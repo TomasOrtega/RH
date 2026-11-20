@@ -6,7 +6,7 @@ open scoped ComplexConjugate Matrix
 namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.PR
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Rewrite `hl` using `[Finset.mem_Icc]`. Establish `h1` using `h ⟨l - 1, by omega⟩`. Establish `h2 : l - 1 + 1 = l` using `by omega`. Simplify using `[h2] at h1`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem up_ne (P : M.Par) {l : ℕ} (hl : l ∈ Finset.Icc 1 (P.k - 1)) {π ρ : M.Ty P} (h : M.Up P l π ρ) :
     ρ ≠ π := by
@@ -17,9 +17,9 @@ theorem up_ne (P : M.Par) {l : ℕ} (hl : l ∈ Finset.Icc 1 (P.k - 1)) {π ρ :
   simp [h2] at h1
 
 /- English proof (translation)
-Rewrite `hl` using `[Finset.mem_Icc]`. Establish `h1` using `h ⟨l - 1, by omega⟩`. Establish `h3` using `h' ⟨l - 1, by omega⟩`. Establish `h2 : l - 1 + 1 = l` using `by omega`. Assume the negation of the conclusion as `hne`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hne' : ¬ l = j` using `fun e => hne e.symm`. Simplify using `only [h2, if_true, hne', if_false] at h1 h3`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem up_idx (P : M.Par) {j l : ℕ} (hl : l ∈ Finset.Icc 1 (P.k - 1)) {π ρ : M.Ty P} (h : M.Up P l π ρ)
     (h' : M.Up P j π ρ) : j = l := by
@@ -33,7 +33,7 @@ theorem up_idx (P : M.Par) {j l : ℕ} (hl : l ∈ Finset.Icc 1 (P.k - 1)) {π �
   omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[h i, h' i]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem up_det (P : M.Par) {j : ℕ} {σ σ' ρ : M.Ty P} (h : M.Up P j σ σ') (h' : M.Up P j σ ρ) : σ' = ρ := by
   funext i
@@ -41,25 +41,23 @@ theorem up_det (P : M.Par) {j : ℕ} {σ σ' ρ : M.Ty P} (h : M.Up P j σ σ') 
   rw [h i, h' i]
 
 /- English proof (translation)
-Introduce `P 𝒜 _ _ _ d hR l hl π ρ hUp Y`. Take `⟨-, hκ, -, hSS, -, -⟩` from `hR`. Establish `hne` using `up_ne P hl hUp`. Establish `hmul : ∀ f : M.Ty P → ℂ, d.κ f * d.κ (Pi.single π 1) = f π • d.κ (Pi.single π 1)`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_mul, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = π`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`. Establish `h0 : d.κ (Pi.single ρ 1) * d.κ (Pi.single π 1) = 0`. Rewrite using `[hmul, Pi.single_eq_of_ne hne.symm, zero_smul]`. Establish `cGG : Commute (d.κ (Pi.single ρ 1)) d.L.GG` using `hκ _ _ (by simp [R.LevelData.fns])`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `cl0 : Commute (d.κ (Pi.single π 1)) (d.L.l0 Y)`. Unfold `R.LevelData.l0`. Use `Commute.sub_right (Commute.neg_right (hκ _ _ (by simp))) (Commute.mul_right (Algebra.commute_algebraMap_right _ _) (Commute.mul_right (hκ _ _ (by simp [R.LevelData.fns])) (hκ _ _ (by simp [R.LevelData.fns]))))` and prove the remaining obligations. Establish `t1 : d.κ (Pi.single ρ 1) * (d.L.GG * d.x Y * d.L.l0 Y) * d.κ (Pi.single π 1) = 0`. Establish `e : d.κ (Pi.single ρ 1) * (d.L.GG * d.x Y * d.L.l0 Y) * d.κ (Pi.single π 1) = d.L.GG * (d.κ (Pi.single ρ 1) * (d.x Y * d.κ (Pi.single π 1))) * d.L.l0 Y`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = (d.L.GG * d.κ (Pi.single ρ 1)) * d.x Y * (d.κ (Pi.single π 1) * d.L.l0 Y) := by`. Rewrite using `[cGG.eq, cl0.eq]`. Use `_ = _ := by simp only [mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, Q.NFData.x, hmul, mul_smul_comm, h0, smul_zero, mul_zero, zero_mul]`. Establish `t2 : ∀ j ∈ Finset.Icc 1 (P.k - 1), d.κ (Pi.single ρ 1) * (d.SS j * d.κ fun σ => M.xEx P {j} σ Y) * d.κ (Pi.single π 1) = if j = l then M.xEx P {j} π Y • (d.SS j * d.κ (Pi.single π 1)) else 0`. Introduce `j _`. Establish `hs` using `hSS j (fun σ => if M.Up P j σ ρ then 1 else 0) (Pi.single ρ 1) (by`. Introduce `σ σ' h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hσ : σ' = ρ`. Substitute `hσ` using the available equality. Simplify using `[h]`. Rewrite using `[Pi.single_eq_of_ne hσ, if_neg]`. Introduce `h'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Conclude with `hσ (up_det P h h'))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = M.xEx P {j} π Y • (d.SS j * ((d.κ fun σ => if M.Up P j σ ρ then 1 else 0) * d.κ (Pi.single π 1))) := by`. Rewrite using `[hs, hmul, mul_smul_comm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `_ = M.xEx P {j} π Y • (d.SS j * ((if M.Up P j π ρ then (1 : ℂ) else 0) • d.κ (Pi.single π 1))) := by`. Rewrite using `[hmul]`. Use `_ = _ := by`. Distinguish the cases in `hjl : j = l`. Substitute `hjl` using the available equality.
-
-Simplify using `[hUp]`. Establish `hn : ¬ M.Up P j π ρ` using `fun h => hjl (up_idx P hl hUp h)`. Simplify using `[hn, hjl]`. Establish `hQ : d.QQ Y 1 0 = d.L.GG * d.x Y * d.L.l0 Y + d.weightedSumBis Y` using `rfl`. Rewrite using `[hQ, mul_add, add_mul, t1, zero_add, Q.NFData.weightedSumBis, Finset.mul_sum, Finset.sum_mul, Finset.sum_congr rfl t2, Finset.sum_ite_eq', if_pos hl]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraic_shift_holds : AlgSS := by
   intro P 𝒜 _ _ _ d hR l hl π ρ hUp Y

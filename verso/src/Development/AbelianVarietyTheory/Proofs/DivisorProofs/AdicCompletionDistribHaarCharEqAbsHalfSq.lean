@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.ModAbs
 
 /- English proof (translation)
-Establish `h2` using `GroundTheory.Global.valued_eq_exp_neg_ord hx`. Establish `hv : Valued.v x ≠ 0` using `(Valued.v).ne_zero_iff.2 hx`. Unfold `ordL`. Rewrite using `[dif_neg hv]`. Establish `: WithZero.unzero hv = Multiplicative.ofAdd (-GroundTheory.LocalField.ord x)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `WithZero.coe_injective` to reduce the goal to its premises. Rewrite using `[WithZero.coe_unzero, h2]`. Both sides reduce to the same expression. Rewrite using `[this, toAdd_ofAdd, neg_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem ordL_eq_ord {E : Type} [Field E] [NumberField E] (w : Pl E) {x : w.adicCompletion E} (hx : x ≠ 0) :
     ordL x = GroundTheory.LocalField.ord x := by
@@ -28,9 +28,9 @@ theorem ordL_eq_ord {E : Type} [Field E] [NumberField E] (w : Pl E) {x : w.adicC
   rw [this, toAdd_ofAdd, neg_neg]
 
 /- English proof (translation)
-Introduce `E _ _ w x hx`. Establish `h1` using `GroundTheory.LocalField.distribHaarChar_eq_modulus (K := w.adicCompletion E) (Units.mk0 x hx)`. Establish `h3 : (GroundTheory.LocalField.residueCard (w.adicCompletion E)) = Ideal.absNorm w.asIdeal` using `GroundTheory.Global.residueCard_adicCompletion`. Rewrite using `[h1, Units.val_mk0, GroundTheory.LocalField.modulus_of_ne_zero hx, h3]`. Unfold `absHalf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[ordL_eq_ord w hx]`. Establish `hq : (0 : ℝ) ≤ ((qV E w : ℕ) : ℝ) ^ (-GroundTheory.LocalField.ord x)` using `zpow_nonneg (Nat.cast_nonneg _) _`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt hq]`. Simplify using `[qV]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem haar_eq_absHalf_sq : ∀ (E : Type) [Field E] [NumberField E] (w : Pl E) (x : w.adicCompletion E) (hx : x ≠ 0), (((MeasureTheory.distribHaarChar (w.adicCompletion E) (Units.mk0 x hx) : NNReal) : ℝ) : ℂ) = absHalf w x ^ 2 := by
   intro E _ _ w x hx

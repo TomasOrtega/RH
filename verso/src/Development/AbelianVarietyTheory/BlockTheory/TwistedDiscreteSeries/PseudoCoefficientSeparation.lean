@@ -33,9 +33,9 @@ def PseudoCoeffSeparation : Prop :=
         HasInfChar ε (fun a => (lam a : ℂ)) π ∧ (IsURepOn (UJset ε) π → UEquiv ε π D ∧ c = 1)
 
 /- English proof (translation)
-Use `⟨fun i j h => ?_, fun i j h => ?_⟩` and prove the remaining obligations. Establish `h1 : ((i : ℕ) : ℤ) < (j : ℕ)` using `by exact_mod_cast h`. Establish `h2 : (0 : ℤ) < r` using `by exact_mod_cast i.pos`. Simplify using `only [neg_lt_neg_iff]`. Conclude with `mul_lt_mul_of_pos_left h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h]`. Use `push_cast`. Put the polynomial expressions in normal form. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hasWideGaps_mul (r : ℕ) : HasWideGaps fun i : Fin r => -((r : ℤ) * (i : ℕ)) := by
   refine ⟨fun i j h => ?_, fun i j h => ?_⟩
@@ -49,12 +49,12 @@ theorem hasWideGaps_mul (r : ℕ) : HasWideGaps fun i : Fin r => -((r : ℤ) * (
     rfl
 
 /- English proof (translation)
-Introduce `h` and use `by simpa using h.2 0 1 rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ HasWideGaps ![1, 0, -1] := fun h => by simpa using h.2 0 1 rfl
 
 /- English proof (translation)
-Take `⟨h, f, -, hf⟩` from `GlobalTheory.Published.pseudoCoefficientUpq_trivial 1 μ`. Use `⟨⟨Subsingleton.strictAnti _, fun i j e => by omega⟩, ⟨h, fun v w _ _ => ?_⟩, f, hf, ⟨h.2.1, ⟨h.2.2.1.1, h.2.2.1.2.2, fun _ _ _ => rfl, fun _ => inferInstance⟩, h.2.2.2.1⟩, hf.trace_self⟩` and prove the remaining obligations. Use `GlobalTheory.Dec.isZEigen_const (allPos 1) (inner ℂ w v)` as an intermediate fact. Use `this using 2 with a` and compare the differences between its conclusion and the goal. Simplify using `[Formalism.QuantumDeterminants.rhoStd]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

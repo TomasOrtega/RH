@@ -9,21 +9,21 @@ variable {O A K : Type} [CommRing O] [CommRing A] [Algebra O A] (𝒜 : ℤ → 
   [Field K] [Algebra O K]
 
 /- English proof (translation)
-Rewrite using `[GradedAlgebra.proj_apply, DirectSum.decompose_of_mem_same 𝒜 hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem proj_same {j : ℤ} {f : A} (hf : f ∈ 𝒜 j) : GradedAlgebra.proj 𝒜 j f = f := by
   rw [GradedAlgebra.proj_apply, DirectSum.decompose_of_mem_same 𝒜 hf]
 
 /- English proof (translation)
-Rewrite using `[GradedAlgebra.proj_apply, DirectSum.decompose_of_mem_ne 𝒜 hf h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem proj_ne {i j : ℤ} {f : A} (hf : f ∈ 𝒜 i) (h : i ≠ j) : GradedAlgebra.proj 𝒜 j f = 0 := by
   rw [GradedAlgebra.proj_apply, DirectSum.decompose_of_mem_ne 𝒜 hf h]
 
 /- English proof (translation)
-Proceed by induction on `u using DirectSum.Decomposition.inductionOn 𝒜 with`. Consider the case `zero => simp`. Consider the case `@homogeneous i m`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[proj_same 𝒜 m.2]`. Rewrite using `[proj_ne 𝒜 m.2 hi, map_zero, hx i hi _ m.2]`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 private theorem x_proj_zero (x : A →ₐ[O] O) (hx : ∀ j, j ≠ 0 → ∀ f ∈ 𝒜 j, x f = 0) (u : A) :
     x (GradedAlgebra.proj 𝒜 0 u) = x u := by
@@ -37,13 +37,11 @@ private theorem x_proj_zero (x : A →ₐ[O] O) (hx : ∀ j, j ≠ 0 → ∀ f �
   | add a b ha hb => rw [map_add, map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Establish `hc : ∀ u : A, x u = 0 → ∀ a, x (DirectSum.decompose 𝒜 u a : A) = 0`. Introduce `u hu a`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Rewrite using `[← GradedAlgebra.proj_apply, x_proj_zero 𝒜 x hx, hu]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx a ha _ (SetLike.coe_mem _)`. Rewrite `hf` using `[sq]`. Use `Submodule.mul_induction_on hf (fun u hu v hv => ?_) (fun a b ha hb => by rw [map_add, map_add, ha, hb, add_zero])` and prove the remaining obligations. Rewrite using `[← DirectSum.sum_support_decompose 𝒜 u, ← DirectSum.sum_support_decompose 𝒜 v, Finset.sum_mul_sum]`. Simplify using `only [map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Establish `hm : (DirectSum.decompose 𝒜 u a : A) * (DirectSum.decompose 𝒜 v b : A) ∈ 𝒜 (a + b)` using `SetLike.GradedMul.mul_mem (SetLike.coe_mem _) (SetLike.coe_mem _)`. Distinguish the cases in `hab : a + b = j`. Rewrite using `[proj_same 𝒜 (hab ▸ hm), map_mul]`. Conclude with `h a b hab _ (SetLike.coe_mem _) _ (SetLike.coe_mem _) (hc u hu a) (hc v hv b)`.
-
-Rewrite using `[proj_ne 𝒜 hm hab, map_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kill_sq (x : A →ₐ[O] O) (hx : ∀ j, j ≠ 0 → ∀ f ∈ 𝒜 j, x f = 0) (ξ : A →ₐ[O] K) (j : ℤ)
     (h : ∀ a b, a + b = j → ∀ u ∈ 𝒜 a, ∀ v ∈ 𝒜 b, x u = 0 → x v = 0 → ξ u * ξ v = 0)
@@ -68,15 +66,13 @@ private theorem kill_sq (x : A →ₐ[O] O) (hx : ∀ j, j ≠ 0 → ∀ f ∈ �
   · rw [proj_ne 𝒜 hm hab, map_zero]
 
 /- English proof (translation)
-Establish `hcan : ∀ c : O, c ≠ 0 → ∀ y : K, c • y = 0 → y = 0`. Introduce `c hc y hy`. Rewrite `hy` using `[Algebra.smul_def]`. Conclude with `(mul_eq_zero.1 hy).resolve_left (fun h0 => hc (FaithfulSMul.algebraMap_injective O K (by rw [h0, map_zero])))`. Set `L : A →ₗ[O] K` to `ξ.toLinearMap ∘ₗ GradedAlgebra.proj 𝒜 j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hL : satSq x ≤ LinearMap.ker L`. Introduce and unpack `g ⟨c, hc, hg⟩`. Use `hcan c hc _ ?_` and prove the remaining obligations. Rewrite using `[← map_smul]`. Conclude with `kill_sq 𝒜 x hx ξ j h _ hg`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL' : ∀ g ∈ 𝒜 j, (satSq x).liftQ L hL ((satSq x).mkQ g) = ξ g`. Introduce `g hg`. Use `show ξ (GradedAlgebra.proj 𝒜 j g) = ξ g`. Rewrite using `[proj_same 𝒜 hg]`. Take `⟨c, hc, hp⟩` from `hs ((satSq x).mkQ f) ⟨f, ⟨hf, hx j hj f hf⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hle : cotSpan x F ≤ LinearMap.ker ((satSq x).liftQ L hL)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(hL' _ (hF i)).trans (hξ i)`. Establish `h1` using `LinearMap.mem_ker.1 (hle hp)`.
-
-Rewrite `h1` using `[map_smul, hL' f hf]`. Conclude with `hcan c hc _ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kill_part [IsDomain O] [FaithfulSMul O K] (x : A →ₐ[O] O)
     (hx : ∀ j, j ≠ 0 → ∀ f ∈ 𝒜 j, x f = 0) (ξ : A →ₐ[O] K) (j : ℤ) (hj : j ≠ 0)
@@ -110,17 +106,15 @@ private theorem kill_part [IsDomain O] [FaithfulSMul O K] (x : A →ₐ[O] O)
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ A _ _ 𝒜 _ _ x hW r s r' s' m Q hF hG ξ hS hP h0`. Establish `hnn : ∀ a, 0 ≤ a → ∀ u ∈ 𝒜 a, x u = 0 → ξ u = 0`. Introduce `a ha u hu hxu`. Break down `ha.eq_or_lt with rfl | ha` into its components or cases. Rewrite using `[h0 u hu, AlgHom.comp_apply, hxu, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP a ha u hu`. Establish `h1 : ∀ f ∈ 𝒜 (-1), ξ f = 0`. Use `kill_part 𝒜 x hW.fixed ξ (-1) (by decide) ?_ Q.F Q.hF (fun i => hS _ (Ideal.subset_span ?_)) hF` and prove the remaining obligations. Introduce `a b hab u hu v hv hxu hxv`. Distinguish the cases in `ha : 0 ≤ a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnn a ha u hu hxu, zero_mul]`. Rewrite using `[hnn b (by omega) v hv hxv, mul_zero]`. Conclude with `Or.inl (Or.inl (Or.inl (Or.inl ⟨i, rfl⟩)))`. Establish `h2 : ∀ f ∈ 𝒜 (-2), ξ f = 0`. Use `kill_part 𝒜 x hW.fixed ξ (-2) (by decide) ?_ Q.G Q.hG (fun i => hS _ (Ideal.subset_span ?_)) hG` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the first alternative. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab u hu v hv hxu hxv`. Distinguish the cases in `ha : 0 ≤ a`. Rewrite using `[hnn a ha u hu hxu, zero_mul]`. Distinguish the cases in `hb : 0 ≤ b`. Rewrite using `[hnn b hb v hv hxv, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `rfl : a = -1` from `by omega`. Rewrite using `[h1 u hu, zero_mul]`. Conclude with `Or.inl (Or.inl (Or.inl (Or.inr ⟨i, rfl⟩)))`. Assume the negation of the conclusion as `hn`. Take `⟨f, hf, hne⟩` from `(sign_holds O A 𝒜 x hW K ξ).1.1 hn`.
-
-Conclude with `hne (h2 f hf)`.
+Rewrite the conclusion using the stated equalities. Prove the first alternative. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.ct_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

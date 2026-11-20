@@ -10,7 +10,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha => exact hy a ha`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`. Consider the case `smul c a _ ha => simp [ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem hT_span_left (S : HSpace E) {s : Set S.V} {y : S.V} (hy : ∀ a ∈ s, S.hT a y = 0)
     {x : S.V} (hx : x ∈ Submodule.span E s) : S.hT x y = 0 := by
@@ -21,7 +21,7 @@ theorem hT_span_left (S : HSpace E) {s : Set S.V} {y : S.V} (hy : ∀ a ∈ s, S
   | smul c a _ ha => simp [ha]
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem a ha => exact hx a ha`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`. Consider the case `smul c a _ ha => simp [ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem hT_span_right (S : HSpace E) {s : Set S.V} {x : S.V} (hx : ∀ a ∈ s, S.hT x a = 0)
     {y : S.V} (hy : y ∈ Submodule.span E s) : S.hT x y = 0 := by
@@ -32,11 +32,11 @@ theorem hT_span_right (S : HSpace E) {s : Set S.V} {x : S.V} (hx : ∀ a ∈ s, 
   | smul c a _ ha => simp [ha]
 
 /- English proof (translation)
-Establish `h1 : F'.z - ζ • F.z ∈ F.Xa r` using `by simpa [FlagG.fvec] using h`. Establish `hz : F'.z - ζ • F.z ∈ Submodule.span E (Set.range F.e)` using `Submodule.span_mono (Set.image_subset_range F.e {i | i.1 < r}) h1`. Take `⟨x, hx, hzx⟩ : ∃ x ∈ Submodule.span E (Set.range F.e), F'.z = ζ • F.z + x` from `⟨_, hz, by abel⟩`. Establish `hxz : S.hT x F.z = 0` using `hT_span_left S (by rintro _ ⟨a, rfl⟩; exact F.z_orth a) hx`. Establish `hzx' : S.hT F.z x = 0` using `by rw [← S.herm.eq x F.z, hxz, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxx : S.hT x x = 0` using `hT_span_left S (fun a ha => by`. Take `⟨a', rfl⟩` from `ha`. Conclude with `hT_span_right S (by rintro _ ⟨b, rfl⟩; exact F.e_iso a' b) hx) hx`. Establish `h2` using `F'.z_norm`. Rewrite `h2` using `[hzx]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, hxz, hzx', hxx, F.z_norm, starRingEnd_apply] at h2`. Take the linear combination `h2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_shift {S : HSpace E} {r : ℕ} {T T' : E} (F : FlagG S r T) (F' : FlagG S r T')
     (ζ : E) (h : F'.fvec (Fin.last r) - ζ • F.fvec (Fin.last r) ∈ F.Xa r) :
@@ -60,11 +60,11 @@ theorem norm_shift {S : HSpace E} {r : ℕ} {T T' : E} (F : FlagG S r T) (F' : F
   linear_combination h2
 
 /- English proof (translation)
-Establish `hn` using `congrArg (Algebra.norm ℚ) h`. Rewrite `hn` using `[map_mul, map_mul, Algebra.norm_natCast, Algebra.norm_natCast]`. Establish `hs : Algebra.norm ℚ (star ((ζ : 𝓞 E) : E)) = Algebra.norm ℚ ((ζ : 𝓞 E) : E)`. Use `Algebra.norm_eq_of_algEquiv (R := ℚ) (starRingAut (R := E)).toRatAlgEquiv ((ζ : 𝓞 E) : E)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hu` using `NumberField.Units.norm E ζ`. Establish `h1 : Algebra.norm ℚ ((ζ : 𝓞 E) : E) * Algebra.norm ℚ ((ζ : 𝓞 E) : E) = 1`. Rewrite using `[← abs_mul_abs_self, hu, one_mul]`. Rewrite `hn` using `[hs, h1, one_mul]`. Establish `hd : Module.finrank ℚ E ≠ 0` using `Module.finrank_pos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : T' ^ Module.finrank ℚ E = T ^ Module.finrank ℚ E` using `by exact_mod_cast hn`. Conclude with `(Nat.pow_left_injective hd h3).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nat_eq_of (ζ : (𝓞 E)ˣ) {T T' : ℕ}
     (h : ((T' : ℕ) : E) = star ((ζ : 𝓞 E) : E) * ((ζ : 𝓞 E) : E) * (T : E)) : T = T' := by
@@ -83,11 +83,11 @@ theorem nat_eq_of (ζ : (𝓞 E)ˣ) {T T' : ℕ}
   exact (Nat.pow_left_injective hd h3).symm
 
 /- English proof (translation)
-Establish `hnorm : ∀ φ : E →+* ℂ, ‖φ ((ζ : 𝓞 E) : E)‖ = 1`. Introduce `φ`. Establish `h1` using `congrArg φ h`. Rewrite `h1` using `[map_mul, hC φ, map_one, ← Complex.normSq_eq_conj_mul_self]`. Establish `h2 : ‖φ ((ζ : 𝓞 E) : E)‖ ^ 2 = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.sq_norm]`. Conclude with `h1` after adjusting the coercions. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h2`. Take `⟨n, hn, hpow⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one E ℂ (RingOfIntegers.isIntegral_coe (ζ : 𝓞 E)) hnorm`. Use `⟨n, hn, Units.ext ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_one, map_pow, map_one]`. Conclude with `hpow`.
+A detailed English derivation is pending.
 -/
 theorem root_of (hC : Formalism.L2.SG.IdCell.StarIsConj E) (ζ : (𝓞 E)ˣ)
     (h : star ((ζ : 𝓞 E) : E) * ((ζ : 𝓞 E) : E) = 1) : ∃ n : ℕ, 0 < n ∧ ζ ^ n = 1 := by
@@ -106,9 +106,9 @@ theorem root_of (hC : Formalism.L2.SG.IdCell.StarIsConj E) (ζ : (𝓞 E)ˣ)
   exact hpow
 
 /- English proof (translation)
-Introduce `S r T T' F F' c ζ hC hT _ hS hc`. Establish `h` using `norm_shift F F' (c (Fin.last r)) (hS (Fin.last r))`. Rewrite `h` using `[hc]`. Establish `hTT` using `nat_eq_of ζ h`. Substitute `hTT` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨rfl, root_of hC ζ ?_⟩` and prove the remaining obligations. Establish `hT0 : (T : E) ≠ 0` using `Nat.cast_ne_zero.mpr hT.ne'`. Conclude with `mul_right_cancel₀ hT0 (h.symm.trans (one_mul _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unitNormRoot_main : Formalism.L2.SG.IdCell.NormRoot E := by
   intro S r T T' F F' c ζ hC hT _ hS hc

@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.ThickFrames.MarkedLow
 open Finset UpperTheory.BernoulliSumsFrobeniusOrbits Formalism.G0
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on generalizing c with`. Consider the case `empty => simp`. Consider the case `insert x S hx ih`. Rewrite using `[Finset.sum_powerset_insert hx, Finset.sum_insert hx, Finset.sum_insert hx]`. Establish `h1 : ∑ T ∈ S.powerset, ((∏ a ∈ T, p a) * ∏ a ∈ insert x S \ T, (1 - p a)) * (c + ∑ a ∈ T, g a) ^ 2 = (1 - p x) * ∑ T ∈ S.powerset, ((∏ a ∈ T, p a) * ∏ a ∈ S \ T, (1 - p a)) * (c + ∑ a ∈ T, g a) ^ 2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun T hT => ?_` and prove the remaining obligations. Establish `hxT : x ∉ T` using `fun h => hx (Finset.mem_powerset.1 hT h)`. Rewrite using `[Finset.insert_sdiff_of_notMem _ hxT, Finset.prod_insert (fun h => hx (Finset.mem_sdiff.1 h).1)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : ∑ T ∈ S.powerset, ((∏ a ∈ insert x T, p a) * ∏ a ∈ insert x S \ insert x T, (1 - p a)) * (c + ∑ a ∈ insert x T, g a) ^ 2 = p x * ∑ T ∈ S.powerset, ((∏ a ∈ T, p a) * ∏ a ∈ S \ T, (1 - p a)) * ((c + g x) + ∑ a ∈ T, g a) ^ 2`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun T hT => ?_` and prove the remaining obligations. Establish `hxT : x ∉ T` using `fun h => hx (Finset.mem_powerset.1 hT h)`. Rewrite using `[Finset.insert_sdiff_insert, Finset.sdiff_insert_of_notMem hx, Finset.prod_insert hxT, Finset.sum_insert hxT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, ih, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sel_moment {α : Type} [DecidableEq α] (p g : α → ℝ) (S : Finset α) (c : ℝ) :
     ∑ T ∈ S.powerset, ((∏ a ∈ T, p a) * ∏ a ∈ S \ T, (1 - p a)) * (c + ∑ a ∈ T, g a) ^ 2 =
@@ -42,7 +42,7 @@ private theorem sel_moment {α : Type} [DecidableEq α] (p g : α → ℝ) (S : 
     ring
 
 /- English proof (translation)
-Use `sel_moment p g univ c` as an intermediate fact. Rewrite `this` using `[Finset.powerset_univ]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sel_moment' {α : Type} [Fintype α] [DecidableEq α] (p g : α → ℝ) (c : ℝ) :
     ∑ T : Finset α, pw p T * (c + ∑ a ∈ T, g a) ^ 2 =
@@ -52,13 +52,11 @@ private theorem sel_moment' {α : Type} [Fintype α] [DecidableEq α] (p g : α 
   exact this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Choose the witnesses or unpack the hypotheses as in `⟨T₀, hT₀⟩ : ∃ T, 0 < w T := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: ∑ T, w T ≤ 0` using `Finset.sum_nonpos fun T _ => h T`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: ∑ T, w T * (∑ U, w U * F U) < ∑ T, w T * F T`. Use `Finset.sum_lt_sum (fun T _ => ?_) ⟨T₀, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Break down `(hw T).eq_or_lt with h | h` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h]`. Simplify using the standard rewrite rules. Conclude with `mul_le_mul_of_nonneg_left (hc T h).le h.le`. Conclude with `mul_lt_mul_of_pos_left (hc T₀ hT₀) hT₀`. Rewrite `this` using `[← Finset.sum_mul, h1, one_mul]`.
-
-Conclude with `lt_irrefl _ this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sel_exists {γ : Type} [Fintype γ] (w F : γ → ℝ) (hw : ∀ T, 0 ≤ w T)
     (h1 : ∑ T, w T = 1) : ∃ T, 0 < w T ∧ F T ≤ ∑ U, w U * F U := by
@@ -79,9 +77,9 @@ private theorem sel_exists {γ : Type} [Fintype γ] (w F : γ → ℝ) (hw : ∀
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Establish `: {t | P t} = ((univ.filter P : Finset α) : Set α)` using `by ext; simp`. Rewrite using `[this, Set.ncard_coe_finset, Finset.card_filter]`. Use `push_cast`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Unfold `ind`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `by_cases h : P t <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sel_ncard {α : Type} [Fintype α] (P : α → Prop) :
     (({t | P t}.ncard : ℕ) : ℝ) = ∑ t, ind (P t) := by
@@ -94,39 +92,35 @@ private theorem sel_ncard {α : Type} [Fintype α] (P : α → Prop) :
   by_cases h : P t <;> simp [h]
 
 /- English proof (translation)
-Introduce `α κ ι _ _ _ _ cl p δ β D I ω BAD hp hδ hδ1 hβ hω hD hD2 hbad`. Establish `hw : ∀ T : Finset α, 0 ≤ pw p T` using `fun T => mul_nonneg (Finset.prod_nonneg fun a _ => (hp a).1) (Finset.prod_nonneg fun a _ => by linarith [(hp a).2])`. Establish `h1 : ∑ T : Finset α, pw p T = 1`. Simplify using `using sel_moment' p (fun _ => 0) 1`. Use `set Y : κ → Finset α → ℝ := fun c T => ((T.filter fun a => cl a = c).card : ℝ) - ∑ a ∈ univ.filter (fun a => cl a = c), p a with hY`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set B : Finset α → ℝ := fun T => ∑ i ∈ I, ω i * (({t | t ∈ T ∧ BAD i t T}.ncard : ℕ) : ℝ) with hB`. Use `set m : ℝ := β * δ * Fintype.card α * ∑ i ∈ I, ω i with hm`. Establish `hm0 : 0 ≤ m`. Establish `: 0 ≤ ∑ i ∈ I, ω i` using `Finset.sum_nonneg fun i _ => hω i`. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB0 : ∀ T, 0 ≤ B T` using `fun T => Finset.sum_nonneg fun i _ => mul_nonneg (hω i) (Nat.cast_nonneg _)`. Establish `hEY : ∀ c, ∑ T, pw p T * Y c T ^ 2 ≤ ∑ a, if cl a = c then δ else 0`. Introduce `c`. Establish `h` using `sel_moment' p (fun a => if cl a = c then 1 else 0) (-∑ a ∈ univ.filter (fun a => cl a = c), p a)`. Establish `e1 : ∀ T : Finset α, Y c T = -∑ a ∈ univ.filter (fun a => cl a = c), p a + ∑ a ∈ T, (if cl a = c then (1 : ℝ) else 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `T`. Simplify using `only [hY]`. Rewrite using `[Finset.card_filter]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∑ a, (if cl a = c then (1 : ℝ) else 0) * p a = ∑ a ∈ univ.filter (fun a => cl a = c), p a`. Rewrite using `[Finset.sum_filter]`. Simplify using the standard rewrite rules. Simplify using `only [e1]`. Rewrite using `[h, e2, neg_add_cancel, zero_pow two_ne_zero, zero_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Use `split_ifs`. Use polynomial arithmetic with `[(hp a).1, (hp a).2, sq_nonneg (p a)]`. Simplify using the standard rewrite rules. Establish `hEX : ∑ T, pw p T * ∑ c, Y c T ^ 2 ≤ D ^ 2 / 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `(Finset.sum_le_sum fun c _ => hEY c).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hEB : ∑ T, pw p T * B T ≤ m`. Simplify using `only [hB, sel_ncard, Finset.mul_sum, hm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun t _ => ?_` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (mul_le_mul_of_nonneg_left (hbad i hi t) (hω i))` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun T _ => by ring`. Use `_ = _ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨T, hT0, hT⟩` from `sel_exists (pw p) (fun T => (∑ c, Y c T ^ 2) / D ^ 2 + B T / (4 * m)) hw h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD0 : 0 < D ^ 2` using `by positivity`. Establish `hE : ∑ U, pw p U * ((∑ c, Y c U ^ 2) / D ^ 2 + B U / (4 * m)) ≤ 1`. Establish `e : ∑ U, pw p U * ((∑ c, Y c U ^ 2) / D ^ 2 + B U / (4 * m)) = (∑ U, pw p U * ∑ c, Y c U ^ 2) / D ^ 2 + (∑ U, pw p U * B U) / (4 * m)`. Rewrite using `[Finset.sum_div, Finset.sum_div, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun U _ => by ring`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `a1 : (∑ U, pw p U * ∑ c, Y c U ^ 2) / D ^ 2 ≤ 1 / 2`. Rewrite using `[div_le_iff₀ hD0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a2 : (∑ U, pw p U * B U) / (4 * m) ≤ 1 / 2` using `div_le_of_le_mul₀ (by positivity) (by norm_num) (by linarith)`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT1` using `hT.trans hE`. Establish `n1 : 0 ≤ (∑ c, Y c T ^ 2) / D ^ 2` using `div_nonneg (Finset.sum_nonneg fun c _ => sq_nonneg _) hD0.le`. Establish `n2 : 0 ≤ B T / (4 * m)` using `div_nonneg (hB0 T) (by positivity)`. Use `⟨T, fun c => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : (∑ c, Y c T ^ 2) / D ^ 2 ≤ 1` using `by linarith`. Rewrite `a1` using `[div_le_one hD0]`. Establish `a2 : Y c T ^ 2 ≤ ∑ c, Y c T ^ 2` using `Finset.single_le_sum (f := fun c => Y c T ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ c)`. Conclude with `abs_le_of_sq_le_sq (a2.trans a1) hD.le`. Establish `key : B T ≤ 4 * m`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Break down `hm0.eq_or_lt with h | h` into its components or cases. Establish `a1 : pw p T * B T ≤ ∑ U, pw p U * B U` using `Finset.single_le_sum (f := fun U => pw p U * B U) (fun U _ => mul_nonneg (hw U) (hB0 U)) (Finset.mem_univ T)`. Establish `a2 : pw p T * B T ≤ 0` using `by linarith`. Establish `a3 : B T ≤ 0`. Assume the negation of the conclusion as `hc`.
-
-Use `push Not at hc`. Combine the linear relations using `[mul_pos hT0 hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a1 : B T / (4 * m) ≤ 1` using `by linarith`. Rewrite `a1` using `[div_le_one (by positivity)]`. Then use the resulting hypothesis.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.BernoulliSumsFrobeniusOrbits.select :
     ∀ (α κ ι : Type) [Fintype α] [DecidableEq α] [Fintype κ] [DecidableEq κ] (cl : α → κ) (p : α → ℝ) (δ β D : ℝ)

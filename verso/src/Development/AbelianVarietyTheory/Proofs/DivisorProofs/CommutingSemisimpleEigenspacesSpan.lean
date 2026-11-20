@@ -5,9 +5,9 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C _ _ V _ _ _ I T hc hs`. Establish `hmax : ∀ a μ, (T a).maxGenEigenspace μ = (T a).eigenspace μ`. Introduce `a μ`. Take `⟨f, hf, h0⟩` from `hs a`. Conclude with `(Module.End.isSemisimple_of_squarefree_aeval_eq_zero hf.squarefree h0).isFinitelySemisimple.maxGenEigenspace_eq_eigenspace μ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcomm : Pairwise fun i j => Commute (T i) (T j)` using `fun i j _ => hc i j`. Establish `hdiag : ∀ a, ⨆ μ, (T a).maxGenEigenspace μ = ⊤` using `fun a => Module.End.iSup_maxGenEigenspace_eq_top (T a)`. Establish `htop` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute T hcomm hdiag`. Simplify `htop` using `only [hmax]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem iSup_jointEigenspace_eq_top_of_separable : ∀ (C : Type) [Field C] [IsAlgClosed C] (V : Type) [AddCommGroup V] [Module C V] [FiniteDimensional C V] (I : Type) (T : I → Module.End C V), (∀ a b, Commute (T a) (T b)) → (∀ a, ∃ f : Polynomial C, f.Separable ∧ Polynomial.aeval (T a) f = 0) → (⨆ χ : I → C, ⨅ a : I, Module.End.eigenspace (T a) (χ a)) = ⊤ := by
   intro C _ _ V _ _ _ I T hc hs

@@ -10,19 +10,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ M _ r h`. Take `⟨T, _, _, π, hfree, hfin, hrk, hs, h0, hsm, hon, hker, huniq⟩` from `GlobalTheory.exists_tateModule_of_card (Additive M) p r (fun n => by`. Rewrite using `[← h n]`. Conclude with `Nat.card_congr (Equiv.subtypeEquiv Additive.toMul fun x => Iff.rfl))`. Establish `hkill : ∀ n x, p ^ n • π n x = 0` using `fun n x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => simp [h0]`. Consider the case `succ n ih => rw [pow_succ, mul_smul, hs, ih]`. Set `f : T →ₗ[ℤ_[p]] Tate p M` to `{ toFun := fun x => Tate.mk (fun n => Additive.toMul (π n x)) fun n => ⟨congrArg Additive.toMul (hkill n x), congrArg Additive.toMul (hs n x)⟩ map_add' := fun x y => Tate.ext fun n => congrArg Additive.toMul (map_add (π n) x y) map_smul' := fun a x => Tate.ext fun n => congrArg A …`. Establish `hf : ∀ x n, (f x).lev n = Additive.toMul (π n x)` using `fun _ _ => rfl`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ t : Tate p M, ∃! x, ∀ n, π n x = Additive.ofMul (t.lev n)` using `fun t => huniq (fun n => Additive.ofMul (t.lev n)) (by have := t.lev_pow 0`. Rewrite `this` using `[pow_zero, pow_one]`. Rewrite using `[this]`. Use the proof step `rfl)`. Use the proof step `(fun n => congrArg Additive.ofMul (t.lev_succ n))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hsurj : Function.Surjective f` using `fun t => by`. Take `⟨x, hx, -⟩` from `hu t`. Conclude with `⟨x, Tate.ext fun n => by rw [hf, hx]; rfl⟩`. Establish `hinj : Function.Injective f` using `fun x y hxy => (hu (f y)).unique (fun n => by rw [← hxy]; rfl) (fun n => rfl)`. Use `⟨⟨(LinearEquiv.ofBijective f ⟨hinj, hsurj⟩).symm.trans (LinearEquiv.ofFinrankEq _ _ (by simpa using hrk))⟩, fun n x hx => ?_, fun n t => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hon n (Additive.ofMul x) (congrArg Additive.ofMul hx)`. Conclude with `⟨f y, by rw [hf, hy]; rfl⟩`. Take `⟨x, rfl⟩` from `hsurj t`. Establish `key : ∀ y : T, f (p ^ n • y) = (p : ℤ_[p]) ^ n • f y` using `fun y => by`. Rewrite using `[map_nsmul, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `Iff.trans (hker n x) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨f y, key y⟩`. Introduce and unpack `⟨s, hs'⟩`. Take `⟨y, rfl⟩` from `hsurj s`.
-
-Conclude with `⟨y, hinj (hs'.trans (key y).symm)⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tate_free_of_card :
     ∀ (p : ℕ) [Fact p.Prime] (M : Type) [CommGroup M] (r : ℕ), (∀ n : ℕ, Nat.card {x : M // x ^ p ^ n = 1} = p ^ (r * n)) → Nonempty (Tate p M ≃ₗ[ℤ_[p]] (Fin r → ℤ_[p])) ∧ (∀ (n : ℕ) (x : M), x ^ p ^ n = 1 → ∃ t : Tate p M, t.lev n = x) ∧ ∀ (n : ℕ) (t : Tate p M), t.lev n = 1 ↔ ∃ s : Tate p M, t = (p : ℤ_[p]) ^ n • s := by

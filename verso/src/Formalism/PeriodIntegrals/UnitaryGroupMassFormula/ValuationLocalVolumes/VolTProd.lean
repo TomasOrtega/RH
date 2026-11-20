@@ -9,13 +9,13 @@ open Formalism.L2.SG.LocVol Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 open scoped ENNReal TensorProduct
 
 /- English proof (translation)
-Unfold `VolTProdU`. Rewrite using `[Measure.prod_apply hM]`. Establish `hsec : ∀ x : UIdx r → Fv F v ⊗[F] E, sdE (E` using `E) ψ v (UIdx r) (Prod.mk x ⁻¹' VolTUSet (E := E) v g r) = (VolTO (E := E) v (UIdx r)).indicator (fun _ => ((g : ℝ≥0∞) ^ (2 * Fintype.card (UIdx r)))⁻¹) x := by`. Introduce `x`. Distinguish the cases in `hx : x ∈ VolTO (E := E) v (UIdx r)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hx]`. Establish `hpre : Prod.mk x ⁻¹' VolTUSet (E` using `E) v g r = {w | (fun i => (w i - x i) * sc (E := E) v (g : Fv F v)⁻¹) ∈ VolTO (E := E) v (UIdx r)} := by`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, VolTUSet, VolTO, Set.mem_ofPred_eq]`. Conclude with `⟨fun h => h.2, fun h => ⟨hx, h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[hpre, hA, hO, mul_one]`. Rewrite using `[Set.indicator_of_notMem hx]`. Establish `hpre : Prod.mk x ⁻¹' VolTUSet (E` using `E) v g r = ∅ := by`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, VolTUSet, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `fun h => hx h.1`. Rewrite using `[hpre, measure_empty]`. Repeatedly rewrite using `[hsec]`. Rewrite using `[lintegral_indicator_const hMO, mul_comm]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem volTProdU_of {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (g r : ℕ)

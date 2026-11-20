@@ -34,13 +34,13 @@ def OpenEx2EAlt : Prop :=
       Nonempty (Λ.Λ ≃ₐ[c₁.O] MvPowerSeries (Fin m) c₁.O) ∧ R.T.IsPhi φ ∧ Function.Surjective φ ∧ AllGood R.S (J.map φ) ∧
       R.T.DimT J ∧ _root_.UpperTheory.Gal.projectedFormsSystemPart.EndPtAlt R ι φ
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c _ N _ e ψ η σ g₁ B M H hev L _ _ _ _ _ Φ C₀ k hok hbig hseed A _ _ _ ρ hρ hψ r hr hirr v hpc i j`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Take `⟨ι⟩` from `hι l`. Take `⟨c₁, _, f, R, Λ, J, φ, m, hAc, hL, hka, hmod, hnum, hΛ, hφ, hsurj, hgood, hdim, hend⟩` from `hO Ω l ι c N e ψ η σ g₁ B M H hev L Φ C₀ k hok hbig hseed A`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ξ, h1, h2⟩` from `hX Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f R A hAc ρ hρ`. Establish `hr' : ∀ s, (r s).val = (R.S.ρ.r (k.p0 s)).map fun a => (ξ a).1` using `fun s => by`. Rewrite using `[hr s]`. Use extensionality with `a b`. Conclude with `(h1 _ a b).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : IsIrr r`. Use `hirr ⊤ (by simp)` as an intermediate fact. Conclude with `⟨this.1, fun s w hw => Submodule.mem_top, fun U hU h => this.2.2 U hU fun s w hw => h s.1 w hw⟩`. Establish `hψ' : ∀ v i, ∀ g ∈ Φ.Iv v, (ξ (R.S.ρ.ψ v i g).val).1 = (Chr.Psi l e (Chr.dirG ℚ Ω ψ) (k.j v g) ^ Fr.w 3 i).val.1` using `fun v i g hg => (h2 v i g).trans (by rw [hψ v i g hg]; rfl)`. Take `⟨t1, t2, t3⟩` from `hT Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f R ξ r hr' hi`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨w, hw⟩, hip⟩` from `hA Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f R hka φ hφ ξ r hr' hi hψ'`. Take `⟨D, hD, D', hD', k1, k2, hli⟩` from `hTan Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f R ξ r hr' hi hψ' v hpc i j fun g => (h2 v i g).trans ((hno g).trans (congrArg (· * _) (h2 v j g).symm))`. Conclude with `hE Ω l c η _ σ g₁ B M L Φ k c₁ f _ R φ hφ hsurj J ξ w (hU l L Ω R.s R.V c₁ 3 R.r R.B₀ Λ ι J m (by norm_num) hΛ hmod.dense hmod.end1 hnum) t1 hw hip (hR Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f _ R hL hka φ hφ hsurj J hgood hdim hmod.dense hend (ptA R ξ) t2 t3) D hD D' hD' k1 k2 hli`.
+A detailed English derivation is pending.
 -/
 theorem UnitaryRankTwoFlagsAlt (hO : _root_.UpperTheory.Gal.projectedFormsSystemPart.OpenEx2EAlt) (hX : XiEx) (hT : XiTI) (hA : XiArith) (hTan : TanA) (hR : _root_.UpperTheory.Gal.projectedFormsSystemPart.Red2Alt) (hU : _root_.UpperTheory.V.J.UnramifiedEndsStatement) (hE : End)
     (hι : ∀ (l : ℕ) [Fact l.Prime], Nonempty (Qbar l ≃+* ℂ)) : UpperTheory.V.Z.J.LinkedUnlE := by
@@ -69,23 +69,23 @@ theorem UnitaryRankTwoFlagsAlt (hO : _root_.UpperTheory.Gal.projectedFormsSystem
     D hD D' hD' k1 k2 hli
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `hA hLoc hMod hN hLev hLam hB0 hS3 hS2 hTw hCyc hRes Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M H hev L _ _ _ _ _ Φ C₀ k hok hbig hseed A _`. Take `⟨K, _, _, _, N', w, χ', η', θ, j, hD, hne, hord, hη, hcong, hdisc⟩` from `hseed`. Establish `hv : Nonempty Φ.V`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hbig.1` as an intermediate fact. Simplify using `[UpperTheory.V.Fr.Frame.d] at this`. Take `⟨v⟩` from `hv`. Establish `hker : η.ker = galOf ℚ K Ω`. Rewrite using `[← hD.η_ker]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `s`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker, ← Units.val_eq_one, ← Units.val_eq_one, hη s]`. Conclude with `Iff.rfl` after adjusting the coercions. Use `haveI := hD.imag`. Take `⟨κ, hκ⟩` from `hTw K Ω hD.quad l hok.l_odd hdisc ι σ hD.cc`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hk3, hk2⟩` from `UpperTheory.V.Pr.kaOf hCyc hRes Ω l ι c N e ψ η σ g₁ B M H L Φ k`. Take `⟨ka, hk2, hka⟩` from `hk2 K hker κ hκ`. Take `⟨c₂, hcc, hAc⟩` from `UpperTheory.V.J.oe_big c A`. Take `⟨c₁, hle₁, hL, hv3, hv2, -⟩` from `UpperTheory.V.Pr.coefEx l c₂ L Ω _ _ hk3.alg.1 hk2.alg.1`. Establish `hle : c.O ≤ c₁.O` using `hcc.trans hle₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `UpperTheory.V.J.oe_res hle`. Use `haveI hco := UpperTheory.V.Pr.coefIs l c₁`. Take `⟨R₂⟩` from `UpperTheory.V.Pr.cRealEx hA hLoc hLev hB0 Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f 2 ka C₀ (Or.inl rfl) hok hbig hle hf hk2 hv2`. Take `⟨R₃⟩` from `UpperTheory.V.Pr.cRealEx hA hLoc hLev hB0 Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f 3 _ C₀ (Or.inr rfl) hok hbig hle hf hk3 hv3`. Take `⟨m₃, hm₃, -, r₃, -, s₃⟩` from `hS3 K L Ω l ι σ N' w χ' η' θ j hD hne M H.3 (by rw [mul_comm]; exact (Nat.mul_dvd_mul_left l hev.two_dvd).trans H.2) (UpperTheory.V.Z.Sym.Pl.linkUnr Ω l _ η _ σ g₁ B M L Φ k) (UpperTheory.V.Z.Sym.Pl.chiUnr Ω l c N e ψ χ' j hord hcong M H.2 L) 2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m₂, hm₂, -, r₂, -, -, -, s₂⟩` from `hS2 K L Ω l ι σ N' w χ' η' θ j hD κ ka hκ hka 2`. Take `⟨-, hμ⟩` from `UpperTheory.V.Pr.degEq Ω l ι c N e ψ η σ g₁ B M H L Φ k v`. Take `⟨Λ₂, hΛ₂⟩` from `hLam l L Ω R₂.s R₂.V c₁ 2 R₂.r`. Take `⟨Λ₃, hΛ₃⟩` from `hLam l L Ω R₃.s R₃.V c₁ 3 R₃.r`. Take `⟨J₂, hJ₂⟩` from `hMod l L Ω R₂.s R₂.V R₂.hV hμ c₁ hL 2 (by norm_num) R₂.r R₂.B₀ Λ₂ ι`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨J₃, hJ₃, hnum⟩` from `hN l L Ω R₃.s R₃.V R₃.hV hμ c₁ hL R₃.r R₃.v0 R₃.B₀ Λ₃ ι`. Establish `h₂` using `_root_.UpperTheory.V.J.mod_l_open_existence ι H v R₂ Λ₂ hΛ₂ J₂ hJ₂ (_root_.UpperTheory.V.Pr.seedPtOf_alt hA Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f 2 ka R₂ hk2 χ' j hord hcong m₂ hm₂ _ (by`. Apply the tactic sequence `convert s₂ using 2 with i i i <;> fin_cases i <;> simp [UpperTheory.V.Fr.w]) J₂ hJ₂.pt)`. Establish `h₃` using `_root_.UpperTheory.V.J.mod_l_open_existence ι H v R₃ Λ₃ hΛ₃ J₃ hJ₃ (_root_.UpperTheory.V.Pr.seedPtOf_alt hA Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f 3 _ R₃ hk3 χ' j hord hcong m₃ hm₃ _ (by`. Apply the tactic sequence `convert s₃ using 2 with i i i <;> fin_cases i <;> simp [UpperTheory.V.Fr.w]) J₃ hJ₃.pt)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ, hsurj, hgood⟩` from `UpperTheory.V.J.absGood l c₁.O _ R₂.T R₃.T J₂ J₃ h₂ h₃`. Take `⟨R₀, hp⟩` from `cRealAv hLev hB0 Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f 3 _ C₀ (Or.inr rfl) hok hbig hle hf hk3 hv3 R₃.s.p R₃.s.p_prime.ne_zero`. Take `⟨Λ₀, hΛ₀⟩` from `hLam l L Ω R₀.s R₀.V c₁ 3 R₀.r`. Take `⟨J₀, hJ₀⟩` from `hMod l L Ω R₀.s R₀.V R₀.hV hμ c₁ hL 3 (by norm_num) R₀.r R₀.B₀ Λ₀ ι`. Establish `h₀` using `_root_.UpperTheory.V.J.mod_l_open_existence ι H v (setS R₀ R₃.S) Λ₀ hΛ₀ J₀ hJ₀ (_root_.UpperTheory.V.Pr.seedPtOf_alt hA Ω l ι c N e ψ η σ g₁ B M H L Φ k c₁ f 3 _ (setS R₀ R₃.S) hk3 χ' j hord hcong m₃ hm₃ _ (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Apply the tactic sequence `convert s₃ using 2 with i i i <;> fin_cases i <;> simp [UpperTheory.V.Fr.w]) J₀ hJ₀.pt)`. Take `⟨φ₀, hφ₀, -, hgood₀⟩` from `UpperTheory.V.J.absGood l c₁.O _ R₂.T (setS R₀ R₃.S).T J₂ J₀ h₂ h₀`. Conclude with `⟨c₁, hco, f, R₃, Λ₃, J₃, φ, _, fun x hx => hle₁ (hAc x hx), hL, hk3, hJ₃, hnum, hΛ₃, hφ, hsurj, hgood, h₃.dim, _root_.UpperTheory.Gal.projectedFormsSystemPart.endPt_of_allGood_of_arithmeticPointClassicality R₃ R₀ hp hφ hgood hJ₃.end2 hφ₀ hgood₀ hJ₀.end2⟩`.
+A detailed English derivation is pending.
 -/
 theorem openEx2E_alt :
     GlobalTheory.Published.GlobalArtinReciprocity → UpperTheory.V.W.LocCFTAll → _root_.UpperTheory.V.W.ModUAlt → _root_.UpperTheory.V.J.ModNAlt → UpperTheory.V.W.LevEx → UpperTheory.V.W.LamEx → UpperTheory.V.W.ProModularRingExists → _root_.UpperTheory.V.Z.Sym.UnitaryThreeAutomorphyDense → _root_.UpperTheory.V.Sd.Seed2Alt → UpperTheory.V.Sd.Twist → UpperTheory.V.Sd.AlgCyc → UpperTheory.V.Sd.AlgRes → _root_.UpperTheory.Gal.projectedFormsSystemPart.OpenEx2EAlt := by
@@ -142,7 +142,7 @@ theorem openEx2E_alt :
   exact ⟨c₁, hco, f, R₃, Λ₃, J₃, φ, _, fun x hx => hle₁ (hAc x hx), hL, hk3, hJ₃, hnum, hΛ₃, hφ, hsurj, hgood, h₃.dim,
     _root_.UpperTheory.Gal.projectedFormsSystemPart.endPt_of_allGood_of_arithmeticPointClassicality R₃ R₀ hp hφ hgood hJ₃.end2 hφ₀ hgood₀ hJ₀.end2⟩
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Gal.projectedFormsSystemPart.UnitaryRankTwoFlagsAlt (_root_.UpperTheory.Gal.projectedFormsSystemPart.openEx2E_alt hG h1 h2 hN h3 h4 h5 s3 s2 tw cy re) xiEx xiTI (xiArith hG) hT (_root_.UpperTheory.Gal.projectedFormsSystemPart.red2_alt hG hC) _root_.UpperTheory. …`.
+A detailed English derivation is pending.
 -/
 theorem linkedUnlE_alt (hG : GlobalTheory.Published.GlobalArtinReciprocity) (h1 : W.LocCFTAll) (h2 : _root_.UpperTheory.V.W.ModUAlt) (hN : _root_.UpperTheory.V.J.ModNAlt) (h3 : W.LevEx)
     (h4 : W.LamEx) (h5 : W.ProModularRingExists) (s3 : _root_.UpperTheory.V.Z.Sym.UnitaryThreeAutomorphyDense) (s2 : _root_.UpperTheory.V.Sd.Seed2Alt) (tw : Sd.Twist) (cy : Sd.AlgCyc) (re : Sd.AlgRes)

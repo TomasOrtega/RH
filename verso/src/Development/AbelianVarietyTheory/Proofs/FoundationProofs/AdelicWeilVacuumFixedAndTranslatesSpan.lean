@@ -14,14 +14,14 @@ open scoped BigOperators
 namespace GlobalTheory.FinWeil.Vacuum
 
 /- English proof (translation)
-Take `⟨Lt, h1, h2, -⟩` from `GlobalTheory.T.Lt_eq_iff_inv_mul_mem_intG_and_transport D N`. Conclude with `h2 ▸ (h1 1).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sd_std (D : D7) (N : ℕ) : SD D (stdL D N) := by
   obtain ⟨Lt, h1, h2, -⟩ := GlobalTheory.T.Lt_eq_iff_inv_mul_mem_intG_and_transport D N
   exact h2 ▸ (h1 1).2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `only [pt, embV, tor0, Pi.smul_apply, Matrix.smul_apply, map_nsmul]`. Conclude with `smul_comm _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pt_nsmul (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (m : ℕ)
     (z : Matrix (Fin N') (Fin N) D.host.E) :
@@ -31,7 +31,7 @@ theorem pt_nsmul (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (
   exact smul_comm _ _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, map_nsmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_nsmul_inc (D : D7) {N N' : ℕ} (m : ℕ) (z : Matrix (Fin N') (Fin N) D.host.E) :
     (m • z).map (inc D) = m • z.map (inc D) := by
@@ -39,18 +39,18 @@ theorem map_nsmul_inc (D : D7) {N N' : ℕ} (m : ℕ) (z : Matrix (Fin N') (Fin 
   simp only [Matrix.map_apply, Matrix.smul_apply, map_nsmul]
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ, smul_smul, mul_inv_cancel₀ (by exact_mod_cast hm.ne'), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_inv_smul {X : Type*} [AddCommGroup X] [Module ℚ X] {m : ℕ} (hm : 0 < m) (a : X) :
     m • ((m : ℚ)⁻¹ • a) = a := by
   rw [← Nat.cast_smul_eq_nsmul ℚ, smul_smul, mul_inv_cancel₀ (by exact_mod_cast hm.ne'), one_smul]
 
 /- English proof (translation)
-Introduce `b hb`. Take `⟨-, -, -, hW, hC⟩` from `hM`. Take `⟨h1, -, h3, -⟩` from `GlobalTheory.T.completedStandardAdelicLattice_properties D hg cc δ hc N N'`. Take `⟨m', hm', h⟩` from `hC (m • b) v`. Take `⟨z, a, ha, hz⟩` from `h3 b m' hm'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz' : pt D (tor0 D cc δ) δ z ∈ La0 D (tor0 D cc δ) N N'`. Rewrite using `[← h1, hz]`. Conclude with `add_mem hb (nsmul_mem ha _)`. Establish `e : (m • z).map (inc D) = m • b + m' • (m • a)`. Rewrite using `[map_nsmul_inc, hz, smul_add, smul_comm m m' a]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h _ (nsmul_mem ha m), ← e]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hW, pt_nsmul]`. Conclude with `hv _ hz'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_fixed {D : D7} (hg : admG1 D) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ) {N N' : ℕ}
     {w : 𝓞 D.host.E} {γ : XA D N N' → XA D N N' → ℂ}
@@ -74,19 +74,17 @@ theorem level_fixed {D : D7} (hg : admG1 D) {cc : Ideal (𝓞 D.host.K)} {δ : �
   exact hv _ hz'
 
 /- English proof (translation)
-Introduce `D hg cc δ hc N N' w γ WA hM e0 he0 hne`. Take `⟨hL, hWd, -⟩` from `GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hg cc δ hc N N' (La0 D (tor0 D cc δ) N N') (Or.inr ⟨_, _, sd_std D _, sd_std D _, rfl⟩)`. Take `⟨h1, h2, -⟩` from `GlobalTheory.T.completedStandardAdelicLattice_properties D hg cc δ hc N N'`. Establish `h0 : ∀ x ∈ La0 D (tor0 D cc δ) N N', Wd D (tor0 D cc δ) ((1 : ℕ) • x) e0 = e0` using `fun x hx => by`. Rewrite using `[one_smul, hWd x hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `z`. Conclude with `he0.2 x hx z`. Establish `hT : e0 ∈ TTs D (tor0 D cc δ) N N'` using `⟨he0.1, 1, one_pos, h0⟩`. Use `⟨hT, fun a ha => ?_, ?_⟩` and prove the remaining obligations. Use `level_fixed hg hc hM ⟨e0, hT⟩ 1 h0 a ha` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Use `GlobalTheory.T.span_heisenberg_translates_vacuum_eq_top hM.1 _ hM.2.1 _ (fun v hv => ?_) (fun v => ?_)` and prove the remaining obligations. Establish `hv' : (v : VC D N N' → ℂ) ∈ ThSp D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N')`. Use `⟨v.2.1, fun x hx y => ?_⟩` and prove the remaining obligations. Establish `e` using `hWd x hx v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `h2 x hx`. Rewrite `e` using `[← hM.2.2.2.1, hv _ ((h1 z).2 hx)]`. Conclude with `(congrFun e y).symm`. Take `⟨c, hc'⟩` from `hL _ hv' e0 he0 hne`. Conclude with `⟨c, Subtype.ext hc'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, m, hm, hv⟩` from `v.2`. Use `⟨(latA D cc N N').comap (m • LinearMap.id), GlobalTheory.T.heisenbergRelativeIndex_completedStandard_ne_zero D hg cc δ hc N N' m hm _ (fun ζ hζ => hζ), fun a _ hT' => ?_⟩` and prove the remaining obligations. Establish `hb : (m : ℚ)⁻¹ • a ∈ latA D cc N N'`. Use `(hM.2.1 _).2 fun a' ha' => ?_` and prove the remaining obligations. Establish `ht : (m : ℚ)⁻¹ • a' ∈ (latA D cc N N').comap (m • LinearMap.id)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Express the relevant statement in the definitionally equal form `m • ((m : ℚ)⁻¹ • a') ∈ latA D cc N N'`. Rewrite using `[nsmul_inv_smul hm]` and apply the resulting hypothesis. Rewrite using `[← nsmul_inv_smul hm a', hM.1.nsmul_right, ← hM.1.nsmul_left, nsmul_inv_smul hm]`. Conclude with `hT' _ ht`. Use `level_fixed hg hc hM v m hv _ hb` as an intermediate fact.
-
-Rewrite `this` using `[nsmul_inv_smul hm]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem vacuum_fixed_span : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ) w γ WA, GlobalTheory.FinWeil.IsModel D cc δ N N' w γ WA → ∀ e0 ∈ Th D (tor0 D cc δ) (stdL D N) (stdL D N'), e0 ≠ 0 → ∃ h : e0 ∈ TTs D (tor0 D cc δ) N N', Fixes WA (latA D cc N N') ⟨e0, h⟩ ∧ Submodule.span ℂ (Set.range fun ζ => WA ζ ⟨e0, h⟩) = ⊤ := by
   intro D hg cc δ hc N N' w γ WA hM e0 he0 hne

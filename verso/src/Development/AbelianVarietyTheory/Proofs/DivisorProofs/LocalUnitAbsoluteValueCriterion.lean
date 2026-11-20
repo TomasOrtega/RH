@@ -14,19 +14,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ShFam.Pad
 
 /- English proof (translation)
-Introduce `F _ _ v ε _ k gn hgn b`. Establish `hpr : (resP v).Prime` using `Fact.out`. Establish `hio` using `ioOf_le_one_iff (resP v) (residueCharacteristic_mem v) ε`. Establish `hlog` using `log_w_eq (resP v) ε (ioOf (resP v) ε) hio`. Establish `hwp : ε.w ((resP v : ℕ) : AlgebraicClosure F) < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((resP v : ℕ) : AlgebraicClosure F) = algebraMap F _ (algebraMap (𝓞 F) F ((resP v : ℕ) : 𝓞 F))` using `by simp`. Rewrite using `[h1, ε.w_alg]`. Conclude with `(v.adicAbv_coe_lt_one_iff (K := F) (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v) _).2 (residueCharacteristic_mem v)`. Establish `hwp0 : 0 < ε.w ((resP v : ℕ) : AlgebraicClosure F)` using `ε.w.pos (Nat.cast_ne_zero.2 hpr.ne_zero)`. Establish `hlp : 0 < Real.log ((resP v : ℕ) : ℝ)` using `Real.log_pos (by exact_mod_cast hpr.one_lt)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c := -Real.log (ε.w ((resP v : ℕ) : AlgebraicClosure F)) / Real.log ((resP v : ℕ) : ℝ) with hc`. Establish `hc0 : 0 < c` using `div_pos (neg_pos.2 (Real.log_neg hwp0 hwp)) hlp`. Establish `hwb : ε.w b = ‖ioOf (resP v) ε b‖ ^ c`. Break down `eq_or_ne b 0 with rfl | hb` into its components or cases. Simplify using `[Real.zero_rpow hc0.ne']`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb' : 0 < ‖ioOf (resP v) ε b‖` using `norm_pos_iff.2 ((map_ne_zero _).2 hb)`. Rewrite using `[← Real.exp_log (ε.w.pos hb), hlog b, Real.rpow_def_of_pos hb', mul_comm]`. Establish `hν : 0 < ∏ l, gn l` using `Finset.prod_pos fun l _ => hgn l`. Establish `hexp : Real.exp (-∑ l, c * Real.log (gn l)) = (∏ l, gn l) ^ (-c)`. Rewrite using `[Real.rpow_def_of_pos hν, ← Finset.mul_sum, Real.log_prod (fun l _ => (hgn l).ne')]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact.
 
-Put the polynomial expressions in normal form. Establish `hkey : ε.w b * Real.exp (-∑ l, c * Real.log (gn l)) = (‖ioOf (resP v) ε b‖ / ∏ l, gn l) ^ c`. Rewrite using `[hexp, hwb, Real.div_rpow (norm_nonneg _) hν.le, Real.rpow_neg hν.le, div_eq_mul_inv]`. Rewrite using `[hkey]`. Establish `hx : 0 ≤ ‖ioOf (resP v) ε b‖ / ∏ l, gn l` using `div_nonneg (norm_nonneg _) hν.le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : (‖ioOf (resP v) ε b‖ / ∏ l, gn l) ^ c ≤ 1 ↔ ‖ioOf (resP v) ε b‖ ≤ ∏ l, gn l`. Rewrite using `[← Real.one_rpow c, Real.rpow_le_rpow_iff hx zero_le_one hc0, div_le_one hν]`. Establish `hge : 1 ≤ (‖ioOf (resP v) ε b‖ / ∏ l, gn l) ^ c ↔ ∏ l, gn l ≤ ‖ioOf (resP v) ε b‖`. Rewrite using `[← Real.one_rpow c, Real.rpow_le_rpow_iff zero_le_one hx hc0, one_le_div hν]`. Use `⟨hle, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_antisymm_iff, hle, hge, ← le_antisymm_iff]`. Rewrite using `[← Real.one_rpow c, Real.rpow_lt_rpow_iff hx zero_le_one hc0, div_lt_one hν]`.
+A detailed English derivation is pending.
 -/
 theorem w_mul_exp_cmp_iff : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (ε : GlobalTheory.TrueGeo.Ext v) [Fact (resP v).Prime] (k : ℕ) (gn : Fin k → ℝ), (∀ l, 0 < gn l) → ∀ b : AlgebraicClosure F, (ε.w b * Real.exp (-∑ l, (-Real.log (ε.w (resP v)) / Real.log (resP v)) * Real.log (gn l)) ≤ 1 ↔ ‖ioOf (resP v) ε b‖ ≤ ∏ l, gn l) ∧ (ε.w b * Real.exp (-∑ l, (-Real.log (ε.w (resP v)) / Real.log (resP v)) * Real.log (gn l)) = 1 ↔ ‖ioOf (resP v) ε b‖ = ∏ l, gn l) ∧ (ε.w b * Real.exp (-∑ l, (-Real.log (ε.w (resP v)) / Real.log (resP v)) * Real.log (gn l)) < 1 ↔ ‖ioOf (resP v) ε b‖ < ∏ l, gn l) := by
   intro F _ _ v ε _ k gn hgn b

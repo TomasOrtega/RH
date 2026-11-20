@@ -9,11 +9,11 @@ universe u
 namespace Formalism.DworkPowerSeriesWeights
 
 /- English proof (translation)
-Introduce `l a hl ha`. Use `set L := Nat.log l a with hLdef`. Establish `hsub : (Finset.Icc (-(a : ℤ)) a).filter (fun j => Odd j ∧ l ^ j.natAbs ≤ a) ⊆ Finset.Icc (-(L : ℤ)) L`. Introduce `j hj`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at hj ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : j.natAbs ≤ L` using `Nat.le_log_of_pow_le (by omega) hj.2.2`. Apply the tactic sequence `rcases Int.natAbs_eq j with h | h <;> omega`. Establish `hcard` using `Finset.card_le_card hsub`. Rewrite `hcard` using `[Int.card_Icc]`. Establish `h2 : ((L : ℤ) + 1 - -(L : ℤ)).toNat = 2 * L + 1` using `by omega`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcard` using `[h2]`. Establish `hL : (L : ℝ) ≤ Real.logb l a` using `Real.natLog_le_logb a l`. Establish `h3 : ((((Finset.Icc (-(a : ℤ)) a).filter (fun j => Odd j ∧ l ^ j.natAbs ≤ a)).card : ℕ) : ℝ) ≤ ((2 * L + 1 : ℕ) : ℝ)` using `by exact_mod_cast hcard`. Move the coercions through the operations in `at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem oddExponentCount : JCount := by
   intro l a hl ha
@@ -47,11 +47,9 @@ section BasisSec
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one` to reduce the goal to its premises. Introduce `p _`. Establish `hp : ‖∏ i, M (p i) i‖ ≤ 1`. Rewrite using `[norm_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun i _ => h _ _)`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign p) with hs | hs <;> rw [hs]`. Rewrite using `[one_smul]`. Conclude with `hp`. Rewrite using `[Units.neg_smul, one_smul, norm_neg]`.
-
-Conclude with `hp`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_det_le_one_of_entries {n : Type*} [Fintype n] [DecidableEq n] (M : Matrix n n K)
     (h : ∀ i j, ‖M i j‖ ≤ 1) : ‖M.det‖ ≤ 1 := by
@@ -66,9 +64,9 @@ lemma norm_det_le_one_of_entries {n : Type*} [Fintype n] [DecidableEq n] (M : Ma
   · rw [Units.neg_smul, one_smul, norm_neg]; exact hp
 
 /- English proof (translation)
-Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, norm_mul, norm_inv, hd, inv_one, one_mul, Matrix.adjugate_apply]`. Apply `norm_det_le_one_of_entries` to reduce the goal to its premises. Introduce `a b`. Rewrite using `[Matrix.updateRow_apply]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [Pi.single_apply] split_ifs <;> simp`. Conclude with `h _ _`.
+A detailed English derivation is pending.
 -/
 lemma norm_inv_entry_le_one {n : Type*} [Fintype n] [DecidableEq n] (M : Matrix n n K)
     (h : ∀ i j, ‖M i j‖ ≤ 1) (hd : ‖M.det‖ = 1) (i j : n) : ‖M⁻¹ i j‖ ≤ 1 := by

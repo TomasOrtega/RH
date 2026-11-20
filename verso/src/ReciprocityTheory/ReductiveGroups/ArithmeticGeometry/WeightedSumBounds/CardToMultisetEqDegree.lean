@@ -8,17 +8,15 @@ open MvPowerSeries ReciprocityTheory.PGsh
 noncomputable section
 
 /- English proof (translation)
-Establish `hQ : ∀ u : Multiset ι, t ^ Multiset.card u ∣ (u.map y).prod`. Introduce `u`. Use `Multiset.induction_on u ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `b u ihu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Multiset.card_cons, Multiset.map_cons, Multiset.prod_cons, pow_succ']`. Conclude with `mul_dvd_mul (hy b) ihu`. Introduce `s`. Use `Multiset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd rfl h`. Introduce `a s ih _`. Rewrite using `[Multiset.card_cons, Multiset.map_cons, Multiset.map_cons, Multiset.prod_cons, Multiset.prod_cons]`. Distinguish the cases in `hs : s = 0`. Substitute `hs` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hxy a`. Establish `hc : Multiset.card s ≠ 0` using `fun h => hs (Multiset.card_eq_zero.mp h)`. Establish `h1` using `ih hs`. Establish `key : x a * (s.map x).prod - y a * (s.map y).prod = x a * ((s.map x).prod - (s.map y).prod) + (x a - y a) * (s.map y).prod` using `by ring`. Establish `e : k + (Multiset.card s + 1) - 1 = (k + Multiset.card s - 1) + 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key, e]`. Use `dvd_add ?_ ?_` and prove the remaining obligations. Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul (hx a) h1`. Establish `e2 : k + Multiset.card s - 1 + 1 = k + Multiset.card s` using `by omega`.
-
-Rewrite using `[e2, pow_add]`. Conclude with `mul_dvd_mul (hxy a) (hQ s)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multiset_prod_sub_dvd {S ι : Type*} [CommRing S] (t : S) (k : ℕ) (x y : ι → S)
     (hx : ∀ i, t ∣ x i) (hy : ∀ i, t ∣ y i) (hxy : ∀ i, t ^ k ∣ x i - y i) :
@@ -56,9 +54,9 @@ theorem multiset_prod_sub_dvd {S ι : Type*} [CommRing S] (t : S) (k : ℕ) (x y
         exact mul_dvd_mul (hxy a) (hQ s)
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [← Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)])`. Consider the case `(induction e using Finsupp.induction with`. Consider the case `zero => simp`. Consider the case `single_add i m f hi hm ih`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), ih]`. Simplify using `[Finsupp.toMultiset_single, Multiset.map_nsmul, Multiset.prod_nsmul])`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finsupp_prod_eq_multiset {S ι : Type*} [CommMonoid S] (x : ι → S) (e : ι →₀ ℕ) :
     e.prod (fun i m => x i ^ m) = (e.toMultiset.map x).prod := by
@@ -72,7 +70,7 @@ theorem finsupp_prod_eq_multiset {S ι : Type*} [CommMonoid S] (x : ι → S) (e
         simp [Finsupp.toMultiset_single, Multiset.map_nsmul, Multiset.prod_nsmul])
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [Finsupp.card_toMultiset]; rfl)`. Consider the case `simp [Finsupp.card_toMultiset, Finsupp.degree, Finsupp.sum]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem card_toMultiset_eq_degree {ι : Type*} (e : ι →₀ ℕ) :
     Multiset.card e.toMultiset = e.degree := by
@@ -83,17 +81,17 @@ theorem card_toMultiset_eq_degree {ι : Type*} (e : ι →₀ ℕ) :
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Establish `hA : HasSubst α` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun b => hα b)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun b => hα b)`. Establish `hB : HasSubst β` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun b => hβ b)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun b => hβ b)`. Establish `hterm : ∀ e : Fin d →₀ ℕ, ∀ j < k + 1, coeff e f • PowerSeries.coeff j (e.prod (fun s n => α s ^ n)) - coeff e f • PowerSeries.coeff j (e.prod (fun s n => β s ^ n)) = 0`. Introduce `e j hj`. Distinguish the cases in `he : e.degree ≤ 1`. Rewrite using `[hf e he, zero_smul, zero_smul, sub_zero]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← smul_sub, ← map_sub]`. Establish `hne : e.toMultiset ≠ 0`. Introduce `h0`. Establish `h0' : Multiset.card e.toMultiset = 0` using `by rw [h0]; rfl`. Rewrite `h0'` using `[card_toMultiset_eq_degree]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hdvd` using `multiset_prod_sub_dvd (PowerSeries.X : PowerSeries C) k α β (fun b => PowerSeries.X_dvd_iff.mpr (hα b)) (fun b => PowerSeries.X_dvd_iff.mpr (hβ b)) hk e.toMultiset hne`. Rewrite `hdvd` using `[card_toMultiset_eq_degree, ← finsupp_prod_eq_multiset, ← finsupp_prod_eq_multiset]`. Establish `h2` using `(pow_dvd_pow (PowerSeries.X : PowerSeries C) (show k + 1 ≤ k + e.degree - 1 by omega)).trans hdvd`. Rewrite using `[PowerSeries.X_pow_dvd_iff.mp h2 j hj, smul_zero]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `j hj`. Rewrite using `[map_sub]`. Express the relevant statement in the definitionally equal form `MvPowerSeries.coeff (Finsupp.single () j) (subst α f) - MvPowerSeries.coeff (Finsupp.single () j) (subst β f) = 0`. Rewrite using `[MvPowerSeries.coeff_subst hA, MvPowerSeries.coeff_subst hB, ← finsum_sub_distrib (MvPowerSeries.coeff_subst_finite hA f _) (MvPowerSeries.coeff_subst_finite hB f _)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finsum_eq_zero_of_forall_eq_zero fun e => hterm e j hj`.
+A detailed English derivation is pending.
 -/
 theorem subst_sub_dvd {d : ℕ} (f : MvPowerSeries (Fin d) C)
     (hf : ∀ e : Fin d →₀ ℕ, e.degree ≤ 1 → coeff e f = 0)
@@ -142,17 +140,17 @@ theorem subst_sub_dvd {d : ℕ} (f : MvPowerSeries (Fin d) C)
 variable {v : AddValuation C (WithTop ℝ)} {d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[map_sub, coeff_X]`. Break down `Nat.le_one_iff_eq_zero_or_eq_one.mp he with h0 | h1` into its components or cases. Establish `e0 : e = 0` using `by first`. Consider the case `exact (Finsupp.degree_eq_zero_iff e).mp h0`. Consider the case `exact Finsupp.degree_eq_zero_iff.mp h0`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Substitute `e0` using the available equality. Establish `hs : (0 : Fin d →₀ ℕ) ≠ Finsupp.single a 1`. Introduce `h`. Use `congrArg (fun f : Fin d →₀ ℕ => f a) h` as an intermediate fact. Simplify using `at this`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hs, coeff_zero_eq_constantCoeff_apply, G.lg_const a, sub_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, e.toMultiset = {b} := by`. Apply `Multiset.card_eq_one.mp` to reduce the goal to its premises. Rewrite using `[card_toMultiset_eq_degree, h1]`. Establish `eb : e = Finsupp.single b 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Multiset.toFinsupp (Finsupp.toMultiset e) = e` using `Finsupp.toMultiset_toFinsupp e`. Rewrite using `[← h2, hb]`. Use `first`. Consider the case `exact Multiset.toFinsupp_singleton b`. Consider the case `simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Substitute using the available equality.
 
-Substitute `eb` using the available equality. Rewrite using `[G.lg_lin a b]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne : Finsupp.single b 1 ≠ Finsupp.single a 1`. Introduce `h`. Conclude with `hab ((Finsupp.single_left_inj one_ne_zero).mp h).symm`. Rewrite using `[if_neg hab, if_neg hne, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_lg_sub_X_low (G : LogFGL v d) (a : Fin d) (e : Fin d →₀ ℕ) (he : e.degree ≤ 1) :
     coeff e (G.lg a - X a) = 0 := by
@@ -188,11 +186,11 @@ theorem coeff_lg_sub_X_low (G : LogFGL v d) (a : Fin d) (e : Fin d →₀ ℕ) (
       rw [if_neg hab, if_neg hne, sub_zero]
 
 /- English proof (translation)
-Establish `hA : HasSubst α` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun b => hα b)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun b => hα b)`. Establish `hB : HasSubst β` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun b => hβ b)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun b => hβ b)`. Establish `e1 : (G.lgCurve α a - G.lgCurve β a) - (α a - β a) =`. Substitute `α (G.lg a - X a) - subst β (G.lg a - X a) := by` using the available equality. Use `show subst α (G.lg a) - subst β (G.lg a) - (α a - β a) = _`. Rewrite using `[MvPowerSeries.subst_sub hA, MvPowerSeries.subst_sub hB, MvPowerSeries.subst_X hA, MvPowerSeries.subst_X hB]`.
+Treat this case separately. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `subst_sub_dvd _ (coeff_lg_sub_X_low G a) α β hα hβ k hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lgCurve_sub_dvd (G : LogFGL v d) {α β : Fin d → PowerSeries C}
     (hα : ∀ b, PowerSeries.constantCoeff (α b) = 0)
@@ -218,7 +216,7 @@ theorem lgCurve_sub_dvd (G : LogFGL v d) {α β : Fin d → PowerSeries C}
   exact subst_sub_dvd _ (coeff_lg_sub_X_low G a) α β hα hβ k hk
 
 /- English proof (translation)
-The claim follows from `| 0, _, a => by simp | N + 1, h, a => by have ih := dvd_of_lgCurve_low G hα hβ N (fun a j hj => h a j (by omega)) have h1 := PowerSeries.X_pow_dvd_iff.1 (lgCurve_sub_dvd G hα hβ N ih a) N (by omega) rw [map_sub, map_sub, h a N (by omega), sub_self, zero_sub, neg_eq_zero] at h1 rw …`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_lgCurve_low (G : LogFGL v d) {α β : Fin d → PowerSeries C}
     (hα : ∀ b, PowerSeries.constantCoeff (α b) = 0)
@@ -238,7 +236,7 @@ theorem dvd_of_lgCurve_low (G : LogFGL v d) {α β : Fin d → PowerSeries C}
       · rw [map_sub]; exact h1
 
 /- English proof (translation)
-Establish `hN` using `dvd_of_lgCurve_low G hα hβ N h`. Establish `h1` using `lgCurve_sub_dvd G hα hβ N hN a`. Establish `h2` using `PowerSeries.X_pow_dvd_iff.mp h1 N (Nat.lt_succ_self N)`. Rewrite `h2` using `[map_sub]`. Conclude with `sub_eq_zero.mp h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_lgCurve_sub_eq (G : LogFGL v d) {α β : Fin d → PowerSeries C}
     (hα : ∀ b, PowerSeries.constantCoeff (α b) = 0)
@@ -256,7 +254,7 @@ def expC (q : ℕ) (ga : Fin d → PowerSeries C) : Fin d → PowerSeries C :=
   fun a => PowerSeries.subst (PowerSeries.X ^ q : PowerSeries C) (ga a)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(simp only [expC]; rw [PowerSeries.expand_eq_subst])`. Consider the case `(unfold expC; ext m; rw [PowerSeries.coeff_expand, PowerSeries.coeff_subst_X_pow] <;> simp [hq])`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem expC_apply {q : ℕ} (hq : q ≠ 0) (ga : Fin d → PowerSeries C) (a : Fin d) :
     expC q ga a = PowerSeries.expand q hq (ga a) := by
@@ -266,9 +264,9 @@ theorem expC_apply {q : ℕ} (hq : q ≠ 0) (ga : Fin d → PowerSeries C) (a : 
   | (unfold expC; ext m; rw [PowerSeries.coeff_expand, PowerSeries.coeff_subst_X_pow] <;> simp [hq])
 
 /- English proof (translation)
-Introduce `a`. Rewrite using `[expC_apply hq]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_expand]`. Simplify using `[(h a).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `m show 0 ≤ v (PowerSeries.coeff m (PowerSeries.expand q hq (ga a)))`. Rewrite using `[PowerSeries.coeff_expand]`. Use `split_ifs`. Conclude with `(h a).2 _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCurve_expC {q : ℕ} (hq : q ≠ 0) {ga : Fin d → PowerSeries C} (h : IsCurve v ga) :
     IsCurve v (expC q ga) := by
@@ -285,11 +283,11 @@ theorem isCurve_expC {q : ℕ} (hq : q ≠ 0) {ga : Fin d → PowerSeries C} (h 
     · simp
 
 /- English proof (translation)
-Establish `hga : HasSubst ga` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun b => h0 b)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun b => h0 b)`. Establish `hX : HasSubst (fun _ : Unit => (PowerSeries.X ^ q : PowerSeries C))` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => by first | simp [hq, PowerSeries.X] | (simp [hq]; exact PowerSeries.constantCoeff_X))`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun _ => by first | simp [hq, PowerSeries.X] | (simp [hq]; exact PowerSeries.constantCoeff_X))`. Establish `e1 : ∀ g : PowerSeries C, PowerSeries.expand q hq g = PowerSeries.subst (PowerSeries.X ^ q : PowerSeries C) g` using `fun g => (expC_apply hq (fun _ => g) a).symm`. Rewrite using `[e1]`. Use `first`. Consider the case `(show MvPowerSeries.subst (expC q ga) (G.lg a) = MvPowerSeries.subst (fun _ => (PowerSeries.X ^ q : PowerSeries C)) (MvPowerSeries.subst ga (G.lg a))`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.subst_comp_subst_apply hga hX]`. Use the proof step `rfl)`. Consider the case `(unfold LogFGL.lgCurve PowerSeries.subst`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hga hX]`. Use the proof step `rfl)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lgCurve_expC (G : LogFGL v d) {q : ℕ} (hq : q ≠ 0) {ga : Fin d → PowerSeries C}
     (h0 : ∀ b, PowerSeries.constantCoeff (ga b) = 0) (a : Fin d) :
@@ -317,7 +315,7 @@ theorem lgCurve_expC (G : LogFGL v d) {q : ℕ} (hq : q ≠ 0) {ga : Fin d → P
      rfl)
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.coeff_expand]`. Use `split_ifs`. Rewrite using `[PowerSeries.coeff_rescale]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coeff_expand_rescale (q : ℕ) (hq : q ≠ 0) (x : C) (f : PowerSeries C) (m : ℕ) :
     PowerSeries.coeff m (PowerSeries.expand q hq (PowerSeries.rescale x f)) =

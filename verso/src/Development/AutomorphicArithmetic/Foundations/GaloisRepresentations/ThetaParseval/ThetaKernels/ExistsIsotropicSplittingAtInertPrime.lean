@@ -13,9 +13,9 @@ open PositivityTheory.ThKH.Iwas GlobalTheory.LFun GlobalTheory.LFun.InertChart F
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {v : Pl F}
   {w : HeightOneSpectrum (𝓞 E)}
 /- English proof (translation)
-Use `intLoc_induction (p := fun y => sgE E v y ∈ Oh E v) (fun a ha x => ?_) ?_ (fun y z hy hz => ?_) (fun y hy => ?_) hy` and prove the remaining obligations. Use `AddSubgroup.subset_closure ⟨PositivityTheory.ThKH.Iwas.sg v a, at_sg a, by rwa [ev_sg], x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `TensorProduct.tmul F (PositivityTheory.ThKH.Iwas.sg v a) (x : E) = TensorProduct.tmul F (PositivityTheory.ThKH.Iwas.sg v a * 1) (x : E)`. Rewrite using `[mul_one]`. Rewrite using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Rewrite using `[map_add]`. Conclude with `add_mem hy hz`. Rewrite using `[map_neg]`. Conclude with `neg_mem hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sgE_mem_Oh_pk {y : TensorProduct F (Fv F v) E} (hy : y ∈ intLoc F E v) : sgE E v y ∈ Oh E v := by
   refine intLoc_induction (p := fun y => sgE E v y ∈ Oh E v) (fun a ha x => ?_) ?_ (fun y z hy hz => ?_)
@@ -27,21 +27,21 @@ private theorem sgE_mem_Oh_pk {y : TensorProduct F (Fv F v) E} (hy : y ∈ intLo
   · rw [map_add]; exact add_mem hy hz
   · rw [map_neg]; exact neg_mem hy
 /- English proof (translation)
-Establish `h1` using `hx (1 - PositivityTheory.ThKH.Iwas.sg v 1) (by rw [map_sub, map_one, ev_sg, sub_self])`. Rewrite `h1` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sg_one_smul_pk {x : AE F E} (hx : At (evFin F v) x) : PositivityTheory.ThKH.Iwas.sg v 1 • x = x := by
   have h1 := hx (1 - PositivityTheory.ThKH.Iwas.sg v 1) (by rw [map_sub, map_one, ev_sg, sub_self])
   rw [sub_smul, one_smul, sub_eq_zero] at h1
   exact h1.symm
 /- English proof (translation)
-Rewrite using `[← sg_one_smul_pk hx, ← sgE_comp]`. Conclude with `sgE_mem_Oh_pk ((mem_intLoc_iff hw h _).2 hi)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_Oh_pk (hw : IsInertAt F E v w) (h : w.under (𝓞 F) = v) {x : AE F E} (hx : At (evFin F v) x)
     (hi : piE h x ∈ Ov E w) : x ∈ Oh E v := by
   rw [← sg_one_smul_pk hx, ← sgE_comp]
   exact sgE_mem_Oh_pk ((mem_intLoc_iff hw h _).2 hi)
 /- English proof (translation)
-Rewrite using `[← sgE_comp]`. Express the relevant statement in the definitionally equal form `toCompl h (compFin F E v (sgE E v _)) = _`. Rewrite using `[comp_sgE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem piE_sg_smul_pk (h : w.under (𝓞 F) = v) (x : AE F E) : piE h (PositivityTheory.ThKH.Iwas.sg v 1 • x) = piE h x := by
   rw [← sgE_comp]
@@ -49,7 +49,7 @@ private theorem piE_sg_smul_pk (h : w.under (𝓞 F) = v) (x : AE F E) : piE h (
   rw [comp_sgE]
   rfl
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `piE h (PositivityTheory.ThKH.Iwas.sg v 1 • (1 : Matrix (Fin n) (Fin n) (AE F E)) i j) = _`. Rewrite using `[piE_sg_smul_pk, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem piE_eM_pk (h : w.under (𝓞 F) = v) (n : ℕ) : (eM (E := E) v n).map (piE h) = 1 := by
   refine Matrix.ext fun i j => ?_
@@ -57,31 +57,31 @@ private theorem piE_eM_pk (h : w.under (𝓞 F) = v) (n : ℕ) : (eM (E := E) v 
   rw [piE_sg_smul_pk, Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 /- English proof (translation)
-Introduce `u hu` and use `by change u • (PositivityTheory.ThKH.Iwas.sg v 1 • (1 : Matrix (Fin n) (Fin n) (AE F E))) = 0 rw [smul_smul, ← smul_eq_mul, at_sg 1 u hu, zero_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem at_eM_pk (n : ℕ) : At (evFin F v) (eM (E := E) v n) := fun u hu => by
   change u • (PositivityTheory.ThKH.Iwas.sg v 1 • (1 : Matrix (Fin n) (Fin n) (AE F E))) = 0
   rw [smul_smul, ← smul_eq_mul, at_sg 1 u hu, zero_smul]
 /- English proof (translation)
-Establish `h : w.under (𝓞 F) = v` using `(under_eq_iff hw w).2 rfl`. Take `⟨c, hc, -⟩` from `existsUnique_isConjAt σ hw h`. Take `⟨a, ha, l, -, hg⟩` from `exists_frame hB.cm hw h hc hW`. Set `f : Fin n → Fin d` to `Fin.castLE (by omega)`. Establish `hf : Function.Injective f` using `Fin.castLE_injective _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨Y, hY, eY⟩` from `mat_surj h (a.1ᵀ.submatrix f id)`. Take `⟨R, hR, eR⟩` from `mat_surj h ((a⁻¹).1ᵀ.submatrix id f)`. Use `⟨Y, R, fun i => ?_, ?_, ?_, fun z hz j => ?_⟩` and prove the remaining obligations. Use `(mem_latW_iff hw h W _).2 ⟨fun u hu => congrFun (hY u hu) i, ?_⟩` and prove the remaining obligations. Establish `e : piE h ∘ Y i = a.1 *ᵥ fun k => (1 : Matrix (Fin d) (Fin d) (w.adicCompletion E)) k (f i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Establish `e1 : piE h (Y i k) = a.1 k (f i)` using `congrFun (congrFun eY i) k`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply, e1]`. Rewrite using `[e]`. Conclude with `(ha _).1 fun k => one_int k (f i)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mat_inj hw h (at_sub (at_mul_left hY _) (at_eM_pk n)) ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, eY, eR, piE_eM_pk]`. Establish `e : a.1ᵀ.submatrix f id * (a⁻¹).1ᵀ.submatrix id f = (a.1ᵀ * (a⁻¹).1ᵀ).submatrix f f` using `rfl`. Rewrite using `[e, ← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one, Matrix.submatrix_one _ hf]`. Use `mat_inj hw h (at_sub (at_mul_left (at_mul_left hY _) _) at_zero) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `map_gram hc W.J Yᵀ Yᵀ`. Rewrite `e` using `[Matrix.transpose_transpose]`. Establish `e2 : Yᵀ.map (piE h) = a.1.submatrix id f`. Rewrite using `[Matrix.transpose_map, eY]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[e2]`. Use `e.trans (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `e3` using `congrFun (congrFun hg (f i)) (f j)`. Use `e3.trans ?_` and prove the remaining obligations. Use `i.2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `j.2` as an intermediate fact. Establish `e4 : (f i : ℕ) = i` using `rfl`. Establish `e5 : (f j : ℕ) = j` using `rfl`. Rewrite using `[Matrix.smul_apply]`. Simplify using `only [antiJ, Matrix.of_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by omega)]`. Simplify using the standard rewrite rules. Take `⟨h3, h4⟩` from `(mem_latW_iff hw h W z).1 hz`. Rewrite using `[← Matrix.mulVec_transpose]`. Use `mem_Oh_pk hw h (fun u hu => congrFun (at_mulVec_left (at_transpose hR) z u hu) j) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `congrFun (piE_mulVec h Rᵀ z) j`. Rewrite `e` using `[Function.comp_apply]`. Rewrite using `[e]`. Establish `e2 : Rᵀ.map (piE h) = (a⁻¹).1.submatrix f id`. Rewrite using `[Matrix.transpose_map, eR]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `coord_int ha h4 (f j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isoW_k {σ : E →ₐ[F] E} {B : Base F E} {n d : ℕ} {W : Spc F E d} {r s : ℕ} (hB : _root_.UpperTheory.TP.W.GoodK σ B)
     (hW : W.IsSkew σ B r s) (h2 : 2 * n ≤ d) (hw : IsInertAt F E v w) : ∃ Y R, IsIsoW σ W v (n := n) Y R := by
@@ -132,7 +132,7 @@ theorem exists_isoW_k {σ : E →ₐ[F] E} {B : Base F E} {n d : ℕ} {W : Spc F
     exact coord_int ha h4 (f j)
 end
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d W r s hB hW h2 v w hw`. Conclude with `_root_.exists_isoW_k hB hW h2 hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_isotropic_splitting_at_inert_prime :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (W : Spc F E d) (r s : ℕ), _root_.UpperTheory.TP.W.GoodK σ B → W.IsSkew σ B r s → 2 * n ≤ d → ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → ∃ Y R, IsIsoW σ W v (n := n) Y R := by

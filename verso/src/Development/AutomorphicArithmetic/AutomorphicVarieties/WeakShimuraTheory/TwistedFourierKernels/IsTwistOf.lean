@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Ws.H5
 
 /- English proof (translation)
-Introduce `l _ F O _ _ _ n r B R _ x x' γ h`. Establish `e : B.u.D.map x' = twD (B.u.D.map x) γ`. Use `UpperTheory.V.CA.d_gext _ _ fun g i _ hi => ?_` and prove the remaining obligations. Establish `s : MonoidAlgebra.single g ((1 : R) * algebraMap R R (γ g)) = (γ g : R) • MonoidAlgebra.single g (1 : R)`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[lam_twD, twA_single, s, lamSmul, min_eq_left hi, (UpperTheory.V.AlgebraTools.Det.mapApi B.u.D x).2.2.1, (UpperTheory.V.AlgebraTools.Det.mapApi B.u.D x').2.2.1]`. Conclude with `h.1 g i hi`. Rewrite using `[e]`. Conclude with `isTwist_twD _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.H5.isTwistOf :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ} {r : Resid F O n} (B : UniversalOrdinaryDeterminantRing r) {R : Type} [CommRing R] (x x' : B.B →+* R) (γ : F.G₀ →* Rˣ), TwMap B x x' γ → (B.u.D.map x).IsTwist γ (B.u.D.map x') := by

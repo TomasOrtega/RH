@@ -19,7 +19,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `hV.1` as an intermediate fact. Use `hV.2.1` as an intermediate fact. Use `⟨⟨inferInstance, inferInstance, inferInstance, inferInstance⟩, hV.2.1, hV.2.2, inferInstance, ?_⟩` and prove the remaining obligations. Use `letI := Ideal.Quotient.field (IsLocalRing.maximalIdeal V)`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem LN.isAdmissible_of_complete_DVR_charZero (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (hV : LN.CDvr V) :
     LN.admitted V (IsLocalRing.maximalIdeal V) := by
@@ -30,7 +30,7 @@ theorem LN.isAdmissible_of_complete_DVR_charZero (V : Type) [CommRing V] [IsDoma
   infer_instance
 
 /- English proof (translation)
-Take `⟨L, L2, L3, L4, L5, -⟩` from `GlobalTheory.T.all_six_abelian_scheme_laws_hold`. Introduce `E _ _ _ H V _ _ _ hV t hp hs`. Use `hV.1` as an intermediate fact. Conclude with `GlobalTheory.T.exists_uniformisation_complete_local_normal_prime L L2 L3 L4 L5 LN.ega_holds GlobalTheory.T.uniformisation_completeDVR GlobalTheory.T.linearUniformisation_triples_torsion E H V _ (LN.isAdmissible_of_complete_DVR_charZero V hV) (by letI := Ideal.Quotient.field (IsLo …`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LN.uDvrSt_holds : GlobalTheory.LN.UDvrSt := by
   obtain ⟨L, L2, L3, L4, L5, -⟩ := GlobalTheory.T.all_six_abelian_scheme_laws_hold

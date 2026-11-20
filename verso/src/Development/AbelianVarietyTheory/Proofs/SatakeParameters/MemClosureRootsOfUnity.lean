@@ -10,7 +10,7 @@ open Filter Topology
 namespace GlobalTheory.WittRootsOfUnity
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial A with hA | hA` into its components or cases. Conclude with `Subsingleton.elim _ _`. Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `: CharP A p` using `(CharP.charP_iff_prime_eq_zero hp).2 h0`. Conclude with `add_pow_char_pow ..`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem add_pow_of_cast_eq_zero {A : Type*} [CommRing A] {p : ℕ} (hp : p.Prime) (h0 : (p : A) = 0)
     (a b : A) (m : ℕ) : (a + b) ^ p ^ m = a ^ p ^ m + b ^ p ^ m := by
@@ -22,7 +22,7 @@ theorem add_pow_of_cast_eq_zero {A : Type*} [CommRing A] {p : ℕ} (hp : p.Prime
     exact add_pow_char_pow ..
 
 /- English proof (translation)
-Establish `h` using `add_pow_of_cast_eq_zero hp h0 a (-a) m`. Rewrite `h` using `[add_neg_cancel, zero_pow (pow_ne_zero _ hp.ne_zero)]`. Conclude with `(neg_eq_of_add_eq_zero_right h.symm).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_pow_of_cast_eq_zero {A : Type*} [CommRing A] {p : ℕ} (hp : p.Prime) (h0 : (p : A) = 0)
     (a : A) (m : ℕ) : (-a) ^ p ^ m = -a ^ p ^ m := by
@@ -34,7 +34,7 @@ theorem neg_pow_of_cast_eq_zero {A : Type*} [CommRing A] {p : ℕ} (hp : p.Prime
 def mu (K : Type*) [Field K] (p : ℕ) : Set K := {ζ | ∃ n, 0 < n ∧ n.Coprime p ∧ ζ ^ n = 1}
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_mul, ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem pow_pow_eq_self_of_pow_eq_self {A : Type*} [Monoid A] {q : ℕ} {a : A} (h : a ^ q = a) (k : ℕ) :
     a ^ q ^ k = a := by
@@ -43,7 +43,7 @@ private theorem pow_pow_eq_self_of_pow_eq_self {A : Type*} [Monoid A] {q : ℕ} 
   | succ k ih => rw [pow_succ, pow_mul, ih, h]
 
 /- English proof (translation)
-Take `⟨f, hf, ha⟩` from `ha`. Take `⟨g, hg, hb⟩` from `hb`. Establish `ha' : a ^ p ^ (f * g) = a` using `by rw [pow_mul]; exact pow_pow_eq_self_of_pow_eq_self ha g`. Establish `hb' : b ^ p ^ (f * g) = b` using `by rw [mul_comm, pow_mul]; exact pow_pow_eq_self_of_pow_eq_self hb f`. Conclude with `⟨⟨f * g, Nat.mul_pos hf hg, by rw [add_pow_of_cast_eq_zero hp h0, ha', hb']⟩, ⟨f * g, Nat.mul_pos hf hg, by rw [mul_pow, ha', hb']⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem frobenius_periodic_add_and_mul {A : Type*} [CommRing A] {p : ℕ} (hp : p.Prime) (h0 : (p : A) = 0)
     {a b : A} (ha : ∃ f, 0 < f ∧ a ^ p ^ f = a) (hb : ∃ f, 0 < f ∧ b ^ p ^ f = b) :
@@ -57,7 +57,7 @@ private theorem frobenius_periodic_add_and_mul {A : Type*} [CommRing A] {p : ℕ
     ⟨f * g, Nat.mul_pos hf hg, by rw [mul_pow, ha', hb']⟩⟩
 
 /- English proof (translation)
-Take `⟨n, hn, hcop, h1⟩` from `hζ`. Use `⟨n.totient, Nat.totient_pos.2 hn, ?_⟩` and prove the remaining obligations. Establish `hmod : p ^ n.totient % n = 1 % n` using `Nat.ModEq.pow_totient hcop.symm`. Rewrite using `[pow_eq_pow_mod _ h1, hmod, ← pow_eq_pow_mod _ h1, pow_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_frobenius_periodic_of_mem_mu {K : Type*} [Field K] {p : ℕ} {ζ : K} (hζ : ζ ∈ mu K p) :
     ∃ f, 0 < f ∧ ζ ^ p ^ f = ζ := by
@@ -68,23 +68,21 @@ private theorem exists_frobenius_periodic_of_mem_mu {K : Type*} [Field K] {p : �
   rw [pow_eq_pow_mod _ h1, hmod, ← pow_eq_pow_mod _ h1, pow_one]
 
 /- English proof (translation)
-Set `I : Ideal (Subring.closure (mu K p))` to `Ideal.span {((p : ℕ) : Subring.closure (mu K p))}`. Establish `h0 : ((p : ℕ) : Subring.closure (mu K p) ⧸ I) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk I), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span rfl`. Establish `key : ∀ (y : K) (hy : y ∈ Subring.closure (mu K p)), ∃ f, 0 < f ∧ (Ideal.Quotient.mk I ⟨y, hy⟩) ^ p ^ f = Ideal.Quotient.mk I ⟨y, hy⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Proceed by induction on `hy using Subring.closure_induction with`. Consider the case `mem z hz`. Take `⟨f, hf, hz'⟩` from `exists_frobenius_periodic_of_mem_mu hz`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow]`. Use `congr 1`. Conclude with `Subtype.ext (by simpa using hz')`. Consider the case `zero`. Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `show (Ideal.Quotient.mk I 0) ^ p ^ 1 = Ideal.Quotient.mk I 0`. Rewrite using `[map_zero, zero_pow (pow_ne_zero _ hp.ne_zero)]`. Consider the case `one`. Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations. Use `show (Ideal.Quotient.mk I 1) ^ p ^ 1 = Ideal.Quotient.mk I 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_one, one_pow]`. Consider the case `add z w hz hw ihz ihw`. Take `⟨f, hf, h⟩` from `(frobenius_periodic_add_and_mul hp h0 ihz ihw).1`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Use `show (Ideal.Quotient.mk I (⟨z, hz⟩ + ⟨w, hw⟩)) ^ p ^ f = Ideal.Quotient.mk I (⟨z, hz⟩ + ⟨w, hw⟩)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `h`. Consider the case `neg z hz ih`. Take `⟨f, hf, h⟩` from `ih`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show (Ideal.Quotient.mk I (-⟨z, hz⟩)) ^ p ^ f = Ideal.Quotient.mk I (-⟨z, hz⟩)`. Rewrite using `[map_neg, neg_pow_of_cast_eq_zero hp h0, h]`. Consider the case `mul z w hz hw ihz ihw`. Take `⟨f, hf, h⟩` from `(frobenius_periodic_add_and_mul hp h0 ihz ihw).2`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `show (Ideal.Quotient.mk I (⟨z, hz⟩ * ⟨w, hw⟩)) ^ p ^ f = Ideal.Quotient.mk I (⟨z, hz⟩ * ⟨w, hw⟩)`. Rewrite using `[map_mul]`. Conclude with `h`. Take `⟨f, hf, h⟩` from `key x hx`. Rewrite `h` using `[← map_pow, Ideal.Quotient.eq, Ideal.mem_span_singleton]`.
-
-Take `⟨c, hc⟩` from `h`. Use `⟨f, hf, c, c.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem frob_periodic {K : Type*} [Field K] {p : ℕ} (hp : p.Prime) {x : K}
     (hx : x ∈ Subring.closure (mu K p)) :
@@ -145,32 +143,30 @@ def W (K : Type*) [NormedField K] (p : ℕ) : Subring K :=
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-The claim follows from `Subring.isClosed_topologicalClosure _`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_divisorComponent : IsClosed (W K p : Set K) :=
   Subring.isClosed_topologicalClosure _
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-The claim follows from `Subring.le_topologicalClosure _ hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_W_of_mem {x : K} (hx : x ∈ Subring.closure (mu K p)) : x ∈ W K p :=
   Subring.le_topologicalClosure _ hx
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-The claim follows from `hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_closure_roots_of_unity {x : K} (hx : x ∈ W K p) :
     x ∈ closure (Subring.closure (mu K p) : Set K) :=
   hx
 
 /- English proof (translation)
-Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem z hz`. Take `⟨n, hn, -, h1⟩` from `hz`. Establish `: ‖z‖ ^ n = 1` using `by rw [← norm_pow, h1, norm_one]`. Conclude with `((pow_eq_one_iff_of_nonneg (norm_nonneg z) hn.ne').1 this).le`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `one => simp`. Consider the case `add z w _ _ hz hw => exact (IsUltrametricDist.norm_add_le_max z w).trans (max_le hz hw)`. Consider the case `neg z _ hz => rwa [norm_neg]`. Consider the case `mul z w _ _ hz hw => rw [norm_mul]`.
-
-Conclude with `mul_le_one₀ hz (norm_nonneg w) hw`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem {x : K} (hx : x ∈ Subring.closure (mu K p)) : ‖x‖ ≤ 1 := by
   induction hx using Subring.closure_induction with
@@ -186,7 +182,7 @@ theorem norm_le_one_of_mem {x : K} (hx : x ∈ Subring.closure (mu K p)) : ‖x�
   | mul z w _ _ hz hw => rw [norm_mul]; exact mul_le_one₀ hz (norm_nonneg w) hw
 
 /- English proof (translation)
-The claim follows from `closure_minimal (fun y hy => norm_le_one_of_mem hy) (isClosed_le continuous_norm continuous_const) (mem_closure_roots_of_unity hx)`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem_W {x : K} (hx : x ∈ W K p) : ‖x‖ ≤ 1 :=
   closure_minimal (fun y hy => norm_le_one_of_mem hy) (isClosed_le continuous_norm continuous_const)
@@ -194,9 +190,9 @@ theorem norm_le_one_of_mem_W {x : K} (hx : x ∈ W K p) : ‖x‖ ≤ 1 :=
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Establish `hu1 : (1 - u) ≠ 0`. Introduce `h`. Rewrite `h1` using `[← sub_eq_zero.1 h, norm_one]`. Conclude with `lt_irrefl _ h1`. Establish `hsum : ∀ N, ∑ i ∈ Finset.range N, u ^ i = (1 - u)⁻¹ * (1 - u ^ N)` using `fun N => (eq_inv_mul_iff_mul_eq₀ hu1).2 (mul_neg_geom_sum u N)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : Tendsto (fun N => ∑ i ∈ Finset.range N, u ^ i) atTop (𝓝 (1 - u)⁻¹)`. Use `((tendsto_pow_atTop_nhds_zero_of_norm_lt_one h1).const_sub 1).const_mul (1 - u)⁻¹` as an intermediate fact. Simplify using `only [sub_zero, mul_one] at this`. Simplify `this` using `only [hsum]`. Conclude with `(isClosed_divisorComponent (K := K) (p := p)).mem_of_tendsto ht (Eventually.of_forall fun N => sum_mem fun i _ => pow_mem hu i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inv_one_sub_mem {u : K} (hu : u ∈ W K p) (h1 : ‖u‖ < 1) : (1 - u)⁻¹ ∈ W K p := by
   have hu1 : (1 - u) ≠ 0 := by
@@ -215,13 +211,13 @@ theorem inv_one_sub_mem {u : K} (hu : u ∈ W K p) (h1 : ‖u‖ < 1) : (1 - u)�
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Distinguish the cases in `hp0 : (p : K) = 0`. Rewrite using `[hp0, div_zero]`. Conclude with `zero_mem _`. Take `⟨f, hf, s, hs, hfs⟩` from `frob_periodic hp hr`. Take `⟨t, ht⟩ : ∃ t, p ^ f = t + 2` from `⟨p ^ f - 2, by have := Nat.one_lt_pow hf.ne' hp.one_lt; omega⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu1 : ‖r ^ (t + 1)‖ < 1`. Rewrite using `[norm_pow]`. Conclude with `pow_lt_one₀ (norm_nonneg _) h1 (Nat.succ_ne_zero t)`. Establish `h1u : (1 - r ^ (t + 1)) ≠ 0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu1` using `[← sub_eq_zero.1 h, norm_one]`. Conclude with `lt_irrefl _ hu1`. Establish `e1 : r * (1 - r ^ (t + 1)) = -(p * s)`. Rewrite `hfs` using `[ht]`. Take the linear combination `(-1 : K) * hfs`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `key : r / p = -s * (1 - r ^ (t + 1))⁻¹`. Use `div_eq_of_eq_mul hp0 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key]`. Conclude with `mul_mem (neg_mem (mem_W_of_mem hs)) (inv_one_sub_mem (mem_W_of_mem (pow_mem hr _)) hu1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_mem_of_mem (hp : p.Prime) {r : K} (hr : r ∈ Subring.closure (mu K p)) (h1 : ‖r‖ < 1) :
     r / p ∈ W K p := by
@@ -250,7 +246,7 @@ theorem div_mem_of_mem (hp : p.Prime) {r : K} (hr : r ∈ Subring.closure (mu K 
 omit [IsUltrametricDist K] in
 
 /- English proof (translation)
-Establish `hw' : w ∈ closure ({y : K | ‖y‖ < 1} ∩ (Subring.closure (mu K p) : Set K))` using `(isOpen_lt continuous_norm continuous_const).inter_closure ⟨h1, mem_closure_roots_of_unity hw⟩`. Use `map_mem_closure (t := (W K p : Set K)) (continuous_id.div_const (p : K)) hw' fun y hy => div_mem_of_mem hp hy.2 hy.1` as an intermediate fact. Rewrite `this` using `[isClosed_divisorComponent.closure_eq]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_mem (hp : p.Prime) {w : K} (hw : w ∈ W K p) (h1 : ‖w‖ < 1) : w / p ∈ W K p := by
 
@@ -262,13 +258,13 @@ theorem div_mem (hp : p.Prime) {w : K} (hw : w ∈ W K p) (h1 : ‖w‖ < 1) : w
   exact this
 
 /- English proof (translation)
-Establish `hr0 : r ≠ 0` using `by rintro rfl; simp at h1`. Take `⟨f, hf, s, hs, hfs⟩` from `frob_periodic hp hr`. Take `⟨t, ht⟩ : ∃ t, p ^ f = t + 2` from `⟨p ^ f - 2, by have := Nat.one_lt_pow hf.ne' hp.one_lt; omega⟩`. Establish `e1 : r * (r ^ (t + 1) - 1) = p * s`. Rewrite `hfs` using `[ht]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `hfs`. Establish `hn : ‖1 - r ^ (t + 1)‖ < 1`. Establish `h2 : ‖r‖ * ‖r ^ (t + 1) - 1‖ = ‖(p : K)‖ * ‖s‖` using `by rw [← norm_mul, ← norm_mul, e1]`. Rewrite `h2` using `[h1, one_mul]`. Rewrite using `[norm_sub_rev, h2]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hinv : (r ^ (t + 1))⁻¹ ∈ W K p`. Use `inv_one_sub_mem (sub_mem (one_mem _) (mem_W_of_mem (pow_mem hr (t + 1)))) hn` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `e2 : r⁻¹ = r ^ t * (r ^ (t + 1))⁻¹`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[eq_mul_inv_iff_mul_eq₀ (pow_ne_zero _ hr0), pow_succ', inv_mul_cancel_left₀ hr0]`. Rewrite using `[e2]`. Conclude with `mul_mem (mem_W_of_mem (pow_mem hr t)) hinv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_of_mem (hp : p.Prime) (hpn : ‖(p : K)‖ < 1) {r : K}
     (hr : r ∈ Subring.closure (mu K p)) (h1 : ‖r‖ = 1) : r⁻¹ ∈ W K p := by
@@ -295,13 +291,13 @@ theorem inv_mem_of_mem (hp : p.Prime) (hpn : ‖(p : K)‖ < 1) {r : K}
   exact mul_mem (mem_W_of_mem (pow_mem hr t)) hinv
 
 /- English proof (translation)
-Take `⟨r, hr, hd⟩` from `Metric.mem_closure_iff.1 (mem_closure_roots_of_unity hw) 1 one_pos`. Establish `hd' : ‖r - w‖ < 1` using `by rwa [dist_eq_norm, norm_sub_rev] at hd`. Establish `hr1 : ‖r‖ = 1`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Assume the negation of the conclusion as `hlt push_neg at hlt`. Establish `: ‖w‖ < 1`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr0 : r ≠ 0` using `by rintro rfl; simp at hr1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hri : r⁻¹ ∈ W K p` using `inv_mem_of_mem hp hpn hr hr1`. Establish `ht : (r - w) * r⁻¹ ∈ W K p` using `mul_mem (sub_mem (mem_W_of_mem hr) hw) hri`. Establish `htn : ‖(r - w) * r⁻¹‖ < 1` using `by rw [norm_mul, norm_inv, hr1, inv_one, mul_one]; exact hd'`. Establish `hweq : (1 - (r - w) * r⁻¹) * r = w`. Rewrite using `[sub_mul, one_mul, mul_assoc, inv_mul_cancel₀ hr0, mul_one, sub_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hweq, mul_inv]`. Conclude with `mul_mem (inv_one_sub_mem ht htn) hri`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem (hp : p.Prime) (hpn : ‖(p : K)‖ < 1) {w : K} (hw : w ∈ W K p) (h1 : ‖w‖ = 1) :
     w⁻¹ ∈ W K p := by
@@ -331,11 +327,11 @@ theorem inv_mem (hp : p.Prime) (hpn : ‖(p : K)‖ < 1) {w : K} (hw : w ∈ W K
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro x hx _`. Simplify using `using hx`. Consider the case `succ k ih`. Introduce `x hx hx1`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ih _ hx1` to reduce the goal to its premises. Establish `hn : ‖(p : K) ^ (k + 1) * x‖ < 1`. Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Use `div_mem hp hx hn` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `this` using `[pow_succ, mul_comm ((p : K) ^ k) (p : K), mul_assoc, mul_div_cancel_left₀ _ hp0]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_W_of_norm_le (hp : p.Prime) (hp0 : (p : K) ≠ 0) (hpn : ‖(p : K)‖ < 1) (k : ℕ) :
     ∀ {x : K}, (p : K) ^ k * x ∈ W K p → ‖x‖ ≤ 1 → x ∈ W K p := by
@@ -354,13 +350,13 @@ theorem mem_W_of_norm_le (hp : p.Prime) (hp0 : (p : K) ≠ 0) (hpn : ‖(p : K)�
     rwa [pow_succ, mul_comm ((p : K) ^ k) (p : K), mul_assoc, mul_div_cancel_left₀ _ hp0] at this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hall : ∀ k : ℕ, w / (p : K) ^ k ∈ W K p`. Introduce `k`. Proceed by induction on `k with`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using hw`. Consider the case `succ k ih`. Establish `hlt : ‖w / (p : K) ^ k‖ < 1` using `lt_of_le_of_ne (norm_le_one_of_mem_W ih) (hcon k ih)`. Use `div_mem hp ih hlt` as an intermediate fact. Rewrite `this` using `[div_div, ← pow_succ]`. Then use the resulting hypothesis.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hle : ∀ k : ℕ, ‖w‖ ≤ ‖(p : K)‖ ^ k`. Introduce `k`. Establish `h` using `norm_le_one_of_mem_W (hall k)`. Establish `hpos : 0 < ‖(p : K)‖ ^ k` using `pow_pos (norm_pos_iff.2 hp0) k`. Rewrite `h` using `[norm_div, norm_pow, div_le_one hpos]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `: ‖w‖ ≤ 0` using `ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hpn) hle`. Conclude with `hw0 (norm_le_zero_iff.1 this)`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit (hp : p.Prime) (hp0 : (p : K) ≠ 0) (hpn : ‖(p : K)‖ < 1) {w : K}
     (hw : w ∈ W K p) (hw0 : w ≠ 0) : ∃ k : ℕ, w / p ^ k ∈ W K p ∧ ‖w / p ^ k‖ = 1 := by
@@ -413,13 +409,13 @@ def F (hp : p.Prime) (hp0 : (p : K) ≠ 0) (hpn : ‖(p : K)‖ < 1) : Subfield 
     exact mul_mem (pow_mem (natCast_mem _ _) _) (inv_mem hp hpn hl hl1)
 
 /- English proof (translation)
-Use `isClosed_of_closure_subset fun x hx => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (by positivity : (0 : ℝ) < 1 / (‖x‖ + 1)) hpn`. Establish `hx1 : 0 < ‖x‖ + 1` using `by positivity`. Rewrite `hk` using `[lt_div_iff₀ hx1]`. Establish `hx' : x ∈ closure ({y : K | ‖y - x‖ < 1} ∩ (F hp hp0 hpn : Set K))` using `(isOpen_lt (continuous_id.sub continuous_const).norm continuous_const).inter_closure ⟨by simp, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap : Set.MapsTo (fun y => (p : K) ^ k * y) ({y : K | ‖y - x‖ < 1} ∩ (F hp hp0 hpn : Set K)) (W K p : Set K)`. Introduce and unpack `y ⟨hy1, hy2⟩`. Establish `hy1' : ‖y - x‖ < 1` using `hy1`. Take `⟨j, hj⟩ : ∃ j : ℕ, (p : K) ^ j * y ∈ W K p` from `hy2`. Establish `hyn : ‖y‖ ≤ ‖x‖ + 1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `mem_W_of_norm_le hp hp0 hpn j` to reduce the goal to its premises. Establish `e : (p : K) ^ j * ((p : K) ^ k * y) = (p : K) ^ k * ((p : K) ^ j * y)` using `by ring`. Rewrite using `[e]`. Conclude with `mul_mem (pow_mem (natCast_mem _ _) _) hj`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Use `map_mem_closure (continuous_const.mul continuous_id) hx' hmap` as an intermediate fact. Rewrite `this` using `[isClosed_divisorComponent.closure_eq]`. Conclude with `(show ∃ k : ℕ, (p : K) ^ k * x ∈ W K p from ⟨k, this⟩)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_F (hp : p.Prime) (hp0 : (p : K) ≠ 0) (hpn : ‖(p : K)‖ < 1) :
     IsClosed (F hp hp0 hpn : Set K) := by
@@ -454,7 +450,7 @@ theorem isClosed_F (hp : p.Prime) (hp0 : (p : K) ≠ 0) (hpn : ‖(p : K)‖ < 1
 end Normed
 
 /- English proof (translation)
-Establish `h` using `PadicComplex.norm_extends' (p := p) (p : ℚ_[p])`. Move the coercions through the operations in `at h`. Rewrite using `[h]`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_p_lt_one {p : ℕ} [Fact p.Prime] : ‖(p : ℂ_[p])‖ < 1 := by
 
@@ -464,9 +460,9 @@ theorem norm_p_lt_one {p : ℕ} [Fact p.Prime] : ‖(p : ℂ_[p])‖ < 1 := by
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `inst.out`. Establish `hp0 : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hsub : Formalism.L2.Th1.CM.MaximalUnramifiedExtension p ≤ F hp hp0 norm_p_lt_one`. Use `Subfield.topologicalClosure_minimal _ ?_ (isClosed_F hp hp0 norm_p_lt_one)` and prove the remaining obligations. Use `Subfield.closure_le.2 fun ζ hζ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn, hnd, h1⟩` from `hζ`. Establish `hmu : ζ ∈ mu ℂ_[p] p` using `⟨n, hn, ((Nat.Prime.coprime_iff_not_dvd hp).2 hnd).symm, h1⟩`. Conclude with `⟨0, by simpa using mem_W_of_mem (Subring.subset_closure hmu)⟩`. Conclude with `hsub hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inWf_of_mem_Kur {p : ℕ} [inst : Fact (Nat.Prime p)] {x : ℂ_[p]}
     (hx : x ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p) : Formalism.MainNotions.GL3Theta.InWf x := by

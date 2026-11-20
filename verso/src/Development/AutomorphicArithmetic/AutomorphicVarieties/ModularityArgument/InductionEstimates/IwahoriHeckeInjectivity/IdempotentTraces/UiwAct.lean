@@ -16,9 +16,9 @@ open scoped ComplexConjugate Classical
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E
 
 /- English proof (translation)
-Distinguish the cases in `hi : Integrable (fun k => e k • π k w) ν`. Establish `h1` using `(π u).integral_comp_comm hi`. Establish `h2` using `hu.integral_comp (Homeomorph.mulLeft u).measurableEmbedding (fun k => e k • π k w)`. Rewrite `h1`, `h2` using `[hw]`. Rewrite using `[← h1]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans (integral_congr_ae ?_) h2` and prove the remaining obligations. Use `filter_upwards [he] with k hk`. Rewrite using `[map_smul, hk, π.map_mul_apply]`. Rewrite `hw` using `[integral_undef hi]`. Rewrite using `[← hw, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fix_of_avg {G H : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep G H) (ν : Measure G)
@@ -36,13 +36,13 @@ private theorem fix_of_avg {G H : Type*} [Group G] [TopologicalSpace G] [IsTopol
     rw [← hw, map_zero]
 
 /- English proof (translation)
-Establish `key : ∀ y : L, (QuotientGroup.mk (loc (QuotientGroup.mk y : L ⧸ J).out) : G ⧸ U) = QuotientGroup.mk (loc y)`. Introduce `y`. Take `⟨j, hj⟩` from `QuotientGroup.mk_out_eq_mul J y`. Rewrite using `[hj, map_mul, QuotientGroup.mk_mul_of_mem _ (hJU _ j.2)]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `⟨loc k, hJU k hk, by simp only [key, map_mul]⟩`. Introduce `a _ b _ hab`. Establish `h` using `hUJ _ (QuotientGroup.eq.1 hab)`. Rewrite `h` using `[map_mul, map_inv, h1, h1]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← QuotientGroup.out_eq' a, ← QuotientGroup.out_eq' b]`. Conclude with `QuotientGroup.eq.2 h`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Use `⟨QuotientGroup.mk (p k * x), ⟨p k, hUJ k hk, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hp : p (k * (loc (p k))⁻¹) = 1` using `by rw [map_mul, map_inv, h1, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : k * loc x = loc (p k * x) * (k * (loc (p k))⁻¹)`. Rewrite using `[hc _ hp, map_mul]`. Use `group`. Simplify using `only [key]`. Rewrite using `[e1, QuotientGroup.mk_mul_of_mem _ (U.mul_mem hk (U.inv_mem (hJU _ (hUJ k hk))))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coset_bij {G L : Type*} [Group G] [Group L] (loc : L →* G) (p : G →* L) (h1 : ∀ x, p (loc x) = x)
     (hc : ∀ h, p h = 1 → ∀ x, loc x * h = h * loc x) (J : Subgroup L) (x : L) (U : Subgroup G)
@@ -71,13 +71,13 @@ private theorem coset_bij {G L : Type*} [Group G] [Group L] (loc : L →* G) (p 
     rw [e1, QuotientGroup.mk_mul_of_mem _ (U.mul_mem hk (U.inv_mem (hJU _ (hUJ k hk))))]
 
 /- English proof (translation)
-Take `⟨hfin, -⟩` from `UpperTheory.ConvolutionTheory.Tf.hopBasic K n μ w J x hJ.2 hJ.1`. Take `⟨-, hmemU, hPU, -, habs, hmul, -⟩` from `UpperTheory.ConvolutionTheory.Tf.commPrj K n μ U`. Take `⟨-, hmemJ, -, hPJ, -⟩` from `UpperTheory.ConvolutionTheory.Tf.commPrj K n μ (J.map (AdelicGLn.localEmbedding w))`. Take `⟨-, hl1, -, -, hl5⟩` from `UpperTheory.ConvolutionTheory.Tf.locEmb K n w`. Establish `hb` using `coset_bij (AdelicGLn.localEmbedding w) (MonoidHom.mk' (fun g : FA K n => finAt w (finEmb K n g)) fun a b => by rw [map_mul, finAt_mul]) hl1 hl5 J x U hJU hUJ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfin'` using `hb.image_eq ▸ hfin.image _`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hv : prj (fixL μ w J) (prj (fixF μ U) v) = prj (fixF μ U) v`. Use `hPJ _ ((hmemJ _).2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(hmemU _).1 (hPU v) _ (hJU j hj)`. Rewrite using `[Hop, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, hv]`. Set `ev : (LL μ →L[ℂ] LL μ) →+ LL μ` to `AddMonoidHom.mk' (fun T => T (prj (fixF μ U) v)) fun _ _ => rfl`. Use `(ev.map_finsum_mem _ hfin').trans (Eq.trans ?_ (ev.map_finsum_mem _ hfin).symm)` and prove the remaining obligations. Use `(finsum_mem_eq_of_bijOn _ hb fun c _ => ?_).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul U (AdelicGLn.localEmbedding w c.out)`. Express the relevant statement in the definitionally equal form `rhoF μ _ (prj (fixF μ U) v) = rhoF μ _ (prj (fixF μ U) v)`. Rewrite using `[hu, hmul, ContinuousLinearMap.comp_apply, (hmemU _).1 (hPU v) u u.2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hop_prj {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (w : Pl K) (J : Subgroup (Gw n w)) (x : Gw n w) (U : Subgroup (FA K n)) (hJ : CO J)
@@ -105,17 +105,15 @@ private theorem hop_prj {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Mea
   rw [hu, hmul, ContinuousLinearMap.comp_apply, (hmemU _).1 (hPU v) u u.2]
 
 /- English proof (translation)
-Establish `hpe : ∀ u ∈ AdelicGLn.integralFiniteGL K n, ((fin1 u : G1 K n) : AdelicGLn.AdelicGL K n) = finEmb K n u`. Introduce `u hu`. Conclude with `congrArg Subtype.val (MultiplicityOne.finProj_of_mem (maxCompact_le_normOneGL (finEmb_mem_maxCompact hu)))`. Establish `hiff : ∀ u ∈ AdelicGLn.integralFiniteGL K n, fin1 u ∈ D.U ↔ u ∈ U`. Introduce `u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hD.1 (fin1 u) (by rw [hpe u hu, prodEquiv_finEmb])`. Rewrite `h` using `[hpe u hu, prodEquiv_finEmb]`. Then use the resulting hypothesis. Establish `ho : IsOpen (U : Set (FA K n))`. Take `⟨O, hO, hUO⟩` from `D.isOpen`. Establish `: (U : Set (FA K n)) = (AdelicGLn.integralFiniteGL K n : Set (FA K n)) ∩ finEmb K n ⁻¹' O`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Establish `h` using `((hUO _).1 ((hiff u (hle hu)).2 hu)).1`. Rewrite `h` using `[hpe u (hle hu)]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hle hu, h⟩`. Introduce and unpack `⟨hu, h⟩`. Use `(hiff u hu).1 ((hUO _).2 ?_)` and prove the remaining obligations. Rewrite using `[hpe u hu]`. Conclude with `⟨h, finEmb_mem_maxCompact hu⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(AdelicGLn.isOpen_integralFiniteGL K n).inter (hO.preimage continuous_finEmb)`. Use `⟨ho, (AdelicGLn.isCompact_integralFiniteGL K n).of_isClosed_subset (U.isClosed_of_isOpen ho) hle, fun v hv => ?_⟩` and prove the remaining obligations. Use `((UpperTheory.ConvolutionTheory.Tf.commPrj K n μ U).2.1 v).2 fun u hu => ?_` and prove the remaining obligations. Establish `hu'` using `(hiff u (hle hu)).2 hu`.
-
-Use `fix_of_avg _ D.ν D.e (fin1 u) (D.inv _ hu') ?_ v hv` and prove the remaining obligations. Use `filter_upwards [D.supp] with k hk`. Conclude with `hD.2.2 _ hu' (by rw [hpe u (hle hu), prodEquiv_finEmb]) k hk`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem level_facts {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (D : TypeDat K n) (U : Subgroup (FA K n)) (hD : D.Level U) (hle : U ≤ AdelicGLn.integralFiniteGL K n) :
@@ -150,11 +148,11 @@ private theorem level_facts {K : Type} [Field K] [NumberField K] {n : ℕ} (μ :
   exact hD.2.2 _ hu' (by rw [hpe u (hle hu), prodEquiv_finEmb]) k hk
 
 /- English proof (translation)
-Establish `h0 : ∀ a ∈ F, ∀ h, inner ℂ a (h - prj F h) = 0` using `fun a ha h => inner_eq_zero_symm.1 (Submodule.starProjection_inner_eq_zero h a (F.le_topologicalClosure ha))`. Establish `h1 : P * prj F = P`. Use `ContinuousLinearMap.ext fun h => ?_` and prove the remaining obligations. Use `(hP.2.2 (h - prj F h)).2 ⟨fun u => h0 _ (hJ u) h, fun u => h0 _ (hJ' u) h⟩` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `hQ : IsSelfAdjoint (prj F)` using `isSelfAdjoint_starProjection _`. Establish `h2 : prj F * P = P`. Use `congrArg star h1` as an intermediate fact. Rewrite `this` using `[star_mul, hQ.star_eq, hP.1.star_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(T * prj F) * P = P * (T * prj F) at hY`. Express the relevant statement in the definitionally equal form `T * P = P * T`. Rewrite `hY` using `[mul_assoc, h2, hT.eq, ← mul_assoc, h1]`. Conclude with `hY`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comm_proj {H V W : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
@@ -178,19 +176,17 @@ private theorem comm_proj {H V W : Type} [NormedAddCommGroup H] [InnerProductSpa
   exact hY
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hp S U hU D hD d d' A A' w hw hI ν`. Establish `hmem : ∀ u, u ∈ levOn S U ↔ ∀ v, finAt v (finEmb K (2 + 2) u) ∈ (if v ∈ S then U v else GLnLocal.integralGL (v.adicCompletion K) (2 + 2))` using `fun u => Iff.rfl`. Establish `hle : levOn S U ≤ AdelicGLn.integralFiniteGL K (2 + 2)`. Introduce `u hu`. Use `(AdelicGLn.mem_integralFiniteGL_iff_forall K (2 + 2)).2 fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `(hmem u).1 hu v`. Use `split_ifs at h`. Conclude with `(hU v).2 h`. Conclude with `h`. Take `⟨-, hl1, hl2, -⟩` from `UpperTheory.ConvolutionTheory.Tf.locEmb K (2 + 2) w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hJU : ∀ j ∈ U w, AdelicGLn.localEmbedding w j ∈ levOn S U`. Introduce `j hj`. Use `(hmem _).2 fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hl1, if_pos hw]`. Conclude with `hj`. Rewrite using `[hl2 v hv]`. Conclude with `one_mem _`. Establish `hUJ : ∀ u ∈ levOn S U, finAt w (finEmb K (2 + 2) u) ∈ U w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `h` using `(hmem u).1 hu w`. Rewrite `h` using `[if_pos hw]`. Then use the resulting hypothesis. Take `⟨ho, hc, hfix⟩` from `level_facts μ D _ hD hle`. Establish `hT : Uiw μ w ν = Hop μ w (U w) (Cartan.diagPow (w.adicCompletion K) (2 + 2) ν)` using `by rw [hI]; rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨s, ⟨u, κ, hκ, hact, hs⟩, hsec⟩, hcomm⟩` from `cosAct K μ μ₂ τ₁ τ₂ hp D d d' A A' _ hD hle _ _ (hop_prj μ w (U w) (Cartan.diagPow (w.adicCompletion K) (2 + 2) ν) _ (hU w).1 hJU hUJ).symm`. Establish `hA : ∀ x, A.J x ∈ fixF μ (levOn S U)` using `fun x => hfix _ (ctZero K μ μ₂ τ₁ τ₂ hp D d d' A A' x).2.1`. Establish `hA' : ∀ x, A'.J x ∈ fixF μ (levOn S U)` using `fun x => hfix _ (ctZero K μ μ₂ τ₂ τ₁ ⟨hp.irr₂, hp.irr₁, hp.orth.symm⟩ D d' d A' A x).2.1`. Rewrite using `[hT]`. Use `⟨⟨s, ⟨u, κ, hκ, fun x => ?_, hs⟩, fun v => funext fun x => hsec 0 v x⟩, fun P hP => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hact x, ContinuousLinearMap.comp_apply, (UpperTheory.ConvolutionTheory.Tf.commPrj K (2 + 2) μ _).2.2.2.1 _ (hA x)]`. Use `comm_proj A.J A'.J P _ _ hP hA hA' ?_ (hcomm P hP)` and prove the remaining obligations. Use `(UpperTheory.ConvolutionTheory.Tf.hopLevel K (2 + 2) μ Measure.haar w (U w) _ _ (hU w).1.2 (hU w).1.1 ho hc ?_ hUJ).1` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `hJU j hj`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.uiwAct :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (μ₂ : Measure (G1 K 2))

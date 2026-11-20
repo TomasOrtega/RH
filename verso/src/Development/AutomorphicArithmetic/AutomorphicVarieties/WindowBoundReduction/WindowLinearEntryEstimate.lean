@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.WeylC UpperTheory.V.Cj.R
 
 /- English proof (translation)
-Establish `e : A = ∑ k, ∑ l, A k l • Matrix.single k l (1 : ℂ)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single A]`. Simplify using `only [Matrix.smul_single, smul_eq_mul, mul_one]`. Use `conv_lhs => rw [e]`. Simplify using `only [map_sum, map_smul, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lin_entry {d D : ℕ} (φ : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
     (A : Matrix (Fin d) (Fin d) ℂ) (i j : Fin D) :
@@ -15,13 +15,13 @@ private theorem lin_entry {d D : ℕ} (φ : Matrix (Fin d) (Fin d) ℂ →ₗ[�
   simp only [map_sum, map_smul, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `E _ _ a d D φ M h`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Establish `e : (fun y => φ (M y) i j) = ∑ k, ∑ l, (φ (Matrix.single k l 1) i j) • fun y => M y k l`. Use function extensionality and compare the values at `y`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `exact lin_entry φ (M y) i j`. Rewrite using `[e]`. Conclude with `Subalgebra.sum_mem _ fun l _ => Subalgebra.sum_mem _ fun k _ => Subalgebra.smul_mem _ (h l k) _`. Establish `hd : ∀ X, dOf (fun y => φ (M y)) X = φ (dOf M X)`. Introduce `X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Establish `h1` using `HasFDerivAt.fun_sum (u := Finset.univ) fun k _ => HasFDerivAt.fun_sum (u := Finset.univ) fun l _ => (h.diff k l).const_mul (φ (Matrix.single k l 1) i j)`. Apply the tactic sequence `have h2 := h1.congr_of_eventuallyEq (extGL_eventuallyEq (f := fun y => φ (M y) i j) (fun y => by simp only [extGL_val]; exact lin_entry φ (M y) i j) (x := oneL E a) isUnit_one)`. Apply the tactic sequence `rw [lin_entry φ (dOf M X), dOf, Matrix.of_apply, h2.fderiv]`. Simplify using `[dOf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `τ i j`. Simplify using `only [eOf, hd, map_smul, map_sub]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.window_linear_entry_estimate :
     ∀ (E : Type) [Field E] [NumberField E] (a d D : ℕ) (φ : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ) (M : GL (Fin a) (Cinf E) → Matrix (Fin d) (Fin d) ℂ), IsReg M → IsReg (fun y => φ (M y)) ∧ ∀ τ i j, eOf (fun y => φ (M y)) τ i j = φ (eOf M τ i j) := by

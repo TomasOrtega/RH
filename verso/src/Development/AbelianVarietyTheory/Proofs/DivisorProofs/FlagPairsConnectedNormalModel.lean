@@ -21,7 +21,7 @@ open GlobalTheory.Vert GlobalTheory.Vert.Model
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Proceed by induction on `h using Relation.ReflTransGen.head_induction_on with`. Consider the case `refl => exact ⟨0, fun _ => b, rfl, rfl, finZeroElim⟩`. Consider the case `@head a c hac _ ih`. Take `⟨m, g, rfl, h₂, h₃⟩` from `ih`. Conclude with `⟨m + 1, Fin.cons a g, rfl, h₂, Fin.cases hac h₃⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_seq {α : Type*} {R : α → α → Prop} {a b : α} (h : Relation.ReflTransGen R a b) :
     ∃ (m : ℕ) (g : Fin (m + 1) → α), g 0 = a ∧ g (Fin.last m) = b ∧
@@ -33,11 +33,11 @@ theorem exists_seq {α : Type*} {R : α → α → Prop} {a b : α} (h : Relatio
     exact ⟨m + 1, Fin.cons a g, rfl, h₂, Fin.cases hac h₃⟩
 
 /- English proof (translation)
-Simplify using `only [ck, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hG : Gk (B'.toITh p) k ((B'.toITh p).c1 (((GlobalTheory.FlagPairExists.pairPull f.comp_str P).toFPair p).x i)) ((B'.toITh p).c1 (((GlobalTheory.FlagPairExists.pairPull f.comp_str P).toFPair p).x' i)) = picSymPull f.f (Gk (B.toITh p) k ((B.toITh p).c1 ((P.toFPair p).x i)) ((B.toIT …`. Simplify using `only [Gk, map_sum, map_mul, map_pow]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `c1 _ _ ^ a * c1 _ _ ^ _ = picSymPull f.f (c1 _ _) ^ a * picSymPull f.f (c1 _ _) ^ _`. Rewrite using `[← GlobalTheory.T.chern_root_flag_pullback _ _ f.f _ _ P.fl i, ← GlobalTheory.T.chern_root_flag_pullback _ _ f.f _ _ P.fl' i]`. Both sides reduce to the same expression. Rewrite using `[hG, ← map_mul]`. Express the relevant statement in the definitionally equal form `B'.capDeg_vp p (toQ ((GlobalTheory.FlagPairExists.pairPull f.comp_str P).div i).cls) _ = _ * B.capDeg_vp p (toQ (P.div i).cls) _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.T.flag_pair_pull_divisor_class, ← vPullQ_toQ, hproj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ck_pairPull (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p]
     {B B' : Model O} (f : Hom B' B)
@@ -67,9 +67,9 @@ theorem ck_pairPull (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O
 end GlobalTheory.FlagPairChain
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B hB E E' φ r P P'`. Take `⟨B', f, hB', hf, hj⟩` from `GlobalTheory.T.flag_pair_connected_normal O p B hB E E' φ r P P'`. Take `⟨hpos, hproj⟩` from `GlobalTheory.T.cap_degree_finite_pullback O p B hB B' f hf`. Take `⟨m, g, h₀, h₁, h₂⟩` from `GlobalTheory.FlagPairChain.exists_seq hj`. Use `⟨B', f, m, g, hB', hf, hpos, fun k Q => ?_, fun k Q => ?_, h₂⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h₀]`. Conclude with `GlobalTheory.FlagPairChain.ck_pairPull p f hproj P k Q`. Rewrite using `[h₁]`. Conclude with `GlobalTheory.FlagPairChain.ck_pairPull p f hproj P' k Q`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlagPairChain.exists_chain_flagPair : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (E E' : B.X.Modules) (φ : B.GenIso E E') (r : ℕ) (P P' : GlobalTheory.Vert.Model.FlagPair φ r), ∃ (B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B) (m : ℕ) (g : Fin (m + 1) → GlobalTheory.Vert.Model.FlagPair (φ.pull f.comp_str) r), GlobalTheory.IsNormalScheme B'.X ∧ f.relDim = 0 ∧ 0 < f.fibreDeg 1 ∧ (∀ (k : ℕ) (Q : PicSym B.X), ck ((g 0).toFPair p) k (picSymPull f.f Q) = f.fibreDeg 1 * ck (P.toFPair p) k Q) ∧ (∀ (k : ℕ) (Q : PicSym B.X), ck ((g (Fin.last m)).toFPair p) k (picSymPull f.f Q) = f.fibreDeg 1 * ck (P'.toFPair p) k Q) ∧ ∀ j : Fin m, GlobalTheory.Vert.Model.FlagPair.Adj (g j.castSucc) (g j.succ) := by
   intro O _ _ _ p _ _ _ B hB E E' φ r P P'

@@ -12,7 +12,7 @@ open scoped Formalism.Per NNReal
 open UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 /- English proof (translation)
-Use `haveI := L₁.2`. Use `haveI : ∀ x : Fin d × Fin a × Fin a, FiniteDimensional ℚ_[l] ↥(adjExt (b x.1 x.2.1 x.2.2)).1 := fun x => (adjExt _).2`. Use `⟨⟨L₁.1 ⊔ ⨆ x : Fin d × Fin a × Fin a, (adjExt (b x.1 x.2.1 x.2.2)).1, IntermediateField.finiteDimensional_sup _ _⟩, le_sup_left, fun i j k => ?_⟩` and prove the remaining obligations. Conclude with `(le_sup_right : _ ≤ L₁.1 ⊔ _) (le_iSup (fun x : Fin d × Fin a × Fin a => (adjExt (b x.1 x.2.1 x.2.2)).1) (i, j, k) (mem_adjExt _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_ext {l : ℕ} [Fact l.Prime] (L₁ : FinExt l) {d a : ℕ}
     (b : Fin d → Matrix (Fin a) (Fin a) (Om l)) :
@@ -26,7 +26,7 @@ private theorem exists_ext {l : ℕ} [Fact l.Prime] (L₁ : FinExt l) {d a : ℕ
     (le_iSup (fun x : Fin d × Fin a × Fin a => (adjExt (b x.1 x.2.1 x.2.2)).1) (i, j, k) (mem_adjExt _))
 
 /- English proof (translation)
-Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (Module.finBasis ℂ W), Matrix.trace_eq_neg_charpoly_nextCoeff, LinearMap.charpoly_toMatrix]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem trace_eq_nextCoeff {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (f : W →ₗ[ℂ] W) : LinearMap.trace ℂ W f = -f.charpoly.nextCoeff := by
@@ -42,7 +42,7 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (ι : Om l ≃+* ℂ)
   {L : FinExt l} {a : ℕ} {r : ↥(Dec (F := E) A) →* GL (Fin a) (Om l)} {r' : ↥(Dec (F := E) A) →* GL (Fin a) ↥L.1}
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.V.Loc.PstExact.charPol_model ι Bw h hj hm hP g).trans (GlobalTheory.Pst.DpstMap.charPol_wdPst P ι Bw h hj _ hP g)`.
+A detailed English derivation is pending.
 -/
 private theorem charPol_eq [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P (Bw.repE L r'))]
     (hm : IsModel Bw r L r') (hP : IsPst P (Bw.repE L r')) (g : ↥(Weil h)) :
@@ -50,7 +50,7 @@ private theorem charPol_eq [FiniteDimensional ↥(MaximalUnramifiedExtension l) 
   (UpperTheory.V.Loc.PstExact.charPol_model ι Bw h hj hm hP g).trans
     (GlobalTheory.Pst.DpstMap.charPol_wdPst P ι Bw h hj _ hP g)
 /- English proof (translation)
-The claim follows from `congrArg ι.symm ((congrArg (fun p => -p.nextCoeff) (charPol_eq ι Bw h hj hm hP g)).trans (trace_eq_nextCoeff _).symm)`.
+A detailed English derivation is pending.
 -/
 private theorem wdTr_eq [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P (Bw.repE L r'))]
     (hm : IsModel Bw r L r') (hP : IsPst P (Bw.repE L r')) (g : ↥(Weil h)) :
@@ -61,7 +61,7 @@ private theorem wdTr_eq [FiniteDimensional ↥(MaximalUnramifiedExtension l) (Dp
 
 include hj in
 /- English proof (translation)
-Rewrite using `[← LinearMap.charpoly_natDegree (wdRho P ι Bw h hj (Bw.repE L r') g), ← charPol_eq ι Bw h hj hm hP g, WD.charPol_natDegree, GlobalTheory.PstLaws.lpDim_wdAt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem finrank_eq [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P (Bw.repE L r'))]
     (hm : IsModel Bw r L r') (hP : IsPst P (Bw.repE L r')) (g : ↥(Weil h)) :
@@ -70,25 +70,23 @@ private theorem finrank_eq [FiniteDimensional ↥(MaximalUnramifiedExtension l) 
     ← charPol_eq ι Bw h hj hm hP g, WD.charPol_natDegree, GlobalTheory.PstLaws.lpDim_wdAt]
 end
 /- English proof (translation)
-Introduce `hT l _ ι P AI T E Ω _ _ _ _ _ w A h O _ _ _ Bw hj g n₁ n₂ hα a d r hcr ρ b e hR s V hV`. Take `⟨L₁, r₁, hm₁, hc₁⟩` from `id hcr`. Take `⟨L, hL, hb⟩` from `exists_ext L₁ b`. Establish `hm` using `hm₁.enlarge hL`. Generalize the expression as in `mapRep (IntermediateField.inclusion hL).toRingHom r₁ = r' at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hc` using `(hm.isCrysAt_iff P).1 hcr`. Establish `hP : IsPst P (Bw.repE L r')` using `GlobalTheory.PstOfCrys.isPst_of_isCrys T _ hc`. Use `haveI := hP.finite`. Establish `hr : ∀ x i j, (((r' x).val i j : ↥L.1) : Om l) = (r x).val i j` using `fun x i j => by`. Rewrite using `[← hm.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Set `b' : Fin d → Matrix (Fin a) (Fin a) ↥L.1` to `fun i => Matrix.of fun j k => ⟨b i j k, hb i j k⟩`. Establish `H1 : ∀ g j (k : Fin a), Bw.repE L r' g (fun i => b' j i k) = ∑ i, ((ρ g).val i j : ℚ_[l]) • fun i' => b' i i' k` using `fun g j k => by`. Use function extensionality and compare the values at `i'`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `congrFun (congrFun (hR.equi g j) i') k` as an intermediate fact. Rewrite using `[GlobalTheory.ConjLocal.repE_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, Matrix.mul_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul] at this ⊢`. Rewrite using `[AddSubmonoidClass.coe_finset_sum, AddSubmonoidClass.coe_finset_sum]`. Use `(Finset.sum_congr rfl fun x _ => ?_).trans (this.trans (Finset.sum_congr rfl fun x _ => ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MulMemClass.coe_mul, hr]`. Both sides reduce to the same expression. Rewrite using `[Algebra.smul_def, MulMemClass.coe_mul]`. Both sides reduce to the same expression. Establish `H2 : ∑ i, (e i : ℚ_[l]) • b' i = 1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `j k`. Use `congrFun (congrFun hR.one j) k` as an intermediate fact. Establish `h1 : (((1 : Matrix (Fin a) (Fin a) ↥L.1) j k : ↥L.1) : Om l) = (1 : Matrix (Fin a) (Fin a) (Om l)) j k`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq]`. Both sides reduce to the same expression. Rewrite using `[Matrix.one_apply_ne hjk, Matrix.one_apply_ne hjk]`. Both sides reduce to the same expression. Rewrite using `[h1, ← this, Matrix.sum_apply, Matrix.sum_apply, AddSubmonoidClass.coe_finset_sum]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, Algebra.smul_def, smul_eq_mul, MulMemClass.coe_mul]`. Both sides reduce to the same expression. Establish `key` using `hT l ι P AI T E Ω w A h O Bw hj g n₁ n₂ hα L a d (Bw.repE L r') (finrank_eq ι Bw h hj hm hP g) ρ b' e H1 H2 s V hV`. Establish `e1 : (fun i => (((b' i).trace : ↥L.1) : Om l)) = fun i => (b i).trace`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.trace, b']`. Establish `e2` using `wdTr_eq ι Bw h hj hm hP g`. Establish `fin : ∀ (x : Fin d → Om l) (y z : Om l), x = (fun i => (b i).trace) → y = z → IsTr (uB T) s (V *ᵥ fun i => Per.zB l (e i)) x y → IsTr (uB T) s (V *ᵥ fun i => Per.zB l (e i)) (fun i => (b i).trace) z`. Introduce and unpack `x y z rfl rfl hh`.
-
-Conclude with `hh`. Conclude with `fin _ _ _ e1 e2.symm key`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.tie_holds :
     TieRep2 → Tie2 := by

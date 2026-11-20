@@ -6,9 +6,9 @@ open Matrix Polynomial
 namespace GlobalTheory.IsoIdem
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `GlobalTheory.CommSep.eq_aeval_of_commute_of_separable A hs y hy`. Break down `k with _ | k` into its components or cases. Rewrite `hk` using `[pow_zero]`. Conclude with `eq_zero_of_zero_eq_one hk.symm _`. Establish `hsq : Squarefree (minpoly E A)` using `Squarefree.squarefree_of_dvd (Matrix.minpoly_dvd_charpoly A) hs.squarefree`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : minpoly E A ∣ q ^ (k + 1)` using `minpoly.dvd E A (by rw [map_pow]; exact hk)`. Establish `h2 : minpoly E A ∣ q` using `(hsq.dvd_pow_iff_dvd (by omega)).1 h1`. Conclude with `minpoly.dvd_iff.1 h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pow_eq_zero {E : Type} [Field E] {r : ℕ} (A : Matrix (Fin r) (Fin r) E)
     (hs : A.charpoly.Separable) (y : Matrix (Fin r) (Fin r) E) (hy : y * A = A * y) (k : ℕ)
@@ -24,11 +24,11 @@ theorem eq_zero_of_pow_eq_zero {E : Type} [Field E] {r : ℕ} (A : Matrix (Fin r
   exact minpoly.dvd_iff.1 h2
 
 /- English proof (translation)
-Set `S` to `Subalgebra.centralizer E ({A} : Set (Matrix (Fin r) (Fin r) E))`. Establish `hmem : ∀ a : Matrix (Fin r) (Fin r) E, a ∈ S ↔ a * A = A * a`. Introduce `a`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Simplify using `[eq_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `letI : CommRing S := { (inferInstance : Ring S) with mul_comm := fun a b => Subtype.ext (GlobalTheory.CommSep.commute_of_commute_separable E r A hs a b ((hmem a).1 a.2) ((hmem b).1 b.2)) }`. Use `haveI : IsArtinianRing S := IsArtinianRing.of_finite E S`. Take `⟨n, w, hw⟩` from `IsArtinian.exists_pow_succ_smul_dvd (R := S) (M := S) ⟨z, (hmem z).2 hz⟩ 1`. Use `⟨n, w, (hmem w).1 w.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hw` as an intermediate fact.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_eq {E : Type} [Field E] {r : ℕ} (A : Matrix (Fin r) (Fin r) E)
     (hs : A.charpoly.Separable) (z : Matrix (Fin r) (Fin r) E) (hz : z * A = A * z) :
@@ -46,7 +46,7 @@ theorem exists_pow_mul_eq {E : Type} [Field E] {r : ℕ} (A : Matrix (Fin r) (Fi
   simpa using this
 
 /- English proof (translation)
-Establish `hA' : star A = A` using `hA`. Use `congrArg star hy` as an intermediate fact. Rewrite `this` using `[star_mul, star_mul, hA']`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mul_comm {E : Type} [Field E] [StarRing E] {r : ℕ} (A : Matrix (Fin r) (Fin r) E)
     (hA : A.IsHermitian) (y : Matrix (Fin r) (Fin r) E) (hy : y * A = A * y) :
@@ -57,9 +57,9 @@ theorem star_mul_comm {E : Type} [Field E] [StarRing E] {r : ℕ} (A : Matrix (F
   exact this.symm
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[pow_succ' w j, show m + (j + 1) = j + (m + 1) by omega, pow_add]`. Simplify using `only [mul_assoc]`. Use `_ = z ^ (m + j) * w ^ j := by rw [h, ← pow_add, show j + m = m + j by omega]`. Use `_ = z ^ m := ih`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pow_add_mul_pow {R : Type} [Ring R] (z w : R) (m : ℕ) (h : z ^ (m + 1) * w = z ^ m) :
     ∀ j : ℕ, z ^ (m + j) * w ^ j = z ^ m := by
@@ -74,45 +74,43 @@ theorem pow_add_mul_pow {R : Type} [Ring R] (z w : R) (m : ℕ) (h : z ^ (m + 1)
       _ = z ^ m := ih
 
 /- English proof (translation)
-Introduce `E _ _ r A hA hs`. Establish `comm : ∀ a b : Matrix (Fin r) (Fin r) E, a * A = A * a → b * A = A * b → a * b = b * a` using `GlobalTheory.CommSep.commute_of_commute_separable E r A hs`. Establish `cstar` using `star_mul_comm A hA`. Establish `cmul : ∀ a b : Matrix (Fin r) (Fin r) E, a * A = A * a → b * A = A * b → (a * b) * A = A * (a * b)`. Introduce `a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_assoc, hb, ← mul_assoc, ha, mul_assoc]`. Establish `cadd : ∀ a b : Matrix (Fin r) (Fin r) E, a * A = A * a → b * A = A * b → (a + b) * A = A * (a + b)`. Introduce `a b ha hb`. Rewrite using `[add_mul, mul_add, ha, hb]`. Establish `csub : ∀ a b : Matrix (Fin r) (Fin r) E, a * A = A * a → b * A = A * b → (a - b) * A = A * (a - b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b ha hb`. Rewrite using `[sub_mul, mul_sub, ha, hb]`. Establish `cone : (1 : Matrix (Fin r) (Fin r) E) * A = A * 1` using `by simp`. Establish `cpow : ∀ a : Matrix (Fin r) (Fin r) E, a * A = A * a → ∀ k : ℕ, a ^ k * A = A * a ^ k`. Introduce `a ha k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `cmul _ _ ih ha`. Set `S : Set (Matrix (Fin r) (Fin r) E)` to `{f | f * A = A * f ∧ f * f = f ∧ f * star f = 0}`.
+Proceed by induction. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨f, ⟨hfC, hff, hfs⟩, hmax⟩` from `(measure fun f : Matrix (Fin r) (Fin r) E => r - f.rank).wf.has_min S ⟨0, by simp [S]⟩`. Use `⟨f, hfC, hff, hfs, ?_⟩` and prove the remaining obligations. Introduce `y hy hiso`. Assume the negation of the conclusion as `hz`. Use `set e := 1 - f - star f with he`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set z := y * e with hzdef`. Establish `hfsC` using `cstar f hfC`. Establish `heC : e * A = A * e` using `csub _ _ (csub _ _ cone hfC) hfsC`. Establish `hzC : z * A = A * z` using `cmul _ _ hy heC`. Establish `hsf : star f * f = 0` using `by rw [← comm f (star f) hfC hfsC]; exact hfs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsfsf : star f * star f = star f` using `by rw [← star_mul, hff]`. Establish `hfe : f * e = 0` using `by rw [he, mul_sub, mul_sub, mul_one, hff, hfs]; abel`. Establish `hsfe : star f * e = 0` using `by rw [he, mul_sub, mul_sub, mul_one, hsf, hsfsf]; abel`. Establish `hef : e * star f = 0` using `by rw [← comm _ _ hfsC heC]; exact hsfe`. Establish `hee : e * e = e`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hestar : star e = e`. Rewrite using `[he, star_sub, star_sub, star_one, star_star, sub_right_comm]`. Establish `hze : z * e = z` using `by rw [hzdef, mul_assoc, hee]`. Take `⟨n, w, hwC, hw⟩` from `exists_pow_mul_eq A hs z hzC`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw' : z ^ (n + 1 + 1) * w = z ^ (n + 1)`. Rewrite using `[pow_succ' z (n + 1), mul_assoc, hw, ← pow_succ']`. Establish `key` using `pow_add_mul_pow z w (n + 1) hw' (n + 1)`. Establish `hzw : Commute z w` using `comm _ _ hzC hwC`. Use `set g := z ^ (n + 1) * w ^ (n + 1) with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgC : g * A = A * g` using `cmul _ _ (cpow _ hzC _) (cpow _ hwC _)`. Establish `hgz : g * z ^ (n + 1) = z ^ (n + 1)`. Rewrite using `[hg, mul_assoc, ((hzw.pow_pow (n + 1) (n + 1)).symm).eq, ← mul_assoc, ← pow_add, key]`. Establish `hgg : g * g = g` using `by conv_lhs => rw [hg]`. Rewrite using `[← mul_assoc, hgz]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg0 : g ≠ 0`. Introduce `h0`. Rewrite `hgz` using `[h0, zero_mul]`. Conclude with `hz (eq_zero_of_pow_eq_zero A hs z hzC _ hgz.symm)`. Use `set a := z ^ n * w ^ (n + 1) with ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `haC : a * A = A * a` using `cmul _ _ (cpow _ hzC _) (cpow _ hwC _)`. Establish `hgza : g = z * a` using `by rw [hg, ha, pow_succ', mul_assoc]`. Establish `hgs : g * star g = 0`. Establish `hb : (a * star a) * A = A * (a * star a)` using `cmul _ _ haC (cstar _ haC)`. Rewrite using `[hgza, star_mul, mul_assoc, ← mul_assoc a, comm _ _ hb (cstar _ hzC), ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show z * star z = 0 from hiso, zero_mul]`. Establish `hge : g * e = g`. Rewrite using `[hgza, mul_assoc, comm a e haC heC, ← mul_assoc, hze]`. Establish `hfz : f * z = 0`. Rewrite using `[hzdef, ← mul_assoc, comm f y hfC hy, mul_assoc, hfe, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfg : f * g = 0` using `by rw [hgza, ← mul_assoc, hfz, zero_mul]`. Establish `hgf : g * f = 0` using `by rw [comm g f hgC hfC]; exact hfg`. Establish `hfsg : f * star g = 0`. Rewrite using `[← hge, star_mul, hestar, ← mul_assoc, hfe, zero_mul]`. Establish `hgsf : g * star f = 0` using `by rw [← hge, mul_assoc, hef, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hf'S : f + g ∈ S`. Use `⟨cadd _ _ hfC hgC, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_mul, mul_add, mul_add, hff, hfg, hgf, hgg]`. Normalize the expressions using the abelian group laws. Rewrite using `[star_add, add_mul, mul_add, mul_add, hfs, hfsg, hgsf, hgs]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Normalize the expressions using the abelian group laws. Establish `hrank : f.rank < (f + g).rank`. Unfold `Matrix.rank`. Apply `Submodule.finrank_lt_finrank_of_lt` to reduce the goal to its premises. Rewrite using `[SetLike.lt_iff_le_and_exists]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Establish `h1 : (f + g) * f = f` using `by rw [add_mul, hff, hgf, add_zero]`. Combine the equalities or inequalities in the displayed calculation. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : Fin r → E, g *ᵥ v ≠ 0 := by`. Assume the negation of the conclusion as `hall`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [not_exists, not_not] at hall`. Apply `hg0` to reduce the goal to its premises. Use extensionality with `i j`. Use `congrFun (hall (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `⟨g *ᵥ v, ⟨g *ᵥ v, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, add_mul, hfg, hgg, zero_add]`. Introduce and unpack `⟨u, hu⟩`. Rewrite `hu` using `[Matrix.mulVecLin_apply]`. Apply `hv` to reduce the goal to its premises.
-
-Establish `hgv : g *ᵥ v = g *ᵥ (g *ᵥ v)` using `by rw [Matrix.mulVec_mulVec, hgg]`. Rewrite using `[hgv, ← hu, Matrix.mulVec_mulVec, hgf, Matrix.zero_mulVec]`. Establish `hle : (f + g).rank ≤ r`. Simplify using `using Matrix.rank_le_card_width (f + g)`. Conclude with `hmax (f + g) hf'S (show r - (f + g).rank < r - f.rank by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isoIdem : ∀ (E : Type) [Field E] [StarRing E] (r : ℕ) (A₀ : Matrix (Fin r) (Fin r) E),
     A₀.IsHermitian → A₀.charpoly.Separable → ∃ f : Matrix (Fin r) (Fin r) E, f * A₀ = A₀ * f ∧

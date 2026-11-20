@@ -15,9 +15,9 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `v.isPrime` as an intermediate fact. Establish `: Nontrivial (𝓞 F ⧸ v.asIdeal)` using `Ideal.Quotient.nontrivial_iff.2 v.isPrime.ne_top`. Unfold `Formalism.EigenvalueLevelCeiling.plc`. Apply `CharP.ringChar_of_prime_eq_zero h` to reduce the goal to its premises. Rewrite using `[← map_natCast (Ideal.Quotient.mk v.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.absNorm_mem _`.
+A detailed English derivation is pending.
 -/
 theorem plc_eq_absNorm (v : HeightOneSpectrum (𝓞 F)) (h : (Ideal.absNorm v.asIdeal).Prime) :
     Formalism.EigenvalueLevelCeiling.plc v = Ideal.absNorm v.asIdeal := by
@@ -29,7 +29,7 @@ theorem plc_eq_absNorm (v : HeightOneSpectrum (𝓞 F)) (h : (Ideal.absNorm v.as
   exact Ideal.absNorm_mem _
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_algebraMap, ← h2]`. Use `congr 1`. Conclude with `(Algebra.IsAlgebraic.finrank_of_isFractionRing (𝓞 F) F (𝓞 E) E).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem absNorm_map (h2 : Module.finrank F E = 2) (I : Ideal (𝓞 F)) :
     Ideal.absNorm (Ideal.map (algebraMap (𝓞 F) (𝓞 E)) I) = Ideal.absNorm I ^ 2 := by
@@ -38,7 +38,7 @@ theorem absNorm_map (h2 : Module.finrank F E = 2) (I : Ideal (𝓞 F)) :
   exact (Algebra.IsAlgebraic.finrank_of_isFractionRing (𝓞 F) F (𝓞 E) E).symm
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `AddSubgroup.card_dvd_of_injective (Ideal.quotientMap P.asIdeal (algebraMap (𝓞 F) (𝓞 E)) le_rfl).toAddMonoidHom Ideal.quotientMap_injective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_under_dvd (P : HeightOneSpectrum (𝓞 E)) :
     Ideal.absNorm (P.under (𝓞 F)).asIdeal ∣ Ideal.absNorm P.asIdeal := by
@@ -47,13 +47,13 @@ theorem absNorm_under_dvd (P : HeightOneSpectrum (𝓞 E)) :
     (Ideal.quotientMap P.asIdeal (algebraMap (𝓞 F) (𝓞 E)) le_rfl).toAddMonoidHom Ideal.quotientMap_injective
 
 /- English proof (translation)
-Establish `hN : Ideal.absNorm Q.asIdeal * Ideal.absNorm Q'.asIdeal = Ideal.absNorm v.asIdeal ^ 2`. Rewrite using `[← map_mul, ← hm, absNorm_map h2]`. Establish `h1 : Ideal.absNorm Q.asIdeal ≠ 1` using `fun h => Q.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Establish `h1' : Ideal.absNorm Q'.asIdeal ≠ 1` using `fun h => Q'.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Use `⟨((Nat.Prime.mul_eq_prime_sq_iff hv.1 h1 h1').1 hN).1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hmem`. Establish `hqv : ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F) ∈ v.asIdeal` using `Ideal.absNorm_mem _`. Take `⟨I, hI⟩ : v.asIdeal ∣ Ideal.span {((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F)}` from `Ideal.dvd_span_singleton.2 hqv`. Establish `hd : Q.asIdeal ^ 2 ∣ Ideal.map (algebraMap (𝓞 F) (𝓞 E)) (Ideal.span {((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F)})`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.dvd_span_singleton.2 hmem`. Rewrite `hd` using `[hI, Ideal.map_mul, hm, pow_two, mul_assoc, mul_dvd_mul_iff_left Q.ne_bot]`. Break down `(Ideal.prime_of_isPrime Q.ne_bot Q.isPrime).dvd_or_dvd hd with h | h` into its components or cases. Conclude with `hne (HeightOneSpectrum.ext (Q'.isMaximal.eq_of_le Q.isPrime.ne_top (Ideal.le_of_dvd h)).symm)`. Establish `hle : I ≤ v.asIdeal`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hQ]`. Conclude with `Ideal.map_le_iff_le_comap.1 (Ideal.le_of_dvd h)`. Apply `hv.2` to reduce the goal to its premises. Rewrite using `[← Ideal.span_singleton_le_iff_mem, hI, pow_two]`. Conclude with `Ideal.mul_mono_right hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_split (h2 : Module.finrank F E = 2) {v : HeightOneSpectrum (𝓞 F)} (hv : Formalism.L2.DIV.DegOne v)
     {Q Q' : HeightOneSpectrum (𝓞 E)} (hne : Q ≠ Q')
@@ -82,7 +82,7 @@ theorem of_split (h2 : Module.finrank F E = 2) {v : HeightOneSpectrum (𝓞 F)} 
     exact Ideal.mul_mono_right hle
 
 /- English proof (translation)
-Use `(HeightOneSpectrum.ext (v.isMaximal.eq_of_le (Q.under (𝓞 F)).isPrime.ne_top ?_)).symm` and prove the remaining obligations. Conclude with `Ideal.map_le_iff_le_comap.1 (hm ▸ Ideal.mul_le_left)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem under_eq_of_map_eq {v : HeightOneSpectrum (𝓞 F)} {Q : HeightOneSpectrum (𝓞 E)} {J : Ideal (𝓞 E)}
     (hm : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal = Q.asIdeal * J) : Q.under (𝓞 F) = v := by
@@ -90,13 +90,13 @@ theorem under_eq_of_map_eq {v : HeightOneSpectrum (𝓞 F)} {Q : HeightOneSpectr
   exact Ideal.map_le_iff_le_comap.1 (hm ▸ Ideal.mul_le_left)
 
 /- English proof (translation)
-Establish `hle : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) (P.under (𝓞 F)).asIdeal ≤ P.asIdeal * P'.asIdeal`. Rewrite using `[Ideal.mul_eq_inf_of_isCoprime (HeightOneSpectrum.isCoprime_of_ne P P' hne)]`. Use `le_inf Ideal.map_comap_le ?_` and prove the remaining obligations. Rewrite using `[← hu]`. Conclude with `Ideal.map_comap_le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.2 hle`. Establish `hN` using `absNorm_map h2 (P.under (𝓞 F)).asIdeal`. Take `⟨a, ha⟩` from `absNorm_under_dvd (F := F) P`. Take `⟨b, hb⟩` from `absNorm_under_dvd (F := F) P'`. Rewrite `hb` using `[hu]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : Ideal.absNorm (P.under (𝓞 F)).asIdeal ≠ 0` using `fun h => (P.under (𝓞 F)).ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Rewrite `hN` using `[hJ, map_mul, map_mul, ha, hb]`. Establish `h3 : (a * b) * Ideal.absNorm J = 1`. Apply `mul_left_cancel₀ (pow_ne_zero 2 h0)` to reduce the goal to its premises. Rewrite using `[mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ hN` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hJ, Ideal.absNorm_eq_one_iff.1 (Nat.eq_one_of_mul_eq_one_left h3), Ideal.mul_top]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_mul (h2 : Module.finrank F E = 2) {P P' : HeightOneSpectrum (𝓞 E)} (hne : P ≠ P')
     (hu : P'.under (𝓞 F) = P.under (𝓞 F)) :
@@ -121,15 +121,15 @@ theorem map_eq_mul (h2 : Module.finrank F E = 2) {P P' : HeightOneSpectrum (𝓞
   rw [hJ, Ideal.absNorm_eq_one_iff.1 (Nat.eq_one_of_mul_eq_one_left h3), Ideal.mul_top]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨Q, Q', hne, hm⟩, hv, hS⟩`. Choose the witnesses or unpack the hypotheses as in `⟨P', hne', hm'⟩ : ∃ P', P ≠ P' ∧ Ideal.map (algebraMap (𝓞 F) (𝓞 E)) (P.under (𝓞 F)).asIdeal = P.asIdeal * P'.asIdeal := by`. Establish `hle : Q.asIdeal * Q'.asIdeal ≤ P.asIdeal`. Rewrite using `[← hm]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.map_comap_le`. Break down `P.isPrime.mul_le.1 hle with h | h` into its components or cases. Take `rfl : Q = P` from `HeightOneSpectrum.ext (Q.isMaximal.eq_of_le P.isPrime.ne_top h)`. Conclude with `⟨Q', hne, hm⟩`. Take `rfl : Q' = P` from `HeightOneSpectrum.ext (Q'.isMaximal.eq_of_le P.isPrime.ne_top h)`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Q, hne.symm, by rw [hm, mul_comm]⟩`. Take `⟨e, hn⟩` from `of_split h2 hv hne' hm' rfl`. Rewrite `hS` using `[plc_eq_absNorm _ hv.1]`. Rewrite using `[e]`. Conclude with `⟨⟨P', hne', under_eq_of_map_eq (hm'.trans (mul_comm _ _))⟩, hv.1, hn, hS⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨P', hne, hu⟩, hp, hn, hS⟩`. Establish `e : Ideal.absNorm (P.under (𝓞 F)).asIdeal = Ideal.absNorm P.asIdeal` using `((Nat.dvd_prime hp).1 (absNorm_under_dvd P)).resolve_left fun h => (P.under (𝓞 F)).isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Use `⟨⟨P, P', hne, map_eq_mul h2 hne hu⟩, ⟨e ▸ hp, fun h => hn ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[e]`. Establish `h3` using `Ideal.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 E)) h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[map_natCast, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono Ideal.map_comap_le 2 h3`. Rewrite using `[plc_eq_absNorm _ (e ▸ hp), e]`. Conclude with `hS`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodPl_iff (h2 : Module.finrank F E = 2) (S : Set ℕ) (P : HeightOneSpectrum (𝓞 E)) :
     Formalism.L2.DIV.GoodPl E S (P.under (𝓞 F)) ↔ ((∃ P', P ≠ P' ∧ P'.under (𝓞 F) = P.under (𝓞 F)) ∧
@@ -166,13 +166,13 @@ theorem goodPl_iff (h2 : Module.finrank F E = 2) (S : Set ℕ) (P : HeightOneSpe
 end General
 
 /- English proof (translation)
-Take `⟨c, hc, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hy⟩`. Take `⟨P', hP', -⟩` from `existsUnique_conjPl c.toRingEquiv P`. Use `⟨P', ?_, (under_eq_iff_conjPl c hcm.rank hcm.ne P P').2 (Or.inr hP')⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Conclude with `hy (RingOfIntegers.mapRingEquiv c.toRingEquiv x) (hc x) (((conjPl_iff_mem _ P P).1 hP' x _ rfl).1 hx)`. Introduce and unpack `⟨P', hne, hu⟩`. Establish `hP'` using `((under_eq_iff_conjPl c hcm.rank hcm.ne P P').1 hu).resolve_left hne.symm`. Rewrite `hP'` using `[conjPl_iff_mem]`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Unfold `IsSplitPl at hn`. Use `push Not at hn`. Use `hne (HeightOneSpectrum.ext (P'.isMaximal.eq_of_le P.isPrime.ne_top fun y hy => ?_).symm)` and prove the remaining obligations. Establish `hxy : (y : H.E) = c.toRingEquiv ((RingOfIntegers.mapRingEquiv c.toRingEquiv).symm y : 𝓞 H.E)` using `congrArg (fun z : 𝓞 H.E => (z : H.E)) ((RingOfIntegers.mapRingEquiv c.toRingEquiv).apply_symm_apply y).symm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz, hzP⟩` from `hn _ ((hP' _ y hxy).2 hy)`. Establish `e : z = y` using `RingOfIntegers.ext (hz.trans ((hc _).symm.trans hxy.symm))`. Conclude with `e ▸ hzP`.
+A detailed English derivation is pending.
 -/
 theorem isSplitPl_iff {R : Ranks} (H : Formalism.BasicNotions.Host R) (P : HeightOneSpectrum (𝓞 H.E)) :
     IsSplitPl H P ↔ ∃ P', P ≠ P' ∧ P'.under (𝓞 H.F) = P.under (𝓞 H.F) := by
@@ -199,7 +199,7 @@ theorem isSplitPl_iff {R : Ranks} (H : Formalism.BasicNotions.Host R) (P : Heigh
 open Classical in
 
 /- English proof (translation)
-Introduce `R H S P`. Take `⟨c, -, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Rewrite using `[isSplitPl_iff]`. Conclude with `goodPl_iff hcm.rank S P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodPl_under_iff : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (S : Set ℕ) (P : HeightOneSpectrum (𝓞 H.E)), Formalism.L2.DIV.GoodPl H.E S (P.under (𝓞 H.F)) ↔ (IsSplitPl H P ∧ (Ideal.absNorm P.asIdeal).Prime ∧ ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 H.E) ∉ P.asIdeal ^ 2 ∧ Ideal.absNorm P.asIdeal ∉ S) := by
   intro R H S P

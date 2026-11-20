@@ -11,25 +11,23 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial Matrix ComplexSets IsLocalRing
 
 /- English proof (translation)
-Establish `hIW : I ≤ W` using `hW.1.2`. Establish `hP` using `isPrime_map_quotient_localization m W I hWm hIW`. Establish `hunit : ∀ s ∉ m, IsUnit (((Ideal.Quotient.mk (I.map (algebraMap R (Localization.AtPrime m)))).comp (algebraMap R (Localization.AtPrime m))) s)` using `fun s hs => ((IsLocalization.AtPrime.isUnit_to_map_iff (Localization.AtPrime m) m s).2 hs).map (Ideal.Quotient.mk (I.map (algebraMap R (Localization.AtPrime m))))`. Establish `hall : ∀ Q : Ideal (Localization.AtPrime m ⧸ I.map (algebraMap R (Localization.AtPrime m))), Q.IsPrime → W.map ((Ideal.Quotient.mk (I.map (algebraMap R (Localization.AtPrime m)))).comp (algebraMap R (Localization.AtPrime m))) ≤ Q`. Introduce `Q hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hIQ : I ≤ Q.comap ((Ideal.Quotient.mk (I.map (algebraMap R (Localization.AtPrime m)))).comp (algebraMap R (Localization.AtPrime m)))` using `fun f hf => by`. Rewrite using `[Ideal.mem_comap, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ hf)]`. Conclude with `Q.zero_mem`. Establish `hQm : Q.comap ((Ideal.Quotient.mk (I.map (algebraMap R (Localization.AtPrime m)))).comp (algebraMap R (Localization.AtPrime m))) ≤ m` using `fun f hf => by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hQ.ne_top (Ideal.eq_top_of_isUnit_mem _ hf (hunit f h))`. Take `⟨W', hW', hW'Q⟩` from `Ideal.exists_minimalPrimes_le hIQ`. Establish `: W' = W` using `huniq W' hW' (hW'Q.trans hQm)`. Substitute `this` using the available equality. Conclude with `Ideal.map_le_iff_le_comap.2 hW'Q`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hmin : minimalPrimes (Localization.AtPrime m ⧸ I.map (algebraMap R (Localization.AtPrime m))) = {W.map ((Ideal.Quotient.mk (I.map (algebraMap R (Localization.AtPrime m)))).comp (algebraMap R (Localization.AtPrime m)))}`. Use extensionality with `Q`. Rewrite using `[Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hQ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `le_antisymm (hQ.2 ⟨hP, bot_le⟩ (hall Q hQ.1.1)) (hall Q hQ.1.1)`. Introduce and unpack `rfl`. Conclude with `⟨⟨hP, bot_le⟩, fun Q hQ _ => hall Q hQ.1⟩`. Establish `hPdef : W.map ((Ideal.Quotient.mk (I.map (algebraMap R (Localization.AtPrime m)))).comp (algebraMap R (Localization.AtPrime m))) = (W.map (algebraMap R (Localization.AtPrime m))).map (Ideal.Quotient.mk _)`. Rewrite using `[Ideal.map_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdimP : ringKrullDim ((Localization.AtPrime m ⧸ I.map (algebraMap R (Localization.AtPrime m))) ⧸ W.map ((Ideal.Quotient.mk (I.map (algebraMap R (Localization.AtPrime m)))).comp (algebraMap R (Localization.AtPrime m)))) = (d : ℕ)`. Rewrite using `[ringKrullDim_eq_of_ringEquiv ((Ideal.quotEquivOfEq hPdef).trans (DoubleQuot.quotQuotEquivQuotOfLE (Ideal.map_mono hIW)))]`. Conclude with `hdim`. Establish `hmB : m.map ((Ideal.Quotient.mk (I.map (algebraMap R (Localization.AtPrime m)))).comp (algebraMap R (Localization.AtPrime m))) = maximalIdeal (Localization.AtPrime m ⧸ I.map (algebraMap R (Localization.AtPrime m)))`. Rewrite using `[← Ideal.map_map, Localization.AtPrime.map_eq_maximalIdeal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_maximalIdeal_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hspan : Ideal.span (Set.range fun i => ((Ideal.Quotient.mk (I.map (algebraMap R (Localization.AtPrime m)))).comp (algebraMap R (Localization.AtPrime m))) (lin i)) = (Ideal.span (Set.range lin)).map ((Ideal.Quotient.mk (I.map (algebraMap R (Localization.AtPrime m)))).comp (algebra …`. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hmax : Ideal.span (Set.range fun i => ((Ideal.Quotient.mk (I.map (algebraMap R (Localization.AtPrime m)))).comp (algebraMap R (Localization.AtPrime m))) (lin i)) ⊔ W.map ((Ideal.Quotient.mk (I.map (algebraMap R (Localization.AtPrime m)))).comp (algebraMap R (Localization.AtPrime …`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hspan, ← Ideal.map_sup, sup_comm, ← hmB]`. Apply `le_antisymm` to reduce the goal to its premises. Use `Ideal.map_mono (sup_le hWm ?_)` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hlin i`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `g hg`. Take `⟨s, hs, hsg⟩` from `hT g hg`. Rewrite using `[Ideal.mem_comap, ← Ideal.unit_mul_mem_iff_mem _ (hunit s hs), ← map_mul]`.
-
-Conclude with `Ideal.mem_map_of_mem _ hsg`. Establish `key` using `hCM _ _ d _ hmin hdimP hmax`. Rewrite `key` using `[hLS R m W I hWm hIW _ rfl]`. Rewrite using `[← key, ← Module.length_eq_of_surjective (S := Localization.AtPrime m) (R := Localization.AtPrime m ⧸ I.map (algebraMap R (Localization.AtPrime m))) Ideal.Quotient.mk_surjective, hspan, ← Ideal.map_map, Ideal.map_sup]`. Conclude with `(DoubleQuot.quotQuotEquivQuotSupₐ (Localization.AtPrime m) _ _).toLinearEquiv.length_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_slice_of_isCohenMacaulay (hCM : CMLengthParameters.Statement.{0})
     (hLS : LocalizeQuotientStages.Statement.{0}) {R : Type} [CommRing R] (m W I : Ideal R) [m.IsPrime] [W.IsPrime]
@@ -122,9 +120,9 @@ theorem length_slice_of_isCohenMacaulay (hCM : CMLengthParameters.Statement.{0})
   exact (DoubleQuot.quotQuotEquivQuotSupₐ (Localization.AtPrime m) _ _).toLinearEquiv.length_eq
 
 /- English proof (translation)
-Introduce `n d I W q L hW hdim hq huniq hCMq hT`. Establish `hWp : W.IsPrime` using `hW.1.1`. Establish `hWm : W ≤ RingHom.ker (eval q)` using `fun f hf => RingHom.mem_ker.2 (hq f hf)`. Establish `: IsCohenMacaulayLocalRing (localRingAt I q)` using `hCMq`. Establish `h` using `length_slice_of_isCohenMacaulay hCM hLS (RingHom.ker (eval q)) W I hW hWm (fun W' hW' hle => huniq W' hW' fun f hf => RingHom.mem_ker.1 (hle hf)) d (fun i => linPoly L i - C ((L *ᵥ q) i)) (fun i => by rw [RingHom.mem_ker, map_sub, eval_linPoly, eval_C, sub_self]) (LocalDimDomain. …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hs, hsg⟩` from `hT g (RingHom.mem_ker.1 hg)`. Conclude with `⟨s, fun h => hs (RingHom.mem_ker.1 h), hsg⟩)`. Unfold `localMult`. Rewrite using `[dif_pos hWp, dif_pos (inferInstance : (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)).IsPrime), h]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem LengthTransverseSlice.proof (hCM : CMLengthParameters.Statement.{0})
     (hLS : LocalizeQuotientStages.Statement.{0}) : LengthTransverseSlice.Statement := by

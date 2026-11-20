@@ -11,7 +11,7 @@ section Field
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [antiJ, Matrix.map_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem antiJ_map (g : K →+* K) (n : ℕ) : (antiJ K n).map g = antiJ K n := by
   ext i j
@@ -19,7 +19,7 @@ theorem antiJ_map (g : K →+* K) (n : ℕ) : (antiJ K n).map g = antiJ K n := b
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, hg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_map (g σ σ' : K →+* K) (hg : ∀ x, g (σ x) = σ' (g x)) {n : ℕ}
     (M : Matrix (Fin n) (Fin n) K) : cT σ' (M.map g) = (cT σ M).map g := by
@@ -53,13 +53,13 @@ def gEquiv (D D' : InertDatum L n v w) : w.adicCompletion L ≃+* w.adicCompleti
   D.e.symm.trans D'.e
 
 /- English proof (translation)
-Simplify using `[gEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gEquiv_e (D D' : InertDatum L n v w) (y) : gEquiv D D' (D.e y) = D'.e y := by
   simp [gEquiv]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨y, rfl⟩` from `D.e.surjective x`. Rewrite using `[← D.comm, gEquiv_e, gEquiv_e, D'.comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gEquiv_comm (D D' : InertDatum L n v w) :
     ∀ x, gEquiv D D' (D.σw x) = D'.σw (gEquiv D D' x) := by
@@ -68,7 +68,7 @@ theorem gEquiv_comm (D D' : InertDatum L n v w) :
   rw [← D.comm, gEquiv_e, gEquiv_e, D'.comm]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨y, rfl⟩` from `D.e.surjective x`. Rewrite using `[gEquiv_e, ← D.integ, ← D'.integ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gEquiv_intL (D D' : InertDatum L n v w) :
     ∀ x, x ∈ intL (w.adicCompletion L) ↔ gEquiv D D' x ∈ intL (w.adicCompletion L) := by

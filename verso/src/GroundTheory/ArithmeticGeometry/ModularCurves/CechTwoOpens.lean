@@ -49,7 +49,7 @@ section TwoOpens2
 variable {X : TopCat.{u}} (P : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}) (U : Fin 2 → Opens X)
 
 /- English proof (translation)
-Introduce `x y hxy`. Use `congrArg (res P h') hxy` as an intermediate fact. Rewrite `this` using `[res_res, res_res, res_refl, res_refl]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma res_injective_of_le {V W : Opens X} (h : V ≤ W) (h' : W ≤ V) :
     Function.Injective (res P h) := by
@@ -58,7 +58,7 @@ lemma res_injective_of_le {V W : Opens X} (h : V ≤ W) (h' : W ≤ V) :
   rwa [res_res, res_res, res_refl, res_refl] at this
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma res_cochain_congr {n : ℕ} (σ : Cochain P U n) {V : Opens X} {i i' : Fin (n + 1) → Fin 2}
     (e : i = i') (h : V ≤ inter U i) (h' : V ≤ inter U i') : res P h (σ i) = res P h' (σ i') := by
@@ -66,42 +66,42 @@ lemma res_cochain_congr {n : ℕ} (σ : Cochain P U n) {V : Opens X} {i i' : Fin
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `fin_cases x <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma vec2_eq (i : Fin 2 → Fin 2) : i = ![i 0, i 1] := by
   funext x
   fin_cases x <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `fin_cases x <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma vec3_eq (j : Fin 3 → Fin 2) : j = ![j 0, j 1, j 2] := by
   funext x
   fin_cases x <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `fin_cases x <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma comp_succAbove_zero (a b c : Fin 2) : ![a, b, c] ∘ Fin.succAbove 0 = ![b, c] := by
   funext x
   fin_cases x <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `fin_cases x <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma comp_succAbove_one (a b c : Fin 2) : ![a, b, c] ∘ Fin.succAbove 1 = ![a, c] := by
   funext x
   fin_cases x <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `fin_cases x <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma comp_succAbove_two (a b c : Fin 2) : ![a, b, c] ∘ Fin.succAbove 2 = ![a, b] := by
   funext x
   fin_cases x <;> rfl
 
 /- English proof (translation)
-Rewrite using `[d_apply, Fin.sum_univ_three]`. Rewrite using `[res_cochain_congr P U σ (comp_succAbove_zero a b c) _ (by rw [← comp_succAbove_zero a b c]; exact inter_le_comp U _ _), res_cochain_congr P U σ (comp_succAbove_one a b c) _ (by rw [← comp_succAbove_one a b c]; exact inter_le_comp U _ _), res_cochain_congr P U σ (comp_succAbove_t …`. Simplify using `only [Fin.val_zero, pow_zero, one_smul, Fin.val_one, pow_one, neg_smul, Fin.val_two]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 lemma d_one_apply (σ : Cochain P U 1) (a b c : Fin 2) :
     d P U 1 σ ![a, b, c] =
@@ -119,9 +119,9 @@ lemma d_one_apply (σ : Cochain P U 1) (a b c : Fin 2) :
   abel
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[mem_inter_iff]`. Introduce `a`. Take `⟨b, hb⟩` from `h a`. Rewrite using `[← hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx b`.
+A detailed English derivation is pending.
 -/
 lemma inter_le_inter_of_forall {m n : ℕ} (i : Fin m → Fin 2) (i' : Fin n → Fin 2)
     (h : ∀ a, ∃ b, i b = i' a) : inter U i ≤ inter U i' := by
@@ -135,7 +135,7 @@ lemma inter_le_inter_of_forall {m n : ℕ} (i : Fin m → Fin 2) (i' : Fin n →
 variable {P U}
 
 /- English proof (translation)
-Establish `h` using `congrFun hσ ![c, c, c]`. Rewrite `h` using `[d_one_apply, sub_self, zero_add]`. Apply the tactic sequence `exact res_injective_of_le P _ (inter_le_inter_of_forall U _ _ (fun a => ⟨0, by fin_cases a <;> rfl⟩)) (h.trans (map_zero _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma cocycle_diag {σ : Cochain P U 1} (hσ : d P U 1 σ = 0) (c : Fin 2) : σ ![c, c] = 0 := by
   have h := congrFun hσ ![c, c, c]
@@ -144,9 +144,9 @@ lemma cocycle_diag {σ : Cochain P U 1} (hσ : d P U 1 σ = 0) (c : Fin 2) : σ 
     (h.trans (map_zero _).symm)
 
 /- English proof (translation)
-Establish `h` using `congrFun hσ ![0, 1, 0]`. Rewrite `h` using `[d_one_apply, cocycle_diag hσ 0, map_zero, sub_zero]`. Express the relevant statement in the definitionally equal form `_ + res P _ (σ i01) = 0 at h`. Rewrite `h` using `[h01, map_zero, add_zero]`. Conclude with `res_injective_of_le P _ (inter_le_inter_of_forall U _ _ (fun a => by fin_cases a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨1, rfl⟩`. Conclude with `⟨0, rfl⟩`. Conclude with `⟨1, rfl⟩)) (h.trans (map_zero _).symm)`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma cocycle_swap {σ : Cochain P U 1} (hσ : d P U 1 σ = 0) (h01 : σ i01 = 0) : σ ![1, 0] = 0 := by
   have h := congrFun hσ ![0, 1, 0]
@@ -162,15 +162,13 @@ lemma cocycle_swap {σ : Cochain P U 1} (hσ : d P U 1 σ = 0) (h01 : σ i01 = 0
 variable (P U)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Proceed by induction on `x using QuotientAddGroup.induction_on with`. Consider the case `H σ`. Take `⟨σ, hσ⟩` from `σ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ⟩` from `(QuotientAddGroup.eq_zero_iff _).1 hx`. Apply `(QuotientAddGroup.eq_zero_iff _).2` to reduce the goal to its premises. Rewrite using `[AddSubgroup.mem_addSubgroupOf, coboundaries_succ]`. Use `⟨τ, ?_⟩` and prove the remaining obligations. Establish `hσ' : d P U 1 (σ - d P U 0 τ) = 0`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_sub, (mem_cocycles _).1 hσ, d_d, sub_zero]`. Establish `h01 : (σ - d P U 0 τ) i01 = 0`. Express the relevant statement in the definitionally equal form `σ i01 - twoDiff P U τ = 0`. Rewrite using `[hτ]`. Conclude with `sub_self _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion.
 
-It suffices to establish `h : σ - d P U 0 τ = 0 from (sub_eq_zero.1 h).symm`. Use function extensionality and compare the values at `i`. Take `⟨a, b, rfl⟩ : ∃ a b, i = ![a, b]` from `⟨_, _, vec2_eq i⟩`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `cocycle_diag hσ' 0`.
-
-Conclude with `h01`. Conclude with `cocycle_swap hσ' h01`. Conclude with `cocycle_diag hσ' 1`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cechOneToQuot_injective : Function.Injective (cechOneToQuot P U) := by
   rw [injective_iff_map_eq_zero]
@@ -204,9 +202,9 @@ section TwoOpens3
 variable {X : TopCat.{u}} (P : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}) (U : Fin 2 → Opens X)
 
 /- English proof (translation)
-Establish `hi : ∀ a : Fin 2, a = i 0 ∨ a = i 1`. Introduce `a`. Use `revert h`. Generalize the expression as in `i 0 = p`. Generalize the expression as in `i 1 = q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases a <;> fin_cases p <;> fin_cases q <;> simp`. Conclude with `inter_le_inter_of_forall U _ _ (fun a => (hi (i01 a)).elim (fun e => ⟨0, e.symm⟩) (fun e => ⟨1, e.symm⟩))`.
+A detailed English derivation is pending.
 -/
 lemma inter_le_inter_zero_one {i : Fin 2 → Fin 2} (h : i 0 ≠ i 1) : inter U i ≤ inter U i01 := by
   have hi : ∀ a : Fin 2, a = i 0 ∨ a = i 1 := by
@@ -225,7 +223,7 @@ noncomputable def twoCochain (s : P.obj (op (inter U i01))) : Cochain P U 1 := f
     if i 0 = 0 then res P (inter_le_inter_zero_one U h) s else -res P (inter_le_inter_zero_one U h) s
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Take `⟨a, b, c, rfl⟩ : ∃ a b c, j = ![a, b, c]` from `⟨_, _, _, vec3_eq j⟩`. Rewrite using `[d_one_apply]`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> fin_cases c <;>`. Simplify using `[twoCochain, res_res]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem d_twoCochain (s : P.obj (op (inter U i01))) : d P U 1 (twoCochain P U s) = 0 := by
   funext j
@@ -235,13 +233,13 @@ theorem d_twoCochain (s : P.obj (op (inter U i01))) : d P U 1 (twoCochain P U s)
     simp [twoCochain, res_res]
 
 /- English proof (translation)
-Simplify using `[twoCochain]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twoCochain_zero_one (s : P.obj (op (inter U i01))) : twoCochain P U s i01 = s := by
   simp [twoCochain]
 
 /- English proof (translation)
-Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H s`. Conclude with `⟨cls (twoCochain P U s) (d_twoCochain P U s), by`. Rewrite using `[cechOneToQuot_cls, twoCochain_zero_one]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem cechOneToQuot_surjective : Function.Surjective (cechOneToQuot P U) := by
   intro q

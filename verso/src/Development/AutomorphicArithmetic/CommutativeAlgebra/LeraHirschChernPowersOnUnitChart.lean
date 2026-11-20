@@ -29,7 +29,7 @@ private noncomputable def sg {N : ℕ} {A : Type} [CommRing A] (i : Fin N) (x : 
   Um.scale ![h.unit, 1] x.2
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [sg, Um.scale, Um.map]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sg_map {N : ℕ} {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (i : Fin N) (x : Um N A × Um 2 A)
     (h : IsUnit (x.1.1 i)) (h' : IsUnit (((Um.map N f).obj x.1).1 i)) :
@@ -39,9 +39,9 @@ private theorem sg_map {N : ℕ} {A B : Type} [CommRing A] [CommRing B] (f : A �
   fin_cases j <;> simp [sg, Um.scale, Um.map]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Simplify using `[sg, Um.scale, bAct]`. Take the linear combination `((u.2 : A) * (x.1.1 i) * (x.2.1 0)) * (Units.mul_inv u.1)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `[sg, Um.scale, bAct]`.
+A detailed English derivation is pending.
 -/
 private theorem sg_act {N : ℕ} {A : Type} [CommRing A] (i : Fin N) (u : Aˣ × Aˣ) (x : Um N A × Um 2 A)
     (h : IsUnit (x.1.1 i)) (h' : IsUnit ((bAct u x).1.1 i)) :
@@ -64,13 +64,13 @@ private noncomputable def sig {N : ℕ} (i : Fin N) (Q : Pred (XC N)) (hQ : Q.Le
   eq A u x := sg_act (A := A) i u x.1 (hQ A _ x.2) _
 
 /- English proof (translation)
-Introduce `U hU` and use `h U (hU.elim fun x => ⟨Sx.map f x⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem etC_inv_of_hom {q : ℕ} {X Y : Spc} (f : X ⟶ Y) (h : GlobalTheory.EtC.Inv q Y) : GlobalTheory.EtC.Inv q X :=
   fun U hU => h U (hU.elim fun x => ⟨Sx.map f x⟩)
 
 /- English proof (translation)
-Rewrite using `[← Um.scale_mul]`. Simplify using `only [h]`. Conclude with `Um.scale_one w`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem um_scale_scale_eq_of_mul_eq_one {A : Type} [CommRing A] (c d : Fin 2 → Aˣ) (h : ∀ j, c j * d j = 1)
     (w : Um 2 A) : Um.scale c (Um.scale d w) = w := by
@@ -79,21 +79,19 @@ private theorem um_scale_scale_eq_of_mul_eq_one {A : Type} [CommRing A] (c d : F
   exact Um.scale_one w
 
 /- English proof (translation)
-Introduce `q _ N E i Q hQ hE`. Establish `hiso : IsIso (Sp.pair E ((pC N).sub Q) (sig i Q hQ))`. Apply `UpperTheory.isIso_stackProductPair_of_bijective` to reduce the goal to its premises. Introduce `A`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨⟨x1, x2⟩, hx⟩ ⟨⟨y1, y2⟩, hy⟩ e`. Establish `e1 : x1 = y1` using `congrArg (fun p => p.1.1) e`. Establish `e2 : Um.scale ![(hQ A _ hx).unit, 1] x2 = Um.scale ![(hQ A _ hy).unit, 1] y2` using `congrArg Prod.snd e`. Substitute `e1` using the available equality. Establish `e3` using `congrArg (Um.scale ![(hQ A _ hx).unit⁻¹, 1]) e2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [um_scale_scale_eq_of_mul_eq_one _ _ (by intro j; fin_cases j <;> simp <;> exact inv_mul_cancel _), um_scale_scale_eq_of_mul_eq_one _ _ (by intro j; fin_cases j <;> simp <;> exact inv_mul_cancel _)] at e3`. Substitute `e3` using the available equality. Both sides reduce to the same expression. Introduce and unpack `⟨⟨y1, hy1⟩, w⟩`. Use `⟨⟨(y1, Um.scale ![(hQ A _ hy1).unit⁻¹, 1] w), hy1⟩, ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext rfl ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Um.scale ![(hQ A _ hy1).unit, 1] (Um.scale ![(hQ A _ hy1).unit⁻¹, 1] w) = w`. Apply the tactic sequence `exact um_scale_scale_eq_of_mul_eq_one _ _ (by intro j; fin_cases j <;> simp) w`. Introduce `A`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `g h e`. Conclude with `Prod.ext (congrArg Prod.fst e) (congrArg Prod.snd e)`. Introduce `p`. Conclude with `⟨(p.1, p.2), rfl⟩`. Establish `hS : GlobalTheory.EtC.Inv q (Sp E ((XC N).sub Q))` using `etC_inv_of_hom (Sp.fst E _) hE`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : Pbf q (Sp E ((XC N).sub Q)) 2` using `(UpperTheory.projBundleFormula_iff_pglForm q _ 2 hS).mp (UpperTheory.projectiveBundleFormula_rank_two q _ hS)`. Establish `hX : GlobalTheory.EtC.Inv q (Sp (Sp E ((XC N).sub Q)) (XC 2))` using `etC_inv_of_hom (Sp.fst _ _) hS`. Establish `hB : GlobalTheory.EtC.Inv q (Sp E (BC N))` using `etC_inv_of_hom (Sp.fst E _) hE`. Establish `hcomm : Sp.pair E ((pC N).sub Q) (sig i Q hQ) ≫ Sp.fst (Sp E ((XC N).sub Q)) (XC 2) = Sp.map E ((pC N).sub Q) ≫ 𝟙 (Sp E ((XC N).sub Q))` using `rfl`. Establish `h1` using `UpperTheory.lerayHirsch_of_iso_square q (Sp.fst (Sp E ((XC N).sub Q)) (XC 2)) (Sp.map E ((pC N).sub Q)) (Sp.pair E ((pC N).sub Q) (sig i Q hQ)) (𝟙 _) hcomm _ _ _ hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hline : Sp.pair E ((pC N).sub Q) (sig i Q hQ) ≫ Sp.line (Sp E ((XC N).sub Q)) (chiX 2) = Sp.map E (incl (Q.comap (pC N))) ≫ Sp.line E (chiB N)` using `rfl`. Establish `key : ∀ j : Fin 2, (pull (ZMod q) (Sp.pair E ((pC N).sub Q) (sig i Q hQ)) (tw q ((j : ℕ) : ℤ)) (2 * ((j : ℕ) : ℤ))) (cpow q (c1 q (Sp.line (Sp E ((XC N).sub Q)) (chiX 2))) (j : ℕ)) = (pull (ZMod q) (Sp.map E (incl (Q.comap (pC N)))) (tw q ((j : ℕ) : ℤ)) (2 * ((j : ℕ) : ℤ))) (cpow …`. Introduce `j`. Rewrite using `[UpperTheory.pull_cupPow_eq_cupPow_pull q _ _ _ hX, UpperTheory.pull_cupPow_eq_cupPow_pull q _ _ _ hB, (GlobalTheory.T.firstChernClassTateTwist_cocycle_unique_natural_additive q).2.1 _ _ hX, (GlobalTheory.T.firstChernClassTateTwist_cocycle_unique_natural_additive q).2.1 _ _ hB, h …`. Use `show LH q (Sp.map E ((pC N).sub Q)) _ _ _`.
-
-Use `h1 using 2` and compare the differences between its conclusion and the goal. Conclude with `(key _).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.leraHirsch_chernPowers_on_unitChart :
     ∀ (q : ℕ) [NeZero q] (N : ℕ) (E : Spc) (i : Fin N) (Q : Pred (XC N)), Q.Le (unitAt i) → Inv q E →

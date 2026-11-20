@@ -18,7 +18,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, Prod.fst_add, Prod.snd_add, ← mul_assoc, ← AddChar.map_add_eq_mul, add_assoc, add_dotProduct, dotProduct_add]`. Use `congr 2`. Establish `h2 : ⅟(2 : k) * 2 = 1` using `invOf_mul_self _`. Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * h2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem schr_schr (w w' : (κ → k) × (κ → k)) (φ : (κ → k) → ℂ) :
     schr ψ w (schr ψ w' φ) = ψ (⅟(2 : k) * (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2)) • schr ψ (w + w') φ := by
@@ -31,14 +31,14 @@ theorem schr_schr (w w' : (κ → k) × (κ → k)) (φ : (κ → k) → ℂ) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schr_zero (φ : (κ → k) → ℂ) : schr ψ 0 φ = φ := by
   funext x
   simp [schr]
 
 /- English proof (translation)
-Use `nonarch_field k` as an intermediate fact. Establish `hlc` using `isLocallyConstant_addChar ψ hc`. Establish `h1 : IsLocallyConstant fun x : κ → k => ψ (x ⬝ᵥ w.2 + ⅟(2 : k) * (w.1 ⬝ᵥ w.2))` using `hlc.comp_continuous ((continuous_id.dotProduct continuous_const).add continuous_const)`. Conclude with `⟨h1.mul (hφ.1.comp_continuous (continuous_id.add continuous_const)), (hφ.2.comp_homeomorph (Homeomorph.addRight w.1)).mul_left⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem schr_mem (hc : Continuous ψ) (w : (κ → k) × (κ → k)) {φ : (κ → k) → ℂ} (hφ : φ ∈ SB (κ → k)) :
     schr ψ w φ ∈ SB (κ → k) := by
@@ -51,9 +51,9 @@ theorem schr_mem (hc : Continuous ψ) (w : (κ → k) × (κ → k)) {φ : (κ �
 
 omit [Invertible (2 : k)] in
 /- English proof (translation)
-Take `⟨ψ₀, h₀⟩` from `(GlobalTheory.CompanionTheory.VacLoc.GoodInh.exists_goodChar k).1`. Take `⟨M, hM⟩` from `h₀.compact.exists_bound_of_continuousOn (f := fun y : k => ψ (x * y)) (hc.comp (continuous_const.mul continuous_id)).continuousOn`. Assume the negation of the conclusion as `h`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt M (not_le.1 h)`. Use `hM (n : k) (natCast_mem _ n)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_comm, ← nsmul_eq_mul, AddChar.map_nsmul_eq_pow, norm_pow]`. Conclude with `absurd hn (not_lt.2 this)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one (hc : Continuous ψ) (x : k) : ‖ψ x‖ ≤ 1 := by
   obtain ⟨ψ₀, h₀⟩ := (GlobalTheory.CompanionTheory.VacLoc.GoodInh.exists_goodChar k).1
@@ -67,7 +67,7 @@ theorem norm_le_one (hc : Continuous ψ) (x : k) : ‖ψ x‖ ≤ 1 := by
 
 omit [Invertible (2 : k)] in
 /- English proof (translation)
-Establish `h1` using `norm_le_one hc x`. Establish `h2` using `norm_le_one hc (-x)`. Establish `h3 : ‖ψ x‖ * ‖ψ (-x)‖ = 1` using `by rw [← norm_mul, ← AddChar.map_add_eq_mul, add_neg_cancel]; simp`. Use polynomial arithmetic with `[norm_nonneg (ψ x), norm_nonneg (ψ (-x))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_one (hc : Continuous ψ) (x : k) : ‖ψ x‖ = 1 := by
   have h1 := norm_le_one hc x
@@ -76,13 +76,13 @@ theorem norm_one (hc : Continuous ψ) (x : k) : ‖ψ x‖ = 1 := by
   nlinarith [norm_nonneg (ψ x), norm_nonneg (ψ (-x))]
 
 /- English proof (translation)
-Use `GlobalTheory.SplitWeil.t2Space k` as an intermediate fact. Take `⟨u, hu⟩` from `(GlobalTheory.CompanionTheory.VacLoc.GoodInh.exists_goodChar k).2 ψ hc (norm_one hc) h1`. Set `d : Darboux (R` to `k) (W := (κ → k) × (κ → k)) (fun w w' => w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) κ := ⟨LinearEquiv.refl _ _, fun _ _ => rfl⟩`. Set `: MeasurableSpace (κ → k)` to `borel _`. Establish `: BorelSpace (κ → k)` using `⟨rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨S, hS⟩` from `GlobalTheory.CompanionTheory.SchrSys.exists_isModel ψ _ u d Measure.addHaar hu inferInstance`. Establish `hcyc` using `(GlobalTheory.CompanionTheory.VacLoc.ModelLine.cyclic_and_line ψ _ u d _ S ⊥ (fun _ => 1) ⟨φ₀, h₀⟩ ⟨φ₀, h₀⟩ hu hS).1 (fun h => hne (congrArg Subtype.val h))`. Introduce `φ hφ`. Establish `hle : Submodule.span ℂ (Set.range fun x => S.rho x ⟨φ₀, h₀⟩) ≤ LinearMap.ker (l ∘ₗ (SB (κ → k)).subtype)`. Rewrite using `[Submodule.span_le]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨w, rfl⟩`. Use `show l _ = 0`. Rewrite using `[Submodule.subtype_apply, hS.1]`. Conclude with `hl w`. Establish `hm : (⟨φ, hφ⟩ : SB (κ → k)) ∈ Submodule.span ℂ (Set.range fun x => S.rho x ⟨φ₀, h₀⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[show Submodule.span ℂ (Set.range fun x => S.rho x ⟨φ₀, h₀⟩) = ⊤ from hcyc]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `hle hm`.
+A detailed English derivation is pending.
 -/
 theorem cyc (hc : Continuous ψ) (h1 : ψ ≠ 1) {φ₀ : (κ → k) → ℂ} (h₀ : φ₀ ∈ SB (κ → k)) (hne : φ₀ ≠ 0)
     (l : ((κ → k) → ℂ) →ₗ[ℂ] ℂ) (hl : ∀ w, l (schr ψ w φ₀) = 0) : ∀ φ ∈ SB (κ → k), l φ = 0 := by
@@ -108,11 +108,11 @@ theorem cyc (hc : Continuous ψ) (h1 : ψ ≠ 1) {φ₀ : (κ → k) → ℂ} (h
   exact hle hm
 
 /- English proof (translation)
-Use `nonarch_field k` as an intermediate fact. Establish `hlc` using `isLocallyConstant_addChar ψ hc`. Establish `h1` using `eventually_comp_eq (p₀ := (0 : (κ → k) × (κ → k))) (fun p v => v + p.1) (fun p v => v - p.1) (by fun_prop) (by fun_prop) (by simp) (by simp) (by simp) hφ`. Establish `hq : Continuous fun q : ((κ → k) × (κ → k)) × (κ → k) => q.2 ⬝ᵥ q.1.2 + ⅟(2 : k) * (q.1.1 ⬝ᵥ q.1.2)` using `(continuous_snd.dotProduct continuous_fst.snd).add (continuous_const.mul (continuous_fst.fst.dotProduct continuous_fst.snd))`. Establish `h2 : ∀ᶠ w in 𝓝 (0 : (κ → k) × (κ → k)), ∀ v ∈ tsupport φ, ψ (v ⬝ᵥ w.2 + ⅟(2 : k) * (w.1 ⬝ᵥ w.2)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsCompact.eventually_forall_of_forall_eventually hφ.2 fun v _ => ?_` and prove the remaining obligations. Use `filter_upwards [(hlc.comp_continuous hq).eventually_eq (0, v)] with q h`. Simplify using `using h`. Use `filter_upwards [h1, h2] with w a b`. Use function extensionality and compare the values at `v`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[schr, a v]`. Distinguish the cases in `hv : v ∈ tsupport φ`. Rewrite using `[b v hv, one_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hv, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem small (hc : Continuous ψ) {φ : (κ → k) → ℂ} (hφ : φ ∈ SB (κ → k)) :
     ∀ᶠ w in 𝓝 (0 : (κ → k) × (κ → k)), schr ψ w φ = φ := by
@@ -135,29 +135,29 @@ theorem small (hc : Continuous ψ) {φ : (κ → k) → ℂ} (hφ : φ ∈ SB (�
   · rw [image_eq_zero_of_notMem_tsupport hv, mul_zero]
 
 /- English proof (translation)
-Take `⟨l, ⟨φ₀, hφ₀, hl₀⟩, hl⟩` from `GlobalTheory.CompanionTheory.LagFun.exists_invariant_form k κ ψ hc h1 (LinearMap.range (e.toLinearMap ∘ₗ LinearMap.inr k _ _)) (by`. Introduce and unpack `_ ⟨z, rfl⟩ _ ⟨z', rfl⟩`. Use `he (0, z) (0, z')` as an intermediate fact. Simplify `this)` using `[sub_eq_zero]`. Establish `hl' : ∀ z, ∀ φ ∈ SB (κ → k), l (schr ψ (e (0, z)) φ) = l φ` using `fun z => hl _ ⟨z, rfl⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Set `ι : ((κ → k) → ℂ) →ₗ[ℂ] ((μ → k) → ℂ)` to `{ toFun := fun φ y => l (schr ψ (e (y, 0)) φ) map_add' := fun φ φ' => funext fun y => by`. Rewrite using `[Pi.add_apply, ← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[schr, mul_add]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := fun c φ => funext fun y => by`. Rewrite using `[RingHom.id_apply, Pi.smul_apply, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[schr, mul_left_comm] }`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hι : ∀ φ y, ι φ y = l (schr ψ (e (y, 0)) φ)` using `fun _ _ => rfl`. Establish `h0 : ∀ φ, ι φ 0 = l φ` using `fun φ => by rw [hι, show ((0 : μ → k), (0 : μ → k)) = 0 from rfl, map_zero, schr_zero]`. Establish `hint : ∀ w, ∀ φ ∈ SB (κ → k), ι (schr ψ (e w) φ) = schr ψ w (ι φ)` using `fun w φ hφ => funext fun y => by`. Establish `a` using `hl' w.2 _ (schr_mem hc (e (y + w.1, 0)) hφ)`. Rewrite `a` using `[schr_schr, he, ← map_add, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hι, schr_schr, he, ← map_add, map_smul, schr, hι, ← a, show ((y, 0) + w : (μ → k) × (μ → k)) = (0, w.2) + (y + w.1, 0) from Prod.ext (by simp) (by simp), smul_eq_mul, smul_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Establish `h2 : ⅟(2 : k) * 2 = 1` using `invOf_mul_self _`. Simplify using `only [dotProduct_zero, add_dotProduct]`. Take the linear combination `(y ⬝ᵥ w.2) * h2`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `c1 : Continuous fun y : μ → k => e (y, 0)` using `(e.toLinearMap ∘ₗ LinearMap.inl k _ _).continuous_on_pi`. Establish `c2 : Continuous fun y : μ → k => e (0, y)` using `(e.toLinearMap ∘ₗ LinearMap.inr k _ _).continuous_on_pi`. Establish `hmaps : ∀ φ ∈ SB (κ → k), ι φ ∈ SB (μ → k)` using `fun φ hφ => by`. Establish `s1 : ∀ᶠ y in 𝓝 (0 : μ → k), schr ψ (e (y, 0)) φ = φ` using `(c1.tendsto' 0 0 (map_zero e)).eventually (small hc hφ)`. Establish `s2 : ∀ᶠ y in 𝓝 (0 : μ → k), schr ψ (e (0, y)) φ = φ` using `(c2.tendsto' 0 0 (map_zero e)).eventually (small hc hφ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(IsLocallyConstant.iff_eventually_eq _).2 fun y₀ => ?_, ?_⟩` and prove the remaining obligations. Establish `: Tendsto (fun y => y - y₀) (𝓝 y₀) (𝓝 0)` using `Continuous.tendsto' (by fun_prop) _ _ (sub_self _) filter_upwards [this.eventually s1] with y hy`. Use `congrFun (hint (y - y₀, 0) φ hφ) y₀` as an intermediate fact. Rewrite `this` using `[hy]`. Simplify `this.symm` using `[schr]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `(GlobalTheory.CompanionTheory.VacLoc.GoodInh.exists_goodChar k).2 ψ hc (norm_one hc) h1`. Establish `s3 : ∀ i : μ, ∃ v : kˣ, ∀ o ∈ 𝒪[k], schr ψ (e (0, Pi.single i ((v : k) * o))) φ = φ` using `fun i => hu.basis _ (((continuous_single (A := fun _ : μ => k) i).tendsto' 0 0 (Pi.single_zero i)).eventually s2)`. Use `choose v hv using s3`. Use `HasCompactSupport.intro (K := Set.pi Set.univ fun i => (fun o => (u : k) * ((v i)⁻¹ : kˣ) * o) '' (𝒪[k] : Set k)) (isCompact_univ_pi fun i => hu.compact.image (by fun_prop)) fun y hy => by_contra fun hne => hy fun i _ => ?_` and prove the remaining obligations. Use `⟨_, (hu.ann (y i * v i)).1 fun o ho => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun (hint (0, Pi.single i ((v i : k) * o)) φ hφ) y` as an intermediate fact. Rewrite `this` using `[hv i o ho]`. Simplify using `only [schr, Pi.zero_apply, zero_mul, mul_zero, add_zero, dotProduct_single] at this`. Rewrite using `[mul_assoc]`. Conclude with `mul_right_cancel₀ hne (this.symm.trans (one_mul _).symm)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Use `⟨ι, ⟨hmaps, fun φ hφ φ' hφ' h => ?_, fun Φ hΦ => ?_⟩, hint⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hd` using `(SB (κ → k)).sub_mem hφ hφ'`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `hl₀ (cyc hc h1 hd (sub_ne_zero.2 hne) l (fun w => ?_) _ hφ₀)` and prove the remaining obligations. Take `⟨w, rfl⟩` from `e.surjective w`. Rewrite using `[← h0, hint w _ hd, map_sub, h, sub_self]`. Simplify using `[schr]`. Assume the negation of the conclusion as `hn`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn' : Φ ∉ (SB (κ → k)).map ι` using `hn`. Take `⟨m, hm, hb⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hn' inferInstance`. Use `hm (cyc hc h1 (hmaps _ hφ₀) (fun h => hl₀ (by rw [← h0, h]; rfl)) m (fun w => ?_) _ hΦ)` and prove the remaining obligations. Rewrite using `[← hint w _ hφ₀, ← Submodule.mem_bot ℂ, ← hb]`. Conclude with `⟨_, ⟨_, schr_mem hc _ hφ₀, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem model (hc : Continuous ψ) (h1 : ψ ≠ 1) (e : ((μ → k) × (μ → k)) ≃ₗ[k] ((κ → k) × (κ → k)))
     (he : ∀ w w', (e w).1 ⬝ᵥ (e w').2 - (e w').1 ⬝ᵥ (e w).2 = w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) :
@@ -238,12 +238,12 @@ theorem model (hc : Continuous ψ) (h1 : ψ ≠ 1) (e : ((μ → k) × (μ → k
 end Mod
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ hc h1 _ h₀ hne l hl` and use `Mod.cyc hc h1 h₀ hne l hl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cyclicity : Cyc := fun _ _ _ _ _ _ _ _ _ hc h1 _ h₀ hne l hl => Mod.cyc hc h1 h₀ hne l hl
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ hc h1 e he` and use `Mod.model hc h1 e he`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem model_existence : ModelEx := fun _ _ _ _ _ _ _ _ _ _ _ hc h1 e he => Mod.model hc h1 e he
 

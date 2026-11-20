@@ -24,7 +24,7 @@ def boundarySupport (D : MarkedSchemeWithCenter.{u} k) : Set ↥D.ambient :=
   {x : ↥D.ambient | ∃ J ∈ D.boundary, x ∈ (↑J.support : Set ↥D.ambient)}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_boundarySupport_iff (D : MarkedSchemeWithCenter.{u} k) (x : ↥D.ambient) :
     x ∈ D.boundarySupport ↔ ∃ J ∈ D.boundary, x ∈ (↑J.support : Set ↥D.ambient) :=
@@ -33,7 +33,7 @@ theorem mem_boundarySupport_iff (D : MarkedSchemeWithCenter.{u} k) (x : ↥D.amb
 end MarkedSchemeWithCenter
 
 /- English proof (translation)
-Simplify using `only [Scheme.IdealSheafData.support_comap]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_comap_support_iff_base_mem_support {X Y : Scheme.{u}} (f : X ⟶ Y)
     (J : Y.IdealSheafData) (x : ↥X) :
@@ -46,9 +46,9 @@ namespace MarkedSchemeWithCenter
 variable {k : Type u} [Field k]
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨J, hJ, hx⟩`. Take `⟨K, hK, rfl⟩` from `List.mem_map.1 hJ`. Conclude with `⟨K, hK, (mem_comap_support_iff_base_mem_support e.hom K x).1 hx⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨K, hK, hx⟩`. Conclude with `⟨K.comap e.hom, List.mem_map.2 ⟨K, hK, rfl⟩, (mem_comap_support_iff_base_mem_support e.hom K x).2 hx⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem boundarySupport_transport (D : MarkedSchemeWithCenter.{u} k) {A : Scheme.{u}} (e : A ≅ D.ambient) :
     (D.transport e).boundarySupport = e.hom.base ⁻¹' D.boundarySupport := by
@@ -69,7 +69,7 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
 /- English proof (translation)
-Use extensionality with `x`. Use `Iff.trans (MarkedSchemeWithCenter.mem_boundarySupport_iff (s.dataAt i) x) ?_` and prove the remaining obligations. Conclude with `(MarkedSequenceOfBlowups.mem_boundaryLocus_iff s.toMarkedSequenceOfBlowups i x).symm`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem boundarySupport_dataAt (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     (s.dataAt i).boundarySupport = s.toMarkedSequenceOfBlowups.boundaryLocus i := by
@@ -84,11 +84,11 @@ structure HasPrincipalizationCenter {k : Type u} [Field k] (μ : ℕ) (D : Marke
   cert : PrincipalizationCertificate D.ambient D.structMap D.ideal μ D.boundarySupport D.center
 
 /- English proof (translation)
-Introduce `D A e hD`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hD.center_nonempty`. Use `⟨e.inv.base x, ?_⟩` and prove the remaining obligations. Establish `key : e.hom.base (e.inv.base x) = x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hmem : e.hom.base (e.inv.base x) ∈ D.center.support`. Rewrite using `[key]`. Conclude with `hx`. Conclude with `(mem_comap_support_iff_base_mem_support e.hom D.center (e.inv.base x)).2 hmem`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcert` using `PrincipalizationCertificate.comap_iso hT e hD.cert`. Rewrite using `[MarkedSchemeWithCenter.boundarySupport_transport]`. Conclude with `hcert`.
+A detailed English derivation is pending.
 -/
 theorem isInvariantUnderIso_hasPrincipalizationCenter {k : Type u} [Field k] (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) (μ : ℕ) :
     IsInvariantUnderIso (fun D : MarkedSchemeWithCenter.{u} k => HasPrincipalizationCenter μ D) := by
@@ -111,11 +111,11 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `i hi`. Establish `hi' : i < s.toBlowupSequenceData.length`. Rewrite using `[← s.toMarkedSequence_length]`. Conclude with `hi`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hs i hi').center_nonempty`. Introduce `i hi`. Establish `hi' : i < s.toBlowupSequenceData.length`. Rewrite using `[← s.toMarkedSequence_length]`. Conclude with `hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(hs i hi').cert`. Rewrite `h` using `[s.boundarySupport_dataAt i]`. Rewrite using `[toMarkedSequence_projectionToSpec]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_center_and_certificate_of_hasPrincipalizationCenter (s : MarkedBlowupSequenceData p I m E) (μ : ℕ)
     (hs : ∀ i < s.toBlowupSequenceData.length, HasPrincipalizationCenter μ (s.dataAt i)) :

@@ -9,7 +9,7 @@ namespace GlobalTheory.CompanionTheory.SlabLemma
 noncomputable def wt (c t : ℝ) : ℝ≥0∞ := ENNReal.ofReal (Real.exp (2 * c * t))
 
 /- English proof (translation)
-Use `show ENNReal.ofReal (Real.exp (2 * c * (s + t))) = ENNReal.ofReal (Real.exp (2 * c * s)) * ENNReal.ofReal (Real.exp (2 * c * t))`. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma wt_add (c s t : ℝ) : wt c (s + t) = wt c s * wt c t := by
   show ENNReal.ofReal (Real.exp (2 * c * (s + t))) =
@@ -19,14 +19,14 @@ lemma wt_add (c s t : ℝ) : wt c (s + t) = wt c s * wt c t := by
   ring
 
 /- English proof (translation)
-Use `show ENNReal.ofReal (Real.exp (2 * c * t)) ≠ 0`. Conclude with `(ENNReal.ofReal_pos.mpr (Real.exp_pos _)).ne'`.
+A detailed English derivation is pending.
 -/
 lemma wt_ne_zero (c t : ℝ) : wt c t ≠ 0 := by
   show ENNReal.ofReal (Real.exp (2 * c * t)) ≠ 0
   exact (ENNReal.ofReal_pos.mpr (Real.exp_pos _)).ne'
 
 /- English proof (translation)
-Use `show Measurable fun t => ENNReal.ofReal (Real.exp (2 * c * t))`. Conclude with `(Real.continuous_exp.comp (continuous_const.mul continuous_id)).measurable.ennreal_ofReal`.
+A detailed English derivation is pending.
 -/
 lemma measurable_wt (c : ℝ) : Measurable (wt c) := by
   show Measurable fun t => ENNReal.ofReal (Real.exp (2 * c * t))
@@ -35,14 +35,14 @@ lemma measurable_wt (c : ℝ) : Measurable (wt c) := by
 noncomputable def unitInd : ℝ → ℝ≥0∞ := (Ico (0 : ℝ) 1).indicator 1
 
 /- English proof (translation)
-Use `show Measurable ((Ico (0 : ℝ) 1).indicator (1 : ℝ → ℝ≥0∞))`. Conclude with `measurable_const.indicator measurableSet_Ico`.
+A detailed English derivation is pending.
 -/
 lemma measurable_unitInd : Measurable unitInd := by
   show Measurable ((Ico (0 : ℝ) 1).indicator (1 : ℝ → ℝ≥0∞))
   exact measurable_const.indicator measurableSet_Ico
 
 /- English proof (translation)
-Use `show ∫⁻ t, (Ico (0 : ℝ) 1).indicator (1 : ℝ → ℝ≥0∞) (x - t) = 1`. Rewrite using `[lintegral_sub_left_eq_self (fun y => (Ico (0 : ℝ) 1).indicator (1 : ℝ → ℝ≥0∞) y) x, lintegral_indicator_one measurableSet_Ico, Real.volume_Ico, sub_zero, ENNReal.ofReal_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lintegral_unitInd (x : ℝ) : ∫⁻ t, unitInd (x - t) = 1 := by
   show ∫⁻ t, (Ico (0 : ℝ) 1).indicator (1 : ℝ → ℝ≥0∞) (x - t) = 1
@@ -55,7 +55,7 @@ noncomputable def line (F : G → ℝ≥0∞) (a : ℝ → G) (c : ℝ) (p : G �
   ∫⁻ t, F (p.1 * p.2 * a t) * wt c t
 
 /- English proof (translation)
-Establish `hm : Measurable fun q : (G × G) × ℝ => F (q.1.1 * q.1.2 * a q.2) * wt c q.2` using `(hF.comp ((measurable_fst.fst.mul measurable_fst.snd).mul (ha.comp measurable_snd))).mul ((measurable_wt c).comp measurable_snd)`. Conclude with `hm.lintegral_prod_right'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma measurable_line {F : G → ℝ≥0∞} {a : ℝ → G} (c : ℝ) (hF : Measurable F) (ha : Measurable a) :
     Measurable (line F a c) := by
@@ -65,9 +65,9 @@ lemma measurable_line {F : G → ℝ≥0∞} {a : ℝ → G} (c : ℝ) (hF : Mea
   exact hm.lintegral_prod_right'
 
 /- English proof (translation)
-Use `show ∫⁻ t, F (u * (m * a s) * a t) * wt c t = wt c (-s) * ∫⁻ t, F (u * m * a t) * wt c t`. Rewrite using `[← lintegral_sub_right_eq_self (fun t => F (u * (m * a s) * a t) * wt c t) s, ← lintegral_const_mul _ (show Measurable fun t => F (u * m * a t) * wt c t from (hF.comp (measurable_const.mul ha)).mul (measurable_wt c))]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Establish `h1 : u * (m * a s) * a (t - s) = u * m * a t`. Establish `h2 : s + (t - s) = t` using `by ring`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc u m, mul_assoc u, mul_assoc m, ← hadd, h2]`. Rewrite using `[h1, sub_eq_add_neg, wt_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma line_shift {F : G → ℝ≥0∞} {a : ℝ → G} {c : ℝ} (hadd : ∀ s t, a (s + t) = a s * a t) (u m : G) (s : ℝ)
     (hF : Measurable F) (ha : Measurable a) :
@@ -84,13 +84,13 @@ lemma line_shift {F : G → ℝ≥0∞} {a : ℝ → G} {c : ℝ} (hadd : ∀ s 
   ring
 
 /- English proof (translation)
-Establish `hSae : ∀ᵐ m ∂μM, m ∈ S` using `ae_iff.mpr hSc`. Establish `hU : Measurable fun m => unitInd (τ m)` using `measurable_unitInd.comp hτ`. Establish `e1 : ∀ m, unitInd (τ m) * δ m * ∫⁻ t, H (m * a t) * wt c t ∂volume = ∫⁻ t, unitInd (τ m) * δ m * (H (m * a t) * wt c t)` using `fun m => (lintegral_const_mul _ ((hH.comp (measurable_const.mul ha)).mul (measurable_wt c))).symm`. Establish `hmeas : Measurable (Function.uncurry fun (m : G) (t : ℝ) => unitInd (τ m) * δ m * (H (m * a t) * wt c t))` using `((hU.comp measurable_fst).mul (hδ.comp measurable_fst)).mul ((hH.comp (measurable_fst.mul (ha.comp measurable_snd))).mul ((measurable_wt c).comp measurable_snd))`. Establish `hmeas2 : Measurable (Function.uncurry fun (t : ℝ) (m : G) => unitInd (τ m - t) * (δ m * H m))` using `(measurable_unitInd.comp ((hτ.comp measurable_snd).sub measurable_fst)).mul ((hδ.comp measurable_snd).mul (hH.comp measurable_snd))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∀ t, ∫⁻ m, unitInd (τ m) * δ m * (H (m * a t) * wt c t) ∂μM = ∫⁻ m, unitInd (τ m - t) * (δ m * H m) ∂μM`. Introduce `t`. Establish `hg : Measurable fun m => unitInd (τ m - t) * (δ m * H m)` using `(measurable_unitInd.comp (hτ.sub measurable_const)).mul (hδ.mul hH)`. Establish `hf : Measurable fun m : G => m * a t` using `measurable_id.mul measurable_const`. Use `conv_rhs => rw [← hinv t]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_map hg hf]`. Use `lintegral_congr_ae (hSae.mono fun m hm => ?_)` and prove the remaining obligations. Use `show unitInd (τ m) * δ m * (H (m * a t) * wt c t) = unitInd (τ (m * a t) - t) * (δ (m * a t) * H (m * a t))`. Rewrite using `[hτa m hm t, hδa m hm t, add_sub_cancel_right]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun m => ?_` and prove the remaining obligations. Rewrite using `[lintegral_mul_const _ (show Measurable fun t => unitInd (τ m - t) from measurable_unitInd.comp (measurable_const.sub measurable_id)), lintegral_unitInd, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma slab_identity (μM : Measure G) [SFinite μM] {S : Set G} {a : ℝ → G} {δ : G → ℝ≥0∞} {τ : G → ℝ} {c : ℝ}
     (hSc : μM Sᶜ = 0) (ha : Measurable a) (hδ : Measurable δ) (hτ : Measurable τ)
@@ -142,25 +142,19 @@ end GlobalTheory.CompanionTheory.SlabLemma
 open GlobalTheory.CompanionTheory.SlabLemma in
 
 /- English proof (translation)
-Introduce `G _ _ _ μN μM _ _ S a δ τ c hSm hSc ha hδ hτ hadd hS hinv hδa hτa hδ0 F hF hfin`. Establish `hSae : ∀ᵐ m ∂μM, m ∈ S` using `ae_iff.mpr hSc`. Establish `hline : Measurable (line F a c)` using `measurable_line c hF ha`. Establish `hmeasF : Measurable fun q : G × G => δ q.2 * F (q.1 * q.2)` using `(hδ.comp measurable_snd).mul (hF.comp (measurable_fst.mul measurable_snd))`. Establish `hae1 : ∀ᵐ u ∂μN, ∫⁻ m, δ m * F (u * m) ∂μM < ⊤` using `ae_lt_top hmeasF.lintegral_prod_right' hfin.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ᵐ u ∂μN, ∀ᵐ m ∂μM, line F a c (u, m) < ⊤`. Use `hae1.mono fun u hu => ?_` and prove the remaining obligations. Establish `hid : ∫⁻ m, unitInd (τ m) * δ m * line F a c (u, m) ∂μM = ∫⁻ m, δ m * F (u * m) ∂μM`. Establish `h` using `slab_identity μM hSc ha hδ hτ hinv hδa hτa (H := fun x => F (u * x)) (hF.comp (measurable_const.mul measurable_id))`. Use `Eq.trans (lintegral_congr fun m => ?_) h` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show unitInd (τ m) * δ m * ∫⁻ t, F (u * m * a t) * wt c t = unitInd (τ m) * δ m * ∫⁻ t, F (u * (m * a t)) * wt c t`. Simplify using `only [mul_assoc]`. Establish `hfin2 : ∫⁻ m, unitInd (τ m) * δ m * line F a c (u, m) ∂μM < ⊤` using `hid ▸ hu`. Establish `hmeas3 : Measurable fun m => unitInd (τ m) * δ m * line F a c (u, m)` using `((measurable_unitInd.comp hτ).mul hδ).mul (hline.comp (measurable_const.prodMk measurable_id))`. Establish `hae2` using `ae_lt_top hmeas3 hfin2.ne`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hshift : ∀ k : ℤ, ∀ᵐ m ∂μM, unitInd (τ (m * a k)) * δ (m * a k) * line F a c (u, m * a k) < ⊤`. Introduce `k`. Establish `hf : AEMeasurable (fun m : G => m * a k) μM` using `(measurable_id.mul measurable_const).aemeasurable`. Rewrite `hae2` using `[← hinv k]`. Conclude with `ae_of_ae_map hf hae2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : ∀ᵐ m ∂μM, ∀ k : ℤ, unitInd (τ (m * a k)) * δ (m * a k) * line F a c (u, m * a k) < ⊤` using `ae_all_iff.mpr hshift`. Use `filter_upwards [hall, hSae] with m hm hmS`. Establish `hmk : m * a ((-⌊τ m⌋ : ℤ) : ℝ) ∈ S` using `hS m hmS _`. Establish `hmem : τ m + ((-⌊τ m⌋ : ℤ) : ℝ) ∈ Ico (0 : ℝ) 1`. Apply the tactic sequence `constructor <;> push_cast <;> linarith [Int.floor_le (τ m), Int.lt_floor_add_one (τ m)]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU1 : unitInd (τ (m * a ((-⌊τ m⌋ : ℤ) : ℝ))) = 1`. Rewrite using `[hτa m hmS]`. Conclude with `(Set.indicator_of_mem hmem 1).trans rfl`. Establish `h1` using `hm (-⌊τ m⌋)`. Rewrite `h1` using `[hU1, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hL : line F a c (u, m * a ((-⌊τ m⌋ : ℤ) : ℝ)) < ⊤`. Break down `ENNReal.mul_lt_top_iff.mp h1 with h | h | h` into its components or cases. Conclude with `h.2`. Conclude with `absurd h (hδ0 _ hmk)`. Rewrite using `[h]`.
-
-Conclude with `ENNReal.zero_lt_top`. Rewrite `hL` using `[line_shift hadd u m _ hF ha]`. Break down `ENNReal.mul_lt_top_iff.mp hL with h | h | h` into its components or cases. Conclude with `h.2`. Conclude with `absurd h (wt_ne_zero _ _)`.
-
-Rewrite using `[h]`. Conclude with `ENNReal.zero_lt_top`. Establish `hset : MeasurableSet {p : G × G | line F a c p < ⊤}` using `measurableSet_lt hline measurable_const`. Establish `hprod : ∀ᵐ p ∂μN.prod μM, line F a c p < ⊤` using `(Measure.ae_prod_iff_ae_ae hset).mpr key`. Use `filter_upwards [hprod] with p hp`.
-
-Conclude with `lt_of_le_of_lt (setLIntegral_le_lintegral _ _) hp`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SlabLemma.slab : CompanionTheory.RgExh.Dec.N.S.Slab := by
   intro G _ _ _ μN μM _ _ S a δ τ c hSm hSc ha hδ hτ hadd hS hinv hδa hτa hδ0 F hF hfin

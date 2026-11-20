@@ -7,7 +7,7 @@ namespace Formalism.L2.SG.Pf.Cnt
 open Formalism.L2.SG.Pf.G6
 
 /- English proof (translation)
-The claim follows from `glueLoc_of_fibCount fibre_counting_holds`.
+A detailed English derivation is pending.
 -/
 theorem local_gluing_holds : GlueLoc :=
   glueLoc_of_fibCount fibre_counting_holds

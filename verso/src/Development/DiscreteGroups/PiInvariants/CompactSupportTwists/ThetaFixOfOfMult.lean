@@ -8,14 +8,14 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.CuspidalMultiplici
 namespace DiscreteGroups.T1.G
 
 /- English proof (translation)
-The claim follows from `thetaFixOf_of (PositivityTheory.JMult1.gelfandKazhdanDual_of_rigidity PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity PositivityTheory.S2.CuspBdd.cuspFormsBoundedGL) CuspFormAutomorphicBounds.automorphicFormsFiniteGL hM`.
+A detailed English derivation is pending.
 -/
 theorem thetaFixOf_of_mult (hM : GlobalTheory.Published.CuspidalMultiplicityOne) : PositivityTheory.Rg.BcB.Desc.ThetaFixOf :=
   thetaFixOf_of (PositivityTheory.JMult1.gelfandKazhdanDual_of_rigidity PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity
     PositivityTheory.S2.CuspBdd.cuspFormsBoundedGL) CuspFormAutomorphicBounds.automorphicFormsFiniteGL hM
 
 /- English proof (translation)
-The claim follows from `thetaFixOf_of_mult (PositivityTheory.Lit1.cuspidalMultiplicityOne_of_lit h)`.
+A detailed English derivation is pending.
 -/
 theorem thetaFixOf_of_lit (h : PositivityTheory.Lit1.CuspidalMultiplicityOneLit) : PositivityTheory.Rg.BcB.Desc.ThetaFixOf :=
   thetaFixOf_of_mult (PositivityTheory.Lit1.cuspidalMultiplicityOne_of_lit h)

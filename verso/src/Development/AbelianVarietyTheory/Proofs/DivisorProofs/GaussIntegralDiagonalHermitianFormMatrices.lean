@@ -13,19 +13,15 @@ open GlobalTheory.SplitWeil (SB nabs)
 namespace GlobalTheory.KSp
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ ψ hψ hn h1 _ _ μ _`. Take `⟨hfd, -, -, -, -, -, -, hmat⟩` from `GlobalTheory.T.quadExt_topological_properties F E c δ hE`. Use `letI : MeasurableSpace E := borel E`. Use `haveI : BorelSpace E := ⟨rfl⟩`. Use `haveI : FiniteDimensional F E := hfd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hGE : Good E` using `GlobalTheory.T.isSelfDualCompactOpenGroup_of_finiteDimensional F E`. Use `haveI := hGE.grp`. Use `haveI := hGE.lc`. Use `haveI := hGE.sc`. Use `haveI := hGE.t2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `μE : Measure E` to `Measure.addHaar`. Take `⟨g₁, hg₁⟩` from `GlobalTheory.T.gaussIntegral_normForm_scaled_eq_sign_abs_inv F E c δ hE ψ hψ hn h1 μE`. Establish `hGM : Good (Matrix α ν E)` using `(hmat α ν).2`. Use `haveI := hGM.grp`. Use `haveI := hGM.lc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `haveI := hGM.sc`. Set `T : Matrix α ν E ≃ₜ+ (α × ν → E)` to `{ toFun := fun x p => x p.1 p.2 invFun := fun y i j => y (i, j) left_inv := fun x => rfl right_inv := fun y => rfl map_add' := fun x y => rfl continuous_toFun := continuous_pi fun p => (continuous_apply p.2).comp (continuous_apply p.1) continuous_invFun := continuous_pi fun i => …`. Use `haveI : BorelSpace (α × ν → E) := Pi.borelSpace`. Use `haveI : (μ.map T).IsAddHaarMeasure := T.isAddHaarMeasure_map μ`. Establish `hr : μ.map T = (μ.map T).addHaarScalarFactor (Measure.pi fun _ : α × ν => μE) • Measure.pi fun _ : α × ν => μE` using `Measure.isAddLeftInvariant_eq_smul _ _`.
+Treat this case separately. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(((μ.map T).addHaarScalarFactor (Measure.pi fun _ : α × ν => μE) : ℝ) : ℂ) * g₁ ^ Fintype.card (α × ν), fun t => ?_⟩` and prove the remaining obligations. Establish `hpi` using `GlobalTheory.T.hasGaussIntegralCompactOpen_pi E hGE μE (α × ν) (fun p z => ψ ((t p.1 p.2 : F) * Algebra.norm F z)) (fun p => g₁ * (sgn E (t p.1 p.2) * ((nabs F (t p.1 p.2))⁻¹ : ℝ))) (fun p => hg₁ _)`. Establish `hm` using `GlobalTheory.T.hasGaussIntegral_comp_addEquiv_rescale _ _ μ _ T _ _ _ hr hpi`. Establish `hsum : ∀ (s : Finset (α × ν)) (f : α × ν → F), ψ (∑ p ∈ s, f p) = ∏ p ∈ s, ψ (f p)`. Introduce `s f`.
-
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`. Use `hm using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
-
-Rewrite using `[← Fintype.sum_prod_type', hsum]`. Both sides reduce to the same expression. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.prod_prod_type, mul_assoc]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasGauss_diag_norm : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E] (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (α : Type) [Fintype α] [DecidableEq α] (ν : Type) [Fintype ν] [DecidableEq ν] (ψ : AddChar F ℂ) (hψ : Continuous ψ) (_ : ∀ t, ‖ψ t‖ = 1) (_ : ψ ≠ 1) [MeasurableSpace (Matrix α ν E)] [BorelSpace (Matrix α ν E)] (μ : Measure (Matrix α ν E)) [μ.IsAddHaarMeasure], ∃ g : ℂ, ∀ t : α → ν → Fˣ, HasGauss μ (fun x => ψ (∑ i, ∑ j, (t i j : F) * Algebra.norm F (x i j))) (g * ∏ i, ∏ j, (sgn E (t i j) * ((nabs F (t i j))⁻¹ : ℝ))) := by
   intro F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ ψ hψ hn h1 _ _ μ _

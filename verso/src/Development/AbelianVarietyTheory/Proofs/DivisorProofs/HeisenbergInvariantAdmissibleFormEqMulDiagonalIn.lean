@@ -24,7 +24,7 @@ open scoped Classical
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply v.1)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply v.1)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
   refine Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)
@@ -32,16 +32,14 @@ theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace 
   · exact (InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply v.1)
 
 /- English proof (translation)
-Establish `h` using `glue_add_shiftOf (0 : Vi F κ × Vf F κ) x`. Rewrite `h` using `[zero_add, GlobalTheory.DiagNonvan.glue_zero, zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem glue_shiftOf (x : κ → AF F) : glue (shiftOf x) = x := by
   have h := glue_add_shiftOf (0 : Vi F κ × Vf F κ) x
   rwa [zero_add, GlobalTheory.DiagNonvan.glue_zero, zero_add] at h
 
 /- English proof (translation)
-Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use `(eI F κ).injective ?_` and prove the remaining obligations. Use `show eI F κ ((eI F κ).symm _) = _`. Rewrite using `[ContinuousLinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `i`.
-
-Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem shiftOf_glue (p : Vi F κ × Vf F κ) : shiftOf (glue p) = p := by
   refine Prod.ext ?_ rfl
@@ -52,7 +50,7 @@ theorem shiftOf_glue (p : Vi F κ × Vf F κ) : shiftOf (glue p) = p := by
   exact (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _
 
 /- English proof (translation)
-The claim follows from `((eI F κ).symm.continuous.comp (continuous_pi fun i => continuous_toMixed.comp (continuous_fst.comp (continuous_apply i)))).prodMk (continuous_pi fun i => continuous_snd.comp (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_shiftOf : Continuous (shiftOf : (κ → AF F) → Vi F κ × Vf F κ) :=
   ((eI F κ).symm.continuous.comp (continuous_pi fun i =>
@@ -71,11 +69,9 @@ def glueE : (Vi F κ × Vf F κ) ≃ₜ+ (κ → AF F) where
   continuous_invFun := continuous_shiftOf
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI : ((mu F κ).map (glueE F κ)).IsAddHaarMeasure := (glueE F κ).isAddHaarMeasure_map _`. Establish `h` using `Measure.isAddLeftInvariant_eq_smul ((mu F κ).map (glueE F κ)) μ`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨((Measure.addHaarScalarFactor ((mu F κ).map (glueE F κ)) μ : ℝ) : ℂ), fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `e` using `(glueE F κ).toHomeomorph.measurableEmbedding.integral_map (μ := mu F κ) (fun u => Φ (Sum.elim u u))`. Rewrite using `[lDiag, LinearMap.comp_apply, Lext_apply _ (integrable_resD hΦ)]`. Use `e.symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∫ u, Φ (Sum.elim u u) ∂((mu F κ).map (glueE F κ)) = _`.
-
-Use `conv_lhs => rw [h]`. Rewrite using `[integral_smul_nnreal_measure]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lDiag_eq (μ : @Measure (κ → AF F) (borel _)) (hμ : @Measure.IsAddHaarMeasure _ _ _ (borel _) μ) :
     ∃ c : ℂ, ∀ Φ ∈ schA F (κ ⊕ κ), lDiag F κ Φ = c * GlobalTheory.DiagSiegel.diagInt μ Φ := by
@@ -104,7 +100,7 @@ def diagL : ((κ → F) × (κ → F)) →ₗ[F] ((κ ⊕ κ → F) × (κ ⊕ �
 
 omit [NumberField F] [Fintype κ] in
 /- English proof (translation)
-Introduce `p q h`. Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations. Conclude with `congrFun (congrArg Prod.fst h) (Sum.inl i)`. Conclude with `congrFun (congrArg Prod.snd h) (Sum.inl i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem diagL_injective : Function.Injective (diagL F κ) := by
   intro p q h
@@ -113,13 +109,11 @@ theorem diagL_injective : Function.Injective (diagL F κ) := by
   · exact congrFun (congrArg Prod.snd h) (Sum.inl i)
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ l hl hinv μ hμ`. Establish `key : ∀ l' : ((κ ⊕ κ → AF F) → ℂ) →ₗ[ℂ] ℂ, (∀ x y : κ → AF F, ∀ Φ ∈ schA F (κ ⊕ κ), l' (schr ψ (Sum.elim x x, Sum.elim y (-y)) Φ) = l' Φ) → ∀ (t : AF F), ∀ w ∈ LinearMap.range (diagL F κ), ∀ φ ∈ schA F (κ ⊕ κ), l' (schr ψ (t • ((fun i => algebraMap F (AF F) (w.1 i)), (fun i => al …`. Introduce and unpack `l' h t _ ⟨p, rfl⟩ φ hφ`. Establish `e : t • ((fun i => algebraMap F (AF F) ((diagL F κ p).1 i)), (fun i => algebraMap F (AF F) ((diagL F κ p).2 i))) = (Sum.elim (fun i => t * algebraMap F (AF F) (p.1 i)) (fun i => t * algebraMap F (AF F) (p.1 i)), Sum.elim (fun i => t * algebraMap F (AF F) (p.2 i)) (-fun i => t * a …`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> funext i <;> cases i <;> simp [diagL]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e]`. Conclude with `h _ _ φ hφ`. Take `⟨c, hc⟩` from `GlobalTheory.T.adelicStoneVonNeumann_lagrangian_uniqueness F ψ hψ (κ ⊕ κ) (LinearMap.range (diagL F κ)) (by`. Introduce and unpack `_ ⟨p, rfl⟩ _ ⟨q, rfl⟩`. Simplify using `[diagL, dotProduct, Fintype.sum_sum_type])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Rewrite using `[LinearMap.finrank_range_of_inj diagL_injective]`. Use the proof step `simp)`. Use `l hl (lDiag F κ) lDiag_adm (key l hinv) (key _ fun x y Φ hΦ => lDiag_schr ψ x y hΦ) exists_lDiag_ne`. Take `⟨d, hd⟩` from `lDiag_eq μ hμ`.
-
-Conclude with `⟨c * d, fun Φ hΦ => by rw [hc Φ hΦ, hd Φ hΦ, mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_mul_diagInt : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ (κ : Type) [Fintype κ] (l : ((κ ⊕ κ → AF F) → ℂ) →ₗ[ℂ] ℂ), l ∈ (adeleClass F).adm (κ ⊕ κ) →

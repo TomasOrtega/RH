@@ -11,16 +11,16 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.NL.GamModX
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun f h1 h2 => (h f).2 ⟨h1, by simpa using h2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem full_of_std {L M : Type} [Field L] [AddCommGroup M] [Module L M] {D : Submodule L M}
     {Λ : Submodule L (ℤ → M)} (h : Std D Λ) : Full D Λ :=
   ⟨0, fun f h1 h2 => (h f).2 ⟨h1, by simpa using h2⟩⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(h e).1 he`. Use `⟨fun k => y (k + 1), (h _).2 ⟨fun k => ?_, fun k hk => ?_⟩, fun j => by simp⟩` and prove the remaining obligations. Rewrite using `[hy]`. Conclude with `D.sub_mem (D.smul_mem _ (h1 _)) (h1 _)`. Rewrite using `[hy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `(show k + 1 < 0 ∨ k + 1 = 0 by omega) with h3 | h3` into its components or cases. Simplify using `[h2 _ h3]`. Simplify using `[h3]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shift_mem {L M : Type} [Field L] [AddCommGroup M] [Module L M] {D : Submodule L M}
     {Λ : Submodule L (ℤ → M)} (h : Std D Λ) (e y : ℤ → M) (he : e ∈ Λ) (u : L)
@@ -35,9 +35,9 @@ theorem shift_mem {L M : Type} [Field L] [AddCommGroup M] [Module L M] {D : Subm
     · simp [h3]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Unfold `conv`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `j hj`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[PowerSeries.coeff_one, hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conv_one {L M : Type} [Field L] [AddCommGroup M] [Module L M] (f : ℤ → M) :
     conv (1 : PowerSeries L) f = f := by
@@ -49,9 +49,9 @@ theorem conv_one {L M : Type} [Field L] [AddCommGroup M] [Module L M] (f : ℤ �
     simp [PowerSeries.coeff_one, hj]
 
 /- English proof (translation)
-Use `choose c hc using hz`. Use `⟨((∑ j, c j • nb j : ↥N) : M), Subtype.property _, ?_⟩` and prove the remaining obligations. Establish `key : z = a • ∑ j, c j • nb j` using `by conv_lhs => rw [← nb.sum_repr z]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc j, pow_one, mul_smul]`. Conclude with `congrArg Subtype.val key`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_of_dvd_repr {A M ι : Type} [CommRing A] [AddCommGroup M] [Module A M]
     [Fintype ι] (N : Submodule A M) (nb : Module.Basis ι A ↥N) (a : A) (z : ↥N)
@@ -68,7 +68,7 @@ theorem exists_smul_of_dvd_repr {A M ι : Type} [CommRing A] [AddCommGroup M] [M
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨j, hj, hord⟩` from `(Nat.dvd_prime_pow (Fact.out : l.Prime)).1 (orderOf_dvd_of_pow_eq_one hζ)`. Establish `hjs : (j : WithTop ℚ) ≤ (m : WithTop ℚ)` using `by exact_mod_cast hj`. Conclude with `(C.C K s LL h).tie.levB_Γ T hT g i ζ ζ j 1 (by rw [P.PD_p, ← hord]; exact IsPrimitiveRoot.orderOf ζ) (by rw [Nat.cast_one]; exact hjs.trans hg) (pow_one ζ).symm x ((H.W K s LL h).N_Γ T g x x.2) k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ex_of_val {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {H : LocHW l P}
     {F : LocFon l P AI H} (C : LocCmpT l P AI H F) {K : FinExt l} {s : ℕ} {LL : FinExt l}
@@ -89,13 +89,13 @@ theorem ex_of_val {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D HW F Cm l _ K s LL h W T hT g hg x hx`. Take `⟨nb⟩` from `GlobalTheory.NL.N_basis D HW F l K s LL h T hT`. Set `x' : ↥(W.N T)` to `⟨x, hx⟩`. Set `g' : ↥(W.N T)` to `⟨_, W.N_Γ T g x hx⟩`. Use `exists_smul_of_dvd_repr (W.N T) nb W.X (g' - x') fun j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.T.wachWeierstrass_test_and_density D HW l K s LL h).2.1 1 _ fun i ζ hζ => ?_` and prove the remaining obligations. Establish `hS` using `GlobalTheory.T.wachLattice_expansions_std_below_level D HW F Cm l K s LL h T hT i ζ hζ`. Establish `hprim : ∃ j : ℕ, IsPrimitiveRoot ζ (l ^ j)`. Take `⟨j, -, hord⟩` from `(Nat.dvd_prime_pow (Fact.out : l.Prime)).1 (orderOf_dvd_of_pow_eq_one hζ)`. Conclude with `⟨j, hord ▸ IsPrimitiveRoot.orderOf ζ⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hI` using `(GlobalTheory.T.wachExpansion_basis_divisibility D HW F Cm l K s LL h T hT i ζ hprim (full_of_std hS)).2 _ nb`. Use `(hI.2.2 (g' - x') 1).1 ?_ j` and prove the remaining obligations. Use `shift_mem hS (ex (Cm l) h T i ζ x') _ ?_ (algebraMap ↥(OL LL) ↥LL.1 (W.χΓ g : ↥(OL LL))) fun k => ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨1, x', (conv_one _).symm⟩`. Rewrite using `[← ex_of_val (Cm l) h T hT i ζ (s - 1) hζ g hg x' k]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `ex`. Rewrite using `[map_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sub_mem_X_of_val : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (_ : CmpOf D.loc D.locA HW F) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l)
@@ -128,9 +128,9 @@ theorem sub_mem_X_of_val : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D HW F Cm l _ K s LL h W T hT`. Use `⟨W.N_Γ T, W.N_π T, sub_mem_X_of_val D HW F Cm l K s LL h T hT W.gam ?_⟩` and prove the remaining obligations. Establish `hg` using `W.gam_gen`. Rewrite `hg` using `[(HW l).W_s]`. Establish `hs : ((s - 1 : ℕ) : WithTop ℚ) ≤ (s : WithTop ℚ)` using `by exact_mod_cast Nat.sub_le s 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hs.trans hg.ge`.
+A detailed English derivation is pending.
 -/
 theorem gam_mod_π_mod_X : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (_ : CmpOf D.loc D.locA HW F) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l)

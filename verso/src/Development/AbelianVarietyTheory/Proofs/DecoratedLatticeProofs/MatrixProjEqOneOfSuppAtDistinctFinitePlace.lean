@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.OtherPlace
 
 /- English proof (translation)
-Take `⟨ε, hε, hqe⟩` from `q.above`. Take `⟨ε', hε', hqe'⟩` from `q'.above`. Establish `hpr : ∀ x, q.pr x = q.pr (q.e * x)` using `fun x => by rw [← q.sec_pr, q.pr_sec]`. Establish `he : q.e = q.e * algebraMap (AF D.host.F) (AE D) ε`. Rewrite using `[← hqe, mul_add, q.split.1, q.split.2.1, add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hεε : ε * ε' = 0`. Rewrite using `[GlobalTheory.SplitCut.eFin_of_placeIdem hε, GlobalTheory.SplitCut.eFin_of_placeIdem hε']`. Conclude with `GlobalTheory.LocWeil.PlaceIdem.eFin_mul_eFin _ hv`. Rewrite using `[hqe', hpr, he, mul_assoc, ← map_mul, hεε, map_zero, mul_zero, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_placeIdem_other {D : D7} {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
@@ -30,9 +30,9 @@ theorem pr_placeIdem_other {D : D7} {k k' : Type} [Field k] [ValuativeRel k] [To
   rw [hqe', hpr, he, mul_assoc, ← map_mul, hεε, map_zero, mul_zero, map_zero]
 
 /- English proof (translation)
-Introduce `D k k' _ _ _ _ _ _ _ _ q q' V g hv hs`. Establish `h0` using `pr_placeIdem_other q q' hv`. Use extensionality with `i j`. Establish `h1` using `congrArg q.pr (hs i j)`. Rewrite `h1` using `[map_mul, h0, zero_mul, Matrix.sub_apply, map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.map_apply, ← sub_eq_zero, ← h1.symm]`. Establish `: q.pr ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) k) i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_map_pr_eq_one : ∀ (D : D7) (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] (q : GlobalTheory.FinPl.SplitPt D k)

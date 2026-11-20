@@ -29,7 +29,7 @@ set_option autoImplicit false in
 open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix ComplexConjugate in
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.LineForm.chain_sum_coordVec _`.
+A detailed English derivation is pending.
 -/
 private lemma apply_coordVec_eq_sum_coordMat {n : ℕ} (L : _root_.ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] _root_.ReciprocityTheory.L2DbarEstimates.V n)
     (a : Fin n) : L (_root_.GlobalTheory.GoodMetric.coordVec a) =
@@ -40,7 +40,7 @@ set_option autoImplicit false in
 open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix ComplexConjugate in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.HermFrame.mdel_apply, Matrix.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma mdel_sum_smul_coordVec {n : ℕ} {r : Type}
     (G : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ) (z : _root_.ReciprocityTheory.L2DbarEstimates.V n) (x : Fin n → ℂ) :
@@ -53,7 +53,7 @@ set_option autoImplicit false in
 open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix ComplexConjugate in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.HermFrame.mdbar_apply, Matrix.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma mdbar_sum_smul_coordVec {n : ℕ} {r : Type}
     (G : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ) (z : _root_.ReciprocityTheory.L2DbarEstimates.V n) (y : Fin n → ℂ) :
@@ -66,7 +66,7 @@ set_option autoImplicit false in
 open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix ComplexConjugate in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.HermFrame.mddbar_apply, Matrix.sum_apply, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma mddbar_sum_smul_coordVec {n : ℕ} {r : Type}
     (G : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ) (z : _root_.ReciprocityTheory.L2DbarEstimates.V n) (x y : Fin n → ℂ) :
@@ -82,7 +82,7 @@ set_option autoImplicit false in
 open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix ComplexConjugate in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.HermFrame.curv_eq hG hu, mdel_sum_smul_coordVec, mdbar_sum_smul_coordVec, mddbar_sum_smul_coordVec, Matrix.transpose_sum, Matrix.transpose_smul, Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_smul, Matrix.smul_mul, smul_sub, Finset.sum_sub_distrib, smul_smul …`.
+Simplify using the standard rewrite rules.
 -/
 private lemma curv_sum_smul_coordVec {n : ℕ} {r : Type} [Fintype r] [DecidableEq r]
     (G : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ) (z : _root_.ReciprocityTheory.L2DbarEstimates.V n) (hG : _root_.GlobalTheory.HermFrame.MContDiffAt 2 G z)
@@ -100,7 +100,7 @@ set_option autoImplicit false in
 open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix ComplexConjugate in
 /- English proof (translation)
-Set `f : _root_.ReciprocityTheory.L2DbarEstimates.V n →+ Matrix r r ℂ` to `{ toFun := _root_.GlobalTheory.HermFrame.conn G z map_zero' := by simpa using _root_.GlobalTheory.HermFrame.conn_smul_vec G z 0 0 map_add' := _root_.GlobalTheory.HermFrame.conn_add_vec G z }`. Express the relevant statement in the definitionally equal form `f (∑ c, x c • v c) = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => _root_.GlobalTheory.HermFrame.conn_smul_vec G z (x c) (v c)`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma conn_sum_smul {n : ℕ} {r : Type} [Fintype r] [DecidableEq r]
     (G : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ) (z : _root_.ReciprocityTheory.L2DbarEstimates.V n) (x : Fin n → ℂ) (v : Fin n → _root_.ReciprocityTheory.L2DbarEstimates.V n) :
@@ -119,23 +119,23 @@ open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix ComplexConjugate in
 
 /- English proof (translation)
-Establish `hφd : DifferentiableAt ℂ φ w` using `hφ.differentiableAt (by norm_num)`. Establish `h₀' : _root_.GlobalTheory.HermFrame.MContDiffAt 1 G₀ (φ w)` using `fun a b => (h₀ a b).of_le (by norm_num)`. Establish `h₁' : _root_.GlobalTheory.HermFrame.MContDiffAt 1 G₁ (φ w)` using `fun a b => (h₁ a b).of_le (by norm_num)`. Take `⟨J, hJ⟩ : ∃ J, J = _root_.GlobalTheory.GoodTop.CorrHolo.coordMat (fderiv ℂ φ w)` from `⟨_, rfl⟩`. Establish `hL : ∀ a, fderiv ℂ φ w (_root_.GlobalTheory.GoodMetric.coordVec a) = ∑ c, J c a • _root_.GlobalTheory.GoodMetric.coordVec c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[hJ]`. Conclude with `apply_coordVec_eq_sum_coordMat _ a`. Establish `hcurv : ∀ G : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ, _root_.GlobalTheory.HermFrame.MContDiffAt 2 G (φ w) → IsUnit (G (φ w)).det → _root_.GlobalTheory.GoodTop.curvAt (fun x => G (φ x)) w = fun a b => ∑ c, ∑ d, (J c a * (J.map (starRingEnd ℂ)) d b) • _root_.Gl …`. Introduce `G hG hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a b`. Simplify using `only [_root_.GlobalTheory.GoodTop.curvAt, Matrix.map_apply]`. Rewrite using `[_root_.GlobalTheory.HermFrame.curv_comp_holo hG hu hφ, hL, hL, curv_sum_smul_coordVec G _ hG hu]`. Establish `hρc : DifferentiableAt ℝ (fun y => (ρ y : ℂ)) (φ w)` using `Complex.ofRealCLM.differentiableAt.comp _ hρ`. Establish `hdbar : _root_.GlobalTheory.GoodTop.cutForm (fun x => ρ (φ x)) (fun x => G₀ (φ x)) (fun x => G₁ (φ x)) w = fun a b => ∑ c, ∑ d, (J c a * (J.map (starRingEnd ℂ)) d b) • _root_.GlobalTheory.GoodTop.cutForm ρ G₀ G₁ (φ w) c d`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a b`. Simplify using `only [_root_.GlobalTheory.GoodTop.cutForm, Matrix.map_apply]`. Establish `hw` using `_root_.GlobalTheory.dbar_comp_holo (u := fun y => (ρ y : ℂ)) hρc hφd`. Rewrite using `[hw, _root_.GlobalTheory.HermFrame.conn_comp_holo h₁' hφd, _root_.GlobalTheory.HermFrame.conn_comp_holo h₀' hφd, hL, hL, conn_sum_smul, conn_sum_smul, map_sum, ← Finset.sum_sub_distrib, Finset.sum_smul]`. Simplify using `only [map_smulₛₗ, Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [← smul_sub, smul_smul, smul_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hdet : J.det * (J.map (starRingEnd ℂ)).det = ((‖(fderiv ℂ φ w).det‖ ^ 2 : ℝ) : ℂ)`. Establish `h1 : J.det = (fderiv ℂ φ w).det`. Establish `hJm : J = LinearMap.toMatrix (EuclideanSpace.basisFun (Fin n) ℂ).toBasis (EuclideanSpace.basisFun (Fin n) ℂ).toBasis (fderiv ℂ φ w : _root_.ReciprocityTheory.L2DbarEstimates.V n →ₗ[ℂ] _root_.ReciprocityTheory.L2DbarEstimates.V n)`. Use extensionality with `c a`. Simplify using `[hJ, _root_.GlobalTheory.GoodTop.CorrHolo.coordMat, LinearMap.toMatrix_apply, _root_.GlobalTheory.GoodMetric.coordVec]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJm, LinearMap.det_toMatrix]`. Establish `h2 : (J.map (starRingEnd ℂ)).det = starRingEnd ℂ J.det` using `(RingHom.map_det (starRingEnd ℂ) J).symm`. Rewrite using `[h2, Complex.mul_conj, Complex.normSq_eq_norm_sq, h1]`. Unfold `_root_.GlobalTheory.GoodTop.corrC`. Rewrite using `[hcurv G₁ h₁ u₁, hcurv G₀ h₀ u₀, hdbar, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hdet, ← _root_.GlobalTheory.GoodTop.mixTop_subst]`. Use `congr 1`. Use function extensionality and compare the values at `i a b`. Unfold `_root_.GlobalTheory.GoodTop.intersection_update_fsHerm_neg_one`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> rfl`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GoodTop.corrC_comp_holo {n : ℕ} {r : Type} [Fintype r]
     [DecidableEq r] {ρ : _root_.ReciprocityTheory.L2DbarEstimates.V n → ℝ} {G₀ G₁ : _root_.ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ}

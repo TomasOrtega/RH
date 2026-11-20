@@ -21,11 +21,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele (ideleMa
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele (ideleMap adeleMap finiteCompletionMap)
 
 /- English proof (translation)
-Establish `hker : p.rangeRestrict.ker ≤ f.ker`. Introduce `c hc`. Rewrite `hc` using `[MonoidHom.ker_rangeRestrict, MonoidHom.mem_ker]`. Rewrite using `[MonoidHom.mem_ker]`. Conclude with `h c hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ω' : p.range →* ℂˣ` to `p.rangeRestrict.liftOfSurjective p.rangeRestrict_surjective ⟨f, hker⟩`. Establish `hω' : ∀ c, ω' (p.rangeRestrict c) = f c` using `fun c => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ c`. Take `⟨F, hF⟩` from `KStar.Choice.isDiv_complex_circle.1.exists_extension p.range ω'`. Use `⟨F, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[← hω', ← hF]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem glue {G H : Type*} [CommGroup G] [CommGroup H] (p : G →* H)
     (f : G →* ℂˣ) (h : ∀ x, p x = 1 → f x = 1) : ∃ F : H →* ℂˣ, ∀ x, F (p x) = f x := by
@@ -69,15 +69,13 @@ def lev (K : Type) [Field K] [NumberField K] (N : ℕ) : Subgroup (Ideles K) whe
     exact ha.2 v⟩
 
 /- English proof (translation)
-Establish `hO : IsOpen {a : FiniteAdeleRing (𝓞 K) K | ∀ v, a v ∈ v.adicCompletionIntegers K}` using `RestrictedProduct.isOpen_forall_mem (A := fun v : HeightOneSpectrum (𝓞 K) => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) fun _ => Valued.isOpen_valuationSubring _`. Establish `h1 : Continuous fun x : Ideles K => x.val.2` using `continuous_snd.comp Units.continuous_val`. Establish `h2 : Continuous fun x : Ideles K => (x⁻¹).val.2` using `h1.comp continuous_inv`. Establish `h3 : Continuous fun x : Ideles K => (x.val.2 - 1) * algebraMap K (FiniteAdeleRing (𝓞 K) K) (N : K)⁻¹` using `(h1.sub continuous_const).mul continuous_const`. Establish `hU` using `((hO.preimage h1).inter (hO.preimage h2)).inter (hO.preimage h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Filter.mem_of_superset (hU.mem_nhds ⟨⟨fun v => one_mem _, fun v => one_mem _⟩, fun v => ?_⟩) ?_` and prove the remaining obligations. Establish `: ((1 : Ideles K).val.2 - 1) = 0` using `sub_self _`. Simplify using `only [this, zero_mul]`. Conclude with `zero_mem _`. Introduce and unpack `y ⟨⟨hy, hy'⟩, hy''⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `e : y.val.2 v * (y⁻¹).val.2 v = 1` using `congrArg (fun a : AdeleRing (𝓞 K) K => a.2 v) y.mul_inv`. Establish `e'` using `congrArg Valued.v e`. Rewrite `e'` using `[map_mul, map_one]`. Conclude with `eq_one_of_one_le_mul_left (hy v) (hy' v) e'.ge`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Valued.v ((y.val.2 v - 1) * algebraMap K (v.adicCompletion K) (N : K)⁻¹) ≤ 1` using `hy'' v haveI : CharZero (v.adicCompletion K) := charZero_of_injective_algebraMap (algebraMap K _).injective`. Establish `h0 : Valued.v (N : v.adicCompletion K) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `Nat.cast_ne_zero.2 hN`. Rewrite `e` using `[map_inv₀, map_natCast, map_mul, map_inv₀, mul_inv_le_iff₀ (zero_lt_iff.2 h0), one_mul]`.
-
-Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_mem_nhds (K : Type) [Field K] [NumberField K] {N : ℕ} (hN : N ≠ 0) :
     (lev K N : Set (Ideles K)) ∈ nhds (1 : Ideles K) := by
@@ -119,7 +117,7 @@ noncomputable def kap (K : Type) [Field K] [NumberField K] (a : ℤ) : Ideles K 
   ∏ w : InfinitePlace K, crd K w ^ a
 
 /- English proof (translation)
-Rewrite using `[kap, MonoidHom.finsetProd_apply, Units.coe_prod]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.zpow_apply, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_kap (K : Type) [Field K] [NumberField K] (a : ℤ) (x : Ideles K) :
     (kap K a x : ℂ) = ∏ w : InfinitePlace K, InfinitePlace.Completion.extensionEmbedding w (x.val.1 w) ^ a := by
@@ -129,9 +127,9 @@ theorem coe_kap (K : Type) [Field K] [NumberField K] (a : ℤ) (x : Ideles K) :
   rfl
 
 /- English proof (translation)
-Establish `e : (kap K a : Ideles K → ℂˣ) = fun x => ∏ w : InfinitePlace K, (crd K w x) ^ a`. Use function extensionality and compare the values at `x`. Rewrite using `[kap, MonoidHom.finsetProd_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_finsetProd _ fun w _ => Continuous.zpow (f := crd K w) (Continuous.units_map _ ?_) a` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp ((continuous_apply w).comp continuous_fst)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_kap (K : Type) [Field K] [NumberField K] (a : ℤ) : Continuous (kap K a) := by
   have e : (kap K a : Ideles K → ℂˣ) = fun x => ∏ w : InfinitePlace K, (crd K w x) ^ a := by
@@ -144,11 +142,9 @@ theorem continuous_kap (K : Type) [Field K] [NumberField K] (a : ℤ) : Continuo
     ((continuous_apply w).comp continuous_fst)
 
 /- English proof (translation)
-Rewrite using `[infDiag, MonoidHom.finsetProd_apply, Units.coe_prod]`. Set `p1 : AdeleRing (𝓞 E) E →+* InfiniteAdeleRing E` to `RingHom.fst _ _`. Set `p2 : AdeleRing (𝓞 E) E →+* FiniteAdeleRing (𝓞 E) E` to `RingHom.snd _ _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p1 _ = _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_prod]`. Express the relevant statement in the definitionally equal form `∏ w : InfinitePlace E, Pi.mulSingle w (algebraMap E w.Completion (k : E)) = _`. Conclude with `Finset.univ_prod_mulSingle _`. Express the relevant statement in the definitionally equal form `p2 _ = _`. Rewrite using `[map_prod]`.
-
-Conclude with `Finset.prod_eq_one fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_infDiag' {E : Type} [Field E] [NumberField E] (k : Eˣ) :
     (infDiag k : AdeleRing (𝓞 E) E) = (algebraMap E (InfiniteAdeleRing E) k, 1) := by
@@ -166,7 +162,7 @@ theorem coe_infDiag' {E : Type} [Field E] [NumberField E] (k : Eˣ) :
     exact Finset.prod_eq_one fun _ _ => rfl
 
 /- English proof (translation)
-Rewrite using `[coe_kap, h]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `InfinitePlace.Completion.extensionEmbedding_coe w (WithAbs.toAbs _ k)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem kap_of_fst {K : Type} [Field K] [NumberField K] (a : ℤ) (x : Ideles K) (k : K)
     (h : x.val.1 = algebraMap K (InfiniteAdeleRing K) k) :
@@ -177,9 +173,9 @@ theorem kap_of_fst {K : Type} [Field K] [NumberField K] (a : ℤ) (x : Ideles K)
   exact InfinitePlace.Completion.extensionEmbedding_coe w (WithAbs.toAbs _ k)
 
 /- English proof (translation)
-Establish `hg : Topology.IsOpenEmbedding (Units.val : (InfiniteAdeleRing F)ˣ → InfiniteAdeleRing F)` using `Units.isOpenEmbedding_val (R := ∀ v : InfinitePlace F, v.Completion)`. Rewrite using `[DenseRange, dense_iff_inter_open]`. Introduce and unpack `U hU ⟨u, hu⟩`. Take `⟨k, v, hv, hk⟩` from `(InfiniteAdeleRing.denseRange_algebraMap F).exists_mem_open (hg.isOpenMap U hU) ⟨_, u, hu, rfl⟩`. Establish `hk0 : k ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hk` using `[map_zero]`. Conclude with `v.ne_zero hk`. Conclude with `⟨v, hv, Units.mk0 k hk0, Units.ext hk.symm⟩`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dense_inf (F : Type) [Field F] [NumberField F] :
     DenseRange (Units.map (algebraMap F (InfiniteAdeleRing F)).toMonoidHom) := by
@@ -196,11 +192,11 @@ theorem dense_inf (F : Type) [Field F] [NumberField F] :
   exact ⟨v, hv, Units.mk0 k hk0, Units.ext hk.symm⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `w w' h`. Apply `(IsCMField.equivInfinitePlace E).injective` to reduce the goal to its premises. Rewrite using `[IsCMField.equivInfinitePlace_apply, IsCMField.equivInfinitePlace_apply, ← InfinitePlace.mk_embedding w, ← InfinitePlace.mk_embedding w', InfinitePlace.comap_mk, InfinitePlace.comap_mk]`. Conclude with `congrArg _ h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ`. Use `⟨InfinitePlace.mk (ComplexEmbedding.lift E φ), ?_⟩` and prove the remaining obligations. Break down `InfinitePlace.embedding_mk_eq (ComplexEmbedding.lift E φ) with h | h` into its components or cases. Simplify using `only [h, ComplexEmbedding.lift_comp_algebraMap]`. Simplify using `only [h]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ComplexEmbedding.conjugate_comp, ComplexEmbedding.lift_comp_algebraMap]`. Conclude with `ComplexEmbedding.isReal_iff.1 (IsTotallyReal.complexEmbedding_isReal φ)`.
+A detailed English derivation is pending.
 -/
 theorem bij_emb (E : Type) [Field E] [NumberField E] [IsCMField E] :
     Function.Bijective fun w : InfinitePlace E => w.embedding.comp (algebraMap (maximalRealSubfield E) E) := by
@@ -219,9 +215,9 @@ theorem bij_emb (E : Type) [Field E] [NumberField E] [IsCMField E] :
       exact ComplexEmbedding.isReal_iff.1 (IsTotallyReal.complexEmbedding_isReal φ)
 
 /- English proof (translation)
-Establish `c2 : Continuous (Units.map (MonoidHom.inl (InfiniteAdeleRing (maximalRealSubfield E)) (FiniteAdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E))))` using `Continuous.units_map _ (continuous_id.prodMk continuous_const)`. Use `(dense_inf _).induction_on z (isClosed_eq (ψ.2.1.comp c2) ((continuous_kap E a).comp ((GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.continuous_ideleMap _ E).comp c2))) fun k => ?_` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[kap_of_fst a _ (algebraMap _ E (k : maximalRealSubfield E)) (congrArg Prod.fst (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap_algebraMap _ E (k : maximalRealSubfield E)))]`. Use `Eq.trans ?_ ((hψ k).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun x => ((ψ.1 x : ℂˣ) : ℂ)) (Units.ext (coe_infDiag' k).symm)`. Conclude with `((bij_emb E).prod_comp fun φ => φ (k : maximalRealSubfield E) ^ a).symm`.
+A detailed English derivation is pending.
 -/
 theorem psi_eq_kap (E : Type) [Field E] [NumberField E] [IsCMField E] (ψ : HChar (maximalRealSubfield E))
     (a : ℤ) (hψ : ψ.IsAlg fun _ => a) (z : (InfiniteAdeleRing (maximalRealSubfield E))ˣ) :
@@ -240,9 +236,9 @@ theorem psi_eq_kap (E : Type) [Field E] [NumberField E] [IsCMField E] (ψ : HCha
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[← Finset.prod_fiberwise Finset.univ InfinitePlace.mk]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single_of_mem w.embedding (by simp)]`. Rewrite using `[InfinitePlace.mk_embedding, if_pos rfl]`. Introduce `φ hφ hne`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(Finset.mem_filter.1 hφ).2, if_neg hne.symm, zpow_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_type (E : Type) [Field E] [NumberField E] (a : ℤ) (k : E) :
     ∏ w : InfinitePlace E, w.embedding k ^ a =
@@ -280,20 +276,20 @@ def levT (K : Type) [Field K] [NumberField K] (T : Set (HeightOneSpectrum (𝓞 
     exact ha.2 v hv⟩
 
 /- English proof (translation)
-Introduce `_ ha` and use `⟨ha.1, fun v _ => ha.2 v⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lev_le_levT (K : Type) [Field K] [NumberField K] (T : Set (HeightOneSpectrum (𝓞 K))) (N : ℕ) :
     lev K N ≤ levT K T N := fun _ ha => ⟨ha.1, fun v _ => ha.2 v⟩
 
 /- English proof (translation)
-The claim follows from `Filter.mem_of_superset (lev_mem_nhds K hN) (lev_le_levT K T N)`.
+A detailed English derivation is pending.
 -/
 theorem levT_mem_nhds (K : Type) [Field K] [NumberField K] (T : Set (HeightOneSpectrum (𝓞 K))) {N : ℕ} (hN : N ≠ 0) :
     (levT K T N : Set (Ideles K)) ∈ nhds (1 : Ideles K) :=
   Filter.mem_of_superset (lev_mem_nhds K hN) (lev_le_levT K T N)
 
 /- English proof (translation)
-Introduce `_ ha` and use `⟨ha.1, fun v hv => ha.2 v (h hv)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem levT_anti (K : Type) [Field K] [NumberField K] {T T' : Set (HeightOneSpectrum (𝓞 K))} (h : T' ⊆ T) (N : ℕ) :
     levT K T N ≤ levT K T' N := fun _ ha => ⟨ha.1, fun v hv => ha.2 v (h hv)⟩

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SepIntPolyRootModPr
 open scoped TensorProduct Polynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.sep_int_poly_root_mod_prime_sq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSepIntPolyRootModPrimeSq.lean&line=34#L34)
 -/

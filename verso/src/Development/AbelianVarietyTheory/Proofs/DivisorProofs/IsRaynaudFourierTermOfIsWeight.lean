@@ -24,7 +24,7 @@ noncomputable section
 namespace GlobalTheory.Heat.TermDescent
 
 /- English proof (translation)
-Establish `e` using `gs_appLE φ U ⊤ h (𝟙 Y) y trivial a`. Rewrite `e` using `[Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gs_top_appLE {Y X : Scheme.{0}} (φ : Y ⟶ X) (y : Y) (U : X.Opens) (h : ⊤ ≤ φ ⁻¹ᵁ U) (a : Γ(X, U)) :
     gs (𝟙 Y) y ⊤ ((φ.appLE U ⊤ h).hom a) = gs φ y U a := by
@@ -32,9 +32,9 @@ theorem gs_top_appLE {Y X : Scheme.{0}} (φ : Y ⟶ X) (y : Y) (U : X.Opens) (h 
   rwa [Category.id_comp] at e
 
 /- English proof (translation)
-Rewrite `e` using `[valR, valR, dif_pos h, dif_pos h']`. Establish `e' : (x'.appLE V ⊤ h').hom f = (unitOn c).val * (x.appLE V ⊤ h).hom f`. Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom e` as an intermediate fact. Rewrite `this` using `[map_mul]`. Simplify `this` using `[unitOn]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← gs_top_appLE x' y V h', ← gs_top_appLE x y V h, e', gs_mul _ y ⊤ trivial, gs_unit _ y ⊤ trivial]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_of_valR {S : Type} [CommRing S] {X : Scheme.{0}} (x x' : Sp S ⟶ X) (V : X.Opens) (f : Γ(X, V))
     (c : Sˣ) (h : ⊤ ≤ x ⁻¹ᵁ V) (h' : ⊤ ≤ x' ⁻¹ᵁ V) (e : valR x' V f = c * valR x V f) (y : Sp S) :
@@ -47,11 +47,11 @@ theorem gs_of_valR {S : Type} [CommRing S] {X : Scheme.{0}} (x x' : Sp S ⟶ X) 
   rw [← gs_top_appLE x' y V h', ← gs_top_appLE x y V h, e', gs_mul _ y ⊤ trivial, gs_unit _ y ⊤ trivial]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Set `u` to `LB.mulGen L φ ε φ (fun k => - ε k) t' (LB.invGen L φ ε t)`. Establish `hu : u.IsGen` using `DVR.mulGen_isGen _ _ _ _ _ _ _ ht' (DVR.invGen_isGen _ _ _ _ ht)`. Establish `hF : FormEq (Sum.elim φ φ) (Sum.elim ε fun k => - ε k) (K'` using `PEmpty.{1}) PEmpty.elim PEmpty.elim := by`. Introduce `U _ h`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel, Fintype.prod_empty]`. Take `⟨t₀, -, h₀⟩` from `exists_gen hL hF u hu`. Establish `le : (⊤ : (Sp S).Opens) ≤ LB.wchart L (K` using `PEmpty.{1}) PEmpty.elim PEmpty.elim := fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Set `v : Γ(Sp S, ⊤)ˣ` to `res le (t₀.s PEmpty.elim)`. Use `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom.toMonoidHom v, fun y J hJ => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv : unitOn (Units.map (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom.toMonoidHom v) = v` using `by ext; simp [unitOn]`. Establish `e₀ : gm (𝟙 (Sp S)) y ⊤ v = val t₀ (𝟙 _) y J` using `(gm_res _ y le trivial _).trans (val_of t₀ _ y J PEmpty.elim fun k => k.elim).symm`. Rewrite using `[hv, e₀, h₀ _ _ y J hJ, val_mul hJ, val_inv, inv_mul_cancel_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gen_ratio {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) {S : Type} [CommRing S] {K : Type} [Fintype K]
     {φ φ' : K → (Sp S ⟶ X)} (ε : K → ℤ) (e : φ = φ') (t : LB.Gen (LB.LinComb L φ ε))
@@ -81,31 +81,29 @@ namespace GlobalTheory.Heat
 open GlobalTheory.Heat.TermDescent
 
 /- English proof (translation)
-Introduce `R _ _ Q O _ _ _ oa Y k α τ Jt V j hcov hle hwt`. Establish `hL` using `Q.P.isLB`. Take `⟨hs, hqc⟩` from `GlobalTheory.T.ray_q_surjective_and_quasiCompact Y`. Use `Ray.smooth_q Y` as an intermediate fact. Set `t` to `(Y.Φ Y.H (𝟙 _)).s α`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `ht : t.IsGen` using `(Y.Φ Y.H (𝟙 _)).isGen α`. Establish `hF : FormEq (Sum.elim (fun _ : Fin 1 => 𝟙 _ ≫ Y.q.left) (DegPre.gtφT Q Y.H Y.q α)) (Sum.elim (fun _ => (k : ℤ)) (fun a => - DegPre.gtε a)) (fun i => Y.q.left ≫ DegPre.famφB Q α i) (DegPre.famε k)`. Introduce `U _ h`. Establish `e` using `GlobalTheory.RayEv.formEq_term Y k α U h`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Category.id_comp, zpow_neg, Finset.prod_inv_distrib] at e ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e, mul_inv_cancel_right]`. Take `⟨σ, hσ⟩` from `exists_sec hL hF (pullMulSec τ (𝟙 _) (LB.invGen Q.P.L _ _ t) (DVR.invGen_isGen _ _ _ _ ht))`. Establish `vσ : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y.H.left) (z : Z) J, Good Q.P.L z J → sval σ r z J = sval τ r z J * ((val t r z J)⁻¹).val`. Introduce `Z r z J hJ`. Rewrite using `[hσ Z r z J hJ, sval_pullMulSec _ _ _ _ r z hJ, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun u => sval τ r z J * u.val) (val_inv (z := z) (J := J) t r)`. Establish `vt : ∀ (T : Over (Sp R)) (x : T ⟶ Y.H) (y : T.left) J, Good Q.P.L y J → val t x.left y J = val ((Y.Φ T x).s α) (𝟙 _) y J`. Introduce `T x y J hJ`. Take `⟨-, h₂⟩` from `(GlobalTheory.TorusModel.isPull_iff _ _ _).1 (Y.rep.1 T Y.H x (𝟙 _))`. Establish `e` using `h₂ α y J hJ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[Category.comp_id]`. Conclude with `e.symm`. Establish `hdesc : ∀ (S : Type) [CommRing S] [IsLocalRing S] (g₁ g₂ : Sp S ⟶ Y.H.left), g₁ ≫ Y.q.left = g₂ ≫ Y.q.left → ∀ J, Good Q.P.L (closedPoint S) J → sval σ g₁ (closedPoint S) J = sval σ g₂ (closedPoint S) J`. Introduce `S _ _ g₁ g₂ hg J hJ`. Establish `hA : g₂ ≫ Y.H.hom = g₁ ≫ Y.H.hom`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Over.w Y.q, ← Category.assoc, ← Category.assoc, hg]`. Take `⟨φ, hφ⟩ : ∃ φ : R →+* S, g₁ ≫ Y.H.hom = spMap φ` from `⟨(Spec.preimage (g₁ ≫ Y.H.hom)).hom, (Spec.map_preimage _).symm⟩`. Set `x₁ : Over.mk (spMap φ) ⟶ Y.H` to `Over.homMk g₁ hφ`. Set `x₂ : Over.mk (spMap φ) ⟶ Y.H` to `Over.homMk g₂ (hA.trans hφ)`. Establish `hx : x₂ ≫ Y.q = x₁ ≫ Y.q` using `Over.OverMorphism.ext hg.symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc : ∀ χ, ∃ c : Sˣ, ∀ y J, Good Q.P.L y J → val ((Y.Φ _ x₂).s χ) (𝟙 _) y J = gm (𝟙 (Over.mk (spMap φ)).left) y ⊤ (unitOn c) * val ((Y.Φ _ x₁).s χ) (𝟙 _) y J` using `fun χ => gen_ratio Q.P.L hL DegPre.gtε (by rw [Ray.Φ_b, Ray.Φ_b, hx]) _ _ ((Y.Φ _ x₁).isGen χ) ((Y.Φ _ x₂).isGen χ)`. Use `choose c hc using hc`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, g₁ (closedPoint S) ∈ Y.q.left ⁻¹ᵁ V i := by`. Establish `: g₁ (closedPoint S) ∈ (⨆ i, Y.q.left ⁻¹ᵁ V i : Y.H.left.Opens)` using `by rw [hcov]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi₂ : g₂ (closedPoint S) ∈ Y.q.left ⁻¹ᵁ V i` using `by show (g₂ ≫ Y.q.left) (closedPoint S) ∈ V i`. Rewrite using `[← hg]`. Conclude with `hi`. Establish `h₁ : ⊤ ≤ g₁ ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V i)` using `(Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of S) g₁ hi).ge`. Establish `h₂ : ⊤ ≤ g₂ ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V i)` using `(Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of S) g₂ hi₂).ge`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw` using `hwt i S φ x₁ x₂ c g₁ g₂ rfl rfl h₁ h₂ hx hc`. Establish `hg'` using `gs_of_valR g₁ g₂ _ _ (c α) h₁ h₂ hw (closedPoint S)`. Establish `s_i : ∀ g : Sp S ⟶ Y.H.left, g (closedPoint S) ∈ Y.q.left ⁻¹ᵁ V i → gs g (closedPoint S) (Y.q.left ⁻¹ᵁ V i) (rsT (τ.f (j i)) (Y.q.left ⁻¹ᵁ V i)) = (trF (fun _ : Fin 1 => Y.q.left) (fun _ => (k : ℤ)) g (closedPoint S) (j i) (fun _ => J (g ≫ Y.q.left))).val * sval τ g (closedPoint …`. Introduce `g hm`. Establish `er : rsT (τ.f (j i)) (Y.q.left ⁻¹ᵁ V i) = resG _ (hle i) (τ.f (j i))` using `dif_pos (hle i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[er]`. Conclude with `(gs_res g _ (hle i) hm _).trans (sec_trans τ g _ (hle i hm) (hJ.mem _ g))`. Establish `htr : trF (fun _ : Fin 1 => Y.q.left) (fun _ => (k : ℤ)) g₂ (closedPoint S) (j i) (fun _ => J (g₂ ≫ Y.q.left)) = trF (fun _ : Fin 1 => Y.q.left) (fun _ => (k : ℤ)) g₁ (closedPoint S) (j i) (fun _ => J (g₁ ≫ Y.q.left))`. Simplify using `only [trF]`. Rewrite using `[hg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `set C : ((Sp S).presheaf.stalk (closedPoint S))ˣ := gm (𝟙 (Sp S)) (closedPoint S) ⊤ (unitOn (c α)) with hC`. Establish `sv : sval τ g₂ (closedPoint S) J = C.val * sval τ g₁ (closedPoint S) J`. Establish `e` using `hg'`. Rewrite `e` using `[s_i g₂ hi₂, s_i g₁ hi, htr, mul_left_comm]`. Conclude with `(Units.mul_right_inj _).1 e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `vv : val t g₂ (closedPoint S) J = C * val t g₁ (closedPoint S) J` using `(vt _ x₂ _ J hJ).trans ((hc α _ J hJ).trans (congrArg (C * ·) (vt _ x₁ _ J hJ).symm))`. Rewrite using `[vσ _ g₁ _ J hJ, vσ _ g₂ _ J hJ, sv, vv, mul_inv_rev, Units.val_mul]`. Take the linear combination `(-(sval τ g₁ (closedPoint S) J * ((val t g₁ (closedPoint S) J)⁻¹).val)) * C.mul_inv`. Take `⟨b, hb⟩` from `GlobalTheory.T.exists_section_descent_flat_surjective_quasiCompact Q.P.L hL Y.q.left inferInstance hs hqc (DegPre.famφB Q α) (DegPre.famε k) σ hdesc`. Use `⟨b, fun T x y J hJ => ?_⟩` and prove the remaining obligations.
-
-Establish `e1` using `hb _ x.left y J hJ`. Rewrite `e1` using `[vσ _ _ y J hJ, vt T x y J hJ]`. Use `show sval τ x.left y J = sval b (x.left ≫ Y.q.left) y J * _`. Rewrite using `[← e1, _root_.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, _root_.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem isTerm_of_isWt : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa) (k : ℕ) (α : Q.X) (τ : SecM Y.q.left Q.P.L k) (J : Type) (V : J → Q.P.A.left.Opens) (j : J → Fin 1 → Q.P.L.ι), ⨆ i, Y.q.left ⁻¹ᵁ V i = ⊤ → (∀ i, Y.q.left ⁻¹ᵁ V i ≤ LB.wchart Q.P.L (fun _ : Fin 1 => Y.q.left) (j i)) → (∀ i, IsWt Y α (Y.q.left ⁻¹ᵁ V i) (rsT (τ.f (j i)) (Y.q.left ⁻¹ᵁ V i))) → ∃ σ' : Q.SecB k α, IsTerm Y k α σ' τ := by
   intro R _ _ Q O _ _ _ oa Y k α τ Jt V j hcov hle hwt

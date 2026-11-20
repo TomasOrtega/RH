@@ -9,29 +9,27 @@ open scoped Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 namespace GlobalTheory.LocMod
 
 /- English proof (translation)
-Introduce `D s p hpl hpr c χ hc μw hμ`. Establish `he : p.e * p.e = p.e` using `hpl.1`. Establish `e_ι : ∀ x, p.e * p.ι x = p.ι x` using `fun x => by rw [← p.ι_π, p.π_ι]`. Establish `hm : ∀ x y, p.ι (x * y) = p.ι x * p.ι y` using `fun x y => by conv_lhs => rw [← p.π_ι x, ← p.π_ι y, ← RingHom.map_mul, p.ι_π, ← mul_assoc, e_ι]`. Establish `ho : p.ι 1 = p.e` using `by rw [← p.π.map_one, p.ι_π, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `j0 : s.w.adicCompletion D.host.E →* Formalism.L2.Theta.AE D` to `{ toFun := fun x => p.ι x + (1 - p.e) map_one' := by rw [ho, add_sub_cancel] map_mul' := fun x y => by`. Rewrite using `[hm]`. Take the linear combination `e_ι x + e_ι y - he }`. Establish `hj0 : Continuous j0` using `p.cont_ι.add continuous_const`. Set `j : (s.w.adicCompletion D.host.E)ˣ →* (Formalism.L2.Theta.AE D)ˣ` to `Units.map j0`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hj : Continuous j`. Use `Units.continuous_iff.2 ⟨hj0.comp Units.continuous_val, ?_⟩` and prove the remaining obligations. Establish `: (fun u => ((j u)⁻¹ : (Formalism.L2.Theta.AE D)ˣ).val) = fun u : (s.w.adicCompletion D.host.E)ˣ => j0 ((u⁻¹ : (s.w.adicCompletion D.host.E)ˣ) : s.w.adicCompletion D.host.E)`. Use function extensionality and compare the values at `u`. Rewrite using `[← map_inv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hj0.comp Units.continuous_coe_inv`. Establish `hcc : Continuous c` using `hc.1.1`. Establish `hF2 : Continuous fun u => ((c (j u) : Circle) : ℂ)` using `(continuous_subtype_val.comp hcc).comp hj`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμc : Continuous μw`. Use `continuous_of_continuousAt_one μw ?_` and prove the remaining obligations. Establish `hker : (μw.ker : Set (s.w.adicCompletion D.host.E)ˣ) ∈ nhds 1` using `hμ.1.mem_nhds (by simp)`. Establish `: (fun _ => (1 : ℂˣ)) =ᶠ[nhds 1] μw` using `Filter.mem_of_superset hker fun x hx => (MonoidHom.mem_ker.1 hx).symm`. Establish `h2` using `(continuousAt_const.congr this).tendsto`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_one]`. Rewrite using `[ContinuousAt, map_one]`. Conclude with `h2`. Establish `hF1 : Continuous fun u => ((μw u : ℂˣ) : ℂ)` using `Units.continuous_val.comp hμc`. Establish `hd : Dense (Set.range (Units.map (algebraMap D.host.E (s.w.adicCompletion D.host.E) : D.host.E →* s.w.adicCompletion D.host.E)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `U hU ⟨u, hu⟩`. Establish `hoe : Topology.IsOpenEmbedding (Units.val : (s.w.adicCompletion D.host.E)ˣ → s.w.adicCompletion D.host.E)` using `{ toIsEmbedding := Units.isEmbedding_val₀ isOpen_range := by`. Establish `: Set.range (Units.val : (s.w.adicCompletion D.host.E)ˣ → s.w.adicCompletion D.host.E) = {0}ᶜ`. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun ⟨u, hu⟩ => hu ▸ u.ne_zero, fun h => ⟨Units.mk0 y h, rfl⟩⟩`. Rewrite using `[this]`. Conclude with `isOpen_compl_singleton }`. Take `⟨y, hy⟩` from `(HeightOneSpectrum.denseRange_algebraMap (K := D.host.E) s.w).exists_mem_open (hoe.isOpenMap U hU) ⟨u, u, hu, rfl⟩`. Take `⟨v, hv, hvy⟩` from `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `v.ne_zero (by simpa using hvy)`. Use `⟨v, hv, Units.mk0 y hy0, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `using hvy.symm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `key : ∀ x : D.host.Eˣ, ((μw (Units.map (algebraMap D.host.E (s.w.adicCompletion D.host.E) : D.host.E →* s.w.adicCompletion D.host.E) x) : ℂˣ) : ℂ) = ((c (j (Units.map (algebraMap D.host.E (s.w.adicCompletion D.host.E) : D.host.E →* s.w.adicCompletion D.host.E) x)) : Circle) : ℂ)`. Introduce `x`. Use `(congrArg Units.val (hμ.2 x)).trans (hc.2 s.w p.e hpl x _ ?_).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p.ι (algebraMap D.host.E (s.w.adicCompletion D.host.E) x) + (1 - p.e) = _`. Rewrite using `[← hpr, GlobalTheory.LocMod.Place.pr, p.ι_π, Formalism.L2.JoinChr.locE]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `heq` using `Continuous.ext_on hd hF1 hF2 (by rintro _ ⟨x, rfl⟩; exact key x)`. Introduce `x a ha`. Establish `hja : j x = a` using `Units.ext ha.symm`. Rewrite using `[← hja]`.
-
-Conclude with `congrFun heq x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Place.isComp_of_chrEq : ∀ (D : D7) (s : SplitPlace D.host.E) (p : GlobalTheory.LocMod.Place D (s.w.adicCompletion D.host.E)), Formalism.L2.JoinChr.IsPlIdem D p.e s.w → (∀ x : D.host.E, p.pr x = algebraMap D.host.E (s.w.adicCompletion D.host.E) x) → ∀ (c : (Formalism.L2.Theta.AE D)ˣ →* Circle) (χ : HChar D.host.E), Formalism.IndefR.Links.ChrEq c χ → ∀ μw, GlobalTheory.NPin.IsComp χ s.w μw → p.IsComp c μw := by
   intro D s p hpl hpr c χ hc μw hμ

@@ -22,7 +22,7 @@ def fP (s : ι → GH k r) : ℝ := ∑ v, fG k r (z v) (s v)
 variable {z}
 
 /- English proof (translation)
-Unfold `fG`. Use `Real.sInf_nonneg ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, -, rfl⟩`. Unfold `nrm`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem fG_nonneg (z0 : Fin (2 * r + k + 1) → ℂ) (g : GH k r) : 0 ≤ fG k r z0 g := by
   unfold fG
@@ -36,21 +36,17 @@ Both sides reduce to the same expression.
 theorem cjB_pi (b s : ι → GH k r) (v : ι) : cjB b s v = cjB (b v) (s v) := rfl
 
 /- English proof (translation)
-Establish `hCc : IsCompact (CP z)`. Establish `: CP z = Set.pi Set.univ (fun v => Cg k r (z v))` using `by ext s; simp [CP, Set.mem_pi]`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun v => isCompact_Cg (hz v) (hT v)`. Use `isFolner_of_contract hμ (CP z) (fP z) ?_ ?_ ?_ (fun _ => aT k r) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `continuous_finsetSum _ fun v _ => (continuous_fG (hz v) (hT v)).comp (continuous_apply v)`. Introduce `c hc x`. Unfold `fP`. Conclude with `Finset.sum_congr rfl fun v _ => fG_mul_left (hc v) (x v)`. Introduce `ρ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : {x | fP z x ≤ ρ} ∩ SP z ⊆ Set.pi Set.univ (fun v => {y | fG k r (z v) y ≤ ρ} ∩ Sg k r (z v))`. Introduce and unpack `s ⟨hs, hsS⟩ v -`. Use `⟨?_, hsS v⟩` and prove the remaining obligations. Use `show fG k r (z v) (s v) ≤ ρ`. Use `le_trans ?_ hs` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.single_le_sum (f := fun w => fG k r (z w) (s w)) (fun w _ => fG_nonneg _ _) (Finset.mem_univ v)`. Use `(isCompact_univ_pi fun v => isCompact_sublevel (hz v) (hT v) ρ).of_isClosed_subset ?_ hsub` and prove the remaining obligations. Use `(isClosed_le (continuous_finsetSum _ fun v _ => (continuous_fG (hz v) (hT v)).comp (continuous_apply v)) continuous_const).inter ?_` and prove the remaining obligations. Establish `: SP z = ⋂ v, (fun s : ι → GH k r => s v) ⁻¹' Sg k r (z v)` using `by ext s; simp [SP]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `isClosed_iInter fun v => (isClosed_Sg (hz v) (hT v)).preimage (continuous_apply v)`. Introduce `s show (∀ v, s v ∈ Sg k r (z v)) ↔ ∀ v, cjB (fun _ => aT k r) s v ∈ Sg k r (z v)`. Conclude with `forall_congr' fun v => by rw [cjB_pi]; exact aT_iff (z v) (s v)`. Introduce `K hK hKS U hU hCU`. Take `⟨V, hV, hCV⟩` from `compact_open_separated_mul_right hCc hU hCU`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hV` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, t, ht, hIt⟩` from `hV`. Establish `hev : ∀ v, ∀ᶠ m : ℕ in atTop, ∀ x ∈ (fun s : ι → GH k r => s v) '' K, cjB (aT k r ^ m) x ∈ Cg k r (z v) * t v` using `fun v => contractV (hz v) (hT v) _ (hK.image (continuous_apply v)) (by rintro _ ⟨s, hs, rfl⟩; exact hKS hs v) (t v) (ht v)`. Use `filter_upwards [Filter.eventually_all.2 hev] with m hm x hx`. Establish `hx' : ∀ v, cjB (aT k r ^ m) (x v) ∈ Cg k r (z v) * t v` using `fun v => hm v (x v) ⟨x, hx, rfl⟩`.
-
-Use `choose c hc w hw hcw using hx'`. Use `hCV ⟨c, hc, w, hIt (fun v _ => hw v), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Use `show c v * w v = cjB ((fun _ => aT k r) ^ m) x v`. Rewrite using `[cjB_pi, Pi.pow_apply]`.
-
-Conclude with `hcw v`.
+A detailed English derivation is pending.
 -/
 theorem isFolner_pi (hz : ∀ v, inWb k r (z v)) (hT : ∀ v, 0 < Tz k r (z v)) (μS : Measure (ι → GH k r))
     (hμ : IsHaarSub (SP z) μS) : IsFolner (SP z) μS := by

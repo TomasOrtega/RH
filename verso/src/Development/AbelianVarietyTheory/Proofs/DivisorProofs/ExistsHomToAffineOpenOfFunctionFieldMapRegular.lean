@@ -12,9 +12,7 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Use `choose t ht using fun s => exists_fnOf_eq hU (h s)`. Apply the tactic sequence `refine ⟨⟨⟨⟨t, ?_⟩, fun a b => ?_⟩, ?_, fun a b => ?_⟩, ht⟩ <;> apply fnOf_injective U hU`. Rewrite using `[ht, map_one, map_one, map_one]`. Rewrite using `[map_mul, ht, ht, ht, map_mul, map_mul]`. Conclude with `(ht 0).trans (by rw [map_zero, map_zero, map_zero])`.
-
-Conclude with `(ht (a + b)).trans (((congrArg φ (map_add _ a b)).trans (map_add φ _ _)).trans ((congrArg₂ (· + ·) (ht a) (ht b)).symm.trans (map_add (fnOf U hU) (t a) (t b)).symm))`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_fnOf_eq {Y P : Scheme.{0}} [IsIntegral Y] [IsIntegral P] {U : Y.Opens}
     (hU : genericPoint Y ∈ U) {V : P.Opens} (hVη : genericPoint P ∈ V)
@@ -31,13 +29,13 @@ theorem exists_ringHom_fnOf_eq {Y P : Scheme.{0}} [IsIntegral Y] [IsIntegral P] 
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Introduce `Y P _ _ U hU V hV hVη φ h`. Take `⟨ψ, hψ⟩` from `exists_ringHom_fnOf_eq hU hVη φ h`. Use `⟨U.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ψ) ≫ hV.fromSpec, fun y => ?_, fun l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, Scheme.Hom.comp_apply]`. Express the relevant statement in the definitionally equal form `_ ∈ (V : Set P)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hV.range_fromSpec]`. Conclude with `⟨_, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `rfl : l = U.fromSpecStalkOfMem (genericPoint Y) hU := by`. Rewrite using `[← cancel_mono U.ι, hl]`. Conclude with `(Scheme.Opens.fromSpecStalkOfMem_ι U _ hU).symm`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : CommRingCat.ofHom ψ ≫ Y.presheaf.germ U (genericPoint Y) hU = P.presheaf.germ V (genericPoint P) hVη ≫ CommRingCat.ofHom φ`. Use extensionality with `s`. Conclude with `hψ s`. Establish `e₁` using `Scheme.Opens.fromSpecStalkOfMem_toSpecΓ_assoc U (genericPoint Y) hU (Spec.map (CommRingCat.ofHom ψ) ≫ hV.fromSpec)`. Use `e₁.trans ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Spec.map_comp_assoc]`. Use `(congrArg (fun z => Spec.map z ≫ hV.fromSpec) e).trans ?_` and prove the remaining obligations. Rewrite using `[gp, ← hV.fromSpecStalk_eq_fromSpecStalk hVη, IsAffineOpen.fromSpecStalk, Spec.map_comp_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_regAt_fnOf : ∀ (Y P : Scheme.{0}) [IsIntegral Y] [IsIntegral P] (U : Y.Opens), genericPoint Y ∈ U → ∀ (V : P.Opens), IsAffineOpen V → ∀ (hVη : genericPoint P ∈ V) (φ : P.functionField →+* Y.functionField), (∀ s : Γ(P, V), ∀ y ∈ U, RegAt y (φ (fnOf V hVη s))) → ∃ f : U.toScheme ⟶ P, (∀ y : U.toScheme, f y ∈ V) ∧ ∀ l : Sp Y.functionField ⟶ U.toScheme, l ≫ U.ι = gp Y → l ≫ f = spMap φ ≫ gp P := by
   intro Y P _ _ U hU V hV hVη φ h

@@ -58,17 +58,15 @@ import Formalism.RealPlaceAnalysis.StatementC
 namespace Bl.general_b_fact_left_version
 
 /- English proof (translation)
-Introduce `O _ _ V _ _ _ _ M hM x`. Establish `hx : x ∈ Submodule.span (Formalism.MainNotions.G.KK O) (M : Set V)`. Establish `h : x ∈ (⊤ : Submodule (Formalism.MainNotions.G.KK O) V)` using `Submodule.mem_top`. Rewrite `h` using `[← hM]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact M.zero_mem⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, hay⟩` from `hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `M.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.smul_mem b hay`. Rewrite using `[mul_smul]`. Conclude with `M.smul_mem a hbz`. Consider the case `smul k y _ hy`. Take `⟨b, hb, hby⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨n, d⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors O) k`. Establish `hd : (d : O) ≠ 0` using `nonZeroDivisors.coe_ne_zero d`. Use `⟨b * d, mul_ne_zero hb hd, ?_⟩` and prove the remaining obligations. Establish `key : (d : O) • (IsLocalization.mk' (Formalism.MainNotions.G.KK O) n d • y) = n • y`. Rewrite using `[← smul_assoc, Algebra.smul_def, IsLocalization.mk'_spec', algebraMap_smul]`.
-
-Rewrite using `[mul_smul, key, smul_comm]`. Conclude with `M.smul_mem n hby`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {O : Type} [inst : CommRing.{0} O]

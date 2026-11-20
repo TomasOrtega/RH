@@ -17,29 +17,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
 /- English proof (translation)
-Take `⟨κ, ze, hz, hf⟩` from `hF`. Establish `hc : cTot a.ch p.P.A3.fam3.base3.μ0 ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => Finset.prod_ne_zero_iff.2 fun j _ => hC i j _`. Establish `hze : D.what₂.embLL (ze p.P.A3.fam3.base3.μ0) ≠ 0`. Take `⟨n, hn, e⟩` from `hz p.P.A3.fam3.base3.μ0`. Use `(map_ne_zero _).2 fun z => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e` using `[z, zero_pow hn.ne']`. Conclude with `zero_ne_one e`. Establish `hinj` using `(GlobalTheory.T.injective_iC_rows p hp).1`. Establish `key : ∀ y, p.R.Th p.P.A3.fam3.base3.μ0 (p.R.jX p.P.A3.fam3.base3.μ0 (eV0 p p.P.A3.fam3.base3.μ0 y)) = 0 ↔ ((Df p).Pq p.P.A3.fam3.base3.μ0).mulVec y = 0`. Introduce `y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `GlobalTheory.T.theta_eV0_eq_iC_Pq_rows p hp p.P.A3.fam3.base3.μ0 y`. Express the relevant statement in the definitionally equal form `p.R.Th p.P.A3.fam3.base3.μ0 (p.R.jX p.P.A3.fam3.base3.μ0 (eV0 p p.P.A3.fam3.base3.μ0 y)) = _ at e`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hinj (h0.trans (map_zero _).symm)`. Use function extensionality and compare the values at `i`. Conclude with `p.P.A3.fam3.base3.v0.embedding.injective (by simpa [cpt] using congrFun h1 i)`. Introduce `h0`. Rewrite using `[h0]`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: cpt p.P.A3.fam3.base3.v0.embedding (0 : Fin ((Df p).dQ p.P.A3.fam3.base3.μ0) → D.what₂.LL) = 0`. Use function extensionality and compare the values at `i`. Simplify using `[cpt]`. Rewrite using `[this, map_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hκ : κ ≠ 0`. Take `⟨y, hy⟩` from `hPq (Pi.single ⟨0, hD⟩ 1)`. Establish `hne : p.R.Th p.P.A3.fam3.base3.μ0 (p.R.jX p.P.A3.fam3.base3.μ0 (eV0 p p.P.A3.fam3.base3.μ0 y)) ≠ 0` using `fun h0 => by`. Establish `h2` using `congrFun ((key y).1 h0) ⟨0, hD⟩`. Rewrite `h2` using `[hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `at h2`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, psiK a.ch i (p.R.Th p.P.A3.fam3.base3.μ0 (p.R.jX p.P.A3.fam3.base3.μ0 (eV0 p p.P.A3.fam3.base3.μ0 y))) ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `hne (hI _ hall)`.
+Assume the negation of the conclusion and derive a contradiction. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `FormulaAt.ne_zero ⟨hz, hf⟩ hc (GlobalTheory.T.eV0_mem_goodF_rows p hp _ y) hi`. Use extensionality with `y`. Simplify using `only [LinearMap.mem_ker, Matrix.mulVecLin_apply, DefSide.U]`. Rewrite using `[← key y]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hI` to reduce the goal to its premises. Introduce `i`. Establish `e` using `hf p.P.A3.fam3.base3.μ0 (eV0 p p.P.A3.fam3.base3.μ0 y) (GlobalTheory.T.eV0_mem_goodF_rows p hp _ y) i`. Establish `hs` using `h.sums p.P.A3.fam3.base3.μ0 (Or.inl rfl) y i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hv : vK a.ch p.P.A3.fam3.base3.μ0 (eV0 p p.P.A3.fam3.base3.μ0 y) i = 0` using `hs.symm.trans (by rw [h0]; exact map_zero _)`. Establish `e2` using `e.trans (by rw [hv, mul_zero])`. Conclude with `((mul_eq_zero.1 e2).resolve_left (mul_ne_zero hze hc))`. Introduce `h0`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `hf p.P.A3.fam3.base3.μ0 (eV0 p p.P.A3.fam3.base3.μ0 y) (GlobalTheory.T.eV0_mem_goodF_rows p hp _ y) i`. Establish `hs` using `h.sums p.P.A3.fam3.base3.μ0 (Or.inl rfl) y i`. Establish `hz0 : psiK a.ch i (p.R.Th p.P.A3.fam3.base3.μ0 (p.R.jX p.P.A3.fam3.base3.μ0 (eV0 p p.P.A3.fam3.base3.μ0 y))) = 0`. Rewrite using `[h0]`. Conclude with `psiK_zero _ _`.
-
-Rewrite `e` using `[hz0, mul_zero, ← hs]`. Establish `h3` using `(mul_eq_zero.1 e.symm).resolve_left hκ`. Conclude with `D.what₂.embLL.injective (by rw [h3]; exact (map_zero _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem ker_eq_of_formula {p : PtAt ex Csz} (hp : p.Rows) (hD : 0 < (Df p).dQ p.P.A3.fam3.base3.μ0)
     (hPq : Function.Surjective ((Df p).Pq p.P.A3.fam3.base3.μ0).mulVec)
@@ -110,11 +108,11 @@ theorem ker_eq_of_formula {p : PtAt ex Csz} (hp : p.Rows) (hD : 0 < (Df p).dQ p.
     exact D.what₂.embLL.injective (by rw [h3]; exact (map_zero _).symm)
 
 /- English proof (translation)
-Introduce `hB hS _ hI hC hF`. Take `⟨CF0, hA⟩` from `hS.atPt (hI.and (hC.and hF))`. Use `⟨CF0, fun CF hCF => (hA CF hCF).imp fun Fm CH _ e _ => ⟨0, fun C _ => evPt_imp e fun x hx i p hp b d hd => ?_⟩⟩` and prove the remaining obligations. Take `⟨-, a, ha⟩` from `hd`. Take `⟨q1, q2, q3⟩` from `b d.G d.W d.n a ha.ok`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨wf, R0, hR⟩` from `hB p hp`. Establish `h0 : 0 < (p.S false).D` using `hR ▸ R0.D_pos`. Establish `v : d.O.vmu p.P.A3.fam3.base3.μ0 = d.V p.P.A3.fam3.base3.μ0` using `by show (1 : _)⁻¹ • _ = _`. Rewrite using `[inv_one]`. Conclude with `one_smul _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show LinearMap.ker (d.O.vmu _).mulVecLin = _`. Rewrite using `[v]`. Conclude with `ker_eq_of_formula hp h0 (wf.Pq_surj _) d a ha q1 (fun i j t => (q2 i j t).2) (q3 ha.ok.field)`.
+A detailed English derivation is pending.
 -/
 theorem ker_tie : Bundle → SetAt → LinK → InjK → ConstK → Formula2K → Ker @Comparison₂ := by
   intro hB hS _ hI hC hF

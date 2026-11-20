@@ -14,23 +14,23 @@ def rootRing (l : ℕ) [Fact l.Prime] (m : ℕ) : Subalgebra ℤ_[l] (Om l) :=
   Algebra.adjoin ℤ_[l] {x : Om l | x ^ m = 1}
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (Om l)]`. Conclude with `PadicAlgCl.norm_extends l _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_algebraMap_int (a : ℤ_[l]) : ‖algebraMap ℤ_[l] (Om l) a‖ = ‖a‖ := by
   rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (Om l)]
   exact PadicAlgCl.norm_extends l _
 
 /- English proof (translation)
-Establish `h` using `norm_algebraMap_int (l := l) (l : ℤ_[l])`. Rewrite `h` using `[map_natCast, PadicInt.norm_p]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_l : ‖(l : Om l)‖ = (l : ℝ)⁻¹ := by
   have h := norm_algebraMap_int (l := l) (l : ℤ_[l])
   rwa [map_natCast, PadicInt.norm_p] at h
 
 /- English proof (translation)
-Unfold `rootRing`. Apply `Algebra.adjoin_mono` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : x ^ m = 1` using `hx`. Take `⟨k, rfl⟩` from `h`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `show x ^ (m * k) = 1`. Rewrite using `[pow_mul, hx', one_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootRing_mono {m m' : ℕ} (h : m ∣ m') : rootRing l m ≤ rootRing l m' := by
   unfold rootRing
@@ -42,11 +42,9 @@ theorem rootRing_mono {m m' : ℕ} (h : m ∣ m') : rootRing l m ≤ rootRing l 
   rw [pow_mul, hx', one_pow]
 
 /- English proof (translation)
-Unfold `rootRing at hy`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Establish `hx' : x ^ m = 1` using `hx`. Establish `h1 : ‖x‖ ^ m = 1` using `by rw [← norm_pow, hx', norm_one]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_of_eq ((pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').mp h1)`. Consider the case `algebraMap r => rw [norm_algebraMap_int]`. Conclude with `PadicInt.norm_le_one r`. Consider the case `add x y _ _ hx hy => exact (IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`. Consider the case `mul x y _ _ hx hy => rw [norm_mul]`.
-
-Conclude with `mul_le_one₀ hx (norm_nonneg _) hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_le_one {m : ℕ} (hm : 0 < m) {y : Om l} (hy : y ∈ rootRing l m) : ‖y‖ ≤ 1 := by
   unfold rootRing at hy
@@ -60,11 +58,11 @@ theorem norm_le_one {m : ℕ} (hm : 0 < m) {y : Om l} (hy : y ∈ rootRing l m) 
   | mul x y _ _ hx hy => rw [norm_mul]; exact mul_le_one₀ hx (norm_nonneg _) hy
 
 /- English proof (translation)
-Establish `h` using `Algebra.adjoin_eq_span_of_subset (R := ℤ_[l]) (s := {x : Om l | x ^ m = 1}) (by`. Introduce `x hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Proceed by induction on `hx using Submonoid.closure_induction with`. Consider the case `mem y hy => exact hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Proceed by induction. Treat this case separately.
 
-Consider the case `one => exact one_pow m`. Consider the case `mul y z _ _ hy hz`. Establish `hy' : y ^ m = 1` using `hy`. Establish `hz' : z ^ m = 1` using `hz`. Use `show (y * z) ^ m = 1`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, hy', hz', one_mul])`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma rootRing_eq_span_roots_of_unity (m : ℕ) :
     (rootRing l m : Set (Om l)) = Submodule.span ℤ_[l] {x : Om l | x ^ m = 1} := by
@@ -83,11 +81,11 @@ private lemma rootRing_eq_span_roots_of_unity (m : ℕ) :
   rfl
 
 /- English proof (translation)
-Use `set T : Finset (Om l) := (Polynomial.nthRoots m (1 : Om l)).toFinset with hT`. Establish `hS : {x : Om l | x ^ m = 1} = Set.range (fun i : T => (i : Om l))`. Use extensionality with `x`. Simplify using `[T, Polynomial.mem_nthRoots hm]`. Establish `hc : Continuous (algebraMap ℤ_[l] (Om l))` using `(AddMonoidHomClass.isometry_of_norm (algebraMap ℤ_[l] (Om l)) norm_algebraMap_int).continuous`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Continuous (fun c : T → ℤ_[l] => ∑ i, c i • (i : Om l))`. Use `continuous_finsetSum _ (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [Algebra.smul_def]`. Conclude with `(hc.comp (continuous_apply i)).mul continuous_const`. Establish `heq : (rootRing l m : Set (Om l)) = Set.range (fun c : T → ℤ_[l] => ∑ i, c i • (i : Om l))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[rootRing_eq_span_roots_of_unity, hS]`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Submodule.mem_span_range_iff_exists_fun, Set.mem_range]`. Rewrite using `[heq]`. Conclude with `(isCompact_range hf).isClosed`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_rootRing {m : ℕ} (hm : 0 < m) : IsClosed (rootRing l m : Set (Om l)) := by
   classical
@@ -110,7 +108,7 @@ theorem isClosed_rootRing {m : ℕ} (hm : 0 < m) : IsClosed (rootRing l m : Set 
   exact (isCompact_range hf).isClosed
 
 /- English proof (translation)
-Establish `h : a ^ (l ^ k) - a ∈ Ideal.span {(l : ℤ_[l])}`. Rewrite using `[← PadicInt.maximalIdeal_eq_span_p, ← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, map_pow, ZMod.pow_card_pow, sub_self]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp h`. Conclude with `⟨c, by linear_combination -hc⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_pow_prime_pow_eq_add_prime_mul (k : ℕ) (a : ℤ_[l]) : ∃ c : ℤ_[l], a ^ (l ^ k) = a + l * c := by
   have h : a ^ (l ^ k) - a ∈ Ideal.span {(l : ℤ_[l])} := by
@@ -120,7 +118,7 @@ private lemma exists_pow_prime_pow_eq_add_prime_mul (k : ℕ) (a : ℤ_[l]) : �
   exact ⟨c, by linear_combination -hc⟩
 
 /- English proof (translation)
-Establish `hcop : Nat.Coprime l m` using `(Nat.Prime.coprime_iff_not_dvd Fact.out).2 hl`. Establish `hmod : l ^ m.totient % m = 1 % m` using `Nat.ModEq.pow_totient hcop`. Establish `key : ∀ n, x ^ n = x ^ (n % m)` using `fun n => by conv_lhs => rw [← Nat.mod_add_div n m, pow_add, pow_mul, hx, one_pow, mul_one]`. Rewrite using `[key, hmod, ← key, pow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma pow_prime_pow_totient_eq_self_of_pow_eq_one {m : ℕ} (hl : ¬ l ∣ m) {x : Om l} (hx : x ^ m = 1) :
     x ^ (l ^ m.totient) = x := by
@@ -131,17 +129,15 @@ private lemma pow_prime_pow_totient_eq_self_of_pow_eq_one {m : ℕ} (hl : ¬ l �
   rw [key, hmod, ← key, pow_one]
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. It suffices to establish `H : ∃ z : rootRing l m, (⟨y, hy⟩ : rootRing l m) ^ (l ^ m.totient) = ⟨y, hy⟩ + (l : rootRing l m) * z by`. Take `⟨z, hz⟩` from `H`. Use `⟨z, z.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hz` as an intermediate fact.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`. Use `Algebra.adjoin_induction (p := fun y hy => ∃ z : rootRing l m, (⟨y, hy⟩ : rootRing l m) ^ (l ^ m.totient) = ⟨y, hy⟩ + (l : rootRing l m) * z) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce `x hx`. Use `⟨0, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[pow_prime_pow_totient_eq_self_of_pow_eq_one hl hx]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `r`. Take `⟨c, hc⟩` from `exists_pow_prime_pow_eq_add_prime_mul (l := l) m.totient r`. Use `⟨algebraMap ℤ_[l] (rootRing l m) c, ?_⟩` and prove the remaining obligations. Use `show (algebraMap ℤ_[l] (rootRing l m) r) ^ (l ^ m.totient) = algebraMap ℤ_[l] (rootRing l m) r + (l : rootRing l m) * algebraMap ℤ_[l] (rootRing l m) c`. Rewrite using `[← map_pow, hc, map_add, map_mul, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x y hx hy ⟨z1, h1⟩ ⟨z2, h2⟩`. Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq hp (⟨x, hx⟩ : rootRing l m) ⟨y, hy⟩ m.totient`. Use `⟨z1 + z2 + ⟨x, hx⟩ * ⟨y, hy⟩ * r, ?_⟩` and prove the remaining obligations. Use `show ((⟨x, hx⟩ : rootRing l m) + ⟨y, hy⟩) ^ (l ^ m.totient) = (⟨x, hx⟩ + ⟨y, hy⟩) + _`. Rewrite using `[hr, h1, h2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `x y hx hy ⟨z1, h1⟩ ⟨z2, h2⟩`. Use `⟨⟨x, hx⟩ * z2 + z1 * ⟨y, hy⟩ + (l : rootRing l m) * z1 * z2, ?_⟩` and prove the remaining obligations. Use `show ((⟨x, hx⟩ : rootRing l m) * ⟨y, hy⟩) ^ (l ^ m.totient) = (⟨x, hx⟩ * ⟨y, hy⟩) + _`. Rewrite using `[mul_pow, h1, h2]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pow_sub_mem {m : ℕ} (hl : ¬ l ∣ m) {y : Om l} (hy : y ∈ rootRing l m) :
     ∃ z ∈ rootRing l m, y ^ (l ^ m.totient) = y + l * z := by
@@ -178,17 +174,15 @@ theorem pow_sub_mem {m : ℕ} (hl : ¬ l ∣ m) {y : Om l} (hy : y ∈ rootRing 
     ring
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `hN1 : 1 < l ^ m.totient` using `Nat.one_lt_pow (Nat.totient_pos.2 hm).ne' hp.one_lt`. Establish `hl0 : (l : Om l) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `step : ∀ j : ℕ, ∃ w ∈ rootRing l m, y ^ ((l ^ m.totient) ^ j) = y + l * w`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `j with`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `succ j ih`. Take `⟨w, hw, hwe⟩` from `ih`. Take `⟨z, hz, hze⟩` from `pow_sub_mem hl (pow_mem hy ((l ^ m.totient) ^ j))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨w + z, add_mem hw hz, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, pow_mul, hze, hwe]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : ∀ j : ℕ, (l : Om l)⁻¹ * (y - y ^ ((l ^ m.totient) ^ j)) ∈ rootRing l m`. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw, hwe⟩` from `step j`. Establish `e : (l : Om l)⁻¹ * (y - y ^ ((l ^ m.totient) ^ j)) = -w`. Rewrite using `[hwe, sub_add_cancel_left, mul_neg, inv_mul_cancel_left₀ hl0]`. Rewrite using `[e]`. Conclude with `neg_mem hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht : Filter.Tendsto (fun j : ℕ => (l : Om l)⁻¹ * (y - y ^ ((l ^ m.totient) ^ j))) Filter.atTop (nhds ((l : Om l)⁻¹ * (y - 0)))`. Establish `h0 : Filter.Tendsto (fun j : ℕ => y ^ ((l ^ m.totient) ^ j)) Filter.atTop (nhds 0)` using `(tendsto_pow_atTop_nhds_zero_of_norm_lt_one h1).comp (tendsto_pow_atTop_atTop_of_one_lt hN1)`. Conclude with `(tendsto_const_nhds.sub h0).const_mul _`. Establish `hz` using `(isClosed_rootRing hm).mem_of_tendsto ht (Filter.Eventually.of_forall hmem)`. Rewrite `hz` using `[sub_zero]`.
-
-Conclude with `⟨(l : Om l)⁻¹ * y, hz, (mul_inv_cancel_left₀ hl0 y).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_mul {m : ℕ} (hm : 0 < m) (hl : ¬ l ∣ m) {y : Om l} (hy : y ∈ rootRing l m)
     (h1 : ‖y‖ < 1) : ∃ z ∈ rootRing l m, y = l * z := by
@@ -223,17 +217,15 @@ theorem exists_eq_mul {m : ℕ} (hm : 0 < m) (hl : ¬ l ∣ m) {y : Om l} (hy : 
   exact ⟨(l : Om l)⁻¹ * y, hz, (mul_inv_cancel_left₀ hl0 y).symm⟩
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hp.one_lt`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Establish `key : ∀ k : ℕ, ∀ y ∈ rootRing l m, y ≠ 0 → (l : ℝ) ^ (-(k : ℤ)) ≤ ‖y‖ → ∃ n : ℤ, ‖y‖ = (l : ℝ) ^ n`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `y hy _ hle`. Use `⟨0, ?_⟩` and prove the remaining obligations. Simplify using `only [Nat.cast_zero, neg_zero, zpow_zero] at hle ⊢`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `le_antisymm (norm_le_one hm hy) hle`. Consider the case `succ k ih`. Introduce `y hy hy0 hle`. Break down `(norm_le_one hm hy).lt_or_eq with hlt | heq` into its components or cases. Take `⟨z, hz, rfl⟩` from `exists_eq_mul hm hl hy hlt`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz0 : z ≠ 0` using `by rintro rfl; simp at hy0`. Rewrite `hle`, the goal using `[norm_mul, norm_l]`. Rewrite `hle` using `[show (-((k + 1 : ℕ) : ℤ)) = -(k : ℤ) - 1 by push_cast; ring, zpow_sub_one₀ hl0.ne']`. Establish `hk : (l : ℝ) ^ (-(k : ℤ)) ≤ ‖z‖` using `le_of_mul_le_mul_left (by rwa [mul_comm] at hle) (inv_pos.2 hl0)`. Take `⟨n, hn⟩` from `ih z hz hz0 hk`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n - 1, by rw [hn, zpow_sub_one₀ hl0.ne', mul_comm]⟩`. Conclude with `⟨0, by simp [heq]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : ℕ, (l : ℝ) ^ (-(k : ℤ)) ≤ ‖y‖ := by`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (norm_pos_iff.2 h0) (inv_lt_one_of_one_lt₀ hl1)`. Conclude with `⟨k, by rw [zpow_neg, zpow_natCast, ← inv_pow]; exact hk.le⟩`.
-
-Conclude with `key k y hy h0 hk`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem norm_rootRing {m : ℕ} (hm : 0 < m) (hl : ¬ l ∣ m) {y : Om l} (hy : y ∈ rootRing l m)
     (h0 : y ≠ 0) : ∃ n : ℤ, ‖y‖ = (l : ℝ) ^ n := by
@@ -268,27 +260,25 @@ theorem norm_rootRing {m : ℕ} (hm : 0 < m) (hl : ¬ l ∣ m) {y : Om l} (hy : 
   exact key k y hy h0 hk
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Unfold `MaximalUnramifiedExtension at hx`. Rewrite `hx` using `[← IntermediateField.mem_toSubalgebra, IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (fun y _ => Algebra.IsAlgebraic.isAlgebraic y)]`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Take `⟨m, hm, hlm, hym⟩` from `hy`. Use `⟨m, hm, hlm, 1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_mul]`. Conclude with `Algebra.subset_adjoin hym`. Consider the case `algebraMap q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, one_pos, hp.not_dvd_one, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hq : ‖q‖ ≤ 1`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_mul]`. Take `⟨a, ha⟩ : ∃ a : ℤ_[l], (a : ℚ_[l]) = q` from `⟨⟨q, hq⟩, rfl⟩`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : algebraMap ℚ_[l] (Om l) q = algebraMap ℤ_[l] (Om l) a`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (Om l), ← ha]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Subalgebra.algebraMap_mem _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : q ≠ 0` using `by rintro rfl; simp at hq`. Establish `hinv : ‖q⁻¹‖ ≤ 1`. Rewrite using `[norm_inv]`. Conclude with `inv_le_one_of_one_le₀ (le_of_not_ge hq)`. Take `⟨a, ha⟩ : ∃ a : ℤ_[l], (a : ℚ_[l]) = q⁻¹` from `⟨⟨q⁻¹, hinv⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply `hq0` to reduce the goal to its premises. Rewrite `ha` using `[PadicInt.coe_zero]`. Conclude with `inv_eq_zero.1 ha.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `e : algebraMap ℤ_[l] ℚ_[l] a * q = 1`. Rewrite using `[show algebraMap ℤ_[l] ℚ_[l] a = (a : ℚ_[l]) from rfl, ha, inv_mul_cancel₀ hq0]`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (Om l), ← map_mul, e, map_one]`. Conclude with `one_mem _`. Consider the case `add x y _ _ hx hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m1, hm1, hl1, c1, hc1, h1⟩` from `hx`. Take `⟨m2, hm2, hl2, c2, hc2, h2⟩` from `hy`. Use `⟨m1 * m2, Nat.mul_pos hm1 hm2, fun h => (hp.dvd_mul.1 h).elim hl1 hl2, c1 * c2, mul_ne_zero hc1 hc2, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap ℤ_[l] (Om l) (c1 * c2) * (x + y) = algebraMap ℤ_[l] (Om l) c2 * (algebraMap ℤ_[l] (Om l) c1 * x) + algebraMap ℤ_[l] (Om l) c1 * (algebraMap ℤ_[l] (Om l) c2 * y)`. Rewrite using `[map_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (mul_mem (Subalgebra.algebraMap_mem _ _) (rootRing_mono (dvd_mul_right m1 m2) h1)) (mul_mem (Subalgebra.algebraMap_mem _ _) (rootRing_mono (dvd_mul_left m2 m1) h2))`. Consider the case `mul x y _ _ hx hy`. Take `⟨m1, hm1, hl1, c1, hc1, h1⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m2, hm2, hl2, c2, hc2, h2⟩` from `hy`. Use `⟨m1 * m2, Nat.mul_pos hm1 hm2, fun h => (hp.dvd_mul.1 h).elim hl1 hl2, c1 * c2, mul_ne_zero hc1 hc2, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap ℤ_[l] (Om l) (c1 * c2) * (x * y) = (algebraMap ℤ_[l] (Om l) c1 * x) * (algebraMap ℤ_[l] (Om l) c2 * y)`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `mul_mem (rootRing_mono (dvd_mul_right m1 m2) h1) (rootRing_mono (dvd_mul_left m2 m1) h2)`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_mem {x : Om l} (hx : x ∈ MaximalUnramifiedExtension l) :
     ∃ m : ℕ, 0 < m ∧ ¬ l ∣ m ∧ ∃ c : ℤ_[l], c ≠ 0 ∧ algebraMap ℤ_[l] (Om l) c * x ∈ rootRing l m := by
@@ -353,13 +343,13 @@ theorem exists_mul_mem {x : Om l} (hx : x ∈ MaximalUnramifiedExtension l) :
     exact mul_mem (rootRing_mono (dvd_mul_right m1 m2) h1) (rootRing_mono (dvd_mul_left m2 m1) h2)
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Take `⟨m, hm, hlm, c, hc, hmem⟩` from `exists_mul_mem hx`. Establish `hcx : algebraMap ℤ_[l] (Om l) c * x ≠ 0`. Use `mul_ne_zero ?_ h0` and prove the remaining obligations. Rewrite using `[← norm_ne_zero_iff, norm_algebraMap_int]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_ne_zero_iff.2 hc`. Take `⟨n, hn⟩` from `norm_rootRing hm hlm hmem hcx`. Rewrite `hn` using `[norm_mul, norm_algebraMap_int]`. Establish `hc' : (c : ℚ_[l]) ≠ 0` using `fun h => hc (PadicInt.ext (h.trans PadicInt.coe_zero.symm))`. Establish `hcv : ‖c‖ = (l : ℝ) ^ (-(c : ℚ_[l]).valuation)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PadicInt.norm_def]`. Conclude with `Padic.norm_eq_zpow_neg_valuation hc'`. Establish `hl0 : (l : ℝ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Rewrite `hn` using `[hcv]`. Use `⟨n + (c : ℚ_[l]).valuation, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← zpow_add₀ hl0, add_neg_cancel, zpow_zero, one_mul]`. Use `_ = (l : ℝ) ^ (n + (c : ℚ_[l]).valuation) := by rw [hn, zpow_add₀ hl0, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem norm_of_mem_Kur {x : Om l} (hx : x ∈ MaximalUnramifiedExtension l) (h0 : x ≠ 0) :
     ∃ n : ℤ, ‖x‖ = (l : ℝ) ^ n := by
@@ -383,7 +373,7 @@ theorem norm_of_mem_Kur {x : Om l} (hx : x ∈ MaximalUnramifiedExtension l) (h0
     _ = (l : ℝ) ^ (n + (c : ℚ_[l]).valuation) := by rw [hn, zpow_add₀ hl0, mul_comm]
 
 /- English proof (translation)
-Introduce `l _ K x hx h0`. Unfold `K0 at hx`. Conclude with `norm_of_mem_Kur hx.2 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem norm_of_mem_unramified_subfield : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (x : Om l),
     x ∈ K0 K → x ≠ 0 → ∃ n : ℤ, ‖x‖ = (l : ℝ) ^ n := by

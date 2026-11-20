@@ -7,19 +7,17 @@ open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F _ _ g γ b hb k h`. Use `set d : Fˣ := Matrix.GeneralLinearGroup.det γ with hd`. Establish `hdet : γ.val.det = (d : F)` using `rfl`. Use `set t : (A F)ˣ := (IdeleGroup.diagonal F d)⁻¹ with ht`. Establish `htv : ((t : (A F)ˣ) : A F) = algebraMap F (A F) ((d⁻¹ : Fˣ) : F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[ht, IdeleGroup.diagonal, ← map_inv]`. Set `γ' : Matrix.SpecialLinearGroup (Fin 2) F` to `⟨!![1, 0; 0, ((d⁻¹ : Fˣ) : F)] * γ.val, by`. Rewrite using `[Matrix.det_mul, hdet, Matrix.det_fin_two_of]`. Use the proof step `simp⟩`. Establish `hg : gl (ratS F γ') = dM t * AdelicGLn.diagonal F 2 γ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, val_gl, val_ratS]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[γ', dM, Matrix.mul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_two, htv, map_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu⟩` from `Reduction.isUnit_apply_self_of_mem_adelicBorel hb 1`. Establish `hlow : b.val 1 0 = 0` using `Reduction.mem_adelicBorel.1 hb (by decide)`. Use `⟨γ', dM t * b, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `mul_mem (Reduction.mem_adelicBorel.2 ?_) hb` and prove the remaining obligations. Introduce `i j hij`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | (simp [dM]; done) | (simp at hij)`. Establish `hm : gl (ratS F γ' * g) = gl (ratS F γ') * gl g` using `map_mul _ _ _`. Rewrite using `[hm, hg, mul_assoc, h, mul_assoc]`. Simplify using `[dM, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e : (dM t * b).val 1 1 = ((t * u : (A F)ˣ) : A F)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[dM, Matrix.mul_apply, Fin.sum_univ_two, hu]`. Rewrite using `[e, ← hu, Reduction.adeleAbs_units, Reduction.adeleAbs_units]`. Use `ab_mul t u` as an intermediate fact. Establish `h1 : ab t = 1` using `by rw [ht, ab_inv, ab_diag, inv_one]`. Rewrite `this` using `[h1, one_mul]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.M.redDet :
     ∀ (F : Type) [Field F] [NumberField F], ∀ (g : G1 F) (γ : GL (Fin 2) F), ∀ b ∈ Reduction.adelicBorel (K := F) (n := 2), ∀ k : GL (Fin 2) (A F), AdelicGLn.diagonal F 2 γ * gl g = b * k → ∃ γ' : Matrix.SpecialLinearGroup (Fin 2) F, ∃ b' ∈ Reduction.adelicBorel (K := F) (n := 2), gl (ratS F γ' * g) = b' * k ∧ b'.val 0 0 = b.val 0 0 ∧ Reduction.adeleAbs (b'.val 1 1) = Reduction.adeleAbs (b.val 1 1) := by

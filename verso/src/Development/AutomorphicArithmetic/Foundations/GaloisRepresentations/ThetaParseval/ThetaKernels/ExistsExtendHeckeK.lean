@@ -14,21 +14,19 @@ noncomputable section
 namespace GlobalTheory.HeckeExtend
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB lam hc h1 hinf`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Take `⟨M, hM, hMk⟩` from `GlobalTheory.T.exists_congruence_kernel_ideleCharacter_trivialAtInfinity F lam hc hinf`. Set `V : Subgroup (AF F ⊗[F] E)ˣ` to `(Units.map (incAF F E).toMonoidHom).range ⊔ WE F E (8 * M)`. Establish `hkey : ∀ a : (AF F)ˣ, idFF F E a ∈ V → lam a = 1` using `key σ hB.cm M hM lam h1 hMk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : 0 < 8 * M` using `by positivity`. Establish `hWo : IsOpen (WE F E (8 * M) : Set (AF F ⊗[F] E)ˣ)`. Establish `ho` using `GlobalTheory.T.isOpen_integralTensorAdeleMultiples F E (8 * M) hN`. Establish `hcv : Continuous fun z : (AF F ⊗[F] E)ˣ => (z : AF F ⊗[F] E) - 1` using `Units.continuous_val.sub continuous_const`. Establish `hci : Continuous fun z : (AF F ⊗[F] E)ˣ => ((z⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) - 1` using `Units.continuous_coe_inv.sub continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(ho.preimage hcv).inter (ho.preimage hci)`. Establish `hVo : IsOpen (V : Set (AF F ⊗[F] E)ˣ)` using `Subgroup.isOpen_mono le_sup_right hWo`. Set `ψ0 : (AF F)ˣ →* (AF F ⊗[F] E)ˣ ⧸ V` to `(QuotientGroup.mk' V).comp (idFF F E)`. Establish `hker : ψ0.ker ≤ lam.ker` using `fun a ha => hkey a ((QuotientGroup.eq_one_iff _).1 ha)`. Use `letI : DivisibleBy (Additive Circle) ℕ := divisibleByOfSMulRightSurj _ _ fun {n} hn u => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht⟩` from `Circle.exp_surjective u.toMul`. Use `⟨Additive.ofMul (Circle.exp (t / n)), ?_⟩` and prove the remaining obligations. Use `show Additive.ofMul (Circle.exp (t / n) ^ n) = u`. Rewrite using `[← Circle.exp_nsmul, nsmul_eq_mul, mul_div_cancel₀ _ (Nat.cast_ne_zero.2 hn), ht]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `letI : DivisibleBy (Additive Circle) ℤ := AddGroup.divisibleByIntOfDivisibleByNat _`. Take `⟨ρ, hρ⟩` from `(Module.Baer.of_divisible (Additive Circle)).extension_property_addMonoidHom (MonoidHom.toAdditive (QuotientGroup.kerLift ψ0)) (QuotientGroup.kerLift_injective ψ0) (MonoidHom.toAdditive (QuotientGroup.lift ψ0.ker lam hker))`. Set `κ : (AF F ⊗[F] E)ˣ ⧸ V →* Circle` to `MonoidHom.toAdditive.symm ρ`. Establish `hκ : ∀ x, κ (QuotientGroup.kerLift ψ0 x) = QuotientGroup.lift ψ0.ker lam hker x` using `fun x => DFunLike.congr_fun hρ (Additive.ofMul x)`. Establish `hV1 : ∀ z ∈ V, κ.comp (QuotientGroup.mk' V) z = 1` using `fun z hz => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.comp_apply, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff z).2 hz, map_one]`. Use `⟨κ.comp (QuotientGroup.mk' V), ⟨?_, fun x => hV1 _ (le_sup_left (a := (Units.map (incAF F E).toMonoidHom).range) ⟨x, rfl⟩)⟩, fun z hz => hV1 z (le_sup_right (a := (Units.map (incAF F E).toMonoidHom).range) ?_), fun a => hκ (a : (AF F)ˣ ⧸ ψ0.ker)⟩` and prove the remaining obligations. Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Unfold `ContinuousAt`. Rewrite using `[map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hVo.mem_nhds (one_mem V)] with z hz`. Conclude with `(hV1 z hz).symm`. Establish `hN'` using `hN`. Use `⟨GlobalTheory.T.mem_tensorCongruence_of_supported_at_infinity F E _ hN' _ hz, GlobalTheory.T.mem_tensorCongruence_of_supported_at_infinity F E _ hN' _ ?_⟩` and prove the remaining obligations.
-
-Introduce `u hu`. Establish `e : ((z⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) - 1 = -(((z⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) * ((z : AF F ⊗[F] E) - 1))`. Rewrite using `[mul_sub, Units.inv_mul, mul_one, neg_sub]`. Rewrite using `[e, smul_neg, ← mul_smul_comm, hz u hu, mul_zero, neg_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extend_hecke_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E),

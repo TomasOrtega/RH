@@ -5,25 +5,23 @@ open NumberField Formalism.HC UpperTheory.Top UpperTheory.V
 
 open Polynomial in
 /- English proof (translation)
-Use `set f : ℚ[X] := X ^ 2 + C (p : ℚ) with hf`. Establish `hdeg : f.natDegree = 2`. Rewrite using `[hf]`. Use `compute_degree!`. Establish `hmon : f.Monic`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf]`. Use `monicity!`. Establish `hpq : (0 : ℚ) < p` using `by exact_mod_cast hp`. Establish `hnoroot : ∀ x : ℚ, ¬ f.IsRoot x`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `hx` using `[hf]`. Simplify using `[Polynomial.IsRoot] at hx`. Use polynomial arithmetic with `[sq_nonneg x]`. Establish `hirr : Irreducible f` using `Polynomial.irreducible_of_degree_le_three_of_not_isRoot (by rw [hdeg]; decide) hnoroot`. Establish `hspl` using `IsSplittingField.splits L f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 
-Establish `hdeg0 : (f.map (algebraMap ℚ L)).degree ≠ 0`. Rewrite using `[Polynomial.degree_map, Polynomial.degree_eq_natDegree hmon.ne_zero, hdeg]`. Evaluate the decidable proposition. Take `⟨α, hα⟩` from `hspl.exists_eval_eq_zero hdeg0`. Establish `haeval : aeval α f = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[aeval_def, ← eval_map]`. Conclude with `hα`. Establish `hmin : f = minpoly ℚ α` using `minpoly.eq_of_irreducible_of_monic hirr haeval hmon`. Establish `hint : IsIntegral ℚ α` using `⟨f, hmon, by rw [← aeval_def]; exact haeval⟩`. Establish `hfin : Module.finrank ℚ (IntermediateField.adjoin ℚ {α}) = 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IntermediateField.adjoin.finrank hint, ← hmin, hdeg]`. Establish `htop : IntermediateField.adjoin ℚ {α} = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hy : y ∈ Algebra.adjoin ℚ (f.rootSet L)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[IsSplittingField.adjoin_rootSet L f]`. Discharge the goal by the elementary cases of `trivial`. Establish `hle : Algebra.adjoin ℚ (f.rootSet L) ≤ (IntermediateField.adjoin ℚ {α}).toSubalgebra`. Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce `β hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hβ` using `[Polynomial.mem_rootSet]`. Establish `e1` using `hβ.2`. Establish `e2` using `haeval`. Rewrite `e1`, `e2` using `[hf]`. Simplify using `at e1 e2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (β - α) * (β + α) = 0` using `by linear_combination e1 - e2`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Establish `hb : β = α` using `by linear_combination h`. Rewrite using `[hb]`. Conclude with `IntermediateField.mem_adjoin_simple_self ℚ α`.
-
-Establish `hb : β = -α` using `by linear_combination h`. Rewrite using `[hb]`. Conclude with `neg_mem (IntermediateField.mem_adjoin_simple_self ℚ α)`. Conclude with `hle hy`. Rewrite using `[← IntermediateField.finrank_top', ← htop, hfin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finrank_quadratic_splitting_field (p : ℕ) (hp : 0 < p) (L : Type) [Field L] [Algebra ℚ L]
     [h : IsSplittingField ℚ L (X ^ 2 + C (p : ℚ) : ℚ[X])] : Module.finrank ℚ L = 2 := by
@@ -81,24 +79,24 @@ private theorem finrank_quadratic_splitting_field (p : ℕ) (hp : 0 < p) (L : Ty
 
 open Polynomial in
 /- English proof (translation)
-Use `show Module.finrank ℚ (SplittingField (X ^ 2 + C (p : ℚ))) = 2`. Conclude with `@finrank_quadratic_splitting_field p hp _ _ _ (Polynomial.IsSplittingField.splittingField _)`.
+A detailed English derivation is pending.
 -/
 private theorem finrank_kstar (p : ℕ) (hp : 0 < p) : Module.finrank ℚ (Kstar p) = 2 := by
   show Module.finrank ℚ (SplittingField (X ^ 2 + C (p : ℚ))) = 2
   exact @finrank_quadratic_splitting_field p hp _ _ _ (Polynomial.IsSplittingField.splittingField _)
 
 /- English proof (translation)
-Introduce `ψ`. Establish `hN : ψ.N ≠ 0` using `NeZero.ne _`. Establish `hne1 : {p | Nat.Prime p ∧ p % 4 = 3 ∧ 7 ≤ p ∧ p.Coprime ψ.N}.Nonempty`. Take `⟨p, hpgt, hp, hpm⟩` from `Nat.forall_exists_prime_gt_and_eq_mod (q := 4) (a := 3) (by decide) (ψ.N + 7)`. Use `⟨p, hp, ?_, by omega, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : ((p : ℕ) : ZMod 4) = ((3 : ℕ) : ZMod 4)` using `by simpa using hpm`. Rewrite `h3` using `[ZMod.natCast_eq_natCast_iff']`. Simplify using `using h3`. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Nat.le_of_dvd (Nat.pos_of_ne_zero hN) h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1 : (pK ψ).Prime ∧ pK ψ % 4 = 3 ∧ 7 ≤ pK ψ ∧ (pK ψ).Coprime ψ.N` using `Nat.sInf_mem hne1`. Establish `hord : ordC ψ ≠ 0` using `(orderOf_pos _).ne'`. Establish `hk : ordC ψ / 2 ^ (ordC ψ).factorization 2 ≠ 0` using `(Nat.ordCompl_pos 2 hord).ne'`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : 0 < 2 * ψ.N * pK ψ`. Use `h1.1.pos` as an intermediate fact. Use `Nat.pos_of_ne_zero hN` as an intermediate fact. Check the signs of the components of the expression. Establish `hne2 : {p | Nat.Prime p ∧ p ≡ 1 [MOD ordC ψ / 2 ^ (ordC ψ).factorization 2] ∧ p.Coprime (2 * ψ.N * pK ψ)}.Nonempty`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Take `⟨p, hp, hpgt, hpm⟩` from `Nat.exists_prime_gt_modEq_one (2 * ψ.N * pK ψ) hk`. Use `⟨p, hp, hpm, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `h`. Use `Nat.le_of_dvd hm h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2` using `Nat.sInf_mem hne2`. Conclude with `⟨h1, h2, finrank_kstar _ h1.1.pos⟩`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.pK_pOne_prime_conditions :
     ∀ ψ : PChar, ((pK ψ).Prime ∧ pK ψ % 4 = 3 ∧ 7 ≤ pK ψ ∧ (pK ψ).Coprime ψ.N) ∧

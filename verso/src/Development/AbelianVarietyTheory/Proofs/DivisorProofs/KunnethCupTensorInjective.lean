@@ -35,7 +35,7 @@ def toPair : C ⥤ (Pair φ)ᵒᵖ where
   map_comp _ _ := Quiver.Hom.unop_inj (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Rewrite using `[CoefMap.pullCohomologyOne_comp, (isPullO_pullHO1 h c : (pairPull h).pull1 c = (pairRes φ s').pull1 (pullHO1 h c))]`. Conclude with `CoefMap.pullCohomologyOne_comp (pairRes φ s') (CoefMap.restrict (OPair φ s') (toPair A B hle)) (pullHO1 h c)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrict_pullHO1 (h : φ ≫ s = s' ≫ spMap σ) (c : HO1 s) :
     (CoefMap.restrict (OAff s') A).pull1 (pullHO1 h c) =
@@ -57,31 +57,27 @@ def prodFun {J J' : Type} [Preorder J] [Preorder J'] {Z : Scheme.{0}} (W : J × 
   map_comp _ _ := Quiver.Hom.unop_inj (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Introduce `K _ X Y hXs hXq hYs hYq n x y hsum`. Take `⟨J, _, _, U, hU, hUi, hUc⟩` from `GlobalTheory.exists_finite_affine_cover_infClosed K X.left X.hom hXs hXq`. Take `⟨J', _, _, V, hV, hVi, hVc⟩` from `GlobalTheory.exists_finite_affine_cover_infClosed K Y.left Y.hom hYs hYq`. Use `choose Wf h1 h2 i1 i2 hWe hi1 hi2 hbij using fun p : J × J' ↦ GlobalTheory.T.exists_affine_open_product_sections_iso K X Y (U p.1) (V p.2)`. Establish `hWm : Monotone Wf` using `fun p q hpq ↦ by show (Wf p).1 ≤ (Wf q).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hWe p, hWe q]`. Conclude with `inf_le_inf (Scheme.Hom.preimage_mono _ (hU hpq.1)) (Scheme.Hom.preimage_mono _ (hV hpq.2))`. Use `haveI : Finite J'ᵒᵖ := Finite.of_equiv J' Opposite.equivToOpposite`. Set `Ψ` to `prodFun Wf hWm`. Set `F` to `hU.functor.op ⋙ OAff X.hom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `G` to `hV.functor.op ⋙ OAff Y.hom`. Set `E` to `Ψ ⋙ OAff (X ⊗ Y).hom`. Set `B₁ : Jᵒᵖ × J'ᵒᵖ ⥤ AffOp X.left` to `CategoryTheory.Prod.fst Jᵒᵖ J'ᵒᵖ ⋙ hU.functor.op`. Set `B₂ : Jᵒᵖ × J'ᵒᵖ ⥤ AffOp Y.left` to `CategoryTheory.Prod.snd Jᵒᵖ J'ᵒᵖ ⋙ hV.functor.op`. Establish `hle₁ : ∀ T, (Ψ.obj T).unop.1 ≤ (fst X Y).left ⁻¹ᵁ (B₁.obj T).unop.1` using `fun T ↦ h1 (T.1.unop, T.2.unop)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hle₂ : ∀ T, (Ψ.obj T).unop.1 ≤ (snd X Y).left ⁻¹ᵁ (B₂.obj T).unop.1` using `fun T ↦ h2 (T.1.unop, T.2.unop)`. Set `m₁` to `(pairPull (ovw (fst X Y))).comp (CoefMap.restrict (OPair (fst X Y).left (X ⊗ Y).hom) (toPair Ψ B₁ hle₁))`. Set `m₂` to `(pairPull (ovw (snd X Y))).comp (CoefMap.restrict (OPair (snd X Y).left (X ⊗ Y).hom) (toPair Ψ B₂ hle₂))`. Set `j₁ : ∀ T : Jᵒᵖ × J'ᵒᵖ, F.obj T.1 →ₐ[K] E.obj T` to `fun T ↦ i1 (T.1.unop, T.2.unop)`. Set `j₂ : ∀ T : Jᵒᵖ × J'ᵒᵖ, G.obj T.2 →ₐ[K] E.obj T` to `fun T ↦ i2 (T.1.unop, T.2.unop)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `nat₁ : ∀ (T T' : Jᵒᵖ × J'ᵒᵖ) (a : T ⟶ T') (b : F.obj T.1), j₁ T' (mp F a.1 b) = mp E a (j₁ T b)`. Introduce `T T' a b`. Use `(hi1 _ _).trans (Eq.trans ?_ (congrArg (mp E a) (hi1 (T.1.unop, T.2.unop) b).symm))` and prove the remaining obligations. Conclude with `m₁.naturality a b`. Establish `nat₂ : ∀ (T T' : Jᵒᵖ × J'ᵒᵖ) (a : T ⟶ T') (b : G.obj T.2), j₂ T' (mp G a.2 b) = mp E a (j₂ T b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `T T' a b`. Use `(hi2 _ _).trans (Eq.trans ?_ (congrArg (mp E a) (hi2 (T.1.unop, T.2.unop) b).symm))` and prove the remaining obligations. Conclude with `m₂.naturality a b`. Set `n₁ : CoefMap (RingHom.id K) F E` to `{ G := CategoryTheory.Prod.fst Jᵒᵖ J'ᵒᵖ α := fun T ↦ (j₁ T).toRingHom naturality := fun {T T'} a b ↦ nat₁ T T' a b smul := fun T r b ↦ map_smul (j₁ T) r b }`. Set `n₂ : CoefMap (RingHom.id K) G E` to `{ G := CategoryTheory.Prod.snd Jᵒᵖ J'ᵒᵖ α := fun T ↦ (j₂ T).toRingHom naturality := fun {T T'} a b ↦ nat₂ T T' a b smul := fun T r b ↦ map_smul (j₂ T) r b }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `rU` to `CoefMap.restrict (OAff X.hom) hU.functor.op`. Set `rV` to `CoefMap.restrict (OAff Y.hom) hV.functor.op`. Set `rE` to `CoefMap.restrict (OAff (X ⊗ Y).hom) Ψ`. Establish `key₁ : ∀ a, rE.pull1 (pO1 (fst X Y) a) = n₁.pull1 (rU.pull1 a)` using `fun a ↦ by`. Use `(restrict_pullHO1 Ψ B₁ hle₁ (ovw (fst X Y)) a).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(CoefMap.pullCohomologyOne_eq_of_natTrans m₁ (rU.comp n₁) (𝟙 B₁) (fun T b ↦ ?_) a).trans (CoefMap.pullCohomologyOne_comp rU n₁ a)` and prove the remaining obligations. Use `(congrArg ((rU.comp n₁).α T) (mp_id (OAff X.hom) _ b)).trans ?_` and prove the remaining obligations. Conclude with `hi1 (T.1.unop, T.2.unop) b`. Establish `key₂ : ∀ a, rE.pull1 (pO1 (snd X Y) a) = n₂.pull1 (rV.pull1 a)` using `fun a ↦ by`. Use `(restrict_pullHO1 Ψ B₂ hle₂ (ovw (snd X Y)) a).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(CoefMap.pullCohomologyOne_eq_of_natTrans m₂ (rV.comp n₂) (𝟙 B₂) (fun T b ↦ ?_) a).trans (CoefMap.pullCohomologyOne_comp rV n₂ a)` and prove the remaining obligations. Use `(congrArg ((rV.comp n₂).α T) (mp_id (OAff Y.hom) _ b)).trans ?_` and prove the remaining obligations. Conclude with `hi2 (T.1.unop, T.2.unop) b`. Establish `hbU : Function.Bijective rU.pull1` using `GlobalTheory.T.cech_pull_one_bijective_lattice_cover K X.left X.hom J U hU hUi hUc`. Establish `hbV : Function.Bijective rV.pull1` using `GlobalTheory.T.cech_pull_one_bijective_lattice_cover K Y.left Y.hom J' V hV hVi hVc`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `choose x' hx' using fun i ↦ H1.mk_surjective F (rU.pull1 (x i))`. Use `choose y' hy' using fun i ↦ H1.mk_surjective G (rV.pull1 (y i))`. Establish `hz : H2.mk E (∑ i, cupZ E (n₁.pullbackOneCocycle (x' i)) (n₂.pullbackOneCocycle (y' i))) = 0`. Establish `h0` using `congrArg rE.pull2 hsum`. Rewrite `h0` using `[map_zero, map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sum]`. Use `Eq.trans (Finset.sum_congr rfl fun i _ ↦ ?_) h0` and prove the remaining obligations. Rewrite using `[CoefMap.pullCohomologyTwo_cup, key₁, key₂, ← hx', ← hy']`. Both sides reduce to the same expression. Take `⟨f, hf⟩` from `H2.mk_eq_zero.1 hz`.
-
-Establish `e` using `GlobalTheory.T.tensor_algebra_product_diagram_compat K Jᵒᵖ J'ᵒᵖ F G E j₁ j₂ nat₁ nat₂ (fun T ↦ hbij (T.1.unop, T.2.unop)) n x' y' f (fun T T' T'' a b ↦ by`. Rewrite using `[hf]`. Simplify using `only [Submodule.coe_sum, Finset.sum_apply]`. Use the proof step `rfl)`. Simplify using `only [hx', hy'] at e`.
-
-Set `eU` to `LinearEquiv.ofBijective rU.pull1 hbU`. Set `eV` to `LinearEquiv.ofBijective rV.pull1 hbV`. Apply `(TensorProduct.congr eU eV).injective` to reduce the goal to its premises. Rewrite using `[map_sum, map_zero]`. Conclude with `e`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup_tmul_injective : ∀ (K : Type) [Field K] (X Y : Over (Sp K)), IsSeparated X.hom → QuasiCompact X.hom →
     IsSeparated Y.hom → QuasiCompact Y.hom → ∀ (n : ℕ) (x : Fin n → HO1 X.hom) (y : Fin n → HO1 Y.hom),

@@ -4,19 +4,19 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hT E _ _ _ A n Θ hΘ x y`. Establish `hconj : ∀ (τ : E →+* ℂ) (b : 𝓞 E), τ ((A.bar b : 𝓞 E) : E) = (starRingEnd ℂ) (τ (b : E))` using `fun τ b => by`. Rewrite using `[A.bar_eq, IsCMField.complexEmbedding_complexConj]`. Establish `hkey : ∀ a b : Fin n → 𝓞 E, ((A.EF n a b : ℤ) : ℝ) = ∑ k : Phi A × Fin n, 2 * (k.1.1 A.δ * k.1.1 (A.hd n k.2 : E) * k.1.1 (a k.2 : E) * (starRingEnd ℂ) (k.1.1 (b k.2 : E))).re`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ((A.EF n a b : ℤ) : ℝ) = ((Algebra.trace ℚ E (A.δ * ((∑ i, A.hd n i * a i * A.bar (b i) : 𝓞 E) : E)) : ℚ) : ℝ)`. Rewrite using `[← A.trd_spec, A.EF_apply]`. Use `norm_cast`. Rewrite using `[h1, (hT E A).1, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ((∑ i, A.hd n i * a i * A.bar (b i) : 𝓞 E) : E) = ∑ i, ((A.hd n i : 𝓞 E) : E) * (a i : E) * ((A.bar (b i) : 𝓞 E) : E)`. Simplify using `using map_sum (algebraMap (𝓞 E) E) (fun i => A.hd n i * a i * A.bar (b i)) Finset.univ`. Rewrite using `[h2, map_mul, map_sum, Finset.mul_sum, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, hconj, mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hx : ∀ (r : ℝ) (a : Fin n → 𝓞 E) (k : Phi A × Fin n), Θ (r ⊗ₜ[ℤ] a) k = (r : ℂ) * k.1.1 (a k.2 : E)`. Introduce and unpack `r a ⟨τ, i⟩`. Establish `h : r ⊗ₜ[ℤ] a = r • ((1 : ℝ) ⊗ₜ[ℤ] a)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h, map_smul, Pi.smul_apply, hΘ, Complex.real_smul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x₁ x₂ h₁ h₂`. Simplify using `only [map_add, LinearMap.add_apply, h₁, h₂, Pi.add_apply, mul_add, add_mul, Complex.add_re, Finset.sum_add_distrib]`. Consider the case `tmul r a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y₁ y₂ h₁ h₂`. Simplify using `only [map_add, h₁, h₂, Pi.add_apply, mul_add, Complex.add_re, Finset.sum_add_distrib]`. Consider the case `tmul s b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[LinearMap.BilinForm.baseChange_tmul, zsmul_eq_mul, hkey, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hx, hx, map_mul, Complex.conj_ofReal]`. Establish `h : k.1.1 A.δ * k.1.1 (A.hd n k.2 : E) * ((r : ℂ) * k.1.1 (a k.2 : E)) * ((s : ℂ) * (starRingEnd ℂ) (k.1.1 (b k.2 : E))) = ((r * s : ℝ) : ℂ) * (k.1.1 A.δ * k.1.1 (A.hd n k.2 : E) * k.1.1 (a k.2 : E) * (starRingEnd ℂ) (k.1.1 (b k.2 : E)))` using `by push_cast; ring`. Rewrite using `[h, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

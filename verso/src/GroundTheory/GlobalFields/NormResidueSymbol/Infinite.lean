@@ -16,7 +16,7 @@ section Conj
 variable {K L : Type*} [Field K] [Field L] [Algebra K L]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h ↦ h.eq, fun h ↦ RingHom.ext fun x ↦ by rw [RingHom.comp_apply, conjugate_coe_eq, starRingEnd_apply] exact (h x).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isConj_iff_forall {φ : L →+* ℂ} {σ : L ≃ₐ[K] L} :
     IsConj φ σ ↔ ∀ x, φ (σ x) = star (φ x) :=
@@ -25,9 +25,9 @@ theorem isConj_iff_forall {φ : L →+* ℂ} {σ : L ≃ₐ[K] L} :
     exact (h x).symm⟩
 
 /- English proof (translation)
-Simplify using `only [isConj_iff_forall, conjugate_coe_eq, starRingEnd_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Simplify using `using congrArg star (h x)`. Introduce `h x`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isConj_conjugate_iff {φ : L →+* ℂ} {σ : L ≃ₐ[K] L} :
     IsConj (conjugate φ) σ ↔ IsConj φ σ := by
@@ -39,7 +39,7 @@ theorem isConj_conjugate_iff {φ : L →+* ℂ} {σ : L ≃ₐ[K] L} :
     rw [h x]
 
 /- English proof (translation)
-Break down `mk_eq_iff.1 h with rfl | rfl` into its components or cases. Both sides reduce to the same expression. Conclude with `isConj_conjugate_iff.symm`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isConj_iff_of_mk_eq {φ ψ : L →+* ℂ} (h : mk φ = mk ψ) (σ : L ≃ₐ[K] L) :
     IsConj φ σ ↔ IsConj ψ σ := by
@@ -48,11 +48,11 @@ theorem isConj_iff_of_mk_eq {φ ψ : L →+* ℂ} (h : mk φ = mk ψ) (σ : L �
   · exact isConj_conjugate_iff.symm
 
 /- English proof (translation)
-Establish `hc : ∀ y, ν (σ y) = σ (ν y)` using `fun y ↦ by`. Rewrite using `[← AlgEquiv.mul_apply, mul_comm' ν σ, AlgEquiv.mul_apply]`. Establish `hν : ∀ y, (ν : L →+* L) y = ν y` using `fun _ ↦ rfl`. Simplify using `only [isConj_iff_forall, RingHom.comp_apply, hν]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h y`. Use `h (ν.symm y)` as an intermediate fact. Rewrite `this` using `[hc, AlgEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `h y`. Rewrite using `[hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h (ν y)`.
+A detailed English derivation is pending.
 -/
 theorem isConj_comp_iff [IsMulCommutative (L ≃ₐ[K] L)] {φ : L →+* ℂ} {σ ν : L ≃ₐ[K] L} :
     IsConj (φ.comp (ν : L →+* L)) σ ↔ IsConj φ σ := by
@@ -74,7 +74,7 @@ def conjOfEmbedding (φ : L →+* ℂ) : L ≃ₐ[K] L :=
   if h : ∃ σ : L ≃ₐ[K] L, IsConj φ σ then h.choose else 1
 
 /- English proof (translation)
-Establish `h : ∃ σ : L ≃ₐ[K] L, IsConj φ σ` using `⟨σ, hσ⟩`. Rewrite using `[conjOfEmbedding, dif_pos h]`. Conclude with `h.choose_spec.ext hσ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjOfEmbedding_eq {φ : L →+* ℂ} {σ : L ≃ₐ[K] L} (hσ : IsConj φ σ) :
     conjOfEmbedding φ = σ := by
@@ -83,14 +83,14 @@ theorem conjOfEmbedding_eq {φ : L →+* ℂ} {σ : L ≃ₐ[K] L} (hσ : IsConj
   exact h.choose_spec.ext hσ
 
 /- English proof (translation)
-Rewrite using `[conjOfEmbedding, dif_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conjOfEmbedding_of_not {φ : L →+* ℂ} (h : ¬ ∃ σ : L ≃ₐ[K] L, IsConj φ σ) :
     conjOfEmbedding (K := K) φ = 1 := by
   rw [conjOfEmbedding, dif_neg h]
 
 /- English proof (translation)
-Distinguish the cases in `hφ : ∃ σ : L ≃ₐ[K] L, IsConj φ σ`. Take `⟨σ, hσ⟩` from `hφ`. Rewrite using `[conjOfEmbedding_eq hσ, conjOfEmbedding_eq ((h σ).1 hσ)]`. Rewrite using `[conjOfEmbedding_of_not hφ, conjOfEmbedding_of_not fun ⟨σ, hσ⟩ ↦ hφ ⟨σ, (h σ).2 hσ⟩]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjOfEmbedding_congr {φ ψ : L →+* ℂ}
     (h : ∀ σ : L ≃ₐ[K] L, IsConj φ σ ↔ IsConj ψ σ) :
@@ -102,7 +102,7 @@ theorem conjOfEmbedding_congr {φ ψ : L →+* ℂ}
       conjOfEmbedding_of_not fun ⟨σ, hσ⟩ ↦ hφ ⟨σ, (h σ).2 hσ⟩]
 
 /- English proof (translation)
-Distinguish the cases in `hφ : ∃ σ : L ≃ₐ[K] L, IsConj φ σ`. Take `⟨σ, hσ⟩` from `hφ`. Rewrite using `[conjOfEmbedding_eq hσ]`. Conclude with `AlgEquiv.ext fun x ↦ isConj_apply_apply hσ x`. Rewrite using `[conjOfEmbedding_of_not hφ, mul_one]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjOfEmbedding_mul_self (φ : L →+* ℂ) :
     conjOfEmbedding (K := K) φ * conjOfEmbedding φ = 1 := by
@@ -118,19 +118,19 @@ def conjAt (w : InfinitePlace L) : L ≃ₐ[K] L :=
   conjOfEmbedding w.embedding
 
 /- English proof (translation)
-The claim follows from `conjOfEmbedding_mul_self _`.
+A detailed English derivation is pending.
 -/
 theorem conjAt_mul_self (w : InfinitePlace L) : conjAt K w * conjAt K w = 1 :=
   conjOfEmbedding_mul_self _
 
 /- English proof (translation)
-The claim follows from `conjOfEmbedding_eq (isConj_one_iff.2 (isReal_iff.1 hw))`.
+A detailed English derivation is pending.
 -/
 theorem conjAt_of_isReal {w : InfinitePlace L} (hw : w.IsReal) : conjAt K w = 1 :=
   conjOfEmbedding_eq (isConj_one_iff.2 (isReal_iff.1 hw))
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `exists_isConj_of_isRamified (k := K) (φ := w.embedding) (by rwa [mk_embedding])`. Rewrite using `[conjAt, conjOfEmbedding_eq hσ]`. Conclude with `hσ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isConj_conjAt [IsGalois K L] {w : InfinitePlace L} (hw : w.IsRamified K) :
     IsConj w.embedding (conjAt K w) := by
@@ -139,7 +139,7 @@ theorem isConj_conjAt [IsGalois K L] {w : InfinitePlace L} (hw : w.IsRamified K)
   exact hσ
 
 /- English proof (translation)
-The claim follows from `(isConj_ne_one_iff (isConj_conjAt hw)).2 fun h ↦ not_isReal_iff_isComplex.2 (isRamified_iff.1 hw).1 (isReal_iff.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem conjAt_ne_one [IsGalois K L] {w : InfinitePlace L} (hw : w.IsRamified K) :
     conjAt K w ≠ 1 :=
@@ -147,7 +147,7 @@ theorem conjAt_ne_one [IsGalois K L] {w : InfinitePlace L} (hw : w.IsRamified K)
     not_isReal_iff_isComplex.2 (isRamified_iff.1 hw).1 (isReal_iff.2 h)
 
 /- English proof (translation)
-Use `conjOfEmbedding_congr fun σ ↦ ?_` and prove the remaining obligations. Establish `h : mk (τ • w).embedding = mk (w.embedding.comp (τ.symm : L →+* L))`. Rewrite using `[mk_embedding, ← smul_mk, mk_embedding]`. Rewrite using `[isConj_iff_of_mk_eq h]`. Conclude with `isConj_comp_iff`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjAt_smul [IsMulCommutative (L ≃ₐ[K] L)] (τ : L ≃ₐ[K] L) (w : InfinitePlace L) :
     conjAt K (τ • w) = conjAt K w := by
@@ -158,7 +158,7 @@ theorem conjAt_smul [IsMulCommutative (L ≃ₐ[K] L)] (τ : L ≃ₐ[K] L) (w :
   exact isConj_comp_iff
 
 /- English proof (translation)
-Take `⟨σ, rfl⟩` from `MulAction.exists_smul_eq (L ≃ₐ[K] L) w w'`. Rewrite using `[InfinitePlace.coe_smul_placesOver, conjAt_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjAt_eq [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)] {v : InfinitePlace K}
     (w w' : v.placesOver L) : conjAt K (w : InfinitePlace L) = conjAt K (w' : InfinitePlace L) := by
@@ -173,16 +173,16 @@ variable {K L : Type*} [Field K] [Field L] [Algebra K L] [IsGalois K L] {v : Inf
   (w : InfinitePlace L) [w.LiesOver v]
 
 /- English proof (translation)
-The claim follows from `extensionEmbedding_coe w _`.
+A detailed English derivation is pending.
 -/
 theorem extensionEmbedding_algebraMap_self (l : L) :
     extensionEmbedding w (algebraMap L w.Completion l) = w.embedding l :=
   extensionEmbedding_coe w _
 
 /- English proof (translation)
-Distinguish the cases in `hw : w.IsComplex`. Establish `hram : w.IsRamified K` using `isRamified_iff.2 ⟨hw, by rw [InfinitePlace.LiesOver.comap_eq w v]; exact hv⟩`. Apply `(extensionEmbedding w).injective` to reduce the goal to its premises. Rewrite using `[InfinitePlace.extensionEmbedding_completionConj, extensionEmbedding_algebraMap_self, extensionEmbedding_algebraMap_self, (isConj_conjAt hram).eq, starRingEnd_apply]`. Establish `hw' : w.IsReal` using `not_isComplex_iff_isReal.1 hw`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[InfinitePlace.completionConj, dif_neg hw, conjAt_of_isReal hw']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem completionConj_algebraMap (hv : v.IsReal) (l : L) :
     InfinitePlace.completionConj (w := w) hv (algebraMap L w.Completion l) =
@@ -214,7 +214,7 @@ def infiniteLocalSymbol : v.Completionˣ →* (L ≃ₐ[K] L) :=
   else 1
 
 /- English proof (translation)
-Rewrite using `[infiniteLocalSymbol, dif_pos hv, MonoidHom.comp_apply, InfinitePlace.realSignHom_apply, conjAt_eq _ w]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infiniteLocalSymbol_apply (hv : v.IsReal) (w : v.placesOver L) (x : v.Completionˣ) :
     infiniteLocalSymbol L v x =
@@ -226,15 +226,15 @@ theorem infiniteLocalSymbol_apply (hv : v.IsReal) (w : v.placesOver L) (x : v.Co
 omit [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)] in
 
 /- English proof (translation)
-Rewrite using `[infiniteLocalSymbol, dif_neg hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infiniteLocalSymbol_of_not_isReal (hv : ¬ v.IsReal) : infiniteLocalSymbol L v = 1 := by
   rw [infiniteLocalSymbol, dif_neg hv]
 
 /- English proof (translation)
-Distinguish the cases in `hv : v.IsReal`. Rewrite using `[infiniteLocalSymbol_apply L v hv w, InfinitePlace.localSymbol_apply v _ hv] split_ifs`. Conclude with `(completionConj_algebraMap (w : InfinitePlace L) hv l).symm`. Both sides reduce to the same expression. Rewrite using `[infiniteLocalSymbol_of_not_isReal L v hv, InfinitePlace.localSymbol_of_not_isReal v _ hv]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_infiniteLocalSymbol_apply (w : v.placesOver L) (x : v.Completionˣ) (l : L) :
     algebraMap L (w : InfinitePlace L).Completion (infiniteLocalSymbol L v x l) =
@@ -249,13 +249,13 @@ theorem algebraMap_infiniteLocalSymbol_apply (w : v.placesOver L) (x : v.Complet
     rfl
 
 /- English proof (translation)
-Distinguish the cases in `h2 : v.IsReal ∧ (w : InfinitePlace L).IsComplex`. Take `⟨hv, hw⟩` from `h2`. Establish `hram : (w : InfinitePlace L).IsRamified K` using `isRamified_iff.2 ⟨hw, by rw [InfinitePlace.LiesOver.comap_eq (w : InfinitePlace L) v]; exact hv⟩`. Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, infiniteLocalSymbol_apply L v hv w, InfinitePlace.mem_normSubgroup_iff hv hw]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : extensionEmbeddingOfIsReal hv x ≠ 0` using `(map_ne_zero _).2 x.ne_zero`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hneg`. Rewrite `h` using `[if_pos (lt_of_le_of_ne (not_lt.1 hneg) hx0)]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `conjAt_ne_one hram h`. Introduce `h`. Rewrite using `[if_neg (not_lt.2 h.le)]`. Rewrite using `[InfinitePlace.normSubgroup_eq_top (w : InfinitePlace L) h2, eq_top_iff]`. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_ker]`. Distinguish the cases in `hv : v.IsReal`. Establish `hw : (w : InfinitePlace L).IsReal` using `not_isComplex_iff_isReal.1 fun hw ↦ h2 ⟨hv, hw⟩`. Rewrite using `[infiniteLocalSymbol_apply L v hv w, conjAt_of_isReal hw, ite_self]`. Rewrite using `[infiniteLocalSymbol_of_not_isReal L v hv, MonoidHom.one_apply]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_infiniteLocalSymbol (w : v.placesOver L) :
     (infiniteLocalSymbol L v).ker = InfinitePlace.normSubgroup v (w : InfinitePlace L) := by
@@ -285,7 +285,7 @@ theorem ker_infiniteLocalSymbol (w : v.placesOver L) :
 open scoped Classical in
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Express the relevant statement in the definitionally equal form `∏ w : v.placesOver L, Units.map (Algebra.norm v.Completion : (w : InfinitePlace L).Completion →* v.Completion) (y w) ∈ _`. Conclude with `Subgroup.prod_mem _ fun w _ ↦ by`. Rewrite using `[ker_infiniteLocalSymbol L v w]`. Conclude with `⟨y w, rfl⟩`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_infiniteLocalNorm_le_ker_infiniteLocalSymbol :
     (IdeleNorm.infiniteLocalNorm L v).range ≤ (infiniteLocalSymbol L v).ker := by
@@ -297,7 +297,7 @@ theorem range_infiniteLocalNorm_le_ker_infiniteLocalSymbol :
     exact ⟨y w, rfl⟩
 
 /- English proof (translation)
-The claim follows from `continuous_monoidHom_of_isOpen_ker _ (Subgroup.isOpen_mono (range_infiniteLocalNorm_le_ker_infiniteLocalSymbol L v) (IdeleNorm.isOpen_range_infiniteLocalNorm v))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infiniteLocalSymbol : Continuous (infiniteLocalSymbol L v) :=
   continuous_monoidHom_of_isOpen_ker _ (Subgroup.isOpen_mono

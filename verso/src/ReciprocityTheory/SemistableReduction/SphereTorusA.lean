@@ -7,9 +7,9 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open MeasureTheory Polynomial
 
 /- English proof (translation)
-Rewrite using `[logMahlerMeasure_def, Real.circleAverage, ← intervalIntegral.integral_of_le zero_le_one]`. Establish `h2 : (2 * Real.pi) ≠ 0` using `by positivity`. Use `intervalIntegral.integral_comp_mul_left (fun θ => Real.log ‖eval (circleMap 0 1 θ) q‖) (a := 0) (b := 1) h2` as an intermediate fact. Simplify using `only [mul_zero, mul_one] at this`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Use `congr 3`. Simplify using `only [circleMap, zero_add, Complex.ofReal_one, one_mul, Complex.ofReal_mul, Complex.ofReal_ofNat]`. Put the polynomial expressions in normal form.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 theorem integral_Ioc_log_eval_eq_logMahlerMeasure (q : ℂ[X]) :
     ∫ t in Set.Ioc (0 : ℝ) 1, Real.log ‖q.eval (Complex.exp (2 * Real.pi * Complex.I * (t : ℂ)))‖ =
@@ -28,15 +28,15 @@ theorem integral_Ioc_log_eval_eq_logMahlerMeasure (q : ℂ[X]) :
   ring_nf
 
 /- English proof (translation)
-Distinguish the cases in `hp : p = 0`. Simplify using `[hp]`. Establish `hq : p.comp (C c * X) ≠ 0`. Introduce `h`. Apply `hp` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h'` using `congrArg (fun r => r.comp (C c⁻¹ * X)) h`. Establish `hX : (C c * X).comp (C c⁻¹ * X) = (X : ℂ[X])`. Simplify using `[← mul_assoc, ← C_mul, mul_inv_cancel₀ hc]`. Simplify `h'` using `[Polynomial.comp_assoc, hX]`. Establish `key : ∀ s : Multiset ℂ, (((s.map fun a => X - C a).prod).comp (C c * X)).mahlerMeasure ≤ ((s.map fun a => X - C a).prod).mahlerMeasure`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `s`. Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons, mul_comp, mahlerMeasure_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Apply `mul_le_mul _ ih (mahlerMeasure_nonneg _) (mahlerMeasure_nonneg _)` to reduce the goal to its premises. Establish `h1 : (X - C a).comp (C c * X) = C c * X + C (-a)`. Simplify using `[sub_eq_add_neg]`. Rewrite using `[h1, mahlerMeasure_C_mul_X_add_C hc, mahlerMeasure_X_sub_C, norm_neg]`. Conclude with `max_le_max hc1 le_rfl`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[logMahlerMeasure_eq_log_MahlerMeasure, logMahlerMeasure_eq_log_MahlerMeasure]`. Apply `Real.log_le_log (mahlerMeasure_pos_of_ne_zero hq)` to reduce the goal to its premises. Establish `hs` using `(IsAlgClosed.splits p).eq_prod_roots`. Rewrite using `[hs, mul_comp, C_comp, mahlerMeasure_mul, mahlerMeasure_mul]`. Conclude with `mul_le_mul_of_nonneg_left (key _) (mahlerMeasure_nonneg _)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logMahlerMeasure_comp_C_mul_X_le (p : ℂ[X]) {c : ℂ} (hc : c ≠ 0) (hc1 : ‖c‖ ≤ 1) :
     (p.comp (C c * X)).logMahlerMeasure ≤ p.logMahlerMeasure := by
@@ -68,7 +68,7 @@ theorem logMahlerMeasure_comp_C_mul_X_le (p : ℂ[X]) {c : ℂ} (hc : c ≠ 0) (
   exact mul_le_mul_of_nonneg_left (key _) (mahlerMeasure_nonneg _)
 
 /- English proof (translation)
-Establish `h` using `integral_Ioc_log_eval_eq_logMahlerMeasure (p.comp (C c * X))`. Simplify using `only [eval_comp, eval_mul, eval_C, eval_X] at h`. Rewrite using `[h, integral_Ioc_log_eval_eq_logMahlerMeasure]`. Conclude with `logMahlerMeasure_comp_C_mul_X_le p hc hc1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_log_eval_mul_le (p : ℂ[X]) {c : ℂ} (hc : c ≠ 0) (hc1 : ‖c‖ ≤ 1) :
     ∫ t in Set.Ioc (0 : ℝ) 1,
@@ -88,17 +88,17 @@ instance isProbabilityMeasure_torusProb_sphere (ι : Type*) [Fintype ι] :
   unfold torusProb; infer_instance
 
 /- English proof (translation)
-Establish `hm : Measurable (fun p : (ι → ℝ) × ℝ => Function.update p.1 i p.2)` using `measurable_update'`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Use `symm`. Apply `Measure.pi_eq` to reduce the goal to its premises. Introduce `s hs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `hpre : (fun p : (ι → ℝ) × ℝ => Function.update p.1 i p.2) ⁻¹' (Set.univ.pi s) = (Set.univ.pi (Function.update s i Set.univ)) ×ˢ s i`. Use extensionality with `⟨x, t⟩`. Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_prod]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `⟨fun j => ?_, by simpa using h i⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify `h j` using `[Function.update_of_ne hj]`. Introduce and unpack `⟨h1, h2⟩ j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1 j` using `[Function.update_of_ne hj]`. Rewrite using `[hpre, Measure.prod_prod, torusProb, Measure.pi_pi, ← Finset.mul_prod_erase _ _ (Finset.mem_univ i), ← Finset.mul_prod_erase (s := Finset.univ) (fun j => volume.restrict (Set.Ioc (0 : ℝ) 1) (s j)) (Finset.mem_univ i)]`. Simplify using `only [Function.update_self, measure_univ, one_mul]`. Rewrite using `[mul_comm]`. Use `congr 1`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.prod_congr rfl fun j hj => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_update_torus {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι) :
     MeasurePreserving (fun p : (ι → ℝ) × ℝ => Function.update p.1 i p.2)
@@ -133,9 +133,9 @@ theorem measurePreserving_update_torus {ι : Type*} [Fintype ι] [DecidableEq ι
   exact Finset.prod_congr rfl fun j hj => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]
 
 /- English proof (translation)
-Establish `hU` using `measurePreserving_update_torus (ι := ι) i`. Establish `hgU : Integrable (g ∘ fun p : (ι → ℝ) × ℝ => Function.update p.1 i p.2) ((torusProb ι).prod (volume.restrict (Set.Ioc (0 : ℝ) 1)))` using `(hU.integrable_comp hg.aestronglyMeasurable).mpr hg`. Use `⟨hgU.integral_prod_left, ?_⟩` and prove the remaining obligations. Establish `h1 : ∫ θ, g θ ∂(torusProb ι) = ∫ p, g (Function.update p.1 i p.2) ∂((torusProb ι).prod (volume.restrict (Set.Ioc (0 : ℝ) 1)))` using `by conv_lhs => rw [← hU.map_eq]`. Conclude with `integral_map hU.measurable.aemeasurable (by rw [hU.map_eq]; exact hg.aestronglyMeasurable)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `integral_prod _ hgU`.
+A detailed English derivation is pending.
 -/
 theorem integral_torus_eq_iter {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι) {g : (ι → ℝ) → ℝ}
     (hg : Integrable g (torusProb ι)) :

@@ -11,20 +11,20 @@ namespace PositivityTheory.DualRT
 open GlobalTheory.Published
 
 /- English proof (translation)
-The claim follows from `surjAll_of_hodge GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations MainStatements.Hodge.Free.abelianHodgeDeRham`.
+A detailed English derivation is pending.
 -/
 theorem surjAll : CrystallinePoints.Pd.SurjAll :=
   surjAll_of_hodge GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations MainStatements.Hodge.Free.abelianHodgeDeRham
 
 /- English proof (translation)
-The claim follows from `have hS := AbelianDeRhamStructureFromPages.Adrs.abelianDeRhamStructure_of_page MainStatements.Hodge.Free.abelianDeRhamPage CrystallinePoints.Pd.duality_of_surjAll (GlobalTheory.abelianDeRhamStructure_toFree hS) hS.2.1 hS.2.2 surjAll`.
+A detailed English derivation is pending.
 -/
 theorem duality : AbelianDeRham.Duality :=
   have hS := AbelianDeRhamStructureFromPages.Adrs.abelianDeRhamStructure_of_page MainStatements.Hodge.Free.abelianDeRhamPage
   CrystallinePoints.Pd.duality_of_surjAll (GlobalTheory.abelianDeRhamStructure_toFree hS) hS.2.1 hS.2.2 surjAll
 
 /- English proof (translation)
-The claim follows from `have hS := AbelianDeRhamStructureFromPages.Adrs.abelianDeRhamStructure_of_page MainStatements.Hodge.Free.abelianDeRhamPage have hF := GlobalTheory.abelianDeRhamStructure_toFree hS ⟨hF, hS.2.1, hS.2.2, AbelianDeRham.rigid_of_free_of_crystallineDeRham hF FubiniStudyChowHeightFormul …`.
+A detailed English derivation is pending.
 -/
 theorem abelianDeRham : AbelianDeRham :=
   have hS := AbelianDeRhamStructureFromPages.Adrs.abelianDeRhamStructure_of_page MainStatements.Hodge.Free.abelianDeRhamPage

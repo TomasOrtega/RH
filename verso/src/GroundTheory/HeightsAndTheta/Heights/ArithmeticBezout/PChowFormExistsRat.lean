@@ -13,7 +13,7 @@ open MvPolynomial
 open ReciprocityTheory.ChartRestriction.G.Geo (MRing PBlk IsArithVar)
 
 /- English proof (translation)
-Introduce `n e P hP`. Establish `hQ` using `(ObjectsChow.GenericFibreIdeal.proof n (e + 1) P hP).1`. Take `⟨g, hg⟩` from `ObjectsChow.chowFormExists ℚ n (e + 1) (ObjectsChow.genericIdeal P) hQ (hD n (e + 1) P hP)`. Take `⟨δ, -, hδ⟩` from `ChowFormMultiHomog.full ℚ n (e + 1) (ObjectsChow.genericIdeal P) g hQ hg`. Conclude with `⟨δ, g, hA n e δ P g hP hg hδ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ChowFormExistsRat.proof (hA : ObjectsChow.ChowFormToComplexChowForm.Statement)
     (hD : ObjectsChow.GenericFibreDim.Statement) : ChowFormExistsRat.Statement := by

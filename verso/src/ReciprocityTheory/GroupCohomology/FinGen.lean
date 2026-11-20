@@ -14,7 +14,7 @@ section SlopeTestRemainingChoices
 variable {R : Type u} [CommRing R]
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => show Submodule.Quotient.mk (i.Z n z) = t • Submodule.Quotient.mk z`. Rewrite using `[← Submodule.Quotient.mk_smul]`. Use `congr 1`. Conclude with `Subtype.ext (hi n z.1)`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hom_H_smul {A : Cx R} (i : Hom A A) (t : R) (hi : ∀ n x, i.f n x = t • x) (n : ℕ)
     (x : A.H n) : i.H n x = t • x := by
@@ -30,11 +30,11 @@ end SlopeTestRemainingChoices
 section Aux2
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m generalizing X with`. Consider the case `zero`. Introduce `y`. Set `z : ∀ k, X k` to `fun k => Nat.rec (motive := fun k => X k) y (fun k zk => Classical.choose (hf k zk)) k`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `⟨z, fun k => Classical.choose_spec (hf k (z k)), rfl⟩`. Consider the case `succ m ih`. Introduce `y`. Take `⟨z', hz', hm⟩` from `ih (X := fun k => X (k + 1)) (fun k => f (k + 1)) (fun k => hf (k + 1)) y`. Use `⟨fun k => match k with | 0 => f 0 (z' 0) | k + 1 => z' k, fun k => ?_, hm⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the cases of `k with`. Consider the case `zero => rfl`. Consider the case `succ k => exact hz' k`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem tower_family {X : ℕ → Type*} (f : ∀ k, X (k + 1) → X k) (hf : ∀ k, Surjective (f k)) :
     ∀ (m : ℕ) (y : X m), ∃ z : ∀ k, X k, (∀ k, f k (z (k + 1)) = z k) ∧ z m = y := by
@@ -61,7 +61,7 @@ noncomputable def descend (p : M →ₗ[R] P) (hp : Surjective p) (g : M →ₗ[
   (LinearMap.ker p).liftQ g h ∘ₗ (p.quotKerEquivOfSurjective hp).symm.toLinearMap
 
 /- English proof (translation)
-Establish `: (p.quotKerEquivOfSurjective hp).symm (p x) = Submodule.Quotient.mk x`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Simplify using `only [descend, LinearMap.coe_comp, LinearEquiv.coe_coe, comp_apply, this, Submodule.liftQ_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem descend_apply (p : M →ₗ[R] P) (hp : Surjective p) (g : M →ₗ[R] Q)
     (h : LinearMap.ker p ≤ LinearMap.ker g) (x : M) : descend p hp g h (p x) = g x := by
@@ -71,7 +71,7 @@ theorem descend_apply (p : M →ₗ[R] P) (hp : Surjective p) (g : M →ₗ[R] Q
     Submodule.liftQ_apply]
 
 /- English proof (translation)
-Rewrite `*` using `[isFiniteLength_iff_isNoetherian_isArtinian]`. Take `⟨_, _⟩` from `hM`. Take `⟨_, _⟩` from `hP`. Establish `e : LinearMap.range f = LinearMap.ker g` using `h.linearMap_ker_eq.symm`. Conclude with `⟨isNoetherian_of_range_eq_ker f g e, isArtinian_of_range_eq_ker f g e⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isFiniteLength_of_exact {N : Type*} [AddCommGroup N] [Module R N]
     (f : M →ₗ[R] N) (g : N →ₗ[R] P) (h : Exact f g)
@@ -83,11 +83,9 @@ theorem isFiniteLength_of_exact {N : Type*} [AddCommGroup N] [Module R N]
   exact ⟨isNoetherian_of_range_eq_ker f g e, isArtinian_of_range_eq_ker f g e⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.smul_induction_on (p := fun x => ∀ i, x i ∈ J) hx ?_ ?_` and prove the remaining obligations. Introduce `a ha m _ i`. Conclude with `J.mul_mem_right _ ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hb i`. Conclude with `J.add_mem (ha i) (hb i)`. Introduce `hx`. Rewrite using `[show x = ∑ i, x i • Pi.single i (1 : R) by`. Use extensionality with `j`.
-
-Simplify using `[Finset.sum_apply, Pi.single_apply]]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_smul_top_pi {ι : Type*} [Fintype ι] [DecidableEq ι] (J : Ideal R) (x : ι → R) :
     x ∈ J • (⊤ : Submodule R (ι → R)) ↔ ∀ i, x i ∈ J := by
@@ -102,13 +100,11 @@ theorem mem_smul_top_pi {ι : Type*} [Fintype ι] [DecidableEq ι] (J : Ideal R)
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top
 
 /- English proof (translation)
-Establish `key : ∀ k (x : ι → R), x ∈ I ^ k • (⊤ : Submodule R (ι → R)) ↔ ∀ i, x i ∈ I ^ k • (⊤ : Submodule R R)`. Introduce `k x`. Rewrite using `[mem_smul_top_pi]`. Simplify using `only [smul_eq_mul, Ideal.mul_top]`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ∀ i, ∃ l : R, ∀ n, f n i ≡ l [SMOD (I ^ n • ⊤ : Submodule R R)]`. Introduce `i`. Use `IsPrecomplete.prec' (fun n => f n i) fun {m n} hmn => ?_` and prove the remaining obligations. Use `(hf hmn)` as an intermediate fact. Rewrite `this`, the goal using `[SModEq.sub_mem]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(key m _).1 this i`. Use `choose l hl using hc`. Use `⟨l, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, key]`. Introduce `i`.
-
-Conclude with `SModEq.sub_mem.1 (hl i n)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isPrecomplete_pi {ι : Type*} [Fintype ι] [DecidableEq ι] (I : Ideal R) [IsPrecomplete I R] :
     IsPrecomplete I (ι → R) := by
@@ -138,7 +134,7 @@ variable {R : Type u} [CommRing R] (t : R) {A : ℕ → Cx R} {τ : ∀ m, Hom (
   {L : Cx R} {π : ∀ m, Hom L (A m)}
 
 /- English proof (translation)
-Introduce `y`. Take `⟨z, hz, hm⟩` from `tower_family (X := fun k => (A k).X n) (fun k => (τ k).f n) (fun k => hT.surj k n) m y`. Take `⟨x, hx⟩` from `hT.lift n z hz`. Conclude with `⟨x, (hx m).trans hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tower_pi_surj (hT : IsTowerLim A τ L π) (m n : ℕ) : Surjective ((π m).f n) := by
   intro y
@@ -155,7 +151,7 @@ Both sides reduce to the same expression.
 theorem smulHom_f (L : Cx R) (t : R) (n : ℕ) (x : L.X n) : (smulHom L t).f n x = t • x := rfl
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x hx`. Simplify using `using hx`. Consider the case `succ k ih => intro x hx; exact htf n x (ih _ (by rw [smul_smul, ← pow_succ]; exact hx))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 -/
 theorem pow_torsionfree (htf : ∀ n (x : L.X n), t • x = 0 → x = 0) (n : ℕ) :
     ∀ k (x : L.X n), t ^ k • x = 0 → x = 0 := by
@@ -170,7 +166,7 @@ variable (hT : IsTowerLim A τ L π) (htf : ∀ n (x : L.X n), t • x = 0 → x
 include hT htf hk
 
 /- English proof (translation)
-The claim follows from `(injective_iff_map_eq_zero _).2 fun x hx => htf n x hx exact n y := by rw [hk 0 n y] simp only [zero_add, pow_one, Set.mem_range, smulHom_f] exact ⟨fun ⟨z, hz⟩ => ⟨z, hz.symm⟩, fun ⟨z, hz⟩ => ⟨z, hz.symm⟩⟩ surj n := tower_pi_surj hT 0 n`.
+A detailed English derivation is pending.
 -/
 theorem ses_smul : SES (smulHom L t) (π 0) where
   inj n := (injective_iff_map_eq_zero _).2 fun x hx => htf n x hx
@@ -181,7 +177,7 @@ theorem ses_smul : SES (smulHom L t) (π 0) where
   surj n := tower_pi_surj hT 0 n
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, rfl⟩` from `(hk 0 n x).1 hx`. Use `show (π (m + 1)).f n (t ^ (m + 1) • t ^ (0 + 1) • y) = 0`. Rewrite using `[hk, smul_smul, ← pow_add]`. Conclude with `⟨y, by ring_nf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ker_le_ker_smul (m n : ℕ) : LinearMap.ker ((π 0).f n) ≤
     LinearMap.ker ((π (m + 1)).f n ∘ₗ (t ^ (m + 1) • LinearMap.id)) := by
@@ -195,7 +191,7 @@ noncomputable def jf (m n : ℕ) : (A 0).X n →ₗ[R] (A (m + 1)).X n :=
   descend ((π 0).f n) (tower_pi_surj hT 0 n) _ (ker_le_ker_smul t hT htf hk m n)
 
 /- English proof (translation)
-The claim follows from `descend_apply _ _ _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem jf_apply (m n : ℕ) (x : L.X n) :
     jf t hT htf hk m n ((π 0).f n x) = (π (m + 1)).f n (t ^ (m + 1) • x) :=
@@ -209,17 +205,15 @@ noncomputable def jHom (m : ℕ) : Hom (A 0) (A (m + 1)) where
     simp only [map_smul]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `tower_pi_surj hT 0 n a`. Express the relevant statement in the definitionally equal form `jf t hT htf hk m n _ = 0 at ha`. Rewrite `ha` using `[jf_apply, hk]`. Take `⟨y, hy⟩` from `ha`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: x = t • y`. Use `sub_eq_zero.1 (pow_torsionfree t htf n (m + 1) _ ?_)` and prove the remaining obligations. Rewrite using `[smul_sub, hy, smul_smul, ← pow_succ, sub_self]`. Rewrite using `[hk 0 n]`. Conclude with `⟨y, by simpa using this⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `n z := by`. Take `⟨x, rfl⟩` from `tower_pi_surj hT (m + 1) n z`. Rewrite using `[hT.compat, hk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨(π 0).f n y, jf_apply t hT htf hk m n y⟩`. Introduce and unpack `⟨a, ha⟩`. Take `⟨y, rfl⟩` from `tower_pi_surj hT 0 n a`. Express the relevant statement in the definitionally equal form `jf t hT htf hk m n _ = _ at ha`. Rewrite `ha` using `[jf_apply]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (π (m + 1)).f n (x - t ^ (m + 1) • y) = 0` using `by rw [map_sub, ha, sub_self]`. Take `⟨w, hw⟩` from `(hk (m + 1) n _).1 h2`. Use `⟨y + t • w, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, smul_smul, ← pow_succ, ← hw]`. Normalize the expressions using the abelian group laws.
-
-Use `surj n := hT.surj m n`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem ses_j (m : ℕ) : SES (jHom t hT htf hk m) (τ m) where
   inj n := by
@@ -253,11 +247,11 @@ theorem ses_j (m : ℕ) : SES (jHom t hT htf hk m) (τ m) where
 end Tower
 
 /- English proof (translation)
-Introduce `R _ A C i p t δ hi hs hc n`. Take `⟨⟨δ0, hc0, hl⟩, huniq⟩` from `lES_holds R A A C i p hs`. Take `rfl : δ = δ0` from `huniq δ δ0 hc hc0`. Use `⟨fun x => ?_, hl.exC n, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hl.exB n x]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, hom_H_smul i t hi n y⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, hom_H_smul i t hi n y⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[LinearMap.mem_range, ← hom_H_smul i t hi (n + 1) x]`. Conclude with `(hl.exA n x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modT_holds : ModTStatement.{u} := by
   intro R _ A C i p t δ hi hs hc n
@@ -274,29 +268,27 @@ theorem modT_holds : ModTStatement.{u} := by
     exact (hl.exA n x).symm
 
 /- English proof (translation)
-Introduce `R _ t _ A τ L π hT htf hk h0`. Establish `hfl : ∀ m n, IsFiniteLength R ((A m).H n)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih`. Introduce `n`. Take `⟨⟨δ, _, hl⟩, _⟩` from `lES_holds R (A 0) (A (m + 1)) (A m) (jHom t hT htf hk m) (τ m) (ses_j t hT htf hk m)`. Conclude with `isFiniteLength_of_exact _ _ (hl.exB n) (h0 n) (ih n)`. Introduce `n`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun m => hfl m n⟩` and prove the remaining obligations. Establish `hkill : ∀ m (z : (A m).H n), t ^ (m + 1) • z = 0`. Introduce `m z`. Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `H w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.Quotient.mk_smul]`. Establish `: t ^ (m + 1) • w = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Take `⟨l, hl⟩` from `tower_pi_surj hT m n w.1`. Use `show t ^ (m + 1) • w.1 = 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hl, ← map_smul, hk]`. Conclude with `⟨l, rfl⟩`. Rewrite using `[this, Submodule.Quotient.mk_zero]`. Establish `hmem : ∀ k (x : L.H n), x ∈ Ideal.span {t} ^ k • (⊤ : Submodule R (L.H n)) ↔ ∃ y, x = t ^ k • y`. Introduce `k x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using `[eq_comm]`. Establish `: IsHausdorff (Ideal.span {t}) (L.H n)`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Use `(tower_holds R A τ L π hT n).2 (fun k _ m => ?_) x (fun m => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(isFiniteLength_iff_isNoetherian_isArtinian.1 (hfl m k)).2`. Establish `h1` using `SModEq.sub_mem.1 (hx (m + 1))`. Rewrite `h1` using `[sub_zero]`. Take `⟨y, rfl⟩` from `(hmem (m + 1) x).1 h1`. Rewrite using `[map_smul, hkill]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨δ, hc, _⟩, _⟩` from `lES_holds R L L (A 0) (smulHom L t) (π 0) (ses_smul t hT htf hk)`. Establish `hmt` using `(modT_holds R L (A 0) (smulHom L t) (π 0) t δ (fun _ _ => rfl) (ses_smul t hT htf hk) hc n).1`. Establish `hmem1 : ∀ x : L.H n, x ∈ Ideal.span {t} • (⊤ : Submodule R (L.H n)) ↔ ∃ y, x = t • y`. Introduce `x`. Simplify using `using hmem 1 x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hle : Ideal.span {t} • (⊤ : Submodule R (L.H n)) ≤ LinearMap.ker ((π 0).H n)`. Introduce `x hx`. Conclude with `(hmt x).2 ((hmem1 x).1 hx)`. Set `q` to `(Ideal.span {t} • (⊤ : Submodule R (L.H n))).liftQ ((π 0).H n) hle`. Establish `hq : Injective q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `(injective_iff_map_eq_zero _).2 fun z hz => ?_` and prove the remaining obligations. Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `H x`. Rewrite using `[Submodule.Quotient.mk_eq_zero, hmem1]`. Conclude with `(hmt x).1 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherian R ((A 0).H n)` using `(isFiniteLength_iff_isNoetherian_isArtinian.1 (h0 n)).1`. Establish `: Module.Finite R (L.H n ⧸ Ideal.span {t} • (⊤ : Submodule R (L.H n)))` using `Module.Finite.of_injective q hq`. Take `⟨r, s, hs⟩` from `Module.Finite.exists_fin (R := R) (M := L.H n ⧸ Ideal.span {t} • (⊤ : Submodule R (L.H n)))`. Use `choose s' hs' using fun i => Submodule.Quotient.mk_surjective _ (s i)`. Establish `: IsPrecomplete (Ideal.span {t}) (Fin r → R)` using `isPrecomplete_pi _`.
-
-Establish `hsurj : Surjective ((Ideal.span {t} • (⊤ : Submodule R (L.H n))).mkQ ∘ₗ Fintype.linearCombination R s')`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hs, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨Pi.single i 1, by simp [hs']⟩`. Conclude with `Module.Finite.of_surjective _ (surjective_of_mkQ_comp_surjective hsurj)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finGen_holds : FinGenStatement.{u} := by
   intro R _ t _ A τ L π hT htf hk h0

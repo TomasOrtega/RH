@@ -26,7 +26,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {K : Ty
 variable {ρ : 𝓞 K} {σ₁ : K →+* ℂ} {p q : ℕ}
 
 /- English proof (translation)
-Consider the cases of `b`. Take `⟨a, b, c, d, -⟩` from `EigDec.eigen_decomposition E H K (-ρ) _ F 1 0 X.split (Test.hasType_neg X.ρ_sq X.typeM) (by rw [neg_sq, X.ρ_sq])`. Conclude with `⟨a, b, c, by rw [F.fib.1]; simpa using d⟩`. Take `⟨a, b, c, d, -⟩` from `EigDec.eigen_decomposition E H K ρ _ F 1 0 X.split X.typeP X.ρ_sq`. Conclude with `⟨a, b, c, by rw [F.fib.1]; simpa using d⟩`.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pure_decomposition (X : CMObj H K ρ σ₁ p q) (b : Bool) (F : GenFib (X.A b).pol) :
     (∀ τ : 𝓞 E →+* 𝓞 K, latRank K (F.eigLat (X.A b).t.act τ) =
@@ -51,7 +51,7 @@ section Linear
 variable {k V J : Type} [Field k] [AddCommGroup V] [Module k V]
 
 /- English proof (translation)
-Establish `h₁ : (⊤ : Submodule k V) = N i ⊔ ⨆ j, ⨆ _ : j ≠ i, N j` using `by rw [← hN, iSup_split_single N i]`. Establish `h₂ : Disjoint (W i) (⨆ j, ⨆ _ : j ≠ i, N j)` using `(hW i).mono_right (iSup₂_mono fun j _ => hle j)`. Establish `h₃` using `sup_inf_assoc_of_le (⨆ j, ⨆ _ : j ≠ i, N j) (hle i)`. Rewrite `h₃` using `[← h₁, top_inf_eq, h₂.symm.eq_bot, sup_bot_eq]`. Conclude with `h₃.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_le_of_iSupIndep {N W : J → Submodule k V} (hle : ∀ i, N i ≤ W i) (hW : iSupIndep W)
     (hN : ⨆ i, N i = ⊤) (i : J) : W i ≤ N i := by
@@ -64,9 +64,9 @@ theorem eq_of_le_of_iSupIndep {N W : J → Submodule k V} (hle : ∀ i, N i ≤ 
 variable [FiniteDimensional k V] [Fintype J]
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (DirectSum.coeLinearMap N)`. Rewrite using `[← LinearMap.range_eq_top, DirectSum.range_coeLinearMap, h]`. Establish `h₁` using `LinearMap.finrank_le_finrank_of_surjective hs`. Establish `h₂ : ∑ i, Module.finrank k (N i) ≤ ∑ i, n i` using `Finset.sum_le_sum fun i _ => hn i`. Establish `he : Module.finrank k (DirectSum J fun i => N i) = Module.finrank k V`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₁`, the goal using `[Module.finrank_directSum]`. Use linear arithmetic over natural numbers and integers. Use `⟨DirectSum.IsInternal.submodule_iSupIndep ⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank he).2 hs, hs⟩, fun i => ?_⟩` and prove the remaining obligations. Rewrite `he` using `[Module.finrank_directSum]`. Conclude with `(Finset.sum_eq_sum_iff_of_le fun i _ => hn i).1 (by omega) i (Finset.mem_univ _)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indep_of_sum_le {N : J → Submodule k V} {n : J → ℕ} (h : ⨆ i, N i = ⊤) (hn : ∀ i, Module.finrank k (N i) ≤ n i)
     (hd : ∑ i, n i ≤ Module.finrank k V) : iSupIndep N ∧ ∀ i, Module.finrank k (N i) = n i := by
@@ -84,7 +84,7 @@ theorem indep_of_sum_le {N : J → Submodule k V} {n : J → ℕ} (h : ⨆ i, N 
   exact (Finset.sum_eq_sum_iff_of_le fun i _ => hn i).1 (by omega) i (Finset.mem_univ _)
 
 /- English proof (translation)
-Rewrite using `[← Module.finrank_directSum]`. Conclude with `(LinearEquiv.ofBijective (DirectSum.coeLinearMap N) (DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hi h)).finrank_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_finrank_eq {N : J → Submodule k V} (hi : iSupIndep N) (h : ⨆ i, N i = ⊤) :
     ∑ i, Module.finrank k (N i) = Module.finrank k V := by
@@ -96,21 +96,17 @@ theorem sum_finrank_eq {N : J → Submodule k V} (hi : iSupIndep N) (h : ⨆ i, 
 end Linear
 
 /- English proof (translation)
-Use `set N : (Fin p ⊕ Fin q) × (𝓞 E →+* 𝓞 K) → Submodule (𝓞 K) (Fin FB.P₀.g → K) := fun x => ((FA x.1.isLeft).eigLat (X.A x.1.isLeft).t.act x.2).map ((M x.1).restrictScalars (𝓞 K)) with hN`. Take `⟨-, hBi, hBt, hBg, -⟩` from `EigDec.eigen_decomposition E H K ρ X.B FB p q X.split X.typeB X.ρ_sq`. Establish `hset : ∀ τ : 𝓞 E →+* 𝓞 K, Submodule.span K {y | ∃ j : Fin p ⊕ Fin q, ∃ c ∈ (FA j.isLeft).eigLat (X.A j.isLeft).t.act τ, y = M j c} = ⨆ j, Submodule.span K (N (j, τ) : Set (Fin FB.P₀.g → K))` using `fun τ => by`. Rewrite using `[← Submodule.span_iUnion]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion]`. Conclude with `exists_congr fun j => ⟨fun ⟨c, h, e⟩ => ⟨c, h, e.symm⟩, fun ⟨c, h, e⟩ => ⟨c, h, e.symm⟩⟩`. Simplify using `only [hset]`. Use `⟨fun ⟨h₁, _, _, _, h₅⟩ τ => ⟨fun j c hc => h₁ (j, τ) ⟨c, hc, rfl⟩, ?_⟩, fun h => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.subset_span.trans (eq_of_le_of_iSupIndep (N := fun τ => ⨆ j, Submodule.span K (N (j, τ) : Set (Fin FB.P₀.g → K))) (fun τ => iSup_le fun j => Submodule.span_mono (h₁ (j, τ))) hBi ?_ τ)` and prove the remaining obligations. Rewrite using `[iSup_comm, ← h₅, iSup_prod]`. Use `haveI : Finite (𝓞 E →+* 𝓞 K) := (Nat.card_pos_iff.1 (X.split ▸ Module.finrank_pos)).2`. Use `haveI := Fintype.ofFinite (𝓞 E →+* 𝓞 K)`. Establish `hA` using `fun b => pure_decomposition X b (FA b)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htop : ⨆ x, Submodule.span K (N x : Set (Fin FB.P₀.g → K)) = ⊤`. Rewrite using `[iSup_prod, iSup_comm, eq_top_iff, ← hBt]`. Conclude with `iSup_mono fun τ => Submodule.span_le.2 (h τ).2`. Establish `hspan : ∀ x, Submodule.span K (N x : Set (Fin FB.P₀.g → K)) = (Submodule.span K ((FA x.1.isLeft).eigLat (X.A x.1.isLeft).t.act x.2 : Set _)).map (M x.1)` using `fun x => by`. Rewrite using `[Submodule.map_span]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Establish `hdim : ∑ j : Fin p ⊕ Fin q, Module.finrank K (Fin (FA j.isLeft).P₀.g → K) = Module.finrank K (Fin FB.P₀.g → K)`. Establish `: FB.P₀.g = Module.finrank ℚ E / 2 * (p + q)` using `FB.fib.1.trans hBg`. Simplify using `[(hA _).2.2.2, this, mul_comm]`. Take `⟨hi, hr⟩` from `indep_of_sum_le (n := fun x : (Fin p ⊕ Fin q) × (𝓞 E →+* 𝓞 K) => latRank K ((FA x.1.isLeft).eigLat (X.A x.1.isLeft).t.act x.2)) htop (fun x => by rw [hspan]; exact Submodule.finrank_map_le _ _) (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hdim, Fintype.sum_prod_type]`. Conclude with `le_of_eq (Finset.sum_congr rfl fun j _ => sum_finrank_eq (hA j.isLeft).2.1 (hA j.isLeft).2.2.1))`. Establish `hsur : ⨆ j, LinearMap.range (M j) = ⊤`. Rewrite using `[eq_top_iff, ← htop]`. Conclude with `iSup_le fun x => (hspan x).le.trans (LinearMap.map_le_range.trans (le_iSup (fun j => LinearMap.range (M j)) x.1))`.
-
-Use `⟨fun x => ?_, fun x => (hr x).trans ((hA _).1 _), fun j => ?_, hi, htop⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `(h x.2).1 x.1 c hc`. Establish `h₁` using `(indep_of_sum_le hsur (fun j => LinearMap.finrank_range_le (M j)) hdim.le).2 j`. Use `LinearMap.finrank_range_add_finrank_ker (M j)` as an intermediate fact.
-
-Rewrite using `[← LinearMap.ker_eq_bot, ← Submodule.finrank_eq_zero]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ind_concl_iff (X : CMObj H K ρ σ₁ p q) (FA : ∀ b, GenFib (X.A b).pol) (FB : GenFib X.B.pol)
     (M : ∀ j : Fin p ⊕ Fin q, (Fin (FA j.isLeft).P₀.g → K) →ₗ[K] (Fin FB.P₀.g → K)) :

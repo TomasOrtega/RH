@@ -34,12 +34,12 @@ def rootIdx (ι : Type) (N j : ℕ) (x : ι × Fin N) : Σ a : ι × Bool, Fin (
 def lamSign {ι : Type} (a : ι × Bool) : ℝ := cond a.2 (-1) 1
 
 /- English proof (translation)
-Simplify using `[rootIdx]`.
+Simplify using the standard rewrite rules.
 -/
 example : rootIdx Unit 3 1 ((), 0) = ⟨((), true), ⟨0, by simp [rkB]⟩⟩ := by simp [rootIdx]
 
 /- English proof (translation)
-Simplify using `[rootIdx]`.
+Simplify using the standard rewrite rules.
 -/
 example : rootIdx Unit 3 1 ((), 2) = ⟨((), false), ⟨1, by simp [rkB]⟩⟩ := by
   simp [rootIdx]

@@ -39,9 +39,9 @@ Both sides reduce to the same expression.
 variable {P L}
 
 /- English proof (translation)
-Proceed by induction on `y' using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v' b'`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul v b`. Rewrite using `[GlobalTheory.Pst.TwistLetters.mulB_tmul, toA_tmul, toA_tmul, toA_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using the standard rewrite rules. Consider the case `add x x' hx hx' => simp only [map_add, mul_add, hx, hx']`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, add_mul, hy, hy']`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 -/
 theorem toA_mulB (y' y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) :
     toA P L (GlobalTheory.Pst.TwistLetters.mulB P (Fin 1 → ↥L.1) y' y) = toA P L y' * toA P L y := by
@@ -57,7 +57,7 @@ theorem toA_mulB (y' y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) :
   | add y y' hy hy' => simp only [map_add, LinearMap.add_apply, add_mul, hy, hy']
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b`. Rewrite using `[mulV_tmul, toA_tmul, toA_tmul, TensorProduct.smul_tmul', smul_eq_mul]`. Consider the case `add x x' hx hx' => simp only [map_add, smul_add, hx, hx']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem toA_mulV (c : ↥(MaximalUnramifiedExtension l)) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) :
     toA P L (mulV P ↥L.1 (Fin 1 → ↥L.1) c y) = algebraMap ↥(MaximalUnramifiedExtension l) (Bst P) c • toA P L y := by
@@ -68,9 +68,9 @@ theorem toA_mulV (c : ↥(MaximalUnramifiedExtension l)) (y : (Fin 1 → ↥L.1)
   | add x x' hx hx' => simp only [map_add, smul_add, hx, hx']
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b`. Rewrite using `[stRep_tmul, toA_tmul, toA_tmul, hm, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using `[mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add x x' hx hx' => simp only [map_add, add_mul, hx, hx']`.
+Treat this case separately.
 -/
 theorem toA_stRep {K : FinExt l} (ρm : Representation ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) (χ : ↥(GK K) → ↥L.1)
     (hm : ∀ g v, ρm g v = χ g • v) (g : ↥(GK K)) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) :

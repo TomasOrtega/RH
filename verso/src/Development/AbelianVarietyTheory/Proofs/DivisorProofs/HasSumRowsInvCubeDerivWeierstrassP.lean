@@ -7,11 +7,11 @@ open GlobalTheory.QFam GlobalTheory.WpFam
 namespace GlobalTheory.WpFam
 
 /- English proof (translation)
-Establish `h` using `((tauPair τ).hasSum_derivWeierstrassP z).mul_left (-(1 / 2))`. Set `e : ℤ × ℤ ≃ (tauPair τ).lattice` to `(Equiv.neg (ℤ × ℤ)).trans (tauPair τ).latticeEquivProd.symm.toEquiv`. Rewrite `h` using `[← e.hasSum_iff]`. Establish `key : (fun p : ℤ × ℤ => 1 / (z + p.1 * (τ : ℂ) + p.2) ^ 3) = (fun i : (tauPair τ).lattice => -(1 / 2) * (-2 / (z - (i : ℂ)) ^ 3)) ∘ e` using `?_`. Rewrite using `[key]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Use function extensionality and compare the values at `p`. Establish `he : ((e p : (tauPair τ).lattice) : ℂ) = -(p.1 * (τ : ℂ) + p.2)`. Express the relevant statement in the definitionally equal form `((tauPair τ).latticeEquivProd.symm (-p)).1 = _`. Rewrite using `[PeriodPair.latticeEquiv_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[tauPair]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Function.comp, he]`. Rewrite using `[show z - -(p.1 * (τ : ℂ) + p.2) = z + p.1 * (τ : ℂ) + p.2 by ring]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasSum_prod_derivWeierstrassP (τ : ℍ) (z : ℂ) :
     HasSum (fun p : ℤ × ℤ => 1 / (z + p.1 * (τ : ℂ) + p.2) ^ 3)
@@ -34,7 +34,7 @@ theorem hasSum_prod_derivWeierstrassP (τ : ℍ) (z : ℂ) :
   ring
 
 /- English proof (translation)
-Introduce `τ z`. Establish `h` using `hasSum_prod_derivWeierstrassP τ z`. Conclude with `h.prod_fiberwise fun n => (h.summable.prod_factor n).hasSum`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasSum_rows_derivWeierstrassP : ∀ (τ : ℍ) (z : ℂ), HasSum (fun n : ℤ => ∑' m : ℤ, 1 / (z + n * (τ : ℂ) + m) ^ 3) (-(1 / 2) * (tauPair τ).derivWeierstrassP z) := by
   intro τ z

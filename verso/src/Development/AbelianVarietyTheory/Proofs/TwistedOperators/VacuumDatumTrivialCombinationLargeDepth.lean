@@ -18,7 +18,7 @@ namespace GlobalTheory.VacComb
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `hx i j` as an intermediate fact. Simplify using `at this`. Simplify using `using this.symm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_isHalf_zero {m n : ℕ} {x : Mx D m n} (hx : IsHalf (0 : AE D) x) : x = 0 := by
   ext i j
@@ -27,27 +27,27 @@ theorem eq_zero_of_isHalf_zero {m n : ℕ} {x : Mx D m n} (hx : IsHalf (0 : AE D
   simpa using this.symm
 
 /- English proof (translation)
-Introduce `i j`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isHalf_zero_zero {m n : ℕ} (e : AE D) : IsHalf e (0 : Mx D m n) := by
   intro i j
   simp
 
 /- English proof (translation)
-Simplify using `[symplO, hO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heisenbergSymplecticForm_zero_right_eq_zero (S T : HSp D) (x : WO S T) : symplO S T x 0 = 0 := by
   simp [symplO, hO]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `[heisO, symplOH, heisenbergSymplecticForm_zero_right_eq_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisO_zero_eq_self (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   funext w
   simp [heisO, symplOH, heisenbergSymplecticForm_zero_right_eq_zero]
 
 /- English proof (translation)
-Unfold `GlobalTheory.SeeSaw.comb`. Rewrite using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisenbergTranslationCombination_single_one_eq_translate (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w : WO S T) (f : WO S T → ℂ) :
     GlobalTheory.SeeSaw.comb ψ S T (Finsupp.single w 1) f = heisO ψ S T w f := by
@@ -55,7 +55,7 @@ theorem heisenbergTranslationCombination_single_one_eq_translate (ψ : AddChar (
   rw [Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite `hu` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`. Substitute `hu` using the available equality. Use extensionality with `i j`. Simplify using `[Matrix.map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isFinComb_single_zero {S T : HSp D} : IsFinComb (Finsupp.single (0 : WO S T) (1 : ℂ)) := by
   intro u hu
@@ -65,15 +65,15 @@ theorem isFinComb_single_zero {S T : HSp D} : IsFinComb (Finsupp.single (0 : WO 
   simp [Matrix.map]
 
 /- English proof (translation)
-Use `⟨isFinComb_single_zero, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite `hu` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`. Substitute `hu` using the available equality. Conclude with `isHalf_zero_zero _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `he : (FinDatum.vacuum G t p).e = 0` using `rfl`. Introduce `f₀ _ _`. Use `show AllSome _ _`. Rewrite using `[heisenbergTranslationCombination_single_one_eq_translate, heisO_zero_eq_self]`. Use `⟨⟨(LinearMap.proj (R := ℂ) (φ := fun _ : WO (G.pS p) (G.pT p) => ℂ) 0).smulRight f₀, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `Φ _ x hx`. Take `rfl` from `eq_zero_of_isHalf_zero hx`. Simplify using `[heisO_zero_eq_self]`. Introduce `Φ _ y hy`. Establish `hy0 : IsHalf (0 : AE D) y` using `by rw [he, map_zero] at hy; exact hy`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `rfl` from `eq_zero_of_isHalf_zero hy0`. Simplify using `[heisO_zero_eq_self, heisenbergSymplecticForm_zero_right_eq_zero]`. Establish `h0 : halfInd (0 : AE D) (latO (G.pS p) (G.pT p) ↑(G.latS p) ↑(G.latT p) fun _ => True) 0 = 1`. Rewrite using `[halfInd, if_pos ⟨zero_mem _, isHalf_zero_zero _⟩]`. Rewrite using `[he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h0]`. Introduce `Tm hT`. Use `hT.vac` as an intermediate fact. Rewrite `this` using `[one_smul]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vacuum_isCombOf {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (t : T)
     (p : Pair T) : IsCombOf W (FinDatum.vacuum G t p) (Finsupp.single 0 1) := by
@@ -108,7 +108,7 @@ end GlobalTheory.VacComb
 open GlobalTheory.VacComb in
 
 /- English proof (translation)
-Use `⟨0, fun _ _ _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Use `intros`. Conclude with `fun t j => vacuum_isCombOf _ t _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.VacComb.main : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (j : Fin D.R.m), IsCombOf ch.W (FinDatum.vacuum ch.G t (.top t j)) (Finsupp.single 0 1) := by
   refine ⟨0, fun _ _ _ => ⟨0, ?_⟩⟩

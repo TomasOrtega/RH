@@ -11,9 +11,7 @@ open scoped ENNReal ContDiff
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hd : Continuous (fderiv ℝ g)` using `hg.continuous_fderiv (by simp)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `dbarDir`. Conclude with `(hd.clm_apply continuous_const).sub (continuous_const.mul (hd.clm_apply continuous_const))`. Unfold `dbarDir`.
-
-Conclude with `(hc.fderiv_apply ℝ (I • v)).sub ((hc.fderiv_apply ℝ v).mul_left)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dbarDir_continuous_hasCompactSupport {g : V n → ℂ} (hg : ContDiff ℝ ∞ g)
     (hc : HasCompactSupport g) (v : V n) :
@@ -27,9 +25,9 @@ theorem dbarDir_continuous_hasCompactSupport {g : V n → ℂ} (hg : ContDiff �
     exact (hc.fderiv_apply ℝ (I • v)).sub ((hc.fderiv_apply ℝ v).mul_left)
 
 /- English proof (translation)
-Establish `hh2 : Integrable (fun z => ‖h z‖ ^ 2)` using `(hc.norm.pow 2).integrable_of_hasCompactSupport (hs.mono (fun z hz => by`. Rewrite `hz`, the goal using `[Function.mem_support]`. Introduce `h0`. Conclude with `hz (by simp [h0])))`. Use `Integrable.mono' ((hu2.add hh2.integrableOn).div_const 2) (hum.mul hc.aestronglyMeasurable) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.Eventually.of_forall (fun z => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, norm_mul]`. Use polynomial arithmetic with `[sq_nonneg (‖u z‖ - ‖h z‖), norm_nonneg (u z), norm_nonneg (h z)]`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_mul_of_sq {W : Set (V n)} {u h : V n → ℂ}
     (hum : AEStronglyMeasurable u (volume.restrict W)) (hu2 : IntegrableOn (fun z => ‖u z‖ ^ 2) W)
@@ -47,9 +45,9 @@ theorem integrableOn_mul_of_sq {W : Set (V n)} {u h : V n → ℂ}
   nlinarith [sq_nonneg (‖u z‖ - ‖h z‖), norm_nonneg (u z), norm_nonneg (h z)]
 
 /- English proof (translation)
-Establish `h1 : IsOpen (W ∩ f ⁻¹' Set.Iio c)` using `hf.isOpen_inter_preimage hW isOpen_Iio`. Establish `h2 : {z | z ∈ W ∧ c ≤ f z} = W \ (W ∩ f ⁻¹' Set.Iio c)`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Set.mem_diff, Set.mem_inter_iff, Set.mem_preimage, Set.mem_Iio, not_and, not_lt]`. Conclude with `⟨fun ⟨a, b⟩ => ⟨a, fun _ => b⟩, fun ⟨a, b⟩ => ⟨a, b a⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[h2]`. Conclude with `hW.measurableSet.diff h1.measurableSet`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableSet_ge_of_continuousOn {W : Set (V n)} (hW : IsOpen W) {f : V n → ℝ}
     (hf : ContinuousOn f W) (c : ℝ) : MeasurableSet {z | z ∈ W ∧ c ≤ f z} := by
@@ -63,13 +61,13 @@ theorem measurableSet_ge_of_continuousOn {W : Set (V n)} (hW : IsOpen W) {f : V 
   exact hW.measurableSet.diff h1.measurableSet
 
 /- English proof (translation)
-Use `set A : ℕ → Set (V n) := fun k => {z | z ∈ W ∧ (k : ℝ) + 1 ≤ f z} with hA`. Establish `hmeas : ∀ k, MeasurableSet (A k)` using `fun k => measurableSet_ge_of_continuousOn hW hf _`. Establish `hanti : Antitone A`. Introduce `i j hij z hz`. Use `⟨hz.1, le_trans ?_ hz.2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (i : ℝ) ≤ j` using `by exact_mod_cast hij`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hempty : (⋂ k, A k) = ∅`. Use extensionality with `z`. Simplify using `only [Set.mem_iInter, Set.mem_empty_iff_false, iff_false, not_forall]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_nat_gt (f z)`. Conclude with `⟨k, fun h => by have := h.2; linarith⟩`. Establish `hfin : ∃ k, volume.withDensity φ (A k) ≠ ⊤` using `⟨0, by`. Rewrite using `[withDensity_apply _ (hmeas 0)]`. Conclude with `(lt_of_le_of_lt (lintegral_mono_set (fun z hz => hz.1)) hφ).ne⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `tendsto_measure_iInter_atTop (fun k => (hmeas k).nullMeasurableSet) hanti hfin`. Rewrite `h` using `[hempty, measure_empty]`. Use `h.congr (fun k => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Conclude with `withDensity_apply _ (hmeas k)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_setLIntegral_band {W : Set (V n)} (hW : IsOpen W) {f : V n → ℝ}
     (hf : ContinuousOn f W) {φ : V n → ℝ≥0∞} (hφ : ∫⁻ z in W, φ z < ⊤) :
@@ -99,17 +97,15 @@ noncomputable def extErr (F : V n → ℂ) (k : ℝ) (v z : V n) : ℂ :=
   (fderiv ℝ (extCut F k) z (I • v) : ℂ) - I * (fderiv ℝ (extCut F k) z v : ℂ)
 
 /- English proof (translation)
-Establish `hMg0 : 0 ≤ Mg` using `(norm_nonneg _).trans (hMg z)`. Distinguish the cases in `hmem : z ∈ tsupport g ∩ {z | F z ≠ 0 ∧ k ≤ -Real.log (‖F z‖ ^ 2) ∧ -Real.log (‖F z‖ ^ 2) ≤ 2 * k}`. Rewrite using `[Set.indicator_apply, if_pos hmem]`. Establish `hD` using `norm_fderiv_logCutoff_le hk hC0b hFd hz`. Establish `hE : ‖extErr F k v z‖ ≤ 2 * ‖v‖ * ‖fderiv ℝ (extCut F k) z‖`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `extErr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, Complex.norm_I, one_mul, Complex.norm_real, Complex.norm_real]`. Use `_ ≤ ‖fderiv ℝ (extCut F k) z‖ * ‖I • v‖ + ‖fderiv ℝ (extCut F k) z‖ * ‖v‖ := add_le_add (ContinuousLinearMap.le_opNorm _ _) (ContinuousLinearMap.le_opNorm _ _)`. Use `_ = 2 * ‖v‖ * ‖fderiv ℝ (extCut F k) z‖ := by`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[norm_smul, Complex.norm_I, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hK : 0 ≤ Mg * (2 * ‖v‖) * C0 * k⁻¹` using `mul_nonneg (mul_nonneg (mul_nonneg hMg0 (by positivity)) hC0) (inv_nonneg.mpr hk.le)`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ← ENNReal.ofReal_mul (norm_nonneg _), ← ENNReal.ofReal_mul hK]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_mul]`. Establish `hE' : ‖extErr F k v z‖ ≤ 2 * ‖v‖ * (C0 * k⁻¹ * ‖fderiv ℝ (fun w => Real.log (‖F w‖ ^ 2)) z‖)` using `hE.trans (mul_le_mul_of_nonneg_left hD (by positivity))`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hMg z`. Use `_ = _ := by ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_apply, if_neg hmem, mul_zero, nonpos_iff_eq_zero, enorm_eq_zero]`. Distinguish the cases in `hzt : z ∈ tsupport g`. Establish `h2 : ¬ (k ≤ -Real.log (‖F z‖ ^ 2) ∧ -Real.log (‖F z‖ ^ 2) ≤ 2 * k)` using `fun hb => hmem ⟨hzt, hz, hb⟩`. Establish `h3` using `fderiv_logCutoff_eq_zero hk hFd hz h2`. Simplify using `[extErr, h3]`.
-
-Rewrite using `[image_eq_zero_of_notMem_tsupport hzt]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extErr_le {F g u : V n → ℂ} {k C0 Mg : ℝ} (hk : 0 < k) (hC0 : 0 ≤ C0)
     (hC0b : ∀ t, ‖deriv extCh t‖ ≤ C0) (hMg : ∀ z, ‖g z‖ ≤ Mg) {z : V n} (v : V n)
@@ -158,11 +154,9 @@ theorem extErr_le {F g u : V n → ℂ} {k C0 Mg : ℝ} (hk : 0 < k) (hC0 : 0 �
       simp
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨r, hr, -⟩` from `Metric.isOpen_iff.mp hΩ x hx`. Use `⟨ball x r, mem_nhdsWithin_of_mem_nhds (Metric.ball_mem_nhds x hr), ?_⟩` and prove the remaining obligations. Use `show Integrable (W.indicator u) (volume.restrict (ball x r))`. Rewrite using `[integrable_indicator_iff hW, IntegrableOn, Measure.restrict_restrict hW]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : volume (W ∩ ball x r) < ⊤` using `(measure_mono Set.inter_subset_right).trans_lt measure_ball_lt_top`. Use `haveI : IsFiniteMeasure (volume.restrict (W ∩ ball x r)) := isFiniteMeasure_restrict.mpr hfin.ne`. Use `Integrable.mono' (((hu2.mono_set Set.inter_subset_left).add (integrable_const (1 : ℝ))).div_const 2) (hum.mono_measure (Measure.restrict_mono Set.inter_subset_left le_rfl)) ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall (fun z => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`.
-
-Use polynomial arithmetic with `[sq_nonneg (‖u z‖ - 1), norm_nonneg (u z)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem locallyIntegrableOn_indicator_of_sq_integrableOn {Ω W : Set (V n)} {u : V n → ℂ} (hΩ : IsOpen Ω) (hW : MeasurableSet W)
     (hum : AEStronglyMeasurable u (volume.restrict W))
@@ -184,27 +178,25 @@ private theorem locallyIntegrableOn_indicator_of_sq_integrableOn {Ω W : Set (V 
   nlinarith [sq_nonneg (‖u z‖ - 1), norm_nonneg (u z)]
 
 /- English proof (translation)
-Establish `hk : (0 : ℝ) < (j : ℝ) + 1` using `by positivity`. Establish `hk1 : (1 : ℝ) ≤ (j : ℝ) + 1` using `by have := (Nat.cast_nonneg j : (0 : ℝ) ≤ j); linarith`. Take `⟨S, hS⟩ : ∃ S : Set (V n), S = tsupport g ∩ {z | F z ≠ 0 ∧ (j : ℝ) + 1 ≤ -Real.log (‖F z‖ ^ 2) ∧ -Real.log (‖F z‖ ^ 2) ≤ 2 * ((j : ℝ) + 1)}` from `⟨_, rfl⟩`. Take `⟨T, hT⟩ : ∃ T : Set (V n), T = {z | z ∈ Ω \ {z | F z = 0} ∧ (j : ℝ) + 1 ≤ -Real.log (‖F z‖ ^ 2)}` from `⟨_, rfl⟩`. Establish `hSm' : MeasurableSet S` using `by rw [hS]; exact hSm _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hTm' : MeasurableSet T` using `by rw [hT]; exact hTm _`. Rewrite using `[← hT]`. Establish `hK : 0 ≤ Mg * (2 * ‖v‖) * C0 * ((j : ℝ) + 1)⁻¹` using `mul_nonneg (mul_nonneg (mul_nonneg hMg0 (by positivity)) hC0) (inv_nonneg.mpr hk.le)`. Establish `step1` using `enorm_integral_le_lintegral_enorm (μ := volume.restrict (Ω \ {z | F z = 0})) (fun z => u z * g z * extErr F ((j : ℝ) + 1) v z)`. Establish `step2 : ∫⁻ z in Ω \ {z | F z = 0}, ‖u z * g z * extErr F ((j : ℝ) + 1) v z‖ₑ ≤ ∫⁻ z in Ω \ {z | F z = 0}, ENNReal.ofReal (Mg * (2 * ‖v‖) * C0 * ((j : ℝ) + 1)⁻¹) * (S.indicator (fun z => ‖u z‖ₑ) z * S.indicator (fun z => ‖fderiv ℝ (fun w => Real.log (‖F w‖ ^ 2)) z‖ₑ) z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lintegral_mono_ae (ae_restrict_of_forall_mem hWm (fun z hz => ?_))` and prove the remaining obligations. Establish `h` using `extErr_le (u := u) hk hC0 hC0b hMg v ((hsm z hz.1).differentiableAt (by simp)) hz.2`. Rewrite `h` using `[← hS]`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `hzS : z ∈ S`. Rewrite using `[Set.indicator_of_mem hzS, Set.indicator_of_mem hzS, Set.indicator_of_mem hzS]`. Rewrite using `[Set.indicator_apply, if_neg hzS, Set.indicator_apply, if_neg hzS, zero_mul]`. Establish `step3` using `lintegral_const_mul' (μ := volume.restrict (Ω \ {z | F z = 0})) (ENNReal.ofReal (Mg * (2 * ‖v‖) * C0 * ((j : ℝ) + 1)⁻¹)) (fun z => S.indicator (fun z => ‖u z‖ₑ) z * S.indicator (fun z => ‖fderiv ℝ (fun w => Real.log (‖F w‖ ^ 2)) z‖ₑ) z) ENNReal.ofReal_ne_top`. Establish `step4` using `ENNReal.lintegral_mul_le_Lp_mul_Lq (volume.restrict (Ω \ {z | F z = 0})) Real.HolderConjugate.two_two ((hum.enorm).indicator hSm') ((measurable_fderiv ℝ (fun w => Real.log (‖F w‖ ^ 2))).enorm.aemeasurable.indicator hSm')`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `step5 : ∫⁻ z in Ω \ {z | F z = 0}, S.indicator (fun z => ‖u z‖ₑ) z ^ (2 : ℝ) ≤ ∫⁻ z in T, ‖u z‖ₑ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono (fun z => ?_)` and prove the remaining obligations. Distinguish the cases in `hzS : z ∈ S`. Establish `hzT : z ∈ T`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `hzS` using `[hS]`. Rewrite using `[hT]`. Conclude with `⟨⟨hgΩ hzS.1, hzS.2.1⟩, hzS.2.2.1⟩`. Rewrite using `[Set.indicator_of_mem hzS, Set.indicator_of_mem hzT, ENNReal.rpow_two]`. Rewrite using `[Set.indicator_apply, if_neg hzS, ENNReal.zero_rpow_of_pos (by norm_num)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_le`. Use `_ ≤ ∫⁻ z, T.indicator (fun z => ‖u z‖ₑ ^ 2) z := setLIntegral_le_lintegral _ _`. Use `_ = ∫⁻ z in T, ‖u z‖ₑ ^ 2 := lintegral_indicator hTm' _`. Establish `step6 : ∫⁻ z in Ω \ {z | F z = 0}, S.indicator (fun z => ‖fderiv ℝ (fun w => Real.log (‖F w‖ ^ 2)) z‖ₑ) z ^ (2 : ℝ) ≤ C * ENNReal.ofReal (((j : ℝ) + 1) ^ 2)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_mono (fun z => ?_)` and prove the remaining obligations. Distinguish the cases in `hzS : z ∈ S`. Rewrite using `[Set.indicator_of_mem hzS, Set.indicator_of_mem hzS, ENNReal.rpow_two]`. Rewrite using `[Set.indicator_apply, if_neg hzS, Set.indicator_apply, if_neg hzS, ENNReal.zero_rpow_of_pos (by norm_num)]`. Use `_ ≤ ∫⁻ z, S.indicator (fun z => ‖fderiv ℝ (fun w => Real.log (‖F w‖ ^ 2)) z‖ₑ ^ 2) z := setLIntegral_le_lintegral _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∫⁻ z in S, ‖fderiv ℝ (fun w => Real.log (‖F w‖ ^ 2)) z‖ₑ ^ 2 := lintegral_indicator hSm' _`. Use `_ ≤ C * ENNReal.ofReal (((j : ℝ) + 1) ^ 2) := by rw [hS]; exact hCb _ hk1`. Establish `hsq : (((j : ℝ) + 1) ^ 2) ^ (1 / 2 : ℝ) = (j : ℝ) + 1`. Rewrite using `[← Real.sqrt_eq_rpow, Real.sqrt_sq hk.le]`. Establish `hcomb : ENNReal.ofReal (Mg * (2 * ‖v‖) * C0 * ((j : ℝ) + 1)⁻¹) * ENNReal.ofReal ((j : ℝ) + 1) = ENNReal.ofReal (Mg * (2 * ‖v‖) * C0)`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_mul hK]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul' le_rfl (step4.trans ?_)` and prove the remaining obligations.
-
-Conclude with `mul_le_mul' (ENNReal.rpow_le_rpow step5 (by norm_num)) (ENNReal.rpow_le_rpow step6 (by norm_num))`. Use `_ = (ENNReal.ofReal (Mg * (2 * ‖v‖) * C0 * ((j : ℝ) + 1)⁻¹) * ENNReal.ofReal ((j : ℝ) + 1)) * C ^ (1 / 2 : ℝ) * (∫⁻ z in T, ‖u z‖ₑ ^ 2) ^ (1 / 2 : ℝ) := by`. Rewrite using `[ENNReal.mul_rpow_of_nonneg _ _ (by norm_num : (0 : ℝ) ≤ 1 / 2), ENNReal.ofReal_rpow_of_nonneg (sq_nonneg _) (by norm_num), hsq]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [hcomb]`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem bound_lemma_3 {Ω : Set (V n)} {F u g : V n → ℂ} {C0 Mg : ℝ} {C : ℝ≥0∞} (v : V n)
     (j : ℕ) (hsm : ∀ z ∈ Ω, ContDiffAt ℝ ∞ F z) (hgΩ : tsupport g ⊆ Ω)
@@ -311,45 +303,41 @@ private theorem bound_lemma_3 {Ω : Set (V n)} {F u g : V n → ℂ} {C0 Mg : �
     _ = _ := by rw [hcomb]
 
 /- English proof (translation)
-Use `set W := Ω \ {z | F z = 0} with hWdef`. Establish `hWsub : W ⊆ Ω` using `Set.diff_subset`. Establish `hWo : IsOpen W`. Establish `e : W = Ω ∩ F ⁻¹' {0}ᶜ` using `by ext z; simp [hWdef]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hF.continuousOn.isOpen_inter_preimage hΩ isOpen_compl_singleton`. Establish `hWm : MeasurableSet W` using `hWo.measurableSet`. Establish `hum : AEStronglyMeasurable u (volume.restrict W)` using `hu.continuousOn.aestronglyMeasurable hWm`. Take `⟨hgc, hgs, hgΩ⟩` from `hg`. Establish `hd1` using `dbarDir_continuous_hasCompactSupport hgc hgs v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hud : IntegrableOn (fun z => u z * dbarDir g z v) W` using `integrableOn_mul_of_sq hum hu2 hd1.1 hd1.2`. Establish `hk : ∀ j : ℕ, (0 : ℝ) < (j : ℝ) + 1` using `fun j => by positivity`. Establish `hmeasA : ∀ j : ℕ, AEStronglyMeasurable (fun z => u z * (extCut F ((j : ℝ) + 1) z : ℂ) * dbarDir g z v) (volume.restrict W)`. Introduce `j`. Establish `hχ : ContinuousOn (fun z => (extCut F ((j : ℝ) + 1) z : ℂ)) W` using `fun z hz => (Complex.continuous_ofReal.continuousAt.comp ((contDiffAt_logCutoff (hk j) (hsm z hz.1)).continuousAt)).continuousWithinAt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hum.mul (hχ.aestronglyMeasurable hWm)).mul hd1.1.aestronglyMeasurable`. Establish `hboundA : ∀ j : ℕ, ∀ z, ‖u z * (extCut F ((j : ℝ) + 1) z : ℂ) * dbarDir g z v‖ ≤ ‖u z * dbarDir g z v‖`. Introduce `j z`. Rewrite using `[norm_mul, norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (logCutoff_nonneg _ _ _)]`. Establish `h1` using `logCutoff_le_one F ((j : ℝ) + 1) z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2` using `logCutoff_nonneg F ((j : ℝ) + 1) z`. Establish `h3` using `mul_nonneg (norm_nonneg (u z)) (norm_nonneg (dbarDir g z v))`. Use the polynomial consequences of the given equalities and inequalities. Establish `hA : Tendsto (fun j : ℕ => ∫ z in W, u z * (extCut F ((j : ℝ) + 1) z : ℂ) * dbarDir g z v) atTop (𝓝 (∫ z in W, u z * dbarDir g z v))`. Use `tendsto_integral_of_dominated_convergence (fun z => ‖u z * dbarDir g z v‖) hmeasA hud.norm (fun j => Filter.Eventually.of_forall (hboundA j)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `ae_restrict_of_forall_mem hWm (fun z hz => ?_)` and prove the remaining obligations. Establish `hFz : F z ≠ 0` using `hz.2`. Take `⟨N, hN⟩` from `exists_nat_ge (-Real.log (‖F z‖ ^ 2))`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop N] with j hj`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hNj : (N : ℝ) ≤ j` using `by exact_mod_cast hj`. Rewrite using `[logCutoff_eq_one (hk j) hFz (by linarith)]`. Simplify using the standard rewrite rules. Establish `hAB : ∀ j : ℕ, (∫ z in W, u z * (extCut F ((j : ℝ) + 1) z : ℂ) * dbarDir g z v) = -∫ z in W, u z * g z * extErr F ((j : ℝ) + 1) v z`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk'` using `hk j`. Establish `htest` using `isTest_logCutoff_mul hsm hk' ⟨hgc, hgs, hgΩ⟩`. Establish `h0` using `(holoWeak n W u hWo hu).2 _ htest v`. Establish `hpt : ∀ z ∈ W, u z * dbarDir (fun w => (extCut F ((j : ℝ) + 1) w : ℂ) * g w) z v = u z * (extCut F ((j : ℝ) + 1) z : ℂ) * dbarDir g z v + u z * g z * extErr F ((j : ℝ) + 1) v z`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[dbarDir_extensionCutoff_mul v ((contDiffAt_logCutoff hk' (hsm z hz.1)).differentiableAt (by simp)) (hgc.differentiable (by simp) z)]`. Simplify using `only [extErr]`. Expand and normalize the polynomial expressions, which then agree. Establish `hI1 : IntegrableOn (fun z => u z * dbarDir (fun w => (extCut F ((j : ℝ) + 1) w : ℂ) * g w) z v) W`. Establish `h` using `dbarDir_continuous_hasCompactSupport htest.1 htest.2.1 v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `integrableOn_mul_of_sq hum hu2 h.1 h.2`. Establish `hI2 : IntegrableOn (fun z => u z * (extCut F ((j : ℝ) + 1) z : ℂ) * dbarDir g z v) W` using `Integrable.mono' hud.norm (hmeasA j) (Filter.Eventually.of_forall (hboundA j))`. Establish `hsplit : ∫ z in W, u z * g z * extErr F ((j : ℝ) + 1) v z = (∫ z in W, u z * dbarDir (fun w => (extCut F ((j : ℝ) + 1) w : ℂ) * g w) z v) - ∫ z in W, u z * (extCut F ((j : ℝ) + 1) z : ℂ) * dbarDir g z v`. Rewrite using `[← integral_sub hI1 hI2]`. Use `setIntegral_congr_fun hWm (fun z hz => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hpt z hz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, h0]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨C0, hC0, hC0b⟩` from `exists_deriv_extCh_le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Mg, hMg⟩` from `hgc.continuous.bounded_above_of_compact_support hgs`. Establish `hMg0 : 0 ≤ Mg` using `(norm_nonneg _).trans (hMg 0)`. Take `⟨C, hC, hCb⟩` from `ext_cut hΩ hF hgs hgΩ`. Establish `hfc : ContinuousOn (fun z => -Real.log (‖F z‖ ^ 2)) W`. Use `ContinuousOn.neg (ContinuousOn.log ((hF.continuousOn.mono hWsub).norm.pow 2) ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `z hz`. Conclude with `pow_ne_zero 2 (norm_ne_zero_iff.mpr hz.2)`. Establish `hm2 : ∫⁻ z in W, ‖u z‖ₑ ^ 2 < ⊤`. Establish `e : ∀ z, ‖‖u z‖ ^ 2‖ₑ = ‖u z‖ₑ ^ 2` using `fun z => by rw [enorm_pow, enorm_norm]`. Establish `h` using `hu2.2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `HasFiniteIntegral at h`. Simplify `h` using `only [e]`. Establish `hmass : Tendsto (fun j : ℕ => ∫⁻ z in {z | z ∈ W ∧ (j : ℝ) + 1 ≤ -Real.log (‖F z‖ ^ 2)}, ‖u z‖ₑ ^ 2) atTop (𝓝 0)` using `tendsto_setLIntegral_band hWo hfc hm2`. Establish `hSm : ∀ k : ℝ, MeasurableSet (tsupport g ∩ {z | F z ≠ 0 ∧ k ≤ -Real.log (‖F z‖ ^ 2) ∧ -Real.log (‖F z‖ ^ 2) ≤ 2 * k})`. Introduce `k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : tsupport g ∩ {z | F z ≠ 0 ∧ k ≤ -Real.log (‖F z‖ ^ 2) ∧ -Real.log (‖F z‖ ^ 2) ≤ 2 * k} = tsupport g ∩ ({z | z ∈ W ∧ k ≤ -Real.log (‖F z‖ ^ 2)} ∩ {z | z ∈ W ∧ -(2 * k) ≤ - -Real.log (‖F z‖ ^ 2)})`. Use extensionality with `z`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hF0, h1, h2⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzW : z ∈ W` using `⟨hgΩ hz, hF0⟩`. Conclude with `⟨hz, ⟨hzW, h1⟩, hzW, by linarith⟩`. Introduce and unpack `⟨hz, ⟨hzW, h1⟩, _, h2⟩`. Conclude with `⟨hz, hzW.2, h1, by linarith⟩`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `(isClosed_tsupport g).measurableSet.inter ((measurableSet_ge_of_continuousOn hWo hfc k).inter (measurableSet_ge_of_continuousOn hWo hfc.neg (-(2 * k))))`. Establish `hbound : ∀ j : ℕ, ‖∫ z in W, u z * g z * extErr F ((j : ℝ) + 1) v z‖ₑ ≤ (ENNReal.ofReal (Mg * (2 * ‖v‖) * C0) * C ^ (1 / 2 : ℝ)) * (∫⁻ z in {z | z ∈ W ∧ (j : ℝ) + 1 ≤ -Real.log (‖F z‖ ^ 2)}, ‖u z‖ₑ ^ 2) ^ (1 / 2 : ℝ)` using `fun j => bound_lemma_3 v j hsm hgΩ hMg hMg0 hC0 hC0b hWm hSm (fun k => measurableSet_ge_of_continuousOn hWo hfc k) hCb hum`. Establish `hR : Tendsto (fun j : ℕ => (ENNReal.ofReal (Mg * (2 * ‖v‖) * C0) * C ^ (1 / 2 : ℝ)) * (∫⁻ z in {z | z ∈ W ∧ (j : ℝ) + 1 ≤ -Real.log (‖F z‖ ^ 2)}, ‖u z‖ₑ ^ 2) ^ (1 / 2 : ℝ)) atTop (𝓝 0)`. Establish `h1 : Tendsto (fun j : ℕ => (∫⁻ z in {z | z ∈ W ∧ (j : ℝ) + 1 ≤ -Real.log (‖F z‖ ^ 2)}, ‖u z‖ₑ ^ 2) ^ (1 / 2 : ℝ)) atTop (𝓝 0)`. Use `((ENNReal.continuous_rpow_const (y := (1 / 2 : ℝ))).tendsto 0).comp hmass` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[ENNReal.zero_rpow_of_pos (by norm_num)]`. Then use the resulting hypothesis. Establish `hne : ENNReal.ofReal (Mg * (2 * ‖v‖) * C0) * C ^ (1 / 2 : ℝ) ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.rpow_ne_top_of_nonneg (by norm_num) hC.ne)`. Use `ENNReal.Tendsto.const_mul h1 (Or.inr hne)` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Then use the resulting hypothesis. Establish `hBe : Tendsto (fun j : ℕ => ‖∫ z in W, u z * g z * extErr F ((j : ℝ) + 1) v z‖ₑ) atTop (𝓝 0)` using `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hR (fun _ => zero_le) hbound`.
-
-Establish `hB : Tendsto (fun j : ℕ => ∫ z in W, u z * g z * extErr F ((j : ℝ) + 1) v z) atTop (𝓝 0)` using `tendsto_iff_edist_tendsto_0.mpr (by simpa only [edist_zero_right] using hBe)`. Establish `hA' : Tendsto (fun j : ℕ => ∫ z in W, u z * (extCut F ((j : ℝ) + 1) z : ℂ) * dbarDir g z v) atTop (𝓝 0)`. Establish `h` using `hB.neg`. Rewrite `h` using `[neg_zero]`. Conclude with `h.congr (fun j => (hAB j).symm)`.
-
-Conclude with `tendsto_nhds_unique hA hA'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem main_lemma_2 {Ω : Set (V n)} {F u g : V n → ℂ} (hΩ : IsOpen Ω)
     (hF : DifferentiableOn ℂ F Ω) (hsm : ∀ z ∈ Ω, ContDiffAt ℝ ∞ F z)
@@ -494,13 +482,13 @@ private theorem main_lemma_2 {Ω : Set (V n)} {F u g : V n → ℂ} (hΩ : IsOpe
   exact tendsto_nhds_unique hA hA'
 
 /- English proof (translation)
-Establish `hWo : IsOpen (Ω \ {z | F z = 0})`. Establish `e : Ω \ {z | F z = 0} = Ω ∩ F ⁻¹' {0}ᶜ` using `by ext z; simp`. Rewrite using `[e]`. Conclude with `hF.continuousOn.isOpen_inter_preimage hΩ isOpen_compl_singleton`. Establish `hWm : MeasurableSet (Ω \ {z | F z = 0})` using `hWo.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hum : AEStronglyMeasurable u (volume.restrict (Ω \ {z | F z = 0}))` using `hu.continuousOn.aestronglyMeasurable hWm`. Use `⟨locallyIntegrableOn_indicator_of_sq_integrableOn hΩ hWm hum hu2, ?_⟩` and prove the remaining obligations. Introduce `g hg v`. Establish `hred : ∫ z in Ω, (Ω \ {z | F z = 0}).indicator u z * dbarDir g z v = ∫ z in Ω \ {z | F z = 0}, u z * dbarDir g z v`. Establish `e : (fun z => (Ω \ {z | F z = 0}).indicator u z * dbarDir g z v) = (Ω \ {z | F z = 0}).indicator (fun z => u z * dbarDir g z v)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ Ω \ {z | F z = 0}`. Rewrite using `[Set.indicator_of_mem hz, Set.indicator_of_mem hz]`. Rewrite using `[Set.indicator_apply, if_neg hz, Set.indicator_apply, if_neg hz, zero_mul]`. Rewrite using `[e, setIntegral_indicator hWm, Set.inter_eq_right.mpr Set.diff_subset]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hred]`. Conclude with `main_lemma_2 hΩ hF hsm hu hu2 hg v`.
+A detailed English derivation is pending.
 -/
 theorem extWeak_of_smooth {Ω : Set (V n)} {F u : V n → ℂ} (hΩ : IsOpen Ω)
     (hF : DifferentiableOn ℂ F Ω) (hsm : ∀ z ∈ Ω, ContDiffAt ℝ ∞ F z)
@@ -530,7 +518,7 @@ theorem extWeak_of_smooth {Ω : Set (V n)} {F u : V n → ℂ} (hΩ : IsOpen Ω)
   exact main_lemma_2 hΩ hF hsm hu hu2 hg v
 
 /- English proof (translation)
-Introduce `n Ω F u hΩ hF hu hu2`. Conclude with `extWeak_of_smooth hΩ hF (fun z hz => (holo_contDiffOn hΩ hF).contDiffAt (hΩ.mem_nhds hz)) hu hu2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem extWeak : ExtWeakStatement := by
   intro n Ω F u hΩ hF hu hu2

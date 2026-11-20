@@ -15,43 +15,37 @@ def trl {G : Type} [Group G] (a : ℝ → G) (t : ℝ) : (G → ℂ) →ₗ[ℂ]
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Introduce `G _ a F₀ ha hcont hfin`. Use `set V := Submodule.span ℂ (Set.range fun t : ℝ => fun g => F₀ (a t * g)) with hVdef`. Establish `ha0 : a 0 = 1`. Establish `h` using `ha 0 0`. Rewrite `h` using `[add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `left_eq_mul.mp h`. Establish `hcomm : ∀ s t, a s * a t = a t * a s` using `fun s t => by rw [← ha, ← ha, add_comm]`. Establish `hmem : ∀ t, (fun g => F₀ (a t * g)) ∈ V` using `fun t => Submodule.subset_span ⟨t, rfl⟩`. Establish `hinv : ∀ t, ∀ x ∈ V, trl a t x ∈ V`. Introduce `t x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨s, rfl⟩` from `h`. Establish `e : trl a t (fun g => F₀ (a s * g)) = fun g => F₀ (a (s + t) * g)`. Use function extensionality and compare the values at `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show F₀ (a s * (a t * g)) = F₀ (a (s + t) * g)`. Rewrite using `[ha, mul_assoc]`. Rewrite using `[e]`. Conclude with `hmem _`. Consider the case `zero => rw [map_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `V.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `V.add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `V.smul_mem c hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcV : ∀ x ∈ V, ∀ g, Continuous fun t => x (a t * g)`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨s, rfl⟩` from `h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce `g`. Establish `e : (fun t => F₀ (a s * (a t * g))) = fun t => F₀ (a t * (a s * g))`. Use function extensionality and compare the values at `t`. Rewrite using `[← mul_assoc, hcomm, mul_assoc]`. Conclude with `e ▸ hcont (a s * g)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => intro g`. Conclude with `continuous_const`. Consider the case `add x y _ _ hx hy => intro g`. Conclude with `(hx g).add (hy g)`. Consider the case `smul c x _ hx => intro g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `continuous_const.mul (hx g)`. Establish `: FiniteDimensional ℂ V` using `hfin`. Set `T : ℝ → Module.End ℂ V` to `fun t => (trl a t).restrict (hinv t)`. Establish `hT : ∀ t (x : V) g, ((T t x : V) : G → ℂ) g = (x : G → ℂ) (a t * g)` using `fun t x g => rfl`. Establish `hTc : ∀ s t, T s * T t = T t * T s`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s t`. Use `LinearMap.ext fun x => Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Use `show (x : G → ℂ) (a t * (a s * g)) = (x : G → ℂ) (a s * (a t * g))`. Rewrite using `[← mul_assoc, ← mul_assoc, hcomm]`. Set `v₀ : V` to `⟨fun g => F₀ (a 0 * g), hmem 0⟩`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpow : ∀ j : ℕ, ∀ g, (((T 1 ^ j) v₀ : V) : G → ℂ) g = F₀ (a j * g)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro g`. Simplify using `[v₀]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `succ j ih`. Introduce `g`. Rewrite using `[pow_succ', Module.End.mul_apply, hT, ih, ← mul_assoc, ← ha]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hint : IsIntegral ℂ (T 1)` using `Algebra.IsIntegral.isIntegral _`. Use `⟨minpoly ℂ (T 1), minpoly.monic hint, fun g => ?_, ?_⟩` and prove the remaining obligations. Establish `h0` using `congrArg (fun w : V => (w : G → ℂ) g) (LinearMap.congr_fun (minpoly.aeval ℂ (T 1)) v₀)`. Simplify using `only [Polynomial.aeval_eq_sum_range, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, hpow, LinearMap.zero_apply, Submodule.coe_zero, Pi.zero_apply] at h0`. Conclude with `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `hev : Module.End.HasEigenvalue (T 1) z` using `Module.End.hasEigenvalue_iff_isRoot.2 hz`. Establish `hW : Module.End.eigenspace (T 1) z ≠ ⊥` using `Module.End.hasEigenvalue_iff.1 hev`. Establish `hWi : ∀ t, ∀ x ∈ Module.End.eigenspace (T 1) z, T t x ∈ Module.End.eigenspace (T 1) z`. Introduce `t x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx`, the goal using `[Module.End.mem_eigenspace_iff]`. Establish `e` using `LinearMap.congr_fun (hTc 1 t) x`. Rewrite `e` using `[Module.End.mul_apply, Module.End.mul_apply, hx, map_smul]`. Conclude with `e`. Take `⟨v, hvW, hv0, hμ⟩` from `UpperTheory.V.LinAlg.simEig T hTc _ _ rfl hW hWi`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hf0 : (v : G → ℂ) ≠ 0` using `fun h => hv0 (Subtype.ext h)`. Take `⟨g₀, hg₀⟩` from `Function.ne_iff.1 hf0`. Establish `hg₀' : (v : G → ℂ) g₀ ≠ 0` using `hg₀`. Establish `heig : ∀ t g, (v : G → ℂ) (a t * g) = (v : G → ℂ) (a t * g₀) / (v : G → ℂ) g₀ * (v : G → ℂ) g`. Introduce `t g`.
-
-Take `⟨μ, hμt⟩` from `hμ t`. Establish `e : ∀ g, (v : G → ℂ) (a t * g) = μ * (v : G → ℂ) g` using `fun g => congrArg (fun w : V => (w : G → ℂ) g) hμt`. Rewrite using `[e g, e g₀, mul_div_cancel_right₀ _ hg₀']`. Take `⟨c, hc⟩` from `UpperTheory.V.Lib.Small.exists_eq_exp (fun t => (v : G → ℂ) (a t * g₀) / (v : G → ℂ) g₀) ((hcV _ v.2 g₀).div_const _) (by simp only [ha0, one_mul, div_self hg₀']) (fun s t => by show (v : G → ℂ) (a (s + t) * g₀) / (v : G → ℂ) g₀ = (v : G → ℂ) (a s * g₀) / (v : G → ℂ) g₀ * ((v : G …`. Rewrite using `[ha, mul_assoc, heig s (a t * g₀), mul_div_assoc])`.
-
-Use `⟨c, ?_, (v : G → ℂ), v.2, hf0, fun t g => ?_⟩` and prove the remaining obligations. Establish `h1 : (v : G → ℂ) (a 1 * g₀) = z * (v : G → ℂ) g₀` using `congrArg (fun w : V => (w : G → ℂ) g₀) (Module.End.mem_eigenspace_iff.1 hvW)`. Establish `e` using `hc 1`. Rewrite `e` using `[h1, mul_div_cancel_right₀ _ hg₀', Complex.ofReal_one, mul_one]`. Conclude with `e`.
-
-Rewrite using `[heig t g, hc t]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killPoly4 : KillPoly := by
   intro G _ a F₀ ha hcont hfin

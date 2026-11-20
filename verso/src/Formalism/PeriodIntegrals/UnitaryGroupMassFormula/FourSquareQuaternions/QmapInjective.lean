@@ -29,9 +29,9 @@ theorem qmap_apply {K E : Type*} [Field K] [CharZero K] [Field E] [Algebra K E] 
     qmap b Q x w = ∑ a, (Q w.2 w.1 a : K) * b.repr (x a) w.2 := rfl
 
 /- English proof (translation)
-Simplify using `only [qmap_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h : ∀ a, ∑ c, (Q i c a' : K) * ((Q i c a : K) * b.repr (x a) i) = (∑ c, (Q i c a' : K) * (Q i c a : K)) * b.repr (x a) i`. Introduce `a`. Rewrite using `[Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[h, sum_mul_cast (Q i) (q i) (hQ i), ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem qmap_back {K E : Type*} [Field K] [CharZero K] [Field E] [Algebra K E] {n : Type*}
     (b : Module.Basis n K E) (Q : n → Matrix (Fin 4) (Fin 4) ℚ) (q : n → ℚ)
@@ -48,11 +48,11 @@ theorem qmap_back {K E : Type*} [Field K] [CharZero K] [Field E] [Algebra K E] {
   simp_rw [h, sum_mul_cast (Q i) (q i) (hQ i), ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Use function extensionality and compare the values at `a'`. Rewrite using `[b.ext_elem_iff]`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `qmap_back b Q q hQ x a' i`. Simplify using `only [hx, Pi.zero_apply, mul_zero, Finset.sum_const_zero] at h`. Establish `hqi : (q i : K) ≠ 0` using `by exact_mod_cast (hq i).ne'`. Establish `h0 : b.repr (x a') i = 0`. Break down `mul_eq_zero.mp h.symm with h1 | h1` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h1 hqi`. Conclude with `h1`. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qmap_injective {K E : Type*} [Field K] [CharZero K] [Field E] [Algebra K E] {n : Type*}
     (b : Module.Basis n K E) (Q : n → Matrix (Fin 4) (Fin 4) ℚ) (q : n → ℚ) (hq : ∀ i, 0 < q i)
@@ -73,15 +73,15 @@ theorem qmap_injective {K E : Type*} [Field K] [CharZero K] [Field E] [Algebra K
   simp [h0]
 
 /- English proof (translation)
-Introduce `K E _ _ _ _ _ cj n _ b q hq hb`. Use `choose Q hQ using fun i => exists_quat (q i) (hq i)`. Establish `: Module.Finite K E` using `Module.Finite.of_basis b`. Establish `hdim : Module.finrank K (Fin 4 → E) = Module.finrank K (Fin 4 × n → K)`. Rewrite using `[Module.finrank_pi_fintype, Module.finrank_fintype_fun_eq_card, Module.finrank_eq_card_basis b, Finset.sum_const, Finset.card_univ, Fintype.card_prod, Fintype.card_fin, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(qmap b Q).linearEquivOfInjective (qmap_injective b Q q hq hQ) hdim, ?_⟩` and prove the remaining obligations. Introduce `x y`. Simplify using `only [LinearMap.linearEquivOfInjective_apply]`. Rewrite using `[map_sum]`. Unfold `DiagId at hb`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hb]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm, Finset.sum_comm (γ := Fin 4)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hx : ∀ c, algebraMap K E (qmap b Q x (c, i)) = ∑ a, (Q i c a : E) * algebraMap K E (b.repr (x a) i)`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[qmap_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_ratCast]`. Establish `hy : ∀ c, algebraMap K E (qmap b Q y (c, i)) = ∑ a, (Q i c a : E) * algebraMap K E (b.repr (y a) i)`. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[qmap_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_ratCast]`. Repeatedly rewrite using `[hx, hy]`. Rewrite using `[quat_herm cj (Q i) (q i) (hQ i), Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem from_diagonal : FromDiag := by
   intro K E _ _ _ _ _ cj n _ b q hq hb

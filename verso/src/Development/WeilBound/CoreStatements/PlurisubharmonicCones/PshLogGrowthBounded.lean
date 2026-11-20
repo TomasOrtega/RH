@@ -11,39 +11,35 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 
 /- English proof (translation)
-Use `set A : Set ℂ := {ζ : ℂ | r0 ≤ ‖ζ‖ ∧ ‖ζ‖ ≤ R} with hA`. Establish `hAc : IsCompact A`. Apply `(ProperSpace.isCompact_closedBall (0 : ℂ) R).of_isClosed_subset` to reduce the goal to its premises. Conclude with `(isClosed_le continuous_const continuous_norm).inter (isClosed_le continuous_norm continuous_const)`. Introduce `z hz`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hz.2`. Establish `hAne : A.Nonempty` using `⟨(R : ℂ), by`. Simplify using `only [hA, Set.mem_setOf_eq, Complex.norm_real, Real.norm_eq_abs]`. Rewrite using `[abs_of_pos (hr0.trans hR)]`. Conclude with `⟨hR.le, le_rfl⟩⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcont : ContinuousOn (fun ζ : ℂ => ε * Real.log ‖ζ‖ + δ * ‖ζ‖ ^ 2) A`. Introduce `z hz`. Establish `hz0 : ‖z‖ ≠ 0` using `(hr0.trans_le hz.1).ne'`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Apply `ContinuousAt.add` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `continuousAt_const.mul (Real.continuousAt_log hz0 |>.comp continuous_norm.continuousAt)`. Conclude with `continuousAt_const.mul (continuous_norm.continuousAt.pow 2)`. Establish `husck : UpperSemicontinuousOn (fun ζ : ℂ => g ζ + (ε * Real.log ‖ζ‖ + δ * ‖ζ‖ ^ 2)) A` using `husc.add hcont.upperSemicontinuousOn`. Take `⟨z0, hz0A, hmax⟩` from `husck.exists_isMaxOn hAne hAc`. Establish `key : g z0 + (ε * Real.log ‖z0‖ + δ * ‖z0‖ ^ 2) ≤ M`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_lt_of_le hz0A.1 with h1 | h1` into its components or cases. Use `hin z0 h1.symm` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Break down `eq_or_lt_of_le hz0A.2 with h2 | h2` into its components or cases. Use `hout z0 h2` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. It suffices to derive a contradiction. Use `set s := min (‖z0‖ - r0) (R - ‖z0‖) / 2 with hs`. Establish `hs0 : 0 < s`. Establish `: 0 < min (‖z0‖ - r0) (R - ‖z0‖)` using `lt_min (by linarith) (by linarith)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs1 : s < ‖z0‖ - r0`. Use `min_le_left (‖z0‖ - r0) (R - ‖z0‖)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs2 : s < R - ‖z0‖`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `min_le_right (‖z0‖ - r0) (R - ‖z0‖)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hgi, hgle⟩` from `hsub z0 s hs0 (by linarith) (by linarith)`. Establish `hsph : Metric.sphere z0 s ⊆ A`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `hx` using `[mem_sphere_iff_norm]`. Establish `h3 : ‖x‖ ≤ ‖z0‖ + ‖x - z0‖`. Use `norm_add_le z0 (x - z0)` as an intermediate fact. Simplify using `using this`. Establish `h4 : ‖z0‖ ≤ ‖x‖ + ‖x - z0‖`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `norm_sub_le x (x - z0)` as an intermediate fact. Simplify using `using this`. Conclude with `⟨by linarith, by linarith⟩`. Establish `hci2 : CircleIntegrable (fun ζ : ℂ => ε * Real.log ‖ζ‖ + δ * ‖ζ‖ ^ 2) z0 s` using `ContinuousOn.circleIntegrable hs0.le (hcont.mono hsph)`. Establish `hlogc : CircleIntegrable (fun ζ : ℂ => ε * Real.log ‖ζ‖) z0 s` using `ContinuousOn.circleIntegrable hs0.le (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `z hz`. Establish `hz0 : ‖z‖ ≠ 0` using `(hr0.trans_le (hsph hz).1).ne'`. Conclude with `(continuousAt_const.mul (Real.continuousAt_log hz0 |>.comp continuous_norm.continuousAt)).continuousWithinAt)`. Establish `hsqc : CircleIntegrable (fun ζ : ℂ => δ * ‖ζ‖ ^ 2) z0 s` using `ContinuousOn.circleIntegrable hs0.le (by fun_prop)`. Establish `havg_le : Real.circleAverage (fun ζ : ℂ => g ζ + (ε * Real.log ‖ζ‖ + δ * ‖ζ‖ ^ 2)) z0 s ≤ g z0 + (ε * Real.log ‖z0‖ + δ * ‖z0‖ ^ 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Real.circleAverage_mono_on_of_le_circle (hgi.add hci2)` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[abs_of_pos hs0]`. Conclude with `hmax (hsph hx)`. Establish `hsplit : Real.circleAverage (fun ζ : ℂ => g ζ + (ε * Real.log ‖ζ‖ + δ * ‖ζ‖ ^ 2)) z0 s = Real.circleAverage g z0 s + (ε * Real.circleAverage (fun ζ : ℂ => Real.log ‖ζ‖) z0 s + δ * Real.circleAverage (fun ζ : ℂ => ‖ζ‖ ^ 2) z0 s)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.circleAverage_fun_add hgi hci2, Real.circleAverage_fun_add hlogc hsqc, ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.cA_mul, ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.cA_mul]`. Establish `hlog : Real.log ‖z0‖ ≤ Real.circleAverage (fun ζ : ℂ => Real.log ‖ζ‖) z0 s`. Establish `h` using `circleAverage_log_norm_sub_const_eq_log_radius_add_posLog (a := 0) (c := z0) hs0.ne'`. Simplify using `only [sub_zero] at h`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz0pos : 0 < ‖z0‖` using `by linarith`. Establish `hl : Real.log (s⁻¹ * ‖z0‖) ≤ (s⁻¹ * ‖z0‖).posLog`. Unfold `Real.posLog`. Conclude with `le_max_right _ _`. Rewrite `hl` using `[Real.log_mul (inv_ne_zero hs0.ne') hz0pos.ne', Real.log_inv]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsq : Real.circleAverage (fun ζ : ℂ => ‖ζ‖ ^ 2) z0 s = ‖z0‖ ^ 2 + s ^ 2`. Establish `h` using `ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.circleAverage_norm_sub_sq z0 0 hs0.le`. Simplify using `using h`. Rewrite `havg_le` using `[hsplit, hsq]`.
-
-Establish `h5 : ε * Real.log ‖z0‖ ≤ ε * Real.circleAverage (fun ζ : ℂ => Real.log ‖ζ‖) z0 s` using `mul_le_mul_of_nonneg_left hlog hε`. Establish `h6 : 0 < δ * s ^ 2` using `mul_pos hδ (pow_pos hs0 2)`. Use the polynomial consequences of the given equalities and inequalities. Introduce `ζ h1 h2`. Use `hmax (show ζ ∈ A from ⟨h1, h2⟩)` as an intermediate fact.
-
-Simplify using `only [Set.mem_setOf_eq] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem le_of_subMeanValue_log_sq_le_on_annulus_boundary (g : ℂ → ℝ) (R r0 ε δ M : ℝ) (hr0 : 0 < r0) (hR : r0 < R) (hε : 0 ≤ ε)
     (hδ : 0 < δ) (husc : UpperSemicontinuousOn g {ζ : ℂ | r0 ≤ ‖ζ‖ ∧ ‖ζ‖ ≤ R})
@@ -145,31 +141,27 @@ private theorem le_of_subMeanValue_log_sq_le_on_annulus_boundary (g : ℂ → �
   linarith
 
 /- English proof (translation)
-Introduce `ζ0 hζ0 hζ0R`. Break down `eq_or_lt_of_le hζ0R with hEq | hlt` into its components or cases. Use `hout ζ0 hEq` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLpos : 0 < Real.log (R / ‖ζ0‖)` using `Real.log_pos (by rw [lt_div_iff₀ hζ0]; linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `set ε : ℝ := 1 / (Real.log (R / ‖ζ0‖) + 1) with hεdef`. Establish `hε : 0 < ε` using `by positivity`. Use `set δ : ℝ := 1 / (R ^ 2 + 1) with hδdef`. Establish `hδ : 0 < δ` using `by positivity`. Use `set et : ℝ := ε / (2 * (K + 1)) with hetdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `het : 0 < et` using `by positivity`. Establish `hKet : K * et ≤ ε / 2`. Rewrite using `[hetdef, mul_div_assoc']`. Rewrite using `[div_le_div_iff₀ (by positivity) (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c0 : ℝ := K + ε * A / 2 - K * (1 + Real.log et) with hc0`. Use `set x : ℝ := max (max 0 (1 - Real.log ‖ζ0‖)) (2 * (c0 - B - ε * Real.log R) / ε) with hxdef`. Establish `hx0 : 0 ≤ x` using `le_trans (le_max_left _ _) (le_max_left _ _)`. Establish `hx1 : 1 - Real.log ‖ζ0‖ ≤ x` using `le_trans (le_max_right _ _) (le_max_left _ _)`. Establish `hx2 : 2 * (c0 - B - ε * Real.log R) / ε ≤ x` using `le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `set r0 : ℝ := Real.exp (-x) with hr0def`. Establish `hr0 : 0 < r0` using `Real.exp_pos _`. Establish `hlogr0 : Real.log r0 = -x` using `Real.log_exp _`. Establish `hr0lt : r0 < ‖ζ0‖`. Rewrite using `[← Real.exp_log hζ0, hr0def, Real.exp_lt_exp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmain` using `le_of_subMeanValue_log_sq_le_on_annulus_boundary g R r0 ε δ (B + ε * Real.log R + δ * R ^ 2) hr0 (hr0lt.trans hlt) hε.le hδ (husc.mono (fun z hz => ⟨hr0.trans_le hz.1, hz.2⟩)) (fun c s hs h1 h2 => hsub c s hs (by linarith) h2) (by`. Introduce `ζ hζ`. Establish `hg` using `hgrow ζ (by rw [hζ]; exact hr0) (by rw [hζ]; linarith)`. Rewrite `hg` using `[hζ, hlogr0, abs_neg, abs_of_nonneg hx0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hζ, hlogr0]`. Establish `hAx : 0 < A + x` using `by linarith`. Establish `hl1 : Real.log (et * (A + x)) ≤ et * (A + x) - 1` using `Real.log_le_sub_one_of_pos (by positivity)`. Rewrite `hl1` using `[Real.log_mul het.ne' hAx.ne']`. Establish `hl2 : K * Real.log (A + x) ≤ K * (et * (A + x) - 1 - Real.log et)` using `mul_le_mul_of_nonneg_left (by linarith) hK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hl3 : K * et * (A + x) ≤ ε / 2 * (A + x)` using `mul_le_mul_of_nonneg_right hKet hAx.le`. Establish `hl4 : 2 * (c0 - B - ε * Real.log R) ≤ ε * x`. Use `mul_le_mul_of_nonneg_left hx2 hε.le` as an intermediate fact. Establish `e : ε * (2 * (c0 - B - ε * Real.log R) / ε) = 2 * (c0 - B - ε * Real.log R)`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr0R : r0 ^ 2 ≤ R ^ 2`. Establish `: r0 ≤ R` using `(hr0lt.trans hlt).le`. Use the polynomial consequences of the given equalities and inequalities. Establish `hl5 : δ * r0 ^ 2 ≤ δ * R ^ 2` using `mul_le_mul_of_nonneg_left hr0R hδ.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hl4` using `[hc0]`. Use the proof step `nlinarith)`. Use the proof step `(by`. Introduce `ζ hζ`. Use `hout ζ hζ` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hζ]`. Use the proof step `linarith)`. Use `ζ0 hr0lt.le hζ0R`. Establish `hεL : ε * (Real.log R - Real.log ‖ζ0‖) ≤ 1`. Rewrite using `[← Real.log_div hR.ne' hζ0.ne', hεdef]`.
-
-Rewrite using `[div_mul_eq_mul_div, _root_.one_mul, div_le_one (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hδR : δ * R ^ 2 ≤ 1`. Rewrite using `[hδdef, div_mul_eq_mul_div, _root_.one_mul, div_le_one (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hsq : 0 ≤ δ * ‖ζ0‖ ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem le_add_two_of_subMeanValue_loglog_bound (g : ℂ → ℝ) (R B K A : ℝ) (hR : 0 < R) (hK : 0 ≤ K) (hA : 1 ≤ A)
     (husc : UpperSemicontinuousOn g {ζ : ℂ | 0 < ‖ζ‖ ∧ ‖ζ‖ ≤ R})
@@ -246,77 +238,65 @@ private theorem le_add_two_of_subMeanValue_loglog_bound (g : ℂ → ℝ) (R B K
   nlinarith
 
 /- English proof (translation)
-Introduce `n a ρ C u hρ hρ1 hpsh hgrow`. Use `set K : ℝ := max C 0 with hKdef`. Establish `hK : 0 ≤ K` using `le_max_right _ _`. Use `set R : ℝ := 3 * ρ / 4 with hRdef`. Establish `hR : 0 < R` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRρ : R < ρ` using `by linarith`. Establish `hWsub : ∀ z : Fin n → ℂ, (∀ j, ‖z j‖ ≤ R) → (∀ j : Fin n, (j : ℕ) < a → z j ≠ 0) → z ∈ Flat.punct n a ρ`. Introduce `z h1 h2`. Use `⟨?_, h2⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `lt_of_le_of_lt ((pi_norm_le_iff_of_nonneg hR.le).2 h1) hRρ`. Establish `hls1 : ∀ z : Fin n → ℂ, 1 ≤ Flat.logSize a z`. Introduce `z`. Unfold `Flat.logSize`. Conclude with `le_add_of_nonneg_right (Finset.sum_nonneg (fun _ _ => abs_nonneg _))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgK : ∀ z ∈ Flat.punct n a ρ, u z ≤ K * (1 + Real.log (Flat.logSize a z))`. Introduce `z hz`. Establish `h` using `hgrow z hz`. Establish `hl : 0 ≤ 1 + Real.log (Flat.logSize a z)`. Use `Real.log_nonneg (hls1 z)` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hl)`. Use `set B0 : ℝ := K * (1 + Real.log (1 + n * |Real.log R|)) with hB0`. Establish `main : ∀ k : ℕ, ∀ z : Fin n → ℂ, (∀ j, ‖z j‖ ≤ R) → (∀ j : Fin n, (j : ℕ) < a → z j ≠ 0) → (Finset.univ.filter (fun i : Fin n => (i : ℕ) < a ∧ ‖z i‖ ≠ R)).card ≤ k → u z ≤ B0 + 2 * (k : ℝ)`. Introduce `k`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `z h1 h2 hb`. Establish `hz` using `hWsub z h1 h2`. Establish `hall : ∀ j : Fin n, (j : ℕ) < a → ‖z j‖ = R`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `j hj`. Assume the negation of the conclusion as `hne`. Establish `hm : j ∈ Finset.univ.filter (fun i : Fin n => (i : ℕ) < a ∧ ‖z i‖ ≠ R)`. Simplify using `[hj, hne]`. Use `Finset.card_pos.2 ⟨j, hm⟩` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hls : Flat.logSize a z ≤ 1 + n * |Real.log R|`. Unfold `Flat.logSize`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => |Real.log R|) (fun i hi => by rw [hall i (Finset.mem_filter.1 hi).2])]`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately.
 
-Use `gcongr`. Conclude with `(Finset.card_filter_le _ _).trans (by simp)` after adjusting the coercions. Establish `hu` using `hgK z hz`. Establish `hlog : Real.log (Flat.logSize a z) ≤ Real.log (1 + n * |Real.log R|)` using `Real.log_le_log (by linarith [hls1 z]) hls`. Use `mul_le_mul_of_nonneg_left (show 1 + Real.log (Flat.logSize a z) ≤ 1 + Real.log (1 + n * |Real.log R|) by linarith) hK` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ k ih`. Introduce `z h1 h2 hb`. Distinguish the cases in `hbk : (Finset.univ.filter (fun i : Fin n => (i : ℕ) < a ∧ ‖z i‖ ≠ R)).card ≤ k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ih z h1 h2 hbk` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : 0 < (Finset.univ.filter (fun i : Fin n => (i : ℕ) < a ∧ ‖z i‖ ≠ R)).card` using `by omega`. Take `⟨j, hj⟩` from `Finset.card_pos.1 hpos`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hj'` using `(Finset.mem_filter.1 hj).2`. Establish `hjz0 : 0 < ‖z j‖` using `norm_pos_iff.2 (h2 j hj'.1)`. Establish `hupdW1 : ∀ ζ : ℂ, ‖ζ‖ ≤ R → ∀ i, ‖Function.update z j ζ i‖ ≤ R`. Introduce `ζ hζ i`. Distinguish the cases in `h : i = j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hζ`. Rewrite using `[Function.update_of_ne h]`. Conclude with `h1 i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hupdW2 : ∀ ζ : ℂ, ζ ≠ 0 → ∀ i : Fin n, (i : ℕ) < a → Function.update z j ζ i ≠ 0`. Introduce `ζ hζ i hi`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hζ`. Rewrite using `[Function.update_of_ne h]`. Conclude with `h2 i hi`. Establish `hjmem : j ∈ Finset.univ.filter (fun i : Fin n => (i : ℕ) < a)` using `by simp [hj'.1]`. Establish `key` using `le_add_two_of_subMeanValue_loglog_bound (fun ζ => u (Function.update z j ζ)) R (B0 + 2 * (k : ℝ)) K (Flat.logSize a z) hR hK (hls1 z) (by`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Introduce `ζ hζ y hy`. Establish `hmem : Function.update z j ζ ∈ Flat.punct n a ρ` using `hWsub _ (hupdW1 ζ hζ.2) (hupdW2 ζ (norm_pos_iff.1 hζ.1))`. Establish `hu` using `hpsh.1 (Function.update z j ζ) hmem y hy`. Establish `hcont : Continuous (fun ξ : ℂ => Function.update z j ξ)` using `continuous_const.update j continuous_id`. Establish `ht : Filter.Tendsto (fun ξ : ℂ => Function.update z j ξ) (𝓝[{ζ : ℂ | 0 < ‖ζ‖ ∧ ‖ζ‖ ≤ R}] ζ) (𝓝[Flat.punct n a ρ] (Function.update z j ζ))` using `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ (hcont.continuousAt.tendsto.mono_left nhdsWithin_le_nhds) (eventually_nhdsWithin_of_forall (fun ξ hξ => hWsub _ (hupdW1 ξ hξ.2) (hupdW2 ξ (norm_pos_iff.1 hξ.1))))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht.eventually hu)`. Use the proof step `(by`. Introduce `c s hs h1' h2'`. Establish `hupd : ∀ ξ : ℂ, Function.update z j c + ξ • Pi.single j (s : ℂ) = Function.update z j ((s : ℂ) * ξ + c)`. Introduce `ξ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Pi.add_apply, Pi.smul_apply, Function.update_self, Function.update_self, Pi.single_eq_same, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Pi.add_apply, Pi.smul_apply, Function.update_of_ne h, Function.update_of_ne h, Pi.single_eq_of_ne h, smul_zero, add_zero]`. Establish `hdisc : ∀ ξ : ℂ, ‖ξ‖ ≤ 1 → Function.update z j c + ξ • Pi.single j (s : ℂ) ∈ Flat.punct n a ρ`. Introduce `ξ hξ`. Rewrite using `[hupd]`. Establish `hn1 : ‖(s : ℂ) * ξ‖ ≤ s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hs]`. Use polynomial arithmetic with `[norm_nonneg ξ]`. Establish `hup : ‖(s : ℂ) * ξ + c‖ ≤ ‖c‖ + s`. Use `norm_add_le ((s : ℂ) * ξ) c` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hlo : ‖c‖ - s ≤ ‖(s : ℂ) * ξ + c‖`. Use `norm_sub_le ((s : ℂ) * ξ + c) ((s : ℂ) * ξ)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_left]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hWsub _ (hupdW1 _ (by linarith)) (hupdW2 _ (by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Rewrite `hlo` using `[h0, norm_zero]`. Use the proof step `linarith))`. Take `⟨hI, hle⟩` from `hpsh.2 (Function.update z j c) (Pi.single j (s : ℂ)) hdisc`. Establish `e : (fun θ : ℝ => u (Function.update z j (circleMap c s θ))) = (fun θ : ℝ => u (Function.update z j c + circleMap 0 1 θ • Pi.single j (s : ℂ)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `θ`. Rewrite using `[hupd]`. Rewrite using `[show circleMap c s θ = (s : ℂ) * circleMap 0 1 θ + c by`. Simplify using `only [circleMap, Complex.ofReal_one]`. Use the proof step `ring]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `CircleIntegrable at hI ⊢`. Rewrite using `[e]`. Conclude with `hI`. Rewrite using `[Real.circleAverage_eq_circleAverage_zero_one]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e2 : (fun ξ : ℂ => u (Function.update z j ((s : ℂ) * ξ + c))) = (fun ξ : ℂ => u (Function.update z j c + ξ • Pi.single j (s : ℂ)))`. Use function extensionality and compare the values at `ξ`. Rewrite using `[hupd]`. Rewrite using `[e2]`. Conclude with `hle)`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `(by`. Introduce `ζ hζ0 hζR`. Establish `hmem` using `hWsub _ (hupdW1 ζ hζR) (hupdW2 ζ (norm_pos_iff.1 hζ0))`. Establish `h` using `hgK _ hmem`. Establish `hls : Flat.logSize a (Function.update z j ζ) ≤ Flat.logSize a z + |Real.log ‖ζ‖|`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Unfold `Flat.logSize`. Establish `hterm : ∀ i ∈ Finset.univ.filter (fun i : Fin n => (i : ℕ) < a), |Real.log ‖Function.update z j ζ i‖| ≤ |Real.log ‖z i‖| + (if i = j then |Real.log ‖ζ‖| else 0)`. Introduce `i _`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.update_self, if_pos rfl]`. Combine the linear relations using `[abs_nonneg (Real.log ‖z i‖)]`. Rewrite using `[Function.update_of_ne hij, if_neg hij]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum` using `Finset.sum_le_sum hterm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hsum` using `[Finset.sum_add_distrib, Finset.sum_ite_eq', if_pos hjmem]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog` using `Real.log_le_log (by linarith [hls1 (Function.update z j ζ)]) hls`. Conclude with `h.trans (mul_le_mul_of_nonneg_left (by linarith) hK))`. Use the proof step `(by`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `ζ hζ`. Apply `ih` to reduce the goal to its premises. Conclude with `hupdW1 ζ hζ.le`. Conclude with `hupdW2 ζ (by`. Introduce `h0`.
-
-Rewrite `hζ` using `[h0, norm_zero]`. Use the proof step `linarith)`. Establish `hsub : Finset.univ.filter (fun i : Fin n => (i : ℕ) < a ∧ ‖Function.update z j ζ i‖ ≠ R) ⊆ (Finset.univ.filter (fun i : Fin n => (i : ℕ) < a ∧ ‖z i‖ ≠ R)).erase j`. Introduce `i hi`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hi`.
-
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite `hi` using `[Function.update_self]`. Conclude with `absurd hζ hi.2`. Rewrite using `[Finset.mem_erase]`.
-
-Use `⟨h, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite `hi` using `[Function.update_of_ne h]`. Conclude with `hi`. Use `Finset.card_le_card hsub` as an intermediate fact.
-
-Rewrite `this` using `[Finset.card_erase_of_mem hj]`. Use the proof step `omega)`. Use the proof step `(z j) hjz0 (h1 j)`. Simplify using `only [Function.update_eq_self] at key`. Use `push_cast`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨B0 + 2 * (n : ℝ), ?_⟩` and prove the remaining obligations. Introduce `t ht`. Take `⟨htb, htnz⟩` from `ht`. Rewrite `htb` using `[mem_ball_zero_iff]`.
-
-Establish `h1 : ∀ j, ‖t j‖ ≤ R` using `fun j => ((norm_le_pi_norm t j).trans htb.le).trans (by linarith)`. Conclude with `main n t h1 htnz ((Finset.card_filter_le _ _).trans (by simp))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LevelTowerAlt.psh_log_growth_bounded : ∀ (n a : ℕ) (ρ C : ℝ) (u : (Fin n → ℂ) → ℝ), 0 < ρ → ρ ≤ 1 → ReciprocityTheory.AnForm.A.IsPsh (Flat.punct n a ρ) u → (∀ t ∈ Flat.punct n a ρ, u t ≤ C * (1 + Real.log (Flat.logSize a t))) → ∃ C' : ℝ, ∀ t ∈ Flat.punct n a (ρ / 2), u t ≤ C' := by
   intro n a ρ C u hρ hρ1 hpsh hgrow

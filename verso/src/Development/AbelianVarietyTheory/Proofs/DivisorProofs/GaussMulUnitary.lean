@@ -13,14 +13,14 @@ namespace GlobalTheory.VacKInf.LeviFix
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (θ τ).comp (infPart D))`.
+A detailed English derivation is pending.
 -/
 theorem compAt_mul' (θ : InfFam D) (τ : D.what₂.Tau) {k m n : ℕ} (x : Mx D k m) (y : Mx D m n) :
     compAt θ τ (HMul.hMul x y : Mx D k n) = compAt θ τ x * compAt θ τ y :=
   Matrix.map_mul (f := (θ τ).comp (infPart D))
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [compAt, adj, Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply]`. Rewrite using `[GlobalTheory.FockCompare.comp_cA hθ τ]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem compAt_adj' {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {m n : ℕ} (x : Mx D m n) :
     compAt θ τ (adj x) = (compAt θ τ x)ᴴ := by

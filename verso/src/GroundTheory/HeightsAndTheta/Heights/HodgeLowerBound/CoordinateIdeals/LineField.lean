@@ -14,7 +14,7 @@ abbrev L : Type := FractionRing (MvPolynomial (Fin 2) ℚ)
 def xL (i : Fin 2) : L := algebraMap (MvPolynomial (Fin 2) ℚ) L (X i)
 
 /- English proof (translation)
-Unfold `xL`. Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective _ _)]`. Conclude with `X_ne_zero i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xL_ne_zero (i : Fin 2) : xL i ≠ 0 := by
   unfold xL
@@ -22,15 +22,15 @@ theorem xL_ne_zero (i : Fin 2) : xL i ≠ 0 := by
   exact X_ne_zero i
 
 /- English proof (translation)
-Rewrite using `[transcendental_iff_injective, injective_iff_map_eq_zero]`. Introduce `p hp`. Use `set n := p.natDegree`. Use `set Q : MvPolynomial (Fin 2) ℚ := ∑ k ∈ Finset.range (n + 1), C (p.coeff k) * X i ^ k * X j ^ (n - k) with hQdef`. Establish `hQ : algebraMap _ L Q = xL j ^ n * Polynomial.aeval (xL i / xL j) p`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.aeval_eq_sum_range, Finset.mul_sum, hQdef, map_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`. Establish `hpow : xL j ^ n = xL j ^ (n - k) * xL j ^ k`. Rewrite using `[← pow_add, Nat.sub_add_cancel hk']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, map_pow, map_pow, hpow, Algebra.smul_def, div_pow]`. Rewrite using `[show algebraMap (MvPolynomial (Fin 2) ℚ) L (C (p.coeff k)) = algebraMap ℚ L (p.coeff k) from (IsScalarTower.algebraMap_apply ℚ (MvPolynomial (Fin 2) ℚ) L _).symm]`. Establish `hj : xL j ^ k ≠ 0` using `pow_ne_zero _ (xL_ne_zero j)`. Express the relevant statement in the definitionally equal form `_ * xL i ^ k * xL j ^ (n - k) = _`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hQ0 : Q = 0`. Apply `IsFractionRing.injective (MvPolynomial (Fin 2) ℚ) L` to reduce the goal to its premises. Rewrite using `[hQ, hp, mul_zero, map_zero]`. Establish `hev : MvPolynomial.aeval (fun m : Fin 2 => if m = i then (Polynomial.X : Polynomial ℚ) else 1) Q = p` using `by conv_rhs => rw [p.as_sum_range_C_mul_X_pow]`. Rewrite using `[hQdef, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[hij.symm, Polynomial.algebraMap_eq]`. Rewrite using `[← hev, hQ0, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transcendental_div {i j : Fin 2} (hij : i ≠ j) : Transcendental ℚ (xL i / xL j) := by
   rw [transcendental_iff_injective, injective_iff_map_eq_zero]
@@ -72,7 +72,7 @@ Both sides reduce to the same expression.
 theorem coe_gen : (gen : L) = u := rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `: (gen : L) = 0` using `by rw [h]; rfl`. Rewrite `this` using `[coe_gen, u]`. Conclude with `div_ne_zero (xL_ne_zero 1) (xL_ne_zero 0) this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_ne_zero : gen ≠ 0 := by
   intro h
@@ -81,9 +81,9 @@ theorem gen_ne_zero : gen ≠ 0 := by
   exact div_ne_zero (xL_ne_zero 1) (xL_ne_zero 0) this
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[transcendental_iff_injective, injective_iff_map_eq_zero]`. Introduce `p hp`. Apply `ha p` to reduce the goal to its premises. Use `congrArg (IntermediateField.val _) hp` as an intermediate fact. Rewrite `this` using `[map_zero, ← Polynomial.aeval_algHom_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem transcendental_of_coe {a : Ω} (ha : Transcendental ℚ (a : L)) : Transcendental ℚ a := by
   rw [transcendental_iff_injective, injective_iff_map_eq_zero] at ha ⊢
@@ -94,13 +94,13 @@ theorem transcendental_of_coe {a : Ω} (ha : Transcendental ℚ (a : L)) : Trans
   exact this
 
 /- English proof (translation)
-The claim follows from `transcendental_of_coe (by rw [coe_gen]; exact transcendental_div (by decide))`.
+A detailed English derivation is pending.
 -/
 theorem transcendental_gen : Transcendental ℚ gen :=
   transcendental_of_coe (by rw [coe_gen]; exact transcendental_div (by decide))
 
 /- English proof (translation)
-Use `transcendental_of_coe ?_` and prove the remaining obligations. Rewrite using `[IntermediateField.coe_inv, coe_gen, u, inv_div]`. Conclude with `transcendental_div (by decide)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transcendental_gen_inv : Transcendental ℚ gen⁻¹ := by
   refine transcendental_of_coe ?_
@@ -120,7 +120,7 @@ Both sides reduce to the same expression.
 theorem yLine_one : yLine ⟨(), 1⟩ = gen := rfl
 
 /- English proof (translation)
-Unfold `yLine`. Use `split_ifs`. Conclude with `one_ne_zero`. Conclude with `gen_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem yLine_ne_zero (p : Σ _ : Unit, Fin 2) : yLine p ≠ 0 := by
   unfold yLine
@@ -129,17 +129,17 @@ theorem yLine_ne_zero (p : Σ _ : Unit, Fin 2) : yLine p ≠ 0 := by
   · exact gen_ne_zero
 
 /- English proof (translation)
-Set `ψ : MvPolynomial Unit Ω →ₐ[Ω] L` to `MvPolynomial.aeval fun _ => xL 0`. Set `ρ : MRing (PBlk 2) →+* L` to `(algebraMap (MvPolynomial (Fin 2) ℚ) L).comp ((MvPolynomial.map (Int.castRingHom ℚ)).comp (rename (fun p : Σ _ : Unit, Fin 2 => p.2)).toRingHom)`. Establish `hcomp : ψ.toRingHom.comp (mConeMap yLine).toRingHom = ρ`. Apply `MvPolynomial.ringHom_ext'` to reduce the goal to its premises. Conclude with `RingHom.ext_int _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨⟩, i⟩`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, mConeMap, aeval_X, map_mul, ψ, ρ, AlgHom.coe_toRingHom, rename_X, map_X]`. Use `fin_cases i`. Simplify using `[yLine, xL]`. Simplify using `only [yLine]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by decide), MvPolynomial.aeval_C]`. Use `show (gen : L) * xL 0 = xL 1`. Rewrite using `[coe_gen, u, div_mul_cancel₀ _ (xL_ne_zero 0)]`. Establish `hinj : Function.Injective ρ`. Use `(IsFractionRing.injective (MvPolynomial (Fin 2) ℚ) L).comp ((MvPolynomial.map_injective _ (RingHom.injective_int _)).comp (rename_injective _ ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Introduce and unpack `⟨⟨⟩, a⟩ ⟨⟨⟩, b⟩ h`. Simplify using `only at h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Use extensionality with `f`.
+Both sides reduce to the same expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Ideal.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Establish `h1 : mConeMap yLine f = 0` using `hf`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_zero, ← hcomp]`. Simplify using `[h1]`. Introduce and unpack `rfl`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem mCoordIdeal_yLine : mCoordIdeal yLine = ⊥ := by
   let ψ : MvPolynomial Unit Ω →ₐ[Ω] L := MvPolynomial.aeval fun _ => xL 0
@@ -177,14 +177,14 @@ theorem mCoordIdeal_yLine : mCoordIdeal yLine = ⊥ := by
     exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[mCoordIdeal_yLine]`. Conclude with `Inter.isArithVar_projLine`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isArithVar_yLine : IsArithVar (mCoordIdeal yLine) 2 := by
   rw [mCoordIdeal_yLine]
   exact Inter.isArithVar_projLine
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Apply the tactic sequence `fin_cases i <;> simp [Finsupp.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isMultiHomog_X_line (i : Fin 2) :
     IsMultiHomog (X ⟨(), i⟩ : MRing (PBlk 2)) (fun _ => 1) := by
@@ -195,23 +195,23 @@ theorem isMultiHomog_X_line (i : Fin 2) :
   fin_cases i <;> simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Introduce and unpack `⟨x, hx⟩`. Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `⟨fun _ => 1, X ⟨(), 1⟩, X ⟨(), 0⟩, isMultiHomog_X_line 1, isMultiHomog_X_line 0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_X, yLine_zero]`. Conclude with `one_ne_zero`. Rewrite using `[aeval_X, aeval_X, yLine_zero, yLine_one, mul_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Consider the case `algebraMap r`. Use `⟨0, C r.num, C (r.den : ℤ), isMultiHomog_C_zero _, isMultiHomog_C_zero _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_C]`. Simplify using `[r.den_nz]`. Rewrite using `[aeval_C, aeval_C]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (⟨algebraMap ℚ L r, IntermediateField.algebraMap_mem _ r⟩ : Ω) = algebraMap ℚ Ω r` using `rfl`. Rewrite using `[this, eq_intCast, eq_intCast, ← map_intCast (algebraMap ℚ Ω), ← map_intCast (algebraMap ℚ Ω), ← map_mul]`. Use `congr 1`. Use `push_cast`. Conclude with `(Rat.mul_den_eq_num r).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y hx hy ihx ihy`. Take `⟨d₁, g₁, h₁, hg₁, hh₁, hy₁, e₁⟩` from `ihx`. Take `⟨d₂, g₂, h₂, hg₂, hh₂, hy₂, e₂⟩` from `ihy`. Use `⟨d₁ + d₂, g₁ * h₂ + g₂ * h₁, h₁ * h₂, isMultiHomog_add (isMultiHomog_mul hg₁ hh₂) (by rw [add_comm]; exact isMultiHomog_mul hg₂ hh₁), isMultiHomog_mul hh₁ hh₂, by rw [map_mul]; exact mul_ne_zero hy₁ hy₂, ?_⟩` and prove the remaining obligations. Establish `: (⟨x + y, add_mem hx hy⟩ : Ω) = ⟨x, hx⟩ + ⟨y, hy⟩` using `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, map_add, map_mul, map_mul, map_mul, e₁, e₂]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `inv x hx ih`. Take `⟨d, g, h, hg, hh, hy, e⟩` from `ih`. Establish `hinv : (⟨x⁻¹, inv_mem hx⟩ : Ω) = (⟨x, hx⟩ : Ω)⁻¹` using `rfl`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h0 : (⟨x, hx⟩ : Ω) = 0`. Use `⟨0, 0, 1, isMultiHomog_zero _, isMultiHomog_one, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[hinv, h0, inv_zero, zero_mul, map_zero]`. Use `⟨d, h, g, hh, hg, by rw [e]; exact mul_ne_zero h0 hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hinv, e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Treat this case separately.
 
-Clear the denominators using the available nonvanishing facts. Consider the case `mul x y hx hy ihx ihy`. Take `⟨d₁, g₁, h₁, hg₁, hh₁, hy₁, e₁⟩` from `ihx`. Take `⟨d₂, g₂, h₂, hg₂, hh₂, hy₂, e₂⟩` from `ihy`. Use `⟨d₁ + d₂, g₁ * g₂, h₁ * h₂, isMultiHomog_mul hg₁ hg₂, isMultiHomog_mul hh₁ hh₂, by rw [map_mul]; exact mul_ne_zero hy₁ hy₂, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⟨x * y, mul_mem hx hy⟩ : Ω) = ⟨x, hx⟩ * ⟨y, hy⟩` using `rfl`. Rewrite using `[this, map_mul, map_mul, e₁, e₂]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem birational_yLine : Birational yLine := by
   rintro ⟨x, hx⟩
@@ -260,7 +260,7 @@ theorem birational_yLine : Birational yLine := by
     ring
 
 /- English proof (translation)
-Establish `: Algebra.Smooth ℚ (Polynomial ℚ)` using `{}`. Establish `e2 : (Polynomial.aeval v).range = Algebra.adjoin ℚ s`. Rewrite using `[hs, Algebra.adjoin_singleton_eq_range_aeval]`. Conclude with `Algebra.Smooth.of_equiv ((AlgEquiv.ofInjective (Polynomial.aeval v) (transcendental_iff_injective.mp hv)).trans (Subalgebra.equivOfEq _ _ e2))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_adjoin_of_transcendental {A : Type} [Field A] [Algebra ℚ A] {v : A}
     (hv : Transcendental ℚ v) (s : Set A) (hs : Algebra.adjoin ℚ s = Algebra.adjoin ℚ {v}) :
@@ -272,17 +272,15 @@ theorem smooth_adjoin_of_transcendental {A : Type} [Field A] [Algebra ℚ A] {v 
     (transcendental_iff_injective.mp hv)).trans (Subalgebra.equivOfEq _ _ e2))
 
 /- English proof (translation)
-Introduce `c _`. Take `⟨a, ha⟩ : ∃ a, c () = a` from `⟨_, rfl⟩`. Use `fin_cases a`. Use `smooth_adjoin_of_transcendental transcendental_gen _ (le_antisymm ?_ ?_)` and prove the remaining obligations. Rewrite using `[Algebra.adjoin_le_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨⟨⟨⟩, i⟩, rfl⟩`. Simplify using `only [Fin.zero_eta, Fin.isValue] at ha`. Simplify using `only [ha]`. Use `fin_cases i`. Simplify using `[yLine_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.mk_one, yLine_one, yLine_zero, div_one]`. Conclude with `Algebra.subset_adjoin rfl`. Rewrite using `[Algebra.adjoin_le_iff, Set.singleton_subset_iff]`. Use `Algebra.subset_adjoin ⟨⟨(), 1⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.zero_eta, Fin.isValue] at ha`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ha, yLine_one, yLine_zero]`. Use `smooth_adjoin_of_transcendental transcendental_gen_inv _ (le_antisymm ?_ ?_)` and prove the remaining obligations. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨⟨⟩, i⟩, rfl⟩`. Simplify using `only [Fin.mk_one, Fin.isValue] at ha`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [ha]`. Use `fin_cases i`. Simplify using `only [Fin.zero_eta, yLine_one, yLine_zero, one_div]`. Conclude with `Algebra.subset_adjoin rfl`. Simplify using `[yLine_one, div_self gen_ne_zero]`.
-
-Rewrite using `[Algebra.adjoin_le_iff, Set.singleton_subset_iff]`. Use `Algebra.subset_adjoin ⟨⟨(), 0⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.mk_one, Fin.isValue] at ha`. Simplify using `[ha, yLine_one, yLine_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothGenericFibreM_yLine : SmoothGenericFibreM yLine := by
   intro c _

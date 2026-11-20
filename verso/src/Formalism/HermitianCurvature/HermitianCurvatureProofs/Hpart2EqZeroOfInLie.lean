@@ -14,12 +14,12 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (Hsq k r)`.
+A detailed English derivation is pending.
 -/
 theorem Hinv (k r : ℕ) : (Hpk k r)⁻¹ = Hpk k r := Matrix.inv_eq_left_inv (Hsq k r)
 
 /- English proof (translation)
-Establish `hX0 : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX`. Establish `h1 : Xᴴ * Hpk k r = -(Hpk k r * X)` using `eq_neg_of_add_eq_zero_left hX0`. Rewrite using `[Hinv, Matrix.mul_assoc, h1, Matrix.mul_neg, ← Matrix.mul_assoc, Hsq, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_inv {X : Mat k r} (hX : inLie k r X) : (Hpk k r)⁻¹ * Xᴴ * Hpk k r = -X := by
   have hX0 : Xᴴ * Hpk k r + Hpk k r * X = 0 := hX
@@ -27,7 +27,7 @@ theorem lie_inv {X : Mat k r} (hX : inLie k r X) : (Hpk k r)⁻¹ * Xᴴ * Hpk k
   rw [Hinv, Matrix.mul_assoc, h1, Matrix.mul_neg, ← Matrix.mul_assoc, Hsq, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [hpart1]`. Rewrite using `[lie_inv hX, sub_neg_eq_add, ← two_smul ℂ X, smul_smul]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem hermPart_eq_self_of_mem_lie {X : Mat k r} (hX : inLie k r X) : hpart1 (Hpk k r) X = X := by
   simp only [hpart1]
@@ -35,7 +35,7 @@ theorem hermPart_eq_self_of_mem_lie {X : Mat k r} (hX : inLie k r X) : hpart1 (H
   norm_num
 
 /- English proof (translation)
-Simplify using `only [hpart2]`. Rewrite using `[lie_inv hX]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hpart2_eq_zero_of_inLie {X : Mat k r} (hX : inLie k r X) : hpart2 (Hpk k r) X = 0 := by
   simp only [hpart2]
@@ -43,14 +43,14 @@ theorem hpart2_eq_zero_of_inLie {X : Mat k r} (hX : inLie k r X) : hpart2 (Hpk k
   simp
 
 /- English proof (translation)
-Rewrite using `[div_eq_iff (mul_ne_zero two_ne_zero Complex.I_ne_zero)]`. Take the linear combination `Complex.I_sq`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem two_I_inv : (1 / (2 * Complex.I) : ℂ) = -(Complex.I / 2) := by
   rw [div_eq_iff (mul_ne_zero two_ne_zero Complex.I_ne_zero)]
   linear_combination Complex.I_sq
 
 /- English proof (translation)
-Simplify using `only [hpart1, hpart2]`. Establish `e : Complex.I * -(Complex.I / 2) = (1 / 2 : ℂ)`. Take the linear combination `(-1 / 2 : ℂ) * Complex.I_sq`. Rewrite using `[two_I_inv, smul_smul, e, ← smul_add, sub_add_add_cancel, ← two_smul ℂ Z, smul_smul]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem hp_decomp (Z : Mat k r) : hpart1 (Hpk k r) Z + Complex.I • hpart2 (Hpk k r) Z = Z := by
   simp only [hpart1, hpart2]
@@ -60,7 +60,7 @@ theorem hp_decomp (Z : Mat k r) : hpart1 (Hpk k r) Z + Complex.I • hpart2 (Hpk
   norm_num
 
 /- English proof (translation)
-Simplify using `only [hpart1, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul]`. Rewrite using `[← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 -/
 theorem hpart1_add' (Z W : Mat k r) : hpart1 (Hpk k r) (Z + W) = hpart1 (Hpk k r) Z + hpart1 (Hpk k r) W := by
   simp only [hpart1, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul]
@@ -69,7 +69,7 @@ theorem hpart1_add' (Z W : Mat k r) : hpart1 (Hpk k r) (Z + W) = hpart1 (Hpk k r
   abel
 
 /- English proof (translation)
-Simplify using `only [hpart2, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul]`. Rewrite using `[← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 -/
 theorem hpart2_add' (Z W : Mat k r) : hpart2 (Hpk k r) (Z + W) = hpart2 (Hpk k r) Z + hpart2 (Hpk k r) W := by
   simp only [hpart2, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul]
@@ -78,7 +78,7 @@ theorem hpart2_add' (Z W : Mat k r) : hpart2 (Hpk k r) (Z + W) = hpart2 (Hpk k r
   abel
 
 /- English proof (translation)
-Establish `hs : star (x : ℂ) = (x : ℂ)` using `Complex.conj_ofReal x`. Simplify using `only [hpart1, Matrix.conjTranspose_smul, hs, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[← smul_sub, smul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hp1_real (x : ℝ) (Z : Mat k r) : hpart1 (Hpk k r) ((x : ℂ) • Z) = (x : ℂ) • hpart1 (Hpk k r) Z := by
   have hs : star (x : ℂ) = (x : ℂ) := Complex.conj_ofReal x
@@ -86,7 +86,7 @@ theorem hp1_real (x : ℝ) (Z : Mat k r) : hpart1 (Hpk k r) ((x : ℂ) • Z) = 
   rw [← smul_sub, smul_comm]
 
 /- English proof (translation)
-Establish `hs : star (x : ℂ) = (x : ℂ)` using `Complex.conj_ofReal x`. Simplify using `only [hpart2, Matrix.conjTranspose_smul, hs, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[← smul_add, smul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hpart2_ofReal_smul (x : ℝ) (Z : Mat k r) : hpart2 (Hpk k r) ((x : ℂ) • Z) = (x : ℂ) • hpart2 (Hpk k r) Z := by
   have hs : star (x : ℂ) = (x : ℂ) := Complex.conj_ofReal x
@@ -94,7 +94,7 @@ theorem hpart2_ofReal_smul (x : ℝ) (Z : Mat k r) : hpart2 (Hpk k r) ((x : ℂ)
   rw [← smul_add, smul_comm]
 
 /- English proof (translation)
-Establish `hs : star Complex.I = -Complex.I` using `Complex.conj_I`. Simplify using `only [hpart1, hpart2, Matrix.conjTranspose_smul, hs, Matrix.mul_smul, Matrix.smul_mul, two_I_inv]`. Simplify using `only [neg_smul, neg_neg, sub_neg_eq_add]`. Rewrite using `[← smul_add, smul_smul, show (1 / 2 : ℂ) * Complex.I = Complex.I / 2 by ring]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem hpart1_I_smul (Z : Mat k r) : hpart1 (Hpk k r) (Complex.I • Z) = -hpart2 (Hpk k r) Z := by
   have hs : star Complex.I = -Complex.I := Complex.conj_I
@@ -103,9 +103,9 @@ theorem hpart1_I_smul (Z : Mat k r) : hpart1 (Hpk k r) (Complex.I • Z) = -hpar
   rw [← smul_add, smul_smul, show (1 / 2 : ℂ) * Complex.I = Complex.I / 2 by ring]
 
 /- English proof (translation)
-Establish `hs : star Complex.I = -Complex.I` using `Complex.conj_I`. Simplify using `only [hpart1, hpart2, Matrix.conjTranspose_smul, hs, Matrix.mul_smul, Matrix.smul_mul, two_I_inv]`. Establish `e1 : -(Complex.I / 2) * Complex.I = 1 / 2`. Take the linear combination `(-1 / 2 : ℂ) * Complex.I_sq`. Establish `e2 : -(Complex.I / 2) * -Complex.I = -(1 / 2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(1 / 2 : ℂ) * Complex.I_sq`. Rewrite using `[smul_add, smul_smul, smul_smul, smul_sub, e1, e2, neg_smul, sub_eq_add_neg]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem hpart2_I_smul (Z : Mat k r) : hpart2 (Hpk k r) (Complex.I • Z) = hpart1 (Hpk k r) Z := by
   have hs : star Complex.I = -Complex.I := Complex.conj_I
@@ -117,11 +117,11 @@ theorem hpart2_I_smul (Z : Mat k r) : hpart2 (Hpk k r) (Complex.I • Z) = hpart
   rw [smul_add, smul_smul, smul_smul, smul_sub, e1, e2, neg_smul, sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `hX0 : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX`. Establish `hY0 : Yᴴ * Hpk k r + Hpk k r * Y = 0` using `hY`. Establish `hX' : Xᴴ * Hpk k r = -(Hpk k r * X)` using `eq_neg_of_add_eq_zero_left hX0`. Establish `hY' : Yᴴ * Hpk k r = -(Hpk k r * Y)` using `eq_neg_of_add_eq_zero_left hY0`. Establish `hX'' : ∀ M : Mat k r, Xᴴ * (Hpk k r * M) = -(Hpk k r * (X * M))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `M`. Rewrite using `[← Matrix.mul_assoc, hX', Matrix.neg_mul, Matrix.mul_assoc]`. Establish `hY'' : ∀ M : Mat k r, Yᴴ * (Hpk k r * M) = -(Hpk k r * (Y * M))`. Introduce `M`. Rewrite using `[← Matrix.mul_assoc, hY', Matrix.neg_mul, Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show (X * Y - Y * X)ᴴ * Hpk k r + Hpk k r * (X * Y - Y * X) = 0`. Simplify using `only [Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, hX', hY', Matrix.mul_neg, hX'', hY'', neg_neg]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem lie_bracket {X Y : Mat k r} (hX : inLie k r X) (hY : inLie k r Y) : inLie k r (X * Y - Y * X) := by
   have hX0 : Xᴴ * Hpk k r + Hpk k r * X = 0 := hX
@@ -140,7 +140,7 @@ theorem lie_bracket {X Y : Mat k r} (hX : inLie k r X) (hY : inLie k r Y) : inLi
   abel
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hpart1_add', hpart1_I_smul, hermPart_eq_self_of_mem_lie hX, hpart2_eq_zero_of_inLie hY, neg_zero, add_zero]`. Rewrite using `[hpart2_add', hpart2_I_smul, hpart2_eq_zero_of_inLie hX, hermPart_eq_self_of_mem_lie hY, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hp_of_parts {X Y : Mat k r} (hX : inLie k r X) (hY : inLie k r Y) :
     hpart1 (Hpk k r) (X + Complex.I • Y) = X ∧ hpart2 (Hpk k r) (X + Complex.I • Y) = Y := by
@@ -152,37 +152,37 @@ def Psi (D : Mat k r →L[ℝ] E) (g Z : Mat k r) : E :=
   D (g * hpart1 (Hpk k r) Z) + Complex.I • D (g * hpart2 (Hpk k r) Z)
 
 /- English proof (translation)
-Simplify using `only [Psi, hpart1_add', hpart2_add', Matrix.mul_add, map_add, smul_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Psi_add (D : Mat k r →L[ℝ] E) (g Z W : Mat k r) : Psi D g (Z + W) = Psi D g Z + Psi D g W := by
   simp only [Psi, hpart1_add', hpart2_add', Matrix.mul_add, map_add, smul_add]
   abel
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_smul]`. Conclude with `(map_smul D x (g * M)).trans (Complex.coe_smul x _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem D_real (D : Mat k r →L[ℝ] E) (g M : Mat k r) (x : ℝ) : D (g * ((x : ℂ) • M)) = (x : ℂ) • D (g * M) := by
   rw [Matrix.mul_smul]
   exact (map_smul D x (g * M)).trans (Complex.coe_smul x _).symm
 
 /- English proof (translation)
-Simplify using `only [Psi, hp1_real, hpart2_ofReal_smul, D_real, smul_add]`. Rewrite using `[smul_comm (x : ℂ) Complex.I]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Psi_real (D : Mat k r →L[ℝ] E) (g Z : Mat k r) (x : ℝ) : Psi D g ((x : ℂ) • Z) = (x : ℂ) • Psi D g Z := by
   simp only [Psi, hp1_real, hpart2_ofReal_smul, D_real, smul_add]
   rw [smul_comm (x : ℂ) Complex.I]
 
 /- English proof (translation)
-Simplify using `only [Psi, hpart1_I_smul, hpart2_I_smul, Matrix.mul_neg, map_neg, smul_add, smul_smul, Complex.I_mul_I, neg_one_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Psi_I (D : Mat k r →L[ℝ] E) (g Z : Mat k r) : Psi D g (Complex.I • Z) = Complex.I • Psi D g Z := by
   simp only [Psi, hpart1_I_smul, hpart2_I_smul, Matrix.mul_neg, map_neg, smul_add, smul_smul, Complex.I_mul_I, neg_one_smul]
   abel
 
 /- English proof (translation)
-Establish `hc` using `Complex.re_add_im c`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, ← add_smul, hc]`. Use `_ = (c.re : ℂ) • Psi D g Z + (c.im : ℂ) • (Complex.I • Psi D g Z) := by`. Rewrite using `[Psi_add, Psi_real, Psi_real, Psi_I]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = c • Psi D g Z := by`. Rewrite using `[smul_smul, ← add_smul, hc]`.
+A detailed English derivation is pending.
 -/
 theorem Psi_smul (D : Mat k r →L[ℝ] E) (g Z : Mat k r) (c : ℂ) : Psi D g (c • Z) = c • Psi D g Z := by
   have hc := Complex.re_add_im c
@@ -194,13 +194,13 @@ theorem Psi_smul (D : Mat k r →L[ℝ] E) (g Z : Mat k r) (c : ℂ) : Psi D g (
         rw [smul_smul, ← add_smul, hc]
 
 /- English proof (translation)
-Simplify using `using Psi_smul D g 0 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Psi_zero (D : Mat k r →L[ℝ] E) (g : Mat k r) : Psi D g 0 = 0 := by
   simpa using Psi_smul D g 0 0
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, Psi_add, ← neg_one_smul ℂ W, Psi_smul, neg_one_smul, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Psi_sub (D : Mat k r →L[ℝ] E) (g Z W : Mat k r) : Psi D g (Z - W) = Psi D g Z - Psi D g W := by
   rw [sub_eq_add_neg, Psi_add, ← neg_one_smul ℂ W, Psi_smul, neg_one_smul, ← sub_eq_add_neg]

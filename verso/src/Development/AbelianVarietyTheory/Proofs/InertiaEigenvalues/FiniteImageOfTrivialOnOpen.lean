@@ -8,7 +8,7 @@ open scoped Formalism.Per
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ K Q _ ρ J H hH hρ`. Use `haveI := GlobalTheory.T.finiteIndex_of_isOpen_absGalois_finExt l K H hH`. Conclude with `GlobalTheory.T.finite_image_of_trivial_on_inf_finiteIndex _ Q ρ J H inferInstance hρ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GK.finite_image_of_trivial_on_open :
     ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (Q : Type) [Group Q] (ρ : ↥(GK K) →* Q)

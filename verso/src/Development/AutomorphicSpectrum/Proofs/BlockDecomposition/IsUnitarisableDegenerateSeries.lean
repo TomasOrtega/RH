@@ -11,9 +11,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.DegenerateSeries
 
 /- English proof (translation)
-Apply `GlobalTheory.SmGL.UnitInd.isUnitarisable_prod₂` to reduce the goal to its premises. Rewrite using `[GlobalTheory.SmGL.detRep, GlobalTheory.SmGL.isUnitarisable_ofChar_iff]`. Introduce `g`. Conclude with `h₁ _`. Rewrite using `[GlobalTheory.SmGL.detRep, GlobalTheory.SmGL.isUnitarisable_ofChar_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Conclude with `h₂ _`.
+A detailed English derivation is pending.
 -/
 theorem isUnitarisable_degenerateSeries (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a b : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ) (_ : IsSmoothChar χ₁)

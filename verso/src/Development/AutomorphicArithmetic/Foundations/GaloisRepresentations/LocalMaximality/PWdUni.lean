@@ -8,7 +8,7 @@ section
 variable {β κ : Type} [LinearOrder β] [LinearOrder κ]
 
 /- English proof (translation)
-Break down `t with i | l` into its components or cases. Conclude with `Or.inl ⟨i, rfl⟩`. Conclude with `Or.inr ⟨l, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 private theorem lex_cases (t : β ⊕ₗ κ) : (∃ i, t = inlE i) ∨ ∃ l, t = inrE l := by
   rcases t with i | l
@@ -16,49 +16,49 @@ private theorem lex_cases (t : β ⊕ₗ κ) : (∃ i, t = inlE i) ∨ ∃ l, t 
   · exact Or.inr ⟨l, rfl⟩
 
 /- English proof (translation)
-Simplify using `[uni, inlE]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_uni_l (b : Finset β) (L : Finset κ) (i : β) :
     (inlE i : β ⊕ₗ κ) ∈ uni b L ↔ i ∈ b := by
   simp [uni, inlE]
 
 /- English proof (translation)
-Simplify using `[uni, inrE]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_uni_r (b : Finset β) (L : Finset κ) (l : κ) :
     (inrE l : β ⊕ₗ κ) ∈ uni b L ↔ l ∈ L := by
   simp [uni, inrE]
 
 /- English proof (translation)
-Simplify using `[lft, inlE]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_lft (s : Finset (β ⊕ₗ κ)) (i : β) : i ∈ lft s ↔ (inlE i : β ⊕ₗ κ) ∈ s := by
   simp [lft, inlE]
 
 /- English proof (translation)
-Simplify using `[rgt, inrE]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_rgt (s : Finset (β ⊕ₗ κ)) (l : κ) : l ∈ rgt s ↔ (inrE l : β ⊕ₗ κ) ∈ s := by
   simp [rgt, inrE]
 
 /- English proof (translation)
-The claim follows from `Sum.Lex.inl_lt_inr i l`.
+A detailed English derivation is pending.
 -/
 private theorem l_lt_r (i : β) (l : κ) : (inlE i : β ⊕ₗ κ) < inrE l := Sum.Lex.inl_lt_inr i l
 
 /- English proof (translation)
-The claim follows from `Sum.Lex.not_inr_lt_inl`.
+A detailed English derivation is pending.
 -/
 private theorem not_r_lt_l (i : β) (l : κ) : ¬ (inrE l : β ⊕ₗ κ) < inlE i := Sum.Lex.not_inr_lt_inl
 
 /- English proof (translation)
-Simplify using `[uni]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem card_uni (b : Finset β) (L : Finset κ) : (uni b L).card = b.card + L.card := by
   simp [uni]
 
 /- English proof (translation)
-Rewrite using `[uni, Finset.sum_map, Finset.sum_disjSum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem sum_uni {M : Type} [AddCommMonoid M] (b : Finset β) (L : Finset κ) (f : β ⊕ₗ κ → M) :
     ∑ t ∈ uni b L, f t = ∑ i ∈ b, f (inlE i) + ∑ l ∈ L, f (inrE l) := by
@@ -66,7 +66,7 @@ private theorem sum_uni {M : Type} [AddCommMonoid M] (b : Finset β) (L : Finset
   rfl
 
 /- English proof (translation)
-Use extensionality with `t`. Break down `lex_cases t with ⟨j, rfl⟩ | ⟨m, rfl⟩` into its components or cases. Rewrite using `[Finset.mem_erase, mem_uni_l, mem_uni_l, Finset.mem_erase, inlE.injective.ne_iff]`. Rewrite using `[Finset.mem_erase, mem_uni_r, mem_uni_r]`. Conclude with `and_iff_right (l_lt_r i m).ne'`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem erase_l [DecidableEq (β ⊕ₗ κ)] (b : Finset β) (L : Finset κ) (i : β) :
     (uni b L).erase (inlE i) = uni (b.erase i) L := by
@@ -77,7 +77,7 @@ private theorem erase_l [DecidableEq (β ⊕ₗ κ)] (b : Finset β) (L : Finset
     exact and_iff_right (l_lt_r i m).ne'
 
 /- English proof (translation)
-Use extensionality with `t`. Break down `lex_cases t with ⟨j, rfl⟩ | ⟨m, rfl⟩` into its components or cases. Rewrite using `[Finset.mem_erase, mem_uni_l, mem_uni_l]`. Conclude with `and_iff_right (l_lt_r j l).ne`. Rewrite using `[Finset.mem_erase, mem_uni_r, mem_uni_r, Finset.mem_erase, inrE.injective.ne_iff]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem erase_r [DecidableEq (β ⊕ₗ κ)] (b : Finset β) (L : Finset κ) (l : κ) :
     (uni b L).erase (inrE l) = uni b (L.erase l) := by
@@ -88,7 +88,7 @@ private theorem erase_r [DecidableEq (β ⊕ₗ κ)] (b : Finset β) (L : Finset
   · rw [Finset.mem_erase, mem_uni_r, mem_uni_r, Finset.mem_erase, inrE.injective.ne_iff]
 
 /- English proof (translation)
-Unfold `GlobalTheory.cubeSign`. Use `congr 1`. Rewrite using `[Finset.card_filter, Finset.card_filter, sum_uni]`. Simplify using `[not_r_lt_l]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sign_l (b : Finset β) (L : Finset κ) (i : β) :
     GlobalTheory.cubeSign (uni b L) (inlE i) = GlobalTheory.cubeSign b i := by
@@ -98,7 +98,7 @@ private theorem sign_l (b : Finset β) (L : Finset κ) (i : β) :
   simp [not_r_lt_l]
 
 /- English proof (translation)
-Unfold `GlobalTheory.cubeSign`. Rewrite using `[← pow_add]`. Use `congr 1`. Rewrite using `[Finset.card_filter, Finset.card_filter, sum_uni]`. Simplify using `[l_lt_r]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sign_r (b : Finset β) (L : Finset κ) (l : κ) :
     GlobalTheory.cubeSign (uni b L) (inrE l) = (-1 : ℤ) ^ b.card * GlobalTheory.cubeSign L l := by
@@ -109,7 +109,7 @@ private theorem sign_r (b : Finset β) (L : Finset κ) (l : κ) :
   simp [l_lt_r]
 
 /- English proof (translation)
-Simplify using `[wd, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wd_app {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E]
     (w : ι → Module.End ℂ E) (c : Finset ι → E) (t : Finset ι) :
@@ -119,13 +119,13 @@ private theorem wd_app {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module �
 end
 
 /- English proof (translation)
-Introduce `β κ E _ _ _ _ w c b L`. Use `⟨?_, ?_, ?_, card_uni b L, ?_⟩` and prove the remaining obligations. Rewrite using `[wd_app, wd_app, wd_app, sum_uni, Finset.smul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [sign_l, erase_l]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[sign_r, erase_r, mul_smul]`. Use extensionality with `i`. Rewrite using `[mem_lft, mem_uni_l]`. Use extensionality with `l`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_rgt, mem_uni_r]`. Introduce `s`. Use extensionality with `t`. Break down `lex_cases t with ⟨j, rfl⟩ | ⟨l, rfl⟩` into its components or cases. Rewrite using `[mem_uni_l, mem_lft]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_uni_r, mem_rgt]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.wdUni_of :
     WdUni := by

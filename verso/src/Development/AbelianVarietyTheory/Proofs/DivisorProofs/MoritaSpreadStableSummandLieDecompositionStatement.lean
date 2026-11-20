@@ -13,7 +13,7 @@ open IsLocalRing
 universe u
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.morita_spread_stable_summand_lie) | (exact GlobalTheory.morita_spread_stable_summand_lie) | (intros; apply GlobalTheory.morita_spread_stable_summand_lie <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.moritaSpread_stableSummand_lieDecomposition : ∀ {C : Type} [CommRing C] (I : Ideal C) {H : Type u} [AddCommGroup H] [Module C H]
   (m : ℕ) [NeZero m] (E : Fin m → Fin m → Module.End C H),

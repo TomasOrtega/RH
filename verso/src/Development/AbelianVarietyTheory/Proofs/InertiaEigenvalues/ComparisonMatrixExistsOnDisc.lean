@@ -12,14 +12,14 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP.RelEx
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smul_ring {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {m n : Type} (a : R)
     (M : Matrix m n R) : (a • M).map φ = φ a • M.map φ := by
   ext i j; simp
 
 /- English proof (translation)
-Establish `h1 : A * Zf * (Zfi * G * Zg) = lam • (Y * Zg)`. Rewrite using `[Matrix.mul_assoc A Zf, ← Matrix.mul_assoc Zf, ← Matrix.mul_assoc Zf, hZ, Matrix.one_mul, ← Matrix.mul_assoc, hAG, Matrix.smul_mul]`. Rewrite using `[Matrix.mul_smul, h1, smul_smul, smul_smul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation.
 -/
 theorem alg {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] (N : ℕ)
     (A Zf Zfi G Y Zg : Matrix n n R) (gE fE wi c lam : R) (hZ : Zf * Zfi = 1) (hAG : A * G = lam • Y)
@@ -34,9 +34,9 @@ theorem alg {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] (N : 
     _ = fE ^ N := by rw [hw, hc, mul_one]
 
 /- English proof (translation)
-Establish `h2 : e • (Xf * G) = e • ((lk * lc) • Y)`. Rewrite using `[← Matrix.mul_smul, hG, Matrix.mul_smul, ← Matrix.mul_assoc, hXX, Matrix.smul_mul, Matrix.one_mul, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components.
 
-Establish `h3` using `congrFun (congrFun h2 i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at h3`. Conclude with `(mul_cancel_left_mem_nonZeroDivisors he).1 h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cancel {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] (Xf X'f Y G : Matrix n n R)
     (e lk lc : R) (he : e ∈ nonZeroDivisors R) (hXX : Xf * X'f = (lc * e) • 1) (hG : e • G = lk • (X'f * Y)) :
@@ -51,14 +51,14 @@ theorem cancel {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] (X
   exact (mul_cancel_left_mem_nonZeroDivisors he).1 h3
 
 /- English proof (translation)
-Rewrite using `[← hw, ← map_mul, mul_assoc, Units.mul_inv, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_unit_eq {R S : Type} [CommRing R] [CommRing S] (T : R →+* S) (a b : R) (w : Rˣ) (hw : a * w = b) :
     T b * T (↑w⁻¹ : R) = T a := by
   rw [← hw, ← map_mul, mul_assoc, Units.mul_inv, mul_one]
 
 /- English proof (translation)
-Rewrite using `[map_pow, ← mul_pow, h, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_pow_map {R S : Type} [CommRing R] [CommRing S] (T : R →+* S) (x : R) (li : S) (h : li * T x = 1)
     (m : ℕ) : li ^ m * T (x ^ m) = 1 := by
@@ -74,7 +74,7 @@ variable {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} {bk : BK K} {d : ℕ}
   {ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]} {τ : Ainf l} {s : Seed bk d ρ τ} (ht : Height s)
 
 /- English proof (translation)
-Rewrite using `[Height.bas, Matrix.map_mul]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Conclude with `hF.ext _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bas_map_disc {B : Obj l ↥(OL K)} (u : B.A) (h : Hom bk.prism B) (F : bk.DS bk.ρ₀ →+* Disc l u bk.ρ₀)
     (hF : IsDiscMap (BK.hf h) F) :
@@ -86,13 +86,11 @@ theorem bas_map_disc {B : Obj l ↥(OL K)} (u : B.A) (h : Hom bk.prism B) (F : b
   exact hF.ext _
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨Z', hZ'⟩ : ∃ Z', ht.Z * Z' = 1 := by`. Take `⟨U, hU⟩` from `ht.Z_unit`. Conclude with `⟨↑U⁻¹, by rw [← hU]; exact U.mul_inv⟩`. Take `⟨li, hli⟩ : ∃ li : Disc l u bk.ρ₀, li * toDisc l u bk.ρ₀ (l : B.A) = 1` from `((IsLocalization.Away.algebraMap_isUnit (S := PreDisc l u bk.ρ₀) (l : B.A)).map (ofPre l u bk.ρ₀)).exists_left_inv`. Establish `key : toDisc l u bk.ρ₀ (BK.hf g bk.E) ^ s.N • (ht.bas.map Ff * ((toDisc l u bk.ρ₀ (↑w⁻¹ : B.A) ^ s.N * li ^ m) • (Z'.map Ff * G.map (toDisc l u bk.ρ₀) * ht.Z.map Fg))) = toDisc l u bk.ρ₀ (BK.hf f bk.E) ^ s.N • ht.bas.map Fg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `ht.bas_map_disc u f Ff hF`. Establish `e2` using `ht.bas_map_disc u g Fg hG`. Establish `h4` using `alg s.N ((s.X.map (BK.hf f)).map (toDisc l u bk.ρ₀)) (ht.Z.map Ff) (Z'.map Ff) (G.map (toDisc l u bk.ρ₀)) ((s.X.map (BK.hf g)).map (toDisc l u bk.ρ₀)) (ht.Z.map Fg) (toDisc l u bk.ρ₀ (BK.hf g bk.E)) (toDisc l u bk.ρ₀ (BK.hf f bk.E)) (toDisc l u bk.ρ₀ (↑w⁻¹ : B.A)) (li ^ m) (toDis …`. Conclude with `(congrArg (fun M => toDisc l u bk.ρ₀ (BK.hf g bk.E) ^ s.N • (M * ((toDisc l u bk.ρ₀ (↑w⁻¹ : B.A) ^ s.N * li ^ m) • (Z'.map Ff * G.map (toDisc l u bk.ρ₀) * ht.Z.map Fg)))) e1).trans (h4.trans (congrArg (fun M => toDisc l u bk.ρ₀ (BK.hf f bk.E) ^ s.N • M) e2.symm))`. Use `⟨(toDisc l u bk.ρ₀ (↑w⁻¹ : B.A) ^ s.N * li ^ m) • (Z'.map Ff * G.map (toDisc l u bk.ρ₀) * ht.Z.map Fg), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `Height.Rel`. Introduce `Ff' Fg' hF' hG'`. Establish `e1 : Ff' = Ff` using `(hF.unique hF').symm`. Establish `e2 : Fg' = Fg` using `(hG.unique hG').symm`. Substitute `e1 e2` using the available equality.
-
-Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem rel_exists_of {B : Obj l ↥(OL K)} (u : B.A) (f g : Hom bk.prism B)
     (Ff Fg : bk.DS bk.ρ₀ →+* Disc l u bk.ρ₀) (hF : IsDiscMap (BK.hf f) Ff) (hG : IsDiscMap (BK.hf g) Fg)
@@ -137,15 +135,13 @@ namespace GlobalTheory.BSP.Height
 open GlobalTheory.BSP.RelEx
 
 /- English proof (translation)
-Introduce `l _ K bk d ρ τ s ht B u f g`. Distinguish the cases in `hex : ∃ Ff Fg : bk.DS bk.ρ₀ →+* Disc l u bk.ρ₀, IsDiscMap (BK.hf f) Ff ∧ IsDiscMap (BK.hf g) Fg`. Use `swap`. Use `⟨0, ?_⟩` and prove the remaining obligations. Unfold `Height.Rel`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Ff Fg hF hG`. Conclude with `(hex ⟨Ff, Fg, hF, hG⟩).elim`. Take `⟨Ff, Fg, hF, hG⟩` from `hex`. Take `⟨hreg, ⟨w, hw⟩, -⟩` from `GlobalTheory.T.breuilKisin_two_homs_E_regular_associated l K bk B f g`. Take `⟨k, hk⟩` from `s.nopole f g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose G hGc using hk`. Establish `hXX : s.X.map (BK.hf f) * s.X'.map (BK.hf f) = ((l : B.A) ^ s.c₂ * BK.hf f bk.E ^ (2 * s.N)) • 1`. Rewrite using `[← Matrix.map_mul, s.X_mul, map_smul_ring, Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using the standard rewrite rules. Establish `hGm : BK.hf f bk.E ^ (2 * s.N) • Matrix.of G = (l : B.A) ^ k • (s.X'.map (BK.hf f) * s.X.map (BK.hf g))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.of_apply]`. Conclude with `(hGc i j).symm`. Establish `hAG : s.X.map (BK.hf f) * Matrix.of G = (l : B.A) ^ (k + s.c₂) • s.X.map (BK.hf g)`. Rewrite using `[pow_add]`.
-
-Conclude with `cancel _ _ _ _ _ _ _ (pow_mem hreg _) (by rw [hXX, mul_comm]) hGm`. Conclude with `ht.rel_exists_of u f g Ff Fg hF hG w hw (Matrix.of G) (k + s.c₂) hAG`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_exists : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ)
     (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (τ : Ainf l) (s : Seed bk d ρ τ) (ht : Height s)

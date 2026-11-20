@@ -14,9 +14,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.TempGal
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.Pst GlobalTheory.GalOfCusp
 /- English proof (translation)
-Introduce `π w σ _ α hα`. Take `⟨ξ, hξ, -, hξu⟩` from `GlobalTheory.HeckeComp.main D.host.E (P.chr.e1 π).1 w`. Establish `he` using `_root_.GlobalTheory.RankOneComp.e_locG_eq_rcAt_ofDet_of_isComp hAF hL D P π w ξ hξ`. Rewrite `hα` using `[WDTie.eig, he]`. Unfold `WD.inePol at hα`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs at hα with hσ`. Conclude with `_root_.UpperTheory.Zero.LLC.IsRecT.recUnit (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w)) ξ (Irr.ofDet 1 ξ hξ.1) (hξu (P.chr.e1 π).2) ⟨Representation.Equiv.refl _⟩ ⟨σ, hσ⟩ α hα`. Simplify using `at hα`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rankOneUnitary_of_charSide (hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7)
     (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) : RankOneUnitary P.T := by

@@ -10,7 +10,7 @@ section CsApprox
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F)]`. Use `first`. Consider the case `(rw [valuedAdicCompletion_eq_valuation' v]; exact valuation_of_algebraMap v r)`. Consider the case `simp [valuedAdicCompletion_eq_valuation', valuation_of_algebraMap]`. Consider the case `(erw [valuedAdicCompletion_eq_valuation']; exact valuation_of_algebraMap v r)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem csApprox_val_int (v : HeightOneSpectrum (𝓞 F)) (r : 𝓞 F) :
     Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) r) = v.intValuation r := by
@@ -21,19 +21,17 @@ theorem csApprox_val_int (v : HeightOneSpectrum (𝓞 F)) (r : 𝓞 F) :
   | (erw [valuedAdicCompletion_eq_valuation']; exact valuation_of_algebraMap v r)
 
 /- English proof (translation)
-Use `set c := algebraMap (𝓞 F) (v.adicCompletion F) D with hcdef`. Establish `hc : c ≠ 0` using `levelaf_algebraMap_ne_zero v D hD`. Establish `hrc : (Valued.v : Valuation (v.adicCompletion F) ℤᵐ⁰).restrict c ≠ 0` using `(Valuation.ne_zero_iff _).2 hc`. Establish `hs : {y : v.adicCompletion F | Valued.v (y - x) < Valued.v c} ∈ nhds x`. Use `Valued.mem_nhds.2 ⟨Units.mk0 _ hrc, fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_ofPred_eq, Units.val_mk0] at hy ⊢`. Conclude with `lt_of_not_ge fun h => (not_le.2 hy) ((Valuation.restrict_le_iff _).2 h)`. Take `⟨b, hb⟩` from `(denseRange_algebraMap (K := F) v).mem_nhds hs`. Simplify using `only [Set.mem_ofPred_eq] at hb`. Establish `hcv : Valued.v c = v.intValuation D` using `csApprox_val_int v D`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hb` using `[hcv]`. Establish `hb1 : v.valuation F b ≤ 1`. Rewrite using `[← levelaf_valued_algebraMap]`. Establish `e : algebraMap F (v.adicCompletion F) b = (algebraMap F (v.adicCompletion F) b - x) + x`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `Valuation.map_add_le _ (hb.le.trans (v.intValuation_le_one D)) hx`. Take `⟨s, hs⟩` from `exists_valuation_sub_lt_of_integer v hb1 (Units.mk0 (v.intValuation D) (v.intValuation_ne_zero D hD))`. Simplify using `only [Units.val_mk0] at hs`. Use `⟨s, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs' : Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) s - algebraMap F (v.adicCompletion F) b) < v.intValuation D`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F), ← map_sub, levelaf_valued_algebraMap]`. Conclude with `hs`. Establish `e2 : x - algebraMap (𝓞 F) (v.adicCompletion F) s = -(algebraMap F (v.adicCompletion F) b - x) + -(algebraMap (𝓞 F) (v.adicCompletion F) s - algebraMap F (v.adicCompletion F) b)`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_neg]`. Conclude with `hb`. Rewrite using `[Valuation.map_neg]`.
-
-Conclude with `hs'`.
+A detailed English derivation is pending.
 -/
 theorem csApprox_local (v : HeightOneSpectrum (𝓞 F)) (D : 𝓞 F) (hD : D ≠ 0)
     (x : v.adicCompletion F) (hx : x ∈ v.adicCompletionIntegers F) :
@@ -75,13 +73,13 @@ theorem csApprox_local (v : HeightOneSpectrum (𝓞 F)) (D : 𝓞 F) (hD : D ≠
   · rw [Valuation.map_neg]; exact hs'
 
 /- English proof (translation)
-Establish `hP` using `levelaf_finite_places D hD`. Use `choose s hs using fun v : HeightOneSpectrum (𝓞 F) => csApprox_local v D hD (a v) (ha v)`. Take `⟨r, hr⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := hP.toFinset) (fun v : HeightOneSpectrum (𝓞 F) => v.asIdeal) (fun v => multiplicity v.asIdeal (Ideal.span {D})) (fun v _ => v.prime) (fun v _ w _ hvw h => hvw (HeightOneSpectrum.ext h)) (fun v => s v)`. Use `⟨r, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ hP.toFinset`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h1` using `(v.intValuation_le_pow_iff_mem _ _).2 (hr v hv)`. Rewrite `h1` using `[← v.intValuation_eq_exp_neg_multiplicity hD]`. Establish `e1 : a v - algebraMap (𝓞 F) (v.adicCompletion F) r = (a v - algebraMap (𝓞 F) (v.adicCompletion F) (s v)) + -(algebraMap (𝓞 F) (v.adicCompletion F) (r - s v))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, csApprox_val_int]`. Use `Valuation.map_add_le _ (hs v).le ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_neg, csApprox_val_int]`. Conclude with `h1`. Establish `hv' : ¬ Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) D) < 1` using `by simpa using hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) D) = 1` using `le_antisymm ((mem_adicCompletionIntegers _ _ _).1 (levelaf_int_mem_v v D)) (not_lt.1 hv')`. Rewrite using `[h1]`. Conclude with `(mem_adicCompletionIntegers _ _ _).1 (sub_mem (ha v) (levelaf_int_mem_v v r))`.
+A detailed English derivation is pending.
 -/
 theorem csApprox_global (D : 𝓞 F) (hD : D ≠ 0) (a : FiniteAdeleRing (𝓞 F) F) (ha : a ∈ intAd F) :
     ∃ r : 𝓞 F, ∀ v : HeightOneSpectrum (𝓞 F),
@@ -115,11 +113,9 @@ theorem csApprox_global (D : 𝓞 F) (hD : D ≠ 0) (a : FiniteAdeleRing (𝓞 F
 end CsApprox
 
 /- English proof (translation)
-Introduce `F _ _ D hD a ha`. Take `⟨r, hle⟩` from `csApprox_global D hD a ha`. Use `set y : FiniteAdeleRing (𝓞 F) F := algebraMap F _ (algebraMap (𝓞 F) F D)⁻¹ * (a - algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) r) with hy`. Use `⟨r, y, fun v => ?_, ?_⟩` and prove the remaining obligations. Use `show algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F D)⁻¹ * (a v - algebraMap (𝓞 F) (v.adicCompletion F) r) ∈ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) D) ≠ 0` using `(Valuation.ne_zero_iff _).2 (levelaf_algebraMap_ne_zero v D hD)`. Rewrite using `[mem_adicCompletionIntegers, Valuation.map_mul, map_inv₀, map_inv₀, ← IsScalarTower.algebraMap_apply]`. Combine the equalities or inequalities in the displayed calculation. Establish `hD' : algebraMap (𝓞 F) F D ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).2 hD`. Rewrite using `[hy, IsScalarTower.algebraMap_apply (𝓞 F) F (FiniteAdeleRing (𝓞 F) F) D, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hD', map_one, one_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_adele_approximation_holds : Formalism.UG.CS.IntAdApprox := by
   intro F _ _ D hD a ha

@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.LogKSDiv.GenKSProof
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((starRingEnd ℂ).comp τ) ((H.bar x : 𝓞 E) : E) = τ (x : E)`. Rewrite using `[RingHom.comp_apply, H.bar_eq, IsCMField.complexEmbedding_complexConj, Complex.conj_conj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embK_conj_bar' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {l : Level H} (c : Coeff l) (τ : E →+* ℂ) (x : 𝓞 E) :
@@ -31,7 +31,7 @@ theorem embK_conj_bar' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : R
   rw [RingHom.comp_apply, H.bar_eq, IsCMField.complexEmbedding_complexConj, Complex.conj_conj]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show τ ((H.bar x : 𝓞 E) : E) = ((starRingEnd ℂ).comp τ) (x : E)`. Rewrite using `[RingHom.comp_apply, H.bar_eq, IsCMField.complexEmbedding_complexConj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embK_bar' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {l : Level H} (c : Coeff l) (τ : E →+* ℂ) (x : 𝓞 E) :
@@ -41,9 +41,9 @@ theorem embK_bar' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recipr
   rw [RingHom.comp_apply, H.bar_eq, IsCMField.complexEmbedding_complexConj]
 
 /- English proof (translation)
-Establish `h` using `FlagTan.isHalf_psiSet H`. Establish `hc : Fintype.card {τ : E →+* ℂ // τ (H.rt : E) = H.rt0} = Module.finrank ℚ E / 2`. Rewrite using `[← h.card, FlagTan.psiSet, Fintype.card_subtype]`. Establish `hm : ∀ τ : {τ : E →+* ℂ // τ (H.rt : E) = H.rt0}, Dw.mult τ.1 * Dw.mult ((starRingEnd ℂ).comp τ.1) = Dw.p * Dw.q` using `fun τ => by`. Break down `FlagTan.mult_conj (Dw := Dw) τ.1 with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[a, show (starRingEnd ℂ).comp τ.1 = conjEmb τ.1 from rfl, b]`. Rewrite using `[a, show (starRingEnd ℂ).comp τ.1 = conjEmb τ.1 from rfl, b, mul_comm]`. Simplify using `only [Fintype.card_sigma, Fintype.card_prod, Fintype.card_fin, hm, Finset.sum_const, Finset.card_univ, hc, smul_eq_mul, Datum.dim, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_pairIx {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) : Fintype.card (GlobalTheory.LogKSDiv.PairIx H Dw) = Dw.dim := by
@@ -59,11 +59,11 @@ theorem card_pairIx {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Reci
     smul_eq_mul, Datum.dim, mul_assoc]
 
 /- English proof (translation)
-Use `(LogKS.mem_balanced_diagonal H.bar (fun j a => κ (embK c (e.symm j).1 a)) _).2 ⟨?_, fun a i k => ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `only [Matrix.transpose_apply, GlobalTheory.LogKSDiv.symPair, Matrix.of_apply]`. Rewrite using `[add_comm]`. Apply the tactic sequence `congr 1 <;> congr 1 <;> exact propext and_comm`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [GlobalTheory.LogKSDiv.symPair, Matrix.of_apply]`. Distinguish the cases in `h1 : i = e ⟨P.1.1, P.2.1⟩ ∧ k = e ⟨(starRingEnd ℂ).comp P.1.1, P.2.2⟩`. Take `⟨rfl, rfl⟩` from `h1`. Simplify using `only [Equiv.symm_apply_apply, embK_conj_bar', sub_self, zero_mul]`. Distinguish the cases in `h2 : i = e ⟨(starRingEnd ℂ).comp P.1.1, P.2.2⟩ ∧ k = e ⟨P.1.1, P.2.1⟩`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Take `⟨rfl, rfl⟩` from `h2`. Simplify using `only [Equiv.symm_apply_apply, embK_bar', sub_self, zero_mul]`. Rewrite using `[if_neg h1, if_neg h2, add_zero, mul_zero]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem symPair_mem_balanced {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (c : Coeff l) (R : Type) [CommRing R] (κ : c.F → R) (n : ℕ)
@@ -85,11 +85,11 @@ theorem symPair_mem_balanced {E : Type} [Field E] [NumberField E] [IsCMField E] 
     · rw [if_neg h1, if_neg h2, add_zero, mul_zero]
 
 /- English proof (translation)
-Use `letI := ρ.toAlgebra`. Take `⟨δ, hδ, hδρ⟩` from `Formalism.L2.Pj.GenericSectionMinimum.IsDer.ofLoc (A := R) (B := K) (nonZeroDivisors R) (fun r => ρ (d r)) (fun x y => by rw [map_add, map_add]) (fun x y => by`. Rewrite using `[Derivation.leibniz, map_add, smul_eq_mul, smul_eq_mul, map_mul, map_mul]`. Use the proof step `rfl)`. Establish `hα : ∀ a, δ (α a) = 0` using `fun a => by`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hκ a]`. Conclude with `(hδρ (κ a)).trans (by rw [hd, map_zero])`. Use `letI := α.toAlgebra`. Establish `hs : ∀ (a : k) (x : K), δ (a • x) = a • δ x` using `fun a x => by show δ (α a * x) = α a * δ x`. Rewrite using `[hδ.mul, hα, mul_zero, add_zero]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Set `D0 : K →ₗ[k] K` to `{ toFun := δ, map_add' := hδ.add, map_smul' := hs }`. Conclude with `⟨{ toLinearMap := D0, map_one_eq_zero' := hδ.der_one, leibniz' := (fun x y => hδ.mul x y) }, fun r => hδρ r⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_ext (k R K : Type) [CommRing k] [CommRing R] [Field K] (ρ : R →+* K) (α : k →+* K) (κ : k → R)
     (hfr : letI := ρ.toAlgebra; IsFractionRing R K) (hκ : ∀ a, ρ (κ a) = α a) (d : Derivation ℤ R R)
@@ -111,11 +111,11 @@ theorem exists_ext (k R K : Type) [CommRing k] [CommRing R] [Field K] (ρ : R �
     fun r => hδρ r⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z _ _ _ _ φ₀ f₀ hφ₀`. Take `⟨U, hU, ρ, n, e, v, hch, htan, huq, hf, heig⟩` from `GlobalTheory.T.exists_spread_genericEigenFrame_affineOpen E H Dw l Xo c TF Z φ₀ f₀ hφ₀`. Take `⟨hfr, hconst⟩` from `GlobalTheory.T.genericGerm_functionField_isFractionRing_affineChart E H Dw l Xo c TF Z U hU ρ hch`. Take `⟨e', he'⟩` from `TF.logKS U n v _ htan huq heig`. Set `ε : Fin Dw.dim ≃ GlobalTheory.LogKSDiv.PairIx H Dw` to `(Fintype.equivFinOfCardEq (card_pairIx H Dw)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Dl : Fin Dw.dim → LogKS.logDer TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U` to `fun j => e'.symm ⟨GlobalTheory.LogKSDiv.symPair e (ε j), symPair_mem_balanced H Dw l c _ _ n e (ε j)⟩`. Establish `hD` using `fun j => exists_ext c.F Γ(TF.Y.X, U.1) (X₀ TF.Y Z).functionField ρ (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)) (constFn TF.Y.s U.1) hfr hconst (Dl j).1 (Dl j).2.1`. Use `choose D hD using hD`. Use `⟨D, U, hU, ρ, n, e, v, ε, Dl, hch, htan, huq, fun τ i => hf τ i, fun j => ?_, hD⟩` and prove the remaining obligations. Use `(he' (Dl j) _).2 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Dl, LinearEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_genKS : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), 1 ≤ Dw.p + Dw.q → FnAlgClosed Xo c → ∀ [IsIntegral (X₀ TF.Y Z)] [SmoothOfRelativeDimension Dw.dim (s₀ TF.Y Z)], ∀ (φ₀ : c.F →+* (X₀ TF.Y Z).functionField) (f₀ : GlobalTheory.ShFam.EigFrame TF.Y φ₀ ((show Sp (X₀ TF.Y Z).functionField ⟶ X₀ TF.Y Z from (X₀ TF.Y Z).fromSpecStalk (genericPoint (X₀ TF.Y Z))) ≫ (barComp TF.Y Z).ι)), (show Sp (X₀ TF.Y Z).functionField ⟶ X₀ TF.Y Z from (X₀ TF.Y Z).fromSpecStalk (genericPoint (X₀ TF.Y Z))) ≫ s₀ TF.Y Z = spMap φ₀ → ∃ D : Fin Dw.dim → GlobalTheory.LogKSDiv.GenDer TF Z, GlobalTheory.LogKSDiv.GenKS TF Z f₀.v D := by
   intro E _ _ _ H Dw l Xo c TF Z _ _ _ _ φ₀ f₀ hφ₀

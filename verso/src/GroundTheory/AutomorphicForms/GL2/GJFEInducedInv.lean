@@ -19,7 +19,7 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   (C : LinearChart F ι G) (μ₀ : Measure (ι → F)) [μ₀.IsAddHaarMeasure]
 
 /- English proof (translation)
-Rewrite using `[C.map_mul_right_haar μ₀ h, C.modularCharacter_eq h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_right_haar_modular (h : G) :
     map (· * h) (C.haar μ₀) = modularCharacter h • C.haar μ₀ := by
@@ -28,7 +28,7 @@ theorem map_mul_right_haar_modular (h : G) :
 include C in
 
 /- English proof (translation)
-Establish `: (modularCharacter : G → ℝ≥0) = fun g => C.leftModulus g * (C.rightModulus g)⁻¹`. Use function extensionality and compare the values at `g`. Rewrite using `[C.modularCharacter_eq, div_eq_mul_inv]`. Rewrite using `[this]`. Conclude with `C.continuous_leftModulus.mul (C.continuous_rightModulus.inv₀ fun g => (C.rightModulus_pos g).ne')`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_modularCharacter : Continuous (modularCharacter : G → ℝ≥0) := by
   have : (modularCharacter : G → ℝ≥0) = fun g => C.leftModulus g * (C.rightModulus g)⁻¹ := by
@@ -40,14 +40,14 @@ theorem continuous_modularCharacter : Continuous (modularCharacter : G → ℝ�
 
 include C in
 /- English proof (translation)
-The claim follows from `(ENNReal.continuous_coe.comp (continuous_modularCharacter C)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_modularCharacter :
     Measurable fun g : G => ((modularCharacter g : ℝ≥0) : ℝ≥0∞) :=
   (ENNReal.continuous_coe.comp (continuous_modularCharacter C)).measurable
 
 /- English proof (translation)
-Rewrite using `[← lintegral_map hf (measurable_mul_const h), C.map_mul_right_haar_modular, lintegral_smul_measure]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lintegral_mul_right_haar (h : G) {f : G → ℝ≥0∞} (hf : Measurable f) :
     ∫⁻ x, f (x * h) ∂C.haar μ₀ = modularCharacter h * ∫⁻ x, f x ∂C.haar μ₀ := by
@@ -58,7 +58,7 @@ theorem lintegral_mul_right_haar (h : G) {f : G → ℝ≥0∞} (hf : Measurable
 include C in
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `C.modulus_eq_one_of_mem hV hv`. Rewrite using `[C.modularCharacter_eq, h1, h2, div_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem modularCharacter_eq_one_of_mem {V : OpenSubgroup G} (hV : IsCompact (V : Set G)) {v : G}
     (hv : v ∈ V) : modularCharacter v = 1 := by
@@ -68,29 +68,25 @@ theorem modularCharacter_eq_one_of_mem {V : OpenSubgroup G} (hV : IsCompact (V :
 variable [SecondCountableTopology G]
 
 /- English proof (translation)
-Use `set μ := C.haar μ₀ with hμ`. Use `set Δ : G → ℝ≥0∞ := fun x => (modularCharacter x : ℝ≥0∞) with hΔ`. Establish `hΔm : Measurable Δ` using `(measurable_modularCharacter C)`. Use `set ν := map (·⁻¹) (μ.withDensity Δ) with hνdef`. Establish `hν : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂ν = ∫⁻ x, f x⁻¹ * Δ x ∂μ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `f hf`. Rewrite using `[hνdef, lintegral_map hf measurable_inv]`. Use `lintegral_withDensity_eq_lintegral_mul μ hΔm (hf.comp measurable_inv)` as an intermediate fact. Simplify using `only [Function.comp_def, Pi.mul_apply] at this`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Establish `hleft : ∀ g : G, ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ x, f (g * x) ∂ν = ∫⁻ x, f x ∂ν`. Introduce `g f hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hν (fun x => f (g * x)) (hf.comp (measurable_const_mul g)), hν f hf]`. Use `set L : G → ℝ≥0∞ := fun y => f y⁻¹ * Δ y with hLdef`. Establish `hL : Measurable L` using `(hf.comp measurable_inv).mul hΔm`. Establish `key : (fun x => f (g * x⁻¹) * Δ x) = fun x => (modularCharacter g : ℝ≥0∞) * L (x * g⁻¹)`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : (x * g⁻¹)⁻¹ = g * x⁻¹` using `by group`. Establish `h2 : Δ x = (modularCharacter (x * g⁻¹) : ℝ≥0∞) * modularCharacter g`. Rewrite using `[hΔ, ← ENNReal.coe_mul, ← map_mul, inv_mul_cancel_right]`. Simplify using `only [hLdef, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show ∫⁻ x, f (g * x⁻¹) * Δ x ∂μ = ∫⁻ x, L x ∂μ`. Rewrite using `[key, lintegral_const_mul (f := fun x => L (x * g⁻¹)) _ (hL.comp (measurable_mul_const _)), C.lintegral_mul_right_haar μ₀ g⁻¹ hL, ← mul_assoc, ← ENNReal.coe_mul, ← map_mul, mul_inv_cancel, map_one, ENNReal.coe_one, one_mul]`. Establish `hinv : ν.IsMulLeftInvariant` using `⟨fun g => by`. Use extensionality with `s hs`. Rewrite using `[map_apply (measurable_const_mul g) hs, ← lintegral_indicator_one hs, ← lintegral_indicator_one (measurable_const_mul g hs)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hleft g (s.indicator 1) (measurable_one.indicator hs)⟩`. Establish `hfin : IsFiniteMeasureOnCompacts ν` using `⟨fun K hK => by`. Rewrite using `[hνdef, map_apply measurable_inv hK.isClosed.measurableSet, withDensity_apply _ (measurable_inv hK.isClosed.measurableSet)]`. Establish `hK' : IsCompact ((·⁻¹) ⁻¹' K : Set G)`. Rewrite using `[Set.inv_preimage]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `hK.inv`. Conclude with `setLIntegral_lt_top_of_isCompact (hK'.measure_lt_top).ne hK' (continuous_modularCharacter C)⟩`. Establish `hsmul` using `isMulLeftInvariant_eq_smul ν μ`. Take `⟨V, hV⟩` from `exists_compactOpenSubgroup (G := G)`. Establish `hVm : MeasurableSet (V : Set G)` using `V.isOpen.measurableSet`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hVinv : ((·⁻¹) ⁻¹' (V : Set G) : Set G) = V`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hνV : ν V = μ V`. Rewrite using `[hνdef, map_apply measurable_inv hVm, withDensity_apply _ (measurable_inv hVm), hVinv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[setLIntegral_congr_fun hVm (g := fun _ => (1 : ℝ≥0∞)) fun x hx => by`. Simplify using `[hΔ, modularCharacter_eq_one_of_mem C hV hx]]`. Simplify using the standard rewrite rules. Establish `hμV0 : μ V ≠ 0` using `V.isOpen.measure_ne_zero μ ⟨1, V.one_mem⟩`. Establish `hμVt : μ V ≠ ∞` using `hV.measure_lt_top.ne`.
-
-Establish `hc : haarScalarFactor ν μ = 1`. Use `congrArg (fun m : Measure G => m V) hsmul` as an intermediate fact. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at this`. Rewrite `this` using `[hνV]`. Establish `h1 : (haarScalarFactor ν μ : ℝ≥0∞) * μ V = 1 * μ V` using `by rw [one_mul, ← this]`.
-
-Conclude with `(ENNReal.mul_left_inj hμV0 hμVt).1 h1` after adjusting the coercions. Rewrite using `[hsmul, hc, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_inv_withDensity_haar :
     map (·⁻¹) ((C.haar μ₀).withDensity fun x => (modularCharacter x : ℝ≥0∞)) = C.haar μ₀ := by
@@ -161,9 +157,9 @@ theorem map_inv_withDensity_haar :
   rw [hsmul, hc, one_smul]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← C.map_inv_withDensity_haar μ₀]`. Establish `h1` using `lintegral_map (μ := (C.haar μ₀).withDensity fun x => (modularCharacter x : ℝ≥0∞)) (f := fun x => f x⁻¹) (hf.comp measurable_inv) measurable_inv`. Establish `h2` using `lintegral_withDensity_eq_lintegral_mul (C.haar μ₀) (measurable_modularCharacter C) hf`. Simplify using `only [inv_inv] at h1`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem lintegral_inv_haar {f : G → ℝ≥0∞} (hf : Measurable f) :
     ∫⁻ x, f x⁻¹ ∂C.haar μ₀ = ∫⁻ x, (modularCharacter x : ℝ≥0∞) * f x ∂C.haar μ₀ := by
@@ -176,9 +172,9 @@ theorem lintegral_inv_haar {f : G → ℝ≥0∞} (hf : Measurable f) :
   rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← C.map_inv_withDensity_haar μ₀]`. Establish `h1` using `integral_map (μ := (C.haar μ₀).withDensity fun x => (modularCharacter x : ℝ≥0∞)) (φ := fun x : G => x⁻¹) (f := fun x => f x⁻¹) measurable_inv.aemeasurable (hf.comp continuous_inv).aestronglyMeasurable`. Simplify using `only [inv_inv] at h1`. Rewrite using `[h1, integral_withDensity_eq_integral_smul (continuous_modularCharacter C).measurable]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [NNReal.smul_def, Complex.real_smul]`.
+A detailed English derivation is pending.
 -/
 theorem integral_inv_haar {f : G → ℂ} (hf : Continuous f) :
     ∫ x, f x⁻¹ ∂C.haar μ₀ = ∫ x, (modularCharacter x : ℂ) * f x ∂C.haar μ₀ := by

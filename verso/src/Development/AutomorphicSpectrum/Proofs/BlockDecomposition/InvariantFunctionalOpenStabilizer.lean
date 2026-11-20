@@ -24,7 +24,7 @@ def linearFormStabiliser {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     rfl
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_mono (H₁ := K) (H₂ := linearFormStabiliser ρ l) (fun x hx => hl x hx) hK`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_linearForm_stabiliser {G V : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)

@@ -12,11 +12,11 @@ noncomputable section
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨E', hE', ⟨α⟩⟩` from `hE`. Establish `hW : Set.range (baseChangeMap f R) ⊆ Set.range W.ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `htop (Set.mem_univ y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `U` to `baseChangeMap f R ⁻¹ᵁ W`. Set `u : baseChange f R ⟶ U` to `IsOpenImmersion.lift U.ι (𝟙 _) (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `htop (Set.mem_univ y))`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : u ≫ U.ι = 𝟙 _` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hcomp : u ≫ (baseChangeMap f R ∣_ W) = toOpen f R W hW`. Rewrite using `[← cancel_mono W.ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, hu, Category.id_comp, toOpen_ι]`. Conclude with `⟨hW, E', hE', ⟨pullbackCompIso hcomp α ≪≫ (Scheme.Modules.pullbackComp u U.ι).app E ≪≫ (Scheme.Modules.pullbackCongr hu).app E ≪≫ (Scheme.Modules.pullbackId _).app E⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SpreadsOn.toNbhd (f : X ⟶ SpecZ) (R : Type) [CommRing R] {E : (baseChange f R).Modules}
     {W : X.Opens} (hE : SpreadsOn f R E W) (htop : ⊤ ≤ baseChangeMap f R ⁻¹ᵁ W) :
@@ -40,9 +40,9 @@ theorem SpreadsOn.toNbhd (f : X ⟶ SpecZ) (R : Type) [CommRing R] {E : (baseCha
     (Scheme.Modules.pullbackCongr hu).app E ≪≫ (Scheme.Modules.pullbackId _).app E⟩⟩
 
 /- English proof (translation)
-Establish `hW : Set.range (baseChangeMap f R) ⊆ Set.range (⊥ : X.Opens).ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `isEmptyElim y`. Establish `: IsEmpty ((⊥ : X.Opens) : Scheme.{0})` using `⟨fun x => x.2⟩`. Set `i : ((⊥ : X.Opens) : Scheme.{0}) ⟶ baseChange f R` to `isInitialOfIsEmpty.to _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hi : toOpen f R ⊥ hW ≫ i = 𝟙 _` using `isInitialOfIsEmpty.hom_ext _ _`. Conclude with `⟨⊥, hW, (Scheme.Modules.pullback i).obj E, fun x => isEmptyElim x, ⟨(Scheme.Modules.pullbackComp _ i).app E ≪≫ (Scheme.Modules.pullbackCongr hi).app E ≪≫ (Scheme.Modules.pullbackId _).app E⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem spreadNbhd_of_isEmpty (f : X ⟶ SpecZ) (R : Type) [CommRing R] [IsEmpty (baseChange f R)]
     (E : (baseChange f R).Modules) :
@@ -60,15 +60,13 @@ theorem spreadNbhd_of_isEmpty (f : X ⟶ SpecZ) (R : Type) [CommRing R] [IsEmpty
       (Scheme.Modules.pullbackId _).app E⟩⟩
 
 /- English proof (translation)
-Introduce `X f _ _ p E hE`. Break down `isEmpty_or_nonempty (baseChange f (ZLoc p)) with hX | hne` into its components or cases. Conclude with `spreadNbhd_of_isEmpty f (ZLoc p) E`. Take `⟨x₀⟩` from `hne`. Use `choose Wx hxW hWx using h₁ X f p E hE`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcov : Set.univ ⊆ ⋃ x, ((baseChangeMap f (ZLoc p) ⁻¹ᵁ Wx x : (baseChange f (ZLoc p)).Opens) : Set (baseChange f (ZLoc p)))` using `fun x _ => Set.mem_iUnion.2 ⟨x, hxW x⟩`. Establish `hc : IsCompact (Set.univ : Set (baseChange f (ZLoc p)))` using `isCompact_univ`. Take `⟨t, ht⟩` from `hc.elim_finite_subcover _ (fun x => (baseChangeMap f (ZLoc p) ⁻¹ᵁ Wx x).isOpen) hcov`. Establish `key : ∀ s : Finset (baseChange f (ZLoc p)), ∃ W : X.Opens, (∀ x ∈ s, baseChangeMap f (ZLoc p) ⁻¹ᵁ Wx x ≤ baseChangeMap f (ZLoc p) ⁻¹ᵁ W) ∧ SpreadsOn f (ZLoc p) E W`. Introduce `s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨Wx x₀, fun x hx => absurd hx (Finset.notMem_empty x), hWx x₀⟩`. Consider the case `insert a s ha ih`. Take `⟨W, hW, hEW⟩` from `ih`. Take `⟨W', hW', hEW'⟩` from `h₂ X f p E (Wx a) W (hWx a) hEW`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨W', fun x hx => ?_, hEW'⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `le_sup_left.trans hW'`. Conclude with `(hW x hx).trans (le_sup_right.trans hW')`. Take `⟨W, hW, hEW⟩` from `key t`.
-
-Take `⟨hW', E', hE', hiso⟩` from `hEW.toNbhd f (ZLoc p) (fun y _ => by`. Take `⟨x, hx, hy⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Conclude with `hW x hx hy)`. Conclude with `⟨W, hW', E', hE', hiso⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SpreadBundleNbhd.proof (h₁ : SpreadLocal.Statement) (h₂ : SpreadStep.Statement) :
     SpreadBundleNbhd.Statement := by

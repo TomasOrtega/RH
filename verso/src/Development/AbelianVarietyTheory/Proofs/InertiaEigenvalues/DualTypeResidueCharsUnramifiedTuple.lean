@@ -19,7 +19,7 @@ variable {D : D7}
 open GlobalTheory.StepLaw (ResAt UnrOff)
 
 /- English proof (translation)
-Rewrite using `[idem, map_sum, add_mul, Finset.sum_mul, Finset.sum_mul, Finset.sum_eq_zero fun i hi => h.mul_eq_zero (hQ hi) hPP (by rintro rfl; exact hn hi), Finset.sum_eq_zero fun i hi => by rw [mul_comm]; exact h.mul_conj hPP (hQ hi), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idemSum_mul_idemAt {P Q : Finset (Pl D.host.E)} (h : SplitSet P) (hQ : Q ⊆ P) {PP : Pl D.host.E}
     (hPP : PP ∈ P) (hn : PP ∉ Q) : (idem Q + cA D (idem Q)) * idemAt PP = 0 := by
@@ -28,7 +28,7 @@ theorem idemSum_mul_idemAt {P Q : Finset (Pl D.host.E)} (h : SplitSet P) (hQ : Q
     Finset.sum_eq_zero fun i hi => by rw [mul_comm]; exact h.mul_conj hPP (hQ hi), add_zero]
 
 /- English proof (translation)
-Establish `k` using `idemSum_mul_idemAt h hQ hPP hn`. Rewrite `k` using `[idemAt_eq he]`. Take the linear combination `(-(idem Q + cA D (idem Q))) * hx + (x - 1) * k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem idemSum_mul_of_off {P Q : Finset (Pl D.host.E)} (h : SplitSet P) (hQ : Q ⊆ P) {PP : Pl D.host.E}
     (hPP : PP ∈ P) (hn : PP ∉ Q) {e : AE D} (he : IsIdemAt e PP) {x : AE D} (hx : e * (x - 1) = x - 1) :
@@ -38,7 +38,7 @@ theorem idemSum_mul_of_off {P Q : Finset (Pl D.host.E)} (h : SplitSet P) (hQ : Q
   linear_combination (-(idem Q + cA D (idem Q))) * hx + (x - 1) * k
 
 /- English proof (translation)
-Introduce `e he x hx hi u hu`. Establish `he'` using `idemAt_eq he`. Rewrite using `[h x (by rw [he']; linear_combination (-1 : AE D) * hx) hi u hu.symm]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resAt_of_isResAt {χ : (AE D)ˣ →* Circle} {PP : Pl D.host.E} {c : (kP PP)ˣ →* Circle} (h : IsResAt χ PP c) :
     ResAt χ PP (Circle.toUnits.comp c) := by
@@ -48,7 +48,7 @@ theorem resAt_of_isResAt {χ : (AE D)ˣ →* Circle} {PP : Pl D.host.E} {c : (kP
   rfl
 
 /- English proof (translation)
-Introduce `e he x hx hi u hu`. Establish `he'` using `idemAt_eq he`. Establish `hfu` using `SpecGood.finUnit_of_res PP (by rw [he']; exact he) x (by rw [he']; linear_combination (-1 : AE D) * hx) hi u hu.symm`. Rewrite using `[hχ x hfu.1 hfu.2.1 hfu.2.2 (idemSum_mul_of_off h hQ hPP hn he hx)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem resAt_of_unram {χ : (AE D)ˣ →* Circle} {P Q : Finset (Pl D.host.E)} (hχ : UnramOutside χ Q) (h : SplitSet P)
     (hQ : Q ⊆ P) {PP : Pl D.host.E} (hPP : PP ∈ P) (hn : PP ∉ Q) : ResAt χ PP 1 := by
@@ -60,7 +60,7 @@ theorem resAt_of_unram {χ : (AE D)ˣ →* Circle} {P Q : Finset (Pl D.host.E)} 
   simp
 
 /- English proof (translation)
-Introduce `e he x hx hi u hu`. Establish `he'` using `idemAt_eq he`. Establish `hfu` using `SpecGood.finUnit_of_res PP (by rw [he']; exact he) x (by rw [he']; linear_combination (-1 : AE D) * hx) hi u hu.symm`. Rewrite using `[hχ x hfu.1 hfu.2.1 hfu.2.2]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem resAt_of_unramEverywhere {χ : (AE D)ˣ →* Circle} (hχ : UnramEverywhere D χ) (PP : Pl D.host.E) : ResAt χ PP 1 := by
   intro e he x hx hi u hu
@@ -71,9 +71,9 @@ theorem resAt_of_unramEverywhere {χ : (AE D)ˣ →* Circle} (hχ : UnramEverywh
   simp
 
 /- English proof (translation)
-Distinguish the cases in `hq : PP ∈ t.Q`. Establish `e : t.locC PP = t.resC PP` using `by simp only [Twist.locC, if_pos hq]`. Rewrite using `[e]`. Conclude with `resAt_of_isResAt (ht.res PP hq)`. Establish `e : t.locC PP = 1` using `by simp only [Twist.locC, if_neg hq]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `resAt_of_unram ht.unram h hQ hPP hq`.
+A detailed English derivation is pending.
 -/
 theorem resAt_twist {t : Twist D Circle} (ht : t.Good) {P : Finset (Pl D.host.E)} (h : SplitSet P) (hQ : t.Q ⊆ P)
     {PP : Pl D.host.E} (hPP : PP ∈ P) : ResAt t.chi PP (t.locC PP) := by
@@ -86,7 +86,7 @@ theorem resAt_twist {t : Twist D Circle} (ht : t.Good) {P : Finset (Pl D.host.E)
     exact resAt_of_unram ht.unram h hQ hPP hq
 
 /- English proof (translation)
-Take `⟨α, rfl, -⟩` from `h`. Simplify using `[infPart, Algebra.TensorProduct.algebraMap_apply]`. Use `show (0 : Ainf D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Conclude with `TensorProduct.zero_tmul _ _`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem infPart_placeIdem {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h : IsPlaceIdem D v ε) :
     infPart D (algebraMap (AF D.host.F) (AE D) ε) = 0 := by
@@ -96,7 +96,7 @@ theorem infPart_placeIdem {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.hos
   exact TensorProduct.zero_tmul _ _
 
 /- English proof (translation)
-Establish `k` using `congrArg (infPart D) h`. Rewrite `k` using `[map_mul, map_sub, map_one, infPart_placeIdem hε, zero_mul]`. Take the linear combination `-k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem infPart_eq_one {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) {x : AE D}
     (h : algebraMap (AF D.host.F) (AE D) ε * (x - 1) = x - 1) : infPart D x = 1 := by
@@ -105,9 +105,9 @@ theorem infPart_eq_one {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F
   linear_combination -k
 
 /- English proof (translation)
-Introduce `v ε hε hv x h1 h2 h3`. Use `hχ x (infPart_eq_one hε h1) h2 h3 ?_` and prove the remaining obligations. Establish `k : (idem Q + cA D (idem Q)) * algebraMap (AF D.host.F) (AE D) ε = 0`. Rewrite using `[idem, map_sum, ← Finset.sum_add_distrib, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun PP hPP => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, -, v', ε', hε', he⟩` from `(h.isIdemAt hPP).1`. Establish `hu` using `GlobalTheory.IdemUnder.under_eq_of_isIdemAt D _ PP v' ε' (h.isIdemAt hPP) hε' he`. Rewrite using `[he, ← map_mul, GlobalTheory.PlaceDatum.placeIdem_mul hε' hε fun e => hv PP (hQ hPP) (hu.trans e), map_zero]`. Take the linear combination `(-(idem Q + cA D (idem Q))) * h1 + ((x : AE D) - 1) * k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem unrOff_of_unram {χ : (AE D)ˣ →* Circle} {P Q : Finset (Pl D.host.E)} (hχ : UnramOutside χ Q) (h : SplitSet Q)
     (hQ : Q ⊆ P) : UnrOff χ P := by
@@ -122,21 +122,19 @@ theorem unrOff_of_unram {χ : (AE D)ˣ →* Circle} {P Q : Finset (Pl D.host.E)}
   linear_combination (-(idem Q + cA D (idem Q))) * h1 + ((x : AE D) - 1) * k
 
 /- English proof (translation)
-Introduce `_ _ hε _ x h1 h2 h3` and use `hχ x (infPart_eq_one hε h1) h2 h3`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrOff_of_unramEverywhere {χ : (AE D)ˣ →* Circle} (hχ : UnramEverywhere D χ) (P : Finset (Pl D.host.E)) :
     UnrOff χ P := fun _ _ hε _ x h1 h2 h3 => hχ x (infPart_eq_one hε h1) h2 h3
 
 /- English proof (translation)
-Introduce `D S T B hB ν hν hA`. Take `⟨P, hPg, hQP, hP⟩` from `hA.1.split`. Establish `hsub : allP B ν.Q ⊆ P` using `Finset.union_subset hPg hQP`. Establish `hdeP : B.de.Q ⊆ P` using `fun x hx => hQP (Finset.mem_union_left _ hx)`. Establish `hνP : ν.Q ⊆ P` using `fun x hx => hQP (Finset.mem_union_right _ hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη : UnramEverywhere D B.eta` using `hB.eta.2.1`. Establish `key : ∀ PP ∈ allP B ν.Q, ResAt (B.mu * ν.chi) PP (resP B ν PP)`. Introduce `PP hPP`. Establish `hPPP` using `hsub hPP`. Establish `hνr` using `resAt_twist hν hP hνP hPPP`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hg : PP ∈ B.G.Pg`. Establish `hde : PP ∉ B.de.Q` using `fun h => Finset.disjoint_left.1 hA.1.disj hg (Finset.mem_union_left _ h)`. Establish `hdl : B.de.locC PP = 1` using `by simp only [Twist.locC, if_neg hde]`. Rewrite using `[resP, if_pos hg, hdl, mul_one]`. Conclude with `ResAt.mul (resAt_of_isResAt (hB.tame PP hg)) hνr`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[resP, if_neg hg]`. Conclude with `ResAt.mul (ResAt.mul (resAt_of_unram hB.unram hP hPg hPPP hg) (resAt_twist hB.de hP hdeP hPPP)) hνr`. Establish `u1 : UnrOff (B.mu * ν.chi) (allP B ν.Q)` using `UnrOff.mul (UnrOff.mul (unrOff_of_unram hB.unram (hP.mono hPg) (by intro x hx; simp [allP, hx])) (unrOff_of_unram hB.de.unram hB.de.split (by intro x hx; simp [allP, hx]))) (unrOff_of_unram hν.unram hν.split (by intro x hx; simp [allP, hx]))`. Use `⟨fun PP hPP => ⟨key PP hPP, ?_⟩, u1, u1.mul (unrOff_of_unramEverywhere hη _).inv⟩` and prove the remaining obligations. Use `(key PP hPP).mul (resAt_of_unramEverywhere hη PP).inv` as an intermediate fact.
-
-Rewrite `this` using `[inv_one, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem tuple_chars : ∀ {D : D7} {S T : HSp D} (B : Base S T), B.Good → ∀ (ν : Twist D Circle), ν.Good → B.admitted ν.Q →
     (∀ PP ∈ allP B ν.Q, GlobalTheory.StepLaw.ResAt (B.mu * ν.chi) PP (resP B ν PP) ∧

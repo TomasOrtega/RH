@@ -121,7 +121,7 @@ def LevelIndexEq : Prop :=
     EqIdx (levelGrp c.toRingHom J Λ 𝔞) (levelGrp c.toRingHom J Λ' 𝔞)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ N c J Λ Λ' 𝔞 hS hΛ hΛ' h𝔞 hN ⟨g, hg, hgΛ⟩`. Establish `h` using `h1 F E N c J _ hS (h2 F E N c J Λ 𝔞 hΛ h𝔞) g hg`. Rewrite `h` using `[h3 F E N c J Λ Λ' 𝔞 g hg hgΛ, h4 F E N c J Λ 𝔞 hΛ h𝔞 hS.2.2.2.1 hN, h4 F E N c J Λ' 𝔞 hΛ' h𝔞 hS.2.2.2.1 hN]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem levelIndexEq_of (h1 : IndexEq) (h2 : LevelCO) (h3 : LevelConj) (h4 : LevelRat) : LevelIndexEq := by
   intro F E _ _ _ _ _ N c J Λ Λ' 𝔞 hS hΛ hΛ' h𝔞 hN ⟨g, hg, hgΛ⟩

@@ -6,13 +6,11 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.Dieu
 
 /- English proof (translation)
-Establish `h1 : Hom.app (q ≫ q') (n + 1) = mulBy k (G.A (n + 1)) (p ^ m)`. Rewrite using `[h, ← Nat.cast_pow, natCast_smul_id_app]`. Establish `h2 : torsionIdeal k (G.A (n + 1)) (p ^ m) ≤ kerIdeal (q.app (n + 1))`. Rewrite using `[torsionIdeal, ← h1, comp_app, kerIdeal_comp]`. Use `Ideal.map_mono ((kerIdeal_le_ker_iff _ (counitAlgHom k _)).2 fun c => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `h3 : RingHom.ker (G.res n : G.A (n + 1) →ₐ[k] G.A n) ≤ kerIdeal (q.app (n + 1))` using `(G.ker_res n).le.trans ((torsionIdeal_le_of_dvd (pow_dvd_pow p hmn)).trans h2)`. Establish `h4 : Ideal.map (G.res n : G.A (n + 1) →ₐ[k] G.A n) (kerIdeal (q.app (n + 1))) = kerIdeal (q.app n)`. Rewrite using `[← kerIdeal_comp, q.comm n, kerIdeal_comp_of_surjective _ (Q.res_surjective n)]`. Establish `hs : Function.Surjective (G.res n : G.A (n + 1) →ₐ[k] G.A n)` using `G.res_surjective n`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : Ideal.comap (G.res n : G.A (n + 1) →ₐ[k] G.A n) (kerIdeal (q.app n)) = kerIdeal (q.app (n + 1))`. Rewrite using `[← h4, Ideal.comap_map_of_surjective _ hs, ← RingHom.ker_eq_comap_bot]`. Conclude with `sup_eq_left.2 h3`. Set `e` to `Ideal.quotientMapₐ (kerIdeal (q.app n)) (G.res n : G.A (n + 1) →ₐ[k] G.A n) hc.ge`. Establish `he : Function.Bijective e` using `⟨Ideal.quotientMap_injective' (H := hc.ge) hc.le, Ideal.quotientMap_surjective (H := hc.ge) hs⟩`.
-
-Conclude with `(AlgEquiv.ofBijective e he).toLinearEquiv.finrank_eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_quot_kerIdeal_succ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] (G Q : PDivGroup p k)
     (m n : ℕ) (q : G ⟶ Q) (q' : Q ⟶ G) (h : q ≫ q' = (p : ℤ_[p]) ^ m • 𝟙 G) (hmn : m ≤ n) :
@@ -40,7 +38,7 @@ theorem finrank_quot_kerIdeal_succ (p : ℕ) [Fact p.Prime] (k : Type) [Field k]
   exact (AlgEquiv.ofBijective e he).toLinearEquiv.finrank_eq
 
 /- English proof (translation)
-Introduce `p _ k _ _ G Q m n q q' h hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ n hmn ih => exact (finrank_quot_kerIdeal_succ p k G Q m n q q' h hmn).trans ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem finrank_quot_kerIdeal_eq : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     (G Q : PDivGroup p k) (m n : ℕ) (q : G ⟶ Q) (q' : Q ⟶ G),

@@ -12,9 +12,7 @@ open scoped ContDiff ComplexOrder
 namespace GlobalTheory.SecForm
 
 /- English proof (translation)
-Establish `h : ∀ p q : W, ExteriorAlgebra.ι ℂ p * ExteriorAlgebra.ι ℂ q = -(ExteriorAlgebra.ι ℂ q * ExteriorAlgebra.ι ℂ p)` using `fun p q => eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap p q)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h v w, neg_mul, mul_assoc]`. Use `_ = (ExteriorAlgebra.ι ℂ w * ExteriorAlgebra.ι ℂ x) * ExteriorAlgebra.ι ℂ v := by`. Rewrite using `[h v x, mul_neg, neg_neg, mul_assoc]`.
-
-Use `_ = _ := by rw [h w x, neg_mul, mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ι_three_swap {W : Type} [AddCommGroup W] [Module ℂ W] (v w x : W) :
     ExteriorAlgebra.ι ℂ v * (ExteriorAlgebra.ι ℂ w * ExteriorAlgebra.ι ℂ x) =
@@ -31,7 +29,7 @@ private theorem ι_three_swap {W : Type} [AddCommGroup W] [Module ℂ W] (v w x 
     _ = _ := by rw [h w x, neg_mul, mul_assoc]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `dz a * dzb b * (dz c * dzb d) = -(dz a * dzb d * (dz c * dzb b))`. Rewrite using `[mul_assoc, mul_assoc, ← mul_neg]`. Use `congr 1`. Conclude with `ι_three_swap _ _ _`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sym_mul_sym_swap {n : ℕ} (a b c d : Fin n) :
     (sym (a, b) * sym (c, d) : Ev n) = -(sym (a, d) * sym (c, b)) := by
@@ -42,14 +40,14 @@ theorem sym_mul_sym_swap {n : ℕ} (a b c d : Fin n) :
   exact ι_three_swap _ _ _
 
 /- English proof (translation)
-Simplify using `only [Fintype.sum_prod_type]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sum_four {ι R : Type} [Fintype ι] [AddCommMonoid R] (f : ι → ι → ι → ι → R) :
     ∑ a, ∑ b, ∑ c, ∑ d, f a b c d = ∑ x : ι × ι × ι × ι, f x.1 x.2.1 x.2.2.1 x.2.2.2 := by
   simp only [Fintype.sum_prod_type]
 
 /- English proof (translation)
-Rewrite using `[sum_four f, sum_four fun a b c d => f c d a b]`. Conclude with `Fintype.sum_equiv ⟨fun x => (x.2.2.1, x.2.2.2, x.1, x.2.1), fun x => (x.2.2.1, x.2.2.2, x.1, x.2.1), fun _ => rfl, fun _ => rfl⟩ _ _ fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_four_swap_pairs {ι R : Type} [Fintype ι] [AddCommMonoid R] (f : ι → ι → ι → ι → R) :
     ∑ a, ∑ b, ∑ c, ∑ d, f a b c d = ∑ a, ∑ b, ∑ c, ∑ d, f c d a b := by
@@ -58,7 +56,7 @@ private theorem sum_four_swap_pairs {ι R : Type} [Fintype ι] [AddCommMonoid R]
     fun _ => rfl, fun _ => rfl⟩ _ _ fun _ => rfl
 
 /- English proof (translation)
-Rewrite using `[sum_four f, sum_four fun a b c d => f a d c b]`. Conclude with `Fintype.sum_equiv ⟨fun x => (x.1, x.2.2.2, x.2.2.1, x.2.1), fun x => (x.1, x.2.2.2, x.2.2.1, x.2.1), fun _ => rfl, fun _ => rfl⟩ _ _ fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_four_swap_second {ι R : Type} [Fintype ι] [AddCommMonoid R] (f : ι → ι → ι → ι → R) :
     ∑ a, ∑ b, ∑ c, ∑ d, f a b c d = ∑ a, ∑ b, ∑ c, ∑ d, f a d c b := by
@@ -67,13 +65,11 @@ private theorem sum_four_swap_second {ι R : Type} [Fintype ι] [AddCommMonoid R
     fun _ => rfl, fun _ => rfl⟩ _ _ fun _ => rfl
 
 /- English proof (translation)
-Establish `h1 : (∑ a, ∑ b, α a b • s a b) * (∑ a, ∑ b, β a b • s a b) = ∑ a, ∑ b, ∑ c, ∑ d, (α a b * β c d) • (s a b * s c d)`. Simplify using `only [Finset.sum_mul]`. Simplify using `only [Finset.mul_sum, smul_mul_smul_comm]`. Establish `h2 : ∑ a, ∑ b, ∑ c, ∑ d, (α c d * β a b) • (s a b * s c d) = ∑ a, ∑ b, ∑ c, ∑ d, (α a b * β c d) • (s a b * s c d)`. Rewrite using `[sum_four_swap_pairs]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by rw [mul_comm (s c d)]`. Establish `h3 : ∀ γ : ι → ι → ι → ι → ℂ, ∑ a, ∑ b, ∑ c, ∑ d, γ a d c b • (s a b * s c d) = -∑ a, ∑ b, ∑ c, ∑ d, γ a b c d • (s a b * s c d)`. Introduce `γ`. Rewrite using `[sum_four_swap_second]`. Simplify using `only [← Finset.sum_neg_distrib, ← smul_neg, ← hs]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4` using `h3 fun a b c d => α a b * β c d`. Establish `h5` using `h3 fun a b c d => α c d * β a b`. Rewrite using `[h1]`. Simplify using `only [wedge, add_smul, sub_smul, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Rewrite using `[h4, h5, h2]`.
-
-Use `module`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wedge_sum {ι R : Type} [Fintype ι] [CommRing R] [Algebra ℂ R] (s : ι → ι → R)
     (hs : ∀ a b c d, s a b * s c d = -(s a d * s c b)) (α β : ι → ι → ℂ) :
@@ -101,7 +97,7 @@ private theorem wedge_sum {ι R : Type} [Fintype ι] [CommRing R] [Algebra ℂ R
   module
 
 /- English proof (translation)
-The claim follows from `wedge_sum (fun a b : Fin n => sym (a, b)) sym_mul_sym_swap (fun a b => α (coordVec a) (coordVec b)) (fun a b => β (coordVec a) (coordVec b))`.
+A detailed English derivation is pending.
 -/
 theorem ofValues_mul_ofValues {n : ℕ} (α β : V n → V n → ℂ) :
     ofValues α * ofValues β = ofValuesTwo (wedge α β) :=

@@ -12,21 +12,21 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.Amp.LocalInputs
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1`.
+A detailed English derivation is pending.
 -/
 theorem hpk_det (k r : ℕ) : IsUnit (Hpk k r).det :=
   Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1
 
 /- English proof (translation)
-Take `⟨P, ⟨⟨hP, hH⟩, -⟩, -, -, ⟨⟨h1, hm⟩, hn, hc⟩, -⟩` from `h`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `hiP : P⁻¹ * P = 1` using `nonsing_inv_mul _ hd`. Establish `mem : ∀ g, g ∈ GG k r ↔ P * g * P⁻¹ ∈ UJset ε` using `uHConj _ ε _ P hd hH`. Establish `back : ∀ g : Mat k r, P⁻¹ * (P * g * P⁻¹) * P = g` using `fun g => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify `h1` using `[hiP]`. Introduce `a ha b hb`. Use `hm _ ((mem a).1 ha) _ ((mem b).1 hb)` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : P * a * P⁻¹ * (P * b * P⁻¹) = P * (a * b) * P⁻¹`. Combine the equalities or inequalities in the displayed calculation. Simplify `this` using `only [e, back]`. Introduce `g hg v`. Use `hn _ ((mem g).1 hg) v` as an intermediate fact.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `only [back]`. Introduce `v`. Establish `hcont : Continuous fun g : Mat k r => P * g * P⁻¹` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `(hc v).comp hcont.continuousOn (s := GG k r) (fun g hg => (mem g).1 hg)` as an intermediate fact. Use `this.congr fun g _ => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp, back]`.
+Simplify using the standard rewrite rules.
 -/
 theorem urep_of_ds {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mat k r → (H →L[ℂ] H)}
@@ -57,9 +57,9 @@ theorem urep_of_ds {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSp
     simp only [Function.comp, back]
 
 /- English proof (translation)
-Establish `hu` using `((uHGroup _ _ (hpk_det k r)).2.2 g hg).1`. Establish `h` using `opn_mul_le g⁻¹ g`. Rewrite `h` using `[nonsing_inv_mul _ hu, opn_one]`. Break down `(opn_nonneg g).lt_or_eq with h0 | h0` into its components or cases. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem opn_pos {k r : ℕ} {g : Mat k r} (hg : g ∈ GG k r) : 0 < opn g := by
   have hu := ((uHGroup _ _ (hpk_det k r)).2.2 g hg).1
@@ -70,11 +70,11 @@ theorem opn_pos {k r : ℕ} {g : Mat k r} (hg : g ∈ GG k r) : 0 < opn g := by
   · rw [← h0] at h; linarith
 
 /- English proof (translation)
-Take `⟨-, hmul, hinv⟩` from `uHGroup _ _ (hpk_det k r)`. Establish `hx : b⁻¹ * g * a ∈ GG k r` using `hmul _ (hmul _ (hinv b hb).2 _ hg) _ ha`. Establish `e : g * a = b * (b⁻¹ * g * a)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_nonsing_inv _ (hinv b hb).1, Matrix.one_mul]`. Establish `e2 : σ g (σ a u) = σ b (σ (b⁻¹ * g * a) u)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hσ.1.2 g hg a ha`. Establish `h2` using `hσ.1.2 b hb _ hx`. Rewrite `h2` using `[← e, h1]`. Conclude with `congrArg (fun T : H →L[ℂ] H => T u) h2`. Unfold `coef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `(LinearIsometry.mk (σ b : H →ₗ[ℂ] H) (hσ.2.1 b hb)).inner_map_map v _`.
+A detailed English derivation is pending.
 -/
 theorem coef_translate {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) {a b g : Mat k r} (ha : a ∈ GG k r)
@@ -94,21 +94,19 @@ theorem coef_translate {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProdu
   exact (LinearIsometry.mk (σ b : H →ₗ[ℂ] H) (hσ.2.1 b hb)).inner_map_map v _
 
 /- English proof (translation)
-Take `⟨-, hmul, hinv⟩` from `uHGroup _ _ (hpk_det k r)`. Introduce `u hu v hv`. Use `Submodule.span_induction₂ (p := fun u v _ _ => ∃ C : ℝ, ∀ g ∈ GG k r, ‖coef σ u v g‖ ≤ C * opn g ^ (-a)) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hu hv` and prove the remaining obligations. Introduce and unpack `_ _ ⟨x, hx, u, hu, rfl⟩ ⟨y, hy, v, hv, rfl⟩`. Take `⟨C, hC⟩` from `hV u hu v hv`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hK : 0 < opn y * opn x⁻¹` using `mul_pos (opn_pos hy) (opn_pos (hinv x hx).2)`. Use `⟨|C| * (opn y * opn x⁻¹) ^ a, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hm : y⁻¹ * g * x ∈ GG k r` using `hmul _ (hmul _ (hinv y hy).2 _ hg) _ hx`. Rewrite using `[coef_translate hσ hx hy hg]`. Establish `e : g = y * (y⁻¹ * g * x) * x⁻¹`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_nonsing_inv _ (hinv y hy).1, Matrix.one_mul, Matrix.mul_assoc, mul_nonsing_inv _ (hinv x hx).1, Matrix.mul_one]`. Establish `h1 : opn g ≤ opn y * opn x⁻¹ * opn (y⁻¹ * g * x)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `Real.rpow_le_rpow_of_nonpos (opn_pos hg) h1 (neg_nonpos.2 ha)`. Rewrite `h2` using `[Real.mul_rpow hK.le (opn_nonneg _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp` using `opn_pos hm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc |C|, ← mul_assoc (_ ^ a), ← Real.rpow_add hK]`. Simplify using the standard rewrite rules. Use `_ ≤ _ := by gcongr`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Conclude with `fun y _ => ⟨0, fun g _ => by simp [coef]⟩`. Conclude with `fun y _ => ⟨0, fun g _ => by simp [coef]⟩`. Introduce and unpack `x y z - - - ⟨C, hC⟩ ⟨C', hC'⟩`. Use `⟨C + C', fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[coef_add_left, add_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(norm_add_le _ _).trans (add_le_add (hC g hg) (hC' g hg))`. Introduce and unpack `x y z - - - ⟨C, hC⟩ ⟨C', hC'⟩`. Use `⟨C + C', fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[coef_add_right, add_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hC g hg) (hC' g hg))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `c x y - - ⟨C, hC⟩`. Use `⟨‖c‖ * C, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[coef_smul_left, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC g hg) (norm_nonneg _)`. Introduce and unpack `c x y - - ⟨C, hC⟩`.
-
-Use `⟨‖c‖ * C, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[coef_smul_right, norm_mul, norm_star, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC g hg) (norm_nonneg _)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decay_span {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Mat k r → (H →L[ℂ] H)} {V : Set H} {a : ℝ} (ha : 0 ≤ a) (hσ : IsURepOn (GG k r) σ) (hV : Decay σ V a) :
@@ -160,23 +158,23 @@ theorem decay_span {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSp
     exact mul_le_mul_of_nonneg_left (hC g hg) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `hd` using `dimS_eq D.R`. Establish `hm` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `step : ∀ (i : ℕ) (hi : i + 1 < 2 * D.R.rS + D.R.k + 1), D.R.k - 1 ≤ i → h ≤ lamD D τ ⟨i, by omega⟩ - lamD D τ ⟨i + 1, hi⟩`. Introduce `i hi hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0` using `hb (i - (D.R.k - 1) + 1) (by omega) (by omega)`. Unfold `bOne at h0`. Rewrite `h0` using `[dif_pos (by omega), dif_pos (by omega)]`. Unfold `lamD lamSH lamS`. Simplify using `only [Fin.val_cast]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_neg (by omega), dif_pos (by omega), dif_neg (by omega), dif_pos (by omega)]`. Establish `e : i + 1 - (D.R.k - 1) = i - (D.R.k - 1) + 1` using `by omega`. Simplify using `only [e, Nat.add_sub_cancel] at h0 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ a b : Fin (2 * D.R.rS + D.R.k + 1), a < b → epsSH D.R a ≠ epsSH D.R b → h ≤ lamD D τ a - lamD D τ b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `a b hab hne`. Establish `hab' : a.val < b.val` using `hab`. Establish `hb'` using `b.isLt`. Distinguish the cases in `ha : D.R.k - 1 ≤ a.val`. Establish `h1` using `step a.val (by omega) ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2` using `hanti.antitone (show (⟨a.val + 1, by omega⟩ : Fin _) ≤ b from hab')`. Simplify using `only [Fin.eta] at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbk : D.R.k ≤ b.val`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hne` to reduce the goal to its premises. Unfold `epsSH epsS`. Simplify using `only [Fin.val_cast]`. Rewrite using `[if_pos (by omega)]`. Use `split_ifs`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `: b.val - (D.R.k - 1) = 0` using `by omega`. Simplify using `[this]`. Establish `h1` using `step (b.val - 1) (by omega) (by omega)`. Establish `h2` using `hanti.antitone (show a ≤ (⟨b.val - 1, by omega⟩ : Fin _) from by show a.val ≤ b.val - 1; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (⟨b.val - 1 + 1, by omega⟩ : Fin (2 * D.R.rS + D.R.k + 1)) = b` using `Fin.ext (by simp only; omega)`. Rewrite `h1` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b hne`. Break down `lt_trichotomy a b with h1 | h1 | h1` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(key a b h1 hne).trans (le_abs_self _)`. Conclude with `absurd (by rw [h1]) hne`. Rewrite using `[abs_sub_comm]`. Conclude with `(key b a h1 hne.symm).trans (le_abs_self _)`.
+A detailed English derivation is pending.
 -/
 theorem gap_of_nodes (D : D7) (τ : D.what₂.Tau) (h : ℝ) (hanti : StrictAnti (lamD D τ))
     (hb : ∀ j, 1 ≤ j → j + 1 ≤ D.R.m → h ≤ bOne D τ (j + 1) - bOne D τ j) :
@@ -229,17 +227,15 @@ theorem gap_of_nodes (D : D7) (τ : D.what₂.Tau) (h : ℝ) (hanti : StrictAnti
   · rw [abs_sub_comm]; exact (key b a h1 hne.symm).trans (le_abs_self _)
 
 /- English proof (translation)
-Introduce `u hu v hv`. Use `set n : ℝ := ((2 * r + k + 1 : ℕ) : ℝ) with hn`. Establish `hr : 2 * ((r : ℝ) + 1) ≤ n`. Establish `: (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Rewrite using `[hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn2 : 2 ≤ n` using `by have : (0 : ℝ) ≤ r := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h13 : (120 : ℝ) ≤ n ^ 13` using `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hn2 13)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h16 : (120 : ℝ) ≤ n ^ 16` using `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hn2 16)`. Establish `hh : 120 * n ^ 3 ≤ n ^ 19`. Establish `: n ^ 19 = n ^ 16 * n ^ 3` using `by ring`. Rewrite using `[this]`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `hD k r hk ε lam (n ^ 19) H σ hl hσ hg hh P hP u v hu hv`. Establish `hs : Real.sqrt (2 * ((r : ℝ) + 1)) ≤ n` using `Real.sqrt_le_iff.2 ⟨by linarith, by nlinarith⟩`. Establish `hs0 : 0 < Real.sqrt (2 * ((r : ℝ) + 1))` using `by positivity`. Establish `he : 2 * n ^ 5 ≤ n ^ 19 / (8 * Real.sqrt (2 * ((r : ℝ) + 1)))`. Rewrite using `[le_div_iff₀ (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨K, hK, hc⟩` from `GlobalTheory.SOrb.CCBridge.opn_gN_compare k r`. Use `⟨|C| * K ^ |-(2 * n ^ 5)|, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ Formalism.FourierDecayAlt.B.gN g` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_ge_one hg`. Establish `h2 : Formalism.FourierDecayAlt.B.gN g ^ (-(2 * n ^ 5)) ≤ K ^ |-(2 * n ^ 5)| * opn g ^ (-(2 * n ^ 5))` using `GlobalTheory.SOrb.CCBridge.rpow_compare hK _ (by linarith) (opn_pos hg) (hc g).2 (hc g).1`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem decay_low (hD : Formalism.FourierDecayAlt.ThreeDimData.DecLow) {k r : ℕ} (hk : 1 ≤ k) {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H]

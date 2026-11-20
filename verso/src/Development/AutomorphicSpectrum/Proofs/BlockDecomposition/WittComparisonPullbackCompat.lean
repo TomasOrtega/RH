@@ -10,7 +10,7 @@ open CategoryTheory Limits AlgebraicGeometry TensorProduct GroundTheory.PAdicHod
 namespace GlobalTheory.CompanionTheory.CrisBase
 
 /- English proof (translation)
-Rewrite using `[pull_pull τ, pull_pull τ]`. Conclude with `cr_pull_eq _ _ (fun T => crHom (T := ma.obj (mb.obj T)) (T' := mc.obj (md.obj T)) (RingHom.id T.B) (fun r => congrArg T.i (hσ r)) (DPMorphism.id T.δ).isDPMorphism fun h => (pt_id _ h _).trans (hpt _ _)) (fun _ _ => rfl) (fun _ _ => rfl) j x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cr_square_coeff {O : Type} [CommRing O] {F₁ F₂ F₃ F₄ : B.Fn O} {b₁ b₂ b₃ b₄ : Base} {h₁ : b₁.t = 1} {h₂ : b₂.t = 1} {h₃ : b₃.t = 1}
     {h₄ : b₄.t = 1} {κ₁ : O →+* b₁.R ⧸ b₁.I} {κ₂ : O →+* b₂.R ⧸ b₂.I} {κ₃ : O →+* b₃.R ⧸ b₃.I} {κ₄ : O →+* b₄.R ⧸ b₄.I}
@@ -31,7 +31,7 @@ theorem cr_square_coeff {O : Type} [CommRing O] {F₁ F₂ F₃ F₄ : B.Fn O} {
     (fun _ _ => rfl) (fun _ _ => rfl) j x
 
 /- English proof (translation)
-Conclude with `cr_square_coeff (B.crMor (F := B.schFn N.p) (F' := B.schFn N.p) (b := Wc.bs l r.k n) (b' := B.bs l true n) (ht := rfl) (ht' := rfl) (Mid.wn r n) rfl (dp_wn r n) (B.basePt _ (Ideal.quotientMap _ (Mid.wn r n) (Mid.im_le r n)) rfl) fun _ _ _ => rfl) (B.crMor (F := B.schFn N.p) (F' : …`.
+A detailed English derivation is pending.
 -/
 theorem pullM_bW {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : CrystallineSemistableComparison.Res l K) {M N : Model l K}
     (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (n j : ℕ) (y : (HSW r N j).M n) :

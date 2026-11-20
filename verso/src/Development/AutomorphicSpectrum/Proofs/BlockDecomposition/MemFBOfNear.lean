@@ -12,21 +12,19 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.LTPer
 
 /- English proof (translation)
-Introduce `l _ b k`. Establish `hξ` using `GroundTheory.PAdicHodge.IsPerfectoidField.ker_fontaineTheta_eq_span_kerThetaGenerator ℂ_[l] l`. Use `set ξ := GroundTheory.PAdicHodge.IsPerfectoidField.kerThetaGenerator ℂ_[l] l with hξdef`. Establish `hfg` using `GroundTheory.PAdicHodge.fg_ker_fontaineThetaInvertP hξ`. Establish `hm : FB l k = Ideal.span {GroundTheory.PAdicHodge.wittToBDeRhamPlus _ l ξ ^ k}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FB, ker_thB_eq, GroundTheory.PAdicHodge.IsPerfectoidField.maximalIdeal_bDeRhamPlus_eq_span hξ, Ideal.span_singleton_pow]`. Establish `h' : Ideal.span {GroundTheory.PAdicHodge.wittToBDeRhamPlus _ l ξ ^ k} = (RingHom.ker (fontaineThetaInvertP _ l) ^ k).map (GroundTheory.PAdicHodge.toBDeRhamPlus _ l)`. Rewrite using `[GroundTheory.PAdicHodge.ker_fontaineThetaInvertP hξ, Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, map_pow]`. Both sides reduce to the same expression. Take `⟨a0, ha0⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ (RingHom.ker (fontaineThetaInvertP _ l)) k b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : b - GroundTheory.PAdicHodge.toBDeRhamPlus _ l a0 ∈ FB l k`. Set `I` to `RingHom.ker (fontaineThetaInvertP (↥(GroundTheory.PAdicHodge.normInteger ℂ_[l])) l)`. Set `b' : AdicCompletion I (Localization.Away (l : Wl l))` to `b`. Set `c' : AdicCompletion I (Localization.Away (l : Wl l))` to `algebraMap _ _ a0`. Establish `e : (AdicCompletion.evalₐ I k) c' = Ideal.Quotient.mk _ a0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [c']`. Rewrite using `[AdicCompletion.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, AdicCompletion.evalₐ_of]`. Establish `h1 : b' - c' ∈ RingHom.ker (AdicCompletion.evalₐ I k).toRingHom`. Rewrite using `[RingHom.mem_ker]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ha0, sub_self]`. Rewrite `h1` using `[GroundTheory.PAdicHodge.ker_adicCompletion_evalₐ hfg k]`. Rewrite using `[hm, h']`. Conclude with `h1`. Take `⟨⟨w, ⟨_, c, rfl⟩⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers ((l : Wl l))) a0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨c, w, ?_⟩` and prove the remaining obligations. Establish `e : (l : Formalism.Per6.BdRp l) ^ c * GroundTheory.PAdicHodge.toBDeRhamPlus _ l (IsLocalization.mk' _ w (⟨(l : Wl l) ^ c, c, rfl⟩ : Submonoid.powers (l : Wl l))) = wB l w`. Establish `h2` using `IsLocalization.mk'_spec (Localization.Away (l : Wl l)) w (⟨(l : Wl l) ^ c, c, rfl⟩ : Submonoid.powers (l : Wl l))`. Establish `h3` using `congrArg (GroundTheory.PAdicHodge.toBDeRhamPlus _ l) h2`. Rewrite `h3` using `[map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4 : GroundTheory.PAdicHodge.toBDeRhamPlus _ l (algebraMap (Wl l) (Localization.Away (l : Wl l)) ((l : Wl l) ^ c)) = (l : Formalism.Per6.BdRp l) ^ c`. Simplify using `only [map_pow, map_natCast]`. Simplify using `only [] at h3`. Rewrite `h3` using `[h4]`. Rewrite using `[mul_comm]`.
-
-Conclude with `h3`. Rewrite using `[← e, ← mul_sub]`. Conclude with `Ideal.mul_mem_left _ _ hz`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keyL : ∀ {l : ℕ} [Fact l.Prime] (b : Formalism.Per6.BdRp l) (k : ℕ),
     ∃ (c : ℕ) (a : Wl l), (l : Formalism.Per6.BdRp l) ^ c * b - wB l a ∈ FB l k := by
@@ -80,11 +78,11 @@ theorem keyL : ∀ {l : ℕ} [Fact l.Prime] (b : Formalism.Per6.BdRp l) (k : ℕ
   exact Ideal.mul_mem_left _ _ hz
 
 /- English proof (translation)
-Introduce `l _ K' s hs`. Establish `hle : latS K' ≤ (GroundTheory.PAdicHodge.normInteger ℂ_[l]).comap (thB l)`. Use `(Subring.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `z (⟨a, rfl⟩ | ⟨x, ⟨hx, hi⟩, rfl⟩)`. Express the relevant statement in the definitionally equal form `thB l (wB l a) ∈ GroundTheory.PAdicHodge.normInteger ℂ_[l]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e : thB l (wB l a) = _` using `GroundTheory.PAdicHodge.IsPerfectoidField.thetaBDeRhamPlusField_wittToBDeRhamPlus (K := ℂ_[l]) l a`. Rewrite using `[e]`. Conclude with `Subtype.property _`. Express the relevant statement in the definitionally equal form `thB l (rB l x) ∈ GroundTheory.PAdicHodge.normInteger ℂ_[l]`. Establish `e : thB l (rB l x) = ((x : Om l) : ℂ_[l])` using `GroundTheory.PAdicHodge.thetaAlgHom_algClToBdR l x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, GroundTheory.PAdicHodge.mem_normInteger, PadicComplex.norm_extends, ← GlobalTheory.isIntegral_padicInt_iff_norm_le_one]`. Conclude with `hi`. Conclude with `GroundTheory.PAdicHodge.mem_normInteger.1 (hle hs)`.
+A detailed English derivation is pending.
 -/
 theorem normL : ∀ {l : ℕ} [Fact l.Prime] (K' : IntermediateField ℚ_[l] (Om l)),
     ∀ s ∈ latS K', ‖thB l s‖ ≤ 1 := by
@@ -105,11 +103,11 @@ theorem normL : ∀ {l : ℕ} [Fact l.Prime] (K' : IntermediateField ℚ_[l] (Om
   exact GroundTheory.PAdicHodge.mem_normInteger.1 (hle hs)
 
 /- English proof (translation)
-Introduce `l _ K' hn g s hs`. Establish `hle : latS K' ≤ (latS K').comap (actB g)`. Use `(Subring.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `z (⟨a, rfl⟩ | ⟨x, ⟨hx, hi⟩, rfl⟩)`. Express the relevant statement in the definitionally equal form `actB g (wB l a) ∈ latS K'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e : actB g (wB l a) = wB l (Formalism.Per6.toBot g • a)` using `GroundTheory.PAdicHodge.gal_smul_wittToBDeRhamPlus (Formalism.Per6.toBot g) a`. Rewrite using `[e]`. Conclude with `wB_mem_latS K' _`. Express the relevant statement in the definitionally equal form `actB g (rB l x) ∈ latS K'`. Establish `e : actB g (rB l x) = rB l (g x)` using `GroundTheory.PAdicHodge.gal_smul_algClToBdR (Formalism.Per6.toBot g) x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `rB_mem_latS K' ?_ (hi.map ((g : Om l →ₐ[ℚ_[l]] Om l).restrictScalars ℤ_[l]))` and prove the remaining obligations. Conclude with `(IntermediateField.normal_iff_forall_map_le.1 hn) (g : Om l →ₐ[ℚ_[l]] Om l) ⟨x, hx, rfl⟩`. Conclude with `hle hs`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem galL : ∀ {l : ℕ} [Fact l.Prime] (K' : IntermediateField ℚ_[l] (Om l)) [Normal ℚ_[l] K']
     (g : GQ l), ∀ s ∈ latS K', actB g s ∈ latS K' := by
@@ -131,13 +129,13 @@ theorem galL : ∀ {l : ℕ} [Fact l.Prime] (K' : IntermediateField ℚ_[l] (Om 
   exact hle hs
 
 /- English proof (translation)
-Introduce `l _ K' x hx h1`. Rewrite `h1` using `[PadicComplex.norm_extends]`. Establish `hl0 : (l : Om l) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hlp : 0 < ‖(l : Om l)‖` using `norm_pos_iff.2 hl0`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hlp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hNpos : 0 < N`. Break down `Nat.eq_zero_or_pos N with rfl | h` into its components or cases. It suffices to derive a contradiction. Establish `hle : ‖(l : Om l)‖ ≤ 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Om l)), PadicAlgCl.norm_extends]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Padic.norm_p_lt_one.le`. Rewrite `hN` using `[pow_zero]`. Conclude with `absurd hN (not_lt.2 hle)`. Conclude with `h`. Use `⟨N, x ^ N / (l : Om l), hNpos, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `div_mem (pow_mem hx N) ?_` and prove the remaining obligations. Conclude with `natCast_mem K' l`. Rewrite using `[GlobalTheory.isIntegral_padicInt_iff_norm_le_one, norm_div, norm_pow]`. Conclude with `(div_le_one hlp).2 hN.le`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem xpowL : ∀ {l : ℕ} [Fact l.Prime] (K' : IntermediateField ℚ_[l] (Om l)) (x : Om l),
     x ∈ K' → ‖((x : Om l) : ℂ_[l])‖ < 1 →
@@ -168,19 +166,17 @@ end GlobalTheory.CompanionTheory.LTPer
 namespace GlobalTheory.CompanionTheory.LTPer
 
 /- English proof (translation)
-Use `choose cf af hcf using fun t : Formalism.Per6.BdRp l => keyL t k`. Use `set c := T.sup cf with hc`. Establish `hT : ∀ t ∈ T, (l : Formalism.Per6.BdRp l) ^ c * t - wB l ((l : Wl l) ^ (c - cf t) * af t) ∈ FB l k`. Introduce `t ht`. Establish `hle : cf t ≤ c` using `Finset.le_sup ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (l : Formalism.Per6.BdRp l) ^ c * t - wB l ((l : Wl l) ^ (c - cf t) * af t) = (l : Formalism.Per6.BdRp l) ^ (c - cf t) * ((l : Formalism.Per6.BdRp l) ^ cf t * t - wB l (af t))`. Rewrite using `[map_mul, map_pow, map_natCast, mul_sub, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ (hcf t)`. Establish `hSa : ∀ s ∈ S, ∃ a : Wl l, (l : Formalism.Per6.BdRp l) ^ c * s - wB l a ∈ FB l k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s hs`. Take `⟨a, rfl⟩` from `hS s hs`. Use `⟨∑ t ∈ T, (l : Wl l) ^ (c - cf t) * af t * a t, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Ideal.sum_mem _ fun t ht => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : (l : Formalism.Per6.BdRp l) ^ c * (t * wB l (a t)) - wB l ((l : Wl l) ^ (c - cf t) * af t * a t) = ((l : Formalism.Per6.BdRp l) ^ c * t - wB l ((l : Wl l) ^ (c - cf t) * af t)) * wB l (a t)`. Rewrite using `[map_mul (wB l) _ (a t)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ (hT t ht)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hm : FB l k = IsLocalRing.maximalIdeal (Formalism.Per6.BdRp l) ^ k` using `by rw [FB, ker_thB_eq]`. Rewrite using `[hm]`. Use `GroundTheory.PAdicHodge.IsPerfectoidField.mem_maximalIdeal_pow_of_forall_sub_mem (K := ℂ_[l]) (p := l) fun M => ?_` and prove the remaining obligations. Take `⟨s, hs, hx⟩` from `h (M + c)`. Take `⟨a, ha⟩` from `hSa s hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm]`. Establish `e : x - (l : Formalism.Per6.BdRp l) ^ M * GroundTheory.PAdicHodge.wittToBDeRhamPlus _ l a = (x - (l : Formalism.Per6.BdRp l) ^ (M + c) * s) + (l : Formalism.Per6.BdRp l) ^ M * ((l : Formalism.Per6.BdRp l) ^ c * s - wB l a)`. Rewrite using `[pow_add, wB]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `add_mem hx (Ideal.mul_mem_left _ _ ha)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_FB_of_near {l : ℕ} [Fact l.Prime] (S : Subring (Formalism.Per6.BdRp l)) (T : Finset (Formalism.Per6.BdRp l))
     (hS : ∀ s ∈ S, ∃ a : Formalism.Per6.BdRp l → Wl l, s = ∑ t ∈ T, t * wB l (a t)) (k : ℕ)
@@ -225,7 +221,7 @@ theorem mem_FB_of_near {l : ℕ} [Fact l.Prime] (S : Subring (Formalism.Per6.BdR
   exact add_mem hx (Ideal.mul_mem_left _ _ ha)
 
 /- English proof (translation)
-Use `IsHausdorff.haus (I := IsLocalRing.maximalIdeal (Formalism.Per6.BdRp l)) inferInstance x fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, ← ker_thB_eq]`. Conclude with `h n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FB_sep {l : ℕ} [Fact l.Prime] (x : Formalism.Per6.BdRp l) (h : ∀ k, x ∈ FB l k) : x = 0 := by
   refine IsHausdorff.haus (I := IsLocalRing.maximalIdeal (Formalism.Per6.BdRp l)) inferInstance x fun n => ?_
@@ -233,13 +229,11 @@ theorem FB_sep {l : ℕ} [Fact l.Prime] (x : Formalism.Per6.BdRp l) (h : ∀ k, 
   exact h n
 
 /- English proof (translation)
-Establish `hc : IsPrecomplete (IsLocalRing.maximalIdeal (Formalism.Per6.BdRp l)) (Formalism.Per6.BdRp l)` using `inferInstance`. Establish `hstep : ∀ m n, m ≤ n → x n - x m ∈ FB l m`. Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n hmn ih`. Establish `h1 : x (n + 1) - x n ∈ FB l m` using `Ideal.pow_le_pow_right hmn (h n)`. Use `add_mem h1 ih` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨t, ht⟩` from `hc.prec (f := x) (fun {m n} hmn => by`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite using `[SModEq.comm, SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← ker_thB_eq]`. Conclude with `hstep m n hmn)`. Use `⟨t, fun k => ?_⟩` and prove the remaining obligations. Use `ht k` as an intermediate fact. Rewrite `this` using `[SModEq.comm, SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← ker_thB_eq]`.
-
-Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FB_complete {l : ℕ} [Fact l.Prime] (x : ℕ → Formalism.Per6.BdRp l)
     (h : ∀ k, x (k + 1) - x k ∈ FB l k) : ∃ t, ∀ k, t - x k ∈ FB l k := by
@@ -261,15 +255,15 @@ theorem FB_complete {l : ℕ} [Fact l.Prime] (x : ℕ → Formalism.Per6.BdRp l)
   exact this
 
 /- English proof (translation)
-Introduce `l _ K' _ _`. Use `⟨latS K', wB_mem_latS K', fun x hx hi => rB_mem_latS K' hx hi, galL K', normL K', ?_⟩` and prove the remaining obligations. Introduce `x hxK hxi hx0 hx1`. Take `⟨T, hT, hS⟩` from `latS_finite_span K'`. Take `⟨N, y, hN, hyK, hyi, hxy⟩` from `xpowL K' x hxK hx1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hϖ : rB l x ∈ latS K'` using `rB_mem_latS K' hxK hxi`. Establish `hy : rB l y ∈ latS K'` using `rB_mem_latS K' hyK hyi`. Establish `hϖy : rB l x ^ N = (l : Formalism.Per6.BdRp l) * rB l y`. Rewrite using `[← map_pow, hxy, map_mul, map_natCast]`. Establish `hnear : ∀ k x', (∀ m : ℕ, ∃ s ∈ latS K', x' - (l : Formalism.Per6.BdRp l) ^ m * s ∈ FB l k) → x' ∈ FB l k` using `fun k x' h => mem_FB_of_near (latS K') T hS k x' h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsep : ∀ x' : Formalism.Per6.BdRp l, (∀ m : ℕ, ∃ s ∈ latS K', x' = (l : Formalism.Per6.BdRp l) ^ m * s) → x' = 0`. Introduce `x' h`. Use `FB_sep x' fun k => hnear k x' fun m => ?_` and prove the remaining obligations. Take `⟨s, hs, e⟩` from `h m`. Conclude with `⟨s, hs, by rw [← e, sub_self]; exact zero_mem _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨⟨by simp [FB], fun k => Ideal.pow_le_pow_right (Nat.le_succ k), fun a b => by rw [FB, FB, FB, pow_add], FB_sep, FB_complete, (IsUnit.map (rB l) (isUnit_iff_ne_zero.2 hx0)), hϖ, ?_, ?_⟩, tch_ne_mul_of_pow_eq (latS K') T (wB_mem_latS K') hT hS (rB l x) (rB l y) N hy hϖy⟩` and prove the remaining obligations. Conclude with `PowerSeriesSum.sum_with_tails (wB l) l (latS K') T (wB_mem_latS K') hT hS hsep (rB l x) (rB l y) N hN hϖ hy hϖy`. Introduce `k x' _ h`. Use `hnear k x' fun m => ?_` and prove the remaining obligations. Take `⟨s, hs, e⟩` from `h (N * m)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨rB l y ^ m * s, mul_mem (pow_mem hy m) hs, ?_⟩` and prove the remaining obligations. Establish `e2 : rB l x ^ (N * m) * s = (l : Formalism.Per6.BdRp l) ^ m * (rB l y ^ m * s)`. Rewrite using `[pow_mul, hϖy, mul_pow, mul_assoc]`. Rewrite `e` using `[e2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lattice_main : ∀ {l : ℕ} [Fact l.Prime] (K' : IntermediateField ℚ_[l] (Om l)) [FiniteDimensional ℚ_[l] K'] [Normal ℚ_[l] K'],
     ∃ S : Subring (Formalism.Per6.BdRp l), (∀ a, wB l a ∈ S) ∧

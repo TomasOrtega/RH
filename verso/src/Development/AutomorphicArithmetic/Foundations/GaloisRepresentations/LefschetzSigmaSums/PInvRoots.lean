@@ -4,11 +4,11 @@ open UpperTheory.Gal.LocalSmoothExtension
 
 open Polynomial in
 /- English proof (translation)
-Establish `h1 : (C (-r) * (X - C r⁻¹) : ℂ[X]) = 1 - C r * X`. Rewrite using `[mul_sub, ← C_mul]`. Simplify using `[hr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `n`. Rewrite using `[coeff_reverse, natDegree_X_sub_C]`. Break down `n with _ | _ | n` into its components or cases. Rewrite using `[revAt_le (by norm_num)]`. Simplify using `[coeff_X, coeff_C]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[revAt_le (by norm_num)]`. Simplify using `[coeff_X, coeff_C, coeff_one]`. Rewrite using `[revAt_eq_self_of_lt (by omega)]`. Simplify using `[coeff_X, coeff_one, coeff_C]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem rev_lin (r : ℂ) (hr : r ≠ 0) :
     (X - C r : ℂ[X]).reverse = C (-r) * (X - C r⁻¹) := by
@@ -29,11 +29,11 @@ private theorem rev_lin (r : ℂ) (hr : r ≠ 0) :
 
 open Polynomial in
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty`. Rewrite using `[Multiset.map_zero, Multiset.prod_zero, ← C_1, reverse_C, roots_C, Multiset.map_zero]`. Consider the case `cons a s ih`. Establish `ha : a ≠ 0` using `hs a (Multiset.mem_cons_self a s)`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `ih'` using `ih fun z hz => hs z (Multiset.mem_cons_of_mem hz)`. Establish `hm : ((s.map (fun a => X - C a)).prod : ℂ[X]) ≠ 0` using `(monic_multiset_prod_of_monic s _ fun a _ => monic_X_sub_C a).ne_zero`. Establish `hm' : ((s.map (fun a => X - C a)).prod : ℂ[X]).reverse ≠ 0`. Simplify `hm` using `[reverse_eq_zero]`. Establish `hl : (C (-a) * (X - C a⁻¹) : ℂ[X]) ≠ 0` using `mul_ne_zero (C_ne_zero.mpr (neg_ne_zero.mpr ha)) (X_sub_C_ne_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[Multiset.map_cons, Multiset.prod_cons, reverse_mul_of_domain, rev_lin a ha, roots_mul (mul_ne_zero hl hm'), roots_C_mul _ (neg_ne_zero.mpr ha), roots_X_sub_C, ih', Multiset.map_cons, Multiset.singleton_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem rev_prod (s : Multiset ℂ) (hs : ∀ z ∈ s, z ≠ 0) :
     ((s.map (fun a => X - C a)).prod : ℂ[X]).reverse.roots = s.map (fun z => z⁻¹) := by
@@ -55,9 +55,9 @@ private theorem rev_prod (s : Multiset ℂ) (hs : ∀ z ∈ s, z ≠ 0) :
 
 open Polynomial in
 /- English proof (translation)
-Establish `hQ : Q ≠ 0` using `fun h => h0 (by simp [h])`. Establish `hc : Multiset.card Q.roots = Q.natDegree` using `IsAlgClosed.card_roots_eq_natDegree`. Establish `hf` using `C_leadingCoeff_mul_prod_multiset_X_sub_C hc`. Establish `hz : ∀ z ∈ Q.roots, z ≠ 0`. Introduce and unpack `z hz rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `h0 (by rw [coeff_zero_eq_eval_zero]; exact (mem_roots hQ).mp hz)`. Establish `hl : Q.leadingCoeff ≠ 0` using `leadingCoeff_ne_zero.mpr hQ`. Use `conv_lhs => rw [← hf]`. Rewrite using `[reverse_mul_of_domain, reverse_C, roots_C_mul _ hl, rev_prod _ hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rev_roots (Q : ℂ[X]) (h0 : Q.coeff 0 ≠ 0) :
     Q.reverse.roots = Q.roots.map (fun z => z⁻¹) := by
@@ -73,9 +73,9 @@ private theorem rev_roots (Q : ℂ[X]) (h0 : Q.coeff 0 ≠ 0) :
 
 open Polynomial in
 /- English proof (translation)
-Introduce `F _ _ P h0 τ`. Establish `hτ : τ (P.coeff 0) ≠ 0` using `by simpa using h0`. Establish `hmap : (P.map τ).coeff 0 ≠ 0` using `by simpa [coeff_map] using h0`. Establish `hrev : (P.reverse).map τ = (P.map τ).reverse`. Rewrite using `[reverse, reverse, natDegree_map, reflect_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : (invPol P).map τ = C (τ (P.coeff 0))⁻¹ * (P.map τ).reverse`. Rewrite using `[invPol, Polynomial.map_mul, map_C, hrev, map_inv₀]`. Simplify using `only [UpperTheory.Gal.W2.rts]`. Rewrite using `[hinv, roots_C_mul _ (inv_ne_zero hτ), rev_roots _ hmap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.invRoots_of :
     InvRoots := by

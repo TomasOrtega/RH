@@ -10,7 +10,7 @@ open Formalism.MainNotions Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensit
 variable (D : D7)
 
 /- English proof (translation)
-Establish `h1 : DN.vol D L * CU.cS D (DN.vol D L) = 1` using `le_antisymm (DN.vol_mul_cS_le_one (D := D) L (DN.sd_int (D := D) hL)) (DN.unitDisc (D := D) N L hL)`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Conclude with `DN.vol_mul_cS_le (D := D) L L' (DN.sd_int (D := D) hL)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem detId_eq_vol {N : ℕ} {L L' : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} (hL : SD D L) :
     TaylorLogMetric.detId D L L' = DN.vol D L' * CU.cS D (DN.vol D L) := by
@@ -25,14 +25,14 @@ theorem detId_eq_vol {N : ℕ} {L L' : Submodule (𝓞 D.host.E) (Fin N → D.ho
   · exact DN.vol_mul_cS_le (D := D) L L' (DN.sd_int (D := D) hL)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (DN.vol_mul_cS_le_one (D := D) L (DN.sd_int (D := D) hL)) (DN.unitDisc (D := D) N L hL)`.
+A detailed English derivation is pending.
 -/
 theorem vol_unit {N : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} (hL : SD D L) :
     DN.vol D L * CU.cS D (DN.vol D L) = 1 :=
   le_antisymm (DN.vol_mul_cS_le_one (D := D) L (DN.sd_int (D := D) hL)) (DN.unitDisc (D := D) N L hL)
 
 /- English proof (translation)
-Introduce `N L L' L'' _ hL hL' hL''`. Rewrite using `[detId_eq_vol D hL, detId_eq_vol D hL, detId_eq_vol D hL']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[vol_unit D hL', mul_one]`. Use `_ = DN.vol D L' * CU.cS D (DN.vol D L) * (DN.vol D L'' * CU.cS D (DN.vol D L')) := by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detMul : DetMul D := by
   intro N L L' L'' _ hL hL' hL''
@@ -43,29 +43,29 @@ theorem detMul : DetMul D := by
     _ = DN.vol D L' * CU.cS D (DN.vol D L) * (DN.vol D L'' * CU.cS D (DN.vol D L')) := by ring
 
 /- English proof (translation)
-Introduce `z`. Use `letI := D.host.cmStar`. Establish `hz : star (z : D.host.E) * (z : D.host.E) = 1` using `(show _ ∧ _ from z.2).1`. Establish `hint : ∀ a : 𝓞 D.host.E, star ((algebraMap (𝓞 D.host.E) D.host.E) a) ∈ (algebraMap (𝓞 D.host.E) D.host.E).range` using `fun a => ⟨RingOfIntegers.mapRingEquiv (IsCMField.complexConj D.host.E : D.host.E ≃+* D.host.E) a, rfl⟩`. Establish `hz0 : (z : D.host.E) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hz` using `[h, mul_zero]`. Conclude with `zero_ne_one hz`. Take `⟨L, hL⟩ : ∃ L : Submodule (𝓞 D.host.E) (Fin 1 → D.host.E), L = Submodule.span (𝓞 D.host.E) {(fun _ : Fin 1 => (z : D.host.E))}` from `⟨_, rfl⟩`. Establish `hmemL : ∀ y : Fin 1 → D.host.E, y ∈ L ↔ ∃ a : 𝓞 D.host.E, (algebraMap (𝓞 D.host.E) D.host.E) a * (z : D.host.E) = y 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[hL, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, by rw [Pi.smul_apply, Algebra.smul_def]⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, ha⟩`. Use `⟨a, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0, Pi.smul_apply, Algebra.smul_def]`. Conclude with `ha`. Establish `hH : ∀ x y : Fin 1 → D.host.E, stdH D.host.E 1 x y = star (x 0) * y 0` using `fun x y => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [stdH, Fin.sum_univ_one]`. Establish `hSD : SD D L`. Unfold `SD IsSDLat`. Use `⟨by rw [hL]; exact Submodule.fg_span_singleton _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hL, Submodule.span_span_of_tower, eq_top_iff]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w _`. Rewrite using `[Submodule.mem_span_singleton]`. Use `⟨w 0 * (z : D.host.E)⁻¹, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0, Pi.smul_apply, smul_eq_mul, inv_mul_cancel_right₀ hz0]`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hmemL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩ x hx`. Take `⟨a, ha⟩` from `(hmemL x).1 hx`. Establish `e : stdH D.host.E 1 x y = star ((algebraMap (𝓞 D.host.E) D.host.E) a) * (algebraMap (𝓞 D.host.E) D.host.E) b`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hH, ← ha, ← hb, star_mul']`. Take the linear combination `star ((algebraMap (𝓞 D.host.E) D.host.E) a) * (algebraMap (𝓞 D.host.E) D.host.E) b * hz`. Rewrite using `[e]`. Conclude with `(algebraMap (𝓞 D.host.E) D.host.E).range.mul_mem (hint a) (RingHom.mem_range_self _ b)`. Introduce `H`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `H (fun _ : Fin 1 => (z : D.host.E)) ((hmemL _).2 ⟨1, by rw [map_one, one_mul]⟩)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, hH]`. Take the linear combination `y 0 * hz`. Establish `hvol : DN.vol D L = Submodule.span (𝓞 D.host.E) {(z : D.host.E)}`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Unfold `DN.vol`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨U, hU, rfl⟩`. Take `⟨a, ha⟩` from `(hmemL _).1 (hU 0)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_fin_one, SetLike.mem_coe, Submodule.mem_span_singleton]`. Conclude with `⟨a, by rw [Algebra.smul_def]; exact ha⟩`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨Matrix.of fun _ _ => (z : D.host.E), fun j => ?_, by rw [Matrix.det_fin_one, Matrix.of_apply]⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hL]`. Conclude with `Submodule.subset_span rfl`. Establish `h1` using `vol_unit D hSD`. Rewrite `h1` using `[hvol]`. Conclude with `⟨CU.cS D (Submodule.span (𝓞 D.host.E) {(z : D.host.E)}), fun x => Iff.rfl, h1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem norm_one_unit_ideal : NormOneUnitIdeal D := by
   intro z
@@ -132,9 +132,9 @@ theorem norm_one_unit_ideal : NormOneUnitIdeal D := by
   exact ⟨CU.cS D (Submodule.span (𝓞 D.host.E) {(z : D.host.E)}), fun x => Iff.rfl, h1⟩
 
 /- English proof (translation)
-Unfold `SDLat.smulLat`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w', hw', rfl⟩`. Express the relevant statement in the definitionally equal form `g' *ᵥ (g *ᵥ w') ∈ L`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g *ᵥ (g' *ᵥ w) = w`. Rewrite using `[Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_smulLat_lemma [StarRing D.host.E] {N : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (g g' : Matrix (Fin N) (Fin N) D.host.E) (h1 : g' * g = 1) (h2 : g * g' = 1) (w : Fin N → D.host.E) :
@@ -151,15 +151,15 @@ private theorem mem_smulLat_lemma [StarRing D.host.E] {N : ℕ} (L : Submodule (
     rw [Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hc : ∀ (A B : Matrix (Fin N) (Fin N) D.host.E) (j : Fin N), (fun i => (A * B) i j) = A *ᵥ (fun i => B i j)` using `fun A B j => by`. Use function extensionality and compare the values at `i`. Both sides reduce to the same expression. Unfold `DN.vol`. Rewrite using `[Submodule.span_mul_span]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨U, hU, rfl⟩`. Establish `e : U.det = g.det * (g' * U).det`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.det_mul, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Rewrite using `[e]`. Use `Set.mul_mem_mul (Set.mem_singleton _) ⟨g' * U, fun j => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `(mem_smulLat_lemma D L g g' h1 h2 _).1 (hU j)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Take `⟨a, ha, b, hb, rfl⟩` from `Set.mem_mul.1 hx`. Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality. Take `⟨U, hU, rfl⟩` from `hb`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g * U, fun j => ?_, (Matrix.det_mul _ _).symm⟩` and prove the remaining obligations. Rewrite using `[mem_smulLat_lemma D L g g' h1 h2, hc, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Conclude with `hU j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vol_smul_lemma_2 [StarRing D.host.E] {N : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (g g' : Matrix (Fin N) (Fin N) D.host.E) (h1 : g' * g = 1) (h2 : g * g' = 1) :
@@ -190,7 +190,7 @@ private theorem vol_smul_lemma_2 [StarRing D.host.E] {N : ℕ} (L : Submodule (�
     exact hU j
 
 /- English proof (translation)
-Introduce `N L₀ L γ _ hL₀ hL`. Use `letI := D.host.cmStar`. Establish `hu : star (γ : Matrix (Fin N) (Fin N) D.host.E) * (γ : Matrix (Fin N) (Fin N) D.host.E) = 1` using `(show _ ∧ _ from γ.2).1`. Establish `hu2 : (γ : Matrix (Fin N) (Fin N) D.host.E) * star (γ : Matrix (Fin N) (Fin N) D.host.E) = 1` using `(show _ ∧ _ from γ.2).2`. Rewrite using `[detId_eq_vol D hL₀, detId_eq_vol D hL₀, vol_smul_lemma_2 D L _ _ hu hu2, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem detSmul : DetSmul D := by
   intro N L₀ L γ _ hL₀ hL
@@ -200,7 +200,7 @@ theorem detSmul : DetSmul D := by
   rw [detId_eq_vol D hL₀, detId_eq_vol D hL₀, vol_smul_lemma_2 D L _ _ hu hu2, mul_assoc]
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Establish `key : ∀ v w : Fin N → D.host.E, stdH D.host.E N v w = star v ⬝ᵥ w` using `fun v w => rfl`. Rewrite using `[key, key, Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.star_eq_conjTranspose, hu', Matrix.vecMul_one]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem stdH_unitary {N : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E)
     (hu' : (letI := D.host.cmStar; star γ * γ) = 1) (a b : Fin N → D.host.E) :
@@ -211,21 +211,21 @@ theorem stdH_unitary {N : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E)
     ← Matrix.star_eq_conjTranspose, hu', Matrix.vecMul_one]
 
 /- English proof (translation)
-Introduce `N L γ hL`. Use `letI := D.host.cmStar`. Take `⟨hfg, hsp, hdual⟩` from `hL`. Establish `hu : star (γ : Matrix (Fin N) (Fin N) D.host.E) * (γ : Matrix (Fin N) (Fin N) D.host.E) = 1` using `(show _ ∧ _ from γ.2).1`. Establish `hu2 : (γ : Matrix (Fin N) (Fin N) D.host.E) * star (γ : Matrix (Fin N) (Fin N) D.host.E) = 1` using `(show _ ∧ _ from γ.2).2`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `happ : ∀ v, ((toLin' (γ : Matrix (Fin N) (Fin N) D.host.E)).restrictScalars (𝓞 D.host.E)) v = (γ : Matrix (Fin N) (Fin N) D.host.E) *ᵥ v` using `fun v => rfl`. Establish `hy : ∀ y, y = (γ : Matrix (Fin N) (Fin N) D.host.E) *ᵥ (star (γ : Matrix (Fin N) (Fin N) D.host.E) *ᵥ y)` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, hu2, Matrix.one_mulVec]`. Establish `hmem : ∀ w, w ∈ L.map ((toLin' (γ : Matrix (Fin N) (Fin N) D.host.E)).restrictScalars (𝓞 D.host.E)) ↔ star (γ : Matrix (Fin N) (Fin N) D.host.E) *ᵥ w ∈ L`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w', hw', rfl⟩`. Rewrite using `[happ, Matrix.mulVec_mulVec, hu, Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, h, by rw [happ, ← hy]⟩`. Unfold `SD SDLat.smulLat`. Use `⟨hfg.map _, ?_, ?_⟩` and prove the remaining obligations. Establish `himg : ((L.map ((toLin' (γ : Matrix (Fin N) (Fin N) D.host.E)).restrictScalars (𝓞 D.host.E)) : Submodule _ _) : Set (Fin N → D.host.E)) = (toLin' (γ : Matrix (Fin N) (Fin N) D.host.E)) '' (L : Set (Fin N → D.host.E))`. Rewrite using `[Submodule.map_coe]`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[himg, Submodule.span_image, hsp, Submodule.map_top, LinearMap.range_eq_top]`. Introduce `v`. Conclude with `⟨star (γ : Matrix (Fin N) (Fin N) D.host.E) *ᵥ v, by rw [Matrix.toLin'_apply, ← hy]⟩`. Introduce `y`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hmem, hdual]`. Prove the components needed by the constructor for the conclusion. Introduce `H x hx`. Rewrite `hx` using `[Submodule.mem_map]`. Take `⟨x', hx', rfl⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `H x' hx'`. Rewrite `h1` using `[← stdH_unitary D (γ : Matrix (Fin N) (Fin N) D.host.E) hu x' (star (γ : Matrix (Fin N) (Fin N) D.host.E) *ᵥ y), ← hy]`. Rewrite using `[happ]` and apply the resulting hypothesis. Introduce `H x' hx'`. Establish `h1` using `H _ (Submodule.mem_map_of_mem hx')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[happ, hy y, stdH_unitary D (γ : Matrix (Fin N) (Fin N) D.host.E) hu]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smulSD : SmulSD D := by
   intro N L γ hL

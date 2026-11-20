@@ -9,9 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 namespace GlobalTheory.RelDimOfDim
 
 /- English proof (translation)
-Introduce `F _ X _ q n hq hn`. Establish `x₀ : X` using `Classical.arbitrary X`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected q x₀`. Establish `h` using `GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth q d hd`. Rewrite `h` using `[hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdn : d = n` using `by exact_mod_cast h.symm`. Conclude with `hdn ▸ hd`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_topologicalKrullDim_eq :
     ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp F) (n : ℕ),

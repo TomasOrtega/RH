@@ -16,39 +16,31 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ S := hS.1`. Take `⟨α, hadd, hsmul, hαK, hαsm, hαS⟩` from `exists_moll_data hσ S`. Set `A : H →ₗ[ℂ] H` to `{ toFun := opConv ε σ α, map_add' := hadd, map_smul' := hsmul }`. Establish `hAv : ∀ v, A v = opConv ε σ α v` using `fun v => rfl`. Establish `hinj : ∀ w ∈ S, A w = 0 → w = 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw h0`. Establish `h1` using `hαS w hw`. Rewrite `h1` using `[← hAv, h0, zero_sub, norm_neg]`. Establish `h2 : ‖w‖ ≤ 0` using `by linarith`. Conclude with `norm_le_zero_iff.1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : ∀ k ∈ Kset ε, ∀ v, σ k (A v) = A (σ k v)` using `fun k hk v => hαK k hk v`. Establish `hsm : ∀ v, A v ∈ smD ε σ` using `fun v => (mem_smD_iff ε σ _).2 (hαsm v)`. Use `set S₁ : Submodule ℂ H := S.map A with hS₁`. Establish `hS₁D : S₁ ≤ smD ε σ`. Introduce and unpack `_ ⟨w, _, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hsm w`. Establish `hirr : ∀ S' : Submodule ℂ H, S' ≤ S₁ → Formalism.MainNotions.S.IsKStableOn ε σ S' → S' = ⊥ ∨ S' = S₁`. Introduce `S' hS' hK'`. Establish `hTK : Formalism.MainNotions.S.IsKStableOn ε σ (S ⊓ S'.comap A)`. Introduce `g hg v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hv`, the goal using `[Submodule.mem_inf]`. Use `⟨hS.2.1 g hg v hv.1, ?_⟩` and prove the remaining obligations. Use `show A (σ g v) ∈ S'`. Rewrite using `[← hcomm g hg v]`. Conclude with `hK' g hg _ hv.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hS.2.2.1 (S ⊓ S'.comap A) inf_le_left hTK with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨w, hw, rfl⟩` from `hS' hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwT : w ∈ S ⊓ S'.comap A` using `Submodule.mem_inf.2 ⟨hw, hx⟩`. Rewrite `hwT` using `[h]`. Rewrite using `[(Submodule.mem_bot ℂ).1 hwT, map_zero]`. Conclude with `Submodule.zero_mem _`. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm hS' ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hwT : w ∈ S ⊓ S'.comap A` using `by rw [h]; exact hw`. Conclude with `(Submodule.mem_inf.1 hwT).2`. Establish `hS₁K : Formalism.MainNotions.S.IsKTypeOf ε σ Λ S₁`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨inferInstance, ?_, hirr, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg _ ⟨w, hw, rfl⟩`. Conclude with `⟨σ g w, hS.2.1 g hg w hw, (hcomm g hg w).symm⟩`. Take `⟨v, hv, hv0, hwt⟩` from `hS.2.2.2.1`. Use `⟨A v, ⟨v, hv, rfl⟩, fun h => hv0 (hinj v hv h), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `θ hθ`. Rewrite using `[hcomm _ hθ, hwt θ hθ, map_smul]`. Introduce and unpack `μ _ ⟨w, hw, rfl⟩ hne hwt`. Use `hS.2.2.2.2 μ w hw (fun h => hne (by rw [h, map_zero])) ?_` and prove the remaining obligations. Introduce `θ hθ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h1 : A (σ (Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I))) w - Complex.exp (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I) • w) = 0`. Rewrite using `[map_sub, map_smul, ← hcomm _ hθ, hwt θ hθ, sub_self]`. Establish `h2` using `hinj _ (Submodule.sub_mem _ (hS.2.1 _ hθ w hw) (Submodule.smul_mem _ _ hw)) h1`. Conclude with `sub_eq_zero.1 h2`. Set `V : Submodule ℂ (smD ε σ)` to `S₁.comap (smD ε σ).subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hVmap : V.map (smD ε σ).subtype = S₁`. Rewrite using `[Submodule.map_comap_subtype]`. Conclude with `inf_eq_right.2 hS₁D`. Use `haveI hVfin : FiniteDimensional ℂ V := LinearEquiv.finiteDimensional (Submodule.comapSubtypeEquivOfLe hS₁D).symm`. Establish `hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `k hk v hv`. Establish `hmem : σ k (v : H) ∈ S₁` using `hS₁K.2.1 k hk _ hv`. Conclude with `⟨⟨σ k v, hS₁D hmem⟩, hmem, rfl⟩`. Establish `hD` using `isDerivedOn_smE hσ`. Establish `hKsub : IsKStableSub ε (smE ε σ) V` using `isKStableSub_of_kStable hσ hD V hVfin hVK`.
-
-Take `⟨w₀, hw₀S, hw₀, hw₀HW⟩` from `exists_isKHWVec_of_isKTypeOf hσ hD hS₁K hS₁D`. Use `⟨V, ⟨hVfin, hKsub, ?_, w₀, hw₀S, hw₀, hw₀HW⟩, ?_, hVK, ?_⟩` and prove the remaining obligations. Introduce `S' hS'V hS'k haveI : FiniteDimensional ℂ S' := Submodule.finiteDimensional_of_le hS'V`. Establish `hK'` using `kStable_of_isKStableSub hσ hD S' inferInstance hS'k`. Break down `hirr (S'.map (smD ε σ).subtype) ((Submodule.map_mono hS'V).trans hVmap.le) (by` into its components or cases.
-
-Introduce and unpack `g hg _ ⟨x, hx, rfl⟩`. Take `⟨y, hy, hyx⟩` from `hK' g hg x hx`. Conclude with `⟨y, hy, hyx⟩) with h | h`. Use `left`. Conclude with `Submodule.map_injective_of_injective (smD ε σ).injective_subtype (by rw [h, Submodule.map_bot])`.
-
-Use `right`. Conclude with `Submodule.map_injective_of_injective (smD ε σ).injective_subtype (by rw [h, hVmap])`. Introduce `h`. Establish `hw₀V : w₀ ∈ V` using `hw₀S`. Rewrite `hw₀V` using `[h]`.
-
-Conclude with `hw₀ ((Submodule.mem_bot ℂ).1 hw₀V)`. Rewrite using `[hVmap]`. Conclude with `le_sSup hS₁K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_datum_of_isKTypeOf (hσ : IsURepOn (UJset ε) σ) {Λ : Fin n → ℝ} {S : Submodule ℂ H}
     (hS : Formalism.MainNotions.S.IsKTypeOf ε σ Λ S) :
@@ -145,9 +137,9 @@ theorem exists_datum_of_isKTypeOf (hσ : IsURepOn (UJset ε) σ) {Λ : Fin n →
 variable {lam : Fin n → ℝ}
 
 /- English proof (translation)
-Establish `hσ : IsURepOn (UJset ε) σ` using `hDS.2.2.1`. Take `⟨S, hS⟩` from `hDS.2.2.2.2.2.1`. Take `⟨V, hV, hV0, hVK, -⟩` from `exists_datum_of_isKTypeOf hσ hS`. Use `⟨V, hV, hV0, hVK, fun v _ => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← casU_eq_casimir (isDerivedOn_smE hσ) v]`. Conclude with `hcas _ ((mem_smD_iff ε σ _).1 v.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arb_datum (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hcas : CasOnSmooth ε lam σ) :
     ∃ V : Submodule ℂ (smD ε σ), IsKIrrHW ε (smE ε σ) (lowK ε lam) V ∧ V ≠ ⊥ ∧
@@ -162,7 +154,7 @@ theorem arb_datum (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hcas : CasOnSm
   exact hcas _ ((mem_smD_iff ε σ _).1 v.2)
 
 /- English proof (translation)
-Establish `hσ : IsURepOn (UJset ε) σ` using `hDS.2.2.1`. Take `⟨V, hV, hV0, hVK, hc⟩` from `arb_datum hDS hcas`. Establish `htop` using `data_closGen_eq_top hgap hσ (isDerivedOn_smE hσ) hV hc hVK hDS.2.2.2.1 hV0`. Rewrite using `[data_lowK_eq hgap hσ (isDerivedOn_smE hσ) hV hc hVK S (htop ▸ le_top) hS, data_lowK_eq hgap hσ (isDerivedOn_smE hσ) hV hc hVK S' (htop ▸ le_top) hS']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lowKMultOne_of_cas (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) (hcas : CasOnSmooth ε lam σ)
     (S S' : Submodule ℂ H) (hS : Formalism.MainNotions.S.IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S)
@@ -174,9 +166,9 @@ theorem lowKMultOne_of_cas (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap 
     data_lowK_eq hgap hσ (isDerivedOn_smE hσ) hV hc hVK S' (htop ▸ le_top) hS']
 
 /- English proof (translation)
-Establish `hσ : IsURepOn (UJset ε) σ` using `hDS.2.2.1`. Take `⟨V, hV, hV0, hVK, hc⟩` from `arb_datum hDS hcas`. Establish `htop` using `data_closGen_eq_top hgap hσ (isDerivedOn_smE hσ) hV hc hVK hDS.2.2.2.1 hV0`. Take `⟨U, hU⟩` from `sigLam_equiv_data hgap hP hv₀ hσ (isDerivedOn_smE hσ) hV hc hVK hV0`. Use `⟨U.trans (LinearIsometryEquiv.ofTop _ _ htop), fun g hg x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearIsometryEquiv.trans_apply, LinearIsometryEquiv.ofTop_apply]`. Conclude with `hU g hg x`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem equiv_sigLam_of_cas (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) (hcas : CasOnSmooth ε lam σ)
     {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
@@ -193,11 +185,11 @@ theorem equiv_sigLam_of_cas (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap
 end One
 
 /- English proof (translation)
-Establish `hσ : IsURepOn (UJset ε) σ` using `hDS.2.2.1`. Establish `hσ' : IsURepOn (UJset ε) σ'` using `hDS'.2.2.1`. Take `⟨V, hV, hV0, hVK, hc⟩` from `arb_datum hDS hcas`. Take `⟨V', hV', hV0', hVK', hc'⟩` from `arb_datum hDS' hcas'`. Establish `htop` using `data_closGen_eq_top hgap hσ (isDerivedOn_smE hσ) hV hc hVK hDS.2.2.2.1 hV0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htop'` using `data_closGen_eq_top hgap hσ' (isDerivedOn_smE hσ') hV' hc' hVK' hDS'.2.2.2.1 hV0'`. Take `⟨U, hU⟩` from `data_unitary_equiv hgap hσ (isDerivedOn_smE hσ) hV hc hVK hV0 hσ' (isDerivedOn_smE hσ') hV' hc' hVK' hV0'`. Use `⟨((LinearIsometryEquiv.ofTop _ _ htop).symm.trans U).trans (LinearIsometryEquiv.ofTop _ _ htop'), fun g hg x => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearIsometryEquiv.trans_apply, LinearIsometryEquiv.ofTop_apply]`. Apply `hU g hg` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [LinearIsometryEquiv.ofTop_symm_apply_coe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dsUnique_of_cas {ε : Fin n → Bool} {lam : Fin n → ℝ} (hgap : StdGap ε lam)
     {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

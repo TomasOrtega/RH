@@ -13,33 +13,27 @@ noncomputable section
 namespace GlobalTheory.TypeVecEig
 
 /- English proof (translation)
-Introduce `hL D P S hT i PI k v s hw hsw c hcont hci F _hF x hx hh`. Take `⟨j, hj⟩ : ∃ j : Fin D.R.m, j.1 + 1 = D.nd.j i` from `⟨⟨D.nd.j i - 1, by have := D.nd.j_range i; omega⟩, by have := D.nd.j_range i; simp only; omega⟩`. Take `⟨ψ₀, ξ, hψ, hξ, hlev⟩` from `P.H.level.uni i j hj k v s hsw`. Establish `hcv` using `GlobalTheory.SplitConjVal.valuation_eq s c hcont hci`. Take `⟨h1, h2⟩` from `GlobalTheory.BlockConj.facts_of_mem s D.R.r D.R.t c hcv (s.loc D.R.nV x) hh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i1, -⟩` from `GlobalTheory.BlockConj.facts_of_mem s D.R.r D.R.t c hcv (s.loc D.R.nV x)⁻¹ (by`. Use `(GlobalTheory.BlockType.blockGrp _ _ _).inv_mem hh` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `map_inv (Matrix.GeneralLinearGroup.map (n := Fin (D.R.r + D.R.t)) c.toRingHom) _)`. Establish `huni : NG.UniRT s D.R.r (s.loc D.R.nV x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨GlobalTheory.BlockConj.mem_GLint_of (fun a b => ?_) (fun a b => ?_), fun a b ha hb => ?_⟩, fun a b ha hb => ⟨fun hlt => ?_, fun he => ?_⟩⟩` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (h1 a b)`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (i1 a b)`. Use `h2 a b hb split_ifs at this with e` as an intermediate fact. Rewrite `ha` using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[sub_zero]`. Then use the resulting hypothesis. Use `h2 a b hb split_ifs at this with e` as an intermediate fact. Rewrite `hlt` using `[e]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_zero]`. Then use the resulting hypothesis. Substitute `he` using the available equality. Use `h2 a a ha` as an intermediate fact. Use `split_ifs at this with e`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `absurd rfl e`. Establish `hxJ : x ∈ (P.M.loc i).J` using `(hlev.mem x hx).2 huni`. Establish `hTS : (P.M.loc i).real F ∈ NG.TypeSp (P.M.loc i).wt.ρ (P.M.loc i).J (P.M.loc i).χ`. Rewrite using `[← (P.M.loc i).real_range]`. Conclude with `LinearMap.mem_range_self _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrt` using `hTS.2 ⟨x, hxJ⟩`. Set `h : GL (Fin (D.R.r + D.R.t)) (s.w.adicCompletion D.host.E)` to `Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x)`. Establish `hh' : h ∈ GlobalTheory.BlockType.blockGrp (s.w.adicCompletion D.host.E) D.R.r D.R.t` using `hh`. Establish `hdet` using `GlobalTheory.BlockConjDet.val_det_mul_sub_one_lt hh'`. Establish `hne2 : (h.val.submatrix (Fin.natAdd D.R.r) (Fin.natAdd D.R.r)).det ≠ 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `h0`. Rewrite `hdet` using `[h0, mul_zero, zero_sub, Valuation.map_neg, map_one]`. Conclude with `lt_irrefl _ hdet`. Establish `hc_det : c (NG.detDD s D.R.r (s.loc D.R.nV x)) = (h.val.submatrix (Fin.natAdd D.R.r) (Fin.natAdd D.R.r)).det`. Set `e : Fin D.R.t ≃ {y : Fin D.R.nV // D.R.r ≤ y.val}` to `{ toFun := fun a => ⟨Fin.natAdd D.R.r a, by simp⟩ invFun := fun y => ⟨y.1.val - D.R.r, by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h1` using `y.1.2`. Establish `h2` using `y.2`. Express the relevant statement in the definitionally equal form `y.1.val < D.R.r + D.R.t at h1`. Use the proof step `omega⟩`. Use `left_inv := fun a => by ext; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `right_inv := fun y => by ext; simp; have := y.2; omega }`. Rewrite using `[NG.detDD, ← Matrix.det_submatrix_equiv_self e]`. Rewrite using `[show c _ = c.toRingHom _ from rfl, RingHom.map_det]`. Use `congr 1`. Establish `hF0 : NG.detDD s D.R.r (s.loc D.R.nV x) ≠ 0` using `fun h0 => hne2 (by rw [← hc_det, h0, map_zero])`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `u` to `Units.mk0 _ hF0`. Establish `hchr` using `hlev.chr x hxJ hx u rfl`. Establish `hsup : ψ₀ (NG.supDiag s D.R.r (s.loc D.R.nV x)) = 1` using `hψ.1 _ (by`. Unfold `NG.supDiag`. Use `Valuation.map_sum_lt _ one_ne_zero fun p _ => Valuation.map_sum_lt _ one_ne_zero fun q _ => ?_` and prove the remaining obligations.
-
-Use `split_ifs with h`. Use `h2 p q h.2 split_ifs at this with e` as an intermediate fact. Rewrite `h` using `[e]`. Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[sub_zero]`. Then use the resulting hypothesis.
-
-Rewrite using `[map_zero]`. Conclude with `zero_lt_one)`. Establish `hμ` using `hT.mu i s.w hw j hj`. Establish `hξμ` using `GlobalTheory.ConjDense.eq_of_agree s c hcont hci (S i s.w hw).mu ξ hμ.1 hξ.1 (fun k => by rw [hξ.2 k, hμ.2 k]) u`. Establish `hbc : GlobalTheory.BlockType.blockChar (S i s.w hw).mu h = (((S i s.w hw).mu (Units.map c.toMonoidHom u) : ℂˣ) : ℂ)` using `GlobalTheory.BlockType.blockChar_eq _ _ _ (by rw [← hc_det]; rfl)`.
-
-Express the relevant statement in the definitionally equal form `_ = GlobalTheory.BlockType.blockChar (S i s.w hw).mu h • _`. Rewrite using `[hbc, ← hξμ, hrt, hchr, hsup, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (S : Reading P.T), IsTrue P S → ∀ (i : D.nd.Loc) (PI : D.naut.AV i) (k : Fin 2) (v : D.nd.PlG k) (s : SplitPlace D.host.E) (hw : IsSplitPl D.host s.w), s.w = D.naut.plGw k v → ∀ c : s.v.adicCompletion (maximalRealSubfield D.host.E) ≃+* s.w.adicCompletion D.host.E, Continuous c → (∀ x : D.host.E, c (s.i x) = algebraMap D.host.E (s.w.adicCompletion D.host.E) x) → ∀ F ∈ D.naut.typeV i PI, ∀ x : GAf D.host.E D.R.nV, TrivOutside {s.v} x → Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x) ∈ GlobalTheory.BlockType.blockGrp (s.w.adicCompletion D.host.E) D.R.r D.R.t → NG.rt D.host.E D.R.nV x ((P.M.loc i).real F) = GlobalTheory.BlockType.blockChar (S i s.w hw).mu (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x)) • (P.M.loc i).real F := by
   intro hL D P S hT i PI k v s hw hsw c hcont hci F _hF x hx hh

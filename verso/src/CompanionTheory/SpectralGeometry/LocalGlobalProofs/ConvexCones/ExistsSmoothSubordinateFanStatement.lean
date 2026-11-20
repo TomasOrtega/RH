@@ -5,7 +5,7 @@ import CompanionTheory.SpectralGeometry.CountingDefinitions.VoronoiMeans.VorFunE
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.ConvexCones.ExistsSmoothSubordinateFan
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.CompanionTheory.Ar.Fan
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.Fan.FanResolution.resolution` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FConvexCones%2FExistsSmoothSubordinateFan.lean&line=15#L15)
 -/

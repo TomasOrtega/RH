@@ -9,11 +9,11 @@ namespace UpperTheory.Lit.Bur.BlockEmb
 open PI.UpqRep PI.HwUniqW
 
 /- English proof (translation)
-Use extensionality with `i a`. Establish `h1 : (PI.UpqRep.blockW m r s * colW m r) i a = PI.UpqRep.blockW m r s i (bl m r a)`. Simplify using `[Matrix.mul_apply, colW]`. Rewrite using `[h1]`. Distinguish the cases in `hi : InB m r i`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hp : i.val - r < m` using `by unfold InB at hi; omega`. Establish `hb` using `block_mk hi hp`. Rewrite using `[← hb, blockW_bl, Matrix.mul_apply]`. Simplify using `[colW, blockIndex_injective.eq_iff]`. Rewrite using `[blockW_out s hi, if_neg (ne_of_inB (inB_bl a) hi).symm, Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.sum_eq_zero fun b _ => ?_).symm` and prove the remaining obligations. Simplify using `[colW, (ne_of_inB (inB_bl b) hi).symm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem blockW_mul_colW {m r : ℕ} (s : Matrix (Fin m) (Fin m) ℂ) :
     PI.UpqRep.blockW m r s * colW m r = colW m r * s := by
@@ -31,11 +31,11 @@ theorem blockW_mul_colW {m r : ℕ} (s : Matrix (Fin m) (Fin m) ℂ) :
     simp [colW, (ne_of_inB (inB_bl b) hi).symm]
 
 /- English proof (translation)
-Establish `hz : ∀ j, InB m r j → y j = 0` using `fun j hj => by`. Establish `hp : j.val - r < m` using `by unfold InB at hj; omega`. Rewrite using `[← block_mk hj hp]`. Conclude with `hy _`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec, dotProduct]`. Distinguish the cases in `hi : InB m r i`. Rewrite using `[hz i hi]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : InB m r j`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz j hj, mul_zero]`. Rewrite using `[blockW_in_out s hi hj, zero_mul]`. Simplify using `[blockW_out s hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockW_mulVec_of_vanish {m r : ℕ} (s : Matrix (Fin m) (Fin m) ℂ) {y : Fin (2 * r + m + 1) → ℂ}
     (hy : ∀ a, y (bl m r a) = 0) : PI.UpqRep.blockW m r s *ᵥ y = y := by
@@ -53,17 +53,15 @@ theorem blockW_mulVec_of_vanish {m r : ℕ} (s : Matrix (Fin m) (Fin m) ℂ) {y 
   · simp [blockW_out s hi]
 
 /- English proof (translation)
-Establish `hFe : F = Q * colW m r * Ai` using `by rw [hF, Matrix.mul_assoc, hA, Matrix.mul_one]`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hFe]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = Q * (PI.UpqRep.blockW m r s * colW m r) * Ai := by`. Rewrite using `[h2]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = (Q * colW m r) * s * Ai := by`. Rewrite using `[blockW_mul_colW]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = F * (A * s * Ai) := by`. Rewrite using `[hF]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hy : ∀ a, (Qi *ᵥ x) (bl m r a) = 0` using `fun a => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (colW m r)ᴴ * PI.UpqRep.Hpk m r * Qi = Aᴴ * (Fᴴ * J)`. Establish `hH : PI.UpqRep.Hpk m r = Qᴴ * J * Q` using `hg.symm`. Rewrite using `[hH]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Aᴴ * (Fᴴ * J) := by`. Rewrite using `[h1, hF, conjTranspose_mul]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Rewrite using `[← colW_mulVec (Qi *ᵥ x) a, mulVec_mulVec, e, ← mulVec_mulVec, hx, mulVec_zero]`.
-
-Both sides reduce to the same expression. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, blockW_mulVec_of_vanish s hy, mulVec_mulVec, h1, one_mulVec]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEmb_conj_blockW {m r : ℕ} {J Q Qi : Matrix (Fin (2 * r + m + 1)) (Fin (2 * r + m + 1)) ℂ}
     {F : Matrix (Fin (2 * r + m + 1)) (Fin m) ℂ} {A Ai s : Matrix (Fin m) (Fin m) ℂ}
@@ -97,7 +95,7 @@ end UpperTheory.Lit.Bur.BlockEmb
 open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta GlobalTheory.SmVec
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Lit.Bur.BlockEmb.isEmb_conj_blockW | exact UpperTheory.Lit.Bur.BlockEmb.isEmb_conj_blockW | (intros; apply UpperTheory.Lit.Bur.BlockEmb.isEmb_conj_blockW <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.UpperTheory.Lit.Bur.blockEmbed_conj_isUnitaryEmbedding : ∀ {m r : ℕ} {J Q Qi : Matrix (Fin (2 * r + m + 1)) (Fin (2 * r + m + 1)) ℂ} {F : Matrix (Fin (2 * r + m + 1)) (Fin m) ℂ} {A Ai s : Matrix (Fin m) (Fin m) ℂ} (h1 : Q * Qi = 1) (h2 : Qi * Q = 1) (hg : Qᴴ * J * Q = Formalism.QuantumDeterminants.Hpk m r) (hF : Q * colW m r = F * A) (hA : A * Ai = 1), IsEmb J F (Q * PI.UpqRep.blockW m r s * Qi) (A * s * Ai) := by
   first | exact @UpperTheory.Lit.Bur.BlockEmb.isEmb_conj_blockW | exact UpperTheory.Lit.Bur.BlockEmb.isEmb_conj_blockW | (intros; apply UpperTheory.Lit.Bur.BlockEmb.isEmb_conj_blockW <;> assumption)

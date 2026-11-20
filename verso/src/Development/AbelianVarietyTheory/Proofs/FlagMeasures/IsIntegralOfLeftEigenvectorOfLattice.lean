@@ -8,21 +8,21 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `φ : (Fin n → E) →ₗ[E] K` to `{ toFun := fun y => v ⬝ᵥ (fun i => algebraMap E K (y i)) map_add' := by`. Introduce `x y`. Simplify using `[dotProduct, mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`. Introduce `a x`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[dotProduct, Finset.mul_sum, Algebra.smul_def, mul_left_comm] }`. Establish `hφ : ∀ y, φ (B *ᵥ y) = (algebraMap E K c * w) * φ y`. Introduce `y`. Establish `h1 : (fun i => algebraMap E K ((B *ᵥ y) i)) = (B.map (algebraMap E K)) *ᵥ (fun i => algebraMap E K (y i))`. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, dotProduct, map_sum]`. Use `show v ⬝ᵥ (fun i => algebraMap E K ((B *ᵥ y) i)) = _ * (v ⬝ᵥ (fun i => algebraMap E K (y i)))`. Rewrite using `[h1, Matrix.dotProduct_mulVec, hw, smul_dotProduct, smul_eq_mul]`. Establish `hcK : algebraMap E K c ≠ 0` using `by simpa using hc`. Set `N : Submodule (𝓞 E) K` to `Λ.map (φ.restrictScalars (𝓞 E))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `isIntegral_of_smul_mem_submodule N ?_ (hfg.map _) w ?_` and prove the remaining obligations. Introduce `hN`. Apply `hv` to reduce the goal to its premises. Establish `h0 : ∀ y ∈ Λ, φ y = 0`. Introduce `y hy`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: φ y ∈ N` using `⟨y, hy, rfl⟩`. Rewrite `this` using `[hN]`. Simplify using `using this`. Establish `hk : (⊤ : Submodule E (Fin n → E)) ≤ LinearMap.ker φ`. Rewrite using `[← hsp, Submodule.span_le]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `y hy`. Conclude with `h0 y hy`. Use extensionality with `i`. Use `hk (Submodule.mem_top (x := Pi.single i (1 : E)))` as an intermediate fact. Establish `h2 : v ⬝ᵥ (fun j => algebraMap E K ((Pi.single i (1 : E) : Fin n → E) j)) = 0` using `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify `h2` using `[dotProduct, Pi.single_apply, apply_ite]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨z, hz, hyz⟩` from `hB y hy`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Establish `h` using `hφ y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[hyz, map_smul, Algebra.smul_def, mul_assoc]`. Establish `h'` using `mul_left_cancel₀ hcK h`. Simplify using `using h'`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_left_eigenvector_of_lattice {E K : Type} [Field E] [NumberField E] [Field K]
     [Algebra E K] [Algebra (𝓞 E) K] [IsScalarTower (𝓞 E) E K] {n : ℕ}
@@ -74,31 +74,29 @@ theorem isIntegral_of_left_eigenvector_of_lattice {E K : Type} [Field E] [Number
     simpa using h'
 
 /- English proof (translation)
-Set `K` to `AlgebraicClosure E`. Set `f : E →+* K` to `algebraMap E K`. Set `R` to `integralClosure (𝓞 E) K`. Establish `hgE : (g : E) ≠ 0` using `by exact_mod_cast (by omega : g ≠ 0)`. Establish `hgK : (g : K) ≠ 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: f (g : E) ≠ 0` using `by simpa only [map_ne_zero] using hgE`. Simplify using `using this`. Establish `hroot : ∀ z ∈ (A.map f).charpoly.roots, ∃ r : R, r ∈ (Ideal.span {(g : R)}).radical ∧ (r : K) = z`. Introduce `z hz`. Establish `h0 : (Matrix.scalar (Fin n) z - A.map f).det = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.eval_charpoly]`. Conclude with `(Polynomial.mem_roots'.1 hz).2`. Take `⟨v, hv, hvz⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Establish `h1 : v ᵥ* (A.map f) = z • v`. Rewrite `hvz` using `[Matrix.vecMul_sub, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hvz]`. Use extensionality with `i`. Simplify using `[Matrix.vecMul_diagonal, mul_comm]`. Establish `hk : ∀ k : ℕ, v ᵥ* ((A ^ k).map f) = z ^ k • v`. Introduce `k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Matrix.map_mul, ← Matrix.vecMul_vecMul, ih, Matrix.smul_vecMul, h1, smul_smul, pow_succ]`. Establish `hi1 : IsIntegral (𝓞 E) z` using `isIntegral_of_left_eigenvector_of_lattice Λ A 1 z v hfg hsp one_ne_zero (fun y hy => ⟨_, hA y hy, by simp⟩) hv (by simpa using h1)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi2 : IsIntegral (𝓞 E) (z ^ m / (g : K))` using `isIntegral_of_left_eigenvector_of_lattice Λ (A ^ m) (g : E) _ v hfg hsp hgE hm hv (by`. Rewrite using `[map_natCast, mul_div_cancel₀ _ hgK]`. Conclude with `hk m)`. Use `⟨⟨z, hi1⟩, ⟨m, Ideal.mem_span_singleton'.2 ⟨⟨_, hi2⟩, ?_⟩⟩, rfl⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show z ^ m / (g : K) * ((g : R) : K) = z ^ m`. Establish `: ((g : R) : K) = (g : K)` using `by simp`. Rewrite using `[this, div_mul_cancel₀ _ hgK]`. Establish `hsum : ∃ r : R, r ∈ (Ideal.span {(g : R)}).radical ∧ (r : K) = (A.map f).charpoly.roots.sum`. Use `Multiset.sum_induction (fun x : K => ∃ r : R, r ∈ (Ideal.span {(g : R)}).radical ∧ (r : K) = x) _ ?_ ⟨0, Ideal.zero_mem _, rfl⟩ hroot` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, Ideal.add_mem _ ha hb, rfl⟩`. Rewrite `hsum` using `[← Matrix.trace_eq_sum_roots_charpoly, ← AddMonoidHom.map_trace f A]`. Take `⟨r, ⟨N, hN⟩, hr⟩` from `hsum`. Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.1 hN`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hdown : ∀ x : E, IsIntegral (𝓞 E) (f x) → ∃ t : 𝓞 E, (t : E) = x`. Introduce `x hx`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 ((isIntegral_algebraMap_iff (algebraMap E K).injective).1 hx)`. Take `⟨t₀, ht₀⟩` from `hdown A.trace (hr ▸ r.2)`. Establish `hsK : (s : K) * (g : K) = f A.trace ^ N`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun x : R => (x : K)) hs` as an intermediate fact. Simplify `this` using `[hr]`. Take `⟨u, hu⟩` from `hdown (A.trace ^ N / (g : E)) (by`. Rewrite using `[map_div₀, map_pow, map_natCast, ← hsK, mul_div_cancel_right₀ _ hgK]`. Conclude with `s.2)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hmem : t₀ ∈ Ideal.span {(g : 𝓞 E)}`. Apply `hrad` to reduce the goal to its premises. Use `⟨N, Ideal.mem_span_singleton'.2 ⟨u, ?_⟩⟩` and prove the remaining obligations. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Establish `h : (u : E) * (g : E) = (t₀ : E) ^ N`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, ht₀, div_mul_cancel₀ _ hgE]`. Simplify using `using h`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hmem`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← ht₀, ← ht]`.
-
-Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_mem_of_nilpotent_mod_radical (E : Type) [Field E] [NumberField E] (n m g : ℕ)
     (Λ : Submodule (𝓞 E) (Fin n → E)) (A : Matrix (Fin n) (Fin n) E) (hfg : Λ.FG)

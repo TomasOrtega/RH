@@ -11,13 +11,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `R _ _ D χ r h`. Take `⟨j, hj, h, e⟩` from `h`. Use `⟨j, hj, ?_⟩` and prove the remaining obligations. Unfold `valF`. Rewrite using `[dif_pos (by exact h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ (h' : ⊤ ≤ 𝟙 (Sp (FractionRing R)) ⁻¹ᵁ (D.P.L.LinComb (fun _ ↦ ptK (D.c χ)) fun _ ↦ -1).U j), (Scheme.Hom.appLE (𝟙 (Sp (FractionRing R))) ((D.P.L.LinComb (fun _ ↦ ptK (D.c χ)) fun _ ↦ -1).U j) ⊤ h').hom ((D.psi χ).s j).val = ((TK R).left.presheaf.map (homOfLE h).op).hom ((D …`. Introduce `h'`. Both sides reduce to the same expression. Use `(congrArg (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom ((e1 h).trans e.symm)).trans ?_` and prove the remaining obligations. Establish `e2 : DegPre.toOpen (R` using `R) ⊤ r = (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (homOfLE (le_top : (⊤ : (Spec (CommRingCat.of R)).Opens) ≤ ⊤)).op = 𝟙 _` using `rfl`. Simplify using `only [DegPre.toOpen, RingHom.comp_apply, this, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression. Rewrite using `[e2]`. Establish `n` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R)))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `n'` using `congrArg (fun f => (f ≫ (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom).hom r) n`. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id] at n'`. Conclude with `n'.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valF_psi_of_psiCoord : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (χ : D.X) (r : R), Formalism.L2.Pj.PsiCoord D χ r → ∃ j : PUnit → D.P.L.ι, ⊤ ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U (j PUnit.unit) ∧ valF (𝟙 (Sp (FractionRing R))) _ ((D.psi χ).s j).val = algebraMap R (FractionRing R) r := by
   intro R _ _ D χ r h

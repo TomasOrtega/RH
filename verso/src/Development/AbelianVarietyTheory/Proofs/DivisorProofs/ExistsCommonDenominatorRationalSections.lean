@@ -15,9 +15,9 @@ namespace GlobalTheory.MixHt.Denom
 variable {Y : Scheme.{0}} [IsIntegral Y]
 
 /- English proof (translation)
-Establish `P` using `(presents_divOfRatSec hL hr).tens (presents_divOfRatSec hM (isRatSec_ratOfSec u hu))`. Take `⟨t, ht⟩` from `P.exists_rat_eq (f := 1) (CartierDiv.mem_sections.2 fun x => hE x)`. Establish `hη : genericPoint Y ∈ nonzeroLocus t` using `(P.generatesAt_rat_iff t).1 (ht ▸ CartierDiv.generatesAt_genericPoint _ one_ne_zero)`. Use `⟨t, hη, fun i j hi hj => Units.ext ?_⟩` and prove the remaining obligations. Establish `e` using `P.rat_mul t (i, j) ⟨hi, hj⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[ht, one_mul]`. Rewrite using `[val_ratOfSec (show genericPoint Y ∈ (tens L M).U (i, j) from ⟨hi, hj⟩), ← e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_sec_tens {L M : LB Y} (hL : L.IsLB) (hM : M.IsLB) {r : L.ι → Y.functionFieldˣ}
     (hr : IsRatSec L r) (u : M.Sec) (hu : genericPoint Y ∈ nonzeroLocus u)
@@ -34,9 +34,7 @@ theorem exists_sec_tens {L M : LB Y} (hL : L.IsLB) (hM : M.IsLB) {r : L.ι → Y
   rw [val_ratOfSec (show genericPoint Y ∈ (tens L M).U (i, j) from ⟨hi, hj⟩), ← e]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_chart hL (genericPoint Y)`. Establish `hj : genericPoint Y ∈ (lbPow L m).U (fun _ => i)` using `(lbPow_U L m _).ge hi`. Use `(mem_nonzeroLocus_iff _ _ hj).2 ((unitAt_fnOf_iff hj hj _).1 (unitAt_genericPoint ?_))` and prove the remaining obligations. Use `show fnOf _ hj (resG Y _ (t.f i) ^ m) ≠ 0`. Rewrite using `[map_pow, fnOf_resG]`.
-
-Conclude with `pow_ne_zero _ (fnOf_sec_ne_zero ht hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_mem_secPow {L : LB Y} (hL : L.IsLB) (t : L.Sec) (ht : genericPoint Y ∈ nonzeroLocus t)
     (m : ℕ) : genericPoint Y ∈ nonzeroLocus (Cartier.secPow t m) := by
@@ -48,11 +46,9 @@ theorem gen_mem_secPow {L : LB Y} (hL : L.IsLB) (t : L.Sec) (ht : genericPoint Y
   exact pow_ne_zero _ (fnOf_sec_ne_zero ht hi)
 
 /- English proof (translation)
-Use `CartierDiv.ext_of_isEqn fun x => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart hL x`. Establish `hj : x ∈ (lbPow L m).U (fun _ => i)` using `(lbPow_U L m _).ge hi`. Establish `e : ratOfSec (Cartier.secPow t m) hm (fun _ => i) = ratOfSec t ht i ^ m`. Use `Units.ext ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_pow_eq_pow_val, val_ratOfSec (gen_mem hi), val_ratOfSec (gen_mem hj)]`. Use `show fnOf _ (gen_mem hj) (resG Y _ (t.f i) ^ m) = _`. Rewrite using `[map_pow, fnOf_resG]`. Use `⟨ratOfSec t ht i ^ m, ?_, ((presents_divOfRatSec hL (isRatSec_ratOfSec t ht)).isEqn i x hi).nsmul m⟩` and prove the remaining obligations. Rewrite using `[← e]`.
-
-Conclude with `(presents_divOfRatSec (isLB_lbPow hL m) (isRatSec_ratOfSec _ hm)).isEqn _ x hj`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divOfSec_secPow {L : LB Y} (hL : L.IsLB) (t : L.Sec) (ht : genericPoint Y ∈ nonzeroLocus t)
     (m : ℕ) (hm : genericPoint Y ∈ nonzeroLocus (Cartier.secPow t m)) :
@@ -71,9 +67,9 @@ theorem divOfSec_secPow {L : LB Y} (hL : L.IsLB) (t : L.Sec) (ht : genericPoint 
   exact (presents_divOfRatSec (isLB_lbPow hL m) (isRatSec_ratOfSec _ hm)).isEqn _ x hj
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_chart hL (genericPoint Y)`. Take `⟨U, hU, a, ha⟩` from `(regAt_genericPoint (r i : Y.functionField)).exists_fnOf`. Use `⟨L.U i ⊓ U, ⟨hi, hU⟩, fun x hx => ?_⟩` and prove the remaining obligations. Use `((presents_divOfRatSec hL hr).isEqn i x hx.1).regularAt_iff.2 ?_` and prove the remaining obligations. Rewrite using `[one_mul, ← ha]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `regAt_fnOf hx.2 _ a`.
+A detailed English derivation is pending.
 -/
 theorem exists_open_regularAt {L : LB Y} (hL : L.IsLB) {r : L.ι → Y.functionFieldˣ}
     (hr : IsRatSec L r) :
@@ -90,13 +86,13 @@ end GlobalTheory.MixHt.Denom
 open GlobalTheory.MixHt.Denom in
 
 /- English proof (translation)
-Introduce `k _ Y _ q hq N r r' hr hr'`. Take `⟨n₀, j, hj, hjq⟩` from `hq.isProjOver`. Set `H : HermLB q` to `(ProjSpace.hermitianTwistingSheaf k n₀).pull j hjq`. Establish `hH : IsAmpleLB H.B` using `(isAmple_projective_O_one k n₀).pull_of_isClosedImmersion j`. Use `haveI := hH.compactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, hWr⟩` from `exists_open_regularAt N.isLB hr`. Take `⟨W', hW', hWr'⟩` from `exists_open_regularAt N.isLB hr'`. Take `⟨n, -, t, ht, hle, -⟩` from `hH.exists_affine_le (x := genericPoint Y) (U := W ⊓ W') ⟨hW, hW'⟩`. Establish `hL` using `isLB_lbPow H.isLB n`. Take `⟨N₁, h₁⟩` from `EffDiff.eventually_eff_add_nsmul hL t ht _ fun x hx => hWr x (hle hx).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N₂, h₂⟩` from `EffDiff.eventually_eff_add_nsmul hL t ht _ fun x hx => hWr' x (hle hx).2`. Establish `hu` using `gen_mem_secPow hL t ht (max N₁ N₂)`. Establish `hD` using `divOfSec_secPow hL t ht (max N₁ N₂) hu`. Take `⟨s, hs, e⟩` from `exists_sec_tens N.isLB (isLB_lbPow hL _) hr (Cartier.secPow t (max N₁ N₂)) hu (by rw [hD]; exact h₁ _ (le_max_left _ _))`. Take `⟨s', hs', e'⟩` from `exists_sec_tens N.isLB (isLB_lbPow hL _) hr' (Cartier.secPow t (max N₁ N₂)) hu (by rw [hD]; exact h₂ _ (le_max_right _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(H.pow n).pow (max N₁ N₂), Cartier.secPow t (max N₁ N₂), s, s', hu, hs, hs', fun i j hi hj => ⟨e i j hi hj, e' i j hi hj⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MixHt.exists_common_denom : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y]
     (q : Y ⟶ Sp k), IsAmb q → ∀ (N : HermLB q) (r r' : N.B.ι → Y.functionFieldˣ), IsRatSec N.B r →

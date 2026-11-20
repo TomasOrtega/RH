@@ -6,41 +6,35 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree
 
 /- English proof (translation)
-Unfold `LatRetract`. Introduce `O K V V' _ _ _ _ _ _ _ _ _ _ _ _ _ _ ι ι' _ _ b b' io hio`. Use `set L := Submodule.span O (Set.range b) with hL`. Use `set L' := Submodule.span O (Set.range b') with hL'`. Establish `hcoord : ∀ x ∈ L, ∀ i, ∃ a : O, algebraMap O K a = b.repr x i`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `x hx i`. Conclude with `⟨(b.restrictScalars O).repr ⟨x, hx⟩ i, Module.Basis.restrictScalars_repr_apply O b ⟨x, hx⟩ i⟩`. Establish `hinj : Function.Injective io`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `F hF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hF` using `[LinearMap.mem_ker]`. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, b.repr F i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hne (b.ext_elem (fun j => by simp [h j]))`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hϖ0 : algebraMap O K ϖ ≠ 0` using `fun h0 => hϖ.ne_zero (IsFractionRing.injective O K (by rw [h0, map_zero]))`. Establish `hmem : ((algebraMap O K ϖ)⁻¹ * (b.repr F i)⁻¹) • F ∈ L`. Rewrite using `[← hio, map_smul, hF, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.zero_mem _`. Take `⟨a, ha⟩` from `hcoord _ hmem i`. Rewrite `ha` using `[map_smul, Finsupp.smul_apply, smul_eq_mul, mul_assoc, inv_mul_cancel₀ hi, mul_one]`. Apply `hϖ.not_isUnit` to reduce the goal to its premises. Use `isUnit_iff_exists_inv.mpr ⟨a, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `IsFractionRing.injective O K` to reduce the goal to its premises. Rewrite using `[map_mul, ha, map_one, mul_inv_cancel₀ hϖ0]`. Set `φ : L →ₗ[O] L'` to `LinearMap.codRestrict L' ((io.restrictScalars O).domRestrict L) (fun x => (hio x).2 x.2)`. Establish `hφ : Function.Injective φ` using `fun x y h => Subtype.ext (hinj (congrArg Subtype.val h))`. Use `haveI : Module.Finite O L' := Module.Finite.span_of_finite O (Set.finite_range b')`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : NoZeroSMulDivisors O (L' ⧸ LinearMap.range φ) := by`. Use `⟨fun {a q} h => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Break down `eq_or_ne a 0 with ha | ha` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inl ha`. Use `right`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨x, hx⟩` from `h`. Establish `hx' : io (x : V) = a • (y : V')` using `congrArg Subtype.val hx`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hK : algebraMap O K a ≠ 0` using `fun h0 => ha (IsFractionRing.injective O K (by rw [h0, map_zero]))`. Establish `hyio : (y : V') = io ((algebraMap O K a)⁻¹ • (x : V))`. Rewrite using `[map_smul, hx', ← algebraMap_smul K a (y : V'), smul_smul, inv_mul_cancel₀ hK, one_smul]`. Establish `hmem : (algebraMap O K a)⁻¹ • (x : V) ∈ L` using `(hio _).1 (hyio ▸ y.2)`. Conclude with `⟨⟨_, hmem⟩, Subtype.ext hyio.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : Module.Free O (L' ⧸ LinearMap.range φ) := Module.free_of_finite_type_torsion_free'`. Take `⟨s, hs⟩` from `Module.projective_lifting_property (LinearMap.range φ).mkQ LinearMap.id (Submodule.mkQ_surjective _)`. Set `pr : L' →ₗ[O] L'` to `LinearMap.id - s ∘ₗ (LinearMap.range φ).mkQ`. Establish `hpr : ∀ y, pr y ∈ LinearMap.range φ`. Introduce `y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `LinearMap.congr_fun hs ((LinearMap.range φ).mkQ y)`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h2`. Rewrite using `[← Submodule.ker_mkQ (LinearMap.range φ), LinearMap.mem_ker]`. Simplify using `only [pr, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, h2, sub_self]`. Set `e` to `LinearEquiv.ofInjective φ hφ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `r0 : L' →ₗ[O] L` to `e.symm.toLinearMap ∘ₗ LinearMap.codRestrict (LinearMap.range φ) pr hpr`. Establish `hr0 : ∀ x : L, r0 (φ x) = x`. Introduce `x`. Establish `h1 : (LinearMap.range φ).mkQ (φ x) = 0`. Rewrite using `[← LinearMap.mem_ker, Submodule.ker_mkQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.mem_range_self φ x`. Use `show e.symm (LinearMap.codRestrict _ pr hpr (φ x)) = x`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[LinearMap.codRestrict_apply, h1, e, pr, LinearEquiv.ofInjective_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `ret : V' →ₗ[K] V` to `b'.constr K (fun j => ((r0 ⟨b' j, Submodule.subset_span ⟨j, rfl⟩⟩ : L) : V))`. Establish `hA : ∀ y : L', ret (y : V') = (r0 y : V)`. Establish `h3 : (ret.restrictScalars O) ∘ₗ L'.subtype = L.subtype ∘ₗ r0`. Use `(b'.restrictScalars O).ext (fun j => ?_)` and prove the remaining obligations. Establish `hj : (b'.restrictScalars O) j = ⟨b' j, Submodule.subset_span ⟨j, rfl⟩⟩` using `Subtype.ext (Module.Basis.restrictScalars_apply _ _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hj]`. Simplify using `[ret, Module.Basis.constr_basis]`. Introduce `y`. Conclude with `LinearMap.congr_fun h3 y`. Use `⟨ret, ?_, ?_⟩` and prove the remaining obligations.
-
-Establish `h4 : ret ∘ₗ io = LinearMap.id`. Use `b.ext (fun i => ?_)` and prove the remaining obligations. Establish `hbi : b i ∈ L` using `Submodule.subset_span ⟨i, rfl⟩`. Rewrite using `[LinearMap.comp_apply, LinearMap.id_apply]`. Establish `h5` using `hA (φ ⟨b i, hbi⟩)`.
-
-Rewrite `h5` using `[hr0]`. Conclude with `h5`. Introduce `F`. Conclude with `LinearMap.congr_fun h4 F`. Introduce `G hG`.
-
-Rewrite using `[hA ⟨G, hG⟩]`. Conclude with `(r0 ⟨G, hG⟩).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latRetract : LatRetract := by
   unfold LatRetract
@@ -138,13 +132,13 @@ theorem latRetract : LatRetract := by
     exact (r0 ⟨G, hG⟩).2
 
 /- English proof (translation)
-The claim follows from `cloud_prop_of_maps_retraction_basis hC latRetract hBP hD3`.
+A detailed English derivation is pending.
 -/
 theorem cloud_prop_of_maps_basis (hC : RestCloudMaps) (hBP : BePerfect) (hD3 : DualHeightBasis) : CloudLowerBoundWeyl :=
   cloud_prop_of_maps_retraction_basis hC latRetract hBP hD3
 
 /- English proof (translation)
-The claim follows from `cloud_bound_of_prop_and_weyl_dimension (cloud_prop_of_maps_basis hC hBP hD3) hW`.
+A detailed English derivation is pending.
 -/
 theorem cloud_bound_of_maps (hC : RestCloudMaps) (hBP : BePerfect) (hD3 : DualHeightBasis) (hW : WeylV) : CloudWeightLowerBound :=
   cloud_bound_of_prop_and_weyl_dimension (cloud_prop_of_maps_basis hC hBP hD3) hW

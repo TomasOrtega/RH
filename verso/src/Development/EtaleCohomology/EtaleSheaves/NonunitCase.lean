@@ -8,9 +8,9 @@ namespace LateralTheory.E.AlgGlue₂
 variable {A K : Type} [CommRing A] [IsLocalRing A] [Field K] [Algebra A K]
 
 /- English proof (translation)
-Unfold `mS at hx ⊢`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `a ha s hs`. Rewrite using `[smul_mul_assoc]`. Conclude with `Submodule.smul_mem_smul ha (S.mul_mem hs hb)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hx hy`. Rewrite using `[add_mul]`. Conclude with `Submodule.add_mem _ hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mS_mul (S : Subalgebra A K) {x b : K} (hx : x ∈ mS S) (hb : b ∈ S) : x * b ∈ mS S := by
   unfold mS at hx ⊢
@@ -23,7 +23,7 @@ theorem mS_mul (S : Subalgebra A K) {x b : K} (hx : x ∈ mS S) (hb : b ∈ S) :
     exact Submodule.add_mem _ hx hy
 
 /- English proof (translation)
-Establish `key : e - 1 = (e * e - e) * h + (u - e) * ((e - 1) * h)`. Take the linear combination `(1 - e) * huh`. Rewrite using `[key]`. Conclude with `Submodule.add_mem _ (mS_mul S hee hh) (mS_mul S hue (S.mul_mem (S.sub_mem he (S.one_mem)) hh))`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_case (S : Subalgebra A K) {u h e : K} (hu : u ∈ S) (hh : h ∈ S) (huh : u * h = 1)
     (he : e ∈ S) (hue : u - e ∈ mS S) (hee : e * e - e ∈ mS S) : e - 1 ∈ mS S := by
@@ -34,11 +34,9 @@ theorem unit_case (S : Subalgebra A K) {u h e : K} (hu : u ∈ S) (hh : h ∈ S)
     (mS_mul S hue (S.mul_mem (S.sub_mem he (S.one_mem)) hh))
 
 /- English proof (translation)
-Establish `h1` using `unit_case S (u := 1 - u) (e := 1 - e) (S.sub_mem S.one_mem hu) hh huh (S.sub_mem S.one_mem he) (by`. Establish `: (1 - u) - (1 - e) = (u - e) * (-1)` using `by ring`. Rewrite using `[this]`. Conclude with `mS_mul S hue (S.neg_mem S.one_mem))`. Use the proof step `(by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (1 - e) * (1 - e) - (1 - e) = e * e - e` using `by ring`. Rewrite using `[this]`. Conclude with `hee)`. Establish `: e = (1 - e - 1) * (-1)` using `by ring`. Rewrite using `[this]`.
-
-Conclude with `mS_mul S h1 (S.neg_mem S.one_mem)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonunit_case (S : Subalgebra A K) {u h e : K} (hu : u ∈ S) (hh : h ∈ S) (huh : (1 - u) * h = 1)
     (he : e ∈ S) (hue : u - e ∈ mS S) (hee : e * e - e ∈ mS S) : e ∈ mS S := by
@@ -54,17 +52,15 @@ theorem nonunit_case (S : Subalgebra A K) {u h e : K} (hu : u ∈ S) (hh : h ∈
   rw [this]; exact mS_mul S h1 (S.neg_mem S.one_mem)
 
 /- English proof (translation)
-Introduce `A _ _ _ K _ _ B C t hc hint e f hef`. Take `⟨heB, hfC, hee, hff, hd⟩` from `hef`. Take `⟨g, hgB, hgC, hge, hgf⟩` from `hL A K B C t hc e f ⟨heB, hfC, hee, hff, hd⟩`. Use `set R : Subalgebra A K := Algebra.adjoin A {g} with hR`. Establish `hRB : R ≤ B` using `Algebra.adjoin_le (Set.singleton_subset_iff.mpr hgB)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRC : R ≤ C` using `Algebra.adjoin_le (Set.singleton_subset_iff.mpr hgC)`. Establish `hgi : IsIntegral A g` using `hint g hgB hgC`. Establish `: Module.Finite A R` using `Algebra.finite_adjoin_simple_of_isIntegral hgi`. Establish `: IsDomain R` using `inferInstance`. Establish `: ConnectedSpace ↑(Spec (CommRingCat.of R))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ConnectedSpace (PrimeSpectrum R)`. Use `infer_instance`. Establish `: IsLocalRing R` using `hF A R this`. Establish `hgR : g ∈ R` using `Algebra.self_mem_adjoin_singleton A g`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (⟨g, hgR⟩ : R) with hu | hu` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `hv' : g * (v : K) = 1`. Use `congrArg Subtype.val hv` as an intermediate fact. Simplify using `using this`. Use `right`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨unit_case B hgB (hRB v.2) hv' heB hge hee, unit_case C hgC (hRC v.2) hv' hfC hgf hff⟩`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `hv' : (1 - g) * (v : K) = 1`. Use `congrArg Subtype.val hv` as an intermediate fact. Simplify using `using this`.
-
-Use `left`. Conclude with `⟨nonunit_case B hgB (hRB v.2) hv' heB hge hee, nonunit_case C hgC (hRC v.2) hv' hfC hgf hff⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem AlgGlue_of (hL : IdemLift) (hF : LateralTheory.E.LZProperCut.LZHensFinite) : AlgGlue := by
   intro A _ _ _ K _ _ B C t hc hint e f hef

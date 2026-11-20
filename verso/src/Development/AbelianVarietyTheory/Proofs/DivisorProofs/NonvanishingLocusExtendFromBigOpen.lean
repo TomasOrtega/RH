@@ -13,11 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ _ hX V W hV hVW hW c hloc`. Take `⟨L, hL, rfl⟩` from `cls_surj c`. Take `⟨r, hr⟩` from `IsLocus.exists_sec (pull_isLB hL W.ι) hloc`. Take `⟨t, ht, -⟩` from `((GlobalTheory.extension_over_codim_two X hX).1 W hW).2.1 L r`. Establish `e : GlobalTheory.secPull t W.ι = r` using `(GlobalTheory.lbSec_ext fun i => rfl).trans ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : W.ι ⁻¹ᵁ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus t = W.ι ⁻¹ᵁ V`. Rewrite using `[← GlobalTheory.nonzeroLocus_secPull, e, hr]`. Establish `key : ∀ x (hx : x ∈ W), x ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus t ↔ x ∈ V` using `fun x hx => by`. Use `congrArg (fun U : W.toScheme.Opens => (⟨x, hx⟩ : W.toScheme) ∈ U) h1` as an intermediate fact. Conclude with `Iff.of_eq this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L, hL, t, rfl, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.eq_of_isAffineOpen_of_ringKrullDim_le_one' X hX V (ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus t) hV (fun x hx => (key x (hVW hx)).2 hx) (fun z hz hz1 => (key z (hW z hz1)).1 hz)`.
+A detailed English derivation is pending.
 -/
 theorem extend_isLocus_of_big_open : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] [X.IsSeparated], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → ∀ V W : X.Opens, IsAffineOpen V → V ≤ W → (∀ z : X, ringKrullDim ((X).presheaf.stalk z) ≤ 1 → z ∈ W) → ∀ c : Pic X, IsLocus (GlobalTheory.CechPic.pull W.ι c) (W.ι ⁻¹ᵁ V) → IsLocus c V := by
   intro X _ _ hX V W hV hVW hW c hloc

@@ -10,7 +10,7 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.HerrExtUnit
 
 /- English proof (translation)
-Introduce `S E e t hN hφ ht`. Take `⟨u, hu'⟩ : ∃ u : (S.O)ˣ, E.jD S.W.one e = (algebraMap S.O S.RW (u : S.O)) ⊗ₜ[S.O] t` from `GlobalTheory.Cyc.UnitGen.main D HW F l K s LL h e t hN hφ ht`. Use `⟨u, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hu', Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← TensorProduct.tmul_smul, smul_smul, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_unit (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) :
@@ -29,7 +29,7 @@ theorem exists_unit (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf
     ← TensorProduct.tmul_smul, smul_smul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul S.LL b x, ← algebraMap_smul S.LL b et, map_smul, map_smul, hx, smul_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_cocycle (S : Sit) {T Tp : LocLat S.G S.Qp S.LL S.O} (ι : LatHom T.L Tp.L) (x : T.V)
     (g : S.G) (et : Tp.V) (hx : ι.f x = Tp.ρ g et - et) (b : S.O) :
@@ -37,16 +37,16 @@ theorem smul_cocycle (S : Sit) {T Tp : LocLat S.G S.Qp S.LL S.O} (ι : LatHom T.
   rw [← algebraMap_smul S.LL b x, ← algebraMap_smul S.LL b et, map_smul, map_smul, hx, smul_sub]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul S.LL b et, map_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_proj (S : Sit) {Tp Z : LocLat S.G S.Qp S.LL S.O} (π : LatHom Tp.L Z.L)
     (et : Tp.V) (b : S.O) : b • π.f et = π.f (b • et) := by
   rw [← algebraMap_smul S.LL b et, map_smul, algebraMap_smul]
 
 /- English proof (translation)
-Introduce `T Tp ι π _ _ c hc hE e he`. Take `⟨hS, et, het, hgen, hcoc⟩` from `hE`. Take `⟨u, hu⟩` from `exists_unit D HW F l K s LL h e ⟨π.f et, π.T_le _ het⟩ he.1 he.2.1 hgen`. Use `⟨u, fun x a hx y z hyz h1 h2 => ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.Cyc.dict_ext_Ks D HW F (GlobalTheory.Decompl.fontaine_and_decompletion D HW F) l K s LL h T Tp _ ι π hS (sit D.loc HW l (D.locA l) K s LL h).W.one_triv ((u.1 * a) • ⟨et, het⟩) ((u.1 * a) • ⟨π.f et, π.T_le _ het⟩) x (smul_proj _ π et _) (by rw [hx]; exact hu a) ⟨(y, z …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `key.trans (Submodule.Quotient.mk_smul _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem over_Ks (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) :
@@ -64,9 +64,9 @@ theorem over_Ks (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.l
   exact key.trans (Submodule.Quotient.mk_smul _ _ _)
 
 /- English proof (translation)
-Introduce `_ hp T Tp ι π _ _ c hc hE e he`. Take `⟨hS, et, het, hgen, hcoc⟩` from `hE`. Take `⟨u, hu⟩` from `exists_unit D HW F l K s LL h e ⟨π.f et, π.T_le _ het⟩ he.1 he.2.1 hgen`. Use `⟨u, fun x a hδ hx y z hyz h1 h2 => ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.ExtDict.dict_K D HW F (GlobalTheory.Decompl.fontaine_and_decompletion D HW F) l K s LL h (fun h2 => absurd h2 hp) T Tp _ ι π hS (sit D.loc HW l (D.locA l) K s LL h).W.one_triv ((u.1 * a) • ⟨et, het⟩) ((u.1 * a) • ⟨π.f et, π.T_le _ het⟩) x (smul_proj _ π et _) (by rw …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `key.trans (Submodule.Quotient.mk_smul _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem over_K (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) :
@@ -84,7 +84,7 @@ theorem over_K (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.lo
   exact key.trans (Submodule.Quotient.mk_smul _ _ _)
 
 /- English proof (translation)
-Introduce `D HW F l _ K s LL h` and use `⟨over_Ks D HW F l K s LL h, over_K D HW F l K s LL h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW),
     Formalism.MainNotions.HerrComplexNaturality.HerrExtensionUpToUnit D HW F :=

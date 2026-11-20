@@ -21,13 +21,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.WeilSchrodinger
 
 /- English proof (translation)
-Introduce `D B hB n d X Y r s r' s' hX hY Mo hMo χX χW hcX hcW rX rW`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.hermitianSelfDualLatticeSpace_form_hermitian_nondeg_unimodular D B hB n X r s hX`. Take `⟨hJ, L, hL, h4, h5, h6⟩` from `GlobalTheory.T.skewHermitian_neg_traceZero_inv_hermitian_unimodular D B hB d Y r' s' hY`. Establish `hξ : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Set `T` to `hspOf D X.Jᵀ h1 h2 X.L hX.lat h3 (fun _ => (r, s))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `S` to `hspOf D (-D.host.xi0 • Y.J⁻¹) h4 h5 L hL h6 (fun _ => (s', r'))`. Establish `eA : X.J = T.gramᵀ` using `by rw [gram_hspOf]; rfl`. Establish `eB : (-1 : AF D.host.F ⊗[D.host.F] D.host.E) • incM D.host.F Y.J = incM D.host.F (D.host.xi0 • S.gram⁻¹)`. Rewrite using `[gram_hspOf]`. Establish `e1 : (-D.host.xi0 • Y.J⁻¹)⁻¹ = (-D.host.xi0)⁻¹ • Y.J` using `Matrix.inv_eq_left_inv (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_nonsing_inv _ hJ, inv_mul_cancel₀ (neg_ne_zero.2 hξ), one_smul])`. Establish `e2 : D.host.xi0 • (-D.host.xi0)⁻¹ • Y.J = -Y.J`. Rewrite using `[smul_smul, inv_neg, mul_neg, mul_inv_cancel₀ hξ, neg_one_smul]`. Use `show (-1 : AF D.host.F ⊗[D.host.F] D.host.E) • incM D.host.F Y.J = incM D.host.F (D.host.xi0 • (-D.host.xi0 • Y.J⁻¹)⁻¹)`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i j`. Simplify using `[incM]`. Conclude with `GlobalTheory.T.exists_weilRep_hermitianPair_rationalSchrodinger D B.ψ (GlobalTheory.T.isStdChar_neg_one_of_standardTraceAdelicAddChar D B.ψ hB.std) S T χW χX hcW hcX (GlobalTheory.T.restrictsToQuadraticSignPow_idelic_restriction D χW d rW) (GlobalTheory.T.restrictsToQuadraticSign …`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isWeil : ∀ (D : D7) (B : Base D.host.F D.host.E), B.IsGood D.sp.cm.sig →
     ∀ (n d : ℕ) (X : Spc D.host.F D.host.E n) (Y : Spc D.host.F D.host.E d) (r s r' s' : ℕ),

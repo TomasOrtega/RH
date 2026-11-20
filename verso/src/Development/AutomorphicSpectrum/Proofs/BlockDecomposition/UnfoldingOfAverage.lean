@@ -15,18 +15,18 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {K : Subgroup G} [CompactSpace K] [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-The claim follows from `hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_continuous (μ : Measure K) [IsProbabilityMeasure μ] {F : K → (W →L[ℂ] W)}
     (hF : Continuous F) : Integrable F μ :=
   hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
 /- English proof (translation)
-Use `haveI : CompleteSpace W := FiniteDimensional.complete ℂ W`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hρ.continuousOn`. Establish `hint : ∀ f : C(K, ℂ), Integrable (fun κ => f κ • ρ κ) μ` using `fun f => integrable_of_continuous μ (f.continuous.smul hρ)`. Set `A₀ : C(K, ℂ) →ₗ[ℂ] (W →L[ℂ] W)` to `{ toFun := fun f => avg μ ρ f map_add' := fun f g => by`. Simplify using `only [avg, ContinuousMap.coe_add, Pi.add_apply, add_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `integral_add (hint f) (hint g)`. Use the proof step `map_smul' := fun a f => by`. Simplify using `only [avg, ContinuousMap.coe_smul, Pi.smul_apply, smul_eq_mul, mul_smul, RingHom.id_apply]`. Conclude with `integral_smul a _ }`. Use `⟨A₀.mkContinuous C fun f => ?_, fun f => rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h : ∀ᵐ κ ∂μ, ‖f κ • ρ κ‖ ≤ C * ‖f‖` using `Eventually.of_forall fun κ => by`. Rewrite using `[norm_smul, mul_comm]`. Conclude with `mul_le_mul (hC κ (Set.mem_univ _)) (f.norm_coe_le_norm κ) (norm_nonneg _) ((norm_nonneg _).trans (hC κ (Set.mem_univ _)))`. Use `norm_integral_le_of_norm_le_const h` as an intermediate fact. Simplify `this` using `[avg, A₀]`.
+A detailed English derivation is pending.
 -/
 theorem exists_avgCLM (μ : Measure K) [IsProbabilityMeasure μ] {ρ : K →* (W →L[ℂ] W)}
     (hρ : Continuous ρ) :
@@ -53,11 +53,11 @@ theorem exists_avgCLM (μ : Measure K) [IsProbabilityMeasure μ] {ρ : K →* (W
   simpa [avg, A₀] using this
 
 /- English proof (translation)
-Use `haveI : CompleteSpace W := FiniteDimensional.complete ℂ W`. Establish `hc : Continuous fun κ : K => κ₁ * κ` using `continuous_const.mul continuous_id`. Establish `hI : Integrable (fun κ => φ (κ₁ * κ) • ρ (κ₁ * κ)) μ` using `integrable_of_continuous μ ((hφ.comp hc).smul (hρ.comp hc))`. Establish `h1 : avg μ ρ φ = ∫ κ, φ (κ₁ * κ) • ρ (κ₁ * κ) ∂μ` using `(integral_mul_left_eq_self (fun κ => φ κ • ρ κ) κ₁).symm`. Establish `h2` using `ContinuousLinearMap.integral_comp_comm (ContinuousLinearMap.compL ℂ W W W (ρ κ₁⁻¹)) hI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `Eq.trans ?_ h2` and prove the remaining obligations. Unfold `avg`. Use `integral_congr_ae (Eventually.of_forall fun κ => ?_)` and prove the remaining obligations. Establish `h3 : (ρ κ₁⁻¹).comp (ρ (κ₁ * κ)) = ρ κ`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ρ κ₁⁻¹ * ρ (κ₁ * κ) = ρ κ`. Rewrite using `[← map_mul, inv_mul_cancel_left]`. Express the relevant statement in the definitionally equal form `φ (κ₁ * κ) • ρ κ = ContinuousLinearMap.compL ℂ W W W (ρ κ₁⁻¹) (φ (κ₁ * κ) • ρ (κ₁ * κ))`. Rewrite using `[map_smul, ContinuousLinearMap.compL_apply, h3]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_translate (μ : Measure K) [μ.IsHaarMeasure] [IsProbabilityMeasure μ]
     {ρ : K →* (W →L[ℂ] W)} (hρ : Continuous ρ) {φ : K → ℂ} (hφ : Continuous φ) (κ₁ : K) :
@@ -83,23 +83,21 @@ theorem avg_translate (μ : Measure K) [μ.IsHaarMeasure] [IsProbabilityMeasure 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `hSec hAvg G _ _ _ _ _ W _ _ _ K ρ hK hρ _ _ μ hμ hpr Γ P c hpar φ Λ T hφ hLaw hΛ hT g u hu hb w`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Use `haveI : CompleteSpace W := FiniteDimensional.complete ℂ W`. Establish `hsec` using `(hSec G W K ρ hK hρ Γ P c hpar).1`. Establish `hmem` using `hAvg G W K ρ hK hρ μ hμ hpr Γ P c hpar φ hφ hLaw w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ q : Cos P Γ, ∃ (p : G) (κ₁ : K), p ∈ P ∧ rep q * g = p * κ₁` using `fun q => by`. Take `⟨p, hp, k, hk, e⟩` from `hpar.iwa (rep q * g)`. Conclude with `⟨p, ⟨k, hk⟩, hp, e⟩`. Use `choose p κ₁ hp hpk using key`. Establish `hterm : ∀ q (κ : K), T (rep q * (g * κ)) = (c (p q) * Complex.exp (Λ (p q))) * φ (κ₁ q * κ)` using `fun q κ => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : rep q * (g * (κ : G)) = p q * ((κ₁ q * κ : K) : G)`. Rewrite using `[← mul_assoc, hpk q, Subgroup.coe_mul, mul_assoc]`. Rewrite using `[e]`. Conclude with `hT _ (hp q) _`. Establish `hc : ∀ q, Continuous fun κ : K => φ (κ₁ q * κ)` using `fun q => hφ.comp (continuous_const.mul continuous_id)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `f' : Cos P Γ → C(K, ℂ)` to `fun q => ⟨fun κ => φ (κ₁ q * κ), hc q⟩`. Set `f : Cos P Γ → C(K, ℂ)` to `fun q => (c (p q) * Complex.exp (Λ (p q))) • f' q`. Establish `hfa : ∀ q κ, f q κ = T (rep q * (g * κ))` using `fun q κ => by`. Rewrite using `[hterm]`. Simplify using `[f, f']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hu0 : ∀ q, 0 ≤ u q` using `fun q => (norm_nonneg _).trans (hb q 1)`. Establish `hsum : Summable f` using `Summable.of_norm_bounded hu fun q => (ContinuousMap.norm_le _ (hu0 q)).2 fun κ => by`. Rewrite using `[hfa]`. Conclude with `hb q κ`. Take `⟨A, hA⟩` from `exists_avgCLM μ hρ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF : (fun κ : K => ∑' q : Cos P Γ, T (rep q * (g * κ))) = ⇑(∑' q, f q)`. Use function extensionality and compare the values at `κ`. Rewrite using `[← ContinuousMap.tsum_apply hsum]`. Conclude with `tsum_congr fun q => (hfa q κ).symm`. Rewrite using `[hF, ← hA]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hL` using `((ContinuousLinearMap.apply ℂ W w).comp A).map_tsum hsum`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply] at hL`. Rewrite using `[hL]`. Unfold `eis`. Use `tsum_congr fun q => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e1 : A (f q) w = (c (p q) * Complex.exp (Λ (p q))) • (ρ (κ₁ q)⁻¹ (avg μ ρ φ w))`. Establish `: A (f' q) = ρ (κ₁ q)⁻¹ * avg μ ρ φ`. Rewrite using `[hA]`. Conclude with `avg_translate μ hρ hφ (κ₁ q)`. Establish `e2 : A (f q) = (c (p q) * Complex.exp (Λ (p q))) • A (f' q)` using `map_smul A _ _`.
-
-Rewrite using `[e2, this]`. Both sides reduce to the same expression. Rewrite using `[e1, hpk q, hΛ _ _ (κ₁ q).2, hsec _ hmem _ (hp q), smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold : SecLaw → AvgMem → Unfold := by
   intro hSec hAvg G _ _ _ _ _ W _ _ _ K ρ hK hρ _ _ μ hμ hpr Γ P c hpar φ Λ T hφ hLaw hΛ hT g u hu

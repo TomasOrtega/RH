@@ -13,7 +13,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.SegSocle
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.segment_term_injective hA Δ).comp Fin.rev_injective`.
+A detailed English derivation is pending.
 -/
 theorem dec_injective {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) :
@@ -21,9 +21,9 @@ theorem dec_injective {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   (GlobalTheory.T.segment_term_injective hA Δ).comp Fin.rev_injective
 
 /- English proof (translation)
-Rewrite using `[Set.ncard_le_one_iff_subsingleton]`. Introduce `e₁ h₁ e₂ h₂`. Use extensionality with `a`. Establish `i₁` using `dec_injective hA Δ (h₁ a)`. Establish `i₂` using `dec_injective hA Δ (h₂ a)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← i₁, ← i₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ncard_perm_dec_le_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) :
@@ -36,7 +36,7 @@ theorem ncard_perm_dec_le_one {k : Type} [Field k] [ValuativeRel k] [Topological
   rw [← i₁, ← i₂]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA Δ N hd`. Apply `GlobalTheory.CompanionTheory.SocleJm.exists_isSocle_of_jm_le_one hA (dec Δ) hd` to reduce the goal to its premises. Establish `hc : ∀ a, (dec Δ a).IsCusp` using `fun a => Δ.isCusp_term (Fin.rev a)`. Rewrite using `[GlobalTheory.T.jacquet_multiplicity_cuspidal_product hA (dec Δ) (dec Δ) hd hd hc hc]`. Conclude with `ncard_perm_dec_le_one hA Δ` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isSocle_prodIrr_dec : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) {N : ℕ}

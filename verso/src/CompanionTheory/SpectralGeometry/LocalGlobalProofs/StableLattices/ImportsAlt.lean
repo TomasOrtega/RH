@@ -7,7 +7,7 @@ import CompanionTheory.AutomorphicTheory.PieriRules.PieriDegreeBounds.Imports
 namespace GlobalTheory.CompanionTheory.DSCapelliAction
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ S E h u v`. Conclude with `GlobalTheory.CapelliFreeAction.actU_qdet n ε H σ S E (fun a b w => h.act a b w) u v`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem actQ : CompanionTheory.D.DSIC.ActQ := by
   intro n ε H _ _ σ S E h u v

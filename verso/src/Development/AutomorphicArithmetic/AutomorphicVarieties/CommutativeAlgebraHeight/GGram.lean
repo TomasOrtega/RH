@@ -3,31 +3,29 @@ import Mathlib
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `K ι _ _ _ s`. Establish `hG : ∀ (x : ι × ι → Matrix ι ι K) (v : ι × ι → K) (a : ι × ι), (Matrix.of (fun a b : ι × ι => (x a * x b).trace)).mulVec v a = (x a * ∑ b, v b • x b).trace`. Introduce `x v a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.mul_sum, Matrix.trace_sum, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hs`. Take `⟨b, hbs, hspan, hli⟩` from `exists_linearIndependent K s`. Establish `htop : ⊤ ≤ Submodule.span K (Set.range (Subtype.val : b → Matrix ι ι K))`. Rewrite using `[Subtype.range_coe, hspan, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `B` to `Module.Basis.mk hli htop`. Set `e` to `B.indexEquiv (Matrix.stdBasis K ι ι)`. Set `x : ι × ι → Matrix ι ι K` to `fun a => (e.symm a : Matrix ι ι K)`. Establish `hxli : LinearIndependent K x` using `hli.comp e.symm e.symm.injective`. Establish `hxspan : Submodule.span K (Set.range x) = ⊤`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : Set.range x = Set.range (Subtype.val : b → Matrix ι ι K)`. Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨e.symm a, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨e c, by simp [x]⟩`. Rewrite using `[hr, Subtype.range_coe, hspan, hs]`. Use `⟨x, fun a => hbs (e.symm a).2, ?_⟩` and prove the remaining obligations. Introduce `hdet`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Establish `hxy : ∀ a, (x a * ∑ b, v b • x b).trace = 0` using `fun a => by`. Rewrite using `[← hG x v a, hv]`. Both sides reduce to the same expression. Establish `hall : ∀ z ∈ Submodule.span K (Set.range x), (z * ∑ b, v b • x b).trace = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨a, rfl⟩` from `hz`. Conclude with `hxy a`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add z w _ _ hz hw => rw [add_mul, Matrix.trace_add, hz, hw, add_zero]`. Consider the case `smul c z _ hz => rw [Matrix.smul_mul, Matrix.trace_smul, hz, smul_zero]`. Establish `hy0 : ∑ b, v b • x b = 0`. Use extensionality with `i k`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hall (Matrix.single k i 1) (by rw [hxspan]; exact Submodule.mem_top)`. Rewrite `h` using `[Matrix.trace_single_mul, one_smul]`. Simplify using `using h`. Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Fintype.linearIndependent_iff.mp hxli v hy0 a`. Introduce and unpack `⟨x, hxs, hdet⟩`. Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Conclude with `Subsingleton.elim _ _`. Establish `hli : LinearIndependent K x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hm : (Matrix.of fun a b : ι × ι => (x a * x b).trace).mulVec g = 0`. Use function extensionality and compare the values at `a`. Rewrite using `[hG, hg, Matrix.mul_zero, Matrix.trace_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `fun i => congrFun (Matrix.eq_zero_of_mulVec_eq_zero hdet hm) i`. Establish `htop` using `hli.span_eq_top_of_card_eq_finrank (by`. Rewrite using `[Module.finrank_matrix, Module.finrank_self, mul_one, Fintype.card_prod])`. Rewrite using `[eq_top_iff, ← htop]`.
-
-Conclude with `Submodule.span_mono (Set.range_subset_iff.mpr hxs)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.g_gram :
     ∀ (K ι : Type) [Field K] [Fintype ι] [DecidableEq ι] (s : Set (Matrix ι ι K)),

@@ -15,31 +15,31 @@ open NumberField
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.FD.frameAtMaximum_of_transference d5_translation`.
+A detailed English derivation is pending.
 -/
 theorem t41_statement : ReciprocityTheory.ChartRestriction.G.FD.FrameAtMaximum (E := E) :=
   ReciprocityTheory.ChartRestriction.G.FD.frameAtMaximum_of_transference d5_translation
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.FD.orthonormalShortVectorBound_of ReciprocityTheory.ChartRestriction.G.FD.shortVectorBound d5_translation`.
+A detailed English derivation is pending.
 -/
 theorem d6P4_statement : ReciprocityTheory.ChartRestriction.G.FD.OrthonormalShortVectorBound (E := E) :=
   ReciprocityTheory.ChartRestriction.G.FD.orthonormalShortVectorBound_of ReciprocityTheory.ChartRestriction.G.FD.shortVectorBound d5_translation
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.FD.latticeBoundAtMaximum_of_transference d5_translation`.
+A detailed English derivation is pending.
 -/
 theorem t41a_statement : ReciprocityTheory.ChartRestriction.G.FD.LatticeBoundAtMaximum (E := E) :=
   ReciprocityTheory.ChartRestriction.G.FD.latticeBoundAtMaximum_of_transference d5_translation
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.FD.maxPointFrame_of_transference d5_translation`.
+A detailed English derivation is pending.
 -/
 theorem t41H_statement : ReciprocityTheory.ChartRestriction.G.FD.FrameAtHalfMaximum (E := E) :=
   ReciprocityTheory.ChartRestriction.G.FD.maxPointFrame_of_transference d5_translation
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.FD.fundamentalDomain_of_transference d5_translation`.
+A detailed English derivation is pending.
 -/
 theorem d6_statement : ReciprocityTheory.ChartRestriction.G.FD.FundamentalDomainPointBound (E := E) :=
   ReciprocityTheory.ChartRestriction.G.FD.fundamentalDomain_of_transference d5_translation

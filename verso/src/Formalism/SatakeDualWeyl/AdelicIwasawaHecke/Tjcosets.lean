@@ -11,9 +11,9 @@ namespace Formalism.UG.P
 open Formalism.UG
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Finset.prod_range_succ', ← add_assoc, Finset.prod_range_succ, ← ih, mul_assoc]`. Use `congr 2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem tjcosets_prod_shift (q : ℤ) (j m : ℕ) :
     (∏ i ∈ Finset.range j, (q ^ (i + 1) - 1)) * ∏ i ∈ Finset.range m, (q ^ (j + m - i) - 1) =
@@ -28,9 +28,9 @@ theorem tjcosets_prod_shift (q : ℤ) (j m : ℕ) :
     omega
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_prod, Fin.prod_univ_eq_prod_range (fun i => ((q ^ N - q ^ i : ℕ) : ℤ)) m, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ N` using `by have := Finset.mem_range.1 hi; omega`. Rewrite using `[Nat.cast_sub (Nat.pow_le_pow_right hq hi')]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[mul_sub, mul_one, ← pow_add, Nat.add_sub_cancel' hi']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tjcosets_cast_gl (q N m : ℕ) (hq : 1 ≤ q) (hm : m ≤ N) :
     ((∏ i : Fin m, (q ^ N - q ^ (i : ℕ)) : ℕ) : ℤ) =
@@ -44,15 +44,15 @@ theorem tjcosets_cast_gl (q N m : ℕ) (hq : 1 ≤ q) (hm : m ≤ N) :
   rw [mul_sub, mul_one, ← pow_add, Nat.add_sub_cancel' hi']
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, n = j + m` from `⟨n - j, by omega⟩`. Rewrite `h` using `[Nat.add_sub_cancel_left]`. Establish `hq1 : 1 ≤ q` using `by omega`. Establish `h'` using `congrArg (Nat.cast : ℕ → ℤ) h`. Rewrite `h'` using `[Nat.cast_mul, tjcosets_cast_gl q m m hq1 le_rfl, tjcosets_cast_gl q (j + m) m hq1 (by omega)]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hqs : ((q : ℤ) ^ (∑ i ∈ Finset.range m, i)) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (by omega : q ≠ 0))`. Establish `hAm : ∏ i ∈ Finset.range m, ((q : ℤ) ^ (m - i) - 1) = ∏ i ∈ Finset.range m, ((q : ℤ) ^ (i + 1) - 1)`. Simplify using `using tjcosets_prod_shift (q : ℤ) 0 m`. Establish `hX : (C : ℤ) * ∏ i ∈ Finset.range m, ((q : ℤ) ^ (i + 1) - 1) = ∏ i ∈ Finset.range m, ((q : ℤ) ^ (j + m - i) - 1)`. Rewrite using `[← hAm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_left_cancel₀ hqs` to reduce the goal to its premises. Take the linear combination `h'`. Establish `s1` using `tjcosets_prod_shift (q : ℤ) j m`. Establish `s2` using `tjcosets_prod_shift (q : ℤ) m j`. Rewrite `s2` using `[add_comm m j]`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hAm0 : ∏ i ∈ Finset.range m, ((q : ℤ) ^ (i + 1) - 1) ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i _`. Establish `: (1 : ℤ) < (q : ℤ) ^ (i + 1)` using `one_lt_pow₀ (by exact_mod_cast (by omega : 1 < q)) (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Apply `mul_left_cancel₀ hAm0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem tjcosets_arith (q n j C : ℕ) (hq : 2 ≤ q) (hj : j ≤ n)
     (h : C * ∏ i : Fin (n - j), (q ^ (n - j) - q ^ (i : ℕ)) =
@@ -94,12 +94,12 @@ instance tjcosets_isLocalRing : IsLocalRing (Ov F v) :=
   inferInstanceAs (IsLocalRing (v.adicCompletionIntegers F))
 
 /- English proof (translation)
-The claim follows from `glint_finite_residueField v`.
+A detailed English derivation is pending.
 -/
 theorem tjcosets_finite : Finite (IsLocalRing.ResidueField (Ov F v)) := glint_finite_residueField v
 
 /- English proof (translation)
-Proceed by induction on `x using WithZero.recZeroCoe with`. Consider the case `zero => simp`. Consider the case `coe a`. Rewrite using `[← WithZero.coe_one, WithZero.coe_lt_coe, WithZero.coe_le_coe]`. Express the relevant statement in the definitionally equal form `Multiplicative.toAdd a < 0 ↔ Multiplicative.toAdd a ≤ -1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -113,7 +113,7 @@ theorem tjcosets_lt_one_iff (x : ℤᵐ⁰) :
     omega
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.residue_eq_zero_iff]`. Use `(ValuationSubring.valuation_lt_one_iff (v.adicCompletionIntegers F) x).trans ?_` and prove the remaining obligations. Establish `e` using `(Valuation.isEquiv_valuation_valuationSubring (Valued.v : Valuation (v.adicCompletion F) ℤᵐ⁰)).lt_iff_lt (x := (x : v.adicCompletion F)) (y := 1)`. Rewrite `e` using `[map_one, map_one]`. Conclude with `e.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tjcosets_mem_max (x : Ov F v) :
     IsLocalRing.residue (Ov F v) x = 0 ↔ Valued.v (x : v.adicCompletion F) < 1 := by
@@ -125,7 +125,7 @@ theorem tjcosets_mem_max (x : Ov F v) :
   exact e.symm
 
 /- English proof (translation)
-Introduce `h`. Unfold `IsUnifV at hϖ`. Rewrite `hϖ` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tjcosets_ne_zero (ϖ : v.adicCompletion F) (hϖ : IsUnifV F v ϖ) : ϖ ≠ 0 := by
   intro h
@@ -134,9 +134,9 @@ theorem tjcosets_ne_zero (ϖ : v.adicCompletion F) (hϖ : IsUnifV F v ϖ) : ϖ �
   exact WithZero.zero_ne_coe hϖ
 
 /- English proof (translation)
-Rewrite using `[tjcosets_mem_max v x, tjcosets_lt_one_iff, ValuationSubring.mem_toSubring, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, map_inv₀, hϖ]`. Establish `hc : ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : ℤᵐ⁰) ≠ 0` using `WithZero.coe_ne_zero`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `mul_le_mul' (le_refl ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : ℤᵐ⁰)) h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← mul_assoc, mul_inv_cancel₀ hc, one_mul, mul_one]`. Then use the resulting hypothesis. Introduce `h`. Use `mul_le_mul' (le_refl (((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : ℤᵐ⁰)⁻¹)) h` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ hc]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tjcosets_hmax (ϖ : v.adicCompletion F) (hϖ : IsUnifV F v ϖ) (x : Ov F v) :
     ϖ⁻¹ * (x : v.adicCompletion F) ∈ Ov F v ↔ IsLocalRing.residue (Ov F v) x = 0 := by
@@ -152,17 +152,17 @@ theorem tjcosets_hmax (ϖ : v.adicCompletion F) (hϖ : IsUnifV F v ϖ) (x : Ov F
     rwa [inv_mul_cancel₀ hc] at this
 
 /- English proof (translation)
-Set `φ : 𝓞 F →+* IsLocalRing.ResidueField (v.adicCompletionIntegers F)` to `(IsLocalRing.residue _).comp (algebraMap (𝓞 F) (v.adicCompletionIntegers F))`. Establish `hmem : ∀ y : v.adicCompletionIntegers F, Valued.v (y : v.adicCompletion F) < 1 → y ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)` using `fun y hy => (Valuation.mem_maximalIdeal_iff (v := (Valued.v : Valuation (v.adicCompletion F) ℤᵐ⁰))).2 hy`. Establish `hker : ∀ r ∈ v.asIdeal, φ r = 0`. Introduce `r hr`. Simplify using `only [φ, RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `hmem` to reduce the goal to its premises. Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply, HeightOneSpectrum.adicCompletion.valued_coe (K := F) (v := v), HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_lt_one_iff_mem v r).2 hr`. Establish `hsurj : Function.Surjective φ`. Introduce `y`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨r, hr⟩` from `glint_exists_approx v x`. Use `⟨r, ?_⟩` and prove the remaining obligations. Simplify using `only [φ, RingHom.comp_apply]`. Use `show Ideal.Quotient.mk _ _ = Ideal.Quotient.mk _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.Quotient.eq]`. Apply `hmem` to reduce the goal to its premises. Establish `e : ((algebraMap (𝓞 F) (v.adicCompletionIntegers F) r - x : v.adicCompletionIntegers F) : v.adicCompletion F) = -((x : v.adicCompletion F) - algebraMap (𝓞 F) (v.adicCompletion F) r)`. Rewrite using `[AddSubgroupClass.coe_sub, neg_sub, HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply, IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F), HeightOneSpectrum.algebraMap_adicCompletion]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, Valuation.map_neg]`. Conclude with `hr`. Use `v.isMaximal` as an intermediate fact. Use `letI := Ideal.Quotient.field v.asIdeal`. Set `ψ` to `Ideal.Quotient.lift v.asIdeal φ hker`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hs : Function.Surjective ψ` using `Ideal.Quotient.lift_surjective_of_surjective _ _ hsurj`. Establish `hi : Function.Injective ψ` using `RingHom.injective ψ`. Unfold `qV`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Equiv.ofBijective ψ ⟨hi, hs⟩)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tjcosets_card_residue :
     Nat.card (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) = qV F v := by
@@ -208,9 +208,9 @@ theorem tjcosets_card_residue :
 end Adic
 
 /- English proof (translation)
-Unfold `Tj`. Rewrite using `[Set.indicator_apply_ne_zero]`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Function.mem_support, Pi.one_apply, ne_eq, one_ne_zero, not_false_eq_true, and_true]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, h⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, b, hb, Units.ext (by rw [h, Units.val_mul, Units.val_mul, tjcosets_dG_val])⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨a, ha, b, hb, by rw [Units.val_mul, Units.val_mul, tjcosets_dG_val]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem tjcosets_tj_ne_zero {L : Type} [Field L] (O : Subring L) (n j : ℕ) (ϖ : L) (hϖ : ϖ ≠ 0)
     (g : GL (Fin n) L) :
@@ -227,15 +227,13 @@ theorem tjcosets_tj_ne_zero {L : Type} [Field L] (O : Subring L) (n j : ℕ) (ϖ
     exact ⟨a, ha, b, hb, by rw [Units.val_mul, Units.val_mul, tjcosets_dG_val]⟩
 
 /- English proof (translation)
-Introduce `F _ _ v n ϖ hϖO hϖ j hj`. Establish `hϖ0` using `tjcosets_ne_zero v ϖ hϖ`. Use `haveI := tjcosets_finite v`. Establish `hmax` using `tjcosets_hmax v ϖ hϖ`. Establish `hset : {x : GL (Fin n) (v.adicCompletion F) ⧸ GLint (Fin n) (Ov F v) | Tj ℤ n (Ov F v) ϖ j x.out ≠ 0} = {x | ∃ a ∈ GLint (Fin n) (Ov F v), ∃ b ∈ GLint (Fin n) (Ov F v), x.out = a * tjcosets_dG n j ϖ hϖ0 * b}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Conclude with `tjcosets_tj_ne_zero _ n j ϖ hϖ0 x.out`. Establish `hC : Nat.card {x : GL (Fin n) (v.adicCompletion F) ⧸ GLint (Fin n) (Ov F v) | Tj ℤ n (Ov F v) ϖ j x.out ≠ 0} = (tjcosets_par (𝔽` using `IsLocalRing.ResidueField (Ov F v)) n j).index := by`. Rewrite using `[hset]`. Conclude with `tjcosets_index (O := Ov F v) n j ϖ hϖO hϖ0 hmax`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI : Fintype (IsLocalRing.ResidueField (Ov F v)) := Fintype.ofFinite _`. Establish `hcount` using `tjcosets_ff_count (𝔽 := IsLocalRing.ResidueField (Ov F v)) n j hj`. Establish `hq : Fintype.card (IsLocalRing.ResidueField (Ov F v)) = qV F v`. Rewrite using `[Fintype.card_eq_nat_card]`. Conclude with `tjcosets_card_residue v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hq2 : 2 ≤ qV F v`. Rewrite using `[← hq]`. Conclude with `Fintype.one_lt_card`. Rewrite `hcount` using `[hq]`. Rewrite using `[hC]`.
-
-Conclude with `tjcosets_arith (qV F v) n j _ hq2 hj hcount`.
+A detailed English derivation is pending.
 -/
 theorem Tj_double_coset_decomposition : Formalism.UG.TjCosets := by
   intro F _ _ v n ϖ hϖO hϖ j hj

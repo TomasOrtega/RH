@@ -21,13 +21,13 @@ abbrev pr8 (i : Fin 8) : G8 G ⟶ G := powPr G i
 def mk8 {T : Over S} (x : Fin 8 → (T ⟶ G)) : T ⟶ G8 G := (powIsLimit G 8).lift (Fan.mk T x)
 
 /- English proof (translation)
-The claim follows from `(powIsLimit G 8).fac (Fan.mk T x) ⟨i⟩`.
+A detailed English derivation is pending.
 -/
 theorem eighthPowerLift_comp_projection {T : Over S} (x : Fin 8 → (T ⟶ G)) (i : Fin 8) : mk8 G x ≫ pr8 G i = x i :=
   (powIsLimit G 8).fac (Fan.mk T x) ⟨i⟩
 
 /- English proof (translation)
-The claim follows from `(powIsLimit G 8).hom_ext fun ⟨i⟩ => h i`.
+A detailed English derivation is pending.
 -/
 theorem eighthPowerGroupObj_hom_ext {T : Over S} {x y : T ⟶ G8 G} (h : ∀ i, x ≫ pr8 G i = y ≫ pr8 G i) : x = y :=
   (powIsLimit G 8).hom_ext fun ⟨i⟩ => h i
@@ -35,7 +35,7 @@ theorem eighthPowerGroupObj_hom_ext {T : Over S} {x y : T ⟶ G8 G} (h : ∀ i, 
 def matAct (a : Matrix (Fin 8) (Fin 8) ℤ) : G8 G ⟶ G8 G := mk8 G fun i => ∏ j, pr8 G j ^ a i j
 
 /- English proof (translation)
-The claim follows from `eighthPowerLift_comp_projection G _ i`.
+A detailed English derivation is pending.
 -/
 theorem matAct_pr (a : Matrix (Fin 8) (Fin 8) ℤ) (i : Fin 8) : matAct G a ≫ pr8 G i = ∏ j, pr8 G j ^ a i j :=
   eighthPowerLift_comp_projection G _ i
@@ -47,7 +47,7 @@ def L8 (PP : LB (G2 G).left) : LB (G8 G).left :=
     (fun ij => GlobalTheory.W8 ij.1 ij.2)
 
 /- English proof (translation)
-The claim follows from `Serre.isMonHom_of_mul_comp _ fun T x y => eighthPowerGroupObj_hom_ext G fun k => by have hc : IsMonHom (∏ j, pr8 G j ^ a k j) := PowQuotient.isMonHom_prod _ fun j => Serre.isMonHom_zpow _ _ rw [MonObj.mul_comp _ _ (pr8 G k), Category.assoc, Category.assoc, Category.assoc, matAct_ …`.
+A detailed English derivation is pending.
 -/
 theorem matAct_hom (a : Matrix (Fin 8) (Fin 8) ℤ) : IsMonHom (matAct G a) :=
   Serre.isMonHom_of_mul_comp _ fun T x y => eighthPowerGroupObj_hom_ext G fun k => by
@@ -57,7 +57,7 @@ theorem matAct_hom (a : Matrix (Fin 8) (Fin 8) ℤ) : IsMonHom (matAct G a) :=
       MonObj.mul_comp _ _ (∏ j, pr8 G j ^ a k j)]
 
 /- English proof (translation)
-The claim follows from `eighthPowerGroupObj_hom_ext G fun i => by rw [matAct_pr, Category.id_comp, Finset.prod_eq_single i] · simp · intro j _ hj; simp [Matrix.one_apply_ne' hj] · simp`.
+A detailed English derivation is pending.
 -/
 theorem matAct_one : matAct G 1 = 𝟙 (G8 G) := eighthPowerGroupObj_hom_ext G fun i => by
   rw [matAct_pr, Category.id_comp, Finset.prod_eq_single i]
@@ -66,13 +66,13 @@ theorem matAct_one : matAct G 1 = 𝟙 (G8 G) := eighthPowerGroupObj_hom_ext G f
   · simp
 
 /- English proof (translation)
-Simplify using `only [Fin.sum_univ_eight, Fin.prod_univ_eight, zpow_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zpow_sum8 {M : Type} [CommGroup M] (x : M) (f : Fin 8 → ℤ) : x ^ (∑ j, f j) = ∏ j, x ^ f j := by
   simp only [Fin.sum_univ_eight, Fin.prod_univ_eight, zpow_add]
 
 /- English proof (translation)
-The claim follows from `eighthPowerGroupObj_hom_ext G fun k => by have e : padd (G8 G) (matAct G a) (matAct G b) = matAct G a * matAct G b := rfl rw [e, MonObj.mul_comp _ _ (pr8 G k), matAct_pr, matAct_pr, matAct_pr, ← Finset.prod_mul_distrib] refine Finset.prod_congr rfl fun j _ => ?_ rw [Matrix.add_ap …`.
+A detailed English derivation is pending.
 -/
 theorem matAct_add (a b : Matrix (Fin 8) (Fin 8) ℤ) :
     matAct G (a + b) = padd (G8 G) (matAct G a) (matAct G b) := eighthPowerGroupObj_hom_ext G fun k => by
@@ -82,7 +82,7 @@ theorem matAct_add (a b : Matrix (Fin 8) (Fin 8) ℤ) :
   rw [Matrix.add_apply, zpow_add]
 
 /- English proof (translation)
-The claim follows from `eighthPowerGroupObj_hom_ext G fun k => by rw [Category.assoc, matAct_pr, matAct_pr, PowQuotient.comp_prod] simp only [GrpObj.comp_zpow, matAct_pr, Matrix.mul_apply] simp only [← Finset.prod_zpow, ← zpow_mul] rw [Finset.prod_comm] refine Finset.prod_congr rfl fun l _ => ?_ rw [zpo …`.
+A detailed English derivation is pending.
 -/
 theorem matAct_mul (a b : Matrix (Fin 8) (Fin 8) ℤ) :
     matAct G (a * b) = matAct G b ≫ matAct G a := eighthPowerGroupObj_hom_ext G fun k => by

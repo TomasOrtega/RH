@@ -22,19 +22,19 @@ theorem map_comp {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) {U : Scheme.{0}} 
     Sec.map (φ ≫ ψ) a = Sec.map ψ (Sec.map φ a) := rfl
 
 /- English proof (translation)
-The claim follows from `map_zero (φ.hom.app (op U)).hom`.
+A detailed English derivation is pending.
 -/
 theorem map_zero' {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} : Sec.map φ (0 : Sec F U) = 0 :=
   map_zero (φ.hom.app (op U)).hom
 
 /- English proof (translation)
-The claim follows from `map_zero (F.obj.map g.op).hom`.
+A detailed English derivation is pending.
 -/
 theorem res_zero' {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) : Sec.res g (0 : Sec F U) = 0 :=
   map_zero (F.obj.map g.op).hom
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Rewrite using `[cpush, cpost_mk]`. Establish `: zcomp x (Cocycle.ofHom (0 : I ⟶ J)) (add_zero n) = 0` using `Cocycle.ext (by simp [zcomp])`. Rewrite using `[this]`. Conclude with `CohomologyClass.mk_zero _ _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpush_zero (K I J : Cx R) (n : ℤ) (x : CohomologyClass K I n) : cpush K (0 : I ⟶ J) n x = 0 := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
@@ -44,7 +44,7 @@ theorem cpush_zero (K I J : Cx R) (n : ℤ) (x : CohomologyClass K I n) : cpush 
   exact CohomologyClass.mk_zero _ _ _
 
 /- English proof (translation)
-Rewrite using `[δ_comp _ _ (add_zero n) (n + 1) 1 (n + 1) rfl rfl (zero_add 1)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem delta_comp_ofHom {K I J : Cx R} {n : ℤ} (a : Cochain K I n) (f : I ⟶ J) :
     δ n (n + 1) (a.comp (Cochain.ofHom f) (add_zero n)) = (δ n (n + 1) a).comp (Cochain.ofHom f) (add_zero _) := by
@@ -56,29 +56,29 @@ end GlobalTheory.EtC.SuppAcyc
 open GlobalTheory.EtC.SuppAcyc in
 
 /- English proof (translation)
-Introduce `R _ E C _ hC n`. Set `Z : Scheme.{0} → Prop` to `fun U => Nonempty (Sx E 0 U)`. Establish `hZ : ∀ (V U : Scheme.{0}) (_ : V ⟶ U), Z U → Z V` using `fun V U g ⟨x⟩ => ⟨Sx.res g x⟩`. Take `⟨D, ι, hinj, hchar⟩` from `SuppSub.exists_supp_sub R C Z hZ`. Take `⟨ltop, lmono, -, -, ltrans, -, -⟩` from `GlobalTheory.EtC.loc_calculus`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hin : ∀ k U (a : Sec (C.X k) U), Z U → ∃ b, Sec.map (ι.f k) b = a` using `fun k U a hU => (hchar k U a).2 (ltop _ _ fun V g => Or.inl (hZ V U g hU))`. Establish `hD : D.Acyclic`. Introduce `k`. Rewrite using `[HomologicalComplex.exactAt_iff' D (k - 1) k (k + 1) (by simp) (by simp), GlobalTheory.T.etaleSheaf_shortComplex_exact_iff_locally]`. Introduce `U (b : Sec (D.X k) U) hb`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `Sec.map (D.d k (k + 1)) b = 0 at hb`. Establish `hc : Sec.map (C.d k (k + 1)) (Sec.map (ι.f k) b) = 0`. Rewrite using `[← map_comp, ι.comm, map_comp, hb, map_zero']`. Establish `hloc` using `(hchar k U (Sec.map (ι.f k) b)).1 ⟨b, rfl⟩`. Use `ltrans _ _ (lmono _ _ _ hloc fun V g hg => ?_)` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hg with hV | h0` into its components or cases. Establish `hc' : Sec.map (C.d k (k + 1)) (Sec.res g (Sec.map (ι.f k) b)) = 0`. Use `congrArg (Sec.res g) hc` as an intermediate fact. Rewrite `this` using `[SuppSub.res_map, res_zero']`. Then use the resulting hypothesis. Use `lmono _ _ _ (hC V hV k _ hc') fun W h => ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨a, ha⟩`. Take `⟨a', rfl⟩` from `hin (k - 1) W a (hZ W V h hV)`. Use `⟨a', hinj k W ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.map (ι.f k) (Sec.map (D.d (k - 1) k) a') = Sec.map (ι.f k) (Sec.res (h ≫ g) b)`. Rewrite using `[← map_comp, ← ι.comm, map_comp, ha, SuppSub.res_comp, SuppSub.res_map, SuppSub.res_map]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h0' : Sec.res g b = 0` using `hinj k V (by rw [← SuppSub.res_map, h0, map_zero'])`. Use `ltop _ _ fun W h => ⟨0, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.map (D.d (k - 1) k) 0 = Sec.res (h ≫ g) b`. Rewrite using `[map_zero', SuppSub.res_comp, h0', res_zero']`. Establish `hnull : Nonempty (Homotopy ι 0)` using `IsKInjective.nonempty_homotopy_zero ι hD`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpush : cpush ((chains R).obj E) ι n = cpush _ (0 : D ⟶ C) n` using `((GlobalTheory.EtC.ZcFun.main R).2.2.2.2 ι 0 hnull ((chains R).obj E) n).2`. Take `⟨-, hnat, hdet, -, -⟩` from `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := C) (n := n)`. Take `⟨-, -, -, -, hpost⟩` from `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := D) (n := n)`. Take `⟨haddD1, -, hdetD, -, hpost1⟩` from `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := D) (n := n + 1)`. Take `⟨haddC1, -, -, -, -⟩` from `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := C) (n := n + 1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hzero : ∀ c : CohomologyClass ((chains R).obj E) C n, c = 0`. Introduce `c`. Take `⟨α, rfl⟩` from `c.mk_surjective`. Establish `hv : ∀ (p : ℕ) (U : Scheme.{0}), Sx E p U → Z U` using `fun p U x => ⟨Sx.along x (SimplexCategory.const (SimplexCategory.mk 0) (SimplexCategory.mk p) 0)⟩`. Set `v : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ∀ U : Scheme.{0}, Sx E p U → Sec (D.X s) U` to `fun p s h U x => Classical.choose (hin s U (ev α.1 p s h U x) (hv p U x))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hvspec : ∀ p s h U x, Sec.map (ι.f s) (v p s h U x) = ev α.1 p s h U x` using `fun p s h U x => Classical.choose_spec (hin s U (ev α.1 p s h U x) (hv p U x))`. Establish `hvnat : ∀ p s h (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E p U), Sec.res g (v p s h U x) = v p s h V (x.res g)`. Introduce `p s h V U g x`. Apply `hinj s V` to reduce the goal to its premises. Rewrite using `[← SuppSub.res_map, hvspec, hvspec, (hnat α.1 p s h V U g x)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨α', hα'⟩` from `GlobalTheory.EtC.exists_cochain_ev_eq_of_natural R v hvnat`. Establish `hcomp : α'.comp (Cochain.ofHom ι) (add_zero n) = α.1`. Apply `hdet` to reduce the goal to its premises. Introduce `p s h U x`. Rewrite using `[hpost, hα', hvspec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoc : δ n (n + 1) α' = 0`. Apply `hdetD` to reduce the goal to its premises. Introduce `p s h U x`. Apply `hinj s U` to reduce the goal to its premises. Rewrite using `[← hpost1, ← delta_comp_ofHom, hcomp, (Cocycle.mem_iff n (n + 1) rfl α.1).1 α.2, (haddC1 0 0 p s h U x).2.2.1, (haddD1 0 0 p s h U x).2.2.1, map_zero']`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `β : Cocycle ((chains R).obj E) D n` to `Cocycle.mk α' (n + 1) rfl hcoc`. Establish `hαβ : α = zcomp β (Cocycle.ofHom ι) (add_zero n)` using `Cocycle.ext hcomp.symm`. Rewrite using `[hαβ, ← cpost_mk, ← cpush, hpush, cpush_zero]`. Conclude with `⟨fun a b => (hzero a).trans (hzero b).symm⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.EtC.subsingleton_of_locExact_supp : ∀ (R : Type) [CommRing R] (E : Spc) (C : Cx R) [C.IsKInjective], (∀ (U : Scheme.{0}), Nonempty (Sx E 0 U) → ∀ (n : ℤ) (b : Sec (C.X n) U), Sec.map (C.d n (n + 1)) b = 0 → Loc U fun V g => ∃ a : Sec (C.X (n - 1)) V, Sec.map (C.d (n - 1) n) a = Sec.res g b) → ∀ n, Subsingleton (CohomologyClass ((chains R).obj E) C n) := by
   intro R _ E C _ hC n

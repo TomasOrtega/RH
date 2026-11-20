@@ -25,11 +25,11 @@ section Zero
 variable {Z : Model O} {r : ℕ}
 
 /- English proof (translation)
-Use `hF.isQuasicoherent` as an intermediate fact. Use `hG.isQuasicoherent` as an intermediate fact. Establish `hψ : (Z.genRes.mapIso β : Z.GenIso F G).inv = Z.genRes.map β.inv` using `rfl`. Establish `H : VertDiv.IsSum (VertDiv.zero Z) (VertDiv.zero Z) (GenIso.div (Z` using `Z) (Z.genRes.mapIso β : Z.GenIso F G) hF hG) := by`. Introduce `i j k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, c'⟩` from `k`. Use `⟨c.isFrame.detUnit (c'.isFrame.map_iso β.inv) (inf_le_right.trans inf_le_left) (inf_le_right.trans inf_le_right), (GenIso.eqn_div_of_hom hF hG hψ c c' le_rfl inf_le_right).trans ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ * (resG _ _ 1 * resG _ _ 1)`. Simplify using `only [IsFrame.val_detUnit, map_one, mul_one, GlobalTheory.Twist.app_resM]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `using H.cls_eq`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cls_div_mapIso {F G : Z.X.Modules} (β : F ≅ G) (hF : IsVB F r) (hG : IsVB G r) :
     (GenIso.div (Z := Z) (Z.genRes.mapIso β : Z.GenIso F G) hF hG).cls = 0 := by
@@ -54,7 +54,7 @@ section Pull
 variable {B B₁ : Model O} {h : B₁.X ⟶ B.X} (hh : h ≫ B.str = B₁.str)
 
 /- English proof (translation)
-Establish `n₁` using `(GenIso.genPullIso hh).hom.naturality a`. Establish `n₂` using `(GenIso.genPullIso hh).inv.naturality b`. Simplify using `only [Functor.comp_map] at n₁ n₂`. Simplify using `only [GenIso.pull, Iso.trans_hom, Iso.app_hom, Iso.symm_hom, Iso.app_inv, Functor.mapIso_hom, Category.assoc]`. Rewrite using `[← n₂, reassoc_of% n₁, ← Functor.map_comp_assoc, w, Functor.map_comp_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_comm {F G F' G' : B.X.Modules} (a : F ⟶ G) (b : F' ⟶ G') (φF : B.GenIso F F')
     (φG : B.GenIso G G') (w : B.genRes.map a ≫ φG.hom = φF.hom ≫ B.genRes.map b) :
@@ -83,7 +83,7 @@ variable {B B₁ : Model O} {h : B₁.X ⟶ B.X} (hh : h ≫ B.str = B₁.str)
 variable {E E' : B.X.Modules} {φ : B.GenIso E E'} {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[smallPull_smallCls h _ (pull_isLB (fl.isLB_root i) h)]`. Use `((smallCls_eq_iff _ _).2 ?_).symm` and prove the remaining obligations. Conclude with `((fl.isVB_gr i).lbIso_det_pullback h).trans (pull_isLB (fl.isLB_root i) h) ((fl.isVB_gr i).pullback h).isLB_det ((fl.pull h).isLB_root i) (((fl.isVB_gr i).pullback h).lbIso_det_of_iso (fl.pullGrIso h i))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem smallCls_root_pull (fl : Flag E N) (i : Fin N) :
     smallCls _ ((fl.pull h).isLB_root i) = smallPull h (smallCls _ (fl.isLB_root i)) := by
@@ -94,9 +94,9 @@ theorem smallCls_root_pull (fl : Flag E N) (i : Fin N) :
     (((fl.isVB_gr i).pullback h).lbIso_det_of_iso (fl.pullGrIso h i))
 
 /- English proof (translation)
-Use `Iso.ext ?_` and prove the remaining obligations. Rewrite using `[← cancel_epi (B₁.genRes.map ((P.fl.pull h).π i))]`. Use `((pairPull hh P).π_grIso_hom i).trans ?_` and prove the remaining obligations. Simplify using `only [Iso.trans_hom, Iso.symm_hom, Functor.mapIso_hom, Functor.mapIso_inv]`. Establish `e : B₁.genRes.map ((P.fl.pull h).π i) ≫ B₁.genRes.map (P.fl.pullGrIso h i).inv = B₁.genRes.map ((Scheme.Modules.pullback h).map (P.fl.π i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Functor.map_comp]`. Conclude with `congrArg B₁.genRes.map ((Iso.comp_inv_eq _).2 (Flag.map_π_pullGrIso _ _ _).symm)`. Rewrite using `[reassoc_of% e, reassoc_of% (pull_comm hh _ _ _ _ (P.π_grIso_hom i)), ← Functor.map_comp, Flag.map_π_pullGrIso]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem grIso_pairPull (P : FlagPair φ N) (i : Fin N) :
     (pairPull hh P).grIso i = (B₁.genRes.mapIso (P.fl.pullGrIso h i)).symm ≪≫
@@ -114,7 +114,7 @@ theorem grIso_pairPull (P : FlagPair φ N) (i : Fin N) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[FlagPair.div, grIso_pairPull, GenIso.cls_div_trans (hE' := (P.fl.isVB_gr i).pullback h), GenIso.cls_div_trans (hE' := (P.fl'.isVB_gr i).pullback h), ← Functor.mapIso_symm, cls_div_mapIso, cls_div_mapIso, DivPull.cls_div_pull, zero_add, add_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cls_div_pairPull (P : FlagPair φ N) (i : Fin N) :
     ((pairPull hh P).div i).cls = vPull hh (P.div i).cls := by
@@ -137,7 +137,7 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 set_option linter.overlappingInstances false in
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B B₁ h hh E E' φ r P`. Use `⟨GlobalTheory.Vert.FlagPairPull.pairPull hh P, fun i => ⟨GlobalTheory.Vert.FlagPairPull.smallCls_root_pull P.fl i, GlobalTheory.Vert.FlagPairPull.smallCls_root_pull P.fl' i, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.Vert.Model.toQ _ = GlobalTheory.Vert.Model.vPullQ hh (GlobalTheory.Vert.Model.toQ _)`. Rewrite using `[GlobalTheory.Vert.Model.vPullQ_toQ, GlobalTheory.Vert.FlagPairPull.cls_div_pairPull]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.Vert.FlagPairPull.exists_flagPair_pull : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B B₁ : GlobalTheory.Vert.Model O) (h : B₁.X ⟶ B.X) (hh : h ≫ B.str = B₁.str) (E E' : B.X.Modules) (φ : B.GenIso E E') (r : ℕ) (P : GlobalTheory.Vert.Model.FlagPair φ r), ∃ P₁ : GlobalTheory.Vert.Model.FlagPair (φ.pull hh) r, ∀ i, (P₁.toFPair p).x i = smallPull h ((P.toFPair p).x i) ∧ (P₁.toFPair p).x' i = smallPull h ((P.toFPair p).x' i) ∧ (P₁.toFPair p).Dv i = GlobalTheory.Vert.Model.vPullQ hh ((P.toFPair p).Dv i) := by
   intro O _ _ _ p _ _ _ B B₁ h hh E E' φ r P

@@ -31,7 +31,7 @@ open ReciprocityTheory.Aut Formalism.AUTREP GlobalTheory.CenFrame
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Establish `hm : mtL L M = M'` using `eq_of_heq hM`. Substitute `hm` using the available equality. Conclude with `⟨tp.tup, C.Q, { mt with }⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem mtInput_of {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : NTrue hL D' cf' C' tp') (M' : MtFam D') (hM : HEq (mtL nt.L nt.M) M') :
@@ -47,9 +47,9 @@ def IsBlockUpperUnipotentMatrix {k : Type} [CommRing k] {n : ℕ} (r : ℕ) (x :
     (i.val < r → i = j → x.val i j = 1)
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun h1 h2 => ?_, fun _ h2 => ?_, fun _ h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_one, Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Units.val_one, Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Units.val_one, h2, Matrix.one_apply_eq]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem blkUni_one {k : Type} [CommRing k] {n : ℕ} (r : ℕ) : IsBlockUpperUnipotentMatrix r (1 : GL (Fin n) k) := by
   intro i j
@@ -59,7 +59,7 @@ theorem blkUni_one {k : Type} [CommRing k] {n : ℕ} (r : ℕ) : IsBlockUpperUni
   · rw [Units.val_one, h2, Matrix.one_apply_eq]
 
 /- English proof (translation)
-Use `mem_blockTri.2 fun i j hij => ?_` and prove the remaining obligations. Unfold `Formalism.L2.DIV.blk2 at hij`. Apply the tactic sequence `refine (h i j).1 ?_ ?_ <;> split_ifs at hij <;> omega`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsBlockUpperUnipotentMatrix.blk2 {k : Type} [CommRing k] {n r : ℕ} {x : GL (Fin n) k} (h : IsBlockUpperUnipotentMatrix r x) : x ∈ blockTri (blk2 r) := by
   refine mem_blockTri.2 fun i j hij => ?_
@@ -67,11 +67,11 @@ theorem IsBlockUpperUnipotentMatrix.blk2 {k : Type} [CommRing k] {n r : ℕ} {x 
   refine (h i j).1 ?_ ?_ <;> split_ifs at hij <;> omega
 
 /- English proof (translation)
-Use `mem_blockTri.2 fun i j hij => ?_` and prove the remaining obligations. Unfold `Formalism.L2.DIV.blkOf at hij`. Establish `hi` using `i.2`. Distinguish the cases in `h1 : i.val < r`. Rewrite `hij` using `[if_pos h1]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hij` using `[if_neg h1, Nat.div_eq_of_lt (show i.val - r < t by omega)]`. Use `(h i j).1 (by omega) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h2`. Rewrite `hij` using `[if_neg h2]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hij (not_lt.2 (Nat.succ_le_succ (Nat.zero_le _)))`.
+A detailed English derivation is pending.
 -/
 theorem IsBlockUpperUnipotentMatrix.blkOf {k : Type} [CommRing k] {n r t : ℕ} (hn : n ≤ r + t) {x : GL (Fin n) k} (h : IsBlockUpperUnipotentMatrix r x) :
     x ∈ blockTri (blkOf r t) := by
@@ -87,7 +87,7 @@ theorem IsBlockUpperUnipotentMatrix.blkOf {k : Type} [CommRing k] {n r t : ℕ} 
     exact absurd hij (not_lt.2 (Nat.succ_le_succ (Nat.zero_le _)))
 
 /- English proof (translation)
-Use `⟨mem_blockTri.2 fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[upper_block_val_submatrix hr h.blk2]`. Conclude with `(h _ _).2.1 i.2 hij`. Rewrite using `[upper_block_val_submatrix hr h.blk2]`. Conclude with `(h _ _).2.2 i.2 rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsBlockUpperUnipotentMatrix.unip {k : Type} [CommRing k] {n r : ℕ} (hr : r ≤ n) {x : GL (Fin n) k} (h : IsBlockUpperUnipotentMatrix r x) :
     upperLeftBlock hr x ∈ unip k r := by
@@ -100,9 +100,9 @@ theorem IsBlockUpperUnipotentMatrix.unip {k : Type} [CommRing k] {n r : ℕ} (hr
 variable {D : D7}
 
 /- English proof (translation)
-Break down `Formalism.L2.eq_or_eq_conjPlE s.w PP ((congrArg HeightOneSpectrum.asIdeal h).trans s.w_under.symm) with e | e` into its components or cases. Conclude with `absurd e hne`. Introduce `c hc`. Rewrite `hc` using `[e, Formalism.L2.mem_conjPlE]`. Use `⟨_, hc, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj, GlobalTheory.TypePlaces.star_eq_conj, GlobalTheory.SplitPlaceOver.host_conj_eq']`.
+A detailed English derivation is pending.
 -/
 theorem isConjPl_of_under (s : SplitPlace D.host.E) {PP : PlE D.host} (hne : PP ≠ s.w)
     (h : HeightOneSpectrum.under (𝓞 (maximalRealSubfield D.host.E)) PP = s.v) : Formalism.IndefR.Lev.IsConjPl (D := D) PP s.w := by
@@ -114,17 +114,17 @@ theorem isConjPl_of_under (s : SplitPlace D.host.E) {PP : PlE D.host} (hne : PP 
     rw [IsCMField.coe_ringOfIntegersComplexConj, GlobalTheory.TypePlaces.star_eq_conj, GlobalTheory.SplitPlaceOver.host_conj_eq']
 
 /- English proof (translation)
-Establish `hS` using `(GlobalTheory.FinZeta.LevelOff.finE_mem_St_iff hB (P.into κ)).2 ((hP.2 κ).1 hU)`. Establish `hred : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → PP ≠ s.w → redFn β PP (Formalism.IndefR.Lev.finE V (P.ψ κ)) = 1`. Introduce `PP hPP hne`. Use `GlobalTheory.FinZeta.LevelOff.redFn_eq_one_of_proj β {PP.under (𝓞 D.host.F)} hS (fun u hu => ?_) (Finset.mem_singleton_self _)` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.1 hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.NonSplitLevel.projV_eq_one hP κ PP (hT _ fun e => hsep PP hPP (isConjPl_of_under s hne e))`. Establish `hent : ∀ i j : Fin V.rank, (redFn β s.w (Formalism.IndefR.Lev.finE V (P.ψ κ))).val i j = (b * Matrix.GeneralLinearGroup.map φ y * b⁻¹).val (Fin.cast hn i) (Fin.cast hn j)` using `fun i j => hfr κ hU y hy (Fin.cast hn i) (Fin.cast hn j)`. Use `⟨fun hb => ?_, fun h1 => ?_⟩` and prove the remaining obligations. Establish `hall : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → IsBlockUpperUnipotentMatrix L.r (redFn β PP (Formalism.IndefR.Lev.finE V (P.ψ κ)))`. Introduce `PP hPP`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `e : PP = s.w`. Substitute `e` using the available equality. Introduce `i j`. Rewrite using `[hent]`. Establish `hb'` using `hb (Fin.cast hn i) (Fin.cast hn j)`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨hb'.1, hb'.2.1, fun h1 h2 => hb'.2.2 h1 (congrArg _ h2)⟩`. Rewrite using `[hred PP hPP e]`. Conclude with `blkUni_one _`. Conclude with `⟨P.into κ, mem_lev.2 ⟨mem_parLev.2 ⟨GlobalTheory.LevSplit.finE_mem_UA V _, hS, fun PP h => (hall PP (Or.inl h)).blkOf hrt, fun PP h => (hall PP (Or.inr h)).blk2⟩, hH _ fun PP => (hall PP.1 (Or.inl PP.2)).unip L.hr⟩⟩`. Establish `hall : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → redFn β PP (Formalism.IndefR.Lev.finE V (P.ψ κ)) = 1`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `PP hPP`. Distinguish the cases in `e : PP = s.w`. Substitute `e` using the available equality. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[hent, h1, mul_one, mul_inv_cancel, Units.val_one, Units.val_one, Matrix.one_apply, Matrix.one_apply]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `if_congr (Fin.cast_injective hn).eq_iff rfl rfl`. Conclude with `hred PP hPP e`. Use `⟨⟨P.into κ, GlobalTheory.LevSplit.mem_lev_of_red _ _ β L _ (GlobalTheory.LevSplit.finE_mem_UA V _) hS hall⟩, ?_⟩` and prove the remaining obligations. Unfold `Formalism.IndefR.Lev.levChi`. Rewrite using `[GlobalTheory.LevSplit.levFn_eq_one β L _ hall, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_level {V : TH.HSp D} {n : ℕ} (hn : V.rank = n) {hF : D.host.F = maximalRealSubfield D.host.E}
     {P : Formalism.IndefR.principalLevelFrame.RowPsi V n} (hP : StdFrame hF P) {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)}
@@ -178,11 +178,11 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : DIV.FamIn3 D.w
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_ne (0 : D.what₂.Mt μ ((k : ℕ) + 1))`. Establish `hr : (M μ (k.1 + 1) (by omega) (by omega)).real x ≠ 0` using `fun e => hx ((M μ (k.1 + 1) _ _).real_inj (e.trans (map_zero _).symm))`. Take `⟨g₀, hg₀⟩` from `Function.ne_iff.1 hr`. Take `⟨l, hl⟩` from `Module.Projective.exists_dual_ne_zero ℂ hg₀`. Establish `hm : (M μ (k.1 + 1) (Nat.le_add_left _ _) k.2).real x ∈ NG.TypeSp (M μ (k.1 + 1) (Nat.le_add_left _ _) k.2).wt.ρ (M μ (k.1 + 1) (Nat.le_add_left _ _) k.2).J (M μ (k.1 + 1) (Nat.le_add_left _ _) k.2).χ` using `(M μ (k.1 + 1) (Nat.le_add_left _ _) k.2).real_range ▸ LinearMap.mem_range_self _ x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun g => l ((M μ (k.1 + 1) (Nat.le_add_left _ _) k.2).real x g), fun e => hl (congrFun e g₀), fun κ h g => ?_, fun κ hJ g => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (hm.2 ⟨κ, h⟩) g`. Conclude with `(congrArg l e).trans (map_smul l _ _)`. Establish `e1` using `ad.read _ hμ k x (g * κ)`. Establish `e2` using `ad.read _ hμ k x g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `(Y.IL.jMt _ hμ k x).2.2 _ hJ ((ad.PV k).ψ g)`. Rewrite `e3` using `[← map_mul]`. Establish `e4` using `e1.trans (e3.trans (congrArg _ e2.symm))`. Rewrite `e4` using `[← map_smul]`. Conclude with `(congrArg l ((ad.eW _ hμ k).injective e4)).trans (map_smul l _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fn (ad : MtAd Y M) (μ : D.what₂.Tup) (hμ : Formalism.IndefR.RecTie.Used0 D μ) (k : Fin D.R.m)
     (hnt : Nontrivial (D.what₂.Mt μ ((k : ℕ) + 1))) :
@@ -215,13 +215,13 @@ theorem exists_fn (ad : MtAd Y M) (μ : D.what₂.Tup) (hμ : Formalism.IndefR.R
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hu : Formalism.IndefR.RecTie.Used0 D μ` using `hμ ▸ Model.used_loc i`. Rewrite `hμ` using `[D.nd.mu_w i]`. Substitute `hμ` using the available equality. Take `⟨kk, v, hv⟩` from `hw`. Take `⟨ψ₀, ξ, h1, -, h2⟩` from `hin.uni (D.nd.w i) k kk v s hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hJ, hL⟩` from `exists_fn ad _ hu k hnt`. Take `⟨c, hc⟩` from `hlev.βV k`. Rewrite `hc` using `[one_pow]`. Take `⟨ψ0, -, hP0, -⟩` from `hgl`. Use `⟨f, _, _, ψ₀, ξ, hf, h1, h2, hJ, fun κ hU hT y hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `mem_level (GlobalTheory.FrameBlockDiagonal.rankV D k) (ad.std k) hc (Formalism.IndefR.RecTie.datVP R.toRealDat k (Y.tupT (D.what₂.muTw (D.nd.w i))) (R.toRealDat.levR F.lv2 false)) (le_of_eq (GlobalTheory.FrameBlockDiagonal.rankV D k)) (fun g hg => by show g ∈ (R.toRealDat.levR F. …`. Rewrite using `[hP0]`. Conclude with `fun PP _ => hg PP)`. Use `s (fun PP hPP => GlobalTheory.HeckeCharacterRestriction.not_isConjPl_union hlev _ hPP (Or.inl hs)) hfr hU hT hy`. Use `⟨fun hb => ⟨_, hL κ (key.1 hb)⟩, fun h1 g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL κ (key.2 h1).1 g, (key.2 h1).2, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem types_of (ad : MtAd Y M) {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E} {Q : D.what₂.places.Pl → Finset (PlE D.host)}
     (hin : MtInput D M tup Q) {μ0 : T} (hlev : R.toRealDat.toLevCh.Is μ0) (hgl : R.toRealDat.grp_levels F.lv2)
@@ -261,9 +261,9 @@ end Read
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hL`. Use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun K B f T _ w Z Wt p0 t nch n xd c hE hR hP => ?_` and prove the remaining obligations. Introduce `ad i s k hs hnt s' φ b hPg _ hfr`. Take `⟨tup, Q, hin⟩` from `mtInput_of c.a.nt c.a.all.gal.mt c.a.mt_eq`. Take `⟨plg, iso, h1, -⟩` from `t.r.z.pins.keep.grp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `types_of (D := (w.st Z).toD7) ad hin t.r.z.pins.char.base.lev t.r.z.pins.char.base.grp.levels i _ k hs hnt s' φ b hPg ⟨(plg.symm ⟨s'.w, hPg⟩).1, (plg.symm ⟨s'.w, hPg⟩).2, by rw [← h1, plg.apply_symm_apply]⟩ hfr`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ _ c =>
   ∀ (ad : MtAd t.r.Y c.a.all.gal.mt) (i : (w.st Z).toD7.nd.Loc) s (k : Fin (w.st Z).toD7.R.m), t.r.Y.tup s = (w.st Z).toD7.nd.mu i →

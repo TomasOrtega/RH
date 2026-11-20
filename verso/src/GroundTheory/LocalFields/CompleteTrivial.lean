@@ -27,7 +27,7 @@ def invariants : Subgroup M where
 
 omit [Fintype G] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_invariants {x : M} : x ∈ invariants G M ↔ ∀ g : G, g • x = x := Iff.rfl
 
@@ -54,7 +54,7 @@ theorem augMap_apply (m : G → M) : augMap G M m = ∏ g : G, g • m g / m g :
 variable {G M}
 
 /- English proof (translation)
-Rewrite using `[tateNorm_apply, Finset.smul_prod']`. Repeatedly rewrite using `[smul_smul]`. Conclude with `Fintype.prod_equiv (Equiv.mulLeft g) _ _ (fun _ => rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_tateNorm (g : G) (x : M) : g • tateNorm G M x = tateNorm G M x := by
   rw [tateNorm_apply, Finset.smul_prod']
@@ -62,20 +62,20 @@ theorem smul_tateNorm (g : G) (x : M) : g • tateNorm G M x = tateNorm G M x :=
   exact Fintype.prod_equiv (Equiv.mulLeft g) _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Repeatedly rewrite using `[tateNorm_apply, smul_smul]`. Conclude with `Fintype.prod_equiv (Equiv.mulRight g) _ _ (fun _ => rfl)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateNorm_smul (g : G) (x : M) : tateNorm G M (g • x) = tateNorm G M x := by
   simp_rw [tateNorm_apply, smul_smul]
   exact Fintype.prod_equiv (Equiv.mulRight g) _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Introduce `g` and use `smul_tateNorm g x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tateNorm_mem_invariants (x : M) : tateNorm G M x ∈ invariants G M :=
   fun g => smul_tateNorm g x
 
 /- English proof (translation)
-Rewrite using `[augMap_apply, map_prod]`. Use `prod_eq_one fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_div, tateNorm_smul, div_self']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tateNorm_augMap (m : G → M) : tateNorm G M (augMap G M m) = 1 := by
   rw [augMap_apply, map_prod]
@@ -83,9 +83,9 @@ theorem tateNorm_augMap (m : G → M) : tateNorm G M (augMap G M m) = 1 := by
   rw [map_div, tateNorm_smul, div_self']
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[augmentation, Subgroup.closure_le]`. Introduce and unpack `_ ⟨g, x, rfl⟩`. Use `⟨Pi.mulSingle g x, ?_⟩` and prove the remaining obligations. Rewrite using `[augMap_apply, Fintype.prod_eq_single g (fun h hh => by simp [Pi.mulSingle_eq_of_ne hh])]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `Subgroup.prod_mem _ fun g _ => Subgroup.subset_closure ⟨g, m g, rfl⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem augmentation_eq_range : augmentation G M = (augMap G M).range := by
   classical
@@ -99,7 +99,7 @@ theorem augmentation_eq_range : augmentation G M = (augMap G M).range := by
     exact Subgroup.prod_mem _ fun g _ => Subgroup.subset_closure ⟨g, m g, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[QuotientGroup.subsingleton_iff, Subgroup.subgroupOf_eq_top]`. Conclude with `⟨fun h x hx => h hx, fun h x hx => h x hx⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem subsingleton_tateZero_iff :
     Subsingleton (TateZero G M) ↔ ∀ x : M, (∀ g : G, g • x = x) → ∃ y, tateNorm G M y = x := by
@@ -107,7 +107,7 @@ theorem subsingleton_tateZero_iff :
   exact ⟨fun h x hx => h hx, fun h x hx => h x hx⟩
 
 /- English proof (translation)
-Rewrite using `[QuotientGroup.subsingleton_iff, Subgroup.subgroupOf_eq_top]`. Conclude with `⟨fun h x hx => h hx, fun h x hx => h x hx⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem subsingleton_tateNegOne_iff :
     Subsingleton (TateNegOne G M) ↔ ∀ x : M, tateNorm G M x = 1 → x ∈ augmentation G M := by
@@ -152,19 +152,19 @@ instance instCommGroupGr (n : ℕ) : CommGroup (S.gr n) :=
 def grMk (n : ℕ) : S.F n →* S.gr n := QuotientGroup.mk' _
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.mk'_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem grMk_surjective (n : ℕ) : Function.Surjective (S.grMk n) :=
   QuotientGroup.mk'_surjective _
 
 /- English proof (translation)
-The claim follows from `(QuotientGroup.eq_one_iff x).trans Subgroup.mem_subgroupOf`.
+A detailed English derivation is pending.
 -/
 theorem grMk_eq_one_iff {n : ℕ} (x : S.F n) : S.grMk n x = 1 ↔ (x : V) ∈ S.F (n + 1) :=
   (QuotientGroup.eq_one_iff x).trans Subgroup.mem_subgroupOf
 
 /- English proof (translation)
-Rewrite using `[← div_eq_one, ← map_div, grMk_eq_one_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem grMk_eq_grMk_iff {n : ℕ} (x y : S.F n) :
     S.grMk n x = S.grMk n y ↔ (x : V) / y ∈ S.F (n + 1) := by
@@ -202,14 +202,14 @@ theorem smul_grMk {n : ℕ} (g : G) (x : S.F n) : g • S.grMk n x = S.grMk n (g
 variable [Fintype G]
 
 /- English proof (translation)
-Rewrite using `[tateNorm_apply, tateNorm_apply, SubmonoidClass.coe_finsetProd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_tateNorm_F {n : ℕ} (x : S.F n) : ((tateNorm G (S.F n) x : S.F n) : V) = tateNorm G V x := by
   rw [tateNorm_apply, tateNorm_apply, SubmonoidClass.coe_finsetProd]
   rfl
 
 /- English proof (translation)
-Rewrite using `[augMap_apply, augMap_apply, SubmonoidClass.coe_finsetProd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_augMap_F {n : ℕ} (m : G → S.F n) :
     ((augMap G (S.F n) m : S.F n) : V) = augMap G V (fun g => (m g : V)) := by
@@ -217,7 +217,7 @@ theorem coe_augMap_F {n : ℕ} (m : G → S.F n) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[tateNorm_apply, tateNorm_apply, map_prod]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tateNorm_grMk {n : ℕ} (x : S.F n) :
     tateNorm G (S.gr n) (S.grMk n x) = S.grMk n (tateNorm G (S.F n) x) := by
@@ -225,7 +225,7 @@ theorem tateNorm_grMk {n : ℕ} (x : S.F n) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[augMap_apply, augMap_apply, map_prod]`. Simplify using `only [map_div, smul_grMk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem augMap_grMk {n : ℕ} (m : G → S.F n) :
     augMap G (S.gr n) (fun g => S.grMk n (m g)) = S.grMk n (augMap G (S.F n) m) := by
@@ -233,25 +233,25 @@ theorem augMap_grMk {n : ℕ} (m : G → S.F n) :
   simp only [map_div, smul_grMk]
 
 /- English proof (translation)
-The claim follows from `Subgroup.prod_mem _ fun g _ => S.smul_mem n g hx`.
+A detailed English derivation is pending.
 -/
 theorem tateNorm_mem {n : ℕ} {x : V} (hx : x ∈ S.F n) : tateNorm G V x ∈ S.F n :=
   Subgroup.prod_mem _ fun g _ => S.smul_mem n g hx
 
 /- English proof (translation)
-The claim follows from `Subgroup.prod_mem _ fun g _ => Subgroup.div_mem _ (S.smul_mem n g (hm g)) (hm g)`.
+A detailed English derivation is pending.
 -/
 theorem augMap_mem {n : ℕ} {m : G → V} (hm : ∀ g, m g ∈ S.F n) : augMap G V m ∈ S.F n :=
   Subgroup.prod_mem _ fun g _ => Subgroup.div_mem _ (S.smul_mem n g (hm g)) (hm g)
 
 /- English proof (translation)
-Rewrite using `[subsingleton_tateZero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx hinv`. Take `⟨q, hq⟩` from `h (S.grMk n ⟨x, hx⟩) fun g => by`. Rewrite using `[smul_grMk, grMk_eq_grMk_iff]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hinv g`. Take `⟨y, rfl⟩` from `S.grMk_surjective n q`. Rewrite `hq` using `[tateNorm_grMk, eq_comm, grMk_eq_grMk_iff, coe_tateNorm_F]`. Conclude with `⟨y, y.2, hq⟩`. Introduce `h q hq`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `S.grMk_surjective n q`. Take `⟨y, hy, hxy⟩` from `h x x.2 fun g => by`. Use `hq g` as an intermediate fact. Rewrite `this` using `[smul_grMk, grMk_eq_grMk_iff]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨S.grMk n ⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[tateNorm_grMk, eq_comm, grMk_eq_grMk_iff, coe_tateNorm_F]`. Conclude with `hxy`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_tateZero_gr_iff (n : ℕ) :
     Subsingleton (TateZero G (S.gr n)) ↔
@@ -277,13 +277,13 @@ theorem subsingleton_tateZero_gr_iff (n : ℕ) :
     exact hxy
 
 /- English proof (translation)
-Rewrite using `[subsingleton_tateNegOne_iff, augmentation_eq_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx hN`. Take `⟨q, hq⟩` from `h (S.grMk n ⟨x, hx⟩) (by`. Rewrite using `[tateNorm_grMk, grMk_eq_one_iff, coe_tateNorm_F]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hN)`. Establish `hl : ∀ g, ∃ y, S.grMk n y = q g` using `fun g => S.grMk_surjective n (q g)`. Use `choose m hm using hl`. Establish `e : q = fun g => S.grMk n (m g)` using `funext fun g => (hm g).symm`. Rewrite `hq` using `[e, augMap_grMk, eq_comm, grMk_eq_grMk_iff, coe_augMap_F]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨fun g => (m g : V), fun g => (m g).2, hq⟩`. Introduce `h q hq`. Take `⟨x, rfl⟩` from `S.grMk_surjective n q`. Rewrite `hq` using `[tateNorm_grMk, grMk_eq_one_iff, coe_tateNorm_F]`. Take `⟨m, hm, hxm⟩` from `h x x.2 hq`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun g => S.grMk n ⟨m g, hm g⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[augMap_grMk, eq_comm, grMk_eq_grMk_iff, coe_augMap_F]`. Conclude with `hxm`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_tateNegOne_gr_iff (n : ℕ) :
     Subsingleton (TateNegOne G (S.gr n)) ↔
@@ -317,9 +317,9 @@ section Complete
 variable {V : Type*} [CommGroup V]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hxi : ∀ i, FiltrationCauchy F fun k => x k i`. Introduce `i N`. Take `⟨M, hM⟩` from `hx N`. Conclude with `⟨M, fun m hm n hn => (Subgroup.mem_pi _).mp (hM m hm n hn) i (Set.mem_univ i)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose y hy using fun i => hc _ (hxi i)`. Use `⟨y, fun N => ?_⟩` and prove the remaining obligations. Use `choose M hM using fun i => hy i N`. Use `⟨Finset.univ.sup M, fun n hn => (Subgroup.mem_pi _).mpr fun i _ => ?_⟩` and prove the remaining obligations. Conclude with `hM i n ((Finset.le_sup (Finset.mem_univ i)).trans hn)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem filtrationComplete_pi {ι : Type*} [Fintype ι] {F : ℕ → Subgroup V}
     (hc : FiltrationComplete F) :
@@ -338,13 +338,13 @@ theorem filtrationComplete_pi {ι : Type*} [Fintype ι] {F : ℕ → Subgroup V}
 variable {G : Type*} [Group G] [Fintype G] [MulDistribMulAction G V]
 
 /- English proof (translation)
-Rewrite using `[subsingleton_tateZero_iff]`. Introduce `x hx`. Set `f : V →* invariants G V` to `(tateNorm G V).codRestrict _ tateNorm_mem_invariants`. Set `E : ℕ → Subgroup (invariants G V)` to `fun n => (S.F n).subgroupOf (invariants G V)`. Establish `key` using `map_eq_of_graded_surjective (F := S.F) (E := E) S.antitone (fun a b hab y hy => Subgroup.mem_subgroupOf.mpr (S.antitone hab (Subgroup.mem_subgroupOf.mp hy))) hc (fun y hy => Subtype.ext (hs _ fun n => Subgroup.mem_subgroupOf.mp (hy n))) f tendsto_id 0 (fun n _ y hy => Subgroup.me …`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hh' : (h : V) ∈ S.F n` using `Subgroup.mem_subgroupOf.mp hh`. Take `⟨y, hy, hhy⟩` from `(S.subsingleton_tateZero_gr_iff n).mp (hgr n) h hh' fun g => by`. Rewrite using `[h.2 g, div_self']`. Conclude with `Subgroup.one_mem _`. Conclude with `⟨y, hy, Subgroup.mem_subgroupOf.mpr hhy⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hx0 : (⟨x, (mem_invariants G V).mpr hx⟩ : invariants G V) ∈ (S.F 0).map f`. Rewrite using `[key]`. Express the relevant statement in the definitionally equal form `_ ∈ E 0`. Rewrite using `[Subgroup.mem_subgroupOf, h0]`. Conclude with `Subgroup.mem_top _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, -, hy⟩` from `hx0`. Conclude with `⟨y, congrArg Subtype.val hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_tateZero_of_complete (S : StableFiltration G V) (h0 : S.F 0 = ⊤)
     (hc : FiltrationComplete S.F) (hs : FiltrationSeparated S.F)
@@ -372,13 +372,13 @@ theorem subsingleton_tateZero_of_complete (S : StableFiltration G V) (h0 : S.F 0
   exact ⟨y, congrArg Subtype.val hy⟩
 
 /- English proof (translation)
-Rewrite using `[subsingleton_tateNegOne_iff, augmentation_eq_range]`. Introduce `x hx`. Set `f : (G → V) →* (tateNorm G V).ker` to `(augMap G V).codRestrict _ tateNorm_augMap`. Set `P : ℕ → Subgroup (G → V)` to `fun n => Subgroup.pi Set.univ fun _ : G => S.F n`. Set `E : ℕ → Subgroup (tateNorm G V).ker` to `fun n => (S.F n).subgroupOf (tateNorm G V).ker`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `key` using `map_eq_of_graded_surjective (F := P) (E := E) (fun a b hab m hm => (Subgroup.mem_pi _).mpr fun g _ => S.antitone hab ((Subgroup.mem_pi _).mp hm g (Set.mem_univ g))) (fun a b hab y hy => Subgroup.mem_subgroupOf.mpr (S.antitone hab (Subgroup.mem_subgroupOf.mp hy))) (filtrationCompl …`. Establish `hh' : (h : V) ∈ S.F n` using `Subgroup.mem_subgroupOf.mp hh`. Establish `hN : tateNorm G V h ∈ S.F (n + 1)`. Rewrite using `[h.2]`. Conclude with `Subgroup.one_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, hhm⟩` from `(S.subsingleton_tateNegOne_gr_iff n).mp (hgr n) h hh' hN`. Conclude with `⟨m, (Subgroup.mem_pi _).mpr fun g _ => hm g, Subgroup.mem_subgroupOf.mpr hhm⟩)`. Establish `hx0 : (⟨x, MonoidHom.mem_ker.mpr hx⟩ : (tateNorm G V).ker) ∈ (P 0).map f`. Rewrite using `[key]`. Express the relevant statement in the definitionally equal form `_ ∈ E 0`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_subgroupOf, h0]`. Conclude with `Subgroup.mem_top _`. Take `⟨m, -, hm⟩` from `hx0`. Conclude with `⟨m, congrArg Subtype.val hm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subsingleton_tateNegOne_of_complete (S : StableFiltration G V) (h0 : S.F 0 = ⊤)
     (hc : FiltrationComplete S.F) (hs : FiltrationSeparated S.F)
@@ -412,7 +412,7 @@ theorem subsingleton_tateNegOne_of_complete (S : StableFiltration G V) (h0 : S.F
   exact ⟨m, congrArg Subtype.val hm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨subsingleton_tateZero_of_complete S h0 hc hs hgr0, subsingleton_tateNegOne_of_complete S h0 hc hs hgr1⟩`.
+Supply the required witnesses or components.
 -/
 theorem subsingleton_tate_of_complete (S : StableFiltration G V) (h0 : S.F 0 = ⊤)
     (hc : FiltrationComplete S.F) (hs : FiltrationSeparated S.F)

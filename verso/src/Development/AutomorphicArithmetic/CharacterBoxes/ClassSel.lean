@@ -12,11 +12,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace UpperTheory.Top
 
 /- English proof (translation)
-Introduce `h1 h2 KP Q Q' Bd Lk H cT hc hx hr`. Take `⟨R, r, hx', hr'⟩` from `RowL.elim hx hr`. Take `⟨E, hE, hH⟩` from `Row.elim hx' hr'`. Establish `hs : IsSel (sAnd Q' R) Lk (fun _ _ _ _ _ => True) (cls (sAnd Q' R) Lk E) (pick (sAnd Q' R) Lk E)` using `IsSel.mono (fun _ _ _ _ _ _ => trivial) (pick_isSel (sAnd Q' R) Lk E)`. Use `⟨cls (sAnd Q' R) Lk E, pick (sAnd Q' R) Lk E, ?_, fun _ _ h => sevenDuties_of_class h, @isSel_of_sAnd Bd Q' R Lk _ (cls (sAnd Q' R) Lk E) (pick (sAnd Q' R) Lk E) hs, hH⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `recS (QOf (sAnd Q' R) Lk E) cT fun hm => ?_` and prove the remaining obligations. Take `⟨a, b, c, d⟩` from `hc hm`. Establish `d'` using `GlobalTheory.T.secondG_sAnd_of_largeBase KP Q Q' R a (evG_of_ev r) d`. Establish `h` using `memberTop_final_contextParameters h1 h2 KP Q (sAnd Q' R) (QOf (sAnd Q' R) Lk E) a b c d' hE`. Establish `e : ∀ κ : Par, (fun D O => κ.Pos → QOf (sAnd Q' R) Lk E κ D O) = QOf (sAnd Q' R) Lk E κ` using `fun κ => funext fun _ => funext fun _ => propext ⟨fun h' h0 => h' h0 h0, fun h' _ => h'⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `only [e]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem classSel : StandardLattice.SiegelMassRatioCM → (∀ D : D7, StandardLattice.VolTie D → StandardLattice.VolumeRatio₂ D) → ∀ (KP : ∀ B : Base, Fr B.toPre → Prop) (Q Q' : V4.Slot) (Bd : BdT) (Lk : LkT Bd) (H : ∀ 𝒜 : FamClass, RawSel Bd 𝒜 → Prop) (cT : ℝ → ℝ → ℝ), (DC.MinkDiv → GroupRetwisting.BaseCond KP ∧ GroupRetwisting.FirstG KP Q ∧ GroupRetwisting.ExportF KP Q ∧ GroupRetwisting.SecondG KP Q Q') → ExBL KP Q Q' Lk → RowL KP Q Q' Lk H → ∃ (𝒜 : FamClass) (σ : RawSel Bd 𝒜), (DC.MinkDiv → ExD 𝒜 cT) ∧ (∀ (eps : ℝ) (Fm : FamP eps), 𝒜 Fm → DQ.Duty7 Fm ∧ DQ.MtStableF Fm) ∧ IsSel Q' Lk (fun _ _ _ _ _ => True) 𝒜 σ ∧ H 𝒜 σ := by
   intro h1 h2 KP Q Q' Bd Lk H cT hc hx hr

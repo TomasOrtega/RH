@@ -26,7 +26,7 @@ variable {S' T : Scheme.{0}} {G : Over S'} [GrpObj G] {H : Over T} [GrpObj H] {x
   {ψ : H.left ⟶ G.left} [QuasiSeparated G.hom] {g : ℕ}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.BadPt.Fibre.frame_pb x (j PUnit.unit).isFrame _).map_iso (omegaBase h)`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_chart (h : IsGrpPullback H G x ψ) (j : PUnit → (hodge G g).ι) :
     IsFrame fun i => (omegaBase h).app (LB.wchart (hodge G g) (fun _ => x) j)

@@ -8,9 +8,9 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.val_castSucc, Fin.val_last]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih, Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_fin_add_one_eq_factorial (n : ℕ) :
     ∏ j : Fin n, ((j : ℚ) + 1) = (n.factorial : ℚ) := by
@@ -24,9 +24,9 @@ theorem prod_fin_add_one_eq_factorial (n : ℕ) :
     ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.val_castSucc, Fin.val_last]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih, Nat.factorial_succ (n + 1)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_fin_add_two_eq_factorial (n : ℕ) :
     ∏ j : Fin n, ((j : ℚ) + 2) = ((n + 1).factorial : ℚ) := by
@@ -40,21 +40,21 @@ theorem prod_fin_add_two_eq_factorial (n : ℕ) :
     ring
 
 /- English proof (translation)
-Introduce `r a hr _`. Take `⟨n, rfl⟩ : ∃ n, r = n + 1` from `⟨r - 1, by omega⟩`. Use `set lam : Fin (n + 1) → ℕ := fun i => a + if (i : ℕ) = 0 then 1 else 0 with hlam`. Establish `hanti : Antitone lam`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (i : ℕ) ≤ j` using `hij`. Simplify using `only [lam]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `hrect : Antitone (rectangle (n + 1) a)` using `fun _ _ _ => le_rfl`. Establish `e1` using `h1 (n + 1) lam hanti`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `h1 (n + 1) (rectangle (n + 1) a) hrect`. Rewrite `e1`, `e2` using `[h2]`. Simplify using `only [Fin.prod_univ_succ, Fin.sum_univ_succ, lam, rectangle, Fin.val_zero, Fin.val_succ, Nat.add_one_ne_zero, if_true, if_false, add_zero, Nat.add_sub_cancel, Nat.sub_zero, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at e1 e2`. Use `set V := vandermondeOf fun j : Fin n => ((a + (n - ((j : ℕ) + 1)) : ℕ) : ℚ) with hV`. Use `set D := ∏ x : Fin n, (((a + (n - ((x : ℕ) + 1))).factorial : ℕ) : ℚ) with hD`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hP1 : ∏ j : Fin n, (((a + n : ℕ) : ℚ) - ((a + (n - ((j : ℕ) + 1)) : ℕ) : ℚ)) = (n.factorial : ℚ)`. Rewrite using `[← prod_fin_add_one_eq_factorial]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h' : (j : ℕ) + 1 ≤ n` using `j.isLt`. Move the coercions through the operations in `[Nat.cast_sub h']`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hP2 : ∏ j : Fin n, (((a + 1 + n : ℕ) : ℚ) - ((a + (n - ((j : ℕ) + 1)) : ℕ) : ℚ)) = ((n + 1).factorial : ℚ)`. Rewrite using `[← prod_fin_add_two_eq_factorial]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h' : (j : ℕ) + 1 ≤ n` using `j.isLt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `[Nat.cast_sub h']`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e1` using `[hP2, show a + 1 + n * a = (n + 1) * a + 1 by ring, show a + 1 + n = a + n + 1 by ring, Nat.factorial_succ ((n + 1) * a), Nat.factorial_succ (a + n)]`. Rewrite `e2` using `[hP1]`. Rewrite `e1` using `[Nat.factorial_succ n]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hD0 : D ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun x _ => by positivity`. Establish `hf0 : ((a + n).factorial : ℚ) ≠ 0` using `by positivity`. Apply `Nat.cast_injective (R := ℚ)` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[e1, e2]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem TotalIdentity.proof (h1 : FrobeniusDimensionFormula.Statement)
     (h2 : CombVandermondeSucc.Statement) : TotalIdentity.Statement := by

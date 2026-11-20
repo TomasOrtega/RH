@@ -219,7 +219,7 @@ def AdelicIsometries (D : D7) : Prop :=
     GluedSt D ∧ UngluedSt D ∧ LamNSt D ∧ FrameSt D
 
 /- English proof (translation)
-The claim follows from `have hf := h.2.2.2.2.2.2.2.2.2.2.2.1 ⟨fun _ => hf _ _, hf _ _, fun _ => hf _ _, fun _ => hf _ _⟩`.
+A detailed English derivation is pending.
 -/
 example (h : AdelicIsometries D) :
     (∀ j, ∃ β Λ, IsSDFrame (Yc D j) β Λ (D.host.g 0 * D.host.g 1)) ∧ (∃ β Λ, IsSDFrame D.sp.X' β Λ 1) ∧
@@ -228,7 +228,7 @@ example (h : AdelicIsometries D) :
   ⟨fun _ => hf _ _, hf _ _, fun _ => hf _ _, fun _ => hf _ _⟩
 
 /- English proof (translation)
-Use `⟨⟨?_, fun a b => by simp⟩, fun a => by simp, fun w _ => by simp⟩` and prove the remaining obligations. Establish `: ((1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)).mulVec) = id` using `by funext a; simp`. Rewrite using `[this]`. Conclude with `Function.bijective_id`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (V : HSp D) (L : Lat V) (S : Finset (Pl D.host.E)) {n : ℕ}
     (be : Pl D.host.E → Matrix (Fin V.rank) (Fin n) (EAf D)) : IsTransport V V L L S be be 1 := by

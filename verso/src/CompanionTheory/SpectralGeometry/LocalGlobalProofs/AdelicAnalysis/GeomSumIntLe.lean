@@ -6,37 +6,37 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.Adelic
 
 /- English proof (translation)
-Establish `hDr : (0 : ℝ) < D` using `by exact_mod_cast hD`. Establish `hMr : (0 : ℝ) < M` using `by exact_mod_cast hM`. Take `⟨a, ha⟩ : ∃ a : ℝ, a = 2 * D * M` from `⟨_, rfl⟩`. Establish `ha0 : 0 < a` using `by rw [ha]; positivity`. Take `⟨q, hq⟩ : ∃ q : ℝ, q = Real.exp (-a)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hq0 : 0 ≤ q` using `by rw [hq]; exact (Real.exp_pos _).le`. Establish `hq1 : q < 1` using `by rw [hq, ← Real.exp_zero]; exact Real.exp_lt_exp.mpr (by linarith)`. Establish `h1q : 0 < 1 - q` using `by linarith`. Take `⟨K, hK⟩ : ∃ K : ℝ, K = max C 0` from `⟨_, rfl⟩`. Establish `hK0 : 0 ≤ K` using `by rw [hK]; exact le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hCK : C ≤ K` using `by rw [hK]; exact le_max_left _ _`. Use `⟨K * Real.exp (-a * x₀) / (1 - q), fun r hr => ?_⟩` and prove the remaining obligations. Take `⟨n₀, hn₀⟩ : ∃ n₀ : ℤ, n₀ = ⌈x₀ - Real.log r⌉` from `⟨_, rfl⟩`. Establish `hn₀le : x₀ - Real.log r ≤ n₀` using `by rw [hn₀]; exact Int.le_ceil _`. Establish `hr2 : (0 : ℝ) < r ^ (2 * D)` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨A, hA⟩ : ∃ A : ℝ, A = K * r ^ (2 * D) * Real.exp (-a * n₀)` from `⟨_, rfl⟩`. Establish `hA0 : 0 ≤ A` using `by rw [hA]; have := Real.exp_pos (-a * n₀); positivity`. Establish `hsupp : Function.support (fun j : ℤ => (if (j : ℝ) + Real.log r < x₀ then 0 else ENNReal.ofReal (C * Real.exp (2 * D * ((j : ℝ) + Real.log r)))) * ENNReal.ofReal (Real.exp (-(2 * D * (M + 1) * (j : ℝ))))) ⊆ Set.range (fun n : ℕ => n₀ + (n : ℤ))`. Introduce `j hj`. Establish `hnot : ¬ ((j : ℝ) + Real.log r < x₀)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Apply `hj` to reduce the goal to its premises. Simplify using `[h]`. Establish `hge : n₀ ≤ j`. Rewrite using `[hn₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Int.ceil_le.mpr` to reduce the goal to its premises. Combine the linear relations using `[not_lt.mp hnot]`. Use `⟨(j - n₀).toNat, ?_⟩` and prove the remaining obligations. Establish `: (((j - n₀).toNat : ℕ) : ℤ) = j - n₀` using `Int.toNat_of_nonneg (by omega)`. Simplify using `only [this]`.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hinj : Function.Injective (fun n : ℕ => n₀ + (n : ℤ))`. Introduce `m n h`. Simplify using `using h`. Rewrite using `[← hinj.tsum_eq hsupp]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hterm : ∀ n : ℕ, (if (((n₀ + (n : ℤ) : ℤ)) : ℝ) + Real.log r < x₀ then 0 else ENNReal.ofReal (C * Real.exp (2 * D * ((((n₀ + (n : ℤ) : ℤ)) : ℝ) + Real.log r)))) * ENNReal.ofReal (Real.exp (-(2 * D * (M + 1) * (((n₀ + (n : ℤ) : ℤ)) : ℝ)))) ≤ ENNReal.ofReal (A * q ^ n)`. Introduce `n`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Rewrite using `[← ENNReal.ofReal_mul' (Real.exp_pos _).le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hr' : r ^ (2 * D) = Real.exp (((2 * D : ℕ) : ℝ) * Real.log r)`. Rewrite using `[Real.exp_nat_mul, Real.exp_log hr]`. Establish `hq' : q ^ n = Real.exp ((n : ℝ) * (-a))`. Rewrite using `[hq, Real.exp_nat_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : Real.exp (2 * D * ((((n₀ + (n : ℤ) : ℤ)) : ℝ) + Real.log r)) * Real.exp (-(2 * D * (M + 1) * (((n₀ + (n : ℤ) : ℤ)) : ℝ))) = r ^ (2 * D) * Real.exp (-a * n₀) * q ^ n`. Rewrite using `[hr', hq', ← Real.exp_add, ← Real.exp_add, ← Real.exp_add, ha]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hpos : 0 ≤ r ^ (2 * D) * Real.exp (-a * n₀) * q ^ n`. Use `Real.exp_pos (-a * n₀)` as an intermediate fact. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Use `(ENNReal.tsum_le_tsum hterm).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsum : Summable (fun n : ℕ => A * q ^ n)` using `(summable_geometric_of_lt_one hq0 hq1).mul_left A`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun n => by positivity) hsum]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[tsum_mul_left, tsum_geometric_of_lt_one hq0 hq1]`. Establish `hexp : Real.exp (-a * n₀) ≤ Real.exp (-a * x₀) * r ^ (2 * D * M)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : r ^ (2 * D * M) = Real.exp (((2 * D * M : ℕ) : ℝ) * Real.log r)`. Rewrite using `[Real.exp_nat_mul, Real.exp_log hr]`. Rewrite using `[hr', ← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hc : (((2 * D * M : ℕ) : ℝ)) = a` using `by rw [ha]; push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hn₀le ha0.le]`. Establish `hpow : r ^ (2 * D * (M + 1)) = r ^ (2 * D) * r ^ (2 * D * M)`. Rewrite using `[← pow_add]`. Use `congr 1`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hAle : A ≤ K * Real.exp (-a * x₀) * r ^ (2 * D * (M + 1))`. Rewrite using `[hA, hpow]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem geom_sum_int_le (D M : ℕ) (hD : 0 < D) (hM : 1 ≤ M) (x₀ C : ℝ) :
     ∃ C' : ℝ, ∀ r : ℝ, 0 < r →
@@ -147,7 +147,7 @@ theorem geom_sum_int_le (D M : ℕ) (hD : 0 < D) (hM : 1 ≤ M) (x₀ C : ℝ) :
         rw [div_eq_mul_inv]; ring
 
 /- English proof (translation)
-Introduce `D M hD hM x₀ C` and use `geom_sum_int_le D M hD hM x₀ C`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem geom_sum_int :
     ∀ (D M : ℕ), 0 < D → 1 ≤ M → ∀ (x₀ C : ℝ), ∃ C' : ℝ, ∀ r : ℝ, 0 < r →

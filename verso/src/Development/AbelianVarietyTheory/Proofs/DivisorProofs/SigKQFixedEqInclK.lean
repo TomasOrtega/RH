@@ -8,7 +8,7 @@ open scoped TensorProduct
 namespace GlobalTheory.LKRes
 
 /- English proof (translation)
-Establish `h1 : frobK p (Q0 p) (b : PadicAlgCl p) = b` using `congrArg Subtype.val hb`. Establish `h2 : (b : PadicAlgCl p) ∈ Q0 p` using `mem_of_frobK_fixed inferInstance (Kn_le_Kur hr b.2) h1`. Take `⟨c, hc⟩` from `IntermediateField.mem_bot.1 h2`. Conclude with `⟨c, Subtype.ext hc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frobQ_fixed_mem (p : ℕ) [Fact p.Prime] (r : ℕ) (hr : 0 < r) (b : Qr p r) (hb : frobQ p r b = b) :
     ∃ c : ℚ_[p], algebraMap ℚ_[p] (Qr p r) c = b := by
@@ -18,19 +18,17 @@ theorem frobQ_fixed_mem (p : ℕ) [Fact p.Prime] (r : ℕ) (hr : 0 < r) (b : Qr 
   exact ⟨c, Subtype.ext hc⟩
 
 /- English proof (translation)
-Introduce `p _ K r hr`. Express the relevant statement in the definitionally equal form `∀ x : K ⊗[ℚ_[p]] Qr p r, Algebra.TensorProduct.map (AlgHom.id ℚ_[p] K) (frobQ p r) x = x → ∃ a : K, (Algebra.TensorProduct.includeLeft : K →ₐ[ℚ_[p]] K ⊗[ℚ_[p]] Qr p r) a = x`. Introduce `x hx`. Set `f : ℚ_[p] →ₗ[ℚ_[p]] Qr p r` to `Algebra.linearMap _ _`. Set `g : Qr p r →ₗ[ℚ_[p]] Qr p r` to `(frobQ p r).toLinearMap - LinearMap.id`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hex : Function.Exact f g`. Introduce `b`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Establish `hb' : frobQ p r b = b` using `sub_eq_zero.1 hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `frobQ_fixed_mem p r hr b hb'`. Introduce and unpack `⟨c, rfl⟩`. Simplify using `[g, f]`. Establish `hex2` using `Module.Flat.lTensor_exact K hex`. Establish `hg : g.lTensor K = (Algebra.TensorProduct.map (AlgHom.id ℚ_[p] K) (frobQ p r)).toLinearMap - LinearMap.id`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `TensorProduct.ext' fun a b => ?_` and prove the remaining obligations. Simplify using `[g, TensorProduct.tmul_sub]`. Establish `hx0 : g.lTensor K x = 0`. Rewrite using `[hg, LinearMap.sub_apply, LinearMap.id_apply, AlgHom.toLinearMap_apply]`. Conclude with `sub_eq_zero.2 hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `(hex2 x).1 hx0`. Use `⟨TensorProduct.rid ℚ_[p] K y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Use `clear hy hx hx0`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `zero => simp`. Consider the case `tmul a c`. Simplify using `only [TensorProduct.rid_tmul, LinearMap.lTensor_tmul, f, Algebra.linearMap_apply]`. Express the relevant statement in the definitionally equal form `(c • a) ⊗ₜ[ℚ_[p]] (1 : Qr p r) = a ⊗ₜ[ℚ_[p]] (algebraMap ℚ_[p] (Qr p r) c)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
-
-Consider the case `add u v hu hv`. Rewrite using `[map_add, map_add, hu, hv, map_add]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigKQ_fixed_eq_inclK : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ), 0 < r →
     ∀ x : GlobalTheory.LKRes.KQ p K r, GlobalTheory.LKRes.sigKQ p K r x = x → ∃ a : K, GlobalTheory.LKRes.inclK p K r a = x := by

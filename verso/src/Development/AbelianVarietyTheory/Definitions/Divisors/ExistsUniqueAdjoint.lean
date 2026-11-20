@@ -20,7 +20,7 @@ variable {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ
   {X : Type} [AddCommGroup X] {m : ℕ} {t : Fin m → V} {δ : Fin m → LinearMap.BilinForm ℤ X}
 
 /- English proof (translation)
-Establish `hu : IsUnit (W + W.transpose).det` using `by rw [X₁.e8.2]; exact isUnit_one`. Use `⟨(W + W.transpose)⁻¹ * (a.transpose * (W + W.transpose)), Matrix.mul_nonsing_inv_cancel_left _ _ hu, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[← hb, Matrix.nonsing_inv_mul_cancel_left _ _ hu]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_adjoint (X₁ : Setup F W i) (a : Matrix (Fin 8) (Fin 8) ℤ) :
     ∃! a' : Matrix (Fin 8) (Fin 8) ℤ, (W + W.transpose) * a' = a.transpose * (W + W.transpose) := by
@@ -29,14 +29,14 @@ theorem existsUnique_adjoint (X₁ : Setup F W i) (a : Matrix (Fin 8) (Fin 8) �
   rw [← hb, Matrix.nonsing_inv_mul_cancel_left _ _ hu]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, h, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec y, Matrix.vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem polar_adjoint {s : ℕ} (S a a' : Matrix (Fin s) (Fin s) ℤ) (h : S * a' = a.transpose * S) (y χ : Fin s → ℤ) :
     (a.mulVec y) ⬝ᵥ (S.mulVec χ) = y ⬝ᵥ (S.mulVec (a'.mulVec χ)) := by
   rw [Matrix.mulVec_mulVec, h, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec y, Matrix.vecMul_transpose]
 
 /- English proof (translation)
-The claim follows from `let ⟨a', h, _⟩ := existsUnique_adjoint X₁ a let ⟨E, hE, _⟩ := 𝔪.equiv a a' h ⟨E, hE⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_endU (𝔪 : UMem X₁ z₁ act V ev X t δ) (a : Matrix (Fin 8) (Fin 8) ℤ) :
     ∃ E : EndU 𝔪.U.toUnifPre, E.aA.left ≫ 𝔪.φ = 𝔪.φ ≫ (act a).left :=
@@ -45,7 +45,7 @@ theorem exists_endU (𝔪 : UMem X₁ z₁ act V ev X t δ) (a : Matrix (Fin 8) 
   ⟨E, hE⟩
 
 /- English proof (translation)
-Take `⟨x, fr, th, w₀, s, g', w, -, -, hth, -, hs, hc, hT⟩` from `h`. Use `(hc c).2.2 1 le_rfl (w c) (fun z J _ => (pow_one _).symm) (hc c).2.1 th s _ hs (hth (lab c))` as an intermediate fact. Use `this using 2 with χ` and compare the differences between its conclusion and the goal. Rewrite using `[hT, AddEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem terms_sum (𝔪 : UMem X₁ z₁ act V ev X t δ) {x₀ : X₁.S.Gam} {C : Type} {lab : C → X₁.S.Gam}
     {T : (Fin 8 → X) → C → V} (h : 𝔪.Terms x₀ lab T) (c : C) :
@@ -58,11 +58,11 @@ theorem terms_sum (𝔪 : UMem X₁ z₁ act V ev X t δ) {x₀ : X₁.S.Gam} {C
   rw [hT, AddEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `hp` using `𝔪.cart.1`. Establish `e : jFK (R` using `V) (FractionRing V) = 𝟙 _ := Spec.map_id _`. Establish `hw : (spMap 𝔪.yK ≫ (X₁.ρ.pt a).left) ≫ X₁.ρ.P.A.hom = jFK (R` using `V) (FractionRing V) ≫ spMap 𝔪.yK := by`. Rewrite using `[e, Category.assoc, Over.w]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `x : TFK (R` to `V) (FractionRing V) ⟶ 𝔪.A.A := Over.homMk (hp.lift _ _ hw) (hp.lift_snd _ _ hw)`. Establish `hx : x.left ≫ 𝔪.φ = spMap 𝔪.yK ≫ (X₁.ρ.pt a).left` using `hp.lift_fst _ _ hw`. Take `⟨fr, hfr, H⟩` from `ReciprocityTheory.ChartRestriction.G.H1.exists_gen_move X₁.ρ.P.isLB 𝔪.A.isLB 𝔪.wl ((isGen_iff _).1 𝔪.wl_gen) (K := Fin 1) (fun _ => (X₁.ρ.pt a).left) (fun _ => x.left) (fun _ => 1) (spMap 𝔪.yK) (fun _ => hx) (X₁.ρ.fr a) (X₁.ρ.fr_tors a).2.1`. Use `⟨x, fr, hx, hfr, fun z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Use `H _ (𝟙 _) z (fun _ => J (x.left ≫ 𝔪.φ)) (fun _ => J' x.left) (fun _ => hJ (x.left ≫ 𝔪.φ)) (fun _ => hJ' x.left)` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[val_of fr (𝟙 _) z J' (fun _ => J' x.left) (fun _ => by rw [Category.id_comp]), val_of (X₁.ρ.fr a) _ z J (fun _ => J (x.left ≫ 𝔪.φ)) (fun _ => by rw [hx])]`. Simplify using `using this.symm`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_frames (𝔪 : UMem X₁ z₁ act V ev X t δ) (a : X₁.S.Gam) :
     ∃ (x : TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A) (fr : FrAt x), x.left ≫ 𝔪.φ = spMap 𝔪.yK ≫ (X₁.ρ.pt a).left ∧

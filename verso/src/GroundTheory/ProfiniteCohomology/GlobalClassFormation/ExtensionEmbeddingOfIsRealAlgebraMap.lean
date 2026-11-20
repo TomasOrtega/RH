@@ -10,26 +10,24 @@ variable {K : Type*} [Field K] [NumberField K]
 omit [NumberField K] in
 
 /- English proof (translation)
-Rewrite using `[← norm_embedding_of_isReal hv x, Real.norm_eq_abs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_eq_abs_embedding_of_isReal {v : InfinitePlace K} (hv : v.IsReal) (x : K) :
     v x = |embedding_of_isReal hv x| := by
   rw [← norm_embedding_of_isReal hv x, Real.norm_eq_abs]
 
 /- English proof (translation)
-Use `set c : InfinitePlace K → K := fun v => if h : v.IsReal then (if (⟨v, h⟩ : {v : InfinitePlace K // v.IsReal}) ∈ S then -1 else 1) else 1 with hcdef`. Set `t : (v : InfinitePlace K) → WithAbs v.1` to `fun v => WithAbs.toAbs v.1 (c v)`. Set `U : Set ((v : InfinitePlace K) → WithAbs v.1)` to `Set.pi Set.univ fun v => Metric.ball (t v) 1`. Establish `hU : IsOpen U` using `isOpen_set_pi Set.finite_univ fun v _ => Metric.isOpen_ball`. Establish `htU : t ∈ U` using `fun v _ => Metric.mem_ball_self one_pos`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `(InfinitePlace.denseRange_algebraMap_pi K).exists_mem_open hU ⟨t, htU⟩`. Establish `hclose : ∀ v : InfinitePlace K, v (x - c v) < 1`. Introduce `v`. Establish `h` using `hx v (Set.mem_univ v)`. Rewrite `h` using `[Metric.mem_ball, dist_eq_norm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hc : ∀ v : InfinitePlace K, v (c v) = 1`. Introduce `v`. Rewrite using `[hcdef]`. Use `show v.1 (if h : v.IsReal then (if (⟨v, h⟩ : {v : InfinitePlace K // v.IsReal}) ∈ S then -1 else 1) else 1) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `split_ifs <;> simp only [AbsoluteValue.map_neg, AbsoluteValue.map_one]`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Take `⟨v⟩ : Nonempty (InfinitePlace K)` from `inferInstance`. Use `hclose v` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_sub, show v (-c v) = v (c v) from v.1.map_neg _, hc]`. Conclude with `lt_irrefl _ this`. Use `⟨Units.mk0 x hx0, fun v => ?_⟩` and prove the remaining obligations. Establish `h` using `hclose v.1`. Rewrite `h` using `[apply_eq_abs_embedding_of_isReal v.2, map_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hcv : c v.1 = if v ∈ S then -1 else 1` using `by rw [hcdef]; exact dif_pos v.2`. Rewrite `h` using `[hcv]`. Rewrite using `[Units.val_mk0]`. Distinguish the cases in `hv : v ∈ S`. Rewrite `h` using `[if_pos hv, map_neg, map_one, sub_neg_eq_add, abs_lt]`.
-
-Conclude with `⟨⟨fun _ => hv, fun _ => by linarith [h.2]⟩, ⟨fun h' => by linarith [h.2], fun h' => absurd hv h'⟩⟩`. Rewrite `h` using `[if_neg hv, map_one, abs_lt]`. Conclude with `⟨⟨fun h' => by linarith [h.1], fun h' => absurd h' hv⟩, ⟨fun _ => hv, fun _ => by linarith [h.1]⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_units_neg_iff_mem (S : Set {v : InfinitePlace K // v.IsReal}) :
     ∃ a : Kˣ, ∀ v : {v : InfinitePlace K // v.IsReal},
@@ -74,9 +72,9 @@ theorem exists_units_neg_iff_mem (S : Set {v : InfinitePlace K // v.IsReal}) :
     exact ⟨⟨fun h' => by linarith [h.1], fun h' => absurd h' hv⟩, ⟨fun _ => hv, fun _ => by linarith [h.1]⟩⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_units_neg_iff_mem {v | ε v = -1}`. Use `⟨a, fun v => ?_⟩` and prove the remaining obligations. Break down `Int.units_eq_one_or (ε v) with hε | hε` into its components or cases. Establish `hpos : 0 < embedding_of_isReal v.2 (a : K)` using `(ha v).2.2 (by simp [hε])`. Rewrite using `[sign_pos hpos, hε]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hneg : embedding_of_isReal v.2 (a : K) < 0` using `(ha v).1.2 hε`. Rewrite using `[sign_neg hneg, hε]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_units_sign (ε : {v : InfinitePlace K // v.IsReal} → ℤˣ) :
     ∃ a : Kˣ, ∀ v : {v : InfinitePlace K // v.IsReal},
@@ -94,14 +92,14 @@ theorem exists_units_sign (ε : {v : InfinitePlace K // v.IsReal} → ℤˣ) :
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `Completion.extensionEmbeddingOfIsReal_coe hv (WithAbs.toAbs v.1 x)`.
+A detailed English derivation is pending.
 -/
 theorem extensionEmbeddingOfIsReal_algebraMap {v : InfinitePlace K} (hv : v.IsReal) (x : K) :
     Completion.extensionEmbeddingOfIsReal hv (algebraMap K v.Completion x) = embedding_of_isReal hv x :=
   Completion.extensionEmbeddingOfIsReal_coe hv (WithAbs.toAbs v.1 x)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_units_neg_iff_mem S`. Conclude with `⟨a, fun v => by simpa only [extensionEmbeddingOfIsReal_algebraMap] using ha v⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_units_neg_iff_mem_completion (S : Set {v : InfinitePlace K // v.IsReal}) :
     ∃ a : Kˣ, ∀ v : {v : InfinitePlace K // v.IsReal},

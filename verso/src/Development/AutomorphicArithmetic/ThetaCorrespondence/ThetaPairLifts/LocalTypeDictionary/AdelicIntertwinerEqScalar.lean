@@ -12,45 +12,41 @@ variable {F : Type} [Field F] [NumberField F]
 end GlobalTheory.AdelicSchur
 namespace GlobalTheory.AdelicSchur
 /- English proof (translation)
-Introduce `_ F _ _ κ _ ψ hψ M hpres hcomm hiso`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Set `μ : Measure (κ → AF F)` to `Measure.addHaar`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hμH : μ.IsAddHaarMeasure := by dsimp [μ]; infer_instance`. Establish `hL2 : ∀ φ ∈ schA F κ, MemLp φ 2 μ` using `fun φ hφ => GlobalTheory.WeilM.schA_memLp_two F κ μ hμH φ hφ`. Establish `hint : ∀ φ ∈ schA F κ, Integrable (fun x => ‖φ x‖ ^ 2) μ` using `fun φ hφ => (hL2 φ hφ).integrable_norm_pow two_ne_zero`. Establish `hnorm : ∀ φ ∈ schA F κ, ∫ x, ‖M φ x‖ ^ 2 ∂μ = ∫ x, ‖φ x‖ ^ 2 ∂μ`. Introduce `φ hφ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hiso μ hμH φ hφ`. Establish `e : ∀ g ∈ schA F κ, ∫⁻ x, ‖g x‖ₑ ^ 2 ∂μ = ENNReal.ofReal (∫ x, ‖g x‖ ^ 2 ∂μ)` using `fun g hg => by`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal (hint g hg) (Filter.Eventually.of_forall fun x => by positivity)]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Rewrite `h` using `[e _ (hpres φ hφ), e φ hφ]`. Conclude with `(ENNReal.ofReal_eq_ofReal_iff (integral_nonneg fun x => by positivity) (integral_nonneg fun x => by positivity)).1 h`. Establish `hψn : ∀ a, ‖ψ a‖ = 1` using `GlobalTheory.HeisLineTheta.norm_psi hψ`. Establish `hcy : ∀ y : κ → AF F, Continuous fun x : κ → AF F => ψ (x ⬝ᵥ y)` using `fun y => hψ.1.comp (continuous_finset_sum _ fun i _ => (continuous_apply i).mul continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hschr0 : ∀ (y : κ → AF F) (f : (κ → AF F) → ℂ) x, schr ψ (0, y) f x = ψ (x ⬝ᵥ y) * f x`. Introduce `y f x`. Simplify using `[schr]`. Establish `hdiag : ∀ φ ∈ schA F κ, ∀ x, ‖M φ x‖ = ‖φ x‖`. Introduce `φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMφ` using `hpres φ hφ`. Use `set D : (κ → AF F) → ℝ := fun x => ‖M φ x‖ ^ 2 - ‖φ x‖ ^ 2 with hD`. Establish `hDi : Integrable D μ` using `(hint _ hMφ).sub (hint φ hφ)`. Establish `hDc : Continuous D` using `((GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hMφ).norm.pow 2).sub ((GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hφ).norm.pow 2)`. Establish `hbi : ∀ (y : κ → AF F) (c : ℂ) (f : (κ → AF F) → ℂ), f ∈ schA F κ → Integrable (fun x => (c * ψ (x ⬝ᵥ y)).re * ‖f x‖ ^ 2) μ` using `fun y c f hf => (hint f hf).bdd_mul (Complex.continuous_re.comp (continuous_const.mul (hcy y))).aestronglyMeasurable (Filter.Eventually.of_forall fun x => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Real.norm_eq_abs]`. Use `(Complex.abs_re_le_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hψn, mul_one])`. Establish `hre : ∀ (y : κ → AF F) (c : ℂ), ∫ x, (c * ψ (x ⬝ᵥ y)).re * D x ∂μ = 0`. Introduce `y c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg : φ + c • schr ψ (0, y) φ ∈ schA F κ` using `(schA F κ).add_mem hφ ((schA F κ).smul_mem c (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ φ hφ))`. Establish `hMg : M (φ + c • schr ψ (0, y) φ) = M φ + c • schr ψ (0, y) (M φ)`. Rewrite using `[map_add, map_smul, hcomm _ φ hφ]`. Establish `h1` using `hnorm _ hg`. Rewrite `h1` using `[hMg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hpt : ∀ f : (κ → AF F) → ℂ, (fun x => ‖(f + c • schr ψ (0, y) f) x‖ ^ 2) = fun x => (1 + ‖c‖ ^ 2) * ‖f x‖ ^ 2 + 2 * ((c * ψ (x ⬝ᵥ y)).re * ‖f x‖ ^ 2)`. Introduce `f`. Use function extensionality and compare the values at `x`. Rewrite using `[Pi.add_apply, Pi.smul_apply, hschr0, smul_eq_mul, show f x + c * (ψ (x ⬝ᵥ y) * f x) = (1 + c * ψ (x ⬝ᵥ y)) * f x by ring, norm_mul, mul_pow, norm_one_add_sq c _ (hψn _)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h1` using `[hpt, hpt, integral_add ((hint _ hMφ).const_mul _) ((hbi y c _ hMφ).const_mul _), integral_add ((hint _ hφ).const_mul _) ((hbi y c _ hφ).const_mul _), integral_const_mul, integral_const_mul, integral_const_mul, integral_const_mul, hnorm φ hφ]`. Establish `h2 : ∫ x, (c * ψ (x ⬝ᵥ y)).re * ‖M φ x‖ ^ 2 ∂μ = ∫ x, (c * ψ (x ⬝ᵥ y)).re * ‖φ x‖ ^ 2 ∂μ`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (fun x => (c * ψ (x ⬝ᵥ y)).re * D x) = fun x => (c * ψ (x ⬝ᵥ y)).re * ‖M φ x‖ ^ 2 - (c * ψ (x ⬝ᵥ y)).re * ‖φ x‖ ^ 2`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hD]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_sub (hbi y c _ hMφ) (hbi y c _ hφ), h2, sub_self]`. Establish `hF : ∀ y : κ → AF F, ∫ x, ψ (x ⬝ᵥ y) * (D x : ℂ) ∂μ = 0`. Introduce `y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hI : Integrable (fun x => ψ (x ⬝ᵥ y) * (D x : ℂ)) μ` using `hDi.ofReal.bdd_mul (hcy y).aestronglyMeasurable (Filter.Eventually.of_forall fun x => (hψn _).le)`. Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[Complex.zero_re, ← RCLike.re_to_complex, ← integral_re hI]`. Establish `e : (fun x => RCLike.re (ψ (x ⬝ᵥ y) * (D x : ℂ))) = fun x => ((1 : ℂ) * ψ (x ⬝ᵥ y)).re * D x`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Complex.mul_re]`. Rewrite using `[e]`. Conclude with `hre y 1`. Rewrite using `[Complex.zero_im, ← RCLike.im_to_complex, ← integral_im hI]`. Establish `e : (fun x => RCLike.im (ψ (x ⬝ᵥ y) * (D x : ℂ))) = fun x => ((-Complex.I) * ψ (x ⬝ᵥ y)).re * D x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `[Complex.mul_re, Complex.mul_im]`. Rewrite using `[e]`. Conclude with `hre y (-Complex.I)`. Establish `hD0` using `GlobalTheory.CharFourierInj.real_eq_zero (G := κ → AF F) (A := κ → AF F) (fun y x => ψ (x ⬝ᵥ y)) hcy (fun y x x' => by simp only [add_dotProduct, AddChar.map_add_eq_mul]) (fun y y' x => by simp only [dotProduct_add, AddChar.map_add_eq_mul]) (fun x => by simp only [dotProduct_zero …`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `congrFun hD0 x` as an intermediate fact. Simplify using `only [hD, Pi.zero_apply, sub_eq_zero] at this`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 this`. Establish `htwo : ∀ φ ∈ schA F κ, ∀ φ' ∈ schA F κ, ∀ x a, star (M φ x) * M φ' (x + a) = star (φ x) * φ' (x + a)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Introduce `φ hφ φ' hφ' x a`. Apply `conj_mul_eq` to reduce the goal to its premises. Introduce `c`. Establish `hg : φ + c • schr ψ (a, 0) φ' ∈ schA F κ` using `(schA F κ).add_mem hφ ((schA F κ).smul_mem c (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ φ' hφ'))`. Establish `h1` using `hdiag _ hg x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[map_add, map_smul, hcomm _ φ' hφ']`. Simplify `h1` using `[schr]`. Distinguish the cases in `h0 : ∃ φ₀ ∈ schA F κ, ∃ x₀, φ₀ x₀ ≠ 0`. Take `⟨φ₀, hφ₀, x₀, hx₀⟩` from `h0`. Establish `hn1 : ‖M φ₀ x₀‖ = ‖φ₀ x₀‖` using `hdiag φ₀ hφ₀ x₀`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs : star (M φ₀ x₀) ≠ 0`. Rewrite using `[star_ne_zero, ← norm_ne_zero_iff, hn1, norm_ne_zero_iff]`. Conclude with `hx₀`. Use `⟨star (φ₀ x₀) / star (M φ₀ x₀), fun φ hφ => funext fun x => ?_⟩` and prove the remaining obligations. Establish `h2` using `htwo φ₀ hφ₀ φ hφ x₀ (x - x₀)`.
-
-Rewrite `h2` using `[add_sub_cancel]`. Rewrite using `[Pi.smul_apply, smul_eq_mul, div_mul_eq_mul_div, eq_div_iff hs]`. Conclude with `(mul_comm _ _).trans h2`. Use `push_neg at h0`. Use `⟨0, fun φ hφ => ?_⟩` and prove the remaining obligations.
-
-Establish `: φ = 0` using `funext fun x => h0 φ hφ x`. Rewrite using `[this, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelic_schur_lemma : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (ψ : AddChar (AF F) ℂ), IsStd ψ →
   ∀ M : Module.End ℂ ((κ → AF F) → ℂ), (∀ φ ∈ schA F κ, M φ ∈ schA F κ) →
@@ -187,7 +183,7 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.AdelicSchur.adelic_schur_lemma | exact _root_.GlobalTheory.AdelicSchur.adelic_schur_lemma | (intros; apply _root_.GlobalTheory.AdelicSchur.adelic_schur_lemma <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.adelic_intertwiner_eq_scalar : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (ψ : AddChar (AF F) ℂ), IsStd ψ →
   ∀ M : Module.End ℂ ((κ → AF F) → ℂ), (∀ φ ∈ schA F κ, M φ ∈ schA F κ) →

@@ -6,12 +6,12 @@ open ReciprocityTheory.ChartRestriction.G.Key
 namespace GlobalTheory.ThetaInversion
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.inversionStatement_holds`.
+A detailed English derivation is pending.
 -/
 theorem inversion : Chi.InversionStatement := GlobalTheory.inversionStatement_holds
 
 /- English proof (translation)
-The claim follows from `Chi.chi_of inversion Chi.spGen`.
+A detailed English derivation is pending.
 -/
 theorem chi : Chi.ChiStatement := Chi.chi_of inversion Chi.spGen
 

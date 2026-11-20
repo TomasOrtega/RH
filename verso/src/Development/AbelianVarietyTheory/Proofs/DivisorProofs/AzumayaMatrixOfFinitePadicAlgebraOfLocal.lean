@@ -8,9 +8,9 @@ open Function
 namespace GlobalTheory.AzumayaMatrixReduction
 
 /- English proof (translation)
-Introduce `hloc ℓ _ A _ _ _ Λ _ _ _ _ n hn`. Take `⟨ι, _, I, hlocI, hcop, hbot⟩` from `GlobalTheory.T.exists_localRing_quotients_coprime_iInf_eq_bot ℓ A`. Use `GlobalTheory.T.algEquiv_matrix_glue_crt A Λ ι I hcop hbot n fun i => ?_` and prove the remaining obligations. Use `haveI := hlocI i`. Use `haveI : IsAzumaya (A ⧸ I i) ((A ⧸ I i) ⊗[A] Λ) := GlobalTheory.T.azumaya_base_change A (A ⧸ I i) Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Module.Finite ℤ_[ℓ] (A ⧸ I i) := Module.Finite.of_surjective ((IsScalarTower.toAlgHom ℤ_[ℓ] A (A ⧸ I i)).toLinearMap) Ideal.Quotient.mk_surjective`. Use `hloc ℓ (A ⧸ I i) ((A ⧸ I i) ⊗[A] Λ) n ?_` and prove the remaining obligations. Use `haveI : Nontrivial A := (Ideal.Quotient.mk (I i)).domain_nontrivial`. Rewrite using `[Module.finrank_baseChange, hn]`.
+A detailed English derivation is pending.
 -/
 theorem of_local : (∀ (ℓ : ℕ) [Fact ℓ.Prime] (A : Type) [CommRing A] [IsLocalRing A] [Algebra ℤ_[ℓ] A]
     [Module.Finite ℤ_[ℓ] A] (Λ : Type) [Ring Λ] [Algebra A Λ] [IsAzumaya A Λ] [Module.Free A Λ]

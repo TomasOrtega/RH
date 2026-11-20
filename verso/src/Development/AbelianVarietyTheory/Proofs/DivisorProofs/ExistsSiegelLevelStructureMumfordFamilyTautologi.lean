@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TChart
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => ea) (Geo.Tor.chartPullSame M _ (fun _ => b) _ j fun _ => eb) h`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_both {X X' Y Z : Scheme.{0}} {L : LB X} {M : LB X'} {a : Y ⟶ X} {b : Y ⟶ X'}
     (h : LBIso (L.pull a) (M.pull b)) (j : Z ⟶ Y) {a' : Z ⟶ X} {b' : Z ⟶ X'} (ea : a' = j ≫ a) (eb : b' = j ≫ b) :
@@ -21,7 +21,7 @@ theorem lbIso_pull_both {X X' Y Z : Scheme.{0}} {L : LB X} {M : LB X'} {a : Y �
     (Geo.Tor.chartPullSame M _ (fun _ => b) _ j fun _ => eb) h
 
 /- English proof (translation)
-Substitute `e` using the available equality. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `ha.1.trans hb.1.symm`. Conclude with `ha.2.trans hb.2.symm`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem isSquare_eq {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {φ φ' : G'.left ⟶ G.left}
     {a b : (G' ⊗ G').left ⟶ (G ⊗ G).left} (ha : IsSquare φ a) (hb : IsSquare φ' b) (e : φ = φ') : a = b := by
@@ -33,21 +33,21 @@ theorem isSquare_eq {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {φ φ' : G'
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Take `⟨hR, hpos, -, hbi, hU⟩` from `h`. Establish `w : pullback.fst G₁.hom (jK R) ≫ G₁.hom = (pullback.snd G₁.hom (jK R) ≫ l) ≫ i`. Rewrite using `[Category.assoc, hl, pullback.condition]`. Take `⟨ω, ω₁, ω₂⟩ : ∃ ω : pullback G₁.hom (jK R) ⟶ A₀.left, ω ≫ a = pullback.fst G₁.hom (jK R) ∧ ω ≫ A₀.hom = pullback.snd G₁.hom (jK R) ≫ l` from `⟨ha.1.lift _ _ w, ha.1.lift_fst _ _ w, ha.1.lift_snd _ _ w⟩`. Establish `h₁` using `isGrpPullback_pullback G₁ (jK R)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hω : IsGrpPullback ((Over.pullback (jK R)).obj G₁) A₀ l ω` using `ha.cancel (h₁.congr hl.symm ω₁.symm) ω₂`. Use `⟨ω ≫ φ, hω.comp hφ, hR, hpos, fun R' _ _ _ ρ hR' hρ hf D ε hD => ?_⟩` and prove the remaining obligations. Take `⟨G', _, _, π, π₂, A, U, hπ, hπ₂, hL⟩` from `hU R' ρ hR' hρ hf D ε hD`. Take `⟨κ, hκ⟩` from `exists_genericMap hρ`. Use `letI := A.isAb.comm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Establish `w' : (pullback.fst G'.hom (jK R') ≫ π) ≫ G₁.hom = (pullback.snd G'.hom (jK R') ≫ κ) ≫ jK R`. Rewrite using `[Category.assoc, hπ.1.w, Category.assoc, hκ, pullback.condition_assoc]`. Take `⟨πK, p₁, p₂⟩ : ∃ πK : pullback G'.hom (jK R') ⟶ pullback G₁.hom (jK R), πK ≫ pullback.fst G₁.hom (jK R) = pullback.fst G'.hom (jK R') ≫ π ∧ πK ≫ pullback.snd G₁.hom (jK R) = pullback.snd G'.hom (jK R') ≫ κ` from `⟨pullback.lift _ _ w', pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `h₂` using `isGrpPullback_pullback G' (jK R')`. Establish `hπK : IsGrpPullback ((Over.pullback (jK R')).obj G') ((Over.pullback (jK R)).obj G₁) κ πK` using `h₁.cancel ((h₂.comp hπ).congr hκ.symm p₁.symm) p₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := U.gen_hom`. Use `haveI : IsMonHom U.gen.symm.hom := inferInstanceAs (IsMonHom U.gen.inv)`. Establish `hi` using `isGrpPullback_of_iso U.gen.symm`. Establish `e₁ : U.gen.hom.left ≫ U.gen.symm.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.symm_hom, U.gen.hom_inv_id, Over.id_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : U.gen.symm.hom.left ≫ U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.symm_hom, U.gen.inv_hom_id, Over.id_left]`. Establish `hβ` using `hi.comp (hπK.comp hω)`. Establish `hδ` using `hi.comp h₂`. Take `⟨β₂, hβ₂⟩ : ∃ β₂, IsSquare _ β₂` from `⟨_, GlobalTheory.LamPull.exists_isSquare hβ.1.w⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ₂, hδ₂⟩ : ∃ δ₂, IsSquare _ δ₂` from `⟨_, GlobalTheory.LamPull.exists_isSquare hδ.1.w⟩`. Establish `r : LBIso A.L (U.LG.L.pull (U.gen.symm.hom.left ≫ pullback.fst G'.hom (jK R')))` using `LBIso.trans A.isLB (pull_isLB A.isLB _) (pull_isLB U.LG.isLB _) (LBIso.chartPull (chartPullId A.L) (Geo.Tor.chartPullPull A.L (𝟙 _) (𝟙 _) rfl) (GlobalTheory.PolBaseChange.lbIso_refl A.isLB)) (lbIso_pull_both U.ext U.gen.symm.hom.left e₂.symm rfl)`. Establish `l₁` using `GlobalTheory.LamPull.lbIso_lam_pull hδ U.LG.isLB A.isLB r hδ₂`. Establish `i₁ : (abelian₂ G' U.LG.L).IsLB` using `DVR.linComb_isLB _ U.LG.isLB _ _`. Establish `i₀ : (abelian₂ A.A A.L).IsLB` using `DVR.linComb_isLB _ A.isLB _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e₃ : β₂ ≫ a₂ = δ₂ ≫ π₂` using `isSquare_eq (isSquare_comp hβ₂ ha₂) (isSquare_comp hδ₂ hπ₂) (by`. Simplify using `only [Category.assoc]`. Rewrite using `[ω₁, p₁])`. Establish `l₂` using `lbIso_pull_comp hL δ₂ e₃`. Establish `l₃` using `(lbIso_pull_comp hPa β₂ rfl).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `l₄` using `lbIso_pull_comp hPφ β₂ rfl`. Use `⟨G', inferInstance, inferInstance, π, A, U, hπ, κ, πK, (U.gen.symm.hom.left ≫ πK ≫ ω) ≫ φ, β₂ ≫ φ₂, hκ, p₁, (hβ.comp hφ).congr (by simp only [Category.id_comp, Category.assoc]) rfl, isSquare_comp hβ₂ hφ₂, LBIso.trans i₀ (pull_isLB i₁ _) (pull_isLB F.univ.isLB _) l₁ (LBIso.trans ( …` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[← Category.assoc, e₁, Category.id_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsMumPol.exists_isMumfordFam {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) {R : Type} [CommRing R]
     [IsDomain R] [IsLocalRing R] {Q : Data R} {G₁ : Over (Sp R)} [GrpObj G₁] [IsCommMonObj G₁] {P : LB (G2 G₁).left}
@@ -110,9 +110,9 @@ theorem IsMumPol.exists_isMumfordFam {o : Type} [CommRing o] {ζ : o} {g n : ℕ
   rw [← Category.assoc, e₁, Category.id_comp]
 
 /- English proof (translation)
-Establish `hle` using `powers_le_nonZeroDivisors_of_noZeroDivisors hf`. Use `haveI : IsDomain (Localization.Away f) := IsLocalization.isDomain_localization hle`. Establish `hinj : Function.Injective ((algebraMap R (Localization.Away f)).comp b)` using `(IsLocalization.injective (Localization.Away f) hle).comp hb`. Set `p : PrimeSpectrum (Localization.Away f)` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hp : Dense ({p} : Set (PrimeSpectrum (Localization.Away f)))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dense_iff_closure_eq, PrimeSpectrum.closure_singleton]`. Simplify using `[p]`. Use `Dense.mono ?_ hp` and prove the remaining obligations. Introduce and unpack `x rfl`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 hinj`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem dense_generic_away {o R : Type} [CommRing o] [CommRing R] [IsDomain R] {b : o →+* R} (hb : Function.Injective b)
     {f : R} (hf : f ≠ 0) :
@@ -132,11 +132,11 @@ theorem dense_generic_away {o R : Type} [CommRing o] [CommRing R] [IsDomain R] {
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Introduce `g n φ hn _ F C G₁ _ _ P hM hab c hc ⟨a, a₂, ha, ha₂, hPa⟩`. Take `⟨-, -, hinj, -, hrel, -⟩` from `Taut.isRegularLocalRing_and_isRelParam g n φ hn C`. Establish `hf : ∏ k, C.t k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => ne_zero_of_isRelParam hrel i`. Use `haveI : IsDomain (Localization.Away (∏ k, C.t k)) := IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors hf)`. Take `⟨yU, hs, hPB⟩` from `F.rep _ _ c inferInstance (dense_generic_away hinj hf) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : IsUnit (algebraMap C.R (FractionRing C.R) (∏ k, C.t k))` using `IsUnit.mk0 _ ((map_ne_zero_iff _ (IsFractionRing.injective C.R _)).2 hf)`. Set `l : Localization.Away (∏ k, C.t k) →+* FractionRing C.R` to `IsLocalization.Away.lift _ hu`. Establish `hl : l.comp (algebraMap C.R (Localization.Away (∏ k, C.t k))) = algebraMap C.R (FractionRing C.R)` using `IsLocalization.Away.lift_comp _ hu`. Establish `hl' : spMap l ≫ spMap (algebraMap C.R (Localization.Away (∏ k, C.t k))) = jK C.R`. Rewrite using `[← Geo.Tor.spMap_comp, hl]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, ψ₂, h₁, h₂, h₃, h₄⟩` from `hPB`. Take `⟨α₁, hα, hF⟩` from `hM.exists_isMumfordFam F hl' c.isLB ha ha₂ hPa h₁ h₂ h₃`. Use `⟨spMap l ≫ yU, α₁, yU, l, ⟨hM.2.2.1, hab, hα, hF, ?_⟩, ⟨ψ, ψ₂, h₁, h₂, h₃, h₄⟩, hl, rfl⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hs, Geo.Tor.spMap_comp, ← Category.assoc, hl']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Taut.exists_isFam_of_siegPre : ∀ (g n : ℕ) (φ : InvFun ℤ), 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (C : Taut (zetaAway n) g n φ) (G₁ : Over (Sp C.R)) [GrpObj G₁] [IsCommMonObj G₁] (P : LB (G2 G₁).left), IsMumPol C.Q G₁ P → (∀ p : Sp C.R, p ∈ abLocus G₁ ↔ ∏ k, C.t k ∉ p.asIdeal) → ∀ c : SiegPre g n (zetaAway n) (spMap ((algebraMap C.R (Localization.Away (∏ k, C.t k))).comp C.b)), c.Principal → (∃ (a : c.A.left ⟶ G₁.left) (a₂ : (G2 c.A).left ⟶ (G2 G₁).left), IsGrpPullback c.A G₁ (spMap (algebraMap C.R (Localization.Away (∏ k, C.t k)))) a ∧ IsSquare a a₂ ∧ LBIso c.P (P.pull a₂)) → ∃ (y : Sp (FractionRing C.R) ⟶ F.X) (α₁ : pullback G₁.hom (jK C.R) ⟶ F.univ.A.left) (yU : Sp (Localization.Away (∏ k, C.t k)) ⟶ F.X) (l : Localization.Away (∏ k, C.t k) →+* FractionRing C.R), C.IsFam F G₁ y α₁ ∧ SiegPB c F.univ yU ∧ l.comp (algebraMap C.R (Localization.Away (∏ k, C.t k))) = algebraMap C.R (FractionRing C.R) ∧ y = spMap l ≫ yU := by
   intro g n φ hn _ F C G₁ _ _ P hM hab c hc ⟨a, a₂, ha, ha₂, hPa⟩

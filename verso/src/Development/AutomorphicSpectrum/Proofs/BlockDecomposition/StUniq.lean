@@ -6,21 +6,19 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.EdgeStair
 
 /- English proof (translation)
-Introduce `hcol R _ C _ F T hT j z`. Take `⟨hι, hdv, hinj, hex0, hex⟩` from `hcol R C F T hT`. Establish `key : ∀ (s k : ℕ) (x : Cn (T.K s) k), T.St z s k x → T.BZ s k x → z ∈ (cx F).B j`. Introduce `s`. Proceed by induction on `s with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `k x hS hB`. Take `⟨h, rfl⟩` from `hS`. Substitute `h` using the available equality. Consider the cases of `j with`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Establish `h0 : T.ιC 0 z = 0` using `hB`. Establish `hz : z = 0` using `hinj 0 (by rw [h0, map_zero])`. Rewrite using `[hz]`. Conclude with `Submodule.zero_mem _`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ k`. Take `⟨b, hb, hdb⟩` from `hB`. Take `⟨z', rfl⟩` from `(hex0 k b).1 hb`. Use `(⟨z', ?_⟩ : z ∈ LinearMap.range (d F k))` and prove the remaining obligations. Apply `hinj (k + 1)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hι]`. Conclude with `hdb`. Consider the case `succ s ih`. Introduce `k x hS hB`. Take `⟨a, rfl, hS'⟩` from `hS`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `k with`. Consider the case `zero`. Conclude with `ih 1 _ hS' ⟨a, hB, by simp⟩`. Consider the case `succ k`. Take `⟨b, hb, hdb⟩` from `hB`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b', rfl⟩` from `(hex s k b).1 hb`. Use `ih (k + 2) _ hS' ⟨(-1 : ℤ) ^ (k + 1) • (a - d _ k b'), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, map_sub, ← hdv, hdb, sub_self, smul_zero]`. Rewrite using `[map_zsmul, map_sub, d_d, sub_zero]`. Introduce `s k x hS hB`.
-
-Conclude with `key s k x hS hB`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stUniq : CrystallineSemistableComparison.E.StCol → CrystallineSemistableComparison.E.StUniq := by
   intro hcol R _ C _ F T hT j z

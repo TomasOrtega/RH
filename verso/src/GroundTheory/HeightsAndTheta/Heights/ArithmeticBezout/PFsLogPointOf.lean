@@ -7,11 +7,11 @@ namespace GroundTheory.Heights₂.Heights
 open Matrix
 
 /- English proof (translation)
-Introduce `n h v y`. Establish `hdet : IsUnit (h.matᵀ).det` using `by rw [Matrix.det_transpose]; exact h.isUnit_det`. Establish `hd : h.dualNorm (h.pointOf y) = (HermNorm.std n).dualNorm (fun i => y i)`. Simplify using `only [HermNorm.dualNorm, HermNorm.pointOf, HermNorm.std, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec, Matrix.transpose_one, inv_one]`. Establish `hn : (HermNorm.std n).norm (h.mat *ᵥ v) = h.norm v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [HermNorm.norm, HermNorm.std, Matrix.one_mulVec]`. Establish `hs : ∑ j, v j * h.pointOf y j = ∑ i, (h.mat *ᵥ v) i * y i`. Use `Matrix.dotProduct_mulVec v h.matᵀ (fun i => y i)` as an intermediate fact. Rewrite `this` using `[Matrix.vecMul_transpose]`. Simplify `this` using `[dotProduct, HermNorm.pointOf]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `fsLog nrmv`. Rewrite using `[hd, hn]`. Simplify using `only [mul_assoc, ← Finset.mul_sum, hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem FsLogPointOf.proof : FsLogPointOf.Statement := by
   intro n h v y

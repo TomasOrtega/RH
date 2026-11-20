@@ -11,27 +11,23 @@ namespace GlobalTheory
 open SplitOffPlaces Formalism.L2.Col Formalism.HermitianLatticesTheory in
 
 /- English proof (translation)
-Introduce `D Pb Pg S P hPg hS hP`. Establish `key : ∀ PP ∈ Pg, PP ≠ P ∧ ¬ Formalism.IndefR.Lev.IsConjPl PP P`. Introduce `PP h`. Take `⟨x, hx, hxP⟩` from `hP _ (hS PP h)`. Establish `hx' : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x ∈ PP.asIdeal` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun e => hxP _ rfl (e ▸ hx'), fun hc => ?_⟩` and prove the remaining obligations. Take `⟨c', h1, h2⟩` from `hc _ hx'`. Use `hxP c' ?_ h1` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `(D.sp.cm.fixed _).2 ⟨(x : D.host.F), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ∀ PP ∈ Pg, PP ≠ P` using `fun PP h => (key PP h).1`. Establish `hne' : ∀ PP ∈ Pg, PP ≠ conjSpec P`. Introduce `PP h e`. Apply `(key PP h).2` to reduce the goal to its premises. Introduce `c hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[e]`. Conclude with `⟨cO D.host.E c, hc, rfl⟩`. Establish `hg : ∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Introduce `k hk`. Establish `h1 : Pb.pb k ≠ P.under (𝓞 D.host.K)` using `fun e => hne P ((hPg P).2 ⟨k, e.symm⟩) rfl`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Pb.pb k ≠ (conjSpec P).under (𝓞 D.host.K)` using `fun e => hne' (conjSpec P) ((hPg _).2 ⟨k, e.symm⟩) rfl`. Take `⟨x, hx, hx1, hx2⟩` from `exists_mem_not_mem h1 h2`. Take `⟨x', n, hx', hn⟩` from `exists_norm D x`. Establish `hnP : (n : 𝓞 D.host.E) ∉ P.asIdeal`. Introduce `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (n : 𝓞 D.host.E) = algebraMap (𝓞 D.host.K) (𝓞 D.host.E) x * cO D.host.E (algebraMap (𝓞 D.host.K) (𝓞 D.host.E) x)`. Rewrite using `[← hx', ← map_mul, hn, map_intCast]`. Rewrite `h` using `[e]`. Break down `P.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `hx1 h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hx2 h`. Establish `hnb : (n : 𝓞 D.host.K) ∈ (Pb.pb k).asIdeal` using `hn ▸ Ideal.mul_mem_right _ _ hx`. Establish `hp : Prime (D.host.g k : ℤ)` using `Nat.prime_iff_prime_int.1 (D.host.g_prime k)`. Distinguish the cases in `hd : (D.host.g k : ℤ) ∣ n`. Take `⟨m, rfl⟩` from `hd`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result.
 
-Apply `hnP` to reduce the goal to its premises. Use `push_cast`. Conclude with `Ideal.mul_mem_right _ _ hk`. Take `⟨a, b, hab⟩` from `(hp.irreducible.coprime_iff_not_dvd).2 hd`. Apply `(Pb.pb k).isPrime.ne_top` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e : (1 : 𝓞 D.host.K) = a * ((D.host.g k : ℕ) : 𝓞 D.host.K) + b * n`. Conclude with `congrArg (Int.cast : ℤ → 𝓞 D.host.K) hab.symm` after adjusting the coercions. Rewrite using `[e]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (Pb.pb_over k)) (Ideal.mul_mem_left _ _ hnb)`.
-
-Use `⟨?_, key⟩` and prove the remaining obligations. Introduce `h`. Rewrite `h` using `[Nat.cast_mul]`. Break down `P.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `hg 0 h`.
-
-Conclude with `hg 1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem offS_not_type_places : ∀ {D : D7} (Pb : Formalism.L2.Host.PiBar D.host) (Pg : Finset (HeightOneSpectrum (𝓞 D.host.E))) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (P : HeightOneSpectrum (𝓞 D.host.E)), (∀ PP, PP ∈ Pg ↔ ∃ k, Pb.Div k PP) → (∀ PP ∈ Pg, PP.under (𝓞 D.host.F) ∈ S) → OffS D S P → ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal ∧ ∀ PP ∈ Pg, PP ≠ P ∧ ¬ Formalism.IndefR.Lev.IsConjPl PP P := by
   intro D Pb Pg S P hPg hS hP

@@ -38,21 +38,21 @@ variable {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ 
 variable {act R M}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `a ha n _`. Establish `: ∀ n : M, ((a • n : M) : E) ∈ sm act M ((fun j => (f j : S)) '' {j | j.val < k})`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Submodule.span_induction ?_ ?_ ?_ ?_ ha` and prove the remaining obligations. Introduce `b hb n`. Take `⟨i, hi, rfl⟩` from `List.mem_take_iff_getElem.1 hb`. Establish `hi' : i < k` using `lt_of_lt_of_le hi (min_le_left _ _)`. Establish `hid : i < d`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lt_of_lt_of_le hi (min_le_right _ _)` as an intermediate fact. Simplify using `using this`. Rewrite using `[hsm]`. Use `Submodule.mem_iSup_of_mem ((f ⟨i, hid⟩ : S)) (Submodule.mem_iSup_of_mem ⟨⟨i, hid⟩, hi', rfl⟩ ?_)` and prove the remaining obligations. Simplify using `using ⟨n, n.2, rfl⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `n`. Simplify using the standard rewrite rules. Introduce `a b _ _ ha hb n`. Rewrite using `[add_smul]`. Simplify using `using Submodule.add_mem _ (ha n) (hb n)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `a b _ hb n`. Rewrite using `[smul_eq_mul, mul_comm, mul_smul]`. Conclude with `hb (a • n)`. Conclude with `this n`. Introduce `a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using Submodule.add_mem _ ha hb`. Introduce `hx`. Establish `hle : sm act M ((fun j => (f j : S)) '' {j | j.val < k}) ≤ ((Ideal.ofList ((List.ofFn f).take k) • ⊤ : Submodule R M).restrictScalars ℂ).map M.subtype`. Use `iSup₂_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩ _ ⟨m, hm, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : f j • (⟨m, hm⟩ : M) ∈ (Ideal.ofList ((List.ofFn f).take k) • ⊤ : Submodule R M)`. Use `Submodule.smul_mem_smul (Ideal.subset_span ?_) Submodule.mem_top` and prove the remaining obligations. Use `List.mem_take_iff_getElem.2 ⟨j.val, ?_, by simp⟩` and prove the remaining obligations. Simplify using `using hj`. Conclude with `Submodule.mem_map.2 ⟨_, (Submodule.restrictScalars_mem ℂ _ _).2 hmem, hsm _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.1 (hle hx)`. Establish `hyx' : y = x` using `Subtype.ext hyx`. Rewrite using `[← hyx']`. Conclude with `(Submodule.restrictScalars_mem ℂ _ _).1 hy`.
+A detailed English derivation is pending.
 -/
 private theorem mem_ofList_iff [Module R M] [IsScalarTower ℂ R M] (hsm : ∀ (a : R) (m : M), ((a • m : M) : E) = act a m)
     {d : ℕ} (f : Fin d → R) (k : ℕ) (x : M) :
@@ -101,7 +101,7 @@ private theorem mem_ofList_iff [Module R M] [IsScalarTower ℂ R M] (hsm : ∀ (
     exact (Submodule.restrictScalars_mem ℂ _ _).1 hy
 
 /- English proof (translation)
-Simplify using `[wd, hsm]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wd_coe [Module R M] [IsScalarTower ℂ R M]
     (hsm : ∀ (a : R) (m : M), ((a • m : M) : E) = act a m) {κ : Type} [LinearOrder κ] (r : κ → R)
@@ -111,31 +111,27 @@ private theorem wd_coe [Module R M] [IsScalarTower ℂ R M]
   simp [wd, hsm]
 
 /- English proof (translation)
-Use `letI := modR act R M hS`. Establish `hsm : ∀ (a : R) (m : M), ((a • m : M) : E) = act a m` using `fun _ _ => rfl`. Use `haveI : IsScalarTower ℂ R M := ⟨fun c a m => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `act ((c • a : R) : S) (m : E) = c • act a m`. Use the proof step `simp)⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfR : ∀ j, f j ∈ R`. Introduce `j`. Take `⟨a, ha, h⟩` from `hf j`. Rewrite using `[h]`. Conclude with `sum_mem fun l _ => R.mul_mem (ha l) (hr l)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `r' : κ → R` to `fun l => ⟨r l, hr l⟩`. Set `f' : Fin d → R` to `fun j => ⟨f j, hfR j⟩`. Establish `hreg : RingTheory.Sequence.IsWeaklyRegular M (List.ofFn f')`. Use `⟨fun i hi => ?_⟩` and prove the remaining obligations. Establish `hid : i < d` using `by simpa using hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[isSMulRegular_on_quot_iff_lsmul_comap_le]`. Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_comap, LinearMap.lsmul_apply, mem_ofList_iff hsm]`. Rewrite using `[mem_ofList_iff hsm]`. Establish `hget : (List.ofFn f')[i] = f' ⟨i, hid⟩` using `by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[hget, hsm]`. Conclude with `hReg ⟨i, hid⟩ x x.2 hx`. Establish `hsp : ∀ g ∈ List.ofFn f', InSp (⊤ : Subalgebra ℂ R) r' g`. Introduce `g hg`. Take `⟨j, rfl⟩` from `(List.mem_ofFn' _ _).1 hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨a, ha, h⟩` from `hf j`. Use `⟨fun l => ⟨a l, ha l⟩, fun _ => trivial, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify `h` using `[f', r']`. Establish `key` using `hK d R M κ r' (List.ofFn f') (by simp) hreg hsp`. Introduce `m hm c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hcC, hcD⟩` from `hc`. Establish `hcM : ∀ s, c s ∈ M`. Introduce `s`. Establish `: c s ∈ if (s.card : ℤ) = m then M else ⊥` using `hcC s (Set.mem_univ s)`. Use `split_ifs at this with h`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Rewrite `this` using `[Submodule.mem_bot]`. Conclude with `this ▸ M.zero_mem`. Set `c' : Finset κ → M` to `fun s => ⟨c s, hcM s⟩`. Establish `hc' : c' ∈ (kos (Algebra.lsmul ℂ ℂ M) (⊤ : Submodule ℂ M) r').Z m`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Check the elementary cases of the proposition. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `s _`. Establish `: c s ∈ if (s.card : ℤ) = m then M else ⊥` using `hcC s (Set.mem_univ s)`. Express the relevant statement in the definitionally equal form `c' s ∈ if (s.card : ℤ) = m then (⊤ : Submodule ℂ M) else ⊥`. Use `split_ifs at this ⊢ with h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Discharge the goal by the elementary cases of `trivial`. Rewrite `this`, the goal using `[Submodule.mem_bot]`. Conclude with `Subtype.ext this`. Use `LinearMap.mem_ker.2 (funext fun t => Subtype.ext ?_)` and prove the remaining obligations. Use `wd_coe hsm r' c' t` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `this.trans (congrFun (LinearMap.mem_ker.1 hcD) t)`. Take `⟨y, hy, hyc⟩` from `key m hm hc'`. Use `⟨fun s => (y s : E), ?_, ?_⟩` and prove the remaining obligations. Introduce `s _`. Establish `: y s ∈ if (s.card : ℤ) = m - 1 then (⊤ : Submodule ℂ M) else ⊥` using `hy s (Set.mem_univ s)`.
-
-Express the relevant statement in the definitionally equal form `(y s : E) ∈ if (s.card : ℤ) = m - 1 then M else ⊥`. Use `split_ifs at this ⊢ with h`. Conclude with `(y s).2`. Rewrite `this`, the goal using `[Submodule.mem_bot]`. Rewrite using `[this]`.
-
-Both sides reduce to the same expression. Use function extensionality and compare the values at `t`. Establish `h1` using `wd_coe hsm r' y t`. Establish `h2 : ((wd (fun l => Algebra.lsmul ℂ ℂ M (r' l)) y t : M) : E) = c t` using `congrArg (fun z : Finset κ → M => ((z t : M) : E)) hyc`. Conclude with `h1.symm.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem koszulExact_of_regular (hK : KoszulExactBelowLengthOfWeaklyRegular) {κ : Type} [LinearOrder κ] [Fintype κ] (r : κ → S) {d : ℕ}
     (f : Fin d → S) (hS : Stab act R M) (hr : ∀ l, r l ∈ R) (hReg : Reg act M f)
@@ -214,7 +210,7 @@ end UpperTheory.Gal.productCup_of_system
 end
 
 /- English proof (translation)
-Introduce `hK S E _ _ _ _ act κ _ _ R M r d f hS hr hReg hf`. Conclude with `koszulExact_of_regular hK r f hS hr hReg hf`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.firstCohomologyBound_of_boundaryBound :
     KoszulExactBelowLengthOfWeaklyRegular → K1 := by

@@ -10,7 +10,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GroundTheory.PA
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[l]) (S := ℚ_[l]) (j := PositivityTheory.LocInh.qB l) (k := period_ring_base.qB l) (RingHom.ext fun z => by simp only [RingHom.comp_apply] rw [show (algebraMap ℤ_[l] ℚ_[l] z) = (z : ℚ_[l]) from rfl, PositivityTheory …`.
+A detailed English derivation is pending.
 -/
 theorem qB_eq (q : ℚ_[l]) : PositivityTheory.LocInh.qB l q = period_ring_base.qB l q :=
   RingHom.congr_fun (IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[l]) (S := ℚ_[l])
@@ -23,13 +23,13 @@ theorem qB_eq (q : ℚ_[l]) : PositivityTheory.LocInh.qB l q = period_ring_base.
 variable {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI)
 
 /- English proof (translation)
-The claim follows from `(PositivityTheory.LocInh.tie_q T q).trans (qB_eq q)`.
+A detailed English derivation is pending.
 -/
 theorem tie_qB (q : ℚ_[l]) : T.eB (algebraMap ℚ_[l] P.R.B q) = period_ring_base.qB l q :=
   (PositivityTheory.LocInh.tie_q T q).trans (qB_eq q)
 
 /- English proof (translation)
-The claim follows from `T.actB g b`.
+A detailed English derivation is pending.
 -/
 theorem tie_σB (g : GQ l) (b : P.R.B) : T.eB (P.actQ g b) = period_ring_base.σB g (T.eB b) := T.actB g b
 

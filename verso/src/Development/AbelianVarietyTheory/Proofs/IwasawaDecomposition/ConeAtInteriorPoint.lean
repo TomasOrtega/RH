@@ -17,9 +17,9 @@ section Empty
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hB : ∀ β : LinearMap.BilinForm ℤ X, β = 0` using `fun β => LinearMap.ext₂ fun a b => by rw [Subsingleton.elim a 0]; simp`. Establish `hz : ∀ β : LinearMap.BilinForm ℤ X, φ.evalZ β = 0` using `fun β => φ.eval_of_subsingleton _`. Use `⟨fun i => i.elim0, fun i => i.elim0, ?_, fun c _ => ?_, ?_⟩` and prove the remaining obligations. Establish `: Subsingleton (balForms H.bar X)` using `⟨fun a b => Subtype.ext ((hB a).trans (hB b).symm)⟩`. Conclude with `⟨0, Module.Basis.empty _, fun i => i.elim0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty]`. Conclude with `φ.eval_of_subsingleton _`. Use `⟨1, 0, one_pos, fun i => i.elim0, fun β _ _ => by simp [hz], fun β _ _ _ => ⟨1, Fin.elim0, one_pos, ?_⟩⟩` and prove the remaining obligations. Simplify using `[hB β]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCone_empty (H : Host E) (φ : InvFun (𝓞 E)) (X : Type) [AddCommGroup X] [Module (𝓞 E) X]
     [Module.Finite (𝓞 E) X] [Subsingleton X] : ConeO H φ X 0 Fin.elim0 := by
@@ -35,7 +35,7 @@ theorem isCone_empty (H : Host E) (φ : InvFun (𝓞 E)) (X : Type) [AddCommGrou
     simp [hB β]
 
 /- English proof (translation)
-Introduce `W _ _ _ _ ϖ _ f be _ _`. Use `⟨Fin.elim0, fun i => i.elim0, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[Subsingleton.elim a 0]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inCone_empty {R : Type} [CommRing R] [IsDomain R] (Dg : DegPre R) [Subsingleton Dg.X] :
     InCone Dg (m := 0) Fin.elim0 := by
@@ -55,9 +55,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {c : Coeff l}
 
 /- English proof (translation)
-Unfold `Model.j`. Establish `: IsIso (pullback.fst Y.s (spMap (RingHom.id c.F)))`. Establish `: IsIso (spMap (RingHom.id c.F))` using `by show IsIso (Spec.map (CommRingCat.ofHom (RingHom.id c.F)))`. Rewrite using `[show CommRingCat.ofHom (RingHom.id c.F) = 𝟙 (CommRingCat.of c.F) from rfl, Spec.map_id]`. Use `infer_instance`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `infer_instance`. Use `Y.jQ_open` as an intermediate fact. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_j (Y : Model Xo c (RingHom.id c.F)) : IsOpenImmersion Y.j := by
   unfold Model.j
@@ -71,9 +71,9 @@ theorem isOpenImmersion_j (Y : Model Xo c (RingHom.id c.F)) : IsOpenImmersion Y.
   infer_instance
 
 /- English proof (translation)
-Use `c.fin` as an intermediate fact. Establish `: NumberField c.F` using `{}`. Establish `: IsProper Y.s` using `projProper _ _ _ Y.proj`. Take `⟨R, _, _, _, ξ, hR, hξ, he, hu, hsp⟩` from `GlobalTheory.T.exists_complete_local_etale_neighbourhood c.F Y.X Y.s inferInstance Y.normal (Y.j w)`. Establish `hj` using `isOpenImmersion_j Y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : Set.range ξ ⊆ Set.range Y.j` using `fun _ ⟨p, hp⟩ => hp ▸ (hsp p).mem_open Y.j.isOpenEmbedding.isOpen_range ⟨w, rfl⟩`. Take `⟨t, m, hpol, hth, hab⟩` from `GlobalTheory.T.exists_semi_abelian_polarized Y R ξ hR hr`. Take `⟨P, hP, hX⟩` from `GlobalTheory.T.exists_uniformization_abelian R t hR hpol hth hab`. Conclude with `⟨R, _, _, _, ξ, t, m, P, 0, Fin.elim0, hR, hξ, he, hu, hP, isCone_empty H φ _, inCone_empty _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coneAt_j (φ : InvFun (𝓞 E)) (Y : Model Xo c (RingHom.id c.F)) (w : Xo.XF c) :
     GlobalTheory.GenFan.ConeAt (ConeO H φ) Y (Y.j w) := by

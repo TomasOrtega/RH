@@ -25,9 +25,9 @@ def covHom : covSub p q →* UpqT p q where
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-Establish `h1` using `x.2.2`. Establish `h2` using `congrArg Matrix.det ((mem_Upq_iff p q _).1 x.2.1)`. Establish `hJ : (Jm p q).det ≠ 0` using `fun h => by`. Use `congrArg Matrix.det (Jm_sq p q)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, Matrix.det_one, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, mul_right_comm, mul_eq_right₀ hJ]`. Establish `h3` using `congrArg norm h2`. Rewrite `h3` using `[norm_mul, norm_star, ← h1, norm_pow, norm_one, ← pow_add]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sq_one (x : covSub p q) : ‖((x.1.2 : ℂˣ) : ℂ)‖ = 1 := by
   have h1 := x.2.2
@@ -42,17 +42,17 @@ theorem norm_sq_one (x : covSub p q) : ‖((x.1.2 : ℂˣ) : ℂ)‖ = 1 := by
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h3
 
 /- English proof (translation)
-Establish `i1 : BorelSpace (UpqT p q)` using `⟨rfl⟩`. Establish `i2 : IsTopologicalGroup (UpqT p q)` using `inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq p q))`. Establish `hcl : IsClosed (Formalism.UG.Upq p q : Set (GL (Ix p q) ℂ))`. Establish `hv : Continuous fun x : GL (Ix p q) ℂ => (x : Mat p q)` using `Units.continuous_val`. Conclude with `isClosed_eq ((hv.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hv) continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i3 : LocallyCompactSpace (UpqT p q)` using `hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `i5 : SecondCountableTopology (Mat p q)` using `inferInstanceAs (SecondCountableTopology (Ix p q → Ix p q → ℂ))`. Establish `i7 : SecondCountableTopology (Mat p q)ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.secondCountableTopology`. Establish `i6 : SecondCountableTopology (GL (Ix p q) ℂ)` using `Units.isEmbedding_embedProduct.secondCountableTopology`. Establish `i4 : SecondCountableTopology (UpqT p q)` using `(Topology.IsEmbedding.subtypeVal (p := fun g : GL (Ix p q) ℂ => g ∈ Formalism.UG.Upq p q)).secondCountableTopology`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : (stdGrp p q).G →* UpqT p q` to `covHom p q`. Establish `fc : Continuous f` using `Continuous.subtype_mk (continuous_fst.comp continuous_subtype_val) _`. Establish `fs : Function.Surjective f`. Introduce `g`. Set `g' : Formalism.UG.Upq p q` to `g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `IsAlgClosed.exists_eq_mul_self ((g'.1 : Mat p q).det)`. Establish `h0 : z ≠ 0` using `fun h => (Matrix.isUnits_det_units g'.1).ne_zero (by rw [hz, h, zero_mul])`. Conclude with `⟨(⟨(g'.1, Units.mk0 z h0), g'.2, by rw [hz, sq]; rfl⟩ : covSub p q), rfl⟩`. Establish `fp : Filter.Tendsto f (Filter.cocompact _) (Filter.cocompact _)`. Use `Filter.hasBasis_cocompact.tendsto_right_iff.2 fun K hK => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hS : IsCompact (Set.range Circle.toUnits)` using `isCompact_range AdBC.toUnits_cont`. Establish `hK' : IsCompact ((fun g : Formalism.UG.Upq p q => g.1) '' K)` using `hK.image continuous_subtype_val`. Establish `hc` using `(covSub_closed p q).isClosedEmbedding_subtypeVal.isCompact_preimage (hK'.prod hS)`. Use `Filter.mem_of_superset hc.compl_mem_cocompact fun x hx hx' => hx ⟨⟨f x, hx', rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `⟨⟨_, mem_sphere_zero_iff_norm.2 (norm_sq_one p q x)⟩, Units.ext rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hm` using `Measure.isHaarMeasure_map (stdGrp p q).haar f fc fs fp`. Use `⟨Measure.haarScalarFactor ν (Measure.map f (stdGrp p q).haar), Measure.haarScalarFactor_pos_of_isHaarMeasure _ _, ?_⟩` and prove the remaining obligations. Establish `e` using `Measure.isMulLeftInvariant_eq_smul ν (Measure.map f (stdGrp p q).haar)`. Use `conv_rhs => rw [e]`. Conclude with `Measure.map_smul _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cov_haar (ν : Measure (UpqT p q)) (hν : ν.IsHaarMeasure) : ∃ c : NNReal, 0 < c ∧
     Measure.map (stdGrp p q).covU (c • (stdGrp p q).haar) = ν := by
@@ -99,7 +99,7 @@ def DSPar (cd : CDHaar) : Prop :=
   ∀ (p q : ℕ) (lam : Ix p q → ℚ), IsParam lam → ∃ R : DSRep (grpCd p q cd), HasParam R lam
 
 /- English proof (translation)
-Use `⟨fun a => -((finSumFinEquiv a : Fin (p + q)) : ℕ), fun a b h => ?_, fun a b h => ?_, fun a => ⟨-(2 * ((finSumFinEquiv a : Fin (p + q)) : ℕ)), by push_cast; ring⟩, fun a b => ⟨-((finSumFinEquiv a : Fin (p + q)) : ℕ) + ((finSumFinEquiv b : Fin (p + q)) : ℕ), by push_cast; ring⟩⟩` and prove the remaining obligations. Apply `finSumFinEquiv.injective` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Conclude with `neg_injective h` after adjusting the coercions. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp only [posC] at h <;> simp <;> exact h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem param_ex (p q : ℕ) : ∃ lam : Ix p q → ℚ, IsParam lam := by
   refine ⟨fun a => -((finSumFinEquiv a : Fin (p + q)) : ℕ), fun a b h => ?_, fun a b h => ?_,
@@ -123,7 +123,7 @@ def provC (cd : CDHaar) (hF : FockExists) (hD : DSPar cd) : ProvA where
 variable {D : D7}
 
 /- English proof (translation)
-Use `conv_lhs => rw [← V.frame.sum_repr x, ← V.frame.sum_repr y]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, HSpace.gram, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_coord (V : HSp D) (x y : V.V) :
     V.hT x y = ∑ i, ∑ j, star (V.frame.repr x i) * V.gram i j * V.frame.repr y j := by
@@ -136,7 +136,7 @@ theorem gram_coord (V : HSp D) (x y : V.V) :
 def colM (V : HSp D) {n : ℕ} (v : Fin n → V.V) : Matrix (Fin V.rank) (Fin n) D.host.E := fun i k => V.frame.repr (v k) i
 
 /- English proof (translation)
-Rewrite using `[gram_coord, Matrix.mul_apply, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem colM_gram (V : HSp D) {n m : ℕ} (v : Fin n → V.V) (w : Fin m → V.V) (a : Fin n) (b : Fin m) :
     (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (colM V v) * V.gram * colM V w) a b = V.hT (v a) (w b) := by
@@ -146,14 +146,14 @@ theorem colM_gram (V : HSp D) {n m : ℕ} (v : Fin n → V.V) (w : Fin m → V.V
   rfl
 
 /- English proof (translation)
-The claim follows from `(colM_gram V v (fun _ : Fin 1 => z) a 0)`.
+A detailed English derivation is pending.
 -/
 theorem colM_vec (V : HSp D) {n : ℕ} (v : Fin n → V.V) (z : V.V) (a : Fin n) :
     (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (colM V v) * V.gram).mulVec (V.frame.repr z) a = V.hT (v a) z :=
   (colM_gram V v (fun _ : Fin 1 => z) a 0)
 
 /- English proof (translation)
-Use extensionality with `i k`. Rewrite using `[frameMat, LinearMap.toMatrix_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frameMat_eq (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V) : frameMat A B ι = colM A fun k => ι (B.frame k) := by
   ext i k
@@ -161,7 +161,7 @@ theorem frameMat_eq (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V) : frameMat A B
   rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[frameMat_eq, colM_gram, h]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frame_rel {A B : HSp D} {ι : B.V →ₗ[D.host.E] A.V} (h : HSpace.IsIsomEmb B A ι) :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat A B ι) * A.gram * frameMat A B ι = B.gram := by
@@ -206,17 +206,15 @@ def besselFlagHyperbolic (D : D7) (c : Fin D.R.rS → D.host.E) (hc : ∀ i, c i
   y := y
 
 /- English proof (translation)
-Establish `hfe : ∀ i k, (D.sp.Y 0).hT (D.sp.hypF i) (D.sp.hypE k) = if k = i then 1 else 0` using `fun i k => by`. Rewrite using `[← (D.sp.Y 0).herm.eq, D.sp.hyp_ef]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨⟨?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : LinearIndependent D.host.E D.sp.hypF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Establish `e` using `congrArg (fun x => (D.sp.Y 0).hT (D.sp.hypE i) x) hg`. Simplify `e` using `[map_sum, D.sp.hyp_ef]`. Conclude with `h1.map' (D.sp.Y 0).frame.equivFun.toLinearMap (LinearEquiv.ker _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun a b => (colM_gram (D.sp.Y 0) D.sp.hypF D.sp.hypF a b).trans ?_` and prove the remaining obligations. Conclude with `D.sp.hyp_ff a b`. Use `Matrix.ext fun a b => (colM_gram (D.sp.Y 0) D.sp.hypE D.sp.hypF a b).trans ?_` and prove the remaining obligations. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_eq]`. Conclude with `(D.sp.hyp_ef a a).trans (if_pos rfl)`. Rewrite using `[Matrix.one_apply_ne h]`. Conclude with `(D.sp.hyp_ef a b).trans (if_neg h)`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[frameMat_eq]`. Use `(colM_gram (D.sp.Y 0) (fun k => D.sp.iXY 0 ((D.sp.X 0).frame k)) D.sp.hypF a b).trans ?_` and prove the remaining obligations. Rewrite using `[(D.sp.hyp_orthX b _).2]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `a`.
-
-Use `(colM_vec (D.sp.Y 0) D.sp.hypF D.sp.zm a).trans ?_` and prove the remaining obligations. Rewrite using `[← (D.sp.Y 0).herm.eq, (D.sp.hyp_orthz a).2]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bessel_flag_dual : IsDualFlag (besselFlagHyperbolic D (fun _ => 1) (fun _ => one_ne_zero) 1) (colM (D.sp.Y 0) D.sp.hypF) := by
   have hfe : ∀ i k, (D.sp.Y 0).hT (D.sp.hypF i) (D.sp.hypE k) = if k = i then 1 else 0 := fun i k => by
@@ -287,7 +285,7 @@ def prM (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V) : Matrix (Fin B.rank) (Fin
   B.gram⁻¹ * (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat A B ι) * A.gram)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, frame_rel h, prM, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (gram_det_ne B).isUnit, Matrix.one_mul, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem perp_rel (h : HSpace.IsIsomEmb B A ι) :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat A B ι) * A.gram * (1 - frameMat A B ι * prM A B ι) = 0 := by
@@ -295,9 +293,9 @@ theorem perp_rel (h : HSpace.IsIsomEmb B A ι) :
     Matrix.mul_nonsing_inv _ (gram_det_ne B).isUnit, Matrix.one_mul, sub_self]
 
 /- English proof (translation)
-Establish `e2' : g * Q.map f = Q.map f`. Use extensionality with `i j`. Conclude with `congrFun (e2 j) i`. Establish `e3 : M.map f * P.map f + Q.map f = 1`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_add _ f.map_add, hQ, Matrix.map_one _ f.map_zero f.map_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, ← e2', Matrix.mul_assoc, ← Matrix.mul_add, e3, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem emb_gen {E R : Type} [CommRing E] [CommRing R] {a b : ℕ} (f : E →+* R) (M : Matrix (Fin a) (Fin b) E)
     (P : Matrix (Fin b) (Fin a) E) (Q : Matrix (Fin a) (Fin a) E) (hQ : M * P + Q = 1) (g : Matrix (Fin a) (Fin a) R)
@@ -314,7 +312,7 @@ def coM (A B : HSp D) (ι : B.V →ₗ[D.host.E] A.V) : Matrix (Fin A.rank) (Fin
   1 - frameMat A B ι * prM A B ι
 
 /- English proof (translation)
-Introduce `A B ι h g g' x a b`. Establish `hQ : frameMat A B ι * prM A B ι + coM A B ι = 1` using `add_sub_cancel _ _`. Establish `hp : ∀ j, (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat A B ι) * A.gram).mulVec (fun k => coM A B ι k j) = 0` using `fun j => funext fun i => congrFun (congrFun (perp_rel h) i) j`. Conclude with `Subtype.ext (Units.ext ((emb_gen (incA D) _ _ _ hQ (mt A g) (mt B x) a.1 fun j => a.2 _ (hp j)).trans (emb_gen (incA D) _ _ _ hQ (mt A g') (mt B x) b.1 fun j => b.2 _ (hp j)).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem embU (D : D7) : EmbU D := by
   intro A B ι h g g' x a b

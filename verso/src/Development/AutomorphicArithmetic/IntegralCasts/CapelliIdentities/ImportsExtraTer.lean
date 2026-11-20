@@ -2,9 +2,9 @@ import Mathlib
 import Formalism.WeaklyAdmissibleFiltrations.Statement
 
 /- English proof (translation)
-Introduce `G _ LL _ O _ _ _ _ V _ _ _ _ ρ L x`. Establish `hx : x ∈ Submodule.span LL (L.T : Set V)`. Rewrite using `[L.span]`. Conclude with `Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors O) LL (L.T : Set V) x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨t, nonZeroDivisors.coe_ne_zero t, ht⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Ue16.exists_smul_mem :
     ∀ {G : Type} [inst : Group G] {LL : Type} [inst_1 : Field LL] {O : Type} [inst_2 : CommRing O]

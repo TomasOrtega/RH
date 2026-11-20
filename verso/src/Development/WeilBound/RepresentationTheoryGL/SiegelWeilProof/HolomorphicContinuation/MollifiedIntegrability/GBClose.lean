@@ -9,7 +9,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.WR.K.GB
 
 /- English proof (translation)
-The claim follows from `clsGainB_of cauchyW invar pBound link twist lagr`.
+A detailed English derivation is pending.
 -/
 theorem clsGainB : PositivityTheory.Rg.Sw.WR.ClsGain := clsGainB_of cauchyW invar pBound link twist lagr
 

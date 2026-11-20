@@ -17,7 +17,7 @@ open scoped ContDiff
 namespace GlobalTheory.TorsionForm.HeatConj
 
 /- English proof (translation)
-Rewrite using `[frameMap, frameMapInv, GlobalTheory.T.extMap_comp_extMap, fibMat_mul, ← conjTranspose_mul, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det D).1 hD), conjTranspose_one, fibMat_one, GlobalTheory.T.extMap_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frameMap_comp_inv (n : ℕ) {g : ℕ} (D : Matrix (Fin g) (Fin g) ℂ) (hD : IsUnit D) :
     frameMap n D ∘L frameMapInv n D = ContinuousLinearMap.id ℂ _ := by
@@ -26,7 +26,7 @@ theorem frameMap_comp_inv (n : ℕ) {g : ℕ} (D : Matrix (Fin g) (Fin g) ℂ) (
     GlobalTheory.T.extMap_one']
 
 /- English proof (translation)
-Rewrite using `[frameMap, frameMapInv, GlobalTheory.T.extMap_comp_extMap, fibMat_mul, ← conjTranspose_mul, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det D).1 hD), conjTranspose_one, fibMat_one, GlobalTheory.T.extMap_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frameMapInv_comp (n : ℕ) {g : ℕ} (D : Matrix (Fin g) (Fin g) ℂ) (hD : IsUnit D) :
     frameMapInv n D ∘L frameMap n D = ContinuousLinearMap.id ℂ _ := by
@@ -35,14 +35,14 @@ theorem frameMapInv_comp (n : ℕ) {g : ℕ} (D : Matrix (Fin g) (Fin g) ℂ) (h
     GlobalTheory.T.extMap_one']
 
 /- English proof (translation)
-Simplify using `using congrArg (fun L => L w) (frameMap_comp_inv n D hD)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem frameMap_inv_apply (n : ℕ) {g : ℕ} (D : Matrix (Fin g) (Fin g) ℂ) (hD : IsUnit D)
     (w : Ext (n + n + g)) : frameMap n D (frameMapInv n D w) = w := by
   simpa using congrArg (fun L => L w) (frameMap_comp_inv n D hD)
 
 /- English proof (translation)
-Simplify using `using congrArg (fun L => L w) (frameMapInv_comp n D hD)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem frameMapInv_apply (n : ℕ) {g : ℕ} (D : Matrix (Fin g) (Fin g) ℂ) (hD : IsUnit D)
     (w : Ext (n + n + g)) : frameMapInv n D (frameMap n D w) = w := by
@@ -54,7 +54,7 @@ def frameEquiv (n : ℕ) {g : ℕ} (D : Matrix (Fin g) (Fin g) ℂ) (hD : IsUnit
     (frameMapInv_apply n D hD) (frameMap_inv_apply n D hD)
 
 /- English proof (translation)
-Unfold `Matrix.vecMul dotProduct`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_vecMul {g : ℕ} (A : Matrix (Fin g) (Fin g) ℂ) :
     ContDiff ℝ ∞ (fun y : Fin g → ℂ => y ᵥ* A) := by
@@ -62,14 +62,14 @@ theorem contDiff_vecMul {g : ℕ} (A : Matrix (Fin g) (Fin g) ℂ) :
   fun_prop
 
 /- English proof (translation)
-Rewrite using `[vecMul_vecMul, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det D).1 hD), vecMul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vecMul_inv_vecMul {g : ℕ} (D : Matrix (Fin g) (Fin g) ℂ) (hD : IsUnit D) (y : Fin g → ℂ) :
     y ᵥ* D⁻¹ ᵥ* D = y := by
   rw [vecMul_vecMul, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det D).1 hD), vecMul_one]
 
 /- English proof (translation)
-Rewrite using `[vecMul_vecMul, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det D).1 hD), vecMul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vecMul_vecMul_inv {g : ℕ} (D : Matrix (Fin g) (Fin g) ℂ) (hD : IsUnit D) (y : Fin g → ℂ) :
     y ᵥ* D ᵥ* D⁻¹ = y := by
@@ -80,33 +80,31 @@ end GlobalTheory.TorsionForm.HeatConj
 namespace GlobalTheory.TorsionForm.HeatConj
 
 /- English proof (translation)
-Establish `hD : IsUnit (den γ (τ b))` using `GlobalTheory.T.period_map_moebius_denom_unit B τ γ hd.1 b hb`. Establish `hper : ∀ x, per (τ b) x ᵥ* (den γ (τ b))⁻¹ = per (moeb γ (τ b)) (x ᵥ* (γ⁻¹).mat)` using `fun x => GlobalTheory.T.period_vector_moebius_transform γ (τ b) x hD`. Establish `hmem : ∀ l ∈ M, l ᵥ* (γ⁻¹).mat ∈ latAct M γ` using `fun l hl => Submodule.mem_map.2 ⟨l, hl, rfl⟩`. Establish `hsec : ∀ (t : ℝ), 0 < t → ∀ z' w, ContDiff ℝ ∞ (fun y => K t y z' w)`. Introduce `t ht z' w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ContDiff ℝ ∞ (fun y : Fin g → ℂ => K t y z')`. Rewrite using `[← contDiffOn_univ]`. Use `hK.1.comp (f := fun y : Fin g → ℂ => (t, y, z')) (show ContDiff ℝ ∞ (fun y : Fin g → ℂ => (t, y, z')) by fun_prop).contDiffOn ?_` and prove the remaining obligations. Introduce `y _`. Conclude with `⟨ht, trivial⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `((ContinuousLinearMap.apply ℂ (Ext (n + n + g)) w).restrictScalars ℝ).contDiff.comp h1`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `set T : (Ext (n + n + g) →L[ℂ] Ext (n + n + g)) →L[ℝ] (Ext (n + n + g) →L[ℂ] Ext (n + n + g)) := ((ContinuousLinearMap.compL ℂ _ _ _ (frameMap n (den γ (τ b)))).comp ((ContinuousLinearMap.compL ℂ _ _ _).flip (frameMapInv n (den γ (τ b))))).restrictScalars ℝ`. Establish `hmap : ContDiff ℝ ∞ (fun a : ℝ × (Fin g → ℂ) × (Fin g → ℂ) => (a.1, a.2.1 ᵥ* (den γ (τ b))⁻¹, a.2.2 ᵥ* (den γ (τ b))⁻¹))` using `contDiff_fst.prodMk ((contDiff_vecMul _).comp (contDiff_fst.comp contDiff_snd) |>.prodMk ((contDiff_vecMul _).comp (contDiff_snd.comp contDiff_snd)))`. Establish `h2` using `hK.1.comp (s := Ioi (0:ℝ) ×ˢ univ) hmap.contDiffOn (fun a ha => ⟨ha.1, trivial⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `T.contDiff.comp_contDiffOn h2`. Introduce `t ht l hl z z'`. Take `⟨k1, k2⟩` from `hK.2.1 t ht _ (hmem l hl) (z ᵥ* (den γ (τ b))⁻¹) (z' ᵥ* (den γ (τ b))⁻¹)`. Prove the components needed by the constructor for the conclusion. Simplify using `only [kerConj, reframe, add_vecMul, hper]`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[k1, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`. Simplify using `only [kerConj, reframe, add_vecMul, hper]`. Rewrite using `[← k2]`. Conclude with `ContinuousLinearMap.ext fun w => by simp`. Introduce `t ht z z' w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdt` using `hK.2.2.1 t ht (z ᵥ* (den γ (τ b))⁻¹) (z' ᵥ* (den γ (τ b))⁻¹) (frameMapInv n (den γ (τ b)) w)`. Establish `hc` using `GlobalTheory.T.curvature_reframed_metric_eq B τ γ h β b u _ hτ hd.1 hd.2.2.2.1 hd.2.2.2.2.1 hb (hsec t ht (z' ᵥ* (den γ (τ b))⁻¹) (frameMapInv n (den γ (τ b)) w)) z`. Establish `e : (fun y => kerConj n (den γ (τ b)) K t y z' w) = fun y => frameMap n (den γ (τ b)) (K t (y ᵥ* (den γ (τ b))⁻¹) (z' ᵥ* (den γ (τ b))⁻¹) (frameMapInv n (den γ (τ b)) w))` using `rfl`. Rewrite using `[e, hc]`. Use `((frameMap n (den γ (τ b))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t hdt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e3 : (fun t' => kerConj n (den γ (τ b)) K t' z z' w) = (⇑((frameMap n (den γ (τ b))).restrictScalars ℝ)) ∘ (fun t' => K t' (z ᵥ* (den γ (τ b))⁻¹) (z' ᵥ* (den γ (τ b))⁻¹) (frameMapInv n (den γ (τ b)) w))` using `rfl`. Rewrite using `[e3]`. Conclude with `this.congr_deriv (map_neg _ _)`. Introduce `f₂ hf₂`. Use `set Φ := frameMap n (den γ (τ b)) with hΦ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Use `set Ψ := frameMapInv n (den γ (τ b)) with hΨ`. Use `set f₁ : (Fin g → ℂ) → Ext (n + n + g) := fun y => Ψ (f₂ (y ᵥ* den γ (τ b))) with hf₁def`. Establish `hf₁ : IsSec (fun b => moeb γ (τ b)) (latAct M γ) j b f₁`. Use `⟨(Ψ.restrictScalars ℝ).contDiff.comp (hf₂.1.comp (contDiff_vecMul _)), ?_⟩` and prove the remaining obligations. Introduce `l' hl' y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨l, hl, hll⟩` from `Submodule.mem_map.1 hl'`. Establish `hl'' : l' = l ᵥ* (γ⁻¹).mat` using `hll.symm`. Substitute `hl''` using the available equality. Establish `e : (y + per (moeb γ (τ b)) (l ᵥ* (γ⁻¹).mat)) ᵥ* den γ (τ b) = y ᵥ* den γ (τ b) + per (τ b) l`. Rewrite using `[← hper, add_vecMul, vecMul_inv_vecMul _ hD]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hf₁def, e]`. Rewrite using `[hf₂.2 l hl, map_smul]`. Simplify using `[reframe, vecMul_vecMul_inv _ hD]`. Establish `htend` using `hK.2.2.2 f₁ hf₁`. Establish `hfun : (fun t z => ∫ x in (fun x : Fl g => x ᵥ* (γ⁻¹).mat) ⁻¹' D, kerConj n (den γ (τ b)) K t z (per (τ b) x) (f₂ (per (τ b) x))) = fun t z => Φ (∫ x in D, K t (z ᵥ* (den γ (τ b))⁻¹) (per (moeb γ (τ b)) x) (f₁ (per (moeb γ (τ b)) x)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `t z`. Establish `hint : ∀ x, kerConj n (den γ (τ b)) K t z (per (τ b) x) (f₂ (per (τ b) x)) = frameEquiv n (den γ (τ b)) hD ((fun y => K t (z ᵥ* (den γ (τ b))⁻¹) (per (moeb γ (τ b)) y) (f₁ (per (moeb γ (τ b)) y))) (x ᵥ* (γ⁻¹).mat))`. Introduce `x`. Establish `e2 : f₂ (per (τ b) x) = f₂ (per (moeb γ (τ b)) (x ᵥ* (γ⁻¹).mat) ᵥ* den γ (τ b))`. Rewrite using `[← hper, vecMul_inv_vecMul _ hD]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [kerConj, ContinuousLinearMap.comp_apply, hper, e2, hf₁def]`. Both sides reduce to the same expression. Simplify using `only [hint]`. Establish `hch` using `GlobalTheory.T.integral_symplectic_preimage_eq (F := Ext (n + n + g)) γ D (fun y => K t (z ᵥ* (den γ (τ b))⁻¹) (per (moeb γ (τ b)) y) (f₁ (per (moeb γ (τ b)) y)))`. Rewrite using `[ContinuousLinearEquiv.integral_comp_comm, hch]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hfun]`. Establish `h2` using `htend.comp (fun z : Fin g → ℂ => z ᵥ* (den γ (τ b))⁻¹) (contDiff_vecMul _).continuous`. Establish `h3` using `Φ.uniformContinuous.comp_tendstoLocallyUniformly h2`. Establish `e5 : Φ ∘ (f₁ ∘ fun z : Fin g → ℂ => z ᵥ* (den γ (τ b))⁻¹) = f₂`.
-
-Use function extensionality and compare the values at `z`. Simplify using `[hf₁def, Function.comp, vecMul_inv_vecMul _ hD, hΦ, hΨ, frameMap_inv_apply n _ hD]`. Rewrite using `[← e5]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem isHeatKernel_kerConj {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     {g n : ℕ} (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (M : Submodule ℤ (Fl g)) (γ : Sp g)

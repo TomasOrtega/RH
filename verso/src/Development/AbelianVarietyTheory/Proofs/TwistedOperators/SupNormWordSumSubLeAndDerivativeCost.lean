@@ -18,7 +18,7 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp D}
   {p : (WO V W → ℂ) → ℝ≥0∞}
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[wordAct_cons, wordAct_cons, wordAct_cons, ih]`. Conclude with `dRho_add hψ hθ a.1 _ (theta_word hψ hθ l h) (theta_word hψ hθ l h')`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (l : List (D.what₂.Tau × Fin W.rank × Fin V.rank × Bool))
     (h : IsThetaFunO ψ V W f) (h' : IsThetaFunO ψ V W f') :
@@ -30,14 +30,14 @@ theorem word_add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (l : List (D.wh
     exact dRho_add hψ hθ a.1 _ (theta_word hψ hθ l h) (theta_word hψ hθ l h')
 
 /- English proof (translation)
-The claim follows from `wordAct_rel (R := fun g g' => g = c • g') l (fun a _ _ _ e => e ▸ dRho_smul a.1 _ c _) rfl`.
+A detailed English derivation is pending.
 -/
 theorem word_smul (l : List (D.what₂.Tau × Fin W.rank × Fin V.rank × Bool)) (c : ℂ) (f : WO V W → ℂ) :
     wordAct (heisDer ψ θ) l (c • f) = c • wordAct (heisDer ψ θ) l f :=
   wordAct_rel (R := fun g g' => g = c • g') l (fun a _ _ _ e => e ▸ dRho_smul a.1 _ c _) rfl
 
 /- English proof (translation)
-The claim follows from `wordSum_le_add fun l => by rw [word_add hψ hθ l h h']; exact hp _ _`.
+A detailed English derivation is pending.
 -/
 theorem ws_add_le (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (hp : ∀ g g', p (g + g') ≤ p g + p g')
     (h : IsThetaFunO ψ V W f) (h' : IsThetaFunO ψ V W f') (k : ℕ) :
@@ -45,14 +45,14 @@ theorem ws_add_le (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (hp : ∀ g g'
   wordSum_le_add fun l => by rw [word_add hψ hθ l h h']; exact hp _ _
 
 /- English proof (translation)
-The claim follows from `wordSum_eq_mul fun l => by rw [word_smul]; exact hp _ _`.
+A detailed English derivation is pending.
 -/
 theorem ws_smul (hp : ∀ (c : ℂ) g, p (c • g) = ‖c‖ₑ * p g) (k : ℕ) (c : ℂ) (f : WO V W → ℂ) :
     wordSum (heisDer ψ θ) p k (c • f) = ‖c‖ₑ * wordSum (heisDer ψ θ) p k f :=
   wordSum_eq_mul fun l => by rw [word_smul]; exact hp _ _
 
 /- English proof (translation)
-Use `Finset.le_sum_of_subadditive_on_pred (wordSum (heisDer ψ θ) p k) (IsThetaFunO ψ V W) ?_ (fun _ _ a b => ws_add_le hψ hθ hp a b k) (fun _ _ => theta_add) g hg` and prove the remaining obligations. Use `ws_smul (ψ := ψ) (θ := θ) hs k 0 (0 : WO V W → ℂ)` as an intermediate fact. Rewrite `this` using `[zero_smul, enorm_zero, zero_mul]`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ws_sum_le (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (hp : ∀ g g', p (g + g') ≤ p g + p g')
     (hs : ∀ (c : ℂ) g, p (c • g) = ‖c‖ₑ * p g) {ι : Type} (s : Finset ι) {g : ι → WO V W → ℂ}
@@ -65,11 +65,9 @@ theorem ws_sum_le (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (hp : ∀ g g'
   simp [this]
 
 /- English proof (translation)
-Establish `ht : ∀ (c : ℂ) a, IsThetaFunO ψ V W (c • heisDer ψ θ a f)` using `fun c a => theta_smul c (theta_dRho hθ hψ a.1 _ hf)`. Establish `hb : ∀ (c : ℝ) a, wordSum (heisDer ψ θ) p k ((c : ℂ) • heisDer ψ θ a f) ≤ ENNReal.ofReal |c| * wordSum (heisDer ψ θ) p (k + 1) f` using `fun c a => by`. Rewrite using `[ws_smul hs, ← ofReal_norm, Complex.norm_real, Real.norm_eq_abs]`. Use `gcongr`. Conclude with `wordSum_letter_le k a f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dRho_eq_sum_heisDer hψ hθ hf, ENNReal.ofReal_sum_of_nonneg fun i _ => by positivity, Finset.sum_mul]`. Use `(ws_sum_le hψ hθ hp hs _ (fun i _ => theta_finsetSum _ fun j _ => theta_add (ht _ _) (ht _ _)) k).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_sum_of_nonneg fun i _ => by positivity, Finset.sum_mul]`. Use `(ws_sum_le hψ hθ hp hs _ (fun j _ => theta_add (ht _ _) (ht _ _)) k).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_add (abs_nonneg _) (abs_nonneg _), add_mul]`.
-
-Conclude with `(ws_add_le hψ hθ hp (ht _ _) (ht _ _) k).trans (add_le_add (hb _ _) (hb _ _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ws_dRho_le (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (hp : ∀ g g', p (g + g') ≤ p g + p g')
     (hs : ∀ (c : ℂ) g, p (c • g) = ‖c‖ₑ * p g) (hf : IsThetaFunO ψ V W f) (τ : D.what₂.Tau)
@@ -92,24 +90,24 @@ theorem ws_dRho_le (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (hp : ∀ g g
   exact (ws_add_le hψ hθ hp (ht _ _) (ht _ _) k).trans (add_le_add (hb _ _) (hb _ _))
 
 /- English proof (translation)
-The claim follows from `iSup_le fun w => (enorm_add_le (g w) (g' w)).trans (add_le_add (le_iSup (fun w => ‖g w‖ₑ) w) (le_iSup (fun w => ‖g' w‖ₑ) w))`.
+A detailed English derivation is pending.
 -/
 theorem supN_add_le (g g' : WO V W → ℂ) : (⨆ w, ‖(g + g') w‖ₑ) ≤ (⨆ w, ‖g w‖ₑ) + ⨆ w, ‖g' w‖ₑ :=
   iSup_le fun w => (enorm_add_le (g w) (g' w)).trans (add_le_add (le_iSup (fun w => ‖g w‖ₑ) w)
     (le_iSup (fun w => ‖g' w‖ₑ) w))
 
 /- English proof (translation)
-Simplify using `only [Pi.smul_apply, enorm_smul, ENNReal.mul_iSup]`.
+Simplify using the standard rewrite rules.
 -/
 theorem supN_smul (c : ℂ) (g : WO V W → ℂ) : (⨆ w, ‖(c • g) w‖ₑ) = ‖c‖ₑ * ⨆ w, ‖g w‖ₑ := by
   simp only [Pi.smul_apply, enorm_smul, ENNReal.mul_iSup]
 
 /- English proof (translation)
-Introduce `D V W ψ hψ θ hθ`. Establish `ha : ∀ g g' : WO V W → ℂ, (fun φ : WO V W → ℂ => ⨆ w, ‖φ w‖ₑ) (g + g') ≤ (fun φ : WO V W → ℂ => ⨆ w, ‖φ w‖ₑ) g + (fun φ : WO V W → ℂ => ⨆ w, ‖φ w‖ₑ) g'` using `supN_add_le`. Establish `hs : ∀ (c : ℂ) (g : WO V W → ℂ), (fun φ : WO V W → ℂ => ⨆ w, ‖φ w‖ₑ) (c • g) = ‖c‖ₑ * (fun φ : WO V W → ℂ => ⨆ w, ‖φ w‖ₑ) g` using `supN_smul`. Use `⟨fun G H c k hG hH => ?_, fun r C x => ?_⟩` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg, ← neg_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(ws_add_le hψ hθ ha hG (theta_smul _ hH) k).trans ?_` and prove the remaining obligations. Rewrite using `[ws_smul hs, enorm_neg]`. Use `⟨∑ τ, ∑ i, ∑ j, (|(dirAt V W C τ (x.map (tauE D τ)) i j).re| + |(dirAt V W C τ (x.map (tauE D τ)) i j).im|), by positivity, fun G hG k => ?_⟩` and prove the remaining obligations. Unfold `derAlong`. Use `(ws_sum_le hψ hθ ha hs _ (fun τ _ => theta_dRho hθ hψ τ _ hG) k).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun τ _ => by positivity), Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun τ _ => ws_dRho_le hψ hθ ha hs hG τ _ k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wordSum_sup_sub_and_derAlong :
     ∀ (D : D7) (V W : HSp D) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → (∀ (G H : WO V W → ℂ) (c : ℂ) (k : ℕ), IsThetaFunO ψ V W G → IsThetaFunO ψ V W H → GlobalTheory.Size.wordSum (GlobalTheory.Size.heisDer ψ θ) (fun φ : WO V W → ℂ => ⨆ w, ‖φ w‖ₑ) k (G - c • H) ≤ GlobalTheory.Size.wordSum (GlobalTheory.Size.heisDer ψ θ) (fun φ : WO V W → ℂ => ⨆ w, ‖φ w‖ₑ) k G + ‖c‖ₑ * GlobalTheory.Size.wordSum (GlobalTheory.Size.heisDer ψ θ) (fun φ : WO V W → ℂ => ⨆ w, ‖φ w‖ₑ) k H) ∧ ∀ (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (x : Matrix (Fin W.rank) (Fin r) D.host.E), ∃ c : ℝ, 0 ≤ c ∧ ∀ G : WO V W → ℂ, IsThetaFunO ψ V W G → ∀ k : ℕ, GlobalTheory.Size.wordSum (GlobalTheory.Size.heisDer ψ θ) (fun φ : WO V W → ℂ => ⨆ w, ‖φ w‖ₑ) k (derAlong ψ θ V W C x G) ≤ ENNReal.ofReal c * GlobalTheory.Size.wordSum (GlobalTheory.Size.heisDer ψ θ) (fun φ : WO V W → ℂ => ⨆ w, ‖φ w‖ₑ) (k + 1) G := by

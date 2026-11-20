@@ -9,19 +9,19 @@ namespace RestTerms
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `f N P α hP hc τ i j hij`. Simplify using `only at hij`. Assume the negation of the conclusion as `hne`. Set `w : Fin f → Equiv.Perm (Fin N)` to `Function.update 1 τ (Equiv.swap i j)`. Establish `hsign : blockSign f N w = -1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Unfold `blockSign`. Rewrite using `[Finset.prod_eq_single τ]`. Simplify using `[w, Equiv.Perm.sign_swap hne]`. Introduce `b _ hb`. Simplify using `[w, Function.update_of_ne hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hα : (Finsupp.equivFunOnFinite.symm fun p : Fin f × Fin N => α (p.1, w p.1 p.2)) = α`. Use extensionality with `⟨σ, k⟩`. Express the relevant statement in the definitionally equal form `α (σ, w σ k) = α (σ, k)`. Distinguish the cases in `hσ : σ = τ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Substitute `hσ` using the available equality. Simplify using `only [w, Function.update_self]`. Break down `eq_or_ne k i with rfl | hki` into its components or cases. Rewrite using `[Equiv.swap_apply_left]`. Conclude with `hij.symm`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne k j with rfl | hkj` into its components or cases. Rewrite using `[Equiv.swap_apply_right]`. Conclude with `hij`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne hki hkj]`. Simplify using `[w, Function.update_of_ne hσ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `h1 f N w P α`. Rewrite `key` using `[hα, hP w, hsign, coeff_smul]`. Establish `: coeff α P = 0`. Establish `h2 : (2 : ℚ) * coeff α P = 0`. Rewrite `key` using `[smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `using h2`. Conclude with `hc this`.
+A detailed English derivation is pending.
 -/
 theorem FlagAltCoeffInjective.proof (h1 : FlagCoeffBlockPermute.Statement) :
     FlagAltCoeffInjective.Statement := by

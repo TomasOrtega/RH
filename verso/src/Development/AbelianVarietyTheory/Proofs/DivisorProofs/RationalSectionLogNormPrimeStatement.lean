@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.VertTriv.num_vert_triv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalSectionLogNormPrime.lean&line=25#L25)
 -/

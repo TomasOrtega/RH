@@ -15,9 +15,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Tele
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Establish `hs : ∀ (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) y w, sheetDensity P Ψ φ g y w = sheetDensity P Ψ φ g' y w`. Introduce `Ψ y w`. Unfold `sheetDensity`. Distinguish the cases in `hs : ∃ c, IsSheet P Ψ y w c`. Rewrite using `[dif_pos hs, dif_pos hs, h _ hs.choose_spec.2.self_of_nhds.2.1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hs, dif_neg hs]`. Unfold `ptsIntegral ptsIntegralAt`. Simplify using `only [hs]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ptsIntegral_congr_on {e : ℕ} (P : Ideal (MRing J)) (φ : Fin e → ((Σ k, J k) → ℂ) → ℝ)
     {g g' : ((Σ k, J k) → ℂ) → ℝ} (h : ∀ z ∈ mcPts P, g z = g' z) :
@@ -37,16 +37,16 @@ def logDiff (A B : HermLine J) (z : (Σ k, J k) → ℂ) : ℝ := by
   exact if ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0 then Real.log (A.h z) - Real.log (B.h z) else 0
 
 /- English proof (translation)
-Simplify using `only [ne_eq, mul_eq_zero, hc, false_or]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cone_smul_iff (c : K → ℂ) (hc : ∀ k, c k ≠ 0) (z : (Σ k, J k) → ℂ) :
     (∀ k, ∃ i, (fun p : (Σ k, J k) => c p.1 * z p) ⟨k, i⟩ ≠ 0) ↔ ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0 := by
   simp only [ne_eq, mul_eq_zero, hc, false_or]
 
 /- English proof (translation)
-Unfold `logDiff`. Distinguish the cases in `hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0`. Rewrite using `[if_pos hz, if_pos ((cone_smul_iff c hc z).2 hz), A.smul c z hc, B.smul c z hc, hab]`. Establish `hp : (∏ k, ‖c k‖ ^ A.a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))`. Rewrite using `[Real.log_mul hp (A.pos z hz).ne', Real.log_mul hp (B.pos z hz).ne']`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hz, if_neg fun h => hz ((cone_smul_iff c hc z).1 h)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem logDiff_smul {A B : HermLine J} (hab : B.a = A.a) (c : K → ℂ) (z : (Σ k, J k) → ℂ)
     (hc : ∀ k, c k ≠ 0) : logDiff A B (fun p => c p.1 * z p) = logDiff A B z := by
@@ -60,7 +60,7 @@ theorem logDiff_smul {A B : HermLine J} (hab : B.a = A.a) (c : K → ℂ) (z : (
   · rw [if_neg hz, if_neg fun h => hz ((cone_smul_iff c hc z).1 h)]
 
 /- English proof (translation)
-Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => Real.log (A.h z) - Real.log (B.h z)) {z : (Σ k, J k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `(ContDiffOn.log hA fun z hz => (A.pos z hz).ne').sub (ContDiffOn.log hB fun z hz => (B.pos z hz).ne')`. Use `h1.congr fun z hz => ?_` and prove the remaining obligations. Unfold `logDiff`. Conclude with `if_pos hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem logDiff_smooth {A B : HermLine J} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) :
     ReciprocityTheory.ChartRestriction.G.AI.I2.SmoothFn (logDiff A B) := by
@@ -73,21 +73,19 @@ theorem logDiff_smooth {A B : HermLine J} (hA : IsSmoothHerm A) (hB : IsSmoothHe
   exact if_pos hz
 
 /- English proof (translation)
-Establish `hu` using `fun (c : K → ℂ) z (hc : ∀ k, c k ≠ 0) => logDiff_smul (A := A) (B := B) hab c z hc`. Establish `hus` using `logDiff_smooth hA hB`. Establish `hch` using `metricChange K J I hI P n L A (logDiff A B) hu hP hL hA hus`. Use `set T := A.tensor (HermLine.ofWeight (logDiff A B) hu) with hT`. Establish `hTh : ∀ z, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → T.h z = B.h z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Establish `e : T.h z = A.h z * Real.exp (-logDiff A B z)` using `rfl`. Rewrite using `[e]`. Unfold `logDiff`. Rewrite using `[if_pos hz, neg_sub, Real.exp_sub, Real.exp_log (B.pos z hz), Real.exp_log (A.pos z hz)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(A.pos z hz).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hTs : IsSmoothHerm T`. Unfold `IsSmoothHerm`. Conclude with `(ContDiffOn.congr hB fun z hz => hTh z hz)`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTa : T.a = B.a`. Rewrite using `[hab]`. Use `show A.a + 0 = A.a`. Simplify using the standard rewrite rules. Establish `hSn : ∀ X : HermLine J, IsSmoothHerm X → ∀ j, IsSmoothHerm ((Fin.snoc L X : Fin (n + 1) → HermLine J) j)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `X hX j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `using hX`. Simplify using `using hL j`. Establish `hloc : I P (n + 1) (Fin.snoc L T) = I P (n + 1) (Fin.snoc L B)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hLoc K J I hI P (n + 1) _ _ hP (hSn T hTs) (hSn B hB) (fun j => ?_) (fun j z hz => ?_)` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `using hTa`. Simplify using the standard rewrite rules. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hTh z hz.1`. Simplify using the standard rewrite rules. Rewrite using `[← hloc, hch]`. Use `congr 1`. Use `ptsIntegral_congr_on P _ fun z hz => ?_` and prove the remaining obligations.
-
-Unfold `logDiff`. Rewrite using `[if_pos hz.1]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (hLoc : ReciprocityTheory.ChartRestriction.G.AI.I2.MetricLocalStatement)
     (I : Ideal (MRing J) → (n : ℕ) → (Fin n → HermLine J) → ℝ) (hI : IsIntersectionFamily I)
@@ -138,13 +136,13 @@ def toLast {n : ℕ} (p : Fin (n + 1)) : Equiv.Perm (Fin (n + 1)) :=
   (finSuccEquiv' p).trans finSuccEquivLast.symm
 
 /- English proof (translation)
-Simplify using `[toLast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toLast_self {n : ℕ} (p : Fin (n + 1)) : toLast p p = Fin.last n := by
   simp [toLast]
 
 /- English proof (translation)
-Simplify using `[toLast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toLast_succAbove {n : ℕ} (p : Fin (n + 1)) (j : Fin n) :
     toLast p (p.succAbove j) = j.castSucc := by
@@ -153,11 +151,11 @@ theorem toLast_succAbove {n : ℕ} (p : Fin (n + 1)) (j : Fin n) :
 def word (A B : HermLine J) (m i : ℕ) : Fin m → HermLine J := fun j => if (j : ℕ) < i then B else A
 
 /- English proof (translation)
-Break down `Fin.eq_self_or_eq_succAbove p q with rfl | ⟨j, rfl⟩` into its components or cases. Simplify using `[toLast_self]`. Rewrite using `[toLast_succAbove, Fin.snoc_castSucc]`. Establish `hne` using `Fin.succAbove_ne p j`. Rewrite using `[if_neg hne]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `word`. Distinguish the cases in `h : (j : ℕ) < p`. Establish `: p.succAbove j = j.castSucc` using `Fin.succAbove_of_castSucc_lt _ _ (by simpa [Fin.lt_def] using h)`. Simplify using `[this, h]`. Establish `: p.succAbove j = j.succ` using `Fin.succAbove_of_le_castSucc _ _ (by simpa [Fin.le_def] using h)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h' : ¬ ((j : ℕ) + 1 < p)` using `by omega`. Simplify using `[this, h, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem word_snoc (A B X : HermLine J) (n : ℕ) (p : Fin (n + 1)) (q : Fin (n + 1)) :
     (Fin.snoc (word A B n p) X : Fin (n + 1) → HermLine J) (toLast p q) =
@@ -176,7 +174,7 @@ theorem word_snoc (A B X : HermLine J) (n : ℕ) (p : Fin (n + 1)) (q : Fin (n +
       simp [this, h, h']
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `using hX`. Simplify using `using hL j`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smooth_snoc {n : ℕ} {L : Fin n → HermLine J} {X : HermLine J} (hL : ∀ j, IsSmoothHerm (L j))
     (hX : IsSmoothHerm X) (j : Fin (n + 1)) :
@@ -186,7 +184,7 @@ theorem smooth_snoc {n : ℕ} {L : Fin n → HermLine J} {X : HermLine J} (hL : 
   · simpa using hL j
 
 /- English proof (translation)
-Unfold `word`. Use `split_ifs`. Conclude with `hB`. Conclude with `hA`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem word_smooth {A B : HermLine J} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) (m i : ℕ)
     (j : Fin m) : IsSmoothHerm (word A B m i j) := by
@@ -196,17 +194,17 @@ theorem word_smooth {A B : HermLine J} (hA : IsSmoothHerm A) (hB : IsSmoothHerm 
   · exact hA
 
 /- English proof (translation)
-Set `p : Fin (n + 1)` to `⟨i, hi⟩`. Establish `hL` using `word_smooth (J := J) hA hB n i`. Establish `sB : word A B (n + 1) (i + 1) = (Fin.snoc (word A B n i) B : Fin (n + 1) → HermLine J) ∘ toLast p`. Use function extensionality and compare the values at `q`. Establish `h` using `word_snoc A B B n p q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply]`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Unfold `word`. Establish `hq : q = p ↔ (q : ℕ) = i` using `by simp [p, Fin.ext_iff]`. Distinguish the cases in `h1 : (q : ℕ) < i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : (q : ℕ) < i + 1` using `by omega`. Simplify using `only [p, h1, h2, if_true]`. Distinguish the cases in `h3 : (q : ℕ) = i`. Establish `h2 : (q : ℕ) < i + 1` using `by omega`. Simplify using `[p, h1, h2, hq.2 h3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : ¬ (q : ℕ) < i + 1` using `by omega`. Establish `h4 : q ≠ p` using `fun e => h3 (hq.1 e)`. Simplify using `[p, h1, h2, h4]`. Establish `sA : word A B (n + 1) i = (Fin.snoc (word A B n i) A : Fin (n + 1) → HermLine J) ∘ toLast p`. Use function extensionality and compare the values at `q`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h` using `word_snoc A B A n p q`. Simplify using `only [Function.comp_apply]`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Unfold `word`. Distinguish the cases in `h1 : (q : ℕ) < i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Simplify using `[p, h1]`. Simplify using `[p, h1]`. Rewrite using `[sB, sA, hI.1 P (n + 1) _ (toLast p) hP (smooth_snoc hL hB), hI.1 P (n + 1) _ (toLast p) hP (smooth_snoc hL hA)]`. Conclude with `step hLoc I hI P n _ A B hP hL hA hB hab`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_step (hLoc : ReciprocityTheory.ChartRestriction.G.AI.I2.MetricLocalStatement)
     (I : Ideal (MRing J) → (n : ℕ) → (Fin n → HermLine J) → ℝ) (hI : IsIntersectionFamily I)
@@ -247,13 +245,13 @@ theorem word_step (hLoc : ReciprocityTheory.ChartRestriction.G.AI.I2.MetricLocal
   exact step hLoc I hI P n _ A B hP hL hA hB hab
 
 /- English proof (translation)
-Introduce `hLoc K _ J _ II P n A B hII hP hA hB hab`. Establish `hI : IsIntersectionFamily (II K J)` using `hII.1 K J`. Establish `key : ∀ i, i ≤ n + 1 → II K J P (n + 1) (word A B (n + 1) i) = II K J P (n + 1) (word A B (n + 1) 0) - ∑ k ∈ Finset.range i, ptsIntegral P (pot (word A B n k)) (fun z => Real.log (A.h z) - Real.log (B.h z))`. Introduce `i`. Proceed by induction on `i with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ i ih`. Introduce `hi`. Rewrite using `[word_step hLoc _ hI P n A B hP hA hB hab i (by omega), ih (by omega), Finset.sum_range_succ]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e1 : word A B (n + 1) (n + 1) = fun _ => B`. Use function extensionality and compare the values at `j`. Simplify using `[word, j.isLt]`. Establish `e0 : word A B (n + 1) 0 = fun _ => A`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Simplify using `[word]`. Establish `h` using `key (n + 1) le_rfl`. Rewrite `h` using `[e1, e0]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem telescope : ReciprocityTheory.ChartRestriction.G.AI.I2.MetricLocalStatement → ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (P : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRing J)) (n : ℕ) (A B : HermLine J), IsFullIntersectionSystem II → IsArithVar P (n + 1) → IsSmoothHerm A → IsSmoothHerm B → B.a = A.a → II K J P (n + 1) (fun _ => B) = II K J P (n + 1) (fun _ => A) - ∑ i ∈ Finset.range (n + 1), ptsIntegral P (pot fun j : Fin n => if (j : ℕ) < i then B else A) (fun z => Real.log (A.h z) - Real.log (B.h z)) := by
   intro hLoc K _ J _ II P n A B hII hP hA hB hab

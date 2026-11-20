@@ -15,9 +15,9 @@ namespace NormalModelFibre
 variable {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (M : IndefiniteRowSideFullHecke.ComplexSets.NormalModel J)
 
 /- English proof (translation)
-Introduce `f hf`. Establish `h1 : f ∈ M.ideal.comap (rename Sum.inl : MvPolynomial (Fin n) ℂ →ₐ[ℂ] MvPolynomial (Fin n ⊕ Fin M.m) ℂ)`. Rewrite using `[M.comap_eq]`. Conclude with `hf`. Establish `h0` using `hw _ (Ideal.mem_comap.1 h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[eval_rename]`. Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem firstCoords_mem_zeroSet {w : Fin n ⊕ Fin M.m → ℂ} (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal) :
     IndefiniteRowSideFullHecke.ComplexSets.firstCoords w ∈ zeroSet J := by
@@ -31,13 +31,11 @@ theorem firstCoords_mem_zeroSet {w : Fin n ⊕ Fin M.m → ℂ} (hw : w ∈ Inde
   exact h0
 
 /- English proof (translation)
-Establish `: M.ideal.IsPrime` using `M.isPrime`. Establish `h0 : (0 : MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) ∉ normalModelSubmonoid M q`. Introduce `h`. Take `⟨f, hf, hf0⟩` from `Submonoid.mem_map.1 h`. Apply `(Ideal.mem_primeCompl_iff).1 hf` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[RingHom.mem_ker]`. Establish `h1 : rename Sum.inl f ∈ M.ideal` using `Ideal.Quotient.eq_zero_iff_mem.1 hf0`. Establish `h2 : f ∈ J`. Rewrite using `[← M.comap_eq]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hq f h2`. Establish `hle` using `le_nonZeroDivisors_of_noZeroDivisors h0`. Establish `: Nontrivial (Localization (normalModelSubmonoid M q))` using `(IsLocalization.injective (M := normalModelSubmonoid M q) (S := Localization (normalModelSubmonoid M q)) hle).nontrivial`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (Localization (normalModelSubmonoid M q))`. Take `⟨w, hw, hwq, -⟩` from `ModelLocalizationMaximalPoint.proof n J q M P hP`.
-
-Conclude with `⟨w, hw, hwq⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_fibre {q : Fin n → ℂ} (hq : q ∈ zeroSet J) :
     ∃ w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal, IndefiniteRowSideFullHecke.ComplexSets.firstCoords w = q := by
@@ -61,9 +59,9 @@ theorem exists_mem_fibre {q : Fin n → ℂ} (hq : q ∈ zeroSet J) :
   exact ⟨w, hw, hwq⟩
 
 /- English proof (translation)
-Use `choose P hPm hP using M.integral`. Establish `hroots : (Set.univ.pi fun i : Fin M.m => {a : ℂ | ((P i).map (eval q)).IsRoot a}).Finite` using `Set.Finite.pi fun i => Polynomial.finite_setOfPred_isRoot ((hPm i).map _).ne_zero`. Use `(hroots.image fun y : Fin M.m → ℂ => Sum.elim q y).subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hw, rfl⟩`. Use `⟨fun i => w (Sum.inr i), fun i _ => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `IndefiniteRowSideFullHecke.ComplexSets.isRoot_map_eval_of_mem_zeroSetIn hw i (P i) (hP i)`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `rcases s with i | i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem fibre_finite (q : Fin n → ℂ) :
     {w | w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal ∧ IndefiniteRowSideFullHecke.ComplexSets.firstCoords w = q}.Finite := by
@@ -78,7 +76,7 @@ theorem fibre_finite (q : Fin n → ℂ) :
     rcases s with i | i <;> rfl
 
 /- English proof (translation)
-Establish `h : IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal = ⋂ f ∈ M.ideal, {z | eval z f = 0}`. Use extensionality with `z`. Simplify using `[IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn]`. Rewrite using `[h]`. Conclude with `isClosed_biInter fun f _ => isClosed_eq (MvPolynomial.continuous_eval f) continuous_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_zeroSetIn : IsClosed (IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal) := by
   have h : IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal = ⋂ f ∈ M.ideal, {z | eval z f = 0} := by
@@ -88,17 +86,15 @@ theorem isClosed_zeroSetIn : IsClosed (IndefiniteRowSideFullHecke.ComplexSets.ze
   exact isClosed_biInter fun f _ => isClosed_eq (MvPolynomial.continuous_eval f) continuous_const
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun _ => continuous_apply _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_firstCoords : Continuous (IndefiniteRowSideFullHecke.ComplexSets.firstCoords (n := n) (m := M.m)) :=
   continuous_pi fun _ => continuous_apply _
 
 /- English proof (translation)
-Use `set K : Set (Fin n ⊕ Fin M.m → ℂ) := {w | w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal ∧ IndefiniteRowSideFullHecke.ComplexSets.firstCoords w ∈ closedBall q 1} ∩ Uᶜ with hKdef`. Establish `hKb : Bornology.IsBounded K` using `(IndefiniteRowSideFullHecke.ComplexSets.NormalModelProper.proof n J M (closedBall q 1) isBounded_closedBall).subset Set.inter_subset_left`. Establish `hKc : IsClosed K` using `((isClosed_zeroSetIn M).inter (isClosed_closedBall.preimage (continuous_firstCoords M))).inter hU.isClosed_compl`. Establish `hK : IsCompact K` using `isCompact_of_isClosed_isBounded hKc hKb`. Establish `hKi : IsClosed (IndefiniteRowSideFullHecke.ComplexSets.firstCoords '' K)` using `(hK.image (continuous_firstCoords M)).isClosed`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : q ∉ IndefiniteRowSideFullHecke.ComplexSets.firstCoords '' K`. Introduce and unpack `⟨w, ⟨⟨hw, -⟩, hwU⟩, hwq⟩`. Conclude with `hwU (hfib w hw hwq)`. Use `⟨closedBall q 1 ∩ (IndefiniteRowSideFullHecke.ComplexSets.firstCoords '' K)ᶜ, inter_mem (closedBall_mem_nhds q one_pos) (hKi.isOpen_compl.mem_nhds hq), ?_⟩` and prove the remaining obligations. Introduce `w hw hwN`.
-
-Assume the negation of the conclusion as `hwU`. Conclude with `hwN.2 ⟨w, ⟨⟨hw, hwN.1⟩, hwU⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem eventually_mem_of_fibre_subset {q : Fin n → ℂ} {U : Set (Fin n ⊕ Fin M.m → ℂ)} (hU : IsOpen U)
     (hfib : ∀ w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal, IndefiniteRowSideFullHecke.ComplexSets.firstCoords w = q → w ∈ U) :

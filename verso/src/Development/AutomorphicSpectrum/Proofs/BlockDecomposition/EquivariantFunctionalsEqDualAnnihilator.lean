@@ -9,11 +9,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZMir.W
 namespace GlobalTheory.CompanionTheory.TwistedDual
 
 /- English proof (translation)
-Distinguish the cases in `hW : Module.Finite ℂ W`. Establish `h : Module.rank ℂ (Module.Dual ℂ W) = Module.rank ℂ W`. Rewrite using `[← Module.finrank_eq_rank, ← Module.finrank_eq_rank, Subspace.dual_finrank_eq]`. Rewrite using `[h]`. Establish `hinf : Cardinal.aleph0 ≤ Module.rank ℂ W`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Conclude with `hW (Module.rank_lt_aleph0_iff.1 (not_le.1 hlt))`. Establish `hone : (1 : Cardinal) < Module.rank ℂ W` using `lt_of_lt_of_le Cardinal.one_lt_aleph0 hinf`. Establish `hdual : Module.rank ℂ W < Module.rank ℂ (Module.Dual ℂ W)`. Simplify using `using lift_rank_lt_rank_dual (K := ℂ) (V := W) hinf`.
-
-Conclude with `iff_of_false (not_le.2 hone) (not_le.2 (hone.trans hdual))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rank_le_one_iff_rank_dual_le_one (W : Type) [AddCommGroup W] [Module ℂ W] :
     Module.rank ℂ W ≤ 1 ↔ Module.rank ℂ (Module.Dual ℂ W) ≤ 1 := by
@@ -33,11 +31,11 @@ theorem rank_le_one_iff_rank_dual_le_one (W : Type) [AddCommGroup W] [Module ℂ
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use extensionality with `ℓ`. Rewrite using `[GroundTheory.Automorphic.Whittaker.mem_equivariantFunctionals, Submodule.mem_dualAnnihilator]`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Establish `hle : twKer ρ N θ ≤ LinearMap.ker ℓ`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨n, v, rfl⟩`. Simplify using `[h n v]`. Conclude with `hle hw`. Introduce `h n v`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : ρ (n : G) v - ((θ n : ℂˣ) : ℂ) • v ∈ twKer ρ N θ` using `Submodule.subset_span ⟨n, v, rfl⟩`. Establish `h0` using `h _ hmem`. Simplify using `only [map_sub, map_smul, smul_eq_mul] at h0`. Conclude with `sub_eq_zero.1 h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem equivariantFunctionals_eq_dualAnnihilator (ρ : Representation ℂ G V) (N : Subgroup G)
     (θ : N →* ℂˣ) :
@@ -60,7 +58,7 @@ theorem equivariantFunctionals_eq_dualAnnihilator (ρ : Representation ℂ G V) 
     exact sub_eq_zero.1 h0
 
 /- English proof (translation)
-Rewrite using `[equivariantFunctionals_eq_dualAnnihilator, ← (twKer ρ N θ).dualQuotEquivDualAnnihilator.rank_eq]`. Conclude with `rank_le_one_iff_rank_dual_le_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_twJacquet_le_one_iff (ρ : Representation ℂ G V) (N : Subgroup G) (θ : N →* ℂˣ) :
     Module.rank ℂ (TwJacquet ρ N θ) ≤ 1 ↔

@@ -28,11 +28,11 @@ def leviHom (b : ι → Fin s) : parab K b →* (∀ c, GL {i // b i = c} K) whe
     exact blk_mul b c p.2.1 q.2.1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `c`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `h1` using `h.2 i j (hi.trans hj.symm)`. Use `show (p.1 : Matrix ι ι K) i j = (1 : Matrix {i // b i = c} {i // b i = c} K) ⟨i, hi⟩ ⟨j, hj⟩`. Rewrite using `[h1, Matrix.one_apply]`. Simplify using the standard rewrite rules. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p.2, fun i j hij => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun f : (∀ c, GL {i // b i = c} K) => ((f (b i) : GL {k // b k = b i} K) : Matrix {k // b k = b i} {k // b k = b i} K) ⟨i, rfl⟩ ⟨j, hij.symm⟩) h`. Establish `h2 : (p.1 : Matrix ι ι K) i j = (1 : Matrix {k // b k = b i} {k // b k = b i} K) ⟨i, rfl⟩ ⟨j, hij.symm⟩` using `h1`. Rewrite using `[h2, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_unip_iff (b : ι → Fin s) (p : parab K b) : p.1 ∈ unip K b ↔ leviHom b p = 1 := by
   constructor
@@ -54,7 +54,7 @@ theorem mem_unip_iff (b : ι → Fin s) (p : parab K b) : p.1 ∈ unip K b ↔ l
     simp
 
 /- English proof (translation)
-Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `h' : k ≠ k'` using `fun e => h e.symm`. Simplify using `[Matrix.blockDiagonal'_apply, h, h']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blockDiagonal_entry (b : ι → Fin s) (M : ∀ c, Matrix {i // b i = c} {i // b i = c} K) (k k' : Fin s)
     (x : {i // b i = k}) (y : {i // b i = k'}) :
@@ -75,7 +75,7 @@ def blockHom (b : ι → Fin s) : (∀ c, Matrix {i // b i = c} {i // b i = c} K
     rw [Matrix.blockDiagonal'_mul, Matrix.submatrix_mul_equiv]
 
 /- English proof (translation)
-The claim follows from `blockDiagonal_entry b M (b i) (b j) ⟨i, rfl⟩ ⟨j, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem blockHom_apply (b : ι → Fin s) (M : ∀ c, Matrix {i // b i = c} {i // b i = c} K) (i j : ι) :
     blockHom b M i j = if h : b j = b i then M (b i) ⟨i, rfl⟩ ⟨j, h⟩ else 0 :=
@@ -93,7 +93,7 @@ theorem dGL_val (b : ι → Fin s) (g : ∀ c, GL {i // b i = c} K) :
       blockHom b (fun c => ((g c : GL {i // b i = c} K) : Matrix {i // b i = c} {i // b i = c} K)) := rfl
 
 /- English proof (translation)
-Introduce `i j h`. Rewrite using `[dGL_val, blockHom_apply, dif_neg (ne_of_lt h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isBlockUT_dGL (b : ι → Fin s) (g : ∀ c, GL {i // b i = c} K) :
     IsBlockUT K b ((dGL b g : GL ι K) : Matrix ι ι K) := by
@@ -101,15 +101,15 @@ theorem isBlockUT_dGL (b : ι → Fin s) (g : ∀ c, GL {i // b i = c} K) :
   rw [dGL_val, blockHom_apply, dif_neg (ne_of_lt h)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isBlockUT_dGL b g, by rw [← map_inv]; exact isBlockUT_dGL b g⁻¹⟩`.
+Supply the required witnesses or components.
 -/
 theorem dGL_mem (b : ι → Fin s) (g : ∀ c, GL {i // b i = c} K) : dGL b g ∈ parab K b :=
   ⟨isBlockUT_dGL b g, by rw [← map_inv]; exact isBlockUT_dGL b g⁻¹⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Substitute `hi` using the available equality. Use `show ((dGL b g : GL ι K) : Matrix ι ι K) i j = _`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dGL_val, blockHom_apply, dif_pos hj]`.
+A detailed English derivation is pending.
 -/
 theorem leviHom_dGL (b : ι → Fin s) (g : ∀ c, GL {i // b i = c} K) :
     leviHom b ⟨dGL b g, dGL_mem b g⟩ = g := by
@@ -121,7 +121,7 @@ theorem leviHom_dGL (b : ι → Fin s) (g : ∀ c, GL {i // b i = c} K) :
   rw [dGL_val, blockHom_apply, dif_pos hj]
 
 /- English proof (translation)
-Establish `hd` using `dGL_mem b g`. Establish `hl` using `(mem_unip_iff b ⟨u, hu.1⟩).1 hu`. Use `(mem_unip_iff b ((⟨dGL b g, hd⟩ : parab K b)⁻¹ * ⟨u, hu.1⟩ * ⟨dGL b g, hd⟩)).2 (by rw [map_mul, map_mul, hl, map_inv, mul_one, inv_mul_cancel])` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unip_conj (b : ι → Fin s) (g : ∀ c, GL {i // b i = c} K) {u : GL ι K} (hu : u ∈ unip K b) :
     (dGL b g)⁻¹ * u * dGL b g ∈ unip K b := by
@@ -132,7 +132,7 @@ theorem unip_conj (b : ι → Fin s) (g : ∀ c, GL {i // b i = c} K) {u : GL ι
   exact this
 
 /- English proof (translation)
-Establish `hd` using `dGL_mem b (leviHom b p)`. Use `(mem_unip_iff b ((⟨dGL b (leviHom b p), hd⟩ : parab K b)⁻¹ * p)).2 (by rw [map_mul, map_inv, leviHom_dGL, inv_mul_cancel])` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unip_of_levi (b : ι → Fin s) (p : parab K b) : (dGL b (leviHom b p))⁻¹ * p.1 ∈ unip K b := by
   have hd := dGL_mem b (leviHom b p)
@@ -153,7 +153,7 @@ def fixSub (τ : FDRep ℂ (GL ι K)) (b : ι → Fin s) : Submodule ℂ τ wher
     rw [map_smul, hx u hu]
 
 /- English proof (translation)
-Introduce `v hv u hu`. Establish `h` using `hv _ (unip_conj b g hu)`. Establish `e : u * dGL b g = dGL b g * ((dGL b g)⁻¹ * u * dGL b g)` using `by group`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem fixSub_stable (τ : FDRep ℂ (GL ι K)) (b : ι → Fin s) (g : ∀ c, GL {i // b i = c} K) :
     ∀ v ∈ fixSub τ b, τ.ρ (dGL b g) v ∈ fixSub τ b := by
@@ -179,7 +179,7 @@ def HasFixed (τ : FDRep ℂ (GL ι K)) (s : ℕ) : Prop :=
   ∃ b : ι → Fin s, Function.Surjective b ∧ ∃ v : τ, v ≠ 0 ∧ ∀ u ∈ unip K b, τ.ρ u v = v
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[hu.2 i j (hb i j)]`. Simplify using `[Matrix.one_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unip_trivial (b : ι → Fin s) (hb : ∀ i j, b i = b j) {u : GL ι K} (hu : u ∈ unip K b) : u = 1 := by
   apply Units.ext
@@ -188,9 +188,9 @@ theorem unip_trivial (b : ι → Fin s) (hb : ∀ i j, b i = b j) {u : GL ι K} 
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ne (0 : τ)`. Break down `isEmpty_or_nonempty ι with h | h` into its components or cases. Use `⟨0, fun i => isEmptyElim i, fun c => c.elim0, v, hv, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[unip_trivial _ (fun i => isEmptyElim i) hu]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨i₀⟩` from `h`. Use `⟨1, fun _ => 0, fun c => ⟨i₀, Subsingleton.elim _ _⟩, v, hv, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[unip_trivial _ (fun _ _ => rfl) hu]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hasFixed_exists (τ : FDRep ℂ (GL ι K)) [Nontrivial τ] : ∃ s, HasFixed τ s := by
   obtain ⟨v, hv⟩ := exists_ne (0 : τ)
@@ -204,7 +204,7 @@ theorem hasFixed_exists (τ : FDRep ℂ (GL ι K)) [Nontrivial τ] : ∃ s, HasF
     simp
 
 /- English proof (translation)
-Take `⟨b, hb, _⟩` from `h`. Simplify using `using Fintype.card_le_of_surjective b hb`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasFixed_le {τ : FDRep ℂ (GL ι K)} {s : ℕ} (h : HasFixed τ s) : s ≤ Fintype.card ι := by
   obtain ⟨b, hb, _⟩ := h
@@ -220,20 +220,20 @@ def refine (i : ι) : Fin (s + t - 1) :=
   else ⟨b i + t - 1, by have := (b i).2; omega⟩
 
 /- English proof (translation)
-Simplify using `[refine, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem refine_of_eq {i : ι} (h : b i = c) : (refine b c b₁ ht i : ℕ) = c + b₁ ⟨i, h⟩ := by
   simp [refine, h]
 
 /- English proof (translation)
-Establish `h' : b i ≠ c` using `fun e => by rw [e] at h; exact lt_irrefl _ h`. Simplify using `[refine, h, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem refine_of_lt {i : ι} (h : (b i : ℕ) < c) : (refine b c b₁ ht i : ℕ) = b i := by
   have h' : b i ≠ c := fun e => by rw [e] at h; exact lt_irrefl _ h
   simp [refine, h, h']
 
 /- English proof (translation)
-Establish `h' : b i ≠ c` using `fun e => by rw [e] at h; exact lt_irrefl _ h`. Establish `h2 : ¬ (b i : ℕ) < c` using `by omega`. Simplify using `[refine, h2, h']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem refine_of_gt {i : ι} (h : (c : ℕ) < b i) : (refine b c b₁ ht i : ℕ) = b i + t - 1 := by
   have h' : b i ≠ c := fun e => by rw [e] at h; exact lt_irrefl _ h
@@ -241,9 +241,9 @@ theorem refine_of_gt {i : ι} (h : (c : ℕ) < b i) : (refine b c b₁ ht i : �
   simp [refine, h2, h']
 
 /- English proof (translation)
-Break down `lt_trichotomy (b i : ℕ) c with h | h | h` into its components or cases. Conclude with `Or.inl ⟨h, refine_of_lt b c b₁ ht h⟩`. Establish `h' : b i = c` using `Fin.ext h`. Use `refine_of_eq b c b₁ ht h'` as an intermediate fact. Use `(b₁ ⟨i, h'⟩).2` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Or.inr (Or.inl ⟨h, by omega, by omega⟩)`. Conclude with `Or.inr (Or.inr ⟨h, refine_of_gt b c b₁ ht h⟩)`.
+Prove the second alternative. Prove the second alternative.
 -/
 theorem refine_cases (i : ι) :
     ((b i : ℕ) < c ∧ (refine b c b₁ ht i : ℕ) = b i) ∨
@@ -258,7 +258,7 @@ theorem refine_cases (i : ι) :
   · exact Or.inr (Or.inr ⟨h, refine_of_gt b c b₁ ht h⟩)
 
 /- English proof (translation)
-Establish `h' : (b j : ℕ) < b i` using `h`. Rewrite using `[Fin.lt_def]`. Apply the tactic sequence `rcases refine_cases b c b₁ ht i with h1 | h1 | h1 <;> rcases refine_cases b c b₁ ht j with h2 | h2 | h2 <;> omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem refine_lt {i j : ι} (h : b j < b i) : refine b c b₁ ht j < refine b c b₁ ht i := by
   have h' : (b j : ℕ) < b i := h
@@ -266,7 +266,7 @@ theorem refine_lt {i j : ι} (h : b j < b i) : refine b c b₁ ht j < refine b c
   rcases refine_cases b c b₁ ht i with h1 | h1 | h1 <;> rcases refine_cases b c b₁ ht j with h2 | h2 | h2 <;> omega
 
 /- English proof (translation)
-Establish `h' : (b i : ℕ) = b j` using `by rw [h]`. Establish `hc' : (b i : ℕ) ≠ c` using `fun e => hc (Fin.ext e)`. Apply `Fin.ext` to reduce the goal to its premises. Apply the tactic sequence `rcases refine_cases b c b₁ ht i with h1 | h1 | h1 <;> rcases refine_cases b c b₁ ht j with h2 | h2 | h2 <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem refine_eq_of_ne {i j : ι} (h : b i = b j) (hc : b i ≠ c) : refine b c b₁ ht i = refine b c b₁ ht j := by
   have h' : (b i : ℕ) = b j := by rw [h]
@@ -275,13 +275,13 @@ theorem refine_eq_of_ne {i j : ι} (h : b i = b j) (hc : b i ≠ c) : refine b c
   rcases refine_cases b c b₁ ht i with h1 | h1 | h1 <;> rcases refine_cases b c b₁ ht j with h2 | h2 | h2 <;> omega
 
 /- English proof (translation)
-Introduce `k`. Establish `hk` using `k.2`. Establish `hcs` using `c.2`. Distinguish the cases in `h1 : (k : ℕ) < c`. Take `⟨i, hi⟩` from `hb ⟨k, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hi' : (b i : ℕ) = k` using `by rw [hi]`. Use `⟨i, Fin.ext ?_⟩` and prove the remaining obligations. Rewrite using `[refine_of_lt b c b₁ ht (by omega), hi']`. Distinguish the cases in `h2 : (k : ℕ) < c + t`. Take `⟨x, hx⟩` from `hb₁ ⟨k - c, by omega⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hx' : (b₁ x : ℕ) = k - c` using `by rw [hx]`. Use `⟨x.1, Fin.ext ?_⟩` and prove the remaining obligations. Rewrite using `[refine_of_eq b c b₁ ht x.2]`. Establish `: b₁ ⟨x.1, x.2⟩ = b₁ x` using `rfl`. Rewrite using `[this, hx']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨i, hi⟩` from `hb ⟨k + 1 - t, by omega⟩`. Establish `hi' : (b i : ℕ) = k + 1 - t` using `by rw [hi]`. Use `⟨i, Fin.ext ?_⟩` and prove the remaining obligations. Rewrite using `[refine_of_gt b c b₁ ht (by omega), hi']`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -310,17 +310,15 @@ theorem refine_surjective (hb : Function.Surjective b) (hb₁ : Function.Surject
       omega
 
 /- English proof (translation)
-Establish `hp : u ∈ parab K b` using `⟨fun i j h => hu.1.1 i j (refine_lt b c b₁ ht h), fun i j h => hu.1.2 i j (refine_lt b c b₁ ht h)⟩`. Use `⟨hp, fun c' hc' => ?_, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Establish `h1` using `hu.2 i j (refine_eq_of_ne b c b₁ ht (hi.trans hj.symm) (by rw [hi]; exact hc'))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `show (u : Matrix ι ι K) i j = (1 : Matrix {i // b i = c'} {i // b i = c'} K) ⟨i, hi⟩ ⟨j, hj⟩`. Rewrite using `[h1, Matrix.one_apply]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩ h`. Use `hu.1.1 i j ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h' : (b₁ ⟨j, hj⟩ : ℕ) < b₁ ⟨i, hi⟩` using `h`. Rewrite using `[Fin.lt_def, refine_of_eq b c b₁ ht hi, refine_of_eq b c b₁ ht hj]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩ h`. Use `hu.1.2 i j ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h' : (b₁ ⟨j, hj⟩ : ℕ) < b₁ ⟨i, hi⟩` using `h`. Rewrite using `[Fin.lt_def, refine_of_eq b c b₁ ht hi, refine_of_eq b c b₁ ht hj]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩ h`. Establish `h1 : refine b c b₁ ht i = refine b c b₁ ht j`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[refine_of_eq b c b₁ ht hi, refine_of_eq b c b₁ ht hj, h]`. Establish `h2` using `hu.2 i j h1`. Use `show (u : Matrix ι ι K) i j = _`. Rewrite using `[h2]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem refine_parts {u : GL ι K} (hu : u ∈ unip K (refine b c b₁ ht)) :
     ∃ hp : u ∈ parab K b, (∀ c', c' ≠ c → levi K b c' ⟨u, hp⟩ = 1) ∧ levi K b c ⟨u, hp⟩ ∈ unip K b₁ := by
@@ -360,7 +358,7 @@ variable {τ : FDRep ℂ (GL ι K)} {b : ι → Fin s} {lam : ∀ c : Fin s, FDR
   {Φ : PiTensorProduct ℂ (fun c => (lam c : Type)) →ₗ[ℂ] τ}
 
 /- English proof (translation)
-Use `LinearMap.congr_fun (heq p) (PiTensorProduct.tprod ℂ f)` as an intermediate fact. Simplify `this` using `[infl, PiTensorProduct.map_tprod]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem equivariant_tprod (heq : ∀ p : parab K b, Φ ∘ₗ infl K b lam p = τ.ρ p.1 ∘ₗ Φ) (p : parab K b)
     (f : ∀ c, (lam c : Type)) :
@@ -381,15 +379,15 @@ def killSub (Φ : PiTensorProduct ℂ (fun c => (lam c : Type)) →ₗ[ℂ] τ) 
     rw [MultilinearMap.map_update_smul, map_smul, hx f, smul_zero]
 
 /- English proof (translation)
-Establish `hinv : ∀ g, ∀ x ∈ killSub Φ c, (lam c).ρ g x ∈ killSub Φ c`. Introduce `g x hx f`. Set `gh : ∀ c', GL {i // b i = c'} K` to `Function.update 1 c g`. Set `p : parab K b` to `⟨dGL b gh, dGL_mem b gh⟩`. Establish `hl : ∀ c', levi K b c' p = gh c'` using `fun c' => congrFun (leviHom_dGL b gh) c'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `equivariant_tprod heq p (Function.update f c x)`. Establish `h2 : (fun c' => (lam c').ρ (levi K b c' p) (Function.update f c x c')) = Function.update f c ((lam c).ρ g x)`. Use function extensionality and compare the values at `c'`. Rewrite using `[hl]`. Distinguish the cases in `e : c' = c`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using `[gh]`. Simplify using `[gh, e]`. Rewrite `h1` using `[h2]`. Rewrite using `[h1, hx f, map_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `hirr.2 (killSub Φ c) hinv with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Apply `hΦ` to reduce the goal to its premises. Apply `PiTensorProduct.ext` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `f`. Establish `h1 : f c ∈ killSub Φ c` using `by rw [h]; trivial`. Establish `h2` using `h1 f`. Rewrite `h2` using `[Function.update_eq_self]`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem killSub_eq_bot (hΦ : Φ ≠ 0) (heq : ∀ p : parab K b, Φ ∘ₗ infl K b lam p = τ.ρ p.1 ∘ₗ Φ) (c : Fin s)
     (hirr : IsIrr (lam c).ρ) : killSub Φ c = ⊥ := by
@@ -421,13 +419,13 @@ theorem killSub_eq_bot (hΦ : Φ ≠ 0) (heq : ∀ p : parab K b, Φ ∘ₗ infl
     simpa using h2
 
 /- English proof (translation)
-Establish `hnot : v ∉ killSub Φ c`. Rewrite using `[killSub_eq_bot hΦ heq c hirr]`. Simplify using `using hv`. Establish `hex : ∃ f : ∀ c, (lam c : Type), Φ (PiTensorProduct.tprod ℂ (Function.update f c v)) ≠ 0`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Conclude with `hnot hcon`. Take `⟨f, hf⟩` from `hex`. Use `⟨refine b c b₁ ht, refine_surjective b c b₁ ht hb hb₁, _, hf, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨hp, h1, h2⟩` from `refine_parts b c b₁ ht hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `equivariant_tprod heq ⟨u, hp⟩ (Function.update f c v)`. Establish `h4 : (fun c' => (lam c').ρ (levi K b c' ⟨u, hp⟩) (Function.update f c v c')) = Function.update f c v`. Use function extensionality and compare the values at `c'`. Distinguish the cases in `e : c' = c`. Substitute `e` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hfix _ h2`. Rewrite using `[h1 c' e]`. Simplify using the standard rewrite rules. Rewrite `h3` using `[h4]`. Conclude with `h3.symm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cusp_step (hb : Function.Surjective b) (hΦ : Φ ≠ 0)
     (heq : ∀ p : parab K b, Φ ∘ₗ infl K b lam p = τ.ρ p.1 ∘ₗ Φ) (c : Fin s) (hirr : IsIrr (lam c).ρ)
@@ -457,21 +455,19 @@ theorem cusp_step (hb : Function.Surjective b) (hΦ : Φ ≠ 0)
 end Cusp
 
 /- English proof (translation)
-Introduce `K _ _ _ ι _ _ τ hτ`. Establish `hirrτ` using `((GlobalTheory.T.simple_iff_irreducible).1 _ τ).1 hτ`. Use `haveI : Nontrivial τ := hirrτ.1`. Take `⟨s₀, h₀⟩` from `hasFixed_exists τ`. Take `⟨m, hm, hmax⟩ : ∃ m, HasFixed τ m ∧ ∀ s', HasFixed τ s' → s' ≤ m` from `⟨Nat.findGreatest (HasFixed τ) (Fintype.card ι), Nat.findGreatest_spec (hasFixed_le h₀) h₀, fun s' h => Nat.le_findGreatest (hasFixed_le h) h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, v, hv, hfix⟩` from `hm`. Use `haveI : Nontrivial (fixSub τ b) := ⟨⟨⟨v, hfix⟩, 0, fun e => hv (congrArg Subtype.val e)⟩⟩`. Take `⟨lam, Φ', hsimple, hΦ', heq'⟩` from `(GlobalTheory.T.product_simple_all : PI.GreenHCLabel.ProdSimple) m (fun c => GL {i // b i = c} K) (fixSub τ b) (wRep τ b)`. Establish `hΦ : (fixSub τ b).subtype ∘ₗ Φ' ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Apply `hΦ'` to reduce the goal to its premises. Use extensionality with `x`. Use `LinearMap.congr_fun h (PiTensorProduct.tprod ℂ x)` as an intermediate fact. Simplify using `using this`. Establish `heq : ∀ p : parab K b, ((fixSub τ b).subtype ∘ₗ Φ') ∘ₗ infl K b lam p = τ.ρ p.1 ∘ₗ ((fixSub τ b).subtype ∘ₗ Φ')`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `p`. Use extensionality with `x`. Establish `h1` using `LinearMap.congr_fun (heq' (leviHom b p)) (PiTensorProduct.tprod ℂ x)`. Establish `h2 : ((Φ' (PiTensorProduct.map (fun c => (lam c).ρ (leviHom b p c)) (PiTensorProduct.tprod ℂ x)) : fixSub τ b) : τ) = τ.ρ (dGL b (leviHom b p)) (Φ' (PiTensorProduct.tprod ℂ x))`. Use `congrArg Subtype.val h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h3 : τ.ρ p.1 (Φ' (PiTensorProduct.tprod ℂ x)) = τ.ρ (dGL b (leviHom b p)) (Φ' (PiTensorProduct.tprod ℂ x))`. Establish `h4` using `(Φ' (PiTensorProduct.tprod ℂ x)).2 _ (unip_of_levi b p)`. Establish `e : p.1 = dGL b (leviHom b p) * ((dGL b (leviHom b p))⁻¹ * p.1)` using `by group`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Both sides reduce to the same expression. Use `_ = _ := by rw [h4]`. Use `show ((Φ' (PiTensorProduct.map (fun c => (lam c).ρ (leviHom b p c)) (PiTensorProduct.tprod ℂ x)) : fixSub τ b) : τ) = τ.ρ p.1 (Φ' (PiTensorProduct.tprod ℂ x))`. Rewrite using `[h2, h3]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨m, b, lam, (fixSub τ b).subtype ∘ₗ Φ', hb, fun c => ⟨hsimple c, ?_⟩, hΦ, heq⟩` and prove the remaining obligations. Introduce `t b₁ hb₁ ht w hw`. Assume the negation of the conclusion as `hne`. Establish `hirr` using `((GlobalTheory.T.simple_iff_irreducible).1 _ (lam c)).1 (hsimple c)`. Use `hmax _ (cusp_step hb hΦ heq c hirr (by omega) b₁ hb₁ w hne hw)` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem jacquetAll : ReciprocityTheory.Ty.Fin.St.JacquetAll := by
   intro K _ _ _ ι _ _ τ hτ

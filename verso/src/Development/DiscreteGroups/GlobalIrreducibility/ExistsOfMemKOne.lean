@@ -15,7 +15,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Rewrite using `[he.lt_one_iff_lt_one, Valued.toNormedField.norm_lt_one_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_lt_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y < 1 ↔ ‖y‖ < 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -25,7 +25,7 @@ theorem val_lt_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y <
   rw [he.lt_one_iff_lt_one, Valued.toNormedField.norm_lt_one_iff]
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Rewrite using `[he.le_one_iff_le_one, Valued.toNormedField.norm_le_one_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_le_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y ≤ 1 ↔ ‖y‖ ≤ 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -38,9 +38,9 @@ variable {g : ℕ} [Fact g.Prime] (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : C
 include hi
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun k : ℕ => x ^ k) atTop (𝓝 0)` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one hx`. Establish `h0 : Tendsto i (𝓝 0) (𝓝 0)` using `by simpa using hi.tendsto 0`. Establish `h2 : Tendsto (fun k : ℕ => ‖i x‖ ^ k) atTop (𝓝 0)`. Use `(h0.comp h1).norm` as an intermediate fact. Simplify `this` using `[Function.comp_def, map_pow, norm_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt]`. Take `⟨k, hk⟩` from `(h2.eventually (gt_mem_nhds one_pos)).exists`. Conclude with `absurd hk (not_lt.2 (one_le_pow₀ hc))`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem norm_lt_of_lt {x : ℚ_[g]} (hx : ‖x‖ < 1) : ‖i x‖ < 1 := by
   have h1 : Tendsto (fun k : ℕ => x ^ k) atTop (𝓝 0) := tendsto_pow_atTop_nhds_zero_of_norm_lt_one hx
@@ -54,15 +54,15 @@ theorem norm_lt_of_lt {x : ℚ_[g]} (hx : ‖x‖ < 1) : ‖i x‖ < 1 := by
   exact absurd hk (not_lt.2 (one_le_pow₀ hc))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TypeRec.Model.emb_le w g i.toRingHom hi x hx`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_of_le {x : ℚ_[g]} (hx : ‖x‖ ≤ 1) : ‖i x‖ ≤ 1 :=
   GlobalTheory.TypeRec.Model.emb_le w g i.toRingHom hi x hx
 
 /- English proof (translation)
-Use `⟨fun h => ?_, norm_lt_of_lt i hi⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt]`. Establish `hx0 : x ≠ 0` using `fun e => by rw [e, norm_zero] at hc; exact absurd hc (by norm_num)`. Establish `h1 : ‖x⁻¹‖ ≤ 1` using `by rw [norm_inv]; exact inv_le_one_of_one_le₀ hc`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `norm_le_of_le i hi h1`. Rewrite `h2` using `[map_inv₀, norm_inv]`. Establish `hpos : 0 < ‖i x‖` using `norm_pos_iff.2 ((map_ne_zero i).2 hx0)`. Use `(inv_le_one₀ hpos).1 h2` as an intermediate fact. Conclude with `absurd h (not_lt.2 this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_lt_iff (x : ℚ_[g]) : ‖i x‖ < 1 ↔ ‖x‖ < 1 := by
   refine ⟨fun h => ?_, norm_lt_of_lt i hi⟩
@@ -77,9 +77,9 @@ theorem norm_lt_iff (x : ℚ_[g]) : ‖i x‖ < 1 ↔ ‖x‖ < 1 := by
   exact absurd h (not_lt.2 this)
 
 /- English proof (translation)
-Use `⟨fun h => ?_, norm_le_of_le i hi⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_le]`. Establish `hx0 : x ≠ 0` using `fun e => by rw [e, norm_zero] at hc; exact absurd hc (by norm_num)`. Establish `h1 : ‖x⁻¹‖ < 1` using `by rw [norm_inv]; exact inv_lt_one_of_one_lt₀ hc`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `norm_lt_of_lt i hi h1`. Rewrite `h2` using `[map_inv₀, norm_inv]`. Establish `hpos : 0 < ‖i x‖` using `norm_pos_iff.2 ((map_ne_zero i).2 hx0)`. Use `(inv_lt_one₀ hpos).1 h2` as an intermediate fact. Conclude with `absurd h (not_le.2 this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_le_iff (x : ℚ_[g]) : ‖i x‖ ≤ 1 ↔ ‖x‖ ≤ 1 := by
   refine ⟨fun h => ?_, norm_le_of_le i hi⟩
@@ -94,25 +94,25 @@ theorem norm_le_iff (x : ℚ_[g]) : ‖i x‖ ≤ 1 ↔ ‖x‖ ≤ 1 := by
   exact absurd h (not_le.2 this)
 
 /- English proof (translation)
-The claim follows from `(val_lt_iff _).trans (norm_lt_iff i hi x)`.
+A detailed English derivation is pending.
 -/
 theorem valuation_lt_iff (x : ℚ_[g]) : valuation (w.adicCompletion E) (i x) < 1 ↔ ‖x‖ < 1 :=
   (val_lt_iff _).trans (norm_lt_iff i hi x)
 
 /- English proof (translation)
-The claim follows from `(val_le_iff _).trans (norm_le_iff i hi x)`.
+A detailed English derivation is pending.
 -/
 theorem valuation_le_iff (x : ℚ_[g]) : valuation (w.adicCompletion E) (i x) ≤ 1 ↔ ‖x‖ ≤ 1 :=
   (val_le_iff _).trans (norm_le_iff i hi x)
 
 /- English proof (translation)
-The claim follows from `Valued.toNormedField.norm_lt_one_iff.symm.trans (norm_lt_iff i hi x)`.
+A detailed English derivation is pending.
 -/
 theorem v_lt_iff (x : ℚ_[g]) : Valued.v (i x) < 1 ↔ ‖x‖ < 1 :=
   Valued.toNormedField.norm_lt_one_iff.symm.trans (norm_lt_iff i hi x)
 
 /- English proof (translation)
-The claim follows from `Valued.toNormedField.norm_le_one_iff.symm.trans (norm_le_iff i hi x)`.
+A detailed English derivation is pending.
 -/
 theorem v_le_iff (x : ℚ_[g]) : Valued.v (i x) ≤ 1 ↔ ‖x‖ ≤ 1 :=
   Valued.toNormedField.norm_le_one_iff.symm.trans (norm_le_iff i hi x)
@@ -120,23 +120,19 @@ theorem v_le_iff (x : ℚ_[g]) : Valued.v (i x) ≤ 1 ↔ ‖x‖ ≤ 1 :=
 omit hi in
 
 /- English proof (translation)
-Establish `hM : ∀ a b, ‖M a b‖ ≤ 1`. Introduce `a b`. Establish `h1` using `h a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite `h1` using `[Matrix.one_apply_eq]`. Use `IsUltrametricDist.norm_add_le_max (M a a - 1) (1 : ℚ_[g])` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, norm_one]`. Conclude with `this.trans (max_le h1.le le_rfl)`. Rewrite `h1` using `[Matrix.one_apply_ne hab, sub_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `h1.le`. Set `A : Matrix (Fin n) (Fin n) ℤ_[g]` to `fun a b => ⟨M a b, hM a b⟩`. Establish `hA : (PadicInt.toZMod (p` using `g)).mapMatrix A = 1 := by`. Use extensionality with `a b`. Establish `hmem : A a b - (1 : Matrix (Fin n) (Fin n) ℤ_[g]) a b ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ((A a b - (1 : Matrix (Fin n) (Fin n) ℤ_[g]) a b : ℤ_[g]) : ℚ_[g]) = M a b - (1 : Matrix (Fin n) (Fin n) ℚ_[g]) a b`. Rewrite using `[PadicInt.coe_sub]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, PadicInt.coe_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne hab, PadicInt.coe_zero]`. Rewrite using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.norm_def, hc]`. Conclude with `h a b`. Rewrite `hmem` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, hmem]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Apply the tactic sequence `by_cases hab : a = b <;> simp [hab, Matrix.one_apply]`. Establish `hd : IsUnit A.det`. Assume the negation of the conclusion as `hn`. Establish `hk : A.det ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`. Rewrite using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mem_nonunits_iff.2 hn`. Rewrite `hk` using `[RingHom.mem_ker, RingHom.map_det, hA, Matrix.det_one]`. Conclude with `one_ne_zero hk`. Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det A).2 hd`. Use `⟨u, Units.ext ?_, ?_⟩` and prove the remaining obligations.
-
-Use `show (PadicInt.toZMod (p := g)).mapMatrix (u : Matrix (Fin n) (Fin n) ℤ_[g]) = 1`. Rewrite using `[hu, hA]`. Use `show (algebraMap ℤ_[g] ℚ_[g]).mapMatrix (u : Matrix (Fin n) (Fin n) ℤ_[g]) = M`. Rewrite using `[hu]`. Use extensionality with `a b`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_ker_red {n : ℕ} (M : Matrix (Fin n) (Fin n) ℚ_[g])
     (h : ∀ a b, ‖M a b - (1 : Matrix (Fin n) (Fin n) ℚ_[g]) a b‖ < 1) :
@@ -184,15 +180,15 @@ theorem exists_ker_red {n : ℕ} (M : Matrix (Fin n) (Fin n) ℚ_[g])
     rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.StepData.mem_KOne]`. Introduce `a b`. Establish `hk' : PadicInt.toZMod (k.val a b) = (1 : Matrix (Fin n) (Fin n) (ZMod g)) a b` using `congrArg (fun x : GL (Fin n) (ZMod g) => (x : Matrix (Fin n) (Fin n) (ZMod g)) a b) hk`. Establish `hn : ‖((k.val a b : ℤ_[g]) : ℚ_[g]) - (1 : Matrix (Fin n) (Fin n) ℚ_[g]) a b‖ < 1`. Establish `hmem : k.val a b - (1 : Matrix (Fin n) (Fin n) ℤ_[g]) a b ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, map_sub, hk']`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`. Establish `hc : ((k.val a b - (1 : Matrix (Fin n) (Fin n) ℤ_[g]) a b : ℤ_[g]) : ℚ_[g]) = ((k.val a b : ℤ_[g]) : ℚ_[g]) - (1 : Matrix (Fin n) (Fin n) ℚ_[g]) a b`. Rewrite using `[PadicInt.coe_sub]`. Distinguish the cases in `hab : a = b`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hab` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, PadicInt.coe_one]`. Rewrite using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne hab, PadicInt.coe_zero]`. Rewrite `hmem` using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.norm_def, hc]`. Conclude with `hmem`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv` using `(valuation_lt_iff i hi _).2 hn`. Establish `e : ((Matrix.GeneralLinearGroup.map i.toRingHom (inc g n k)).val - 1) a b = i (((k.val a b : ℤ_[g]) : ℚ_[g]) - (1 : Matrix (Fin n) (Fin n) ℚ_[g]) a b)`. Rewrite using `[Matrix.sub_apply, map_sub]`. Use `congrArg₂ (· - ·) rfl ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hv`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_KOne {n : ℕ} (k : GL (Fin n) ℤ_[g]) (hk : red g n k = 1) :
     Matrix.GeneralLinearGroup.map i.toRingHom (inc g n k) ∈ KOne (w.adicCompletion E) (Fin n) := by
@@ -222,9 +218,9 @@ theorem map_mem_KOne {n : ℕ} (k : GL (Fin n) ℤ_[g]) (hk : red g n k = 1) :
   exact hv
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.StepData.mem_KOne.1 hm`. Take `⟨k, hk, hk'⟩` from `exists_ker_red (i.symm.toRingHom.mapMatrix m.val) (fun a b => by`. Establish `e : (i.symm.toRingHom.mapMatrix m.val) a b - (1 : Matrix (Fin n) (Fin n) ℚ_[g]) a b = i.symm ((m.val - 1) a b)`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab, map_sub]`. Rewrite using `[e, ← valuation_lt_iff i hi, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 a b)`. Use `⟨k, hk, Units.ext (Matrix.ext fun a b => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `i ((inc g n k : Matrix (Fin n) (Fin n) ℚ_[g]) a b) = m.val a b`. Rewrite using `[hk']`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_KOne {n : ℕ} {m : GL (Fin n) (w.adicCompletion E)}
     (hm : m ∈ KOne (w.adicCompletion E) (Fin n)) :
@@ -242,9 +238,9 @@ theorem exists_of_mem_KOne {n : ℕ} {m : GL (Fin n) (w.adicCompletion E)}
   simp
 
 /- English proof (translation)
-Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨k, hk, rfl⟩, rfl⟩`. Conclude with `map_mem_KOne i hi k (MonoidHom.mem_ker.1 hk)`. Introduce `hm`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, rfl⟩` from `exists_of_mem_KOne i hi hm`. Conclude with `⟨_, ⟨k, MonoidHom.mem_ker.2 hk, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_ker_red (n : ℕ) :
     ((red g n).ker.map (inc g n)).map (Matrix.GeneralLinearGroup.map i.toRingHom) =

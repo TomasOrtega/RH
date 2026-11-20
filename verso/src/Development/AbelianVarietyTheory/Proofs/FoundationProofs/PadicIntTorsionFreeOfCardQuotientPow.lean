@@ -5,25 +5,23 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Set `N : ℕ → AddSubgroup C` to `fun r => (LinearMap.range (LinearMap.lsmul ℤ_[l] C ((l : ℤ_[l]) ^ r))).toAddSubgroup`. Establish `hmem : ∀ r (x : C), x ∈ N r ↔ ∃ y, (l : ℤ_[l]) ^ r • y = x` using `fun r x => Iff.rfl`. Establish `hidx : ∀ r, 0 < r → (N r).index = l ^ r` using `fun r hr => h r hr`. Set `f : C →+ C` to `(LinearMap.lsmul ℤ_[l] C (l : ℤ_[l])).toAddMonoidHom`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf : ∀ x, f x = (l : ℤ_[l]) • x` using `fun x => rfl`. Establish `hrange : f.range = N 1`. Use extensionality with `x`. Rewrite using `[hmem]`. Simplify using `only [AddMonoidHom.mem_range, hf, pow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ c : C, (l : ℤ_[l]) • c = 0 → ∀ k, 0 < k → c ∈ N k`. Introduce `c hc k hk`. Establish `h1 : N (k + 1) ≤ N 1`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(hmem _ _).1 hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(hmem _ _).2 ⟨(l : ℤ_[l]) ^ k • y, by rw [smul_smul, ← pow_add, add_comm]⟩`. Establish `h2` using `AddSubgroup.relIndex_mul_index h1`. Rewrite `h2` using `[hidx 1 one_pos, hidx (k + 1) k.succ_pos, pow_one, pow_succ]`. Establish `h3 : ((N (k + 1)).comap f).index = l ^ k`. Rewrite using `[AddSubgroup.index_comap, hrange]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.eq_of_mul_eq_mul_right hl h2`. Establish `h4 : N k ≤ (N (k + 1)).comap f`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(hmem _ _).1 hx`. Conclude with `(hmem _ _).2 ⟨y, by rw [hf, smul_smul, pow_succ']⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5` using `AddSubgroup.relIndex_mul_index h4`. Rewrite `h5` using `[h3, hidx k hk]`. Establish `h6 : (N k).relIndex ((N (k + 1)).comap f) = 1` using `Nat.eq_of_mul_eq_mul_right (pow_pos hl k) (by rw [h5, one_mul])`. Apply `AddSubgroup.relIndex_eq_one.1 h6` to reduce the goal to its premises. Use `show f c ∈ N (k + 1)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hf, hc]`. Conclude with `zero_mem _`. Establish `one : ∀ c : C, (l : ℤ_[l]) • c = 0 → c = 0`. Introduce `c hc`. Establish `hK` using `Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := C) (IsLocalRing.maximalIdeal ℤ_[l]) (IsLocalRing.maximalIdeal.isMaximal _).ne_top`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Submodule.mem_bot ℤ_[l], ← hK, Submodule.mem_iInf]`. Introduce `i`. Take `⟨y, hy⟩` from `(hmem _ _).1 (key c hc (i + 1) i.succ_pos)`. Rewrite using `[← hy, pow_succ, mul_smul]`. Use `Submodule.smul_mem_smul (Ideal.pow_mem_pow ?_ i) Submodule.mem_top` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`. Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => intro c hc`.
-
-Simplify using `using hc`. Consider the case `succ r ih`. Introduce `c hc`. Rewrite `hc` using `[pow_succ, mul_smul]`. Conclude with `one c (ih _ hc)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicInt_torsionFree_of_card_quotient_pow (l : ℕ) [Fact l.Prime] (C : Type)
     [AddCommGroup C] [Module ℤ_[l] C] [Module.Finite ℤ_[l] C]

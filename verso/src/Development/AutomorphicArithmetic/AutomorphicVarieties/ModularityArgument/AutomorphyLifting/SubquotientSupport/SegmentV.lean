@@ -15,7 +15,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {rc : IrrGL (w.adicCompletion E) → WD h}
 
 /- English proof (translation)
-The claim follows from `(H.langlands [Δ] x hx.isL).trans (WD.lpSum_zero _)`.
+A detailed English derivation is pending.
 -/
 private theorem segmentV {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {ε : EpsFamily A}
     (H : LawsV a ha ε rc) {Δ : Segment (w.adicCompletion E)} {x : IrrGL (w.adicCompletion E)}
@@ -26,9 +26,9 @@ private theorem segmentV {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalA
 end UpperTheory.V.Z.Win.T2
 
 /- English proof (translation)
-Introduce `E Ω i₁ i₂ i₃ i₄ i₅ A w h rc hrc 𝔪 s N δ hδ hd π hπ`. Establish `h1 : IsL 𝔪 (GlobalTheory.LocLanglands.cls π).rep` using `IsL.of_equiv ⟨s, δ, hd, hδ, hπ⟩ (equivRep π)`. Take `⟨Δ, ⟨hm, -⟩, hΔ⟩` from `hδ`. Take `⟨a, ha, ε, H⟩` from `UpperTheory.V.Z.Win.toV hrc`. Simplify using `only [fun i => UpperTheory.V.Z.Win.T2.segmentV H (hΔ i)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[H.langlands (List.ofFn Δ) (GlobalTheory.LocLanglands.cls π) (by rwa [← Fin.univ_val_map, hm]), List.map_ofFn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.Z.Win.T2.lQuot :
     type_of% @GlobalTheory.LocLanglands.IsRec.langlandsQuotient := by

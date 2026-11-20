@@ -9,29 +9,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorsionPoints
 
 /- English proof (translation)
-Introduce `F _ _ A _ _ rm L u Fa hFa N hN`. Establish `hst : ∀ (a : 𝓞 F) (l : Fin (Module.finrank ℚ F) → ℂ), l ∈ u.Λ → Fa a l ∈ u.Λ`. Introduce `a l hl`. Rewrite using `[← u.ker, hFa, (u.ker l).2 hl, Hom.one_def, Category.assoc, (rm.hom a).one_hom]`. Use `letI : Module (𝓞 F) (Fin (Module.finrank ℚ F) → ℂ) := Module.compHom _ Fa`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Establish `hsmul : ∀ (a : 𝓞 F) (v : Fin (Module.finrank ℚ F) → ℂ), a • v = Fa a v` using `fun _ _ => rfl`. Set `Λ' : Submodule (𝓞 F) (Fin (Module.finrank ℚ F) → ℂ)` to `{ carrier := u.Λ add_mem' := fun ha hb => u.Λ.add_mem ha hb zero_mem' := u.Λ.zero_mem smul_mem' := fun a l hl => hst a l hl }`. Set `e : u.Λ ≃+ Λ'` to `{ toFun := fun l => ⟨l.1, l.2⟩, invFun := fun l => ⟨l.1, l.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl, map_add' := fun _ _ => rfl }`. Use `haveI := u.discrete`. Use `haveI : IsZLattice ℝ u.Λ := ⟨u.full⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `haveI : Module.Finite ℤ u.Λ := ZLattice.module_finite ℝ u.Λ`. Use `haveI : Module.Finite ℤ Λ' := Module.Finite.equiv e.toIntLinearEquiv`. Use `haveI : IsAddTorsionFree Λ' := ⟨fun n hn a b h => by`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h' : n • (a : Fin (Module.finrank ℚ F) → ℂ) = n • (b : Fin (Module.finrank ℚ F) → ℂ)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `using congrArg Subtype.val h`. Rewrite `h'` using `[← Nat.cast_smul_eq_nsmul ℂ, ← Nat.cast_smul_eq_nsmul ℂ n]`. Conclude with `smul_right_injective _ (Nat.cast_ne_zero.2 hn) h'⟩`. Establish `hrank : Module.finrank ℤ Λ' = 2 * Module.finrank ℚ F`. Rewrite using `[← e.toIntLinearEquiv.finrank_eq, ZLattice.rank ℝ u.Λ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm]`. Take `⟨x, hgen, hfree⟩` from `GlobalTheory.T.exists_rank_two_basis_mod_N F Λ' hrank N hN`. Establish `hN0 : (N : ℂ) ≠ 0` using `by exact_mod_cast (show N ≠ 0 by omega)`. Establish `hpow : ∀ (z : Fin (Module.finrank ℚ F) → ℂ) (k : ℕ), u.ex (k • z) = u.ex z ^ k`. Introduce `z k`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_smul, pow_zero]`. Conclude with `(u.ker 0).2 u.Λ.zero_mem`. Consider the case `succ n ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]`. Establish `hcancel : ∀ v : Fin (Module.finrank ℚ F) → ℂ, N • ((N : ℂ)⁻¹ • v) = v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ hN0, one_smul]`. Establish `key : ∀ a b : 𝓞 F, (u.ex ((N : ℂ)⁻¹ • (x 0 : Fin (Module.finrank ℚ F) → ℂ)) ≫ rm.act a) * (u.ex ((N : ℂ)⁻¹ • (x 1 : Fin (Module.finrank ℚ F) → ℂ)) ≫ rm.act b) = u.ex ((N : ℂ)⁻¹ • ((a • x 0 + b • x 1 : Λ') : Fin (Module.finrank ℚ F) → ℂ))`. Introduce `a b`. Rewrite using `[← hFa, ← hFa, ← u.ex_add, Submodule.coe_add, Submodule.coe_smul, Submodule.coe_smul, hsmul, hsmul, smul_add, map_smul, map_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun i => u.ex ((N : ℂ)⁻¹ • (x i : Fin (Module.finrank ℚ F) → ℂ)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Rewrite using `[← hpow, hcancel]`. Conclude with `(u.ker _).2 (x i).2`. Introduce `a b h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[key]`. Use `hfree a b ⟨⟨_, (u.ker _).1 h⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `(hcancel _).symm`. Introduce `y hy`. Take `⟨z, rfl⟩` from `u.ex_onto y`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : N • z ∈ u.Λ` using `(u.ker _).1 (by rw [hpow]; exact hy)`. Take `⟨a, b, m', hm⟩` from `hgen ⟨N • z, hz⟩`. Use `⟨a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Establish `hm' : N • z = ((a • x 0 + b • x 1 : Λ') : Fin (Module.finrank ℚ F) → ℂ) + N • (m' : Fin (Module.finrank ℚ F) → ℂ)`.
-
-Simplify using `using congrArg Subtype.val hm`. Establish `hz' : z = (N : ℂ)⁻¹ • ((a • x 0 + b • x 1 : Λ') : Fin (Module.finrank ℚ F) → ℂ) + (m' : Fin (Module.finrank ℚ F) → ℂ)`. Establish `h1 : z = (N : ℂ)⁻¹ • (N • z)`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hN0, one_smul]`. Rewrite using `[h1, hm', smul_add, ← Nat.cast_smul_eq_nsmul ℂ N (m' : Fin (Module.finrank ℚ F) → ℂ), smul_smul, inv_mul_cancel₀ hN0, one_smul]`.
-
-Use `conv_lhs => rw [hz']`. Rewrite using `[u.ex_add, (u.ker _).2 m'.2, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_torsion_basis : ∀ (F : Type) [Field F] [NumberField F] (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A]
     (rm : OAct (𝓞 F) A) (L : LB A.left) (u : HolUnif A L (Module.finrank ℚ F))

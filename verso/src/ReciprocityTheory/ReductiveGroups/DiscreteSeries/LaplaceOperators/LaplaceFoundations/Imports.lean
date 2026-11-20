@@ -10,7 +10,7 @@ noncomputable section
 namespace ReciprocityTheory.ChartRestriction.DS.Lap.Base
 
 /- English proof (translation)
-The claim follows from `matrixCoeffBounds_imply_bound b2 b3a b3b b3c smInfUnitary`.
+A detailed English derivation is pending.
 -/
 theorem b3 : TangentPairingStatement :=
   matrixCoeffBounds_imply_bound b2 b3a b3b b3c smInfUnitary

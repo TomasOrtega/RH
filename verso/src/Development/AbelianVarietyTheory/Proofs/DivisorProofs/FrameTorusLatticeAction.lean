@@ -14,7 +14,7 @@ namespace GlobalTheory.ThKTorus.FrameBlock
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hr : realAd F 0 = 0`. Simplify using `only [realAd, map_zero]`. Both sides reduce to the same expression. Rewrite using `[tAd, sub_self, hr, add_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem tAd_one : tAd F 1 = 1 := by
   have hr : realAd F 0 = 0 := by
@@ -23,11 +23,11 @@ theorem tAd_one : tAd F 1 = 1 := by
   rw [tAd, sub_self, hr, add_zero]
 
 /- English proof (translation)
-Establish `hadd : ∀ a b : AF F, evI F (a + b) = evI F a + evI F b` using `fun a b => map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`. Establish `hmul : ∀ a b : AF F, evI F (a * b) = evI F a * evI F b` using `fun a b => map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`. Establish `hone : evI F 1 = 1` using `map_one (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Establish `hreal : ∀ t : ℝ, evI F (realAd F t) = algebraMap ℝ _ t` using `fun t => by simp [evI, realAd]`. Establish `halg : evI F (algebraMap F (AF F) u) = mixedEmbedding F u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`. Both sides reduce to the same expression. Establish `ht : ∀ t : ℝ, evI F (tAd F t) = algebraMap ℝ _ t` using `fun t => by`. Rewrite using `[tAd, hadd, hone, hreal, map_sub, map_one, add_sub_cancel]`. Establish `h1` using `congrArg (evI F) h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hmul, hmul, ht, ht, halg, ← Algebra.smul_def, ← Algebra.smul_def, ← sub_eq_zero, ← sub_smul, smul_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h1) hrs`. Conclude with `mixedEmbedding_injective F (h1.trans (map_zero _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_tAd_mul_eq {r s : ℝ} (hrs : r ≠ s) (u : F)
     (h : tAd F r * algebraMap F (AF F) u = tAd F s * algebraMap F (AF F) u) : u = 0 := by
@@ -53,41 +53,39 @@ end GlobalTheory.ThKTorus.FrameBlock
 open GlobalTheory.ThKTorus.FrameBlock GlobalTheory.ThKTorus.FrameCoords
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W q x y M₁ blk hG hF hT i`. Set `t : Fin q → ℝ` to `Function.update (fun _ => 1) i 2`. Establish `hti : t i = 2` using `by simp [t]`. Establish `htk : ∀ k, k ≠ i → t k = 1` using `fun k hk => by simp [t, hk]`. Establish `ht : ∀ k, 0 < t k` using `fun k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hk : k = i`. Rewrite using `[hk, hti]`. Evaluate the numerical expressions. Rewrite using `[htk k hk]`. Evaluate the numerical expressions.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Take `⟨a, ha⟩` from `hT t ht`. Establish `hprod : ∀ s : Fin q → ℝ, (∀ k, k ≠ i → s k = 1) → ∀ j : Fin n × Fin d, (∏ k, if j ∈ blk k then tAd F (s k) else 1) = tAd F (if j ∈ blk i then s i else 1)`. Introduce `s hs j`. Rewrite using `[Finset.prod_eq_single i (fun k _ hk => by rw [hs k hk, tAd_one, ite_self]) (fun h => absurd (Finset.mem_univ i) h)]`. Use `split_ifs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `tAd_one.symm`. Establish `hrat : ∀ z₀ : Fin d → E, (M₁.co.e (Matrix.vecMulVec (incV F (x i)) (incV F z₀))).1 = 0 ∧ ∀ j, j ∉ blk i → (M₁.co.e (Matrix.vecMulVec (incV F (x i)) (incV F z₀))).2 j = 0`. Introduce `z₀`. Take `⟨u, v, huv⟩` from `hG.rat (Matrix.vecMulVec (x i) z₀)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `huv` using `[incM_vecMulVec]`. Use `set w := Matrix.vecMulVec (incV F (x i)) (incV F z₀) with hw`. Establish `h1 : mat a * w = tAd F 2 • w`. Rewrite using `[hw, mul_vecMulVec_eq, mulVec_eq_tAd _ _ _ (ha.1 i), hti]`. Use extensionality with `r l`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.vecMulVec_apply, smul_mul_assoc]`. Establish `h2 : w = M₁.co.e.symm (fun j => algebraMap F (AF F) (u j), 0) + M₁.co.e.symm (0, fun j => algebraMap F (AF F) (v j))`. Rewrite using `[← map_add, Prod.mk_add_mk, add_zero, zero_add, ← huv, LinearEquiv.symm_apply_apply]`. Establish `h3 : M₁.co.e (mat a * w) = (blkScale blk (fun k => (t k)⁻¹) fun j => algebraMap F (AF F) (u j), blkScale blk t fun j => algebraMap F (AF F) (v j))` using `by conv_lhs => rw [h2]`. Rewrite using `[Matrix.mul_add, map_add, (hF.2 t a ht ha _).1, (hF.2 t a ht ha _).2, Prod.mk_add_mk, add_zero, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h3` using `[h1, map_smul, huv]`. Rewrite using `[huv]`. Use `⟨funext fun j => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Establish `h4` using `congrFun (congrArg Prod.fst h3) j`. Simplify using `only [Prod.smul_fst, Pi.smul_apply, smul_eq_mul, blkScale] at h4`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite `h4` using `[hprod _ (fun k hk => by rw [htk k hk, inv_one]), hti]`. Apply the tactic sequence `have := eq_zero_of_tAd_mul_eq (by split_ifs <;> norm_num) _ h4`. Simplify using `[this]`. Establish `h4` using `congrFun (congrArg Prod.snd h3) j`. Simplify using `only [Prod.smul_snd, Pi.smul_apply, smul_eq_mul, blkScale] at h4`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h4` using `[hprod _ htk, if_neg hj]`. Use `eq_zero_of_tAd_mul_eq (by norm_num) _ h4` as an intermediate fact. Simplify using `[this]`. Set `P : (Fin d → AE F E) → Prop` to `fun z => (M₁.co.e (Matrix.vecMulVec (incV F (x i)) z)).1 = 0 ∧ ∀ j, j ∉ blk i → (M₁.co.e (Matrix.vecMulVec (incV F (x i)) z)).2 j = 0`. Establish `hP0 : P 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Matrix.vecMulVec (incV F (x i)) (0 : Fin d → AE F E) = 0`. Use extensionality with `r l`. Rewrite using `[Matrix.vecMulVec_apply, Pi.zero_apply, mul_zero, Matrix.zero_apply]`. Use `⟨?_, fun j _ => ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e, map_zero]`. Both sides reduce to the same expression. Establish `hPadd : ∀ z z', P z → P z' → P (z + z')`. Introduce `z z' h h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e : Matrix.vecMulVec (incV F (x i)) (z + z') = Matrix.vecMulVec (incV F (x i)) z + Matrix.vecMulVec (incV F (x i)) z'`. Use extensionality with `r l`. Simplify using `[Matrix.vecMulVec_apply, mul_add]`. Use `⟨?_, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_add, Prod.fst_add, h.1, h'.1, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, map_add, Prod.snd_add, Pi.add_apply, h.2 j hj, h'.2 j hj, add_zero]`. Establish `hPsmul : ∀ (c : AF F) z, P z → P (c • z)`. Introduce `c z h`. Establish `e : Matrix.vecMulVec (incV F (x i)) (c • z) = c • Matrix.vecMulVec (incV F (x i)) z`. Use extensionality with `r l`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.vecMulVec_apply]`. Use `⟨?_, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_smul, Prod.smul_fst, h.1, smul_zero]`. Rewrite using `[e, map_smul, Prod.smul_snd, Pi.smul_apply, h.2 j hj, smul_zero]`. Establish `hsingle : ∀ (l : Fin d) (c : AE F E), P (Pi.single l c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `l c`. Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => rw [Pi.single_zero]`. Conclude with `hP0`. Consider the case `add b c hb hc => rw [Pi.single_add]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Conclude with `hPadd _ _ hb hc`. Consider the case `tmul b e`. Establish `e1 : (Pi.single l (b ⊗ₜ[F] e) : Fin d → AE F E) = b • incV F (Pi.single l e)`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = l`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hk` using the available equality. Simplify using `[incV, inclR, TensorProduct.smul_tmul']`. Simplify using `[incV, hk]`. Rewrite using `[e1]`. Conclude with `hPsmul _ _ (hrat _)`.
-
-Introduce `z`. Establish `hz : P z`. Rewrite using `[← Finset.univ_sum_single z]`. Conclude with `Finset.sum_induction _ P hPadd hP0 fun l _ => hsingle l _`. Conclude with `⟨_, hz.2, Prod.ext hz.1 rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThKTorus.frameCo_vecMulVec_mem_block : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (q : ℕ) (x y : Fin q → Fin n → E) (M₁ : Model σ X W)

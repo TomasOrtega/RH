@@ -6,23 +6,21 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory.BaseChangeLoc
 
 /- English proof (translation)
-Use `set P : Ideal C := Q.comap (Algebra.TensorProduct.includeLeft : C →ₐ[A] C ⊗[A] R) with hP`. Set `B` to `Localization.AtPrime P`. Set `φ : C ⊗[A] R →ₐ[A] B ⊗[A] R` to `Algebra.TensorProduct.map (IsScalarTower.toAlgHom A C B) (AlgHom.id A R)`. Use `letI : Algebra (C ⊗[A] R) (B ⊗[A] R) := φ.toRingHom.toAlgebra`. Establish `hφ : ∀ x, algebraMap (C ⊗[A] R) (B ⊗[A] R) x = φ x` using `fun _ => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsScalarTower C (C ⊗[A] R) (B ⊗[A] R) := by`. Use `IsScalarTower.of_algebraMap_eq fun c => ?_` and prove the remaining obligations. Rewrite using `[hφ]`. Simplify using `[φ, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `H : (algebraMap (C ⊗[A] R) (B ⊗[A] R)).comp Algebra.TensorProduct.includeRight.toRingHom = Algebra.TensorProduct.includeRight.toRingHom`. Use extensionality with `r`. Simplify using `[hφ, φ]`. Set `M : Submonoid (C ⊗[A] R)` to `Algebra.algebraMapSubmonoid (C ⊗[A] R) P.primeCompl`. Use `haveI hL : IsLocalization M (B ⊗[A] R) := IsLocalization.tensorProduct_tensorProduct A R P.primeCompl B H`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hdisj : Disjoint (M : Set (C ⊗[A] R)) (Q : Set (C ⊗[A] R))`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨c, hc, rfl⟩ h`. Conclude with `hc h`. Establish `hQ'` using `IsLocalization.isPrime_of_isPrime_disjoint M (B ⊗[A] R) Q inferInstance hdisj`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use symmetry to reverse the relation.
 
-Establish `hc` using `IsLocalization.comap_map_of_isPrime_disjoint M (B ⊗[A] R) (inferInstance : Q.IsPrime) hdisj`. Use `⟨Q.map (algebraMap (C ⊗[A] R) (B ⊗[A] R)), hQ', ?_, ?_⟩` and prove the remaining obligations. Use `haveI := hQ'`. Establish `hne : (Q.map (algebraMap (C ⊗[A] R) (B ⊗[A] R))).comap (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] R) ≠ ⊤` using `Ideal.IsPrime.ne_top inferInstance`. Use `symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(IsLocalRing.maximalIdeal.isMaximal B).eq_of_le hne ?_` and prove the remaining obligations. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_le_iff_le_comap]`. Introduce `c hcP`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap]`. Establish `e1 : (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] R) (algebraMap C B c) = algebraMap (C ⊗[A] R) (B ⊗[A] R) ((Algebra.TensorProduct.includeLeft : C →ₐ[A] C ⊗[A] R) c)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hφ, φ]`. Rewrite using `[e1]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_comap.mp hcP)`. Introduce `h3 h4`. Establish `h1` using `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization M (Localization.AtPrime (Q.map (algebraMap (C ⊗[A] R) (B ⊗[A] R)))) (Q.map (algebraMap (C ⊗[A] R) (B ⊗[A] R)))`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Establish `h2 : IsLocalization Q.primeCompl (Localization.AtPrime (Q.map (algebraMap (C ⊗[A] R) (B ⊗[A] R))))`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[Ideal.primeCompl, hc]`. Set `e : Localization.AtPrime (Q.map (algebraMap (C ⊗[A] R) (B ⊗[A] R))) ≃ₐ[C ⊗[A] R] Localization.AtPrime Q` to `IsLocalization.algEquiv Q.primeCompl _ _`.
-
-Conclude with `⟨e.symm.injective.isDomain _, IsIntegrallyClosed.of_equiv e.toRingEquiv⟩`.
+A detailed English derivation is pending.
 -/
 theorem localization_atPrime_tensor (A C R : Type) [CommRing A] [CommRing C] [CommRing R] [Algebra A C]
     [Algebra A R] (Q : Ideal (C ⊗[A] R)) [Q.IsPrime] :

@@ -15,7 +15,7 @@ namespace GlobalTheory.Proof.twistPrimeDatum_integral_support_and_invariant
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Simplify using `[LocE.entB, LocE.scE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem entB_zero (q : ℕ) {N' N : ℕ} (k₀ c' n' c n : ℕ) (x : (Fin N' → E) →ₗ[E] (Fin N → E)) (p p' : ℕ) :
     LocE.entB q k₀ c' n' c n 0 0 x p p' =
@@ -23,9 +23,7 @@ theorem entB_zero (q : ℕ) {N' N : ℕ} (k₀ c' n' c n : ℕ) (x : (Fin N' →
   simp [LocE.entB, LocE.scE]
 
 /- English proof (translation)
-Rewrite using `[entB_zero]`. Establish `h : IntV P (Loc.eN E N' (LocE.fIdx k₀ c' n' p'))` using `fun l => by`. Unfold `Loc.eN`. Use `split_ifs`. Conclude with `intAt_one P`.
-
-Conclude with `IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P`. Unfold `Loc.atN`. Use `split_ifs`. Conclude with `hy _ h _`. Conclude with `IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem intAt_entB {P : HeightOneSpectrum (𝓞 E)} (q : ℕ) {N' N : ℕ} (k₀ c' n' c n : ℕ)
     {y : (Fin N' → E) →ₗ[E] (Fin N → E)} (hy : IntHom P y) (p p' : ℕ) :
@@ -42,7 +40,7 @@ theorem intAt_entB {P : HeightOneSpectrum (𝓞 E)} (q : ℕ) {N' N : ℕ} (k₀
   · exact IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P
 
 /- English proof (translation)
-Rewrite using `[entB_zero, entB_zero, entB_zero, LinearMap.add_apply, LinearMap.smul_apply, atN_add, atN_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem entB_add (q : ℕ) {N' N : ℕ} (k₀ c' n' c n : ℕ) (x y : (Fin N' → E) →ₗ[E] (Fin N → E)) (a : E) (p p' : ℕ) :
     LocE.entB q k₀ c' n' c n 0 0 (x + a • y) p p' =
@@ -50,7 +48,7 @@ theorem entB_add (q : ℕ) {N' N : ℕ} (k₀ c' n' c n : ℕ) (x y : (Fin N' �
   rw [entB_zero, entB_zero, entB_zero, LinearMap.add_apply, LinearMap.smul_apply, atN_add, atN_smul]
 
 /- English proof (translation)
-Unfold `LocE.fIdx LocE.fPos`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fIdx_fPos {k₀ c n l : ℕ} (hk : k₀ ≤ n) (hl : l < n + c) :
     LocE.fIdx k₀ c n (LocE.fPos k₀ c n l) = l ∧ LocE.fPos k₀ c n l < n + c := by
@@ -58,7 +56,7 @@ theorem fIdx_fPos {k₀ c n l : ℕ} (hk : k₀ ≤ n) (hl : l < n + c) :
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `LocE.unitV`. Establish `key : ∀ u v : 𝓞 E ⧸ P.asIdeal, u = v → (open Classical in if h : IsUnit u then ((ξ h.unit : Kˣ) : K) else 0) = (open Classical in if h : IsUnit v then ((ξ h.unit : Kˣ) : K) else 0)`. Introduce and unpack `u v rfl`. Both sides reduce to the same expression. Conclude with `key _ _ h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unitV_congr {K : Type} [Field K] {P : HeightOneSpectrum (𝓞 E)} (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a b : E}
     (h : redP P a = redP P b) : LocE.unitV ξ a = LocE.unitV ξ b := by
@@ -71,27 +69,23 @@ theorem unitV_congr {K : Type} [Field K] {P : HeightOneSpectrum (𝓞 E)} (ξ : 
   exact key _ _ h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by simpa using h.add (IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg hb), fun h => h.add hb⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAt_add_iff {P : HeightOneSpectrum (𝓞 E)} {a b : E} (hb : IntAt P b) : IntAt P (a + b) ↔ IntAt P a :=
   ⟨fun h => by simpa using h.add (IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg hb), fun h => h.add hb⟩
 
 /- English proof (translation)
-Introduce `E _ _ K _ P ξ k₀ r c' n' c n hk' hk hr' hr`. Use `⟨fun x hx => ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Unfold `LocE.PhiQ at hx split_ifs at hx with h`. Rewrite using `[intHom_iff]`. Introduce `s l`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a1, a2⟩` from `fIdx_fPos hk l.2`. Take `⟨b1, b2⟩` from `fIdx_fPos hk' s.2`. Use `h.1 _ _ a2 b2` as an intermediate fact. Rewrite `this` using `[entB_zero, a1, b1]`. Establish `e : Loc.eN E (n' + c') s.1 = Pi.single s 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Loc.eN, Pi.single_apply, Fin.ext_iff]`. Rewrite `this` using `[e]`. Simplify `this` using `[Loc.atN]`. Conclude with `absurd rfl hx`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hq : (qOf P : E) ≠ 0` using `NormalFormAtPrime.qOf_ne_zero P`. Establish `hI` using `intAt_entB (qOf P) k₀ c' n' c n hy`. Establish `e1 : ∀ p p', IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 (x + (qOf P : E) • y) p p') ↔ IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 x p p')` using `fun p p' => by`. Rewrite using `[entB_add, intAt_add_iff ((TopStep.intAt_nat (qOf P)).mul (hI p p'))]`. Establish `e2 : ∀ p p', IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 (x + (qOf P : E) • y) p p' / (qOf P : E)) ↔ IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 x p p' / (qOf P : E))` using `fun p p' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[entB_add, add_div, mul_div_cancel_left₀ _ hq, intAt_add_iff (hI p p')]`. Unfold `LocE.PhiQ`. Use `split_ifs with h' h h`. Use `rotate_left`. Conclude with `absurd ⟨fun p p' a b => (e1 p p').1 (h'.1 p p' a b), fun p p' a b d => (e2 p p').1 (h'.2 p p' a b d)⟩ h`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd ⟨fun p p' a b => (e1 p p').2 (h.1 p p' a b), fun p p' a b d => (e2 p p').2 (h.2 p p' a b d)⟩ h'`. Both sides reduce to the same expression. Apply `unitV_congr` to reduce the goal to its premises. Establish `hx : ∀ s t : Fin r, IntAt P (LocE.entB (qOf P) k₀ c' n' c n 0 0 x s.1 t.1)` using `fun s t => h.1 _ _ (by have := s.2; omega) (by have := t.2; omega)`. Use `(TopStep.det_int ?_).2.trans (Eq.trans ?_ (TopStep.det_int ?_).2.symm)` and prove the remaining obligations.
-
-Conclude with `fun s t => (e1 _ _).2 (hx s t)`. Use `swap`. Conclude with `hx`. Use `congrArg Matrix.det (Matrix.ext fun s t => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `redP P (LocE.entB (qOf P) k₀ c' n' c n 0 0 (x + (qOf P : E) • y) s.1 t.1) = redP P (LocE.entB (qOf P) k₀ c' n' c n 0 0 x s.1 t.1)`.
-
-Rewrite using `[entB_add, reduction_add (hx s t) ((TopStep.intAt_nat (qOf P)).mul (hI _ _)), reduction_mul (TopStep.intAt_nat (qOf P)) (hI _ _), TopStep.reduction_absNorm_eq_zero, zero_mul, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiQ_bdd : ∀ (E : Type) [Field E] [NumberField E] (K : Type) [Field K] (P : HeightOneSpectrum (𝓞 E)) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (k₀ r c' n' c n : ℕ), k₀ ≤ n' → k₀ ≤ n → r ≤ n' + c' → r ≤ n + c → (∀ x, LocE.PhiQ (qOf P) ξ k₀ r c' n' c n x ≠ 0 → IntHom P x) ∧ ∀ x y : (Fin (n' + c') → E) →ₗ[E] (Fin (n + c) → E), IntHom P y → LocE.PhiQ (qOf P) ξ k₀ r c' n' c n (x + (qOf P : E) • y) = LocE.PhiQ (qOf P) ξ k₀ r c' n' c n x := by
   intro E _ _ K _ P ξ k₀ r c' n' c n hk' hk hr' hr

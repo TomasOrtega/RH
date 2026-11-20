@@ -26,9 +26,9 @@ namespace NuP
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hi` using `τ.irr`. Assume the negation of the conclusion as `hs`. Rewrite `hs` using `[not_nontrivial_iff_subsingleton]`. Apply `(bot_ne_top : (⊥ : Subrepresentation τ.ρ) ≠ ⊤)` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem nontrivial_of_irr {G : Type} [Group G] [TopologicalSpace G] (τ : IrrRep G) : Nontrivial τ.V := by
   have hi := τ.irr
@@ -41,9 +41,9 @@ theorem nontrivial_of_irr {G : Type} [Group G] [TopologicalSpace G] (τ : IrrRep
   exact ⟨fun _ => zero_mem _, fun _ => zero_mem _⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hs`. Rewrite `hs` using `[not_nontrivial_iff_subsingleton]`. Apply `(bot_ne_top : (⊥ : Subrepresentation π) ≠ ⊤)` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises. Use extensionality with `x`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[Subsingleton.elim x 0]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem nontrivial_of_isIrreducible {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ G V} (hi : π.IsIrreducible) : Nontrivial V := by
@@ -56,7 +56,7 @@ theorem nontrivial_of_isIrreducible {G V : Type} [Group G] [AddCommGroup V] [Mod
   exact ⟨fun _ => zero_mem _, fun _ => zero_mem _⟩
 
 /- English proof (translation)
-Establish `: (⇑(ψ⁻¹ : AddChar k Circle)) = fun a => ψ (-a)` using `funext fun a => AddChar.inv_apply ψ a`. Rewrite using `[this]`. Conclude with `hc.comp continuous_neg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_inv_addChar (ψ : AddChar k Circle) (hc : Continuous ψ) : Continuous (ψ⁻¹ : AddChar k Circle) := by
   have : (⇑(ψ⁻¹ : AddChar k Circle)) = fun a => ψ (-a) := funext fun a => AddChar.inv_apply ψ a
@@ -64,7 +64,7 @@ theorem continuous_inv_addChar (ψ : AddChar k Circle) (hc : Continuous ψ) : Co
   exact hc.comp continuous_neg
 
 /- English proof (translation)
-Unfold `dualCl`. Apply the tactic sequence `split <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualCl_fst (x : IrrGL k) : (dualCl x).1 = x.1 := by
   unfold dualCl
@@ -75,33 +75,31 @@ end NuP
 set_option maxHeartbeats 4000000 in
 open NuP in
 /- English proof (translation)
-Introduce `N V _ _ ω hs hi hng`. Establish `hA` using `GlobalTheory.CompanionTheory.BZCuspPair.irrAdm`. Take `⟨ψ, hc, hψ⟩` from `exists_continuous_addChar_ne_one k`. Establish `hg : ¬ IsGenericFor ψ ω` using `fun h => hng ⟨ψ, hc, hψ, h⟩`. Establish `hnt : Nontrivial V` using `nontrivial_of_isIrreducible hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn0, hnN, hnt2, hlow⟩` from `GlobalTheory.CompanionTheory.BZCuspPair.exists_highest ψ hc hψ N ω hs hnt hg`. Take `⟨n, rfl⟩ : ∃ n', n = n' + 1` from `⟨n - 1, by omega⟩`. Take `⟨j, rfl⟩ : ∃ j, N = n + 1 + j + 1` from `⟨N - (n + 1) - 1, by omega⟩`. Establish `hc'` using `continuous_inv_addChar ψ hc`. Establish `hψ' : ψ⁻¹ ≠ 1` using `inv_ne_one.2 hψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `B : V →ₗ[ℂ] smoothPart ω.dual →ₗ[ℂ] ℂ` to `LinearMap.flip (smoothPart ω.dual).subtype`. Establish `hBa : ∀ a b, B a b = (b : Module.Dual ℂ V) a` using `fun _ _ => rfl`. Establish `hB : ∀ g a b, B (ω g a) (contra ω g b) = B a b`. Introduce `g a b`. Simplify using `only [hBa, contra_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `hnd : ∀ v, v ≠ 0 → ∃ v', B v v' ≠ 0` using `fun v hv => GlobalTheory.ContraRefl.exists_smooth_form_ne hs (GlobalTheory.SqIntUnit.compactOpen_basis k _) hv`. Take `⟨B', hB', hn'⟩` from `GlobalTheory.CompanionTheory.BZCuspPair.pair_deriv ψ hc hψ n j ω (contra ω) hs (isSmooth_contra _) B hB hnd (GlobalTheory.CompanionTheory.BZCuspPair.phi_vanish ψ hc hψ n j ω hs hlow)`. Establish `hD` using `GlobalTheory.CompanionTheory.BZCuspPair.deriv_nontrivial ψ n j ω hnt2`. Establish `hfl` using `h3 ψ hc hψ (n + 1) j V ω hs hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S, f, hf⟩` from `GlobalTheory.T.exists_injective_irreducible_subrepresentation k (n + 1) _ _ _ _ (GlobalTheory.CompanionTheory.BZCuspPair.isSmooth_deriv ψ j hs) hD (IsSubquotient.refl _) hfl`. Use `nontrivial_of_irr S` as an intermediate fact. Take `⟨w₀, hw₀⟩` from `exists_ne (0 : S.V)`. Establish `hw1 : f w₀ ≠ 0` using `fun h => hw₀ (hf (by rw [h, map_zero]))`. Take `⟨w', hw'⟩` from `hn' (f w₀) hw1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ, hQcl⟩` from `GlobalTheory.T.pairing_twisted_determinant_subquotient k (n + 1) j _ S (GlobalTheory.BZMir.deriv k ψ⁻¹ j (contra ω)) (GlobalTheory.CompanionTheory.BZCuspPair.isSmooth_deriv ψ⁻¹ j (isSmooth_contra _)) (B'.comp f.toLinearMap) (fun g w v => by`. Use `hB' g (f w) v` as an intermediate fact. Simplify `this)` using `[f.isIntertwining]`. Use the proof step `(fun h0 => hw' (by simpa using LinearMap.congr_fun (LinearMap.congr_fun h0 w₀) w'))`. Establish `hflω : HasFiniteLength ω` using `hasFiniteLength_of_isIrreducible hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hd1, hβ, hj1⟩` from `h1 ψ hc hψ n j V ω hs hflω S (IsSubquotient.of_injective f hf)`. Establish `hic : (contra ω).IsIrreducible` using `GlobalTheory.CompanionTheory.ZcDual.isIrreducible_contra hA ω hs hi`. Take `⟨β'', hd2, hβ'', hj2⟩` from `h1 ψ⁻¹ hc' hψ' n j _ (contra ω) (isSmooth_contra _) (hasFiniteLength_of_isIrreducible hic) Q hQ`. Establish `hGK : Zc.Cos.GKLocal k` using `GlobalTheory.T.local_langlands_of_irreducible_admissible hA`. Establish `hsθ : IsSmooth ((ω.comp (Zc.Cos.thetaW k (n + 1 + j + 1))).comp (Zc.Cos.thetaW k (n + 1 + j + 1)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompanionTheory.LSocle.comp_thetaW_thetaW]`. Conclude with `hs`. Establish `hiθ : Representation.IsIrreducible ((ω.comp (Zc.Cos.thetaW k (n + 1 + j + 1))).comp (Zc.Cos.thetaW k (n + 1 + j + 1)))`. Rewrite using `[GlobalTheory.CompanionTheory.LSocle.comp_thetaW_thetaW]`. Conclude with `hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `E` using `GlobalTheory.CompanionTheory.LSocle.equiv_contra_comp_thetaW hGK (ω.comp (Zc.Cos.thetaW k (n + 1 + j + 1))) hsθ hiθ`. Rewrite `E` using `[GlobalTheory.CompanionTheory.LSocle.comp_thetaW_thetaW]`. Establish `hj3 : 1 ≤ jm ![(IrrGL.of Q.ρ Q.smooth Q.irr).nu (-(((j : ℂ) + 1) / 2)), β''] hd2 (ω.comp (Zc.Cos.thetaW k (n + 1 + j + 1)))`. Rewrite using `[GlobalTheory.CompanionTheory.JacquetCongr.jm_congr_of_equiv _ hd2 _ _ E]`. Conclude with `hj2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set α : IrrGL k := (IrrGL.of S.ρ S.smooth S.irr).nu (-(((j : ℂ) + 1) / 2)) with hα`. Use `set Q' : IrrGL k := (IrrGL.of Q.ρ Q.smooth Q.irr).nu (-(((j : ℂ) + 1) / 2)) with hQ'`. Establish `hsum2 : ∀ (x y : IrrGL k), ∑ a, (![x, y] a).1 = x.1 + y.1` using `fun x y => by`. Simplify using `[Fin.sum_univ_two]`. Establish `hd3 : ∑ i, (![dualCl β'', dualCl Q'] i).1 = n + 1 + j + 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsum2, dualCl_fst, dualCl_fst]`. Rewrite `hd2` using `[hsum2]`. Use linear arithmetic over natural numbers and integers. Establish `hj4` using `hj3`. Rewrite `hj4` using `[h2 _ V ω hs hflω Q' β'' hd2 hd3]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hcls : dualCl Q' = α.nu 1`. Rewrite using `[hQ', hQcl, hα, IrrGL.nu_nu, IrrGL.nu_nu, GlobalTheory.CompanionTheory.ZcDual.dualCl_nu hA, GlobalTheory.CompanionTheory.Zcore.dualCl_dualCl hA]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ u : IrrGL k, u = α.nu 1 → ∀ hdu : ∑ i, (![dualCl β'', u] i).1 = n + 1 + j + 1, 1 ≤ jm ![dualCl β'', u] hdu ω → ∃ hd' : ∑ a, (![dualCl β'', α.nu 1] a).1 = n + 1 + j + 1, 1 ≤ jm ![dualCl β'', α.nu 1] hd' ω`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Introduce and unpack `u rfl hdu h`. Conclude with `⟨hdu, h⟩`. Take `⟨hd', hj5⟩` from `key _ hcls hd3 hj4`. Establish `hβ''1 : β''.1 = j + 1` using `hβ''`. Use `⟨α, β, dualCl β'', hd1, hd', ?_, ?_, ?_, hj1, hj5⟩` and prove the remaining obligations.
-
-Use `show 0 < (IrrGL.of S.ρ S.smooth S.irr).1 show 0 < n + 1`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite using `[dualCl_fst, hβ''1, hβ]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuPair_of (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (h1 : GlobalTheory.BZSeg.DerivJac k) (h2 : GlobalTheory.BZSeg.JmTheta k) (h3 : DerFin k) : GlobalTheory.BZSeg.NuPair k := by

@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.MeanSquareBounds.TwistPrim
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.HC GlobalTheory.EX UpperTheory.Top
 
 /- English proof (translation)
-Use `interval_cases i`. Conclude with `⟨f, ξ, by simp, hξ, fun n => by simp⟩`. Take `⟨ψ, hψ, -, hn⟩` from `QH.twist_prim f q ξ hξ hq h2 hf`. Conclude with `⟨f * q, ψ, by simp, hψ, fun n => by simp [hn]⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem boxes_step (f q i : ℕ) [NeZero f] (ξ : DirichletCharacter ℂ f) (hξ : ξ.IsPrimitive)
     (hq : q.Prime) (h2 : q ≠ 2) (hf : ¬ q ∣ f) (hi : i ≤ 1) :
@@ -19,47 +19,43 @@ private theorem boxes_step (f q i : ℕ) [NeZero f] (ξ : DirichletCharacter ℂ
     exact ⟨f * q, ψ, by simp, hψ, fun n => by simp [hn]⟩
 
 /- English proof (translation)
-Introduce `N _ χ hind`. Take `⟨hprim, hval⟩` from `hind`. Establish `hi : (i : ℕ) ≤ 1` using `by have := i.isLt; omega`. Establish `hj : (j : ℕ) ≤ 1` using `by have := j.isLt; omega`. Establish `hw` using `h.pair`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `hw.q_prime`. Establish `hd` using `hw.d_prime`. Establish `hqm` using `hw.q_mod`. Establish `hdm` using `hw.d_mod`. Establish `hq2 : q ≠ 2` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd2 : d ≠ 2` using `by omega`. Establish `hqd : q ≠ d` using `by omega`. Use `haveI := ρ.ne`. Establish `h8' : ρ.N ∣ 2 ^ 3` using `h8`. Establish `hqN : ¬ q ∣ ρ.N` using `fun hqn => hq2 ((Nat.prime_dvd_prime_iff_eq hq Nat.prime_two).mp (hq.dvd_of_dvd_pow (dvd_trans hqn h8')))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M1, ψ1, hM1, hψ1, hv1⟩` from `boxes_step ρ.N q i ρ.χ ρ.prim hq hq2 hqN hi`. Use `haveI : NeZero M1 := ⟨by rw [hM1]; exact mul_ne_zero (NeZero.ne _) (pow_ne_zero _ hq.ne_zero)⟩`. Establish `hdM1 : ¬ d ∣ M1`. Rewrite using `[hM1]`. Introduce `hdd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `(Nat.Prime.dvd_mul hd).mp hdd with h1 | h1` into its components or cases. Conclude with `hd2 ((Nat.prime_dvd_prime_iff_eq hd Nat.prime_two).mp (hd.dvd_of_dvd_pow (dvd_trans h1 h8')))`. Conclude with `hqd ((Nat.prime_dvd_prime_iff_eq hd hq).mp (hd.dvd_of_dvd_pow h1)).symm`. Take `⟨M2, ψ, hM2, hψ, hv2⟩` from `boxes_step M1 d j ψ1 hψ1 hd hd2 hdM1 hj`. Use `haveI : NeZero M2 := ⟨by rw [hM2]; exact mul_ne_zero (NeZero.ne _) (pow_ne_zero _ hd.ne_zero)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hψv : ∀ n : ℕ, ψ n = tw ρ.val q d i j n`. Introduce `n`. Rewrite using `[hv2, hv1]`. Simplify using `only [tw, PChar.val, QH.J]`. Establish `hodd : ∀ a : ℕ, a.Coprime 2 → a % 2 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a ha`. Break down `Nat.even_or_odd a with ⟨k, hk⟩ | ho` into its components or cases. It suffices to derive a contradiction. Establish `h2g : 2 ∣ Nat.gcd a 2` using `Nat.dvd_gcd ⟨k, by omega⟩ dvd_rfl`. Rewrite `h2g` using `[ha]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `Nat.odd_iff.mp ho`. Establish `hagree : ∀ n : ℕ, n.Coprime (8 * q * d) → χ n = ψ n`. Introduce `n hn`. Establish `h2 : n.Coprime 2` using `Nat.Coprime.coprime_dvd_right ⟨4 * q * d, by ring⟩ hn`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[hval n hn, hf n (hodd n h2), hψv]`. Establish `h8qd : 8 * q * d ≠ 0` using `mul_ne_zero (mul_ne_zero (by norm_num) hq.ne_zero) hd.ne_zero`. Establish `huniq` using `QH.ind_unique N M2 (8 * q * d) χ ψ h8qd hprim hψ hagree`. Take `⟨hNM, hh⟩` from `Sigma.mk.inj_iff.mp huniq`. Substitute `hNM` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e : χ = ψ` using `eq_of_heq hh`. Establish `hχv : ∀ n : ℕ, χ n = tw ρ.val q d i j n` using `fun n => by rw [e]; exact hψv n`. Establish `hqX : (q : ℝ) ≤ GlobalTheoryTheory.X1 Y eps`. Unfold `GlobalTheoryTheory.X1`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hdX : (d : ℝ) ≤ GlobalTheoryTheory.X2 Y eps`. Unfold `GlobalTheoryTheory.X2`. Combine the equalities or inequalities in the displayed calculation. Establish `hX1 : 0 ≤ GlobalTheoryTheory.X1 Y eps` using `by unfold GlobalTheoryTheory.X1; positivity`. Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast hq.one_lt.le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `GlobalTheoryTheory.GoodFor`. Use `⟨hprim, fun a => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← ZMod.natCast_zmod_val a, hχv]`. Generalize the expression as in `a.val = n`. Establish `hr : (ρ.χ (n : ZMod ρ.N)).im = 0` using `hρ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (((jacobiSym (n : ℤ) q : ℤ) : ℂ) ^ (i : ℕ)).im = 0`. Rewrite using `[← Int.cast_pow]`. Conclude with `Complex.intCast_im _`. Establish `e2 : (((jacobiSym (n : ℤ) d : ℤ) : ℂ) ^ (j : ℕ)).im = 0`. Rewrite using `[← Int.cast_pow]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Complex.intCast_im _`. Simplify using `only [tw, PChar.val]`. Rewrite using `[Complex.mul_im, Complex.mul_im, hr, e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hQ, hM2, hM1]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Establish `hNr : (ρ.N : ℝ) ≤ 8` using `by exact_mod_cast Nat.le_of_dvd (by norm_num) h8`. Establish `hqi : (q : ℝ) ^ (i : ℕ) ≤ GlobalTheoryTheory.X1 Y eps`. Break down `Nat.le_one_iff_eq_zero_or_eq_one.mp hi with h0 | h1` into its components or cases. Rewrite using `[h0, pow_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h1, pow_one]`. Conclude with `hqX`. Establish `hdj : (d : ℝ) ^ (j : ℕ) ≤ GlobalTheoryTheory.X2 Y eps ^ (j : ℕ)` using `pow_le_pow_left₀ (by positivity) hdX _`. Conclude with `mul_le_mul (mul_le_mul hNr hqi (by positivity) (by norm_num)) hdj (by positivity) (mul_nonneg (by norm_num) hX1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs hsQ`. Establish `hind' : An.Induces χ (tw ρ.val q d i j) (2 * M * q * d)`. Unfold `An.Induces`. Use `⟨hprim, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h2 : a.Coprime 2` using `Nat.Coprime.coprime_dvd_right ⟨M * q * d, by ring⟩ ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hqa : a.Coprime q` using `Nat.Coprime.coprime_dvd_right ⟨2 * M * d, by ring⟩ ha`. Establish `hda : a.Coprime d` using `Nat.Coprime.coprime_dvd_right ⟨2 * M * q, by ring⟩ ha`. Establish `h8a : a.Coprime (8 * q * d)`. Establish `e8 : (8 : ℕ) = 2 ^ 3` using `by norm_num`. Rewrite using `[e8]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `Nat.Coprime.mul_right (Nat.Coprime.mul_right (Nat.Coprime.pow_right 3 h2) hqa) hda`. Rewrite using `[hval a h8a, hf a (hodd a h2)]`. Establish `hbox` using `h.boxes ρ hρ (dvd_mul_of_dvd_left h8 M) i j hij _ χ hind'`. Apply `hbox s hs` to reduce the goal to its premises. Use `le_trans hsQ ?_` and prove the remaining obligations.
-
-Rewrite using `[hQ]`. Unfold `height GlobalTheoryTheory.X1 GlobalTheoryTheory.X2`. Establish `hM1' : (1 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hpos : 0 ≤ 8 * Real.exp (Y ^ (eps / 5)) * Real.exp (Y ^ (eps / 5) * Real.log Y ^ 2) ^ (j : ℕ)`. Check the signs of the components of the expression.
-
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 private theorem boxes_core {M : ℕ} {eps Y X : ℝ} {q d : ℕ} (hM : 0 < M) (h : PairGood M eps Y X q d)
     (ρ : Formalism.HC.PChar) (hρ : ρ.IsReal) (h8 : ρ.N ∣ 8) (i j : Fin 2) (hij : i ≠ 0 ∨ j ≠ 0) (f : ℕ → ℂ)
@@ -168,16 +164,16 @@ private theorem boxes_core {M : ℕ} {eps Y X : ℝ} {q d : ℕ} (hM : 0 < M) (h
     nlinarith
 
 /- English proof (translation)
-Establish `h2 : ¬ 2 ∣ a` using `by omega`. Simplify using `[GlobalTheoryTheory.kronSym, Nat.factorization_eq_zero_of_not_dvd h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem boxes_kron_odd (D : ℤ) (a : ℕ) (ha : a % 2 = 1) : GlobalTheoryTheory.kronSym D a = jacobiSym D a := by
   have h2 : ¬ 2 ∣ a := by omega
   simp [GlobalTheoryTheory.kronSym, Nat.factorization_eq_zero_of_not_dvd h2]
 
 /- English proof (translation)
-Establish `hao : Odd a` using `Nat.odd_iff.mpr ha`. Establish `key : jacobiSym (-(q : ℤ)) a = jacobiSym (a : ℤ) q`. Rewrite using `[jacobiSym.neg _ hao, ← jacobiSym.quadratic_reciprocity_if ha (by omega : q % 2 = 1)]`. Break down `Nat.odd_mod_four_iff.mp ha with h1 | h3` into its components or cases. Simplify using `[h1, ZMod.χ₄_nat_one_mod_four h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[h3, hq, ZMod.χ₄_nat_three_mod_four h3]`. Simplify using `only [GlobalTheoryTheory.kron]`. Rewrite using `[boxes_kron_odd _ _ ha, key]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem boxes_kron_neg (q a : ℕ) (hq : q % 4 = 3) (ha : a % 2 = 1) :
     GlobalTheoryTheory.kron (-(q : ℤ)) a = ((jacobiSym (a : ℤ) q : ℤ) : ℂ) := by
@@ -192,15 +188,15 @@ private theorem boxes_kron_neg (q a : ℕ) (hq : q % 4 = 3) (ha : a % 2 = 1) :
 
 open DirichletCharacter in
 /- English proof (translation)
-Take `⟨χ, hχ⟩ : ∃ χ : DirichletCharacter ℂ 8, ∀ a : ZMod 8, χ a = ((ZMod.χ₈ a : ℤ) : ℂ)` from `⟨ZMod.χ₈.ringHomComp (Int.castRingHom ℂ), fun a => by simp⟩`. Establish `hprim : χ.IsPrimitive`. Rewrite using `[DirichletCharacter.isPrimitive_def]`. Establish `hd` using `DirichletCharacter.conductor_dvd_level χ`. Establish `hc0` using `DirichletCharacter.conductor_ne_zero χ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `h4 : DirichletCharacter.conductor χ ∣ 4`. Establish `hle : DirichletCharacter.conductor χ ≤ 8` using `Nat.le_of_dvd (by norm_num) hd`. Apply the tactic sequence `interval_cases h : DirichletCharacter.conductor χ <;> omega`. Take `⟨h4', χ₀, e⟩` from `DirichletCharacter.FactorsThrough.mono (hχ := DirichletCharacter.factorsThrough_conductor χ) (hd := h4) (hm := (by norm_num : 4 ∣ 8))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Establish `h5` using `DFunLike.congr_fun e ((5 : ℤ) : ZMod 8)`. Establish `hcop : IsCoprime (5 : ℤ) ((8 : ℕ) : ℤ)` using `⟨-3, 2, by norm_num⟩`. Rewrite `h5` using `[DirichletCharacter.changeLevel_eq_cast_of_dvd' χ₀ h4' hcop]`. Establish `e1 : ((5 : ℤ) : ZMod 4) = 1` using `by decide`. Establish `e2 : ZMod.χ₈ ((5 : ℤ) : ZMod 8) = -1` using `by decide`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h5` using `[e1, map_one, hχ, e2]`. Evaluate the numerical expressions using `at h5`. Use `⟨⟨8, χ, hprim⟩, fun a => ?_, dvd_refl 8, fun a ha => ?_⟩` and prove the remaining obligations. Use `show (χ a).im = 0`. Rewrite using `[hχ]`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `show GlobalTheoryTheory.kron 2 a = χ (a : ZMod 8)`. Rewrite using `[hχ]`. Simplify using `only [GlobalTheoryTheory.kron]`. Rewrite using `[boxes_kron_odd _ _ ha, jacobiSym.at_two (Nat.odd_iff.mpr ha)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem real_character_mod_eight : ∃ ρ : Formalism.HC.PChar, ρ.IsReal ∧ ρ.N ∣ 8 ∧
     ∀ a : ℕ, a % 2 = 1 → GlobalTheoryTheory.chi8 a = ρ.val a := by
@@ -233,23 +229,19 @@ private theorem real_character_mod_eight : ∃ ρ : Formalism.HC.PChar, ρ.IsRea
     rw [boxes_kron_odd _ _ ha, jacobiSym.at_two (Nat.odd_iff.mpr ha)]
 
 /- English proof (translation)
-Establish `hw` using `h.pair`. Establish `hq4 : q % 4 = 3` using `by have := hw.q_mod; omega`. Establish `hd4 : d % 4 = 3` using `by have := hw.d_mod; omega`. Establish `hone : ∀ a : ℕ, PChar.one.val a = 1` using `fun a => by show (1 : DirichletCharacter ℂ 1) (a : ZMod 1) = 1`. Rewrite using `[Subsingleton.elim (a : ZMod 1) 1, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr1 : PChar.one.IsReal`. Introduce `a`. Use `show ((1 : DirichletCharacter ℂ 1) a).im = 0`. Rewrite using `[Subsingleton.elim (α := ZMod 1) a 1, map_one]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h81 : PChar.one.N ∣ 8` using `by show (1 : ℕ) ∣ 8`. Conclude with `one_dvd 8`. Take `⟨ρ, hρr, hρN, hρv⟩` from `real_character_mod_eight`. Establish `hP : ∀ a : ℕ, a % 2 = 1 → GlobalTheoryTheory.psDir q a = ((jacobiSym (a : ℤ) q : ℤ) : ℂ)` using `fun a ha => boxes_kron_neg q a hq4 ha`. Establish `hC : ∀ a : ℕ, a % 2 = 1 → GlobalTheoryTheory.chDir d a = ((jacobiSym (a : ℤ) d : ℤ) : ℂ)` using `fun a ha => boxes_kron_neg d a hd4 ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Formalism.MainNotions.Inhab.Boxq`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `boxes_core hM h PChar.one hr1 h81 1 0 (Or.inl (by decide)) _ (fun a ha => ?_) _ (by simp)` and prove the remaining obligations. Rewrite using `[hP a ha]`. Simplify using `only [tw, hone, Fin.val_one, Fin.val_zero, pow_one, pow_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try ring`. Use `boxes_core hM h ρ hρr hρN 1 0 (Or.inl (by decide)) _ (fun a ha => ?_) _ (by simp)` and prove the remaining obligations. Rewrite using `[hP a ha, hρv a ha]`. Simplify using `only [tw, Fin.val_one, Fin.val_zero, pow_one, pow_zero]`. Apply the tactic sequence `try ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `boxes_core hM h PChar.one hr1 h81 0 1 (Or.inr (by decide)) _ (fun a ha => ?_) _ (by simp)` and prove the remaining obligations. Rewrite using `[hC a ha]`. Simplify using `only [tw, hone, Fin.val_one, Fin.val_zero, pow_one, pow_zero]`. Apply the tactic sequence `try ring`. Use `boxes_core hM h ρ hρr hρN 0 1 (Or.inr (by decide)) _ (fun a ha => ?_) _ (by simp)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hC a ha, hρv a ha]`. Simplify using `only [tw, Fin.val_one, Fin.val_zero, pow_one, pow_zero]`. Apply the tactic sequence `try ring`. Use `boxes_core hM h PChar.one hr1 h81 1 1 (Or.inl (by decide)) _ (fun a ha => ?_) _ (by simp)` and prove the remaining obligations. Rewrite using `[hC a ha, hP a ha]`.
-
-Simplify using `only [tw, hone, Fin.val_one, Fin.val_zero, pow_one, pow_zero]`. Apply the tactic sequence `try ring`. Use `boxes_core hM h ρ hρr hρN 1 1 (Or.inl (by decide)) _ (fun a ha => ?_) _ (by simp)` and prove the remaining obligations. Rewrite using `[hρv a ha, hC a ha, hP a ha]`. Simplify using `only [tw, Fin.val_one, Fin.val_zero, pow_one, pow_zero]`.
-
-Apply the tactic sequence `try ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem boxq_of_pair {M : ℕ} {eps Y X : ℝ} {q d : ℕ} (hM : 0 < M) (h : PairGood M eps Y X q d) : Boxq Y eps q d := by
   have hw := h.pair
@@ -299,9 +291,9 @@ private theorem boxq_of_pair {M : ℕ} {eps Y X : ℝ} {q d : ℕ} (hM : 0 < M) 
     try ring
 
 /- English proof (translation)
-Rewrite using `[boxes_kron_odd _ _ (by omega)]`. Establish `hm : (-(d : ℤ)) % (p : ℤ) = 1 % (p : ℤ)`. Apply `Int.emod_eq_emod_iff_emod_sub_eq_zero.mpr` to reduce the goal to its premises. Apply `Int.emod_eq_zero_of_dvd` to reduce the goal to its premises. Establish `hd : (p : ℤ) ∣ ((d + 1 : ℕ) : ℤ)` using `Int.natCast_dvd_natCast.mpr h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e : -(d : ℤ) - 1 = -((d + 1 : ℕ) : ℤ)` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `dvd_neg.mpr hd`. Rewrite using `[jacobiSym.mod_left' hm, jacobiSym.one_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem qdRows_kron_odd {p d : ℕ} (hp : ¬ 2 ∣ p) (h : p ∣ d + 1) : GlobalTheoryTheory.kronSym (-(d : ℤ)) p = 1 := by
   rw [boxes_kron_odd _ _ (by omega)]
@@ -315,9 +307,9 @@ private theorem qdRows_kron_odd {p d : ℕ} (hp : ¬ 2 ∣ p) (h : p ∣ d + 1) 
   rw [jacobiSym.mod_left' hm, jacobiSym.one_left]
 
 /- English proof (translation)
-Establish `hf : (2 : ℕ).factorization 2 = 1` using `Nat.Prime.factorization_self Nat.prime_two`. Simplify using `only [GlobalTheoryTheory.kronSym, GlobalTheoryTheory.kron2, hf]`. Establish `h1 : (-(d : ℤ)) % 2 ≠ 0` using `by omega`. Establish `h2 : (-(d : ℤ)) % 8 = 1` using `by omega`. Establish `h3 : (d : ℤ) % 2 = 1` using `by omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `[h1, h2, h3, jacobiSym.one_right]`.
+Evaluate the numerical expressions.
 -/
 private theorem qdRows_kron_two {d : ℕ} (h : d % 16 = 7) : GlobalTheoryTheory.kronSym (-(d : ℤ)) 2 = 1 := by
   have hf : (2 : ℕ).factorization 2 = 1 := Nat.Prime.factorization_self Nat.prime_two
@@ -328,7 +320,7 @@ private theorem qdRows_kron_two {d : ℕ} (h : d % 16 = 7) : GlobalTheoryTheory.
   norm_num [h1, h2, h3, jacobiSym.one_right]
 
 /- English proof (translation)
-Rewrite using `[← Real.exp_half]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem qdRows_lo {z : ℝ} {n : ℕ} (hn : 0 < n) (h : z / 2 < Real.log n) : Real.sqrt (Real.exp z) < n := by
   rw [← Real.exp_half]
@@ -336,18 +328,16 @@ private theorem qdRows_lo {z : ℝ} {n : ℕ} (hn : 0 < n) (h : z / 2 < Real.log
     _ = n := Real.exp_log (by exact_mod_cast hn)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem qdRows_up {z : ℝ} {n : ℕ} (hn : 0 < n) (h : Real.log n ≤ z) : (n : ℝ) ≤ Real.exp z := by
   calc (n : ℝ) = Real.exp (Real.log n) := (Real.exp_log (by exact_mod_cast hn)).symm
     _ ≤ Real.exp z := Real.exp_le_exp.mpr h
 
 /- English proof (translation)
-Establish `hq` using `h.q_prime`. Establish `hd` using `h.d_prime`. Establish `hqm` using `h.q_mod`. Unfold `GlobalTheory.EX.PairRow`. Use `⟨hq, hqm, ?_, ?_, hd, h.d_mod, ?_, ?_, ?_, ?_, hN⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `qdRows_lo hq.pos h.q_lo`. Conclude with `qdRows_up hq.pos h.q_up`. Conclude with `qdRows_lo hd.pos h.d_lo`. Conclude with `qdRows_up hd.pos h.d_up`. Conclude with `qdRows_kron_odd (by omega) h.d_q`.
-
-Introduce `p hp hpY`. Distinguish the cases in `hp2 : p = 2`. Substitute `hp2` using the available equality. Conclude with `qdRows_kron_two h.d_mod`. Conclude with `qdRows_kron_odd (fun h2 => hp2 ((Nat.prime_dvd_prime_iff_eq Nat.prime_two hp).mp h2).symm) (h.d_small p hp hp2 hpY)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem pairRow_of_pair {R : Ranks} (H : Host R) {eps Y : ℝ} (h : WinPair eps Y H.q H.d)
     (hN : Real.log (H.QS * H.q * H.d) ≤ 2 * Y ^ (eps / 5) * Real.log Y ^ 2) : PairRow Y eps H := by
@@ -369,17 +359,17 @@ private theorem pairRow_of_pair {R : Ranks} (H : Host R) {eps Y : ℝ} (h : WinP
         (h.d_small p hp hp2 hpY)
 
 /- English proof (translation)
-Introduce `N _ χ hind`. Take `⟨hprim, hval⟩` from `hind`. Establish `hodd : ∀ a : ℕ, a.Coprime 2 → a % 2 = 1`. Introduce `a ha`. Break down `Nat.even_or_odd a with ⟨k, hk⟩ | ho` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-It suffices to derive a contradiction. Establish `h2g : 2 ∣ Nat.gcd a 2` using `Nat.dvd_gcd ⟨k, by omega⟩ dvd_rfl`. Rewrite `h2g` using `[ha]`. Use linear arithmetic over natural numbers and integers. Conclude with `Nat.odd_iff.mp ho`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hind' : An.Induces χ (tw (fun a => (1 : DirichletCharacter ℂ M) a) q d i j) (2 * M * q * d)`. Unfold `An.Induces`. Use `⟨hprim, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h2 : a.Coprime 2` using `Nat.Coprime.coprime_dvd_right ⟨M * q * d, by ring⟩ ha`. Establish `hqa : a.Coprime q` using `Nat.Coprime.coprime_dvd_right ⟨2 * M * d, by ring⟩ ha`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hda : a.Coprime d` using `Nat.Coprime.coprime_dvd_right ⟨2 * M * q, by ring⟩ ha`. Establish `hMa : a.Coprime M` using `Nat.Coprime.coprime_dvd_right ⟨2 * q * d, by ring⟩ ha`. Establish `h8a : a.Coprime (8 * q * d)`. Establish `e8 : (8 : ℕ) = 2 ^ 3` using `by norm_num`. Rewrite using `[e8]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.Coprime.mul_right (Nat.Coprime.mul_right (Nat.Coprime.pow_right 3 h2) hqa) hda`. Rewrite using `[hval a h8a, hf a (hodd a h2)]`. Establish `h1 : (1 : DirichletCharacter ℂ M) (a : ZMod M) = 1` using `MulChar.one_apply ((ZMod.isUnit_iff_coprime a M).mpr hMa)`. Simplify using `only [tw, h1]`. Take `⟨hg, hl⟩` from `h.bounds 1 i j hij N χ hind' x hY le_rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, hl⟩` and prove the remaining obligations. Establish `e : GlobalTheoryTheory.gChi χ x = An.gChi χ x` using `rfl`. Rewrite using `[e]`. Use `le_trans hg ?_` and prove the remaining obligations. Conclude with `Real.rpow_le_rpow_of_exponent_le hx (by linarith)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem qdq_core {M : ℕ} {eps Y x : ℝ} {q d : ℕ} (he : 0 < eps) (hx : 1 ≤ x) (hY : Y ≤ x)
     (h : PairGood M eps Y x q d) (i j : Fin 2) (hij : i ≠ 0 ∨ j ≠ 0) (f : ℕ → ℂ)
@@ -417,13 +407,13 @@ private theorem qdq_core {M : ℕ} {eps Y x : ℝ} {q d : ℕ} (he : 0 < eps) (h
   exact Real.rpow_le_rpow_of_exponent_le hx (by linarith)
 
 /- English proof (translation)
-Establish `hw` using `h.pair`. Establish `hq4 : q % 4 = 3` using `by have := hw.q_mod; omega`. Establish `hd4 : d % 4 = 3` using `by have := hw.d_mod; omega`. Establish `hP : ∀ a : ℕ, a % 2 = 1 → GlobalTheoryTheory.psDir q a = ((jacobiSym (a : ℤ) q : ℤ) : ℂ)` using `fun a ha => boxes_kron_neg q a hq4 ha`. Establish `hC : ∀ a : ℕ, a % 2 = 1 → GlobalTheoryTheory.chDir d a = ((jacobiSym (a : ℤ) d : ℤ) : ℂ)` using `fun a ha => boxes_kron_neg d a hd4 ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.MainNotions.Inhab.QDq`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `qdq_core he hx hY h 1 0 (Or.inl (by decide)) _ (fun a ha => ?_)` and prove the remaining obligations. Rewrite using `[hP a ha]`. Simplify using `only [tw, Fin.val_one, Fin.val_zero, pow_one, pow_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `try ring`. Use `qdq_core he hx hY h 0 1 (Or.inr (by decide)) _ (fun a ha => ?_)` and prove the remaining obligations. Rewrite using `[hC a ha]`. Simplify using `only [tw, Fin.val_one, Fin.val_zero, pow_one, pow_zero]`. Apply the tactic sequence `try ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `qdq_core he hx hY h 1 1 (Or.inl (by decide)) _ (fun a ha => ?_)` and prove the remaining obligations. Rewrite using `[hC a ha, hP a ha]`. Simplify using `only [tw, Fin.val_one, Fin.val_zero, pow_one, pow_zero]`. Apply the tactic sequence `try ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem qdq_of_pair {M : ℕ} {eps Y x : ℝ} {q d : ℕ} (he : 0 < eps) (hx : 1 ≤ x) (hY : Y ≤ x)
     (h : PairGood M eps Y x q d) : QDq x eps 4 q d := by
@@ -450,9 +440,9 @@ private theorem qdq_of_pair {M : ℕ} {eps Y x : ℝ} {q d : ℕ} (he : 0 < eps)
     try ring
 
 /- English proof (translation)
-Establish `hl0 : 0 < l` using `lt_of_lt_of_le (by positivity) hl`. Establish `hy0 : 0 ≤ l * (eps / 5)` using `by positivity`. Establish `hq` using `Real.quadratic_le_exp_of_nonneg hy0`. Establish `h1 : 41000 * C ≤ l * eps ^ 2`. Rewrite `hl` using `[div_le_iff₀ (by positivity)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : 41000 * C * l ≤ l * eps ^ 2 * l` using `mul_le_mul_of_nonneg_right h1 hl0.le`. Establish `h3 : 820 * C * l ≤ (l * (eps / 5)) ^ 2 / 2` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem mul_le_exp_of_le_div_sq {eps C l : ℝ} (he : 0 < eps) (hC : 1 ≤ C) (hl : 41000 * C / eps ^ 2 ≤ l) :
     820 * C * l ≤ Real.exp (l * (eps / 5)) := by
@@ -466,23 +456,23 @@ private theorem mul_le_exp_of_le_div_sq {eps C l : ℝ} (he : 0 < eps) (hC : 1 �
   linarith
 
 /- English proof (translation)
-Introduce `eps C0 he he1`. Use `⟨Real.exp (max C0 1 * max 2 (41000 * max C0 1 / eps ^ 2)), ?_⟩` and prove the remaining obligations. Introduce `s R H M Y hs hx0 hRV hHC hM hPW hPG`. Establish `hw` using `hPG.pair`. Establish `hx1 : 1 < s.x` using `s.one_lt_alt`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ1 : 1 ≤ s.J` using `s.one_le_J`. Establish `hJC : s.J ≤ C0` using `hHC.1`. Establish `hC1 : 1 ≤ C0` using `le_trans hJ1 hJC`. Establish `hY1 : 1 < Y` using `hPW.one_lt`. Establish `hYx : Y ≤ s.x` using `hPW.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, qdq_of_pair he hx1.le hYx hPG, boxq_of_pair hM hPG, H.qd_big⟩` and prove the remaining obligations. Apply `pairRow_of_pair H hw` to reduce the goal to its premises. Establish `hl0 : 0 < Real.log Y` using `Real.log_pos hY1`. Establish `hKL : max C0 1 * max 2 (41000 * max C0 1 / eps ^ 2) ≤ Real.log s.x`. Use `Real.log_le_log (Real.exp_pos _) hx0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis. Rewrite `hKL` using `[max_eq_left hC1]`. Establish `hlx : Real.log s.x ≤ C0 * Real.log Y`. Establish `h1` using `hPW.log_div_le`. Rewrite `h1` using `[div_le_iff₀ (by linarith)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hJC hl0.le]`. Establish `hLl : max 2 (41000 * C0 / eps ^ 2) ≤ Real.log Y` using `le_of_mul_le_mul_left (by linarith) (by linarith : (0 : ℝ) < C0)`. Establish `hl2 : 2 ≤ Real.log Y` using `le_trans (le_max_left _ _) hLl`. Establish `hlb : 41000 * C0 / eps ^ 2 ≤ Real.log Y` using `le_trans (le_max_right _ _) hLl`. Establish `hT : 820 * C0 * Real.log Y ≤ Y ^ (eps / 5)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_exp_of_le_div_sq he hC1 hlb` as an intermediate fact. Rewrite using `[Real.rpow_def_of_pos (by linarith)]`. Conclude with `this`. Establish `hQS0 : (0 : ℝ) < H.QS` using `by exact_mod_cast H.QS_pos`. Establish `hq0 : (0 : ℝ) < H.q` using `by exact_mod_cast hw.q_prime.pos`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : (0 : ℝ) < H.d` using `by exact_mod_cast hw.d_prime.pos`. Establish `hxp : (0 : ℝ) < s.x ^ (9 / 4 : ℝ)` using `Real.rpow_pos_of_pos (by linarith) _`. Establish `hQSle : (H.QS : ℝ) ≤ C0 * (2 * s.x ^ (9 / 4 : ℝ))` using `le_trans hHC.2.2 (mul_le_mul_of_nonneg_left hRV.n_le' (by linarith))`. Establish `hlogQS : Real.log H.QS ≤ 2 * C0 + 9 / 4 * Real.log s.x`. Establish `h1` using `Real.log_le_log hQS0 hQSle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Real.log_mul (by linarith) (ne_of_gt (by positivity)), Real.log_mul (by norm_num) (ne_of_gt hxp), Real.log_rpow (by linarith)]`. Establish `h2` using `Real.log_le_sub_one_of_pos (by linarith : (0 : ℝ) < C0)`. Establish `h3 : Real.log 2 < 1` using `by have := Real.log_two_lt_d9; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.log_mul (ne_of_gt (mul_pos hQS0 hq0)) (ne_of_gt hd0), Real.log_mul (ne_of_gt hQS0) (ne_of_gt hq0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k1 : 820 * C0 * Real.log Y * (Real.log Y ^ 2 - 1) ≤ Y ^ (eps / 5) * (Real.log Y ^ 2 - 1)` using `mul_le_mul_of_nonneg_right hT (by nlinarith)`. Establish `k2 : 3 ≤ Real.log Y ^ 2 - 1` using `by nlinarith`. Establish `k3 : 820 * C0 * Real.log Y * 3 ≤ 820 * C0 * Real.log Y * (Real.log Y ^ 2 - 1)` using `mul_le_mul_of_nonneg_left k2 (mul_nonneg (mul_nonneg (by norm_num) (by linarith)) hl0.le)`. Establish `k4 : 2 * C0 ≤ C0 * Real.log Y` using `by nlinarith`. Combine the linear relations using `[hw.q_up, hw.d_up]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Top.pairRows :
     ∀ eps C0 : ℝ, 0 < eps → eps < 1 / 52 → ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks) (H : Host R) (M : ℕ) (Y : ℝ), s.eps = eps → x0 ≤ s.x →

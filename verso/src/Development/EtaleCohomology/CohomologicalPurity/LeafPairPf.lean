@@ -21,9 +21,9 @@ instance presFree (R : Type) [CommRing R] : PreservesColimitsOfShape WalkingSpan
   unfold free; infer_instance
 
 /- English proof (translation)
-Establish `nat` using `congrArg (fun k => k.hom (freeGen R (yoneda.obj X) X (𝟙 X))) (m.hom.naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply] at nat`. Express the relevant statement in the definitionally equal form `_ = (G.obj.map g.op).hom ((m.hom.app (op X)).hom (freeGen R (yoneda.obj X) X (𝟙 X)))`. Rewrite using `[← nat]`. Express the relevant statement in the definitionally equal form `_ = (m.hom.app (op V)).hom (Sec.res g (freeGen R (yoneda.obj X) X (𝟙 X)))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[freeGen_res]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem gen_eq {R : Type} [CommRing R] {G : Shv R} {X V : Scheme.{0}} (m : (free R).obj (yoneda.obj X) ⟶ G)
     (g : V ⟶ X) : (m.hom.app (op V)).hom (freeGen R (yoneda.obj X) V g) = Sec.res g (DictPf.ev m) := by
@@ -36,9 +36,9 @@ theorem gen_eq {R : Type} [CommRing R] {G : Shv R} {X V : Scheme.{0}} (m : (free
   congr 2
 
 /- English proof (translation)
-Apply `Sheaf.hom_ext` to reduce the goal to its premises. Apply `sheafify_hom_ext _ _ _ G.property` to reduce the goal to its premises. Use extensionality with `V : 2`. Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce `x`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `(m.hom.app V).hom (freeGen R (yoneda.obj X) V.unop x.down) = (m'.hom.app V).hom (freeGen R (yoneda.obj X) V.unop x.down)`. Rewrite using `[gen_eq m x.down, gen_eq m' x.down, h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_gen {R : Type} [CommRing R] {G : Shv R} {X : Scheme.{0}} (m m' : (free R).obj (yoneda.obj X) ⟶ G)
     (h : DictPf.ev m = DictPf.ev m') : m = m' := by
@@ -51,13 +51,13 @@ theorem ext_gen {R : Type} [CommRing R] {G : Shv R} {X : Scheme.{0}} (m m' : (fr
   rw [gen_eq m x.down, gen_eq m' x.down, h]
 
 /- English proof (translation)
-The claim follows from `ofSec_gen G s`.
+A detailed English derivation is pending.
 -/
 theorem ev_ofSec {R : Type} [CommRing R] {G : Shv R} {X : Scheme.{0}} (s : Sec G X) : DictPf.ev (ofSec G s) = s :=
   ofSec_gen G s
 
 /- English proof (translation)
-Rewrite using `[← gen_eq]`. Express the relevant statement in the definitionally equal form `(m.hom.app (op Y)).hom ((((free R).map (yoneda.map f)).hom.app (op Y)).hom (freeGen R (yoneda.obj Y) Y (𝟙 Y))) = _`. Rewrite using `[freeGen_map]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem ev_pre {R : Type} [CommRing R] {G : Shv R} {Y X : Scheme.{0}} (f : Y ⟶ X)
     (m : (free R).obj (yoneda.obj X) ⟶ G) : DictPf.ev ((free R).map (yoneda.map f) ≫ m) = Sec.res f (DictPf.ev m) := by
@@ -67,11 +67,11 @@ theorem ev_pre {R : Type} [CommRing R] {G : Shv R} {Y X : Scheme.{0}} (f : Y ⟶
   congr 2
 
 /- English proof (translation)
-Introduce `R _ G X U`. Use `⟨fun s s' hs => ?_, fun m m' h1 h2 => ?_⟩` and prove the remaining obligations. Establish `w : (free R).map (yoneda.map U.ι) ≫ ofSec G s = (free R).map (yoneda.map U.ι) ≫ ofSec G s'`. Apply `ext_gen` to reduce the goal to its premises. Rewrite using `[ev_pre, ev_pre, ev_ofSec, ev_ofSec]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`. Use `⟨(PreservesPushout.iso (free R) (yoneda.map U.ι) (yoneda.map U.ι)).inv ≫ pushout.desc _ _ w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, PreservesPushout.inl_iso_inv, pushout.inl_desc, ev_ofSec]`. Rewrite using `[← Category.assoc, PreservesPushout.inr_iso_inv, pushout.inr_desc, ev_ofSec]`. Apply `(cancel_epi (PreservesPushout.iso (free R) (yoneda.map U.ι) (yoneda.map U.ι)).hom).1` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pushout.hom_ext` to reduce the goal to its premises. Rewrite using `[← Category.assoc, ← Category.assoc, PreservesPushout.inl_iso_hom]`. Conclude with `h1`. Rewrite using `[← Category.assoc, ← Category.assoc, PreservesPushout.inr_iso_hom]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafPair_of : DictPf.LeafPair := by
   intro R _ G X U

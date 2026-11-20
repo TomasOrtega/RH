@@ -29,9 +29,9 @@ def pairQ (Q : Data R) (pr : Fin r → (D'.P.A ⟶ Q.B)) (M : Matrix (Fin r) (Fi
   ∑ i, ∑ j, M i j • lam (cls Q.M.L Q.M.isLB) (u ≫ pr i) (v ≫ pr j)
 
 /- English proof (translation)
-Establish `hC` using `LB.isLB_linComb Q.M.isLB (tensφ pr) (tensε W)`. Use `((cls_eq_iff D'.P.isLB hC).2 ⟨w, hw⟩).trans ?_` and prove the remaining obligations. Rewrite using `[cls_linComb Q.M.isLB, Fintype.sum_prod_type, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.sum_univ_four, tensφ, tensε, GlobalTheory.PolDeg.lamPts, Oε, lam, mul_smul, ← smul_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem cls_pow {W : Matrix (Fin r) (Fin r) ℤ} (w : LB.Iso D'.P.L (LB.LinComb Q.M.L (tensφ pr) (tensε W)))
     (hw : w.IsGen) : cls D'.P.L D'.P.isLB = ∑ i, ∑ j, W i j • lam (cls Q.M.L Q.M.isLB) (pr i) (pr j) := by
@@ -45,7 +45,7 @@ theorem cls_pow {W : Matrix (Fin r) (Fin r) ℤ} (w : LB.Iso D'.P.L (LB.LinComb 
   abel
 
 /- English proof (translation)
-Rewrite using `[cls_pow w hw, pairQ, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, pull_lam]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_pow {W : Matrix (Fin r) (Fin r) ℤ} (w : LB.Iso D'.P.L (LB.LinComb Q.M.L (tensφ pr) (tensε W)))
     (hw : w.IsGen) {X : Over (Spec (CommRingCat.of R))} (h : X ⟶ D'.P.A) :
@@ -57,9 +57,9 @@ theorem pull_pow {W : Matrix (Fin r) (Fin r) ℤ} (w : LB.Iso D'.P.L (LB.LinComb
   rw [map_zsmul, pull_lam]
 
 /- English proof (translation)
-Establish `hm : ∀ i, (u * v) ≫ pr i = u ≫ pr i * v ≫ pr i` using `fun i => by haveI := hpr i`. Conclude with `MonObj.mul_comp _ _ _`. Establish `hΘ : ∃ t : LB.Gen (Theta Q.B Q.M.L), t.IsGen` using `⟨Q.cub.t, Q.cub.isGen⟩`. Establish `e : ∑ i, ∑ j, W i j • lam (cls Q.M.L Q.M.isLB) (v ≫ pr i) (u ≫ pr j) = ∑ i, ∑ j, W.transpose i j • lam (cls Q.M.L Q.M.isLB) (u ≫ pr i) (v ≫ pr j)`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.transpose_apply, lam_comm _ (v ≫ _)]`. Simplify using `only [pairQ, hm, lam_mul_left Q.M.isLB hΘ, lam_mul_right Q.M.isLB hΘ, smul_add, Finset.sum_add_distrib, Matrix.add_apply, add_smul]`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem pairQ_mul (hpr : ∀ i, IsMonHom (pr i)) (W : Matrix (Fin r) (Fin r) ℤ) {X : Over (Spec (CommRingCat.of R))}
     (u v : X ⟶ D'.P.A) :
@@ -78,7 +78,7 @@ theorem pairQ_mul (hpr : ∀ i, IsMonHom (pr i)) (W : Matrix (Fin r) (Fin r) ℤ
   abel
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, PowLim.act_pr]`. Conclude with `(map_prod (pre (Z := Q.B) u) _ _).trans (Finset.prod_congr rfl fun k _ => map_zpow (pre (Z := Q.B) u) _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_act_pr' (hl : IsLimit (Fan.mk D'.P.A pr)) {X : Over (Spec (CommRingCat.of R))} (u : X ⟶ D'.P.A)
     (m : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) :
@@ -87,9 +87,9 @@ theorem comp_act_pr' (hl : IsLimit (Fan.mk D'.P.A pr)) {X : Over (Spec (CommRing
   exact (map_prod (pre (Z := Q.B) u) _ _).trans (Finset.prod_congr rfl fun k _ => map_zpow (pre (Z := Q.B) u) _ _)
 
 /- English proof (translation)
-Establish `hΘ : ∃ t : LB.Gen (Theta Q.B Q.M.L), t.IsGen` using `⟨Q.cub.t, Q.cub.isGen⟩`. Simplify using `only [pairQ, comp_act_pr', lam_prod_left Q.M.isLB hΘ, Finset.smul_sum, smul_smul, Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairQ_act_left (hl : IsLimit (Fan.mk D'.P.A pr)) (M m : Matrix (Fin r) (Fin r) ℤ)
     {X : Over (Spec (CommRingCat.of R))} (u v : X ⟶ D'.P.A) :
@@ -104,7 +104,7 @@ theorem pairQ_act_left (hl : IsLimit (Fan.mk D'.P.A pr)) (M m : Matrix (Fin r) (
   simp only [mul_comm]
 
 /- English proof (translation)
-Establish `hΘ : ∃ t : LB.Gen (Theta Q.B Q.M.L), t.IsGen` using `⟨Q.cub.t, Q.cub.isGen⟩`. Simplify using `only [pairQ, comp_act_pr', lam_prod_right Q.M.isLB hΘ, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairQ_act_right (hl : IsLimit (Fan.mk D'.P.A pr)) (M m : Matrix (Fin r) (Fin r) ℤ)
     {X : Over (Spec (CommRingCat.of R))} (u v : X ⟶ D'.P.A) :
@@ -116,13 +116,13 @@ theorem pairQ_act_right (hl : IsLimit (Fan.mk D'.P.A pr)) (M m : Matrix (Fin r) 
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Introduce `R _ _ Q D' r W h pr hl w hpr hw a`. Introduce `s`. Use `⟨⊤, trivial, (cls_eq_zero_iff (LB.isLB_linComb D'.P.isLB _ _)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[cls_linComb D'.P.isLB]`. Set `f` to `PowLim.act pr hl (TensO.mat _ a)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `g` to `PowLim.act pr hl (TensO.mat _ (star a))`. Set `H : Fin 6 → (D'.P.A ⊗ D'.P.A ⟶ D'.P.A)` to `![fst _ _ ≫ f * snd _ _, fst _ _ ≫ f, snd _ _, fst _ _ * snd _ _ ≫ g, fst _ _, snd _ _ ≫ g]`. Establish `hH : rosatiφ D'.P.A f g = fun k => (H k).left`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp [rosatiφ, H, padd, Hom.mul_def]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `key : ∑ k, rosatiε k • pull (rosatiφ D'.P.A f g k) (cls D'.P.L D'.P.isLB) = 0`. Simplify using `only [hH, pull_pow w hw]`. Simplify using `only [Fin.sum_univ_six, H, rosatiε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four, Matrix.head_cons, Matrix.tail_cons, Matrix.cons_val]`. Rewrite using `[pairQ_mul hpr, pairQ_mul hpr]`. Rewrite using `[pairQ_act_left hl (W + W.transpose) (TensO.mat _ a) (fst _ _) (snd _ _), pairQ_act_right hl (W + W.transpose) (TensO.mat _ (star a)) (fst _ _) (snd _ _), symUnit_mul_star]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_smul, neg_smul]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [pull_comp, map_sum, map_zsmul]`. Use `_ = 0 := by rw [key, map_zero]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rosatiAdj_pow : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : Data R) (D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ)
     (h : IsUnit (W + W.transpose).det) (pr : Fin r → (D'.P.A ⟶ Q.B)) (hl : IsLimit (Fan.mk D'.P.A pr))
@@ -157,11 +157,11 @@ theorem rosatiAdj_pow : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : Data R) (D
 end GlobalTheory.Mum.PowLim.Rosati
 
 /- English proof (translation)
-Introduce `R _ _ _ hR Q D' r W hpos hdet hr pr xe w hpr hlim hc hw hpsi`. Set `hl` to `hlim.some`. Set `s` to `symUnitOf W hdet`. Set `i₀ : Fin r` to `⟨0, hr⟩`. Use `letI := PowLim.mod xe s`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Take `⟨w', hw', htau⟩` from `GlobalTheory.T.mumfordIso_periods_factor_tensor_polarised R hR Q D' W hdet hpos pr hl xe w hpr hc hw hpsi i₀`. Take `⟨hxx, hxe, hinj, honto⟩` from `PowLim.factor_latt xe s i₀`. Establish `hp : 0 < (s.1 : Matrix (Fin r) (Fin r) ℤ) i₀ i₀`. Establish `h` using `hpos.diag_pos (i := i₀)`. Establish `h' : (0 : ℝ) < (((W + W.transpose) i₀ i₀ : ℤ) : ℝ)` using `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h'` after adjusting the coercions. Conclude with `⟨{ O := TensO s mod := PowLim.mod xe s o := { onB := { act := fun a => PowLim.act pr hl (TensO.mat s a) hom := fun a => PowLim.act_isMonHom pr hl hpr _ map_one := PowLim.act_one pr hl map_mul := fun a b => PowLim.act_mul pr hl _ _ map_add := fun a b => PowLim.act_add pr hl hpr _ …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.PFactor.nonempty_of_tens : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ (Q : Data R) (D' : DegData R (maximalIdeal R))
   {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ), ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → IsUnit (W + W.transpose).det → 1 ≤ r →

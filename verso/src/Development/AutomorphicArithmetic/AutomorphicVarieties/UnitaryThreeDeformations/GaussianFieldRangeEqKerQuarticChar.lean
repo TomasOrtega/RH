@@ -5,11 +5,11 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Po
 open NumberField Matrix IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.Aut UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Establish `hne : (1 : L) ≠ -1`. Introduce `h`. Establish `h2 : (2 : L) = 0` using `by linear_combination h`. Conclude with `two_ne_zero h2`. Rewrite using `[IsPrimitiveRoot.iff (by norm_num)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by linear_combination (i * i - 1) * hi, ?_⟩` and prove the remaining obligations. Introduce `l hl hl4`. Evaluate the numerical expressions using `at hl4`. Use `interval_cases l`. Introduce `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hne (by linear_combination hi - (i + 1) * h1)`. Introduce `h2`. Conclude with `hne (by linear_combination hi - h2)`. Introduce `h3`. Conclude with `hne (by linear_combination (1 - i ^ 2 + i) * hi + (i - 1) * h3)`.
+A detailed English derivation is pending.
 -/
 private theorem prim4 {L : Type} [Field L] [CharZero L] {i : L} (hi : i * i = -1) : IsPrimitiveRoot i (2 ^ 2) := by
   have hne : (1 : L) ≠ -1 := by
@@ -29,15 +29,13 @@ private theorem prim4 {L : Type} [Field L] [CharZero L] {i : L} (hi : i * i = -1
     exact hne (by linear_combination (1 - i ^ 2 + i) * hi + (i - 1) * h3)
 
 /- English proof (translation)
-Establish `hnb : i ∉ (⊥ : Subalgebra ℚ K)`. Rewrite using `[Algebra.mem_bot]`. Introduce and unpack `⟨q, hq⟩`. Establish `hq2 : algebraMap ℚ K (q * q) = algebraMap ℚ K (-1)`. Rewrite using `[map_mul, hq, hi, map_neg, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq3` using `(algebraMap ℚ K).injective hq2`. Use polynomial arithmetic with `[mul_self_nonneg q]`. Establish `hS : Algebra.adjoin ℚ {i} ≠ ⊥`. Introduce `hb`. Apply `hnb` to reduce the goal to its premises.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hb]`. Conclude with `Algebra.subset_adjoin rfl`. Establish `hle : Module.finrank ℚ (Subalgebra.toSubmodule (Algebra.adjoin ℚ {i})) ≤ 2` using `h ▸ Submodule.finrank_le _`. Establish `hpos : 0 < Module.finrank ℚ (Algebra.adjoin ℚ {i})` using `Module.finrank_pos`. Establish `hne1 : Module.finrank ℚ (Algebra.adjoin ℚ {i}) ≠ 1` using `fun h1 => hS (Subalgebra.finrank_eq_one_iff.mp h1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Module.finrank ℚ (Subalgebra.toSubmodule (Algebra.adjoin ℚ {i})) = Module.finrank ℚ K`. Establish `: Module.finrank ℚ (Subalgebra.toSubmodule (Algebra.adjoin ℚ {i})) = Module.finrank ℚ (Algebra.adjoin ℚ {i})` using `rfl`. Use linear arithmetic over natural numbers and integers. Apply `Subalgebra.toSubmodule_injective` to reduce the goal to its premises. Rewrite using `[Algebra.top_toSubmodule]`.
-
-Conclude with `Submodule.eq_top_of_finrank_eq h2`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adj_top {K : Type} [Field K] [NumberField K] (h : Module.finrank ℚ K = 2) {i : K} (hi : i * i = -1) :
     Algebra.adjoin ℚ {i} = ⊤ := by
@@ -68,15 +66,15 @@ private theorem adj_top {K : Type} [Field K] [NumberField K] (h : Module.finrank
 
 open UpperTheory.V UpperTheory.V.Base in
 /- English proof (translation)
-Establish `hspec` using `UpperTheory.V.Chr.cls_spec (k := ℚ) 4 σ ζ hζ.pow_eq_one`. Establish `key : ∀ u : (ZMod 4)ˣ, u = 1 ∨ u = -1` using `by decide`. Establish `heta : eta4 Ω σ = MulChar.toUnitHom ZMod.χ₄ (UpperTheory.V.Chr.cls ℚ Ω 4 σ)` using `rfl`. Break down `key (UpperTheory.V.Chr.cls ℚ Ω 4 σ) with hu | hu` into its components or cases. Rewrite using `[heta, hu, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [iff_true]`. Rewrite using `[hspec, hu, Units.val_one, show ZMod.val (1 : ZMod 4) = 1 from rfl, pow_one]`. Rewrite using `[heta, hu]`. Establish `hm : MulChar.toUnitHom ZMod.χ₄ (-1) ≠ 1`. Introduce `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h'` using `congrArg (fun x : ℤˣ => (x : ℤ)) h`. Simplify using `only [MulChar.coe_toUnitHom, Units.val_neg, Units.val_one] at h'`. Use `revert h'`. Evaluate the decidable proposition. Establish `hz : σ ζ ≠ ζ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the decidable proposition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hspec, hu]`. Establish `h3 : (((-1 : (ZMod 4)ˣ) : ZMod 4)).val = 3` using `rfl`. Rewrite using `[h3]`. Introduce `h`. Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : ζ ^ 2 = 1`. Apply `mul_right_cancel₀ hζ0` to reduce the goal to its premises. Take the linear combination `h`. Conclude with `hζ.pow_ne_one_of_pos_of_lt (by norm_num) (by norm_num) hsq`. Conclude with `iff_of_false hz hm`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem fix_iff (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (ζ : Ω) (hζ : IsPrimitiveRoot ζ 4)
     (σ : G ℚ Ω) : σ ζ = ζ ↔ eta4 Ω σ = 1 := by
@@ -107,25 +105,23 @@ private theorem fix_iff (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
     exact iff_of_false hz hm
 
 /- English proof (translation)
-Establish `sq_of_prim : ∀ {L : Type} [Field L] {z : L}, IsPrimitiveRoot z 4 → z * z = -1`. Introduce `L _ z hz`. Establish `h4 : z ^ 4 = 1` using `hz.pow_eq_one`. Establish `h2 : z ^ 2 ≠ 1` using `hz.pow_ne_one_of_pos_of_lt (by norm_num) (by norm_num)`. Establish `hprod : (z ^ 2 - 1) * (z ^ 2 + 1) = 0` using `by linear_combination h4`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp hprod with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h) h2`. Take the linear combination `h`. Use `⟨⟨CyclotomicField 4 ℚ, inferInstance, inferInstance, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `IsCyclotomicExtension.Rat.isCMField (CyclotomicField 4 ℚ) (S := {4}) ⟨4, rfl, by norm_num⟩`.
+Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ⟨IsCyclotomicExtension.zeta 4 ℚ (CyclotomicField 4 ℚ), sq_of_prim (IsCyclotomicExtension.zeta_spec 4 ℚ (CyclotomicField 4 ℚ))⟩⟩` and prove the remaining obligations. Rewrite using `[IsCyclotomicExtension.Rat.finrank 4 (CyclotomicField 4 ℚ)]`. Evaluate the decidable proposition. Introduce `Ω _ _ _ K _ _ _ _ hK`. Take `⟨hrank, i, hi⟩` from `hK`.
+Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadj` using `adj_top hrank hi`. Establish `hprim : IsPrimitiveRoot (algebraMap K Ω i) 4`. Use `prim4 (L := Ω) (i := algebraMap K Ω i) (by rw [← map_mul, hi, map_neg, map_one])` as an intermediate fact. Simplify using `using this`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker, ← fix_iff Ω _ hprim σ, UpperTheory.V.Base.range_galEmb, UpperTheory.V.Base.mem_galOf]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h x`. Establish `hφ : (σ.toAlgHom).comp (IsScalarTower.toAlgHom ℚ K Ω) = IsScalarTower.toAlgHom ℚ K Ω`. Apply `AlgHom.ext_of_adjoin_eq_top hadj` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hy` using the available equality. Conclude with `h`. Conclude with `congrArg (fun φ : K →ₐ[ℚ] Ω => φ x) hφ`. Use `haveI : IsCyclotomicExtension {2 ^ 2} ℚ K := by`. Rewrite using `[IsCyclotomicExtension.iff_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨i, prim4 hi⟩, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `hle : Algebra.adjoin ℚ {i} ≤ Algebra.adjoin ℚ {b : K | b ^ (2 ^ 2) = 1}`. Apply `Algebra.adjoin_mono` to reduce the goal to its premises. Introduce `y hy`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Conclude with `(prim4 hi).pow_eq_one`. Apply `hle` to reduce the goal to its premises. Rewrite using `[hadj]`.
-
-Discharge the goal by the elementary cases of `trivial`. Rewrite using `[IsCyclotomicExtension.Rat.discr_prime_pow 2 2 K]`. Establish `ht : Nat.totient (2 ^ 2) = 2` using `by decide`. Rewrite using `[ht]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.gaussian_field_range_eq_ker_quartic_char :
     (∃ (K : Type) (_ : Field K) (_ : NumberField K) (_ : IsCMField K), IsQi K) ∧ ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K] [Algebra K Ω] [IsScalarTower ℚ K Ω], IsQi K →

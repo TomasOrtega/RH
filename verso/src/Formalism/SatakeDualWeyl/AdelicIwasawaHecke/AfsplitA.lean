@@ -32,7 +32,7 @@ Both sides reduce to the same expression.
 -/
 theorem afsplit_zero_apply (w : HeightOneSpectrum (𝓞 F)) : (0 : 𝔸) w = 0 := rfl
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, afsplit_mul_apply, Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem afsplit_smul_apply (c : F) (a : 𝔸) (w : HeightOneSpectrum (𝓞 F)) :
     (c • a) w = c • a w := by
@@ -47,7 +47,7 @@ def afsplitF (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion F) : 𝔸 :=
     exact zero_mem _⟩
 
 /- English proof (translation)
-Use `show Pi.single v x v = x`. Use `Pi.single_eq_same v x` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem afsplitF_self (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion F) : afsplitF v x v = x := by
   classical
@@ -55,7 +55,7 @@ theorem afsplitF_self (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion F) 
   convert Pi.single_eq_same v x
 
 /- English proof (translation)
-Use `show Pi.single v x w = 0`. Use `Pi.single_eq_of_ne h x` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem afsplitF_ne (v w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) (x : v.adicCompletion F) :
     afsplitF v x w = 0 := by
@@ -77,19 +77,19 @@ def afsplitI (v : HeightOneSpectrum (𝓞 F)) : v.adicCompletion F →ₗ[F] �
     · simp only [afsplit_smul_apply, afsplitF_ne v w h, smul_zero, RingHom.id_apply]
 
 /- English proof (translation)
-The claim follows from `afsplitF_self v x`.
+A detailed English derivation is pending.
 -/
 theorem afsplitI_self (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion F) : afsplitI v x v = x :=
   afsplitF_self v x
 
 /- English proof (translation)
-The claim follows from `afsplitF_ne v w h x`.
+A detailed English derivation is pending.
 -/
 theorem afsplitI_ne (v w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) (x : v.adicCompletion F) :
     afsplitI v x w = 0 := afsplitF_ne v w h x
 
 /- English proof (translation)
-Use extensionality with `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `only [afsplit_mul_apply, afsplitI_self]`. Simplify using `only [afsplit_mul_apply, afsplitI_ne v w h, mul_zero]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem afsplitI_mul (v : HeightOneSpectrum (𝓞 F)) (x y : v.adicCompletion F) :
     afsplitI v (x * y) = afsplitI v x * afsplitI v y := by
@@ -99,7 +99,7 @@ theorem afsplitI_mul (v : HeightOneSpectrum (𝓞 F)) (x y : v.adicCompletion F)
   · simp only [afsplit_mul_apply, afsplitI_ne v w h, mul_zero]
 
 /- English proof (translation)
-Use extensionality with `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `only [afsplit_mul_apply, afsplitI_self, one_mul]`. Simplify using `only [afsplit_mul_apply, afsplitI_ne v w h, zero_mul]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem afsplitI_eval (v : HeightOneSpectrum (𝓞 F)) (a : 𝔸) :
     afsplitI v (a v) = afsplitI v 1 * a := by
@@ -109,9 +109,9 @@ theorem afsplitI_eval (v : HeightOneSpectrum (𝓞 F)) (a : 𝔸) :
   · simp only [afsplit_mul_apply, afsplitI_ne v w h, zero_mul]
 
 /- English proof (translation)
-Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[afsplitI_self]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[afsplitI_ne v w h]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem afsplitI_mem_intAd (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion F)
     (hx : x ∈ v.adicCompletionIntegers F) : afsplitI v x ∈ intAd F := by

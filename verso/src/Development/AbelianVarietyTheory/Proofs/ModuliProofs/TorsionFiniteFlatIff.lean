@@ -21,9 +21,9 @@ instance : Mono (incl G k) := by
   exact pullback.fst_of_mono
 
 /- English proof (translation)
-Establish `h : incl G k ≫ ((𝟙 G : G ⟶ G) ^ k) = pullback.snd ((𝟙 G : G ⟶ G) ^ k) η[G] ≫ η[G]` using `pullback.condition`. Rewrite `h` using `[MonObj.comp_pow, Category.comp_id]`. Establish `h1 : incl G k ^ k = 1`. Rewrite using `[h, Hom.one_def]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `toUnit_unique _ _`. Rewrite using `[← MonObj.comp_pow, h1, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_incl_pow {T : Over S} (y : T ⟶ GlobalTheory.IndefiniteRowSideFullHecke.FlatTorsionIsomorphism.torsScheme G k) : (y ≫ incl G k) ^ k = 1 := by
   have h : incl G k ≫ ((𝟙 G : G ⟶ G) ^ k) = pullback.snd ((𝟙 G : G ⟶ G) ^ k) η[G] ≫ η[G] := pullback.condition
@@ -35,7 +35,7 @@ theorem comp_incl_pow {T : Over S} (y : T ⟶ GlobalTheory.IndefiniteRowSideFull
   rw [← MonObj.comp_pow, h1, MonObj.comp_one]
 
 /- English proof (translation)
-Use `⟨pullback.lift x (toUnit _) ?_, pullback.lift_fst _ _ _⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_pow, Category.comp_id, hx, Hom.one_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift {T : Over S} (x : T ⟶ G) (hx : x ^ k = 1) :
     ∃ y : T ⟶ GlobalTheory.IndefiniteRowSideFullHecke.FlatTorsionIsomorphism.torsScheme G k, y ≫ incl G k = x := by

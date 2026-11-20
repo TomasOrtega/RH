@@ -18,9 +18,9 @@ theorem u_eq (D : PeriodChartData) :
     D.u = fun q => logDetGram (D.Y q.1) (D.f q) := rfl
 
 /- English proof (translation)
-Establish `hCr : 0 < C₁ * r` using `mul_pos hC₁ hr`. Establish `h1 : S * (1 + A * e) / ((C₁ * r)⁻¹ ^ k * δ) = S * (1 + A * e) * (C₁ ^ k * r ^ k / δ)`. Rewrite using `[inv_pow, ← mul_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : S * (1 + A * e) ≤ S * (1 + A) * e`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left he hS]`. Establish `h3 : 0 ≤ C₁ ^ k * r ^ k / δ` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem bound_arith (S A C₁ δ r e : ℝ) (k : ℕ) (hS : 0 ≤ S) (hA : 0 ≤ A) (hC₁ : 0 < C₁)
     (hδ : 0 < δ) (hr : 0 < r) (he : 1 ≤ e) :
@@ -39,7 +39,7 @@ theorem bound_arith (S A C₁ δ r e : ℝ) (k : ℕ) (hS : 0 ≤ S) (hA : 0 ≤
     _ = S * (1 + A) * C₁ ^ k / δ * r ^ k * e := by ring
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hr hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_le_rpow_of_le {r C : ℝ} {k : ℕ} (hr : 1 ≤ r) (hk : (k : ℝ) ≤ C) :
     r ^ k ≤ r ^ C := by
@@ -51,19 +51,17 @@ end MCChartGradient
 open MCChartGradient in
 
 /- English proof (translation)
-Introduce `D`. Take `⟨K₀, hK₀, hK⟩` from `h₁ D.g D.rk`. Take `⟨AF, hAF, hF⟩` from `h₂ D`. Take `⟨AY, hAY, hY⟩` from `h₃ D`. Take `⟨C₁, hC₁, hB⟩` from `h₄ D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, M, hδ, -, hG⟩` from `MCBounds.exists_gram_bounds D`. Establish `hc : 0 ≤ D.c⁻¹` using `inv_nonneg.mpr D.c_pos.le`. Use `set S : ℝ := K₀ * (1 + AF) ^ (2 * D.rk) * (1 + D.c⁻¹) ^ (D.rk + 1) with hSdef`. Establish `hS : 0 ≤ S` using `by positivity`. Use `set K' : ℝ := S * (1 + AY) * C₁ ^ D.rk / δ with hK'def`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK'0 : 0 ≤ K'` using `by positivity`. Establish `hC1 : (1 : ℝ) ≤ max K' (max (D.rk : ℝ) 1)` using `(le_max_right _ _).trans (le_max_right _ _)`. Use `⟨max K' (max (D.rk : ℝ) 1), lt_of_lt_of_le one_pos hC1, fun p hp hps => ?_⟩` and prove the remaining obligations. Use `set C := max K' (max (D.rk : ℝ) 1) with hCdef`. Establish `hz : p.1 ∈ D.U` using `(D.K_subset hp).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : 1 ≤ D.radius p.1` using `MCBounds.one_le_radius D hz`. Use `set r := D.radius p.1 with hr`. Establish `hr0 : 0 < r` using `lt_of_lt_of_le one_pos hr1`. Establish `he : 1 ≤ Real.exp (r / 2)` using `Real.one_le_exp (by linarith)`. Take `⟨hYc, -, hdet, -, -, -⟩` from `hB p hp hps`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hCr : 0 < C₁ * r` using `mul_pos hC₁ hr0`. Establish `hμpos : 0 < (C₁ * r)⁻¹ ^ D.rk * δ` using `mul_pos (pow_pos (inv_pos.mpr hCr) _) hδ`. Establish `hμ : (C₁ * r)⁻¹ ^ D.rk * δ ≤ ((D.f p)ᴴ * (D.Y p.1)⁻¹.map (fun x : ℝ => (x : ℂ)) * D.f p).det.re` using `le_trans (mul_le_mul_of_nonneg_left (hG p hp).1 (pow_nonneg (inv_pos.mpr hCr).le _)) hdet`. Take `⟨hd, hn⟩` from `hK (E := (Fin D.n → ℂ) × (Fin D.m → ℂ)) D.f (fun q => D.Y q.1) p AF (AY * Real.exp (r / 2)) D.c ((C₁ * r)⁻¹ ^ D.rk * δ) D.c_pos hμpos hAF.le (mul_nonneg hAY.le (Real.exp_pos _).le) (hF p hp) (fun j l => hY p hp hps j l) hYc hμ`. Rewrite using `[u_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hd, hn.trans ?_⟩` and prove the remaining obligations. Establish `hb` using `bound_arith S AY C₁ δ r (Real.exp (r / 2)) D.rk hS hAY.le hC₁ hδ hr0 he`. Use `hb.trans ?_` and prove the remaining obligations. Establish `hpow : r ^ D.rk ≤ r ^ C` using `pow_le_rpow_of_le hr1 ((le_max_left _ _).trans (le_max_right _ _))`. Establish `hKC : K' ≤ C` using `le_max_left _ _`.
-
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul hKC hpow (pow_nonneg hr0.le _) (by linarith)) (Real.exp_pos _).le`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ChartGradient.proof (h₁ : LogDetGramDeriv.Statement) (h₂ : ChartFrameDeriv.Statement)
     (h₃ : ChartImagDeriv.Statement) (h₄ : ChartBounds.Statement) : ChartGradient.Statement := by

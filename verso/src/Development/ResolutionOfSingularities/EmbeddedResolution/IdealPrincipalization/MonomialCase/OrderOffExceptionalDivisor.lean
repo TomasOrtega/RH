@@ -20,9 +20,7 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `hx : π.base x' ∉ Z.support`. Introduce `hc`. Apply `hx'` to reduce the goal to its premises. Rewrite using `[Blowup.exceptionalIdeal_eq_comap]`. Conclude with `Scheme.IdealSheafData.mem_support_comap.mpr hc`.
-
-Use `haveI : IsIso (π.stalkMap x') := isIso_stalkMap_of_isBlowupAlongIdealSheaf π Z hπ x' hx`. Conclude with `orderAt_comap_of_isIso_stalkMap π A x'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAt_comap_eq_of_notMem_exceptionalIdeal
     (T : MarkedIdealWithBoundary.{u}) (_hT : T.IsAdmissible) (Z : T.scheme.IdealSheafData)

@@ -13,37 +13,33 @@ noncomputable section
 namespace GlobalTheory.SphTheta
 
 /- English proof (translation)
-Introduce `R X M _ _ _ _ _ σ w γ W h Λ hΛ s hs hfix hspan A hA`. Establish `key : ∀ z y, y - z ∈ Λ → W z s = γ (w • z) (y - z) • W y s`. Introduce `z y hyz`. Establish `h1` using `h.comp z (y - z) s`. Rewrite `h1` using `[hfix _ hyz, add_sub_cancel]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Set `P : X ⧸ Λ → Prop` to `fun q => ∃ a ∈ A, (Submodule.Quotient.mk a : X ⧸ Λ) = q`. Set `rep : X ⧸ Λ → X` to `fun q => if hq : P q then hq.choose else Quotient.out q`. Establish `hrep : ∀ q, (Submodule.Quotient.mk (rep q) : X ⧸ Λ) = q`. Introduce `q`. Distinguish the cases in `hq : P q`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [rep, dif_pos hq]`. Conclude with `hq.choose_spec.2`. Simplify using `only [rep, dif_neg hq]`. Conclude with `Quotient.out_eq q`. Establish `hrepA : ∀ q, P q → rep q ∈ A`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `q hq`. Simplify using `only [rep, dif_pos hq]`. Conclude with `hq.choose_spec.1`. Set `e : X ⧸ Λ → M` to `fun q => W (rep q) s`. Establish `he : ∀ z, W z s = γ (w • z) (rep (Submodule.Quotient.mk z) - z) • e (Submodule.Quotient.mk z)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Conclude with `key z _ ((Submodule.Quotient.eq Λ).1 (hrep _))`. Establish `hli : LinearIndependent ℂ e`. Use `linearIndependent_of_simultaneous_eigen e (fun q (l : Λ) => γ l (rep q)) (fun l : Λ => W l) ?_ ?_ ?_` and prove the remaining obligations. Introduce `q q' hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hm : rep q - rep q' ∈ Λ`. Rewrite using `[hΛ]`. Introduce `a ha`. Apply `h.swap_eq_one` to reduce the goal to its premises. Establish `h1 : γ a (rep q) = γ a (rep q')` using `congrFun hq ⟨a, ha⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_add_neg, h.add_right, h.neg_right, h1, mul_inv_cancel₀ (h.ne_zero _ _)]`. Rewrite using `[← hrep q, ← hrep q']`. Conclude with `(Submodule.Quotient.eq Λ).2 hm`. Introduce `l q show W l (W (rep q) s) = γ l (rep q) • W (rep q) s`. Rewrite using `[h.comm, hfix l l.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `q h0`. Establish `h1` using `h.neg_comp (rep q) s`. Rewrite `h1` using `[show W (rep q) s = 0 from h0, map_zero]`. Conclude with `hs ((smul_eq_zero.1 h1.symm).resolve_left (h.ne_zero _ _))`. Establish `hsp : ⊤ ≤ Submodule.span ℂ (Set.range e)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨z, rfl⟩`. Use `show W z s ∈ _`. Rewrite using `[he z]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `b` to `Module.Basis.mk hli hsp`. Set `ℓ : M →ₗ[ℂ] ℂ` to `b.constr ℂ (fun q => if P q then (1 : ℂ) else 0)`. Establish `hℓ : ∀ q, ℓ (e q) = if P q then (1 : ℂ) else 0`. Introduce `q`. Use `b.constr_basis ℂ (fun q => if P q then (1 : ℂ) else 0) q` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[Module.Basis.mk_apply]`. Then use the resulting hypothesis. Establish `hwA : ∀ a ∈ A, ∀ b ∈ A, γ (w • a) b = 1` using `fun a ha b hb => hA _ (A.smul_mem w ha) b hb`. Use `⟨ℓ, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : P (Submodule.Quotient.mk 0)` using `⟨0, A.zero_mem, rfl⟩`. Establish `h1` using `he 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `h1` using `[h.zero, hwA 0 A.zero_mem _ (A.sub_mem (hrepA _ h0) A.zero_mem), one_smul]`. Rewrite using `[h1, hℓ, if_pos h0]`. Introduce `a ha v`. Establish `hext : ℓ ∘ₗ W a = ℓ`. Use `b.ext fun q => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Module.Basis.mk_apply, LinearMap.comp_apply]`. Use `show ℓ (W a (W (rep q) s)) = ℓ (e q)`. Rewrite using `[h.comp, he (a + rep q), map_smul, map_smul, hℓ, hℓ]`. Distinguish the cases in `hq : P q`. Establish `hA1 : a + rep q ∈ A` using `A.add_mem ha (hrepA q hq)`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hq' : P (Submodule.Quotient.mk (a + rep q))` using `⟨_, hA1, rfl⟩`. Rewrite using `[if_pos hq, if_pos hq', hwA a ha _ (hrepA q hq), hwA _ hA1 _ (A.sub_mem (hrepA _ hq') hA1)]`. Simplify using the standard rewrite rules. Establish `hq' : ¬ P (Submodule.Quotient.mk (a + rep q))`. Introduce and unpack `⟨c, hc, hce⟩`.
-
-Apply `hq` to reduce the goal to its premises. Use `⟨c - a, A.sub_mem hc ha, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.Quotient.mk_sub, hce, ← Submodule.Quotient.mk_sub, add_sub_cancel_left, hrep]`. Rewrite using `[if_neg hq, if_neg hq']`. Simplify using the standard rewrite rules.
-
-Conclude with `LinearMap.congr_fun hext v`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_linearForm_invariant_isotropic_vacuum : ∀ {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}, IsHeis σ w γ W → ∀ Λ : Submodule R X, SelfDual γ Λ → ∀ s : M, s ≠ 0 → Fixes W Λ s → Submodule.span ℂ (Set.range fun x => W x s) = ⊤ → ∀ A : Submodule R X, (∀ a ∈ A, ∀ b ∈ A, γ a b = 1) → ∃ ℓ : M →ₗ[ℂ] ℂ, ℓ s = 1 ∧ ∀ a ∈ A, ∀ v, ℓ (W a v) = ℓ v := by
   intro R X M _ _ _ _ _ σ w γ W h Λ hΛ s hs hfix hspan A hA

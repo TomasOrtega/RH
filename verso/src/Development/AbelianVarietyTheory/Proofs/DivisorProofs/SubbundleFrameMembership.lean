@@ -7,17 +7,15 @@ open GlobalTheory.Twist (resM)
 namespace GlobalTheory.VB
 
 /- English proof (translation)
-Introduce `X F U N c hc S l hS V h a`. Establish `hg : ∀ (y : X) (hy : y ∈ V), F.presheaf.germ V y hy (∑ j, a j • resM F h (c j)) = ∑ j, X.presheaf.germ V y hy (a j) • hc.stalkBasis y (h hy) j`. Introduce `y hy`. Simplify using `only [map_sum, QCoh.germ_smul, Twist.germ_resM, IsFrame.stalkBasis_apply]`. Establish `hset : ∀ (y : X) (hy : y ∈ U), {v | ∃ j : Fin N, (j : ℕ) < l ∧ v = F.presheaf.germ U y hy (c j)} = hc.stalkBasis y hy '' {j : Fin N | (j : ℕ) < l}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `y hy`. Use extensionality with `v`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, IsFrame.stalkBasis_apply]`. Conclude with `⟨fun ⟨j, h1, h2⟩ => ⟨j, h1, h2.symm⟩, fun ⟨j, h1, h2⟩ => ⟨j, h1, h2.symm⟩⟩`. Express the relevant statement in the definitionally equal form `(∀ (y : X) (hy : y ∈ V), F.presheaf.germ V y hy (∑ j, a j • resM F h (c j)) ∈ S y) ↔ _`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H j hj`. Use `TopCat.Presheaf.section_ext X.sheaf V _ _ fun y hy => ?_` and prove the remaining obligations. Establish `H1` using `H y hy`. Rewrite `H1` using `[hg y hy, hS y (h hy), hset y (h hy), Module.Basis.mem_span_image]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : (hc.stalkBasis y (h hy)).repr (∑ j, X.presheaf.germ V y hy (a j) • hc.stalkBasis y (h hy) j) j = 0`. Assume the negation of the conclusion as `hne`. Use `H1 (Finset.mem_coe.2 (Finsupp.mem_support_iff.2 hne))` as an intermediate fact. Conclude with `absurd this (not_lt.2 hj)`. Rewrite `h0` using `[congrFun ((hc.stalkBasis y (h hy)).repr_sum_self _) j]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h0.trans (map_zero (X.presheaf.germ V y hy).hom).symm`. Introduce `H y hy`. Rewrite using `[hg y hy, hS y (h hy), hset y (h hy)]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : (j : ℕ) < l`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hj, rfl⟩)`. Rewrite using `[H j (not_lt.1 hj), map_zero, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_smul_frame_mem_ofStalks_iff : ∀ {X : Scheme.{0}} {F : X.Modules} {U : X.Opens} {N : ℕ} (c : Fin N → Γ(F, U)), VB.IsFrame c → ∀ (S : ∀ x : X, Submodule (X.presheaf.stalk x) (F.presheaf.stalk x :)) (l : ℕ), (∀ (y : X) (hy : y ∈ U), S y = Submodule.span _ {v | ∃ j : Fin N, (j : ℕ) < l ∧ v = F.presheaf.germ U y hy (c j)}) → ∀ {V : X.Opens} (h : V ≤ U) (a : Fin N → Γ(X, V)), (∑ j, a j • resM F h (c j)) ∈ (VB.Sub.ofStalks S).sec V ↔ ∀ j : Fin N, l ≤ (j : ℕ) → a j = 0 := by
   intro X F U N c hc S l hS V h a

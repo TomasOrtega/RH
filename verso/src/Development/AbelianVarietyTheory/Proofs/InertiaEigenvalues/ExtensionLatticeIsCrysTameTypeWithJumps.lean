@@ -23,16 +23,16 @@ abbrev ext (T : QLat LL) (z : ↥(latticeCocycles T.L)) : QLat LL :=
   GlobalTheory.FiniteAdm.extLat (O := ↥(OL LL)) Subtype.val_injective T z
 
 /- English proof (translation)
-Rewrite using `[map_mul, Module.End.mul_apply, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_mul_eq_zero {K M : Type*} [Field K] [AddCommGroup M] [Module K M] (A : Module.End K M)
     (p q : Polynomial K) (x : M) (h : Polynomial.aeval A q x = 0) : Polynomial.aeval A (p * q) x = 0 := by
   rw [map_mul, Module.End.mul_apply, h, map_zero]
 
 /- English proof (translation)
-Use `⟨h.crys, fun g hg w hw x hx => ?_, fun τ j hj => ?_⟩` and prove the remaining obligations. Establish `h1` using `h.type g hg w hw x hx`. Rewrite `h1` using `[Finset.prod_singleton]`. Rewrite using `[← Finset.prod_erase_mul _ _ hS]`. Conclude with `aeval_mul_eq_zero _ _ _ _ h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h.jumps τ j hj`. Simplify using `only [Finset.coe_singleton, Set.mem_singleton_iff] at h2`. Substitute `h2` using the available equality. Conclude with `hU`.
+Simplify using the standard rewrite rules. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isGood_mono (T : QLat LL) {Sig : Finset (ZMod e)} {U : Finset ℤ} (h : IsGood a ϖ Pl T {0} {0})
     (hS : (0 : ZMod e) ∈ Sig) (hU : (0 : ℤ) ∈ U) : IsGood a ϖ Pl T Sig U := by
@@ -61,11 +61,11 @@ def proj (T : QLat LL) (z : ↥(latticeCocycles T.L)) : LatHom (ext T z).L (unit
   T_le x hx := hx.2
 
 /- English proof (translation)
-Introduce `_ l _ a e _ _ ϖ LL _ _ Pl AI hstd Sig U hS hU`. Use `⟨isGood_mono ϖ Pl _ (UnitModel.isGood_of_trivial ϖ Pl _ fun _ _ => rfl) hS hU, fun T hT c hc => ?_⟩` and prove the remaining obligations. Set `z : ↥(latticeCocycles T.L)` to `⟨c, hc.1⟩`. Establish `hz : (z : Gl l → T.V) ∈ finiteCocycles (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T.ρ` using `hc.2`. Establish `hcr` using `GlobalTheory.T.crystalline_of_extension_lattice ϖ Pl T hT.crys z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨ext T z, incl T z, proj T z, ((0 : T.V), (1 : ↥LL.1)), ⟨LinearMap.inl_injective, fun y => ⟨(0, y), rfl⟩, fun y hy => ?_, fun x => ?_, fun y hy => ?_⟩, ⟨zero_mem _, 1, (algebraMap (OL LL) LL.1).map_one⟩, rfl, fun h => ?_, ⟨hcr, GlobalTheory.T.tame_type_of_extension_lattice ϖ Pl T …` and prove the remaining obligations. Take `⟨o, rfl⟩` from `hy`. Conclude with `⟨(0, Algebra.linearMap _ _ o), ⟨zero_mem _, o, rfl⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `x.2 = 0 ↔ ∃ y, ((y, 0) : T.V × ↥LL.1) = x`. Conclude with `⟨fun h0 => ⟨x.1, Prod.ext rfl h0.symm⟩, fun ⟨y, hy⟩ => by rw [← hy]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components.
 
-Conclude with `hy.1`. Express the relevant statement in the definitionally equal form `((T.ρ h 0 + (1 : ↥LL.1) • (z : Gl l → T.V) h, (1 : ↥LL.1)) : T.V × ↥LL.1) - (0, 1) = (c h, 0)`. Simplify using `only [map_zero, zero_add, one_smul]`. Conclude with `Prod.ext (sub_zero _) (sub_self _)`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extLat_isGood : GlobalTheory.Published.FontaineBcris → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (Pl : LocPrime l) (AI : LocAinf l Pl), IsStd Pl AI → ∀ (Sig : Finset (ZMod e)) (U : Finset ℤ), (0 : ZMod e) ∈ Sig → (0 : ℤ) ∈ U → IsGood a ϖ Pl (unitLat (Gl l) : QLat LL) Sig U ∧ ∀ T : QLat LL, IsGood a ϖ Pl T Sig U → ∀ c ∈ latticeFiniteCocycles (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T.L, ∃ (Tp : QLat LL) (f : LatHom T.L Tp.L) (g : LatHom Tp.L (unitLat (Gl l) : QLat LL).L) (v : Tp.V), IsSESLat (Qp := ℚ_[l]) f g ∧ v ∈ Tp.L.T ∧ g.f v = (1 : ↥LL.1) ∧ (∀ h, Tp.ρ h v - v = f.f (c h)) ∧ IsGood a ϖ Pl Tp Sig U := by
   intro _ l _ a e _ _ ϖ LL _ _ Pl AI hstd Sig U hS hU

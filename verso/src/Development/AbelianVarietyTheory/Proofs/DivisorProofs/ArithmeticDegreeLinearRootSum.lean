@@ -37,11 +37,11 @@ open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Establish `h₁` using `norms_pow F Y V L f a l m.toNat h`. Establish `h₂` using `Norms.dual F Y V _ _ _ _ (norms_pow F Y V L f a l (-m).toNat h)`. Establish `hE : ((m.toNat : ℕ) : ℝ) - (((-m).toNat : ℕ) : ℝ) = m` using `by exact_mod_cast Int.toNat_sub_toNat_neg m`. Use `(norms_tens F Y V _ _ _ _ _ _ _ _ h₁ h₂).congr (fun x => ?_) (fun σ y => ?_) (fun v e y => ?_)` and prove the remaining obligations. Break down `m with n | n` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Rewrite using `[zpow_negSucc]`. Establish `h : (Int.negSucc n).toNat = 0` using `rfl`. Establish `h' : (-Int.negSucc n).toNat = n + 1` using `rfl`. Rewrite using `[h, h', pow_zero, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `a σ y * hE`. Take the linear combination `l v e y * hE`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem norms_zpow {V : Cover Y} {L : HermLB V.p} {f : Y.X → Y.Fn} {a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ}
     {l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ} (h : Norms V L f a l) (m : ℤ) :
@@ -60,11 +60,9 @@ theorem norms_zpow {V : Cover Y} {L : HermLB V.p} {f : Y.X → Y.Fn} {a : ∀ σ
   · linear_combination l v e y * hE
 
 /- English proof (translation)
-Establish `key : ∀ s : List ι, Norms V (s.foldr (fun i M => (ArInt.zp (L i) (n i)).tens M) (HermLB.triv V.p)) (fun x => (s.map fun i => f i x ^ n i).prod) (fun σ y => (s.map fun i => (n i : ℝ) * a i σ y).sum) (fun v e y => (s.map fun i => (n i : ℝ) * l i v e y).sum)`. Introduce `s`. Proceed by induction on `s with`. Consider the case `nil => exact (norms_triv_fnB F Y V).1`. Consider the case `cons i s ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [List.foldr_cons, List.map_cons, List.prod_cons, List.sum_cons]`. Conclude with `norms_tens F Y V _ _ _ _ _ _ _ _ (norms_zpow (h i) (n i)) ih`. Use `(key Finset.univ.toList).congr (fun x => ?_) (fun σ y => ?_) (fun v e y => ?_)` and prove the remaining obligations. Conclude with `Finset.prod_map_toList _ _`. Conclude with `Finset.sum_map_toList _ _`.
-
-Conclude with `Finset.sum_map_toList _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norms_prod {V : Cover Y} {ι : Type} [Fintype ι] {L : ι → HermLB V.p} {f : ι → Y.X → Y.Fn}
     {a : ι → ∀ σ : F →+* ℂ, Pts Y σ → ℝ} {l : ι → ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ}
@@ -86,17 +84,17 @@ theorem norms_prod {V : Cover Y} {ι : Type} [Fintype ι] {L : ι → HermLB V.p
   · exact Finset.sum_map_toList _ _
 
 /- English proof (translation)
-Substitute `he` using the available equality. Use `M.ar.isIntegral` as an intermediate fact. Take `⟨N, ρ, -, hN, hρ, -, hρj, -, ⟨U, hU, hU'⟩, -⟩` from `GlobalTheory.ModelDom.exists_normal_dominating F Y M M`. Use `N.ar.isIntegral` as an intermediate fact. Take `⟨g₁, g₂⟩` from `GlobalTheory.Published.generic_of_isIso_restrict ρ U hU`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hΨ₁` using `(hC.arProj _ M.X N.X M.p N.p Y.dim M.ar N.ar ρ hρ g₁ (by rw [g₂]; exact one_ne_zero)).2 ι L Ψ hΨ`. Rewrite `hΨ₁` using `[g₂, Nat.cast_one, one_smul]`. Set `W : Cover Y` to `Cover.ofModel N hN`. Establish `hW : ∀ i, Norms W ((L i).pull ρ hρ) _ _ _` using `fun i => norms_of_induces (Cover.induces_ofModel hN (GlobalTheory.TrueGeo.InducedPull.induced_pull F C Y (A i) M N ρ hρ hρj (L i) m 0 (hI i)))`. Take `⟨V', α, g, β, hα, hβ, hαj, hg, hgη, hβj⟩` from `GlobalTheory.Mean4O.CoverDom.exists_cover_dominating F Y V N`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hη : V'.π (genericPoint V'.G) = genericPoint Y.X`. Take `⟨h, -⟩` from `GlobalTheory.Mean4O.Cover.φ_eq_fnMap V'`. Conclude with `(h.antisymm (genericPoint_specializes _)).eq`. Take `⟨a₁, a₂⟩` from `GlobalTheory.CoverDeg.map_genericPoint_and_deg F Y V V' α hα g hαj hg hgη`. Take `⟨b₁, b₂⟩` from `GlobalTheory.CoverDeg.map_genericPoint_and_deg F Y W V' β hβ V'.π hβj (Category.comp_id _) hη`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b₂` using `[Cover.deg_ofModel, mul_one]`. Establish `ha0 : α.residueDegree (genericPoint V'.X) ≠ 0` using `fun h => V'.deg_pos.ne' (by rw [← a₂, h, zero_mul])`. Establish `hΦ'` using `(hC.arProj _ V.X V'.X V.p V'.p Y.dim V.ar V'.ar α hα a₁ ha0).2 κ G Φ hΦ`. Establish `hΨ'` using `(hC.arProj _ W.X V'.X W.p V'.p Y.dim W.ar V'.ar β hβ b₁ (b₂ ▸ V'.deg_pos.ne')).2 ι _ Ψ hΨ₁`. Establish `n₁` using `norms_prod (fun i => norms_pull F Y W V' β hβ V'.π hβj (Category.comp_id _) hη _ _ _ _ (hW i)) n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n₂` using `norms_prod (fun k => norms_pull F Y V V' α hα g hαj hg hgη _ _ _ _ (hG k)) n'`. Establish `hiso` using `GlobalTheory.T.isometric_of_same_norms F Y V' _ _ _ _ _ (n₁.congr hf ha hl) n₂`. Take `⟨H, hH, e₁⟩` from `hΨ'.1 n`. Establish `key` using `HermLB.IsSelfInter.unique V'.ar ⟨H, (hC.arIso _ V'.X V'.p Y.dim V'.ar).1 _ _ H hiso hH, e₁⟩ (hΦ'.1 n')`. Rewrite `key` using `[LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂ : (β.residueDegree (genericPoint V'.X) : ℝ) = α.residueDegree (genericPoint V'.X) * V.deg`. Conclude with `b₂.trans a₂.symm` after adjusting the coercions. Use `mul_left_cancel₀ (Nat.cast_ne_zero.2 ha0 : (α.residueDegree (genericPoint V'.X) : ℝ) ≠ 0) ?_` and prove the remaining obligations. Establish `key' : (β.residueDegree (genericPoint V'.X) : ℝ) * Ψ (lin (fun i => (n i : ℝ)) ^ (Y.dim + 1)) = (α.residueDegree (genericPoint V'.X) : ℝ) * Φ (lin (fun k => (n' k : ℝ)) ^ (Y.dim + 1))` using `key`. Rewrite using `[← key', e₂, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_mul_eq (hC : GlobalTheory.Published.ArCalc) {C : CxSt F} (V : Cover Y) (M : TrueGeo.Model Y) {e : ℕ} (he : Y.dim = e)
     {ι κ : Type} [Fintype ι] [Fintype κ] (A : ι → Adl C Y) (L : ι → HermLB M.p) (m : ℕ+)
@@ -142,11 +140,9 @@ theorem deg_mul_eq (hC : GlobalTheory.Published.ArCalc) {C : CxSt F} (V : Cover 
   rw [← key', e₂, mul_assoc]
 
 /- English proof (translation)
-Establish `: Mono (spMap (algebraMap (𝓞 F) F))`. Establish `: IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F))`. Use `infer_instance`. Establish `: Mono V.j` using `(MorphismProperty.monomorphisms _).of_isPullback V.pb.flip this`. Take `⟨w, h₁, h₂⟩` from `(hd _).2 y'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw : w = z.1` using `by rw [← cancel_mono V.j, h₁, e₂]`. Establish `hσ : I.ε (ε (σ.comp (algebraMap (𝓞 F) F))) = σ` using `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) (hd _).1`. Establish `key : ∀ (τ : F →+* ℂ) (p : Pts Y τ), τ = σ → p.1 = y.1 → g τ p = g σ y`. Introduce and unpack `τ p rfl h`. Rewrite using `[Subtype.ext h]`.
-
-Conclude with `key _ _ hσ (by rw [← h₂, hw, e₁])`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem read_down {V : Cover Y} {e : ℕ} {M : Man e} {I : ManIs M Y} {ε : (𝓞 F →+* ℂ) → Fin (M.n + 1)}
     {π : ∀ σ, CxPts V.p σ → M.X (ε σ)} (hd : V.IsDown I ε π) (g : ∀ σ : F →+* ℂ, Pts Y σ → ℝ) (σ : F →+* ℂ)
@@ -169,7 +165,7 @@ theorem read_down {V : Cover Y} {e : ℕ} {M : Man e} {I : ManIs M Y} {ε : (�
 end Covers
 
 /- English proof (translation)
-Set `G : MultilinearMap ℝ (fun _ : Fin d => J → ℝ) ℝ` to `Ψ.compMultilinearMap ((MultilinearMap.mkPiAlgebra ℝ (Fin d) (MvPolynomial J ℝ)).compLinearMap fun _ => p) - c • num.compLinearMap fun _ => ℓ`. Establish `hG : ∀ b : J → ℝ, G (fun _ => b) = Ψ (p b ^ d) - c * num fun _ => ℓ b` using `fun b => by simp [G]`. Use `GlobalTheory.Mean4O.CalcModel.diag_zero_of_int G (fun n => by rw [hG, h, sub_self]) a` as an intermediate fact. Rewrite `this` using `[hG, sub_eq_zero]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ext_of_int {J : Type} [Fintype J] {V : Type} [AddCommGroup V] [Module ℝ V] {d : ℕ}
     (Ψ : MvPolynomial J ℝ →ₗ[ℝ] ℝ) (p : (J → ℝ) →ₗ[ℝ] MvPolynomial J ℝ) (num : MultilinearMap ℝ (fun _ : Fin d => V) ℝ)
@@ -194,11 +190,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {D : D7} {O : Setup D}
 
 /- English proof (translation)
-Take `⟨x, P, hc⟩` from `hO`. Establish `hu : under p' = under p`. Rewrite using `[under, e]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg p.1 (Subsingleton.elim (α := PrimeSpectrum ℂ) _ _))`. Use `Finset.sum_congr rfl fun r _ => congrArg _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₁ : p ∈ GlobalTheory.ProjVar.Var.eqnSet σ (divOf (O.Φ.C c) (O.ex r)) (eqn _ (under p))` using `Base.isEqn_eqn _ _`. Take `⟨k₁, -, -⟩` from `GlobalTheory.ShFam.mets_conj _ _ _ _ _ _ _ x' O.Φ c σ σ' (O.ex r) p p' _ e h₁`. Take `⟨-, k₂, -⟩` from `GlobalTheory.ShFam.mets_conj _ _ _ _ _ _ _ x O.Φ c σ σ' (O.ex r) p p' _ e h₁`. Rewrite using `[hc.h0_eq]`. Use `(GlobalTheory.InterpChgCover.lnRatio_eq_h _ _ p' hu).trans (Eq.trans ?_ (GlobalTheory.InterpChgCover.lnRatio_eq_h _ _ p rfl).symm)` and prove the remaining obligations.
-
-Conclude with `congrArg₂ (fun a b => Real.log a / 2 - Real.log b / 2) (k₁ R) k₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chgWith_conj (hO : O.Core) (x' : ToroidalCompactificationData O.s) (c : O.s.Comp) (R : Option ℝ) (u : D.what₂.Tau → Fin O.N → ℝ)
     {σ σ' : D.what₂.LL →+* ℂ} {p : Pts (O.var c) σ} {p' : Pts (O.var c) σ'} (e : p'.1 = spMap (starRingEnd ℂ) ≫ p.1) :
@@ -217,9 +211,9 @@ theorem chgWith_conj (hO : O.Core) (x' : ToroidalCompactificationData O.s) (c : 
   exact congrArg₂ (fun a b => Real.log a / 2 - Real.log b / 2) (k₁ R) k₂
 
 /- English proof (translation)
-Simplify using `only [rootSym] at hb`. Apply the tactic sequence `split_ifs at hb <;>`. Use `Finsupp.support_single_subset hb` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Substitute `this` using the available equality.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_support_rootSym {a : ℕ → Bool} {R : Option ℝ} {τ : D.host.E →+* ℂ} {i : ℕ} {b : Sym D.host.E}
     (hb : b ∈ (rootSym O.S.Dw a R τ i).support) : b.1 = a ∧ b.2.1 = R := by
@@ -231,7 +225,7 @@ theorem mem_support_rootSym {a : ℕ → Bool} {R : Option ℝ} {τ : D.host.E �
     exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Establish `h : (rootSym O.S.Dw a R τ i).support.Nonempty`. Rewrite using `[Finsupp.support_nonempty_iff, rootSym]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[parOf, dif_pos h]`. Conclude with `(mem_support_rootSym h.choose_spec).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parOf_rootSym (a : ℕ → Bool) (R : Option ℝ) (τ : D.host.E →+* ℂ) (i : ℕ) :
     parOf (rootSym O.S.Dw a R τ i) = R := by
@@ -242,7 +236,7 @@ theorem parOf_rootSym (a : ℕ → Bool) (R : Option ℝ) (τ : D.host.E →+* �
   exact (mem_support_rootSym h.choose_spec).2
 
 /- English proof (translation)
-Establish `key : ∀ (R' : Option ℝ) (n : Letter O.S.Dw → ℤ), R' = R → n = O.ex x → lnN (hm R' σ n) (genAt (divOf (O.Φ.C c) n) (under z)) z = lnN (hm R σ (O.ex x)) (genAt (divOf (O.Φ.C c) (O.ex x)) (under z)) z`. Introduce and unpack `_ _ rfl rfl`. Both sides reduce to the same expression. Use `Eq.trans ?_ (key _ _ (parOf_rootSym (O := O) a R (DV.tauEmb D x.1) x.2) (expo_rootSym O.S.Dw a R (DV.tauEmb D x.1) x.2))` and prove the remaining obligations. Conclude with `(congrArg _ (mul_zero _)).trans (sub_zero _)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lnAdl_root (c : O.s.Comp) (hm : Mets (O.Φ.C c) (cxSt D.what₂.LL)) (a : ℕ → Bool) (R : Option ℝ)
     (x : DV.Rt D.what₂.Tau O.N) (σ : D.what₂.LL →+* ℂ) (z : Pts (O.var c) σ) :
@@ -257,7 +251,7 @@ theorem lnAdl_root (c : O.s.Comp) (hm : Mets (O.Φ.C c) (cxSt D.what₂.LL)) (a 
   exact (congrArg _ (mul_zero _)).trans (sub_zero _)
 
 /- English proof (translation)
-Unfold `rootSym`. Apply the tactic sequence `split_ifs <;> rw [Finsupp.sum_single_index (h₀ _), Finsupp.sum_single_index (h₀ _), h]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_rootSym {a : ℕ → Bool} {R R' : Option ℝ} {τ : D.host.E →+* ℂ} {i : ℕ} (g : Sym D.host.E → ℤ → ℝ)
     (h₀ : ∀ b, g b 0 = 0) (h : ∀ st n, g (a, R, st) n = g (a, R', st) n) :
@@ -266,9 +260,9 @@ theorem sum_rootSym {a : ℕ → Bool} {R R' : Option ℝ} {τ : D.host.E →+* 
   split_ifs <;> rw [Finsupp.sum_single_index (h₀ _), Finsupp.sum_single_index (h₀ _), h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v e y`. Unfold `lgOf`. Use `split_ifs with hp`. Simplify using `only [expo_rootSym]`. Use `congr 2`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Both sides reduce to the same expression.
 
-Conclude with `sum_rootSym _ (fun _ => by rw [Int.cast_zero, zero_mul]) fun _ _ => rfl`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem lgOf_root (c : O.s.Comp) (a : ℕ → Bool) (R R' : Option ℝ) (τ : D.host.E →+* ℂ) (i : ℕ) :
     lgOf (O.Φ.C c) (rootSym O.S.Dw a R τ i) = lgOf (O.Φ.C c) (rootSym O.S.Dw a R' τ i) := by
@@ -294,11 +288,11 @@ def psiLin (h : O.Reads A T H) (x' : ToroidalCompactificationData O.s) (R : ℝ)
 variable (T) in
 
 /- English proof (translation)
-Establish `e : u = ∑ x : D.what₂.Tau × Fin O.N, u x.1 x.2 • (Pi.single x.1 (Pi.single x.2 (1 : ℝ)) : _ → Fin O.N → ℝ)`. Use function extensionality and compare the values at `t i`. Rewrite using `[Finset.sum_apply, Finset.sum_apply, Fintype.sum_eq_single (t, i)]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨t', i'⟩ hne`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `ht : t = t'`. Substitute `ht` using the available equality. Establish `hi : i ≠ i'` using `fun h => hne (by rw [h])`. Simplify using `[hi]`. Simplify using `[ht]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [e]`. Use `erw [map_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => LinearMap.map_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem L_eq_sum (B : ℝ) (c : O.Y.Comp) (u : D.what₂.Tau → Fin O.N → ℝ) :
     T.L B c u = ∑ x : D.what₂.Tau × Fin O.N, u x.1 x.2 • T.L B c (Pi.single x.1 (Pi.single x.2 (1 : ℝ))) := by
@@ -317,25 +311,23 @@ theorem L_eq_sum (B : ℝ) (c : O.Y.Comp) (u : D.what₂.Tau → Fin O.N → ℝ
   exact Finset.sum_congr rfl fun x _ => LinearMap.map_smul _ _ _
 
 /- English proof (translation)
-Use `set S := FlagAr.setB O.Y B with hS`. Use `set W := h.mdl S c with hW`. Take `⟨ε, π, hd⟩` from `W.V.exists_isDown (h.man c)`. Establish `hu : ∀ σ y, CInfAt ((T.M c).pull ε π ((2 : ℝ) • psiOf h x' R u c) σ) y` using `GlobalTheory.Mean4O.OnModelCInf.cInfAt_pull _ _ _ _ _ (h.man c) ε π hd _ fun σ j => (hs σ j).const_smul (2 : ℝ)`. Establish `hc : ∀ σ σ', (GlobalTheory.Weight.ofFun ((T.M c).pull ε π ((2 : ℝ) • psiOf h x' R u c) σ)).IsConj (GlobalTheory.Weight.ofFun ((T.M c).pull ε π ((2 : ℝ) • psiOf h x' R u c) σ'))` using `fun σ σ' _ y y' e _ => congrArg ((2 : ℝ) * ·) (chgWith_conj hO x' c _ u (GlobalTheory.InterpChgCover.down_conj hd e))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `har : IsArithVar W.V.p (dimY O.Y)`. Use `W.V.ar` as an intermediate fact. Rewrite `this` using `[O.dim_eq c]`. Then use the resulting hypothesis. Set `G : Option (Option (D.what₂.Tau × Fin O.N)) → HermLB W.V.p` to `fun o => o.elim (fnB ((T.M c).pull ε π ((2 : ℝ) • psiOf h x' R u c)) hu hc) (W.gens S)`. Take `⟨Φ, hΦ⟩` from `((hC.arExists _ _ W.V.p (dimY O.Y) har).2 _ G).1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `n' : Option (Option (D.what₂.Tau × Fin O.N)) → ℤ` to `fun o => o.elim (m : ℕ) fun o' => o'.elim 0 fun x => (m : ℕ) * n x`. Establish `hN` using `h.num B hB c ε π hd _ hs hu hc Φ hΦ fun o => (n' o : ℝ)`. Establish `hG : ∀ o : Option (Option (D.what₂.Tau × Fin O.N)), Norms W.V (G o) (o.elim (fun _ => 1) fun o' => o'.elim (fun y => genAt (O.met.ab c).D y ^ W.k) fun x y => (genAt (O.root0 c S x).D y ^ 1)⁻¹) (o.elim (fun σ y => -chgWith O (metsOf x' O.Φ) c (some R) u σ y) fun o' => o'.elim (fun …`. Introduce and unpack `(_ | _ | x)`. Use `(norms_triv_fnB _ _ W.V).2 _ hu hc _ fun σ z y y' e₁ e₂ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `read_down hd (chgWith O (metsOf x' O.Φ) c (some R) u) σ z y y' e₁ e₂` as an intermediate fact. Express the relevant statement in the definitionally equal form `-_ = -((2 : ℝ) * chgWith O (metsOf x' O.Φ) c (some R) u _ _ / 2)`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `norms_of_induces W.amp_spec`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Norms.dual _ _ _ _ _ _ _ (norms_of_induces (Setup.induces_root0 D O hO.dualRef S c W S le_rfl x))`. Establish `key` using `deg_mul_eq hC W.V M (e := dimY O.Y) (O.dim_eq c) _ L m hI hΨ G _ _ _ hG hΦ (fun x => -n x) n' (fun y => ?_) (fun σ y => ?_) (fun v e y => ?_)`. Establish `e₁ : linRoot u = lin fun x => ((-n x : ℤ) : ℝ)`. Simplify using `only [linRoot, lin, hn, Int.cast_neg, map_neg, neg_mul, Finset.sum_neg_distrib]`. Establish `e₂ : ∑ o, (n' (some o) : ℝ) • T.gen B c W.mult o + (n' none : ℝ) • (T.K B c).ar (psiOf h x' R u c) = ((m : ℕ) : ℝ) • (T.L B c u + (T.K B c).ar (psiOf h x' R u c))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[L_eq_sum T B c u, smul_add, Finset.smul_sum, Fintype.sum_option]`. Simplify using `only [n', Option.elim, Real0.gen, Int.cast_zero, zero_smul, zero_add, Int.cast_mul, Int.cast_natCast, hn, mul_smul]`. Establish `e₃` using `hN.trans (congrArg (fun v => W.V.ν * (T.K B c).top v) e₂)`. Rewrite `e₃` using `[Calc.top, MultilinearMap.map_smul_univ, Finset.prod_const, Finset.card_fin, smul_eq_mul, ← key, Cover.ν]`. Use `mul_left_cancel₀ (Nat.cast_ne_zero.2 W.V.deg_pos.ne' : (W.V.deg : ℝ) ≠ 0) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e₁, e₃, Calc.top]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [n', Fintype.prod_option, Option.elim, one_zpow, zpow_zero, one_mul, pow_one]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `e : (O.root0 c S x).D = (adlOf (O.Φ.C c) (metsOf x' O.Φ c) (rootSym O.S.Dw (ArIn.ind S) (some R) (DV.tauEmb D x.1) x.2)).D` using `congrArg (divOf _) ((expo_rootSym _ _ _ _ _).trans (expo_rootSym _ _ _ _ _).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, ← zpow_natCast, ← zpow_mul, inv_zpow', mul_neg]`. Simplify using `only [n', Fintype.sum_option, Option.elim, chgWith, lnRatio, hn, Setup.root0, Setup.adl0, lnAdl_root]`. Use `push_cast`. Simplify using `only [zero_mul, zero_add, mul_neg, Finset.mul_sum, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [n', Fintype.sum_option, Option.elim]`. Use `push_cast`. Simplify using `only [zero_mul, mul_zero, zero_add]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `e : (O.root0 c S x).lg = (adlOf (O.Φ.C c) (metsOf x' O.Φ c) (rootSym O.S.Dw (ArIn.ind S) (some R) (DV.tauEmb D x.1) x.2)).lg` using `lgOf_root c _ _ _ _ _`.
-
-Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem top_eq_of_int (hC : GlobalTheory.Published.ArCalc) (hO : O.Core) (h : O.Reads A T H) (x' : ToroidalCompactificationData O.s) {B : ℝ} (hB : 2 ≤ B) (R : ℝ)
     (c : O.s.Comp) (M : GlobalTheory.TrueGeo.Model (O.var c)) (L : D.what₂.Tau × Fin O.N → GlobalTheory.HermLB M.p) (m : ℕ+)
@@ -410,9 +402,9 @@ theorem top_eq_of_int (hC : GlobalTheory.Published.ArCalc) (hO : O.Core) (h : O.
     ring
 
 /- English proof (translation)
-Set `cu : (D.what₂.Tau × Fin O.N → ℝ) →ₗ[ℝ] Wt O.Y` to `⟨⟨fun a t i => a (t, i), fun _ _ => rfl⟩, fun _ _ => rfl⟩`. Set `p : (D.what₂.Tau × Fin O.N → ℝ) →ₗ[ℝ] MvPolynomial (D.what₂.Tau × Fin O.N) ℝ` to `-Fintype.linearCombination ℝ (MvPolynomial.X : _ → MvPolynomial (D.what₂.Tau × Fin O.N) ℝ)`. Establish `hp : ∀ a, p a = linRoot fun t i => a (t, i)` using `fun a => by`. Simplify using `only [p, linRoot, LinearMap.neg_apply, Fintype.linearCombination_apply, smul_eq_C_mul]`. Use `ext_of_int Ψ p (T.K B c).num ((T.L B c + (T.K B c).ar ∘ₗ psiLin h x' R c) ∘ₗ cu) (((m : ℕ) : ℝ) ^ (dimY O.Y + 1) * (Module.finrank ℚ D.what₂.LL : ℝ)) (fun n => by` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hp]`. Conclude with `top_eq_of_int hC hO h x' hB R c M L m Ψ hI hΨ n _ (fun _ => rfl) (hs _))`. Use `fun x => u x.1 x.2`. Rewrite `this` using `[hp]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_eq (hC : GlobalTheory.Published.ArCalc) (hO : O.Core) (h : O.Reads A T H) (x' : ToroidalCompactificationData O.s) {B : ℝ} (hB : 2 ≤ B) (R : ℝ)
     (c : O.s.Comp) (M : GlobalTheory.TrueGeo.Model (O.var c)) (L : D.what₂.Tau × Fin O.N → GlobalTheory.HermLB M.p) (m : ℕ+)
@@ -438,15 +430,15 @@ theorem top_eq (hC : GlobalTheory.Published.ArCalc) (hO : O.Core) (h : O.Reads A
   exact this
 
 /- English proof (translation)
-Introduce `hP hH D O hO hf A T H h x' B hB R hR u`. Establish `hR2 : (2 : ℝ) ≤ R`. Use `Real.add_one_le_exp (2 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[ArIn.arDeg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `erw [LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Set `w : D.what₂.Tau × Fin O.N → Sym D.host.E →₀ ℤ` to `fun x => rootSym O.S.Dw (ArIn.ind (FlagAr.setB O.Y B)) (some R) (DV.tauEmb D x.1) x.2`. Establish `hsupp : ∀ x, ∀ a ∈ (w x).support, {q | a.1 q = true}.Finite ∧ a.2.1 = some R` using `fun x a ha => by`. Take `⟨e₁, e₂⟩` from `mem_support_rootSym ha`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, e₂⟩` and prove the remaining obligations. Rewrite using `[e₁]`. Simplify using `[ArIn.ind]`. Take `⟨M, L, m, Ψ, hI, hΨ, hnum⟩` from `(GlobalTheory.ArTopTrue.arTop_true hP.p4 hH.deg GlobalTheory.ShFam.Pad.HTBound.htBound D O.A O.N O.j O.S O.κ O.s x' O.Φ c R hR2).2 (D.what₂.Tau × Fin O.N) w hsupp`. Rewrite `hnum` using `[O.dim_eq c]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hhom : (linRoot u ^ (dimY O.Y + 1)).IsHomogeneous (dimY O.Y + 1)`. Establish `h1 : (linRoot u).IsHomogeneous 1`. Unfold `linRoot`. Use `MvPolynomial.IsHomogeneous.neg ?_` and prove the remaining obligations. Conclude with `MvPolynomial.IsHomogeneous.sum _ _ _ fun i _ => MvPolynomial.isHomogeneous_C_mul_X _ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using h1.pow (dimY O.Y + 1)`. Use `(GlobalTheory.NumLRename.numL_rename_of_agree _ _ w Ψ _ (fun μ hμ => hnum μ hμ) _ hhom).trans ?_` and prove the remaining obligations. Establish `hne : ((m : ℕ) : ℝ) ^ (dimY O.Y + 1) * (Module.finrank ℚ D.what₂.LL : ℝ) ≠ 0` using `mul_ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.2 m.ne_zero)) (Nat.cast_ne_zero.2 Module.finrank_pos.ne')`. Conclude with `(div_eq_iff hne).2 ((top_eq hP.p4 hO h x' hB R c M L m Ψ hI hΨ (fun v => psiOf_smooth hP hH D O hO hf A T H h x' R hR2 v c) u).trans (mul_comm _ _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem arDeg_eq_sum_top : Hypotheses2 → HypothesesH → OnObj fun D O A T H h => ∀ x' : GlobalTheory.ShFam.ToroidalCompactificationData O.s, ∀ B : ℝ, 2 ≤ B →
     ∀ R : ℝ, Real.exp 2 ≤ R → ∀ u : Wt O.Y,
@@ -482,11 +474,11 @@ theorem arDeg_eq_sum_top : Hypotheses2 → HypothesesH → OnObj fun D O A T H h
     (fun v => psiOf_smooth hP hH D O hO hf A T H h x' R hR2 v c) u).trans (mul_comm _ _))
 
 /- English proof (translation)
-Introduce `hP _ D O hO A T H h B hB R hR c u M L m Ψ hI hΨ ε π hd hu hc Φ hΦ`. Take `⟨x, P, hx⟩` from `id hO`. Establish `hR2 : (2 : ℝ) ≤ R`. Use `Real.add_one_le_exp (2 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hs` using `fun v => GlobalTheory.InterpChgCover.smooth_phR hO h c hR2 v`. Rewrite `hI` using `[hx.hm_eq]`. Establish `e₁` using `top_eq hP.p4 hO h x hB R c M L m Ψ hI hΨ (fun v => phR_eq_psiOf h hx hR2 v c ▸ hs v) u`. Establish `e₂` using `h.num B hB c ε π hd _ (hs u) hu hc Φ hΦ fun o : Option (Option (D.what₂.Tau × Fin O.N)) => o.elim 1 fun o' => o'.elim 0 fun x => u x.1 x.2`. Establish `hne : ((m : ℕ) : ℝ) ^ (dimY O.Y + 1) * (Module.finrank ℚ D.what₂.LL : ℝ) ≠ 0` using `mul_ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.2 m.ne_zero)) (Nat.cast_ne_zero.2 Module.finrank_pos.ne')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e₁, e₂, mul_div_cancel_left₀ _ hne, mul_div_cancel_left₀ _ (h.mdl _ c).V.ν_pos.ne', ← phR_eq_psiOf h hx hR2 u c, L_eq_sum T B c u]`. Simplify using `only [Option.elim, one_smul, zero_smul, zero_add, Fintype.sum_option, Real0.gen]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem model_eq_cover : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (B : ℝ), 2 ≤ B → ∀ R : ℝ, Real.exp 2 ≤ R → ∀ (c : O.s.Comp) (u : D.what₂.Tau → Fin O.N → ℝ) (M : GlobalTheory.TrueGeo.Model (O.var c)) (L : D.what₂.Tau × Fin O.N → GlobalTheory.HermLB M.p) (m : ℕ+) (Ψ : MvPolynomial (D.what₂.Tau × Fin O.N) ℝ →ₗ[ℝ] ℝ), (∀ x, (adlOf (O.Φ.C c) (O.met.hm c) (rootSym O.S.Dw (ArIn.ind (GlobalTheory.FlagAr.setB O.Y B)) (some R) (DV.tauEmb D x.1) x.2)).Induced M (L x) m 0) → (haveI := M.ar.isIntegral; IsArFun L (O.var c).dim Ψ) → ∀ (ε : (𝓞 D.what₂.LL →+* ℂ) → Fin ((T.M c).n + 1)) (π : ∀ σ, GlobalTheory.CxPts (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p σ → (T.M c).X (ε σ)), (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.IsDown (h.man c) ε π → ∀ (hu : ∀ σ y, GlobalTheory.CxPts.CInfAt ((T.M c).pull ε π ((2 : ℝ) • (T.F c).phR R u) σ) y) (hc : ∀ σ σ', (GlobalTheory.Weight.ofFun ((T.M c).pull ε π ((2 : ℝ) • (T.F c).phR R u) σ)).IsConj (GlobalTheory.Weight.ofFun ((T.M c).pull ε π ((2 : ℝ) • (T.F c).phR R u) σ'))) (Φ : MvPolynomial (Option (Option (D.what₂.Tau × Fin O.N))) ℝ →ₗ[ℝ] ℝ), IsArFun (fun o => o.elim (fnB ((T.M c).pull ε π ((2 : ℝ) • (T.F c).phR R u)) hu hc) ((h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).gens (GlobalTheory.FlagAr.setB O.Y B))) (dimY O.Y) Φ → Ψ (linRoot u ^ (dimY O.Y + 1)) / (((m : ℕ) : ℝ) ^ (dimY O.Y + 1) * (Module.finrank ℚ D.what₂.LL : ℝ)) = Φ (lin (fun o => o.elim 1 fun o' => o'.elim 0 fun x => u x.1 x.2) ^ (dimY O.Y + 1)) / (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.ν := by
   intro hP _ D O hO A T H h B hB R hR c u M L m Ψ hI hΨ ε π hd hu hc Φ hΦ

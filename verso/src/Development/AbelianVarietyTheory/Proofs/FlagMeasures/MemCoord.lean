@@ -19,7 +19,7 @@ def hq {F E : Type} [Field F] [Field E] [Algebra F E] (sig : E →ₐ[F] E) {n :
 open ValuativeRel NumberField IsDedekindDomain in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.HL.SAN.hq, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.HL.SAN.hq_add_l {F E : Type} [Field F] [Field E] [Algebra F E] (sig : E →ₐ[F] E) {n : ℕ}
     (Hm : Matrix (Fin n) (Fin n) E) (a b y : Fin n → E) :
@@ -29,7 +29,7 @@ theorem _root_.GlobalTheory.HL.SAN.hq_add_l {F E : Type} [Field F] [Field E] [Al
 open ValuativeRel NumberField IsDedekindDomain in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.HL.SAN.hq, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.HL.SAN.hq_smul_l {F E : Type} [Field F] [Field E] [Algebra F E] (sig : E →ₐ[F] E) {n : ℕ}
     (Hm : Matrix (Fin n) (Fin n) E) (c : E) (a y : Fin n → E) :
@@ -47,15 +47,15 @@ def eQ {F E : Type} [Field F] [Field E] [Algebra F E] (sig : E →ₐ[F] E) {n :
 open ValuativeRel NumberField IsDedekindDomain in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[L.O.one_mem]`. Simplify using `[Pi.single_apply, h, L.O.zero_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `zero => intro j`. Conclude with `L.O.zero_mem`. Consider the case `add y z _ _ hy hz => intro j`. Conclude with `add_mem (hy j) (hz j)`. Consider the case `smul c y _ hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `j`. Simplify using `only [Pi.smul_apply, Subring.smul_def, smul_eq_mul]`. Conclude with `mul_mem c.2 (hy j)`. Introduce `hx`. Establish `hsum : x = ∑ j, (⟨x j, hx j⟩ : L.O) • (Pi.single j 1 : Fin N → E)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply, Subring.smul_def]`. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HL.SAN.mem_coord {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {N : ℕ} (x : Fin N → E) :
@@ -83,7 +83,7 @@ theorem _root_.GlobalTheory.HL.SAN.mem_coord {F : Type} [Field F] [ValuativeRel 
     exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `L.O.sum_mem fun i _ => L.O.sum_mem fun j _ => L.O.mul_mem (L.O.mul_mem (hx i) (hI i j)) (GlobalTheory.UnramOrder.cj_mem L (hy j))`.
+A detailed English derivation is pending.
 -/
 theorem hf_int {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : LocE F E) {N : ℕ} {Hm : Matrix (Fin N) (Fin N) E}
@@ -95,7 +95,7 @@ theorem hf_int {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : T
 open ValuativeRel NumberField IsDedekindDomain in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.HL.hf`. Conclude with `sum_mem fun i _ => sum_mem fun j _ => mul_mem (mul_mem (hx i) (hI i j)) (_root_.GlobalTheory.UnramOrder.cj_mem L (hy j))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem hf_mem_O {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {n : ℕ} {H : Matrix (Fin n) (Fin n) E}
@@ -108,7 +108,7 @@ private theorem hf_mem_O {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace
 open ValuativeRel NumberField IsDedekindDomain in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.HL.eich`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `sub_mem (add_mem (hv j) (mul_mem (hf_mem_O L hI v u hv hu) (hx j))) (mul_mem (hf_mem_O L hI v x hv hx) (add_mem (hu j) (mul_mem hs (hx j))))`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem eich_mem_O {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {n : ℕ} {H : Matrix (Fin n) (Fin n) E}
@@ -123,9 +123,9 @@ private theorem eich_mem_O {F : Type} [Field F] [ValuativeRel F] [TopologicalSpa
 open ValuativeRel NumberField IsDedekindDomain in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `X u s e _ _ _ _ x hx j`. Simplify using `using hx j`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ m ih`. Introduce `X u s e hX hu hs he x hx j`. Rewrite using `[List.ofFn_succ, List.prod_cons, LinearEquiv.mul_apply, he 0]`. Conclude with `eich_mem_O L hI (hX 0) (hu 0) (hs 0) (fun j' => ih (fun i => X i.succ) (fun i => u i.succ) (fun i => s i.succ) (fun i => e i.succ) (fun i => hX i.succ) (fun i => hu i.succ) (fun i => hs i.succ) (fun i => he i.succ) x hx j') j`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HL.SAN.int_prod {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {N : ℕ} {Hm : Matrix (Fin N) (Fin N) E}
@@ -148,11 +148,11 @@ theorem _root_.GlobalTheory.HL.SAN.int_prod {F : Type} [Field F] [ValuativeRel F
 open ValuativeRel NumberField IsDedekindDomain in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b _`. Simplify using `only [_root_.GlobalTheory.HL.Places.Ext]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `a b h`. Establish `ih'` using `ih (fun i => a i.succ) (fun i => b i.succ) (fun i => h i.succ)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [_root_.GlobalTheory.HL.Places.Ext] at h ih' ⊢`. Introduce `x`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, LinearEquiv.mul_apply, LinearEquiv.mul_apply, ih', h 0]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.HL.SAN.ext_prod {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} (A : _root_.GlobalTheory.HL.Places F E sig) (p : HeightOneSpectrum (𝓞 F)) {N : ℕ} : ∀ (m : ℕ)
@@ -178,9 +178,9 @@ theorem _root_.GlobalTheory.HL.SAN.ext_prod {F E : Type} [Field F] [NumberField 
 open ValuativeRel NumberField IsDedekindDomain in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Establish `h5` using `(_root_.GlobalTheory.HL.RatExt.rational_extend A N p).2.2.2.2.1 Hm`. Establish `hu` using `h5 v u`. Establish `hx` using `h5 v x`. Unfold `_root_.GlobalTheory.HL.eich`. Rewrite using `[hu, hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `[_root_.GlobalTheory.HL.Places.bc, _root_.GlobalTheory.HL.SAN.eQ, _root_.GlobalTheory.HL.SAN.hq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.HL.SAN.bc_eQ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} (A : _root_.GlobalTheory.HL.Places F E sig) (p : HeightOneSpectrum (𝓞 F)) {N : ℕ}
@@ -198,7 +198,7 @@ theorem _root_.GlobalTheory.HL.SAN.bc_eQ {F E : Type} [Field F] [NumberField F] 
 open ValuativeRel NumberField IsDedekindDomain in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 F)`. Conclude with `⟨⟨M, hM.isPrime, (Ideal.bot_lt_of_maximal M (NumberField.RingOfIntegers.not_isField F)).ne'⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.HL.SAN.exists_place (F : Type) [Field F] [NumberField F] : Nonempty (HeightOneSpectrum (𝓞 F)) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 F)

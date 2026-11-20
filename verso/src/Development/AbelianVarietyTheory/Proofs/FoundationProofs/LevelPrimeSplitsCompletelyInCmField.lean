@@ -17,15 +17,13 @@ section Descent
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {p : ℕ}
 
 /- English proof (translation)
-Take `⟨P, hP, hPl⟩` from `(inferInstance : Nonempty (v.primesOver (𝓞 E)))`. Establish `hgP : (p : 𝓞 E) ∈ P`. Simplify using `using (Ideal.mem_of_liesOver P v (p : 𝓞 F)).1 hpv`. Take `⟨hP2, hP3⟩` from `GlobalTheory.LocSplit.split_prime hp h P hgP`. Use `⟨fun h2 => hP2 ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 E)) h2` as an intermediate fact. Rewrite `this` using `[Ideal.map_pow, map_natCast]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 hPl.over.le) 2 this`. Use `haveI : Fact p.Prime := ⟨hp⟩ haveI : Nontrivial (𝓞 F ⧸ v) := Ideal.Quotient.nontrivial_iff.2 hv.ne_top`. Establish `h0 : ((p : ℕ) : 𝓞 F ⧸ v) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (Ideal.Quotient.mk v), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hpv`. Use `haveI : CharP (𝓞 F ⧸ v) p := (CharP.charP_iff_prime_eq_zero hp).2 h0`. Establish `hb : Function.Bijective (ZMod.castHom (dvd_refl p) (𝓞 F ⧸ v))`. Use `⟨RingHom.injective _, fun x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨m, hm⟩` from `hP3 (algebraMap (𝓞 F) (𝓞 E) x)`. Use `⟨(m : ZMod p), ?_⟩` and prove the remaining obligations. Rewrite using `[map_intCast, ← map_intCast (Ideal.Quotient.mk v), eq_comm, Ideal.Quotient.eq, Ideal.mem_of_liesOver P v]`. Simplify using `using hm`.
-
-Rewrite using `[← Nat.card_eq_of_bijective _ hb, Nat.card_zmod]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unram_card_of_split (hp : p.Prime)
     (h : (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 E)).ncard = Module.finrank ℚ E)
@@ -56,17 +54,15 @@ theorem unram_card_of_split (hp : p.Prime)
     rw [← Nat.card_eq_of_bijective _ hb, Nat.card_zmod]
 
 /- English proof (translation)
-Establish `hp' : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Use `haveI : (Ideal.span {(p : ℤ)}).IsPrime := (Ideal.span_singleton_prime hp'.ne_zero).mpr hp'`. Establish `hne : (Ideal.span {(p : ℤ)}) ≠ ⊥` using `by simpa using hp.ne_zero`. Use `haveI hmax : (Ideal.span {(p : ℤ)}).IsMaximal := Ideal.IsPrime.isMaximal inferInstance hne`. Establish `hs` using `Ideal.sum_ramification_inertia (𝓞 F) ℚ F (p := Ideal.span {(p : ℤ)}) hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hs, ← IsDedekindDomain.coe_primesOverFinset hne, Set.ncard_coe_finset, Finset.card_eq_sum_ones]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite `hq` using `[IsDedekindDomain.mem_primesOverFinset_iff hne]`. Use `haveI := hq.1`. Use `haveI := hq.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpq : (p : 𝓞 F) ∈ q`. Simplify using `using (Ideal.mem_of_liesOver q (Ideal.span {(p : ℤ)}) (p : ℤ)).1 (Ideal.mem_span_singleton_self _)`. Take `⟨h2, hc⟩` from `unram_card_of_split (E := E) hp h q hpq`. Establish `he : (Ideal.span {(p : ℤ)}).ramificationIdx' q = 1`. Assume the negation of the conclusion as `hne1`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h2 ?_` and prove the remaining obligations. Use `(Ideal.ramificationIdx'_ne_one_iff (by` as an intermediate fact. Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem]`. Simplify using `using hpq)).1 hne1`. Rewrite `this` using `[Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `hf : (Ideal.span {(p : ℤ)}).inertiaDeg' q = 1`. Establish `h1` using `Ideal.absNorm_eq_pow_inertiaDeg' q hp`. Rewrite `h1` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, hc]`. Conclude with `(Nat.pow_right_injective hp.two_le (by simpa using h1)).symm`.
-
-Rewrite using `[he, hf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncard_primesOver_of_split (hp : p.Prime)
     (h : (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 E)).ncard = Module.finrank ℚ E) :
@@ -101,7 +97,7 @@ theorem ncard_primesOver_of_split (hp : p.Prime)
 end Descent
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Establish `h1` using `Module.finrank_mul_finrank ℚ D.host.F D.host.E`. Rewrite `h1` using `[D.sp.cm.deg2, finrank_host D]`. Use linear arithmetic over natural numbers and integers.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_F (D : D7) : Module.finrank ℚ D.host.F = D.R.f := by
   letI := D.host.cmStar
@@ -110,9 +106,9 @@ theorem finrank_F (D : D7) : Module.finrank ℚ D.host.F = D.R.f := by
   omega
 
 /- English proof (translation)
-Take `⟨hp, h⟩` from `h`. Rewrite `h` using `[GlobalTheory.HostSplit.ncard_placesOver _ hp]`. Use `⟨?_, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `ncard_primesOver_of_split (F := D.host.F) hp h`. Rewrite `h1` using `[← GlobalTheory.HostSplit.ncard_placesOver _ hp, finrank_F]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h1, ← Nat.card_coe_set_eq]`. Both sides reduce to the same expression. Use `haveI := v.isPrime`. Conclude with `(unram_card_of_split hp h v.asIdeal hv).2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem splitsF_of_splitsCompletely (D : D7) {p : ℕ} (h : SplitsCompletely D.host.E p) : SplitsF D p := by
   obtain ⟨hp, h⟩ := h
@@ -126,23 +122,21 @@ theorem splitsF_of_splitsCompletely (D : D7) {p : ℕ} (h : SplitsCompletely D.h
     exact (unram_card_of_split hp h v.asIdeal hv).2
 
 /- English proof (translation)
-Take `⟨π, -, hn, hm⟩` from `D.T_norm u`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 hm`. Establish `hq8 : D.host.q % 8 = 3` using `D.host.hyp.2.2.1`. Establish `hd16 : D.host.d % 16 = 7` using `D.host.hyp.2.2.2.1`. Establish `hn0 : 1 ≤ D.host.QS` using `D.host.QS_pos`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M, hM⟩ : ∃ M : ℕ, M = D.host.QS * D.host.q * D.host.d` from `⟨_, rfl⟩`. Establish `hM1 : 1 < M`. Establish `h1 : 1 * 3 * 7 ≤ D.host.QS * D.host.q * D.host.d` using `Nat.mul_le_mul (Nat.mul_le_mul hn0 (by omega)) (by omega)`. Use linear arithmetic over natural numbers and integers. Rewrite `ha`, the goal using `[← hM]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨G, hG⟩ : ∃ G : ℕ, G = (D.host.g 0 * D.host.g 1) ^ 2` from `⟨_, rfl⟩`. Rewrite `ha` using `[← hG]`. Use `set y : D.host.E := (a : D.host.E) * G with hy`. Establish `hyi : IsIntegral ℤ y` using `(RingOfIntegers.isIntegral_coe a).mul (isIntegral_natCast G)`. Establish `hπ : (π : D.host.E) = 1 + M * y`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun z : 𝓞 D.host.E => (z : D.host.E)) ha` as an intermediate fact. Simplify using `only [map_mul, map_sub, map_one, map_natCast] at this`. Rewrite using `[hy]`. Move the coercions through the operations in `at this ⊢`. Take the linear combination `-this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hci : IsIntegral ℤ (D.conjF y)` using `hyi.map (D.conjF.toRingHom.toIntAlgHom)`. Rewrite `hn` using `[← D.conjF_eq, hπ, map_add, map_mul, map_one, map_natCast]`. Use `set z : D.host.E := y + D.conjF y + M * (y * D.conjF y) with hz`. Establish `hzi : IsIntegral ℤ z` using `(hyi.add hci).add ((isIntegral_natCast (R := ℤ) (B := D.host.E) M).mul (hyi.mul hci))`. Establish `hM0 : (M : ℚ) ≠ 0` using `by exact_mod_cast (by omega : M ≠ 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : z = algebraMap ℚ D.host.E ((((D.mem u).A.T : ℚ) - 1) / M)`. Establish `hM0' : (M : D.host.E) ≠ 0` using `by exact_mod_cast (by omega : M ≠ 0)`. Rewrite using `[map_div₀, map_sub, map_one, map_natCast, map_natCast, eq_div_iff hM0', hz]`. Take the linear combination `hn`. Rewrite `hzi` using `[h4, isIntegral_algebraMap_iff (algebraMap ℚ D.host.E).injective]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn'⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hzi`. Establish `h5 : (((D.mem u).A.T : ℤ) : ℚ) = ((1 + M * n : ℤ) : ℚ)`. Establish `: (n : ℚ) = (((D.mem u).A.T : ℚ) - 1) / M` using `by simpa using hn'`. Use `push_cast`. Rewrite using `[this]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h6 : ((D.mem u).A.T : ℤ) = 1 + M * n` using `by exact_mod_cast h5`. Establish `h7 : (((D.mem u).A.T % M : ℕ) : ℤ) = 1`. Rewrite using `[Int.natCast_mod, h6, Int.add_mul_emod_self_left]`.
-
-Conclude with `Int.emod_eq_of_lt (by norm_num) (by exact_mod_cast hM1)`. Conclude with `h7` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelPrime_mod (D : D7) (u : D.what₂.Word) :
     (D.mem u).A.T % (D.host.QS * D.host.q * D.host.d) = 1 := by
@@ -192,21 +186,21 @@ theorem levelPrime_mod (D : D7) (u : D.what₂.Word) :
   exact_mod_cast h7
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(D.mem u).A.T_prime, (GlobalTheory.HostSplit.split_of_one_mod D.R D.host _ (D.mem u).A.T_prime (levelPrime_mod D u)).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem levelPrime_splitsCompletely_in_cmField (D : D7) (u : D.what₂.Word) : SplitsCompletely D.host.E (D.mem u).A.T :=
   ⟨(D.mem u).A.T_prime,
     (GlobalTheory.HostSplit.split_of_one_mod D.R D.host _ (D.mem u).A.T_prime (levelPrime_mod D u)).1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => splitsCompletely_g D i, splitsF_of_splitsCompletely D⟩`.
+Supply the required witnesses or components.
 -/
 theorem split_g_iff (D : D7) (i : Fin 2) :
     SplitsF D (D.host.g i) ↔ SplitsCompletely D.host.E (D.host.g i) :=
   ⟨fun _ => splitsCompletely_g D i, splitsF_of_splitsCompletely D⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => levelPrime_splitsCompletely_in_cmField D u, splitsF_of_splitsCompletely D⟩`.
+Supply the required witnesses or components.
 -/
 theorem split_T_iff (D : D7) (u : D.what₂.Word) :
     SplitsF D (D.mem u).A.T ↔ SplitsCompletely D.host.E (D.mem u).A.T :=
@@ -215,24 +209,24 @@ theorem split_T_iff (D : D7) (u : D.what₂.Word) :
 def BothBig (D : D7) : Prop := ∀ i : Fin 2, 2 * D.R.f * D.R.k + 1 < D.host.g i
 
 /- English proof (translation)
-The claim follows from `exists_congr fun _ => by omega`.
+A detailed English derivation is pending.
 -/
 theorem gBig_iff (D : D7) : GBig D ↔ ∃ i : Fin 2, 2 * D.R.f * D.R.k + 1 < D.host.g i :=
   exists_congr fun _ => by omega
 
 /- English proof (translation)
-The claim follows from `(gBig_iff D).2 ⟨0, h 0⟩`.
+A detailed English derivation is pending.
 -/
 theorem gBig_of_bothBig {D : D7} (h : BothBig D) : GBig D := (gBig_iff D).2 ⟨0, h 0⟩
 
 /- English proof (translation)
-Introduce `i`. Establish `hc` using `D.ntypes.g_cond i`. Establish `hg` using `(D.host.g_prime i).two_le`. Establish `h3 : D.host.QS * D.host.q * D.host.d ≤ D.host.g i`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hc` using `[Nat.mod_eq_of_lt (by omega)]`. Use linear arithmetic over natural numbers and integers. Take `⟨hq, hd⟩` from `D.host.qd_big`. Establish `hn : 1 ≤ D.host.QS` using `D.host.QS_pos`. Establish `hf : D.R.f ≤ D.R.k` using `D.R.f_le_k`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `D.R.two_le_m`. Establish `ht` using `D.R.rank_add_five_le`. Establish `hr : D.R.k ≤ D.R.r` using `by unfold Ranks.r; omega`. Establish `h4 : D.R.f * D.R.k ≤ D.R.t * D.R.r` using `Nat.mul_le_mul (by omega) hr`. Establish `h5 : D.host.q ≤ D.host.QS * D.host.q * D.host.d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite `hq`, the goal using `[mul_assoc]`. Use linear arithmetic over natural numbers and integers.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem bothBig_all (D : D7) : BothBig D := by
   intro i
@@ -256,13 +250,13 @@ theorem bothBig_all (D : D7) : BothBig D := by
   omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => bothBig_all D, gBig_of_bothBig⟩`.
+Supply the required witnesses or components.
 -/
 theorem gBig_iff_bothBig (D : D7) : GBig D ↔ BothBig D :=
   ⟨fun _ => bothBig_all D, gBig_of_bothBig⟩
 
 /- English proof (translation)
-Unfold `ClassCount`. Rewrite using `[card_colClassSet]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem classCount_iff (D : D7) (L : LevelData D) (u : D.what₂.Word) :
     ClassCount D L u ↔
@@ -277,7 +271,7 @@ def ColumnClassNumberAt (D : D7) (L : LevelData D) : Prop :=
     SplitsCompletely D.host.E (D.mem u).A.T → ClassCount D L u
 
 /- English proof (translation)
-Unfold `ClassNumberFormula₂`. Simplify using `only [gBig_iff, split_g_iff, split_T_iff, classCount_iff]`. Conclude with `⟨fun h u h1 h2 h3 => h h1 h2 u h3, fun h h1 h2 u h3 => h u h1 h2 h3⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem first_iff (D : D7) (L : LevelData D) :
     ClassNumberFormula₂ D L ↔ ∀ u : D.what₂.Word, (∃ i : Fin 2, 2 * D.R.f * D.R.k + 1 < D.host.g i) →
@@ -288,14 +282,14 @@ theorem first_iff (D : D7) (L : LevelData D) :
   exact ⟨fun h u h1 h2 h3 => h h1 h2 u h3, fun h h1 h2 u h3 => h u h1 h2 h3⟩
 
 /- English proof (translation)
-Rewrite using `[first_iff]`. Conclude with `⟨fun h hb u _ h2 h3 => h u hb h2 h3, fun h u hb h2 h3 => h hb u ⟨0, hb 0⟩ h2 h3⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem at_iff (D : D7) (L : LevelData D) : ColumnClassNumberAt D L ↔ (BothBig D → ClassNumberFormula₂ D L) := by
   rw [first_iff]
   exact ⟨fun h hb u _ h2 h3 => h u hb h2 h3, fun h u hb h2 h3 => h hb u ⟨0, hb 0⟩ h2 h3⟩
 
 /- English proof (translation)
-Rewrite using `[at_iff]`. Conclude with `⟨fun h _ => h, fun h hg => h (hs hg) hg⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem iff_of_size {D : D7} (hs : GBig D → BothBig D) (L : LevelData D) :
     ClassNumberFormula₂ D L ↔ ColumnClassNumberAt D L := by
@@ -303,13 +297,13 @@ theorem iff_of_size {D : D7} (hs : GBig D → BothBig D) (L : LevelData D) :
   exact ⟨fun h _ => h, fun h hg => h (hs hg) hg⟩
 
 /- English proof (translation)
-The claim follows from `iff_of_size (gBig_iff_bothBig D).1 L`.
+A detailed English derivation is pending.
 -/
 theorem full_at (D : D7) (L : LevelData D) : ClassNumberFormula₂ D L ↔ ColumnClassNumberAt D L :=
   iff_of_size (gBig_iff_bothBig D).1 L
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun D => forall_congr' fun L => (full_at D L).symm`.
+A detailed English derivation is pending.
 -/
 theorem full : ColumnClassNumber ↔ ∀ (D : D7) (L : LevelData D), ClassNumberFormula₂ D L :=
   forall_congr' fun D => forall_congr' fun L => (full_at D L).symm

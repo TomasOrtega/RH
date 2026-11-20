@@ -8,9 +8,9 @@ noncomputable section
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Take `⟨J, _, _, D, s, t, hs, hj⟩` from `hg`. Use `⟨J, inferInstance, inferInstance, D, (Functor.const J).map (CommRingCat.ofHom φ) ≫ s, t, hs, fun j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show RingHom.Etale ((s.app j).hom.comp φ)`. Conclude with `RingHom.Etale.stableUnderComposition _ _ hφ (hj j).1`. Establish `h2` using `(hj j).2 show CommRingCat.ofHom φ ≫ s.app j ≫ t.app j = CommRingCat.ofHom (g.comp φ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h2]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isIndEtale_comp_etale {A B O : Type} [CommRing A] [CommRing B] [CommRing O] (φ : A →+* B)
     (hφ : φ.Etale) (g : B →+* O) (hg : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale g) :
@@ -26,11 +26,9 @@ theorem isIndEtale_comp_etale {A B O : Type} [CommRing A] [CommRing B] [CommRing
     rfl
 
 /- English proof (translation)
-Introduce `A _ O _ s hs`. Take `⟨hSH, A', _, _, j, hj, hind, rfl⟩` from `hs`. Use `set φ := Spec.preimage j with hφdef`. Establish `hjφ : Spec.map φ = j` using `Spec.map_preimage j`. Establish `hφ : φ.hom.Etale`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[← hjφ]`. Conclude with `(HasRingHomProperty.Spec_iff (P := @Etale)).mp hj`. Use `letI : Algebra A O := ((algebraMap A' O).comp φ.hom).toAlgebra`. Use `⟨this, hSH, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isIndEtale_comp_etale φ.hom hφ (algebraMap A' O) hind`.
-
-Rewrite using `[← hjφ, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isStalk_affine : ∀ (A : Type) [CommRing A] (O : Type) [CommRing O]
     (s : Spec (CommRingCat.of O) ⟶ Spec (CommRingCat.of A)), IsStalk O s →

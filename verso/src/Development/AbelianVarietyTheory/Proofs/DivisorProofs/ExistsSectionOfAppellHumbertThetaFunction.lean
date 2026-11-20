@@ -25,7 +25,7 @@ namespace GlobalTheory.ThetaGAGA
 variable {A : Over (Sp ℂ)} [GrpObj A] {M : LB A.left} {g : ℕ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.top_le_preimage_mono _ (GlobalTheory.Cartier.lbPow_U M k j).le hz`.
+A detailed English derivation is pending.
 -/
 theorem top_le_of_lbPow (u : HolUnif A M g) (k : ℕ) (j : (lbPow M k).ι) {z : Fin g → ℂ}
     (hz : ⊤ ≤ (u.ex z).left ⁻¹ᵁ (lbPow M k).U j) : ⊤ ≤ (u.ex z).left ⁻¹ᵁ M.U (j PUnit.unit) :=
@@ -47,11 +47,11 @@ def powFrame (u : HolUnif A M g) (k : ℕ) : HolUnif A (lbPow M k) g where
     ((GlobalTheory.top_le_preimage_inf _ _ _).1 hz).1 ((GlobalTheory.top_le_preimage_inf _ _ _).1 hz).2
 
 /- English proof (translation)
-Introduce `g A _ hA M u Hm χ hM hAH k θ hθ`. Use `hA.comm` as an intermediate fact. Establish `hp : IsProjOver A.hom` using `(GlobalTheory.ProjSpace.isProjBy_iff_isProjOver A.hom).1 (GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme ℂ A hA)`. Take `⟨s, hs⟩` from `GlobalTheory.HolUnifSec.exists_isFn (powFrame u k) hA hp (GlobalTheory.isLB_lbPow hM k) hθ.1 (by`. Introduce `l hl j z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz' : ⊤ ≤ (u.ex z).left ⁻¹ᵁ M.U (j PUnit.unit)` using `top_le_of_lbPow u k j hz`. Establish `h1` using `hθ.2 ⟨l, hl⟩ z`. Establish `h2` using `hAH.2.2.2 ⟨l, hl⟩ _ z hz'`. Express the relevant statement in the definitionally equal form `θ (z + l) * u.fr (j PUnit.unit) (z + l) ^ k = θ z * u.fr (j PUnit.unit) z ^ k`. Simplify using `only [hermForm] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `θ (z + l) = _ at h1`. Express the relevant statement in the definitionally equal form `u.fr (j PUnit.unit) z = _ * u.fr (j PUnit.unit) (z + l) at h2`. Rewrite using `[h1, h2, mul_pow]`. Use the proof step `ring)`. Conclude with `⟨s, hs⟩`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isFnPow : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (M : LB A.left) (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ),

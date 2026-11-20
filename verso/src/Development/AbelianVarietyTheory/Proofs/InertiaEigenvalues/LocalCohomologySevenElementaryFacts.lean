@@ -10,15 +10,13 @@ open Formalism.NG Formalism.RepresentationBoundsCohomology.LOC Formalism.Represe
 namespace GlobalTheory.LocElem
 
 /- English proof (translation)
-Use `⟨inferInstance, inferInstance, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isAdic_iff]`. Establish `key : ∀ n : ℕ, ((IsLocalRing.maximalIdeal ℤ_[p] ^ n : Ideal ℤ_[p]) : Set ℤ_[p]) = Metric.closedBall 0 ((p : ℝ) ^ (-(n : ℤ)))`. Introduce `n`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[PadicInt.maximalIdeal_eq_span_p, Ideal.span_singleton_pow, SetLike.mem_coe, ← PadicInt.norm_le_pow_iff_mem_span_pow, mem_closedBall_zero_iff]`. Use `⟨fun n => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `IsUltrametricDist.isOpen_closedBall _ (zpow_pos (by exact_mod_cast (Fact.out : p.Prime).pos) _).ne'`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε (inv_lt_one_of_one_lt₀ (show (1:ℝ) < p by exact_mod_cast (Fact.out : p.Prime).one_lt))`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Introduce `x hx`. Apply `hball` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[mem_closedBall_zero_iff]`. Rewrite using `[mem_ball_zero_iff]`. Use `lt_of_le_of_lt hx ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `hn`.
-
-Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.subset_span rfl`. Conclude with `(Fact.out : p.Prime).ne_zero` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicInt_coeff {p : ℕ} [Fact p.Prime] : PadicCoeff p ℤ_[p] := by
   refine ⟨inferInstance, inferInstance, inferInstance, ?_, ?_, ?_⟩
@@ -47,19 +45,17 @@ theorem padicInt_coeff {p : ℕ} [Fact p.Prime] : PadicCoeff p ℤ_[p] := by
   · exact_mod_cast (Fact.out : p.Prime).ne_zero
 
 /- English proof (translation)
-Use `hO.compact` as an intermediate fact. Use `hO.ring` as an intermediate fact. Use `hM.t2` as an intermediate fact. Use `hM.csmul` as an intermediate fact. Take `⟨s, hs⟩` from `hM.fg.fg_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `f : (s → O) →ₗ[O] M` to `Fintype.linearCombination O (fun i : s => (i : M))`. Establish `hfc : Continuous f` using `by show Continuous fun v : s → O => ∑ i, v i • (i : M)`. Conclude with `continuous_finset_sum _ fun i _ => (continuous_apply i).smul continuous_const`. Establish `hfs : Function.Surjective f`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, Subtype.range_coe_subtype, Finset.setOf_mem, hs]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : Topology.IsQuotientMap f` using `(hfc.isClosedMap).isQuotientMap hfc hfs`. Establish `haO : IsOpen ((Ideal.span {a} : Ideal O) : Set O)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Establish `e : (Ideal.span {(u : O) * ϖ ^ n} : Ideal O) = IsLocalRing.maximalIdeal O ^ n`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_singleton_mul_left_unit u.isUnit, ← Ideal.span_singleton_pow, hϖ.maximalIdeal_eq]`. Rewrite using `[e]`. Conclude with `(isAdic_iff.1 hO.adic).1 n`. Establish `hopen : IsOpen ((((mulSub a M).comap f).toAddSubgroup : AddSubgroup (s → O)) : Set (s → O))`. Use `AddSubgroup.isOpen_mono (H₁ := (Submodule.pi Set.univ fun _ => (Ideal.span {a} : Ideal O)).toAddSubgroup) ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `: ∀ i, ∃ w : O, a * w = v i` using `fun i => by`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 (hv i (Set.mem_univ i))`. Conclude with `⟨w, by rw [mul_comm]; exact hw⟩`. Use `choose w hw using this`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨f w, ?_⟩` and prove the remaining obligations. Use `show a • f w = f v`. Rewrite using `[← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
-
-Conclude with `hw i`. Use `show IsOpen (Set.univ.pi fun _ => ((Ideal.span {a} : Ideal O) : Set O))`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => haO`. Rewrite using `[← hq.isOpen_preimage]`. Conclude with `hopen`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulSub_open {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]
     {M : Type} [AddCommGroup M] [Module O M] [TopologicalSpace M] [IsTopologicalAddGroup M]
@@ -108,7 +104,7 @@ theorem mulSub_open {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteVa
   exact hopen
 
 /- English proof (translation)
-Establish `hq : IsOpenQuotientMap (Prod.map (id : G → G) T.mkQ)` using `IsOpenQuotientMap.id.prodMap (Submodule.isOpenQuotientMap_mkQ T)`. Unfold `ReciprocityTheory.Gal.ContAction`. Rewrite using `[hq.isQuotientMap.continuous_iff]`. Conclude with `continuous_quot_mk.comp h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contAction_quotient {O G V : Type} [CommRing O] [Group G] [TopologicalSpace G] [AddCommGroup V] [Module O V]
     [TopologicalSpace V] [IsTopologicalAddGroup V] {ρ : Representation O G V} (h : ReciprocityTheory.Gal.ContAction ρ)
@@ -120,9 +116,9 @@ theorem contAction_quotient {O G V : Type} [CommRing O] [Group G] [TopologicalSp
   exact continuous_quot_mk.comp h
 
 /- English proof (translation)
-Use `show (Submodule.Quotient.mk (cupCocycleZ1Z1 ρM ρ₂ ρP b hb hbe h₂ x t) : H2 ρP) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨fun g => -(b (x.1 g) (t.1 g)) - c g, ((hb.comp (x.2.1.prodMk t.2.1)).neg).sub hc, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Take `⟨g, h⟩` from `q`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `hcz g h`. Simplify using `only [d1_apply, Submodule.coe_subtype, cupCocycleZ1Z1_apply, map_sub, map_neg, ← hbe, x.2.2 g h, t.2.2 g h, map_add, LinearMap.add_apply]`. Establish `e' : ρP g (c h) = b (ρM g (x.1 h)) (t.1 g) + c (g * h) - c g` using `by rw [e]; abel`. Rewrite using `[e']`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cup_eq_zero_of_coboundary {O : Type} [CommRing O] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     {M T₂ P : Type} [AddCommGroup M] [Module O M] [TopologicalSpace M] [IsTopologicalAddGroup M]
@@ -148,7 +144,7 @@ theorem cup_eq_zero_of_coboundary {O : Type} [CommRing O] {Γ : Type} [Group Γ]
   abel
 
 /- English proof (translation)
-Use `show D.inv (cupProductH1H1 D.ρA D.ρTl' (twist D.ε (KO O)) (pairKO D.bT D.T) (pairKO_cont D.bT D.contbT D.T) D.pairKO_equiv (sub_contAction D.contT' _ D.stT') (Submodule.Quotient.mk x) (Submodule.Quotient.mk t)) = 0`. Establish `h0` using `cup_eq_zero_of_coboundary D.ρA D.ρTl' (twist D.ε (KO O)) (pairKO D.bT D.T) (pairKO_cont D.bT D.contbT D.T) D.pairKO_equiv (sub_contAction D.contT' _ D.stT') x t c hc (fun g k => hcz g k)`. Conclude with `(congrArg D.inv h0).trans (map_zero _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pr_eq_zero_of_coboundary {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -168,9 +164,9 @@ theorem pr_eq_zero_of_coboundary {O : Type} [CommRing O] [IsDomain O] [IsDiscret
   exact (congrArg D.inv h0).trans (map_zero _)
 
 /- English proof (translation)
-Take `⟨Cy, i1, i2, ι, π, hι, hex, c0, hc0⟩` from `h`. Use `⟨Cy, i1, i2, e.toLinearMap ∘ₗ ι, π ∘ₗ e.symm.toLinearMap, e.injective.comp hι, ?_, c0, hc0⟩` and prove the remaining obligations. Introduce `y`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, Set.mem_range]`. Rewrite using `[hex (e.symm y)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩; exact ⟨z, by rw [hz, LinearEquiv.apply_symm_apply]⟩`. Introduce and unpack `⟨z, hz⟩; exact ⟨z, by rw [← hz, LinearEquiv.symm_apply_apply]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 -/
 theorem quotShape_of_equiv {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X : Type} [AddCommGroup X]
     [Module O X] (Hc F Hc' F' : Submodule O X) (d : ℕ)
@@ -186,21 +182,21 @@ theorem quotShape_of_equiv {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValua
   · rintro ⟨z, hz⟩; exact ⟨z, by rw [← hz, LinearEquiv.symm_apply_apply]⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EmbInj.mem_OL_iff LL x`.
+A detailed English derivation is pending.
 -/
 theorem mem_integers_iff_norm_le_one {l : ℕ} [Fact l.Prime] (LL : Formalism.BasicNotions.Loc.FinExt l) (x : ↥LL.1) :
     x ∈ Formalism.BasicNotions.Loc.OL LL ↔ ‖(x : Formalism.BasicNotions.Loc.Om l)‖ ≤ 1 :=
   GlobalTheory.EmbInj.mem_OL_iff LL x
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.LitGood.litGoodO l LL).2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_integers {l : ℕ} [Fact l.Prime] (LL : Formalism.BasicNotions.Loc.FinExt l) :
     IsOpen (Set.range (algebraMap ↥(Formalism.BasicNotions.Loc.OL LL) ↥LL.1)) :=
   (GlobalTheory.LitGood.litGoodO l LL).2.2.2.2
 
 /- English proof (translation)
-The claim follows from `padicInt_coeff mulSub := @fun _ _ _ _ _ _ _ _ _ _ _ hM hO _ ha => mulSub_open hM hO ha contQuot := fun h T hT => contAction_quotient h T hT swapCob := fun D x t c hc hcz => pr_eq_zero_of_coboundary D x t c hc hcz shapeEquiv := fun Hc F Hc' F' d e h => quotShape_of_equiv Hc F Hc' …`.
+A detailed English derivation is pending.
 -/
 theorem elem : ReciprocityTheory.ChartRestriction.T2.Elem where
   padicInt := padicInt_coeff

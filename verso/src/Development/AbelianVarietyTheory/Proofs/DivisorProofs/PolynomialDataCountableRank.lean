@@ -19,7 +19,7 @@ namespace GlobalTheory.ThK.PolRank
 open Module
 
 /- English proof (translation)
-Set `b` to `Basis.piTensorProduct (fun _ : InfinitePlace F => (MvPolynomial.basisMonomials _ ℂ : Basis _ ℂ (Formalism.BasicNotions.TH.Pol P Q R S)))`. Establish `hb` using `b.mk_eq_rank`. Rewrite `hb` using `[Cardinal.lift_id, Cardinal.lift_id]`. Rewrite using `[← hb]`. Conclude with `Cardinal.mk_le_aleph0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_tens_le (F : Type) [Field F] [NumberField F] (P Q R S : ℕ) :
     Module.rank ℂ (GlobalTheory.RealLift.Tens F P Q R S) ≤ Cardinal.aleph0 := by
@@ -32,7 +32,7 @@ theorem rank_tens_le (F : Type) [Field F] [NumberField F] (P Q R S : ℕ) :
   exact Cardinal.mk_le_aleph0
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, piInf, inclR, compInf, infEmb_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_map_piInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {m : ℕ}
     (J : Matrix (Fin m) (Fin m) E) {w : InfinitePlace F} (τ : EmbOver E w) :
@@ -41,11 +41,11 @@ theorem incM_map_piInf {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   simp [incM, piInf, inclR, compInf, infEmb_tmul]
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' h`. Establish `hX` using `fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists n r s _ (X.θ w) (h.herm.sig w) (h.herm.cartan w)`. Establish `hW` using `fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists d r' s' _ (W.θ w) (h.skew.sig w) (h.skew.cartan w)`. Use `choose A hA hAθ using hX`. Use `choose C hC hCθ using hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfr : GlobalTheory.RealLift.Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C`. Use `⟨one_mul _, fun w => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[incM_map_piInf, one_smul]`. Conclude with `hA w`. Rewrite using `[incM_map_piInf]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hC w`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives GlobalTheory.T.archHeisenbergDerivatives_exist F E σ (Fin n) (Fin d) (Fin n × Fin d) r s r' s' B.ψ B.emb (incM F X.J) (incM F W.J) M.co 1 Complex.I A C h.base.cm h.base.std hfr`. Establish `hr` using `GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws GlobalTheory.T.archActionReadings_compatible GlobalTheory.T.archHeisenbergDerivatives_exist (GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives GlobalTheory.T.archHeisenbergDerivatives_exist) F E σ n …`. Rewrite using `[← hr]`. Conclude with `(rank_range_le Φ).trans (rank_tens_le F r s r' s')`.
+A detailed English derivation is pending.
 -/
 theorem rank_pol_le : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → Module.rank ℂ (M.Pol B.ψ B.emb) ≤ Cardinal.aleph0 := by

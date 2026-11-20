@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `F _ k r A B`. Establish `h1 : (A * B) = (fun a => ∑ j, (A a j • B j : Fin k → F))`. Use extensionality with `a c`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`. Establish `h2 : (A * B).det = (Matrix.detRowAlternating (R` using `F) (n := Fin k)).toMultilinearMap (fun a => ∑ j, (A a j • B j : Fin k → F)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Both sides reduce to the same expression. Rewrite using `[h2, MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

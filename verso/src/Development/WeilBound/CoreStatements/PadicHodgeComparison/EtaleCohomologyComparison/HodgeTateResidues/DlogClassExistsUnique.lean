@@ -25,20 +25,20 @@ open GlobalTheory.CatH (face toLast)
 namespace DlogClassConstruction
 
 /- English proof (translation)
-Use `dpow_mem_pdP δ 1 hx` as an intermediate fact. Rewrite `this` using `[δ.dpow_one hx]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem1 {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {x : B} (hx : x ∈ J) : x ∈ pdP δ 1 := by
   have := dpow_mem_pdP δ 1 hx
   rwa [δ.dpow_one hx] at this
 
 /- English proof (translation)
-The claim follows from `dividedPowerFiltration_mul δ 1 1 (mem1 δ hx) (mem1 δ hy)`.
+A detailed English derivation is pending.
 -/
 theorem mul2 {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {x y : B} (hx : x ∈ J) (hy : y ∈ J) : x * y ∈ pdP δ 2 :=
   dividedPowerFiltration_mul δ 1 1 (mem1 δ hx) (mem1 δ hy)
 
 /- English proof (translation)
-Use `sub_mem (mul2 δ ha hb) (mul2 δ hc hd)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-1 : B) * h`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem four {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {a b c d : B} (ha : a - 1 ∈ J) (hb : b - 1 ∈ J)
     (hc : c - 1 ∈ J) (hd : d - 1 ∈ J) (h : a * b = c * d) : (c - 1) - (b - 1) + (d - 1) - (a - 1) ∈ pdP δ 2 := by
@@ -47,9 +47,9 @@ theorem four {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {a b c
   linear_combination (-1 : B) * h
 
 /- English proof (translation)
-Establish `hra : r * a - 1 ∈ J`. Use `add_mem (J.mul_mem_left r ha) hr` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `sub_mem (sub_mem (mul2 δ hr' hc) (mul2 δ hr ha)) (mul2 δ hra hb)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-1 : B) * h`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem five {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {r' r a b c : B} (hr' : r' - 1 ∈ J) (hr : r - 1 ∈ J)
     (ha : a - 1 ∈ J) (hb : b - 1 ∈ J) (hc : c - 1 ∈ J) (h : r' * c = r * a * b) :
@@ -62,7 +62,7 @@ theorem five {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {r' r 
   linear_combination (-1 : B) * h
 
 /- English proof (translation)
-Unfold `plogK`. Rewrite using `[Finset.sum_range_succ']`. Simplify using `only [pow_zero, Nat.factorial_zero, Nat.cast_one, one_mul, zero_add, δ.dpow_one hx]`. Rewrite using `[sub_add_cancel_right]`. Conclude with `neg_mem (Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (dividedPowerFiltration_anti δ (by omega) (dpow_mem_pdP δ _ hx)))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plog_sub {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (s : ℕ) {x : B} (hx : x ∈ J) :
     x - plogK δ (s + 1) x ∈ pdP δ 2 := by
@@ -73,9 +73,9 @@ theorem plog_sub {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (s
   exact neg_mem (Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (dividedPowerFiltration_anti δ (by omega) (dpow_mem_pdP δ _ hx)))
 
 /- English proof (translation)
-Take `⟨z, hz, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ j).1 x`. Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun σ => Subtype.ext ?_))` and prove the remaining obligations. Establish `key : ∀ (T : Thick L) (h') (w : T.B ⧸ T.pdPow r'.toNat), Ideal.quotientMap (T.pdPow r'.toNat) (RingHom.id T.B) h' w = w`. Introduce `T h' w`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Conclude with `key _ _ _`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem incl_res {b : Base} {L : b.Fun} {Q Q' : ObjectProperty (Thick L)} (h : Q' ≤ Q) (r r' : ℤ) (j : ℕ)
     (x : CH.H (sq (thFil L r) (thFil L r')) j) :
@@ -101,17 +101,15 @@ def fz (Λ : CLiftK g D) : CH.Cn (sq (Fg g ((1 : ℕ) : ℤ)) (Fg g (((1 : ℕ) 
   fun σ => sqMk _ _ (zz Λ σ) (mem1 (g.obj (σ.obj (Fin.last 2))).δ (r_sub_one_mem Λ σ))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `m0` using `GlobalTheory.CompanionTheory.ConeZcoc.mem_J Λ (face 0 τ) (toLast 0 τ)`. Establish `m1` using `GlobalTheory.CompanionTheory.ConeZcoc.mem_J Λ (face 1 τ) (toLast 1 τ)`. Establish `m2` using `GlobalTheory.CompanionTheory.ConeZcoc.mem_J Λ (face 2 τ) (toLast 2 τ)`. Establish `m3` using `GlobalTheory.CompanionTheory.ConeZcoc.mem_J Λ (face 3 τ) (toLast 3 τ)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : Units.map (g.map (toLast 0 τ)).φ.toMonoidHom (Λ.r (face 0 τ)) = Λ.r (face 0 τ)` using `GlobalTheory.CompanionTheory.ConeZcoc.map_id_unit (g := g) (c := τ.obj (Fin.last 3)) (toLast 0 τ) (τ.map_id _) _`. Establish `e1 : Units.map (g.map (toLast 1 τ)).φ.toMonoidHom (Λ.r (face 1 τ)) = Λ.r (face 1 τ)` using `GlobalTheory.CompanionTheory.ConeZcoc.map_id_unit (g := g) (c := τ.obj (Fin.last 3)) (toLast 1 τ) (τ.map_id _) _`. Establish `e2 : Units.map (g.map (toLast 2 τ)).φ.toMonoidHom (Λ.r (face 2 τ)) = Λ.r (face 2 τ)` using `GlobalTheory.CompanionTheory.ConeZcoc.map_id_unit (g := g) (c := τ.obj (Fin.last 3)) (toLast 2 τ) (τ.map_id _) _`. Establish `key : Units.map (g.map (toLast 3 τ)).φ.toMonoidHom (Λ.r (face 3 τ)) * Units.map (g.map (toLast 1 τ)).φ.toMonoidHom (Λ.r (face 1 τ)) = Units.map (g.map (toLast 0 τ)).φ.toMonoidHom (Λ.r (face 0 τ)) * Units.map (g.map (toLast 2 τ)).φ.toMonoidHom (Λ.r (face 2 τ))`. Rewrite using `[e0, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.CompanionTheory.ConeZcoc.rr_coboundary Λ (τ.map' 0 1) (τ.map' 1 2) (τ.map' 2 3) (τ.map' 0 2) (τ.map' 1 3) (τ.map' 0 3) (τ.map'_comp 0 1 2) (τ.map'_comp 1 2 3)`. Establish `hval` using `congrArg (Units.val) key`. Rewrite `hval` using `[Units.val_mul, Units.val_mul]`. Establish `p` using `four (g.obj (τ.obj (Fin.last 3))).δ m3 m1 m0 m2 hval`. Establish `hi : ∀ i : Fin 4, ((sq (Fg g ((1 : ℕ) : ℤ)) (Fg g (((1 : ℕ) : ℤ) + 1))).map (toLast i τ)).hom (fz Λ (face i τ)) = sqMk (Fg g ((1 : ℕ) : ℤ)) (Fg g (((1 : ℕ) : ℤ) + 1)) (T` using `τ.obj (Fin.last 3)) (((Units.map (g.map (toLast i τ)).φ.toMonoidHom (Λ.r (face i τ)) : (g.obj (τ.obj (Fin.last 3))).Bˣ) : (g.obj (τ.obj (Fin.last 3))).B) - 1 : (g.obj (τ.obj (Fin.last 3))).B) (mem1 (g.obj (τ.obj (Fin.last 3))).δ (GlobalTheory.CompanionTheory.ConeZcoc.mem_J Λ (fac …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(g.map (toLast i τ)).φ (_ - 1) = _`. Rewrite using `[map_sub, map_one]`. Use the proof step `rfl))`. Express the relevant statement in the definitionally equal form `∑ i : Fin 4, (-1 : ℤ) ^ (i : ℕ) • ((sq (Fg g ((1 : ℕ) : ℤ)) (Fg g (((1 : ℕ) : ℤ) + 1))).map (toLast i τ)).hom (fz Λ (face i τ)) = 0`. Rewrite using `[Fin.sum_univ_four, hi, hi, hi, hi]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `fin : ∀ {M : Type} [AddCommGroup M] (a b c d : M), a - b + c - d = 0 → (-1 : ℤ) ^ ((0 : Fin 4) : ℕ) • a + (-1 : ℤ) ^ ((1 : Fin 4) : ℕ) • b + (-1 : ℤ) ^ ((2 : Fin 4) : ℕ) • c + (-1 : ℤ) ^ ((3 : Fin 4) : ℕ) • d = 0`. Introduce `M _ a b c d h`. Express the relevant statement in the definitionally equal form `(-1 : ℤ) ^ 0 • a + (-1 : ℤ) ^ 1 • b + (-1 : ℤ) ^ 2 • c + (-1 : ℤ) ^ 3 • d = 0`. Rewrite using `[← h]`. Evaluate the numerical expressions.
-
-Normalize the expressions using the abelian group laws. Conclude with `fin _ _ _ _ (Subtype.ext (Ideal.Quotient.eq_zero_iff_mem.2 p))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem fz_coc (Λ : CLiftK g D) : CH.d _ 2 (fz Λ) = 0 := by
   funext τ
@@ -159,16 +157,16 @@ theorem fz_coc (Λ : CLiftK g D) : CH.d _ 2 (fz Λ) = 0 := by
 def cz (Λ : CLiftK g D) : CH.H (sq (Fg g ((1 : ℕ) : ℤ)) (Fg g (((1 : ℕ) : ℤ) + 1))) 2 := (CH.cx _).cls (fz Λ) (fz_coc Λ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fz Λ, fz_coc Λ, rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem rep_cz (Λ : CLiftK g D) : Rep (Fg g ((1 : ℕ) : ℤ)) (Fg g (((1 : ℕ) : ℤ) + 1)) (zz Λ) (cz Λ) :=
   ⟨fz Λ, fz_coc Λ, rfl, fun _ => rfl⟩
 
 open GlobalTheory.CompanionTheory.ConeZcls in
 /- English proof (translation)
-Establish `e0` using `(g.map ψ).hle (eps_sub Λ Λ' v hv φ)`. Rewrite `e0` using `[Ideal.mem_comap, map_sub, map_one]`. Establish `key` using `rr_eq Λ Λ' v φ ψ χ hχ`. Establish `key'` using `congrArg Units.val (mul_inv_eq_iff_eq_mul.1 key.symm).symm`. Rewrite `key'` using `[Units.val_mul, Units.val_mul, Units.val_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sub, map_one]`. Conclude with `five (g.obj c₂).δ (GlobalTheory.CompanionTheory.ConeUnit.r_sub_mem Λ' φ ψ χ hχ) (GlobalTheory.CompanionTheory.ConeUnit.r_sub_mem Λ φ ψ χ hχ) e0 (eps_sub Λ Λ' v hv ψ) (eps_sub Λ Λ' v hv χ) key'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_rel (Λ Λ' : CLiftK g D) (v : ∀ c, (g.obj c).Bˣ)
     (hv : ∀ c, Ideal.Quotient.mk (g.obj c).J ((v c : (g.obj c).Bˣ) : (g.obj c).B) =
@@ -186,13 +184,13 @@ theorem eps_rel (Λ Λ' : CLiftK g D) (v : ∀ c, (g.obj c).Bˣ)
 
 open GlobalTheory.CompanionTheory.ConeZcls in
 /- English proof (translation)
-Establish `hl : ∀ c, ∃ v : (g.obj c).Bˣ, Ideal.Quotient.mk (g.obj c).J ((v : (g.obj c).Bˣ) : (g.obj c).B) = ub (Λ.p c) (Λ'.p c) ((Λ.hp c).trans (Λ'.hp c).symm)` using `fun c => exists_unit_lift (g.obj c) _ (ub_isUnit _ _ _)`. Use `choose v hv using hl`. Set `F` to `sq (Fg g ((1 : ℕ) : ℤ)) (Fg g (((1 : ℕ) : ℤ) + 1))`. Set `ε : ∀ {c c' : C}, (c ⟶ c') → F.obj c'` to `fun {c c'} φ => sqMk (Fg g ((1 : ℕ) : ℤ)) (Fg g (((1 : ℕ) : ℤ) + 1)) (T := c') (((eps Λ Λ' v φ : (g.obj c').Bˣ) : (g.obj c').B) - 1 : (g.obj c').B) (mem1 (g.obj c').δ (eps_sub Λ Λ' v hv φ))`. Set `e : CH.Cn F 1` to `fun τ => ε (τ.map' 0 1)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `((CrystallineSemistableComparison.P.cls_surj (CH.cx F) 2).2.2.1 _ _ _ _).2 ⟨e, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `σ`. Establish `h0 : (F.map (toLast 0 σ)).hom (e (face 0 σ)) = ε (σ.map' 1 2)` using `map_self F σ (Fin.last 2) _ _`. Establish `h1 : (F.map (toLast 1 σ)).hom (e (face 1 σ)) = ε (σ.map' 0 2)` using `map_self F σ (Fin.last 2) _ _`. Establish `h2 : (F.map (toLast 2 σ)).hom (e (face 2 σ)) = (F.map (σ.map' 1 2)).hom (ε (σ.map' 0 1))` using `rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p` using `eps_rel Λ Λ' v hv (σ.map' 0 1) (σ.map' 1 2) (σ.map' 0 2) (composable_arrows_map_zero_two σ)`. Express the relevant statement in the definitionally equal form `∑ i : Fin 3, (-1 : ℤ) ^ (i : ℕ) • (F.map (toLast i σ)).hom (e (face i σ)) = fz Λ' σ - fz Λ σ`. Rewrite using `[Fin.sum_univ_three, h0, h1, h2]`. Establish `fin : ∀ {M : Type} [AddCommGroup M] (a b c d : M), a - b + c - d = 0 → (-1 : ℤ) ^ ((0 : Fin 3) : ℕ) • a + (-1 : ℤ) ^ ((1 : Fin 3) : ℕ) • b + (-1 : ℤ) ^ ((2 : Fin 3) : ℕ) • c = d`. Introduce `M _ a b c d h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(-1 : ℤ) ^ 0 • a + (-1 : ℤ) ^ 1 • b + (-1 : ℤ) ^ 2 • c = d`. Rewrite using `[← sub_eq_zero, ← h]`. Evaluate the numerical expressions. Normalize the expressions using the abelian group laws. Conclude with `fin _ _ _ _ (Subtype.ext (Ideal.Quotient.eq_zero_iff_mem.2 p))`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cz_eq (Λ Λ' : CLiftK g D) : cz Λ' = cz Λ := by
   have hl : ∀ c, ∃ v : (g.obj c).Bˣ, Ideal.Quotient.mk (g.obj c).J ((v : (g.obj c).Bˣ) : (g.obj c).B) =
@@ -223,13 +221,13 @@ theorem cz_eq (Λ Λ' : CLiftK g D) : cz Λ' = cz Λ := by
 
 omit [CharZero K] in
 /- English proof (translation)
-Establish `hp : ∀ c : C, ∃ p : Spec (CommRingCat.of ((g.obj c).B ⧸ (g.obj c).J)) ⟶ D.Y, p ≫ D.f = pt (g.obj c)`. Introduce `c`. Take `⟨V, ⟨σ, hσ⟩, hV⟩` from `h c`. Establish `hr : Set.range (pt (g.obj c)) ⊆ Set.range V.ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hV (show x ∈ (⊤ : Scheme.Opens _) from trivial)`. Use `⟨IsOpenImmersion.lift V.ι (pt (g.obj c)) hr ≫ σ, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hσ, IsOpenImmersion.lift_fac]`. Use `choose p hp using hp`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : ∀ {c c' : C} (φ : c ⟶ c'), ∃ w : (g.obj c').Bˣ, ∀ (h : (Spec.map (CommRingCat.ofHom (Ideal.quotientMap (g.obj c').J (g.map φ).φ (g.map φ).hle)) ≫ p c) ≫ D.f = p c' ≫ D.f), Ideal.Quotient.mk (g.obj c').J w = (Scheme.ΓSpecIso (CommRingCat.of ((g.obj c').B ⧸ (g.obj c').J))).hom …`. Introduce `c c' φ`. Distinguish the cases in `h : (Spec.map (CommRingCat.ofHom (Ideal.quotientMap (g.obj c').J (g.map φ).φ (g.map φ).hle)) ≫ p c) ≫ D.f = p c' ≫ D.f`. Take `⟨w, hw⟩` from `GlobalTheory.CompanionTheory.ConeZcls.exists_unit_lift (g.obj c') _ (GlobalTheory.CompanionTheory.ConeZcls.ub_isUnit _ _ h)`. Conclude with `⟨w, fun _ => hw⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨1, fun h' => absurd h' h⟩`. Use `choose w hw using @hw`. Conclude with `⟨{ p := p, hp := hp, w := fun φ => w φ, hw := fun φ h => hw φ h }⟩`.
+A detailed English derivation is pending.
 -/
 theorem lift_ex (g : C ⥤ Thick (smFun X q)) (D : E.LineData X) (h : ∀ c, ∃ V ∈ 𝒱D D, InU V (g.obj c)) : Nonempty (CLiftK g D) := by
   have hp : ∀ c : C, ∃ p : Spec (CommRingCat.of ((g.obj c).B ⧸ (g.obj c).J)) ⟶ D.Y, p ≫ D.f = pt (g.obj c) := by
@@ -261,7 +259,7 @@ abbrev Q0 (𝒱 : Set X.Opens) : ObjectProperty (Thick (smFun X q)) :=
 
 omit [CharZero K] in
 /- English proof (translation)
-Establish `b` using `GlobalTheory.CompanionTheory.KIso.chain_bij q s 𝒱 h (a : ℤ) ((a : ℤ) + 1) (by omega) j`. Establish `e : GlobalTheory.CompanionTheory.KIso.chain q s 𝒱 (a : ℤ) ((a : ℤ) + 1) j = fun x => (CH.Mor.restrict (grT (smFun X q) a) (KS q s 𝒱).ι).pull j x`. Use function extensionality and compare the values at `fun x => (congrArg _ (incl_res (GlobalTheory.CompanionTheory.KIso.top_ge q s) _ _ j x)).trans (incl_res (GlobalTheory.CompanionTheory.KIso.st_le q s 𝒱) _ _ j x)`. Rewrite `b` using `[e]`. Conclude with `b`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_ks (s a j : ℕ) (hs : a < s) (𝒱 : Set X.Opens) (h : sSup 𝒱 = ⊤) :
     Function.Bijective ((CH.Mor.restrict (grT (smFun X q) a) (KS q s 𝒱).ι).pull j) := by
@@ -274,9 +272,9 @@ theorem res_ks (s a j : ℕ) (hs : a < s) (𝒱 : Set X.Opens) (h : sSup 𝒱 = 
 
 omit [CharZero K] in
 /- English proof (translation)
-Establish `hle : KS q (a + 1) 𝒱 ≤ Q0 q 𝒱` using `fun _ h => ⟨trivial, h.2⟩`. Establish `b1` using `Pb.refl (γ := dividedPowersBot K) (q := q) (κ := Ideal.Quotient.mk ⊥) ⊤ 1 (a + 1) (Or.inl ⟨rfl, rfl⟩) 𝒱 hle (a : ℤ) ((a : ℤ) + 1) (by push_cast; omega) j`. Establish `b` using `res_ks q (a + 1) a j (by omega) 𝒱 h`. Use `⟨fun x y hxy => b.1 ?_, fun y => ?_⟩` and prove the remaining obligations. Conclude with `(incl_res hle _ _ j x).symm.trans ((congrArg _ hxy).trans (incl_res hle _ _ j y))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `b.2 (((incl hle).sq (incl_fil hle (a : ℤ)) (incl_fil hle ((a : ℤ) + 1))).pull j y)`. Conclude with `⟨x, b1.1 ((incl_res hle _ _ j x).trans hx)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem restriction_open_cover_bijective (a j : ℕ) (𝒱 : Set X.Opens) (h : sSup 𝒱 = ⊤) :
     Function.Bijective ((CH.Mor.restrict (grT (smFun X q) a) (Q0 q 𝒱).ι).pull j) := by
@@ -290,11 +288,11 @@ theorem restriction_open_cover_bijective (a j : ℕ) (𝒱 : Set X.Opens) (h : s
     exact ⟨x, b1.1 ((incl_res hle _ _ j x).trans hx)⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `⟨fun s => ?_, _, _, rfl, fun s => rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ∈ (g.obj _).pdPow 0`. Rewrite using `[Thick.pdPow_zero]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Consider the case `succ k ih`. Establish `ok : MulOk (Fg g (k : ℤ)) (Fg g ((k : ℤ) + 1)) (Fg g ((1 : ℕ) : ℤ)) (Fg g (((1 : ℕ) : ℤ) + 1)) (Fg g ((k + 1 : ℕ) : ℤ)) (Fg g (((k + 1 : ℕ) : ℤ) + 1))` using `⟨fun T _ _ => (grOk (smFun X q) rfl).aa (g.obj T), fun T _ _ => (grOk (smFun X q) rfl).ab (g.obj T), fun T _ _ => (grOk (smFun X q) rfl).ba (g.obj T)⟩`. Establish `h` using `rep_cup ok (show 2 * k + 2 = 2 * (k + 1) by omega) _ z ih.1 hz ih.2 hc`. Establish `key` using `CrystallineSemistableComparison.P.cup_pull (grOk (smFun X q) (rfl : k + 1 = k + 1)).pair ok.pair g (fun _ => LinearMap.id) (fun _ => LinearMap.id) (fun _ => LinearMap.id) (fun _ _ => rfl) (fun _ _ => rfl) (fun _ _ => rfl) (fun _ _ _ => rfl) (show 2 * k + 2 = 2 * (k + 1) by omega) …`.
+Check the elementary cases of the proposition. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨h.1, key ▸ h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem pow_rep (g : C ⥤ Thick (smFun X q)) (c : Hdg q 1 2) (z : CH.Cn (CH.modF (g ⋙ thA (smFun X q))) 2)
     (hz : ∀ s, z s ∈ (Fg g ((1 : ℕ) : ℤ)).S _)
@@ -324,11 +322,11 @@ end DlogClassConstruction
 open DlogClassConstruction
 
 /- English proof (translation)
-Introduce `K _ _ X q D hD`. Establish `hb` using `restriction_open_cover_bijective q 1 2 (𝒱D D) hD`. Establish `hU : ∀ c : (Q0 q (𝒱D D)).FullSubcategory, ∃ V ∈ 𝒱D D, InU V ((Q0 q (𝒱D D)).ι.obj c)` using `fun c => c.property.2`. Take `⟨Λ₀⟩` from `lift_ex (Q0 q (𝒱D D)).ι D hU`. Take `⟨x, hx⟩` from `hb.2 (cz Λ₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨x, fun C _ g hg Λ => ?_, fun y hy => hb.1 ((rep_uniq (hy _ _ hU Λ₀) (rep_cz Λ₀)).trans hx.symm)⟩` and prove the remaining obligations. Set `h : C ⥤ (Q0 q (𝒱D D)).FullSubcategory` to `(Q0 q (𝒱D D)).lift g fun c => ⟨trivial, hg c⟩`. Establish `e1 : (CH.Mor.restrict (grT (smFun X q) 1) g).pull 2 x = (CH.Mor.restrict ((Q0 q (𝒱D D)).ι ⋙ grT (smFun X q) 1) h).pull 2 ((CH.Mor.restrict (grT (smFun X q) 1) (Q0 q (𝒱D D)).ι).pull 2 x)` using `(CrystallineSemistableComparison.P.pull_comp (CH.Mor.restrict (grT (smFun X q) 1) (Q0 q (𝒱D D)).ι) (CH.Mor.restrict ((Q0 q (𝒱D D)).ι ⋙ grT (smFun X q) 1) h) 2 x).1`. Establish `e2 : (CH.Mor.restrict (grT (smFun X q) 1) g).pull 2 x = cz Λ` using `e1.trans ((congrArg _ hx).trans (cz_eq Λ (Λ₀.precomp h)))`. Rewrite using `[e2]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `rep_cz Λ`.
+A detailed English derivation is pending.
 -/
 theorem dlog_class_exists_unique : DlogClassExistsUnique := by
   intro K _ _ X q D hD
@@ -348,17 +346,15 @@ theorem dlog_class_exists_unique : DlogClassExistsUnique := by
   exact rep_cz Λ
 
 /- English proof (translation)
-Introduce `K _ _ X q _ d _ D hD c hc h0`. Take `⟨c', hc'⟩` from `isFirstChernDeRham_exists q d D hD`. Use `powK_ne_zero q d D hD c' hc' ?_` and prove the remaining obligations. Take `⟨N, i, hi, hip, hO⟩` from `hD`. Establish `hP : IsProper q` using `GlobalTheory.CommonModel.isProper_of_isProjOver ⟨N, i, hi, hip⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U, hUd⟩` from `(cov_ex q).2 d inferInstance`. Establish `hcov : sSup (𝒱D D) = ⊤` using `sSup_𝒱D D N i hO`. Establish `hk` using `(k_iso_pf q U (d + 1) (fun α => by rw [hUd]; omega) (𝒱D D) hcov (2 * d)).1`. Set `g` to `(KS q (d + 1) (𝒱D D)).ι`. Take `⟨Λ⟩` from `lift_exists q D (d + 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, hzf, hzc⟩` from `hc' (d + 1) _ g (fun c => c.property.1.1) (fun c => by`. Take `⟨-, V, ⟨σ, hσ⟩, hV⟩` from `c.property`. Conclude with `⟨V, σ, hσ, hV⟩) Λ`. Establish `r1` using `hc _ g (fun c => c.property.2) Λ`. Establish `r2 : Rep (Fg g ((1 : ℕ) : ℤ)) (Fg g (((1 : ℕ) : ℤ) + 1)) z ((CH.Mor.restrict (grT (smFun X q) 1) g).pull 2 c)` using `rep_congr (fun s => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `plog_sub (g.obj (s.obj (Fin.last 2))).δ d (r_sub_one_mem Λ s)` as an intermediate fact. Rewrite `this` using `[← hzf s]`. Conclude with `this) r1`. Establish `r3` using `(pow_rep q g c z (fun s => by`. Use `mem1 (g.obj (s.obj (Fin.last 2))).δ (plogK_mem (g.obj (s.obj (Fin.last 2))).δ (d + 1) (r_sub_one_mem Λ s))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hzf s]`. Conclude with `this) r2 d).2`. Rewrite `r3` using `[h0, map_zero]`. Take `⟨hp, ep⟩` from `powK_pull q g c' z hz hzc d`. Use `cls_zero_of_rep (fun T => T.property.1.1) _ hp r3` as an intermediate fact.
-
-Conclude with `hk.1 ((ep.symm.trans this).trans (map_zero _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kTop : KTop := by
   intro K _ _ X q _ d _ D hD c hc h0

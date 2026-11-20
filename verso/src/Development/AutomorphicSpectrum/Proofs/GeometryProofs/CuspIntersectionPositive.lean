@@ -24,18 +24,18 @@ open _root_.Metric GlobalTheory.CompanionTheory.Ar.Cusp.CuspCorrespondence
 open GroundTheory.Heights₂.Heights.Regular (logCover expCover)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[affInv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem affInv_self {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) : affInv t₀ ρ π t₀ = 0 := by
   funext i
   simp [affInv]
 
 /- English proof (translation)
-Establish `hd : Differentiable ℂ (affInv t₀ ρ π)`. Unfold `affInv`. Use `fun_prop`. Set `V : Set (Fin n → ℂ)` to `ball t₀ ρ ∩ affInv t₀ ρ π ⁻¹' ball 0 r`. Establish `hV : IsOpen V` using `isOpen_ball.inter (isOpen_ball.preimage hd.continuous)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG' : DifferentiableOn ℂ (fun t => G (affInv t₀ ρ π t)) V` using `hG.comp hd.differentiableOn fun t ht => ht.2`. Establish `heq : Set.EqOn (fun t => ψ (affInv t₀ ρ π t) / 2 + (G (affInv t₀ ρ π t)).re + 0) f V` using `fun t ht => by`. Use `hf _ ht.2` as an intermediate fact. Rewrite `this` using `[aff_affInv t₀ hρ π]`. Simplify using `only [this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `P0` using `isPsh_comp_affInv t₀ hρ π h`. Establish `P1` using `isPsh_half (⟨P0.1.mono Set.inter_subset_left, fun z w hd => P0.2 z w fun ζ hζ => (hd ζ hζ).1⟩ : IsPsh V _)`. Use `⟨V, hV, ⟨mem_ball_self hρ, by simpa [affInv_self] using hr⟩, GroundTheory.Heights₂.Heights.NineStatements.isPsh_congr' heq (GroundTheory.Heights₂.Heights.NineStatements.isPsh_add_re_add_const hV P1 hG' 0), ContinuousOn.congr ?_ heq.symm⟩` and prove the remaining obligations. Conclude with `(((hc.comp hd.continuous.continuousOn fun t ht => norm_affInv t₀ hρ π ht.1).div_const 2).add (Complex.continuous_re.comp_continuousOn hG'.continuousOn)).add continuousOn_const`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem loc_of_formula {n : ℕ} (t₀ : Fin n → ℂ) {ρ r : ℝ} (hρ : 0 < ρ) (hr : 0 < r) (π : Equiv.Perm (Fin n))
     {ψ f : (Fin n → ℂ) → ℝ} {G : (Fin n → ℂ) → ℂ} (h : IsPsh (ball 0 1) ψ) (hc : ContinuousOn ψ (ball 0 1))
@@ -62,9 +62,9 @@ theorem loc_of_formula {n : ℕ} (t₀ : Fin n → ℂ) {ρ r : ℝ} (hρ : 0 < 
     (Complex.continuous_re.comp_continuousOn hG'.continuousOn)).add continuousOn_const
 
 /- English proof (translation)
-Break down `U.eq_empty_or_nonempty with rfl | ⟨t₁, ht₁⟩` into its components or cases. Conclude with `continuousOn_empty _`. Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `hH : Continuous fun x : U => (R x).Hm` using `GlobalTheory.T.continuous_hermitian_matrix_family E g Λ U (fun x => R x) (R t₁).form (fun x => hR.1 x x.2 t₁ ht₁) fun v => continuousOn_iff_continuous_restrict.1 (hR.2 v).continuousOn`. Use `continuous_finset_sum _ fun τ _ => Continuous.log ?_ fun x => (gram_det_pos _ _ (hl x x.2 τ)).ne'` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Complex.continuous_re.comp (Continuous.matrix_det (continuous_matrix fun p q => ?_))` and prove the remaining obligations. Establish `hb' : ∀ i, Continuous fun x : U => b τ i x` using `fun i => continuousOn_iff_continuous_restrict.1 (hb τ i)`. Conclude with `(hb' q).dotProduct (hH.matrix_mulVec (hb' p).star)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem logDet_cont {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
     [Module (𝓞 E) Λ] {Ψ : Type} [Fintype Ψ] {n m : ℕ} {U : Set (Fin n → ℂ)} {R : (Fin n → ℂ) → RiemLat E g Λ}
@@ -90,17 +90,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Dc : ComponentData II (CMType H) K J Ω W} {Hd : HodgeData Dc} {S₀ : Finset ℕ}
 
 /- English proof (translation)
-Establish `hex : ∃ v, IsValueAt Dc.y d.u ((Dc.chart a).γ t₀) v`. Assume the negation of the conclusion as `hn`. Conclude with `hv0 (dif_neg hn)`. Take `⟨v₀, dg, pg, ph, hpg, hph, hne, heq, hhne, hv₀⟩` from `hex`. Establish `hq : ∀ p, AnalyticAt ℂ (fun t => (Dc.chart a).γ t p) t₀` using `fun p => ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : (Σ k, J k) => ℂ) p).analyticAt _).comp ((Dc.chart a).analytic t₀ ht₀)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGa` using `analyticAt_eval hq pg`. Establish `hHa` using `analyticAt_eval hq ph`. Establish `hval0 : v₀ ≠ 0`. Establish `e : GroundTheory.Heights₂.Heights.LowerBoundFree.valAt Dc.y d.u ((Dc.chart a).γ t₀) = v₀` using `valAt_eq ((Dc.chart a).mem t₀ ht₀) ⟨dg, pg, ph, hpg, hph, hne, heq, hhne, hv₀⟩`. Rewrite `hv0` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hg0 : MvPolynomial.eval ((Dc.chart a).γ t₀) (MvPolynomial.map (Int.castRingHom ℂ) pg) ≠ 0`. Introduce `h`. Apply `hval0` to reduce the goal to its premises. Rewrite using `[hv₀, h, zero_div]`. Set `F : (Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) → ℂ` to `fun t => MvPolynomial.eval ((Dc.chart a).γ t) (MvPolynomial.map (Int.castRingHom ℂ) pg) / MvPolynomial.eval ((Dc.chart a).γ t) (MvPolynomial.map (Int.castRingHom ℂ) ph) * ∏ k, (Dc.chart a).γ t ⟨k, d.c k⟩ ^ Hd.aMu k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hF : AnalyticAt ℂ F t₀` using `(hGa.div hHa hhne).mul (Finset.analyticAt_fun_prod _ fun k _ => (hq _).zpow (d.inDom.1 k))`. Establish `hF0 : F t₀ ≠ 0` using `mul_ne_zero (div_ne_zero hg0 hhne) (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (d.inDom.1 k))`. Take `⟨r, hr, Gf, hGf, hlog⟩` from `exists_log_norm hF hF0`. Take `⟨r₂, hr₂, hH2⟩` from `Metric.eventually_nhds_iff_ball.1 (hHa.continuousAt.eventually_ne hhne)`. Establish `hV1 : ball t₀ (min r r₂) ⊆ ball t₀ r` using `ball_subset_ball (min_le_left _ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV2 : ball t₀ (min r r₂) ⊆ ball t₀ r₂` using `ball_subset_ball (min_le_right _ _)`. Use `⟨min r r₂, lt_min hr hr₂, fun t => Gf t + (Real.log ‖F t₀‖ : ℂ), (hGf.mono hV1).add_const _, fun t ht ht1 => ?_⟩` and prove the remaining obligations. Establish `hval : GroundTheory.Heights₂.Heights.LowerBoundFree.valAt Dc.y d.u ((Dc.chart a).γ t) = MvPolynomial.eval ((Dc.chart a).γ t) (MvPolynomial.map (Int.castRingHom ℂ) pg) / MvPolynomial.eval ((Dc.chart a).γ t) (MvPolynomial.map (Int.castRingHom ℂ) ph)` using `valAt_eq ((Dc.chart a).mem t ht1) ⟨dg, pg, ph, hpg, hph, hne, heq, hH2 t (hV2 ht), rfl⟩`. Establish `hn : ‖GroundTheory.Heights₂.Heights.LowerBoundFree.valAt Dc.y d.u ((Dc.chart a).γ t)‖ * ∏ k, ‖(Dc.chart a).γ t ⟨k, d.c k⟩‖ ^ Hd.aMu k = ‖F t‖`. Simplify using `only [F, norm_mul, norm_prod, norm_zpow, hval]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn, hlog t (hV1 ht), Complex.add_re, Complex.ofReal_re]`.
+A detailed English derivation is pending.
 -/
 theorem unit_factor (a : Fin Dc.nCharts) (t₀ : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) (ht₀ : t₀ ∈ ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1)
     (d : MuFrameAt Hd ((Dc.chart a).γ t₀)) (hv0 : valAt Dc.y d.u ((Dc.chart a).γ t₀) ≠ 0) :
@@ -148,11 +148,11 @@ theorem unit_factor (a : Fin Dc.nCharts) (t₀ : Fin (Fintype.card (CMType H) * 
   rw [hn, hlog t (hV1 ht), Complex.add_re, Complex.ofReal_re]
 
 /- English proof (translation)
-Take `⟨-, hP⟩` from `GlobalTheory.T.component_data_intersection_bound hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or z w co`. Take `⟨-, hP2⟩` from `hP d`. Take `⟨-, -, hform⟩` from `hP2 s hs`. Set `Γ : CMType H → Matrix (Fin (Dc.N - Dc.j)) (Fin (Dc.N - Dc.j)) ℂ` to `fun τ => Matrix.of fun p q => (Real.pi : ℂ) * R.ip (x τ p) (x τ q)`. Establish `hΓ : ∀ τ, Or.𝔐.M.GramAt Or.𝔐.t.PP.L z (s τ) (Γ τ)` using `fun τ => ⟨fun p => v (τ, p), fun p => hv (τ, p), fun p q => hodgeInnerProduct_of_fibreLatticeVector hfib (fun i => (hv i).isTanAt) (τ, p) (τ, q)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdet : ∀ τ, Real.log (Γ τ).det.re = ((Dc.N - Dc.j : ℕ) : ℝ) * Real.log Real.pi + Real.log (R.gram (x τ)).det.re`. Introduce `τ`. Establish `hpos` using `gram_det_pos R (x τ) (hx τ)`. Establish `e1 : Γ τ = (Real.pi : ℂ) • R.gram (x τ)`. Use extensionality with `p q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite using `[e1, Matrix.det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul, Real.log_mul (pow_ne_zero _ Real.pi_ne_zero) hpos.ne', Real.log_pow]`. Establish `h1` using `hform hI Γ hΓ`. Simplify using `only [hdet, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at h1`. Conclude with `h1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem point_formula (Or : CptOrigin Y S₀ Dc Hd) {z : Sp ℂ ⟶ Or.𝔐.X} {w : (Σ k, J k) → ℂ}
     (co : CoordsAt Or.𝔐.ξ Dc.y z w) (hI : Or.𝔐.Interior z) (hG : Top.Given) (d : MuFrameAt Hd w)
@@ -184,7 +184,7 @@ theorem point_formula (Or : CptOrigin Y S₀ Dc Hd) {z : Sp ℂ ⟶ Or.𝔐.X} {
   exact h1
 
 /- English proof (translation)
-Take `⟨A, i, φ, u, χ, h1, h2, h3, h4, h5, -⟩` from `h`. Conclude with `⟨A, i, φ, u, χ, h1, h2, h3, h4, h5, fun i => i.elim⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fibreLat_of_vec {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {g : ℕ} {Λ : Type} [AddCommGroup Λ]
     [Module (𝓞 E) Λ] {R : RiemLat E g Λ} {A₀ : Type} {x : A₀ → Fin g → ℂ} {v : A₀ → (epsAt z ⟶ t.G)}
@@ -193,19 +193,19 @@ theorem fibreLat_of_vec {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {g : �
   exact ⟨A, i, φ, u, χ, h1, h2, h3, h4, h5, fun i => i.elim⟩
 
 /- English proof (translation)
-Take `⟨a₀, g, Λ, i₁, i₂, L, π, ρ, σ, pt, d, s, b, hρ, hσ, hs, hb, hu, hw⟩` from `GlobalTheory.T.component_data_hodge_bound hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or a t₀ ht₀`. Take `⟨-, -, co0, -, int0⟩` from `hu 0 (mem_ball_self one_pos)`. Establish `hT0 : t₀ + (ρ : ℂ) • ((0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) ∘ π) = t₀`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `co0` using `[hT0]`. Take `⟨-, hP⟩` from `GlobalTheory.T.component_data_intersection_bound hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or (pt 0) _ co0`. Take `⟨-, hP2⟩` from `hP d`. Take `⟨-, hv0, -⟩` from `hP2 s hs`. Take `⟨r, hr, G, hGd, hlog⟩` from `unit_factor a t₀ ht₀ d hv0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hd : Differentiable ℂ (aff t₀ ρ π)`. Unfold `aff`. Use `fun_prop`. Establish `h0 : aff t₀ ρ π 0 = t₀` using `hT0`. Take `⟨r', hr', hb'⟩` from `Metric.eventually_nhds_iff_ball.1 ((hd.continuous.tendsto 0).eventually (by rw [h0]; exact ball_mem_nhds t₀ hr : ball t₀ r ∈ 𝓝 (aff t₀ ρ π 0)))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `C : ℝ` to `(Fintype.card (CMType H) : ℝ) * (((Dc.N - Dc.j : ℕ) : ℝ) * Real.log Real.pi)`. Establish `hm1 : ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) (min r' 1) ⊆ ball 0 r'` using `ball_subset_ball (min_le_left _ _)`. Establish `hm2 : ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) (min r' 1) ⊆ ball 0 1` using `ball_subset_ball (min_le_right _ _)`. Use `⟨a₀, g, Λ, i₁, i₂, L, π, ρ, min r' 1, σ, b, fun u => G (aff t₀ ρ π u) + ((C / 2 : ℝ) : ℂ), hρ, lt_min hr' one_pos, min_le_right _ _, hσ, hb, (hGd.comp hd.differentiableOn fun u hu' => hb' u (hm1 hu')).add_const _, fun u hu' => ?_, fun w hlw h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨e1, -, co, -, hint⟩` from `hu u hu'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hint]`. Conclude with `⟨fun h => not_not.1 fun hn => h.2 ((Or.bd _ _ co).2 hn), fun h => ⟨e1, fun hb => (Or.bd _ _ co).1 hb h⟩⟩`. Take `⟨v, hv, hfib⟩` from `hw w hlw`. Take `⟨e1, dom, co, hL, hint⟩` from `hu _ (hm2 h1)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hI` using `hint.2 h2`. Use `⟨?_, WeightSheet.eq_cuspW_of_fibre Or hU co hI _ (fibreLat_of_vec hfib) hL⟩` and prove the remaining obligations. Establish `k` using `point_formula Or co hI hG { d with inDom := dom } hs (L.riem w hlw) (fun τ i => b τ i (expCover a₀ w)) (fun τ => (hb.2 _ (hm2 h1) τ).1) v hv hfib`. Establish `k2` using `hlog _ (hb' _ (hm1 h1)) e1`. Use `k.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.add_re, Complex.ofReal_re, ← k2]`. Simplify using `only [C, aff]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chart_formula (hG : Top.Given) (Or : CptOrigin Y S₀ Dc Hd) {U : ((Σ k, J k) → ℂ) → ℝ}
     (hU : Or.𝔐.IsCuspWeight Or.sm U) (a : Fin Dc.nCharts)
@@ -261,25 +261,23 @@ theorem chart_formula (hG : Top.Given) (Or : CptOrigin Y S₀ Dc Hd) {U : ((Σ k
     ring
 
 /- English proof (translation)
-Take `⟨a₀, g, Λ, i₁, i₂, L, π, ρ, r, σ, b, G, hρ, hr, hr1, hσ, hb, hGd, hu, hw⟩` from `chart_formula hG Or hU a t₀ ht₀.1`. Establish `h0 : (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) ∈ ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1` using `mem_ball_self one_pos`. Establish `hT0 : aff t₀ ρ π 0 = t₀`. Use function extensionality and compare the values at `i`. Simplify using `[aff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `ha0 : a₀ = 0`. Assume the negation of the conclusion as `hne`. Establish `hle` using `L.a_le`. Conclude with `((hu 0 h0).2.1 (by rw [hT0]; exact ht₀)).2 ⟨0, by omega⟩ (Nat.pos_of_ne_zero hne) rfl`. Substitute `ha0` using the available equality.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `he : ∀ u : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ, expCover 0 u = u`. Introduce `u`. Use function extensionality and compare the values at `k`. Simplify using `[expCover]`. Establish `hlc : ∀ u ∈ ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1, u ∈ logCover L.a_le`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu'`. Conclude with `⟨fun i => i.elim0, fun k _ => (pi_norm_lt_iff one_pos).1 (mem_ball_zero_iff.1 hu') k⟩`. Set `R : (Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) → RiemLat E g Λ` to `fun u => if h : u ∈ logCover L.a_le then L.riem u h else L.riem 0 (hlc 0 h0)`. Establish `hR : ∀ u (h : u ∈ logCover L.a_le), R u = L.riem u h` using `fun u h => dif_pos h`. Establish `hHol : IsHolFam (ball 0 1) R`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun t ht t' ht' => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hR t (hlc t ht), hR t' (hlc t' ht')]`. Both sides reduce to the same expression. Use `((L.hol x).mono (fun u hu' => hlc u hu')).congr fun u hu' => ?_` and prove the remaining obligations. Rewrite using `[hR u (hlc u hu')]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hEig : IsEigFrames (ball 0 1) (fun t => (R t).B) σ b`. Use `⟨hb.1, fun t ht τ => ?_⟩` and prove the remaining obligations. Establish `e : (R t).B = L.B t`. Rewrite using `[hR t (hlc t ht)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show L.B (expCover 0 t) = L.B t`. Rewrite using `[he]`. Simplify using `only [e]`. Conclude with `hb.2 t ht τ`. Take `⟨p1, p2, p3⟩` from `GlobalTheory.T.log_det_eigen_frame_plurisubharmonic E g Λ (CMType H) _ (ball 0 1) R σ (Dc.N - Dc.j) b isOpen_ball hHol hσ hEig`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `c1` using `logDet_cont hHol (fun τ i => (hb.1 τ i).continuousOn) fun t ht τ => (hb.2 t ht τ).1`. Establish `key : ∀ u ∈ ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) r, phMu Hd ((Dc.chart a).γ (aff t₀ ρ π u)) = (G u).re + (R u).logDet (fun τ i => b τ i u) / 2 ∧ U ((Dc.chart a).γ (aff t₀ ρ π u)) = (R u).cuspW σ`. Introduce `u hu'`. Establish `hu1` using `ball_subset_ball hr1 hu'`. Use `hw u (hlc u hu1) (by rw [he]; exact hu') (by rw [he]; exact ⟨hu1, fun i hi => absurd hi (Nat.not_lt_zero _)⟩)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[he]`. Rewrite using `[hR u (hlc u hu1)]`. Conclude with `this`. Use `⟨loc_of_formula t₀ hρ hr π p1 c1 hGd fun u hu' => (key u hu').1, loc_of_formula t₀ hρ hr π p2 (c1.add p3) hGd fun u hu' => ?_⟩` and prove the remaining obligations. Simplify using `only [corrW, (key u hu').1, (key u hu').2]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem near_all (hG : Top.Given) (Or : CptOrigin Y S₀ Dc Hd) {U : ((Σ k, J k) → ℂ) → ℝ}
     (hU : Or.𝔐.IsCuspWeight Or.sm U) (a : Fin Dc.nCharts) (t₀ : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) (ht₀ : t₀ ∈ offBd Dc a) :
@@ -340,9 +338,9 @@ theorem near_all (hG : Top.Given) (Or : CptOrigin Y S₀ Dc Hd) {U : ((Σ k, J k
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or U hU`. Use `⟨fun a => GlobalTheory.T.plurisubharmonic_local _ _ _ (isOpen_offBd Dc a) fun t ht => ?_, fun a t ht => ?_, fun a => GlobalTheory.T.plurisubharmonic_local _ _ _ (isOpen_offBd Dc a) fun t ht => ?_, fun a t ht => ?_⟩` and prove the remaining obligations. Take `⟨V, h1, h2, h3, -⟩` from `(near_all hG Or hU a t ht).1`. Conclude with `⟨V, h1, h2, h3⟩`. Take `⟨V, h1, h2, -, h3⟩` from `(near_all hG Or hU a t ht).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `(h3.continuousAt (h1.mem_nhds h2)).continuousWithinAt`. Take `⟨V, h1, h2, h3, -⟩` from `(near_all hG Or hU a t ht).2`. Conclude with `⟨V, h1, h2, h3⟩`. Take `⟨V, h1, h2, -, h3⟩` from `(near_all hG Or hU a t ht).2`. Conclude with `(h3.continuousAt (h1.mem_nhds h2)).continuousWithinAt`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.cusp_intersection_positive : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (U : ((Σ k, J k) → ℂ) → ℝ), Or.𝔐.IsCuspWeight Or.sm U → ChartPsh Dc (phMu Hd) ∧ ChartCont Dc (phMu Hd) ∧ ChartPsh Dc (corrW Hd U) ∧ ChartCont Dc (corrW Hd U) := by
   intro hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or U hU

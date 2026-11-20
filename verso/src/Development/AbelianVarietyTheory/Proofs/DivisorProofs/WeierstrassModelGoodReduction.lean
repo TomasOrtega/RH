@@ -26,43 +26,35 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PlaceRingCurve
 
 /- English proof (translation)
-Introduce `l _ lam k hk`. Use `haveI : NumberField k := { }`. Establish `hle : k ≤ algebraicClosure ℚ ℂ` using `fun x hx => mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) (⟨x, hx⟩ : k)).algHom k.val)`. Set `f : k →+* ℂ_[l]` to `lam.comp (IntermediateField.inclusion hle).toRingHom`. Establish `hO : ∀ a : 𝓞 k, ‖f a‖ ≤ 1` using `fun a => GlobalTheory.PlaceRingExists.norm_le_one_of_isIntegral_int (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `convert map_isIntegral_int f (NumberField.RingOfIntegers.isIntegral_coe a) using 1 <;> first | exact Subsingleton.elim _ _ | rfl)`. Set `P : Ideal (𝓞 k)` to `{ carrier := {a | ‖f a‖ < 1} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, map_add] at *`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ha hb)`. Use the proof step `zero_mem' := by simp`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := fun c a ha => by`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, map_mul, norm_mul] at *`. Combine the equalities or inequalities in the displayed calculation. Establish `hmemP : ∀ a, a ∈ P ↔ ‖f a‖ < 1` using `fun _ => Iff.rfl`. Establish `hPp : P.IsPrime`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨?_, fun {a b} hab => ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.eq_top_iff_one, hmemP]`. Simplify using the standard rewrite rules. Establish `e : ((a * b : 𝓞 k) : k) = (a : k) * b` using `rfl`. Rewrite `hab` using `[hmemP, e, map_mul, norm_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Rewrite `h` using `[hmemP, hmemP, not_lt, not_lt]`. Use polynomial arithmetic with `[hO a, hO b]`. Establish `hlP : ((l : ℕ) : 𝓞 k) ∈ P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (((l : ℕ) : 𝓞 k) : k) = ((l : ℕ) : k)` using `by simp`. Rewrite using `[hmemP, e, map_natCast]`. Conclude with `GlobalTheory.PlaceRingExists.norm_prime_lt_one l`. Establish `hP0 : P ≠ ⊥`. Introduce `h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hlP` using `[h, Ideal.mem_bot, Nat.cast_eq_zero]`. Conclude with `(Fact.out : l.Prime).ne_zero hlP`. Establish `hS : P.primeCompl ≤ nonZeroDivisors (𝓞 k)` using `Ideal.primeCompl_le_nonZeroDivisors _`. Set `A` to `Localization.subalgebra.ofField k P.primeCompl hS`. Use `haveI : IsLocalization.AtPrime A P := Localization.subalgebra.isLocalization_ofField k _ hS`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsDiscreteValuationRing A := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 k) hP0 A`. Use `haveI : IsFractionRing A k := Localization.subalgebra.isFractionRing_ofField k _ hS`. Establish `hS1 : ∀ s : 𝓞 k, s ∈ P.primeCompl → ‖f s‖ = 1` using `fun s hs => le_antisymm (hO s) (not_lt.1 hs)`. Establish `hA : ∀ x : k, x ∈ A ↔ ‖f x‖ ≤ 1`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, s, hs, rfl⟩`. Rewrite using `[map_mul, map_inv₀, norm_mul, norm_inv]`. Express the relevant statement in the definitionally equal form `‖f (r : k)‖ * ‖f (s : k)‖⁻¹ ≤ 1`. Rewrite using `[hS1 s hs, inv_one, _root_.mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hO r`. Introduce `hx`. Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0]`. Conclude with `zero_mem A`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Break down `ValuationRing.isInteger_or_isInteger A x with ⟨a, ha⟩ | ⟨a, ha⟩` into its components or cases. Rewrite using `[← ha]`. Conclude with `a.2`. Take `⟨r, s, hs, hrs⟩` from `a.2`. Establish `ha' : (a : k) = x⁻¹` using `ha`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hrs` using `[ha']`. Establish `hs0 : (s : k) ≠ 0`. Introduce `h0`. Apply `hs` to reduce the goal to its premises. Rewrite using `[show s = 0 from RingOfIntegers.coe_eq_zero_iff.1 h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `P.zero_mem`. Establish `hr0 : (r : k) ≠ 0`. Introduce `h0`. Establish `h0' : algebraMap (𝓞 k) k r = 0` using `h0`. Rewrite `hrs` using `[h0', zero_mul, inv_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hx0 hrs`. Establish `hxe : x = (s : k) * (r : k)⁻¹`. Rewrite using `[← inv_inv x, hrs, mul_inv, inv_inv, mul_comm]`. Establish `hr1 : ‖f r‖ = 1`. Use `le_antisymm (hO r) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hx` as an intermediate fact. Rewrite `this` using `[hxe, map_mul, map_inv₀, norm_mul, norm_inv]`. Express the relevant statement in the definitionally equal form `‖f (s : k)‖ * ‖f (r : k)‖⁻¹ ≤ 1 at this`. Rewrite `this` using `[hS1 s hs, _root_.one_mul]`. Establish `hpos : 0 < ‖f (r : k)‖` using `norm_pos_iff.2 ((map_ne_zero f).2 hr0)`.
-
-Rewrite `this` using `[inv_le_one₀ hpos]`. Then use the resulting hypothesis. Conclude with `⟨s, r, fun h => by have h' := (hmemP r).1 h; rw [hr1] at h'; exact lt_irrefl _ h', hxe⟩`. Set `g : k →+* ℂ` to `k.val.toRingHom`. Set `R : Subring ℂ` to `A.toSubring.map g`. Set `e : A.toSubring ≃+* R` to `Subring.equivMapOfInjective A.toSubring g g.injective`.
-
-Use `haveI : IsDiscreteValuationRing A.toSubring := inferInstanceAs (IsDiscreteValuationRing A)`. Use `haveI : IsDiscreteValuationRing R := IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e`. Use `⟨R, ⟨this, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨x, hxA, rfl⟩` from `Subring.mem_map.1 hz`.
-
-Use `⟨hle x.2, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.rpow_zero]`. Conclude with `(hA x).1 hxA`. Introduce and unpack `z hz ⟨h, hn⟩`. Rewrite `hn` using `[Real.rpow_zero]`.
-
-Conclude with `Subring.mem_map.2 ⟨⟨z, hz⟩, (hA _).2 hn, rfl⟩`. Introduce `z hz`. Take `⟨x, -, rfl⟩` from `Subring.mem_map.1 hz`. Conclude with `x.2`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isPlaceOver_le : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (k : IntermediateField ℚ ℂ),
     FiniteDimensional ℚ k → ∃ R : Subring ℂ, IsPlaceOver l lam k R ∧ ∀ x ∈ R, x ∈ k := by
@@ -162,7 +154,7 @@ theorem exists_isPlaceOver_le : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClo
     exact x.2
 
 /- English proof (translation)
-Establish `e : ((n : ℕ) : ℂ_[l]) = ((algebraMap ℚ_[l] (PadicAlgCl l) (n : ℚ_[l]) : PadicAlgCl l) : ℂ_[l])` using `by simp`. Rewrite using `[e, PadicComplex.norm_extends', Padic.norm_natCast_eq_one_iff]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_eq_one {l : ℕ} [Fact l.Prime] {n : ℕ} (h : l.Coprime n) : ‖((n : ℕ) : ℂ_[l])‖ = 1 := by
   have e : ((n : ℕ) : ℂ_[l]) = ((algebraMap ℚ_[l] (PadicAlgCl l) (n : ℚ_[l]) : PadicAlgCl l) : ℂ_[l]) := by simp
@@ -170,27 +162,27 @@ theorem norm_natCast_eq_one {l : ℕ} [Fact l.Prime] {n : ℕ} (h : l.Coprime n)
   exact h
 
 /- English proof (translation)
-The claim follows from `IsUltrametricDist.norm_natCast_le_one _ n`.
+A detailed English derivation is pending.
 -/
 theorem norm_natCast_le {l : ℕ} [Fact l.Prime] (n : ℕ) : ‖((n : ℕ) : ℂ_[l])‖ ≤ 1 :=
   IsUltrametricDist.norm_natCast_le_one _ n
 
 /- English proof (translation)
-Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne', max_eq_left h.le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_add_of_lt {l : ℕ} [Fact l.Prime] {x y : ℂ_[l]} (h : ‖y‖ < ‖x‖) : ‖x + y‖ = ‖x‖ := by
   rw [IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne', max_eq_left h.le]
 
 /- English proof (translation)
-Establish `h3 : ‖(3 : ℂ_[l])‖ = 1`. Conclude with `norm_natCast_eq_one (l := l) (n := 3) ((Nat.coprime_primes Fact.out Nat.prime_three).2 hl)` after adjusting the coercions. Establish `h24 : ‖(-24 : ℂ_[l])‖ ≤ 1` using `by rw [norm_neg]; exact_mod_cast norm_natCast_le (l := l) 24`. Establish `h27 : ‖(27 : ℂ_[l])‖ = 1` using `by rw [show (27 : ℂ_[l]) = 3 ^ 3 by norm_num, norm_pow, h3, one_pow]`. Establish `hn` using `congrArg norm h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[mul_pow, norm_mul, norm_mul, norm_pow (a ^ 3 - 24)]`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `ha`. Establish `ht : 1 < ‖a ^ 3‖` using `by rw [norm_pow]; exact one_lt_pow₀ (not_le.1 ha) (by norm_num)`. Establish `e1 : ‖a ^ 3 - 24‖ = ‖a ^ 3‖` using `by rw [sub_eq_add_neg]; exact norm_add_of_lt (h24.trans_lt ht)`.
+Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ‖a ^ 3 - 27‖ = ‖a ^ 3‖`. Rewrite using `[sub_eq_add_neg]; exact norm_add_of_lt (by rw [norm_neg, h27]; exact ht)`. Rewrite `hn` using `[e1, e2]`. Establish `h1 : 1 < ‖a ^ 3‖ ^ 3` using `one_lt_pow₀ ht (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hd`. Establish `hd` using `not_le.1 hd`. Establish `e1 : ‖a ^ 3 - 24‖ = 1`. Rewrite using `[show a ^ 3 - 24 = 3 + (a ^ 3 - 27) by ring, norm_add_of_lt (by rw [h3]; exact hd), h3]`. Establish `e2 : ‖a ^ 3‖ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show a ^ 3 = 27 + (a ^ 3 - 27) by ring, norm_add_of_lt (by rw [h27]; exact hd), h27]`. Rewrite `hn` using `[e1, e2]`. Use polynomial arithmetic with `[norm_nonneg j, norm_nonneg (a ^ 3 - 27)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem deuring_norm {l : ℕ} [Fact l.Prime] (hl : l ≠ 3) {a j : ℂ_[l]} (hj : ‖j‖ ≤ 1)
     (h : (a * (a ^ 3 - 24)) ^ 3 = j * (a ^ 3 - 27)) : ‖a‖ ≤ 1 ∧ 1 ≤ ‖a ^ 3 - 27‖ := by
@@ -219,15 +211,13 @@ theorem deuring_norm {l : ℕ} [Fact l.Prime] (hl : l ≠ 3) {a j : ℂ_[l]} (hj
     nlinarith [norm_nonneg j, norm_nonneg (a ^ 3 - 27)]
 
 /- English proof (translation)
-Establish `h2 : ‖(2 : ℂ_[l])‖ = 1`. Conclude with `norm_natCast_eq_one (l := l) (n := 2) ((Nat.coprime_primes Fact.out Nat.prime_two).2 hl)` after adjusting the coercions. Establish `h16 : ‖(16 : ℂ_[l])‖ = 1` using `by rw [show (16 : ℂ_[l]) = 2 ^ 4 by norm_num, norm_pow, h2, one_pow]`. Establish `hn` using `congrArg norm h`. Simplify using `only [norm_pow, norm_mul (16 : ℂ_[l]), norm_mul j, h16, _root_.one_mul] at hn ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `set b := a * (a - 1) with hb`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `ha`. Establish `ha` using `not_le.1 ha`. Establish `e0 : ‖a - 1‖ = ‖a‖` using `by rw [sub_eq_add_neg]; exact norm_add_of_lt (by rw [norm_neg, norm_one]; exact ha)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht : 1 < ‖b‖` using `by rw [hb, norm_mul, e0]; nlinarith`. Rewrite `hn` using `[norm_add_of_lt (by rw [norm_one]; exact ht)]`. Establish `h1 : 0 < ‖b‖ ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Assume the negation of the conclusion as `hd`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `not_le.1 hd`. Establish `hb1 : ‖b‖ < 1`. Assume the negation of the conclusion as `h'`. Conclude with `absurd hd (not_lt.2 (one_le_pow₀ (not_lt.1 h')))`. Rewrite `hn` using `[add_comm, norm_add_of_lt (by rw [norm_one]; exact hb1), norm_one]`.
-
-Use polynomial arithmetic with `[norm_nonneg j, sq_nonneg ‖b‖]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem legendre_norm {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) {a j : ℂ_[l]} (hj : ‖j‖ ≤ 1)
     (h : (16 * (a * (a - 1) + 1)) ^ 3 = j * (16 * (a * (a - 1)) ^ 2)) :
@@ -255,19 +245,17 @@ theorem legendre_norm {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) {a j : ℂ_[l]} (h
     nlinarith [norm_nonneg j, sq_nonneg ‖b‖]
 
 /- English proof (translation)
-Set `S : Set ℂ` to `{(V.a₁ : ℂ), (V.a₂ : ℂ), (V.a₃ : ℂ), (V.a₄ : ℂ), (V.a₆ : ℂ)}`. Use `haveI : Finite S := (Set.toFinite S).to_subtype`. Establish `hi : ∀ x : algebraicClosure ℚ ℂ, IsIntegral ℚ (x : ℂ)` using `fun x => (mem_algebraicClosure_iff.1 x.2).isIntegral`. Establish `hk : FiniteDimensional ℚ (IntermediateField.adjoin ℚ S)` using `IntermediateField.finiteDimensional_adjoin (by`. Apply the tactic sequence `rintro x (rfl | rfl | rfl | rfl | rfl) <;> exact hi _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR, hRk⟩` from `exists_isPlaceOver_le l lam _ hk`. Establish `hm : ∀ x : algebraicClosure ℚ ℂ, (x : ℂ) ∈ IntermediateField.adjoin ℚ S → ‖lam x‖ ≤ 1 → (x : ℂ) ∈ R` using `fun x hx hn => hR.2.2 _ hx ⟨x.2, by rw [Real.rpow_zero]; exact hn⟩`. Establish `hs : ∀ x ∈ S, x ∈ IntermediateField.adjoin ℚ S` using `fun x hx => IntermediateField.subset_adjoin ℚ S hx`. Set `W : WeierstrassCurve R` to `⟨⟨_, hm _ (hs _ (by simp [S])) h₁⟩, ⟨_, hm _ (hs _ (by simp [S])) h₂⟩, ⟨_, hm _ (hs _ (by simp [S])) h₃⟩, ⟨_, hm _ (hs _ (by simp [S])) h₄⟩, ⟨_, hm _ (hs _ (by simp [S])) h₆⟩⟩`. Establish `hW : W.map R.subtype = V.map (algebraMap (algebraicClosure ℚ ℂ) ℂ)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eΔ : ((W.Δ : R) : ℂ) = (V.Δ : ℂ)`. Use `congrArg WeierstrassCurve.Δ hW` as an intermediate fact. Rewrite `this` using `[WeierstrassCurve.map_Δ, WeierstrassCurve.map_Δ]`. Then use the resulting hypothesis. Establish `ec : ((W.c₄ : R) : ℂ) = (V.c₄ : ℂ)`. Use `congrArg WeierstrassCurve.c₄ hW` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[WeierstrassCurve.map_c₄, WeierstrassCurve.map_c₄]`. Then use the resulting hypothesis. Establish `h0 : V.Δ ≠ 0`. Introduce `h; rw [h, map_zero, norm_zero] at hΔ; exact absurd hΔ (by norm_num)`. Use `⟨_, R, W, hk, hR, hRk, ?_, ?_⟩` and prove the remaining obligations. Establish `hmem : ((V.Δ⁻¹ : algebraicClosure ℚ ℂ) : ℂ) ∈ R`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hm _ ?_ ?_` and prove the remaining obligations. Rewrite using `[IntermediateField.coe_inv, ← eΔ]`. Conclude with `inv_mem (hRk _ W.Δ.2)`. Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ hΔ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `IsUnit.of_mul_eq_one ⟨_, hmem⟩ (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((W.Δ : R) : ℂ) * ((V.Δ⁻¹ : algebraicClosure ℚ ℂ) : ℂ) = 1`. Rewrite using `[eΔ, ← IntermediateField.coe_mul, mul_inv_cancel₀ h0]`. Both sides reduce to the same expression. Rewrite using `[eΔ, ec]`.
-
-Conclude with `congrArg (fun x : algebraicClosure ℚ ℂ => (x : ℂ)) hc` after adjusting the coercions.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (j : algebraicClosure ℚ ℂ)
     (V : WeierstrassCurve (algebraicClosure ℚ ℂ)) (h₁ : ‖lam V.a₁‖ ≤ 1) (h₂ : ‖lam V.a₂‖ ≤ 1) (h₃ : ‖lam V.a₃‖ ≤ 1)
@@ -310,23 +298,21 @@ theorem descend (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* �
 open Polynomial in
 
 /- English proof (translation)
-Introduce `l _ lam J hJ`. Use `haveI : IsAlgClosed (algebraicClosure ℚ ℂ) := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Establish `hJQ : IsIntegral ℚ J` using `hJ.tower_top`. Set `j : algebraicClosure ℚ ℂ` to `⟨J, mem_algebraicClosure_iff.2 hJQ.isAlgebraic⟩`. Establish `hjZ : IsIntegral ℤ j` using `(isIntegral_algHom_iff ((algebraicClosure ℚ ℂ).val.toRingHom.toIntAlgHom) Subtype.val_injective).1 hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : ‖lam j‖ ≤ 1` using `GlobalTheory.PlaceRingExists.norm_le_one_of_isIntegral_int (by`. Apply the tactic sequence `convert map_isIntegral_int lam hjZ using 1 <;> first | exact Subsingleton.elim _ _ | rfl)`. Distinguish the cases in `hl : l = 3`. Establish `hd : ((C 16 * (X * (X - C 1) + C 1)) ^ 3 - C j * (C 16 * (X * (X - C 1)) ^ 2) : (algebraicClosure ℚ ℂ)[X]).degree = 6` using `by compute_degree!`. Take `⟨α, hα⟩` from `IsAlgClosed.exists_root _ (hd.trans_ne (by decide))`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hα' : (16 * (α * (α - 1) + 1)) ^ 3 = j * (16 * (α * (α - 1)) ^ 2)`. Simplify `hα` using `[sub_eq_zero]`. Establish `hn` using `legendre_norm (l := l) (by omega) hj (a := lam α) (by simpa [map_ofNat] using congrArg lam hα')`. Set `V : WeierstrassCurve (algebraicClosure ℚ ℂ)` to `⟨0, -(1 + α), 0, α, 0⟩`. Establish `eΔ : V.Δ = 16 * (α * (α - 1)) ^ 2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [V, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Expand and normalize the polynomial expressions, which then agree. Establish `ec : V.c₄ = 16 * (α * (α - 1) + 1)`. Simplify using `only [V, WeierstrassCurve.c₄, WeierstrassCurve.b₂, WeierstrassCurve.b₄]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `descend l lam j V (by simp [V]) ?_ (by simp [V]) hn.1 (by simp [V]) ?_ (by rw [eΔ, ec, hα'])` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖lam (-(1 + α))‖ ≤ 1`. Rewrite using `[map_neg, norm_neg, map_add, map_one]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (by simp) hn.1)`. Rewrite using `[eΔ]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hn.2` using `only [map_mul, map_pow, map_sub, map_one, map_ofNat]`. Establish `hd : ((X * (X ^ 3 - C 24)) ^ 3 - C j * (X ^ 3 - C 27) : (algebraicClosure ℚ ℂ)[X]).degree = 12` using `by compute_degree!`. Take `⟨α, hα⟩` from `IsAlgClosed.exists_root _ (hd.trans_ne (by decide))`. Establish `hα' : (α * (α ^ 3 - 24)) ^ 3 = j * (α ^ 3 - 27)`. Simplify `hα` using `[sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hn` using `deuring_norm (l := l) hl hj (a := lam α) (by simpa [map_ofNat] using congrArg lam hα')`. Set `V : WeierstrassCurve (algebraicClosure ℚ ℂ)` to `⟨α, 0, 1, 0, 0⟩`. Establish `eΔ : V.Δ = α ^ 3 - 27`. Simplify using `only [V, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ec : V.c₄ = α * (α ^ 3 - 24)`. Simplify using `only [V, WeierstrassCurve.c₄, WeierstrassCurve.b₂, WeierstrassCurve.b₄]`. Expand and normalize the polynomial expressions, which then agree. Use `descend l lam j V hn.1 (by simp [V]) (by simp [V]) (by simp [V]) (by simp [V]) ?_ (by rw [eΔ, ec, hα'])` and prove the remaining obligations. Rewrite using `[eΔ]`.
-
-Simplify `hn.2` using `only [map_mul, map_pow, map_sub, map_ofNat]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_curve : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (J : ℂ), IsIntegral ℤ J →
     ∃ (k₁ : IntermediateField ℚ ℂ) (R₁ : Subring ℂ) (W : WeierstrassCurve R₁), FiniteDimensional ℚ k₁ ∧

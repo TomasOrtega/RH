@@ -17,17 +17,17 @@ open scoped TensorProduct
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV Formalism.UG GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TypeLev Matrix Formalism.L2.Forms GlobalTheory.SeeSaw.TwLev
 
 /- English proof (translation)
-Substitute `e hJ' hJ` using the available equality. Take `rfl : g = y` from `Units.ext (Matrix.ext hgy)`. Establish `hred : ∀ (hz : g ∈ St (1 : GL (Fin n') (E ⊗[F] Formalism.L2.Herm.Af F))) (w : Pl E), redFn 1 w g = redAt 1 w ⟨g, hz⟩` using `fun hz w => extendOne_of_mem _ hz`. Establish `hU : g ∈ S.U → g ∈ UAd hc n' ∧ g ∈ St (1 : GL (Fin n') (E ⊗[F] Formalism.L2.Herm.Af F))` using `fun hy => by`. Take `⟨h1, h2⟩` from `(S.U_eq g).1 hy`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨h1, rll_St_of_loc n' g fun v => ⟨_, rll_put_mem_St n' v ?_, rll_put_self n' v _⟩⟩` and prove the remaining obligations. Use `(S.Uloc_lev v (h2 v)).2` as an intermediate fact. Rewrite `this` using `[hL]`. Conclude with `this`. Establish `e0 : g ∈ lev hc 1 1 ⟨r, h', t, s, SG, Q, P', cg, xq⟩ ↔ g ∈ lev hc 1 1 (parDat h t s P χ) ∧ ∀ PP ∈ Q, redFn 1 PP g ∈ blockTri (blk2 r)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_lev, mem_lev, mem_parLev, mem_parLev]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a1, a2, a3, a4⟩, a5⟩`. Conclude with `⟨⟨⟨a1, a2, a3, fun PP hP => absurd hP (Finset.notMem_empty PP)⟩, fun w _ => (hH _).1 a5 w⟩, a4⟩`. Introduce and unpack `⟨⟨⟨a1, a2, a3, -⟩, a5⟩, a4⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨a1, a2, a3, a4⟩, (hH _).2 fun w => a5 w (Set.mem_univ w)⟩`. Establish `e1 : g ∈ levU hc n' ∅ SG (parFam h t s P χ).grp ∧ (∀ PP ∈ Q, redFn 1 PP g ∈ blockTri (blk2 r)) ↔ g ∈ S.U`. Rewrite using `[mem_levU_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2, -, h4⟩, hq⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hR g h2 h1).2 ⟨fun w => hred h2 w.1 ▸ h4 w (Set.mem_univ w), fun PP => hred h2 PP.1 ▸ hq PP.1 PP.2⟩`. Introduce `hy`. Take `⟨h1, h2⟩` from `hU hy`. Take `⟨a, b⟩` from `(hR g h2 h1).1 hy`. Use `⟨⟨h1, h2, fun P hP => absurd hP (Finset.notMem_empty P), fun w _ => ?_⟩, fun PP hP => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `a w` as an intermediate fact. Rewrite `this` using `[← hred h2]`. Then use the resulting hypothesis. Use `b ⟨PP, hP⟩` as an intermediate fact. Rewrite `this` using `[← hred h2]`. Then use the resulting hypothesis. Rewrite using `[e0, ← levU_parFam_eq_lev hc h ht hn, e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_set {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K]
     (hc : CMData F E) {n n' : ℕ} (e : n' = n) [NeZero n] {J' : Matrix (Fin n') (Fin n') E} {J : Matrix (Fin n) (Fin n) E}
@@ -76,7 +76,7 @@ theorem lev_set {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField 
   rw [e0, ← levU_parFam_eq_lev hc h ht hn, e1]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.levelReading_rationalAtTwist_extends_integralUnitary hc hJ { S with chi := 1, chi_triv := fun _ _ => rfl } (fun w => ⟨(Λ w).H, 1⟩) emb HQ (fun _ => 1) h1 h2 (Filter.Eventually.of_forall fun _ _ _ => rfl) (fun x hx hs hv => ⟨(hR x hx hs hv).1, fun _ _ _ => by simp⟩ …`.
+A detailed English derivation is pending.
 -/
 theorem set_univ {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K]
     (hc : CMData F E) {n : ℕ} [NeZero n] {SG Q : Finset (HeightOneSpectrum (𝓞 E))} {J : Matrix (Fin n) (Fin n) E} (hJ : J = 1)
@@ -94,7 +94,7 @@ open Formalism.IndefR Formalism.IndefR.Links GlobalTheory.SeeSaw.TopLevel
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `P P' e`. Break down `(GlobalTheory.Mem.Col2.under_eq_iff B.host P.1 P'.1).1 (HeightOneSpectrum.ext (congrArg HeightOneSpectrum.asIdeal e.symm)) with h | h` into its components or cases. Conclude with `Subtype.ext h.symm`. Conclude with `absurd (h ▸ Finset.mem_union_right _ (GlobalTheory.Mem.Col2.ChEx.q_sub_SQ I a P'.2)) ((GlobalTheory.Mem.LevTwist.levOk_twists B X I hOk).1.split P.1 (Finset.mem_union_right _ (GlobalTheory.Mem.Col2.ChEx.q_sub_SQ I a P.2)))`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem under_inj {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (a : I.ι) :
     ∀ P P' : I.Q a, underPl B.host.F P.1 = underPl B.host.F P'.1 → P = P' := by
@@ -108,15 +108,13 @@ theorem under_inj {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (a : I
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Substitute `hβ hPg hQ` using the available equality. Take `⟨-, gP, -, -⟩` from `GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hOk hPins l Z`. Establish `gX : (I.rec7 l Z).sp.X'.gram = 1`. Use `congrArg (Matrix.reindex (finCongr (rankP (I.rec7 l Z))) (finCongr (rankP (I.rec7 l Z)))).symm gP` as an intermediate fact. Rewrite `this` using `[gramP, Equiv.symm_apply_apply]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, Matrix.reindex_symm, Matrix.reindex_apply, Matrix.submatrix_one_equiv]`. Use `haveI : NeZero (B.R.N B.R.m - 1) := ⟨by`. Use `Formalism.L2.Col.rank_X'_eq B.R` as an intermediate fact. Use `B.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r at *`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use the proof step `omega⟩`. Establish `hLb : S.Lb = Formalism.L2.Col.stdLat B.fields.E (B.R.N B.R.m - 1)`. Use extensionality with `x`. Use `(hK.lb x).trans (Iff.trans ?_ (Formalism.L2.Col.mem_stdLat x).symm)` and prove the remaining obligations. Conclude with `forall_congr' fun j => ⟨fun ⟨r, h, _⟩ => ⟨r, h.symm⟩, fun ⟨r, h⟩ => ⟨r, h.symm, fun _ => one_dvd _⟩⟩`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c : (I.stX a).Cl` to `⟨(), Quotient.mk _ ⟨(DecoF.base _ _ _ _ _, ∅), Set.mem_singleton _⟩⟩`. Establish `hR0` using `GlobalTheory.T.twistedTuple_reading_level_character I hOk hPins l Z a S hK c (fun PP => (Units.map B.embLL.toMonoidHom).comp (Formalism.L2.DIV.resChar (I.tup a : Formalism.L2.DIV.Chr B.fields.F B.fields.E B.fields.K) PP)) (fun _ _ _ => rfl)`. Establish `hR` using `set_univ (Q := I.Q a) B.sp.cm gP S (rowTyG I.Ch I.Ps) B.embLL _ _ (GlobalTheory.Mem.Col2.ChEx.q_conj I hOk a) (under_inj I hOk a) hR0`. Establish `key` using `@lev_set B.fields.F B.fields.E B.fields.K _ _ _ _ (GlobalTheory.Mem.Col2.starE B) _ _ B.sp.cm (B.R.N B.R.m - 1) _ (rankP (I.rec7 l Z)) _ _ _ gX gP _ _ _ S hLb B.R.r B.R.t B.R.m (Formalism.L2.Col.r_le_X' B.R) hr (Formalism.L2.Col.t_pos B.R) (Formalism.L2.Col.rank_X'_eq B.R) (B.pri …`. Use `⟨fun hh => ?_, fun ⟨κ, h1, h2⟩ => ⟨h1, (key _ κ.1 h2).2 κ.2⟩⟩` and prove the remaining obligations.
-
-Take `⟨y, hy⟩` from `exists_copy (rankP (I.rec7 l Z)) (Lev.finE (I.rec7 l Z).sp.X' g)`. Conclude with `⟨⟨y, (key _ y hy).1 hh.2⟩, hh.1, hy⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_levS_of_reads {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (hPins : TC.Pins B X) (l : I.Laws)
     (Z : TC.Later B (I.cols l)) (a : I.ι) {bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))}
@@ -168,13 +166,13 @@ open GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalThe
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Consider the cases of `a with`. Consider the case `mk Dc Sp Zsc lam err lam_eq x pack intersectionNumber_baseChange hκ hv hfw htup htupT hjA hjA0 heMt hPY hPW heFT hIL heE heW hjW heRR`. Consider the cases of `x with`. Consider the case `mk G Pl0 I0 T' A3 core R F cG geo pins err' Y Z' C' sEE div JA amb0 JM mjH`. Consider the cases of `pack`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Establish `key : ∀ g : G0 t.r.z.R.Pg (w.st Z).toD7.R.r, t.r.z.R.eG.symm g ∈ lev1 w.I ↔ ∀ PP (h : PP ∈ (B.primes w.px).vGs) (h' : PP ∈ t.r.z.R.Pg), g ⟨PP, h'⟩ ∈ (TC.Ps w.I ⟨PP, h⟩).H`. Introduce `g`. Establish `e` using `fun PP h h' => t.r.z.idG (t.r.z.R.eG.symm g) PP h h'`. Simplify using `only [MulEquiv.apply_symm_apply] at e`. Use `⟨fun hg PP h h' => ?_, fun hg PP _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e PP h h']`. Conclude with `hg ⟨PP, h⟩ (Set.mem_univ _)`. Establish `h' : PP.1 ∈ t.r.z.R.Pg`. Use `t.r.z.lev.Pg` as an intermediate fact. Conclude with `(congrArg (PP.1 ∈ ·) this).mpr PP.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hg PP.1 PP.2 h'` as an intermediate fact. Rewrite `this` using `[e PP.1 PP.2 h']`. Conclude with `this`. Use `kexactB key g`.
+A detailed English derivation is pending.
 -/
 theorem lev_twArgs {K : Ctx} {B : GlobalTheory.Mem.Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}
     {L : SizeData₂ (w.st Z).toD7} {hT : GatTies (w.st Z).toD7} {Gi : Formalism.MainNotions.G.Inst (w.st Z).toD7 L} {Gl : Formalism.MainNotions.G.LatInst (w.st Z).toD7}
@@ -208,13 +206,11 @@ end Args
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hu` using `GlobalTheory.MiS.Check.used_all (packB b)`. Take `⟨x, a, ax, y, -, -, -, -, -, -, -, -, -⟩` from `hw`. Establish `hx : a.x = x` using `eq_of_heq ax`. Substitute `hx` using the available equality. Take `⟨-, -, hl, -⟩` from `GlobalTheory.Mem.R3.twArgs_lev K q.B q.f q.T q.w q.Z _ _ _ _ _ _ _ _ q.O.ex q.x.what₂ a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ k : Bl.RPk b.R b.S, k = Bl.rpkX y.y → (∀ t, Formalism.IndefR.RecTie.Used0 (q.w.D q.Z) (k.P.I.tup t)) → (letI` using `k.B.alg k.B.Q.Rl.toRealDat.βX = 1 ∧ (∀ t, k.B.Q.Rl.toRealDat.Q t = q.w.I.Q (k.P.I.tup t)) ∧ ∀ g, g ∈ (k.B.Q.Rl.toRealDat.levR k.B.Q.F.lv2 true).H ↔ ∀ PP (h : PP ∈ (q.B.primes q.w.px).vGs) (h' : PP ∈ k.B.Q.Rl.toRealDat.Pg), g ⟨PP, h'⟩ ∈ (GlobalTheory.Mem.Col2.TC.Ps q.w.I ⟨PP, h⟩). …`. Introduce `k hk`. Substitute `hk` using the available equality. Introduce `hu`. Use `letI := a.x.grp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Use `letI := a.x.fin`. Use `letI := a.x.alg`. Use `⟨a.x.pins.keep.beta.2, fun t => ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `eq_of_heq (hl _ (hu t)).1`. Conclude with `(congrArg a.x.R.Q (a.x.Y.tupT_tup t)).symm.trans h1`.
-
-Conclude with `(lev_twArgs a g)`. Conclude with `key (Bl.rpkB b) y.eq hu`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem data_of_bWit {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
     (b : Bundle (q.w.D q.Z) q.O c) (hw : Bl.BWit q b) :
@@ -247,9 +243,9 @@ theorem data_of_bWit {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `hL p K q c b hw u t h g`. Take `⟨hOk, ⟨hPins⟩, -, -, l0, tw, he, ht, -, -, s⟩` from `GlobalTheory.Fam.colsStd_of_bWit q b hw`. Take `⟨hβ, hQ, hH⟩` from `data_of_bWit q b hw`. Establish `hPg : (pk (packB b)).Pg = (q.B.primes q.w.px).vGs` using `Finset.ext (GlobalTheory.Fam.BundleLev.levTrue_packB q b hw).2.1`. Establish `key : ∀ (Tw : TwForms (q.w.D q.Z)) (t' : Formalism.L2.Forms.SymmetricTwistedColumnsAtPrimes (packB b).R.T.n.tp (packB b).R.T.cols Tw), Tw = GlobalTheory.Mem.Col2.TC.tw q.w.I q.w.l l0 q.Z → HEq t' tw → (g ∈ (levS _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t)) ↔ ∃ κ …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ t' rfl rfl`. Conclude with `mem_levS_of_reads q.w.I hOk hPins q.w.l q.Z _ _ (s.what₂ u _ h) _ hβ _ _ hPg (hQ t) _ hH _ _ _ g`. Conclude with `key _ _ he ht`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem levS_iff_cls : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → ∀ (u : (q.w.D q.Z).what₂.Word) (t : (packB b).P.T) (h : (packB b).P.I.tup t ≠ (q.w.D q.Z).what₂.mu0) (g : GA (q.w.D q.Z) (q.w.D q.Z).sp.X'), g ∈ (levS _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t)) ↔ ∃ κ : ((packB b).R.T.tw.pt.cls u ((packB b).P.I.tup t) h).lev.U, GlobalTheory.Core.Rk.Top.HasMat g κ.1 := by
   intro hL p K q c b hw u t h g

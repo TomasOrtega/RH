@@ -5,11 +5,11 @@ open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProd
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Establish `hk : letterKer m F τ ≤ LinearMap.ker (κ'.liftBaseChange F)`. Use `iSup_le fun c => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul z x`. Simplify using `[LinearMap.liftBaseChange_tmul, LinearMap.baseChange_tmul, hκ, smul_smul, mul_comm]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, hx, hy, add_zero]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(letterKer m F τ).liftQ (κ'.liftBaseChange F) hk, fun x => ?_⟩` and prove the remaining obligations. Use `show (letterKer m F τ).liftQ (κ'.liftBaseChange F) hk ((letterKer m F τ).mkQ ((1 : F) ⊗ₜ[LL] x)) = κ' x`. Rewrite using `[Submodule.mkQ_apply, Submodule.liftQ_apply, LinearMap.liftBaseChange_tmul, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem letter_lift {LL U D N : Type} [Field LL] [Field U] [AddCommGroup D] [Module LL D]
     (m : U →+* End LL D) (F : Type) [Field F] [Algebra LL F] (τ : U →+* F)
@@ -31,9 +31,7 @@ private theorem letter_lift {LL U D N : Type} [Field LL] [Field U] [AddCommGroup
   rw [Submodule.mkQ_apply, Submodule.liftQ_apply, LinearMap.liftBaseChange_tmul, one_smul]
 
 /- English proof (translation)
-Introduce `l _ P ι K LL V _ _ _ _ ρ N _ _ κ hadd hsmul hmul`. Use `letI := algC ι LL`. Use `letI : Module ↥LL.1 N := Module.compHom N (algebraMap ↥LL.1 ℂ)`. Use `haveI : IsScalarTower ↥LL.1 ℂ N := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Set `κ' : ↥(Dpst P ρ) →ₗ[↥LL.1] N` to `{ toFun := κ map_add' := hadd map_smul' := fun c x => hsmul c x }`.
-
-Conclude with `letter_lift (mulD P ρ) ℂ (urC ι) κ' (fun c x => hmul c x)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.detWdLift_of :
     WdLift := by

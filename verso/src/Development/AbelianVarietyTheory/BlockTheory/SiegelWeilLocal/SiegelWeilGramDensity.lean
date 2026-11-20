@@ -88,7 +88,7 @@ def SiegelFormula : Prop :=
 def SiegelWeilConvergent : Prop := VolumeFinite ∧ SiegelFormula
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, by simp⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, h, Ne.symm h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 example {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) :
     IsHermND σ (1 : Matrix (Fin M) (Fin M) E) := by

@@ -13,11 +13,9 @@ open scoped Classical
 namespace CombExtendWord
 
 /- English proof (translation)
-Simplify using `only [latticeWords, mem_filter, mem_univ, true_and] at hv ⊢`. Take `⟨hlat, hcont⟩` from `hv`. Use `⟨fun t ht i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Break down `Nat.lt_or_ge t (n + 1) with htn | htn` into its components or cases. Rewrite using `[pcnt_castSucc_snoc _ _ _ (by omega), pcnt_castSucc_snoc _ _ _ (by omega)]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hlat t (by omega) i j hij`. Establish `ht' : t = n + 1` using `by omega`. Substitute `ht'` using the available equality. Rewrite using `[pcnt_snoc_last, pcnt_snoc_last, hcont, hcont, update_pred_sub lam k i hk, update_pred_sub lam k j hk]`. Conclude with `hlam hij`.
-
-Rewrite using `[pcnt_snoc_last, hcont, update_pred_sub lam k i hk]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snoc_mem {m n : ℕ} (lam : Fin m → ℕ) (hlam : Antitone lam) (k : Fin m) (hk : 1 ≤ lam k)
     (v : Fin n → Fin m) (hv : v ∈ latticeWords n (Function.update lam k (lam k - 1))) :
@@ -36,31 +34,29 @@ theorem snoc_mem {m n : ℕ} (lam : Fin m → ℕ) (hlam : Antitone lam) (k : Fi
   · rw [pcnt_snoc_last, hcont, update_pred_sub lam k i hk]
 
 /- English proof (translation)
-Introduce `q`. Proceed by induction on `q with`. Consider the case `zero`. Introduce `lam _ hle hsum`. Establish `heq : ∀ i, μ i = lam i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(Finset.sum_eq_sum_iff_of_le (s := univ) (fun i _ => hle i)).mp (by simpa using hsum.symm)` as an intermediate fact. Conclude with `fun i => this i (mem_univ i)`. Use `⟨Fin.elim0, fun n w hw => ?_⟩` and prove the remaining obligations. Simplify using `only [latticeWords, mem_filter, mem_univ, true_and] at hw ⊢`. Establish `hp : ∀ t i, pcnt (Fin.append w (Fin.elim0 : Fin 0 → Fin m)) t i = pcnt w t i`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `t i`. Rewrite using `[h1]`. Establish `: pcnt (Fin.elim0 : Fin 0 → Fin m) (t - n) i = 0` using `by unfold pcnt; simp`. Use linear arithmetic over natural numbers and integers. Use `⟨fun t ht i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hp, hp]`. Conclude with `hw.1 t ht i j hij`. Rewrite using `[hp, Nat.add_zero, hw.2 i, heq i]`. Consider the case `succ q ih`. Introduce `lam hlam hle hsum`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : (univ.filter (fun i => μ i < lam i)).Nonempty`. Assume the negation of the conclusion as `hemp`. Rewrite `hemp` using `[Finset.not_nonempty_iff_eq_empty, Finset.filter_eq_empty_iff]`. Establish `: ∑ i, lam i ≤ ∑ i, μ i` using `Finset.sum_le_sum fun i _ => not_lt.mp (hemp (mem_univ i))`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hkmax⟩ : ∃ k, μ k < lam k ∧ ∀ j, μ j < lam j → j ≤ k` from `⟨_, (mem_filter.mp (max'_mem _ hne)).2, fun j hj => le_max' _ j (mem_filter.mpr ⟨mem_univ j, hj⟩)⟩`. Establish `hgt : ∀ j, k < j → lam j = μ j`. Introduce `j hj`. Assume the negation of the conclusion as `hne'`. Conclude with `absurd (hkmax j (lt_of_le_of_ne (hle j) (Ne.symm hne'))) (not_le.mpr hj)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hanti : Antitone (Function.update lam k (lam k - 1))`. Introduce `i j hij`. Apply the tactic sequence `by_cases hik : i = k <;> by_cases hjk : j = k`. Rewrite using `[hik, hjk]`. Rewrite using `[hik, Function.update_self, Function.update_of_ne hjk]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkj : k < j` using `lt_of_le_of_ne (hik ▸ hij) (Ne.symm hjk)`. Rewrite using `[hgt j hkj]`. Use `hμ (hik ▸ hij)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hjk, Function.update_self, Function.update_of_ne hik]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hlam (hjk ▸ hij)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_of_ne hik, Function.update_of_ne hjk]`. Conclude with `hlam hij`. Establish `hle' : ∀ i, μ i ≤ Function.update lam k (lam k - 1) i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Distinguish the cases in `hik : i = k`. Rewrite using `[hik, Function.update_self]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_of_ne hik]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hle i`. Establish `hsum' : ∑ i, Function.update lam k (lam k - 1) i = ∑ i, μ i + q`. Establish `h2 : ∀ i, Function.update lam k (lam k - 1) i + (if k = i then 1 else 0) = lam i` using `fun i => update_pred_sub lam k i (by omega)`. Establish `: ∑ i, lam i = ∑ i, Function.update lam k (lam k - 1) i + 1`. Rewrite using `[← Finset.sum_congr rfl (fun i _ => h2 i), Finset.sum_add_distrib, Finset.sum_ite_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Take `⟨s', hs'⟩` from `ih _ hanti hle' hsum'`. Use `⟨Fin.snoc s' k, fun n w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.append_snoc]`.
-
-Conclude with `snoc_mem lam hlam k (by omega) _ (hs' n w hw)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_word {m : ℕ} (h1 : CombPcntAppend.Statement) (μ : Fin m → ℕ) (hμ : Antitone μ) :
     ∀ (q : ℕ) (lam : Fin m → ℕ), Antitone lam → (∀ i, μ i ≤ lam i) →
@@ -131,7 +127,7 @@ theorem exists_word {m : ℕ} (h1 : CombPcntAppend.Statement) (μ : Fin m → �
     exact snoc_mem lam hlam k (by omega) _ (hs' n w hw)
 
 /- English proof (translation)
-Introduce `m n q μ lam hμ hlam hle hsum`. Take `⟨s, hs⟩` from `exists_word h1 μ hμ q lam hlam hle hsum`. Conclude with `⟨s, hs n⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem proof (h1 : CombPcntAppend.Statement) : CombExtendWord.Statement := by
   intro m n q μ lam hμ hlam hle hsum

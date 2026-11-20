@@ -73,9 +73,9 @@ def sandwich (B A : Matrix (Fin m) (Fin m) E) :
   map_smul' c X := by simp only [Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply]
 
 /- English proof (translation)
-Set `c : (Fin m × Fin m → E) ≃ₗ[E] Matrix (Fin m) (Fin m) E` to `{ toFun := fun v => Matrix.of fun i j => v (i, j) invFun := fun X k => X k.1 k.2 map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `h : sandwich B A = (c : _ →ₗ[E] _) ∘ₗ Matrix.toLin' (B ⊗ₖ A.transpose) ∘ₗ (c.symm : _ →ₗ[E] _)`. Use `LinearMap.ext fun X => ?_` and prove the remaining obligations. Use extensionality with `i j`. Use `show (B * X * A) i j = ∑ k : Fin m × Fin m, (B i k.1 * A k.2 j) * X k.1 k.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Fintype.sum_prod_type, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring` and prove the remaining obligations. Rewrite using `[h, LinearMap.det_conj, LinearMap.det_toLin', Matrix.det_kronecker, Matrix.det_transpose, Fintype.card_fin, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_sandwich (B A : Matrix (Fin m) (Fin m) E) :
     LinearMap.det (sandwich B A) = (B.det * A.det) ^ m := by
@@ -97,11 +97,11 @@ theorem det_sandwich (B A : Matrix (Fin m) (Fin m) E) :
     Fintype.card_fin, mul_pow]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.det_toMatrix' f, ← LinearMap.det_toMatrix' g, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Use `congrFun (h (Pi.single j 1)) i` as an intermediate fact. Establish `h2 : (fun k => algebraMap F E ((Pi.single j 1 : ι → F) k)) = Pi.single j 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[h2]`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, LinearMap.toMatrix'_apply]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_of_comm {F : Type} [Field F] [Algebra F E] {ι : Type} [Fintype ι] [DecidableEq ι]
     (f : (ι → F) →ₗ[F] (ι → F)) (g : (ι → E) →ₗ[E] (ι → E))
@@ -126,16 +126,16 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h i j => congrFun (congrFun h i) j, fun h => funext fun i => funext fun j => h i j⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHerm_iff (L : LocE F E) {m : ℕ} (X : Matrix (Fin m) (Fin m) E) :
     IsHerm L X ↔ ∀ i j, L.cj (X j i) = X i j :=
   ⟨fun h i j => congrFun (congrFun h i) j, fun h => funext fun i => funext fun j => h i j⟩
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => AddSubgroup.subset_closure h⟩` and prove the remaining obligations. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨(isHerm_iff L _).2 (by simp), fun i j => L.O.zero_mem⟩`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `⟨(isHerm_iff L _).2 fun i j => ?_, fun i j => L.O.add_mem (hx.2 i j) (hy.2 i j)⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, Matrix.add_apply, map_add, (isHerm_iff L _).1 hx.1, (isHerm_iff L _).1 hy.1]`. Consider the case `neg x _ hx`. Use `⟨(isHerm_iff L _).2 fun i j => ?_, fun i j => L.O.neg_mem (hx.2 i j)⟩` and prove the remaining obligations. Rewrite using `[Matrix.neg_apply, Matrix.neg_apply, map_neg, (isHerm_iff L _).1 hx.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_hermLat_iff (L : LocE F E) (m : ℕ) (X : Matrix (Fin m) (Fin m) E) :
     X ∈ hermLat L m ↔ IsHerm L X ∧ IsIntM L X := by
@@ -152,7 +152,7 @@ theorem mem_hermLat_iff (L : LocE F E) (m : ℕ) (X : Matrix (Fin m) (Fin m) E) 
     rw [Matrix.neg_apply, Matrix.neg_apply, map_neg, (isHerm_iff L _).1 hx.1]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [cT, Matrix.mul_apply, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cT_mul (L : LocE F E) {m : ℕ} (X Y : Matrix (Fin m) (Fin m) E) :
     cT L (X * Y) = cT L Y * cT L X := by
@@ -161,14 +161,14 @@ theorem cT_mul (L : LocE F E) {m : ℕ} (X Y : Matrix (Fin m) (Fin m) E) :
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `L.cj_cj _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cT_cT (L : LocE F E) {m : ℕ} (X : Matrix (Fin m) (Fin m) E) : cT L (cT L X) = X := by
   ext i j
   exact L.cj_cj _
 
 /- English proof (translation)
-Rewrite using `[AlgEquiv.map_det, ← Matrix.det_transpose]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_cT (L : LocE F E) {m : ℕ} (X : Matrix (Fin m) (Fin m) E) :
     (cT L X).det = L.cj X.det := by
@@ -176,7 +176,7 @@ theorem det_cT (L : LocE F E) {m : ℕ} (X : Matrix (Fin m) (Fin m) E) :
   rfl
 
 /- English proof (translation)
-Unfold `IsHerm at hX ⊢`. Rewrite using `[cT_mul, cT_mul, cT_cT, hX, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHerm_congr (L : LocE F E) {m : ℕ} (A X : Matrix (Fin m) (Fin m) E) (hX : IsHerm L X) :
     IsHerm L (cT L A * X * A) := by
@@ -184,7 +184,7 @@ theorem isHerm_congr (L : LocE F E) {m : ℕ} (A X : Matrix (Fin m) (Fin m) E) (
   rw [cT_mul, cT_mul, cT_cT, hX, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `(isHerm_iff L _).2 fun i j => ?_` and prove the remaining obligations. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Simplify using `[coord_apply, hij, hij.not_gt, L.cj_cj]`. Simplify using `[coord_apply]`. Simplify using `[coord_apply, hij, hij.not_gt]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isHerm_coord (L : LocE F E) {m : ℕ} {ω e : E} (h : (ω - L.cj ω) * e = 1)
     (v : Fin m × Fin m → F) : IsHerm L (coord m ω (L.cj ω) e h fun k => algebraMap F E (v k)) := by
@@ -195,11 +195,11 @@ theorem isHerm_coord (L : LocE F E) {m : ℕ} {ω e : E} (h : (ω - L.cj ω) * e
   · simp [coord_apply, hij, hij.not_gt]
 
 /- English proof (translation)
-Establish `he' : (L.cj ω - ω) * L.cj e = 1` using `by simpa [L.cj_cj] using congrArg L.cj h`. Establish `hce : L.cj e = -e` using `by linear_combination (-e) * he' - (L.cj e) * h`. Rewrite using `[← L.cj_fix]`. Take `⟨i, j⟩` from `k`. Establish `h1` using `(isHerm_iff L X).1 hX i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `(isHerm_iff L X).1 hX j i`. Rewrite using `[coord_symm_apply]`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Simplify using `only [hij, if_true, map_sub, map_mul, hce, h1, h2]`. Take the linear combination `(X i j - X j i) * h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `[h1]`. Simplify using `only [hij, hij.not_gt, if_true, if_false, map_sub, map_mul, hce, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_coord (L : LocE F E) {m : ℕ} {ω e : E} (h : (ω - L.cj ω) * e = 1)
     (X : Matrix (Fin m) (Fin m) E) (hX : IsHerm L X) (k : Fin m × Fin m) :
@@ -219,39 +219,33 @@ theorem exists_coord (L : LocE F E) {m : ℕ} {ω e : E} (h : (ω - L.cj ω) * e
     ring
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L ϖ hϖ m A hA`. Use `⟨mem_hermLat_iff L m, fun B hB => ?_⟩` and prove the remaining obligations. Take `⟨ω, hω, e, he, h⟩` from `GlobalTheory.UnramOrder.exists_sub_cj_mul_eq_one L`. Establish `hinj` using `GlobalTheory.UnramOrder.algebraMap_inj L`. Establish `hA' : IsUnit (cT L A).det` using `by rw [det_cT]; exact hA.map L.cj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : Matrix (Fin m) (Fin m) E ≃+ Matrix (Fin m) (Fin m) E` to `{ toFun := fun X => cT L A * X * A invFun := fun X => (cT L A)⁻¹ * X * A⁻¹ left_inv := fun X => by`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hA', Matrix.nonsing_inv_mul_cancel_left _ _ hA', Matrix.mul_nonsing_inv _ hA, Matrix.mul_one]`. Use `right_inv := fun X => by`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hA', Matrix.nonsing_inv_mul _ hA, Matrix.mul_one]`. Use the proof step `map_add' := fun X Y => by rw [Matrix.mul_add, Matrix.add_mul] }`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set T := coord m ω (L.cj ω) e h with hT`. Take `⟨r, hr⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap F E) (LinearMap.ker_eq_bot.2 hinj)`. Establish `hr' : ∀ a : F, r (algebraMap F E a) = a` using `fun a => LinearMap.congr_fun hr a`. Set `g : (Fin m × Fin m → E) →ₗ[E] (Fin m × Fin m → E)` to `(T.symm : _ →ₗ[E] _) ∘ₗ sandwich (cT L A) A ∘ₗ (T.symm.symm : _ →ₗ[E] _)`. Set `ι : (Fin m × Fin m → F) →ₗ[F] (Fin m × Fin m → E)` to `(Algebra.linearMap F E).compLeft _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : (Fin m × Fin m → F) →ₗ[F] (Fin m × Fin m → F)` to `r.compLeft _ ∘ₗ g.restrictScalars F ∘ₗ ι`. Establish `hfg : ∀ v, g (fun k => algebraMap F E (v k)) = fun k => algebraMap F E (f v k)`. Introduce `v`. Use function extensionality and compare the values at `k`. Take `⟨a, ha⟩` from `exists_coord L h _ (isHerm_congr L A _ (isHerm_coord L h v)) k`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : g (fun k => algebraMap F E (v k)) k = algebraMap F E a` using `ha.symm`. Establish `h2 : f v k = r (g (fun k => algebraMap F E (v k)) k)` using `rfl`. Rewrite using `[h2, h1, hr']`. Take `⟨n, hn⟩` from `(L.cj_fix (A.det * L.cj A.det)).1 (by rw [map_mul, L.cj_cj, mul_comm])`. Establish `hn0 : n ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Establish `: Nontrivial E` using `hinj.nontrivial`. Conclude with `(hA.mul (hA.map L.cj)).ne_zero (by rw [← hn, map_zero])`. Establish `hdet : LinearMap.det f = n ^ m`. Apply `hinj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[det_of_comm f g hfg, LinearMap.det_conj, det_sandwich, det_cT, map_pow, hn, mul_comm]`. Take `⟨u, hu⟩` from `(GlobalTheory.UnramVal.vE_valuation L ϖ hϖ).2.2.2 n hn0`. Rewrite `hu` using `[hn]`. Set `f' : (Fin m × Fin m → F) ≃ₗ[F] (Fin m × Fin m → F)` to `LinearMap.equivOfIsUnitDet (f := f) (by rw [hdet]; exact (pow_ne_zero _ hn0).isUnit)`. Establish `hf' : (f' : _ →ₗ[F] _) = f` using `LinearMap.coe_equivOfIsUnitDet _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Set `W0 : AddSubgroup (Fin m × Fin m → F)` to `AddSubgroup.pi Set.univ fun _ => (𝒪[F]).toAddSubgroup`. Establish `hW0 : ∀ x, x ∈ W0 ↔ ∀ i, x i ∈ 𝒪[F]` using `fun x => by simp [W0, AddSubgroup.mem_pi]`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.relative_lattice_volume_of_det_valuation ϖ hϖ (Pi.basisFun F (Fin m × Fin m)) f' (vE L ϖ (A.det * L.cj A.det) * m) (u ^ m) (by`. Rewrite using `[hf', hdet, zpow_mul, zpow_natCast]`. Use `conv_lhs => rw [hu]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[mul_pow]`. Use the proof step `simp) W0 (fun x => by simpa using hW0 x)`. Set `j : (Fin m × Fin m → F) →+ Matrix (Fin m) (Fin m) E` to `T.toAddEquiv.toAddMonoidHom.comp ι.toAddMonoidHom`. Establish `hj : ∀ v, j v = T fun k => algebraMap F E (v k)` using `fun _ => rfl`. Establish `hjinj : Function.Injective j` using `fun v w hvw =>`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use function extensionality and compare the values at `fun k => hinj (congrFun (T.injective hvw) k)`. Establish `hcj` using `GlobalTheory.UnramOrder.cj_mem L hω`. Establish `hlat : hermLat L m = W0.map j`. Use extensionality with `X`. Rewrite using `[mem_hermLat_iff, AddSubgroup.mem_map]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hX, hI⟩ choose v hv using exists_coord L h X hX`. Use `⟨v, (hW0 v).2 fun ⟨a, b⟩ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.UnramOrder.algebraMap_mem_iff L, hv, coord_symm_apply] split_ifs`. Conclude with `L.O.sub_mem (hI _ _) (L.O.mul_mem hω (L.O.mul_mem he (L.O.sub_mem (hI _ _) (hI _ _))))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `L.O.mul_mem he (L.O.sub_mem (hI _ _) (hI _ _))`. Conclude with `hI _ _`. Rewrite using `[hj, funext hv]`. Conclude with `T.apply_symm_apply X`. Introduce and unpack `⟨v, hv, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv' : ∀ k, algebraMap F E (v k) ∈ L.O` using `fun k => (GlobalTheory.UnramOrder.algebraMap_mem_iff L _).2 ((hW0 v).1 hv k)`. Use `⟨isHerm_coord L h v, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[hj, coord_apply]`. Use `split_ifs`. Conclude with `L.O.add_mem (hv' _) (L.O.mul_mem hω (hv' _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `L.O.add_mem (hv' _) (L.O.mul_mem hcj (hv' _))`. Conclude with `hv' _`. Establish `hmap : (hermLat L m).map φ.toAddMonoidHom = (W0.map f'.toAddEquiv.toAddMonoidHom).map j`. Rewrite using `[hlat, AddSubgroup.map_map, AddSubgroup.map_map]`. Use `congr 1`.
-
-Use `AddMonoidHom.ext fun v => ?_` and prove the remaining obligations. Establish `h4 : f' v = f v` using `LinearMap.congr_fun hf' v`. Use `show cT L A * j v * A = j (f' v)`. Rewrite using `[h4, hj, hj, ← hfg]`. Conclude with `(T.apply_symm_apply _).symm`.
-
-Establish `e1 : ((hermLat L m).map φ.toAddMonoidHom).relIndex (hermLat L m) = (W0.map f'.toAddEquiv.toAddMonoidHom).relIndex W0`. Rewrite using `[hmap, hlat, AddSubgroup.relIndex_map_map_of_injective _ _ hjinj]`. Establish `e2 : (hermLat L m).relIndex ((hermLat L m).map φ.toAddMonoidHom) = W0.relIndex (W0.map f'.toAddEquiv.toAddMonoidHom)`. Rewrite using `[hmap, hlat, AddSubgroup.relIndex_map_map_of_injective _ _ hjinj]`. Take `⟨h5, h6⟩` from `GlobalTheory.HL.ContAut.cont_image (hermLat L m) φ (e1 ▸ h1) (e2 ▸ h2) B hB`.
-
-Use `⟨h5, h6.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← h3, relVol, relVol, e1, e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_congr : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (ϖ : 𝒪[F]), Irreducible ϖ → ∀ (m : ℕ) (A : Matrix (Fin m) (Fin m) E), IsUnit A.det → (∀ X, X ∈ hermLat L m ↔ IsHerm L X ∧ IsIntM L X) ∧ ∀ B, IsCO (hermLat L m) B → IsCO (hermLat L m) ((fun X => cT L A * X * A) '' B) ∧ cont (hermLat L m) ((fun X => cT L A * X * A) '' B) = (resQ ϖ : ℝ) ^ (-(vE L ϖ (A.det * L.cj A.det) * m)) * cont (hermLat L m) B := by
   intro F _ _ _ _ _ E _ _ _ L ϖ hϖ m A hA

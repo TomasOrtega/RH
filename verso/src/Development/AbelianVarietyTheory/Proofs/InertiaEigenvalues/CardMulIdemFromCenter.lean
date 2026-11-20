@@ -9,13 +9,13 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 namespace GlobalTheory.CentralIdem
 
 /- English proof (translation)
-Use `choose c hc using hr`. Set `z : MonoidAlgebra A Γ` to `MonoidAlgebra.ofCoeff (Finsupp.equivFunOnFinite.symm c)`. Establish `hz : ∀ h, f (z.coeff h) = x.coeff h` using `fun h => hc h`. Establish `hco : ∀ (y : MonoidAlgebra A Γ) h, (MonoidAlgebra.mapRingHom Γ f y).coeff h = f (y.coeff h)`. Introduce `y h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hinj : Function.Injective (MonoidAlgebra.mapRingHom Γ f)`. Introduce `a b hab`. Use extensionality with `h`. Apply `hf` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hco, ← hco, hab]`. Establish `hzx : MonoidAlgebra.mapRingHom Γ f z = x`. Use extensionality with `h`. Rewrite using `[hco, hz]`. Use `⟨z, ?_, hz⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `b`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, hzx, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_central_lift {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
     (hf : Function.Injective f) {Γ : Type} [Group Γ] [Finite Γ] (x : MonoidAlgebra B Γ)
@@ -41,11 +41,11 @@ theorem exists_central_lift {A B : Type} [CommRing A] [CommRing B] (f : A →+* 
   rw [map_mul, map_mul, hzx, hx]
 
 /- English proof (translation)
-Introduce `D i Γ _ _ e he hc ⟨ζ, hζ⟩`. Establish `hinj : Function.Injective (iotaO D.nd D.naut i)` using `((D.naut.iotaQC i).injective.comp (D.naut.iotaQ i).injective).comp (IsFractionRing.injective _ _)`. Establish `hco : ∀ h, ((Nat.card Γ : ℂ) • e).coeff h = (Nat.card Γ : ℂ) * e.coeff h`. Introduce `h`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨z, hz, hz'⟩` from `exists_central_lift (iotaO D.nd D.naut i) hinj ((Nat.card Γ : ℂ) • e) (fun z => by rw [smul_mul_assoc, mul_smul_comm, hc]) (fun h => by`. Rewrite using `[hco]`. Establish `h1` using `centralIdemCoeff Γ e he hc _ hζ h`. Establish `h2 : Algebra.adjoin ℤ ({iotaO D.nd D.naut i ζ} : Set ℂ) ≤ subalgebraOfSubring (iotaO D.nd D.naut i).range` using `Algebra.adjoin_le (by rintro _ rfl; exact ⟨ζ, rfl⟩)`. Conclude with `h2 h1)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨z, hz, fun h => by rw [hz', hco]⟩`.
+A detailed English derivation is pending.
 -/
 theorem card_mul_idem_from_center : ∀ (D : D7) (i : D.nd.Loc) (Γ : Type) [Group Γ] [Finite Γ] (e : MonoidAlgebra ℂ Γ), e * e = e → (∀ z, e * z = z * e) → (∃ ζ : D.nd.O i, IsPrimitiveRoot (iotaO D.nd D.naut i ζ) (Nat.card Γ)) → ∃ z ∈ Subalgebra.center (D.nd.O i) (MonoidAlgebra (D.nd.O i) Γ), ∀ h : Γ, iotaO D.nd D.naut i (MonoidAlgebra.coeff z h) = (Nat.card Γ : ℂ) * e.coeff h := by
   intro D i Γ _ _ e he hc ⟨ζ, hζ⟩

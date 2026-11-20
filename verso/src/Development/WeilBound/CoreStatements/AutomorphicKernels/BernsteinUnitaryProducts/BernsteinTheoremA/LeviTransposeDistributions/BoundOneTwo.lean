@@ -12,7 +12,7 @@ section Levi
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show ((glEmb k n g : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)ᵀ = glEmbMat k n ((g : Matrix (Fin n) (Fin n) k)ᵀ)`. Use extensionality with `i j`. Apply the tactic sequence `induction i using Fin.lastCases <;> induction j using Fin.lastCases <;>`. Simplify using `[glEmb, glEmbHom, glEmbMat]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trGL_glEmb (n : ℕ) (g : GL (Fin n) k) : trGL (glEmb k n g) = glEmb k n (trGL g) := by
   apply Units.ext
@@ -23,7 +23,7 @@ theorem trGL_glEmb (n : ℕ) (g : GL (Fin n) k) : trGL (glEmb k n g) = glEmb k n
     simp [glEmb, glEmbHom, glEmbMat]
 
 /- English proof (translation)
-Rewrite using `[eq_inv_iff_mul_eq_one, ← trGL_mul, mul_inv_cancel]`. Conclude with `Units.ext (by show ((1 : GL (Fin m) k) : Matrix (Fin m) (Fin m) k)ᵀ = 1; simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trGL_inv' {m : ℕ} (g : GL (Fin m) k) : trGL g⁻¹ = (trGL g)⁻¹ := by
   rw [eq_inv_iff_mul_eq_one, ← trGL_mul, mul_inv_cancel]
@@ -36,9 +36,9 @@ section Top
 variable {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalDivisionRing k] {m : ℕ}
 
 /- English proof (translation)
-Use `Units.isEmbedding_val_mk' (f := Inv.inv) ?_ ?_` and prove the remaining obligations. Introduce `A hA`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Apply `continuousAt_matrix_inv` to reduce the goal to its premises. Establish `hd : A.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det A).1 hA).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ hd`. Introduce `u`. Conclude with `(Matrix.coe_units_inv u).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isEmbedding_valGL : IsEmbedding (Units.val : GL (Fin m) k → Matrix (Fin m) (Fin m) k) := by
   refine Units.isEmbedding_val_mk' (f := Inv.inv) ?_ ?_
@@ -52,9 +52,9 @@ theorem isEmbedding_valGL : IsEmbedding (Units.val : GL (Fin m) k → Matrix (Fi
     exact (Matrix.coe_units_inv u).symm
 
 /- English proof (translation)
-Use extensionality with `A`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 u.isUnit).ne_zero`. Introduce `h`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨((Matrix.isUnit_iff_isUnit_det A).2 (isUnit_iff_ne_zero.2 h)).unit, IsUnit.unit_spec _⟩`.
+A detailed English derivation is pending.
 -/
 theorem range_valGL :
     Set.range (Units.val : GL (Fin m) k → Matrix (Fin m) (Fin m) k) = {A | A.det ≠ 0} := by
@@ -68,7 +68,7 @@ theorem range_valGL :
 variable [T2Space k]
 
 /- English proof (translation)
-The claim follows from `isEmbedding_valGL isOpen_range := by rw [range_valGL] exact isOpen_ne_fun (continuous_id.matrix_det) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isOpenEmbedding_valGL :
     IsOpenEmbedding (Units.val : GL (Fin m) k → Matrix (Fin m) (Fin m) k) where
@@ -83,21 +83,19 @@ def extZ (φ : SB (GL (Fin m) k)) : Matrix (Fin m) (Fin m) k → ℂ :=
   fun y => if h : IsUnit y then φ.1 h.unit else 0
 
 /- English proof (translation)
-Rewrite using `[extZ, dif_pos u.isUnit, IsUnit.unit_of_val_units]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extZ_val (φ : SB (GL (Fin m) k)) (u : GL (Fin m) k) : extZ φ u.val = φ.1 u := by
   rw [extZ, dif_pos u.isUnit, IsUnit.unit_of_val_units]
 
 /- English proof (translation)
-Establish `hE` using `isOpenEmbedding_valGL (k := k) (m := m)`. Establish `hK : IsCompact (Units.val '' tsupport φ.1)` using `φ.2.2.isCompact.image hE.continuous`. Establish `hKc : IsClosed (Units.val '' tsupport φ.1)` using `hK.isClosed`. Establish `hzero : ∀ y, y ∉ Units.val '' tsupport φ.1 → extZ φ y = 0`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `extZ`. Use `split_ifs with h`. Conclude with `image_eq_zero_of_notMem_tsupport (fun hm => hy ⟨h.unit, hm, h.unit_spec⟩)`. Both sides reduce to the same expression. Use `⟨?_, HasCompactSupport.intro' hK hKc hzero⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `y`. Distinguish the cases in `hy : IsUnit y`. Take `⟨u, rfl⟩` from `hy`. Establish `hφ` using `(IsLocallyConstant.iff_eventually_eq _).1 φ.2.1 u`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hE.map_nhds_eq, Filter.eventually_map]`. Use `filter_upwards [hφ] with u' hu'`. Rewrite using `[extZ_val, extZ_val, hu']`. Establish `hy' : y ∉ Units.val '' tsupport φ.1`. Introduce and unpack `⟨u, -, rfl⟩`.
-
-Conclude with `hy u.isUnit`. Use `filter_upwards [hKc.isOpen_compl.mem_nhds hy'] with y' hy''`. Rewrite using `[hzero y' hy'', hzero y hy']`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extZ_mem (φ : SB (GL (Fin m) k)) : extZ φ ∈ SB (Matrix (Fin m) (Fin m) k) := by
   have hE := isOpenEmbedding_valGL (k := k) (m := m)
@@ -130,17 +128,15 @@ def cutFun (U : Set k) (ψ : SB (Matrix (Fin m) (Fin m) k)) : GL (Fin m) k → �
   fun x => if (x.val).det ∈ U then ψ.1 x.val else 0
 
 /- English proof (translation)
-Establish `hdet : Continuous fun x : GL (Fin m) k => (x.val).det` using `Units.continuous_val.matrix_det`. Prove the components needed by the constructor for the conclusion. Establish `h1 : IsLocallyConstant (fun x : GL (Fin m) k => ψ.1 x.val)` using `ψ.2.1.comp_continuous Units.continuous_val`. Rewrite `h1`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hx : (x.val).det ∈ U`. Establish `h2 : ∀ᶠ x' in 𝓝 x, (x'.val).det ∈ U` using `hdet.continuousAt.preimage_mem_nhds (hU.isOpen.mem_nhds hx) filter_upwards [h2, h1 x] with x' hx' h'`. Simplify using `only [cutFun, if_pos hx, if_pos hx', h']`. Establish `h2 : ∀ᶠ x' in 𝓝 x, (x'.val).det ∈ Uᶜ` using `hdet.continuousAt.preimage_mem_nhds (hU.isClosed.isOpen_compl.mem_nhds hx) filter_upwards [h2] with x' hx'`. Establish `hx'' : (x'.val).det ∉ U` using `hx'`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [cutFun, if_neg hx, if_neg hx'']`. Establish `hK : IsCompact (tsupport ψ.1 ∩ (fun A : Matrix (Fin m) (Fin m) k => A.det) ⁻¹' U)` using `ψ.2.2.isCompact.inter_right (hU.isClosed.preimage continuous_id.matrix_det)`. Establish `hKr : tsupport ψ.1 ∩ (fun A : Matrix (Fin m) (Fin m) k => A.det) ⁻¹' U ⊆ Set.range (Units.val : GL (Fin m) k → Matrix (Fin m) (Fin m) k)`. Introduce `A hA`. Rewrite using `[range_valGL]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show A.det ≠ 0`. Introduce `h`. Establish `hA2 : A.det ∈ U` using `hA.2`. Rewrite `hA2` using `[h]`. Conclude with `h0 hA2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK'` using `isEmbedding_valGL.isInducing.isCompact_preimage' hK hKr`. Use `HasCompactSupport.intro' hK' (hK.isClosed.preimage Units.continuous_val) ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [cutFun]`. Use `split_ifs with h`.
-
-Conclude with `image_eq_zero_of_notMem_tsupport (fun hm => hx ⟨hm, h⟩)`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cutFun_mem (U : Set k) (hU : IsClopen U) (h0 : (0 : k) ∉ U) (ψ : SB (Matrix (Fin m) (Fin m) k)) :
     cutFun U ψ ∈ SB (GL (Fin m) k) := by
@@ -202,7 +198,7 @@ section Dist
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Apply `IsTopologicalAddGroup.t2Space_of_zero_sep` to reduce the goal to its premises. Introduce `x hx`. Use `⟨{y | valuation k y < valuation k x}, (IsValuativeTopology.hasBasis_nhds_zero' k).mem_of_mem ((valuation k).ne_zero_iff.2 hx), ?_⟩` and prove the remaining obligations. Conclude with `fun h => lt_irrefl (valuation k x) h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem t2Space_local : T2Space k := by
   apply IsTopologicalAddGroup.t2Space_of_zero_sep
@@ -212,11 +208,11 @@ theorem t2Space_local : T2Space k := by
   exact fun h => lt_irrefl (valuation k x) h
 
 /- English proof (translation)
-Use `t2Space_local (k := k)` as an intermediate fact. Establish `hCc : Cᶜ ∈ 𝓝 (0 : k)` using `hC.isClosed.isOpen_compl.mem_nhds h0`. Take `⟨γ, hγ, hsub⟩` from `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.1 hCc`. Set `W : AddSubgroup k` to `{ carrier := {x | valuation k x < γ} add_mem' := fun {a b} ha hb => show valuation k (a + b) < γ from lt_of_le_of_lt ((valuation k).map_add a b) (max_lt ha hb) zero_mem' := by show valuation k 0 < γ`. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_lt_iff.2 hγ`. Use the proof step `neg_mem' := fun {a} ha => by show valuation k (-a) < γ`. Rewrite using `[Valuation.map_neg]`. Conclude with `ha }`. Establish `hWn : (W : Set k) ∈ 𝓝 (0 : k)` using `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_of_mem hγ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hWo : IsOpen (W : Set k)` using `AddSubgroup.isOpen_of_mem_nhds W hWn`. Use `⟨(W : Set k)ᶜ, ⟨hWo.isClosed_compl, (AddSubgroup.isClosed_of_isOpen W hWo).isOpen_compl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc hcW`. Conclude with `hsub hcW hc`. Conclude with `fun h => h W.zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_clopen_local (C : Set k) (hC : IsCompact C) (h0 : (0 : k) ∉ C) :
     ∃ U : Set k, IsClopen U ∧ C ⊆ U ∧ (0 : k) ∉ U := by
@@ -250,9 +246,9 @@ def NoSignDistGL (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
     (∀ g : GL (Fin n) k, ConjInv T (glEmb k n g)) → TrAnti T → T = 0
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h φ`. Conclude with `h φ _ fun x y hy => by`. Establish `: y = trGL x` using `Units.ext hy`. Rewrite using `[this]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `h φ ψ hψ`. Establish `e : ψ = pull trHomeo φ` using `Subtype.ext (funext fun x => hψ x (trGL x) rfl)`. Rewrite using `[e]`. Conclude with `h φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trInv_iff {m : ℕ} (T : SB (GL (Fin m) k) →ₗ[ℂ] ℂ) :
     TrInv T ↔ ∀ φ, T (pull trHomeo φ) = T φ := by
@@ -268,9 +264,9 @@ theorem trInv_iff {m : ℕ} (T : SB (GL (Fin m) k) →ₗ[ℂ] ℂ) :
     exact h φ
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h φ`. Conclude with `h φ _ fun x y hy => by`. Establish `: y = trGL x` using `Units.ext hy`. Rewrite using `[this]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `h φ ψ hψ`. Establish `e : ψ = pull trHomeo φ` using `Subtype.ext (funext fun x => hψ x (trGL x) rfl)`. Rewrite using `[e]`. Conclude with `h φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trAnti_iff {m : ℕ} (T : SB (GL (Fin m) k) →ₗ[ℂ] ℂ) :
     TrAnti T ↔ ∀ φ, T (pull trHomeo φ) = -T φ := by
@@ -286,13 +282,13 @@ theorem trAnti_iff {m : ℕ} (T : SB (GL (Fin m) k) →ₗ[ℂ] ℂ) :
     exact h φ
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem pull_tr_tr {m : ℕ} (φ : SB (GL (Fin m) k)) : pull trHomeo (pull trHomeo φ) = φ :=
   Subtype.ext (funext fun _ => rfl)
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Use `show φ.1 (g * trGL x * g⁻¹) = φ.1 (trGL ((trGL g)⁻¹ * x * (trGL g)⁻¹⁻¹))`. Use `congr 1`. Simplify using `only [inv_inv, trGL_mul, trGL_inv', trGL_trGL, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pull_tr_conj {m : ℕ} (g : GL (Fin m) k) (φ : SB (GL (Fin m) k)) :
     pull trHomeo (pull (conjHomeo g) φ) = pull (conjHomeo (trGL g)⁻¹) (pull trHomeo φ) := by
@@ -302,13 +298,13 @@ theorem pull_tr_conj {m : ℕ} (g : GL (Fin m) k) (φ : SB (GL (Fin m) k)) :
   simp only [inv_inv, trGL_mul, trGL_inv', trGL_trGL, mul_assoc]
 
 /- English proof (translation)
-Introduce `n hn T hT`. Establish `hL : ∀ g : GL (Fin n) k, ConjInv (T - T ∘ₗ pull trHomeo) (glEmb k n g)`. Introduce `g`. Rewrite using `[conjInv_iff]`. Introduce `φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(conjInv_iff T _).1 (hT g) φ`. Establish `h2` using `(conjInv_iff T _).1 (hT (trGL g)⁻¹) (pull trHomeo φ)`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply]`. Rewrite using `[pull_tr_conj, trGL_glEmb, ← map_inv, h2, h1]`. Establish `hA : TrAnti (T - T ∘ₗ pull trHomeo)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[trAnti_iff]`. Introduce `φ`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, pull_tr_tr]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `h n hn _ hL hA`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[trInv_iff]`. Introduce `φ`. Use `congrArg (fun L : SB (GL (Fin (n + 1)) k) →ₗ[ℂ] ℂ => L φ) h0` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.zero_apply] at this`. Conclude with `(sub_eq_zero.1 this).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviTransposeInv_of_noSignDistGL (h : NoSignDistGL k) : LeviTransposeInv k := by
   intro n hn T hT
@@ -333,9 +329,9 @@ theorem leviTransposeInv_of_noSignDistGL (h : NoSignDistGL k) : LeviTransposeInv
   exact (sub_eq_zero.1 this).symm
 
 /- English proof (translation)
-Introduce `n hn T hL hA`. Establish `hT` using `(trInv_iff T).1 (h n hn T hL)`. Establish `hA'` using `(trAnti_iff T).1 hA`. Use `LinearMap.ext fun φ => ?_` and prove the remaining obligations. Establish `e : T φ = -T φ` using `by rw [← hA' φ, hT φ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.zero_apply]`. Take the linear combination `e / 2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem noSignDistGL_of_leviTransposeInv (h : LeviTransposeInv k) : NoSignDistGL k := by
   intro n hn T hL hA
@@ -347,7 +343,7 @@ theorem noSignDistGL_of_leviTransposeInv (h : LeviTransposeInv k) : NoSignDistGL
   linear_combination e / 2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨leviTransposeInv_of_noSignDistGL, noSignDistGL_of_leviTransposeInv⟩`.
+Supply the required witnesses or components.
 -/
 theorem noSignDistGL_iff : NoSignDistGL k ↔ LeviTransposeInv k :=
   ⟨leviTransposeInv_of_noSignDistGL, noSignDistGL_of_leviTransposeInv⟩
@@ -365,7 +361,7 @@ def NoSignDistGl (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
     (∀ g : GL (Fin n) k, ConjInvM T (glEmb k n g)) → TrAntiM T → T = 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.coe_units_inv, Matrix.det_conj h.isUnit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_conj_val {m : ℕ} (h x : GL (Fin m) k) :
     ((h : Matrix (Fin m) (Fin m) k) * (x : Matrix (Fin m) (Fin m) k) *
@@ -373,26 +369,26 @@ theorem det_conj_val {m : ℕ} (h x : GL (Fin m) k) :
   rw [Matrix.coe_units_inv, Matrix.det_conj h.isUnit]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, det_conj_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_conj_gl {m : ℕ} (h x : GL (Fin m) k) :
     (((h * x * h⁻¹ : GL (Fin m) k)) : Matrix (Fin m) (Fin m) k).det = (x : Matrix (Fin m) (Fin m) k).det := by
   rw [Units.val_mul, Units.val_mul, det_conj_val]
 
 /- English proof (translation)
-Use `t2Space_local (k := k)` as an intermediate fact. Introduce `n hn T hL hA`. Use `LinearMap.ext fun φ => ?_` and prove the remaining obligations. Take `⟨U, hU, hCU, h0⟩` from `exists_clopen_local ((fun x : GL (Fin (n + 1)) k => (x.val).det) '' tsupport φ.1) (φ.2.2.isCompact.image Units.continuous_val.matrix_det) (by`. Introduce and unpack `⟨x, -, hx⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 x.isUnit).ne_zero hx)`. Establish `hζL : ∀ g : GL (Fin n) k, ConjInvM (T ∘ₗ cut U hU h0) (glEmb k n g)`. Introduce `g φ' ψ' hψ'`. Simplify using `only [LinearMap.comp_apply]`. Apply `hL g (cut U hU h0 φ') (cut U hU h0 ψ')` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[cut_apply, cut_apply]`. Establish `hd` using `det_conj_gl (glEmb k n g) x`. Unfold `cutFun`. Distinguish the cases in `hx : (x : Matrix (Fin (n + 1)) (Fin (n + 1)) k).det ∈ U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hx, if_pos (hd ▸ hx), hψ', Units.val_mul, Units.val_mul]`. Rewrite using `[if_neg hx, if_neg (hd ▸ hx)]`. Establish `hζA : TrAntiM (T ∘ₗ cut U hU h0)`. Introduce `φ' ψ' hψ'`. Simplify using `only [LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hA (cut U hU h0 φ') (cut U hU h0 ψ')` to reduce the goal to its premises. Introduce `x y hy`. Rewrite using `[cut_apply, cut_apply]`. Simplify using `only [cutFun]`. Rewrite using `[hψ', hy, Matrix.det_transpose]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz` using `h n hn _ hζL hζA`. Establish `hφ : cut U hU h0 ⟨extZ φ, extZ_mem φ⟩ = φ`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[cut_apply]`. Simplify using `only [cutFun, extZ_val]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `split_ifs with hx`. Both sides reduce to the same expression. Conclude with `(image_eq_zero_of_notMem_tsupport (fun hm => hx (hCU ⟨x, hm, rfl⟩))).symm`. Rewrite using `[LinearMap.zero_apply, ← hφ]`. Conclude with `congrArg (fun L : SB (Matrix (Fin (n + 1)) (Fin (n + 1)) k) →ₗ[ℂ] ℂ => L ⟨extZ φ, extZ_mem φ⟩) hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem noSignDistGL_of_gl (h : NoSignDistGl k) : NoSignDistGL k := by
   have := t2Space_local (k := k)
@@ -435,13 +431,13 @@ theorem noSignDistGL_of_gl (h : NoSignDistGl k) : NoSignDistGL k := by
   exact congrArg (fun L : SB (Matrix (Fin (n + 1)) (Fin (n + 1)) k) →ₗ[ℂ] ℂ => L ⟨extZ φ, extZ_mem φ⟩) hz
 
 /- English proof (translation)
-The claim follows from `leviTransposeInv_of_noSignDistGL (noSignDistGL_of_gl h)`.
+A detailed English derivation is pending.
 -/
 theorem leviTransposeInv_of_gl (h : NoSignDistGl k) : LeviTransposeInv k :=
   leviTransposeInv_of_noSignDistGL (noSignDistGL_of_gl h)
 
 /- English proof (translation)
-The claim follows from `theoremA_of_levi_transpose (leviTransposeInv_of_gl h)`.
+A detailed English derivation is pending.
 -/
 theorem theoremA_of_gl (h : NoSignDistGl k) : TheoremA k :=
   theoremA_of_levi_transpose (leviTransposeInv_of_gl h)

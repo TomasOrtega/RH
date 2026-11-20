@@ -5,9 +5,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.EtaleFoundations.TwResSecInj
 
 /- English proof (translation)
-Set `α : Discrete.functor (fun (_ : ι) => X) ⟶ Discrete.functor (fun _ => Y)` to `Discrete.natTrans (fun _ => f)`. Establish `: ∀ j, Mono (α.app j)` using `fun j => by`. Express the relevant statement in the definitionally equal form `Mono f`. Use `infer_instance`. Establish `h1 : Mono α` using `NatTrans.mono_of_mono_app _`.
-
-Conclude with `(colim : (Discrete ι ⥤ ModuleCat.{1} (ULift.{1} R)) ⥤ _).map_mono α`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sigma_map_mono (R : Type) [CommRing R] (ι : Type) {X Y : ModuleCat.{1} (ULift.{1} R)} (f : X ⟶ Y) [Mono f] :
     Mono (Limits.Sigma.map (fun (_ : ι) => f)) := by
@@ -32,7 +30,7 @@ end LateralTheory.EtaleFoundations.TwResSecInj
 
 open LateralTheory.EtaleFoundations.TwResSecInj in
 /- English proof (translation)
-Introduce `R _ M _ U`. Establish `adj` using `(evaluationAdjunctionRight (ModuleCat.{1} (ULift.{1} R)) (op U)).comp (sheafificationAdjunction Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R)))`. Establish `hI` using `Injective.injective_of_adjoint adj M`. Conclude with `Module.injective_module_of_injective_object (inj := hI) _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_injective_sheaf_sections_injective_holds : LateralTheory.EtaleFoundations.EtaleInjectiveSheafSectionsInjective := by
   intro R _ M _ U

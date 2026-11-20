@@ -12,35 +12,31 @@ open scoped Matrix
 namespace GlobalTheory.HeckeEx
 
 /- English proof (translation)
-Introduce `E _ _ _ r X la P hP ξ hξ x hx`. Establish `hdom : ∀ t : ℝ, 0 ≤ t → X.flow ξ (fun _ => Complex.I * t) x ∈ X.dom` using `fun t ht => GlobalTheory.FjCauchy.flow_mem_dom X hξ hx _ fun τ => by`. Use `GlobalTheory.FjCauchy.tt_pos X hξ hx τ` as an intermediate fact. Simplify using `only [Complex.mul_im, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, one_mul, zero_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `⟨hdom, ?_⟩` and prove the remaining obligations. Establish `hexp` using `m3bExp_holds (E := E) r X la P hP.1 ξ hξ x hx`. Establish `hfac : ∀ (ν : X.Ψ → ℝ) (t : ℝ), Complex.exp (4 * Real.pi * Complex.I * ∑ τ, (ν τ : ℂ) * (fun _ => Complex.I * (t : ℂ)) τ) = ((Real.exp (-(4 * Real.pi * (∑ τ, ν τ) * t)) : ℝ) : ℂ)`. Introduce `ν t`. Rewrite using `[Complex.ofReal_exp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hs : ∑ τ, (ν τ : ℂ) * (Complex.I * (t : ℂ)) = (∑ τ, (ν τ : ℂ)) * (Complex.I * t)`. Rewrite using `[Finset.sum_mul]`. Simplify using `only [hs]`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree. Use `set F : ℝ → (X.Ψ → ℝ) → ℂ := fun t ν => X.fj la ξ ν P x * Complex.exp (4 * Real.pi * Complex.I * ∑ τ, (ν τ : ℂ) * (fun _ => Complex.I * (t : ℂ)) τ) with hF`. Establish `hF' : ∀ t ν, F t ν = X.fj la ξ ν P x * ((Real.exp (-(4 * Real.pi * (∑ τ, ν τ) * t)) : ℝ) : ℂ)`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ν`. Rewrite using `[hF]`. Simplify using `only`. Rewrite using `[hfac]`. Establish `hsum0 : Summable fun ν : X.Ψ → ℝ => X.fj la ξ ν P x`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(hexp _ (hdom 0 le_rfl)).summable`. Use `h.congr fun ν => ?_` and prove the remaining obligations. Use `hF' 0 ν` as an intermediate fact. Rewrite `this` using `[hF]`. Simplify using `only [mul_zero, neg_zero, Real.exp_zero, Complex.ofReal_one, _root_.mul_one] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hbound : Summable fun ν : X.Ψ → ℝ => ‖X.fj la ξ ν P x‖` using `summable_norm_iff.mpr hsum0`. Establish `hsign : ∀ ν : X.Ψ → ℝ, X.fj la ξ ν P x ≠ 0 → ∀ τ, 0 ≤ ν τ` using `fun ν h => BoundedSectionAlgebra.sign_of_bdd X moderateCoefficientPositivity_holds hP hξ ν hx h`. Establish `hlim : Filter.Tendsto (fun t => ∑' ν, F t ν) Filter.atTop (nhds (∑' ν : X.Ψ → ℝ, if ν = 0 then X.fj la ξ 0 P x else 0))`. Use `tendsto_tsum_of_dominated_convergence hbound (fun ν => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : X.fj la ξ ν P x = 0`. Establish `: (if ν = 0 then X.fj la ξ 0 P x else 0) = 0` using `by split_ifs with h; · subst h; exact h0`. Both sides reduce to the same expression. Rewrite using `[this]`. Simplify using `only [hF', h0, zero_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `tendsto_const_nhds`. Distinguish the cases in `hν : ν = 0`. Substitute `hν` using the available equality. Simplify using `only [hF', if_true, Finset.sum_const_zero, Pi.zero_apply, mul_zero, zero_mul, neg_zero, Real.exp_zero, Complex.ofReal_one, _root_.mul_one]`. Conclude with `tendsto_const_nhds`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[if_neg hν]`. Establish `hnn` using `hsign ν h0`. Choose the witnesses or unpack the hypotheses as in `⟨τ0, hτ0⟩ : ∃ τ0, ν τ0 ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hν (funext hc)`. Establish `hS : 0 < ∑ τ, ν τ` using `Finset.sum_pos' (fun τ _ => hnn τ) ⟨τ0, Finset.mem_univ _, lt_of_le_of_ne (hnn τ0) (Ne.symm hτ0)⟩`. Establish `hk : 0 < 4 * Real.pi * ∑ τ, ν τ` using `by positivity`. Establish `he : Filter.Tendsto (fun t : ℝ => Real.exp (-(4 * Real.pi * (∑ τ, ν τ) * t))) Filter.atTop (nhds 0)` using `Real.tendsto_exp_neg_atTop_nhds_zero.comp (Filter.tendsto_id.const_mul_atTop hk)`. Use `((Complex.continuous_ofReal.tendsto 0).comp he).const_mul (X.fj la ξ ν P x)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Complex.ofReal_zero, mul_zero] at this`. Simplify using `only [hF']`. Conclude with `this`. Use `filter_upwards [Filter.eventually_ge_atTop (0 : ℝ)] with t ht ν`. Rewrite using `[hF', norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Distinguish the cases in `h0 : X.fj la ξ ν P x = 0`. Simplify using `[h0]`. Establish `hS : 0 ≤ ∑ τ, ν τ` using `Finset.sum_nonneg fun τ _ => hsign ν h0 τ`. Establish `: Real.exp (-(4 * Real.pi * (∑ τ, ν τ) * t)) ≤ 1`. Rewrite using `[Real.exp_le_one_iff]`.
-
-Establish `: 0 ≤ 4 * Real.pi * (∑ τ, ν τ) * t` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite `hlim` using `[tsum_ite_eq]`. Use `hlim.congr' ?_` and prove the remaining obligations.
-
-Use `filter_upwards [Filter.eventually_ge_atTop (0 : ℝ)] with t ht`. Simplify using `only [hF]`. Conclude with `(hexp _ (hdom t ht)).tsum_eq`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bddSec_tendsto_constTerm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ), X.IsBddSec la P → ∀ ξ, X.IsIso ξ → ∀ x ∈ X.dom, (∀ t : ℝ, 0 ≤ t → X.flow ξ (fun _ => Complex.I * t) x ∈ X.dom) ∧ Filter.Tendsto (fun t : ℝ => P (X.flow ξ (fun _ => Complex.I * t) x)) Filter.atTop (nhds (X.fj la ξ 0 P x)) := by
   intro E _ _ _ r X la P hP ξ hξ x hx

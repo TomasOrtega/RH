@@ -23,7 +23,7 @@ Both sides reduce to the same expression.
 theorem Bmap_val (u : VT (X := Y.toData) z ξ) : (Bmap z ξ u).val = MajorantOperators.Bop z u.val := rfl
 
 /- English proof (translation)
-Apply `VT.ext` to reduce the goal to its premises. Rewrite using `[Bmap_val, Bmap_val, MajorantOperators.Bop_Bop hz.out]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Bmap_Bmap (u : VT (X := Y.toData) z ξ) : Bmap z ξ (Bmap z ξ u) = (-(Y.k0 ^ 2)) • u := by
   apply VT.ext
@@ -31,14 +31,14 @@ theorem Bmap_Bmap (u : VT (X := Y.toData) z ξ) : Bmap z ξ (Bmap z ξ u) = (-(Y
   rfl
 
 /- English proof (translation)
-Rewrite using `[inner_eq, inner_eq, Bmap_val, Bmap_val, MajorantOperators.gI_Bop_right hz.out]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_Bmap_right (u v : VT (X := Y.toData) z ξ) :
     inner ℝ u (Bmap z ξ v) = -inner ℝ (Bmap z ξ u) v := by
   rw [inner_eq, inner_eq, Bmap_val, Bmap_val, MajorantOperators.gI_Bop_right hz.out]
 
 /- English proof (translation)
-Establish `h : ‖Bmap z ξ u‖ ^ 2 = (Y.k0 * ‖u‖) ^ 2`. Rewrite using `[← real_inner_self_eq_norm_sq, mul_pow, ← real_inner_self_eq_norm_sq, inner_eq, inner_eq, Bmap_val, MajorantOperators.gI_Bop_self hz.out]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (mul_nonneg Y.minWeight_pos.le (norm_nonneg _)) two_ne_zero).1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_Bmap (u : VT (X := Y.toData) z ξ) : ‖Bmap z ξ u‖ = Y.k0 * ‖u‖ := by
   have h : ‖Bmap z ξ u‖ ^ 2 = (Y.k0 * ‖u‖) ^ 2 := by
@@ -48,9 +48,9 @@ theorem norm_Bmap (u : VT (X := Y.toData) z ξ) : ‖Bmap z ξ u‖ = Y.k0 * ‖
     two_ne_zero).1 h
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `u hu`. Establish `h` using `norm_Bmap z ξ u`. Rewrite `h` using `[hu, norm_zero]`. Establish `h2 : ‖u‖ = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 h.symm with h3 | h3` into its components or cases. Conclude with `absurd h3 Y.minWeight_pos.ne'`. Conclude with `h3`. Conclude with `norm_eq_zero.1 h2`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem Bmap_injective : Function.Injective (Bmap z ξ) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -70,25 +70,23 @@ noncomputable def Bequiv : VT (X := Y.toData) z ξ ≃ₗ[ℝ] VT (X := Y.toData
 variable {ξ} (hξ : Y.IsIso ξ)
 
 /- English proof (translation)
-Establish `hval : ∀ ν : Y.Λp ξ, inner ℝ y (Bmap z ξ (phi z ξ hξ ν)) = (round (inner ℝ y (Bmap z ξ (phi z ξ hξ ν))) : ℝ)`. Introduce `ν`. Take `⟨m, hm⟩` from `hy _ ((mem_Lat z ξ hξ).mpr ⟨ν, rfl⟩)`. Rewrite using `[hm, round_intCast]`. Set `ψ : Y.Λp ξ →+ ℤ` to `AddMonoidHom.mk' (fun ν => round (inner ℝ y (Bmap z ξ (phi z ξ hξ ν)))) (fun ν ν' => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨m1, hm1⟩` from `hy _ ((mem_Lat z ξ hξ).mpr ⟨ν, rfl⟩)`. Take `⟨m2, hm2⟩` from `hy _ ((mem_Lat z ξ hξ).mpr ⟨ν', rfl⟩)`. Use `show round _ = round _ + round _`. Rewrite using `[map_add, map_add, inner_add_right, hm1, hm2, ← Int.cast_add, round_intCast, round_intCast, round_intCast])`. Establish `hψ : ∀ ν, (ψ ν : ℝ) = inner ℝ y (Bmap z ξ (phi z ξ hξ ν))` using `fun ν => (hval ν).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvan : ∀ ν : Y.Λp ξ, (∃ e : E, (ν : Fin r → E) = e • ξ) → ψ ν = 0`. Introduce and unpack `ν ⟨e, he⟩`. Establish `h0 : phi z ξ hξ ν = 0` using `VT.ext (by rw [phi_val, he, ucomp_line z ξ hξ e]; rfl)`. Use `hψ ν` as an intermediate fact. Rewrite `this` using `[h0, map_zero, inner_zero_right]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `this` after adjusting the coercions. Take `⟨μ, hμ⟩` from `(hermitian_dual_lattice_identity r Y ξ hξ).1 ψ hvan`. Establish `hEF : ∀ ν : Y.Λp ξ, inner ℝ (Bmap z ξ y + Bmap z ξ (phi z ξ hξ μ)) (phi z ξ hξ ν) = 0`. Introduce `ν`. Establish `h1` using `hμ ν`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((EFf Y.ξ0 Y.Gm μ ν : ℚ) : ℝ) = inner ℝ (Bmap z ξ (phi z ξ hξ μ)) (phi z ξ hξ ν)`. Rewrite using `[inner_eq, Bmap_val, phi_val, phi_val]`. Conclude with `MajorantOperators.EF_eq hz.out hξ.2.1 (LatticeSpanMembership.mem_Λp_iff.mp μ.2).2 (LatticeSpanMembership.mem_Λp_iff.mp ν.2).2`. Establish `h3 : (ψ ν : ℝ) = ((EFf Y.ξ0 Y.Gm μ ν : ℚ) : ℝ)` using `by exact_mod_cast h1`. Rewrite `h3` using `[hψ, inner_Bmap_right, h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[inner_add_left]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set w := Bmap z ξ y + Bmap z ξ (phi z ξ hξ μ) with hw`. Establish `hwall : ∀ a ∈ Submodule.span ℝ (Lat z ξ hξ : Set (VT (X` using `Y.toData) z ξ)), inner ℝ w a = 0 := by`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha`. Take `⟨ν, rfl⟩` from `(mem_Lat z ξ hξ).mp ha`. Conclude with `hEF ν`. Consider the case `zero => exact inner_zero_right _`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `add a b _ _ iha ihb => rw [inner_add_right, iha, ihb, add_zero]`. Consider the case `smul c a _ iha => rw [inner_smul_right, iha, mul_zero]`. Establish `hw0 : w = 0`. Use `hwall w (by rw [span_Lat z ξ hD3 hξ]; exact Submodule.mem_top)` as an intermediate fact. Conclude with `inner_self_eq_zero.mp this`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hy0 : y + phi z ξ hξ μ = 0`. Apply `Bmap_injective z ξ` to reduce the goal to its premises. Rewrite using `[map_add, ← hw, hw0, map_zero]`. Establish `: y = phi z ξ hξ (-μ)`. Rewrite using `[map_neg]`.
-
-Conclude with `eq_neg_of_add_eq_zero_left hy0`. Rewrite using `[this]`. Conclude with `(mem_Lat z ξ hξ).mpr ⟨-μ, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_Lat_of_int (hD3 : IntegerApproximationCount (E := E)) (y : VT (X := Y.toData) z ξ)
     (hy : ∀ a ∈ Lat z ξ hξ, ∃ m : ℤ, inner ℝ y (Bmap z ξ a) = m) : y ∈ Lat z ξ hξ := by
@@ -156,15 +154,15 @@ variable (ep0 : ℝ) (hns : ∀ x ∈ Y.L', herm Y.Gm x ξ = 0 → (∀ e : E, x
 
 include hns in
 /- English proof (translation)
-Take `⟨μ, rfl⟩` from `(mem_Lat z ξ hξ).mp ha`. Establish `hμ` using `LatticeSpanMembership.mem_Λp_iff.mp μ.2`. Establish `hNA : (Y.NA : E) ≠ 0` using `by exact_mod_cast Y.NA_pos.ne'`. Establish `hNAr : (0 : ℝ) < Y.NA` using `by exact_mod_cast Y.NA_pos`. Take `⟨τ, hτ⟩` from `hns ((Y.NA : E) • (μ : Fin r → E)) (Y.NA_sub _ hμ.1) (by rw [HermitianTraceFormVanishing.herm_smul_left, hμ.2, mul_zero]) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `e he`. Apply `ha0` to reduce the goal to its premises. Establish `hμe : (μ : Fin r → E) = ((Y.NA : E)⁻¹ * e) • ξ`. Rewrite using `[mul_smul, ← he, smul_smul, inv_mul_cancel₀ hNA, one_smul]`. Conclude with `VT.ext (by rw [phi_val, hμe, ucomp_line z ξ hξ]; rfl))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hemb : Y.embV ((Y.NA : E) • (μ : Fin r → E)) = (Y.NA : ℝ) • Y.embV μ`. Use function extensionality and compare the values at `τ' b`. Simplify using `[Data.embV, Data.emb]`. Rewrite `hτ` using `[hemb, ucomp_smul, Pi.smul_apply, ← Complex.coe_smul, UnipotentCoefficientShift.maj_smul hz.out]`. Establish `h2` using `maj_le_norm_sq z ξ (phi z ξ hξ μ) τ`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[phi_val]`. Establish `h3 : ep0 ≤ (Y.NA * ‖phi z ξ hξ μ‖) ^ 2`. Rewrite using `[mul_pow]`. Conclude with `le_trans hτ (mul_le_mul_of_nonneg_left h2 (by positivity))`. Establish `h4` using `Real.sqrt_le_sqrt h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h4` using `[Real.sqrt_sq (by positivity)]`. Rewrite using `[div_le_iff₀ hNAr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem min_norm (a : VT (X := Y.toData) z ξ) (ha : a ∈ Lat z ξ hξ) (ha0 : a ≠ 0) :
     Real.sqrt ep0 / Y.NA ≤ ‖a‖ := by
@@ -196,11 +194,11 @@ theorem min_norm (a : VT (X := Y.toData) z ξ) (ha : a ∈ Lat z ξ hξ) (ha0 : 
 
 include hns in
 /- English proof (translation)
-Apply `discreteTopology_of_isOpen_singleton_zero` to reduce the goal to its premises. Establish `hε : 0 < Real.sqrt ep0 / Y.NA` using `div_pos (Real.sqrt_pos.mpr hep) (by exact_mod_cast Y.NA_pos)`. Establish `hset : ({0} : Set (Lat z ξ hξ)) = Subtype.val ⁻¹' Metric.ball (0 : VT (X` using `Y.toData) z ξ) (Real.sqrt ep0 / Y.NA) := by`. Use extensionality with `x`. Simplify using `only [Set.mem_singleton_iff, Set.mem_preimage, Metric.mem_ball, dist_zero_right]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using `using hε`. Introduce `hx`. Assume the negation of the conclusion as `hne`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `min_norm z hξ ep0 hns x.1 x.2 (fun h => hne (Subtype.ext h))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hset]`. Conclude with `Metric.isOpen_ball.preimage continuous_subtype_val`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discrete_Lat (hep : 0 < ep0) : DiscreteTopology (Lat z ξ hξ) := by
   apply discreteTopology_of_isOpen_singleton_zero
@@ -222,31 +220,29 @@ theorem discrete_Lat (hep : 0 < ep0) : DiscreteTopology (Lat z ξ hξ) := by
 
 include hns in
 /- English proof (translation)
-Use `discrete_Lat z hξ ep0 hns hep` as an intermediate fact. Establish `: IsZLattice ℝ (Lat z ξ hξ)` using `⟨span_Lat z ξ hD3 hξ⟩`. Use `ZLattice.module_free ℝ (Lat z ξ hξ)` as an intermediate fact. Use `ZLattice.module_finite ℝ (Lat z ξ hξ)` as an intermediate fact. Use `set n := finrank ℝ (VT (X := Y.toData) z ξ) with hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `bZ` to `Module.Free.chooseBasis ℤ (Lat z ξ hξ)`. Set `bR` to `bZ.ofZLatticeBasis ℝ (Lat z ξ hξ)`. Establish `hspanR : Submodule.span ℤ (Set.range bR) = Lat z ξ hξ` using `bZ.ofZLatticeBasis_span ℝ _`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (Lat z ξ hξ)) = n` using `(Module.finrank_eq_card_basis bR).symm`. Set `bF` to `bR.reindex (Fintype.equivFinOfCardEq hcard)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hspanF : Submodule.span ℤ (Set.range bF) = Lat z ξ hξ`. Rewrite using `[Basis.range_reindex]`. Conclude with `hspanR`. Set `e` to `(stdOrthonormalBasis ℝ (VT (X := Y.toData) z ξ)).repr`. Set `b'` to `(bF.map (Bequiv z ξ)).map e.toLinearEquiv`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hb'j : ∀ j, b' j = e (Bmap z ξ (bF j))` using `fun j => by`. Simplify using `only [b', Basis.map_apply]`. Both sides reduce to the same expression. Use `set lam := Y.k0 * Real.sqrt ep0 / Y.NA with hlam`. Establish `hlam0 : 0 < lam`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Y.minWeight_pos`. Establish `h2 : (0 : ℝ) < Y.NA` using `by exact_mod_cast Y.NA_pos`. Establish `h3` using `Real.sqrt_pos.mpr hep`. Check the signs of the components of the expression. Set `f : VT (X` to `Y.toData) z ξ →ₗ[ℤ] EuclideanSpace ℝ (Fin n) := ((e.toLinearEquiv.toLinearMap).comp (Bmap z ξ)).restrictScalars ℤ`.
+Check the signs of the components of the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfr : f '' Set.range bF = Set.range b'`. Rewrite using `[← Set.range_comp]`. Conclude with `congrArg Set.range (funext fun j => (hb'j j).symm)`. Establish `hmin : ∀ x ∈ Submodule.span ℤ (Set.range b'), x ≠ 0 → lam ≤ ‖x‖`. Introduce `x hx hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hx` using `[← hfr, Submodule.span_image, hspanF]`. Take `⟨a, ha, rfl⟩` from `hx`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx0 (map_zero f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfa : ‖f a‖ = Y.k0 * ‖a‖` using `by show ‖e (Bmap z ξ a)‖ = _`. Rewrite using `[LinearIsometryEquiv.norm_map, norm_Bmap]`. Rewrite using `[hfa, hlam, mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (min_norm z hξ ep0 hns a ha ha0) Y.minWeight_pos.le`. Take `⟨y, hli, hint, hnorm⟩` from `T0.transference_dual b' lam hlam0 hmin`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Use `⟨fun i => e.symm (y i), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hli.map' e.symm.toLinearEquiv.toLinearMap e.symm.toLinearEquiv.ker`. Introduce `i`. Apply `mem_Lat_of_int z hξ hD3` to reduce the goal to its premises. Introduce `a ha`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `ha` using `[← hspanF]`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha`. Take `⟨j, rfl⟩` from `ha`. Take `⟨m, hm⟩` from `hint i j`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm, hb'j, ← LinearIsometryEquiv.inner_map_map e, LinearIsometryEquiv.apply_symm_apply]`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b _ _ iha ihb`. Take `⟨m1, h1⟩` from `iha`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m2, h2⟩` from `ihb`. Conclude with `⟨m1 + m2, by rw [map_add, inner_add_right, h1, h2, Int.cast_add]⟩`. Consider the case `smul c a _ iha`. Take `⟨m, h⟩` from `iha`. Use `⟨c * m, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_zsmul, ← Int.cast_smul_eq_zsmul ℝ, inner_smul_right, h, Int.cast_mul]`. Introduce `i`. Rewrite using `[LinearIsometryEquiv.norm_map]`. Conclude with `hnorm i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem short_basis (hD3 : IntegerApproximationCount (E := E)) (hep : 0 < ep0) :
     ∃ y : Fin (finrank ℝ (VT (X := Y.toData) z ξ)) → VT (X := Y.toData) z ξ,
@@ -325,21 +321,19 @@ theorem short_basis (hD3 : IntegerApproximationCount (E := E)) (hep : 0 < ep0) :
 include hns in
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (finrank ℝ (VT (X := Y.toData) z ξ)) with h0 | hpos` into its components or cases. Establish `hsub : Subsingleton (VT (X` using `Y.toData) z ξ) := Module.finrank_zero_iff.mp h0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (d - phi z ξ hξ 0) 0, norm_zero, h0]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: Nonempty (Fin (finrank ℝ (VT (X` using `Y.toData) z ξ))) := ⟨⟨0, hpos⟩⟩`. Take `⟨y, hli, hyL, hyn⟩` from `short_basis z hξ ep0 hns hD3 hep`. Set `yb` to `Basis.mk hli (hli.span_eq_top_of_card_eq_finrank (by simp)).ge`. Establish `hyb : ∀ i, yb i = y i` using `fun i => Basis.mk_apply _ _ _`. Use `set c := yb.repr d with hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set p : VT (X := Y.toData) z ξ := ∑ i, (round (c i) : ℤ) • y i with hp`. Establish `hpL : p ∈ Lat z ξ hξ` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hyL i)`. Take `⟨μ, hμ⟩` from `(mem_Lat z ξ hξ).mp hpL`. Use `⟨μ, ?_⟩` and prove the remaining obligations. Rewrite using `[hμ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : d = ∑ i, c i • y i` using `by conv_lhs => rw [← yb.sum_repr d]`. Simplify using `only [hyb, hc]`. Establish `hdiff : d - p = ∑ i, (c i - round (c i)) • y i`. Rewrite using `[hd, hp, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_smul, ← Int.cast_smul_eq_zsmul ℝ]`. Rewrite using `[hdiff]`. Establish `hlam0 : 0 < Y.k0 * Real.sqrt ep0 / Y.NA`. Establish `h1` using `Y.minWeight_pos`. Establish `h2 : (0 : ℝ) < Y.NA` using `by exact_mod_cast Y.NA_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `h3` using `Real.sqrt_pos.mpr hep`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul (abs_sub_round _) (hyn i) (norm_nonneg _) (by norm_num)`. Use `_ = (finrank ℝ (VT (X := Y.toData) z ξ) : ℝ) ^ 3 * Y.NA / (2 * Y.k0 * Real.sqrt ep0) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `h1` using `Y.minWeight_pos.ne'`. Establish `h2 : (Y.NA : ℝ) ≠ 0` using `by exact_mod_cast Y.NA_pos.ne'`.
-
-Establish `h3` using `(Real.sqrt_pos.mpr hep).ne'`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem covering (hD3 : IntegerApproximationCount (E := E)) (hep : 0 < ep0) (d : VT (X := Y.toData) z ξ) :
     ∃ μ : Y.Λp ξ, ‖d - phi z ξ hξ μ‖ ≤ (finrank ℝ (VT (X := Y.toData) z ξ) : ℝ) ^ 3 * Y.NA /

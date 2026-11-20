@@ -27,9 +27,9 @@ Both sides reduce to the same expression.
 theorem iotaQ_mk (f : Z1 F) : iotaQ F (H1.mk F f) = Submodule.Quotient.mk f.1 := rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Take `⟨f, rfl⟩` from `H1.mk_surjective F c`. Rewrite `hc` using `[iotaQ_mk, Submodule.Quotient.mk_eq_zero]`. Take `⟨g, hg⟩` from `hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `H1.mk_eq_zero.2 ⟨g, hg⟩`.
+A detailed English derivation is pending.
 -/
 theorem iotaQ_injective : Function.Injective (iotaQ F) := by
   rw [injective_iff_map_eq_zero]
@@ -54,13 +54,13 @@ section Wedge
 variable {R : Type} [CommRing R] (V : Type) [AddCommGroup V] [Module R V]
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; fin_cases i <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem upd0 {X : Type} (a b c : X) : Function.update ![a, b] 0 c = ![c, b] := by
   funext i; fin_cases i <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; fin_cases i <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem upd1 {X : Type} (a b c : X) : Function.update ![a, b] 1 c = ![a, c] := by
   funext i; fin_cases i <;> simp

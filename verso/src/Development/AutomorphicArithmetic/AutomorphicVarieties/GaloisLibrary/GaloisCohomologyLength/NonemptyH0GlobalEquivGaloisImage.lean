@@ -16,7 +16,7 @@ noncomputable section
 namespace UpperTheory.V.LDataCardLeFinrank
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ l _ D e` and use `⟨contScal l _ _ (GlobalTheory.TateLimit.continuous_chi D (-e)), GlobalTheory.TateLimit.contAction_zlTw D e⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem contTw : ContTw := fun _ _ _ _ _ _ _ l _ D e =>
   ⟨contScal l _ _ (GlobalTheory.TateLimit.continuous_chi D (-e)), GlobalTheory.TateLimit.contAction_zlTw D e⟩
@@ -26,21 +26,21 @@ section
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `contScal l _ _ (Units.continuous_val.comp ((continuous_cycZ F Ω l).zpow (-e)))`.
+A detailed English derivation is pending.
 -/
 theorem contAction_qzG (e : ℤ) : ContAction (qzG F Ω l e) :=
   contScal l _ _ (Units.continuous_val.comp ((continuous_cycZ F Ω l).zpow (-e)))
 
 omit [IsAlgClosure F Ω] in
 /- English proof (translation)
-Rewrite using `[← D.hS]`. Conclude with `Finset.mem_coe.2 v.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem above_of_mem (D : LData F Ω l) (v : D.S) : v.1 ∈ Above F l := by
   rw [← D.hS]
   exact Finset.mem_coe.2 v.2
 
 /- English proof (translation)
-Rewrite using `[← (ranges F Ω l D).2.1]`. Conclude with `H0_scalRep_inv_pow_eq_twistInv l _ D.chi e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem global_fixed_points_eq_twist_fixed_points (D : LData F Ω l) (e : ℤ) :
     H0 (qzTw D e) = KStar.TotallyRealRoots.twistInv l (QZ l) (KStar.TotallyRealRoots.galImage l F) e.natAbs := by
@@ -48,7 +48,7 @@ theorem global_fixed_points_eq_twist_fixed_points (D : LData F Ω l) (e : ℤ) :
   exact H0_scalRep_inv_pow_eq_twistInv l _ D.chi e
 
 /- English proof (translation)
-Use `show H0 (scalRep (QZ l) ((D.chi.comp (locFam D.S D.A v)) ^ (-e))) = _`. Rewrite using `[H0_scalRep_inv_pow_eq_twistInv, (ranges F Ω l D).2.2 v]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_fixed_points_eq_twist_fixed_points (D : LData F Ω l) (e : ℤ) (v : D.S) :
     H0 ((qzTw D e).comp (locFam D.S D.A v)) = KStar.TotallyRealRoots.twistInv l (QZ l) (decImage F l (D.A v)) e.natAbs := by
@@ -56,7 +56,7 @@ theorem local_fixed_points_eq_twist_fixed_points (D : LData F Ω l) (e : ℤ) (v
   rw [H0_scalRep_inv_pow_eq_twistInv, (ranges F Ω l D).2.2 v]
 
 /- English proof (translation)
-Rewrite using `[global_fixed_points_eq_twist_fixed_points, KStar.TotallyRealRoots.nuGal_eq_nu]`. Conclude with `(lenTwist l _ _).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_H0_global_eq_nu (D : LData F Ω l) (e : ℤ) :
     Module.length ℤ_[l] (H0 (qzTw D e)) = KStar.TotallyRealRoots.nuGal l F e.natAbs := by
@@ -64,7 +64,7 @@ theorem length_H0_global_eq_nu (D : LData F Ω l) (e : ℤ) :
   exact (lenTwist l _ _).1
 
 /- English proof (translation)
-Rewrite using `[local_fixed_points_eq_twist_fixed_points]`. Conclude with `(lenTwist l _ _).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_H0_local_eq_nu (D : LData F Ω l) (e : ℤ) (v : D.S) :
     Module.length ℤ_[l] (H0 ((qzTw D e).comp (locFam D.S D.A v))) =
@@ -73,14 +73,14 @@ theorem length_H0_local_eq_nu (D : LData F Ω l) (e : ℤ) (v : D.S) :
   exact (lenTwist l _ _).1
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun v _ => length_H0_local_eq_nu D e v`.
+A detailed English derivation is pending.
 -/
 theorem local_H0_length_eq_sum (D : LData F Ω l) (e : ℤ) :
     sumLocalH0TwistLength D e = ∑ v : D.S, KStar.TotallyRealRoots.nu l (decImage F l (D.A v)) e.natAbs :=
   Finset.sum_congr rfl fun v _ => length_H0_local_eq_nu D e v
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_mono (ineImage_le_decImage F l A) (ineOpen F Ω l v A hv hA).1`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_decImage {v : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω} (hv : v ∈ Above F l)
     (hA : IsPlaceOver A v) : IsOpen (decImage F l A : Set ℤ_[l]ˣ) :=

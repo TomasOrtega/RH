@@ -11,13 +11,13 @@ namespace GlobalTheory.InertIwasawaGen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hu` using `(GlobalTheory.LFun.InertChart.under_eq_iff hw w).2 rfl`. Take `⟨x, hx⟩` from `GlobalTheory.LFun.InertChart.exists_conj_sub_unit h hw`. Establish `hσ` using `GlobalTheory.LFun.InertChart.conj_conj h`. Establish `h0 : σ (x : E) - x ≠ 0`. Introduce `e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[e, map_zero]`. Conclude with `zero_ne_one hx`. Use `set t : E := σ x / (σ x - x) with ht`. Establish `hsum : t + σ t = 1`. Rewrite using `[ht, map_div₀, map_sub, hσ, ← neg_sub (σ (x : E)) x, div_neg, ← sub_eq_add_neg, ← sub_div, div_self h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(1 : Fv F v) ⊗ₜ[F] t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LFun.InertChart.mem_intLoc_iff hw hu, GlobalTheory.LFun.toCompl_tmul, map_one, one_mul]`. Establish `hval : ∀ a : E, Valued.v (algebraMap E (w.adicCompletion E) a) = w.valuation E a` using `fun a => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Express the relevant statement in the definitionally equal form `Valued.v (algebraMap E (w.adicCompletion E) t) ≤ 1`. Rewrite using `[hval, ht, map_div₀, hx, div_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `w.valuation_le_one (RingOfIntegers.mapRingHom (σ : E →+* E) x)`. Express the relevant statement in the definitionally equal form `(1 : Fv F v) ⊗ₜ[F] t + 1 ⊗ₜ[F] σ t = 1`. Rewrite using `[← TensorProduct.tmul_add, hsum]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_trace_one_loc {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : HeightOneSpectrum (𝓞 F)}
     {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w) :
@@ -43,7 +43,7 @@ theorem exists_trace_one_loc {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Heig
 open GlobalTheory.LFun GlobalTheory.InertIwasawa in
 
 /- English proof (translation)
-Introduce `g` and use `by have h := (InertChart.under_eq_iff hw w).2 rfl obtain ⟨τ, hτO, hτ⟩ := exists_trace_one_loc hC hw obtain ⟨a, ha⟩ := Frames.exists_isLatticeFrame (F := F) L have eQ : JR (F := F) (Fv F v) Q = dblGram finSumFinEquiv (JR (Fv F v) J) := hQ ▸ JR_dblGram _ J obtain ⟨k, h1, h2, h3⟩ := …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasIwasawa_of_inertAt {σ : E →ₐ[F] E} (hC : IsCMExt F E σ) {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) {Q : Matrix (Fin (n + n)) (Fin (n + n)) E}
@@ -68,7 +68,7 @@ theorem hasIwasawa_of_inertAt {σ : E →ₐ[F] E} (hC : IsCMExt F E σ) {n : �
   exact ⟨⟨g * κ, h3⟩, κ⁻¹, inv_mem hκ, (mul_inv_cancel_right g κ).symm⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ L _ v hL P hP g`. Conclude with `hasIwasawa_of_inertAt h hJ rfl (w := P) hP hL _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ioH_mem_siegel_mul_KFin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J)

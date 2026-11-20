@@ -11,7 +11,7 @@ attribute [local instance 2000] UpperTheory.V.W.coefLocal
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Conclude with `UpperTheory.V.Hi.Up.main`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.upU :
     Af.HypothesesH → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

@@ -10,9 +10,9 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `hoi : IsOpenImmersion hU.fromSpec` using `hU.isOpenImmersion_fromSpec`. Establish `hind` using `(Scheme.Hom.isOpenEmbedding hU.fromSpec).toIsEmbedding.toIsInducing`. Prove the components needed by the constructor for the conclusion. Introduce `hab`. Establish `h1 : b ⤳ a` using `specializes_iff_mem_closure.mpr hab`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `specializes_iff_mem_closure.mp (hind.specializes_iff.mpr h1)`. Introduce `hab`. Establish `h1 : hU.fromSpec b ⤳ hU.fromSpec a` using `specializes_iff_mem_closure.mpr hab`. Conclude with `specializes_iff_mem_closure.mp (hind.specializes_iff.mp h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mem_closure_singleton_iff_fromSpec {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineOpen U)
     (a b : PrimeSpectrum Γ(X, U)) :
@@ -29,9 +29,9 @@ private theorem mem_closure_singleton_iff_fromSpec {X : Scheme.{u}} {U : X.Opens
     exact specializes_iff_mem_closure.mp (hind.specializes_iff.mp h1)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hfn`. Apply `hb` to reduce the goal to its premises. Establish `h1 : hU.primeIdealOf ⟨x, hx⟩ ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen f`. Rewrite using `[hU.fromSpec_preimage_basicOpen f]`. Conclude with `(PrimeSpectrum.mem_basicOpen f _).mpr hfn`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : hU.fromSpec (hU.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen f` using `h1`. Rewrite `h2` using `[hU.fromSpec_primeIdealOf ⟨x, hx⟩]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_primeIdealOf_of_notMem_basicOpen {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) {x : (X : Type u)} (hx : x ∈ U) {f : Γ(X, U)}
@@ -46,7 +46,7 @@ private theorem mem_primeIdealOf_of_notMem_basicOpen {X : Scheme.{u}} {U : X.Ope
   exact h2
 
 /- English proof (translation)
-Establish `hz : x ∈ X.zeroLocus (I.ideal U : Set Γ(X, U.1))` using `(Scheme.IdealSheafData.mem_support_iff_of_mem hx).mp hxs`. Rewrite `hz` using `[Scheme.mem_zeroLocus_iff]`. Conclude with `mem_primeIdealOf_of_notMem_basicOpen U.2 hx (hz f hf)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_primeIdealOf_of_mem_support {X : Scheme.{u}} {I : X.IdealSheafData}
     {U : X.affineOpens} {x : (X : Type u)} (hx : x ∈ U.1) {f : Γ(X, U.1)}
@@ -58,19 +58,17 @@ private theorem mem_primeIdealOf_of_mem_support {X : Scheme.{u}} {I : X.IdealShe
   exact mem_primeIdealOf_of_notMem_basicOpen U.2 hx (hz f hf)
 
 /- English proof (translation)
-Introduce `hsub`. Establish `hZcl : IsClosed Z` using `isClosed_of_mem_irreducibleComponents Z hZ`. Take `⟨ξ, hξ⟩` from `QuasiSober.sober hZ.1 hZcl`. Establish `hξ' : closure ({ξ} : Set (X : Type u)) = Z` using `hξ`. Establish `hξZ : ξ ∈ Z` using `by rw [← hξ']; exact subset_closure rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, f, hxU, hf, hDU⟩` from `hD ξ`. Establish `hfD : f ∈ D.ideal U` using `by rw [hDU]; exact Ideal.subset_span rfl`. Establish `hfp : f ∈ (U.2.primeIdealOf ⟨ξ, hxU⟩).asIdeal` using `EmbeddedResolution.mem_primeIdealOf_of_mem_support hxU hfD (hsub hξZ)`. Establish `hmin : (U.2.primeIdealOf ⟨ξ, hxU⟩).asIdeal ∈ minimalPrimes Γ(X, U.1)`. Use `⟨⟨(U.2.primeIdealOf ⟨ξ, hxU⟩).isPrime, bot_le⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `q ⟨hq, -⟩ hqle`. Establish `hqle' : (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1)) ≤ U.2.primeIdealOf ⟨ξ, hxU⟩` using `hqle`. Establish `hxy : (U.2.primeIdealOf ⟨ξ, hxU⟩) ∈ closure ({(⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1))} : Set (PrimeSpectrum Γ(X, U.1)))` using `(PrimeSpectrum.le_iff_mem_closure ⟨q, hq⟩ (U.2.primeIdealOf ⟨ξ, hxU⟩)).mp hqle'`. Establish `hξcl : ξ ∈ closure ({U.2.fromSpec (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1))} : Set (X : Type u))`. Establish `h2` using `(_root_.FunctorialResolution.EmbeddedResolution.mem_closure_singleton_iff_fromSpec U.2 (U.2.primeIdealOf ⟨ξ, hxU⟩) ⟨q, hq⟩).mp hxy`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[U.2.fromSpec_primeIdealOf ⟨ξ, hxU⟩]`. Conclude with `h2`. Establish `hZsub : Z ⊆ closure ({U.2.fromSpec (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1))} : Set (X : Type u))`. Rewrite using `[← hξ']`. Conclude with `closure_minimal (Set.singleton_subset_iff.mpr hξcl) isClosed_closure`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyZ : U.2.fromSpec (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1)) ∈ Z` using `hZ.2 isIrreducible_singleton.closure hZsub (subset_closure rfl)`. Establish `hy : U.2.fromSpec (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1)) ∈ closure ({ξ} : Set (X : Type u))`. Rewrite using `[hξ']`. Conclude with `hyZ`. Establish `hprimeLe : (U.2.primeIdealOf ⟨ξ, hxU⟩) ≤ (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(PrimeSpectrum.le_iff_mem_closure (U.2.primeIdealOf ⟨ξ, hxU⟩) ⟨q, hq⟩).mpr ?_` and prove the remaining obligations. Use `(_root_.FunctorialResolution.EmbeddedResolution.mem_closure_singleton_iff_fromSpec U.2 ⟨q, hq⟩ (U.2.primeIdealOf ⟨ξ, hxU⟩)).mpr ?_` and prove the remaining obligations. Rewrite using `[U.2.fromSpec_primeIdealOf ⟨ξ, hxU⟩]`. Conclude with `hy`. Conclude with `hprimeLe`.
-
-Conclude with `notMem_nonZeroDivisors_of_mem_mem_minimalPrimes hfp hmin hf`.
+A detailed English derivation is pending.
 -/
 theorem _root_.FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor.not_irreducibleComponent_subset_support
     {X : Scheme.{u}} {D : X.IdealSheafData} (hD : FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor D)

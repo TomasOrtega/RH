@@ -13,9 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `: FaithfulSMul V W` using `(faithfulSMul_iff_algebraMap_injective V W).2 hinj`. Establish `hfl : Module.Flat V W` using `inferInstance`. Establish `: Flat (spMap (algebraMap V W))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 hfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Surjective (spMap (algebraMap V W))` using `⟨Algebra.IsIntegral.comap_surjective V W⟩`. Conclude with `Flat.epi_of_flat_of_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem epi_spMap_of_finite_of_injective (V W : Type) [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] [CommRing W] [IsDomain W] [Algebra V W] [Module.Finite V W]
@@ -30,19 +30,19 @@ theorem epi_spMap_of_finite_of_injective (V W : Type) [CommRing V] [IsDomain V]
   exact Flat.epi_of_flat_of_surjective _
 
 /- English proof (translation)
-Introduce `hD hU V _ _ _ hV G _ _ _ _ C _ _ ga m hm hrat κ _ _ f hf x hx`. Take `⟨W, _, _, _, _, _, f', hfin, hinj, hloc, -, hcomp, hy⟩` from `exists_finite_extension_torsion_lift hU V G m hm κ f hf {x} (by simpa using hx)`. Take `⟨y, hy, hy'⟩` from `hy x (Finset.mem_singleton_self x)`. Set `: Algebra V C` to `(ga.comp (algebraMap V (FractionRing V))).toAlgebra`. Establish `hC : Function.Injective (algebraMap V C)` using `ga.injective.comp (IsFractionRing.injective V (FractionRing V))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: FaithfulSMul V W` using `(faithfulSMul_iff_algebraMap_injective V W).2 hinj`. Establish `: FaithfulSMul V C` using `(faithfulSMul_iff_algebraMap_injective V C).2 hC`. Set `β : W →ₐ[V] C` to `IsAlgClosed.lift`. Establish `hβ : Function.Injective β.toRingHom`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.eq_bot_of_comap_eq_bot (R := V) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comap_ker]`. Use `(RingHom.injective_iff_ker_eq_bot _).1 ?_` and prove the remaining obligations. Rewrite using `[show β.toRingHom.comp (algebraMap V W) = algebraMap V C from β.comp_algebraMap]`. Conclude with `hC`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hβα : β.toRingHom.comp (algebraMap V W) = ga.comp (algebraMap V (FractionRing V))` using `β.comp_algebraMap`. Establish `hw : spMap β.toRingHom ≫ spMap (algebraMap V W) = spMap ga ≫ jK V`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hβα]`. Set `j : Over.mk (spMap ga ≫ jK V) ⟶ Over.mk (spMap (algebraMap V W))` to `Over.homMk (spMap β.toRingHom) hw`. Take `⟨x₀, hx₀⟩` from `hrat (j ≫ y) (by rw [← comp_pow, hy, comp_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h₀, hh₀, -⟩` from `hD V W C (algebraMap V W) β.toRingHom ga hloc hβ hβα G.left y.left x₀ hx₀.symm`. Establish `hepi` using `epi_spMap_of_finite_of_injective V W hinj`. Set `h : baseOver (Sp V) ⟶ G` to `Over.homMk h₀ (by`. Rewrite using `[← cancel_epi (spMap (algebraMap V W))]`. Conclude with `((reassoc_of% hh₀) _).trans ((Over.w y).trans (Category.comp_id _).symm))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a : Over.mk (spMap (algebraMap V W)) ⟶ baseOver (Sp V)` to `Over.homMk (spMap (algebraMap V W)) (Category.comp_id _)`. Establish `ha : a ≫ h = y` using `Over.OverMorphism.ext hh₀`. Establish `: Epi a.left` using `hepi`. Establish `: Epi a` using `Over.epi_of_epi_left a`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi a, comp_pow, ha, hy, comp_one]`. Rewrite using `[← hy', ← hh₀, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hcomp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_torsion_lift_of_generic_rational : (∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (W C : Type) [CommRing W] [IsLocalRing W] [Field C] (α : V →+* W) (β : W →+* C) (ga : FractionRing V →+* C), IsLocalHom α → Function.Injective β → β.comp α = ga.comp (algebraMap V (FractionRing V)) → ∀ (X : Scheme.{0}) (y : Sp W ⟶ X) (x : Sp (FractionRing V) ⟶ X), spMap β ≫ y = spMap ga ≫ x → ∃ h : Sp V ⟶ X, spMap α ≫ h = y ∧ jK V ≫ h = x) → UnramExtSt → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V], IsAdicComplete (IsLocalRing.maximalIdeal V) V → ∀ (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] [IsSeparated G.hom] (C : Type) [Field C] [IsAlgClosed C] (ga : FractionRing V →+* C) (m : ℕ), IsUnit (m : V) → (∀ y : Over.mk (spMap ga ≫ jK V) ⟶ G, y ^ m = 1 → ∃ x : Sp (FractionRing V) ⟶ G.left, spMap ga ≫ x = y.left) → ∀ (κ : Type) [Field κ] [IsAlgClosed κ] (f : V →+* κ), IsLocalHom f → ∀ x : Over.mk (spMap f) ⟶ G, x ^ m = 1 → ∃ h : baseOver (Sp V) ⟶ G, h ^ m = 1 ∧ spMap f ≫ h.left = x.left := by
   intro hD hU V _ _ _ hV G _ _ _ _ C _ _ ga m hm hrat κ _ _ f hf x hx

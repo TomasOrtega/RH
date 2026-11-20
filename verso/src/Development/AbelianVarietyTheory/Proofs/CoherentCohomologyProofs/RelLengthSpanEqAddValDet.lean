@@ -10,7 +10,7 @@ variable {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 omit [Fintype ι] in
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, addVal_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem addVal_prod (s : Finset ι) (c : ι → R) :
     addVal R (∏ i ∈ s, c i) = ∑ i ∈ s, addVal R (c i) := by
@@ -19,7 +19,7 @@ theorem addVal_prod (s : Finset ι) (c : ι → R) :
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, addVal_mul, ih]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[← ne_eq, Module.length_ne_top_iff, isFiniteLength_iff_isNoetherian_isArtinian]`. Establish `: IsArtinianRing R` using `h.2`. Conclude with `IsDiscreteValuationRing.not_isField R (IsArtinianRing.isField_of_isDomain R)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem length_self_eq_top : Module.length R R = ⊤ := by
   by_contra h
@@ -28,11 +28,11 @@ theorem length_self_eq_top : Module.length R R = ⊤ := by
   exact IsDiscreteValuationRing.not_isField R (IsArtinianRing.isField_of_isDomain R)
 
 /- English proof (translation)
-Take `⟨w, hw, hwP⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr h`. Take `⟨k, hk⟩` from `Function.ne_iff.mp hw`. Establish `hk' : w k ≠ 0` using `hk`. Set `g : R →ₗ[R] (ι → R) ⧸ LinearMap.range P.mulVecLin` to `(LinearMap.range P.mulVecLin).mkQ ∘ₗ LinearMap.single R (fun _ : ι => R) k`. Establish `hg : Function.Injective g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Establish `hr' : (Pi.single k r : ι → R) ∈ LinearMap.range P.mulVecLin` using `(Submodule.Quotient.mk_eq_zero _).mp hr`. Take `⟨x, hx⟩` from `hr'`. Establish `h1 : w ⬝ᵥ P.mulVec x = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Matrix.dotProduct_mulVec, hwP, zero_dotProduct]`. Rewrite `hx` using `[Matrix.mulVecLin_apply]`. Rewrite `h1` using `[hx, dotProduct_single]`. Conclude with `(mul_eq_zero.mp h1).resolve_left hk'`. Conclude with `top_le_iff.mp (length_self_eq_top (R := R) ▸ Module.length_le_of_injective g hg)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_coker_of_det_eq_zero (P : Matrix ι ι R) (h : P.det = 0) :
     Module.length R ((ι → R) ⧸ LinearMap.range P.mulVecLin) = ⊤ := by
@@ -55,15 +55,15 @@ theorem length_coker_of_det_eq_zero (P : Matrix ι ι R) (h : P.det = 0) :
   exact top_le_iff.mp (length_self_eq_top (R := R) ▸ Module.length_le_of_injective g hg)
 
 /- English proof (translation)
-Establish `hr : Module.finrank R (LinearMap.range f) = Module.finrank R M` using `LinearMap.finrank_range_of_inj hf`. Use `set c := Submodule.smithNormalFormCoeffs b hr with hc`. Use `set bt := Submodule.smithNormalFormTopBasis b hr with hbt`. Use `set bb := Submodule.smithNormalFormBotBasis b hr with hbb`. Establish `hdef : ∀ i, (bb i : M) = c i • bt i` using `Submodule.smithNormalFormBotBasis_def b hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Module.length R (M ⧸ LinearMap.range f) = ∑ i, addVal R (c i)`. Rewrite using `[(Submodule.quotientEquivPiSpan _ b hr).length_eq, Module.length_pi_of_fintype]`. Conclude with `Finset.sum_congr rfl fun i _ => Ring.ord_eq_addVal (c i)`. Establish `h2` using `LinearMap.associated_det_comp_equiv (LinearMap.range f).subtype (LinearEquiv.ofInjective f hf) (bt.equiv bb (Equiv.refl ι))`. Establish `h3 : (LinearMap.range f).subtype ∘ₗ (LinearEquiv.ofInjective f hf : M →ₗ[R] _) = f`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Both sides reduce to the same expression. Establish `h4 : LinearMap.det ((LinearMap.range f).subtype ∘ₗ (bt.equiv bb (Equiv.refl ι) : M →ₗ[R] LinearMap.range f)) = ∏ i, c i`. Rewrite using `[← LinearMap.det_toMatrix bt, ← Matrix.det_diagonal]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Module.Basis.equiv_apply, Equiv.refl_apply, Submodule.subtype_apply, hdef, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply, Matrix.diagonal_apply, smul_eq_mul]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[hij, Ne.symm hij]`. Rewrite `h2` using `[h3, h4]`. Rewrite using `[h1, (addVal_eq_iff_associated _ _).mpr h2, addVal_prod]`.
+A detailed English derivation is pending.
 -/
 theorem length_coker_of_injective {M : Type*} [AddCommGroup M] [Module R M]
     (b : Module.Basis ι R M) (f : M →ₗ[R] M) (hf : Function.Injective f) :
@@ -99,9 +99,9 @@ theorem length_coker_of_injective {M : Type*} [AddCommGroup M] [Module R M]
   rw [h1, (addVal_eq_iff_associated _ _).mpr h2, addVal_prod]
 
 /- English proof (translation)
-Distinguish the cases in `h : P.det = 0`. Rewrite using `[length_coker_of_det_eq_zero P h, h, addVal_zero]`. Establish `hinj : Function.Injective P.mulVecLin`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hx0`. Conclude with `h (Matrix.exists_mulVec_eq_zero_iff.mp ⟨x, hx0, hx⟩)`. Rewrite using `[length_coker_of_injective (Pi.basisFun R ι) _ hinj, ← Matrix.toLin'_apply', LinearMap.det_toLin']`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_coker (P : Matrix ι ι R) :
     Module.length R ((ι → R) ⧸ LinearMap.range P.mulVecLin) = addVal R P.det := by
@@ -116,11 +116,11 @@ theorem length_coker (P : Matrix ι ι R) :
       LinearMap.det_toLin']
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Fintype.linearCombination R a)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.mp ha x (by rwa [Fintype.linearCombination_apply] at hx) i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hA : Submodule.span R (Set.range a) = (⊤ : Submodule R (ι → R)).map (Fintype.linearCombination R a)`. Rewrite using `[Submodule.map_top, Fintype.range_linearCombination]`. Establish `hcomp : Fintype.linearCombination R a ∘ₗ P.mulVecLin = Fintype.linearCombination R v`. Use `LinearMap.pi_ext' fun j => LinearMap.ext_ring ?_` and prove the remaining obligations. Simplify using `[Fintype.linearCombination_apply, hv, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hB : Submodule.span R (Set.range v) = (LinearMap.range P.mulVecLin).map (Fintype.linearCombination R a)`. Rewrite using `[← LinearMap.range_comp, hcomp, Fintype.range_linearCombination]`. Rewrite using `[hA, hB, relLength_map_of_injective _ hinj, relLength_top_left, length_coker]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLength_span_eq_addVal_det {V : Type*} [AddCommGroup V] [Module R V] {a v : ι → V}
     (ha : LinearIndependent R a) (P : Matrix ι ι R) (hv : ∀ j, v j = ∑ i, P i j • a i) :
@@ -145,7 +145,7 @@ theorem relLength_span_eq_addVal_det {V : Type*} [AddCommGroup V] [Module R V] {
 universe u_1 u_2 u_3 in
 
 /- English proof (translation)
-The claim follows from `relLength_span_eq_addVal_det ha P hv`.
+A detailed English derivation is pending.
 -/
 theorem relLength_span_eq {R : Type u_1} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     {V : Type u_2} [AddCommGroup V] [Module R V] {ι : Type u_3} [Fintype ι] [DecidableEq ι]

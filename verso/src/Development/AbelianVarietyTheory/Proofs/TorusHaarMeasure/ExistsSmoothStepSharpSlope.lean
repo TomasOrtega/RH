@@ -6,41 +6,35 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `ψ : ContDiffBump (ρ / 2 : ℝ)` to `⟨ρ / 2 - 2 * ε, ρ / 2 - ε, by linarith, by linarith⟩`. Establish `hψc : Continuous ψ` using `ψ.continuous`. Establish `hψ0 : ∀ t, t ≤ ε ∨ ρ - ε ≤ t → ψ t = 0`. Introduce `t ht`. Apply `ψ.zero_of_le_dist` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Real.dist_eq]`. Use `show ρ / 2 - ε ≤ |t - ρ / 2|`. Break down `ht with ht | ht` into its components or cases. Rewrite using `[abs_sub_comm]; exact le_trans (by linarith) (le_abs_self _)`. Conclude with `le_trans (by linarith) (le_abs_self _)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψ1 : ∀ t, 2 * ε ≤ t → t ≤ ρ - 2 * ε → ψ t = 1`. Introduce `t h1 h2`. Apply `ψ.one_of_mem_closedBall` to reduce the goal to its premises. Rewrite using `[Metric.mem_closedBall, Real.dist_eq]`. Use `show |t - ρ / 2| ≤ ρ / 2 - 2 * ε`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Establish `hII : ∀ a b, IntervalIntegrable ψ volume a b` using `fun a b => hψc.intervalIntegrable a b`. Take `⟨F, hF⟩ : ∃ F : ℝ → ℝ, F = fun u => ∫ t in ε..u, ψ t` from `⟨_, rfl⟩`. Establish `hFd : ∀ u, HasDerivAt F (ψ u) u`. Introduce `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hF]`. Conclude with `(hψc.integral_hasStrictDerivAt ε u).hasDerivAt`. Establish `hFs : ContDiff ℝ ∞ F`. Use `contDiff_infty_iff_deriv.2 ⟨fun u => (hFd u).differentiableAt, ?_⟩` and prove the remaining obligations. Establish `h : deriv F = ψ` using `funext fun u => (hFd u).deriv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `ψ.contDiff`. Establish `hFlow : ∀ u, u ≤ ε → F u = 0`. Introduce `u hu`. Rewrite using `[hF]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show ∫ t in ε..u, ψ t = 0`. Rewrite using `[intervalIntegral.integral_congr (g := fun _ => (0 : ℝ)) ?_]`. Simplify using the standard rewrite rules. Introduce `t ht`. Conclude with `hψ0 t (Or.inl (le_trans ht.2 (sup_le le_rfl hu)))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨I, hI⟩ : ∃ I : ℝ, I = ∫ t in ε..(ρ - ε), ψ t` from `⟨_, rfl⟩`. Establish `hFhigh : ∀ u, ρ - ε ≤ u → F u = I`. Introduce `u hu`. Rewrite using `[hF, hI]`. Use `show ∫ t in ε..u, ψ t = ∫ t in ε..(ρ - ε), ψ t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← intervalIntegral.integral_add_adjacent_intervals (hII ε (ρ - ε)) (hII (ρ - ε) u), intervalIntegral.integral_congr (a := ρ - ε) (b := u) (g := fun _ => (0 : ℝ)) ?_]`. Simplify using the standard rewrite rules. Introduce `t ht`. Conclude with `hψ0 t (Or.inr (le_trans (le_inf le_rfl hu) ht.1))`. Establish `hIge : ρ - 4 * ε ≤ I`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hI]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[intervalIntegral.integral_const, smul_eq_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ t in (2 * ε)..(ρ - 2 * ε), ψ t := by`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `intervalIntegral.integral_congr` to reduce the goal to its premises. Introduce `t ht`. Rewrite `ht` using `[Set.uIcc_of_le (by linarith)]`. Conclude with `(hψ1 t ht.1 ht.2).symm`. Use `_ ≤ ∫ t in ε..(ρ - ε), ψ t := intervalIntegral.integral_mono_interval (by linarith) (by linarith) (by linarith) (Filter.Eventually.of_forall fun t => ψ.nonneg) (hII _ _)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hIpos : 0 < I` using `by linarith`. Establish `hFrange : ∀ u, 0 ≤ F u ∧ F u ≤ I`. Introduce `u`. Break down `le_total u ε with h | h` into its components or cases. Rewrite using `[hFlow u h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨le_rfl, hIpos.le⟩`. Break down `le_total (ρ - ε) u with h' | h'` into its components or cases. Rewrite using `[hFhigh u h']`. Conclude with `⟨hIpos.le, le_rfl⟩`. Establish `hsplit : F u + ∫ t in u..(ρ - ε), ψ t = I`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF, hI]`. Conclude with `intervalIntegral.integral_add_adjacent_intervals (hII _ _) (hII _ _)`. Establish `h1 : 0 ≤ F u`. Rewrite using `[hF]`. Conclude with `intervalIntegral.integral_nonneg h fun t _ => ψ.nonneg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ ∫ t in u..(ρ - ε), ψ t` using `intervalIntegral.integral_nonneg h' fun t _ => ψ.nonneg`. Conclude with `⟨h1, by linarith⟩`. Use `⟨fun u => 1 - F u / I, contDiff_const.sub (hFs.div_const I), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Simplify using `[hFlow u hu]`.
-
-Introduce `u hu`. Simplify using `[hFhigh u hu, hIpos.ne']`. Introduce `u`. Rewrite using `[sub_nonneg, div_le_one hIpos]`. Conclude with `(hFrange u).2`.
-
-Introduce `u`. Establish `: 0 ≤ F u / I` using `div_nonneg (hFrange u).1 hIpos.le`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `u`. Establish `hd : HasDerivAt (fun u => 1 - F u / I) (-(ψ u / I)) u` using `((hFd u).div_const I).const_sub 1`.
-
-Rewrite using `[hd.deriv, neg_le_neg_iff, div_le_div_iff₀ hIpos (by linarith)]`. Use polynomial arithmetic with `[ψ.le_one (x := u), ψ.nonneg (x := u)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_smooth_step_sharp_slope (ρ ε : ℝ) (hε : 0 < ε) (h4 : 4 * ε < ρ) :
     ∃ η : ℝ → ℝ, ContDiff ℝ ∞ η ∧ (∀ u, u ≤ ε → η u = 1) ∧ (∀ u, ρ - ε ≤ u → η u = 0) ∧
@@ -127,45 +121,43 @@ theorem exists_smooth_step_sharp_slope (ρ ε : ℝ) (hε : 0 < ε) (h4 : 4 * ε
     nlinarith [ψ.le_one (x := u), ψ.nonneg (x := u)]
 
 /- English proof (translation)
-Introduce `ρ0 θ hρ hθ`. Take `⟨ε, hε, hE⟩ : ∃ ε : ℝ, 0 < ε ∧ 8 * θ * ε = ρ0 * (θ - 1)` from `⟨ρ0 * (θ - 1) / (8 * θ), div_pos (mul_pos hρ (by linarith)) (by linarith), by field_simp⟩`. Establish `h4 : 4 * ε < ρ0` using `by nlinarith`. Establish `hpos : 0 < ρ0 - 4 * ε` using `by linarith`. Establish `hslope : 1 / (ρ0 - 4 * ε) ≤ θ / ρ0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[one_div_le hpos (by positivity), one_div_div, div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨η, hηs, hη1, hη0, hηnn, hηle, hηd⟩` from `exists_smooth_step_sharp_slope ρ0 ε hε h4`. Use `⟨ε, 2 * ρ0 / ε + |Real.log ε|, hε, by linarith, ?_⟩` and prove the remaining obligations. Introduce `δ hδ _`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf⟩ : ∃ f : ℝ → ℝ, f = fun t => η t / (t + δ)` from `⟨_, rfl⟩`. Establish `hfv : ∀ t, f t = η t / (t + δ)` using `fun t => by rw [hf]`. Establish `hfc : ContDiffOn ℝ ∞ f (Set.Ioi (-δ))`. Rewrite using `[hf]`. Use `hηs.contDiffOn.div (contDiffOn_id.add contDiffOn_const) fun t ht => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : 0 < t + δ` using `by simp only [Set.mem_Ioi] at ht; linarith`. Conclude with `h.ne'`. Establish `hfcont` using `hfc.continuousOn`. Establish `hsub : ∀ a b, -δ < a → -δ < b → Set.uIcc a b ⊆ Set.Ioi (-δ)` using `fun a b ha hb t ht => lt_of_lt_of_le (lt_inf_iff.2 ⟨ha, hb⟩) ht.1`. Establish `hII : ∀ a b, -δ < a → -δ < b → IntervalIntegrable f volume a b` using `fun a b ha hb => (hfcont.mono (hsub a b ha hb)).intervalIntegrable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ u, -δ < u → HasDerivAt (fun u => ∫ t in ρ0..u, f t) (f u) u` using `fun u hu => intervalIntegral.integral_hasDerivAt_right (hII ρ0 u (by linarith) hu) (hfcont.stronglyMeasurableAtFilter isOpen_Ioi u hu) (hfcont.continuousAt (isOpen_Ioi.mem_nhds hu))`. Establish `hnn : ∀ t, -δ < t → 0 ≤ f t` using `fun t ht => by`. Rewrite using `[hfv]; exact div_nonneg (hηnn t) (by linarith)`. Establish `hzero : ∀ u, ρ0 - ε ≤ u → ∫ t in ρ0..u, f t = 0`. Introduce `u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[intervalIntegral.integral_congr (g := fun _ => (0 : ℝ)) ?_]`. Simplify using the standard rewrite rules. Introduce `t ht`. Establish `h : ρ0 - ε ≤ t` using `le_trans (le_inf (by linarith) hu) ht.1`. Simplify using `only [hfv, hη0 t h, zero_div]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hle0 : ∀ u, 0 ≤ u → ∫ t in ρ0..u, f t ≤ 0`. Introduce `u hu`. Break down `le_total u ρ0 with h | h` into its components or cases. Rewrite using `[intervalIntegral.integral_symm]`. Use `intervalIntegral.integral_nonneg (μ := volume) h fun t ht => hnn t (lt_of_lt_of_le (by linarith) ht.1)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hzero u (by linarith)]`. Use `⟨fun u => ∫ t in ρ0..u, f t, ?_, hzero, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(contDiffOn_infty_iff_deriv_of_isOpen isOpen_Ioi).2 ⟨fun u hu => (hd u hu).differentiableAt.differentiableWithinAt, hfc.congr fun u hu => (hd u hu).deriv⟩`. Introduce `u hu`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : -δ < u` using `by linarith`. Establish `hp : 0 < u + δ` using `by linarith`. Establish `hdg : deriv (fun u => ∫ t in ρ0..u, f t) u = f u` using `(hd u hu').deriv`. Establish `hηdiff : HasDerivAt η (deriv η u) u` using `((hηs.differentiable (by simp)) u).hasDerivAt`. Establish `hfd : HasDerivAt f ((deriv η u * (u + δ) - η u * 1) / (u + δ) ^ 2) u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf]`. Conclude with `hηdiff.fun_div ((hasDerivAt_id u).add_const δ) hp.ne'`. Establish `hdd : deriv (deriv (fun u => ∫ t in ρ0..u, f t)) u = deriv f u`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Use `filter_upwards [isOpen_Ioi.mem_nhds hu'] with t ht using (hd t ht).deriv`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hle0 u hu, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdg, hfv]`. Conclude with `div_nonneg (hηnn u) hp.le`. Rewrite using `[hdg, hdd, hfd.deriv, hfv]`. Establish `ha : 0 < 1 / (ρ0 - 4 * ε)` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : η u / (u + δ) + u * ((deriv η u * (u + δ) - η u * 1) / (u + δ) ^ 2) = η u * δ / (u + δ) ^ 2 + u * deriv η u / (u + δ)` using `by field_simp; ring`. Rewrite using `[key]`. Establish `h1 : 0 ≤ η u * δ / (u + δ) ^ 2` using `div_nonneg (mul_nonneg (hηnn u) hδ.le) (sq_nonneg _)`. Establish `h2 : -(1 / (ρ0 - 4 * ε)) ≤ u * deriv η u / (u + δ)`. Rewrite using `[le_div_iff₀ hp]`.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (hηd u) hu, mul_pos ha hδ]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `u hu0 huε beta_reduce`. Establish `hp : 0 < u + δ` using `by linarith`. Establish `hεδ : 0 < ε + δ` using `by linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : ∫ t in ρ0..u, f t = (∫ t in ρ0..ε, f t) - ∫ t in u..ε, f t`. Rewrite using `[← intervalIntegral.integral_add_adjacent_intervals (hII ρ0 ε (by linarith) (by linarith)) (hII ε u (by linarith) (by linarith)), intervalIntegral.integral_symm u ε]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlog : ∫ t in u..ε, f t = Real.log (ε + δ) - Real.log (u + δ)`. Rewrite using `[intervalIntegral.integral_congr (g := fun t => (t + δ)⁻¹) ?_]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `intervalIntegral.integral_comp_add_right (a := u) (b := ε) (fun t : ℝ => t⁻¹) δ`. Rewrite using `[h, integral_inv_of_pos hp hεδ, Real.log_div hεδ.ne' hp.ne']`. Introduce `t ht`. Establish `h : t ≤ ε` using `le_trans ht.2 (sup_le huε le_rfl)`. Simplify using `only [hfv, hη1 t h, one_div]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsplit, hlog]`. Establish `h1` using `hle0 ε hε.le`. Establish `h2 : Real.log ε ≤ Real.log (ε + δ)` using `Real.log_le_log hε (by linarith)`. Establish `h3` using `neg_abs_le (Real.log ε)`. Establish `h5 : 0 ≤ 2 * ρ0 / ε` using `by positivity`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `u hu beta_reduce`. Establish `hC : 0 ≤ 2 * ρ0 / ε + |Real.log ε|` using `by positivity`. Break down `le_total u ρ0 with h | h` into its components or cases. Establish `hu' : -δ < u` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[intervalIntegral.integral_symm]`. Establish `hb : ∫ t in u..ρ0, f t ≤ ∫ _ in u..ρ0, (2 / ε)`. Use `intervalIntegral.integral_mono_on h (hII u ρ0 hu' (by linarith)) intervalIntegrable_const fun t ht => ?_` and prove the remaining obligations. Establish `ht1 : ε / 2 ≤ t` using `le_trans hu ht.1`. Establish `hk : 2 / ε * ε = 2` using `div_mul_cancel₀ 2 hε.ne'`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hfv, div_le_iff₀ (by linarith)]`. Use polynomial arithmetic with `[hηle t, mul_nonneg (div_pos two_pos hε).le (show 0 ≤ t + δ - ε / 2 by linarith)]`. Rewrite `hb` using `[intervalIntegral.integral_const, smul_eq_mul]`. Establish `hm : (ρ0 - u) * (2 / ε) ≤ 2 * ρ0 / ε`. Rewrite using `[show 2 * ρ0 / ε = ρ0 * (2 / ε) by ring]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Use `abs_nonneg (Real.log ε)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hzero u (by linarith)]; linarith`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cutoff_log_sharp : ∀ ρ0 θ : ℝ, 0 < ρ0 → 1 < θ → ∃ ε C : ℝ, 0 < ε ∧ ε < ρ0 ∧
     ∀ δ : ℝ, 0 < δ → δ ≤ 1 → ∃ g : ℝ → ℝ,

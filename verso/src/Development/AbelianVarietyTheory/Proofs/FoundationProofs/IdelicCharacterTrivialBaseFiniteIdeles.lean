@@ -16,7 +16,7 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v k`.
+A detailed English derivation is pending.
 -/
 theorem val_algebraMap (v : HeightOneSpectrum (𝓞 F)) (k : F) :
     Valued.v (algebraMap F (v.adicCompletion F) k) = v.valuation F k :=
@@ -47,9 +47,9 @@ theorem adele_one_apply (v : HeightOneSpectrum (𝓞 F)) :
     (1 : FiniteAdeleRing (𝓞 F) F) v = 1 := rfl
 
 /- English proof (translation)
-Establish `hm1 : v.valuation F m ≠ 0` using `(Valuation.ne_zero_iff _).2 hm`. Establish `hm2 : P.valuation E (algebraMap F E m) ≠ 0` using `(Valuation.ne_zero_iff _).2 (by simpa using hm)`. Establish `h1` using `h0 ((a - algebraMap F _ k) * algebraMap F _ m⁻¹) n (by`. Rewrite using `[adele_mul_apply, adele_sub_apply, adele_algebraMap_apply, adele_algebraMap_apply, map_mul, val_algebraMap, map_inv₀]`. Conclude with `(mul_inv_le_iff₀ (zero_lt_iff.2 hm1)).2 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_mul, map_sub, hf, hf, adele_mul_apply, adele_sub_apply, adele_algebraMap_apply, adele_algebraMap_apply, map_mul, val_algebraMap, map_inv₀, map_inv₀]`. Conclude with `(mul_inv_le_iff₀ (zero_lt_iff.2 hm2)).1 h1`.
+A detailed English derivation is pending.
 -/
 theorem close_scaled (f : FiniteAdeleRing (𝓞 F) F →+* FiniteAdeleRing (𝓞 E) E)
     (hf : ∀ k : F, f (algebraMap F _ k) = algebraMap E _ (algebraMap F E k))
@@ -71,11 +71,11 @@ theorem close_scaled (f : FiniteAdeleRing (𝓞 F) F →+* FiniteAdeleRing (𝓞
   exact (mul_inv_le_iff₀ (zero_lt_iff.2 hm2)).1 h1
 
 /- English proof (translation)
-Establish `e1 : Valued.v ((a : FiniteAdeleRing (𝓞 F) F) v) * Valued.v (((a⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) v) = 1`. Rewrite using `[← map_mul, ← adele_mul_apply, Units.mul_inv, adele_one_apply, map_one]`. Establish `e2 : Valued.v (f a P) * Valued.v (f (a⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) P) = 1`. Rewrite using `[← map_mul, ← adele_mul_apply, ← map_mul, Units.mul_inv, map_one, adele_one_apply, map_one]`. Rewrite `e1` using `[h, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `l1` using `h0 a 0 (by simp [h])`. Establish `l2` using `h0 (a⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) 0 (by simp [e1])`. Simplify using `only [Nat.cast_zero, neg_zero, WithZero.exp_zero] at l1 l2`. Use `le_antisymm l1 ?_` and prove the remaining obligations. Rewrite using `[← e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_right' l2`.
+A detailed English derivation is pending.
 -/
 theorem val_eq_one (f : FiniteAdeleRing (𝓞 F) F →+* FiniteAdeleRing (𝓞 E) E)
     (P : HeightOneSpectrum (𝓞 E)) (v : HeightOneSpectrum (𝓞 F))
@@ -97,35 +97,35 @@ theorem val_eq_one (f : FiniteAdeleRing (𝓞 F) F →+* FiniteAdeleRing (𝓞 E
   exact mul_le_of_le_one_right' l2
 
 /- English proof (translation)
-Simplify using `[aboveF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_aboveF (v : HeightOneSpectrum (𝓞 F)) (P : HeightOneSpectrum (𝓞 E)) :
     P ∈ aboveF (L := E) F v ↔ P.under (𝓞 F) = v := by
   simp [aboveF]
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_tmul_one {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [Algebra R A] [Algebra R B]
     (k : R) : (algebraMap R A k) ⊗ₜ[R] (1 : B) = (1 : A) ⊗ₜ[R] (algebraMap R B k) := by
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Take `⟨S, k, hS, hS'⟩` from `GlobalTheory.finiteIdele_exists_local_approx F N hN α`. Establish `hNF : (N : F) ≠ 0` using `by exact_mod_cast hN.ne'`. Use `⟨S.biUnion (aboveF (L := E) F), fun P => upF F (k (P.under (𝓞 F))), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P hP`. Take `⟨v, hv, hPv⟩` from `Finset.mem_biUnion.1 hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `(mem_aboveF v P).1 hPv`. Take `⟨-, b1, b2⟩` from `hS _ hv`. Use `beta_reduce`. Use `set kk := k (P.under (𝓞 F)) with hkk`. Establish `hk : ((upF F kk : Eˣ) : E) = algebraMap F E kk` using `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk]`. Establish `c1` using `close_scaled f hf P _ (h0 P) α kk (N * kk) (mul_ne_zero hNF kk.ne_zero) 0 (by simpa using b1)`. Establish `c2` using `close_scaled f hf P _ (h0 P) α kk kk kk.ne_zero 1 (by simpa using b2)`. Use `⟨?_, by simpa using c1⟩` and prove the remaining obligations. Rewrite using `[← val_algebraMap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Valuation.map_eq_of_sub_lt` to reduce the goal to its premises. Rewrite using `[val_algebraMap]`. Use `c2.trans_lt ?_` and prove the remaining obligations. Establish `hm2 : P.valuation E (algebraMap F E kk) ≠ 0` using `(Valuation.ne_zero_iff _).2 (by simp)`. Use `mul_lt_of_lt_one_left (zero_lt_iff.2 hm2) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Introduce `P hP`. Establish `hv : P.under (𝓞 F) ∉ S` using `fun h => hP (Finset.mem_biUnion.2 ⟨_, h, (mem_aboveF _ P).2 rfl⟩)`. Take `⟨b1, b2⟩` from `hS' _ hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨val_eq_one f P _ (h0 P) α b1, fun h => b2 ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (𝓞 E) N ∈ P.asIdeal`. Simplify using `using h`. Rewrite using `[Finset.prod_biUnion]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hχ.1 v (k v)` as an intermediate fact. Rewrite `this` using `[HChar.resFin, MonoidHom.finsetProd_apply]`. Rewrite using `[← Units.coe_prod, Units.val_eq_one, ← this]`. Use `Finset.prod_congr rfl fun P hP => ?_` and prove the remaining obligations. Rewrite using `[← (mem_aboveF v P).1 hP]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `v _ w _ hvw`. Use `Finset.disjoint_left.2 fun P hv hw => hvw ?_` and prove the remaining obligations. Rewrite using `[← (mem_aboveF v P).1 hv, ← (mem_aboveF w P).1 hw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_approx (f : FiniteAdeleRing (𝓞 F) F →+* FiniteAdeleRing (𝓞 E) E)
     (hf : ∀ k : F, f (algebraMap F _ k) = algebraMap E _ (algebraMap F E k))
@@ -181,13 +181,13 @@ theorem exists_approx (f : FiniteAdeleRing (𝓞 F) F →+* FiniteAdeleRing (�
 end General
 
 /- English proof (translation)
-Introduce `D c χ hc hχ a ha`. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨N, hN, hprod⟩` from `GlobalTheory.CharLocProd.char_eq_prod_locK D ι h1 h2 (GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3) c χ hc`. Set `α : (Af D.host.F)ˣ` to `Units.map (sndA D.host.F).toRingHom.toMonoidHom a`. Set `f : Af D.host.F →+* FiniteAdeleRing (𝓞 D.host.E) D.host.E` to `ι.toRingHom.comp (Algebra.TensorProduct.includeLeftRingHom (R := D.host.F) (B := D.host.E))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hfa : ∀ b, f b = ι (b ⊗ₜ[D.host.F] (1 : D.host.E))` using `fun _ => rfl`. Establish `hf : ∀ k : D.host.F, f (algebraMap D.host.F _ k) = algebraMap D.host.E _ (algebraMap D.host.F D.host.E k)`. Introduce `k`. Rewrite using `[hfa, ← h1, algebraMap_tmul_one]`. Establish `h0 : ∀ (P : HeightOneSpectrum (𝓞 D.host.E)) (b : Af D.host.F) (n : ℕ), Valued.v (b (P.under (𝓞 D.host.F))) ≤ WithZero.exp (-(n : ℤ)) → Valued.v (f b P) ≤ WithZero.exp (-(n : ℤ))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `P b n h`. Use `h3 b 0 P n (by rwa [map_zero, sub_zero])` as an intermediate fact. Rewrite `this` using `[map_zero, map_zero, sub_zero]`. Then use the resulting hypothesis. Establish `hfin : ι (finPart D (idF D a : AE D)) = f α` using `rfl`. Take `⟨S, k, hS, hS', hp⟩` from `exists_approx f hf h0 χ hχ N hN α`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hS`, `hS'` using `[← hfin]`. Conclude with `Circle.ext ((hprod (idF D a) ha S k hS hS').trans hp)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_idele_base_trivial : ∀ (D : D7) (c : (AE D)ˣ →* Circle) (χ : HChar D.host.E), ChrEq c χ → χ.TrivOn D.host.F → ∀ a : (AF D.host.F)ˣ, infPart D (idF D a : AE D) = 1 → c (idF D a) = 1 := by
   intro D c χ hc hχ a ha

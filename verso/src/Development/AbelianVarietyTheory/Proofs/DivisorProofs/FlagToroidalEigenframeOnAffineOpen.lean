@@ -21,17 +21,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ShFam.Cell
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e σ N U Φ k V hV φV f₀ hstr hint w y hy Ω _ _ ψ x hx g a hg i p hp hc`. Use `haveI : Nonempty V.toScheme := inferInstance`. Use `haveI : IsDomain Γ(V.toScheme, ⊤) := inferInstance`. Use `haveI : IsDomain Γ(gen Z, V) := (V.topIso.commRingCatIsoToRingEquiv).symm.toMulEquiv.isDomain`. Set `t₀ : PrimeSpectrum (MvPolynomial (Coord Dw) Γ(gen Z, V))` to `⟨⊥, Ideal.bot_prime⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i₀, h₀⟩` from `GlobalTheory.T.exists_cell_lands_of_eigFrame Φ hV f₀ hstr w (GeoF t₀) ((geoHom t₀).comp MvPolynomial.C) (fun j => geoHom t₀ (MvPolynomial.X j))`. Establish `hall : ∀ t, InComp Φ hV f₀ w i₀ t` using `fun t => GlobalTheory.T.flag_torus_frame_unique Φ hV f₀ hstr w i₀ t₀ t bot_le h₀`. Establish `key : ∀ (K : Type) [Field K] [IsAlgClosed K] (ψ' : Γ(gen Z, V) →+* K) (a' : Coord Dw → K) (x' : Sp K ⟶ gen Z) (hx' : spMap ψ' ≫ hV.fromSpec = x') (g' : EigFrame Z (ψ'.comp φV) (x' ≫ genι Z)), FrameIn hV f₀ w ψ' hx' g' a' → ∀ (j : U.Comp) (p' : Sp K ⟶ (Φ.C j).Y.X), p' ≫ (Φ.C j).π …`. Introduce `K _ _ ψ' a' x' hx' g' hg' j p' hp' hc'`. Set `χ : MvPolynomial (Coord Dw) Γ(gen Z, V) →+* K` to `MvPolynomial.eval₂Hom ψ' a'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `t : PrimeSpectrum (MvPolynomial (Coord Dw) Γ(gen Z, V))` to `⟨RingHom.ker χ, RingHom.ker_isPrime χ⟩`. Take `⟨em, hem⟩` from `GlobalTheory.T.geometric_point_extends_character t K χ rfl`. Establish `h1` using `GlobalTheory.T.flag_torus_eigen_frame_compat Φ hV f₀ w i₀ em _ _ (hall t)`. Establish `e1 : em.comp ((geoHom t).comp MvPolynomial.C) = ψ'`. Rewrite using `[← RingHom.comp_assoc, hem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MvPolynomial.eval₂Hom_comp_C ψ' a'`. Establish `e2 : (em ∘ fun j => geoHom t (MvPolynomial.X j)) = a'`. Use function extensionality and compare the values at `j`. Use `show (em.comp (geoHom t)) (MvPolynomial.X j) = a' j`. Rewrite using `[hem]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MvPolynomial.eval₂Hom_X' ψ' a' j`. Rewrite `h1` using `[e1, e2]`. Conclude with `GlobalTheory.T.flag_torus_frame_transition Φ hV f₀ hstr w i₀ K ψ' a' h1 x' hx' g' hg' j p' hp' hc'`. Take `⟨Ω₁, _, _, ψ₁, a₁, g₁, hg₁, p₁, hp₁, hc₁⟩` from `GlobalTheory.T.flag_torus_frame_component Φ k hV f₀ hstr w y hy`. Establish `hk` using `key Ω₁ ψ₁ a₁ _ rfl g₁ hg₁ k p₁ hp₁ hc₁`.
-
-Establish `hi` using `key Ω ψ a x hx g hg i p hp hc`. Rewrite using `[hi, hk]`.
+A detailed English derivation is pending.
 -/
 theorem mem_comp_of_frameIn : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F}, ∀ {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N} (Φ : FlagTor Z e U) (k : U.Comp) {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : c.F →+* Γ(gen Z, V)} (f₀ : EigFrame Z φV (hV.fromSpec ≫ genι Z)), hV.fromSpec ≫ genStr Z = spMap φV → IsIntegral V.toScheme → ∀ (w : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ))) (y : (Φ.C k).Y.X), y ∈ Cell.cellOpen (Φ.C k) hV f₀ w → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (ψ : Γ(gen Z, V) →+* Ω) (x : Sp Ω ⟶ gen Z) (hx : spMap ψ ≫ hV.fromSpec = x) (g : EigFrame Z (ψ.comp φV) (x ≫ genι Z)) (a : Cell.Coord Dw → Ω), Cell.FrameIn hV f₀ w ψ hx g a → ∀ (i : U.Comp) (p : Sp Ω ⟶ (Φ.C i).Y.X), p ≫ (Φ.C i).π = x → (Φ.C i).Carries p g → i = k := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e σ N U Φ k V hV φV f₀ hstr hint w y hy Ω _ _ ψ x hx g a hg i p hp hc

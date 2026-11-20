@@ -11,29 +11,25 @@ open ValuativeRel Matrix
 namespace GlobalTheory.RankCoinv
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A D _ _ _ _ ϖ hϖ ν β hν hνϖ r hr Φ hΦ`. Take `⟨⟨hlc, hcs⟩, hvan⟩` from `hΦ`. Establish `hSclosed : IsClosed {X : Matrix A D k | Φ X ≠ 0}`. Establish `: {X : Matrix A D k | Φ X ≠ 0} = (Φ ⁻¹' {0})ᶜ` using `by ext; simp`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hlc.isOpen_fiber 0).isClosed_compl`. Establish `hScpt : IsCompact {X : Matrix A D k | Φ X ≠ 0}` using `hcs.isCompact.of_isClosed_subset hSclosed (fun X hX => subset_tsupport Φ hX)`. Set `m₀ : Matrix A D k → ℕ` to `fun X => if h : X.rank = r then Classical.choose (GlobalTheory.T.low_rank_box_function_stable k A D ϖ hϖ ν β hν hνϖ r X h hr) else 0`. Establish `hm₀ : ∀ X : Matrix A D k, ∀ h : X.rank = r, ∀ m ≥ m₀ X, ∀ C ∈ box ϖ X (fun _ => m₀ X), boxFn ϖ C (fun _ => m) ∈ lowRank (r + 1) ⊔ twistSpan ν β`. Introduce `X h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Classical.choose_spec (GlobalTheory.T.low_rank_box_function_stable k A D ϖ hϖ ν β hν hνϖ r X h hr)` as an intermediate fact. Simplify `this` using `[m₀, h]`. Set `U : Matrix A D k → Set (Matrix A D k)` to `fun X => if X.rank ≤ r then box ϖ X (fun _ => m₀ X) else {Y | r + 1 ≤ Y.rank}`. Establish `hU : ∀ X ∈ {X : Matrix A D k | Φ X ≠ 0}, U X ∈ nhds X`. Introduce `X _`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : X.rank ≤ r`. Simplify using `only [U, h, if_true]`. Use `(isClopen_box ϖ X _).isOpen.mem_nhds ?_` and prove the remaining obligations. Introduce `i j`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [U, h, if_false]`. Conclude with `(GlobalTheory.T.isOpen_rank_ge k A D (r + 1)).mem_nhds (by simp only [Set.mem_setOf_eq]; omega)`. Take `⟨t, htS, hcover⟩` from `hScpt.elim_nhds_subcover U hU`. Take `⟨m₁, hm₁⟩` from `GlobalTheory.T.schwartz_bruhat_box_decomposition k A D ϖ hϖ Φ ⟨hlc, hcs⟩`. Take `⟨s, hdec, hconst⟩` from `hm₁ (max m₁ (t.sup m₀)) (le_max_left _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set m := max m₁ (t.sup m₀) with hm`. Rewrite using `[hdec]`. Use `Submodule.sum_mem _ fun c hc => ?_` and prove the remaining obligations. Distinguish the cases in `hex : ∃ X₂ ∈ box ϖ c (fun _ => m), X₂.rank ≤ r`. Take `⟨X₂, hX₂, hX₂r⟩` from `hex`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hc0 : Φ c = 0`. Rewrite using `[hc0, zero_smul]`. Conclude with `zero_mem _`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hX₂S : Φ X₂ ≠ 0` using `by rw [hconst c hc X₂ hX₂]; exact hc0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hX₂eq : X₂.rank = r`. Assume the negation of the conclusion as `hne`. Conclude with `hX₂S (hvan X₂ (lt_of_le_of_ne hX₂r hne))`. Take `⟨x, hxt, hxU⟩` from `Set.mem_iUnion₂.1 (hcover hX₂S)`. Establish `hxS : Φ x ≠ 0` using `htS x hxt`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Distinguish the cases in `hxr : x.rank ≤ r`. Simplify using `only [U, hxr, if_true] at hxU`. Establish `hxeq : x.rank = r`. Assume the negation of the conclusion as `hne`. Conclude with `hxS (hvan x (lt_of_le_of_ne hxr hne))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmx : m₀ x ≤ m` using `le_trans (Finset.le_sup (f := m₀) hxt) (le_max_right _ _)`. Rewrite using `[← boxFn_eq_of_mem hX₂]`. Conclude with `hm₀ x hxeq m hmx X₂ hxU`. Simplify using `only [U, hxr, if_false, Set.mem_setOf_eq] at hxU`. Use linear arithmetic over natural numbers and integers.
-
-Use `push_neg at hex`. Use `Submodule.smul_mem _ _ (Submodule.mem_sup_left ?_)` and prove the remaining obligations. Use `⟨boxFn_mem_SB ϖ c _, fun Y hY => ?_⟩` and prove the remaining obligations. Establish `hYn : Y ∉ box ϖ c (fun _ => m)` using `fun hYb => by`. Use `hex Y hYb` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Simplify using `[boxFn, Set.indicator_of_notMem hYn]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_lowRank_succ_sup_twistSpan_of_mem_lowRank : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → ∀ (ν β : kˣ →* ℂˣ), (∀ x, ‖(ν x : ℂ)‖ = 1) → ν ϖ ≠ 1 → ∀ (r : ℕ), r < Fintype.card A → ∀ Φ ∈ (GlobalTheory.RankCoinv.lowRank r : Submodule ℂ (Matrix A D k → ℂ)), Φ ∈ GlobalTheory.RankCoinv.lowRank (r + 1) ⊔ GlobalTheory.RankCoinv.twistSpan ν β := by
   intro k _ _ _ _ A D _ _ _ _ ϖ hϖ ν β hν hνϖ r hr Φ hΦ

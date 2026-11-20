@@ -10,25 +10,21 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKMid
 
 /- English proof (translation)
-Use `letI : Algebra G.F ℂ := v.embedding.toAlgebra`. Establish `hg : ∀ a, G.psi v (algebraMap G.F G.C a) = algebraMap G.F (Matrix (Fin G.n) (Fin G.n) ℂ) a` using `fun a => by rw [G.psi_F, Matrix.algebraMap_eq_diagonal]; rfl`. Set `g : G.C →ₐ[G.F] Matrix (Fin G.n) (Fin G.n) ℂ` to `{ G.psi v with commutes' := hg }`. Set `L : ℂ ⊗[G.F] G.C →ₐ[ℂ] Matrix (Fin G.n) (Fin G.n) ℂ` to `Algebra.TensorProduct.lift (Algebra.ofId ℂ _) g (fun r _ => Algebra.commute_algebraMap_left r _)`. Use `haveI : Nonempty (Fin G.n) := ⟨⟨0, G.n_pos⟩⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective L` using `(IsSimpleRing.injective_ringHom_or_subsingleton_codomain L.toRingHom).resolve_right (not_subsingleton _)`. Establish `hL : ∀ x : G.C, L ((1 : ℂ) ⊗ₜ x) = G.psi v x` using `fun x => by show (Algebra.TensorProduct.lift _ g _) ((1 : ℂ) ⊗ₜ x) = _ erw [Algebra.TensorProduct.lift_tmul]`. Rewrite using `[map_one, one_mul]`. Both sides reduce to the same expression. Establish `hli : LinearIndependent G.F (fun i : Fin G.n => γ ^ (i : ℕ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `linearIndependent_pow (K := G.F) γ` as an intermediate fact. Rewrite `this` using `[hdeg]`. Conclude with `this`. Establish `hT : LinearIndependent ℂ (fun i : Fin G.n => (1 : ℂ) ⊗ₜ[G.F] (γ ^ (i : ℕ)))` using `Module.Flat.linearIndependent_one_tmul hli`. Establish `hM : LinearIndependent ℂ (fun i : Fin G.n => (G.psi v γ) ^ (i : ℕ))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hT.map' L.toLinearMap (LinearMap.ker_eq_bot.2 hinj)` as an intermediate fact. Establish `e : (fun i : Fin G.n => (G.psi v γ) ^ (i : ℕ)) = L.toLinearMap ∘ (fun i : Fin G.n => (1 : ℂ) ⊗ₜ[G.F] (γ ^ (i : ℕ)))`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[hL, map_pow]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `this`. Establish `hint : IsIntegral ℂ (G.psi v γ)` using `Algebra.IsIntegral.isIntegral _`. Use `set q := minpoly ℂ (G.psi v γ) with hq`. Establish `hqm : q.Monic` using `minpoly.monic hint`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hqdeg : G.n ≤ q.natDegree`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `h0 : aeval (G.psi v γ) q = 0` using `minpoly.aeval _ _`. Rewrite `h0` using `[Polynomial.aeval_eq_sum_range' hlt, Finset.sum_range]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Fintype.linearIndependent_iff.1 hM (fun i => q.coeff i) h0 ⟨q.natDegree, hlt⟩`. Establish `h2 : q.coeff q.natDegree = 1` using `hqm.coeff_natDegree`. Rewrite `h1` using `[h2]`. Conclude with `one_ne_zero h1`. Establish `hpol : aeval (G.psi v γ) ((minpoly G.F γ).map v.embedding) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : aeval (g γ) (minpoly G.F γ) = 0` using `by rw [Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`. Express the relevant statement in the definitionally equal form `aeval (G.psi v γ) ((minpoly G.F γ).map (algebraMap G.F ℂ)) = 0`. Rewrite using `[Polynomial.aeval_map_algebraMap]`. Conclude with `h`. Establish `hFint : IsIntegral G.F γ` using `Algebra.IsIntegral.isIntegral _`.
-
-Establish `hm1 : ((minpoly G.F γ).map v.embedding).Monic` using `(minpoly.monic hFint).map _`. Establish `hn1 : ((minpoly G.F γ).map v.embedding).natDegree = G.n`. Rewrite using `[Polynomial.natDegree_map]`. Conclude with `hdeg`. Establish `e1` using `Polynomial.eq_of_monic_of_dvd_of_natDegree_le hqm hm1 (minpoly.dvd _ _ hpol) (by rw [hn1]; exact hqdeg)`.
-
-Establish `e2` using `Polynomial.eq_of_monic_of_dvd_of_natDegree_le hqm (Matrix.charpoly_monic _) (Matrix.minpoly_dvd_charpoly _) (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]; exact hqdeg)`. Rewrite using `[e2, e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_psi_eq_map_minpoly {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (γ : G.C)
     (hdeg : (minpoly G.F γ).natDegree = G.n) :
@@ -90,7 +86,7 @@ theorem charpoly_psi_eq_map_minpoly {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v 
   rw [e2, e1]
 
 /- English proof (translation)
-Introduce `p _ G v g hdeg hsep`. Rewrite using `[charpoly_psi_eq_map_minpoly G v g hdeg]`. Conclude with `hsep.map`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_psi_separable : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (g : G.C),
     (minpoly G.F g).natDegree = G.n → (minpoly G.F g).Separable → (G.psi v g).charpoly.Separable := by

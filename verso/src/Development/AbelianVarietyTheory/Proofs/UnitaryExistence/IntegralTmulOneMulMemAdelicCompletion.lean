@@ -13,7 +13,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.AdLat.hermA_add_left c G x x' y`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AdLat.Half.herm_add_left (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E)
     (x x' y : Fin n → _root_.GlobalTheory.AdLat.RA F E) :
@@ -25,7 +25,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.AdLat.hermA, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.AdLat.Half.herm_add_right (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E)
     (x y y' : Fin n → _root_.GlobalTheory.AdLat.RA F E) :
@@ -37,7 +37,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, _root_.GlobalTheory.AdLat.hermA_add_left, _root_.GlobalTheory.AdLat.hermA_neg_left, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma _root_.GlobalTheory.AdLat.Half.herm_sub_left (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E)
     (x x' y : Fin n → _root_.GlobalTheory.AdLat.RA F E) :
@@ -50,7 +50,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.AdLat.hermA, Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma _root_.GlobalTheory.AdLat.Half.herm_neg_right (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E)
     (x y : Fin n → _root_.GlobalTheory.AdLat.RA F E) :
@@ -61,7 +61,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, _root_.GlobalTheory.AdLat.Half.herm_add_right, _root_.GlobalTheory.AdLat.Half.herm_neg_right, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma _root_.GlobalTheory.AdLat.Half.herm_sub_right (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E)
     (x y y' : Fin n → _root_.GlobalTheory.AdLat.RA F E) :
@@ -74,7 +74,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.AdLat.hermA, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.AdLat.Half.herm_smul_left (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E)
     (r : _root_.GlobalTheory.AdLat.RA F E) (x y : Fin n → _root_.GlobalTheory.AdLat.RA F E) :
@@ -85,7 +85,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.AdLat.hermA, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AdLat.Half.herm_smul_right (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E)
     (r : _root_.GlobalTheory.AdLat.RA F E) (x y : Fin n → _root_.GlobalTheory.AdLat.RA F E) :
@@ -98,15 +98,15 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.AdLat.hat at hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, y, hy, rfl⟩` from `hw`. Establish `hw' : (fun i => a ⊗ₜ[F] y i) = (a ⊗ₜ[F] (1 : E) : _root_.GlobalTheory.AdLat.RA F E) • _root_.GlobalTheory.AdLat.fv F y`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[_root_.GlobalTheory.AdLat.fv, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[hw', _root_.GlobalTheory.AdLat.Half.herm_smul_right]`. Establish `hsg : _root_.GlobalTheory.AdLat.sg (FiniteAdeleRing (𝓞 F) F) c (a ⊗ₜ[F] (1 : E)) = a ⊗ₜ[F] (1 : E)`. Simplify using `[_root_.GlobalTheory.AdLat.sg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsg]`. Use `_root_.GlobalTheory.AdLat.mul_mem_adelicCompletionOfElementSet_of_mul_mem F (I := {1}) (fun x hx y hy => ?_) (_root_.GlobalTheory.AdLat.tmul_mem_adelicCompletion_of_integral F ha rfl) (hz y hy)` and prove the remaining obligations. Rewrite using `[Set.mem_singleton_iff.1 hx, one_mul]`. Conclude with `hy`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `h0 : _root_.GlobalTheory.AdLat.hermA c G z 0 = 0`. Simplify using `[_root_.GlobalTheory.AdLat.hermA]`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Consider the case `add w w' _ _ hw hw'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[_root_.GlobalTheory.AdLat.Half.herm_add_right]`. Conclude with `add_mem hw hw'`. Consider the case `neg w _ hw`. Rewrite using `[_root_.GlobalTheory.AdLat.Half.herm_neg_right]`. Conclude with `neg_mem hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AdLat.Half.herm_mem_of_fv (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E)
     (J : Set E) (L : Set (Fin n → E)) (z : Fin n → _root_.GlobalTheory.AdLat.RA F E)
@@ -147,7 +147,7 @@ open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ} in
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨1, _root_.GlobalTheory.AdLat.adele_one_integral F, y, hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AdLat.Half.fv_mem_hat' (L : Set (Fin n → E)) (y : Fin n → E)
     (hy : y ∈ L) : _root_.GlobalTheory.AdLat.fv F y ∈ _root_.GlobalTheory.AdLat.hat F L :=
@@ -162,33 +162,29 @@ open Half
 open NumberField IsDedekindDomain in
 open scoped TensorProduct Matrix nonZeroDivisors in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n L c G J g M I I' hFG hspan hc hG hdet hJ hdual hg hM hsup hprod hcI hhalf`. Use `set Lh := _root_.GlobalTheory.AdLat.hat F (L : Set (Fin n → E)) with hLh`. Generalize the expression as in `(g : Matrix (Fin n) (Fin n) (_root_.GlobalTheory.AdLat.RA F E)) = gm at hg hhalf ⊢`. Set `e : 𝓞 E → _root_.GlobalTheory.AdLat.RA F E` to `fun b => (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (b : E)`. Establish `hh : ∀ b ∈ I, ∀ z ∈ Lh, ∃ y ∈ Lh, gm *ᵥ (e b • z) - e b • z = M • y` using `hhalf`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ (r : _root_.GlobalTheory.AdLat.RA F E) (z : Fin n → _root_.GlobalTheory.AdLat.RA F E), gm *ᵥ (r • z) - r • z = r • (gm *ᵥ z - z)` using `fun r z => by`. Rewrite using `[Matrix.mulVec_smul, smul_sub]`. Establish `hM0 : (M : F) ≠ 0` using `Nat.cast_ne_zero.2 hM.ne'`. Establish `hnat : ∀ (m : ℕ) (v : Fin n → _root_.GlobalTheory.AdLat.RA F E), m • v = (algebraMap F (_root_.GlobalTheory.AdLat.RA F E) m) • v` using `fun m v => by`. Rewrite using `[map_natCast, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hMcancel : ∀ x y : Fin n → _root_.GlobalTheory.AdLat.RA F E, M • x = M • y → x = y`. Introduce `x y hxy`. Rewrite `hxy` using `[← Nat.cast_smul_eq_nsmul F, ← Nat.cast_smul_eq_nsmul F]`. Conclude with `smul_right_injective _ hM0 hxy`. Establish `heM : e (M : 𝓞 E) = algebraMap F (_root_.GlobalTheory.AdLat.RA F E) M`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [e, map_natCast]`. Use `push_cast`. Rewrite using `[← Algebra.TensorProduct.includeRight_apply, map_natCast]`. Establish `hMI : (M : 𝓞 E) ∈ I`. Establish `h1 : (M : 𝓞 E) ∈ Ideal.span {(M : 𝓞 E)}` using `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hprod]`. Establish `h2 : I * I' ≤ I` using `Ideal.mul_le_left`. Conclude with `h2 h1`. Establish `hstab : ∀ z ∈ Lh, gm *ᵥ z - z ∈ Lh` using `fun z hz => by`. Take `⟨y, hy, hyz⟩` from `hh _ hMI z hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hyz` using `[hu, heM, ← hnat]`. Rewrite using `[hMcancel _ _ hyz]`. Conclude with `hy`. Establish `hgL : ∀ z ∈ Lh, gm *ᵥ z ∈ Lh` using `fun z hz => by`. Rewrite using `[← sub_add_cancel (gm *ᵥ z) z]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `add_mem (hstab z hz) hz`. Establish `hpair : ∀ z ∈ Lh, ∀ w ∈ Lh, _root_.GlobalTheory.AdLat.hermA c G z w ∈ _root_.GlobalTheory.AdLat.hat1 F (J : Set E)` using `fun z hz w hw => _root_.GlobalTheory.AdLat.Half.herm_mem_of_fv c G J L z ((_root_.GlobalTheory.AdLat.hat_selfDual F E n L c G J hFG hspan hc hG hdet hJ hdual z).2 hz) w hw`. Introduce `z hz`. Take `⟨i, hi, i', hi', hii'⟩` from `Submodule.mem_sup.1 (hsup ▸ Submodule.mem_top : (1 : 𝓞 E) ∈ I ⊔ I')`. Take `⟨b, hb, hbc⟩` from `hcI i' hi'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `he1 : e i + e i' = 1`. Establish `h1 : (i : E) + (i' : E) = 1` using `by exact_mod_cast congrArg (fun x : 𝓞 E => (x : E)) hii'`. Simplify using `only [e, ← TensorProduct.tmul_add]`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set w := gm *ᵥ z - z with hw`. Take `⟨y₁, hy₁, hwy₁⟩` from `hh i hi z hz`. Rewrite `hwy₁` using `[hu]`. Use `set v : Fin n → _root_.GlobalTheory.AdLat.RA F E := ((M : F)⁻¹) • (e i' • w) with hv`. Establish `hMv : M • v = e i' • w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hv, ← Nat.cast_smul_eq_nsmul F, smul_smul, mul_inv_cancel₀ hM0, one_smul]`. Establish `hsg : _root_.GlobalTheory.AdLat.sg (FiniteAdeleRing (𝓞 F) F) c (e b) = e i'`. Simplify using `only [e, _root_.GlobalTheory.AdLat.sg, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Rewrite using `[AlgEquiv.coe_algHom, hbc, hc]`. Establish `hvL : v ∈ Lh`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `(_root_.GlobalTheory.AdLat.hat_selfDual F E n L c G J hFG hspan hc hG hdet hJ hdual v).1 fun y hy => ?_` and prove the remaining obligations. Use `set Y := _root_.GlobalTheory.AdLat.fv F y`. Establish `hY : Y ∈ Lh` using `_root_.GlobalTheory.AdLat.Half.fv_mem_hat' (L : Set (Fin n → E)) y hy`. Take `⟨y₂, hy₂, hY₂⟩` from `hh b hb Y hY`. Rewrite `hY₂` using `[hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : _root_.GlobalTheory.AdLat.hermA c G w Y = -_root_.GlobalTheory.AdLat.hermA c G (gm *ᵥ z) (gm *ᵥ Y - Y)`. Rewrite using `[hw, _root_.GlobalTheory.AdLat.Half.herm_sub_left, _root_.GlobalTheory.AdLat.Half.herm_sub_right, ← hg z Y]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : e i' * _root_.GlobalTheory.AdLat.hermA c G (gm *ᵥ z) (gm *ᵥ Y - Y) = algebraMap F (_root_.GlobalTheory.AdLat.RA F E) M * _root_.GlobalTheory.AdLat.hermA c G (gm *ᵥ z) y₂`. Rewrite using `[← hsg, ← _root_.GlobalTheory.AdLat.Half.herm_smul_right, hY₂, hnat, _root_.GlobalTheory.AdLat.Half.herm_smul_right, AlgHom.commutes]`.
-
-Establish `h3 : _root_.GlobalTheory.AdLat.hermA c G v Y = -_root_.GlobalTheory.AdLat.hermA c G (gm *ᵥ z) y₂`. Rewrite using `[hv, algebra_compatible_smul (_root_.GlobalTheory.AdLat.RA F E), _root_.GlobalTheory.AdLat.Half.herm_smul_left, _root_.GlobalTheory.AdLat.Half.herm_smul_left, key, mul_neg, h2, mul_neg, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hM0, map_one, one_mul]`. Rewrite using `[h3]`. Conclude with `neg_mem (hpair _ (hgL z hz) y₂ hy₂)`. Use `⟨y₁ + v, add_mem hy₁ hvL, ?_⟩` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AdLat.trivial_level_of_half : ∀ (F E : Type) [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (c : E ≃ₐ[F] E)

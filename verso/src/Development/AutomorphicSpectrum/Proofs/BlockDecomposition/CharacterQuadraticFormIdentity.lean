@@ -23,15 +23,15 @@ namespace GlobalTheory.CompanionTheory.RCellP
 variable {D : D7} {n r t : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Take `⟨F₀, hF₀⟩` from `GlobalTheory.T.schwartz_exists_real_majorant _ f`. Use `⟨fun x => F₀ (fun τ i j => compAt θ τ x i j) * (fun u => ((‖g u‖ : ℝ) : ℂ)) (fun i j => finPart D (x i j)), Submodule.subset_span ⟨F₀, fun u => ((‖g u‖ : ℝ) : ℂ), ⟨?_, ?_⟩, rfl⟩, fun x => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hg.1.comp fun z => ((‖z‖ : ℝ) : ℂ)`. Conclude with `hg.2.comp_left (g := fun z => ((‖z‖ : ℝ) : ℂ)) (by simp)`. Establish `h` using `hF₀ (fun τ i j => compAt θ τ x i j)`. Prove the components needed by the constructor for the conclusion. Simplify using `[Complex.mul_im, h.1]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, mul_zero, sub_zero, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right h.2 (norm_nonneg _)`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, fun x => by simp⟩`. Consider the case `add φ₁ φ₂ _ _ h₁ h₂`. Take `⟨F₁, m₁, e₁⟩` from `h₁`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨F₂, m₂, e₂⟩` from `h₂`. Use `⟨F₁ + F₂, Submodule.add_mem _ m₁ m₂, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `[(e₁ x).1, (e₂ x).1]`. Simplify using `using (norm_add_le _ _).trans (add_le_add (e₁ x).2 (e₂ x).2)`. Consider the case `smul c φ _ h`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨F, m, e⟩` from `h`. Use `⟨((‖c‖ : ℝ) : ℂ) • F, Submodule.smul_mem _ _ m, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `[(e x).1]`. Simplify `mul_le_mul_of_nonneg_left (e x).2 (norm_nonneg c)` using `[norm_smul]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem maj_mem {θ : InfFam D} {a b : ℕ} {φ : Mx D a b → ℂ} (hφ : φ ∈ schwartzA θ a b) :
     ∃ F ∈ schwartzA θ a b, ∀ x, (F x).im = 0 ∧ ‖φ x‖ ≤ (F x).re := by
@@ -62,7 +62,7 @@ theorem maj_mem {θ : InfFam D} {a b : ℕ} {φ : Mx D a b → ℂ} (hφ : φ �
     · simpa [norm_smul] using mul_le_mul_of_nonneg_left (e x).2 (norm_nonneg c)
 
 /- English proof (translation)
-The claim follows from `let ⟨F, m, e⟩ := maj_mem Φ.2 ⟨⟨F, m⟩, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_real_schwartz_majorant {θ : InfFam D} {a b : ℕ} (Φ : schwartzA θ a b) :
     ∃ F : schwartzA θ a b, ∀ x, (F.1 x).im = 0 ∧ ‖Φ.1 x‖ ≤ (F.1 x).re :=
@@ -70,9 +70,7 @@ theorem exists_real_schwartz_majorant {θ : InfFam D} {a b : ℕ} (Φ : schwartz
   ⟨⟨F, m⟩, e⟩
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `show Continuous fun z : Mx D a r × Mx D a t => Matrix.fromCols z.1 z.2 i ((finSumFinEquiv.trans (finCongr hn)).symm j)`. Generalize the expression as in `(finSumFinEquiv.trans (finCongr hn)).symm j = c`. Break down `c with c | c` into its components or cases. Conclude with `continuous_fst.matrix_elem i c`.
-
-Conclude with `continuous_snd.matrix_elem i c`.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem c_jn_cont (hn : r + t = n) {a : ℕ} : Continuous (fun z : Mx D a r × Mx D a t => jn hn z.1 z.2) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -83,7 +81,7 @@ theorem c_jn_cont (hn : r + t = n) {a : ℕ} : Continuous (fun z : Mx D a r × M
   · exact continuous_snd.matrix_elem i c
 
 /- English proof (translation)
-Establish `h1 : (b₀.1.map (incA D) : Mx D r r) * rat b₀.1⁻¹ = 1` using `by show b₀.1.map (incA D) * b₀.1⁻¹.map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (Ne.isUnit hb)]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Simplify using `only [ip, pr, yv, mm, adj_mul]`. Rewrite using `[← Matrix.mul_assoc (b₀.1.map (incA D)), h1, Matrix.one_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_product_mul_eq_pairing (V : HSp D) (b₀ : HermE D r) (hb : b₀.1.det ≠ 0) (x : Mx D V.rank r) (v : Mx D V.rank t) (y : Mx D r t) :
     ip V (mm x y) v = pr b₀ y (yv V b₀ (x, v)) := by
@@ -95,9 +93,9 @@ theorem inner_product_mul_eq_pairing (V : HSp D) (b₀ : HermE D r) (hb : b₀.1
   rw [← Matrix.mul_assoc (b₀.1.map (incA D)), h1, Matrix.one_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : ψ u * conj (ψ u) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hψ.2.1 u]`. Simplify using the standard rewrite rules. Establish `h2 : ψ u * ψ (-u) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ψ u ≠ 0` using `fun h => by simp [h] at h1`. Conclude with `mul_left_cancel₀ h0 (h1.trans h2.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conj_psi {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (u : AF D.host.F) : conj (ψ u) = ψ (-u) := by
   have h1 : ψ u * conj (ψ u) = 1 := by
@@ -109,7 +107,7 @@ theorem conj_psi {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (
   exact mul_left_cancel₀ h0 (h1.trans h2.symm)
 
 /- English proof (translation)
-Rewrite using `[conj_psi hψ]`. Simplify using `only [pch, qv, mm]`. Rewrite using `[← AddChar.map_add_eq_mul, Matrix.mul_sub, Matrix.trace_sub]`. Use `congr 1`. Simplify using `only [halfTr, trA, map_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -124,19 +122,17 @@ theorem character_quadratic_form_identity (V : HSp D) {ψ : AddChar (AF D.host.F
   ring
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.integrable_schwartz_restriction_columns hθ hn μt Φ x`.
+A detailed English derivation is pending.
 -/
 theorem integrable_schwartz_slice {θ : InfFam D} (hθ : IsInfFam θ) {a : ℕ} (hn : r + t = n) (μt : Measure (Mx D a t)) [μt.IsAddHaarMeasure]
     (Φ : schwartzA θ a n) (x : Mx D a r) : Integrable (fun v => Φ.1 (jn hn x v)) μt := GlobalTheory.T.integrable_schwartz_restriction_columns hθ hn μt Φ x
 
 /- English proof (translation)
-Establish `hIPe : ∀ y, Integrable (fun z => P z * e y z) ν` using `fun y => hP.mono (hP.aestronglyMeasurable.mul (hem y)) (ae_of_all _ fun z => by simp [hn])`. Use `⟨hIPe, ?_⟩` and prove the remaining obligations. Establish `hbase` using `Integrable.mul_prod hO hP`. Establish `hIF : Integrable (Function.uncurry fun (y : Y) z => P z * e y z * O y) (μ.prod ν)`. Use `hbase.mono ?_ (ae_of_all _ fun q => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hP.aestronglyMeasurable.comp_snd.mul he).mul hO.aestronglyMeasurable.comp_fst`. Simplify using `[Function.uncurry, hn, mul_comm]`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Use `beta_reduce`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_mul_const]`. Use `_ = ∫ z, ∫ y, P z * e y z * O y ∂μ ∂ν := integral_integral_swap hIF`. Use `_ = _ := by`. Use `integral_congr_ae (ae_of_all _ fun z => ?_)` and prove the remaining obligations. Use `beta_reduce`.
-
-Simplify using `only [mul_assoc]`. Rewrite using `[integral_const_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fub {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] {μ : Measure Y} {ν : Measure X} [SFinite μ] [SFinite ν]
     {P : X → ℂ} {e : Y → X → ℂ} {O : Y → ℂ} (hP : Integrable P ν) (hO : Integrable O μ)
@@ -164,19 +160,17 @@ theorem fub {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] {μ : Measure Y
         rw [integral_const_mul]
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, -⟩` from `lattice_Mx D V.rank r`. Take `⟨j1, j2, j3, j4, -⟩` from `lattice_Mx D V.rank t`. Use `haveI : BorelSpace (Mx D V.rank r) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D V.rank t) := ⟨rfl⟩`. Use `haveI := hfib.fin`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hμt.choose_spec.1`. Take `⟨F, hF⟩` from `exists_real_schwartz_majorant Φ`. Establish `hPa` using `hP D n r t hn M V ψ hψ χ hχ hη θ hθ μ hμ ω hω μr μt hμr hμt`. Establish `hm : ∀ x, ∫ v, F.1 (jn hn x v) ∂μt = (ω (M.emb w) F).1 (jn hn x 0)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[(hPa F).2.2 w hw x 0]`. Use `integral_congr_ae (ae_of_all _ fun v => ?_)` and prove the remaining obligations. Establish `: ip V (0 : Mx D V.rank t) v = 0`. Simplify using `[ip, mm, adj]`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ` using `(hPa (ω (M.emb w) F)).2.1`. Establish `hint` using `(hfib.int _ hφ).1`. Establish `hcF : Continuous fun z : Mx D V.rank r × Mx D V.rank t => F.1 (jn hn z.1 z.2)` using `(GlobalTheory.RegSch.CentreWeilComm.continuous_of_mem hθ F).comp (c_jn_cont hn)`. Establish `hcΦ : Continuous fun z : Mx D V.rank r × Mx D V.rank t => Φ.1 (jn hn z.1 z.2)` using `(GlobalTheory.RegSch.CentreWeilComm.continuous_of_mem hθ Φ).comp (c_jn_cont hn)`. Establish `hIF : Integrable (fun z : Mx D V.rank r × Mx D V.rank t => F.1 (jn hn z.1 z.2)) (fib.prod μt)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(integrable_prod_iff hcF.aestronglyMeasurable).2 ⟨ae_of_all _ fun x => integrable_schwartz_slice hθ hn μt F x, ?_⟩` and prove the remaining obligations. Use `(hint.re).congr (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Establish `e1 : ∀ v, ‖F.1 (jn hn x v)‖ = (F.1 (jn hn x v)).re`. Introduce `v`. Establish `h` using `hF (jn hn x v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h0 : 0 ≤ (F.1 (jn hn x v)).re` using `(norm_nonneg _).trans h.2`. Rewrite using `[← Complex.re_add_im (F.1 (jn hn x v)), h.1]`. Simplify using `[abs_of_nonneg h0]`. Simplify using `only [e1]`. Use `show (RCLike.re ((ω (M.emb w) F).1 (jn hn x 0))) = _`.
-
-Rewrite using `[← hm x]`. Conclude with `(integral_re (integrable_schwartz_slice hθ hn μt F x)).symm`. Conclude with `hIF.mono hcΦ.aestronglyMeasurable (ae_of_all _ fun z => (hF _).2.trans ((le_abs_self _).trans (Complex.abs_re_le_norm _)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_fib (hP : PartFT) {hn : r + t = n} (M : Maps D hn) (m : Meas D r t) (V : HSp D) {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : IsCharAF D.host.F ψ) {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hη : ResEta D χ V.rank) {θ : InfFam D}
@@ -225,19 +219,15 @@ theorem integrable_fib (hP : PartFT) {hn : r + t = n} (M : Maps D hn) (m : Meas 
     (hF _).2.trans ((le_abs_self _).trans (Complex.abs_re_le_norm _)))
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, -⟩` from `lattice_Mx D V.rank r`. Take `⟨j1, j2, j3, j4, -⟩` from `lattice_Mx D V.rank t`. Take `⟨k1, k2, k3, k4, -⟩` from `lattice_Mx D r t`. Use `haveI : BorelSpace (Mx D V.rank r) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D V.rank t) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (Mx D r t) := ⟨rfl⟩`. Use `haveI := hfib.fin`. Use `haveI := hμt.choose_spec.1`. Use `haveI := m.hμ.1`. Take `⟨hc1, hc2, hc3, hc4, hn1, hn2⟩` from `GlobalTheory.T.continuous_theta_kernel_components (t := t) hψ V b₀ b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcΦ : Continuous fun z : Mx D V.rank r × Mx D V.rank t => Φ.1 (jn hn z.1 z.2)` using `(GlobalTheory.RegSch.CentreWeilComm.continuous_of_mem hθ Φ).comp (c_jn_cont hn)`. Establish `hcP : Continuous fun z : Mx D V.rank r × Mx D V.rank t => pch ψ b.1 (ip V z.2 z.2) * Φ.1 (jn hn z.1 z.2)` using `hc1.mul hcΦ`. Establish `hIP : Integrable (fun z : Mx D V.rank r × Mx D V.rank t => pch ψ b.1 (ip V z.2 z.2) * Φ.1 (jn hn z.1 z.2)) (fib.prod μt)` using `hI.mono hcP.aestronglyMeasurable (ae_of_all _ fun z => by simp [hn1])`. Establish `hcΩ : Continuous (Ω (w * nb b))` using `hΩ.cont.comp (continuous_const.prodMk continuous_id)`. Establish `hIΩ : Integrable (fun y => conj (Ω (w * nb b) y)) m.μ` using `(GlobalTheory.RegSch.CentreWeilComm.integrable_of_mem hθ m.μ ⟨_, hΩ.mem (w * nb b)⟩).mono (Complex.continuous_conj.comp hcΩ).aestronglyMeasurable (ae_of_all _ fun y => by simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hIPe, hsw⟩` from `fub (μ := m.μ) (ν := fib.prod μt) (e := fun y z => ψ (trA (Matrix.trace (pr b₀ y (yv V b₀ z))))) hIP hIΩ hc3.aestronglyMeasurable (fun y z => hn2 _) (fun y => (hc3.comp (Continuous.prodMk_right y)).aestronglyMeasurable)`. Establish `hW : ∀ y, Wz M m ψ b₀ (fun g => (ω g Φ).1 0) (M.sh y * M.emb (w * nb b) * 1) = ∫ z, pch ψ b.1 (ip V z.2 z.2) * Φ.1 (jn hn z.1 z.2) * ψ (trA (Matrix.trace (pr b₀ y (yv V b₀ z)))) ∂(fib.prod μt)`. Introduce `y`. Rewrite using `[GlobalTheory.T.weil_representation_theta_integral hP M m V hψ hχ hη hθ hμ hω hμr hμt b₀ hfib Φ, integral_prod _ (hIPe y)]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[GlobalTheory.T.weil_representation_fourier_coefficient hP M V hψ hχ hη hθ hμ hω hμr hμt Φ hnb hw b y x]`. Use `integral_congr_ae (ae_of_all _ fun v => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[inner_product_mul_eq_pairing V b₀ hb x v y]`.
-
-Unfold `Rsec`. Simplify using `only [hW]`. Rewrite using `[hsw]`. Use `integral_congr_ae (ae_of_all _ fun z => ?_)` and prove the remaining obligations. Use `beta_reduce`.
-
-Rewrite using `[GlobalTheory.T.theta_fourier_coefficient_weyl_integral hψ hχ hΩ hnb hw b (yv V b₀ z), map_mul, ← character_quadratic_form_identity V hψ b₀ b z]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem core (hP : PartFT) {hn : r + t = n} (M : Maps D hn) (m : Meas D r t) (V : HSp D) {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : IsCharAF D.host.F ψ) {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hη : ResEta D χ V.rank) {θ : InfFam D}
@@ -292,9 +282,9 @@ theorem core (hP : PartFT) {hn : r + t = n} (M : Maps D hn) (m : Meas D r t) (V 
   ring
 
 /- English proof (translation)
-Introduce `_ hP D n t B W d hn ψ χ θ μB μW ωB ωW hS M m b₀ hb μr μt hμr hμt fib hfib Ω hΩ Φ nb hnb w hw`. Take `⟨𝓕, h𝓕⟩` from `hS.hμB`. Establish `hn0 : 0 < n`. Use `hS.pos` as an intermediate fact. Use `hS.lt` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hη : ResEta D χ B.rank` using `GlobalTheory.RegSch.JointCont.resEta_of_isWeilSch hn0 hS.hψ hS.hθ h𝓕 hS.hB`. Establish `hI` using `integrable_fib hP M m B hS.hψ hS.hχ hη hS.hθ ⟨𝓕, h𝓕⟩ hS.hB hμr hμt b₀ hfib Φ hw`. Conclude with `⟨hI, fun b => core hP M m B hS.hψ hS.hχ hη hS.hθ ⟨𝓕, h𝓕⟩ hS.hB hμr hμt b₀ hb hfib hΩ Φ hnb hw b hI⟩`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem rcell : WMaj → PartFT → RCell := by
   intro _ hP D n t B W d hn ψ χ θ μB μW ωB ωW hS M m b₀ hb μr μt hμr hμt fib hfib Ω hΩ Φ nb hnb w hw

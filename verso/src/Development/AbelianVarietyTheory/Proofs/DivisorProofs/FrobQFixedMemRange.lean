@@ -16,7 +16,7 @@ noncomputable def frobQEquiv (r : ℕ) (hr : 0 < r) : Qr p r ≃ₐ[ℚ_[p]] Qr 
       fun hs => ⟨(frobQ p r).toRingHom.injective, hs⟩)
 
 /- English proof (translation)
-Proceed by induction on `i generalizing b with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[pow_succ, AlgEquiv.mul_apply, ih, pow_succ, AlgEquiv.mul_apply]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frobQEquiv_pow_apply (r : ℕ) (hr : 0 < r) (i : ℕ) (b : Qr p r) :
     (((frobQEquiv p r hr ^ i) b : Qr p r) : PadicAlgCl p) = (frobK p (Q0 p) ^ i) (b : PadicAlgCl p) := by
@@ -27,13 +27,11 @@ theorem frobQEquiv_pow_apply (r : ℕ) (hr : 0 < r) (i : ℕ) (b : Qr p r) :
     rfl
 
 /- English proof (translation)
-Establish `hK : FiniteDimensional ℚ_[p] (Q0 p)` using `inferInstance`. Establish `key : ∀ i : ℕ, frobQEquiv p r hr ^ i = 1 ↔ r ∣ i`. Introduce `i`. Rewrite using `[← IsFrobOn.pow_fixes_iff p (Q0 p) hK hr ((isFrob_frobK hK).isFrobOn r) i]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h x hx`. Use `frobQEquiv_pow_apply p r hr i ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this.symm`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `AlgEquiv.ext fun b => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[frobQEquiv_pow_apply]`. Conclude with `h _ b.2`. Apply `Nat.dvd_antisymm` to reduce the goal to its premises. Conclude with `orderOf_dvd_of_pow_eq_one ((key r).2 dvd_rfl)`.
-
-Conclude with `(key _).1 (pow_orderOf_eq_one _)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem orderOf_frobQEquiv (r : ℕ) (hr : 0 < r) : orderOf (frobQEquiv p r hr) = r := by
   have hK : FiniteDimensional ℚ_[p] (Q0 p) := inferInstance

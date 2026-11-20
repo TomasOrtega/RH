@@ -15,15 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hC.hθ`. Establish `hfr : IsUnit fr.det` using `hC.hfr.1`. Establish `hΨ` using `LocLawH.unitaryFinitePointsToGLFiniteAdeles_isUnitary θ V n l s τ`. Establish `mem : ∀ P, tens θ τ fr (fP (cLoc l τ) P) (LocLawH.psi0 θ V n l s τ) ∈ schwartzA θ V.rank n` using `fun P => (hT D n V θ l s τ ε fr hC.hθ (LocLawH.cx_lne hC) hC.hs hC.hfr _ hΨ P).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun y a P Q => ?_, fun P => ?_⟩` and prove the remaining obligations. Apply `LocLawH.tens_cancel hσ V l s τ hfr` to reduce the goal to its premises. Establish `hlin : phiS θ τ fr (cLoc l τ) (LocLawH.psi0 θ V n l s τ) (a • P + Q) = a • phiS θ τ fr (cLoc l τ) (LocLawH.psi0 θ V n l s τ) P + phiS θ τ fr (cLoc l τ) (LocLawH.psi0 θ V n l s τ) Q`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[LocLawH.phiS_val (mem _), Submodule.coe_add, Submodule.coe_smul, LocLawH.phiS_val (mem P), LocLawH.phiS_val (mem Q)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [tens, fP, evX, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, MvPolynomial.smul_eval]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hL y _ hΨ (a • P + Q), hlin, map_add, map_smul, Submodule.coe_add, Submodule.coe_smul, hL y _ hΨ P, hL y _ hΨ Q]`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [tens, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `show a * (L y (fP (cLoc l τ) P) _ * _) + L y (fP (cLoc l τ) Q) _ * _ = (a * L y (fP (cLoc l τ) P) _ + L y (fP (cLoc l τ) Q) _) * _`. Expand and normalize the polynomial expressions, which then agree. Apply `LocLawH.tens_cancel hσ V l s τ hfr` to reduce the goal to its premises. Establish `e` using `hL 1 _ hΨ P`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[map_one, map_one, Module.End.one_apply, LocLawH.phiS_val (mem P)]`. Conclude with `e.symm`.
+A detailed English derivation is pending.
 -/
 theorem lIlin : LIlin := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL
@@ -54,9 +54,9 @@ theorem lIlin : LIlin := by
     exact e.symm
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL P`. Establish `hΨ` using `LocLawH.unitaryFinitePointsToGLFiniteAdeles_isUnitary θ V n l s τ`. Establish `key : sLd L (cLoc l τ) P = fun y => (ω (ι y) (phiS θ τ fr (cLoc l τ) (LocLawH.psi0 θ V n l s τ) P)).1 0`. Use function extensionality and compare the values at `y`. Rewrite using `[hL y _ hΨ P, LocLawH.tens_zero, LocLawH.cmTraceAdditiveCharacter_zero, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[key]`. Take `⟨𝓕, h𝓕⟩` from `hC.hμ`. Conclude with `(GlobalTheory.StdUnn.weilSch_apply_zero_continuous D n V ψ hC.hψ χ hC.hχ hC.hη θ hC.hθ μ 𝓕 h𝓕 ω hC.hω (phiS θ τ fr (cLoc l τ) (LocLawH.psi0 θ V n l s τ) P)).comp hC.hι.1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lIcont : LIcont := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL P
@@ -71,9 +71,9 @@ theorem lIcont : LIcont := by
     (phiS θ τ fr (cLoc l τ) (LocLawH.psi0 θ V n l s τ) P)).comp hC.hι.1
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL ρ hρ P g k hk`. Establish `hΨ` using `LocLawH.unitaryFinitePointsToGLFiniteAdeles_isUnitary θ V n l s τ`. Establish `mem : ∀ P, tens θ τ fr (fP (cLoc l τ) P) (LocLawH.psi0 θ V n l s τ) ∈ schwartzA θ V.rank n` using `fun P => (hT D n V θ l s τ ε fr hC.hθ (LocLawH.cx_lne hC) hC.hs hC.hfr _ hΨ P).1`. Establish `hk' : ω (ι k) (phiS θ τ fr (cLoc l τ) (LocLawH.psi0 θ V n l s τ) P) = phiS θ τ fr (cLoc l τ) (LocLawH.psi0 θ V n l s τ) (ρ k P)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hL k _ hΨ P, hρ k P hk, LocLawH.phiS_val (mem _)]`. Establish `e : (ω (ι (g * k)) (phiS θ τ fr (cLoc l τ) (LocLawH.psi0 θ V n l s τ) P)).1 0 = (ω (ι g) (phiS θ τ fr (cLoc l τ) (LocLawH.psi0 θ V n l s τ) (ρ k P))).1 0`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, hk']`. Rewrite `e` using `[hL (g * k) _ hΨ P, hL g _ hΨ (ρ k P), LocLawH.tens_zero, LocLawH.tens_zero, LocLawH.cmTraceAdditiveCharacter_zero, mul_one, mul_one]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lIkact : LIkact := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL ρ hρ P g k hk

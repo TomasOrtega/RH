@@ -17,7 +17,7 @@ def loweringOperatorSpan (E : GLOps n (KK O) V) (lam : Fin n → ℤ) (v : V) : 
   Submodule.span O {x | ∃ nu, IsLoweringWord E lam v nu x}
 
 /- English proof (translation)
-Unfold `loweringSpanOfHeight loweringOperatorSpan`. Conclude with `Submodule.span_mono fun x ⟨nu, h, _⟩ => ⟨nu, h⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem loweringSpanOfHeight_le_total (E : GLOps n (KK O) V) (lam : Fin n → ℤ) (v : V) (N : ℤ) :
     loweringSpanOfHeight (O := O) E lam v N ≤ loweringOperatorSpan (O := O) E lam v := by
@@ -25,9 +25,9 @@ theorem loweringSpanOfHeight_le_total (E : GLOps n (KK O) V) (lam : Fin n → �
   exact Submodule.span_mono fun x ⟨nu, h, _⟩ => ⟨nu, h⟩
 
 /- English proof (translation)
-Consider the cases of `h with`. Consider the case `base => intro _`. Both sides reduce to the same expression. Consider the case `step c d hdc l hl nu' x' h'`. Introduce `heq`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `loweringWord_height_ge_highest h'`. Establish `h2` using `weight_height_add_root_smul nu' c d l`. Rewrite `h2` using `[heq]`. Establish `hl' : (1 : ℤ) ≤ l` using `by exact_mod_cast hl`. Establish `hcd : ((d : ℕ) : ℤ) < ((c : ℕ) : ℤ)` using `by exact_mod_cast (Fin.lt_iff_val_lt_val.mp hdc)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -45,15 +45,13 @@ private theorem eq_of_isLoweringWord_of_weight_eq {E : GLOps n (KK O) V} {lam : 
     nlinarith
 
 /- English proof (translation)
-Introduce `u hu y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨nu, hnu⟩` from `hx`. Establish `hxL : x ∈ loweringSpanOfHeight (O` using `O) E lam v (weightHeightAscending nu - weightHeightAscending lam) := Submodule.subset_span ⟨nu, hnu, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `hu with ⟨a, b, k, hab, rfl⟩ | ⟨a, k, rfl⟩` into its components or cases. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Use `loweringSpanOfHeight_le_total E lam v ((weightHeightAscending nu - weightHeightAscending lam).toNat) ?_` and prove the remaining obligations. Conclude with `raising_dividedPower_loweringSpan hE hv _ nu x hnu (by omega) a b h k`. Conclude with `loweringSpanOfHeight_le_total E lam v _ (loweringSpan_lower_dividedPower_mem E lam v h k _ x hxL)`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw` using `loweringWord_mem_weightSpace hE hv.2.1 hnu`. Rewrite using `[binomial_diagonal_on_weight hw a k]`. Establish `: ((Ring.choose (nu a) k : ℤ) : KK O) = algebraMap O (KK O) ((Ring.choose (nu a) k : ℤ) : O)`. Simplify using the standard rewrite rules. Rewrite using `[this, algebraMap_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨nu, hnu⟩)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [LinearMap.map_smul_of_tower]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem loweringSpan_divided_power_stable [CharZero (KK O)] {E : GLOps n (KK O) V} (hE : IsGLRep E) {lam : Fin n → ℤ} {v : V}
     (hv : IsHWV E lam v) : UZStable (O := O) E (loweringOperatorSpan (O := O) E lam v) := by
@@ -79,17 +77,15 @@ theorem loweringSpan_divided_power_stable [CharZero (KK O)] {E : GLOps n (KK O) 
   | smul a x _ hx => rw [LinearMap.map_smul_of_tower]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨nu, hnu⟩` from `hx`. Distinguish the cases in `h : nu = lam`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_of_isLoweringWord_of_weight_eq hnu h, map_one, one_smul, sub_self]`. Conclude with `Submodule.zero_mem _`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, zero_smul, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.mem_iSup_of_mem nu (Submodule.mem_iSup_of_mem h (loweringWord_mem_weightSpace hE hv.2.1 hnu))`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c1, h1⟩` from `hx`. Take `⟨c2, h2⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨c1 + c2, ?_⟩` and prove the remaining obligations. Establish `: x + y - algebraMap O (KK O) (c1 + c2) • v = (x - algebraMap O (KK O) c1 • v) + (y - algebraMap O (KK O) c2 • v)`. Rewrite using `[map_add, add_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a x _ hx`. Take `⟨c, h⟩` from `hx`. Use `⟨a * c, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_smul, algebraMap_smul, ← smul_sub]`.
-
-Conclude with `Submodule.smul_of_tower_mem _ a h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loweringSpan_highest_component_integral {E : GLOps n (KK O) V} (hE : IsGLRep E) {lam : Fin n → ℤ} {v : V}
     (hv : IsHWV E lam v) : ∀ y ∈ loweringOperatorSpan (O := O) E lam v,
@@ -121,7 +117,7 @@ theorem loweringSpan_highest_component_integral {E : GLOps n (KK O) V} (hE : IsG
     exact Submodule.smul_of_tower_mem _ a h
 
 /- English proof (translation)
-Introduce `u hu`. Conclude with `loweringSpan_highest_component_integral hE hv (u v) (integral_enveloping_preserves_submodule (loweringSpan_divided_power_stable hE hv) hu v (Submodule.subset_span ⟨lam, IsLoweringWord.base⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem highest_vector_mem_nabla [CharZero (KK O)] {E : GLOps n (KK O) V} (hE : IsGLRep E) {lam : Fin n → ℤ} {v : V}
     (hv : IsHWV E lam v) : v ∈ Nabla (O := O) E lam v := by
@@ -132,7 +128,7 @@ theorem highest_vector_mem_nabla [CharZero (KK O)] {E : GLOps n (KK O) V} (hE : 
 end hw
 
 /- English proof (translation)
-Introduce `p n' O _ _ _ S hG n _ lam V _ _ _ _ E v hI`. Use `haveI := dvr_fraction_field_char_zero_prime S hG.prime`. Conclude with `highest_vector_mem_nabla hI.1 hI.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem highest_vector_integrality : HighestWeightVectorIntegrality := by
   intro p n' O _ _ _ S hG n _ lam V _ _ _ _ E v hI

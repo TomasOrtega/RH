@@ -23,15 +23,15 @@ open GlobalTheory.FinPl (idAt MxAt grpAt SplitPt)
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `inf_le_inf_left _ (le_iInf fun w => iInf_le_of_le ⟨w.1, fun hw => w.2 (h _ hw)⟩ le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem idAt_mono {P P' : GlobalTheory.FinPl.Pl D → Prop} (h : ∀ w, P w → P' w) : idAt D P ≤ idAt D P' :=
   inf_le_inf_left _ (le_iInf fun w => iInf_le_of_le ⟨w.1, fun hw => w.2 (h _ hw)⟩ le_rfl)
 
 /- English proof (translation)
-Take `⟨ε, h1, h2⟩` from `q.above`. Take `rfl` from `GlobalTheory.AdelicU.Supp.isPlaceIdem_iff.1 h1`. Introduce `i j`. Use `idAt_mono (fun w (hw : w = q.v) => hw ▸ hP) (GlobalTheory.FinPl.Model.mem_idAt_iff.2 ?_)` and prove the remaining obligations. Rewrite using `[← h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h i j`.
+A detailed English derivation is pending.
 -/
 theorem mxAt_of_half {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : SplitPt D k) {P : GlobalTheory.FinPl.Pl D → Prop} (hP : P q.v) {m n : ℕ} (w : Mx D m n)
@@ -44,11 +44,11 @@ theorem mxAt_of_half {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
   exact h i j
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Use `⟨Finsupp.single 0 1, fun w hw => ?_, fun f => ?_⟩` and prove the remaining obligations. Take `rfl` from `Finset.mem_singleton.1 (Finsupp.support_single_subset hw)`. Conclude with `fun i j => zero_mem _`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[comb, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul, GlobalTheory.MixPer.heisO_zero]`. Both sides reduce to the same expression. Consider the case `cons i l ih`. Take `⟨c', h1, h2⟩` from `ih`. Take `⟨c'', h3, h4⟩` from `(GlobalTheory.HeisComb.main D ψ S T).1 (c i) c'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c'', fun w hw => ?_, fun f => by rw [h4, h2]; rfl⟩` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `h3 w hw`. Conclude with `fun a b => add_mem (hc i x hx a b) (h1 y hy a b)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_fold (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (P : GlobalTheory.FinPl.Pl D → Prop) {ι : Type} (c : ι → WO S T →₀ ℂ)
     (hc : ∀ i, ∀ w ∈ (c i).support, MxAt P w) (l : List ι) : ∃ c' : WO S T →₀ ℂ, (∀ w ∈ c'.support, MxAt P w) ∧
@@ -69,7 +69,7 @@ theorem exists_fold (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (P : GlobalTh
     exact fun a b => add_mem (hc i x hx a b) (h1 y hy a b)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hx`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mxAt_cast {F : ℕ → HSp D} {T : HSp D} {P : GlobalTheory.FinPl.Pl D → Prop} {s j : ℕ} (h : s = j) (x : WO (F s) T →₀ ℂ)
     (hx : ∀ w ∈ x.support, MxAt P w) : ∀ w ∈ (cast (congrArg (fun n => WO (F n) T →₀ ℂ) h) x).support, MxAt P w := by
@@ -94,9 +94,9 @@ def conjHom {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y
     rw [← Matrix.mul_assoc F.β F.γ, F.βγ, Matrix.one_mul])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x.val = F.γ * M.val * F.β`. Rewrite using `[h, ← Matrix.mul_assoc, ← Matrix.mul_assoc, F.γβ, Matrix.one_mul, Matrix.mul_assoc, F.γβ, Matrix.mul_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Express the relevant statement in the definitionally equal form `M.val = F.β * (F.γ * M.val * F.β) * F.γ`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, F.βγ, Matrix.one_mul, Matrix.mul_assoc, F.βγ, Matrix.mul_one]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_iff {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y] (F : Frame k N Y)
     (M : GL (Fin N) k) (x : GL Y k) : M.val = F.β * x.val * F.γ ↔ x = conjHom F M := by
@@ -114,9 +114,7 @@ def frameSub {G : Type} [Group G] {k : Type} [Field k] {N : ℕ} {Y : Type} [Fin
   J.comap ((conjHom F).comp ρ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Rewrite using `[(conj_iff F _ x).1 hx]`. Conclude with `h`. Introduce `h`.
-
-Conclude with `h _ ((conj_iff F _ _).2 rfl)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_frameSub {G : Type} [Group G] {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y]
     (ρ : G →* GL (Fin N) k) (F : Frame k N Y) (J : Subgroup (GL Y k)) (g : G) :
@@ -129,7 +127,7 @@ theorem mem_frameSub {G : Type} [Group G] {k : Type} [Field k] {N : ℕ} {Y : Ty
     exact h _ ((conj_iff F _ _).2 rfl)
 
 /- English proof (translation)
-Establish `hm : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ (PP.under (𝓞 D.host.F)).asIdeal`. Use `hT.1 PP h` as an intermediate fact. Simplify `this` using `[IsDedekindDomain.HeightOneSpectrum.under]`. Take `⟨Q, _, hu⟩` from `hT.2 _ hm`. Conclude with `(hu PP ⟨h, rfl⟩).trans (hu PP' ⟨h', e.symm⟩).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem under_inj {Pg : Finset (Formalism.L2.DIV.Pl D.host.E)} (hT : GlobalTheory.Core.Mi.IsTypePlaces Pg) {PP PP' : Formalism.L2.DIV.Pl D.host.E}
     (h : PP ∈ Pg) (h' : PP' ∈ Pg) (e : PP.under (𝓞 D.host.F) = PP'.under (𝓞 D.host.F)) : PP = PP' := by
@@ -148,19 +146,17 @@ variable {D : D7}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `keyE : ∀ j, ∃ c : WO (Yc D j) (Yc D (j + 1)) →₀ ℂ, (∀ a' (H : j + a' = l.s), (ofSplit l.q).IsCombAt ψ (Y.FY j (a' + 1) (by omega)) (Y.FY (j + 1) a' (by omega)) c ((S.T (Fin D.R.t)).Phi j a' H)) ∧ ∀ w ∈ c.support, IsHalf (l.q.e + cA D l.q.e) w`. Introduce `j`. Distinguish the cases in `hj : j ≤ l.s`. Take `⟨c, hc⟩` from `GlobalTheory.LocMod.CombAt.exists_isCombAt (ofSplit l.q) hψ (Y.FY j (l.s - j + 1) (by omega)) (Y.FY (j + 1) (l.s - j) (by omega)) ((S.T (Fin D.R.t)).Phi j (l.s - j) (by omega))`. Use `⟨c, fun a' H => ?_, hc.1⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : a' = l.s - j` from `by omega`. Conclude with `hc`. Conclude with `⟨0, fun a' H => by omega, by simp⟩`. Use `choose eg heg sEg using keyE`. Take `⟨egT, hegT⟩` from `GlobalTheory.LocMod.CombAt.exists_isCombAt (ofSplit l.q) hψ (Y.FY (l.s + 1) 0 rfl) l.FT (S.T (Fin D.R.t)).PhiTop`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₁, h₁⟩` from `GlobalTheory.LocMod.CombAt.exists_isCombAt (ofSplit l.q) hψ (l.FX l.s (by omega)) (l.FX (l.s + 1) le_rfl) (fun x₀ => (S.T (Fin D.R.t)).Psi 1 x₀ (S.y0 (Fin D.R.t)))`. Take `⟨c₂, h₂⟩` from `GlobalTheory.LocMod.CombAt.exists_isCombAt (ofSplit l.q) hψ (l.FX (l.s + 1) le_rfl) l.FM ((S.T (Fin D.R.t)).xiTop (box _ (1 : l.kˣ)) S.ψ ν (-1) (Submodule.Quotient.mk (S.y0 (Fin D.R.t))))`. Apply the tactic sequence `have keyC : ∀ j, ∃ c : WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ, (∀ c' (H : j + 1 + c' = l.s), (ofSplit l.q).IsCombAt ψ (l.FX j (by omega)) (l.FX (j + 1) (by omega)) c ((S.T (Fin D.R.t)).entry S.ψ ν j c' H 1 1)) ∧ (j = l.s → HEq c c₁) ∧ (j = l.s + 1 → HEq c c₂) ∧ ∀ w ∈ c.support, IsHa …`. Introduce `j`. Distinguish the cases in `hj : j < l.s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `obtain ⟨c, hc⟩ := GlobalTheory.LocMod.CombAt.exists_isCombAt (ofSplit l.q) hψ (l.FX j (by omega)) (l.FX (j + 1) (by omega)) ((S.T (Fin D.R.t)).entry S.ψ ν j (l.s - j - 1) (by omega) 1 1)`. Use `⟨c, fun c'' H' => ?_, fun h => by omega, fun h => by omega, hc.1⟩` and prove the remaining obligations. Take `rfl : c'' = l.s - j - 1` from `by omega`. Conclude with `hc`. Distinguish the cases in `h1 : j = l.s`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Substitute `h1` using the available equality. Conclude with `⟨c₁, fun c' H => by omega, fun _ => HEq.rfl, fun h => by omega, h₁.1⟩`. Distinguish the cases in `h2 : j = l.s + 1`. Substitute `h2` using the available equality. Conclude with `⟨c₂, fun c' H => by omega, fun h => by omega, fun _ => HEq.rfl, h₂.1⟩`.
+Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨0, fun c' H => by omega, fun h => (h1 h).elim, fun h => (h2 h).elim, by simp⟩`. Use `choose cg k1 k2 k3 k4 using keyC`. Use `⟨eg, egT, cg, heg, hegT, k1, ?_, ?_, sEg, k4⟩` and prove the remaining obligations. Rewrite using `[eq_of_heq (k2 l.s rfl)]`. Conclude with `h₁`.
-
-Rewrite using `[eq_of_heq (k3 (l.s + 1) rfl)]`. Conclude with `h₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locComb {a : XGeo D} {y : YRat a} {βT : GL (Fin D.sp.X'.rank) (Lev.EAf D)} {PP : Pl D.host.E}
     (l : LocX a βT PP) (S : SymData l.k l.s D.R.k) {N : ∀ j, GlobalTheory.FinPl.Lat (Yc D j)} {β : ∀ j, GL (Fin (Yc D j).rank) (Lev.EAf D)}

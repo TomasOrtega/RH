@@ -7,13 +7,13 @@ open scoped InnerProductSpace
 namespace PositivityTheory.RgHe3
 
 /- English proof (translation)
-Introduce `H _ _ _ a ha`. Use `⟨cfc (fun x : ℝ => max x 0) a, cfc (fun x : ℝ => max (-x) 0) a, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cfc_sub (fun x : ℝ => max x 0) (fun x : ℝ => max (-x) 0) a] conv_lhs => rw [← cfc_id' ℝ a]`. Use `cfc_congr fun x _ => ?_` and prove the remaining obligations. Conclude with `(max_zero_sub_eq_self x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cfc_mul (fun x : ℝ => max (-x) 0) (fun x : ℝ => max x 0) a]`. Rewrite using `[← cfc_zero ℝ a]`. Use `cfc_congr fun x _ => ?_` and prove the remaining obligations. Break down `le_total x 0 with h | h` into its components or cases. Simplify using `[max_eq_right h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[max_eq_right (neg_nonpos.mpr h)]`. Introduce `x`. Establish `hp : 0 ≤ cfc (fun x : ℝ => max x 0) a` using `cfc_nonneg fun y _ => le_max_right _ _`. Conclude with `((ContinuousLinearMap.nonneg_iff_isPositive _).mp hp).re_inner_nonneg_left x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : 0 ≤ cfc (fun x : ℝ => max (-x) 0) a` using `cfc_nonneg fun y _ => le_max_right _ _`. Conclude with `((ContinuousLinearMap.nonneg_iff_isPositive _).mp hm).re_inner_nonneg_left x`. Introduce `S hS`. Conclude with `⟨hS.cfc_real _, hS.cfc_real _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem positive_negative_holds : PosNeg := by
   intro H _ _ _ a ha

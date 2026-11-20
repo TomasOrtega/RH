@@ -18,7 +18,7 @@ abbrev NC : Type := ↥(normInteger ℂ_[l])
 abbrev e : OC l ≃+* NC l := Formalism.Per6.intEquiv l
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[ACris.dpow_eq_iff]`. Conclude with `Reformulated.AutPerF.AinfInv.factorial_mul_gamma n _`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamma_eq_dpow (n : ℕ) (x : Reformulated.AutPerF.Ainf l (NC l)) :
     Reformulated.AutPerF.AinfInv.gamma n (algebraMap (Reformulated.AutPerF.Ainf l (NC l)) (Reformulated.AutPerF.AinfInv l (NC l)) x) =
@@ -28,9 +28,9 @@ theorem gamma_eq_dpow (n : ℕ) (x : Reformulated.AutPerF.Ainf l (NC l)) :
   exact Reformulated.AutPerF.AinfInv.factorial_mul_gamma n _
 
 /- English proof (translation)
-Unfold `Reformulated.AutPerF.acrisZero ACris.ACrisZero`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, x, hx, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨n, x, RingHom.mem_ker.2 hx, (gamma_eq_dpow l n x).symm⟩`. Introduce and unpack `⟨n, x, hx, rfl⟩`. Conclude with `⟨n, x, RingHom.mem_ker.1 hx, (gamma_eq_dpow l n x).symm⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem acrisZero_eq : Reformulated.AutPerF.acrisZero l (NC l) = ACris.ACrisZero ℂ_[l] l := by
   unfold Reformulated.AutPerF.acrisZero ACris.ACrisZero

@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.EisM.Indep
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using GlobalTheory.EisM.Lin.qs_zero`. Consider the case `insert i s hi ih`. Establish `hp : PolyB (∑ j ∈ s, a j)` using `by clear ih hi`. Proceed by induction on `s using Finset.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `empty => simpa using GlobalTheory.EisM.Lin.polyB_zero`. Consider the case `insert j t hj ih2`. Rewrite using `[Finset.sum_insert hj]`. Conclude with `GlobalTheory.EisM.Lin.polyB_add _ _ (ha j) ih2`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, GlobalTheory.EisM.Lin.qs_add _ _ (ha i) hp, ih]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qs_finset_sum {ι : Type*} (s : Finset ι) (a : ι → ℕ → ℂ) (ha : ∀ i, PolyB (a i)) :
     qs (∑ i ∈ s, a i) = ∑ i ∈ s, qs (a i) := by
@@ -32,11 +32,11 @@ theorem qs_finset_sum {ι : Type*} (s : Finset ι) (a : ι → ℕ → ℂ) (ha 
     rw [Finset.sum_insert hi, Finset.sum_insert hi, GlobalTheory.EisM.Lin.qs_add _ _ (ha i) hp, ih]
 
 /- English proof (translation)
-Use `haveI : NeZero L := ⟨hL.ne'⟩`. Take `⟨v, hv⟩` from `ZMod.unitsMap_surjective hNL u`. Establish `hc : Nat.Coprime (v : ZMod L).val L` using `ZMod.val_coe_unit_coprime v`. Establish `hc' : IsCoprime (((v : ZMod L).val : ℕ) : ℤ) (L : ℤ)` using `Nat.isCoprime_iff_coprime.mpr hc`. Take `⟨x, y, hxy⟩` from `hc'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨!![x, -y; (L : ℤ), (((v : ZMod L).val : ℕ) : ℤ)], ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_two_of]`. Take the linear combination `hxy`. Simplify using the standard rewrite rules. Simplify using `only [SpecialLinearGroup.coe_mk, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_one, Matrix.cons_val_zero, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv, ZMod.unitsMap_val, ZMod.cast_eq_val, Int.cast_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem exists_gamma (L N : ℕ) (hL : 0 < L) (hNL : N ∣ L) (u : (ZMod N)ˣ) :
     ∃ γ : SL(2, ℤ), γ 1 0 = (L : ℤ) ∧ ((γ 1 1 : ℤ) : ZMod N) = u := by
@@ -53,29 +53,27 @@ theorem exists_gamma (L N : ℕ) (hL : 0 < L) (hNL : N ∣ L) (u : (ZMod N)ˣ) :
     rw [← hv, ZMod.unitsMap_val, ZMod.cast_eq_val, Int.cast_natCast]
 
 /- English proof (translation)
-Introduce `k L N a hL hNL hmf hsum ε₀`. Establish `hN : N ≠ 0` using `by rintro rfl; exact hL.ne' (Nat.eq_zero_of_zero_dvd hNL)`. Use `haveI : NeZero N := ⟨hN⟩`. Use `set f : DirichletCharacter ℂ N → ℍ → ℂ := fun ε => qs (a ε) with hf`. Establish `hfs : ∑ ε, f ε = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf, ← qs_finset_sum _ _ (fun ε => (hmf ε).1), hsum]`. Conclude with `GlobalTheory.EisM.Lin.qs_zero`. Establish `key : ∀ (b : ZMod N) (τ : ℍ), ∑ ε, ε b * f ε τ = 0`. Introduce `b τ`. Distinguish the cases in `hb : IsUnit b`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, rfl⟩` from `hb`. Take `⟨γ, h10, h11⟩` from `exists_gamma L N hL hNL u`. Establish `hdiv : (L : ℤ) ∣ γ 1 0` using `by rw [h10]`. Establish `hj : ((((γ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 1 1 : ℤ) : ℂ)) ^ k) ≠ 0`. Apply `pow_ne_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Establish `him` using `congrArg Complex.im h0`. Simplify using `only [h10, Int.cast_natCast, Complex.add_im, Complex.mul_im, Complex.natCast_re, Complex.natCast_im, Complex.intCast_im, zero_mul, add_zero, Complex.zero_im] at him`. Establish `: (0 : ℝ) < (L : ℝ) * (τ : ℂ).im` using `mul_pos (by exact_mod_cast hL) τ.im_pos`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ ε, f ε (γ • τ) = ε (u : ZMod N) * ((((γ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 1 1 : ℤ) : ℂ)) ^ k) * f ε τ`. Introduce `ε`. Rewrite using `[hf]`. Simplify using `only`. Rewrite using `[(hmf ε).2 γ hdiv τ, ch, h11]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0 : ∑ ε, f ε (γ • τ) = 0`. Use `congrFun hfs (γ • τ)` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`. Simplify using `only [e] at h0`. Establish `h1 : ((((γ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 1 1 : ℤ) : ℂ)) ^ k) * ∑ ε, ε (u : ZMod N) * f ε τ = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum, ← h0]; exact Finset.sum_congr rfl (fun ε _ => by ring)`. Conclude with `(mul_eq_zero.mp h1).resolve_left hj`. Conclude with `Finset.sum_eq_zero (fun ε _ => by rw [MulChar.map_nonunit ε hb, zero_mul])`. Use function extensionality and compare the values at `n`. Establish `hq : f ε₀ = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `τ`. Establish `hT : ∑ b : ZMod N, ε₀⁻¹ b * ∑ ε, ε b * f ε τ = 0` using `Finset.sum_eq_zero (fun b _ => by rw [key b τ, mul_zero])`. Establish `hT' : ∑ b : ZMod N, ε₀⁻¹ b * ∑ ε, ε b * f ε τ = ∑ ε, f ε τ * ∑ b : ZMod N, (ε₀⁻¹ * ε) b`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun ε _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Rewrite using `[MulChar.coeToFun_mul, Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hT` using `[hT']`. Rewrite `hT` using `[Finset.sum_eq_single ε₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hT` using `[inv_mul_cancel, MulChar.sum_one_eq_card_units]`. Establish `hc : ((Fintype.card (ZMod N)ˣ : ℕ) : ℂ) ≠ 0`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Simplify `hT` using `[hc, hN]`. Introduce `ε _ hne`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MulChar.sum_eq_zero_of_ne_one, mul_zero]`. Introduce `h1`. Apply `hne` to reduce the goal to its premises. Use `congrArg (ε₀ * ·) h1` as an intermediate fact. Simplify using `using this`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Use `qs_injective (a ε₀) 0 (hmf ε₀).1 GlobalTheory.EisM.Lin.polyB_zero (by rw [GlobalTheory.EisM.Lin.qs_zero]; exact hq)` as an intermediate fact. Simplify using `using congrFun this n`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem forms_of_characters_independent : ∀ (k L N : ℕ) (a : DirichletCharacter ℂ N → ℕ → ℂ), 0 < L → N ∣ L →
     (∀ ε, MF k L (ch ε) (a ε)) → (∑ ε, a ε) = 0 → ∀ ε, a ε = 0 := by

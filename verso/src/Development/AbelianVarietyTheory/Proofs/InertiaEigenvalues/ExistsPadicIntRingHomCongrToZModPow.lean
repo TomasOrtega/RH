@@ -10,11 +10,11 @@ namespace GlobalTheory.ZpHomAdic
 open IsLocalRing Filter Topology
 
 /- English proof (translation)
-Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨L, -, hL⟩` from `(isCompact_univ (X := O)).exists_clusterPt (f := Filter.map f atTop) (le_principal_iff.2 univ_mem)`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `hopen : IsOpen ((maximalIdeal O ^ n : Ideal O) : Set O)` using `(isAdic_iff.1 hA).1 n`. Establish `hclosed : IsClosed ((maximalIdeal O ^ n : Ideal O) : Set O)` using `AddSubgroup.isClosed_of_isOpen ((maximalIdeal O ^ n).toAddSubgroup) hopen`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsClosed {y : O | f n - y ∈ maximalIdeal O ^ n}` using `hclosed.preimage (continuous_const.sub continuous_id)`. Establish `hmem : {y : O | f n - y ∈ maximalIdeal O ^ n} ∈ Filter.map f atTop`. Use `Filter.mem_map.2 (Filter.mem_atTop_sets.2 ⟨n, fun k hk => ?_⟩)` and prove the remaining obligations. Use `hf hk` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hL' : L ∈ closure {y : O | f n - y ∈ maximalIdeal O ^ n}` using `mem_closure_iff_clusterPt.2 (hL.mono (le_principal_iff.2 hmem))`. Rewrite `hL'` using `[hS.closure_eq]`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Conclude with `hL'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrecomplete_of_compact {O : Type} [CommRing O] [IsLocalRing O] [TopologicalSpace O]
     [IsTopologicalRing O] [CompactSpace O] (hA : IsAdic (maximalIdeal O)) :
@@ -40,7 +40,7 @@ theorem isPrecomplete_of_compact {O : Type} [CommRing O] [IsLocalRing O] [Topolo
   exact hL'
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_bot, ← Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal O) (maximalIdeal.isMaximal O).ne_top, Ideal.mem_iInf]`. Introduce `n`. Use `hx n` as an intermediate fact. Rewrite `this` using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isHausdorff_dvr {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] :
     IsHausdorff (maximalIdeal O) O := by
@@ -52,7 +52,7 @@ theorem isHausdorff_dvr {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuatio
   rwa [SModEq.zero, smul_eq_mul, Ideal.mul_top] at this
 
 /- English proof (translation)
-Use `conv_lhs => rw [← ZMod.natCast_zmod_val z]`. Conclude with `map_natCast ψ _`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_zmod_apply {N : ℕ} [NeZero N] {R : Type*} [Ring R] (ψ : ZMod N →+* R) (z : ZMod N) :
     ψ z = ((z.val : ℕ) : R) := by
@@ -60,11 +60,9 @@ theorem ringHom_zmod_apply {N : ℕ} [NeZero N] {R : Type*} [Ring R] (ψ : ZMod 
   exact map_natCast ψ _
 
 /- English proof (translation)
-Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Use `haveI : NeZero (p ^ m) := ⟨pow_ne_zero _ hp⟩`. Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ hp⟩`. Establish `h1 : (((PadicInt.toZModPow n x).val : ℕ) : ZMod (p ^ m)) = (((PadicInt.toZModPow m x).val : ℕ) : ZMod (p ^ m))`. Rewrite using `[ZMod.natCast_val, ZMod.natCast_zmod_val, PadicInt.cast_toZModPow m n h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[ZMod.natCast_eq_natCast_iff]`. Take `⟨c, hc⟩` from `(Nat.modEq_iff_dvd.1 h1.symm)`. Rewrite using `[Ideal.mem_span_singleton]`. Use `⟨(c : O), ?_⟩` and prove the remaining obligations. Use `congrArg (fun t : ℤ => (t : O)) hc` as an intermediate fact.
-
-Move the coercions through the operations in `at this`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem val_toZModPow_sub_mem {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] {m n : ℕ} (h : m ≤ n)
     (x : ℤ_[p]) :
@@ -98,17 +96,13 @@ noncomputable def zmodToQuot (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [I
     (Int.quotientSpanNatEquivZMod (p ^ n)).symm.toRingHom
 
 /- English proof (translation)
-Use `haveI := hT`. Use `haveI : IsAdicComplete (maximalIdeal O) O := { toIsHausdorff := isHausdorff_dvr, toIsPrecomplete := isPrecomplete_of_compact hA }`. Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Use `haveI hNZ : ∀ n, NeZero (p ^ n) := fun n => ⟨pow_ne_zero _ hp0⟩`. Set `f : (n : ℕ) → ℤ_[p] →+* O ⧸ maximalIdeal O ^ n` to `fun n => (zmodToQuot p O hp n).comp (PadicInt.toZModPow n)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfx : ∀ n x, f n x = Ideal.Quotient.mk _ ((PadicInt.toZModPow n x).val : O)`. Introduce `n x`. Use `show zmodToQuot p O hp n _ = _`. Rewrite using `[ringHom_zmod_apply, map_natCast]`. Establish `hf : ∀ {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorPow (maximalIdeal O) hle).comp (f n) = f m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m n hle`. Use extensionality with `x`. Rewrite using `[RingHom.comp_apply, hfx, hfx, Ideal.Quotient.factor_mk, Ideal.Quotient.eq]`. Conclude with `Ideal.span_singleton_le_iff_mem _ |>.2 (Ideal.pow_mem_pow hp m) (val_toZModPow_sub_mem hle x)`. Use `⟨IsAdicComplete.liftRingHom (maximalIdeal O) f hf, fun x k => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set ι := IsAdicComplete.liftRingHom (maximalIdeal O) f hf`. Establish `hι : ∀ n, ι x - ((PadicInt.toZModPow n x).val : O) ∈ maximalIdeal O ^ n`. Introduce `n`. Rewrite using `[← Ideal.Quotient.eq, IsAdicComplete.mk_liftRingHom, hfx]`. Use `set J : Ideal O := Ideal.span {(p : O) ^ k}`.
-
-Rewrite using `[← Submodule.Quotient.mk_eq_zero (p := J), ← Submodule.mem_bot O, ← Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := O ⧸ J) (maximalIdeal O) (maximalIdeal.isMaximal O).ne_top, Submodule.mem_iInf]`. Introduce `n`. Establish `hle : maximalIdeal O ^ max n k • (⊤ : Submodule O (O ⧸ J)) ≤ maximalIdeal O ^ n • ⊤` using `Submodule.smul_mono_left (Ideal.pow_le_pow_right (le_max_left n k))`. Use `hle ?_` and prove the remaining obligations. Establish `hsplit : ι x - ((PadicInt.toZModPow k x).val : O) = (ι x - ((PadicInt.toZModPow (max n k) x).val : O)) + (((PadicInt.toZModPow (max n k) x).val : O) - ((PadicInt.toZModPow k x).val : O))` using `by ring`.
-
-Rewrite using `[hsplit, Submodule.Quotient.mk_add, (Submodule.Quotient.mk_eq_zero J).2 (val_toZModPow_sub_mem (le_max_right n k) x), add_zero, ← mul_one (ι x - _), ← smul_eq_mul, Submodule.Quotient.mk_smul]`. Conclude with `Submodule.smul_mem_smul (hι _) Submodule.mem_top`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_padicInt {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [TopologicalSpace O] (hT : IsTopologicalRing O)
@@ -156,7 +150,7 @@ theorem exists_ringHom_padicInt {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O]
   exact Submodule.smul_mem_smul (hι _) Submodule.mem_top
 
 /- English proof (translation)
-Introduce `hT hC hH hA hp` and use `exists_ringHom_padicInt hT hC hH hA hp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zp_ringHom : ∀ {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O], IsTopologicalRing O → CompactSpace O → T2Space O → IsAdic (IsLocalRing.maximalIdeal O) → (p : O) ∈ IsLocalRing.maximalIdeal O → ∃ ι : ℤ_[p] →+* O, ∀ (x : ℤ_[p]) (k : ℕ), ι x - ((PadicInt.toZModPow k x).val : O) ∈ Ideal.span {(p : O) ^ k} :=
   fun hT hC hH hA hp => exists_ringHom_padicInt hT hC hH hA hp

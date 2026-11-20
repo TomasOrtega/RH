@@ -26,7 +26,7 @@ def βS (hC : B.Compat l) {O : Type} [CommRing O] (F : B.Fn O) (κ : O →+* OC 
 variable {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Take `⟨hG, hS⟩` from `h`. Establish `hP` using `AdicGeo.proper_p hG`. Conclude with `B.P.atlas M.p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem atlas_of {M : Model l K} (h : M.Sm) : ∃ d, Nonempty ((B.schFn M.p).Atlas d) := by
   obtain ⟨hG, hS⟩ := h
@@ -44,7 +44,7 @@ def bβ' (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) (j : ℕ) :
   (βS hC (B.schFn M.p) (okToOC l K) true j).lim
 
 /- English proof (translation)
-Take `⟨d, ⟨A⟩⟩` from `atlas_of hM`. Take `⟨ε, u, -, ht⟩` from `GlueBE.exists_eps_period_t_unit l K`. Take `⟨N, hN⟩` from `hMain d j`. Conclude with `⟨2 * N, fun x hx => GlueBL.lim_inj (βS hC (B.schFn M.p) (okToOC l K) false j) ε.μ u (per l K).t N ht (fun n => (hN (B.schFn M.p) (okToOC l K) ε A n).1 false) x hx⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem f_inj (hMain : B.Main l) (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) (hM : M.Sm) (j : ℕ) :
     ∃ n : ℕ, ∀ x, bβ Amp hC a j x = 0 → (per l K).t ^ n • x = 0 := by
@@ -55,7 +55,7 @@ theorem f_inj (hMain : B.Main l) (hC : B.Compat l) {M : Model l K} (a : (dat Amp
     (fun n => (hN (B.schFn M.p) (okToOC l K) ε A n).1 false) x hx⟩
 
 /- English proof (translation)
-Take `⟨d, ⟨A⟩⟩` from `atlas_of hM`. Take `⟨ε, u, -, ht⟩` from `GlueBE.exists_eps_period_t_unit l K`. Take `⟨N, hN⟩` from `hMain d j`. Conclude with `⟨2 * N, fun x hx => GlueBL.lim_inj (βS hC (B.schFn M.p) (okToOC l K) true j) ε.μ u (per l K).t N ht (fun n => (hN (B.schFn M.p) (okToOC l K) ε A n).1 true) x hx⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem f_inj' (hMain : B.Main l) (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) (hM : M.Sm) (j : ℕ) :
     ∃ n : ℕ, ∀ x, bβ' Amp hC a j x = 0 → (per l K).t ^ n • x = 0 := by
@@ -66,7 +66,7 @@ theorem f_inj' (hMain : B.Main l) (hC : B.Compat l) {M : Model l K} (a : (dat Am
     (fun n => (hN (B.schFn M.p) (okToOC l K) ε A n).1 true) x hx⟩
 
 /- English proof (translation)
-Take `⟨d, ⟨A⟩⟩` from `atlas_of hM`. Take `⟨ε, u, -, ht⟩` from `GlueBE.exists_eps_period_t_unit l K`. Take `⟨N, hN⟩` from `hMain d j`. Conclude with `⟨2 * N, fun y => GlueBL.lim_surj (βS hC (B.schFn M.p) (okToOC l K) true j) ε.μ u (per l K).t N ht (fun n => (hN (B.schFn M.p) (okToOC l K) ε A n).1 true) y⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem f_surj' (hMain : B.Main l) (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) (hM : M.Sm) (j : ℕ) :
     ∃ n : ℕ, ∀ y, ∃ x, bβ' Amp hC a j x = (per l K).t ^ n • y := by
@@ -77,9 +77,9 @@ theorem f_surj' (hMain : B.Main l) (hC : B.Compat l) {M : Model l K} (a : (dat A
     (fun n => (hN (B.schFn M.p) (okToOC l K) ε A n).1 true) y⟩
 
 /- English proof (translation)
-Take `⟨d, ⟨A⟩⟩` from `atlas_of hM`. Take `⟨ε, u, -, ht⟩` from `GlueBE.exists_eps_period_t_unit l K`. Take `⟨N, hN⟩` from `hMain d j`. Use `⟨2 * N, fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxy⟩` from `GlueBL.lim_surj_fil (βS hC (B.schFn M.p) (okToOC l K) false j) ε.μ u (per l K).t N ht (fun n r => B.HcFil (B.schFn M.p) (okToOC l K) false n r j) (fun n r x hx => hC.smul_fil (B.schFn M.p) (okToOC l K) false n r j ε.μ (ε.μ_mem false (PAlg.base l) n) x hx) (fun n x hx => ((hN (B.s …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, hx, hxy⟩`.
+Supply the required witnesses or components.
 -/
 theorem f_surj (hMain : B.Main l) (hC : B.Compat l) {M : Model l K} (a : (dat Amp).Ch M) (hM : M.Sm) (j : ℕ) :
     ∃ n : ℕ, ∀ y, ∃ x, (dat Amp).fil a j n x ∧ bβ Amp hC a j x = (per l K).t ^ n • y := by

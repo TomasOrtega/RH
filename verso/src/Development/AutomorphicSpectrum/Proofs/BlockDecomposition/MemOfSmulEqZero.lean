@@ -24,11 +24,11 @@ section Ring
 variable {R : Type} [CommRing R] {B : Type} [AddCommGroup B] [Module R B]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, TensorProduct.tmul_zero _ _⟩`. Consider the case `tmul q x`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Use `⟨r • x, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Use `congr 1`. Rewrite using `[Algebra.smul_def, _root_.mul_one]`. Both sides reduce to the same expression. Consider the case `add x y hx hy`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, TensorProduct.tmul_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_one_tmul (I : Ideal R) (z : (R ⧸ I) ⊗[R] B) : ∃ b : B, (1 : R ⧸ I) ⊗ₜ[R] b = z := by
   induction z using TensorProduct.induction_on with
@@ -45,21 +45,21 @@ theorem exists_one_tmul (I : Ideal R) (z : (R ⧸ I) ⊗[R] B) : ∃ b : B, (1 :
     exact ⟨a + b, TensorProduct.tmul_add _ _ _⟩
 
 /- English proof (translation)
-Rewrite using `[← TensorProduct.quotTensorEquivQuotSMul_symm_mk I x, LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_tmul_eq_zero (I : Ideal R) (x : B) : (1 : R ⧸ I) ⊗ₜ[R] x = 0 ↔ x ∈ I • (⊤ : Submodule R B) := by
   rw [← TensorProduct.quotTensorEquivQuotSMul_symm_mk I x, LinearEquiv.map_eq_zero_iff,
     Submodule.Quotient.mk_eq_zero]
 
 /- English proof (translation)
-Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `⟨fun ⟨y, _, h⟩ ↦ ⟨y, h.symm⟩, fun ⟨y, h⟩ ↦ ⟨y, trivial, h.symm⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_span_smul_top (t : R) (x : B) : x ∈ Ideal.span {t} • (⊤ : Submodule R B) ↔ ∃ y : B, x = t • y := by
   rw [Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]
   exact ⟨fun ⟨y, _, h⟩ ↦ ⟨y, h.symm⟩, fun ⟨y, h⟩ ↦ ⟨y, trivial, h.symm⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.smul_induction_on' with`. Consider the case `smul r hr n hn => rw [smul_smul, _root_.mul_comm, ht r hr, zero_smul]`. Consider the case `add x _ y _ hx hy => rw [smul_add, hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem smul_eq_zero_of_mem [IsLocalRing R] {t : R} (ht : ∀ x, ¬ IsUnit x → x * t = 0) {x : B}
     (h : x ∈ (IsLocalRing.maximalIdeal R) • (⊤ : Submodule R B)) : t • x = 0 := by
@@ -68,9 +68,9 @@ theorem smul_eq_zero_of_mem [IsLocalRing R] {t : R} (ht : ∀ x, ¬ IsUnit x →
   | add x _ y _ hx hy => rw [smul_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Establish `h2 : ∑ i : Unit, (fun _ ↦ t) i • (fun _ ↦ x) i = 0` using `by simpa using h`. Take `⟨κ, a, y, hx, hj⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero h2`. Rewrite using `[show x = _ from hx ()]`. Use `Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem_smul ?_ trivial` and prove the remaining obligations. Introduce `hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : t * a () j = 0` using `by simpa using hj j`. Conclude with `h0 (hu.mul_left_eq_zero.1 h3)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_of_smul_eq_zero [IsLocalRing R] [Module.Flat R B] {t : R} (h0 : t ≠ 0) {x : B} (h : t • x = 0) :
     x ∈ (IsLocalRing.maximalIdeal R) • (⊤ : Submodule R B) := by
@@ -85,9 +85,9 @@ theorem mem_of_smul_eq_zero [IsLocalRing R] [Module.Flat R B] {t : R} (h0 : t �
 end Ring
 
 /- English proof (translation)
-Establish `key : ∀ T (x : F.obj T), a.α T x = 0 ↔ ∃ y : F.obj T, x = t • y`. Introduce `T x`. Take `⟨e, he⟩` from `a.bij T`. Rewrite using `[← he, LinearEquiv.map_eq_zero_iff, one_tmul_eq_zero]`. Conclude with `mem_span_smul_top t x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun T y ↦ ?_, fun T x h ↦ (key T x).1 h, fun T x ↦ (key T _).2 ⟨x, rfl⟩⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `a.bij T`. Take `⟨b, hb⟩` from `exists_one_tmul _ (e.symm y)`. Conclude with `⟨b, by rw [← he, hb, e.apply_symm_apply]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exA_of_bc {R : Type} [CommRing R] (t : R) {C : Type} [Category.{0} C] {F : C ⥤ CommAlgCat.{0} R}
     {F₀ : C ⥤ CommAlgCat.{0} (R ⧸ Ideal.span {t})} (a : BC F F₀) : ExA a t := by
@@ -102,11 +102,11 @@ theorem exA_of_bc {R : Type} [CommRing R] (t : R) {C : Type} [Category.{0} C] {F
   exact ⟨b, by rw [← he, hb, e.apply_symm_apply]⟩
 
 /- English proof (translation)
-Establish `key : ∀ T (x : F.obj T), b.α T x = 0 ↔ x ∈ (IsLocalRing.maximalIdeal R) • (⊤ : Submodule R (F.obj T))`. Introduce `T x`. Take `⟨e, he⟩` from `b.bij T`. Rewrite using `[← he, LinearEquiv.map_eq_zero_iff]`. Conclude with `one_tmul_eq_zero (IsLocalRing.maximalIdeal R) x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun T y ↦ ?_, fun T x h ↦ ?_, fun T x h ↦ ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `b.bij T`. Take `⟨c, hc⟩` from `exists_one_tmul (IsLocalRing.maximalIdeal R) (e.symm y)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg e hc).trans (e.apply_symm_apply y)`. Conclude with `smul_eq_zero_of_mem ht ((key T x).1 h)`. Use `hf T` as an intermediate fact. Conclude with `(key T x).2 (mem_of_smul_eq_zero h0 h)`.
+A detailed English derivation is pending.
 -/
 theorem exB_of_bc {R : Type} [CommRing R] [IsLocalRing R] {t : R} (ht : ∀ x, ¬ IsUnit x → x * t = 0) (h0 : t ≠ 0)
     {C : Type} [Category.{0} C] {F : C ⥤ CommAlgCat.{0} R} {Fk : C ⥤ CommAlgCat.{0} (IsLocalRing.ResidueField R)}
@@ -127,9 +127,7 @@ theorem exB_of_bc {R : Type} [CommRing R] [IsLocalRing R] {t : R} (ht : ∀ x, �
     exact (key T x).2 (mem_of_smul_eq_zero h0 h)
 
 /- English proof (translation)
-Establish `h` using `HasRingHomProperty.appLE (P := @Flat) s inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Establish `h2 : RingHom.Flat (algebraMap R (Sec s U))`. Establish `: algebraMap R (Sec s U) = (s.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom` using `rfl`. Rewrite using `[this]`. Conclude with `RingHom.Flat.comp (RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso _)) h`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_sec {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) [Flat s] {U : X.Opens}
     (hU : IsAffineOpen U) : Module.Flat R (Sec s U) := by
@@ -145,7 +143,7 @@ section Group
 open GlobalTheory.FieldModel
 
 /- English proof (translation)
-Establish `: IsSeparated (s ≫ Limits.terminal.from (Sp R))` using `inferInstance`. Conclude with `⟨by rwa [Subsingleton.elim (Limits.terminal.from X) (s ≫ Limits.terminal.from (Sp R))]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isSeparated_scheme {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (h : IsSeparated s) :
     X.IsSeparated := by
@@ -153,9 +151,9 @@ theorem isSeparated_scheme {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ S
   exact ⟨by rwa [Subsingleton.elim (Limits.terminal.from X) (s ≫ Limits.terminal.from (Sp R))]⟩
 
 /- English proof (translation)
-Establish `h' : IsPullback (show (Over.mk s').left ⟶ A.left from φ) (Over.mk s').hom A.hom (spMap σ)` using `h`. Use `letI := GlobalTheory.grpObjOfIsPullback (G' := Over.mk s') (G := A) (f := spMap σ) (φ := φ) h'`. Use `⟨inferInstance, h, fun T x y x₀ y₀ hx hy ↦ ?_⟩` and prove the remaining obligations. Establish `e₁ : x₀ = GlobalTheory.pullbackPointEquiv (G'` using `Over.mk s') (G := A) (f := spMap σ) (φ := φ) h' T x := Over.OverMorphism.ext hx`. Establish `e₂ : y₀ = GlobalTheory.pullbackPointEquiv (G'` using `Over.mk s') (G := A) (f := spMap σ) (φ := φ) h' T y := Over.OverMorphism.ext hy`.
+Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e₁, e₂, ← GlobalTheory.pullbackPointEquiv_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_grp {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') (A : Over (Sp R)) [GrpObj A]
     {X' : Scheme.{0}} {s' : X' ⟶ Sp R'} {φ : X' ⟶ A.left} (h : IsPullback φ s' A.hom (spMap σ)) :
@@ -171,7 +169,7 @@ theorem exists_grp {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') (A
 variable {S S₀ : Scheme.{0}} {c : S ⟶ S₀} {B : Over S} {B₀ : Over S₀} {φ : B.left ⟶ B₀.left}
 
 /- English proof (translation)
-Set `U : Over.mk ((B ⊗ B).hom ≫ c) ⟶ B₀ ⊗ B₀` to `Over.homMk (sq H.1.w) (isPullback_sq H.1).w`. Establish `k` using `H.2 (B ⊗ B) (fst B B) (snd B B) (U ≫ fst B₀ B₀) (U ≫ snd B₀ B₀) (sq_fst H.1.w) (sq_snd H.1.w)`. Rewrite `k` using `[← MonObj.comp_mul]`. Conclude with `k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_mul [GrpObj B] [GrpObj B₀] (H : IsGrpPullback B B₀ c φ) :
     sq H.1.w ≫ (fst B₀ B₀ * snd B₀ B₀).left = (fst B B * snd B B).left ≫ φ := by
@@ -181,7 +179,7 @@ theorem sq_mul [GrpObj B] [GrpObj B₀] (H : IsGrpPullback B B₀ c φ) :
   exact k
 
 /- English proof (translation)
-Establish `k : IsPullback (fst B B).left (snd B B).left B.hom B.hom` using `.of_hasPullback _ _`. Rewrite using `[← Over.w (snd B B)]`. Conclude with `P.comp_mem _ _ (MorphismProperty.of_isPullback k h) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_prop (P : MorphismProperty Scheme.{0}) [P.IsStableUnderBaseChange] [P.IsStableUnderComposition]
     {S : Scheme.{0}} (B : Over S) (h : P B.hom) : P (B ⊗ B).hom := by
@@ -192,7 +190,7 @@ theorem tensor_prop (P : MorphismProperty Scheme.{0}) [P.IsStableUnderBaseChange
 end Group
 
 /- English proof (translation)
-The claim follows from `flat_sec s (S.u T.unop).2`.
+A detailed English derivation is pending.
 -/
 theorem flat_osys {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) [Flat s] {P : Type} [SemilatticeInf P]
     (S : Sys X P) (T : Pᵒᵖ) : Module.Flat R ((OSys s S).obj T) :=
@@ -205,23 +203,21 @@ open GlobalTheory.FieldModel
 variable {R : Type} [CommRing R] [IsLocalRing R] {t : R}
 
 /- English proof (translation)
-Establish `sepA : IsSeparated A.hom` using `by have := hA.proper; infer_instance`. Establish `sepA₀ : IsSeparated A₀.hom` using `by have := hA₀.proper; infer_instance`. Establish `sepAk : IsSeparated Ak.hom` using `by have := hAk.proper; infer_instance`. Establish `sepY` using `tensor_prop @IsSeparated A sepA`. Establish `sepY₀` using `tensor_prop @IsSeparated A₀ sepA₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sepYk` using `tensor_prop @IsSeparated Ak sepAk`. Use `haveI : A₀.left.IsSeparated := isSeparated_scheme _ sepA₀`. Use `haveI : Ak.left.IsSeparated := isSeparated_scheme _ sepAk`. Use `haveI : (A ⊗ A).left.IsSeparated := isSeparated_scheme _ sepY`. Use `haveI : (A₀ ⊗ A₀).left.IsSeparated := isSeparated_scheme _ sepY₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : (Ak ⊗ Ak).left.IsSeparated := isSeparated_scheme _ sepYk`. Use `haveI smA : Smooth A.hom := hA.smooth`. Use `haveI smY : Smooth (A ⊗ A).hom := tensor_prop @Smooth A smA`. Establish `hY₀` using `isPullback_sq H₀.1`. Establish `hYk` using `isPullback_sq Hk.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `haX` using `exA_of_bc t (pullBC H₀.1 (idSys A.left))`. Establish `hbX` using `exB_of_bc ht h0 (pullBC Hk.1 (idSys A.left)) (flat_osys A.hom _)`. Establish `haY` using `exA_of_bc t (pullBC hY₀ (idSys (A ⊗ A).left))`. Establish `hbY` using `exB_of_bc ht h0 (pullBC hYk (idSys (A ⊗ A).left)) (flat_osys (A ⊗ A).hom _)`. Establish `haP : ∀ f : (A ⊗ A).left ⟶ A.left, ExA (pullBC hY₀ (pairSys f)) t` using `fun f ↦ exA_of_bc t _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hbP : ∀ f : (A ⊗ A).left ⟶ A.left, ExB (pullBC hYk (pairSys f)) t` using `fun f ↦ exB_of_bc ht h0 _ (flat_osys (A ⊗ A).hom _)`. Take `⟨z, Bz⟩` from `bd_exists haX hbX ((resSys A₀.hom (pullSys H₀.1 (idSys A.left))).pull1 c')`. Establish `pm` using `isPullO_pullHO1 (wOver (fst A₀ A₀ * snd A₀ A₀)) c'`. Establish `pp` using `isPullO_pullHO1 (wOver (fst A₀ A₀)) c'`. Establish `pq` using `isPullO_pullHO1 (wOver (snd A₀ A₀)) c'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `prim` using `GlobalTheory.T.primitive_torsor_class_additive hD hL hAx _ A₀ g hA₀ hg₀ c' _ _ _ pm pp pq`. Take `⟨yp, Bp⟩` from `bd_exists haY hbY ((resSys (A₀ ⊗ A₀).hom (pullSys hY₀ (idSys (A ⊗ A).left))).pull1 (pullHO1 (wOver (fst A₀ A₀)) c'))`. Take `⟨yq, Bq⟩` from `bd_exists haY hbY ((resSys (A₀ ⊗ A₀).hom (pullSys hY₀ (idSys (A ⊗ A).left))).pull1 (pullHO1 (wOver (snd A₀ A₀)) c'))`. Establish `Bm : Bd (pullBC hY₀ (idSys (A ⊗ A).left)) (pullBC hYk (idSys (A ⊗ A).left)) t ((resSys (A₀ ⊗ A₀).hom (pullSys hY₀ (idSys (A ⊗ A).left))).pull1 (pullHO1 (wOver (fst A₀ A₀ * snd A₀ A₀)) c')) (yp + yq)`. Rewrite using `[prim, map_add]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Bp.add Bq`. Establish `tp` using `transfer (wOver (fst A A)) H₀.1 hY₀ (sq_fst H₀.1.w) (wOver (fst A₀ A₀)) Hk.1 hYk (sq_fst Hk.1.w) (wOver (fst Ak Ak)) (haP _) (hbP _) pp Bz Bp`. Establish `tq` using `transfer (wOver (snd A A)) H₀.1 hY₀ (sq_snd H₀.1.w) (wOver (snd A₀ A₀)) Hk.1 hYk (sq_snd Hk.1.w) (wOver (snd Ak Ak)) (haP _) (hbP _) pq Bz Bq`. Establish `tm` using `transfer (wOver (fst A A * snd A A)) H₀.1 hY₀ (sq_mul H₀) (wOver (fst A₀ A₀ * snd A₀ A₀)) Hk.1 hYk (sq_mul Hk) (wOver (fst Ak Ak * snd Ak Ak)) (haP _) (hbP _) pm Bz Bm`. Take `⟨z', hz⟩` from `(res_bij hD hL Ak.hom sepAk (pullSys Hk.1 (idSys A.left))).2.2 z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨yp', hyp⟩` from `(res_bij hD hL (Ak ⊗ Ak).hom sepYk (pullSys hYk (idSys (A ⊗ A).left))).2.2 yp`. Take `⟨yq', hyq⟩` from `(res_bij hD hL (Ak ⊗ Ak).hom sepYk (pullSys hYk (idSys (A ⊗ A).left))).2.2 yq`. Establish `Np : IsPullbackH2Structure (wOver (fst Ak Ak)) z' yp'` using `isPullback_second_cohomology_of_eq hD hL sepYk Hk.1 hYk (sq_fst Hk.1.w) _ (by rw [hz, hyp]; exact tp)`. Establish `Nq : IsPullbackH2Structure (wOver (snd Ak Ak)) z' yq'` using `isPullback_second_cohomology_of_eq hD hL sepYk Hk.1 hYk (sq_snd Hk.1.w) _ (by rw [hz, hyq]; exact tq)`. Establish `Nm : IsPullbackH2Structure (wOver (fst Ak Ak * snd Ak Ak)) z' (yp' + yq')` using `isPullback_second_cohomology_of_eq hD hL sepYk Hk.1 hYk (sq_mul Hk) _ (by rw [hz, map_add, hyp, hyq]; exact tm)`.
-
-Establish `zero : z' = 0` using `hNP _ Ak g hAk hgk (Field.toIsField _) z' _ _ _ Nm Np Nq rfl`. Rewrite `hz` using `[zero, map_zero]`. Rewrite `Bz` using `[← hz]`. Conclude with `lift_of_bd haX hbX Bz`.
+A detailed English derivation is pending.
 -/
 theorem lift_aux (hD : DescentSt) (hL : LowSt) (hAx : AxOSt) (hNP : NoPrimSt)
     (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A)
@@ -294,9 +290,9 @@ theorem lift_aux (hD : DescentSt) (hL : LowSt) (hAx : AxOSt) (hNP : NoPrimSt)
   exact lift_of_bd haX hbX Bz
 
 /- English proof (translation)
-Establish `hk : IsPullback (Limits.pullback.fst A.hom (spMap (algebraMap R (IsLocalRing.ResidueField R)))) (Limits.pullback.snd A.hom (spMap (algebraMap R (IsLocalRing.ResidueField R)))) A.hom (spMap (algebraMap R (IsLocalRing.ResidueField R)))` using `.of_hasPullback _ _`. Take `⟨gr₀, H₀⟩` from `exists_grp _ A h`. Take `⟨grk, Hk⟩` from `exists_grp _ A hk`. Take `⟨hA₀, hg₀⟩` from `GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback _ A _ _ g H₀ hA hg`. Take `⟨hAk, hgk⟩` from `GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback _ A _ _ g Hk hA hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `lift_aux hD hL hAx hNP A g hA ht h0 (Over.mk s') _ φ _ H₀ Hk hA₀ hg₀ hAk hgk c'`.
+A detailed English derivation is pending.
 -/
 theorem lift_core (hD : DescentSt) (hL : LowSt) (hAx : AxOSt) (hNP : NoPrimSt)
     (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
@@ -316,13 +312,11 @@ theorem lift_core (hD : DescentSt) (hL : LowSt) (hAx : AxOSt) (hNP : NoPrimSt)
 end Core
 
 /- English proof (translation)
-Introduce `hD hL _ hAx hNP R _ A _ g hA hg _ t ht X' s' φ h c'`. Establish `hsep : IsSeparated A.hom` using `by have := hA.proper; infer_instance`. Use `haveI : A.left.IsSeparated := isSeparated_scheme _ hsep`. Establish `hs' : IsSeparated s'` using `MorphismProperty.of_isPullback (P := @IsSeparated) h hsep`. Establish `key : ∃ d, (pullBC h (idSys A.left)).coef.pull1 d = (resSys s' (pullSys h (idSys A.left))).pull1 c'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : t = 0 ∨ IsUnit t`. Conclude with `lift_of_trivial (exA_of_bc t _) hc _`. Use `push_neg at hc`. Conclude with `lift_core hD hL hAx hNP A g hA hg ht hc.1 h c'`. Take `⟨d, hd⟩` from `key`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `(res_bij hD hL A.hom hsep (idSys A.left)).1.2 d`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `inj` using `(res_bij hD hL s' hs' (pullSys h (idSys A.left))).1.1`. Take `⟨x, hx⟩` from `(pairRes_bijective φ s').1.2 ((pairPull h.w).pull1 c)`. Establish `e' : x = c'` using `inj (by`.
-
-Rewrite using `[← pull1_restrict_pair_restriction h _ x, hx, pull1_restrict_pair_pullback, hd])`. Conclude with `hx.symm.trans (congrArg _ e')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : DescentSt → LowSt → SysBCSt → AxOSt → NoPrimSt → SmallLiftSt := by
   intro hD hL _ hAx hNP R _ A _ g hA hg _ t ht X' s' φ h c'

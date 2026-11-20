@@ -35,7 +35,7 @@ def secGroup (V : X.Opens) : AddSubgroup (∀ i, Γ(F, V ⊓ L.U i)) where
 variable {F L} in
 
 /- English proof (translation)
-Use `congrArg (resM F (le_inf hi (hj.trans inf_le_right) : W ≤ V ⊓ L.U i ⊓ L.U j)) (s.2 i j)` as an intermediate fact. Simplify `this` using `only [resM_smul, resM_resM, resG_resG]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem secGroup_rel {V : X.Opens} (s : secGroup F L V) (i j : L.ι)
     {W : X.Opens} (hi : W ≤ V ⊓ L.U i) (hj : W ≤ V ⊓ L.U j) (hij : W ≤ L.U i ⊓ L.U j) :
@@ -71,7 +71,7 @@ def secRes {V W : X.Opens} (h : W ≤ V) : secGroup F L V →+ secGroup F L W wh
   map_add' s t := Subtype.ext <| funext fun i => map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun i => by change resM F _ (resG X _ r • m.1 i) = resG X _ (resG X h r) • resM F _ (m.1 i) rw [resM_smul, resG_resG, resG_resG]`.
+A detailed English derivation is pending.
 -/
 theorem secRes_smul {V W : X.Opens} (h : W ≤ V) (r : Γ(X, V)) (m : secGroup F L V) :
     secRes F L h (r • m) = resG X h r • secRes F L h m :=
@@ -90,13 +90,13 @@ def secPresheaf : TopCat.Presheaf Ab.{0} X where
     exact (resM_resM _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]`. Introduce `κ W sf hsf`. Establish `hc (i : L.ι) : iSup W ⊓ L.U i ≤ ⨆ k, W k ⊓ L.U i` using `by rw [iSup_inf_eq]`. Establish `hW (i : L.ι) (k : κ) : W k ⊓ L.U i ≤ iSup W ⊓ L.U i` using `inf_le_inf_right _ (le_iSup W k)`. Establish `H (i : L.ι) : ∃ b : Γ(F, iSup W ⊓ L.U i), ∀ k, resM F (hW i k) b = (sf k).1 i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `exists_sec_of_cover (fun k => W k ⊓ L.U i) (hW i) (hc i) (fun k => (sf k).1 i) fun k l => ?_` and prove the remaining obligations. Establish `e : resM F (inf_le_inf_right (L.U i) (inf_le_left : W k ⊓ W l ≤ W k)) ((sf k).1 i) = resM F (inf_le_inf_right (L.U i) (inf_le_right : W k ⊓ W l ≤ W l)) ((sf l).1 i)` using `congrFun (congrArg Subtype.val (hsf k l)) i`. Use `congrArg (resM F (le_inf (inf_le_inf inf_le_left inf_le_left) (inf_le_left.trans inf_le_right) : (W k ⊓ L.U i) ⊓ (W l ⊓ L.U i) ≤ W k ⊓ W l ⊓ L.U i)) e` as an intermediate fact. Simplify `this` using `only [resM_resM]`. Use `choose b hb using H`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨b, fun i j => ?_⟩, fun k => Subtype.ext (funext fun i => hb i k), fun t ht => ?_⟩` and prove the remaining obligations. Use `sec_ext_of_cover (fun k => W k ⊓ L.U i ⊓ L.U j) (fun k => inf_le_inf_right _ (hW i k)) (by rw [iSup_inf_eq, iSup_inf_eq]) fun k => ?_` and prove the remaining obligations. Use `(sf k).2 i j` as an intermediate fact. Rewrite `this` using `[← hb i k, ← hb j k]`. Simplify `this` using `only [resM_smul, resM_resM, resG_resG]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (funext fun i => sec_ext_of_cover _ (hW i) (hc i) fun k => ?_)` and prove the remaining obligations. Rewrite using `[hb i k]`. Conclude with `congrFun (congrArg Subtype.val (ht k)) i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSheaf_secPresheaf : (secPresheaf F L).IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]
@@ -141,7 +141,7 @@ def coord {V : X.Opens} (s : Γ(twist F L, V)) (i : L.ι) : Γ(F, V ⊓ L.U i) :
   (show secGroup F L V from s).1 i
 
 /- English proof (translation)
-The claim follows from `(show secGroup F L V from s).2`.
+A detailed English derivation is pending.
 -/
 theorem coord_mem {V : X.Opens} (s : Γ(twist F L, V)) : coord s ∈ secGroup F L V :=
   (show secGroup F L V from s).2
@@ -156,7 +156,7 @@ Both sides reduce to the same expression.
     coord (mkSec f hf) = f := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext h)`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem sec_ext {V : X.Opens} {s t : Γ(twist F L, V)} (h : ∀ i, coord s i = coord t i) :
     s = t := Subtype.ext (funext h)
@@ -197,7 +197,7 @@ Both sides reduce to the same expression.
     coord (resM (twist F L) h s) i = resM F (inf_le_inf_right _ h) (coord s i) := rfl
 
 /- English proof (translation)
-The claim follows from `secGroup_rel (show secGroup F L V from s) i j hi hj hij`.
+A detailed English derivation is pending.
 -/
 theorem coord_rel {V : X.Opens} (s : Γ(twist F L, V)) (i j : L.ι)
     {W : X.Opens} (hi : W ≤ V ⊓ L.U i) (hj : W ≤ V ⊓ L.U j) (hij : W ≤ L.U i ⊓ L.U j) :
@@ -205,7 +205,7 @@ theorem coord_rel {V : X.Opens} (s : Γ(twist F L, V)) (i j : L.ι)
   secGroup_rel (show secGroup F L V from s) i j hi hj hij
 
 /- English proof (translation)
-The claim follows from `sec_ext fun i => sec_ext_of_cover (fun k => V ⊓ L.U i ⊓ U k) (fun _ => inf_le_left) (le_iSup_inf hU _) (h i)`.
+A detailed English derivation is pending.
 -/
 theorem sec_ext_of_charts {ι : Type*} {U : ι → X.Opens} (hU : ⨆ k, U k = ⊤) {V : X.Opens}
     {s t : Γ(twist F L, V)}
@@ -270,7 +270,7 @@ instance (L : LB X) : (twistFunctor L).Additive where
   map_add := rfl
 
 /- English proof (translation)
-Use extensionality with `V s : 3`. Conclude with `sec_ext (h V s)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem hom_ext {φ ψ : G ⟶ twist F L}
     (h : ∀ (V : X.Opens) (s : Γ(G, V)) (i : L.ι), coord (φ.app V s) i = coord (ψ.app V s) i) :
@@ -310,7 +310,7 @@ theorem coord_chartEquiv_symm (hL : L.IsLB) (i j : L.ι) {V : X.Opens} (h : V �
         resM F inf_le_left t := rfl
 
 /- English proof (translation)
-Simplify using `only [chartEquiv_apply, coord_resM, resM_resM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartEquiv_resM (hL : L.IsLB) (i : L.ι) {V W : X.Opens} (h : V ≤ L.U i) (h' : W ≤ V)
     (s : Γ(twist F L, V)) :
@@ -318,7 +318,7 @@ theorem chartEquiv_resM (hL : L.IsLB) (i : L.ι) {V W : X.Opens} (h : V ≤ L.U 
   simp only [chartEquiv_apply, coord_resM, resM_resM]
 
 /- English proof (translation)
-The claim follows from `coord_rel s i j _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem chartEquiv_change (hL : L.IsLB) (i j : L.ι) {V : X.Opens} (hi : V ≤ L.U i)
     (hj : V ≤ L.U j) (s : Γ(twist F L, V)) :
@@ -327,7 +327,7 @@ theorem chartEquiv_change (hL : L.IsLB) (i j : L.ι) {V : X.Opens} (hi : V ≤ L
   coord_rel s i j _ _ _
 
 /- English proof (translation)
-The claim follows from `(app_resM φ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem chartEquiv_map_app (hL : L.IsLB) (φ : F ⟶ G) (i : L.ι) {V : X.Opens} (h : V ≤ L.U i)
     (s : Γ(twist F L, V)) :
@@ -361,7 +361,7 @@ def chartIso (hL : L.IsLB) (i : L.ι) : (twist F L).restrict (L.U i).ι ≅ F.re
   restrictIso F hL i _ (L.U i).opensRange_ι.le
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => isQuasicoherent_of_locally_iso hL.cover (chartIso F hL), fun _ => isQuasicoherent_of_locally_iso hL.cover fun i => (chartIso F hL i).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isQuasicoherent_twist_iff (hL : L.IsLB) :
     (twist F L).IsQuasicoherent ↔ F.IsQuasicoherent :=
@@ -369,13 +369,13 @@ theorem isQuasicoherent_twist_iff (hL : L.IsLB) :
     fun _ => isQuasicoherent_of_locally_iso hL.cover fun i => (chartIso F hL i).symm⟩
 
 /- English proof (translation)
-The claim follows from `(isQuasicoherent_twist_iff hL).2 h`.
+A detailed English derivation is pending.
 -/
 theorem isQuasicoherent_twist (hL : L.IsLB) [h : F.IsQuasicoherent] :
     (twist F L).IsQuasicoherent := (isQuasicoherent_twist_iff hL).2 h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => isFiniteType_of_locally_iso hL.cover fun i W h => restrictIso F hL i W.ι (W.opensRange_ι.le.trans h), fun _ => isFiniteType_of_locally_iso hL.cover fun i W h => (restrictIso F hL i W.ι (W.opensRange_ι.le.trans h)).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFiniteType_twist_iff (hL : L.IsLB) : (twist F L).IsFiniteType ↔ F.IsFiniteType :=
   ⟨fun _ => isFiniteType_of_locally_iso hL.cover fun i W h =>
@@ -384,13 +384,13 @@ theorem isFiniteType_twist_iff (hL : L.IsLB) : (twist F L).IsFiniteType ↔ F.Is
       (restrictIso F hL i W.ι (W.opensRange_ι.le.trans h)).symm⟩
 
 /- English proof (translation)
-The claim follows from `(isFiniteType_twist_iff hL).2 h`.
+A detailed English derivation is pending.
 -/
 theorem isFiniteType_twist (hL : L.IsLB) [h : F.IsFiniteType] : (twist F L).IsFiniteType :=
   (isFiniteType_twist_iff hL).2 h
 
 /- English proof (translation)
-The claim follows from `Module.Finite.equiv_iff (chartEquiv hL i h)`.
+A detailed English derivation is pending.
 -/
 theorem finite_sections_twist_iff (hL : L.IsLB) (i : L.ι) {V : X.Opens} (h : V ≤ L.U i) :
     Module.Finite Γ(X, V) Γ(twist F L, V) ↔ Module.Finite Γ(X, V) Γ(F, V) :=
@@ -403,7 +403,7 @@ def stalkEquiv (hL : L.IsLB) (i : L.ι) {x : X} (hx : x ∈ L.U i) :
   stalkEquivOfLinear (fun _ h => chartEquiv hL i h) (chartEquiv_resM hL i) hx
 
 /- English proof (translation)
-Establish `hx' : x ∈ V ⊓ L.U i` using `⟨hxV, hx⟩`. Rewrite using `[← germ_resM (inf_le_left : V ⊓ L.U i ≤ V) hx']`. Use `(stalkEquivOfLinear_germ _ _ hx inf_le_right hx' _).trans ?_` and prove the remaining obligations. Rewrite using `[chartEquiv_apply, coord_resM, resM_resM, resM_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem stalkEquiv_germ (hL : L.IsLB) (i : L.ι) {x : X} (hx : x ∈ L.U i) {V : X.Opens}
     (hxV : x ∈ V) (s : Γ(twist F L, V)) :
@@ -415,7 +415,7 @@ theorem stalkEquiv_germ (hL : L.IsLB) (i : L.ι) {x : X} (hx : x ∈ L.U i) {V :
   rw [chartEquiv_apply, coord_resM, resM_resM, resM_self]
 
 /- English proof (translation)
-The claim follows from `let ⟨i, hi⟩ := Semi.LB.mem_of_cover hL x ⟨stalkEquiv F hL i hi⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_stalkEquiv (hL : L.IsLB) (x : X) :
     Nonempty (((twist F L).presheaf.stalk x :) ≃ₗ[X.presheaf.stalk x] (F.presheaf.stalk x :)) :=
@@ -423,7 +423,7 @@ theorem nonempty_stalkEquiv (hL : L.IsLB) (x : X) :
   ⟨stalkEquiv F hL i hi⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨e⟩ := nonempty_stalkEquiv (F := F) hL x e.toEquiv.nontrivial_congr`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_stalk_twist_iff (hL : L.IsLB) (x : X) :
     Nontrivial ((twist F L).presheaf.stalk x :) ↔ Nontrivial (F.presheaf.stalk x :) :=
@@ -431,19 +431,19 @@ theorem nontrivial_stalk_twist_iff (hL : L.IsLB) (x : X) :
   e.toEquiv.nontrivial_congr
 
 /- English proof (translation)
-The claim follows from `Set.ext (nontrivial_stalk_twist_iff hL)`.
+A detailed English derivation is pending.
 -/
 theorem support_twist (hL : L.IsLB) : QCoh.support (twist F L) = QCoh.support F :=
   Set.ext (nontrivial_stalk_twist_iff hL)
 
 /- English proof (translation)
-Rewrite using `[QCoh.suppDim, QCoh.suppDim, support_twist hL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem suppDim_twist (hL : L.IsLB) : QCoh.suppDim (twist F L) = QCoh.suppDim F := by
   rw [QCoh.suppDim, QCoh.suppDim, support_twist hL]
 
 /- English proof (translation)
-The claim follows from `Set.ext fun x => by obtain ⟨e⟩ := nonempty_stalkEquiv (F := F) hL x rw [QCoh.assPoints, QCoh.assPoints, Set.mem_setOf_eq, Set.mem_setOf_eq, LinearEquiv.AssociatedPrimes.eq e]`.
+A detailed English derivation is pending.
 -/
 theorem assPoints_twist (hL : L.IsLB) : QCoh.assPoints (twist F L) = QCoh.assPoints F :=
   Set.ext fun x => by
@@ -452,22 +452,22 @@ theorem assPoints_twist (hL : L.IsLB) : QCoh.assPoints (twist F L) = QCoh.assPoi
       LinearEquiv.AssociatedPrimes.eq e]
 
 /- English proof (translation)
-Rewrite using `[QCoh.isFiniteQC_iff_isFiniteType, QCoh.isFiniteQC_iff_isFiniteType, isQuasicoherent_twist_iff hL, isFiniteType_twist_iff hL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isFiniteQC_twist_iff (hL : L.IsLB) : QCoh.IsFiniteQC (twist F L) ↔ QCoh.IsFiniteQC F := by
   rw [QCoh.isFiniteQC_iff_isFiniteType, QCoh.isFiniteQC_iff_isFiniteType,
     isQuasicoherent_twist_iff hL, isFiniteType_twist_iff hL]
 
 /- English proof (translation)
-The claim follows from `(isFiniteQC_twist_iff hL).2 h`.
+A detailed English derivation is pending.
 -/
 theorem isFiniteQC_twist (hL : L.IsLB) [h : QCoh.IsFiniteQC F] : QCoh.IsFiniteQC (twist F L) :=
   (isFiniteQC_twist_iff hL).2 h
 
 /- English proof (translation)
-Use `haveI := isQuasicoherent_twist (F := F) hL`. Rewrite using `[QCoh.isFlatOver_iff_stalk, QCoh.isFlatOver_iff_stalk]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations. Take `⟨e⟩` from `nonempty_stalkEquiv (F := F) hL x`. Use `letI := QCoh.baseModuleStalk F ρ x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := QCoh.baseModuleStalk (twist F L) ρ x`. Conclude with `Module.Flat.equiv_iff (e.toAddEquiv.toLinearEquiv fun r t => e.map_smul _ t)`.
+A detailed English derivation is pending.
 -/
 theorem isFlatOver_twist_iff (hL : L.IsLB) [F.IsQuasicoherent] {R : Type*} [CommRing R]
     (ρ : R →+* Γ(X, ⊤)) : QCoh.IsFlatOver (twist F L) ρ ↔ QCoh.IsFlatOver F ρ := by
@@ -535,7 +535,7 @@ Both sides reduce to the same expression.
     coord (tmul F L V t σ) i = LB.coord σ i • resM F inf_le_left t := rfl
 
 /- English proof (translation)
-The claim follows from `sec_ext fun i => by rw [coord_resM, coord_tmul, coord_tmul, resM_smul, resM_resM, resM_resM] rfl`.
+A detailed English derivation is pending.
 -/
 theorem resM_tmul {V W : X.Opens} (h : W ≤ V) (t : Γ(F, V)) (σ : Γ(toMod L, V)) :
     resM (twist F L) h (tmul F L V t σ) = tmul F L W (resM F h t) (resM (toMod L) h σ) :=
@@ -544,14 +544,14 @@ theorem resM_tmul {V W : X.Opens} (h : W ≤ V) (t : Γ(F, V)) (σ : Γ(toMod L,
     rfl
 
 /- English proof (translation)
-Rewrite using `[chartEquiv_apply, coord_tmul, resM_smul, resM_resM, resM_self, LB.chartEquiv_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chartEquiv_tmul (hL : L.IsLB) (i : L.ι) {V : X.Opens} (h : V ≤ L.U i) (t : Γ(F, V))
     (σ : Γ(toMod L, V)) : chartEquiv hL i h (tmul F L V t σ) = LB.chartEquiv hL i h σ • t := by
   rw [chartEquiv_apply, coord_tmul, resM_smul, resM_resM, resM_self, LB.chartEquiv_apply]
 
 /- English proof (translation)
-The claim follows from `sec_ext fun i => by rw [coord_map_app, coord_tmul, coord_tmul, Scheme.Modules.Hom.app_smul, app_resM]`.
+A detailed English derivation is pending.
 -/
 theorem map_app_tmul (φ : F ⟶ G) {V : X.Opens} (t : Γ(F, V)) (σ : Γ(toMod L, V)) :
     (map L φ).app V (tmul F L V t σ) = tmul G L V (φ.app V t) σ :=
@@ -573,7 +573,7 @@ Both sides reduce to the same expression.
       resG X (inf_le_right : V ⊓ L.U i ≤ L.U i) (σ.f i) • resM F inf_le_left t := rfl
 
 /- English proof (translation)
-Rewrite using `[chartEquiv_apply, coord_secHom_app, resM_smul, resM_resM, resM_self, resG_resG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chartEquiv_secHom_app (hL : L.IsLB) (σ : LB.Sec L) (i : L.ι) {V : X.Opens}
     (h : V ≤ L.U i) (t : Γ(F, V)) :
@@ -581,21 +581,21 @@ theorem chartEquiv_secHom_app (hL : L.IsLB) (σ : LB.Sec L) (i : L.ι) {V : X.Op
   rw [chartEquiv_apply, coord_secHom_app, resM_smul, resM_resM, resM_self, resG_resG]
 
 /- English proof (translation)
-The claim follows from `hom_ext fun V t i => congrArg (coord · i) (map_app_tmul φ t (LB.ofSec σ V)).symm`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem secHom_naturality (σ : LB.Sec L) (φ : F ⟶ G) :
     φ ≫ secHom G σ = secHom F σ ≫ map L φ :=
   hom_ext fun V t i => congrArg (coord · i) (map_app_tmul φ t (LB.ofSec σ V)).symm
 
 /- English proof (translation)
-The claim follows from `QCoh.isUnit_res_of_le_basicOpen _ h ((le_inf hV h).trans (nonzeroLocus_inf_chart σ i).le)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_resG_f (σ : LB.Sec L) (i : L.ι) {V : X.Opens} (h : V ≤ L.U i)
     (hV : V ≤ Out.nonzeroLocus σ) : IsUnit (resG X h (σ.f i)) :=
   QCoh.isUnit_res_of_le_basicOpen _ h ((le_inf hV h).trans (nonzeroLocus_inf_chart σ i).le)
 
 /- English proof (translation)
-Rewrite using `[← Function.Bijective.of_comp_iff' hq]`. Conclude with `(funext h : q ∘ f = (fun s => u • s) ∘ p) ▸ (bijective_smul_of_isUnit hu).comp hp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_of_eq_smul {A B : Type*} {V : X.Opens} {f : A → B} {p : A → Γ(F, V)}
     {q : B → Γ(F, V)} (hp : Function.Bijective p) (hq : Function.Bijective q) {u : Γ(X, V)}
@@ -604,7 +604,7 @@ theorem bijective_of_eq_smul {A B : Type*} {V : X.Opens} {f : A → B} {p : A �
   exact (funext h : q ∘ f = (fun s => u • s) ∘ p) ▸ (bijective_smul_of_isUnit hu).comp hp
 
 /- English proof (translation)
-The claim follows from `bijective_app_of_cover _ hL.cover V fun i _ h hi => bijective_of_eq_smul Function.bijective_id (chartEquiv hL i hi).bijective (isUnit_resG_f σ i hi (h.trans hV)) (chartEquiv_secHom_app hL σ i hi)`.
+A detailed English derivation is pending.
 -/
 theorem bijective_secHom_app (hL : L.IsLB) (σ : LB.Sec L) {V : X.Opens}
     (hV : V ≤ Out.nonzeroLocus σ) : Function.Bijective ((secHom F σ).app V) :=
@@ -613,7 +613,7 @@ theorem bijective_secHom_app (hL : L.IsLB) (σ : LB.Sec L) {V : X.Opens}
       (isUnit_resG_f σ i hi (h.trans hV)) (chartEquiv_secHom_app hL σ i hi)
 
 /- English proof (translation)
-The claim follows from `isIso_of_bijective _ fun _ => bijective_secHom_app hL _ (le_top.trans (nonzeroLocus_genSec hL t ht).ge)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_secHom_genSec (hL : L.IsLB) (t : LB.Gen L) (ht : t.IsGen) :
     IsIso (secHom F (DVR.genSec t ht)) :=
@@ -636,7 +636,7 @@ def genNatIso (hL : L.IsLB) (t : LB.Gen L) (ht : t.IsGen) : 𝟭 X.Modules ≅ t
   NatIso.ofComponents (fun F => genIso F hL t ht) fun φ => secHom_naturality _ φ
 
 /- English proof (translation)
-Introduce `_ _` and use `(one_mul _).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGen_one_triv : LB.Gen.IsGen (L := LB.triv X) ⟨fun _ => 1⟩ :=
   fun _ _ => (one_mul _).symm
@@ -646,7 +646,7 @@ variable (F) in
 def trivIso : F ≅ twist F (LB.triv X) := genIso F (LB.isLB_triv X) _ isGen_one_triv
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `resG X (inf_le_right : V ⊓ ⊤ ≤ ⊤) 1 • resM F inf_le_left t = _`. Rewrite using `[map_one, one_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_trivIso_hom_app {V : X.Opens} (t : Γ(F, V)) (i : PUnit.{1}) :
     coord (L := LB.triv X) ((trivIso F).hom.app V t) i = resM F inf_le_left t := by
@@ -654,7 +654,7 @@ theorem coord_trivIso_hom_app {V : X.Opens} (t : Γ(F, V)) (i : PUnit.{1}) :
   rw [map_one, one_smul]
 
 /- English proof (translation)
-Establish `e : res h ((LB.div N L).g p q) = res hN (N.g p.1 q.1) * (res hL (L.g p.2 q.2))⁻¹` using `Semi.LB.res_dg N L p q h`. Rewrite using `[← val_res, ← val_res, ← val_res, e, Units.val_mul, Units.inv_mul_cancel_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem resG_div_g_mul (p q : (LB.div N L).ι) {W : X.Opens}
     (h : W ≤ (LB.div N L).U p ⊓ (LB.div N L).U q) (hL : W ≤ L.U p.2 ⊓ L.U q.2)
@@ -667,17 +667,17 @@ theorem resG_div_g_mul (p q : (LB.div N L).ι) {W : X.Opens}
   rw [← val_res, ← val_res, ← val_res, e, Units.val_mul, Units.inv_mul_cancel_right]
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem div_U_le_left (p : (LB.div N L).ι) : (LB.div N L).U p ≤ N.U p.1 := inf_le_left
 
 /- English proof (translation)
-The claim follows from `inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem div_U_le_right (p : (LB.div N L).ι) : (LB.div N L).U p ≤ L.U p.2 := inf_le_right
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.eq_symm_apply, chartEquiv_resM hL i h, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem resM_chartEquiv_symm (hL : L.IsLB) (i : L.ι) {V W : X.Opens} (h : V ≤ L.U i) (h' : W ≤ V)
     (t : Γ(F, V)) : resM (twist F L) h' ((chartEquiv hL i h).symm t) =
@@ -724,7 +724,7 @@ def divHom (hL : L.IsLB) : twist F N ⟶ twist (twist F L) (LB.div N L) :=
         resM_resM]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `resM F h (_ • resM F _ (resM F _ _)) = _`. Rewrite using `[resM_smul, resM_resM, resM_resM, resG_resG]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_coord_divHom_app (hL : L.IsLB) {V : X.Opens} (t : Γ(twist F N, V)) (n : N.ι)
     (l' l : L.ι) {W : X.Opens} (h : W ≤ V ⊓ (LB.div N L).U (n, l') ⊓ L.U l) (hn : W ≤ V ⊓ N.U n)
@@ -735,7 +735,7 @@ theorem coord_coord_divHom_app (hL : L.IsLB) {V : X.Opens} (t : Γ(twist F N, V)
   rw [resM_smul, resM_resM, resM_resM, resG_resG]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `chartEquiv hL _ _ (resM _ _ ((chartEquiv hL _ _).symm (resM F _ _))) = _`. Rewrite using `[resM_chartEquiv_symm, LinearEquiv.apply_symm_apply, resM_resM, chartEquiv_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem chartEquiv_divHom_app (hL : L.IsLB) (hN : N.IsLB) (p : (LB.div N L).ι) {V : X.Opens}
     (h : V ≤ (LB.div N L).U p) (t : Γ(twist F N, V)) :
@@ -746,7 +746,7 @@ theorem chartEquiv_divHom_app (hL : L.IsLB) (hN : N.IsLB) (p : (LB.div N L).ι) 
   rw [resM_chartEquiv_symm, LinearEquiv.apply_symm_apply, resM_resM, chartEquiv_apply]
 
 /- English proof (translation)
-The claim follows from `isIso_of_cover _ (Semi.LB.isLB_div hN hL).cover fun p _ h => bijective_of_eq_smul (chartEquiv hN p.1 (h.trans (div_U_le_left p))).bijective ((chartEquiv hL p.2 (h.trans (div_U_le_right p))).bijective.comp (chartEquiv (Semi.LB.isLB_div hN hL) p h).bijective) isUnit_one fun t => (c …`.
+A detailed English derivation is pending.
 -/
 theorem isIso_divHom (hL : L.IsLB) (hN : N.IsLB) : IsIso (divHom F N hL) :=
   isIso_of_cover _ (Semi.LB.isLB_div hN hL).cover fun p _ h =>
@@ -756,7 +756,7 @@ theorem isIso_divHom (hL : L.IsLB) (hN : N.IsLB) : IsIso (divHom F N hL) :=
       fun t => (chartEquiv_divHom_app hL hN p h t).trans (one_smul _ _).symm
 
 /- English proof (translation)
-The claim follows from `hom_ext fun V t p => sec_ext fun l => by change _ • resM G _ (resM G _ (φ.app _ _)) = φ.app _ (_ • resM F _ (resM F _ _)) rw [Scheme.Modules.Hom.app_smul, app_resM, app_resM]`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem divHom_naturality (hL : L.IsLB) (φ : F ⟶ G) :
     map N φ ≫ divHom G N hL = divHom F N hL ≫ map (LB.div N L) (map L φ) :=
@@ -780,7 +780,7 @@ def divNatIso (hL : L.IsLB) (hN : N.IsLB) :
   NatIso.ofComponents (fun F => divIso F hL hN) fun φ => divHom_naturality hL φ
 
 /- English proof (translation)
-Establish `e : (divHom F N hL).app V ((divIso F hL hN).inv.app V s) = s` using `congrArg (fun φ => Scheme.Modules.Hom.app φ V s) (divIso F hL hN).inv_hom_id`. Use `coord_coord_divHom_app hL ((divIso F hL hN).inv.app V s) n l l h hn (le_inf (h.trans inf_le_right) (h.trans inf_le_right))` as an intermediate fact. Rewrite `this` using `[e, resG_g_self hL, one_smul]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_divIso_inv_app (hL : L.IsLB) (hN : N.IsLB) {V : X.Opens}
     (s : Γ(twist (twist F L) (LB.div N L), V)) (n : N.ι) (l : L.ι) {W : X.Opens}
@@ -848,7 +848,7 @@ Both sides reduce to the same expression.
       resM F (inf_right_comm V (L.U l) (M.U m)).le (coord (coord s m) l) := rfl
 
 /- English proof (translation)
-The claim follows from `hom_ext fun V s m => sec_ext fun l => by change coord (coord (swapFun (swapFun s)) m) l = coord (coord s m) l rw [coord_coord_swapFun, coord_coord_swapFun, resM_resM, resM_self]`.
+A detailed English derivation is pending.
 -/
 theorem swapHom_swapHom : swapHom F L M ≫ swapHom F M L = 𝟙 _ :=
   hom_ext fun V s m => sec_ext fun l => by
@@ -875,7 +875,7 @@ def homOfSec (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) : twist F L �
   secHom (twist F L) w ≫ (divIso F hL hM).inv
 
 /- English proof (translation)
-Establish `h' : W ≤ V ⊓ (LB.div M L).U (p, q) ⊓ L.U q` using `le_inf (le_inf (hp.trans inf_le_left) h) (h.trans inf_le_right)`. Use `(coord_divIso_inv_app hL hM ((secHom (twist F L) w).app V s) p q hp h').trans ?_` and prove the remaining obligations. Establish `key (r : (LB.div M L).ι) (hr : W ≤ V ⊓ (LB.div M L).U r ⊓ L.U q) : resM F hr (coord (coord ((secHom (twist F L) w).app V s) r) q) = resG X (hr.trans (inf_le_left.trans inf_le_right)) (w.f r) • resM F hq (coord s q)`. Rewrite using `[coord_secHom_app, coord_smul, coord_resM, resM_smul, resM_resM, resG_resG, resG_resG]`. Conclude with `key (p, q) h'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_homOfSec_app (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) {V : X.Opens}
     (s : Γ(twist F L, V)) (p : M.ι) (q : L.ι) {W : X.Opens}
@@ -892,7 +892,7 @@ theorem coord_homOfSec_app (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L))
   exact key (p, q) h'
 
 /- English proof (translation)
-The claim follows from `coord_homOfSec_app hL hM w s p q _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem chartEquiv_homOfSec_app (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) (p : M.ι)
     (q : L.ι) {V : X.Opens} (hp : V ≤ M.U p) (hq : V ≤ L.U q) (s : Γ(twist F L, V)) :
@@ -901,7 +901,7 @@ theorem chartEquiv_homOfSec_app (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div 
   coord_homOfSec_app hL hM w s p q _ _ _
 
 /- English proof (translation)
-Rewrite using `[homOfSec, homOfSec, secHom_naturality_assoc, Category.assoc]`. Conclude with `congrArg _ ((divNatIso hL hM).inv.naturality φ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[reassoc] theorem homOfSec_naturality (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L))
     (φ : F ⟶ G) : map L φ ≫ homOfSec G hL hM w = homOfSec F hL hM w ≫ map M φ := by
@@ -909,7 +909,7 @@ Rewrite using `[homOfSec, homOfSec, secHom_naturality_assoc, Category.assoc]`. C
   exact congrArg _ ((divNatIso hL hM).inv.naturality φ)
 
 /- English proof (translation)
-The claim follows from `(ConcreteCategory.bijective_of_isIso ((divIso F hL hM).inv.app V)).comp (bijective_secHom_app (Semi.LB.isLB_div hM hL) w hV)`.
+A detailed English derivation is pending.
 -/
 theorem bijective_homOfSec_app (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L))
     {V : X.Opens} (hV : V ≤ Out.nonzeroLocus w) :
@@ -932,7 +932,7 @@ theorem isoOfGen_hom (hL : L.IsLB) (hM : M.IsLB) (w : LB.Iso L M) (hw : w.IsGen)
 def isoUnit (w : LB.Iso L M) (p : M.ι) (q : L.ι) : Γ(X, M.U p ⊓ L.U q)ˣ := w.s (p, q)
 
 /- English proof (translation)
-The claim follows from `coord_homOfSec_app hL hM _ s p q hp hq h`.
+A detailed English derivation is pending.
 -/
 theorem coord_isoOfGen_hom_app (hL : L.IsLB) (hM : M.IsLB) (w : LB.Iso L M) (hw : w.IsGen)
     {V : X.Opens} (s : Γ(twist F L, V)) (p : M.ι) (q : L.ι) {W : X.Opens}
@@ -946,7 +946,7 @@ def natIsoOfGen (hL : L.IsLB) (hM : M.IsLB) (w : LB.Iso L M) (hw : w.IsGen) :
   NatIso.ofComponents (fun F => isoOfGen F hL hM w hw) fun φ => homOfSec_naturality hL hM _ φ
 
 /- English proof (translation)
-The claim follows from `let ⟨w, hw⟩ := h ⟨isoOfGen F hL hM w hw⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_iso_of_lbIso (hL : L.IsLB) (hM : M.IsLB) (h : LBIso L M) :
     Nonempty (twist F L ≅ twist F M) :=
@@ -954,7 +954,7 @@ theorem nonempty_iso_of_lbIso (hL : L.IsLB) (hM : M.IsLB) (h : LBIso L M) :
   ⟨isoOfGen F hL hM w hw⟩
 
 /- English proof (translation)
-Use extensionality with `V s : 3`. Conclude with `sec_ext_of_charts hL.cover fun p q => (h V s p q).trans (coord_homOfSec_app hL hM w s p q _ _ _).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem eq_homOfSec (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L))
     (φ : twist F L ⟶ twist F M)
@@ -968,14 +968,14 @@ theorem eq_homOfSec (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L))
     (h V s p q).trans (coord_homOfSec_app hL hM w s p q _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `(eq_homOfSec hL hL _ _ fun _ s p q => coord_rel s p q _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem isoOfGen_idIso_hom (hL : L.IsLB) :
     (isoOfGen F hL hL (idIso L) (idIso_isGen hL)).hom = 𝟙 _ :=
   (eq_homOfSec hL hL _ _ fun _ s p q => coord_rel s p q _ _ _).symm
 
 /- English proof (translation)
-Establish `e : (isoOfGen F hL hM w hw).hom.app V ((isoOfGen F hL hM w hw).inv.app V t) = t` using `congrArg (fun φ => Scheme.Modules.Hom.app φ V t) (isoOfGen F hL hM w hw).inv_hom_id`. Use `coord_isoOfGen_hom_app hL hM w hw ((isoOfGen F hL hM w hw).inv.app V t) p q hp hq h` as an intermediate fact. Rewrite `this` using `[e]`. Rewrite using `[this, ← val_res, smul_smul, Units.inv_mul, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_isoOfGen_inv_app (hL : L.IsLB) (hM : M.IsLB) (w : LB.Iso L M) (hw : w.IsGen)
     {V : X.Opens} (t : Γ(twist F M, V)) (p : M.ι) (q : L.ι) {W : X.Opens}
@@ -989,7 +989,7 @@ theorem coord_isoOfGen_inv_app (hL : L.IsLB) (hM : M.IsLB) (w : LB.Iso L M) (hw 
   rw [this, ← val_res, smul_smul, Units.inv_mul, one_smul]
 
 /- English proof (translation)
-The claim follows from `eq_homOfSec hL hN u _ fun V s r q => by refine sec_ext_of_cover (fun p => V ⊓ N.U r ⊓ L.U q ⊓ M.U p) (fun _ => inf_le_left) (le_iSup_inf hM.cover _) fun p => ?_ have l : V ⊓ N.U r ⊓ L.U q ⊓ M.U p ≤ N.U r ⊓ L.U q ⊓ M.U p := inf_le_inf_right _ (inf_le_inf_right _ inf_le_right) have …`.
+A detailed English derivation is pending.
 -/
 theorem homOfSec_comp (hL : L.IsLB) (hM : M.IsLB) (hN : N.IsLB) (w : LB.Sec (LB.div M L))
     (v : LB.Sec (LB.div N M)) (u : LB.Sec (LB.div N L))
@@ -1014,7 +1014,7 @@ theorem homOfSec_comp (hL : L.IsLB) (hM : M.IsLB) (hN : N.IsLB) (w : LB.Sec (LB.
     exact coord_homOfSec_app hM hN v _ r p _ lp _
 
 /- English proof (translation)
-Use extensionality with `V s : 3`. Conclude with `LB.sec_ext_of_cover hL.cover fun p q => (coord_homOfSec_app hL hM w s p q _ _ _).trans (LB.coord_mulFun' hL hM w ((unitTwistIso L).hom.app V s) p q).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem homOfSec_unitTwistIso (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L)) :
     homOfSec (unitMod X) hL hM w ≫ (unitTwistIso M).hom =
@@ -1034,9 +1034,9 @@ def tripleUnit (w : LB.Gen (LB.div (LB.div N L) M)) (n : N.ι) (l : L.ι) (m : M
     Γ(X, N.U n ⊓ L.U l ⊓ M.U m)ˣ := w.s ((n, l), m)
 
 /- English proof (translation)
-Establish `h₁ : W ≤ V ⊓ (LB.div N L).U (n, l)` using `le_inf (hn.trans inf_le_left) (h.trans inf_le_left)`. Establish `h₂ : W ≤ L.U l` using `hm.trans inf_le_right`. Use `(coord_divIso_inv_app hL hN ((isoOfGen (twist F L) hM (Semi.LB.isLB_div hN hL) w hw).hom.app V s) n l hn (le_inf h₁ h₂)).trans ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun r => resM F (le_inf le_rfl h₂ : W ≤ W ⊓ L.U l) (coord r l)) (coord_isoOfGen_hom_app hM (Semi.LB.isLB_div hN hL) w hw s (n, l) m h₁ (hm.trans inf_le_left) h)`. Simplify using `only [coord_resM, coord_smul, resM_smul, resM_resM, resG_resG] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `e.trans (congrArg (· • _) (resG_self _ _))`.
+A detailed English derivation is pending.
 -/
 theorem coord_twistTwistIso_hom_app (hL : L.IsLB) (hM : M.IsLB) (hN : N.IsLB)
     (w : LB.Gen (LB.div (LB.div N L) M)) (hw : w.IsGen) {V : X.Opens}
@@ -1070,7 +1070,7 @@ theorem twistTwistNatIso_hom_app (hL : L.IsLB) (hM : M.IsLB) (hN : N.IsLB)
     (twistTwistNatIso hL hM hN w hw).hom.app F = (twistTwistIso F hL hM hN w hw).hom := rfl
 
 /- English proof (translation)
-The claim follows from `(twistTwistNatIso hL hM hN w hw).hom.naturality φ`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem twistTwistIso_naturality (hL : L.IsLB) (hM : M.IsLB) (hN : N.IsLB)
     (w : LB.Gen (LB.div (LB.div N L) M)) (hw : w.IsGen) (φ : F ⟶ G) :
@@ -1079,7 +1079,7 @@ The claim follows from `(twistTwistNatIso hL hM hN w hw).hom.naturality φ`.
   (twistTwistNatIso hL hM hN w hw).hom.naturality φ
 
 /- English proof (translation)
-The claim follows from `let ⟨w, hw⟩ := h ⟨twistTwistIso F hL hM hN w hw⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_twistTwistIso (hL : L.IsLB) (hM : M.IsLB) (hN : N.IsLB)
     (h : LBIso M (LB.div N L)) : Nonempty (twist (twist F L) M ≅ twist F N) :=
@@ -1112,20 +1112,20 @@ Both sides reduce to the same expression.
     (twistEquivalence hL).inverse = twistFunctor (LB.div (LB.triv X) L) := rfl
 
 /- English proof (translation)
-The claim follows from `(twistEquivalence hL).isEquivalence_functor`.
+A detailed English derivation is pending.
 -/
 theorem isEquivalence_twistFunctor (hL : L.IsLB) : (twistFunctor L).IsEquivalence :=
   (twistEquivalence hL).isEquivalence_functor
 
 /- English proof (translation)
-The claim follows from `haveI := isEquivalence_twistFunctor hL inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem preservesLimits_twistFunctor (hL : L.IsLB) : Limits.PreservesLimits (twistFunctor L) :=
   haveI := isEquivalence_twistFunctor hL
   inferInstance
 
 /- English proof (translation)
-The claim follows from `haveI := isEquivalence_twistFunctor hL inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem preservesColimits_twistFunctor (hL : L.IsLB) :
     Limits.PreservesColimits (twistFunctor L) :=
@@ -1133,7 +1133,7 @@ theorem preservesColimits_twistFunctor (hL : L.IsLB) :
   inferInstance
 
 /- English proof (translation)
-The claim follows from `haveI := isEquivalence_twistFunctor hL inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem preservesFiniteLimits_twistFunctor (hL : L.IsLB) :
     Limits.PreservesFiniteLimits (twistFunctor L) :=
@@ -1141,7 +1141,7 @@ theorem preservesFiniteLimits_twistFunctor (hL : L.IsLB) :
   inferInstance
 
 /- English proof (translation)
-The claim follows from `haveI := isEquivalence_twistFunctor hL inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem preservesFiniteColimits_twistFunctor (hL : L.IsLB) :
     Limits.PreservesFiniteColimits (twistFunctor L) :=
@@ -1149,7 +1149,7 @@ theorem preservesFiniteColimits_twistFunctor (hL : L.IsLB) :
   inferInstance
 
 /- English proof (translation)
-The claim follows from `haveI := isEquivalence_twistFunctor hL S.exact_map_iff_of_faithful (twistFunctor L)`.
+A detailed English derivation is pending.
 -/
 theorem exact_map_iff (hL : L.IsLB) (S : ShortComplex X.Modules) :
     (S.map (twistFunctor L)).Exact ↔ S.Exact :=
@@ -1157,7 +1157,7 @@ theorem exact_map_iff (hL : L.IsLB) (S : ShortComplex X.Modules) :
   S.exact_map_iff_of_faithful (twistFunctor L)
 
 /- English proof (translation)
-The claim follows from `haveI := isEquivalence_twistFunctor hL hS.map_of_exact (twistFunctor L)`.
+A detailed English derivation is pending.
 -/
 theorem shortExact_map (hL : L.IsLB) {S : ShortComplex X.Modules} (hS : S.ShortExact) :
     (S.map (twistFunctor L)).ShortExact :=
@@ -1165,28 +1165,28 @@ theorem shortExact_map (hL : L.IsLB) {S : ShortComplex X.Modules} (hS : S.ShortE
   hS.map_of_exact (twistFunctor L)
 
 /- English proof (translation)
-The claim follows from `haveI := isEquivalence_twistFunctor hL (twistFunctor L).mono_map_iff_mono φ`.
+A detailed English derivation is pending.
 -/
 theorem mono_map_iff (hL : L.IsLB) (φ : F ⟶ G) : Mono (map L φ) ↔ Mono φ :=
   haveI := isEquivalence_twistFunctor hL
   (twistFunctor L).mono_map_iff_mono φ
 
 /- English proof (translation)
-The claim follows from `haveI := isEquivalence_twistFunctor hL (twistFunctor L).epi_map_iff_epi φ`.
+A detailed English derivation is pending.
 -/
 theorem epi_map_iff (hL : L.IsLB) (φ : F ⟶ G) : Epi (map L φ) ↔ Epi φ :=
   haveI := isEquivalence_twistFunctor hL
   (twistFunctor L).epi_map_iff_epi φ
 
 /- English proof (translation)
-The claim follows from `haveI := isEquivalence_twistFunctor hL isIso_iff_of_reflects_iso φ (twistFunctor L)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_map_iff (hL : L.IsLB) (φ : F ⟶ G) : IsIso (map L φ) ↔ IsIso φ :=
   haveI := isEquivalence_twistFunctor hL
   isIso_iff_of_reflects_iso φ (twistFunctor L)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ((twistFunctor _).map_isZero h).of_iso ((twistInvNatIso hL).app F), fun h => (twistFunctor L).map_isZero h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isZero_twist_iff (hL : L.IsLB) : Limits.IsZero (twist F L) ↔ Limits.IsZero F :=
   ⟨fun h => ((twistFunctor _).map_isZero h).of_iso ((twistInvNatIso hL).app F),
@@ -1197,7 +1197,7 @@ section PushPull
 variable (f : Y ⟶ X)
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨hx.1, (LB.pull_U f fun _ => i).ge hx.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_pull_inf (V : X.Opens) (i : L.ι) :
     f ⁻¹ᵁ (V ⊓ L.U i) ≤ f ⁻¹ᵁ V ⊓ (L.pull f).U fun _ => i :=
@@ -1296,7 +1296,7 @@ def pullbackHom : (Scheme.Modules.pullback f).obj (twist F L) ⟶
     (twistFunctor (L.pull f)) (projNatIso L f).symm F
 
 /- English proof (translation)
-Establish `e : (Scheme.Modules.pullbackPushforwardAdjunction f).unit.app (twist F L) ≫ (Scheme.Modules.pushforward f).map (pullbackHom F L f) = map L ((Scheme.Modules.pullbackPushforwardAdjunction f).unit.app F) ≫ (projIso L f _).inv` using `((Scheme.Modules.pullbackPushforwardAdjunction f).homEquiv_unit _ _ _).symm.trans (Equiv.apply_symm_apply _ _)`. Conclude with `congrArg (fun φ => coord (F := (Scheme.Modules.pullback f).obj F) (V := f ⁻¹ᵁ V) (Scheme.Modules.Hom.app φ V s) j) e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coord_pullbackHom_app_unit {V : X.Opens} (s : Γ(twist F L, V)) (j : (L.pull f).ι) :
     coord ((pullbackHom F L f).app (f ⁻¹ᵁ V)
@@ -1314,7 +1314,7 @@ theorem coord_pullbackHom_app_unit {V : X.Opens} (s : Γ(twist F L, V)) (j : (L.
     (Scheme.Modules.Hom.app φ V s) j) e
 
 /- English proof (translation)
-The claim follows from `mateHom_naturality _ (twistFunctor L) (twistFunctor (L.pull f)) _ φ`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem pullbackHom_naturality (φ : F ⟶ G) :
     (Scheme.Modules.pullback f).map (map L φ) ≫ pullbackHom G L f =
@@ -1322,7 +1322,7 @@ The claim follows from `mateHom_naturality _ (twistFunctor L) (twistFunctor (L.p
   mateHom_naturality _ (twistFunctor L) (twistFunctor (L.pull f)) _ φ
 
 /- English proof (translation)
-The claim follows from `haveI := isEquivalence_twistFunctor hL haveI := isEquivalence_twistFunctor (Semi.LB.isLB_pull hL f) isIso_mateHom _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isIso_pullbackHom (hL : L.IsLB) : IsIso (pullbackHom F L f) :=
   haveI := isEquivalence_twistFunctor hL
@@ -1376,14 +1376,14 @@ Both sides reduce to the same expression.
       resM F (inf_le_inf_left V (hU m)) (coord s (r m)) := rfl
 
 /- English proof (translation)
-The claim follows from `hom_ext fun V _ m => (app_resM φ (inf_le_inf_left V (hU m)) _).symm`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem refineHom_naturality (φ : F ⟶ G) :
     map L φ ≫ refineHom G r hU hg = refineHom F r hU hg ≫ map M φ :=
   hom_ext fun V _ m => (app_resM φ (inf_le_inf_left V (hU m)) _).symm
 
 /- English proof (translation)
-The claim follows from `isIso_of_cover _ hM.cover fun m _ h => bijective_of_eq_smul (chartEquiv hL (r m) (h.trans (hU m))).bijective (chartEquiv hM m h).bijective isUnit_one fun s => by rw [one_smul, chartEquiv_apply, chartEquiv_apply, coord_refineHom_app, resM_resM]`.
+A detailed English derivation is pending.
 -/
 theorem isIso_refineHom (hL : L.IsLB) (hM : M.IsLB) : IsIso (refineHom F r hU hg) :=
   isIso_of_cover _ hM.cover fun m _ h =>
@@ -1433,7 +1433,7 @@ theorem twistZ_natCast (F : X.Modules) (L : LB X) (n : ℕ) :
     twistZ F L n = twist F (lbPow L n) := rfl
 
 /- English proof (translation)
-The claim follows from `Semi.LB.isLB_linComb hL _ _`.
+A detailed English derivation is pending.
 -/
 theorem isLB_lbZPow (hL : L.IsLB) (n : ℤ) : (lbZPow L n).IsLB := Semi.LB.isLB_linComb hL _ _
 
@@ -1442,25 +1442,25 @@ variable (L) in
 def zidx (n : ℤ) (i : L.ι) : (lbZPow L n).ι := fun _ => i
 
 /- English proof (translation)
-The claim follows from `Semi.LB.wchart_le L (fun _ : PUnit.{1} => 𝟙 X) j PUnit.unit`.
+A detailed English derivation is pending.
 -/
 theorem zpow_U_le (j : (lbZPow L n).ι) : (lbZPow L n).U j ≤ L.U (j PUnit.unit) :=
   Semi.LB.wchart_le L (fun _ : PUnit.{1} => 𝟙 X) j PUnit.unit
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_zpow_U (j : (lbZPow L n).ι) : L.U (j PUnit.unit) ≤ (lbZPow L n).U j :=
   fun _ hy => Set.mem_iInter.2 fun _ => hy
 
 /- English proof (translation)
-The claim follows from `le_zpow_U (zidx L n i)`.
+A detailed English derivation is pending.
 -/
 theorem le_zidx_U (n : ℤ) (i : L.ι) : L.U i ≤ (lbZPow L n).U (zidx L n i) :=
   le_zpow_U (zidx L n i)
 
 /- English proof (translation)
-Use `Semi.LB.res_lcg L (fun _ : PUnit.{1} => 𝟙 X) (fun _ => n) i j h` as an intermediate fact. Rewrite `this` using `[Fintype.prod_unique]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_zpow_g (i j : (lbZPow L n).ι) {W : X.Opens}
     (h : W ≤ (lbZPow L n).U i ⊓ (lbZPow L n).U j)
@@ -1474,7 +1474,7 @@ def zcoord {V : X.Opens} (s : Γ(twistZ F L n, V)) (i : L.ι) : Γ(F, V ⊓ L.U 
   resM F (inf_le_inf_left V (le_zidx_U n i)) (coord s (zidx L n i))
 
 /- English proof (translation)
-Establish `h` using `hij.trans (inf_le_inf (le_zidx_U n i) (le_zidx_U n j))`. Rewrite using `[zcoord, zcoord, resM_resM, resM_resM, coord_rel s (zidx L n i) (zidx L n j) _ _ h, ← val_res, res_zpow_g _ _ h hij]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zcoord_rel {V : X.Opens} (s : Γ(twistZ F L n, V)) (i j : L.ι)
     {W : X.Opens} (hi : W ≤ V ⊓ L.U i) (hj : W ≤ V ⊓ L.U j) (hij : W ≤ L.U i ⊓ L.U j) :
@@ -1486,14 +1486,14 @@ theorem zcoord_rel {V : X.Opens} (s : Γ(twistZ F L n, V)) (i j : L.ι)
   rfl
 
 /- English proof (translation)
-The claim follows from `((resM_resM _ _ _).trans (resM_self _ _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem coord_eq_zcoord {V : X.Opens} (s : Γ(twistZ F L n, V)) (j : (lbZPow L n).ι) :
     coord s j = resM F (inf_le_inf_left V (zpow_U_le j)) (zcoord s (j PUnit.unit)) :=
   ((resM_resM _ _ _).trans (resM_self _ _)).symm
 
 /- English proof (translation)
-The claim follows from `sec_ext fun j => by rw [coord_eq_zcoord, coord_eq_zcoord, h]`.
+A detailed English derivation is pending.
 -/
 theorem zsec_ext {V : X.Opens} {s t : Γ(twistZ F L n, V)} (h : ∀ i, zcoord s i = zcoord t i) :
     s = t :=
@@ -1515,46 +1515,46 @@ def zmkSec {V : X.Opens} (f : ∀ i, Γ(F, V ⊓ L.U i))
     exact this
 
 /- English proof (translation)
-The claim follows from `(resM_resM _ _ _).trans (resM_self _ _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zcoord_zmkSec {V : X.Opens} (f : ∀ i, Γ(F, V ⊓ L.U i)) (hf) (i : L.ι) :
     zcoord (zmkSec (n := n) f hf) i = f i :=
   (resM_resM _ _ _).trans (resM_self _ _)
 
 /- English proof (translation)
-The claim follows from `map_zero (resM F _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zcoord_zero {V : X.Opens} (i : L.ι) : zcoord (0 : Γ(twistZ F L n, V)) i = 0 :=
   map_zero (resM F _)
 
 /- English proof (translation)
-The claim follows from `map_add (resM F _) _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zcoord_add {V : X.Opens} (s t : Γ(twistZ F L n, V)) (i : L.ι) :
     zcoord (s + t) i = zcoord s i + zcoord t i := map_add (resM F _) _ _
 
 /- English proof (translation)
-Rewrite using `[zcoord, zcoord, coord_smul, resM_smul, resG_resG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem zcoord_smul {V : X.Opens} (a : Γ(X, V)) (s : Γ(twistZ F L n, V)) (i : L.ι) :
     zcoord (a • s) i = resG X (inf_le_left : V ⊓ L.U i ≤ V) a • zcoord s i := by
   rw [zcoord, zcoord, coord_smul, resM_smul, resG_resG]
 
 /- English proof (translation)
-Rewrite using `[zcoord, zcoord, coord_resM, resM_resM, resM_resM]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem zcoord_resM {V W : X.Opens} (h : W ≤ V) (s : Γ(twistZ F L n, V)) (i : L.ι) :
     zcoord (resM (twistZ F L n) h s) i = resM F (inf_le_inf_right _ h) (zcoord s i) := by
   rw [zcoord, zcoord, coord_resM, resM_resM, resM_resM]
 
 /- English proof (translation)
-The claim follows from `(app_resM φ _ _).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zcoord_map_app (φ : F ⟶ G) {V : X.Opens} (s : Γ(twistZ F L n, V)) (i : L.ι) :
     zcoord ((map (lbZPow L n) φ).app V s) i = φ.app _ (zcoord s i) := (app_resM φ _ _).symm
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 @[simp] theorem zcoord_eqToHom_app (h : n = k) (e : twistZ F L n = twistZ F L k) {V : X.Opens}
     (s : Γ(twistZ F L n, V)) (i : L.ι) :
@@ -1563,7 +1563,7 @@ Substitute `h` using the available equality. Both sides reduce to the same expre
   rfl
 
 /- English proof (translation)
-Use extensionality with `V s : 3`. Conclude with `zsec_ext (h V s)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem zhom_ext {φ ψ : G ⟶ twistZ F L n}
     (h : ∀ (V : X.Opens) (s : Γ(G, V)) (i : L.ι), zcoord (φ.app V s) i = zcoord (ψ.app V s) i) :
@@ -1576,14 +1576,14 @@ def zchartEquiv (hL : L.IsLB) (n : ℤ) (i : L.ι) {V : X.Opens} (h : V ≤ L.U 
   chartEquiv (isLB_lbZPow hL n) (zidx L n i) (h.trans (le_zidx_U n i))
 
 /- English proof (translation)
-The claim follows from `(resM_resM _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem zchartEquiv_apply (hL : L.IsLB) (i : L.ι) {V : X.Opens} (h : V ≤ L.U i)
     (s : Γ(twistZ F L n, V)) :
     zchartEquiv hL n i h s = resM F (le_inf le_rfl h) (zcoord s i) := (resM_resM _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `chartEquiv_resM _ _ _ h' s`.
+A detailed English derivation is pending.
 -/
 theorem zchartEquiv_resM (hL : L.IsLB) (i : L.ι) {V W : X.Opens} (h : V ≤ L.U i) (h' : W ≤ V)
     (s : Γ(twistZ F L n, V)) :
@@ -1592,7 +1592,7 @@ theorem zchartEquiv_resM (hL : L.IsLB) (i : L.ι) {V W : X.Opens} (h : V ≤ L.U
   chartEquiv_resM _ _ _ h' s
 
 /- English proof (translation)
-Rewrite using `[zchartEquiv_apply, zchartEquiv_apply]`. Conclude with `zcoord_rel s i j _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zchartEquiv_change (hL : L.IsLB) (i j : L.ι) {V : X.Opens} (hi : V ≤ L.U i)
     (hj : V ≤ L.U j) (s : Γ(twistZ F L n, V)) :
@@ -1605,7 +1605,7 @@ def zfun (σ : LB.Sec (lbZPow L m)) (i : L.ι) : Γ(X, L.U i) :=
   resG X (le_zidx_U m i) (σ.f (zidx L m i))
 
 /- English proof (translation)
-Establish `h` using `hij.trans (inf_le_inf (le_zidx_U m i) (le_zidx_U m j))`. Rewrite using `[zfun, zfun, resG_resG, resG_resG, LB.sec_rel σ (zidx L m i) (zidx L m j) _ _ h, ← val_res, res_zpow_g _ _ h hij]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zfun_rel (σ : LB.Sec (lbZPow L m)) (i j : L.ι) {W : X.Opens} (hi : W ≤ L.U i)
     (hj : W ≤ L.U j) (hij : W ≤ L.U i ⊓ L.U j) :
@@ -1617,14 +1617,14 @@ theorem zfun_rel (σ : LB.Sec (lbZPow L m)) (i j : L.ι) {W : X.Opens} (hi : W �
   rfl
 
 /- English proof (translation)
-The claim follows from `((resG_resG _ _ _).trans (resG_self _ _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem f_eq_zfun (σ : LB.Sec (lbZPow L m)) (j : (lbZPow L m).ι) :
     σ.f j = resG X (zpow_U_le j) (zfun σ (j PUnit.unit)) :=
   ((resG_resG _ _ _).trans (resG_self _ _)).symm
 
 /- English proof (translation)
-The claim follows from `LB.f_injective (funext fun j => by rw [f_eq_zfun, f_eq_zfun, h])`.
+A detailed English derivation is pending.
 -/
 theorem zglobal_ext {σ τ : LB.Sec (lbZPow L m)} (h : ∀ i, zfun σ i = zfun τ i) : σ = τ :=
   LB.f_injective (funext fun j => by rw [f_eq_zfun, f_eq_zfun, h])
@@ -1642,26 +1642,26 @@ def zmkGlobal (f : ∀ i, Γ(X, L.U i))
     exact (resG_resG _ _ _).trans (this.trans (congrArg (_ * ·) (resG_resG _ _ _).symm))
 
 /- English proof (translation)
-The claim follows from `(resG_resG _ _ _).trans (resG_self _ _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zfun_zmkGlobal (f : ∀ i, Γ(X, L.U i)) (hf) (i : L.ι) :
     zfun (zmkGlobal (m := m) f hf) i = f i :=
   (resG_resG _ _ _).trans (resG_self _ _)
 
 /- English proof (translation)
-The claim follows from `map_zero (resG X _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zfun_zero (i : L.ι) : zfun (0 : LB.Sec (lbZPow L m)) i = 0 :=
   map_zero (resG X _)
 
 /- English proof (translation)
-The claim follows from `map_add (resG X _) _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zfun_add (σ τ : LB.Sec (lbZPow L m)) (i : L.ι) :
     zfun (σ + τ) i = zfun σ i + zfun τ i := map_add (resG X _) _ _
 
 /- English proof (translation)
-Rewrite using `[zfun, zfun, LB.smul_f, map_mul, resG_resG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem zfun_smul (a : Γ(X, ⊤)) (σ : LB.Sec (lbZPow L m)) (i : L.ι) :
     zfun (a • σ) i = resG X le_top a * zfun σ i := by
@@ -1673,7 +1673,7 @@ def zone : LB.Sec (lbZPow L 0) :=
   zmkGlobal (fun _ => 1) fun i j => by rw [zpow_zero, map_one, map_one, Units.val_one, mul_one]
 
 /- English proof (translation)
-The claim follows from `zfun_zmkGlobal _ _ i`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zfun_zone (i : L.ι) : zfun (zone L) i = 1 := zfun_zmkGlobal _ _ i
 
@@ -1681,7 +1681,7 @@ def zofSec (σ : LB.Sec L) : LB.Sec (lbZPow L 1) :=
   zmkGlobal σ.f fun i j => by rw [zpow_one]; exact σ.compat i j
 
 /- English proof (translation)
-The claim follows from `zfun_zmkGlobal _ _ i`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zfun_zofSec (σ : LB.Sec L) (i : L.ι) : zfun (zofSec σ) i = σ.f i :=
   zfun_zmkGlobal _ _ i
@@ -1693,13 +1693,13 @@ def zmul (σ : LB.Sec (lbZPow L m)) (τ : LB.Sec (lbZPow L m')) : LB.Sec (lbZPow
       e, zpow_add, Units.val_mul, mul_mul_mul_comm]
 
 /- English proof (translation)
-The claim follows from `zfun_zmkGlobal _ _ i`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zfun_zmul (σ : LB.Sec (lbZPow L m)) (τ : LB.Sec (lbZPow L m')) (i : L.ι) :
     zfun (zmul σ τ) i = zfun σ i * zfun τ i := zfun_zmkGlobal _ _ i
 
 /- English proof (translation)
-Rewrite using `[zfun, resG_resG]`. Conclude with `isUnit_resG_f σ _ _ hV`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_resG_zfun (σ : LB.Sec (lbZPow L m)) (i : L.ι) {V : X.Opens} (h : V ≤ L.U i)
     (hV : V ≤ Out.nonzeroLocus σ) : IsUnit (resG X h (zfun σ i)) := by
@@ -1715,7 +1715,7 @@ def mulFun (σ : LB.Sec (lbZPow L m)) (h : n + m = k) {V : X.Opens} (s : Γ(twis
       Units.val_mul, mul_right_comm, mul_comm (Units.val _) (Units.val _)]
 
 /- English proof (translation)
-The claim follows from `zcoord_zmkSec _ _ i`.
+A detailed English derivation is pending.
 -/
 theorem zcoord_mulFun (σ : LB.Sec (lbZPow L m)) (h : n + m = k) {V : X.Opens}
     (s : Γ(twistZ F L n, V)) (i : L.ι) :
@@ -1742,7 +1742,7 @@ abbrev mulSec (σ : LB.Sec (lbZPow L m)) (n : ℤ) : twistZ F L n ⟶ twistZ F L
   mulSecOfEq F σ rfl
 
 /- English proof (translation)
-The claim follows from `zcoord_mulFun σ h s i`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zcoord_mulSecOfEq_app (σ : LB.Sec (lbZPow L m)) (h : n + m = k) {V : X.Opens}
     (s : Γ(twistZ F L n, V)) (i : L.ι) :
@@ -1751,7 +1751,7 @@ The claim follows from `zcoord_mulFun σ h s i`.
   zcoord_mulFun σ h s i
 
 /- English proof (translation)
-Rewrite using `[zchartEquiv_apply, zchartEquiv_apply, zcoord_mulSecOfEq_app, resM_smul, resG_resG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zchartEquiv_mulSecOfEq_app (hL : L.IsLB) (σ : LB.Sec (lbZPow L m)) (h : n + m = k)
     (i : L.ι) {V : X.Opens} (hi : V ≤ L.U i) (s : Γ(twistZ F L n, V)) :
@@ -1760,7 +1760,7 @@ theorem zchartEquiv_mulSecOfEq_app (hL : L.IsLB) (σ : LB.Sec (lbZPow L m)) (h :
   rw [zchartEquiv_apply, zchartEquiv_apply, zcoord_mulSecOfEq_app, resM_smul, resG_resG]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `Category.comp_id _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 @[reassoc] theorem mulSec_eqToHom (σ : LB.Sec (lbZPow L m)) (h : n + m = k) :
     mulSec F σ n ≫ eqToHom (congrArg (twistZ F L) h) = mulSecOfEq F σ h := by
@@ -1768,7 +1768,7 @@ Substitute `h` using the available equality. Conclude with `Category.comp_id _`.
   exact Category.comp_id _
 
 /- English proof (translation)
-The claim follows from `zhom_ext fun V s i => by change zcoord ((mulSecOfEq G σ h).app V ((map (lbZPow L n) φ).app V s)) i = zcoord ((map (lbZPow L k) φ).app V ((mulSecOfEq F σ h).app V s)) i rw [zcoord_mulSecOfEq_app, zcoord_map_app, zcoord_map_app, zcoord_mulSecOfEq_app, Scheme.Modules.Hom.app_smul]`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem mulSecOfEq_naturality (σ : LB.Sec (lbZPow L m)) (h : n + m = k) (φ : F ⟶ G) :
     map (lbZPow L n) φ ≫ mulSecOfEq G σ h = mulSecOfEq F σ h ≫ map (lbZPow L k) φ :=
@@ -1784,7 +1784,7 @@ def mulSecNatTrans (σ : LB.Sec (lbZPow L m)) (h : n + m = k) :
   naturality _ _ φ := mulSecOfEq_naturality σ h φ
 
 /- English proof (translation)
-The claim follows from `zhom_ext fun V s i => by change zcoord ((mulSecOfEq F τ h₂).app V ((mulSecOfEq F σ h₁).app V s)) i = _ rw [zcoord_mulSecOfEq_app, zcoord_mulSecOfEq_app, zcoord_mulSecOfEq_app, hρ, map_mul, mul_comm, mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem mulSecOfEq_comp_of_zfun {m'' : ℤ} (σ : LB.Sec (lbZPow L m)) (τ : LB.Sec (lbZPow L m'))
     (ρ : LB.Sec (lbZPow L m'')) (hρ : ∀ i, zfun ρ i = zfun σ i * zfun τ i)
@@ -1796,7 +1796,7 @@ theorem mulSecOfEq_comp_of_zfun {m'' : ℤ} (σ : LB.Sec (lbZPow L m)) (τ : LB.
       mul_smul]
 
 /- English proof (translation)
-The claim follows from `mulSecOfEq_comp_of_zfun σ τ _ (zfun_zmul σ τ) h₁ h₂ h₃`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem mulSecOfEq_comp (σ : LB.Sec (lbZPow L m)) (τ : LB.Sec (lbZPow L m'))
     (h₁ : n + m = k) (h₂ : k + m' = l) (h₃ : n + (m + m') = l) :
@@ -1804,7 +1804,7 @@ The claim follows from `mulSecOfEq_comp_of_zfun σ τ _ (zfun_zmul σ τ) h₁ h
   mulSecOfEq_comp_of_zfun σ τ _ (zfun_zmul σ τ) h₁ h₂ h₃
 
 /- English proof (translation)
-The claim follows from `(mulSecOfEq_comp σ τ h₁ h₂ (by omega)).trans (mulSecOfEq_comp_of_zfun τ σ _ (fun i => (zfun_zmul σ τ i).trans (mul_comm _ _)) h₃ h₄ _).symm`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem mulSecOfEq_comm (σ : LB.Sec (lbZPow L m)) (τ : LB.Sec (lbZPow L m'))
     (h₁ : n + m = k) (h₂ : k + m' = l) (h₃ : n + m' = k') (h₄ : k' + m = l) :
@@ -1813,7 +1813,7 @@ The claim follows from `(mulSecOfEq_comp σ τ h₁ h₂ (by omega)).trans (mulS
     (mulSecOfEq_comp_of_zfun τ σ _ (fun i => (zfun_zmul σ τ i).trans (mul_comm _ _)) h₃ h₄ _).symm
 
 /- English proof (translation)
-The claim follows from `(mulSecOfEq_comp σ τ rfl rfl h).trans (mulSec_eqToHom _ h).symm`.
+A detailed English derivation is pending.
 -/
 theorem mulSec_comp (σ : LB.Sec (lbZPow L m)) (τ : LB.Sec (lbZPow L m')) (n : ℤ)
     (h : n + (m + m') = n + m + m' := by omega) :
@@ -1822,7 +1822,7 @@ theorem mulSec_comp (σ : LB.Sec (lbZPow L m)) (τ : LB.Sec (lbZPow L m')) (n : 
   (mulSecOfEq_comp σ τ rfl rfl h).trans (mulSec_eqToHom _ h).symm
 
 /- English proof (translation)
-Rewrite using `[mulSec_eqToHom σ h]`. Conclude with `mulSecOfEq_comm σ τ rfl rfl rfl h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulSec_comm (σ : LB.Sec (lbZPow L m)) (τ : LB.Sec (lbZPow L m')) (n : ℤ)
     (h : n + m' + m = n + m + m' := by omega) :
@@ -1832,7 +1832,7 @@ theorem mulSec_comm (σ : LB.Sec (lbZPow L m)) (τ : LB.Sec (lbZPow L m')) (n : 
   exact mulSecOfEq_comm σ τ rfl rfl rfl h
 
 /- English proof (translation)
-The claim follows from `zhom_ext fun V s i => by rw [zcoord_mulSecOfEq_app, zfun_zone, map_one, one_smul] rfl`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem mulSecOfEq_zone (h : n + 0 = n) : mulSecOfEq F (zone L) h = 𝟙 _ :=
   zhom_ext fun V s i => by
@@ -1840,7 +1840,7 @@ The claim follows from `zhom_ext fun V s i => by rw [zcoord_mulSecOfEq_app, zfun
     rfl
 
 /- English proof (translation)
-The claim follows from `zhom_ext fun V s i => by rw [zcoord_mulSecOfEq_app, zfun_zero, map_zero, zero_smul] exact (zcoord_zero i).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem mulSecOfEq_zero (h : n + m = k) :
     mulSecOfEq F (0 : LB.Sec (lbZPow L m)) h = 0 :=
@@ -1849,7 +1849,7 @@ The claim follows from `zhom_ext fun V s i => by rw [zcoord_mulSecOfEq_app, zfun
     exact (zcoord_zero i).symm
 
 /- English proof (translation)
-The claim follows from `zhom_ext fun V s i => by change _ = zcoord ((mulSecOfEq F σ h).app V s + (mulSecOfEq F τ h).app V s) i rw [zcoord_add, zcoord_mulSecOfEq_app, zcoord_mulSecOfEq_app, zcoord_mulSecOfEq_app, zfun_add, map_add, add_smul]`.
+A detailed English derivation is pending.
 -/
 theorem mulSecOfEq_add (σ τ : LB.Sec (lbZPow L m)) (h : n + m = k) :
     mulSecOfEq F (σ + τ) h = mulSecOfEq F σ h + mulSecOfEq F τ h :=
@@ -1859,7 +1859,7 @@ theorem mulSecOfEq_add (σ τ : LB.Sec (lbZPow L m)) (h : n + m = k) :
       map_add, add_smul]
 
 /- English proof (translation)
-The claim follows from `zsec_ext fun i => by rw [zcoord_smul, zcoord_mulSecOfEq_app, zcoord_mulSecOfEq_app, zfun_smul, map_mul, mul_smul, resG_resG, resG_resG]`.
+A detailed English derivation is pending.
 -/
 theorem mulSecOfEq_smul_app (a : Γ(X, ⊤)) (σ : LB.Sec (lbZPow L m)) (h : n + m = k) {V : X.Opens}
     (s : Γ(twistZ F L n, V)) :
@@ -1869,7 +1869,7 @@ theorem mulSecOfEq_smul_app (a : Γ(X, ⊤)) (σ : LB.Sec (lbZPow L m)) (h : n +
       resG_resG, resG_resG]
 
 /- English proof (translation)
-The claim follows from `bijective_app_of_cover _ hL.cover V fun i _ h' hi => bijective_of_eq_smul (zchartEquiv hL n i hi).bijective (zchartEquiv hL k i hi).bijective (isUnit_resG_zfun σ i hi (h'.trans hV)) (zchartEquiv_mulSecOfEq_app hL σ h i hi)`.
+A detailed English derivation is pending.
 -/
 theorem bijective_mulSecOfEq_app (hL : L.IsLB) (σ : LB.Sec (lbZPow L m)) (h : n + m = k)
     {V : X.Opens} (hV : V ≤ Out.nonzeroLocus σ) :
@@ -1883,7 +1883,7 @@ variable (L) in
 def zoneGen : LB.Gen (lbZPow L 0) := ⟨fun _ => 1⟩
 
 /- English proof (translation)
-Introduce `i j` and use `by have e := res_zpow_g i j le_rfl (inf_le_inf (zpow_U_le i) (zpow_U_le j)) rw [zpow_zero] at e have e' : (lbZPow L 0).g i j = 1 := (Units.ext (resG_self _ _)).symm.trans e rw [e', one_mul] exact (map_one _).trans (map_one _).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGen_zoneGen : (zoneGen L).IsGen := fun i j => by
   have e := res_zpow_g i j le_rfl (inf_le_inf (zpow_U_le i) (zpow_U_le j))
@@ -1898,7 +1898,7 @@ def twistZZeroIso (hL : L.IsLB) : F ≅ twistZ F L 0 :=
   genIso F (isLB_lbZPow hL 0) (zoneGen L) isGen_zoneGen
 
 /- English proof (translation)
-Establish `e : coord ((twistZZeroIso F hL).hom.app V t) (zidx L 0 i) = resG X (inf_le_right : V ⊓ (lbZPow L 0).U (zidx L 0 i) ≤ _) 1 • resM F inf_le_left t` using `rfl`. Rewrite using `[zcoord, e, map_one, one_smul, resM_resM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem zcoord_twistZZeroIso_hom_app (hL : L.IsLB) {V : X.Opens} (t : Γ(F, V)) (i : L.ι) :
     zcoord ((twistZZeroIso F hL).hom.app V t) i = resM F inf_le_left t := by
@@ -1915,14 +1915,14 @@ def twistZOneIso (hL : L.IsLB) : twist F L ≅ twistZ F L 1 :=
     hL (isLB_lbZPow hL 1)
 
 /- English proof (translation)
-The claim follows from `(resM_resM _ _ _).trans (resM_self _ _)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zcoord_twistZOneIso_hom_app (hL : L.IsLB) {V : X.Opens} (s : Γ(twist F L, V))
     (i : L.ι) : zcoord ((twistZOneIso F hL).hom.app V s) i = coord s i :=
   (resM_resM _ _ _).trans (resM_self _ _)
 
 /- English proof (translation)
-The claim follows from `zhom_ext fun V t i => by change zcoord ((mulSecOfEq F σ h).app V ((twistZZeroIso F hL).hom.app V t)) i = _ rw [zcoord_mulSecOfEq_app, zcoord_twistZZeroIso_hom_app, zcoord, coord_secHom_app, resM_smul, resM_resM, zfun, resG_resG, resG_resG]`.
+A detailed English derivation is pending.
 -/
 theorem twistZZeroIso_hom_mulSecOfEq (hL : L.IsLB) (σ : LB.Sec (lbZPow L m)) (h : 0 + m = m) :
     (twistZZeroIso F hL).hom ≫ mulSecOfEq F σ h = secHom F σ :=
@@ -1932,7 +1932,7 @@ theorem twistZZeroIso_hom_mulSecOfEq (hL : L.IsLB) (σ : LB.Sec (lbZPow L m)) (h
       resM_resM, zfun, resG_resG, resG_resG]
 
 /- English proof (translation)
-The claim follows from `Semi.LB.res_dg N L p q h`.
+A detailed English derivation is pending.
 -/
 theorem res_div_g (p q : (LB.div N L).ι) {W : X.Opens}
     (h : W ≤ (LB.div N L).U p ⊓ (LB.div N L).U q) (hN : W ≤ N.U p.1 ⊓ N.U q.1)
@@ -1952,7 +1952,7 @@ def zaddGen : LB.Gen (LB.div (LB.div (lbZPow L k) (lbZPow L n)) (lbZPow L m)) wh
       (L.g (p.1.1 PUnit.unit) (p.2 PUnit.unit)) ^ m
 
 /- English proof (translation)
-Simplify using `only [mul_zpow, inv_zpow, zpow_add]`. The two sides agree by associativity and commutativity.
+Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity.
 -/
 theorem zpow_mul_inv_mul_identity_commGroup {A : Type*} [CommGroup A] (a b c d e : A) (n m : ℤ) :
     (a * b⁻¹ * d) ^ n * (a * c⁻¹ * e) ^ m =
@@ -1961,7 +1961,7 @@ theorem zpow_mul_inv_mul_identity_commGroup {A : Type*} [CommGroup A] (a b c d e
   ac_rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `res h (_ * _) = _`. Rewrite using `[map_mul, map_zpow, map_zpow, Semi.LB.res_res, Semi.LB.res_res]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_zaddGen (p : (LB.div (LB.div (lbZPow L k) (lbZPow L n)) (lbZPow L m)).ι) {W : X.Opens}
     (h : W ≤ (LB.div (LB.div (lbZPow L k) (lbZPow L n)) (lbZPow L m)).U p)
@@ -1973,7 +1973,7 @@ theorem res_zaddGen (p : (LB.div (LB.div (lbZPow L k) (lbZPow L n)) (lbZPow L m)
   rw [map_mul, map_zpow, map_zpow, Semi.LB.res_res, Semi.LB.res_res]
 
 /- English proof (translation)
-Introduce `p q` and use `by let D := LB.div (LB.div (lbZPow L k) (lbZPow L n)) (lbZPow L m) have hp : D.U p ⊓ D.U q ≤ D.U p := inf_le_left have hq : D.U p ⊓ D.U q ≤ D.U q := inf_le_right have pa := hp.trans ((div_U_le_left p).trans (div_U_le_left p.1)) have pb := hp.trans ((div_U_le_left p).trans (div_U_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGen_zaddGen (hL : L.IsLB) (h : n + m = k) : (zaddGen L n m k).IsGen := fun p q => by
   let D := LB.div (LB.div (lbZPow L k) (lbZPow L n)) (lbZPow L m)
@@ -2013,9 +2013,9 @@ def twistZAddIso (hL : L.IsLB) (h : n + m = k) : twistZ (twistZ F L n) L m ≅ t
   twistTwistIso F (isLB_lbZPow hL n) (isLB_lbZPow hL m) (isLB_lbZPow hL k) _ (isGen_zaddGen hL h)
 
 /- English proof (translation)
-Establish `l (r : ℤ) : V ⊓ L.U i ≤ (lbZPow L r).U (zidx L r i)` using `inf_le_right.trans (le_zidx_U r i)`. Establish `hu : V ⊓ L.U i ≤ (lbZPow L k).U (zidx L k i) ⊓ (lbZPow L n).U (zidx L n i) ⊓ (lbZPow L m).U (zidx L m i)` using `le_inf (le_inf (l k) (l n)) (l m)`. Establish `e : res hu (tripleUnit (zaddGen L n m k) (zidx L k i) (zidx L n i) (zidx L m i)) = 1`. Establish `hii : V ⊓ L.U i ≤ L.U i ⊓ L.U i` using `le_inf inf_le_right inf_le_right`. Establish `e₁ : _ = res hii (L.g i i) ^ n * res hii (L.g i i) ^ m` using `res_zaddGen ((zidx L k i, zidx L n i), zidx L m i) hu hii hii`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₁` using `[Semi.LB.res_g_self hL i, one_zpow, one_zpow, one_mul]`. Conclude with `e₁`. Use `(coord_twistTwistIso_hom_app _ _ _ _ (isGen_zaddGen hL h) s (zidx L k i) (zidx L n i) (zidx L m i) _ (le_inf (le_inf inf_le_left (l m)) (l n)) hu).trans ?_` and prove the remaining obligations. Rewrite using `[← val_res, e, Units.val_one, one_smul, zcoord, zcoord, coord_resM, resM_resM, resM_resM]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zcoord_twistZAddIso_hom_app (hL : L.IsLB) (h : n + m = k) {V : X.Opens}
     (s : Γ(twistZ (twistZ F L n) L m, V)) (i : L.ι) :
@@ -2035,7 +2035,7 @@ theorem zcoord_twistZAddIso_hom_app (hL : L.IsLB) (h : n + m = k) {V : X.Opens}
   rw [← val_res, e, Units.val_one, one_smul, zcoord, zcoord, coord_resM, resM_resM, resM_resM]
 
 /- English proof (translation)
-The claim follows from `twistTwistIso_naturality _ _ _ _ _ φ`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem twistZAddIso_naturality (hL : L.IsLB) (h : n + m = k) (φ : F ⟶ G) :
     map (lbZPow L m) (map (lbZPow L n) φ) ≫ (twistZAddIso G hL h).hom =
@@ -2043,7 +2043,7 @@ The claim follows from `twistTwistIso_naturality _ _ _ _ _ φ`.
   twistTwistIso_naturality _ _ _ _ _ φ
 
 /- English proof (translation)
-The claim follows from `zhom_ext fun V s i => by change zcoord ((twistZAddIso F hL h).hom.app V ((secHom (twistZ F L n) σ).app V s)) i = _ have e : zcoord ((secHom (twistZ F L n) σ).app V s) i = resG X (inf_le_right : V ⊓ L.U i ≤ L.U i) (zfun σ i) • resM _ inf_le_left s := by rw [zcoord, coord_secHom_ap …`.
+A detailed English derivation is pending.
 -/
 theorem secHom_twistZAddIso_hom (hL : L.IsLB) (σ : LB.Sec (lbZPow L m)) (h : n + m = k) :
     secHom (twistZ F L n) σ ≫ (twistZAddIso F hL h).hom = mulSecOfEq F σ h :=
@@ -2088,7 +2088,7 @@ variable (L) in
 def pidx (i : L.ι) : (L.pull f).ι := fun _ => i
 
 /- English proof (translation)
-The claim follows from `((LB.pull_U_le f j).trans (f.preimage_mono (zpow_U_le _))).trans ((LB.pull_U f (pidx L f (j PUnit.unit PUnit.unit))).ge.trans (le_zidx_U n _))`.
+A detailed English derivation is pending.
 -/
 theorem pull_zpow_U_le (j : ((lbZPow L n).pull f).ι) :
     ((lbZPow L n).pull f).U j ≤
@@ -2097,7 +2097,7 @@ theorem pull_zpow_U_le (j : ((lbZPow L n).pull f).ι) :
     ((LB.pull_U f (pidx L f (j PUnit.unit PUnit.unit))).ge.trans (le_zidx_U n _))
 
 /- English proof (translation)
-The claim follows from `Units.ext (LB.resG_pull_g f i j h)`.
+A detailed English derivation is pending.
 -/
 theorem res_pull_g (i j : (L.pull f).ι) {W : Y.Opens} (h : W ≤ (L.pull f).U i ⊓ (L.pull f).U j)
     (h' : W ≤ f ⁻¹ᵁ (L.U (i PUnit.unit) ⊓ L.U (j PUnit.unit))) :
@@ -2105,9 +2105,9 @@ theorem res_pull_g (i j : (L.pull f).ι) {W : Y.Opens} (h : W ≤ (L.pull f).U i
   Units.ext (LB.resG_pull_g f i j h)
 
 /- English proof (translation)
-Establish `h₁ : ((lbZPow L n).pull f).U i ⊓ ((lbZPow L n).pull f).U j ≤ f ⁻¹ᵁ ((lbZPow L n).U (i PUnit.unit) ⊓ (lbZPow L n).U (j PUnit.unit))` using `inf_le_inf (LB.pull_U_le f i) (LB.pull_U_le f j)`. Establish `h₂` using `inf_le_inf (zpow_U_le (i PUnit.unit)) (zpow_U_le (j PUnit.unit))`. Establish `h₃` using `(inf_le_inf (pull_zpow_U_le f i) (pull_zpow_U_le f j)).trans (inf_le_inf (zpow_U_le _) (zpow_U_le _))`. Establish `e₁ : ((lbZPow L n).pull f).g i j = _` using `(Units.ext (resG_self _ _)).symm.trans (res_pull_g f i j le_rfl h₁)`. Establish `e₂ : (lbZPow L n).g (i PUnit.unit) (j PUnit.unit) = _` using `(Units.ext (resG_self _ _)).symm.trans (res_zpow_g _ _ le_rfl h₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e₁, e₂, map_zpow, map_zpow, Semi.LB.pullU_res, Semi.LB.res_res, res_zpow_g _ _ _ h₃]`. Conclude with `congrArg (· ^ n) (res_pull_g f _ _ h₃ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_zpow_g (i j : ((lbZPow L n).pull f).ι) :
     ((lbZPow L n).pull f).g i j = res (inf_le_inf (pull_zpow_U_le f i) (pull_zpow_U_le f j))
@@ -2137,13 +2137,13 @@ def projZIso (hL : L.IsLB) (G : Y.Modules) (n : ℤ) :
   (Scheme.Modules.pushforward f).mapIso (twistZPullIso f hL G n) ≪≫ projIso (lbZPow L n) f G
 
 /- English proof (translation)
-The claim follows from `le_pull_inf f V i`.
+A detailed English derivation is pending.
 -/
 theorem le_pidx_inf (V : X.Opens) (i : L.ι) :
     f ⁻¹ᵁ (V ⊓ L.U i) ≤ f ⁻¹ᵁ V ⊓ (L.pull f).U (pidx L f i) := le_pull_inf f V i
 
 /- English proof (translation)
-Establish `h₁ : f ⁻¹ᵁ (V ⊓ L.U i) ≤ f ⁻¹ᵁ (V ⊓ (lbZPow L n).U (zidx L n i))` using `f.preimage_mono (inf_le_inf_left V (le_zidx_U n i))`. Use `Eq.trans (b := resM G h₁ (resM G (le_pidx_inf f V (zidx L n i)) (resM G (inf_le_inf_left _ (pull_zpow_U_le f (pidx _ f (zidx L n i)))) (coord s (zidx _ n (pidx L f i)))))) rfl ?_` and prove the remaining obligations. Conclude with `((resM_resM _ _ _).trans (resM_resM _ _ _)).trans (resM_resM _ _ _).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem zcoord_projZIso_hom_app (hL : L.IsLB) (G : Y.Modules) {V : X.Opens}
     (s : Γ(twistZ G (L.pull f) n, f ⁻¹ᵁ V)) (i : L.ι) :
@@ -2157,7 +2157,7 @@ theorem zcoord_projZIso_hom_app (hL : L.IsLB) (G : Y.Modules) {V : X.Opens}
   exact ((resM_resM _ _ _).trans (resM_resM _ _ _)).trans (resM_resM _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `zhom_ext fun V (s : Γ(twistZ G (L.pull f) n, f ⁻¹ᵁ V)) i => by refine (zcoord_projZIso_hom_app f hL G' ((map (lbZPow (L.pull f) n) φ).app _ s) i).trans ?_ refine Eq.trans ?_ (zcoord_map_app ((Scheme.Modules.pushforward f).map φ) ((projZIso f hL G n).hom.app V s) i).symm rw [zcoor …`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem projZIso_naturality (hL : L.IsLB) {G G' : Y.Modules} (φ : G ⟶ G') (n : ℤ) :
     (Scheme.Modules.pushforward f).map (map (lbZPow (L.pull f) n) φ) ≫ (projZIso f hL G' n).hom =
@@ -2184,14 +2184,14 @@ def zpull (σ : LB.Sec (lbZPow L m)) : LB.Sec (lbZPow (L.pull f) m) :=
     exact e
 
 /- English proof (translation)
-The claim follows from `zfun_zmkGlobal _ _ j`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zfun_zpull (σ : LB.Sec (lbZPow L m)) (j : (L.pull f).ι) :
     zfun (zpull f σ) j = (f.appLE _ _ (LB.pull_U_le f j)).hom (zfun σ (j PUnit.unit)) :=
   zfun_zmkGlobal _ _ j
 
 /- English proof (translation)
-The claim follows from `zhom_ext fun V (s : Γ(twistZ G (L.pull f) n, f ⁻¹ᵁ V)) i => by refine (zcoord_projZIso_hom_app f hL G ((mulSecOfEq G (zpull f σ) h).app _ s) i).trans ?_ refine Eq.trans ?_ (zcoord_mulSecOfEq_app σ h ((projZIso f hL G n).hom.app V s) i).symm have e : (f.app (V ⊓ L.U i)).hom (resG …`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem projZIso_mulSecOfEq (hL : L.IsLB) (G : Y.Modules) (σ : LB.Sec (lbZPow L m))
     (h : n + m = k) :
@@ -2218,7 +2218,7 @@ def pullbackZIso (hL : L.IsLB) (n : ℤ) : (Scheme.Modules.pullback f).obj (twis
 end PowPushPull
 
 /- English proof (translation)
-The claim follows from `coord_mem s true false`.
+A detailed English derivation is pending.
 -/
 example {U₀ U₁ : X.Opens} (u : Γ(X, U₀ ⊓ U₁)ˣ) (V : X.Opens)
     (s : Γ(twist F (LB.twoChart U₀ U₁ u), V)) :
@@ -2228,7 +2228,7 @@ example {U₀ U₁ : X.Opens} (u : Γ(X, U₀ ⊓ U₁)ˣ) (V : X.Opens)
   coord_mem s true false
 
 /- English proof (translation)
-Establish `e : resG X (le_inf le_rfl le_rfl : (⊤ : X.Opens) ≤ ⊤ ⊓ ⊤) (-1) = -1` using `(map_neg (resG X _) 1).trans (congrArg Neg.neg (map_one _))`. Use `(chartEquiv_change (LB.twoChart_isLB (sup_idem ⊤) (-1)) true false (V := ⊤) le_rfl le_rfl _).trans ?_` and prove the remaining obligations. Conclude with `(congrArg₂ (fun (a : Γ(X, ⊤)) (s : Γ(F, ⊤)) => a • s) e (LinearEquiv.apply_symm_apply _ t)).trans (neg_one_smul _ t)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 example (t : Γ(F, ⊤)) :
     chartEquiv (LB.twoChart_isLB (sup_idem ⊤) (-1)) true (V := ⊤) le_rfl
@@ -2241,7 +2241,7 @@ example (t : Γ(F, ⊤)) :
     (LinearEquiv.apply_symm_apply _ t)).trans (neg_one_smul _ t)
 
 /- English proof (translation)
-Establish `e : res (le_inf le_rfl le_rfl : (⊤ : X.Opens) ≤ ⊤ ⊓ ⊤) (-1) = -1` using `Units.ext ((map_neg (resG X _) 1).trans (congrArg Neg.neg (map_one _)))`. Establish `e' : res (le_inf le_rfl le_rfl : (⊤ : X.Opens) ≤ ⊤ ⊓ ⊤) (-1) ^ (2 : ℤ) = 1`. Rewrite using `[e, zpow_two, neg_mul_neg, one_mul]`. Use `(zchartEquiv_change (LB.twoChart_isLB (sup_idem ⊤) (-1)) true false (V := ⊤) le_rfl le_rfl s).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (fun a : Γ(X, ⊤)ˣ => (a : Γ(X, ⊤)) • zchartEquiv (LB.twoChart_isLB (sup_idem ⊤) (-1)) 2 false (V := ⊤) le_rfl s) e').trans (one_smul _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 example (s : Γ(twistZ F (LB.twoChart (X := X) ⊤ ⊤ (-1)) 2, ⊤)) :
     zchartEquiv (LB.twoChart_isLB (sup_idem ⊤) (-1)) 2 true (V := ⊤) le_rfl s =
@@ -2257,13 +2257,13 @@ example (s : Γ(twistZ F (LB.twoChart (X := X) ⊤ ⊤ (-1)) 2, ⊤)) :
     (one_smul _ _)
 
 /- English proof (translation)
-The claim follows from `(ConcreteCategory.bijective_of_isIso ((trivIso F).hom.app ⊤)).1.nontrivial`.
+A detailed English derivation is pending.
 -/
 example [Nontrivial Γ(F, ⊤)] : Nontrivial Γ(twist F (LB.triv X), ⊤) :=
   (ConcreteCategory.bijective_of_isIso ((trivIso F).hom.app ⊤)).1.nontrivial
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isQuasicoherent_twist_iff (LB.twoChart_isLB h u)).2 (LB.isQuasicoherent_toMod (LB.twoChart_isLB h u)), (isFiniteType_twist_iff (LB.twoChart_isLB h u)).2 (LB.isFiniteType_toMod (LB.twoChart_isLB h u))⟩`.
+Supply the required witnesses or components.
 -/
 example {U₀ U₁ : X.Opens} (h : U₀ ⊔ U₁ = ⊤) (u : Γ(X, U₀ ⊓ U₁)ˣ) :
     (twist (toMod (LB.twoChart U₀ U₁ u)) (LB.twoChart U₀ U₁ u)).IsQuasicoherent ∧

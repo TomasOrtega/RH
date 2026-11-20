@@ -12,21 +12,21 @@ namespace PositivityTheory.SiegelWeilFormula.Act.CL
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hone : incM F (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hPQ : incM F d.b.1 * incM F (d.b⁻¹).1 = 1`. Rewrite using `[← PositivityTheory.SiegelWeilFormula.kunf.incM_mul', Units.mul_inv, hone]`. Establish `hQP : incM F (d.b⁻¹).1 * incM F d.b.1 = 1`. Rewrite using `[← PositivityTheory.SiegelWeilFormula.kunf.incM_mul', Units.inv_mul, hone]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM'M : ∀ c, M' c * M c = 1` using `fun c => by first`. Consider the case `exact mul_eq_one_comm.mp (h c)`. Consider the case `exact Matrix.mul_eq_one_comm.mp (h c)`. Consider the case `exact Matrix.mul_eq_one_symm (h c)`. Set `N : X → Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)` to `fun c => incM F d.b.1 * M c * incM F (d.b⁻¹).1`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Set `N' : X → Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)` to `fun c => incM F d.b.1 * M' c * incM F (d.b⁻¹).1`. Establish `hNN' : ∀ c, N c * N' c = 1`. Introduce `c`. Simplify using `only [N, N', Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incM F (d.b⁻¹).1) (incM F d.b.1), hQP, Matrix.one_mul, ← Matrix.mul_assoc (M c) (M' c), h c, Matrix.one_mul, hPQ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hN'N : ∀ c, N' c * N c = 1`. Introduce `c`. Simplify using `only [N, N', Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incM F (d.b⁻¹).1) (incM F d.b.1), hQP, Matrix.one_mul, ← Matrix.mul_assoc (M' c) (M c), hM'M c, Matrix.one_mul, hPQ]`. Set `u : X → GL (Fin d.n ⊕ Fin d.n) (AE F E)` to `fun c => ⟨N c, N' c, hNN' c, hN'N c⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `mem : ∀ c, u c ∈ UG (cA σ) (dbl (incM F d.Y.J))`. Introduce `c`. Take `⟨x, hx⟩` from `PositivityTheory.SiegelWeilFormula.kunf.exists_of_frame hε (M c) (M' c) (h c) (hu c)`. Establish `hx' : x.1.1 = N c` using `by show x.1.1 = incM F d.b.1 * M c * incM F (d.b⁻¹).1`. Rewrite using `[← hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show x.1.1 = incM F d.b.1 * (incM F (d.b⁻¹).1 * x.1.1 * incM F d.b.1) * incM F (d.b⁻¹).1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hPQ, Matrix.mul_one, ← Matrix.mul_assoc, hPQ, Matrix.one_mul]`. Establish `e : u c = x.1` using `Units.ext hx'.symm`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `x.2`. Use `⟨fun c => ⟨u c, mem c⟩, ?_, ?_⟩` and prove the remaining obligations. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(continuous_const.matrix_mul hM).matrix_mul continuous_const`. Conclude with `(continuous_const.matrix_mul hM').matrix_mul continuous_const`. Introduce `c show incM F (d.b⁻¹).1 * N c * incM F d.b.1 = M c`. Simplify using `only [N, Matrix.mul_assoc]`. Rewrite using `[hQP, Matrix.mul_one, ← Matrix.mul_assoc, hQP, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptEx' (d : SD σ) {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0)
     {X : Type} [TopologicalSpace X] (M M' : X → Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E))

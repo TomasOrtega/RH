@@ -18,47 +18,43 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.GoodPlace
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S _ hgg hG hD`. Establish `hvth : S.vth = 0` using `by simp [Frames.vth, hgg]`. Establish `ha : S.a = 0` using `by simp [Frames.a, hvth, hG]`. Establish `hvD : S.vD = 0` using `Finset.sum_eq_zero fun l _ => by split_ifs with h`. Conclude with `hD l h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `huniq` using `fun d Λ h => GlobalTheory.HL.UnimodTerm.term_unique L r k S d Λ h ha`. Establish `key : ∀ d, ((S.mass d fun _ => True) = 0 ∨ (S.mass d fun _ => True) = 1) ∧ ENNReal.ofReal (‖S.amp d fun _ => True‖ ^ 2) = S.mass d fun _ => True`. Introduce `d`. Distinguish the cases in `hex : ∃ Λ, S.IsTerm d Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `swap`. Establish `h0 : ∀ Λ, ¬ S.IsTerm d Λ` using `fun Λ h => hex ⟨Λ, h⟩`. Simplify using `[Frames.mass, Frames.amp, h0]`. Take `⟨Λ₀, h₀⟩` from `hex`. Take `⟨-, -, hDO, -⟩` from `GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ₀ h₀`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, hDu, -⟩` from `GlobalTheory.FrameBasic.main L r k S`. Take `⟨-, -, -, hvu⟩` from `GlobalTheory.UnramVal.vE_valuation L S.ϖ S.ϖ_irr`. Establish `hunit : ∀ l, S.D l ≠ 0 → S.D l ∈ L.O ∧ ∃ y ∈ L.O, S.D l * y = 1`. Introduce `l hl`. Use `⟨hDO l, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `GlobalTheory.UnramOrder.exists_norm L (hDO l)`. Establish `he0 : (e : F) ≠ 0` using `fun h0 => by`. Rewrite `he` using `[h0, map_zero]`. Apply `hl` to reduce the goal to its premises. Rewrite using `[← L.cj_cj (S.D l), (hDu l hl).mul_right_eq_zero.1 he, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu⟩` from `hvu _ he0`. Rewrite `hu` using `[← he, hD l hl, zpow_zero, one_mul]`. Use `⟨L.cj (S.D l) * algebraMap F E (((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F), L.O.mul_mem (GlobalTheory.UnramOrder.cj_mem L (hDO l)) ((GlobalTheory.UnramOrder.algebraMap_mem_iff L _).2 (Subtype.property _)), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, he, ← map_mul, hu, ← Subring.coe_mul, Units.mul_inv]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hC0, hw0, hall⟩` from `GlobalTheory.HL.GoodClass.one_class L r k S hgg hunit`. Use `set C0 := S.frameCls S.f S.f' with hC0def`. Establish `hact` using `GlobalTheory.FrameAct.stabiliser_acts_on_terms L r k S d`. Establish `hint : ∀ Λ, S.IsTerm d Λ → S.IsIntCls (S.Fr d Λ)` using `fun Λ h => (TermBasic.term_basic L r k S d Λ h).2.2.2.2.2.2.1`. Establish `hm : (S.mass d fun _ => True) = 0 ∨ (S.mass d fun _ => True) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Introduce a local definition for the expression.
 
-Rewrite using `[mass_eq_sumCls L r k S d _ (fun _ _ _ _ _ => trivial)]`. Unfold `Frames.sumCls`. Set `o₀ : MulAction.orbitRel.Quotient S.St (Set S.FrP)` to `Quotient.mk _ C0`. Rewrite using `[tsum_eq_single o₀ (fun o ho => if_neg fun hI => ho (by`. Take `⟨h, hh, e⟩` from `hall _ hI`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Quotient.out_eq o]`. Conclude with `Quotient.sound ⟨⟨h, hh⟩, e.symm⟩))]`. Use `split_ifs with hI`. Use `swap`. Conclude with `Or.inl rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨h, hh, e⟩` from `hall _ hI`. Establish `hw : S.wC o₀.out = 1`. Rewrite using `[e, ((volSt L r k S).2 C0 hC0.1).2.2.2 h hh, hw0]`. Rewrite using `[hw, ENNReal.ofReal_one, one_mul]`. Establish `hs : ({Λ | S.IsTerm d Λ ∧ True ∧ S.Fr d Λ = o₀.out} : Set (Submodule L.O S.V)).Subsingleton` using `fun Λ hΛ Λ' hΛ' => (huniq d Λ' hΛ'.1).2 Λ hΛ.1 (hΛ.2.2.trans hΛ'.2.2.symm)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `Frames.nT`. Use `beta_reduce`. Break down `hs.eq_empty_or_singleton with h1 | ⟨x, h1⟩` into its components or cases. Use `left`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Use `right`. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Use `⟨hm, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `o₁ : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V)` to `Quotient.mk _ Λ₀`. Establish `hone : ∀ o : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V), o ≠ o₁ → ¬ (S.IsTerm d o.out ∧ True)`. Introduce `o ho hT`. Apply `ho` to reduce the goal to its premises. Take `⟨h, hh, e⟩` from `hall _ (hint _ hT.1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h', hh', e'⟩` from `hall _ (hint _ h₀)`. Establish `hmem : h * h'⁻¹ ∈ S.St` using `S.St.mul_mem hh (S.St.inv_mem hh')`. Establish `hA` using `hact Λ₀ h₀ _ hmem`. Establish `e2 : (h * h'⁻¹) • Λ₀ = o.out` using `(huniq d _ hT.1).2 _ hA.1 (by`. Rewrite using `[hA.2.2.2.2.1, e', e, smul_smul, inv_mul_cancel_right])`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Quotient.out_eq o]`. Conclude with `Quotient.sound ⟨⟨_, hmem⟩, e2⟩`. Establish `e1 : (S.mass d fun _ => True) = if S.IsTerm d o₁.out ∧ True then ENNReal.ofReal (S.mu o₁.out) else 0`. Unfold `Frames.mass`. Rewrite using `[tsum_eq_single o₁]`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Reduce the equality to equality of the corresponding arguments. Conclude with `fun o ho => if_neg (hone o ho)`. Establish `e2 : (S.amp d fun _ => True) = if S.IsTerm d o₁.out ∧ True then (S.mu o₁.out : ℂ) * S.om d o₁.out else 0`. Unfold `Frames.amp`. Rewrite using `[tsum_eq_single o₁]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Reduce the equality to equality of the corresponding arguments. Conclude with `fun o ho => if_neg (hone o ho)`. Rewrite `hm`, the goal using `[e1]`. Rewrite using `[e2]`. Distinguish the cases in `hT : S.IsTerm d o₁.out ∧ True`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `swap`. Simplify using `only [if_neg hT]`. Simplify using the standard rewrite rules. Simplify using `only [if_pos hT] at hm ⊢`. Establish `hom : ‖S.om d o₁.out‖ = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨p, hp⟩` from `hT.1`. Conclude with `(WitIndep.witness_independence L r k S d _ _ _ hp).2.2.2.2`. Establish `hmu : 0 ≤ S.mu o₁.out` using `div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)`. Rewrite using `[norm_mul, hom, mul_one, Complex.norm_real, Real.norm_of_nonneg hmu]`. Break down `hm with h | h` into its components or cases.
-
-Rewrite using `[le_antisymm (ENNReal.ofReal_eq_zero.1 h) hmu]`. Simplify using the standard rewrite rules. Rewrite using `[ENNReal.ofReal_eq_one.1 h]`. Simplify using the standard rewrite rules. Use `⟨fun d Λ h => (huniq d Λ h).1, by simp [Frames.Hp, hvth, ha, hvD], ?_, fun d => (key d).1⟩` and prove the remaining obligations.
-
-Unfold `Frames.ampSq Frames.nn`. Use `congr 1`. Use function extensionality and compare the values at `d`. Conclude with `(key d).2`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem equality : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 4 * r + 7 ≤ k → S.gg = false → vE L S.ϖ S.G = 0 → (∀ l, S.D l ≠ 0 → vE L S.ϖ (S.D l * L.cj (S.D l)) = 0) → (∀ d Λ, S.IsTerm d Λ → S.BBzero d Λ) ∧ S.Hp = 1 ∧ (S.ampSq fun _ _ => True) = S.nn ∧ ∀ d, (S.mass d fun _ => True) = 0 ∨ (S.mass d fun _ => True) = 1 := by
   intro F _ _ _ _ _ E _ _ _ L r k S _ hgg hG hD

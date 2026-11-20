@@ -11,11 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PlugPt
 
 /- English proof (translation)
-Introduce `hR hL 𝒮 ν Q hC`. Use `RowE.of_all ?_` and prove the remaining obligations. Introduce `κ K β c b _ hq hl`. Establish `hray : RayRec β.D β.O.ex.nch` using `GlobalTheory.T.rayClassFieldsInCoefficientField_constructedPoint K β hq.2`. Take `⟨p, b', ⟨kap, lam, err, hs⟩, heq⟩` from `hl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `F : (Σ (D : D7) (O : Obj D), BdPt D O c) → Prop` to `fun x => RayRec x.1 x.2.1.ex.nch → TiesB x.1 x.2.1 c x.2.2`. Establish `hp : F ⟨p.w.D p.Z, p.O, b'⟩`. Introduce `hr`. Establish `hu` using `GlobalTheory.T.seriesUpdate_preserves_parameterFreeConditions_rayFields _ _ (sideW ν p) p.O.ex.errX p.O.ex.xd kap lam err`. Use `show (sidePt b').Ties p.O.ex.errX p.O.ex.xd ∧ (sidePt b').Rays`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Conclude with `⟨hu.1 (GlobalTheory.T.side_weight_compatible_ray_field hR hL 𝒮 ν hC K p), hu.2 (GlobalTheory.T.side_weight_rays_of_ray_rec hL 𝒮 ν K p hr)⟩`. Establish `hb : F ⟨β.D, β.O, b⟩` using `(congrArg F heq).mpr hp`. Conclude with `hb hray`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rowE_tiesB : GlobalTheory.NT.RayField → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (𝒮 : Slots) (ν : NRead hL 𝒮) (Q : V4.Slot),
     CoreSlot 𝒮 → RowE (sAnd Q RayPosition) (linkOf (pinPt ν)) fun _ => TiesB := by

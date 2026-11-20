@@ -18,9 +18,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.AlphaPair.DegenDir
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [cubN]`. Consider the case `succ k ih`. Establish `hk` using `h k`. Simplify using `only [cubN, Finset.prod_range_succ, _root_.one_mul, Units.val_mul, pow_succ w, Nat.cast_succ] at ih hk ⊢`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `((θ (x ^ k) x y).val * w.val) * ih + (1 + t * (B k - B 0 - k * β)) * hk + ((B k - B 0 - k * β) * (B (k + 1) - B k - β) * (f (k + 1)).val) * ht`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem telescope {Gp R : Type} [CommGroup Gp] [CommRing R] (θ : Gp → Gp → Gp → Rˣ) (x y : Gp) (f : ℕ → Rˣ) (w : Rˣ)
     (t : R) (ht : t ^ 2 = 0) (B : ℕ → R) (β : R)
@@ -35,7 +35,7 @@ theorem telescope {Gp R : Type} [CommGroup Gp] [CommRing R] (θ : Gp → Gp → 
       ((B k - B 0 - k * β) * (B (k + 1) - B k - β) * (f (k + 1)).val) * ht
 
 /- English proof (translation)
-Establish `e` using `telescope θ x y f w t ht B β h p`. Rewrite `e` using `[hp, hf, hB, sub_self, zero_mul, sub_zero, mul_zero, add_zero, _root_.one_mul, Units.val_inj, mul_right_comm]`. Conclude with `mul_eq_right.1 e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem telescope_eq_one {Gp R : Type} [CommGroup Gp] [CommRing R] (θ : Gp → Gp → Gp → Rˣ) (x y : Gp) (f : ℕ → Rˣ)
     (w : Rˣ) (t : R) (ht : t ^ 2 = 0) (B : ℕ → R) (β : R)
@@ -51,7 +51,7 @@ section Eval
 variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {d : ℕ}
 
 /- English proof (translation)
-Take `⟨i, j⟩` from `q`. Use `fin_cases i`. Use `exacts [ha j, hb j]`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pair_mem {I : Ideal A} {a b : Fin d → A} (ha : ∀ j, a j ∈ I) (hb : ∀ j, b j ∈ I) (q : Fin 2 × Fin d) :
     ![a, b] q.1 q.2 ∈ I := by
@@ -60,7 +60,7 @@ theorem pair_mem {I : Ideal A} {a b : Fin d → A} (ha : ∀ j, a j ∈ I) (hb :
   exacts [ha j, hb j]
 
 /- English proof (translation)
-Use `evBasic_nEval_sub_coeff_mem (F j) (fun q : Fin 2 × Fin d => ![a, b] q.1 q.2) (fun q => hI _ (pair_mem ha hb q))` as an intermediate fact. Rewrite `this` using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hF, map_zero, sub_zero]`. Conclude with `(Ideal.span_le.2 (by rintro _ ⟨q, rfl⟩; exact pair_mem ha hb q) : Ideal.span _ ≤ I) this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formalAdd_mem {F : Fin d → PS R 2 d} (hF : ∀ j, MvPowerSeries.constantCoeff (F j) = 0) {I : Ideal A}
     (hI : ∀ x ∈ I, IsNilpotent x) {a b : Fin d → A} (ha : ∀ j, a j ∈ I) (hb : ∀ j, b j ∈ I) (j : Fin d) :
@@ -79,7 +79,7 @@ Both sides reduce to the same expression.
 theorem mult_succ (F : Fin d → PS R 2 d) (a : Fin d → A) (i : ℕ) : mult F a (i + 1) = addP F (mult F a i) a := rfl
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => exact fun _ => I.zero_mem`. Consider the case `succ i ih => exact formalAdd_mem hF hI ih ha`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mult_mem {F : Fin d → PS R 2 d} (hF : ∀ j, MvPowerSeries.constantCoeff (F j) = 0) {I : Ideal A}
     (hI : ∀ x ∈ I, IsNilpotent x) {a : Fin d → A} (ha : ∀ j, a j ∈ I) (i : ℕ) : ∀ j, mult F a i j ∈ I := by
@@ -88,16 +88,16 @@ theorem mult_mem {F : Fin d → PS R 2 d} (hF : ∀ j, MvPowerSeries.constantCoe
   | succ i ih => exact formalAdd_mem hF hI ih ha
 
 /- English proof (translation)
-The claim follows from `ChartCompare.isNilpotent_nEval (σ := Unit) _ (h j) _ fun _ => ha`.
+A detailed English derivation is pending.
 -/
 theorem cv_nil {ga : Fin d → PowerSeries R} (h : ∀ j, PowerSeries.constantCoeff (ga j) = 0) {a : A}
     (ha : IsNilpotent a) (j : Fin d) : IsNilpotent (cv ga a j) :=
   ChartCompare.isNilpotent_nEval (σ := Unit) _ (h j) _ fun _ => ha
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `hn : IsNilpotent e` using `⟨2, he⟩`. Establish `h0` using `evBasic_nEval_sub_coeff_mem (ga j : MvPowerSeries Unit R) (fun _ => (0 : A)) fun _ => IsNilpotent.zero`. Establish `h0' : nEval (σ` using `Unit) (ga j) (fun _ => (0 : A)) = 0 := by`. Rewrite `h0` using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, show MvPowerSeries.constantCoeff (ga j) = 0 from h j, map_zero, sub_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Ideal.span_le.2 (by rintro _ ⟨q, rfl⟩; simp) : Ideal.span _ ≤ (⊥ : Ideal A)) h0`. Establish `h1` using `ChartCompare.nEval_sub_mem (σ := Unit) (ga j) (fun _ => e) (fun _ => 0) (fun _ => hn) (fun _ => IsNilpotent.zero) (Ideal.span {e}) (Ideal.span {e}) (fun _ => Ideal.subset_span rfl) (fun _ => Ideal.zero_mem _) (fun _ => by simp)`. Rewrite `h1` using `[Ideal.span_singleton_mul_span_singleton, ← pow_two, he, Ideal.span_singleton_eq_bot.2 rfl, Ideal.mem_bot, h0', sub_zero, sub_eq_zero, Fintype.sum_unique, sub_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cv_sq_zero {ga : Fin d → PowerSeries R} (h : ∀ j, PowerSeries.constantCoeff (ga j) = 0) {e : A}
     (he : e ^ 2 = 0) : cv ga e = fun j => PowerSeries.coeff 1 (ga j) • e := by
@@ -116,9 +116,9 @@ theorem cv_sq_zero {ga : Fin d → PowerSeries R} (h : ∀ j, PowerSeries.consta
   exact h1
 
 /- English proof (translation)
-Unfold `evP ev`. Rewrite using `[ChartCompare.nEval_subst _ (by rintro ⟨i, j⟩; fin_cases i; exact hv j) _ _ h]`. Use `congr 1`. Use function extensionality and compare the values at `⟨i, j⟩`. Use `fin_cases i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem evalPoints_eval_one {a b : Fin d → A} (h : ∀ q : Fin 2 × Fin d, IsNilpotent (![a, b] q.1 q.2)) (v : Fin d → PS R 2 d)
     (hv : ∀ j, MvPowerSeries.constantCoeff (v j) = 0) (f : PS R 1 d) :
@@ -131,11 +131,11 @@ theorem evalPoints_eval_one {a b : Fin d → A} (h : ∀ q : Fin 2 × Fin d, IsN
   rfl
 
 /- English proof (translation)
-Establish `hX : (fun q : Fin 2 × Fin d => (![pt R d 0, pt R d 1] : Fin 2 → Fin d → PS R 2 d) q.1 q.2) = MvPowerSeries.X`. Use function extensionality and compare the values at `⟨i, j⟩`. Apply the tactic sequence `fin_cases i <;> rfl`. Establish `hA : addOf F (pt R d 0) (pt R d 1) = F`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `addOf ev`. Rewrite using `[hX, MvPowerSeries.subst_self]`. Both sides reduce to the same expression. Establish `hp : ∀ i : Fin 2, (fun j => evP ![a, b] (pt R d i j)) = ![a, b] i` using `fun i =>`. Use function extensionality and compare the values at `fun j => ChartCompare.nEval_X _ h (i, j)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hs : ∀ f g : PS R 2 d, evP ![a, b] (f - g) = evP ![a, b] f - evP ![a, b] g` using `nEval_sub h`. Rewrite using `[hs, hs, hA, evalPoints_eval_one h _ hF, evalPoints_eval_one h _ (fun j => by simp [pt]), evalPoints_eval_one h _ (fun j => by simp [pt]), hp, hp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalPoints_coboundary {F : Fin d → PS R 2 d} (hF : ∀ j, MvPowerSeries.constantCoeff (F j) = 0) {a b : Fin d → A}
     (h : ∀ q : Fin 2 × Fin d, IsNilpotent (![a, b] q.1 q.2)) (f : PS R 1 d) :
@@ -165,7 +165,7 @@ variable {S : Scheme.{0}} {Ω : Type} [Field Ω] {s : Sp Ω ⟶ S} {G : Over S} 
   {F : Fin d → PS Ω 2 d} {P : PtFam s G d}
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => exact (hL.2.1 A).trans (pow_zero _).symm`. Consider the case `succ i ih`. Rewrite using `[mult_succ, hL.2.2 A _ _ (mult_mem (I := nilradical A) hF (fun _ h => h) ha i) ha, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_mult (hF : ∀ j, MvPowerSeries.constantCoeff (F j) = 0) (hL : IsPtLaw s G F P) {A : Type} [CommRing A]
     [Algebra Ω A] {a : Fin d → A} (ha : ∀ j, IsNilpotent (a j)) (i : ℕ) : P A (mult F a i) = P A a ^ i := by
@@ -175,17 +175,15 @@ theorem pt_mult (hF : ∀ j, MvPowerSeries.constantCoeff (F j) = 0) (hL : IsPtLa
     rw [mult_succ, hL.2.2 A _ _ (mult_mem (I := nilradical A) hF (fun _ h => h) ha i) ha, ih, pow_succ]
 
 /- English proof (translation)
-Use `⟨hx, hy, fun z J hJ => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hC A _ hπ z J hJ`. Use `set a : Fin d → A := fun j => u j • e with hadef`. Establish `hker : ∀ x : A, IsNilpotent x → x ∈ RingHom.ker π` using `fun x hx => (hx.map π).eq_zero`. Establish `hen : ∀ x ∈ Ideal.span {e}, IsNilpotent x` using `fun x hx => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Conclude with `⟨2, by rw [mul_pow, he, mul_zero]⟩`. Establish `hae : ∀ j, a j ∈ Ideal.span {e}` using `fun j => by`. Simplify using `only [hadef, Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span rfl)`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : ∀ j, IsNilpotent (a j)` using `fun j => hen _ (hae j)`. Establish `hn : ∀ {v : Fin d → A}, (∀ j, IsNilpotent (v j)) → ∀ i j, IsNilpotent (mult F v i j)` using `fun hv i => mult_mem (I := nilradical A) hF (fun _ h => h) hv i`. Establish `h0 : ∀ {v : Fin d → A}, (∀ j, IsNilpotent (v j)) → P A v ^ p = 1 → mult F v p = mult F v 0` using `fun hv h => (hU A π hπ).1 _ (hn hv p) ((pt_mult hF hL hv p).trans h)`. Set `ρ : A →+* (overAt s A).left.presheaf.stalk z` to `(((overAt s A).left.presheaf.germ ⊤ z trivial).hom).comp (toΓ A)`. Establish `hρ : ∀ r : A, gs (𝟙 (overAt s A).left) z ⊤ (toΓ A r) = ρ r` using `fun r => gs_eq _ z ⊤ trivial _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : ((p : ℕ) : (overAt s A).left.presheaf.stalk z) = 0`. Rewrite using `[← map_natCast (ρ.comp (algebraMap Ω A)), CharP.cast_eq_zero, map_zero]`. Establish `e₁` using `telescope_eq_one (cubV c z J) (P A a) (P A b) (fun i => w (mult F a i) b) (w a b) 0 (by simp) 0 0 (fun i => by`. Use `(hw (mult F a i) a b (fun j => hker _ (hn ha i j)) (fun j => hker _ (ha j)) (fun j => hker _ (hb j))).1` as an intermediate fact. Rewrite `this` using `[pt_mult hF hL ha, T.evalPowerSeries_eq_one_of_two_axes Ω d ph1 h₁ h₂ A e he _ _ _ (mult_mem hF hen hae i) hae hb, hρ, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zero_mul, add_zero]`. Conclude with `this) p hp (by rw [h0 ha hx]) rfl`. Establish `e₂` using `telescope_eq_one (cubV c z J) (P A b) (P A a) (fun i => w a (mult F b i)) (w a b) (ρ e) (by rw [← map_pow, he, map_zero]) (fun i => ρ (evP ![mult F b i] f)) (ρ (evP ![b] f)) (fun i => by`. Use `(hw a (mult F b i) b (fun j => hker _ (ha j)) (fun j => hker _ (hn hb i j)) (fun j => hker _ (hb j))).2` as an intermediate fact. Rewrite `this` using `[pt_mult hF hL hb, evalPoints_first_order_of_eq_one Ω d ph2 h₃ A e he u _ _ (hn hb i) hb, hρ, hf, evalPoints_coboundary hF (pair_mem (I := nilradical A) (hn hb i) hb), map_add, map_one, map_mul, map_sub, map_sub]`.
-
-Conclude with `this) p hp (by rw [h0 hb hy]) (by rw [h0 hb hy])`. Rewrite using `[map_one, _root_.one_mul]`. Conclude with `mul_right_cancel (e₁.trans e₂.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cubWeil_one [IsCommMonObj G] {L : RigLB G} {c : CubicalStr G L} {p : ℕ} [CharP Ω p] {ph1 ph2 : PS Ω 3 d}
     (hF : ∀ j, MvPowerSeries.constantCoeff (F j) = 0)
@@ -239,17 +237,15 @@ theorem cubWeil_one [IsCommMonObj G] {L : RigLB G} {c : CubicalStr G L} {p : ℕ
 end Main
 
 /- English proof (translation)
-Introduce `Ω _ p _ _ S s G _ _ L c d F ph1 ph2 P hF h₁ h₂ h₃ hL hU hC ⟨ga, hc, ⟨i, hi⟩, hadd, f, hf⟩ hN`. Establish `hp : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `hα : IsAlpha p s G fun A _ _ a => P A (cv ga a)`. Use `⟨fun A B _ _ _ _ φ a ha => ?_, fun A _ _ a a' ha ha' => ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hL.1 A B φ _ (cv_nil hc ⟨p, ha⟩)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `(evBasic_map_nEval φ (ga j : MvPowerSeries Unit Ω) _ fun _ => ⟨p, ha⟩).symm`. Use `beta_reduce`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← formalAdd_cv_of_addMod Ω p d F ga hc hadd A a a' ha ha', hL.2.2 A _ _ (cv_nil hc ⟨p, ha⟩) (cv_nil hc ⟨p, ha'⟩)]`. Establish `h` using `hN _ hα fun A _ _ π hπ e he z hz hzp => by`. Take `⟨b, hb, rfl⟩` from `(hU A π hπ).2 z hz`. Establish `hx` using `hα.pow_eq_one (by omega) (pow_eq_zero_of_le hp he)`. Use `beta_reduce at hx ⊢`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx`, the goal using `[cv_sq_zero hc he]`. Conclude with `cubWeil_one hF h₁ h₂ h₃ hL hU hC hf π hπ he hb hx hzp`. Establish `he : (DualNumber.eps : DualNumber Ω) ^ 2 = 0` using `by rw [pow_two, DualNumber.eps_mul_eps]`. Establish `hk : IsNilpotent (RingHom.ker (TrivSqZeroExt.fstHom Ω Ω Ω))`. Use `⟨2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Establish `hx' : x.fst = 0` using `hx`. Establish `hy' : y.fst = 0` using `hy`. Rewrite using `[Ideal.mem_bot]`.
-
-Apply the tactic sequence `ext <;> simp [hx', hy']`. Establish `h0` using `(hU (DualNumber Ω) _ hk).1 _ (cv_nil hc ⟨2, he⟩) h`. Rewrite `h0` using `[cv_sq_zero hc he]`. Conclude with `hi (by simpa using congrArg TrivSqZeroExt.snd (congrFun h0 i))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_nonDeg_of_degenerate : ∀ (Ω : Type) [Field Ω] (p : ℕ) [Fact p.Prime] [CharP Ω p] (S : Scheme.{0}) (s : Sp Ω ⟶ S) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (c : CubicalStr G L) (d : ℕ) (F : Fin d → PS Ω 2 d) (ph1 ph2 : PS Ω 3 d) (P : PtFam s G d), (∀ j, MvPowerSeries.constantCoeff (F j) = 0) → ev (n := 2) ![0, pt Ω d 0, pt Ω d 1] ph1 = 1 → ev (n := 2) ![pt Ω d 0, 0, pt Ω d 1] ph1 = 1 → ev (n := 2) ![0, pt Ω d 0, pt Ω d 1] ph2 = 1 → IsPtLaw s G F P → IsPtUniv s G P → IsPtCube s G c F ph1 ph2 P → Degenerate p F ph2 → ¬ NonDeg p s G c := by
   intro Ω _ p _ _ S s G _ _ L c d F ph1 ph2 P hF h₁ h₂ h₃ hL hU hC ⟨ga, hc, ⟨i, hi⟩, hadd, f, hf⟩ hN

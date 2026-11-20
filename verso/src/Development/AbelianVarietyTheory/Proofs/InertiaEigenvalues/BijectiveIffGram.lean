@@ -19,9 +19,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation (QuotC
 open GlobalTheory.IndefiniteRowSideFullHecke.GammaStableInverse GlobalTheory.IndefiniteRowSideFullHecke.WachLettersFreeness
 
 /- English proof (translation)
-Establish `h : LinearMap.toMatrix t t'.dualBasis b = Matrix.of fun i j => b (t j) (t' i)`. Use extensionality with `i j`. Simplify using `[LinearMap.toMatrix_apply]`. Rewrite using `[← h]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hb`. Conclude with `LinearEquiv.isUnit_det (LinearEquiv.ofBijective b hb) t t'.dualBasis`. Introduce `hb`. Conclude with `(LinearEquiv.ofIsUnitDet hb).bijective`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bijective_iff_gram {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R M'] {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -49,7 +49,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (E : EtTie W RA RW inclR φR gR πA)
 
 /- English proof (translation)
-Establish `h1 : Function.Injective Pr.flip` using `(injective_iff_map_eq_zero _).2 fun y hy => h.2.2.1 y fun x => LinearMap.congr_fun hy x`. Use `⟨h1, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).1 h1⟩` and prove the remaining obligations. Rewrite using `[← h.2.2.2.1]`. Conclude with `(Subspace.dual_finrank_eq (K := LL) (V := T.V)).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flip_bijective {T T' : LocLat G Qp LL O} {Pr : T.V →ₗ[LL] T'.V →ₗ[LL] LL}
     (h : IsDualLat T.L T'.L Pr) : Function.Bijective Pr.flip := by
@@ -60,9 +60,9 @@ theorem flip_bijective {T T' : LocLat G Qp LL O} {Pr : T.V →ₗ[LL] T'.V →�
   exact (Subspace.dual_finrank_eq (K := LL) (V := T.V)).symm
 
 /- English proof (translation)
-Set `ε` to `LinearEquiv.ofBijective Pr.flip (flip_bijective h)`. Use `hq _ T.ρ.dual _ T'.ρ ε.symm.toLinearMap ?_ ε.symm.surjective (hdu _ _ hT)` and prove the remaining obligations. Introduce `g f`. Take `⟨y, rfl⟩` from `ε.surjective f`. Rewrite using `[LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_eq]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `Pr (T.ρ g⁻¹ x) y = Pr x (T'.ρ g y)`. Rewrite using `[← h.1 g, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCrys_dual (hq : QuotCrys PD LL) (hdu : DualCrys PD LL) {T T' : LocLat G Qp LL O}
     (hT : IsCrys PD T.ρ) {Pr : T.V →ₗ[LL] T'.V →ₗ[LL] LL} (h : IsDualLat T.L T'.L Pr) :
@@ -77,15 +77,13 @@ theorem isCrys_dual (hq : QuotCrys PD LL) (hdu : DualCrys PD LL) {T T' : LocLat 
   rw [← h.1 g, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Establish `hO` using `IsFractionRing.injective O LL`. Use `choose f hf using fun (x : ↥T.L.T) (y : ↥T'.L.T) => (h.2.2.2.2 y).1 y.2 x x.2`. Set `β : ↥T.L.T →ₗ[O] ↥T'.L.T →ₗ[O] O` to `LinearMap.mk₂ O f (fun x x' y => hO (by rw [map_add, ← hf, ← hf, ← hf]; simp)) (fun c x y => hO (by`. Rewrite using `[smul_eq_mul, map_mul, ← hf, ← hf, Submodule.coe_smul, ← algebraMap_smul LL c]`. Simplify using `[Algebra.smul_def]))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun x y y' => hO (by rw [map_add, ← hf, ← hf, ← hf]; simp))`. Use the proof step `(fun c x y => hO (by`. Rewrite using `[smul_eq_mul, map_mul, ← hf, ← hf, Submodule.coe_smul, ← algebraMap_smul LL c]`. Simplify using `[Algebra.smul_def]))`. Establish `hβ : ∀ x y, β x y = f x y` using `fun _ _ => rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨β, hf, (injective_iff_map_eq_zero _).2 fun y hy => ?_, fun u => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `(flip_bijective h).1` to reduce the goal to its premises. Use `ext_lat T fun x => ?_` and prove the remaining obligations. Establish `h1 : β x y = 0` using `LinearMap.congr_fun hy x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearMap.flip_apply, hf, ← hβ, h1]`. Simplify using the standard rewrite rules. Take `⟨u', hu'⟩` from `exists_extend T (Algebra.linearMap O LL ∘ₗ u)`. Take `⟨y, hy⟩` from `(flip_bijective h).2 u'`. Establish `h1 : ∀ x : ↥T.L.T, Pr x y = algebraMap O LL (u x)` using `fun x => (LinearMap.congr_fun hy x).trans (hu' x)`.
-
-Use `⟨⟨y, (h.2.2.2.2 y).2 fun x hx => ⟨_, h1 ⟨x, hx⟩⟩⟩, LinearMap.ext fun x => hO ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.flip_apply, hβ, ← hf, h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intPair [IsFractionRing O LL] {T T' : LocLat G Qp LL O}
     {Pr : T.V →ₗ[LL] T'.V →ₗ[LL] LL} (h : IsDualLat T.L T'.L Pr) :
@@ -119,11 +117,11 @@ theorem exists_intPair [IsFractionRing O LL] {T T' : LocLat G Qp LL O}
     rw [LinearMap.flip_apply, hβ, ← hf, h1]
 
 /- English proof (translation)
-Take `⟨e⟩` from `exists_basis_DD E T`. Take `⟨e'⟩` from `exists_basis_DD E T'`. Take `⟨U, hU⟩` from `exists_frob_mat E hm hφ T e`. Take `⟨U', hU'⟩` from `exists_frob_mat E hm hφ T' e'`. Establish `hact : ∀ (g : G) (x : TW RW T) (y : TW RW T'), gR g (pairL RW β x y) = pairL RW β (TWact (gR g) T g x) (TWact (gR g) T' g y)` using `fun g x y => map_pairL RW β (gR g) (T.actT g) (T'.actT g) (hβ g) x y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfr : ∀ (x : TW RW T) (y : TW RW T'), φR (pairL RW β x y) = pairL RW β (TWmap φR T x) (TWmap φR T' y)` using `fun x y => map_pairL RW β φR LinearMap.id LinearMap.id (fun _ _ => rfl) x y`. Generalize the expression as in `pairL RW β = b at hact hfr ⊢`. Establish `key` using `hd (Fin (Module.finrank O ↥T.L.T) × Fin (Module.finrank O ↥T'.L.T)) (fun p q => U p.1 q.1 * U' p.2 q.2) (fun p => b (E.jD T (e p.1)) (E.jD T' (e' p.2))) (fun g hg p => by simp only [hact, jD_fixed E T g hg, jD_fixed E T' g hg]) (fun p => by`. Simplify using `only [hfr, map_mul, ← smul_eq_mul (α := RW) (_ * _)]`. Rewrite using `[← bil_expand b (fun b => E.ioE (U p.1 b)) (fun b => TWmap φR T (E.jD T (e b))) (fun b => E.ioE (U' p.2 b)) (fun b => TWmap φR T' (E.jD T' (e' b))), ← hU, ← hU'])`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `exists_descend E.ioE (E.jD T).toAddMonoidHom (E.jD T').toAddMonoidHom E.ioE.toRingHom.toAddMonoidHom (E.jD_smul T) (E.jD_smul T') (fun a x => map_mul E.ioE a x) (ioE_injective E) b e e' fun a c => key (a, c)`.
+A detailed English derivation is pending.
 -/
 theorem exists_pair (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRingHom ≠ ⊤)
     (hφ : Function.Surjective φR) (hd : Descends E) {T T' : LocLat G Qp LL O}
@@ -154,21 +152,19 @@ theorem exists_pair (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRing
     (ioE_injective E) b e e' fun a c => key (a, c)
 
 /- English proof (translation)
-Use `haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial`. Use `haveI := T.L.free`. Use `haveI : Module.Finite O ↥T.L.T := Module.Finite.iff_fg.2 T.L.fg`. Set `t` to `Module.finBasis O ↥T.L.T`. Set `t'` to `t.dualBasis.map (LinearEquiv.ofBijective β.flip hβ).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htt : ∀ i j, β (t j) (t' i) = if i = j then 1 else 0` using `fun i j => by`. Establish `: β.flip (t' i) = t.dualBasis i` using `(LinearEquiv.ofBijective β.flip hβ).apply_symm_apply _`. Rewrite using `[← LinearMap.flip_apply β, this, Module.Basis.dualBasis_apply_self]`. Simplify using `only [eq_comm]`. Establish `hr : Module.finrank O ↥T'.L.T = Module.finrank O ↥T.L.T`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.finrank_eq_card_basis t', Fintype.card_fin]`. Establish `h1 : Function.Bijective (pairL RW β)`. Rewrite using `[bijective_iff_gram _ (Algebra.TensorProduct.basis RW t) (Algebra.TensorProduct.basis RW t')]`. Establish `: (Matrix.of fun i j => pairL RW β (Algebra.TensorProduct.basis RW t j) (Algebra.TensorProduct.basis RW t' i)) = 1`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `[Algebra.TensorProduct.basis_apply, pairL_tmul, htt, Matrix.one_apply]`. Rewrite using `[this, Matrix.det_one]`. Conclude with `isUnit_one`. Take `⟨e⟩` from `exists_basis_DD E T`. Take `⟨e₁⟩` from `exists_basis_DD E T'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `e'` to `e₁.reindex (finCongr hr)`. Take `⟨c, hc⟩` from `exists_basis_jD E T e`. Take `⟨c', hc'⟩` from `exists_basis_jD E T' e'`. Rewrite `h1` using `[bijective_iff_gram _ c c']`. Establish `h2 : IsUnit (Matrix.of fun i j => b (e j) (e' i)).det`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hn`. Take `⟨m, hmax, hle⟩` from `exists_max_ideal_of_mem_nonunits hn`. Use `hm m hmax (Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ hle) ?_)` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `h1 using 2` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, hc, hc', ← hb]`. Both sides reduce to the same expression. Use `⟨(bijective_iff_gram b e e').2 h2, (bijective_iff_gram b.flip e' e).2 ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[← Matrix.det_transpose]`.
-
-Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_perfect (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRingHom ≠ ⊤)
     {T T' : LocLat G Qp LL O} (β : ↥T.L.T →ₗ[O] ↥T'.L.T →ₗ[O] O) (hβ : Function.Bijective β.flip)
@@ -216,7 +212,7 @@ theorem pair_perfect (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRin
   exact h2
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `W.EE_π.exists_right_inv`. Conclude with `⟨u • x, by rw [← algebraMap_smul W.EE letπ, smul_smul, hu, one_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isUnit_or_smul_pi (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (x : W.DD T) :
     ∃ y : W.DD T, x = (letπ : LetA O n) • y := by
@@ -224,57 +220,53 @@ theorem isUnit_or_smul_pi (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (x : 
   exact ⟨u • x, by rw [← algebraMap_smul W.EE letπ, smul_smul, hu, one_smul]⟩
 
 /- English proof (translation)
-Introduce `T T' hT Pr hPr`. Establish `hO` using `IsFractionRing.injective O LL`. Take `⟨β, hβ, hβb⟩` from `exists_intPair hPr`. Establish `hβg : ∀ g x y, β (T.actT g x) (T'.actT g y) = β x y` using `fun g x y => hO (by`. Rewrite using `[← hβ, ← hβ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hPr.1 g x y)`. Take `⟨b, hb⟩` from `exists_pair E hm hφ hd β hβg`. Take `⟨hb1, hb2⟩` from `pair_perfect E hm β hβb b hb`. Establish `hφb : ∀ x y, b (W.φD T x) (W.φD T' y) = W.φE (b x y)` using `fun x y => by`. Apply `ioE_injective E` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ioE_φE E hO, hb, hb, E.jD_φ, E.jD_φ]`. Conclude with `(map_pairL RW β φR LinearMap.id LinearMap.id (fun _ _ => rfl) _ _).symm`. Establish `hγb : ∀ (g : W.Gam) x y, b (W.γD T g x) (W.γD T' g y) = W.γE g (b x y)` using `fun g x y => by`. Take `⟨g, rfl⟩` from `W.resΓ_onto g`. Apply `ioE_injective E` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ioE_γE E hO, hb, hb, E.jD_act, E.jD_act]`. Conclude with `(map_pairL RW β (gR g) (T.actT g) (T'.actT g) (hβg g) _ _).symm`. Take `⟨⟨b₀, hb₀⟩, -⟩` from `hF T hT`. Take `⟨e, c, hec⟩` from `exists_bases hb₀`. Choose the witnesses or unpack the hypotheses as in `⟨e', hee⟩ : ∃ e' : Module.Basis (Fin (Module.finrank O ↥T.L.T)) W.EE (W.DD T'), ∀ x i, b x (e' i) = e.repr x i := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e.dualBasis.map (LinearEquiv.ofBijective b.flip hb2).symm, fun x i => ?_⟩` and prove the remaining obligations. Establish `: b.flip (e.dualBasis.map (LinearEquiv.ofBijective b.flip hb2).symm i) = e.dualBasis i` using `(LinearEquiv.ofBijective b.flip hb2).apply_symm_apply _`. Rewrite using `[← LinearMap.flip_apply b, this, Module.Basis.dualBasis_apply]`. Establish `hA₁ : ∀ (a : LetA O n) x y, b (a • x) y = algebraMap _ W.EE a * b x y` using `fun a x y => by`. Rewrite using `[← algebraMap_smul W.EE a x, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hA₂ : ∀ (a : LetA O n) x y, b x (a • y) = algebraMap _ W.EE a * b x y` using `fun a x y => by`. Rewrite using `[← algebraMap_smul W.EE a y, map_smul, smul_eq_mul]`. Set `δ₀ : Module.Dual (LetA O n) ↥(W.N T) →ₗ[LetA O n] W.DD T'` to `c.dualBasis.constr (LetA O n) e'`. Establish `hδe : ∀ i, δ₀ (c.dualBasis i) = e' i` using `fun i => Module.Basis.constr_basis _ _ _ _`. Establish `hinj : Function.Injective δ₀` using `c.dualBasis.injective_constr_of_linearIndependent (e'.linearIndependent.restrict_scalars (by simpa [Algebra.smul_def] using W.EE_inj))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsum : ∀ f, δ₀ f = ∑ i, f (c i) • e' i` using `fun f => by`. Simplify using `[δ₀, Module.Basis.constr_apply_fintype]`. Establish `hci : ∀ i y, e'.repr y i = b (c i) y` using `fun i y => by conv_rhs => rw [← e'.sum_repr y, ← hec]`. Simplify using `only [map_sum, map_smul, hee, e.repr_self, Finsupp.single_apply, smul_eq_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hδ : ∀ (x : ↥(W.N T)) f, b x (δ₀ f) = algebraMap _ W.EE (f x)` using `fun x f => by conv_lhs => rw [← c.sum_repr x] conv_rhs => rw [← c.sum_repr x]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum, LinearMap.sum_apply, hA₁, map_smul, smul_eq_mul, map_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hsum]`. Simplify using `[map_sum, hA₂, hee, ← hec, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hbas : ∀ y, (∀ i, ∃ a : LetA O n, b (c i) y = algebraMap _ W.EE a) → y ∈ LinearMap.range δ₀`. Introduce `y hy`. Use `choose a ha using hy`. Rewrite using `[← e'.sum_repr y]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hci, ha, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ ⟨_, hδe i⟩`. Establish `hiff : ∀ y, y ∈ LinearMap.range δ₀ ↔ ∀ x ∈ W.N T, ∃ a : LetA O n, b x y = algebraMap _ W.EE a` using `fun y => ⟨by rintro ⟨f, rfl⟩ x hx; exact ⟨_, hδ ⟨x, hx⟩ f⟩, fun h => hbas y fun i => h _ (c i).2⟩`. Establish `hγinv : ∀ (g : W.Gam) x, W.γD T g (W.γD T g⁻¹ x) = x` using `fun g x => by`. Rewrite using `[← W.γD_mul, mul_inv_cancel, W.γD_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hγmem : ∀ (g : W.Gam), ∀ z ∈ LinearMap.range δ₀, W.γD T' g z ∈ LinearMap.range δ₀`. Introduce `g z hz`. Rewrite `hz`, the goal using `[hiff]`. Introduce `x hx`. Take `⟨a, ha⟩` from `hz _ (W.N_Γ T g⁻¹ x hx)`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨_, by rw [← hγinv g x, hγb, ha, W.γE_ext]⟩`. Establish `hN : LinearMap.range δ₀ = W.N T'`. Use `hU T' (isCrys_dual hq hdu hT hPr) _ ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `⟨_, c.dualBasis.map (LinearEquiv.ofInjective δ₀ hinj), e', fun p => (hδe p).symm⟩`. Apply `Set.Subset.antisymm` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hγmem W.gam x hx`. Introduce `x hx`. Use `⟨W.γD T' W.gam⁻¹ x, hγmem _ x hx, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `W.γD T' W.gam (W.γD T' W.gam⁻¹ x) = x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← W.γD_mul, mul_inv_cancel, W.γD_one]`. Introduce `y hy`. Take `⟨y', hy'⟩` from `isUnit_or_smul_pi W T' (W.γ T' y - y)`. Use `⟨y', (hiff y').2 fun x hx => ?_, hy'⟩` and prove the remaining obligations. Rewrite `hy` using `[hiff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x', hx', h1⟩` from `W.N_π T W.gam⁻¹ x hx`. Take `⟨a, ha⟩` from `hy _ (W.N_Γ T W.gam⁻¹ x hx)`. Take `⟨a', ha'⟩` from `hy _ hx'`. Take `⟨d, hd⟩` from `γA_sub W W.gam a`. Use `⟨d + a', W.EE_π.mul_left_cancel ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : b x (W.γ T' y) = algebraMap _ W.EE (W.γA W.gam a)`. Rewrite using `[← hγinv W.gam x, LocWach.γ, hγb, ha, W.γE_ext]`. Both sides reduce to the same expression. Establish `h3 : algebraMap _ W.EE a - b x y = algebraMap (LetA O n) W.EE letπ * algebraMap _ W.EE a'`. Rewrite using `[← ha, ← ha', ← hA₁, ← h1, map_sub, LinearMap.sub_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h4` using `congrArg (algebraMap _ W.EE) hd`. Rewrite `h4` using `[map_sub, map_mul]`. Rewrite using `[← hA₂, ← hy', map_sub, h2, map_add]`. Take the linear combination `h4 + h3`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Apply `invSub_le` to reduce the goal to its premises. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `choose k hk using fun i => W.N_φinv T (c i) (c i).2`. Establish `key : ∀ u ∈ Submodule.span (LetA O n) (W.φD T '' (W.N T : Set (W.DD T))), ∃ a : LetA O n, b u (W.φD T' y) = algebraMap _ W.EE a`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha'⟩` from `hy`. Conclude with `⟨a + a', by rw [map_add, LinearMap.add_apply, ha, ha', map_add]⟩`. Consider the case `smul a x _ hx`. Take `⟨a', ha'⟩` from `hx`. Conclude with `⟨a * a', by rw [hA₁, ha', map_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem u hu`. Take `⟨x, hx, rfl⟩` from `hu`. Take `⟨a, ha⟩` from `(hiff y).1 hy x hx`. Conclude with `⟨_, by rw [hφb, ha, W.φE_ext]⟩`. Use `⟨∑ i, k i, hbas _ fun i => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `Nat.exists_eq_add_of_le' (Finset.single_le_sum (f := k) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))`. Rewrite using `[hA₂, ← hA₁, hr, pow_add, mul_smul]`. Conclude with `key _ (Submodule.smul_mem _ _ (hk i))`. Apply `invSub_le` to reduce the goal to its premises. Introduce `y hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : y = ∑ i, b (W.φD T (e i)) y • W.φD T' (e' i)`. Apply `hb2.1` to reduce the goal to its premises. Use `LinearMap.ext_on_range (exists_frob_inv E hm hφ T e) fun j => ?_` and prove the remaining obligations. Simplify using `[map_sum, hφb, hee, Finsupp.single_apply, apply_ite W.φE]`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `W.N_φ T (c i) (c i).2`. Take `⟨a, ha⟩` from `(hiff y).1 hy _ hk`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[hA₁, ← hec]`.
-
-Establish `h2 : W.Q ^ k • b (W.φD T (e i)) y • W.φD T' (e' i) = a • W.φD T' (e' i)`. Rewrite using `[← algebraMap_smul W.EE (W.Q ^ k), smul_smul, ← algebraMap_smul W.EE a, ← ha]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨e' i, ⟨_, hδe i⟩, rfl⟩)`.
-
-Use `⟨β, b, hβ, hb, hb1, hb2, hφb, hγb, fun y => by rw [← hN]; exact hiff y, ((LinearEquiv.ofInjective δ₀ hinj).trans (LinearEquiv.ofEq _ _ hN)).symm, fun x y => ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `((LinearEquiv.ofInjective δ₀ hinj).trans (LinearEquiv.ofEq _ _ hN)).surjective y`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `hδ x f`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualFor [IsFractionRing O LL]
     (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRingHom ≠ ⊤)

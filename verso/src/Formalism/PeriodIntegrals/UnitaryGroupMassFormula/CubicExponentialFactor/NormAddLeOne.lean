@@ -9,17 +9,17 @@ open PI.CubicExponentialFactor
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `(IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`.
+A detailed English derivation is pending.
 -/
 theorem norm_add_le_one {x y : ℂ_[p]} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x + y‖ ≤ 1 :=
   (IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)
 
 /- English proof (translation)
-Introduce `j hj`. Rewrite using `[PowerSeries.coeff_mul]`. Establish `key : ∀ s : Finset (ℕ × ℕ), (∀ q ∈ s, q.1 + q.2 = j) → ‖∑ q ∈ s, PowerSeries.coeff q.1 f * PowerSeries.coeff q.2 g‖ ≤ 1`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `empty => intro _`. Simplify using the standard rewrite rules. Consider the case `insert q s hq ih`. Introduce `hs`. Rewrite using `[Finset.sum_insert hq]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hq'` using `hs q (Finset.mem_insert_self q s)`. Use `norm_add_le_one ?_ (ih fun q' h' => hs q' (Finset.mem_insert_of_mem h'))` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf _ (by omega)) (norm_nonneg _) (hg _ (by omega))`. Conclude with `key _ (fun q h => by simpa using h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trunc_mul {f g : PowerSeries ℂ_[p]} {k : ℕ} (hf : ∀ j < k, ‖PowerSeries.coeff j f‖ ≤ 1)
     (hg : ∀ j < k, ‖PowerSeries.coeff j g‖ ≤ 1) : ∀ j < k, ‖PowerSeries.coeff j (f * g)‖ ≤ 1 := by
@@ -41,7 +41,7 @@ theorem trunc_mul {f g : PowerSeries ℂ_[p]} {k : ℕ} (hf : ∀ j < k, ‖Powe
   exact key _ (fun q h => by simpa using h)
 
 /- English proof (translation)
-Rewrite using `[mul_assoc, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm (PowerSeries.X ^ m) F, PowerSeries.coeff_mul_X_pow']`. Use `split_ifs with h`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) (hF _ (by omega))`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem term_int {a : ℂ_[p]} (ha : ‖a‖ ≤ 1) {m k : ℕ} (hm : 1 ≤ m) {F : PowerSeries ℂ_[p]}
     (hF : ∀ j < k, ‖PowerSeries.coeff j F‖ ≤ 1) :
@@ -54,7 +54,7 @@ theorem term_int {a : ℂ_[p]} (ha : ‖a‖ ≤ 1) {m k : ℕ} (hm : 1 ≤ m) {
   · simp
 
 /- English proof (translation)
-Establish `h` using `term_int ha (m := 1) le_rfl hF`. Rewrite `h` using `[pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem term_int1 {a : ℂ_[p]} (ha : ‖a‖ ≤ 1) {k : ℕ} {F : PowerSeries ℂ_[p]}
     (hF : ∀ j < k, ‖PowerSeries.coeff j F‖ ≤ 1) :
@@ -63,13 +63,11 @@ theorem term_int1 {a : ℂ_[p]} (ha : ‖a‖ ≤ 1) {k : ℕ} {F : PowerSeries 
   rwa [pow_one] at h
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Establish `h2 : ∀ j < k, ‖PowerSeries.coeff j (wq ^ 2)‖ ≤ 1`. Rewrite using `[pow_two]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `trunc_mul ih ih`. Establish `h3 : ∀ j < k, ‖PowerSeries.coeff j (wq ^ 3)‖ ≤ 1`. Establish `e : wq ^ 3 = wq ^ 2 * wq` using `by ring`. Rewrite using `[e]`. Conclude with `trunc_mul h2 ih`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [IsWq] at hW`. Rewrite using `[hW]`. Simplify using `only [map_add]`. Use `norm_add_le_one (norm_add_le_one (norm_add_le_one (norm_add_le_one (norm_add_le_one ?_ ?_) ?_) ?_) ?_) ?_` and prove the remaining obligations. Apply the tactic sequence `rw [PowerSeries.coeff_one] split_ifs <;> simp`.
-
-Conclude with `term_int1 ha1 ih`. Conclude with `term_int ha2 (by norm_num) ih`. Conclude with `term_int ha3 (by norm_num) h2`. Conclude with `term_int ha4 (by norm_num) h2`. Conclude with `term_int ha6 (by norm_num) h3`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem wq_int {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (ha1 : IsIntP W.a₁)
     (ha2 : IsIntP W.a₂) (ha3 : IsIntP W.a₃) (ha4 : IsIntP W.a₄) (ha6 : IsIntP W.a₆)

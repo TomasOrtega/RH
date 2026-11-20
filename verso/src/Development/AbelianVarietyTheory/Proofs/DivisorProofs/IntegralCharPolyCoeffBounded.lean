@@ -7,9 +7,7 @@ open GlobalTheory.BCT
 namespace GlobalTheory.BCT.GeoFin
 
 /- English proof (translation)
-Establish `ht` using `hL.2.2 y hy`. Unfold `nrmL`. Unfold `thL at ht`. Use `split_ifs with hs`. Conclude with `hy`.
-
-Rewrite `ht` using `[if_neg hs]`. Conclude with `mul_mem hy ht`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrmL_mem_KGL {E : Type} [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E)
     (hL : IsLevel (thL n w) (GlobalTheory.LFun.KGL w n) (GlobalTheory.LFun.KGL w n)) {y : GLw n w}
@@ -23,15 +21,13 @@ theorem nrmL_mem_KGL {E : Type} [Field E] [NumberField E] [IsCMField E] (n : ℕ
     exact mul_mem hy ht
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `hz`. Use `set f := (Ov E w).subtype`. Establish `hcp : (Formalism.UG.bc f g).val.charpoly = g.val.charpoly.map f`. Rewrite using `[← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hint : ∀ a : Ov E w, Valued.v (f a) ≤ 1` using `fun a => a.2`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcp, Polynomial.coeff_map]`. Conclude with `hint _`. Rewrite using `[hcp, Polynomial.coeff_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : IsUnit (g.val.charpoly.coeff 0)`. Establish `h1 : IsUnit g.val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit`. Rewrite `h1` using `[Matrix.det_eq_sign_charpoly_coeff]`. Conclude with `isUnit_of_mul_isUnit_right h1`. Take `⟨u, hu⟩` from `hdet`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmul : f (u : Ov E w) * f ((u⁻¹ : (Ov E w)ˣ) : Ov E w) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `h2 : Valued.v (f (u : Ov E w)) * Valued.v (f ((u⁻¹ : (Ov E w)ˣ) : Ov E w)) = 1`. Rewrite using `[← map_mul, hmul, map_one]`. Rewrite using `[← hu]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem charpoly_coeff_of_mem_KGL {E : Type} [Field E] [NumberField E] (n : ℕ) (w : Pl E)
     {z : GL (Fin n) (w.adicCompletion E)} (hz : z ∈ GlobalTheory.LFun.KGL w n) :
@@ -61,7 +57,7 @@ theorem charpoly_coeff_of_mem_KGL {E : Type} [Field E] [NumberField E] (n : ℕ)
       _ = Valued.v (f (u : Ov E w)) := mul_one _
 
 /- English proof (translation)
-Introduce `_ _ _ _ n w hL y hy` and use `charpoly_coeff_of_mem_KGL n w (nrmL_mem_KGL n w hL hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem charpoly_nrmL_integral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E),
     IsLevel (thL n w) (GlobalTheory.LFun.KGL w n) (GlobalTheory.LFun.KGL w n) → ∀ y ∈ GlobalTheory.LFun.KGL w n,

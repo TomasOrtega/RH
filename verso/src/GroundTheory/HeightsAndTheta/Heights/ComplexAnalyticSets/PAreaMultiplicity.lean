@@ -11,7 +11,7 @@ open scoped ENNReal NNReal
 noncomputable section
 
 /- English proof (translation)
-Establish `h1 : areaJacobian L = L.normDet`. Establish `h` using `L.normDet_sq`. Simplify using `only [RCLike.ofReal_real_eq_id, id_eq] at h`. Rewrite using `[areaJacobian, ← h, Real.sqrt_sq L.normDet_nonneg]`. Rewrite using `[h1, ← LinearMap.normDet_eq_abs_det, LinearMap.normDet_comp_of_finrank_eq _ _ φ.toLinearEquiv.finrank_eq.symm, φ.toLinearIsometry.normDet_eq_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem areaJacobian_eq_abs_det_comp {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
@@ -26,7 +26,7 @@ theorem areaJacobian_eq_abs_det_comp {E F : Type*} [NormedAddCommGroup E] [Inner
     φ.toLinearIsometry.normDet_eq_one, one_mul]
 
 /- English proof (translation)
-Set `_ : MeasurableSpace α` to `⊤`. Establish `hm : ∀ t : Set α, MeasurableSet t` using `fun _ => MeasurableSpace.measurableSet_top`. Rewrite using `[← Measure.count_apply (hm _), measure_iUnion hs (fun _ => hm _)]`. Simplify using `only [Measure.count_apply (hm _)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem encard_iUnion_nat_eq_tsum {α : Type*} (s : ℕ → Set α) (hs : Pairwise (Disjoint on s)) :
     (((⋃ n, s n).encard : ℕ∞) : ℝ≥0∞) = ∑' n, (((s n).encard : ℕ∞) : ℝ≥0∞) := by
@@ -36,43 +36,37 @@ theorem encard_iUnion_nat_eq_tsum {α : Type*} (s : ℕ → Set α) (hs : Pairwi
   simp only [Measure.count_apply (hm _)]
 
 /- English proof (translation)
-Use `set B : Set E := {x ∈ A | (f' x).det ≠ 0} with hBdef`. Establish `hBA : B ⊆ A` using `sep_subset _ _`. Establish `hB : NullMeasurableSet B μ`. Take `⟨d, hdm, hfd⟩ : AEMeasurable (fun x => (f' x).det) (μ.restrict A)` from `ContinuousLinearMap.continuous_det.measurable.comp_aemeasurable (aemeasurable_fderivWithin μ hA hf')`. Use `(hA.inter (hdm (measurableSet_singleton 0).compl)).nullMeasurableSet.congr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `filter_upwards [(ae_restrict_iff' hA).1 hfd] with x hx`. Express the relevant statement in the definitionally equal form `(x ∈ A ∩ d ⁻¹' {0}ᶜ) = (x ∈ B)`. Rewrite using `[eq_iff_iff]`. Distinguish the cases in `hxA : x ∈ A`. Simplify using `[B, hxA, hx hxA]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[B, hxA]`. Establish `hZ : μ (f '' {x ∈ A | (f' x).det = 0}) = 0` using `addHaar_image_eq_zero_of_det_fderivWithin_eq_zero μ (fun x hx => (hf' x hx.1).mono (sep_subset _ _)) (fun x hx => hx.2)`. Set `r : (E →L[ℝ] E) → ℝ≥0` to `fun L => (‖L.inverse‖₊ + 1)⁻¹`. Take `⟨t, L, htd, htm, hcov, happ, hL⟩` from `exists_partition_approximatesLinearOn_of_hasFDerivWithinAt f B f' (fun x hx => (hf' x hx.1).mono hBA) r (fun _ => inv_ne_zero (by positivity))`. Use `set P : ℕ → Set E := fun n => B ∩ t n with hPdef`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPm : ∀ n, NullMeasurableSet (P n) μ` using `fun n => hB.inter (htm n).nullMeasurableSet`. Establish `hPd : Pairwise (Disjoint on P)` using `fun m n hmn => (htd hmn).mono inter_subset_right inter_subset_right`. Establish `hPA : ∀ n, P n ⊆ A` using `fun n => inter_subset_left.trans hBA`. Establish `hderP : ∀ n, ∀ x ∈ P n, HasFDerivWithinAt f (f' x) (P n) x` using `fun n x hx => (hf' x (hPA n hx)).mono (hPA n)`. Establish `hinj : ∀ n, InjOn f (P n)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Break down `(P n).eq_empty_or_nonempty with h | ⟨x, hx⟩` into its components or cases. Rewrite using `[h]`. Conclude with `injOn_empty f`. Take `⟨y, hy, hLy⟩` from `hL ⟨x, hx.1⟩ n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set e := (f' y).toContinuousLinearEquivOfDetNeZero hy.2`. Establish `he : (e : E →L[ℝ] E) = L n`. Rewrite using `[hLy]`. Conclude with `ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero _ _`. Establish `ha` using `happ n`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `ha` using `[← he]`. Use `ha.injOn ?_` and prove the remaining obligations. Break down `subsingleton_or_nontrivial E with hE | hE` into its components or cases. Conclude with `Or.inl hE`. Use `right`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hr : r (e : E →L[ℝ] E) = (‖(e.symm : E →L[ℝ] E)‖₊ + 1)⁻¹`. Simplify using `only [r, ContinuousLinearMap.inverse_equiv]`. Rewrite using `[hr]`. Establish `hpos : 0 < ‖(e.symm : E →L[ℝ] E)‖₊`. Rewrite using `[pos_iff_ne_zero, ne_eq, nnnorm_eq_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Take `⟨z, hz⟩` from `exists_ne (0 : E)`. Apply `hz` to reduce the goal to its premises. Simplify using `using congrArg (fun T : E →L[ℝ] E => T (e z)) h0`. Conclude with `(inv_lt_inv₀ (by positivity) hpos).2 (lt_add_one _)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Establish `hBU : B = ⋃ n, P n`. Rewrite using `[← inter_iUnion]`. Conclude with `(inter_eq_left.2 hcov).symm`. Establish `himg : ∀ n, NullMeasurableSet (f '' P n) μ` using `fun n => nullMeasurable_image_of_fderivWithin μ (hPm n) (hderP n) (hinj n)`. Combine the equalities or inequalities in the displayed calculation.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← lintegral_indicator hA, ← lintegral_indicator₀ hB]`. Use `congr 1`. Use extensionality with `x`. Distinguish the cases in `hx : x ∈ A`. Distinguish the cases in `hd : (f' x).det = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[indicator, hx, hd, B]`. Simplify using `[indicator, hx, hd, B]`. Establish `: x ∉ B` using `fun h => hx h.1`. Simplify using `[hx, this]`. Use `_ = ∑' n, ∫⁻ x in P n, ENNReal.ofReal |(f' x).det| ∂μ := by`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hBU]`. Conclude with `lintegral_iUnion₀ hPm (fun m n hmn => (hPd hmn).aedisjoint) _`. Use `_ = ∑' n, μ (f '' P n) := tsum_congr fun n => lintegral_abs_det_fderiv_eq_addHaar_image₀ μ (hPm n) (hderP n) (hinj n)`. Use `_ = ∑' n, ∫⁻ y, (f '' P n).indicator 1 y ∂μ := tsum_congr fun n => (lintegral_indicator_one₀ (himg n)).symm`. Use `_ = ∫⁻ y, ∑' n, (f '' P n).indicator 1 y ∂μ := (lintegral_tsum fun n => aemeasurable_one.indicator₀ (himg n)).symm`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `_ = ∫⁻ y, (({x ∈ A | f x = y}.encard : ℕ∞) : ℝ≥0∞) ∂μ := by`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 hZ] with y hy`. Establish `hU : {x ∈ A | f x = y} = ⋃ n, {x ∈ P n | f x = y}`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [mem_ofPred_eq, mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxA, hxy⟩`. Establish `hxB : x ∈ B` using `⟨hxA, fun hd => hy ⟨x, ⟨hxA, hd⟩, hxy⟩⟩`. Take `⟨n, hn⟩` from `mem_iUnion.1 (hcov hxB)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨n, ⟨hxB, hn⟩, hxy⟩`. Introduce and unpack `⟨n, hxP, hxy⟩`. Conclude with `⟨hPA n hxP, hxy⟩`. Rewrite using `[hU, encard_iUnion_nat_eq_tsum _ (fun m n hmn => (hPd hmn).mono (sep_subset _ _) (sep_subset _ _))]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations.
-
-Distinguish the cases in `hyn : y ∈ f '' P n`. Take `⟨x, hx, rfl⟩` from `hyn`. Establish `hs : {z ∈ P n | f z = f x} = {x}`. Use extensionality with `z`. Simplify using `only [mem_ofPred_eq, mem_singleton_iff]`.
-
-Conclude with `⟨fun h => hinj n h.1 hx h.2, fun h => by subst h; exact ⟨hx, rfl⟩⟩`. Rewrite using `[hs, encard_singleton, indicator_of_mem (mem_image_of_mem f hx)]`. Simplify using the standard rewrite rules. Establish `hs : {z ∈ P n | f z = y} = ∅`. Use extensionality with `z`.
-
-Simplify using `only [mem_ofPred_eq, mem_empty_iff_false, iff_false, not_and]`. Conclude with `fun hz e => hyn ⟨z, hz, e⟩`. Rewrite using `[hs, encard_empty]`. Simplify using `[hyn]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_abs_det_eq_lintegral_encard {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
@@ -189,13 +183,13 @@ theorem lintegral_abs_det_eq_lintegral_encard {E : Type*} [NormedAddCommGroup E]
           simp [hyn]
 
 /- English proof (translation)
-Introduce `E F _ _ _ _ _ _ _ _ _ _ k hE hF A f f' hA hf'`. Substitute `hE` using the available equality. Set `φ : F ≃ₗᵢ[ℝ] E` to `(stdOrthonormalBasis ℝ F).equiv (stdOrthonormalBasis ℝ E) (finCongr hF)`. Set `g : E → E` to `fun x => φ (f x)`. Set `g' : E → E →L[ℝ] E` to `fun x => (φ.toContinuousLinearEquiv : F →L[ℝ] E).comp (f' x)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hg' : ∀ x ∈ A, HasFDerivWithinAt g (g' x) A x` using `fun x hx => (φ.toContinuousLinearEquiv : F →L[ℝ] E).hasFDerivAt.comp_hasFDerivWithinAt x (hf' x hx)`. Establish `hJ : ∀ x, ENNReal.ofReal (areaJacobian (f' x : E →ₗ[ℝ] F)) = ENNReal.ofReal |(g' x).det|`. Introduce `x`. Rewrite using `[areaJacobian_eq_abs_det_comp φ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hN : ∀ y, {x ∈ A | f x = y} = {x ∈ A | g x = φ y}`. Introduce `y`. Use extensionality with `x`. Simplify using `[g]`. Repeatedly rewrite using `[hJ, hN]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[lintegral_abs_det_eq_lintegral_encard μH[(finrank ℝ E : ℝ)] hA hg']`. Establish `hφ : MeasurePreserving φ (μH[(finrank ℝ E : ℝ)] : Measure F) μH[(finrank ℝ E : ℝ)]` using `φ.toIsometryEquiv.measurePreserving_hausdorffMeasure _`. Establish `hφe : MeasurableEmbedding φ` using `φ.toHomeomorph.measurableEmbedding`. Conclude with `(hφ.lintegral_comp_emb hφe (fun z => (({x ∈ A | g x = z}.encard : ℕ∞) : ℝ≥0∞))).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem AreaMultiplicity.proof : AreaMultiplicity.Statement := by
   intro E F _ _ _ _ _ _ _ _ _ _ k hE hF A f f' hA hf'

@@ -15,29 +15,27 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp
 
 /- English proof (translation)
-Use `set L := fderiv ℂ Φ e₀ with hL`. Establish `hLi : LinearMap.ker (L : E →ₗ[ℂ] A) = ⊥` using `LinearMap.ker_eq_bot'.mpr hinj`. Take `⟨p, hp⟩` from `(L : E →ₗ[ℂ] A).exists_leftInverse_of_injective hLi`. Set `π : A →L[ℂ] E` to `LinearMap.toContinuousLinearMap p`. Establish `hπ : ∀ e, π (L e) = e` using `fun e => LinearMap.congr_fun hp e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `h : E → E` to `fun e => π (Φ e)`. Establish `hh : HasStrictFDerivAt h ((ContinuousLinearEquiv.refl ℂ E : E ≃L[ℂ] E) : E →L[ℂ] E) e₀`. Establish `h1` using `π.hasStrictFDerivAt.comp e₀ hΦ.hasStrictFDerivAt`. Use `h1.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hπ, ← hL]`. Set `Φ₁` to `hh.toOpenPartialHomeomorph h`. Establish `hΦ₁ : ∀ e, Φ₁ e = π (Φ e)` using `fun e => rfl`. Establish `hs₁ : e₀ ∈ Φ₁.source` using `hh.mem_toOpenPartialHomeomorph_source`. Establish `han₁ : AnalyticAt ℂ Φ₁ e₀` using `(π.analyticAt _).comp hΦ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsymm : AnalyticAt ℂ Φ₁.symm (Φ₁ e₀)` using `Φ₁.analyticAt_symm' (i := ContinuousLinearEquiv.refl ℂ E) hs₁ han₁ hh.hasFDerivAt.fderiv`. Establish `hback : Φ₁.symm (Φ₁ e₀) = e₀` using `Φ₁.left_inv hs₁`. Set `M : A →L[ℂ] B × E` to `(fderiv ℂ G (Φ e₀)).prod π`. Establish `hMi : LinearMap.ker (M : A →ₗ[ℂ] B × E) = ⊥`. Use `LinearMap.ker_eq_bot'.mpr fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : fderiv ℂ G (Φ e₀) w = 0` using `congrArg Prod.fst hw`. Establish `h2 : π w = 0` using `congrArg Prod.snd hw`. Take `⟨e, rfl⟩` from `hker w h1`. Rewrite `h2` using `[hπ]`. Rewrite using `[h2, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `(M : A →ₗ[ℂ] B × E).exists_leftInverse_of_injective hMi`. Set `R : B × E →L[ℂ] A` to `LinearMap.toContinuousLinearMap q`. Establish `hR : ∀ w, R (M w) = w` using `fun w => LinearMap.congr_fun hq w`. Set `Ξ : A → A` to `fun z => R (G z, π z)`. Establish `hΞ : HasStrictFDerivAt Ξ ((ContinuousLinearEquiv.refl ℂ A : A ≃L[ℂ] A) : A →L[ℂ] A) (Φ e₀)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `R.hasStrictFDerivAt.comp (Φ e₀) (hG.hasStrictFDerivAt.prodMk π.hasStrictFDerivAt)`. Use `h1.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `w`. Conclude with `hR w`. Set `Φ₂` to `hΞ.toOpenPartialHomeomorph Ξ`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs₂ : Φ e₀ ∈ Φ₂.source` using `hΞ.mem_toOpenPartialHomeomorph_source`. Establish `hN : ∀ᶠ e in 𝓝 e₀, e ∈ U ∧ G (Φ e) = 0 ∧ Φ e ∈ Φ₂.source` using `(Filter.eventually_of_mem hU fun _ h => h).and (hzero.and (hΦ.continuousAt.eventually_mem (Φ₂.open_source.mem_nhds hs₂)))`. Establish `hc₁ : ContinuousAt Φ₁.symm (Φ₁ e₀)` using `hsymm.continuousAt`. Establish `hN' : ∀ᶠ x in 𝓝 (Φ₁ e₀), Φ₁.symm x ∈ U ∧ G (Φ (Φ₁.symm x)) = 0 ∧ Φ (Φ₁.symm x) ∈ Φ₂.source`. Use `hc₁.tendsto.eventually (by rw [hback]; exact hN)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `ht₁ : Φ₁ e₀ ∈ Φ₁.target` using `Φ₁.map_source hs₁`. Establish `hP : ∀ᶠ x in 𝓝 (Φ₁ e₀), (Φ₁.symm x ∈ U ∧ G (Φ (Φ₁.symm x)) = 0 ∧ Φ (Φ₁.symm x) ∈ Φ₂.source) ∧ x ∈ Φ₁.target ∧ AnalyticAt ℂ Φ₁.symm x` using `hN'.and ((Φ₁.open_target.mem_nhds ht₁ |> Filter.eventually_of_mem <| fun _ h => h).and hsymm.eventually_analyticAt)`. Establish `hπc : Tendsto π (𝓝 (Φ e₀)) (𝓝 (Φ₁ e₀))` using `π.continuous.tendsto _`. Establish `hQ : ∀ᶠ z in 𝓝 (Φ e₀), ((Φ₁.symm (π z) ∈ U ∧ G (Φ (Φ₁.symm (π z))) = 0 ∧ Φ (Φ₁.symm (π z)) ∈ Φ₂.source) ∧ π z ∈ Φ₁.target ∧ AnalyticAt ℂ Φ₁.symm (π z)) ∧ z ∈ Φ₂.source` using `(hπc.eventually hP).and (Φ₂.open_source.mem_nhds hs₂ |> Filter.eventually_of_mem <| fun _ h => h)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨V, hVs, hVo, hV0⟩` from `mem_nhds_iff.mp hQ`. Use `⟨V, fun z => Φ₁.symm (π z), hVo, hV0, ?_, hback, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Conclude with `AnalyticAt.comp (f := fun z => π z) (hVs hz).1.2.2 (π.analyticAt z)`. Introduce `z hz hGz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨⟨hU', hG', hsrc⟩, htgt, -⟩, hzs⟩` from `hVs hz`. Use `⟨hU', ?_⟩` and prove the remaining obligations. Establish `h1 : π (Φ (Φ₁.symm (π z))) = π z` using `Φ₁.right_inv htgt`. Use `Φ₂.injOn hzs hsrc ?_` and prove the remaining obligations. Use `show R (G z, π z) = R (G _, π _)`.
-
-Rewrite using `[hGz, hG', h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_analytic_param {A B E : Type} [NormedAddCommGroup A] [NormedSpace ℂ A] [FiniteDimensional ℂ A]
     [NormedAddCommGroup B] [NormedSpace ℂ B] [FiniteDimensional ℂ B]
@@ -119,47 +117,43 @@ theorem exists_analytic_param {A B E : Type} [NormedAddCommGroup A] [NormedSpace
 open MvPolynomial in
 
 /- English proof (translation)
-Use `set z₀ := χ.γ t₀ with hz₀`. Set `σ : ℤ →+* ℂ` to `Int.castRingHom ℂ`. Set `ell : MRing J → Module.Dual ℂ ((Σ k, J k) → ℂ)` to `fun f => ∑ i, eval z₀ (pderiv i (map σ f)) • LinearMap.proj i`. Establish `hell : ∀ f w, ell f w = ∑ i, eval z₀ (pderiv i (map σ f)) * w i` using `fun f w => by`. Simplify using `[ell, LinearMap.sum_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hsub, hspan⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset (ell '' (P : Set (MRing J)))).1 (IsNoetherian.noetherian (Submodule.span ℂ (ell '' (P : Set (MRing J)))))`. Establish `hch : ∀ l : s, ∃ f ∈ P, ell f = l.1` using `fun l => by`. Take `⟨f, hf, h⟩` from `hsub l.2`. Conclude with `⟨f, hf, h⟩`. Use `choose f hfP hfl using hch`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g : s → MvPolynomial (Σ k, J k) ℂ` to `fun l => map σ (f l)`. Set `G : ((Σ k, J k) → ℂ) → s → ℂ` to `fun z l => eval z (g l)`. Set `Φ : (K → ℂ) × (Fin n → ℂ) → (Σ k, J k) → ℂ` to `fun e => torusSmul e.1 (χ.γ e.2)`. Set `e₀ : (K → ℂ) × (Fin n → ℂ)` to `(1, t₀)`. Establish `hΦ₀ : Φ e₀ = z₀`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `p`. Simplify using `[Φ, e₀, torusSmul, hz₀]`. Establish `hγ : AnalyticAt ℂ χ.γ t₀` using `χ.analytic t₀ ht₀`. Establish `hΦan : AnalyticAt ℂ Φ e₀`. Use `AnalyticAt.pi fun p => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : AnalyticAt ℂ (fun e : (K → ℂ) × (Fin n → ℂ) => e.1 p.1) e₀` using `((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : K => ℂ) p.1).comp (ContinuousLinearMap.fst ℂ (K → ℂ) (Fin n → ℂ))).analyticAt e₀`. Establish `h2 : AnalyticAt ℂ (fun e : (K → ℂ) × (Fin n → ℂ) => χ.γ e.2) e₀` using `AnalyticAt.comp (f := fun e : (K → ℂ) × (Fin n → ℂ) => e.2) hγ ((ContinuousLinearMap.snd ℂ (K → ℂ) (Fin n → ℂ)).analyticAt e₀)`. Establish `h3 : AnalyticAt ℂ (fun e : (K → ℂ) × (Fin n → ℂ) => χ.γ e.2 p) e₀` using `((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : (Σ k, J k) => ℂ) p).analyticAt _).comp h2`. Conclude with `h1.mul h3`. Establish `hGan : AnalyticAt ℂ G (Φ e₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `AnalyticAt.pi fun l => ?_` and prove the remaining obligations. Conclude with `AnalyticOnNhd.eval_mvPolynomial (𝕜 := ℂ) (g l) _ (Set.mem_univ _)`. Establish `hdΦ : ∀ c u, fderiv ℂ Φ e₀ (c, u) = fderiv ℂ χ.γ t₀ u + torusSmul c z₀`. Establish `hγd` using `hγ.differentiableAt.hasFDerivAt`. Establish `hD : HasFDerivAt Φ (ContinuousLinearMap.pi fun p : (Σ k, J k) => (1 : ℂ) • ((ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : (Σ k, J k) => ℂ) p).comp ((fderiv ℂ χ.γ t₀).comp (ContinuousLinearMap.snd ℂ (K → ℂ) (Fin n → ℂ)))) + z₀ p • ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : K => ℂ) p.1).comp (ContinuousLinearMap.fst ℂ (K → ℂ) (Fin n → ℂ)))) e₀ := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hasFDerivAt_pi.2 fun p => ?_` and prove the remaining obligations. Establish `h1 : HasFDerivAt (fun e : (K → ℂ) × (Fin n → ℂ) => e.1 p.1) ((ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : K => ℂ) p.1).comp (ContinuousLinearMap.fst ℂ (K → ℂ) (Fin n → ℂ))) e₀ := ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : K => ℂ) p.1).comp (ContinuousLinearMap.fst ℂ (K → ℂ) (Fin n → ℂ))).hasFDerivAt`. Establish `h2 : HasFDerivAt (fun e : (K → ℂ) × (Fin n → ℂ) => χ.γ e.2) ((fderiv ℂ χ.γ t₀).comp (ContinuousLinearMap.snd ℂ (K → ℂ) (Fin n → ℂ))) e₀` using `HasFDerivAt.comp e₀ (f := fun e : (K → ℂ) × (Fin n → ℂ) => e.2) hγd (ContinuousLinearMap.snd ℂ (K → ℂ) (Fin n → ℂ)).hasFDerivAt`. Establish `h3 : HasFDerivAt (fun e : (K → ℂ) × (Fin n → ℂ) => χ.γ e.2 p) ((ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : (Σ k, J k) => ℂ) p).comp ((fderiv ℂ χ.γ t₀).comp (ContinuousLinearMap.snd ℂ (K → ℂ) (Fin n → ℂ)))) e₀ := (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : (Σ k, J k) => ℂ) p).hasFDerivAt.comp e₀ h2`. Use `(h1.mul h3).congr_fderiv ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[e₀, hz₀]`. Introduce `c u`. Rewrite using `[hD.fderiv]`. Use function extensionality and compare the values at `p`. Simplify using `[torusSmul, mul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hdG : ∀ w l, fderiv ℂ G (Φ e₀) w l = ell (f l) w`. Establish `hD : HasFDerivAt G (ContinuousLinearMap.pi fun l : s => ∑ i, eval (Φ e₀) (pderiv i (g l)) • ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : (Σ k, J k) => ℂ) i) (Φ e₀) := hasFDerivAt_pi.2 fun l => hasFDerivAt_eval (g l) (Φ e₀)`. Introduce `w l`. Rewrite using `[hD.fderiv, hell, hΦ₀]`. Simplify using `[g]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : ∀ e, fderiv ℂ Φ e₀ e = 0 → e = 0`. Introduce and unpack `⟨c, u⟩ h`. Rewrite `h` using `[hdΦ]`. Establish `hu : u = 0`. Use `χ.immersion t₀ ht₀ u ⟨fun k => - c k, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `p`. Use `congrFun h p` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.zero_apply, torusSmul] at this ⊢`. Rewrite using `[← hz₀]`. Take the linear combination `this`.
+Take a linear combination of the given relations to obtain the conclusion. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Substitute `hu` using the available equality. Establish `hc : c = 0`. Use function extensionality and compare the values at `k`. Take `⟨i, hi⟩` from `(χ.mem t₀ ht₀).1 k`. Use `congrFun h ⟨k, i⟩` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_zero, Pi.add_apply, Pi.zero_apply, zero_add, torusSmul] at this`. Conclude with `(mul_eq_zero.mp this).resolve_right hi`. Simplify using `[hc]`. Establish `hker : ∀ w, fderiv ℂ G (Φ e₀) w = 0 → ∃ e, w = fderiv ℂ Φ e₀ e`. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Establish `hs0 : ∀ l ∈ Submodule.span ℂ (s : Set (Module.Dual ℂ ((Σ k, J k) → ℂ))), l w = 0`. Introduce `l hl`. Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem x hx`. Use `congrFun hw ⟨x, hx⟩` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `this` using `[hdG, hfl]`. Conclude with `this`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul a x _ hx => simp [hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htv : IsConeTangent (Int.castRingHom ℂ) P z₀ w`. Introduce `q hq`. Establish `: ell q ∈ Submodule.span ℂ (s : Set (Module.Dual ℂ ((Σ k, J k) → ℂ)))`. Rewrite using `[← hspan]`. Conclude with `Submodule.subset_span ⟨q, hq, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0` using `hs0 _ this`. Rewrite `h0` using `[hell]`. Conclude with `h0`. Take `⟨u, c, hv⟩` from `htan w htv`. Conclude with `⟨(c, u), by rw [hdΦ, hv]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hopen : ∀ᶠ e : (K → ℂ) × (Fin n → ℂ) in 𝓝 e₀, (∀ k, e.1 k ≠ 0) ∧ e.2 ∈ Metric.ball (0 : Fin n → ℂ) 1`. Use `Filter.Eventually.and (eventually_all.2 fun k => ?_) ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (fun e : (K → ℂ) × (Fin n → ℂ) => e.1 k) e₀` using `by fun_prop`. Conclude with `hc.eventually_ne (by simp [e₀])`. Establish `hc : ContinuousAt (fun e : (K → ℂ) × (Fin n → ℂ) => e.2) e₀` using `by fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hc.eventually_mem (Metric.isOpen_ball.mem_nhds ht₀)`. Establish `hzero : ∀ᶠ e in 𝓝 e₀, G (Φ e) = 0` using `by filter_upwards [hopen] with e he`. Use function extensionality and compare the values at `l`. Conclude with `(mcPts_smul hP e.1 he.1 (χ.mem e.2 he.2)).2 (f l) (hfP l)`. Take `⟨V, S, hVo, hV0, hSan, hS0, hS⟩` from `exists_analytic_param hΦan hGan hinj hker hzero hopen`.
-
-Rewrite `hV0`, `hS0` using `[hΦ₀]`. Use `⟨V, fun z => (S z).2, hVo, hV0, ?_, by simp [hS0, e₀], ?_⟩` and prove the remaining obligations. Introduce `z hz`. Conclude with `((ContinuousLinearMap.snd ℂ (K → ℂ) (Fin n → ℂ)).analyticAt _).comp (hSan z hz)`. Introduce and unpack `z ⟨hzV, hzP⟩`.
-
-Establish `hGz : G z = 0`. Use function extensionality and compare the values at `l`. Conclude with `hzP.2 (f l) (hfP l)`. Take `⟨hU, hz⟩` from `hS z hzV hGz`. Conclude with `⟨hU.2, (S z).1, hU.1, hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chart_inverse {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {P : Ideal (MRing J)}
     (hP : IsMultiHomogIdeal P) {n : ℕ} {Bd : Set ((Σ k, J k) → ℂ)} (χ : SncChart P n Bd) {t₀ : Fin n → ℂ}
@@ -304,7 +298,7 @@ theorem exists_chart_inverse {K : Type} [Fintype K] {J : K → Type} [∀ k, Fin
     exact ⟨hU.2, (S z).1, hU.1, hz⟩
 
 /- English proof (translation)
-Introduce `K _ J _ II Ψ _ Ω _ _ W _ _ D a t₀ ht₀`. Conclude with `exists_chart_inverse D.arith.2.1.2.1 (D.chart a) ht₀ (GlobalTheory.T.cone_tangent_lift_in_chart K J II Ψ Ω W D a t₀ ht₀)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_torus_open : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (a : Fin D.nCharts), ∀ t₀ ∈ Metric.ball (0 : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) 1, ∃ (V : Set ((Σ k, J k) → ℂ)) (T : ((Σ k, J k) → ℂ) → Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ), IsOpen V ∧ (D.chart a).γ t₀ ∈ V ∧ AnalyticOnNhd ℂ T V ∧ T ((D.chart a).γ t₀) = t₀ ∧ ∀ z ∈ V ∩ mcPts (mCoordIdeal D.y), T z ∈ Metric.ball 0 1 ∧ ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧ z = torusSmul c ((D.chart a).γ (T z)) := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D a t₀ ht₀

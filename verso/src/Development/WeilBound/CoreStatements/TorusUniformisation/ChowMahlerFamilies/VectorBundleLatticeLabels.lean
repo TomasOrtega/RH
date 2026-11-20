@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.B
 namespace PositivityTheory.Xgn.VectorBundleLabels
 
 /- English proof (translation)
-Take `⟨U, hU, b, hb, hf⟩` from `h q trivial`. Rewrite using `[← hb, finrank_span_eq_card (hf q trivial hU).1, Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_eq_of_isVB {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {Li : Type} [AddCommGroup Li] [Module Ω Li] {L : Lat ξ Li} {r : ℕ} {V : Submodule Ω Li} (h : L.IsVB r V)
@@ -19,7 +19,7 @@ theorem finrank_eq_of_isVB {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (C
   rw [← hb, finrank_span_eq_card (hf q trivial hU).1, Fintype.card_fin]
 
 /- English proof (translation)
-Introduce `p _` and use `by obtain ⟨U, hU, b, hb, hf⟩ := h p trivial exact ⟨U, hU, b, hb, fun q hq hqU => ⟨(hf q trivial hqU).1, (he q hq).trans (hf q trivial hqU).2⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isVBOn_of_eqOn {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {Li : Type} [AddCommGroup Li] [Module Ω Li] {L L' : Lat ξ Li} {r : ℕ} {V : Submodule Ω Li} {T : Set (Cpt ξ)}
@@ -28,7 +28,7 @@ theorem isVBOn_of_eqOn {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommR
   exact ⟨U, hU, b, hb, fun q hq hqU => ⟨(hf q trivial hqU).1, (he q hq).trans (hf q trivial hqU).2⟩⟩
 
 /- English proof (translation)
-Establish `e : (X.presheaf.stalkSpecializes p.2).hom ((X.presheaf.germ U p.1 hpU).hom s) = (X.presheaf.germ U (genPt ξ) heU).hom s` using `ConcreteCategory.congr_hom (X.presheaf.germ_stalkSpecializes hpU p.2) s`. Conclude with `congrArg (fun t : X.presheaf.stalk (genPt ξ) => (Scheme.stalkClosedPointTo ξ).hom t) e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genMap_germ {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} (p : Cpt ξ)
     {U : X.Opens} (hpU : p.1 ∈ U) (heU : genPt ξ ∈ U) (s : Γ(X, U)) :
@@ -40,11 +40,11 @@ theorem genMap_germ {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRing
   exact congrArg (fun t : X.presheaf.stalk (genPt ξ) => (Scheme.stalkClosedPointTo ξ).hom t) e
 
 /- English proof (translation)
-Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := p.1) (U := ⊤) trivial`. Establish `heU : genPt ξ ∈ U` using `p.2.mem_open U.isOpen hpU`. Take `⟨g, hg⟩ : ∃ g : X.presheaf.stalk (genPt ξ), (Scheme.stalkClosedPointTo ξ).hom g = a` from `hξ.bij.2 a`. Use `letI alg : Algebra Γ(X, U) (X.presheaf.stalk (genPt ξ)) := TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨genPt ξ, heU⟩ : U)`. Establish `hloc : IsLocalization.AtPrime (X.presheaf.stalk (genPt ξ)) (hU.primeIdealOf ⟨genPt ξ, heU⟩).asIdeal` using `hU.isLocalization_stalk ⟨genPt ξ, heU⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Take `⟨⟨f, h⟩, hfh⟩` from `IsLocalization.surj (hU.primeIdealOf ⟨genPt ξ, heU⟩).asIdeal.primeCompl g`. Establish `hunit` using `IsLocalization.map_units (X.presheaf.stalk (genPt ξ)) h`. Set `ψ : X.presheaf.stalk (genPt ξ) →+* Ω` to `(Scheme.stalkClosedPointTo ξ).hom`. Establish `germ_val : ∀ s : Γ(X, U), genMap ξ p ((X.presheaf.germ U p.1 hpU).hom s) = (Scheme.stalkClosedPointTo ξ).hom (algebraMap Γ(X, U) (X.presheaf.stalk (genPt ξ)) s)` using `fun s => genMap_germ p hpU heU s`. Establish `hv : (Scheme.stalkClosedPointTo ξ).hom (algebraMap Γ(X, U) (X.presheaf.stalk (genPt ξ)) (h : Γ(X, U))) ≠ 0` using `(hunit.map (Scheme.stalkClosedPointTo ξ).hom).ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(X.presheaf.germ U p.1 hpU).hom f, (X.presheaf.germ U p.1 hpU).hom h, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[germ_val]`. Conclude with `hv`. Rewrite using `[germ_val, germ_val, eq_div_iff hv, ← hg]`. Conclude with `(map_mul ψ _ _).symm.trans (congrArg ψ hfh)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_div_genMap {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (hξ : IsCptGen ξ) (p : Cpt ξ) (a : Ω) :
@@ -72,11 +72,9 @@ theorem exists_eq_div_genMap {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec 
     exact (map_mul ψ _ _).symm.trans (congrArg ψ hfh)
 
 /- English proof (translation)
-Introduce `p a ha`. Take `⟨hd, hc⟩` from `hX p.1`. Use `letI : Algebra (X.presheaf.stalk p.1) Ω := (genMap ξ p).toAlgebra`. Establish `hinj : Function.Injective (algebraMap (X.presheaf.stalk p.1) Ω)` using `hξ.inj p`. Use `haveI : FaithfulSMul (X.presheaf.stalk p.1) Ω := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsFractionRing (X.presheaf.stalk p.1) Ω := IsFractionRing.of_field _ _ fun z => by`. Take `⟨u, v, -, e⟩` from `exists_eq_div_genMap hξ p z`. Conclude with `⟨u, v, e⟩`. Use `letI : Algebra (X.presheaf.stalk p.1) (regAt ξ p) := (genMap ξ p).rangeRestrict.toAlgebra`. Use `haveI : IsScalarTower (X.presheaf.stalk p.1) (regAt ξ p) Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
-
-Use `haveI : Algebra.IsIntegral (X.presheaf.stalk p.1) (regAt ξ p) := Algebra.IsIntegral.of_surjective (R := X.presheaf.stalk p.1) (A := X.presheaf.stalk p.1) (Algebra.ofId _ _) (genMap ξ p).rangeRestrict_surjective`. Take `⟨b, hb⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := X.presheaf.stalk p.1) (K := Ω)).1 (isIntegral_trans (R := X.presheaf.stalk p.1) (A := regAt ξ p) a ha)`. Conclude with `⟨b, hb⟩`.
+Supply the required witnesses or components. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem normalCpt_of_isCptGen {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (hξ : IsCptGen ξ)
@@ -101,19 +99,15 @@ theorem normalCpt_of_isCptGen {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec
 end PositivityTheory.Xgn.VectorBundleLabels
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ J y 𝔐 p hpp hpS hdisc hgenf t`. Establish `hp : p.Prime` using `hpp.out`. Use `haveI : CharZero Ω := charZero_of_injective_ringHom 𝔐.cst.injective`. Establish `hgen : IsCptGen 𝔐.ξ` using `𝔐.tie.gen`. Establish `hN : Flat.NormalCpt 𝔐.ξ` using `PositivityTheory.Xgn.VectorBundleLabels.normalCpt_of_isCptGen hgen 𝔐.normal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvb : (𝔐.V t).IsVB (labelRk D t) (𝔐.Vgen t)` using `𝔐.vb t`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hsm : Smooth 𝔐.t.G.hom` using `𝔐.t.semi.smooth`. Take `⟨hLat, -⟩` from `GlobalTheory.T.lie_omega_lattice_vector_bundle 𝔐.X Ω 𝔐.ξ 𝔐.t.G 𝔐.Li 𝔐.M hgen hsm`. Take `⟨hinj, hcard⟩` from `GlobalTheory.T.label_embedding_injective E H l c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hσinj : Function.Injective 𝔐.emb` using `fun a b hab => hinj (RingHom.ext fun x => 𝔐.cst.injective (RingHom.congr_fun hab x))`. Use `letI : Fintype (CMType H ⊕ CMType H) := by haveI : Finite (CMType H ⊕ CMType H) := Nat.finite_of_card_ne_zero (by`. Rewrite using `[hcard]`. Conclude with `Module.finrank_pos.ne')`. Conclude with `Fintype.ofFinite _`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(GlobalTheory.T.lattice_eigen_vector_bundle 𝔐.X Ω 𝔐.ξ 𝔐.Li E 𝔐.ρ 𝔐.M.lat (overPrime 𝔐.ξ p) (Module.finrank Ω 𝔐.Li) (CMType H ⊕ CMType H) 𝔐.emb hgen hσinj (by rw [← Nat.card_eq_fintype_card]; exact hcard) (HcVb.isVBOn_of_isVB hLat _) (fun q _ a e he => by haveI := 𝔐.t.act.hom a`. Conclude with `HcVb.lat_stable 𝔐.M (𝔐.t.act.act a) (𝔐.ρ a) (𝔐.act a) q e he)`. Use the proof step `(fun q _ s' a => HcVb.integers_regular hN _ q a)`. Use the proof step `(fun q hq => HcVb.unitAt_discr fun r hr hd => not_not.1 (hq r hr fun e => hdisc (e ▸ hd)))).1 t`. Establish `hrk : Module.finrank Ω (eigSp 𝔐.ρ (𝔐.emb t)) = labelRk D t` using `PositivityTheory.Xgn.VectorBundleLabels.finrank_eq_of_isVB hvb ⟨genPt 𝔐.ξ, specializes_rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hrk]`. Conclude with `h`. Use `PositivityTheory.Xgn.VectorBundleLabels.isVBOn_of_eqOn hvb fun q hq => ?_` and prove the remaining obligations. Distinguish the cases in `hf : InFibre 𝔐.ξ p q`. Conclude with `(Lat.patch_of_unique S (𝔐.dR t) (fun p => 𝔐.HT p t) hpS hf fun p' hp' h' => inFibre_unique hp (𝔐.S_prime _ hp') hf h').symm`.
-
-Establish `hno : ∀ r : ℕ, r.Prime → ¬ InFibre 𝔐.ξ r q` using `fun r hr => by`. Distinguish the cases in `e : r = p`. Conclude with `e ▸ hf`. Conclude with `hq r hr e`. Rewrite using `[hgenf t q hno]`.
-
-Conclude with `(Lat.patch_of_not S (𝔐.dR t) (fun p => 𝔐.HT p t) fun r hr => hno r (𝔐.S_prime r hr)).symm`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.vector_bundle_lattice_labels : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (p : ℕ) [Fact p.Prime], p ∈ S → ¬ (p : ℤ) ∣ NumberField.discr E → (∀ (t : CMType H ⊕ CMType H) (q : Cpt 𝔐.ξ), (∀ r : ℕ, r.Prime → ¬ InFibre 𝔐.ξ r q) → 𝔐.HT p t q = 𝔐.dR t q) → ∀ t : CMType H ⊕ CMType H, (𝔐.dR t).IsVBOn (overPrime 𝔐.ξ p) (labelRk D t) (𝔐.Vgen t) ∧ (𝔐.HT p t).IsVBOn (overPrime 𝔐.ξ p) (labelRk D t) (𝔐.Vgen t) := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ J y 𝔐 p hpp hpS hdisc hgenf t

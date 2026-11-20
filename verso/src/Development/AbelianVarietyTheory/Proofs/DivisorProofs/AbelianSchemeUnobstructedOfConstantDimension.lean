@@ -26,15 +26,15 @@ abbrev qmap (π : R →+* R₀) (f : R) : R ⧸ Ideal.span {f} →+* R₀ ⧸ Id
     rw [SetLike.mem_coe, Ideal.mem_comap]; exact Ideal.mem_span_singleton_self _)))
 
 /- English proof (translation)
-Use `⟨Ideal.quotientMap_surjective hπ, ?_, ?_, Ideal.quotientMap_comp_mk _⟩` and prove the remaining obligations. Use extensionality with `x`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[RingHom.mem_ker, Ideal.quotientMap_mk, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hx`. Take `⟨r, rfl⟩` from `hπ c`. Use `⟨x - r * f, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, RingHom.mem_ker, map_sub, map_mul, hc, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.Quotient.eq]`. Simplify using `using Ideal.mul_mem_left _ r (Ideal.mem_span_singleton_self f)`. Introduce and unpack `⟨y, hy, hyx⟩`. Rewrite `hyx` using `[Ideal.Quotient.eq]`. Establish `h1 : π (y - x) ∈ Ideal.span {π f}`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hyx`. Rewrite using `[← hc, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`. Establish `h2 : π y = 0` using `by rw [← RingHom.mem_ker, hk]; exact hy`. Rewrite `h1` using `[map_sub, h2, zero_sub]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (Ideal.span {π f}).neg_mem h1`. Rewrite using `[← Ideal.map_pow, hI, Ideal.zero_eq_bot, Ideal.map_bot]`. Conclude with `Ideal.zero_eq_bot.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qmap_facts (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π)
     (hk : RingHom.ker π = I) (f : R) :
@@ -65,7 +65,7 @@ theorem qmap_facts (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Fun
   · rw [← Ideal.map_pow, hI, Ideal.zero_eq_bot, Ideal.map_bot]; exact Ideal.zero_eq_bot.symm
 
 /- English proof (translation)
-Establish `outer` using `(IsPullback.of_hasPullback (pullback.snd p u) v).paste_horiz (IsPullback.of_hasPullback p u)`. Rewrite `outer` using `[← hw]`. Establish `sq` using `IsPullback.of_right (h₁₁ := pullback.lift (pullback.fst (pullback.snd p u) v ≫ pullback.fst p u) (pullback.snd (pullback.snd p u) v ≫ d) (by rw [Category.assoc]; exact outer.w)) (by rw [pullback.lift_fst]; exact outer) (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback p w)`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback sq h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_paste {X Y Z S T : Scheme.{0}} (p : X ⟶ S) (u : Y ⟶ S) (v : Z ⟶ Y) (w : T ⟶ S) (d : Z ⟶ T)
     (hw : d ≫ w = v ≫ u) (g : ℕ) (h : SmoothOfRelativeDimension g (pullback.snd p w)) :
@@ -79,32 +79,30 @@ theorem smooth_paste {X Y Z S T : Scheme.{0}} (p : X ⟶ S) (u : Y ⟶ S) (v : Z
   exact (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback sq h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x ↦ absurd (Subsingleton.elim (⊤ : Ideal R₀) (p x).asIdeal) (p x).isPrime.ne_top.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem smooth_zero_of_subsingleton [Subsingleton R₀] {X : Scheme.{0}} (p : X ⟶ Sp R₀) :
     SmoothOfRelativeDimension 0 p :=
   ⟨fun x ↦ absurd (Subsingleton.elim (⊤ : Ideal R₀) (p x).asIdeal) (p x).isPrime.ne_top.symm⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `R _ I hI R₀ _ π hπ hk A₀ _ hA e he _`. Establish `h01 : (0 : R₀) = 1` using `by simpa using he.complete`. Use `haveI : Subsingleton R₀ := subsingleton_of_zero_eq_one h01`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `hU R I hI R₀ π hπ hk A₀ 0 hA (smooth_zero_of_subsingleton _)`. Consider the case `succ n ih`. Introduce `R _ I hI R₀ _ π hπ hk A₀ _ hA e he hsm`. Establish `hnil : ∀ x ∈ RingHom.ker π, IsNilpotent x` using `fun x hx ↦ ⟨2, by`. Rewrite `hx` using `[hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `Ideal.pow_mem_pow hx 2`. Rewrite `h2` using `[hI]`. Simplify using `using h2⟩`. Take `⟨ε, hε, hπε⟩` from `exists_isIdempotentElem_eq_of_ker_isNilpotent π hnil (e 0) (hπ _) (he.idem 0)`. Use `GlobalTheory.T.exists_abelianScheme_lift_of_splitRing R R₀ I hI π hπ hk ε hε A₀ hA ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `f hf`. Take `⟨hρs, hρk, hρ2, hρc⟩` from `qmap_facts I hI π hπ hk f`. Set `B : Over (Sp (R₀ ⧸ Ideal.span {π f}))` to `(Over.pullback (spMap (Ideal.Quotient.mk _))).obj A₀`. Use `letI : GrpObj B := Functor.grpObjObj`. Establish `hB : IsGrpPullback B A₀ (spMap (Ideal.Quotient.mk _)) (pullback.fst _ _)` using `isGrpPullback_pullback A₀ _`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-Establish `hBa : IsAbelianScheme B` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA hB`. It suffices to establish `H : ∃ (A : Over (Sp (R ⧸ Ideal.span {f}))) (_ : GrpObj A) (i : B.left ⟶ A.left), IsGrpPullback B A (spMap (qmap π f)) i ∧ IsAbelianScheme A by`. Take `⟨A, _, i, h1, h2⟩` from `H`. Conclude with `⟨A, _, B, _, i, pullback.fst _ _, qmap π f, hρc, h1, hB, h2⟩`. Break down `hf with rfl | rfl` into its components or cases.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm` using `he.map (Ideal.Quotient.mk (Ideal.span {π f}))`. Use `ih (R ⧸ Ideal.span {f}) (I.map (Ideal.Quotient.mk _)) hρ2 (R₀ ⧸ Ideal.span {π f}) (qmap π f) hρs hρk B hBa (fun k ↦ Ideal.Quotient.mk _ (e k.succ)) ⟨⟨fun k ↦ hm.idem k.succ, fun i j hij ↦ hm.ortho ((Fin.succ_injective _).ne hij)⟩, ?_⟩ ?_` and prove the remaining obligations. Establish `hc` using `hm.complete`. Rewrite `hc` using `[Fin.sum_univ_succ]`. Establish `h0 : Ideal.Quotient.mk (Ideal.span {π f}) (e 0) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, ← hπε]`. Conclude with `Ideal.mem_span_singleton_self _`. Simplify `hc` using `[h0]`. Introduce `k`. Take `⟨g, hg⟩` from `hsm k.succ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨g, smooth_paste A₀.hom _ _ _ (spMap (Ideal.Quotient.lift (Ideal.span {1 - e k.succ}) ((Ideal.Quotient.mk (Ideal.span {1 - Ideal.Quotient.mk (Ideal.span {π f}) (e k.succ)})).comp (Ideal.Quotient.mk (Ideal.span {π f}))) ?_)) ?_ g hg⟩` and prove the remaining obligations. Introduce `a ha`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Establish `h0 : (Ideal.Quotient.mk (Ideal.span {1 - Ideal.Quotient.mk (Ideal.span {π f}) (e k.succ)})) (Ideal.Quotient.mk (Ideal.span {π f}) (1 - e k.succ)) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Rewrite using `[RingHom.comp_apply, map_mul, map_mul, h0, mul_zero]`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Take `⟨g, hg⟩` from `hsm 0`.
-
-Establish `h1 : π (1 - ε) = 1 - e 0` using `by rw [map_sub, map_one, hπε]`. Rewrite `hg` using `[← h1]`. Conclude with `hU _ _ hρ2 _ _ hρs hρk B g hBa hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_of_split (hU : UnobDim) (n : ℕ) : ∀ (R : Type) [CommRing R] (I : Ideal R), I ^ 2 = 0 →
     ∀ (R₀ : Type) [CommRing R₀] (π : R →+* R₀), Function.Surjective π → RingHom.ker π = I →
@@ -167,7 +165,7 @@ theorem lift_of_split (hU : UnobDim) (n : ℕ) : ∀ (R : Type) [CommRing R] (I 
       exact hU _ _ hρ2 _ _ hρs hρk B g hBa hg
 
 /- English proof (translation)
-Introduce `hU R _ I hI R₀ _ π hπ hk A₀ _ hA`. Take `⟨n, e, he, hsm⟩` from `GlobalTheory.T.exists_idempotents_abelianScheme_constant_dimension R₀ A₀ hA`. Conclude with `lift_of_split hU n R I hI R₀ π hπ hk A₀ hA e he hsm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem abelianUnobstructed_of_unobDim : UnobDim → GlobalTheory.Published.AbelianUnobstructed := by
   intro hU R _ I hI R₀ _ π hπ hk A₀ _ hA

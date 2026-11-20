@@ -42,9 +42,9 @@ variable (μ : A ⊗ B ⟶ C) (μᵥ : ∀ v, Aᵥ v ⊗ Rep.res (φ v).toMonoid
     resTensorHom (φ v).toMonoidHom (a v) (𝟙 _) ≫ μᵥ v)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(compactCupLeibniz φ μ μᵥ hμ).homology h' ((mappingCoconeNat.homologyδ (localRes φ A Aᵥ a) r).hom ((localCohomologyIso Aᵥ r).inv.hom ξ)) z = (mappingCoconeNat.homologyδ (localRes φ C Cᵥ c) n).hom ((localCohomologyIso Cᵥ n).inv.hom _)`. Use `(LeibnizPairing.coconeLeft_homology_homologyδ (LeibnizPairing.pi fun v => cupLeibniz (μᵥ v)) (localRes φ B (fun v => Rep.res (φ v).toMonoidHom B) fun _ => 𝟙 _) (cupLeibniz μ) (localRes_cupPairingCochains φ μ μᵥ hμ) h h' _ z).trans ?_` and prove the remaining obligations. Use `congr 1`. Apply `(ModuleCat.mono_iff_injective (localCohomologyIso Cᵥ n).hom).1 inferInstance` to reduce the goal to its premises. Rewrite using `[hom_apply_hom_apply_of_comp_eq (localCohomologyIso Cᵥ n).inv_hom_id]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `v`. Use `(LeibnizPairing.piHomologyIso_hom_pi_homology (fun v => cupLeibniz (μᵥ v)) h _ _ v).trans ?_` and prove the remaining obligations. Use `(cupLeibniz_homology (μᵥ v) h _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (fun p q => cupPairing (μᵥ v) h p q) (congrFun (hom_apply_hom_apply_of_comp_eq (localCohomologyIso Aᵥ r).inv_hom_id ξ) v) (congrFun (ConcreteCategory.congr_hom (homologyMap_piLift_piHomologyIso_hom _ (fun v => cochainsMapAlong (φ v).toMonoidHom (continuous_toMonoidHom ( …`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem compactCup_localToCompact {r s n : ℕ} (h : r + s = n) (h' : r + 1 + s = n + 1)
     (ξ : ∀ v, cohomology (Aᵥ v) r) (z : cohomology B s) :
@@ -111,7 +111,7 @@ variable {A B C : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRe
     resTensorHom (φ v).toMonoidHom (𝟙 _) (b v) ≫ μᵥ' v)
 
 /- English proof (translation)
-Substitute `hν` using the available equality. Conclude with `congrArg ν'.hom (tensorHom_cupCochain (𝟙 X) β h f g σ)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cupCochain_tensorHom_eq {K : Type u} [Group K] {X Y Y' Z : Rep.{u} k K}
     (ν : X ⊗ Y ⟶ Z) (ν' : X ⊗ Y' ⟶ Z) (β : Y ⟶ Y') (hν : ν = (𝟙 X ⊗ₘ β) ≫ ν') {r s n : ℕ}
@@ -121,7 +121,7 @@ theorem cupCochain_tensorHom_eq {K : Type u} [Group K] {X Y Y' Z : Rep.{u} k K}
   exact congrArg ν'.hom (tensorHom_cupCochain (𝟙 X) β h f g σ)
 
 /- English proof (translation)
-Substitute `hν` using the available equality. Conclude with `congrArg ν'.hom (tensorHom_cupCochain α (𝟙 Y) h f g σ)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cupCochain_tensorHom_eq' {K : Type u} [Group K] {X X' Y Z : Rep.{u} k K}
     (ν : X ⊗ Y ⟶ Z) (ν' : X' ⊗ Y ⟶ Z) (α : X ⟶ X') (hν : ν = (α ⊗ₘ 𝟙 Y) ≫ ν') {r s n : ℕ}
@@ -131,7 +131,7 @@ theorem cupCochain_tensorHom_eq' {K : Type u} [Group K] {X X' Y Z : Rep.{u} k K}
   exact congrArg ν'.hom (tensorHom_cupCochain α (𝟙 Y) h f g σ)
 
 /- English proof (translation)
-The claim follows from `LeibnizPairing.coconeLeft_homology_eq_coconeRight_homology (fA := localRes φ A Aᵥ a) (fB := localRes φ B Bᵥ b) (fC := localRes φ C Cᵥ c) (LeibnizPairing.pi fun v => cupLeibniz (μᵥ'' v)) (localRes φ A (fun v => Rep.res (φ v).toMonoidHom A) fun _ => 𝟙 _) (localRes φ B (fun v => Rep …`.
+A detailed English derivation is pending.
 -/
 theorem compactCup_eq_compactCupRight (hL : ∀ v, μᵥ v = (𝟙 _ ⊗ₘ b v) ≫ μᵥ'' v)
     (hR : ∀ v, μᵥ' v = (a v ⊗ₘ 𝟙 _) ≫ μᵥ'' v) {r s n : ℕ} (h : r + s = n)
@@ -178,21 +178,19 @@ variable {SA : ShortComplex (Rep.{u} k G)} [IsDiscreteRep SA.X₁] [IsDiscreteRe
 include hμ₂ in
 
 /- English proof (translation)
-Use `LeibnizPairing.homology_δ_add_homology_δ (SM := mappingCoconeNat.mapShortComplex (localResShortComplex φ SA SAᵥ sA)) (SN := cochainsShortComplex SB) (compactCupLeibniz φ μ₂ μ₂ᵥ hμ₂) (compactCupLeibniz φ μ₁ μ₁ᵥ hμ₁) (compactCupLeibniz φ μ₃ μ₃ᵥ hμ₃) ?_ ?_ (compactCochains_shortExac …` and prove the remaining obligations. Introduce `r s n h p y revert p`. Introduce `(p : (cochainsComplex SA.X₁).X r × shiftNegOneX (piComplex fun v => cochainsComplex (SAᵥ v).X₁) r)`. Take `⟨x0, b⟩` from `p`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Conclude with `cupCochain_pairing_left μ₁ μ₂ h₁₂ h (cochainOf _ x0) (cochainOf _ y) σ`. Consider the cases of `r with`. Consider the case `zero => rfl`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ r`. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ m => revert b`. Introduce `(b : (piComplex fun v => cochainsComplex (SAᵥ v).X₁).X r)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `funext fun v => ?_` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Conclude with `cupCochain_pairing_left (S := SAᵥ v) (T := SB.map (Rep.resFunctor (φ v).toMonoidHom)) (μ₁ᵥ v) (μ₂ᵥ v) (h₁₂ᵥ v) (show r + s = m by omega) (cochainOf _ (b v)) (fun τ => cochainOf SB.X₂ y (⇑(φ v).toMonoidHom ∘ τ)) σ`. Introduce `r s n h p y revert p`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `(p : (cochainsComplex SA.X₂).X r × shiftNegOneX (piComplex fun v => cochainsComplex (SAᵥ v).X₂) r)`. Take `⟨x0, b⟩` from `p`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `cupCochain_pairing_right μ₂ μ₃ h₂₃ h (cochainOf _ x0) (cochainOf _ y) σ`. Consider the cases of `r with`. Consider the case `zero => rfl`. Consider the case `succ r`. Consider the cases of `n with`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => rfl`. Consider the case `succ m => revert b`. Introduce `(b : (piComplex fun v => cochainsComplex (SAᵥ v).X₂).X r)`. Use `funext fun v => ?_` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises.
-
-Use function extensionality and compare the values at `σ`. Conclude with `cupCochain_pairing_right (S := SAᵥ v) (T := SB.map (Rep.resFunctor (φ v).toMonoidHom)) (μ₂ᵥ v) (μ₃ᵥ v) (h₂₃ᵥ v) (show r + s = m by omega) (cochainOf _ (b v)) (fun τ => cochainOf SB.X₁ y (⇑(φ v).toMonoidHom ∘ τ)) σ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem compactCup_compactδ_add_compactCup_δ
     (h₁₂ : (SA.f ⊗ₘ 𝟙 SB.X₂) ≫ μ₂ = (𝟙 SA.X₁ ⊗ₘ SB.g) ≫ μ₁)

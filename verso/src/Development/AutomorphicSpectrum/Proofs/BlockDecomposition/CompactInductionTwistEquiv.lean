@@ -13,14 +13,14 @@ variable {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Subtype.ext (Subtype.ext (funext h)))`.
+A detailed English derivation is pending.
 -/
 theorem cIndSpace_ext {H : Subgroup G} {τ : Representation ℂ H W} {a b : cIndSpace H τ}
     (h : ∀ g, a.1.1.1 g = b.1.1.1 g) : a = b :=
   Subtype.ext (Subtype.ext (Subtype.ext (funext h)))
 
 /- English proof (translation)
-Introduce `h g`. Establish `e : f.1.1.1 ((h : G) * g) = τ h (f.1.1.1 g)` using `f.1.1.2 h g`. Use `beta_reduce`. Rewrite using `[e, map_smul, hτ, map_mul, Units.val_mul, mul_smul, smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_indSpace {H : Subgroup G} {τ τ' : Representation ℂ H W} {ψ : G →* ℂˣ}
     (hτ : ∀ (h : H) (w : W), τ' h w = ((ψ h : ℂˣ) : ℂ) • τ h w) (f : cIndSpace H τ) :
@@ -31,9 +31,9 @@ theorem mul_mem_indSpace {H : Subgroup G} {τ τ' : Representation ℂ H W} {ψ 
   rw [e, map_smul, hτ, map_mul, Units.val_mul, mul_smul, smul_comm]
 
 /- English proof (translation)
-Take `⟨L, hL, hLi⟩` from `cInd_right_inv H τ f`. Use `GlobalTheory.CompanionTheory.BZMirOnto.isOpen_fixed_of_subgroup (ind H τ') (K ⊓ L) (hK.inter hL) _ fun x hx => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show ((ψ (g * x) : ℂˣ) : ℂ) • f.1.1.1 (g * x) = ((ψ g : ℂˣ) : ℂ) • f.1.1.1 g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hLi g x hx.2, map_mul, hψ x hx.1, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_smoothPart {H : Subgroup G} {τ τ' : Representation ℂ H W} {ψ : G →* ℂˣ}
     {K : Subgroup G} (hK : IsOpen (K : Set G)) (hψ : ∀ x ∈ K, ψ x = 1)
@@ -68,13 +68,13 @@ theorem mulC_apply {H : Subgroup G} {τ τ' : Representation ℂ H W} {ψ : G �
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `G W _ _ _ _ _ H σ χ hχ`. Establish `h1 : ∀ x ∈ χ.ker, χ x = 1` using `fun x hx => hx`. Establish `h2 : ∀ x ∈ χ.ker, χ⁻¹ x = 1` using `fun x hx => by`. Rewrite using `[MonoidHom.inv_apply, show χ x = 1 from hx, inv_one]`. Establish `t1 : ∀ (h : H) (w : W), twist σ (χ.comp H.subtype) h w = ((χ h : ℂˣ) : ℂ) • σ h w` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `t2 : ∀ (h : H) (w : W), σ h w = (((χ⁻¹) h : ℂˣ) : ℂ) • twist σ (χ.comp H.subtype) h w` using `fun h w => by`. Rewrite using `[t1, smul_smul, ← Units.val_mul, MonoidHom.inv_apply, inv_mul_cancel, Units.val_one, one_smul]`. Establish `cancel : ∀ g, (((χ⁻¹) g : ℂˣ) : ℂ) * ((χ g : ℂˣ) : ℂ) = 1` using `fun g => by`. Rewrite using `[← Units.val_mul, MonoidHom.inv_apply, inv_mul_cancel, Units.val_one]`. Establish `cancel' : ∀ g, ((χ g : ℂˣ) : ℂ) * (((χ⁻¹) g : ℂˣ) : ℂ) = 1` using `fun g => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, cancel]`. Set `e : cIndSpace H σ ≃ₗ[ℂ] cIndSpace H (twist σ (χ.comp H.subtype))` to `{ toFun := mulC hχ h1 t1 map_add' := fun a b => cIndSpace_ext fun g => smul_add _ (a.1.1.1 g) (b.1.1.1 g) map_smul' := fun c a => cIndSpace_ext fun g => smul_comm _ c (a.1.1.1 g) invFun := mulC hχ h2 t2 left_inv := fun a => cIndSpace_ext fun g => by`. Rewrite using `[mulC_apply, mulC_apply, smul_smul, cancel, one_smul]`. Use `right_inv := fun a => cIndSpace_ext fun g => by`. Rewrite using `[mulC_apply, mulC_apply, smul_smul, cancel', one_smul] }`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Representation.Equiv.mk e fun y => LinearMap.ext fun f => cIndSpace_ext fun g => ?_⟩` and prove the remaining obligations. Use `show ((χ g : ℂˣ) : ℂ) • (((χ y : ℂˣ) : ℂ) • f.1.1.1 (g * y)) = ((χ (g * y) : ℂˣ) : ℂ) • f.1.1.1 (g * y)`. Rewrite using `[smul_smul, map_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_twist_cInd_equiv : ∀ {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W]
     (H : Subgroup G) (σ : Representation ℂ H W) (χ : G →* ℂˣ), IsOpen (χ.ker : Set G) →

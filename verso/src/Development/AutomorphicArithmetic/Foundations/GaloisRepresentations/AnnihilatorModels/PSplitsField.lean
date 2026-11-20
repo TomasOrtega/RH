@@ -5,15 +5,15 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Establish `hex : ∃ p, ψ (Pi.single p 1) ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `Fintype.ofFinite P` as an intermediate fact. Establish `h1 : (1 : P → K) = ∑ p, Pi.single p 1`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (Finset.univ_sum_single (1 : P → K)).symm`. Establish `h2 : ψ 1 = 0`. Rewrite using `[h1, map_sum]`. Simplify using `[h]`. Simplify using `at h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `hex`. Use `⟨p, fun x => ?_⟩` and prove the remaining obligations. Establish `hid : ψ (Pi.single p 1) = 1`. Establish `h2 : ψ (Pi.single p 1) * ψ (Pi.single p 1) = ψ (Pi.single p 1)`. Rewrite using `[← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i`. Apply the tactic sequence `by_cases h : i = p <;> simp [Pi.single_apply, h]`. Conclude with `(mul_left_inj' hp).1 (h2.trans (one_mul _).symm)`. Establish `hx : x * Pi.single p 1 = algebraMap K (P → K) (x p) * Pi.single p 1`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `i`. Apply the tactic sequence `by_cases h : i = p <;> simp [Pi.single_apply, h]`. Establish `h3` using `congrArg ψ hx`. Rewrite `h3` using `[map_mul, map_mul, AlgHom.commutes, hid]`. Simplify using `using h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_forall_algHom_pi_eq_apply_of_finite {K P : Type} [Field K] [Finite P] (ψ : (P → K) →ₐ[K] K) :
     ∃ p, ∀ x, ψ x = x p := by
@@ -45,25 +45,23 @@ private theorem exists_forall_algHom_pi_eq_apply_of_finite {K P : Type} [Field K
   simpa using h3
 
 /- English proof (translation)
-Introduce `R S K _ _ _ _ _ _ hE`. Establish `hfin : Module.Finite K (K ⊗[R] S)` using `Algebra.FormallyUnramified.finite_of_free K (K ⊗[R] S)`. Use `haveI : IsArtinianRing (K ⊗[R] S) := isArtinian_of_tower K inferInstance`. Use `haveI : Finite (PrimeSpectrum (K ⊗[R] S)) := inferInstance`. Set `e` to `Algebra.FormallyEtale.equivPiOfIsSepClosed K (K ⊗[R] S)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `F` to `splitMap (R := R) (S := S) (B := K) (I := S →ₐ[R] K) (fun z => z)`. Set `L : (S →ₐ[R] K) → ((K ⊗[R] S) →ₐ[K] K)` to `fun ψ => (Pi.evalAlgHom K (fun _ => K) ψ).comp F`. Establish `hL : ∀ ψ x, L ψ x = F x ψ` using `fun _ _ => rfl`. Establish `hLs : ∀ ψ (s : S), L ψ (1 ⊗ₜ s) = ψ s`. Introduce `ψ s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[L, F, splitMap]`. Use `choose q hq using fun ψ => exists_forall_algHom_pi_eq_apply_of_finite ((L ψ).comp e.symm.toAlgHom)`. Establish `hLe : ∀ ψ x, L ψ x = e x (q ψ)`. Introduce `ψ x`. Simplify using `using hq ψ (e x)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `qinj : Function.Injective q`. Introduce `ψ1 ψ2 h`. Use extensionality with `s`. Rewrite using `[← hLs, ← hLs, hLe, hLe, h]`. Establish `hsec : ∀ p, ∃ ψ, q ψ = p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `p`. Set `g : (K ⊗[R] S) →ₐ[K] K` to `(Pi.evalAlgHom K (fun _ => K) p).comp e.toAlgHom`. Set `ψ : S →ₐ[R] K` to `(g.restrictScalars R).comp Algebra.TensorProduct.includeRight`. Establish `hg : L ψ = g`. Apply `Algebra.TensorProduct.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subsingleton.elim _ _`. Use extensionality with `s`. Simplify using `[hLs, ψ]`. Use `⟨ψ, ?_⟩` and prove the remaining obligations. Establish `h1` using `hLe ψ (e.symm (Pi.single p 1))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hg]`. Simplify using `only [g, AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.apply_symm_apply, Pi.evalAlgHom_apply] at h1`. Assume the negation of the conclusion as `hne`. Simplify using `[Pi.single_apply, hne] at h1`. Use `⟨Finite.of_injective q qinj, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Apply `e.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `p`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨ψ, rfl⟩` from `hsec p`. Rewrite using `[← hLe, ← hLe, hL, hL, h]`. Introduce `v`. Use `⟨e.symm (Function.extend q v 0), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `ψ`.
-
-Rewrite using `[← hL, hLe, e.apply_symm_apply, qinj.extend_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.splitsField_of :
     SplitsField := by

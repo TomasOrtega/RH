@@ -11,7 +11,7 @@ open Ad3 Ad3.S
 namespace GlobalTheory.CompanionTheory.HalfWeightUnfold
 
 /- English proof (translation)
-Introduce `h`. Use `(Complex.arg_eq_pi_iff.1 h).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma arg_ne_pi {p : ℂ} (hp : 0 < p.re) : p.arg ≠ π := by
   intro h
@@ -19,14 +19,14 @@ lemma arg_ne_pi {p : ℂ} (hp : 0 < p.re) : p.arg ≠ π := by
   linarith
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Simplify using `at hp`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 lemma ne_zero_of_re_pos {p : ℂ} (hp : 0 < p.re) : p ≠ 0 := by
   rintro rfl
   simp at hp
 
 /- English proof (translation)
-Establish `h0` using `ne_zero_of_re_pos hp`. Establish `hc : conj p ≠ 0` using `(map_ne_zero _).2 h0`. Rewrite using `[Complex.log_mul_eq_add_log_iff h0 hc, Complex.arg_conj, if_neg (arg_ne_pi hp)]`. Simplify using `[Real.pi_pos.le, Real.pi_pos]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma log_mul_conj {p : ℂ} (hp : 0 < p.re) : log (p * conj p) = log p + log (conj p) := by
   have h0 := ne_zero_of_re_pos hp
@@ -35,9 +35,9 @@ lemma log_mul_conj {p : ℂ} (hp : 0 < p.re) : log (p * conj p) = log p + log (c
   simp [Real.pi_pos.le, Real.pi_pos]
 
 /- English proof (translation)
-Establish `h0` using `ne_zero_of_re_pos hp`. Establish `hc : conj p ≠ 0` using `(map_ne_zero _).2 h0`. Establish `h3 : p * conj p ≠ 0` using `mul_ne_zero h0 hc`. Rewrite using `[← cpow_natCast p k, ← cpow_natCast (conj p) ν]`. Simplify using `only [cpow_def_of_ne_zero h0, cpow_def_of_ne_zero hc, cpow_def_of_ne_zero h3, log_mul_conj hp, ← exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Take the linear combination `(log p) * h1 + (log (conj p)) * h2`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma pair {p : ℂ} (hp : 0 < p.re) (k ν : ℕ) (ω α β : ℂ) (h1 : (k : ℂ) - ω = -α)
     (h2 : (ν : ℂ) + 1 / 2 - ω = -β) :
@@ -53,7 +53,7 @@ lemma pair {p : ℂ} (hp : 0 < p.re) (k ν : ℕ) (ω α β : ℂ) (h1 : (k : �
   linear_combination (log p) * h1 + (log (conj p)) * h2
 
 /- English proof (translation)
-Establish `hr0 : (r : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`. Rewrite using `[cpow_def_of_ne_zero (mul_ne_zero hr0 hx), cpow_def_of_ne_zero hr0, cpow_def_of_ne_zero hx, Complex.log_ofReal_mul hr hx, ← exp_add, Complex.ofReal_log hr.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma real_mul_cpow {r : ℝ} (hr : 0 < r) {x : ℂ} (hx : x ≠ 0) (c : ℂ) :
     ((r : ℂ) * x) ^ c = (r : ℂ) ^ c * x ^ c := by
@@ -64,7 +64,7 @@ lemma real_mul_cpow {r : ℝ} (hr : 0 < r) {x : ℂ} (hx : x ≠ 0) (c : ℂ) :
   ring
 
 /- English proof (translation)
-Establish `hb' : ((b : ℂ)).arg ≠ π` using `arg_ne_pi (by simpa using hb)`. Rewrite using `[div_eq_mul_inv, Complex.ofReal_mul, mul_cpow_ofReal_nonneg ha.le (inv_nonneg.2 hb.le), Complex.ofReal_inv, inv_cpow _ _ hb', cpow_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma real_div_cpow {a b : ℝ} (ha : 0 < a) (hb : 0 < b) (x : ℂ) :
     (((a / b : ℝ)) : ℂ) ^ x = (a : ℂ) ^ x * (b : ℂ) ^ (-x) := by
@@ -76,13 +76,13 @@ def kap (k ν : ℕ) (ω u : ℂ) : ℂ :=
   u ^ k * conj (u ^ ν * (-I * u) ^ (1 / 2 : ℂ)) * ((normSq u : ℝ) : ℂ) ^ (-ω)
 
 /- English proof (translation)
-Take `⟨p, hp⟩ : ∃ p, p = -I * u` from `⟨_, rfl⟩`. Establish `hre : 0 < p.re` using `by simpa [hp] using hu`. Establish `hu' : u = I * p` using `by rw [hp]; linear_combination (u) * I_sq`. Establish `h0` using `ne_zero_of_re_pos hre`. Establish `hn : ((normSq u : ℝ) : ℂ) = p * conj p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.mul_conj, hu']`. Simplify using `[map_mul]`. Establish `hK : KK (al k ν s) (be k ν s) u.im u.re = p ^ (-(al k ν s)) * (conj p) ^ (-(be k ν s))`. Establish `e1 : (u.im : ℂ) - I * u.re = p`. Apply the tactic sequence `rw [hp]; apply Complex.ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e2 : (u.im : ℂ) + I * u.re = conj p`. Apply the tactic sequence `rw [hp]; apply Complex.ext <;> simp`. Rewrite using `[KK, e1, e2]`. Establish `h12 : conj (p ^ (1 / 2 : ℂ)) = (conj p) ^ (1 / 2 : ℂ)`. Establish `hh : conj (1 / 2 : ℂ) = 1 / 2` using `by rw [map_div₀, map_one, map_ofNat]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[conj_cpow p _ (arg_ne_pi hre), hh]`. Establish `key` using `pair hre k ν (om k ν s) (al k ν s) (be k ν s) (by simp only [om, al]; ring) (by simp only [om, be]; ring)`. Rewrite using `[kap, ← hp, hn, hK, hu', mul_pow, mul_pow, map_mul, map_mul, map_pow, map_pow, conj_I, h12]`. Take the linear combination `(I ^ k * (-I) ^ ν) * key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma kap_eq (k ν : ℕ) (s u : ℂ) (hu : 0 < u.im) :
     kap k ν (om k ν s) u = I ^ k * (-I) ^ ν * KK (al k ν s) (be k ν s) u.im u.re := by
@@ -109,13 +109,11 @@ lemma kap_eq (k ν : ℕ) (s u : ℂ) (hu : 0 < u.im) :
   linear_combination (I ^ k * (-I) ^ ν) * key
 
 /- English proof (translation)
-Establish `hy' : (y : ℂ) ≠ 0` using `by exact_mod_cast hy.ne'`. Establish `h1 : (y : ℂ) - I * t ≠ 0`. Introduce `h`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hy.ne' this`. Establish `h2 : (y : ℂ) + I * t ≠ 0`. Introduce `h`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hy.ne' this`. Establish `e1 : ((r * y : ℝ) : ℂ) - I * ((r * t : ℝ) : ℂ) = (r : ℂ) * ((y : ℂ) - I * t)` using `by push_cast; ring`. Establish `e2 : ((r * y : ℝ) : ℂ) + I * ((r * t : ℝ) : ℂ) = (r : ℂ) * ((y : ℂ) + I * t)` using `by push_cast; ring`. Establish `hr0 : (r : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`. Rewrite using `[KK, KK, e1, e2, real_mul_cpow hr h1, real_mul_cpow hr h2, neg_add, cpow_add _ _ hr0]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma KK_hom (α β : ℂ) {r : ℝ} (hr : 0 < r) {y : ℝ} (hy : 0 < y) (t : ℝ) :
     KK α β (r * y) (r * t) = (r : ℂ) ^ (-(α + β)) * KK α β y t := by
@@ -139,11 +137,11 @@ lemma KK_hom (α β : ℂ) {r : ℝ} (hr : 0 < r) {y : ℝ} (hy : 0 < y) (t : �
   ring
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hu`. Establish `hcast : ZMod.cast (u : ZMod M) = (d : ZMod N)`. Rewrite using `[hu]`. Conclude with `ZMod.cast_natCast hM d`. Establish `hun : IsUnit (d : ZMod N)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcast]`. Use `(u.isUnit).map (ZMod.castHom hM (ZMod N))` as an intermediate fact. Simplify using `using this`. Establish `hχ : χ (d : ZMod N) ≠ 0` using `(hun.map χ).ne_zero`. Establish `hn : ‖(c * DirichletCharacter.changeLevel hM χ⁻¹) (u : ZMod M)‖ = 1` using `DirichletCharacter.unit_norm_eq_one _ u`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu, MulChar.inv_apply_eq_inv', map_inv₀, Complex.inv_eq_conj (by simpa using congrArg id hn), Complex.conj_conj, MulChar.mul_apply, DirichletCharacter.changeLevel_eq_cast_of_dvd _ hM u, hcast, MulChar.inv_apply_eq_inv']`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 lemma char_id {N M : ℕ} [NeZero N] [NeZero M] (hM : N ∣ M) (χ : DirichletCharacter ℂ N)
     (c : DirichletCharacter ℂ M) (d : ℕ) (hu : IsUnit (d : ZMod M)) :
@@ -165,7 +163,7 @@ lemma char_id {N M : ℕ} [NeZero N] [NeZero M] (hM : N ∣ M) (χ : DirichletCh
   field_simp
 
 /- English proof (translation)
-Substitute `h1 h5 h4` using the available equality. Take the linear combination `(Xd * Pd * A * g * (dm * dp) * T * Y) * h2 - (A * T * Y * Kwi * Xd * Pd * dm * g * dp * KU) * h3`.
+Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma assemble (Xd Pd Cd A T Y g Dh Rc Q n KU Kwi Lm Lp dm dp Kv : ℂ) (h1 : Xd * Pd = Cd)
     (h2 : Q * Rc * n = KU * Kwi) (h3 : Lm * Lp = 1) (h4 : dm * dp = Dh) (h5 : Kv = Lp * dp * KU) :
@@ -176,19 +174,19 @@ lemma assemble (Xd Pd Cd A T Y g Dh Rc Q n KU Kwi Lm Lp dm dp Kv : ℂ) (h1 : Xd
     (A * T * Y * Kwi * Xd * Pd * dm * g * dp * KU) * h3
 
 /- English proof (translation)
-Rewrite using `[cpow_def_of_ne_zero hQ]`. Conclude with `exp_ne_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cpow_ne {Q : ℂ} (hQ : Q ≠ 0) (x : ℂ) : Q ^ x ≠ 0 := by
   rw [cpow_def_of_ne_zero hQ]; exact exp_ne_zero _
 
 /- English proof (translation)
-Establish `hc : (I ^ k * (-I) ^ ν : ℂ) ≠ 0` using `mul_ne_zero (pow_ne_zero _ I_ne_zero) (pow_ne_zero _ (neg_ne_zero.2 I_ne_zero))`. Establish `hU0 : U ≠ 0` using `by rintro rfl; simp at hU`. Establish `hw0 : w ≠ 0` using `by rintro rfl; simp at hw`. Establish `hQ : -I * w ≠ 0` using `mul_ne_zero (neg_ne_zero.2 I_ne_zero) hw0`. Establish `e : KK (al k ν s) (be k ν s) U.im U.re * (KK (al k ν s) (be k ν s) w.im w.re)⁻¹ = kap k ν (om k ν s) U * (kap k ν (om k ν s) w)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[kap_eq k ν s U hU, kap_eq k ν s w hw, mul_inv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hnU : 0 < normSq U` using `normSq_pos.2 hU0`. Establish `hnw : 0 < normSq w` using `normSq_pos.2 hw0`. Establish `hnw0 : ((normSq w : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hnw.ne'`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((normSq w : ℝ) : ℂ) ^ (om k ν s) = (((normSq w : ℝ) : ℂ) ^ (-(om k ν s)))⁻¹`. Rewrite using `[cpow_neg, inv_inv]`. Rewrite using `[e, map_div₀, real_div_cpow hnU hnw, neg_neg, h1, kap, kap, cpow_neg (-I * w)]`. Establish `a1` using `cpow_ne hnw0 (-(om k ν s))`. Establish `a2 : conj ((-I * w) ^ (1 / 2 : ℂ)) ≠ 0` using `(map_ne_zero _).2 (cpow_ne hQ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : conj w ≠ 0` using `(map_ne_zero _).2 hw0`. Simplify using `only [map_mul, map_inv₀, map_pow, map_div₀, div_pow, mul_inv]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 lemma kap_ratio (k ν : ℕ) (s U w : ℂ) (hU : 0 < U.im) (hw : 0 < w.im) :
     (U / w) ^ k * conj ((-I * U) ^ (1 / 2 : ℂ) * (-I * w) ^ (-(1 / 2 : ℂ)) * (U / w) ^ ν) *
@@ -218,45 +216,43 @@ lemma kap_ratio (k ν : ℕ) (s U w : ℂ) (hU : 0 < U.im) (hw : 0 < w.im) :
   field_simp
 
 /- English proof (translation)
-Introduce `h3 h4 k N M ν d _ _ hM χ f a hf c c' γ z s hd hν hc hdd`. Take `⟨L, hL⟩ : ∃ L : ℕ, L = 4 * M ^ 2` from `⟨_, rfl⟩`. Establish `hM0 : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `hL0 : 0 < L` using `by rw [hL]; positivity`. Establish `hcL : γ 1 0 = (L : ℤ) * c'` using `by rw [hc, hL]; push_cast; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : γ 0 0 * d - γ 0 1 * (4 * (M : ℤ) ^ 2 * c') = 1`. Use `γ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Rewrite using `[← hc, ← hdd]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hunit : IsUnit (d : ZMod M)`. Apply `IsUnit.of_mul_eq_one ((γ 0 0 : ℤ) : ZMod M)` to reduce the goal to its premises. Use `congrArg (Int.cast : ℤ → ZMod M) hdet` as an intermediate fact. Move the coercions through the operations in `at this`. Simplify `this` using `[mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hmem : γ ∈ Gamma0 N`. Rewrite using `[Gamma0_mem, hc]`. Establish `hdv : (N : ℤ) ∣ 4 * (M : ℤ) ^ 2 * c'` using `Dvd.dvd.mul_right (Dvd.dvd.mul_left (dvd_pow (Int.natCast_dvd_natCast.2 hM) two_ne_zero) 4) c'`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 hdv`. Establish `hz0 : (z : ℂ) ≠ 0` using `z.ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hwd⟩ : ∃ w, w = -1 / (z : ℂ)` from `⟨_, rfl⟩`. Establish `hw : 0 < w.im`. Use `UpperHalfPlane.im_inv_neg_coe_pos z` as an intermediate fact. Rewrite `this` using `[show (-(z : ℂ))⁻¹ = w by rw [hwd, inv_neg, neg_div, one_div]]`. Then use the resulting hypothesis. Establish `hw0 : w ≠ 0` using `by rintro rfl; simp at hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hUd⟩ : ∃ U : ℂ, U = d * w - (γ 1 0 : ℤ)` from `⟨_, rfl⟩`. Take `⟨v, hvd⟩ : ∃ v : ℂ, v = w / (L : ℂ)` from `⟨_, rfl⟩`. Establish `hLc : (L : ℂ) ≠ 0` using `by exact_mod_cast hL0.ne'`. Establish `hdc : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Take `⟨r, hrd⟩ : ∃ r : ℝ, r = (L : ℝ) * d` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : 0 < r` using `by rw [hrd]; positivity`. Establish `hr0 : (r : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`. Establish `hwv : w = ((L : ℝ) : ℂ) * v` using `by rw [hvd]; push_cast; field_simp`. Establish `hvim : 0 < v.im`. Establish `h` using `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hwv, Complex.im_ofReal_mul]`. Conclude with `(mul_pos_iff_of_pos_left (by exact_mod_cast hL0)).1 h`. Establish `hUe : U = (r : ℂ) * (v - (((c' : ℝ) / (d : ℝ) : ℝ) : ℂ))`. Rewrite using `[hUd, hcL, hrd, hvd]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `hUim : U.im = r * v.im`. Rewrite using `[hUe, Complex.im_ofReal_mul]`. Simplify using the standard rewrite rules. Establish `hUre : U.re = r * (v.re - (c' : ℝ) / (d : ℝ))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hUe, Complex.re_ofReal_mul]`. Simplify using the standard rewrite rules. Establish `hU : 0 < U.im` using `by rw [hUim]; positivity`. Establish `hU0 : U ≠ 0` using `by rintro rfl; simp at hU`. Establish `hden : denom γ z = U / w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[ModularGroup.denom_apply, hUd, hwd, hdd]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hq0 : U / w ≠ 0` using `div_ne_zero hU0 hw0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfz : f (γ • z) = χ (d : ZMod N) * (U / w) ^ k * f z`. Establish `e` using `congrFun (hf.char γ hmem) z`. Rewrite `e` using `[ModularForm.SL_slash_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at e`. Rewrite `e` using `[hdd, Int.cast_natCast, hden, zpow_neg, zpow_natCast, mul_inv_eq_iff_eq_mul₀ (pow_ne_zero _ hq0)]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnq : 0 < normSq (U / w)` using `normSq_pos.2 hq0`. Establish `him : (((γ • z : ℍ).im : ℝ) : ℂ) ^ om k ν s = ((z.im : ℝ) : ℂ) ^ om k ν s * ((normSq (U / w) : ℝ) : ℂ) ^ (-(om k ν s))`. Rewrite using `[ModularGroup.im_smul_eq_div_normSq, hden, real_div_cpow z.im_pos hnq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdarg : ((d : ℂ)).arg ≠ π` using `arg_ne_pi (by simpa using hd)`. Establish `hdconj : conj ((d : ℂ) ^ (-(1 / 2 : ℂ))) = (d : ℂ) ^ (-(1 / 2 : ℂ))`. Establish `hh : conj (-(1 / 2 : ℂ)) = -(1 / 2)` using `by rw [map_neg, map_div₀, map_one, map_ofNat]`. Use `conj_cpow (d : ℂ) (-(1 / 2)) hdarg` as an intermediate fact. Rewrite `this` using `[Complex.conj_natCast, hh]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `hg` using `h4 M d (γ 0 0) (γ 0 1) c' hd hdet`. Establish `ht` using `h3 M d ν (c * DirichletCharacter.changeLevel hM χ⁻¹)⁻¹ c' γ z hd hν hc hdd`. Rewrite `ht` using `[← hwd, ← hUd]`. Establish `hth : conj (th (fun n => (c * DirichletCharacter.changeLevel hM χ⁻¹)⁻¹ (n : ZMod M)) ν (γ • z : ℍ)) = conj ((c * DirichletCharacter.changeLevel hM χ⁻¹)⁻¹ (d : ZMod M)) * GS c' d * (d : ℂ) ^ (-(1 / 2 : ℂ)) * conj ((-I * U) ^ (1 / 2 : ℂ) * (-I * w) ^ (-(1 / 2 : ℂ)) * (U / w) ^ ν) * …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[ht]`. Simplify using `only [map_mul]`. Rewrite using `[hg, hdconj]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : al k ν s + be k ν s = s + 1 / 2` using `by simp only [al, be]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hKv : KK (al k ν s) (be k ν s) v.im (v.re - (c' : ℝ) / (d : ℝ)) = (r : ℂ) ^ (s + 1 / 2) * KK (al k ν s) (be k ν s) U.im U.re`. Rewrite using `[hUim, hUre, KK_hom _ _ hr hvim, hsum, ← mul_assoc, ← cpow_add _ _ hr0]`. Simplify using the standard rewrite rules. Establish `hrsplit : (r : ℂ) ^ (s + 1 / 2) = (L : ℂ) ^ (s + 1 / 2) * (d : ℂ) ^ (s + 1 / 2)`. Use `mul_cpow_ofReal_nonneg (Nat.cast_nonneg (α := ℝ) L) (Nat.cast_nonneg (α := ℝ) d) (s + 1 / 2)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrd]`. Simplify using `using this`. Establish `e3 : (L : ℂ) ^ (-(s + 1 / 2)) * (L : ℂ) ^ (s + 1 / 2) = 1`. Rewrite using `[← cpow_add _ _ hLc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e4 : (d : ℂ) ^ (-(s + 1)) * (d : ℂ) ^ (s + 1 / 2) = (d : ℂ) ^ (-(1 / 2 : ℂ))`. Rewrite using `[← cpow_add _ _ hdc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `kap_ratio k ν s U w hU hw`.
-
-Establish `h1` using `char_id hM χ c d hunit`. Simplify using `only [FF, pref, tm]`. Rewrite using `[← hL, ← hwd, ← hvd, hfz, hth, him, div_eq_mul_inv]`. Conclude with `assemble _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h1 key e3 e4 (by rw [hKv, hrsplit])`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_of_theta : T3 → T4 → T5 := by
   intro h3 h4 k N M ν d _ _ hM χ f a hf c c' γ z s hd hν hc hdd

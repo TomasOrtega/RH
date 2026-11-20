@@ -21,7 +21,7 @@ section lin
 variable {r : ℕ} (T' : ℝ)
 
 /- English proof (translation)
-Simplify using `only [hco, Prod.fst_add, Prod.snd_add, Pi.add_apply, map_add, add_mul, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hco_add_left (c c' d : Co r) : hco T' (c + c') d = hco T' c d + hco T' c' d := by
   simp only [hco, Prod.fst_add, Prod.snd_add, Pi.add_apply, map_add, add_mul, mul_add,
@@ -29,7 +29,7 @@ theorem hco_add_left (c c' d : Co r) : hco T' (c + c') d = hco T' c d + hco T' c
   ring
 
 /- English proof (translation)
-Simplify using `only [hco, Prod.fst_add, Prod.snd_add, Pi.add_apply, map_add, add_mul, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hco_add_right (c d d' : Co r) : hco T' c (d + d') = hco T' c d + hco T' c d' := by
   simp only [hco, Prod.fst_add, Prod.snd_add, Pi.add_apply, map_add, add_mul, mul_add,
@@ -37,7 +37,7 @@ theorem hco_add_right (c d d' : Co r) : hco T' c (d + d') = hco T' c d + hco T' 
   ring
 
 /- English proof (translation)
-Simplify using `only [hco, Prod.fst_sub, Prod.snd_sub, Pi.sub_apply, map_sub, sub_mul, mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hco_sub_left (c c' d : Co r) : hco T' (c - c') d = hco T' c d - hco T' c' d := by
   simp only [hco, Prod.fst_sub, Prod.snd_sub, Pi.sub_apply, map_sub, sub_mul, mul_sub,
@@ -45,7 +45,7 @@ theorem hco_sub_left (c c' d : Co r) : hco T' (c - c') d = hco T' c d - hco T' c
   ring
 
 /- English proof (translation)
-Simplify using `only [hco, Prod.fst_sub, Prod.snd_sub, Pi.sub_apply, map_sub, sub_mul, mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hco_sub_right (c d d' : Co r) : hco T' c (d - d') = hco T' c d - hco T' c d' := by
   simp only [hco, Prod.fst_sub, Prod.snd_sub, Pi.sub_apply, map_sub, sub_mul, mul_sub,
@@ -53,9 +53,9 @@ theorem hco_sub_right (c d d' : Co r) : hco T' c (d - d') = hco T' c d - hco T' 
   ring
 
 /- English proof (translation)
-Simplify using `only [hco, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`. Establish `e1 : ∑ a, x * c.1 a * conj (d.2.1 a) = x * ∑ a, c.1 a * conj (d.2.1 a)`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring`. Establish `e2 : ∑ a, x * c.2.1 a * conj (d.1 a) = x * ∑ a, c.2.1 a * conj (d.1 a)`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hco_smul_left (x : ℂ) (c d : Co r) : hco T' (x • c) d = x * hco T' c d := by
   simp only [hco, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]
@@ -67,9 +67,9 @@ theorem hco_smul_left (x : ℂ) (c d : Co r) : hco T' (x • c) d = x * hco T' c
   ring
 
 /- English proof (translation)
-Simplify using `only [hco, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, map_mul]`. Establish `e1 : ∑ a, c.1 a * (conj x * conj (d.2.1 a)) = conj x * ∑ a, c.1 a * conj (d.2.1 a)`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring`. Establish `e2 : ∑ a, c.2.1 a * (conj x * conj (d.1 a)) = conj x * ∑ a, c.2.1 a * conj (d.1 a)`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hco_smul_right (x : ℂ) (c d : Co r) : hco T' c (x • d) = conj x * hco T' c d := by
   simp only [hco, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, map_mul]
@@ -81,7 +81,7 @@ theorem hco_smul_right (x : ℂ) (c d : Co r) : hco T' c (x • d) = conj x * hc
   ring
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simp [hco]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hco_add_left, ih]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hco_sum_left {ι : Type*} (s : Finset ι) (f : ι → Co r) (d : Co r) :
     hco T' (∑ i ∈ s, f i) d = ∑ i ∈ s, hco T' (f i) d := by
@@ -91,7 +91,7 @@ theorem hco_sum_left {ι : Type*} (s : Finset ι) (f : ι → Co r) (d : Co r) :
   rw [Finset.sum_insert ha, Finset.sum_insert ha, hco_add_left, ih]
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simp [hco]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hco_add_right, ih]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hco_sum_right {ι : Type*} (s : Finset ι) (c : Co r) (f : ι → Co r) :
     hco T' c (∑ i ∈ s, f i) = ∑ i ∈ s, hco T' c (f i) := by
@@ -101,7 +101,7 @@ theorem hco_sum_right {ι : Type*} (s : Finset ι) (c : Co r) (f : ι → Co r) 
   rw [Finset.sum_insert ha, Finset.sum_insert ha, hco_add_right, ih]
 
 /- English proof (translation)
-Simplify using `only [hco, map_add, map_sub, map_mul, map_sum, Complex.conj_conj, Complex.conj_ofReal]`. Establish `e1 : ∑ a, d.1 a * conj (c.2.1 a) = ∑ a, conj (c.2.1 a) * d.1 a` using `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Establish `e2 : ∑ a, d.2.1 a * conj (c.1 a) = ∑ a, conj (c.1 a) * d.2.1 a` using `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hco_symm (c d : Co r) : hco T' d c = conj (hco T' c d) := by
   simp only [hco, map_add, map_sub, map_mul, map_sum, Complex.conj_conj, Complex.conj_ofReal]
@@ -119,28 +119,28 @@ section vec
 variable {k r : ℕ} {z' ν' : Fin (2 * r + k + 1) → ℂ}
 
 /- English proof (translation)
-Simplify using `only [cvec, Prod.fst_add, Prod.snd_add, Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem cvec_add (c d : Co r) : cvec k z' ν' (c + d) = cvec k z' ν' c + cvec k z' ν' d := by
   simp only [cvec, Prod.fst_add, Prod.snd_add, Pi.add_apply, add_smul, Finset.sum_add_distrib]
   abel
 
 /- English proof (translation)
-Simplify using `only [cvec, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, mul_smul, ← Finset.smul_sum, smul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cvec_smul (x : ℂ) (c : Co r) : cvec k z' ν' (x • c) = x • cvec k z' ν' c := by
   simp only [cvec, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, mul_smul,
     ← Finset.smul_sum, smul_add]
 
 /- English proof (translation)
-Simplify using `only [cvec, Prod.fst_sub, Prod.snd_sub, Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem cvec_sub (c d : Co r) : cvec k z' ν' (c - d) = cvec k z' ν' c - cvec k z' ν' d := by
   simp only [cvec, Prod.fst_sub, Prod.snd_sub, Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]
   abel
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simp [cvec]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, cvec_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem cvec_sum {ι : Type*} (s : Finset ι) (f : ι → Co r) :
     cvec k z' ν' (∑ i ∈ s, f i) = ∑ i ∈ s, cvec k z' ν' (f i) := by
@@ -150,47 +150,47 @@ theorem cvec_sum {ι : Type*} (s : Finset ι) (f : ι → Co r) :
   rw [Finset.sum_insert ha, Finset.sum_insert ha, cvec_add, ih]
 
 /- English proof (translation)
-Establish `hH : ∀ i j, conj (Hpk k r j i) = Hpk k r i j`. Introduce `i j`. Simplify using `only [Hpk, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | omega | rfl | simp`. Establish `hsym : ∀ v w : Fin (2 * r + k + 1) → ℂ, herm (Hpk k r) v w = conj (herm (Hpk k r) w v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `v w`. Simplify using `only [herm, dotProduct, Matrix.mulVec, Pi.star_apply, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul, Complex.star_def, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hH j i]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `a1 : ∀ v v' w : Fin (2 * r + k + 1) → ℂ, herm (Hpk k r) (v + v') w = herm (Hpk k r) v w + herm (Hpk k r) v' w`. Introduce `v v' w`. Simplify using `only [herm, Matrix.mulVec_add, dotProduct_add]`. Establish `s1 : ∀ (x : ℂ) (v w : Fin (2 * r + k + 1) → ℂ), herm (Hpk k r) (x • v) w = x * herm (Hpk k r) v w`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x v w`. Simplify using `only [herm, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`. Establish `a2 : ∀ v w w' : Fin (2 * r + k + 1) → ℂ, herm (Hpk k r) v (w + w') = herm (Hpk k r) v w + herm (Hpk k r) v w'`. Introduce `v w w'`. Rewrite using `[hsym, a1, map_add, ← hsym, ← hsym]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `s2 : ∀ (x : ℂ) (v w : Fin (2 * r + k + 1) → ℂ), herm (Hpk k r) v (x • w) = conj x * herm (Hpk k r) v w`. Introduce `x v w`. Rewrite using `[hsym, s1, map_mul, ← hsym]`. Establish `m1 : ∀ (f : Fin r → Fin (2 * r + k + 1) → ℂ) (w : Fin (2 * r + k + 1) → ℂ), herm (Hpk k r) (∑ a, f a) w = ∑ a, herm (Hpk k r) (f a) w` using `fun f w => map_sum (AddMonoidHom.mk' (fun v => herm (Hpk k r) v w) fun v v' => a1 v v' w) f Finset.univ`. Establish `m2 : ∀ (v : Fin (2 * r + k + 1) → ℂ) (f : Fin r → Fin (2 * r + k + 1) → ℂ), herm (Hpk k r) v (∑ a, f a) = ∑ a, herm (Hpk k r) v (f a)` using `fun v f => map_sum (AddMonoidHom.mk' (fun w => herm (Hpk k r) v w) fun w w' => a2 v w w') f Finset.univ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmv : ∀ p : Fin (2 * r + k + 1), Hpk k r *ᵥ Pi.single p (1 : ℂ) = fun i => Hpk k r i p`. Introduce `p`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hst : ∀ q : Fin (2 * r + k + 1), star (Pi.single q (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) = (Pi.single q (1 : ℂ) : Fin (2 * r + k + 1) → ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `intro q; ext i; by_cases h : i = q <;> simp [Pi.single_apply, h]`. Establish `hsing : ∀ p q : Fin (2 * r + k + 1), herm (Hpk k r) (Pi.single p 1) (Pi.single q 1) = Hpk k r q p`. Introduce `p q`. Simplify using `only [herm, hmv, hst]`. Simplify using `[dotProduct, Pi.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hpw : ∀ (p : Fin (2 * r + k + 1)) (w : Fin (2 * r + k + 1) → ℂ), (p.val < r ∨ r + k < p.val) → inWb k r w → herm (Hpk k r) (Pi.single p 1) w = 0`. Introduce `p w hp hw`. Simplify using `only [herm, hmv, dotProduct, Pi.star_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hw i hi]`. Simplify using the standard rewrite rules. Establish `h0 : Hpk k r i p = 0`. Simplify using `only [Hpk, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | omega | rfl | simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h0, mul_zero]`. Establish `hpw' : ∀ (p : Fin (2 * r + k + 1)) (w : Fin (2 * r + k + 1) → ℂ), (p.val < r ∨ r + k < p.val) → inWb k r w → herm (Hpk k r) w (Pi.single p 1) = 0`. Introduce `p w hp hw`. Rewrite using `[hsym, hpw p w hp hw, map_zero]`. Establish `hEe : ∀ a : Fin r, ee k r a = Pi.single ⟨a.val, by have` using `a.isLt; omega⟩ 1 := fun a => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hEs : ∀ a : Fin r, es k r a = Pi.single ⟨2 * r + k - a.val, by have` using `a.isLt; omega⟩ 1 := fun a => rfl`. Establish `hee : ∀ a b : Fin r, herm (Hpk k r) (ee k r a) (ee k r b) = 0`. Introduce `a b`. Rewrite using `[hEe, hEe, hsing]`. Use `a.isLt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `b.isLt` as an intermediate fact. Simplify using `only [Hpk, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | omega | rfl | simp`. Establish `hss : ∀ a b : Fin r, herm (Hpk k r) (es k r a) (es k r b) = 0`. Introduce `a b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hEs, hEs, hsing]`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Simplify using `only [Hpk, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | omega | rfl | simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hes : ∀ a b : Fin r, herm (Hpk k r) (ee k r a) (es k r b) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[hEe, hEs, hsing]`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Hpk, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | omega | rfl | simp`. Establish `hse : ∀ a b : Fin r, herm (Hpk k r) (es k r a) (ee k r b) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[hEs, hEe, hsing]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Simplify using `only [Hpk, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | omega | rfl | simp`. Establish `hez : ∀ (a : Fin r) (w : Fin (2 * r + k + 1) → ℂ), inWb k r w → herm (Hpk k r) (ee k r a) w = 0 ∧ herm (Hpk k r) w (ee k r a) = 0 ∧ herm (Hpk k r) (es k r a) w = 0 ∧ herm (Hpk k r) w (es k r a) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `a w hw`. Establish `ha` using `a.isLt`. Establish `hb : r + k < 2 * r + k - a.val` using `by omega`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hEe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpw _ w (Or.inl ha) hw`. Rewrite using `[hEe]`. Conclude with `hpw' _ w (Or.inl ha) hw`. Rewrite using `[hEs]`. Conclude with `hpw _ w (Or.inr hb) hw`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hEs]`. Conclude with `hpw' _ w (Or.inr hb) hw`. Establish `hz1 : ∀ a, herm (Hpk k r) (ee k r a) z' = 0` using `fun a => (hez a z' hz').1`. Establish `hz2 : ∀ a, herm (Hpk k r) z' (ee k r a) = 0` using `fun a => (hez a z' hz').2.1`. Establish `hz3 : ∀ a, herm (Hpk k r) (es k r a) z' = 0` using `fun a => (hez a z' hz').2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz4 : ∀ a, herm (Hpk k r) z' (es k r a) = 0` using `fun a => (hez a z' hz').2.2.2`. Establish `hn1 : ∀ a, herm (Hpk k r) (ee k r a) ν' = 0` using `fun a => (hez a ν' hν).1`. Establish `hn2 : ∀ a, herm (Hpk k r) ν' (ee k r a) = 0` using `fun a => (hez a ν' hν).2.1`. Establish `hn3 : ∀ a, herm (Hpk k r) (es k r a) ν' = 0` using `fun a => (hez a ν' hν).2.2.1`. Establish `hn4 : ∀ a, herm (Hpk k r) ν' (es k r a) = 0` using `fun a => (hez a ν' hν).2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hzν : herm (Hpk k r) z' ν' = 0` using `by rw [hsym, hνz, map_zero]`. Take `⟨tz, htz⟩ : ∃ t : ℝ, herm (Hpk k r) z' z' = t` from `⟨(herm (Hpk k r) z' z').re, (Complex.conj_eq_iff_re.mp (hsym z' z').symm).symm⟩`. Simplify using `only [cvec, a1, a2, s1, s2, m1, m2, hee, hss, hes, hse, hz1, hz2, hz3, hz4, hn1, hn2, hn3, hn4, hzν, hνz, hνν, htz, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, mul_one, mul_ite, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using `only [hco, Tz, htz, Complex.ofReal_re, Complex.ofReal_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem herm_cvec (hz' : inWb k r z') (hν : inWb k r ν') (hνz : herm (Hpk k r) ν' z' = 0)
     (hνν : herm (Hpk k r) ν' ν' = 1) (c d : Co r) :

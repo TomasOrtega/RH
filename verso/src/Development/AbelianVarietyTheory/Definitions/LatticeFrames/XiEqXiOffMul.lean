@@ -25,19 +25,19 @@ def QPinS (v : VCom c) (w : VTup t) : Prop :=
   ∃ (w₀ : VTup t) (s : ∀ j, t.Ch j → ℂ), (∀ j α, s j α ^ 2 = 1) ∧ QPin v w₀ ∧ w = twist w₀ s
 
 /- English proof (translation)
-Consider the cases of `w`. Simplify using `[twist]`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 -/
 theorem twist_one (w : VTup t) : twist w (fun _ _ => 1) = w := by
   cases w; simp [twist]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨w, fun _ _ => 1, fun _ _ => one_pow _, h, (twist_one w).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem QPinS.of {v : VCom c} {w : VTup t} (h : QPin v w) : QPinS v w :=
   ⟨w, fun _ _ => 1, fun _ _ => one_pow _, h, (twist_one w).symm⟩
 
 /- English proof (translation)
-Simplify using `[twist]`.
+Simplify using the standard rewrite rules.
 -/
 example (w : VTup t) (j α γ) : (twist w fun _ _ => -1).dQ j α γ = w.dQ j α γ ∧ (twist w fun _ _ => -1).ε j α = -w.ε j α := by
   simp [twist]
@@ -59,7 +59,7 @@ structure QGeo.FrTie (G : QGeo v B PP) (fr : ∀ i, i ≤ D.R.m → Matrix (Fin 
       ∀ r a, G.FM.β r a = (ofSplit G.q).pr (fr (G.s + 1 + 1) hm r (e a))
 
 /- English proof (translation)
-Establish `h : R.k + j + j * R.t = R.N j` using `by show _ = R.k + j * (R.t + 1)`. Expand and normalize the polynomial expressions, which then agree. Use `⟨((Equiv.sumCongr finSumFinEquiv finProdFinEquiv).trans finSumFinEquiv).trans (finCongr h), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro ((i | i) | ⟨p, q⟩) <;> simp [GlobalTheory.SymBridge.xPos, finProdFinEquiv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_xOrd (R : Ranks) (j : ℕ) :
     ∃ e : XIx (Fin R.k) (Fin R.t) j ≃ Fin (R.N j), GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.xPos e := by
@@ -71,9 +71,9 @@ theorem exists_xOrd (R : Ranks) (j : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `h : R.k + (s + 1) + (s + 2) * R.t + 1 = R.N (s + 1 + 1)` using `by show _ = R.k + (s + 1 + 1) * (R.t + 1)`. Expand and normalize the polynomial expressions, which then agree. Use `⟨((Equiv.sumCongr ((Equiv.sumCongr finSumFinEquiv finProdFinEquiv).trans finSumFinEquiv) finOneEquiv.symm).trans finSumFinEquiv).trans (finCongr h), ?_⟩` and prove the remaining obligations. Introduce and unpack `(((i | i) | ⟨p, q⟩) | i)`. Simplify using `[GlobalTheory.SymBridge.zPos]`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.SymBridge.zPos]`. Simplify using `[GlobalTheory.SymBridge.zPos, finProdFinEquiv]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[← hs, ← h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem exists_topOrd (R : Ranks) (s : ℕ) (hs : s + 1 + 1 = R.m) :
     ∃ e : Ix (Fin R.k ⊕ Fin (s + 1)) (Fin R.t) (s + 2) ⊕ Unit ≃ Fin (R.N (s + 1 + 1)),
@@ -126,9 +126,9 @@ def xiOff (i : ℕ) (hi : i + 1 ≤ B.R.m) (α : Ch₀ i) (γ : Ch₀ (i + 1))
     ∏ P ∈ Finset.univ.filter (fun P : BadPr I a => P.1 ∈ (B.primes X).vGs), locXi A i α γ P (homOf I l Z i hi z))
 
 /- English proof (translation)
-Rewrite using `[xiOff, ← map_mul, mul_assoc, Finset.prod_filter_mul_prod_filter_not, TwDat.xi]`. Use `congr 1`. Unfold `xiAt locXi`. Use `split_ifs with h1 h2 h3`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by have := B.R.two_le_m; omega⟩`. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem xi_eq_xiOff_mul (i : ℕ) (hi : i + 1 ≤ B.R.m) (α : Ch₀ i) (γ : Ch₀ (i + 1)) (z) :
     A.xi i hi α γ z = xiOff A i hi α γ z *
@@ -153,7 +153,7 @@ def BaseMoved : Prop := ∀ i, i ≤ B.R.m → ∀ β β',
   (A.p0 i β).1.1.deco = (A.p0 i β').1.1.deco ∧ (i + 1 ≠ B.R.m → (A.p0 i β).1.1 = (A.p0 i β').1.1)
 
 /- English proof (translation)
-Introduce `i hi β β'` and use `⟨congrArg _ (h i hi β β').1, fun _ => (h i hi β β').1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem BaseCommon.moved (h : BaseCommon A) : BaseMoved A :=
   fun i hi β β' => ⟨congrArg _ (h i hi β β').1, fun _ => (h i hi β β').1⟩
@@ -197,15 +197,15 @@ variable {A}
 variable (A)
 
 /- English proof (translation)
-Establish `hs : G.s + 1 + 1 = B.R.m` using `G.hs`. Establish `h0` using `(A.p0 (G.s + 1) β).repY_mem hs`. Take `⟨y, hy, hY⟩` from `(A.p0 (G.s + 1) β).mem_ybSet hs`. Use `set z := Formalism.L2.Col.repY (A.p0 (G.s + 1) β).1.2 with hz`. Rewrite `h0` using `[hY]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(Formalism.L2.Col.mem_locLat _ _ _ _).1 hy P`. Establish `h2` using `(Formalism.L2.Col.mem_locLat _ _ _ _).1 h0 P`. Simplify using `only [if_neg hP] at h1 h2`. Establish `hq : ((Formalism.L2.Col.qOf P.1 : ℕ) : B.fields.E) ≠ 0` using `fun h => G.ϖ.ne_zero (by rw [hc.unif, h, map_zero])`. Establish `h3 : ((Formalism.L2.Col.qOf P.1 : ℕ) : B.fields.E) ^ (I.cst a).M • z ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (A.p0 (G.s + 1) β).1.1.deco.1.N`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `add_mem h1 (Submodule.smul_mem _ (((Formalism.L2.Col.qOf P.1 : ℕ) : 𝓞 B.fields.E) ^ (2 * (I.cst a).M)) h2)`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← algebraMap_smul B.fields.E (((Formalism.L2.Col.qOf P.1 : ℕ) : 𝓞 B.fields.E) ^ (2 * (I.cst a).M)), smul_smul, map_pow, map_natCast, _root_.zpow_neg, inv_inv, zpow_natCast, two_mul, pow_add, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hq), mul_one, ← smul_add, add_sub_cancel]`. Rewrite `h3` using `[← (ptFr (A.p0 (G.s + 1) β).1.1 P.1).apply_symm_apply (_ • z)]`. Establish `h5` using `(isFr_ptFr (A.p0 (G.s + 1) β).1.1 P.1 _).1 h3`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h5` using `[← frsF_eq_ptFr I.sel (I.tup a), map_smul]`. Introduce `r`. Establish `h6` using `(hc.int _).2 (GlobalTheory.TopStep.mem_stdAt.1 h5 (e r))`. Rewrite `h6` using `[Pi.smul_apply, smul_eq_mul, map_mul, map_pow, ← hc.unif, Valuation.mem_integer_iff, map_mul]`. Establish `h7 : 0 < valuation G.k ((G.ϖ : G.k) ^ (I.cst a).M)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow]`. Conclude with `pow_pos ((Valuation.pos_iff _).2 G.ϖ.ne_zero) _`. Rewrite using `[Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, map_inv₀, ← mul_one (_⁻¹), le_inv_mul_iff₀ h7]`. Conclude with `h6`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ownVec_mem (P : BadPr I a) (hP : P.1 ∉ (B.primes X).vGs)
     (hc : GlobalTheory.SymBridge.IsCompl (E := B.fields.E) P.1 (Formalism.L2.Col.qOf P.1) (G.q.pr.comp (incA (I.rec7 l Z))) G.ϖ) (e) (β) :

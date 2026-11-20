@@ -26,28 +26,26 @@ Both sides reduce to the same expression.
 theorem locF'_eq (b : Fin (D.R.rS + 1)) : locF' Zd p G b = sF' Zd p b • baseChange₂ D p (frame G b) := rfl
 
 /- English proof (translation)
-Rewrite using `[locF'_eq, smul_smul, (isUnit_sF' Zd p b).val_inv_mul, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bcP_frameG (b : Fin (D.R.rS + 1)) :
     baseChange₂ D p (frame G b) = (((isUnit_sF' Zd p b).unit⁻¹ : ((D.s.atP p).Ep)ˣ) : (D.s.atP p).Ep) • locF' Zd p G b := by
   rw [locF'_eq, smul_smul, (isUnit_sF' Zd p b).val_inv_mul, one_smul]
 
 /- English proof (translation)
-Simplify using `[frame, FlagG.fvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_csG (i : Fin D.R.rS) : frame G i.castSucc = G.fl.e i := by
   simp [frame, FlagG.fvec]
 
 /- English proof (translation)
-Simplify using `[frame, FlagG.fvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_lastG : frame G (Fin.last D.R.rS) = G.fl.z := by
   simp [frame, FlagG.fvec]
 
 /- English proof (translation)
-Unfold `sF'`. Rewrite using `[frFac_last' Zd p, mul_one]`. Unfold `TermLoc.sgnP'`. Use `split`. Conclude with `sgnP_last p`.
-
-Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sF'_last : sF' Zd p (Fin.last D.R.rS) = 1 := by
   unfold sF'
@@ -58,17 +56,15 @@ theorem sF'_last : sF' Zd p (Fin.last D.R.rS) = 1 := by
   · simp
 
 /- English proof (translation)
-Rewrite using `[locF'_eq, sF'_last, one_smul, frame_lastG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locF'_last : locF' Zd p G (Fin.last D.R.rS) = baseChange₂ D p G.fl.z := by
   rw [locF'_eq, sF'_last, one_smul, frame_lastG]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `x ∈ Submodule.span D.host.E (Set.range G.fl.e) at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Rewrite using `[← frame_csG, bcP_frameG Zd p G]`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
-
-Consider the case `smul c x _ hx => rw [Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bcP_X' {x : (VS D).V} (hx : x ∈ Xsp G) : baseChange₂ D p x ∈ (locH Zd p).X (locF' Zd p G) := by
   change x ∈ Submodule.span D.host.E (Set.range G.fl.e) at hx
@@ -82,11 +78,11 @@ theorem bcP_X' {x : (VS D).V} (hx : x ∈ Xsp G) : baseChange₂ D p x ∈ (locH
   | smul c x _ hx => rw [Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Use `show ∀ w ∈ (locH Zd p).X (locF' Zd p G), (locH Zd p).h (baseChange₂ D p m) w = 0`. Introduce `w hw`. Rewrite using `[h_eq]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `hw`. Simplify using `only`. Rewrite using `[locF'_eq, frame_csG, LocFacts.localForm_smul_right, ← h_eq, localForm_baseChange, (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hm _ (Submodule.subset_span ⟨i, rfl⟩), map_zero, mul_zero]`. Consider the case `zero => exact LocFacts.localForm_zero_right Zd p _`. Consider the case `add a b _ _ ha hb => rw [LocFacts.localForm_add_right, ha, hb, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c w _ hw => rw [LocFacts.localForm_smul_right, hw, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem baseChangeAt_perp' {m : (VS D).V} (hm : m ∈ orth (VS D) (Xsp G)) :
     baseChange₂ D p m ∈ (locH Zd p).perp ((locH Zd p).X (locF' Zd p G)) := by
@@ -106,7 +102,7 @@ theorem baseChangeAt_perp' {m : (VS D).V} (hm : m ∈ orth (VS D) (Xsp G)) :
 end Frame
 
 /- English proof (translation)
-The claim follows from `mem_of_bcP Zd hΛ fun p => by rw [← locF'_last Zd p G]; exact (h p).1 _`.
+A detailed English derivation is pending.
 -/
 theorem z_memG {T' : D.host.E} (G : LFlag (VS D) D.R.rS T') {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hΛ : Submodule.IsLattice D.host.E Λ) (h : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p Λ) (locF' Zd p G)) :
@@ -114,17 +110,15 @@ theorem z_memG {T' : D.host.E} (G : LFlag (VS D) D.R.rS T') {Λ : Submodule (�
   mem_of_bcP Zd hΛ fun p => by rw [← locF'_last Zd p G]; exact (h p).1 _
 
 /- English proof (translation)
-Use `int_of_loc Zd fun p => ?_` and prove the remaining obligations. Use `set m := ∑ a, c a • frame G a with hm`. Establish `hbm : baseChange₂ D p m = ∑ a, ((D.s.atP p).ιE (c a) * ((((isUnit_sF' Zd p a).unit⁻¹ : ((D.s.atP p).Ep)ˣ)) : (D.s.atP p).Ep)) • locF' Zd p G a`. Rewrite using `[hm, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.SG.Pf.LocalDenominators.baseChange_smul₂, bcP_frameG Zd p G, smul_smul]`. Establish `hspan : baseChange₂ D p m ∈ Submodule.span (D.s.atP p).Ep (Set.range (locF' Zd p G))`. Rewrite using `[hbm]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Establish `h2` using `(hprim p).2.2 _ (baseChange_mem_localLattice Zd hc p) hspan`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨o, ho⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 h2`. Establish `hli` using `(hprim p).2.1`. Establish `hz : ∑ a, (((o a : (Zd.M p).L.O) : (D.s.atP p).Ep) - (D.s.atP p).ιE (c a) * ((((isUnit_sF' Zd p a).unit⁻¹ : ((D.s.atP p).Ep)ˣ)) : (D.s.atP p).Ep)) • locF' Zd p G a = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← hbm, ← ho]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [sub_eq_zero]`. Both sides reduce to the same expression. Establish `h3` using `Fintype.linearIndependent_iff.1 hli _ hz (Fin.last D.R.rS)`. Establish `key : ∀ {a : (D.s.atP p).Ep} (h : IsUnit a), a = 1 → (((h.unit⁻¹ : ((D.s.atP p).Ep)ˣ)) : (D.s.atP p).Ep) = 1`. Introduce `a h ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `ha` using the available equality. Establish `: h.unit = 1` using `Units.ext (IsUnit.unit_spec h)`. Rewrite using `[this, inv_one, Units.val_one]`. Establish `hone` using `key (isUnit_sF' Zd p (Fin.last D.R.rS)) (sF'_last Zd p)`. Rewrite `h3` using `[hone, mul_one, sub_eq_zero]`.
-
-Rewrite using `[← h3]`. Conclude with `(o (Fin.last D.R.rS)).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_intG {T' : D.host.E} (G : LFlag (VS D) D.R.rS T') {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hprim : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p Λ) (locF' Zd p G)) (c : Fin (D.R.rS + 1) → D.host.E)
@@ -162,21 +156,21 @@ theorem coef_intG {T' : D.host.E} (G : LFlag (VS D) D.R.rS T') {Λ : Submodule (
   exact (o (Fin.last D.R.rS)).2
 
 /- English proof (translation)
-Take `⟨f, hfz, hfX⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hzX inferInstance`. Set `ρ : Module.Dual D.host.E (VS D).V` to `(f G.fl.z)⁻¹ • f`. Establish `hρz : ρ G.fl.z = 1`. Simplify using `only [ρ, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `inv_mul_cancel₀ hfz`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hρX : ∀ x ∈ Xsp G, ρ x = 0` using `fun x hx => by`. Establish `h1 : f x ∈ (Xsp G).map f` using `⟨x, hx, rfl⟩`. Rewrite `h1` using `[hfX, Submodule.mem_bot]`. Simplify using `only [ρ, LinearMap.smul_apply, smul_eq_mul, h1, mul_zero]`. Establish `hρe : ∀ i : Fin D.R.rS, ρ (frame G i.castSucc) = 0` using `fun i => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[frame_csG]`. Conclude with `hρX _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hρl : ρ (frame G (Fin.last D.R.rS)) = 1`. Rewrite using `[frame_lastG, hρz]`. Take `⟨v, hv⟩` from `BwdNA.riesz (VS D) ρ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `U : Submodule D.host.E (VS D).V` to `Submodule.span D.host.E (Set.range (frame G))`. Establish `hint : ∀ m ∈ Λ, m ∈ U → IsIntegral ℤ ((VS D).hT m v)` using `fun m hm hmU => by`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.E).1 hmU`. Establish `hρm : ρ m = c (Fin.last D.R.rS)`. Rewrite using `[← hc, map_sum, Fin.sum_univ_castSucc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, smul_eq_mul, hρe, mul_zero, Finset.sum_const_zero, zero_add, hρl, mul_one]`. Rewrite using `[BwdNA.hsw (VS D) v m, hv, hρm]`. Conclude with `BwdNA.isInt_star (coef_intG Zd G hprim c (by rw [hc]; exact hm))`. Take `⟨w, hwΛ, hvw⟩` from `BwdNA.dual_sum (VS D) Λ hΛ hSD U v hint`. Establish `hw : ∀ a, (VS D).hT w (frame G a) = ρ (frame G a)` using `fun a => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hvw _ (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Rewrite using `[BwdNA.hsw (VS D) (frame G a) w, ← h0, ← BwdNA.hsw (VS D) (frame G a) v, hv]`. Use `⟨w, hwΛ, (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).2 fun x hx => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x ∈ Submodule.span D.host.E (Set.range G.fl.e) at hx`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Rewrite using `[BwdNA.hsw (VS D) w (G.fl.e i), ← frame_csG, hw, hρe, star_zero]`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b _ _ ha hb => rw [map_add, LinearMap.add_apply, ha, hb, add_zero]`. Consider the case `smul c x _ hx => rw [BwdNA.hT_smulL, hx, mul_zero]`. Rewrite using `[← frame_lastG, hw, hρl]`.
+A detailed English derivation is pending.
 -/
 theorem exists_yG {T' : D.host.E} (G : LFlag (VS D) D.R.rS T') {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hΛ : Submodule.IsLattice D.host.E Λ) (hSD : BwdNA.SD (VS D) Λ)

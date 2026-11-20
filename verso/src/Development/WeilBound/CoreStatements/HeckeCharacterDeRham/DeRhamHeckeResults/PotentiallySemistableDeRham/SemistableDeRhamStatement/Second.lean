@@ -31,7 +31,7 @@ def IsAdm (S : Set (BdR l)) {d : ℕ} (G : Subgroup (PadicAlgCl l ≃ₐ[ℚ_[l]
     ∀ σ : G, (r σ).map (qQ l) * P.map (σD σ.1) = P
 
 /- English proof (translation)
-The claim follows from `IntermediateField.fixingSubgroup_antitone h σ.2`.
+A detailed English derivation is pending.
 -/
 theorem fix_mono {K L : IntermediateField ℚ_[l] (PadicAlgCl l)} (h : K ≤ L)
     (σ : L.fixingSubgroup) : σ.1 ∈ K.fixingSubgroup :=

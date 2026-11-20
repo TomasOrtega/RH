@@ -7,11 +7,11 @@ noncomputable section
 namespace PI.OpWords
 
 /- English proof (translation)
-Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => exact hs x hx`. Consider the case `zero`. Introduce `m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `at hm`. Consider the case `add x y _ _ hx hy`. Introduce `m hm a`. Break down `Finset.mem_union.1 (support_add hm) with h | h` into its components or cases. Conclude with `hx m h a`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Treat this case separately.
 
-Conclude with `hy m h a`. Consider the case `smul r x _ hx`. Introduce `m hm a`. Conclude with `hx m (support_smul hm) a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wtLe_span (K : Type) [Field K] (k : ℕ) (c : ℤ) (s : Set (Pol K k))
     (hs : ∀ f ∈ s, WtLe K k c f) : ∀ f ∈ Submodule.span K s, WtLe K k c f := by
@@ -31,7 +31,7 @@ theorem wtLe_span (K : Type) [Field K] (k : ℕ) (c : ℤ) (s : Set (Pol K k))
     exact hx m (support_smul hm) a
 
 /- English proof (translation)
-Rewrite using `[map_sub, hL K k d a b A, hR K k d a b A]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kappa_ad (hL : KappaLeft) (hR : KappaRight) (K : Type) [Field K] [CharZero K] (k d : ℕ)
     (a b : Fin k) (A : Module.End K ↥(homogeneousSubmodule (Fin k) K d)) :
@@ -41,25 +41,25 @@ theorem kappa_ad (hL : KappaLeft) (hR : KappaRight) (K : Type) [Field K] [CharZe
   rfl
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `W hW _ _ f hf`. Conclude with `⟨f, by simpa using hW hf, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `W hW hst hwt f hf`. Break down `Nat.eq_zero_or_pos k with hk | hk` into its components or cases. Substitute `hk` using the available equality. Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf' : f ∈ weightedHomogeneousSubmodule K (wx 0) (c + (n + 1)) ⊓ weightedHomogeneousSubmodule K (wxi 0) (c + (n + 1))` using `hW hf`. Establish `h1` using `(Submodule.mem_inf.1 hf').1`. Rewrite `h1` using `[mem_weightedHomogeneousSubmodule]`. Rewrite using `[mul_zero]`. Use extensionality with `m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[coeff_zero]`. Assume the negation of the conclusion as `h`. Establish `h2` using `h1 h`. Establish `h3 : m = 0`. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `rcases v with i | i <;> exact i.elim0`. Rewrite `h2` using `[h3, map_zero]`. Use linear arithmetic over natural numbers and integers. Establish `htt : tt K k ≠ 0`. Introduce `h`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (eval (fun _ : Fin k ⊕ Fin k => (1 : K))) h`. Simplify using `[tt] at h1`. Use linear arithmetic over natural numbers and integers. Establish `hdiv : ∀ f ∈ W, ∃ g ∈ Bihom K k (c + n), f = tt K k * g`. Introduce `f hf`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv` using `hV K k (c + (n + 1)) c W hW hst hwt (by omega) f hf`. Take `⟨g, hg, rfl⟩` from `hD K k (c + (n + 1)) (by omega) f (hW hf) hv`. Conclude with `⟨g, by simpa using hg, rfl⟩`. Set `W' : Submodule K (Pol K k)` to `W.comap (LinearMap.mulLeft K (tt K k))`. Establish `hmem : ∀ g, g ∈ W' ↔ tt K k * g ∈ W` using `fun g => Iff.rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hW' : W' ≤ Bihom K k (c + n)`. Introduce `g hg`. Take `⟨g', hg', he⟩` from `hdiv _ ((hmem g).1 hg)`. Rewrite using `[mul_left_cancel₀ htt he]`. Conclude with `hg'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hst' : ∀ f ∈ W', ∀ a b, Rop K k a b f ∈ W'`. Introduce `g hg a b`. Rewrite using `[hmem, ← hRT K k a b g]`. Conclude with `hst _ ((hmem g).1 hg) a b`. Establish `hwt' : ∀ f ∈ W', WtLe K k c f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g hg`. Conclude with `hTW K k c g (hwt _ ((hmem g).1 hg))`. Take `⟨g, hg, rfl⟩` from `hdiv f hf`. Take `⟨g'', hg'', rfl⟩` from `ih W' hW' hst' hwt' g ((hmem g).2 hf)`. Conclude with `⟨g'', hg'', by ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem divide_all (hV : Vanish) (hD : DivT) (hRB : RBihom) (hRT : RTT) (hTW : TTWt)
     (K : Type) [Field K] [CharZero K] (k c : ℕ) : ∀ n : ℕ, ∀ (W : Submodule K (Pol K k)),
@@ -118,21 +118,21 @@ theorem divide_all (hV : Vanish) (hD : DivT) (hRB : RBihom) (hRT : RTT) (hTW : T
       exact ⟨g'', hg'', by ring⟩
 
 /- English proof (translation)
-Introduce `K _ _ k d c WW Sg hst hspan heig A hA`. Establish `key : ∃ c' : ℕ, c' ≤ c ∧ c' ≤ d ∧ ∃ g ∈ Bihom K k c', kappa K k d A = tt K k ^ (d - c') * g`. Break down `Nat.lt_or_ge c d with hcd | hdc` into its components or cases. Set `W : Submodule K (Pol K k)` to `WW.map (kappa K k d)`. Establish `hW : W ≤ Bihom K k (c + (d - c))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : c + (d - c) = d` using `by omega`. Rewrite using `[e]`. Introduce and unpack `f ⟨A', _, rfl⟩`. Conclude with `hB K k d A'`. Establish `hWst : ∀ f ∈ W, ∀ a b, Rop K k a b f ∈ W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `f ⟨A', hA', rfl⟩ a b`. Rewrite using `[← kappa_ad hL hR K k d a b A']`. Conclude with `Submodule.mem_map_of_mem (hst A' hA' a b)`. Establish `hWwt : ∀ f ∈ W, WtLe K k c f`. Establish `hWeq : W = Submodule.span K (kappa K k d '' Sg)` using `by show WW.map (kappa K k d) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hspan, Submodule.map_span]`. Rewrite using `[hWeq]`. Apply `wtLe_span` to reduce the goal to its premises. Introduce and unpack `f ⟨A', hA', rfl⟩ m hm a`. Take `⟨ω, hω, hωc⟩` from `heig A' hA'`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Rop K k a a (kappa K k d A') = (ω a : K) • kappa K k d A'`. Rewrite using `[← kappa_ad hL hR K k d a a A', hω a, map_smul]`. Establish `h2` using `hE K k a (ω a) (kappa K k d A') h1 m hm`. Rewrite using `[h2]`. Conclude with `hωc a` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨g, hg, he⟩` from `divide_all hV hD hRB hRT hTW K k c (d - c) W hW hWst hWwt _ (Submodule.mem_map_of_mem hA)`. Conclude with `⟨c, le_rfl, hcd.le, g, hg, he⟩`. Conclude with `⟨d, hdc, le_rfl, kappa K k d A, hB K k d A, by simp⟩`. Take `⟨c', hc'c, hc'd, g, hg, he⟩` from `key`. Establish `hsurj` using `hS K k d c' hc'd g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hsurj` using `[← he]`. Take `⟨B, hB', hBe⟩` from `Submodule.mem_map.1 hsurj`. Establish `hAB : B = A` using `hI K k d hBe`. Substitute `hAB` using the available equality. Establish `hmono : Wc K k d c' ≤ Wc K k d c`.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Unfold `Wc`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `Bx ⟨l, hl, rfl⟩`. Conclude with `⟨l, le_trans hl hc'c, rfl⟩`. Conclude with `hmono hB'`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem opWords_of (hI : KappaInj) (hL : KappaLeft) (hR : KappaRight) (hB : KappaBihom)
     (hE : WtOfEig) (hRB : RBihom) (hRT : RTT) (hTW : TTWt) (hD : DivT) (hV : Vanish)

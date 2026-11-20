@@ -18,14 +18,14 @@ variable {R : Type} [CommRing R] {s : R →+* R} {n r : ℕ} {Jm : Matrix (Fin n
   {Xm Ym : Matrix (Fin n) (Fin r) R} {M N : Matrix (Fin n) (Fin n) R}
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq_dot (s : R →+* R) (H : Matrix (Fin n) (Fin n) R) (x y : Fin n → R) :
     Formalism.UG.hform s H x y = (fun i => s (x i)) ⬝ᵥ (H *ᵥ y) := by
   simp only [Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, vecMul, dotProduct, map_sum, map_mul, cT, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comp_mulVec (s : R →+* R) (P : Matrix (Fin n) (Fin n) R) (x : Fin n → R) :
     (fun i => s ((P *ᵥ x) i)) = (fun i => s (x i)) ᵥ* cT s P := by
@@ -34,7 +34,7 @@ theorem comp_mulVec (s : R →+* R) (P : Matrix (Fin n) (Fin n) R) (x : Fin n �
   exact Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, hform_eq_dot, comp_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_mulVec (s : R →+* R) (P H : Matrix (Fin n) (Fin n) R) (x : Fin n → R) :
     Formalism.UG.hform s H (P *ᵥ x) (P *ᵥ x) = Formalism.UG.hform s (cT s P * H * P) x x := by
@@ -42,7 +42,7 @@ theorem hform_mulVec (s : R →+* R) (P H : Matrix (Fin n) (Fin n) R) (x : Fin n
     ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_smul (s : R →+* R) (c : R) (H : Matrix (Fin n) (Fin n) R) (x y : Fin n → R) :
     Formalism.UG.hform s (c • H) x y = c * Formalism.UG.hform s H x y := by
@@ -50,7 +50,7 @@ theorem hform_smul (s : R →+* R) (c : R) (H : Matrix (Fin n) (Fin n) R) (x y :
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using `[cT]`. Simplify using `[cT, Matrix.diagonal_apply, e, Ne.symm e]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cT_diagonal (s : R →+* R) (d : Fin r → R) : cT s (diagonal d) = diagonal fun i => s (d i) := by
   ext i j
@@ -59,7 +59,7 @@ theorem cT_diagonal (s : R →+* R) (d : Fin r → R) : cT s (diagonal d) = diag
   · simp [cT, Matrix.diagonal_apply, e, Ne.symm e]
 
 /- English proof (translation)
-Establish `e` using `pgram_unitary hU P N`. Rewrite `e` using `[hMN, Matrix.mul_one, hP, Formalism.UG.cT_mul]`. Rewrite using `[← e, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_row (hU : cT s M * Jm * M = Jm) (hMN : M * N = 1) {P : Matrix (Fin n) (Fin r) R} {d : Fin r → R}
     (hP : M * P = P * diagonal d) : cT s P * Jm * N = cT s (diagonal d) * (cT s P * Jm) := by
@@ -68,7 +68,7 @@ theorem coef_row (hU : cT s M * Jm * M = Jm) (hMN : M * N = 1) {P : Matrix (Fin 
   rw [← e, Matrix.mul_assoc]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem col_inv (hNM : N * M = 1) {P : Matrix (Fin n) (Fin r) R} {D A : Matrix (Fin r) (Fin r) R}
     (hP : M * P = P * D) (hDA : D * A = 1) : N * P = P * A := by
@@ -77,9 +77,9 @@ theorem col_inv (hNM : N * M = 1) {P : Matrix (Fin n) (Fin r) R} {D A : Matrix (
     _ = P * A := by rw [← Matrix.mul_assoc, hNM, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `e` using `pgram_unitary hU Xm Ym`. Rewrite `e` using `[hX, hY, hF.xy, Formalism.UG.cT_mul]`. Establish `e2 : cT s (diagonal d) * diagonal d' = 1`. Rewrite using `[← e]`. Establish `: cT s (diagonal d) * cT s Xm * Jm * (Ym * diagonal d') = cT s (diagonal d) * (cT s Xm * Jm * Ym) * diagonal d'` using `by simp only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, hF.xy, Matrix.mul_one]`. Use `congrFun (congrFun e2 i) i` as an intermediate fact. Rewrite `this` using `[cT_diagonal, Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply_eq, Matrix.one_apply_eq]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem diag_rel (hF : PFr s Jm Xm Ym) (hU : cT s M * Jm * M = Jm) {d d' : Fin r → R}
     (hX : M * Xm = Xm * diagonal d) (hY : M * Ym = Ym * diagonal d') (i : Fin r) : s (d i) * d' i = 1 := by
@@ -94,11 +94,11 @@ theorem diag_rel (hF : PFr s Jm Xm Ym) (hU : cT s M * Jm * M = Jm) {d d' : Fin r
   rwa [cT_diagonal, Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply_eq, Matrix.one_apply_eq] at this
 
 /- English proof (translation)
-Establish `hrow : (cT s P * Jm) i ᵥ* N = s (d i) • (cT s P * Jm) i`. Rewrite using `[← Matrix.mul_apply_eq_vecMul, coef_row hU hMN hP, cT_diagonal]`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.diagonal_mul]`. Establish `hcol : cT s N *ᵥ (fun k => s ((cT s P * Jm) i k)) = fun k => s (((cT s P * Jm) i ᵥ* N) k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [mulVec, vecMul, dotProduct, map_sum, map_mul, cT, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Rewrite using `[Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, hcol, hrow]`. Use extensionality with `a b`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Matrix.smul_apply, map_mul, hss]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem line_conj (hss : ∀ x, s (s x) = x) (hU : cT s M * Jm * M = Jm) (hMN : M * N = 1)
     {P : Matrix (Fin n) (Fin r) R} {d : Fin r → R} (hP : M * P = P * diagonal d) (i : Fin r) :
@@ -118,15 +118,15 @@ theorem line_conj (hss : ∀ x, s (s x) = x) (hU : cT s M * Jm * M = Jm) (hMN : 
   ring
 
 /- English proof (translation)
-Establish `hrel` using `diag_rel hF hU hX hY`. Establish `h1 : diagonal d * cT s (diagonal d') = 1`. Rewrite using `[cT_diagonal, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrArg s (hrel i)` as an intermediate fact. Rewrite `this` using `[map_mul, hF.ss, map_one]`. Then use the resulting hypothesis. Establish `h2 : diagonal d' * cT s (diagonal d) = 1`. Rewrite using `[cT_diagonal, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[mul_comm]`. Conclude with `hrel i`. Establish `hc : N * P = P * N`. Rewrite using `[hPe, Matrix.mul_sub, Matrix.mul_sub, Matrix.sub_mul, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, ← Matrix.mul_assoc N Xm, ← Matrix.mul_assoc N Ym, col_inv hNM hX h1, col_inv hNM hY h2, Matrix.mul_assoc Xm, Matrix.mul_assoc Ym, Matrix.mul_assoc Xm, Matrix.mul_assoc Ym, coef_r …`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `pgram_unitary hUN P P`. Rewrite `e` using `[hc]`. Establish `e2 : cT s N * (cT s P * Jm * P) * N = cT s (P * N) * Jm * (P * N)`. Rewrite using `[Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, e]`.
+A detailed English derivation is pending.
 -/
 theorem aniso_conj (hF : PFr s Jm Xm Ym) (hU : cT s M * Jm * M = Jm) (hUN : cT s N * Jm * N = Jm) (hMN : M * N = 1)
     (hNM : N * M = 1) {d d' : Fin r → R} (hX : M * Xm = Xm * diagonal d) (hY : M * Ym = Ym * diagonal d')
@@ -165,7 +165,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, hE, ratV, JR, Matrix.map_apply, sigRA_inclR, map_sum, map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hform_ratV (H : Matrix (Fin n) (Fin n) E) (ξ : Fin n → E) :
     Formalism.UG.hform (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (JR (F := F) (AF F) H) (ratV F ξ) (ratV F ξ) =
@@ -174,7 +174,7 @@ theorem hform_ratV (H : Matrix (Fin n) (Fin n) E) (ξ : Fin n → E) :
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Formalism.UG.hform _ _ _ _ = _`. Rewrite using `[hform_mulVec, h, hform_smul, hform_ratV]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem hR_of_conj (hH : Matrix (Fin n) (Fin n) E) (P : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) (c : AF F ⊗[F] E)
     (h : cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) P * JR (F := F) (AF F) hH * P = c • JR (F := F) (AF F) hH) (ξ : Fin n → E) :
@@ -183,7 +183,7 @@ theorem hR_of_conj (hH : Matrix (Fin n) (Fin n) E) (P : Matrix (Fin n) (Fin n) (
   rw [hform_mulVec, h, hform_smul, hform_ratV]
 
 /- English proof (translation)
-Unfold `JR`. Rewrite using `[← cT_map_inclR, ← Matrix.map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rows_map (J : Matrix (Fin n) (Fin n) E) (C : Matrix (Fin n) (Fin r) E) :
     cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (adMat F C) * JR (F := F) (AF F) J =
@@ -192,7 +192,7 @@ theorem rows_map (J : Matrix (Fin n) (Fin n) E) (C : Matrix (Fin n) (Fin r) E) :
   rw [← cT_map_inclR, ← Matrix.map_mul]
 
 /- English proof (translation)
-Rewrite using `[rows_map]`. Use extensionality with `a b`. Simplify using `[JR, normMat, rowOf, vecMulVec_apply, sigRA_inclR, -Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem JR_normMat (C : Matrix (Fin n) (Fin r) E) (i : Fin r) :
     JR (F := F) (AF F) (normMat σ (rowOf σ J C i)) =
@@ -204,7 +204,7 @@ theorem JR_normMat (C : Matrix (Fin n) (Fin r) E) (i : Fin r) :
   simp [JR, normMat, rowOf, vecMulVec_apply, sigRA_inclR, -Matrix.map_mul]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.sum_apply, Matrix.mul_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_lineProj (C D : Matrix (Fin n) (Fin r) E) :
     ∑ i, lineProj σ J C D i = C * (cT (σ : E →+* E) D * J) := by
@@ -213,7 +213,7 @@ theorem sum_lineProj (C D : Matrix (Fin n) (Fin r) E) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[anisoProj, Fintype.sum_sum_type]`. Simplify using `only [projFam, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[sum_lineProj, sum_lineProj, sub_add_eq_sub_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem anisoProj_eq : anisoProj σ J X Y = 1 - X * (cT (σ : E →+* E) Y * J) - Y * (cT (σ : E →+* E) X * J) := by
   rw [anisoProj, Fintype.sum_sum_type]
@@ -221,7 +221,7 @@ theorem anisoProj_eq : anisoProj σ J X Y = 1 - X * (cT (σ : E →+* E) Y * J) 
   rw [sum_lineProj, sum_lineProj, sub_add_eq_sub_sub]
 
 /- English proof (translation)
-Rewrite using `[rows_map, rows_map, anisoProj_eq, ← Matrix.map_mul, ← Matrix.map_mul]`. Use extensionality with `a b`. Simplify using `[Matrix.one_apply, apply_ite (inclR (F := F) (AF F)), -Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem adMat_anisoProj : adMat F (anisoProj σ J X Y) =
     1 - adMat F X * (cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (adMat F Y) * JR (F := F) (AF F) J) -
@@ -231,7 +231,7 @@ theorem adMat_anisoProj : adMat F (anisoProj σ J X Y) =
   simp [Matrix.one_apply, apply_ite (inclR (F := F) (AF F)), -Matrix.map_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `JR (F := F) (AF F) (cT (σ : E →+* E) (anisoProj σ J X Y) * J * anisoProj σ J X Y) = _`. Unfold `JR`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cT_map_inclR]`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem JR_aniso : JR (F := F) (AF F) (hermFam σ J X Y none) =
     cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (adMat F (anisoProj σ J X Y)) * JR (F := F) (AF F) J * adMat F (anisoProj σ J X Y) := by
@@ -240,9 +240,9 @@ theorem JR_aniso : JR (F := F) (AF F) (hermFam σ J X Y none) =
   rw [Matrix.map_mul, Matrix.map_mul, cT_map_inclR]
 
 /- English proof (translation)
-Use `⟨Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) u, ?_, GlobalTheory.Doubling.algebraMap_norm_eq h _⟩` and prove the remaining obligations. Establish `h2 : ∀ v : (AF F)ˣ, (((GlobalTheory.WeilM.adeleClass F).modu v : ℝ≥0) : ℝ) = (GroundTheory.Global.IdeleGroup.ideleModule F v : ℝ)` using `fun v => by`. Express the relevant statement in the definitionally equal form `(distribHaarChar (AdeleRing (𝓞 F) F) v : ℝ) = _`. Conclude with `GlobalTheory.ModuAdele.distribHaarChar_adeleRing F v`. Rewrite using `[← h2, GlobalTheory.ModuAdele.modu_norm_eq_absE, hu]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem idele_norm (h : IsCMExt F E σ) (u : (AF F ⊗[F] E)ˣ) (hu : GlobalTheory.Doubling.absE F E u = 1) :
     ∃ t : GroundTheory.Global.IdeleGroup F, (GroundTheory.Global.IdeleGroup.ideleModule F t : ℝ) = 1 ∧
@@ -256,11 +256,11 @@ theorem idele_norm (h : IsCMExt F E σ) (u : (AF F ⊗[F] E)ˣ) (hu : GlobalTheo
   simp
 
 /- English proof (translation)
-Take `⟨t, ht, e1⟩` from `idele_norm h u hu`. Use `⟨t⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `e0 : GroundTheory.Global.IdeleGroup.ideleModule F t = 1` using `Subtype.ext ht`. Rewrite using `[map_inv, e0, inv_one]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : algebraMap (AF F) (AF F ⊗[F] E) ((t⁻¹ : GroundTheory.Global.IdeleGroup F) : AF F) * algebraMap (AF F) (AF F ⊗[F] E) (t : AF F) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `h3` using `congrArg (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) he`. Rewrite `h3` using `[map_mul, sigRA_sigRA σ h, map_one]`. Establish `h2 : algebraMap (AF F) (AF F ⊗[F] E) (t : AF F) * (e * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ e) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `left_inv_eq_right_inv h1 h2`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem idele_norm_inv (h : IsCMExt F E σ) (u : (AF F ⊗[F] E)ˣ) (hu : GlobalTheory.Doubling.absE F E u = 1)
     (e : AF F ⊗[F] E) (he : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ u.1 * e = 1) :
@@ -285,21 +285,19 @@ theorem idele_norm_inv (h : IsCMExt F E σ) (u : (AF F ⊗[F] E)ˣ) (hu : Global
 end Adelic
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW m hm hm1 j`. Take `⟨d, d', hX, hY⟩` from `hm`. Take `⟨B, hB, hXB, hu⟩` from `hm1`. Establish `hF` using `pfrA h hJ hW`. Establish `hBd : diagonal d = B` using `(Bm_eq hF hX).symm.trans (Bm_eq hF hXB)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `unitaryA_matHom m`. Establish `hUN` using `unitaryA_matHom m⁻¹`. Establish `hMN : (matHom _ σ J m).1 * (matHom _ σ J m⁻¹).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Establish `hNM : (matHom _ σ J m⁻¹).1 * (matHom _ σ J m).1 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Establish `hunit : ∀ i, ∃ u : (AF F ⊗[F] E)ˣ, d i = u ∧ GlobalTheory.Doubling.absE F E u = 1` using `fun i => by`. Take `⟨u, e, e'⟩` from `hu i`. Conclude with `⟨u, by rw [← e, ← hBd, Matrix.diagonal_apply_eq], e'⟩`. Break down `j with _ | i | i` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨1, ?_, fun ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `le_refl _`. Rewrite using `[Units.val_one, map_one]`. Use `hR_of_conj _ _ 1 ?_ ξ` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_smul, JR_aniso]`. Conclude with `aniso_conj hF hU hUN hMN hNM hX hY _ adMat_anisoProj`. Take `⟨u, e, hu1⟩` from `hunit i`. Take `⟨t, ht, et⟩` from `idele_norm_inv h u hu1 (d' i) (by rw [← e]; exact diag_rel hF hU hX hY i)`. Use `⟨t, ht.ge, fun ξ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hR_of_conj _ _ _ ?_ ξ` and prove the remaining obligations. Rewrite using `[et]`. Express the relevant statement in the definitionally equal form `cT _ _ * JR (F := F) (AF F) (normMat σ (rowOf σ J Y i)) * _ = _ • JR (F := F) (AF F) (normMat σ (rowOf σ J Y i))`. Rewrite using `[JR_normMat]`. Conclude with `line_conj hF.ss hU hMN hY i`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, e, hu1⟩` from `hunit i`. Take `⟨t, ht, et⟩` from `idele_norm h u hu1`. Use `⟨t, ht.ge, fun ξ => ?_⟩` and prove the remaining obligations. Use `hR_of_conj _ _ _ ?_ ξ` and prove the remaining obligations. Rewrite using `[et, ← e]`.
-
-Express the relevant statement in the definitionally equal form `cT _ _ * JR (F := F) (AF F) (normMat σ (rowOf σ J X i)) * _ = _ • JR (F := F) (AF F) (normMat σ (rowOf σ J X i))`. Rewrite using `[JR_normMat]`. Conclude with `line_conj hF.ss hU hMN hX i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermFam_levi_scale : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ m ∈ leviMin σ J X Y, m ∈ minParOne σ J X → ∀ j, ∃ s : GroundTheory.Global.IdeleGroup F, 1 ≤ (GroundTheory.Global.IdeleGroup.ideleModule F s : ℝ) ∧ ∀ ξ : Fin n → E, hR (AF F) σ (hermFam σ J X Y j) ((matHom _ σ J m⁻¹).1 *ᵥ ratV F ξ) ((matHom _ σ J m⁻¹).1 *ᵥ ratV F ξ) = algebraMap (AF F) (AF F ⊗[F] E) (s : AF F) * inclR (F := F) (AF F) (hE σ (hermFam σ J X Y j) ξ ξ) := by
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW m hm hm1 j

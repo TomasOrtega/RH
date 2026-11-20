@@ -16,19 +16,19 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(Matrix.isUnit_iff_isUnit_det _).1 y.isUnit |>.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem mem_GLs_of (y : G n) : y.val ∈ GLs n := (Matrix.isUnit_iff_isUnit_det _).1 y.isUnit |>.ne_zero
 
 /- English proof (translation)
-Simplify using `only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *`. Conclude with `mul_ne_zero hx hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_mem_GLs {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n := by
   simp only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *
   exact mul_ne_zero hx hy
 
 /- English proof (translation)
-Simplify using `only [act]`. Conclude with `integral_congr_ae (Eventually.of_forall fun y => by show (k y.val) (F (x * y.val)) = (k y.val) (F' (x * y.val))`. Rewrite using `[h (mul_mem_GLs hx (mem_GLs_of y))])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_congr [MeasurableSpace (G n)] (μ : Measure (G n)) (E : KMod n) (k : Mat n → (E.V →L[ℂ] E.V))
     {F F' : Mat n → E.V} (h : Set.EqOn F F' (GLs n)) {x : Mat n} (hx : x ∈ GLs n) : act μ E k F x = act μ E k F' x := by
@@ -38,11 +38,11 @@ theorem act_congr [MeasurableSpace (G n)] (μ : Measure (G n)) (E : KMod n) (k :
     rw [h (mul_mem_GLs hx (mem_GLs_of y))])
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ E.V`. Take `⟨u, hu, hu0⟩` from `hWE n E f hf`. Establish `h1 : (1 : Mat n) ∈ GLs n` using `by simp [GLs]`. Establish `hDu` using `hDW hG n lam E Fr ε ι S Γ T hC u hu`. Establish `hk1` using `hks.2.2.2 _ hDu 1 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hPs, hPd⟩` from `hP n E u hu g T' hgb`. Establish `eqA : Set.EqOn (fun x' => ∫ t, (g t : ℂ) • DC ε Fr (u t) x') (DC ε Fr fun x' => ∫ t, (g t : ℂ) • u t x') (GLs n)` using `fun x hx => param_dc ε Fr u hu.1 g T' hgb hPd x hx`. Establish `hz` using `hZ hG n lam E Fr ε ι S Γ T hC (fun x' => ∫ t, (g t : ℂ) • u t x') hPs w`. Establish `eqB : Set.EqOn (zOp w fun x' => ∫ t, (g t : ℂ) • u t x') (act μ E ks f) (GLs n)`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hks.2.2.2 u hu x hx]`. Conclude with `act_congr μ E ks (fun y hy => hu0 y hy) hx`. Establish `eq0 : Set.EqOn (DC ε Fr f) (DC ε Fr (u 0)) (GLs n)` using `dc_congr ε Fr (isOpen_GLs n) fun y hy => (hu0 y hy).symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem act_dc (hDW : DCwave) (hP : ParamInt) (hZ : ZopDC) (hG : GelComm) (hWE : WaveEx) {lam : Fin n → ℤ} {E : KMod n}
     {Fr : Mat n → (E.V →L[ℂ] E.V)} {ε ι : Mat n →ₗ[ℝ] (E.V →L[ℂ] E.V)} {S : ℝ → (E.V →L[ℂ] E.V)} {Γ T : E.V →L[ℂ] E.V}

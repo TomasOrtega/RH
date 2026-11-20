@@ -13,7 +13,7 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnFor
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 
 /- English proof (translation)
-Unfold `PB.gap PB.gapX`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gap_eq (lam : Ψ × Fin N → ℝ) (p : Ψ × Fin N) :
     PB.gap lam p = lam p - if h : (p.2 : ℕ) + 1 < N then lam (p.1, ⟨(p.2 : ℕ) + 1, h⟩) else 0 := by
@@ -21,7 +21,7 @@ theorem gap_eq (lam : Ψ × Fin N → ℝ) (p : Ψ × Fin N) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `l1`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem abs_le_l1_norm (lam : Wt Ψ N) (τ : Ψ) (i : Fin N) : |lam τ i| ≤ l1 lam := by
   unfold l1
@@ -32,7 +32,7 @@ theorem abs_le_l1_norm (lam : Wt Ψ N) (τ : Ψ) (i : Fin N) : |lam τ i| ≤ l1
           (fun σ _ => Finset.sum_nonneg fun j _ => abs_nonneg _) (Finset.mem_univ τ)
 
 /- English proof (translation)
-The claim follows from `|PB.gap (fun x => mu x.1 x.2) p| ≤ 2 * b := by rw [gap_eq] have h0 : 0 ≤ b := le_trans (abs_nonneg _) (hb p.1 p.2) refine le_trans (abs_sub _ _) ?_ have h1 : |mu p.1 p.2| ≤ b := hb p.1 p.2 split_ifs with h · have h2 := hb p.1 ⟨(p.2 : ℕ) + 1, h⟩ simp only at h1 h2 ⊢ linarith · sim …`.
+A detailed English derivation is pending.
 -/
 theorem abs_gap_le (mu : Wt Ψ N) (b : ℝ) (hb : ∀ τ i, |mu τ i| ≤ b) (p : Ψ × Fin N) :
     |PB.gap (fun x => mu x.1 x.2) p| ≤ 2 * b := by
@@ -48,41 +48,37 @@ theorem abs_gap_le (mu : Wt Ψ N) (b : ℝ) (hb : ∀ τ i, |mu τ i| ≤ b) (p 
     linarith
 
 /- English proof (translation)
-Establish `hth : IsPotential S.A (S.th none)` using `(S.sing none).1`. Take `⟨c₀, hc₀, hcmp⟩` from `compare_global hth hpos S.potΘ`. Establish `hpotb : IsPotential S.A (S.th none + LocPot.rsmul (-c₀) S.Θ)` using `isPotentialAdd S.A _ _ hth (isPotentialRsmul S.A (-c₀) S.Θ S.potΘ)`. Establish `hbase : IsPsh S.A (S.th none + LocPot.rsmul (-c₀) S.Θ)`. Rewrite using `[isPsh_iff hpotb]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `j y hy w`. Rewrite using `[dl_add_rsmul hth S.potΘ (-c₀) j hy w]`. Use `hcmp j y hy w` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha' : ∀ t, IsPsh S.A (S.potT none t + LocPot.rsmul (-c₀) S.Θ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `t x j y hy w`. Establish `hy' : y ∈ (S.A.chart j).target ∩ ↑(S.A.chart j).symm ⁻¹' (S.th none + LocPot.rsmul (-c₀) S.Θ).U x`. Use `⟨hy.1, ?_⟩` and prove the remaining obligations. Establish `h2` using `hy.2`. Simplify using `only [Set.mem_preimage] at h2 ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨h2.1.1, h2.2⟩`. Establish `h3` using `hbase x j y hy' w`. Use `h3 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply]`.
+Supply the required witnesses or components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `show (S.th none).φ x _ + S.phT none t _ + -c₀ * S.Θ.φ x _ = (S.th none).φ x _ + -c₀ * S.Θ.φ x _`. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree. Set `Fl : Set (Option (Ψ × Fin N))` to `{a | ∃ p : Ψ × Fin N, a = some p ∧ (p.2 : ℕ) + 1 = N}`. Establish `hFl : ∀ a ∈ Fl, ∀ t, IsPsh S.A (LocPot.rsmul (-1) (S.potT a t)) ∧ IsPsh S.A (S.potT a t)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a ⟨p, rfl, hp⟩ t`. Conclude with `hfl p.1 p.2 hp t`. Establish `hnone : (none : Option (Ψ × Fin N)) ∉ Fl`. Introduce and unpack `⟨p, hp, -⟩`. Consider the cases of `hp`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hkR : (0 : ℝ) < k` using `by exact_mod_cast hk`. Use `set abelian₂ : ℝ := 1 + ∑ _p : Ψ × Fin N, (k : ℝ) * (2 * b) with hLam`. Take `⟨s₁, hs₁, hall⟩` from `psh_sum_potentials_small_parameter D _ S Fl none c₀ abelian₂ hc₀ hFl ha' hnone`. Use `⟨min s₁ 1, lt_min hs₁ one_pos, fun s hs hss => ?_⟩` and prove the remaining obligations. Take `⟨hsc, hmain⟩` from `hall s hs (le_trans hss (min_le_left _ _))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs1 : s ≤ 1` using `le_trans hss (min_le_right _ _)`. Use `⟨hsc, fun mu hmu hdom => ?_⟩` and prove the remaining obligations. Establish `hpot : ∀ a, IsPotential S.A (S.potT a (scale s))` using `fun a => potT_potential S a (Real.exp_pos _) hsc`. Use `set c : Option (Ψ × Fin N) → ℝ := PB.gapS (fun x => mu x.1 x.2) (s / k) with hc`. Establish `hcn : c none = s / k` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcs : ∀ p, c (some p) = PB.gap (fun x => mu x.1 x.2) p` using `fun p => rfl`. Set `c' : Option (Ψ × Fin N) → ℝ` to `fun a => (k : ℝ) * c a`. Establish `h1 : c' none = s` using `by show (k : ℝ) * c none = s`. Rewrite using `[hcn]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∑ a, |c' a| ≤ abelian₂`. Rewrite using `[Fintype.sum_option, hLam]`. Establish `e1 : |c' none| ≤ 1` using `by rw [h1, abs_of_pos hs]; exact hs1`. Establish `e2 : ∑ p : Ψ × Fin N, |c' (some p)| ≤ ∑ _p : Ψ × Fin N, (k : ℝ) * (2 * b)`. Use `Finset.sum_le_sum fun p _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show |(k : ℝ) * c (some p)| ≤ _`. Rewrite using `[abs_mul, abs_of_pos hkR, hcs]`. Conclude with `mul_le_mul_of_nonneg_left (abs_gap_le mu b hmu p) hkR.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : ∀ a ∉ Fl, 0 ≤ c' a`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Consider the cases of `a with`. Consider the case `none => rw [h1]`. Conclude with `hs.le`. Consider the case `some p => show 0 ≤ (k : ℝ) * c (some p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `mul_nonneg hkR.le ?_` and prove the remaining obligations. Rewrite using `[hcs, gap_eq]`. Establish `hlt : (p.2 : ℕ) + 1 < N`. Establish `hne : (p.2 : ℕ) + 1 ≠ N` using `fun h => ha ⟨p, rfl, h⟩`. Use `p.2.isLt` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_pos hlt]`. Use `hdom p.1 p.2 ⟨(p.2 : ℕ) + 1, hlt⟩ (by show (p.2 : ℕ) ≤ (p.2 : ℕ) + 1 omega)` as an intermediate fact. Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : IsPsh S.A (PB.sumPot c' (fun a => S.potT a (scale s)) + LocPot.rsmul (-(s * c₀ / 2)) S.Θ)` using `hmain c' h1 h2 h3`. Rewrite using `[isPsh_iff (isPotential_sumPot c hpot)]`. Introduce `j y hy w`. Establish `hq` using `dl_nonneg hP j hy w`. Rewrite `hq` using `[dl_add_rsmul (isPotential_sumPot c' hpot) S.potΘ _ j hy w, dl_sumPot c' hpot j hy w]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[dl_sumPot c hpot j hy w]`. Establish `hΘ` using `dl_nonneg_of_pos S.posΘ j hy w`. Establish `hsum : ∑ a, c' a * dl S.A (S.potT a (scale s)) j y w = (k : ℝ) * ∑ a, c a * dl S.A (S.potT a (scale s)) j y w`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
-
-Use `show (k : ℝ) * c a * _ = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hq` using `[hsum]`. Establish `hsc0 : 0 ≤ s * c₀ / 2 * dl S.A S.Θ j y w` using `mul_nonneg (by positivity) hΘ`. Establish `hk2 : 0 ≤ (k : ℝ) * ∑ a, c a * dl S.A (S.potT a (scale s)) j y w` using `by linarith`.
-
-Conclude with `(mul_nonneg_iff_of_pos_left hkR).mp hk2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comp_psh {D : ℕ} (S : PB.AnSys D (Option (Ψ × Fin N))) (k : ℕ) (hk : 0 < k) (b : ℝ)
     (h0 : ∀ t x, S.phT none t x = 0)
@@ -192,29 +188,27 @@ end RootFieldNumerics.A1
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Introduce `_hin II _hII Ψ _ _ N T R hSm hFl hPos`. Use `haveI := T.finC`. Use `haveI := T.neC`. Introduce `abelian₂`. Use `set b : ℝ := abelian₂ + l1 T.nu with hb`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hex : ∀ c : T.Comp, ∃ s₀ > (0 : ℝ), ∀ s, 0 < s → s ≤ s₀ → scale s ≤ (R.Sys c).t₀ ∧ ∀ mu : Wt Ψ N, (∀ τ i, |mu τ i| ≤ b) → Dominant mu → ReciprocityTheory.AnForm.M.IsPsh (R.Sys c).A (PB.sumPot (PB.gapS (fun x => mu x.1 x.2) (s / ((T.M 2 c).kA : ℕ))) fun a => (R.Sys c).potT a (scal …`. Introduce `c`. Conclude with `RootFieldNumerics.A1.comp_psh (R.Sys c) (T.M 2 c).kA (T.M 2 c).kA_pos b ((R.tie 2 c).phT_none) (hFl c) (hPos c)`. Use `choose f hfpos hf using hex`. Use `⟨min 1 (Finset.univ.inf' Finset.univ_nonempty f), lt_min one_pos ((Finset.lt_inf'_iff _).2 fun c _ => hfpos c), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `B _hB c lam s hlam hs hss hdom`. Establish `hs1 : s ≤ 1` using `le_trans hss (min_le_left _ _)`. Establish `hsf : s ≤ f c` using `le_trans hss (le_trans (min_le_right _ _) (Finset.inf'_le f (Finset.mem_univ c)))`. Take `⟨hsc, hmain⟩` from `hf c s hs hsf`. Use `set mu := T.lamS lam s with hmu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbd : ∀ τ i, |mu τ i| ≤ b`. Introduce `τ i`. Establish `e1` using `RootFieldNumerics.A1.abs_le_l1_norm lam τ i`. Establish `e2` using `RootFieldNumerics.A1.abs_le_l1_norm T.nu τ i`. Establish `e0 : mu τ i = lam τ i - s * T.nu τ i` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e0]`. Establish `e3 : |s * T.nu τ i| ≤ |T.nu τ i|`. Rewrite using `[abs_mul, abs_of_pos hs]`. Conclude with `mul_le_of_le_one_left (abs_nonneg _) hs1`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpsh` using `hmain mu hbd hdom`. Establish `hk : ((T.M B c).kA : ℝ) = ((T.M 2 c).kA : ℕ)` using `by rw [R.kA_eq B 2 c]`. Take `⟨hJ, alg, hsmooth⟩` from `hSm B c`. Use `letI := alg`. Establish `ht0 : 0 < scale s` using `Real.exp_pos _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz w hw`. Use `RootFieldNumerics.Levi.levi_nonneg (T.M B c).Ω (T.M B c).y (dimFl Ψ N) (T.M B c).arith hsmooth hJ (R.tie B c).Re.R ((T.M B c).weight (scale s) mu s) (fun k => ∑ j, (T.M B c).coef mu s j * (((T.M B c).line (scale s) j).a k : ℝ)) ?_ ?_ ?_ z hz w hw` and prove the remaining obligations. Introduce `cc zz hcc hzz`. Simplify using `only [RootModel.weight, RootFieldNumerics.Levi.log_h_torus _ cc zz hcc hzz]`. Simplify using `only [mul_add, Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => by ring`. Introduce `zz hzz`. Establish `hsm : ∀ j, IsSmoothHerm ((T.M B c).line (scale s) j)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Consider the cases of `j with`. Consider the case `none => exact (T.M B c).A_smooth`. Consider the case `some r => exact (T.M B c).x_smooth (scale s) r`. Use `show ContDiffAt ℝ 2 (fun z => ∑ j, (T.M B c).coef mu s j * Real.log (((T.M B c).line (scale s) j).h z)) zz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ContDiffAt.sum fun j _ => contDiffAt_const.mul (RootFieldNumerics.Levi.contDiffAt_log_h (hsm j) zz hzz)`. Introduce `x j hx u`. Use `RootFieldNumerics.Levi.levi_chart_nonneg (R.tie B c).Re (scale s) ht0 hsc _ hpsh x (fun y => (T.M B c).weight (scale s) mu s ((R.tie B c).Re.R.lift x y)) ?_ j hx u` and prove the remaining obligations. Introduce `y hy`. Establish `hzm : (R.tie B c).Re.R.lift x y ∈ mcPts (T.M B c).P` using `(R.tie B c).Re.R.mem x y hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : ∀ a, Real.log (((R.tie B c).Re.ref a).h ((R.tie B c).Re.R.lift x y)) + (R.Sys c).phT a (scale s) ((R.tie B c).Re.π y) = Real.log (((R.tie B c).Re.line a (scale s)).h ((R.tie B c).Re.R.lift x y))` using `fun a => (RootFieldNumerics.Levi.log_line_lift (R.tie B c).Re a (scale s) ht0 hsc x y hy).symm`. Simplify using `only [hl]`. Establish `hnone : Real.log (((R.tie B c).Re.line none (scale s)).h ((R.tie B c).Re.R.lift x y)) = Real.log ((T.M B c).A.h ((R.tie B c).Re.R.lift x y))`. Rewrite using `[← hl none, (R.tie B c).phT_none, add_zero, (R.tie B c).ref_none.2 _ hzm]`. Establish `hsome : ∀ p : Ψ × Fin N, Real.log (((R.tie B c).Re.line (some p) (scale s)).h ((R.tie B c).Re.R.lift x y)) = -∑ k ≤ p.2, Real.log (((T.M B c).x (scale s) (p.1, k)).h ((R.tie B c).Re.R.lift x y))` using `fun p => (R.tie B c).fund_reg p.1 p.2 (scale s) ht0 hsc _ hzm`.
-
-Rewrite using `[Fintype.sum_option, hnone]`. Simplify using `only [hsome]`. Establish `hsg` using `RootFieldNumerics.Levi.sum_gap_mul (fun x => mu x.1 x.2) (fun r => Real.log (((T.M B c).x (scale s) r).h ((R.tie B c).Re.R.lift x y)))`. Simplify using `only [RootModel.weight, Fintype.sum_option, RootModel.coef, RootModel.line, PB.gapS, Option.elim, mul_neg, Finset.sum_neg_distrib, neg_mul, hsg]`. Rewrite using `[hk]`.
+A detailed English derivation is pending.
 -/
 theorem RootFieldNumerics.real_tower_mean_slope_condition : PB.Inputs → ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N) (R : RealTower T), R.Smooth → R.Flat → R.Pos → T.A1 := by
   intro _hin II _hII Ψ _ _ N T R hSm hFl hPos

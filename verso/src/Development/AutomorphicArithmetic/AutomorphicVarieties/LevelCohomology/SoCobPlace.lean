@@ -5,15 +5,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `k Ω _ _ _ _ _ O _ θ z hz v A A' hA hA' hcob`. Take `⟨a, ha, m, hm⟩` from `hcob`. Take `⟨g, rfl⟩` from `exists_smul_eq_of_over hA hA'`. Use `⟨a, ha, (θ g : O) * m - a * z g, ?_⟩` and prove the remaining obligations. Introduce `h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h0, hh0, rfl⟩ : ∃ h0 ∈ Dec (F` from `k) A, h = g * h0 * g⁻¹ := by`. Use `⟨g⁻¹ * h * g, ?_, by group⟩` and prove the remaining obligations. Rewrite `hh`, the goal using `[mem_Dec]`. Rewrite using `[mul_smul, mul_smul, hh, inv_smul_smul]`. Establish `e` using `hm h0 hh0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz1 : z 1 = 0`. Establish `h11` using `hz 1 1`. Rewrite `h11` using `[one_mul, map_one, Units.val_one, one_mul]`. Take the linear combination `-h11`. Establish `hinv : (θ g : O) * z g⁻¹ = - z g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2` using `hz g g⁻¹`. Rewrite `h2` using `[mul_inv_cancel, hz1]`. Take the linear combination `-h2`. Establish `hθ : θ (g * h0 * g⁻¹) = θ h0`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm (θ g), mul_inv_cancel_right]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hθ, hz (g * h0) g⁻¹, hz g h0, map_mul, Units.val_mul]`. Take the linear combination `(θ g : O) * e + a * (θ h0 : O) * hinv`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem UpperTheory.V.X.So.cobPlace :
     ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (O : Type) [CommRing O] (θ : G k Ω →* Oˣ) (z : G k Ω → O), Coc θ z → ∀ (v : HeightOneSpectrum (𝓞 k)) (A A' : ValuationSubring Ω), IsPlaceOver A v → IsPlaceOver A' v → CobOn θ z (Dec (F := k) A) → CobOn θ z (Dec (F := k) A') := by

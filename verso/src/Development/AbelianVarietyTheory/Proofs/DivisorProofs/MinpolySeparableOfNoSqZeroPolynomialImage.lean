@@ -5,17 +5,17 @@ open scoped TensorProduct Classical ComplexOrder
 namespace GlobalTheory.LKCx
 
 /- English proof (translation)
-Use `haveI : CharZero F := (RingHom.charZero_iff σ.injective).2 inferInstance`. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Establish `hinj : Function.Injective ψ` using `ψ.injective`. Establish `hcomp : ψ.comp (algebraMap F C) = (algebraMap ℂ (Matrix (Fin n) (Fin n) ℂ)).comp σ`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [RingHom.comp_apply, hψ, Matrix.algebraMap_eq_diagonal, Matrix.scalar_apply]`. Both sides reduce to the same expression. Establish `hev : ∀ Q : Polynomial F, ψ (Polynomial.aeval c Q) = Polynomial.aeval (ψ c) (Q.map σ)`. Introduce `Q`. Rewrite using `[Polynomial.aeval_def, Polynomial.hom_eval₂, hcomp, Polynomial.aeval_def, Polynomial.eval₂_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : IsIntegral F c` using `IsIntegral.of_finite F c`. Establish `hm0 : minpoly F c ≠ 0` using `minpoly.ne_zero hint`. Rewrite using `[PerfectField.separable_iff_squarefree]`. Introduce `g hg`. Take `⟨h, hh⟩` from `hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hQ : Polynomial.aeval c (g * h) = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, hev]`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← hev, ← map_mul, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: g * h * (g * h) = minpoly F c * h` using `by rw [hh]; ring`. Rewrite using `[this, map_mul, minpoly.aeval, zero_mul, map_zero]`. Establish `hdvd : minpoly F c ∣ g * h` using `minpoly.dvd F c hQ`. Establish `hgh0 : g * h ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hm0` to reduce the goal to its premises. Rewrite using `[hh, mul_assoc, h0, mul_zero]`. Rewrite `hdvd` using `[hh, mul_assoc]`. Establish `: g * (g * h) ∣ 1 * (g * h)` using `by rwa [one_mul]`. Conclude with `isUnit_of_dvd_one ((mul_dvd_mul_iff_right hgh0).1 this)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem minpoly_separable_of_sq_zero_free
     (F C : Type) [Field F] [Ring C] [IsSimpleRing C] [Algebra F C] [FiniteDimensional F C]

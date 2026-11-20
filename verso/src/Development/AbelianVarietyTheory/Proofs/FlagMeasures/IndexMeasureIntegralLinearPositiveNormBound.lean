@@ -10,7 +10,7 @@ namespace GlobalTheory.IdxInt.Lin
 variable {W : Type} [AddCommGroup W]
 
 /- English proof (translation)
-Use `⟨hφ.1, hφ.2.1, fun w b hb => by simp [hφ.2.2.1 w b hb], ?_⟩` and prove the remaining obligations. Use `hφ.2.2.2.subset (Set.image_mono ?_)` and prove the remaining obligations. Introduce `w hw h0`. Conclude with `hw (by simp [h0])`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fine_mul {A B : AddSubgroup W} {φ : W → ℂ} (c : ℂ) (hφ : Fine A φ B) :
     Fine A (fun w => c * φ w) B := by
@@ -20,14 +20,14 @@ theorem fine_mul {A B : AddSubgroup W} {φ : W → ℂ} (c : ℂ) (hφ : Fine A 
   exact hw (by simp [h0])
 
 /- English proof (translation)
-Use `⟨le_rfl, by simp, fun _ _ _ => rfl, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem fine_zero (A : AddSubgroup W) : Fine A (fun _ => 0) A := by
   refine ⟨le_rfl, by simp, fun _ _ _ => rfl, ?_⟩
   simp
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.T.indexMeasureIntegral_eq_of_fineSubgroup A A _ (fine_zero A)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cint_zero (A : AddSubgroup W) : cint A (fun _ => 0) = 0 := by
   rw [GlobalTheory.T.indexMeasureIntegral_eq_of_fineSubgroup A A _ (fine_zero A)]; simp
@@ -44,11 +44,11 @@ private lemma quotientEquivProdOfLE_mk_fst {W : Type} [AddCommGroup W] {C B : Ad
 open scoped Pointwise Classical in
 open Function in
 /- English proof (translation)
-Take `⟨hBA, -, hinv, hsupp⟩` from `hB`. Establish `hidx : C.relIndex B ≠ 0`. Rewrite `hC` using `[← AddSubgroup.relIndex_mul_relIndex C B A hCB hBA]`. Conclude with `left_ne_zero_of_mul hC`. Establish `hfin : Finite (B ⧸ C.addSubgroupOf B)` using `Nat.finite_of_card_ne_zero hidx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hCB.trans hBA, hC, fun w b hb => hinv w b (hCB hb), ?_⟩` and prove the remaining obligations. Set `e` to `AddSubgroup.quotientEquivProdOfLE hCB`. Use `((hsupp.prod (Set.finite_univ (α := B ⧸ C.addSubgroupOf B))).preimage e.injective.injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Simplify using `only [Set.mem_preimage, Set.mem_prod, Set.mem_univ, and_true]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[quotientEquivProdOfLE_mk_fst]`. Conclude with `⟨w, hw, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma Fine_of_le_of_relIndex_ne_zero {W : Type} [AddCommGroup W] {A B C : AddSubgroup W} {φ : W → ℂ}
     (hB : _root_.GlobalTheory.IdxInt.Fine A φ B) (hCB : C ≤ B) (hC : C.relIndex A ≠ 0) :
@@ -70,7 +70,7 @@ private lemma Fine_of_le_of_relIndex_ne_zero {W : Type} [AddCommGroup W] {A B C 
 open scoped Pointwise Classical in
 variable {W : Type} [AddCommGroup W] in
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hφ`. Take `⟨B', hB'⟩` from `hψ`. Establish `hidx : (B ⊓ B').relIndex A ≠ 0` using `AddSubgroup.relIndex_inf_ne_zero hB.2.1 hB'.2.1`. Conclude with `⟨B ⊓ B', Fine_of_le_of_relIndex_ne_zero hB inf_le_left hidx, Fine_of_le_of_relIndex_ne_zero hB' inf_le_right hidx⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private lemma exists_fine_fine_of_nice_nice {W : Type} [AddCommGroup W] {A : AddSubgroup W} {φ ψ : W → ℂ}
     (hφ : _root_.GlobalTheory.IdxInt.Nice A φ) (hψ : _root_.GlobalTheory.IdxInt.Nice A ψ) :
@@ -83,9 +83,9 @@ private lemma exists_fine_fine_of_nice_nice {W : Type} [AddCommGroup W] {A : Add
 open scoped Pointwise Classical in
 variable {W : Type} [AddCommGroup W] in
 /- English proof (translation)
-Use `⟨hφ.1, hφ.2.1, fun w b hb => by simp only [Pi.add_apply, hφ.2.2.1 w b hb, hψ.2.2.1 w b hb], ?_⟩` and prove the remaining obligations. Use `(hφ.2.2.2.union hψ.2.2.2).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Break down `Function.support_add φ ψ hw with h | h` into its components or cases. Conclude with `Or.inl ⟨w, h, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr ⟨w, h, rfl⟩`.
+Prove the second alternative.
 -/
 private lemma Fine_add {W : Type} [AddCommGroup W] {A C : AddSubgroup W} {φ ψ : W → ℂ}
     (hφ : _root_.GlobalTheory.IdxInt.Fine A φ C) (hψ : _root_.GlobalTheory.IdxInt.Fine A ψ C) :
@@ -100,7 +100,7 @@ private lemma Fine_add {W : Type} [AddCommGroup W] {A C : AddSubgroup W} {φ ψ 
 open scoped Pointwise Classical in
 open Function in
 /- English proof (translation)
-Use `hφ.subset fun c hc => ⟨Quotient.out c, hc, QuotientAddGroup.out_eq' c⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 private lemma finite_support_quotient_out_of_finite_image {W : Type} [AddCommGroup W] {B : AddSubgroup W} (φ : W → ℂ)
     (hφ : ((fun w : W => (w : W ⧸ B)) '' support φ).Finite) :
@@ -111,23 +111,23 @@ open scoped Pointwise Classical in
 variable {W : Type} [AddCommGroup W] in
 
 /- English proof (translation)
-Introduce `W _ A`. Establish `hadd : ∀ φ ψ : W → ℂ, _root_.GlobalTheory.IdxInt.Nice A φ → _root_.GlobalTheory.IdxInt.Nice A ψ → _root_.GlobalTheory.IdxInt.Nice A (φ + ψ) ∧ _root_.GlobalTheory.IdxInt.cint A (φ + ψ) = _root_.GlobalTheory.IdxInt.cint A φ + _root_.GlobalTheory.IdxInt.cint A ψ ∧ ((∀ w, ‖φ w‖ ≤ (ψ …`. Introduce `φ ψ hφ hψ`. Take `⟨C, hφC, hψC⟩` from `exists_fine_fine_of_nice_nice hφ hψ`. Establish `hsum` using `Fine_add hφC hψC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfφ` using `finite_support_quotient_out_of_finite_image φ hφC.2.2.2`. Establish `hfψ` using `finite_support_quotient_out_of_finite_image ψ hψC.2.2.2`. Use `⟨⟨C, hsum⟩, ?_, fun hle => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.IdxInt.cint_eq_of_fine A C _ hsum, _root_.GlobalTheory.IdxInt.cint_eq_of_fine A C _ hφC, _root_.GlobalTheory.IdxInt.cint_eq_of_fine A C _ hψC, ← add_div]`. Simplify using `only [Pi.add_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[finsum_add_distrib hfφ hfψ]`. Rewrite using `[_root_.GlobalTheory.IdxInt.cint_eq_of_fine A C _ hφC, _root_.GlobalTheory.IdxInt.cint_eq_of_fine A C _ hψC, finsum_eq_sum_of_support_subset (s := (hfφ.union hfψ).toFinset) _ (by simp), finsum_eq_sum_of_support_subset (s := (hfφ.union hfψ).toFinset) _ (by simp), norm_div, Complex …`. Conclude with `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => hle _)`. Use `⟨hadd, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c φ hφ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `hφ`. Establish `hc : _root_.GlobalTheory.IdxInt.Fine A (fun w => c * φ w) B` using `⟨hB.1, hB.2.1, fun w b hb => by simp only [hB.2.2.1 w b hb], hB.2.2.2.subset (Set.image_mono (Function.support_mul_subset_right _ _))⟩`. Use `⟨⟨B, hc⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.IdxInt.cint_eq_of_fine A B _ hc, _root_.GlobalTheory.IdxInt.cint_eq_of_fine A B _ hB, ← mul_finsum, mul_div_assoc]`. Introduce `P`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : _root_.GlobalTheory.IdxInt.Nice A (_root_.GlobalTheory.IdxInt.ind P)`. Take `⟨B, hB⟩` from `h`. Rewrite using `[_root_.GlobalTheory.IdxInt.cint_eq_of_fine A B _ hB, finsum_eq_sum _ (finite_support_quotient_out_of_finite_image _ hB.2.2.2), Complex.div_natCast_re, Complex.div_natCast_im, Complex.re_sum, Complex.im_sum]`. Use `⟨div_nonneg (Finset.sum_nonneg fun i _ => ?_) (Nat.cast_nonneg _), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `unfold _root_.GlobalTheory.IdxInt.ind split_ifs <;> simp`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero fun i _ => ?_, zero_div]`. Unfold `_root_.GlobalTheory.IdxInt.ind`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `_root_.GlobalTheory.IdxInt.cint`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `ι s φ hs`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h0 : _root_.GlobalTheory.IdxInt.Fine A (fun _ : W => (0 : ℂ)) A` using `⟨le_rfl, by simp [AddSubgroup.relIndex_self], fun _ _ _ => rfl, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_empty]`. Use `⟨⟨A, h0⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.IdxInt.cint_eq_of_fine A A _ h0]`. Simplify using the standard rewrite rules. Consider the case `insert i s hi ih`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hi'` using `hs i (Finset.mem_insert_self i s)`. Establish `ih'` using `ih fun j hj => hs j (Finset.mem_insert_of_mem hj)`. Simplify using `only [Finset.sum_insert hi]`. Take `⟨hn, he, -⟩` from `hadd (φ i) (fun w => ∑ j ∈ s, φ j w) hi' ih'.1`. Conclude with `⟨hn, he.trans (by rw [ih'.2])⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IdxInt.Lin.main : ∀ {W : Type} [AddCommGroup W] (A : AddSubgroup W), (∀ φ ψ : W → ℂ, _root_.GlobalTheory.IdxInt.Nice A φ → _root_.GlobalTheory.IdxInt.Nice A ψ → _root_.GlobalTheory.IdxInt.Nice A (φ + ψ) ∧ _root_.GlobalTheory.IdxInt.cint A (φ + ψ) = _root_.GlobalTheory.IdxInt.cint A φ + _root_.GlobalTheory.IdxInt.cint A ψ ∧ ((∀ w, ‖φ w‖ ≤ (ψ w).re) → ‖_root_.GlobalTheory.IdxInt.cint A φ‖ ≤ (_root_.GlobalTheory.IdxInt.cint A ψ).re)) ∧ (∀ (c : ℂ) (φ : W → ℂ), _root_.GlobalTheory.IdxInt.Nice A φ → _root_.GlobalTheory.IdxInt.Nice A (fun w => c * φ w) ∧ _root_.GlobalTheory.IdxInt.cint A (fun w => c * φ w) = c * _root_.GlobalTheory.IdxInt.cint A φ) ∧ (∀ P : W → Prop, 0 ≤ (_root_.GlobalTheory.IdxInt.cint A (_root_.GlobalTheory.IdxInt.ind P)).re ∧ (_root_.GlobalTheory.IdxInt.cint A (_root_.GlobalTheory.IdxInt.ind P)).im = 0) ∧ ∀ (ι : Type) (s : Finset ι) (φ : ι → W → ℂ), (∀ i ∈ s, _root_.GlobalTheory.IdxInt.Nice A (φ i)) → _root_.GlobalTheory.IdxInt.Nice A (fun w => ∑ i ∈ s, φ i w) ∧ _root_.GlobalTheory.IdxInt.cint A (fun w => ∑ i ∈ s, φ i w) = ∑ i ∈ s, _root_.GlobalTheory.IdxInt.cint A (φ i) := by
   intro W _ A

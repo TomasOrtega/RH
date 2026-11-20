@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.NotZeroChi
 open GlobalTheory.KZ GlobalTheory.Ord2 UpperTheory.V.HV Formalism.ConjugateSelfDual PowerSeries
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.KZ.CoefVal.coeff_cg_of_values` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FCoefficientCongruenceOfTwistedValues.lean&line=105#L105)
 -/

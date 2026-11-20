@@ -24,7 +24,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.BoxFamily
 variable {R : Type} [CommRing R] [IsDomain R] {j : ℕ} {D D' : DegPre R}
 
 /- English proof (translation)
-Unfold `DegPre.tau`. Rewrite using `[val_mul hJ, val_mul hJ, val_mul hJ, val_inv, val_inv, val_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_val (D : DegPre R) {Z : Scheme.{0}} {y : Z} {J} (hJ : Good D.P.L y J) (p q : D.X) (r : Z ⟶ (TK R).left) :
     val (D.tau p q) r y J = val (D.psi (p + q)) r y J * (val (D.psi p) r y J)⁻¹ * (val (D.psi q) r y J)⁻¹ *
@@ -33,7 +33,7 @@ theorem tau_val (D : DegPre R) {Z : Scheme.{0}} {y : Z} {J} (hJ : Good D.P.L y J
   rw [val_mul hJ, val_mul hJ, val_mul hJ, val_inv, val_inv, val_inv]
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem inv_mul_mul_mul_inv_mul_eq_commGroup {G : Type*} [CommGroup G] (A B C E a b c e : G) :
     A⁻¹ * B * C * E⁻¹ * (a * b⁻¹ * c⁻¹ * e⁻¹) = A⁻¹ * a * (B⁻¹ * b)⁻¹ * (C⁻¹ * c)⁻¹ * (E * e)⁻¹ := by
@@ -42,13 +42,13 @@ private theorem inv_mul_mul_mul_inv_mul_eq_commGroup {G : Type*} [CommGroup G] (
   abel
 
 /- English proof (translation)
-Establish `hc : ∀ x : D'.X, 𝟙 _ ≫ D'.xK x = (cP D' (TK R) x).left` using `fun x => by`. Simplify using `only [Category.id_comp, DegPre.xK, ptK, cP]`. Establish `hpq : cP D' (TK R) (p + q) = cP D' (TK R) p * cP D' (TK R) q`. Unfold `cP`. Rewrite using `[D'.c_add, padd, comp_lift_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h1` using `psi_val pD hJ hJ' (p + q) (𝟙 _)`. Establish `h2` using `psi_val pD hJ hJ' p (𝟙 _)`. Establish `h3` using `psi_val pD hJ hJ' q (𝟙 _)`. Establish `h4` using `rig_val pD hJ hJ' (𝟙 _)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hc, hpq]`. Rewrite `h2`, `h3` using `[hc]`. Establish `e : ∀ i, val (D.tau (pD.xe p i) (pD.xe q i)) (𝟙 _) y J = val (D.psi (pD.xe (p + q) i)) (𝟙 _) y J * (val (D.psi (pD.xe p i)) (𝟙 _) y J)⁻¹ * (val (D.psi (pD.xe q i)) (𝟙 _) y J)⁻¹ * (val D.rigK (𝟙 _) y J)⁻¹` using `fun i => by`. Rewrite using `[tau_val D hJ, map_add, Pi.add_apply]`. Rewrite using `[Finset.prod_congr rfl (fun i _ => e i), Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_inv_distrib, Finset.prod_inv_distrib, Finset.prod_inv_distrib, ← h1, ← h2, ← h3, ← h4, tau_val D' hJ' p q (𝟙 _)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_mul_mul_mul_inv_mul_eq_commGroup _ _ _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem tau_box (pD : IsPowDeg D' D j) {y : (TK R).left} {J J'} (hJ : Good D.P.L y J) (hJ' : Good D'.P.L y J')
     (p q : D'.X) :
@@ -78,7 +78,7 @@ theorem tau_box (pD : IsPowDeg D' D j) {y : (TK R).left} {J J'} (hJ : Good D.P.L
   exact inv_mul_mul_mul_inv_mul_eq_commGroup _ _ _ _ _ _ _ _
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;>`. Simplify using `[rosatiφ, padd, ← Over.comp_left, comp_lift_assoc, IsMonHom.mul_hom, lift_map_assoc, hf, hg, tensorHom_fst_assoc, tensorHom_snd_assoc, tensorHom_fst, tensorHom_snd]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem rosatiφ_pr {S : Scheme.{0}} {A A' : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A']
     (π : A' ⟶ A) [IsMonHom π] {f g : A ⟶ A} {f' g' : A' ⟶ A'} (hf : f' ≫ π = π ≫ f) (hg : g' ≫ π = π ≫ g)
@@ -88,7 +88,7 @@ theorem rosatiφ_pr {S : Scheme.{0}} {A A' : Over S} [GrpObj A] [IsCommMonObj A]
       tensorHom_fst_assoc, tensorHom_snd_assoc, tensorHom_fst, tensorHom_snd]
 
 /- English proof (translation)
-Substitute `hT1 hBU hB` using the available equality. Apply `mul_left_cancel (a := X4⁻¹ * LinearSubstitution * X6 * Eo⁻¹)` to reduce the goal to its premises. Rewrite using `[hT2]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -103,7 +103,7 @@ private theorem mul_eq_of_four_relations_commGroup {G : Type*} [CommGroup G] (X1
   abel
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem mul_inv_inv_inv_mul_mul_eq_one {G : Type*} [CommGroup G] (x : G) : x * x⁻¹ * x⁻¹ * x⁻¹ * x * x = 1 := by
   apply Additive.ofMul.injective
@@ -111,33 +111,31 @@ private theorem mul_inv_inv_inv_mul_mul_eq_one {G : Type*} [CommGroup G] (x : G)
   abel
 
 /- English proof (translation)
-Introduce `hG R _ _ j D D' pD f g f' g' hfm hgm hfm' hgm' hf hg hr a a' b b' hb hb' ca ca' hB`. Establish `hcb : ∀ x, cP D' (TK R) x ≫ f' = cP D' (TK R) (b x)` using `fun x => by`. Unfold `cP`. Rewrite using `[Category.assoc]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `pD.pw.lim.hom_ext (fun k => ?_)` and prove the remaining obligations. Break down `k with ⟨i⟩` into its components or cases. Simplify using `only [Fan.mk_π_app, Category.assoc, hf i, pD.c_pr, ← reassoc_of% (pD.c_pr x i), hb, ca]`. Establish `hcb' : ∀ x, cP D' (TK R) x ≫ g' = cP D' (TK R) (b' x)` using `fun x => by`. Unfold `cP`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Category.assoc]`. Use `congr 1`. Use `pD.pw.lim.hom_ext (fun k => ?_)` and prove the remaining obligations. Break down `k with ⟨i⟩` into its components or cases. Simplify using `only [Fan.mk_π_app, Category.assoc, hg i, pD.c_pr, ← reassoc_of% (pD.c_pr x i), hb', ca']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Unfold `DegPre.TauBal`. Introduce `u' hu' h0' y y'`. Take `⟨u, hu, h0⟩` from `exists_ros hG D.P.isAb D.P.isLB f g hr`. Apply `corr_of_val D'.P.isLB` to reduce the goal to its premises. Introduce `z J' hJ'`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨J, hJ⟩` from `exists_good_at D.P.isLB z`. Rewrite using `[val_mul hJ', val_pull hJ', Category.id_comp]`. Establish `T1` using `tau_box pD hJ hJ' (b y) y'`. Establish `T2` using `tau_box pD hJ hJ' y (b' y')`. Establish `HB : ∀ i, val (D.tau (pD.xe (b y) i) (pD.xe y' i)) (𝟙 _) z J * val u (D.pt2 (pD.xe y i) (pD.xe y' i)) z J = val (D.tau (pD.xe y i) (pD.xe (b' y') i)) (𝟙 _) z J` using `fun i => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hb, hb']`. Use `val_corr hJ (hB u hu h0 (pD.xe y i) (pD.xe y' i)) (𝟙 _)` as an intermediate fact. Rewrite `this` using `[val_mul hJ, val_pull hJ, Category.id_comp]`. Then use the resulting hypothesis. Establish `hpt : ∀ i, D'.pt2 y y' ≫ (pD.pw.pr i ⊗ₘ pD.pw.pr i).left = D.pt2 (pD.xe y i) (pD.xe y' i)` using `fun i => by show (lift (cP D' (TK R) y) (cP D' (TK R) y')).left ≫ _ = (lift (cP D (TK R) _) (cP D (TK R) _)).left`. Rewrite using `[← Over.comp_left, lift_map, cPoint_pr pD, cPoint_pr pD]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ : ∀ i k, rosatiφ D'.P.A f' g' k ≫ (pD.pw.pr i).left = (pD.pw.pr i ⊗ₘ pD.pw.pr i).left ≫ rosatiφ D.P.A f g k` using `fun i k => by`. Use `pD.pw.hom i` as an intermediate fact. Conclude with `rosatiφ_pr (pD.pw.pr i) (hf i) (hg i) k`. Establish `hp : Function.Surjective (D'.P.A ⊗ D'.P.A).hom.appTop.hom`. Establish `h1` using `surj_comp (surj_snd hG D'.P.isAb D'.P.A) (hG _ D'.P.A D'.P.isAb).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[Over.w]`. Then use the resulting hypothesis. Establish `hone : ∀ {Z : Scheme.{0}} (z₀ : Z) (J₀ : (Z ⟶ D'.P.A.left) → D'.P.L.ι), Good D'.P.L z₀ J₀ → ∀ (r : Z ⟶ (𝟙_ (Over (Spec (CommRingCat.of R)))).left), val u' (r ≫ zero2 D'.P.A) z₀ J₀ = 1`. Introduce `Z z₀ J₀ hJ₀ r`. Use `val_corr hJ₀ h0' r` as an intermediate fact. Rewrite `this` using `[val_pull hJ₀, val_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hcond : ∀ (y₀ : (𝟙_ (Over (Spec (CommRingCat.of R)))).left) J₀ J₀', Good D.P.L y₀ J₀ → Good D'.P.L y₀ J₀' → (∏ k, bw pD.w (zero2 D'.P.A ≫ rosatiφ D'.P.A f' g' k) y₀ (fun i => J₀ ((zero2 D'.P.A ≫ rosatiφ D'.P.A f' g' k) ≫ (pD.pw.pr i).left)) (J₀' (zero2 D'.P.A ≫ rosatiφ D'.P.A f' …`. Introduce `y₀ J₀ J₀' hJ₀ hJ₀'`. Establish `hz : ∀ i, zero2 D'.P.A ≫ (pD.pw.pr i ⊗ₘ pD.pw.pr i).left = 𝟙 _ ≫ zero2 D.P.A` using `fun i => by`. Use `pD.pw.hom i` as an intermediate fact. Rewrite using `[Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `zero2`. Rewrite using `[← Over.comp_left, lift_map, IsMonHom.one_hom]`. Establish `hz'` using `hone y₀ J₀' hJ₀' (𝟙 _)`. Rewrite `hz'` using `[Category.id_comp]`. Establish `hu0 : val u (𝟙 _ ≫ zero2 D.P.A) y₀ J₀ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `val_corr hJ₀ h0 (𝟙 _)` as an intermediate fact. Rewrite `this` using `[val_pull hJ₀, val_one]`. Then use the resulting hypothesis. Simplify using `only [hz, hu0, Finset.prod_const_one, hz', _root_.mul_one]`. Establish `PR0` using `prod_ros f' g' (η[D'.P.A]) (η[D'.P.A]) (fun ψ => om pD.w y₀ J₀ J₀' ψ)`. Use `beta_reduce at PR0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D'.P.A) = η[D'.P.A]` using `by show toUnit _ ≫ η[D'.P.A] = η[D'.P.A]`. Rewrite using `[toUnit_unit, Category.id_comp]`. Establish `e2 : η[D'.P.A] * η[D'.P.A] = η[D'.P.A]` using `by rw [← e1, _root_.mul_one]`. Rewrite `PR0` using `[IsMonHom.one_hom, IsMonHom.one_hom, e2]`. Conclude with `PR0.trans (mul_inv_inv_inv_mul_mul_eq_one _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `BU` using `CubBox.box_unique D.P.isLB D'.P.isLB pD.w pD.w_gen hψ hu' hu ((D'.P.A ⊗ D'.P.A).hom) (zero2 D'.P.A) (by unfold zero2; exact Over.w (lift η[D'.P.A] η[D'.P.A])) hp hcond (TK R).left (D'.pt2 y y') z J J' hJ hJ'`. Simplify using `only [hpt] at BU`. Establish `BU2 : (∏ k, om pD.w z J J' ((lift (cP D' (TK R) y) (cP D' (TK R) y')).left ≫ rosatiφ D'.P.A f' g' k) ^ rosatiε k) * val u' (D'.pt2 y y') z J' = ∏ i, val u (D.pt2 (pD.xe y i) (pD.xe y' i)) z J` using `BU`. Establish `PR` using `prod_ros f' g' (cP D' (TK R) y) (cP D' (TK R) y') (fun ψ => om pD.w z J J' ψ)`. Use `beta_reduce at PR`.
-
-Rewrite `PR` using `[hcb, hcb']`. Rewrite `BU2` using `[PR]`. Conclude with `mul_eq_of_four_relations_commGroup _ _ _ _ _ _ _ _ _ _ _ _ _ T1 T2 BU2 (by rw [← Finset.prod_mul_distrib]; exact Finset.prod_congr rfl (fun i _ => HB i))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauBal_pow : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (j : ℕ) (D D' : DegPre R) (pD : IsPowDeg D' D j) (f g : D.P.A ⟶ D.P.A) (f' g' : D'.P.A ⟶ D'.P.A), IsMonHom f → IsMonHom g → IsMonHom f' → IsMonHom g' → (∀ i, f' ≫ pD.pw.pr i = pD.pw.pr i ≫ f) → (∀ i, g' ≫ pD.pw.pr i = pD.pw.pr i ≫ g) → RosatiAdj D.P.A D.P.L f g → ∀ (a a' : D.X → D.X) (b b' : D'.X → D'.X), (∀ x i, pD.xe (b x) i = a (pD.xe x i)) → (∀ x i, pD.xe (b' x) i = a' (pD.xe x i)) → (∀ y, D.c (a y) = D.c y ≫ f) → (∀ y, D.c (a' y) = D.c y ≫ g) → D.TauBal f g a a' → D'.TauBal f' g' b b' := by
   intro hG R _ _ j D D' pD f g f' g' hfm hgm hfm' hgm' hf hg hr a a' b b' hb hb' ca ca' hB

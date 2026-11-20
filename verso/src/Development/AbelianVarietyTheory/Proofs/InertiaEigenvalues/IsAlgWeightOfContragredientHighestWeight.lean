@@ -24,19 +24,19 @@ set_option maxHeartbeats 800000
 namespace GlobalTheory.AlgWtDualRead
 
 /- English proof (translation)
-Introduce `L _ _ _ n K _ e c hc W _ _ _ ρ κ _ _ b ρC hρC τ lam hw`. Take `⟨ι, _, _, b', P, hP, -⟩` from `hw`. Set `bd` to `b.dualBasis`. Set `A : Matrix κ ι K` to `bd.toMatrix b'`. Set `B : Matrix ι κ K` to `b'.toMatrix bd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : (L →+* K) × Fin n × Fin n → (L →+* K) × Fin n × Fin n` to `fun p => (p.1.comp c, p.2.2, p.2.1)`. Set `Q : κ → κ → MvPolynomial ((L →+* K) × Fin n × Fin n) K` to `fun i j => ∑ l, ∑ k, MvPolynomial.C (A j k) * MvPolynomial.rename f (P k l) * MvPolynomial.C (B l i)`. Establish `key : ∀ (γ : ReciprocityTheory.Aut.GQ L n) (γ₀ : GL (Fin n) L), (((γ : Formalism.AUTREP.GAf L n) : GL (Fin n) (ReciprocityTheory.Aut.AL L)) : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL L)) = (γ₀ : Matrix (Fin n) (Fin n) L).map (Algebra.TensorProduct.includeLeftRingHom) → ∀ …`. Introduce `γ γ₀ hm i j`. Establish `hinv` using `hP γ⁻¹ γ₀⁻¹ (GlobalTheory.WtDual.match_inv γ γ₀ hm)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hγ` using `GlobalTheory.WtDual.mem_rationalUnitaryGroup_of_matrix_match γ γ₀ hm`. Establish `e1 : LinearMap.toMatrix bd bd (ρ.dual γ⁻¹) = Matrix.transpose (LinearMap.toMatrix b b (ρ γ))`. Rewrite using `[Representation.dual_apply, inv_inv, LinearMap.toMatrix_transpose]`. Establish `e2 : LinearMap.toMatrix bd bd (ρ.dual γ⁻¹) = A * LinearMap.toMatrix b' b' (ρ.dual γ⁻¹) * B` using `(basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix bd b' bd b' _).symm`. Establish `e3 : LinearMap.toMatrix b b (ρ γ) i j = LinearMap.toMatrix bd bd (ρ.dual γ⁻¹) j i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Both sides reduce to the same expression. Rewrite using `[e3, e2]`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Simplify using `only [hinv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Q, map_sum, map_mul, MvPolynomial.eval_C, MvPolynomial.eval_rename]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 2`. Use `congrArg (fun g => MvPolynomial.eval g (P k l)) (funext fun p => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp_apply, f, RingHom.comp_apply]`. Apply the tactic sequence `rw [GlobalTheory.WtDual.inv_entry γ₀ hγ, hc]`. Both sides reduce to the same expression. Use `⟨inferInstance, κ, inferInstance, inferInstance, Pi.basisFun ℂ κ, fun i j => MvPolynomial.rename (fun p : (L →+* K) × Fin n × Fin n => (e.comp p.1, p.2)) (MvPolynomial.map e (Q i j)), ?_⟩` and prove the remaining obligations. Introduce `γ γ₀ hm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_eq_toMatrix', hρC γ, Matrix.map_apply, key γ γ₀ hm i j, MvPolynomial.eval_rename, MvPolynomial.eval_map]`. Simplify using `only [MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, MvPolynomial.hom_eval₂, RingHom.comp_id]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem isAlgWeight_of_hwAtF_dual : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (K : Type) [Field K] (e : K →+* ℂ) (c : L →+* L), (∀ x, c x = IsCMField.complexConj L x) → ∀ (W : Type) [AddCommGroup W] [Module K W] [FiniteDimensional K W] (ρ : Representation K (ReciprocityTheory.Aut.GQ L n) W) (κ : Type) [Fintype κ] [DecidableEq κ] (b : Module.Basis κ K W) (ρC : Representation ℂ (ReciprocityTheory.Aut.GQ L n) (κ → ℂ)), (∀ γ, LinearMap.toMatrix' (ρC γ) = (LinearMap.toMatrix b b (ρ γ)).map e) → ∀ (τ : L →+* K) (lam : Fin n → ℤ), NX.HWAtF c ρ.dual τ lam → Formalism.AUTREP.IsAlgWeight L n ρC := by
   intro L _ _ _ n K _ e c hc W _ _ _ ρ κ _ _ b ρC hρC τ lam hw

@@ -15,7 +15,7 @@ namespace GlobalTheory.FinPl.AllCombProof
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hmono : latO S T (LS : Set _) (LT : Set _) Q ≤ latO S T (LS : Set _) (LT : Set _) P`. Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨α, hα, hv, rest⟩`. Conclude with `⟨α, hα, fun v hv' => hv v fun hq => hv' (h v hq), rest⟩`. Conclude with `⟨hf.1, fun u hu => hf.2.1 u (hmono hu), fun e he u hu hh => hf.2.2 e he u (hmono hu) hh⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem vac_mono {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {LS : Lat S} {LT : Lat T} {P Q : Pl D → Prop}
     (h : ∀ x, Q x → P x) {f : WO S T → ℂ} (hf : Vac ψ S T LS LT P f) : Vac ψ S T LS LT Q f := by
@@ -26,7 +26,7 @@ theorem vac_mono {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {LS : Lat S} {LT
   exact ⟨hf.1, fun u hu => hf.2.1 u (hmono hu), fun e he u hu hh => hf.2.2 e he u (hmono hu) hh⟩
 
 /- English proof (translation)
-Introduce `x hx` and use `GlobalTheory.DisjComb.mxAt_mono h (hc x hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem combAt_mono {S T : HSp D} {P Q : Pl D → Prop} (h : ∀ x, P x → Q x) {c : WO S T →₀ ℂ} (hc : CombAt P c) :
     CombAt Q c := fun x hx => GlobalTheory.DisjComb.mxAt_mono h (hc x hx)
@@ -37,28 +37,28 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {LT : Lat T} {Ψ : ι → Matrix n n' k → ℂ}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem overAll_nil {f f' : WO S T → ℂ} : OverAll ψ α β LS LT Ψ [] f f' ↔ f' = f := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem overAll_cons {i : ι} {J : List ι} {f f' : WO S T → ℂ} :
     OverAll ψ α β LS LT Ψ (i :: J) f f' ↔
       ∃ g, OverAll ψ α β LS LT Ψ J f g ∧ Over ψ (α i) (β i) LS LT g (Ψ i) f' := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k (p i) n n' ψ hψ S T (α i) (β i) LS LT h'.1 h'.2.1 g h'.2.2.1).1 (Ψ i) h'.2.2.2.1).unique h' h''`.
+A detailed English derivation is pending.
 -/
 theorem over_unique (hψ : IsStdChar D ψ (-1)) {i : ι} {g f' f'' : WO S T → ℂ}
     (h' : Over ψ (α i) (β i) LS LT g (Ψ i) f') (h'' : Over ψ (α i) (β i) LS LT g (Ψ i) f'') : f' = f'' :=
   ((GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k (p i) n n' ψ hψ S T (α i) (β i) LS LT h'.1 h'.2.1 g h'.2.2.1).1 (Ψ i) h'.2.2.2.1).unique h' h''
 
 /- English proof (translation)
-Proceed by induction on `J with`. Consider the case `nil => intro f f' f'' h' h''`. Rewrite using `[overAll_nil.1 h', overAll_nil.1 h'']`. Consider the case `cons i J ih`. Introduce `f f' f'' h' h''`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg, h'⟩` from `overAll_cons.1 h'`. Take `⟨g', hg', h''⟩` from `overAll_cons.1 h''`. Take `rfl` from `ih f g g' hg hg'`. Conclude with `over_unique hψ h' h''`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem overAll_unique (hψ : IsStdChar D ψ (-1)) (J : List ι) : ∀ f f' f'' : WO S T → ℂ,
     OverAll ψ α β LS LT Ψ J f f' → OverAll ψ α β LS LT Ψ J f f'' → f' = f'' := by
@@ -72,7 +72,7 @@ theorem overAll_unique (hψ : IsStdChar D ψ (-1)) (J : List ι) : ∀ f f' f'' 
     exact over_unique hψ h' h''
 
 /- English proof (translation)
-Take `⟨c, hc, hcf⟩` from `(GlobalTheory.T.splitPlace_changeBaseVacuum_heisenbergCombination D k (p i) n n' ψ hψ hu S T (α i) (β i) LS LS LT LT h.1 h.2.1 h.1 h.2.1).2 (Ψ i) h.2.2.2.1`. Establish `M` using `GlobalTheory.DisjComb.main D ψ hψ S T Q (· = (p i).v) (fun x hx hx' => hQ (hx' ▸ hx))`. Establish `hf : f = comb ψ S T c g` using `over_unique hψ h (hcf g h.2.2.1)`. Rewrite using `[hf, M.1 d c hd hc g]`. Conclude with `hcf _ ((M.2.1 d hd).2 LS LT g h.2.2.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_comb (hψ : IsStdChar D ψ (-1)) {i : ι} (hu : (p i).UnitAA) {Q : Pl D → Prop} (hQ : ¬ Q (p i).v)
     {d : WO S T →₀ ℂ} (hd : CombAt Q d) {g f : WO S T → ℂ} (h : Over ψ (α i) (β i) LS LT g (Ψ i) f) :
@@ -85,9 +85,9 @@ theorem over_comb (hψ : IsStdChar D ψ (-1)) {i : ι} (hu : (p i).UnitAA) {Q : 
   exact hcf _ ((M.2.1 d hd).2 LS LT g h.2.2.1)
 
 /- English proof (translation)
-Proceed by induction on `J with`. Consider the case `nil => intro f' h`. Rewrite using `[overAll_nil.1 h]`. Conclude with `overAll_nil.2 rfl`. Consider the case `cons i J ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f' h`. Take `⟨g, hg, h⟩` from `overAll_cons.1 h`. Conclude with `overAll_cons.2 ⟨_, ih g hg, over_comb hψ (hu i) (hQ i) hd h⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem overAll_comb (hψ : IsStdChar D ψ (-1)) (hu : ∀ i, (p i).UnitAA) {Q : Pl D → Prop} (hQ : ∀ i, ¬ Q (p i).v)
     {d : WO S T →₀ ℂ} (hd : CombAt Q d) (J : List ι) (f : WO S T → ℂ) : ∀ f', OverAll ψ α β LS LT Ψ J f f' →
@@ -100,13 +100,13 @@ theorem overAll_comb (hψ : IsStdChar D ψ (-1)) (hu : ∀ i, (p i).UnitAA) {Q :
     exact overAll_cons.2 ⟨_, ih g hg, over_comb hψ (hu i) (hQ i) hd h⟩
 
 /- English proof (translation)
-Proceed by induction on `J with`. Consider the case `nil`. Conclude with `⟨Finsupp.single 0 1, OffTest.combAt_single_zero _ _, fun f _ => overAll_nil.2 (OffTest.comb_single_zero ψ S T f)⟩`. Consider the case `cons i J ih`. Take `⟨hi, hJ'⟩` from `List.nodup_cons.1 hJ`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc', hf'⟩` from `ih hJ'`. Take `⟨c, hc, hcf⟩` from `(GlobalTheory.T.splitPlace_changeBaseVacuum_heisenbergCombination D k (p i) n n' ψ hψ (hu i) S T (α i) (β i) LS LS LT LT hLS hLT hLS hLT).2 (Ψ i) (hΨ i)`. Establish `M` using `GlobalTheory.DisjComb.main D ψ hψ S T (fun x => ∃ j ∈ J, x = (p j).v) (· = (p i).v) (by`. Introduce and unpack `x ⟨j, hj, rfl⟩ hx`. Conclude with `hi (hinj hx ▸ hj))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨c'', hc'', heq⟩` from `M.2.2.2.1 c c' (combAt_mono (fun x hx => Or.inr hx) hc) (combAt_mono (fun x hx => Or.inl hx) hc')`. Use `⟨c'', combAt_mono ?_ hc'', fun f hf => ?_⟩` and prove the remaining obligations. Introduce and unpack `x (⟨j, hj, rfl⟩ | rfl)`. Conclude with `⟨j, List.mem_cons_of_mem _ hj, rfl⟩`. Conclude with `⟨i, List.mem_cons_self, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `overAll_cons.2 ⟨_, hf' f fun j hj => hf j (List.mem_cons_of_mem _ hj), hcf _ ((M.2.1 c' hc').2 LS LT f (hf i List.mem_cons_self))⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_comb (hψ : IsStdChar D ψ (-1)) (hu : ∀ i, (p i).UnitAA) (hinj : Function.Injective fun i => (p i).v)
     (hLS : IsSelfDualC S LS) (hLT : IsSelfDualC T LT) (hΨ : ∀ i, Ψ i ∈ SB (Matrix n n' k)) (J : List ι) (hJ : J.Nodup) :
@@ -140,9 +140,9 @@ namespace GlobalTheory.FinPl
 open AllCombProof in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ ι p I P hP n n' _ _ _ _ ψ hψ S T α β LS LT hLS hLT Ψ`. Use `⟨fun hΨ => ?_, overAll_unique hψ I, fun d hd f hf => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨c, hc, hf⟩` from `exists_comb (α := α) (β := β) hψ hP.unit hP.inj hLS hLT hΨ I hP.nodup`. Use `⟨c, combAt_mono ?_ hc, fun f h => hf f fun i _ => vac_mono ?_ h⟩` and prove the remaining obligations. Introduce and unpack `x ⟨i, -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(hP.mem _).2 ⟨i, rfl⟩`. Introduce and unpack `x rfl`. Conclude with `(hP.mem _).2 ⟨i, rfl⟩`. Conclude with `((GlobalTheory.DisjComb.main D ψ hψ S T (fun x => ¬ P x) P fun x hx => hx).2.1 d hd).2 LS LT f hf`. Conclude with `overAll_comb hψ hP.unit (fun i h => h ((hP.mem _).2 ⟨i, rfl⟩)) hd I f`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem allComb : ∀ D : D7, AllComb D := by
   intro D k _ _ _ _ ι p I P hP n n' _ _ _ _ ψ hψ S T α β LS LT hLS hLT Ψ

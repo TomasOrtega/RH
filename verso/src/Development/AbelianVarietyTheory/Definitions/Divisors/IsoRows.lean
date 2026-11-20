@@ -122,9 +122,9 @@ abbrev IsoRows {m : ℕ} (JW : Matrix (Fin m) (Fin m) E) (r : ℕ) : Type :=
   {w : Matrix (Fin r) (Fin m) E // w ≠ 0 ∧ w * JW * (w.map σ)ᵀ = 0}
 
 /- English proof (translation)
-Use `⟨Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _, Matrix.fromRows 0 1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.fromCols_mul_fromRows]`. Use extensionality with `(a | a) (b | b)`. Apply the tactic sequence `rcases a with a | a <;> exact a.elim0`. Apply the tactic sequence `rcases a with a | a <;> exact a.elim0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases b with b | b <;> exact b.elim0`. Simplify using `[Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 example {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     IsFrame σ J (0 : Matrix (Fin n) (Fin 0) E) 0 (1 : Matrix (Fin n) (Fin n) E) := by

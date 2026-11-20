@@ -6,20 +6,20 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalLanglands
 namespace UpperTheory.Lit.Car
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocLanglandsBridge.localLanglandsGL_of_depthZero_zelevinsky_bernstein hN.loc.llc hN.loc.conv hN.loc.dzc hN.loc.dzi hN.loc.brauer hN.loc.chev hN.aut.art hN.loc.exh hN.loc.multi hN.loc.cos hN.loc.zel hN.loc.geo hN.loc.bz`.
+A detailed English derivation is pending.
 -/
 private theorem ll (hN : GlobalTheory.Mem.LiteralAutomorphy.LitN) : GlobalTheory.Published.LocalLanglandsGL :=
   GlobalTheory.LocLanglandsBridge.localLanglandsGL_of_depthZero_zelevinsky_bernstein hN.loc.llc hN.loc.conv hN.loc.dzc hN.loc.dzi hN.loc.brauer hN.loc.chev
     hN.aut.art hN.loc.exh hN.loc.multi hN.loc.cos hN.loc.zel hN.loc.geo hN.loc.bz
 
 /- English proof (translation)
-The claim follows from `(dualR_closed hN.aut.fin hN.aut.gk hN.aut.gal hN.aut.berger (ll hN) hN.aut.js.1).2`.
+A detailed English derivation is pending.
 -/
 theorem csdSs_litN (hN : GlobalTheory.Mem.LiteralAutomorphy.LitN) : UpperTheory.V.Lev.CsdSs :=
   (dualR_closed hN.aut.fin hN.aut.gk hN.aut.gal hN.aut.berger (ll hN) hN.aut.js.1).2
 
 /- English proof (translation)
-The claim follows from `have hG := (bridge' hN.aut.gk).2 hN.aut.gal csdMonoOdd_of hN.aut.fin hN.aut.gk hG hN.aut.berger (LocalGlobalAboveLAlt.local_global_compatibility_holds (UpperTheory.V.Z.Bc.wbc_of_cbcc UpperTheory.ConvolutionTheory.cbcc) hG hN.aut.berger (ll hN) hN.aut.js.1)`.
+A detailed English derivation is pending.
 -/
 theorem csdMonoOdd_litN (hN : GlobalTheory.Mem.LiteralAutomorphy.LitN) : UpperTheory.V.Lev.CsdMonoOdd :=
   have hG := (bridge' hN.aut.gk).2 hN.aut.gal

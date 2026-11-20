@@ -21,15 +21,13 @@ noncomputable section
 namespace GlobalTheory.AdelicHaarProd
 
 /- English proof (translation)
-Introduce `D V μf hμf`. Take `⟨hLC, hSC, hT2, hB, hTG, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `hi` using `GlobalTheory.AdelicSplit.isClosed_GinfC' V`. Establish `hf` using `GlobalTheory.AdelicSplit.isClosed_GfC' V`. Use `haveI : LocallyCompactSpace (GinfC V) := hi.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : LocallyCompactSpace (GfC V) := hf.locallyCompactSpace`. Set `e` to `GlobalTheory.AdelicSplit.splitEquiv V`. Set `μi : Measure (GinfC V)` to `Measure.haar`. Use `haveI : SFinite μf := inferInstance`. Use `⟨Measure.map e (μi.prod μf), μi, ContinuousMulEquiv.isHaarMeasure_map _ e, fun S E => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hset : {h : GA D V | ∃ a ∈ S, ∃ k ∈ E, h = (a : GA D V) * k} = e '' (S ×ˢ E)`. Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, k, hk, rfl⟩`. Conclude with `⟨(a, k), ⟨ha, hk⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨p, ⟨ha, hk⟩, rfl⟩`. Conclude with `⟨p.1, ha, p.2, hk, rfl⟩`. Rewrite using `[hset]`. Rewrite using `[show (Measure.map e (μi.prod μf)) = Measure.map (e.toHomeomorph.toMeasurableEquiv) (μi.prod μf) from rfl]`. Rewrite using `[MeasurableEquiv.map_apply]`.
-
-Rewrite using `[show (e.toHomeomorph.toMeasurableEquiv) ⁻¹' (e '' (S ×ˢ E)) = S ×ˢ E from e.toEquiv.preimage_image _]`. Conclude with `Measure.prod_prod S E`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_prod : ∀ (D : D7) (V : HSp D) (μf : Measure (GfC V)), μf.IsHaarMeasure → ∃ (μR : Measure (GA D V)) (μi : Measure (GinfC V)), μR.IsHaarMeasure ∧ ∀ (S : Set (GinfC V)) (E : Set (GfC V)), μR {h | ∃ a ∈ S, ∃ k ∈ E, h = (a : GA D V) * k} = μi S * μf E := by
   intro D V μf hμf

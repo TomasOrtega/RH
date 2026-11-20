@@ -16,9 +16,9 @@ section General
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Use `⟨hxu, fun a b hab => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : x ∣ a`. Use `right`. Take `⟨c, rfl⟩` from `ha`. Establish `h1 : x * 1 = x * (c * b)` using `by rw [mul_one, ← mul_assoc]; exact hab`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `mul_left_cancel₀ hx0 h1`. Conclude with `IsUnit.of_mul_eq_one_right c h2.symm`. Conclude with `Or.inl (hu a ha)`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem irreducible_of_units [IsDomain R] {x : R} (hx0 : x ≠ 0) (hxu : ¬ IsUnit x)
     (hu : ∀ y : R, ¬ x ∣ y → IsUnit y) : Irreducible x := by
@@ -32,15 +32,13 @@ theorem irreducible_of_units [IsDomain R] {x : R} (hx0 : x ≠ 0) (hxu : ¬ IsUn
   · exact Or.inl (hu a ha)
 
 /- English proof (translation)
-Establish `hex : ∃ n : ℕ, ¬ x ^ n ∣ y`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hy` to reduce the goal to its premises. Use `IsHausdorff.haus (I := Ideal.span {x}) inferInstance y fun n => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `h n`. Establish `hN` using `Nat.find_spec hex`. Establish `hN0 : Nat.find hex ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hN` using `[h0, pow_zero]`. Conclude with `hN (one_dvd _)`. Take `⟨m, hm⟩` from `Nat.exists_eq_succ_of_ne_zero hN0`. Establish `hmin : x ^ m ∣ y`. Use `Nat.find_min hex (m := m) (by omega)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `not_not.1 this`. Take `⟨c, rfl⟩` from `hmin`. Establish `hc : IsUnit c` using `hu c fun hxc => hN (by`. Rewrite using `[hm, pow_succ]`. Conclude with `mul_dvd_mul_left _ hxc)`.
-
-Conclude with `⟨m, hc.unit, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem associated_pow_of_units {x : R} (hu : ∀ y : R, ¬ x ∣ y → IsUnit y)
     [IsHausdorff (Ideal.span {x}) R] {y : R} (hy : y ≠ 0) : ∃ n : ℕ, Associated (x ^ n) y := by
@@ -70,23 +68,19 @@ theorem associated_pow_of_units {x : R} (hu : ∀ y : R, ¬ x ∣ y → IsUnit y
 end General
 
 /- English proof (translation)
-Establish `he` using `core_isEps l C`. Take `⟨hdom, hinj, hfield, hden⟩` from `BdRField.bdR_isField l`. Take `⟨hfil, hreg, hcomp, -⟩` from `filtration_eq_xi_pow l C.ε he`. Take `⟨-, hker, hunit, -, -⟩` from `thetaD_props l`. Take `⟨-, ht1, ht2, -⟩` from `core_t_unit_fil l C`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hden'` using `hden C.ε he`. Use `clear hden`. Generalize the expression as in `aDp l (xi C.ε) = x at hfil hreg hcomp hden'`. Establish `hθ : ∀ y : Per.BdRp l, Per.θD l y = 0 ↔ x ∣ y` using `fun y => by`. Rewrite using `[hker, hfil, pow_one]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : ∀ y : Per.BdRp l, ¬ x ∣ y → IsUnit y` using `fun y hy => hunit y fun h => hy ((hθ y).1 h)`. Establish `hx0 : x ≠ 0` using `fun h => one_ne_zero (hreg 1 (by rw [h, zero_mul]))`. Establish `hxu : ¬ IsUnit x` using `fun h => (h.map (Per.θD l)).ne_zero ((hθ x).2 dvd_rfl)`. Establish `hirr : Irreducible x` using `irreducible_of_units hx0 hxu hu`. Use `haveI : IsHausdorff (Ideal.span {x}) (Per.BdRp l) := hcomp.toIsHausdorff`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hdvr : IsDiscreteValuationRing (Per.BdRp l) := IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨x, hirr, fun hy => associated_pow_of_units hu hy⟩`. Establish `hmax : IsLocalRing.maximalIdeal (Per.BdRp l) = Ideal.span {x}` using `hirr.maximalIdeal_eq`. Establish `hassoc : Associated x (C.j C.t)`. Take `⟨c, hc⟩` from `(hfil 1 _).1 ht1`. Rewrite `hc` using `[pow_one]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hcu : IsUnit c` using `hu c fun hxc => ht2 ((hfil 2 _).2 (by`. Rewrite using `[hc, pow_two]`. Conclude with `mul_dvd_mul_left _ hxc))`. Conclude with `⟨hcu.unit, hc.symm⟩`. Use `⟨hdom, hdvr, ?_, ?_, ?_, fun n => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmax]`. Conclude with `Ideal.span_singleton_eq_span_singleton.2 hassoc`. Rewrite using `[hmax]`. Use extensionality with `y`. Rewrite using `[Ideal.mem_span_singleton, RingHom.mem_ker, hθ]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hmax]`. Conclude with `hcomp`. Use extensionality with `y`. Rewrite using `[hfil, Ideal.mem_span_singleton]`. Conclude with `(hassoc.pow_pow (n := n)).dvd_iff_dvd_left`.
-
-Use `(isLocalization_iff _ _).2 ⟨fun y => ?_, fun z => ?_, fun {a b} h => ⟨1, by rw [hinj h]⟩⟩` and prove the remaining obligations. Establish `hy : algebraMap (Per.BdRp l) (Per.BdR l) y ≠ 0` using `fun h => nonZeroDivisors.ne_zero y.2 (hinj (h.trans (map_zero _).symm))`. Take `⟨b, hb⟩` from `hfield.mul_inv_cancel hy`. Conclude with `IsUnit.of_mul_eq_one b hb`. Take `⟨n, y, h⟩` from `hden' z`.
-
-Conclude with `⟨(y, ⟨x ^ n, mem_nonZeroDivisors_of_ne_zero (pow_ne_zero n hx0)⟩), by`. Simplify `h⟩` using `only [map_pow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem core_dvr (l : ℕ) [Fact l.Prime] (C : Core l) : C.DVR := by
   have he := core_isEps l C

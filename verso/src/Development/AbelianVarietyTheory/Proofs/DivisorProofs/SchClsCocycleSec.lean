@@ -9,11 +9,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC.SchCls
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => (-1 : ℤ) ^ i)]`. Proceed by induction on `p with`. Consider the case `zero => simp [Finset.sum_range_succ]`. Consider the case `succ q ih`. Rewrite using `[Finset.sum_range_succ, ih]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.even_or_odd q with h | h` into its components or cases. Establish `h2 : Even (q + 1 + 1)` using `by rw [add_assoc]; exact h.add even_two`. Simplify using `[h, Nat.even_add_one, h2.neg_one_pow]`. Establish `h2 : Odd (q + 1 + 1)` using `by rw [add_assoc]; exact h.add_even even_two`. Establish `h3 : Even (q + 1)` using `h.add_one`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h3, h2.neg_one_pow, Nat.not_even_iff_odd.mpr h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_neg_one_pow (p : ℕ) : ∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) = if Even p then 0 else 1 := by
   rw [Fin.sum_univ_eq_sum_range (fun i => (-1 : ℤ) ^ i)]
@@ -36,7 +36,7 @@ Both sides reduce to the same expression.
 theorem face_sch {X U : Scheme.{0}} {p : ℕ} (x : Sx (sch.obj X) (p + 1) U) (i : Fin (p + 2)) : x.face i = x := rfl
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_comp {F : Shv R} {W V U : Scheme.{0}} (g : W ⟶ V) (f : V ⟶ U) (z : Sec F U) :
     Sec.res g (Sec.res f z) = Sec.res (g ≫ f) z := by
@@ -48,21 +48,21 @@ Both sides reduce to the same expression.
 theorem map_id' {F : Shv R} {U : Scheme.{0}} (y : Sec F U) : Sec.map (𝟙 F) y = y := rfl
 
 /- English proof (translation)
-Rewrite using `[Units.smul_def, Units.smul_def]`. Conclude with `map_zsmul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_units_smul {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (u : ℤˣ) (y : Sec F U) :
     Sec.map φ (u • y) = u • Sec.map φ y := by
   rw [Units.smul_def, Units.smul_def]; exact map_zsmul _ _ _
 
 /- English proof (translation)
-Rewrite using `[Units.smul_def, Units.smul_def]`. Conclude with `map_zsmul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_units_smul {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (u : ℤˣ) (y : Sec F U) :
     Sec.res g (u • y) = u • Sec.res g y := by
   rw [Units.smul_def, Units.smul_def]; exact map_zsmul _ _ _
 
 /- English proof (translation)
-Rewrite using `[CupSpec.ev_δ_succ hk α U p s t hs ht x]`. Simplify using `only [face_sch]`. Rewrite using `[← Finset.sum_smul, sum_neg_one_pow]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ev_δ_sch {X : Scheme.{0}} {I : Cx R} {n k : ℤ} (hk : n + 1 = k)
     (α : Cochain ((chains R).obj (sch.obj X)) I n) (U : Scheme.{0}) (p : ℕ) (s t : ℤ)
@@ -81,37 +81,29 @@ namespace GlobalTheory.EtC
 open GlobalTheory.EtC.SchCls in
 
 /- English proof (translation)
-Introduce `R _ X I m n k hmn hnk`. Use `⟨fun z hz => ?_, fun α => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `CupSpec.ev_exists (R := R) (E := sch.obj X) (I := I) (n := n) (fun p s h U x => if hp : p = 0 then Sec.map (I.XIsoOfEq (show n = s by omega)).hom (Sec.res (x : U ⟶ X) z) else 0) (by`. Introduce `p s h V U g x`. Distinguish the cases in `hp : p = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hp` using the available equality. Simplify using `only [dif_pos]`. Use `erw [CupSpec.map_res, res_comp]`. Both sides reduce to the same expression. Simplify using `only [dif_neg hp]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `map_zero _)`. Establish `hc : δ n k a = 0`. Use `CupSpec.ev_ext _ _ fun p t ht U x => ?_` and prove the remaining obligations. Use `erw [CupSpec.ev_zero]`. Consider the cases of `p with`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Substitute using the available equality.
 
-Consider the case `zero`. Establish `hkt : k = t` using `by omega`. Substitute `hkt` using the available equality. Use `erw [CupSpec.ev_δ_zero hnk a U n k (by simp) ht x, ha]`. Simplify using `only [dif_pos, HomologicalComplex.XIsoOfEq_rfl, Iso.refl_hom, map_id']`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `erw [← CupSpec.map_res, hz]`. Conclude with `map_zero _`. Consider the case `succ p => erw [ev_δ_sch hnk a U p (-((p + 1 : ℕ) : ℤ) + n) t (by omega) ht x, ha, ha]`. Simplify using `only [Nat.add_one_ne_zero, dif_neg, not_false_eq_true, map_zero, zero_add]`. Use `split_ifs with he hp0`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Conclude with `absurd (hp0 ▸ (⟨0, rfl⟩ : Even 0)) he`. Conclude with `smul_zero _`. Use `⟨Cocycle.mk a k hnk hc, fun U x => ?_, fun p s h U x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ev a 0 n _ U x = _ erw [ha]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [dif_pos, HomologicalComplex.XIsoOfEq_rfl, Iso.refl_hom, map_id']`. Express the relevant statement in the definitionally equal form `ev a (p + 1) s h U x = 0 erw [ha]`. Simplify using the standard rewrite rules. Establish `hδ` using `Cocycle.δ_eq_zero α k`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `h0` using `CupSpec.ev_δ_zero hnk α.1 X n k (by simp) (by simp) (𝟙 X) erw [hδ, CupSpec.ev_zero] at h0`. Conclude with `h0.symm`. Use `erw [CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff α m hmn]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨β, hβ⟩`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Use `⟨ev β 0 m (by simp) X (𝟙 X), ?_⟩` and prove the remaining obligations. Use `erw [← hβ, CupSpec.ev_δ_zero hmn β X m n (by simp) (by simp)]`. Introduce and unpack `⟨y, hy⟩`. Take `⟨b, hb⟩` from `CupSpec.ev_exists (R := R) (E := sch.obj X) (I := I) (n := m) (fun p s h U x => if hp : p = 0 then Sec.map (I.XIsoOfEq (show m = s by omega)).hom (Sec.res (x : U ⟶ X) y) else if Even p then 0 else (-k.negOnePow) • ev α.1 (p + 1) s (by omega) U x) (by`. Introduce `p s h V U g x`.
+Treat this case separately. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Simplify using `only [dif_pos]`. Use `erw [CupSpec.map_res, res_comp]`. Both sides reduce to the same expression.
+Treat this case separately. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_neg hp] split_ifs`. Conclude with `map_zero _`. Use `erw [res_units_smul, CupSpec.ev_res] rfl)`. Use `⟨b, CupSpec.ev_ext _ _ fun p t ht U x => ?_⟩` and prove the remaining obligations. Consider the cases of `p with`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `zero`. Establish `hnt : n = t` using `by omega`. Substitute `hnt` using the available equality. Use `erw [CupSpec.ev_δ_zero hmn b U m n (by simp) ht x, hb]`. Simplify using `only [dif_pos, HomologicalComplex.XIsoOfEq_rfl, Iso.refl_hom, map_id']`.
-
-Use `erw [← CupSpec.map_res, hy, CupSpec.ev_res]`. Use `congr 1`. Consider the case `succ p => erw [ev_δ_sch hmn b U p (-((p + 1 : ℕ) : ℤ) + m) t (by omega) ht x, hb, hb]`. Establish `hc` using `ev_δ_sch hnk α.1 U (p + 1) (-((p + 1 : ℕ) : ℤ) + m) t (by omega) (by omega) x`. Use `erw [hδ, CupSpec.ev_zero] at hc`.
-
-Break down `Nat.even_or_odd p with he | ho` into its components or cases. Establish `hne : ¬ Even (p + 1)` using `Nat.not_even_iff_odd.mpr he.add_one`. Simplify using `only [Nat.add_one_ne_zero, dif_neg, not_false_eq_true, hne, if_false, if_pos he, add_zero] at hc ⊢`. Use `erw [map_units_smul, eq_neg_of_add_eq_zero_left hc.symm, smul_neg, smul_smul]`. Simplify using `[Int.units_mul_self]`.
-
-Establish `hne : ¬ Even p` using `Nat.not_even_iff_odd.mpr ho`. Establish `hp0 : p ≠ 0` using `fun h => hne (h ▸ (⟨0, rfl⟩ : Even 0))`. Establish `hev : Even (p + 1)` using `ho.add_one`. Simplify using `only [Nat.add_one_ne_zero, dif_neg, not_false_eq_true, hev, if_true, hne, if_false, dif_neg hp0, map_zero, zero_add]`. Establish `hkn : k.negOnePow = -n.negOnePow` using `by rw [← hnk, Int.negOnePow_succ]`.
-
-Use `erw [hkn, neg_neg, smul_smul, Int.units_mul_self, one_smul]`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sch_cls_cocycle_sec : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (I : Cx R) (m n k : ℤ), m + 1 = n → n + 1 = k → (∀ z : Sec (I.X n) X, Sec.map (I.d n k) z = 0 → ∃ α : Cocycle ((chains R).obj (sch.obj X)) I n, (∀ (U : Scheme.{0}) (x : U ⟶ X), ev α.1 0 n (by simp) U x = Sec.res x z) ∧ ∀ (p : ℕ) s h U x, ev α.1 (p + 1) s h U x = 0) ∧ ∀ α : Cocycle ((chains R).obj (sch.obj X)) I n, Sec.map (I.d n k) (ev α.1 0 n (by simp) X (𝟙 X)) = 0 ∧ (CohomologyClass.mk α = 0 ↔ ∃ y : Sec (I.X m) X, Sec.map (I.d m n) y = ev α.1 0 n (by simp) X (𝟙 X)) := by
   intro R _ X I m n k hmn hnk

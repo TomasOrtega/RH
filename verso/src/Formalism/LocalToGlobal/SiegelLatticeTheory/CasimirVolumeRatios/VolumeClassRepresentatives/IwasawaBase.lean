@@ -13,7 +13,7 @@ open Formalism.MainNotions.S Formalism.MainNotions.BridgeLemma Formalism.MainNot
 variable (I : AutInst)
 
 /- English proof (translation)
-Establish `: μf.IsMulRightInvariant` using `Formalism.L2.SG.Closed.GfUnimod_holds I μf`. Conclude with `rr_muA_right I μf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem muA_right (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure] : (I.muA μf).IsMulRightInvariant := by
   have : μf.IsMulRightInvariant := Formalism.L2.SG.Closed.GfUnimod_holds I μf

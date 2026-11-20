@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.ProjBase
 
 /- English proof (translation)
-Rewrite using `[chiLen_eq_sum_range R 1 fun n hn => subsingleton_coh_of_suppDim_le_zero h (by omega)]`. Simplify using `[(cohOn.zeroEquiv R F ⊤).length_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chiLen_eq_length_sections {X : Scheme.{0}} [AlgebraicGeometry.IsNoetherian X] (R : Type) [CommRing R]
     [Algebra R Γ(X, ⊤)] (F : X.Modules) [IsFiniteQC F] (h : suppDim F ≤ 0) :
@@ -26,7 +26,7 @@ theorem chiLen_eq_length_sections {X : Scheme.{0}} [AlgebraicGeometry.IsNoetheri
   simp [(cohOn.zeroEquiv R F ⊤).length_eq]
 
 /- English proof (translation)
-Establish `: Finite s` using `hs.to_subtype`. Establish `: T1Space s` using `⟨fun x => by`. Simplify `(hc x.1 x.2).preimage (continuous_subtype_val (p := (· ∈ s)))⟩` using `[← Set.image_singleton, Set.preimage_image_eq _ Subtype.val_injective]`. Conclude with `topologicalKrullDim_zero_of_discreteTopology s`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem topDim_le_zero_of_finite_closed {T : Type} [TopologicalSpace T] {s : Set T} (hs : s.Finite)
     (hc : ∀ x ∈ s, IsClosed ({x} : Set T)) : topologicalKrullDim s ≤ 0 := by
@@ -37,19 +37,17 @@ theorem topDim_le_zero_of_finite_closed {T : Type} [TopologicalSpace T] {s : Set
   exact topologicalKrullDim_zero_of_discreteTopology s
 
 /- English proof (translation)
-Introduce `O _ _ _ B B' f U n hU G _ _ hdim hsub`. Establish `hfin : (support G).Finite` using `finite_support_of_suppDim_le_zero hdim`. Establish `hcl : ∀ x ∈ support G, IsClosed ({x} : Set B.X)` using `fun x hx => isClosed_singleton_of_suppDim_le_zero hdim hx`. Establish `key : ∀ x : support G, ∃ W : B.X.Opens, x.1 ∈ W ∧ (∀ y ∈ support G \ {x.1}, y ∉ W) ∧ IsAffineOpen W ∧ IsAffineOpen (f.f ⁻¹ᵁ W) ∧ (letI` using `(f.f.app W).hom.toAlgebra; Module.Free Γ(B.X, W) Γ(B'.X, f.f ⁻¹ᵁ W) ∧ Module.Finite Γ(B.X, W) Γ(B'.X, f.f ⁻¹ᵁ W) ∧ Module.finrank Γ(B.X, W) Γ(B'.X, f.f ⁻¹ᵁ W) = n) := by`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨V, hxV, -, hVa, hV'a, hfree⟩` from `hU x.1 (hsub x.2)`. Take `⟨W, hxW, -, hWT, hWa, hW'a, hWfree⟩` from `GlobalTheory.T.finite_flat_affine_avoiding f.f n V hVa hV'a hfree x.1 hxV (support G \ {x.1}) (hfin.subset Set.diff_subset) (fun y hy => hcl y hy.1) (by simp)`. Conclude with `⟨W, hxW, hWT, hWa, hW'a, hWfree⟩`. Use `choose W hxW hWS hWa hW'a hWfree using key`. Use `letI : Fintype (support G) := hfin.fintype`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hsupp' : support ((Scheme.Modules.pullback f.f).obj G) = f.f.base ⁻¹' support G` using `GlobalTheory.T.support_pullback_eq_preimage f.f G`. Establish `hmem : ∀ x : support G, ∀ y ∈ support G, y ∈ W x → y = x.1` using `fun x y hy hyW => by`. Assume the negation of the conclusion as `h`. Conclude with `hWS x y ⟨hy, h⟩ hyW`. Establish `hpts : ∀ y ∈ support ((Scheme.Modules.pullback f.f).obj G), IsClosed ({y} : Set B'.X)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy`. Rewrite `hy` using `[hsupp']`. Conclude with `(GlobalTheory.T.finite_map_closed_fibre f.f (W ⟨_, hy⟩) (hWa _) (hW'a _) (hWfree _).2.1 _ (hxW _) (hcl _ hy)).2 y rfl`. Establish `hfin' : (support ((Scheme.Modules.pullback f.f).obj G)).Finite`. Rewrite using `[hsupp']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Set.Finite.biUnion (t := fun x => f.f.base ⁻¹' {x}) hfin fun x hx => (GlobalTheory.T.finite_map_closed_fibre f.f (W ⟨x, hx⟩) (hWa _) (hW'a _) (hWfree _).2.1 _ (hxW _) (hcl _ hx)).1).subset fun y hy => ?_` and prove the remaining obligations. Conclude with `Set.mem_biUnion hy rfl`. Establish `hdim' : suppDim ((Scheme.Modules.pullback f.f).obj G) ≤ 0` using `topDim_le_zero_of_finite_closed hfin' hpts`. Establish `hO : ∀ r : O, f.f.appTop (algebraMap O Γ(B.X, ⊤) r) = algebraMap O Γ(B'.X, ⊤) r` using `GlobalTheory.Vert.Model.appTop_const f.comp_str`. Rewrite using `[chiLen_eq_length_sections O _ hdim, chiLen_eq_length_sections O _ hdim', GlobalTheory.T.module_length_disjoint_support G O W (fun x hx => Set.mem_iUnion.2 ⟨⟨x, hx⟩, hxW _⟩) (fun i j hij y hy hyi hyj => hij (Subtype.ext ((hmem i y hy hyi).symm.trans (hmem j y hy hyj)))), GlobalTh …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Repeatedly rewrite using `[GlobalTheory.T.finite_flat_quasicoherent_local O f.f hO _ n (hWa _) (hW'a _) (hWfree _) G]`. Rewrite using `[← Finset.mul_sum, ENat.toNat_mul]`. Simplify using the standard rewrite rules. Introduce `y hy`. Rewrite `hy` using `[hsupp']`.
-
-Conclude with `Set.mem_iUnion.2 ⟨⟨_, hy⟩, hxW _⟩`. Introduce `i j hij y hy hyi hyj`. Rewrite `hy` using `[hsupp']`. Conclude with `hij (Subtype.ext ((hmem i _ hy hyi).symm.trans (hmem j _ hy hyj)))`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiLen_pullback_eq_mul : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B) (U : B.X.Opens) (n : ℕ), (∀ x ∈ U, ∃ V : B.X.Opens, x ∈ V ∧ V ≤ U ∧ IsAffineOpen V ∧ IsAffineOpen (f.f ⁻¹ᵁ V) ∧ (letI := (f.f.app V).hom.toAlgebra; Module.Free Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V) ∧ Module.Finite Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V) ∧ Module.finrank Γ(B.X, V) Γ(B'.X, f.f ⁻¹ᵁ V) = n)) → ∀ (G : B.X.Modules) [IsFiniteQC G], B.IsVertical G → suppDim G ≤ 0 → support G ⊆ (U : Set B.X) → chiLen O ((Scheme.Modules.pullback f.f).obj G) = n * chiLen O G := by
   intro O _ _ _ B B' f U n hU G _ _ hdim hsub

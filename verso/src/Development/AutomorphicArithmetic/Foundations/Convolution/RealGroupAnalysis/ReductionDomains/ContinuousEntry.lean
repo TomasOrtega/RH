@@ -26,24 +26,24 @@ instance : LocallyCompactSpace (G1 F) := by
 namespace M
 
 /- English proof (translation)
-The claim follows from `(IdeleGroup.ideleModule F a).2`.
+A detailed English derivation is pending.
 -/
 theorem ab_pos (a : (A F)ˣ) : 0 < ab a := (IdeleGroup.ideleModule F a).2
 /- English proof (translation)
-Simplify using `[ab]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ab_mul (a b : (A F)ˣ) : ab (a * b) = ab a * ab b := by simp [ab]
 /- English proof (translation)
-Simplify using `[ab]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ab_one : ab (1 : (A F)ˣ) = 1 := by simp [ab]
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← ab_mul, inv_mul_cancel, ab_one])`.
+A detailed English derivation is pending.
 -/
 theorem ab_inv (a : (A F)ˣ) : ab a⁻¹ = (ab a)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← ab_mul, inv_mul_cancel, ab_one])
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp (IdeleGroup.continuous_ideleModule (K := F))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ab : Continuous (ab : (A F)ˣ → ℝ) :=
   continuous_subtype_val.comp (IdeleGroup.continuous_ideleModule (K := F))
@@ -62,94 +62,94 @@ Both sides reduce to the same expression.
 theorem val_ratS (γ : Matrix.SpecialLinearGroup (Fin 2) F) : (ratS F γ).1 = γ.1.map (algebraMap F (A F)) := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `refine Subtype.ext ?_; rw [val_mul]; ext i j; fin_cases i <;> fin_cases j <;> simp [nU, Matrix.mul_apply, Fin.sum_univ_two, add_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nU_add (a b : A F) : nU (a + b) = nU a * nU b := by
   refine Subtype.ext ?_; rw [val_mul]; ext i j; fin_cases i <;> fin_cases j <;> simp [nU, Matrix.mul_apply, Fin.sum_univ_two, add_comm]
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [nU]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nU_zero : nU (0 : A F) = 1 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [nU]
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← nU_add, neg_add_cancel, nU_zero])`.
+A detailed English derivation is pending.
 -/
 theorem nU_neg (a : A F) : nU (-a) = (nU a)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← nU_add, neg_add_cancel, nU_zero])
 /- English proof (translation)
-Apply the tactic sequence `refine Subtype.ext ?_; rw [val_mul]; ext i j; fin_cases i <;> fin_cases j <;> simp [mD, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mD_mul (a b : (A F)ˣ) : mD (a * b) = mD a * mD b := by
   refine Subtype.ext ?_; rw [val_mul]; ext i j; fin_cases i <;> fin_cases j <;> simp [mD, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [mD]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mD_one : mD (1 : (A F)ˣ) = 1 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [mD]
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← mD_mul, inv_mul_cancel, mD_one])`.
+A detailed English derivation is pending.
 -/
 theorem mD_inv (a : (A F)ˣ) : mD a⁻¹ = (mD a)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← mD_mul, inv_mul_cancel, mD_one])
 /- English proof (translation)
-Apply the tactic sequence `refine Subtype.ext ?_; rw [val_mul, val_mul]; ext i j; fin_cases i <;> fin_cases j <;>`. Simplify using `[mD, nU, Matrix.mul_apply, Fin.sum_univ_two, pow_two, mul_assoc, mul_comm b]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem mD_mul_nU (a : (A F)ˣ) (b : A F) : mD a * nU b = nU ((a : A F) ^ 2 * b) * mD a := by
   refine Subtype.ext ?_; rw [val_mul, val_mul]; ext i j; fin_cases i <;> fin_cases j <;>
     simp [mD, nU, Matrix.mul_apply, Fin.sum_univ_two, pow_two, mul_assoc, mul_comm b]
 /- English proof (translation)
-Apply the tactic sequence `refine Units.ext ?_; rw [Units.val_mul, Units.val_mul, val_gl, val_gl]; ext i j; fin_cases i <;> fin_cases j <;>`. Simplify using `[cD, dM, Matrix.mul_apply, Fin.sum_univ_two, mul_assoc, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem gl_cD (t : (A F)ˣ) (g : G1 F) : gl (cD t g) * dM t = dM t * gl g := by
   refine Units.ext ?_; rw [Units.val_mul, Units.val_mul, val_gl, val_gl]; ext i j; fin_cases i <;> fin_cases j <;>
     simp [cD, dM, Matrix.mul_apply, Fin.sum_univ_two, mul_assoc, mul_comm]
 /- English proof (translation)
-The claim follows from `Matrix.SpecialLinearGroup.toGL_injective`.
+A detailed English derivation is pending.
 -/
 theorem gl_inj : Function.Injective (gl : G1 F → GL (Fin 2) (A F)) := Matrix.SpecialLinearGroup.toGL_injective
 /- English proof (translation)
-Rewrite using `[← gl_cD, mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gl_cD' (t : (A F)ˣ) (g : G1 F) : gl (cD t g) = dM t * gl g * (dM t)⁻¹ := by
   rw [← gl_cD, mul_inv_cancel_right]
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [dM, Matrix.mul_apply, Fin.sum_univ_two]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dM_mul (s t : (A F)ˣ) : dM (s * t) = dM s * dM t := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [dM, Matrix.mul_apply, Fin.sum_univ_two]
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [dM]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dM_one : dM (1 : (A F)ˣ) = 1 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [dM]
 /- English proof (translation)
-The claim follows from `gl_inj (by have h : ∀ x y : G1 F, gl (x * y) = gl x * gl y := fun x y => map_mul _ x y rw [h, gl_cD', gl_cD', gl_cD', h]; group)`.
+A detailed English derivation is pending.
 -/
 theorem cD_mul (t : (A F)ˣ) (g h : G1 F) : cD t (g * h) = cD t g * cD t h :=
   gl_inj (by
     have h : ∀ x y : G1 F, gl (x * y) = gl x * gl y := fun x y => map_mul _ x y
     rw [h, gl_cD', gl_cD', gl_cD', h]; group)
 /- English proof (translation)
-The claim follows from `gl_inj (by rw [gl_cD', gl_cD', gl_cD', dM_mul]; group)`.
+A detailed English derivation is pending.
 -/
 theorem cD_cD (s t : (A F)ˣ) (g : G1 F) : cD s (cD t g) = cD (s * t) g :=
   gl_inj (by rw [gl_cD', gl_cD', gl_cD', dM_mul]; group)
 /- English proof (translation)
-The claim follows from `gl_inj (by rw [gl_cD', dM_one]; group)`.
+A detailed English derivation is pending.
 -/
 theorem cD_one (g : G1 F) : cD 1 g = g := gl_inj (by rw [gl_cD', dM_one]; group)
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [cD, nU]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cD_nU (t : (A F)ˣ) (b : A F) : cD t (nU b) = nU (b * ((t⁻¹ : (A F)ˣ) : A F)) := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [cD, nU]
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [cD, mD]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cD_mD (t a : (A F)ˣ) : cD t (mD a) = mD a := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [cD, mD]
 /- English proof (translation)
-Rewrite using `[← mD_inv]`. Apply the tactic sequence `refine Subtype.ext ?_; rw [val_mul, val_mul]; ext i j; fin_cases i <;> fin_cases j <;>`. Simplify using `[cD, mD, Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct, mul_assoc, mul_comm, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem cD_sq (t : (A F)ˣ) (g : G1 F) : cD (t * t) g = (mD t)⁻¹ * g * mD t := by
   rw [← mD_inv]
@@ -157,51 +157,51 @@ theorem cD_sq (t : (A F)ˣ) (g : G1 F) : cD (t * t) g = (mD t)⁻¹ * g * mD t :
     simp [cD, mD, Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct, mul_assoc, mul_comm, mul_left_comm]
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (continuous_matrix fun i j => by fin_cases i <;> fin_cases j <;> simp <;> fun_prop) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_nU : Continuous (nU : A F → G1 F) :=
   Continuous.subtype_mk (continuous_matrix fun i j => by fin_cases i <;> fin_cases j <;> simp <;> fun_prop) _
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (continuous_matrix fun i j => by fin_cases i <;> fin_cases j <;> simp only [Fin.zero_eta, Fin.mk_one, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one] <;> first | exact continuous_const | exact Units.cont …`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mD : Continuous (mD : (A F)ˣ → G1 F) :=
   Continuous.subtype_mk (continuous_matrix fun i j => by
     fin_cases i <;> fin_cases j <;> simp only [Fin.zero_eta, Fin.mk_one, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one] <;>
       first | exact continuous_const | exact Units.continuous_val | exact Units.continuous_coe_inv) _
 /- English proof (translation)
-The claim follows from `(continuous_subtype_val (p := fun M : Matrix (Fin 2) (Fin 2) (A F) => M.det = 1)).matrix_elem i j`.
+A detailed English derivation is pending.
 -/
 theorem continuous_entry (i j : Fin 2) : Continuous fun g : G1 F => g i j :=
   (continuous_subtype_val (p := fun M : Matrix (Fin 2) (Fin 2) (A F) => M.det = 1)).matrix_elem i j
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (continuous_matrix fun i j => by fin_cases i <;> fin_cases j <;> simp only [Fin.zero_eta, Fin.mk_one, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one] <;> first | exact continuous_entry _ _ | exact (conti …`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cD (t : (A F)ˣ) : Continuous (cD t : G1 F → G1 F) :=
   Continuous.subtype_mk (continuous_matrix fun i j => by
     fin_cases i <;> fin_cases j <;> simp only [Fin.zero_eta, Fin.mk_one, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one] <;>
       first | exact continuous_entry _ _ | exact (continuous_entry _ _).mul continuous_const | exact continuous_const.mul (continuous_entry _ _)) _
 /- English proof (translation)
-The claim follows from `Matrix.SpecialLinearGroup.continuous_toGL`.
+A detailed English derivation is pending.
 -/
 theorem continuous_gl : Continuous (gl : G1 F → GL (Fin 2) (A F)) := Matrix.SpecialLinearGroup.continuous_toGL
 
 /- English proof (translation)
-Apply the tactic sequence `refine Subtype.ext ((val_ratS _).trans ?_); ext i j; fin_cases i <;> fin_cases j <;> simp [nU]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ratS_up (ξ : F) : ratS F ⟨!![1, ξ; 0, 1], by simp [Matrix.det_fin_two]⟩ = nU (rt ξ) := by
   refine Subtype.ext ((val_ratS _).trans ?_); ext i j; fin_cases i <;> fin_cases j <;> simp [nU]
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, ratS_up ξ⟩`.
+Supply the required witnesses or components.
 -/
 theorem nU_rt_mem (ξ : F) : nU (rt ξ) ∈ Gam F := ⟨_, ratS_up ξ⟩
 /- English proof (translation)
-Use `⟨⟨!![(t : F), 0; 0, ((t⁻¹ : Fˣ) : F)], by simp [Matrix.det_fin_two]⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine Subtype.ext ((val_ratS _).trans ?_); ext i j; fin_cases i <;> fin_cases j <;> simp [mD, IdeleGroup.diagonal, ← map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mD_diag_mem (t : Fˣ) : mD (IdeleGroup.diagonal F t) ∈ Gam F := by
   refine ⟨⟨!![(t : F), 0; 0, ((t⁻¹ : Fˣ) : F)], by simp [Matrix.det_fin_two]⟩, ?_⟩
   refine Subtype.ext ((val_ratS _).trans ?_); ext i j; fin_cases i <;> fin_cases j <;> simp [mD, IdeleGroup.diagonal, ← map_inv]
 /- English proof (translation)
-Simplify using `[ab, IdeleGroup.ideleModule_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ab_diag (t : Fˣ) : ab (IdeleGroup.diagonal F t) = 1 := by
   simp [ab, IdeleGroup.ideleModule_diagonal]
@@ -238,17 +238,17 @@ def NWt (β : G1 F → ℝ≥0∞) : Prop := Measurable β ∧ ∀ g, ∑' ξ : 
 def RowSec (σ : {r : Fin 2 → F // r ≠ 0} → Matrix.SpecialLinearGroup (Fin 2) F) : Prop := ∀ r, (σ r).1 1 = r.1
 
 /- English proof (translation)
-The claim follows from `((continuous_ab.measurable.inv).pow_const 2).ennreal_ofReal`.
+A detailed English derivation is pending.
 -/
 theorem measurable_wt : Measurable (wt : IdeleGroup F → ℝ≥0∞) :=
   ((continuous_ab.measurable.inv).pow_const 2).ennreal_ofReal
 
 /- English proof (translation)
-Establish `e : m.map u = n.map v`. Use extensionality with `s hs`. Rewrite using `[← lintegral_indicator_one hs, ← lintegral_indicator_one hs, lintegral_map (measurable_one.indicator hs) hu, lintegral_map (measurable_one.indicator hs) hv]`. Conclude with `h _ (measurable_one.indicator hs)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `h1` using `integrable_map_measure (μ := m) (f := u) (g := id) aestronglyMeasurable_id hu.aemeasurable`. Establish `h2` using `integrable_map_measure (μ := n) (f := v) (g := id) aestronglyMeasurable_id hv.aemeasurable`. Rewrite `h1` using `[e]`. Conclude with `h1.symm.trans h2`. Establish `h1` using `integral_map (μ := m) (φ := u) (f := id) hu.aemeasurable aestronglyMeasurable_id`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `integral_map (μ := n) (φ := v) (f := id) hv.aemeasurable aestronglyMeasurable_id`. Rewrite `h1` using `[e]`. Conclude with `h1.symm.trans h2`.
+A detailed English derivation is pending.
 -/
 theorem transfer {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y] {m : Measure X} {n : Measure Y} {u : X → ℂ} {v : Y → ℂ}
     (hu : Measurable u) (hv : Measurable v)

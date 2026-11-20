@@ -12,17 +12,15 @@ namespace Formalism.MainNotions.DIV.HookProducts.AdmPerTw
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hpp` using `D.what₂.places.resChar_prime w`. Establish `hn : n ≠ 0` using `fun h => hN (Nat.eq_zero_of_zero_dvd (h ▸ hd))`. Use `set p := D.what₂.places.resChar w with hp`. Use `set k := padicValNat p n with hk`. Take `⟨n', hn'⟩ : ∃ n', n' = n / p ^ n.factorization p` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfac : n.factorization p = k` using `by rw [hk, Nat.factorization_def n hpp]`. Establish `hprod : p ^ k * n' = n`. Rewrite using `[hn', ← hfac]`. Conclude with `Nat.ordProj_mul_ordCompl_eq_self n _`. Establish `hcop : Nat.Coprime n' p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hn']`. Conclude with `(Nat.coprime_ordCompl hpp hn).symm`. Establish `hn'0 : n' ≠ 0` using `by rintro rfl; simp at hprod; exact hn hprod.symm`. Establish `hv' : vAdd (D.plEq w) ((n' : ℕ) : D.what₂.LL) = 0`. Establish `h` using `OrbitPlaces.val_coprime w n' hcop`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[D.val_eq w _ (Nat.cast_ne_zero.2 hn'0)]`. Conclude with `h` after adjusting the coercions. Establish `hpk : ((p : ℕ) : D.what₂.LL) ^ k ≠ 0` using `pow_ne_zero _ (OrbitPlaces.p_ne w)`. Establish `hv : vAdd (D.plEq w) (n : D.what₂.LL) = (k : ℤ) * (D.what₂.places.ramIdx w : ℤ)`. Rewrite using `[← hprod, Nat.cast_mul, Nat.cast_pow, OrbitPlaces.vAdd_mul w hpk (Nat.cast_ne_zero.2 hn'0), OrbitPlaces.vAdd_pow, hv', add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hkN : k ≤ padicValNat p N` using `(padicValNat_dvd_iff_le hN).1 (pow_padicValNat_dvd.trans hd)`. Rewrite using `[hv]`. Unfold `ur`. Use `push_cast`. Establish `h0 : (0 : ℝ) ≤ (D.what₂.places.ramIdx w : ℝ)` using `Nat.cast_nonneg _`.
-
-Establish `h1 : (k : ℝ) ≤ (padicValNat p N : ℝ)` using `by exact_mod_cast hkN`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem vAdd_dvd_le (w : D.what₂.places.Pl) {n N : ℕ} (hN : N ≠ 0) (hd : n ∣ N) :
     (vAdd (D.plEq w) (n : D.what₂.LL) : ℝ) ≤ ur D w (padicValNat (D.what₂.places.resChar w) N : ℝ) := by
@@ -53,7 +51,7 @@ theorem vAdd_dvd_le (w : D.what₂.places.Pl) {n N : ℕ} (hN : N ≠ 0) (hd : n
   nlinarith
 
 /- English proof (translation)
-Rewrite using `[← DGamDef.one hD u u μ]`. Use `dvd_trans ?_ ((D.chTw u μ).dvd_DGam D.R.m le_rfl ((T.fm u μ).til c))` and prove the remaining obligations. Rewrite using `[Nat.card_congr (MonoidHom.ofInjective ((T.fm u μ).stabMap_inj c)).toEquiv]`. Conclude with `Subgroup.card_subgroup_dvd_card _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_stabilizer_dvd₂ (hD : DGamDef D) (T : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (c : (T.fm u μ).clsP) :
     Nat.card ((T.fm u μ).stabilizer₂ c) ∣ (D.mem u).C.DGam := by
@@ -63,15 +61,13 @@ theorem card_stabilizer_dvd₂ (hD : DGamDef D) (T : TwForms D) (u : D.what₂.W
   exact Subgroup.card_subgroup_dvd_card _
 
 /- English proof (translation)
-Introduce `hD u μ hμ x hx F hF _`. Take `⟨pc, hs, hi⟩` from `h u μ hμ`. Use `choose y hy hv using hi x hx F hF`. Use `⟨∑ c, ((Nat.card ((T.fm u μ).stabilizer₂ c) : ℕ) : D.what₂.LL)⁻¹ * y c, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hs, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, map_natCast, hy c]`. Use `Finset.sum_induction _ (fun t => t = 0 ∨ -ur D w (Formalism.MainNotions.WeilJacquetShalikaLaw.vDG D u w) ≤ (vAdd (D.plEq w) t : ℝ)) (fun a b ha hb => Formalism.MainNotions.WeightDegreeSizes.pair_add_ge D w ha hb) (Or.inl rfl) fun c _ => ?_` and prove the remaining obligations. Break down `hv c w hw with h0 | h0` into its components or cases. Use `left`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0, mul_zero]`. Distinguish the cases in `hy0 : y c = 0`. Use `left`. Rewrite using `[hy0, mul_zero]`. Use `right`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : ((Nat.card ((T.fm u μ).stabilizer₂ c) : ℕ) : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Rewrite using `[OrbitPlaces.vAdd_mul w (inv_ne_zero hn0) hy0, OrbitPlaces.vAdd_inv w hn0]`. Establish `hb` using `vAdd_dvd_le (D := D) w (D.mem u).C.DGam_pos.ne' (card_stabilizer_dvd₂ hD T u μ c)`. Establish `h0' : (0 : ℝ) ≤ (vAdd (D.plEq w) (y c) : ℝ)` using `by exact_mod_cast h0`. Unfold `Formalism.MainNotions.WeilJacquetShalikaLaw.vDG`.
-
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem twisted_period_of_class_decomposition {Dx : DivX D} {T : TwForms D}
     (h : ∀ u μ, μ ≠ D.what₂.mu0 → Formalism.MainNotions.RT.PeriodPointConditions.PerDecTw D Dx T u μ) : Formalism.MainNotions.WeightDegreeSizes.TwistedPeriodIntegral D Dx T := by

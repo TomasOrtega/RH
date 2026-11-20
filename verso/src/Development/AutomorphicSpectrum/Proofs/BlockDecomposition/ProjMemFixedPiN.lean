@@ -5,9 +5,9 @@ open GlobalTheory.PRep PositivityTheory.SphericalProduct
 namespace GlobalTheory.CompanionTheory.Cass
 
 /- English proof (translation)
-Introduce `t`. Establish `ht : ((t : D.T) : G) ∈ D.J` using `Subgroup.mem_comap.mp t.2`. Establish `hv : π ((t : D.T) : G) (v : V) = (v : V)`. Establish `h` using `v.2 ⟨((t : D.T) : G), ht⟩`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hq : (D.piN π) (t : D.T) (D.proj π (v : V)) = D.proj π (π ((t : D.T) : G) (v : V))` using `rfl`. Rewrite using `[hq, hv, MonoidHom.one_apply, Units.val_one, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_mem_fixed_piN (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (D : PositivityTheory.SphericalProduct.CassData G) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V) (v : fixed π D.J) : D.proj π (v : V) ∈ fixed (D.piN π) D.JT := by
   intro t

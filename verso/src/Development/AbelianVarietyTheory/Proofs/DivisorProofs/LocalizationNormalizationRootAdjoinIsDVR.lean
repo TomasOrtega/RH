@@ -10,7 +10,7 @@ set_option maxHeartbeats 1000000
 namespace GlobalTheory.LocNormDVR
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing (TensorProduct S L D) := IsArtinianRing.of_finite L _`. Conclude with `RingEquiv.isArtinianRing (Algebra.TensorProduct.comm S L D).toRingEquiv`.
+A detailed English derivation is pending.
 -/
 theorem artinian (S L D : Type) [CommRing S] [Field L] [Algebra S L] [CommRing D] [Algebra S D]
     [Module.Finite S D] : IsArtinianRing (TensorProduct S D L) := by
@@ -18,37 +18,29 @@ theorem artinian (S L D : Type) [CommRing S] [Field L] [Algebra S L] [CommRing D
   exact RingEquiv.isArtinianRing (Algebra.TensorProduct.comm S L D).toRingEquiv
 
 /- English proof (translation)
-Introduce `S K L _ _ _ _ _ _ _ _ _ _ _ _ π e D _ _ hD hπ he _ _ Q _`. Take `⟨φ⟩` from `hD`. Establish `he0 : 0 < e`. Break down `Nat.eq_zero_or_pos e with h | h` into its components or cases. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using `at he`. Conclude with `h`. Use `haveI : Module.Finite S (AdjoinRoot (Polynomial.X ^ e - Polynomial.C π)) := (AdjoinRoot.powerBasis' (Polynomial.monic_X_pow_sub_C π he0.ne')).finite`. Use `haveI : Module.Finite S D := Module.Finite.equiv φ.symm.toLinearEquiv`. Use `haveI : FaithfulSMul S D := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[faithfulSMul_iff_algebraMap_injective]`. Introduce `a b hab`. Establish `h1 : algebraMap S (AdjoinRoot (Polynomial.X ^ e - Polynomial.C π)) a = algebraMap S (AdjoinRoot (Polynomial.X ^ e - Polynomial.C π)) b`. Rewrite using `[← φ.commutes, ← φ.commutes, hab]`. Use `set pb := AdjoinRoot.powerBasis' (Polynomial.monic_X_pow_sub_C π he0.ne') with hpb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : 0 < pb.dim`. Rewrite using `[hpb, AdjoinRoot.powerBasis'_dim, Polynomial.natDegree_X_pow_sub_C]`. Conclude with `he0`. Establish `h0 : pb.basis ⟨0, hd⟩ = 1` using `by rw [PowerBasis.coe_basis]; simp`. Establish `key : ∀ s : S, pb.basis.repr (algebraMap S (AdjoinRoot (Polynomial.X ^ e - Polynomial.C π)) s) ⟨0, hd⟩ = s`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s`. Rewrite using `[Algebra.algebraMap_eq_smul_one, ← h0, map_smul, Module.Basis.repr_self]`. Simplify using the standard rewrite rules. Rewrite using `[← key a, ← key b, h1]`. Use `haveI : Module.Finite D (integralClosure D (TensorProduct S D L)) := GlobalTheory.T.normalisation_dvr_tensor_separable_finite S K L D`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsArtinianRing (TensorProduct S D L) := artinian S L D`. Use `haveI : IsReduced (TensorProduct S D L) := GlobalTheory.T.kummer_uniformiser_adjoinRoot_tensor_isReduced S K L π e D ⟨φ⟩ hπ he`. Take `⟨hdom, hic⟩` from `GlobalTheory.T.localization_integralClosure_artinian_reduced_domain D (TensorProduct S D L) Q`. Use `⟨hdom, ?_⟩` and prove the remaining obligations. Use `haveI : IsNoetherianRing (integralClosure D (TensorProduct S D L)) := IsNoetherianRing.of_finite D _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `haveI : IsNoetherianRing (Localization.AtPrime Q) := IsLocalization.isNoetherianRing Q.primeCompl _ inferInstance`. Use `haveI : Module.Flat S K := IsLocalization.flat K (nonZeroDivisors S)`. Use `haveI : Module.Flat S L := Module.Flat.trans S K L`. Establish `htf : ∀ a : D, a ≠ 0 → ∀ x : integralClosure D (TensorProduct S D L), a • x = 0 → x = 0`. Introduce `a ha x hax`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective (LinearMap.rTensor L (LinearMap.mulLeft S a))` using `Module.Flat.rTensor_preserves_injective_linearMap _ (fun y z h => (mul_right_injective₀ ha) h)`. Establish `hsmul : ∀ z : TensorProduct S D L, a • z = LinearMap.rTensor L (LinearMap.mulLeft S a) z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul y l => simp [TensorProduct.smul_tmul']`. Consider the case `add u v hu hv => rw [smul_add, map_add, hu, hv]`. Establish `h1 : a • (x : TensorProduct S D L) = 0` using `congrArg Subtype.val hax`. Rewrite `h1` using `[hsmul, ← map_zero (LinearMap.rTensor L (LinearMap.mulLeft S a))]`. Conclude with `Subtype.ext (hinj h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQu : Q.comap (algebraMap D (integralClosure D (TensorProduct S D L))) = maximalIdeal D` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal Q)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible D`. Establish `hϖQ : algebraMap D (integralClosure D (TensorProduct S D L)) ϖ ∈ Q`. Rewrite using `[← Ideal.mem_comap, hQu]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 hϖ.not_isUnit`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnf : ¬ IsField (Localization.AtPrime Q)`. Introduce `hF`. Establish `hmax : maximalIdeal (Localization.AtPrime Q) = ⊥` using `(IsLocalRing.isField_iff_maximalIdeal_eq).1 hF`. Establish `hmem : algebraMap _ (Localization.AtPrime Q) (algebraMap D (integralClosure D (TensorProduct S D L)) ϖ) ∈ maximalIdeal (Localization.AtPrime Q)`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_map_of_mem _ hϖQ`. Rewrite `hmem` using `[hmax, Ideal.mem_bot, IsLocalization.map_eq_zero_iff Q.primeCompl]`. Take `⟨⟨t, ht⟩, hts⟩` from `hmem`. Establish `ht0 : t = 0` using `htf ϖ hϖ.ne_zero t (by rw [Algebra.smul_def, mul_comm]; exact hts)`. Conclude with `ht (ht0 ▸ Q.zero_mem)`.
-
-Use `((IsDiscreteValuationRing.TFAE (Localization.AtPrime Q) hnf).out 0 3).2 (⟨hic, ?_⟩ : IsIntegrallyClosed (Localization.AtPrime Q) ∧ ∃! P : Ideal (Localization.AtPrime Q), P ≠ ⊥ ∧ P.IsPrime)` and prove the remaining obligations. Use `⟨maximalIdeal _, ⟨⟨?_, inferInstance⟩, ?_⟩⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hnf ((IsLocalRing.isField_iff_maximalIdeal_eq).2 h)`. Introduce and unpack `P ⟨hP0, hP⟩`.
-
-Assume the negation of the conclusion as `hne`. Establish `hlt : P < maximalIdeal _` using `lt_of_le_of_ne (IsLocalRing.le_maximalIdeal hP.ne_top) hne`. Establish `hbl : (⊥ : Ideal (Localization.AtPrime Q)) < P` using `bot_lt_iff_ne_bot.2 hP0`. Establish `h1 : (⊥ : Ideal (Localization.AtPrime Q)).comap (algebraMap (integralClosure D (TensorProduct S D L)) (Localization.AtPrime Q)) < P.comap (algebraMap (integralClosure D (TensorProduct S D L)) (Localization.AtPrime Q))` using `(IsLocalization.orderEmbedding Q.primeCompl (Localization.AtPrime Q)).strictMono hbl`. Establish `h2 : P.comap (algebraMap (integralClosure D (TensorProduct S D L)) (Localization.AtPrime Q)) < (maximalIdeal (Localization.AtPrime Q)).comap (algebraMap (integralClosure D (TensorProduct S D L)) (Localization.AtPrime Q))` using `(IsLocalization.orderEmbedding Q.primeCompl (Localization.AtPrime Q)).strictMono hlt`.
-
-Establish `hc : (maximalIdeal (Localization.AtPrime Q)).comap (algebraMap (integralClosure D (TensorProduct S D L)) (Localization.AtPrime Q)) = Q` using `Localization.AtPrime.comap_maximalIdeal`. Rewrite `h2` using `[hc]`. Use `haveI : ((⊥ : Ideal (Localization.AtPrime Q)).comap (algebraMap (integralClosure D (TensorProduct S D L)) (Localization.AtPrime Q))).IsPrime := Ideal.comap_isPrime _ _`. Use `haveI : (P.comap (algebraMap (integralClosure D (TensorProduct S D L)) (Localization.AtPrime Q))).IsPrime := Ideal.comap_isPrime _ _`. Establish `k1` using `Ideal.IsIntegral.comap_lt_comap (R := D) h1`.
-
-Establish `k2` using `Ideal.IsIntegral.comap_lt_comap (R := D) h2`. Rewrite `k2` using `[hQu]`. Establish `hp1 : ((P.comap (algebraMap (integralClosure D (TensorProduct S D L)) (Localization.AtPrime Q))).comap (algebraMap D (integralClosure D (TensorProduct S D L)))).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hmx` using `hp1.isMaximal (ne_bot_of_gt k1)`. Conclude with `(ne_of_lt k2) (IsLocalRing.eq_maximalIdeal hmx)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (S K L : Type) [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
     [Field K] [Algebra S K] [IsFractionRing S K] [Field L] [Algebra K L] [Algebra S L] [IsScalarTower S K L]

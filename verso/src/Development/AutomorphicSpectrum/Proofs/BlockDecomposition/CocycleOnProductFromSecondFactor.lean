@@ -24,23 +24,21 @@ theorem mp_box_tmul {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C �
   rfl
 
 /- English proof (translation)
-Establish `hk : ∀ {b b' : C} (ψ : b ⟶ b') {a a' : C} (φ : a ⟶ a'), f.1 (a', b) (a', b') (𝟙 a', ψ) = mp (box F) (show ((a, b') : C × C) ⟶ (a', b') from (φ, 𝟙 b')) (f.1 (a, b) (a, b') (𝟙 a, ψ))`. Introduce `b b' ψ a a' φ`. Establish `e1` using `Z1.comp f (T := (a, b)) (T' := (a', b)) (T'' := (a', b')) (φ, 𝟙 b) (𝟙 a', ψ)`. Establish `e2` using `Z1.comp f (T := (a, b)) (T' := (a, b')) (T'' := (a', b')) (𝟙 a, ψ) (φ, 𝟙 b')`. Establish `e : (show ((a, b) : C × C) ⟶ (a', b) from (φ, 𝟙 b)) ≫ (show ((a', b) : C × C) ⟶ (a', b') from (𝟙 a', ψ)) = (show ((a, b) : C × C) ⟶ (a, b') from (𝟙 a, ψ)) ≫ (show ((a, b') : C × C) ⟶ (a', b') from (φ, 𝟙 b'))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite `e1` using `[e, e2, hf a a' b' φ, add_zero, hf a a' b φ, map_zero, zero_add]`. Conclude with `e1.symm`. Establish `hcomm : ∀ {a a' b' : C} (φ : a ⟶ a') (x : F.obj a ⊗[R] F.obj b'), TensorProduct.comm R (F.obj a') (F.obj b') (mp (box F) (show ((a, b') : C × C) ⟶ (a', b') from (φ, 𝟙 b')) x) = (mp F φ).toLinearMap.lTensor (F.obj b') (TensorProduct.comm R (F.obj a) (F.obj b') x)`. Introduce `a a' b' φ x`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul u v => rw [mp_box_tmul, mp_id]`. Simplify using the standard rewrite rules. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hex : ∀ {b b' : C} (ψ : b ⟶ b'), ∃! m : F.obj b', ∀ a : C, f.1 (a, b) (a, b') (𝟙 a, ψ) = (1 : F.obj a) ⊗ₜ[R] m`. Introduce `b b' ψ`. Take `⟨m, hm, hu⟩` from `hU (F.obj b') (fun a ↦ TensorProduct.comm R (F.obj a) (F.obj b') (f.1 (a, b) (a, b') (𝟙 a, ψ))) (fun a a' φ ↦ by rw [hk ψ φ, hcomm])`. Establish `hiff : ∀ (a : C) (m' : F.obj b'), TensorProduct.comm R (F.obj a) (F.obj b') (f.1 (a, b) (a, b') (𝟙 a, ψ)) = m' ⊗ₜ[R] (1 : F.obj a) ↔ f.1 (a, b) (a, b') (𝟙 a, ψ) = (1 : F.obj a) ⊗ₜ[R] m'`. Introduce `a m'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `(TensorProduct.comm R (F.obj a) (F.obj b')).injective.eq_iff' (TensorProduct.comm_tmul R _ _ _ _)`. Conclude with `⟨m, fun a ↦ (hiff a m).1 (hm a), fun m' h ↦ hu m' fun a ↦ (hiff a m').2 (h a)⟩`. Use `choose y hy huniq using @hex`. Use `⟨⟨fun b b' ψ ↦ y ψ, fun b b' b'' ψ χ ↦ ?_⟩, ?_⟩` and prove the remaining obligations. Use `(huniq (ψ ≫ χ) _ fun a ↦ ?_).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `Z1.comp f (T := (a, b)) (T' := (a, b')) (T'' := (a, b'')) (𝟙 a, ψ) (𝟙 a, χ)`. Establish `e' : (show ((a, b) : C × C) ⟶ (a, b') from (𝟙 a, ψ)) ≫ (show ((a, b') : C × C) ⟶ (a, b'') from (𝟙 a, χ)) = (𝟙 a, ψ ≫ χ)`. Simplify using the standard rewrite rules. Rewrite `e` using `[e', hy ψ a, hy χ a]`. Use `e.trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[mp_box_tmul, mp_id, TensorProduct.tmul_add]`. Use `Subtype.ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`. Take `⟨a, b⟩` from `T`. Take `⟨a', b'⟩` from `T'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ₁, φ₂⟩` from `φ`. Establish `e` using `Z1.comp f (T := (a, b)) (T' := (a', b)) (T'' := (a', b')) (φ₁, 𝟙 b) (𝟙 a', φ₂)`. Establish `e' : (show ((a, b) : C × C) ⟶ (a', b) from (φ₁, 𝟙 b)) ≫ (show ((a', b) : C × C) ⟶ (a', b') from (𝟙 a', φ₂)) = (φ₁, φ₂)`. Simplify using the standard rewrite rules. Rewrite `e` using `[e', hf a a' b φ₁, map_zero, zero_add, hy φ₂ a']`.
-
-Conclude with `e.symm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pull_of_vanish_fst (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
     (hU : USt F) (f : Z1 (box F))

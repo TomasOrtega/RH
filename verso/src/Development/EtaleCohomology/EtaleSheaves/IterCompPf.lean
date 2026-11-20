@@ -6,14 +6,14 @@ open CategoryTheory Limits AlgebraicGeometry LateralTheory.E.t_E2Cut LateralTheo
 namespace LateralTheory.E.IterCompPf
 
 /- English proof (translation)
-The claim follows from `h.bc (IsPullback.of_horiz_isIso ⟨by simp⟩ : IsPullback e (e ≫ l) l (𝟙 S))`.
+A detailed English derivation is pending.
 -/
 theorem isLine_iso_comp {L L' S : Scheme.{0}} (e : L' ⟶ L) [IsIso e] {l : L ⟶ S} (h : IsLine l) :
     IsLine (e ≫ l) :=
   h.bc (IsPullback.of_horiz_isIso ⟨by simp⟩ : IsPullback e (e ≫ l) l (𝟙 S))
 
 /- English proof (translation)
-Consider the cases of `hk with`. Consider the case `iso k' hk' => exact IterLine.iso _ inferInstance`. Consider the case `comp l k' hl hk'`. Rewrite using `[← Category.assoc]`. Conclude with `IterLine.comp _ _ (isLine_iso_comp e hl) hk'`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iterLine_iso_comp {T S Y : Scheme.{0}} {k : T ⟶ S} (hk : IterLine k) (e : Y ⟶ T) [IsIso e] :
     IterLine (e ≫ k) := by
@@ -24,9 +24,9 @@ theorem iterLine_iso_comp {T S Y : Scheme.{0}} {k : T ⟶ S} (hk : IterLine k) (
     exact IterLine.comp _ _ (isLine_iso_comp e hl) hk'
 
 /- English proof (translation)
-Introduce `P T S l k hl hk`. Proceed by induction on `hl with`. Consider the case `iso e he => exact iterLine_iso_comp hk e`. Consider the case `comp l₁ k₁ hl₁ _ ih`. Rewrite using `[Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IterLine.comp _ _ hl₁ ih`.
+A detailed English derivation is pending.
 -/
 theorem IterComp_of : LateralTheory.E.ChowGraphCut.IterComp := by
   intro P T S l k hl hk

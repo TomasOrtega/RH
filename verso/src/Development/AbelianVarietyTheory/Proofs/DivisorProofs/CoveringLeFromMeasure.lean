@@ -21,29 +21,27 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨ι, hι, hli, himg⟩` from `GlobalTheory.T.exists_semilinear_emb_supLattice_onto_realisation _ _ _ _ _ p.T p.R.toRealDat p.κ p.v₀ p.fw i`. Establish `hTC : IsTotallyComplex p.T.Q.c.F` using `⟨fun v => by`. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Conclude with `fun e => GlobalTheory.CompHt.conj_comp_ne (c := p.T.Q.c) v.embedding (RingHom.ext fun a => RingHom.congr_fun e a)⟩`. Establish `hc : ∀ σ x, nrmK p.fw i ((starRingEnd ℂ).comp σ) x = nrmK p.fw i σ x` using `fun σ x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Simplify using `only [nrmK]`. Rewrite using `[normW, normW, petW, petW, GlobalTheory.CompHt.goodOf_conj σ]`. Establish `hfg : (latTypeK p.fw p.F.lv2 i).FG` using `by haveI := isNoetherian_of_fg_of_noetherian _ hg.2.2.2.2.1`. Conclude with `Submodule.FG.of_le_of_isNoetherian (T := latW (p.T.U ((i : ℕ) + 1)) (wtZ (wtA (p.κ i)) (p.κ i).n)) inf_le_left`. Establish `hN : ∀ σ' x, nrmR p.R.toRealDat i σ' (ι x) ≤ Real.exp (C * unitE p) * nrmK p.fw i (σ'.comp (algebraMap p.T.Q.c.F D.what₂.LL)) x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ' x`. Take `⟨c, hc0, hcl, hcf⟩` from `hm σ'`. Take `⟨h, hx⟩` from `hι x`. Rewrite using `[hx, hcf ⟨x, h⟩]`. Establish `hce : c ≤ Real.exp (C * unitE p)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul_of_nonneg_right hce (petAt_nonneg _ _ _ _ _ _ _)`. Establish `hS : latType p.R.toRealDat p.F.lv2 i = Submodule.span (𝓞 D.what₂.LL) (ι '' (latTypeK p.fw p.F.lv2 i : Set (VK p.fw i)))`. Rewrite using `[hr]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy1, hy2⟩`. Establish `hy1' : y ∈ (ι '' (latW (p.T.U ((i : ℕ) + 1)) (wtZ (wtA (p.κ i)) (p.κ i).n) : Set (VK p.fw i)))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[himg]`. Conclude with `hy1`. Take `⟨x, hx, rfl⟩` from `hy1'`. Use `⟨x, ⟨hx, ?_⟩, rfl⟩` and prove the remaining obligations. Use `show (x : p.T.R _) ∈ Submodule.span _ (typeK p.fw p.F.lv2 i)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨h, hx'⟩` from `hι x`. Conclude with `Submodule.subset_span ⟨h, hx' ▸ hy2⟩`. Introduce and unpack `⟨x, ⟨hx1, hx2⟩, rfl⟩`. Use `⟨(show ι x ∈ ((p.R.FW i).MK : Set (Fin (p.R.nW i) → D.what₂.LL)) by rw [← himg]; exact ⟨x, hx1, rfl⟩), ?_⟩` and prove the remaining obligations. Establish `hsp : Submodule.span p.T.Q.c.F (typeK p.fw p.F.lv2 i) ≤ ((spType p.R.toRealDat p.F.lv2 i).comap ι).map (VK p.fw i).subtype`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `f ⟨h, hf⟩`. Establish `hfV : f ∈ VK p.fw i` using `by rw [VK, cuspW_wtZ]; exact h`. Use `⟨⟨f, hfV⟩, ?_, rfl⟩` and prove the remaining obligations. Take `⟨h', e⟩` from `hι ⟨f, hfV⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use `show ι ⟨f, hfV⟩ ∈ spType p.R.toRealDat p.F.lv2 i`. Rewrite using `[e]`. Conclude with `hf`. Take `⟨z, hz, hzx⟩` from `hsp hx2`. Establish `: z = x` using `Subtype.ext hzx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Substitute `this` using the available equality. Conclude with `hz`. Establish `h0 : latTypeK p.fw p.F.lv2 i ≠ ⊥`. Introduce `h0`. Apply `hg.2.2.1` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[eq_bot_iff]`. Use `(latGood_le _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hS, h0]`. Simplify using the standard rewrite rules. Establish `key` using `GlobalTheory.SlopeExt.slope_sq_sub_le_slope_sq_span p.T.Q.c.F D.what₂.LL (VK p.fw i) (Fin (p.R.toRealDat.nW i) → D.what₂.LL) (nrmK p.fw i) (nrmR p.R.toRealDat i) ι (latTypeK p.fw p.F.lv2 i) (C * unitE p) hg.2.2.2.1 hg.1 hc hli hfg h0 hN`.
-
-Unfold `CoreAt muCore`. Rewrite using `[hS]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem coreAt_of (C : ℝ) (hg : GramAt p i) (hm : MeasAt p i C) (hr : RatAt p i) : CoreAt p i (2 * C) := by
   obtain ⟨ι, hι, hli, himg⟩ := GlobalTheory.T.exists_semilinear_emb_supLattice_onto_realisation _ _ _ _ _ p.T p.R.toRealDat p.κ p.v₀ p.fw i
@@ -110,9 +108,9 @@ theorem coreAt_of (C : ℝ) (hg : GramAt p i) (hm : MeasAt p i C) (hr : RatAt p 
   linarith
 
 /- English proof (translation)
-Introduce `hg hm hr`. Unfold `Gram Meas GlobalTheory.CovTop.Rat CoreLe Lifts at *`. Use `Closed.imp (Closed.and (Closed.and hg hm) hr) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨⟨C1, -, hg'⟩, ⟨C, hC, hm'⟩⟩, ⟨C3, -, hr'⟩⟩`. Use `⟨2 * C, by linarith, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x0, h⟩` from `(hg'.and hm').and hr'`. Conclude with `⟨x0, fun x hx hle ι p hp i => coreAt_of p i C ((h x hx hle ι p hp).1.1 i) ((h x hx hle ι p hp).1.2 i) ((h x hx hle ι p hp).2 i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coreLe_of_gram_meas_rat : Gram → Meas → GlobalTheory.CovTop.Rat → CoreLe := by
   intro hg hm hr
@@ -125,7 +123,7 @@ theorem coreLe_of_gram_meas_rat : Gram → Meas → GlobalTheory.CovTop.Rat → 
     coreAt_of p i C ((h x hx hle ι p hp).1.1 i) ((h x hx hle ι p hp).1.2 i) ((h x hx hle ι p hp).2 i)⟩
 
 /- English proof (translation)
-The claim follows from `coreLe_of_gram_meas_rat`.
+A detailed English derivation is pending.
 -/
 example : Gram → Meas → GlobalTheory.CovTop.Rat → CoreLe := coreLe_of_gram_meas_rat
 

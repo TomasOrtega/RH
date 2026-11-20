@@ -36,13 +36,13 @@ def GBase.map (β : R₁ →+* R₂) (gb : GBase G R₁) : GBase G R₂ where
     simpa [Function.comp_def] using h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem GBase.isMap_map (β : R₁ →+* R₂) (gb : GBase G R₁) : GBase.IsMap β gb (gb.map β) :=
   ⟨rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => h ▸ GBase.isMap_map β gb₁⟩` and prove the remaining obligations. Take `⟨ρ, _, t, _, _⟩` from `gb₂`. Take `⟨h₁, h₂⟩` from `h`. Take `rfl : ρ = β gb₁.ρ` from `h₁`. Take `rfl : t = fun i => β.comp (gb₁.t i)` from `funext h₂`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
 Both sides reduce to the same expression.
 -/
@@ -56,7 +56,7 @@ theorem GBase.isMap_iff {β : R₁ →+* R₂} {gb₁ : GBase G R₁} {gb₂ : G
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem GBase.IsMap.id (gb : GBase G R₁) : GBase.IsMap (RingHom.id R₁) gb gb :=
   ⟨rfl, fun _ => rfl⟩
@@ -71,17 +71,17 @@ variable {β : R₁ →+* R₂} {gb₁ : GBase G R₁} {gb₂ : GBase G R₂} {N
   {o' : GObj gb₂ N s'} {o : GObj gb₁ N s} {f : S' ⟶ S}
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem IsGGPullOver.over (h : IsGGPullOver β o' o f) : f ≫ s = s' ≫ spMap β := h.1
 
 /- English proof (translation)
-The claim follows from `h.2.1`.
+A detailed English derivation is pending.
 -/
 theorem IsGGPullOver.isMap (h : IsGGPullOver β o' o f) : GBase.IsMap β gb₁ gb₂ := h.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2`.
+A detailed English derivation is pending.
 -/
 theorem IsGGPullOver.pull (h : IsGGPullOver β o' o f) : IsGGPull o' o f := h.2.2
 
@@ -90,7 +90,7 @@ end Over
 variable {R : Type} [CommRing R] [Algebra ℚ R]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨φ, φ₂, h₁, h₂, h₃, ⟨h₄⟩, h₅⟩ => ⟨⟨φ, φ₂, h₁, h₂, h₃, h₄, h₅⟩⟩, fun ⟨m⟩ => ⟨m.φ, m.φ₂, m.cart, m.sq, m.act, ⟨m.pol⟩, m.eta⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGGPull_iff {gb : GBase G R} {N : ℕ} {s' : S' ⟶ Sp R} {s : S ⟶ Sp R} {o' : GObj gb N s'}
     {o : GObj gb N s} {f : S' ⟶ S} : IsGGPull o' o f ↔ Nonempty (GObjMap o' o f) :=
@@ -98,7 +98,7 @@ theorem isGGPull_iff {gb : GBase G R} {N : ℕ} {s' : S' ⟶ Sp R} {s : S ⟶ Sp
     fun ⟨m⟩ => ⟨m.φ, m.φ₂, m.cart, m.sq, m.act, ⟨m.pol⟩, m.eta⟩⟩
 
 /- English proof (translation)
-Establish `e : spMap (RingHom.id R) = 𝟙 (Sp R)` using `Spec.map_id (CommRingCat.of R)`. Rewrite using `[IsGGPullOver, e, Category.comp_id, isGGPull_iff]`. Conclude with `⟨fun h => ⟨h.1, h.2.2⟩, fun h => ⟨h.1, GBase.IsMap.id gb, h.2⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isGGPullOver_id_iff {gb : GBase G R} {N : ℕ} {s' : S' ⟶ Sp R} {s : S ⟶ Sp R} {o' : GObj gb N s'}
     {o : GObj gb N s} {f : S' ⟶ S} :
@@ -108,7 +108,7 @@ theorem isGGPullOver_id_iff {gb : GBase G R} {N : ℕ} {s' : S' ⟶ Sp R} {s : S
   exact ⟨fun h => ⟨h.1, h.2.2⟩, fun h => ⟨h.1, GBase.IsMap.id gb, h.2⟩⟩
 
 /- English proof (translation)
-The claim follows from `isGGPull_iff.2 (Unique.gObjMap_id o)`.
+A detailed English derivation is pending.
 -/
 theorem IsGGPull.refl {gb : GBase G R} {N : ℕ} {s : S ⟶ Sp R} (o : GObj gb N s) : IsGGPull o o (𝟙 S) :=
   isGGPull_iff.2 (Unique.gObjMap_id o)
@@ -120,16 +120,16 @@ variable {R₃ : Type} [CommRing R₃] [Algebra ℚ R₃] {gb₁ : GBase G R₁}
   {o₂ : GObj gb₂ N s₂} {o₃ : GObj gb₃ N s₃} {f : S₃ ⟶ S₂} {f' : S₂ ⟶ S₁}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [h'.1, h.1, RingHom.comp_apply], fun i => by rw [h'.2, h.2, RingHom.comp_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem GBase.IsMap.comp {β : R₁ →+* R₂} {β' : R₂ →+* R₃} (h' : GBase.IsMap β' gb₂ gb₃) (h : GBase.IsMap β gb₁ gb₂) :
     GBase.IsMap (β'.comp β) gb₁ gb₃ :=
   ⟨by rw [h'.1, h.1, RingHom.comp_apply], fun i => by rw [h'.2, h.2, RingHom.comp_assoc]⟩
 
 /- English proof (translation)
-Take `⟨φ, φ₂, hc, hs, ha, ⟨hp⟩, he⟩` from `h₁`. Take `⟨φ', φ₂', hc', hs', ha', ⟨hp'⟩, he'⟩` from `h₂`. Establish `H : LBIso (o₂.P.pull φ₂) ((o₁.P.pull φ₂').pull φ₂)` using `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull o₂.P φ₂ φ₂ rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull (o₁.P.pull φ₂') φ₂ φ₂ rfl) hp'`. Establish `H' : LBIso (o₂.P.pull φ₂) (o₁.P.pull (φ₂ ≫ φ₂'))` using `LBIso.chartPull (chartPullId _) (chartPullIn o₁.P (fun _ : PUnit => φ₂') (fun _ => 1) φ₂) H`. Use `⟨φ ≫ φ', φ₂ ≫ φ₂', hc.comp hc', ⟨?_, ?_⟩, fun c => ?_, ⟨LBIso.trans o₃.isLB (pull_isLB o₂.isLB _) (pull_isLB o₁.isLB _) hp H'⟩, fun y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hs'.1, ← Category.assoc, hs.1, Category.assoc]`. Rewrite using `[Category.assoc, hs'.2, ← Category.assoc, hs.2, Category.assoc]`. Rewrite using `[← Category.assoc, ha, Category.assoc, ha', Category.assoc]`. Rewrite using `[← Category.assoc, he, Category.assoc, he', Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsGGPull.comp (h₁ : IsGGPull o₃ o₂ f) (h₂ : IsGGPull o₂ o₁ f') : IsGGPull o₃ o₁ (f ≫ f') := by
   obtain ⟨φ, φ₂, hc, hs, ha, ⟨hp⟩, he⟩ := h₁
@@ -147,7 +147,7 @@ theorem IsGGPull.comp (h₁ : IsGGPull o₃ o₂ f) (h₂ : IsGGPull o₂ o₁ f
   · rw [← Category.assoc, he, Category.assoc, he', Category.assoc]
 
 /- English proof (translation)
-Establish `e : spMap (β'.comp β) = spMap β' ≫ spMap β` using `Spec.map_comp (CommRingCat.ofHom β) (CommRingCat.ofHom β')`. Use `⟨?_, h₁.isMap.comp h₂.isMap, h₁.pull.comp h₂.pull⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h₂.over, ← Category.assoc, h₁.over, e, Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsGGPullOver.comp {β : R₁ →+* R₂} {β' : R₂ →+* R₃} (h₁ : IsGGPullOver β' o₃ o₂ f)
     (h₂ : IsGGPullOver β o₂ o₁ f') : IsGGPullOver (β'.comp β) o₃ o₁ (f ≫ f') := by
@@ -158,7 +158,7 @@ theorem IsGGPullOver.comp {β : R₁ →+* R₂} {β' : R₂ →+* R₃} (h₁ :
 end Comp
 
 /- English proof (translation)
-Establish `h` using `o.eta_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (a := o.eta 0) (by rw [_root_.mul_one]; exact h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GObj.eta_zero {gb : GBase G R} {M : ℕ} {s : S ⟶ Sp R} (o : GObj gb M s) : o.eta 0 = 1 := by
   have h := o.eta_add 0 0
@@ -166,7 +166,7 @@ theorem GObj.eta_zero {gb : GBase G R} {M : ℕ} {s : S ⟶ Sp R} (o : GObj gb M
   exact mul_left_cancel (a := o.eta 0) (by rw [_root_.mul_one]; exact h.symm)
 
 /- English proof (translation)
-Apply `eq_inv_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← o.eta_add, add_neg_cancel, GObj.eta_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem GObj.eta_neg {gb : GBase G R} {M : ℕ} {s : S ⟶ Sp R} (o : GObj gb M s) (x : G.La) :
     o.eta (-x) = (o.eta x)⁻¹ := by
@@ -174,7 +174,7 @@ theorem GObj.eta_neg {gb : GBase G R} {M : ℕ} {s : S ⟶ Sp R} (o : GObj gb M 
   rw [← o.eta_add, add_neg_cancel, GObj.eta_zero]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_nsmul, pow_zero, GObj.eta_zero]`. Consider the case `succ n ih => rw [succ_nsmul, o.eta_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem GObj.eta_nsmul {gb : GBase G R} {M : ℕ} {s : S ⟶ Sp R} (o : GObj gb M s) (n : ℕ) (x : G.La) :
     o.eta (n • x) = o.eta x ^ n := by
@@ -194,7 +194,7 @@ def gHeckeSub {gb : GBase G R} {M : ℕ} {s : S ⟶ Sp R} (o : GObj gb M s) (g :
     exact ⟨-x, by rw [map_neg, smul_neg, GObj.eta_neg]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_gHeckeSub {gb : GBase G R} {M : ℕ} {s : S ⟶ Sp R} (o : GObj gb M s) (g : G.La →ₗ[G.O] G.La) (N : ℕ)
     (x : G.La) : o.eta (N • g x) ∈ gHeckeSub o g N := ⟨x, rfl⟩
@@ -216,44 +216,44 @@ variable {gb : GBase G R} {g : G.La →ₗ[G.O] G.La} {c k N : ℕ} {s : S ⟶ S
   {o' : GObj gb N s} {ψ : o.A ⟶ o'.A}
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem IsGHecke.isMonHom (h : IsGHecke g c k N o o' ψ) : IsMonHom ψ := h.1
 
 /- English proof (translation)
-The claim follows from `h.2.1 c'`.
+A detailed English derivation is pending.
 -/
 theorem IsGHecke.act (h : IsGHecke g c k N o o' ψ) (c' : G.O) : o.act.act c' ≫ ψ = ψ ≫ o'.act.act c' := h.2.1 c'
 
 /- English proof (translation)
-The claim follows from `h.2.2.1 x`.
+A detailed English derivation is pending.
 -/
 theorem IsGHecke.eta (h : IsGHecke g c k N o o' ψ) (x : G.La) : o'.eta x = o.eta (g x) ≫ ψ := h.2.2.1 x
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem IsGHecke.cover (h : IsGHecke g c k N o o' ψ) :
     GlobalTheory.ZM.IsGaloisCover (gHeckeSub o g N) (fun h => (Hecke.transl h.1).left) ψ.left := h.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem IsGHecke.pol (h : IsGHecke g c k N o o' ψ) :
     Nonempty (LBIso (Hecke.lbPow o.P (k ^ 2 / c)) (o'.P.pull (Hecke.sq2 ψ))) := h.2.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem IsGHecke.dvd (h : IsGHecke g c k N o o' ψ) : c ∣ k ^ 2 := h.2.2.2.2.2
 
 /- English proof (translation)
-The claim follows from `Nat.mul_div_cancel' h.dvd`.
+A detailed English derivation is pending.
 -/
 theorem IsGHecke.mul_exp (h : IsGHecke g c k N o o' ψ) : c * (k ^ 2 / c) = k ^ 2 := Nat.mul_div_cancel' h.dvd
 
 /- English proof (translation)
-Use `haveI := h.isMonHom`. Conclude with `comp_eq_one_of_transl ψ _ (h.cover.inv ⟨_, mem_gHeckeSub o g N x⟩)`.
+A detailed English derivation is pending.
 -/
 theorem IsGHecke.kills (h : IsGHecke g c k N o o' ψ) (x : G.La) : o.eta (N • g x) ≫ ψ = 1 := by
   haveI := h.isMonHom
@@ -262,19 +262,19 @@ theorem IsGHecke.kills (h : IsGHecke g c k N o o' ψ) (x : G.La) : o.eta (N • 
 variable {X : GenModel gb N} {X' : GenModel gb (N * k)} {π : X'.X ⟶ X.X}
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem IsGHeckeMap.over (h : IsGHeckeMap g c k N X X' π) : π ≫ X.s = X'.s := h.1
 
 /- English proof (translation)
-Take `⟨-, o', ψ, hH, -⟩` from `h`. Conclude with `hH.dvd`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsGHeckeMap.dvd (h : IsGHeckeMap g c k N X X' π) : c ∣ k ^ 2 := by
   obtain ⟨-, o', ψ, hH, -⟩ := h
   exact hH.dvd
 
 /- English proof (translation)
-Take `⟨π, ⟨h₁, h₂⟩, -⟩` from `X.rep X'.X X'.s o₁`. Conclude with `⟨π, h₁, o₁, ψ₁, h, h₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsGHecke.exists_isGHeckeMap (X : GenModel gb N) {o₁ : GObj gb N X'.s} {ψ₁ : X'.univ.A ⟶ o₁.A}
     (h : IsGHecke g c k N X'.univ o₁ ψ₁) : ∃ π : X'.X ⟶ X.X, IsGHeckeMap g c k N X X' π := by
@@ -307,7 +307,7 @@ def GObj.forgetMul {gb : GBase G R} {N k : ℕ} (hN : 0 < N) (hk : 0 < k) {s : S
     rw [o.eta_nsmul, MonObj.comp_pow, hI, I.tower N k hN hk]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, smul_smul]`. Conclude with `o.eta_ker x`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gHeckeSub_smul_id_eq_one {gb : GBase G R} {N k : ℕ} {s : S ⟶ Sp R} (o : GObj gb (N * k) s) :
     ∀ h ∈ gHeckeSub o (k • LinearMap.id) N, h = 1 := by
@@ -316,15 +316,11 @@ theorem gHeckeSub_smul_id_eq_one {gb : GBase G R} {N k : ℕ} {s : S ⟶ Sp R} (
   exact o.eta_ker x
 
 /- English proof (translation)
-Establish `hsub` using `gHeckeSub_smul_id_eq_one o`. Establish `ha : ∀ a : gHeckeSub o (k • LinearMap.id) N, (Hecke.transl a.1).left = 𝟙 o.A.left` using `fun a => by`. Rewrite using `[hsub a.1 a.2, Hecke.transl, MonObj.comp_one, _root_.mul_one]`. Both sides reduce to the same expression. Use `⟨?_, fun c' => ?_, fun x => ?_, ?_, ?_, dvd_rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(inferInstance : IsMonHom (𝟙 o.A))`. Conclude with `(Category.comp_id (o.act.act c')).trans (Category.id_comp (o.act.act c')).symm`. Conclude with `(Category.comp_id (o.eta (k • x))).symm`. Use `{ finite := ?_ one := ha 1 mul := fun a c => by rw [ha (a * c), ha a, ha c, Category.comp_id] inv := fun a => by rw [ha a, Category.id_comp] fin := by rw [Over.id_left]; exact inferInstanceAs (IsFinite (𝟙 _)) etale := by rw [Over.id_left]; exact inferInstanceAs (Etale (𝟙 _)) onto …` and prove the remaining obligations. Rewrite using `[ha 1, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(Category.comp_id y).symm.trans (h.trans (Category.comp_id y')),`. Use `fun a _ => Subtype.ext (hsub a.1 a.2)⟩ }`. Establish `: Subsingleton (gHeckeSub o (k • LinearMap.id) N)` using `⟨fun a c => Subtype.ext ((hsub a.1 a.2).trans (hsub c.1 c.2).symm)⟩`. Conclude with `Finite.of_subsingleton`. Establish `e : Hecke.sq2 (𝟙 o.A) = 𝟙 (G2 o.A).left`.
-
-Simplify using `only [Hecke.sq2, Category.comp_id, lift_fst_snd]`. Both sides reduce to the same expression. Use `⟨(GlobalTheory.PrimNorm.lbIso_iff o.isLB _ _ _ _).2 ?_⟩` and prove the remaining obligations. Use `show _ = ∏ _k : PUnit, GlobalTheory.PrimNorm.cls o.P (Hecke.sq2 (𝟙 o.A)) ^ (1 : ℤ)`. Rewrite using `[e]`.
-
-Simplify using `[Nat.div_self (pow_pos hk 2)]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isGHecke_forgetMul {gb : GBase G R} {N k : ℕ} (hN : 0 < N) (hk : 0 < k) {s : S ⟶ Sp R}
     (o : GObj gb (N * k) s) : IsGHecke (k • LinearMap.id) (k ^ 2) k N o (o.forgetMul hN hk) (𝟙 o.A) := by
@@ -359,30 +355,30 @@ theorem isGHecke_forgetMul {gb : GBase G R} {N k : ℕ} (hN : 0 < N) (hk : 0 < k
     simp [Nat.div_self (pow_pos hk 2)]
 
 /- English proof (translation)
-The claim follows from `(isGHecke_forgetMul hN hk X'.univ).exists_isGHeckeMap X`.
+A detailed English derivation is pending.
 -/
 theorem exists_isGHeckeMap_forget {gb : GBase G R} {N k : ℕ} (hN : 0 < N) (hk : 0 < k) (X : GenModel gb N)
     (X' : GenModel gb (N * k)) : ∃ π : X'.X ⟶ X.X, IsGHeckeMap (k • LinearMap.id) (k ^ 2) k N X X' π :=
   (isGHecke_forgetMul hN hk X'.univ).exists_isGHeckeMap X
 
 /- English proof (translation)
-Introduce `h` and use `absurd h.dvd (by decide)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {gb : GBase G R} (g : G.La →ₗ[G.O] G.La) (N : ℕ) {s : S ⟶ Sp R} (o : GObj gb (N * 3) s) (o' : GObj gb N s)
     (ψ : o.A ⟶ o'.A) : ¬ IsGHecke g 5 3 N o o' ψ :=
   fun h => absurd h.dvd (by decide)
 
 /- English proof (translation)
-Introduce `h` and use `(pow_pos hk 2).ne' (zero_dvd_iff.1 h.dvd)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {gb : GBase G R} (g : G.La →ₗ[G.O] G.La) (k N : ℕ) (hk : 0 < k) {s : S ⟶ Sp R} (o : GObj gb (N * k) s)
     (o' : GObj gb N s) (ψ : o.A ⟶ o'.A) : ¬ IsGHecke g 0 k N o o' ψ :=
   fun h => (pow_pos hk 2).ne' (zero_dvd_iff.1 h.dvd)
 
 /- English proof (translation)
-Introduce `h`. Establish `him : gb.ρ.im = 0` using `Complex.conj_eq_iff_im.1 h.1.symm`. Establish `hre` using `congrArg Complex.re gb.ρ_root`. Simplify using `[pow_two, him] at hre`. Establish `hd : ((G.tr : ℝ)) ^ 2 - 4 * G.nm < 0` using `by exact_mod_cast G.disc_neg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg (2 * gb.ρ.re - G.tr)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 example (gb : GBase G ℂ) : ¬ GBase.IsMap (starRingEnd ℂ) gb gb := by
   intro h
@@ -393,7 +389,7 @@ example (gb : GBase G ℂ) : ¬ GBase.IsMap (starRingEnd ℂ) gb gb := by
   nlinarith [sq_nonneg (2 * gb.ρ.re - G.tr)]
 
 /- English proof (translation)
-The claim follows from `isGGPullOver_id_iff.2 ⟨Category.id_comp s, isGGPull_iff.1 (IsGGPull.refl o)⟩`.
+A detailed English derivation is pending.
 -/
 example {gb : GBase G R} {N : ℕ} {s : S ⟶ Sp R} (o : GObj gb N s) : IsGGPullOver (RingHom.id R) o o (𝟙 S) :=
   isGGPullOver_id_iff.2 ⟨Category.id_comp s, isGGPull_iff.1 (IsGGPull.refl o)⟩

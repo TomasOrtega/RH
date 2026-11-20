@@ -17,7 +17,7 @@ variable {l : ℕ} [Fact l.Prime]
 private def vv (a : ℕ → Tl l) (f n m : ℕ) : Tl l := a (n + m) ^ l ^ (f * m)
 
 /- English proof (translation)
-Establish `e : vv a f n (m + 1) = (a (n + m + 1) ^ l ^ f) ^ l ^ (f * m)`. Rewrite using `[vv, ← pow_mul, ← pow_add, ← add_assoc, mul_add, mul_one, add_comm (f * m) f]`. Rewrite using `[e, vv, norm_sub_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (h _) _`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem vv_step (a : ℕ → Tl l) {f : ℕ} {ρ : ℝ} (h : ∀ n, ‖a (n + 1) ^ l ^ f - a n‖ ≤ ρ)
     (n m : ℕ) : ‖vv a f n (m + 1) - vv a f n m‖ ≤ ρ ^ l ^ (f * m) := by
@@ -27,7 +27,7 @@ private theorem vv_step (a : ℕ → Tl l) {f : ℕ} {ρ : ℝ} (h : ∀ n, ‖a
   exact pow_le_pow_left₀ (norm_nonneg _) (h _) _
 
 /- English proof (translation)
-Use `pow_le_pow_of_le_one hρ0 hρ1.le ?_` and prove the remaining obligations. Establish `h2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `h3 : m ≤ f * m` using `Nat.le_mul_of_pos_left m hf`. Conclude with `h3.trans (Nat.lt_pow_self h2).le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pow_bound {f : ℕ} {ρ : ℝ} (hρ0 : 0 ≤ ρ) (hρ1 : ρ < 1) (hf : 0 < f) (m : ℕ) :
     ρ ^ l ^ (f * m) ≤ ρ ^ m := by
@@ -37,9 +37,9 @@ private theorem pow_bound {f : ℕ} {ρ : ℝ} (hρ0 : 0 ≤ ρ) (hρ1 : ρ < 1)
   exact h3.trans (Nat.lt_pow_self h2).le
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa [vv] using hρ0`. Consider the case `succ m ih`. Establish `e : vv a f n (m + 1) - a n = (vv a f n (m + 1) - vv a f n m) + (vv a f n m - a n)`. Normalize the expressions using the abelian group laws.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ih)` and prove the remaining obligations. Use `(vv_step a h n m).trans ?_` and prove the remaining obligations. Conclude with `pow_le_of_le_one hρ0 hρ1.le (pow_pos (Fact.out : l.Prime).pos _).ne'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem vv_near (a : ℕ → Tl l) {f : ℕ} {ρ : ℝ} (hρ0 : 0 ≤ ρ) (hρ1 : ρ < 1)
     (h : ∀ n, ‖a (n + 1) ^ l ^ f - a n‖ ≤ ρ) (n m : ℕ) : ‖vv a f n m - a n‖ ≤ ρ := by
@@ -54,19 +54,17 @@ private theorem vv_near (a : ℕ → Tl l) {f : ℕ} {ρ : ℝ} (hρ0 : 0 ≤ ρ
     exact pow_le_of_le_one hρ0 hρ1.le (pow_pos (Fact.out : l.Prime).pos _).ne'
 
 /- English proof (translation)
-Establish `hρ0 : 0 ≤ ρ` using `(norm_nonneg _).trans hl`. Use `choose a ha using fun n => exists_sh_near (l := l) (Z n) (hZ n)`. Establish `ha' : ∀ n, ‖sh (a n) - Z n‖ ≤ ρ` using `fun n => (ha n).trans hl`. Establish `hd : ∀ n, ‖a (n + 1) ^ l ^ f - a n‖ ≤ ρ`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `norm_sub_le_of_near hl ?_` and prove the remaining obligations. Establish `h1` using `near_pow hl (hZ (n + 1)) (ha' (n + 1)) (l ^ f)`. Establish `e : sh (a (n + 1) ^ l ^ f) - sh (a n) = (sh (a (n + 1) ^ l ^ f) - Z (n + 1) ^ l ^ f) + ((Z (n + 1) ^ l ^ f - Z n) + -(sh (a n) - Z n))` using `by ring`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hc n) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `ha' n`. Establish `hcau : ∀ n, CauchySeq (vv a f n)`. Introduce `n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `cauchySeq_of_le_geometric ρ 1 hρ1 fun m => ?_` and prove the remaining obligations. Rewrite using `[dist_comm, dist_eq_norm, one_mul]`. Conclude with `(vv_step a hd n m).trans (pow_bound hρ0 hρ1 hf m)`. Use `choose u hu using fun n => cauchySeq_tendsto_of_complete (hcau n)`. Use `⟨u, fun n => ?_, fun n => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : Filter.Tendsto (fun m => vv a f (n + 1) m ^ l ^ f) Filter.atTop (nhds (u (n + 1) ^ l ^ f))` using `(hu (n + 1)).pow _`. Establish `h2 : Filter.Tendsto (fun m => vv a f n (m + 1)) Filter.atTop (nhds (u n))` using `(hu n).comp (Filter.tendsto_add_atTop_nat 1)`. Establish `e : (fun m => vv a f (n + 1) m ^ l ^ f) = fun m => vv a f n (m + 1)`. Use function extensionality and compare the values at `m`. Rewrite using `[vv, vv, ← pow_mul, ← pow_add, mul_add, mul_one, add_comm (f * m) f, add_assoc, add_comm 1 m]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[e]`. Conclude with `tendsto_nhds_unique h1 h2`. Establish `h1 : ‖u n - a n‖ ≤ ρ` using `le_of_tendsto (((hu n).sub_const (a n)).norm) (Filter.Eventually.of_forall fun m => vv_near a hρ0 hρ1 hd n m)`. Establish `h2` using `near_of_norm_sub_le hl h1`. Establish `e : sh (u n) - Z n = (sh (u n) - sh (a n)) + (sh (a n) - Z n)` using `by ring`.
-
-Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h2 (ha' n))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tilt_lift_compat {l : ℕ} [Fact l.Prime] (f : ℕ) (ρ : ℝ) (hf : 0 < f)
     (hl : ‖(l : ℂ_[l])‖ ≤ ρ) (hρ1 : ρ < 1) (Z : ℕ → ℂ_[l])

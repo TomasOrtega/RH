@@ -8,7 +8,7 @@ open GroundTheory.Global.Elliptic
 open scoped Real ModularForm UpperHalfPlane
 
 /- English proof (translation)
-Introduce `τ`. Rewrite using `[latticeDiscr_lattice, discr_latticeOfTau]`. Simplify using `only [ModularForm.discriminant]`. Use `push_cast`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem DeltaEta.proof : DeltaEta.Statement := by
   intro τ

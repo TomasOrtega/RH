@@ -2,11 +2,11 @@ import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
 
 /- English proof (translation)
-Introduce `E _ _ _ H`. Establish `h` using `H.sqrt_neg_disc_sq`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `hre` using `congrArg Complex.re h`. Establish `him` using `congrArg Complex.im h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[pow_two] at hre him`. Establish `h0 : H.rt0.re = 0`. Assume the negation of the conclusion as `hne`. Establish `him0 : H.rt0.im = 0`. Establish `hm : H.rt0.re * H.rt0.im = 0` using `by linarith`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp hm).resolve_left hne`. Rewrite `hre` using `[him0]`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ConjugateRootZeroSecond.rt0_conj_neg_ne_zero :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : NumberField.IsCMField E]

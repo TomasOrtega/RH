@@ -16,9 +16,9 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Simplify using `using H.h_smul_left 0 0 y`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, H.h_smul_left, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem h_finset_sum_smul_left {ι : Type} (s : Finset ι) (c : ι → E) (v : ι → V) (y : V) :
     H.h (∑ i ∈ s, c i • v i) y = ∑ i ∈ s, c i * H.h (v i) y := by
@@ -31,27 +31,27 @@ private theorem h_finset_sum_smul_left {ι : Type} (s : Finset ι) (c : ι → E
     rw [Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, H.h_smul_left, ih]
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (y + z) x, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem h_add_right_rank_point_counts (x y z : V) : H.h x (y + z) = H.h x y + H.h x z := by
   rw [H.h_herm (y + z) x, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (a • y) x, H.h_smul_left, map_mul, ← H.h_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem h_smul_right_eq_cj_mul (a : E) (x y : V) : H.h x (a • y) = M.L.cj a * H.h x y := by
   rw [H.h_herm (a • y) x, H.h_smul_left, map_mul, ← H.h_herm]
 
 /- English proof (translation)
-Simplify using `using h_add_right_rank_point_counts H x 0 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem h_zero_right_rank_point_counts (x : V) : H.h x 0 = 0 := by
   simpa using h_add_right_rank_point_counts H x 0 0
 
 /- English proof (translation)
-Use `show ∀ x ∈ H.X f, H.h v x = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `h j`. Consider the case `zero => exact h_zero_right_rank_point_counts H v`. Consider the case `add y z _ _ hy hz => rw [h_add_right_rank_point_counts, hy, hz, add_zero]`. Consider the case `smul a y _ hy => rw [h_smul_right_eq_cj_mul, hy, mul_zero]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_perpX_of {f : Fin (r + 1) → V} {v : V} (h : ∀ j : Fin r, H.h v (f j.castSucc) = 0) :
     v ∈ H.perp (H.X f) := by
@@ -66,16 +66,16 @@ theorem mem_perpX_of {f : Fin (r + 1) → V} {v : V} (h : ∀ j : Fin r, H.h v (
   | smul a y _ hy => rw [h_smul_right_eq_cj_mul, hy, mul_zero]
 
 /- English proof (translation)
-The claim follows from `mem_perpX_of H fun j => hF.1 _ _ (Or.inr (Fin.castSucc_lt_last j).ne)`.
+A detailed English derivation is pending.
 -/
 theorem z_mem_perpX {f : Fin (r + 1) → V} {T : F} (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T) :
     f (Fin.last r) ∈ H.perp (H.X f) :=
   mem_perpX_of H fun j => hF.1 _ _ (Or.inr (Fin.castSucc_lt_last j).ne)
 
 /- English proof (translation)
-Use `mem_perpX_of H fun j => ?_` and prove the remaining obligations. Unfold `HermSp.om'`. Rewrite using `[h_sum_smul_left]`. Establish `e` using `congrFun (congrFun (mul_adjugate (H.Zhat f f')) j.castSucc) (Fin.last r)`. Rewrite `e` using `[Matrix.smul_apply, one_apply_ne (Fin.castSucc_lt_last j).ne, smul_zero, mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [HermSp.Zhat, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem om'_mem_perpX (f f' : Fin (r + 1) → V) : H.om' f f' ∈ H.perp (H.X f) := by
   refine mem_perpX_of H fun j => ?_
@@ -89,7 +89,7 @@ theorem om'_mem_perpX (f f' : Fin (r + 1) → V) : H.om' f f' ∈ H.perp (H.X f)
   ring
 
 /- English proof (translation)
-Unfold `HermSp.om'`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr b, rfl⟩)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem om'_mem_U (f f' : Fin (r + 1) → V) :
     H.om' f f' ∈ Submodule.span E (Set.range (Sum.elim f f')) := by
@@ -97,21 +97,21 @@ theorem om'_mem_U (f f' : Fin (r + 1) → V) :
   exact Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr b, rfl⟩)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).mp hu`. Apply the tactic sequence `obtain ⟨a, p, rfl⟩ : ∃ a p, c = Sum.elim a p := ⟨c ∘ Sum.inl, c ∘ Sum.inr, by ext (i | i) <;> rfl⟩`. Establish `hp' : ∀ x ∈ H.X f, H.h (∑ i, Sum.elim a p i • Sum.elim f f' i) x = 0` using `hp`. Rewrite `hp'`, the goal using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at hp' ⊢`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨d, hd⟩` from `hZ`. Establish `hperp : ∀ j : Fin r, (H.Zhat f f' *ᵥ p) j.castSucc = 0`. Introduce `j`. Establish `h0` using `hp' (f j.castSucc) (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite `h0` using `[H.h_add_left, h_finset_sum_smul_left, h_finset_sum_smul_left, Finset.sum_eq_zero (fun i _ => by rw [hF.1 _ _ (Or.inr (Fin.castSucc_lt_last j).ne), mul_zero]), zero_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans ?_ h0` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, HermSp.Zhat, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Establish `hZp : H.Zhat f f' *ᵥ p = Pi.single (Fin.last r) ((H.Zhat f f' *ᵥ p) (Fin.last r))`. Use function extensionality and compare the values at `k`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hk : k = Fin.last r`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Take `⟨j, rfl⟩` from `Fin.exists_castSucc_eq.mpr hk`. Rewrite using `[hperp j, Pi.single_eq_of_ne hk]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp2 : ∀ b, p b = (↑d⁻¹ * (H.Zhat f f' *ᵥ p) (Fin.last r)) * (H.Zhat f f').adjugate b (Fin.last r)`. Introduce `b`. Establish `h1 : (H.Zhat f f').adjugate *ᵥ (H.Zhat f f' *ᵥ p) = (H.Zhat f f').det • p`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `h2` using `congrFun h1 b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hZp]`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Pi.smul_apply, smul_eq_mul] at h2`. Rewrite `h2` using `[← hd]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h2]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨∑ j : Fin r, a j.castSucc • f j.castSucc, ?_, a (Fin.last r), ↑d⁻¹ * (H.Zhat f f' *ᵥ p) (Fin.last r), ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite using `[Fin.sum_univ_castSucc (fun i => a i • f i)]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Unfold `HermSp.om'`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← hp2 b]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomp_U_perpX {f f' : Fin (r + 1) → V} {T : F} (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T)
     (hZ : IsUnit (H.Zhat f f').det) {u : V} (hu : u ∈ Submodule.span E (Set.range (Sum.elim f f')))
@@ -165,7 +165,7 @@ theorem decomp_U_perpX {f f' : Fin (r + 1) → V} {T : F} (hF : Formalism.MainNo
     rw [smul_smul, ← hp2 b]
 
 /- English proof (translation)
-Unfold `HermSp.Gdet HermSp.normE`. Establish `h' : M.L.cj (H.Dl f₁ f₁' r) * M.L.cj (H.Dl f₂ f₂' (r + 1)) = M.L.cj (H.Dl f₂ f₂' r) * M.L.cj (H.Dl f₁ f₁' (r + 1))`. Rewrite using `[← map_mul, ← map_mul, h]`. Take the linear combination `(algebraMap F E (T * T')) * (M.L.cj (H.Dl f₁ f₁' r) * M.L.cj (H.Dl f₂ f₂' (r + 1))) * h + (algebraMap F E (T * T')) * (H.Dl f₂ f₂' r * H.Dl f₁ f₁' (r + 1)) * h'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Gdet_rel (f₁ f₁' f₂ f₂' : Fin (r + 1) → V) (T T' : F)
     (h : H.Dl f₁ f₁' r * H.Dl f₂ f₂' (r + 1) = H.Dl f₂ f₂' r * H.Dl f₁ f₁' (r + 1)) :

@@ -19,7 +19,7 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-The claim follows from `HtGaussUniq 𝒜 d hd h c`.
+A detailed English derivation is pending.
 -/
 theorem AdmissibleValuationPrimeUnique (hd : d.AxH 𝒜) (h : d.S1) (c : ι) :
     ∀ v : AddValuation (Ω c) (WithTop ℤ), d.admitted c v → IsTrivOn K v →
@@ -27,7 +27,7 @@ theorem AdmissibleValuationPrimeUnique (hd : d.AxH 𝒜) (h : d.S1) (c : ι) :
   HtGaussUniq 𝒜 d hd h c
 
 /- English proof (translation)
-The claim follows from `HtGaussGen 𝒜 d (Data.PlaceTrivialOrPositive (𝒜 := 𝒜) d) (Data.AdmissibleValuationPrimeUnique (𝒜 := 𝒜) d) hd h c`.
+A detailed English derivation is pending.
 -/
 theorem GeneratorMultiHomogeneous (hd : d.AxH 𝒜) (h : d.S1) (c : ι) :
     ∀ p ∈ d.HtOne, (∃ w, w ∈ d.GoodP c p) →

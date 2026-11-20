@@ -14,9 +14,9 @@ open ReciprocityTheory.AnForm.A (polyMax molli mollify_thm polyMax_le' polyMax_m
 noncomputable section
 
 /- English proof (translation)
-Establish `h1 : Real.log t < -(Real.exp 1 + 2 * a)`. Use `Real.log_lt_log ht hta` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis. Rewrite using `[Real.log_inv]`. Establish `he` using `Real.exp_pos 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨by linarith, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.lt_log_iff_exp_lt (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_inv_facts {t a : ℝ} (ht : 0 < t) (ha : 0 ≤ a)
     (hta : t < Real.exp (-(Real.exp 1 + 2 * a))) :
@@ -31,51 +31,49 @@ theorem log_inv_facts {t a : ℝ} (ht : 0 < t) (ha : 0 ≤ a)
   linarith
 
 /- English proof (translation)
-Introduce `X _ _ _ D A R ρ`. Take `⟨δ, B₀, hδ, hV⟩` from `h3 X D A R`. Use `choose V hVo _hVt hVball hVpsh using hV`. Take `⟨δ₁, L, B₁, hδ₁, hL, hT⟩` from `h4 X D A R`. Take `⟨C₂, t₂, ht₂, hlow⟩` from `h2 X D A R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `mollifier_exists_bound ρ`. Establish `hb0 : 0 ≤ b` using `(ρ.nonneg 0).trans (hb 0)`. Take `⟨c₀, hc₀⟩ : ∃ c : ℝ, c = Real.pi ^ D * (3 / 2 : ℝ) ^ (2 * D) * b` from `⟨_, rfl⟩`. Establish `hc₀0 : 0 ≤ c₀` using `by rw [hc₀]; positivity`. Take `⟨C₁, hC₁⟩ : ∃ c : ℝ, c = L + 2` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC₁3 : 3 ≤ C₁` using `by linarith`. Take `⟨a, ha⟩ : ∃ c : ℝ, c = |Real.log (δ / C₁)|` from `⟨_, rfl⟩`. Establish `ha0 : 0 ≤ a` using `ha ▸ abs_nonneg _`. Take `⟨B₀', hB₀'⟩ : ∃ c : ℝ, c = max B₀ 0` from `⟨_, rfl⟩`. Take `⟨C₂', hC₂'⟩ : ∃ c : ℝ, c = max C₂ 0` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB₀'0 : 0 ≤ B₀'` using `hB₀' ▸ le_max_right _ _`. Establish `hC₂'0 : 0 ≤ C₂'` using `hC₂' ▸ le_max_right _ _`. Establish `hC₂C₂' : C₂ ≤ C₂'` using `hC₂' ▸ le_max_left _ _`. Establish `hlog4 : 0 ≤ Real.log (4 * C₁ ^ 2)` using `Real.log_nonneg (by nlinarith)`. Take `⟨E, hE⟩ : ∃ c : ℝ, c = (1 + c₀) * (2 * Real.log (4 * C₁ ^ 2) * (B₀' + C₂'))` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩ : ∃ c : ℝ, c = max (max E L) (C₂' + |B₁| + 1)` from `⟨_, rfl⟩`. Establish `hCE : E ≤ C` using `hC ▸ (le_max_left _ _).trans (le_max_left _ _)`. Establish `hCL : L ≤ C` using `hC ▸ (le_max_right _ _).trans (le_max_left _ _)`. Establish `hCB : C₂' + |B₁| + 1 ≤ C` using `hC ▸ le_max_right _ _`. Establish `hC0 : 0 ≤ C` using `by linarith [abs_nonneg B₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC₁2 : 0 < C₁ + 2` using `by linarith`. Use `⟨C, min (min t₂ δ₁) (min (δ / (C₁ + 2)) (Real.exp (-(Real.exp 1 + 2 * a)))), lt_min (lt_min ht₂ hδ₁) (lt_min (div_pos hδ hC₁2) (Real.exp_pos _)), ?_⟩` and prove the remaining obligations. Introduce `t ht ht₀ K hK`. Simplify using `only [lt_min_iff] at ht₀`. Take `⟨⟨htt₂, htδ₁⟩, htδ, hte⟩` from `ht₀`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hCt : t * (C₁ + 2) < δ` using `(lt_div_iff₀ hC₁2).1 htδ`. Establish `hCt' : t * (C₁ + 2) = C₁ * t + 2 * t` using `by ring`. Establish `hC₁t : C₁ * t ≤ δ` using `by linarith`. Establish `hC₁tlt : C₁ * t < δ` using `by linarith`. Establish `htLt : t ≤ L * t` using `le_mul_of_one_le_left ht.le hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLt : L * t ≤ C₁ * t` using `mul_le_mul_of_nonneg_right (by linarith) ht.le`. Establish `h2t : 2 * t ≤ C₁ * t` using `mul_le_mul_of_nonneg_right (by linarith) ht.le`. Establish `htC : t ≤ C₁ * t` using `le_mul_of_one_le_left ht.le (by linarith)`. Take `⟨hℓa, hlogℓ⟩` from `log_inv_facts ht ha0 hte`. Establish `hℓ0 : 0 < Real.log t⁻¹` using `by linarith [Real.exp_pos 1]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK0 : 0 ≤ K` using `le_trans (mul_nonneg hC0 (by linarith)) hK`. Establish `hKB : -K + B₁ ≤ -C₂ * Real.log (Real.log t⁻¹)`. Establish `h1' : (C₂' + |B₁| + 1) * Real.log (Real.log t⁻¹) ≤ C * Real.log (Real.log t⁻¹)` using `mul_le_mul_of_nonneg_right hCB (by linarith)`. Establish `h2' : B₁ ≤ |B₁| * Real.log (Real.log t⁻¹)`. Use `le_mul_of_one_le_right (abs_nonneg B₁) hlogℓ.le` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[le_abs_self B₁]`. Establish `h3' : C₂ * Real.log (Real.log t⁻¹) ≤ C₂' * Real.log (Real.log t⁻¹)` using `mul_le_mul_of_nonneg_right hC₂C₂' (by linarith)`. Establish `h4' : (C₂' + |B₁| + 1) * Real.log (Real.log t⁻¹) = C₂' * Real.log (Real.log t⁻¹) + |B₁| * Real.log (Real.log t⁻¹) + Real.log (Real.log t⁻¹)` using `by ring`. Establish `h5' : -C₂ * Real.log (Real.log t⁻¹) = -(C₂ * Real.log (Real.log t⁻¹))` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `key : ∀ j k : Fin R.N, ∀ x ∈ R.mid j ∩ R.mid k, R.phReg ρ K t j x - R.phReg ρ K t k x ≤ E * (Real.log (Real.log t⁻¹) / Real.log t⁻¹) + L * t`. Introduce `j k x hx`. Take `⟨hpj, -⟩` from `hVpsh j K`. Take `⟨hpk, hbk⟩` from `hVpsh k K`. Establish `hball : ∀ r, r ≤ δ → closedBall (R.chart k x) r ⊆ V k` using `fun r hr => (closedBall_subset_closedBall hr).trans (hVball k x hx.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hballj : closedBall (R.chart j x) t ⊆ V j` using `(closedBall_subset_closedBall (by linarith : t ≤ δ)).trans (hVball j x hx.1)`. Establish `hi : molli ρ t (R.trunc K j) (R.chart j x) ≤ polyMax (R.trunc K j) (R.chart j x) t` using `(((mollify_thm D ρ (V j) (R.trunc K j) (hVo j) hpj).1 t ht).2.2.2 (R.chart j x) hballj).2`. Establish `hii : polyMax (R.trunc K j) (R.chart j x) t ≤ max (polyMax (R.trunc K k) (R.chart k x) (L * t)) (-K + B₁) + (R.q j (R.chart j x) - R.q k (R.chart k x)) + L * t` using `polyMax_le' ht.le fun y hy => hT K j k x hx t ht htδ₁ y hy`. Establish `mono : ∀ s s', 0 ≤ s → s ≤ s' → s' ≤ δ → polyMax (R.trunc K k) (R.chart k x) s ≤ polyMax (R.trunc K k) (R.chart k x) s'` using `fun s s' hs hss' hs' => polyMax_mono' hpk.1 hs hss' (hball _ hs')`. Establish `hlowk` using `hlow t ht htt₂ K k x hx.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0` using `mono t (L * t) ht.le htLt (by linarith)`. Establish `e1` using `mono (L * t) (C₁ * t) (by linarith) hLt hC₁t`. Establish `h4C : 0 < 4 * C₁` using `by linarith`. Establish `hq : t / (4 * C₁) ≤ t / 4` using `div_le_div_of_nonneg_left ht.le (by norm_num) (by linarith)`. Establish `e2` using `mono (t / (4 * C₁)) (t / 4) (by positivity) hq (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `mono (t / 4) (2 * t) (by positivity) (by linarith) (by linarith)`. Establish `e4` using `mono (2 * t) (C₁ * t) (by positivity) h2t hC₁t`. Establish `e5` using `mono t (C₁ * t) ht.le htC hC₁t`. Establish `hmax : max (polyMax (R.trunc K k) (R.chart k x) (L * t)) (-K + B₁) = polyMax (R.trunc K k) (R.chart k x) (L * t)` using `max_eq_left (by linarith)`. Rewrite `hii` using `[hmax]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hiv` using `h0 D ρ b (V k) (R.trunc K k) (R.chart k x) t (hVo k) hpk ht (hball _ (by linarith)) hb`. Rewrite `hiv` using `[← hc₀]`. Establish `hv` using `h1 D (V k) (R.trunc K k) (R.chart k x) δ t C₁ (hVo k) hpk (hball δ le_rfl) ht (by linarith) hC₁tlt`. Establish `hMδ : polyMax (R.trunc K k) (R.chart k x) δ ≤ B₀'` using `polyMax_le' hδ.le fun y hy => (hbk y (hVball k x hx.2 hy)).trans (max_le (hB₀' ▸ le_max_left _ _) (by linarith))`. Establish `hN : polyMax (R.trunc K k) (R.chart k x) δ - polyMax (R.trunc K k) (R.chart k x) (C₁ * t) ≤ (B₀' + C₂') * Real.log (Real.log t⁻¹)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1' : C₂ * Real.log (Real.log t⁻¹) ≤ C₂' * Real.log (Real.log t⁻¹)` using `mul_le_mul_of_nonneg_right hC₂C₂' (by linarith)`. Establish `h2' : B₀' ≤ B₀' * Real.log (Real.log t⁻¹)` using `le_mul_of_one_le_right hB₀'0 hlogℓ.le`. Establish `h3' : -C₂ * Real.log (Real.log t⁻¹) = -(C₂ * Real.log (Real.log t⁻¹))` using `by ring`. Establish `h4' : (B₀' + C₂') * Real.log (Real.log t⁻¹) = B₀' * Real.log (Real.log t⁻¹) + C₂' * Real.log (Real.log t⁻¹)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hden : Real.log t⁻¹ / 2 ≤ Real.log (δ / (C₁ * t))`. Rewrite using `[show δ / (C₁ * t) = (δ / C₁) * t⁻¹ by field_simp, Real.log_mul (div_pos hδ (by linarith)).ne' (inv_pos.2 ht).ne']`. Use `neg_abs_le (Real.log (δ / C₁))` as an intermediate fact. Rewrite `this` using `[← ha]`. Combine the linear relations using `[Real.exp_pos 1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hden0 : 0 < Real.log (δ / (C₁ * t))` using `by linarith`. Establish `hP : 0 ≤ 2 * Real.log (4 * C₁ ^ 2) * (B₀' + C₂')` using `by positivity`. Establish `hO : polyMax (R.trunc K k) (R.chart k x) (C₁ * t) - polyMax (R.trunc K k) (R.chart k x) (t / (4 * C₁)) ≤ 2 * Real.log (4 * C₁ ^ 2) * (B₀' + C₂') * (Real.log (Real.log t⁻¹) / Real.log t⁻¹)`. Use `hv.trans ?_` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hden0]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hx` using `div_mul_cancel₀ (Real.log (Real.log t⁻¹)) hℓ0.ne'`. Take the linear combination `(-(Real.log (4 * C₁ ^ 2) * (B₀' + C₂'))) * hx`. Use `_ ≤ 2 * Real.log (4 * C₁ ^ 2) * (B₀' + C₂') * (Real.log (Real.log t⁻¹) / Real.log t⁻¹) * Real.log (δ / (C₁ * t)) := mul_le_mul_of_nonneg_left hden (mul_nonneg hP (div_nonneg (by linarith) hℓ0.le))`. Establish `hc : c₀ * (polyMax (R.trunc K k) (R.chart k x) (2 * t) - polyMax (R.trunc K k) (R.chart k x) (t / 4)) ≤ c₀ * (polyMax (R.trunc K k) (R.chart k x) (C₁ * t) - polyMax (R.trunc K k) (R.chart k x) (t / (4 * C₁)))` using `mul_le_mul_of_nonneg_left (by linarith) hc₀0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : (1 + c₀) * (polyMax (R.trunc K k) (R.chart k x) (C₁ * t) - polyMax (R.trunc K k) (R.chart k x) (t / (4 * C₁))) ≤ E * (Real.log (Real.log t⁻¹) / Real.log t⁻¹)`. Rewrite using `[hE]`. Use `mul_le_mul_of_nonneg_left hO (by linarith : (0 : ℝ) ≤ 1 + c₀)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : polyMax (R.trunc K k) (R.chart k x) (L * t) - polyMax (R.trunc K k) (R.chart k x) (2 * t) + c₀ * (polyMax (R.trunc K k) (R.chart k x) (2 * t) - polyMax (R.trunc K k) (R.chart k x) (t / 4)) ≤ (1 + c₀) * (polyMax (R.trunc K k) (R.chart k x) (C₁ * t) - polyMax (R.trunc K k) ( …`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h' : polyMax (R.trunc K k) (R.chart k x) (L * t) - polyMax (R.trunc K k) (R.chart k x) (2 * t) ≤ polyMax (R.trunc K k) (R.chart k x) (C₁ * t) - polyMax (R.trunc K k) (R.chart k x) (t / (4 * C₁))` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [RegChartData.phReg, RegChartData.smoothed]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr : 0 ≤ Real.log (Real.log t⁻¹) / Real.log t⁻¹` using `div_nonneg (by linarith) hℓ0.le`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j k x hx`. Establish `hEC : E * (Real.log (Real.log t⁻¹) / Real.log t⁻¹) + L * t ≤ C * Real.log (Real.log t⁻¹) / Real.log t⁻¹ + C * t`. Rewrite using `[mul_div_assoc]`. Use `mul_le_mul_of_nonneg_right hCE hr` as an intermediate fact. Use `mul_le_mul_of_nonneg_right hCL ht.le` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `abs_sub_le_iff.2 ⟨(key j k x hx).trans hEC, (key k j x ⟨hx.2, hx.1⟩).trans hEC⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ChartComparison.proof (h0 : MollifiedLowerBound.Statement)
     (h1 : PolyMaxOscillation.Statement) (h2 : PolyMaxLowerBound.Statement)

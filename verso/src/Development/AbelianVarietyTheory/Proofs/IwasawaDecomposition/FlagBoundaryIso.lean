@@ -22,7 +22,7 @@ def pullEqns (J : PUnit.{1} → B.ι) : X.functionFieldˣ :=
   if hJ : ∃ y, f y ∈ B.U (J PUnit.unit) then pullEqn B f h _ hJ.choose_spec else 1
 
 /- English proof (translation)
-Rewrite using `[pullEqns, dif_pos ⟨y, hy⟩]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pullEqns_eq (J : PUnit.{1} → B.ι) {y : X} (hy : f y ∈ B.U (J PUnit.unit)) :
     pullEqns B f h J = pullEqn B f h _ hy := by
@@ -30,7 +30,7 @@ theorem pullEqns_eq (J : PUnit.{1} → B.ι) {y : X} (hy : f y ∈ B.U (J PUnit.
   rfl
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.germ_stalkMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_pullEqn (i : B.ι) {y : X} (hy : f y ∈ B.U i) (hg : f (genericPoint X) ∈ B.U i) :
     (pullEqn B f h i hy : X.functionField) =
@@ -39,7 +39,7 @@ theorem val_pullEqn (i : B.ι) {y : X} (hy : f y ∈ B.U i) (hg : f (genericPoin
   rfl
 
 /- English proof (translation)
-Use `show fnOf _ hg (Units.val (∏ _k : PUnit.{1}, _ ^ (1 : ℤ))) = _`. Rewrite using `[Fintype.prod_unique]`. Use `erw [zpow_one, LB.val_res, fnOf_resG]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply f (B.U (J PUnit.unit) ⊓ B.U (J' PUnit.unit)) (genericPoint X) _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnOf_pull_g (J J' : PUnit.{1} → B.ι)
     (hg : genericPoint X ∈ (B.lb.pull f).U J ⊓ (B.lb.pull f).U J') :
@@ -53,11 +53,9 @@ theorem fnOf_pull_g (J J' : PUnit.{1} → B.ι)
   exact (Scheme.Hom.germ_stalkMap_apply f (B.U (J PUnit.unit) ⊓ B.U (J' PUnit.unit)) (genericPoint X) _ _).symm
 
 /- English proof (translation)
-Use `⟨pull_isLB B.isLB_lb f, fun J J' hg => ?_, fun J x hx => ?_⟩` and prove the remaining obligations. Establish `hi` using `mem_pull.1 hg.1`. Establish `hj` using `mem_pull.1 hg.2`. Rewrite using `[pullEqns_eq B f h J hi, pullEqns_eq B f h J' hj, val_pullEqn B f h _ hi hi, val_pullEqn B f h _ hj hj]`. Use `erw [fnOf_pull_g B f J J' hg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul]`. Use `congr 1`. Establish `e` using `congrArg (Z.presheaf.germ _ _ (⟨hi, hj⟩ : f (genericPoint X) ∈ B.U (J PUnit.unit) ⊓ B.U (J' PUnit.unit))).hom (B.trans_spec (J PUnit.unit) (J' PUnit.unit))`. Use `erw [map_mul, germ_resG, germ_resG] at e`. Conclude with `e`.
-
-Establish `hx'` using `mem_pull.1 hx`. Rewrite using `[pullEqns_eq B f h J hx']`. Conclude with `isEqn_pullDiv B f h _ hx'`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem presents_pullDiv : Presents (pullDiv B f h) (B.lb.pull f) (pullEqns B f h) := by
   refine ⟨pull_isLB B.isLB_lb f, fun J J' hg => ?_, fun J x hx => ?_⟩
@@ -78,7 +76,7 @@ theorem presents_pullDiv : Presents (pullDiv B f h) (B.lb.pull f) (pullEqns B f 
 end PullPresents
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ Φ k` and use `(presents_toLB (bdPull Φ k)).lbIso (presents_pullDiv _ _ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lbIso_bdPull : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag)
     (k : s.Comp), LBIso ((Φ.C k).Y.lb (bdPull Φ k)) (s.T.BD.lb.pull ((Φ.C k).π ≫ genι s.T.Z)) :=

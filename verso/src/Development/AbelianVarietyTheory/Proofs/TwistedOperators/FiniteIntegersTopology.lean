@@ -8,9 +8,7 @@ open scoped NNReal ENNReal TensorProduct
 namespace GlobalTheory.ModuLR
 
 /- English proof (translation)
-Introduce `F _ _ S`. Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum F`. Use `haveI : ∀ v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}, CompactSpace (v.1.adicCompletionIntegers F) := fun v => GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v.1`. Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), SecondCountableTopology (v.adicCompletion F) := fun v => secondCountable_of_proper`.
-
-Use `haveI : ∀ v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}, SecondCountableTopology (v.1.adicCompletionIntegers F) := fun v => TopologicalSpace.Subtype.secondCountableTopology _`. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finiteIntegers_compact_secondCountable_t2 : ∀ (F : Type) [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F))), CompactSpace (OPart F S) ∧ SecondCountableTopology (OPart F S) ∧ T2Space (OPart F S) := by
   intro F _ _ S

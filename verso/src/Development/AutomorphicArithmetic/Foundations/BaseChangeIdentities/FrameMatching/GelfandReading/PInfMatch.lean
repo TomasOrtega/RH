@@ -15,16 +15,16 @@ set_option synthInstance.maxHeartbeats 200000
 attribute [local instance] PositivityTheory.Rg.BcB.F.borelG PositivityTheory.Rg.BcB.F.borelF PositivityTheory.Rg.BcB.F.borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Dec.gelfVal, pow_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gelfand_value_at_zero_const {n : ℕ} (x y : Fin n → ℂ) :
     GlobalTheory.Dec.gelfVal x 0 = GlobalTheory.Dec.gelfVal y 0 := by
   simp only [GlobalTheory.Dec.gelfVal, pow_zero]
 
 /- English proof (translation)
-Introduce `hG E _ _ _ a χ χ' h`. Use function extensionality and compare the values at `τ`. Unfold `mOf`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use `hG a _ _ fun m => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Conclude with `gelfand_value_at_zero_const _ _`. Conclude with `h _ _ m hm ha`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.BaseChangeIdentities.GelfandReading.pInfMatch :
     UpperTheory.BaseChangeIdentities.GelfandReading.InfMatchOf := by

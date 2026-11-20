@@ -18,7 +18,7 @@ def twL {a₁ a₂ d₁ d₂ : ℕ} (π₁ : CuspSub E a₁) (π₂ : CuspSub E 
     List.ofFn (fun j => (⟨a₂, (CG.mk π₂).twist (GlobalTheory.CuspRep.Model.absC E (y j))⟩ : Σ a, CG E a))
 
 /- English proof (translation)
-The claim follows from `map_sum (Multiset.mapAddMonoidHom f) g s`.
+A detailed English derivation is pending.
 -/
 theorem map_fsum {α β ι : Type} (f : α → β) (s : Finset ι) (g : ι → Multiset α) :
     (∑ i ∈ s, g i).map f = ∑ i ∈ s, (g i).map f :=
@@ -26,16 +26,16 @@ theorem map_fsum {α β ι : Type} (f : α → β) (s : Finset ι) (g : ι → M
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use `NumberField.HeightOneSpectrum.one_lt_absNorm w` as an intermediate fact. Conclude with `(by omega : Ideal.absNorm w.asIdeal ≠ 0)` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absNorm_ne_zero (w : HeightOneSpectrum (𝓞 E)) : ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ≠ 0 := by
   have := NumberField.HeightOneSpectrum.one_lt_absNorm w
   exact_mod_cast (by omega : Ideal.absNorm w.asIdeal ≠ 0)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_inv_eq_inv_val, Units.coe_star, StrStepB.absC_val, StrStepB.absC_val]`. Establish `hq : (((Ideal.absNorm w.asIdeal : ℕ) : ℂ)).arg ≠ Real.pi`. Rewrite using `[Complex.natCast_arg]`. Conclude with `Real.pi_ne_zero.symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Complex.cpow_conj ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) (-x) hq`. Rewrite `h1` using `[Complex.conj_natCast]`. Express the relevant statement in the definitionally equal form `(conj (((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-x)))⁻¹ = _`. Rewrite using `[← h1, ← Complex.cpow_neg, map_neg, neg_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hinv_absC (w : HeightOneSpectrum (𝓞 E)) (x : ℂ) :
     (star ((GlobalTheory.CuspRep.Model.absC E x).val w))⁻¹ = (GlobalTheory.CuspRep.Model.absC E (-conj x)).val w := by
@@ -51,11 +51,11 @@ theorem hinv_absC (w : HeightOneSpectrum (𝓞 E)) (x : ℂ) :
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Establish `e1 : satTw w z C = (C.map fun b : ℂˣ => (b : ℂ)).map (fun c => c * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-z))`. Unfold `satTw`. Use `congr 1`. Conclude with `Multiset.bind_singleton _ _`. Rewrite using `[e1, h, map_fsum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e2 : satTw w (e i : ℂ) B₀ = (B₀.map fun b : ℂˣ => (b : ℂ)).map (fun c => c * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-(e i : ℂ)))`. Unfold `satTw`. Use `congr 1`. Conclude with `Multiset.bind_singleton _ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e2, Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[neg_add, Complex.cpow_add _ _ (absNorm_ne_zero w)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem satTw_string (w : HeightOneSpectrum (𝓞 E)) (z : ℂ) (C B₀ : Multiset ℂˣ) {d : ℕ} (e : Fin d → ℝ)
     (h : C.map (fun b : ℂˣ => (b : ℂ)) = ∑ i, satTw w (e i : ℂ) B₀) :
@@ -77,9 +77,9 @@ theorem satTw_string (w : HeightOneSpectrum (𝓞 E)) (z : ℂ) (C B₀ : Multis
   ring
 
 /- English proof (translation)
-Use `filter_upwards [hI E r s V V₁ V₂ z₁ z₂ hV hV₁ hV₂ hemb, hA E r a₁ d₁ V₁ π₁ hV₁ h₁, hA E s a₂ d₂ V₂ π₂ hV₂ h₂] with w hw hw₁ hw₂`. Take `⟨B, C₁, C₂, hB, hC₁, hC₂, e⟩` from `hw`. Take `⟨B₁, hs₁, hall₁⟩` from `hw₁`. Take `⟨B₂, hs₂, hall₂⟩` from `hw₂`. Use `⟨B, B₁, B₂, hB, hs₁, hs₂, ?_, (hH E (r + s) w B).1 V hV hB, (hH E a₁ w B₁).2 π₁ ha₁ hu₁ hn₁ hs₁, (hH E a₂ w B₂).2 π₂ ha₂ hu₂ hn₂ hs₂⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, satTw_string w _ C₁ B₁ (spehExp d₁) (hall₁ C₁ hC₁), satTw_string w _ C₂ B₂ (spehExp d₂) (hall₂ C₂ hC₂)]`.
+A detailed English derivation is pending.
 -/
 theorem sat_expand (hI : SatInd2) (hA : SatAsc) (hH : SatHerm) {r s : ℕ} (V : Submodule ℂ (Sm E (r + s)))
     (V₁ : Submodule ℂ (Sm E r)) (V₂ : Submodule ℂ (Sm E s)) (z₁ z₂ : ℂ) (hV : IsDiscrete V) (hV₁ : IsDiscrete V₁)
@@ -104,21 +104,19 @@ theorem sat_expand (hI : SatInd2) (hA : SatAsc) (hH : SatHerm) {r s : ℕ} (V : 
   rw [e, satTw_string w _ C₁ B₁ (spehExp d₁) (hall₁ C₁ hC₁), satTw_string w _ C₂ B₂ (spehExp d₂) (hall₂ C₂ hC₂)]
 
 /- English proof (translation)
-Establish `hpos : ∀ (x' : Fin d₁ → ℂ) (y' : Fin d₂ → ℂ), ∀ p ∈ twL π₁ π₂ x' y', 1 ≤ p.1`. Introduce `x' y' p hp`. Simplify using `only [twL, List.mem_append, List.mem_ofFn] at hp`. Break down `hp with ⟨i, rfl⟩ | ⟨j, rfl⟩` into its components or cases. Conclude with `ha₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ha₂`. Use `hR.perm _ _ (hpos _ _) (hpos _ _) (hw.mono fun w hw' => ?_)` and prove the remaining obligations. Take `⟨BV, B₁, B₂, h₁, h₂, e, hV, hh₁, hh₂⟩` from `hw'`. Set `B : (Σ a, CG E a) → Multiset ℂˣ` to `fun p => if h : ∃ B, p.2.HasSat w B then h.choose else 0`. Establish `hB : ∀ p (B' : Multiset ℂˣ), p.2.HasSat w B' → B p = B'` using `fun p B' h => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hex : ∃ B, p.2.HasSat w B` using `⟨B', h⟩`. Simplify using `only [B, dif_pos hex]`. Conclude with `hex.choose_spec.unique h`. Establish `t₁ : ∀ u : ℂ, B ⟨a₁, (CG.mk π₁).twist (GlobalTheory.CuspRep.Model.absC E u)⟩ = B₁.map (· * (GlobalTheory.CuspRep.Model.absC E u).val w)` using `fun u => hB _ _ (StrStepB.hasSat_twist_absC π₁ h₁ u)`. Establish `t₂ : ∀ u : ℂ, B ⟨a₂, (CG.mk π₂).twist (GlobalTheory.CuspRep.Model.absC E u)⟩ = B₂.map (· * (GlobalTheory.CuspRep.Model.absC E u).val w)` using `fun u => hB _ _ (StrStepB.hasSat_twist_absC π₂ h₂ u)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hsat : ∀ (x' : Fin d₁ → ℂ) (y' : Fin d₂ → ℂ), ∀ p ∈ twL π₁ π₂ x' y', p.2.HasSat w (B p)`. Introduce `x' y' p hp`. Simplify using `only [twL, List.mem_append, List.mem_ofFn] at hp`. Break down `hp with ⟨i, rfl⟩ | ⟨j, rfl⟩` into its components or cases. Rewrite using `[t₁]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `StrStepB.hasSat_twist_absC π₁ h₁ _`. Rewrite using `[t₂]`. Conclude with `StrStepB.hasSat_twist_absC π₂ h₂ _`. Use `⟨B, hsat x y, hsat _ _, ?_⟩` and prove the remaining obligations. Simplify using `only [twL, List.map_append, List.map_ofFn, List.sum_append, List.sum_ofFn, Function.comp_def, t₁, t₂]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hT : (∑ i, B₁.map (· * (GlobalTheory.CuspRep.Model.absC E (x i)).val w)) + ∑ j, B₂.map (· * (GlobalTheory.CuspRep.Model.absC E (y j)).val w) = BV`. Apply `Multiset.map_injective (f := fun b : ℂˣ => (b : ℂ)) Units.val_injective` to reduce the goal to its premises. Rewrite using `[e, Multiset.map_add, map_fsum, map_fsum]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun i _ => ?_ <;> rw [Multiset.map_map] <;>`. Apply the tactic sequence `refine Multiset.map_congr rfl fun b _ => ?_ <;> simp [StrStepB.absC_val]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hm : ∀ (C : Multiset ℂˣ) (u : ℂˣ), C.map (fun b => (star b)⁻¹) = C → (C.map (· * u)).map (fun b => (star b)⁻¹) = C.map (· * (star u)⁻¹)`. Introduce `C u hC`. Use `conv_rhs => rw [← hC]`. Rewrite using `[Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations.
-
-Simplify using `[star_mul', mul_comm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hT, Multiset.map_add, map_fsum, map_fsum]`. Simplify using `only [hm B₁ _ hh₁, hm B₂ _ hh₂, hinv_absC]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perm_of (hR : GlobalTheory.Published.JacquetShalikaRigidity) {a₁ a₂ d₁ d₂ : ℕ} (π₁ : CuspSub E a₁) (π₂ : CuspSub E a₂)
     (ha₁ : 1 ≤ a₁) (ha₂ : 1 ≤ a₂) (x : Fin d₁ → ℂ) (y : Fin d₂ → ℂ)

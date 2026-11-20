@@ -5,15 +5,13 @@ open ReciprocityTheory.Gal Pointwise NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ p hp A hpA`. Use `set f : 𝓞 F →+* Ω := (algebraMap F Ω).comp (algebraMap (𝓞 F) F) with hf`. Establish `fA : ∀ r : 𝓞 F, f r ∈ A` using `fun r => mem_of_isIntegral_int A ((RingOfIntegers.isIntegral_coe r).map (algebraMap F Ω).toIntAlgHom)`. Set `I : Ideal (𝓞 F)` to `(IsLocalRing.maximalIdeal A).comap (f.codRestrict A fA)`. Establish `memI : ∀ r, r ∈ I ↔ A.valuation (algebraMap F Ω (r : F)) < 1` using `fun r => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [I, Ideal.mem_comap]`. Conclude with `A.valuation_lt_one_iff _`. Establish `hIp : I.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hpI : (p : 𝓞 F) ∈ I`. Rewrite using `[memI]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hpA`. Establish `hIne : I ≠ ⊥` using `fun h => by`. Establish `h'` using `hpI`. Rewrite `h'` using `[h, Ideal.mem_bot]`. Conclude with `hp.out.ne_zero (by exact_mod_cast h')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `v : HeightOneSpectrum (𝓞 F)` to `⟨I, hIp, hIne⟩`. Take `⟨σ, hσA, hσ⟩` from `exists_frob_over (F := F) (A := A) (v := v) (fun x => (memI x).symm)`. Use `⟨σ, hσA, Nat.card (𝓞 F ⧸ v.asIdeal), fun h1 => ?_, hσ⟩` and prove the remaining obligations. Establish `hss : Subsingleton (𝓞 F ⧸ v.asIdeal)` using `by haveI : Finite (𝓞 F ⧸ v.asIdeal) := Nat.finite_of_card_ne_zero (by rw [h1]; exact one_ne_zero)`. Conclude with `Finite.card_le_one_iff_subsingleton.mp h1.le`.
-
-Establish `: (1 : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Subsingleton.elim _ _`. Conclude with `hIp.ne_top ((Ideal.eq_top_iff_one _).2 this)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frob_at_place_over_prime : ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω]
     [Algebra F Ω] [IsAlgClosure F Ω] {p : ℕ} [Fact p.Prime] (A : ValuationSubring Ω),

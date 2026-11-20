@@ -9,7 +9,7 @@ open GlobalTheory.ArLieBase
 namespace GlobalTheory.CommonFrames
 
 /- English proof (translation)
-Introduce `X M M' r h h' x`. Take `⟨U, e, hx, he⟩` from `h x`. Take `⟨V, e', hV, hxV, hle, he'⟩` from `IsVB.exists_affine h' hx`. Conclude with `⟨V, fun i => Twist.resM M hle (e i), e', GlobalTheory.VB.IsFrame.res he hle, he', hV, hxV⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_common_affine_frames : ∀ (X : Scheme.{0}) (M M' : X.Modules) (r : ℕ), IsVB M r → IsVB M' r → ∀ x : X, ∃ (V : X.Opens)
     (f : Fin r → Γ(M, V)) (f' : Fin r → Γ(M', V)), VB.IsFrame f ∧ VB.IsFrame f' ∧ IsAffineOpen V ∧ x ∈ V := by

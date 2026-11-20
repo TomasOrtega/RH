@@ -5,11 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← sub_eq_zero, ← map_one (residue O), ← map_sub, residue_eq_zero_iff]`. Assume the negation of the conclusion as `hm`. Establish `hu` using `(IsLocalRing.notMem_maximalIdeal.mp hm).map a`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hu` using `[map_sub, h, map_one, sub_self]`. Conclude with `not_isUnit_zero hu`. Introduce `h`. Establish `hm : x - 1 ∈ maximalIdeal O`. Rewrite using `[← residue_eq_zero_iff, map_sub, h, map_one, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ha _ hm` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Ws.Chain.map_eq_one_iff {O k : Type} [CommRing O] [IsLocalRing O] [Field k] (a : O →+* k)
     (ha : ∀ x ∈ maximalIdeal O, a x = 0) (x : O) : a x = 1 ↔ residue O x = 1 := by
@@ -34,13 +34,13 @@ private theorem UpperTheory.V.Ws.Chain.roots_wt : ∀ w ∈ roots, ∃ i j : Fin
   decide
 
 /- English proof (translation)
-Establish `hd : Φ.χ 3 g = Φ.χ 1 g * Φ.χ 2 g * (Φ.χ 0 g)⁻¹`. Rewrite using `[← h, mul_comm (Φ.χ 0 g), mul_inv_cancel_right]`. Establish `e : ∀ k : Fin 4, Φ.χ k g = ![Φ.χ 0 g, Φ.χ 1 g, Φ.χ 2 g, Φ.χ 1 g * Φ.χ 2 g * (Φ.χ 0 g)⁻¹] k`. Introduce `k`. Apply the tactic sequence `fin_cases k <;> simp [hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `key : ∀ k : Fin 4, Φ.χ k g = Φ.χ 1 g * Φ.χ 2 g * (Φ.χ 0 g)⁻¹ * (Φ.χ 0 g * (Φ.χ 1 g)⁻¹) ^ lamW k * (Φ.χ 0 g * (Φ.χ 2 g)⁻¹) ^ muW k`. Introduce `k`. Rewrite using `[e k]`. Generalize the expression as in `Φ.χ 0 g = x at *`. Generalize the expression as in `Φ.χ 1 g = y at *`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Φ.χ 2 g = z at *`. Apply the tactic sequence `fin_cases k <;> simp [lamW, muW] <;> group`. Establish `hrt : Φ.rt (wt i j) g = (Φ.χ 0 g * (Φ.χ 1 g)⁻¹) ^ (lamW i - lamW j) * (Φ.χ 0 g * (Φ.χ 2 g)⁻¹) ^ (muW i - muW j)` using `rfl`. Rewrite using `[hrt, key i, key j]`. Generalize the expression as in `Φ.χ 1 g * Φ.χ 2 g * (Φ.χ 0 g)⁻¹ = d`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Φ.χ 0 g * (Φ.χ 1 g)⁻¹ = u`. Generalize the expression as in `Φ.χ 0 g * (Φ.χ 2 g)⁻¹ = v`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`. Rewrite using `[sub_smul, sub_smul]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -71,11 +71,11 @@ private theorem UpperTheory.V.Ws.Chain.rt_wt {O Γ : Type} [CommRing O] [Group �
   abel
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD T hT k _ a ha`. Establish `rel : ∀ (pr : Bool) (s : G ℚ Ω), chi D pr 0 s * chi D pr 3 s = chi D pr 1 s * chi D pr 2 s`. Introduce `pr s`. Apply the tactic sequence `cases pr <;> simp [chi, lab, Raw.ps, Raw.th, Raw.al, Raw.Psi, UpperTheory.V.Chr.Psi] <;> ac_rfl`. Use `⟨?_, fun w g => UpperTheory.V.Ws.Chain.map_eq_one_iff a ha _⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw h1`. Establish `hw' : ∃ i j : Fin 4, i ≠ j ∧ w = wt i j`. Take `⟨i, j, hij, h⟩` from `UpperTheory.V.Ws.Chain.roots_wt w hw`. Apply the tactic sequence `rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl, rfl⟩ | ⟨rfl, rfl, rfl⟩ <;> exact ⟨_, _, hij, rfl⟩`. Take `⟨i, j, hij, rfl⟩` from `hw'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Establish `key : (frQ D T.pr (resQ T.F T.g0)).rt (wt i j) (resQ T.F T.g0) * chi D T.pr j (resQ T.F T.g0) = chi D T.pr i (resQ T.F T.g0)` using `UpperTheory.V.Ws.Chain.rt_wt (frQ D T.pr (resQ T.F T.g0)) (resQ T.F T.g0) (rel T.pr _) i j`. Establish `hr : residue c.O ↑((frQ D T.pr (resQ T.F T.g0)).rt (wt i j) (resQ T.F T.g0)) = 1` using `(UpperTheory.V.Ws.Chain.map_eq_one_iff a ha _).1 h1`. Apply `hT.dist i j hij` to reduce the goal to its premises. Use `show residue c.O ↑(chi D T.pr i (resQ T.F T.g0)) = residue c.O ↑(chi D T.pr j (resQ T.F T.g0))`. Rewrite using `[← key, Units.val_mul, map_mul, hr, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Chain.rtFacts :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ T : Tower D, T.Ok → ∀ (k : Type) [Field k] (a : c.O →+* k), (∀ x ∈ maximalIdeal c.O, a x = 0) →

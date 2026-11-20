@@ -8,9 +8,9 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 namespace GlobalTheory.SteepMult
 
 /- English proof (translation)
-Simplify using `only [adP, Eab, Matrix.single_apply, map_sub, map_mul, apply_ite (starRingEnd ℂ), map_one, map_zero]`. Use `congr 2`. Simplify using `only [and_comm]`. Simplify using `only [eq_comm]`. Simplify using `only [eq_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [and_comm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma star_adP_Eab {R S : ℕ} (a b : Ix R S) (y x : NC R S) :
     (starRingEnd ℂ) (adP (Eab a b) y x) = adP (Eab b a) x y := by
@@ -22,9 +22,9 @@ lemma star_adP_Eab {R S : ℕ} (a b : Ix R S) (y x : NC R S) :
   · simp only [and_comm]
 
 /- English proof (translation)
-Rewrite using `[← Fintype.sum_prod_type', ← Fintype.sum_prod_type']`. Establish `hinv : Function.Involutive (fun p : (ι → α) × α => (Function.update p.1 i p.2, p.1 i))`. Introduce `p`. Simplify using the standard rewrite rules. Use `Fintype.sum_equiv hinv.toPerm _ _ fun p => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Function.Involutive.toPerm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma sum_update_swap {ι α M : Type} [Fintype ι] [DecidableEq ι] [Fintype α] [AddCommMonoid M] (i : ι)
     (F : (ι → α) → (ι → α) → M) :
@@ -36,11 +36,11 @@ lemma sum_update_swap {ι α M : Type} [Fintype ι] [DecidableEq ι] [Fintype α
   simp [Function.Involutive.toPerm]
 
 /- English proof (translation)
-Take `⟨hs, hp, ha⟩` from `h`. Use `⟨fun Ψ Φ => ?_, fun Ψ hΨ => ?_, fun a b hab Ψ Φ => ?_⟩` and prove the remaining obligations. Simplify using `only [formT_apply, star_sum, hs]`. Rewrite using `[formT_apply, Complex.re_sum]`. Take `⟨g, hg⟩` from `Function.ne_iff.1 hΨ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_pos' (fun g' _ => ?_) ⟨g, Finset.mem_univ _, hp _ hg⟩` and prove the remaining obligations. Distinguish the cases in `h0 : Ψ g' = 0`. Simplify using `[h0]`. Conclude with `(hp _ h0).le`. Simplify using `only [formT_apply, tAct_apply, map_add, LinearMap.add_apply, Finset.sum_add_distrib, ha a b hab, map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, star_adP_Eab, RingHom.id_apply]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := (Finset.univ : Finset (Fin k → NC R S)))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `sum_update_swap i (fun g g' : Fin k → NC R S => adP (Eab b a) (g' i) (g i) * B (Ψ g') (Φ g))` as an intermediate fact. Simplify `this` using `only [Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isUnitary_tAct (R S k : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] (actW : Mat R S →ₗ[ℂ] Module.End ℂ W)
     (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (h : IsUnitary actW B) : IsUnitary (tAct k actW) (formT k B) := by

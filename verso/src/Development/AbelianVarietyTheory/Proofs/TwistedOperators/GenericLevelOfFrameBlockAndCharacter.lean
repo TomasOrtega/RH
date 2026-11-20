@@ -7,9 +7,9 @@ open MeasureTheory ValuativeRel Matrix Topology GlobalTheory.SplitWeil GlobalThe
 namespace GlobalTheory.GenericShape
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun r _ => Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Use `split_ifs with e`. Rewrite using `[Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem superSum_one {F : Type} [Field F] {κ : ℕ} : superSum Fin.val (1 : Matrix (Fin κ) (Fin κ) F) = 0 := by
   refine Finset.sum_eq_zero fun r _ => Finset.sum_eq_zero fun s _ => ?_
@@ -29,15 +29,13 @@ private lemma map_residue_apply {k : Type} [Field k] [ValuativeRel k] [Topologic
 
 open MeasureTheory ValuativeRel Matrix Topology in
 /- English proof (translation)
-Substitute `hg` using the available equality. Use `set A : Matrix (Fin κ) (Fin κ) 𝒪[k] := (g₀ : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) 𝒪[k]).toBlocks₁₁ with hA`. Establish `hB : ∀ r s, s ≤ r → IsLocalRing.residue 𝒪[k] (A r s) = (1 : Matrix (Fin κ) (Fin κ) 𝓀[k]) r s` using `hres`. Establish `hdet : IsUnit A.det`. Apply `IsLocalRing.notMem_maximalIdeal.1` to reduce the goal to its premises.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hm`. Rewrite `hm` using `[← IsLocalRing.residue_eq_zero_iff, RingHom.map_det, Matrix.det_of_upperTriangular]`. Establish `hp : ∏ i, (IsLocalRing.residue 𝒪[k]).mapMatrix A i i = 1` using `Finset.prod_eq_one fun i _ => by simp [RingHom.mapMatrix_apply, hB i i le_rfl]`. Rewrite `hm` using `[hp]`. Conclude with `one_ne_zero hm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j hij`. Establish `hij' : j < i` using `hij`. Simplify using `[RingHom.mapMatrix_apply, hB i j hij'.le, Matrix.one_apply_ne (ne_of_lt hij').symm]`. Set `γ₀ : GL (Fin κ) 𝒪[k]` to `A.nonsingInvUnit hdet`. Use `⟨GeneralLinearGroup.map (IsLocalRing.residue 𝒪[k]) γ₀, ⟨γ₀, ?_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[← hγ]`. Both sides reduce to the same expression. Introduce `r s hsr`. Rewrite using `[map_residue_apply]`.
-
-Conclude with `hres r s hsr`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma reduces_of_corner_lemma {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {κ l : ℕ} {g : GL (Fin κ ⊕ Fin l) k} {γ : GL (Fin κ) k}
@@ -75,7 +73,7 @@ private lemma reduces_of_corner_lemma {k : Type} [Field k] [ValuativeRel k] [Top
 
 open MeasureTheory ValuativeRel Matrix Topology in
 /- English proof (translation)
-Rewrite using `[Units.val_mul, _root_.GlobalTheory.StepData.mul_toBlocks₁₁, _root_.GlobalTheory.RootEx.Radical.toBlocks₁₁_of_mem hu, _root_.GlobalTheory.RootEx.Radical.embX_val]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma toBlocks₁₁_mul_embX_of_mem_N {k : Type*} [Field k] {κ l p : ℕ}
     {u : GL (Fin κ ⊕ Fin l) k} (hu : u ∈ _root_.GlobalTheory.RootEx.N k (Fin κ) l p)
@@ -88,7 +86,7 @@ private lemma toBlocks₁₁_mul_embX_of_mem_N {k : Type*} [Field k] {κ l p : �
 
 open MeasureTheory ValuativeRel Matrix Topology in
 /- English proof (translation)
-Apply the tactic sequence `by_cases h : r = s <;> simp [Matrix.one_apply, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma one_apply_inl_inl {F a b : Type*} [Zero F] [One F] [DecidableEq a] [DecidableEq b]
     (r s : a) : (1 : Matrix (a ⊕ b) (a ⊕ b) F) (Sum.inl r) (Sum.inl s) = (1 : Matrix a a F) r s := by
@@ -96,7 +94,7 @@ private lemma one_apply_inl_inl {F a b : Type*} [Zero F] [One F] [DecidableEq a]
 
 open MeasureTheory ValuativeRel Matrix Topology in
 /- English proof (translation)
-Take `⟨γ₀, h₁, h₂⟩` from `h`. Substitute `h₁ h₂` using the available equality. Set `g₀ : GL (Fin κ ⊕ Fin l) 𝒪[k]` to `⟨fromBlocks (γ₀ : Matrix (Fin κ) (Fin κ) 𝒪[k]) 0 0 1, fromBlocks ((γ₀⁻¹ : GL (Fin κ) 𝒪[k]) : Matrix (Fin κ) (Fin κ) 𝒪[k]) 0 0 1, by rw [fromBlocks_multiply]; simp, by rw [fromBlocks_multiply]; simp⟩`. Apply the tactic sequence `refine ⟨g₀, ?_, ?_⟩ <;> ext i j <;> rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[g₀, _root_.GlobalTheory.RootEx.Radical.embX_val, Matrix.one_apply, apply_ite]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private lemma reduces_embX_of_reduces {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {κ l : ℕ} {γ : GL (Fin κ) k}
@@ -114,7 +112,7 @@ private lemma reduces_embX_of_reduces {k : Type} [Field k] [ValuativeRel k] [Top
 
 open MeasureTheory ValuativeRel Matrix Topology in
 /- English proof (translation)
-Apply the tactic sequence `by_cases h : r = s <;> simp [Matrix.one_apply, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma one_apply_inr_inr {F a b : Type*} [Zero F] [One F] [DecidableEq a] [DecidableEq b]
     (r s : b) : (1 : Matrix (a ⊕ b) (a ⊕ b) F) (Sum.inr r) (Sum.inr s) = (1 : Matrix b b F) r s := by
@@ -122,11 +120,11 @@ private lemma one_apply_inr_inr {F a b : Type*} [Zero F] [One F] [DecidableEq a]
 
 open MeasureTheory ValuativeRel Matrix Topology in
 /- English proof (translation)
-Establish `hl : ∀ i : Fin κ, _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos κ l (Sum.inl i) = i` using `fun i => by`. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos]`. Establish `hr : ∀ i : Fin l, _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos κ l (Sum.inr i) = κ + i` using `fun i => by`. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos]`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.superSum`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [Fintype.sum_sum_type, _root_.GlobalTheory.RootEx.Radical.embX_val, hl, hr, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.zero_apply, ite_self, Finset.sum_const_zero, add_zero, zero_add]`. Establish `h : ∑ i : Fin l, ∑ j : Fin l, (if κ + (j : ℕ) = κ + i + 1 then (1 : Matrix (Fin l) (Fin l) k) i j else 0) = 0`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hij`. Conclude with `Matrix.one_apply_ne fun h => by subst h; omega`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Take a linear combination of the given relations to obtain the conclusion.
 
-Both sides reduce to the same expression. Take the linear combination `h`.
+A detailed English derivation is pending.
 -/
 private lemma superSum_framePos_embX {k : Type} [Field k] {κ l : ℕ} (γ : GL (Fin κ) k) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.superSum (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos κ l)
@@ -151,17 +149,17 @@ private lemma superSum_framePos_embX {k : Type} [Field k] {κ l : ℕ} (γ : GL 
 
 open MeasureTheory ValuativeRel Matrix Topology in
 /- English proof (translation)
-Rewrite `hu` using `[_root_.GlobalTheory.RootEx.Model.mem_N_iff]`. Unfold `_root_.GlobalTheory.RootEx.InN at hu`. Establish `hl : ∀ i : Fin κ, _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos κ l (Sum.inl i) = i` using `fun i => by`. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos]`. Establish `hr : ∀ i : Fin l, _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos κ l (Sum.inr i) = κ + i` using `fun i => by`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos]`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.superSum _root_.GlobalTheory.RootEx.simpleSum`. Simplify using `only [Fintype.sum_sum_type, hl, hr]`. Establish `h₁ : ∑ i : Fin κ, ∑ j : Fin κ, (if (j : ℕ) = i + 1 then (u : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) k) (Sum.inl i) (Sum.inl j) else 0) = 0`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with hij`. Rewrite using `[hu _ _ (by simp [_root_.GlobalTheory.RootEx.lev])]`. Conclude with `Matrix.one_apply_ne fun h => by`. Use `congrArg (fun x : Fin κ ⊕ Fin l => Sum.elim (fun a : Fin κ => (a : ℕ)) (fun _ => 0) x) h` as an intermediate fact. Simplify using `at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
 
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Establish `h₂ : ∑ i : Fin κ, ∑ j : Fin l, (if κ + (j : ℕ) = i + 1 then (u : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) k) (Sum.inl i) (Sum.inr j) else 0) = 0`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hij`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[hu _ _ (by simp [_root_.GlobalTheory.RootEx.lev]; omega)]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish `h₃ : ∑ i : Fin l, ∑ j : Fin κ, (if (j : ℕ) = κ + i + 1 then (u : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) k) (Sum.inr i) (Sum.inl j) else 0) = 0`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by omega)]`. Establish `h₄ : ∀ i j : Fin l, (κ + (j : ℕ) = κ + i + 1) ↔ ((j : ℕ) = i + 1)` using `fun i j => by omega`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib]`. Simplify using `only [h₄]`. Take the linear combination `h₁ + h₂ + h₃`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma superSum_framePos_eq_simpleSum_of_mem_N {k : Type} [Field k] {κ l : ℕ}
     {u : GL (Fin κ ⊕ Fin l) k} (hu : u ∈ _root_.GlobalTheory.RootEx.N k (Fin κ) l 1) :
@@ -205,15 +203,15 @@ private lemma superSum_framePos_eq_simpleSum_of_mem_N {k : Type} [Field k] {κ l
 open MeasureTheory ValuativeRel Matrix Topology in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ ϖ κ l P h`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsGenericLevel at h`. Take `⟨hJ, hlam⟩` from `h`. Use `⟨fun u hu γ hm => ?_, fun γ gb hred hup => ?_, fun u hu hm => ?_⟩` and prove the remaining obligations. Take `⟨gb', ⟨g₀, hg₀, hres₀⟩, hup'⟩` from `(hJ _).1 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `reduces_of_corner_lemma hg₀ (toBlocks₁₁_mul_embX_of_mem_N hu γ) fun r s hsr => ?_` and prove the remaining obligations. Rewrite using `[← map_residue_apply, hres₀]`. Conclude with `(hup' (Sum.inl r) (Sum.inl s) (by simpa [_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos] using hsr)).trans (one_apply_inl_inl r s)`. Establish `hm : _root_.GlobalTheory.RootEx.embX l γ ∈ P.J`. Use `(hJ _).2 ⟨_root_.GlobalTheory.RootEx.embX l gb, reduces_embX_of_reduces hred, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r s hrs`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Establish `h' : (s : ℕ) ≤ r` using `by simpa [_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos] using hrs`. Rewrite using `[_root_.GlobalTheory.RootEx.Radical.embX_val, fromBlocks_apply₁₁]`. Conclude with `(hup r s h').trans (one_apply_inl_inl r s).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h' : κ + (s : ℕ) ≤ r` using `by simpa [_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos] using hrs`. Use linear arithmetic over natural numbers and integers. Rewrite using `[_root_.GlobalTheory.RootEx.Radical.embX_val, fromBlocks_apply₂₁]`. Simplify using `[Matrix.one_apply]`. Rewrite using `[_root_.GlobalTheory.RootEx.Radical.embX_val, fromBlocks_apply₂₂]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(one_apply_inr_inr r s).symm`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[hlam ⟨_, hm⟩]`. Simplify using `only [superSum_framePos_embX]`. Rewrite using `[hlam ⟨u, hm⟩, superSum_framePos_eq_simpleSum_of_mem_N hu]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GenericShape.generic_shape : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (ϖ : kˣ) (κ l : ℕ) (P : _root_.GlobalTheory.StepData.TypeDatum k (Fin κ ⊕ Fin l)), _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsGenericLevel ψ ϖ P → ((∀ u ∈ _root_.GlobalTheory.RootEx.N k (Fin κ) l 1, ∀ γ : GL (Fin κ) k, u * _root_.GlobalTheory.RootEx.embX l γ ∈ P.J → ∃ gb, _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.Reduces γ gb ∧ _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUpperUnip Fin.val gb.val) ∧ (∀ (γ : GL (Fin κ) k) (gb : GL (Fin κ) 𝓀[k]), _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.Reduces γ gb → _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUpperUnip Fin.val gb.val → ∃ hm : _root_.GlobalTheory.RootEx.embX l γ ∈ P.J, (P.lam ⟨_, hm⟩ : ℂ) = ψ ((ϖ⁻¹ : kˣ) * _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.superSum Fin.val γ.val)) ∧ ∀ u ∈ _root_.GlobalTheory.RootEx.N k (Fin κ) l 1, ∀ hm : u ∈ P.J, (P.lam ⟨u, hm⟩ : ℂ) = ψ ((ϖ⁻¹ : kˣ) * _root_.GlobalTheory.RootEx.simpleSum u)) := by
   intro k _ _ _ _ ψ ϖ κ l P h

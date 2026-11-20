@@ -13,32 +13,32 @@ section Alg
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[toLE_apply, toLE_apply, toLE_apply, Units.val_mul, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coordRat_toLE_mul (g k : GL (Fin N) E) (v : Fin N → E) : toLE (g * k) v = toLE g (toLE k v) := by
   rw [toLE_apply, toLE_apply, toLE_apply, Units.val_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[← coordRat_toLE_mul, inv_mul_cancel, toLE_apply, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coordRat_toLE_inv_apply (g : GL (Fin N) E) (v : Fin N → E) : toLE g⁻¹ (toLE g v) = v := by
   rw [← coordRat_toLE_mul, inv_mul_cancel, toLE_apply, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[← coordRat_toLE_mul, mul_inv_cancel, toLE_apply, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coordRat_toLE_apply_inv (g : GL (Fin N) E) (v : Fin N → E) : toLE g (toLE g⁻¹ v) = v := by
   rw [← coordRat_toLE_mul, mul_inv_cancel, toLE_apply, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Apply `(toLE g).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, coordRat_toLE_apply_inv]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordRat_toLE_symm (g : GL (Fin N) E) (v : Fin N → E) : (toLE g).symm v = toLE g⁻¹ v := by
   apply (toLE g).injective
   rw [LinearEquiv.apply_symm_apply, coordRat_toLE_apply_inv]
 
 /- English proof (translation)
-Simplify using `only [inFr, toStdCo, stdG, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.trans_apply, LinearEquiv.symm_trans_apply, LinearEquiv.symm_symm, coordRat_toLE_symm, LinearEquiv.symm_apply_apply, _root_.mul_inv_rev, inv_inv, coordRat_toLE_mul, coordRat_toLE_inv_apply, coordRat_ …`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordRat_inFr {a b : ℕ} (σ : E →+* E) (J : Matrix (Fin a) (Fin a) E) (J' : Matrix (Fin b) (Fin b) E)
     (co γ : GL (Fin a) E) (co' γ' : GL (Fin b) E) (z : (Fin a → E) →ₗ[E] (Fin b → E)) (v : Fin a → E) :
@@ -51,11 +51,11 @@ theorem coordRat_inFr {a b : ℕ} (σ : E →+* E) (J : Matrix (Fin a) (Fin a) E
 end Alg
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a _ _ i hi γ γ' g g' hg hg' z`. Establish `hS : ∀ {p q : ℕ} (x : HomE D.host.E p q) (w : Sp t.X.E p), (fun l => t.seam.iE (seamHom t.seam x w l)) = x (fun k => t.seam.iE (w k))` using `fun x w => funext (seamHom_apply t.seam x w)`. Establish `hG : ∀ {n : ℕ} (h : Sp t.X.E n ≃ₗ[t.X.E] Sp t.X.E n) (v : Sp t.X.E n), (fun l => t.seam.iE (h v l)) = toLE (seamGL t.seam h) (fun l => t.seam.iE (v l))`. Introduce `n h v`. Rewrite using `[toLE_apply, seamGL_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : ∀ {n : ℕ} (h : Sp t.X.E n ≃ₗ[t.X.E] Sp t.X.E n) (v : Sp t.X.E n), (fun l => t.seam.iE (h.symm v l)) = toLE (seamGL t.seam h)⁻¹ (fun l => t.seam.iE (v l))`. Introduce `n h v`. Apply `(toLE (seamGL t.seam h)).injective` to reduce the goal to its premises. Rewrite using `[← hG, LinearEquiv.apply_symm_apply, coordRat_toLE_apply_inv]`. Use `LinearMap.ext fun w => funext fun l => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : (fun l => t.seam.iE (seamHom t.seam (inFr (toStdCo (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i (Nat.le_of_succ_le hi)) (A.crd i (Nat.le_of_succ_le hi))) (toStdCo (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D (i + 1) hi) (A.crd (i + 1) hi)) z) w l)) = (fun l => t.seam. …`. Rewrite using `[hG, hS, hS, hw, hg, hg', coordRat_inFr, coordRat_toLE_apply_inv, coordRat_toLE_apply_inv]`. Conclude with `t.seam.iE.injective (congrFun key l)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seamHom_inFr_stdG : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
     ∀ i (hi : i + 1 ≤ D.R.m) (γ : GL (Fin (D.R.N i)) D.host.E) (γ' : GL (Fin (D.R.N (i + 1))) D.host.E)

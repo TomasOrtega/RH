@@ -8,17 +8,15 @@ open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory
 namespace PositivityTheory.HtPt.Gc
 
 /- English proof (translation)
-Introduce `A _ _ _ _ _ p hp q hq h1 hpq`. Take `⟨R, _, _, _, _, _⟩ : ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : Algebra A R), IsLocalization.AtPrime R q ∧ IsDiscreteValuationRing R` from `⟨Localization.AtPrime q, inferInstance, inferInstance, inferInstance, inferInstance, dvr_of_height_one q h1⟩`. Set `K` to `FractionRing R`. Establish `hAR : Function.Injective (algebraMap A R)` using `IsLocalization.injective R q.primeCompl_le_nonZeroDivisors`. Use `haveI : CharZero R := charZero_of_injective_algebraMap hAR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CharZero K := charZero_of_injective_algebraMap (IsFractionRing.injective R K)`. Establish `hpR : (p : R) ∈ IsLocalRing.maximalIdeal R`. Use `(IsLocalization.AtPrime.to_map_mem_maximal_iff R q (p : A)).2 hpq` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨C, _, _, _, _, _, _, hC⟩` from `GlobalTheory.exists_complete_isAlgClosed_padic_of_isDiscreteValuationRing R K p hpR`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, hφ, hφ'⟩` from `GlobalTheory.exists_isLocalHom_normIntegers hC`. Use `haveI : CharZero C := charZero_of_injective_algebraMap (algebraMap K C).injective`. Establish `hO` using `GlobalTheory.normIntegers_integers C`. Establish `key : ∀ a : A, a ∈ q ↔ NormedField.valuation (K` using `C) (algebraMap (GlobalTheory.normIntegers C) C (φ (algebraMap A R a))) < 1 := by`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← IsLocalization.AtPrime.to_map_mem_maximal_iff R q a, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← isUnit_map_iff φ, hO.isUnit_iff_valuation_eq_one]`. Conclude with `(hO.map_le_one _).lt_iff_ne.symm`. Establish `hv : NormedField.valuation (K` using `C) (p : C) < 1 := by`. Simplify `(key p).1 hpq` using `only [map_natCast]`. Use `⟨C, GlobalTheory.normIntegers C, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, NormedField.valuation, φ.comp (algebraMap A R), hO, hv, ?_, ?_, key⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `GlobalTheory.NormIntegers.isAdicComplete_span_singleton hO` to reduce the goal to its premises. Rewrite using `[map_natCast]`. Conclude with `hv` after adjusting the coercions. Introduce `a b hab`. Establish `: (φ (algebraMap A R a) : C) = (φ (algebraMap A R b) : C)` using `congrArg Subtype.val hab`.
-
-Rewrite `this` using `[hφ', hφ']`. Conclude with `hAR (IsFractionRing.injective R K ((algebraMap K C).injective this))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem test_field : ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] [CharZero A] (p : ℕ) [Fact p.Prime] (𝔮 : Ideal A), 𝔮.IsPrime → 𝔮.height = 1 → (p : A) ∈ 𝔮 → ∃ (C O : Type) (_ : Field C) (_ : IsAlgClosed C) (_ : CharZero C) (_ : CommRing O) (_ : IsDomain O) (_ : Algebra O C) (v : Valuation C NNReal) (φ : A →+* O), v.Integers O ∧ v (p : C) < 1 ∧ IsAdicComplete (Ideal.span {(p : O)}) O ∧ Function.Injective φ ∧ ∀ a, a ∈ 𝔮 ↔ v (algebraMap O C (φ a)) < 1 := by
   intro A _ _ _ _ _ p hp q hq h1 hpq

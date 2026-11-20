@@ -11,7 +11,7 @@ open Formalism.UG (cT bc)
 namespace GlobalTheory.IwArchLine
 
 /- English proof (translation)
-Establish `h1 : cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ) (M.map (inclR (F` using `F) R)) = (cT (σ : E →+* E) M).map (inclR (F := F) R) := by`. Use extensionality with `i j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply]`. Both sides reduce to the same expression. Rewrite using `[h1, Matrix.map_mul, Matrix.map_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_map_inclR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {m k l : Type} [Fintype m] (M : Matrix m k E) (J : Matrix m m E) (N : Matrix m l E) :
@@ -24,17 +24,15 @@ theorem form_map_inclR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type)
   rw [h1, Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n J _ x y hx hxy a ha w g`. Take `⟨τ⟩ : Nonempty (GlobalTheory.AdelicU.EmbOver E w)` from `inferInstance`. Take `⟨ε, hε⟩` from `ha w`. Establish `hXiso` using `form_map_inclR (F := F) w.Completion σ x J x`. Rewrite `hXiso` using `[hx, Matrix.map_zero _ (map_zero _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨K, hK, hK1, β, hβ⟩` from `GlobalTheory.Core.Rk.IwArch.iw_iso_cols (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR w.Completion σ) (GlobalTheory.AdelicU.infEmb τ) (GlobalTheory.AdelicU.infEmb_bijective hcm τ) (fun z => (GlobalTheory.AdelicU.infEmb_sigR hcm τ z).symm) (bc (compInf F E w) a) …`. Set `kk : GArch σ J w` to `⟨K, hK⟩`. Establish `hPX` using `form_map_inclR (F := F) w.Completion σ y J x`. Rewrite `hPX` using `[hxy, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `set X := x.map (inclR (F := F) w.Completion) with hXdef`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set P := cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR w.Completion σ) (y.map (inclR (F := F) w.Completion)) * J.map (inclR (F := F) w.Completion) with hPdef`. Use `set Q : GL (Fin n) (w.Completion ⊗[F] E) := GlobalTheory.AdelicU.matHom w.Completion σ J g * K⁻¹ with hQ`. Establish `hQX : Q.1 * X = X * β` using `hβ`. Establish `hX' : X = (Q⁻¹).1 * X * β`. Rewrite using `[Matrix.mul_assoc, ← hQX, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hleft : (P * (Q⁻¹).1 * X) * β = 1`. Rewrite using `[← hPX]`. Use `conv_rhs => rw [hX']`. Simplify using `only [Matrix.mul_assoc]`. Set `βu : GL (Fin 1) (w.Completion ⊗[F] E)` to `⟨β, P * (Q⁻¹).1 * X, mul_eq_one_comm.1 hleft, hleft⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨g * kk⁻¹, kk, GlobalTheory.AdelicU.mem_stabArch.2 hK1, by group, βu, ?_⟩` and prove the remaining obligations. Establish `: (GlobalTheory.AdelicU.matHom w.Completion σ J (g * kk⁻¹)) = Q`. Rewrite using `[map_mul, map_inv]`. Both sides reduce to the same expression. Rewrite using `[this]`.
-
-Conclude with `hQX`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_q_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (x y : Matrix (Fin n) (Fin 1) E), cT (σ : E →+* E) x * J * x = 0 → cT (σ : E →+* E) y * J * x = 1 → ∀ (a : GL (Fin n) (AF F ⊗[F] E)), IsMajorantFrame σ J a → ∀ (w : InfinitePlace F) (g : GArch σ J w), ∃ q k : GArch σ J w, k ∈ stabArch σ J w (bc (compInf F E w) a) ∧ g = q * k ∧ ∃ β : GL (Fin 1) (w.Completion ⊗[F] E), (matHom _ σ J q).1 * x.map (inclR (F := F) w.Completion) = x.map (inclR (F := F) w.Completion) * β.1 := by
   intro F E _ _ _ _ _ σ hcm n J _ x y hx hxy a ha w g

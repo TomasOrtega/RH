@@ -24,13 +24,13 @@ Both sides reduce to the same expression.
 theorem jM_mk (P : Pair G) (f : G.F[X]) : jM P (AdjoinRoot.mk P.pol f) = aeval (P.γ : G.C) f := rfl
 
 /- English proof (translation)
-Rewrite using `[← AdjoinRoot.mk_X, jM_mk, aeval_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jM_root (P : Pair G) : jM P (AdjoinRoot.root P.pol) = P.γ := by
   rw [← AdjoinRoot.mk_X, jM_mk, aeval_X]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨f, rfl⟩` from `AdjoinRoot.mk_surjective a`. Rewrite `ha` using `[jM_mk]`. Conclude with `AdjoinRoot.mk_eq_zero.2 (minpoly.dvd G.F _ ha)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jM_injective (P : Pair G) : Function.Injective (jM P) := by
   rw [injective_iff_map_eq_zero]
@@ -40,21 +40,21 @@ theorem jM_injective (P : Pair G) : Function.Injective (jM P) := by
   exact AdjoinRoot.mk_eq_zero.2 (minpoly.dvd G.F _ ha)
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℚ G.F (FM P), AlgHom.commutes, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jM_algQ (P : Pair G) (q : ℚ) : jM P (algebraMap ℚ (FM P) q) = algebraMap ℚ G.C q := by
   rw [IsScalarTower.algebraMap_apply ℚ G.F (FM P), AlgHom.commutes, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Rewrite using `[← jM_root, ← map_mul, ← map_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jM_comm (P : Pair G) (a : FM P) : jM P a * P.γ = P.γ * jM P a := by
   rw [← jM_root, ← map_mul, ← map_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hc : u ∈ Subalgebra.centralizer G.F {(P.γ : G.C)}`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce and unpack `g rfl`. Conclude with `hu.symm`. Rewrite `hc` using `[GlobalTheory.CentSep.centralizer_eq_adjoin G.F G.C G.n G.rankC _ P.reg.2 P.reg.1, Algebra.adjoin_singleton_eq_range_aeval]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨f, rfl⟩` from `hc`. Conclude with `⟨AdjoinRoot.mk _ f, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_jM (P : Pair G) (u : G.C) (hu : u * P.γ = P.γ * u) : ∃ a, jM P a = u := by
   have hc : u ∈ Subalgebra.centralizer G.F {(P.γ : G.C)} := by
@@ -67,33 +67,33 @@ theorem exists_jM (P : Pair G) (u : G.C) (hu : u * P.γ = P.γ * u) : ∃ a, jM 
   exact ⟨AdjoinRoot.mk _ f, rfl⟩
 
 /- English proof (translation)
-Simplify using `[sh, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sh_mul (x y : G.C) : sh G (x * y) = sh G y * sh G x := by
   simp [sh, map_mul]
 
 /- English proof (translation)
-Simplify using `[sh]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sh_one : sh G (1 : G.C) = 1 := by simp [sh]
 
 /- English proof (translation)
-Simplify using `[sh, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sh_add (x y : G.C) : sh G (x + y) = sh G x + sh G y := by simp [sh, map_add]
 
 /- English proof (translation)
-Simplify using `[sh]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sh_zero : sh G (0 : G.C) = 0 := by simp [sh]
 
 /- English proof (translation)
-The claim follows from `G.star_star x`.
+A detailed English derivation is pending.
 -/
 theorem sh_sh (x : G.C) : sh G (sh G x) = x := G.star_star x
 
 /- English proof (translation)
-The claim follows from `G.star_F a`.
+A detailed English derivation is pending.
 -/
 theorem sh_algF (a : G.F) : sh G (algebraMap G.F G.C a) = algebraMap G.F G.C (IsCMField.complexConj G.F a) :=
   G.star_F a
@@ -101,36 +101,36 @@ theorem sh_algF (a : G.F) : sh G (algebraMap G.F G.C a) = algebraMap G.F G.C (Is
 def iC (P : Pair G) (x : G.C) : G.C := (P.β : G.C) * sh G x * ((P.β⁻¹ : G.Cˣ) : G.C)
 
 /- English proof (translation)
-Simplify using `only [iC, sh_mul, mul_assoc, Units.inv_mul_cancel_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iC_mul (P : Pair G) (x y : G.C) : iC P (x * y) = iC P y * iC P x := by
   simp only [iC, sh_mul, mul_assoc, Units.inv_mul_cancel_left]
 
 /- English proof (translation)
-Simplify using `[iC, sh_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iC_one (P : Pair G) : iC P 1 = 1 := by simp [iC, sh_one]
 
 /- English proof (translation)
-Simplify using `[iC, sh_add, mul_add, add_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iC_add (P : Pair G) (x y : G.C) : iC P (x + y) = iC P x + iC P y := by
   simp [iC, sh_add, mul_add, add_mul]
 
 /- English proof (translation)
-Simplify using `[iC, sh_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iC_zero (P : Pair G) : iC P 0 = 0 := by simp [iC, sh_zero]
 
 /- English proof (translation)
-Rewrite using `[iC, sh_algF, ← Algebra.commutes, mul_assoc, Units.mul_inv, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iC_algF (P : Pair G) (a : G.F) :
     iC P (algebraMap G.F G.C a) = algebraMap G.F G.C (IsCMField.complexConj G.F a) := by
   rw [iC, sh_algF, ← Algebra.commutes, mul_assoc, Units.mul_inv, mul_one]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℚ G.F G.C, iC_algF]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem iC_algQ (P : Pair G) (q : ℚ) : iC P (algebraMap ℚ G.C q) = algebraMap ℚ G.C q := by
   rw [IsScalarTower.algebraMap_apply ℚ G.F G.C, iC_algF]
@@ -138,9 +138,9 @@ theorem iC_algQ (P : Pair G) (q : ℚ) : iC P (algebraMap ℚ G.C q) = algebraMa
   simp
 
 /- English proof (translation)
-Establish `h` using `P.sim`. Establish `h2 : (P.β : G.C) * sh G P.γ = ((P.γ⁻¹ : G.Cˣ) : G.C) * (algebraMap ℚ G.C P.c * P.β)`. Rewrite using `[← h]`. Simplify using `only [← mul_assoc, Units.inv_mul, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h2]`. Simplify using `only [mul_assoc, Units.mul_inv, mul_one]`. Use `_ = _ := by rw [mul_assoc, Algebra.commutes, ← mul_assoc, Units.inv_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iC_gamma_mul (P : Pair G) : iC P P.γ * P.γ = algebraMap ℚ G.C P.c := by
   have h := P.sim
@@ -152,9 +152,9 @@ theorem iC_gamma_mul (P : Pair G) : iC P P.γ * P.γ = algebraMap ℚ G.C P.c :=
     _ = _ := by rw [mul_assoc, Algebra.commutes, ← mul_assoc, Units.inv_mul, one_mul]
 
 /- English proof (translation)
-Establish `h1 : iC P u * iC P P.γ = iC P P.γ * iC P u` using `by rw [← iC_mul, ← iC_mul, hu]`. Establish `hg : iC P P.γ = algebraMap ℚ G.C P.c * ((P.γ⁻¹ : G.Cˣ) : G.C)`. Rewrite using `[← iC_gamma_mul, mul_assoc, Units.mul_inv, mul_one]`. Rewrite `h1` using `[hg, ← mul_assoc, ← Algebra.commutes, mul_assoc, mul_assoc]`. Establish `hc : IsUnit (algebraMap ℚ G.C P.c)` using `(P.c.isUnit).map _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hc.mul_left_cancel h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, Units.mul_inv, one_mul]`. Use `_ = P.γ * (iC P u * ((P.γ⁻¹ : G.Cˣ) : G.C)) * P.γ := by rw [h2]`. Use `_ = _ := by rw [mul_assoc, mul_assoc, Units.inv_mul, mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iC_comm (P : Pair G) (u : G.C) (hu : u * P.γ = P.γ * u) : iC P u * P.γ = P.γ * iC P u := by
   have h1 : iC P u * iC P P.γ = iC P P.γ * iC P u := by rw [← iC_mul, ← iC_mul, hu]
@@ -169,9 +169,9 @@ theorem iC_comm (P : Pair G) (u : G.C) (hu : u * P.γ = P.γ * u) : iC P u * P.�
     _ = _ := by rw [mul_assoc, mul_assoc, Units.inv_mul, mul_one]
 
 /- English proof (translation)
-Establish `hb : sh G (P.β : G.C) = P.β` using `P.sym`. Establish `hbi : sh G ((P.β⁻¹ : G.Cˣ) : G.C) = ((P.β⁻¹ : G.Cˣ) : G.C)`. Establish `e : sh G ((P.β⁻¹ : G.Cˣ) : G.C) * P.β = 1`. Rewrite using `[← hb, ← sh_mul, Units.mul_inv, sh_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`. Use `_ = _ := by rw [e, one_mul]`. Simplify using `only [iC, sh_mul, hb, hbi, sh_sh, mul_assoc, Units.mul_inv, mul_one, Units.mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iC_iC (P : Pair G) (x : G.C) : iC P (iC P x) = x := by
   have hb : sh G (P.β : G.C) = P.β := P.sym
@@ -186,7 +186,7 @@ theorem iC_iC (P : Pair G) (x : G.C) : iC P (iC P x) = x := by
 def iMf (P : Pair G) (a : FM P) : FM P := (exists_jM P (iC P (jM P a)) (iC_comm P _ (jM_comm P a))).choose
 
 /- English proof (translation)
-The claim follows from `(exists_jM P (iC P (jM P a)) (iC_comm P _ (jM_comm P a))).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem jM_iMf (P : Pair G) (a : FM P) : jM P (iMf P a) = iC P (jM P a) :=
   (exists_jM P (iC P (jM P a)) (iC_comm P _ (jM_comm P a))).choose_spec
@@ -201,32 +201,32 @@ def iM (P : Pair G) : FM P →ₐ[ℚ] FM P where
   commutes' q := jM_injective P (by rw [jM_iMf, jM_algQ, iC_algQ])
 
 /- English proof (translation)
-The claim follows from `jM_iMf P a`.
+A detailed English derivation is pending.
 -/
 theorem jM_iM (P : Pair G) (a : FM P) : jM P (iM P a) = iC P (jM P a) := jM_iMf P a
 
 /- English proof (translation)
-The claim follows from `jM_injective P (by rw [jM_iM, AlgHom.commutes, AlgHom.commutes, iC_algF])`.
+A detailed English derivation is pending.
 -/
 theorem iM_algF (P : Pair G) (a : G.F) :
     iM P (algebraMap G.F (FM P) a) = algebraMap G.F (FM P) (IsCMField.complexConj G.F a) :=
   jM_injective P (by rw [jM_iM, AlgHom.commutes, AlgHom.commutes, iC_algF])
 
 /- English proof (translation)
-The claim follows from `jM_injective P (by rw [map_mul, jM_iM, jM_root, jM_algQ, iC_gamma_mul])`.
+A detailed English derivation is pending.
 -/
 theorem iM_root_mul (P : Pair G) :
     iM P (AdjoinRoot.root P.pol) * AdjoinRoot.root P.pol = algebraMap ℚ (FM P) P.c :=
   jM_injective P (by rw [map_mul, jM_iM, jM_root, jM_algQ, iC_gamma_mul])
 
 /- English proof (translation)
-The claim follows from `jM_injective P (by rw [jM_iM, jM_iM, iC_iC])`.
+A detailed English derivation is pending.
 -/
 theorem iM_iM (P : Pair G) (a : FM P) : iM P (iM P a) = a :=
   jM_injective P (by rw [jM_iM, jM_iM, iC_iC])
 
 /- English proof (translation)
-The claim follows from `jM_injective P (by rw [map_mul, jM_iM, jM_algQ, ha, iC, ← mul_assoc, ← mul_assoc, w.2.2, mul_assoc, Units.mul_inv, mul_one])`.
+A detailed English derivation is pending.
 -/
 theorem mul_iM_of_cent (P : Pair G) (w : P.cent) (a : FM P) (ha : jM P a = ((w : G.Cˣ × ℚˣ).1 : G.C)) :
     a * iM P a = algebraMap ℚ (FM P) ((w : G.Cˣ × ℚˣ).2 : ℚ) :=
@@ -234,7 +234,7 @@ theorem mul_iM_of_cent (P : Pair G) (w : P.cent) (a : FM P) (ha : jM P a = ((w :
     rw [map_mul, jM_iM, jM_algQ, ha, iC, ← mul_assoc, ← mul_assoc, w.2.2, mul_assoc, Units.mul_inv, mul_one])
 
 /- English proof (translation)
-Take `⟨k, hk, rfl⟩` from `hy`. Take `⟨m, hm0, -, hm⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero hK.2 (⟨k, hk⟩ : K)`. Use `⟨m, hm0, k ^ m, ?_, by simp [map_pow]⟩` and prove the remaining obligations. Simplify `hm` using `[Subgroup.mem_subgroupOf]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_pow_mem_conj {H : Type} [Group H] (K K₀ : Subgroup H) (g y : H) (hK : K.Commensurable K₀)
     (hy : y ∈ K.map (MulAut.conj g).toMonoidHom) :

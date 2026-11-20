@@ -21,7 +21,7 @@ section Emb
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {ι : Type} [Fintype ι] {a b : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Use `show δ * emb τ ((r • x) (Pi.single j 1) i) = k * (δ * emb τ (x (Pi.single j 1) i))`. Rewrite using `[LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul, hr]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem embH_smul (emb : ι → E →+* ℂ) (δ : ℂ) (r : E) (k : ℂ) (hr : ∀ τ, emb τ r = k) (x : HomE E a b) :
     embH emb δ (r • x) = k • embH emb δ x := by
@@ -31,7 +31,7 @@ theorem embH_smul (emb : ι → E →+* ℂ) (δ : ℂ) (r : E) (k : ℂ) (hr : 
   ring
 
 /- English proof (translation)
-The claim follows from `embH_smul emb δ (n : E) (n : ℂ) (fun τ => map_natCast (emb τ) n) x`.
+A detailed English derivation is pending.
 -/
 theorem embH_nat (emb : ι → E →+* ℂ) (δ : ℂ) (n : ℕ) (x : HomE E a b) :
     embH emb δ ((n : E) • x) = (n : ℂ) • embH emb δ x :=
@@ -45,7 +45,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 variable {W : Type} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
 
 /- English proof (translation)
-Substitute `he` using the available equality. Rewrite using `[algebraMap_smul]`. Conclude with `M.smul_mem r hm`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_of (M : Submodule (𝓞 E) W) {m : W} (hm : m ∈ M) (r : 𝓞 E) {e : E} (he : algebraMap (𝓞 E) E r = e) :
     e • m ∈ M := by
@@ -54,7 +54,7 @@ theorem smul_mem_of (M : Submodule (𝓞 E) W) {m : W} (hm : m ∈ M) (r : 𝓞 
   exact M.smul_mem r hm
 
 /- English proof (translation)
-Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul E s z]`. Conclude with `hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_of (M : Submodule (𝓞 E) W) (Q : HeightOneSpectrum (𝓞 E)) {z : W} (s : 𝓞 E) (hs : s ∉ Q.asIdeal)
     (hz : (algebraMap (𝓞 E) E s) • z ∈ M) : z ∈ localization₂ Q.asIdeal M := by
@@ -67,13 +67,11 @@ end Loc
 end KH
 
 /- English proof (translation)
-Introduce `X A a b S N N' c _ _ _ hc y hy`. Take `⟨x, hx, rfl⟩` from `AddSubgroup.mem_map.mp hy`. Use `AddSubgroup.mem_map.mpr ⟨(c : X.E) • x, ?_, KH.embH_nat _ _ c x⟩` and prove the remaining obligations. Use `show (c : X.E) • x ∈ perO A.AA N N'`. Apply `mem_of_forall_locP` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Q`. Establish `hx'` using `(mem_twO (perO A.AA N N') c (expS S) x).mp hx Q`. Establish `hc0 : (c : X.E) ≠ 0` using `Nat.cast_ne_zero.mpr hc.ne'`. Unfold `expS at hx'`. Use `split_ifs at hx'`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx'` using `[zpow_one]`. Establish `e : (c : X.E) • x = ((c : X.E) * (c : X.E)) • ((c : X.E))⁻¹ • x`. Rewrite using `[smul_smul, mul_assoc, mul_inv_cancel₀ hc0, mul_one]`. Rewrite using `[e]`. Conclude with `KH.smul_mem_of _ hx' ((c : 𝓞 X.E) * (c : 𝓞 X.E)) (by simp)`.
-
-Rewrite `hx'` using `[zpow_neg_one, inv_inv]`. Conclude with `hx'`. Rewrite `hx'` using `[zpow_zero, inv_one, one_smul]`. Conclude with `KH.smul_mem_of _ hx' (c : 𝓞 X.E) (by simp)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_kills_half_lattice : HalfKill := by
   intro X A a b S N N' c _ _ _ hc y hy
@@ -97,21 +95,17 @@ theorem level_kills_half_lattice : HalfKill := by
     exact KH.smul_mem_of _ hx' (c : 𝓞 X.E) (by simp)
 
 /- English proof (translation)
-Introduce `X A a b S N N' c c' x hN hN' hLa hc hc' hdvd hx`. Take `⟨-, -, -, hAU, -, -⟩` from `hLa`. Establish `hNfg : N.FG` using `by haveI := hN.1`. Conclude with `Submodule.IsLattice.fg (A := X.E)`. Establish `hN'sp : Submodule.span X.E (N' : Set (Sp X.E b)) = ⊤` using `by haveI := hN'.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.IsLattice.span_eq_top`. Establish `hx0 : (c' : 𝓞 X.E) • x ∈ homAt S N N'` using `hx`. Establish `hxc : x ∈ divLat c (homAt S N N')`. Take `⟨k, rfl⟩` from `hdvd`. Use `show ((c' * k : ℕ) : 𝓞 X.E) • x ∈ homAt S N N'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `(homAt S N N').smul_mem _ hx0`. Take `⟨s, hs, hsx⟩` from `ti_exists_lift A.AA S N N' hNfg hN'sp hAU hc hxc`. Establish `hL : A.IsLift S N N' c x (A.liftW S N N' c x)` using `Classical.epsilon_spec (p := A.IsLift S N N' c x) ⟨s, ⟨c, hc, hs⟩, hsx⟩`. Take `⟨⟨c'', hc'', hs''⟩, hsx''⟩` from `hL`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `AddSubgroup.mem_map.mpr ⟨(c' : X.E) • A.liftW S N N' c x, ?_, KH.embH_nat _ _ c' _⟩` and prove the remaining obligations. Use `show (c' : X.E) • A.liftW S N N' c x ∈ perO A.AA N N'`. Apply `mem_of_forall_locP` to reduce the goal to its premises. Introduce `Q`. Distinguish the cases in `hQ : Q ∈ S`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, h2⟩` from `lf_mulLat S A.AA N N' hNfg hAU c hc hsx'' Q hQ`. Establish `h3 : (c' : 𝓞 X.E) • x ∈ localization₂ Q.asIdeal (perO A.AA N N')` using `homAt_le_locP_perO S A.AA N N' hNfg hQ (hAU Q hQ) hx0`. Establish `e : (c' : X.E) • A.liftW S N N' c x = (c' : 𝓞 X.E) • (A.liftW S N N' c x - x) + (c' : 𝓞 X.E) • x`. Rewrite using `[← smul_add, sub_add_cancel, ← algebraMap_smul X.E (c' : 𝓞 X.E), map_natCast]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `add_mem ((localization₂ Q.asIdeal _).smul_mem _ h2) h3`. Establish `ht` using `(mem_twO (perO A.AA N N') c'' (fun Q => -expS S Q) (A.liftW S N N' c x)).mp hs'' Q`. Establish `hc0 : (c'' : X.E) ≠ 0` using `Nat.cast_ne_zero.mpr hc''.ne'`. Distinguish the cases in `hQ' : conjPrime₂ Q ∈ S`. Rewrite `ht` using `[show -expS S Q = 1 from by simp [expS, hQ, hQ'], zpow_one]`.
-
-Establish `e : (c' : X.E) • A.liftW S N N' c x = algebraMap (𝓞 X.E) X.E ((c' : 𝓞 X.E) * (c'' : 𝓞 X.E)) • ((c'' : X.E))⁻¹ • A.liftW S N N' c x`. Rewrite using `[smul_smul, map_mul, map_natCast, map_natCast, mul_assoc, mul_inv_cancel₀ hc0, mul_one]`. Rewrite using `[e]`. Conclude with `KH.smul_mem_of _ ht _ rfl`. Rewrite `ht` using `[show -expS S Q = 0 from by simp [expS, hQ, hQ'], zpow_zero, inv_one, one_smul]`.
-
-Conclude with `KH.smul_mem_of _ ht (c' : 𝓞 X.E) (by simp)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chosen_lift_killed_level : LiftKill := by
   intro X A a b S N N' c c' x hN hN' hLa hc hc' hdvd hx
@@ -162,19 +156,19 @@ namespace KH
 section Arith
 
 /- English proof (translation)
-Take `⟨m, n, hπ⟩` from `hq`. Simplify using `only [Formalism.L2.Th1.CM.omegaK] at hπ`. Establish `hs : ((Real.sqrt d : ℝ) : ℂ) ^ 2 = (d : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg d)]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc : conj π = (m : ℂ) + (n : ℂ) * ((1 - Complex.I * ((Real.sqrt d : ℝ) : ℂ)) / 2)`. Rewrite using `[hπ]`. Simplify using `only [map_add, map_mul, map_div₀, map_one, Complex.conj_ofReal, Complex.conj_I, map_intCast, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨2 * m + n, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc, hπ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key : (((2 * m + n) ^ 2 + (d : ℤ) * n ^ 2 : ℤ) : ℂ) = ((4 * (p : ℤ) : ℤ) : ℂ)`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← hpp, hc, hπ]`. Take the linear combination `(-(n : ℂ) ^ 2) * hs + ((n : ℂ) ^ 2 * ((Real.sqrt d : ℝ) : ℂ) ^ 2) * Complex.I_sq`. Establish `key' : (2 * m + n) ^ 2 + (d : ℤ) * n ^ 2 = 4 * (p : ℤ)` using `by exact_mod_cast key`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Use `(hpZ.irreducible.coprime_iff_not_dvd.mpr ?_).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨t, ht⟩`. Establish `h1 : (p : ℤ) ∣ (d : ℤ) * n ^ 2` using `⟨4 - p * t ^ 2, by linear_combination key' - (p * t + (2 * m + n)) * ht⟩`. Establish `h2 : (p : ℤ) ∣ n ^ 2` using `(hpZ.dvd_or_dvd h1).resolve_left (fun h => hpd (Int.natCast_dvd_natCast.mp h))`. Take `⟨s, hs'⟩` from `hpZ.dvd_of_dvd_pow h2`. Establish `hp0 : (p : ℤ) ≠ 0` using `by exact_mod_cast hp.ne_zero`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4 : (p : ℤ) * (t ^ 2 + d * s ^ 2) = 4`. Apply `mul_left_cancel₀ hp0` to reduce the goal to its premises. Take the linear combination `key' - (2 * m + n + p * t) * ht - (d : ℤ) * (n + p * s) * hs'`. Establish `h5 : (p : ℤ) ∣ 4` using `Dvd.intro _ h4`. Establish `h6 : p ∣ 4` using `by exact_mod_cast h5`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : p ∣ 2`. Apply the tactic sequence `rcases hp.dvd_mul.mp (show p ∣ 2 * 2 from h6) with h | h <;> exact h`. Conclude with `hp2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).mp h7)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem trace_coprime (d p : ℕ) (hp : p.Prime) (hp2 : p ≠ 2) (hpd : ¬ p ∣ d) (π : ℂ) (hq : IsQInt d π)
     (hpp : π * conj π = p) : ∃ T : ℤ, π + conj π = T ∧ IsCoprime T (p : ℤ) := by
@@ -215,9 +209,9 @@ theorem trace_coprime (d p : ℕ) (hp : p.Prime) (hp2 : p ≠ 2) (hpd : ¬ p ∣
     exact hp2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).mp h7)
 
 /- English proof (translation)
-Take `⟨τ⟩` from `hne`. Set `f : 𝓞 X.E →+* ℂ` to `(X.embC σ₀ τ).comp (algebraMap (𝓞 X.E) X.E)`. Establish `hinj : Function.Injective f` using `(X.embC σ₀ τ).injective.comp (IsFractionRing.injective (𝓞 X.E) X.E)`. Establish `f1 : f pE = π` using `h1 τ`. Establish `f2 : f (cO X.E pE) = conj π` using `h2 τ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, f1, f2, hpp, map_natCast]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_add, f1, f2, hT, map_intCast]`.
+Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ring_facts {X : Fields} (σ₀ : X.K →+* ℂ) (π : ℂ) (pE : 𝓞 X.E) (p : ℕ) (T : ℤ) (hne : Nonempty X.Tau)
     (h1 : ∀ τ, X.embC σ₀ τ (pE : X.E) = π) (h2 : ∀ τ, X.embC σ₀ τ (star (pE : X.E)) = conj π)
@@ -245,7 +239,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] (S : Finset (HeightOn
 
 include hcop hprod in
 /- English proof (translation)
-Take `⟨α, β, h⟩` from `hcop`. Establish `hp : (p : 𝓞 E) ∈ Q.asIdeal` using `hprod ▸ Q.asIdeal.mul_mem_right _ h1`. Establish `hs : ϖ + cO E ϖ ∈ Q.asIdeal` using `Q.asIdeal.add_mem h1 h2`. Establish `h1' : (1 : 𝓞 E) ∈ Q.asIdeal` using `h ▸ Q.asIdeal.add_mem (Q.asIdeal.mul_mem_left α hs) (Q.asIdeal.mul_mem_left β hp)`. Conclude with `Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_both (Q : HeightOneSpectrum (𝓞 E)) (h1 : ϖ ∈ Q.asIdeal) (h2 : cO E ϖ ∈ Q.asIdeal) : False := by
   obtain ⟨α, β, h⟩ := hcop
@@ -256,7 +250,7 @@ theorem not_both (Q : HeightOneSpectrum (𝓞 E)) (h1 : ϖ ∈ Q.asIdeal) (h2 : 
 
 include hprod in
 /- English proof (translation)
-Rewrite using `[← hprod]`. Break down `h with h | h` into its components or cases. Conclude with `Q.asIdeal.mul_mem_right _ h`. Conclude with `Q.asIdeal.mul_mem_left _ h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem p_of (Q : HeightOneSpectrum (𝓞 E)) (h : ϖ ∈ Q.asIdeal ∨ cO E ϖ ∈ Q.asIdeal) : (p : 𝓞 E) ∈ Q.asIdeal := by
   rw [← hprod]
@@ -266,7 +260,7 @@ theorem p_of (Q : HeightOneSpectrum (𝓞 E)) (h : ϖ ∈ Q.asIdeal ∨ cO E ϖ 
 
 include hS hprod in
 /- English proof (translation)
-Introduce `h`. Conclude with `((hS Q (p_of p ϖ hprod Q (Or.inl h))).mp hQ) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pi_notin_S (Q : HeightOneSpectrum (𝓞 E)) (hQ : Q ∈ S) : ϖ ∉ Q.asIdeal := by
   intro h
@@ -274,9 +268,7 @@ theorem pi_notin_S (Q : HeightOneSpectrum (𝓞 E)) (hQ : Q ∈ S) : ϖ ∉ Q.as
 
 include hS hprod hcop in
 /- English proof (translation)
-Introduce `h`. Establish `hp` using `p_of p ϖ hprod Q (Or.inr h)`. Establish `h1 : ϖ ∈ Q.asIdeal`. Assume the negation of the conclusion as `h1`. Conclude with `hQ ((hS Q hp).mpr h1)`.
-
-Conclude with `not_both p ϖ hprod hcop Q h1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem pibar_notin (Q : HeightOneSpectrum (𝓞 E)) (hQ : Q ∉ S) : cO E ϖ ∉ Q.asIdeal := by
   intro h
@@ -288,11 +280,9 @@ theorem pibar_notin (Q : HeightOneSpectrum (𝓞 E)) (hQ : Q ∉ S) : cO E ϖ �
 
 include hS hprod hcop in
 /- English proof (translation)
-Introduce `h`. Establish `hp` using `p_of p ϖ hprod Q (Or.inl h)`. Establish `hp' : (p : 𝓞 E) ∈ (conjPrime₂ Q).asIdeal` using `by show (p : 𝓞 E) ∈ Q.asIdeal.comap (cO E)`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ϖ ∈ (conjPrime₂ Q).asIdeal`. Assume the negation of the conclusion as `h2`. Conclude with `hQ' ((hS (conjPrime₂ Q) hp').mpr h2)`. Establish `h3 : cO E ϖ ∈ Q.asIdeal`. Establish `: ϖ ∈ Q.asIdeal.comap (cO E)` using `h2`.
-
-Rewrite `this` using `[Ideal.mem_comap]`. Then use the resulting hypothesis. Conclude with `not_both p ϖ hprod hcop Q h h3`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pi_notin_off (Q : HeightOneSpectrum (𝓞 E)) (hQ : Q ∉ S) (hQ' : conjPrime₂ Q ∉ S) : ϖ ∉ Q.asIdeal := by
   intro h
@@ -323,15 +313,15 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] (S : Finset (HeightOn
 variable {W : Type} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W] (M : Submodule (𝓞 E) W)
 
 /- English proof (translation)
-Rewrite using `[← map_mul, hprod, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_E (hprod : ϖ * cO E ϖ = p) : algebraMap (𝓞 E) E ϖ * algebraMap (𝓞 E) E (cO E ϖ) = (p : E) := by
   rw [← map_mul, hprod, map_natCast]
 
 /- English proof (translation)
-Establish `h` using `prod_E p ϖ hprod`. Establish `hp' : (p : E) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hp)`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite `h` using `[h0, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hp' h.symm`. Introduce `h0`. Rewrite `h` using `[h0, mul_zero]`. Conclude with `hp' h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_E (hp : 0 < p) (hprod : ϖ * cO E ϖ = p) :
     algebraMap (𝓞 E) E ϖ ≠ 0 ∧ algebraMap (𝓞 E) E (cO E ϖ) ≠ 0 := by
@@ -348,15 +338,15 @@ theorem ne_zero_E (hp : 0 < p) (hprod : ϖ * cO E ϖ = p) :
 include hS hprod hcop in
 
 /- English proof (translation)
-Take `⟨ha, hb⟩` from `ne_zero_E p ϖ hp hprod`. Establish `hab` using `prod_E p ϖ hprod`. Establish `hc0 : (c' : E) ≠ 0` using `Nat.cast_ne_zero.mpr hc'.ne'`. Apply `mem_of_forall_locP` to reduce the goal to its premises. Introduce `Q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hQ : Q ∈ S`. Establish `h1` using `(mem_twO M (p * c') (expS S) w).mp hw Q`. Rewrite `h1` using `[show expS S Q = 1 from if_pos hQ, zpow_one]`. Establish `e : (algebraMap (𝓞 E) E ϖ / algebraMap (𝓞 E) E (cO E ϖ)) • w = algebraMap (𝓞 E) E (ϖ * ϖ * (c' : 𝓞 E)) • (((p * c' : ℕ) : E))⁻¹ • w`. Rewrite using `[smul_smul]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[map_mul, map_mul, map_natCast, Nat.cast_mul, ← hab]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `smul_mem_of _ h1 _ rfl`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb'` using `pibar_notin S p ϖ hS hprod hcop Q hQ`. Apply `loc_of M Q (cO E ϖ * cO E ϖ) (fun h => hb' ((Q.isPrime.mem_or_mem h).elim id id))` to reduce the goal to its premises. Establish `e : algebraMap (𝓞 E) E (cO E ϖ * cO E ϖ) • (algebraMap (𝓞 E) E ϖ / algebraMap (𝓞 E) E (cO E ϖ)) • w = (p : E) • w`. Rewrite using `[smul_smul]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ← hab]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `hpw`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_to (hp : 0 < p) (c' : ℕ) (hc' : 0 < c') {w : W} (hw : w ∈ twist₂ M (p * c') (expS S)) (hpw : (p : E) • w ∈ M) :
     (algebraMap (𝓞 E) E ϖ / algebraMap (𝓞 E) E (cO E ϖ)) • w ∈ M := by
@@ -390,27 +380,25 @@ theorem half_to (hp : 0 < p) (c' : ℕ) (hc' : 0 < c') {w : W} (hw : w ∈ twist
 include hS hprod hcop in
 
 /- English proof (translation)
-Take `⟨ha, hb⟩` from `ne_zero_E p ϖ hp hprod`. Establish `hab` using `prod_E p ϖ hprod`. Establish `hc0 : (c' : E) ≠ 0` using `Nat.cast_ne_zero.mpr hc'.ne'`. Establish `hM : ∀ (Q : HeightOneSpectrum (𝓞 E)) {z : W}, z ∈ M → z ∈ localization₂ Q.asIdeal M` using `fun Q z hz => ⟨1, Q.asIdeal.primeCompl.one_mem, by rw [one_smul]; exact hz⟩`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[mem_twO]`. Introduce `Q`. Distinguish the cases in `hQ : Q ∈ S`. Rewrite using `[show expS S Q = 1 from if_pos hQ, zpow_one]`. Establish `hpi` using `pi_notin_S S p ϖ hS hprod Q hQ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `loc_of M Q (ϖ * ϖ) (fun h => hpi ((Q.isPrime.mem_or_mem h).elim id id))` to reduce the goal to its premises. Establish `e : algebraMap (𝓞 E) E (ϖ * ϖ) • (((p * c' : ℕ) : E))⁻¹ • ((u * c' : ℤ) : E) • (algebraMap (𝓞 E) E (cO E ϖ) / algebraMap (𝓞 E) E ϖ) • m = algebraMap (𝓞 E) E (u : 𝓞 E) • m`. Simplify using `only [smul_smul]`. Use `congr 1`. Rewrite using `[map_mul, map_intCast, Nat.cast_mul, ← hab]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `smul_mem_of M hm _ rfl`. Distinguish the cases in `hQ' : conjPrime₂ Q ∈ S`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show expS S Q = -1 from by simp [expS, hQ, hQ'], zpow_neg_one, inv_inv]`. Apply `hM Q` to reduce the goal to its premises. Establish `e : ((p * c' : ℕ) : E) • ((u * c' : ℤ) : E) • (algebraMap (𝓞 E) E (cO E ϖ) / algebraMap (𝓞 E) E ϖ) • m = algebraMap (𝓞 E) E ((u : 𝓞 E) * c' * c' * cO E ϖ * cO E ϖ) • m`. Simplify using `only [smul_smul]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_intCast, map_natCast, Nat.cast_mul]`. Rewrite using `[← hab]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smul_mem_of M hm _ rfl`. Rewrite using `[show expS S Q = 0 from by simp [expS, hQ, hQ'], zpow_zero, inv_one, one_smul]`. Establish `hpi` using `pi_notin_off S p ϖ hS hprod hcop Q hQ hQ'`. Apply `loc_of M Q ϖ hpi` to reduce the goal to its premises. Establish `e : algebraMap (𝓞 E) E ϖ • ((u * c' : ℤ) : E) • (algebraMap (𝓞 E) E (cO E ϖ) / algebraMap (𝓞 E) E ϖ) • m = algebraMap (𝓞 E) E ((u : 𝓞 E) * c' * cO E ϖ) • m`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [smul_smul]`. Use `congr 1`. Simplify using `only [map_mul, map_intCast, map_natCast]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `smul_mem_of M hm _ rfl`. Establish `e : (p : E) • ((u * c' : ℤ) : E) • (algebraMap (𝓞 E) E (cO E ϖ) / algebraMap (𝓞 E) E ϖ) • m = algebraMap (𝓞 E) E ((u : 𝓞 E) * c' * cO E ϖ * cO E ϖ) • m`. Simplify using `only [smul_smul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [map_mul, map_intCast, map_natCast]`. Rewrite using `[← hab]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
-
-Conclude with `smul_mem_of M hm _ rfl`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_of (hp : 0 < p) (c' : ℕ) (hc' : 0 < c') (u : ℤ) {m : W} (hm : m ∈ M) :
     ((u * c' : ℤ) : E) • (algebraMap (𝓞 E) E (cO E ϖ) / algebraMap (𝓞 E) E ϖ) • m ∈ twist₂ M (p * c') (expS S) ∧
@@ -475,13 +463,13 @@ theorem half_of (hp : 0 < p) (c' : ℕ) (hc' : 0 < c') (u : ℤ) {m : W} (hm : m
 end Halves
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_killIn {V : Type*} [AddCommGroup V] [Module ℂ V] (m : ℂ) (L M : AddSubgroup V) (y : V) :
     y ∈ killIn m L M ↔ y ∈ L ∧ m • y ∈ M := Iff.rfl
 
 /- English proof (translation)
-Use `show y ∈ AddSubgroup.map ((c • LinearMap.id : V →ₗ[ℂ] V).toAddMonoidHom) Λ ↔ _`. Rewrite using `[AddSubgroup.mem_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_cLat' {V : Type*} [AddCommGroup V] [Module ℂ V] (c : ℂ) (Λ : AddSubgroup V) (y : V) :
     y ∈ cLat c Λ ↔ ∃ x ∈ Λ, c • x = y := by
@@ -492,43 +480,41 @@ theorem mem_cLat' {V : Type*} [AddCommGroup V] [Module ℂ V] (c : ℂ) (Λ : Ad
 end KH
 
 /- English proof (translation)
-Introduce `X A a b S N N' p hp hp2 hpd hN hN' hLa π pE hq hpp hsplit c' hc' hpc' S₂ hR`. Take `⟨hδ, hTau, -, -, -, -⟩` from `hLa`. Take `⟨h1, h2, hS⟩` from `hsplit`. Take `⟨r1, r2, r3⟩` from `hR`. Take `⟨T, hT, hTc⟩` from `KH.trace_coprime A.d p hp hp2 hpd π hq hpp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hprod, hsum⟩` from `KH.ring_facts A.σ₀ π pE p T hTau h1 h2 hpp hT`. Establish `hcop : ∃ α β : 𝓞 X.E, α * (pE + cO X.E pE) + β * (p : 𝓞 X.E) = 1`. Take `⟨u, v, huv⟩` from `hTc`. Use `⟨u, v, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (Int.cast : ℤ → 𝓞 X.E) huv` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Take `⟨ha0, hb0⟩` from `KH.ne_zero_E p pE hp.pos hprod`. Establish `hab : (algebraMap (𝓞 X.E) X.E pE) * (algebraMap (𝓞 X.E) X.E (cO X.E pE)) = (p : X.E)` using `KH.prod_E p pE hprod`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hainv : (algebraMap (𝓞 X.E) X.E pE) * (algebraMap (𝓞 X.E) X.E pE)⁻¹ = 1` using `mul_inv_cancel₀ ha0`. Establish `hbinv : (algebraMap (𝓞 X.E) X.E (cO X.E pE)) * (algebraMap (𝓞 X.E) X.E (cO X.E pE))⁻¹ = 1` using `mul_inv_cancel₀ hb0`. Establish `ha : ∀ τ, X.embC A.σ₀ τ (algebraMap (𝓞 X.E) X.E pE) = π` using `h1`. Establish `hb : ∀ τ, X.embC A.σ₀ τ (algebraMap (𝓞 X.E) X.E (cO X.E pE)) = conj π` using `h2`. Establish `hΛ : ∀ y, y ∈ LamC (X.embC A.σ₀) A.δ A.AA N N' ↔ ∃ w ∈ perO A.AA N N', embH (X.embC A.σ₀) A.δ w = y` using `fun y => AddSubgroup.mem_map`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ∀ y, y ∈ BC (X.embC A.σ₀) A.δ A.AA S N N' (p * c') ↔ ∃ w ∈ twist₂ (perO A.AA N N') (p * c') (expS S), embH (X.embC A.σ₀) A.δ w = y` using `fun y => AddSubgroup.mem_map`. Establish `hsa : ∀ x : HomE X.E a b, embH (X.embC A.σ₀) A.δ ((algebraMap (𝓞 X.E) X.E (cO X.E pE) / algebraMap (𝓞 X.E) X.E pE) • x) = (conj π / π) • embH (X.embC A.σ₀) A.δ x` using `fun (x : HomE X.E a b) => KH.embH_smul _ _ _ _ (fun τ => by rw [map_div₀, ha, hb]) x`. Establish `hsb : ∀ x : HomE X.E a b, embH (X.embC A.σ₀) A.δ (algebraMap (𝓞 X.E) X.E (cO X.E pE) • x) = conj π • embH (X.embC A.σ₀) A.δ x` using `fun (x : HomE X.E a b) => KH.embH_smul _ _ _ _ hb x`. Establish `hinj : ∀ w w' : HomE X.E a b, embH (X.embC A.σ₀) A.δ w = embH (X.embC A.σ₀) A.δ w' → w = w'`. Introduce `w w' h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨τ⟩` from `hTau`. Apply `(Pi.basisFun X.E (Fin a)).ext` to reduce the goal to its premises. Introduce `j`. Rewrite using `[Pi.basisFun_apply]`. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hij : A.δ * X.embC A.σ₀ τ (w (Pi.single j 1) i) = A.δ * X.embC A.σ₀ τ (w' (Pi.single j 1) i)` using `congr_fun (congr_fun (congr_fun h τ) i) j`. Conclude with `(X.embC A.σ₀ τ).injective (mul_left_cancel₀ hδ hij)`. Establish `K1 : ∀ x ∈ S₂, ∃ w ∈ twist₂ (perO A.AA N N') (p * c') (expS S), embH (X.embC A.σ₀) A.δ w = x ∧ (algebraMap (𝓞 X.E) X.E pE / algebraMap (𝓞 X.E) X.E (cO X.E pE)) • w ∈ perO A.AA N N'`. Introduce `x hx`. Take `⟨hxB, hxp⟩` from `(KH.mem_killIn _ _ _ x).mp (r1 x hx)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, rfl⟩` from `(hB _).mp hxB`. Take `⟨w', hw', he⟩` from `(hΛ _).mp hxp`. Establish `hww : w' = (p : X.E) • w` using `hinj _ _ (by rw [he, KH.embH_nat])`. Establish `hpw : (p : X.E) • w ∈ perO A.AA N N'` using `by rw [← hww]; exact hw'`. Conclude with `⟨w, hw, rfl, KH.half_to S p pE hS hprod hcop (perO A.AA N N') hp.pos c' hc' hw hpw⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun x hx => ?_, fun x hx y hy hxy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, rfl, haw⟩` from `K1 x hx`. Rewrite using `[KH.mem_cLat']`. Use `⟨embH (X.embC A.σ₀) A.δ ((algebraMap (𝓞 X.E) X.E pE / algebraMap (𝓞 X.E) X.E (cO X.E pE)) • w), (hΛ _).mpr ⟨_, haw, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsa, smul_smul, div_mul_div_comm, mul_comm (algebraMap (𝓞 X.E) X.E (cO X.E pE)) (algebraMap (𝓞 X.E) X.E pE), div_self (mul_ne_zero ha0 hb0), one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `r2 x hx y hy ?_` and prove the remaining obligations. Take `⟨z, hz, hze⟩` from `(KH.mem_cLat' _ _ _).mp hxy`. Take `⟨m, hm, rfl⟩` from `(hΛ z).mp hz`. Rewrite using `[← hze, ← hsb]`. Conclude with `(hΛ _).mpr ⟨_, KH.smul_mem_of _ hm (cO X.E pE) rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z0, hz0, rfl⟩` from `(KH.mem_cLat' _ _ y).mp hy`. Take `⟨m, hm, rfl⟩` from `(hΛ z0).mp hz0`. Establish `hcp : IsCoprime (c' : ℤ) (p : ℤ)` using `Nat.isCoprime_iff_coprime.mpr (Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hp).mpr hpc'))`. Take `⟨u, k, hu⟩` from `hcp`. Establish `huE : ((u * c' : ℤ) : X.E) + (k : X.E) * (p : X.E) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `congrArg (Int.cast : ℤ → X.E) hu` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Take the linear combination `this`. Take `⟨hz1, hz2⟩` from `KH.half_of S p pE hS hprod hcop (perO A.AA N N') hp.pos c' hc' u hm`. Establish `ht : embH (X.embC A.σ₀) A.δ (((u * c' : ℤ) : X.E) • (algebraMap (𝓞 X.E) X.E (cO X.E pE) / algebraMap (𝓞 X.E) X.E pE) • m) ∈ killIn (p : ℂ) (BC (X.embC A.σ₀) A.δ A.AA S N N' (p * c')) (LamC (X.embC A.σ₀) A.δ A.AA N N')` using `(KH.mem_killIn _ _ _ _).mpr ⟨(hB _).mpr ⟨_, hz1, rfl⟩, (hΛ _).mpr ⟨_, hz2, KH.embH_nat _ _ p _⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxS, htx⟩` from `r3 _ ht`. Take `⟨w, hw, rfl, haw⟩` from `K1 x hxS`. Take `⟨m₁, hm₁, he₁⟩` from `(hΛ _).mp htx`. Establish `hm₁w : m₁ = ((u * c' : ℤ) : X.E) • (algebraMap (𝓞 X.E) X.E (cO X.E pE) / algebraMap (𝓞 X.E) X.E pE) • m - w` using `hinj _ _ (by rw [he₁, map_sub])`. Establish `hm₀ : (algebraMap (𝓞 X.E) X.E pE / algebraMap (𝓞 X.E) X.E (cO X.E pE)) • m₁ ∈ perO A.AA N N'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hm₁w, smul_sub]`. Use `sub_mem ?_ haw` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, show algebraMap (𝓞 X.E) X.E pE / algebraMap (𝓞 X.E) X.E (cO X.E pE) * ((u * c' : ℤ) : X.E) * (algebraMap (𝓞 X.E) X.E (cO X.E pE) / algebraMap (𝓞 X.E) X.E pE) = ((u * c' : ℤ) : X.E) from by`. Take the linear combination `(((u * c' : ℤ) : X.E) * (algebraMap (𝓞 X.E) X.E (cO X.E pE)) * (algebraMap (𝓞 X.E) X.E (cO X.E pE))⁻¹) * hainv + ((u * c' : ℤ) : X.E) * hbinv]`. Conclude with `KH.smul_mem_of _ hm ((u * c' : ℤ) : 𝓞 X.E) (map_intCast _ _)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Establish `hw₁ : w = (((u * c' : ℤ) : X.E) * (algebraMap (𝓞 X.E) X.E (cO X.E pE) / algebraMap (𝓞 X.E) X.E pE)) • m - m₁`. Rewrite using `[hm₁w, smul_smul]`. Normalize the expressions using the abelian group laws. Take `⟨α, β, hαβ⟩` from `id hcop`. Establish `h𝓞 : α * pE + (α + β * pE) * cO X.E pE = 1` using `by linear_combination hαβ + β * hprod`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcopE : algebraMap (𝓞 X.E) X.E α * (algebraMap (𝓞 X.E) X.E pE) + (algebraMap (𝓞 X.E) X.E α + algebraMap (𝓞 X.E) X.E β * (algebraMap (𝓞 X.E) X.E pE)) * (algebraMap (𝓞 X.E) X.E (cO X.E pE)) = 1`. Use `congrArg (algebraMap (𝓞 X.E) X.E) h𝓞` as an intermediate fact. Simplify using `only [map_add, map_mul, map_one] at this`. Conclude with `this`. Establish `hm₃ : ((k : X.E) * (algebraMap (𝓞 X.E) X.E (cO X.E pE))) • m + (algebraMap (𝓞 X.E) X.E α * (algebraMap (𝓞 X.E) X.E pE / algebraMap (𝓞 X.E) X.E (cO X.E pE)) + (algebraMap (𝓞 X.E) X.E α + algebraMap (𝓞 X.E) X.E β * (algebraMap (𝓞 X.E) X.E pE))) • m₁ ∈ perO A.AA N N'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem (KH.smul_mem_of _ hm ((k : 𝓞 X.E) * cO X.E pE) (by simp only [map_mul, map_intCast])) ?_` and prove the remaining obligations. Rewrite using `[add_smul, ← smul_smul]`. Conclude with `add_mem (KH.smul_mem_of _ hm₀ α rfl) (KH.smul_mem_of _ hm₁ (α + β * pE) (by simp only [map_add, map_mul]))`. Use `⟨embH (X.embC A.σ₀) A.δ w, hxS, ?_⟩` and prove the remaining obligations. Rewrite using `[KH.mem_cLat']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨embH (X.embC A.σ₀) A.δ (((k : X.E) * (algebraMap (𝓞 X.E) X.E (cO X.E pE))) • m + (algebraMap (𝓞 X.E) X.E α * (algebraMap (𝓞 X.E) X.E pE / algebraMap (𝓞 X.E) X.E (cO X.E pE)) + (algebraMap (𝓞 X.E) X.E α + algebraMap (𝓞 X.E) X.E β * (algebraMap (𝓞 X.E) X.E pE))) • m₁), (hΛ _).mpr …` and prove the remaining obligations. Rewrite using `[← hsb, ← hsa, ← map_sub]`. Use `congr 1`. Rewrite using `[hw₁, smul_add, smul_smul, smul_smul, show algebraMap (𝓞 X.E) X.E (cO X.E pE) * ((k : X.E) * algebraMap (𝓞 X.E) X.E (cO X.E pE)) = algebraMap (𝓞 X.E) X.E (cO X.E pE) / algebraMap (𝓞 X.E) X.E pE - ((u * c' : ℤ) : X.E) * (algebraMap (𝓞 X.E) X.E (cO X.E pE) / algebraMap (𝓞 X.E) X.E …`. Take the linear combination `((algebraMap (𝓞 X.E) X.E (cO X.E pE)) * (algebraMap (𝓞 X.E) X.E pE)⁻¹) * huE + ((algebraMap (𝓞 X.E) X.E (cO X.E pE)) * (algebraMap (𝓞 X.E) X.E pE)⁻¹ * (k : X.E)) * hab - ((k : X.E) * (algebraMap (𝓞 X.E) X.E (cO X.E pE)) ^ 2) * hainv,`.
-
-Use `show algebraMap (𝓞 X.E) X.E (cO X.E pE) * (algebraMap (𝓞 X.E) X.E α * (algebraMap (𝓞 X.E) X.E pE / algebraMap (𝓞 X.E) X.E (cO X.E pE)) + (algebraMap (𝓞 X.E) X.E α + algebraMap (𝓞 X.E) X.E β * (algebraMap (𝓞 X.E) X.E pE))) = 1 from by`. Take the linear combination `hcopE + (algebraMap (𝓞 X.E) X.E α * (algebraMap (𝓞 X.E) X.E pE)) * hbinv,`. Use the proof step `one_smul, sub_smul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem p_torsion_represents_quotient : HalfP := by
   intro X A a b S N N' p hp hp2 hpd hN hN' hLa π pE hq hpp hsplit c' hc' hpc' S₂ hR

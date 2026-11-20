@@ -6,9 +6,9 @@ open LateralTheory.E.PartDiagCut
 namespace LateralTheory.E.PartBPf
 
 /- English proof (translation)
-Establish `h1 : (Pi.evalRingHom (fun e : P.1 => Localization (S I e.1)) e) x ∈ (I.map (βP I P)).map (Pi.evalRingHom (fun e : P.1 => Localization (S I e.1)) e)` using `Ideal.mem_map_of_mem _ hx`. Rewrite `h1` using `[Ideal.map_map]`. Establish `h2 : (Pi.evalRingHom (fun e : P.1 => Localization (S I e.1)) e).comp (βP I P) = algebraMap B (Localization (S I e.1))`. Use extensionality with `b`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[h2]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mem {B : Type} [CommRing B] (I : Ideal B) (P : PartDiagCut.Part (B ⧸ I)) (x : PiLocalization₂ I P)
     (hx : x ∈ I.map (βP I P)) (e : P.1) :
@@ -24,11 +24,9 @@ theorem comp_mem {B : Type} [CommRing B] (I : Ideal B) (P : PartDiagCut.Part (B 
   exact h1
 
 /- English proof (translation)
-Take `⟨⟨⟨i, hi⟩, ⟨s, hs⟩⟩, h⟩` from `(IsLocalization.mem_map_algebraMap_iff (S I e) _).1 hy`. Simplify using `only at h`. Establish `hsi : s + i ∈ S I e`. Take `⟨t, ht⟩` from `hs`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Ideal.Quotient.mk I i = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hi`. Rewrite using `[map_add, this, add_zero]`. Conclude with `ht`. Establish `hu : IsUnit ((1 + y) * algebraMap B _ s)`. Rewrite using `[add_mul, one_mul, h, ← map_add]`.
-
-Conclude with `IsLocalization.map_units (Localization (S I e)) ⟨s + i, hsi⟩`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_unit {B : Type} [CommRing B] (I : Ideal B) (e : B ⧸ I) (y : Localization (S I e))
     (hy : y ∈ I.map (algebraMap B (Localization (S I e)))) : IsUnit (1 + y) := by
@@ -45,7 +43,7 @@ theorem comp_unit {B : Type} [CommRing B] (I : Ideal B) (e : B ⧸ I) (y : Local
   exact isUnit_of_mul_isUnit_left hu
 
 /- English proof (translation)
-Introduce `B _ I P x hx`. Rewrite using `[Pi.isUnit_iff]`. Introduce `e`. Conclude with `comp_unit I e.1 (x e) (comp_mem I P x hx e)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem PartB_of : LateralTheory.E.PartDiagCut.PartB := by
   intro B _ I P x hx

@@ -42,7 +42,7 @@ theorem cf_tmul (v : Pl D) (a : Af D.host.F) (x : D.host.E) : cf v (a ⊗ₜ[D.h
   rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero, map_zero]`. Consider the case `tmul a y => rfl`. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cv_eq (v : Pl D) (x : AE D) : cv D v x = cf v (finPart D x) := by
   induction x using TensorProduct.induction_on with
@@ -51,11 +51,9 @@ theorem cv_eq (v : Pl D) (x : AE D) : cv D v x = cf v (finPart D x) := by
   | add x y hx hy => rw [RingHom.map_add, RingHom.map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, rfl⟩` from `hy`. Rewrite using `[cf_tmul]`. Conclude with `tmul_mem_intLoc (ha v) x`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [map_neg]`.
-
-Conclude with `neg_mem hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cf_mem_of_mem {z : AfE D} (hz : z ∈ intAE D) (v : Pl D) : cf v z ∈ intLoc D.host.F D.host.E v := by
   induction hz using AddSubgroup.closure_induction with
@@ -71,7 +69,7 @@ def pr (φ : D.host.E →ₗ[D.host.F] D.host.F) : AfE D →ₗ[D.host.F] Af D.h
   (TensorProduct.rid D.host.F (Af D.host.F)).toLinearMap ∘ₗ φ.lTensor (Af D.host.F)
 
 /- English proof (translation)
-Rewrite using `[pr, LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.rid_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pr_tmul (φ : D.host.E →ₗ[D.host.F] D.host.F) (a : Af D.host.F) (x : D.host.E) :
     pr φ (a ⊗ₜ[D.host.F] x) = φ x • a := by
@@ -81,14 +79,14 @@ def aux₃ (φ : D.host.E →ₗ[D.host.F] D.host.F) (v : Pl D) : Ev D v →ₗ[
   (TensorProduct.rid D.host.F (Fv D.host.F v)).toLinearMap ∘ₗ φ.lTensor (Fv D.host.F v)
 
 /- English proof (translation)
-Rewrite using `[aux₃, LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.rid_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_projection_tmul (φ : D.host.E →ₗ[D.host.F] D.host.F) (v : Pl D) (a : Fv D.host.F v) (x : D.host.E) :
     aux₃ φ v (a ⊗ₜ[D.host.F] x) = φ x • a := by
   rw [aux₃, LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.rid_tmul]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [LinearMap.map_zero, map_zero, map_zero, LinearMap.map_zero]`. Consider the case `tmul a x => rw [pr_tmul, cf_tmul, trace_projection_tmul, AlgHom.map_smul_of_tower]`. Consider the case `add y y' hy hy' => rw [LinearMap.map_add, map_add, map_add, LinearMap.map_add, hy, hy']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem evalV_pr (φ : D.host.E →ₗ[D.host.F] D.host.F) (v : Pl D) (y : AfE D) :
     evalV D.host.F v (pr φ y) = aux₃ φ v (cf v y) := by
@@ -98,9 +96,9 @@ theorem evalV_pr (φ : D.host.E →ₗ[D.host.F] D.host.F) (v : Pl D) (y : AfE D
   | add y y' hy hy' => rw [LinearMap.map_add, map_add, map_add, LinearMap.map_add, hy, hy']
 
 /- English proof (translation)
-Use `intLoc_induction (p := fun w => aux₃ φ v w ∈ v.adicCompletionIntegers D.host.F) (fun a ha x => ?_) ?_ (fun y z hy hz => ?_) (fun y hy => ?_) hw` and prove the remaining obligations. Take `⟨r, hr⟩` from `hφ x`. Rewrite using `[trace_projection_tmul, ← hr, Algebra.smul_def]`. Conclude with `mul_mem (v.coe_mem_adicCompletionIntegers r) ha`. Rewrite using `[LinearMap.map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Rewrite using `[LinearMap.map_add]`. Conclude with `add_mem hy hz`. Rewrite using `[LinearMap.map_neg]`. Conclude with `neg_mem hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_projection_mem_integers (φ : D.host.E →ₗ[D.host.F] D.host.F) (hφ : ∀ x : 𝓞 D.host.E, φ x ∈ (algebraMap (𝓞 D.host.F) D.host.F).range)
     (v : Pl D) {w : Ev D v} (hw : w ∈ intLoc D.host.F D.host.E v) : aux₃ φ v w ∈ v.adicCompletionIntegers D.host.F := by
@@ -114,9 +112,9 @@ theorem trace_projection_mem_integers (φ : D.host.E →ₗ[D.host.F] D.host.F) 
   · rw [LinearMap.map_neg]; exact neg_mem hy
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [LinearMap.map_zero, TensorProduct.zero_tmul, Finset.sum_const_zero]`. Consider the case `tmul a x`. Simplify using `only [pr_tmul, TensorProduct.smul_tmul]`. Rewrite using `[← TensorProduct.tmul_sum, hsum x]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add y y' hy hy' => simp only [LinearMap.map_add, TensorProduct.add_tmul, Finset.sum_add_distrib, hy, hy']`.
+Treat this case separately.
 -/
 theorem sum_pr {k : ℕ} (s : Fin k → 𝓞 D.host.E) (φ : Fin k → D.host.E →ₗ[D.host.F] D.host.F)
     (hsum : ∀ x, ∑ j, φ j x • (s j : D.host.E) = x) (y : AfE D) :
@@ -129,7 +127,7 @@ theorem sum_pr {k : ℕ} (s : Fin k → 𝓞 D.host.E) (φ : Fin k → D.host.E 
   | add y y' hy hy' => simp only [LinearMap.map_add, TensorProduct.add_tmul, Finset.sum_add_distrib, hy, hy']
 
 /- English proof (translation)
-Take `⟨k, s, φ, hφ, hsum⟩` from `GlobalTheory.AdelicU.SelfDual.exists_dualFamily_integers (F := D.host.F) (E := D.host.E)`. Rewrite using `[← sum_pr s φ hsum z]`. Use `sum_mem fun j _ => AddSubgroup.subset_closure ⟨pr (φ j) z, fun v => ?_, s j, rfl⟩` and prove the remaining obligations. Rewrite using `[evalV_pr]`. Conclude with `trace_projection_mem_integers (φ j) (fun x => hφ x j) v (hz v)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_cf_mem {z : AfE D} (hz : ∀ v : Pl D, cf v z ∈ intLoc D.host.F D.host.E v) : z ∈ intAE D := by
   obtain ⟨k, s, φ, hφ, hsum⟩ := GlobalTheory.AdelicU.SelfDual.exists_dualFamily_integers (F := D.host.F) (E := D.host.E)
@@ -139,9 +137,9 @@ theorem mem_of_cf_mem {z : AfE D} (hz : ∀ v : Pl D, cf v z ∈ intLoc D.host.F
   exact trace_projection_mem_integers (φ j) (fun x => hφ x j) v (hz v)
 
 /- English proof (translation)
-Establish `: IsModuleTopology (Af D.host.F) (AfE D)` using `⟨rfl⟩`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AfE D)` using `IsModuleTopology.isTopologicalRing (Af D.host.F) _`. Take `⟨t, ht⟩` from `hQ.elim_finite_subcover (fun n : ℕ => {q : AfE D | ((n + 1 : ℕ) : AfE D) * q ∈ intAE D}) (fun n => (GlobalTheory.SchwartzBruhatTensor.isOpen_intAE D).preimage (continuous_const.mul continuous_id)) (fun q _ => by`. Take `⟨n, hn, h⟩` from `GlobalTheory.IwaPlace.SdComap.exists_natCast_mul_mem_intAE q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mem_iUnion.2 ⟨n - 1, by rwa [Nat.sub_add_cancel hn]⟩)`. Use `⟨∏ n ∈ t, (n + 1), Finset.prod_pos fun _ _ => Nat.succ_pos _, fun q hq => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, hq'⟩` from `Set.mem_iUnion₂.1 (ht hq)`. Rewrite using `[← Finset.mul_prod_erase t _ hn, Nat.cast_mul, mul_comm ((n + 1 : ℕ) : AfE D), mul_assoc]`. Conclude with `GlobalTheory.HostAdeleIso.intAE_mul_mem D (GlobalTheory.IwaPlace.SdComap.natCast_mem_intAE _) hq'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem {Q : Set (AfE D)} (hQ : IsCompact Q) :
     ∃ N : ℕ, 0 < N ∧ ∀ q ∈ Q, (N : AfE D) * q ∈ intAE D := by
@@ -169,7 +167,7 @@ def U (S : Finset (Pl D)) (ef : AfE D) (N m n : ℕ) : AddSubgroup (Matrix (Fin 
     fun i j => by rw [Matrix.neg_apply, mul_neg, mul_neg]; exact neg_mem (ha.2 i j)⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_U {S : Finset (Pl D)} {ef : AfE D} {N m n : ℕ} {w : Matrix (Fin m) (Fin n) (AfE D)} :
     w ∈ U S ef N m n ↔ (∀ v ∉ S, ∀ i j, cf v (w i j) ∈ intLoc D.host.F D.host.E v) ∧
@@ -178,9 +176,9 @@ theorem mem_U {S : Finset (Pl D)} {ef : AfE D} {N m n : ℕ} {w : Matrix (Fin m)
 open Classical in
 
 /- English proof (translation)
-Establish `h2 : ∀ i j, (N : AfE D) * (ef * (Matrix.of fun i j => ef * w i j) i j) = (N : AfE D) * (ef * w i j)` using `fun i j => by rw [Matrix.of_apply, ← mul_assoc ef ef, hef]`. Rewrite using `[mem_U, mem_U]`. Simplify using `only [h2]`. Use `⟨fun h => ⟨fun v hv i j => ?_, h.2⟩, fun h => ⟨hw, h.2⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.of_apply, map_mul, hS v, if_neg hv, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem mem_U_iff {S : Finset (Pl D)} {ef : AfE D} (hef : ef * ef = ef)
     (hS : ∀ v : Pl D, cf v ef = if v ∈ S then 1 else 0) {N m n : ℕ} {w : Matrix (Fin m) (Fin n) (AfE D)}

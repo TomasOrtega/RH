@@ -5,9 +5,9 @@ import Formalism.LocalRingCardinality.Params
 import Formalism.LocalRingCardinality.DataHost
 
 /- English proof (translation)
-Introduce `D n Λ h x`. Take `⟨⟨_, m, hm, rfl⟩, ht⟩` from `multiple_mem_span_of_mem_localization_span (Algebra.algebraMapSubmonoid (NumberField.RingOfIntegers D.host.E) (nonZeroDivisors ℤ)) D.host.E (Λ : Set (Fin n → D.host.E)) x (by rw [h.span_eq_top]; trivial)`. Express the relevant statement in the definitionally equal form `algebraMap ℤ (NumberField.RingOfIntegers D.host.E) m • x ∈ _ at ht`. Rewrite `ht` using `[Submodule.span_eq, algebraMap_smul]`. Establish `hm0 : m ≠ 0` using `nonZeroDivisors.ne_zero hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨m.natAbs * m.natAbs, by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul, ← natCast_zsmul, Int.natAbs_mul_self, mul_smul]`. Conclude with `zsmul_mem ht m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Rd4.exists_nat_smul_mem :
     ∀ {D : Formalism.BasicNotions.D7} {n : ℕ}

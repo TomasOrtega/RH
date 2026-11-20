@@ -18,11 +18,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RealGeo.FrameModels
 
 /- English proof (translation)
-Establish `h1 : (Finset.univ.filter fun a : Fin n => decide ((a : ℕ) < p) = true).card = p`. Establish `: (Finset.univ.filter fun a : Fin n => decide ((a : ℕ) < p) = true) = Finset.univ.map (Fin.castLEEmb (by omega : p ≤ n))`. Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq, Finset.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `ha`. Conclude with `⟨⟨a, ha⟩, rfl⟩`. Introduce and unpack `⟨i, rfl⟩`. Simplify using the standard rewrite rules. Rewrite using `[this, Finset.card_map, Finset.card_univ, Fintype.card_fin]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin n))) (fun a : Fin n => decide ((a : ℕ) < p) = true)`. Simplify using `only [Bool.not_eq_true] at h2`. Rewrite `h2` using `[h1, Finset.card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_signs {n p q : ℕ} (hpq : p + q = n) :
     (Finset.univ.filter fun a : Fin n => decide ((a : ℕ) < p) = true).card = p ∧
@@ -48,11 +48,11 @@ theorem card_signs {n p q : ℕ} (hpq : p + q = n) :
 open Formalism.L2.NTheta in
 
 /- English proof (translation)
-Establish `hs : StrictAnti fun a : Fin n => ((lamAt h a : ℚ) : ℝ)` using `fun a b hab => by`. Use `GlobalTheory.HolDict.lamAt_strictAnti h hn hab` as an intermediate fact. Use `show ((lamAt h b : ℚ) : ℝ) < ((lamAt h a : ℚ) : ℝ)`. Conclude with `this` after adjusting the coercions. Use `⟨fun a => (lamAt h a : ℝ), fun a => decide ((a : ℕ) < p), ⟨hs, fun a => lamAt h a, fun a => rfl, GlobalTheory.HolDict.holPar_kapW_eq h hn hpq⟩, ⟨hs, fun a => ?_⟩, (card_signs hpq).1, (card_signs hpq).2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `lamAt_int h a`. Take `⟨s, hs'⟩` from `odd_r R`. Use `⟨z - s, ?_⟩` and prove the remaining obligations. Establish `hn' : ((n : ℕ) : ℝ) = 2 * s + 1` using `by rw [hn, hs']; push_cast; rfl`. Use `show ((lamAt h a : ℚ) : ℝ) - _ = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hz, hn']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem goodPar_holPar {R : Ranks} (h : HCParam R) {n p q : ℕ} (hn : n = R.r) (hpq : p + q = n) :
     GoodPar n p q (holPar p q (kapW h p q)) := by
@@ -72,13 +72,13 @@ theorem goodPar_holPar {R : Ranks} (h : HCParam R) {n p q : ℕ} (hn : n = R.r) 
   ring
 
 /- English proof (translation)
-Take `⟨lam, ε, ⟨hl, r, hr, hS⟩, ⟨-, hi⟩, hp, hq⟩` from `h`. Establish `hs : StrictAnti fun a => -lam (Fin.rev a)` using `fun a b hab => neg_lt_neg (hl (Fin.rev_lt_rev.2 hab))`. Use `⟨fun a => -lam (Fin.rev a), fun a => ε (Fin.rev a), ⟨hs, fun a => -r (Fin.rev a), fun a => by simp [hr], ?_⟩, ⟨hs, fun a => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hS]`. Use extensionality with `z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [dualPar, Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, rfl⟩, rfl⟩`. Conclude with `⟨Fin.rev a, by simp⟩`. Introduce and unpack `⟨a, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ⟨Fin.rev a, rfl⟩, rfl⟩`. Take `⟨m, hm⟩` from `hi (Fin.rev a)`. Use `⟨-m - n + 1, ?_⟩` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[← hp]`. Conclude with `Finset.card_equiv Fin.revPerm (by simp)`. Rewrite using `[← hq]`. Conclude with `Finset.card_equiv Fin.revPerm (by simp)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodPar_dualPar {n p q : ℕ} {S : SPar} (h : GoodPar n p q S) : GoodPar n p q (dualPar S) := by
   obtain ⟨lam, ε, ⟨hl, r, hr, hS⟩, ⟨-, hi⟩, hp, hq⟩ := h
@@ -105,7 +105,7 @@ theorem goodPar_dualPar {n p q : ℕ} {S : SPar} (h : GoodPar n p q S) : GoodPar
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[show (Wc D i).sig (tauE D ρ) = D.R.sigW ((i : ℕ) + 1) from D.sp.W_sigval _ (Nat.le_add_left _ _) i.2 _, rank_Wc i]`. Use `D.R.m_add_three_le_k` as an intermediate fact. Establish `hi` using `i.2`. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sig_add (i : Fin D.R.m) (ρ : D.what₂.Tau) :
     ((Wc D i).sig (tauE D ρ)).1 + ((Wc D i).sig (tauE D ρ)).2 = (Wc D i).rank := by
@@ -116,7 +116,7 @@ theorem sig_add (i : Fin D.R.m) (ρ : D.what₂.Tau) :
   omega
 
 /- English proof (translation)
-Establish `h` using `goodPar_holPar (D.hc (lab σ ρ)) (rank_Wc i) (sig_add i ρ)`. Unfold `Links.parAt`. Use `split_ifs`. Conclude with `h`. Conclude with `goodPar_dualPar h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem goodPar_parAt (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau) :
     GoodPar (Wc D i).rank ((Wc D i).sig (tauE D ρ)).1 ((Wc D i).sig (tauE D ρ)).2 (parAt (Wc D i) σ ρ) := by
@@ -127,9 +127,9 @@ theorem goodPar_parAt (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (ρ : D.what
   · exact goodPar_dualPar h
 
 /- English proof (translation)
-Establish `hl : lab σ = lab σ'`. Use function extensionality and compare the values at `ρ`. Unfold `lab`. Rewrite using `[h]`. Use function extensionality and compare the values at `ρ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `Links.parAt kapAt`. Rewrite using `[h, hl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem parAt_congr (W : HSp D) {σ σ' : D.what₂.LL →+* ℂ} (h : labE σ = labE σ') : parAt W σ = parAt W σ' := by
   have hl : lab σ = lab σ' := by
@@ -141,13 +141,11 @@ theorem parAt_congr (W : HSp D) {σ σ' : D.what₂.LL →+* ℂ} (h : labE σ =
   rw [h, hl]
 
 /- English proof (translation)
-Introduce `hP D Ks _ _ hK`. Establish `hne : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), Nonempty (DSModel (Wc D i) (parAt (Wc D i) σ))` using `fun i σ => GlobalTheory.Published.dsExists_of_discreteSeriesExists hP D _ _ (D.sp.W_sig _) (goodPar_parAt i σ)`. Establish `hx : ∀ (V : HSp D) (S S' : D.what₂.Tau → SPar) (h : Nonempty (DSModel V S)) (h' : Nonempty (DSModel V S')), S = S' → ∀ ρ, x0Mat (Classical.choice h) ρ = x0Mat (Classical.choice h') ρ`. Introduce `V S S' h h' e ρ`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Both sides reduce to the same expression. Use `⟨fun i σ => Classical.choice (hne i σ), fun i σ σ' hσ ρ => hx _ _ _ _ _ (parAt_congr _ ?_) ρ, fun i σ hσ τ a => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Use extensionality with `x`. Take `⟨y, hy⟩` from `hK (D.host.sigmaOf (D.eTau τ).1 x)`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use `show σ (D.embE (D.host.sigmaOf (D.eTau τ).1 x)) = σ' (D.embE (D.host.sigmaOf (D.eTau τ).1 x))`. Rewrite using `[← hy]`. Conclude with `RingHom.congr_fun hσ y`. Establish `he` using `(Classical.choice (hne i σ)).enum τ`. Establish `e : parAt (Wc D i) σ τ = Formalism.L2.NTheta.holPar _ _ (kapAt (Wc D i) σ τ)` using `if_pos (hσ τ)`.
-
-Rewrite `he` using `[e]`. Conclude with `(GlobalTheory.HolDict.isEnum_holPar_kapW _ (rank_Wc i) (sig_add i τ) he a).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frameKs : GlobalTheory.Published.DiscreteSeriesExists → ∀ (D : D7) (Ks : Type) [Field Ks] [Algebra Ks D.what₂.LL], (∀ x, D.embE x ∈ (algebraMap Ks D.what₂.LL).range) → ∃ MW : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), DSModel (Wc D i) (parAt (Wc D i) σ), FrameKs Ks MW := by
   intro hP D Ks _ _ hK

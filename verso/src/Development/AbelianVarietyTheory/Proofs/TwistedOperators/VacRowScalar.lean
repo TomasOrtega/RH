@@ -15,9 +15,7 @@ open GlobalTheory.LastVertexMove GlobalTheory.FunObj
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Establish `hv` using `S.Z.vac_is p hp`. Take `⟨h1, h2⟩` from `hp.nodes`. Break down `p with ⟨i, j⟩ | ⟨t, i, j⟩ | i | ⟨t, j⟩` into its components or cases. Conclude with `GlobalTheory.VacUnique.vacUniqueO D W.ψ W.θ W.ψ_std W.θ_is _ _ _ _ (GlobalTheory.ChiGrid.WeilOver.sigOK_negSp (h2.sigOK G)) (h1.sigOK G) (fun τ => isCartanInv_neg (W.cart_is _ h2.inRange τ)) (fun τ => W.cart_is _ h1.inRange τ) _ _ (isSelfDualC_neg (S.N.selfDual h2)) (S.N.selfDual …`. Conclude with `hp.elim`.
-
-Conclude with `hp.elim`. Conclude with `GlobalTheory.VacUnique.vacUniqueO D W.ψ W.θ W.ψ_std W.θ_is _ _ _ _ (h1.sigOK G) (h2.sigOK G) (fun τ => W.cart_is _ h1.inRange τ) (fun τ => W.cart_is _ h2.inRange τ) _ _ (S.N.selfDual h1) (S.N.selfDual h2) _ _ hv hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_smul_vac (S : GridChoice W U) {p : Pair T} (hp : DefPair D.R.m p) (f : WO (G.pS p) (G.pT p) → ℂ)
     (hf : IsVacO W.ψ W.θ _ _ (G.cartS W.cart p) (G.onT W.cart p) (S.N.latS p : Set _) (S.N.latT p : Set _) f) :
@@ -36,7 +34,7 @@ theorem eq_smul_vac (S : GridChoice W U) {p : Pair T} (hp : DefPair D.R.m p) (f 
       _ _ hv hf
 
 /- English proof (translation)
-Establish `e : matHom (negSp V) (negGA V g) = matHom V g` using `Units.ext (mt_negGA V g)`. Simplify using `only [GfC, MonoidHom.mem_ker, infHom, MonoidHom.comp_apply] at hg ⊢`. Rewrite using `[e]`. Conclude with `hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem negGA_mem (V : HSp D) {g : GA D V} (hg : g ∈ GfC V) : negGA V g ∈ GfC (negSp V) := by
   have e : matHom (negSp V) (negGA V g) = matHom V g := Units.ext (mt_negGA V g)
@@ -45,20 +43,20 @@ theorem negGA_mem (V : HSp D) {g : GA D V} (hg : g ∈ GfC V) : negGA V g ∈ Gf
   exact hg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨negGA_mem _ (gridLast ((S.N.u (.grid D.R.m D.R.m))⁻¹ * k * S.N.u (.grid D.R.m D.R.m))).2, one_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem rowPt_mem (S : GridChoice W U) (k : FinPt G (.grid D.R.m D.R.m)) :
     (rowPt S k).1 ∈ GfC _ ∧ (rowPt S k).2 ∈ GfC _ :=
   ⟨negGA_mem _ (gridLast ((S.N.u (.grid D.R.m D.R.m))⁻¹ * k * S.N.u (.grid D.R.m D.R.m))).2, one_mem _⟩
 
 /- English proof (translation)
-Introduce `D T L sc G W U S k hlat`. Establish `hp : DefPair D.R.m (Pair.chi ((lastIx D : ℕ)) D.R.m : Pair T)` using `defPair_chi (lastIx D)`. Establish `hom` using `W.om_is _ (inRange_chi (T := T) (lastIx D))`. Take `⟨m1, m2⟩` from `rowPt_mem S k`. Establish `hΛ : ∀ u, u ∈ stdLat S (.chi (lastIx D) D.R.m) ↔ ∃ u₀ ∈ stdLat S (.chi (lastIx D) D.R.m), u = actO _ _ (rowPt S k).1 (rowPt S k).2 u₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use `⟨actO _ _ (rowPt S k).1⁻¹ (rowPt S k).2⁻¹ u, (hlat u).2 hu, ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.WeilVacMove.actO_inv_actO (rowPt S k).1⁻¹ (rowPt S k).2⁻¹ u`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[inv_inv, inv_inv]`. Conclude with `e.symm`. Introduce and unpack `⟨u₀, hu₀, rfl⟩`. Use `(hlat _).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.WeilVacMove.actO_inv_actO]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hu₀`. Establish `hv'` using `GlobalTheory.WeilVacMove.isVacO_om D W.ψ W.θ _ _ _ _ (W.om _) hom W.θ_is _ _ _ _ _ _ _ _ (rowPt S k).1 (rowPt S k).2 (fun τ => by rw [GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC W.θ _ m1, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [GlobalTheory.OrientedHeis.compAt_mt_of_ …`. Take `⟨c, -, hc⟩` from `eq_smul_vac S hp _ hv'`. Conclude with `⟨c, by rw [rowShift_eq]; exact hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vac_row_scalar : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) (k : FinPt G (.grid D.R.m D.R.m)),
     (∀ x, actO _ _ (rowPt S k).1⁻¹ (rowPt S k).2⁻¹ x ∈ stdLat S (.chi (lastIx D) D.R.m) ↔

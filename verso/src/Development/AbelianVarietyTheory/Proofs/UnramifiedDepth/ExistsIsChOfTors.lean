@@ -23,7 +23,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Establish `hle : Ideal.span (Set.range (mulF F N)) ≤ RingHom.ker φ`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `h j`. Conclude with `hle hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem apply_eq_zero_of_killed {R : Type} [CommRing R] {d : ℕ} {F : Fin d → PS R 2 d} {N : ℕ}
     {φ : PS R 1 d →ₐ[R] R} (h : Killed F N φ) {f : PS R 1 d}
@@ -35,7 +35,7 @@ private theorem apply_eq_zero_of_killed {R : Type} [CommRing R] {d : ℕ} {F : F
   exact hle hf
 
 /- English proof (translation)
-Introduce `j`. Apply `apply_eq_zero_of_killed h` to reduce the goal to its premises. Establish `hn : p ^ n = p ^ (n - m) * p ^ m` using `by rw [← pow_add, Nat.sub_add_cancel hmn]`. Rewrite using `[hn]`. Conclude with `(GlobalTheory.T.mulF_span_mul_le_and_mulF_pow_mem_ideal_pow R d F).2.2.1 _ _ (Ideal.subset_span ⟨j, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem killed_pow_mono {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d) (p : ℕ) {m n : ℕ}
     (hmn : m ≤ n) {φ : PS R 1 d →ₐ[R] R} (h : Killed F.F (p ^ m) φ) : Killed F.F (p ^ n) φ := by
@@ -46,9 +46,9 @@ private theorem killed_pow_mono {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d
   exact (GlobalTheory.T.mulF_span_mul_le_and_mulF_pow_mem_ideal_pow R d F).2.2.1 _ _ (Ideal.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `addOf ev`. Establish `h : (fun q : Fin 2 × Fin d => (![pt R (n` using `2) d 0, pt R (n := 2) d 1] : Fin 2 → Pt R 2 d) q.1 q.2) = MvPowerSeries.X := by`. Use function extensionality and compare the values at `⟨a, b⟩`. Apply the tactic sequence `fin_cases a <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem addOf_pt {R : Type} [CommRing R] {d : ℕ} (F : Fin d → PS R 2 d) :
     addOf F (pt R (n := 2) d 0) (pt R (n := 2) d 1) = F := by
@@ -62,7 +62,7 @@ private theorem addOf_pt {R : Type} [CommRing R] {d : ℕ} (F : Fin d → PS R 2
   rfl
 
 /- English proof (translation)
-Apply `MvPowerSeries.hasSubst_of_constantCoeff_zero` to reduce the goal to its premises. Introduce and unpack `⟨a, b⟩`. Use `fin_cases a`. Conclude with `F.const b`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem hasSubst_law {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d) :
     MvPowerSeries.HasSubst (fun q : Fin 1 × Fin d => (![F.F] : Fin 1 → Pt R 2 d) q.1 q.2) := by
@@ -72,29 +72,27 @@ private theorem hasSubst_law {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d) :
   exact F.const b
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ hv _ _ d F hFH κ hmul hone`. Establish `hinj : Function.Injective (algebraMap O C)` using `hv.hom_inj`. Use `choose w hw using fun k : ℕ => GlobalTheory.T.exists_series_eq_character_on_torsion p C v O hv d F hFH k κ (fun φ φ' ψ h h' hs => hmul φ φ' ψ ⟨k, h⟩ ⟨k, h'⟩ hs) hone`. Take `⟨hsep, hsepT⟩` from `GlobalTheory.T.formalGroup_series_separated_by_torsion p C v O hv d F hFH`. Establish `hsame : ∀ {m n : ℕ}, m ≤ n → ∀ φ, Killed F.F (p ^ m) φ → φ (w m) = φ (w n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m n hmn φ h`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hw m φ h, hw n φ (killed_pow_mono F p hmn h)]`. Use `set J : Ideal (PS O 1 d) := (Ideal.span {(p : O)}).map (MvPowerSeries.C : O →+* PS O 1 d) ⊔ Ideal.span (Set.range (MvPowerSeries.X : Fin 1 × Fin d → PS O 1 d)) with hJ`. Establish `hcomp : IsAdicComplete J (PS O 1 d)` using `(mem_sup_span_X_pow_iff_and_isAdicComplete O (Ideal.span {(p : O)}) (Fin 1 × Fin d)).2 inferInstance`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcauchy : ∀ {m n : ℕ}, m ≤ n → w m ≡ w n [SMOD (J ^ m • ⊤ : Submodule (PS O 1 d) (PS O 1 d))]`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Establish `h1` using `hsep m (w m - w n) (fun φ h => by rw [map_sub, hsame hmn φ h, sub_self])`. Establish `h2 : Ideal.span (Set.range (mulF F.F (p ^ m))) ≤ J ^ (m + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `(GlobalTheory.T.mulF_span_mul_le_and_mulF_pow_mem_ideal_pow O d F).2.2.2 p m j`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ m) (h2 h1)`. Take `⟨u, hu⟩` from `hcomp.toIsPrecomplete.prec hcauchy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hval : ∀ φ, Tors p F.F φ → algebraMap O C (φ u) = κ φ`. Introduce and unpack `φ ⟨k, hk⟩`. Rewrite using `[← hw k φ hk]`. Use `congr 1`. Establish `hH : IsHausdorff (Ideal.span {(p : O)}) O` using `inferInstance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Apply `hH.haus` to reduce the goal to its premises. Introduce `n`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Take `⟨N, hN⟩` from `(GlobalTheory.T.formalDisc_points_valuationIntegers p C v O hv (Fin 1 × Fin d)).2.2 φ n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hu (max N k)`. Rewrite `h1` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Establish `h2` using `hN _ (Ideal.pow_le_pow_right (le_max_left N k) h1)`. Rewrite `h2` using `[map_sub, ← hsame (le_max_right N k) φ hk]`. Rewrite using `[← neg_sub]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_mem h2`. Take `⟨inst, hsum, hzero, hkill⟩` from `GlobalTheory.T.exists_addCommMonoid_algHom_powerSeries_fgLaw p C v O hv d F`. Use `⟨u, ⟨?_, ?_⟩, hval⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hzero u, hval _ ⟨0, (hkill _ _).1 (smul_zero _)⟩, hone _ hzero, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[addOf_pt, ← sub_eq_zero]`. Apply `GlobalTheory.T.eq_zero_of_forall_pair_points_valuationIntegers p C v O hv d (Tors p F.F) hsepT` to reduce the goal to its premises. Introduce `Φ φ φ' h0 h1 hφ hφ'`. Set `ψ : PS O 1 d →ₐ[O] O` to `Φ.comp (MvPowerSeries.substAlgHom (hasSubst_law F))`. Establish `hψ : ∀ f, Φ (ev (n` using `2) ![F.F] f) = ψ f := by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f`. Simplify using `only [ψ, AlgHom.comp_apply, MvPowerSeries.coe_substAlgHom]`. Both sides reduce to the same expression. Establish `hs : IsSum F.F φ φ' ψ` using `⟨Φ, h0, h1, hψ⟩`. Establish `hT : Tors p F.F ψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨k, hk⟩` from `hφ`. Take `⟨k', hk'⟩` from `hφ'`. Use `⟨max k k', (hkill _ _).1 ?_⟩` and prove the remaining obligations. Rewrite using `[(hsum _ _ _).1 hs, smul_add, (hkill _ _).2 (killed_pow_mono F p (le_max_left k k') hk), (hkill _ _).2 (killed_pow_mono F p (le_max_right k k') hk'), add_zero]`. Apply `hinj` to reduce the goal to its premises.
-
-Rewrite using `[map_sub, map_mul, hψ, h0, h1, map_sub, map_mul, hval _ hT, hval _ hφ, hval _ hφ', hmul _ _ _ hφ hφ' hs, sub_self, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCh_of_tors : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (d : ℕ) (F : FGLaw O d), FH p F.F → ∀ (κ : (PS O 1 d →ₐ[O] O) → C), (∀ φ φ' ψ, Tors p F.F φ → Tors p F.F φ' → IsSum F.F φ φ' ψ → κ ψ = κ φ * κ φ') → (∀ φ, (∀ f, φ f = MvPowerSeries.constantCoeff f) → κ φ = 1) → ∃ u : PS O 1 d, IsCh F.F u ∧ ∀ φ, Tors p F.F φ → algebraMap O C (φ u) = κ φ := by
   intro p _ C _ _ _ v O _ _ hv _ _ d F hFH κ hmul hone

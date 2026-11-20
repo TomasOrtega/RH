@@ -17,40 +17,40 @@ def toEnt {D : D7} (E : OrbitPlaces.Ent D) : PI.OrbJet.Ent D :=
   ⟨E.nu, E.nu_row, E.nu_rows, E.Th, E.ep, E.be, E.sg⟩
 
 /- English proof (translation)
-Introduce `p _ h u i hi R hR ep sg be hbe β hβ Th hTh`. Conclude with `PI.OrbAddUp D (toEnt E) p ⟨h.five, h.even, h.two⟩ u i hi R hR ep sg be hbe β hβ Th hTh`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem addition_bound_holds (D : D7) (E : OrbitPlaces.Ent D) : OrbitPlaces.OrbitsAddLowerBound E := by
   intro p _ h u i hi R hR ep sg be hbe β hβ Th hTh
   exact PI.OrbAddUp D (toEnt E) p ⟨h.five, h.even, h.two⟩ u i hi R hR ep sg be hbe β hβ Th hTh
 
 /- English proof (translation)
-The claim follows from `PI.OrbAddOne D (toEnt E)`.
+A detailed English derivation is pending.
 -/
 theorem orbitsAddAtConjugate_ent (D : D7) (E : OrbitPlaces.Ent D) : OrbitPlaces.OrbitsAddAtConjugate E :=
   PI.OrbAddOne D (toEnt E)
 
 /- English proof (translation)
-Introduce `p _ h u i R hR ep sg be hbe Th hTh r hr`. Conclude with `PI.OrbRestr D (toEnt E) p ⟨h.five, h.even, h.two⟩ u i R hR ep sg be hbe Th hTh r hr`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restriction_bound_holds (D : D7) (E : OrbitPlaces.Ent D) : OrbitPlaces.OrbitRestriction E := by
   intro p _ h u i R hR ep sg be hbe Th hTh r hr
   exact PI.OrbRestr D (toEnt E) p ⟨h.five, h.even, h.two⟩ u i R hR ep sg be hbe Th hTh r hr
 
 /- English proof (translation)
-The claim follows from `PI.OrbRestrOne D (toEnt E)`.
+A detailed English derivation is pending.
 -/
 theorem orbit_restriction_at_conjugate (D : D7) (E : OrbitPlaces.Ent D) : OrbitPlaces.OrbitRestrictionAtConjugate E :=
   PI.OrbRestrOne D (toEnt E)
 
 /- English proof (translation)
-Introduce `u μ w hL hc i hi L L'`. Conclude with `_root_.jet_bound_ramified_prime D Dx E.nu E.nu_row E.nu_rows E.Th hs u μ w hL hc i hi L L'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem entry_divisor_bound_holds (D : D7) (E : OrbitPlaces.Ent D) (Dx : DivX D) (hs : OrbitPlaces.ThetaKernelShapeAtD E Dx) : OrbitPlaces.EntriesAtDiscriminant E Dx := by
   intro u μ w hL hc i hi L L'
   exact _root_.jet_bound_ramified_prime D Dx E.nu E.nu_row E.nu_rows E.Th hs u μ w hL hc i hi L L'
 
 /- English proof (translation)
-Introduce `p hp h5 hcs hpX u i hi`. Conclude with `⟨fun Th hTh => UpperTheory.kvalGe_theta_of_shape D L X E hS p h5 hcs.1 hcs.2.2 hpX u i hi Th hTh, fun hL => UpperTheory.fInert_sub_eatI_le_orbit_average_sub_errors D L X K E ce C6 C hS hC hL p hp.out h5 hcs hpX i hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem entry_number_bound_holds (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (E : OrbitPlaces.Ent D) (ce : ErrC) (C6 C : ℝ)
     (hS : OrbitPlaces.Shape D L X E) (hC : OrbitPlaces.CLarge C6 C K ce) : OrbitPlaces.ScaledGeneratorsInSup E L K ce := by
@@ -59,7 +59,7 @@ private theorem entry_number_bound_holds (D : D7) (L : SizeData₂ D) (X : Inst 
     fun hL => UpperTheory.fInert_sub_eatI_le_orbit_average_sub_errors D L X K E ce C6 C hS hC hL p hp.out h5 hcs hpX i hi⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨addition_bound_holds D E, orbitsAddAtConjugate_ent D E, restriction_bound_holds D E, orbit_restriction_at_conjugate D E, hF, entry_divisor_bound_holds D E Dx hs, PI.SumOrbC D L X K ce E C6 C hS hC, entry_number_bound_holds D L X K E ce C6 C hS hC⟩`.
+Supply the required witnesses or components.
 -/
 theorem orbit_entry_bounds_of_family (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX D) (E : OrbitPlaces.Ent D) (ce : ErrC) (C6 C : ℝ)
     (hF : OrbitPlaces.OrbitValuationBound E X K ce) (hs : OrbitPlaces.ThetaKernelShapeAtD E Dx) (hS : OrbitPlaces.Shape D L X E) (hC : OrbitPlaces.CLarge C6 C K ce) :
@@ -68,7 +68,7 @@ theorem orbit_entry_bounds_of_family (D : D7) (L : SizeData₂ D) (X : Inst D L)
     PI.SumOrbC D L X K ce E C6 C hS hC, entry_number_bound_holds D L X K E ce C6 C hS hC⟩
 
 /- English proof (translation)
-The claim follows from `orbit_entry_bounds_of_family D L X K Dx E ce C6 C (PI.OrbBoundF D L X K ce E C6 C hA hS hC) hs hS hC`.
+A detailed English derivation is pending.
 -/
 theorem orbit_entry_bounds_hold (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX D) (E : OrbitPlaces.Ent D) (ce : ErrC) (C6 C : ℝ)
     (hA : OrbitPlaces.OrbitLetterBoundsAll C6 C) (hs : OrbitPlaces.ThetaKernelShapeAtD E Dx) (hS : OrbitPlaces.Shape D L X E) (hC : OrbitPlaces.CLarge C6 C K ce) :

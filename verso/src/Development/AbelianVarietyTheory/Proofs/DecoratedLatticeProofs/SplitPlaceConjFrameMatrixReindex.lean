@@ -23,13 +23,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.StepData GlobalTheory.SplitWeil ValuativeRel
 
 /- English proof (translation)
-Substitute `hG` using the available equality. Establish `hMM : βF.submatrix id σ * γF.submatrix σ id = 1`. Rewrite using `[Matrix.submatrix_mul_equiv βF γF id σ id, hβγ, Matrix.submatrix_id_id]`. Establish `hN : Pi * Bi = γF.submatrix σ id`. Establish `h1 : (Pi * Bi) * βF.submatrix id σ = 1`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hBP]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hX' : X = gk.val.submatrix σ σ`. Establish `e0 : X = (Pi * Bi) * (βF * gk.val * γF) * (B * P)` using `by rw [hX]; simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e0, hN, hBP]`. Establish `e1 : γF.submatrix σ id * (βF * gk.val * γF) = (γF * (βF * gk.val * γF)).submatrix σ id`. Rewrite using `[Matrix.submatrix_mul γF _ σ id id Function.bijective_id, Matrix.submatrix_id_id]`. Rewrite using `[e1, ← Matrix.submatrix_mul _ βF σ id σ Function.bijective_id]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hγβ, Matrix.one_mul, Matrix.mul_assoc, hγβ, Matrix.mul_one]`. Use `⟨hX', ?_⟩` and prove the remaining obligations. Establish `hR : gk.val.submatrix σ σ * (gk⁻¹).val.submatrix σ σ = 1`. Rewrite using `[Matrix.submatrix_mul_equiv _ _ σ σ σ, Units.mul_inv, Matrix.submatrix_one_equiv]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem GlobalTheory.Lev.conj_frameMatrix_submatrix_equiv {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y]
     (βF : Matrix (Fin N) Y k) (γF : Matrix Y (Fin N) k) (hβγ : βF * γF = 1) (hγβ : γF * βF = 1) (σ : Fin N ≃ Y)
@@ -62,17 +62,17 @@ theorem GlobalTheory.Lev.conj_frameMatrix_submatrix_equiv {k : Type} [Field k] {
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `D k _ _ _ _ q PP he V β Y _ _ F σ b hmov g gk hloc`. Establish `hm : (mt V (b⁻¹ * g * b)).map q.pr = (mt V b⁻¹).map q.pr * (mt V g).map q.pr * (mt V b).map q.pr`. Rewrite using `[mt_mul, mt_mul, Matrix.map_mul, Matrix.map_mul]`. Establish `hc : ∀ A : Matrix (Fin V.rank) (Fin V.rank) (AE D), (A.map (toEAf D)).map (q.prF he) = A.map q.pr`. Introduce `A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Simplify using `[Matrix.map_apply, GlobalTheory.FinPl.SplitPt.prF_toEAf]`. Establish `hX : (β⁻¹ * Lev.finE V (b⁻¹ * g * b) * β : GL (Fin V.rank) (Lev.EAf D)).val.map (q.prF he) = (β⁻¹).val.map (q.prF he) * (mt V (b⁻¹ * g * b)).map q.pr * β.val.map (q.prF he)`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.map_mul, Matrix.map_mul, ← hc]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hX` using `[hm]`. Take `⟨bt, hbt⟩ : ∃ bt : Matrix (Fin V.rank) (Fin V.rank) (AE D), bt.map (toEAf D) = β.val` from `by choose s hs using fun i j => GlobalTheory.ResLoc.toEAf_surj (D := D) (β.val i j)`. Conclude with `⟨Matrix.of s, by ext i j; simp [hs]⟩`. Establish `hM : ((mt V b * bt).map q.pr) = F.β.submatrix id σ` using `hmov bt hbt`. Establish `hBP : (mt V b).map q.pr * β.val.map (q.prF he) = F.β.submatrix id σ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hM, ← hbt, hc, Matrix.map_mul]`. Establish `hBB : (mt V b⁻¹).map q.pr * (mt V b).map q.pr = 1`. Establish `h` using `mt_mul_inv V b⁻¹`. Rewrite `h` using `[inv_inv]`. Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hPP : (β⁻¹).val.map (q.prF he) * β.val.map (q.prF he) = 1`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hG : (mt V g).map q.pr = F.β * gk.val * F.γ` using `hloc.2`. Establish `hXi : ((β⁻¹ * Lev.finE V (b⁻¹ * g * b) * β : GL (Fin V.rank) (Lev.EAf D))⁻¹).val.map (q.prF he) * (β⁻¹ * Lev.finE V (b⁻¹ * g * b) * β : GL (Fin V.rank) (Lev.EAf D)).val.map (q.prF he) = 1`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.Lev.conj_frameMatrix_submatrix_equiv F.β F.γ F.βγ F.γβ σ gk _ _ _ _ _ _ _ hG hX hBP hBB hPP hXi`. Conclude with `⟨fun i j => congrArg (fun M => M i j) h1, fun i j => congrArg (fun M => M i j) h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Lev.conj_frame_matrix : ∀ {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E} (he : Formalism.L2.NTheta.IsIdemAt q.e PP) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) {Y : Type} [Fintype Y] [DecidableEq Y] (F : GlobalTheory.LocMod.Frame k V.rank Y) (σ : Fin V.rank ≃ Y) (b : GA D V), MovedTo (ofSplit q) V b β (F.β.submatrix id σ) → ∀ (g : GA D V) (gk : GL Y k), (ofSplit q).IsLoc F g gk → (∀ i j, q.prF he ((β⁻¹ * Lev.finE V (b⁻¹ * g * b) * β : GL (Fin V.rank) (Lev.EAf D)).val i j) = gk.val (σ i) (σ j)) ∧ ∀ i j, q.prF he (((β⁻¹ * Lev.finE V (b⁻¹ * g * b) * β : GL (Fin V.rank) (Lev.EAf D))⁻¹).val i j) = (gk⁻¹).val (σ i) (σ j) := by
   intro D k _ _ _ _ q PP he V β Y _ _ F σ b hmov g gk hloc

@@ -17,7 +17,7 @@ namespace GlobalTheory.GKLie
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_mul_self (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   unfold Jm
@@ -27,7 +27,7 @@ theorem Jm_mul_self (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : ε a = true <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_conjTranspose (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   unfold Jm
@@ -37,7 +37,7 @@ theorem Jm_conjTranspose (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   by_cases h : ε a = true <;> simp [h]
 
 /- English proof (translation)
-The claim follows from `isUnit_det_of_left_inverse (Jm_mul_self ε)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_Jm_det (ε : Fin n → Bool) : IsUnit (Jm ε).det :=
   isUnit_det_of_left_inverse (Jm_mul_self ε)
@@ -45,15 +45,15 @@ theorem isUnit_Jm_det (ε : Fin n → Bool) : IsUnit (Jm ε).det :=
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
 /- English proof (translation)
-Use `set J := Jm ε with hJdef`. Establish `hd : IsUnit J.det` using `isUnit_Jm_det ε`. Establish `hJ : Jᴴ = J` using `Jm_conjTranspose ε`. Set `σ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ` to `{ toFun := fun X => J⁻¹ * Xᴴ * J map_add' := fun X Y => by rw [conjTranspose_add, mul_add, add_mul] map_smul' := fun c X => by`. Rewrite using `[conjTranspose_smul, star_trivial, mul_smul_comm, smul_mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `rfl }`. Establish `hσ : ∀ Z, σ Z = J⁻¹ * Zᴴ * J` using `fun _ => rfl`. Establish `hskew : ∀ Z, σ Z = -Z ↔ Zᴴ * J + J * Z = 0` using `fun Z => by`. Rewrite using `[hσ]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Rewrite using `[← mul_nonsing_inv_cancel_left _ (Zᴴ * J) hd, ← mul_assoc J⁻¹, h1, mul_neg, neg_add_cancel]`. Introduce `h1`. Rewrite using `[mul_assoc, eq_neg_of_add_eq_zero_left h1, mul_neg, nonsing_inv_mul_cancel_left _ _ hd]`. Establish `hun : ∀ u, σ u * u = 1 → u ∈ UJset ε` using `fun u h1 => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `uᴴ * J * u = J`. Use `congrArg (J * ·) h1` as an intermediate fact. Simplify `this` using `only [hσ, ← mul_assoc, mul_nonsing_inv _ hd, one_mul, mul_one]`. Use `GlobalTheory.DerivedAction.abstract σ (fun a b => ?_) ?_ (fun a => ?_) ρ hρ.1 (fun a b ha hb => hρ.2 _ (hun a ha) _ (hun b hb)) v (fun k Xs h => hv k Xs fun i => (hskew _).1 (h i)) X ((hskew _).2 hX) Y ((hskew _).2 hY)` and prove the remaining obligations. Simplify using `only [hσ, conjTranspose_mul, mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_nonsing_inv_cancel_left _ _ hd]`. Rewrite using `[hσ, conjTranspose_one, mul_one, nonsing_inv_mul _ hd]`. Rewrite using `[hσ, hσ, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hJ]`. Simplify using `only [mul_assoc]`. Rewrite using `[nonsing_inv_mul_cancel_left _ _ hd, nonsing_inv_mul _ hd, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dRep_add_bracket {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) {v : H} (hv : SmoothVec (lieSet ε) ρ v)
@@ -91,9 +91,9 @@ theorem dRep_add_bracket {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     rw [nonsing_inv_mul_cancel_left _ _ hd, nonsing_inv_mul _ hd, mul_one]
 
 /- English proof (translation)
-Unfold `dRep`. Establish `: (fun t : ℝ => ρ (NormedSpace.exp (t • r • X)) v) = fun t : ℝ => (fun s : ℝ => ρ (NormedSpace.exp (s • X)) v) (r * t)`. Use function extensionality and compare the values at `t`. Rewrite using `[smul_smul, mul_comm]`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `deriv_comp_mul_left r (fun s : ℝ => ρ (NormedSpace.exp (s • X)) v) 0`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dRep_smul (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (r : ℝ) (X : Matrix (Fin n) (Fin n) ℂ) (v : H) :
     dRep ρ (r • X) v = r • dRep ρ X v := by
@@ -106,13 +106,13 @@ theorem dRep_smul (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (r : ℝ
   simpa using h
 
 /- English proof (translation)
-Simplify using `[dRep]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dRep_zero (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (v : H) : dRep ρ 0 v = 0 := by
   simp [dRep]
 
 /- English proof (translation)
-Unfold `PI.PhMeasCore.dsig dRep`. Use `congr 1`. Apply the tactic sequence `try (funext t; rw [Complex.coe_smul])`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem dsig_eq_dRep (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (X : Matrix (Fin n) (Fin n) ℂ) (v : H) :
     PI.PhMeasCore.dsig ρ X v = dRep ρ X v := by
@@ -121,7 +121,7 @@ theorem dsig_eq_dRep (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (X : 
   try (funext t; rw [Complex.coe_smul])
 
 /- English proof (translation)
-Establish `h` using `(hv 1 (fun _ => X) fun _ => hX).comp (contDiff_pi.2 fun _ => contDiff_id : ContDiff ℝ ∞ fun (t : ℝ) (_ : Fin 1) => t)`. Use `(h.differentiable (by simp)).differentiableAt (x := 0)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem differentiableAt_orbit {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {v : H}
     (hv : SmoothVec (lieSet ε) ρ v) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) :
@@ -132,7 +132,7 @@ theorem differentiableAt_orbit {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ]
   simpa [Function.comp_def] using this
 
 /- English proof (translation)
-Unfold `dRep`. Repeatedly rewrite using `[map_add]`. Conclude with `deriv_add (differentiableAt_orbit hv hX) (differentiableAt_orbit hw hX)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dRep_add_vec {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {v w : H}
     (hv : SmoothVec (lieSet ε) ρ v) (hw : SmoothVec (lieSet ε) ρ w) {X : Matrix (Fin n) (Fin n) ℂ}
@@ -142,7 +142,7 @@ theorem dRep_add_vec {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {v w 
   exact deriv_add (differentiableAt_orbit hv hX) (differentiableAt_orbit hw hX)
 
 /- English proof (translation)
-Unfold `dRep`. Repeatedly rewrite using `[map_smul]`. Conclude with `deriv_const_smul c (differentiableAt_orbit hv hX)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dRep_smul_vec {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {v : H}
     (hv : SmoothVec (lieSet ε) ρ v) {X : Matrix (Fin n) (Fin n) ℂ}
@@ -156,31 +156,31 @@ section Theta
 local notation "θ" => PI.DSInfCharCap.thetaJ ε
 
 /- English proof (translation)
-Simplify using `only [PI.DSInfCharCap.thetaJ, conjTranspose_add, mul_add, add_mul, neg_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_add (Y Z : Matrix (Fin n) (Fin n) ℂ) : θ (Y + Z) = θ Y + θ Z := by
   simp only [PI.DSInfCharCap.thetaJ, conjTranspose_add, mul_add, add_mul, neg_add]
 
 /- English proof (translation)
-Simplify using `only [PI.DSInfCharCap.thetaJ, conjTranspose_smul, mul_smul_comm, smul_mul_assoc, smul_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_smul (c : ℂ) (Y : Matrix (Fin n) (Fin n) ℂ) : θ (c • Y) = star c • θ Y := by
   simp only [PI.DSInfCharCap.thetaJ, conjTranspose_smul, mul_smul_comm, smul_mul_assoc, smul_neg]
 
 /- English proof (translation)
-Simplify using `[PI.DSInfCharCap.thetaJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_neg (Y : Matrix (Fin n) (Fin n) ℂ) : θ (-Y) = -θ Y := by
   simp [PI.DSInfCharCap.thetaJ]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, theta_add, theta_neg, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_sub (Y Z : Matrix (Fin n) (Fin n) ℂ) : θ (Y - Z) = θ Y - θ Z := by
   rw [sub_eq_add_neg, theta_add, theta_neg, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Simplify using `only [PI.DSInfCharCap.thetaJ, conjTranspose_neg, conjTranspose_mul, conjTranspose_conjTranspose, Jm_conjTranspose, mul_neg, neg_mul, neg_neg, mul_assoc]`. Rewrite using `[Jm_mul_self, mul_one, ← mul_assoc, Jm_mul_self, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_theta (Y : Matrix (Fin n) (Fin n) ℂ) : θ (θ Y) = Y := by
   simp only [PI.DSInfCharCap.thetaJ, conjTranspose_neg, conjTranspose_mul, conjTranspose_conjTranspose,
@@ -188,16 +188,16 @@ theorem theta_theta (Y : Matrix (Fin n) (Fin n) ℂ) : θ (θ Y) = Y := by
   rw [Jm_mul_self, mul_one, ← mul_assoc, Jm_mul_self, one_mul]
 
 /- English proof (translation)
-Simplify using `only [PI.DSInfCharCap.thetaJ, conjTranspose_mul, neg_mul_neg, mul_assoc]`. Rewrite using `[← mul_assoc (Jm ε) (Jm ε), Jm_mul_self, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_mul (X Y : Matrix (Fin n) (Fin n) ℂ) : θ (X * Y) = -(θ Y * θ X) := by
   simp only [PI.DSInfCharCap.thetaJ, conjTranspose_mul, neg_mul_neg, mul_assoc]
   rw [← mul_assoc (Jm ε) (Jm ε), Jm_mul_self, one_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Xᴴ * Jm ε + Jm ε * X = 0 ↔ _`. Unfold `PI.DSInfCharCap.thetaJ`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : Xᴴ * Jm ε = -(Jm ε * X)` using `eq_neg_of_add_eq_zero_left h`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, h1, mul_neg, ← mul_assoc, Jm_mul_self, one_mul, neg_neg]`. Introduce `h`. Establish `h2 : Jm ε * X = -(Xᴴ * Jm ε)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_lieSet_iff (X : Matrix (Fin n) (Fin n) ℂ) : X ∈ lieSet ε ↔ θ X = X := by
   change Xᴴ * Jm ε + Jm ε * X = 0 ↔ _
@@ -213,7 +213,7 @@ theorem mem_lieSet_iff (X : Matrix (Fin n) (Fin n) ℂ) : X ∈ lieSet ε ↔ θ
     rw [h2, add_neg_cancel]
 
 /- English proof (translation)
-Rewrite `*` using `[mem_lieSet_iff]`. Rewrite using `[theta_sub, theta_mul, theta_mul, hX, hY]`. Normalize the expressions using the abelian group laws.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem bracket_mem {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) (hY : Y ∈ lieSet ε) :
     X * Y - Y * X ∈ lieSet ε := by
@@ -230,7 +230,7 @@ def cim (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) 
   (1 / (2 * Complex.I)) • (Y - PI.DSInfCharCap.thetaJ ε Y)
 
 /- English proof (translation)
-Rewrite using `[mem_lieSet_iff, cre, theta_smul, theta_add, theta_theta, add_comm (PI.DSInfCharCap.thetaJ ε Y)]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem cre_mem (Y : Matrix (Fin n) (Fin n) ℂ) : cre ε Y ∈ lieSet ε := by
   rw [mem_lieSet_iff, cre, theta_smul, theta_add, theta_theta, add_comm (PI.DSInfCharCap.thetaJ ε Y)]
@@ -238,7 +238,7 @@ theorem cre_mem (Y : Matrix (Fin n) (Fin n) ℂ) : cre ε Y ∈ lieSet ε := by
   simp
 
 /- English proof (translation)
-Rewrite using `[mem_lieSet_iff, cim, theta_smul, theta_sub, theta_theta]`. Establish `: star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))`. Simplify using `[Complex.conj_I]`. Rewrite using `[this, neg_smul, ← smul_neg, neg_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cim_mem (Y : Matrix (Fin n) (Fin n) ℂ) : cim ε Y ∈ lieSet ε := by
   rw [mem_lieSet_iff, cim, theta_smul, theta_sub, theta_theta]
@@ -247,7 +247,7 @@ theorem cim_mem (Y : Matrix (Fin n) (Fin n) ℂ) : cim ε Y ∈ lieSet ε := by
   rw [this, neg_smul, ← smul_neg, neg_sub]
 
 /- English proof (translation)
-Unfold `cre cim`. Rewrite using `[smul_smul]`. Establish `: Complex.I * (1 / (2 * Complex.I)) = 1 / 2` using `by field_simp`. Rewrite using `[this]`. Use `module`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cre_add_cim (Y : Matrix (Fin n) (Fin n) ℂ) : cre ε Y + Complex.I • cim ε Y = Y := by
   unfold cre cim
@@ -257,7 +257,7 @@ theorem cre_add_cim (Y : Matrix (Fin n) (Fin n) ℂ) : cre ε Y + Complex.I • 
   module
 
 /- English proof (translation)
-Rewrite `hX` using `[mem_lieSet_iff]`. Rewrite using `[cre, hX, ← two_smul ℂ X, smul_smul]`. Evaluate the numerical expressions.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem cre_of_mem {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) : cre ε X = X := by
   rw [mem_lieSet_iff] at hX
@@ -265,14 +265,14 @@ theorem cre_of_mem {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) : cre
   norm_num
 
 /- English proof (translation)
-Rewrite `hX` using `[mem_lieSet_iff]`. Rewrite using `[cim, hX, sub_self, smul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cim_of_mem {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) : cim ε X = 0 := by
   rw [mem_lieSet_iff] at hX
   rw [cim, hX, sub_self, smul_zero]
 
 /- English proof (translation)
-Unfold `cre`. Rewrite using `[theta_add]`. Use `module`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cre_add (Y Z : Matrix (Fin n) (Fin n) ℂ) : cre ε (Y + Z) = cre ε Y + cre ε Z := by
   unfold cre
@@ -280,7 +280,7 @@ theorem cre_add (Y Z : Matrix (Fin n) (Fin n) ℂ) : cre ε (Y + Z) = cre ε Y +
   module
 
 /- English proof (translation)
-Unfold `cim`. Rewrite using `[theta_add]`. Use `module`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cim_add (Y Z : Matrix (Fin n) (Fin n) ℂ) : cim ε (Y + Z) = cim ε Y + cim ε Z := by
   unfold cim
@@ -288,7 +288,7 @@ theorem cim_add (Y Z : Matrix (Fin n) (Fin n) ℂ) : cim ε (Y + Z) = cim ε Y +
   module
 
 /- English proof (translation)
-Unfold `cre`. Rewrite using `[theta_smul, Complex.star_def, Complex.conj_ofReal]`. Use `module`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cre_ofReal (r : ℝ) (Y : Matrix (Fin n) (Fin n) ℂ) : cre ε ((r : ℂ) • Y) = (r : ℂ) • cre ε Y := by
   unfold cre
@@ -296,7 +296,7 @@ theorem cre_ofReal (r : ℝ) (Y : Matrix (Fin n) (Fin n) ℂ) : cre ε ((r : ℂ
   module
 
 /- English proof (translation)
-Unfold `cim`. Rewrite using `[theta_smul, Complex.star_def, Complex.conj_ofReal]`. Use `module`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cim_ofReal (r : ℝ) (Y : Matrix (Fin n) (Fin n) ℂ) : cim ε ((r : ℂ) • Y) = (r : ℂ) • cim ε Y := by
   unfold cim
@@ -304,9 +304,9 @@ theorem cim_ofReal (r : ℝ) (Y : Matrix (Fin n) (Fin n) ℂ) : cim ε ((r : ℂ
   module
 
 /- English proof (translation)
-Unfold `cre cim`. Rewrite using `[theta_smul, Complex.star_def, Complex.conj_I]`. Establish `h : (1 / 2 : ℂ) * Complex.I = -(1 / (2 * Complex.I))`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try rw [Complex.I_sq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try ring`. Rewrite using `[smul_add, smul_smul, neg_smul, smul_neg, smul_smul, h, smul_sub]`. Use `module`.
+A detailed English derivation is pending.
 -/
 theorem cre_I (Y : Matrix (Fin n) (Fin n) ℂ) : cre ε (Complex.I • Y) = -cim ε Y := by
   unfold cre cim
@@ -319,7 +319,7 @@ theorem cre_I (Y : Matrix (Fin n) (Fin n) ℂ) : cre ε (Complex.I • Y) = -cim
   module
 
 /- English proof (translation)
-Unfold `cre cim`. Rewrite using `[theta_smul, Complex.star_def, Complex.conj_I]`. Establish `h : (1 / (2 * Complex.I)) * Complex.I = 1 / 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[smul_sub, smul_smul, neg_smul, smul_neg, smul_smul, h, sub_neg_eq_add, smul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem cim_I (Y : Matrix (Fin n) (Fin n) ℂ) : cim ε (Complex.I • Y) = cre ε Y := by
   unfold cre cim
@@ -329,7 +329,7 @@ theorem cim_I (Y : Matrix (Fin n) (Fin n) ℂ) : cim ε (Complex.I • Y) = cre 
   rw [smul_sub, smul_smul, neg_smul, smul_neg, smul_smul, h, sub_neg_eq_add, smul_add]
 
 /- English proof (translation)
-Unfold `PI.DSInfCharCap.dsigC`. Rewrite using `[dsig_eq_dRep, dsig_eq_dRep]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dsigC_eq (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (Y : Matrix (Fin n) (Fin n) ℂ) (v : H) :
     PI.DSInfCharCap.dsigC ε ρ Y v = dRep ρ (cre ε Y) v + Complex.I • dRep ρ (cim ε Y) v := by
@@ -338,7 +338,7 @@ theorem dsigC_eq (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (Y : Matr
   rfl
 
 /- English proof (translation)
-Rewrite using `[← neg_one_smul ℝ X, dRep_smul, neg_one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dRep_neg (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (X : Matrix (Fin n) (Fin n) ℂ) (v : H) :
     dRep ρ (-X) v = -dRep ρ X v := by
@@ -349,7 +349,7 @@ section Act
 variable {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Rewrite using `[dsigC_eq, dsigC_eq, dsigC_eq, cre_add, cim_add, (dRep_add_bracket hρ hv (cre_mem Y) (cre_mem Z)).1, (dRep_add_bracket hρ hv (cim_mem Y) (cim_mem Z)).1, smul_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem dsigC_add (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) {v : H} (hv : SmoothVec (lieSet ε) ρ v)
     (Y Z : Matrix (Fin n) (Fin n) ℂ) :
@@ -359,7 +359,7 @@ theorem dsigC_add (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) {
   abel
 
 /- English proof (translation)
-Rewrite using `[dsigC_eq, dsigC_eq, cre_ofReal, cim_ofReal, Complex.coe_smul, Complex.coe_smul, dRep_smul, dRep_smul, Complex.coe_smul, smul_add, smul_comm r Complex.I]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dsigC_ofReal (r : ℝ) (Y : Matrix (Fin n) (Fin n) ℂ) (v : H) :
     PI.DSInfCharCap.dsigC ε ρ ((r : ℂ) • Y) v = (r : ℂ) • PI.DSInfCharCap.dsigC ε ρ Y v := by
@@ -367,7 +367,7 @@ theorem dsigC_ofReal (r : ℝ) (Y : Matrix (Fin n) (Fin n) ℂ) (v : H) :
     Complex.coe_smul, smul_add, smul_comm r Complex.I]
 
 /- English proof (translation)
-Rewrite using `[dsigC_eq, dsigC_eq, cre_I, cim_I, dRep_neg, smul_add, smul_smul, Complex.I_mul_I, neg_one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem dsigC_I (Y : Matrix (Fin n) (Fin n) ℂ) (v : H) :
     PI.DSInfCharCap.dsigC ε ρ (Complex.I • Y) v = Complex.I • PI.DSInfCharCap.dsigC ε ρ Y v := by
@@ -375,7 +375,7 @@ theorem dsigC_I (Y : Matrix (Fin n) (Fin n) ℂ) (v : H) :
   abel
 
 /- English proof (translation)
-Establish `hc : c • Y = (c.re : ℂ) • Y + (c.im : ℂ) • (Complex.I • Y)`. Rewrite using `[smul_smul, ← add_smul, Complex.re_add_im]`. Rewrite using `[hc, dsigC_add hρ hv, dsigC_ofReal, dsigC_ofReal, dsigC_I, smul_smul, ← add_smul, Complex.re_add_im]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dsigC_smul (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) {v : H} (hv : SmoothVec (lieSet ε) ρ v)
     (c : ℂ) (Y : Matrix (Fin n) (Fin n) ℂ) :
@@ -385,7 +385,7 @@ theorem dsigC_smul (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) 
   rw [hc, dsigC_add hρ hv, dsigC_ofReal, dsigC_ofReal, dsigC_I, smul_smul, ← add_smul, Complex.re_add_im]
 
 /- English proof (translation)
-Rewrite using `[dsigC_eq, dsigC_eq, dsigC_eq, dRep_add_vec hv hw (cre_mem Y), dRep_add_vec hv hw (cim_mem Y), smul_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem dsigC_add_vec {v w : H} (hv : SmoothVec (lieSet ε) ρ v) (hw : SmoothVec (lieSet ε) ρ w)
     (Y : Matrix (Fin n) (Fin n) ℂ) :
@@ -394,7 +394,7 @@ theorem dsigC_add_vec {v w : H} (hv : SmoothVec (lieSet ε) ρ v) (hw : SmoothVe
   abel
 
 /- English proof (translation)
-Rewrite using `[dsigC_eq, dsigC_eq, dRep_smul_vec hv (cre_mem Y), dRep_smul_vec hv (cim_mem Y), smul_add, smul_comm c Complex.I]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dsigC_smul_vec {v : H} (hv : SmoothVec (lieSet ε) ρ v) (Y : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) :
     PI.DSInfCharCap.dsigC ε ρ Y (c • v) = c • PI.DSInfCharCap.dsigC ε ρ Y v := by
@@ -402,7 +402,7 @@ theorem dsigC_smul_vec {v : H} (hv : SmoothVec (lieSet ε) ρ v) (Y : Matrix (Fi
     smul_comm c Complex.I]
 
 /- English proof (translation)
-Rewrite using `[dsigC_eq]`. Conclude with `add_mem (hV.lieStable _ (cre_mem Y) v hv) (Submodule.smul_mem _ _ (hV.lieStable _ (cim_mem Y) v hv))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dsigC_mem (hV : IsGKSub ε ρ (kFinVec ε ρ)) (Y : Matrix (Fin n) (Fin n) ℂ) {v : H}
     (hv : v ∈ kFinVec ε ρ) : PI.DSInfCharCap.dsigC ε ρ Y v ∈ kFinVec ε ρ := by
@@ -426,7 +426,7 @@ theorem gAct_coe (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (h
     ((gAct hρ hV Y v : kFinVec ε ρ) : H) = PI.DSInfCharCap.dsigC ε ρ Y v := rfl
 
 /- English proof (translation)
-Rewrite using `[gAct_coe, dsigC_eq, cre_of_mem hX, cim_of_mem hX, dRep_zero, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gAct_of_mem (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ))
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) (v : kFinVec ε ρ) :
@@ -434,7 +434,7 @@ theorem gAct_of_mem (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ)
   rw [gAct_coe, dsigC_eq, cre_of_mem hX, cim_of_mem hX, dRep_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← cre_add_cim (ε := ε) X]`. Rewrite using `[map_add, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gAct_decomp (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ))
     (X : Matrix (Fin n) (Fin n) ℂ) :
@@ -443,7 +443,7 @@ theorem gAct_decomp (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ)
   rw [map_add, map_smul]
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[gAct_of_mem hρ hV (bracket_mem hX hY), LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, Submodule.coe_sub]`. Simplify using `only [gAct_of_mem hρ hV hX, gAct_of_mem hρ hV hY]`. Conclude with `(dRep_add_bracket hρ (hV.smooth v v.2) hX hY).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gAct_bracket_of_mem (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ))
     {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) (hY : Y ∈ lieSet ε) :
@@ -455,9 +455,9 @@ theorem gAct_bracket_of_mem (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset
   exact (dRep_add_bracket hρ (hV.smooth v v.2) hX hY).2
 
 /- English proof (translation)
-Establish `hm : ∀ X1 X2 Y1 Y2 : Matrix (Fin n) (Fin n) ℂ, (X1 + Complex.I • X2) * (Y1 + Complex.I • Y2) - (Y1 + Complex.I • Y2) * (X1 + Complex.I • X2) = (X1 * Y1 - Y1 * X1) + Complex.I • (X1 * Y2 - Y2 * X1) + Complex.I • (X2 * Y1 - Y1 * X2) - (X2 * Y2 - Y2 * X2)`. Introduce `X1 X2 Y1 Y2`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I, neg_one_smul, smul_sub, smul_add, smul_neg, neg_smul, Complex.I_mul_I]`. Use `module`. Establish `h` using `hm (cre ε X) (cim ε X) (cre ε Y) (cim ε Y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[cre_add_cim, cre_add_cim]`. Rewrite using `[h, map_sub, map_add, map_add, map_smul, map_smul, gAct_bracket_of_mem hρ hV (cre_mem X) (cre_mem Y), gAct_bracket_of_mem hρ hV (cre_mem X) (cim_mem Y), gAct_bracket_of_mem hρ hV (cim_mem X) (cre_mem Y), gAct_bracket_of_mem hρ hV (cim_mem X) (cim_mem Y), gAct_decomp hρ hV X, gAct …`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I, neg_one_smul, smul_sub, smul_add, smul_neg, neg_smul, Complex.I_mul_I]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gAct_bracket (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ (kFinVec ε ρ))
     (X Y : Matrix (Fin n) (Fin n) ℂ) :

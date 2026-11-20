@@ -19,19 +19,17 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable (L : LocE F E) {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-The claim follows from `Λ.smul_mem (⟨a, ha⟩ : L.O) hv`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem' {Λ : Submodule L.O (Fin n → E)} {a : E} (ha : a ∈ L.O) {v : Fin n → E}
     (hv : v ∈ Λ) : a • v ∈ Λ := Λ.smul_mem (⟨a, ha⟩ : L.O) hv
 
 /- English proof (translation)
-Establish `hint : ∀ {y z}, y ∈ Λ → z ∈ Λ → hf L Hm y z ∈ L.O` using `fun hy hz => (hΛ.2 _).2 hz _ hy`. Establish `hV : p ^ 2 • v ∈ Λ`. Rewrite using `[← eich_inv L hH x u s hx hu hs v]`. Generalize the expression as in `eich L Hm x u s v = w at hv`. Establish `e : p ^ 2 • eich L Hm x (-u) (L.cj s) w = p ^ 2 • w - (p * hf L Hm w u) • (p • x) + (p * hf L Hm w (p • x)) • u - (hf L Hm w (p • x) * L.cj s) • (p • x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Simplify using `only [eich, hf_neg_r, hf_smul_r, hpc]`. Use `module`. Rewrite using `[e]`. Conclude with `Λ.sub_mem (Λ.add_mem (Λ.sub_mem (smul_mem' L (L.O.pow_mem hp 2) hv) (smul_mem' L (L.O.mul_mem hp (hint hv huΛ)) hxΛ)) (smul_mem' L (L.O.mul_mem hp (hint hv hxΛ)) huΛ)) (smul_mem' L (L.O.mul_mem (hint hv hxΛ) (GlobalTheory.UnramOrder.cj_mem L hsO)) hxΛ)`. Establish `hu1 : u + p ^ 4 • b ∈ Λ` using `Λ.add_mem huΛ (smul_mem' L (L.O.pow_mem hp 4) hb)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : p • x + p ^ 5 • a ∈ Λ` using `Λ.add_mem hxΛ (smul_mem' L (L.O.pow_mem hp 5) ha)`. Establish `hs1 : s + p ^ 4 * t ∈ L.O` using `L.O.add_mem hsO (L.O.mul_mem (L.O.pow_mem hp 4) ht)`. Establish `e : eich L Hm (x + p ^ 4 • a) (u + p ^ 4 • b) (s + p ^ 4 * t) v = eich L Hm x u s v + (p * hf L Hm (p ^ 2 • v) b) • (p • x) + (p ^ 2 * hf L Hm (p ^ 2 • v) (u + p ^ 4 • b)) • a - (p * hf L Hm (p ^ 2 • v) (p • x)) • b - (p ^ 2 * hf L Hm (p ^ 2 • v) a) • (u + p ^ 4 • b) - (p * hf L …`. Simplify using `only [eich, hf_add_r, hf_smul_r, hf_smul_l, map_pow, hpc]`. Use `module`.
-
-Rewrite using `[e]`. Establish `hp2` using `L.O.pow_mem hp 2`. Conclude with `Λ.sub_mem (Λ.sub_mem (Λ.sub_mem (Λ.sub_mem (Λ.sub_mem (Λ.add_mem (Λ.add_mem hv (smul_mem' L (L.O.mul_mem hp (hint hV hb)) hxΛ)) (smul_mem' L (L.O.mul_mem hp2 (hint hV hu1)) ha)) (smul_mem' L (L.O.mul_mem hp (hint hV hxΛ)) hb)) (smul_mem' L (L.O.mul_mem hp2 (hint hV ha)) hu1)) (sm …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_of_close (hH : IsHerm L Hm) {Λ : Submodule L.O (Fin n → E)} (hΛ : IsSD L Hm Λ)
     {p : E} (hp : p ∈ L.O) (hpc : L.cj p = p) {x u a b : Fin n → E} {s t : E}
@@ -77,15 +75,13 @@ theorem mem_of_close (hH : IsHerm L Hm) {Λ : Submodule L.O (Fin n → E)} (hΛ 
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S Λ hΛ c`. Use `⟨c * 4, ?_⟩` and prove the remaining obligations. Introduce and unpack `x x₁ u u₁ s s₁ hx hu hs hx₁ hu₁ hs₁ hxΛ huΛ hsO ⟨a, ha, ea⟩ ⟨b, hb, eb⟩ ⟨t, ht, et⟩`. Rewrite `ea`, `eb`, `et` using `[pow_mul, map_pow]`. Establish `hp : algebraMap F E ((S.ϖ : F) ^ c) ∈ L.O` using `(GlobalTheory.UnramOrder.algebraMap_mem_iff L _).2 (Subring.pow_mem _ S.ϖ.2 c)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpc : L.cj (algebraMap F E ((S.ϖ : F) ^ c)) = algebraMap F E ((S.ϖ : F) ^ c)` using `L.cj.commutes _`. Generalize the expression as in `algebraMap F E ((S.ϖ : F) ^ c) = p at *`. Take `rfl : x₁ = x + p ^ 4 • a` from `by rw [← ea]; abel`. Take `rfl : u₁ = u + p ^ 4 • b` from `by rw [← eb]; abel`. Take `rfl : s₁ = s + p ^ 4 * t` from `by rw [← et]; ring`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `h` using `mem_of_close L S.herm.1 hΛ hp hpc hx₁ hu₁ hs₁ (by`. Rewrite using `[smul_add]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Λ.add_mem hxΛ (smul_mem' L hp (smul_mem' L (L.O.pow_mem hp 4) ha)))`. Use the proof step `(Λ.add_mem huΛ (smul_mem' L (L.O.pow_mem hp 4) hb))`. Use the proof step `(L.O.add_mem hsO (L.O.mul_mem (L.O.pow_mem hp 4) ht))`. Use the proof step `(Λ.neg_mem ha) (Λ.neg_mem hb) (L.O.neg_mem ht) hv`. Simplify using `only [smul_neg, mul_neg, add_neg_cancel_right] at h`.
-
-Conclude with `h`. Introduce `hv`. Conclude with `mem_of_close L S.herm.1 hΛ hp hpc hx hu hs hxΛ huΛ hsO ha hb ht hv`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem moved_locally_constant : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ Λ : Submodule L.O S.V, IsSD L S.Hm Λ → ∀ c : ℕ, ∃ N : ℕ, ∀ (x x₁ u u₁ : S.V) (s s₁ : E), S.h x x = 0 → S.h u x = 0 → s + L.cj s = S.h u u → S.h x₁ x₁ = 0 → S.h u₁ x₁ = 0 → s₁ + L.cj s₁ = S.h u₁ u₁ → algebraMap F E ((S.ϖ : F) ^ c) • x ∈ Λ → u ∈ Λ → s ∈ L.O → (∃ y ∈ Λ, x₁ - x = algebraMap F E ((S.ϖ : F) ^ N) • y) → (∃ y ∈ Λ, u₁ - u = algebraMap F E ((S.ϖ : F) ^ N) • y) → (∃ y ∈ L.O, s₁ - s = algebraMap F E ((S.ϖ : F) ^ N) * y) → S.moved Λ x₁ u₁ s₁ = S.moved Λ x u s := by
   intro F _ _ _ _ _ E _ _ _ L r k S Λ hΛ c

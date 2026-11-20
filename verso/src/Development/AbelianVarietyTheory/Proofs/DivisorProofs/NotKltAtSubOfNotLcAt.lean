@@ -14,15 +14,13 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 namespace GlobalTheory.PairStep
 
 /- English proof (translation)
-Introduce `X _ _ _ p n hp hn Δ D x hD hk hlc`. Use `haveI : IsProper p := ((isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hp).1`. Take `⟨η, m, g, hη, hm, hg, hd⟩` from `hk`. Take `⟨m', f, hm', hf, hDf⟩` from `GlobalTheory.T.exists_localEquation_effectiveQCartierDivisor X p D hD x`. Take `⟨m₁, g₁, hm₁, hg₁, hd₁⟩` from `GlobalTheory.T.isLogCanonicalLocalEquation_add_smul_divisor X p n Δ D η x m m' g f 1 hm hm' hg hDf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg₁` using `[one_smul]`. Establish `hnl` using `(GlobalTheory.T.logCanonicalAt_iff_of_isLogCanonicalLocalEquation X p n hp hn (Δ + D) η x m₁ g₁ hη hm₁ hg₁).not.1 hlc`. Use `push_neg at hnl`. Take `⟨E, hE, hlt⟩` from `hnl`. Rewrite `hlt` using `[hd₁, one_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a := discrep E η m g with ha`. Use `set t : ℚ := (E.ord f : ℚ) / m' with ht`. Establish `hm'q : (0 : ℚ) < m'` using `by exact_mod_cast hm'`. Establish `ht0 : 0 ≤ t` using `div_nonneg (by exact_mod_cast (E.ord_nonneg_iff f).2 (hE _ hf)) hm'q.le`. Establish `ha1` using `hd E hE`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨(-1 - a + t) / (t + 1), div_pos (by linarith) (by linarith), fun δ hδ0 hδ hk' => ?_⟩` and prove the remaining obligations. Take `⟨m₂, g₂, hm₂, hg₂, hd₂⟩` from `GlobalTheory.T.isLogCanonicalLocalEquation_add_smul_divisor X p n Δ D η x m m' g f (1 - δ) hm hm' hg hDf`. Use `((hg₂.kltAt_iff hn hη hm₂).1 hk') E hE` as an intermediate fact. Rewrite `this` using `[hd₂]`. Establish `h1 : δ * (t + 1) ≤ -1 - a + t` using `(le_div_iff₀ (by linarith)).1 hδ`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem not_kltAt_sub_of_not_lcAt : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n →

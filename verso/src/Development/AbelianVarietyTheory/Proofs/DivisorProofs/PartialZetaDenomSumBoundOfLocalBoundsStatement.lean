@@ -8,7 +8,7 @@ open NumberField Module Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.R
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Proof.partialZetaDenomSumBound_of_local_bounds.sumBound_of_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPartialZetaDenomSumBoundOfLocalBounds.lean&line=10#L10)
 -/

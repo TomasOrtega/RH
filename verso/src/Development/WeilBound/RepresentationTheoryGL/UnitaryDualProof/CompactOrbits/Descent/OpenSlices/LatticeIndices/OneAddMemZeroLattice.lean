@@ -11,11 +11,9 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Desc.SLF PositivityTheory.R
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨hxB, hxv⟩` from `hx`. Use `⟨fun a ha => ?_, fun r s => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, add_mul, mul_one, one_mul, hxB a ha]`. Establish `hpi : valuation k (pi k) ^ j ≤ 1` using `pow_le_one' (GLnLocal.valuation_uniformizer_lt_one k).le j`. Rewrite using `[pow_zero, Matrix.add_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Valuation.map_add _ _ _).trans (max_le ?_ ((hxv r s).trans hpi))` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[map_one]`. Rewrite using `[map_zero]`.
-
-Conclude with `zero_le'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_add_mem_zero_lattice (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {j : ℕ} {x : Matrix (Fin n) (Fin n) k}
     (hx : x ∈ Lat Z j) : 1 + x ∈ Lat Z 0 := by
@@ -32,19 +30,17 @@ theorem one_add_mem_zero_lattice (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {
       exact zero_le'
 
 /- English proof (translation)
-Establish `hpi1 : valuation k (pi k) ^ m ≤ 1` using `pow_le_one' (GLnLocal.valuation_uniformizer_lt_one k).le m`. Establish `hpim : valuation k (pi k) ^ m ≤ valuation k (pi k) ^ 1` using `pow_le_pow_right_of_le_one' (GLnLocal.valuation_uniformizer_lt_one k).le hm`. Set `B : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => ⟨a i j, (ha i j).trans hpi1⟩`. Establish `hBm : ∀ i j, B i j ∈ IsLocalRing.maximalIdeal 𝒪[k]`. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(GLnLocal.mem_maximalIdeal_pow_iff k (m := 1) (y := B i j)).2 ((ha i j).trans hpim)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Establish `hone : ∀ i j, (((1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j : 𝒪[k]) : k) = (1 : Matrix (Fin n) (Fin n) k) i j`. Introduce `i j`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hdet : IsUnit (1 + B).det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det, map_add, map_one]`. Establish `h0 : (IsLocalRing.residue 𝒪[k]).mapMatrix B = 0`. Use extensionality with `i j`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.zero_apply]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 (hBm i j)`. Rewrite using `[h0, add_zero, Matrix.det_one]`. Conclude with `one_ne_zero`. Establish `hcoe : ∀ i j, ((((1 + B) i j : 𝒪[k])) : k) = (1 + a) i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[Matrix.add_apply, Subring.coe_add, hone, Matrix.add_apply]`. Set `U : GL (Fin n) 𝒪[k]` to `Matrix.nonsingInvUnit (1 + B) hdet`. Use `⟨GLnLocal.integralGLHom k n U, ⟨U, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `(GLnLocal.mem_ker_reduction_iff k n).2 fun i j => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((U : Matrix (Fin n) (Fin n) 𝒪[k]) i j : k) = (1 + a) i j` using `hcoe i j`. Rewrite using `[this, Matrix.add_apply, add_sub_cancel_left]`. Conclude with `ha i j`. Use extensionality with `i j`. Rewrite using `[GLnLocal.integralGLHom_apply]`.
-
-Conclude with `hcoe i j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit {m : ℕ} (hm : 1 ≤ m) {a : Matrix (Fin n) (Fin n) k}
     (ha : ∀ i j, valuation k (a i j) ≤ valuation k (pi k) ^ m) :
@@ -84,13 +80,13 @@ theorem exists_unit {m : ℕ} (hm : 1 ≤ m) {a : Matrix (Fin n) (Fin n) k}
     exact hcoe i j
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hG, hC⟩`. Establish `hG' : h ∈ Gz Z` using `hG`. Establish `hC' : h ∈ GLnLocal.congruenceSubgroup k n m` using `hC`. Rewrite `hC'` using `[GLnLocal.mem_congruenceSubgroup_iff]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun a ha => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_sub, sub_mul, mul_one, one_mul, hG' a ha]`. Rewrite using `[Matrix.sub_apply]`. Conclude with `hC'.2 i j`. Introduce `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h', hh', hv⟩` from `exists_unit hm hx.2`. Establish `heq : h' = h` using `Units.ext (by rw [hv]; abel)`. Establish `hG : h ∈ Gz Z`. Introduce `a ha`. Use `hx.1 a ha` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[mul_sub, sub_mul, mul_one, one_mul]`. Conclude with `sub_left_inj.mp this`. Conclude with `⟨hG, heq ▸ hh'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_Lc_iff (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {m : ℕ} (hm : 1 ≤ m) (h : GL (Fin n) k) :
     h ∈ Lc Z m ↔ h.val - 1 ∈ Lat Z m := by
@@ -114,7 +110,7 @@ theorem mem_Lc_iff (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {m : ℕ} (hm :
     exact ⟨hG, heq ▸ hh'⟩
 
 /- English proof (translation)
-Take `⟨h, -, e⟩` from `exists_unit hm ha.2`. Use `⟨h, (mem_Lc_iff Z hm h).mpr ?_, e⟩` and prove the remaining obligations. Rewrite using `[e, add_sub_cancel_left]`. Conclude with `ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_Lc (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {m : ℕ} (hm : 1 ≤ m)
     {a : Matrix (Fin n) (Fin n) k} (ha : a ∈ Lat Z m) : ∃ h ∈ Lc Z m, h.val = 1 + a := by
@@ -125,17 +121,17 @@ theorem exists_Lc (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {m : ℕ} (hm : 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Set `e : H ≃ A` to `{ toFun := fun x => ⟨(x : GL (Fin n) k).val - 1, h1 x x.2⟩ invFun := fun a => ⟨(h2 a a.2).choose, (h2 a a.2).choose_spec.1⟩ left_inv := fun x => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[(h2 _ (h1 x x.2)).choose_spec.2]`. Normalize the expressions using the abelian group laws.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `right_inv := fun a => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(h2 a a.2).choose.val - 1 = a`. Rewrite using `[(h2 a a.2).choose_spec.2]`. Use `abel }`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `key : ∀ x y : H, x⁻¹ * y ∈ K.subgroupOf H ↔ -(e x) + e y ∈ N.addSubgroupOf A`. Introduce `x y`. Rewrite using `[Subgroup.mem_subgroupOf, AddSubgroup.mem_addSubgroupOf, h4]`. Establish `hx : (x : GL (Fin n) k) ∈ H` using `x.2`. Establish `hinv : (x : GL (Fin n) k)⁻¹ ∈ H` using `H.inv_mem x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((x : GL (Fin n) k)⁻¹ * (y : GL (Fin n) k)).val - 1 ∈ N ↔ -((x : GL (Fin n) k).val - 1) + ((y : GL (Fin n) k).val - 1) ∈ N`. Establish `h6 : -((x : GL (Fin n) k).val - 1) + ((y : GL (Fin n) k).val - 1) = (y : GL (Fin n) k).val - (x : GL (Fin n) k).val` using `by abel`. Establish `h5 : ((x : GL (Fin n) k)⁻¹ * (y : GL (Fin n) k)).val - 1 = ((x : GL (Fin n) k)⁻¹).val * ((y : GL (Fin n) k).val - (x : GL (Fin n) k).val)`. Rewrite using `[Units.val_mul, mul_sub, Units.inv_mul]`. Rewrite using `[h5, h6]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hN`. Use `h3 _ hx _ hN` as an intermediate fact. Rewrite `this` using `[← mul_assoc, Units.mul_inv, one_mul]`. Then use the resulting hypothesis. Introduce `hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `h3 _ hinv _ hN`. Express the relevant statement in the definitionally equal form `Nat.card (H ⧸ K.subgroupOf H) = Nat.card (A ⧸ N.addSubgroupOf A)`. Conclude with `Nat.card_congr (Quotient.congr e fun x y => by`. Rewrite using `[QuotientGroup.leftRel_apply, QuotientAddGroup.leftRel_apply]`. Conclude with `key x y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_eq_of_coset (H K : Subgroup (GL (Fin n) k)) (A N : AddSubgroup (Matrix (Fin n) (Fin n) k))
     (h1 : ∀ h ∈ H, h.val - 1 ∈ A) (h2 : ∀ a ∈ A, ∃ h ∈ H, h.val = 1 + a)
@@ -179,9 +175,9 @@ theorem relIndex_eq_of_coset (H K : Subgroup (GL (Fin n) k)) (A N : AddSubgroup 
     exact key x y)
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_, fun r s => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hy.1 a ha, mul_assoc, hx.1 a ha, mul_assoc]`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem mul_mem_Lat_of_mem_Lat_zero (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {j : ℕ}
     {y x : Matrix (Fin n) (Fin n) k} (hy : y ∈ Lat Z 0) (hx : x ∈ Lat Z j) : y * x ∈ Lat Z j := by
@@ -195,11 +191,9 @@ private theorem mul_mem_Lat_of_mem_Lat_zero (Z : Subalgebra k (Matrix (Fin n) (F
       _ = _ := one_mul _
 
 /- English proof (translation)
-Apply `relIndex_eq_of_coset` to reduce the goal to its premises. Introduce `h hh`. Conclude with `(mem_Lc_iff Z hm h).1 hh`. Introduce `a ha`. Conclude with `exists_Lc Z hm ha`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h hh x hx`. Use `one_add_mem_zero_lattice Z ((mem_Lc_iff Z hm h).1 hh)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `mul_mem_Lat_of_mem_Lat_zero Z this hx`. Introduce `h`.
-
-Conclude with `mem_Lc_iff Z (hm.trans hmm) h`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem relIndex_Lc (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {m m' : ℕ} (hm : 1 ≤ m) (hmm : m ≤ m') :
     (Lc Z m').relIndex (Lc Z m) = (Lat Z m').relIndex (Lat Z m) := by
@@ -216,15 +210,15 @@ theorem relIndex_Lc (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {m m' : ℕ} (
     exact mem_Lc_iff Z (hm.trans hmm) h
 
 /- English proof (translation)
-Apply `relIndex_eq_of_coset` to reduce the goal to its premises. Introduce `h hh`. Take `⟨h0, hh0, rfl⟩` from `Subgroup.mem_map.1 hh`. Use `AddSubgroup.mem_map.2 ⟨h0.val - 1, (mem_Lc_iff Z hm h0).1 hh0, ?_⟩` and prove the remaining obligations. Rewrite using `[conjA_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, Units.val_mul, Units.val_mul, mul_sub, sub_mul, mul_one, Units.mul_inv]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Take `⟨a0, ha0, rfl⟩` from `AddSubgroup.mem_map.1 ha`. Take `⟨h0, hh0, hv⟩` from `exists_Lc Z hm ha0`. Use `⟨g * h0 * g⁻¹, Subgroup.mem_map.2 ⟨h0, hh0, by rw [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[conjA_apply, Units.val_mul, Units.val_mul, hv, mul_add, add_mul, mul_one, Units.mul_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h hh x hx`. Take `⟨h0, hh0, rfl⟩` from `Subgroup.mem_map.1 hh`. Establish `hd : h0.val - 1 ∈ Lat Z ((m - c) + c)`. Rewrite using `[Nat.sub_add_cancel hcm]`. Conclude with `(mem_Lc_iff Z hm h0).1 hh0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy` using `one_add_mem_zero_lattice Z (hc _ _ hd).1`. Establish `he : 1 + conjA g (h0.val - 1) = ((MulAut.conj g).toMonoidHom h0).val`. Rewrite using `[conjA_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, Units.val_mul, Units.val_mul, mul_sub, sub_mul, mul_one, Units.mul_inv]`. Normalize the expressions using the abelian group laws. Rewrite `hy` using `[he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_mem_Lat_of_mem_Lat_zero Z hy hx`. Introduce `h`. Conclude with `mem_Lc_iff Z (hm.trans hmm) h`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_Lc_conj (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (g : GL (Fin n) k) (hg : g ∈ Gz Z)
     (c : ℕ) (hc : ∀ j : ℕ, ∀ x ∈ Lat Z (j + c), conjA g x ∈ Lat Z j ∧ conjA g⁻¹ x ∈ Lat Z j)
@@ -258,11 +252,11 @@ theorem relIndex_Lc_conj (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (g : GL (
     exact mem_Lc_iff Z (hm.trans hmm) h
 
 /- English proof (translation)
-Introduce `h hh`. Establish `hm' : 1 ≤ m'` using `by omega`. Establish `hx` using `(mem_Lc_iff Z hm' h).1 hh`. Use `⟨(mem_Lc_iff Z hm h).2 (Lat_anti Z (by omega) hx), ?_⟩` and prove the remaining obligations. Establish `hx' : h.val - 1 ∈ Lat Z (m + c)` using `Lat_anti Z hmm hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0 : g⁻¹ * h * g ∈ Lc Z m`. Use `(mem_Lc_iff Z hm _).2 ?_` and prove the remaining obligations. Use `(hc m _ hx').2` as an intermediate fact. Rewrite `this` using `[conjA_apply, inv_inv]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[Units.val_mul, Units.val_mul, mul_sub, sub_mul, mul_one, Units.inv_mul]`. Use `Subgroup.mem_map.2 ⟨_, h0, ?_⟩` and prove the remaining obligations. Rewrite using `[MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lc_le (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (g : GL (Fin n) k) (hg : g ∈ Gz Z)
     (c : ℕ) (hc : ∀ j : ℕ, ∀ x ∈ Lat Z (j + c), conjA g x ∈ Lat Z j ∧ conjA g⁻¹ x ∈ Lat Z j)

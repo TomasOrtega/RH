@@ -13,7 +13,7 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
 
 /- English proof (translation)
-Rewrite using `[H.h_herm, h_sum_left, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← H.h_herm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem h_sum_right {ι : Type} (s : Finset ι) (c : ι → E) (g : ι → V) (u : V) :
     H.h u (∑ i ∈ s, c i • g i) = ∑ i ∈ s, M.L.cj (c i) * H.h u (g i) := by
@@ -24,7 +24,7 @@ theorem h_sum_right {ι : Type} (s : Finset ι) (c : ι → E) (g : ι → V) (u
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `hs : (∑ i, (Matrix.vecMul (fun j => H.h u (g j)) (gramH H g)⁻¹) i • g i) ∈ Submodule.span E (Set.range g)` using `(Submodule.mem_span_range_iff_exists_fun E).2 ⟨_, rfl⟩`. Establish `h' : pairSpan H g ⟨u, hu⟩ = pairSpan H g ⟨_, hs⟩` using `by show pairing H g u = pairing H g (∑ i, (Matrix.vecMul (fun j => H.h u (g j)) (gramH H g)⁻¹) i • g i)`. Rewrite using `[pairing_sum, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hG, Matrix.vecMul_one]`. Both sides reduce to the same expression. Conclude with `congrArg Subtype.val ((pairSpan_bij H g hG).1 h')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem span_eq_sum (g : ι → V) (hG : IsUnit (gramH H g).det) (u : V)
     (hu : u ∈ Submodule.span E (Set.range g)) :
@@ -39,9 +39,9 @@ theorem span_eq_sum (g : ι → V) (hG : IsUnit (gramH H g).det) (u : V)
   exact congrArg Subtype.val ((pairSpan_bij H g hG).1 h')
 
 /- English proof (translation)
-Use `(congrArg (fun x => H.h x w) (span_eq_sum H g hG u hu)).trans ?_` and prove the remaining obligations. Rewrite using `[h_sum_left]`. Simplify using `only [Matrix.vecMul, dotProduct, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[H.h_herm w (g j)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_eq_form (g : ι → V) (hG : IsUnit (gramH H g).det) (u w : V)
     (hu : u ∈ Submodule.span E (Set.range g)) :
@@ -66,14 +66,14 @@ def GoodL {r : ℕ} (t : Term V M r) : Prop :=
     IsUnit (H.Dl t.f t.f' (r + 1)) ∧ H.Dl t.f t.f' r = 0
 
 /- English proof (translation)
-Unfold `HermSp.MMfam`. Rewrite using `[hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mmfam_none (hs : M.split = none) {r : ℕ} (t : Term V M r) :
     H.MMfam t = Sum.elim t.f t.f' := by
   unfold HermSp.MMfam; rw [hs]
 
 /- English proof (translation)
-Rewrite using `[gramC_eq H _ _ _ _ hg.2.1 hg.2.2.1, mmfam_none H hg.1]`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem gramH_eq {r : ℕ} {t : Term V M r} (hg : GoodL H t) :
     gramH H (H.MMfam t) = gramC (M.L.cj : E →+* E) (H.Zhat t.f t.f') (algebraMap F E t.T)
@@ -83,7 +83,7 @@ theorem gramH_eq {r : ℕ} {t : Term V M r} (hg : GoodL H t) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[gramH_eq H hg]`. Conclude with `unit_gramC H _ _ _ _ hg.2.1 hg.2.2.1 hg.2.2.2.1 hg.2.2.2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_gramH {r : ℕ} {t : Term V M r} (hg : GoodL H t) :
     IsUnit (gramH H (H.MMfam t)).det := by
@@ -91,7 +91,7 @@ theorem unit_gramH {r : ℕ} {t : Term V M r} (hg : GoodL H t) :
   exact unit_gramC H _ _ _ _ hg.2.1 hg.2.2.1 hg.2.2.2.1 hg.2.2.2.2
 
 /- English proof (translation)
-Use extensionality with `y`. Use `show (∃ c : Ix r → M.L.O, ∀ j, (y j : E) = ∑ i, (c i : E) * gramH H (H.MMfam t) i j) ↔ _`. Rewrite using `[gramH_eq H hg]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem relSub_eq {r : ℕ} {t : Term V M r} (hg : GoodL H t) :
     relSub H t = relC M.L.O (M.L.cj : E →+* E) (H.Zhat t.f t.f') (algebraMap F E t.T)
@@ -113,7 +113,7 @@ theorem Psi_mk {r : ℕ} {t : Term V M r} (hg : GoodL H t) (u : ↥(MMsharp H t)
     Psi H hg (ddMk H t u) = Submodule.Quotient.mk (sharpEquiv H t (unit_gramH H hg) u) := rfl
 
 /- English proof (translation)
-Rewrite using `[h_eq_form H (H.MMfam t) (unit_gramH H hg) u w ((mem_MMsharp_iff H t u).1 u.2).1, formC, ← gramH_eq H hg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem h_eq_formC {r : ℕ} {t : Term V M r} (hg : GoodL H t) (u w : ↥(MMsharp H t)) :
     H.h u w = formC M.L.O (M.L.cj : E →+* E) (H.Zhat t.f t.f') (algebraMap F E t.T)

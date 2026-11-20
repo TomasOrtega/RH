@@ -14,7 +14,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL Formalism.BasicNotions GlobalTheory.Cus
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Unfold `dS`. Rewrite using `[MonoidHom.finset_prod_apply, Finset.prod_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.mulSingle_eq_of_ne hj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -28,13 +28,13 @@ private theorem dS_single {K : Type} [Field K] [NumberField K] {r : ℕ} (w : Fi
   · simp
 
 /- English proof (translation)
-Establish `h1 : (fun j => (lev₂ (w j) ((Pi.mulSingle i p : ∀ j, PW (w j)) j)).1) = Pi.mulSingle i (lev₂ (w i) p).1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.mulSingle_eq_of_ne h]`. Establish `h2 : (fun j => (lev₂ (w j) ((Pi.mulSingle i p : ∀ j, PW (w j)) j)).2) = Pi.mulSingle i (lev₂ (w i) p).2`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne h]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MultiplicityOne.finProj K 2 (ι (fun j => (lev₂ (w j) ((Pi.mulSingle i p : ∀ j, PW (w j)) j)).1)) = _`. Rewrite using `[h1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `MultiplicityOne.finProj K 2 (ι (fun j => (lev₂ (w j) ((Pi.mulSingle i p : ∀ j, PW (w j)) j)).2)) = _`. Rewrite using `[h2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem blocks_single {K : Type} [Field K] [NumberField K] {r : ℕ} {w : Fin r → Pl K} (ι : GS 2 w →* FA K 2)
     (i : Fin r) (p : PW (w i)) :
@@ -60,31 +60,27 @@ private theorem blocks_single {K : Type} [Field K] [NumberField K] {r : ℕ} {w 
     rw [h2]
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ τ₁ τ₂ κ p₁ p₂ h₁ h₂ e₁ e₂ r w ι hw hι hne i`. Establish `hX₁ : Xs μ τ₁ κ p₁ (im w) ≠ ⊥`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff, tensFn, Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨φ, hφ, ψ, _, rfl⟩`. Rewrite `hφ` using `[h, Submodule.mem_bot]`. Substitute `hφ` using the available equality. Simplify using `only [Submodule.bot_coe, Set.mem_singleton_iff]`. Use function extensionality and compare the values at `x`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Establish `hX₂ : Xs μ τ₂ κ p₂ (im w) ≠ ⊥`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff, tensFn, Submodule.span_le]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨φ, _, ψ, hψ, rfl⟩`. Rewrite `hψ` using `[h, Submodule.mem_bot]`. Substitute `hψ` using the available equality. Simplify using `only [Submodule.bot_coe, Set.mem_singleton_iff]`. Use function extensionality and compare the values at `x`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Take `⟨σ₁, f₁, o₁, n₁, m₁, q₁⟩` from `xOcc μ τ₁ κ p₁ h₁ e₁ w ι hw hι hX₁ i`. Take `⟨σ₂, f₂, o₂, n₂, m₂, q₂⟩` from `xOcc μ τ₂ κ p₂ h₂ e₂ w ι hw hι hX₂ i`. Set `f : σ₁.V ⊗[ℂ] σ₂.V →ₗ[ℂ] (G1 K 2 × G1 K 2 → ℂ)` to `TensorProduct.lift (LinearMap.mk₂ ℂ (fun a b x => f₁ a x.1 * f₂ b x.2) (fun _ _ _ => by funext x; simp [add_mul]) (fun _ _ _ => by funext x; simp [mul_assoc]) (fun _ _ _ => by funext x; simp [mul_add]) (fun _ _ _ => by funext x; simp [mul_left_comm]))`. Establish `hf : ∀ a b, f (a ⊗ₜ b) = fun x => f₁ a x.1 * f₂ b x.2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a b`. Simplify using `only [f, TensorProduct.lift.tmul, LinearMap.mk₂_apply]`. Use `⟨σ₁.V ⊗[ℂ] σ₂.V, inferInstance, inferInstance, rhoW (w i) σ₁ σ₂, f, locDat (w i) σ₁ σ₂ (occUnit 2 μ τ₁ (w i) σ₁ o₁) (occUnit 2 μ τ₂ (w i) σ₂ o₂), ?_, ?_, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, f₁ a ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hc`. Conclude with `n₁ (LinearMap.ext hc)`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, f₂ b ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `n₂ (LinearMap.ext hc)`. Take `⟨x, hx⟩` from `Function.ne_iff.1 ha`. Take `⟨y, hy⟩` from `Function.ne_iff.1 hb`. Introduce `h0`. Use `congrFun (hf a b) (x, y)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite `this` using `[h0]`. Conclude with `mul_ne_zero hx hy this.symm`. Introduce `v`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `tmul a b`. Rewrite using `[hf]`. Conclude with `Submodule.subset_span ⟨_, m₁ a, _, m₂ b, rfl⟩`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem _ hx hy`. Introduce `p v`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
-
-Consider the case `tmul a b`. Establish `hL : rhoW (w i) σ₁ σ₂ p (a ⊗ₜ b) = ((dl (w i) p : ℂˣ) : ℂ) • (σ₁.ρ (lev₂ (w i) p).1 a ⊗ₜ σ₂.ρ (lev₂ (w i) p).2 b)`. Simplify using `only [rhoW, twist_apply, MonoidHom.comp_apply, extTensor_tmul]`. Rewrite using `[hL, map_smul, hf, hf, q₁, q₂]`. Simplify using `only [xS, twist_apply, MonoidHom.comp_apply, dS_single, blocks_single]`.
-
-Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.exists_local_subrep_of_isotypic_tensor_ne_bot :
     ∀ {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ : Measure (G1 K 2)) [μ.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ)) (κ : Measure (archCompact K 2)) (p₁ p₂ : archCompact K 2 → ℂ),

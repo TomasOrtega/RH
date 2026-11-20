@@ -7,7 +7,7 @@ open scoped MatrixGroups ModularForm
 namespace UpperTheory.V.Sd
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ModularForm.coe_add, ModularForm.coe_smul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem coe_comb {N : ℕ} {k : ℤ} {I : Type} (s : Finset I) (c : I → ℂ) (f : I → ModularForm (Gamma1 N) k) :
     ((∑ a ∈ s, c a • f a : ModularForm (Gamma1 N) k) : ℍ → ℂ) = ∑ a ∈ s, c a • (f a : ℍ → ℂ) := by
@@ -17,9 +17,9 @@ private theorem coe_comb {N : ℕ} {k : ℤ} {I : Type} (s : Finset I) (c : I �
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ModularForm.coe_add, ModularForm.coe_smul, ih]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_strictPeriods_iff, Subgroup.mem_map]`. Use `⟨ModularGroup.T, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`. Simplify using `[ModularGroup.T]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;>`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[Matrix.GeneralLinearGroup.upperRightHom, Matrix.SpecialLinearGroup.mapGL, ModularGroup.coe_T]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem one_mem_per (N : ℕ) :
     (1 : ℝ) ∈ (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) (Gamma1 N)).strictPeriods := by
@@ -32,7 +32,7 @@ private theorem one_mem_per (N : ℕ) :
       simp [Matrix.GeneralLinearGroup.upperRightHom, Matrix.SpecialLinearGroup.mapGL, ModularGroup.coe_T]
 
 /- English proof (translation)
-Unfold `coef`. Rewrite using `[ModularForm.qExpansion_smul one_pos (one_mem_per N) c f]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem coef_smul {N : ℕ} {k : ℤ} (c : ℂ) (f : ModularForm (Gamma1 N) k) (n : ℕ) :
     coef (c • (f : ℍ → ℂ)) n = c * coef f n := by
@@ -41,9 +41,9 @@ private theorem coef_smul {N : ℕ} {k : ℤ} (c : ℂ) (f : ModularForm (Gamma1
   simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [coef, qExpansion_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih, ← coef_smul]`. Unfold `coef`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[ModularForm.coe_add, ModularFormClass.qExpansion_add one_pos (one_mem_per N), map_add, ModularForm.coe_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem coef_comb {N : ℕ} {k : ℤ} {I : Type} (s : Finset I) (c : I → ℂ) (f : I → ModularForm (Gamma1 N) k) (n : ℕ) :
     coef (∑ a ∈ s, c a • f a : ModularForm (Gamma1 N) k) n = ∑ a ∈ s, c a * coef (f a) n := by
@@ -57,9 +57,9 @@ private theorem coef_comb {N : ℕ} {k : ℤ} {I : Type} (s : Finset I) (c : I �
       ModularForm.coe_smul]
 
 /- English proof (translation)
-Use extensionality with `τ`. Rewrite using `[ModularForm.SL_slash_apply]`. Establish `h : Matrix.SpecialLinearGroup.toGL (-1 : SL(2, ℝ)) = -1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[h, denom_neg, denom_one, ← inv_pow, inv_neg, inv_one, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem slash_neg_one (k : ℕ) (f : ℍ → ℂ) : f ∣[(k : ℤ)] (-1 : SL(2, ℤ)) = ((-1 : ℂ) ^ k) • f := by
   ext τ
@@ -71,7 +71,7 @@ private theorem slash_neg_one (k : ℕ) (f : ℍ → ℂ) : f ∣[(k : ℤ)] (-1
   rw [h, denom_neg, denom_one, ← inv_pow, inv_neg, inv_one, mul_comm]
 
 /- English proof (translation)
-Establish `h2 : (2 : Qbar l) = algebraMap ℚ_[l] (PadicAlgCl l) ((2 : ℕ) : ℚ_[l])`. Rewrite using `[Nat.cast_ofNat, map_ofNat]`. Rewrite using `[h2, PadicAlgCl.norm_extends, Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.coprime_primes (Fact.out) Nat.prime_two).mpr hl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_two (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) : ‖(2 : Qbar l)‖ = 1 := by
   have h2 : (2 : Qbar l) = algebraMap ℚ_[l] (PadicAlgCl l) ((2 : ℕ) : ℚ_[l]) := by
@@ -80,7 +80,7 @@ private theorem norm_two (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) : ‖(2 : Qbar 
   exact (Nat.coprime_primes (Fact.out) Nat.prime_two).mpr hl
 
 /- English proof (translation)
-Establish `hpow : (ι.symm (χ (a : ZMod N))) ^ orderOf a = 1`. Rewrite using `[← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, pow_orderOf_eq_one, Units.val_one, map_one, map_one]`. Establish `hn : orderOf a ≠ 0` using `(orderOf_pos a).ne'`. Establish `hnorm : ‖ι.symm (χ (a : ZMod N))‖ ^ orderOf a = 1` using `by rw [← norm_pow, hpow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).mp hnorm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem norm_chi {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     (a : (ZMod N)ˣ) : ‖ι.symm (χ (a : ZMod N))‖ = 1 := by
@@ -94,37 +94,33 @@ end UpperTheory.V.Sd
 
 open UpperTheory.V.Sd in
 /- English proof (translation)
-Introduce `l _ hl ι N _ hN hlN`. Take `⟨k₀, hk₀⟩` from `unitFam l hl ι N hN hlN`. Use `⟨k₀, fun k hk χ hχ => ?_⟩` and prove the remaining obligations. Take `⟨f, hfam, hint, hvan, hnorm1, hzero⟩` from `hk₀ k hk`. Use `set c1 := coef (f 1) 0 with hc1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc1ne : c1 ≠ 0`. Introduce `h`. Rewrite `hnorm1` using `[h, map_zero, norm_zero]`. Conclude with `zero_ne_one hnorm1`. Use `set w : (ZMod N)ˣ → ℂ := fun a => (2 * c1)⁻¹ * χ ((a⁻¹ : (ZMod N)ˣ) : ZMod N) with hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hslash : ∀ (s : Finset (ZMod N)ˣ) (γ : SL(2, ℤ)), (∑ a ∈ s, w a • (f a : ℍ → ℂ)) ∣[(k : ℤ)] γ = ∑ a ∈ s, w a • ((f a : ℍ → ℂ) ∣[(k : ℤ)] γ)`. Introduce `s γ`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [SlashAction.zero_slash]`. Consider the case `insert a s ha ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, SlashAction.add_slash, ih, ModularForm.SL_smul_slash]`. Use `⟨∑ a, w a • f a, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ`. Rewrite using `[coe_comb, hslash]`. Establish `h10 : (((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ℤ) : ZMod N) = 0` using `CongruenceSubgroup.Gamma0_mem.mp hγ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hdet : (((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 : ℤ) : ZMod N) * (((γ : Matrix (Fin 2) (Fin 2) ℤ) 0 0 : ℤ) : ZMod N) = 1`. Establish `h` using `congrArg (fun x : ℤ => (x : ZMod N)) (Matrix.SpecialLinearGroup.det_coe γ)`. Simplify using `only [Matrix.det_fin_two, Int.cast_sub, Int.cast_mul, Int.cast_one, h10, mul_zero, sub_zero] at h`. Rewrite using `[mul_comm]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `set u : (ZMod N)ˣ := Units.mkOfMulEqOne _ _ hdet with hu`. Establish `huv : (u : ZMod N) = (((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 : ℤ) : ZMod N)` using `rfl`. Establish `hstep : ∀ a, (f a : ℍ → ℂ) ∣[(k : ℤ)] γ = f (a * u)`. Introduce `a`. Conclude with `hfam a (a * u) γ hγ (by rw [Units.val_mul, huv])`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [hstep]`. Rewrite using `[Fintype.sum_equiv (Equiv.mulRight u) (fun a => w a • (f (a * u) : ℍ → ℂ)) (fun b => w (b * u⁻¹) • (f b : ℍ → ℂ)) (fun a => by simp)]`. Rewrite using `[← huv, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Simplify using `only [hw, mul_inv_rev, inv_inv, Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `n`. Rewrite using `[coef_comb, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul]`. Establish `hwa : ‖ι.symm (w a)‖ = 1`. Simplify using `only [hw, map_mul, map_inv₀, norm_mul, norm_inv, norm_chi, map_ofNat, norm_two l hl, hnorm1]`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[hwa, one_mul]`. Conclude with `hint a n`. Introduce `γ hγ`. Rewrite using `[coe_comb, hslash]`. Establish `hz : ∀ s : Finset (ZMod N)ˣ, IsZeroAtImInfty (∑ a ∈ s, w a • ((f a : ℍ → ℂ) ∣[(k : ℤ)] γ))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty]`. Conclude with `Filter.zero_zeroAtFilter _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `((hvan a γ hγ).smul (w a)).add ih`. Conclude with `hz _`. Use `haveI : Fact (2 < N) := ⟨by omega⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne : (1 : (ZMod N)ˣ) ≠ -1`. Introduce `h`. Use `congrArg Units.val h` as an intermediate fact. Simplify using `only [Units.val_one, Units.val_neg] at this`. Conclude with `ZMod.neg_one_ne_one this.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hm1 : (f (-1) : ℍ → ℂ) = ((-1 : ℂ) ^ k) • (f 1 : ℍ → ℂ)`. Rewrite using `[← slash_neg_one]`. Use `(hfam 1 (-1) (-1) ?_ ?_).symm` and prove the remaining obligations. Rewrite using `[CongruenceSubgroup.Gamma0_mem]`. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules. Establish `hcm1 : coef (f (-1)) 0 = (-1 : ℂ) ^ k * c1`. Rewrite using `[hm1, coef_smul]`. Rewrite using `[coef_comb, Fintype.sum_eq_add 1 (-1) hne (fun x hx => by rw [hzero x hx.1 hx.2, mul_zero]), hcm1]`. Simplify using `only [hw, inv_one, Units.val_one, map_one, inv_neg_one, Units.val_neg, hχ]`.
-
-Clear the denominators using the available nonvanishing facts. Establish `hsq : ((-1 : ℂ) ^ k) ^ 2 = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, neg_one_sq, one_pow]`. Rewrite using `[hsq, ← hc1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.unitForm :
     UpperTheory.V.Sd.UnitForm := by

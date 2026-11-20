@@ -9,11 +9,11 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.InertLocFrame
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ v n X L _ ι hι g A hg u hu`. Establish `hent : ∀ i j, (mat g - 1) i j = ι ((A - 1) i j)`. Introduce `i j`. Rewrite using `[hg]`. Distinguish the cases in `h : i = j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[Matrix.one_apply, map_sub]`. Normalize the expressions using the abelian group laws. Simplify using `[Matrix.one_apply, h, map_sub]`. Use extensionality with `i j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `h1 : At (evFin F v) ((mat g - 1) i j)` using `(hι _).2 ⟨_, (hent i j).symm⟩`. Simplify using `using h1 u hu`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem uAt_of_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (v : Pl F) (n : ℕ) (X : Spc F E n) (L : Type) [Field L]
     (ι : L →+ AE F E), (∀ z : AE F E, At (evFin F v) z ↔ ∃ x, ι x = z) →

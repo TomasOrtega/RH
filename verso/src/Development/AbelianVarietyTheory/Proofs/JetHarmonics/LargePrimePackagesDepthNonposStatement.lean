@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Jets.DepthNumbersThresholdEq
 open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds Formalism.UnitaryBoundIntegral Formalism.L2.DIV Formalism.L2.Pj Formalism.BasicNotions GlobalTheory.GoodDepth NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GoodDepth.zeroBd | exact GlobalTheory.GoodDepth.zeroBd | (intros; apply GlobalTheory.GoodDepth.zeroBd <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.largePrime_packages_depth_nonpos : ZeroBd := by
   first | exact @GlobalTheory.GoodDepth.zeroBd | exact GlobalTheory.GoodDepth.zeroBd | (intros; apply GlobalTheory.GoodDepth.zeroBd <;> assumption)

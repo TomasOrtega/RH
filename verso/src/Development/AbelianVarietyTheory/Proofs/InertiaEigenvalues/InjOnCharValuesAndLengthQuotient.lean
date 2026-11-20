@@ -8,7 +8,7 @@ namespace GlobalTheory.CharValueLength
 
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Apply `h` to reduce the goal to its premises. Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hx`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_of_toZMod_ne_zero' {x : ℤ_[l]} (h : PadicInt.toZMod x ≠ 0) : IsUnit x := by
   by_contra hx
@@ -18,17 +18,15 @@ private theorem isUnit_of_toZMod_ne_zero' {x : ℤ_[l]} (h : PadicInt.toZMod x �
 
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Take `⟨n, hn⟩ : ∃ n, l = n + 2` from `⟨l - 2, by omega⟩`. Use `set x := (l : ℤ_[l]) ^ r * w with hx`. Establish `hexp : u ^ l = (∑ j ∈ Finset.range (n + 1), x ^ (j + 1 + 1) * ((l.choose (j + 1 + 1) : ℕ) : ℤ_[l])) + x * l + 1`. Rewrite using `[hu, add_comm, add_pow, show l + 1 = n + 1 + 1 + 1 by omega, Finset.sum_range_succ', Finset.sum_range_succ']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [one_pow, mul_one, pow_zero, pow_one, Nat.choose_zero_right, Nat.choose_one_right, Nat.cast_one, zero_add]`. Establish `hdvd : (l : ℤ_[l]) ^ (r + 2) ∣ ∑ j ∈ Finset.range (n + 1), x ^ (j + 1 + 1) * ((l.choose (j + 1 + 1) : ℕ) : ℤ_[l])`. Use `Finset.dvd_sum fun j hj => ?_` and prove the remaining obligations. Establish `hj' : j + 2 ≤ l` using `by rw [Finset.mem_range] at hj; omega`. Establish `hxp : x ^ (j + 1 + 1) = (l : ℤ_[l]) ^ (r * (j + 1 + 1)) * w ^ (j + 1 + 1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, mul_pow, ← pow_mul]`. Break down `Nat.lt_or_ge (j + 2) l with hlt | hge` into its components or cases. Establish `hc : (l : ℤ_[l]) ∣ ((l.choose (j + 1 + 1) : ℕ) : ℤ_[l])` using `Nat.cast_dvd_cast ((Fact.out : l.Prime).dvd_choose_self (by omega) (by omega))`. Establish `h1 : (l : ℤ_[l]) ^ (r + 2) ∣ (l : ℤ_[l]) ^ (r * (j + 1 + 1)) * l`. Rewrite using `[← pow_succ]; exact pow_dvd_pow _ (by nlinarith)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.trans (mul_dvd_mul (Dvd.intro _ hxp.symm) hc)`. Establish `hle : r + 2 ≤ r * (j + 1 + 1)`. Break down `Nat.lt_or_ge l 3 with h | h` into its components or cases. Use `h2 (by omega); nlinarith` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((pow_dvd_pow _ hle).trans (Dvd.intro _ hxp.symm)).mul_right _`. Take `⟨c, hc⟩` from `hdvd`. Use `⟨w + l * c, isUnit_of_toZMod_ne_zero' ?_, ?_⟩` and prove the remaining obligations. Simplify `(hw.map PadicInt.toZMod).ne_zero` using `[ZMod.natCast_self]`. Rewrite using `[hexp, hc, hx]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem principalUnit_pow_prime_eq_one_add_pow_succ {u w : ℤ_[l]} {r : ℕ} (hr : 1 ≤ r)
     (h2 : l = 2 → 2 ≤ r) (hw : IsUnit w) (hu : u = 1 + (l : ℤ_[l]) ^ r * w) :
@@ -66,7 +64,7 @@ private theorem principalUnit_pow_prime_eq_one_add_pow_succ {u w : ℤ_[l]} {r :
 
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Rewrite using `[hu]`. Simplify using `[ZMod.natCast_self, zero_pow (Nat.one_le_iff_ne_zero.1 hr)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem toZMod_principalUnit_eq_one {u w : ℤ_[l]} {r : ℕ} (hr : 1 ≤ r)
     (hu : u = 1 + (l : ℤ_[l]) ^ r * w) : PadicInt.toZMod u = 1 := by
@@ -75,9 +73,9 @@ private theorem toZMod_principalUnit_eq_one {u w : ℤ_[l]} {r : ℕ} (hr : 1 �
 
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Use `⟨w * ∑ i ∈ Finset.range m, u ^ i, hw.mul (isUnit_of_toZMod_ne_zero' ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [map_pow, toZMod_principalUnit_eq_one hr hu, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Conclude with `fun h => hm ((ZMod.natCast_eq_zero_iff m l).1 h)`. Establish `hg` using `geom_sum_mul u m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hu1 : u - 1 = (l : ℤ_[l]) ^ r * w` using `by rw [hu]; ring`. Rewrite `hg` using `[hu1]`. Take the linear combination `-hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem principalUnit_pow_of_not_dvd {u w : ℤ_[l]} {r m : ℕ} (hr : 1 ≤ r)
     (hw : IsUnit w) (hu : u = 1 + (l : ℤ_[l]) ^ r * w) (hm : ¬ l ∣ m) :
@@ -94,11 +92,11 @@ private theorem principalUnit_pow_of_not_dvd {u w : ℤ_[l]} {r m : ℕ} (hr : 1
 
 variable {l : ℕ} [Fact l.Prime] in
 /- English proof (translation)
-Establish `hpow : ∀ a : ℕ, ∃ w' : ℤ_[l], IsUnit w' ∧ u ^ (l ^ a) = 1 + (l : ℤ_[l]) ^ (r + a) * w'`. Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => exact ⟨w, hw, by simpa using hu⟩`. Consider the case `succ a ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨w', hw', h'⟩` from `ih`. Take `⟨w'', hw'', h''⟩` from `principalUnit_pow_prime_eq_one_add_pow_succ (by omega) (fun h => by have := h2 h; omega) hw' h'`. Conclude with `⟨w'', hw'', by rw [pow_succ, pow_mul, h'', ← add_assoc]⟩`. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hk l (Fact.out : l.Prime).one_lt.ne'`. Take `⟨w', hw', h'⟩` from `hpow a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w'', hw'', h''⟩` from `principalUnit_pow_of_not_dvd (by omega) hw' h' hm`. Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hm (dvd_zero l)`. Use `⟨w'', hw'', ?_⟩` and prove the remaining obligations. Rewrite using `[padicValNat.mul (pow_ne_zero _ (Fact.out : l.Prime).ne_zero) hm0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hm, add_zero, pow_mul, h'']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem principalUnit_pow_eq_one_add_pow_add_padicValNat {u w : ℤ_[l]} {r : ℕ} (hr : 1 ≤ r) (h2 : l = 2 → 2 ≤ r)
     (hw : IsUnit w) (hu : u = 1 + (l : ℤ_[l]) ^ r * w) {k : ℕ} (hk : k ≠ 0) :
@@ -121,7 +119,7 @@ private theorem principalUnit_pow_eq_one_add_pow_add_padicValNat {u w : ℤ_[l]}
     padicValNat.eq_zero_of_not_dvd hm, add_zero, pow_mul, h'']
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_mul_left_unit w.isUnit, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq]`. Conclude with `IsDiscreteValuationRing.length_quotient_pow_maximalIdeal O n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem length_quotient_span_unit_mul_pow_eq {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {ϖ : O} (hϖ : Irreducible ϖ) (w : Oˣ) (n : ℕ) :
@@ -131,29 +129,27 @@ private theorem length_quotient_span_unit_mul_pow_eq {O : Type} [CommRing O] [Is
   exact IsDiscreteValuationRing.length_quotient_pow_maximalIdeal O n
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ _ s t u v χ hs hs2 huv hχ`. Establish `hl0 : (l : O) ≠ 0` using `_root_.GlobalTheory.LenUnitPow.natCast_ne_zero l`. Establish `hD : ∀ k : ℕ, k ≠ 0 → ∃ ε : Oˣ, algebraMap ℤ_[l] O u ^ k - 1 = ε * (l : O) ^ (s + padicValNat l k)`. Introduce `k hk`. Take `⟨w', hw', h'⟩` from `principalUnit_pow_eq_one_add_pow_add_padicValNat hs hs2 v.isUnit huv hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨(hw'.map (algebraMap ℤ_[l] O)).unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, ← map_pow, h', map_add, map_one, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hrel : ∀ c, 1 ≤ c → c ≤ t → (χ c : O) * algebraMap ℤ_[l] O u ^ (c - 1) = χ 1`. Introduce `c h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : χ c * (Units.map (algebraMap ℤ_[l] O).toMonoidHom u) ^ (c - 1) = χ 1`. Rewrite using `[hχ c h1 h2, mul_assoc, ← zpow_natCast, ← zpow_add, Nat.cast_sub h1, Nat.cast_one, neg_add_cancel, zpow_zero, mul_one]`. Establish `h'` using `congrArg (fun z : Oˣ => (z : O)) h`. Simplify using `using h'`. Establish `hφu : IsUnit (algebraMap ℤ_[l] O u)` using `u.isUnit.map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `c hc c' hc' heq`. Simplify using `only [Finset.coe_Icc, Set.mem_Icc] at hc hc'`. Simplify using `only at heq`. Establish `key : ∀ a b : ℕ, 1 ≤ a ∧ a ≤ t → 1 ≤ b ∧ b ≤ t → (χ a : O) = χ b → a ≤ b → a = b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c c' hc hc' heq hle`. Assume the negation of the conclusion as `hne`. Take `⟨ε, hε⟩` from `hD (c' - c) (by omega)`. Establish `e1` using `hrel c hc.1 hc.2`. Establish `e2` using `hrel c' hc'.1 hc'.2`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e2` using `[← heq, show c' - 1 = (c - 1) + (c' - c) by omega, pow_add]`. Establish `h0 : (χ c : O) * algebraMap ℤ_[l] O u ^ (c - 1) * (algebraMap ℤ_[l] O u ^ (c' - c) - 1) = 0`. Take the linear combination `e2 - e1`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `((χ c).isUnit.mul (hφu.pow _)).ne_zero h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hε]`. Conclude with `mul_ne_zero ε.ne_zero (pow_ne_zero _ hl0) h`. Break down `le_total c c' with hle | hle` into its components or cases. Conclude with `key c c' hc hc' heq hle`. Conclude with `(key c' c hc' hc heq.symm hle).symm`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hterm : ∀ c ∈ Finset.Ioc 1 t, ∃ ε : Oˣ, (χ 1 : O) - χ c = ε * (l : O) ^ (s + padicValNat l (c - 1))`. Introduce `c hc`. Rewrite `hc` using `[Finset.mem_Ioc]`. Take `⟨ε, hε⟩` from `hD (c - 1) (by omega)`. Use `⟨χ c * ε, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hrel c (by omega) hc.2, Units.val_mul, mul_assoc, ← hε]`. Expand and normalize the polynomial expressions, which then agree. Use `choose! ε hε using hterm`. Establish `hprod : ∏ c ∈ Finset.Ioc 1 t, ((χ 1 : O) - χ c) = ((∏ c ∈ Finset.Ioc 1 t, ε c : Oˣ) : O) * (l : O) ^ (∑ c ∈ Finset.Ioc 1 t, (s + padicValNat l (c - 1)))`. Rewrite using `[Finset.prod_congr rfl hε, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Units.coe_prod]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsum : ∑ c ∈ Finset.Ioc 1 t, (s + padicValNat l (c - 1)) = ∑ k ∈ Finset.Ioo 0 t, (s + padicValNat l k)`. Apply the tactic sequence `refine Finset.sum_nbij' (fun c => c - 1) (fun k => k + 1) ?_ ?_ ?_ ?_ ?_ <;> intro a ha <;>`. Apply the tactic sequence `simp only [Finset.mem_Ioc, Finset.mem_Ioo] at ha ⊢ <;> omega`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨e, η, hη⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl0 hϖ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `he : e ≠ 0`. Introduce and unpack `rfl`. Conclude with `_root_.GlobalTheory.LenUnitPow.natCast_not_isUnit l (O := O) (by rw [hη, pow_zero, mul_one]; exact η.isUnit)`. Unfold `_root_.Formalism.BasicNotions.lenUnit`. Rewrite using `[hprod, hsum, hη, mul_pow, ← pow_mul, ← mul_assoc, ← Units.val_pow_eq_pow_val, ← Units.val_mul, length_quotient_span_unit_mul_pow_eq hϖ, length_quotient_span_unit_mul_pow_eq hϖ, ENat.toNat_natCast, ENat.toNat_natCast, Nat.cast_mul, mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 he)]`.
-
-Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CharValueLength.injOn_and_lenUnit : ∀ (l : ℕ) [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [CharZero O] (s t : ℕ) (u v : ℤ_[l]ˣ) (χ : ℕ → Oˣ), 1 ≤ s → (l = 2 → 2 ≤ s) → (u : ℤ_[l]) = 1 + (l : ℤ_[l]) ^ s * (v : ℤ_[l]) → (∀ c : ℕ, 1 ≤ c → c ≤ t → χ c = χ 1 * (Units.map (algebraMap ℤ_[l] O).toMonoidHom u) ^ (-((c : ℤ) - 1))) → Set.InjOn (fun c => (χ c : O)) (Finset.Icc 1 t : Set ℕ) ∧ _root_.Formalism.BasicNotions.lenUnit (O := O) l (O ⧸ Ideal.span {∏ c ∈ Finset.Ioc 1 t, ((χ 1 : O) - (χ c : O))}) = ∑ k ∈ Finset.Ioo 0 t, ((s : ℚ) + padicValNat l k) := by
   intro l _ O _ _ _ _ _ _ s t u v χ hs hs2 huv hχ

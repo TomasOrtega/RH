@@ -8,13 +8,9 @@ set_option maxHeartbeats 1000000
 namespace GlobalTheory.AbhFin
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing C := IsArtinianRing.of_finite K C`. Use `haveI : IsReduced C := Algebra.FormallyUnramified.isReduced_of_field K C`. Use `haveI := Fintype.ofFinite (MaximalSpectrum C)`. Use `haveI : ∀ m : MaximalSpectrum C, Module.Finite R (integralClosure R (C ⧸ m.asIdeal)) := fun m => by haveI := m.isMaximal`. Use `letI := Ideal.Quotient.field m.asIdeal`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Algebra.FormallyUnramified K (C ⧸ m.asIdeal) := Algebra.FormallyUnramified.of_surjective (Ideal.Quotient.mkₐ K m.asIdeal) Ideal.Quotient.mk_surjective`. Use `haveI : Algebra.IsSeparable K (C ⧸ m.asIdeal) := Algebra.FormallyUnramified.isSeparable K _`. Conclude with `IsIntegralClosure.finite R K (C ⧸ m.asIdeal) _`. Set `red : ∀ m : MaximalSpectrum C, integralClosure R C →ₗ[R] integralClosure R (C ⧸ m.asIdeal)` to `fun m => (((Ideal.Quotient.mkₐ R m.asIdeal).comp (integralClosure R C).val).codRestrict (integralClosure R (C ⧸ m.asIdeal)) (fun a => (show IsIntegral R (a : C) from a.2).map (Ideal.Quotient.mkₐ R m.asIdeal))).toLinearMap`. Use `Module.Finite.of_injective (LinearMap.pi red) ?_` and prove the remaining obligations.
-
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `a ha`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `(IsArtinianRing.equivPi C).injective` to reduce the goal to its premises. Use `show _ = IsArtinianRing.equivPi C 0`.
-
-Rewrite using `[map_zero]`. Use function extensionality and compare the values at `m`. Conclude with `congrArg Subtype.val (congrFun ha m)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem finite_integralClosure_of_formallyUnramified (R K C : Type) [CommRing R] [IsDomain R]
     [IsNoetherianRing R] [IsIntegrallyClosed R] [Field K] [Algebra R K] [IsFractionRing R K]
@@ -46,27 +42,21 @@ theorem finite_integralClosure_of_formallyUnramified (R K C : Type) [CommRing R]
   exact congrArg Subtype.val (congrFun ha m)
 
 /- English proof (translation)
-Introduce `R K L _ _ _ _ _ _ _ _ _ _ _ _ _ π e hπ he _ _`. Use `set f : R[X] := X ^ e - C π with hf`. Use `set g : K[X] := X ^ e - C (algebraMap R K π) with hg`. Establish `he0 : e ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at he`. Establish `hfm : f.Monic` using `monic_X_pow_sub_C _ he0`. Establish `hgm : g.Monic` using `monic_X_pow_sub_C _ he0`. Establish `hπK : IsUnit (algebraMap R K π)` using `(IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hπ.ne_zero)).isUnit`. Use `haveI : Algebra.Etale K (AdjoinRoot g) := GlobalTheory.etale_adjoinRoot_X_pow_sub_C K e _ (by simpa using he.map (algebraMap R K)) hπK`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Module.Finite K (AdjoinRoot g) := (AdjoinRoot.powerBasis' hgm).finite`. Use `haveI : Module.Finite R (AdjoinRoot f) := (AdjoinRoot.powerBasis' hfm).finite`. Use `haveI : Algebra.FormallyUnramified K L := Algebra.FormallyUnramified.of_isSeparable K L`. Set `C'` to `L ⊗[K] AdjoinRoot g`. Use `haveI : Algebra.FormallyUnramified L C' := inferInstance`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Algebra.FormallyUnramified K C' := Algebra.FormallyUnramified.comp K L C'`. Use `haveI : FiniteDimensional K C' := inferInstance`. Use `haveI : IsScalarTower R K C' := inferInstance`. Establish `hfinC : Module.Finite R (integralClosure R C')` using `finite_integralClosure_of_formallyUnramified R K C'`. Establish `hroot : aeval (AdjoinRoot.root g) f = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `AdjoinRoot.eval₂_root g`. Rewrite `h` using `[hg, eval₂_sub, eval₂_X_pow, eval₂_C, sub_eq_zero]`. Rewrite using `[hf, map_sub, map_pow, aeval_X, aeval_C, sub_eq_zero, h]`. Conclude with `(IsScalarTower.algebraMap_apply R K (AdjoinRoot g) π).symm`. Set `φ : AdjoinRoot f →ₐ[R] AdjoinRoot g` to `AdjoinRoot.liftAlgHom f (Algebra.ofId R (AdjoinRoot g)) (AdjoinRoot.root g) hroot`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `ψ : L ⊗[R] AdjoinRoot f →ₐ[L] C'` to `Algebra.TensorProduct.lift (Algebra.TensorProduct.includeLeft (S := L)) (((Algebra.TensorProduct.includeRight : AdjoinRoot g →ₐ[K] C').restrictScalars R).comp φ) (fun _ _ => Commute.all _ _)`. Set `bR` to `Algebra.TensorProduct.basis L (AdjoinRoot.powerBasis' hfm).basis`. Set `bK` to `Algebra.TensorProduct.basis L (AdjoinRoot.powerBasis' hgm).basis`. Establish `hdeg : f.natDegree = g.natDegree`. Rewrite using `[hf, hg, natDegree_X_pow_sub_C, natDegree_X_pow_sub_C]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hψb : ∀ i, ψ (bR i) = bK (Fin.cast hdeg i)`. Introduce `i`. Establish `hφ : φ (AdjoinRoot.root f) = AdjoinRoot.root g` using `AdjoinRoot.liftAlgHom_root _ _ _ _`. Simplify using `only [bR, bK, Algebra.TensorProduct.basis_apply, PowerBasis.coe_basis, AdjoinRoot.powerBasis'_gen, ψ, Algebra.TensorProduct.lift_tmul, map_one, one_mul, AlgHom.comp_apply, AlgHom.restrictScalars_apply, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.includeLeft_ap …`. Rewrite using `[Algebra.TensorProduct.tmul_pow, one_pow]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Establish `hinj : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `hli` using `bK.linearIndependent.comp (Fin.cast hdeg) (Fin.cast_injective hdeg)`.
-
-Rewrite `hx` using `[← bR.sum_repr x, map_sum]`. Simplify using `only [map_smul, hψb] at hx`. Establish `h0 : ∀ i, bR.repr x i = 0` using `Fintype.linearIndependent_iff.1 hli _ hx`. Rewrite using `[← bR.sum_repr x]`. Simplify using `[h0]`.
-
-Set `Φ : AdjoinRoot f ⊗[R] L →ₐ[R] C'` to `(ψ.restrictScalars R).comp (Algebra.TensorProduct.comm R (AdjoinRoot f) L).toAlgHom`. Establish `hΦ : Function.Injective Φ` using `hinj.comp (Algebra.TensorProduct.comm R (AdjoinRoot f) L).injective`. Set `M` to `integralClosure (AdjoinRoot f) (AdjoinRoot f ⊗[R] L)`. Set `lin : M →ₗ[R] integralClosure R C'` to `{ toFun := fun x => ⟨Φ (x : AdjoinRoot f ⊗[R] L), (isIntegral_trans (R := R) (A := AdjoinRoot f) _ x.2).map Φ⟩ map_add' := fun x y => Subtype.ext (map_add Φ (x : AdjoinRoot f ⊗[R] L) y) map_smul' := fun r x => Subtype.ext (map_smul Φ r (x : AdjoinRoot f ⊗[R] L)) }`. Establish `hlin : Function.Injective lin` using `fun x y h => Subtype.ext (hΦ (congrArg Subtype.val h))`.
-
-Use `haveI : Module.Finite R M := Module.Finite.of_injective lin hlin`. Conclude with `Module.Finite.of_restrictScalars_finite R (AdjoinRoot f) M`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R K L : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [PerfectField (IsLocalRing.ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field L] [Algebra K L] [Algebra R L] [IsScalarTower R K L] [FiniteDimensional K L] [Algebra.IsSeparable K L] (π : R) (e : ℕ), Irreducible π → IsUnit (e : R) → ∀ [IsDomain (AdjoinRoot (Polynomial.X ^ e - Polynomial.C π : Polynomial R))] [IsDiscreteValuationRing (AdjoinRoot (Polynomial.X ^ e - Polynomial.C π : Polynomial R))], Module.Finite (AdjoinRoot (Polynomial.X ^ e - Polynomial.C π : Polynomial R)) (integralClosure (AdjoinRoot (Polynomial.X ^ e - Polynomial.C π : Polynomial R)) (TensorProduct R (AdjoinRoot (Polynomial.X ^ e - Polynomial.C π : Polynomial R)) L)) := by
   intro R K L _ _ _ _ _ _ _ _ _ _ _ _ _ π e hπ he _ _

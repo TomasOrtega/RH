@@ -11,11 +11,11 @@ namespace Formalism.FourierDecayAlt.Q.QnMinorLeftPf
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `E _ _ n t H f a b u h`. Establish `hT : ∀ (c : ℂ) (i j : Fin n) (g : Matrix (Fin n) (Fin n) ℂ → E), Formalism.QuantumDeterminants.Top (EabH H) c i j (fun x => g (h * x)) = fun x => Formalism.QuantumDeterminants.Top (EabH H) c i j g (h * x)`. Introduce `c i j g`. Use function extensionality and compare the values at `x`. Simplify using `only [Formalism.QuantumDeterminants.Top]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[ioLeft_eabH_left]`. Use function extensionality and compare the values at `x`. Simplify using `only [qminorOp, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[ioLeft_foldr_left h _ (fun T hTm g => ?_) f]`. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hTm`. Conclude with `hT _ _ _ g`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem left_quantum_minor_qMinorLeftH : QMinorLeftH := by
   intro E _ _ n t H f a b u h

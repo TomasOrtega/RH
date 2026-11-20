@@ -4,17 +4,15 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvDer
 open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.PDivLat GlobalTheory.LawDer
 
 /- English proof (translation)
-Introduce `p O _ G d c m hp`. Take `⟨n, hn⟩` from `c.ker 1 2`. Use `⟨n, fun u => ?_⟩` and prove the remaining obligations. Set `L : MvPowerSeries (Fin d) O →ₗ[O] O` to `∑ i, u i • coeff (Finsupp.single i 1)`. Establish `hL : ∀ F, L F = ∑ i, u i * lin F i` using `fun F => by simp [L, LinearMap.sum_apply, lin]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : MvPowerSeries (Fin d) O →ₗ[O] O ⧸ m` to `m.mkQ ∘ₗ L`. Establish `hk : LinearMap.ker (c.ev n).toLinearMap ≤ LinearMap.ker f`. Introduce `F hF`. Establish `h` using `hn F hF`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk m (L F) = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hL]`. Use `Submodule.sum_mem _ fun i _ => m.mul_mem_left _ ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `h (Finsupp.single i 1) (by simp)`. Establish `: lin F i = p ^ 1 * a` using `ha`. Rewrite using `[this, pow_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `m.mul_mem_right _ hp`. Set `g : G.A n →ₗ[O] O ⧸ m` to `(LinearMap.ker (c.ev n).toLinearMap).liftQ f hk ∘ₗ ((c.ev n).toLinearMap.quotKerEquivOfSurjective (c.surj n)).symm.toLinearMap`. Establish `hg : ∀ F, g (c.ev n F) = f F` using `fun F => by`. Establish `: ((c.ev n).toLinearMap.quotKerEquivOfSurjective (c.surj n)).symm (c.ev n F) = Submodule.Quotient.mk F`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [g, LinearMap.comp_apply, LinearEquiv.coe_coe, this, Submodule.liftQ_apply]`. Take `⟨φ, hφ⟩` from `Module.projective_lifting_property m.mkQ g m.mkQ_surjective`. Use `⟨WithConv.toConv φ, fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[← hL, ← Submodule.Quotient.eq]`.
-
-Conclude with `(LinearMap.congr_fun hφ (c.ev n F)).trans (hg F)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.QLog.Chart.exists_dual_lift_lin : ∀ (p : ℕ) (O : Type) [CommRing O] (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (m : Ideal O), (p : O) ∈ m → ∃ n : ℕ, ∀ u : Fin d → O, ∃ φ : G.dual.A n, ∀ F, φ (c.ev n F) - ∑ i, u i * lin F i ∈ m := by
   intro p O _ G d c m hp

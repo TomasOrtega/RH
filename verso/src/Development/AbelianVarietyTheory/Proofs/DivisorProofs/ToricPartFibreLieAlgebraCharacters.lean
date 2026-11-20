@@ -23,16 +23,16 @@ section Grp
 variable {S Z : Scheme.{0}} {G : Over S} [GrpObj G]
 
 /- English proof (translation)
-Use `show (toUnit T ≫ η[G]).left = _`. Rewrite using `[Over.comp_left, Over.toUnit_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_left' (T : Over S) : (1 : T ⟶ G).left = T.hom ≫ η[G].left := by
   show (toUnit T ≫ η[G]).left = _
   rw [Over.comp_left, Over.toUnit_left]
 
 /- English proof (translation)
-Establish `hb : u' ≫ T'.hom = u ≫ T.hom`. Rewrite using `[← Over.w x, ← Over.w x', ← Category.assoc, ← hx, Category.assoc]`. Set `U : Over.mk (u ≫ T.hom) ⟶ T` to `Over.homMk u rfl`. Set `U' : Over.mk (u ≫ T.hom) ⟶ T'` to `Over.homMk u' hb`. Establish `e1 : U ≫ x = U' ≫ x'` using `Over.OverMorphism.ext hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e2 : U ≫ y = U' ≫ y'` using `Over.OverMorphism.ext hy`. Establish `: U ≫ (x * y) = U' ≫ (x' * y')` using `by rw [MonObj.comp_mul, MonObj.comp_mul, e1, e2]`. Conclude with `congrArg (fun k => k.left) this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mul_left_congr {T T' : Over S} (x y : T ⟶ G) (x' y' : T' ⟶ G) (u : Z ⟶ T.left) (u' : Z ⟶ T'.left)
     (hx : u ≫ x.left = u' ≫ x'.left) (hy : u ≫ y.left = u' ≫ y'.left) :
@@ -49,9 +49,9 @@ theorem mul_left_congr {T T' : Over S} (x y : T ⟶ G) (x' y' : T' ⟶ G) (u : Z
 end Grp
 
 /- English proof (translation)
-Establish `hw : ((1 : T ⟶ G').left ≫ φ) ≫ G.hom = (Over.mk (T.hom ≫ f)).hom`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w]`. Both sides reduce to the same expression. Set `x₀ : Over.mk (T.hom ≫ f) ⟶ G` to `Over.homMk ((1 : T ⟶ G').left ≫ φ) hw`. Establish `hm` using `h.2 T 1 1 x₀ x₀ rfl rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hm` using `[_root_.mul_one]`. Establish `hx : x₀ * x₀ = x₀` using `Over.OverMorphism.ext hm`. Establish `h1 : x₀ = 1` using `by simpa using hx`. Establish `: x₀.left = (Over.mk (T.hom ≫ f)).hom ≫ η[G].left` using `by rw [h1, one_left']`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pull_one_left {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G']
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') :
@@ -70,27 +70,25 @@ end GlobalTheory.TorLie
 
 open GlobalTheory.TorLie in
 /- English proof (translation)
-Introduce `S G _ _ O _ act hhom h1 hmul hadd k _ x E`. Use `letI := E.addCommGroup`. Use `haveI := E.i_hom`. Use `set Gx := (Over.pullback x).obj G with hGx`. Establish `hGP` using `isGrpPullback_pullback G x`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨act', ⟨hhom', h1', hmul', hadd'⟩, hact'⟩` from `GlobalTheory.T.exists_ring_action_pullback_cartesian_group_schemes S (Sp k) x G Gx (pullback.fst G.hom x) hGP O act hhom h1 hmul hadd`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.ringHom_characterEnd_of_torusExtension_action k Gx E O act' hhom' h1' hmul' hadd'`. Take `⟨U₀, hinj, hone, hU₀mul, hscale, hequi⟩` from `GlobalTheory.T.splitTorus_tangentVectors_addMonoidHom k E.X`. Establish `heq : ∀ l, ((U₀ l ≫ E.i).left ≫ pullback.fst G.hom x) ≫ G.hom = (epsPt (𝟙 (Sp k))).hom ≫ x`. Introduce `l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ x) (Over.w (U₀ l ≫ E.i))`. Establish `hw : ∀ l, ((U₀ l ≫ E.i).left ≫ pullback.fst G.hom x) ≫ G.hom = (epsPt x).hom`. Introduce `l`. Rewrite using `[heq l]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[epsPt]`. Set `U : (E.X →+ k) → (epsPt x ⟶ G)` to `fun l => Over.homMk _ (hw l)`. Establish `hUl : ∀ l, (U l).left = (U₀ l).left ≫ E.i.left ≫ pullback.fst G.hom x`. Introduce `l`. Simplify using `[U]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : Mono E.i := E.isKernel.mono_fst_of_mono (IsTerminal.mono_from isTerminalTensorUnit _)`. Use `⟨ρ, U, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `l l' h`. Establish `hl` using `congrArg Over.Hom.left h`. Rewrite `hl` using `[hUl, hUl, ← Category.assoc, ← Category.assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : (U₀ l ≫ E.i).left = (U₀ l' ≫ E.i).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify `hl` using `[Over.comp_left]`. Conclude with `(Over.w (U₀ l ≫ E.i)).trans (Over.w (U₀ l' ≫ E.i)).symm`. Conclude with `hinj ((cancel_mono E.i).1 (Over.OverMorphism.ext h2))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `l`. Rewrite using `[hUl, ← Category.assoc, hone l, ← Category.assoc, ← Over.comp_left, MonObj.one_comp, pull_one_left hGP, one_left']`. Simplify using the standard rewrite rules. Introduce `l l'`. Set `x₀ : Over.mk ((epsPt (𝟙 (Sp k))).hom ≫ x) ⟶ G` to `Over.homMk _ (heq l)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `y₀ : Over.mk ((epsPt (𝟙 (Sp k))).hom ≫ x) ⟶ G` to `Over.homMk _ (heq l')`. Establish `key` using `hGP.2 (epsPt (𝟙 (Sp k))) (U₀ l ≫ E.i) (U₀ l' ≫ E.i) x₀ y₀ rfl rfl`. Rewrite `key` using `[← mul_comp, ← hU₀mul]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `hc` using `mul_left_congr (U l) (U l') x₀ y₀ (𝟙 _) (𝟙 _) rfl rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Category.id_comp] at hc`. Rewrite using `[hc, key, hUl, Over.comp_left, Category.assoc]`. Introduce `t l`. Rewrite using `[hUl, hUl, hscale]`. Simplify using `[Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `a l`. Take `⟨τ, hτ, hχ⟩` from `hρ a`. Establish `hτl : τ.left ≫ E.i.left = E.i.left ≫ (act' a).left`. Simplify using `using congrArg Over.Hom.left hτ`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
-
-Establish `hτU : U₀ l ≫ τ = U₀ (l.comp (ρ a).toAddMonoidHom)` using `hequi τ (ρ a).toAddMonoidHom (fun χ => hχ χ) l`. Rewrite using `[Over.comp_left, hUl, hUl, ← hτU, Over.comp_left]`. Simplify using `only [Category.assoc, ← hact' a, reassoc_of% hτl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.torus_part_lie : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (O : Type) [Ring O] (act : O → (G ⟶ G)), (∀ a, IsMonHom (act a)) → act 1 = 𝟙 G → (∀ a b, act (a * b) = act a ≫ act b) → (∀ a b, act (a + b) = act a * act b) → ∀ (k : Type) [Field k] (x : Sp k ⟶ S) (E : TorusExtension ((Over.pullback x).obj G)), letI := E.addCommGroup; ∃ (ρ : O →+* Module.End ℤ E.X) (U : (E.X →+ k) → (epsPt x ⟶ G)), Function.Injective U ∧ (∀ l, spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ (U l).left = (1 : Over.mk x ⟶ G).left) ∧ (∀ l l', U (l + l') = U l * U l') ∧ (∀ (t : k) l, (U ((AddMonoidHom.mulLeft t).comp l)).left = spMap (epsScale t) ≫ (U l).left) ∧ ∀ a l, U l ≫ act a = U (l.comp (ρ a).toAddMonoidHom) := by
   intro S G _ _ O _ act hhom h1 hmul hadd k _ x E

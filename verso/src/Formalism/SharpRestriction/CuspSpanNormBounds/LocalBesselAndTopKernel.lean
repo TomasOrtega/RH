@@ -722,7 +722,7 @@ def Stmt (D : D7) (large₂ : SizeData₂ D) (X : TermTie D) (Cw : ℝ) (Y : ∀
     Conclusion1 D CA CA' Ce ∧ Conclusion2 D large₂ C1 C2 C3' C4 c5 CA
 
 /- English proof (translation)
-Introduce `hT hA hH` and use `⟨h1 hT hA.1 hH, (h2 hT hA.2 hH).1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem statement_of_degree_and_bound {D : D7} {large₂ : SizeData₂ D} {X : TermTie D} {Cw : ℝ} {Y : ∀ u u', LoopTie D large₂ X u u' Cw} {Z : TermLocs D X}
     {cN : D.what₂.Word → D.what₂.Word → ℝ} {Vm : ValMap D.R.k D.R.rS}
@@ -836,7 +836,7 @@ def FamilyUnfoldingCount (C0 Cg cb Cu cT CT : ℝ) : Prop :=
   SecondSizeStatement Fm → BesselFormLine Fm → FamilyRanksHypothesis Fm C0 Cg cb Cu cT CT → FamilyBesselBoundFirstPart Fm C0 Cg cb Cu cT CT
 
 /- English proof (translation)
-The claim follows from `h hA.2.1 hA.2.2.1 hA.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem FamilyUnfoldingCount.ClosedSizeStatements {Fm : Formalism.MainNotions.FamP eps} {C0 Cg cb Cu cT CT C3 : ℝ} (h : FamilyUnfoldingCount Fm C0 Cg cb Cu cT CT)
     (hA : SecondFiltrationHypotheses Fm C0 Cg cb Cu cT CT C3) : FamilyBesselBoundFirstPart Fm C0 Cg cb Cu cT CT :=
@@ -854,7 +854,7 @@ def KudlaFamilyStatement (X : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.
     OrbitValuationBound Fm C0 Cg cb Cu cT CT CA CA' Ce C1 C2 C3' C4 c5 ep0 CV
 
 /- English proof (translation)
-Introduce `hG hA` and use `⟨h1 hG hA.1, h2 hG hA.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem family_statement_of_parts {Fm : Formalism.MainNotions.FamP eps} {X : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i)} {Cw : ℝ}
     {Y : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) u u', LoopTie (Fm.D x i) (Fm.L x i) (X x hx i) u u' Cw}

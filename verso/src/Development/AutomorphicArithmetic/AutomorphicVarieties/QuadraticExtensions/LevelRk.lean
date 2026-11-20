@@ -8,11 +8,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ n r hn hc`. Use `haveI := (fnCyc F Ω l n).1`. Establish `htop : galOf F F Ω = ⊤`. Use `eq_top_iff.2 fun σ _ => ?_` and prove the remaining obligations. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `σ.commutes x`. Establish `hU : Un F Ω l n = galOf F (Fn F Ω l n) Ω`. Unfold `Un`. Rewrite using `[galOfCyc F Ω l n F (Fn F Ω l n), htop]`. Establish `hmap` using `pullOnto F Ω (Fn F Ω l n) (Un F Ω l n) hU.le 1 (ZMod l) (ZMod l) one_ne_zero hU.ge (Or.inl ((fnCyc F Ω l n).2.2 hn))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take `⟨hfin, hcard⟩` from `cardClDual (Fn F Ω l n) l 1`. Unfold `XRk CardLe`. Rewrite using `[← hmap]`. Establish `hsurj` using `LinearMap.submoduleMap_surjective (clPull (Fn F Ω l n) hU.le (ZMod l) (ZMod l)) (ClDual (Fn F Ω l n) 1 (ZMod l) (ZMod l))`. Conclude with `⟨Finite.of_surjective _ hsurj, (Nat.card_le_card_of_surjective _ hsurj).trans (hcard.trans hc)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.levelRk :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (n r : ℕ), 2 ≤ n → Nat.card (ClassGroup (𝓞 (Fn F Ω l n)) ⧸ (powMonoidHom l : ClassGroup (𝓞 (Fn F Ω l n)) →* ClassGroup (𝓞 (Fn F Ω l n))).range) ≤ l ^ r → XRk l 1 (Un F Ω l n) r := by

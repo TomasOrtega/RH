@@ -19,7 +19,7 @@ section Fub4Proof
 variable {α β γ δ : Type} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ] [MeasurableSpace δ]
 
 /- English proof (translation)
-Rewrite using `[integral_prod _ hg]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hg.prod_right_ae] with h hh`. Conclude with `integral_prod _ hh`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_prod_three (b : Measure β) (c : Measure γ) (a : Measure α) [SFinite a] [SFinite b] [SFinite c]
     (g : β × γ × α → ℂ) (hg : Integrable g (b.prod (c.prod a))) :
@@ -30,7 +30,7 @@ theorem integral_prod_three (b : Measure β) (c : Measure γ) (a : Measure α) [
   exact integral_prod _ hh
 
 /- English proof (translation)
-Rewrite using `[integral_prod _ hg]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hg.prod_right_ae] with y hy`. Conclude with `integral_prod_three b c a _ hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_prod_four (e : Measure δ) (b : Measure β) (c : Measure γ) (a : Measure α)
     [SFinite a] [SFinite b] [SFinite c] [SFinite e]
@@ -42,9 +42,9 @@ theorem integral_prod_four (e : Measure δ) (b : Measure β) (c : Measure γ) (a
   exact integral_prod_three b c a _ hy
 
 /- English proof (translation)
-Rewrite using `[lintegral_prod _ hg.aemeasurable]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Establish `h1 : Measurable fun q : β × γ × α => g (y, q)` using `hg.comp measurable_prodMk_left`. Rewrite using `[lintegral_prod _ h1.aemeasurable]`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : Measurable fun q : γ × α => g (y, h, q)` using `h1.comp measurable_prodMk_left`. Conclude with `lintegral_prod _ h2.aemeasurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lintegral_prod_four (e : Measure δ) (b : Measure β) (c : Measure γ) (a : Measure α)
     [SFinite a] [SFinite b] [SFinite c] [SFinite e]
@@ -72,9 +72,9 @@ def swapFour (α β γ δ : Type) [MeasurableSpace α] [MeasurableSpace β] [Mea
     fun_prop
 
 /- English proof (translation)
-Establish `p1 : MeasurePreserving (Prod.map id (MeasurableEquiv.prodAssoc (α` using `β) (β := γ) (γ := δ)).symm) (a.prod (b.prod (c.prod e))) (a.prod ((b.prod c).prod e)) := (MeasurePreserving.id a).prod ((measurePreserving_prodAssoc b c e).symm _)`. Establish `p2 : MeasurePreserving (MeasurableEquiv.prodAssoc (α` using `α) (β := β × γ) (γ := δ)).symm (a.prod ((b.prod c).prod e)) ((a.prod (b.prod c)).prod e) := (measurePreserving_prodAssoc a (b.prod c) e).symm _`. Establish `p3 : MeasurePreserving Prod.swap ((a.prod (b.prod c)).prod e) (e.prod (a.prod (b.prod c)))` using `Measure.measurePreserving_swap`. Establish `p4 : MeasurePreserving (Prod.map id Prod.swap) (e.prod (a.prod (b.prod c))) (e.prod ((b.prod c).prod a))` using `(MeasurePreserving.id e).prod Measure.measurePreserving_swap`. Establish `p5 : MeasurePreserving (Prod.map id (MeasurableEquiv.prodAssoc (α` using `β) (β := γ) (γ := α))) (e.prod ((b.prod c).prod a)) (e.prod (b.prod (c.prod a))) := (MeasurePreserving.id e).prod (measurePreserving_prodAssoc b c a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(((p5.comp p4).comp p3).comp p2).comp p1`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_swapFour (a : Measure α) (b : Measure β) (c : Measure γ) (e : Measure δ)
     [SFinite a] [SFinite b] [SFinite c] [SFinite e] :
@@ -97,11 +97,11 @@ theorem measurePreserving_swapFour (a : Measure α) (b : Measure β) (c : Measur
 end Fub4Proof
 
 /- English proof (translation)
-Introduce `α β γ δ _ _ _ _ a b c e _ _ _ _`. Establish `hm` using `measurePreserving_swapFour a b c e`. Prove the components needed by the constructor for the conclusion. Introduce `f hf`. Set `g : δ × β × γ × α → ℂ` to `fun q => f (q.2.2.2, q.2.1, q.2.2.1, q.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hfg : g ∘ swapFour α β γ δ = f` using `rfl`. Establish `hg : Integrable g (e.prod (b.prod (c.prod a)))` using `(hm.integrable_comp_emb (swapFour α β γ δ).measurableEmbedding).1 (by rwa [hfg])`. Combine the equalities or inequalities in the displayed calculation. Introduce `f hf`. Set `g : δ × β × γ × α → ℝ≥0∞` to `fun q => f (q.2.2.2, q.2.1, q.2.2.1, q.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hg : Measurable g` using `hf.comp (swapFour α β γ δ).symm.measurable`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem iterated_integrals_four_factors_holds : Fub4 := by
   intro α β γ δ _ _ _ _ a b c e _ _ _ _

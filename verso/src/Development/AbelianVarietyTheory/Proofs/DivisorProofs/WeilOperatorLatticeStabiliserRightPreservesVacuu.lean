@@ -16,9 +16,9 @@ variable {R : Type} [CommRing R] {E : Type} [CommRing E] [Algebra R E] (c : E �
 
 omit [DecidableEq α] [DecidableEq β] in
 /- English proof (translation)
-Unfold `hTens`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hTens_eq (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β E) :
     hTens c JA JB x y = ∑ i, ∑ k, JA i k * (x * JB * (y.map c)ᵀ) i k := by
@@ -34,9 +34,9 @@ theorem hTens_eq (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β
 omit [DecidableEq α] [DecidableEq β] in
 
 /- English proof (translation)
-Unfold `symp`. Rewrite using `[hTens_eq, hTens_eq]`. Establish `e : (y * hᵀ).map c = y.map c * (hᵀ).map c` using `Matrix.map_mul (f := c.toRingHom)`. Establish `e2 : x * hᵀ * JB * ((y * hᵀ).map c)ᵀ = x * JB * (y.map c)ᵀ`. Rewrite using `[e, Matrix.transpose_mul, ← Matrix.transpose_map, Matrix.transpose_transpose]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hh]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symp_mul_transpose (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) (h : Matrix β β E)
     (hh : hᵀ * JB * h.map c = JB) (x y : Matrix α β E) :
@@ -55,13 +55,11 @@ end Alg
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hv, y, hy, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, ha, hv, x, hx, y, hy, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.vecMulVec_apply, incM]`. Consider the case `zero`. Establish `e : Matrix.vecMulVec (fun i => inclR (F` using `F) (AF F) (x i)) (0 : Fin d → AE F E) = 0 := by`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ h h' => rw [Matrix.vecMulVec_add]`. Conclude with `add_mem h h'`. Consider the case `neg z _ h => rw [Matrix.vecMulVec_neg]`.
-
-Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem vecMulVec_mem {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : Pl F) {x : Fin n → E} (hx : x ∈ X.L)
     {z : Fin d → AE F E} (hz : z ∈ GlobalTheory.InertSph.latAt Y v) :
@@ -81,11 +79,11 @@ theorem vecMulVec_mem {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : Pl F) {x 
   | neg z _ h => rw [Matrix.vecMulVec_neg]; exact neg_mem h
 
 /- English proof (translation)
-Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hv, x, hx, y, hy, rfl⟩` from `hz`. Establish `hm : (a • fun i => inclR (F` using `F) (AF F) (y i)) ∈ GlobalTheory.InertSph.latAt Y v := AddSubgroup.subset_closure ⟨a, ha, hv, y, hy, rfl⟩`. Establish `e : a • incM F (Matrix.vecMulVec x y) = Matrix.vecMulVec (fun i => inclR (F` using `F) (AF F) (x i)) (a • fun i => inclR (F := F) (AF F) (y i)) := by`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, incM]`. Rewrite using `[e, Matrix.vecMulVec_mul, Matrix.vecMul_transpose]`. Conclude with `vecMulVec_mem X Y v hx (hh _ hm)`. Consider the case `zero => rw [Matrix.zero_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add z z' _ _ h h' => rw [Matrix.add_mul]`. Conclude with `add_mem h h'`. Consider the case `neg z _ h => rw [Matrix.neg_mul]`. Conclude with `neg_mem h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_transpose_mem {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : Pl F) (h : Matrix (Fin d) (Fin d) (AE F E))
     (hh : ∀ z ∈ GlobalTheory.InertSph.latAt Y v, h *ᵥ z ∈ GlobalTheory.InertSph.latAt Y v)
@@ -107,7 +105,7 @@ theorem mul_transpose_mem {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : Pl F)
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tens_smul {R κ : Type} (ev : AF F → R) (c : ℂ) (φ : (κ → R) → ℂ) (r : (κ → AF F) → ℂ) :
     tens ev (c • φ) r = c • tens ev φ r := by
@@ -115,13 +113,13 @@ theorem tens_smul {R κ : Type} (ev : AF F → R) (c : ℂ) (φ : (κ → R) →
   simp only [tens, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v k hk θ _ φ hφ φ₁ _ hfix hact γ hγ r hr`. Distinguish the cases in `h0 : φ₁ = 0`. Substitute `h0` using the available equality. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr, tens]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hr' : Rest (evFin F v) φ r` using `GlobalTheory.RestCofactor.rest_of_rest v φ₁ φ r h0 hφ hr`. Establish `hS` using `IsUWeilPair.isUSplitting hT.weil`. Establish `hγ' : γ * (mat k⁻¹)ᵀ ∈ latAtV G.V G.W v` using `mul_transpose_mem G.V G.W v _ (fun z hz => (hk.2 z hz).2) hγ`. Establish `hback : actAB (cA σ) ((1 : UA σ G.V.J), k) (γ * (mat k⁻¹)ᵀ) = γ`. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ _) * (γ * (mat k⁻¹)ᵀ) * (mat k)ᵀ = γ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e : mat k * mat k⁻¹ = 1` using `Units.mul_inv k.1`. Rewrite using `[Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, e, Matrix.transpose_one, Matrix.mul_one]`. Establish `hsy` using `symp_mul_transpose (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) (mat k⁻¹) (k⁻¹).2 γ γ`. Establish `h1` using `hS.impl (1, k) (γ * (mat k⁻¹)ᵀ) _ hr'.2`. Rewrite `h1` using `[hback, hfix _ hγ' r hr', hsy, tens_smul, map_smul, hact r hr']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h1, tens_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transport : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

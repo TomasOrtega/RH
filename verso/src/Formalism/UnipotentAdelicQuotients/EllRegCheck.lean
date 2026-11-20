@@ -17,7 +17,7 @@ import Formalism.UnipotentAdelicQuotients.EllipticRegularity.StepCore
 namespace ZetaZeros.D.EllReg
 
 /- English proof (translation)
-Establish `hSP : StepOfParts` using `stepOfParts_of frozenDecompositionOfParts weightedNormFinite weightedNormLimit regularity_inductive_step`. Conclude with `internal_of_all smoothOfSobolevAll existsBump cutoffContinuous smoothOfLocallySmooth sobolevOfCompactSupport symbolLowerBound sobolevWeightLipschitz convolution_bound frozenKernelSmall adjointPairingFourier iteratedPartialFourierChar integralFourierChar adjointPairingLocal weakEq …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem elliptic_regularity_of_parts : Internal := by
   have hSP : StepOfParts :=

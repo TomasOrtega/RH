@@ -8,19 +8,17 @@ namespace GlobalTheory.TrueGeoModel
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Set `K` to `v.adicCompletion F`. Establish `h1 : ‖FinitePlace.embedding v (algebraMap (𝓞 F) F a)‖ < 1` using `(FinitePlace.norm_lt_one_iff_mem F v a).2 ha`. Establish `h0 : FinitePlace.embedding v (algebraMap (𝓞 F) F a) ≠ 0`. Simplify using `using ha0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `letI : NontriviallyNormedField K := NontriviallyNormedField.ofNormNeOne ⟨_, h0, h1.ne⟩`. Set `L` to `AlgebraicClosure K`. Use `letI : Algebra F L := ((algebraMap K L).comp (FinitePlace.embedding v)).toAlgebra`. Set `j : AlgebraicClosure F →ₐ[F] L` to `IsAlgClosed.lift`. Set `N` to `spectralMulAlgNorm K L`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `w : AbsoluteValue (AlgebraicClosure F) ℝ` to `(MulRingNorm.mulRingNormEquivAbsoluteValue N.toMulRingNorm).comp (f := j.toRingHom) j.injective`. Establish `hw (x) : w x = spectralNorm K L (j x)` using `rfl`. Establish `hn (x y) : w (x + y) ≤ max (w x) (w y)`. Rewrite using `[hw, hw, hw, map_add]`. Conclude with `isNonarchimedean_spectralNorm _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨w, fun x => ?_, ⟨⟨⟨⟨⟨{x | w x ≤ 1}, ?_⟩, by simp⟩, ?_, by simp⟩, ?_⟩, ?_⟩, fun _ => Iff.rfl⟩⟩` and prove the remaining obligations. Rewrite using `[hw, j.commutes, ← FinitePlace.norm_embedding]`. Conclude with `spectralNorm_extends _`. Introduce `x y hx hy`. Simplify using `only [Set.mem_setOf_eq, map_mul] at *`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_le_one₀ hx (w.nonneg _) hy`. Introduce `x y hx hy`. Conclude with `(hn x y).trans (max_le hx hy)`. Introduce `x hx`. Simplify using `using hx`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `x`. Break down `le_total (w x) 1 with h | h` into its components or cases. Conclude with `.inl h`. Use `.inr ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `w x⁻¹ ≤ 1`.
-
-Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_ext (v : HeightOneSpectrum (𝓞 F)) : Nonempty (Ext v) := by
   obtain ⟨a, ha, ha0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot

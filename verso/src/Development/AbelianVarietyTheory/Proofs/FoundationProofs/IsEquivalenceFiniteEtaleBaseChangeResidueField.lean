@@ -8,11 +8,11 @@ namespace GlobalTheory
 open IsLocalRing Polynomial TensorProduct
 
 /- English proof (translation)
-Introduce `x hx`. Apply `mem_jacobson_bot_of_forall_isMaximal` to reduce the goal to its premises. Introduce `n hn`. Use `haveI := hn`. Establish `hc` using `comap_eq_maximalIdeal_of_finite (R := R) n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ : ResidueField R →ₐ[R] B ⧸ n` to `Ideal.Quotient.liftₐ (maximalIdeal R) (Algebra.ofId R (B ⧸ n)) fun a ha => by`. Rewrite using `[Algebra.ofId_apply, ← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq_zero_iff_mem, ← Ideal.mem_comap, hc]`. Conclude with `ha`. Set `ψ` to `Algebra.TensorProduct.lift φ (Ideal.Quotient.mkₐ R n) fun _ _ => Commute.all _ _`. Establish `h1 : ψ ((1 : ResidueField R) ⊗ₜ[R] x) = Ideal.Quotient.mk n x`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[ψ]`. Establish `h0 : (1 : ResidueField R) ⊗ₜ[R] x = 0`. Simplify using `using RingHom.mem_ker.mp hx`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← h1, h0, map_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_includeRight_residueField_le_jacobson (R B : Type*) [CommRing R] [IsLocalRing R]
     [CommRing B] [Algebra R B] [Module.Finite R B] :
@@ -36,7 +36,7 @@ theorem ker_includeRight_residueField_le_jacobson (R B : Type*) [CommRing R] [Is
   rw [← Ideal.Quotient.eq_zero_iff_mem, ← h1, h0, map_zero]
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (algebraMap R (ResidueField R))` using `IsLocalRing.residue_surjective`. Conclude with `Algebra.TensorProduct.includeRight_surjective B hs`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem includeRight_residueField_surjective (R B : Type*) [CommRing R] [IsLocalRing R]
     [CommRing B] [Algebra R B] :
@@ -45,7 +45,7 @@ theorem includeRight_residueField_surjective (R B : Type*) [CommRing R] [IsLocal
   exact Algebra.TensorProduct.includeRight_surjective B hs
 
 /- English proof (translation)
-Apply `isUnit_of_isUnit_mk_of_le_jacobson (ker_includeRight_residueField_le_jacobson R B)` to reduce the goal to its premises. Set `e` to `Ideal.quotientKerAlgEquivOfSurjective (includeRight_residueField_surjective R B)`. Establish `he : e (Ideal.Quotient.mk _ x) = (1 : ResidueField R) ⊗ₜ[R] x` using `rfl`. Establish `h` using `hx.map e.symm`. Rewrite `h` using `[← he, AlgEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_of_isUnit_one_tmul_residueField (R : Type*) {B : Type*} [CommRing R]
     [IsLocalRing R] [CommRing B] [Algebra R B] [Module.Finite R B] {x : B}
@@ -57,9 +57,9 @@ theorem isUnit_of_isUnit_one_tmul_residueField (R : Type*) {B : Type*} [CommRing
   rwa [← he, AlgEquiv.symm_apply_apply] at h
 
 /- English proof (translation)
-Use `haveI : Nontrivial B := (includeRight_residueField_surjective R B).nontrivial`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => ?_` and prove the remaining obligations. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self ((1 : ResidueField R) ⊗ₜ[R] x) with h | h` into its components or cases. Conclude with `Or.inl (isUnit_of_isUnit_one_tmul_residueField R h)`. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Apply `isUnit_of_isUnit_one_tmul_residueField R` to reduce the goal to its premises. Rewrite using `[TensorProduct.tmul_sub, ← Algebra.TensorProduct.one_def]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isLocalRing_of_isLocalRing_residueField_tensor (R B : Type*) [CommRing R]
     [IsLocalRing R] [CommRing B] [Algebra R B] [Module.Finite R B]
@@ -73,7 +73,7 @@ theorem isLocalRing_of_isLocalRing_residueField_tensor (R B : Type*) [CommRing R
     rwa [TensorProduct.tmul_sub, ← Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Use `existsUnique_idempotent_lift_of_henselian R (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective ?_ hc` and prove the remaining obligations. Rewrite using `[Ideal.mk_ker]`. Conclude with `map_maximalIdeal_le_jacobson_of_finite R S`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_idempotent_lift_quotient (R : Type*) {S : Type*} [CommRing R]
     [HenselianLocalRing R] [CommRing S] [Algebra R S] [Module.Finite R S]
@@ -85,13 +85,13 @@ theorem existsUnique_idempotent_lift_quotient (R : Type*) {S : Type*} [CommRing 
   exact map_maximalIdeal_le_jacobson_of_finite R S
 
 /- English proof (translation)
-Establish `hG` using `bijective_algHom_comp_of_etale_of_henselian R (A := A) (Algebra.TensorProduct.includeRight : B →ₐ[R] ResidueField R ⊗[R] B) (includeRight_residueField_surjective R B) (ker_includeRight_residueField_le_jacobson R B)`. Establish `key : ∀ f : A →ₐ[R] B, ((Algebra.TensorProduct.map (AlgHom.id (ResidueField R) (ResidueField R)) f).restrictScalars R).comp Algebra.TensorProduct.includeRight = Algebra.TensorProduct.includeRight.comp f`. Introduce `f`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨fun f g hfg => ?_, fun h => ?_⟩` and prove the remaining obligations. Apply `hG.1 dsimp only at hfg ⊢` to reduce the goal to its premises. Rewrite using `[← key f, ← key g, hfg]`. Take `⟨f, hf⟩` from `hG.2 ((h.restrictScalars R).comp Algebra.TensorProduct.includeRight)`. Use `⟨f, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only at hf ⊢`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Establish `hb : Algebra.TensorProduct.map (AlgHom.id (ResidueField R) (ResidueField R)) f ((1 : ResidueField R) ⊗ₜ[R] b) = h ((1 : ResidueField R) ⊗ₜ[R] b)`. Use `congrArg (fun φ : A →ₐ[R] ResidueField R ⊗[R] B => φ b) hf` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hab : a ⊗ₜ[R] b = a • ((1 : ResidueField R) ⊗ₜ[R] b)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[hab, map_smul, map_smul, hb]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bijective_baseChange_residueField_of_etale (R A B : Type*) [CommRing R]
     [HenselianLocalRing R] [CommRing A] [CommRing B] [Algebra R A] [Algebra R B]
@@ -125,9 +125,9 @@ theorem bijective_baseChange_residueField_of_etale (R A B : Type*) [CommRing R]
     rw [hab, map_smul, map_smul, hb]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h`. Take `⟨p, hp⟩` from `AdjoinRoot.mk_surjective (↑u⁻¹ : AdjoinRoot f)`. Establish `h1 : AdjoinRoot.mk f (derivative f * p - 1) = 0`. Rewrite using `[map_sub, map_mul, hp, ← hu, Units.mul_inv, map_one, sub_self]`. Take `⟨q, hq⟩` from `AdjoinRoot.mk_eq_zero.mp h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `P : StandardEtalePair R` to `⟨f, hf, 1, p, -q, 0, by rw [pow_zero]; linear_combination hq⟩`. Establish `hunit : IsUnit (AdjoinRoot.mk P.f P.g)`. Simplify using `[P]`. Set `e2 : AdjoinRoot f ≃ₐ[R] Localization.Away (AdjoinRoot.mk P.f P.g)` to `(IsLocalization.atUnit (AdjoinRoot f) (Localization.Away (AdjoinRoot.mk P.f P.g)) _ hunit).restrictScalars R`. Conclude with `Algebra.Etale.of_equiv (P.equivAwayAdjoinRoot.trans e2.symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem etale_adjoinRoot_of_isUnit_derivative {R : Type*} [CommRing R] {f : R[X]} (hf : f.Monic)
     (h : IsUnit (AdjoinRoot.mk f f.derivative)) : Algebra.Etale R (AdjoinRoot f) := by
@@ -146,21 +146,19 @@ theorem etale_adjoinRoot_of_isUnit_derivative {R : Type*} [CommRing R] {f : R[X]
   exact Algebra.Etale.of_equiv (P.equivAwayAdjoinRoot.trans e2.symm)
 
 /- English proof (translation)
-Set `pb` to `Field.powerBasisOfFiniteOfSeparable (ResidueField R) L`. Establish `hsep : (minpoly (ResidueField R) pb.gen).Separable` using `Algebra.IsSeparable.isSeparable _ pb.gen`. Establish `hmon : (minpoly (ResidueField R) pb.gen).Monic` using `minpoly.monic pb.isIntegral_gen`. Establish `hs : Function.Surjective (algebraMap R (ResidueField R))` using `IsLocalRing.residue_surjective`. Take `⟨f, hfmap, hfdeg, hf⟩` from `Polynomial.lifts_and_degree_eq_and_monic ((Polynomial.mem_lifts _).mpr (Polynomial.map_surjective _ hs _)) hmon`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI hfin : Module.Finite R (AdjoinRoot f) := (AdjoinRoot.powerBasis' hf).finite`. Use `letI : Algebra R L := ((algebraMap (ResidueField R) L).comp (algebraMap R (ResidueField R))).toAlgebra`. Use `haveI : IsScalarTower R (ResidueField R) L := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hroot : Polynomial.aeval pb.gen f = 0`. Rewrite using `[← Polynomial.aeval_map_algebraMap (ResidueField R), hfmap, minpoly.aeval]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g : AdjoinRoot f →ₐ[R] L` to `AdjoinRoot.liftAlgHom f (Algebra.ofId R L) pb.gen hroot`. Set `ψ : ResidueField R ⊗[R] AdjoinRoot f →ₐ[ResidueField R] L` to `Algebra.TensorProduct.lift (Algebra.ofId _ _) g fun _ _ => Commute.all _ _`. Establish `hψroot : ψ ((1 : ResidueField R) ⊗ₜ[R] AdjoinRoot.root f) = pb.gen`. Simplify using `only [ψ, g, Algebra.TensorProduct.lift_tmul, map_one, one_mul]`. Conclude with `AdjoinRoot.liftAlgHom_root _ _ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hsurjψ : Function.Surjective ψ`. Rewrite using `[← AlgHom.range_eq_top, eq_top_iff, ← pb.adjoin_gen_eq_top, Algebra.adjoin_le_iff, Set.singleton_subset_iff]`. Conclude with `(AlgHom.mem_range ψ).mpr ⟨_, hψroot⟩`. Set `bT` to `Algebra.TensorProduct.basis (ResidueField R) (AdjoinRoot.powerBasis' hf).basis`. Use `haveI : Module.Finite (ResidueField R) (ResidueField R ⊗[R] AdjoinRoot f) := Module.Finite.of_basis bT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdim : Module.finrank (ResidueField R) (ResidueField R ⊗[R] AdjoinRoot f) = Module.finrank (ResidueField R) L`. Rewrite using `[Module.finrank_eq_card_basis bT, Fintype.card_fin, AdjoinRoot.powerBasis'_dim, pb.finrank, ← pb.natDegree_minpoly, Polynomial.natDegree_eq_of_degree_eq hfdeg]`. Establish `hinjψ : Function.Injective ψ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim (f := ψ.toLinearMap)).mpr hsurjψ`. Set `e` to `AlgEquiv.ofBijective ψ ⟨hinjψ, hsurjψ⟩`. Use `haveI : Nontrivial (ResidueField R ⊗[R] AdjoinRoot f) := hsurjψ.nontrivial`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : IsLocalRing (ResidueField R ⊗[R] AdjoinRoot f) := IsLocalRing.of_surjective' e.symm.toRingEquiv.toRingHom e.symm.surjective`. Establish `hloc : IsLocalRing (AdjoinRoot f)` using `isLocalRing_of_isLocalRing_residueField_tensor R _`. Establish `hder : IsUnit (AdjoinRoot.mk f (derivative f))`. Apply `isUnit_of_isUnit_one_tmul_residueField R` to reduce the goal to its premises. Establish `h1 : ψ ((1 : ResidueField R) ⊗ₜ[R] AdjoinRoot.mk f (derivative f)) = Polynomial.aeval pb.gen (derivative (minpoly (ResidueField R) pb.gen))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Rewrite using `[← hfmap, Polynomial.derivative_map, Polynomial.aeval_map_algebraMap]`. Simplify using `only [ψ, g, Algebra.TensorProduct.lift_tmul, map_one, one_mul]`. Both sides reduce to the same expression. Establish `h2 : IsUnit (e ((1 : ResidueField R) ⊗ₜ[R] AdjoinRoot.mk f (derivative f)))`. Rewrite using `[show e _ = ψ _ from rfl, h1, isUnit_iff_ne_zero]`.
-
-Conclude with `hsep.aeval_derivative_ne_zero (minpoly.aeval _ _)`. Simplify using `using h2.map e.symm`. Use `haveI := etale_adjoinRoot_of_isUnit_derivative hf hder`. Conclude with `⟨AdjoinRoot f, inferInstance, inferInstance, hfin, inferInstance, hloc, ⟨e⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_etale_lift_of_isSeparable.{u} (R : Type u) (L : Type*) [CommRing R] [IsLocalRing R]
     [Field L] [Algebra (ResidueField R) L] [Module.Finite (ResidueField R) L]
@@ -220,9 +218,7 @@ theorem exists_etale_lift_of_isSeparable.{u} (R : Type u) (L : Type*) [CommRing 
   exact ⟨AdjoinRoot f, inferInstance, inferInstance, hfin, inferInstance, hloc, ⟨e⟩⟩
 
 /- English proof (translation)
-Take `⟨I, hI, Ai, _, _, e, hAi⟩` from `(Algebra.Etale.iff_exists_algEquiv_prod (ResidueField R) E).mp inferInstance`. Establish `H : ∀ i, ∃ (A : Type u) (_ : CommRing A) (_ : Algebra R A), Module.Finite R A ∧ Algebra.Etale R A ∧ IsLocalRing A ∧ Nonempty (ResidueField R ⊗[R] A ≃ₐ[ResidueField R] Ai i)` using `fun i => by haveI := (hAi i).1 haveI := (hAi i).2`. Conclude with `exists_etale_lift_of_isSeparable R (Ai i)`. Use `choose A hA1 hA2 hfin het _ hiso using H`. Use `Fintype.ofFinite I` as an intermediate fact.
-
-Use `⟨Π i, A i, inferInstance, inferInstance, inferInstance, inferInstance, ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `(Algebra.TensorProduct.piRight R (ResidueField R) (ResidueField R) A).trans ((AlgEquiv.piCongrRight fun i => (hiso i).some).trans e.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_etale_lift_of_etale.{u, v} (R : Type u) (E : Type v) [CommRing R] [IsLocalRing R]
     [CommRing E] [Algebra (ResidueField R) E] [Algebra.Etale (ResidueField R) E] :

@@ -29,7 +29,7 @@ def Good (Y : Var F) (Δ : Y.Dv) (t : Y.X → Y.Fnˣ) (φ : PtFn Y) : Prop :=
   (∀ y, Δ.IsEqn y (t y)) ∧ FromModel Y Δ t φ
 
 /- English proof (translation)
-Take `rfl : t = t'` from `funext h₂`. Take `rfl : φ = φ'` from `funext fun v => funext fun e => funext (h₃ v e)`. Conclude with `h₁ ▸ h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Good.congr {Δ Δ' : Y.Dv} {t t' : Y.X → Y.Fnˣ} {φ φ' : PtFn Y} (h : Good Y Δ t φ) (h₁ : Δ = Δ')
     (h₂ : ∀ y, t y = t' y) (h₃ : ∀ v e y, φ v e y = φ' v e y) : Good Y Δ' t' φ' := by
@@ -38,35 +38,35 @@ theorem Good.congr {Δ Δ' : Y.Dv} {t t' : Y.X → Y.Fnˣ} {φ φ' : PtFn Y} (h 
   exact h₁ ▸ h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun y => (h.1 y).add (h'.1 y), GlobalTheory.T.fromModel_add' F Y _ _ _ _ _ _ h.1 h'.1 h.2 h'.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem Good.add {Δ Δ' : Y.Dv} {t t' : Y.X → Y.Fnˣ} {φ φ' : PtFn Y} (h : Good Y Δ t φ) (h' : Good Y Δ' t' φ') :
     Good Y (Δ + Δ') (fun y => t y * t' y) (fun v e y => φ v e y + φ' v e y) :=
   ⟨fun y => (h.1 y).add (h'.1 y), GlobalTheory.T.fromModel_add' F Y _ _ _ _ _ _ h.1 h'.1 h.2 h'.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun y => (h.1 y).neg, GlobalTheory.T.fromModel_neg' F Y _ _ _ h.1 h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem Good.neg {Δ : Y.Dv} {t : Y.X → Y.Fnˣ} {φ : PtFn Y} (h : Good Y Δ t φ) :
     Good Y (-Δ) (fun y => (t y)⁻¹) (fun v e y => -φ v e y) :=
   ⟨fun y => (h.1 y).neg, GlobalTheory.T.fromModel_neg' F Y _ _ _ h.1 h.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun y => CartierDiv.isEqn_zero y, GlobalTheory.T.fromModel_zero_log_constant F Y a n ha hn⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_const (a : F) (n : ℕ) (ha : a ≠ 0) (hn : n ≠ 0) :
     Good Y 0 (fun _ => 1) (fun _ e _ => Real.log (e.w (algebraMap F (AlgebraicClosure F) a)) / n) :=
   ⟨fun y => CartierDiv.isEqn_zero y, GlobalTheory.T.fromModel_zero_log_constant F Y a n ha hn⟩
 
 /- English proof (translation)
-The claim follows from `(good_const 1 1 one_ne_zero one_ne_zero).congr rfl (fun _ => rfl) (fun _ _ _ => by simp)`.
+A detailed English derivation is pending.
 -/
 theorem good_zero : Good Y 0 (fun _ => 1) (fun _ _ _ => 0) :=
   (good_const 1 1 one_ne_zero one_ne_zero).congr rfl (fun _ => rfl) (fun _ _ _ => by simp)
 
 omit [NumberField F] in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact CartierDiv.isEqn_zero y`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Conclude with `(h a).add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEqn_sum {α : Type} (s : Finset α) {Δ : α → Y.Dv} {t : α → Y.Fnˣ} (y : Y.X)
     (h : ∀ a, (Δ a).IsEqn y (t a)) : (∑ a ∈ s, Δ a).IsEqn y (∏ a ∈ s, t a) := by
@@ -78,7 +78,7 @@ theorem isEqn_sum {α : Type} (s : Finset α) {Δ : α → Y.Dv} {t : α → Y.F
     exact (h a).add ih
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using good_zero`. Consider the case `insert a s ha ih`. Use `((h a (Finset.mem_insert_self _ _)).add (ih fun b hb => h b (Finset.mem_insert_of_mem hb))).congr (Finset.sum_insert ha).symm (fun _ => by rw [Finset.prod_insert ha]) (fun _ _ _ => by rw [Finset.sum_insert ha])` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem good_sum {α : Type} (s : Finset α) {Δ : α → Y.Dv} {t : α → Y.X → Y.Fnˣ} {φ : α → PtFn Y}
     (h : ∀ a ∈ s, Good Y (Δ a) (t a) (φ a)) :
@@ -91,14 +91,14 @@ theorem good_sum {α : Type} (s : Finset α) {Δ : α → Y.Dv} {t : α → Y.X 
       (Finset.sum_insert ha).symm (fun _ => by rw [Finset.prod_insert ha]) (fun _ _ _ => by rw [Finset.sum_insert ha])
 
 /- English proof (translation)
-The claim follows from `(good_sum (Finset.range n) (fun _ _ => h)).congr (by simp) (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem Good.nsmul {Δ : Y.Dv} {t : Y.X → Y.Fnˣ} {φ : PtFn Y} (h : Good Y Δ t φ) (n : ℕ) :
     Good Y (n • Δ) (fun y => t y ^ n) (fun v e y => (n : ℝ) * φ v e y) :=
   (good_sum (Finset.range n) (fun _ _ => h)).congr (by simp) (by simp) (by simp)
 
 /- English proof (translation)
-Take `⟨m, rfl | rfl⟩` from `n.eq_nat_or_neg`. Conclude with `(h.nsmul m).congr (by simp) (by simp) (by simp)`. Conclude with `(h.nsmul m).neg.congr (by simp) (by simp) (by simp)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Good.zsmul {Δ : Y.Dv} {t : Y.X → Y.Fnˣ} {φ : PtFn Y} (h : Good Y Δ t φ) (n : ℤ) :
     Good Y (n • Δ) (fun y => t y ^ n) (fun v e y => (n : ℝ) * φ v e y) := by
@@ -107,13 +107,13 @@ theorem Good.zsmul {Δ : Y.Dv} {t : Y.X → Y.Fnˣ} {φ : PtFn Y} (h : Good Y Δ
   · exact (h.nsmul m).neg.congr (by simp) (by simp) (by simp)
 
 /- English proof (translation)
-Take `⟨h₁, M, L, m, r, hL, hP, hv⟩` from `h`. Use `⟨M, L, m, r, hL, hP, fun v e y yt i hy hU => ?_⟩` and prove the remaining obligations. Establish `hmem : below y.1 ∈ (L.pull M.j).U i`. Establish `h2 : ∀ U : M.X.Opens, ⊤ ≤ yt ⁻¹ᵁ U → M.j (below y.1) ∈ U` using `fun U hU => by`. Establish `e₀ : M.j (below y.1) = yt (spMap e.O.subtype (IsLocalRing.closedPoint _))` using `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun q : Sp (AlgebraicClosure F) ⟶ M.X => q (IsLocalRing.closedPoint _)) hy.symm).trans (Scheme.Hom.comp_apply _ _ _))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e₀ ▸ hU (Set.mem_univ _)`. Conclude with `Set.mem_iInter.2 fun _ => h2 _ hU`. Establish `u₁ : UnitAt (below y.1) ((t (below y.1) * (t' (below y.1))⁻¹ : Y.Fnˣ) : Y.Fn)`. Simplify `(h' (below y.1)).iff_unitAt.1 (h₁ _)` using `[div_eq_mul_inv]`. Establish `u₂ : UnitAt (below y.1) (((t (below y.1))⁻¹ ^ (m : ℕ) * r i : Y.Fnˣ) : Y.Fn)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `((h₁ (below y.1)).nsmul m).iff_unitAt.1 (hP.isEqn i _ hmem)` using `[div_eq_mul_inv, mul_comm]`. Establish `e₁ : (((t' (below y.1))⁻¹ ^ (m : ℕ) * r i : Y.Fnˣ) : Y.Fn) = ((t (below y.1) * (t' (below y.1))⁻¹ : Y.Fnˣ) : Y.Fn) ^ (m : ℕ) * (((t (below y.1))⁻¹ ^ (m : ℕ) * r i : Y.Fnˣ) : Y.Fn)`. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_mul]`. Use `congr 1`. Rewrite using `[mul_pow, mul_comm (t _ ^ _), mul_assoc, ← mul_assoc (t _ ^ _), ← mul_pow, mul_inv_cancel, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n₁` using `SmallSec.valAt_ne_zero u₁`. Establish `n₂` using `SmallSec.valAt_ne_zero u₂`. Rewrite using `[e₁, SmallSec.valAt_mul (SmallSec.regAt_pow u₁.regAt _) u₂.regAt, SmallSec.valAt_pow u₁.regAt, map_mul, map_pow, Real.log_mul (pow_ne_zero _ (e.w.ne_zero n₁)) (e.w.ne_zero n₂), Real.log_pow, mul_add, hv v e y yt i hy hU]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Good.change {Δ : Y.Dv} {t : Y.X → Y.Fnˣ} {φ : PtFn Y} (h : Good Y Δ t φ) {t' : Y.X → Y.Fnˣ}
     (h' : ∀ y, Δ.IsEqn y (t' y)) :
@@ -150,11 +150,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {t : SAB H X} {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℕ) (hk : k ≤ m), Good Y (∑ l : Fin k, Δ (Fin.castLE hk l)) (fun y => ∏ l : Fin k, d y (Fin.castLE hk l)) (fun v e y => ∑ l : Fin k, stepLog t ρ f q (Fin.castLE hk l) v e y)` using `fun k hk => by`. Establish `he : ∀ y, (∑ l : Fin k, Δ (Fin.castLE hk l)).IsEqn y (∏ l : Fin k, d y (Fin.castLE hk l))` using `fun y => isEqn_sum _ y fun l => hΔ y _`. Conclude with `⟨he, GlobalTheory.T.fromModel_of_locMax' F Y M _ _ _ he (GlobalTheory.T.tangent_sections_on_normal_model hB E H X t hX F Y M ρ' ρ hM hρ m u₀ f d h q k hk)⟩`. Establish `hi : Fin.castLE (Nat.succ_le_of_lt i.2) (Fin.last i) = i` using `rfl`. Use `((key (i + 1) i.2).add (key i i.2.le).neg).congr ?_ (fun y => ?_) (fun v e y => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.sum_univ_castSucc, hi]`. Conclude with `add_neg_cancel_comm _ _`. Rewrite using `[Fin.prod_univ_castSucc, hi]`. Conclude with `mul_inv_cancel_comm _ _`. Rewrite using `[Fin.sum_univ_castSucc, hi]`.
-
-Conclude with `add_neg_cancel_comm _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_step (hB : HTBoundSt) [IsLocallyNoetherian X] (hX : X.IsSeparated) (M : GlobalTheory.TrueGeo.Model Y)
     (ρ' : M.X ⟶ X) {ρ : Y.X ⟶ X} (hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X) (hρ : M.j ≫ ρ' = ρ) {m : ℕ}
@@ -193,7 +191,7 @@ def mixLog (ρ : Y.X ⟶ X) {m : ℕ}
     else 0
 
 /- English proof (translation)
-Unfold `stepLog mixLog`. Rewrite using `[← h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mixLog_eq {ρ : Y.X ⟶ X} {m : ℕ}
     {f : ∀ y : Y.X, Fin m → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left)} {b : ℕ → Bool} {i : Fin m}
@@ -203,9 +201,9 @@ theorem mixLog_eq {ρ : Y.X ⟶ X} {m : ℕ}
   rw [← h]
 
 /- English proof (translation)
-Use `((h 0).add (good_sum hb.toFinset fun q _ => (h q).add (h 0).neg)).congr (by simp) (by simp) fun v e y => ?_` and prove the remaining obligations. Take `⟨hp, -⟩` from `GlobalTheory.ShFam.Pad.ioOf_spec F v e`. Establish `h0 : ∀ q, q ≠ resP v → stepLog t ρ f q i v e y = stepLog t ρ f 0 i v e y` using `fun q hq => (mixLog_eq (b := fun _ => false) (by simpa using hq.symm)).trans (mixLog_eq (b := fun _ => false) (by simpa using hp.ne_zero)).symm`. Distinguish the cases in `hv : b (resP v) = true`. Rewrite using `[Finset.sum_eq_single (resP v) (fun q _ hq => by rw [h0 q hq, add_neg_cancel]) (fun hn => absurd (hb.mem_toFinset.2 hv) hn), ← mixLog_eq (q := resP v) (by simp [hv])]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_eq_zero fun q hq => by`. Rewrite using `[h0 q (fun e => hv (e ▸ hb.mem_toFinset.1 hq)), add_neg_cancel], add_zero]`. Conclude with `mixLog_eq (by simpa [hp.ne_zero] using hv)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_mix {ρ : Y.X ⟶ X} {m : ℕ}
     {f : ∀ y : Y.X, Fin m → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left)} {i : Fin m} {Δ : Y.Dv}
@@ -225,11 +223,11 @@ theorem good_mix {ρ : Y.X ⟶ X} {m : ℕ}
     exact mixLog_eq (by simpa [hp.ne_zero] using hv)
 
 /- English proof (translation)
-Use `(good_sum (hb.toFinset.filter Nat.Prime) fun q hq => good_const ((q : F) ^ padicValNat q (NumberField.discr E).natAbs) (Module.finrank ℚ E) (pow_ne_zero _ (Nat.cast_ne_zero.2 (Finset.mem_filter.1 hq).2.ne_zero)) Module.finrank_pos.ne').congr (by simp) (by simp) fun v e y => ?_` and prove the remaining obligations. Take `⟨hp, -, hw⟩` from `GlobalTheory.ShFam.Pad.ioOf_spec F v e`. Use `Fact.mk hp` as an intermediate fact. Establish `h0 : ∀ q : ℕ, q.Prime → q ≠ resP v → Real.log (e.w (q : AlgebraicClosure F)) = 0` using `fun q hq hne => by`. Establish `h1 : ‖(q : ℂ_[resP v])‖ = 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (algebraMap ℚ_[resP v] ℂ_[resP v]), norm_algebraMap']`. Conclude with `Padic.norm_natCast_eq_one_iff.2 ((Nat.coprime_primes hp hq).2 hne.symm)`. Rewrite using `[hw, map_natCast (ioOf (resP v) e), h1, Real.log_one, mul_zero]`. Simplify using `only [map_pow, map_natCast, Real.log_pow]`. Use `split_ifs with hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_eq_single (resP v) (fun q hq hne => by rw [h0 q (Finset.mem_filter.1 hq).2 hne]; simp) (fun hn => absurd (Finset.mem_filter.2 ⟨hb.mem_toFinset.2 hv, hp⟩) hn), vDiff]`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_eq_zero fun q hq => ?_` and prove the remaining obligations. Rewrite using `[h0 q (Finset.mem_filter.1 hq).2 (fun e => hv (e ▸ hb.mem_toFinset.1 (Finset.mem_filter.1 hq).1))]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_diff (Y : Var F) (E : Type) [Field E] [NumberField E] {b : ℕ → Bool} (hb : {q | b q = true}.Finite) :
     Good Y 0 (fun _ => 1) (fun v e _ => if b (resP v) = true then vDiff E (resP v) * Real.log (e.w (resP v)) else 0) := by
@@ -268,14 +266,14 @@ abbrev dg (y : C.Y.X) : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → C.Y.Fnˣ := (
 
 omit [NumberField F] in
 /- English proof (translation)
-The claim follows from `(C.gr_spec y).choose_spec.choose_spec.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem fr_spec (y : C.Y.X) : (fr C y).Tri (algebraMap (C.Y.X.presheaf.stalk y) C.Y.X.functionField) C.f0 (dg C y) ∧
     ∀ τ i, (C.gr τ i).IsEqn y (dg C y τ i) := (C.gr_spec y).choose_spec.choose_spec.choose_spec
 
 omit [NumberField F] in
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isFrame_compose_ringHom_baseChange E H Dw l c Z.X Z.t _ k _ ψ _ (fr C y).v ⟨fun τ i => ⟨(fr C y).tan τ i, (fr C y).eig τ i⟩, (fr C y).basis⟩`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_fr (y : C.Y.X) {k : Type} [CommRing k] (ψ : C.Y.X.presheaf.stalk y →+* k) :
     GlobalTheory.LocM.IsFrame Z.t (ψ.comp (C.gr_spec y).choose) (spMap ψ ≫ stalkPt C.Y y ≫ C.π ≫ genι Z)
@@ -287,7 +285,7 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 omit [NumberField F] in
 
 /- English proof (translation)
-The claim follows from `(fr C y).tan τ tri y := (fr_spec C y).1.2.2 τ indep y k _ ψ cf cf' w h h' := by have hF := isFrame_fr C y ψ have e₁ := (isCombAtG_iff Z.t _ (fun j => ovT (hF.1 τ j).1) cf w).1 h have ht : IsTanAtG Z.t (spMap ψ ≫ stalkPt C.Y y ≫ C.π ≫ genι Z) w := by rw [← e₁] exact isTanAtG_of _ …`.
+A detailed English derivation is pending.
 -/
 theorem isFlagFrame_eig (τ : E →+* ℂ) :
     IsFlagFrame Z.t (C.π ≫ genι Z) (C.f0.v τ) (fun y => (fr C y).v τ) (fun y => dg C y τ) where
@@ -308,7 +306,7 @@ theorem isFlagFrame_eig (τ : E →+* ℂ) :
 omit [NumberField F] in
 
 /- English proof (translation)
-The claim follows from `(fr C y).tan _ _ tri y i := by obtain ⟨hx, -, h⟩ := (fr_spec C y).1 obtain ⟨cf, h₁, h₂, h₃⟩ := h ((letters Dw).get i).1 ((letters Dw).get i).2 replace h₃ := (congrArg (fun x => IsCombAtG Z.t x _ cf _) hx).mp h₃ obtain ⟨cg, g₁, g₂, g₃⟩ := (GlobalTheory.Proof.frame_combination_coef …`.
+A detailed English derivation is pending.
 -/
 theorem isFlagFrame_concat :
     IsFlagFrame Z.t (C.π ≫ genι Z)
@@ -337,15 +335,13 @@ def symLog (b : ℕ → Bool) (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) : PtFn C.Y :
   else 0
 
 /- English proof (translation)
-Break down `st with ⟨τ, k⟩ | k` into its components or cases. Distinguish the cases in `h : k < Dw.mult τ`. Establish `h₁` using `good_mix (fun q => good_step hB hX M ρ' hM hρ (isFlagFrame_eig C τ) (fun y i => (fr_spec C y).2 τ i) q ⟨k, h⟩) hb`. Distinguish the cases in `hτ : τ (H.rt : E) = H.rt0`. Use `(h₁.add (good_diff C.Y E hb)).congr (by simp [letterOf, h]) (by simp [letterOf, h]) fun v ε y => ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hp, -⟩` from `GlobalTheory.ShFam.Pad.ioOf_spec F v ε`. Establish `hl : Real.log (resP v) ≠ 0` using `(Real.log_pos (by exact_mod_cast hp.one_lt)).ne'`. Simplify using `only [symLog, mixLog, lnStep, dif_pos hp, dif_pos h, hτ, and_true]`. Use `split_ifs`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Use `h₁.congr (by simp [letterOf, h]) (by simp [letterOf, h]) fun v ε y => ?_` and prove the remaining obligations. Simplify using `only [symLog, mixLog, lnStep, dif_pos h, hτ, and_false, if_false, sub_zero]`. Conclude with `good_zero.congr (by simp [letterOf, h]) (by simp [letterOf, h]) fun v ε y => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[symLog, lnStep, h]`. Distinguish the cases in `h : k < (letters Dw).length`. Establish `h₁` using `good_mix (fun q => good_step hB hX M ρ' hM hρ (isFlagFrame_concat C) (Δ := fun i => C.gr ((letters Dw).get i).1 ((letters Dw).get i).2) (fun y i => (fr_spec C y).2 _ _) q ⟨k, h⟩) hb`. Use `h₁.congr (by simp [letterOf, h]) (by simp [letterOf, h]) fun v ε y => ?_` and prove the remaining obligations. Simplify using `only [symLog, mixLog, lnStep, dif_pos h]`.
-
-Conclude with `good_zero.congr (by simp [letterOf, not_lt.1 h]) (by simp [letterOf, not_lt.1 h]) fun v ε y => by`. Simplify using `[symLog, lnStep, h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_sym (hB : HTBoundSt) [IsLocallyNoetherian Z.X] (hX : Z.X.IsSeparated) (M : GlobalTheory.TrueGeo.Model C.Y)
     (ρ' : M.X ⟶ Z.X) (hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X) (hρ : M.j ≫ ρ' = C.π ≫ genι Z)
@@ -399,7 +395,7 @@ Both sides reduce to the same expression.
 theorem lgOf_eq_lgCopy : @lgOf = @lgCopy := rfl
 
 /- English proof (translation)
-Simplify using `only [Finsupp.sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_left_comm _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_finsupp_sum {α : Type} (w : α →₀ ℤ) (c : ℝ) (g : α → ℝ) :
     c * w.sum (fun a n => (n : ℝ) * g a) = ∑ a ∈ w.support, (w a : ℝ) * (c * g a) := by
@@ -407,9 +403,9 @@ theorem mul_finsupp_sum {α : Type} (w : α →₀ ℤ) (c : ℝ) (g : α → �
   exact Finset.sum_congr rfl fun a _ => mul_left_comm _ _ _
 
 /- English proof (translation)
-Take `⟨hp, -⟩` from `GlobalTheory.ShFam.Pad.ioOf_spec F v ε`. Simplify using `only [lgCopy, symLog, dif_pos hp]`. Use `congrArg₂ (fun a b : ℝ => a + b) rfl ?_` and prove the remaining obligations. Use `(mul_finsupp_sum _ _ _).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg _ (congrArg _ ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem lgCopy_eq (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v) (y : AlgPt C.Y) :
     lgCopy C w v ε y = Real.log (ε.w (valAt y.1 (((∏ x : Letter Dw, dg C (below y.1) x.1 x.2 ^ expo Dw w x) *
@@ -425,7 +421,7 @@ theorem lgCopy_eq (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : 
 
 omit [NumberField F] in
 /- English proof (translation)
-Simplify using `only [expo, Finsupp.sum, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases letterOf Dw a.2.2 <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_expo {G : Type} [AddCommGroup G] (g : Letter Dw → G) (w : Sym E →₀ ℤ) :
     ∑ a ∈ w.support, w a • ((letterOf Dw a.2.2).elim 0 g) = ∑ x, expo Dw w x • g x := by
@@ -436,9 +432,9 @@ theorem sum_expo {G : Type} [AddCommGroup G] (g : Letter Dw → G) (w : Sym E �
   cases letterOf Dw a.2.2 <;> simp
 
 /- English proof (translation)
-Establish `h₁` using `good_sum w.support fun a ha => (good_sym C hB hX M ρ' hM hρ (hw a ha) a.2.2).zsmul (w a)`. Establish `h₂ : Good C.Y (divOf C (expo Dw w)) (fun y => ∏ x : Letter Dw, dg C y x.1 x.2 ^ expo Dw w x) _` using `h₁.congr (sum_expo (fun x => C.gr x.1 x.2) w) (fun y => sum_expo (G := Additive C.Y.Fnˣ) (fun x => Additive.ofMul (dg C y x.1 x.2)) w) (fun _ _ _ => rfl)`. Establish `h₃` using `h₂.change (t' := eqn (divOf C (expo Dw w))) fun y => (CartierDiv.exists_isEqn _ y).choose_spec`. Establish `e₀ : lgCopy C w = _` using `funext fun v => funext fun ε => funext fun y => lgCopy_eq C w v ε y`. Rewrite using `[lgOf_eq_lgCopy, e₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h₃`.
+A detailed English derivation is pending.
 -/
 theorem fromModel_lgOf (hB : HTBoundSt) [IsLocallyNoetherian Z.X] (hX : Z.X.IsSeparated) (M : GlobalTheory.TrueGeo.Model C.Y)
     (ρ' : M.X ⟶ Z.X) (hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X) (hρ : M.j ≫ ρ' = C.π ≫ genι Z)
@@ -456,9 +452,9 @@ theorem fromModel_lgOf (hB : HTBoundSt) [IsLocallyNoetherian Z.X] (hX : Z.X.IsSe
 end Flags
 
 /- English proof (translation)
-Introduce `hB D A N j S κ s fl _ k w hw`. Take `⟨hX, hN, M, ρ', hM, hρ⟩` from `GlobalTheory.T.exists_normal_model_over_projective D.what₂.LL (fl.C k).Y (𝓞 κ.c.F) (RingOfIntegers.mapRingEquiv κ.e) s.T.Z.X s.T.Z.s ((fl.C k).π ≫ genι s.T.Z) s.T.Z.proj (by`. Rewrite using `[← (fl.C k).π_str]`. Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition_assoc, ← Spec.map_comp, ← Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Conclude with `fromModel_lgOf (fl.C k) hB hX M ρ' hM hρ w hw`.
+A detailed English derivation is pending.
 -/
 theorem exists_model_lgOf : HTBoundSt → ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (fl : s.Flag), AdmEx S κ → ∀ (k : s.Comp) (w : Sym D.host.E →₀ ℤ), (∀ a ∈ w.support, {q | a.1 q = true}.Finite) → ∃ (M : GlobalTheory.TrueGeo.Model (fl.C k).Y) (L : LB M.X) (m : ℕ+) (r : (L.pull M.j).ι → (fl.C k).Y.Fnˣ), L.IsLB ∧ Presents ((m : ℕ) • divOf (fl.C k) (expo S.Dw w)) (L.pull M.j) r ∧ ∀ (v : HeightOneSpectrum (𝓞 D.what₂.LL)) (e : Ext v) (y : AlgPt (fl.C k).Y) (yt : Sp e.O ⟶ M.X) (i : (L.pull M.j).ι), spMap e.O.subtype ≫ yt = y.1 ≫ M.j → ⊤ ≤ yt ⁻¹ᵁ L.U (i PUnit.unit) → ((m : ℕ) : ℝ) * lgOf (fl.C k) w v e y = Real.log (e.w (valAt y.1 (((eqn (divOf (fl.C k) (expo S.Dw w)) (below y.1))⁻¹ ^ (m : ℕ) * r i : (fl.C k).Y.Fnˣ) : (fl.C k).Y.Fn))) := by
   intro hB D A N j S κ s fl _ k w hw

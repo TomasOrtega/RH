@@ -5,9 +5,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 
 attribute [-instance] UpperTheory.V.UnitaryThreeInertia.Coef.isLocalRing in
 /- English proof (translation)
-Introduce `l _ c Γ _ _ _ κ h`. Establish `h1 : Continuous fun g => (κ g : c.O)` using `((UpperTheory.V.X.So.adicCont l c).2 Γ _).1 h`. Establish `h2 : Continuous fun g => ((W.pushCh (algebraMap c.O (PadicAlgCl l)) κ g : (PadicAlgCl l)ˣ) : PadicAlgCl l)` using `continuous_subtype_val.comp h1`. Use `Units.continuous_iff.2 ⟨h2, ?_⟩` and prove the remaining obligations. Use `(h2.comp continuous_inv).congr fun g => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp, map_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Ws.auCont :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l) {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (κ : Γ →* c.Oˣ), AdicCont (maximalIdeal c.O) (fun g => (κ g : c.O)) → Continuous (W.pushCh (algebraMap c.O (PadicAlgCl l)) κ) := by

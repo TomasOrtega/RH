@@ -12,7 +12,7 @@ namespace GlobalTheory.InvDerMap
 variable {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S)
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `[coeff_map, coeff_pderiv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_pderiv {σ : Type} (i : σ) (f : MvPowerSeries σ R) :
     MvPowerSeries.map φ (pderiv R i f) = pderiv S i (MvPowerSeries.map φ f) := by
@@ -20,9 +20,9 @@ theorem map_pderiv {σ : Type} (i : σ) (f : MvPowerSeries σ R) :
   simp [coeff_map, coeff_pderiv]
 
 /- English proof (translation)
-Unfold `ev`. Establish `h : HasSubst (fun p : Fin 2 × Fin d => (![pt R d 0, 0] : Fin 2 → Pt R 1 d) p.1 p.2)`. Apply `hasSubst_of_constantCoeff_zero` to reduce the goal to its premises. Introduce and unpack `⟨j, i⟩`. Apply the tactic sequence `fin_cases j <;> simp [pt]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[MvPowerSeries.map_subst h]`. Use `congr 1`. Use function extensionality and compare the values at `⟨j, i⟩`. Apply the tactic sequence `fin_cases j <;> simp [pt]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_ev_axis {d : ℕ} (g : PS R 2 d) :
     MvPowerSeries.map φ (ev (n := 1) ![pt R d 0, 0] g) =
@@ -38,7 +38,7 @@ theorem map_ev_axis {d : ℕ} (g : PS R 2 d) :
   fin_cases j <;> simp [pt]
 
 /- English proof (translation)
-Simplify using `only [Dof, map_sum, map_mul, map_C, map_ev_axis, map_pderiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_Dof {d : ℕ} (F : Fin d → PS R 2 d) (u : Fin d → R) (f : PS R 1 d) :
     MvPowerSeries.map φ (Dof F u f) =
@@ -46,7 +46,7 @@ theorem map_Dof {d : ℕ} (F : Fin d → PS R 2 d) (u : Fin d → R) (f : PS R 1
   simp only [Dof, map_sum, map_mul, map_C, map_ev_axis, map_pderiv]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', map_Dof, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_Dof_iterate {d : ℕ} (F : Fin d → PS R 2 d) (u : Fin d → R) (n : ℕ) (f : PS R 1 d) :
     MvPowerSeries.map φ ((Dof F u)^[n] f) =
@@ -60,7 +60,7 @@ end GlobalTheory.InvDerMap
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `DmonOf`. Proceed by induction on `(Finset.univ : Finset ι).toList with`. Consider the case `nil => rfl`. Consider the case `cons l L ih => rw [List.foldr_cons, List.foldr_cons, InvDerMap.map_Dof_iterate, ih]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_dmonOf (R S : Type) [CommRing R] [CommRing S] (φ : R →+* S) (d : ℕ) (F : Fin d → PS R 2 d)
     (ι : Type) [Fintype ι] (u : ι → Fin d → R) (m : ι →₀ ℕ) (f : PS R 1 d) :

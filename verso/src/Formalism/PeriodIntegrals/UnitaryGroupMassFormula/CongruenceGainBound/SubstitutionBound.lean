@@ -14,12 +14,12 @@ variable {σ τ Kc : Type} [Field Kc] (Oc : Subring Kc)
 def IntP (x : MvPolynomial τ Kc) : Prop := ∀ m, MvPolynomial.coeff m x ∈ Oc
 
 /- English proof (translation)
-Introduce `m` and use `by simp [Oc.zero_mem]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coeffsIn_zero : IntP Oc (0 : MvPolynomial τ Kc) := fun m => by simp [Oc.zero_mem]
 
 /- English proof (translation)
-Introduce `m` and use `by classical rw [MvPolynomial.coeff_one]; split_ifs · exact Oc.one_mem · exact Oc.zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coeffsIn_one : IntP Oc (1 : MvPolynomial τ Kc) := fun m => by
   classical
@@ -28,13 +28,13 @@ theorem coeffsIn_one : IntP Oc (1 : MvPolynomial τ Kc) := fun m => by
   · exact Oc.zero_mem
 
 /- English proof (translation)
-Introduce `m` and use `by rw [MvPolynomial.coeff_add]; exact Oc.add_mem (hx m) (hy m)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coeffsIn_add {x y : MvPolynomial τ Kc} (hx : IntP Oc x) (hy : IntP Oc y) : IntP Oc (x + y) := fun m => by
   rw [MvPolynomial.coeff_add]; exact Oc.add_mem (hx m) (hy m)
 
 /- English proof (translation)
-Introduce `m` and use `by classical rw [MvPolynomial.coeff_mul] exact Oc.sum_mem fun q _ => Oc.mul_mem (hx _) (hy _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coeffsIn_mul₂ {x y : MvPolynomial τ Kc} (hx : IntP Oc x) (hy : IntP Oc y) : IntP Oc (x * y) := fun m => by
   classical
@@ -42,20 +42,20 @@ theorem coeffsIn_mul₂ {x y : MvPolynomial τ Kc} (hx : IntP Oc x) (hy : IntP O
   exact Oc.sum_mem fun q _ => Oc.mul_mem (hx _) (hy _)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction f (IntP Oc) (fun _ _ => coeffsIn_add Oc) (coeffsIn_zero Oc) h`.
+A detailed English derivation is pending.
 -/
 theorem coeffsIn_sum {ι : Type} (s : Finset ι) (f : ι → MvPolynomial τ Kc) (h : ∀ i ∈ s, IntP Oc (f i)) :
     IntP Oc (∑ i ∈ s, f i) :=
   Finset.sum_induction f (IntP Oc) (fun _ _ => coeffsIn_add Oc) (coeffsIn_zero Oc) h
 
 /- English proof (translation)
-Introduce `n` and use `by simp only [map_zero]; exact coeffsIn_zero Oc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntA_zero : IntA Oc (0 : MvPowerSeries σ (MvPolynomial τ Kc)) := fun n => by
   simp only [map_zero]; exact coeffsIn_zero Oc
 
 /- English proof (translation)
-Introduce `n` and use `by classical rw [MvPowerSeries.coeff_one]; split_ifs · exact coeffsIn_one Oc · exact coeffsIn_zero Oc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntA_one : IntA Oc (1 : MvPowerSeries σ (MvPolynomial τ Kc)) := fun n => by
   classical
@@ -64,14 +64,14 @@ theorem IntA_one : IntA Oc (1 : MvPowerSeries σ (MvPolynomial τ Kc)) := fun n 
   · exact coeffsIn_zero Oc
 
 /- English proof (translation)
-Introduce `n` and use `by rw [map_add]; exact coeffsIn_add Oc (hF n) (hG n)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntA_add {F G : MvPowerSeries σ (MvPolynomial τ Kc)} (hF : IntA Oc F) (hG : IntA Oc G) :
     IntA Oc (F + G) := fun n => by
   rw [map_add]; exact coeffsIn_add Oc (hF n) (hG n)
 
 /- English proof (translation)
-Introduce `n` and use `by classical rw [MvPowerSeries.coeff_mul] exact coeffsIn_sum Oc _ _ fun q _ => coeffsIn_mul₂ Oc (hF _) (hG _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IntA_mul {F G : MvPowerSeries σ (MvPolynomial τ Kc)} (hF : IntA Oc F) (hG : IntA Oc G) :
     IntA Oc (F * G) := fun n => by

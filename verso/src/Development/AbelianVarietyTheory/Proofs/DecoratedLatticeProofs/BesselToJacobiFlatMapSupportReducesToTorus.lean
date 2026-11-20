@@ -11,15 +11,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinPl
 
 /- English proof (translation)
-Introduce `D ψ ρ B J s LV LV₀ LW LW₀ v hG hU 𝔉 h𝔉 f hf n hnN hnG t γ hγ κ hκ hne`. Establish `h1 : InK B.V LV (· = v) 1`. Use `⟨Subgroup.one_mem _, ?_⟩` and prove the remaining obligations. Introduce `y _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hfix : s.om (1, κ) f = f` using `GlobalTheory.T.selfDualLatticeStabilizers_fix_weilVacuum_on_placeSet D ψ B.V J.W s.χV s.χW s.om s.weil LV LW hG.sdV hG.sdW (· = v) (fun w hw => hw ▸ ⟨hG.tame, hU.1, hU.2⟩) f hf 1 κ h1 hκ`. Establish `hg : IsThetaFunO ψ B.V J.W (s.om (1, J.d.levi t) f)` using `s.weil.om_pres _ f hf.1`. Establish `hsplit : s.om (1, n * J.d.levi t * J.d.emb0 γ * κ) f = s.om (1, n * J.d.emb0 γ) (s.om (1, J.d.levi t) f)`. Establish `: n * J.d.levi t * J.d.emb0 γ * κ = (n * J.d.emb0 γ) * J.d.levi t * κ`. Rewrite using `[mul_assoc n (J.d.levi t), ← J.d.wittHyperbolic_anisotropic_commute_levi γ t]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[this]`. Establish `e : ((1 : GA D B.V), (n * J.d.emb0 γ) * J.d.levi t * κ) = ((1, n * J.d.emb0 γ) * (1, J.d.levi t)) * (1, κ)`. Simplify using the standard rewrite rules. Rewrite using `[e, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hfix]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hsplit, h𝔉.equiv _ hg n hnN hnG γ hγ, h0]`. Establish `: opA ψ J.d B.o B.ζ s.om₀ n γ 0 = 0`. Use function extensionality and compare the values at `w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[opA, jacT, heisO]`. Rewrite using `[this, smul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem oneBF_red_torus : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J) (LV : Lat B.V) (LV₀ : Lat B.V₀) (LW : Lat J.W) (LW₀ : Lat J.W₀) (v : Pl D), GoodBF ψ B J LV LV₀ LW LW₀ v → UnrAt s v → ∀ 𝔉, IsFlatBF s (· = v) 𝔉 → ∀ f, Vac ψ B.V J.W LV LW (· = v) f → ∀ n ∈ flagN J.d, n ∈ grpAt J.W (· = v) → ∀ t : GL (Fin ρ) (AE D), ∀ γ ∈ grpAt J.W₀ (· = v), ∀ κ, InK J.W LW (· = v) κ → 𝔉 (s.om (1, n * J.d.levi t * J.d.emb0 γ * κ) f) ≠ 0 → 𝔉 (s.om (1, J.d.levi t) f) ≠ 0 := by
   intro D ψ ρ B J s LV LV₀ LW LW₀ v hG hU 𝔉 h𝔉 f hf n hnN hnG t γ hγ κ hκ hne

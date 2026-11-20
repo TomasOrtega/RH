@@ -10,7 +10,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.UnipExhaust
 
 /- English proof (translation)
-Take `⟨U₀, hc, hs⟩` from `GlobalTheory.UnipCptSub.exists_compact_subgroup_of_isCompact Q hQ (fun g hg => hU (hQU hg))`. Use `⟨⟨U₀ ⊓ U, ?_, inf_le_right⟩, fun g hg => ⟨hs hg, hQU hg⟩⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hc.inter_right hcl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compact_subgroup_between {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {N : ℕ} {U : Subgroup (GL (Fin N) k)}
@@ -25,13 +25,11 @@ theorem exists_compact_subgroup_between {k : Type} [Field k] [ValuativeRel k] [T
   exact hc.inter_right hcl
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N U hU hcl`. Use `haveI : SecondCountableTopology (GL (Fin N) k) := GlobalTheory.SplitFlip.secondCountable_GL`. Use `haveI : LocallyCompactSpace (GL (Fin N) k) := GlobalTheory.SplitFlip.locallyCompact_GL`. Use `haveI : SigmaCompactSpace (GL (Fin N) k) := inferInstance`. Set `S` to `{L : Subgroup (GL (Fin N) k) // IsCompact (L : Set (GL (Fin N) k)) ∧ L ≤ U}`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `K : ℕ → Set (GL (Fin N) k)` to `compactCovering (GL (Fin N) k)`. Establish `hstep : ∀ (j : ℕ) (A : S), ∃ B : S, (K j ∩ (U : Set (GL (Fin N) k))) ∪ (A.1 : Set (GL (Fin N) k)) ⊆ (B.1 : Set (GL (Fin N) k))` using `fun j A => exists_compact_subgroup_between hU hcl _ (((isCompact_compactCovering _ j).inter_right hcl).union A.2.1) (Set.union_subset Set.inter_subset_right A.2.2)`. Use `choose next hnext using hstep`. Set `b : S` to `⟨⊥, by rw [Subgroup.coe_bot]; exact isCompact_singleton, bot_le⟩`. Set `f : ℕ → S` to `fun j => Nat.rec b (fun i A => next i A) j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsucc : ∀ j, f (j + 1) = next j (f j)` using `fun _ => rfl`. Use `⟨fun j => (f j).1, monotone_nat_of_le_succ fun j g hg => ?_, fun j => (f j).2.1, fun j => (f j).2.2, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[hsucc]`. Conclude with `hnext j (f j) (Or.inr hg)`. Take `⟨j, hj⟩` from `Set.mem_iUnion.1 ((iUnion_compactCovering (GL (Fin N) k)).symm ▸ Set.mem_univ n : n ∈ ⋃ i, K i)`.
-
-Use `⟨j + 1, ?_⟩` and prove the remaining obligations. Use `show n ∈ (f (j + 1)).1`. Rewrite using `[hsucc]`. Conclude with `hnext j (f j) (Or.inl ⟨hj, hn⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_monotone_compact_exhaustion :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ)

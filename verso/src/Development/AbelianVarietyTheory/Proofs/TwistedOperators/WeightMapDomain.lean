@@ -13,7 +13,7 @@ open scoped DirectSum TensorProduct Kronecker Matrix
 namespace GlobalTheory.GLDuality.HighestLine
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply]`. Rewrite using `[Finsupp.sum_mapDomain_index (h := fun (x : Fin r × Fin n) (c : ℕ) => c • colW r n x) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)]`. Rewrite using `[Finsupp.sum, Finsupp.sum, Finset.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `[colW, Pi.single_apply, Fin.castLE_inj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem weight_mapDomain {r m n : ℕ} (h : m ≤ n) (u : Fin r × Fin m →₀ ℕ) (i : Fin m) :
     Finsupp.weight (colW r n) (Finsupp.mapDomain (Prod.map id (Fin.castLE h)) u) (Fin.castLE h i) =
@@ -27,9 +27,9 @@ theorem weight_mapDomain {r m n : ℕ} (h : m ≤ n) (u : Fin r × Fin m →₀ 
   simp [colW, Pi.single_apply, Fin.castLE_inj]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Distinguish the cases in `hx : u x = 0`. Rewrite using `[hx]`. Conclude with `Nat.zero_le _`. Use `le_trans ?_ (Finset.single_le_sum (f := fun y => (u y • colW r n y) x.2) (fun y _ => Nat.zero_le _) (Finsupp.mem_support_iff.mpr hx))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[colW]`.
+A detailed English derivation is pending.
 -/
 theorem le_weight {r n : ℕ} (u : Fin r × Fin n →₀ ℕ) (x : Fin r × Fin n) :
     u x ≤ Finsupp.weight (colW r n) u x.2 := by
@@ -42,9 +42,9 @@ theorem le_weight {r n : ℕ} (u : Fin r × Fin n →₀ ℕ) (x : Fin r × Fin 
     simp [colW]
 
 /- English proof (translation)
-Establish `key : (colAdd ℂ (Fin.castLE h l) (Fin.castLE h j) c).comp (rename (Prod.map id (Fin.castLE h))) = (rename (Prod.map id (Fin.castLE h))).comp (colAdd ℂ (r` using `r) l j c) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, s⟩`. Simplify using `only [AlgHom.comp_apply, rename_X, colAdd, aeval_X, Prod.map_apply, id_eq, Fin.castLE_inj]`. Apply the tactic sequence `split_ifs <;> simp [rename_X]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `DFunLike.congr_fun key f`.
+A detailed English derivation is pending.
 -/
 theorem colAdd_rename {r m n : ℕ} (h : m ≤ n) (l j : Fin m) (c : ℂ) (f : MvPolynomial (Fin r × Fin m) ℂ) :
     colAdd ℂ (Fin.castLE h l) (Fin.castLE h j) c (rename (Prod.map id (Fin.castLE h)) f) =
@@ -58,9 +58,9 @@ theorem colAdd_rename {r m n : ℕ} (h : m ≤ n) (l j : Fin m) (c : ℂ) (f : M
   exact DFunLike.congr_fun key f
 
 /- English proof (translation)
-Establish `key : (rowGen ℂ (n` using `n) a b).comp (rename (Prod.map id (Fin.castLE h))) = (Polynomial.mapAlgHom (rename (Prod.map id (Fin.castLE h)))).comp (rowGen ℂ (n := m) a b) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨x, s⟩`. Simplify using `only [AlgHom.comp_apply, rename_X, rowGen, aeval_X, Prod.map_apply, id_eq]`. Apply the tactic sequence `split_ifs <;> simp [rename_X, Polynomial.coe_mapAlgHom]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hf` using `DFunLike.congr_fun key f`. Simplify using `only [AlgHom.comp_apply] at hf`. Simplify using `only [rowDiv]`. Rewrite using `[hf]`. Simplify using `[Polynomial.coe_mapAlgHom, Polynomial.coeff_map]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rowDiv_rename {r m n : ℕ} (h : m ≤ n) (a b : Fin r) (k : ℕ) (f : MvPolynomial (Fin r × Fin m) ℂ) :
     rowDiv ℂ a b k (rename (Prod.map id (Fin.castLE h)) f) =
@@ -78,19 +78,19 @@ theorem rowDiv_rename {r m n : ℕ} (h : m ≤ n) (a b : Fin r) (k : ℕ) (f : M
   simp [Polynomial.coe_mapAlgHom, Polynomial.coeff_map]
 
 /- English proof (translation)
-Establish `hφi : Function.Injective (Prod.map id (Fin.castLE h) : Fin r × Fin r → Fin r × Fin n)` using `Function.Injective.prodMap Function.injective_id (Fin.castLE_injective h)`. Establish `hpt` using `(dualWeylPoint ℂ r n ν f).1 hf`. Establish `hvars : (f.vars : Set (Fin r × Fin n)) ⊆ Set.range (Prod.map id (Fin.castLE h) : Fin r × Fin r → Fin r × Fin n)`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_coe, MvPolynomial.mem_vars]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu, hxu⟩` from `hx`. Establish `hwu : Finsupp.weight (colW r n) u = ν` using `hpt.1 (MvPolynomial.mem_support_iff.mp hu)`. Establish `hx2 : x.2.val < r`. Assume the negation of the conclusion as `hlt`. Establish `h1` using `le_weight u x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h1` using `[hwu, h0 x.2 (not_lt.mp hlt)]`. Conclude with `(Finsupp.mem_support_iff.mp hxu) (Nat.le_zero.mp h1)`. Conclude with `⟨(x.1, ⟨x.2.val, hx2⟩), Prod.ext rfl (Fin.ext rfl)⟩`. Take `⟨g, rfl⟩` from `exists_rename_eq_of_vars_subset_range f _ hφi hvars`. Establish `hgw : IsWeightedHomogeneous (colW r r) g (fun i => ν (Fin.castLE h i))`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Establish `hu' : coeff (Finsupp.mapDomain (Prod.map id (Fin.castLE h)) u) (rename (Prod.map id (Fin.castLE h)) g) ≠ 0`. Rewrite using `[coeff_rename_mapDomain _ hφi]` and apply the resulting hypothesis. Establish `hwu` using `hpt.1 hu'`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← weight_mapDomain h u i, hwu]`. Establish `hgc : ∀ l j : Fin r, l < j → ∀ c : ℂ, colAdd ℂ l j c g = g`. Introduce `l j hlj c`. Apply `rename_injective _ hφi` to reduce the goal to its premises. Rewrite using `[← colAdd_rename h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hpt.2 _ _ (show Fin.castLE h l < Fin.castLE h j from hlj) c`. Establish `hg : g ∈ dualWeyl ℂ r r (fun i => ν (Fin.castLE h i))` using `(dualWeylPoint ℂ r r _ g).2 ⟨hgw, hgc⟩`. Establish `hgk : ∀ a b : Fin r, a < b → ∀ k : ℕ, 1 ≤ k → rowDiv ℂ a b k g = 0`. Introduce `a b hab k hk1`. Apply `rename_injective _ hφi` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← rowDiv_rename h, map_zero]`. Conclude with `hk a b hab k hk1`. Establish `hant : Antitone (fun i : Fin r => ν (Fin.castLE h i))` using `fun i j hij => hν (show Fin.castLE h i ≤ Fin.castLE h j from hij)`. Take `⟨c, hc⟩` from `hwLine ℂ r r le_rfl _ hant g hg hgk`. Conclude with `⟨c, by rw [hc, map_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wide {r n : ℕ} (h : r ≤ n) (ν : Fin n → ℕ) (hν : Antitone ν) (h0 : ∀ s : Fin n, r ≤ s.val → ν s = 0)
     (f : MvPolynomial (Fin r × Fin n) ℂ) (hf : f ∈ dualWeyl ℂ r n ν)
@@ -139,19 +139,17 @@ theorem wide {r n : ℕ} (h : r ≤ n) (ν : Fin n → ℕ) (hν : Antitone ν) 
   exact ⟨c, by rw [hc, map_smul]⟩
 
 /- English proof (translation)
-Introduce `r n ν v hv hkv hv0`. Establish `hant : Antitone ν`. Introduce `i j hij`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hij' : i < j` using `lt_of_le_of_ne hij (by rintro rfl; exact lt_irrefl _ hlt)`. Establish `hbot` using `dualWeylNonDom ℂ r n ν ⟨i, j, hij', hlt⟩`. Rewrite `hv` using `[hbot]`. Conclude with `hv0 ((Submodule.mem_bot ℂ).mp hv)`. Establish `h0 : ∀ s : Fin n, r ≤ s.val → ν s = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `s hs`. Assume the negation of the conclusion as `hne`. Conclude with `hv0 (hwLineTall ℂ r n ν ⟨s, hs, Nat.pos_of_ne_zero hne⟩ v hv hkv)`. Establish `hline : ∃ H : MvPolynomial (Fin r × Fin n) ℂ, ∀ w ∈ dualWeyl ℂ r n ν, (∀ a b : Fin r, a < b → ∀ k : ℕ, 1 ≤ k → rowDiv ℂ a b k w = 0) → ∃ c : ℂ, w = c • H`. Break down `le_total n r with hnr | hrn` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hw ℂ hnr ν, fun w hw' hk => hwLine ℂ r n hnr ν hant w hw' hk⟩`. Conclude with `⟨_, fun w hw' hk => wide hrn ν hant h0 w hw' hk⟩`. Take `⟨H, hH⟩` from `hline`. Use `⟨⟨⟨fun i => ν (Fin.castLE (min_le_left n r) i), fun i j hij => hant (show Fin.castLE (min_le_left n r) i ≤ Fin.castLE (min_le_left n r) j from hij)⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [rowNu]`. Use `split_ifs with hs`. Conclude with `congrArg ν (Fin.ext rfl)`. Establish `hsn` using `s.isLt`. Conclude with `h0 s (by omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw' hkw`. Take `⟨c₀, hc₀⟩` from `hH v hv hkv`. Take `⟨c₁, hc₁⟩` from `hH w hw' hkw`. Establish `hc0 : c₀ ≠ 0`. Introduce and unpack `rfl`.
-
-Conclude with `hv0 (by rw [hc₀, zero_smul])`. Use `⟨c₁ / c₀, ?_⟩` and prove the remaining obligations. Rewrite using `[hc₁, hc₀, smul_smul, div_mul_cancel₀ _ hc0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem highest_line : ∀ (r n : ℕ) (ν : Fin n → ℕ) (v : MvPolynomial (Fin r × Fin n) ℂ), v ∈ dualWeyl ℂ r n ν → (∀ a b : Fin r, a < b → ∀ k : ℕ, 1 ≤ k → rowDiv ℂ a b k v = 0) → v ≠ 0 → (∃ a : Part (min n r), ν = rowNu (r := n) a.1) ∧ ∀ w ∈ dualWeyl ℂ r n ν, (∀ a b : Fin r, a < b → ∀ k : ℕ, 1 ≤ k → rowDiv ℂ a b k w = 0) → ∃ c : ℂ, w = c • v := by
   intro r n ν v hv hkv hv0

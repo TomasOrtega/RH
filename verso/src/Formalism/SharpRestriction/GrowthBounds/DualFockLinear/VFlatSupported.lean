@@ -30,7 +30,7 @@ def RhoAtG (c0 loss κ : ℕ) (e : Edge W Qq (m + 1)) (Θ : ↥((Pol (KK O) (ι 
       u ∈ scale (algebraMap O Kf w ^ (1 : ℤ)) (Re p ι σ w r lam e))
 
 /- English proof (translation)
-Take `⟨Ix, ρ, h1⟩` from `h`. Conclude with `⟨κ, Ix, ρ, hκ, h1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rhoAt_of_G (lam0 : Fin n' → Fin (m + 1) → ℤ) (c0 loss : ℕ) (bK : ℝ) (e : Edge W Qq (m + 1))
     (Θ : ↥((Pol (KK O) (ι := Fin n') (m + 1) (dT TT lam0)).restrictScalars O) ≃ₗ[O] ↥(Vsp Kf (flW (m := m) (dT TT lam0))))
@@ -43,15 +43,13 @@ theorem rhoAt_of_G (lam0 : Fin n' → Fin (m + 1) → ℤ) (c0 loss : ℕ) (bK :
 end At
 
 /- English proof (translation)
-Introduce `y hy`. Unfold `Vsp tensorLat at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `Subalgebra.prod_mem _ fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `hs : s ∈ TT`. Conclude with `blockEmb_supported s _ (fun s => s ∈ TT) hs`. Establish `h0 : flW (m` using `m) d s = 0 := by`. Unfold `flW`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd0 s hs]`. Simplify using the standard rewrite rules. Establish `h1` using `hF s`. Simplify using `only [lamAt_zero h0, if_pos (anti_zero m), nuOf_zero] at h1`. Rewrite using `[dualWeyl_zero_const _ h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `blockEmb`. Rewrite using `[rename_C]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `zero => exact Subalgebra.zero_mem _`. Consider the case `add a b _ _ ha hb => exact Subalgebra.add_mem _ ha hb`.
-
-Consider the case `smul t a _ ha => exact Subalgebra.smul_mem _ ha t`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem V_flat_supported {Kf : Type} [Field Kf] {n' m : ℕ} (TT : Finset (Fin n')) (d : Fin n' → ℕ)
     (hd0 : ∀ s, s ∉ TT → d s = 0) :
@@ -81,61 +79,55 @@ theorem V_flat_supported {Kf : Type} [Field Kf] {n' m : ℕ} (TT : Finset (Fin n
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨IxT, ρT, L1, L2, L3, Op, Nd⟩` from `hT`. Establish `hw` using `w_ne_zero h`. Establish `hp0 : (p : Kf) ≠ 0` using `by rw [Formalism.L2.G.Model.p_eq h]; exact pow_ne_zero _ hw`. Use `set cw : Kf := algebraMap O Kf w with hcw`. Use `set cp : Kf := (p : Kf) ^ Ar r sp with hcp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bp` using `fun e' (he' : IsEdge p n' r e') => Formalism.L2.G.Model.bePerfect p n' W Qq O Kf ι σ j w h m r sp hdsp e' he'`. Establish `G1 : ∀ G ∈ Re' p ι σ w r sp e, ∀ Q ∈ Re p ι σ w r sp e, ∃ a : O, be p r sp Q G = cw ^ (0 : ℤ) * algebraMap O Kf a`. Introduce `G hG Q hQ`. Take `⟨a, ha⟩` from `((bp e he).1 G).1 hG Q hQ`. Conclude with `⟨a, by rw [zpow_zero, one_mul, ha]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `G0 : ∀ G ∈ Re' p ι σ w r sp e, ∃ G' ∈ dualLat O Kf (HL (O` using `O) ι σ sp e.tgt), cw ^ (-(M : ℤ)) • G' = G := fun G hG => mem_scale.1 (Re'_le_scale h m r sp hdsp e he M hM hG)`. Establish `G2 : ∀ G ∈ Re' p ι σ w r sp e, ∀ e' : Edge W Qq (m + 1), IsEdge p n' r e' → e'.tgt = e.tgt → ∀ Q ∈ Re p ι σ w r sp e', ∃ a : O, be p r sp Q G = cw ^ (-(M : ℤ)) * algebraMap O Kf a`. Introduce `G hG e' he' htg Q hQ`. Take `⟨G', hG', rfl⟩` from `G0 G hG`. Establish `h1 : G' ∈ Re' p ι σ w r sp e'` using `(Formalism.L2.G.Model.dualInclusionLattices p n' W Qq O Kf ι σ j w h m r sp hdsp e' he').2 (by rw [htg]; exact hG')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `((bp e' he').1 G').1 h1 Q hQ`. Conclude with `⟨a, by rw [be_smulK_right, ha]⟩`. Establish `G3 : ∀ G ∈ Re' p ι σ w r sp e, ∀ Q ∈ HL (O` using `O) ι σ sp e.tgt, ∃ a : O, G Q = cw ^ (-(M : ℤ)) * algebraMap O Kf a := by`. Introduce `G hG Q hQ`. Take `⟨G', hG', rfl⟩` from `G0 G hG`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `hG' Q hQ`. Conclude with `⟨a, by rw [LinearMap.smul_apply, smul_eq_mul, ha]⟩`. Establish `hmem0 : ∀ G ∈ Re' p ι σ w r sp e, ∀ u ∈ Re p ι σ w r lam e, peelMap hPl cp G u ∈ Re p ι σ w r lamT e`. Introduce `G hG u hu`. Take `⟨z, hz, hze⟩` from `mem_scale.1 (peel_Re h hPl hlam hdlT hdsp r e he 0 G (G1 G hG) u hu)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hze` using `[zpow_zero, one_smul]`. Rewrite using `[← hze]`. Conclude with `hz`. Use `⟨IxT × {G : Module.Dual Kf (Vsp Kf sp) // G ∈ Re' p ι σ w r sp e}, fun x => (ρT x.1).comp (peelMap hPl cp x.2.1), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `β u hu`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `L1 β.1 _ (hmem0 _ β.2.2 u hu)`. Introduce `β e' he' htg u hu`. Take `⟨z, hz, hze⟩` from `mem_scale.1 (peel_Re h hPl hlam hdlT hdsp r e' he' (-(M : ℤ)) β.2.1 (G2 _ β.2.2 e' he' htg) u hu)`. Take `⟨z2, hz2, hz2e⟩` from `mem_scale.1 (L2 β.1 e' he' htg z hz)`. Use `mem_scale.2 ⟨z2, hz2, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[LinearMap.comp_apply, ← hze, map_smul, ← hz2e, smul_smul, ← zpow_add₀ hw]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `β u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨gs, hgs, _, _, h3⟩` from `Formalism.L2.G.Model.edgeLat h m r e he`. Establish `hL : ∀ s : Fin n', ∃ g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf, IsUnit g.det ∧ extO O ι σ s.val e.tgt = colSpan O g` using `fun s => ⟨_, by`. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Conclude with `((hgs _).mul (lb_D_det _ _ _ hw)).mul (lb_D_det _ _ _ hw), h3 s.val⟩`. Take `⟨z, hz, hze⟩` from `mem_scale.1 (peel_HL hPl hdlT hdsp e.tgt hL cp (cw ^ (-(M : ℤ))) β.2.1 (G3 _ β.2.2) u hu)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Take `⟨z2, hz2, hz2e⟩` from `mem_scale.1 (L3 β.1 z hz)`. Use `mem_scale.2 ⟨z2, hz2, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, ← hze, map_smul, ← hz2e, smul_smul]`. Use `congr 1`. Establish `hAr : Ar r rest = Ar r restT + Ar r sp` using `by rw [hrest]; exact Ar_add r _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hAr, zpow_add₀ hp0, hcp]`. Establish `: cw ^ (-((lossT + M : ℕ) : ℤ)) = cw ^ (-(M : ℤ)) * cw ^ (-(lossT : ℤ))`. Rewrite using `[← zpow_add₀ hw]`. Use `congr 1`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Introduce `β F s u hu`. Use `Op β.1 F (peelMap hPr cp β.2.1 s) (peelMap hPl cp β.2.1 u) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Rewrite using `[peelMap_coe, peelMap_coe, hu, slice_mul_left TT _ _ _ (V_flat_supported TT d hd0 _ (Θ F).2), mul_smul_comm]`. Introduce `u hu hall`. Establish `hz : ∀ G (hG : G ∈ Re' p ι σ w r sp e), peelMap hPl cp G u ∈ scale (cw ^ (1 : ℤ)) (Re p ι σ w r lamT e)` using `fun G hG => Nd _ (hmem0 G hG u hu) (fun βT => hall (βT, ⟨G, hG⟩))`. Take `⟨I, hI, x, π, _, _, _, _, _, c6, c7⟩` from `edge_lattice_adapted_basis h m r sp hdsp e he`. Consider the cases of `nonempty_fintype I`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `spv : I → Vsp Kf sp` to `fun i => (cw ^ (-order r sp (π i))) • x i`. Set `Gv : I → Module.Dual Kf (Vsp Kf sp)` to `fun i => (cw ^ (-order r sp (π i)) * (p : Kf) ^ (-π i)) • x.coord i`. Establish `hspv : ∀ i, spv i ∈ Re p ι σ w r sp e` using `fun i => by rw [← c6]; exact Submodule.subset_span ⟨i, rfl⟩`. Establish `hGv : ∀ i, Gv i ∈ Re' p ι σ w r sp e` using `fun i => by rw [← c7]; exact Submodule.subset_span ⟨i, rfl⟩`. Establish `hexp : ∀ y ∈ Vsp Kf lam, y = ∑ i, (cp • slice TT (extD (Gv i)) y) * ((spv i : Vsp Kf sp) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Unfold `Vsp tensorLat at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨F, hF, rfl⟩` from `hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ : ∏ s, blockEmb Kf s (if s ∈ TT then 1 else F s) ∈ Vsp Kf sp`. Use `Submodule.subset_span ⟨_, fun s => ?_, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hs : s ∈ TT`. Simplify using `only [if_pos hs, lamAt_zero (hPl.top s hs).2, if_pos (anti_zero m), nuOf_zero]`. Conclude with `one_mem_dualWeyl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `hF s` as an intermediate fact. Simplify using `only [if_neg hs, lamAt_congr (hPl.off s hs).2]`. Conclude with `this`. Establish `hPs : ∏ s, blockEmb Kf s (if s ∈ TT then F s else 1) ∈ supported Kf {v : Fin n' × (Fin (m + 1) × Fin (m + 1)) | v.1 ∈ TT}`. Use `Subalgebra.prod_mem _ fun s _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hs : s ∈ TT`. Rewrite using `[if_pos hs]`. Conclude with `blockEmb_supported s _ (fun s => s ∈ TT) hs`. Rewrite using `[if_neg hs, map_one]`. Conclude with `Subalgebra.one_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hQs : ∏ s, blockEmb Kf s (if s ∈ TT then 1 else F s) ∈ supported Kf {v : Fin n' × (Fin (m + 1) × Fin (m + 1)) | v.1 ∉ TT}`. Use `Subalgebra.prod_mem _ fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `hs : s ∈ TT`. Rewrite using `[if_pos hs, map_one]`. Conclude with `Subalgebra.one_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hs]`. Conclude with `blockEmb_supported s _ (fun s => s ∉ TT) hs`. Establish `e1 : (⟨_, hQ⟩ : Vsp Kf sp) = ∑ i, (cp * Gv i ⟨_, hQ⟩) • spv i` using `by conv_lhs => rw [← x.sum_repr ⟨_, hQ⟩]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Gv, spv, LinearMap.smul_apply, Module.Basis.coord_apply, smul_eq_mul, smul_smul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Establish `e3 : cp * (cw ^ (-order r sp (π i)) * (p : Kf) ^ (-π i)) * cw ^ (-order r sp (π i)) = 1`. Rewrite using `[hcp, p_zpow h, p_zpow h, ← zpow_add₀ hw, ← zpow_add₀ hw, ← zpow_add₀ hw]`. Unfold `order`. Establish `: 2 * Ar r sp + (-(Ar r sp - π i) + 2 * -π i) + -(Ar r sp - π i) = 0` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, zpow_zero]`. Combine the equalities or inequalities in the displayed calculation. Establish `e2` using `congrArg (fun t : Vsp Kf sp => (t : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf)) e1`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at e2`. Rewrite using `[prod_split TT F]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : ∀ i, slice TT (extD (Gv i)) ((∏ s, blockEmb Kf s (if s ∈ TT then F s else 1)) * ∏ s, blockEmb Kf s (if s ∈ TT then 1 else F s)) = Gv i ⟨_, hQ⟩ • ∏ s, blockEmb Kf s (if s ∈ TT then F s else 1)`. Introduce `i`. Rewrite using `[slice_mul TT _ _ _ hPs hQs]`. Use `congr 1`. Conclude with `extD_spec (Gv i) ⟨_, hQ⟩`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [e4]`. Use `conv_lhs => rw [e2, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_mul_assoc, mul_smul_comm]`. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `add a b _ _ ha hb`. Simplify using `only [map_add, smul_add, add_mul, Finset.sum_add_distrib]`. Rewrite using `[← ha, ← hb]`. Consider the case `smul t a _ ha => conv_lhs => rw [ha]`. Rewrite using `[Finset.smul_sum]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_comm cp t]`. Simplify using `only [smul_mul_assoc]`. Use `choose z hzR hze using fun i => mem_scale.1 (hz (Gv i) (hGv i))`. Use `mem_scale.2 ⟨∑ i, mulV hlam hdlT hdsp (z i) (spv i), Submodule.sum_mem _ fun i _ => edge_lattice_mul_of_weight_sum D (Formalism.L2.G.Model.products_sections_integral D) p ι σ w hw r hlam hdlT hdsp e (mulV_coe hlam hdlT hdsp _ _) (hzR i) (hspv i), ?_⟩` and prove the remaining obligations.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hexp u u.2]`. Simplify using `only [Submodule.coe_smul, Submodule.coe_sum, mulV_coe, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h5` using `congrArg (fun t : Vsp Kf lamT => (t : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf)) (hze i)`.
-
-Simplify using `only [Submodule.coe_smul, peelMap_coe] at h5`. Rewrite using `[← h5, smul_mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_peel (D : Formalism.BasicNotions.D7) {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     [Field Qq] [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]

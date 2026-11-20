@@ -13,21 +13,19 @@ noncomputable section
 namespace GlobalTheory.SmithOE
 
 /- English proof (translation)
-Take `⟨n, snf⟩` from `(LinearMap.range (Matrix.mulVecLin P)).smithNormalForm (Pi.basisFun O (Fin d))`. Use `set U : Matrix (Fin d) (Fin d) O := (Pi.basisFun O (Fin d)).toMatrix snf.bM with hUdef`. Use `set W : Matrix (Fin d) (Fin d) O := snf.bM.toMatrix (Pi.basisFun O (Fin d)) with hWdef`. Establish `hWU : W * U = 1` using `Module.Basis.toMatrix_mul_toMatrix_flip _ _`. Establish `hUW : U * W = 1` using `Module.Basis.toMatrix_mul_toMatrix_flip _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨U, W, hWU, hUW, fun j => ?_⟩` and prove the remaining obligations. Establish `hUcol : (fun i => U i j) = (snf.bM j : Fin d → O)`. Use function extensionality and compare the values at `i`. Simplify using `[hUdef, Module.Basis.toMatrix_apply]`. Establish `hmem : ∀ k, (fun i => P i k) ∈ LinearMap.range (Matrix.mulVecLin P)` using `fun k => ⟨Pi.single k 1, by funext i; simp⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hWP : ∀ k, (W * P) j k = snf.bM.repr (fun i => P i k) j`. Introduce `k`. Establish `h` using `Module.Basis.toMatrix_mulVec_repr (Pi.basisFun O (Fin d)) snf.bM (fun i => P i k)`. Rewrite using `[← h, ← hWdef]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : ∃ i, snf.f i = j ∧ IsUnit (snf.a i)`. Take `⟨i, rfl, u, hu⟩` from `h left`. Establish `hN : (snf.bM (snf.f i) : Fin d → O) ∈ LinearMap.range (Matrix.mulVecLin P)`. Establish `h1 : (snf.bM (snf.f i) : Fin d → O) = (↑u⁻¹ : O) • (snf.bN i : Fin d → O)`. Rewrite using `[snf.snf, ← hu, smul_smul, Units.inv_mul, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ (snf.bN i).2`. Take `⟨w, hw⟩` from `hN`. Conclude with `⟨w, by rw [hUcol, ← hw]; rfl⟩`. Use `right`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Introduce `k`. Rewrite using `[hWP k]`. Distinguish the cases in `hj : j ∈ Set.range snf.f`. Take `⟨i, rfl⟩` from `hj`. Establish `h2` using `congrFun (snf.repr_comp_embedding_eq_smul ⟨_, hmem k⟩) i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.comp_apply, Pi.smul_apply, smul_eq_mul] at h2`. Establish `h3 : snf.bM.repr (fun i => P i k) (snf.f i) = snf.a i * snf.bN.repr ⟨_, hmem k⟩ i` using `h2`. Rewrite using `[h3]`. Introduce `hu`. Conclude with `h ⟨i, rfl, isUnit_of_mul_isUnit_left hu⟩`.
-
-Establish `h0` using `snf.repr_eq_zero_of_notMem_range ⟨_, hmem k⟩ hj`. Establish `h0' : snf.bM.repr (fun i => P i k) j = 0` using `h0`. Rewrite using `[h0']`. Conclude with `not_isUnit_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pid_dichotomy {O : Type*} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] (d : ℕ)
     (P : Matrix (Fin d) (Fin d) O) :
@@ -81,21 +79,19 @@ end GlobalTheory.SmithOE
 namespace GlobalTheory.SmithOE
 
 /- English proof (translation)
-Introduce `l _ K bk _ d' P hP`. Establish `hfac` using `(GlobalTheory.OEDvr.main l K bk).2.2.2.1`. Set `P' : Matrix (Fin d') (Fin d') ↥bk.OE` to `Matrix.of fun i j => ⟨P i j, hP i j⟩`. Take `⟨U', W', hWU, hUW, hdich⟩` from `pid_dichotomy d' P'`. Establish `hP'map : P'.map bk.OE.subtype = P` using `by ext; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨U'.map bk.OE.subtype, W'.map bk.OE.subtype, fun i j => (U' i j).2, fun i j => (W' i j).2, ?_, ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hWU, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[← Matrix.map_mul, hUW, Matrix.map_one _ (map_zero _) (map_one _)]`. Break down `hdich j with ⟨w, hw⟩ | hnu` into its components or cases. Use `left`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => (w i : WCb l), ?_⟩` and prove the remaining obligations. Rewrite using `[← hP'map]`. Use function extensionality and compare the values at `i`. Use `congrArg Subtype.val (congrFun hw i)` as an intermediate fact. Rewrite `this`, the goal using `[Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use `right`. Introduce `k`. Establish `heq : ((W'.map bk.OE.subtype) * P) j k = (((W' * P') j k : ↥bk.OE) : WCb l)`. Rewrite using `[← hP'map, ← Matrix.map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[heq]`. Establish `hk` using `hnu k`. Generalize the expression as in `(W' * P') j k = x at hk ⊢`. Distinguish the cases in `hx : (x : WCb l) = 0`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hx]`. Conclude with `dvd_zero _`. Take `⟨m, v, v', hv, hv', hvv, hxe⟩` from `hfac x x.2 hx`. Consider the cases of `m with`. Consider the case `zero`.
+Split into cases according to the possible forms of the given data. Treat this case separately. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-It suffices to derive a contradiction. Apply `hk` to reduce the goal to its premises. Use `isUnit_iff_exists_inv.2 ⟨⟨v', hv'⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x : WCb l) * v' = 1`. Rewrite using `[hxe, pow_zero, one_mul, hvv]`.
-
-Consider the case `succ m`. Conclude with `⟨(l : WCb l) ^ m * v, by rw [hxe, pow_succ]; ring⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K), IsDiscreteValuationRing ↥bk.OE → ∀ (d' : ℕ) (P : Matrix (Fin d') (Fin d') (WCb l)), (∀ i j, P i j ∈ bk.OE) → ∃ U Uinv : Matrix (Fin d') (Fin d') (WCb l), (∀ i j, U i j ∈ bk.OE) ∧ (∀ i j, Uinv i j ∈ bk.OE) ∧ Uinv * U = 1 ∧ U * Uinv = 1 ∧ ∀ j, (∃ w : Fin d' → WCb l, (fun i => U i j) = P *ᵥ w) ∨ (∀ k, (l : WCb l) ∣ (Uinv * P) j k) := by
   intro l _ K bk _ d' P hP

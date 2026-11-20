@@ -12,9 +12,9 @@ open scoped WithZero
 namespace GlobalTheory.TraceSmall
 
 /- English proof (translation)
-Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using the standard rewrite rules. Establish `h1 : valV T'.V (i z) ≠ 0` using `valV_ne_zero ((map_ne_zero i).2 hz)`. Establish `h2 : valV T.V z ≠ 0` using `valV_ne_zero hz`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hv z hz`. Establish `he : (0 : ℤ) < e'` using `by exact_mod_cast he'`. Rewrite using `[← WithZero.log_le_log h1 one_ne_zero, ← WithZero.log_le_log h2 one_ne_zero, WithZero.log_one]`. Unfold `vV at h`. Apply the tactic sequence `constructor <;> intro h' <;> nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem valV_le_one_of_ext {T T' : CDVR} (i : T.Fr →+* T'.Fr) {e' : ℕ} (he' : 0 < e')
     (hv : ∀ z : T.Fr, z ≠ 0 → vV T'.V (i z) = (e' : ℤ) * vV T.V z) (z : T.Fr) :
@@ -30,11 +30,11 @@ theorem valV_le_one_of_ext {T T' : CDVR} (i : T.Fr →+* T'.Fr) {e' : ℕ} (he' 
   constructor <;> intro h' <;> nlinarith
 
 /- English proof (translation)
-Establish `hS : {la' : HeightOneSpectrum (𝓞 L) | la'.asIdeal.under (𝓞 K) = p.asIdeal}.Finite`. Use `(Set.Finite.preimage (f := fun la' : HeightOneSpectrum (𝓞 L) => la'.asIdeal) (fun a _ b _ h => HeightOneSpectrum.ext h) (IsDedekindDomain.primesOver_finite p.asIdeal (𝓞 L))).subset fun la' h => ?_` and prove the remaining obligations. Conclude with `⟨la'.isPrime, ⟨h.symm⟩⟩`. Take `⟨B, hB⟩` from `((hS.prod (Set.finite_univ (α := Fin m))).image fun q : HeightOneSpectrum (𝓞 L) × Fin m => WithZero.log (q.1.valuation L (y q.2))).bddAbove`. Use `⟨B.toNat, fun la' h k => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hy : y k = 0`. Simplify using `[hy]`. Establish `h0 : la'.valuation L (y k) ≠ 0` using `by simpa using hy`. Use `hB ⟨(la', k), ⟨h, Set.mem_univ _⟩, rfl⟩` as an intermediate fact. Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_bound {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (p : HeightOneSpectrum (𝓞 K)) {m : ℕ} (y : Fin m → L) :
@@ -57,32 +57,30 @@ theorem exists_bound {K L : Type} [Field K] [NumberField K] [Field L] [NumberFie
   omega
 
 /- English proof (translation)
-The claim follows from `(la'.valuation_of_algebraMap b).trans_le ((la'.intValuation_le_pow_iff_mem b N).2 hb)`.
+A detailed English derivation is pending.
 -/
 theorem valuation_le_of_mem {L : Type} [Field L] [NumberField L] (la' : HeightOneSpectrum (𝓞 L)) {N : ℕ}
     {b : 𝓞 L} (hb : b ∈ la'.asIdeal ^ N) : la'.valuation L (b : L) ≤ WithZero.exp (-(N : ℤ)) :=
   (la'.valuation_of_algebraMap b).trans_le ((la'.intValuation_le_pow_iff_mem b N).2 hb)
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ p la hla m y`. Take `⟨N, hN⟩` from `exists_bound p y`. Use `⟨N, fun b hb T hT io e ho x hx H => ?_⟩` and prove the remaining obligations. Set `Ω` to `AlgebraicClosure L`. Set `F` to `IntermediateField.normalClosure K L Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨T', i, e', σ₀, he', hv, hT', hσ₀⟩` from `GlobalTheory.SupDescent.exists_ext (L := F) T hT io`. Establish `hv' : ∀ a : T.Fr, vV T'.V (i a) = (e' : ℤ) * vV T.V a` using `fun a => by`. Distinguish the cases in `h : a = 0`. Substitute `h` using the available equality. Simplify using `[vV]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `hv a h`. Establish `ho'` using `ho.bc i he' hv'`. Establish `hF : ∀ (ρ : L →ₐ[K] Ω) (z : L), ρ z ∈ F` using `fun ρ z => AlgHom.fieldRange_le_normalClosure ρ ⟨z, rfl⟩`. Set `τ : (L →ₐ[K] Ω) → L →+* T'.Fr` to `fun ρ => σ₀.comp ((ρ.codRestrict F.toSubalgebra (hF ρ)).toRingHom)`. Establish `hτ : ∀ ρ z, τ ρ z = σ₀ ⟨ρ z, hF ρ z⟩` using `fun _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτK : ∀ ρ (a : K), τ ρ (algebraMap K L a) = i (io a)` using `fun ρ a => by`. Rewrite using `[hτ, ← hσ₀ a]`. Use `congr 1`. Conclude with `Subtype.ext (ρ.commutes a)`. Establish `htr : ∀ z : L, i (io (Algebra.trace K L z)) = ∑ ρ : L →ₐ[K] Ω, τ ρ z` using `fun z => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `trace_eq_sum_embeddings Ω (K := K) (L := L) (x := z)`. Establish `h2 : algebraMap K F (Algebra.trace K L z) = ∑ ρ : L →ₐ[K] Ω, (⟨ρ z, hF ρ z⟩ : F)`. Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[IntermediateField.coe_sum]`. Conclude with `h1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hσ₀, h2, map_sum]`. Conclude with `Finset.sum_congr rfl fun ρ _ => (hτ ρ z).symm`. Rewrite using `[← valV_le_one_of_ext i he' hv]`. Establish `hsum : i (∑ k, io (Algebra.trace K L ((b : L) * y k)) * x k) = ∑ ρ : L →ₐ[K] Ω, ∑ k, τ ρ (b : L) * (τ ρ (y k) * i (x k))`. Simplify using `only [map_sum, map_mul (f := i), htr, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun ρ _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc]`. Rewrite using `[hsum]`. Use `Valuation.map_sum_le _ fun ρ _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨la', e'', hol⟩` from `GlobalTheory.AlgLawsCompare.exists_overLa T' (τ ρ) hT'`. Establish `hunder : la'.asIdeal.under (𝓞 K) = p.asIdeal` using `Ideal.ext fun a => by`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, ← GlobalTheory.SupDescent.val_lt_one_iff_mem hol, ← GlobalTheory.SupDescent.val_lt_one_iff_mem ho']`. Conclude with `Iff.of_eq (congrArg (fun t => valV T'.V t < 1) (hτK ρ a))`. Break down `eq_or_ne la' la with rfl | hne` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_sum, map_mul]`. Conclude with `mul_le_one' ((GlobalTheory.SupDescent.val_le_one_iff hol _).2 (la'.valuation_le_one b)) (H T' i e' (τ ρ) e'' he' hv hT' (hτK ρ) hol)`. Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul, map_mul]`. Use `mul_le_one' ((GlobalTheory.SupDescent.val_le_one_iff hol _).2 ?_) ((valV_le_one_of_ext i he' hv _).2 (hx k))` and prove the remaining obligations.
-
-Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem trace_le_one : ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] (p : HeightOneSpectrum (𝓞 K)) (la : HeightOneSpectrum (𝓞 L)), la.asIdeal.under (𝓞 K) = p.asIdeal → ∀ (m : ℕ) (y : Fin m → L), ∃ N : ℕ, ∀ b : 𝓞 L, (∀ la' : HeightOneSpectrum (𝓞 L), la' ≠ la → la'.asIdeal.under (𝓞 K) = p.asIdeal → b ∈ la'.asIdeal ^ N) → ∀ (T : CDVR), T.FinRes → ∀ (io : K →+* T.Fr) (e : ℕ), OverLa p T.V io e → ∀ x : Fin m → T.Fr, (∀ k, valV T.V (x k) ≤ 1) → (∀ (T' : CDVR) (i : T.Fr →+* T'.Fr) (e' : ℕ) (τ : L →+* T'.Fr) (e'' : ℕ), 0 < e' → (∀ z : T.Fr, z ≠ 0 → vV T'.V (i z) = (e' : ℤ) * vV T.V z) → T'.FinRes → (∀ z : K, τ (algebraMap K L z) = i (io z)) → OverLa la T'.V τ e'' → valV T'.V (∑ k, τ (y k) * i (x k)) ≤ 1) → valV T.V (∑ k, io (Algebra.trace K L ((b : L) * y k)) * x k) ≤ 1 := by
   intro K L _ _ _ _ _ p la hla m y

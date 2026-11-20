@@ -8,7 +8,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G.Semi
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e1 : x = x'` using `Over.OverMorphism.ext hx`. Establish `e2 : y = y'` using `Over.OverMorphism.ext hy`. Substitute `e1 e2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mul_left_congr {S X : Scheme.{0}} {G : Over S} [GrpObj G] {a b : X ⟶ S} (h : a = b)
     (x y : Over.mk a ⟶ G) (x' y' : Over.mk b ⟶ G) (hx : x.left = x'.left) (hy : y.left = y'.left) :
@@ -26,9 +26,9 @@ def pushPt {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} {f : S' ⟶ S} {φ : 
     rw [Category.assoc, w, ← Category.assoc, Over.w x])
 
 /- English proof (translation)
-Use `⟨h'.1.paste_horiz h.1, ?_⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`. Establish `w' : φ' ≫ G'.hom = G''.hom ≫ g` using `h'.1.w`. Establish `h1` using `h'.2 T x y (pushPt w' x) (pushPt w' y) rfl rfl`. Set `T' : Over S'` to `Over.mk (T.hom ≫ g)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `x₁ : Over.mk (T'.hom ≫ f) ⟶ G` to `Over.homMk x₀.left (by rw [Over.w x₀]; simp [T'])`. Set `y₁ : Over.mk (T'.hom ≫ f) ⟶ G` to `Over.homMk y₀.left (by rw [Over.w y₀]; simp [T'])`. Establish `h2` using `h.2 T' (pushPt w' x) (pushPt w' y) x₁ y₁ (by simp [x₁, pushPt, hx]) (by simp [y₁, pushPt, hy])`. Establish `h3` using `mul_left_congr (G := G) (Category.assoc T.hom g f) x₁ y₁ x₀ y₀ rfl rfl`. Rewrite using `[← h3, h2, h1, Category.assoc]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsGrpPullback.comp {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' : Over S''} [GrpObj G] [GrpObj G']
     [GrpObj G''] {f : S' ⟶ S} {g : S'' ⟶ S'} {φ : G'.left ⟶ G.left} {φ' : G''.left ⟶ G'.left}
@@ -45,11 +45,11 @@ theorem IsGrpPullback.comp {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {
   rw [← h3, h2, h1, Category.assoc]
 
 /- English proof (translation)
-Use `⟨IsPullback.of_right n.1 w h.1, ?_⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`. Establish `hw : φ ≫ G.hom = G'.hom ≫ f` using `h.1.w`. Establish `hn : (φ' ≫ φ) ≫ G.hom = G''.hom ≫ (g ≫ f)` using `n.1.w`. Establish `h1` using `h.2 (Over.mk (T.hom ≫ g)) x₀ y₀ (pushPt hw x₀) (pushPt hw y₀) rfl rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `n.2 T x y (pushPt hn x) (pushPt hn y) rfl rfl`. Establish `h3` using `mul_left_congr (G := G) (Category.assoc T.hom g f) (pushPt hw x₀) (pushPt hw y₀) (pushPt hn x) (pushPt hn y) (by simp [pushPt, hx]) (by simp [pushPt, hy])`. Apply `h.1.hom_ext` to reduce the goal to its premises. Rewrite using `[← h1, h3, h2, Category.assoc]`. Establish `a1` using `Over.w (x₀ * y₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2` using `Over.w (x * y)`. Rewrite using `[a1, Category.assoc, w, ← Category.assoc, a2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsGrpPullback.cancel {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' : Over S''} [GrpObj G] [GrpObj G']
     [GrpObj G''] {f : S' ⟶ S} {g : S'' ⟶ S'} {φ : G'.left ⟶ G.left} {φ' : G''.left ⟶ G'.left}
@@ -71,7 +71,7 @@ theorem IsGrpPullback.cancel {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'}
     rfl
 
 /- English proof (translation)
-Apply the tactic sequence `have e : (List.finRange 3).filter (· ∈ ({i} : Finset (Fin 3))) = [i] := by fin_cases i <;> decide`. Simplify using `only [psum, e, List.foldr_cons, List.foldr_nil, padd, pzero]`. Use `first`. Consider the case `simp`. Consider the case `exact MonObj.lift_comp_one_right _ _`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem psum_single {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] {T : Over S} (x : Fin 3 → (T ⟶ G))
     (i : Fin 3) : psum G x {i} = x i := by
@@ -83,13 +83,13 @@ theorem psum_single {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] {T
     | exact MonObj.lift_comp_one_right _ _
 
 /- English proof (translation)
-Establish `w : b ≫ (G3 G).hom = a ≫ (G3 G).hom`. Establish `h0` using `h 0`. Establish `k` using `Over.w (x3 G 0)`. Rewrite using `[← k, ← Category.assoc, ← Category.assoc, h0]`. Set `T : Over S` to `Over.mk (a ≫ (G3 G).hom)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `A : T ⟶ G3 G` to `Over.homMk a rfl`. Set `B : T ⟶ G3 G` to `Over.homMk b w`. Establish `hAB : A = B`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Use `ext`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify `h 0` using `[A, B, x3]`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Use `ext`. Simplify `h 1` using `[A, B, x3]`. Use `ext`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Simplify `h 2` using `[A, B, x3]`. Conclude with `congrArg CommaMorphism.left hAB`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hom_ext_triple {S : Scheme.{0}} (G : Over S) {X : Scheme.{0}} {a b : X ⟶ (G3 G).left}
     (h : ∀ i, a ≫ (x3 G i).left = b ≫ (x3 G i).left) : a = b := by
@@ -112,7 +112,7 @@ theorem hom_ext_triple {S : Scheme.{0}} (G : Over S) {X : Scheme.{0}} {a b : X �
   exact congrArg CommaMorphism.left hAB
 
 /- English proof (translation)
-Establish `k` using `m.psum_comm {i}`. Rewrite `k` using `[psum_single, psum_single]`. Conclude with `k.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cubeMap_comp_proj_three {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G]
     [IsCommMonObj G] (m : CubeMap G' G) (i : Fin 3) : m.F3 ≫ (x3 G i).left = (x3 G' i).left ≫ m.F := by
@@ -121,11 +121,11 @@ theorem cubeMap_comp_proj_three {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} 
   exact k.symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H S S' S'' t t' t'' f g m m'`. Set `cm : CubeMap t''.G t.G` to `{ F := m'.cm.F ≫ m.cm.F F3 := m'.cm.F3 ≫ m.cm.F3 e := m'.cm.e ≫ m.cm.e e_comm := by`. Rewrite using `[← Category.assoc, m'.cm.e_comm]`. Simplify using `only [Category.assoc, m.cm.e_comm]`. Use `psum_comm := fun I => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, m'.cm.psum_comm I]`. Simplify using `only [Category.assoc, m.cm.psum_comm I] }`. Use `⟨{ cm := cm, cart := IsGrpPullback.comp m'.cart m.cart, base := ?_, act := ?_, lin := ?_ }, rfl⟩` and prove the remaining obligations. Use `show m'.cm.e ≫ m.cm.e = g ≫ f`. Rewrite using `[m'.base, m.base]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a show _ ≫ (m'.cm.F ≫ m.cm.F) = (m'.cm.F ≫ m.cm.F) ≫ _`. Rewrite using `[← Category.assoc, m'.act a]`. Simplify using `only [Category.assoc, m.act a]`. Conclude with `hC S S' S'' t.G t'.G t''.G m.cm m'.cm cm t.PP t'.PP t''.PP t.cub t'.cub t''.cub rfl rfl rfl m.lin m'.lin`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sabComp (hC : PullCubCompSt) : SABCompSt := by
   intro E _ _ _ H S S' S'' t t' t'' f g m m'
@@ -150,29 +150,27 @@ theorem sabComp (hC : PullCubCompSt) : SABCompSt := by
       m.lin m'.lin
 
 /- English proof (translation)
-Introduce `E _ _ _ H S S' S'' t t' t'' f g m n`. Establish `hP` using `m.cart.1`. Establish `hn : n.cm.F ≫ t.G.hom = t''.G.hom ≫ (g ≫ f)` using `n.cart.1.w`. Set `F' : t''.G.left ⟶ t'.G.left` to `hP.lift n.cm.F (t''.G.hom ≫ g) (by rw [hn, Category.assoc])`. Establish `hF1 : F' ≫ m.cm.F = n.cm.F` using `hP.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hF2 : F' ≫ t'.G.hom = t''.G.hom ≫ g` using `hP.lift_snd _ _ _`. Establish `hF1' : ∀ {Z : Scheme.{0}} (k : t.G.left ⟶ Z), F' ≫ m.cm.F ≫ k = n.cm.F ≫ k`. Introduce `Z k`. Rewrite using `[← Category.assoc, hF1]`. Establish `hF2' : ∀ {Z : Scheme.{0}} (k : S' ⟶ Z), F' ≫ t'.G.hom ≫ k = t''.G.hom ≫ g ≫ k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Z k`. Rewrite using `[← Category.assoc, hF2, Category.assoc]`. Set `T : Over S'` to `Over.mk ((G3 t''.G).hom ≫ g)`. Set `p : Fin 3 → (T ⟶ t'.G)` to `fun i => Over.homMk ((x3 t''.G i).left ≫ F') (by show ((x3 t''.G i).left ≫ F') ≫ t'.G.hom = (G3 t''.G).hom ≫ g`. Rewrite using `[Category.assoc, hF2, ← Category.assoc, Over.w (x3 t''.G i)])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `L3 : T ⟶ G3 t'.G` to `lift (p 0) (lift (p 1) (p 2))`. Set `F3' : (G3 t''.G).left ⟶ (G3 t'.G).left` to `L3.left`. Establish `hF3x : ∀ i, F3' ≫ (x3 t'.G i).left = (x3 t''.G i).left ≫ F'`. Introduce `i`. Use `show L3.left ≫ (x3 t'.G i).left = _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left]`. Apply the tactic sequence `fin_cases i <;> simp [L3, x3, p]`. Establish `hF3 : F3' ≫ m.cm.F3 = n.cm.F3`. Apply `hom_ext_triple t.G` to reduce the goal to its premises. Introduce `i`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, cubeMap_comp_proj_three m.cm i, ← Category.assoc, hF3x i, Category.assoc, hF1, cubeMap_comp_proj_three n.cm i]`. Establish `hT : F3' ≫ (G3 t'.G).hom = (G3 t''.G).hom ≫ g` using `Over.w L3`. Set `cm : CubeMap t''.G t'.G` to `{ F := F' F3 := F3' e := g e_comm := by`. Apply `hP.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, hF1]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[n.cm.e_comm, m.cm.e_comm, n.base, m.base, Category.assoc]`. Simplify using `only [Category.assoc, hF2]`. Establish `k1` using `Over.w (η[t''.G] : 𝟙_ (Over S'') ⟶ t''.G)`. Establish `k2` using `Over.w (η[t'.G] : 𝟙_ (Over S') ⟶ t'.G)`. Simplify using `only [eSec]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, k1, k2]`. Simplify using the standard rewrite rules. Use `psum_comm := fun I => by`. Apply `hP.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, hF1, m.cm.psum_comm I]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[n.cm.psum_comm I, ← Category.assoc, hF3]`. Establish `a1` using `Over.w (psum t''.G (x3 t''.G) I)`. Establish `a2` using `Over.w (psum t'.G (x3 t'.G) I)`. Rewrite using `[Category.assoc, hF2, ← Category.assoc, a1, Category.assoc, a2, hT] }`. Establish `hcart : IsGrpPullback t''.G t.G (g ≫ f) (F' ≫ m.cm.F)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k` using `n.cart`. Rewrite `k` using `[← hF1]`. Conclude with `k`. Use `⟨{ cm := cm, cart := IsGrpPullback.cancel m.cart hcart hF2, base := rfl, act := ?_, lin := ?_ }, hF1.symm⟩` and prove the remaining obligations. Introduce `a show (t''.act.act a).left ≫ F' = F' ≫ (t'.act.act a).left`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `hP.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, hF1, m.act a, hF1']`. Rewrite using `[n.act a]`. Establish `a1` using `Over.w (t''.act.act a)`. Establish `a2` using `Over.w (t'.act.act a)`.
-
-Rewrite using `[Category.assoc, hF2, ← Category.assoc, a1, Category.assoc, a2, hF2]`. Conclude with `hC S S' S'' t.G t'.G t''.G m.cm cm n.cm t.PP t'.PP t''.PP t.cub t'.cub t''.cub hF1.symm hF3.symm (by show n.cm.e = g ≫ m.cm.e; rw [n.base, m.base]) m.lin n.lin`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sabCancel (hC : PullCubCancelSt) : SABCancelSt := by
   intro E _ _ _ H S S' S'' t t' t'' f g m n

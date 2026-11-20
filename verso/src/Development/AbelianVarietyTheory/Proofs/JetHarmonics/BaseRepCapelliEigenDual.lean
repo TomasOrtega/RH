@@ -21,9 +21,9 @@ open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal Matrix.Norms.Elementwise in
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', hfeq⟩` from `h g₀ hg₀`. Establish `hc : ContinuousOn f' U` using `hf'.continuousOn`. Establish `hcont : ContinuousAt f' g₀` using `hc.continuousAt (hU.mem_nhds hgU)`. Use `hcont.continuousWithinAt.congr_of_eventuallyEq ?_ (hfeq g₀ hgU hg₀)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [inter_mem_nhdsWithin (_root_.Formalism.FourierDecayAlt.B.GV k r) (hU.mem_nhds hgU)] with g hg`. Conclude with `hfeq g hg.2 hg.1`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CoefZero.continuousOn_of_ckOn {k r : ℕ} {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℂ E] {m : ℕ∞}
@@ -37,17 +37,17 @@ theorem _root_.GlobalTheory.CoefZero.continuousOn_of_ckOn {k r : ℕ} {E : Type}
   exact hfeq g hg.2 hg.1
 
 /- English proof (translation)
-Introduce `hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R0 f hN hR0 hf`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Take `⟨R, hfam, hR⟩` from `GlobalTheory.family_through_discreteSeries hH P.k P.r lam P.u b bv ga h q0 R0 hN hR0`. Substitute `hR` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, l', dg, hl, hl'⟩` from `GlobalTheory.T.exists_family_functionals hH P Wp Wq p lam b bv ga h q0 R hN hfam`. Establish `h0 : n1 (0 : Fin (2 * P.r + P.k + 1) → ℤ) ≤ q0` using `by simp [n1]`. Take `⟨hB, hdg, hfd⟩` from `hl 0 h0`. Take `⟨hB', -, -⟩` from `hl' 0 h0`. Take `⟨⟨-, -, -, -, hok⟩, hν⟩` from `GlobalTheory.NumFam.num_fam P.k P.r lam P.u b bv ga h q0 hN`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hgap : Formalism.QuantumDeterminants.GapAtLeast (PI.BesselPeriodGGP.eps48 P.k P.r) lam (h / 2)`. Simplify using `using (hν 0 h0).2.2.1`. Take `⟨s, hs⟩` from `(GlobalTheory.isCoef_of_translate_smul_exists hH.1.2.2.1 P.k P.r _ lam (R 0) Wp Wq (l 0) (l' 0) hR0).1 f hf`. Take `⟨c, hc, hnorm⟩` from `GlobalTheory.T.bessel_setting_uniform_constant hH P.k P.r Wp Wq p.T.base`. Establish `hj : TBB.jN2 p f = ENNReal.ofReal (c * ‖s‖ ^ 2 / dg 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.T.jN2_eq_normSq_base]`. Conclude with `hnorm _ lam (h / 2) (R 0) (l 0) (l' 0) (dg 0) hR0 hgap hok hB hB' hfd f s hs`. Establish `hck` using `(GlobalTheory.T.smooth_and_inCC_of_isCoef_of_gap hH P.k P.r _ lam (h / 2) (R 0) Wp Wq (l 0) (l' 0) f s hR0 hgap hok hs).1`. Use `⟨by rw [hj]; exact ENNReal.ofReal_lt_top, GlobalTheory.T.aemeasurable_besselNormIntegrand_bigCell P Wp Wq p f (continuousOn_of_ckOn hck), fun hz x hx hG => ?_⟩` and prove the remaining obligations. Establish `hs0 : s = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Rewrite `hz` using `[hj, ENNReal.ofReal_eq_zero]`. Establish `hpos : 0 < ‖s‖` using `norm_pos_iff.mpr hne`. Establish `: 0 < c * ‖s‖ ^ 2 / dg 0` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, hγ, -, hV⟩` from `GlobalTheory.T.exists_regularRep_besselBigCellVector_eq_bessel P Wp Wq p x hx hG`. Take `⟨OO, hOO⟩` from `GlobalTheory.T.bessel_orbital_integral_integrable_and_eq_smul hH P.k P.r _ lam (h / 2) (R 0) Wp Wq p.T.base (l 0) (l' 0) hR0 hgap hok hB hB'`. Rewrite using `[hV f, (hOO f s hs γ hγ).2, hs0, zero_smul]`.
+A detailed English derivation is pending.
 -/
 theorem coef_norm_finite_and_zero : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R0 : Rep P.k P.r) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)), Num P.k P.r lam P.u b bv ga h q0 → R0.IsDS (PI.BesselPeriodGGP.eps48 P.k P.r) lam → PI.CapelliEig.IsKFinCoefT (k := P.k) (r := P.r) R0.σ f → TBB.jN2 p f < ⊤ ∧ (AEMeasurable fun c : Fin (P.r + 1) → ℂ => ENNReal.ofReal (TBB.Ew p (fun _ => 1) f (P.r + 1) [] (TBB.bigPt P.r c))) ∧ (TBB.jN2 p f = 0 → ∀ c : Fin (P.r + 1) → ℂ, D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) → 0 < TBB.Gp p (TBB.bigPt P.r c) → p.V f (TBB.bigPt P.r c) = 0) := by
   intro hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R0 f hN hR0 hf

@@ -21,7 +21,7 @@ open ReciprocityTheory.AnForm (levi)
 open ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `LevelTowerAlt.good_origin_tower_height` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FPlurisubharmonicCones%2FGoodOriginTowerHeight.lean&line=30#L30)
 -/

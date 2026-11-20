@@ -16,9 +16,9 @@ section row
 variable {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] {n r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [insert_unit_matrix_zero_apply, ite_mul, one_mul, zero_mul]`. Distinguish the cases in `hi : (0 : Fin 2) = i`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unit_matrix_zero_mul_apply (N : SlopeTestRemainingChoices (Fin (n + 1)) A) (i : Fin 2) (e : Ix (Fin n)) (m : Ix (Fin (n + 1))) :
     (eU (0 : Fin (n + 1)) i 0 * N : SlopeTestRemainingChoices (Fin (n + 1)) A) (Fin.cons 0 e) m =
@@ -31,7 +31,7 @@ theorem unit_matrix_zero_mul_apply (N : SlopeTestRemainingChoices (Fin (n + 1)) 
   · simp [hi]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul, Matrix.sum_apply, Fin.sum_univ_two, mul_assoc, mul_assoc, unit_matrix_zero_mul_apply, unit_matrix_zero_mul_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem row_sum (col : Fin 2 → SlopeTestRemainingChoices (Fin (n + 1)) A) (N : SlopeTestRemainingChoices (Fin (n + 1)) A) (e : Ix (Fin n))
     (m : Ix (Fin (n + 1))) :
@@ -41,16 +41,16 @@ theorem row_sum (col : Fin 2 → SlopeTestRemainingChoices (Fin (n + 1)) A) (N :
   simp
 
 /- English proof (translation)
-Rewrite using `[io, Matrix.scalar_apply, Matrix.diagonal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem io_mul_apply {S : Type} [Fintype S] [DecidableEq S] (x : A) (N : SlopeTestRemainingChoices S A) (z m : Ix S) :
     (io x * N : SlopeTestRemainingChoices S A) z m = x * N z m := by
   rw [io, Matrix.scalar_apply, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Rewrite using `[hWS A (Fin (n + 1)) r L st ⟨true, 0, y⟩ (u.map upL) hA hadm (Fin.cons 0 e)]`. Rewrite using `[(lifted_ofWord L st u).F, bTA_lift, ← liftM_mul]`. Simplify using `only`. Rewrite using `[row_sum]`. Simplify using `only [TL.letterCol, ↓reduceIte, Matrix.cons_val_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[io_mul_apply, liftM_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem firstRow (hWS : TL.WordStep) (L : LevelData A r) (st : Start A) (hA : TL.AHyp L st) (y : ℂ)
     (u : List (Letter ℂ (Fin n))) (hadm : admitted st (⟨true, 0, y⟩ :: u.map upL)) (e : Ix (Fin n)) :
@@ -73,9 +73,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   {π : Q.Mx k r → (Wp →L[ℂ] Wp)} {π' : Q.Mx k r → (Wq →L[ℂ] Wq)} {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Unfold `P5.act Top.firstStateVector`. Rewrite using `[Finset.sum_eq_single (e1 : Ix S)]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `absurd rfl h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b _ hb`. Establish `hb' : ¬(b = fun _ => 0)` using `hb`. Simplify using `[hb']`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem act_e1Vec (M : SlopeTestRemainingChoices S (Q.Pr (Q.RadSp k r z z' π π'))) (Φ : Q.RadSp k r z z' π π') (x : Ix S) :
     P5.act M (Top.firstStateVector Φ) x = (M x e1).1 Φ := by
@@ -93,7 +93,7 @@ theorem act_e1Vec (M : SlopeTestRemainingChoices S (Q.Pr (Q.RadSp k r z z' π π
 end act
 
 /- English proof (translation)
-Use `⟨fun a => h.1 a.succ, fun a b hab => h.2 a.succ b.succ fun e => hab (Fin.succ_injective _ e)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cutWord_tail {P : M.Par} {l0 : ℕ} {l : C.Letter} {w : List C.Letter} (h : KB.CutWord P l0 (l :: w)) :
     KB.CutWord P l0 w := by
@@ -105,9 +105,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hA` using `(Formalism.FourierDecayAlt.P.actual_algebra_facts Wp Wq P _ _ _ _ X μ L st p.l0 hD).1`. Establish `hOK` using `Formalism.FourierDecayAlt.P.JCTx5.wordOK_of P p.T.base.z p.T.base.z' p.T.base.π p.T.base.π' st p.l0 p.hP.1 p.hl.1 p.hl.2.1 hD.2.2.2.2.1 hD.2.2.2.2.2.1 ((true, y) :: w) hcut.1 hcut.2`. Establish `hadm` using `hOK.1`. Rewrite using `[act_e1Vec, act_e1Vec]`. Rewrite `hadm`, the goal using `[positioned_cons]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun x : Q.Pr _ => x.1 Φ) (firstRow hWS L st hA (y : ℂ) (D.positionted w) hadm e)`.
+A detailed English derivation is pending.
 -/
 theorem rad_plus (hWS : TL.WordStep) (P : M.Par) (p : KB.Pl P Wp Wq) (X : Q.ActualOps P.k P.r p.T.base.z p.T.base.z' p.T.base.π p.T.base.π')
     (μ : Measure (Mt P.k P.r)) (L : R.LevelData (Q.Pr (Q.RadSp P.k P.r p.T.base.z p.T.base.z' p.T.base.π p.T.base.π')) P.r)

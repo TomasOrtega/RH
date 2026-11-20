@@ -10,29 +10,25 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p q T σ M j hinj hd hder hirr N k lam hfin hN _ hlam heig`. Use `haveI := hirr.1`. Use `⟨hinj.nontrivial, fun S hS hinv => ?_⟩` and prove the remaining obligations. Use `haveI : CompleteSpace S := hS.completeSpace_coe`. Establish `hreal : ∀ Y ∈ upq p q, ∀ y, j y ∈ S → j (M.act Y y) ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `Y hY y hy`. Rewrite using `[← S.orthogonal_orthogonal, Submodule.mem_orthogonal]`. Introduce `w hw`. Establish `h1` using `((innerSL ℂ w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hder Y hY y)`. Establish `h2 : HasDerivAt (fun _ : ℝ => (0 : ℂ)) (inner ℂ w (j (M.act Y y))) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `HasDerivAt.congr_of_eventuallyEq h1 (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Conclude with `(Submodule.inner_left_of_mem_orthogonal (hinv _ _ hy) hw).symm`. Conclude with `h2.unique (hasDerivAt_const _ _)`. Establish `hstab : ∀ Z, ∀ y ∈ S.comap j, M.act Z y ∈ S.comap j`. Introduce `Z y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨X, hX, Y, hY, rfl⟩` from `GlobalTheory.FockTensor.exists_upq_add Z`. Rewrite `hy`, the goal using `[Submodule.mem_comap]`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply]`. Conclude with `S.add_mem (hreal X hX y hy) (S.smul_mem _ (hreal Y hY y hy))`. Break down `hirr.2 _ hstab with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Establish `hperp : ∀ b ∈ Sᗮ, σ.π k b ∈ Sᗮ`. Introduce `b hb`. Rewrite using `[Submodule.mem_orthogonal']`. Introduce `u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[GlobalTheory.FockTensor.inner_pi_left]`. Conclude with `Submodule.inner_left_of_mem_orthogonal (hinv _ _ hu) hb`. Establish `hdense : Dense ((⨆ m, (N m).map j : Submodule ℂ σ.H) : Set σ.H)`. Rewrite using `[← Submodule.map_iSup, hN, Submodule.map_top]`. Conclude with `hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : (⨆ m, (N m).map j : Submodule ℂ σ.H) ≤ Sᗮ`. Use `iSup_le fun m => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨a, ha, b, hb, hab⟩` from `S.exists_add_mem_mem_orthogonal (j x)`. Establish `he` using `heig m x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `he` using `[hab, map_add, smul_add]`. Establish `hdiff : σ.π k a - lam m • a = lam m • b - σ.π k b`. Rewrite using `[sub_eq_sub_iff_add_eq_add, he, add_comm]`. Establish `h1 : σ.π k a - lam m • a ∈ S` using `S.sub_mem (hinv _ _ ha) (S.smul_mem _ ha)`. Establish `h2 : σ.π k a - lam m • a ∈ Sᗮ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdiff]`. Conclude with `Sᗮ.sub_mem (Sᗮ.smul_mem _ hb) (hperp b hb)`. Establish `h3 : σ.π k a = lam m • a` using `sub_eq_zero.1 (inner_self_eq_zero.1 (Submodule.inner_right_of_mem_orthogonal h1 h2))`. Establish `h4` using `GlobalTheory.mem_of_isometry_eigen_of_dense_iSup σ.H (σ.π k) (σ.isom k) (fun m => (N m).map j) lam hlam (fun m => by haveI := hfin m; infer_instance) (by rintro m _ ⟨x, hx, rfl⟩; exact heig m x hx) hdense m a h3`. Take `⟨x', -, hx'⟩` from `h4`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h5 : x' ∈ S.comap j` using `by rw [Submodule.mem_comap, hx']; exact ha`. Rewrite `h5` using `[h, Submodule.mem_bot]`. Rewrite `hx'` using `[h5, map_zero]`. Rewrite using `[hab, ← hx', zero_add]`. Conclude with `hb`.
-
-Rewrite using `[← Submodule.orthogonal_eq_top_iff, eq_top_iff]`. Introduce `v _`. Conclude with `closure_minimal hle S.isClosed_orthogonal (hdense v)`. Use `right`. Rewrite using `[eq_top_iff]`.
-
-Introduce `v _`. Use `closure_minimal ?_ hS (hd v)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `: x ∈ S.comap j` using `by rw [h]; trivial`. Conclude with `this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem irrU_of_dense_graded_irrGK :
     ∀ (p q : ℕ) (T : GrpData p q) (σ : URep T) (M : GKMod p q) (j : M.V →ₗ[ℂ] σ.H), Function.Injective j → Dense (Set.range j) → (∀ Y ∈ upq p q, ∀ x, HasDerivAt (fun t : ℝ => σ.π (T.expt (t • Y)) (j x)) (j (M.act Y x)) 0) → IrrGK M → ∀ (N : ℕ → Submodule ℂ M.V) (k : T.G) (lam : ℕ → ℂ), (∀ m, FiniteDimensional ℂ (N m)) → (⨆ m, N m) = ⊤ → k ∈ T.Kset → Function.Injective lam → (∀ m, ∀ x ∈ N m, σ.π k (j x) = lam m • j x) → IrrU σ := by

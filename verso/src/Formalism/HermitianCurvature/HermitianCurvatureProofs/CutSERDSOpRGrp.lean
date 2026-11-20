@@ -40,13 +40,11 @@ def swapT (T : B.DTerm k r Wp Wq) : B.DTerm k r Wp Wq where
     simpa only [inner_conj_symm] using (congrArg (starRingEnd ℂ) h).symm
 
 /- English proof (translation)
-Introduce `Tm hTm`. Rewrite `hTm` using `[List.mem_map]`. Take `⟨T, hT, rfl⟩` from `hTm`. Take `⟨hlen, P, ⟨q, hq, hPq⟩, hc, hca⟩` from `h T hT`. Use `⟨hlen, fun g => star (P g), ?_, fun g => hca g, fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨MvPolynomial.rename Sum.swap (MvPolynomial.map (starRingEnd ℂ) q), ?_, fun g => ?_⟩` and prove the remaining obligations. Conclude with `le_trans (MvPolynomial.totalDegree_rename_le _ _) (le_trans (show (MvPolynomial.map (starRingEnd ℂ) q).totalDegree ≤ q.totalDegree from Finset.sup_mono (MvPolynomial.support_map_subset _ _)) hq)`. Use `show star (P g) = _`. Rewrite using `[hPq g, MvPolynomial.eval_rename, MvPolynomial.eval_map]`. Establish `e0 : (starRingEnd ℂ) ∘ (Sum.elim (fun x : Fin _ × Fin _ => g x.1 x.2) fun x => star (g x.1 x.2)) = (Sum.elim (fun x : Fin _ × Fin _ => g x.1 x.2) fun x => star (g x.1 x.2)) ∘ Sum.swap`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `cases x <;> simp`. Establish `e1` using `MvPolynomial.eval₂_comp_left (starRingEnd ℂ) (RingHom.id ℂ) (Sum.elim (fun x : Fin _ × Fin _ => g x.1 x.2) fun x => star (g x.1 x.2)) q`. Rewrite `e1` using `[RingHom.comp_id, e0]`. Conclude with `e1`.
-
-Use `show T.coef g = star (star (P g)) • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)`. Rewrite using `[star_star]`. Conclude with `hc g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyOp_swap {o κ : ℕ} {Θ : B.DiffOp k r Wp Wq} (h : CutMP.PolyOp o κ Θ) :
     CutMP.PolyOp o κ (Θ.map swapT) := by
@@ -75,7 +73,7 @@ theorem polyOp_swap {o κ : ℕ} {Θ : B.DiffOp k r Wp Wq} (h : CutMP.PolyOp o �
 end swap
 
 /- English proof (translation)
-Take `⟨hS, hG, -⟩` from `CutMP.polynomial_decay_admissible k r Wp Wq o κ Θ hP`. Use `⟨hS _, hC, fun ε _ => ⟨κ, Nat.cast_nonneg _, fun T hT => ?_⟩, fun F hF => hN k r Wp Wq D o κ Θ hP F hF⟩` and prove the remaining obligations. Take `⟨-, -, hb⟩` from `hG κ le_rfl T hT`. Take `⟨C₁, hC₁⟩` from `hb (B.opOrder Θ + 5)`. Conclude with `⟨C₁, fun u v hu hv hl g hg _ => hC₁ u v hu hv hl g hg⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem opProp1_of_poly (hN : RDSNicePoly) {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
@@ -93,7 +91,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp]
   [NormedSpace ℂ Wq] {z z' : Fin (2 * r + k + 1) → ℂ} {π : Q.Mx k r → (Wp →L[ℂ] Wp)} {π' : Q.Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hJ`. Use `⟨fun g₀ hg₀ => h1 g₀ ⟨hg₀.1, h g₀ hg₀.1 hg₀.2⟩, fun g hg n hn => h2 g ⟨hg.1, h g hg.1 hg.2⟩ n hn, fun g hg n hn => h3 g ⟨hg.1, h g hg.1 hg.2⟩ n hn, fun g hg u hu u' hu' => h4 g ⟨hg.1, h g hg.1 hg.2⟩ u hu u' hu'⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ffl_mono {D₁ D₂ : Set (Q.Mx k r)} (h : ∀ g ∈ Q.Glev k r 0, g ∈ D₂ → g ∈ D₁) {J : Q.Mx k r → (Wq →L[ℂ] Wp)}
     (hJ : J ∈ Q.FFl k r z z' π π' 0 D₁) : J ∈ Q.FFl k r z z' π π' 0 D₂ := by
@@ -104,19 +102,19 @@ theorem ffl_mono {D₁ D₂ : Set (Q.Mx k r)} (h : ∀ g ∈ Q.Glev k r 0, g ∈
 end ffl
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ k r D Y σ`. Take `⟨ε, hε⟩` from `CutMP.jDRRadP_of_steps CutMP.residue_first_move_holds CutMP.residue_second_move_holds k r`. Take `⟨Θ, hP, hO, hR⟩` from `CutMP.ri_real (Wp := Wp) (Wq := Wq) D.z D.z' Y (σ * ε)`. Establish `hComm : B.Commutes D (B.GPos D) Θ`. Introduce `p hp F hF g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hF` using `[hO]`. Establish `hgG : g ∈ B.GV k r` using `hg.1`. Establish `hsg : B.sgs p g ∈ B.GV k r` using `Formalism.FourierDecayAlt.P.B6.conj_product_mem_unitary_group D hp hgG`. Rewrite using `[hR _ _ (Formalism.FourierDecayAlt.P.B5.ckOn_rho D hp hF) g hgG hgG]`. Establish `e2 : B.rho D p (B.opApply Θ F) g = B.rho D p (fun x => (σ * ε) • CutMP.rhatOp k r D.z D.z' Y F x) g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [B.rho]`. Rewrite using `[hR _ _ hF _ hsg hsg]`. Rewrite using `[e2, CutMP.inverse_function_positive_holds k r Wp Wq D Y p hp F hF g hg]`. Simplify using `only [B.rho, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp]`. Use `⟨Θ, opProp1_of_poly hN D hP hComm, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `J hJ x hx`. Establish `hJ' : J ∈ Q.FFl k r D.z D.z' D.π D.π' 0 (Q.OmPlus k r D.z D.z')` using `ffl_mono (D₁ := JF.Om k r D.z D.z') (D₂ := Q.OmPlus k r D.z D.z') (fun g hg hgO => ⟨by simpa [Q.Glev] using hg.1, hgO⟩) hJ`. Establish `hDom` using `Formalism.FourierDecayAlt.P.JCx2.rma_isDom_omPlus (k := k) (r := r) D.z_mem D.z'_mem`. Establish `hcell : Q.wCell k r (Fin.last r) x.1 * x.2 ∈ Q.OmPlus k r D.z D.z'` using `Formalism.FourierDecayAlt.P5.Rad.wCell_mem_omPlus D.z_mem D.z'_mem hx.1 hx.2.1 hx.2.2`. Establish `key` using `hε Wp Wq D.z D.z' D.π D.π' (Q.OmPlus k r D.z D.z') Y D.z_mem D.z'_mem hDom J hJ' x.1 hx.1 x.2 hx.2.1 hcell`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← key]`. Establish `hW0 : Q.wCell k r (Fin.last r) x.1 * x.2 ∈ Q.Glev k r 0` using `Formalism.FourierDecayAlt.P.Qx3.glev_mul (Formalism.FourierDecayAlt.P.Qx3.wlist_glev hx.1 _) (Formalism.FourierDecayAlt.P.Qx3.glev_mono (Fin.zero_le _) hx.2.1)`. Establish `hWG : Q.wCell k r (Fin.last r) x.1 * x.2 ∈ B.GV k r` using `by simpa [Q.Glev] using hW0.1`. Establish `hCk : B.CkOn ((r + k : ℕ) : ℕ∞) (Q.Glev k r 0 ∩ JF.Om k r D.z D.z') J`. Introduce `g₀ hg₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U', F', hU', hg₀U, hc, he⟩` from `hJ.1 g₀ hg₀`. Use `⟨U', F', hU', hg₀U, hc.of_le (by exact_mod_cast le_top), fun y hy hyG => he y hy ?_⟩` and prove the remaining obligations. Simplify `hyG` using `[Q.Glev]`. Simplify using `only [Q.resG]`. Rewrite using `[hR _ J hCk _ ⟨hW0, hWG, hcell⟩ hWG, smul_smul, smul_smul, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rDSOpRGrp_of_nice (hN : RDSNicePoly) : RDSOpRGrp := by
   intro Wp Wq _ _ _ _ _ _ k r D Y σ
@@ -160,19 +158,19 @@ theorem rDSOpRGrp_of_nice (hN : RDSNicePoly) : RDSOpRGrp := by
   ring
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ k r D Y σ`. Take `⟨ε, hε⟩` from `CutMP.jDRRadM_of_parts CutMP.mirror_residue_beta_holds CutMP.mirror_residue_top_holds CutMP.GrpMA.mirror_residue_first_move CutMP.mirror_residue_second_move (CutMP.jDRvConseq_of CutMP.mirror_residue_continuity) k r`. Take `⟨Θ, hP, hO, hR⟩` from `CutMP.rim_real (Wp := Wp) (Wq := Wq) D.z D.z' Y (σ * ε)`. Establish `hComm : B.Commutes D (B.GPos D) Θ`. Introduce `p hp F hF g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hF` using `[hO]`. Establish `hgG : g ∈ B.GV k r` using `hg.1`. Establish `hsg : B.sgs p g ∈ B.GV k r` using `Formalism.FourierDecayAlt.P.B6.conj_product_mem_unitary_group D hp hgG`. Rewrite using `[hR _ _ (Formalism.FourierDecayAlt.P.B5.ckOn_rho D hp hF) g hgG hgG]`. Establish `e2 : B.rho D p (B.opApply Θ F) g = B.rho D p (fun x => (σ * ε) • CutMP.rvhatOp k r D.z D.z' Y F x) g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [B.rho]`. Rewrite using `[hR _ _ hF _ hsg hsg]`. Rewrite using `[e2, CutMP.inverse_function_minus_holds k r Wp Wq D Y p hp F hF g hg]`. Simplify using `only [B.rho, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp]`. Use `⟨Θ, opProp1_of_poly hN D hP hComm, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `J hJ x hx`. Establish `hJ' : J ∈ Q.FFl k r D.z D.z' D.π D.π' 0 (Q.OmPlus k r D.z D.z')` using `ffl_mono (D₁ := JF.Om k r D.z D.z') (D₂ := Q.OmPlus k r D.z D.z') (fun g hg hgO => ⟨by simpa [Q.Glev] using hg.1, hgO⟩) hJ`. Establish `hDom` using `Formalism.FourierDecayAlt.P.JCx2.rma_isDom_omPlus (k := k) (r := r) D.z_mem D.z'_mem`. Establish `hcell : Q.wCell k r (Fin.last r) x.1 * x.2 ∈ Q.OmPlus k r D.z D.z'` using `Formalism.FourierDecayAlt.P5.Rad.wCell_mem_omPlus D.z_mem D.z'_mem hx.1 hx.2.1 hx.2.2`. Establish `key` using `hε Wp Wq D.z D.z' D.π D.π' (Q.OmPlus k r D.z D.z') Y D.z_mem D.z'_mem hDom J hJ' x.1 hx.1 x.2 hx.2.1 hcell`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← key]`. Establish `hW0 : Q.wCell k r (Fin.last r) x.1 * x.2 ∈ Q.Glev k r 0` using `Formalism.FourierDecayAlt.P.Qx3.glev_mul (Formalism.FourierDecayAlt.P.Qx3.wlist_glev hx.1 _) (Formalism.FourierDecayAlt.P.Qx3.glev_mono (Fin.zero_le _) hx.2.1)`. Establish `hWG : Q.wCell k r (Fin.last r) x.1 * x.2 ∈ B.GV k r` using `by simpa [Q.Glev] using hW0.1`. Establish `hCk : B.CkOn ((r + k : ℕ) : ℕ∞) (Q.Glev k r 0 ∩ JF.Om k r D.z D.z') J`. Introduce `g₀ hg₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U', F', hU', hg₀U, hc, he⟩` from `hJ.1 g₀ hg₀`. Use `⟨U', F', hU', hg₀U, hc.of_le (by exact_mod_cast le_top), fun y hy hyG => he y hy ?_⟩` and prove the remaining obligations. Simplify `hyG` using `[Q.Glev]`. Simplify using `only [Q.resG]`. Rewrite using `[hR _ J hCk _ ⟨hW0, hWG, hcell⟩ hWG, smul_smul, smul_smul, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rDSOpRvGrp_of_nice (hN : RDSNicePoly) : RDSOpRvGrp := by
   intro Wp Wq _ _ _ _ _ _ k r D Y σ

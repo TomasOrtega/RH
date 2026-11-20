@@ -19,7 +19,7 @@ def eigLat {O : Type} (act : O → (G ⟶ G)) [∀ a, IsMonHom (act a)] (χ : O 
   ⨅ a, LinearMap.ker (tmap hx (act a) - χ a • LinearMap.id)
 
 /- English proof (translation)
-Take `⟨k, bk⟩` from `Submodule.basisOfPid (Pi.basisFun R (Fin n)) (eigLat hx act χ)`. Conclude with `⟨k, ⟨bk⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eigLat_basis [IsDomain R] [IsPrincipalIdealRing R] {O : Type} (act : O → (G ⟶ G)) [∀ a, IsMonHom (act a)]
     (χ : O → R) : ∃ k, Nonempty (Module.Basis (Fin k) R (eigLat hx act χ)) := by

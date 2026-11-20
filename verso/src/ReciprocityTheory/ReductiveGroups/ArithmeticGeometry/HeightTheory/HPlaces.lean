@@ -17,7 +17,7 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-The claim follows from `HtPlacesSum 𝒜 d hd h la c`.
+A detailed English derivation is pending.
 -/
 theorem places_over_la (hd : d.AxH 𝒜) (h : d.S1) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (c : ι) :
     (d.PlOver la c).Finite ∧

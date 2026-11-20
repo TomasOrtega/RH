@@ -9,7 +9,7 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset Comb
 
 /- English proof (translation)
-Establish `h : latticeWords 0 lam = univ`. Use extensionality with `w`. Simplify using `only [latticeWords, mem_filter, mem_univ, true_and, iff_true]`. Conclude with `⟨fun t _ i j _ => by simp [pcnt], fun i => by rw [hlam i]; simp [pcnt]⟩`. Rewrite using `[h, card_univ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -23,19 +23,19 @@ theorem card_latticeWords_zero_of_eq_zero {r : ℕ} (lam : Fin r → ℕ) (hlam 
   simp
 
 /- English proof (translation)
-Introduce `r s`. Proceed by induction on `s with`. Consider the case `zero => intro l hl`. Use linear arithmetic over natural numbers and integers. Consider the case `succ s ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Introduce `l hl hsr`. Break down `Nat.eq_zero_or_pos s with rfl | hs` into its components or cases. Establish `hl0 : l = 0` using `by omega`. Substitute `hl0` using the available equality. Establish `hr : 0 < r` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[card_latticeWords_succ 0 _ (h1 r 1 0 (by omega) hsr).1, Finset.sum_eq_single (⟨0, hr⟩ : Fin r) ?_ (fun h => absurd (mem_univ _) h)]`. Rewrite using `[if_pos (by simp [hookShape]), card_latticeWords_zero_of_eq_zero _ (fun i => ?_)]`. Simplify using the standard rewrite rules. Distinguish the cases in `hi : i = ⟨0, hr⟩`. Substitute `hi` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hookShape]`. Rewrite using `[Function.update_of_ne hi]`. Establish `: (i : ℕ) ≠ 0` using `fun h => hi (Fin.ext h)`. Simplify using `[hookShape, this]`. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (b : ℕ) ≠ 0` using `fun h => hb (Fin.ext h)`. Rewrite using `[if_neg]`. Simplify using `[hookShape, this]`. Rewrite using `[card_latticeWords_succ s _ (h1 r (s + 1) l hl hsr).1, Finset.sum_congr rfl (fun a _ => h2 r s l hs (by omega) hsr a), Finset.sum_add_distrib, Finset.sum_eq_single (⟨0, by omega⟩ : Fin r) (fun b _ hb => if_neg (fun h => hb (Fin.ext h.1))) (fun h => absurd (mem_univ _) h), Finset. …`. Simplify using `only [true_and, Nat.add_sub_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨t, rfl⟩ : ∃ t, s = t + 1` from `⟨s - 1, by omega⟩`. Break down `Nat.eq_zero_or_pos l with rfl | hl1` into its components or cases. Rewrite using `[if_pos hs, if_neg (by omega), ih 0 hs (by omega)]`. Simplify using the standard rewrite rules. Take `⟨k, rfl⟩ : ∃ k, l = k + 1` from `⟨l - 1, by omega⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos (show 1 ≤ k + 1 by omega), Nat.add_sub_cancel, ih k (by omega) (by omega), Nat.add_sub_cancel, Nat.choose_succ_succ]`. Break down `Nat.lt_or_ge (k + 1) (t + 1) with hk | hk` into its components or cases. Rewrite using `[if_pos hk, ih (k + 1) hk (by omega), Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (by omega), Nat.choose_eq_zero_of_lt (show t < k + 1 by omega)]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

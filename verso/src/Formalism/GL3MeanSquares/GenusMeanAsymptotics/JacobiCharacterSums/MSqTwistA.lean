@@ -17,21 +17,19 @@ def smallCnt (X : ℝ) (M b : ℕ) : ℕ :=
   (((Icc (1 : ℕ) ⌊X⌋₊).filter (fun p : ℕ => p.Prime ∧ (p : ℝ) ≤ X ^ (1 / 2 : ℝ))).filter (fun p => p % M = b)).card
 
 /- English proof (translation)
-Establish `hM : 0 < m₀ * s` using `Nat.mul_pos hm hs`. Establish `: NeZero s` using `⟨hs.ne'⟩`. Establish `hcongr : ∀ q : ℕ, (jacobiSym (q : ℤ) s : ℝ) = (jacobiSym ((q % (m₀ * s) : ℕ) : ℤ) s : ℝ)`. Introduce `q`. Establish `h : q ≡ q % (m₀ * s) [MOD s]` using `Nat.ModEq.of_dvd (dvd_mul_left s m₀) (Nat.mod_modEq q (m₀ * s)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[jacobi_congr h]`. Establish `hzero : ∀ q ∈ PPset m₀ a₀ X, q % (m₀ * s) ∉ clsB m₀ s a₀ → (jacobiSym (q : ℤ) s : ℝ) = 0`. Introduce `q hq hnot`. Establish `hqm : q % m₀ = a₀ % m₀` using `(Finset.mem_filter.mp hq).2.2.1`. Establish `hnc : ¬ q.Coprime s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hc`. Apply `hnot` to reduce the goal to its premises. Simplify using `only [clsB, Finset.mem_filter, Finset.mem_range]`. Use `⟨Nat.mod_lt _ hM, by rw [Nat.mod_mod_of_dvd _ (dvd_mul_right m₀ s), hqm], ?_⟩` and prove the remaining obligations. Establish `hg` using `(Nat.ModEq.of_dvd (dvd_mul_left s m₀) (Nat.mod_modEq q (m₀ * s))).gcd_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Nat.Coprime, hg]`. Conclude with `hc`. Establish `h0 : jacobiSym (q : ℤ) s = 0`. Rewrite using `[jacobiSym.eq_zero_iff_not_coprime, Int.gcd_natCast_natCast]`. Conclude with `hnc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations.
+Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_filter, Finset.card_eq_sum_ones, Nat.cast_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun q hq => ?_)` and prove the remaining obligations. Establish `hqb` using `(Finset.mem_filter.mp hq).2`. Rewrite using `[hcongr q, hqb]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ q ∈ PPset m₀ a₀ X, ∑ b ∈ clsB m₀ s a₀, if q % (m₀ * s) = b then (jacobiSym (q : ℤ) s : ℝ) else 0 := Finset.sum_comm`. Use `_ = ∑ q ∈ PPset m₀ a₀ X, (jacobiSym (q : ℤ) s : ℝ) := by`. Use `Finset.sum_congr rfl (fun q hq => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Distinguish the cases in `h : q % (m₀ * s) ∈ clsB m₀ s a₀`.
-
-Rewrite using `[if_pos h]`. Rewrite using `[if_neg h, hzero q hq h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_jacobiSym_eq_sum_residueClass (m₀ s a₀ : ℕ) (X : ℝ) (hm : 0 < m₀) (hs : 0 < s) :
     ∑ q ∈ PPset m₀ a₀ X, (jacobiSym (q : ℤ) s : ℝ) =
@@ -82,17 +80,17 @@ theorem sum_jacobiSym_eq_sum_residueClass (m₀ s a₀ : ℕ) (X : ℝ) (hm : 0 
         · rw [if_neg h, hzero q hq h]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨hbr, hbm, -⟩ : b < m₀ * s ∧ b % m₀ = a₀ % m₀ ∧ b.Coprime s := by`. Simplify `hb` using `[clsB]`. Establish `hbM : b % (m₀ * s) = b` using `Nat.mod_eq_of_lt hbr`. Establish `hmod : ∀ p : ℕ, p % (m₀ * s) = b → p % m₀ = a₀ % m₀` using `fun p h => by`. Rewrite using `[← Nat.mod_mod_of_dvd p (dvd_mul_right m₀ s), h, hbm]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `Finset.card_filter_add_card_filter_not (s := (Finset.Icc 1 ⌊X⌋₊).filter (fun p : ℕ => p.Prime ∧ p % (m₀ * s) = b)) (fun p : ℕ => X ^ (1 / 2 : ℝ) < (p : ℝ))`. Unfold `piAP`. Rewrite using `[hbM, ← key]`. Use `congr 1`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `p`. Simplify using `only [PPset, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2, -, h4⟩, h5⟩`. Conclude with `⟨⟨h1, h2, h5⟩, h4⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨h1, h2, h5⟩, h4⟩`. Conclude with `⟨⟨h1, h2, hmod p h5, h4⟩, h5⟩`. Unfold `smallCnt`. Use `congr 1`. Use extensionality with `p`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, not_lt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2, h4⟩, h5⟩`. Conclude with `⟨⟨h1, h2, h5⟩, h4⟩`. Introduce and unpack `⟨⟨h1, h2, h5⟩, h4⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨h1, h2, h4⟩, h5⟩`.
+Supply the required witnesses or components.
 -/
 theorem cnt_add_small (m₀ s a₀ : ℕ) (X : ℝ) (b : ℕ) (hb : b ∈ clsB m₀ s a₀) :
     ((PPset m₀ a₀ X).filter (fun q => q % (m₀ * s) = b)).card + smallCnt X (m₀ * s) b = piAP X (m₀ * s) b := by
@@ -126,7 +124,7 @@ theorem cnt_add_small (m₀ s a₀ : ℕ) (X : ℝ) (b : ℕ) (hb : b ∈ clsB m
       exact ⟨⟨h1, h2, h4⟩, h5⟩
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem sum_card_filter_mod_le_card (T B : Finset ℕ) (M : ℕ) :
     ∑ b ∈ B, (T.filter (fun p => p % M = b)).card ≤ T.card := by
@@ -138,11 +136,11 @@ private theorem sum_card_filter_mod_le_card (T B : Finset ℕ) (M : ℕ) :
     _ = T.card := by simp
 
 /- English proof (translation)
-Establish `h1 : ∑ b ∈ clsB m₀ s a₀, smallCnt X (m₀ * s) b ≤ ((Finset.Icc (1 : ℕ) ⌊X⌋₊).filter (fun p : ℕ => p.Prime ∧ (p : ℝ) ≤ X ^ (1 / 2 : ℝ))).card` using `sum_card_filter_mod_le_card _ _ _`. Establish `h2 : ((Finset.Icc (1 : ℕ) ⌊X⌋₊).filter (fun p : ℕ => p.Prime ∧ (p : ℝ) ≤ X ^ (1 / 2 : ℝ))).card ≤ ⌊X ^ (1 / 2 : ℝ)⌋₊`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at hp ⊢`. Conclude with `⟨hp.1.1, Nat.le_floor hp.2.2⟩`. Use `_ = ⌊X ^ (1 / 2 : ℝ)⌋₊ := by simp`. Establish `h3 : (⌊X ^ (1 / 2 : ℝ)⌋₊ : ℝ) ≤ X ^ (1 / 2 : ℝ)` using `Nat.floor_le (Real.rpow_nonneg hX _)`. Establish `h4 : ((∑ b ∈ clsB m₀ s a₀, smallCnt X (m₀ * s) b : ℕ) : ℝ) ≤ (⌊X ^ (1 / 2 : ℝ)⌋₊ : ℝ)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `h1.trans h2` after adjusting the coercions. Move the coercions through the operations in `at h4`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_small_le (m₀ s a₀ : ℕ) (X : ℝ) (hX : 0 ≤ X) :
     (∑ b ∈ clsB m₀ s a₀, (smallCnt X (m₀ * s) b : ℝ)) ≤ X ^ (1 / 2 : ℝ) := by
@@ -165,7 +163,7 @@ theorem sum_small_le (m₀ s a₀ : ℕ) (X : ℝ) (hX : 0 ≤ X) :
   linarith
 
 /- English proof (translation)
-Conclude with `sum_card_filter_mod_le_card (PPset m₀ a₀ X) (clsB m₀ s a₀) (m₀ * s)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem sum_cnt_le (m₀ s a₀ : ℕ) (X : ℝ) :
     (∑ b ∈ clsB m₀ s a₀, (((PPset m₀ a₀ X).filter (fun q => q % (m₀ * s) = b)).card : ℝ)) ≤
@@ -173,13 +171,13 @@ theorem sum_cnt_le (m₀ s a₀ : ℕ) (X : ℝ) :
   exact_mod_cast sum_card_filter_mod_le_card (PPset m₀ a₀ X) (clsB m₀ s a₀) (m₀ * s)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases jacobiSym.trichotomy a s with h | h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_jac_le (a : ℤ) (s : ℕ) : |(jacobiSym a s : ℝ)| ≤ 1 := by
   rcases jacobiSym.trichotomy a s with h | h | h <;> simp [h]
 
 /- English proof (translation)
-The claim follows from `|m| ≤ 2 * P ∧ |P - m| ≤ 2 * |k| * P := by have h0 : k * m ≤ |k| * |m| := by rw [← abs_mul]; exact le_abs_self _ have h1 : |k| * |m| ≤ 1 / 2 * |m| := mul_le_mul_of_nonneg_right hk (abs_nonneg m) have h2 : |m| - |P| ≤ |m - P| := abs_sub_abs_le_abs_sub m P rw [abs_sub_comm, abs_of_n …`.
+A detailed English derivation is pending.
 -/
 theorem main_le_two_pi {P m k : ℝ} (hP : 0 ≤ P) (hk : |k| ≤ 1 / 2) (h : |P - m| ≤ k * m) :
     |m| ≤ 2 * P ∧ |P - m| ≤ 2 * |k| * P := by
@@ -193,7 +191,7 @@ theorem main_le_two_pi {P m k : ℝ} (hP : 0 ≤ P) (hk : |k| ≤ 1 / 2) (h : |P
   linarith
 
 /- English proof (translation)
-The claim follows from `|∑ b ∈ C, J b * N b - ∑ b ∈ C, J b * main b| ≤ 2 * |k| * (A + B) + B ∧ ∑ b ∈ C, |main b| ≤ 2 * (A + B) := by have hk := abs_nonneg k constructor · rw [← Finset.sum_sub_distrib] refine (Finset.abs_sum_le_sum_abs _ _).trans ?_ have step : ∀ b ∈ C, |J b * N b - J b * main b| ≤ 2 * | …`.
+A detailed English derivation is pending.
 -/
 private theorem twist_decomposition_bound_of_sum_bounds (C : Finset ℕ) (J N S main : ℕ → ℝ) (k A B : ℝ)
     (hJ : ∀ b, |J b| ≤ 1) (hS0 : ∀ b, 0 ≤ S b)
@@ -226,7 +224,7 @@ private theorem twist_decomposition_bound_of_sum_bounds (C : Finset ℕ) (J N S 
       _ ≤ 2 * (A + B) := by linarith
 
 /- English proof (translation)
-The claim follows from `|∑ q ∈ PPset m₀ a₀ X, (jacobiSym (q : ℤ) s : ℝ) - ∑ b ∈ clsB m₀ s a₀, (jacobiSym (b : ℤ) s : ℝ) * main b| ≤ 2 * |k| * (((PPset m₀ a₀ X).card : ℝ) + X ^ (1 / 2 : ℝ)) + X ^ (1 / 2 : ℝ) ∧ ∑ b ∈ clsB m₀ s a₀, |main b| ≤ 2 * (((PPset m₀ a₀ X).card : ℝ) + X ^ (1 / 2 : ℝ)) := by have hm …`.
+A detailed English derivation is pending.
 -/
 theorem twist_decomp (m₀ s a₀ : ℕ) (X : ℝ) (hm : 0 < m₀) (hs : 0 < s) (hX : 0 ≤ X)
     (main : ℕ → ℝ) (k : ℝ) (hk : |k| ≤ 1 / 2)

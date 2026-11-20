@@ -6,11 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SeriesEqZeroOfVa
 namespace GlobalTheory.PowerDifferenceNorm
 
 /- English proof (translation)
-Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Proceed by induction on `n with`. Consider the case `zero => simpa using h`. Consider the case `succ n ih`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e : x ^ (n + 1 + 1) - y ^ (n + 1 + 1) = x * (x ^ (n + 1) - y ^ (n + 1)) + (x - y) * y ^ (n + 1)` using `by ring`. Rewrite using `[e]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Conclude with `lt_of_le_of_lt ((norm_mul_le _ _).trans (mul_le_of_le_one_left (norm_nonneg _) hx)) ih`. Establish `hp : ‖y ^ (n + 1)‖ ≤ 1` using `(norm_pow_le' y n.succ_pos).trans (pow_le_one₀ (norm_nonneg _) hy)`.
-
-Conclude with `lt_of_le_of_lt ((norm_mul_le _ _).trans (mul_le_of_le_one_right (norm_nonneg _) hp)) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_pow_sub_pow_lt_one_of_ultra {K : Type*} [NormedCommRing K] [IsUltrametricDist K]
     {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) (h : ‖x - y‖ < 1) (n : ℕ) :
@@ -32,7 +30,7 @@ theorem norm_pow_sub_pow_lt_one_of_ultra {K : Type*} [NormedCommRing K] [IsUltra
         (mul_le_of_le_one_right (norm_nonneg _) hp)) h
 
 /- English proof (translation)
-Introduce `l _ x y hx hy h n`. Conclude with `norm_pow_sub_pow_lt_one_of_ultra hx hy h n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem norm_pow_sub_pow_lt_one :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] {x y : Formalism.ConjugateSelfDual.Qbar l}, ‖x‖ ≤ (1 : ℝ) → ‖y‖ ≤ (1 : ℝ) →

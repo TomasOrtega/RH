@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `R R' _ _ σ X X' q w m f`. Use function extensionality and compare the values at `E _ _ E' _ _ ψ y`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem fv_pullbackOneCocycle_eq_bcPull_of_changeOfBase : ∀ (R R' : Type) [CommRing R] [CommRing R'] (σ : R →+* R') (X : Over (Sp R)) (X' : Over (Sp R')) (q : X'.left ⟶ X.left) (w : q ≫ X.hom = X'.hom ≫ spMap σ) (m : IsMor (dp0 R) (X.hom ≫ 𝟙 _) (dp0 R') (X'.hom ≫ 𝟙 _) σ q) (f : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))), fv (m.coef.pullbackOneCocycle f) = bcPull w (fv f) := by
   intro R R' _ _ σ X X' q w m f

@@ -16,9 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `theta`. Use `split_ifs with h`. Take `⟨hint, -⟩` from `h.choose_spec`. Establish `hmem : (⟨h.choose, hint⟩ : 𝓞 D.host.E) • x ∈ (I : Submodule (𝓞 D.host.E) D.host.E)` using `Submodule.smul_mem _ _ hx`. Rewrite `hmem` using `[Algebra.smul_def, mul_comm]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero]`. Conclude with `(I : Submodule (𝓞 D.host.E) D.host.E).zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem theta_int_mem {I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E} {x : D.host.E} (hx : x ∈ I) :
     x * theta D ∈ I := by
@@ -32,7 +32,7 @@ theorem theta_int_mem {I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.h
     exact (I : Submodule (𝓞 D.host.E) D.host.E).zero_mem
 
 /- English proof (translation)
-Introduce `c`. Take `⟨h1, h2⟩` from `hx c`. Take `⟨h3, h4⟩` from `hy c`. Conclude with `⟨by rw [map_sub, h1, h3, sub_zero], by rw [map_sub, h2, h4, sub_zero]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inW_sub {X : HidaSetting D} {x y : (VS D).V} (hx : InW X x) (hy : InW X y) : InW X (x - y) := by
   intro c
@@ -41,7 +41,7 @@ theorem inW_sub {X : HidaSetting D} {x y : (VS D).V} (hx : InW X x) (hy : InW X 
   exact ⟨by rw [map_sub, h1, h3, sub_zero], by rw [map_sub, h2, h4, sub_zero]⟩
 
 /- English proof (translation)
-Simplify using `only [blkQ, tauQ]`. Apply the tactic sequence `first | exact sub_zero _ | rfl | simp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xblk {X : HidaSetting D} (u : D.what₂.Word) (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E)
     (xs : Fin D.R.rS → (VS D).V) (M : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E)
@@ -52,7 +52,7 @@ theorem xblk {X : HidaSetting D} (u : D.what₂.Word) (X0 : Matrix (Fin D.R.rS) 
   first | exact sub_zero _ | rfl | simp
 
 /- English proof (translation)
-Simplify using `only [blkQ, tauQ]`. Apply the tactic sequence `first | exact sub_zero _ | rfl | simp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rblk {X : HidaSetting D} (u : D.what₂.Word) (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E)
     (xs : Fin D.R.rS → (VS D).V) (M : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (b : Fin D.R.rS) :
@@ -62,35 +62,31 @@ theorem rblk {X : HidaSetting D} (u : D.what₂.Word) (X0 : Matrix (Fin D.R.rS) 
   first | exact sub_zero _ | rfl | simp
 
 /- English proof (translation)
-Introduce `D X u X0 xs M hok`. Establish `hup` using `hok.1`. Establish `hd` using `hok.2.1`. Establish `hW` using `hok.2.2.1`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `hX : ∀ b a : Fin D.R.rS, b < a → X0 b a ∈ iQ D b a`. Introduce `b a hba`. Establish `h1` using `h (Sum.inl (Sum.inl ⟨(b, a), hba⟩))`. Rewrite `h1` using `[xblk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [cLat] at h1`. Take `⟨t, ht, hte⟩` from `(CovB.mem_closure_embV X _ _).1 h1`. Establish `: t = X0 b a` using `CovB.embVHom_injective X hte`. Rewrite using `[← this]`. Conclude with `ht`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR : ∀ b, xs b ∈ aaLb X b`. Introduce `b`. Establish `h1` using `h (Sum.inl (Sum.inr b))`. Rewrite `h1` using `[rblk]`. Simplify using `only [cLat] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hye⟩` from `(mem_cl_row X u b _).1 h1`. Establish `hz : rowV X u (xs b - y) = 0` using `by rw [rowV_sub, hye, sub_self]`. Use `rowV_inj X u _ (inW_sub (hW b) (aaLb_inW X hy)) hz` as an intermediate fact. Rewrite `this` using `[sub_eq_zero]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy`. Establish `hG` using `Gp_mem X X0 xs hup hd hX hR`. Use `⟨hX, hR, ?_⟩` and prove the remaining obligations. Establish `hMu : ∀ b a : Fin D.R.rS, b < a → M b a ∈ iP D b a`. Introduce `b a hba`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `h (Sum.inr (Sum.inl ⟨(b, a), hba⟩))`. Rewrite `h1` using `[kblk X u hok]`. Simplify using `only [cLat] at h1`. Take `⟨t, ht, hte⟩` from `(CovB.mem_closure_embV X _ _).1 h1`. Establish `: t = M b a` using `CovB.embVHom_injective X hte`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← this]`. Conclude with `ht`. Introduce `b a`. Break down `lt_trichotomy b a with hba | hba | hba` into its components or cases. Conclude with `hMu b a hba`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Substitute `hba` using the available equality. Establish `h1` using `h (Sum.inr (Sum.inr b))`. Rewrite `h1` using `[imblk X u hok]`. Take `⟨t, ht, htc, hte⟩` from `(mem_cl_im X u b _).1 h1`. Establish `hteq : t = xiA X0 xs M b` using `im_inj X htc (xiA_conj X hok b) fun v => congrFun hte v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxi : xiA X0 xs M b ∈ iP D b b` using `by rw [← hteq]; exact ht`. Establish `e : M b b = xiA X0 xs M b - Gp D X0 xs b b * theta D` using `by unfold xiA; ring`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ hxi (theta_int_mem (hG b b))`. Establish `e` using `entry_rel X hok b a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `e2 : M b a = -Gp D X0 xs b a - star (M a b)` using `by rw [← e]; ring`. Rewrite using `[e2]`. Use `Submodule.sub_mem _ (Submodule.neg_mem _ (hG b a)) ?_` and prove the remaining obligations. Establish `hab : M a b ∈ iP D b a` using `by rw [iP_comm]; exact hMu a b hba`. Conclude with `star_mem_iP hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨hX, hR, hM⟩`. Establish `hG` using `Gp_mem X X0 xs hup hd hX hR`. Introduce `p`. Break down `p with ((p | b) | (p | a))` into its components or cases. Rewrite using `[xblk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cLat]`. Conclude with `(CovB.mem_closure_embV X _ _).2 ⟨X0 p.1.1 p.1.2, hX _ _ p.2, rfl⟩`. Rewrite using `[rblk]`. Simplify using `only [cLat]`. Conclude with `(mem_cl_row X u b _).2 ⟨xs b, hR b, rfl⟩`.
-
-Rewrite using `[kblk X u hok]`. Simplify using `only [cLat]`. Conclude with `(CovB.mem_closure_embV X _ _).2 ⟨M p.1.1 p.1.2, hM _ _, rfl⟩`. Rewrite using `[imblk X u hok]`. Use `(mem_cl_im X u a _).2 ⟨xiA X0 xs M a, ?_, xiA_conj X hok a, rfl⟩` and prove the remaining obligations.
-
-Conclude with `Submodule.add_mem _ (hM a a) (theta_int_mem (hG a a))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fibQ_holds : FibQ := by
   intro D X u X0 xs M hok

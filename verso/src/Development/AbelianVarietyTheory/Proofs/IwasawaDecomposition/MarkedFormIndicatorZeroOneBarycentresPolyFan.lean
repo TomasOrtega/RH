@@ -12,17 +12,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan.Mark
 
 /- English proof (translation)
-Use `⟨{ toFun := markVal bar ψ lab i, inv := ?_, zero := ?_ }, fun _ _ => rfl⟩` and prove the remaining obligations. Introduce `n m r hr B`. Take `⟨s, hs⟩` from `Module.projective_lifting_property r LinearMap.id hr`. Establish `hrs : ∀ a, r (s a) = a` using `fun a => LinearMap.congr_fun hs a`. Unfold `markVal`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h : ∃ β : LinearMap.BilinForm ℤ (Fin m → O), ∀ a b, B a b = β a b`. Establish `h' : ∃ β : LinearMap.BilinForm ℤ (Fin n → O), ∀ a b, B (r a) (r b) = β a b` using `⟨pull r h.choose, fun a b => h.choose_spec _ _⟩`. Rewrite using `[dif_pos h, dif_pos h']`. Establish `e : h'.choose = pull r h.choose` using `LinearMap.ext₂ fun a b => by`. Establish `h1` using `h'.choose_spec a b`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `h.choose_spec (r a) (r b)`. Rewrite using `[pull_apply]`. Conclude with `h1.symm.trans h2` after adjusting the coercions. Rewrite using `[e, GlobalTheory.T.isMarkedBalancedIntForm_pullback_iff_splitSurjection O bar ψ lab i _ _ r s hrs]`. Establish `h' : ¬ ∃ β : LinearMap.BilinForm ℤ (Fin n → O), ∀ a b, B (r a) (r b) = β a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨β, h3⟩`. Conclude with `h ⟨pull s β, fun a b => by rw [pull_apply, ← h3, hrs, hrs]⟩`. Rewrite using `[dif_neg h, dif_neg h']`. Introduce `B`. Unfold `markVal`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Use `split_ifs with h h2`. It suffices to derive a contradiction. Use `h2.2.2.2.1` as an intermediate fact. Rewrite `this` using `[InvFun.evalZ, lab.eval_of_subsingleton]`. Conclude with `absurd this (by positivity)`.
-
-Both sides reduce to the same expression. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_markFun {O : Type} [CommRing O] (bar : O → O) (ψ lab : InvFun O) (i : ℕ) :
     ∃ w : InvFun O, ∀ n B, w.toFun n B = markVal bar ψ lab i n B := by
@@ -59,9 +57,9 @@ theorem exists_markFun {O : Type} [CommRing O] (bar : O → O) (ψ lab : InvFun 
 open Classical in
 
 /- English proof (translation)
-Take `⟨n, t, ht⟩` from `Module.Finite.exists_fin' O X`. Take `⟨u, hu⟩` from `Module.projective_lifting_property t LinearMap.id ht`. Establish `htu : ∀ a, t (u a) = a` using `fun a => LinearMap.congr_fun hu a`. Rewrite using `[InvFun.evalZ, w.eval_eq ht, hw]`. Establish `e` using `markVal_int (bar := bar) (ψ := ψ) (lab := lab) (i := i) n (pull t β)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [pull_apply] at e`. Rewrite using `[e, GlobalTheory.T.isMarkedBalancedIntForm_pullback_iff_splitSurjection O bar ψ lab i _ _ t u htu]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalZ_markFun {O : Type} [CommRing O] {bar : O → O} {ψ lab : InvFun O} {i : ℕ} {w : InvFun O}
     (hw : ∀ n B, w.toFun n B = markVal bar ψ lab i n B) {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
@@ -77,11 +75,11 @@ theorem evalZ_markFun {O : Type} [CommRing O] {bar : O → O} {ψ lab : InvFun O
   rw [e, GlobalTheory.T.isMarkedBalancedIntForm_pullback_iff_splitSurjection O bar ψ lab i _ _ t u htu]
 
 /- English proof (translation)
-Introduce `E _ _ _ H q ψ lab i hD hψ htψ htlab hlab`. Take `⟨w, hw⟩` from `exists_markFun H.bar ψ lab i`. Establish `ev` using `fun {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X] (β : LinearMap.BilinForm ℤ X) => evalZ_markFun hw (X := X) β`. Establish `mk : ∀ {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X] (β : LinearMap.BilinForm ℤ X), w.evalZ β = 1 → IsMarked H.bar ψ lab i X β` using `fun β h => by`. Rewrite `h` using `[ev]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs at h with h'`. Conclude with `h'`. Evaluate the numerical expressions using `at h`. Use `⟨w, fun σ hσ n B => by rw [hw, hw]; exact GlobalTheory.T.markedFormIndicatorValue_invariant_hostFixingAut E H ψ lab i htψ htlab σ hσ n B, ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ _ hX`.
+Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨fun β _ _ => ?_, fun β _ _ h1 => (mk β h1).2.2.1, fun β _ _ h1 => (mk β h1).2.2.2.1, fun m v hv hle β _ _ β' _ _ h1 h1' hc hc' => GlobalTheory.T.polFan_marked_form_unique_in_cell E H q ψ lab i hD hψ hlab X hX m v hv hle β β' (mk β h1) (mk β' h1') hc hc', fun m v hv β hβ hp hc hl …` and prove the remaining obligations. Apply the tactic sequence `rw [ev] split_ifs <;> simp`. Take `⟨β₀, h0, hc0⟩` from `GlobalTheory.T.polFan_exists_marked_form_in_cell E H q ψ lab i hD hψ hlab X hX m v hv β hβ hp hc hl`. Conclude with `⟨β₀, h0.1, h0.2.1, by rw [ev, if_pos h0], hc0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_markFun_props : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ lab : InvFun (𝓞 E)) (i : ℕ), (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X) → IsPolyFan H.bar q ψ → IsTwInv H ψ → IsTwInv H lab → IsCarrierDim H.bar q ψ lab → ∃ w : InvFun (𝓞 E), IsTwInv H w ∧ ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → (∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → w.evalZ β = 0 ∨ w.evalZ β = 1) ∧ (∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → w.evalZ β = 1 → ∀ (k : ℕ) (β' : LinearMap.BilinForm ℤ X), (k : ℤ) • β' = β → k = 1) ∧ (∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → w.evalZ β = 1 → lab.evalZ β = ((i + 1 : ℕ) : ℝ)) ∧ (∀ (m : ℕ) (v : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ v → (∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → InRCone v β → lab.evalZ β ≤ ((i + 1 : ℕ) : ℝ)) → ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → ∀ β' ∈ balForms H.bar X, (∀ y, 0 ≤ β' y y) → w.evalZ β = 1 → w.evalZ β' = 1 → InRCone v β → InRCone v β' → β = β') ∧ (∀ (m : ℕ) (v : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ v → ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → InRCone v β → lab.evalZ β = ((i + 1 : ℕ) : ℝ) → ∃ β₀ ∈ balForms H.bar X, (∀ y, 0 ≤ β₀ y y) ∧ w.evalZ β₀ = 1 ∧ InRCone v β₀) := by
   intro E _ _ _ H q ψ lab i hD hψ htψ htlab hlab

@@ -7,49 +7,47 @@ open scoped BigOperators
 open Formalism.IncomingBounds
 
 /- English proof (translation)
-Introduce `l d _ hl hd κ w D hκ hw hD`. Establish `hl3 : 3 ≤ l` using `by omega`. Establish `hlR : (5 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Establish `hκw : (0 : ZMod d → ℝ) ≤ fun s => κ * w s` using `fun s => mul_nonneg hκ.le (hw s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, sig, hdual, hF⟩` from `UpperTheory.exists_maxFlow_attained_and_isOptDual l d hl3 (fun s => κ * w s) hκw`. Establish `hheavy` using `UpperTheory.sum_demand_filter_two_div_le_of_isOptDual l d hl3 (fun s => κ * w s) sig hκw ⟨hdual, hF⟩`. Use `set c : ℝ := 1 / (l : ℝ) ^ 3 with hc`. Establish `hc0 : 0 < c` using `by positivity`. Establish `hsig0 : ∀ s, 0 ≤ sig s` using `fun s => (hdual.1 s).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsig1 : ∀ s, sig s ≤ 1` using `fun s => (hdual.1 s).2`. Establish `hgam1 : 1 / (l : ℝ) ≤ gam l`. Unfold `gam`. Establish `hden : (0 : ℝ) < (l : ℝ) ^ 2 - 1` using `by nlinarith`. Rewrite using `[div_le_div_iff₀ hl0 hden]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hgam0 : 0 ≤ gam l` using `le_trans (by positivity) hgam1`. Establish `hc2 : c < 2 / (l : ℝ)`. Rewrite using `[hc, div_lt_div_iff₀ (by positivity) hl0]`. Establish `h3 : (l : ℝ) ^ 3 = l * (l * l)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hll : (1 : ℝ) ≤ l * l` using `by nlinarith`. Rewrite using `[h3]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2l : 2 / (l : ℝ) ≤ 1`. Rewrite using `[div_le_one hl0]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun s => max (sig s) c, fun s => le_trans (hsig0 s) (le_max_left _ _), ?_, ?_⟩` and prove the remaining obligations. Introduce `s i hi`. Distinguish the cases in `hid : i < d`. Establish `hmem : i ∈ oddLevels d` using `Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hid, hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hdual.2 s i hmem`. Establish `hp : (0 : ℝ) ≤ (l : ℝ) ^ i` using `by positivity`. Establish `h1` using `mul_le_mul_of_nonneg_left (le_max_left (sig s) c) hp`. Establish `h2` using `le_max_left (sig (s + (i : ZMod d))) c`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hi3 : 3 ≤ i`. Take `⟨k, rfl⟩` from `hi`. Use linear arithmetic over natural numbers and integers. Establish `hpow : (l : ℝ) ^ 3 ≤ (l : ℝ) ^ i` using `pow_le_pow_right₀ (by linarith) hi3`. Establish `hlc : (l : ℝ) ^ 3 * c = 1`.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Clear the denominators using the available nonvanishing facts. Establish `hp3 : (0 : ℝ) ≤ (l : ℝ) ^ 3` using `by positivity`. Establish `h1 : (l : ℝ) ^ 3 * c ≤ (l : ℝ) ^ i * max (sig s) c` using `mul_le_mul hpow (le_max_right _ _) hc0.le (le_trans hp3 hpow)`. Establish `h2 : 0 ≤ max (sig (s + (i : ZMod d))) c` using `le_trans hc0.le (le_max_right _ _)`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpt : ∀ s, κ * w s * (gam l - sig s) - κ * w s * c - 4 * w s / l - 4 * (if 2 / (l : ℝ) ≤ sig s then w s else 0) ≤ D s * (gam l - max (sig s) c)`. Introduce `s`. Take `⟨hD1, hD2⟩` from `hD s`. Establish `hws` using `hw s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmx : max (sig s) c - sig s ≤ c`. Break down `le_total (sig s) c with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Combine the linear relations using `[hsig0 s]`. Rewrite using `[max_eq_left h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkw : κ * w s * (max (sig s) c - sig s) ≤ κ * w s * c` using `mul_le_mul_of_nonneg_left hmx (mul_nonneg hκ.le hws)`. Establish `hsplit : D s * (gam l - max (sig s) c) = κ * w s * (gam l - sig s) - κ * w s * (max (sig s) c - sig s) + (D s - κ * w s) * (gam l - max (sig s) c)` using `by ring`. Establish `he0 : 0 ≤ D s - κ * w s` using `by linarith`. Establish `he4 : D s - κ * w s ≤ 4 * w s` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4l : 0 ≤ 4 * w s / l` using `by positivity`. Use `split_ifs with hh`. Establish `hmx1 : max (sig s) c ≤ 1` using `max_le (hsig1 s) (by linarith)`. Establish `ht : -1 ≤ gam l - max (sig s) c` using `by linarith`. Establish `hm` using `mul_le_mul_of_nonneg_left ht he0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: -(4 * w s) ≤ (D s - κ * w s) * (gam l - max (sig s) c)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at hh`. Establish `hlt : max (sig s) c < 2 / (l : ℝ)` using `max_lt hh hc2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hlow : -(1 / (l : ℝ)) ≤ gam l - max (sig s) c`. Establish `: 2 / (l : ℝ) = 1 / l + 1 / l` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm` using `mul_le_mul_of_nonneg_left hlow he0`. Establish `hil : (0 : ℝ) ≤ 1 / l` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm2` using `mul_le_mul_of_nonneg_right he4 hil`. Establish `: -(4 * w s / l) ≤ (D s - κ * w s) * (gam l - max (sig s) c)`. Establish `e : 4 * w s / l = 4 * w s * (1 / l)` using `by ring`. Rewrite using `[e]`. Establish `e2 : (D s - κ * w s) * -(1 / (l : ℝ)) = -((D s - κ * w s) * (1 / l))` using `by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum` using `Finset.sum_le_sum fun s (_ : s ∈ (Finset.univ : Finset (ZMod d))) => hpt s`. Simplify using `only [Finset.sum_sub_distrib] at hsum`. Rewrite `hsum` using `[← Finset.mul_sum, ← Finset.sum_filter]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFs : Fnum l d (fun s => κ * w s) = ∑ s, κ * w s * (gam l - sig s)` using `hF`. Establish `hH : ∑ s ∈ Finset.univ.filter (fun s : ZMod d => 2 / (l : ℝ) ≤ sig s), w s ≤ (∑ s, w s) / l`. Establish `e1 : ∑ s ∈ Finset.univ.filter (fun s : ZMod d => 2 / (l : ℝ) ≤ sig s), κ * w s = κ * ∑ s ∈ Finset.univ.filter (fun s : ZMod d => 2 / (l : ℝ) ≤ sig s), w s` using `(Finset.mul_sum _ _ _).symm`. Establish `e2 : (∑ s, κ * w s) / l = κ * ((∑ s, w s) / l)`. Rewrite using `[← Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h` using `hheavy`. Rewrite `h` using `[e1, e2]`. Conclude with `le_of_mul_le_mul_left h hκ`. Establish `e3 : ∑ s, κ * w s * c = κ * (∑ s, w s) / (l : ℝ) ^ 3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ← Finset.sum_mul, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Establish `e4 : ∑ s, 4 * w s / (l : ℝ) = 4 * (∑ s, w s) / l`. Rewrite using `[Finset.mul_sum, Finset.sum_div]`. Rewrite `hsum` using `[e3, e4]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hW : 0 ≤ (∑ s, w s) / l`. Use `Finset.sum_nonneg fun s (_ : s ∈ (Finset.univ : Finset (ZMod d))) => hw s` as an intermediate fact. Check the signs of the components of the expression. Establish `e5 : 8 * (∑ s, w s) / l = 4 * (∑ s, w s) / l + 4 * ((∑ s, w s) / l)` using `by ring`. Rewrite using `[hFs, e5]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_nonneg_dual_fnum_sub_le_of_demand_near_mul :
     ∀ (l d : ℕ) [NeZero d], 5 ≤ l → 2 ≤ d → ∀ (κ : ℝ) (w D : ZMod d → ℝ), 0 < κ → (∀ s, 0 ≤ w s) →

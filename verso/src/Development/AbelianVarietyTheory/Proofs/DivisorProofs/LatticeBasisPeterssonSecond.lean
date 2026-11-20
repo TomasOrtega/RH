@@ -39,9 +39,9 @@ section Weights
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Introduce `a i hai`. Establish `h0 : ∀ k, 0 ≤ gap (la τ) k` using `fun k => by`. Distinguish the cases in `hk : k + 1 < Dw.p + Dw.q`. Conclude with `hg.trans (h τ k hk)`. Rewrite using `[gap, dif_neg hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `ofGaps_gap (la τ) a i`. Use `Finset.sum_le_sum_of_subset_of_nonneg (f := gap (la τ)) (Finset.range_mono (show (a : ℕ) ≤ i from hai)) fun k _ _ => h0 k` as an intermediate fact. Rewrite `e` using `[ofGaps]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem antitone_of_gapGe {g : ℤ} (hg : 0 ≤ g) {la : AllWt.Weight Dw} (h : GapGe g la) (τ : Psi H) :
     Antitone (la τ) := by
@@ -57,9 +57,9 @@ theorem antitone_of_gapGe {g : ℤ} (hg : 0 ≤ g) {la : AllWt.Weight Dw} (h : G
   linarith
 
 /- English proof (translation)
-Establish `h₁ : GapGe (FlagTan.dimFlag Dw + 3) P.u₁` using `h.gaps.mono (by`. Use `push_cast`. Conclude with `le_mul_of_one_le_right (by positivity) (by omega))`. Introduce `τ k hk`. Establish `a` using `h₁ τ k hk`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `(P.gap_rem τ k).1`. Apply the tactic sequence `have c : -2 ≤ gap (FlagTan.kap Dw τ) k := by rw [gap_kap τ hk]; split_ifs <;> omega`. Establish `d : 0 ≤ gap (P.u₁ τ) k` using `le_trans (by positivity) a`. Simplify using `only [WtPar.wt, WtPar.uc, WtPar.u₂, Pi.add_apply, Pi.smul_apply, gap_add, gap_nsmul]`. Use polynomial arithmetic with `[mul_nonneg (Int.natCast_nonneg j) d, mul_nonneg (Int.natCast_nonneg (FlagTan.dimFlag Dw)) d]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem gapGe_wt {P : WtPar Dw} (h : WtBig P) (j : ℕ) : GapGe (FlagTan.dimFlag Dw + 1) (P.wt j) := by
   have h₁ : GapGe (FlagTan.dimFlag Dw + 3) P.u₁ := h.gaps.mono (by
@@ -76,7 +76,7 @@ theorem gapGe_wt {P : WtPar Dw} (h : WtBig P) (j : ℕ) : GapGe (FlagTan.dimFlag
 noncomputable abbrev sz (la : AllWt.Weight Dw) : ℝ := ∑ τ, ∑ k, |(la τ k : ℝ)|
 
 /- English proof (translation)
-Establish `e : sz la = ((∑ τ, ∑ k, |la τ k| : ℤ) : ℝ)` using `by push_cast; rfl`. Rewrite `h`, the goal using `[e]`. Conclude with `(show (0 : ℤ) < _ by exact_mod_cast h)` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_sz {la : AllWt.Weight Dw} (h : 0 < sz la) : 1 ≤ sz la := by
   have e : sz la = ((∑ τ, ∑ k, |la τ k| : ℤ) : ℝ) := by push_cast; rfl
@@ -86,7 +86,7 @@ theorem one_le_sz {la : AllWt.Weight Dw} (h : 0 < sz la) : 1 ≤ sz la := by
 end Weights
 
 /- English proof (translation)
-Break down `h0.eq_or_lt with rfl | h0` into its components or cases. Simplify using `using hy`. Conclude with `(Real.log_le_iff_le_exp h0).2 h`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem log_le_of_le_exp {s y : ℝ} (h0 : 0 ≤ s) (hy : 0 ≤ y) (h : s ≤ Real.exp y) : Real.log s ≤ y := by
   rcases h0.eq_or_lt with rfl | h0
@@ -94,9 +94,9 @@ theorem log_le_of_le_exp {s y : ℝ} (h0 : 0 ≤ s) (hy : 0 ≤ y) (h : s ≤ Re
   · exact (Real.log_le_iff_le_exp h0).2 h
 
 /- English proof (translation)
-Establish `hp : 0 < 2 * ((a * L) ^ 2 * κ)` using `by positivity`. Use `log_le_of_le_exp h0 (by linarith) (h.trans ((Real.log_le_iff_le_exp hp).1 ?_))` and prove the remaining obligations. Rewrite using `[Real.log_mul (by norm_num) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_mul ha.ne' (by positivity)]`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num)` as an intermediate fact. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < L by linarith)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_size_le {a L κ s : ℝ} (ha : 0 < a) (hL : 1 ≤ L) (h₁ : Real.log a ≤ L) (hκ : 1 ≤ κ)
     (h₂ : Real.log κ ≤ 2 * L) (h0 : 0 ≤ s) (h : s ≤ 2 * ((a * L) ^ 2 * κ)) : Real.log s ≤ 10 * L := by
@@ -110,7 +110,7 @@ theorem log_size_le {a L κ s : ℝ} (ha : 0 < a) (hL : 1 ≤ L) (h₁ : Real.lo
   linarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => (h.gen _).2 (Submodule.subset_span ⟨i, rfl⟩), top_le_iff.1 (hM.ge.trans (Submodule.span_le.2 fun x hx => Submodule.span_subset_span ℤ F _ ((h.gen x).1 hx)))⟩`.
+Supply the required witnesses or components.
 -/
 theorem span_of_shortGen {F V κ : Type} [Field F] [NumberField F] [AddCommGroup V] [Module F V] [Module (𝓞 F) V]
     {Nm : κ → V → ℝ} {M : Submodule (𝓞 F) V} {n : ℕ} {w : Fin n → V} {Λ : ℝ} (h : CompHt.IsShortGen Nm M w Λ)
@@ -119,7 +119,7 @@ theorem span_of_shortGen {F V κ : Type} [Field F] [NumberField F] [AddCommGroup
     Submodule.span_subset_span ℤ F _ ((h.gen x).1 hx)))⟩
 
 /- English proof (translation)
-Take `rfl : i1 = i2` from `Subsingleton.elim _ _`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem sum_univ_inst {α : Type} {i1 i2 : Fintype α} (f : α → ℝ) :
     @Finset.sum α ℝ _ (@Finset.univ α i1) f = @Finset.sum α ℝ _ (@Finset.univ α i2) f := by
@@ -127,9 +127,9 @@ theorem sum_univ_inst {α : Type} {i1 i2 : Fintype α} (f : α → ℝ) :
   rfl
 
 /- English proof (translation)
-Establish `h5 : 0 ≤ Z ^ 5` using `by positivity`. Establish `e : C * (Z ^ 3 * (Z ^ 2 * κ) + Z ^ 5) = C * Z ^ 5 * (κ + 1)` using `by ring`. Establish `a1 : C * Z ^ 5 * (κ + 1) ≤ C * Z ^ 5 * (2 * κ)` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Establish `a2 : 2 * C * Z ^ 5 ≤ Z * Z ^ 5` using `mul_le_mul_of_nonneg_right (by linarith) h5`. Establish `a3 : Z * Z ^ 5 ≤ Z ^ 12`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_succ']`. Conclude with `pow_le_pow_right₀ hZ (by norm_num)`. Establish `a4 : 2 * C * Z ^ 5 ≤ PP` using `a2.trans (a3.trans hP)`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem bound_le {C Z PP κ : ℝ} (hC : 0 ≤ C) (hZ : 1 ≤ Z) (hCZ : 6 * C ≤ Z) (hP : Z ^ 12 ≤ PP) (hκ : 1 ≤ κ) :
     C * (Z ^ 3 * (Z ^ 2 * κ) + Z ^ 5) ≤ PP * κ := by
@@ -147,35 +147,31 @@ theorem bound_le {C Z PP κ : ℝ} (hC : 0 ≤ C) (hZ : 1 ≤ Z) (hCZ : 6 * C �
     _ ≤ PP * κ := mul_le_mul_of_nonneg_right a4 (by linarith)
 
 /- English proof (translation)
-Introduce `h2 _hDG hSz hF`. Take `⟨C₂, c₂, H₂⟩` from `GlobalTheory.T.flat_constant_abs_le_nine_explicit h2`. Establish `H₄` using `GlobalTheory.T.good_weight_antitone_gap h2`. Use `Closed.imp (Closed.and (Closed.and wtBig_run (GlobalTheory.T.weight_parameter_strict_antitone hSz)) (Closed.and (GlobalTheory.T.size_bounds_for_family hSz) (Closed.and hSz hF))) ?_` and prove the remaining obligations. Introduce `eps Fm CH heps h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨⟨⟨_, -, a₁⟩, ⟨_, -, a₂⟩⟩, ⟨_, -, a₃⟩, ⟨_, -, a₄⟩, ⟨_, -, a₅⟩⟩` from `h`. Establish `e₆ : EvTied Fm fun x _ ι _ => 6 * C₂ ≤ (Fm.L x ι).sc.L`. Use `⟨(6 * C₂) ^ eps⁻¹, fun x hx hle ι p _ => ?_⟩` and prove the remaining obligations. Establish `hx1` using `Fm.L_x x ι hx`. Establish `he` using `Fm.L_eps x ι`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : ℝ) ≤ 6 * C₂` using `by positivity`. Use `show _ ≤ (Fm.L x ι).sc.x ^ (Fm.L x ι).sc.eps`. Rewrite using `[hx1, he]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨x0, a⟩` from `((((a₁.and a₂).and a₃).and a₄).and a₅).and e₆`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨b₁, b₂⟩, b₃⟩, b₄⟩, b₅⟩, hCL⟩` from `a x hx hle ι p hp`. Use `clear a a₁ a₂ a₃ a₄ a₅ e₆`. Establish `hW` using `b₁ i hi`. Take `⟨hp1, hq1, hE, -⟩` from `b₂ i hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hLaw, hIn, hL, hM, hFs, hfr, -, -, hf8, hr, hc₁, hκ2, hPP, -, -, -, -, hwt⟩` from `b₃ i hi Y hY`. Establish `s1 : 1 ≤ (Fm.L x ι).sc.b` using `(b₄ i).1`. Establish `s2 : (Fm.L x ι).sc.b ≤ (Fm.parT x hx ι).PP * kap p i` using `(b₄ i).2.2.2.2.2.1`. Establish `hFl` using `b₅ i hi Y hY`. Establish `hdim` using `(GlobalTheory.T.anchoredWeight_indefiniteLift_gaps p (Fm.params x hx ι) i hi).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `clear b₁ b₂ b₃ b₄ b₅`. Unfold `zBase at hPP hwt`. Establish `hY' : Y.Good _ (391 * (((Fm.D x ι).R.f : ℝ) * (Fm.D x ι).R.r * (Fm.L x ι).sc.L) ^ 2)` using `hY.1`. Use `replace H₂ := fun la a b c Z => H₂ _ p.T hLaw _ hp1 hq1 hE hIn Y _ _ hY' _ hL hM hFs hfr le_rfl _ hFl (by rwa [abs_neg]) la a b c Z`. Use `replace H₄ := H₄ _ p.T hLaw _ hp1 hq1 hE hIn Y _ _ hY'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `hfr1 : (1 : ℝ) ≤ ((Fm.D x ι).R.f : ℝ) * (Fm.D x ι).R.r`. Conclude with `Nat.mul_pos (by omega) (by omega)` after adjusting the coercions. Establish `hgap : ((8 * (Fm.D x ι).R.f * (Fm.D x ι).R.r + 10 : ℕ) : ℤ) ≤ FlagTan.dimFlag (dat p i) + 1`. Establish `: 8 * (Fm.D x ι).R.f * (Fm.D x ι).R.r + 10 ≤ FlagTan.dimFlag (dat p i) + 1`. Rewrite using `[hdim]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Generalize the expression as in `(Fm.D x ι).R.f = f at hf8 ⊢`. Generalize the expression as in `(Fm.D x ι).R.r = r at hr ⊢`. Establish `: 9 * r ≤ r.choose 2`. Rewrite using `[Nat.choose_two_right]`. Conclude with `(Nat.le_div_iff_mul_le two_pos).2 (by nlinarith [Nat.mul_le_mul_left r (show 18 ≤ r - 1 by omega)])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use polynomial arithmetic with `[Nat.mul_le_mul_left f this, Nat.mul_le_mul hf8 hr]`. Conclude with `this` after adjusting the coercions. Establish `hLZ : (Fm.L x ι).sc.L ≤ (((Fm.D x ι).R.f : ℝ) * (Fm.D x ι).R.r * (Fm.L x ι).sc.L)` using `le_mul_of_one_le_left (by linarith) hfr1`. Establish `hZ : 1 ≤ (((Fm.D x ι).R.f : ℝ) * (Fm.D x ι).R.r * (Fm.L x ι).sc.L)` using `hL.trans hLZ`. Establish `hPP0 : 0 ≤ (Fm.parT x hx ι).PP` using `le_trans (by positivity) hPP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hPk : 1 ≤ (Fm.parT x hx ι).PP * kap p i` using `s1.trans s2`. Establish `hκpos : 0 < kap p i`. Assume the negation of the conclusion as `hneg`. Establish `h0 : (Fm.parT x hx ι).PP * kap p i ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos hPP0 (not_lt.1 hneg)`. Conclude with `absurd (hPk.trans h0) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ : 1 ≤ kap p i` using `one_le_sz hκpos`. Establish `hZ3 : 0 ≤ (((Fm.D x ι).R.f : ℝ) * (Fm.D x ι).R.r * (Fm.L x ι).sc.L) ^ 3` using `by positivity`. Use `⟨zero_le_one.trans hPk, fun Z j hj => ?_⟩` and prove the remaining obligations. Establish `hg` using `gapGe_wt hW j`. Establish `ha` using `antitone_of_gapGe (by positivity) hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb : ∀ τ, ((8 * (Fm.D x ι).R.f * (Fm.D x ι).R.r + 10 : ℕ) : ℤ) ≤ gap ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i (Fm.parT x hx ι).PP⟩ : WtPar (dat p i)).wt j τ) ((dat p i).p - 1)` using `fun τ => hgap.trans (hg τ ((dat p i).p - 1) (by omega))`. Establish `hs` using `hwt j hj`. Establish `h1` using `hs.trans (le_mul_of_one_le_left (by positivity) one_le_two)`. Establish `hX` using `H₂ ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i (Fm.parT x hx ι).PP⟩ : WtPar (dat p i)).wt j) ha hb (log_size_le (by positivity) hL hfr hκ hκ2 (by positivity) (le_trans (le_of_eq (sum_univ_inst _)) h1)) Z`. Take `⟨n, w, Λ, hSG, hΛ, _hn⟩` from `hX`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hY4` using `H₄ ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i (Fm.parT x hx ι).PP⟩ : WtPar (dat p i)).wt j) ha (fun τ => le_trans (by omega) (hb τ))`. Take `⟨_hGA, hGO⟩` from `hY4`. Establish `hsp` using `span_of_shortGen hSG (hGO Z).2.2`. Take `⟨hmem, hspan⟩` from `hsp`. Use `⟨n, w, hmem, hspan, fun q σ => ?_⟩` and prove the remaining obligations.
-
-Establish `hΛ' : Real.log Λ ≤ (Fm.parT x hx ι).PP * kap p i`. Use `hΛ.trans (le_trans ?_ (bound_le c₂ hZ (hCL.trans hLZ) hPP hκ))` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (add_le_add (mul_le_mul_of_nonneg_left ?_ hZ3) le_rfl) c₂` and prove the remaining obligations. Conclude with `le_trans (le_of_eq (sum_univ_inst _)) hs`. Establish `hΛ0 : 0 < Λ` using `lt_of_lt_of_le one_pos hSG.one_le`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem short_wt : Hypotheses2 → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => 0 ≤ PP * kap p i ∧ ∀ Z, ∀ j ≤ lenT p i PP, ∃ (m : ℕ) (v : Fin m → Cusp Z Y.U ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt j)), (∀ q, v q ∈ latOn Y.U Z _) ∧ Submodule.span Y.d.c₂.F (Set.range v) = ⊤ ∧ ∀ q σ, petOn Y.U (xiR (Fm.D x ι)) (fun _ => (Fm.D x ι).sp.W ((i : ℕ) + 1)) Y.dict Z (wtOf (dat p i) ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt j) 0) σ (v q).1 ≤ Real.exp (PP * kap p i) := by
   intro h2 _hDG hSz hF

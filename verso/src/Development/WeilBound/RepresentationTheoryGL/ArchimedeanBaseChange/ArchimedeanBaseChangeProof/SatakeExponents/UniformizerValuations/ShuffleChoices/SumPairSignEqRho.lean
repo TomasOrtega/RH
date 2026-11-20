@@ -10,11 +10,11 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 namespace PositivityTheory.Rg.BcB.F.Choice.IndefiniteRowSideFullHecke
 
 /- English proof (translation)
-Introduce `n x _ hx`. Establish `hx' : ∀ i j : Fin n, i < j → x j + 2 ≤ x i` using `hx`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hx' ⟨i.val, by omega⟩ ⟨j.val, by omega⟩ (by show i.val < j.val; omega)`. Establish `h2` using `hx' ⟨n - 1 - j.val, by omega⟩ ⟨n - 1 - i.val, by omega⟩ (by show n - 1 - j.val < n - 1 - i.val; omega)`. Simplify using `only [lOf]`. Use linear arithmetic over natural numbers and integers. Establish `hi` using `i.isLt`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1` using `hx' ⟨i.val, by omega⟩ ⟨n - 1 - i.val, by omega⟩ (by show i.val < n - 1 - i.val; omega)`. Simplify using `only [lOf]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem coneTwo' : ConeTwo := by
   intro n x _ hx
@@ -32,22 +32,22 @@ theorem coneTwo' : ConeTwo := by
     omega
 
 /- English proof (translation)
-Introduce `E _ _ _ w n a s h e he k`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem shufStd' : ShufStd := by
   intro E _ _ _ w n a s h e he k
   rfl
 
 /- English proof (translation)
-Introduce `n a s h`. Establish `hp` using `h.1.2.2`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Finset.disjoint_left]`. Introduce `k h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [symIdx, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_compl] at h1 h2`. Use `k.isLt` as an intermediate fact. Apply the tactic sequence `rcases h1 with ⟨p, hp1⟩ | ⟨p, hp1⟩ | ⟨m1, m2, m3⟩ <;> rcases h2 with ⟨q, hq⟩ | ⟨q, hq⟩ | ⟨q1, q2, q3⟩ <;> first | omega | exact hq hp1`. Use extensionality with `k`. Simplify using `only [symIdx, Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_compl, iff_true]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `k.isLt` as an intermediate fact. Distinguish the cases in `h1 : k.val < n / 2`. Distinguish the cases in `h2 : (⟨k.val, h1⟩ : Fin (n / 2)) ∈ s`. Conclude with `Or.inl (Or.inl ⟨h1, h2⟩)`. Conclude with `Or.inr (Or.inl ⟨h1, h2⟩)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Distinguish the cases in `h3 : n - 1 - k.val < n / 2`. Distinguish the cases in `h2 : (⟨n - 1 - k.val, h3⟩ : Fin (n / 2)) ∈ s`. Conclude with `Or.inl (Or.inr (Or.inl ⟨h3, h2⟩))`. Conclude with `Or.inr (Or.inr (Or.inl ⟨h3, h2⟩))`. Establish `hk : k.val = n / 2` using `by omega`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Establish `hn : n % 2 = 1` using `by omega`. Distinguish the cases in `ha : a % 2 = 1`. Conclude with `Or.inl (Or.inr (Or.inr ⟨ha, hn, hk⟩))`. Conclude with `Or.inr (Or.inr (Or.inr ⟨by omega, hn, hk⟩))`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 -/
 theorem shufEx' : ShufEx := by
   intro n a s h
@@ -79,13 +79,13 @@ theorem shufEx' : ShufEx := by
 def sgn2 {N : ℕ} (i j : Fin N) : ℤ := (if i < j then 1 else 0) - (if j < i then 1 else 0)
 
 /- English proof (translation)
-Unfold `sgn2`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pair_sign_antisymm {N : ℕ} (i j : Fin N) : sgn2 i j = - sgn2 j i := by
   unfold sgn2; ring
 
 /- English proof (translation)
-Unfold `sgn2 rh`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_boole, Finset.sum_boole, Finset.filter_lt_eq_Ioi, Finset.filter_gt_eq_Iio, Fin.card_Ioi, Fin.card_Iio]`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_pair_sign_eq_rho {N : ℕ} (i : Fin N) : ∑ j, sgn2 i j = rh N i := by
   unfold sgn2 rh
@@ -95,7 +95,7 @@ theorem sum_pair_sign_eq_rho {N : ℕ} (i : Fin N) : ∑ j, sgn2 i j = rh N i :=
   omega
 
 /- English proof (translation)
-Unfold `sgn2`. Simplify using `only [hf.lt_iff_lt]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pair_sign_strictMono {N M : ℕ} {f : Fin N → Fin M} (hf : StrictMono f) (i j : Fin N) : sgn2 (f i) (f j) = sgn2 i j := by
   unfold sgn2; simp only [hf.lt_iff_lt]
@@ -105,11 +105,11 @@ def hi (n : ℕ) (i : Fin (n / 2)) : Fin n := ⟨n - 1 - i.val, by have := i.isL
 def md (n : ℕ) (t : Fin (n % 2)) : Fin n := ⟨n / 2 + t.val, by have := t.isLt; omega⟩
 
 /- English proof (translation)
-Set `φ : Fin (n / 2) ⊕ (Fin (n / 2) ⊕ Fin (n % 2)) → Fin n` to `Sum.elim (lo n) (Sum.elim (hi n) (md n))`. Establish `hφ : Function.Bijective φ`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨?_, by simp only [Fintype.card_sum, Fintype.card_fin]; omega⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (i | i | t) (j | j | u) h <;>`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [φ, Sum.elim_inl, Sum.elim_inr, lo, hi, md, Fin.ext_iff, Fin.val_mk, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq] at h ⊢ <;>`. Use `first`. Consider the case `omega`. Consider the case `(have := i.isLt; have := j.isLt; omega)`. Consider the case `(have := i.isLt; have := u.isLt; omega)`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(have := t.isLt; have := j.isLt; omega)`. Consider the case `(have := t.isLt; have := u.isLt; omega)`. Rewrite using `[← Fintype.sum_bijective φ hφ (fun p => f (φ p)) f (fun _ => rfl), Fintype.sum_sum_type, Fintype.sum_sum_type, Finset.sum_add_distrib, add_assoc]`. Both sides reduce to the same expression.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_split {n : ℕ} (f : Fin n → ℤ) :
     ∑ k, f k = ∑ i, (f (lo n i) + f (hi n i)) + ∑ t, f (md n t) := by
@@ -131,9 +131,9 @@ theorem sum_split {n : ℕ} (f : Fin n → ℤ) :
   rfl
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Simplify using `only [symIdx, lo, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨_, h⟩ | ⟨h1, _⟩ | ⟨_, _, h⟩)`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `Or.inl ⟨i.isLt, h⟩`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem mem_lo {n : ℕ} (mid : Prop) [Decidable mid] (s : Finset (Fin (n / 2))) (i : Fin (n / 2)) :
     lo n i ∈ symIdx n mid s ↔ i ∈ s := by
@@ -147,11 +147,11 @@ theorem mem_lo {n : ℕ} (mid : Prop) [Decidable mid] (s : Finset (Fin (n / 2)))
   · intro h; exact Or.inl ⟨i.isLt, h⟩
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Simplify using `only [symIdx, hi, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨h1, _⟩ | ⟨h1, h⟩ | ⟨_, _, h⟩)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 
-Establish `e : (⟨n - 1 - (n - 1 - i.val), h1⟩ : Fin (n / 2)) = i` using `Fin.ext (by show n - 1 - (n - 1 - i.val) = i.val; omega)`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Use linear arithmetic over natural numbers and integers. Introduce `h`. Use `Or.inr (Or.inl ⟨by omega, ?_⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Conclude with `Fin.ext (by show n - 1 - (n - 1 - i.val) = i.val; omega)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem mem_hi {n : ℕ} (mid : Prop) [Decidable mid] (s : Finset (Fin (n / 2))) (i : Fin (n / 2)) :
     hi n i ∈ symIdx n mid s ↔ i ∈ s := by
@@ -169,9 +169,9 @@ theorem mem_hi {n : ℕ} (mid : Prop) [Decidable mid] (s : Finset (Fin (n / 2)))
     exact Fin.ext (by show n - 1 - (n - 1 - i.val) = i.val; omega)
 
 /- English proof (translation)
-Use `t.isLt` as an intermediate fact. Simplify using `only [symIdx, md, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨h1, _⟩ | ⟨h1, _⟩ | ⟨h, _, _⟩)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `h`. Introduce `h; exact Or.inr (Or.inr ⟨h, by omega, by omega⟩)`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_md {n : ℕ} (mid : Prop) [Decidable mid] (s : Finset (Fin (n / 2))) (t : Fin (n % 2)) :
     md n t ∈ symIdx n mid s ↔ mid := by
@@ -185,7 +185,7 @@ theorem mem_md {n : ℕ} (mid : Prop) [Decidable mid] (s : Finset (Fin (n / 2)))
   · intro h; exact Or.inr (Or.inr ⟨h, by omega, by omega⟩)
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_coe_sort S g]`. Conclude with `Fintype.sum_equiv (S.orderIsoOfFin h).toEquiv _ _ (fun i => rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_oe {n m : ℕ} (S : Finset (Fin n)) (h : S.card = m) (g : Fin n → ℤ) :
     ∑ i, g (S.orderEmbOfFin h i) = ∑ k ∈ S, g k := by
@@ -193,13 +193,13 @@ theorem sum_oe {n m : ℕ} (S : Finset (Fin n)) (h : S.card = m) (g : Fin n → 
   exact Fintype.sum_equiv (S.orderIsoOfFin h).toEquiv _ _ (fun i => rfl)
 
 /- English proof (translation)
-Establish `hn : ∀ k : Fin n, rh n k = ∑ i, sgn2 k (e (Sum.inl i)) + ∑ j, sgn2 k (e (Sum.inr j))`. Introduce `k`. Rewrite using `[← sum_pair_sign_eq_rho k, ← Fintype.sum_sum_type (f := fun p => sgn2 k (e p))]`. Conclude with `(Fintype.sum_equiv e (fun p => sgn2 k (e p)) (fun j => sgn2 k j) (fun _ => rfl)).symm`. Establish `ha : ∀ i : Fin a, rh a i = ∑ i', sgn2 (e (Sum.inl i)) (e (Sum.inl i'))` using `fun i => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sum_pair_sign_eq_rho i]`. Conclude with `Finset.sum_congr rfl (fun i' _ => (pair_sign_strictMono hL i i').symm)`. Establish `hb : ∀ j : Fin b, rh b j = ∑ j', sgn2 (e (Sum.inr j)) (e (Sum.inr j'))` using `fun j => by`. Rewrite using `[← sum_pair_sign_eq_rho j]`. Conclude with `Finset.sum_congr rfl (fun j' _ => (pair_sign_strictMono hR j j').symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Fintype.sum_equiv e (fun p => (rh n (e p) - Sum.elim (fun i : Fin a => rh a i) (fun j : Fin b => rh b j) (e.symm (e p))) * x (e p)) (fun k : Fin n => (rh n k - Sum.elim (fun i : Fin a => rh a i) (fun j : Fin b => rh b j) (e.symm k)) * x k) (fun _ => rfl)]`. Simplify using `only [Equiv.symm_apply_apply]`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, hn, ha, hb, add_sub_cancel_left, add_sub_cancel_right, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (Fin b))), ← Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pair_sign_antisymm (e (Sum.inr j))]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem blocks {n a b : ℕ} (e : Fin a ⊕ Fin b ≃ Fin n) (hL : StrictMono fun i => e (Sum.inl i))
     (hR : StrictMono fun j => e (Sum.inr j)) (x : Fin n → ℤ) :
@@ -226,62 +226,62 @@ theorem blocks {n a b : ℕ} (e : Fin a ⊕ Fin b ≃ Fin n) (hL : StrictMono fu
   rw [pair_sign_antisymm (e (Sum.inr j))]; ring
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_ind {α : Type} [Fintype α] [DecidableEq α] (S : Finset α) (g : α → ℤ) :
     ∑ k ∈ S, g k = ∑ k, if k ∈ S then g k else 0 := by
   rw [Finset.sum_ite_mem, Finset.univ_inter]
 
 /- English proof (translation)
-Simplify using `only [Fin.lt_def, lo]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lo_lt_lo {n : ℕ} (i j : Fin (n / 2)) : lo n i < lo n j ↔ i < j := by
   simp only [Fin.lt_def, lo]
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Simplify using `only [Fin.lt_def, hi]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hi_lt_hi {n : ℕ} (i j : Fin (n / 2)) : hi n i < hi n j ↔ j < i := by
   have := i.isLt; have := j.isLt
   simp only [Fin.lt_def, hi]; omega
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Simplify using `only [Fin.lt_def, lo, hi]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lo_lt_hi {n : ℕ} (i j : Fin (n / 2)) : lo n i < hi n j := by
   have := i.isLt; have := j.isLt
   simp only [Fin.lt_def, lo, hi]; omega
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Simplify using `only [Fin.lt_def, lo, hi]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem not_hi_lt_lo {n : ℕ} (i j : Fin (n / 2)) : ¬ hi n i < lo n j := by
   have := i.isLt; have := j.isLt
   simp only [Fin.lt_def, lo, hi]; omega
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Use `t.isLt` as an intermediate fact. Simplify using `only [Fin.lt_def, lo, md]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lo_lt_md {n : ℕ} (i : Fin (n / 2)) (t : Fin (n % 2)) : lo n i < md n t := by
   have := i.isLt; have := t.isLt
   simp only [Fin.lt_def, lo, md]; omega
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Use `t.isLt` as an intermediate fact. Simplify using `only [Fin.lt_def, lo, md]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem not_md_lt_lo {n : ℕ} (i : Fin (n / 2)) (t : Fin (n % 2)) : ¬ md n t < lo n i := by
   have := i.isLt; have := t.isLt
   simp only [Fin.lt_def, lo, md]; omega
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Use `t.isLt` as an intermediate fact. Simplify using `only [Fin.lt_def, hi, md]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem md_lt_hi {n : ℕ} (i : Fin (n / 2)) (t : Fin (n % 2)) : md n t < hi n i := by
   have := i.isLt; have := t.isLt
   simp only [Fin.lt_def, hi, md]; omega
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Use `t.isLt` as an intermediate fact. Simplify using `only [Fin.lt_def, hi, md]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem not_hi_lt_md {n : ℕ} (i : Fin (n / 2)) (t : Fin (n % 2)) : ¬ hi n i < md n t := by
   have := i.isLt; have := t.isLt
@@ -293,9 +293,9 @@ Both sides reduce to the same expression.
 theorem lOf_eq {n : ℕ} (x : Fin n → ℤ) (i : Fin (n / 2)) : lOf x i = x (lo n i) - x (hi n i) := rfl
 
 /- English proof (translation)
-Simplify using `only [sgn2, lo_lt_lo, hi_lt_hi, lo_lt_hi, not_hi_lt_lo, lOf_eq, ↓reduceIte]`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Establish `h1` using `hx _ _ ((lo_lt_lo i j).mpr h)`. Establish `h2` using `hx _ _ ((hi_lt_hi j i).mpr h)`. Simplify using `only [h, not_lt.mpr h.le, ↓reduceIte]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[max_eq_left (by linarith)]; ring`. Establish `h1` using `hx _ _ ((lo_lt_lo j i).mpr h)`. Establish `h2` using `hx _ _ ((hi_lt_hi i j).mpr h)`. Simplify using `only [h, not_lt.mpr h.le, ↓reduceIte]`. Rewrite using `[max_eq_right (by linarith)]; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt4 {n : ℕ} (x : Fin n → ℤ) (hx : ∀ i j : Fin n, i < j → x j + 2 ≤ x i) (i j : Fin (n / 2)) (hij : i ≠ j) :
     (x (lo n i) - x (lo n j)) * sgn2 (lo n i) (lo n j) + (x (lo n i) - x (hi n j)) * sgn2 (lo n i) (hi n j) +
@@ -313,29 +313,29 @@ theorem pt4 {n : ℕ} (x : Fin n → ℤ) (hx : ∀ i j : Fin n, i < j → x j +
     rw [max_eq_right (by linarith)]; ring
 
 /- English proof (translation)
-Use `set T : Fin n → Fin n → ℤ := fun k k' => if k ∈ symIdx n (a % 2 = 1) s then (if k' ∈ symIdx n ((n - a) % 2 = 1) sᶜ then (x k - x k') * sgn2 k k' else 0) else 0 with hT`. Establish `s1 : ∑ k ∈ symIdx n (a % 2 = 1) s, ∑ k' ∈ symIdx n ((n - a) % 2 = 1) sᶜ, (x k - x k') * sgn2 k k' = ∑ k, ∑ k', T k k'`. Rewrite using `[sum_ind (symIdx n (a % 2 = 1) s)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[sum_ind (symIdx n ((n - a) % 2 = 1) sᶜ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hk : k ∈ symIdx n (a % 2 = 1) s`. Simplify using `only [hT, hk, ↓reduceIte]`. Simplify using `only [hT, hk, ↓reduceIte, Finset.sum_const_zero]`. Establish `s2 : ∑ k, ∑ k', T k k' = ∑ i, ∑ j, (T (lo n i) (lo n j) + T (lo n i) (hi n j) + T (hi n i) (lo n j) + T (hi n i) (hi n j)) + ∑ i, ∑ u, (T (lo n i) (md n u) + T (hi n i) (md n u) + T (md n u) (lo n i) + T (md n u) (hi n i)) + ∑ t, ∑ u, T (md n t) (md n u)`. Simplify using `only [sum_split (n := n)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_add_distrib]`. Establish `c1 : ∑ t, ∑ j, T (md n t) (lo n j) = ∑ j, ∑ t, T (md n t) (lo n j)` using `Finset.sum_comm`. Establish `c2 : ∑ t, ∑ j, T (md n t) (hi n j) = ∑ j, ∑ t, T (md n t) (hi n j)` using `Finset.sum_comm`. Rewrite using `[c1, c2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `s3 : ∑ i, ∑ j, (T (lo n i) (lo n j) + T (lo n i) (hi n j) + T (hi n i) (lo n j) + T (hi n i) (hi n j)) = 2 * ∑ i ∈ s, ∑ j ∈ sᶜ, max (lOf x i) (lOf x j)`. Rewrite using `[Finset.mul_sum, sum_ind s]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `his : i ∈ s`. Rewrite using `[if_pos his, Finset.mul_sum, sum_ind sᶜ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hjs : j ∈ sᶜ`. Establish `hij : i ≠ j` using `by rintro rfl; exact (Finset.mem_compl.mp hjs) his`. Simplify using `only [hT, mem_lo, mem_hi, his, hjs, ↓reduceIte]`. Conclude with `pt4 x hx i j hij`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hT, mem_lo, mem_hi, his, hjs, ↓reduceIte, add_zero]`. Rewrite using `[if_neg his]`. Simplify using `only [hT, mem_lo, mem_hi, his, ↓reduceIte, add_zero, Finset.sum_const_zero]`. Establish `q : ∀ i u, T (lo n i) (md n u) + T (hi n i) (md n u) + T (md n u) (lo n i) + T (md n u) (hi n i) = if a % 2 = 1 then (if i ∈ sᶜ then lOf x i else 0) else (if i ∈ s then lOf x i else 0)`. Introduce `i u`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hu` using `u.isLt`. Simplify using `only [hT, mem_lo, mem_hi, mem_md, sgn2, lo_lt_md, not_md_lt_lo, md_lt_hi, not_hi_lt_md, lOf_eq, ↓reduceIte]`. Distinguish the cases in `ha : a % 2 = 1`. Establish `hb : ¬ (n - a) % 2 = 1` using `by omega`. Apply the tactic sequence `by_cases his : i ∈ sᶜ <;> simp [ha, hb, his] <;> ring`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hb : (n - a) % 2 = 1` using `by omega`. Apply the tactic sequence `by_cases his : i ∈ s <;> simp [ha, hb, his] <;> ring`. Establish `s4 : ∑ i, ∑ u, (T (lo n i) (md n u) + T (hi n i) (md n u) + T (md n u) (lo n i) + T (md n u) (hi n i)) = if n % 2 = 1 then (if a % 2 = 1 then ∑ j ∈ sᶜ, lOf x j else ∑ j ∈ s, lOf x j) else 0`. Simplify using `only [q, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Break down `Nat.mod_two_eq_zero_or_one n with h | h` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Simplify using `only [h, one_smul, ↓reduceIte]`. Distinguish the cases in `ha : a % 2 = 1`. Simplify using `only [ha, ↓reduceIte]`. Rewrite using `[sum_ind sᶜ]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ha, ↓reduceIte]`. Rewrite using `[sum_ind s]`. Establish `s5 : ∑ t, ∑ u, T (md n t) (md n u) = 0`. Use `Finset.sum_eq_zero fun t _ => Finset.sum_eq_zero fun u _ => ?_` and prove the remaining obligations. Establish `htu : md n t = md n u`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `t.isLt` as an intermediate fact. Use `u.isLt` as an intermediate fact. Use `ext`. Simplify using `only [md]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hT, htu, sub_self, zero_mul, ite_self]`. Rewrite using `[s1, s2, s3, s4, s5]`. Simplify using `only [vRes]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem half {n a : ℕ} (s : Finset (Fin (n / 2))) (hp : a % 2 + (n - a) % 2 = n % 2) (x : Fin n → ℤ)
     (hx : ∀ i j : Fin n, i < j → x j + 2 ≤ x i) :
@@ -404,7 +404,7 @@ theorem half {n a : ℕ} (s : Finset (Fin (n / 2))) (hp : a % 2 + (n - a) % 2 = 
   ring
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[_root_.zpow_add, _root_.zpow_mul, zpow_natCast]`. Establish `h2 : ((-1 : ℂˣ) ^ (2 : ℤ)) = 1` using `by rw [zpow_two, neg_one_mul, neg_neg]`. Rewrite using `[h2, _root_.one_zpow, mul_one]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem neg_one_pow_eq (N : ℕ) (d t : ℤ) (h : d = N + 2 * t) : ((-1 : ℂˣ) ^ N) = (-1) ^ d := by
   subst h
@@ -413,17 +413,15 @@ theorem neg_one_pow_eq (N : ℕ) (d t : ℤ) (h : d = N + 2 * t) : ((-1 : ℂˣ)
   rw [h2, _root_.one_zpow, mul_one]
 
 /- English proof (translation)
-Introduce `E _ _ _ w n a s h e he x hx`. Establish `hx' : ∀ i j : Fin n, i < j → x j + 2 ≤ x i` using `hx`. Establish `han : a ≤ n`. Establish `h1` using `h.2.1`. Establish `h2` using `Finset.card_le_univ (symIdx n (a % 2 = 1) s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Use `⟨?_, funext fun i => congrArg x (he.1 i).symm, funext fun j => congrArg x (he.2 j).symm⟩` and prove the remaining obligations. Establish `heps : ∀ k, (shufOf w n a s h e he ((-1) ^ (n - a)) ((-1) ^ a)).eps k = (-Units.mk0 (qh w) (qh_ne_zero' w)) ^ (rh n k - Sum.elim (fun i : Fin a => rh a i) (fun j : Fin (n - a) => rh (n - a) j) (e.symm k))`. Introduce `k`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show Sum.elim (fun _ => ((-1) ^ (n - a) : ℂˣ)) (fun _ => (-1) ^ a) (e.symm k) * qU w (rh n k - Sum.elim (fun i : Fin a => rh a i) (fun j : Fin (n - a) => rh (n - a) j) (e.symm k)) = _`. Rewrite using `[unit_power_eq_residue_power, ← neg_one_mul (Units.mk0 (qh w) (qh_ne_zero' w)), mul_zpow]`. Use `congr 1`. Generalize the expression as in `e.symm k = p`. Break down `p with i | j` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inl]`. Conclude with `neg_one_pow_eq (n - a) _ (((i : ℕ) : ℤ) - ((k : ℕ) : ℤ)) (by simp only [rh]; omega)`. Simplify using `only [Sum.elim_inr]`. Conclude with `neg_one_pow_eq a _ (((j : ℕ) : ℤ) - ((k : ℕ) : ℤ)) (by simp only [rh]; omega)`. Simplify using `only [heps, ← _root_.zpow_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← zpow_finsum', Units.val_zpow_eq_zpow_val, Units.val_neg, Units.val_mk0]`. Use `congr 1`. Rewrite using `[blocks e (shufOf w n a s h e he ((-1) ^ (n - a)) ((-1) ^ a)).monoL (shufOf w n a s h e he ((-1) ^ (n - a)) ((-1) ^ a)).monoR x]`. Establish `hAB : ∑ i, ∑ j, (x (e (Sum.inl i)) - x (e (Sum.inr j))) * sgn2 (e (Sum.inl i)) (e (Sum.inr j)) = ∑ k ∈ symIdx n (a % 2 = 1) s, ∑ k' ∈ symIdx n ((n - a) % 2 = 1) sᶜ, (x k - x k') * sgn2 k k'`. Simplify using `only [he.1, he.2]`.
-
-Rewrite using `[← sum_oe _ h.2.1 (fun k => ∑ k' ∈ symIdx n ((n - a) % 2 = 1) sᶜ, (x k - x k') * sgn2 k k')]`. Conclude with `Finset.sum_congr rfl fun i _ => sum_oe _ h.2.2 (fun k' => (x _ - x k') * sgn2 _ k')`. Rewrite using `[hAB, half s h.1.2.2 x hx']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vResStd' : VResStd := by
   intro E _ _ _ w n a s h e he x hx

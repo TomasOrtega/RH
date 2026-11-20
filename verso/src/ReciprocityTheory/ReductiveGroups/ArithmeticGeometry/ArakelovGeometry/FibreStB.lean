@@ -15,9 +15,9 @@ structure Gen.Good (G : Gen x e) (w : Fin (D + 1) → ℂ) : Prop where
   cc : deh w 0 G.cc ≠ 0
 
 /- English proof (translation)
-Rewrite using `[Polynomial.hom_eval₂]`. Use `congr 1`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[deh_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i`. Simplify using `[deh_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem deh_eval₂_rename {S : Type*} [Field S] (v : ι → S) (e : Fin (D + 1) → ι)
     (Θ : MvPolynomial ι ℤ) (H : Polynomial (MvPolynomial (Fin (D + 1)) ℤ)) :
@@ -34,15 +34,15 @@ theorem deh_eval₂_rename {S : Type*} [Field S] (v : ι → S) (e : Fin (D + 1)
 variable [DecidableEq ι] (G : Gen x e) {w : Fin (D + 1) → ℂ}
 
 /- English proof (translation)
-Establish `hP1 : G.P ≠ 1`. Introduce `h`. Establish `h'` using `G.root`. Rewrite `h'` using `[h, Polynomial.eval₂_one]`. Conclude with `one_ne_zero h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : H %ₘ G.P + G.P * (H /ₘ G.P) = H` using `by first`. Consider the case `exact Polynomial.modByMonic_add_div H G.P`. Consider the case `exact Polynomial.modByMonic_add_div H G.monic`. Establish `hdeg : (H %ₘ G.P).natDegree < G.P.natDegree` using `by first`. Consider the case `exact Polynomial.natDegree_modByMonic_lt H G.monic hP1`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Polynomial.natDegree_modByMonic_lt H G.monic hP1`. Establish `hrx : (H %ₘ G.P).eval₂ (deh (x ∘ e) 0) (deh x (e 0) G.Θ) = 0`. Establish `h2` using `congrArg (fun p => p.eval₂ (deh (x ∘ e) 0) (deh x (e 0) G.Θ)) hsplit`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_mul, G.root, zero_mul, add_zero, hH] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `G.min _ hdeg hrx`. Establish `hrw : (H %ₘ G.P).map (deh w 0) = 0`. Use extensionality with `j`. Rewrite using `[Polynomial.coeff_map, hw.ker _ (hc j), Polynomial.coeff_zero]`. Establish `hr : (H %ₘ G.P).eval₂ (deh w 0) ρ = 0`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Polynomial.eval_map, hrw, Polynomial.eval_zero]`. Establish `h3` using `congrArg (fun p => p.eval₂ (deh w 0) ρ) hsplit`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_mul, hr, hρ, zero_mul, add_zero] at h3`. Conclude with `h3.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem eval₂_deh_eq_zero_of_good_of_root (hw : G.Good w) {ρ : ℂ} (hρ : G.P.eval₂ (deh w 0) ρ = 0)
     (H : Polynomial (MvPolynomial (Fin (D + 1)) ℤ))
@@ -75,11 +75,9 @@ private theorem eval₂_deh_eq_zero_of_good_of_root (hw : G.Good w) {ρ : ℂ} (
   exact h3.symm
 
 /- English proof (translation)
-Establish `hH` using `eval₂_deh_eq_zero_of_good_of_root G hw hρ (G.Q (e k) - Polynomial.C (G.dd * X k)) (by`. Rewrite using `[Polynomial.eval₂_sub, Polynomial.eval₂_C, ← G.hQ (e k), map_mul, sub_eq_zero, deh_X, deh_X]`. Use the proof step `rfl)`. Rewrite `hH` using `[Polynomial.eval₂_sub, Polynomial.eval₂_C, map_mul, deh_X, sub_eq_zero]`. Establish `h0` using `hw.w0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hw.dd`. Simplify using `only [Gen.zOf, Gen.evQ]`. Rewrite using `[hH]`. Use `first`. Consider the case `(field_simp; done)`.
-
-Consider the case `(field_simp; ring)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Gen.zOf_e (hw : G.Good w) {ρ : ℂ} (hρ : G.P.eval₂ (deh w 0) ρ = 0) (k : Fin (D + 1)) :
     G.zOf w ρ (e k) = w k := by
@@ -96,9 +94,9 @@ theorem Gen.zOf_e (hw : G.Good w) {ρ : ℂ} (hρ : G.P.eval₂ (deh w 0) ρ = 0
   | (field_simp; ring)
 
 /- English proof (translation)
-Establish `h0` using `hw.w0`. Rewrite using `[deh_apply, G.zOf_e hw hρ 0]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Gen.zOf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Gen.deh_zOf (hw : G.Good w) {ρ : ℂ} (hρ : G.P.eval₂ (deh w 0) ρ = 0)
     (F : MvPolynomial ι ℤ) :
@@ -113,9 +111,9 @@ theorem Gen.deh_zOf (hw : G.Good w) {ρ : ℂ} (hρ : G.P.eval₂ (deh w 0) ρ =
   | (field_simp; ring)
 
 /- English proof (translation)
-Establish `hk` using `MvPolynomial.eval₂_comp_left (Polynomial.mapRingHom (Polynomial.eval₂RingHom φ t)) (Int.castRingHom _) (fun i => Polynomial.X * Polynomial.C (G.Q i)) f`. Use `first`. Consider the case `rw [Polynomial.coe_mapRingHom] at hk`. Consider the case `skip`. Rewrite using `[hk]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `RingHom.ext_int _ _`. Use function extensionality and compare the values at `i`. Simplify using `[Polynomial.map_mul, Polynomial.map_X, Polynomial.map_C, Polynomial.coe_eval₂RingHom]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem map_eval₂_X_mul_C_eq {K : Type*} [Field K] (φ : MvPolynomial (Fin (D + 1)) ℤ →+* K) (t : K)
     (f : MvPolynomial ι ℤ) :
@@ -135,19 +133,17 @@ private theorem map_eval₂_X_mul_C_eq {K : Type*} [Field K] (φ : MvPolynomial 
     simp [Polynomial.map_mul, Polynomial.map_X, Polynomial.map_C, Polynomial.coe_eval₂RingHom]
 
 /- English proof (translation)
-Use `show G.zOf w ρ ≠ 0 ∧ ∀ f ∈ coordIdeal ℤ x, MvPolynomial.eval (G.zOf w ρ) (MvPolynomial.map (Int.castRingHom ℂ) f) = 0`. Use `⟨fun h => hw.w0 ?_, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← G.zOf_e hw hρ 0, h, Pi.zero_apply]`. Establish `hcone` using `RingHom.mem_ker.mp (show f ∈ RingHom.ker (coneMap ℤ x) from hf)`. Establish `hrel : MvPolynomial.eval₂ (Int.castRingHom (Polynomial Ω)) (fun i => Polynomial.X * Polynomial.C ((G.Q i).eval₂ (deh (x ∘ e) 0) (deh x (e 0) G.Θ))) f = ((coneMap ℤ x) f).comp (Polynomial.C (deh (x ∘ e) 0 G.dd * (x (e 0))⁻¹) * Polynomial.X)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `MvPolynomial.eval₂_comp_left (Polynomial.compRingHom (Polynomial.C (deh (x ∘ e) 0 G.dd * (x (e 0))⁻¹) * Polynomial.X)) (algebraMap ℤ (Polynomial Ω)) (fun i => Polynomial.C (x i) * Polynomial.X) f`. Rewrite using `[coneMap, MvPolynomial.aeval_def, ← Polynomial.coe_compRingHom_apply, hk]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Function.comp_apply, Polynomial.coe_compRingHom_apply, Polynomial.mul_comp, Polynomial.C_comp, Polynomial.X_comp, ← G.hQ i, deh_X, div_eq_mul_inv, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `map_eval₂_X_mul_C_eq G (deh (x ∘ e) 0) (deh x (e 0) G.Θ) f`. Rewrite `h2` using `[hrel, hcone, Polynomial.zero_comp]`. Establish `h3 : (MvPolynomial.eval₂ (Int.castRingHom (Polynomial (Polynomial (MvPolynomial (Fin (D + 1)) ℤ)))) (fun i => Polynomial.X * Polynomial.C (G.Q i)) f).map (Polynomial.eval₂RingHom (deh w 0) ρ) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `d`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_zero, Polynomial.coe_eval₂RingHom]`. Apply `eval₂_deh_eq_zero_of_good_of_root G hw hρ` to reduce the goal to its premises. Establish `h4` using `Polynomial.ext_iff.mp h2 d`. Rewrite `h4` using `[Polynomial.coeff_map, Polynomial.coeff_zero, Polynomial.coe_eval₂RingHom]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h4`. Rewrite `h3` using `[map_eval₂_X_mul_C_eq G (deh w 0) ρ f]`. Rewrite using `[MvPolynomial.eval_map]`. Establish `h4` using `congrArg (Polynomial.eval (w 0 / deh w 0 G.dd)) h3`. Rewrite `h4` using `[Polynomial.eval_zero, ← Polynomial.coe_evalRingHom, MvPolynomial.eval₂_comp_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1 : (Polynomial.evalRingHom (w 0 / deh w 0 G.dd)).comp (Int.castRingHom (Polynomial ℂ)) = Int.castRingHom ℂ` using `RingHom.ext_int _ _`. Establish `e2 : (⇑(Polynomial.evalRingHom (w 0 / deh w 0 G.dd)) ∘ fun i => Polynomial.X * Polynomial.C ((G.Q i).eval₂ (deh w 0) ρ)) = G.zOf w ρ`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, Polynomial.coe_evalRingHom, Polynomial.eval_mul, Polynomial.eval_X, Polynomial.eval_C, Gen.zOf, Gen.evQ]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `h4` using `[e1, e2]`. Conclude with `h4`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gen.zOf_mem (hx0 : x (e 0) ≠ 0) (hw : G.Good w) {ρ : ℂ}
     (hρ : G.P.eval₂ (deh w 0) ρ = 0) : G.zOf w ρ ∈ pts (coordIdeal ℤ x) := by
@@ -195,9 +191,9 @@ theorem Gen.zOf_mem (hx0 : x (e 0) ≠ 0) (hw : G.Good w) {ρ : ℂ}
   exact h4
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun m hm => ?_)` and prove the remaining obligations. Establish `hs : ∑ i ∈ m.support, m i ≤ N` using `(MvPolynomial.le_totalDegree hm).trans hN`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hs`. Simplify using `only [hv, div_pow, Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum, eq_intCast, Nat.add_sub_cancel_left, pow_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`. Consider the case `ring`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem sum_coeff_homogenize_eq_pow_mul_eval₂ {S : Type*} [Field S] (F : MvPolynomial ι ℤ) (v a : ι → S) (d : S)
     (hv : ∀ i, v i = a i / d) (hd : d ≠ 0) (N : ℕ) (hN : F.totalDegree ≤ N) :
@@ -215,7 +211,7 @@ private theorem sum_coeff_homogenize_eq_pow_mul_eval₂ {S : Type*} [Field S] (F
   | ring
 
 /- English proof (translation)
-Establish `hC : ∀ c : ℤ, φ (MvPolynomial.C c) = (c : S)` using `fun c => eq_intCast (φ.comp MvPolynomial.C) c`. Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_finset_sum, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X, Polynomial.eval₂_finset_prod, Polynomial.eval₂_pow, map_mul, map_pow, hC]`. Rewrite using `[mul_sub, ← sum_coeff_homogenize_eq_pow_mul_eval₂ G.Θ (G.evQ φ t) (fun i => (G.Q i).eval₂ φ t) (φ G.dd) (fun i => rfl) hd G.Θ.totalDegree le_rfl]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_homogenized_sub_dd_pow_X_eq {S : Type*} [Field S] (φ : MvPolynomial (Fin (D + 1)) ℤ →+* S) (t : S)
     (hd : φ G.dd ≠ 0) :
@@ -230,11 +226,11 @@ private theorem map_homogenized_sub_dd_pow_X_eq {S : Type*} [Field S] (φ : MvPo
     G.Θ.totalDegree le_rfl]
 
 /- English proof (translation)
-Establish `hx` using `map_homogenized_sub_dd_pow_X_eq G (deh (x ∘ e) 0) (deh x (e 0) G.Θ) G.dd_ne`. Establish `hQx : MvPolynomial.eval₂ (Int.castRingHom Ω) (G.evQ (deh (x ∘ e) 0) (deh x (e 0) G.Θ)) G.Θ = deh x (e 0) G.Θ` using `by conv_rhs => rw [deh_apply]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Gen.evQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← G.hQ i, deh_X]`. Use `first`. Consider the case `exact mul_div_cancel_left₀ _ G.dd_ne`. Consider the case `field_simp [G.dd_ne]`. Rewrite `hx` using `[hQx, sub_self, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hw'` using `eval₂_deh_eq_zero_of_good_of_root G hw hρ _ hx`. Rewrite `hw'` using `[map_homogenized_sub_dd_pow_X_eq G (deh w 0) ρ hw.dd]`. Establish `h2` using `(mul_eq_zero.mp hw').resolve_left (pow_ne_zero _ hw.dd)`. Rewrite using `[G.deh_zOf hw hρ]`. Conclude with `sub_eq_zero.mp h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gen.deh_zOf_Θ (hw : G.Good w) {ρ : ℂ} (hρ : G.P.eval₂ (deh w 0) ρ = 0) :
     deh (G.zOf w ρ) (e 0) G.Θ = ρ := by
@@ -257,13 +253,13 @@ theorem Gen.deh_zOf_Θ (hw : G.Good w) {ρ : ℂ} (hρ : G.P.eval₂ (deh w 0) �
   exact sub_eq_zero.mp h2
 
 /- English proof (translation)
-Establish `hz' : z ≠ 0 ∧ ∀ f ∈ coordIdeal ℤ x, MvPolynomial.eval z (MvPolynomial.map (Int.castRingHom ℂ) f) = 0` using `hz`. Establish `hmem : (∑ m ∈ F.support, MvPolynomial.C (MvPolynomial.coeff m F) * X (e 0) ^ (F.totalDegree - ∑ i ∈ m.support, m i) * ∏ i ∈ m.support, X i ^ m i) ∈ coordIdeal ℤ x` using `by show _ ∈ RingHom.ker (coneMap ℤ x)`. Rewrite using `[RingHom.mem_ker, coneMap, map_sum]`. Establish `h1 : ∀ m ∈ F.support, (aeval fun i => Polynomial.C (x i) * Polynomial.X) (MvPolynomial.C (MvPolynomial.coeff m F) * X (e 0) ^ (F.totalDegree - ∑ i ∈ m.support, m i) * ∏ i ∈ m.support, X i ^ m i) = Polynomial.C (((MvPolynomial.coeff m F : ℤ) : Ω) * x (e 0) ^ (F.totalDegree - ∑ i ∈ …`. Introduce `m hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : ∑ i ∈ m.support, m i ≤ F.totalDegree` using `MvPolynomial.le_totalDegree hm`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hs`. Rewrite using `[hk, Nat.add_sub_cancel_left]`. Simplify using `only [map_mul, map_pow, map_prod, MvPolynomial.aeval_C, MvPolynomial.aeval_X, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, algebraMap_int_eq, eq_intCast, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_congr rfl h1, ← Finset.sum_mul, ← map_sum Polynomial.C, sum_coeff_homogenize_eq_pow_mul_eval₂ F (fun i => x i / x (e 0)) x (x (e 0)) (fun i => rfl) hx0 _ le_rfl, ← deh_apply, hF, mul_zero, map_zero, zero_mul]`. Establish `h2` using `hz'.2 _ hmem`. Rewrite `h2` using `[MvPolynomial.eval_map]`. Simplify using `only [MvPolynomial.eval₂_sum, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_C, MvPolynomial.eval₂_pow, MvPolynomial.eval₂_X, MvPolynomial.eval₂_prod, Int.coe_castRingHom] at h2`. Rewrite `h2` using `[sum_coeff_homogenize_eq_pow_mul_eval₂ F (fun i => z i / z (e 0)) z (z (e 0)) (fun i => rfl) hz0 _ le_rfl, ← deh_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.mp h2).resolve_left (pow_ne_zero _ hz0)`.
+A detailed English derivation is pending.
 -/
 private theorem deh_eq_zero_of_mem_pts_of_deh_eq_zero (hx0 : x (e 0) ≠ 0) (F : MvPolynomial ι ℤ) (hF : deh x (e 0) F = 0)
     {z : ι → ℂ} (hz : z ∈ pts (coordIdeal ℤ x)) (hz0 : z (e 0) ≠ 0) : deh z (e 0) F = 0 := by
@@ -296,7 +292,7 @@ private theorem deh_eq_zero_of_mem_pts_of_deh_eq_zero (hx0 : x (e 0) ≠ 0) (F :
   exact (mul_eq_zero.mp h2).resolve_left (pow_ne_zero _ hz0)
 
 /- English proof (translation)
-Rewrite using `[deh_apply, deh_apply, MvPolynomial.eval₂_rename]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem deh_rename' {S : Type*} [Field S] (v : ι → S) (F : MvPolynomial (Fin (D + 1)) ℤ) :
     deh v (e 0) (rename e F) = deh (v ∘ e) 0 F := by
@@ -304,13 +300,13 @@ private theorem deh_rename' {S : Type*} [Field S] (v : ι → S) (F : MvPolynomi
   rfl
 
 /- English proof (translation)
-Establish `hz0 : z (e 0) ≠ 0`. Rewrite using `[hze 0]`. Conclude with `hw.w0`. Establish `hze' : z ∘ e = w` using `funext hze`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `h` using `deh_eq_zero_of_mem_pts_of_deh_eq_zero hx0 (G.P.eval₂ (rename e : MvPolynomial _ ℤ →ₐ[ℤ] MvPolynomial ι ℤ).toRingHom G.Θ) (by rw [deh_eval₂_rename]; exact G.root) hz hz0`. Rewrite `h` using `[deh_eval₂_rename, hze']`. Conclude with `h`. Use function extensionality and compare the values at `i`. Establish `h` using `deh_eq_zero_of_mem_pts_of_deh_eq_zero hx0 ((G.Q i).eval₂ (rename e : MvPolynomial _ ℤ →ₐ[ℤ] MvPolynomial ι ℤ).toRingHom G.Θ - rename e G.dd * X i) (by rw [map_sub, deh_eval₂_rename, map_mul, deh_rename', ← G.hQ i, sub_self]) hz hz0`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[map_sub, deh_eval₂_rename, map_mul, deh_rename', hze', deh_X, sub_eq_zero]`. Establish `h0` using `hw.w0`. Establish `h1` using `hw.dd`. Simplify using `only [Gen.zOf, Gen.evQ]`. Rewrite using `[h, hze 0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`.
+A detailed English derivation is pending.
 -/
 theorem Gen.of_mem (hx0 : x (e 0) ≠ 0) (hw : G.Good w) {z : ι → ℂ}
     (hz : z ∈ pts (coordIdeal ℤ x)) (hze : ∀ k, z (e k) = w k) :
@@ -340,11 +336,11 @@ theorem Gen.of_mem (hx0 : x (e 0) ≠ 0) (hw : G.Good w) {z : ι → ℂ}
     | (field_simp; ring)
 
 /- English proof (translation)
-Establish `h0 : (G.U * G.P + G.V * Polynomial.derivative G.P - Polynomial.C G.cc).map (deh w 0) = 0`. Use extensionality with `j`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_zero]`. Apply `hw.ker` to reduce the goal to its premises. Rewrite using `[← Polynomial.coeff_map, G.hUV, Polynomial.coeff_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : G.U.map (deh w 0) * G.P.map (deh w 0) + G.V.map (deh w 0) * Polynomial.derivative (G.P.map (deh w 0)) = Polynomial.C (deh w 0 G.cc)`. Rewrite using `[Polynomial.derivative_map, ← sub_eq_zero, ← h0]`. Simplify using `only [Polynomial.map_sub, Polynomial.map_add, Polynomial.map_mul, Polynomial.map_C]`. Rewrite using `[Polynomial.separable_def]`. Use `⟨Polynomial.C (deh w 0 G.cc)⁻¹ * G.U.map (deh w 0), Polynomial.C (deh w 0 G.cc)⁻¹ * G.V.map (deh w 0), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, mul_assoc, ← mul_add, h1, ← Polynomial.C_mul, inv_mul_cancel₀ hw.cc, Polynomial.C_1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Gen.sep (hw : G.Good w) : (G.P.map (deh w 0)).Separable := by
   have h0 : (G.U * G.P + G.V * Polynomial.derivative G.P - Polynomial.C G.cc).map (deh w 0) = 0 := by
@@ -363,16 +359,16 @@ theorem Gen.sep (hw : G.Good w) : (G.P.map (deh w 0)).Separable := by
   rw [mul_assoc, mul_assoc, ← mul_add, h1, ← Polynomial.C_mul, inv_mul_cancel₀ hw.cc, Polynomial.C_1]
 
 /- English proof (translation)
-Rewrite using `[Polynomial.mem_roots (G.monic.map _).ne_zero, Polynomial.IsRoot.def, Polynomial.eval_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Gen.mem_roots {ρ : ℂ} :
     ρ ∈ (G.P.map (deh w 0)).roots ↔ G.P.eval₂ (deh w 0) ρ = 0 := by
   rw [Polynomial.mem_roots (G.monic.map _).ne_zero, Polynomial.IsRoot.def, Polynomial.eval_map]
 
 /- English proof (translation)
-Establish `hd : (G.P.map (deh w 0)).natDegree = G.P.natDegree` using `by first`. Consider the case `exact G.monic.natDegree_map _`. Consider the case `exact Polynomial.natDegree_map_of_monic G.monic _`. Rewrite using `[← hd]`. Use `first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact Polynomial.splits_iff_card_roots.mp (IsAlgClosed.splits _)`. Consider the case `exact IsAlgClosed.card_roots_eq_natDegree`. Consider the case `exact (Polynomial.natDegree_eq_card_roots' (IsAlgClosed.splits _)).symm`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Gen.card_roots : (G.P.map (deh w 0)).roots.card = G.P.natDegree := by
   have hd : (G.P.map (deh w 0)).natDegree = G.P.natDegree := by
@@ -390,9 +386,9 @@ abbrev fib (x : ι → Ω) (e : Fin (D + 1) → ι) (w : Fin (D + 1) → ℂ) : 
   {z | z ∈ pts (coordIdeal ℤ x) ∧ ∀ k, z (e k) = w k}
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hze⟩`. Take `⟨h1, h2⟩` from `G.of_mem hx0 hw hz hze`. Conclude with `⟨_, G.mem_roots.2 h1, h2⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨ρ, hρ, rfl⟩`. Establish `hρ'` using `G.mem_roots.1 hρ`. Conclude with `⟨G.zOf_mem hx0 hw hρ', G.zOf_e hw hρ'⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Gen.fib_eq (hx0 : x (e 0) ≠ 0) (hw : G.Good w) :
     fib x e w = G.zOf w '' {ρ | ρ ∈ (G.P.map (deh w 0)).roots} := by
@@ -406,7 +402,7 @@ theorem Gen.fib_eq (hx0 : x (e 0) ≠ 0) (hw : G.Good w) :
     exact ⟨G.zOf_mem hx0 hw hρ', G.zOf_e hw hρ'⟩
 
 /- English proof (translation)
-Introduce `ρ₁ h₁ ρ₂ h₂ h`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 -/
 theorem Gen.injOn (hw : G.Good w) :
     Set.InjOn (G.zOf w) {ρ | ρ ∈ (G.P.map (deh w 0)).roots} := by
@@ -416,7 +412,7 @@ theorem Gen.injOn (hw : G.Good w) :
     _ = ρ₂ := G.deh_zOf_Θ hw (G.mem_roots.1 h₂)
 
 /- English proof (translation)
-Use extensionality with `ρ`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Gen.roots_set (w : Fin (D + 1) → ℂ) :
     {ρ | ρ ∈ (G.P.map (deh w 0)).roots} = ((G.P.map (deh w 0)).roots.toFinset : Set ℂ) := by
@@ -424,14 +420,14 @@ theorem Gen.roots_set (w : Fin (D + 1) → ℂ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[G.fib_eq hx0 hw, G.roots_set]`. Conclude with `(Finset.finite_toSet _).image _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gen.fib_finite (hx0 : x (e 0) ≠ 0) (hw : G.Good w) : (fib x e w).Finite := by
   rw [G.fib_eq hx0 hw, G.roots_set]
   exact (Finset.finite_toSet _).image _
 
 /- English proof (translation)
-Rewrite using `[G.fib_eq hx0 hw, Set.ncard_image_of_injOn (G.injOn hw), G.roots_set, Set.ncard_coe_finset, Multiset.toFinset_card_of_nodup (Polynomial.nodup_roots (G.sep hw)), G.card_roots]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Gen.fib_ncard (hx0 : x (e 0) ≠ 0) (hw : G.Good w) :
     (fib x e w).ncard = G.P.natDegree := by
@@ -439,7 +435,7 @@ theorem Gen.fib_ncard (hx0 : x (e 0) ≠ 0) (hw : G.Good w) :
     Multiset.toFinset_card_of_nodup (Polynomial.nodup_roots (G.sep hw)), G.card_roots]
 
 /- English proof (translation)
-Rewrite using `[G.fib_eq hx0 hw, finsum_mem_image (G.injOn hw), G.roots_set, finsum_mem_coe_finset, Finset.sum_eq_multiset_sum, Multiset.toFinset_val, Multiset.dedup_eq_self.mpr (Polynomial.nodup_roots (G.sep hw))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Gen.finsum_fib (hx0 : x (e 0) ≠ 0) (hw : G.Good w) (f : (ι → ℂ) → ℂ) :
     ∑ᶠ z ∈ fib x e w, f z = ((G.P.map (deh w 0)).roots.map fun ρ => f (G.zOf w ρ)).sum := by
@@ -456,17 +452,15 @@ namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.Fib
 open MvPolynomial Filter Topology ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
 /- English proof (translation)
-Establish `hfd : HasFDerivAt f (fderiv ℂ f u) u` using `(hf.differentiableAt one_ne_zero).hasFDerivAt`. Establish `hi : HasFDerivAt (fun t : ℂ => (u.1, t)) (ContinuousLinearMap.inr ℂ E ℂ) u.2` using `by first`. Consider the case `exact hasFDerivAt_prodMk_right u.1 u.2`. Consider the case `exact hasFDerivAt_prod_mk_right u.1 u.2`. Consider the case `exact (hasFDerivAt_const u.1 u.2).prodMk (hasFDerivAt_id u.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (hasFDerivAt_const u.1 u.2).prod (hasFDerivAt_id u.2)`. Establish `hcomp : HasFDerivAt (fun t : ℂ => f (u.1, t)) ((fderiv ℂ f u).comp (ContinuousLinearMap.inr ℂ E ℂ)) u.2`. Establish `hfd' : HasFDerivAt f (fderiv ℂ f u) (u.1, u.2)` using `hfd`. Conclude with `hfd'.comp u.2 hi`. Establish `heq : (fderiv ℂ f u).comp (ContinuousLinearMap.inr ℂ E ℂ) = ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) c` using `hcomp.unique hd.hasFDerivAt`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ((fderiv ℂ f u).comp (ContinuousLinearMap.inr ℂ E ℂ)).IsInvertible`. Rewrite using `[heq]`. Use `⟨ContinuousLinearEquiv.unitsEquivAut ℂ (Units.mk0 c hc), ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(ext; simp)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `(ext x; simp [mul_comm])`. Establish `ev` using `IsContDiffImplicitAt.apply_implicitFunction hf one_ne_zero hinv`. Establish `cd` using `IsContDiffImplicitAt.contDiffAt_implicitFunction hf one_ne_zero hinv`. Establish `ev2` using `IsContDiffImplicitAt.eventually_implicitFunction_apply_eq hf one_ne_zero hinv`. Establish `hval : hf.implicitFunction one_ne_zero hinv u.1 = u.2` using `(ev2.self_of_nhds).1 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Establish `ecd : ∀ᶠ y in 𝓝 u.1, ContDiffAt ℂ 1 (hf.implicitFunction one_ne_zero hinv) y` using `by first`. Consider the case `exact cd.eventually (by simp)`. Consider the case `exact cd.eventually (by decide)`. Consider the case `exact cd.eventually ENat.one_ne_top`. Take `⟨U, hUsub, hUo, hUmem⟩` from `eventually_nhds_iff.mp (ev.and ecd)`.
-
-Conclude with `⟨U, hf.implicitFunction one_ne_zero hinv, hUo, hUmem, fun y hy => ((hUsub y hy).2.differentiableAt one_ne_zero).differentiableWithinAt, hval, fun y hy => (hUsub y hy).1⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_implicit_section {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [CompleteSpace E] (f : E × ℂ → ℂ) (u : E × ℂ) (hf : ContDiffAt ℂ 1 f u) {c : ℂ} (hc : c ≠ 0)
@@ -507,9 +501,7 @@ theorem exists_implicit_section {E : Type*} [NormedAddCommGroup E] [NormedSpace 
     fun y hy => (hUsub y hy).1⟩
 
 /- English proof (translation)
-Proceed by induction on `G using MvPolynomial.induction_on`. Use `next r =>`. Simplify using `only [eval₂_C]`. Conclude with `contDiffAt_const`. Use `next p q hp hq =>`.
-
-Simplify using `only [eval₂_add]`. Conclude with `hp.add hq`. Use `next p i hp =>`. Simplify using `only [eval₂_mul, eval₂_X]`. Conclude with `hp.mul (hg i)`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffAt_eval₂ {E ι : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (g : E → ι → ℂ) (e₀ : E) (hg : ∀ i, ContDiffAt ℂ 1 (fun e => g e i) e₀)
@@ -526,7 +518,7 @@ theorem contDiffAt_eval₂ {E ι : Type*} [NormedAddCommGroup E] [NormedSpace �
     exact hp.mul (hg i)
 
 /- English proof (translation)
-Simplify using `only [deh_apply]`. Conclude with `contDiffAt_eval₂ (fun e i => g e i / g e i₀) e₀ (fun i => (hg i).div (hg i₀) h0) G`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffAt_deh {E ι : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (g : E → ι → ℂ) (e₀ : E) (i₀ : ι) (hg : ∀ i, ContDiffAt ℂ 1 (fun e => g e i) e₀)
@@ -535,7 +527,7 @@ theorem contDiffAt_deh {E ι : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
   exact contDiffAt_eval₂ (fun e i => g e i / g e i₀) e₀ (fun i => (hg i).div (hg i₀) h0) G
 
 /- English proof (translation)
-Use `Polynomial.induction_on' H (fun p q hp hq => ?_) (fun n a => ?_)` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_add]`. Conclude with `hp.add hq`. Simplify using `only [Polynomial.eval₂_monomial]`. Conclude with `(contDiffAt_deh g e₀ i₀ hg h0 a).mul (ht.pow n)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffAt_eval₂_deh {E ι : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (g : E → ι → ℂ) (t : E → ℂ) (e₀ : E) (i₀ : ι) (hg : ∀ i, ContDiffAt ℂ 1 (fun e => g e i) e₀)
@@ -548,7 +540,7 @@ theorem contDiffAt_eval₂_deh {E ι : Type*} [NormedAddCommGroup E] [NormedSpac
     exact (contDiffAt_deh g e₀ i₀ hg h0 a).mul (ht.pow n)
 
 /- English proof (translation)
-Use `Polynomial.induction_on' H (fun p q hp hq => ?_) (fun n a => ?_)` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_add]`. Conclude with `hp.add hq`. Simplify using `only [Polynomial.eval₂_monomial]`. Conclude with `((contDiffAt_deh g e₀ i₀ hg h0 a).differentiableAt one_ne_zero).mul (ht.pow n)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_eval₂_deh {E ι : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (g : E → ι → ℂ) (t : E → ℂ) (e₀ : E) (i₀ : ι) (hg : ∀ i, ContDiffAt ℂ 1 (fun e => g e i) e₀)
@@ -564,25 +556,23 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {Ω : Type*} [Field Ω] {D : 
   {e : Fin (D + 1) → ι} (G : Gen x e)
 
 /- English proof (translation)
-Establish `hgw` using `hgood w hw`. Take `⟨hroot, hzeq⟩` from `G.of_mem hx0 hgw hz.1 hz.2`. Generalize the expression as in `hρ : deh z (e 0) G.Θ = ρ at hroot hzeq`. Establish `hp1 : ∀ i, ContDiffAt ℂ 1 (fun p : (Fin (D + 1) → ℂ) × ℂ => p.1 i) (w, ρ)`. Introduce `i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `first`. Consider the case `fun_prop`. Consider the case `exact ((contDiff_apply ℂ ℂ i).comp contDiff_fst).contDiffAt`. Consider the case `exact ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (D + 1) => ℂ) i).comp (ContinuousLinearMap.fst ℂ (Fin (D + 1) → ℂ) ℂ)).contDiff.contDiffAt`. Establish `hcd : ContDiffAt ℂ 1 (fun p : (Fin (D + 1) → ℂ) × ℂ => G.P.eval₂ (deh p.1 0) p.2) (w, ρ)` using `contDiffAt_eval₂_deh (fun p : (Fin (D + 1) → ℂ) × ℂ => p.1) (fun p => p.2) (w, ρ) 0 hp1 contDiffAt_snd hgw.w0 G.P`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0` using `(G.P.map (deh w 0)).hasDerivAt ρ`. Simplify using `only [Polynomial.eval_map] at hd0`. Establish `hsep` using `G.sep hgw`. Rewrite `hsep` using `[Polynomial.separable_def]`. Take `⟨a, b, hab⟩` from `hsep`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev` using `congrArg (Polynomial.eval ρ) hab`. Rewrite `hev` using `[Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_mul, Polynomial.eval_one, Polynomial.eval_map, hroot, mul_zero, zero_add]`. Establish `hc : Polynomial.eval ρ (Polynomial.derivative (G.P.map (deh w 0))) ≠ 0`. Introduce `h`. Rewrite `hev` using `[h, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_ne_one hev`. Take `⟨U', τ, hU'o, hwU', hτd, hτw, hτf⟩` from `exists_implicit_section (fun p : (Fin (D + 1) → ℂ) × ℂ => G.P.eval₂ (deh p.1 0) p.2) (w, ρ) hcd hc hd0`. Establish `hτw' : τ w = ρ` using `hτw`. Establish `hproj : ∀ (v : Fin (D + 1) → ℂ) j, ContDiffAt ℂ 1 (fun u : Fin (D + 1) → ℂ => u j) v`. Introduce `v j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `fun_prop`. Consider the case `exact (contDiff_apply ℂ ℂ j).contDiffAt`. Consider the case `exact (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (D + 1) => ℂ) j).contDiff.contDiffAt`. Use `⟨U' ∩ W, fun w' => G.zOf w' (τ w'), hU'o.inter hWo, ⟨hwU', hw⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w' hw'`. Establish `hg'` using `hgood w' hw'.2`. Establish `hτa : DifferentiableAt ℂ τ w'` using `hτd.differentiableAt (hU'o.mem_nhds hw'.1)`. Apply `DifferentiableAt.differentiableWithinAt` to reduce the goal to its premises. Rewrite using `[differentiableAt_pi]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Establish `hA` using `differentiableAt_eval₂_deh (fun u => u) τ w' 0 (hproj w') hτa hg'.w0 (G.Q i)`. Establish `hB` using `(contDiffAt_deh (fun u => u) w' 0 (hproj w') hg'.w0 G.dd).differentiableAt one_ne_zero`. Establish `hC` using `hA.mul (hB.inv hg'.dd)`. Simplify using `only [Gen.zOf, Gen.evQ, div_eq_mul_inv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `((hproj w' 0).differentiableAt one_ne_zero).mul hC`. Use `show G.zOf w (τ w) = z`. Rewrite using `[hτw']`. Conclude with `hzeq`. Introduce `w' hw'`.
-
-Establish `hg'` using `hgood w' hw'.2`. Establish `hr : G.P.eval₂ (deh w' 0) (τ w') = 0` using `(hτf w' hw'.1).trans hroot`. Conclude with `⟨G.zOf_mem hx0 hg' hr, G.zOf_e hg' hr⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Gen.exists_section (hx0 : x (e 0) ≠ 0) {W : Set (Fin (D + 1) → ℂ)} (hWo : IsOpen W)
     (hgood : ∀ w ∈ W, G.Good w) {w : Fin (D + 1) → ℂ} (hw : w ∈ W) {z : ι → ℂ}

@@ -13,13 +13,11 @@ noncomputable section
 namespace GlobalTheory.PDiv.FrobKerInter
 
 /- English proof (translation)
-Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Establish `h1` using `Submodule.IsCoideal.counit_eq_zero (I := I.restrictScalars k) hy`. Establish `h2` using `Submodule.IsCoideal.counit_eq_zero (I := J.restrictScalars k) hz`. Rewrite using `[map_add, h1, h2, add_zero]`. Use `map_mkQ_comul_eq_zero x hx := by set K := (I ⊔ J).restrictScalars k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ (L : Ideal A) [L.IsHopfIdeal k], L ≤ I ⊔ J → ∀ y ∈ L, TensorProduct.map K.mkQ K.mkQ (comul (R` using `k) y) = 0 := by`. Introduce `L _ hL y hy`. Establish `hle : L.restrictScalars k ≤ K` using `fun a ha => hL ha`. Establish `e : K.mkQ = (Submodule.mapQ (L.restrictScalars k) K LinearMap.id hle) ∘ₗ (L.restrictScalars k).mkQ`. Rewrite using `[Submodule.mapQ_mkQ, LinearMap.comp_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, TensorProduct.map_comp, LinearMap.comp_apply, Submodule.IsCoideal.map_mkQ_comul_eq_zero (I := L.restrictScalars k) hy, map_zero]`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add, map_add, key I le_sup_left y hy, key J le_sup_right z hz, add_zero]`. Use `antipode_mem x hx := by`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`.
-
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (Ideal.IsHopfIdeal.antipode_mem (R := k) hy) (Ideal.IsHopfIdeal.antipode_mem (R := k) hz)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHopfIdeal_sup {k A : Type} [CommRing k] [CommRing A] [HopfAlgebra k A]
     (I J : Ideal A) [I.IsHopfIdeal k] [J.IsHopfIdeal k] : (I ⊔ J).IsHopfIdeal k where
@@ -48,11 +46,9 @@ theorem isHopfIdeal_sup {k A : Type} [CommRing k] [CommRing A] [HopfAlgebra k A]
       (Ideal.IsHopfIdeal.antipode_mem (R := k) hz)
 
 /- English proof (translation)
-Introduce `p _ k _ _ G H q`. Use `haveI : (kerIdeal (q.app 1)).IsHopfIdeal k := isHopfIdeal_kerIdeal_of_bialgHom k _ _ (q.app 1)`. Use `haveI : (frobKerIdeal p k (G.A 1)).IsHopfIdeal k := FrobKerOrder.isHopfIdeal p k (G.A 1)`. Use `set I := kerIdeal (q.app 1) ⊔ frobKerIdeal p k (G.A 1) with hI`. Use `haveI : I.IsHopfIdeal k := isHopfIdeal_sup _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `π : G.A 1 →ₐc[k] G.A 1 ⧸ I` to `Bialgebra.Quotient.mkBialgHom I`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mk_surjective`. Use `haveI : Module.Finite k (G.A 1) := G.finite 1`. Use `⟨G.A 1 ⧸ I, inferInstance, inferInstance, KerGrp.isCocomm_of_surjective π hπ, Module.Finite.of_surjective (π : G.A 1 →ₗ[k] G.A 1 ⧸ I) hπ, π, hπ, Ideal.ext fun _ => Ideal.Quotient.eq_zero_iff_mem, ?_, FrobKerOrder.le_sq p k (G.A 1)⟩` and prove the remaining obligations. Introduce `a ha`.
-
-Take `⟨b, rfl⟩` from `hπ a`. Establish `hb : b ∈ augIdeal k (G.A 1)` using `ha`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I b ^ p = 0`. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_sup_right (pow_mem_frobKerIdeal hb)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quotient_kerIdeal_sup_frobKerIdeal : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] (G H : PDivGroup p k) (q : G ⟶ H), ∃ (C : Type) (_ : CommRing C) (_ : HopfAlgebra k C) (_ : IsCocomm k C) (_ : Module.Finite k C) (π : G.A 1 →ₐc[k] C), Function.Surjective π ∧ RingHom.ker π = kerIdeal (q.app 1) ⊔ frobKerIdeal p k (G.A 1) ∧ (∀ a ∈ augIdeal k C, a ^ p = 0) ∧ frobKerIdeal p k (G.A 1) ≤ augIdeal k (G.A 1) ^ 2 := by
   intro p _ k _ _ G H q

@@ -11,7 +11,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply]`. Conclude with `SetLike.prod_pow_mem_graded W.gr W.wt W.zA n fun s _ => W.z_mem s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mono_mem {O X R : Type} [CommRing O] [AddCommGroup X] [CommRing R] [Algebra O R] (W : WPres O X R)
     (n : W.σ →₀ ℕ) : (n.prod fun s k => W.zA s ^ k) ∈ W.gr (Finsupp.weight W.wt n) := by
@@ -19,9 +19,7 @@ private theorem mono_mem {O X R : Type} [CommRing O] [AddCommGroup X] [CommRing 
   exact SetLike.prod_pow_mem_graded W.gr W.wt W.zA n fun s _ => W.z_mem s
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Finsupp.support_nonempty_iff.2 hn`. Use `show W.A.val _ ∈ I`. Rewrite using `[Finsupp.prod, map_prod]`. Use `Ideal.prod_mem _ hs ?_` and prove the remaining obligations. Rewrite using `[map_pow]`.
-
-Conclude with `Ideal.pow_mem_of_mem _ (h s) _ (Nat.pos_of_ne_zero (Finsupp.mem_support_iff.1 hs))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mono_max {O X R : Type} [CommRing O] [AddCommGroup X] [CommRing R] [Algebra O R] (W : WPres O X R)
     (I : Ideal R) (h : ∀ s, W.z s ∈ I) (n : W.σ →₀ ℕ) (hn : n ≠ 0) :
@@ -34,7 +32,7 @@ private theorem mono_max {O X R : Type} [CommRing O] [AddCommGroup X] [CommRing 
   exact Ideal.pow_mem_of_mem _ (h s) _ (Nat.pos_of_ne_zero (Finsupp.mem_support_iff.1 hs))
 
 /- English proof (translation)
-Use `choose g hg using h`. Conclude with `⟨{ toFun := g map_one' := hF (by rw [hg, map_one, map_one]) map_mul' := fun a b => hF (by rw [map_mul, hg, hg, hg, map_mul]) map_zero' := hF (by rw [hg, map_zero, map_zero]) map_add' := fun a b => hF (by rw [map_add, hg, hg, hg, map_add]) }, hg⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem factor {B C K : Type} [CommRing B] [CommRing C] [CommRing K] (F : C →+* K) (hF : Function.Injective F)
     (ξ : B →+* K) (h : ∀ x, ξ x ∈ F.range) : ∃ η : B →+* C, ∀ x, F (η x) = ξ x := by
@@ -46,27 +44,23 @@ private theorem factor {B C K : Type} [CommRing B] [CommRing C] [CommRing K] (F 
            map_add' := fun a b => hF (by rw [map_add, hg, hg, hg, map_add]) }, hg⟩
 
 /- English proof (translation)
-Introduce `l _ 𝔞 A _ _ _ f hf s O _ _ _ _ X _ _ _ _ R _ _ _ W hz y hy hcl`. Use `letI : Algebra O 𝔞.K := ((𝔞.toK.comp y).comp (algebraMap O (W.gr 0))).toAlgebra`. Set `y' : W.gr 0 →ₐ[O] 𝔞.K` to `{ 𝔞.toK.comp y with commutes' := fun _ => rfl }`. Take `⟨ξ, hξ⟩` from `Po.extA O X R W hz 𝔞.K y'`. Establish `hξ' : ∀ b : W.gr 0, ξ b = (y b : 𝔞.K)` using `hξ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `Po.ambScale 𝔞 A f hf W.σ X W.wt (fun i => ξ (W.zA i)) fun n hn hw => by`. Establish `h0 : (n.prod fun s k => W.zA s ^ k) ∈ W.gr 0` using `hw ▸ mono_mem W n`. Establish `h1` using `(𝔞.V.valuation_lt_one_iff _).1 (hy ⟨_, h0⟩ (mono_max W _ hz n hn))`. Rewrite `h1` using `[← hξ']`. Simplify `h1` using `only [Finsupp.prod, map_prod ξ, map_pow ξ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Set `ζ : W.A →ₐ[O] 𝔞.K` to `act W.gr t ξ`. Establish `hζ0 : ∀ b : W.gr 0, ζ b = (y b : 𝔞.K)` using `fun b => by`. Rewrite using `[act_of_mem W.gr t ξ b.2, ofAdd_zero, map_one, Units.val_one, one_mul, hξ']`. Establish `hζz : ∀ i, 𝔞.V.valuation (ζ (W.zA i)) < 1` using `fun i => by`. Rewrite using `[act_of_mem W.gr t ξ (j := W.wt i) (W.z_mem i)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht i`. Take `⟨A', _, _, _, f', g, hf', -, hr⟩` from `smallExt 𝔞 A f hf (s ∪ Finset.univ.image fun i => ζ (W.zA i))`. Establish `hmem : ∀ x : 𝔞.V, x ∈ f'.range → (x : 𝔞.K) ∈ (𝔞.toK.comp f').range`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨a, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h0 : ∀ b : W.gr 0, ζ b ∈ (𝔞.toK.comp f').range` using `fun b => by`. Rewrite using `[hζ0]`. Use `hmem _ (hr _ (Subfield.closure_mono (Set.union_subset_union_right _ ?_) (hcl b)))` and prove the remaining obligations. Conclude with `Finset.coe_subset.2 Finset.subset_union_left`. Establish `hall : ∀ x, (ζ : W.A →+* 𝔞.K) x ∈ (𝔞.toK.comp f').range` using `fun x => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : x ∈ Algebra.adjoin O ((W.gr 0 : Set W.A) ∪ Set.range W.zA)`. Rewrite using `[gr_gen O R X W]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `hx | ⟨i, rfl⟩` from `hx`. Conclude with `h0 ⟨x, hx⟩`. Use `hmem ⟨_, 𝔞.V.mem_of_valuation_le_one _ (hζz i).le⟩ (hr _ (Subfield.subset_closure (.inr ?_)))` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 (Finset.mem_union_right _ (Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩))`. Consider the case `algebraMap a => exact h0 (algebraMap O (W.gr 0) a)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`. Take `⟨η, hη⟩` from `factor (𝔞.toK.comp f') (Subtype.val_injective.comp hf'.inj) _ hall`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hη' : ∀ x, (f' (η x) : 𝔞.K) = ζ x` using `hη`. Establish `hmax : ∀ x, 𝔞.V.valuation (ζ x) < 1 → η x ∈ maximalIdeal A'` using `fun x hx hu => by`. Rewrite `hx` using `[← hη', ← 𝔞.V.valuation_lt_one_iff]`. Conclude with `hx (hu.map f')`. Use `letI : Algebra O A' := (η.comp (algebraMap O W.A)).toAlgebra`.
-
-Use `haveI := hf'.complete`. Take `⟨Ξ, hΞ, hΞm⟩` from `Po.extR O X R W hz A' { η with commutes' := fun _ => rfl } (fun i => hmax _ (hζz i)) fun b hb hm => hmax b (by`. Rewrite using `[hζ0 ⟨b, hb⟩]`. Conclude with `(𝔞.V.valuation_lt_one_iff _).1 (hy ⟨b, hb⟩ hm))`. Use `⟨A', inferInstance, inferInstance, inferInstance, f', Ξ, hf', hΞm, fun b => Subtype.ext ?_⟩` and prove the remaining obligations.
-
-Establish `e : Ξ ((b : W.A) : R) = η b` using `AlgHom.congr_fun hΞ b`. Use `show (f' (Ξ _) : 𝔞.K) = _`. Rewrite using `[e, hη', hζ0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Po.ptA :
     ∀ {l : ℕ} [Fact l.Prime] (𝔞 : Amb l) (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] (f : A →+* 𝔞.V), 𝔞.IsDvr f → ∀ (s : Finset 𝔞.K)

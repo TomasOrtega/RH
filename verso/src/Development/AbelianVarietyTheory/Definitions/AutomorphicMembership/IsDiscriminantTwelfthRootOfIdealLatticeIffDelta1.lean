@@ -152,7 +152,7 @@ Both sides reduce to the same expression.
 theorem lamOf_rec (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : lamOf D.host cc δ = TaylorLogMetric.lamOf D cc δ := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isDiscriminantTwelfthRoot_host_iff (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : IsDiscriminantTwelfthRootOfIdealLattice D.host cc δ ↔ TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ := Iff.rfl
 
@@ -173,7 +173,7 @@ theorem La_rec (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (L : Lt D.ho
     La D.host (TaylorLogMetric.embT D) (lamOf D.host cc δ) L L' = TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) L L' := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isDgen_rec (cD : D.what₂.Tau → ℂ) : IsDgen D.host (TaylorLogMetric.embT D) cD ↔ Formalism.L2.Ker.IsDgen D cD := Iff.rfl
 
@@ -220,15 +220,15 @@ theorem VacIn.eNat_rec (V : VacIn D.host (TaylorLogMetric.embT D) cc δ) (χ : T
 end Record
 
 /- English proof (translation)
-Simplify using `only [Hf, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum, mul_div_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 example (Λ : AddSubgroup ℂ) {N N' : ℕ} (c : ℂ) (z w : VC ι N N') : Hf Λ (c • z) w = c * Hf Λ z w := by
   simp only [Hf, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum, mul_div_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Establish `h0 : ∀ q : (⊥ : AddSubgroup (VC ι N N')) ⧸ (⊥ : AddSubgroup (VC ι N N')).addSubgroupOf ⊥, ((Quotient.out q : (⊥ : AddSubgroup (VC ι N N'))) : VC ι N N') = 0` using `fun q => AddSubgroup.mem_bot.1 (Quotient.out q).2`. Establish `hU : Unique ((⊥ : AddSubgroup (VC ι N N')) ⧸ (⊥ : AddSubgroup (VC ι N N')).addSubgroupOf ⊥)` using `⟨⟨QuotientAddGroup.mk 0⟩, fun q => by`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Rewrite using `[Subsingleton.elim x 0]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl⟩`. Simplify using `only [Iop, h0, finsum_unique]`. Simplify using `[al, U, Hf]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example (Λ : AddSubgroup ℂ) {N N' : ℕ} (G : VC ι N N' → ℂ) : Iop H Λ ⊥ ⊥ G = G := by
   funext z
@@ -243,9 +243,7 @@ example (Λ : AddSubgroup ℂ) {N N' : ℕ} (G : VC ι N N' → ℂ) : Iop H Λ 
   simp [al, U, Hf]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, -, t, ht, rfl⟩`. Conclude with `(H.AA0 : Submodule (𝓞 H.E) H.E).smul_mem (algebraMap (𝓞 H.K) (𝓞 H.E) c) ht`. Introduce `t ht`.
-
-Conclude with `Submodule.subset_span ⟨1, trivial, t, ht, by simp⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem perAA_top : perAA H ⊤ = (H.AA0 : Submodule (𝓞 H.E) H.E) := by
   apply le_antisymm

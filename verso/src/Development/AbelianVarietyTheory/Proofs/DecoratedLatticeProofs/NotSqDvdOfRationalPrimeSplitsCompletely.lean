@@ -7,13 +7,13 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.St.G.SplitUnram
 
 /- English proof (translation)
-Introduce `E _ _ T hT hs w hw hdvd`. Use `w.isPrime` as an intermediate fact. Establish `hnd` using `GlobalTheory.St.G.PsiLoc.not_dvd_different hT hs w.asIdeal hw`. Establish `hun : Algebra.IsUnramifiedAt ℤ w.asIdeal` using `not_dvd_differentIdeal_iff.1 hnd`. Establish `he : w.asIdeal.ramificationIdx ℤ = 1` using `Ideal.ramificationIdx_eq_one_iff.2 hun`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : Prime (T : ℤ)` using `Nat.prime_iff_prime_int.mp hT`. Establish `hmax : (Ideal.span {(T : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hp.irreducible`. Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(T : ℤ)}) = Ideal.span {((T : ℕ) : 𝓞 E)}`. Rewrite using `[Ideal.map_span]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hle : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(T : ℤ)}) ≤ w.asIdeal`. Rewrite using `[hmap, Ideal.span_le]`. Simplify using `using hw`. Establish `: w.asIdeal.LiesOver (Ideal.span {(T : ℤ)})` using `⟨hmax.eq_of_le (Ideal.comap_ne_top _ w.isPrime.ne_top) (Ideal.map_le_iff_le_comap.mp hle)⟩`. Establish `hb : Ideal.span {(T : ℤ)} ≠ ⊥` using `by simpa using hT.ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `he` using `[← Ideal.ramificationIdx'_eq_ramificationIdx (Ideal.span {(T : ℤ)}) w.asIdeal hb]`. Establish `h2` using `(Ideal.ramificationIdx'_ne_one_iff hle).2`. Rewrite `h2` using `[hmap]`. Conclude with `h2 (Ideal.le_of_dvd hdvd) he`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_sq_dvd_of_splitsIn : ∀ (E : Type) [Field E] [NumberField E] (T : ℕ), T.Prime → GlobalTheory.St.G.SplitsIn E T →
     ∀ w : HeightOneSpectrum (𝓞 E), (T : 𝓞 E) ∈ w.asIdeal → ¬ w.asIdeal ^ 2 ∣ Ideal.span {(T : 𝓞 E)} := by

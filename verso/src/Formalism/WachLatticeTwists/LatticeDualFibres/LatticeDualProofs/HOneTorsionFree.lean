@@ -11,11 +11,9 @@ noncomputable section
 namespace Formalism.RepresentationBoundsCohomology.LOC
 
 /- English proof (translation)
-Establish `hc' : algebraMap O (FractionRing O) c ≠ 0`. Simplify using `using hc`. Prove the components needed by the constructor for the conclusion. Introduce `v w h`. Establish `h' : algebraMap O (FractionRing O) c • v = algebraMap O (FractionRing O) c • w`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h` using `only [algebraMap_smul]`. Conclude with `smul_right_injective V hc' h'`. Introduce `v`. Use `⟨(algebraMap O (FractionRing O) c)⁻¹ • v, ?_⟩` and prove the remaining obligations. Use `show c • _ = v`.
-
-Rewrite using `[← algebraMap_smul (FractionRing O) c, smul_smul, mul_inv_cancel₀ hc', one_smul]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_bij {O V : Type u} [CommRing O] [IsDomain O] [AddCommGroup V] [Module O V]
     [Module (FractionRing O) V] [IsScalarTower O (FractionRing O) V] (c : O) (hc : c ≠ 0) :
@@ -33,13 +31,13 @@ theorem smul_bij {O V : Type u} [CommRing O] [IsDomain O] [AddCommGroup V] [Modu
     rw [← algebraMap_smul (FractionRing O) c, smul_smul, mul_inv_cancel₀ hc', one_smul]
 
 /- English proof (translation)
-Use `⟨fun r hr => ?_⟩` and prove the remaining obligations. Establish `hr0 : r ≠ 0` using `hr.ne_zero`. Establish `key : ∀ x : H1 ρ, r • x = 0 → x = 0`. Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `H z`. Introduce `h`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨m, hm⟩` from `(mem_coboundaries1 ρ _).1 h`. Take `⟨m', hm'⟩` from `(hb r hr0).2 m`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `(mem_coboundaries1 ρ _).2 ⟨m', fun g => (hb r hr0).1 ?_⟩` and prove the remaining obligations. Establish `h1 : r • z.1 g = ρ g m - m` using `hm g`. Use `show r • z.1 g = r • (ρ g m' - m')`. Establish `hm'' : r • m' = m` using `hm'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, smul_sub, ← map_smul, hm'']`. Introduce `x y hxy`. Establish `hxy' : r • x = r • y` using `hxy`. Establish `: r • (x - y) = 0` using `by rw [smul_sub, hxy', sub_self]`. Conclude with `sub_eq_zero.1 (key _ this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem h_one_torsion_free {O G V : Type u} [CommRing O] [IsDomain O] [Group G] [TopologicalSpace G]
     [AddCommGroup V] [Module O V] [TopologicalSpace V] [IsTopologicalAddGroup V]
@@ -68,17 +66,17 @@ theorem h_one_torsion_free {O G V : Type u} [CommRing O] [IsDomain O] [Group G] 
   exact sub_eq_zero.1 (key _ this)
 
 /- English proof (translation)
-Introduce `O G VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ D HfV HfV' ℓ e' ι₁ ι₂ P Q hT hperf hfin hc hBK hP hQ`. Establish `h1` using `hDual O G VT VT' D.ε D.ρT D.ρT' D.bT D.T hT D.stT hperf D.eqT`. Establish `hT' : IsLatticeIn D.T'` using `h1.1`. Establish `hrk : Module.finrank O D.T' = Module.finrank O D.T` using `h1.2.1`. Take `⟨e, he⟩ : ∃ e : (VT' ⧸ D.T') →ₗ[O] (Fin (Module.finrank O D.T) → KO O), Function.Injective e` from `hrk ▸ (hEmb O VT' D.T' hT').2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htf : Module.IsTorsionFree O (H1 D.ρT')` using `h_one_torsion_free D.ρT' (fun c hc => smul_bij c hc)`. Establish `a1 : ∀ a : VT' ⧸ D.T', ∃ c : O, c ≠ 0 ∧ c • a = 0`. Introduce `a`. Take `⟨c, hc, h⟩` from `pi_torsion (e a)`. Use `⟨c, hc, he ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, h, map_zero]`. Establish `a2 : LinearMap.ker D.T'.mkQ = LinearMap.range D.T'.subtype`. Rewrite using `[Submodule.ker_mkQ, Submodule.range_subtype]`. Establish `a3 : ∀ (g : G) (m : D.T'), D.T'.subtype (D.ρTl' g m) = D.ρT' g (D.T'.subtype m)` using `fun _ _ => rfl`. Establish `a4 : ∀ (g : G) (m : VT'), D.T'.mkQ (D.ρT' g m) = D.ρA' g (D.T'.mkQ m)` using `fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a5 : Topology.IsEmbedding D.T'.subtype` using `Topology.IsEmbedding.subtypeVal`. Establish `hC` using `hConn O G D.T' VT' (VT' ⧸ D.T') D.ρTl' D.ρT' D.ρA' D.T'.subtype D.T'.mkQ a5 a3 a4 (Submodule.mkQ_surjective _) a2 D.contT' (fun c hc => smul_bij c hc) a1`. Take `⟨δ, hδ⟩` from `hC`. Set `ι : H0 D.ρA' →ₗ[O] (Fin (Module.finrank O D.T) → KO O)` to `e ∘ₗ (H0 D.ρA').subtype`. Establish `hι : Function.Injective ι` using `he.comp (Submodule.injective_subtype _)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `δ' : LinearMap.range ι →ₗ[O] H1 D.ρTl'` to `δ ∘ₗ (LinearEquiv.ofInjective ι hι).symm.toLinearMap`. Establish `hδ' : LinearMap.range δ' = Submodule.torsion O (H1 D.ρTl')`. Rewrite using `[← hδ]`. Conclude with `LinearEquiv.range_comp _ _`. Establish `main` using `propLoc O (H1 D.ρA) (H1 D.ρT) (H1 D.ρTl') (H1 D.ρT') D.q D.j' D.pr HfV HfV' ℓ e' (Module.finrank O D.T) (LinearMap.range ι) δ' ι₁ ι₂ (fun i => (P i).toDirect) (fun i => (Q i).toDual hc) hBK hδ' hP hQ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨main.1, main.2.1, ?_⟩` and prove the remaining obligations. Conclude with `main.2.2`.
+A detailed English derivation is pending.
 -/
 theorem propLocCont_of (hConn : StatConnTors.{u}) (hEmb : StatQuotEmbeds.{u})
     (hDual : StatDualLattice.{u}) : StatPropLocCont.{u} := by

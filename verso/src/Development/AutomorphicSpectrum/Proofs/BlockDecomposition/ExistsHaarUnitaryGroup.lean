@@ -11,7 +11,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GlobalTheory.CompanionTheory.ModelS
 
 /- English proof (translation)
-Use `haveI : CompactSpace (Matrix.unitaryGroup (Fin n) ℂ) := GlobalTheory.compactSpace_unitaryGroup (Fin n) ℂ`. Set `μ : Measure (Matrix.unitaryGroup (Fin n) ℂ)` to `Measure.haarMeasure ⊤`. Use `⟨μ.inv, inferInstance, inferInstance, inferInstance⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_rightInvariant_measure_unitaryGroup
     (n : ℕ) [MeasurableSpace (Matrix.unitaryGroup (Fin n) ℂ)]

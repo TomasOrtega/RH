@@ -14,7 +14,7 @@ namespace CrystallineSemistableComparison
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `hu`. Conclude with `⟨↑v⁻¹, map_units_inv (f : R →* F) v⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fc_inv_mem {R F : Type*} [CommRing R] [Field F] (f : R →+* F) {u : R} (hu : IsUnit u) :
     (f u)⁻¹ ∈ f.range := by
@@ -22,23 +22,21 @@ theorem fc_inv_mem {R F : Type*} [CommRing R] [Field F] (f : R →+* F) {u : R} 
   exact ⟨↑v⁻¹, map_units_inv (f : R →* F) v⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨x, hx⟩, ⟨x⁻¹, hx'⟩, Subtype.ext (mul_inv_cancel₀ h0), Subtype.ext (inv_mul_cancel₀ h0)⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem fc_isUnit_sub {F : Type*} [Field F] (S : Subring F) {x : F} (hx : x ∈ S) (hx' : x⁻¹ ∈ S) (h0 : x ≠ 0) :
     IsUnit (⟨x, hx⟩ : S) :=
   ⟨⟨⟨x, hx⟩, ⟨x⁻¹, hx'⟩, Subtype.ext (mul_inv_cancel₀ h0), Subtype.ext (inv_mul_cancel₀ h0)⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Loc2.lift_mk₀ _ _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem fc_ι_c (a : ACris.ACris ℂ_[l] l) : period_ring_base.ι l (cB l a) = iC l a := Loc2.lift_mk₀ _ _ _ a
 
 /- English proof (translation)
-Set `f : ACris.ACris ℂ_[l] l →+* Bcr l` to `(iC l).codRestrict (Bcr l) (fun a => iC_mem_bcr a)`. Establish `hl : IsUnit (f (l : ACris.ACris ℂ_[l] l))`. Establish `e : iC l (l : ACris.ACris ℂ_[l] l) = (l : BdR l)` using `map_natCast _ l`. Use `fc_isUnit_sub (Bcr l) (x := iC l (l : ACris.ACris ℂ_[l] l)) (iC_mem_bcr _) (by rw [e]; exact linv_mem_bcr) (by rw [e]; exact l_ne)` as an intermediate fact. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : IsUnit (f (tA l))` using `fc_isUnit_sub (Bcr l) (x := iC l (tA l)) (iC_mem_bcr _) tinv_mem_bcr DeRhamTwist.Twist.tQ_ne`. Establish `hg : (Bcr l).subtype.comp (Loc2.lift f hl ht) = period_ring_base.ι l` using `Loc2.hom_ext (fun x => by`. Rewrite using `[RingHom.comp_apply, Loc2.lift_mk₀]`. Conclude with `(fc_ι_c x).symm)`. Introduce and unpack `_ ⟨x, rfl⟩`.
-
-Rewrite using `[← hg]`. Conclude with `(Loc2.lift f hl ht x).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fc_range_le : (period_ring_base.ι l).range ≤ Bcr l := by
   let f : ACris.ACris ℂ_[l] l →+* Bcr l := (iC l).codRestrict (Bcr l) (fun a => iC_mem_bcr a)
@@ -58,9 +56,9 @@ theorem fc_range_le : (period_ring_base.ι l).range ≤ Bcr l := by
   exact (Loc2.lift f hl ht x).2
 
 /- English proof (translation)
-Establish `hb` using `period_ring_base.base l`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (⟨a, rfl⟩ | rfl | rfl)`. Conclude with `⟨_, fc_ι_c a⟩`. Establish `h` using `fc_inv_mem (period_ring_base.ι l) (period_ring_base.isUnit_l l)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h` using `fc_inv_mem (period_ring_base.ι l) hb.t_unit`. Rewrite `h` using `[hb.ι_t]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fc_bcr_le : Bcr l ≤ (period_ring_base.ι l).range := by
   have hb := period_ring_base.base l
@@ -73,12 +71,12 @@ theorem fc_bcr_le : Bcr l ≤ (period_ring_base.ι l).range := by
     rwa [hb.ι_t] at h
 
 /- English proof (translation)
-The claim follows from `le_antisymm fc_range_le fc_bcr_le`.
+A detailed English derivation is pending.
 -/
 theorem fc_range : (period_ring_base.ι l).range = Bcr l := le_antisymm fc_range_le fc_bcr_le
 
 /- English proof (translation)
-Introduce `l _ K r` and use `by have hb := period_ring_base.base l refine ⟨⟨fun a => fc_ι_c a, fun z => hb.ι_q z, hb.ι_inj, Loc2.isUnit_right _ _, ?_, fun z => hb.φ_q z, ?_, ?_, fun g z => hb.σ_q g.1 z, ?_⟩, fc_range⟩ · intro a show φB l (cB l a) = cB l (ACris.phi ℂ_[l] l a) exact Loc2.map_mk₀ _ _ _ _ _ a · …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem factsC : BcrisPeriodFacts := fun l _ K r => by
   have hb := period_ring_base.base l

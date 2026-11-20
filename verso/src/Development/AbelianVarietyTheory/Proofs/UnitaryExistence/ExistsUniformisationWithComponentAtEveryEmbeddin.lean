@@ -16,7 +16,7 @@ open GlobalTheory.Member
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D Q _ h j σ`. Take `⟨X⟩` from `DefiniteData.nonempty_data D.host.E D.R.r`. Take `⟨y⟩` from `GlobalTheory.nonempty_frPt_complex GlobalTheory.closing_of_abelianSchemeLaws GlobalTheory.firstFiveLaws.2.1.secTwist _ _ _ _ (Q.Xo j) Q.c (h j) σ`. Conclude with `⟨{ Comp := Unit, X := fun _ => X, un := fun _ _ => y }, ⟨()⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unf_nonempty_comp_all : ∀ (D : D7) (Q : Par D), Q.Pins → (∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q) → ∀ j (σ : Q.c.F →+* ℂ), ∃ U : Unf (Q.Xo j) Q.c σ D.R.r, Nonempty U.Comp := by
   intro D Q _ h j σ

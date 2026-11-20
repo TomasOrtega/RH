@@ -3,13 +3,11 @@ import Mathlib
 open Filter Topology ValuativeRel
 
 /- English proof (translation)
-Take `⟨γ, hγ, hs⟩` from `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.mp hV`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible ↥(valuation k).integer`. Establish `hlt : valuation k (π : k) < 1`. Use `lt_of_le_of_ne π.2 fun h => hπ.not_isUnit ?_` and prove the remaining obligations. Conclude with `(Valuation.integer.integers (valuation k)).isUnit_of_one' h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: MulArchimedean (ValueGroupWithZero k)` using `ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Take `⟨N, hN⟩` from `exists_pow_lt₀ hlt (Units.mk0 γ hγ)`. Use `filter_upwards [eventually_ge_atTop N] with c hc x hx`. Establish `hx'` using `Ideal.pow_le_pow_right hc hx`. Rewrite `hx'` using `[hπ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨a, rfl⟩` from `hx'`. Apply `hs` to reduce the goal to its premises. Establish `ha : valuation k (a : k) ≤ 1` using `a.2`. Express the relevant statement in the definitionally equal form `valuation k ((a : k) * (π : k) ^ N) < γ`. Rewrite using `[map_mul, map_pow]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem small_powers {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (V : Set k) (hV : V ∈ nhds (0 : k)) :
@@ -35,11 +33,11 @@ private theorem small_powers {k : Type} [Field k] [ValuativeRel k] [TopologicalS
     _ < γ := by simpa using hN
 
 /- English proof (translation)
-Take `⟨h, hh, rfl⟩` from `hg`. Establish `h1 : Matrix.GeneralLinearGroup.map (n` using `Fin n) (Ideal.Quotient.mk I) h = 1 := hh`. Establish `h2 : Ideal.Quotient.mk I ((h : Matrix (Fin n) (Fin n) _) i j) = (1 : Matrix (Fin n) (Fin n) (_ ⧸ I)) i j`. Establish `h4` using `Units.ext_iff.mp h1`. Conclude with `congrFun (congrFun h4 i) j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(h : Matrix (Fin n) (Fin n) _) i j - (1 : Matrix (Fin n) (Fin n) _) i j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, h2]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `h3 : ((Matrix.GeneralLinearGroup.map (algebraMap (↥(valuation k).integer) k) h : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = (((h : Matrix (Fin n) (Fin n) ↥(valuation k).integer) i j : _) : k)` using `rfl`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+A detailed English derivation is pending.
 -/
 private theorem entry_mem {k : Type} [Field k] [ValuativeRel k] {n : ℕ}
     (I : Ideal ↥(valuation k).integer) (g : GL (Fin n) k)
@@ -64,9 +62,9 @@ private theorem entry_mem {k : Type} [Field k] [ValuativeRel k] {n : ℕ}
     by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
 
 /- English proof (translation)
-Use `tendsto_pi_nhds.mpr fun i => tendsto_pi_nhds.mpr fun j => ?_` and prove the remaining obligations. Rewrite using `[← tendsto_sub_nhds_zero_iff]`. Use `tendsto_def.mpr fun V hV => ?_` and prove the remaining obligations. Use `filter_upwards [hg, hc.eventually (small_powers V hV)] with a ha hs`. Take `⟨x, hx, e⟩` from `entry_mem _ _ ha i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hs x hx` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem tendsto_val {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : ℕ} {α : Type} (L : Filter α) (c : α → ℕ)
@@ -85,11 +83,11 @@ private theorem tendsto_val {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   rwa [e] at this
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n U hU`. Set `K : ℕ → Subgroup (GL (Fin n) k)` to `fun c => Subgroup.map (Matrix.GeneralLinearGroup.map (algebraMap (↥(valuation k).integer) k)) (Matrix.GeneralLinearGroup.map (n := Fin n) (Ideal.Quotient.mk (IsLocalRing.maximalIdeal ↥(valuation k).integer ^ c))).ker`. Set `L : Filter (ℕ × GL (Fin n) k)` to `comap Prod.fst atTop ⊓ 𝓟 {p | p.2 ∈ K p.1}`. Establish `hc : Tendsto Prod.fst L atTop` using `tendsto_comap.mono_left inf_le_left`. Establish `hK : ∀ᶠ p in L, p.2 ∈ K p.1` using `mem_inf_of_right (mem_principal_self _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `tendsto_val L Prod.fst hc Prod.snd hK`. Establish `h2` using `tendsto_val L Prod.fst hc (fun p => p.2⁻¹) (hK.mono fun p hp => (K p.1).inv_mem hp)`. Establish `h : Tendsto Prod.snd L (nhds (1 : GL (Fin n) k))`. Rewrite using `[Units.isInducing_embedProduct.tendsto_nhds_iff]`. Use `Tendsto.prodMk_nhds h1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(MulOpposite.continuous_op.tendsto _).comp h2`. Establish `h3 : ∀ᶠ p in L, p.2 ∈ U` using `h hU`. Rewrite `h3` using `[eventually_inf_principal, eventually_comap, eventually_atTop]`. Take `⟨c₀, h₀⟩` from `h3`. Conclude with `⟨c₀, fun c hc g hg => h₀ c hc (c, g) rfl hg⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.congruence_subgroup_eventually :
     ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} (U : Set (GL (Fin n) k)), U ∈ nhds (1 : GL (Fin n) k) →

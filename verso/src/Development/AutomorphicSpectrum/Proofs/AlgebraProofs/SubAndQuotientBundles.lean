@@ -10,9 +10,9 @@ open GlobalTheory.CompanionTheory.Ar.Crv
 variable {K : Type} [Field K] (C : ACurve K)
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Use `(C.fin a ha).subset ?_` and prove the remaining obligations. Introduce `i hi`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_setOf_eq] at hi ⊢`. Introduce `h`. Conclude with `hi (le_of_eq h)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_not_le_one (a : K) : {i | ¬ C.v i a ≤ 1}.Finite := by
   by_cases ha : a = 0
@@ -25,11 +25,11 @@ theorem finite_not_le_one (a : K) : {i | ¬ C.v i a ≤ 1}.Finite := by
     exact hi (le_of_eq h)
 
 /- English proof (translation)
-Use `(Set.finite_iUnion fun q : Fin m => Set.finite_iUnion fun r : Fin n => finite_not_le_one C (b'.repr (f (b r)) q)).subset ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Set.mem_setOf_eq] at hi`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq]`. Assume the negation of the conclusion as `hcon`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Apply `hi` to reduce the goal to its premises. Introduce `x hx q`. Establish `hx' : f x = ∑ r, b.repr x r • f (b r)` using `by conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[map_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul]`. Rewrite using `[hx', map_sum, Finsupp.finset_sum_apply]`. Use `(C.v i).map_sum_le fun r _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, (C.v i).map_mul]`. Conclude with `mul_le_one' (hx r) (hcon q r)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_not_mapsTo {V V' : Type} [AddCommGroup V] [Module K V] [AddCommGroup V']
     [Module K V'] {n m : ℕ} (b : Module.Basis (Fin n) K V) (b' : Module.Basis (Fin m) K V')
@@ -55,25 +55,23 @@ theorem finite_not_mapsTo {V V' : Type} [AddCommGroup V] [Module K V] [AddCommGr
   exact mul_le_one' (hx r) (hcon q r)
 
 /- English proof (translation)
-Introduce `K _ C V _ _ _ L W hL`. Unfold `IsBun at hL ⊢`. Take `⟨hloc, b0, hb0⟩` from `hL`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective W.subtype W.ker_subtype`. Take `⟨s, hs⟩` from `LinearMap.exists_rightInverse_of_surjective W.mkQ W.range_mkQ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨fun i => ?_, Module.finBasis K W, ?_⟩, ⟨fun i => ?_, Module.finBasis K (V ⧸ W), ?_⟩⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hloc i`. Take `⟨bW, bQ, b', -, hW, -, -, -⟩` from `GlobalTheory.T.lattice_basis_adapted_to_subspace K C V i _ b (L i) W hb`. Conclude with `⟨bW, hW⟩`. Use `((hb0.union (finite_not_mapsTo C (Module.finBasis K W) b0 W.subtype)).union (finite_not_mapsTo C b0 (Module.finBasis K W) g)).subset ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq] at hi ⊢`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨⟨h1, h2⟩, h3⟩` from `hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hi` to reduce the goal to its premises. Unfold `IsLatOf at h1 ⊢`. Introduce `w`. Use `show (w : V) ∈ L i ↔ _`. Rewrite using `[h1]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hgw : g (w : V) = w` using `by simpa using LinearMap.congr_fun hg w`. Prove the components needed by the constructor for the conclusion. Introduce `hw q`. Establish `hq` using `h3 (w : V) hw q`. Rewrite `hq` using `[hgw]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hw q`. Conclude with `h2 w hw q`. Take `⟨b, hb⟩` from `hloc i`. Take `⟨bW, bQ, b', -, -, hQ, -, -⟩` from `GlobalTheory.T.lattice_basis_adapted_to_subspace K C V i _ b (L i) W hb`. Conclude with `⟨bQ, hQ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `((hb0.union (finite_not_mapsTo C b0 (Module.finBasis K (V ⧸ W)) W.mkQ)).union (finite_not_mapsTo C (Module.finBasis K (V ⧸ W)) b0 s)).subset ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq] at hi ⊢`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨⟨h1, h2⟩, h3⟩` from `hcon`. Apply `hi` to reduce the goal to its premises. Unfold `IsLatOf at h1 ⊢`. Introduce `y`. Use `show y ∈ (L i).map W.mkQ.toAddMonoidHom ↔ _`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ q`. Conclude with `h2 x ((h1 x).1 hx) q`. Introduce `hy`.
-
-Establish `hsy : W.mkQ (s y) = y` using `by simpa using LinearMap.congr_fun hs y`. Conclude with `⟨s y, (h1 (s y)).2 (h3 y hy), hsy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isBun_sub_quot : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] (L : C.I → AddSubgroup V) (W : Submodule K V),

@@ -25,7 +25,7 @@ section
 variable {m : ℕ} {L : Lev (per l K) m} (hL : L.Good) (M : Model l K) (s : ℕ)
 
 /- English proof (translation)
-The claim follows from `unit_B_pf (l := l) hL fin j := (m_fin M hM j).1 basis j _ bs w := cg_basis_pf hL M hM s U hU j bs w r_tr n j x := hr n j x red_tr n j z := trM_redM (QA L M s) none (l : L.A) n j z lift j x hx := by obtain ⟨e, he⟩ := cg_lift_pf hL M hM s hs j obtain ⟨z, hz⟩ := he.1 (fun n => rH n …`.
+A detailed English derivation is pending.
 -/
 theorem level_system_good [FiniteDimensional ℚ_[l] K] (hM : M.Sm) (U : Cov M.q) (hU : ∀ α, U.d α + m ≤ s) (hs : m ≤ s)
     (rH : ∀ n j, M.Hc false n j →ₛₗ[L.lam] HM (QA L M s) none ((l : L.A) ^ n) j)

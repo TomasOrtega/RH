@@ -19,26 +19,26 @@ open prime_not_mem_section_base_place
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_inv, gInf_infP]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gInf_infP_inv_mul (y : InfinitePlace E → G n) (w : InfinitePlace E) (z : GA E n) :
     gInf w ((infP n y)⁻¹ * z) = (y w)⁻¹ * gInf w z := by
   rw [map_mul, map_inv, gInf_infP]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_inv, gFin_infP, inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gFin_infP_inv_mul (y : InfinitePlace E → G n) (z : GA E n) : gFin ((infP n y)⁻¹ * z) = gFin z := by
   rw [map_mul, map_inv, gFin_infP, inv_one, one_mul]
 
 /- English proof (translation)
-Simplify using `only [entA, gInf_infP_inv_mul]`. Rewrite using `[Fintype.prod_eq_mul_prod_subtype_ne _ v]`. Establish `hv : ent (M v) (k v (((Pi.mulSingle v (Unitary.toUnits u) : InfinitePlace E → G n) v)⁻¹ * gInf v z).val) (I v) (J v) = ∑ l, ent (M v) ((M v).ρ u⁻¹) (I v) l * ent (M v) (k v (gInf v z).val) l (J v)`. Rewrite using `[Pi.mulSingle_eq_same]`. Establish `h2` using `mult_equivariant_val (hk v) (gInf v z) u⁻¹ 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [OneMemClass.coe_one, map_one, mul_one] at h2`. Establish `e : ((Unitary.toUnits u)⁻¹ * gInf v z).val = (u⁻¹ : Matrix.unitaryGroup (Fin n) ℂ).1 * (gInf v z).val`. Rewrite using `[Units.val_mul]`. Both sides reduce to the same expression. Rewrite using `[e, h2, PMul.ent_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : ∀ w : {w // w ≠ v}, ent (M w) (k w (((Pi.mulSingle v (Unitary.toUnits u) : InfinitePlace E → G n) w)⁻¹ * gInf w z).val) (I w) (J w) = ent (M w) (k w (gInf w z).val) (I w) (J w)`. Introduce `w`. Rewrite using `[Pi.mulSingle_eq_of_ne w.2, inv_one, one_mul]`. Rewrite using `[hv, Finset.prod_congr rfl fun w _ => hw w, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.prod_eq_mul_prod_subtype_ne _ v, Function.update_self]`. Establish `hw' : ∀ w : {w // w ≠ v}, ent (M w) (k w (gInf w z).val) (Function.update I v l w) (J w) = ent (M w) (k w (gInf w z).val) (I w) (J w)` using `fun w => by`. Rewrite using `[Function.update_of_ne w.2]`. Rewrite using `[Finset.prod_congr rfl fun w _ => hw' w]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem entA_place [MeasurableSpace (G n)] {μ : Measure (G n)} {M : Mods E n} {k : Kers M}
     {val : InfinitePlace E → Inf n → ℂ} {T : ℝ} (hk : IsMults μ k val T) (v : InfinitePlace E)
@@ -76,19 +76,17 @@ open prime_not_mem_section_base_place ActEq
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Take `⟨hfc, c, hc, hconv⟩` from `hR`. Establish `hint : ∀ i j x, Integrable (fun y => tens ka kb ψ i j y * f j (x * y)) D.μ` using `fun i j x => integrable_tens D hka hkb hψ (hfc j) i j x`. Establish `hRx : ∀ (L : Io Ma Mb κ) x, c * f L x = ∑ j, ∫ y, tens ka kb ψ L j y * f j (x * y) ∂D.μ` using `fun L x => by`. Establish `h0` using `f_mul D _ f hconv L x 1`. Simplify `h0` using `only [mul_one, inv_one, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set p : H E a b := (infP a (Pi.mulSingle v (Unitary.toUnits u)), 1) with hp`. Establish `hΦ : ∀ j y, tens ka kb ψ I j (p⁻¹ * y) = ∑ l, ent (Ma v) ((Ma v).ρ u⁻¹) (I.1.1 v) l * tens ka kb ψ ((Function.update I.1.1 v l, I.1.2), I.2) j y`. Introduce `j y`. Establish `hF : hFin (p⁻¹ * y) = hFin y` using `Prod.ext (gFin_infP_inv_mul _ y.1) (by show gFin (1⁻¹ * y.2) = gFin y.2; rw [inv_one, one_mul])`. Use `show entA ka I.1.1 j.1.1 ((infP a (Pi.mulSingle v (Unitary.toUnits u)))⁻¹ * y.1) * entA kb I.1.2 j.1.2 (1⁻¹ * y.2) * ψ I.2 j.2 (hFin (p⁻¹ * y)) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hF, inv_one, one_mul, entA_place hka, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [tens]`. Expand and normalize the polynomial expressions, which then agree. Apply `mul_left_cancel₀ hc` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[f_mul D _ f hconv I x p]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hΦ, Finset.sum_mul, mul_assoc]`. Use `_ = ∑ j, ∑ l, ent (Ma v) ((Ma v).ρ u⁻¹) (I.1.1 v) l * ∫ y, tens ka kb ψ ((Function.update I.1.1 v l, I.1.2), I.2) j y * f j (x * y) ∂D.μ := by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun l _ => (hint _ j x).const_mul _]`. Conclude with `Finset.sum_congr rfl fun l _ => integral_const_mul _ _`. Use `_ = ∑ l, ent (Ma v) ((Ma v).ρ u⁻¹) (I.1.1 v) l * (c * f ((Function.update I.1.1 v l, I.1.2), I.2) x) := by`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hRx, Finset.mul_sum]`. Use `_ = c * ∑ l, ent (Ma v) ((Ma v).ρ u⁻¹) (I.1.1 v) l * f ((Function.update I.1.1 v l, I.1.2), I.2) x := by`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem equiv_a (D : Dom E a b) [MeasurableSpace (G a)] [MeasurableSpace (G b)] {μa : Measure (G a)}
     {μb : Measure (G b)} {Ma : Mods E a} {Mb : Mods E b} {κ : Type} [Fintype κ] {ka : Kers Ma} {kb : Kers Mb}
@@ -138,19 +136,17 @@ theorem equiv_a (D : Dom E a b) [MeasurableSpace (G a)] [MeasurableSpace (G b)] 
         ring
 
 /- English proof (translation)
-Take `⟨hfc, c, hc, hconv⟩` from `hR`. Establish `hint : ∀ i j x, Integrable (fun y => tens ka kb ψ i j y * f j (x * y)) D.μ` using `fun i j x => integrable_tens D hka hkb hψ (hfc j) i j x`. Establish `hRx : ∀ (L : Io Ma Mb κ) x, c * f L x = ∑ j, ∫ y, tens ka kb ψ L j y * f j (x * y) ∂D.μ` using `fun L x => by`. Establish `h0` using `f_mul D _ f hconv L x 1`. Simplify `h0` using `only [mul_one, inv_one, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set p : H E a b := (1, infP b (Pi.mulSingle v (Unitary.toUnits u))) with hp`. Establish `hΦ : ∀ j y, tens ka kb ψ I j (p⁻¹ * y) = ∑ l, ent (Mb v) ((Mb v).ρ u⁻¹) (I.1.2 v) l * tens ka kb ψ ((I.1.1, Function.update I.1.2 v l), I.2) j y`. Introduce `j y`. Establish `hF : hFin (p⁻¹ * y) = hFin y` using `Prod.ext (by show gFin (1⁻¹ * y.1) = gFin y.1; rw [inv_one, one_mul]) (gFin_infP_inv_mul _ y.2)`. Use `show entA ka I.1.1 j.1.1 (1⁻¹ * y.1) * entA kb I.1.2 j.1.2 ((infP b (Pi.mulSingle v (Unitary.toUnits u)))⁻¹ * y.2) * ψ I.2 j.2 (hFin (p⁻¹ * y)) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hF, inv_one, one_mul, entA_place hkb, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [tens]`. Expand and normalize the polynomial expressions, which then agree. Apply `mul_left_cancel₀ hc` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[f_mul D _ f hconv I x p]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hΦ, Finset.sum_mul, mul_assoc]`. Use `_ = ∑ j, ∑ l, ent (Mb v) ((Mb v).ρ u⁻¹) (I.1.2 v) l * ∫ y, tens ka kb ψ ((I.1.1, Function.update I.1.2 v l), I.2) j y * f j (x * y) ∂D.μ := by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun l _ => (hint _ j x).const_mul _]`. Conclude with `Finset.sum_congr rfl fun l _ => integral_const_mul _ _`. Use `_ = ∑ l, ent (Mb v) ((Mb v).ρ u⁻¹) (I.1.2 v) l * (c * f ((I.1.1, Function.update I.1.2 v l), I.2) x) := by`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hRx, Finset.mul_sum]`. Use `_ = c * ∑ l, ent (Mb v) ((Mb v).ρ u⁻¹) (I.1.2 v) l * f ((I.1.1, Function.update I.1.2 v l), I.2) x := by`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem equiv_b (D : Dom E a b) [MeasurableSpace (G a)] [MeasurableSpace (G b)] {μa : Measure (G a)}
     {μb : Measure (G b)} {Ma : Mods E a} {Mb : Mods E b} {κ : Type} [Fintype κ] {ka : Kers Ma} {kb : Kers Mb}

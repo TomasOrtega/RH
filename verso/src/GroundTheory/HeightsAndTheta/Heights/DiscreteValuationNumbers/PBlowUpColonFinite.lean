@@ -8,9 +8,9 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 universe u
 
 /- English proof (translation)
-Establish `hprop : ∀ t, I ^ (n₀ + t + k) = Ideal.span {y} * I ^ (n₀ + t)`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simpa using h`. Consider the case `succ t ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[show n₀ + (t + 1) + k = n₀ + t + k + 1 by omega, pow_succ, ih, show n₀ + (t + 1) = n₀ + t + 1 by omega, pow_succ, mul_assoc]`. Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `succ s ih`. Rewrite using `[show n₀ + k * (s + 1) = n₀ + k * s + k by ring, hprop, ih, ← mul_assoc, Ideal.span_singleton_mul_span_singleton, ← pow_succ']`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem pow_add_mul_eq_span_pow_mul {A : Type*} [CommRing A] {I : Ideal A} {k n₀ : ℕ} {y : A}
     (h : I ^ (n₀ + k) = Ideal.span {y} * I ^ n₀) (s : ℕ) :
@@ -29,9 +29,9 @@ theorem pow_add_mul_eq_span_pow_mul {A : Type*} [CommRing A] {I : Ideal A} {k n�
       Ideal.span_singleton_mul_span_singleton, ← pow_succ']
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[Submodule.mem_div_iff_forall_mul_mem]`. Introduce `z hz`. Use `Submodule.mul_induction_on hz (fun p hp q hq => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Conclude with `Submodule.mul_mem_mul (hf p hp) hq`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add]`. Conclude with `add_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem mem_div_self_mul_of_mem_div_self {A L : Type*} [CommRing A] [CommRing L] [Algebra A L]
     {P : Submodule A L} (Q : Submodule A L) {f : L} (hf : f ∈ P / P) : f ∈ (P * Q) / (P * Q) := by
@@ -44,25 +44,21 @@ theorem mem_div_self_mul_of_mem_div_self {A L : Type*} [CommRing A] [CommRing L]
     exact add_mem ha hb
 
 /- English proof (translation)
-Introduce `A _ _ _ _ L _ _ hinj _hdim I hI`. Take `⟨k, hk, y, hy, n₀, hred⟩` from `h₂ A I (h₁ A _hdim I)`. Establish `hlin : Algebra.linearMap A L = (Algebra.ofId A L).toLinearMap` using `LinearMap.ext fun _ => rfl`. Establish `hmap : ∀ (J : Ideal A) (n : ℕ), (Submodule.map (Algebra.linearMap A L) J) ^ n = Submodule.map (Algebra.linearMap A L) (J ^ n)` using `fun J n => by`. Rewrite using `[hlin]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.map_pow _ _ n).symm`. Use `set 𝓘 := Submodule.map (Algebra.linearMap A L) I with h𝓘`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Establish `: I ^ (n₀ + k) = ⊥`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hred, Ideal.span_singleton_eq_bot.mpr rfl, Ideal.bot_mul]`. Conclude with `pow_ne_zero _ hI this`. Establish `hy' : algebraMap A L y ≠ 0` using `fun h => hy0 (hinj (by rw [h, map_zero]))`. Establish `hkey : ∀ s, 𝓘 ^ (n₀ + k * s) = Submodule.span A {algebraMap A L y ^ s} * 𝓘 ^ n₀`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h𝓘, hmap, hmap, pow_add_mul_eq_span_pow_mul hred s, hlin, Submodule.map_mul, ← Ideal.submodule_span_eq, Submodule.map_span, Set.image_singleton, AlgHom.toLinearMap_apply, map_pow, Algebra.ofId_apply]`. Establish `hle : ∀ n, 𝓘 ^ n / 𝓘 ^ n ≤ 𝓘 ^ n₀ / 𝓘 ^ n₀`. Introduce `n f hf`. Establish `hn : n ≤ n₀ + k * n` using `by nlinarith`. Establish `hf'` using `mem_div_self_mul_of_mem_div_self (𝓘 ^ (n₀ + k * n - n)) hf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hf'` using `[← pow_add, Nat.add_sub_cancel' hn, hkey]`. Rewrite `hf'`, the goal using `[Submodule.mem_div_iff_forall_mul_mem]`. Introduce `z hz`. Take `⟨w, hw, hweq⟩` from `Submodule.mem_span_singleton_mul.mp (hf' _ (Submodule.mem_span_singleton_mul.mpr ⟨z, hz, rfl⟩))`. Establish `: f * z = w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Apply `mul_left_cancel₀ (pow_ne_zero n hy')` to reduce the goal to its premises. Rewrite using `[hweq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, haI, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Use `set c := algebraMap A L (a ^ n₀) with hc`. Establish `hc0 : c ≠ 0` using `fun h => pow_ne_zero n₀ ha0 (hinj (by rw [← hc, h, map_zero]))`. Establish `hcI : c ∈ 𝓘 ^ n₀`. Rewrite using `[h𝓘, hmap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.mem_map_of_mem (Ideal.pow_mem_pow haI n₀)`. Establish `hfg : (𝓘 ^ n₀).FG`. Rewrite using `[h𝓘, hmap]`. Conclude with `(IsNoetherian.noetherian (I ^ n₀)).map _`. Establish `hcol : (𝓘 ^ n₀ / 𝓘 ^ n₀).FG`.
-
-Use `Submodule.fg_of_fg_map_injective (LinearMap.mulLeft A c) (fun x x' h => mul_left_cancel₀ hc0 h) (hfg.of_le ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Rewrite `hf` using `[SetLike.mem_coe, Submodule.mem_div_iff_forall_mul_mem]`. Rewrite using `[LinearMap.mulLeft_apply, mul_comm]`. Conclude with `hf c hcI`.
-
-Conclude with `hcol.of_le (iSup_le hle)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BlowUpColonFinite.proof (h₁ : PowSpanFinrankBounded.Statement.{u})
     (h₂ : PrincipalReductionOfBoundedGens.Statement.{u}) : BlowUpColonFinite.Statement.{u} := by

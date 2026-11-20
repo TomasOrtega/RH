@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Polynomial UpperTheory.V.Z.Sym.Wt
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[eval_mRep]`. Establish `hact : act (fun k => Matrix.GeneralLinearGroup.scalar (Fin d) (s k)) x = fun p => (s p.1 : ℂ) * x p`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Simplify using `[act, Matrix.scalar_apply, Matrix.diagonal_apply, mul_comm]`. Rewrite using `[hact, Q.2 (fun k => (s k : ℂ)) x]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem mRep_scal {K : Type} [Fintype K] {d : ℕ} (n : K → ℕ) (s : K → ℂˣ) (Q : MH d n) :
     mRep d n (fun k => Matrix.GeneralLinearGroup.scalar (Fin d) (s k)) Q = (∏ k, (s k : ℂ) ^ n k) • Q := by
@@ -20,7 +20,7 @@ private theorem mRep_scal {K : Type} [Fintype K] {d : ℕ} (n : K → ℕ) (s : 
   simp
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[invT_val, ← map_inv]`. Conclude with `Matrix.diagonal_transpose _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem invT_scal {d : ℕ} (s : ℂˣ) :
     invT ℂ d (Matrix.GeneralLinearGroup.scalar (Fin d) s) = Matrix.GeneralLinearGroup.scalar (Fin d) s⁻¹ := by
@@ -29,17 +29,17 @@ private theorem invT_scal {d : ℕ} (s : ℂˣ) :
   exact Matrix.diagonal_transpose _
 
 /- English proof (translation)
-Introduce `I _ s`. Use `⟨fun j => ?_, fun n e => ?_⟩` and prove the remaining obligations. Establish `hd : dbl 3 (fun v ↦ Matrix.GeneralLinearGroup.scalar (Fin 3) (s v)) = fun k => Matrix.GeneralLinearGroup.scalar (Fin 3) (if k.2 then (s k.1)⁻¹ else s k.1)`. Use function extensionality and compare the values at `k`. Take `⟨v, b⟩` from `k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `cases b <;> simp [dbl, invT_scal]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `P`. Use function extensionality and compare the values at `S`. Rewrite using `[repG_apply, Module.End.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `mRep 3 (fun k => dg j S k.1) (dbl 3 _) (P S) = P S`. Rewrite using `[hd, mRep_scal]`. Use `one_smul ℂ (P S)` and compare the differences between its conclusion and the goal. Rewrite using `[Fintype.prod_prod_type]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `v _`. Rewrite using `[Fintype.prod_bool]`. Simplify using the standard rewrite rules. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `P`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[repD_apply, LinearMap.smul_apply, mRep_scal, smul_smul, LinearMap.smul_apply, Module.End.one_apply]`. Use `congr 1`. Simplify using `only [detE, MonoidHom.coe_mk, OneHom.coe_mk, Units.coe_prod, Units.val_zpow_eq_zpow_val]`. Simplify using the standard rewrite rules. Rewrite using `[← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `ha : (s v : ℂ) ≠ 0` using `(s v).ne_zero`. Rewrite using `[zpow_add₀ ha, zpow_mul, zpow_natCast, mul_comm]`. Use `norm_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem UpperTheory.V.Z.Sym.Wt.scalars :
     UpperTheory.V.Z.Sym.Wt.Scalars := by

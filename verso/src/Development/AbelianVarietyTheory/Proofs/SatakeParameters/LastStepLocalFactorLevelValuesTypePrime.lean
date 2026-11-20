@@ -13,13 +13,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.DIV Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie hi β β' x x₁ x' x₁' κ κ' hx hx' p p' p₁ p₁' hp hp' hp₁ hp₁' P hP g z g' z' hC hF hT hF' Z`. Establish `hD : (t.cst μ).D P = 1` using `(t.idx_ok μ).depthG P hP`. Establish `hDt : topDep t.sel (t.tup μ) (t.cst μ) P = 1` using `by unfold topDep; simp [hP]`. Take `⟨Gg, rfl, hsrc⟩` from `GlobalTheory.T.last_step_local_factor_source_law_coupled_level hPin.fields.ok t.pr_ok hPin.sel (t.idx_ok μ) _ P hP g z hC.1`. Take `⟨Gt, rfl, htgt⟩` from `GlobalTheory.T.last_step_local_factor_target_law_top_level hPin.fields.ok t.pr_ok hPin.sel (t.idx_ok μ) P hP g' z' hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hkr⟩` from `GlobalTheory.T.type_prime_frames_right_translate_differ_integral_GL A dtU a hPin hTie (t.m2 + 1) (Nat.le_of_succ_le hi) β x x₁ κ hx p p₁ hp hp₁ P hP (t.cst μ).D hD Gg hF`. Take `⟨k', hk', hkr'⟩` from `GlobalTheory.T.type_prime_frames_right_translate_differ_integral_GL A dtU a hPin hTie (t.m2 + 1 + 1) hi β' x' x₁' κ' hx' p' p₁' hp' hp₁' P hP _ hDt Gt hF'`. Take `⟨i0, i1, hdiff⟩` from `GlobalTheory.T.coupling_cosets_right_translate_in_frames_type_prime A dtU a hPin hTie (Nat.le_of_succ_le hi) β p p₁ P hP Gg k z hC hkr hk`. Establish `e1 : inFr (frsF t.sel (t.tup μ) p₁ P) (frsG t.sel (t.tup μ) p₁' P) Z = (k'⁻¹).1.toLinearMap ∘ₗ (inFr (frsF t.sel (t.tup μ) p P) (frsG t.sel (t.tup μ) p' P) Z ∘ₗ k.1.toLinearMap)`. Rewrite using `[frsG_eq, frsG_eq, hk, hk']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hs` using `hsrc k hkr (inFr (frsF t.sel (t.tup μ) p P) (frsG t.sel (t.tup μ) p' P) Z) _ _ i0 hdiff`. Establish `ht` using `htgt k' hkr' (inFr (frsF t.sel (t.tup μ) p P) (frsG t.sel (t.tup μ) p' P) Z ∘ₗ k.1.toLinearMap) _ i1`. Unfold `topF`. Rewrite using `[e1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `rhoS t.Ch t.sel (t.tup μ) (t.m2 + 1) P ((LinearEquiv.det Gg.1 : t.X.Eˣ) : t.X.E) * ht + hs`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem locAt_vG : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
   ∀ (hi : t.m2 + 1 + 1 ≤ D.R.m) (β : (St (t.m2 + 1) (Nat.le_of_succ_le hi)).Ch) (β' : (St (t.m2 + 1 + 1) hi).Ch)

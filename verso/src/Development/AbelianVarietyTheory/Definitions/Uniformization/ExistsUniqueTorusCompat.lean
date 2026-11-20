@@ -28,16 +28,16 @@ open SplitTorus (bcMap bcMap_hom)
 variable {S S' S'' : Scheme.{0}} {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Rewrite using `[SplitTorus.charUnit_val, SplitTorus.charUnit_val, SplitTorus.bcMap_appTop_chi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bcMap_charUnit (f : S' ⟶ S) (χ : X) :
     (bcMap f X).appTop.hom (charUnit S X χ).val = (charUnit S' X χ).val := by
   rw [SplitTorus.charUnit_val, SplitTorus.charUnit_val, SplitTorus.bcMap_appTop_chi]
 
 /- English proof (translation)
-Set `a' : Over.mk (a ≫ (splitTorus S X).hom) ⟶ splitTorus S X` to `Over.homMk a`. Set `b' : Over.mk (a ≫ (splitTorus S X).hom) ⟶ splitTorus S X` to `Over.homMk b (by simpa using h.symm)`. Establish `hab : a' = b'` using `SplitTorus.hom_ext fun χ => by`. Rewrite using `[SplitTorus.val_eq, SplitTorus.val_eq]`. Establish `hc` using `hχ χ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc` using `[SplitTorus.charUnit_val]`. Conclude with `hc`. Conclude with `congrArg CommaMorphism.left hab`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitTorus_left_hom_ext {Z : Scheme.{0}} (a b : Z ⟶ (splitTorus S X).left)
     (h : a ≫ (splitTorus S X).hom = b ≫ (splitTorus S X).hom)
@@ -53,7 +53,7 @@ theorem splitTorus_left_hom_ext {Z : Scheme.{0}} (a b : Z ⟶ (splitTorus S X).l
   exact congrArg CommaMorphism.left hab
 
 /- English proof (translation)
-The claim follows from `splitTorus_left_hom_ext _ _ (by rw [h, bcMap_hom]) fun χ => by rw [hχ, bcMap_charUnit]`.
+A detailed English derivation is pending.
 -/
 theorem eq_bcMap {f : S' ⟶ S} {τ : (splitTorus S' X).left ⟶ (splitTorus S X).left}
     (h : τ ≫ (splitTorus S X).hom = (splitTorus S' X).hom ≫ f)
@@ -61,13 +61,13 @@ theorem eq_bcMap {f : S' ⟶ S} {τ : (splitTorus S' X).left ⟶ (splitTorus S X
   splitTorus_left_hom_ext _ _ (by rw [h, bcMap_hom]) fun χ => by rw [hχ, bcMap_charUnit]
 
 /- English proof (translation)
-The claim follows from `(eq_bcMap (τ := 𝟙 _) (by simp) fun χ => by simp).symm`.
+A detailed English derivation is pending.
 -/
 theorem bcMap_id : bcMap (𝟙 S) X = 𝟙 _ :=
   (eq_bcMap (τ := 𝟙 _) (by simp) fun χ => by simp).symm
 
 /- English proof (translation)
-The claim follows from `(eq_bcMap (τ := bcMap f' X ≫ bcMap f X) (by rw [Category.assoc, bcMap_hom, ← Category.assoc, bcMap_hom, Category.assoc]) fun χ => by show (bcMap f' X).appTop.hom ((bcMap f X).appTop.hom (charUnit S X χ).val) = _ rw [bcMap_charUnit, bcMap_charUnit]).symm`.
+A detailed English derivation is pending.
 -/
 theorem bcMap_comp (f' : S'' ⟶ S') (f : S' ⟶ S) :
     bcMap (f' ≫ f) X = bcMap f' X ≫ bcMap f X :=
@@ -79,9 +79,9 @@ theorem bcMap_comp (f' : S'' ⟶ S') (f : S' ⟶ S) :
 variable {G'' : Over S''} {G' : Over S'} {G : Over S}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, h₁, h₂, h₃⟩`. Rewrite using `[← eq_bcMap h₁ h₂]`. Conclude with `h₃`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨bcMap f X, bcMap_hom f X, fun χ => bcMap_charUnit f χ, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem torusCompat_iff {f : S' ⟶ S} {F : G'.left ⟶ G.left} {i' : splitTorus S' X ⟶ G'}
     {i : splitTorus S X ⟶ G} : TorusCompat f F i' i ↔ bcMap f X ≫ i.left = i'.left ≫ F := by
@@ -93,13 +93,13 @@ theorem torusCompat_iff {f : S' ⟶ S} {F : G'.left ⟶ G.left} {i' : splitTorus
     exact ⟨bcMap f X, bcMap_hom f X, fun χ => bcMap_charUnit f χ, h⟩
 
 /- English proof (translation)
-Rewrite using `[torusCompat_iff, bcMap_id, Category.id_comp, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem TorusCompat.refl (i : splitTorus S X ⟶ G) : TorusCompat (𝟙 S) (𝟙 G.left) i i := by
   rw [torusCompat_iff, bcMap_id, Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-Rewrite `h'`, `h`, the goal using `[torusCompat_iff]`. Rewrite using `[bcMap_comp, Category.assoc, h, ← Category.assoc, h', Category.assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem TorusCompat.trans {f' : S'' ⟶ S'} {f : S' ⟶ S} {F' : G''.left ⟶ G'.left}
     {F : G'.left ⟶ G.left} {i'' : splitTorus S'' X ⟶ G''} {i' : splitTorus S' X ⟶ G'}
@@ -109,9 +109,9 @@ theorem TorusCompat.trans {f' : S'' ⟶ S'} {f : S' ⟶ S} {F' : G''.left ⟶ G'
   rw [bcMap_comp, Category.assoc, h, ← Category.assoc, h', Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[torusCompat_iff, bcMap_id, Category.id_comp, Category.comp_id]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Over.OverMorphism.ext h.symm`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem torusCompat_id_iff {i' i : splitTorus S X ⟶ G} :
     TorusCompat (𝟙 S) (𝟙 G.left) i' i ↔ i' = i := by
@@ -123,25 +123,25 @@ theorem torusCompat_id_iff {i' i : splitTorus S X ⟶ G} :
     rfl
 
 /- English proof (translation)
-Rewrite using `[torusCompat_iff, bcMap_id, Category.id_comp, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem TorusCompat.of_comp {H : Over S} (i : splitTorus S X ⟶ G) (φ : G ⟶ H) :
     TorusCompat (𝟙 S) φ.left i (i ≫ φ) := by
   rw [torusCompat_iff, bcMap_id, Category.id_comp, Over.comp_left]
 
 /- English proof (translation)
-Rewrite using `[torusCompat_iff, Over.id_left, Over.id_left, Category.id_comp, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem torusCompat_bcMap (f : S' ⟶ S) :
     TorusCompat f (bcMap f X) (𝟙 (splitTorus S' X)) (𝟙 (splitTorus S X)) := by
   rw [torusCompat_iff, Over.id_left, Over.id_left, Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-Establish `hw : (bcMap f X ≫ i.left) ≫ G.hom = (splitTorus S' X).hom ≫ f`. Rewrite using `[Category.assoc, Over.w i, bcMap_hom]`. Use `⟨Over.homMk (hF.lift _ _ hw) (hF.lift_snd _ _ hw), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[torusCompat_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hF.lift_fst _ _ hw).symm`. Introduce `j hj`. Rewrite `hj` using `[torusCompat_iff]`. Use `ext`. Apply `hF.hom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hj]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem existsUnique_torusCompat {f : S' ⟶ S} {F : G'.left ⟶ G.left}
     (hF : IsPullback F G'.hom G.hom f) (i : splitTorus S X ⟶ G) :
@@ -161,7 +161,7 @@ theorem existsUnique_torusCompat {f : S' ⟶ S} {F : G'.left ⟶ G.left}
     · simp
 
 /- English proof (translation)
-The claim follows from `(existsUnique_torusCompat hF i).unique h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem TorusCompat.unique {f : S' ⟶ S} {F : G'.left ⟶ G.left}
     (hF : IsPullback F G'.hom G.hom f) {i : splitTorus S X ⟶ G} {i₁ i₂ : splitTorus S' X ⟶ G'}
@@ -169,9 +169,9 @@ theorem TorusCompat.unique {f : S' ⟶ S} {F : G'.left ⟶ G.left}
   (existsUnique_torusCompat hF i).unique h₁ h₂
 
 /- English proof (translation)
-Rewrite `h''`, `h`, the goal using `[torusCompat_iff]`. Rewrite `h''` using `[bcMap_comp]`. Apply `hF.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc] at h'' ⊢`. Rewrite using `[← h, h'']`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hF', bcMap_hom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem TorusCompat.of_comp_right {f' : S'' ⟶ S'} {f : S' ⟶ S} {F' : G''.left ⟶ G'.left}
     {F : G'.left ⟶ G.left} (hF : IsPullback F G'.hom G.hom f) (hF' : F' ≫ G'.hom = G''.hom ≫ f')
@@ -186,9 +186,9 @@ theorem TorusCompat.of_comp_right {f' : S'' ⟶ S'} {f : S' ⟶ S} {F' : G''.lef
   · simp [hF', bcMap_hom]
 
 /- English proof (translation)
-Rewrite `h` using `[torusCompat_iff]`. Set `p : Over.mk (T.hom ≫ f) ⟶ splitTorus S X` to `Over.homMk (u.left ≫ bcMap f X) (by simp [bcMap_hom])`. Set `q : Over.mk (T.hom ≫ f) ⟶ splitTorus S X` to `Over.homMk (v.left ≫ bcMap f X) (by simp [bcMap_hom])`. Establish `hpq : (p * q).left = (u * v).left ≫ bcMap f X` using `SplitTorus.mul_left_bcMap f X T u v p q rfl rfl`. Establish `key : ((p ≫ i) * (q ≫ i)).left = ((u ≫ i') * (v ≫ i')).left ≫ F` using `hF.2 T (u ≫ i') (v ≫ i') (p ≫ i) (q ≫ i) (by show (u.left ≫ bcMap f X) ≫ i.left = (u.left ≫ i'.left) ≫ F; rw [Category.assoc, h, Category.assoc]) (by show (v.left ≫ bcMap f X) ≫ i.left = (v.left ≫ i'.left) ≫ F; rw [Category.assoc, h, Category.assoc])`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hF.1.hom_ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 -/
 private theorem torusCompat_mul_comp [GrpObj G'] [GrpObj G] {f : S' ⟶ S} {F : G'.left ⟶ G.left}
     (hF : IsGrpPullback G' G f F) {i' : splitTorus S' X ⟶ G'} {i : splitTorus S X ⟶ G} [IsMonHom i]
@@ -215,11 +215,11 @@ private theorem torusCompat_mul_comp [GrpObj G'] [GrpObj G] {f : S' ⟶ S} {F : 
   · simp
 
 /- English proof (translation)
-Establish `hm : ∀ {T : Over S'} (u v : T ⟶ splitTorus S' X), (u * v) ≫ i' = (u ≫ i') * (v ≫ i')` using `fun u v => torusCompat_mul_comp hF h u v`. Establish `one_eq : ∀ (M : Over S') [MonObj M], (1 : 𝟙_ (Over S') ⟶ M) = η[M]` using `fun M _ => by`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Prove the components needed by the constructor for the conclusion. Establish `he` using `hm (1 : 𝟙_ (Over S') ⟶ splitTorus S' X) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Rewrite `he` using `[_root_.mul_one]`. Establish `h1 : (1 : 𝟙_ (Over S') ⟶ splitTorus S' X) ≫ i' = 1` using `by simpa using he.symm`. Rewrite `h1` using `[one_eq, one_eq]`. Conclude with `h1`. Establish `hμ` using `hm (fst (splitTorus S' X) (splitTorus S' X)) (snd _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hμ` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, lift_fst_comp_snd_comp]`. Conclude with `hμ`.
+A detailed English derivation is pending.
 -/
 theorem TorusCompat.isMonHom [GrpObj G'] [GrpObj G] {f : S' ⟶ S} {F : G'.left ⟶ G.left}
     (hF : IsGrpPullback G' G f F) {i' : splitTorus S' X ⟶ G'} {i : splitTorus S X ⟶ G} [IsMonHom i]
@@ -244,11 +244,11 @@ instance isClosedImmersion_red {A : Type} [CommRing A] (J : Ideal A) : IsClosedI
   IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-Rewrite using `[surjective_iff]`. Introduce `x`. Establish `hx : x ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk J))`. Rewrite using `[range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, Ideal.mk_ker]`. Take `⟨n, hn⟩` from `hJ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `a ha`. Establish `hpow : a ^ n ∈ J ^ n` using `Ideal.pow_mem_pow ha n`. Rewrite `hpow` using `[hn, Ideal.zero_eq_bot, Ideal.mem_bot]`. Conclude with `x.isPrime.mem_of_pow_mem n (by rw [hpow]; exact zero_mem _)`. Take `⟨y, hy⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem surjective_red {A : Type} [CommRing A] {J : Ideal A} (hJ : IsNilpotent J) :
     Surjective (red J) := by
@@ -265,24 +265,24 @@ theorem surjective_red {A : Type} [CommRing A] {J : Ideal A} (hJ : IsNilpotent J
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-The claim follows from `torusCompat_bcMap _`.
+A detailed English derivation is pending.
 -/
 example : TorusCompat (red (Ideal.span {(2 : ZMod 4)}))
     (SplitTorus.bcMap (red (Ideal.span {(2 : ZMod 4)})) ℤ) (𝟙 (splitTorus _ ℤ)) (𝟙 (splitTorus _ ℤ)) :=
   torusCompat_bcMap _
 
 /- English proof (translation)
-The claim follows from `TorusCompat.refl i`.
+A detailed English derivation is pending.
 -/
 example (S : Scheme.{0}) (G : Over S) (i : splitTorus S ℤ ⟶ G) : TorusCompat (𝟙 S) (𝟙 _) i i :=
   TorusCompat.refl i
 
 /- English proof (translation)
-Rewrite using `[torusCompat_id_iff]`. Introduce `h`. Set `S` to `Spec (CommRingCat.of ℚ)`. Establish `hall : ∀ t : Over.mk (𝟙 S) ⟶ splitTorus S ℤ, t = 1` using `fun t => by`. Rewrite using `[← Category.comp_id t, ← h, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `u : Γ(S, ⊤)ˣ` to `-1`. Establish `h1` using `SplitTorus.val_ofVal (T := Over.mk (𝟙 S)) (zmultiplesHom _ (Additive.ofMul u)) 1`. Rewrite `h1` using `[hall (SplitTorus.ofVal _), SplitTorus.val_one]`. Establish `h2 : u = 1` using `Units.ext (by simpa using h1.symm)`. Establish `h3` using `congrArg (fun v : Γ(S, ⊤)ˣ => (Scheme.ΓSpecIso (CommRingCat.of ℚ)).hom.hom v.val) h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [u, Units.val_neg, Units.val_one, map_neg, map_one] at h3`. Evaluate the numerical expressions using `at h3`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example : ¬ TorusCompat (𝟙 (Spec (CommRingCat.of ℚ))) (𝟙 _)
     (1 : splitTorus _ ℤ ⟶ splitTorus _ ℤ) (𝟙 (splitTorus _ ℤ)) := by

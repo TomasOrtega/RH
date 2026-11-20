@@ -9,9 +9,9 @@ section helpers
 open Set Complex
 
 /- English proof (translation)
-Rewrite using `[map_pow, map_mul, Complex.conj_ofReal, ← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I, mul_pow, mul_pow, ← Complex.exp_nat_mul, ← Complex.exp_nat_mul]`. Establish `: Complex.exp (((b : ℂ) - a) * I * θ) = Complex.exp (a * (θ * -I)) * Complex.exp (b * (θ * I))`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_pow_mul_pow_polar (r θ : ℝ) (a b : ℕ) :
     starRingEnd ℂ (((r : ℂ) * Complex.exp (θ * I)) ^ a) * ((r : ℂ) * Complex.exp (θ * I)) ^ b =
@@ -24,11 +24,11 @@ theorem conj_pow_mul_pow_polar (r θ : ℝ) (a b : ℕ) :
   rw [this]; push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[← Complex.integral_comp_polarCoord_symm, polarCoord_target]`. Establish `hm : MeasurableSet (Ioi (0 : ℝ) ×ˢ Ioo (-Real.pi) Real.pi)` using `measurableSet_Ioi.prod measurableSet_Ioo`. Rewrite using `[setIntegral_congr_fun hm (g := fun p : ℝ × ℝ => ((p.1 ^ (a + b + 1) * Real.exp (-(t * p.1 ^ 2)) : ℝ) : ℂ) * Complex.exp ((((b : ℂ) - a) * I) * p.2))]`. Rewrite using `[Measure.volume_eq_prod]`. Use `(setIntegral_prod_mul (μ := volume) (ν := volume) (fun r : ℝ => ((r ^ (a + b + 1) * Real.exp (-(t * r ^ 2)) : ℝ) : ℂ)) (fun θ : ℝ => Complex.exp ((((b : ℂ) - a) * I) * θ)) _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_complex_ofReal]`. Introduce and unpack `⟨r, θ⟩ ⟨hr, -⟩`. Establish `hr : 0 < r` using `hr`. Establish `hw : Complex.polarCoord.symm (r, θ) = (r : ℂ) * Complex.exp (θ * I)`. Rewrite using `[Complex.polarCoord_symm_apply, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ‖Complex.polarCoord.symm (r, θ)‖ = r`. Rewrite using `[norm_polarCoord_symm, abs_of_pos hr]`. Simplify using `only`. Rewrite using `[hn, hw, conj_pow_mul_pow_polar, Complex.real_smul]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -59,11 +59,11 @@ theorem integral_conj_pow_mul_pow_mul_exp_eq_polar (a b : ℕ) (t : ℝ) :
     push_cast; ring
 
 /- English proof (translation)
-Establish `hc : ((b : ℂ) - a) * I ≠ 0`. Use `mul_ne_zero ?_ I_ne_zero` and prove the remaining obligations. Rewrite using `[sub_ne_zero]`. Conclude with `(Ne.symm hab)` after adjusting the coercions. Rewrite using `[← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le (by linarith [Real.pi_pos]), integral_exp_mul_complex hc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Complex.exp (((b : ℂ) - a) * I * (Real.pi : ℝ)) = Complex.exp (((b : ℂ) - a) * I * ((-Real.pi : ℝ) : ℂ))`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`. Use `⟨(b : ℤ) - a, ?_⟩` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, sub_self, zero_div]`.
+A detailed English derivation is pending.
 -/
 theorem integral_exp_mul_I_of_ne {a b : ℕ} (hab : a ≠ b) :
     ∫ θ in Ioo (-Real.pi) Real.pi, Complex.exp ((((b : ℂ) - a) * I) * θ) = 0 := by
@@ -80,7 +80,7 @@ theorem integral_exp_mul_I_of_ne {a b : ℕ} (hab : a ≠ b) :
   rw [this, sub_self, zero_div]
 
 /- English proof (translation)
-Simplify using `only [sub_self, zero_mul, Complex.exp_zero]`. Rewrite using `[setIntegral_const, Real.volume_real_Ioo_of_le (by linarith [Real.pi_pos])]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_exp_mul_I_self (a : ℕ) :
     ∫ θ in Ioo (-Real.pi) Real.pi, Complex.exp ((((a : ℂ) - a) * I) * θ) = 2 * Real.pi := by
@@ -89,9 +89,9 @@ theorem integral_exp_mul_I_self (a : ℕ) :
   simp; ring
 
 /- English proof (translation)
-Establish `h` using `_root_.integral_rpow_mul_exp_neg_mul_rpow (p := 2) (q := ((a + a + 1 : ℕ) : ℝ)) (b := t) two_pos (by have := (Nat.cast_nonneg (a + a + 1) : (0 : ℝ) ≤ _); linarith) ht`. Establish `e : ∫ r in Ioi (0 : ℝ), r ^ (a + a + 1) * Real.exp (-(t * r ^ 2)) = ∫ r in Ioi (0 : ℝ), r ^ (((a + a + 1 : ℕ) : ℝ)) * Real.exp (-t * r ^ (2 : ℝ))`. Use `setIntegral_congr_fun measurableSet_Ioi (fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[Real.rpow_natCast, Real.rpow_two, neg_mul]`. Rewrite using `[e, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `g : ((((a + a + 1 : ℕ) : ℝ)) + 1) / 2 = (a : ℝ) + 1` using `by push_cast; ring`. Establish `g2 : -((((a + a + 1 : ℕ) : ℝ)) + 1) / 2 = -(((a + 1 : ℕ) : ℝ))` using `by push_cast; ring`. Rewrite using `[g, g2, Real.Gamma_nat_eq_factorial, Real.rpow_neg ht.le, Real.rpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem integral_Ioi_pow_mul_exp_neg_mul_sq (a : ℕ) {t : ℝ} (ht : 0 < t) :
     ∫ r in Ioi (0 : ℝ), r ^ (a + a + 1) * Real.exp (-(t * r ^ 2)) =
@@ -109,11 +109,11 @@ theorem integral_Ioi_pow_mul_exp_neg_mul_sq (a : ℕ) {t : ℝ} (ht : 0 < t) :
   field_simp
 
 /- English proof (translation)
-Establish `hf : Integrable (fun z : ℂ => (fun y : ℝ => y ^ (a + b) * Real.exp (-(t * y ^ 2))) ‖z‖) volume`. Use `(integrable_fun_norm_addHaar (volume : Measure ℂ) (f := fun y : ℝ => y ^ (a + b) * Real.exp (-(t * y ^ 2)))).mpr ?_` and prove the remaining obligations. Establish `h` using `integrableOn_rpow_mul_exp_neg_mul_sq ht (s := ((a + b + 1 : ℕ) : ℝ)) (by have := (Nat.cast_nonneg (a + b + 1) : (0 : ℝ) ≤ _); linarith)`. Use `h.congr_fun (fun y hy => ?_) measurableSet_Ioi` and prove the remaining obligations. Establish `hy : 0 < y` using `hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Complex.finrank_real_complex, smul_eq_mul]`. Rewrite using `[Real.rpow_natCast]`. Put the polynomial expressions in normal form. Use `hf.mono' (by fun_prop) (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, norm_pow, Complex.norm_conj, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integrable_conj_pow_mul_pow_mul_exp (a b : ℕ) {t : ℝ} (ht : 0 < t) :
     Integrable fun z : ℂ => starRingEnd ℂ (z ^ a) * z ^ b * (Real.exp (-(t * ‖z‖ ^ 2)) : ℂ) := by
@@ -133,16 +133,16 @@ theorem integrable_conj_pow_mul_pow_mul_exp (a b : ℕ) {t : ℝ} (ht : 0 < t) :
   rw [pow_add]
 
 /- English proof (translation)
-Rewrite using `[integral_conj_pow_mul_pow_mul_exp_eq_polar, integral_exp_mul_I_of_ne hab, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_conj_pow_mul_pow_mul_exp_of_ne {a b : ℕ} (hab : a ≠ b) (t : ℝ) :
     ∫ z : ℂ, starRingEnd ℂ (z ^ a) * z ^ b * (Real.exp (-(t * ‖z‖ ^ 2)) : ℂ) = 0 := by
   rw [integral_conj_pow_mul_pow_mul_exp_eq_polar, integral_exp_mul_I_of_ne hab, mul_zero]
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← integral_complex_ofReal]`. Establish `e : (fun z : ℂ => ((‖z‖ ^ (a + a) * Real.exp (-(t * ‖z‖ ^ 2)) : ℝ) : ℂ)) = fun z : ℂ => starRingEnd ℂ (z ^ a) * z ^ a * (Real.exp (-(t * ‖z‖ ^ 2)) : ℂ)`. Use function extensionality and compare the values at `z`. Rewrite using `[Complex.conj_mul', norm_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_conj_pow_mul_pow_mul_exp_eq_polar, integral_Ioi_pow_mul_exp_neg_mul_sq a ht, integral_exp_mul_I_self]`. Establish `: t ^ (a + 1) ≠ 0` using `by positivity`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -162,7 +162,7 @@ theorem integral_norm_pow_mul_exp (a : ℕ) {t : ℝ} (ht : 0 < t) :
   field_simp
 
 /- English proof (translation)
-Rewrite using `[monoC, monoC, sqN, map_prod, Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum, Complex.ofReal_prod, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_prod {N : ℕ} (a b : Fin N → ℕ) (t : ℝ) (z : Fin N → ℂ) :
     starRingEnd ℂ (monoC a z) * monoC b z * (Real.exp (-(t * sqN z)) : ℂ) =
@@ -171,7 +171,7 @@ theorem gs_prod {N : ℕ} (a b : Fin N → ℕ) (t : ℝ) (z : Fin N → ℂ) :
     Complex.ofReal_prod, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Rewrite using `[monoC, sqN, norm_prod, ← Finset.prod_pow, Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow, ← pow_mul, mul_two]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_prod_sq {N : ℕ} (a : Fin N → ℕ) (t : ℝ) (z : Fin N → ℂ) :
     ‖monoC a z‖ ^ 2 * Real.exp (-(t * sqN z)) =
@@ -184,7 +184,7 @@ theorem gs_prod_sq {N : ℕ} (a : Fin N → ℕ) (t : ℝ) (z : Fin N → ℂ) :
 end helpers
 
 /- English proof (translation)
-Repeatedly rewrite using `[gs_prod]`. Conclude with `Integrable.fintype_prod (f := fun i (w : ℂ) => starRingEnd ℂ (w ^ a i) * w ^ b i * (Real.exp (-(t * ‖w‖ ^ 2)) : ℂ)) (μ := fun _ => volume) fun i => integrable_conj_pow_mul_pow_mul_exp (a i) (b i) ht`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_mono_mul_exp {N : ℕ} (a b : Fin N → ℕ) {t : ℝ} (ht : 0 < t) :
     Integrable fun z : Fin N → ℂ =>
@@ -195,7 +195,7 @@ theorem integrable_mono_mul_exp {N : ℕ} (a b : Fin N → ℕ) {t : ℝ} (ht : 
     (μ := fun _ => volume) fun i => integrable_conj_pow_mul_pow_mul_exp (a i) (b i) ht
 
 /- English proof (translation)
-Repeatedly rewrite using `[gs_prod]`. Rewrite using `[integral_fintype_prod_volume_eq_prod (fun i (w : ℂ) => starRingEnd ℂ (w ^ a i) * w ^ b i * (Real.exp (-(t * ‖w‖ ^ 2)) : ℂ))]`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hab`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (integral_conj_pow_mul_pow_mul_exp_of_ne hi t)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integral_mono_mul_exp_of_ne {N : ℕ} {a b : Fin N → ℕ} (hab : a ≠ b) {t : ℝ} (ht : 0 < t) :
     ∫ z : Fin N → ℂ, starRingEnd ℂ (monoC a z) * monoC b z * (Real.exp (-(t * sqN z)) : ℂ) = 0 := by
@@ -206,7 +206,7 @@ theorem integral_mono_mul_exp_of_ne {N : ℕ} {a b : Fin N → ℕ} (hab : a ≠
   exact Finset.prod_eq_zero (Finset.mem_univ i) (integral_conj_pow_mul_pow_mul_exp_of_ne hi t)
 
 /- English proof (translation)
-Repeatedly rewrite using `[gs_prod_sq]`. Rewrite using `[integral_fintype_prod_volume_eq_prod (fun i (w : ℂ) => ‖w‖ ^ (a i + a i) * Real.exp (-(t * ‖w‖ ^ 2)))]`. Repeatedly rewrite using `[integral_norm_pow_mul_exp _ ht]`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Nat.cast_prod, Finset.prod_pow_eq_pow_sum, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_mono_sq_mul_exp {N : ℕ} (a : Fin N → ℕ) {t : ℝ} (ht : 0 < t) :
     ∫ z : Fin N → ℂ, ‖monoC a z‖ ^ 2 * Real.exp (-(t * sqN z)) =

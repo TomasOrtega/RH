@@ -5,17 +5,17 @@ universe u_1 u_2
 namespace GlobalTheory.NonzeroSmulMemSpanLattice
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span E (Λ : Set V)`. Rewrite using `[hΛ.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_add]`. Use `Λ.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `Λ.smul_mem b hax`. Rewrite using `[mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Λ.smul_mem a hby`. Consider the case `smul c x _ hx`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨n, d, hd, hc⟩` from `IsFractionRing.div_surjective (A := NumberField.RingOfIntegers E) c`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd1 : algebraMap (NumberField.RingOfIntegers E) E d ≠ 0`. Introduce `h`. Conclude with `hd0 ((IsFractionRing.injective (NumberField.RingOfIntegers E) E) (by simpa using h))`. Use `⟨d * a, mul_ne_zero hd0 ha, ?_⟩` and prove the remaining obligations. Establish `key : (d * a) • c • x = n • a • x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← algebraMap_smul E (d * a), ← algebraMap_smul E n, ← algebraMap_smul E a, smul_smul, smul_smul, ← hc, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[key]`. Conclude with `Λ.smul_mem n hax`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_smul_mem {E : Type u_1} {V : Type u_2} [Field E] [NumberField E]
     [AddCommGroup V] [Module E V] [Module (NumberField.RingOfIntegers E) V]

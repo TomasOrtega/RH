@@ -9,11 +9,11 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 namespace GlobalTheory.CompanionTheory.WigLowerOmg
 
 /- English proof (translation)
-Introduce `Wq _ _ _ Wqp _ _ _ Wqm _ _ _ k r z z' b n₀ Ap Am hz hTz hz' hTz' hbound`. Unfold `WigLower`. Introduce `g hg hGf v`. Take `⟨hW, hperp, hre⟩` from `GlobalTheory.WigSh.OmgNorm.omg_norm k r z z' g hz hTz hz' hTz' hg`. Establish `h` using `hbound _ hW hperp v`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h` using `[hre]`. Establish `hq : 0 < Gf k r z z' g / Tz k r z'` using `div_pos hGf hTz'`. Establish `hqn` using `pow_pos hq n₀`. Establish `key : ‖v‖ ^ 2 ≤ (3 * b) ^ (2 * n₀) * (‖ContinuousLinearMap.adjoint (Ap (GlobalTheory.WigSh.omg k r z z' g)) v‖ ^ 2 + ‖ContinuousLinearMap.adjoint (Am (GlobalTheory.WigSh.omg k r z z' g)) v‖ ^ 2) / (Gf k r z z' g / Tz k r z') ^ n₀`. Rewrite using `[le_div_iff₀ hqn, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← inv_div (Gf k r z z' g) (Tz k r z'), inv_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wigLower_omg : ∀ (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (Wqp : Type) [NormedAddCommGroup Wqp] [InnerProductSpace ℂ Wqp] [FiniteDimensional ℂ Wqp] (Wqm : Type) [NormedAddCommGroup Wqm] [InnerProductSpace ℂ Wqm] [FiniteDimensional ℂ Wqm] (k r : ℕ) (z z' : (Fin (2 * r + k + 1) → ℂ)) (b : ℝ) (n₀ : ℕ) (Ap : (Fin (2 * r + k + 1) → ℂ) → (Wqp →L[ℂ] Wq)) (Am : (Fin (2 * r + k + 1) → ℂ) → (Wqm →L[ℂ] Wq)), inWb k r z → 0 < Tz k r z → inWb k r z' → 0 < Tz k r z' → (∀ ω, inWb k r ω → herm (Hpk k r) ω z' = 0 → ∀ v : Wq, (herm (Hpk k r) ω ω).re ^ n₀ * ‖v‖ ^ 2 ≤ (3 * b) ^ (2 * n₀) * (‖ContinuousLinearMap.adjoint (Ap ω) v‖ ^ 2 + ‖ContinuousLinearMap.adjoint (Am ω) v‖ ^ 2)) → WigLower z z' b n₀ (fun g : B.Mat k r => Ap (GlobalTheory.WigSh.omg k r z z' (g))) (fun g : B.Mat k r => Am (GlobalTheory.WigSh.omg k r z z' (g))) := by
   intro Wq _ _ _ Wqp _ _ _ Wqm _ _ _ k r z z' b n₀ Ap Am hz hTz hz' hTz' hbound

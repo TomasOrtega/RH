@@ -21,7 +21,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.HeatMod
 
 /- English proof (translation)
-Establish `hc : valR x W (constFn p W r) = φ r` using `GlobalTheory.Points.valR_constFn_of_over p φ x hx W h r`. Rewrite using `[← hc]`. Unfold `valR`. Simplify using `only [dif_pos h, map_sub, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem valR_sub_const_mul {R S : Type} [CommRing R] [CommRing S] {X : Scheme.{0}} (p : X ⟶ Sp R) (φ : R →+* S)
     (x : Sp S ⟶ X) (hx : x ≫ p = spMap φ) (W : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ W) (f g : Γ(X, W)) (r : R) :
@@ -32,9 +32,9 @@ theorem valR_sub_const_mul {R S : Type} [CommRing R] [CommRing S] {X : Scheme.{0
   simp only [dif_pos h, map_sub, map_mul]
 
 /- English proof (translation)
-Introduce `R _ _ Q Ω _ _ _ oa Y α W f g r hf hg S _ φ x x' c a a' ha ha' hW hW' hq hc`. Establish `h1` using `hf S φ x x' c a a' ha ha' hW hW' hq hc`. Establish `h2` using `hg S φ x x' c a a' ha ha' hW hW' hq hc`. Establish `e : a ≫ Y.H.hom = spMap φ` using `by rw [ha]; exact Over.w x`. Establish `e' : a' ≫ Y.H.hom = spMap φ` using `by rw [ha']; exact Over.w x'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[valR_sub_const_mul _ φ a e W hW, valR_sub_const_mul _ φ a' e' W hW', h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isWt_sub_const_mul : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (Ω : Type) [CommRing Ω] [StarRing Ω] [Module Ω Q.X] (oa : Q.OAct Ω) (Y : Ray oa), ∀ (α : Q.X) (W : Y.H.left.Opens) (f g : Γ(Y.H.left, W)) (r : R), IsWt Y α W f → IsWt Y α W g → IsWt Y α W (f - constFn Y.H.hom W r * g) := by
   intro R _ _ Q Ω _ _ _ oa Y α W f g r hf hg S _ φ x x' c a a' ha ha' hW hW' hq hc

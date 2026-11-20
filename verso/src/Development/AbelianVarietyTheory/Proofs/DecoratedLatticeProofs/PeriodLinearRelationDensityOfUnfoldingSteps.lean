@@ -18,14 +18,14 @@ namespace GlobalTheory.SeeSaw.DenseRel
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨[], 0, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem sobCont_zero {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (Lie : Set (Matrix (Fin n) (Fin n) ℂ)) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) : Sobolev₂ Lie σ 0 :=
   ⟨[], 0, by simp, by simp⟩
 
 /- English proof (translation)
-Take `⟨S, C, h1, h2⟩` from `h`. Use `⟨S, ‖c‖ * C, h1, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h2 w hw) (norm_nonneg c)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sobCont_smul {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {Lie : Set (Matrix (Fin n) (Fin n) ℂ)} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {ℓ : H →ₗ[ℂ] ℂ} (c : ℂ)
@@ -36,11 +36,9 @@ theorem sobCont_smul {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSp
   exact mul_le_mul_of_nonneg_left (h2 w hw) (norm_nonneg c)
 
 /- English proof (translation)
-Take `⟨S, C, h1, h2⟩` from `h`. Take `⟨S', C', h1', h2'⟩` from `h'`. Use `⟨S ++ S', max C C', fun l hl => (List.mem_append.1 hl).elim (h1 l) (h1' l), fun w hw => ?_⟩` and prove the remaining obligations. Establish `p : ∀ S : List (List (Matrix (Fin n) (Fin n) ℂ)), 0 ≤ (S.map fun l => ‖l.foldr (dRep σ) w‖).sum`. Introduce `S`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `List.sum_nonneg fun x hx => ?_` and prove the remaining obligations. Take `⟨l, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `norm_nonneg _`. Rewrite using `[LinearMap.add_apply, List.map_append, List.sum_append, mul_add]`. Use `(norm_add_le _ _).trans (add_le_add ((h2 w hw).trans ?_) ((h2' w hw).trans ?_))` and prove the remaining obligations.
-
-Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (p S)`. Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) (p S')`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sobCont_add {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {Lie : Set (Matrix (Fin n) (Fin n) ℂ)} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {ℓ ℓ' : H →ₗ[ℂ] ℂ}
@@ -63,12 +61,12 @@ section Sep
 variable {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
 
 /- English proof (translation)
-Introduce `τ _` and use `⟨0, sobCont_zero _ _, fun _ => by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sepCont_zero : GlobalTheory.Core.Mi.SepCont M 0 := fun τ _ => ⟨0, sobCont_zero _ _, fun _ => by simp⟩
 
 /- English proof (translation)
-Introduce `τ v` and use `by obtain ⟨ℓ, hℓ, e⟩ := h τ v obtain ⟨ℓ', hℓ', e'⟩ := h' τ v exact ⟨ℓ + ℓ', sobCont_add hℓ hℓ', fun w => by simp [e, e']⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sepCont_add {Λ Λ' : SmT M →ₗ[ℂ] ℂ} (h : GlobalTheory.Core.Mi.SepCont M Λ) (h' : GlobalTheory.Core.Mi.SepCont M Λ') :
     GlobalTheory.Core.Mi.SepCont M (Λ + Λ') := fun τ v => by
@@ -77,7 +75,7 @@ theorem sepCont_add {Λ Λ' : SmT M →ₗ[ℂ] ℂ} (h : GlobalTheory.Core.Mi.S
   exact ⟨ℓ + ℓ', sobCont_add hℓ hℓ', fun w => by simp [e, e']⟩
 
 /- English proof (translation)
-Introduce `τ v` and use `by obtain ⟨ℓ, hℓ, e⟩ := h τ v exact ⟨a • ℓ, sobCont_smul a hℓ, fun w => by simp [e]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sepCont_smul (a : ℂ) {Λ : SmT M →ₗ[ℂ] ℂ} (h : GlobalTheory.Core.Mi.SepCont M Λ) : GlobalTheory.Core.Mi.SepCont M (a • Λ) :=
   fun τ v => by
@@ -85,16 +83,14 @@ theorem sepCont_smul (a : ℂ) {Λ : SmT M →ₗ[ℂ] ℂ} (h : GlobalTheory.Co
     exact ⟨a • ℓ, sobCont_smul a hℓ, fun w => by simp [e]⟩
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction Λ (GlobalTheory.Core.Mi.SepCont M) (fun _ _ => sepCont_add M) (sepCont_zero M) h`.
+A detailed English derivation is pending.
 -/
 theorem sepCont_sum {ι : Type} (s : Finset ι) (Λ : ι → SmT M →ₗ[ℂ] ℂ) (h : ∀ i ∈ s, GlobalTheory.Core.Mi.SepCont M (Λ i)) :
     GlobalTheory.Core.Mi.SepCont M (∑ i ∈ s, Λ i) :=
   Finset.sum_induction Λ (GlobalTheory.Core.Mi.SepCont M) (fun _ _ => sepCont_add M) (sepCont_zero M) h
 
 /- English proof (translation)
-Introduce `v hv`. Establish `hle : Submodule.span ℂ {x | ∃ (P : PolF D W.rank V.rank) (y : M'.Vec), GlobalTheory.Core.Mi.KVecP M' y ∧ x = It P (PiTensorProduct.tprod ℂ y)} ≤ LinearMap.ker Λ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨P, y, hy, rfl⟩`. Conclude with `h P y hy`.
-
-Conclude with `hle (hS v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem kill_of_itSpans {W : HSp D} {S' : D.what₂.Tau → SPar} (M' : DSModel W S')
     (It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M) (hS : GlobalTheory.Core.Mi.ItSpans M M' It) (Λ : SmT M →ₗ[ℂ] ℂ)
@@ -111,30 +107,30 @@ theorem kill_of_itSpans {W : HSp D} {S' : D.what₂.Tau → SPar} (M' : DSModel 
 end Sep
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, continuous_const⟩`.
+Supply the required witnesses or components.
 -/
 theorem isContAut_zero (V : HSp D) : IsContAut V (0 : GA D V → ℂ) :=
   ⟨fun _ _ _ => rfl, continuous_const⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun γ hγ x => by simp only [Pi.add_apply, hf.1 γ hγ x, hg.1 γ hγ x], hf.2.add hg.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isContAut_add {V : HSp D} {f g : GA D V → ℂ} (hf : IsContAut V f) (hg : IsContAut V g) :
     IsContAut V (f + g) :=
   ⟨fun γ hγ x => by simp only [Pi.add_apply, hf.1 γ hγ x, hg.1 γ hγ x], hf.2.add hg.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun γ hγ x => by simp only [Pi.smul_apply, hf.1 γ hγ x], hf.2.const_smul c⟩`.
+Supply the required witnesses or components.
 -/
 theorem isContAut_smul {V : HSp D} {f : GA D V → ℂ} (hf : IsContAut V f) (c : ℂ) : IsContAut V (c • f) :=
   ⟨fun γ hγ x => by simp only [Pi.smul_apply, hf.1 γ hγ x], hf.2.const_smul c⟩
 
 /- English proof (translation)
-Take `⟨T, hT, rfl⟩` from `hG`. Proceed by induction on `hT using Submodule.span_induction generalizing x with`. Consider the case `mem T hT`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Rewrite using `[map_smul, LinearEquiv.coe_coe, PiTensorProduct.lift.tprod]`. Conclude with `isContAut_smul ⟨(hT.aut v).left, (hT.aut v).cont⟩ r`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `isContAut_add hx hy`. Consider the case `zero => simpa using isContAut_zero V`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add T₁ T₂ _ _ h₁ h₂ => rw [map_add, LinearMap.add_apply]`. Conclude with `isContAut_add (h₁ x) (h₂ x)`. Consider the case `smul c T _ h => rw [map_smul, LinearMap.smul_apply]`. Conclude with `isContAut_smul (h x) c`.
+A detailed English derivation is pending.
 -/
 theorem isContAut_multT {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S} {J : Set (GA D V)}
     {χ : GA D V → ℂ} {G : SmT M →ₗ[ℂ] (GA D V → ℂ)} (hG : G ∈ MultT θ M J χ) (x : SmT M) : IsContAut V (G x) := by
@@ -155,17 +151,15 @@ end GlobalTheory.SeeSaw.DenseRel
 open GlobalTheory.SeeSaw.DenseRel in
 
 /- English proof (translation)
-Introduce `hHC D c 𝒯 t hc j ρ h I _ s α φ G ht hφ _W W' S' M' It' hS' hrel`. Establish `hj : j < D.R.m` using `by omega`. Establish `hj1 : j + 1 < D.R.m` using `by omega`. Establish `hmult : ∀ i, ∃ J χ, (G i).1 ∈ MultT c.θ (c.M j) J χ` using `fun i => by`. Take `⟨J, χ, hle⟩` from `(ht (s i)).CC j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨J, χ, hle (G i).2⟩`. Use `choose J χ hG using hmult`. Establish `hcont : ∀ i x, IsContAut (c.V j) ((G i).1 x)` using `fun i x => isContAut_multT (hG i) x`. Establish `hL : ∀ (i : I) (a : (t (s i)).Ch j) (g : GA D (c.V j)), ∃ Λ : SmT (c.M j) →ₗ[ℂ] ℂ, GlobalTheory.Core.Mi.SepCont (c.M j) Λ ∧ ∀ x, Λ x = (c.B j ρ h).per c.ψ (φ i a) (rTrans g ((G i).1 x))` using `fun i a g => GlobalTheory.T.besselPeriod_rightTranslate_sobolevSepContinuous D c.θ c.ψ ρ (c.B j ρ h) (c.par j) (c.M j) (J i) (χ i) g (φ i a) hc.inf hc.std (hφ i a) (G i).1 (hG i)`. Use `choose L hLs hLe using hL`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Λ : SmT (c.M j) →ₗ[ℂ] ℂ` to `∑ i, α i • ∑ a, ∑ g ∈ ((t (s i)).e j a).support, ((t (s i)).e j a g) • L i a g`. Establish `hΛ : ∀ x, Λ x = ∑ i, α i * (t (s i)).perF j ρ h (φ i) ((G i).1 x)`. Introduce `x`. Simplify using `only [Λ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, hLe]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Unfold `Tup.perF`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[((GlobalTheory.T.besselPeriod_linear_and_translationCombination D c.ψ hc.std ρ (c.B j ρ h) (φ i a) (hφ i a)).2 _ _ (hcont i x)).2]`. Establish `hΛs : GlobalTheory.Core.Mi.SepCont (c.M j) Λ` using `sepCont_sum _ _ _ fun i _ => sepCont_smul _ _ (sepCont_sum _ _ _ fun a _ => sepCont_sum _ _ _ fun g _ => sepCont_smul _ _ (hLs i a g))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK : ∀ v : (c.M j).Vec, GlobalTheory.Core.Mi.KVecP (c.M j) v → Λ (PiTensorProduct.tprod ℂ v) = 0`. Use `kill_of_itSpans (c.M j) (c.M (j + 1)) (c.It j) (hc.span j hj1) Λ fun P y hy => ?_` and prove the remaining obligations. Conclude with `kill_of_itSpans (c.M (j + 1)) M' It' hS' (Λ ∘ₗ c.It j P) (fun P₂ z _ => by simp only [LinearMap.comp_apply, hΛ]; exact hrel P P₂ _) y hy`. Establish `h0` using `GlobalTheory.Core.Mi.eq_zero_of_sepCont hHC D (c.V j) (c.par j) (c.M j) Λ hΛs hK`. Introduce `v`.
-
-Rewrite using `[← hΛ v, h0, LinearMap.zero_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SeeSaw.perF_rel_of_steps : GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup c), c.Is → ∀ j ρ (h : j + 2 * ρ + 2 = D.R.m) (I : Type) [Fintype I] (s : I → 𝒯) (α : I → ℂ) (φ : ∀ i, (t (s i)).Ch j → GA D (c.X j) → ℂ) (G : ∀ i, (t (s i)).CC j), (∀ s, (t s).Is) → (∀ i a, IsContAut (c.X j) (φ i a)) → ∀ (W W' : HSp D) (S' : D.what₂.Tau → SPar) (M' : DSModel W' S') (It' : PolF D W'.rank (c.V (j + 1)).rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT (c.M (j + 1))), GlobalTheory.Core.Mi.ItSpans (c.M (j + 1)) M' It' → (∀ P₁ P₂ v, ∑ i, α i * (t (s i)).perF j ρ h (φ i) ((G i).1 (c.It j P₁ (It' P₂ v))) = 0) → ∀ v, ∑ i, α i * (t (s i)).perF j ρ h (φ i) ((G i).1 v) = 0 := by
   intro hHC D c 𝒯 t hc j ρ h I _ s α φ G ht hφ _W W' S' M' It' hS' hrel

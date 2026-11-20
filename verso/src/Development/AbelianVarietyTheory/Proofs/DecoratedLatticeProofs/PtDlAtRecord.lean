@@ -50,11 +50,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CoreDlGap
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT C0`. Establish `hH : GlobalTheory.GapIn.Hyp` using `GlobalTheory.GapIn.hyp_of_uniqGap GlobalTheory.uniqGap_and_besselOfW.1`. Take `⟨C, hC⟩` from `GlobalTheory.CellMinorLineGap.minor_line hH (GlobalTheory.AmpOrbGap.ampKF hH) GlobalTheory.CellMaj.cellConv Cg cb Cu cT CT C0 1`. Use `⟨C, fun Cn => ?_⟩` and prove the remaining obligations. Take `⟨m₀, hm⟩` from `hC Cn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨thr, hthr⟩` from `GlobalTheory.Core.Deg.elementary_size_bounds_of_size_hypotheses (max m₀ 1)`. Use `⟨thr, fun D large₂ C' Cl h1 h2 hT => ?_⟩` and prove the remaining obligations. Introduce `hH0`. Take `⟨hCl, -, hMm, -, hrd, -⟩` from `hthr D large₂ C' Cl Cg cb Cu cT CT h1 h2 hH0.1`. Establish `hmm : m₀ ≤ (D.R.m : ℝ)` using `(le_max_left _ _).trans hMm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm1 : (1 : ℝ) ≤ (D.R.m : ℝ)` using `(le_max_right _ _).trans hMm`. Establish `hbig : GlobalTheory.Amp.Big D large₂ Cl m₀` using `⟨hrd, by nlinarith, hmm⟩`. Conclude with `hm D large₂ C' Cl hCl hbig hT.cdScale_tie hH0`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ptDl_at_record : ∀ Cg cb Cu cT CT C0 : ℝ, ∃ C : ℝ, ∀ Cn : ℝ, ∃ thr : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl : ℝ), thr ≤ C' → thr ≤ Cl → Ties D → VanishingOnXAndXPlusBranching.adm2 D large₂ C' Cl Cg cb Cu cT CT C0 Cn 1 C := by
   intro Cg cb Cu cT CT C0

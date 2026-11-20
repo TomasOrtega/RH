@@ -6,15 +6,13 @@ open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProd
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `l _ P AI hT K LL`. Take `⟨T⟩` from `hT`. Use `⟨?_, fun f g => ?_⟩` and prove the remaining obligations. Introduce `U _ _ _ _ _ ρ`. Rewrite using `[dinv_σSt]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := LL.2`. Use `haveI : FiniteDimensional ℚ_[l] U := Module.Finite.trans ↥LL.1 U`. Take `⟨hfin, hb⟩` from `GlobalTheory.CrysSst.finrank_Dst_le P AI T (GlobalTheory.PstCoeff.resQ ρ)`. Establish `hD : Dst P (GlobalTheory.PstCoeff.resQ ρ) = (Dst P ρ).restrictScalars ℚ_[l]`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[mem_Dst, GlobalTheory.PstCoeff.stRep_resQ]`. Establish `e : finrank ℚ_[l] ↥(Dst P (GlobalTheory.PstCoeff.resQ ρ)) = finrank ℚ_[l] ↥LL.1 * finrank ↥LL.1 ↥(Dst P ρ)`. Rewrite using `[hD, finrank_mul_finrank]`. Both sides reduce to the same expression. Establish `hfin' : FiniteDimensional ℚ_[l] ↥((Dst P ρ).restrictScalars ℚ_[l])` using `hD ▸ hfin`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : Module.Finite ℚ_[l] ↥(Dst P ρ) := hfin'`. Use `haveI hL : FiniteDimensional ↥LL.1 ↥(Dst P ρ) := Module.Finite.of_restrictScalars_finite ℚ_[l] ↥LL.1 ↥(Dst P ρ)`. Use `⟨hL, ?_⟩` and prove the remaining obligations. Establish `hV : finrank ℚ_[l] U = finrank ℚ_[l] ↥LL.1 * finrank ↥LL.1 U` using `(finrank_mul_finrank ℚ_[l] ↥LL.1 U).symm`. Rewrite `hb` using `[e, hV]`.
-
-Use `Nat.le_of_mul_le_mul_left ?_ (finrank_pos (R := ℚ_[l]) (M := ↥LL.1))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Commute.pow_right ?_ f` and prove the remaining obligations. Conclude with `LinearMap.ext fun p => (phiSt_actSt P (g : GQ l) p).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.boundSt_of :
     BoundSt := by

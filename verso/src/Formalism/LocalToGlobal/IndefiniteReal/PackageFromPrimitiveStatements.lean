@@ -33,7 +33,7 @@ variable {A3 : FamIn3 K G Pl0 I0 Ty T m} {P0 : Subgroup G} {ψ0 : P0 →* Kˣ} {
   {gE : Representation ℂ G X.EE} {gW : ∀ j, Representation ℂ G (X.W j)} {cf : ConvFace A3.fam3.base3}
 
 /- English proof (translation)
-The claim follows from `CxData.cutStable X hC.kFormR hC.kFormL (Formalism.IndefR.CxPass.definite_kernel_stable hC.kFormR hC.gEquiv hC.thetaR) (Formalism.IndefR.CxPass.lift_kernel_stable hC.kFormL hC.gEquivL hC.thetaL) (definite_adjoint_closed hC.ok hC.heckeR hC.kFormR hC.jIsoR) (lift_adjoint_closed hC.o …`.
+A detailed English derivation is pending.
 -/
 theorem ComplexDataConditionsBaseLevel.stable (hC : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) : X.zs.Stable :=
   CxData.cutStable X hC.kFormR hC.kFormL
@@ -42,7 +42,7 @@ theorem ComplexDataConditionsBaseLevel.stable (hC : ComplexDataConditionsBaseLev
     (definite_adjoint_closed hC.ok hC.heckeR hC.kFormR hC.jIsoR) (lift_adjoint_closed hC.ok hC.heckeL hC.kFormL hC.jIsoL)
 
 /- English proof (translation)
-Introduce `b` and use `match b with | false => A3.side_well_formed hC.ok P0 ψ0 X.zs hC.stable hC.inBlock hC.sep | true => A3.side_well_formed hC.ok P1 ψ1 X.zs hC.stable hC.inBlock hC.sep`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ComplexDataConditionsBaseLevel.wf (hC : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) :
     ∀ b, (lv (faceOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X.zs) b).WF := fun b => match b with
@@ -50,13 +50,13 @@ theorem ComplexDataConditionsBaseLevel.wf (hC : ComplexDataConditionsBaseLevel A
   | true => A3.side_well_formed hC.ok P1 ψ1 X.zs hC.stable hC.inBlock hC.sep
 
 /- English proof (translation)
-The claim follows from `Formalism.IndefR.Rat.ratZOfTests X (cvOf3 A3 P0 ψ0 P1 ψ1) hC.kFormR hC.kFormL hC.jIsoR hC.jIsoL hC.rowTest hC.liftTest`.
+A detailed English derivation is pending.
 -/
 theorem ComplexDataConditionsBaseLevel.ratZ (hC : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) : X.RatZ :=
   Formalism.IndefR.Rat.ratZOfTests X (cvOf3 A3 P0 ψ0 P1 ψ1) hC.kFormR hC.kFormL hC.jIsoR hC.jIsoL hC.rowTest hC.liftTest
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.IndefR.CxPass.rationality_at_level_of_equivariance hC.ok hC.kFormR hC.jIsoR hC.ratZ hC.gUnit hC.gEquiv b, Formalism.IndefR.CxPass.descent_of_types hC.ok hC.kFormR hC.jIsoR hC.ratZ hC.gUnit hC.gEquiv hC.h2P hC.lev0 hC.lev1 b, Formalism.IndefR.CxPass.upper_level_of_types …`.
+Supply the required witnesses or components.
 -/
 theorem ComplexDataConditionsBaseLevel.levs (hC : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) (b : Bool) :
     X.RatLev (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) (cvOf3 A3 P0 ψ0 P1 ψ1) b ∧ X.DnLev (cvOf3 A3 P0 ψ0 P1 ψ1) b ∧
@@ -66,7 +66,7 @@ theorem ComplexDataConditionsBaseLevel.levs (hC : ComplexDataConditionsBaseLevel
     Formalism.IndefR.CxPass.upper_level_of_types hC.ok hC.kFormR hC.jIsoR hC.gUnit hC.gEquiv hC.lev0 hC.lev1 b⟩
 
 /- English proof (translation)
-The claim follows from `cutRows (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) (cvOf3 A3 P0 ψ0 P1 ψ1) b (hC.wf b) hC.h4pos (definite_isometry_of_norms hC.ok hC.jIsoR hC.npTie b) (definite_coordinates_in_subspaces X b) (definite_coordinates_in_good_part X b) (hC.levs b).1 (hC.levs b).2.1 (hC.levs b).2.2 (hC.thmBop b) …`.
+A detailed English derivation is pending.
 -/
 theorem ComplexDataConditionsBaseLevel.what₂ (hC : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) (b : Bool) :
     X.H2 (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) b ∧ X.H4 (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) b :=
@@ -75,14 +75,14 @@ theorem ComplexDataConditionsBaseLevel.what₂ (hC : ComplexDataConditionsBaseLe
     (hC.thmBop b) (hC.partsE b)
 
 /- English proof (translation)
-The claim follows from `Formalism.IndefR.Rat.ratMuOfRowTest X (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) b hC.rowTest (hC.what₂ b).1`.
+A detailed English derivation is pending.
 -/
 theorem ComplexDataConditionsBaseLevel.ratMu (hC : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) (b : Bool) :
     X.RATmu (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) b :=
   Formalism.IndefR.Rat.ratMuOfRowTest X (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) b hC.rowTest (hC.what₂ b).1
 
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `fun v _ p q hpq x hx y hy => majAt_eq_zero_of_mem_Qp_of_ne A3 X hC.ok (hC.heckeR A3.A.fam.μ0) hC.stable P0 ψ0 v p q hpq x hx y hy`. Conclude with `fun v _ p q hpq x hx y hy => majAt_eq_zero_of_mem_Qp_of_ne A3 X hC.ok (hC.heckeR A3.A.fam.μ0) hC.stable P1 ψ1 v p q hpq x hx y hy`.
+Split into cases according to the possible forms of the given data. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ComplexDataConditionsBaseLevel.partsOrth (hC : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) (b : Bool) :
     X.PartsOrth b (fc := faceOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) := by
@@ -93,7 +93,7 @@ theorem ComplexDataConditionsBaseLevel.partsOrth (hC : ComplexDataConditionsBase
       majAt_eq_zero_of_mem_Qp_of_ne A3 X hC.ok (hC.heckeR A3.A.fam.μ0) hC.stable P1 ψ1 v p q hpq x hx y hy
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hC.wf b, hC.h4pos, (hC.what₂ b).1, hC.ratMu b, definite_equivariance_of_primitive P0 ψ0 P1 ψ1 Dc Sp Zsc hC.kFormR hC.stable hC.ok hC.thetaR b, (hC.what₂ b).2, hC.partsOrth b⟩`.
+Supply the required witnesses or components.
 -/
 theorem ComplexDataConditionsBaseLevel.rowHyp (hC : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) (b : Bool) :
     X.RowHyp (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) b :=
@@ -101,7 +101,7 @@ theorem ComplexDataConditionsBaseLevel.rowHyp (hC : ComplexDataConditionsBaseLev
     definite_equivariance_of_primitive P0 ψ0 P1 ψ1 Dc Sp Zsc hC.kFormR hC.stable hC.ok hC.thetaR b, (hC.what₂ b).2, hC.partsOrth b⟩
 
 /- English proof (translation)
-The claim follows from `CxData.cutLifts X (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) (cvOf3 A3 P0 ψ0 P1 ψ1) false (hC.wf false) hC.h4pos hC.kForm (lift_isometry_of_norms hC.ok hC.jIsoL hC.npTie false) (lift_coordinates_in_subspaces X false) (lift_coordinates_in_good_part_family X false) (Formalism.IndefR.CxPass. …`.
+A detailed English derivation is pending.
 -/
 theorem ComplexDataConditionsBaseLevel.lifts0 (hC : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) :
     X.H5 (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) false ∧ X.ThmA (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) false :=
@@ -113,7 +113,7 @@ theorem ComplexDataConditionsBaseLevel.lifts0 (hC : ComplexDataConditionsBaseLev
     hC.thmAop hC.partsW
 
 /- English proof (translation)
-The claim follows from `Formalism.IndefR.Rat.ratThOfLiftTest X (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) false hC.base_lift_test hC.lifts0.1 hC.kForm hC.ewNorm (hC.h4pos.2.2 false)`.
+A detailed English derivation is pending.
 -/
 theorem ComplexDataConditionsBaseLevel.ratTh (hC : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) :
     X.RATth (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) false :=
@@ -121,7 +121,7 @@ theorem ComplexDataConditionsBaseLevel.ratTh (hC : ComplexDataConditionsBaseLeve
     (hC.h4pos.2.2 false)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hC.lifts0.1, hC.ratTh, hC.kForm, hC.ewNorm, hC.lifts0.2, hC.galD, lift_equivariance_of_primitive P0 ψ0 P1 ψ1 Dc Sp Zsc hC.kFormL hC.stable hC.ok hC.thetaL false, hC.mLat⟩`.
+Supply the required witnesses or components.
 -/
 theorem ComplexDataConditionsBaseLevel.liftHyp0 (hC : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) :
     X.LiftHyp (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) false :=
@@ -129,21 +129,21 @@ theorem ComplexDataConditionsBaseLevel.liftHyp0 (hC : ComplexDataConditionsBaseL
     lift_equivariance_of_primitive P0 ψ0 P1 ψ1 Dc Sp Zsc hC.kFormL hC.stable hC.ok hC.thetaL false, hC.mLat⟩
 
 /- English proof (translation)
-The claim follows from `types_of_lift_eigenvalues A3 X hC.ok hC.sep hC.stable P0 ψ0 hC.eig0 hC.typ0`.
+A detailed English derivation is pending.
 -/
 theorem ComplexDataConditionsBaseLevel.types0 (hC : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) :
     (lv (faceOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X.zs) false).Types :=
   types_of_lift_eigenvalues A3 X hC.ok hC.sep hC.stable P0 ψ0 hC.eig0 hC.typ0
 
 /- English proof (translation)
-The claim follows from `proviso_of_lift_eigenvalues A3 X hC.ok (fun j => hC.heckeL j A3.A.fam.μ0) P0 ψ0 hC.eig0`.
+A detailed English derivation is pending.
 -/
 theorem ComplexDataConditionsBaseLevel.proviso0 (hC : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) :
     (lv (faceOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X.zs) false).Proviso :=
   proviso_of_lift_eigenvalues A3 X hC.ok (fun j => hC.heckeL j A3.A.fam.μ0) P0 ψ0 hC.eig0
 
 /- English proof (translation)
-The claim follows from `X.exists_zeta_pairing_factors_through_periods (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) (cvOf3 A3 P0 ψ0 P1 ψ1) eV sEE (hC.wf true) hC.h4pos (hC.what₂ true).1 (hC.ratMu true) hC.jIsoR (hC.levs true).1 (hC.levs true).2.1 (hC.levs true).2.2 (definite_coordinates_in_good_part X true) hC.evTi …`.
+A detailed English derivation is pending.
 -/
 theorem PrimitiveStatementsBaseLiftsOnly.cols (hC : PrimitiveStatementsBaseLiftsOnly A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 eV sEE C CH hE hW gE gW cf) :
     ∃ ζ : (faceOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X.zs).Dc.Mem → A3.fam3.base3.Tup → K,
@@ -175,7 +175,7 @@ def basePackageFullHecke (hC : PrimitiveStatementsWithPassage A3 P0 ψ0 P1 ψ1 D
 end CoreR3
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hC` and use `⟨basePackageFullHecke hC⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem package_from_primitive_statements : PackageFromComplexDataConditions (K := K) (G := G) (Pl0 := Pl0) (I0 := I0) (Ty := Ty) (T := T) (m := m) :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hC => ⟨basePackageFullHecke hC⟩

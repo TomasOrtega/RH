@@ -22,9 +22,9 @@ def FrameEqvInj (T : TermTie D) {u u' : D.what₂.Word} (F0 : FlagG (VS D) D.R.r
     (∃ n ∈ NLam (T.abelian₂ t) (lf D F0), FrameEqv D n (T.fl' t) (T.fl' t')) → t = t'
 
 /- English proof (translation)
-Apply `(hI.eP u u').injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Establish `e : (sOf hF).pfst (hI.eP u u' p) = (sOf hF).pfst (hI.eP u u' q)`. Rewrite using `[← hI.pfst, ← hI.pfst, h1]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`. Establish `e : (sOf hF).psnd (hI.eP u u' p) = (sOf hF).psnd (hI.eP u u' q)`. Rewrite using `[← hI.psnd, ← hI.psnd, h2]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_eq_of_terms (hI : SIso D.s (sOf hF)) {u u' : D.what₂.Word} (p q : D.s.Pair u u') (h1 : D.s.pfst p = D.s.pfst q)
     (h2 : D.s.psnd p = D.s.psnd q) : p = q := by
@@ -39,9 +39,9 @@ theorem pair_eq_of_terms (hI : SIso D.s (sOf hF)) {u u' : D.what₂.Word} (p q :
     exact e
 
 /- English proof (translation)
-Introduce and unpack `p q hL ⟨n', hn', n'', hn'', h1, h2, -⟩`. Establish `e1 : D.s.pfst p = D.s.pfst q` using `hTI _ _ hL ⟨n', hn', h1⟩`. Establish `e2 : D.s.psnd p = D.s.psnd q`. Apply `hTI` to reduce the goal to its premises. Rewrite using `[← T.pLam p, ← T.pLam q, hL]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨n'', ?_, h2⟩` and prove the remaining obligations. Rewrite using `[← T.pLam p]`. Conclude with `hn''`. Conclude with `pair_eq_of_terms hI p q e1 e2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairInj_of (hI : SIso D.s (sOf hF)) (T : TermTie D) {u u' : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS (Tu D u : D.host.E))
     (hTI : FrameEqvInj T (u' := u') F0) :
@@ -86,7 +86,7 @@ end AtTermTieOf
 section Inhab
 
 /- English proof (translation)
-Take `⟨L⟩` from `Formalism.MainNotions.S.Inh.tie_loopTie_of_noTerms D large₂ T u u' C1 h hR hA`. Use `⟨⟨⟨L.F0, L.flag_e_eq_hyperbolic, L.formsAtZero, L.what₂, L.isRows, L.fl_eq, L.Lam_mem, L.frame_ok, L.wRow_eq, L.pair_inj⟩⟩, ⟨L.θ, L.θ_win, L.W, L.goodW, L.A, L.goodS, L.deg_eq⟩, ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `⟨L.γ, L.pt, L.θR, L.νR, L.volR, L.volR_pos, L.gram, L.rel, L.J_irr, L.J_norm⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem parts_nonempty_of_noTerms (D : D7) (large₂ : SizeData₂ D) (T : TermTie D) (u u' : D.what₂.Word) (C1 : ℝ)
     (h : IsEmpty (D.s.Term u u')) (hR : Formalism.MainNotions.S.Inh.tie_HRows D u) (hA : Formalism.MainNotions.S.Inh.tie_HAmp D large₂ u u' C1) :

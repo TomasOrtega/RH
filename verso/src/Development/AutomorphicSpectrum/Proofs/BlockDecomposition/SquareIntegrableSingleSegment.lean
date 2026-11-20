@@ -18,13 +18,13 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.SquareIntegrableSegments
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hh`. Establish `h2 : 2 ≤ h` using `by omega`. Establish `hlog : Real.log q ≠ 0` using `(Real.log_neg hq0 hq1).ne`. Establish `hprod : ∀ s : Finset (Fin h), ∏ i ∈ s, f i = q ^ (∑ i ∈ s, d i * e i)` using `fun s => by`. Rewrite using `[Real.rpow_sum_of_pos hq0]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun i _ => hf i`. Establish `htot : ∑ i, d i * e i = 0`. Establish `h1 : ∏ i, f i = 1`. Rewrite using `[← hfull]`. Conclude with `(Equiv.prod_comp Fin.revPerm f).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hprod]`. Establish `h3` using `congrArg Real.log h1`. Rewrite `h3` using `[Real.log_rpow hq0, Real.log_one]`. Conclude with `(mul_eq_zero.1 h3).resolve_right hlog`. Take `⟨j, hj0, hj⟩` from `GlobalTheory.CompanionTheory.Inequalities.weighted_antitone_last_nonpos h d e h2 hd he htot`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlt` using `hpart (Fin.rev j) (by have := j.isLt; rw [Fin.val_rev]; omega)`. Establish `hrw` using `GlobalTheory.CompanionTheory.FinReversal.prod_filter_le_rev h f (Fin.rev j)`. Rewrite `hrw` using `[Fin.rev_rev]`. Rewrite `hlt` using `[hrw, hprod]`. Conclude with `absurd hlt (not_lt.2 (Real.one_le_rpow_of_pos_of_le_one_of_nonpos hq0 hq1.le hj))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_le_one_of_partial_products {h : ℕ} (d e f : Fin h → ℝ) {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1)
     (hd : ∀ i, 0 < d i) (he : Antitone e) (hf : ∀ i, f i = q ^ (d i * e i))
@@ -54,7 +54,7 @@ theorem length_le_one_of_partial_products {h : ℕ} (d e f : Fin h → ℝ) {q :
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨hd, -⟩` from `h`. Rewrite using `[← hd, Segment.sum_term_fst]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem deg_eq_of_isLSeg {Δ : Segment k} {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin N) k) V} (h : IsLSeg Δ π) : Δ.deg = N := by
@@ -62,7 +62,7 @@ theorem deg_eq_of_isLSeg {Δ : Segment k} {N : ℕ} {V : Type} [AddCommGroup V] 
   rw [← hd, Segment.sum_term_fst]
 
 /- English proof (translation)
-Rewrite using `[← hD, Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_deg_of_listing {h : ℕ} {D : Fin h → Segment k} {𝔪 : Multiset (Segment k)}
     (hD : Finset.univ.val.map D = 𝔪) : ∑ i, (D i).deg = (𝔪.map Segment.deg).sum := by
@@ -70,7 +70,7 @@ theorem sum_deg_of_listing {h : ℕ} {D : Fin h → Segment k} {𝔪 : Multiset 
   rfl
 
 /- English proof (translation)
-Take `⟨π, hd, hc⟩` from `hE Δ`. Conclude with `⟨IrrGL.of π.ρ π.smooth π.irr, hd, hc.of_equiv (IrrGL.equivOf π.ρ π.smooth π.irr) (Representation.Equiv.refl _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_class (hE : Zc.LSegExists k) (Δ : Segment k) : ∃ y : IrrGL k, IsLSeg Δ y.rep := by
   obtain ⟨π, hd, hc⟩ := hE Δ
@@ -78,21 +78,19 @@ theorem exists_class (hE : Zc.LSegExists k) (Δ : Segment k) : ∃ y : IrrGL k, 
     hc.of_equiv (IrrGL.equivOf π.ρ π.smooth π.irr) (Representation.Equiv.refl _)⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hS hC hE 𝔪 N V _ _ π hN hsm hirr hsq hL`. Use `choose y hy using exists_class hE`. Establish `hdeg : ∀ Δ, (y Δ).1 = Δ.deg` using `fun Δ => (deg_eq_of_isLSeg (hy Δ)).symm`. Establish `hpos : ∀ Δ, 0 < (y Δ).1` using `fun Δ => by`. Rewrite using `[hdeg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Nat.mul_pos Δ.len_pos Δ.d_pos`. Use `choose s hs using fun Δ => GlobalTheory.T.central_character_norm_eq_pow k (y Δ) (hpos Δ)`. Take `⟨h, D, hD, hanti, hno⟩` from `GlobalTheory.CompanionTheory.Multiset.exists_antitone_listing 𝔪 s Segment.Precedes fun a b hab => GlobalTheory.T.exponent_lt_of_precedes_of_isLSeg k a b (y a) (y b) (s a) (s b) (hy a) (hy b) (hs a) (hs b) hab`. Set `x : Fin h → IrrGL k` to `fun i => y (D i)`. Establish `hLF : LFactors 𝔪 x` using `⟨D, ⟨hD, hno⟩, fun i => hy (D i)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ a, (x a).1 = N`. Take `⟨h', x', hd', ⟨D', ⟨hD', -⟩, hx'⟩, -⟩` from `hL`. Rewrite using `[← hd']`. Establish `e1 : ∑ a, (x a).1 = ∑ a, (D a).deg` using `Finset.sum_congr rfl fun a _ => hdeg (D a)`. Establish `e2 : ∑ a, (x' a).1 = ∑ a, (D' a).deg` using `Finset.sum_congr rfl fun a _ => (deg_eq_of_isLSeg (hx' a)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, sum_deg_of_listing hD, sum_deg_of_listing hD']`. Establish `hsumrev : ∑ a, (x (Fin.rev a)).1 = N`. Rewrite using `[← hsum]`. Conclude with `Equiv.sum_comp Fin.revPerm fun a => (x a).1`. Establish `hsoc` using `hS 𝔪 h N x hsumrev hLF π hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hposrev : ∀ a, 0 < ((x ∘ Fin.rev) a).1` using `fun a => hpos _`. Establish `hjm` using `GlobalTheory.T.jacquet_multiplicity_pos_of_socle k h N (x ∘ Fin.rev) hsumrev π hsm hposrev hsoc`. Establish `hex` using `hC N π hN hsm hirr hsq h (x ∘ Fin.rev) hsumrev hposrev hjm`. Take `⟨t, ht⟩` from `GlobalTheory.T.exists_unit_pow_tendsto_zero' k`. Establish `hnabs` using `GlobalTheory.T.norm_lt_one_of_pow_tendsto_zero k t ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `choose c hc using fun i => GlobalTheory.T.central_character_exists k (x i) t`. Take `⟨hpart, hfull⟩` from `hex t ht (c ∘ Fin.rev) fun i => hc (Fin.rev i)`. Establish `hle : h ≤ 1` using `length_le_one_of_partial_products (fun i => ((x i).1 : ℝ)) (fun i => s (D i)) (fun i => ‖c i‖) (nabs_pos' k t) hnabs (fun i => by exact_mod_cast hpos (D i)) hanti (fun i => hs (D i) t (c i) (hc i)) hpart hfull`. Establish `hh0 : h ≠ 0`. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at hsum`. Use linear arithmetic over natural numbers and integers. Establish `hcard : 𝔪.card = h`. Rewrite using `[← hD]`. Simplify using the standard rewrite rules.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_eq_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     Zc.LSocleGL k → Zl.CasselmanNecSq k → Zc.LSegExists k → ∀ (𝔪 : Multiset (Segment k)) (N : ℕ) {V : Type}

@@ -12,7 +12,7 @@ namespace GlobalTheory.Ord2.OpenInv
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Unfold `Cg at *`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem cg_trans {n : ℕ} {a b c : Qbar l} (h1 : Cg n a b) (h2 : Cg n b c) : Cg n a c := by
   unfold Cg at *
@@ -21,14 +21,14 @@ theorem cg_trans {n : ℕ} {a b c : Qbar l} (h1 : Cg n a b) (h2 : Cg n b c) : Cg
     _ ≤ _ := max_le h1 h2
 
 /- English proof (translation)
-Unfold `Cg at *`. Rewrite using `[norm_sub_rev]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem cg_symm {n : ℕ} {a b : Qbar l} (h1 : Cg n a b) : Cg n b a := by
   unfold Cg at *
   rwa [norm_sub_rev]
 
 /- English proof (translation)
-Unfold `Cg`. Rewrite using `[sub_self, norm_zero]`. Conclude with `norm_nonneg _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_refl {n : ℕ} (a : Qbar l) : Cg n a a := by
   unfold Cg
@@ -36,7 +36,7 @@ theorem cg_refl {n : ℕ} (a : Qbar l) : Cg n a a := by
   exact norm_nonneg _
 
 /- English proof (translation)
-Unfold `eps cycBar`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 private theorem eps_eq_algebraMap_cycZ (s : G ℚ Ω) :
     eps l s = algebraMap ℚ_[l] (Qbar l) ((ReciprocityTheory.Gal.cycZ ℚ Ω l s : ℤ_[l]) : ℚ_[l]) := by
@@ -44,7 +44,7 @@ private theorem eps_eq_algebraMap_cycZ (s : G ℚ Ω) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[eps_eq_algebraMap_cycZ]`. Unfold `Qbar`. Rewrite using `[PadicAlgCl.norm_extends]`. Conclude with `(ReciprocityTheory.Gal.cycZ ℚ Ω l s : ℤ_[l]).2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eps_le (s : G ℚ Ω) : ‖eps l s‖ ≤ 1 := by
   rw [eps_eq_algebraMap_cycZ]
@@ -53,7 +53,7 @@ theorem norm_eps_le (s : G ℚ Ω) : ‖eps l s‖ ≤ 1 := by
   exact (ReciprocityTheory.Gal.cycZ ℚ Ω l s : ℤ_[l]).2
 
 /- English proof (translation)
-Unfold `Cg at *`. Rewrite using `[← mul_sub, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cg_mul_eps {n : ℕ} (s : G ℚ Ω) {a b : Qbar l} (h : Cg n a b) : Cg n (eps l s * a) (eps l s * b) := by
   unfold Cg at *
@@ -62,29 +62,29 @@ theorem cg_mul_eps {n : ℕ} (s : G ℚ Ω) {a b : Qbar l} (h : Cg n a b) : Cg n
     _ ≤ _ := by rw [one_mul]; exact h
 
 /- English proof (translation)
-Unfold `eps`. Rewrite using `[map_mul, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_mul (s t : G ℚ Ω) : eps l (s * t) = eps l s * eps l t := by
   unfold eps
   rw [map_mul, Units.val_mul]
 
 /- English proof (translation)
-Unfold `eps`. Rewrite using `[map_one, Units.val_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_one : eps l (1 : G ℚ Ω) = 1 := by
   unfold eps
   rw [map_one, Units.val_one]
 
 /- English proof (translation)
-The claim follows from `norm_pos_iff.mpr (pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero))`.
+A detailed English derivation is pending.
 -/
 theorem pow_pos' (n : ℕ) : 0 < ‖((l : ℕ) : Qbar l) ^ n‖ :=
   norm_pos_iff.mpr (pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero))
 
 /- English proof (translation)
-Establish `h : (fun s : G ℚ Ω => eps l s) = fun s => algebraMap ℚ_[l] (Qbar l) ((ReciprocityTheory.Gal.cycZ ℚ Ω l s : ℤ_[l]) : ℚ_[l])`. Use function extensionality and compare the values at `s`. Conclude with `eps_eq_algebraMap_cycZ s`. Rewrite using `[h]`. Establish `h1 : Continuous fun s : G ℚ Ω => ((ReciprocityTheory.Gal.cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l])` using `Units.continuous_val.comp (ReciprocityTheory.Gal.continuous_cycZ ℚ Ω l)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Continuous fun z : ℤ_[l] => (z : ℚ_[l])` using `continuous_subtype_val`. Conclude with `(continuous_algebraMap ℚ_[l] (Qbar l)).comp (h2.comp h1)`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_eps' : Continuous (fun s : G ℚ Ω => eps l s) := by
   have h : (fun s : G ℚ Ω => eps l s) =
@@ -98,9 +98,7 @@ private theorem continuous_eps' : Continuous (fun s : G ℚ Ω => eps l s) := by
   exact (continuous_algebraMap ℚ_[l] (Qbar l)).comp (h2.comp h1)
 
 /- English proof (translation)
-Establish `hc : Continuous fun y => ‖f y - g y‖` using `(hf.sub hg).norm`. Establish `h0 : ‖f x - g x‖ < ‖((l : ℕ) : Qbar l) ^ n‖`. Rewrite using `[h, sub_self, norm_zero]`. Conclude with `pow_pos' n`. Use `filter_upwards [hc.continuousAt.eventually_lt continuousAt_const h0] with y hy`.
-
-Unfold `Cg`. Conclude with `hy.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ev_cg {X : Type} [TopologicalSpace X] {n : ℕ} {f g : X → Qbar l} (hf : Continuous f) (hg : Continuous g)
     {x : X} (h : f x = g x) : ∀ᶠ y in 𝓝 x, Cg n (f y) (g y) := by
@@ -141,17 +139,13 @@ def invSub (n : ℕ) (H : Subgroup (G ℚ Ω)) (ξ : G ℚ Ω → G ℚ Ω → Q
       exact cg_symm this
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ n H I ξ hH hIH hξ hI hinv`. Establish `: CompactSpace H` using `isCompact_iff_compactSpace.mp hH.isCompact`. Establish `hξc : Continuous fun p : H × H => ξ p.1 p.2`. Establish `hp : Continuous fun p : H × H => ((p.1 : G ℚ Ω), (p.2 : G ℚ Ω))` using `(continuous_subtype_val.comp continuous_fst).prodMk (continuous_subtype_val.comp continuous_snd)`. Conclude with `hξ.comp_continuous hp (fun p => ⟨p.1.2, p.2.2⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : ∀ᶠ k in 𝓝 (1 : H), ∀ y ∈ (Set.univ : Set (H × H)), Cg n (ξ ((y.1 * k : H) : G ℚ Ω) y.2) (ξ y.1 y.2)`. Use `isCompact_univ.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Conclude with `ev_cg (X := H × (H × H)) (n := n) (f := fun z => ξ ((z.2.1 * z.1 : H) : G ℚ Ω) z.2.2) (g := fun z => ξ z.2.1 z.2.2) (hξc.comp ((continuous_snd.fst.mul continuous_fst).prodMk continuous_snd.snd)) (hξc.comp (continuous_snd.fst.prodMk continuous_snd.snd)) (x := ((1 : H), y)) (by sim …`. Establish `hR : ∀ᶠ k in 𝓝 (1 : H), ∀ y ∈ (Set.univ : Set (H × H)), Cg n (ξ y.1 ((y.2 * k : H) : G ℚ Ω)) (ξ y.1 y.2)`. Use `isCompact_univ.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ev_cg (X := H × (H × H)) (n := n) (f := fun z => ξ z.2.1 ((z.2.2 * z.1 : H) : G ℚ Ω)) (g := fun z => ξ z.2.1 z.2.2) (hξc.comp (continuous_snd.fst.prodMk (continuous_snd.snd.mul continuous_fst))) (hξc.comp (continuous_snd.fst.prodMk continuous_snd.snd)) (x := ((1 : H), y)) (by sim …`. Establish `hE : ∀ᶠ k : H in 𝓝 (1 : H), Cg n (eps l (k : G ℚ Ω)) 1`. Use `ev_cg (X := H) (n := n) (f := fun k => eps l (k : G ℚ Ω)) (g := fun _ => 1) (continuous_eps'.comp continuous_subtype_val) continuous_const ?_` and prove the remaining obligations. Use `show eps l ((1 : H) : G ℚ Ω) = 1`. Rewrite using `[OneMemClass.coe_one, eps_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨invSub n H ξ, ?_, fun k hk => hk.1, ?_, fun k hk => hk.2.1, fun s hs t ht k hk => hk.2.2 s hs t ht⟩` and prove the remaining obligations. Introduce `i hi`. Establish `hiH : i ∈ H` using `hIH hi`. Use `show i ∈ H ∧ Cg n (eps l i) 1 ∧ ∀ s ∈ H, ∀ t ∈ H, Cg n (ξ (s * i) t) (ξ s t) ∧ Cg n (ξ s (t * i)) (ξ s t)`. Use `⟨hiH, ?_, fun s hs t ht => hinv s hs t ht i hi⟩` and prove the remaining obligations.
-
-Rewrite using `[hI i hi]`. Conclude with `cg_refl _`. Apply `Subgroup.isOpen_of_mem_nhds (g := 1) filter_upwards [hL, hR, hE] with k hkL hkR hkE` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, Subgroup.mem_subgroupOf]`. Use `show (k : G ℚ Ω) ∈ H ∧ Cg n (eps l (k : G ℚ Ω)) 1 ∧ ∀ s ∈ H, ∀ t ∈ H, Cg n (ξ (s * k) t) (ξ s t) ∧ Cg n (ξ s (t * k)) (ξ s t)`.
-
-Conclude with `⟨k.2, hkE, fun s hs t ht => ⟨hkL (⟨s, hs⟩, ⟨t, ht⟩) trivial, hkR (⟨s, hs⟩, ⟨t, ht⟩) trivial⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem open_inv : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (n : ℕ) (H I : Subgroup (G ℚ Ω)) (ξ : G ℚ Ω → G ℚ Ω → Qbar l), IsClosed (H : Set (G ℚ Ω)) → I ≤ H → ContinuousOn (fun p : G ℚ Ω × G ℚ Ω => ξ p.1 p.2) ((H : Set (G ℚ Ω)) ×ˢ (H : Set (G ℚ Ω))) → (∀ i ∈ I, eps l i = 1) → (∀ s ∈ H, ∀ t ∈ H, ∀ i ∈ I, Cg n (ξ (s * i) t) (ξ s t) ∧ Cg n (ξ s (t * i)) (ξ s t)) → ∃ K : Subgroup (G ℚ Ω), I ≤ K ∧ K ≤ H ∧ IsOpen ((K.subgroupOf H : Subgroup ↥H) : Set ↥H) ∧ (∀ k ∈ K, Cg n (eps l k) 1) ∧ ∀ s ∈ H, ∀ t ∈ H, ∀ k ∈ K, Cg n (ξ (s * k) t) (ξ s t) ∧ Cg n (ξ s (t * k)) (ξ s t) := by
   intro l _ Ω _ _ _ n H I ξ hH hIH hξ hI hinv

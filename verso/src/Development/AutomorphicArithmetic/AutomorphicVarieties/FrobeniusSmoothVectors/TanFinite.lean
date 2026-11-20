@@ -6,11 +6,11 @@ section
 variable {O : Type} [CommRing O] [IsLocalRing O] {R : Type} [CommRing R] [Algebra O R] [IsCO O R]
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective g`. Introduce `y`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective y`. Conclude with `⟨algebraMap O R a, by rw [g.commutes, IsLocalRing.ResidueField.algebraMap_eq]⟩`. Establish `hker : RingHom.ker (g : R →+* ResidueField O) = maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective _ hsurj)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) x`. Establish `h1 : g (x - algebraMap O R a) = 0`. Establish `hm : x - algebraMap O R a ∈ RingHom.ker (g : R →+* ResidueField O)`. Rewrite using `[hker]`. Conclude with `ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(RingHom.mem_ker).1 hm`. Establish `h2 : res O R (x - algebraMap O R a) = 0` using `(res_eq_zero_iff O R _).2 ha`. Rewrite `h1`, `h2` using `[map_sub, sub_eq_zero]`. Rewrite using `[h1, h2, AlgHom.commutes, AlgHom.commutes]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hom_eq_res (g : R →ₐ[O] ResidueField O) (x : R) : g x = res O R x := by
   have hsurj : Function.Surjective g := by
@@ -30,33 +30,33 @@ private theorem hom_eq_res (g : R →ₐ[O] ResidueField O) (x : R) : g x = res 
   rw [h1, h2, AlgHom.commutes, AlgHom.commutes]
 
 /- English proof (translation)
-The claim follows from `D.2 f g`.
+A detailed English derivation is pending.
 -/
 private theorem tan_mul (D : Tan O R) (f g : R) :
     D.1 (f * g) = res O R f * D.1 g + res O R g * D.1 f := D.2 f g
 
 /- English proof (translation)
-Simplify using `using tan_mul D 1 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem tan_one (D : Tan O R) : D.1 1 = 0 := by
   simpa using tan_mul D 1 1
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, tan_one, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tan_alg (D : Tan O R) (a : O) : D.1 (algebraMap O R a) = 0 := by
   rw [Algebra.algebraMap_eq_smul_one, map_smul, tan_one, smul_zero]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `(IsNoetherian.noetherian (maximalIdeal R) : (maximalIdeal R).FG)`. Set `φ : Tan O R →ₗ[ResidueField O] (s → ResidueField O)` to `{ toFun := fun D i => D.1 (i : R) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `Module.Finite.of_injective φ ((injective_iff_map_eq_zero φ).2 fun D hD => ?_)` and prove the remaining obligations. Establish `h0 : ∀ i ∈ s, D.1 i = 0` using `fun i hi => congrFun hD ⟨i, hi⟩`. Establish `hm : ∀ y ∈ maximalIdeal R, D.1 y = 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite `hy` using `[← hs]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz => exact h0 z hz`. Consider the case `zero => exact map_zero _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [map_add, ha, hb, add_zero]`. Consider the case `smul c z hz ih`. Establish `hz' : z ∈ maximalIdeal R`. Rewrite using `[← hs]`. Conclude with `hz`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, tan_mul, ih, (res_eq_zero_iff O R z).2 hz', mul_zero, zero_mul, add_zero]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) x`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `hm _ ha`. Rewrite `h` using `[map_sub, tan_alg, sub_zero]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tan_finite : Module.Finite (ResidueField O) (Tan O R) := by
   classical
@@ -115,7 +115,7 @@ private noncomputable def tanEquiv : (R →ₐ[O] DualNumber (ResidueField O)) �
 end
 
 /- English proof (translation)
-Introduce `O _ _ R _ _ _`. Conclude with `⟨tan_finite, Nat.card_congr tanEquiv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Fr.pr_tan :
     ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R], Module.Finite (ResidueField O) (Tan O R) ∧ Nat.card (R →ₐ[O] (DualNumber (ResidueField O))) = Nat.card (Tan O R) := by

@@ -7,9 +7,9 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]`. Distinguish the cases in `hv : v ∈ d.support`. Conclude with `Finset.single_le_sum (f := fun i => d i * w i x) (fun i _ => Nat.zero_le _) hv`. Establish `h0 : d v = 0`. Assume the negation of the conclusion as `h`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv (Finsupp.mem_support_iff.mpr h)`. Rewrite using `[h0, zero_mul]`. Conclude with `Nat.zero_le _`.
+A detailed English derivation is pending.
 -/
 private theorem apply_mul_le_weight_apply {σ : Type*} (w : σ → (σ →₀ ℕ)) (d : σ →₀ ℕ) (v x : σ) :
     d v * w v x ≤ Finsupp.weight w d x := by
@@ -24,9 +24,9 @@ private theorem apply_mul_le_weight_apply {σ : Type*} (w : σ → (σ →₀ �
     exact Nat.zero_le _
 
 /- English proof (translation)
-Establish `hl : pairW (r` using `r) l j (b, l) = Finsupp.single (b, l) 1 := by`. Simplify using `[pairW, hlj]`. Establish `hj : pairW (r` using `r) l j (b, j) = Finsupp.single (b, l) 1 := by`. Simplify using `[pairW]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `h` using `apply_mul_le_weight_apply (pairW l j) d (b, l) (b, l)`. Rewrite `h` using `[hl, Finsupp.single_eq_same, mul_one]`. Then use the resulting hypothesis. Establish `h` using `apply_mul_le_weight_apply (pairW l j) d (b, j) (b, l)`. Rewrite `h` using `[hj, Finsupp.single_eq_same, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lctwo_le_weight {r n : ℕ} {l j : Fin n} (hlj : l ≠ j) (d : Fin r × Fin n →₀ ℕ) (b : Fin r) :
     d (b, l) ≤ Finsupp.weight (pairW l j) d (b, l) ∧ d (b, j) ≤ Finsupp.weight (pairW l j) d (b, l) := by
@@ -41,7 +41,7 @@ theorem lctwo_le_weight {r n : ℕ} {l j : Fin n} (hlj : l ≠ j) (d : Fin r × 
     rwa [hj, Finsupp.single_eq_same, mul_one] at h
 
 /- English proof (translation)
-Establish `h` using `hp (MvPolynomial.mem_support_iff.mp hm)`. Rewrite using `[← h]`. Conclude with `lctwo_le_weight hlj m b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lctwo_le_of_mem {B : Type*} [CommRing B] {r n : ℕ} {l j : Fin n} (hlj : l ≠ j)
     {ω : Fin r × Fin n →₀ ℕ} {p : MvPolynomial (Fin r × Fin n) B}
@@ -52,7 +52,7 @@ theorem lctwo_le_of_mem {B : Type*} [CommRing B] {r n : ℕ} {l j : Fin n} (hlj 
   exact lctwo_le_weight hlj m b
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_add_distrib]`. Simplify using `[Finset.sum_ite_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lctwo_sum_ite {r : ℕ} (a : Fin r) (e : ℕ) (f : Fin r → ℕ) (P : Fin r → Prop) [DecidablePred P] :
     (∑ b : Fin r with P b, ((if a = b then e else 0) + f b)) =
@@ -61,61 +61,55 @@ theorem lctwo_sum_ite {r : ℕ} (a : Fin r) (e : ℕ) (f : Fin r → ℕ) (P : F
   simp [Finset.sum_ite_eq]
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `a0 s ω g hd hg hω h0 _`. Unfold `InterlacedAt`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `a`. Establish `hmg` using `(colLex r n).degree_mem_support hg`. Establish `hz : (∑ b : Fin r with b ≤ a, (colLex r n).degree g (b, j)) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb` using `b.isLt`. Establish `hle` using `(lctwo_le_of_mem hlj.ne hω hmg b).2`. Rewrite `hle` using `[h0 b (by omega)]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.zero_le _`. Consider the case `succ d ih => classical`. Introduce `a0 s ω g hd hg hω h0 hdeg`. Establish `ha0 : a0 < r` using `by omega`. Take `⟨A0, hA0⟩ : ∃ A0 : Fin r, A0.val = a0` from `⟨⟨a0, ha0⟩, rfl⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmg` using `(colLex r n).degree_mem_support hg`. Establish `hm_low : ∀ b : Fin r, b.val < a0 → (colLex r n).degree g (b, j) = 0`. Introduce `b hb`. Establish `hle` using `(lctwo_le_of_mem hlj.ne hω hmg b).2`. Rewrite `hle` using `[h0 b hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hlow : ∀ b : Fin r, b < A0 → ω (b, l) = 0` using `fun b hb => h0 b (by rw [Fin.lt_def] at hb; omega)`. Establish `hdec` using `h1 B r n l j hlj.ne A0 ω g hω`. Establish `hvan : ∀ k, ω (A0, l) < k → peel l j A0 k g = 0`. Introduce `k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `peel`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `m hm`. Establish `hm'` using `Finset.mem_filter.mp hm`. Establish `hle` using `(lctwo_le_of_mem hlj.ne hω hm'.1 A0).1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers. Establish `hex : ∃ k ∈ Finset.range (ω (A0, l) + 1), peel l j A0 k g ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hg (hdec.trans (Finset.sum_eq_zero fun k hk => by rw [hne k hk, mul_zero]))`. Take `⟨k0, hk0, hk00⟩` from `hex`. Take `⟨K, hKT, hKmax⟩` from `Finset.exists_max_image ((Finset.range (ω (A0, l) + 1)).filter (fun k => peel l j A0 k g ≠ 0)) id ⟨k0, Finset.mem_filter.mpr ⟨hk0, hk00⟩⟩`. Take `⟨hKr, hK0⟩` from `Finset.mem_filter.mp hKT`. Establish `hKle : K ≤ ω (A0, l)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `Finset.mem_range.mp hKr` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `habove : ∀ k, K < k → peel l j A0 k g = 0`. Introduce `k hk`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hkω : k ≤ ω (A0, l)`. Establish `hkK` using `hKmax k (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hne⟩)`. Conclude with `absurd (show k ≤ K from hkK) (by omega)`. Conclude with `hne (hvan k (by omega))`. Establish `hgK : g = ∑ k ∈ Finset.range (K + 1), X (A0, l) ^ k * X (A0, j) ^ (ω (A0, l) - K + (K - k)) * peel l j A0 k g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation.
 
-Establish `hsub : Finset.range (K + 1) ⊆ Finset.range (ω (A0, l) + 1)`. Introduce `x hx`. Simplify using `only [Finset.mem_range] at hx ⊢`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Apply `Finset.sum_subset hsub` to reduce the goal to its premises. Introduce `k _ hkK`. Simplify using `only [Finset.mem_range, not_lt] at hkK`. Rewrite using `[habove k (by omega), mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = _ := by`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k hk`. Use `Finset.mem_range.mp hk` as an intermediate fact. Rewrite using `[show ω (A0, l) - K + (K - k) = ω (A0, l) - k by omega]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg' : degreeOf none (colAddGen B l j (∑ k ∈ Finset.range (K + 1), X (A0, l) ^ k * X (A0, j) ^ (ω (A0, l) - K + (K - k)) * peel l j A0 k g)) ≤ s`. Rewrite using `[← hgK]`. Conclude with `hdeg`. Establish `hslice_supp : ∀ k, ∀ m ∈ (peel l j A0 k g).support, m (A0, l) = 0 ∧ m (A0, j) = 0` using `fun k => (h2 B r n l j hlj.ne A0 ω k g hω).2`. Take `⟨he, hdegK⟩` from `h4 B r n l j hlj.ne A0 K (ω (A0, l) - K) s (fun k => peel l j A0 k g) hslice_supp hK0 hdeg'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hlead` using `h3 B r n l j hlj A0 ω g K hω hlow hK0 habove`. Establish `hhomK` using `(h2 B r n l j hlj.ne A0 ω K g hω).1`. Establish `h0' : ∀ b : Fin r, b.val < a0 + 1 → (ω.erase (A0, l)) (b, l) = 0`. Introduce `b hb`. Rewrite using `[Finsupp.erase_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs with hbA`. Both sides reduce to the same expression. Apply `h0 b` to reduce the goal to its premises. Establish `hne : b ≠ A0` using `fun h => hbA (by rw [h])`. Establish `hne' : b.val ≠ A0.val` using `fun h => hne (Fin.ext h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hIH` using `ih (a0 + 1) (s - (ω (A0, l) - K) + K) (ω.erase (A0, l)) (peel l j A0 K g) (by omega) hK0 hhomK h0' hdegK`. Establish `hmK` using `(colLex r n).degree_mem_support hK0`. Establish `hm'_low : ∀ b : Fin r, b.val < a0 + 1 → (colLex r n).degree (peel l j A0 K g) (b, j) = 0`. Introduce `b hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hle` using `(lctwo_le_of_mem hlj.ne hhomK hmK b).2`. Rewrite `hle` using `[h0' b hb]`. Use linear arithmetic over natural numbers and integers. Establish `hjx : ∀ b : Fin r, (colLex r n).degree g (b, j) = (if A0 = b then ω (A0, l) - K else 0) + (colLex r n).degree (peel l j A0 K g) (b, j)`. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hlead]`. Apply the tactic sequence `by_cases hb : A0 = b <;> simp [hlj.ne', hb]`. Establish `hlx : ∀ b : Fin r, (colLex r n).degree g (b, l) = (if A0 = b then K else 0) + (colLex r n).degree (peel l j A0 K g) (b, l)`. Introduce `b`. Rewrite using `[hlead]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `by_cases hb : A0 = b <;> simp [hlj.ne, hb]`. Unfold `InterlacedAt at hIH ⊢`. Introduce `a`. Establish `hIa` using `hIH a`. Distinguish the cases in `haA : a.val < a0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hz : (∑ b : Fin r with b ≤ a, (colLex r n).degree g (b, j)) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b hb`. Establish `hba` using `Fin.le_iff_val_le_val.mp (Finset.mem_filter.mp hb).2`. Conclude with `hm_low b (by omega)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hz]`. Conclude with `Nat.zero_le _`. Establish `hsj : (∑ b : Fin r with b ≤ a, (colLex r n).degree g (b, j)) = (if A0 ≤ a then ω (A0, l) - K else 0) + ∑ b : Fin r with b ≤ a, (colLex r n).degree (peel l j A0 K g) (b, j)`. Simplify using `only [hjx]`. Conclude with `lctwo_sum_ite A0 (ω (A0, l) - K) _ (fun b => b ≤ a)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsl : (∑ b : Fin r with b < a, (colLex r n).degree g (b, l)) = (if A0 < a then K else 0) + ∑ b : Fin r with b < a, (colLex r n).degree (peel l j A0 K g) (b, l)`. Simplify using `only [hlx]`. Conclude with `lctwo_sum_ite A0 K _ (fun b => b < a)`. Establish `hAa : A0 ≤ a` using `Fin.le_iff_val_le_val.mpr (by omega)`. Rewrite using `[hsj, hsl, if_pos hAa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hEq : a.val = a0`. Establish `hAa' : ¬ A0 < a`. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Establish `hz : (∑ b : Fin r with b ≤ a, (colLex r n).degree (peel l j A0 K g) (b, j)) = 0`.
-
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b hb`. Establish `hba` using `Fin.le_iff_val_le_val.mp (Finset.mem_filter.mp hb).2`. Conclude with `hm'_low b (by omega)`. Rewrite using `[if_neg hAa', hz]`.
-
-Use linear arithmetic over natural numbers and integers. Establish `hAa' : A0 < a`. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos hAa']`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lctwo_main (h1 : PeelDecomp) (h2 : PeelHomog) (h3 : PeelLead) (h4 : PeelDegBound)
     (B : Type) [CommRing B] [IsDomain B] (r n : ℕ) (l j : Fin n) (hlj : l < j) :
@@ -281,7 +275,7 @@ theorem lctwo_main (h1 : PeelDecomp) (h2 : PeelHomog) (h3 : PeelLead) (h4 : Peel
         omega
 
 /- English proof (translation)
-Unfold `TwoColumn`. Introduce `B _ _ r n l j hlj a0 s ω g hg hω h0 hdeg`. Conclude with `lctwo_main h1 h2 h3 h4 B r n l j hlj (r - a0) a0 s ω g rfl hg hω h0 hdeg`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem twoColumn_of (h1 : PeelDecomp) (h2 : PeelHomog) (h3 : PeelLead) (h4 : PeelDegBound) : TwoColumn := by
   unfold TwoColumn

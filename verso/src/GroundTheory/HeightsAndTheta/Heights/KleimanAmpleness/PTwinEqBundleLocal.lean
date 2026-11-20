@@ -12,11 +12,11 @@ section Local
 variable (A : Subalgebra S Ω) {k : ℕ} (f c : Fin k → Ω)
 
 /- English proof (translation)
-Set `f' : Fin k → A` to `fun l => ⟨f l, hf l⟩`. Establish `htop : Ideal.span (Set.range f') = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, Ideal.span, Submodule.mem_span_range_iff_exists_fun]`. Use `⟨fun l => ⟨c l, hc l⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify `hs` using `[f']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1` using `Ideal.span_pow_eq_top _ htop n`. Rewrite `h1` using `[← Set.range_comp, Ideal.eq_top_iff_one, Ideal.span, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨d, hd⟩` from `h1`. Use `⟨fun l => d l, fun l => (d l).2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hd` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[f']`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_sum_mul_pow_eq_one (hf : ∀ l, f l ∈ A) (hc : ∀ l, c l ∈ A) (hs : ∑ l, c l * f l = 1)
     (n : ℕ) : ∃ d : Fin k → Ω, (∀ l, d l ∈ A) ∧ ∑ l, d l * f l ^ n = 1 := by
@@ -33,11 +33,9 @@ theorem exists_sum_mul_pow_eq_one (hf : ∀ l, f l ∈ A) (hc : ∀ l, c l ∈ A
   simpa [f'] using this
 
 /- English proof (translation)
-Use `choose m hm using hz`. Take `⟨d, hd, hsum⟩` from `exists_sum_mul_pow_eq_one A f c hf hc hs (Finset.univ.sup m)`. Establish `key : z = ∑ l, (⟨d l * f l ^ (Finset.univ.sup m - m l), mul_mem (hd l) (pow_mem (hf l) _)⟩ : A) • (f l ^ m l * z)`. Simplify using `only [Subalgebra.smul_def, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_sub_mul_pow (f l) (Finset.le_sup (Finset.mem_univ l))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
-
-Conclude with `sum_mem fun l _ => P.smul_mem _ (hm l)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_pow_mul_mem (hf : ∀ l, f l ∈ A) (hc : ∀ l, c l ∈ A) (hs : ∑ l, c l * f l = 1)
     (P : Submodule A Ω) {z : Ω} (hz : ∀ l, ∃ m : ℕ, f l ^ m * z ∈ P) : z ∈ P := by
@@ -56,31 +54,27 @@ theorem mem_of_forall_pow_mul_mem (hf : ∀ l, f l ∈ A) (hc : ∀ l, c l ∈ A
   exact sum_mem fun l _ => P.smul_mem _ (hm l)
 
 /- English proof (translation)
-Establish `hgen : ∀ l, ∃ n : ℕ, f l ^ n * b l ∈ L` using `fun l => (hL l (b l)).2 ⟨1, ⟨0, by rw [pow_zero, one_mul]; exact one_mem A⟩, (one_mul _).symm⟩`. Use `choose n hn using hgen`. Use `set g : Fin k → Ω := fun l => f l ^ n l * b l with hg`. Establish `hloc : ∀ l, ∀ e ∈ L, ∃ a : Ω, (∃ m : ℕ, f l ^ m * a ∈ A) ∧ e = a * b l` using `fun l e he => (hL l e).1 ⟨0, by rw [pow_zero, one_mul]; exact he⟩`. Establish `hLG : L = Submodule.span A (Set.range g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `e he`. Apply `mem_of_forall_pow_mul_mem A f c hf hc hs` to reduce the goal to its premises. Introduce `l`. Take `⟨a, ⟨m, hm⟩, rfl⟩` from `hloc l e he`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨m + n l, ?_⟩` and prove the remaining obligations. Establish `: f l ^ (m + n l) * (a * b l) = (⟨f l ^ m * a, hm⟩ : A) • g l`. Rewrite using `[Subalgebra.smul_def, smul_eq_mul, hg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `hn l`. Use `⟨hLG ▸ Submodule.fg_span (Set.finite_range g), 1 / L, le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mul_le]`. Introduce `p hp q hq`. Rewrite using `[mul_comm]`. Conclude with `(Submodule.mem_div_iff_forall_mul_mem.1 hq) p hp`. Rewrite using `[Submodule.one_le]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `mem_of_forall_pow_mul_mem A f c hf hc hs` to reduce the goal to its premises. Introduce `l`. Establish `hbd : ∀ s, ∃ m : ℕ, f l ^ m * (g s / b l) ∈ A`. Introduce `s`. Take `⟨a, ⟨m, hm⟩, hgs⟩` from `hloc l (g s) (hn s)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[hgs, mul_div_assoc, div_self (hb l), mul_one]`. Conclude with `hm`. Use `choose M hM using hbd`. Use `set K := Finset.univ.sup M with hK`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : f l ^ K / b l ∈ 1 / L`. Rewrite using `[Submodule.mem_div_iff_forall_mul_mem]`. Introduce `e he`. Rewrite `he` using `[hLG]`. Proceed by induction on `he using Submodule.span_induction with`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `mem z hz`. Take `⟨s, rfl⟩` from `hz`. Rewrite using `[Submodule.mem_one]`. Use `⟨⟨f l ^ (K - M s) * (f l ^ M s * (g s / b l)), mul_mem (pow_mem (hf l) _) (hM s)⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f l ^ (K - M s) * (f l ^ M s * (g s / b l)) = f l ^ K / b l * g s`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel (Finset.le_sup (Finset.mem_univ s))]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [mul_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `add_mem hu hv`. Consider the case `smul a u _ hu`. Establish `: f l ^ K / b l * (a • u) = a • (f l ^ K / b l * u)`. Rewrite using `[Subalgebra.smul_def, Subalgebra.smul_def, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ a hu`. Use `⟨n l + K, ?_⟩` and prove the remaining obligations. Establish `: f l ^ (n l + K) * 1 = g l * (f l ^ K / b l)`. Rewrite using `[hg, mul_one, pow_add]`.
-
-Clear denominators, using `[hb l]` for the nonvanishing conditions. Rewrite using `[this]`. Conclude with `Submodule.mul_mem_mul (hn l) hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_and_invertible_of_frame (L : Submodule A Ω) (b : Fin k → Ω)
     (hf : ∀ l, f l ∈ A) (hc : ∀ l, c l ∈ A) (hs : ∑ l, c l * f l = 1) (hb : ∀ l, b l ≠ 0)
@@ -157,9 +151,9 @@ section Lift
 variable {A B : Subalgebra S Ω}
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span hy`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `add u v _ _ hu hv => exact add_mem hu hv`. Consider the case `smul a u _ hu => exact Submodule.smul_mem _ (⟨a, hAB a.2⟩ : B) hu`. Conclude with `Submodule.span_mono Submodule.subset_span`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_span_of_le (hAB : A ≤ B) (T : Set Ω) :
     Submodule.span B (Submodule.span A T : Set Ω) = Submodule.span B T := by
@@ -174,7 +168,7 @@ theorem span_span_of_le (hAB : A ≤ B) (T : Set Ω) :
   · exact Submodule.span_mono Submodule.subset_span
 
 /- English proof (translation)
-Take `⟨T, rfl⟩` from `hL`. Rewrite using `[span_span_of_le hAB]`. Conclude with `Submodule.fg_span T.finite_toSet`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_span_of_le (hAB : A ≤ B) {L : Submodule A Ω} (hL : L.FG) :
     (Submodule.span B (L : Set Ω)).FG := by
@@ -183,11 +177,11 @@ theorem fg_span_of_le (hAB : A ≤ B) {L : Submodule A Ω} (hL : L.FG) :
   exact Submodule.fg_span T.finite_toSet
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_mul_span]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, hp, q, hq, rfl⟩`. Establish `hpq : p * q ∈ L * L'` using `Submodule.mul_mem_mul hp hq`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `hpq` using `[h, Submodule.mem_one]`. Take `⟨a, ha⟩` from `hpq`. Conclude with `Submodule.mem_one.2 ⟨⟨a, hAB a.2⟩, ha⟩`. Rewrite using `[Submodule.one_le]`. Establish `h1 : (1 : Ω) ∈ L * L'` using `h ▸ Submodule.mem_one.2 ⟨1, map_one _⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Submodule.mul_eq_span_mul_set]`. Conclude with `(span_span_of_le hAB ((L : Set Ω) * (L' : Set Ω))).le (Submodule.subset_span h1)`.
+A detailed English derivation is pending.
 -/
 theorem mul_span_eq_one_of_le (hAB : A ≤ B) {L L' : Submodule A Ω} (h : L * L' = 1) :
     Submodule.span B (L : Set Ω) * Submodule.span B (L' : Set Ω) = 1 := by

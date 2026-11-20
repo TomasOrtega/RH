@@ -9,35 +9,33 @@ open scoped ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨hsym, ?_⟩` and prove the remaining obligations. Use `set A : Matrix l l ℂ := fun a b => (s (.inl a) (.inl b) : ℂ) with hA`. Use `set B : Matrix l l ℂ := fun a b => (s (.inl a) (.inr b) : ℂ) with hB`. Use `set C : Matrix l l ℂ := fun a b => (s (.inr a) (.inl b) : ℂ) with hC`. Use `set D : Matrix l l ℂ := fun a b => (s (.inr a) (.inr b) : ℂ) with hD`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hPe : P = A - I • B` using `by ext a b; simp only [hP]; rfl`. Establish `hQe : Q = C - I • D` using `by ext a b; simp only [hQ]; rfl`. Establish `hsc : s.map (Complex.ofRealHom : ℝ →+* ℂ) = fromBlocks A B C D`. Apply the tactic sequence `ext (a|a) (b|b) <;> rfl`. Establish `hJ : (J l ℝ).map (Complex.ofRealHom : ℝ →+* ℂ) = J l ℂ`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `ext (a|a) (b|b) <;> simp [J, one_apply] <;> split_ifs <;> simp`. Establish `hc : (fromBlocks A B C D)ᵀ * J l ℂ * fromBlocks A B C D = J l ℂ`. Establish `h1` using `congrArg (fun M => M.map (Complex.ofRealHom : ℝ →+* ℂ)) (SymplecticGroup.mem_iff'.mp hs)`. Simplify using `only [Matrix.map_mul, transpose_map, hJ, hsc] at h1`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc` using `[J, fromBlocks_transpose, fromBlocks_multiply, fromBlocks_multiply, fromBlocks_inj]`. Take `⟨h11, h12, h21, h22⟩` from `hc`. Simplify using `at h11 h12 h21 h22`. Establish `star_real : ∀ X : Matrix l l ℂ, (∀ a b, star (X a b) = X a b) → Xᴴ = Xᵀ`. Introduce `X hX`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `[conjTranspose_apply, hX]`. Establish `hAs : Aᴴ = Aᵀ` using `star_real A (fun a b => by simp [A])`. Establish `hBs : Bᴴ = Bᵀ` using `star_real B (fun a b => by simp [B])`. Establish `hCs : Cᴴ = Cᵀ` using `star_real C (fun a b => by simp [C])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hDs : Dᴴ = Dᵀ` using `star_real D (fun a b => by simp [D])`. Establish `key : Pᴴ * Q - Qᴴ * P = -(2 * I) • (1 : Matrix l l ℂ)`. Rewrite using `[hPe, hQe]`. Simplify using `only [conjTranspose_sub, conjTranspose_smul, hAs, hBs, hCs, hDs, Complex.star_def, conj_I, sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, smul_smul]`. Apply the tactic sequence `linear_combination (norm := (match_scalars <;> ring_nf <;> (try simp only [I_sq]) <;> ring_nf)) -h11 - h22 + I • h12 - I • h21`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hu : IsUnit P.det` using `isUnit_iff_ne_zero.mpr hdet`. Use `set τ := -(Q * P⁻¹) with hτ`. Establish `hτP : τ * P = -Q` using `by rw [hτ, neg_mul, Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.mul_one]`. Establish `hsymm : ∀ a b, τ b a = τ a b` using `fun a b => by`. Use `congrFun (congrFun hsym a) b` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify `this` using `[transpose_apply]`. Use `set M : Matrix l l ℝ := τ.map im with hM`. Use `set Mc : Matrix l l ℂ := M.map (Complex.ofRealHom : ℝ →+* ℂ) with hMc`. Establish `hdiff : τ - τᴴ = (2 * I) • Mc`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.sub_apply, conjTranspose_apply, hsymm a b, Matrix.smul_apply, smul_eq_mul, Mc, M, map_apply, Complex.ofRealHom_eq_coe, Complex.star_def, Complex.sub_conj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hQP : Pᴴ * τᴴ = -Qᴴ` using `by rw [← conjTranspose_mul, hτP, conjTranspose_neg]`. Establish `h2 : Pᴴ * Mc * P = 1`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Pᴴ * (τ - τᴴ) * P = (2 * I) • (1 : Matrix l l ℂ)`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, hτP, hQP]`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul]`. Apply the tactic sequence `linear_combination (norm := (match_scalars <;> ring_nf <;> (try simp only [I_sq]) <;> ring_nf)) -key`. Rewrite `e` using `[hdiff, Matrix.mul_smul, Matrix.smul_mul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `smul_right_injective _ (by simp [I_ne_zero] : (2 * I) ≠ 0) e`. Establish `e1 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, mul_nonsing_inv _ hu, conjTranspose_one]`. Establish `e2 : P * P⁻¹ = 1` using `mul_nonsing_inv _ hu`. Establish `hMcf : Mc = (P⁻¹)ᴴ * P⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective (P⁻¹).mulVec`. Introduce `u v h`. Use `congrArg P.mulVec h` as an intermediate fact. Simplify `this` using `[mulVec_mulVec, e2]`. Establish `hpd : Mc.PosDef` using `hMcf ▸ PosDef.conjTranspose_mul_self _ hinj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `PosDef.of_dotProduct_mulVec_pos ?_ ?_` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `[conjTranspose_apply, M, hsymm a b]`. Introduce `x hx set xc : l → ℂ := fun i => (x i : ℂ) with hxc`. Establish `hxc0 : xc ≠ 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Apply `hx` to reduce the goal to its premises. Use extensionality with `i`. Use `congrFun h i` as an intermediate fact. Simplify `this` using `[xc]`.
-
-Establish `e : star xc ⬝ᵥ Mc *ᵥ xc = ((star x ⬝ᵥ M *ᵥ x : ℝ) : ℂ)`. Simplify using `[dotProduct, mulVec, Mc, xc, Complex.ofReal_sum, Complex.ofReal_mul]`. Use `hpd.dotProduct_mulVec_pos hxc0` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `zero_lt_real.mp this`.
+A detailed English derivation is pending.
 -/
 theorem IsSiegel.neg_mul_inv_of_symplectic (l : Type) [Fintype l] [DecidableEq l] (s : Matrix (l ⊕ l) (l ⊕ l) ℝ)
     (P Q : Matrix l l ℂ)

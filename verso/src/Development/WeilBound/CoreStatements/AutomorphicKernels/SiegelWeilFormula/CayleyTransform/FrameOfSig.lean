@@ -13,7 +13,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField F] [NumberField E] in
 
 /- English proof (translation)
-Establish `hm : ∀ {p q r : Type} [Fintype q] (X : Matrix p q E) (Z : Matrix q r E), (X * Z).map σ = X.map σ * Z.map σ` using `fun X Z => Matrix.map_mul (f := σ.toRingHom)`. Establish `h1 : ((dbl J).map σ).transpose = c • dbl J`. Apply the tactic sequence `ext (p | p) (q | q) <;> simp [dbl, Matrix.fromBlocks, hJ]`. Establish `hb : (b.map σ).map σ = b` using `by ext; simp [hss]`. Rewrite using `[hm, hm, Matrix.transpose_mul, Matrix.transpose_mul, hb, h1, ← Matrix.transpose_map, Matrix.transpose_transpose, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjT_frame {n : ℕ} (c : E) (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j, σ (J j i) = c * J i j)
     (hss : ∀ x, σ (σ x) = x) (b : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E) :
@@ -27,13 +27,13 @@ theorem conjT_frame {n : ℕ} (c : E) (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i
     Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d`. Take `⟨ε, hε⟩` from `d.ok.frame.1`. Use `⟨ε, hε, ?_⟩` and prove the remaining obligations. Establish `hss : ∀ x, σ (σ x) = x` using `PositivityTheory.ThKG.Tow.Levi.sig_sig d.cm`. Establish `i : Fin d.n` using `⟨0, d.ok.hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ c : E, (∀ i j, σ (d.Y.J j i) = c * d.Y.J i j) → ((ε : ℤ) : E) = c` using `fun c hc => by`. Establish `e` using `congrFun (congrFun (conjT_frame c d.Y.J hc hss d.b.1) (Sum.inl i)) (Sum.inr i)`. Rewrite `e` using `[hε]`. Simplify `e` using `[Matrix.fromBlocks]`. Break down `d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Use `Or.inl ⟨hA, ?_⟩` and prove the remaining obligations. Establish `e` using `key (-1) fun i j => by rw [hY, neg_one_mul]`. Establish `e' : ((ε : ℤ) : E) = ((-1 : ℤ) : E)` using `by rw [e]; push_cast; rfl`. Conclude with `Units.ext (by simpa using Int.cast_injective (α := E) e')`. Use `Or.inr ⟨hA, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `key 1 fun i j => by rw [hY, one_mul]`. Establish `e' : ((ε : ℤ) : E) = ((1 : ℤ) : E)` using `by rw [e]; push_cast; rfl`. Conclude with `Units.ext (by simpa using Int.cast_injective (α := E) e')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem epsEx : EpsEx := by
   intro F E _ _ _ _ _ σ d
@@ -56,17 +56,17 @@ theorem epsEx : EpsEx := by
     exact Units.ext (by simpa using Int.cast_injective (α := E) e')
 
 /- English proof (translation)
-Take `⟨hrs, A, hA⟩` from `h`. Set `e : Fin m ≃ Fin r ⊕ Fin s` to `(finSumFinEquiv.trans (finCongr hrs)).symm`. Set `f0 : Matrix (Fin m) (Fin m) ℂ` to `A.submatrix id e`. Establish `hf0 : f0.transpose * M * f0.map star = (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ).submatrix e e`. Rewrite using `[← hA]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `only [f0, Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply, Matrix.map_apply, id]`. Establish `main : ∃ sg : ℤˣ, f0.transpose * M * f0.map star = ((sg : ℤ) : ℂ) • 1`. Break down `Nat.min_eq_zero_iff.1 h0 with rfl | rfl` into its components or cases. Use `⟨-1, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hf0, show (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin 0 ⊕ Fin s) (Fin 0 ⊕ Fin s) ℂ) = -1 by`. Apply the tactic sequence `ext (i | i) (j | j) <;> first | exact i.elim0 | exact j.elim0 | simp [Matrix.one_apply]]`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.neg_apply, Matrix.one_apply, e.injective.eq_iff, Matrix.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[hf0, show (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin 0) (Fin r ⊕ Fin 0) ℂ) = 1 by`. Apply the tactic sequence `ext (i | i) (j | j) <;> first | exact i.elim0 | exact j.elim0 | simp [Matrix.one_apply]]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, e.injective.eq_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨sg, hsg⟩` from `main`. Establish `hdet : f0.det ≠ 0`. Introduce `h0'`. Establish `e1` using `congrArg Matrix.det hsg`. Rewrite `e1` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0', zero_mul, zero_mul, Matrix.det_smul, Matrix.det_one, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero _ (Int.cast_ne_zero.2 (Units.ne_zero sg)) e1.symm`. Conclude with `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero f0 hdet, sg, hsg⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frame_of_sig {m r s : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} (h : HasSig M r s) (h0 : min r s = 0) :
     ∃ (f : GL (Fin m) ℂ) (sg : ℤˣ), f.1.transpose * M * f.1.map star = ((sg : ℤ) : ℂ) • 1 := by
@@ -101,9 +101,9 @@ theorem frame_of_sig {m r s : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} (h : HasSig 
   exact ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero f0 hdet, sg, hsg⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d`. Use `⟨fun hA => ?_, fun hA => ?_⟩` and prove the remaining obligations. Use `choose fr sg hfr using fun w => frame_of_sig (hA.sig w) d.ok.aniso`. Conclude with `⟨fr, sg, fun w => by rw [one_smul, hfr w]⟩`. Use `choose fr sg hfr using fun w => frame_of_sig (hA.sig w) d.ok.aniso`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fr, sg, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← hfr w, Matrix.mul_smul, Matrix.smul_mul]`.
+A detailed English derivation is pending.
 -/
 theorem frEx : FrEx := by
   intro F E _ _ _ _ _ σ d

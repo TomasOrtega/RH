@@ -17,9 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FrameFix
 
 /- English proof (translation)
-Introduce `g r r₀ l l' w c T hl hl' h1 h2`. Use extensionality with `i m`. Establish `key : ∑ j, c i j • l' j = ∑ m, (c * T) i m • l m`. Simplify using `only [hl', Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsum : ∑ m, ((c * T) i m - c i m) • l m = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← key, ← h2, h1, sub_self]`. Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hl (fun m => (c * T) i m - c i m) hsum m)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mul_eq_of_same_combinations :
     ∀ (g r r₀ : ℕ) (l l' : Fin r → Fin g → ℂ) (w : Fin r₀ → Fin g → ℂ) (c : Matrix (Fin r₀) (Fin r) ℤ)

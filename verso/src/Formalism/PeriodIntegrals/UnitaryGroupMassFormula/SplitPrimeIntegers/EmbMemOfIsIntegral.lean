@@ -12,20 +12,20 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-The claim follows from `Valuation.valuationSubring.integers _`.
+A detailed English derivation is pending.
 -/
 lemma intsV : (Valued.v (R := (v.adicCompletion F))).Integers (v.adicCompletionIntegers F) :=
   Valuation.valuationSubring.integers _
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (intsV v).isUnit_iff_valuation_eq_one]`. Conclude with `⟨fun h => lt_of_le_of_ne ((intsV v).map_le_one z) h, ne_of_lt⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma mem_max_iff (z : (v.adicCompletionIntegers F)) : z ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) ↔ Valued.v (z : (v.adicCompletion F)) < 1 := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (intsV v).isUnit_iff_valuation_eq_one]
   exact ⟨fun h => lt_of_le_of_ne ((intsV v).map_le_one z) h, ne_of_lt⟩
 
 /- English proof (translation)
-Take `⟨z, hzI, hz0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Use `⟨z, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 F) F)).2 hz0`. Rewrite using `[algebraMap_adicCompletion, Function.comp_apply, Algebra.algebraMap_self, RingHom.id_apply, valuedAdicCompletion_eq_valuation']`. Conclude with `(valuation_lt_one_iff_mem v z).2 hzI`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_unif : ∃ π : 𝓞 F, (algebraMap (𝓞 F) F π) ≠ 0 ∧
     Valued.v (algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F π)) < 1 := by
@@ -53,7 +53,7 @@ lemma spl_tmul_one (e : E) :
     spl (e ⊗ₜ[F] 1) = (emb spl (RingHom.fst (v.adicCompletion F) (v.adicCompletion F)) e, emb spl (RingHom.snd (v.adicCompletion F) (v.adicCompletion F)) e) := rfl
 
 /- English proof (translation)
-Establish `h : algebraMap F E f ⊗ₜ[F] (1 : (v.adicCompletion F)) = (1 : E) ⊗ₜ[F] algebraMap F (v.adicCompletion F) f`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Rewrite using `[emb_apply, h, hspl, hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma emb_algebraMap (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] a) = (a, a)) (p : (v.adicCompletion F) × (v.adicCompletion F) →+* (v.adicCompletion F))
     (hp : ∀ a, p (a, a) = a) (f : F) : emb spl p (algebraMap F E f) = algebraMap F (v.adicCompletion F) f := by
@@ -62,7 +62,7 @@ lemma emb_algebraMap (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F
   rw [emb_apply, h, hspl, hp]
 
 /- English proof (translation)
-Take `⟨f, hm, hf⟩` from `he`. Use `(intsV v).mem_of_integral ⟨f.map (Int.castRingHom _), hm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `hc : (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F)).comp (Int.castRingHom (v.adicCompletionIntegers F)) = (emb spl p).comp (algebraMap ℤ E)` using `RingHom.ext_int _ _`. Rewrite using `[hc, ← Polynomial.hom_eval₂, hf, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma emb_mem_of_isIntegral (p : (v.adicCompletion F) × (v.adicCompletion F) →+* (v.adicCompletion F)) (e : E) (he : IsIntegral ℤ e) :
     emb spl p e ∈ (v.adicCompletionIntegers F) := by
@@ -89,7 +89,7 @@ def P (p : (v.adicCompletion F) × (v.adicCompletion F) →+* (v.adicCompletion 
 instance (p : (v.adicCompletion F) × (v.adicCompletion F) →+* (v.adicCompletion F)) : (P spl p).IsPrime := Ideal.IsPrime.comap _
 
 /- English proof (translation)
-Rewrite using `[P, Ideal.mem_comap, mem_max_iff]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_P (p : (v.adicCompletion F) × (v.adicCompletion F) →+* (v.adicCompletion F)) (z : 𝓞 E) :
     z ∈ P spl p ↔ Valued.v (emb spl p (algebraMap (𝓞 E) E z)) < 1 := by
@@ -97,9 +97,9 @@ lemma mem_P (p : (v.adicCompletion F) × (v.adicCompletion F) →+* (v.adicCompl
   exact Iff.rfl
 
 /- English proof (translation)
-Take `⟨π, hπ0, hπ⟩` from `exists_unif v`. Introduce `hbot`. Establish `hmem : algebraMap (𝓞 F) (𝓞 E) π ∈ P spl p`. Rewrite using `[mem_P, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E, emb_algebraMap spl hspl p hp]`. Conclude with `hπ`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[hbot, Ideal.mem_bot]`. Apply `hπ0` to reduce the goal to its premises. Use `congrArg (algebraMap (𝓞 E) E) hmem` as an intermediate fact. Rewrite `this` using `[map_zero, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E]`. Conclude with `(map_eq_zero_iff _ (algebraMap F E).injective).1 this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma prime_ne_bot (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] a) = (a, a)) (p : (v.adicCompletion F) × (v.adicCompletion F) →+* (v.adicCompletion F))
     (hp : ∀ a, p (a, a) = a) : P spl p ≠ ⊥ := by
@@ -116,11 +116,11 @@ lemma prime_ne_bot (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] 
   exact (map_eq_zero_iff _ (algebraMap F E).injective).1 this
 
 /- English proof (translation)
-Set `S : Subring (E ⊗[F] (v.adicCompletion F))` to `(((v.adicCompletionIntegers F)).toSubring.prod ((v.adicCompletionIntegers F)).toSubring).comap (spl : E ⊗[F] (v.adicCompletion F) →+* (v.adicCompletion F) × (v.adicCompletion F))`. Establish `hS : tensInt (F` using `F) (v.adicCompletion F) (intOE E) ((v.adicCompletionIntegers F)).toSubring ≤ S := by`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨e, he⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`. Take `⟨z, rfl⟩` from `RingHom.mem_range.1 he`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hz : IsIntegral ℤ (algebraMap (𝓞 E) E z)` using `RingOfIntegers.isIntegral_coe z`. Use `show spl (algebraMap (𝓞 E) E z ⊗ₜ[F] 1) ∈ ((v.adicCompletionIntegers F)).toSubring.prod ((v.adicCompletionIntegers F)).toSubring`. Rewrite using `[spl_tmul_one, Subring.mem_prod]`. Conclude with `⟨emb_mem_of_isIntegral spl (RingHom.fst _ _) _ hz, emb_mem_of_isIntegral spl (RingHom.snd _ _) _ hz⟩`. Use `show spl ((1 : E) ⊗ₜ[F] y) ∈ ((v.adicCompletionIntegers F)).toSubring.prod ((v.adicCompletionIntegers F)).toSubring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Subring.mem_prod, hspl]`. Conclude with `⟨hy, hy⟩`. Conclude with `Subring.mem_prod.1 (hS hx)`.
+A detailed English derivation is pending.
 -/
 theorem sub_dir (hspl : ∀ a : (v.adicCompletion F), spl ((1 : E) ⊗ₜ[F] a) = (a, a)) (x : E ⊗[F] (v.adicCompletion F))
     (hx : x ∈ tensInt (F := F) (v.adicCompletion F) (intOE E) ((v.adicCompletionIntegers F)).toSubring) :

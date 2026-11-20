@@ -5,13 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 open scoped TensorProduct DirectSum
 
 /- English proof (translation)
-Introduce `X r Y j hj s`. Take `⟨hop, hcov, hdis⟩` from `hj`. Use `haveI := hop s`. Apply `AlgebraicGeometry.IsClosedImmersion.of_isPreimmersion` to reduce the goal to its premises. Establish `hc : (Set.range (j s).base)ᶜ = ⋃ t ∈ {t : Fin r | t ≠ s}, Set.range (j t).base`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_setOf_eq, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨t, ht⟩` from `hcov x`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, ?_, ht⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hx ht`. Introduce and unpack `⟨t, hts, ht⟩ hx`. Conclude with `Set.disjoint_left.mp (hdis t s hts) ht hx`.
-
-Rewrite using `[← isOpen_compl_iff, hc]`. Use `isOpen_biUnion fun t _ => ?_` and prove the remaining obligations. Use `haveI := hop t`. Conclude with `(j t).isOpenEmbedding.isOpen_range`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.sumCl_holds :
     UpperTheory.Gal.KunnethLefschetz.SumCl := by

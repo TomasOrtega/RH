@@ -14,14 +14,14 @@ private def uS (S : Finset ι) (k : ι) : ℤ := ∏ x ∈ S, if k < x then -1 e
 private def shS (I J : Finset ι) : ℤ := ∏ i ∈ I, tS J i
 
 /- English proof (translation)
-Unfold `GlobalTheory.cubeSign tS`. Rewrite using `[Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cs_eq (S : Finset ι) (k : ι) : GlobalTheory.cubeSign S k = tS S k := by
   unfold GlobalTheory.cubeSign tS
   rw [Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one]
 
 /- English proof (translation)
-Unfold `tS`. Rewrite using `[← Finset.prod_mul_distrib]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `x _`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem tS_sq (S : Finset ι) (k : ι) : tS S k * tS S k = 1 := by
   unfold tS
@@ -31,7 +31,7 @@ private theorem tS_sq (S : Finset ι) (k : ι) : tS S k * tS S k = 1 := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `tS`. Rewrite using `[Finset.prod_union h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tS_union {S T : Finset ι} (h : Disjoint S T) (k : ι) :
     tS (S ∪ T) k = tS S k * tS T k := by
@@ -39,16 +39,16 @@ private theorem tS_union {S T : Finset ι} (h : Disjoint S T) (k : ι) :
   rw [Finset.prod_union h]
 
 /- English proof (translation)
-Simplify using `only [tS]`. Conclude with `Finset.prod_erase _ (by simp)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tS_erase (S : Finset ι) (k : ι) : tS (S.erase k) k = tS S k := by
   simp only [tS]
   exact Finset.prod_erase _ (by simp)
 
 /- English proof (translation)
-Unfold `tS uS`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `trans ∏ _x ∈ S, (-1 : ℤ)`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `x hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : x ≠ k` using `fun e => h (e ▸ hx)`. Break down `lt_or_gt_of_ne hne with hl | hl` into its components or cases. Simplify using `[hl, not_lt.2 hl.le]`. Simplify using `[hl, not_lt.2 hl.le]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tS_mul_uS {S : Finset ι} {k : ι} (h : k ∉ S) : tS S k * uS S k = (-1) ^ S.card := by
   unfold tS uS
@@ -63,7 +63,7 @@ private theorem tS_mul_uS {S : Finset ι} {k : ι} (h : k ∉ S) : tS S k * uS S
   · simp
 
 /- English proof (translation)
-Unfold `shS`. Conclude with `(Finset.mul_prod_erase I (fun i => tS J i) h).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem sg_left {I : Finset ι} (J : Finset ι) {k : ι} (h : k ∈ I) :
     shS I J = tS J k * shS (I.erase k) J := by
@@ -71,14 +71,14 @@ private theorem sg_left {I : Finset ι} (J : Finset ι) {k : ι} (h : k ∈ I) :
   exact (Finset.mul_prod_erase I (fun i => tS J i) h).symm
 
 /- English proof (translation)
-Unfold `shS tS uS`. Conclude with `Finset.prod_comm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem sg_eq_u (I J : Finset ι) : shS I J = ∏ j ∈ J, uS I j := by
   unfold shS tS uS
   exact Finset.prod_comm
 
 /- English proof (translation)
-Rewrite using `[sg_eq_u, sg_eq_u]`. Conclude with `(Finset.mul_prod_erase J (fun j => uS I j) h).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sg_right (I : Finset ι) {J : Finset ι} {k : ι} (h : k ∈ J) :
     shS I J = uS I k * shS I (J.erase k) := by
@@ -89,35 +89,33 @@ private def ah (α : Finset ι → E) (I J : Finset ι) : E :=
   if Disjoint I J then shS I J • α (I ∪ J) else 0
 
 /- English proof (translation)
-Distinguish the cases in `hd : Disjoint I J`. Establish `e1 : ∑ i ∈ I, GlobalTheory.cubeSign I i • ah α (I.erase i) J = ∑ i ∈ I, shS I J • (GlobalTheory.cubeSign (I ∪ J) i • α ((I ∪ J).erase i))`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hiJ : i ∉ J` using `Finset.disjoint_left.1 hd hi`. Establish `hdi : Disjoint (I.erase i) J` using `Finset.disjoint_of_subset_left (Finset.erase_subset _ _) hd`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hset : I.erase i ∪ J = (I ∪ J).erase i`. Use extensionality with `y`. Apply the tactic sequence `by_cases hy : y = i <;> simp [hy, hiJ]`. Unfold `ah`. Rewrite using `[if_pos hdi, hset, smul_smul, smul_smul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[cs_eq, cs_eq, tS_union hd, sg_left J hi]`. Take the linear combination `(-(tS I i * shS (I.erase i) J)) * tS_sq J i`. Establish `e2 : ∑ j ∈ J, ((-1 : ℤ) ^ I.card) • (GlobalTheory.cubeSign J j • ah α I (J.erase j)) = ∑ j ∈ J, shS I J • (GlobalTheory.cubeSign (I ∪ J) j • α ((I ∪ J).erase j))`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hjI : j ∉ I` using `Finset.disjoint_right.1 hd hj`. Establish `hdj : Disjoint I (J.erase j)` using `Finset.disjoint_of_subset_right (Finset.erase_subset _ _) hd`. Establish `hset : I ∪ J.erase j = (I ∪ J).erase j`. Use extensionality with `y`. Apply the tactic sequence `by_cases hy : y = j <;> simp [hy, hjI]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Unfold `ah`. Rewrite using `[if_pos hdj, hset, smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[cs_eq, cs_eq, tS_union hd, sg_right I hj]`. Take the linear combination `(-(tS J j * shS I (J.erase j))) * tS_mul_uS hjI`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[e1, Finset.smul_sum, e2, ← Finset.smul_sum, ← Finset.smul_sum, ← smul_add, ← Finset.sum_union hd, h, smul_zero]`. Take `⟨x, hxI, hxJ⟩` from `Finset.not_disjoint_iff.1 hd`. Establish `hsym : Disjoint I (J.erase x) ↔ Disjoint (I.erase x) J`. Rewrite using `[Finset.disjoint_left, Finset.disjoint_left]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h' y hy hyJ`. Conclude with `h' (Finset.mem_of_mem_erase hy) (Finset.mem_erase.2 ⟨Finset.ne_of_mem_erase hy, hyJ⟩)`. Introduce `h' y hyI hy`. Conclude with `h' (Finset.mem_erase.2 ⟨Finset.ne_of_mem_erase hy, hyI⟩) (Finset.mem_of_mem_erase hy)`. Establish `e1 : ∑ i ∈ I, GlobalTheory.cubeSign I i • ah α (I.erase i) J = GlobalTheory.cubeSign I x • ah α (I.erase x) J`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_eq_single_of_mem x hxI fun i _ hne => ?_` and prove the remaining obligations. Unfold `ah`. Rewrite using `[if_neg, smul_zero]`. Introduce `hdi`. Conclude with `Finset.disjoint_left.1 hdi (Finset.mem_erase.2 ⟨hne.symm, hxI⟩) hxJ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `e2 : ∑ j ∈ J, GlobalTheory.cubeSign J j • ah α I (J.erase j) = GlobalTheory.cubeSign J x • ah α I (J.erase x)`. Use `Finset.sum_eq_single_of_mem x hxJ fun j _ hne => ?_` and prove the remaining obligations. Unfold `ah`. Rewrite using `[if_neg, smul_zero]`. Introduce `hdj`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `Finset.disjoint_left.1 hdj hxI (Finset.mem_erase.2 ⟨hne.symm, hxJ⟩)`. Rewrite using `[e1, e2]`. Distinguish the cases in `hd2 : Disjoint (I.erase x) J`. Establish `hd3 : Disjoint I (J.erase x)` using `hsym.2 hd2`. Establish `s1 : I.erase x ∪ J = I ∪ J`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Apply the tactic sequence `by_cases hy : y = x <;> simp [hy, hxJ]`. Establish `s2 : I ∪ J.erase x = I ∪ J`. Use extensionality with `y`. Apply the tactic sequence `by_cases hy : y = x <;> simp [hy, hxI]`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Unfold `ah`. Rewrite using `[if_pos hd2, if_pos hd3, s1, s2, smul_smul, smul_smul, smul_smul, ← add_smul]`. Establish `hnot : x ∉ I.erase x` using `fun h' => Finset.ne_of_mem_erase h' rfl`. Take `⟨n, hn⟩ : ∃ n, I.card = n + 1` from `Nat.exists_eq_succ_of_ne_zero (Finset.card_ne_zero_of_mem hxI)`. Establish `hcard : (I.erase x).card = n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_erase_of_mem hxI, hn, Nat.add_sub_cancel]`. Establish `h1` using `tS_mul_uS hnot`. Rewrite `h1` using `[hcard]`. Establish `h2` using `tS_sq J x`. Establish `hz : GlobalTheory.cubeSign I x * shS (I.erase x) J + (-1 : ℤ) ^ I.card * GlobalTheory.cubeSign J x * shS I (J.erase x) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[cs_eq, cs_eq, sg_right (I.erase x) hxJ, sg_left (J.erase x) hxI, tS_erase, ← tS_erase I x, hn]`. Take the linear combination `(shS (I.erase x) (J.erase x)) * h1 + ((-1 : ℤ) ^ (n + 1) * shS (I.erase x) (J.erase x)) * h2`. Rewrite using `[hz, zero_smul]`. Unfold `ah`. Rewrite using `[if_neg hd2, if_neg (fun h' => hd2 (hsym.1 h'))]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ah_cocycle (α : Finset ι → E)
     (h : ∀ s : Finset ι, ∑ k ∈ s, GlobalTheory.cubeSign s k • α (s.erase k) = 0) (I J : Finset ι) :
@@ -207,11 +205,11 @@ private theorem ah_cocycle (α : Finset ι → E)
       simp
 
 /- English proof (translation)
-Use `split_ifs with h`. Take `⟨a, rfl⟩` from `Finset.card_eq_one.1 h`. Simplify using `[GlobalTheory.cubeSign_singleton]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg, smul_zero]`. Introduce `he`. Apply `h` to reduce the goal to its premises. Establish `h3` using `Finset.card_erase_of_mem hi`. Rewrite `h3` using `[he, Finset.card_empty]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `Finset.card_pos.2 ⟨i, hi⟩`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem sum_single (I : Finset ι) (x : E) :
     ∑ i ∈ I, GlobalTheory.cubeSign I i • (if I.erase i = ∅ then x else 0) = if I.card = 1 then x else 0 := by
@@ -229,7 +227,7 @@ private theorem sum_single (I : Finset ι) (x : E) :
     omega
 
 /- English proof (translation)
-Simplify using `[wd, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wd_ap [Module ℂ E] (w : ι → Module.End ℂ E) (c : Finset ι → E) (t : Finset ι) :
     wd w c t = ∑ i ∈ t, GlobalTheory.cubeSign t i • w i (c (t.erase i)) := by
@@ -237,43 +235,41 @@ private theorem wd_ap [Module ℂ E] (w : ι → Module.End ℂ E) (c : Finset �
 end
 
 /- English proof (translation)
-Introduce `hU`. Unfold `EdgeRel`. Introduce `ι E _ _ _ _ G p _ α hα`. Unfold `cech Cx.Z at hα`. Simplify using `[cechC] at hα`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Take `⟨hC, hδ⟩` from `hα`. Establish `hcoc : ∀ s : Finset ι, ∑ k ∈ s, GlobalTheory.cubeSign s k • α (s.erase k) = 0`. Introduce `s`. Simplify `congrFun hδ s` using `[deltaL, GlobalTheory.DI.delta]`. Establish `hα0 : α ∅ = 0` using `by simpa using hC ∅`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hl : ∀ a b : Finset ι, lft (uni a b) = a` using `fun a b => (hU ι ι E (fun _ => 1) (fun _ => 0) a b).2.1`. Establish `hr : ∀ a b : Finset ι, rgt (uni a b) = b` using `fun a b => (hU ι ι E (fun _ => 1) (fun _ => 0) a b).2.2.1`. Establish `hsurj : ∀ s : Finset (ι ⊕ₗ ι), ∃ I J, s = uni I J` using `fun s => ⟨lft s, rgt s, ((hU ι ι E (fun _ => 1) (fun _ => 0) ∅ ∅).2.2.2.2 s).symm⟩`. Establish `key : ∀ I : Finset ι, ((-1 : ℤ) ^ I.card) • α I = -(((-1 : ℤ) ^ p) • α I)`. Introduce `I`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hI : I.Nonempty ∧ ((I.card : ℕ) : ℤ) = (p : ℤ) + 1`. Establish `e : I.card = p + 1` using `by omega`. Rewrite using `[e, pow_succ, mul_neg_one, neg_smul]`. Establish `h0` using `hC I`. Rewrite `h0` using `[if_neg hI]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : α I = 0` using `by simpa using h0`. Simplify using `[h1]`. Take `⟨c, hc⟩ : ∃ c : Finset (ι ⊕ₗ ι) → E, ∀ s, c s = if (lft s).Nonempty ∧ (rgt s).Nonempty then -ah α (lft s) (rgt s) else 0` from `⟨_, fun s => rfl⟩`. Unfold `acx Cx.B`. Use `Submodule.mem_map.2 ⟨c, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, true_implies]`. Introduce `s`. Take `⟨I, J, rfl⟩` from `hsurj s`. Rewrite using `[hc, hl, hr]`.
+Simplify by unfolding definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hcardU` using `(hU ι ι E (fun _ => 1) (fun _ => 0) I J).2.2.2.1`. Distinguish the cases in `hIJ : I.Nonempty ∧ J.Nonempty`. Rewrite using `[if_pos hIJ]`. Unfold `ah`. Distinguish the cases in `hd : Disjoint I J`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hd]`. Establish `hα'` using `hC (I ∪ J)`. Distinguish the cases in `hcd : (I ∪ J).Nonempty ∧ (((I ∪ J).card : ℕ) : ℤ) = (p : ℤ) + 1`. Rewrite `hα'` using `[if_pos hcd]`. Establish `hk : (((uni I J).card : ℕ) : ℤ) = (p : ℤ) + 2 - 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcardU, ← Finset.card_union_of_disjoint hd]`. Use `hcd.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos hk]`. Simplify using `only [mixF, hl, hr, if_pos hIJ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `neg_mem (zsmul_mem hα' _)`. Rewrite `hα'` using `[if_neg hcd]`. Establish `h0 : α (I ∪ J) = 0` using `by simpa using hα'`. Rewrite using `[h0, smul_zero, neg_zero]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hd, neg_zero]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[if_neg hIJ]`. Conclude with `Submodule.zero_mem _`. Simplify using `only`.
+Simplify by unfolding definitions. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Take `⟨I, J, rfl⟩` from `hsurj s`. Establish `h` using `hU ι ι E (fun _ => 1) c I J`. Rewrite using `[h.1, wd_ap, wd_ap]`. Simplify using `only [hc, hl, hr, edge1, edge2, Pi.sub_apply, Pi.smul_apply, Module.End.one_apply]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hJ : J.Nonempty`. Use `swap`. Rewrite `hJ` using `[Finset.not_nonempty_iff_eq_empty]`. Substitute `hJ` using the available equality. Simplify using `[hα0]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hI : I.Nonempty`. Use `swap`. Rewrite `hI` using `[Finset.not_nonempty_iff_eq_empty]`. Substitute `hI` using the available equality. Simplify using `[hα0]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `t1 : ∀ i ∈ I, GlobalTheory.cubeSign I i • (if (I.erase i).Nonempty ∧ J.Nonempty then -ah α (I.erase i) J else 0) = -(GlobalTheory.cubeSign I i • ah α (I.erase i) J) + GlobalTheory.cubeSign I i • (if I.erase i = ∅ then α J else 0)`. Introduce `i _`. Distinguish the cases in `he : I.erase i = ∅`. Rewrite using `[he]`. Simplify using `[ah, shS]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : (I.erase i).Nonempty` using `Finset.nonempty_iff_ne_empty.2 he`. Rewrite using `[if_pos ⟨hne, hJ⟩, if_neg he, smul_zero, add_zero, smul_neg]`. Establish `t2 : ∀ j ∈ J, GlobalTheory.cubeSign J j • (if I.Nonempty ∧ (J.erase j).Nonempty then -ah α I (J.erase j) else 0) = -(GlobalTheory.cubeSign J j • ah α I (J.erase j)) + GlobalTheory.cubeSign J j • (if J.erase j = ∅ then α I else 0)`. Introduce `j _`. Distinguish the cases in `he : J.erase j = ∅`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he]`. Simplify using `[ah, shS, tS]`. Establish `hne : (J.erase j).Nonempty` using `Finset.nonempty_iff_ne_empty.2 he`. Rewrite using `[if_pos ⟨hI, hne⟩, if_neg he, smul_zero, add_zero, smul_neg]`. Rewrite using `[Finset.sum_congr rfl t1, Finset.sum_congr rfl t2, Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_neg_distrib, Finset.sum_neg_distrib, sum_single, sum_single]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Establish `hco` using `ah_cocycle α hcoc I J`. Rewrite using `[eq_neg_of_add_eq_zero_left hco, smul_add, smul_neg]`. Distinguish the cases in `hJ1 : J.card = 1`. Rewrite using `[if_pos hJ1, key]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[if_neg hJ1]`. Simplify using `only [smul_zero, add_zero, sub_zero]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.edgeRel_of :
     WdUni → EdgeRel := by

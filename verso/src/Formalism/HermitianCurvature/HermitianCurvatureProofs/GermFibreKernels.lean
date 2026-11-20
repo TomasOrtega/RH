@@ -24,18 +24,18 @@ structure GermBlockL2 {ι : Type} (μ : Measure ℂ) (Y : Finset ι) (U A : ι �
     Tendsto (fun x => ∫ D, ⟪A (h, x) D, A (h', x + σ) D⟫_ℂ ∂μ) (cocompact ℂ) (𝓝 (N σ h h'))
 
 /- English proof (translation)
-Use `filter_upwards [(isCompact_singleton : IsCompact ({c} : Set ℂ)).compl_mem_cocompact] with x hx`. Simplify using `using hx`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eventually_ne_cocompact (c : ℂ) : ∀ᶠ x in cocompact ℂ, x ≠ c := by
   filter_upwards [(isCompact_singleton : IsCompact ({c} : Set ℂ)).compl_mem_cocompact] with x hx
   simpa using hx
 
 /- English proof (translation)
-Establish `h0 : Tendsto (fun x : ℂ => ‖x‖) (cocompact ℂ) atTop` using `tendsto_norm_cocompact_atTop`. Establish `h` using `h0.eventually_ge_atTop (‖σ‖ + |C| / δ + 1)`. Use `filter_upwards [h] with x hx`. Establish `h1 : |C| / δ + 1 ≤ ‖x + σ‖`. Use `norm_sub_norm_le x (-σ)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[norm_neg, sub_neg_eq_add]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : 0 < ‖x + σ‖` using `lt_of_lt_of_le (by positivity) h1`. Rewrite using `[← div_eq_mul_inv, div_le_iff₀ hpos]`. Establish `h2 : |C| = δ * (|C| / δ)` using `by first`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(field_simp; ring)`. Consider the case `field_simp`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ hδ.le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Treat this case separately. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eventually_rate_cocompact (σ : ℂ) (C δ : ℝ) (hδ : 0 < δ) :
     ∀ᶠ x in cocompact ℂ, C * ‖x + σ‖⁻¹ ≤ δ := by
@@ -59,11 +59,11 @@ theorem eventually_rate_cocompact (σ : ℂ) (C δ : ℝ) (hδ : 0 < δ) :
         linarith
 
 /- English proof (translation)
-Establish `i1 : Integrable (fun D => ‖u D - a D‖ ^ 2) μ` using `(memLp_two_iff_integrable_sq_norm (hu.sub ha).1).1 (hu.sub ha)`. Establish `i2 : Integrable (fun D => ‖u D‖ ^ 2) μ` using `(memLp_two_iff_integrable_sq_norm hu.1).1 hu`. Establish `i3 : Integrable (fun D => ab D ^ 2) μ` using `(memLp_two_iff_integrable_sq hab.1).1 hab`. Combine the equalities or inequalities in the displayed calculation. Use `integral_mono_ae i1 ((i2.const_mul 2).add (i3.const_mul 2)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hd] with D hD`. Establish `h1 : ‖u D - a D‖ ≤ ‖u D‖ + ‖a D‖` using `norm_sub_le _ _`. Establish `h2 : 0 ≤ ‖a D‖` using `norm_nonneg _`. Establish `h3 : 0 ≤ ‖u D - a D‖` using `norm_nonneg _`. Establish `e1 : ‖u D - a D‖ ^ 2 ≤ (‖u D‖ + ‖a D‖) ^ 2` using `pow_le_pow_left₀ h3 h1 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ‖a D‖ ^ 2 ≤ ab D ^ 2` using `pow_le_pow_left₀ h2 hD 2`. Use polynomial arithmetic with `[sq_nonneg (‖u D‖ - ‖a D‖)]`. Use `_ = 2 * ∫ D, ‖u D‖ ^ 2 ∂μ + 2 * ∫ D, ab D ^ 2 ∂μ := by`. Rewrite using `[integral_add (i2.const_mul 2) (i3.const_mul 2), integral_const_mul, integral_const_mul]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_sq_sub_le {μ : Measure ℂ} {u a : ℂ → H} {ab : ℂ → ℝ} (hu : MemLp u 2 μ) (ha : MemLp a 2 μ)
     (hab : MemLp ab 2 μ) (hd : ∀ᵐ D ∂μ, ‖a D‖ ≤ ab D) :
@@ -87,15 +87,11 @@ theorem integral_sq_sub_le {μ : Measure ℂ} {u a : ℂ → H} {ab : ℂ → �
 variable {ι : Type} {μ : Measure ℂ} {Y : Finset ι} {U A : ι × ℂ → ℂ → H} {N : ℂ → ι → ι → ℂ}
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hG.sup`. Take `⟨ab, hab, hdom⟩` from `hG.dom h' hh'`. Take `⟨ab0, hab0, hdom0⟩` from `hG.dom h hh`. Use `tendsto_integral_inner_germ μ (fun x => fun D => U (h, x + σ) D - A (h, x + σ) D) (fun x => A (h', x + τ)) ab hab (2 * B + 2 * ∫ D, ab0 D ^ 2 ∂μ) ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ne_cocompact (-σ)] with x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx' : x + σ ≠ 0` using `fun h0 => hx (eq_neg_of_add_eq_zero_left h0)`. Establish `hu` using `hG.memU h hh _ hx'`. Establish `ha` using `hG.memA h hh _ hx'`. Use `⟨hu.sub ha, ?_⟩` and prove the remaining obligations. Establish `h1` using `integral_sq_sub_le hu ha hab0 (hdom0 _ hx')`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `hB h hh _ hx'`. Use `beta_reduce`. Combine the linear equalities and inequalities to obtain the conclusion. Use `filter_upwards [eventually_ne_cocompact (-τ)] with x hx`. Conclude with `hdom _ (fun h0 => hx (eq_neg_of_add_eq_zero_left h0))`.
-
-Introduce `K hK hK0 δ hδ`. Take `⟨C, hC⟩` from `hG.germ h hh K hK hK0`. Use `filter_upwards [eventually_ne_cocompact (-σ), eventually_rate_cocompact σ C δ hδ] with x hx hr`. Establish `hx' : x + σ ≠ 0` using `fun h0 => hx (eq_neg_of_add_eq_zero_left h0)`. Use `filter_upwards [hC _ hx'] with D hD hDK`.
-
-Conclude with `(hD hDK).trans hr`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GermBlockL2.tendsto_rem [IsFiniteMeasureOnCompacts μ] [NullSingletonClass μ] (hG : GermBlockL2 μ Y U A N)
     {h h' : ι} (hh : h ∈ Y) (hh' : h' ∈ Y) (σ τ : ℂ) :
@@ -124,29 +120,27 @@ theorem GermBlockL2.tendsto_rem [IsFiniteMeasureOnCompacts μ] [NullSingletonCla
     exact (hD hDK).trans hr
 
 /- English proof (translation)
-Use `⟨fun Xs hXs => blockPSD_gramL μ Y U A hG.memU hG.memA Xs hXs, ?_, ?_⟩` and prove the remaining obligations. Use `choose! ab hab hdom using hG.dom`. Use `⟨∑ h ∈ Y, ∫ D, ab h D ^ 2 ∂μ, fun h hh x hx => ?_⟩` and prove the remaining obligations. Establish `hA` using `hG.memA h hh x hx`. Establish `i1 : Integrable (fun D => ‖A (h, x) D‖ ^ 2) μ` using `(memLp_two_iff_integrable_sq_norm hA.1).1 hA`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2 : Integrable (fun D => ab h D ^ 2) μ` using `(memLp_two_iff_integrable_sq (hab h hh).1).1 (hab h hh)`. Unfold `gramL`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `D`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules. Use `_ ≤ ∫ D, ab h D ^ 2 ∂μ := by`. Use `integral_mono_ae i1 i2 ?_` and prove the remaining obligations. Use `filter_upwards [hdom h hh x hx] with D hD`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `pow_le_pow_left₀ (norm_nonneg _) hD 2`. Use `_ ≤ ∑ h ∈ Y, ∫ D, ab h D ^ 2 ∂μ := Finset.single_le_sum (f := fun h => ∫ D, ab h D ^ 2 ∂μ) (fun i _ => integral_nonneg fun _ => sq_nonneg _) hh`. Introduce `h hh h' hh' σ`. Use `⟨hG.lim h hh h' hh' σ, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hG.tendsto_rem hh hh' 0 σ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [add_zero] at h1`. Establish `h2` using `h1.add (hG.lim h hh h' hh' σ)`. Rewrite `h2` using `[zero_add]`. Use `h2.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ne_cocompact 0, eventually_ne_cocompact (-σ)] with x hx hxσ`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hxσ' : x + σ ≠ 0` using `fun h0 => hxσ (eq_neg_of_add_eq_zero_left h0)`. Establish `i1 : Integrable (fun D => ⟪U (h, x) D - A (h, x) D, A (h', x + σ) D⟫_ℂ) μ` using `integrable_inner_of_memLp ((hG.memU h hh x hx).sub (hG.memA h hh x hx)) (hG.memA h' hh' _ hxσ')`. Establish `ia : Integrable (fun D => ⟪A (h, x) D, A (h', x + σ) D⟫_ℂ) μ` using `integrable_inner_of_memLp (hG.memA h hh x hx) (hG.memA h' hh' _ hxσ')`. Unfold `gramL`. Rewrite using `[← integral_add i1 ia]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `D`. Rewrite using `[inner_sub_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hG.tendsto_rem hh' hh σ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [add_zero] at h1`. Establish `h1c` using `(Complex.continuous_conj.tendsto 0).comp h1`. Rewrite `h1c` using `[map_zero]`. Establish `h2` using `h1c.add (hG.lim h hh h' hh' σ)`. Rewrite `h2` using `[zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h2.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ne_cocompact 0, eventually_ne_cocompact (-σ)] with x hx hxσ`. Establish `hxσ' : x + σ ≠ 0` using `fun h0 => hxσ (eq_neg_of_add_eq_zero_left h0)`. Establish `i1 : Integrable (fun D => ⟪U (h', x + σ) D - A (h', x + σ) D, A (h, x) D⟫_ℂ) μ` using `integrable_inner_of_memLp ((hG.memU h' hh' _ hxσ').sub (hG.memA h' hh' _ hxσ')) (hG.memA h hh x hx)`. Establish `ia : Integrable (fun D => ⟪A (h', x + σ) D, A (h, x) D⟫_ℂ) μ` using `integrable_inner_of_memLp (hG.memA h' hh' _ hxσ') (hG.memA h hh x hx)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hsplit : ∫ D, ⟪U (h', x + σ) D, A (h, x) D⟫_ℂ ∂μ = ∫ D, ⟪U (h', x + σ) D - A (h', x + σ) D, A (h, x) D⟫_ℂ ∂μ + ∫ D, ⟪A (h', x + σ) D, A (h, x) D⟫_ℂ ∂μ`. Rewrite using `[← integral_add i1 ia]`. Use `congr 1`. Use function extensionality and compare the values at `D`. Rewrite using `[inner_sub_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hswap : (starRingEnd ℂ) (∫ D, ⟪A (h', x + σ) D, A (h, x) D⟫_ℂ ∂μ) = ∫ D, ⟪A (h, x) D, A (h', x + σ) D⟫_ℂ ∂μ`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `D`.
-
-Conclude with `inner_conj_symm _ _`. Use `show (starRingEnd ℂ) (∫ D, ⟪U (h', x + σ) D - A (h', x + σ) D, A (h, x) D⟫_ℂ ∂μ) + ∫ D, ⟪A (h, x) D, A (h', x + σ) D⟫_ℂ ∂μ = (starRingEnd ℂ) (gramL μ U A (h', x + σ) (h, x))`. Unfold `gramL`. Rewrite using `[hsplit, map_add, hswap]`.
+A detailed English derivation is pending.
 -/
 theorem GermBlockL2.propG [IsFiniteMeasureOnCompacts μ] [NullSingletonClass μ] (hG : GermBlockL2 μ Y U A N) :
     (∀ Xs : Finset ℂ, (∀ x ∈ Xs, x ≠ 0) →

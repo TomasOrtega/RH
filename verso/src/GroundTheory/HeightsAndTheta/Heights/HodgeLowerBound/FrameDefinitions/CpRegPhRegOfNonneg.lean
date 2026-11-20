@@ -38,7 +38,7 @@ def smoothRepConj (P : Ideal (MRing ι)) (A : HermLine ι) : HermLine ι :=
   else smoothRep P A
 
 /- English proof (translation)
-Unfold `smoothRepConj`. Use `split_ifs with h`. Conclude with `h.choose_spec.2.2.2 z hz`. Conclude with `smoothRep_h A hz`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem smoothRepConj_h {P : Ideal (MRing ι)} (A : HermLine ι) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) :
     (smoothRepConj P A).h z = A.h z := by
@@ -49,7 +49,7 @@ theorem smoothRepConj_h {P : Ideal (MRing ι)} (A : HermLine ι) {z : (Σ k, ι 
   · exact smoothRep_h A hz
 
 /- English proof (translation)
-Unfold `smoothRepConj`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `smoothRep_a P A`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem smoothRepConj_a (P : Ideal (MRing ι)) (A : HermLine ι) : (smoothRepConj P A).a = A.a := by
   classical
@@ -59,7 +59,7 @@ theorem smoothRepConj_a (P : Ideal (MRing ι)) (A : HermLine ι) : (smoothRepCon
   · exact smoothRep_a P A
 
 /- English proof (translation)
-Unfold `smoothRepConj`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec.2.2.1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothRepConj_conj {P : Ideal (MRing ι)} (A : HermLine ι)
     (h : ∃ A' : HermLine ι, A'.a = A.a ∧ IsSmoothHerm A' ∧ IsConjInvariantH A' ∧ ∀ z ∈ mcPts P, A'.h z = A.h z) :
@@ -108,9 +108,9 @@ variable (II : IntersectionSystem)
   (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `hc : (fun y => max (cpReg.u j y) (-K)) = fun _ => (0 : ℝ)`. Use function extensionality and compare the values at `fun y => by`. Simplify using `only [RegChartData.u, GroundTheory.Heights₂.Heights.Regular.PotentialCharts.chartFun, cpReg, cpCharts]`. Simplify using `[hK]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Unfold `RegChartData.trunc ReciprocityTheory.AnForm.A.limsupExt`. Rewrite using `[hc]`. Use `split_ifs`. Conclude with `limsup_zero_real _`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cpReg_trunc_of_nonneg {K : ℝ} (hK : 0 ≤ K) (j : Fin cpReg.N) : cpReg.trunc K j = fun _ => 0 := by
   funext y
@@ -125,7 +125,7 @@ theorem cpReg_trunc_of_nonneg {K : ℝ} (hK : 0 ≤ K) (j : Fin cpReg.N) : cpReg
   · rfl
 
 /- English proof (translation)
-Simplify using `only [RegChartData.phReg, RegChartData.smoothed, ReciprocityTheory.AnForm.A.molli]`. Rewrite using `[cpReg_trunc_of_nonneg hK]`. Simplify using `[cpReg, cpCharts]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cpReg_phReg_of_nonneg (ρ : ReciprocityTheory.AnForm.A.Mollifier 1) {K : ℝ} (hK : 0 ≤ K) (t : ℝ) (j : Fin cpReg.N)
     (x : CP 1) : cpReg.phReg ρ K t j x = 0 := by
@@ -137,7 +137,7 @@ def lineRegT : LogLogRegularisationSetting lineModel (lineData II hII).Xo (muLin
   { lineReg II hII with K := fun t => t⁻¹ }
 
 /- English proof (translation)
-The claim follows from `tendsto_id.mono_left nhdsWithin_le_nhds K_tendsto := tendsto_inv_nhdsGT_zero K_ge := by filter_upwards [self_mem_nhdsWithin] with t ht show cpReg.Clog * Real.log (Real.log t⁻¹) ≤ t⁻¹ have : cpReg.Clog = 0 := rfl rw [this, zero_mul] exact inv_nonneg.2 (le_of_lt ht) compare := by f …`.
+A detailed English derivation is pending.
 -/
 theorem lineRegT_tied : (lineRegT II hII).IsTied where
   e1_tendsto_zero := tendsto_id.mono_left nhdsWithin_le_nhds
@@ -175,7 +175,7 @@ def lineBRegC : BoundedRegularisationSetting lineModel (lineData II hII).Xo
   e1_ge _ _ := le_rfl
 
 /- English proof (translation)
-The claim follows from `tendsto_id.mono_left nhdsWithin_le_nhds compare := by filter_upwards [self_mem_nhdsWithin] with t ht j k x _ have h0 : ∀ (j' : Fin (lineBRegC II hII).B.N) (x' : lineModel.Xc), (lineBRegC II hII).B.phReg (lineBRegC II hII).ρ t j' x' = 0 := fun j' x' => cpBounded_phReg _ t j' x' rw …`.
+A detailed English derivation is pending.
 -/
 theorem lineBRegC_tied : (lineBRegC II hII).IsTied where
   e1_tendsto_zero := tendsto_id.mono_left nhdsWithin_le_nhds

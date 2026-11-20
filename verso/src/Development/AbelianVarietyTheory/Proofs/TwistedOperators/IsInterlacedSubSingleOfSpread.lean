@@ -4,23 +4,23 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ProjExi
 namespace GlobalTheory.SepReal
 
 /- English proof (translation)
-Introduce `n ε lam ε' mu hI hw hm hne s`. Establish `h01 : ∀ a, (Pi.single s (1:ℝ) : Fin (n+1) → ℝ) a = 0 ∨ (Pi.single s (1:ℝ) : Fin (n+1) → ℝ) a = 1`. Introduce `a`. Distinguish the cases in `h : a = s`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Establish `hb : ∀ a, 0 ≤ (Pi.single s (1:ℝ) : Fin (n+1) → ℝ) a ∧ (Pi.single s (1:ℝ) : Fin (n+1) → ℝ) a ≤ 1`. Introduce `a`. Apply the tactic sequence `rcases h01 a with h | h <;> rw [h] <;> norm_num`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `key : ∀ x y : Fin (n + 1) ⊕ Fin n, Sum.elim (lam - Pi.single s 1) mu y < Sum.elim (lam - Pi.single s 1) mu x ↔ Sum.elim lam mu y < Sum.elim lam mu x`. Introduce and unpack `(a | i) (c | j)`. Simplify using `only [Sum.elim_inl, Pi.sub_apply]`. Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `hw'` using `hw a c hac`. Establish `ha` using `h01 a`. Establish `hc` using `h01 c`. Generalize the expression as in `(Pi.single s (1:ℝ) : Fin (n+1) → ℝ) a = da at ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(Pi.single s (1:ℝ) : Fin (n+1) → ℝ) c = dc at hc`. Apply the tactic sequence `rcases le_abs.1 hw' with h | h <;> rcases ha with rfl | rfl <;> rcases hc with rfl | rfl <;>`. Apply the tactic sequence `constructor <;> intro h' <;> linarith`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Pi.sub_apply]`. Establish `hba` using `hb a`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h`. Use `hm a j h` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Pi.sub_apply]`. Establish `hbc` using `hb c`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h'`. Establish `hlt : mu i < lam c` using `lt_of_le_of_ne (not_lt.1 h') (fun e => hne c i e.symm)`. Use `hm c i hlt` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Introduce `x y h hz`. Rewrite `h` using `[key]`. Conclude with `hI x y h (fun z hz' => hz z ⟨(key z y).2 hz'.1, (key x z).2 hz'.2⟩)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interlaced_sub_single : ∀ {n : ℕ} {ε : Fin (n + 1) → Bool} {lam : Fin (n + 1) → ℝ} {ε' : Fin n → Bool} {mu : Fin n → ℝ},
     GlobalTheory.SepReal.Interlaced ε lam ε' mu → (∀ a c, a ≠ c → 2 ≤ |lam a - lam c|) → (∀ a i, mu i < lam a → mu i + 1 < lam a) →

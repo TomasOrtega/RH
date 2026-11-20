@@ -7,9 +7,9 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.DHF
 
 /- English proof (translation)
-Establish `hw0 : w ≠ 0`. Introduce `h`. Rewrite `hw` using `[h, Complex.zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn : 0 < Complex.normSq w` using `Complex.normSq_pos.2 hw0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[norm_div, div_pow, Complex.sq_norm, Complex.sq_norm, Complex.div_re, Complex.normSq_ofReal, Complex.ofReal_re, Complex.ofReal_im, zero_mul, zero_div, add_zero]`. Establish `h1 : η * η ≤ η * w.re` using `mul_le_mul_of_nonneg_left hw hη.le`. Simplify using `only [div_eq_mul_inv]`. Conclude with `mul_le_mul_of_nonneg_right h1 (inv_nonneg.2 hn.le)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem u_disc (η : ℝ) (hη : 0 < η) (w : ℂ) (hw : η ≤ w.re) :
     ‖(η : ℂ) / w‖ ^ 2 ≤ ((η : ℂ) / w).re := by
@@ -25,7 +25,7 @@ theorem u_disc (η : ℝ) (hη : 0 < η) (w : ℂ) (hw : η ≤ w.re) :
   exact mul_le_mul_of_nonneg_right h1 (inv_nonneg.2 hn.le)
 
 /- English proof (translation)
-Establish `h : ∑ i, ((η : ℂ) / w i) ^ j = ((η ^ j : ℝ) : ℂ) * ∑ i, 1 / (w i) ^ j`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[div_pow, div_eq_mul_one_div, Complex.ofReal_pow]`. Rewrite using `[h, Complex.re_ofReal_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem u_sum_re (η : ℝ) {N : ℕ} (w : Fin N → ℂ) (j : ℕ) :
     (∑ i, ((η : ℂ) / w i) ^ j).re = η ^ j * (∑ i, 1 / (w i) ^ j).re := by
@@ -37,55 +37,51 @@ theorem u_sum_re (η : ℝ) {N : ℕ} (w : Fin N → ℂ) (j : ℕ) :
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `h2A : (2 : ℝ) ≤ 2 ^ A`. Combine the equalities or inequalities in the displayed calculation. Establish `hq0 : 0 < q` using `by rw [hq]; positivity`. Establish `hq4 : q ≤ 1 / 4`. Rewrite using `[hq, div_le_iff₀ (by positivity)]; nlinarith`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hε0 : 0 < ε` using `by rw [hε]; positivity`. Establish `hε1 : ε ≤ 1 / 16` using `by rw [hε]; linarith`. Establish `hb0 : 0 ≤ b` using `by rw [hb]; positivity`. Establish `hl0 : 0 ≤ l`. Rewrite using `[hl]; have := Real.log_nonpos hq0.le (by linarith); linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hBr : (1 : ℝ) ≤ B` using `by exact_mod_cast hB1`. Establish `hAr : (1 : ℝ) ≤ A` using `by exact_mod_cast hA1`. Establish `hK0pos : 0 < K0`. Establish `: 0 ≤ 64 * A * Real.exp (l * b)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `set u : Fin N → ℂ := fun i => (η : ℂ) / w i with hu_def`. Establish `hu : ∀ i, ‖u i‖ ^ 2 ≤ (u i).re` using `fun i => u_disc η hη0 (w i) (hw i)`. Establish `hi : ∃ i, 1 / 2 ≤ ‖u i‖`. Take `⟨i, hi⟩` from `hi0`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hu_def, hi, norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hη0, abs_of_pos (by linarith : (0 : ℝ) < η + η)]`. Rewrite using `[le_div_iff₀ (by linarith)]; linarith`. Use `set S : ℝ := ∑ i, (u i).re with hS_def`. Establish `hS_eq : S = η * (∑ i, 1 / (w i) ^ 1).re`. Use `u_sum_re η w 1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pow_one] at this ⊢`. Rewrite using `[hS_def, ← this, Complex.re_sum]`. Establish `hlam1 : lam / η ≤ 1` using `le_trans hlamη (by rw [Real.exp_le_one_iff]; linarith)`. Establish `hS : S ≤ 2 * (lam / η) + 25 * C * (η * large₂)`. Establish `h1` using `hpow 1 le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hS_eq]`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 hη0.le`. Establish `h3 : η * (2 * ((1 : ℕ) : ℝ) * lam / η ^ (1 + 1) + C * large₂ * 25 ^ 1) = 2 * (lam / η) + 25 * C * (η * large₂)` using `by field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set Sb : ℝ := 2 + 25 * C * c₂ * K0 with hSb_def`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSb0 : 0 ≤ Sb` using `by positivity`. Establish `hηL' : 25 * C * (η * large₂) ≤ 25 * C * (c₂ * K0)` using `mul_le_mul_of_nonneg_left hηL.le (by positivity)`. Establish `hSSb : S ≤ Sb` using `by rw [hSb_def]; linarith only [hηL', hS, hlam1]`. Use `set x : ℝ := B * Sb / ε ^ 2 with hx_def`. Establish `hx0 : 0 ≤ x` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K : ℕ := ⌈x⌉₊ + 3 with hK_def`. Establish `hK3 : 3 ≤ K` using `by omega`. Establish `hKr : (K : ℝ) = ⌈x⌉₊ + 3` using `by rw [hK_def]; push_cast; ring`. Establish `hxK : x ≤ ⌈x⌉₊` using `Nat.le_ceil x`. Establish `hxK' : (⌈x⌉₊ : ℝ) < x + 1` using `Nat.ceil_lt_add_one hx0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hε2 : ε ^ 2 ≤ 1` using `pow_le_one₀ hε0.le (by linarith)`. Establish `hSbx : Sb ≤ x`. Rewrite using `[hx_def, le_div_iff₀ (by positivity)]`. Establish `h1` using `mul_le_mul_of_nonneg_left hε2 hSb0`. Establish `h2` using `mul_le_mul_of_nonneg_right hBr hSb0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `only [h1, h2]`. Establish `hBS : (B : ℝ) * S ≤ ε ^ 2 * K`. Establish `h1 : (B : ℝ) * S ≤ B * Sb` using `mul_le_mul_of_nonneg_left hSSb (by positivity)`. Establish `h2 : (B : ℝ) * Sb = ε ^ 2 * x` using `by rw [hx_def]; field_simp`. Establish `h3 : ε ^ 2 * x ≤ ε ^ 2 * K` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨j, hKj, hjA, hj⟩` from `near_far c' A B hc'0 hT ε hε0 (by linarith) N u hu hi K (by omega) hBS`. Establish `hj1 : 1 ≤ j` using `by omega`. Establish `hpj` using `hpow j hj1`. Establish `hsumj : (∑ i, u i ^ j).re = η ^ j * (∑ i, 1 / (w i) ^ j).re` using `u_sum_re η w j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hηj : 0 < η ^ j` using `pow_pos hη0 j`. Establish `hRe : (∑ i, u i ^ j).re ≤ 2 * j * (lam / η) + C * (η * large₂) * 25 * (25 * η) ^ (j - 1)`. Rewrite using `[hsumj]`. Establish `h2` using `mul_le_mul_of_nonneg_left hpj hηj.le`. Establish `h3 : η ^ j * (2 * (j : ℝ) * lam / η ^ (j + 1) + C * large₂ * 25 ^ j) = 2 * j * (lam / η) + C * (η * large₂) * 25 * (25 * η) ^ (j - 1)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨m, rfl⟩ : ∃ m, j = m + 1` from `⟨j - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Rewrite using `[mul_pow, pow_succ, pow_succ]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hjAK : (j : ℝ) ≤ A * K` using `by exact_mod_cast hjA`. Establish `hB1' : 2 * j * (lam / η) ≤ 2 * A * K * Real.exp (-K0)`. Establish `h0 : 0 ≤ lam / η` using `by positivity`. Establish `: (j : ℝ) * (lam / η) ≤ (A * K) * Real.exp (-K0)` using `mul_le_mul hjAK hlamη h0 (by positivity)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `only [this]`. Establish `h25 : 25 * η ≤ q ^ 2 / 8` using `by linarith`. Establish `h25' : q ^ 2 / 8 ≤ 1`. Establish `: q ^ 2 ≤ 1` using `pow_le_one₀ hq0.le (by linarith)`. Combine the linear relations using `only [this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hB2 : C * (η * large₂) * 25 * (25 * η) ^ (j - 1) ≤ K * (q ^ 2 / 8) ^ (K - 1)`. Establish `ha : C * (η * large₂) * 25 ≤ K`. Establish `: C * (η * large₂) * 25 ≤ 25 * C * c₂ * K0` using `by linarith only [hηL']`. Combine the linear relations using `only [this, hSbx, hxK, hKr, hSb_def]`. Establish `hp1 : (25 * η) ^ (j - 1) ≤ (25 * η) ^ (K - 1)` using `pow_le_pow_of_le_one (by positivity) (by linarith) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hp2 : (25 * η) ^ (K - 1) ≤ (q ^ 2 / 8) ^ (K - 1)` using `pow_le_pow_left₀ (by positivity) h25 _`. Establish `hp0 : 0 ≤ (25 * η) ^ (j - 1)` using `by positivity`. Establish `hC0 : 0 ≤ C * (η * large₂) * 25` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hB3 : ε ^ (j - 2) * S ≤ K * (q / 4) ^ K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg (fun i _ => le_trans (by positivity) (hu i))`. Establish `hSK : S ≤ ε ^ 2 * K`. Use `mul_le_mul_of_nonneg_right hBr hS0` as an intermediate fact. Combine the linear relations using `only [this, hBS]`. Establish `hp1 : ε ^ (j - 2) ≤ ε ^ (K - 2)` using `pow_le_pow_of_le_one hε0.le (by linarith) (by omega)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp2 : ε ^ (K - 2) * ε ^ 2 = ε ^ K` using `by rw [← pow_add, Nat.sub_add_cancel (by omega : 2 ≤ K)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hLHS : q ^ K ≤ c' ^ K * (1 / 2) ^ j`. Establish `h1 : q ^ K = c' ^ K * (1 / 2) ^ (A * K)`. Rewrite using `[hq, div_pow, ← pow_mul, one_div_pow]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Conclude with `pow_le_pow_of_le_one (by norm_num) (by norm_num) hjA`. Establish `hmain : q ^ K ≤ 2 * A * K * Real.exp (-K0) + K * (q ^ 2 / 8) ^ (K - 1) + K * (q / 4) ^ K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set a : ℝ := 25 * B * C * c₂ / ε ^ 2 with ha_def`. Establish `ha0 : 0 ≤ a` using `by positivity`. Establish `ha : a * (2 * l + 2) ≤ 1`. Establish `h1 : c₂ * (25 * B * C * (2 * l + 2)) ≤ ε ^ 2`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hc₂` using `[le_div_iff₀ (by positivity)]`. Then use the resulting hypothesis. Rewrite using `[ha_def, div_mul_eq_mul_div, div_le_one (by positivity)]`. Establish `: 25 * (B : ℝ) * C * c₂ * (2 * l + 2) = c₂ * (25 * B * C * (2 * l + 2))` using `by ring`. Combine the linear relations using `only [this, h1]`. Establish `hKab : (K : ℝ) ≤ a * K0 + b`.
-
-Establish `: x = a * K0 + (b - 4)`. Rewrite using `[hx_def, ha_def, hb, hSb_def]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `final_contra q A K0 a b l K hq0 hq4 hl hAr hK3 hK0pos ha0 ha hb0 hKab hK0 hmain`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem core (c' C : ℝ) (A B : ℕ) (hc'0 : 0 < c') (hc'2 : c' ≤ 1 / 2) (hA1 : 1 ≤ A) (hB1 : 1 ≤ B)
     (hC : 0 < C)

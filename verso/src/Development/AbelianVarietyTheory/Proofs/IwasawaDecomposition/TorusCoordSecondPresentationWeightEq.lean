@@ -20,14 +20,14 @@ noncomputable section
 namespace GlobalTheory.WtSecond
 
 /- English proof (translation)
-The claim follows from `(Over.comp_left _ _ _ f g).symm.trans (congrArg (fun k => k.left) H)`.
+A detailed English derivation is pending.
 -/
 lemma left_eq {S : Scheme.{0}} {A B C : Over S} {f : A ⟶ B} {g : B ⟶ C} {h : A ⟶ C} (H : f ≫ g = h) :
     f.left ≫ g.left = h.left :=
   (Over.comp_left _ _ _ f g).symm.trans (congrArg (fun k => k.left) H)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma appLE_congr {A B : Scheme.{0}} {f g : A ⟶ B} (h : f = g) {U : B.Opens} {W : A.Opens}
     (e : W ≤ f ⁻¹ᵁ U) (e' : W ≤ g ⁻¹ᵁ U) : f.appLE U W e = g.appLE U W e' := by
@@ -43,7 +43,7 @@ def chg (θ : WeightPf.Te D' I e ≅ WeightPf.Te D I e) :
   lift (fst (WeightPf.Te D I e) (thickObj R I e G) ≫ θ.inv) (snd (WeightPf.Te D I e) (thickObj R I e G))
 
 /- English proof (translation)
-The claim follows from `lift_fst _ _`.
+A detailed English derivation is pending.
 -/
 lemma chg_fst (θ : WeightPf.Te D' I e ≅ WeightPf.Te D I e) :
     chg (G := G) θ ≫ fst (WeightPf.Te D' I e) (thickObj R I e G) =
@@ -51,14 +51,14 @@ lemma chg_fst (θ : WeightPf.Te D' I e ≅ WeightPf.Te D I e) :
   lift_fst _ _
 
 /- English proof (translation)
-The claim follows from `lift_snd _ _`.
+A detailed English derivation is pending.
 -/
 lemma chg_snd (θ : WeightPf.Te D' I e ≅ WeightPf.Te D I e) :
     chg (G := G) θ ≫ snd (WeightPf.Te D' I e) (thickObj R I e G) = snd (WeightPf.Te D I e) (thickObj R I e G) :=
   lift_snd _ _
 
 /- English proof (translation)
-Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, chg_fst, ← Category.assoc, chg_fst, Category.assoc, Iso.symm_inv, Iso.inv_hom_id, Category.comp_id, Category.id_comp]`. Rewrite using `[Category.assoc, chg_snd, chg_snd, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma chg_chg (θ : WeightPf.Te D' I e ≅ WeightPf.Te D I e) :
     chg (G := G) θ ≫ chg (G := G) θ.symm = 𝟙 _ := by
@@ -68,9 +68,9 @@ lemma chg_chg (θ : WeightPf.Te D' I e ≅ WeightPf.Te D I e) :
   · rw [Category.assoc, chg_snd, chg_snd, Category.id_comp]
 
 /- English proof (translation)
-Establish `hgi : θ.inv ≫ g'.i = g.i` using `(Iso.inv_comp_eq θ).2 hi.symm`. Establish `h1 : chg θ ≫ lift (fst (WeightPf.Te D' I e) (thickObj R I e G) ≫ g'.i) (snd _ _) = lift (fst (WeightPf.Te D I e) (thickObj R I e G) ≫ g.i) (snd _ _)`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, lift_fst, lift_fst, ← Category.assoc, chg_fst, Category.assoc, hgi]`. Rewrite using `[Category.assoc, lift_snd, lift_snd, chg_snd]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ μ[thickObj R I e G]) h1)`.
+A detailed English derivation is pending.
 -/
 lemma chg_act (g : GtCoord I D e G) (g' : GtCoord I D' e G) (θ : WeightPf.Te D' I e ≅ WeightPf.Te D I e)
     (hi : θ.hom ≫ g.i = g'.i) : chg θ ≫ WeightPf.act g' = WeightPf.act g := by
@@ -90,19 +90,19 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D D' : DegPre R} {e
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Establish `hΨs : chg (G` using `G) θ.symm ≫ (snd (WeightPf.Te D I e) (thickObj R I e G)) = (snd (WeightPf.Te D' I e) (thickObj R I e G)) := chg_snd θ.symm`. Establish `hact' : chg (G` using `G) θ.symm ≫ WeightPf.act g = WeightPf.act g' := chg_act g' g θ.symm (by rw [Iso.symm_hom, ← hi, Iso.inv_hom_id_assoc])`. Establish `hs'' : (chg (G` using `G) θ.symm).left ⁻¹ᵁ W' ≤ (snd (WeightPf.Te D' I e) (thickObj R I e G)).left ⁻¹ᵁ LB.wchart D'.P.L (D'.Oφ g'.pG α') jt := by`. Establish `h1 : (snd (WeightPf.Te D' I e) (thickObj R I e G)).left = (chg (G` using `G) θ.symm).left ≫ (snd (WeightPf.Te D I e) (thickObj R I e G)).left := (left_eq hΨs).symm`. Rewrite using `[h1, Scheme.Hom.comp_preimage]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun y hy => hs hy`. Establish `ha'' : (chg (G` using `G) θ.symm).left ⁻¹ᵁ W' ≤ (WeightPf.act g').left ⁻¹ᵁ LB.wchart D'.P.L (D'.Oφ g'.pG α') jt := by`. Establish `h1 : (WeightPf.act g').left = (chg (G` using `G) θ.symm).left ≫ (WeightPf.act g).left := (left_eq hact').symm`. Rewrite using `[h1, Scheme.Hom.comp_preimage]`. Conclude with `fun y hy => ha hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hΦW : W' ≤ (chg (G` using `G) θ).left ⁻¹ᵁ ((chg (G := G) θ.symm).left ⁻¹ᵁ W') := by`. Establish `h2 : (chg (G` using `G) θ).left ≫ (chg (G := G) θ.symm).left = 𝟙 _ := (left_eq (chg_chg θ)).trans (Over.id_left _)`. Rewrite using `[← Scheme.Hom.comp_preimage, h2]`. Conclude with `fun y hy => hy`. Establish `key` using `WeightPf.t_act g' α' jt hjt _ hs'' ha''`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `k2` using `congrArg ((chg (G := G) θ).left.appLE _ W' hΦW).hom key`. Establish `e0 : (chg (G` using `G) θ).left ≫ (WeightPf.act g').left = (WeightPf.act g).left := left_eq (chg_act g g' θ hi)`. Establish `e1 : (chg (G` using `G) θ).left ≫ (snd (WeightPf.Te D' I e) (thickObj R I e G)).left = (snd (WeightPf.Te D I e) (thickObj R I e G)).left := left_eq (chg_snd θ)`. Establish `L : ∀ x, ((chg (G` using `G) θ).left.appLE _ W' hΦW).hom (((WeightPf.act g').left.appLE _ _ ha'').hom x) = ((WeightPf.act g).left.appLE _ W' ha).hom x := by`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`. Conclude with `congrArg (fun φ => φ.hom x) (appLE_congr e0 _ ha)`. Establish `S : ∀ x, ((chg (G` using `G) θ).left.appLE _ W' hΦW).hom (((snd (WeightPf.Te D' I e) (thickObj R I e G)).left.appLE _ _ hs'').hom x) = ((snd (WeightPf.Te D I e) (thickObj R I e G)).left.appLE _ W' hs).hom x := by`. Introduce `x`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun φ => φ.hom x) (appLE_congr e1 _ hs)`. Establish `hres : ∀ x, ((chg (G` using `G) θ).left.appLE _ W' hΦW).hom (((WeightPf.Te D' I e ⊗ thickObj R I e G).left.presheaf.map (homOfLE le_top).op).hom x) = ((WeightPf.Te D I e ⊗ thickObj R I e G).left.presheaf.map (homOfLE le_top).op).hom ((chg (G := G) θ).left.appTop.hom x) := by`. Introduce `x`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Apply the tactic sequence `first | erw [Scheme.Hom.appLE_map] | rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hchi : (chg (G` using `G) θ).left.appTop.hom (TorusInj.chiP D'.X (thickObj R I e G) α') = TorusInj.chiP D.X (thickObj R I e G) (x₀ α') := by`. Unfold `TorusInj.chiP`. Rewrite using `[← SplitTorusHom.appTop_comp, chg_fst, SplitTorusHom.appTop_comp, ← hx α', ← SplitTorusHom.appTop_comp θ.inv θ.hom, Iso.inv_hom_id, SplitTorusHom.appTop_id]`. Rewrite `k2` using `[map_mul]`. Conclude with `(L _).symm.trans (k2.trans (congrArg₂ (· * ·) ((hres _).trans (congrArg _ hchi)) (S _)))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma chg_weight (g : GtCoord I D e G) (g' : GtCoord I D' e G) (θ : WeightPf.Te D' I e ≅ WeightPf.Te D I e)
     (hi : θ.hom ≫ g.i = g'.i) (x₀ : D'.X → D.X)
@@ -165,15 +165,15 @@ lemma chg_weight (g : GtCoord I D e G) (g' : GtCoord I D' e G) (θ : WeightPf.Te
 end Weight
 
 /- English proof (translation)
-Introduce `R _ _ _ hCN G _ _ hG D D' A A' U U' e xe hM α' jt hjt W' hs ha`. Establish `hR` using `admissibleBase_of_completeNormalLocalCharZero hCN`. Take `⟨hN, -, -, -⟩` from `hR`. Establish `hI : maximalIdeal R ≠ ⊤` using `(maximalIdeal.isMaximal R).ne_top`. Take `⟨θ, hθ, hi⟩` from `CharAgree.exists_torus_iso hI (U.gt e) (U'.gt e)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `CharAgree.connected_thick hI e` as an intermediate fact. Take `⟨x₀, hx⟩` from `exists_addEquiv_of_splitTorus_iso _ D.toPre.X D'.toPre.X θ hθ`. Establish `hM₀ : CharAgree.Match (U.gt e) (U'.gt e) x₀`. Introduce `Z r z J J' hJ hJ' _ h' x`. Set `FinalForm : Over (Spec (CommRingCat.of (R ⧸ maximalIdeal R ^ (e + 1))))` to `Over.mk (r ≫ (thickObj R (maximalIdeal R) e G).hom)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `a : FinalForm ⟶ thickObj R (maximalIdeal R) e G` to `Over.homMk r rfl`. Set `τ` to `(U'.gt e).isKernel.lift a (toUnit _) ((CharAgree.comp_q_eq_one_iff (U'.gt e) a).2 h')`. Establish `hτ : τ ≫ (U'.gt e).i = a` using `(U'.gt e).isKernel.lift_fst _ _ _`. Establish `hτ' : (τ ≫ θ.hom) ≫ (U.gt e).i = a` using `by rw [Category.assoc, hi, hτ]`. Establish `k` using `(TorusCoord.val_torus_point_and_translate R (maximalIdeal R) D.toPre e G (U.gt e) FinalForm (τ ≫ θ.hom) 1 z J hJ (x₀ x)).1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k'` using `(TorusCoord.val_torus_point_and_translate R (maximalIdeal R) D'.toPre e G (U'.gt e) FinalForm τ 1 z J' hJ' x).1`. Rewrite `k` using `[hτ']`. Rewrite `k'` using `[hτ]`. Use `k.trans (Eq.trans (Units.ext ?_) k'.symm)` and prove the remaining obligations. Rewrite using `[gm_val _ _ ⊤ trivial, gm_val _ _ ⊤ trivial]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (FinalForm.left.presheaf.germ ⊤ z trivial).hom ?_` and prove the remaining obligations. Conclude with `(SplitTorusHom.appTop_comp τ θ.hom _).trans (congrArg τ.left.appTop.hom (hx x))`. Establish `hxe : (xe : D'.toPre.X → D.toPre.X) = x₀` using `CharAgree.match_unique hI _ _ hM hM₀`. Rewrite using `[congrFun hxe α']`. Conclude with `chg_weight (U.gt e) (U'.gt e) θ hi x₀ hx α' jt hjt W' hs ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_second : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D D' : DegData R (maximalIdeal R)) (A A' : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (U' : Unif (maximalIdeal R) D' A' G) (e : ℕ) (xe : D'.toPre.X ≃+ D.toPre.X), GlobalTheory.CharAgree.Match (U.gt e) (U'.gt e) xe → ∀ (α' : D'.toPre.X) (jt : Fin 4 → D'.toPre.P.L.ι), LB.Coh D'.toPre.P.L (D'.toPre.Oφ (U'.gt e).pG α') jt → ∀ (W' : (WeightPf.Te D.toPre (maximalIdeal R) e ⊗ thickObj R (maximalIdeal R) e G).left.Opens) (hs : W' ≤ (snd (WeightPf.Te D.toPre (maximalIdeal R) e) (thickObj R (maximalIdeal R) e G)).left ⁻¹ᵁ LB.wchart D'.toPre.P.L (D'.toPre.Oφ (U'.gt e).pG α') jt) (ha : W' ≤ (WeightPf.act (U.gt e)).left ⁻¹ᵁ LB.wchart D'.toPre.P.L (D'.toPre.Oφ (U'.gt e).pG α') jt), ((WeightPf.act (U.gt e)).left.appLE _ W' ha).hom (((U'.gt e).t α').s jt).val = ((WeightPf.Te D.toPre (maximalIdeal R) e ⊗ thickObj R (maximalIdeal R) e G).left.presheaf.map (homOfLE le_top).op).hom (TorusInj.chiP D.toPre.X (thickObj R (maximalIdeal R) e G) (xe α')) * ((snd (WeightPf.Te D.toPre (maximalIdeal R) e) (thickObj R (maximalIdeal R) e G)).left.appLE _ W' hs).hom (((U'.gt e).t α').s jt).val := by
   intro R _ _ _ hCN G _ _ hG D D' A A' U U' e xe hM α' jt hjt W' hs ha

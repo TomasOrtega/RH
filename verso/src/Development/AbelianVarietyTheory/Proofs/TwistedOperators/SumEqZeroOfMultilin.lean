@@ -17,7 +17,7 @@ namespace GlobalTheory.ConnectionLinear
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) {M : Vol G} {t : T}
 
 /- English proof (translation)
-Unfold `conAt`. Use `split_ifs with h1 h2`. Use the proof step `exfalso; apply hm; refine ⟨?_, by omega⟩; rw [← h1]; simpa [Nat.even_add] using hj`. Use the proof step `exfalso; apply hm; refine ⟨?_, by omega⟩; rw [← h2]; obtain ⟨r, hr⟩ := hj; exact ⟨r + ((D.R.m - 4 - j) / 2 + 1) + 1, by omega⟩`. Conclude with `dif_neg h2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem conAt_zero (hM : M.Is t) (Φ : SchDown G t) (h : Pts G) (j : ℕ) (hj : Even j) (hm : ¬ (Even D.R.m ∧ j + 2 ≤ D.R.m)) :
     conAt W hM Φ h j = 0 := by
@@ -28,7 +28,7 @@ theorem conAt_zero (hM : M.Is t) (Φ : SchDown G t) (h : Pts G) (j : ℕ) (hj : 
   · exact dif_neg h2
 
 /- English proof (translation)
-Establish `key : ∀ (a : ℕ) (ha : a < D.R.m), (a = j ∨ a = j + 1) → Φ ⟨a, ha⟩ = Φ' ⟨a, ha⟩` using `fun a ha e => hΦ ⟨a, ha⟩ e`. Unfold `conAt`. Simplify using `(disch := simp) only [key]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem conAt_local (hM : M.Is t) (Φ Φ' : SchDown G t) (h : Pts G) (j : ℕ)
     (hΦ : ∀ a : Fin D.R.m, ((a : ℕ) = j ∨ (a : ℕ) = j + 1) → Φ a = Φ' a) : conAt W hM Φ h j = conAt W hM Φ' h j := by
@@ -37,19 +37,19 @@ theorem conAt_local (hM : M.Is t) (Φ Φ' : SchDown G t) (h : Pts G) (j : ℕ)
   simp (disch := simp) only [key]
 
 /- English proof (translation)
-Establish `coe_upd : ∀ (m : ∀ j, V j) (a : ι) (p : V a), (fun j => ((Function.update m a p j : V j) : Y j → ℂ)) = Function.update (fun j => (m j : Y j → ℂ)) a (p : Y a → ℂ)` using `fun m a p => funext fun j => Function.apply_update (fun j (z : V j) => (z : Y j → ℂ)) m a p j`. Set `Mm : MultilinearMap ℂ (fun j => V j) ℂ` to `{ toFun := fun m => E fun j => (m j : Y j → ℂ) map_update_add' := by`. Introduce `inst m a p q`. Take `rfl : inst = dI` from `Subsingleton.elim _ _`. Simplify using `only [coe_upd, Submodule.coe_add]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `hE (fun j => (m j : Y j → ℂ)) (fun j => (m j).2) a p q 1 p.2 q.2` as an intermediate fact. Rewrite `this` using `[one_smul, one_mul]`. Conclude with `this`. Use the proof step `map_update_smul' := by`. Introduce `inst m a c p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `rfl : inst = dI` from `Subsingleton.elim _ _`. Simplify using `only [coe_upd, Submodule.coe_smul, smul_eq_mul]`. Use `hE (fun j => (m j : Y j → ℂ)) (fun j => (m j).2) a p 0 c p.2 (V a).zero_mem` as an intermediate fact. Rewrite `this` using `[add_zero]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h00` using `hE (fun j => (m j : Y j → ℂ)) (fun j => (m j).2) a 0 0 1 (V a).zero_mem (V a).zero_mem`. Simplify using `only [smul_zero, add_zero, one_mul] at h00`. Establish `hz : E (Function.update (fun j => (m j : Y j → ℂ)) a 0) = 0` using `by linear_combination -h00`. Rewrite using `[hz, add_zero] }`. Set `φ : I → ∀ j, V j` to `fun i j => if hi : i ∈ S then ⟨Φ i j, hΦ i hi j⟩ else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `τ : I →₀ ℂ` to `Finsupp.onFinset S (fun i => if i ∈ S then x i else 0) (fun i hi => by by_contra h; simp [h] at hi)`. Establish `key` using `GlobalTheory.finsupp_sum_multilinear_eq_of_prod_eq V Mm τ 0 φ φ (fun z => by`. Rewrite using `[Finsupp.sum_zero_index, Finsupp.onFinset_sum _ (fun _ => zero_mul _)]`. Rewrite using `[← h0 z]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[φ, hi])`. Rewrite `key` using `[Finsupp.sum_zero_index]`. Simplify using `only [τ] at key`. Rewrite `key` using `[Finsupp.onFinset_sum _ (g := fun a c => c • Mm (φ a)) (fun _ => zero_smul _ _)]`. Rewrite using `[← key]`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `[φ, hi, Mm]`.
+A detailed English derivation is pending.
 -/
 theorem sum_eq_zero_of_multilin {ι I : Type} [Fintype ι] [dI : DecidableEq ι] {Y : ι → Type} (V : ∀ j, Submodule ℂ (Y j → ℂ))
     (E : (∀ j, Y j → ℂ) → ℂ)
@@ -115,23 +115,21 @@ def ContrLin (off : ℕ) : Prop := ∀ j, Even j → j + 2 < D.R.m → Even D.R.
 def LastLin (off : ℕ) : Prop := ∀ j, Even j → j + 2 = D.R.m → PositionLinAt ch j off
 
 /- English proof (translation)
-Introduce `t M hM P h I S x f Φ hΦ h0 u y`. Establish `intersection_update_fsHerm_neg_one : ∀ j off, Even j → off ≤ 1 → PositionLinAt ch j off`. Introduce `j off hj ho`. Distinguish the cases in `hm : Even D.R.m ∧ j + 2 ≤ D.R.m`. Break down `Nat.lt_or_eq_of_le hm.2 with hlt | heq` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis.
 
-Use `interval_cases off`. Conclude with `hC0 j hj hlt hm.1`. Conclude with `hC1 j hj hlt hm.1`. Use `interval_cases off`. Conclude with `hL0 j hj heq`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hL1 j hj heq`. Introduce `t M hM P h Φ a _ φ φ' c _ _ _ u v`. Simplify using `only [conAt_zero ch.W hM _ h j hj hm, Pi.zero_apply, mul_zero, add_zero]`. Set `E : SchDown ch.G t → ℂ` to `fun Ψ => ∏ k ∈ Finset.range (D.R.m / 2), conAt ch.W hM (fockD ch.W t Ψ P) h (2 * k) (u (2 * k)) (u (2 * k + 1))`. Establish `hev : ∀ i, evT (conAt ch.W hM (fockD ch.W t (Φ i) P) h) (f i) u y = (∏ n, f i n (y n)) * E (Φ i)` using `fun i => by`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [evT, E]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hev, ← mul_assoc]`. Use `sum_eq_zero_of_multilin (fun j : Fin D.R.m => GlobalTheory.LastVertexInv.thSub ch.W (.mu t D.R.m (j : ℕ))) E ?_ S (fun i => x i * ∏ n, f i n (y n)) Φ (fun i hi j => hΦ i hi j) (fun v => ?_)` and prove the remaining obligations. Introduce `Ψ hΨ a φ φ' c hφ hφ'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Distinguish the cases in `hm : Even D.R.m`. Establish `hk : (a : ℕ) / 2 ∈ Finset.range (D.R.m / 2)`. Take `⟨r, hr⟩` from `hm`. Use `a.2` as an intermediate fact. Rewrite using `[Finset.mem_range]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hrest : ∀ ψ : Sch ch.G (.down t D.R.m a), ∏ k ∈ Finset.range (D.R.m / 2) \ {(a : ℕ) / 2}, conAt ch.W hM (fockD ch.W t (Function.update Ψ a ψ) P) h (2 * k) (u (2 * k)) (u (2 * k + 1)) = ∏ k ∈ Finset.range (D.R.m / 2) \ {(a : ℕ) / 2}, conAt ch.W hM (fockD ch.W t Ψ P) h (2 * k) (u ( …`. Introduce `ψ`. Use `Finset.prod_congr rfl fun k hk' => ?_` and prove the remaining obligations. Establish `hk2 : k ≠ (a : ℕ) / 2` using `by simpa using (Finset.mem_sdiff.1 hk').2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conAt_local ch.W hM (fockD ch.W t (Function.update Ψ a ψ) P) (fockD ch.W t Ψ P) h (2 * k) (fun b hb => ?_)]`. Establish `hne : b ≠ a` using `fun e => by subst e; omega`. Simplify using `only [fockD, Function.update_of_ne hne]`. Simplify using `only [E]`. Establish `hsplit` using `fun (g : ℕ → ℂ) => Finset.prod_eq_mul_prod_diff_singleton (s := Finset.range (D.R.m / 2)) ((a : ℕ) / 2) g (fun h' => absurd hk h')`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hsplit, hsplit, hsplit, hrest, hrest, hrest]`. Rewrite using `[intersection_update_fsHerm_neg_one (2 * ((a : ℕ) / 2)) ((a : ℕ) - 2 * ((a : ℕ) / 2)) (even_two_mul _) (by omega) t M hM P h Ψ a (by omega) φ φ' c hΨ hφ hφ']`. Expand and normalize the polynomial expressions, which then agree. Establish `h0m : 0 ∈ Finset.range (D.R.m / 2)` using `by have := D.R.two_le_m; rw [Finset.mem_range]; omega`. Establish `hz : ∀ Ψ' : SchDown ch.G t, E Ψ' = 0` using `fun Ψ' => Finset.prod_eq_zero h0m (by`.
-
-Rewrite using `[conAt_zero ch.W hM _ h (2 * 0) (even_two_mul 0) (fun e => hm e.1)]`. Use the proof step `rfl)`. Simplify using `only [hz, mul_zero, add_zero]`. Rewrite using `[← h0 y v]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conLin_of_positions (hC0 : ContrLin ch 0) (hC1 : ContrLin ch 1) (hL0 : LastLin ch 0) (hL1 : LastLin ch 1) :
     ConLin ch := by

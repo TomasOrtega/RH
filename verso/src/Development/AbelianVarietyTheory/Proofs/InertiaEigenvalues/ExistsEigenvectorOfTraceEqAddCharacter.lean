@@ -4,19 +4,17 @@ import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.UniNilp
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set ε := MonoidAlgebra.lift K K Γ ((Units.coeHom K).comp χ) with hε`. Establish `hsm : IsSemisimpleModule (MonoidAlgebra K Γ) ρ.asModule` using `(Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule ρ).mp hs`. Set `b` to `Module.finBasis K V`. Set `m : Fin (Module.finrank K V) → ρ.asModule` to `fun i => ρ.asModuleEquiv.symm (b i)`. Set `P : Submodule (MonoidAlgebra K Γ) (Fin (Module.finrank K V) → ρ.asModule)` to `Submodule.map (LinearMap.toSpanSingleton (MonoidAlgebra K Γ) _ m) (RingHom.ker (ε : MonoidAlgebra K Γ →+* K))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `exists_isCompl P`. Establish `hm : m ∈ P ⊔ C` using `by rw [hC.sup_eq_top]; trivial`. Take `⟨p, hp, c, hc, hpc⟩` from `Submodule.mem_sup.mp hm`. Establish `hkill : ∀ x, ε x = 0 → x • c = 0`. Introduce `x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : x • c ∈ P`. Establish `: x • c = x • m - x • p` using `by rw [← hpc, smul_add, add_sub_cancel_left]`. Rewrite using `[this]`. Conclude with `P.sub_mem (Submodule.mem_map.mpr ⟨x, RingHom.mem_ker.mpr hx, LinearMap.toSpanSingleton_apply _ _ _ _⟩) (P.smul_mem x hp)`. Establish `h2 : x • c ∈ P ⊓ C` using `Submodule.mem_inf.mpr ⟨h1, C.smul_mem x hc⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h2` using `[hC.inf_eq_bot, Submodule.mem_bot]`. Then use the resulting hypothesis. Establish `hc0 : c = 0`. Use function extensionality and compare the values at `i`. Establish `hv` using `hno (ρ.asModuleEquiv (c i)) fun g => by`. Establish `h` using `congrFun (hkill (MonoidAlgebra.single g 1 - MonoidAlgebra.single 1 ((χ g : Kˣ) : K)) (by simp [hε, MonoidAlgebra.lift_single])) i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ρ.asModuleEquiv.symm (ρ.asAlgebraHom _ (ρ.asModuleEquiv (c i))) = 0 at h`. Rewrite `h` using `[LinearEquiv.map_eq_zero_iff, map_sub, Representation.asAlgebraHom_single, Representation.asAlgebraHom_single, one_smul, map_one, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `h`. Simplify using `using hv`. Rewrite `hpc` using `[hc0, add_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨y, hy, hym⟩` from `Submodule.mem_map.mp (show m ∈ P from hpc ▸ hp)`. Use `⟨y, RingHom.mem_ker.mp hy, b.ext fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun hym i`. Express the relevant statement in the definitionally equal form `ρ.asModuleEquiv.symm (ρ.asAlgebraHom y (ρ.asModuleEquiv (ρ.asModuleEquiv.symm (b i)))) = ρ.asModuleEquiv.symm (b i) at h`. Rewrite `h` using `[LinearEquiv.apply_symm_apply, LinearEquiv.symm_apply_eq, LinearEquiv.apply_symm_apply]`.
-
-Simplify using `using h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma exists_char_augmentation_zero_acting_as_one {K Γ V : Type} [Field K] [Group Γ]
     [AddCommGroup V] [Module K V] [FiniteDimensional K V] (ρ : Representation K Γ V)
@@ -65,27 +63,25 @@ private lemma exists_char_augmentation_zero_acting_as_one {K Γ V : Type} [Field
   simpa using h
 
 /- English proof (translation)
-Use `set D : L := (Fintype.card ι : L) + 1 with hD`. Establish `hD0 : D ≠ 0` using `by rw [hD]; exact Nat.cast_add_one_ne_zero _`. Establish `hpoly : ∀ f : Polynomial L, (Polynomial.aeval M f).trace = D * f.eval 1 - f.eval 0`. Introduce `f`. Proceed by induction on `f using Polynomial.induction_on' with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add f g hf hg => simp only [map_add, Matrix.trace_add, hf, hg, Polynomial.eval_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `monomial n a`. Rewrite using `[Polynomial.aeval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, Matrix.trace_smul, h n, Polynomial.eval_monomial, Polynomial.eval_monomial, one_pow, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `set p := M.charpoly with hp`. Establish `hvan : ∀ g : Polynomial L, D * (g * p).eval 1 - (g * p).eval 0 = 0`. Introduce `g`. Rewrite using `[← hpoly, map_mul, hp, Matrix.aeval_self_charpoly, mul_zero, Matrix.trace_zero]`. Establish `hp1 : p.eval 1 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hvan Polynomial.X` as an intermediate fact. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_X, one_mul, zero_mul, sub_zero] at this`. Conclude with `(mul_eq_zero.mp this).resolve_left hD0`. Establish `hp0 : p.eval 0 = 0`. Use `hvan 1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify `this` using `[hp1]`. Establish `hpne : p ≠ 0` using `(Matrix.charpoly_monic M).ne_zero`. Take `⟨q, hpq, hq⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd p hpne 1`. Use `set b := p.rootMultiplicity 1`. Establish `hb : 0 < b` using `(Polynomial.rootMultiplicity_pos hpne).mpr hp1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : IsCoprime ((Polynomial.X - Polynomial.C (1 : L)) ^ b) q` using `((Polynomial.irreducible_X_sub_C (1 : L)).coprime_iff_not_dvd.mpr hq).pow_left`. Take `⟨u, v, huv⟩` from `hcop`. Establish `hq0 : q.eval 0 = 0`. Use `hp0` as an intermediate fact. Rewrite `this` using `[hpq, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp this).resolve_left (pow_ne_zero _ (by norm_num))`. Establish `he1 : (v * q).eval 1 = 1`. Use `congrArg (Polynomial.eval 1) huv` as an intermediate fact. Simplify `this` using `[Polynomial.eval_mul, zero_pow hb.ne']`. Establish `he0 : (v * q).eval 0 = 0` using `by simp [Polynomial.eval_mul, hq0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hidem : (v * q) * (v * q) = v * q - (u * v) * p`. Rewrite using `[hpq]`. Take the linear combination `(v * q) * huv`. Use `set E := Polynomial.aeval M (v * q) with hE`. Establish `hEE : E * E = E`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hE, ← map_mul, hidem, map_sub, map_mul (Polynomial.aeval M) (u * v) p, hp, Matrix.aeval_self_charpoly, mul_zero, sub_zero]`. Establish `htrE : E.trace = D` using `by rw [hE, hpoly, he1, he0]; ring`. Establish `hid : IsIdempotentElem (Matrix.toLin' E)`. Unfold `IsIdempotentElem`. Rewrite using `[Module.End.mul_eq_comp, ← Matrix.toLin'_mul, hEE]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `htr` using `(LinearMap.IsIdempotentElem.isProj_range _ hid).trace`. Rewrite `htr` using `[LinearMap.trace_eq_matrix_trace L (Pi.basisFun L ι), LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin', htrE, hD]`. Establish `hle` using `Submodule.finrank_le (LinearMap.range (Matrix.toLin' E))`. Rewrite `hle` using `[Module.finrank_fintype_fun_eq_card]`. Establish `: Fintype.card ι + 1 = Module.finrank L (LinearMap.range (Matrix.toLin' E))`.
-
-Conclude with `htr` after adjusting the coercions. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private lemma false_of_trace_pow_eq_card_add_one_sub {L ι : Type} [Field L] [CharZero L] [Fintype ι] [DecidableEq ι]
     (M : Matrix ι ι L) (h : ∀ n : ℕ, (M ^ n).trace = ((Fintype.card ι : L) + 1) - 0 ^ n) :
@@ -148,19 +144,19 @@ private lemma false_of_trace_pow_eq_card_add_one_sub {L ι : Type} [Field L] [Ch
   omega
 
 /- English proof (translation)
-Introduce `K L Γ V ι _ _ _ _ _ _ _ _ _ φ ρ σ χ hs htr`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hno : ∀ v : V, (∀ g, ρ g v = ((χ g : Kˣ) : K) • v) → v = 0` using `fun v hv => by`. Assume the negation of the conclusion as `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `hcon v h0`. Conclude with `hg (hv g)`. Take `⟨x, hx, hρx⟩` from `exists_char_augmentation_zero_acting_as_one ρ χ hs hno`. Set `S : MonoidAlgebra K Γ →+* Matrix ι ι L` to `MonoidAlgebra.liftNCRingHom ((Matrix.scalar ι).comp φ) σ (fun _ _ => Matrix.scalar_commute _ (fun _ => Commute.all _ _) _)`. Establish `hkey : ∀ z : MonoidAlgebra K Γ, φ (LinearMap.trace K V (ρ.asAlgebraHom z)) = (S z).trace + φ (MonoidAlgebra.lift K K Γ ((Units.coeHom K).comp χ) z)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Use `MonoidAlgebra.induction_linear z ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `f g hf hg`. Simplify using `only [map_add, Matrix.trace_add, hf, hg]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `g r`. Rewrite using `[Representation.asAlgebraHom_single, map_smul, smul_eq_mul, map_mul, htr g]`. Establish `hS : S (MonoidAlgebra.single g r) = Matrix.scalar ι (φ r) * σ g`. Simplify using `[S, MonoidAlgebra.liftNCRingHom, MonoidAlgebra.liftNC_single]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS]`. Rewrite using `[MonoidAlgebra.lift_single, Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul, Matrix.trace_smul, smul_eq_mul, smul_eq_mul, map_mul]`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, Units.coeHom_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdim` using `htr 1`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hdim` using `[map_one ρ, LinearMap.trace_one, map_natCast, map_one σ, Matrix.trace_one, map_one χ, Units.val_one, map_one φ]`. Establish `hpow : ∀ n : ℕ, ((S x) ^ n).trace = ((Fintype.card ι : L) + 1) - 0 ^ n`. Introduce `n`. Establish `h1` using `hkey (x ^ n)`. Rewrite `h1` using `[map_pow, hρx, one_pow, LinearMap.trace_one, map_natCast, map_pow, map_pow, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h0 : φ ((0 : K) ^ n) = (0 : L) ^ n` using `by rw [map_pow, map_zero]`. Take the linear combination `hdim - h1 - h0`. Conclude with `false_of_trace_pow_eq_card_add_one_sub (S x) hpow`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_eigenvector_of_trace_eq_add_character :
     ∀ (K L Γ V ι : Type) [Field K] [Field L] [CharZero L] [Group Γ] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Fintype ι] [DecidableEq ι] (φ : K →+* L) (ρ : Representation K Γ V) (σ : Γ →* Matrix ι ι L) (χ : Γ →* Kˣ), ρ.IsSemisimpleRepresentation → (∀ g, φ (LinearMap.trace K V (ρ g)) = (σ g).trace + φ ((χ g : Kˣ) : K)) → ∃ v : V, v ≠ 0 ∧ ∀ g, ρ g v = ((χ g : Kˣ) : K) • v := by

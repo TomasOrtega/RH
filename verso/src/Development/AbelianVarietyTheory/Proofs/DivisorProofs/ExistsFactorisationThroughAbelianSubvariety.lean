@@ -13,15 +13,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ A B f`. Take `⟨Z, p, i, hpi, hp, hi, hg⟩` from `GlobalTheory.T.exists_geometricallyIntegral_image_of_hom K A B f`. Take `⟨hG, hpm, him⟩` from `GlobalTheory.T.exists_subgroupScheme_of_geometricallyIntegral_image K A B f Z p i hpi hp hi hg`. Use `letI := hG`. Establish `hmono : Mono i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `: Mono i.left` using `inferInstance`. Conclude with `Over.mono_of_mono_left i`. Establish `hcomm : IsCommMonObj Z` using `⟨by`. Apply `(cancel_mono i).1` to reduce the goal to its premises. Rewrite using `[Category.assoc, IsMonHom.mul_hom, ← BraidedCategory.braiding_naturality_assoc, IsCommMonObj.mul_comm]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : i.left ≫ B.X.hom = Z.hom` using `Over.w i`. Establish `hB` using `B.ab`. Establish `: Smooth B.X.hom` using `hB.smooth`. Establish `: IsProper B.X.hom` using `hB.proper`. Establish `hlft : LocallyOfFiniteType Z.hom` using `by rw [← hw]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpr : IsProper Z.hom` using `by rw [← hw]; infer_instance`. Establish `hsm : Smooth Z.hom` using `GlobalTheory.grpObj_smooth_of_geometricallyReduced K Z hlft inferInstance`. Establish `hgc : GeometricallyConnected Z.hom` using `⟨fun L _ y W fst snd h => by`. Establish `: IsIntegral W` using `hg.geometrically_isIntegral y fst snd h`. Use the proof step `infer_instance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hab : IsAbelianScheme Z` using `⟨hcomm, hsm, hpr, hgc⟩`. Take `⟨g, hd⟩` from `GlobalTheory.T.abelianScheme_field_smoothOfRelativeDimension_exists K Z hab`. Set `C : AbVar K` to `{ X := Z, ab := hab, dim := g, smooth := hd }`. Use `⟨C, Hom.mk (B := C) p, Hom.mk (A := C) i, hp, hi, ?_⟩` and prove the remaining obligations. Conclude with `hom_ext hpi`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_factor_abelianSubvariety : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B),
     ∃ (C : AbVar K) (p : A ⟶ C) (i : C ⟶ B), Surjective p.hom.left ∧ IsClosedImmersion i.hom.left ∧ p ≫ i = f := by

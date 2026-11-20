@@ -8,7 +8,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GroundTheory.PAdicHodge Cr
 namespace GlobalTheory.CompanionTheory.LineBase
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem u_eq {X : Scheme.{0}} (D : LineData X) {V : Scheme.{0}} {a a' b b' : V ⟶ D.Y}
     (ha : a = a') (hb : b = b') (h : a ≫ D.f = b ≫ D.f) (h' : a' ≫ D.f = b' ≫ D.f) :
@@ -31,7 +31,7 @@ noncomputable def pull {X' X : Scheme.{0}} (g : X' ⟶ X) (D : LineData X) : Lin
   coc := fun {V} a b c h h' => D.coc _ _ _ _ _
 
 /- English proof (translation)
-Introduce `X' X g D`. Use `⟨pull g D, pullback.fst D.f g, pullback.condition, ?_, ?_⟩` and prove the remaining obligations. Introduce `V a x h`. Conclude with `⟨pullback.lift a x h, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Introduce `V a b h h'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
 Both sides reduce to the same expression.
 -/

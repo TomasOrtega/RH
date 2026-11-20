@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory.SatakeMainTheorem
 
 /- English proof (translation)
-Distinguish the cases in `h : W = ⊥`. Conclude with `Or.inl h`. Use `right`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff W).mp h`. Establish `h0 : v 0 ≠ 0`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `using h0`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `hw : w = (w 0 / v 0) • v`. Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[div_mul_cancel₀ _ h0]`. Rewrite using `[hw]`. Conclude with `W.smul_mem _ hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main {K : Type} [Field K] (W : Submodule K (Fin (1 : ℕ) → K)) : W = ⊥ ∨ W = ⊤ := by
   by_cases h : W = ⊥

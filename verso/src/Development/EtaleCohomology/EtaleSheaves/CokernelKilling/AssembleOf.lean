@@ -20,9 +20,9 @@ def ProdGlue : Prop := Coprod → ∀ (q : ℕ) [NeZero q] (i : ℤ) {D Y' : Com
     pull _ (sch.map (Spec.map u)) (tw q i) m y ∈ Set.range (pull _ (sch.map (Spec.map φ'')) (tw q i) m)
 
 /- English proof (translation)
-Introduce `r hr`. Take `⟨k, P, hP⟩` from `hc ⟨r, hr⟩`. Use `⟨P.asIdeal.comap (Pi.evalRingHom (fun k => D₁ k) k), Ideal.comap_isPrime _ _, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg PrimeSpectrum.asIdeal hP`. Simplify using `only [PrimeSpectrum.comap_asIdeal] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h, Ideal.comap_comap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sps_pi {D : CommRingCat.{0}} {ι : Type} (D₁ : ι → CommRingCat.{0}) (e : ∀ k, D ⟶ D₁ k)
     (hc : ∀ x : PrimeSpectrum D, ∃ k, x ∈ Set.range (PrimeSpectrum.comap (e k).hom)) : SpS (piMap D₁ e) := by
@@ -35,11 +35,11 @@ theorem sps_pi {D : CommRingCat.{0}} {ι : Type} (D₁ : ι → CommRingCat.{0})
   rfl
 
 /- English proof (translation)
-Introduce `hC q _ i D Y' φ' m y hloc`. Establish `h' : ∀ x : PrimeSpectrum D, ∃ (D₁ : CommRingCat.{0}) (e : D ⟶ D₁), Et e ∧ x ∈ Set.range (PrimeSpectrum.comap e.hom) ∧ ∃ (Y₁ : CommRingCat.{0}) (u : Y' ⟶ Y₁) (φ₁ : D₁ ⟶ Y₁), IsPushout φ' e u φ₁ ∧ pull _ (sch.map (Spec.map u)) (tw q i) m y ∈ Set.range (pull _ (sch.map (Spec.map φ₁) …`. Introduce `x`. Take `⟨D₁, e, Q₁, he, hQ₁, hc, rest⟩` from `hloc x.asIdeal x.isPrime`. Conclude with `⟨D₁, e, he, ⟨⟨Q₁, hQ₁⟩, PrimeSpectrum.ext hc⟩, rest⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose D₁ e he hx hY using h'`. Take `⟨s, hs⟩` from `LateralTheory.E.KillCokPf.Lem.finite_subcover D₁ e he hx`. Take `⟨het, Y'', u, φ'', hpo, hy⟩` from `hG hC q i φ' m y (ι := s) (fun k => D₁ k.1) (fun k => e k.1) (fun k => he k.1) (fun k => hY k.1)`. Use `⟨_, _, Y'', u, φ'', het, sps_pi _ _ ?_, hpo, hy⟩` and prove the remaining obligations. Introduce `x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hxr⟩` from `hs x`. Conclude with `⟨⟨r, hr⟩, hxr⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Assemble_of (hG : ProdGlue) : LateralTheory.E.KillCokPf.Assemble := by
   intro hC q _ i D Y' φ' m y hloc

@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 namespace GlobalTheory.LamTie
 
 /- English proof (translation)
-Introduce `x hx hv`. Use `h x hx (le_trans hv ?_)` and prove the remaining obligations. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem levelLe_of_le {E : Type} [Field E] [NumberField E] {χ : Formalism.L2.Host.HChar E} {w : HeightOneSpectrum (𝓞 E)} {m m' : ℕ}
     (h : χ.LevelLe w m) (hm : m ≤ m') : χ.LevelLe w m' := by
@@ -17,11 +17,11 @@ theorem levelLe_of_le {E : Type} [Field E] [NumberField E] {χ : Formalism.L2.Ho
   omega
 
 /- English proof (translation)
-Introduce `E _ _ χ χ' w n hn hχ hχ' m`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Assume the negation of the conclusion as `hlt`. Establish `h1 : (χ' * χ⁻¹).LevelLe w (n - 1)` using `levelLe_of_le hm (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : χ.LevelLe w (n - 1)`. Establish `h3` using `Formalism.L2.Host.HChar.LevelLe.mul (Formalism.L2.Host.HChar.LevelLe.inv h1) hχ'`. Establish `h4 : (χ' * χ⁻¹)⁻¹ * χ' = χ` using `by group`. Rewrite `h3` using `[h4]`. Then use the resulting hypothesis. Use `(hχ (n - 1)).mp h2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `hm`. Establish `hc : χ.LevelLe w m` using `(hχ m).mpr hm`. Establish `hc' : χ'.LevelLe w m` using `levelLe_of_le hχ' (by omega)`. Conclude with `Formalism.L2.Host.HChar.LevelLe.mul hc' (Formalism.L2.Host.HChar.LevelLe.inv hc)`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem expAt_mul_inv : ∀ (E : Type) [Field E] [NumberField E] (χ χ' : Formalism.L2.Host.HChar E) (w : HeightOneSpectrum (𝓞 E)) (n : ℕ),
     1 ≤ n → ExpAt χ w n → χ'.LevelLe w (n - 1) → ExpAt (χ' * χ⁻¹) w n := by

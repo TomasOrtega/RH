@@ -13,9 +13,9 @@ attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebr
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Take `⟨U, d, -, rfl, -⟩` from `h`. Establish `: (diagonal (fun i => (d i : ℂ)))ᴴ = diagonal (fun i => (d i : ℂ))`. Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`. Use extensionality with `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, this, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma log_herm {H A : Matrix ι ι ℂ} (h : IsLog H A) : Hᴴ = H := by
   obtain ⟨U, d, -, rfl, -⟩ := h
@@ -24,9 +24,9 @@ lemma log_herm {H A : Matrix ι ι ℂ} (h : IsLog H A) : Hᴴ = H := by
   simp only [conjTranspose_mul, conjTranspose_conjTranspose, this, Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨U, d, hU, rfl, rfl⟩` from `h`. Establish `hU' : Uᴴ * U = 1` using `mul_eq_one_comm.1 hU`. Establish `e : ∀ Z : Matrix ι ι ℂ, Uᴴ * (U * Z) = Z` using `fun Z => by rw [← Matrix.mul_assoc, hU', Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc, e]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [← Matrix.mul_assoc, diagonal_mul_diagonal]`. Use `congr 2`. Use extensionality with `i`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma log_comm {H A : Matrix ι ι ℂ} (h : IsLog H A) : A * H = H * A := by
   obtain ⟨U, d, hU, rfl, rfl⟩ := h
@@ -40,13 +40,13 @@ lemma log_comm {H A : Matrix ι ι ℂ} (h : IsLog H A) : A * H = H * A := by
   ring
 
 /- English proof (translation)
-Use `⟨fun t => NormedSpace.exp (t • X), fun t => NormedSpace.exp (t • (-X)), by simp, by simp, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t`. Rewrite using `[← Matrix.exp_add_of_commute]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `t`. Rewrite using `[← Matrix.exp_conjTranspose]`. Simplify using `[hX]`. Introduce `t`. Rewrite using `[← Matrix.exp_conjTranspose]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hX]`. Use `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)` as an intermediate fact. Rewrite `this` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Conclude with `this`. Use `hasDerivAt_exp_smul_const (𝕂 := ℝ) (-X) (0 : ℝ)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 lemma exists_path (X : Matrix ι ι ℂ) (hX : Xᴴ = X) :
     ∃ P Q : ℝ → Matrix ι ι ℂ, P 0 = 1 ∧ Q 0 = 1 ∧ (∀ t, P t * Q t = 1) ∧ (∀ t, (P t)ᴴ = P t) ∧
@@ -68,7 +68,7 @@ lemma exists_path (X : Matrix ι ι ℂ) (hX : Xᴴ = X) :
     exact this
 
 /- English proof (translation)
-Set `L : Matrix ι ι ℂ →ₗ[ℝ] ℂ` to `Matrix.entryLinearMap ℝ ℂ i j`. Conclude with `(LinearMap.toContinuousLinearMap L).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 lemma deriv_entry {Y : ℝ → Matrix ι ι ℂ} {D : Matrix ι ι ℂ} (h : HasDerivAt Y D 0) (i j : ι) :
     HasDerivAt (fun t => Y t i j) (D i j) 0 := by
@@ -76,9 +76,9 @@ lemma deriv_entry {Y : ℝ → Matrix ι ι ℂ} {D : Matrix ι ι ℂ} (h : Has
   exact (LinearMap.toContinuousLinearMap L).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h
 
 /- English proof (translation)
-Set `L : Matrix ι ι ℂ →ₗ[ℝ] ℝ` to `Complex.reLm ∘ₗ Matrix.traceLinearMap ι ℝ ℂ`. Establish `h1 : HasDerivAt (fun t => (Matrix.trace (M * Y t)).re) (Matrix.trace (M * D)).re 0` using `(LinearMap.toContinuousLinearMap L).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (h.const_mul M)`. Establish `h2 : HasDerivAt (fun t => ∑ i, ∑ j, ‖Y t i j‖ ^ 2) (∑ i : ι, ∑ j : ι, (0 : ℝ)) 0`. Use `HasDerivAt.fun_sum fun i _ => HasDerivAt.fun_sum fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have := (deriv_entry h i j).norm_sq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[h0]`. Use `(h1.const_mul 2).add (h2.const_mul C)` as an intermediate fact. Simplify using `only [Finset.sum_const_zero, mul_zero, add_zero] at this`. Conclude with `this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma deriv_phi {Y : ℝ → Matrix ι ι ℂ} {D : Matrix ι ι ℂ} (h : HasDerivAt Y D 0) (h0 : Y 0 = 0)
     (M : Matrix ι ι ℂ) (C : ℝ) :
@@ -96,13 +96,13 @@ lemma deriv_phi {Y : ℝ → Matrix ι ι ℂ} {D : Matrix ι ι ℂ} (h : HasDe
   exact this
 
 /- English proof (translation)
-Establish `hg2 : g * g' = 1` using `mul_eq_one_comm.1 hg`. Establish `hg3 : g'ᴴ * gᴴ = 1` using `by rw [← conjTranspose_mul, hg2, conjTranspose_one]`. Establish `hA : (g' * g'ᴴ) * (gᴴ * g) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc g'ᴴ, hg3, Matrix.one_mul, hg]`. Establish `hinv : (gᴴ * g)⁻¹ = g' * g'ᴴ` using `Matrix.inv_eq_left_inv hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA' : (gᴴ * g) * (g' * g'ᴴ) = 1` using `mul_eq_one_comm.1 hA`. Rewrite using `[hinv]`. Establish `e1 : Matrix.trace (H * (g' * g'ᴴ) * (X * (gᴴ * g))) = Matrix.trace (H * X)`. Rewrite using `[← Matrix.mul_assoc, Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc (gᴴ * g) H, hc, Matrix.mul_assoc H, hA', Matrix.mul_one]`. Establish `e2 : Matrix.trace (H * (g' * g'ᴴ) * ((gᴴ * g) * X)) = Matrix.trace (H * X)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, Matrix.mul_assoc H, hA, Matrix.mul_one]`. Establish `e3 : Matrix.trace (H * (g' * g'ᴴ) * (gᴴ * X * g)) = - Matrix.trace (H' * X)`. Establish `: H * (g' * g'ᴴ) * (gᴴ * X * g) = (H * g' * X) * g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hi, Matrix.neg_mul, Matrix.mul_assoc H', hg2, Matrix.mul_one, Matrix.neg_mul, Matrix.trace_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.neg_mul, Matrix.mul_sub, Matrix.mul_add, Matrix.mul_add, Matrix.mul_neg, Matrix.trace_sub, Matrix.trace_add, Matrix.trace_add, Matrix.trace_neg, e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma trace_id {g g' H H' X : Matrix ι ι ℂ} (hg : g' * g = 1) (hc : (gᴴ * g) * H = H * (gᴴ * g))
     (hi : g * H = -(H' * g)) :
@@ -131,31 +131,27 @@ lemma trace_id {g g' H H' X : Matrix ι ι ℂ} (hg : g' * g = 1) (hc : (gᴴ * 
   ring
 
 /- English proof (translation)
-Introduce `ι _ _ σ _ τ g H hτ hH hmin`. Use `set X := ∑ s, H s with hXdef`. Establish `hX : Xᴴ = X`. Rewrite using `[hXdef, conjTranspose_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => log_herm (hH s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨P, Q, hP0, hQ0, hPQ, hPh, hQh, hP, hQ⟩` from `exists_path X hX`. Use `choose C δ hδ hC using fun s => GlobalTheory.T.hermitian_log_trace_sq_first_variation_bound ι (H s) _ (hH s)`. Set `Y : σ → ℝ → Matrix ι ι ℂ` to `fun s t => Q t * (g s)ᴴ * P t * P t * g s * Q t - (g s)ᴴ * g s`. Establish `hY0 : ∀ s, Y s 0 = 0` using `fun s => by simp [Y, hP0, hQ0]`. Establish `hY : ∀ s, HasDerivAt (Y s) (-X * ((g s)ᴴ * g s) + (g s)ᴴ * X * g s + (g s)ᴴ * X * g s - ((g s)ᴴ * g s) * X) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s`. Use `(((((hQ.mul_const (g s)ᴴ).mul hP).mul hP).mul_const (g s)).mul hQ).sub_const ((g s)ᴴ * g s)` as an intermediate fact. Use `HasDerivAt.congr_deriv this ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, hP0, hQ0]`. Use `noncomm_ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ t, (P t)⁻¹ = Q t` using `fun t => Matrix.inv_eq_right_inv (hPQ t)`. Establish `hPu : ∀ t, IsUnit (P t).det` using `fun t => Matrix.isUnit_det_of_right_inverse (hPQ t)`. Establish `hQu : ∀ t, IsUnit (Q t).det` using `fun t => Matrix.isUnit_det_of_left_inverse (hPQ t)`. Establish `hA : ∀ s t, (P t * g s * (P t)⁻¹)ᴴ * (P t * g s * (P t)⁻¹) = (g s)ᴴ * g s + Y s t`. Introduce `s t`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [hinv, Y, conjTranspose_mul, hPh, hQh, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Set `φ : ℝ → ℝ` to `fun t => ∑ s, (2 * (Matrix.trace (H s * ((g s)ᴴ * g s)⁻¹ * Y s t)).re + C s * ∑ i, ∑ j, ‖Y s t i j‖ ^ 2)`. Establish `hφ` using `HasDerivAt.fun_sum (u := Finset.univ) fun s _ => deriv_phi (hY s) (hY0 s) (H s * ((g s)ᴴ * g s)⁻¹) (C s)`. Establish `hloc : IsLocalMin φ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ t in nhds (0 : ℝ), ∀ s i j, ‖Y s t i j‖ ≤ δ s`. Simplify using `only [Filter.eventually_all]`. Introduce `s i j`. Apply the tactic sequence `have hc := (deriv_entry (hY s) i j).continuousAt.norm`. Use `hc.eventually (p := fun x => x ≤ δ s) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Filter.Eventually.mono (gt_mem_nhds (a := δ s) ?_) fun x hx => le_of_lt hx` and prove the remaining obligations. Simplify using `[hY0, hδ]`. Use `filter_upwards [hev] with t ht`. Establish `h0 : φ 0 = 0` using `by simp [φ, hY0]`. Establish `hu : ∀ s, IsUnit (P t * g s * (P t)⁻¹).det` using `fun s => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hinv, det_mul, det_mul]`. Conclude with `((hPu t).mul (Matrix.isUnit_det_of_left_inverse (hτ s))).mul (hQu t)`. Use `choose H' hH' using fun s => GlobalTheory.T.exists_isHermitianLogOfPosDef_gram ι _ (hu s)`. Establish `h1` using `hmin (P t) H' (hPu t) hH'`. Establish `h2` using `Finset.sum_le_sum (s := Finset.univ) fun s _ => hC s (Y s t) (H' s) (ht s) (hA s t ▸ hH' s)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [add_assoc] at h2`. Rewrite `h2` using `[Finset.sum_add_distrib]`. Rewrite using `[h0]`. Use `show 0 ≤ ∑ s, _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz` using `hloc.hasDerivAt_eq_zero hφ`. Establish `hid` using `fun s => trace_id (X := X) (hτ s) (log_comm (hH s)) (GlobalTheory.T.mul_log_eq_neg_log_mul' ι (g s) (g (τ s)) (H s) (H (τ s)) (hH s) (hH (τ s)) (hτ s))`. Simplify using `only [hid] at hz`. Establish `s1 : ∑ s, Matrix.trace (H s * X) = Matrix.trace (X * X)`. Rewrite using `[← Matrix.trace_sum, ← Finset.sum_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `s2 : ∑ s, Matrix.trace (H (τ s) * X) = Matrix.trace (X * X)`. Rewrite using `[← s1]`. Conclude with `Equiv.sum_comp τ fun s => Matrix.trace (H s * X)`. Rewrite `hz` using `[← Finset.mul_sum, ← Complex.re_sum, Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum, s1, s2]`. Establish `hre : (Matrix.trace (X * X)).re = 0`.
-
-Simplify using `at hz`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnn : 0 ≤ Matrix.trace (Xᴴ * X)` using `(Matrix.posSemidef_conjTranspose_mul_self X).trace_nonneg`. Use `Matrix.trace_conjTranspose_mul_self_eq_zero_iff.1 ?_` and prove the remaining obligations. Rewrite `hnn`, the goal using `[hX]`.
-
-Conclude with `Complex.ext hre (Complex.le_def.1 hnn).2.symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_log_eq_zero : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (σ : Type) [Fintype σ] (τ : σ ≃ σ) (g H : σ → Matrix ι ι ℂ), (∀ s, g (τ s) * g s = 1) → (∀ s, IsLog (H s) ((g s)ᴴ * g s)) → (∀ (P' : Matrix ι ι ℂ) (H' : σ → Matrix ι ι ℂ), IsUnit P'.det → (∀ s, IsLog (H' s) ((P' * g s * P'⁻¹)ᴴ * (P' * g s * P'⁻¹))) → ∑ s, (Matrix.trace (H s * H s)).re ≤ ∑ s, (Matrix.trace (H' s * H' s)).re) → ∑ s, H s = 0 := by
   intro ι _ _ σ _ τ g H hτ hH hmin

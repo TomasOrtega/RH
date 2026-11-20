@@ -11,19 +11,19 @@ def LeafPushoutQS : Prop := ∀ {DW DU DV : Scheme.{0}} (φU : DW ⟶ DU) (φV :
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Introduce `DW DU DV S φU φV _ _ qU qV h hS ⟨l1, c1, s1⟩ ⟨l2, c2, s2⟩ ⟨l3, c3, s3⟩`. Establish `: CompactSpace DU` using `QuasiCompact.compactSpace_of_compactSpace qU`. Establish `: CompactSpace DV` using `QuasiCompact.compactSpace_of_compactSpace qV`. Establish `: CompactSpace DW` using `QuasiCompact.compactSpace_of_compactSpace (φU ≫ qU)`. Establish `: QuasiSeparatedSpace DU` using `quasiSeparatedSpace_of_quasiSeparated qU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiSeparatedSpace DV` using `quasiSeparatedSpace_of_quasiSeparated qV`. Establish `: QuasiSeparatedSpace DW` using `quasiSeparatedSpace_of_quasiSeparated (φU ≫ qU)`. Use `isOpenImmersion_inl φU φV` as an intermediate fact. Use `isOpenImmersion_inr φU φV` as an intermediate fact. Set `T : Bool → Scheme.{0}` to `fun i => Bool.rec DU DV i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `t : ∀ i, T i ⟶ pushout φU φV` to `fun i => Bool.rec (motive := fun i => T i ⟶ pushout φU φV) (pushout.inl φU φV) (pushout.inr φU φV) i`. Apply the tactic sequence `have ht : ∀ i, IsOpenImmersion (t i) := fun i => by cases i <;> assumption`. Set `𝒰 : (pushout φU φV).OpenCover` to `Scheme.Cover.mkOfCovers Bool T t (fun x => by`. Break down `pushout_cover φU φV x with ⟨y, hy⟩ | ⟨y, hy⟩` into its components or cases. Conclude with `⟨false, y, hy⟩`.
+Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨true, y, hy⟩)`. Establish `hL : LocallyOfFinitePresentation (pushout.desc qU qV h)`. Use `IsZariskiLocalAtSource.of_openCover 𝒰 ?_` and prove the remaining obligations. Introduce and unpack `(_ | _)`. Express the relevant statement in the definitionally equal form `LocallyOfFinitePresentation (pushout.inl φU φV ≫ pushout.desc qU qV h)`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[pushout.inl_desc]`. Conclude with `l1`. Express the relevant statement in the definitionally equal form `LocallyOfFinitePresentation (pushout.inr φU φV ≫ pushout.desc qU qV h)`. Rewrite using `[pushout.inr_desc]`. Conclude with `l2`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hC : CompactSpace (pushout φU φV : Scheme.{0})`. Use `⟨?_⟩` and prove the remaining obligations. Establish `hu : (Set.univ : Set (pushout φU φV : Scheme.{0})) = Set.range (pushout.inl φU φV) ∪ Set.range (pushout.inr φU φV)`. Use extensionality with `x`. Simplify using `using pushout_cover φU φV x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hu]`. Conclude with `(isCompact_range (pushout.inl φU φV).continuous).union (isCompact_range (pushout.inr φU φV).continuous)`. Establish `hQS` using `hQ φU φV inferInstance inferInstance inferInstance inferInstance`. Conclude with `⟨hL, inferInstance, inferInstance⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pushout_finitePresentation_of_quasiSeparated (hQ : LeafPushoutQS) : LeafPushoutFP := by
   intro DW DU DV S φU φV _ _ qU qV h hS ⟨l1, c1, s1⟩ ⟨l2, c2, s2⟩ ⟨l3, c3, s3⟩
@@ -63,7 +63,7 @@ theorem pushout_finitePresentation_of_quasiSeparated (hQ : LeafPushoutQS) : Leaf
 end LateralTheory.E.LeafGlueTwoPfFP
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LeafGlueTwoPf.LeafGlueTwo_of (LateralTheory.E.LeafGlueTwoPfFP.pushout_finitePresentation_of_quasiSeparated hQ)`.
+A detailed English derivation is pending.
 -/
 theorem LateralTheory.E.LeafGlueTwoPfFP.LeafGlueTwo_of' (hQ : LateralTheory.E.LeafGlueTwoPfFP.LeafPushoutQS) :
     LateralTheory.E.LeafObjGluePf.LeafGlueTwo :=

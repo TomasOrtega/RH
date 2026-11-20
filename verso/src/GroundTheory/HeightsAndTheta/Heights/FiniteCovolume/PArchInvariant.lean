@@ -14,16 +14,16 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Rewrite using `[star_mulVec, mulVec_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_mulVec_dotProduct_mulVec_mulVec (M H : Matrix ι ι ℂ) (y z : ι → ℂ) :
     star (M *ᵥ y) ⬝ᵥ (H *ᵥ (M *ᵥ z)) = star y ⬝ᵥ ((Mᴴ * H * M) *ᵥ z) := by
   rw [star_mulVec, mulVec_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mul_assoc]
 
 /- English proof (translation)
-Introduce `g y z w`. Establish `hmem` using `mem_archUnitary.mp (g⁻¹ : archUnitary h v).2 w`. Use `set M : Matrix ι ι ℂ := (((g⁻¹ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) with hM`. Establish `hct : (M.map (starRingEnd ℂ))ᵀ = Mᴴ`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[conjTranspose_apply]`. Rewrite `hmem` using `[hct]`. Use `show star (M *ᵥ y w) ⬝ᵥ (gramAt h v w *ᵥ (M *ᵥ z w)) = star (y w) ⬝ᵥ (gramAt h v w *ᵥ z w)`. Rewrite using `[star_mulVec_dotProduct_mulVec_mulVec, hmem]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ArchInvariant.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     ArchInvariant.Statement h v := by

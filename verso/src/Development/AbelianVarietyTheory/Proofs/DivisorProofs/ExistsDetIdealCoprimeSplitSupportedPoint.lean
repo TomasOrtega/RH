@@ -26,29 +26,27 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Datum Level Moduli Coeff)
 namespace GlobalTheory.DetIdealPrime
 
 /- English proof (translation)
-Introduce `D V hg hL h e P y he hs hy b hb c ψ hc hu hr Λ hΛ p hp hT`. Take `⟨cc, c0, c1, c2, c3, c4⟩` from `GlobalTheory.ClassScalarValue.exists_ideal V hg hL h e P y he hs hy b hb c ψ hc hu hr`. Use `⟨cc, c0, c2, ?_, c4⟩` and prove the remaining obligations. Use `GlobalTheory.NormCoprime.coprime_absNorm_of_sup p hp c0 ?_` and prove the remaining obligations. Take `⟨k, hk, -, hk2⟩` from `hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hdet : ((k : D.host.E) ^ V.rank) ∈ Submodule.span (𝓞 D.host.E) (detSet (Bridge.hLat V (fin V h)))`. Use `Submodule.subset_span ⟨fun i => (k : D.host.E) • (Pi.single i 1 : Fin V.rank → D.host.E), fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `hstd : (Pi.single i (1 : D.host.E) : Fin V.rank → D.host.E) ∈ Formalism.L2.Pj.stdLat D.host.E V.rank`. Rewrite using `[Formalism.L2.Pj.stdLat, Submodule.mem_pi]`. Introduce `j _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using (Submodule.one_le.1 le_rfl : (1 : D.host.E) ∈ (1 : Submodule (𝓞 D.host.E) D.host.E))`. Simplify using `[Pi.single_apply, hj]`. Establish `h1` using `hk2 (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self (k : 𝓞 D.host.E)) hstd)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ((k : 𝓞 D.host.E) • (Pi.single i (1 : D.host.E) : Fin V.rank → D.host.E)) = (k : D.host.E) • (Pi.single i 1 : Fin V.rank → D.host.E)`. Rewrite using `[← map_natCast (algebraMap (𝓞 D.host.E) D.host.E) k, algebraMap_smul]`. Rewrite `h1` using `[h2]`. Establish `h3` using `(hΛ _).1 h1`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `: (Matrix.of fun i j => ((k : D.host.E) • (Pi.single j 1 : Fin V.rank → D.host.E)) i) = (k : D.host.E) • (1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E)`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[this, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hcM : cc ≤ M` using `le_trans le_sup_left hle`. Establish `hpM : ((p : ℕ) : 𝓞 D.host.E) ∈ M` using `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hkM : ((k : ℕ) : 𝓞 D.host.E) ∉ M`. Introduce `hkM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 hk`. Establish `e1` using `congrArg (Int.cast : ℤ → 𝓞 D.host.E) huv`. Move the coercions through the operations in `at e1`. Use `hM.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[← e1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.add_mem (M.mul_mem_left _ hkM) (M.mul_mem_left _ hpM)`. Establish `hkn : ((k : ℕ) : 𝓞 D.host.E) ^ V.rank ∉ M` using `fun h0 => hkM (hM.isPrime.mem_of_pow_mem _ h0)`. Establish `hc'M : cc.map (GlobalTheory.IdemSupport.cO D : 𝓞 D.host.E →+* 𝓞 D.host.E) ≤ M`. Introduce `x hx`. Establish `hm : (k : D.host.E) ^ V.rank * (x : D.host.E) ∈ idlE cc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← c3]`. Conclude with `Submodule.mul_mem_mul hdet ⟨x, hx, rfl⟩`. Take `⟨z, hz, hzeq⟩` from `hm`. Establish `hz' : z = ((k : ℕ) : 𝓞 D.host.E) ^ V.rank * x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[show (z : D.host.E) = Algebra.linearMap (𝓞 D.host.E) D.host.E z from rfl, hzeq]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `hz` using `[hz']`. Conclude with `((hM.isPrime.mem_or_mem (hcM hz)).resolve_left hkn)`.
-
-Conclude with `hM.ne_top (top_le_iff.1 (c1 ▸ sup_le hcM hc'M))`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ideal_coprime : ∀ (D : D7) (V : HSp D), HSpace.gram V = 1 → Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank → ∀ (h : GA D V) (e : AE D) (P : Finset (HeightOneSpectrum (𝓞 D.host.E))) (y : (AE D)ˣ), IsIdemSum e P → SuppAt e V h → IsDetAt e V h y → ∀ (b : ℕ), (∀ Q ∈ P, (b : 𝓞 D.host.E) ∉ Q.asIdeal) → ∀ (c : (AE D)ˣ →* Circle) (ψ : Formalism.L2.Host.HChar D.host.E), ChrEq c ψ → (∀ Q : HeightOneSpectrum (𝓞 D.host.E), (b : 𝓞 D.host.E) ∉ Q.asIdeal → ψ.UnrAt Q) → (∀ Q : HeightOneSpectrum (𝓞 D.host.E), GlobalTheory.IdemSupport.cP Q ≠ Q → ∀ k : D.host.Fˣ, ψ.resFin (Q.under (𝓞 D.host.F)) k = 1) → ∀ (Λ : GenLat D.host.E V.rank), (∀ w, w ∈ Λ.La ↔ (fun b => star (w b)) ∈ Bridge.hLat V (fin V h)) → ∀ p : ℕ, p.Prime → Λ.TrivAt p → ∃ cc : Ideal (𝓞 D.host.E), cc ≠ ⊥ ∧ cc ⊔ Ideal.span {(b : 𝓞 D.host.E)} = ⊤ ∧ Nat.Coprime (Ideal.absNorm cc) p ∧ ((c y : Circle) : ℂ) = ((ψ.onId (cc : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : ℂˣ) : ℂ) := by
   intro D V hg hL h e P y he hs hy b hb c ψ hc hu hr Λ hΛ p hp hT

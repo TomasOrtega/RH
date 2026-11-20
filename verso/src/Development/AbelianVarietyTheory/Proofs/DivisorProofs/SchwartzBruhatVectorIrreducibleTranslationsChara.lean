@@ -10,9 +10,9 @@ namespace GlobalTheory.IrredSBVec
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Take `⟨n, hn, hxn⟩` from `GlobalTheory.SBUnif.exists_nat_mem_mul_integer x⁻¹ (inv_ne_zero hx)`. Rewrite `hxn` using `[inv_inv]`. Establish `hp : ψ0 x ^ n = 1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← AddChar.map_nsmul_eq_pow, nsmul_eq_mul, mul_comm]`. Conclude with `h1 _ hxn`. Use `congrArg norm hp` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_char_eq_one (ψ0 : AddChar k ℂ) (h1 : ∀ y ∈ 𝒪[k], ψ0 y = 1) (x : k) : ‖ψ0 x‖ = 1 := by
   by_cases hx : x = 0
@@ -38,38 +38,34 @@ theorem coe_toCircle (ψ0 : AddChar k ℂ) (h1 : ∀ y ∈ 𝒪[k], ψ0 y = 1) (
     ((toCircle ψ0 h1 x : Circle) : ℂ) = ψ0 x := rfl
 
 /- English proof (translation)
-The claim follows from `hψ.subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toCircle (ψ0 : AddChar k ℂ) (h1 : ∀ y ∈ 𝒪[k], ψ0 y = 1) (hψ : Continuous ψ0) :
     Continuous (toCircle ψ0 h1) :=
   hψ.subtype_mk _
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ κ _ ψ0 hψ hcond W hW hT hM φ₀ h0 hne`. Establish `h1 : ∀ y ∈ 𝒪[k], ψ0 y = 1` using `fun y hy => by`. Simplify using `using (hcond 1).2 (one_mem _) y hy`. Use `set ψ := toCircle ψ0 h1 with hψdef`. Establish `hψc : Continuous ψ` using `continuous_toCircle ψ0 h1 hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ1 : ψ ≠ 1`. Take `⟨w, hw0, hw1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Establish `hno : w⁻¹ ∉ 𝒪[k]`. Introduce `h`. Establish `h' : valuation k w⁻¹ ≤ 1` using `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[map_inv₀]`. Establish `hv0 : valuation k w ≠ 0` using `(Valuation.ne_zero_iff _).2 hw0`. Use `(one_lt_inv₀ (zero_lt_iff.2 hv0)).2 hw1` as an intermediate fact. Conclude with `absurd h' (not_le.2 this)`. Use `mt (hcond w⁻¹).1 hno` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_neg at this`. Take `⟨y, -, hy⟩` from `this`. Introduce `he`. Apply `hy` to reduce the goal to its premises. Use `congrArg (fun χ : AddChar k Circle => ((χ (w⁻¹ * y) : Circle) : ℂ)) he` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify `this` using `[hψdef, coe_toCircle]`. Set `toM : (κ → k) → Matrix κ Unit k` to `fun x i _ => x i`. Set `frM : Matrix κ Unit k → (κ → k)` to `fun t i => t i ()`. Establish `hto : Continuous toM` using `by fun_prop`. Establish `hfr : Continuous frM` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hft : ∀ t, toM (frM t) = t` using `fun t => by funext i j; rfl`. Set `e : Matrix κ Unit k ≃ₜ (κ → k)` to `{ toFun := frM, invFun := toM, left_inv := hft, right_inv := fun x => rfl, continuous_toFun := hfr, continuous_invFun := hto }`. Establish `SBto : ∀ φ : (κ → k) → ℂ, φ ∈ GlobalTheory.WeilM.SB (κ → k) → (fun t => φ (frM t)) ∈ GlobalTheory.SplitWeil.SB (Matrix κ Unit k)` using `fun φ hφ => ⟨hφ.1.comp_continuous hfr, hφ.2.comp_homeomorph e⟩`. Set `W' : Submodule ℂ (Matrix κ Unit k → ℂ)` to `W.comap (LinearMap.funLeft ℂ ℂ toM)`. Establish `mem' : ∀ Φ, Φ ∈ W' ↔ (fun x => Φ (toM x)) ∈ W` using `fun Φ => Iff.rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hW' : W' ≤ GlobalTheory.SplitWeil.SB (Matrix κ Unit k)`. Introduce `Φ hΦ`. Use `SBto _ (hW ((mem' Φ).1 hΦ))` as an intermediate fact. Simplify `this` using `only [hft]`. Establish `key` using `GlobalTheory.IrredSB.sb_irreducible k κ Unit ψ hψc hψ1 W' hW' (fun Φ hΦ x _ => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem']`. Use `hT _ ((mem' Φ).1 hΦ) (frM x)` as an intermediate fact. Establish `hv : ∀ v, toM (v + frM x) = toM v + x` using `fun v => by`. Use function extensionality and compare the values at `i j`. Consider the cases of `j`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `show (fun v => Φ (toM v + x)) ∈ W`. Simplify `this)` using `only [hv]`. Use the proof step `(fun Φ hΦ b _ => by`. Rewrite using `[mem']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hM _ ((mem' Φ).1 hΦ) (fun i => b i ())` as an intermediate fact. Establish `hs : ∀ v, (∑ r, ∑ q, b r q * toM v r q) = v ⬝ᵥ (fun i => b i ())` using `fun v => by`. Rewrite using `[dotProduct]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_unique]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_comm _ _`. Use `show (fun v => ((ψ (∑ r, ∑ q, b r q * toM v r q) : Circle) : ℂ) * Φ (toM v)) ∈ W`. Simplify using `only [hs]`. Conclude with `this)`. Use the proof step `(fun t => φ₀ (frM t)) ((mem' _).2 h0) (by`.
-
-Introduce `h`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Conclude with `congrFun h (toM x))`. Use `le_antisymm hW fun φ hφ => ?_` and prove the remaining obligations.
-
-Establish `: (fun t => φ (frM t)) ∈ W'` using `key ▸ SBto φ hφ`. Conclude with `(mem' _).1 this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sb_irreducible_vec : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     {κ : Type} [Fintype κ] (ψ0 : AddChar k ℂ), Continuous ψ0 →

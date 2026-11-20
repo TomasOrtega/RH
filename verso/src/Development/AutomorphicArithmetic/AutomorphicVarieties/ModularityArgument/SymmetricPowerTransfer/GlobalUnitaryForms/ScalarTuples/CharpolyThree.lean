@@ -10,7 +10,7 @@ namespace UpperTheory.V.Z.Sym.Glob
 open Matrix Polynomial Loc
 
 /- English proof (translation)
-Simplify using `only [Matrix.charpoly, Matrix.det_fin_three, Matrix.charmatrix_apply, Matrix.adjugate_fin_three, Matrix.trace_fin_three]`. Simplify using `[Matrix.diagonal_apply, Matrix.det_fin_three]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem charpoly_three {R : Type} [CommRing R] (N : Matrix (Fin 3) (Fin 3) R) :
     N.charpoly = X ^ 3 - C N.trace * X ^ 2 + C N.adjugate.trace * X - C N.det := by
@@ -20,9 +20,9 @@ private theorem charpoly_three {R : Type} [CommRing R] (N : Matrix (Fin 3) (Fin 
   ring
 
 /- English proof (translation)
-Establish `ha : N.adjugate = star N`. Combine the equalities or inequalities in the displayed calculation. Establish `hs : N.adjugate.trace = N.trace`. Rewrite using `[ha, Matrix.star_eq_conjTranspose, Matrix.trace_conjTranspose, ht]`. Rewrite using `[charpoly_three, hs, hd]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem charpoly_recip {R : Type} [CommRing R] [StarRing R] (N : Matrix (Fin 3) (Fin 3) R)
     (h : N * star N = 1) (hd : N.det = 1) (ht : star N.trace = N.trace) :
@@ -37,20 +37,20 @@ private theorem charpoly_recip {R : Type} [CommRing R] [StarRing R] (N : Matrix 
   ring
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.EigenvalueSquare.eig_sq h r hr`.
+A detailed English derivation is pending.
 -/
 private theorem eig_sq {A : Matrix (Fin 3) (Fin 3) ℂ} (h : star A * A = 1) (r : ℝ)
     (hr : A.charpoly.eval (r : ℂ) = 0) : r ^ 2 = 1 :=
   _root_.UpperTheory.Reformulated.B.EigenvalueSquare.eig_sq h r hr
 
 /- English proof (translation)
-Establish `hr : Real.sqrt (-σ Δ) ^ 2 = -σ Δ` using `Real.sq_sqrt (by linarith)`. Use `set r := Real.sqrt (-σ Δ)`. Establish `hI : ((r : ℂ) * Complex.I) ^ 2 = (σ Δ : ℂ)`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, hr]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ toFun := fun x => (σ x.re : ℂ) + σ x.im * (r * Complex.I) map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`. Introduce `x y`. Simplify using the standard rewrite rules. Take the linear combination `(-(σ x.im : ℂ) * σ y.im) * hI`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `x y`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `a`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_complex {F : Type} [Field F] (σ : F →+* ℝ) (Δ : F) (h : σ Δ < 0) :
     ∃ φ : Lsq F Δ →+* ℂ, (∀ x, φ (star x) = star (φ x)) ∧ ∀ a, φ (algebraMap F _ a) = (σ a : ℂ) := by
@@ -75,15 +75,15 @@ private theorem exists_complex {F : Type} [Field F] (σ : F →+* ℝ) (Δ : F) 
     simp
 
 /- English proof (translation)
-Use `set A : Matrix (Fin 3) (Fin 3) (Lsq K Δ) := δ.1 with hA`. Establish `hB : ((theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = A.map star` using `rfl`. Establish `hN : ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = A * A.map star`. Rewrite using `[← hB]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hu : A * star A = 1` using `Matrix.mem_unitaryGroup_iff.1 δ.2`. Rewrite using `[hN]`. Prove the components needed by the constructor for the conclusion. Establish `e : (A * A.map star).map (starRingEnd (Lsq K Δ)) = A.map star * A`. Establish `e1` using `Matrix.map_mul (L := A) (M := A.map star) (f := starRingEnd (Lsq K Δ))`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (A.map star).map (starRingEnd (Lsq K Δ)) = A`. Apply the tactic sequence `ext i j <;> simp [starRingEnd_apply]`. Rewrite using `[e1, e2]`. Both sides reduce to the same expression. Establish `e3 : ∀ M : Matrix (Fin 3) (Fin 3) (Lsq K Δ), star M.trace = (M.map (starRingEnd (Lsq K Δ))).trace` using `fun M => by`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.trace_fin_three, starRingEnd_apply]`. Rewrite using `[e3, e, Matrix.trace_mul_comm]`. Establish `e1 : (A.map star).det = star A.det`. Rewrite using `[← Matrix.det_conjTranspose, ← Matrix.det_transpose]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e2 : A.det * star A.det = 1`. Rewrite using `[← Matrix.det_conjTranspose, ← Matrix.det_mul, ← Matrix.star_eq_conjTranspose, hu, Matrix.det_one]`. Rewrite using `[Matrix.det_mul, e1, e2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trace_det {K : Type} [Field K] {Δ : K} (δ : U3 Δ) :
     star ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).trace =
@@ -113,9 +113,9 @@ private theorem trace_det {K : Type} [Field K] {Δ : K} (δ : U3 Δ) :
     rw [Matrix.det_mul, e1, e2]
 
 /- English proof (translation)
-Establish `h1 : (star t).im = t.im` using `by rw [h]`. Establish `h2 : t.im = 0`. Simplify using `at h1`. Establish `h3 : (2 : K) * t.im = 0` using `by linear_combination -h1`. Simplify using `using h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply the tactic sequence `ext <;> simp [h2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem eq_base {K : Type} [Field K] [CharZero K] {Δ : K} (t : Lsq K Δ) (h : star t = t) :
     t = algebraMap K _ t.re := by
@@ -129,7 +129,7 @@ private theorem eq_base {K : Type} [Field K] [CharZero K] {Δ : K} (t : Lsq K Δ
 end UpperTheory.V.Z.Sym.Glob
 
 /- English proof (citation)
-Apply `UpperTheory.Reformulated.B.CubicCharpolyDiscriminant.tauEx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FIntegralCasts%2FCapelliIdentities%2FCubicCharpolyDiscriminant.lean&line=81#L81)
 -/

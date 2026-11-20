@@ -17,27 +17,25 @@ open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 namespace GlobalTheory.PeriodChartChange
 
 /- English proof (translation)
-Establish `cast : ∀ T : Matrix (Fin g) (Fin g) ℂ, IsSiegel T → ((T.map Complex.im)⁻¹).map (fun t : ℝ => (t : ℂ)) = (T.map (fun t => (t.im : ℂ)))⁻¹ ∧ IsUnit (T.map (fun t => (t.im : ℂ))).det ∧ (T.map (fun t => (t.im : ℂ)))ᵀ = T.map (fun t => (t.im : ℂ))`. Introduce `T hT`. Establish `hd : IsUnit (T.map Complex.im).det` using `hT.2.det_pos.ne'.isUnit`. Establish `e : T.map (fun t => (t.im : ℂ)) = (T.map Complex.im).map Complex.ofRealHom`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `symm`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `((T.map Complex.im)⁻¹).map Complex.ofRealHom * (T.map Complex.im).map Complex.ofRealHom = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hd, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[e]`. Use `hd.map Complex.ofRealHom` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← Matrix.transpose_map, hT.1.eq]`. Take `⟨ei, hd, hs⟩` from `cast τ hτ`. Take `⟨ei', hd', hs'⟩` from `cast τ' hτ'`. Introduce `s t`. Unfold `herm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[ei, ei']`. Use `set Y := τ.map (fun t => (t.im : ℂ)) with hYdef`. Use `set Y' := τ'.map (fun t => (t.im : ℂ)) with hY'def`. Establish `hK' : IsUnit K` using `(Matrix.isUnit_iff_isUnit_det K).2 hK`. Establish `hN : IsUnit Kᵀᴴᵀ` using `(Matrix.isUnit_iff_isUnit_det _).2 (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[det_transpose, det_conjTranspose, det_transpose]`. Conclude with `hK.star)`. Establish `hG : (2 : ℂ) • Y' = HermFrame.chg M ((2 : ℂ) • Y)`. Establish `e : HermFrame.chg Kᵀ ((2 : ℂ) • Y') = HermFrame.chg Kᵀ (HermFrame.chg M ((2 : ℂ) • Y))`. Use extensionality with `a b`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[HermFrame.chg_apply, HermFrame.chg_apply]`. Conclude with `(h a b).trans (HermFrame.form_chg M _ (K a) (K b)).symm`. Simplify using `only [HermFrame.chg, transpose_transpose] at e`. Conclude with `hK'.mul_left_cancel (hN.mul_right_cancel e)`. Establish `hY' : Y' = Mᵀ * Y * Mᴴᵀ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hG` using `[HermFrame.chg, Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `smul_right_injective _ (two_ne_zero' ℂ) hG`. Establish `hY'' : Y' = Mᴴ * Y * M`. Rewrite using `[← hs', hY']`. Simplify using `only [transpose_mul, transpose_transpose, hs, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use symmetry to reverse the relation.
 
-Establish `hM : IsUnit M.det`. Use `hd'` as an intermediate fact. Rewrite `this` using `[hY'', det_mul]`. Conclude with `isUnit_of_mul_isUnit_right this`. Establish `hMu : IsUnit M` using `(Matrix.isUnit_iff_isUnit_det M).2 hM`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hkey : M * Y'⁻¹ * Mᴴ = Y⁻¹`. Use `symm`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Apply `hMu.mul_right_cancel` to reduce the goal to its premises. Rewrite using `[Matrix.one_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[star_vecMul, dotProduct_mulVec, vecMul_vecMul, vecMul_vecMul, ← Matrix.mul_assoc, hkey]`.
+A detailed English derivation is pending.
 -/
 theorem gram_herm (g : ℕ) (τ τ' M K : Matrix (Fin g) (Fin g) ℂ) (hτ : IsSiegel τ) (hτ' : IsSiegel τ')
     (hK : IsUnit K.det)
@@ -101,21 +99,19 @@ theorem gram_herm (g : ℕ) (τ τ' M K : Matrix (Fin g) (Fin g) ℂ) (hτ : IsS
   rw [star_vecMul, dotProduct_mulVec, vecMul_vecMul, vecMul_vecMul, ← Matrix.mul_assoc, hkey]
 
 /- English proof (translation)
-Introduce `k _ S p A _ g w σ D c c' τ τ' ex ex' HP HP' P hP ψ hev`. Establish `hv : P.1 ∈ c.e.target` using `hP.1`. Establish `hPQ` using `hev.self_of_nhds`. Establish `hv' : (ψ P).1 ∈ c'.e.target` using `hPQ.1.1`. Establish `hov : ∀ Q : Pt (V D) g, ψ Q ∈ cov c'.e.target g → ex' (ψ Q) = ex Q → Q.1 ∈ c.e.target → c'.e.symm (ψ Q).1 = c.e.symm Q.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Q hQ he hQ1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← (HP'.2.2 _ hQ.1).1 (ψ Q).2, ← (HP.2.2 _ hQ1).1 Q.2]`. Conclude with `congrArg (fun y => y.1 ≫ A.hom) he`. Establish `hsymm` using `hov P hPQ.1 hPQ.2 hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hsymm, ?_⟩` and prove the remaining obligations. Establish `ht : Tendsto (fun u : Fin g → ℂ => ((P.1, P.2 + u) : Pt (V D) g)) (𝓝 0) (𝓝 P)`. Establish `: Continuous (fun u : Fin g → ℂ => ((P.1, P.2 + u) : Pt (V D) g))` using `by fun_prop`. Simplify using `using this.tendsto 0`. Establish `ho : ∀ z, (ex (P.1, z)).1 ≫ A.hom = (c.e.symm P.1).1` using `(HP.2.2 _ hv).1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho' : ∀ z, (ex' ((ψ P).1, z)).1 ≫ A.hom = (c.e.symm P.1).1` using `fun z => by`. Rewrite using `[(HP'.2.2 _ hv').1 z, hsymm]`. Set `e : (Fin g → ℂ) → (Over.mk (c.e.symm P.1).1 ⟶ A)` to `fun z => Over.homMk (ex (P.1, z)).1 (ho z)`. Set `e' : (Fin g → ℂ) → (Over.mk (c.e.symm P.1).1 ⟶ A)` to `fun z => Over.homMk (ex' ((ψ P).1, z)).1 (ho' z)`. Establish `hm : ∀ z z', e z * e z' = e (z + z')` using `fun z z' => Over.OverMorphism.ext ((HP.2.2 _ hv).2.1 z z' _ _ rfl rfl)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul'` using `(HP'.2.2 _ hv').2.1`. Rewrite `hmul'` using `[hsymm]`. Establish `hm' : ∀ z z', e' z * e' z' = e' (z + z')` using `fun z z' => Over.OverMorphism.ext (hmul' z z' _ _ rfl rfl)`. Establish `a0 : e' (ψ P).2 = e P.2` using `Over.OverMorphism.ext (by show (ex' ((ψ P).1, (ψ P).2)).1 = (ex (P.1, P.2)).1`. Conclude with `congrArg Subtype.val hPQ.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [ht.eventually hev] with u hu`. Take `⟨hQ, he⟩` from `hu`. Establish `h1 : (ψ (P.1, P.2 + u)).1 = (ψ P).1` using `c'.e.symm.injOn hQ.1 hv' ((hov _ hQ he hv).trans hsymm.symm)`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hψQ : ψ (P.1, P.2 + u) = ((ψ P).1, (ψ (P.1, P.2 + u)).2)` using `Prod.ext h1 rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1 : e' (ψ (P.1, P.2 + u)).2 = e (P.2 + u)` using `Over.OverMorphism.ext (by show (ex' ((ψ P).1, (ψ (P.1, P.2 + u)).2)).1 = (ex (P.1, P.2 + u)).1`. Rewrite using `[← hψQ, he])`. Establish `key : e' ((ψ (P.1, P.2 + u)).2 - (ψ P).2) = e u`. Apply `mul_left_cancel (a := e P.2)` to reduce the goal to its premises. Rewrite using `[hm, ← a0, hm', add_sub_cancel, a1]`.
-
-Conclude with `Subtype.ext (congrArg (fun x => x.left) key)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_transfer : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (A : Over S) [GrpObj A] (g : ℕ) (w : VMetric p (omega A) g) (σ : k →+* ℂ) (D : ℕ) (c c' : AlgChart p σ D) (τ τ' : V D → Matrix (Fin g) (Fin g) ℂ) (ex ex' : Pt (V D) g → CxPts (A.hom ≫ p) σ), IsPeriodChart w c τ ex → IsPeriodChart w c' τ' ex' → ∀ P ∈ cov c.e.target g, ∀ ψ : Pt (V D) g → Pt (V D) g, (∀ᶠ Q in 𝓝 P, ψ Q ∈ cov c'.e.target g ∧ ex' (ψ Q) = ex Q) → c'.e.symm (ψ P).1 = c.e.symm P.1 ∧ ∀ᶠ u in 𝓝 (0 : Fin g → ℂ), (ψ (P.1, P.2 + u)).1 = (ψ P).1 ∧ ex' ((ψ P).1, (ψ (P.1, P.2 + u)).2 - (ψ P).2) = ex (P.1, u) := by
   intro k _ S p A _ g w σ D c c' τ τ' ex ex' HP HP' P hP ψ hev
@@ -162,13 +158,13 @@ theorem fibre_transfer : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶
   exact Subtype.ext (congrArg (fun x => x.left) key)
 
 /- English proof (translation)
-Introduce `k _ S p A _ g w σ D c τ ex e₁ HP v hv v₁ χ C hχ0 hχ hev W f hW`. Take `⟨ho, hd⟩` from `HP.2.1 W f`. Set `F : Pt (V D) g → ℂ` to `fun x => ev (A.hom ≫ p) σ W f (ex x)`. Establish `hF : DifferentiableAt ℂ F (v, 0)`. Establish `hm : ((v, 0) : Pt (V D) g) ∈ {b ∈ cov c.e.target g | ⊤ ≤ (ex b).1 ⁻¹ᵁ W}` using `⟨⟨hv, trivial⟩, hW⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hd.differentiableAt (ho.mem_nhds hm)`. Set `F₀ : (Fin g → ℂ) → ℂ` to `fun z => ev (A.hom ≫ p) σ W f (ex (v, z))`. Establish `hF₀ : HasFDerivAt F₀ (fderiv ℂ F₀ 0) 0` using `(hF.comp (0 : Fin g → ℂ) ((differentiableAt_const v).prodMk differentiableAt_id)).hasFDerivAt`. Establish `h0 : HasFDerivAt F₀ (fderiv ℂ F₀ 0) (χ 0)` using `by rw [hχ0]; exact hF₀`. Establish `hG : HasFDerivAt (fun u => ev (A.hom ≫ p) σ W f (e₁ (v₁, u))) ((fderiv ℂ F₀ 0).comp C) 0` using `(h0.comp 0 hχ).congr_of_eventuallyEq (hev.mono fun u hu => by show _ = ev (A.hom ≫ p) σ W f (ex (v, χ u))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu])`. Use function extensionality and compare the values at `a`. Use `show fderiv ℂ (fun z => ev (A.hom ≫ p) σ W f (e₁ (v₁, z))) 0 (Pi.single a 1) = _`. Rewrite using `[hG.fderiv, ContinuousLinearMap.comp_apply]`. Establish `hs : C (Pi.single a 1) = ∑ b, C (Pi.single a 1) b • (Pi.single b (1 : ℂ) : Fin g → ℂ)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hs, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cot_comp : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (A : Over S) [GrpObj A] (g : ℕ) (w : VMetric p (omega A) g) (σ : k →+* ℂ) (D : ℕ) (c : AlgChart p σ D) (τ : V D → Matrix (Fin g) (Fin g) ℂ) (ex e₁ : Pt (V D) g → CxPts (A.hom ≫ p) σ), IsPeriodChart w c τ ex → ∀ v ∈ c.e.target, ∀ (v₁ : V D) (χ : (Fin g → ℂ) → Fin g → ℂ) (C : (Fin g → ℂ) →L[ℂ] Fin g → ℂ), χ 0 = 0 → HasFDerivAt χ C 0 → (∀ᶠ u in 𝓝 (0 : Fin g → ℂ), ex (v, χ u) = e₁ (v₁, u)) → ∀ (W : A.left.Opens) (f : Γ(A.left, W)), ex (v, 0) ∈ ptsIn (A.hom ≫ p) σ W → cot e₁ W f v₁ = fun a => ∑ b, C (Pi.single a 1) b * cot ex W f v b := by
   intro k _ S p A _ g w σ D c τ ex e₁ HP v hv v₁ χ C hχ0 hχ hev W f hW
@@ -195,27 +191,27 @@ theorem cot_comp : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k)
   rfl
 
 /- English proof (translation)
-Introduce `k _ S p A _ _ g w σ D c c' τ τ' ex ex' HP HP' P hP ψ hψd hev s t`. Establish `hev' : ∀ᶠ Q in 𝓝 P, ψ Q ∈ cov c'.e.target g ∧ ex' (ψ Q) = ex Q` using `hev.mono fun Q h => h.2`. Take `⟨hsymm, hfib⟩` from `fibre_transfer k S p A g w σ D c c' τ τ' ex ex' HP HP' P hP ψ hev'`. Establish `hPQ` using `hev'.self_of_nhds`. Establish `hv' : (ψ P).1 ∈ c'.e.target` using `hPQ.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : P.1 ∈ c.e.target` using `hP.1`. Set `φ : (Fin g → ℂ) → Pt (V D) g` to `fun u => (P.1, P.2 + u)`. Establish `hφ0 : φ 0 = P` using `Prod.ext rfl (add_zero _)`. Set `L : (Fin g → ℂ) →L[ℂ] Pt (V D) g` to `(0 : (Fin g → ℂ) →L[ℂ] V D).prod (ContinuousLinearMap.id ℂ _)`. Establish `hφ : HasFDerivAt φ L 0` using `(hasFDerivAt_const P.1 0).prodMk ((hasFDerivAt_id (0 : Fin g → ℂ)).const_add P.2)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ1 : HasFDerivAt ψ (fderiv ℂ ψ P) (φ 0)` using `by rw [hφ0]; exact hψd.hasFDerivAt`. Establish `hψφ : HasFDerivAt (ψ ∘ φ) ((fderiv ℂ ψ P).comp L) 0` using `hψ1.comp 0 hφ`. Establish `hL : ∀ s, L s = (0, s)` using `fun s => rfl`. Establish `hfst : HasFDerivAt (fun u => (ψ (φ u)).1) ((ContinuousLinearMap.fst ℂ (V D) (Fin g → ℂ)).comp ((fderiv ℂ ψ P).comp L)) 0` using `hasFDerivAt_fst.comp 0 hψφ`. Establish `hconst : HasFDerivAt (fun u => (ψ (φ u)).1) (0 : (Fin g → ℂ) →L[ℂ] V D) 0` using `(hasFDerivAt_const (ψ P).1 0).congr_of_eventuallyEq (hfib.mono fun u h => h.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ s : Fin g → ℂ, (fderiv ℂ ψ P (0, s)).1 = 0` using `fun s => by`. Use `congrArg (· s) (hfst.unique hconst)` as an intermediate fact. Simplify `this` using `[hL]`. Set `χ : (Fin g → ℂ) → Fin g → ℂ` to `fun u => (ψ (φ u)).2 - (ψ P).2`. Set `C : (Fin g → ℂ) →L[ℂ] Fin g → ℂ` to `(ContinuousLinearMap.snd ℂ (V D) (Fin g → ℂ)).comp ((fderiv ℂ ψ P).comp L)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hχ : HasFDerivAt χ C 0` using `(hasFDerivAt_snd.comp 0 hψφ).sub_const _`. Establish `hχ0 : χ 0 = 0` using `by simp only [χ, hφ0, sub_self]`. Establish `hC : ∀ s, C s = (fderiv ℂ ψ P (0, s)).2` using `fun s => rfl`. Establish `hχev : ∀ᶠ u in 𝓝 (0 : Fin g → ℂ), ex' ((ψ P).1, χ u) = ex (P.1, u)` using `hfib.mono fun u h => h.2`. Take `⟨W, f, hW, hdet⟩` from `PeriodChartOnto.exists_frame_cot k S p A g w σ D c' τ' ex' HP' (ψ P).1 hv'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `M : Matrix (Fin g) (Fin g) ℂ` to `Matrix.of fun a b => C (Pi.single a 1) b`. Set `K : Matrix (Fin g) (Fin g) ℂ` to `Matrix.of fun a b => cot ex' W (f a) (ψ P).1 b`. Establish `hcot : ∀ a, cot ex W (f a) P.1 = M *ᵥ K a` using `fun a => by`. Rewrite using `[cot_comp k S p A g w σ D c' τ' ex' ex HP' (ψ P).1 hv' P.1 χ C hχ0 hχ hχev W (f a) hW]`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[M, K, mulVec, dotProduct]`. Establish `e0 : (ex' ((ψ P).1, 0)).1 = (c'.e.symm (ψ P).1).1 ≫ unitSec A` using `((HP'.2.2 _ hv').2.2.2.1 0).2 ⟨0, zero_mem _, by funext i; simp [GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.per, vecMul, dotProduct]⟩`. Establish `hU' : c'.e.symm (ψ P).1 ∈ ptsIn p σ (unitSec A ⁻¹ᵁ W)`. Establish `hW' : ⊤ ≤ (ex' ((ψ P).1, 0)).1 ⁻¹ᵁ W` using `hW`. Rewrite `hW'` using `[e0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hW'`. Establish `hU : c.e.symm P.1 ∈ ptsIn p σ (unitSec A ⁻¹ᵁ W)` using `hsymm ▸ hU'`. Establish `hgram : ∀ a b, HermFrame.form ((2 : ℂ) • (τ' (ψ P).1).map (fun t => (t.im : ℂ))) (K a) (K b) = HermFrame.form ((2 : ℂ) • (τ P.1).map (fun t => (t.im : ℂ))) (M *ᵥ K a) (M *ᵥ K b)` using `fun a b => by`. Establish `e1` using `(HP.2.2 P.1 hv).2.2.2.2 (unitSec A ⁻¹ᵁ W) W le_rfl (f a) (f b) hU`. Establish `e2` using `(HP'.2.2 _ hv').2.2.2.2 (unitSec A ⁻¹ᵁ W) W le_rfl (f a) (f b) hU'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[hsymm]`. Rewrite using `[← hcot, ← hcot]`. Conclude with `e2.symm.trans e1`. Establish `hCv : ∀ s : Fin g → ℂ, (fderiv ℂ ψ P (0, s)).2 = s ᵥ* M` using `fun s => by`. Rewrite using `[← hC]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hs : s = ∑ a, s a • (Pi.single a (1 : ℂ) : Fin g → ℂ)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hs]`. Use function extensionality and compare the values at `b`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[M, vecMul, dotProduct, Finset.sum_apply]`. Use `⟨h1 s, ?_⟩` and prove the remaining obligations. Rewrite using `[hCv s, hCv t]`. Conclude with `gram_herm g (τ P.1) (τ' (ψ P).1) M K (HP.1.2.2 P.1 hv) (HP'.1.2.2 _ hv') hdet hgram s t`.
+A detailed English derivation is pending.
 -/
 theorem herm_fderiv_vert : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (A : Over S) [GrpObj A] [QuasiSeparated A.hom] (g : ℕ) (w : VMetric p (omega A) g) (σ : k →+* ℂ) (D : ℕ) (c c' : AlgChart p σ D) (τ τ' : V D → Matrix (Fin g) (Fin g) ℂ) (ex ex' : Pt (V D) g → CxPts (A.hom ≫ p) σ), IsPeriodChart w c τ ex → IsPeriodChart w c' τ' ex' → ∀ P ∈ cov c.e.target g, ∀ ψ : Pt (V D) g → Pt (V D) g, DifferentiableAt ℂ ψ P → (∀ᶠ Q in 𝓝 P, ContinuousAt ψ Q ∧ ψ Q ∈ cov c'.e.target g ∧ ex' (ψ Q) = ex Q) → ∀ s t : Fin g → ℂ, (fderiv ℂ ψ P (0, s)).1 = 0 ∧ herm (τ' (ψ P).1) (fderiv ℂ ψ P (0, s)).2 (fderiv ℂ ψ P (0, t)).2 = herm (τ P.1) s t := by
   intro k _ S p A _ _ g w σ D c c' τ τ' ex ex' HP HP' P hP ψ hψd hev s t

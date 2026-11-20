@@ -18,17 +18,17 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-Establish `hpos : ∀ n : ℕ, (1 : BdR) ∈ PD.Fil ((n : ℤ) + 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `PD.Fil_mul 1 ((n : ℤ) + 1) 1 1 h1 ih` as an intermediate fact. Rewrite `this` using `[one_mul]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hle : ∀ (a : ℤ) (n : ℕ), PD.Fil (a + n) ≤ PD.Fil a`. Introduce `a n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `x hx`. Apply `ih` to reduce the goal to its premises. Establish `hx' : x ∈ PD.Fil (a + n + 1)`. Establish `e : a + ((n + 1 : ℕ) : ℤ) = a + n + 1` using `by push_cast; ring`. Rewrite `hx` using `[e]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `PD.Fil_anti (a + n) hx'`. Introduce `a`. Break down `le_or_gt a 1 with h | h` into its components or cases. Establish `e : (1 : ℤ) = a + ((1 - a).toNat : ℕ)` using `by omega`. Use `hle a (1 - a).toNat` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← e]`. Conclude with `this h1`. Take `⟨n, hn⟩ : ∃ n : ℕ, a = (n : ℤ) + 1` from `⟨(a - 1).toNat, by omega⟩`. Rewrite using `[hn]`. Conclude with `hpos n`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_one_mem_all (h1 : (1 : BdR) ∈ PD.Fil 1) : ∀ a : ℤ, (1 : BdR) ∈ PD.Fil a := by
   have hpos : ∀ n : ℕ, (1 : BdR) ∈ PD.Fil ((n : ℤ) + 1) := by
@@ -61,11 +61,11 @@ theorem inv_one_mem_all (h1 : (1 : BdR) ∈ PD.Fil 1) : ∀ a : ℤ, (1 : BdR) �
     rw [hn]; exact hpos n
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h1 : (1 : BdR) ∈ PD.Fil 1`. Use `(PD.Fil 1).smul_mem c⁻¹ hc` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def, ← map_mul, inv_mul_cancel₀ hne, map_one]`. Then use the resulting hypothesis. Establish `hall` using `inv_one_mem_all PD h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h0 : (1 : BdR) = 0` using `PD.Fil_sep 1 hall`. Apply `PD.not_mem_filtration_two` to reduce the goal to its premises. Establish `: PD.ι PD.t = 0`. Rewrite using `[← one_mul (PD.ι PD.t), h0, zero_mul]`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(PD.Fil 2).zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem field_inter_filtration_one_eq_zero (c : K) (hc : algebraMap K BdR c ∈ PD.Fil 1) : c = 0 := by
   by_contra hne

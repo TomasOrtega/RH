@@ -24,7 +24,7 @@ def rr {ι : Type} [Fintype ι] {a b : ℕ} (z : ι → Fin a → Fin b → ℂ)
   1 + ∑ τ, ∑ i, ∑ j, ‖z τ i j‖ ^ 2
 
 /- English proof (translation)
-Unfold `rr`. Establish `: 0 ≤ ∑ τ, ∑ i, ∑ j, ‖z τ i j‖ ^ 2` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_rr {ι : Type} [Fintype ι] {a b : ℕ} (z : ι → Fin a → Fin b → ℂ) : 1 ≤ rr z := by
   unfold rr
@@ -33,9 +33,9 @@ theorem one_le_rr {ι : Type} [Fintype ι] {a b : ℕ} (z : ι → Fin a → Fin
   linarith
 
 /- English proof (translation)
-Establish `h0 : (0 : ℝ) ≤ rr z` using `zero_le_one.trans (one_le_rr z)`. Use `(pi_norm_le_iff_of_nonneg h0).2 fun τ => (pi_norm_le_iff_of_nonneg h0).2 fun i => (pi_norm_le_iff_of_nonneg h0).2 fun j => ?_` and prove the remaining obligations. Establish `h1 : ‖z τ i j‖ ^ 2 ≤ ∑ τ, ∑ i, ∑ j, ‖z τ i j‖ ^ 2`. Establish `hj : ‖z τ i j‖ ^ 2 ≤ ∑ j, ‖z τ i j‖ ^ 2` using `Finset.single_le_sum (f := fun j => ‖z τ i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)`. Establish `hi : ∑ j, ‖z τ i j‖ ^ 2 ≤ ∑ i, ∑ j, ‖z τ i j‖ ^ 2` using `Finset.single_le_sum (f := fun i => ∑ j, ‖z τ i j‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : ∑ i, ∑ j, ‖z τ i j‖ ^ 2 ≤ ∑ τ, ∑ i, ∑ j, ‖z τ i j‖ ^ 2` using `Finset.single_le_sum (f := fun τ => ∑ i, ∑ j, ‖z τ i j‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ τ)`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `rr`. Use polynomial arithmetic with `[sq_nonneg (‖z τ i j‖ - 1)]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_le_rr {ι : Type} [Fintype ι] {a b : ℕ} (z : ι → Fin a → Fin b → ℂ) : ‖z‖ ≤ rr z := by
   have h0 : (0 : ℝ) ≤ rr z := zero_le_one.trans (one_le_rr z)
@@ -55,7 +55,7 @@ theorem norm_le_rr {ι : Type} [Fintype ι] {a b : ℕ} (z : ι → Fin a → Fi
   nlinarith [sq_nonneg (‖z τ i j‖ - 1)]
 
 /- English proof (translation)
-Establish `hc : ∀ (τ : ι) (i : Fin a) (j : Fin b), (fun z : ι → Fin a → Fin b → ℂ => ‖z τ i j‖ ^ 2).HasTemperateGrowth` using `fun τ i j => by`. Set `P : (ι → Fin a → Fin b → ℂ) →L[ℝ] ℂ` to `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin b => ℂ) j).comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin a => Fin b → ℂ) i).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : ι => Fin a → Fin b → ℂ) τ))`. Conclude with `(Function.hasTemperateGrowth_norm_sq ℂ).comp P.hasTemperateGrowth`. Establish `hr : (fun z : ι → Fin a → Fin b → ℂ => rr z).HasTemperateGrowth` using `(Function.HasTemperateGrowth.const (1 : ℝ)).add (Function.HasTemperateGrowth.sum fun τ _ => Function.HasTemperateGrowth.sum fun i _ => Function.HasTemperateGrowth.sum fun j _ => hc τ i j)`. Conclude with `(Complex.ofRealCLM.hasTemperateGrowth.comp hr).pow L`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rr_temperate {ι : Type} [Fintype ι] {a b : ℕ} (L : ℕ) :
     (fun z : ι → Fin a → Fin b → ℂ => ((rr z : ℝ) : ℂ) ^ L).HasTemperateGrowth := by
@@ -73,17 +73,15 @@ theorem rr_temperate {ι : Type} [Fintype ι] {a b : ℕ} (L : ℕ) :
   exact (Complex.ofRealCLM.hasTemperateGrowth.comp hr).pow L
 
 /- English proof (translation)
-Establish `he0 : e 0 = 1`. Use `he 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `u hu x`. Establish `: u = 0` using `by simpa using hu`. Simplify using `[this, he0]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `u hu x`. Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `hu' : |u| ≤ (k : ℝ) + 1` using `by simpa using hu`. Establish `hw : u / (k + 1) ∈ Set.Icc (-1 : ℝ) 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: |u / ((k : ℝ) + 1)| ≤ 1`. Rewrite using `[abs_div, abs_of_pos hk, div_le_one hk]`. Conclude with `hu'`. Conclude with `abs_le.1 this`. Establish `hv : |u - u / (k + 1)| ≤ k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: u - u / ((k : ℝ) + 1) = u / ((k : ℝ) + 1) * k` using `by field_simp; ring`. Rewrite using `[this, abs_mul, abs_of_nonneg (Nat.cast_nonneg k : (0 : ℝ) ≤ k)]`. Establish `h1 : |u / ((k : ℝ) + 1)| ≤ 1` using `abs_le.2 hw`. Use polynomial arithmetic with `[Nat.cast_nonneg (α := ℝ) k]`. Establish `e1 : u = u / (k + 1) + (u - u / (k + 1))` using `by ring`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← he, ← e1]`. Use `_ ≤ κ ^ k * h (x * e (u / (k + 1))) := ih _ hv _`. Use `_ ≤ κ ^ k * (κ * h x) := by gcongr; exact hb _ hw x`. Use `_ = κ ^ (k + 1) * h x := by ring`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_bound {Γ : Type} [Group Γ] (h : Γ → ℝ) (e : ℝ → Γ) (he : ∀ u v, e (u + v) = e u * e v)
     (κ : ℝ) (hκ : 1 ≤ κ) (hb : ∀ u ∈ Set.Icc (-1 : ℝ) 1, ∀ x, h (x * e u) ≤ κ * h x) (hpos : ∀ x, 0 ≤ h x) :
@@ -119,13 +117,13 @@ theorem pow_bound {Γ : Type} [Group Γ] (h : Γ → ℝ) (e : ℝ → Γ) (he :
       _ = κ ^ (k + 1) * h x := by ring
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Use `⟨tsupport g, hg.2, fun y hy => subset_tsupport _ ?_⟩` and prove the remaining obligations. Conclude with `fun h0 => hy (by simp only [h0, mul_zero])`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Consider the case `zero => exact ⟨∅, isCompact_empty, fun y hy => absurd rfl hy⟩`. Consider the case `add Φ Ψ _ _ h1 h2`. Take `⟨S₁, c₁, s₁⟩` from `h1`. Take `⟨S₂, c₂, s₂⟩` from `h2`. Use `⟨S₁ ∪ S₂, c₁.union c₂, fun y hy => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : Φ y = 0`. Conclude with `Or.inr (s₂ y fun h' => hy (by simp [h, h']))`. Conclude with `Or.inl (s₁ y h)`. Consider the case `smul c Φ _ h`. Take `⟨S, cS, sS⟩` from `h`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨S, cS, fun y hy => sS y fun h' => hy (by simp [h'])⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_compact_fin (D : D7) (θ : InfFam D) (ρ p : ℕ) (Φ : Mx D ρ p → ℂ) (hΦ : Φ ∈ schwartzA θ ρ p) :
     ∃ S : Set (Fin ρ → Fin p → Af D.host.F ⊗[D.host.F] D.host.E), IsCompact S ∧
@@ -152,7 +150,7 @@ section Dil
 variable {R : Type} [CommRing R] {n ρ p : ℕ}
 
 /- English proof (translation)
-Rewrite using `[blockMatrix_multiply]`. Use `congr 1`. Simplify using `[smul_smul, mul_comm]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -167,7 +165,7 @@ theorem blockMatrix_smul_one_mul (hn : ρ + p = n) (α β : R) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[blockMatrix_multiply, blockMatrix_multiply]`. Use `congr 1`. Simplify using `[smul_smul, mul_comm β α, h]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -182,7 +180,7 @@ theorem blockMatrix_conj_upperUnipotent (hn : ρ + p = n) (α β : R) (h : α * 
   · simp
 
 /- English proof (translation)
-Rewrite using `[blockMatrix_multiply, blockMatrix_multiply]`. Use `congr 1`. Simplify using `[smul_smul, h, mul_comm β α]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -199,19 +197,17 @@ theorem blockMatrix_conj_lowerUnipotent (hn : ρ + p = n) (α β : R) (h : α * 
 end Dil
 
 /- English proof (translation)
-Take `⟨e1, he1⟩` from `GlobalTheory.RegSch.IkSchwartz.exists_split hθ 1 1`. Establish `hinj : ∀ x x' : AE D, (∀ τ, θ τ (infPart D x) = θ τ (infPart D x')) → finPart D x = finPart D x' → x = x'`. Introduce `x x' h1 h2`. Establish `: (Matrix.of fun _ _ => x : Mx D 1 1) = Matrix.of fun _ _ => x'`. Apply `e1.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[he1, he1]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `τ i j`. Conclude with `h1 τ`. Use function extensionality and compare the values at `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Conclude with `h2`. Conclude with `congrFun (congrFun this 0) 0`. Set `pt : ℝ → (D.what₂.Tau → Fin 1 → Fin 1 → ℂ) × (Fin 1 → Fin 1 → GlobalTheory.RegSch.IkSchwartz.AEf D)` to `fun u => (fun _ _ _ => (Real.exp u : ℂ), fun _ _ => 1)`. Establish `hpt : Continuous pt`. Use `Continuous.prodMk ?_ continuous_const` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `continuous_pi fun _ => continuous_pi fun _ => continuous_pi fun _ => Complex.continuous_ofReal.comp Real.continuous_exp`. Set `a : ℝ → AE D` to `fun u => e1.symm (pt u) 0 0`. Establish `ha1 : ∀ u τ, θ τ (infPart D (a u)) = (Real.exp u : ℂ)` using `fun u τ => by`. Use `congrArg Prod.fst (he1 (e1.symm (pt u)))` as an intermediate fact. Rewrite `this` using `[e1.apply_symm_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrFun (congrFun (congrFun this τ) 0) 0).symm`. Establish `ha2 : ∀ u, finPart D (a u) = 1` using `fun u => by`. Use `congrArg Prod.snd (he1 (e1.symm (pt u)))` as an intermediate fact. Rewrite `this` using `[e1.apply_symm_apply]`. Conclude with `(congrFun (congrFun this 0) 0).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, (e1.symm.continuous.comp hpt).matrix_elem 0 0, fun u v => hinj _ _ (fun τ => ?_) ?_, hinj _ _ (fun τ => ?_) ?_, ha1, ha2⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ha1, ha1, ha1, Real.exp_add, Complex.ofReal_mul]`. Rewrite using `[map_mul, ha2, ha2, ha2, one_mul]`. Rewrite using `[ha1, map_one, map_one]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[ha2, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_real_idele (D : D7) (θ : InfFam D) (hθ : IsInfFam θ) :
     ∃ a : ℝ → AE D, Continuous a ∧ (∀ u v, a u * a v = a (u + v)) ∧ a 0 = 1 ∧
@@ -250,29 +246,25 @@ theorem exists_real_idele (D : D7) (θ : InfFam D) (hθ : IsInfFam θ) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D θ hθ n ρ p hn M`. Take `⟨a, hac, hmul, ha0, ha1, ha2⟩` from `exists_real_idele D θ hθ`. Take `⟨e0, he0⟩` from `GlobalTheory.RegSch.IkSchwartz.exists_split hθ ρ p`. Set `A : ℝ → Mx D n n` to `fun u => bl hn (a u • (1 : Mx D ρ ρ)) 0 0 1`. Establish `hA : ∀ u v, A u * A v = A (u + v)` using `fun u v => by show HMul.hMul _ _ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[blockMatrix_smul_one_mul, hmul]`. Establish `hA0 : A 0 = 1` using `by show bl hn (a 0 • (1 : Mx D ρ ρ)) 0 0 1 = 1`. Rewrite using `[ha0, one_smul]`. Conclude with `GlobalTheory.CompanionTheory.PcB.blockMatrix_one hn`. Establish `hAc : Continuous A`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Continuous fun u => a u • (1 : Mx D ρ ρ)` using `by haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Conclude with `continuous_matrix fun i j => (hac.mul continuous_const : Continuous fun u => a u * (1 : Mx D ρ ρ) i j)`. Conclude with `(h1.matrix_fromBlocks continuous_const continuous_const continuous_const).matrix_submatrix _ _`. Establish `hex : ∀ u, ∃ g : G D n, mat g = blk4 (A u) 0 0 (adj (A (-u)))` using `fun u => GlobalTheory.StdUnn.Model.exists_levi ⟨A u, A (-u), by rw [hA, add_neg_cancel, hA0], by rw [hA, neg_add_cancel, hA0]⟩`. Use `choose e he using hex`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hadd : ∀ u v, e (u + v) = e u * e v` using `fun u v => by`. Apply `mat_injective` to reduce the goal to its premises. Rewrite using `[mat_mul', he, he, he, block_diagonal_mul]`. Use `congr 1`. Conclude with `(hA u v).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show _ = adj (A (-u)) * adj (A (-v))`. Rewrite using `[← adj_mul, hA, neg_add_rev, add_comm (-v)]`. Establish `he0' : e 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `mul_eq_left.1 this.symm`. Establish `hinv : ∀ u, (e u)⁻¹ = e (-u)` using `fun u => by`. Rewrite using `[inv_eq_iff_mul_eq_one, ← hadd, add_neg_cancel, he0']`. Establish `hmc : Continuous fun u => mat (e u)`. Simplify using `only [he]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `((hAc.matrix_fromBlocks continuous_const continuous_const (GlobalTheory.CompanionTheory.JacobiMaps.continuous_adjR.comp (hAc.comp continuous_neg))).matrix_submatrix _ _)`. Use `⟨e, GlobalTheory.StdUnn.continuous_of_mat_pt hmc ?_, hadd, fun u y y' h1 h2 => ?_⟩` and prove the remaining obligations. Simplify using `only [hinv]`. Conclude with `hmc.comp continuous_neg`. Establish `hy : y' = a u • y`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `e0.injective` to reduce the goal to its premises. Rewrite using `[he0, he0]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `τ i j show compAt θ τ y' i j = θ τ (infPart D (a u * y i j))`. Rewrite using `[h1, map_mul, map_mul, ha1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `i j show finPart D (y' i j) = finPart D (a u * y i j)`. Rewrite using `[h2, map_mul, ha2, one_mul]`. Apply `mat_injective` to reduce the goal to its premises. Rewrite using `[mat_mul', mat_mul', he, he, M.sh_mat, M.sh_mat, block_diagonal_mul, block_diagonal_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hau : a u * a (-u) = 1` using `by rw [hmul, add_neg_cancel, ha0]`. Establish `hcu : cA D (a u) * cA D (a (-u)) = 1` using `by rw [← map_mul, hau, map_one]`. Establish `hadjA : ∀ v, adj (A v) = bl hn (cA D (a v) • (1 : Mx D ρ ρ)) 0 0 1` using `fun v => by show adj (bl hn (a v • (1 : Mx D ρ ρ)) 0 0 1) = _`. Rewrite using `[GlobalTheory.CompanionTheory.JacobiMaps.adj_bl, adj_zero, adj_zero, adj_one, GlobalTheory.MixModel.adj_smul, adj_one]`. Use `congr 1`.
-
-Rewrite using `[hy]`. Conclude with `(blockMatrix_conj_upperUnipotent hn (a u) (a (-u)) hau y).symm`. Rewrite using `[neg_neg, hadjA, hadjA, hy]`. Use `blockMatrix_conj_lowerUnipotent hn (cA D (a u)) (cA D (a (-u))) hcu (-adj y)` as an intermediate fact. Rewrite using `[this]`.
-
-Use `congr 2`. Rewrite using `[GlobalTheory.MixModel.adj_smul, smul_neg]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dil_exists : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (n ρ p : ℕ) (hn : ρ + p = n) (M : Maps D hn),
     ∃ e : ℝ → G D n, Continuous e ∧ (∀ u v, e (u + v) = e u * e v) ∧
@@ -343,37 +335,31 @@ theorem dil_exists : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (n ρ p :
     rw [GlobalTheory.MixModel.adj_smul, smul_neg]
 
 /- English proof (translation)
-Take `⟨e, hec, hea, hes⟩` from `dil_exists D θ hθ n ρ p hn M`. Take `⟨S, hS, hsupp⟩` from `exists_compact_fin D θ ρ p Φ hΦ`. Take `⟨e0, he0⟩` from `GlobalTheory.RegSch.IkSchwartz.exists_split hθ ρ p`. Establish `hB : IsCompact (e0.symm '' (Metric.closedBall (0 : D.what₂.Tau → Fin ρ → Fin p → ℂ) 1 ×ˢ {0}))` using `((isCompact_closedBall _ _).prod isCompact_singleton).image e0.symm.continuous`. Establish `hCf : IsCompact (e0.symm '' (({0} : Set (D.what₂.Tau → Fin ρ → Fin p → ℂ)) ×ˢ S))` using `(isCompact_singleton.prod hS).image e0.symm.continuous`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨κ₀, hκ₀, hb₀⟩` from `GlobalTheory.CompanionTheory.HtRightTranslate.height_mul_le D n H hH hC _ ((hB.union hCf).image M.sh_cont)`. Take `⟨κ₁, hκ₁, hb₁⟩` from `GlobalTheory.CompanionTheory.HtRightTranslate.height_mul_le D n H hH hC _ (isCompact_Icc.image hec : IsCompact (e '' Set.Icc (-1 : ℝ) 1))`. Establish `hpw` using `pow_bound (fun x => (H x : ℝ)) e hea κ₁ hκ₁ (fun u hu x => hb₁ _ ⟨u, hu, rfl⟩ x) (fun x => NNReal.coe_nonneg _)`. Take `⟨N, hN⟩` from `exists_nat_ge (Real.log κ₁)`. Establish `hκE : κ₁ ≤ Real.exp N`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hg : ∀ (r : ℝ), 1 ≤ r → ∀ u, |u| = Real.log r → ∀ x, (H (x * e u) : ℝ) ≤ Real.exp N * r ^ N * (H x : ℝ)`. Introduce `r hr u hu x`. Establish `hr0 : 0 < r` using `lt_of_lt_of_le one_pos hr`. Establish `hl : 0 ≤ Real.log r` using `Real.log_nonneg hr`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hpw ⌈|u|⌉₊ u (Nat.le_ceil _) x`. Use `h1.trans (mul_le_mul_of_nonneg_right ?_ (NNReal.coe_nonneg _))` and prove the remaining obligations. Establish `hc : (⌈|u|⌉₊ : ℝ) ≤ Real.log r + 1`. Establish `h` using `Nat.ceil_lt_add_one (abs_nonneg u)`. Conclude with `h.le.trans (by rw [hu])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_add, mul_one, Real.exp_add, mul_comm, mul_comm (N : ℝ), Real.exp_mul, Real.exp_log hr0, Real.rpow_natCast]`. Use `⟨κ₀ ^ 2 * Real.exp N ^ 2, 2 * N, by positivity, fun x y hy => ?_⟩` and prove the remaining obligations. Use `set z : D.what₂.Tau → Fin ρ → Fin p → ℂ := fun τ i j => compAt θ τ y i j with hz`. Use `set f : Fin ρ → Fin p → Af D.host.F ⊗[D.host.F] D.host.E := fun i j => finPart D (y i j) with hf`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hey : e0 y = (z, f)` using `he0 y`. Use `set r := rr z with hr`. Establish `hr1 : 1 ≤ r` using `one_le_rr z`. Establish `hr0 : 0 < r` using `lt_of_lt_of_le one_pos hr1`. Use `set y₀ := e0.symm (r⁻¹ • z, 0) with hy₀`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set y₁ := e0.symm (z, 0) with hy₁`. Use `set y₂ := e0.symm (0, f) with hy₂`. Establish `hsum : y = y₁ + y₂`. Apply `e0.injective` to reduce the goal to its premises. Rewrite using `[map_add, hy₁, hy₂, e0.apply_symm_apply, e0.apply_symm_apply, hey]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hc₀ : ∀ τ i j, compAt θ τ y₀ i j = r⁻¹ • z τ i j` using `fun τ i j => by`. Use `congrArg Prod.fst (he0 y₀)` as an intermediate fact. Rewrite `this` using `[hy₀, e0.apply_symm_apply]`. Conclude with `(congrFun (congrFun (congrFun this τ) i) j).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc₁ : ∀ τ i j, compAt θ τ y₁ i j = z τ i j` using `fun τ i j => by`. Use `congrArg Prod.fst (he0 y₁)` as an intermediate fact. Rewrite `this` using `[hy₁, e0.apply_symm_apply]`. Conclude with `(congrFun (congrFun (congrFun this τ) i) j).symm`. Establish `hf₀ : ∀ i j, finPart D (y₀ i j) = 0` using `fun i j => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg Prod.snd (he0 y₀)` as an intermediate fact. Rewrite `this` using `[hy₀, e0.apply_symm_apply]`. Conclude with `(congrFun (congrFun this i) j).symm`. Establish `hf₁ : ∀ i j, finPart D (y₁ i j) = 0` using `fun i j => by`. Use `congrArg Prod.snd (he0 y₁)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hy₁, e0.apply_symm_apply]`. Conclude with `(congrFun (congrFun this i) j).symm`. Establish `hsh₁ : M.sh y₁ = e (Real.log r) * M.sh y₀ * e (-Real.log r)`. Use `hes _ y₀ y₁ (fun τ i j => ?_) (fun i j => by rw [hf₀, hf₁])` and prove the remaining obligations. Rewrite using `[hc₀, hc₁, Real.exp_log hr0, Complex.real_smul, Complex.ofReal_inv, ← mul_assoc, mul_inv_cancel₀ (by exact_mod_cast hr0.ne'), one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : 0 ≤ Real.log r` using `Real.log_nonneg hr1`. Establish `hy₀B : M.sh y₀ ∈ M.sh '' ((e0.symm '' (Metric.closedBall (0 : D.what₂.Tau → Fin ρ → Fin p → ℂ) 1 ×ˢ {0})) ∪ (e0.symm '' (({0} : Set (D.what₂.Tau → Fin ρ → Fin p → ℂ)) ×ˢ S)))`. Use `⟨y₀, Or.inl ⟨(r⁻¹ • z, 0), ⟨?_, rfl⟩, rfl⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, norm_smul, norm_inv, Real.norm_of_nonneg hr0.le]`. Conclude with `inv_mul_le_one_of_le₀ (norm_le_rr z) hr0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hy₂C : M.sh y₂ ∈ M.sh '' ((e0.symm '' (Metric.closedBall (0 : D.what₂.Tau → Fin ρ → Fin p → ℂ) 1 ×ˢ {0})) ∪ (e0.symm '' (({0} : Set (D.what₂.Tau → Fin ρ → Fin p → ℂ)) ×ˢ S)))` using `⟨y₂, Or.inr ⟨(0, f), ⟨rfl, hsupp y hy⟩, rfl⟩, rfl⟩`. Establish `hexp : M.sh y = e (Real.log r) * M.sh y₀ * e (-Real.log r) * M.sh y₂`. Rewrite using `[← hsh₁, GlobalTheory.CompanionTheory.FJE.sh_add, ← hsum]`. Establish `hE : 0 ≤ Real.exp N * r ^ N` using `by positivity`. Establish `hκ₀' : 0 ≤ κ₀` using `zero_le_one.trans hκ₀`.
-
-Establish `s1` using `hb₀ _ hy₂C (x * e (Real.log r) * M.sh y₀ * e (-Real.log r))`. Establish `s2` using `hg r hr1 (-Real.log r) (by rw [abs_neg, abs_of_nonneg hl]) (x * e (Real.log r) * M.sh y₀)`. Establish `s3` using `hb₀ _ hy₀B (x * e (Real.log r))`. Establish `s4` using `hg r hr1 (Real.log r) (abs_of_nonneg hl) x`. Establish `e1 : x * M.sh y = x * e (Real.log r) * M.sh y₀ * e (-Real.log r) * M.sh y₂`.
-
-Rewrite using `[hexp]`. Simplify using `only [mul_assoc]`. Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Use `s1.trans (mul_le_mul_of_nonneg_left ?_ hκ₀')` and prove the remaining obligations.
-
-Use `s2.trans (mul_le_mul_of_nonneg_left ?_ hE)` and prove the remaining obligations. Conclude with `s3.trans (mul_le_mul_of_nonneg_left s4 hκ₀')`. Use `_ = κ₀ ^ 2 * Real.exp N ^ 2 * r ^ (2 * N) * (H x : ℝ) := by ring`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_shear_bound (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (M : Maps D hn) (θ : InfFam D) (hθ : IsInfFam θ)
     (H : G D n → ℝ≥0) (hH : IsHt H) (hC : ∃ C : Set (G D n), IsCompact C ∧ ∀ g, ∃ q ∈ P D n, ∃ c ∈ C, g = q * c)
@@ -472,17 +458,15 @@ theorem exists_shear_bound (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (M : Maps D
     _ = κ₀ ^ 2 * Real.exp N ^ 2 * r ^ (2 * N) * (H x : ℝ) := by ring
 
 /- English proof (translation)
-Introduce `D n ρ p hn M m θ hθ H hH hC Φ hΦ τ hτ`. Take `⟨A, N, hA, hb⟩` from `exists_shear_bound D n ρ p hn M θ hθ H hH hC Φ hΦ`. Use `set L := ⌈(N : ℝ) * τ⌉₊ with hL`. Establish `hmem` using `GlobalTheory.CompanionTheory.WSum.mul_mem_schwartzA D θ ρ p _ (rr_temperate (ι := D.what₂.Tau) (a := ρ) (b := p) L) Φ hΦ`. Establish `hint` using `GlobalTheory.SchwartzAInt.integrable_of_mem D θ hθ ρ p m.μ m.𝓕 m.hμ _ hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun y => A ^ τ * ‖((rr (fun τ i j => compAt θ τ y i j) : ℝ) : ℂ) ^ L * Φ y‖, hint.norm.const_mul _, fun x y => ?_⟩` and prove the remaining obligations. Establish `hH0 : ∀ g, (0 : ℝ) ≤ (H g : ℝ)` using `fun g => NNReal.coe_nonneg _`. Distinguish the cases in `hy : Φ y = 0`. Simplify using `[hy]`. Use `set r := rr (fun τ i j => compAt θ τ y i j) with hr`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : 1 ≤ r` using `one_le_rr _`. Establish `hr0 : 0 ≤ r` using `by linarith`. Establish `h1 : (H (x * M.sh y) : ℝ) ^ τ ≤ (A * r ^ N * (H x : ℝ)) ^ τ` using `Real.rpow_le_rpow (hH0 _) (hb x y hy) hτ`. Establish `h2 : (A * r ^ N * (H x : ℝ)) ^ τ = A ^ τ * (r ^ N) ^ τ * (H x : ℝ) ^ τ`. Rewrite using `[Real.mul_rpow (by positivity) (hH0 _), Real.mul_rpow hA.le (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (r ^ N) ^ τ ≤ r ^ L`. Rewrite using `[← Real.rpow_natCast r N, ← Real.rpow_mul hr0, ← Real.rpow_natCast r L]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hr1 (Nat.le_ceil _)`. Establish `h4 : ‖((r : ℝ) : ℂ) ^ L * Φ y‖ = r ^ L * ‖Φ y‖`. Rewrite using `[norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg hr0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show _ ≤ A ^ τ * ‖((r : ℝ) : ℂ) ^ L * Φ y‖ * _`. Rewrite using `[h4]`. Establish `hAτ : 0 ≤ A ^ τ` using `Real.rpow_nonneg hA.le _`. Establish `hHτ : 0 ≤ (H x : ℝ) ^ τ` using `Real.rpow_nonneg (hH0 _) _`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← h2]`. Conclude with `mul_le_mul_of_nonneg_right h1 (norm_nonneg _)`. Use `_ ≤ (A ^ τ * r ^ L * (H x : ℝ) ^ τ) * ‖Φ y‖ := by gcongr`. Use `_ = A ^ τ * (r ^ L * ‖Φ y‖) * (H x : ℝ) ^ τ := by ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_shear_majorant : ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (M : Maps D hn) (m : Meas D ρ p) (θ : InfFam D), IsInfFam θ →
   ∀ H : G D n → ℝ≥0, IsHt H → (∃ C : Set (G D n), IsCompact C ∧ ∀ g, ∃ q ∈ P D n, ∃ c ∈ C, g = q * c) →

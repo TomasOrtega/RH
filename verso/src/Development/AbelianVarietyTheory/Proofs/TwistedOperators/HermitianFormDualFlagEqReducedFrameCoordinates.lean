@@ -22,7 +22,7 @@ namespace GlobalTheory.SeeConjGroup.CoefRead
 open Classical
 
 /- English proof (translation)
-Unfold `flagV`. Apply the tactic sequence `split_ifs <;> simp [hφ]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flagVector_map_bilinear {M N P : Type} [Zero M] [Zero N] [Zero P] (φ : M → N → P) (hφ : φ 0 0 = 0) (ρ k n : ℕ)
     (e' f' : Fin ρ → M) (b' : Fin k → M) (z' : M) (e f : Fin ρ → N) (b : Fin k → N) (z : N) (q : Fin n) :
@@ -32,7 +32,7 @@ theorem flagVector_map_bilinear {M N P : Type} [Zero M] [Zero N] [Zero P] (φ : 
   split_ifs <;> simp [hφ]
 
 /- English proof (translation)
-Unfold `flagV`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flagV_mem {M : Type} [Zero M] (S : Set M) (h0 : (0 : M) ∈ S) {ρ k n : ℕ} {e f : Fin ρ → M} {b : Fin k → M} {z : M}
     (he : ∀ a, e a ∈ S) (hf : ∀ a, f a ∈ S) (hb : ∀ i, b i ∈ S) (hz : z ∈ S) (q : Fin n) : flagV ρ k n e f b z q ∈ S := by
@@ -40,17 +40,17 @@ theorem flagV_mem {M : Type} [Zero M] (S : Set M) (h0 : (0 : M) ∈ S) {ρ k n :
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Rewrite using `[← Fin.sum_congr' _ (show ρ + (k + (1 + ρ)) = 2 * ρ + k + 1 by ring)]`. Rewrite using `[Fin.sum_univ_add, Fin.sum_univ_add, Fin.sum_univ_add, Fin.sum_univ_one]`. Establish `h1 : ∀ a : Fin ρ, flagV ρ k (2 * ρ + k + 1) e f b z (Fin.cast (by ring) (Fin.castAdd (k + (1 + ρ)) a)) = e a`. Introduce `a`.
+Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `flagV`. Simplify using the standard rewrite rules. Establish `h2 : ∀ i : Fin k, flagV ρ k (2 * ρ + k + 1) e f b z (Fin.cast (by ring) (Fin.natAdd ρ (Fin.castAdd (1 + ρ) i))) = b i`. Introduce `i`. Unfold `flagV`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using the standard rewrite rules. Establish `h3 : flagV ρ k (2 * ρ + k + 1) e f b z (Fin.cast (by ring) (Fin.natAdd ρ (Fin.natAdd k (Fin.castAdd ρ (0 : Fin 1))))) = z`. Unfold `flagV`. Simplify using the standard rewrite rules. Establish `h4 : ∀ a : Fin ρ, flagV ρ k (2 * ρ + k + 1) e f b z (Fin.cast (by ring) (Fin.natAdd ρ (Fin.natAdd k (Fin.natAdd 1 a)))) = f (Fin.rev a)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a`. Unfold `flagV`. Use `a.2` as an intermediate fact. Simplify using `only [Fin.val_cast, Fin.val_natAdd]`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_neg (by omega), dif_pos (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `ext`. Simplify using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [h1, h2, h3, h4]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (∑ a : Fin ρ, f (Fin.rev a)) = ∑ a, f a from Equiv.sum_comp Fin.revPerm f]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sum_flagV {M : Type} [AddCommMonoid M] (ρ k n : ℕ) (hn : n = 2 * ρ + k + 1) (e f : Fin ρ → M) (b : Fin k → M) (z : M) :
     ∑ q : Fin n, flagV ρ k n e f b z q = (∑ a, e a) + (∑ i, b i) + z + ∑ a, f a := by
@@ -86,14 +86,14 @@ theorem sum_flagV {M : Type} [AddCommMonoid M] (ρ k n : ℕ) (hn : n = 2 * ρ +
   abel
 
 /- English proof (translation)
-The claim follows from `Set.ext_iff.1 (Formalism.IndefR.Eqv.lamAf_eq_hatL (V := Yc D 0) (II D).L) v`.
+A detailed English derivation is pending.
 -/
 theorem memLf (D : D7) (v : Fin (Yc D 0).rank → EAf D) : v ∈ (II D).Lf ↔
     v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (E := D.host.E) ((II D).L : Submodule (𝓞 D.host.E) (Fin (Yc D 0).rank → D.host.E)) :=
   Set.ext_iff.1 (Formalism.IndefR.Eqv.lamAf_eq_hatL (V := Yc D 0) (II D).L) v
 
 /- English proof (translation)
-Rewrite using `[show (Yc D 0).rank = D.R.r from Formalism.L2.SG.InstExistsPf.rank_eq D]`. Take `⟨j, hj⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Simplify using `only [Formalism.BasicNotions.Ranks.r, Formalism.BasicNotions.Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_val (D : D7) : (Yc D 0).rank = 2 * D.R.rS + D.R.k + 1 := by
   rw [show (Yc D 0).rank = D.R.r from Formalism.L2.SG.InstExistsPf.rank_eq D]
@@ -101,7 +101,7 @@ theorem rank_val (D : D7) : (Yc D 0).rank = 2 * D.R.rS + D.R.k + 1 := by
 
 open Formalism.L2.SG.Pf.unitaryCongruence Formalism.L2.SG.Pf.BunEx.Unip in
 /- English proof (translation)
-Rewrite using `[show -a = (-1 : I.E ⊗[I.F] Af I.F) • a by simp, hA_smul_left]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hA_neg_left' (I : AutInst) (a b : VA I) : hA I (-a) b = - hA I a b := by
   rw [show -a = (-1 : I.E ⊗[I.F] Af I.F) • a by simp, hA_smul_left]
@@ -109,7 +109,7 @@ theorem hA_neg_left' (I : AutInst) (a b : VA I) : hA I (-a) b = - hA I a b := by
 
 open Formalism.L2.SG.Pf.unitaryCongruence Formalism.L2.SG.Pf.BunEx.Unip in
 /- English proof (translation)
-Establish `: (⟨x, hx⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = ⟨c, hc⟩ * ⟨x, hx⟩` using `Subtype.ext e`. Rewrite using `[this, map_mul, h0, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem resS_zero_of {D : D7} (PP : Pl D.host.E) {x c : EAf D} (hx : x ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
     (hc : c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (e : x = c * x) (h0 : resS D.host.F PP ⟨c, hc⟩ = 0) :
@@ -119,9 +119,9 @@ theorem resS_zero_of {D : D7} (PP : Pl D.host.E) {x c : EAf D} (hx : x ∈ Forma
 
 open Formalism.L2.SG.Pf.unitaryCongruence Formalism.L2.SG.Pf.BunEx.Unip in
 /- English proof (translation)
-Take `⟨t, ht, e⟩` from `hF.dual i i`. Simplify using `only [if_true] at e`. Establish `h1 : hA (II D) (bwd i) (bw i) ∈ IntAf (II D).F (II D).E` using `hA_int (II D) (hF.mem.2.2 i).2 (hF.mem.2.2 i).1`. Establish `h2 : ((g : ℕ) : (II D).E ⊗[(II D).F] Af (II D).F) * t ∈ IntAf (II D).F (II D).E` using `Subring.mul_mem _ (natCast_mem _ g) ht`. Establish `: ew = hA (II D) (bwd i) (bw i) - (g : (II D).E ⊗[(II D).F] Af (II D).F) * t` using `by rw [← e]; ring`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Subring.sub_mem _ h1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ew_int {D : D7} {g : ℕ} {e0 f0 : Fin D.R.rS → VA (II D)} {z0 : VA (II D)} {bw bwd : Fin D.R.k → VA (II D)}
     {ew : (II D).E ⊗[(II D).F] Af (II D).F} (hF : Formalism.L2.SG.Pf.BunEx.Unip.FH (II D) g e0 f0 z0 bw bwd ew) (i : Fin D.R.k) :
@@ -137,9 +137,9 @@ theorem ew_int {D : D7} {g : ℕ} {e0 f0 : Fin D.R.rS → VA (II D)} {z0 : VA (I
 
 open Formalism.L2.SG.Pf.unitaryCongruence Formalism.L2.SG.Pf.BunEx.Unip in
 /- English proof (translation)
-Establish `hew` using `ew_int hF i`. Consider the cases of `w`. Establish `e : hA (II D) (bwd i) u = ew * hA (II D) (bwd i) u` using `by conv_lhs => rw [hF.bwd_w i]`. Rewrite using `[hA_smul_left, sigA_sigA]`. Conclude with `resS_zero_of PP h1 hew e (by simpa using hL.2.1 hew)`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs` using `sigA_mem (II D) hew`. Establish `e : hA (II D) (bw i) u = sigA (II D) ew * hA (II D) (bw i) u` using `by conv_lhs => rw [hF.bw_w i]`. Rewrite using `[hA_smul_left]`. Conclude with `resS_zero_of PP h1 hs e (by simpa using hL.2.2.1 hs)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem second {D : D7} {g : ℕ} {e0 f0 : Fin D.R.rS → VA (II D)} {z0 : VA (II D)} {bw bwd : Fin D.R.k → VA (II D)}
     {ew : (II D).E ⊗[(II D).F] Af (II D).F} (hF : Formalism.L2.SG.Pf.BunEx.Unip.FH (II D) g e0 f0 z0 bw bwd ew) {β : GL (Fin (Yc D 0).rank) (EAf D)}
@@ -160,9 +160,9 @@ theorem second {D : D7} {g : ℕ} {e0 f0 : Fin D.R.rS → VA (II D)} {z0 : VA (I
 
 open Formalism.L2.SG.Pf.unitaryCongruence Formalism.L2.SG.Pf.BunEx.Unip in
 /- English proof (translation)
-Establish `hq` using `fun q => flagVector_map_bilinear (fun x y : VA (II D) => hA (II D) x u • y) (by simp) D.R.rS D.R.k (Yc D 0).rank f0 e0 (dualOrRevBasis w bw bwd) (-z0) e0 f0 (basisOrRevDual w bw bwd) z0 q`. Simplify using `only [hq]`. Rewrite using `[sum_flagV _ _ _ (rank_val D)]`. Unfold `Rc`. Consider the cases of `w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data.
 
-Simplify using `only [basisOrRevDual, dualOrRevBasis, Bool.false_eq_true, if_false, hA_neg_left', neg_smul]`. Rewrite using `[show (∑ x : Fin D.R.k, hA (II D) (bw x.rev) u • bwd x.rev) = ∑ x, hA (II D) (bw x) u • bwd x from Equiv.sum_comp Fin.revPerm (fun i => hA (II D) (bw i) u • bwd i)]`. Normalize the expressions using the abelian group laws. Simplify using `only [basisOrRevDual, dualOrRevBasis, if_true, hA_neg_left', neg_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Rc_flag {D : D7} (e0 f0 : Fin D.R.rS → VA (II D)) (z0 : VA (II D)) (bw bwd : Fin D.R.k → VA (II D)) (w : Bool)
     (u : VA (II D)) :
@@ -184,7 +184,7 @@ theorem Rc_flag {D : D7} (e0 f0 : Fin D.R.rS → VA (II D)) (z0 : VA (II D)) (bw
     abel
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Substitute `hu` using the available equality. Simplify using `[Matrix.mulVec_add, Matrix.mulVec_sum, Matrix.mulVec_smul, Finset.sum_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem key_gen {A : Type} [CommRing A] (S : Subring A) {n ι κ : Type} [Fintype n] [DecidableEq n] [Fintype ι] [Fintype κ]
     (M : Matrix n n A) (u : n → A) (c : ι → A) (G : ι → n → A) (d : κ → A) (o : κ → n → A) (gg : A) (z : n → A)
@@ -197,7 +197,7 @@ theorem key_gen {A : Type} [CommRing A] (S : Subring A) {n ι κ : Type} [Fintyp
   simp [Matrix.mulVec_add, Matrix.mulVec_sum, Matrix.mulVec_smul, Finset.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[key_gen S M u c G d o gg z hu p hup hc hG hd ho hg hz, map_add, map_add, map_sum, map_sum, map_mul, hg0, zero_mul, add_zero]`. Simplify using `only [map_mul, hd0, zero_mul, Finset.sum_const_zero, add_zero, hδ, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem read_gen {A K : Type} [CommRing A] [CommRing K] (S : Subring A) (φ : S →+* K) {n κ : Type} [Fintype n]
     [DecidableEq n] [Fintype κ] (M : Matrix n n A) (u : n → A) (c : n → A) (G : n → n → A) (d : κ → A) (o : κ → n → A)
@@ -212,7 +212,7 @@ theorem read_gen {A K : Type} [CommRing A] [CommRing K] (S : Subring A) (φ : S 
     Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Rewrite using `[map_natCast, ← map_natCast (Ideal.Quotient.mk PP.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resS_natCast {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (PP : Pl E) (g : ℕ)
     (hg : (g : 𝓞 E) ∈ PP.asIdeal) : resS F PP (g : Formalism.L2.Herm.intAf F E) = 0 := by
@@ -220,7 +220,7 @@ theorem resS_natCast {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   exact hg
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem redV_of {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (PP : Pl E) (v : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) (j : Fin n)
@@ -229,23 +229,19 @@ theorem redV_of {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
 set_option maxHeartbeats 1000000 in
 open Formalism.L2.SG.Pf.unitaryCongruence Formalism.L2.SG.Pf.BunEx.Unip in
 /- English proof (translation)
-Introduce `D g e0 f0 z0 bw bwd ew hF β PP w hβ hL u hu`. Use `⟨fun p h1 => ?_, fun i h1 => second hF hL u i h1⟩` and prove the remaining obligations. Establish `hint : ∀ v ∈ (II D).Lf, ∀ j, ((β⁻¹).val *ᵥ v) j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun v hv => (hβ v).1 ((memLf D v).1 hv)`. Establish `hexp` using `Formalism.L2.SG.Pf.BunEx.Unip.exp hF u hu`. Take `⟨z, hz, hzm⟩` from `Formalism.L2.SG.Pf.BunEx.Unip.mL_dvd (dvd_refl g) _ hexp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu'` using `sub_eq_iff_eq_add'.1 hzm`. Rewrite `hu'` using `[Rc_flag e0 f0 z0 bw bwd w u]`. Establish `hred` using `hL.2.2.2`. Establish `hsD : ∀ i, dualOrRevBasis w bw bwd i ∈ (II D).Lf`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `w`. Conclude with `(hF.mem.2.2 _).1`. Conclude with `(hF.mem.2.2 _).2`. Establish `hDv : ∀ q, flagV D.R.rS D.R.k (Yc D 0).rank f0 e0 (dualOrRevBasis w bw bwd) (-z0) q ∈ (II D).Lf` using `fun q => flagV_mem ((II D).Lf : Set (VA (II D))) (zero_mem _) (fun a => (hF.mem.1 a).2) (fun a => (hF.mem.1 a).1) hsD (neg_mem hF.mem.2.1) q`. Establish `ho : ∀ i, (if w then bwd else bw) i ∈ (II D).Lf`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Introduce `i`. Consider the cases of `w`. Conclude with `(hF.mem.2.2 _).1`. Conclude with `(hF.mem.2.2 _).2`. Establish `hoD : ∀ i, (if w then bw else bwd) i ∈ (II D).Lf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Consider the cases of `w`. Conclude with `(hF.mem.2.2 _).2`. Conclude with `(hF.mem.2.2 _).1`. Establish `hC : ∀ q, hA (II D) (flagV D.R.rS D.R.k (Yc D 0).rank f0 e0 (dualOrRevBasis w bw bwd) (-z0) q) u ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun q => hA_int (II D) (hDv q) hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCo : ∀ i, hA (II D) ((if w then bw else bwd) i) u ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun i => hA_int (II D) (hoD i) hu`. Establish `hGi : ∀ q, ((β⁻¹).val *ᵥ flagV D.R.rS D.R.k (Yc D 0).rank e0 f0 (basisOrRevDual w bw bwd) z0 q) p ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun q => (hred p q).fst`. Establish `hoi : ∀ i, ((β⁻¹).val *ᵥ (if w then bwd else bw) i) p ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun i => hint _ (ho i) p`. Establish `hzi` using `hint z hz p`. Establish `hui` using `hint u hu p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgI : ((g : ℕ) : (II D).E ⊗[(II D).F] Af (II D).F) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `natCast_mem _ g`. Establish `key` using `key_gen (Formalism.L2.Herm.intAf D.host.F D.host.E) (β⁻¹).val u _ _ _ _ _ z hu' p hui hC hGi hCo hoi hgI hzi`. Establish `hgc : (⟨_, hgI⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = (g : Formalism.L2.Herm.intAf D.host.F D.host.E)` using `Subtype.ext (by push_cast; rfl)`. Rewrite `key` using `[hgc]`. Establish `hg0 : resS D.host.F PP ⟨_, hgI⟩ = 0`.
-
-Rewrite using `[hgc]`. Conclude with `resS_natCast PP g hL.1`. Establish `hδ : ∀ q, resS D.host.F PP ⟨_, hGi q⟩ = if p = q then 1 else 0` using `fun q => (hred p q).snd`. Establish `hfin` using `read_gen (Formalism.L2.Herm.intAf D.host.F D.host.E) (resS D.host.F PP) (β⁻¹).val u _ _ _ _ _ z hu' p hui hC hGi hCo hoi hgI hzi hδ (fun i => second hF hL u i (hCo i)) hg0`. Establish `hR` using `redV_of β PP u p hui`.
-
-Rewrite using `[hR]`. Conclude with `hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_read : ∀ {D : D7} (g : ℕ) (e0 f0 : Fin D.R.rS → VA (II D)) (z0 : VA (II D)) (bw bwd : Fin D.R.k → VA (II D)) (ew : EAf D), Formalism.L2.SG.Pf.BunEx.Unip.FH (II D) g e0 f0 z0 bw bwd ew → ∀ (β : GL (Fin (Yc D 0).rank) (EAf D)) (PP : Pl D.host.E) (w : Bool), IsFrame β (II D).L → LocAt g e0 f0 z0 bw bwd ew β PP w → ∀ u ∈ (II D).Lf, (∀ p (h1 : hA (II D) (flagV D.R.rS D.R.k (Yc D 0).rank f0 e0 (dualOrRevBasis w bw bwd) (-z0) p) u ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), resS D.host.F PP ⟨_, h1⟩ = redV β PP u p) ∧ (∀ i (h1 : hA (II D) ((if w then bw else bwd) i) u ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), resS D.host.F PP ⟨_, h1⟩ = 0) := by
   intro D g e0 f0 z0 bw bwd ew hF β PP w hβ hL u hu

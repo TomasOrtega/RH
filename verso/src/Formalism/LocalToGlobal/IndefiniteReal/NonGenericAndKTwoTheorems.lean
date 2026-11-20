@@ -7,11 +7,11 @@ open NumberField IsDedekindDomain
 open Formalism.DivisionValues Formalism.L2.Indef Formalism.IndefR.HeckeTupleConditions
 
 /- English proof (translation)
-Introduce `K _ _ _ Bs Df S N h1 h2 w hw j`. Establish `hμ : S.μ w = Bs.μ0`. Assume the negation of the conclusion as `h`. Conclude with `hw ((h2 w).2 h)`. Establish `hA : S.Aw j w = Atup S j Bs.μ0 w` using `by rw [← hμ]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Apply `h1 w _ hμ` to reduce the goal to its premises. Use `⟨j, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hF : N.F0 w j = 0`. Use `left`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Prove the second alternative.
 
-Introduce `h0`. Conclude with `hc ⟨hA.trans h0, hF⟩`. Conclude with `Or.inr hF`.
+A detailed English derivation is pending.
 -/
 theorem hecke_tuple_condition : UntwistedOfSupportAtTwistedPlaces := by
   intro K _ _ _ Bs Df S N h1 h2 w hw j

@@ -6,9 +6,9 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.FlagMeas
 
 /- English proof (translation)
-Unfold `layerProd`. Simplify using `only [id, mul_one]`. Use `congr 1`. Use `prod_congr rfl fun i _ => prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem layerProd_eq_pow (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) (τ : Fin a → ℝ) :
     layerProd n f j τ id = layerProd n 1 j (fun i => τ i ^ f) id := by
@@ -40,9 +40,9 @@ noncomputable def layerHom (n : ℕ) {a : ℕ} (j : Fin a → ℕ) : (Fin a → 
       ring
 
 /- English proof (translation)
-Introduce `ι _ n f a j s s₁ loc h`. Establish `hs : (fun i => s i ^ f) = (fun i => s₁ i ^ f) * ∏ v, loc v`. Use function extensionality and compare the values at `i`. Rewrite using `[h i, Pi.mul_apply, Finset.prod_apply]`. Establish `key : ∀ τ : Fin a → ℝ, layerHom n j τ = layerProd n 1 j τ id` using `fun τ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[layerProd_eq_pow, layerProd_eq_pow n f j s₁, ← key, ← key, hs, map_mul, map_prod]`. Simplify using `only [key]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem layerProd_mul_prod : ∀ (ι : Type) [Fintype ι] (n f a : ℕ) (j : Fin a → ℕ) (s s₁ : Fin a → ℝ)
     (loc : ι → Fin a → ℝ), (∀ i, s i ^ f = s₁ i ^ f * ∏ v, loc v i) →

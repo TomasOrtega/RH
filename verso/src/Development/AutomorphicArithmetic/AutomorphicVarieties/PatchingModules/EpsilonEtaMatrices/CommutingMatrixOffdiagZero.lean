@@ -17,13 +17,13 @@ private def ddEpsCoordAddHom (X : Type) [CommRing X] (g : ℕ) (j : Fin g) : DD 
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Establish `hmem : Matrix.single j j (1 : x.A) ∈ Ev (PowerSeries x.K) (PowerSeries x.K) n x.a` using `by show ∀ i' j' : Fin n, _`. Introduce `i' j'`. Use `⟨fun _ => Submodule.mem_top, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot, Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `h Iff.rfl`. Take `⟨s, hs⟩` from `x.span _ hmem`. Establish `hcomm : ∀ M ∈ Submodule.span (PowerSeries x.K) (⇑(mat x.ρ) '' ↑F.G'), Z * M = M * Z`. Introduce `M hM`. Proceed by induction on `hM using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem M hM`. Take `⟨g, -, rfl⟩` from `hM`. Conclude with `(hZ g).symm`. Consider the case `zero => simp`. Consider the case `add M N _ _ hM hN => rw [Matrix.mul_add, Matrix.add_mul, hM, hN]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul c M _ hM => rw [Matrix.mul_smul, Matrix.smul_mul, hM]`. Establish `h1` using `hcomm _ hs`. Rewrite `h1` using `[Matrix.mul_smul, Matrix.smul_mul]`. Establish `h2` using `congrFun (congrFun h1 i) j`. Simplify `h2` using `[hij, PowerSeries.X_ne_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem commuting_matrix_offdiag_zero {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n)
     (Z : Matrix (Fin n) (Fin n) x.A) (hZ : ∀ g, mat x.ρ g * Z = Z * mat x.ρ g) (i j : Fin n) (hij : i ≠ j) :
@@ -51,13 +51,13 @@ private theorem commuting_matrix_offdiag_zero {l : ℕ} [Fact l.Prime] {F : GFra
   simpa [hij, PowerSeries.X_ne_zero] using h2
 
 /- English proof (translation)
-Establish `h2u : IsUnit (2 : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff]`. Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.mp fun h => ?_)` and prove the remaining obligations. Establish `h' : ‖((2 : ℤ) : ℤ_[l])‖ < 1` using `by simpa using h`. Rewrite `h'` using `[PadicInt.norm_int_lt_one_iff_dvd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl' : l ∣ 2` using `by exact_mod_cast h'`. Conclude with `hl ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).mp hl')`. Establish `hu : IsUnit (2 : x.A)`. Use `h2u.map ((algebraMap x.K (PowerSeries x.K)).comp (algebraMap ℤ_[l] x.K))` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `h1` using `congrFun (congrFun ht i) i`. Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply] at h1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (2 : x.A) * Z i i = 0` using `by linear_combination h1`. Simplify using `using hu.mul_right_eq_zero.mp h2`. Conclude with `commuting_matrix_offdiag_zero x Z hZ i j hij`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem skew_commuting_matrix_zero {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n) (hl : l ≠ 2)
     (Z : Matrix (Fin n) (Fin n) x.A) (hZ : ∀ g, mat x.ρ g * Z = Z * mat x.ρ g) (ht : Zᵀ = -Z) : Z = 0 := by
@@ -81,9 +81,9 @@ private theorem skew_commuting_matrix_zero {l : ℕ} [Fact l.Prime] {F : GFrame 
   · exact commuting_matrix_offdiag_zero x Z hZ i j hij
 
 /- English proof (translation)
-Establish `ha : ∀ y, ddBaseRingHom x.A k.g y = y.a` using `fun _ => rfl`. Establish `hb : ∀ y : x.A, (algebraMap x.A (DD x.A k.g) y).a = y` using `fun _ => rfl`. Establish `h0 : (0 : DD x.A k.g).a = 0` using `rfl`. Rewrite using `[Kap.ρ1, Matrix.map_mul]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[ha, hb, h0, DD.epM, NP.ρX, Matrix.mul_apply, Matrix.one_apply, apply_ite DD.a, DD.one_a]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem rho1_map_ddBaseRingHom_eq_mat_rho {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x) (g : F.G₀) :
     (k.ρ1 x.A g).map (ddBaseRingHom x.A k.g) = mat x.ρ g := by
@@ -95,7 +95,7 @@ private theorem rho1_map_ddBaseRingHom_eq_mat_rho {l : ℕ} [Fact l.Prime] {F : 
   simp [ha, hb, h0, DD.epM, NP.ρX, Matrix.mul_apply, Matrix.one_apply, apply_ite DD.a, DD.one_a]
 
 /- English proof (translation)
-Use `Matrix.ext fun r c => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, Matrix.add_apply]`. Rewrite using `[← Finset.sum_add_distrib]`. Rewrite using `[show (∑ t, M r t * N t c).ep j = ∑ t, (M r t * N t c).ep j from map_sum (ddEpsCoordAddHom X g j) _ _]`. Simplify using `[DD.mul_ep]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem map_ep_mul_eq_leibniz {X : Type} [CommRing X] {g n : ℕ} (M N : Matrix (Fin n) (Fin n) (DD X g)) (j : Fin g) :
     (M * N).map (fun y => y.ep j) = M.map DD.a * N.map (fun y => y.ep j) + M.map (fun y => y.ep j) * N.map DD.a := by
@@ -106,30 +106,28 @@ private theorem map_ep_mul_eq_leibniz {X : Type} [CommRing X] {g n : ℕ} (M N :
   simp [DD.mul_ep]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := ddBaseRingHom X g)`.
+A detailed English derivation is pending.
 -/
 private theorem map_a_mul_eq_map_a_mul_map_a {X : Type} [CommRing X] {g n : ℕ} (M N : Matrix (Fin n) (Fin n) (DD X g)) :
     (M * N).map DD.a = M.map DD.a * N.map DD.a :=
   Matrix.map_mul (f := ddBaseRingHom X g)
 
 /- English proof (translation)
-Establish `hA0 : ∀ g : F.G₀, (k.ρ1 x.A g).map DD.a = mat x.ρ g` using `fun g => rho1_map_ddBaseRingHom_eq_mat_rho k g`. Establish `hinv : ∀ g : F.G₀, mat x.ρ g⁻¹ * mat x.ρ g = 1` using `fun g => by`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Establish `comm_of : ∀ W : Matrix (Fin n) (Fin n) x.A, (∀ g, mat x.ρ g * W * mat x.ρ g⁻¹ = W) → ∀ g, mat x.ρ g * W = W * mat x.ρ g`. Introduce `W hW g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hA : Z.map DD.a = 0`. Apply `skew_commuting_matrix_zero x hl` to reduce the goal to its premises. Apply `comm_of` to reduce the goal to its premises. Introduce `g`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun M => M.map DD.a) (hZ g)` as an intermediate fact. Simplify `this` using `only [map_a_mul_eq_map_a_mul_map_a, hA0]`. Use `Matrix.ext fun r c => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun ht r) c`. Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply] at h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply, Matrix.map_apply, h1, DD.neg_a]`. Establish `hE : ∀ t : Fin k.g, Z.map (fun y => y.ep t) = 0`. Introduce `t`. Apply `skew_commuting_matrix_zero x hl` to reduce the goal to its premises. Apply `comm_of` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g`. Use `congrArg (fun M => M.map (fun y => y.ep t)) (hZ g)` as an intermediate fact. Simplify using `only [map_ep_mul_eq_leibniz, map_a_mul_eq_map_a_mul_map_a, hA0, hA, Matrix.mul_zero, Matrix.zero_mul, zero_add, add_zero] at this`. Conclude with `this`. Use `Matrix.ext fun r c => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `congrFun (congrFun ht r) c`. Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply] at h1`. Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply, Matrix.map_apply, h1, DD.neg_ep]`. Use `Matrix.ext fun r c => ?_` and prove the remaining obligations. Establish `hm' : (Z r c).ep' = 0 ∧ (Z r c).eta = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `(show ∀ i j : Fin n, _ from hm) r c`. Distinguish the cases in `hb : (↑r < x.a ↔ ↑c < x.a)`. Take `⟨-, -, h3, h4⟩` from `h1 hb`. Conclude with `⟨h3 rfl, h4 rfl⟩`. Take `⟨-, -, h3, h4⟩` from `h2 hb`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨h3 rfl, h4 rfl⟩`. Rewrite using `[Matrix.zero_apply]`. Use `DD.ext ?_ (funext fun t => ?_) ?_ ?_` and prove the remaining obligations. Simplify using `using congrFun (congrFun hA r) c`. Simplify using `using congrFun (congrFun (hE t) r) c`.
-
-Conclude with `hm'.1`. Conclude with `hm'.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem skew_invariant_M1_zero {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x) (hl : l ≠ 2)
     (Z : Matrix (Fin n) (Fin n) (DD x.A k.g)) (hm : Z ∈ k.M1 x.A) (ht : Zᵀ = -Z)
@@ -188,11 +186,11 @@ private def ddMapRingHom {A X : Type} [CommRing A] [CommRing X] (g : ℕ) (f : A
   map_mul' _ _ := by ext <;> simp
 
 /- English proof (translation)
-Establish `hr : ∀ y, ddMapRingHom k.g (algebraMap x.A X) y = ⟨algebraMap x.A X y.a, fun j => algebraMap x.A X (y.ep j), fun j => algebraMap x.A X (y.ep' j), algebraMap x.A X y.eta⟩` using `fun _ => rfl`. Establish `hb : ∀ (Y : Type) [CommRing Y] [Algebra x.A Y] (y : x.A), algebraMap x.A (DD Y k.g) y = ⟨algebraMap x.A Y y, 0, 0, 0⟩` using `fun _ _ _ _ => rfl`. Rewrite using `[Kap.ρ1, Kap.ρ1, Matrix.map_mul]`. Use `congr 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.map_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Apply the tactic sequence `refine DD.ext ?_ (funext fun t => ?_) (funext fun t => ?_) ?_ <;> simp [hr, DD.epM, DD.add_ep, DD.one_ep, DD.add_ep', DD.one_ep', DD.add_a, DD.add_eta, DD.one_eta, DD.one_a]`. Apply the tactic sequence `refine DD.ext ?_ (funext fun t => ?_) (funext fun t => ?_) ?_ <;> simp [hr, DD.epM, hij, DD.zero_ep, DD.zero_a]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `refine DD.ext ?_ (funext fun t => ?_) (funext fun t => ?_) ?_ <;> simp [hr, hb, NP.ρX]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem rho1_map_ddMapRingHom_eq_rho1 {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x)
     (X : Type) [CommRing X] [Algebra x.A X] (g : F.G₀) :
@@ -211,15 +209,15 @@ private theorem rho1_map_ddMapRingHom_eq_rho1 {l : ℕ} [Fact l.Prime] {F : GFra
     refine DD.ext ?_ (funext fun t => ?_) (funext fun t => ?_) ?_ <;> simp [hr, hb, NP.ρX]
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x k hl`. Take `⟨C, hC⟩` from `fixBd l G0.frame n x k (k.M1 x.A) true false false false false true false false G0.G₀ (fun _ => 1) (fun s => k.ρ1 x.A s) (fun s => k.ρ1 x.A s⁻¹) true rfl`. Use `⟨C, fun m => ?_⟩` and prove the remaining obligations. Establish `hfin : ∀ W : Submodule x.A (Matrix (Fin n) (Fin n) (DD x.A k.g)), W = ⊥ → Nat.card x.K ^ (m * Module.finrank x.A W + C) = Nat.card x.K ^ C`. Introduce and unpack `W rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Use `le_trans (le_of_eq ?_) ((hC m).trans (le_of_eq (hfin _ ?_)))` and prove the remaining obligations. Use `clear hC hfin`. Use `congr 1`. Use extensionality with `Y`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hred : ∀ s : G0.G₀, ((k.ρ1 x.A s).map fun y : DD x.A k.g => (⟨(algebraMap x.A (x.Am m)) y.a, fun j => (algebraMap x.A (x.Am m)) (y.ep j), fun j => (algebraMap x.A (x.Am m)) (y.ep' j), (algebraMap x.A (x.Am m)) y.eta⟩ : DD (x.Am m) k.g)) = k.ρ1 (x.Am m) s` using `fun s => rho1_map_ddMapRingHom_eq_rho1 k (x.Am m) s`. Simplify using `only [Set.mem_setOf_eq, one_smul, forall_const, hred]`. Conclude with `Iff.rfl`. Rewrite using `[eq_bot_iff]`. Introduce `Z hZ`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot]`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, ↓reduceIte] at hZ`. Take `⟨⟨hm, ht⟩, hfix⟩` from `hZ`. Apply `skew_invariant_M1_zero k hl Z hm` to reduce the goal to its premises. Simplify `ht` using `[add_eq_zero_iff_eq_neg]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Use `hfix g` as an intermediate fact. Simplify `this` using `[sub_eq_zero, Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.h0G :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (k : Kap x), l ≠ 2 → ∃ C : ℕ, ∀ (m : ℕ), {Y : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g) | Y ∈ k.M1 (x.Am m) ∧ Yᵀ = -Y ∧ ∀ g : G0.G₀, k.ρ1 (x.Am m) g * Y * k.ρ1 (x.Am m) g⁻¹ = Y}.ncard ≤ Nat.card x.K ^ C := by

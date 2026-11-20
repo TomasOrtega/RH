@@ -12,21 +12,19 @@ open QuadraticZeta
 namespace QuadraticZeta
 
 /- English proof (translation)
-Establish `hu` using `ZetaAsymptotics.tendsto_riemannZeta_sub_one_div_nhds_right`. Establish `hB` using `(Complex.continuous_ofReal.tendsto _).comp hA`. Establish `dL : HasDerivAt (fun s : ℝ => L s) (deriv L 1) 1` using `HasDerivAt.comp_ofReal (by simpa using hL.hasDerivAt)`. Establish `dG : HasDerivAt (fun s : ℝ => ((c ^ s / 2 : ℝ) : ℂ)) (c * Real.log c / 2 : ℝ) 1`. Simplify using `using ((Real.hasStrictDerivAt_const_rpow hc 1).hasDerivAt.div_const 2).ofReal_comp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hle : 𝓝[>] (1 : ℝ) ≤ 𝓝[≠] 1` using `nhdsWithin_mono _ fun _ h => ne_of_gt h`. Establish `cL` using `dL.continuousAt.tendsto.mono_left (nhdsWithin_le_nhds (s := Set.Ioi 1))`. Establish `cG` using `dG.continuousAt.tendsto.mono_left (nhdsWithin_le_nhds (s := Set.Ioi 1))`. Establish `sL` using `(hasDerivAt_iff_tendsto_slope.1 dL).mono_left hle`. Establish `sG` using `(hasDerivAt_iff_tendsto_slope.1 dG).mono_left hle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c0 : Tendsto (fun s : ℝ => (s - 1 : ℂ)) (𝓝[>] 1) (𝓝 0)`. Establish `: Continuous fun s : ℝ => (s - 1 : ℂ)` using `by fun_prop`. Simplify using `using (this.tendsto 1).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 1))`. Establish `hne : ∀ s : ℝ, 1 < s → (s - 1 : ℂ) ≠ 0` using `fun s hs => by`. Conclude with `(sub_pos.2 hs).ne'` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : L 1 = (c / 2 * a : ℝ)`. Use `tendsto_nhds_unique_of_eventuallyEq (((c0.mul hu).add_const 1).mul cL) (cG.mul ((c0.mul hB).add_const (a : ℂ))) (by filter_upwards [self_mem_nhdsWithin] with s (hs : 1 < s)` as an intermediate fact. Establish `h1` using `h s hs`. Establish `h2` using `hne s hs`. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h1 ⊢`. Clear the denominators using the available nonvanishing facts. Take the linear combination `2 * (s - 1) * h1)`. Simplify using `using this`. Use `⟨e1, ?_⟩` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `tendsto_nhds_unique_of_eventuallyEq ((hu.mul cL).add sL) ((cG.mul hB).add (sG.const_mul (a : ℂ))) (by filter_upwards [self_mem_nhdsWithin] with s (hs : 1 < s)` as an intermediate fact. Establish `h1` using `h s hs`. Establish `h2` using `hne s hs`. Simplify using `only [Function.comp_apply, slope, vsub_eq_sub, Complex.real_smul, Complex.ofReal_one, e1, Real.rpow_one]`. Move the coercions through the operations in `at h1 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `2 * (s - 1) * h1)`. Simplify using `only [Complex.ofReal_one, Real.rpow_one] at this`. Rewrite using `[this]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem compare_expansions {L : ℂ → ℂ} (hL : DifferentiableAt ℂ L 1) {A : ℝ → ℝ} {a C c : ℝ}
     (hc : 0 < c) (hA : Tendsto (fun s => A s - a / (s - 1)) (𝓝[>] 1) (𝓝 C))
@@ -85,7 +83,7 @@ def IsIdealClassPoint (σ : K →+* ℂ) (c : ClassGroup (𝓞 K)) (τ : ℍ) : 
     ∀ z, z ∈ σ '' 𝔞.1 ↔ ∃ m n : ℤ, ω * (m * (τ : ℂ) + n) = z
 
 /- English proof (translation)
-Take `⟨I, rfl⟩` from `ClassGroup.mk0_surjective c`. Take `⟨L, hL⟩` from `exists_periodPair h2 hD σ (FractionalIdeal.mk0 K I)`. Conclude with `⟨_, L, ClassGroup.mk_mk0 K I, hL⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_classRep_periodPair (h2 : finrank ℚ K = 2) (hD : discr K = -d) (σ : K →+* ℂ)
     (c : ClassGroup (𝓞 K)) : ∃ (𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (L : PeriodPair),
@@ -95,7 +93,7 @@ theorem exists_classRep_periodPair (h2 : finrank ℚ K = 2) (hD : discr K = -d) 
   exact ⟨_, L, ClassGroup.mk_mk0 K I, hL⟩
 
 /- English proof (translation)
-Take `⟨𝔞, L, h1, hL⟩` from `exists_classRep_periodPair h2 hD σ c`. Take `⟨ω, τ, -, h⟩` from `exists_lattice_eq_mul_tau L`. Conclude with `⟨τ, 𝔞, ω, h1, fun z => by rw [← hL, SetLike.mem_coe, h]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isIdealClassPoint (h2 : finrank ℚ K = 2) (hD : discr K = -d) (σ : K →+* ℂ)
     (c : ClassGroup (𝓞 K)) : ∃ τ, IsIdealClassPoint σ c τ := by
@@ -104,15 +102,15 @@ theorem exists_isIdealClassPoint (h2 : finrank ℚ K = 2) (hD : discr K = -d) (�
   exact ⟨τ, 𝔞, ω, h1, fun z => by rw [← hL, SetLike.mem_coe, h]⟩
 
 /- English proof (translation)
-Use `choose 𝔞 ω hc h using hτ`. Establish `hs0 : -s ≠ 0` using `by linarith`. Establish `h1` using `(hasSum_sum fun c (_ : c ∈ Finset.univ) => hasSum_ideal_of_image h2 hD σ hd (𝔞 c) (h c) hs (summable_realEisenstein _ hs)).div_const 2`. Rewrite `h1` using `[← Finset.mul_sum, mul_div_right_comm]`. Establish `h3 : HasSum (fun I : Ideal (𝓞 K) => (Ideal.absNorm I : ℝ) ^ (-s)) _` using `h1.congr_fun fun I => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne I ⊥ with rfl | hI` into its components or cases. Simplify using `[Real.zero_rpow hs0]`. Establish `hI' : I ∈ (Ideal (𝓞 K))⁰` using `mem_nonZeroDivisors_of_ne_zero hI`. Establish `: ∀ c, ((I * 𝔞 c : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K).IsPrincipal ↔ (ClassGroup.mk0 ⟨I, hI'⟩)⁻¹ = c` using `fun c => by`. Rewrite using `[inv_eq_iff_mul_eq_one, ← ClassGroup.mk_mk0 K]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `conv_rhs => rw [← hc c, ← map_mul, ClassGroup.mk_eq_one_iff]`. Both sides reduce to the same expression. Simplify using `only [this, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4` using `Complex.hasSum_ofReal.2 (h3.tsum_fiberwise Ideal.absNorm)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dedekindZeta, LSeries]`. Use `HasSum.tsum_eq (h4.congr_fun fun n => ?_)` and prove the remaining obligations. Rewrite using `[tsum_congr (g := fun _ => (n : ℝ) ^ (-s)) fun I => by`. Rewrite using `[show Ideal.absNorm I.1 = n from I.2], tsum_const, nsmul_eq_mul]`. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Real.zero_rpow hs0]`. Rewrite using `[LSeries.term_of_ne_zero hn, Complex.ofReal_mul, Complex.ofReal_cpow (Nat.cast_nonneg _), Complex.ofReal_neg, Complex.cpow_neg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dedekindZeta_eq_sum_realEisenstein (h2 : finrank ℚ K = 2) (hD : discr K = -d) (hd : 4 < d)
     (σ : K →+* ℂ) {τ : ClassGroup (𝓞 K) → ℍ} (hτ : ∀ c, IsIdealClassPoint σ c (τ c))
@@ -149,13 +147,13 @@ theorem dedekindZeta_eq_sum_realEisenstein (h2 : finrank ℚ K = 2) (hD : discr 
     rfl
 
 /- English proof (translation)
-Establish `hd0` using `discr_pos h2 hD`. Establish `hh : (0 : ℝ) < classNumber K` using `by exact_mod_cast classNumber_pos K`. Establish `hA` using `tendsto_finsetSum Finset.univ fun c _ => tendsto_realEisenstein_sub_pole (τ c)`. Use `replace hA := hA.congr (f₂ := fun s : ℝ => (∑ c, ∑' p : {p : ℤ × ℤ // p ≠ 0}, (τ c).im ^ s / ‖(p.1.1 * τ c + p.1.2 : ℂ)‖ ^ (2 * s)) - classNumber K * π / (s - 1)) fun s => by simp [classNumber, mul_div_assoc]`. Take `⟨e1, e2⟩` from `compare_expansions (χ.differentiableAt_LFunction 1 (Or.inr (hχ.ne_one (by omega)))) (show 0 < 2 / √(d : ℝ) by positivity) hA fun s hs => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← dedekindZeta_eq_mul_LFunction h2 hD hχ (by simpa using hs), dedekindZeta_eq_sum_realEisenstein h2 hD hd σ hτ hs]`. Establish `e3 : ∑ c, (2 * π * (Real.eulerMascheroniConstant - Real.log 2) - π * Real.log (τ c).im - 2 * π * Real.log (‖ModularForm.eta (τ c)‖ ^ 2)) = classNumber K * (2 * π * (Real.eulerMascheroniConstant - Real.log 2)) - π * ∑ c, Real.log ((τ c).im * ‖ModularForm.eta (τ c)‖ ^ 4)`. Rewrite using `[Finset.mul_sum, classNumber, ← Finset.card_univ, ← nsmul_eq_mul, ← Finset.sum_const, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_mul (τ c).im_ne_zero (pow_ne_zero _ (norm_ne_zero_iff.2 (ModularForm.eta_ne_zero (τ c).2))), Real.log_pow, Real.log_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e2` using `[e3]`. Use `⟨e1.trans (congrArg _ (by ring)), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_sub_of_add_eq' e2, e1, ← Complex.ofReal_mul, ← Complex.ofReal_sub, ← Complex.ofReal_div, ← Complex.ofReal_sub, Real.log_div two_ne_zero (by positivity), Real.log_mul two_ne_zero (by positivity)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem LFunction_one_and_mean_log_eta [NeZero d] (h2 : finrank ℚ K = 2) (hD : discr K = -d)
     (hd : 4 < d) {χ : DirichletCharacter ℂ d} (hχ : IsKroneckerChar χ)
@@ -197,13 +195,13 @@ theorem LFunction_one_and_mean_log_eta [NeZero d] (h2 : finrank ℚ K = 2) (hD :
   ring
 
 /- English proof (translation)
-Set `L' : PeriodPair` to `⟨a * τ, a, by`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t e`. Establish `e2 : (s * τ + t : ℂ) = 0` using `mul_left_cancel₀ ha (by`. Simplify using `only [Complex.real_smul] at e`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `e)`. Establish `e3 : s = 0` using `by simpa [τ.im_ne_zero] using congrArg Complex.im e2`. Conclude with `⟨e3, by simpa [e3] using e2⟩⟩`. Establish `e : L.lattice = L'.lattice`. Use extensionality with `x`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [h, PeriodPair.mem_lattice, L']`. Conclude with `exists₂_congr fun m n => by rw [show a * (m * τ + n) = m * (a * τ) + n * a by ring]`. Establish `hy` using `τ.im_pos`. Rewrite using `[e, ZLattice.covolume_eq_det_mul_measureReal _ _ L'.latticeBasis Complex.orthonormalBasisOneI.toBasis, MeasureTheory.measureReal_congr (ZSpan.fundamentalDomain_ae_parallelepiped _ _), MeasureTheory.Measure.real, OrthonormalBasis.coe_toBasis, Complex.orthonormalBasisOneI.volume_pa …`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.Basis.det_apply, Matrix.det_fin_two]`. Simplify using `[Module.Basis.toMatrix_apply, L', Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem covolume_lattice_eq {L : PeriodPair} {a : ℂ} {τ : ℍ} (ha : a ≠ 0)
     (h : ∀ x, x ∈ L.lattice ↔ ∃ m n : ℤ, a * (m * (τ : ℂ) + n) = x) :
@@ -236,7 +234,7 @@ noncomputable def latticeLogPeriod (L : PeriodPair) : ℝ :=
   Real.log (ZLattice.covolume L.lattice / π) + Real.log ‖L.g₂ ^ 3 - 27 * L.g₃ ^ 2‖ / 6
 
 /- English proof (translation)
-Establish `h1` using `norm_ne_zero_iff.2 (ModularForm.eta_ne_zero τ.2)`. Establish `h2` using `norm_ne_zero_iff.2 ha`. Rewrite using `[← latticeCurve_Δ, latticeCurve_Δ_eq_discriminant ha h, ModularForm.discriminant, norm_mul, norm_pow, norm_pow, norm_div, show ‖(2 * π : ℂ)‖ = 2 * π by simp [Real.pi_pos.le], Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow, Real.log_div (by positivity) h2 …`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem log_norm_lattice_discriminant {L : PeriodPair} {a : ℂ} {τ : ℍ} (ha : a ≠ 0)
     (h : ∀ x, x ∈ L.lattice ↔ ∃ m n : ℤ, a * (m * (τ : ℂ) + n) = x) :
@@ -251,9 +249,9 @@ theorem log_norm_lattice_discriminant {L : PeriodPair} {a : ℂ} {τ : ℍ} (ha 
   norm_num
 
 /- English proof (translation)
-Establish `h1` using `norm_ne_zero_iff.2 (ModularForm.eta_ne_zero τ.2)`. Establish `h2` using `norm_ne_zero_iff.2 ha`. Establish `hy` using `τ.im_pos`. Rewrite using `[latticeLogPeriod, covolume_lattice_eq ha h, log_norm_lattice_discriminant ha h, show (4 : ℝ) = 2 ^ 2 by norm_num]`. Simplify using `(disch := positivity) only [Real.log_mul, Real.log_div, Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem latticeLogPeriod_eq {L : PeriodPair} {a : ℂ} {τ : ℍ} (ha : a ≠ 0)
     (h : ∀ x, x ∈ L.lattice ↔ ∃ m n : ℤ, a * (m * (τ : ℂ) + n) = x) :
@@ -276,18 +274,18 @@ include h2 hD hd hχ
 include σ in
 
 /- English proof (translation)
-Use `choose τ hτ using exists_isIdealClassPoint h2 hD σ`. Conclude with `(LFunction_one_and_mean_log_eta h2 hD hd hχ σ hτ).1`.
+A detailed English derivation is pending.
 -/
 theorem LFunction_one_eq_classNumber : χ.LFunction 1 = (π * classNumber K / √d : ℝ) := by
   choose τ hτ using exists_isIdealClassPoint h2 hD σ
   exact (LFunction_one_and_mean_log_eta h2 hD hd hχ σ hτ).1
 
 /- English proof (translation)
-Establish `h` using `(LFunction_one_and_mean_log_eta h2 hD hd hχ σ hτ).2`. Establish `hd0` using `discr_pos h2 hD`. Establish `hh : (0 : ℝ) < classNumber K` using `by exact_mod_cast classNumber_pos K`. Establish `e : ∀ c, Real.log (4 * π * (τ c).im * ‖ModularForm.eta (τ c)‖ ^ 4) = Real.log (4 * π) + Real.log ((τ c).im * ‖ModularForm.eta (τ c)‖ ^ 4)` using `fun c => by`. Establish `h1` using `norm_ne_zero_iff.2 (ModularForm.eta_ne_zero (τ c).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy` using `(τ c).im_pos`. Rewrite using `[mul_assoc, Real.log_mul (by positivity) (by positivity)]`. Establish `e2 : Real.log (2 * π / √d) = Real.log (4 * π) - Real.log (2 * √d)`. Rewrite using `[← Real.log_div (by positivity) (by positivity)]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Simplify using `only [e, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[add_div, show (Fintype.card (ClassGroup (𝓞 K)) : ℝ) = classNumber K from rfl, mul_div_cancel_left₀ _ hh.ne', Complex.ofReal_add, h, e2]`. Use `push_cast`.
+Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -320,7 +318,7 @@ variable {𝔞 : ClassGroup (𝓞 K) → (FractionalIdeal (𝓞 K)⁰ K)ˣ}
 include h𝔞 hL
 
 /- English proof (translation)
-Use `choose a τ ha h using fun c => exists_lattice_eq_mul_tau (L c)`. Simplify using `only [fun c => latticeLogPeriod_eq (ha c) (h c)]`. Conclude with `chowla_selberg_eta h2 hD hd hχ σ fun c => ⟨𝔞 c, a c, h𝔞 c, fun z => by rw [← hL, SetLike.mem_coe, h]⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chowla_selberg_lattice :
     (((∑ c, latticeLogPeriod (L c)) / classNumber K : ℝ) : ℂ)
@@ -332,13 +330,13 @@ theorem chowla_selberg_lattice :
     ⟨𝔞 c, a c, h𝔞 c, fun z => by rw [← hL, SetLike.mem_coe, h]⟩
 
 /- English proof (translation)
-Establish `h0` using `chowla_selberg_lattice h2 hD hd hχ σ h𝔞 hL`. Establish `hd0` using `discr_pos h2 hD`. Establish `hh : (0 : ℝ) < classNumber K` using `by exact_mod_cast classNumber_pos K`. Establish `e : ∀ c, Real.log ((absNorm (𝔞 c).1 : ℝ) ^ 6 * ‖(L c).g₂ ^ 3 - 27 * (L c).g₃ ^ 2‖) = 6 * Real.log (2 * π / √d) + 6 * latticeLogPeriod (L c)` using `fun c => by`. Take `⟨a, τ, ha, h⟩` from `exists_lattice_eq_mul_tau (L c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `norm_ne_zero_iff.2 (latticeCurve_Δ_ne_zero (L c))`. Establish `h3` using `norm_ne_zero_iff.2 ha`. Establish `hy` using `τ.im_pos`. Rewrite `h1` using `[latticeCurve_Δ]`. Rewrite using `[latticeLogPeriod, covolume_lattice_eq ha h, absNorm_eq_of_image h2 hD σ ha (τ := τ) fun z => by rw [← hL, SetLike.mem_coe, h]]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `(disch := positivity) only [Real.log_mul, Real.log_div, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : Real.log (2 * π / √d) = Real.log (2 * π) - Real.log d / 2`. Rewrite using `[Real.log_div (by positivity) (by positivity), Real.log_sqrt hd0.le]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Finset.mul_sum]`. Rewrite using `[add_div, show (Fintype.card (ClassGroup (𝓞 K)) : ℝ) = classNumber K from rfl, mul_div_cancel_left₀ _ hh.ne', mul_div_assoc 6, Complex.ofReal_add, Complex.ofReal_mul 6 (_ / _), h0, e2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chowla_selberg_discriminant :
     (((∑ c, Real.log ((absNorm (𝔞 c).1 : ℝ) ^ 6 * ‖(L c).g₂ ^ 3 - 27 * (L c).g₃ ^ 2‖))
@@ -373,17 +371,17 @@ theorem chowla_selberg_discriminant :
 end
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, d = 4 * k + 3` from `⟨d / 4, by omega⟩`. Establish `hw : ((1 + r) / 2) ^ 2 - (1 + r) / 2 + (k + 1) = 0`. Move the coercions through the operations in `at hr`. Take the linear combination `hr / 4`. Establish `hi : IsIntegral ℤ ((1 + r) / 2)` using `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (k + 1 : ℤ), by monicity!, by simpa using hw⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Set `w : 𝓞 K` to `⟨_, hi⟩`. Establish `hw' : w ^ 2 - w + (k + 1) = 0` using `RingOfIntegers.coe_injective (by`. Simplify using `only [map_add, map_sub, map_pow, map_natCast, map_one, map_zero]`. Conclude with `hw)`. Take `⟨b, t, n, h0, hb, hD⟩` from `exists_basis h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `eq_coord b h0 w`. Generalize the expression as in `b.repr w 0 = x, b.repr w 1 = y at e`. Establish `e1` using `repr_coord b h0 (x ^ 2 - y ^ 2 * n - x + (k + 1)) (2 * x * y + y ^ 2 * t - y)`. Rewrite using `[show ((x ^ 2 - y ^ 2 * n - x + (k + 1) : ℤ) : 𝓞 K) + (2 * x * y + y ^ 2 * t - y : ℤ) * b 1 = 0 by`. Rewrite `hw'` using `[e]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Take the linear combination `hw' - (y : 𝓞 K) ^ 2 * hb] at e1`. Simplify using `only [map_zero, Finsupp.zero_apply] at e1`. Take `⟨e1, e2⟩` from `e1`. Establish `hy : y ≠ 0`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Use polynomial arithmetic with `[sq_nonneg (2 * x - 1), Int.natCast_nonneg k]`. Establish `e3 : 2 * x + y * t - 1 = 0` using `mul_left_cancel₀ hy (by linear_combination -e2)`. Establish `e4 : y * y * discr K = -(4 * k + 3 : ℕ)`. Rewrite using `[hD]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Take the linear combination `(y * t - 2 * x + 1) * e3 - 4 * e1`. Establish `hu : IsUnit y` using `(Int.squarefree_natCast.2 hsq) y ⟨-discr K, by linear_combination e4⟩`. Apply the tactic sequence `rcases Int.isUnit_iff.1 hu with rfl | rfl <;> simpa using e4`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem discr_eq_neg_of_sq_eq (h2 : finrank ℚ K = 2) (hsq : Squarefree d) (hd : d % 4 = 3)
     {r : K} (hr : r ^ 2 = -d) : discr K = -d := by
@@ -420,7 +418,7 @@ theorem discr_eq_neg_of_sq_eq (h2 : finrank ℚ K = 2) (hsq : Squarefree d) (hd 
   rcases Int.isUnit_iff.1 hu with rfl | rfl <;> simpa using e4
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ hs => dedekindZeta_eq_mul_LFunction h2 hD hχ hs, LFunction_one_eq_classNumber h2 hD hd hχ σ, fun _ hτ => chowla_selberg_eta h2 hD hd hχ σ hτ, fun _ _ h𝔞 hL => ⟨chowla_selberg_lattice h2 hD hd hχ σ h𝔞 hL, chowla_selberg_discriminant h2 hD hd hχ σ h𝔞 hL⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem chowla_selberg [NeZero d] (h2 : finrank ℚ K = 2) (hD : discr K = -d) (hd : 4 < d)
     {χ : DirichletCharacter ℂ d} (hχ : IsKroneckerChar χ) (σ : K →+* ℂ) :
@@ -446,13 +444,13 @@ theorem chowla_selberg [NeZero d] (h2 : finrank ℚ K = 2) (hD : discr K = -d) (
       chowla_selberg_discriminant h2 hD hd hχ σ h𝔞 hL⟩⟩
 
 /- English proof (translation)
-Set `r : ℂ` to `√7 * Complex.I`. Establish `hr : r ^ 2 = -7`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (by norm_num)]`. Simplify using the standard rewrite rules. Establish `hm : (Polynomial.X ^ 2 + Polynomial.C 7 : Polynomial ℚ).Monic` using `by monicity!`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `he : Polynomial.aeval r (Polynomial.X ^ 2 + Polynomial.C 7 : Polynomial ℚ) = 0`. Simplify using `[hr]`. Establish `hi : IsIntegral ℚ r` using `⟨_, hm, he⟩`. Establish `hfin` using `IntermediateField.adjoin.finiteDimensional hi`. Establish `hK : NumberField (IntermediateField.adjoin ℚ {r})` using `⟨⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : finrank ℚ (IntermediateField.adjoin ℚ {r}) = 2`. Rewrite using `[IntermediateField.adjoin.finrank hi]`. Use `le_antisymm ((Polynomial.natDegree_le_natDegree (minpoly.min ℚ r hm he)).trans (by compute_degree)) ((minpoly.two_le_natDegree_iff hi).2 ?_)` and prove the remaining obligations. Introduce and unpack `⟨q, hq⟩`. Use `congrArg Complex.im hq` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `[r, eq_comm (a := (0 : ℝ))] at this`. Establish `hD : discr (IntermediateField.adjoin ℚ {r}) = -(7 : ℕ)` using `discr_eq_neg_of_sq_eq h2 (by norm_num : Nat.Prime 7).squarefree rfl (r := IntermediateField.AdjoinSimple.gen ℚ r) (Subtype.ext (by simp [hr]; rfl))`. Take `⟨χ, hχ⟩` from `exists_isKroneckerChar_of_discr h2 hD`. Conclude with `⟨_, hK, χ, h2, hD, hχ⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_field_discr_neg_seven : ∃ (K : IntermediateField ℚ ℂ) (_ : NumberField K)
     (χ : DirichletCharacter ℂ 7), finrank ℚ K = 2 ∧ discr K = -(7 : ℕ) ∧ IsKroneckerChar χ := by

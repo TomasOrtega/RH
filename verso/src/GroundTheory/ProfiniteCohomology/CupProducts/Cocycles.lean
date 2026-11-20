@@ -28,7 +28,7 @@ variable {A : Rep.{u} k G} [IsDiscreteRep A] {p : ℕ}
 omit [IsTopologicalGroup H] in
 
 /- English proof (translation)
-The claim follows from `cocycleι_injective (cochainOf_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem cocycles_ext {x y : cocycles A p}
     (h : cochainOf A (cocycleι A p x) = cochainOf A (cocycleι A p y)) : x = y :=
@@ -38,7 +38,7 @@ omit [IsTopologicalGroup H] in
 
 @[elab_as_elim]
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `cohomologyπ_surjective A p z`. Conclude with `h x`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cohomology_induction_on {C : cohomology A p → Prop} (z : cohomology A p)
     (h : ∀ x : cocycles A p, C (cohomologyπ A p x)) : C z := by
@@ -52,7 +52,7 @@ variable {B : Rep.{u} k G} [IsDiscreteRep B]
 omit [IsTopologicalGroup H] in
 
 /- English proof (translation)
-The claim follows from `congrArg (fun ψ => cochainOf B (ψ.hom x)) (HomologicalComplex.cyclesMap_i (cochainsMap f) p)`.
+A detailed English derivation is pending.
 -/
 theorem cochainOf_cocycleι_cyclesMap (f : A ⟶ B) (x : cocycles A p) :
     cochainOf B (cocycleι B p (HomologicalComplex.cyclesMap (cochainsMap f) p x)) =
@@ -62,7 +62,7 @@ theorem cochainOf_cocycleι_cyclesMap (f : A ⟶ B) (x : cocycles A p) :
 omit [IsTopologicalGroup H] in
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom (cohomologyπ_comp_cohomologyMap f p) x`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyMap_cohomologyπ (f : A ⟶ B) (x : cocycles A p) :
     cohomologyMap f p (cohomologyπ A p x) =
@@ -77,7 +77,7 @@ variable {B : Rep.{u} k H} [IsDiscreteRep B] (φ : H →* G) (hφ : Continuous �
   (f : Rep.res φ A ⟶ B)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun ψ => cochainOf B (ψ.hom x)) (HomologicalComplex.cyclesMap_i (cochainsMapAlong φ hφ f) p)`.
+A detailed English derivation is pending.
 -/
 theorem cochainOf_cocycleι_cocyclesMapAlong (x : cocycles A p) :
     cochainOf B (cocycleι B p (cocyclesMapAlong φ hφ f p x)) =
@@ -86,7 +86,7 @@ theorem cochainOf_cocycleι_cocyclesMapAlong (x : cocycles A p) :
     (HomologicalComplex.cyclesMap_i (cochainsMapAlong φ hφ f) p)
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom (cohomologyπ_cohomologyMapAlong φ hφ f p) x`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyMapAlong_cohomologyπ (x : cocycles A p) :
     cohomologyMapAlong φ hφ f p (cohomologyπ A p x) =

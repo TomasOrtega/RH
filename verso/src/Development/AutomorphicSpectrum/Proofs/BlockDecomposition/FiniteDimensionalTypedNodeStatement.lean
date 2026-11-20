@@ -12,7 +12,7 @@ open PositivityTheory.Rg.BcB.E PositivityTheory.Rg.BcB.SpectralAccumulation Glob
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.LimV.FdNode.finiteDimensional_typed_indSpan` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FFiniteDimensionalTypedNode.lean&line=59#L59)
 -/

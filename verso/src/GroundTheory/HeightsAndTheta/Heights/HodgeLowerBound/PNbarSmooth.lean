@@ -15,7 +15,7 @@ namespace NbarSmooth
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨U, hU, F, hF, hfF⟩` from `hf z hz`. Conclude with `⟨U, hU, fun w => F w ^ n, hF.pow n, fun w hw => by show f w ^ n = F w ^ n; rw [hfF w hw]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smoothAlong_pow {S : Set ((Σ k, ι k) → ℂ)} {f : ((Σ k, ι k) → ℂ) → ℝ} (hf : SmoothAlong S f) (n : ℕ) :
     SmoothAlong S fun z => f z ^ n := by
@@ -24,13 +24,13 @@ theorem smoothAlong_pow {S : Set ((Σ k, ι k) → ℂ)} {f : ((Σ k, ι k) → 
   exact ⟨U, hU, fun w => F w ^ n, hF.pow n, fun w hw => by show f w ^ n = F w ^ n; rw [hfF w hw]⟩
 
 /- English proof (translation)
-Take `⟨c, hc, hzc⟩` from `exists_eq_smul_orbitRep z`. Use `set w := orbitRep z with hw`. Establish `hwz : w = torusSmul c⁻¹ z`. Use function extensionality and compare the values at `p`. Rewrite using `[hzc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[torusSmul, inv_mul_cancel_left₀ (hc p.1)]`. Establish `hcinv : ∀ k, c⁻¹ k ≠ 0` using `fun k => by simpa using hc k`. Establish `hwP : w ∈ mcPts P` using `by rw [hwz]; exact mcPts_smul hP c⁻¹ hcinv hz`. Establish `hP'` using `prod_norm_zpow_pos hc a`. Establish `hFz : F z = (∏ k, ‖c k‖ ^ a k) * F w` using `by rw [hzc]; exact hF w hwP c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRz : refNorm a z = (∏ k, ‖c k‖ ^ a k) * refNorm a w` using `by rw [hzc]; exact refNorm_smul a c w`. Establish `hFw : 0 < F w`. Rewrite `hpos` using `[hFz]`. Conclude with `pos_of_mul_pos_right hpos hP'.le`. Establish `hRw` using `refNorm_pos a hwP.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `show refNorm a z * Real.exp (Real.log (F w / refNorm a w)) = F z`. Rewrite using `[Real.exp_log (div_pos hFw hRw), hRz, hFz]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem hermOfFun_h_of_mem {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) {a : K → ℤ}
     {F : ((Σ k, ι k) → ℂ) → ℝ}
@@ -60,21 +60,19 @@ end NbarSmooth
 open MuRegSmooth TopNPoly NbarSmooth in
 
 /- English proof (translation)
-Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B p q t hsm`. Use `set P := mCoordIdeal D.y with hPdef`. Use `set a : K → ℤ := (q : ℤ) • muTwDeg X.H B + (p : ℤ) • D.a' with ha`. Use `set F : ((Σ k, ι k) → ℂ) → ℝ := fun z => (X.S.ref.h z * Real.exp (X.S.regWeight t (X.M.proj z))) ^ q * (∏ p' ∈ D.SB B, D.vertFactor p' z) ^ q * D.A'.h z ^ p with hFdef`. Establish `hSB : ∀ p' ∈ D.SB B, p' ∈ D.S` using `fun p' hp' => (Finset.mem_filter.1 hp').1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hMH : IsMultiHomogIdeal P` using `D.arith.2.1.2.1`. Establish `hpos : ∀ z ∈ mcPts P, 0 < F z`. Introduce `z hz`. Establish `h2 : 0 < ∏ p' ∈ D.SB B, D.vertFactor p' z` using `Finset.prod_pos fun p' hp' => VertFactorPos.proof II Ψ K ι Ω E D p' (hSB p' hp') z hz`. Conclude with `mul_pos (mul_pos (pow_pos (mul_pos (X.S.ref.pos z hz.1) (Real.exp_pos _)) q) (pow_pos h2 q)) (pow_pos (D.A'.pos z hz.1) p)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhom : ∀ z ∈ mcPts P, ∀ c : K → ℂ, (∀ k, c k ≠ 0) → F (torusSmul c z) = (∏ k, ‖c k‖ ^ a k) * F z`. Introduce `z hz c hc`. Establish `hcz : torusSmul c z ∈ mcPts P` using `mcPts_smul hMH c hc hz`. Establish `hproj : X.M.proj (torusSmul c z) = X.M.proj z` using `((X.M.fibre z hz _ hcz).2 ⟨c, hc, rfl⟩).symm`. Establish `href : X.S.ref.h (torusSmul c z) = (∏ k, ‖c k‖ ^ X.H.aMu k) * X.S.ref.h z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `X.S.ref.smul c z hc` as an intermediate fact. Rewrite `this` using `[X.S.ref_deg]`. Conclude with `this`. Establish `hA : D.A'.h (torusSmul c z) = (∏ k, ‖c k‖ ^ D.a' k) * D.A'.h z`. Use `D.A'.smul c z hc` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[D.A'_deg]`. Conclude with `this`. Establish `hV : ∀ p' ∈ D.SB B, D.vertFactor p' (torusSmul c z) = (∏ k, ‖c k‖ ^ D.vdeg p' k) * D.vertFactor p' z` using `fun p' hp' => (hVS II Ψ K ι Ω E D p' (hSB p' hp')).1 z hz c hc`. Establish `hk : ∀ k, ‖c k‖ ^ a k = (‖c k‖ ^ (muTwDeg X.H B) k) ^ q * (‖c k‖ ^ D.a' k) ^ p`. Introduce `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ‖c k‖ ≠ 0` using `norm_ne_zero_iff.mpr (hc k)`. Establish `hak : a k = (q : ℤ) * (muTwDeg X.H B) k + (p : ℤ) * D.a' k`. Simplify using `only [ha, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hak, zpow_add₀ hx, zpow_mul', zpow_natCast, zpow_mul', zpow_natCast]`. Establish `hprod : (∏ k, ‖c k‖ ^ a k) = ((∏ k, ‖c k‖ ^ X.H.aMu k) * ∏ p' ∈ D.SB B, ∏ k, ‖c k‖ ^ D.vdeg p' k) ^ q * (∏ k, ‖c k‖ ^ D.a' k) ^ p`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.prod_congr rfl fun k _ => hk k, Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_pow, muTwDeg, prod_norm_zpow_add_sum hc]`. Simplify using `only [hFdef]`. Rewrite using `[hproj, href, hA, Finset.prod_congr rfl hV, Finset.prod_mul_distrib, hprod]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsmooth : SmoothAlong (mcPts P) F` using `smoothAlong_mul (smoothAlong_mul (smoothAlong_pow (smoothAlong_mul (smoothAlong_of_contDiffOn X.S.ref_smooth) (smoothAlong_exp (hP II Ψ K ι Ω E D X.M _ hsm))) q) (smoothAlong_pow (smoothAlong_prod _ fun p' hp' => (hVS II Ψ K ι Ω E D p' (hSB p' hp')).2) q)) (smoothAlong_pow (smoot …`.
-
-Take `⟨Z, hZa, hZs, hZh⟩` from `hE K ι P a F hMH hpos hhom hsmooth`. Use `show IsSmoothHerm (smoothRep P (hermOfFun ι a F))`. Conclude with `smoothRep_smooth_of (Z := Z) hZa hZs fun z hz => (hZh z hz).trans (hermOfFun_h_of_mem hMH hhom hz (hpos z hz)).symm`.
+A detailed English derivation is pending.
 -/
 theorem NbarSmooth.proof (hE : HermExtend.Statement) (hP : ProjSmoothAlong.Statement)
     (hVS : VertFactorSmooth.Statement) : NbarSmooth.Statement := by

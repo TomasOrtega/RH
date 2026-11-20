@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.GLZetaBound
 
 /- English proof (translation)
-Establish `e : a * b - 1 = (a - 1) * (b - 1) + (a - 1) + (b - 1)` using `by ring`. Rewrite using `[e, pow_add]`. Establish `h1 : ‖(a - 1) * (b - 1)‖ ≤ ((1 + c) ^ m - 1) * ((1 + c) ^ k - 1)`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul ha hb (norm_nonneg _) ((norm_nonneg _).trans ha)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_mul_sub_one_le {a b : ℂ} {c : ℝ} (hc : 0 ≤ c) {m k : ℕ}
     (ha : ‖a - 1‖ ≤ (1 + c) ^ m - 1) (hb : ‖b - 1‖ ≤ (1 + c) ^ k - 1) :
@@ -34,9 +34,9 @@ theorem norm_mul_sub_one_le {a b : ℂ} {c : ℝ} (hc : 0 ≤ c) {m k : ℕ}
     _ = (1 + c) ^ m * (1 + c) ^ k - 1 := by ring
 
 /- English proof (translation)
-Establish `h1 : 1 - ‖y‖ ≤ ‖1 - y‖`. Use `norm_sub_norm_le (1 : ℂ) y` as an intermediate fact. Rewrite `this` using `[norm_one]`. Then use the resulting hypothesis. Establish `h2 : (1 : ℂ) - y ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (1 - y)⁻¹ - 1 = y / (1 - y)` using `by field_simp; ring`. Rewrite using `[e, norm_div, div_le_iff₀ (norm_pos_iff.2 h2)]`. Use polynomial arithmetic with `[norm_nonneg y]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_inv_one_sub_sub_one_le {y : ℂ} (hy : ‖y‖ ≤ 1 / 2) :
     ‖(1 - y)⁻¹ - 1‖ ≤ 2 * ‖y‖ := by
@@ -50,9 +50,9 @@ theorem norm_inv_one_sub_sub_one_le {y : ℂ} (hy : ‖y‖ ≤ 1 / 2) :
   nlinarith [norm_nonneg y]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.LFun.eulerFac_eq_prod]`. Proceed by induction on `B using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons b B ih`. Establish `h1` using `ih fun c hc => h c (Multiset.mem_cons_of_mem hc)`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2` using `h b (Multiset.mem_cons_self _ _)`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, Multiset.card_cons, add_comm B.card 1]`. Use `norm_mul_sub_one_le (by linarith) ?_ h1` and prove the remaining obligations. Rewrite using `[pow_one]`. Use `norm_inv_one_sub_sub_one_le (h2.trans hδ)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -71,9 +71,9 @@ theorem norm_eulerFac_sub_one_le {B : Multiset ℂˣ} {x : ℂ} {δ : ℝ} (hδ0
     linarith
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Establish `h1` using `ih fun c hc => h c (Finset.mem_insert_of_mem hc)`. Establish `h2` using `h a (Finset.mem_insert_self _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_insert ha, Finset.card_insert_of_notMem ha, add_comm s.card 1]`. Use `norm_mul_sub_one_le (by linarith) ?_ h1` and prove the remaining obligations. Rewrite using `[pow_one]`. Establish `e : (1 - z a) - 1 = -z a` using `by ring`. Rewrite using `[e, norm_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -93,13 +93,13 @@ theorem norm_prod_one_sub_sub_one_le {ι : Type*} (s : Finset ι) (z : ι → �
     linarith
 
 /- English proof (translation)
-Establish `key : (1 + 2 * δ) ^ m - 1 ≤ (3 ^ m - 1) * δ`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `h3 : (1 : ℝ) ≤ 3 ^ m` using `one_le_pow₀ (by norm_num)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hf : 0 ≤ (1 + 2 * δ) ^ m - 1`. Establish `: (1 : ℝ) ≤ (1 + 2 * δ) ^ m` using `one_le_pow₀ (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (1 + 2 * δ) ^ (m + 1) - 1 = (1 + 2 * δ) * ((1 + 2 * δ) ^ m - 1) + 2 * δ` using `by ring`. Rewrite using `[e, pow_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (1 + 2 * δ) * ((1 + 2 * δ) ^ m - 1) ≤ (3 / 2) * ((3 ^ m - 1) * δ)`. Establish `: 1 + 2 * δ ≤ 3 / 2` using `by linarith`. Conclude with `mul_le_mul this ih hf (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities. Establish `: (3 ^ m - 1) * δ ≤ 3 ^ m * δ` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem one_add_two_mul_pow_sub_one_le {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ : δ ≤ 1 / 4) (m : ℕ) :
     (1 + 2 * δ) ^ m - 1 ≤ 3 ^ m * δ := by
@@ -121,25 +121,23 @@ theorem one_add_two_mul_pow_sub_one_le {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ : δ �
   linarith
 
 /- English proof (translation)
-Introduce `q hq r t hrt B hB hβ X hX`. Use `set δ : ℝ := ((q : ℝ) ^ 2)⁻¹ with hδdef`. Establish `hq2 : (2 : ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hq0 : (0 : ℝ) < q` using `by linarith`. Establish `hq1 : (1 : ℝ) ≤ q` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ0 : 0 ≤ δ` using `by positivity`. Establish `hδ : δ ≤ 1 / 4`. Rewrite using `[hδdef]`. Establish `: (4 : ℝ) ≤ (q : ℝ) ^ 2` using `by nlinarith`. Rewrite using `[inv_le_comm₀ (by positivity) (by norm_num)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrt' : (r : ℝ) + 5 ≤ t` using `by exact_mod_cast hrt`. Establish `hbx : (q : ℝ) ^ (((r : ℝ) - 1) / 2) * ‖X‖ ≤ δ`. Rewrite using `[hX, ← Real.rpow_add hq0]`. Establish `e : δ = (q : ℝ) ^ (-(2 : ℝ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hδdef, Real.rpow_neg hq0.le, Real.rpow_two]`. Rewrite using `[e]`. Apply `Real.rpow_le_rpow_of_exponent_le hq1` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB1 : ∀ b ∈ B, ‖(b : ℂ) * X‖ ≤ δ`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul_of_nonneg_right (hβ b hb).1 (norm_nonneg _)).trans hbx`. Establish `hB2 : ∀ b ∈ B.map (fun β : ℂˣ => β⁻¹), ‖(b : ℂ) * X‖ ≤ δ`. Introduce `b hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨β, hβB, rfl⟩` from `Multiset.mem_map.1 hb`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul_of_nonneg_right (hβ β hβB).2 (norm_nonneg _)).trans hbx`. Establish `h1` using `norm_eulerFac_sub_one_le hδ0 (by linarith) hB1`. Establish `h2` using `norm_eulerFac_sub_one_le hδ0 (by linarith) hB2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3` using `norm_prod_one_sub_sub_one_le (Finset.Ioc t (r + t)) (fun i => ((q : ℂ) ^ i)⁻¹) hδ0 (by`. Introduce `i hi`. Establish `hi2 : 2 ≤ i`. Use `(Finset.mem_Ioc.1 hi).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[norm_inv, norm_pow, Complex.norm_natCast, hδdef]`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Conclude with `pow_le_pow_right₀ hq1 hi2)`. Rewrite `h2` using `[Multiset.card_map]`. Rewrite `h3` using `[Nat.card_Ioc, show r + t - t = r by omega]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[hB]`. Establish `h12` using `norm_mul_sub_one_le (by linarith) h1 h2`. Establish `h123` using `norm_mul_sub_one_le (by linarith) h12 h3`. Establish `h4` using `one_add_two_mul_pow_sub_one_le hδ0 hδ (r + r + r)`. Establish `e27 : (3 : ℝ) ^ (r + r + r) = 27 ^ r`.
-
-Rewrite using `[show r + r + r = 3 * r by ring, pow_mul]; norm_num`. Rewrite `h4` using `[e27]`. Conclude with `h123.trans h4`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_trivial_sub_one_le : ∀ (q : ℕ), 2 ≤ q → ∀ (r t : ℕ), r + 5 ≤ t → ∀ (B : Multiset ℂˣ), B.card = r → (∀ β ∈ B, ‖(β : ℂ)‖ ≤ (q : ℝ) ^ (((r : ℝ) - 1) / 2) ∧ ‖((β⁻¹ : ℂˣ) : ℂ)‖ ≤ (q : ℝ) ^ (((r : ℝ) - 1) / 2)) → ∀ X : ℂ, ‖X‖ = (q : ℝ) ^ (-((1 + (t : ℝ)) / 2)) → ‖eulerFac B X * eulerFac (B.map fun β => β⁻¹) X * ∏ i ∈ Finset.Ioc t (r + t), (1 - ((q : ℂ) ^ i)⁻¹) - 1‖ ≤ 27 ^ r * ((q : ℝ) ^ 2)⁻¹ := by
   intro q hq r t hrt B hB hβ X hX

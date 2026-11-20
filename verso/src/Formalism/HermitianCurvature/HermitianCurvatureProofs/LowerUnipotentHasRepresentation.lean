@@ -40,7 +40,7 @@ def topL (u : ℂ) (q : Ix k r × Ix k r) (L : FC k r) : FC k r :=
 def foldL (Qs : List (ℂ × (Ix k r × Ix k r))) : FC k r := Qs.foldr (fun t L => topL t.1 t.2 L) [(1, [])]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [ev]`. Consider the case `cons p L ih => show ev (L ++ L') F g + p.1 • wordR (p.2.map (un k r)) F g = ev L F g + p.1 • wordR (p.2.map (un k r)) F g + ev L' F g`. Rewrite using `[ih]`. Normalize the expressions using the abelian group laws.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem ev_append (L L' : FC k r) (F : Q.Mx k r → E) (g : Q.Mx k r) : ev (L ++ L') F g = ev L F g + ev L' F g := by
   induction L with
@@ -51,7 +51,7 @@ theorem ev_append (L L' : FC k r) (F : Q.Mx k r → E) (g : Q.Mx k r) : ev (L ++
     abel
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [ev, sc]`. Consider the case `cons p L ih => show ev (sc u L) F g + (u * p.1) • wordR (p.2.map (un k r)) F g = u • (ev L F g + p.1 • wordR (p.2.map (un k r)) F g)`. Rewrite using `[ih, smul_add, mul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_sc (u : ℂ) (L : FC k r) (F : Q.Mx k r → E) (g : Q.Mx k r) : ev (sc u L) F g = u • ev L F g := by
   induction L with
@@ -61,7 +61,7 @@ theorem ev_sc (u : ℂ) (L : FC k r) (F : Q.Mx k r → E) (g : Q.Mx k r) : ev (s
     rw [ih, smul_add, mul_smul]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact Qx2.good_id`. Consider the case `cons p w ih => exact (Qx2.good_eh hD p.1 p.2).comp ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem good_word (hD : IsOpen D) (w : List (Ix k r × Ix k r)) :
     Qx2.Good k r (Fin.last r) D (fun F : Q.Mx k r → E => wordR (w.map (un k r)) F) := by
@@ -70,7 +70,7 @@ theorem good_word (hD : IsOpen D) (w : List (Ix k r × Ix k r)) :
   | cons p w ih => exact (Qx2.good_eh hD p.1 p.2).comp ih
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact Qx2.smooth_zero`. Consider the case `cons p L ih => exact Qx2.smooth_add ih (Qx2.smooth_smul ((good_word hD p.2).sm F hF) p.1)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sm_ev (hD : IsOpen D) (L : FC k r) {F : Q.Mx k r → E} (hF : Q.SmoothLev k r (Fin.last r) D F) :
     Q.SmoothLev k r (Fin.last r) D (ev L F) := by
@@ -79,7 +79,7 @@ theorem sm_ev (hD : IsOpen D) (L : FC k r) {F : Q.Mx k r → E} (hF : Q.SmoothLe
   | cons p L ih => exact Qx2.smooth_add ih (Qx2.smooth_smul ((good_word hD p.2).sm F hF) p.1)
 
 /- English proof (translation)
-Establish `h` using `hT.lin (fun _ => 0) (fun _ => 0) 1 Qx2.smooth_zero Qx2.smooth_zero x hx`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem good_at_zero {T : (Q.Mx k r → E) → Q.Mx k r → E} (hT : Qx2.Good k r (Fin.last r) D T) {x : Q.Mx k r}
     (hx : x ∈ Q.Glev k r (Fin.last r) ∩ D) : T (fun _ => (0 : E)) x = 0 := by
@@ -87,9 +87,9 @@ theorem good_at_zero {T : (Q.Mx k r → E) → Q.Mx k r → E} (hT : Qx2.Good k 
   simpa using h
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact good_at_zero (Qx2.good_eh hD q.1 q.2) hx`. Consider the case `cons p L ih`. Establish `h` using `(Qx2.good_eh (E := E) hD q.1 q.2).lin (ev L F) (wordR (p.2.map (un k r)) F) p.1 (sm_ev hD L hF) ((good_word hD p.2).sm F hF) x hx`. Use `h.trans ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Q.EH k r (pL k r q.1) (pL k r q.2) (ev L F) x + p.1 • Q.EH k r (pL k r q.1) (pL k r q.2) (wordR (p.2.map (un k r)) F) x = _`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eh_ev (hD : IsOpen D) (q : Ix k r × Ix k r) (L : FC k r) {F : Q.Mx k r → E}
     (hF : Q.SmoothLev k r (Fin.last r) D F) {x : Q.Mx k r} (hx : x ∈ Q.Glev k r (Fin.last r) ∩ D) :
@@ -106,9 +106,9 @@ theorem eh_ev (hD : IsOpen D) (q : Ix k r × Ix k r) (L : FC k r) {F : Q.Mx k r 
     rfl
 
 /- English proof (translation)
-Establish `h1 : Q.EH k r (pL k r q.1) (pL k r q.2) h x = Q.EH k r (pL k r q.1) (pL k r q.2) (ev L F) x` using `(Qx2.good_eh (E := E) hD q.1 q.2).loc h (ev L F) hh x hx`. Establish `h2` using `eh_ev hD q L hF hx`. Unfold `topL`. Rewrite using `[ev_append]`. Use `show (if pL k r q.1 = pL k r q.2 then u • h x else 0) + Q.EH k r (pL k r q.1) (pL k r q.2) h x = _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, hh x hx]`. Use `split_ifs with hc`. Rewrite using `[ev_sc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem top_ev (hD : IsOpen D) (u : ℂ) (q : Ix k r × Ix k r) (L : FC k r) {F : Q.Mx k r → E}
     (hF : Q.SmoothLev k r (Fin.last r) D F) {h : Q.Mx k r → E} (hh : ∀ x ∈ Q.Glev k r (Fin.last r) ∩ D, h x = ev L F x)
@@ -126,9 +126,9 @@ theorem top_ev (hD : IsOpen D) (u : ℂ) (q : Ix k r × Ix k r) (L : FC k r) {F 
   · rfl
 
 /- English proof (translation)
-Proceed by induction on `Qs with`. Consider the case `nil`. Introduce `x _`. Simplify using `[foldL, ev, wordR]`. Consider the case `cons t Qs ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `x hx`. Conclude with `top_ev hD t.1 t.2 (foldL Qs) hF ih hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fold_ev (hD : IsOpen D) {F : Q.Mx k r → E} (hF : Q.SmoothLev k r (Fin.last r) D F)
     (Qs : List (ℂ × (Ix k r × Ix k r))) : ∀ x ∈ Q.Glev k r (Fin.last r) ∩ D,
@@ -146,7 +146,7 @@ def QL {t : ℕ} (a b : Fin t → Ix k r) (u : ℂ) (σ : Equiv.Perm (Fin t)) : 
   List.ofFn fun l : Fin t => (u - ((l : ℕ) : ℂ), (a (σ l), b l))
 
 /- English proof (translation)
-Simplify using `only [qminorOp, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← fold_ev hD hF _ x hx, QL, List.map_ofFn]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qminor_ev (hD : IsOpen D) {t : ℕ} (a b : Fin t → Ix k r) (u : ℂ) {F : Q.Mx k r → E}
     (hF : Q.SmoothLev k r (Fin.last r) D F) {x : Q.Mx k r} (hx : x ∈ Q.Glev k r (Fin.last r) ∩ D) :
@@ -158,7 +158,7 @@ theorem qminor_ev (hD : IsOpen D) {t : ℕ} (a b : Fin t → Ix k r) (u : ℂ) {
   rfl
 
 /- English proof (translation)
-Establish `h` using `j.isLt`. Simplify using `only [mdim, Fin.val_last, Nat.sub_self, Nat.mul_zero, Nat.zero_add] at h`. Conclude with `⟨⟨j.val, h⟩, Fin.ext (by simp [posL, wI, Nat.add_comm])⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem posL_wI (j : Ix k r) : ∃ a : Fin (k + 1), pL k r j = wI k r a := by
   have h := j.isLt
@@ -166,7 +166,7 @@ theorem posL_wI (j : Ix k r) : ∃ a : Fin (k + 1), pL k r j = wI k r a := by
   exact ⟨⟨j.val, h⟩, Fin.ext (by simp [posL, wI, Nat.add_comm])⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `posL_wI p.1`. Take `⟨b, hb⟩` from `posL_wI p.2`. Conclude with `⟨a, b, by rw [un, ha, hb]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem un_unit (p : Ix k r × Ix k r) : ∃ a b : Fin (k + 1), un k r p = Matrix.single (wI k r a) (wI k r b) 1 := by
   obtain ⟨a, ha⟩ := posL_wI p.1
@@ -179,29 +179,29 @@ def AnnulusPolynomial (TT : ℝ) (f : ℂ → ℂ) : Prop :=
   ∃ p : MvPolynomial (Fin 3) ℂ, ∀ ζ : ℂ, TT < Complex.normSq ζ → f ζ = MvPolynomial.eval ![ζ, conj ζ, sig TT ζ] p
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `h`. Conclude with `⟨0, p, fun ζ hζ => by rw [pow_zero, one_mul, hp ζ hζ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem polynomial_of_annulus_polynomial {TT : ℝ} {f : ℂ → ℂ} (h : AnnulusPolynomial TT f) : PS TT f := by
   obtain ⟨p, hp⟩ := h
   exact ⟨0, p, fun ζ hζ => by rw [pow_zero, one_mul, hp ζ hζ]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MvPolynomial.C c, fun ζ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem annulus_polynomial_const (TT : ℝ) (c : ℂ) : AnnulusPolynomial TT (fun _ => c) := ⟨MvPolynomial.C c, fun ζ _ => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MvPolynomial.X 1, fun ζ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem annulus_polynomial_conj (TT : ℝ) : AnnulusPolynomial TT (fun ζ => conj ζ) := ⟨MvPolynomial.X 1, fun ζ _ => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨MvPolynomial.X 2, fun ζ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem annulus_polynomial_sigma (TT : ℝ) : AnnulusPolynomial TT (fun ζ => sig TT ζ) := ⟨MvPolynomial.X 2, fun ζ _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hf`. Take `⟨q, hq⟩` from `hg`. Conclude with `⟨p + q, fun ζ hζ => by rw [map_add, ← hp ζ hζ, ← hq ζ hζ]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem annulus_polynomial_add {TT : ℝ} {f g : ℂ → ℂ} (hf : AnnulusPolynomial TT f) (hg : AnnulusPolynomial TT g) : AnnulusPolynomial TT (fun ζ => f ζ + g ζ) := by
   obtain ⟨p, hp⟩ := hf
@@ -209,7 +209,7 @@ theorem annulus_polynomial_add {TT : ℝ} {f g : ℂ → ℂ} (hf : AnnulusPolyn
   exact ⟨p + q, fun ζ hζ => by rw [map_add, ← hp ζ hζ, ← hq ζ hζ]⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hf`. Take `⟨q, hq⟩` from `hg`. Conclude with `⟨p * q, fun ζ hζ => by rw [map_mul, ← hp ζ hζ, ← hq ζ hζ]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem annulus_polynomial_mul {TT : ℝ} {f g : ℂ → ℂ} (hf : AnnulusPolynomial TT f) (hg : AnnulusPolynomial TT g) : AnnulusPolynomial TT (fun ζ => f ζ * g ζ) := by
   obtain ⟨p, hp⟩ := hf
@@ -217,7 +217,7 @@ theorem annulus_polynomial_mul {TT : ℝ} {f g : ℂ → ℂ} (hf : AnnulusPolyn
   exact ⟨p * q, fun ζ hζ => by rw [map_mul, ← hp ζ hζ, ← hq ζ hζ]⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hf`. Conclude with `⟨p, fun ζ hζ => by rw [h ζ hζ, hp ζ hζ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem annulus_polynomial_congr {TT : ℝ} {f g : ℂ → ℂ} (hf : AnnulusPolynomial TT f) (h : ∀ ζ : ℂ, TT < Complex.normSq ζ → g ζ = f ζ) : AnnulusPolynomial TT g := by
   obtain ⟨p, hp⟩ := hf
@@ -230,9 +230,9 @@ open Formalism.FourierDecayAlt.B2 Formalism.FourierDecayAlt.P.SettingConstructio
 variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ}
 
 /- English proof (translation)
-Establish `hsec` using `TheSec.theSection_isSection k r z z' hk hz hz' hT hT'`. Use `⟨NFRadRedA.uwb_glev (NFRadRedA.muZ_uwb hsec hζ), ?_⟩` and prove the remaining obligations. Use `show 0 < Q.GGl k r z z' (NF.muZ k r (TheSec.theSection k r z z') ζ)`. Unfold `Q.GGl`. Rewrite using `[NFRadRedA.zeta_muZ hz hz' hsec hζ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem section_point_mem_level_domain (hk : 1 ≤ k) (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z') {ζ : ℂ}
     (hζ : Tz k r z * Tz k r z' < Complex.normSq ζ) : mu0 k r z z' ζ ∈ Q.Glev k r (Fin.last r) ∩ Dp k r z z' := by
@@ -244,7 +244,7 @@ theorem section_point_mem_level_domain (hk : 1 ≤ k) (hz : inWb k r z) (hz' : i
   linarith
 
 /- English proof (translation)
-Establish `ha` using `SettingConstruction.herm_self k r z hz`. Establish `hb` using `SettingConstruction.herm_self k r z' hz'`. Unfold `mu0`. Rewrite using `[DC.muZ_eq, emb_inv (DC.secB_mem hk hT hT' ha hb hζ), DC.emb_mulVec_of _ hz, DC.secB_inv_a hk hT hT' ha hb hζ, DC.jV_add, DC.jV_smul, DC.jV_smul, jV_wbPart hz']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem y_eq (hk : 1 ≤ k) (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z') {ζ : ℂ}
     (hζ : Tz k r z * Tz k r z' < Complex.normSq ζ) :
@@ -258,15 +258,13 @@ theorem y_eq (hk : 1 ≤ k) (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k
   rfl
 
 /- English proof (translation)
-Use `set T := Tz k r z with hTd`. Use `set T' := Tz k r z' with hTd'`. Establish `hP : 0 < T * T'` using `mul_pos hT hT'`. Use `annulus_polynomial_congr (annulus_polynomial_add (annulus_polynomial_mul (annulus_polynomial_const _ (-(((Real.sqrt T : ℝ) : ℂ) / ((Real.sqrt (T * T') : ℝ) : ℂ)) * DC.EE' k r z' p)) (annulus_polynomial_sigma _)) (annulus_polynomial_mul (annulus_polynomial_const _ (((Real.sqrt T : …` and prove the remaining obligations. Introduce `ζ hζ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[y_eq hk hz hz' hT hT' hζ]`. Establish `h1 : ((DC.sR T T' ζ : ℝ) : ℂ) = sig (T * T') ζ / ((Real.sqrt (T * T') : ℝ) : ℂ)`. Establish `e : Complex.normSq ζ / (T * T') - 1 = (Complex.normSq ζ - T * T') / (T * T')`. Clear the denominators using the available nonvanishing facts. Unfold `DC.sR sig`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[e, Real.sqrt_div' _ hP.le]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h2 : star (wZ T T' ζ) = (-((Real.sqrt T * Real.sqrt T' : ℝ) : ℂ)⁻¹) * conj ζ`. Establish `e1 : star ((Real.sqrt T * Real.sqrt T' : ℝ) : ℂ) = ((Real.sqrt T * Real.sqrt T' : ℝ) : ℂ)` using `Complex.conj_ofReal _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `wZ`. Rewrite using `[star_mul', star_neg, star_inv₀, e1]`. Both sides reduce to the same expression. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h2, Complex.ofReal_neg, Complex.ofReal_mul, h1]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem annulus_polynomial_inverse_coords (hk : 1 ≤ k) (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z')
     (p : Fin (2 * r + k + 1)) : AnnulusPolynomial (Tz k r z * Tz k r z') (fun ζ => ((mu0 k r z z' ζ)⁻¹ *ᵥ z) p) := by
@@ -311,7 +309,7 @@ section rep
 variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ}
 
 /- English proof (translation)
-Take `⟨ι, inst, κ, w, hκ, h⟩` from `h`. Conclude with `⟨ι, inst, κ, w, hκ, fun E _ _ F hF ζ hζ => (e E F hF ζ hζ).trans (h E F hF ζ hζ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hr_congr {Φ Ψ : Fam k r} (h : HasRep k r z z' Φ)
     (e : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (F : Q.Mx k r → E),
@@ -321,22 +319,22 @@ theorem hr_congr {Φ Ψ : Fam k r} (h : HasRep k r z z' Φ)
   exact ⟨ι, inst, κ, w, hκ, fun E _ _ F hF ζ hζ => (e E F hF ζ hζ).trans (h E F hF ζ hζ)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Empty, inferInstance, fun i => i.elim, fun i => i.elim, fun i => i.elim, fun _ _ _ _ _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem hr_zero : HasRep k r z z' (fun E _ _ _ _ => (0 : E)) :=
   ⟨Empty, inferInstance, fun i => i.elim, fun i => i.elim, fun i => i.elim, fun _ _ _ _ _ _ _ => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Unit, inferInstance, fun _ _ => c, fun _ => w, fun _ => annulus_polynomial_const _ c, fun _ _ _ _ _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem hr_word (c : ℂ) (w : List (Ix k r × Ix k r)) :
     HasRep k r z z' (fun _ _ _ F ζ => c • wordR (w.map (un k r)) F (mu0 k r z z' ζ)) :=
   ⟨Unit, inferInstance, fun _ _ => c, fun _ => w, fun _ => annulus_polynomial_const _ c, fun _ _ _ _ _ _ _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨ι, inst, κ, w, hκ, h⟩` from `h1`. Take `⟨ι', inst', κ', w', hκ', h'⟩` from `h2`. Use `⟨ι ⊕ ι', inferInstance, Sum.elim κ κ', Sum.elim w w', ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i)`. Conclude with `hκ i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hκ' i`. Introduce `E _ _ F hF ζ hζ show Φ E F ζ + Ψ E F ζ = _`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[h E F hF ζ hζ, h' E F hF ζ hζ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hr_add {Φ Ψ : Fam k r} (h1 : HasRep k r z z' Φ) (h2 : HasRep k r z z' Ψ) :
     HasRep k r z z' (fun E _ _ F ζ => Φ E F ζ + Ψ E F ζ) := by
@@ -353,9 +351,9 @@ theorem hr_add {Φ Ψ : Fam k r} (h1 : HasRep k r z z' Φ) (h2 : HasRep k r z z'
     rw [h E F hF ζ hζ, h' E F hF ζ hζ]
 
 /- English proof (translation)
-Take `⟨ι, inst, κ, w, hκ, h⟩` from `h`. Use `⟨ι, inst, fun i ζ => a ζ * κ i ζ, w, fun i => annulus_polynomial_mul ha (hκ i), ?_⟩` and prove the remaining obligations. Introduce `E _ _ F hF ζ hζ`. Use `show a ζ • Φ E F ζ = _`. Rewrite using `[h E F hF ζ hζ, Finset.smul_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem hr_coef {a : ℂ → ℂ} (ha : AnnulusPolynomial (Tz k r z * Tz k r z') a) {Φ : Fam k r} (h : HasRep k r z z' Φ) :
     HasRep k r z z' (fun E _ _ F ζ => a ζ • Φ E F ζ) := by
@@ -367,9 +365,9 @@ theorem hr_coef {a : ℂ → ℂ} (ha : AnnulusPolynomial (Tz k r z * Tz k r z')
   simp only [mul_smul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact hr_congr hr_zero (fun _ _ _ _ _ _ _ => by simp)`. Consider the case `insert j s hj ih`. Use `hr_congr (hr_add (h j (by simp)) (ih fun l hl => h l (by simp [hl]))) ?_` and prove the remaining obligations. Introduce `E _ _ F _ ζ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.sum_insert hj`.
+A detailed English derivation is pending.
 -/
 theorem hr_sum {J : Type} (s : Finset J) (Φ : J → Fam k r) (h : ∀ j ∈ s, HasRep k r z z' (Φ j)) :
     HasRep k r z z' (fun E _ _ F ζ => ∑ j ∈ s, Φ j E F ζ) := by
@@ -382,7 +380,7 @@ theorem hr_sum {J : Type} (s : Finset J) (Φ : J → Fam k r) (h : ∀ j ∈ s, 
     exact Finset.sum_insert hj
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact hr_zero`. Consider the case `cons p L ih => exact hr_add ih (hr_word p.1 p.2)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hr_ev (L : FC k r) : HasRep k r z z' (fun _ _ _ F ζ => ev L F (mu0 k r z z' ζ)) := by
   induction L with
@@ -390,7 +388,7 @@ theorem hr_ev (L : FC k r) : HasRep k r z z' (fun _ _ _ F ζ => ev L F (mu0 k r 
   | cons p L ih => exact hr_add ih (hr_word p.1 p.2)
 
 /- English proof (translation)
-Use `hr_congr (hr_sum Finset.univ (fun σ : Equiv.Perm (Fin t) => fun E _ _ F ζ => ((Equiv.Perm.sign σ : ℤ) : ℂ) • ev (foldL (QL a b u σ)) F (mu0 k r z z' ζ)) (fun σ _ => hr_coef (annulus_polynomial_const _ _) (hr_ev _))) ?_` and prove the remaining obligations. Introduce `E _ _ F hF ζ hζ`. Conclude with `qminor_ev (Qx5.Dp_open k r z z') a b u hF (section_point_mem_level_domain hk hz hz' hT hT' hζ)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hr_minor (hk : 1 ≤ k) (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z')
     {t : ℕ} (a b : Fin t → Ix k r) (u : ℂ) :
@@ -404,9 +402,9 @@ theorem hr_minor (hk : 1 ≤ k) (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < 
   exact qminor_ev (Qx5.Dp_open k r z z') a b u hF (section_point_mem_level_domain hk hz hz' hT hT' hζ)
 
 /- English proof (translation)
-Establish `hfv : fvec k r z (Fin.last r) = z`. Unfold `fvec`. Rewrite using `[dif_neg (by simp)]`. Use `hr_congr (hr_sum Finset.univ (fun i : Ix k r => fun E _ _ F ζ => ∑ j ∈ (Finset.univ : Finset (Ix k r)), (-((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * xbv k r z' (Fin.last r) i) * ((mu0 k r z z' ζ)⁻¹ *ᵥ z) (pL k r j)) • qminorOp (Q.EH k r) (posL k r (Fin.last r) ∘ skip1 i) (posL k r (Fin.la …` and prove the remaining obligations. Introduce `E _ _ F _ ζ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (-(chatL (Q.EH k r) (posL k r (Fin.last r)) (uC k r (Fin.last r) Y) (yv k r z (Fin.last r)) (fun _ => xbv k r z' (Fin.last r)) F)) (mu0 k r z z' ζ) = _`. Simplify using `only [Pi.neg_apply, chatL, yv, hfv, ← Finset.sum_neg_distrib, ← neg_smul, neg_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lower_unipotent_has_representation (hk : 1 ≤ k) (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z') (Y : ℂ) :
     HasRep k r z z' (fun _ _ _ F ζ => Q.tL k r z z' (Fin.last r) Y 1 0 F (mu0 k r z z' ζ)) := by
@@ -430,9 +428,9 @@ end rep
 end TW
 
 /- English proof (translation)
-Introduce `k r z z' hk hz hz' hT hT' Y`. Take `⟨ι, inst, κ, w, hκ, h⟩` from `TW.lower_unipotent_has_representation hk hz hz' hT hT' Y`. Use `⟨Fintype.card ι, fun i => κ ((Fintype.equivFin ι).symm i), fun i => (w ((Fintype.equivFin ι).symm i)).map (TW.un k r), fun i => TW.polynomial_of_annulus_polynomial (hκ _), ?_, ?_⟩` and prove the remaining obligations. Introduce `i Z hZ`. Rewrite `hZ` using `[List.mem_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨p, _, rfl⟩` from `hZ`. Conclude with `TW.un_unit p`. Introduce `E _ _ F hF ζ hζ`. Conclude with `(h E F hF ζ hζ).trans (Equiv.sum_comp (Fintype.equivFin ι).symm (fun i => κ i ζ • wordR ((w i).map (TW.un k r)) F (mu0 k r z z' ζ))).symm`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lower_unipotent_matrix_words : LowerUnipotentMatrixWords := by
   intro k r z z' hk hz hz' hT hT' Y

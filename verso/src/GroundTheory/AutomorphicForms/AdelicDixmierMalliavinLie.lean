@@ -31,7 +31,7 @@ def leftReg : RegNorm 𝔅 →ₐ[ℝ] Matrix (Fin (Module.finrank ℝ 𝔅)) (F
   Algebra.leftMulMatrix (Module.finBasis ℝ 𝔅)
 
 /- English proof (translation)
-The claim follows from `Algebra.leftMulMatrix_injective _`.
+A detailed English derivation is pending.
 -/
 theorem leftReg_injective : Function.Injective (leftReg 𝔅) :=
   Algebra.leftMulMatrix_injective _
@@ -68,7 +68,7 @@ def formGroup : Subgroup 𝔄ˣ where
       _ = J := by rw [h1, Units.mul_inv, one_mul, mul_one]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_formGroup {g : 𝔄ˣ} : g ∈ formGroup σ hσ1 hσ J ↔ σ g * J * g = J := Iff.rfl
 

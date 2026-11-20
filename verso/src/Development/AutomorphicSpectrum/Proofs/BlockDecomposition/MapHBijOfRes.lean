@@ -27,7 +27,7 @@ section Cut
 variable (m : QMor Φ Φ' c) {d : ℕ} {E : Frame Φ (d + 1)} {E' : Frame Φ' (d + 1)} {e : E.D ⟶ m.G.obj E'.D}
 
 /- English proof (translation)
-Apply `m.inj T` to reduce the goal to its premises. Rewrite using `[he 0 s s', h, map_zero, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem τ_zero (he : m.Fr E E' e) {T : C'} (s s' : E'.D ⟶ T) (h : E'.τ 0 s s' = 0) :
     E.τ 0 (e ≫ m.G.map s) (e ≫ m.G.map s') = 0 := by
@@ -56,7 +56,7 @@ def e1 (he : m.Fr E E' e) : (Cut.E1 E).D ⟶ (m1 m he).G.obj (Cut.E1 E').D :=
     exact E.τ_self 0 e⟩
 
 /- English proof (translation)
-Introduce `i {T} s s'` and use `he i.succ s.1 s'.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Fr1 (he : m.Fr E E' e) : (m1 m he).Fr (Cut.E1 E) (Cut.E1 E') (e1 m he) :=
   fun i {T} s s' => he i.succ s.1 s'.1
@@ -67,14 +67,14 @@ def etaAt (he : m.Fr E E' e) (X : Pt E') : (Cut.P0 Q).obj ((Gpt m E E' e).obj X)
   Cut.adjInv Q ((Gpt m E E' e).obj X) ((Gcut m he).obj ((Cut.P0 Q').obj X)) (m.G.map (Q'.j X.T))
 
 /- English proof (translation)
-The claim follows from `Cut.adjInv_j Q ((Gpt m E E' e).obj X) ((Gcut m he).obj ((Cut.P0 Q').obj X)) (m.G.map (Q'.j X.T))`.
+A detailed English derivation is pending.
 -/
 theorem etaAt_j (he : m.Fr E E' e) (X : Pt E') :
     Q.j (m.G.obj X.T) ≫ (etaAt m Q Q' he X).1 = m.G.map (Q'.j X.T) :=
   Cut.adjInv_j Q ((Gpt m E E' e).obj X) ((Gcut m he).obj ((Cut.P0 Q').obj X)) (m.G.map (Q'.j X.T))
 
 /- English proof (translation)
-Establish `hP : Q.j (m.G.obj X.T) ≫ Cut.Pmap (X` using `(Gpt m E E' e).obj X) (Y := (Gpt m E E' e).obj Y) Q (m.G.map φ) = m.G.map φ ≫ Q.j (m.G.obj Y.T) := Cut.Pmap_j (X := (Gpt m E E' e).obj X) (Y := (Gpt m E E' e).obj Y) Q (m.G.map φ)`. Rewrite using `[← Category.assoc, hP, Category.assoc, etaAt_j, ← Category.assoc, etaAt_j, ← m.G.map_comp, ← m.G.map_comp, Cut.Pmap_j]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem etaAt_nat (he : m.Fr E E' e) {X Y : Pt E'} (φ : X.T ⟶ Y.T) :
     Q.j (m.G.obj X.T) ≫ Cut.Pmap (X := (Gpt m E E' e).obj X) (Y := (Gpt m E E' e).obj Y) Q (m.G.map φ) ≫ (etaAt m Q Q' he Y).1 =
@@ -89,14 +89,14 @@ def eta (he : m.Fr E E' e) : Gpt m E E' e ⋙ Cut.P0 Q ⟶ Cut.P0 Q' ⋙ Gcut m 
   naturality {X Y} φ := Cut.truncation_hom_ext Q (etaAt_nat m Q Q' he (X := X) (Y := Y) φ)
 
 /- English proof (translation)
-The claim follows from `etaAt_j m Q Q' he X`.
+A detailed English derivation is pending.
 -/
 theorem eta_j (he : m.Fr E E' e) (X : Pt E') :
     Q.j (m.G.obj X.T) ≫ ((eta m Q Q' he).app X).1 = m.G.map (Q'.j X.T) :=
   etaAt_j m Q Q' he X
 
 /- English proof (translation)
-Establish `h1 : (Φ.A.map ((eta m Q Q' he).app X).1).hom (Q.X (m.G.obj X.T)) = E.τ 0 ((e ≫ m.G.map X.s) ≫ m.G.map (Q'.j X.T)) (e ≫ m.G.map (Cut.sec Q' X))` using `Q.lift_X _ _ (E.mem 0 ((e ≫ m.G.map X.s) ≫ m.G.map (Q'.j X.T)) (e ≫ m.G.map (Cut.sec Q' X)))`. Establish `h2` using `he 0 (X.s ≫ Q'.j X.T) (Cut.sec Q' X)`. Rewrite `h2` using `[Cut.sec_spec, if_pos rfl, m.G.map_comp, ← Category.assoc]`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_X (he : m.Fr E E' e) (X : Pt E') :
     m.ρ (Q'.P X.T) ((Φ.A.map ((eta m Q Q' he).app X).1).hom (Q.X (m.G.obj X.T))) = Ideal.Quotient.mk _ (Q'.X X.T) := by
@@ -110,13 +110,13 @@ theorem eta_X (he : m.Fr E E' e) (X : Pt E') :
 def etaH (he : m.Fr E E' e) (X : Pt E') : Q.P (m.G.obj X.T) ⟶ m.G.obj (Q'.P X.T) := ((eta m Q Q' he).app X).1
 
 /- English proof (translation)
-The claim follows from `eta_j m Q Q' he X`.
+A detailed English derivation is pending.
 -/
 theorem etaH_j (he : m.Fr E E' e) (X : Pt E') : Q.j (m.G.obj X.T) ≫ etaH m Q Q' he X = m.G.map (Q'.j X.T) :=
   eta_j m Q Q' he X
 
 /- English proof (translation)
-The claim follows from `eta_X m Q Q' he X`.
+A detailed English derivation is pending.
 -/
 theorem etaH_X (he : m.Fr E E' e) (X : Pt E') :
     m.ρ (Q'.P X.T) ((Φ.A.map (etaH m Q Q' he X)).hom (Q.X (m.G.obj X.T))) = Ideal.Quotient.mk _ (Q'.X X.T) :=
@@ -147,7 +147,7 @@ def tr (m₀ : CH.Mor F F' (RingHom.id R)) (L : P ⥤ D) (L' : P' ⥤ D') (K : P
     exact h
 
 /- English proof (translation)
-Rewrite using `[← (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) (CH.Mor.restrict F L) (tr m₀ L L' K η) n x).1, ← (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) m₀ (CH.Mor.restrict F' L') n x).1]`. Conclude with `CrystallineSemistableComparison.P.prism _ _ η (fun _ _ => rfl) n x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_pull (m₀ : CH.Mor F F' (RingHom.id R)) (L : P ⥤ D) (L' : P' ⥤ D') (K : P' ⥤ P) (η : K ⋙ L ⟶ L' ⋙ m₀.G)
     (n : ℕ) (x : CH.H F n) :
@@ -157,7 +157,7 @@ theorem tr_pull (m₀ : CH.Mor F F' (RingHom.id R)) (L : P ⥤ D) (L' : P' ⥤ D
   exact CrystallineSemistableComparison.P.prism _ _ η (fun _ _ => rfl) n x
 
 /- English proof (translation)
-Establish `h` using `CrystallineSemistableComparison.P.adj F L U a n`. Establish `h'` using `CrystallineSemistableComparison.P.adj F' L' U' a' n`. Establish `e : ((tr m₀ L L' K η).pull n : _ → _) ∘ (CH.Mor.restrict F L).pull n = (CH.Mor.restrict F' L').pull n ∘ m₀.pull n` using `funext fun x => tr_pull m₀ L L' K η n x`. Rewrite using `[← Function.Bijective.of_comp_iff _ h, e, Function.Bijective.of_comp_iff' h']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_bij (m₀ : CH.Mor F F' (RingHom.id R)) {L : P ⥤ D} {L' : P' ⥤ D'} (K : P' ⥤ P) (η : K ⋙ L ⟶ L' ⋙ m₀.G)
     {U : D ⥤ P} {U' : D' ⥤ P'} (a : L ⊣ U) (a' : L' ⊣ U') (n : ℕ) :
@@ -196,7 +196,7 @@ def mid : CH.Mor (Cut.P0 Q ⋙ Cut.U E ⋙ CH.modF Φ.A) (Cut.P0 Q' ⋙ Cut.U E'
   tr (cutO m B hB he) (Cut.P0 Q) (Cut.P0 Q') (Gpt m E E' e) (eta m Q Q' he)
 
 /- English proof (translation)
-The claim follows from `tr_bij _ _ _ (Cut.adj Q) (Cut.adj Q') n`.
+A detailed English derivation is pending.
 -/
 theorem mid_bij (n : ℕ) : Function.Bijective ((cutO m B hB he).pull n) ↔ Function.Bijective ((mid m B hB he Q Q').pull n) :=
   tr_bij _ _ _ (Cut.adj Q) (Cut.adj Q') n
@@ -204,7 +204,7 @@ theorem mid_bij (n : ℕ) : Function.Bijective ((cutO m B hB he).pull n) ↔ Fun
 end Cut
 
 /- English proof (translation)
-The claim follows from `tr_bij _ _ _ (Pt.adj E) (Pt.adj E') n`.
+A detailed English derivation is pending.
 -/
 theorem low_bij (m : QMor Φ Φ' c) (B : IdF Φ'.A) (hB : ∀ T, c.S T ≤ B.S T) {d : ℕ} (E : Frame Φ d) (E' : Frame Φ' d)
     (e : E.D ⟶ m.G.obj E'.D) (n : ℕ) :
@@ -220,7 +220,7 @@ section Base
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K (n + 1)).1 x`. Rewrite using `[(CrystallineSemistableComparison.P.cls_surj K (n + 1)).2.1]`. Take `⟨y, hy⟩` from `h.2.2.2 n u hu`. Conclude with `⟨y, by simpa using hy⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem H_succ_zero {K : Cx.{1} R} {M : Type} [AddCommGroup M] [Module R M] {ε : M →ₗ[R] K.X 0} (h : K.ResUpTo 1 ε) (n : ℕ)
     (x : K.H (n + 1)) : x = 0 := by
@@ -230,19 +230,19 @@ theorem H_succ_zero {K : Cx.{1} R} {M : Type} [AddCommGroup M] [Module R M] {ε 
   exact ⟨y, by simpa using hy⟩
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K 0).1 x`. Rewrite `hx` using `[CrystallineSemistableComparison.P.mapH_cls φ 0 u hu (by rw [φ.comm, hu, map_zero]), (CrystallineSemistableComparison.P.cls_surj L 0).2.1]`. Establish `h0 : φ.f 0 u = 0` using `hx`. Take `⟨y, hy⟩` from `hK.2.2.1 u hu`. Rewrite `hy` using `[one_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hy` using the available equality. Rewrite `h0` using `[hc]`. Establish `h1 : a y = 0` using `by simpa using hL.2.1 (a y) h0`. Establish `h2 : y = 0` using `ha.1 (h1.trans (map_zero a).symm)`. Rewrite using `[(CrystallineSemistableComparison.P.cls_surj K 0).2.1]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ε y = 0`. Rewrite using `[h2, map_zero]`. Introduce `z`. Take `⟨v, hv, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj L 0).1 z`. Take `⟨t, ht⟩` from `hL.2.2.1 v hv`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `ht` using `[one_smul]`. Take `⟨s, rfl⟩` from `ha.2 t`. Substitute `ht` using the available equality. Use `⟨K.cls (ε s) (hK.1 s), ?_⟩` and prove the remaining obligations. Rewrite using `[CrystallineSemistableComparison.P.mapH_cls φ 0 _ _ (by rw [hc]; exact hv)]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(CrystallineSemistableComparison.P.cls_surj L 0).2.2.1 _ _ _ _ |>.2 (by rw [hc, sub_self]; exact Submodule.zero_mem _)`. Consider the case `succ n`. Prove the components needed by the constructor for the conclusion. Introduce `x y _`. Rewrite using `[H_succ_zero hK n x, H_succ_zero hK n y]`.
+Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Conclude with `⟨0, by rw [H_succ_zero hL n y, map_zero]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mapH_bij_of_res {K L : Cx.{1} R} (φ : Cx.Hom K L (RingHom.id R)) {M M' : Type} [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R M'] (ε : M →ₗ[R] K.X 0) (ε' : M' →ₗ[R] L.X 0) (a : M →ₗ[R] M')
@@ -287,9 +287,9 @@ variable {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C] [Category.{0} 
   {Φ : PDF R C} {Φ' : PDF R C'} {c : IdF Φ'.A}
 
 /- English proof (translation)
-Use `mapH_bij_of_res (m.o B hB).hom _ _ (((m.o B hB).τ E'.D).comp ((CH.modF Φ.A).map e).hom) hb ?_ (CrystallineSemistableComparison.P.initial (CH.modF Φ.A) E.D E.initial) (CrystallineSemistableComparison.P.initial (sq (IdF.top Φ'.A) B) E'.D E'.initial) j` and prove the remaining obligations. Introduce `x`. Use function extensionality and compare the values at `s`. Establish `h1 : E.initial.to (m.G.obj (s.obj (Fin.last 0))) = e ≫ m.G.map (E'.initial.to (s.obj (Fin.last 0)))` using `E.initial.hom_ext _ _`. Express the relevant statement in the definitionally equal form `(m.o B hB).τ _ (((CH.modF Φ.A).map (E.initial.to (m.G.obj (s.obj (Fin.last 0))))).hom x) = ((sq (IdF.top Φ'.A) B).map (E'.initial.to (s.obj (Fin.last 0)))).hom ((m.o B hB).τ _ (((CH.modF Φ.A).map e).hom x))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, ← (m.o B hB).nat, Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem base (m : QMor Φ Φ' c) (E : Frame Φ 0) (E' : Frame Φ' 0) (e : E.D ⟶ m.G.obj E'.D) (B : IdF Φ'.A)
     (hB : ∀ T, c.S T ≤ B.S T)
@@ -330,19 +330,17 @@ def jW {d : ℕ} {E : Frame Φ (d + 1)} (Q : Poly Φ) (F : C ⥤ ModuleCat.{0} R
   Functor.whiskerRight (Cut.jNat Q) F
 
 /- English proof (translation)
-Establish `hT : ∀ r, Q.Crit (fun _ => IdF.top Φ.A) r` using `fun r T b => ⟨fun _ _ => trivial, fun _ => trivial⟩`. Take `⟨β, b1, b2, b3, b4⟩` from `GlobalTheory.T.filtration_critical_comparison_map Q E (fun _ => IdF.top Φ.A) (fun _ => IdF.bot Φ.A) 0 (fun _ T x _ => trivial) (hT _) (hT _) hQ hQ`. Set `q : ∀ T : C, Φ.A.obj T ≃ₗ[R] sqM (IdF.top Φ.A) (IdF.bot Φ.A) T` to `qE Φ.A`. Set `β₀ : Cut.P0 Q ⋙ Cut.U E ⋙ CH.modF Φ.A ⟶ Cut.P0 Q ⋙ Cut.U E ⋙ CH.modF Φ.A` to `{ app := fun X => ModuleCat.ofHom ((q (Q.P X.T)).symm.toLinearMap ∘ₗ (β.app X).hom ∘ₗ (q (Q.P X.T)).toLinearMap) naturality := fun {X Y} φ => by`. Use extensionality with `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. By extensionality, compare the relevant components.
 
-Apply `(q (Q.P Y.T)).injective` to reduce the goal to its premises. Establish `h` using `congrArg (fun f => f.hom (q (Q.P X.T) x)) (β.naturality φ)`. Establish `e1 : ∀ w, q (Q.P Y.T) ((Φ.A.map (Cut.Pmap Q φ)).hom w) = ((sq (IdF.top Φ.A) (IdF.bot Φ.A)).map (Cut.Pmap Q φ)).hom (q _ w)` using `fun w => rfl`. Express the relevant statement in the definitionally equal form `q (Q.P Y.T) ((q (Q.P Y.T)).symm ((β.app Y).hom (q (Q.P Y.T) ((Φ.A.map (Cut.Pmap Q φ)).hom x)))) = q (Q.P Y.T) ((Φ.A.map (Cut.Pmap Q φ)).hom ((q (Q.P X.T)).symm ((β.app X).hom (q (Q.P X.T) x))))`. Rewrite using `[LinearEquiv.apply_symm_apply, e1, e1, LinearEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h }`. Establish `hj : ∀ (X : Pt E) (u : Φ.A.obj X.T), ((Functor.whiskerRight (Cut.jNat (E` using `E) Q) (sq (IdF.top Φ.A) (IdF.bot Φ.A))).app X).hom (q X.T u) = q (Q.P X.T) ((Φ.A.map (Q.j X.T)).hom u) := fun X u => rfl`. Establish `hβ : ∀ (X : Pt E) (y : Φ.A.obj (Q.P X.T)), (β₀.app X).hom y = (q (Q.P X.T)).symm ((β.app X).hom (q (Q.P X.T) y))` using `fun X y => rfl`. Use `⟨β₀, fun X x y h => ?_, fun X y => ⟨fun hy => ?_, ?_⟩, fun X y => ?_, fun X c c' hc => ?_⟩` and prove the remaining obligations. Apply `(q X.T).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `b1 X` to reduce the goal to its premises. Rewrite using `[hj, hj]`. Conclude with `congrArg (q (Q.P X.T)) h`. Establish `hy' : (β.app X).hom (q (Q.P X.T) y) = 0` using `(LinearEquiv.map_eq_zero_iff (q (Q.P X.T)).symm).1 ((hβ X y).symm.trans hy)`. Take `⟨u, hu⟩` from `(b2 X (q (Q.P X.T) y)).1 hy'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, rfl⟩` from `(q X.T).surjective u`. Rewrite `hu` using `[hj]`. Conclude with `⟨w, (q (Q.P X.T)).injective hu⟩`. Introduce and unpack `⟨u, rfl⟩`. Express the relevant statement in the definitionally equal form `(β₀.app X).hom ((Φ.A.map (Q.j X.T)).hom u) = 0`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `(b2 X (q (Q.P X.T) ((Φ.A.map (Q.j X.T)).hom u))).2 ⟨q X.T u, hj X u⟩`. Rewrite using `[hβ, h0, map_zero]`. Take `⟨z, hz⟩` from `b3 X (q (Q.P X.T) y)`. Take `⟨w, rfl⟩` from `(q (Q.P X.T)).surjective z`. Conclude with `⟨w, by rw [hβ, hz, LinearEquiv.symm_apply_apply]⟩`.
-
-Rewrite using `[hβ, b4 X c c' (q (Q.P X.T) _) (q (Q.P X.T) _) hc rfl rfl, LinearEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ses0 {d : ℕ} (Q : Poly Φ) (E : Frame Φ (d + 1)) (hQ : Q.Crit (fun _ => IdF.bot _) 0) :
     ∃ β : Cut.P0 Q ⋙ Cut.U E ⋙ CH.modF Φ.A ⟶ Cut.P0 Q ⋙ Cut.U E ⋙ CH.modF Φ.A,
@@ -400,7 +398,7 @@ variable {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C] [Category.{0} 
   {Φ : PDF R C} {Φ' : PDF R C'} {c : IdF Φ'.A}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.factor (hB T) (m.ρ T x) = _`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem o_mk (m : QMor Φ Φ' c) (B : IdF Φ'.A) (hB : ∀ T, c.S T ≤ B.S T) (T : C') (x : Φ.A.obj (m.G.obj T)) (y : Φ'.A.obj T)
     (h : m.ρ T x = Ideal.Quotient.mk _ y) :
@@ -410,7 +408,7 @@ theorem o_mk (m : QMor Φ Φ' c) (B : IdF Φ'.A) (hB : ∀ T, c.S T ≤ B.S T) (
   rfl
 
 /- English proof (translation)
-Conclude with `congrArg (fun f => (m.o B hB).τ X.T (f.hom x)) ((CH.modF Φ.A).map_id (m.G.obj X.T))`.
+A detailed English derivation is pending.
 -/
 theorem low_τ (m : QMor Φ Φ' c) (B : IdF Φ'.A) (hB : ∀ T, c.S T ≤ B.S T) {d : ℕ} (E : Frame Φ d) (E' : Frame Φ' d)
     (e : E.D ⟶ m.G.obj E'.D) (X : Pt E') (x : Φ.A.obj (m.G.obj X.T)) :
@@ -429,7 +427,7 @@ theorem mid_τ (B : IdF Φ'.A) (hB : ∀ T, c.S T ≤ B.S T) (X : Pt E') (x : Φ
     (mid m B hB he Q Q').τ X x = (m.o B hB).τ (Q'.P X.T) ((Φ.A.map (etaH m Q Q' he X)).hom x) := rfl
 
 /- English proof (translation)
-Rewrite using `[low_τ]`. Express the relevant statement in the definitionally equal form `(m.o B hB).τ (Q'.P X.T) ((Φ.A.map (etaH m Q Q' he X)).hom ((Φ.A.map (Q.j (m.G.obj X.T))).hom x)) = ((sq (IdF.top Φ'.A) B).map (Q'.j X.T)).hom ((m.o B hB).τ X.T x)`. Rewrite using `[← Cut.mapA_comp, etaH_j, ← (m.o B hB).nat]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comm_f (B : IdF Φ'.A) (hB : ∀ T, c.S T ≤ B.S T) (X : Pt E') (x : Φ.A.obj (m.G.obj X.T)) :
     (mid m B hB he Q Q').τ X (((jW (E := E) Q (CH.modF Φ.A)).app ((Gpt m E E' e).obj X)).hom x) =
@@ -441,9 +439,9 @@ theorem comm_f (B : IdF Φ'.A) (hB : ∀ T, c.S T ≤ B.S T) (X : Pt E') (x : Φ
   rfl
 
 /- English proof (translation)
-Rewrite using `[Finsupp.sum_of_support_subset cc (Finset.subset_union_left (s₂ := y.support)) _ (by intros; simp), Finsupp.sum_of_support_subset y (Finset.subset_union_right (s₁ := cc.support)) _ (by intros; simp), map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_mul]`. Use `congr 1`. Rewrite using `[← Cut.mapA_comp, etaH_j]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `m.nat (Q'.j X.T) (cc k) (y k) (h k)`. Rewrite using `[Φ.dp_map _ k (Q.X_mem _)]`. Conclude with `m.dp _ k _ _ (Φ.J.map_mem _ (Q.X_mem _)) (Q'.X_mem _) (etaH_X m Q Q' he X)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_ev (X : Pt E') (cc : ℕ →₀ Φ.A.obj (m.G.obj X.T)) (y : ℕ →₀ Φ'.A.obj X.T)
     (h : ∀ k, m.ρ X.T (cc k) = Ideal.Quotient.mk _ (y k)) :
@@ -463,15 +461,13 @@ theorem rho_ev (X : Pt E') (cc : ℕ →₀ Φ.A.obj (m.G.obj X.T)) (y : ℕ →
     exact m.dp _ k _ _ (Φ.J.map_mem _ (Q.X_mem _)) (Q'.X_mem _) (etaH_X m Q Q' he X)
 
 /- English proof (translation)
-Take `⟨cc, rfl⟩` from `Q.span (m.G.obj X.T) x`. Set `g : Φ.A.obj (m.G.obj X.T) → Φ'.A.obj X.T` to `fun u => if u = 0 then 0 else Classical.choose (Ideal.Quotient.mk_surjective (m.ρ X.T u))`. Establish `g0 : g 0 = 0` using `if_pos rfl`. Establish `hg : ∀ u, m.ρ X.T u = Ideal.Quotient.mk _ (g u)`. Introduce `u`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hu : u = 0`. Substitute `hu` using the available equality. Rewrite using `[g0, map_zero, map_zero]`. Simplify using `only [g, if_neg hu]`. Conclude with `(Classical.choose_spec (Ideal.Quotient.mk_surjective (m.ρ X.T u))).symm`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `sc : ℕ →₀ Φ.A.obj (m.G.obj X.T)` to `GlobalTheory.CompanionTheory.PolySes.sh cc`. Establish `e1` using `hβ₀ ((Gpt m E E' e).obj X) cc sc (fun k => rfl)`. Use `Eq.symm (hβ' X (cc.mapRange g g0) (sc.mapRange g g0) _ _ (fun k => ?_) ?_ ?_)` and prove the remaining obligations. Simplify using `only [Finsupp.mapRange_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mid_τ]`. Conclude with `o_mk m B hB _ _ _ (rho_ev m he Q Q' X cc _ fun k => by rw [Finsupp.mapRange_apply]; exact hg _)`. Rewrite using `[mid_τ]`. Use `o_mk m B' hB' _ _ _ ?_` and prove the remaining obligations. Use `erw [e1]`.
-
-Conclude with `rho_ev m he Q Q' X sc _ fun k => by rw [Finsupp.mapRange_apply]; exact hg _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comm_g (B B' : IdF Φ'.A) (hB : ∀ T, c.S T ≤ B.S T) (hB' : ∀ T, c.S T ≤ B'.S T)
     (β₀ : Cut.P0 Q ⋙ Cut.U E ⋙ CH.modF Φ.A ⟶ Cut.P0 Q ⋙ Cut.U E ⋙ CH.modF Φ.A)
@@ -511,16 +507,16 @@ theorem comm_g (B B' : IdF Φ'.A) (hB : ∀ T, c.S T ≤ B.S T) (hB' : ∀ T, c.
     exact rho_ev m he Q Q' X sc _ fun k => by rw [Finsupp.mapRange_apply]; exact hg _
 
 /- English proof (translation)
-The claim follows from `(CrystallineSemistableComparison.P.upTo_alg f LinearMap.id 1 1).2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem upBij {M N : Type 1} [AddCommGroup M] [AddCommGroup N] [Module R M] [Module R N] (f : M →ₗ[R] N) :
     UpTo (1 : R) f ↔ Function.Bijective f :=
   (CrystallineSemistableComparison.P.upTo_alg f LinearMap.id 1 1).2.2.2.2
 
 /- English proof (translation)
-Take `⟨β₀, a1, a2, a3, a4⟩` from `ses0 Q E hQ`. Establish `hT : ∀ r, Q'.Crit (fun _ => IdF.top Φ'.A) r` using `fun r T b => ⟨fun _ _ => trivial, fun _ => trivial⟩`. Take `⟨β', b1, b2, b3, b4⟩` from `GlobalTheory.T.filtration_critical_comparison_map Q' E' (fun _ => IdF.top Φ'.A) b r (fun _ T x _ => trivial) (hT _) (hT _) h1 h2`. Take `⟨i1, i2, i3⟩` from `CrystallineSemistableComparison.P.ses_cochains (jW (E := E) Q (CH.modF Φ.A)) β₀ a1 a2 a3`. Take `⟨k1, k2, k3⟩` from `CrystallineSemistableComparison.P.ses_cochains (jW (E := E') Q' (sq (IdF.top Φ'.A) (b r))) β' b1 b2 b3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key` using `(CrystallineSemistableComparison.P.five _ _ i1 i2 i3 _ _ k1 k2 k3 (low m (b r) (h r) E E' e).hom (mid m (b r) (h r) he Q Q').hom (mid m (b (r - 1)) (h (r - 1)) he Q Q').hom (fun n x => funext fun s => comm_f m he Q Q' (b r) (h r) (s.obj (Fin.last n)) (x (s ⋙ Gpt m E E' e))) (fun …`. Rewrite `key` using `[one_pow]`. Conclude with `(upBij _).1 key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (b : ℤ → IdF Φ'.A) (h : ∀ r T, c.S T ≤ (b r).S T) (r : ℤ) (hQ : Q.Crit (fun _ => IdF.bot _) 0)
     (h1 : Q'.Crit b r) (h2 : Q'.Crit b (r - 1))
@@ -543,11 +539,11 @@ theorem step (b : ℤ → IdF Φ'.A) (h : ∀ r T, c.S T ≤ (b r).S T) (r : ℤ
 end Comm
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `C C' _ _ Φ Φ' c m Q Q' E E' e he b h r hQ hQ' hyp j`. Conclude with `base m E E' e (b r) (h r) (hyp r (by simp) le_rfl) j`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ d ih`. Introduce `C C' _ _ Φ Φ' c m Q Q' E E' e he b h r hQ hQ' hyp j`. Establish `hcut : ∀ s, s ≤ r → r - (d + 1 : ℕ) ≤ s - d → ∀ j, Function.Bijective ((mid m (b s) (h s) he Q Q').pull j)`. Introduce `s hs hs' j`. Use `(mid_bij m (b s) (h s) he Q Q' j).1 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ih (m1 m he) (Cut.Q1 (E := E) Q) (Cut.Q1 (E := E') Q') (Cut.E1 E) (Cut.E1 E') (e1 m he) (Fr1 m he) (fun r => (b r).res (Cut.U E')) (fun r T => h r T.T) s (Cut.criterion_truncation Q hQ) (fun r' hr' => Cut.criterion_truncation Q' (hQ' r' (hr'.trans hs))) (fun r' lo hi => hyp r' (b …`. Use `(low_bij m (b r) (h r) E E' e j).2 ?_` and prove the remaining obligations. Conclude with `step m he Q Q' b h r hQ (hQ' r le_rfl) (hQ' _ (by omega)) (hcut r le_rfl (by push_cast; omega)) (hcut (r - 1) (by omega) (by push_cast; omega)) j`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (d : ℕ) {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {Φ : PDF R C} {Φ' : PDF R C'}
     {c : IdF Φ'.A} (m : QMor Φ Φ' c) (Q : Poly Φ) (Q' : Poly Φ') (E : Frame Φ d) (E' : Frame Φ' d)
@@ -580,7 +576,7 @@ section Final
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-Introduce `R _ C C' _ _ Φ Φ' c m Q Q' d E E' e he b h r hQ hQ' hyp j`. Conclude with `GlobalTheory.CompanionTheory.LocCmp.main d m Q Q' E E' e he b h r hQ hQ' hyp j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.LocCmp.localComparison : ∀ {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {Φ : PDF R C} {Φ' : PDF R C'}
     {c : IdF Φ'.A} (m : QMor Φ Φ' c) (Q : Poly Φ) (Q' : Poly Φ') {d : ℕ} (E : Frame Φ d) (E' : Frame Φ' d)

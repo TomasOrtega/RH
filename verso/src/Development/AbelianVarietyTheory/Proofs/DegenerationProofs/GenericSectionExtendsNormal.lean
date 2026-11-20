@@ -25,7 +25,7 @@ variable {X : Scheme.{0}} {A B : Type} [CommRing A] [CommRing B]
 abbrev cp (A : Type) [CommRing A] [IsLocalRing A] : Sp A := closedPoint A
 
 /- English proof (translation)
-The claim follows from `(Scheme.preimage_eq_top_of_closedPoint_mem (R := .of A) f h).ge`.
+A detailed English derivation is pending.
 -/
 theorem top_le [IsLocalRing A] (f : Sp A ⟶ X) {U : X.Opens} (h : f (cp A) ∈ U) : ⊤ ≤ f ⁻¹ᵁ U :=
   (Scheme.preimage_eq_top_of_closedPoint_mem (R := .of A) f h).ge
@@ -37,7 +37,7 @@ def toSt (y : Sp A) : A →+* (Sp A).presheaf.stalk y :=
   ((Scheme.ΓSpecIso (.of A)).inv ≫ (Sp A).presheaf.germ ⊤ y trivial).hom
 
 /- English proof (translation)
-Rewrite using `[gs_eq f y U (h (Set.mem_univ y))]`. Express the relevant statement in the definitionally equal form `_ = ((f.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (.of A)).hom) ≫ (Scheme.ΓSpecIso (.of A)).inv ≫ (Sp A).presheaf.germ ⊤ y trivial).hom a`. Rewrite using `[Category.assoc, Iso.hom_inv_id_assoc, Scheme.Hom.appLE, Category.assoc]`. Conclude with `(TopCat.Presheaf.germ_res_apply (Sp A).presheaf (homOfLE h) y (Set.mem_univ y) _).symm`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_eq_toSt (f : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ f ⁻¹ᵁ U) (y : Sp A) (a : Γ(X, U)) :
     gs f y U a = toSt y (ev f U h a) := by
@@ -48,7 +48,7 @@ theorem gs_eq_toSt (f : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ f ⁻¹ᵁ U) (y 
   exact (TopCat.Presheaf.germ_res_apply (Sp A).presheaf (homOfLE h) y (Set.mem_univ y) _).symm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = ((f.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (.of A)).hom) ≫ CommRingCat.ofHom g).hom a`. Rewrite using `[Category.assoc, ← Scheme.ΓSpecIso_naturality, ← Category.assoc, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `congrArg (fun q => (q ≫ (Scheme.ΓSpecIso (.of B)).hom).hom a) (Scheme.Hom.appLE_comp_appLE (spMap g) f U ⊤ ⊤ h le_top).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_comp (g : A →+* B) (f : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ f ⁻¹ᵁ U) (h' : ⊤ ≤ (spMap g ≫ f) ⁻¹ᵁ U)
     (a : Γ(X, U)) : ev (spMap g ≫ f) U h' a = g (ev f U h a) := by
@@ -58,7 +58,7 @@ theorem ev_comp (g : A →+* B) (f : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ f �
     (Scheme.Hom.appLE_comp_appLE (spMap g) f U ⊤ ⊤ h le_top).symm
 
 /- English proof (translation)
-Establish `: toSt (cp A) = (stalkClosedPointIso (.of A)).inv.hom`. Rewrite using `[toSt, ← ΓSpecIso_hom_stalkClosedPointIso_inv, Iso.inv_hom_id_assoc]`. Rewrite using `[this]`. Conclude with `(stalkClosedPointIso (.of A)).symm.commRingCatIsoToRingEquiv.bijective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toSt_bijective [IsLocalRing A] : Function.Bijective (toSt (cp A)) := by
   have : toSt (cp A) = (stalkClosedPointIso (.of A)).inv.hom := by
@@ -67,15 +67,15 @@ theorem toSt_bijective [IsLocalRing A] : Function.Bijective (toSt (cp A)) := by
   exact (stalkClosedPointIso (.of A)).symm.commRingCatIsoToRingEquiv.bijective
 
 /- English proof (translation)
-The claim follows from `MulEquiv.isUnit_map (RingEquiv.ofBijective _ toSt_bijective)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_toSt [IsLocalRing A] (a : A) : IsUnit (toSt (cp A) a) ↔ IsUnit a :=
   MulEquiv.isUnit_map (RingEquiv.ofBijective _ toSt_bijective)
 
 /- English proof (translation)
-Set `e : A ≃+* g.range` to `RingEquiv.ofBijective g.rangeRestrict ⟨fun a b hab => hg (congrArg Subtype.val hab), g.rangeRestrict_surjective⟩`. Set `ρ : Γ(X, U) →+* A` to `e.symm.toRingHom.comp ((ev x U h).codRestrict g.range hr)`. Establish `hρ : g.comp ρ = ev x U h` using `RingHom.ext fun a => congrArg Subtype.val (e.apply_symm_apply ((ev x U h).codRestrict g.range hr a))`. Use `⟨Spec.map (CommRingCat.ofHom ρ) ≫ hU.fromSpec, ?_⟩` and prove the remaining obligations. Establish `e₁` using `IsAffineOpen.SpecMap_appLE_fromSpec x hU (isAffineOpen_top _) h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e₁` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hρ, ev, CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, e₁, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift (g : A →+* B) (hg : Function.Injective g) (x : Sp B ⟶ X) {U : X.Opens} (hU : IsAffineOpen U)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (hr : ∀ a, ∃ r, g r = ev x U h a) : ∃ χ : Sp A ⟶ X, spMap g ≫ χ = x := by
@@ -93,13 +93,13 @@ theorem exists_lift (g : A →+* B) (hg : Function.Injective g) (x : Sp B ⟶ X)
 variable {L : LB X}
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => h hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_chart {x : Sp A ⟶ X} {i : L.ι} (h : ⊤ ≤ x ⁻¹ᵁ L.U i) :
     ⊤ ≤ x ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => i) := fun _ hy => Set.mem_iInter.2 fun _ => h hy
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => h hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_chart' {x : Sp A ⟶ X} {i : L.ι} (h : ⊤ ≤ x ⁻¹ᵁ L.U i) :
     ⊤ ≤ (𝟙 (Sp A) : Sp A ⟶ Sp A) ⁻¹ᵁ LB.wchart L (fun _ : PUnit => x) (fun _ => i) :=
@@ -112,7 +112,7 @@ def gv {x : Sp A ⟶ X} (e : LB.Gen (L.pull x)) {i : L.ι} (h : ⊤ ≤ x ⁻¹�
   Units.map (ev (𝟙 (Sp A)) _ (le_chart' h)).toMonoidHom (e.s fun _ => i)
 
 /- English proof (translation)
-Rewrite using `[mem_nonzeroLocus_iff_pull s x (cp A) (k := fun _ => i) (le_chart h (Set.mem_univ _)), ← isUnit_toSt]`. Conclude with `(congrArg IsUnit (gs_eq_toSt x _ (le_chart h) _ _)).to_iff.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_sv [IsLocalRing A] {d : ℕ} (s : H0 L d) (x : Sp A ⟶ X) {i : L.ι} (h : ⊤ ≤ x ⁻¹ᵁ L.U i) :
     IsUnit (sv s x h) ↔ x (cp A) ∈ nonzeroLocus s := by
@@ -120,7 +120,7 @@ theorem isUnit_sv [IsLocalRing A] {d : ℕ} (s : H0 L d) (x : Sp A ⟶ X) {i : L
   exact (congrArg IsUnit (gs_eq_toSt x _ (le_chart h) _ _)).to_iff.symm
 
 /- English proof (translation)
-The claim follows from `(gs_eq_toSt (spMap g ≫ x) _ (fun z _ => le_chart h (Set.mem_univ (spMap g z))) y _).trans (congrArg _ (ev_comp g x _ (le_chart h) _ _))`.
+A detailed English derivation is pending.
 -/
 theorem gs_sv {d : ℕ} (s : H0 L d) (g : A →+* B) (x : Sp A ⟶ X) {i : L.ι} (h : ⊤ ≤ x ⁻¹ᵁ L.U i) (y : Sp B) :
     gs (spMap g ≫ x) y (LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => i)) (s.f fun _ => i) = toSt y (g (sv s x h)) :=
@@ -128,7 +128,7 @@ theorem gs_sv {d : ℕ} (s : H0 L d) (g : A →+* B) (x : Sp A ⟶ X) {i : L.ι}
     (congrArg _ (ev_comp g x _ (le_chart h) _ _))
 
 /- English proof (translation)
-Establish `hm : ⊤ ≤ (spMap g ≫ 𝟙 _) ⁻¹ᵁ LB.wchart L (fun _ : PUnit => x) (fun _ => i)` using `fun _ _ => le_chart' h (Set.mem_univ _)`. Use `(gs_unit (spMap g) y (LB.wchart L (fun _ : PUnit => x) (fun _ => i)) (hm (Set.mem_univ y)) _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (fun q => gs q y _ _) (Category.comp_id (spMap g)).symm).trans ?_` and prove the remaining obligations. Conclude with `(gs_eq_toSt _ _ hm _ _).trans (congrArg _ (ev_comp g (𝟙 _) _ (le_chart' h) _ _))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gm_gv (g : A →+* B) {x : Sp A ⟶ X} (e : LB.Gen (L.pull x)) {i : L.ι} (h : ⊤ ≤ x ⁻¹ᵁ L.U i) (y : Sp B) :
     (gm (spMap g) y (LB.wchart L (fun _ : PUnit => x) (fun _ => i)) (e.s fun _ => i)).val = toSt y (g (gv e h).val) := by
@@ -139,15 +139,15 @@ theorem gm_gv (g : A →+* B) {x : Sp A ⟶ X} (e : LB.Gen (L.pull x)) {i : L.ι
   exact (gs_eq_toSt _ _ hm _ _).trans (congrArg _ (ev_comp g (𝟙 _) _ (le_chart' h) _ _))
 
 /- English proof (translation)
-Establish `m : (spMap g ≫ x) (cp C) ∈ L.U i` using `h (Set.mem_univ _)`. Establish `m' : (spMap g ≫ x) (cp C) ∈ L.U i'` using `by rw [hc]; exact h' (Set.mem_univ _)`. Take `⟨J, hJ, hJi⟩` from `exists_good L hL (cp C) (fun _ : PUnit => spMap g ≫ x) (fun _ => i') (fun _ _ _ => rfl) (fun _ => m')`. Establish `v` using `hv _ J hJ`. Rewrite `v` using `[val_of (L := L) (φ := fun _ : PUnit => x) e _ _ J (fun _ => i') (fun _ => hJi PUnit.unit), val_of (L := L) (φ := fun _ : PUnit => χ) e' _ _ J (fun _ => i') (fun _ => hc ▸ hJi PUnit.unit), gen_trans (L := L) (φ := fun _ : PUnit => x) he (spMap g) (cp C) (j := fun _ => i') (j' := …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `v'` using `congrArg Units.val v`. Rewrite `v'` using `[Units.val_mul, gm_gv g e h, gm_gv g' e' h']`. Establish `w` using `sec_trans s (spMap g ≫ x) (cp C) (j := fun _ => i') (j' := fun _ => i) (Set.mem_iInter.2 fun _ => m') (Set.mem_iInter.2 fun _ => m)`. Rewrite `w` using `[trF, Fintype.prod_unique, zpow_natCast, Category.comp_id, gs_sv s g x h, Units.val_pow_eq_pow_val]`. Establish `w'` using `gs_sv s g' χ h' (cp C)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `w'` using `[← hc, w]`. Apply `toSt_bijective.1` to reduce the goal to its premises. Establish `u : toSt (cp C) (g (gv e h).val) * toSt (cp C) (g (gv e h)⁻¹.val) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Establish `u' : toSt (cp C) (g' (gv e' h').val) * toSt (cp C) (g' (gv e' h')⁻¹.val) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Simplify using `only [map_mul, map_pow, Units.val_pow_eq_pow_val]`. Rewrite using `[← w', mul_comm (_ ^ d), _root_.mul_assoc, ← mul_pow]`. Use `congr 2`. Rewrite `u'` using `[← v']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `(-toSt (cp C) (g (gv e h)⁻¹.val)) * u' + ((gm (spMap g ≫ x) (cp C) _ (L.g i' i)).val * toSt (cp C) (g' (gv e' h')⁻¹.val)) * u`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem quot_eq (hL : L.IsLB) {C : Type} [CommRing C] [IsLocalRing C] (g : A →+* C) (g' : B →+* C)
     {x : Sp A ⟶ X} {χ : Sp B ⟶ X} (hc : spMap g ≫ x = spMap g' ≫ χ) (e : LB.Gen (L.pull x)) (he : e.IsGen)
@@ -185,9 +185,9 @@ theorem quot_eq (hL : L.IsLB) {C : Type} [CommRing C] [IsLocalRing C] (g : A →
     toSt (cp C) (g' (gv e' h')⁻¹.val)) * u
 
 /- English proof (translation)
-Take `⟨m, t, ht⟩` from `(sec_extend_of_nonzeroLocus X L hL d s).1 a`. Use `⟨m, t, toSt_bijective.1 ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (x.stalkMap (cp A)).hom (ht (x (cp A)) (fun _ => i) (hs (Set.mem_univ _)) (h (Set.mem_univ _)))`. Rewrite `e` using `[map_mul, map_pow]`. Establish `k : ∀ (U : X.Opens) (hU : ⊤ ≤ x ⁻¹ᵁ U) (b : Γ(X, U)), (x.stalkMap (cp A)).hom (gs (𝟙 X) (x (cp A)) U b) = toSt (cp A) (ev x U hU b)` using `fun U hU b => (gs_stalkMap x (cp A) U (hU (Set.mem_univ _)) b).symm.trans (gs_eq_toSt x U hU _ b)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_pow]`. Conclude with `(k _ (le_chart h) _).symm.trans (e.trans (congrArg₂ (· * ·) (congrArg (· ^ m) (k _ (le_chart h) _)) (k _ hs _)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sv_eq [CompactSpace X] [QuasiSeparatedSpace X] (hL : L.IsLB) [IsLocalRing A] {d : ℕ} (s : H0 L d)
     (x : Sp A ⟶ X) {i : L.ι} (h : ⊤ ≤ x ⁻¹ᵁ L.U i) (hs : ⊤ ≤ x ⁻¹ᵁ nonzeroLocus s) (a : Γ(X, nonzeroLocus s)) :
@@ -203,13 +203,13 @@ theorem exists_sv_eq [CompactSpace X] [QuasiSeparatedSpace X] (hL : L.IsLB) [IsL
   exact (k _ (le_chart h) _).symm.trans (e.trans (congrArg₂ (· * ·) (congrArg (· ^ m) (k _ (le_chart h) _)) (k _ hs _)))
 
 /- English proof (translation)
-Use `exists_algebraMap_eq_of_forall_discreteValuationSubring fun V hV h1 _ => ?_` and prove the remaining obligations. Set `W` to `AdicCompletion (maximalIdeal V) V`. Establish `inj : Function.Injective ((algebraMap W (FractionRing W)).comp (algebraMap V W))` using `(IsFractionRing.injective W _).comp (algebraMap_adicCompletion_injective_of_dvr V)`. Set `φ : R →+* W` to `(algebraMap V W).comp ((algebraMap R (FractionRing R)).codRestrict V h1)`. Set `gam : FractionRing R →+* FractionRing W` to `IsFractionRing.lift (A := V) inj`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hg : ∀ v : V, gam v = algebraMap W _ (algebraMap V W v)` using `fun v => IsFractionRing.lift_algebraMap inj v`. Establish `hφ : Function.Injective φ` using `(algebraMap_adicCompletion_injective_of_dvr V).comp fun a b hab => IsFractionRing.injective R (FractionRing R) (congrArg Subtype.val hab)`. Take `⟨w, hw⟩` from `H W ⟨inferInstance, inferInstance, charZero_of_injective_ringHom hφ⟩ φ gam (fun r => hg ⟨_, h1 r⟩)`. Assume the negation of the conclusion as `hq`. Establish `hq0 : q ≠ 0` using `fun h => hq (h ▸ V.zero_mem)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hi : q⁻¹ ∈ V` using `(V.mem_or_inv_mem q).resolve_left hq`. Establish `hu : IsUnit (algebraMap V W ⟨_, hi⟩)` using `IsUnit.of_mul_eq_one w (IsFractionRing.injective W (FractionRing W) (by`. Rewrite using `[map_mul, ← hg, ← hw, ← map_mul, map_one]`. Conclude with `(congrArg gam (inv_mul_cancel₀ hq0)).trans (map_one _)))`. Take `⟨b, hb⟩` from `((isUnit_map_iff (algebraMap V W) _).1 hu).exists_right_inv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: q⁻¹ * b = 1` using `congrArg Subtype.val hb`. Establish `e : (b : FractionRing R) = q` using `by rw [eq_inv_of_mul_eq_one_right this, inv_inv]`. Conclude with `hq (e ▸ b.2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_eq_of_traits {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
     [IsIntegrallyClosed R] [CharZero R] (q : FractionRing R)
@@ -239,19 +239,17 @@ theorem exists_eq_of_traits {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
   exact hq (e ▸ b.2)
 
 /- English proof (translation)
-Introduce `Z _ _ AA hL amp R _ _ _ _ _ _ x e he H`. Distinguish the cases in `hR : IsField R`. Take `⟨d, s, -, hz, hs⟩` from `amp (x (cp _))`. Use `exists_lift _ (IsFractionRing.injective R _) x hs (top_le x hz) fun a => ?_` and prove the remaining obligations. Conclude with `(IsField.localization_map_bijective (M := nonZeroDivisors R) zero_notMem_nonZeroDivisors hR).2 _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `exists_chart hL (x (cp _))`. Establish `h` using `top_le x hi`. Establish `key : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ (φ : R →+* W) (gam : FractionRing R →+* FractionRing W), (∀ r, gam (algebraMap R _ r) = algebraMap W _ (φ r)) → ∃ z : Z, ∀ (d : ℕ) (s : H0 AA d), ∃ w : W, gam (sv s x h * ((gv e h)⁻¹ ^ d).val) = algebraMap W …`. Introduce `W _ _ _ hW φ gam hg`. Take `⟨χ, hc, e', -, hv⟩` from `H W hW φ gam hg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i', hi'⟩` from `exists_chart hL (χ (cp _))`. Conclude with `⟨χ (cp _), fun d s => ⟨_, quot_eq hL gam (algebraMap W _) hc e he e' hv h (top_le χ hi') s, fun hz => ((isUnit_sv s χ _).2 hz).mul (Units.isUnit _)⟩⟩`. Establish `int : ∀ (d : ℕ) (s : H0 AA d), ∃ r : R, algebraMap R _ r = sv s x h * ((gv e h)⁻¹ ^ d).val` using `fun d s => exists_eq_of_traits _ fun W _ _ _ hW φ gam hg => by`. Take `⟨z, hz⟩` from `key W hW φ gam hg`. Conclude with `(hz d s).imp fun _ => And.left`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨W, _, _, _, _, φ, hφ, _⟩` from `exists_complete_discreteValuationRing_dominating R hR`. Establish `inj : Function.Injective ((algebraMap W (FractionRing W)).comp φ)` using `(IsFractionRing.injective W _).comp hφ`. Establish `hg : ∀ r, IsFractionRing.lift (K` using `FractionRing R) inj (algebraMap R _ r) = algebraMap W _ (φ r) := fun r => IsFractionRing.lift_algebraMap inj r`. Take `⟨z, hz⟩` from `key W ⟨inferInstance, inferInstance, charZero_of_injective_ringHom hφ⟩ φ _ hg`. Take `⟨d, s, -, hzs, hs⟩` from `amp z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hu⟩` from `hz d s`. Take `⟨r, hr⟩` from `int d s`. Rewrite `hw` using `[← hr, hg]`. Establish `hru : IsUnit r` using `(isUnit_map_iff φ r).1 (IsFractionRing.injective W _ hw ▸ hu hzs)`. Establish `hx : x (cp _) ∈ nonzeroLocus s` using `(isUnit_sv s x h).1 (isUnit_of_mul_isUnit_left (hr ▸ hru.map (algebraMap R (FractionRing R))))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `exists_lift _ (IsFractionRing.injective R _) x hs (top_le x hx) fun a => ?_` and prove the remaining obligations. Take `⟨m, t, ht⟩` from `exists_sv_eq hL s x h (top_le x hx) a`. Take `⟨r', hr'⟩` from `int _ t`. Take `⟨u, rfl⟩` from `hru`. Use `⟨r' * (u⁻¹ ^ m).val, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, hr', ht, pow_mul, Units.val_pow_eq_pow_val _ m, mul_right_comm (_ ^ m), ← mul_pow, ← hr, ← map_pow, mul_right_comm, ← map_mul, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← mul_pow, mul_inv_cancel, one_pow, Units.val_one, map_one, _root_.one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extension : ∀ (Z : Scheme.{0}) [CompactSpace Z] [QuasiSeparatedSpace Z] (AA : LB Z), AA.IsLB → (∀ z : Z, ∃ (d : ℕ) (s : H0 AA d), 1 ≤ d ∧ z ∈ nonzeroLocus s ∧ IsAffineOpen (nonzeroLocus s)) → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] (x : Sp (FractionRing R) ⟶ Z) (e : LB.Gen (AA.pull x)), e.IsGen → (∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ (φ : R →+* W) (gam : FractionRing R →+* FractionRing W), (∀ r, gam (algebraMap R _ r) = algebraMap W _ (φ r)) → ∃ χ : Sp W ⟶ Z, spMap gam ≫ x = jK W ≫ χ ∧ ∃ e' : LB.Gen (AA.pull χ), e'.IsGen ∧ ∀ z J, Good AA z J → val (L := AA) (φ := fun _ : PUnit => x) (ε := fun _ => 1) e (spMap gam) z J = val (L := AA) (φ := fun _ : PUnit => χ) (ε := fun _ => 1) e' (jK W) z J) → ∃ χ : Sp R ⟶ Z, jK R ≫ χ = x := by
   intro Z _ _ AA hL amp R _ _ _ _ _ _ x e he H

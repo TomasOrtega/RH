@@ -3,23 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.D
 open Matrix IsLocalRing UpperTheory.V UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.Pa UpperTheory.V.Th UpperTheory.V.Th.Coc
 
 /- English proof (translation)
-Introduce `O _ _ n e he htr`. Establish `hmul : ∀ i j, e i * e j = if i = j then e i else 0`. Introduce `i j`. Use `split_ifs with hij`. Substitute `hij` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `(he.idem i).eq`. Conclude with `he.ortho hij`. Apply the tactic sequence `have hentry : ∀ i j a b, (e i * e j) a b = if i = j then e i a b else 0 := by`. Introduce `i j a b`. Rewrite using `[hmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hc : ∀ i, ∃ c, IsUnit (e i c c)`. Introduce `i`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hmem : (e i).trace ∈ IsLocalRing.maximalIdeal O` using `Ideal.sum_mem _ (fun c _ => (IsLocalRing.mem_maximalIdeal _).mpr (hne c))`. Rewrite `hmem` using `[htr i]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp hmem isUnit_one`. Use `choose c hcu using hc`. Set `Qm : Matrix (Fin n) (Fin n) O` to `Matrix.of fun r j => e j r (c j)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Set `Sm : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i r => e i (c i) r`. Establish `hSQ : Sm * Qm = Matrix.diagonal fun i => e i (c i) (c i)`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(e i * e j) (c i) (c j) = _`. Rewrite using `[hentry, Matrix.diagonal_apply]`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Both sides reduce to the same expression. Establish `hdet : IsUnit (Sm * Qm).det`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hSQ, Matrix.det_diagonal]`. Conclude with `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one (fun i _ => hcu i)`. Rewrite `hdet` using `[Matrix.det_mul]`. Take `⟨U, hU⟩` from `(Matrix.isUnit_iff_isUnit_det Qm).mpr (isUnit_of_mul_isUnit_right hdet)`. Use `⟨U, fun i => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `heQ : e i * Qm = Qm * Matrix.single i i 1`. Use extensionality with `r j`. Express the relevant statement in the definitionally equal form `(e i * e j) r (c j) = _`. Rewrite using `[hentry, Matrix.mul_apply]`. Simplify using `only [Matrix.single_apply, Qm, Matrix.of_apply]`.
-
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[mul_assoc, hU, heQ, ← hU, Units.inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Coc.idemDiag :
     ∀ {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (e : Fin n → Matrix (Fin n) (Fin n) O), CompleteOrthogonalIdempotents e → (∀ i, (e i).trace = 1) → ∃ Q : GL (Fin n) O, ∀ i, ((Q⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) * e i * (Q : Matrix (Fin n) (Fin n) O) = Matrix.single i i 1 := by

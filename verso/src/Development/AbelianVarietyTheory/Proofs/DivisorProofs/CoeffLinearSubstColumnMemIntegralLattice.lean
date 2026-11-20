@@ -8,11 +8,11 @@ open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools
 namespace GlobalTheory.HSShort.CoeffInt
 
 /- English proof (translation)
-Set `Φ` to `(MultilinearMap.mkPiAlgebraFin K t (Module.End K A)).compLinearMap (fun _ => mul)`. Establish `hΦ : ∀ u : Fin t → Fin N → K, word mul u = Φ u`. Introduce `u`. Simplify using `[Φ, word, MultilinearMap.mkPiAlgebraFin_apply]`. Establish `hcol : ∀ i, w.col (g i) = ∑ j, w j (g i) • (Pi.single j 1 : Fin N → K)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.col, Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hΦ]`. Repeatedly rewrite using `[hcol]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, hΦ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem word_col {K A : Type} [Field K] [AddCommGroup A] [Module K A] {N n t : ℕ}
     (mul : (Fin N → K) →ₗ[K] Module.End K A) (w : Matrix (Fin N) (Fin n) K) (g : Fin t → Fin n) :
@@ -30,9 +30,9 @@ theorem word_col {K A : Type} [Field K] [AddCommGroup A] [Module K A] {N n t : �
   rw [MultilinearMap.map_smul_univ, hΦ]
 
 /- English proof (translation)
-Rewrite using `[show (∑ g : Fin t → Fin n, C (c (word mul (fun i => w.col (g i)) x)) * ∏ i, (X (β i, g i) : MvPolynomial (Fin B × Fin n) K)) = ∑ g : Fin t → Fin n, ∑ e : Fin t → Fin N, C (c (word mul (fun i => Pi.single (e i) 1) x)) * ((∏ i, C (w (e i) (g i))) * ∏ i, (X (β i, g i) : MvPolynomia …`. Simplify using `only [linSubst, coordP, map_sum, map_mul, aeval_C, map_prod, aeval_X, algebraMap_eq]`. Repeatedly rewrite using `[Fintype.prod_sum, Finset.mul_sum, ← Finset.prod_mul_distrib]`. Conclude with `Finset.sum_comm`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[word_col, LinearMap.sum_apply, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, smul_eq_mul, ← map_prod, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem linSubst_coordP {K A : Type} [Field K] [AddCommGroup A] [Module K A] {N n B t : ℕ}
     (mul : (Fin N → K) →ₗ[K] Module.End K A) (w : Matrix (Fin N) (Fin n) K) (c : A →ₗ[K] K)
@@ -54,7 +54,7 @@ theorem linSubst_coordP {K A : Type} [Field K] [AddCommGroup A] [Module K A] {N 
     ring
 
 /- English proof (translation)
-Use `Finset.prod_induction _ (fun q => ∃ s, q = monomial s 1) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ _ ⟨s, rfl⟩ ⟨s', rfl⟩; exact ⟨s + s', by rw [monomial_mul, one_mul]⟩`. Conclude with `⟨0, by simp⟩`. Introduce `i _`. Conclude with `⟨_, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem prod_X_monomial {σ K : Type} [Field K] {t : ℕ} (f : Fin t → σ) :
     ∃ s, (∏ i, (X (f i) : MvPolynomial σ K)) = monomial s 1 := by
@@ -68,17 +68,15 @@ end GlobalTheory.HSShort.CoeffInt
 open GlobalTheory.HSShort.CoeffInt in
 
 /- English proof (translation)
-Introduce `F A _ _ _ _ _ _ S hS d b c hco κ hx m`. Take `⟨-, hM⟩` from `GlobalTheory.T.productOfVectorMultiplications_mem_filtration_lattice F A S hS κ.j κ.t (le_of_eq κ.add)`. Establish `tr : ∀ j', j' = S.T → ∀ y' ∈ S.M j', ∃ y ∈ S.M S.T, (y : A) = (y' : A)`. Introduce and unpack `j' rfl y' hy'`. Conclude with `⟨y', hy', rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `key : ∀ g : Fin κ.t → Fin S.n, ∃ y ∈ S.M S.T, (y : A) = word S.mul (fun i => S.w.col (g i)) (κ.x : A)`. Introduce `g`. Take `⟨y, hy, hyeq⟩` from `hM g κ.x hx`. Take `⟨z, hz, hzeq⟩` from `tr _ κ.add y hy`. Conclude with `⟨z, hz, hzeq.trans hyeq⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose Y hY hYeq using key`. Use `choose s hs using fun g : Fin κ.t → Fin S.n => prod_X_monomial (K := F) (fun i => (κ.β i, g i))`. Establish `hcoef : ∀ i, coeff m (linSubst S.w (coordP S.mul (c i) κ.β (κ.x : A))) = ∑ g, b.repr (Y g) i * (if s g = m then 1 else 0)`. Introduce `i`. Rewrite using `[linSubst_coordP, coeff_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_C_mul, hs g, coeff_monomial, ← hYeq g, hco]`. Repeatedly rewrite using `[hcoef, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Submodule.sum_mem _ fun g _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : ∑ i, (b.repr (Y g) i * (if s g = m then (1 : F) else 0)) • b i = (if s g = m then (1 : F) else 0) • Y g` using `by conv_rhs => rw [← b.sum_repr (Y g), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`. Rewrite using `[hsum]`. Use `split_ifs`.
-
-Rewrite using `[one_smul]`. Conclude with `hY g`. Rewrite using `[zero_smul]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HSShort.colCoeff_mem : ∀ (F A : Type) [Field F] [NumberField F] [AddCommGroup A] [Module F A] [Module (𝓞 F) A] [IsScalarTower (𝓞 F) F A] (S : Sys F A), S.Hyp → ∀ (d : ℕ) (b : Module.Basis (Fin d) F (S.V S.T)) (c : Fin d → A →ₗ[F] F), S.IsCo b c → ∀ κ : S.Col, κ.x ∈ S.M κ.j → ∀ m, ∑ i, coeff m (linSubst S.w (coordP S.mul (c i) κ.β (κ.x : A))) • b i ∈ S.M S.T := by
   intro F A _ _ _ _ _ _ S hS d b c hco κ hx m

@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV
 
 /- English proof (translation)
-Use `haveI := c.dvr`. Use `haveI := c.fin`. Distinguish the cases in `h0 : b = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `UpperTheory.V.Base.normO l c.O b h0`. Establish `hv0 : IsDiscreteValuationRing.addVal c.O b ≠ 0` using `fun h => hb ((IsDiscreteValuationRing.addVal_eq_zero_iff).1 h)`. Establish `hvt : IsDiscreteValuationRing.addVal c.O b ≠ ⊤` using `fun h => h0 ((IsDiscreteValuationRing.addVal_eq_top_iff).1 h)`. Establish `hn : (IsDiscreteValuationRing.addVal c.O b).toNat ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. The claim follows by propositional logic.
 
-Rewrite `h` using `[ENat.toNat_eq_zero]`. The claim follows by propositional logic. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hr : ((l : ℝ)⁻¹) ^ (IsDiscreteValuationRing.addVal c.O b).toNat < 1` using `pow_lt_one₀ (by positivity) (inv_lt_one_of_one_lt₀ hl) hn`. Rewrite `hr` using `[← key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `he : (UpperTheory.V.Base.eO l c.O).toNat = 0`. Rewrite `hr` using `[he, pow_zero]`. Conclude with `absurd hr (lt_irrefl 1)`. Conclude with `(pow_lt_one_iff_of_nonneg (norm_nonneg _) he).1 hr`.
+A detailed English derivation is pending.
 -/
 private theorem norm_lt_one_of_nonunit {l : ℕ} [Fact l.Prime] (c : Coef l) (b : c.O) (hb : ¬ IsUnit b) :
     ‖(b : PadicAlgCl l)‖ < 1 := by
@@ -39,9 +39,9 @@ private theorem norm_lt_one_of_nonunit {l : ℕ} [Fact l.Prime] (c : Coef l) (b 
   · exact (pow_lt_one_iff_of_nonneg (norm_nonneg _) he).1 hr
 
 /- English proof (translation)
-Introduce `y hy`. Use `norm_lt_one_of_nonunit c (x y) fun hu => ?_` and prove the remaining obligations. Establish `h2 : IsUnit (y - algebraMap c.O R (x y))`. Assume the negation of the conclusion as `hn`. Establish `h3 : y - algebraMap c.O R (x y) ∈ maximalIdeal R` using `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h4 : algebraMap c.O R (x y) ∈ maximalIdeal R` using `by simpa using Ideal.sub_mem _ hy h3`. Conclude with `h4 (hu.map _)`. Establish `h5` using `h2.map x`. Rewrite `h5` using `[map_sub, AlgHom.commutes]`. Simplify using `at h5`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isLocPt_toBar {l : ℕ} [Fact l.Prime] {c : Coef l} {R : Type} [CommRing R] [Algebra c.O R]
     [IsCO c.O R] (x : R →ₐ[c.O] c.O) : IsLocPt (toBar x) := by
@@ -57,7 +57,7 @@ private theorem isLocPt_toBar {l : ℕ} [Fact l.Prime] {c : Coef l} {R : Type} [
   simp at h5
 
 /- English proof (translation)
-Use `AlgHom.ext fun f => ?_` and prove the remaining obligations. Proceed by induction on `f using DirectSum.Decomposition.inductionOn 𝒜 with`. Consider the case `zero => simp`. Consider the case `homogeneous m => exact h _ _ m.2`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem hom_ext_gr {O A K : Type} [CommRing O] [CommRing A] [Algebra O A] (𝒜 : ℤ → Submodule O A)
     [GradedAlgebra 𝒜] [CommRing K] [Algebra O K] (ξ ξ' : A →ₐ[O] K) (h : ∀ j, ∀ f ∈ 𝒜 j, ξ f = ξ' f) : ξ = ξ' := by
@@ -68,19 +68,19 @@ private theorem hom_ext_gr {O A K : Type} [CommRing O] [CommRing A] [Algebra O A
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Introduce `l _ c Γ H _ _ _ _ _ _ η Ψ N ι hι U I cc g₁ S M hl hm h2 hpt`. Introduce `x₁ hS hN hP hne`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Take `⟨t, f, hf, hact⟩` from `M.pts h2 x₁ hS`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Establish `sg` using `model_signs S M hl hm f hf`. Establish `hN' : NegZero M.𝒜 (f.comp M.q)`. Introduce `j hj a ha`. Rewrite using `[← hact, act_of_mem _ _ _ ha, hN j hj a ha, mul_zero]`. Establish `hP' : PosZero M.𝒜 (f.comp M.q)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j hj a ha`. Rewrite using `[← hact, act_of_mem _ _ _ ha, hP j hj a ha, mul_zero]`. Establish `hfix` using `hpt.fixed f hf (sg.1.1 hN') (sg.2.1.1 hP')`. Establish `hb : IsLocPt (toBar M.x₀)` using `isLocPt_toBar M.x₀`. Establish `hconj : push (toBar M.x₀) S.r.hom = conjBy ((tor (PadicAlgCl l)) 1) (push f S.r.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfix]`. Use extensionality with `g : 1`. Simplify using `[conjBy]`. Establish `heq` using `sg.2.2 (toBar M.x₀) hb 1 hconj`. Apply `hom_ext_gr M.𝒜` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j a ha`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Establish `e1` using `congrArg (fun φ => φ a) hact`. Establish `e2` using `congrArg (fun φ => φ a) heq`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [act_of_mem _ _ _ ha] at e1 e2`. Simplify using `at e1 e2`. Rewrite using `[← M.x₀_q]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hN j h a ha, AlgHom.comp_apply, M.wring.fixed j hj a ha, map_zero]`. Rewrite using `[hP j h a ha, AlgHom.comp_apply, M.wring.fixed j hj a ha, map_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.U3.gradedModel_pointCondition_of_ptHyp :
     ∀ {l : ℕ} [Fact l.Prime] {c : Coef l} {Γ H : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group H] [TopologicalSpace H] [IsTopologicalGroup H]

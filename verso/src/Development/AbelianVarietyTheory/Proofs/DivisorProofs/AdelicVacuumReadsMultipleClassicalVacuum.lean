@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdTh.VacLine
 
 /- English proof (translation)
-Use `congrArg (algebraMap (𝓞 E) E) (PullbackSections.CVA.cmHostUnit_add_conj_eq_one H)` as an intermediate fact. Rewrite `this` using `[map_add, map_one]`. Conclude with `(congrArg _ (H.bar_eq _).symm).trans this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hostHalfRoot_add_conj_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) :
     (H.w0 : E) + cc (H.w0 : E) = 1 := by
@@ -27,11 +27,11 @@ theorem hostHalfRoot_add_conj_eq_one {E : Type} [Field E] [NumberField E] [IsCMF
   exact (congrArg _ (H.bar_eq _).symm).trans this
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, H.d = 16 * k + 7` from `⟨H.d / 16, by have := H.d_mod; omega⟩`. Establish `h1` using `hostHalfRoot_add_conj_eq_one H`. Establish `h2 : 2 * (H.w0 : E) = 1 + (H.rt : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.two_weight_eq_one_add_root` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3 : (H.rt : E) ^ 2 = -(16 * k + 7)`. Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact. Rewrite `this` using `[map_pow, map_neg, map_natCast, hk]`. Conclude with `this.trans (by push_cast; rfl)`. Use `⟨((2 * k + 1 : ℕ) : E), isIntegral_natCast _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_sub_of_add_eq' h1]`. Use `push_cast`. Take the linear combination `(-(1 / 4 : E)) * h3 - (1 / 4 : E) * (2 * (H.w0 : E) - 1 + (H.rt : E)) * h2`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isRelTraceOneIdempotentModTwo_hostElement {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) :
     GlobalTheory.Ker.IdemTwo (H.w0 : E) := by
@@ -50,9 +50,7 @@ theorem isRelTraceOneIdempotentModTwo_hostElement {E : Type} [Field E] [NumberFi
   linear_combination (-(1 / 4 : E)) * h3 - (1 / 4 : E) * (2 * (H.w0 : E) - 1 + (H.rt : E)) * h2
 
 /- English proof (translation)
-Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `LatOf.aMul_induction (p := fun v => v ∈ AddSubgroup.closure {u | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ t ∈ Λ, u = a • t}) (fun a ha t ht => AddSubgroup.subset_closure ⟨a, ha, t, ht, rfl⟩) (zero_mem _) (fun _ _ => add_mem) h`. Introduce `h`.
-
-Conclude with `(AddSubgroup.closure_le (LatOf.aMul Λ).toAddSubgroup).2 Submodule.subset_span h`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isAA_aMul {D : D7} {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) :
     GlobalTheory.Ker.IsAA (LatOf.aMul Λ) Λ := by
@@ -66,19 +64,19 @@ theorem isAA_aMul {D : D7} {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → 
     exact (AddSubgroup.closure_le (LatOf.aMul Λ).toAddSubgroup).2 Submodule.subset_span h
 
 /- English proof (translation)
-Introduce `D ψ θ V W r g hr X bas idx hψ hθ hV he hX hs H _ ΛV ΛW Λ' L _ _ hΛV hΛW hΛ' hL x s hx hsx f hf v hv`. Take `⟨-, hsd, hU, hfg⟩` from `LatOf.isLatOf_tens D ψ θ V W r g hr X bas idx hψ hθ hV he hX hs ΛV ΛW Λ' L hΛV hΛW hΛ' hL`. Substitute `hr` using the available equality. Establish `hL' : L = LatOf.aMul ΛW`. Rewrite using `[hL (LatOf.aMul ΛW) rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.map_id _`. Substitute `hL'` using the available equality. Take `⟨X', m, hq', hq, bas', idx', hs', -, -, hEF, hh, -, -, hfr⟩` from `GlobalTheory.T.orthonormal_frame_reading_eq_conjugate_datum_theta D ψ θ V W g X bas idx hψ hθ he hV hX hs`. Take `⟨⟨B, hB⟩, hall⟩` from `hfr x hx`. Take `⟨hIB, -, hsB, -, -, -, -, -, hrd⟩` from `hall B hB`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set C : GlobalTheory.Ker.Ctx V W := ⟨ψ, hψ, θ, hθ, X', m, g, X.p0, hq', bas', idx', hs', he⟩ with hC`. Take `rfl` from `hsB s hsx`. Establish `hsd' : SelfD C.X (LatOf.aMul ΛW)`. Use `⟨hsd.1, fun u => (hsd.2 u).trans ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ ∀ y ∈ LatOf.aMul ΛW, ∃ k : ℤ, EF X' u y = k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hEF]`. Establish `hv' : IsVac C.X C.bas (H.w0 : D.host.E) (tens Λ' (LatOf.aMul ΛW)) v`. Use `⟨hv.1, hv.2.1, fun y hy => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `epsW X' _ y • heisG X' bas' y v = v`. Establish `e : epsW X' (H.w0 : D.host.E) y = epsW X (H.w0 : D.host.E) y` using `by simp only [epsW, hEF]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, hh]`. Conclude with `hv.2.2 y hy`. Establish `hlat` using `hf.2.lat`. Rewrite `hlat` using `[GlobalTheory.Ker.LatTens.latO_eq_hatA D V W C ΛV Λ' ΛW _ hΛ' (isAA_aMul ΛW)]`. Take `⟨t, ht⟩` from `(GlobalTheory.Ker.latVac_th_line D V W C _ H.w0.isIntegral_coe (hostHalfRoot_add_conj_eq_one H) (isRelTraceOneIdempotentModTwo_hostElement H) 1 Λ' (VacProj.mem_vset ⟨Λ'⟩ hU hfg) _ hsd').2 B hIB v hv' f hf.2.theta hf.2.fock hlat`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨t, ?_, ((hrd f (t • v) (TensVac.sb_smul _ hv.1)).2 ?_).2⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `ht` using `[zero_smul]`. Substitute `ht` using the available equality. Take `⟨⟨p, hp⟩, hn⟩` from `hf.2.norm`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hn p hp` as an intermediate fact. Simplify using `[nrm2] at this`. Rewrite using `[(GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D V W C _ ((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D V W C).2 B hIB).2.1 v hv.1).2.1]`. Conclude with `ht`.
+A detailed English derivation is pending.
 -/
 theorem vac_reads : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (r g : ℕ) (hr : W.rank = r) (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsStdChar D ψ (-1) → IsInfFam θ → V.gram = 1 → Even V.rank → IsMod W hr X → IsSympl X bas → ∀ (H : Geo.Tor.Host D.host.E), (H.rt : D.host.E) = D.host.sqrtMinusD → ∀ (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (Λ' : Lt D.host.E V.rank) (L : Lt D.host.E r), V.SigOK → W.SigOK → IsSelfDualC V ΛV → IsSelfDualC W ΛW → (∀ v : Fin V.rank → D.host.E, v ∈ Λ' ↔ (fun j => star (v j)) ∈ ΛV) → (∀ L₀ : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E), L₀ = Submodule.span (𝓞 D.host.E) {w | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ v ∈ ΛW, w = a • v} → L = latR hr L₀) → ∀ (x : Frame X.Ψ r) (s : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ), IsONFr X x → IsInvOf W hr X x s → ∀ f, IsVacO ψ θ V W (fun _ => 1) s (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) f → ∀ v : TF V.rank g, IsVac X bas (H.w0 : D.host.E) (tens Λ' L) v → ∃ κ : ℂ, κ ≠ 0 ∧ Reads θ V W hr X bas idx f (κ • v) x := by
   intro D ψ θ V W r g hr X bas idx hψ hθ hV he hX hs H _ ΛV ΛW Λ' L _ _ hΛV hΛW hΛ' hL x s hx hsx f hf v hv

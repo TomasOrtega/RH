@@ -22,7 +22,7 @@ open Matrix GlobalTheory.LeviElem GlobalTheory.LeviHom
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[skew]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_flip_skew (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (skew : ∀ i j, σ (J j i) = -J i j) (v w : Fin n → E) : form σ J v w = -σ (form σ J w v) := by
@@ -35,15 +35,13 @@ theorem form_flip_skew (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {n : �
 def skew2 : Matrix (Fin 2) (Fin 2) E := !![0, 1; -1, 0]
 
 /- English proof (translation)
-Establish `hmap : (fromCols H.ι (cols2 H.x H.y)).map σ = fromCols (H.ι.map σ) ((cols2 H.x H.y).map σ)`. Apply the tactic sequence `ext i (j | j) <;> rfl`. Establish `ho : ∀ j, (fun i => H.ι i j) = H.ι *ᵥ Pi.single j 1` using `fun j => by rw [mulVec_single_one]; rfl`. Establish `orth' : ∀ j, form σ W.J (fun i => H.ι i j) H.x = 0 ∧ form σ W.J (fun i => H.ι i j) H.y = 0` using `fun j => by`. Rewrite using `[ho]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `horth _`. Rewrite using `[hmap, transpose_fromCols, fromRows_mul, fromRows_mul_fromCols, hgram]`. Use `congr 1`. Use extensionality with `j k`. Rewrite using `[form_gram, ho]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `fin_cases k`. Simplify `(horth (Pi.single j 1)).1` using `[cols2]`. Simplify `(horth (Pi.single j 1)).2` using `[cols2]`. Use extensionality with `k j`. Rewrite using `[form_gram, form_flip_skew σ hσ skew]`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `fin_cases k`. Simplify using `[cols2, (orth' j).1]`. Simplify using `[cols2, (orth' j).2]`. Use extensionality with `k k'`. Rewrite using `[form_gram]`.
-
-Apply the tactic sequence `fin_cases k <;> fin_cases k' <;>`. Simplify using `[cols2, skew2, hxx, hyy, hxy, form_flip_skew σ hσ skew H.y H.x]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_block_skew (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {b : ℕ} (W : Spc F E (b + 2)) (W₁ : Spc F E b)
     (H : Plane E (b + 2) b) (skew : ∀ i j, σ (W.J j i) = -W.J i j)
@@ -73,23 +71,19 @@ theorem gram_block_skew (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {b : �
       simp [cols2, skew2, hxx, hyy, hxy, form_flip_skew σ hσ skew H.y H.x]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ hσ n n₁ W W₁ H hskew hn hxx hyy hxy horth hgram c₀ hc₀ hND₁ _ M hM`. Substitute `hn` using the available equality. Establish `hdet : W₁.J.det ≠ 0`. Introduce `h0`. Apply `hND₁.2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[det_smul, show (W₁.J.map σ).det = σ W₁.J.det from (RingHom.map_det (σ : E →+* E) _).symm, h0, map_zero, mul_zero]`. Use `set P := fromCols H.ι (cols2 H.x H.y) with hP`. Establish `hK : Pᵀ * W.J * P.map σ = fromBlocks W₁.J 0 0 skew2` using `gram_block_skew σ hσ W W₁ H hskew hxx hyy hxy horth hgram`. Use `set K : Matrix (Fin n₁ ⊕ Fin 2) (Fin n₁ ⊕ Fin 2) E := fromBlocks W₁.J 0 0 skew2 with hKdef`. Establish `hKdet : IsUnit Kᵀ.det`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[det_transpose, hKdef, det_fromBlocks_zero₂₁]`. Simplify using `[skew2, det_fin_two, hdet]`. Use `set Q := (Kᵀ)⁻¹ * ((P.map σ)ᵀ * W.Jᵀ) with hQ`. Establish `hQP : Q * P = 1`. Establish `: (P.map σ)ᵀ * W.Jᵀ * P = Kᵀ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hK]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[hQ, Matrix.mul_assoc, this, nonsing_inv_mul _ hKdet]`. Use `set f : E →+* AE F E := inclR (F := F) (E := E) (AF F) with hf`. Use `set PA := fromCols (incM F H.ι) (cols2 (incV F H.x) (incV F H.y)) with hPA`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hPf : P.map f = PA`. Use extensionality with `i (j | j)`. Both sides reduce to the same expression. Apply the tactic sequence `fin_cases j <;> rfl`. Establish `hQP' : Q.map f * PA = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hPf, ← Matrix.map_mul, hQP, Matrix.map_one _ (map_zero f) (map_one f)]`. Establish `hPQ' : PA * Q.map f = 1` using `(Matrix.mul_eq_one_comm_of_equiv finSumFinEquiv).1 hQP'`. Establish `huniq : ∀ (l : (AE F E)ˣ) (g₀ : UA σ W₁.J) (h h' : UA σ W.J), IsLevi (W₁` using `W₁) H l g₀ h → IsLevi (W₁ := W₁) H l g₀ h' → h = h' := by`. Introduce `l g₀ h h' hL hL'`. Establish `e : mat h = mat h'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_one (mat h), ← Matrix.mul_one (mat h'), ← hPQ', ← Matrix.mul_assoc, ← Matrix.mul_assoc, levi_mul_cols H l g₀ h hL, levi_mul_cols H l g₀ h' hL']`. Conclude with `Subtype.ext (Units.ext e)`. Use `⟨fun a b => ?_, fun t m hm y => ?_⟩` and prove the remaining obligations. Establish `h2` using `isLevi_mul H (hM a) (hM b)`. Rewrite `h2` using `[mul_one]`.
-
-Conclude with `huniq _ _ _ _ (hM (a * b)) h2`. Establish `h1` using `isLevi_mul H hm (hM y)`. Establish `h2` using `isLevi_mul H (hM y) hm`. Rewrite `h1` using `[mul_one, one_mul]`. Rewrite `h2` using `[mul_one, one_mul]`.
-
-Conclude with `huniq _ _ _ _ h1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_section_hom : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →

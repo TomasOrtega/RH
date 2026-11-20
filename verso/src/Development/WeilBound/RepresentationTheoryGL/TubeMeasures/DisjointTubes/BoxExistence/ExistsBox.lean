@@ -16,9 +16,7 @@ noncomputable section
 namespace MainStatements.Tam.B
 
 /- English proof (translation)
-Use `choose K hK hK1 using fun i => exists_compact_mem_nhds (1 : X i)`. Use `haveI := hm`. Use `⟨Set.univ.pi K, MeasurableSet.univ_pi fun i => (hK i).measurableSet, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.pi_pi]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => (MeasureTheory.Measure.measure_pos_of_mem_nhds (μ := m i) (hK1 i)).ne'`.
-
-Rewrite using `[Measure.pi_pi]`. Conclude with `ENNReal.prod_ne_top fun i _ => (hK i).measure_lt_top.ne`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_box {ι : Type} [Fintype ι] {X : ι → Type} [∀ i, Group (X i)] [∀ i, TopologicalSpace (X i)]
     [∀ i, IsTopologicalGroup (X i)] [∀ i, LocallyCompactSpace (X i)] [∀ i, T2Space (X i)]
@@ -34,15 +32,15 @@ theorem exists_box {ι : Type} [Fintype ι] {X : ι → Type} [∀ i, Group (X i
     exact ENNReal.prod_ne_top fun i _ => (hK i).measure_lt_top.ne
 
 /- English proof (translation)
-Establish `hr0 : (0 : ℝ) < r` using `by exact_mod_cast (by omega : 0 < r)`. Establish `hpos : 0 < (((r : ℝ) ^ (r ^ 2))⁻¹) ^ f * ((3 : ℝ) ^ (2 * f * r ^ 2))⁻¹` using `by positivity`. Rewrite using `[← Real.exp_log hpos]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_inv, Real.log_pow, Real.log_inv, Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Establish `hf0 : (0 : ℝ) ≤ f` using `by positivity`. Establish `hfr : (0 : ℝ) ≤ (f : ℝ) * (r : ℝ) ^ 2` using `by positivity`. Establish `h1 : Real.log r ≤ Real.log ((f : ℝ) * r + 3)`. Apply `Real.log_le_log hr0` to reduce the goal to its premises.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : Real.log 3 ≤ Real.log ((f : ℝ) * r + 3)`. Apply `Real.log_le_log (by norm_num)` to reduce the goal to its premises. Establish `: (0 : ℝ) ≤ (f : ℝ) * r` using `by positivity`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl3 : 0 ≤ Real.log 3` using `Real.log_nonneg (by norm_num)`. Establish `hd0 : 0 ≤ Real.log dd` using `Real.log_nonneg hd`. Establish `e1 : (f : ℝ) * ((r : ℝ) ^ 2 * Real.log r) ≤ (f : ℝ) * (r : ℝ) ^ 2 * Real.log ((f : ℝ) * r + 3)`. Rewrite using `[← mul_assoc]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left h1 hfr`. Establish `e2 : 2 * (f : ℝ) * (r : ℝ) ^ 2 * Real.log 3 ≤ 2 * ((f : ℝ) * (r : ℝ) ^ 2 * Real.log ((f : ℝ) * r + 3))`. Use `mul_le_mul_of_nonneg_left h3 hfr` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exp_le (f r : ℕ) (dd : ℝ) (hf : 1 ≤ f) (hr : 2 ≤ r) (hd : 1 ≤ dd) :
     Real.exp (-(3 * ((f : ℝ) * (r : ℝ) ^ 2 * (Real.log ((f : ℝ) * r + 3) + 1) + Real.log dd))) ≤
@@ -78,29 +76,25 @@ end MainStatements.Tam.B
 namespace MainStatements.Tam
 
 /- English proof (translation)
-Introduce `hv hs hn`. Use `⟨3, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `D Tu Cl t0 hC i P μ 𝓕 hF`. Use `letI : IsCMField D.host.E := D.host.isCMField_hostE`. Establish `hrk : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hr : 2 ≤ D.R.r` using `Formalism.L2.Geo.two_le_r D`. Establish `hV : (Wc D i).SigOK` using `D.sp.W_sig _`. Establish `hsig` using `D.sp.W_sigval _ (Nat.le_add_left _ _) i.2`. Use `haveI : IsTopologicalGroup (GA D (Wc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI := hF.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨θ, hθ⟩, H1⟩` from `hF.1.2`. Take `⟨⟨A, hA⟩, H2⟩` from `H1 θ hθ`. Take `⟨⟨m, hm⟩, -⟩` from `H2 A hA`. Take `⟨rp, hrpc, hrp⟩` from `GlobalTheory.CovTop.VolUp.exists_realPart_hom D (Wc D i) θ A hV hθ hA`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.1`. Take `⟨B, hBm, hB0, hBt⟩` from `MainStatements.Tam.B.exists_box m (fun ρ => (hm ρ).1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hKo : IsOpen {h : GA D (Wc D i) | finE (Wc D i) h ∈ GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i P}` using `GlobalTheory.ParahoricCompact.isOpen_comap_lev _ _ _`. Establish `heq` using `GlobalTheory.CovTop.VolPush.meas_translate_eq D (Wc D i) θ A m rp _ μ hV hθ hA hm hrpc hrp hKo hF.1 1 (one_mem _) B hBm`. Establish `hsub : {h | finE (Wc D i) (1⁻¹ * h) ∈ GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i P ∧ rp h ∈ B} ⊆ {h | h ∈ Stab (Wc D i) ∧ rp h ∈ B}`. Introduce `h hh`. Use `⟨hs.2 D Tu Cl t0 hC i P h ?_, hh.2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `using hh.1`. Establish `hle : Measure.pi m B ≤ μ {h | h ∈ Stab (Wc D i) ∧ rp h ∈ B}` using `heq ▸ measure_mono hsub`. Establish `hvol` using `hv D (Wc D i) _ _ hV hsig μ 𝓕 hF.2 θ A m rp hθ hA hm hrpc hrp B hBm`. Use `set X : ℝ := ReciprocityTheory.ChartRestriction.DS.volU (Wc D i).rank ^ D.R.f * Formalism.MainNotions.StandardLattice.massI D (Wc D i).rank with hX`. Establish `hXle : ENNReal.ofReal X ≤ μ 𝓕`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `h1 : ENNReal.ofReal X * Measure.pi m B ≤ μ 𝓕 * Measure.pi m B`. Rewrite using `[hvol, mul_comm]`. Use `gcongr`. Use `first`. Consider the case `exact (ENNReal.mul_le_mul_right hB0 hBt).1 h1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `exact (ENNReal.mul_le_mul_iff_left hB0 hBt).1 h1`. Consider the case `exact (ENNReal.mul_le_mul_iff_right hB0 hBt).1 h1`. Establish `hfin : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[show Module.finrank ℚ D.host.E = 4 * D.R.ord from D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hf : 1 ≤ D.R.f` using `by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Establish `hmass : ((3 : ℝ) ^ (2 * D.R.f * D.R.r ^ 2))⁻¹ ≤ Formalism.MainNotions.StandardLattice.massI D D.R.r`. Use `GlobalTheory.StdMassLower.main D.host.E (fun _ => rfl) D.R.r` as an intermediate fact. Rewrite `this` using `[hfin]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `this`. Take `⟨hn1, -⟩` from `hn D.R.r hr`. Establish `hlow : (((D.R.r : ℝ) ^ (D.R.r ^ 2))⁻¹) ^ D.R.f * ((3 : ℝ) ^ (2 * D.R.f * D.R.r ^ 2))⁻¹ ≤ X`. Rewrite using `[hX, hrk]`. Establish `hr0 : (0 : ℝ) < ((D.R.r : ℝ) ^ (D.R.r ^ 2))⁻¹`.
-
-Establish `: (0 : ℝ) < D.R.r` using `by exact_mod_cast (by omega : 0 < D.R.r)`. Check the signs of the components of the expression. Establish `hv0 : 0 ≤ ReciprocityTheory.ChartRestriction.DS.volU D.R.r` using `hr0.le.trans hn1`. Conclude with `mul_le_mul (pow_le_pow_left₀ hr0.le hn1 _) hmass (by positivity) (pow_nonneg hv0 _)`. Establish `hd : (1 : ℝ) ≤ |(discr D.host.E : ℝ)|`.
-
-Conclude with `Int.one_le_abs (NumberField.discr_ne_zero D.host.E)` after adjusting the coercions. Establish `hexp` using `MainStatements.Tam.B.exp_le D.R.f D.R.r _ hf hr hd`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem low : VolSt → StabSt → NumSt → LowSt := by
   intro hv hs hn

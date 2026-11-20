@@ -20,19 +20,19 @@ Both sides reduce to the same expression.
 @[simp] theorem blockVector_first (x : L) (w : Fin N → L) (t : L) : vec3 x w t 0 = x := rfl
 
 /- English proof (translation)
-Simplify using `[vec3, mid]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blockVector_middle (x : L) (w : Fin N → L) (t : L) (j : Fin N) : vec3 x w t (mid j) = w j := by
   simp [vec3, mid]
 
 /- English proof (translation)
-Simplify using `[vec3, ← Fin.succ_last]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blockVector_last (x : L) (w : Fin N → L) (t : L) : vec3 x w t (Fin.last (N + 1)) = t := by
   simp [vec3, ← Fin.succ_last]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Break down `idx_cases i with rfl | ⟨j, rfl⟩ | rfl` into its components or cases. Conclude with `h0`. Conclude with `hm j`. Conclude with `hl`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem vec_ext {f h : Fin (N + 2) → L} (h0 : f 0 = h 0) (hm : ∀ j, f (mid j) = h (mid j))
     (hl : f (Fin.last (N + 1)) = h (Fin.last (N + 1))) : f = h := by
@@ -43,21 +43,21 @@ theorem vec_ext {f h : Fin (N + 2) → L} (h0 : f 0 = h 0) (hm : ∀ j, f (mid j
   · exact hl
 
 /- English proof (translation)
-The claim follows from `vec_ext (by simp) (fun j => by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem vec3_add (x x' : Fin N → L) (t t' : L) :
     vec3 (0 : L) x t + vec3 0 x' t' = vec3 0 (x + x') (t + t') :=
   vec_ext (by simp) (fun j => by simp) (by simp)
 
 /- English proof (translation)
-The claim follows from `vec_ext (by simp) (fun j => by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem blockVector_sub (x x' : Fin N → L) (t t' : L) :
     vec3 (0 : L) x t - vec3 0 x' t' = vec3 0 (x - x') (t - t') :=
   vec_ext (by simp) (fun j => by simp) (by simp)
 
 /- English proof (translation)
-The claim follows from `vec_ext (by simp [Finset.sum_apply]) (fun j => by simp [Finset.sum_apply, Matrix.vecMul, dotProduct]) (by simp [Finset.sum_apply, dotProduct])`.
+A detailed English derivation is pending.
 -/
 theorem sum_smul_blockVector (ρ : Fin N → L) (M : Matrix (Fin N) (Fin N) L) (s : Fin N → L) :
     ∑ k, ρ k • vec3 (0 : L) (M k) (s k) = vec3 0 (ρ ᵥ* M) (ρ ⬝ᵥ s) :=
@@ -75,7 +75,7 @@ Both sides reduce to the same expression.
     mat3 p M l 0 = p := rfl
 
 /- English proof (translation)
-Use `show (Fin.cons (α := fun _ => Fin (N + 2) → L) p (Fin.snoc (α := fun _ => Fin (N + 2) → L) M l)) (mid j) = M j`. Simplify using `[mid]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] theorem blockMatrix_middle (p : Fin (N + 2) → L) (M : Fin N → Fin (N + 2) → L) (l : Fin (N + 2) → L) (j : Fin N) :
     mat3 p M l (mid j) = M j := by
@@ -83,7 +83,7 @@ Use `show (Fin.cons (α := fun _ => Fin (N + 2) → L) p (Fin.snoc (α := fun _ 
   simp [mid]
 
 /- English proof (translation)
-Use `show (Fin.cons (α := fun _ => Fin (N + 2) → L) p (Fin.snoc (α := fun _ => Fin (N + 2) → L) M l)) (Fin.last (N + 1)) = l`. Simplify using `[← Fin.succ_last]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] theorem blockMatrix_last (p : Fin (N + 2) → L) (M : Fin N → Fin (N + 2) → L) (l : Fin (N + 2) → L) :
     mat3 p M l (Fin.last (N + 1)) = l := by
@@ -92,7 +92,7 @@ Use `show (Fin.cons (α := fun _ => Fin (N + 2) → L) p (Fin.snoc (α := fun _ 
   simp [← Fin.succ_last]
 
 /- English proof (translation)
-Rewrite using `[Matrix.vecMul_eq_sum, sum_idx]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vecMul_blockMatrix (ρ p : Fin (N + 2) → L) (M : Fin N → Fin (N + 2) → L) (l : Fin (N + 2) → L) :
     ρ ᵥ* mat3 p M l = ρ 0 • p + ∑ j, ρ (mid j) • M j + ρ (Fin.last (N + 1)) • l := by
@@ -100,13 +100,13 @@ theorem vecMul_blockMatrix (ρ p : Fin (N + 2) → L) (M : Fin N → Fin (N + 2)
   simp
 
 /- English proof (translation)
-Establish `e : (A.submatrix Fin.succ Fin.succ).det = A (Fin.last (N + 1)) (Fin.last (N + 1)) * B.det`. Rewrite using `[Matrix.det_succ_row _ (Fin.last N), Finset.sum_eq_single (Fin.last N)]`. Establish `: ((A.submatrix Fin.succ Fin.succ).submatrix (Fin.last N).succAbove (Fin.last N).succAbove) = B`. Use extensionality with `i j`. Simplify `hm i j` using `[mid]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[this]`. Simplify using `[← two_mul, Fin.succ_last]`. Introduce `j _ hj`. Establish `: j.succ ≠ Fin.last (N + 1)` using `fun h => hj (by simpa [← Fin.succ_last] using h)`. Establish `h2 : A.submatrix Fin.succ Fin.succ (Fin.last N) j = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.submatrix_apply, Fin.succ_last]`. Conclude with `hl _ this`. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_succ_column_zero, Finset.sum_eq_single 0 (fun i _ hi => by rw [h0 i hi]; simp) (by simp)]`. Simplify using `only [Fin.succAbove_zero, e]`. Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_tri (A : Matrix (Fin (N + 2)) (Fin (N + 2)) L) (B : Matrix (Fin N) (Fin N) L)
     (h0 : ∀ i, i ≠ 0 → A i 0 = 0) (hl : ∀ j, j ≠ Fin.last (N + 1) → A (Fin.last (N + 1)) j = 0)
@@ -138,7 +138,7 @@ section Lat
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {N : ℕ}
 
 /- English proof (translation)
-Establish `e : vec3 (0 : L) ((X * M) i) ((X *ᵥ s) i) = ∑ k, X i k • vec3 (0 : L) (M k) (s k)`. Rewrite using `[sum_smul_blockVector]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `R.sum_mem fun k _ => R.smul_mem ⟨X i k, hX i k⟩ (h k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb (R : Submodule (intL L) (Fin (N + 2) → L)) {X : Matrix (Fin N) (Fin N) L} (hX : IsInt X)
     (M : Matrix (Fin N) (Fin N) L) (s : Fin N → L) (h : ∀ k, vec3 (0 : L) (M k) (s k) ∈ R) (i : Fin N) :
@@ -150,9 +150,7 @@ theorem comb (R : Submodule (intL L) (Fin (N + 2) → L)) {X : Matrix (Fin N) (F
   exact R.sum_mem fun k _ => R.smul_mem ⟨X i k, hX i k⟩ (h k)
 
 /- English proof (translation)
-Establish `hi : t / w ∈ intL L`. Rewrite using `[GlobalTheory.UnitarySwap.mem_int, map_div₀]`. Conclude with `div_le_one_of_le₀ hv zero_le'`. Establish `e : vec3 (0 : L) (0 : Fin N → L) t = (t / w) • vec3 (0 : L) (0 : Fin N → L) w` using `vec_ext (by simp) (fun j => by simp) (by simp [hw])`. Rewrite using `[e]`.
-
-Conclude with `R.smul_mem ⟨t / w, hi⟩ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale (R : Submodule (intL L) (Fin (N + 2) → L)) {w t : L} (hw : w ≠ 0)
     (hv : Valued.v t ≤ Valued.v w) (h : vec3 (0 : L) 0 w ∈ R) : vec3 (0 : L) 0 t ∈ R := by
@@ -165,7 +163,7 @@ theorem scale (R : Submodule (intL L) (Fin (N + 2) → L)) {w t : L} (hw : w ≠
   exact R.smul_mem ⟨t / w, hi⟩ h
 
 /- English proof (translation)
-Rewrite using `[map_zpow₀, hϖ, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem v_zpow {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (k : ℤ) :
     Valued.v (ϖ ^ k) = WithZero.exp (-k) := by
@@ -173,15 +171,15 @@ theorem v_zpow {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (k : ℤ) 
   simp
 
 /- English proof (translation)
-Take `⟨hU, hV, hC, hgC, e⟩` from `hf`. Establish `e' : C * (U + V * g₀) = 1` using `mul_eq_one_comm.1 e`. Establish `h1' : ∀ k, vec3 (0 : L) ((1 : Matrix (Fin N) (Fin N) L) k) ((0 : Fin N → L) k) ∈ R` using `h1`. Establish `c1 : ∀ {X : Matrix (Fin N) (Fin N) L}, IsInt X → ∀ i, vec3 (0 : L) (X i) 0 ∈ R` using `fun {X} hX i => by`. Simplify using `using comb R hX 1 0 h1' i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `c2 : ∀ {X : Matrix (Fin N) (Fin N) L}, IsInt X → ∀ i, vec3 (0 : L) ((X * g₀) i) (((X * g₀) *ᵥ b) i) ∈ R` using `fun {X} hX i => by`. Simplify `comb R hX g₀ (g₀ *ᵥ b) h2 i` using `[Matrix.mulVec_mulVec]`. Establish `eA : C * V * g₀ = 1 - C * U`. Rewrite using `[← e', Matrix.mul_add, Matrix.mul_assoc C V g₀]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `iA : IsInt (C * V * g₀)` using `fun i j => by`. Rewrite using `[eA]`. Conclude with `sub_mem (isInt_one i j) ((hC.mul hU) i j)`. Establish `eB : (1 - g₀ * C * V) * g₀ = g₀ * C * U`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc g₀ C V, Matrix.mul_assoc g₀ (C * V) g₀, eA, Matrix.mul_sub, Matrix.mul_one, Matrix.mul_assoc g₀ C U]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `iB : IsInt (1 - g₀ * C * V)` using `fun i j => sub_mem (isInt_one i j) ((hgC.mul hV) i j)`. Use `⟨fun k => ?_, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `R.add_mem (c1 hU k) (c2 hV k)` as an intermediate fact. Rewrite `this` using `[vec3_add, zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `R.sub_mem (c2 (hC.mul hV) i) (c1 iA i)` as an intermediate fact. Rewrite `this` using `[blockVector_sub, sub_self, sub_zero]`. Then use the resulting hypothesis. Use `R.sub_mem (c2 iB i) (c1 (hgC.mul hU) i)` as an intermediate fact. Rewrite `this` using `[eB, blockVector_sub, sub_self, sub_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mid_le {R : Submodule (intL L) (Fin (N + 2) → L)} {g₀ U V C : Matrix (Fin N) (Fin N) L} {b : Fin N → L}
     (hf : IsFrac g₀ U V C) (h1 : ∀ k, vec3 (0 : L) ((1 : Matrix (Fin N) (Fin N) L) k) 0 ∈ R)
@@ -217,11 +215,11 @@ theorem mid_le {R : Submodule (intL L) (Fin (N + 2) → L)} {g₀ U V C : Matrix
     rwa [eB, blockVector_sub, sub_self, sub_zero] at this
 
 /- English proof (translation)
-Take `⟨hU, hV, hC, hgC, e⟩` from `hf`. Establish `e' : C * (U + V * g₀) = 1` using `mul_eq_one_comm.1 e`. Use `⟨fun k => ?_, fun k => ?_⟩` and prove the remaining obligations. Use `R.sub_mem (comb R hC (U + V * g₀) ((V * g₀) *ᵥ b) hm k) (h1 k)` as an intermediate fact. Rewrite `this` using `[e', blockVector_sub, sub_zero, Matrix.mulVec_mulVec, ← Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Use `R.add_mem (comb R hgC (U + V * g₀) ((V * g₀) *ᵥ b) hm k) (h2 k)` as an intermediate fact. Establish `e2 : g₀ * C * (U + V * g₀) = g₀` using `by rw [Matrix.mul_assoc, e', Matrix.mul_one]`. Establish `e3 : ((g₀ * C) *ᵥ ((V * g₀) *ᵥ b)) k + ((g₀ * C * U) *ᵥ b) k = (g₀ *ᵥ b) k`. Rewrite using `[Matrix.mulVec_mulVec, ← Pi.add_apply, ← Matrix.add_mulVec, ← Matrix.mul_add, add_comm, e2]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[vec3_add, e2, add_zero, e3]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mid_ge {R : Submodule (intL L) (Fin (N + 2) → L)} {g₀ U V C : Matrix (Fin N) (Fin N) L} {b : Fin N → L}
     (hf : IsFrac g₀ U V C) (hm : ∀ k, vec3 (0 : L) ((U + V * g₀) k) (((V * g₀) *ᵥ b) k) ∈ R)
@@ -242,23 +240,21 @@ theorem mid_ge {R : Submodule (intL L) (Fin (N + 2) → L)} {g₀ U V C : Matrix
     rwa [vec3_add, e2, add_zero, e3] at this
 
 /- English proof (translation)
-Establish `hϖ0 : ϖ ≠ 0` using `fun h => by`. Rewrite `hϖ` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hϖ.symm`. Establish `hint : ∀ n : ℕ, ϖ ^ n ∈ intL L` using `fun n => pow_mem (by`. Rewrite using `[GlobalTheory.UnitarySwap.mem_int, hϖ, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use the proof step `omega) n`. Break down `le_or_gt 0 a with h | h` into its components or cases. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le h`. Establish `t1 : (n : ℤ).toNat = n` using `Int.toNat_natCast n`. Establish `t2 : (-(n : ℤ)).toNat = 0` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ew : vec3 ((ϖ ^ (n : ℤ))) (ϖ ^ (n : ℤ) • r) (ϖ ^ (n : ℤ) * c) = ϖ ^ n • vec3 (1 : L) 0 0 + vec3 (0 : L) (ϖ ^ n • r) (ϖ ^ n * c)` using `vec_ext (by simp) (fun j => by simp) (by simp)`. Rewrite using `[t1, t2]`. Use `⟨vec3 1 0 0, by simp, he, ?_, ⟨ϖ ^ (-(n : ℤ)), ?_, hD⟩, fun R' h1 h2 => ⟨h1, ?_⟩⟩` and prove the remaining obligations. Use `R.sub_mem hA (R.smul_mem ⟨ϖ ^ n, hint n⟩ he)` as an intermediate fact. Rewrite `this` using `[ew]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `show _ = ϖ ^ n • vec3 (1 : L) 0 0 + _ - ϖ ^ n • vec3 (1 : L) 0 0`. Normalize the expressions using the abelian group laws. Rewrite using `[v_zpow hϖ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ew]`. Conclude with `R'.add_mem (R'.smul_mem ⟨ϖ ^ n, hint n⟩ h1) h2`. Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le (show 0 ≤ -a by omega)`. Take `rfl : a = -(n : ℤ)` from `by omega`. Establish `t1 : (-(n : ℤ)).toNat = 0` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t2 : (-(-(n : ℤ))).toNat = n` using `by simp`. Establish `en : ϖ ^ n * (ϖ ^ n)⁻¹ = 1` using `mul_inv_cancel₀ (pow_ne_zero _ hϖ0)`. Establish `ew : vec3 (1 : L) 0 0 = ϖ ^ n • vec3 (ϖ ^ (-(n : ℤ))) (ϖ ^ (-(n : ℤ)) • r) (ϖ ^ (-(n : ℤ)) * c) - vec3 (0 : L) r c` using `vec_ext (by simp [en]) (fun j => by simp [← mul_assoc, en]) (by simp [← mul_assoc, en])`. Establish `ew2 : ϖ ^ n • vec3 (ϖ ^ (-(n : ℤ))) (ϖ ^ (-(n : ℤ)) • r) (ϖ ^ (-(n : ℤ)) * c) = vec3 (1 : L) 0 0 + vec3 (0 : L) r c` using `by rw [ew]; abel`. Rewrite using `[t1, t2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [pow_zero, one_smul, one_mul]`. Use `⟨_, ?_, hA, ?_, ⟨1, by simp, hl⟩, fun R' h1 h2 => ⟨?_, h1⟩⟩` and prove the remaining obligations. Rewrite using `[blockVector_first, v_zpow hϖ]`. Simplify using the standard rewrite rules. Use `R.sub_mem (R.smul_mem ⟨ϖ ^ n, hint n⟩ hA) he` as an intermediate fact.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `show _ = ϖ ^ n • vec3 (ϖ ^ (-(n : ℤ))) (ϖ ^ (-(n : ℤ)) • r) (ϖ ^ (-(n : ℤ)) * c) - _`. Rewrite using `[ew2]`. Normalize the expressions using the abelian group laws. Rewrite using `[ew]`.
-
-Conclude with `R'.sub_mem (R'.smul_mem ⟨ϖ ^ n, hint n⟩ h1) h2`.
+A detailed English derivation is pending.
 -/
 theorem first_row {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (a : ℤ) (r : Fin N → L) (c : L)
     (R : Submodule (intL L) (Fin (N + 2) → L)) (he : vec3 (1 : L) 0 0 ∈ R)
@@ -325,9 +321,9 @@ section Main
 variable {L : Type} [Field L] {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[vecMul_blockMatrix]`. Simplify using `only [blockVector_first, blockVector_middle, blockVector_last, zero_smul, zero_add]`. Rewrite using `[sum_smul_blockVector (z • (r ᵥ* C)) (U + V * g₀) ((V * g₀) *ᵥ b)]`. Establish `e1 : (z • (r ᵥ* C)) ᵥ* (U + V * g₀) = z • r`. Rewrite using `[Matrix.smul_vecMul, Matrix.vecMul_vecMul, e, Matrix.vecMul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (z • (r ᵥ* C)) ⬝ᵥ ((V * g₀) *ᵥ b) = z * (r ⬝ᵥ ((C * V * g₀) *ᵥ b))`. Rewrite using `[smul_dotProduct, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, smul_eq_mul, Matrix.mul_assoc C V g₀]`. Rewrite using `[e1, e2]`. Conclude with `vec_ext (by simp) (fun j => by simp) (by simp; field_simp; ring)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecMul_basis (q : Fin (N + 2) → L) (g₀ U V C : Matrix (Fin N) (Fin N) L) (r b : Fin N → L) (c y z : L)
     (hy : y ≠ 0) (e : C * (U + V * g₀) = 1) :
@@ -345,11 +341,11 @@ theorem vecMul_basis (q : Fin (N + 2) → L) (g₀ U V C : Matrix (Fin N) (Fin N
   exact vec_ext (by simp) (fun j => by simp) (by simp; field_simp; ring)
 
 /- English proof (translation)
-Use `det_tri (mat3 q (fun k => vec3 (0 : L) (B k) (s k)) (vec3 (0 : L) 0 y)) B ?_ ?_ ?_` as an intermediate fact. Simplify using `using this`. Introduce `i hi`. Break down `idx_cases i with rfl | ⟨j, rfl⟩ | rfl` into its components or cases. Conclude with `absurd rfl hi`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `j hj`. Break down `idx_cases j with rfl | ⟨j, rfl⟩ | rfl` into its components or cases. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `absurd rfl hj`. Introduce `i j`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_basis (q : Fin (N + 2) → L) (B : Matrix (Fin N) (Fin N) L) (s : Fin N → L) (y : L) :
     (mat3 q (fun k => vec3 (0 : L) (B k) (s k)) (vec3 (0 : L) 0 y)).det = q 0 * y * B.det := by
@@ -371,39 +367,35 @@ theorem det_basis (q : Fin (N + 2) → L) (B : Matrix (Fin N) (Fin N) L) (s : Fi
 end Main
 
 /- English proof (translation)
-Introduce `L _ _ ϖ N a g g₀ U V C r b c y hϖ hf h00 h0m h0l hm0 hmm hml hl0 hlm hll hya hy1 hy2 hyc`. Establish `eg0 : g 0 = vec3 (ϖ ^ a) (ϖ ^ a • r) (ϖ ^ a * c)` using `vec_ext (by simp [h00]) (fun j => by simp [h0m]) (by simp [h0l])`. Establish `egm : ∀ i, g (mid i) = vec3 (0 : L) (g₀ i) ((g₀ *ᵥ b) i)` using `fun i => vec_ext (by simp [hm0]) (fun j => by simp [hmm]) (by simp [hml])`. Establish `egl : g (Fin.last (N + 1)) = vec3 (0 : L) (0 : Fin N → L) (ϖ ^ (-a))` using `vec_ext (by simp [hl0]) (fun j => by simp [hlm]) (by simp [hll])`. Establish `e10 : (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) 0 = vec3 (1 : L) (0 : Fin N → L) 0` using `vec_ext (by simp) (fun j => by simp [Matrix.one_apply, (mid_ne_zero j).symm]) (by simp [Matrix.one_apply])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1m : ∀ k, (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) (mid k) = vec3 (0 : L) ((1 : Matrix (Fin N) (Fin N) L) k) 0` using `fun k => vec_ext (by simp [Matrix.one_apply, mid_ne_zero]) (fun j => by simp [Matrix.one_apply, mid_injective.eq_iff]) (by simp [Matrix.one_apply, mid_ne_last])`. Establish `e1l : (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) (Fin.last (N + 1)) = vec3 (0 : L) (0 : Fin N → L) 1` using `vec_ext (by simp [Matrix.one_apply]) (fun j => by simp [Matrix.one_apply, (mid_ne_last j).symm]) (by simp)`. Take `⟨R, hR⟩ : ∃ R, R = rowLat (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) ⊔ rowLat g` from `⟨_, rfl⟩`. Establish `r1 : ∀ i, (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) i ∈ R` using `fun i => hR ▸ Submodule.mem_sup_left (row_mem_rowLat _ i)`. Establish `r2 : ∀ i, g i ∈ R` using `fun i => hR ▸ Submodule.mem_sup_right (row_mem_rowLat _ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hq0, hqR, hwR, ⟨w, hw, hwl⟩, hback⟩` from `first_row hϖ a r c R (by rw [← e10]; exact r1 0) (by rw [← eg0]; exact r2 0) (by rw [← e1l]; exact r1 _) (by rw [← egl]; exact r2 _)`. Take `⟨m1, m2, m3⟩` from `mid_le (b := b) hf (R := R) (fun k => by rw [← e1m]; exact r1 _) (fun k => by rw [← egm]; exact r2 _)`. Establish `hval : WithZero.exp (a.toNat : ℤ) ≠ 0` using `WithZero.exp_ne_zero`. Establish `hvy : Valued.v y ≠ 0` using `fun h => by`. Rewrite `hya` using `[h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hval (le_antisymm hya zero_le')`. Establish `hy0 : y ≠ 0` using `fun h => hvy (by rw [h, map_zero])`. Establish `hnz : ∀ t : L, Valued.v y = Valued.v t → t ≠ 0` using `fun t h h0 => hvy (by rw [h, h0, map_zero])`. Establish `hyR : vec3 (0 : L) (0 : Fin N → L) y ∈ R`. Break down `hyc with h | ⟨i, h⟩ | ⟨i, h⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `scale R (hnz w (h.trans hw.symm)) (h.trans hw.symm).le hwl`. Conclude with `scale R (hnz _ h) h.le (m2 i)`. Conclude with `scale R (hnz _ h) h.le (m3 i)`. Establish `e' : C * (U + V * g₀) = 1` using `mul_eq_one_comm.1 hf.2.2.2.2`. Take `⟨M, hM⟩ : ∃ M : Fin N → Fin (N + 2) → L, M = fun k => vec3 (0 : L) ((U + V * g₀) k) (((V * g₀) *ᵥ b) k)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, hP⟩ : ∃ P, P = mat3 q M (vec3 (0 : L) 0 y)` from `⟨_, rfl⟩`. Take `⟨ρ, hρ⟩ : ∃ ρ, ρ = vec3 (0 : L) (ϖ ^ a.toNat • (r ᵥ* C)) (ϖ ^ a.toNat * (c - r ⬝ᵥ ((C * V * g₀) *ᵥ b)) / y)` from `⟨_, rfl⟩`. Establish `eρ : ρ ᵥ* P = vec3 (0 : L) (ϖ ^ a.toNat • r) (ϖ ^ a.toNat * c)`. Rewrite using `[hρ, hP, hM]`. Conclude with `vecMul_basis q g₀ U V C r b c y _ hy0 e'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hdet : Valued.v (U + V * g₀).det = (Valued.v C.det)⁻¹`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← Matrix.det_mul, hf.2.2.2.2, Matrix.det_one, map_one]`. Use `⟨P, ρ, ?_, by rw [hρ]; simp, fun j => by rw [hρ]; simp, by rw [hρ]; simp, ?_⟩` and prove the remaining obligations. Rewrite using `[hP, hM, det_basis q (U + V * g₀) ((V * g₀) *ᵥ b) y, map_mul, map_mul, hq0, hdet]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_right_comm _ _ _`. Rewrite using `[← hR]`. Take `⟨R', hR'⟩ : ∃ R', R' = rowLat P ⊔ Submodule.span (intL L) {ρ ᵥ* P}` from `⟨_, rfl⟩`. Rewrite using `[← hR']`. Establish `p1 : ∀ i, P i ∈ R'` using `fun i => hR' ▸ Submodule.mem_sup_left (row_mem_rowLat _ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq' : q ∈ R'` using `by simpa [hP] using p1 0`. Establish `hm' : ∀ k, vec3 (0 : L) ((U + V * g₀) k) (((V * g₀) *ᵥ b) k) ∈ R'` using `fun k => by`. Use `p1 (mid k)` as an intermediate fact. Simplify `this` using `[hP, hM]`. Establish `hy' : vec3 (0 : L) (0 : Fin N → L) y ∈ R'` using `by simpa [hP] using p1 (Fin.last (N + 1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw' : vec3 (0 : L) (ϖ ^ a.toNat • r) (ϖ ^ a.toNat * c) ∈ R'`. Rewrite using `[← eρ, hR']`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span rfl)`. Establish `sc : ∀ t, Valued.v t ≤ Valued.v y → vec3 (0 : L) (0 : Fin N → L) t ∈ R'` using `fun t ht => scale R' hy0 ht hy'`. Take `⟨n1, n2⟩` from `mid_ge (b := b) hf hm' (fun i => sc _ (hy1 i)) (fun i => sc _ (hy2 i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f1, f2⟩` from `hback R' hq' hw'`. Establish `hone : Valued.v (1 : L) ≤ Valued.v y`. Use `le_trans ?_ hya` and prove the remaining obligations. Rewrite using `[map_one, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hD : Valued.v (ϖ ^ (-a)) ≤ Valued.v y`. Use `le_trans ?_ hya` and prove the remaining obligations. Rewrite using `[v_zpow hϖ, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Apply `le_antisymm` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hR]`. Use `sup_le (rowLat_le.2 fun i => ?_) (rowLat_le.2 fun i => ?_)` and prove the remaining obligations. Break down `idx_cases i with rfl | ⟨j, rfl⟩ | rfl` into its components or cases. Rewrite using `[e10]`. Conclude with `f1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1m]`. Conclude with `n1 j`. Rewrite using `[e1l]`. Conclude with `sc 1 hone`. Break down `idx_cases i with rfl | ⟨j, rfl⟩ | rfl` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eg0]`. Conclude with `f2`. Rewrite using `[egm]`. Conclude with `n2 j`. Rewrite using `[egl]`.
-
-Conclude with `sc _ hD`. Rewrite using `[hR']`. Use `sup_le (rowLat_le.2 fun i => ?_) ?_` and prove the remaining obligations. Break down `idx_cases i with rfl | ⟨j, rfl⟩ | rfl` into its components or cases. Simplify `hqR` using `[hP]`.
-
-Simplify `m1 j` using `[hP, hM]`. Simplify `hyR` using `[hP]`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, eρ]`. Conclude with `hwR`.
+A detailed English derivation is pending.
 -/
 theorem spanEq : SpanEq := by
   intro L _ _ ϖ N a g g₀ U V C r b c y hϖ hf h00 h0m h0l hm0 hmm hml hl0 hlm hll hya hy1 hy2 hyc

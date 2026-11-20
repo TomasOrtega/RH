@@ -17,11 +17,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.FinPolySupp
 
 /- English proof (translation)
-Introduce `E _ _ _ n w y hy`. Take `⟨M, rfl⟩` from `hy`. Establish `hint : ∀ z : Ov E w, Valued.v (z : w.adicCompletion E) ≤ 1` using `fun z => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 z.2`. Use `⟨fun k => ?_, ?_⟩` and prove the remaining obligations. Establish `: (bc (Ov E w).subtype M).val = (M.val).map (Ov E w).subtype` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, Matrix.charpoly_map, coeff_map]`. Conclude with `hint _`. Rewrite using `[← map_inv]`. Establish `: (bc (Ov E w).subtype M⁻¹).val = ((M⁻¹).val).map (Ov E w).subtype` using `rfl`. Rewrite using `[this, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
-
-Conclude with `hint _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_pts : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E) (y : GLw n w), y ∈ GlobalTheory.LFun.KGL w n → (∀ k, Valued.v (y.val.charpoly.coeff k) ≤ 1) ∧ Valued.v (y⁻¹ : GLw n w).val.det ≤ 1 := by
   intro E _ _ _ n w y hy
@@ -41,13 +39,13 @@ namespace GlobalTheory.FinPolySupp
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`.
+A detailed English derivation is pending.
 -/
 theorem val_alg (w : Pl E) (x : E) : Valued.v (algebraMap E (w.adicCompletion E) x) = w.valuation E x :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `a`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), h]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem pl_ext {u u' : Pl E} (h : ∀ x : E, u.valuation E x = u'.valuation E x) : u = u' := by
   apply HeightOneSpectrum.ext
@@ -55,13 +53,11 @@ theorem pl_ext {u u' : Pl E} (h : ∀ x : E, u.valuation E x = u'.valuation E x)
   rw [← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E), h]
 
 /- English proof (translation)
-Establish `hc : ∀ k, algebraMap E (w.adicCompletion E) (P.coeff k) = y.val.charpoly.coeff k`. Introduce `k`. Rewrite using `[hP, atPl, coeff_map]`. Use `⟨fun k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← val_alg, hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 k`. Rewrite using `[← val_alg, map_inv₀, hc]`. Establish `hdet : y.val.det = (-1) ^ Fintype.card (Fin n) * y.val.charpoly.coeff 0` using `Matrix.det_eq_sign_charpoly_coeff _`. Establish `hmul : (y⁻¹ : GLw n w).val.det * y.val.det = 1`. Rewrite using `[← Matrix.det_mul, Units.inv_mul, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : (y⁻¹ : GLw n w).val.det = (y.val.det)⁻¹` using `eq_inv_of_mul_eq_one_left hmul`. Establish `hv : Valued.v y.val.det = Valued.v (y.val.charpoly.coeff 0)`. Rewrite using `[hdet, map_mul, map_pow, Valuation.map_neg, map_one, one_pow, one_mul]`. Rewrite `h2` using `[hinv, map_inv₀, hv]`. Rewrite using `[map_inv₀]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer {n : ℕ} (w : Pl E) (y : GLw n w) (P : E[X]) (hP : y.val.charpoly = atPl w P)
     (γ : WithZero (Multiplicative ℤ))
@@ -83,13 +79,11 @@ theorem transfer {n : ℕ} (w : Pl E) (y : GLw n w) (P : E[X]) (hP : y.val.charp
     rw [map_inv₀]; exact h2
 
 /- English proof (translation)
-Distinguish the cases in `hind : f = (KL n w : Set (UL n w)).indicator 1`. Use `⟨1, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `P ⟨y, hy, hP⟩`. Establish `hyK : y ∈ KL n w`. Assume the negation of the conclusion as `hn`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hy` to reduce the goal to its premises. Rewrite using `[hind]`. Conclude with `Set.indicator_of_notMem hn _`. Establish `hy1 : y.1 ∈ GlobalTheory.LFun.KGL w n` using `(Subgroup.mem_subgroupOf).1 hyK`. Take `⟨h1, h2⟩` from `int_pts E n w y.1 hy1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `transfer w y.1 P hP 1 h1 h2`. Take `⟨γ, hγ⟩` from `GlobalTheory.T.charpoly_coeff_det_inv_valuation_bounded_of_isCompact_GL E n w (Subtype.val '' tsupport f) (hf.image continuous_subtype_val)`. Use `⟨γ, fun h => absurd h hind, ?_⟩` and prove the remaining obligations. Introduce and unpack `P ⟨y, hy, hP⟩`. Take `⟨h1, h2⟩` from `hγ y.1 ⟨y, subset_tsupport f hy, rfl⟩`.
-
-Conclude with `transfer w y.1 P hP γ h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bound_at (n : ℕ) (w : Pl E) (f : UL n w → ℂ) (hf : HasCompactSupport f) :
     ∃ γ : WithZero (Multiplicative ℤ), (f = (KL n w : Set (UL n w)).indicator 1 → γ = 1) ∧
@@ -113,15 +107,13 @@ theorem bound_at (n : ℕ) (w : Pl E) (f : UL n w → ℂ) (hf : HasCompactSuppo
     exact transfer w y.1 P hP γ h1 h2
 
 /- English proof (translation)
-Take `⟨h0, hcsr⟩` from `GlobalTheory.T.elliptic_charpoly_self_reciprocal E n P hP`. Establish `hdeg : (P.map (IsCMField.complexConj E).toRingEquiv.toRingHom).natDegree = n`. Rewrite using `[natDegree_map_eq_of_injective (RingHom.injective _)]`. Conclude with `hP.2.1`. Establish `key : ∀ j ≤ n, IsCMField.complexConj E (P.coeff 0) * P.coeff j = IsCMField.complexConj E (P.coeff (n - j))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Use `congrArg (fun Q => Q.coeff j) hcsr` as an intermediate fact. Simplify using `only [coeff_C_mul, coeff_reverse, hdeg, coeff_map] at this`. Rewrite `this` using `[revAt_le hj]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : IsCMField.complexConj E (P.coeff 0) = (P.coeff 0)⁻¹`. Use `key 0 (Nat.zero_le _)` as an intermediate fact. Establish `hn : P.coeff n = 1` using `by rw [← hP.2.1]; exact hP.1`. Rewrite `this` using `[Nat.sub_zero, hn, map_one]`. Conclude with `eq_inv_of_mul_eq_one_left this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hk`. Use `key (n - k) (Nat.sub_le n k)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self hk, hc0]`. Rewrite using `[← this]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[coeff_eq_zero_of_natDegree_lt (by rw [hP.2.1]; omega), map_zero]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_coeff (n : ℕ) (P : E[X]) (hP : P ∈ Ell E n) (k : ℕ) :
     IsCMField.complexConj E (P.coeff k) = if k ≤ n then P.coeff (n - k) * (P.coeff 0)⁻¹ else 0 := by
@@ -147,25 +139,21 @@ theorem conj_coeff (n : ℕ) (P : E[X]) (hP : P ∈ Ell E n) (k : ℕ) :
   · rw [coeff_eq_zero_of_natDegree_lt (by rw [hP.2.1]; omega), map_zero]
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n S hS f hcpt hev`. Use `choose γ hγ1 hγ using fun w => bound_at n w (f w) (hcpt w)`. Establish `hpart` using `GlobalTheory.T.exists_mem_section_valuation_eq_conj E S hS`. Set `p : Pl E → Pl E` to `fun u => if h : u ∈ S then u else (hpart u h).choose`. Establish `hpS : ∀ u, u ∉ S → p u ∈ S ∧ ∀ x : E, u.valuation E x = (p u).valuation E (IsCMField.complexConj E x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Simplify using `only [p, dif_neg hu]`. Conclude with `(hpart u hu).choose_spec`. Set `Γ : Pl E → WithZero (Multiplicative ℤ)` to `fun u => if u ∈ S then γ u else γ (p u) * γ (p u)`. Establish `hB : {w | ¬ f w = (KL n w : Set (UL n w)).indicator 1}.Finite` using `Filter.eventually_cofinite.1 hev`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΓ : ∀ᶠ u in cofinite, Γ u ≤ 1`. Rewrite using `[Filter.eventually_cofinite]`. Establish `hsub : {u | ¬ Γ u ≤ 1} ⊆ {w | ¬ f w = (KL n w : Set (UL n w)).indicator 1} ∪ {u | u ∉ S ∧ p u ∈ {w | ¬ f w = (KL n w : Set (UL n w)).indicator 1}}`. Introduce `u hu`. Distinguish the cases in `huS : u ∈ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `left`. Introduce `hf`. Apply `hu` to reduce the goal to its premises. Simplify using `[Γ, huS, hγ1 u hf]`. Use `right`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨huS, fun hf => hu ?_⟩` and prove the remaining obligations. Simplify using `[Γ, huS, hγ1 _ hf]`. Use `(hB.union ?_).subset hsub` and prove the remaining obligations. Use `Set.Finite.of_finite_image (f := p) (hB.subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu.2`. Introduce `u hu u' hu' he`. Apply `pl_ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[(hpS u hu.1).2, (hpS u' hu'.1).2, he]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨d, hd0, hd⟩` from `GlobalTheory.T.exists_common_integer_denominator_of_valuation_bounds E Γ hΓ`. Use `(GlobalTheory.T.finite_monic_unitRoots_bounded_denominator_numberField E n d hd0).subset ?_` and prove the remaining obligations. Introduce and unpack `P ⟨hP, hPS⟩`. Use `⟨hP.1, hP.2.1, hP.2.2.2, fun k => hd _ fun u => ?_⟩` and prove the remaining obligations. Distinguish the cases in `huS : u ∈ S`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Γ, if_pos huS]`. Conclude with `(hγ u P (hPS u huS)).1 k`. Simplify using `only [Γ, if_neg huS]`. Take `⟨hpu, hv⟩` from `hpS u huS`. Take `⟨hb1, hb2⟩` from `hγ (p u) P (hPS _ hpu)`.
-
-Rewrite using `[hv, conj_coeff n P hP k]`. Use `split_ifs`. Rewrite using `[map_mul]`. Conclude with `mul_le_mul' (hb1 _) hb2`. Rewrite using `[map_zero]`.
-
-Conclude with `zero_le'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finpoly : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (S : Set (Pl E)), IsSection S → ∀ f : ∀ w : Pl E, UL n w → ℂ, (∀ w, HasCompactSupport (f w)) → (∀ᶠ w in (cofinite : Filter (Pl E)), f w = (KL n w : Set (UL n w)).indicator 1) → {P : E[X] | P ∈ Ell E n ∧ ∀ w ∈ S, ∃ y : UL n w, f w y ≠ 0 ∧ y.1.val.charpoly = atPl w P}.Finite := by
   intro E _ _ _ _ n S hS f hcpt hev

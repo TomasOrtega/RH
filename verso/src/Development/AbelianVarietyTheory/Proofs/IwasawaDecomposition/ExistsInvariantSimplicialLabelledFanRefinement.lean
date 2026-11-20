@@ -12,13 +12,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan
 
 /- English proof (translation)
-Introduce `E _ _ _ H q ψ hD hψ hT`. Take `⟨lab, hlT, hlab⟩` from `GlobalTheory.T.exists_invariant_carrierDim_polyFan E H q ψ hD hψ hT`. Take `⟨N, hN⟩` from `GlobalTheory.T.polFanCarrierDimension_bounded E H q ψ lab hlab`. Establish `key : ∀ d : ℕ, ∃ φ : InvFun (𝓞 E), IsTwInv H φ ∧ IsBaryStage H.bar q ψ lab φ (N - d)`. Introduce `d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `d with`. Consider the case `zero => exact ⟨ψ, hT, isBaryStage_start hψ hN⟩`. Consider the case `succ d ih`. Take `⟨φ, hφT, hφ⟩` from `ih`. Break down `Nat.eq_zero_or_pos (N - d) with h | h` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨φ, hφT, by rw [show N - (d + 1) = N - d by omega]; exact hφ⟩`. Establish `e : N - d = (N - (d + 1)) + 1` using `by omega`. Rewrite `hφ` using `[e]`. Conclude with `GlobalTheory.T.barycentricSubdivision_star_step_cells E H q ψ lab φ _ hD hψ hT hlT hlab hφT hφ`. Take `⟨φ, hφT, hφ⟩` from `key N`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hφ` using `[Nat.sub_self]`. Conclude with `⟨φ, lab, hφ.1, hφT, hlT, GlobalTheory.T.simplicialLabelling_of_barycentricStage_zero _ H.bar q ψ lab φ hlab hφ, hφ.2.1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_simpLab_refinement : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ : InvFun (𝓞 E)), (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X) → IsPolyFan H.bar q ψ → IsTwInv H ψ → ∃ φ lab : InvFun (𝓞 E), IsPolyFan H.bar q φ ∧ IsTwInv H φ ∧ IsTwInv H lab ∧ SimpLab H.bar q φ lab ∧ Subordinate H.bar q φ ψ := by
   intro E _ _ _ H q ψ hD hψ hT

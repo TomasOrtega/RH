@@ -18,7 +18,7 @@ variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[segre, Finset.prod_mul_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem segre_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
     segre (fun p ↦ c p.1 * z p) = (∏ k, c k) • segre z := by
@@ -28,11 +28,11 @@ theorem segre_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `rel a b hab`. Take `⟨c, hc, hb⟩` from `hab`. Conclude with `⟨∏ k, c k, Finset.prod_ne_zero_iff.mpr fun k _ ↦ hc k, by rw [hb, segre_smul]⟩`. Consider the case `refl a => exact ⟨1, one_ne_zero, (one_smul _ _).symm⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `symm a b _ ih`. Take `⟨t, ht, hab⟩` from `ih`. Conclude with `⟨t⁻¹, inv_ne_zero ht, by rw [hab, smul_smul, inv_mul_cancel₀ ht, one_smul]⟩`. Consider the case `trans a b d _ _ ih₁ ih₂`. Take `⟨t, ht, hab⟩` from `ih₁`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hbd⟩` from `ih₂`. Conclude with `⟨u * t, mul_ne_zero hu ht, by rw [hbd, hab, smul_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem segre_eq_smul_of_eqvGen {P : Ideal (MRing ι)} {z z' : mcPts P}
     (h : Relation.EqvGen (fun z z' : mcPts P ↦ ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧
@@ -56,13 +56,13 @@ variable {e : ℕ}
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use `set r := fun z z' : mcPts P ↦ ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧ (z' : (Σ k, ι k) → ℂ) = fun p ↦ c p.1 * (z : (Σ k, ι k) → ℂ) p with hr`. Establish `hQ : Finite (Quot r)` using `(Nat.card_pos_iff.mp hP).2`. Set `F : fibre P Ψ y → Quot r` to `fun w ↦ Quot.mk r ⟨w.2.choose, w.2.choose_spec.1⟩`. Establish `hF : Function.Injective F`. Introduce `w w' hww`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, hseg⟩` from `segre_eq_smul_of_eqvGen (Quot.eqvGen_exact hww)`. Establish `h1` using `w.2.choose_spec.2`. Establish `h2` using `w'.2.choose_spec.2`. Simplify using `only at hseg`. Rewrite `hseg` using `[h1.1, h2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hΨ : Ψ (w' : ((k : K) → ι k) → ℂ) = t • Ψ (w : ((k : K) → ι k) → ℂ)`. Rewrite using `[hseg, map_smul]`. Rewrite `hΨ` using `[h1.2, h2.2]`. Establish `h0` using `congrFun hΨ 0`. Simplify using `only [Fin.cons_zero, Pi.smul_apply, smul_eq_mul, mul_one] at h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hseg` using `[← h0, one_smul]`. Conclude with `Subtype.ext hseg.symm`. Conclude with `⟨Set.finite_coe_iff.mp (Finite.of_injective F hF), Nat.card_le_card_of_injective F hF⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fibre_finite_card (P : Ideal (MRing ι))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (y : Fin e → ℂ) (hP : 0 < degC P) :
@@ -90,7 +90,7 @@ theorem fibre_finite_card (P : Ideal (MRing ι))
     Nat.card_le_card_of_injective F hF⟩
 
 /- English proof (translation)
-Simplify using `[maDensity, mixedDisc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem maDensity_zero (φ : Fin 0 → (Fin 0 → ℂ) → ℝ) (y : Fin 0 → ℂ) : maDensity φ y = 1 := by
   simp [maDensity, mixedDisc]
@@ -98,7 +98,7 @@ theorem maDensity_zero (φ : Fin 0 → (Fin 0 → ℂ) → ℝ) (y : Fin 0 → �
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-The claim follows from `|(∑ᶠ w ∈ fibre P Ψ y, sheetDensity P Ψ φ g y w) - ∑ᶠ w ∈ fibre P Ψ y, sheetDensity P Ψ φ g' y w| ≤ c * degC P := by classical obtain ⟨hfin, hcard⟩ := fibre_finite_card P Ψ y hP rw [finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, ← Finset.sum_su …`.
+A detailed English derivation is pending.
 -/
 theorem abs_fibreSum_sub_le (P : Ideal (MRing ι))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (0 + 1) → ℂ)) (φ : Fin 0 → ((Σ k, ι k) → ℂ) → ℝ)
@@ -129,7 +129,7 @@ theorem abs_fibreSum_sub_le (P : Ideal (MRing ι))
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-The claim follows from `|ptsIntegral P φ g - ptsIntegral P φ g'| ≤ c * degC P := by classical unfold ptsIntegral split_ifs with hΨ swap · simp only [sub_self, abs_zero] positivity unfold ptsIntegralAt rw [integral_unique, integral_unique] have hvol : (volume : Measure (Fin 0 → ℂ)).real Set.univ = 1 := b …`.
+A detailed English derivation is pending.
 -/
 theorem abs_ptsIntegral_sub_le (P : Ideal (MRing ι)) (φ : Fin 0 → ((Σ k, ι k) → ℂ) → ℝ)
     (g g' : ((Σ k, ι k) → ℂ) → ℝ) {c : ℝ} (hc0 : 0 ≤ c) (hP : 0 < degC P)
@@ -152,25 +152,23 @@ theorem abs_ptsIntegral_sub_le (P : Ideal (MRing ι)) (φ : Fin 0 → ((Σ k, ι
 end Fibres
 
 /- English proof (translation)
-Introduce `K _ ι _ I P A A' c hI hA hA' ha hc W hW hPW`. Take `⟨z₀, hz₀⟩` from `hpt K ι W hW`. Establish `hmc : ∀ z ∈ mcPts W, z ∈ mcPts P` using `fun z hz ↦ ⟨hz.1, fun f hf ↦ hz.2 f (hPW hf)⟩`. Establish `hc0 : 0 ≤ c` using `(abs_nonneg _).trans (hc z₀ (hmc z₀ hz₀))`. Take `⟨-, hAdd, hR⟩` from `hI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hW' : IsArithVar W (0 + 1)` using `hW`. Establish `hL : ∀ j : Fin 0, IsSmoothHerm ((Fin.elim0 : Fin 0 → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) j)` using `fun j ↦ j.elim0`. Establish `hsnoc : ∀ C : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι, (Fin.snoc (Fin.elim0 : Fin 0 → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) C : Fin 1 → _) = ![C]`. Introduce `C`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases i`. Both sides reduce to the same expression. Establish `hAi : IsSmoothHerm A'.inv` using `isSmoothHerm_inv hA'`. Establish `hadd` using `hAdd W 0 Fin.elim0 A A'.inv hW' hL hA hAi`. Establish `hadd'` using `hAdd W 0 Fin.elim0 A' A'.inv hW' hL hA' hAi`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : IsMultiHomog (1 : MRing ι) (0 : K → ℕ)`. Introduce `m hm k`. Rewrite `hm` using `[support_one]`. Simplify using `[Finset.mem_singleton.mp hm]`. Establish `h1W : (1 : MRing ι) ∉ W` using `fun h ↦ hW.2.1.1.ne_top ((Ideal.eq_top_iff_one _).mpr h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRD` using `hR W 0 Fin.elim0 (A.tensor A'.inv) 1 0 hW' hL (hA.mul hAi) (fun k ↦ by simp [HermLine.tensor, HermLine.inv, ha]) hone h1W`. Establish `hRD'` using `hR W 0 Fin.elim0 (A'.tensor A'.inv) 1 0 hW' hL (hA'.mul hAi) (fun k ↦ by simp [HermLine.tensor, HermLine.inv]) hone h1W`. Rewrite `hadd`, `hadd'` using `[hsnoc, hsnoc, hsnoc]`. Rewrite `hRD`, `hRD'` using `[hsnoc]`. Establish `key : I W 1 ![A] - I W 1 ![A'] = arInt W 1 (A'.tensor A'.inv) Fin.elim0 - arInt W 1 (A.tensor A'.inv) Fin.elim0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `recR at hRD hRD'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog : ∀ z ∈ mcPts W, |logNorm (A'.tensor A'.inv) 1 z - logNorm (A.tensor A'.inv) 1 z| ≤ c`. Introduce `z hz`. Establish `hpA` using `A.pos z hz.1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpA'` using `A'.pos z hz.1`. Establish `e1 : logNorm (A'.tensor A'.inv) 1 z = 0`. Simplify using `[logNorm, HermLine.tensor, HermLine.inv, hpA'.ne']`. Establish `e2 : logNorm (A.tensor A'.inv) 1 z = - Real.log (A.h z / A'.h z)`. Simplify using `only [logNorm, HermLine.tensor, HermLine.inv, map_one, norm_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.log_inv]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, e2, zero_sub, neg_neg]`. Conclude with `hc z (hmc z hz)`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis.
 
-Unfold `height`. Break down `Nat.eq_zero_or_pos (degC W) with h0 | hpos` into its components or cases. Simplify using `[h0, hc0]`. Establish `hd : (0 : ℝ) < degC W` using `by exact_mod_cast hpos`. Rewrite using `[← sub_div, abs_div, abs_of_pos hd, div_le_iff₀ hd, key]`.
-
-Conclude with `abs_ptsIntegral_sub_le W _ _ _ hc0 hpos hlog`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HeightMetricChange.proof (hpt : CurveComplexPoint.Statement) :
     HeightMetricChange.Statement := by

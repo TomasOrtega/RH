@@ -8,7 +8,7 @@ noncomputable section
 namespace GroundTheory.PAdicHodge
 
 /- English proof (translation)
-The claim follows from `le_algebraicClosure F E L`.
+A detailed English derivation is pending.
 -/
 theorem le_algebraicClosure_of_finiteDimensional {F E : Type*} [Field F] [Field E] [Algebra F E]
     (L : IntermediateField F E) [FiniteDimensional F L] : L ≤ algebraicClosure F E :=
@@ -35,21 +35,21 @@ instance (N : FiniteGaloisTilt K C p) : IsGalois K (untiltField K C p N.1) :=
 
 omit [IsAlgClosed C] in
 /- English proof (translation)
-The claim follows from `le_algebraicClosure_of_finiteDimensional N.1`.
+A detailed English derivation is pending.
 -/
 theorem le_algebraicClosure (N : FiniteGaloisTilt K C p) : N.1 ≤ algebraicClosure K♭ C♭ :=
   le_algebraicClosure_of_finiteDimensional N.1
 
 omit [IsAlgClosed C] in
 /- English proof (translation)
-The claim follows from `le_algebraicClosure_of_finiteDimensional _`.
+A detailed English derivation is pending.
 -/
 theorem untiltField_le_algebraicClosure (N : FiniteGaloisTilt K C p) :
     untiltField K C p N.1 ≤ algebraicClosure K C :=
   le_algebraicClosure_of_finiteDimensional _
 
 /- English proof (translation)
-Establish `: PerfectField K♭` using `PerfectRing.toPerfectField K♭ p`. Take `⟨N, hMN, hN, hgal⟩` from `exists_isGalois_le M`. Conclude with `⟨⟨N, hN, hgal⟩, hMN⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_le (M : IntermediateField K♭ C♭) [FiniteDimensional K♭ M] :
     ∃ N : FiniteGaloisTilt K C p, M ≤ N.1 := by
@@ -58,14 +58,14 @@ theorem exists_le (M : IntermediateField K♭ C♭) [FiniteDimensional K♭ M] :
   exact ⟨⟨N, hN, hgal⟩, hMN⟩
 
 /- English proof (translation)
-Introduce `N₁ N₂` and use `by obtain ⟨N, hN⟩ := exists_le (K := K) (C := C) (p := p) (N₁.1 ⊔ N₂.1) exact ⟨N, le_sup_left.trans hN, le_sup_right.trans hN⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem directed : Directed (· ≤ ·) (fun N : FiniteGaloisTilt K C p => N.1) := fun N₁ N₂ => by
   obtain ⟨N, hN⟩ := exists_le (K := K) (C := C) (p := p) (N₁.1 ⊔ N₂.1)
   exact ⟨N, le_sup_left.trans hN, le_sup_right.trans hN⟩
 
 /- English proof (translation)
-Introduce `N₁ N₂` and use `by obtain ⟨N, h1, h2⟩ := directed N₁ N₂ exact ⟨N, untiltField_mono h1, untiltField_mono h2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem directed_untiltField :
     Directed (· ≤ ·) (fun N : FiniteGaloisTilt K C p => untiltField K C p N.1) := fun N₁ N₂ => by
@@ -73,7 +73,7 @@ theorem directed_untiltField :
   exact ⟨N, untiltField_mono h1, untiltField_mono h2⟩
 
 /- English proof (translation)
-Establish `hint : IsIntegral K♭ y` using `((mem_algebraicClosure_iff).1 hy).isIntegral`. Establish `: FiniteDimensional K♭ (IntermediateField.adjoin K♭ {y})` using `IntermediateField.adjoin.finiteDimensional hint`. Take `⟨N, hN⟩` from `exists_le (K := K) (C := C) (p := p) (IntermediateField.adjoin K♭ {y})`. Conclude with `⟨N, hN (IntermediateField.mem_adjoin_simple_self K♭ y)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem (y : C♭) (hy : y ∈ algebraicClosure K♭ C♭) :
     ∃ N : FiniteGaloisTilt K C p, y ∈ N.1 := by
@@ -83,7 +83,7 @@ theorem exists_mem (y : C♭) (hy : y ∈ algebraicClosure K♭ C♭) :
   exact ⟨N, hN (IntermediateField.mem_adjoin_simple_self K♭ y)⟩
 
 /- English proof (translation)
-Establish `hint : IsIntegral K x` using `((mem_algebraicClosure_iff).1 hx).isIntegral`. Establish `: FiniteDimensional K (IntermediateField.adjoin K {x})` using `IntermediateField.adjoin.finiteDimensional hint`. Take `⟨M, hM, hxM⟩` from `exists_le_untiltField (p := p) (IntermediateField.adjoin K {x})`. Take `⟨N, hN⟩` from `exists_le (K := K) (C := C) (p := p) M`. Conclude with `⟨N, untiltField_mono hN (hxM (IntermediateField.mem_adjoin_simple_self K x))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_untiltField (x : C) (hx : x ∈ algebraicClosure K C) :
     ∃ N : FiniteGaloisTilt K C p, x ∈ untiltField K C p N.1 := by
@@ -107,7 +107,7 @@ abbrev resTilt (τ : Ω♭ ≃ₐ[K♭] Ω♭) (N : FiniteGaloisTilt K C p) : N.
 
 omit [IsAlgClosed C] in
 /- English proof (translation)
-The claim follows from `restrictAut_mul _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem resTilt_mul (τ₁ τ₂ : Ω♭ ≃ₐ[K♭] Ω♭) (N : FiniteGaloisTilt K C p) :
     resTilt K C p (τ₁ * τ₂) N = resTilt K C p τ₁ N * resTilt K C p τ₂ N :=
@@ -115,7 +115,7 @@ theorem resTilt_mul (τ₁ τ₂ : Ω♭ ≃ₐ[K♭] Ω♭) (N : FiniteGaloisTi
 
 omit [IsAlgClosed C] in
 /- English proof (translation)
-The claim follows from `coe_untiltAut_of_le h _ _ (fun y => by rw [coe_restrictAut, coe_restrictAut]) x`.
+A detailed English derivation is pending.
 -/
 theorem coe_untiltAut_resTilt (τ : Ω♭ ≃ₐ[K♭] Ω♭) {N N' : FiniteGaloisTilt K C p} (h : N.1 ≤ N'.1)
     (x : untiltField K C p N.1) :
@@ -135,7 +135,7 @@ def untiltGalFun (τ : Ω♭ ≃ₐ[K♭] Ω♭) : Ω ≃ₐ[K] Ω :=
       exact (coe_untiltAut_resTilt τ h2 ⟨x, h x.2⟩).symm.trans (coe_untiltAut_resTilt τ h1 x))
 
 /- English proof (translation)
-The claim follows from `coe_glueAut _ _ _ _ _ _ _ N x hx`.
+A detailed English derivation is pending.
 -/
 theorem coe_untiltGalFun (τ : Ω♭ ≃ₐ[K♭] Ω♭) (N : FiniteGaloisTilt K C p) (x : Ω)
     (hx : (x : C) ∈ untiltField K C p N.1) :
@@ -152,7 +152,7 @@ def tiltGalAlt (ρ : Ω ≃ₐ[K] Ω) (N : FiniteGaloisTilt K C p) : N.1 ≃ₐ[
 
 omit [IsAlgClosed C] in
 /- English proof (translation)
-The claim follows from `(MulEquiv.ofBijective (untiltAutHom (K := K) (C := C) (p := p) N.1) (untiltAutHom_bijective N.1).1).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem untiltAut_tiltGal (ρ : Ω ≃ₐ[K] Ω) (N : FiniteGaloisTilt K C p) :
     untiltAut N.1 (tiltGalAlt K C p ρ N) =
@@ -162,9 +162,9 @@ theorem untiltAut_tiltGal (ρ : Ω ≃ₐ[K] Ω) (N : FiniteGaloisTilt K C p) :
 
 omit [IsAlgClosed C] in
 /- English proof (translation)
-Use `set σ'' := restrictAut N'.1 (tiltGalAlt K C p ρ N') N.1 h`. Establish `hσ'' : untiltAut N.1 σ'' = untiltAut N.1 (tiltGalAlt K C p ρ N)`. Rewrite using `[untiltAut_tiltGal]`. Use `AlgEquiv.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[← coe_untiltAut_of_le h σ'' (tiltGalAlt K C p ρ N') (fun y => (coe_restrictAut _ _ _ h y).symm) x, untiltAut_tiltGal, coe_restrictAut, coe_restrictAut]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(untiltAutHom_bijective (K := K) (C := C) (p := p) N.1).1.1 hσ''` as an intermediate fact. Rewrite using `[← this, coe_restrictAut]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_tiltGal_of_le (ρ : Ω ≃ₐ[K] Ω) {N N' : FiniteGaloisTilt K C p} (h : N.1 ≤ N'.1)
     (y : N.1) : ((tiltGalAlt K C p ρ N' ⟨y, h y.2⟩ : N'.1) : C♭) = ((tiltGalAlt K C p ρ N y : N.1) : C♭) := by
@@ -186,14 +186,14 @@ def tiltGalFun (ρ : Ω ≃ₐ[K] Ω) : Ω♭ ≃ₐ[K♭] Ω♭ :=
     (fun N => (tiltGalAlt K C p ρ N).toAlgHom) (fun _ _ h y => coe_tiltGal_of_le ρ h y)
 
 /- English proof (translation)
-The claim follows from `coe_glueAut _ _ _ _ _ _ _ N y hy`.
+A detailed English derivation is pending.
 -/
 theorem coe_tiltGalFun (ρ : Ω ≃ₐ[K] Ω) (N : FiniteGaloisTilt K C p) (y : Ω♭) (hy : (y : C♭) ∈ N.1) :
     ((tiltGalFun K C p ρ y : Ω♭) : C♭) = ((tiltGalAlt K C p ρ N ⟨y, hy⟩ : N.1) : C♭) :=
   coe_glueAut _ _ _ _ _ _ _ N y hy
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.ext fun y => Subtype.ext (by rw [coe_restrictAut] exact coe_tiltGalFun ρ N _ y.2)`.
+A detailed English derivation is pending.
 -/
 theorem resTilt_tiltGalFun (ρ : Ω ≃ₐ[K] Ω) (N : FiniteGaloisTilt K C p) :
     resTilt K C p (tiltGalFun K C p ρ) N = tiltGalAlt K C p ρ N :=
@@ -202,7 +202,7 @@ theorem resTilt_tiltGalFun (ρ : Ω ≃ₐ[K] Ω) (N : FiniteGaloisTilt K C p) :
     exact coe_tiltGalFun ρ N _ y.2)
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.ext fun x => Subtype.ext (by rw [coe_restrictAut] exact coe_untiltGalFun τ N _ x.2)`.
+A detailed English derivation is pending.
 -/
 theorem restrictAut_untiltGalFun (τ : Ω♭ ≃ₐ[K♭] Ω♭) (N : FiniteGaloisTilt K C p) :
     restrictAut Ω (untiltGalFun K C p τ) (untiltField K C p N.1) N.untiltField_le_algebraicClosure =
@@ -212,7 +212,7 @@ theorem restrictAut_untiltGalFun (τ : Ω♭ ≃ₐ[K♭] Ω♭) (N : FiniteGalo
     exact coe_untiltGalFun τ N _ x.2)
 
 /- English proof (translation)
-Apply `(untiltAutHom_bijective (K := K) (C := C) (p := p) N.1).1.1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `untiltAut _ _ = untiltAut _ _`. Rewrite using `[untiltAut_tiltGal, restrictAut_untiltGalFun]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tiltGal_untiltGalFun (τ : Ω♭ ≃ₐ[K♭] Ω♭) (N : FiniteGaloisTilt K C p) :
     tiltGalAlt K C p (untiltGalFun K C p τ) N = resTilt K C p τ N := by
@@ -221,7 +221,7 @@ theorem tiltGal_untiltGalFun (τ : Ω♭ ≃ₐ[K♭] Ω♭) (N : FiniteGaloisTi
   rw [untiltAut_tiltGal, restrictAut_untiltGalFun]
 
 /- English proof (translation)
-Use `AlgEquiv.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `FiniteGaloisTilt.exists_mem (K := K) (C := C) (p := p) y y.2`. Rewrite using `[coe_tiltGalFun _ N y hN, tiltGal_untiltGalFun, coe_restrictAut]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tiltGalFun_untiltGalFun (τ : Ω♭ ≃ₐ[K♭] Ω♭) : tiltGalFun K C p (untiltGalFun K C p τ) = τ := by
   refine AlgEquiv.ext fun y => Subtype.ext ?_
@@ -229,7 +229,7 @@ theorem tiltGalFun_untiltGalFun (τ : Ω♭ ≃ₐ[K♭] Ω♭) : tiltGalFun K C
   rw [coe_tiltGalFun _ N y hN, tiltGal_untiltGalFun, coe_restrictAut]
 
 /- English proof (translation)
-Use `AlgEquiv.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `FiniteGaloisTilt.exists_mem_untiltField (K := K) (C := C) (p := p) x x.2`. Rewrite using `[coe_untiltGalFun _ N x hN, resTilt_tiltGalFun, untiltAut_tiltGal, coe_restrictAut]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem untiltGalFun_tiltGalFun (ρ : Ω ≃ₐ[K] Ω) : untiltGalFun K C p (tiltGalFun K C p ρ) = ρ := by
   refine AlgEquiv.ext fun x => Subtype.ext ?_
@@ -237,9 +237,9 @@ theorem untiltGalFun_tiltGalFun (ρ : Ω ≃ₐ[K] Ω) : untiltGalFun K C p (til
   rw [coe_untiltGalFun _ N x hN, resTilt_tiltGalFun, untiltAut_tiltGal, coe_restrictAut]
 
 /- English proof (translation)
-Use `AlgEquiv.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `FiniteGaloisTilt.exists_mem_untiltField (K := K) (C := C) (p := p) x x.2`. Establish `hmem : ((untiltGalFun K C p τ₂ x : Ω) : C) ∈ untiltField K C p N.1`. Rewrite using `[coe_untiltGalFun τ₂ N x hN]`. Conclude with `Subtype.prop _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : (⟨((untiltGalFun K C p τ₂ x : Ω) : C), hmem⟩ : untiltField K C p N.1) = untiltAut N.1 (resTilt K C p τ₂ N) ⟨x, hN⟩` using `Subtype.ext (coe_untiltGalFun τ₂ N x hN)`. Rewrite using `[AlgEquiv.mul_apply, coe_untiltGalFun τ₁ N _ hmem, he, coe_untiltGalFun _ N x hN, resTilt_mul, untiltAut_mul, AlgEquiv.mul_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untiltGalFun_mul (τ₁ τ₂ : Ω♭ ≃ₐ[K♭] Ω♭) :
     untiltGalFun K C p (τ₁ * τ₂) = untiltGalFun K C p τ₁ * untiltGalFun K C p τ₂ := by
@@ -268,19 +268,19 @@ theorem untiltGalEquiv_apply (τ : Ω♭ ≃ₐ[K♭] Ω♭) : untiltGalEquiv K 
   rfl
 
 /- English proof (translation)
-Take `⟨N, hMN⟩` from `FiniteGaloisTilt.exists_le (K := K) (C := C) (p := p) M`. Establish `key` using `untiltAut_mem_fixingSubgroup_iff N.1 hMN (resTilt K C p τ N)`. Prove the components needed by the constructor for the conclusion. Introduce `hΨ`. Establish `h1 : untiltAut N.1 (resTilt K C p τ N) ∈ (IntermediateField.restrict (untiltField_mono (K` using `K) (p := p) hMN)).fixingSubgroup := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hΨ ⟨x, N.untiltField_le_algebraicClosure x.2⟩ ((IntermediateField.mem_restrict _ x).1 hx)` as an intermediate fact. Rewrite `this` using `[untiltGalEquiv_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `coe_untiltGalFun τ N ⟨(x : C), N.untiltField_le_algebraicClosure x.2⟩ x.2`. Conclude with `e.symm.trans (congrArg Subtype.val this)`. Establish `h2` using `key.1 h1`. Rewrite `h2` using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val (h2 ⟨y, hMN hy⟩ ((IntermediateField.mem_restrict hMN _).2 hy))` as an intermediate fact. Rewrite `this` using `[coe_restrictAut]`. Conclude with `this`. Introduce `hτ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : resTilt K C p τ N ∈ (IntermediateField.restrict hMN).fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_restrictAut]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg Subtype.val (hτ _ ((IntermediateField.mem_restrict hMN y).1 hy))`. Establish `h1` using `key.2 h2`. Rewrite `h1` using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Establish `hxN` using `untiltField_mono (K := K) (p := p) hMN hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[untiltGalEquiv_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_untiltGalFun τ N x hxN]`. Conclude with `congrArg Subtype.val (h1 ⟨x, hxN⟩ ((IntermediateField.mem_restrict _ _).2 hx))`.
+A detailed English derivation is pending.
 -/
 theorem untiltGalEquiv_fixes_iff (τ : Ω♭ ≃ₐ[K♭] Ω♭) (M : IntermediateField K♭ C♭)
     [FiniteDimensional K♭ M] :
@@ -323,11 +323,11 @@ theorem untiltGalEquiv_fixes_iff (τ : Ω♭ ≃ₐ[K♭] Ω♭) (M : Intermedia
     exact congrArg Subtype.val (h1 ⟨x, hxN⟩ ((IntermediateField.mem_restrict _ _).2 hx))
 
 /- English proof (translation)
-Apply `continuous_of_continuousAt_one (untiltGalEquiv K C p) (continuousAt_def.mpr _)` to reduce the goal to its premises. Introduce `U hU`. Rewrite `hU` using `[map_one, krullTopology_mem_nhds_one_iff]`. Take `⟨E, hE, hsub⟩` from `hU`. Rewrite using `[krullTopology_mem_nhds_one_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `: FiniteDimensional K (IntermediateField.lift E)` using `LinearEquiv.finiteDimensional (IntermediateField.liftAlgEquiv E).toLinearEquiv`. Take `⟨M, hM, hEM⟩` from `exists_le_untiltField (p := p) (IntermediateField.lift E)`. Use `⟨IntermediateField.restrict (le_algebraicClosure_of_finiteDimensional M), LinearEquiv.finiteDimensional (IntermediateField.restrictAlgEquiv _).toLinearEquiv, ?_⟩` and prove the remaining obligations. Introduce `τ hτ`. Rewrite `hτ` using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hsub` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Conclude with `(untiltGalEquiv_fixes_iff τ M).2 (fun y hy => hτ y ((IntermediateField.mem_restrict _ y).2 hy)) x (hEM ((IntermediateField.mem_lift x).2 hx))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem continuous_untiltGalEquiv : Continuous (untiltGalEquiv K C p) := by
   apply continuous_of_continuousAt_one (untiltGalEquiv K C p) (continuousAt_def.mpr _)
@@ -350,13 +350,11 @@ theorem continuous_untiltGalEquiv : Continuous (untiltGalEquiv K C p) := by
     (hEM ((IntermediateField.mem_lift x).2 hx))
 
 /- English proof (translation)
-Apply `continuous_of_continuousAt_one (untiltGalEquiv K C p).symm (continuousAt_def.mpr _)` to reduce the goal to its premises. Introduce `U hU`. Rewrite `hU` using `[map_one, krullTopology_mem_nhds_one_iff]`. Take `⟨E, hE, hsub⟩` from `hU`. Rewrite using `[krullTopology_mem_nhds_one_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `: FiniteDimensional K♭ (IntermediateField.lift E)` using `LinearEquiv.finiteDimensional (IntermediateField.liftAlgEquiv E).toLinearEquiv`. Use `⟨IntermediateField.restrict (le_algebraicClosure_of_finiteDimensional (untiltField K C p (IntermediateField.lift E))), LinearEquiv.finiteDimensional (IntermediateField.restrictAlgEquiv _).toLinearEquiv, ?_⟩` and prove the remaining obligations. Introduce `ρ hρ`. Rewrite `hρ` using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Apply `hsub` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Establish `hfix` using `(untiltGalEquiv_fixes_iff ((untiltGalEquiv K C p).symm ρ) (IntermediateField.lift E)).1 (fun x hx => by`. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `hρ x ((IntermediateField.mem_restrict _ x).2 hx))`. Introduce `y hy`.
-
-Conclude with `hfix y ((IntermediateField.mem_lift y).2 hy)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem continuous_untiltGalEquiv_symm : Continuous (untiltGalEquiv K C p).symm := by
   apply continuous_of_continuousAt_one (untiltGalEquiv K C p).symm (continuousAt_def.mpr _)

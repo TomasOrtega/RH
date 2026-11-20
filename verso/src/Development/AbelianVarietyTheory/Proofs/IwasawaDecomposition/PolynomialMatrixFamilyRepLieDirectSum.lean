@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.GoodMetric.PolyRep
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [lie, Matrix.of_apply]`. Express the relevant statement in the definitionally equal form `Fin (ρ.M + σ.M) at i j`. Express the relevant statement in the definitionally equal form `∑ v : EntIx m, aeval (fun w : EntIx m => (1 : Mat m R) w.1 w.2.1 w.2.2) (pderiv v (blockSum ρ.ent σ.ent i j)) * A v.1 v.2.1 v.2.2 = _`. Take `⟨x, rfl⟩` from `finSumFinEquiv.surjective i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y <;> simp [lie, sum, blockSum]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lie_sum {ι : Type} [Fintype ι] {m : ι → ℕ} (ρ σ : PolyRep m) {R : Type} [CommRing R]
     (A : Mat m R) :

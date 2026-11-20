@@ -23,7 +23,7 @@ def ObjMap.comp (m₁ : ObjMap o₁ o₂ f) (m₂ : ObjMap o₂ o₃ g) : ObjMap
   eta a := by rw [← Category.assoc, m₁.eta, Category.assoc, m₂.eta, Category.assoc]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ m₁ m₂` and use `⟨m₁.comp m₂⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem objMap_comp : ∀ (F : Type) [Field F] [NumberField F] [IsCMField F] (D : GlobalTheory.UPel.Datum F) (p N : ℕ)
     (S₁ S₂ S₃ : Scheme.{0}) (s₁ : S₁ ⟶ Sp (D.OEp p)) (s₂ : S₂ ⟶ Sp (D.OEp p)) (s₃ : S₃ ⟶ Sp (D.OEp p))

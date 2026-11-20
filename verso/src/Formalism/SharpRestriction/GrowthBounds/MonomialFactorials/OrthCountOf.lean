@@ -42,13 +42,11 @@ def GoodLeSmall : Prop :=
 
 open Classical in
 /- English proof (translation)
-Introduce `p _ σ B L W D hW hLW hsm hadd hsym m f hfL hli hspan horth`. Establish `hgood` using `h p σ B L W D hW hLW hsm hadd hsym m f hfL hli hspan horth`. Establish `hrank : Module.finrank ℤ_[p] L = m`. Rewrite using `[← hspan, finrank_span_eq_card hli, Fintype.card_fin]`. Use `set S := Finset.univ.filter (fun a : Fin m => B (f a) (f a) ≠ 0 ∧ (B (f a) (f a)).valuation ≤ D) with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S.card, fun a => f (S.orderEmbOfFin rfl a), fun a => hfL _, hli.comp _ (S.orderEmbOfFin rfl).injective, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Conclude with `horth _ _ (fun h' => hab ((S.orderEmbOfFin rfl).injective h'))`. Introduce `a`. Establish `hmem` using `S.orderEmbOfFin_mem rfl a`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `(Finset.mem_filter.mp hmem).2`. Rewrite using `[hrank]`. Conclude with `(Finset.card_le_univ S).trans (le_of_eq (Fintype.card_fin m))`. Unfold `Formalism.GM.M.bad`. Rewrite using `[hrank]`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem orthCount_of (h : GoodLeSmall) : OrthCount := by
   intro p _ σ B L W D hW hLW hsm hadd hsym m f hfL hli hspan horth
@@ -71,7 +69,7 @@ theorem orthCount_of (h : GoodLeSmall) : OrthCount := by
     omega
 
 /- English proof (translation)
-Introduce `p _ σ B L W D hp2 hW hLW hfg hsm hadd hsym`. Take `⟨m, f, hfL, hli, hspan, horth⟩` from `h1 p σ B L W hp2 hW hLW hfg hsm hadd hsym`. Conclude with `h2 p σ B L W D hW hLW hsm hadd hsym m f hfL hli hspan horth`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem orthLat_of (h1 : OrthBasisLat) (h2 : OrthCount) : OrthLat := by
   intro p _ σ B L W D hp2 hW hLW hfg hsm hadd hsym
@@ -85,7 +83,7 @@ end
 namespace Formalism.MainNotions.G.SymmetricFormBlocks
 
 /- English proof (translation)
-The claim follows from `orthLat_of h1 (orthCount_of h2)`.
+A detailed English derivation is pending.
 -/
 theorem orthLat_of' (h1 : OrthBasisLat) (h2 : GoodLeSmall) : OrthLat := orthLat_of h1 (orthCount_of h2)
 

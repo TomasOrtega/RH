@@ -9,21 +9,19 @@ open scoped TensorProduct
 namespace GlobalTheory.TorsorTrace
 
 /- English proof (translation)
-Introduce `F D _ _ _ q _ act h`. Take `⟨_, _, hff, hbij⟩` from `h`. Establish `hinj : Function.Injective (algebraMap F D)` using `FaithfulSMul.algebraMap_injective F D`. Use `⟨hinj, ?_, ?_⟩` and prove the remaining obligations. Establish `hex : ∀ d : D, ∃ c : F, algebraMap F D c = ∑ g, act g d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `d`. Establish `hfix : ∀ k, act k (∑ g, act g d) = ∑ g, act g d`. Introduce `k`. Rewrite using `[map_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft k) _ _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g`. Simplify using `[map_mul]`. Establish `h1 : (∑ g, act g d) ⊗ₜ[F] (1 : D) = (1 : D) ⊗ₜ[F] (∑ g, act g d)`. Apply `hbij.1` to reduce the goal to its premises. Rewrite using `[Algebra.TensorProduct.productMap_apply_tmul, Algebra.TensorProduct.productMap_apply_tmul, map_one, map_one, mul_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Conclude with `(hfix k).symm`. Use `(Algebra.IsEffective.of_faithfullyFlat F D (∑ g, act g d)).1 (by` as an intermediate fact. Rewrite using `[Algebra.TensorProduct.includeLeftSubRight_apply, h1, sub_self])`. Take `⟨c, hc⟩` from `this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c, hc⟩`. Use `choose t ht using hex`. Use `⟨{ toFun := t, map_add' := ?_, map_smul' := ?_ }, ht⟩` and prove the remaining obligations. Introduce `a b`. Apply `hinj` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ht, Finset.sum_add_distrib]`. Introduce `a b`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[RingHom.id_apply, smul_eq_mul, map_mul, ht, ht, ← Algebra.smul_def, Finset.smul_sum]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hbij.2 (fun g => if g = 1 then 1 else 0)`. Take `⟨n, x, y, rfl⟩` from `TensorProduct.exists_sum_tmul_eq z`. Use `⟨n, x, y, fun g => ?_⟩` and prove the remaining obligations. Use `congrFun hz g` as an intermediate fact. Rewrite `this` using `[map_sum, Finset.sum_apply]`.
-
-Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_trace_galoisData : ∀ (F D : Type) [CommRing F] [CommRing D] [Algebra F D] (q : ℕ) [NeZero q]
     (act : Multiplicative (ZMod q) →* (D ≃ₐ[F] D)),

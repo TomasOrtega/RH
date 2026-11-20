@@ -11,9 +11,9 @@ open GlobalTheory.UnitLemma Polynomial
 namespace GlobalTheory.UnitLemma.Sandwich
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨k, hk⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hd hϖ`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h1 : ϖ ∣ a`. Rewrite `hϖ` using `[IsDiscreteValuationRing.irreducible_iff_uniformizer]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[hϖ]`. Conclude with `Ideal.mem_span_singleton.1 ha`. Conclude with `hk.dvd.trans (pow_dvd_pow_of_dvd h1 k)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dvd_pow {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (a : O)
     (ha : a ∈ IsLocalRing.maximalIdeal O) (d : O) (hd : d ≠ 0) : ∃ k : ℕ, d ∣ a ^ k := by
@@ -27,9 +27,9 @@ theorem exists_dvd_pow {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuation
   exact hk.dvd.trans (pow_dvd_pow_of_dvd h1 k)
 
 /- English proof (translation)
-Take `⟨k, c, hc⟩` from `exists_dvd_pow a ha d hd`. Use `⟨k, fun n hn => ?_⟩` and prove the remaining obligations. Establish `e : algebraMap O A a ^ n * x = (a ^ (n - k) * c) • (d • x)`. Rewrite using `[smul_smul, Algebra.smul_def, ← map_pow]`. Use `congr 2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mul_assoc, mul_comm c d, ← hc, ← pow_add, Nat.sub_add_cancel hn]`. Rewrite using `[e]`. Conclude with `S.smul_mem _ hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_pow_mul_mem {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [CommRing A] [Algebra O A] (a : O) (ha : a ∈ IsLocalRing.maximalIdeal O) (S : Submodule O A)
@@ -51,7 +51,7 @@ namespace GlobalTheory.UnitLemma.Sandwich
 variable {K : UQ} (B : InvAlg K)
 
 /- English proof (translation)
-Establish `h : IsAlgebraic K.E x` using `Algebra.IsAlgebraic.isAlgebraic x`. Establish `h' : IsAlgebraic K.O x` using `(IsFractionRing.isAlgebraic_iff K.O K.E B.A).2 h`. Take `⟨d, hd, hi⟩` from `h'.exists_integral_multiple`. Conclude with `⟨d, hd, hi⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_smul_isIntegral (x : B.A) : ∃ d : K.O, d ≠ 0 ∧ IsIntegral K.O (d • x) := by
   have h : IsAlgebraic K.E x := Algebra.IsAlgebraic.isAlgebraic x
@@ -60,9 +60,9 @@ theorem exists_smul_isIntegral (x : B.A) : ∃ d : K.O, d ≠ 0 ∧ IsIntegral K
   exact ⟨d, hd, hi⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.DenominatorOfSpan.exists_denominator`. Consider the case `exact _root_.GlobalTheory.DenominatorOfSpan.exists_denominator`. Consider the case `(apply _root_.GlobalTheory.DenominatorOfSpan.exists_denominator <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DenominatorOfSpan.exists_denominator <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.DenominatorOfSpan.exists_denominator <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DenominatorOfSpan.exists_denominator ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem (L : Submodule K.O B.A) (hL : Submodule.span K.E (L : Set B.A) = ⊤) (x : B.A) :
     ∃ d : K.O, d ≠ 0 ∧ d • x ∈ L := by
@@ -81,7 +81,7 @@ namespace GlobalTheory.UnitLemma.Sandwich
 variable {K : UQ} (B : InvAlg K)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_basis_pow_of_separable K B hP`. Use `⟨∑ i, C (e.repr x i) * X ^ (i : ℕ), ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← e.sum_repr x]`. Simplify using `[map_sum, he, Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_aeval (hP : B.P.Separable) (x : B.A) : ∃ f : K.E[X], x = aeval B.g f := by
   obtain ⟨e, he⟩ := exists_basis_pow_of_separable K B hP
@@ -90,7 +90,7 @@ theorem exists_aeval (hP : B.P.Separable) (x : B.A) : ∃ f : K.E[X], x = aeval 
   simp [map_sum, he, Algebra.smul_def]
 
 /- English proof (translation)
-Use `⟨fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `TraceNondeg.eq_zero_of_trace_mul_eq_zero K B hP (exists_aeval B hP) w (fun y => by simpa [Algebra.traceForm_apply] using hw y)`. Conclude with `TraceNondeg.eq_zero_of_trace_mul_eq_zero K B hP (exists_aeval B hP) w (fun y => by simpa [Algebra.traceForm_apply, mul_comm] using hw y)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem traceForm_nondegenerate (hP : B.P.Separable) : (Algebra.traceForm K.E B.A).Nondegenerate := by
   refine ⟨fun w hw => ?_, fun w hw => ?_⟩
@@ -100,15 +100,13 @@ theorem traceForm_nondegenerate (hP : B.P.Separable) : (Algebra.traceForm K.E B.
       (fun y => by simpa [Algebra.traceForm_apply, mul_comm] using hw y)
 
 /- English proof (translation)
-Establish `hnd` using `traceForm_nondegenerate B hP`. Set `b0` to `Module.finBasis K.E B.A`. Use `choose d hd0 hdi using fun i => exists_smul_isIntegral B (b0 i)`. Establish `hu : ∀ i, IsUnit (algebraMap K.O K.E (d i))` using `fun i => isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ (IsFractionRing.injective K.O K.E)).2 (hd0 i))`. Set `b` to `b0.isUnitSMul hu`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb : ∀ i, IsIntegral K.O (b i)`. Introduce `i`. Rewrite using `[Module.Basis.isUnitSMul_apply, algebraMap_smul]`. Conclude with `hdi i`. Set `bd` to `(Algebra.traceForm K.E B.A).dualBasis hnd b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose c hc0 hc using fun i => exists_smul_mem B L hL (bd i)`. Use `choose k hk using fun i => eventually_pow_mul_mem a ha L (bd i) (c i) (hc0 i) (hc i)`. Use `⟨Finset.univ.sup k, fun n hn y hy => ?_⟩` and prove the remaining obligations. Establish `hrep` using `bd.sum_repr y`. Establish `hint : ∀ i, ∃ o : K.O, algebraMap K.O K.E o = bd.repr y i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply]`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 (GlobalTheory.DiscConductor.isIntegral_trace_of_isIntegral K.O K.E B.A _ (hy.mul (hb i)))`. Use `choose o ho using hint`. Rewrite using `[← hrep, Finset.mul_sum]`.
-
-Use `L.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← ho i, algebraMap_smul, mul_smul_comm]`. Conclude with `L.smul_mem _ (hk i n ((Finset.le_sup (Finset.mem_univ i)).trans hn))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_sub (hP : B.P.Separable) (a : K.O) (ha : a ∈ IsLocalRing.maximalIdeal K.O)
     (L : Submodule K.O B.A) (hL : Submodule.span K.E (L : Set B.A) = ⊤) :
@@ -141,11 +139,11 @@ theorem integral_sub (hP : B.P.Separable) (a : K.O) (ha : a ∈ IsLocalRing.maxi
   exact L.smul_mem _ (hk i n ((Finset.le_sup (Finset.mem_univ i)).trans hn))
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hL`. Establish `hk : ∀ x : B.A, ∃ k : ℕ, ∀ n, k ≤ n → algebraMap K.O B.A a ^ n * x ∈ Subalgebra.toSubmodule (integralClosure K.O B.A)`. Introduce `x`. Take `⟨d, hd, hi⟩` from `exists_smul_isIntegral B x`. Conclude with `eventually_pow_mul_mem a ha _ x d hd hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose k hk using hk`. Use `⟨s.sup k, fun n hn y hy => ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[← hs]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact hk x n ((Finset.le_sup hx).trans hn)`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simpa using isIntegral_zero`. Consider the case `add x z _ _ hx hz => rw [mul_add]`. Conclude with `hx.add hz`. Consider the case `smul r x _ hx => rw [mul_smul_comm, Algebra.smul_def]`. Conclude with `isIntegral_algebraMap.mul hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sub_integral (a : K.O) (ha : a ∈ IsLocalRing.maximalIdeal K.O) (L : Submodule K.O B.A) (hL : L.FG) :
     ∃ m : ℕ, ∀ n, m ≤ n → ∀ y ∈ L, IsIntegral K.O (algebraMap K.O B.A a ^ n * y) := by
@@ -170,7 +168,7 @@ end GlobalTheory.UnitLemma.Sandwich
 namespace GlobalTheory.UnitLemma
 
 /- English proof (translation)
-Introduce `K B hB a ha L hL`. Take `⟨m₁, h₁⟩` from `Sandwich.integral_sub B hB.2 a ha.2.1 L hL.2`. Take `⟨m₂, h₂⟩` from `Sandwich.sub_integral B a ha.2.1 L hL.1`. Conclude with `⟨max m₁ m₂, fun n hn => ⟨h₁ n (le_of_max_le_left hn), h₂ n (le_of_max_le_right hn)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lattice_sandwich : ∀ (K : UQ) (B : InvAlg K), B.LieReg → ∀ a : K.O, K.Small a →
     ∀ L : Submodule K.O B.A, IsLat K.O K.E L → ∃ m : ℕ, ∀ n : ℕ, m ≤ n →

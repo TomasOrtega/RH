@@ -10,9 +10,7 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.DensInt
 
 /- English proof (translation)
-Establish `h : ∀ k : ℕ, ∃ f : C(V, ℝ), Set.EqOn f 1 (compactCovering V k) ∧ Set.EqOn f 0 (∅ : Set V) ∧ HasCompactSupport f ∧ ∀ x, f x ∈ Set.Icc (0 : ℝ) 1` using `fun k => exists_continuous_one_zero_of_isCompact (isCompact_compactCovering V k) isClosed_empty (Set.disjoint_empty _)`. Use `choose f h1 _ h3 h4 using h`. Use `⟨fun k => f k, fun k => (f k).continuous, h3, fun k x => h4 k x, fun x => ?_⟩` and prove the remaining obligations. Take `⟨k₀, hk₀⟩` from `exists_mem_compactCovering x`. Use `filter_upwards [Filter.eventually_ge_atTop k₀] with k hk`.
-
-Conclude with `h1 k (compactCovering_subset V hk hk₀)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_cutoff (V : Type) [TopologicalSpace V] [LocallyCompactSpace V] [SecondCountableTopology V] [T2Space V] :
     ∃ χ : ℕ → V → ℝ, (∀ k, Continuous (χ k)) ∧ (∀ k, HasCompactSupport (χ k)) ∧
@@ -28,17 +26,13 @@ theorem exists_cutoff (V : Type) [TopologicalSpace V] [LocallyCompactSpace V] [S
   exact h1 k (compactCovering_subset V hk hk₀)
 
 /- English proof (translation)
-Take `⟨χ, hχc, hχs, hχb, hχ1⟩` from `exists_cutoff V`. Use `set ψ : ℕ → V → ℂ := fun k x => φ x * (χ k x : ℂ) with hψ`. Establish `hψc : ∀ k, Continuous (ψ k)` using `fun k => hφc.mul (Complex.continuous_ofReal.comp (hχc k))`. Establish `hψs : ∀ k, HasCompactSupport (ψ k)` using `fun k => by`. Establish `: HasCompactSupport (fun x => (χ k x : ℂ))` using `(hχs k).comp_left (g := fun t : ℝ => (t : ℂ)) (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.mul_left`. Establish `hψn : ∀ k x, ‖ψ k x‖ ≤ ‖φ x‖` using `fun k x => by`. Simplify using `only [hψ, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hχb k x).1]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hχb k x).2`. Establish `hψl : ∀ x, Filter.Tendsto (fun k => ψ k x) Filter.atTop (𝓝 (φ x))` using `fun x => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hχ1 x] with k hk`. Simplify using `[hψ, hk]`. Establish `hmeas : ∀ k (ρ : Measure V), AEStronglyMeasurable (ψ k) ρ` using `fun k ρ => (hψc k).aestronglyMeasurable`. Establish `hL : Filter.Tendsto (fun k => ∫ v in f ⁻¹' (ι '' K), ψ k v ∂μ) Filter.atTop (𝓝 (∫ v in f ⁻¹' (ι '' K), φ v ∂μ))` using `tendsto_integral_of_dominated_convergence (fun x => ‖φ x‖) (fun k => hmeas k _) hφ.norm.integrableOn (fun k => Filter.Eventually.of_forall (hψn k)) (Filter.Eventually.of_forall hψl)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hC⟩ : ∃ C : ℝ, ∀ S ∈ K, ‖∫ x, ‖φ x‖ ∂(m S)‖ ≤ C` from `hK.exists_bound_of_continuousOn (hD.mono hKB)`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `hR : Filter.Tendsto (fun k => ∫ b in K, (∫ x, ψ k x ∂(m b)) ∂ν) Filter.atTop (𝓝 (∫ b in K, (∫ x, φ x ∂(m b)) ∂ν))`. Use `tendsto_integral_of_dominated_convergence (fun _ => C) (fun k => ?_) ?_ (fun k => ?_) ?_` and prove the remaining obligations. Conclude with `((H _ (hψc k) (hψs k)).1.1.mono hKB).aestronglyMeasurable hKm`.
-
-Use `haveI : IsFiniteMeasure (ν.restrict K) := ⟨by simpa using hK.measure_lt_top (μ := ν)⟩`. Conclude with `integrable_const _`. Use `(ae_restrict_iff' hKm).2 (Filter.Eventually.of_forall fun S hS => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `(ae_restrict_iff' hKm).2 (Filter.Eventually.of_forall fun S hS => ?_)` and prove the remaining obligations.
-
-Conclude with `tendsto_integral_of_dominated_convergence (fun x => ‖φ x‖) (fun k => hmeas k _) (hφS S (hKB hS)).norm (fun k => Filter.Eventually.of_forall (hψn k)) (Filter.Eventually.of_forall hψl)`. Use `tendsto_nhds_unique hL (hR.congr fun k => ?_)` and prove the remaining obligations. Conclude with `((H _ (hψc k) (hψs k)).1.2 K hK hKB).symm`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem density_limit {V X Y : Type} [TopologicalSpace V] [LocallyCompactSpace V] [SecondCountableTopology V]
     [T2Space V] [MeasurableSpace V] [BorelSpace V] [TopologicalSpace X] [T2Space X] [MeasurableSpace X]
@@ -95,13 +89,9 @@ theorem density_limit {V X Y : Type} [TopologicalSpace V] [LocallyCompactSpace V
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ n μ ν m hμ hν hfib φ hφc hφ hφS hD K hK hKB`. Establish `hR : IsLocR (Ainf F)` using `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hσ.1`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Take `⟨hTR, hLC, hSC, hT2, -, -, -, -⟩` from `id hR`. Use `haveI := hTR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`. Take `⟨iTR, iLC, iSC, iT2, -, -, -, iB, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Ainf F)`. Use `haveI := iB n M`.
-
-Use `haveI := iTR`. Use `haveI := iLC`. Use `haveI := iSC`. Use `haveI := iT2`. Take `⟨jLC, jSC, jT2, jB, -⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ (Ainf F) n`.
-
-Use `haveI := jLC`. Use `haveI := jSC`. Use `haveI := jT2`. Use `haveI := jB`. Conclude with `density_limit μ ν (gramR (Ainf F) σ J) Subtype.val _ m (fun ψ h1 h2 => GlobalTheory.CompanionTheory.SW.GramDensity.isContDensityOn_gram F E σ hσ M J hJ (Ainf F) hR n μ ν m hμ hν hfib ψ h1 h2) φ hφc hφ hφS hD K hK hKB`.
+A detailed English derivation is pending.
 -/
 theorem density_identity_inf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n : ℕ) (μ : Measure (Fin n → Fin M → Ainf F ⊗[F] E)) (ν : Measure (HermR (Ainf F) σ n)) (m : HermR (Ainf F) σ n → Measure (Fin n → Fin M → Ainf F ⊗[F] E)), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → IsGramFib (Ainf F) σ J n μ ν m → ∀ φ : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ, Continuous φ → Integrable φ μ → (∀ S : HermR (Ainf F) σ n, IsUnit (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).det → Integrable φ (m S)) → ContinuousOn (fun S => ∫ X, ‖φ X‖ ∂(m S)) {S : HermR (Ainf F) σ n | IsUnit (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).det} → ∀ K : Set (HermR (Ainf F) σ n), IsCompact K → K ⊆ {S | IsUnit (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).det} → ∫ X in gramR (Ainf F) σ J ⁻¹' (Subtype.val '' K), φ X ∂μ = ∫ S in K, (∫ X, φ X ∂(m S)) ∂ν := by
   intro F E _ _ _ _ _ σ hσ M J hJ n μ ν m hμ hν hfib φ hφc hφ hφS hD K hK hKB

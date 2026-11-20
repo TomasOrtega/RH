@@ -16,13 +16,11 @@ noncomputable section
 namespace GlobalTheory.PairTerm
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.comp_apply]`. Use `set f := i ≫ q`. Establish `hnu : ¬ IsUnit ((p : ℕ) : (Sp R).presheaf.stalk (f z))`. Introduce `hu`. Establish `h2` using `(isUnit_map_iff (f.stalkMap z).hom ((p : ℕ) : (Sp R).presheaf.stalk (f z))).2 hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_natCast, h]`. Conclude with `not_isUnit_zero h2`. Use `haveI : (f z).asIdeal.IsPrime := PrimeSpectrum.isPrime (f z)`. Set `e` to `(Spec.stalkIso (CommRingCat.of R) (f z)).commRingCatIsoToRingEquiv`. Establish `hl : ¬ IsUnit (algebraMap R (Localization.AtPrime (f z).asIdeal) ((p : ℕ) : R))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `hu`. Apply `hnu` to reduce the goal to its premises. Establish `h3` using `hu.map e.symm`. Rewrite `h3` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis. Rewrite `hl` using `[IsLocalization.AtPrime.isUnit_to_map_iff (Localization.AtPrime (f z).asIdeal) (f z).asIdeal]`.
-
-Simplify `hl` using `[Ideal.primeCompl]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem natCast_mem_asIdeal_of_stalk {R : Type} [CommRing R] {Z X : Scheme.{0}} (i : Z ⟶ X) (q : X ⟶ Sp R) (z : Z)
     (p : ℕ) (h : ((p : ℕ) : Z.presheaf.stalk z) = 0) : ((p : ℕ) : R) ∈ (q (i z)).asIdeal := by
@@ -46,11 +44,9 @@ theorem natCast_mem_asIdeal_of_stalk {R : Type} [CommRing R] {Z X : Scheme.{0}} 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Distinguish the cases in `hne : Nonempty (VertSub p V.X n y)`. Take `⟨S⟩` from `hne`. Use `letI := S.alg`. Use `haveI := S.int`. Establish `hΓ : ((p : ℕ) : Γ(S.Z, ⊤)) = 0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (algebraMap (ZMod p) Γ(S.Z, ⊤)), ZMod.natCast_self, map_zero]`. Establish `hs : ((p : ℕ) : S.Z.presheaf.stalk (genericPoint S.Z)) = 0`. Rewrite using `[← map_natCast (S.Z.presheaf.germ ⊤ (genericPoint S.Z) trivial).hom, hΓ, map_zero]`. Use `natCast_mem_asIdeal_of_stalk S.i V.p (genericPoint S.Z) p hs` as an intermediate fact. Rewrite `this` using `[S.gen]`. Then use the resulting hypothesis.
-
-Conclude with `absurd (by simp only [vertNum, dif_neg hne]) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem natCast_mem_of_vertNum_ne_zero (p : ℕ) [Fact p.Prime] (V : Cover Y) (n : ℕ) (N : Fin n → HermLB V.p)
     (y : V.X) (h : vertNum p V n N y ≠ 0) : ((p : ℕ) : 𝓞 F) ∈ (V.p y).asIdeal := by
@@ -73,15 +69,15 @@ namespace GlobalTheory.PairTerm
 open Classical in
 
 /- English proof (translation)
-Introduce `D p _ Y V n N g hg`. Use `letI := Formalism.L2.Geo.finPl D p`. Establish `hfin : ∀ la ∈ (Finset.univ : Finset (Formalism.L2.Geo.PlL D p)), Function.HasFiniteSupport fun y => if LiesOverPl V la.1 y then g y * vertNum p V n N y else 0`. Introduce `la _`. Use `hg.subset fun y hy => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Apply `hy` to reduce the goal to its premises. Simplify using `[h0]`. Rewrite using `[← finsum_sum_comm Finset.univ _ hfin]`. Use `finsum_congr fun y => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hc : g y * vertNum p V n N y = 0`. Simplify using `[hc]`. Establish `hv : vertNum p V n N y ≠ 0` using `right_ne_zero_of_mul hc`. Establish `hm` using `natCast_mem_of_vertNum_ne_zero p V n N y hv`. Establish `hp0 : ((p : ℕ) : 𝓞 D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `v : HeightOneSpectrum (𝓞 D.what₂.LL)` to `⟨(V.p y).asIdeal, PrimeSpectrum.isPrime _, fun hb => hp0 (by rw [hb] at hm; simpa using hm)⟩`. Set `la0 : Formalism.L2.Geo.PlL D p` to `⟨v, hm⟩`. Rewrite using `[Finset.sum_eq_single la0]`. Conclude with `(if_pos rfl).symm`. Introduce `b _ hb`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb (Subtype.ext (HeightOneSpectrum.ext h.symm))`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finsum_vertNum_eq_sum_places : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (Y : Var D.what₂.LL) (V : Cover Y) (n : ℕ) (N : Fin n → HermLB V.p)
     (g : V.X → ℝ), (Function.support g).Finite →

@@ -15,48 +15,46 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BKLim
 
 /- English proof (translation)
-The claim follows from `funext fun a => RingHom.map_mulVec f M v a`.
+A detailed English derivation is pending.
 -/
 private theorem map_mulVec_fun {R S : Type} [CommRing R] [CommRing S] {d : ℕ} (f : R →+* S)
     (M : Matrix (Fin d) (Fin d) R) (v : Fin d → R) :
     (fun a => f ((M *ᵥ v) a)) = M.map f *ᵥ fun a => f (v a) := funext fun a => RingHom.map_mulVec f M v a
 
 /- English proof (translation)
-The claim follows from `(RingHom.map_det f M).symm`.
+A detailed English derivation is pending.
 -/
 private theorem det_map_ringHom {R S : Type} [CommRing R] [CommRing S] {d : ℕ} (f : R →+* S)
     (M : Matrix (Fin d) (Fin d) R) : (M.map f).det = f M.det := (RingHom.map_det f M).symm
 
 /- English proof (translation)
-The claim follows from `(RingHom.map_adjugate f M).symm`.
+A detailed English derivation is pending.
 -/
 private theorem adjugate_map_ringHom {R S : Type} [CommRing R] [CommRing S] {d : ℕ} (f : R →+* S)
     (M : Matrix (Fin d) (Fin d) R) : (M.map f).adjugate = M.adjugate.map f := (RingHom.map_adjugate f M).symm
 
 /- English proof (translation)
-Introduce `l _ K bk τ hτ d ρ hρ s Y1 Z1 hdet hWZ y hy`. Take `⟨x, hx⟩` from `hy`. Establish `hl : (1 : ℝ≥0) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `he : (0 : ℝ) < bk.Ep.natDegree` using `by exact_mod_cast bk.deg_pos`. Establish `hρ0 : 0 < bk.ρ₀` using `NNReal.rpow_pos (zero_lt_one.trans hl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ1 : bk.ρ₀ < 1` using `NNReal.rpow_lt_one_of_one_lt_of_neg hl (by simp only [Left.neg_neg_iff]; positivity)`. Take `⟨ι, ⟨TB⟩⟩` from `GlobalTheory.BSP.AinfTopBasis.main l K bk`. Establish `hinj : Function.Injective bk.iA` using `(GlobalTheory.BSP.toDisc_injective_of_topBasis l K bk (Ainf l) bk.ev ι TB bk.ρ₀ hρ0 hρ1).1`. Establish `hXn : ‖toDisc l (bk.ev X) bk.ρ₀ (bk.ev X)‖ ≤ bk.ρ₀`. Simplify using `using norm_toDisc_pow_le (l := l) (u := bk.ev X) (ρ := bk.ρ₀) 1 hρ0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀` to `Disc.map (l := l) (u := (X : bk.S)) (ρ := bk.ρ₀) bk.ev hXn`. Establish `hj : IsDiscMap bk.ev j` using `isDiscMap_map _ _`. Establish `hWZj` using `hWZ j hj`. Establish `hxj` using `hx j hj`. Establish `hD : Y1.det ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[det_map_ringHom, h, map_zero]`. Establish `hdetA : bk.iA Y1.det = (s.W).det * j Z1.det`. Rewrite using `[← det_map_ringHom, ← hWZj, det_mul, det_map_ringHom]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΔ : Z1.det ≠ 0`. Introduce `h`. Apply `hD` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hdetA, h, map_zero, mul_zero, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Y1.map bk.iA *ᵥ (fun a => j ((Z1.adjugate *ᵥ x) a)) = j Z1.det • fun a => bk.iA (y a)`. Rewrite using `[map_mulVec_fun j, ← hWZj, ← adjugate_map_ringHom, mulVec_mulVec, Matrix.mul_assoc, mul_adjugate, det_map_ringHom, Matrix.mul_smul, Matrix.mul_one, smul_mulVec, hxj]`. Establish `h2 : bk.iA Y1.det • (fun a => j ((Z1.adjugate *ᵥ x) a)) = j Z1.det • fun a => bk.iA ((Y1.adjugate *ᵥ y) a)`. Establish `h3 : (Y1.map bk.iA).adjugate *ᵥ (Y1.map bk.iA *ᵥ (fun a => j ((Z1.adjugate *ᵥ x) a))) = (Y1.map bk.iA).adjugate *ᵥ (j Z1.det • fun a => bk.iA (y a))` using `by rw [h1]`. Rewrite `h3` using `[mulVec_mulVec, adjugate_mul, det_map_ringHom, smul_mulVec, one_mulVec, mulVec_smul, adjugate_map_ringHom, ← map_mulVec_fun]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`. Establish `key : ∀ a, ∃ δ c : bk.S, δ ≠ 0 ∧ bk.ev δ * (Y1.adjugate *ᵥ y) a = bk.ev c * Y1.det` using `fun a => GlobalTheory.BSP.linDisjoint_disc l K bk (Ainf l) bk.ev ι TB j hj ((Y1.adjugate *ᵥ y) a) Y1.det ((Z1.adjugate *ᵥ x) a) Z1.det hΔ hD (by`. Establish `h4` using `congrFun h2 a`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h4`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose δs cs hδ hc using key`. Use `⟨∏ a, δs a, fun a => cs a * ∏ b ∈ Finset.univ.erase a, δs b, Finset.prod_ne_zero_iff.2 fun a _ => hδ a, ?_⟩` and prove the remaining obligations. Establish `hw : ∀ a, bk.ev (∏ b, δs b) * (Y1.adjugate *ᵥ y) a = Y1.det * bk.ev (cs a * ∏ b ∈ Finset.univ.erase a, δs b)`. Introduce `a`. Rewrite using `[← Finset.mul_prod_erase Finset.univ δs (Finset.mem_univ a), map_mul, map_mul, mul_comm (bk.ev (δs a)), mul_assoc, hc a]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hYw : Y1 *ᵥ (Y1.adjugate *ᵥ y) = Y1.det • y`. Rewrite using `[mulVec_mulVec, mul_adjugate, smul_mulVec, one_mulVec]`. Establish `hcancel : Y1.det • (fun a => bk.ev (∏ b, δs b) * y a) = Y1.det • (Y1 *ᵥ fun a => bk.ev (cs a * ∏ b ∈ Finset.univ.erase a, δs b))`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hYw]`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = Y1 *ᵥ (bk.ev (∏ b, δs b) • (Y1.adjugate *ᵥ y)) := by rw [mulVec_smul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `_ = Y1 *ᵥ (Y1.det • fun a => bk.ev (cs a * ∏ b ∈ Finset.univ.erase a, δs b)) := by`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `hw a`.
-
-Use `_ = _ := by rw [mulVec_smul]`. Conclude with `smul_right_injective _ hD hcancel`.
+A detailed English derivation is pending.
 -/
 theorem rational_in_columns_wseed : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l) (hτ : bk.IsPer τ) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (hρ : ∀ g, IsUnit (ρ g)) (s : WSeed bk d ρ τ) (Y1 : Matrix (Fin d) (Fin d) (Ainf l)) (Z1 : Matrix (Fin d) (Fin d) (bk.DS bk.ρ₀)), (Y1.map (inclW l)).det ≠ 0 → (∀ j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev j → s.W * Z1.map j = Y1.map bk.iA) → ∀ y, (fun y : Fin d → Ainf l => ∃ x : Fin d → bk.DS bk.ρ₀, ∀ j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev j → s.W *ᵥ (fun a => j (x a)) = fun a => bk.iA (y a)) y → ∃ (δ : bk.S) (c : Fin d → bk.S), δ ≠ 0 ∧ (fun a => bk.ev δ * y a) = Y1 *ᵥ fun a => bk.ev (c a) := by
   intro l _ K bk τ hτ d ρ hρ s Y1 Z1 hdet hWZ y hy

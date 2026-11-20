@@ -9,15 +9,13 @@ open scoped SchwartzMap
 namespace GlobalTheory.SchwartzPettis
 
 /- English proof (translation)
-Use `borelize C(K, W)`. Establish `hb : ∀ (b : C(K, W)) (r : ℝ), 0 ≤ r → NullMeasurableSet (h ⁻¹' Metric.closedBall b r) μ`. Introduce `b r hr`. Take `⟨D, hDc, hD⟩` from `TopologicalSpace.exists_countable_dense K`. Establish `e : h ⁻¹' Metric.closedBall b r = ⋂ x ∈ D, (fun t => ‖h t x - b x‖) ⁻¹' Iic r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `t`. Rewrite using `[mem_preimage, Metric.mem_closedBall, ContinuousMap.dist_le hr]`. Simplify using `only [mem_preimage, mem_iInter, mem_Iic, dist_eq_norm]`. Use `⟨fun H x _ => H x, fun H x => ?_⟩` and prove the remaining obligations. Conclude with `(isClosed_le (f := fun x => ‖h t x - b x‖) (by fun_prop) continuous_const).closure_subset_iff.2 (fun x hx => H x hx) (hD x)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `NullMeasurableSet.biInter hDc fun x _ => ((hm x).sub aestronglyMeasurable_const).norm.aemeasurable.nullMeasurable measurableSet_Iic`. Establish `hN : NullMeasurable h μ`. Use `(@measurable_of_isOpen _ (NullMeasurableSpace T μ) _ _ _ _ h fun U hU => ?_ :)` and prove the remaining obligations. Use `show NullMeasurableSet (h ⁻¹' U) μ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ x ∈ U, ∃ r : ℝ, 0 < r ∧ Metric.closedBall x r ⊆ U` using `fun x hx => Metric.nhds_basis_closedBall.mem_iff.1 (hU.mem_nhds hx)`. Use `choose! r hr hrU using h1`. Take `⟨S, hSU, hSc, hS⟩` from `TopologicalSpace.countable_cover_nhdsWithin (s := U) (f := fun x => Metric.closedBall x (r x)) fun x hx => mem_nhdsWithin_of_mem_nhds (Metric.closedBall_mem_nhds x (hr x hx))`. Establish `e : U = ⋃ x ∈ S, Metric.closedBall x (r x)` using `hS.antisymm (iUnion₂_subset fun x hx => hrU x (hSU hx))`. Rewrite using `[e, preimage_iUnion₂]`.
-
-Conclude with `NullMeasurableSet.biUnion hSc fun x hx => hb x _ (hr x (hSU hx)).le`. Conclude with `hN.aemeasurable.aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 theorem aesm_contMap {T K W : Type} [MeasurableSpace T] {μ : Measure T} [TopologicalSpace K] [CompactSpace K]
     [SecondCountableTopology K] [T2Space K] [NormedAddCommGroup W] [SecondCountableTopology W]
@@ -53,9 +51,9 @@ theorem aesm_contMap {T K W : Type} [MeasurableSpace T] {μ : Measure T} [Topolo
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.proper_real V`. Rewrite using `[coclosedCompact_eq_cocompact, tendsto_zero_iff_norm_tendsto_zero]`. Take `⟨C, hC0, hC⟩` from `f.decay (k + 1) n`. Establish `h1 : Tendsto (fun x : V => C * ‖x‖⁻¹) (cocompact V) (𝓝 0)`. Simplify using `using (tendsto_inv_atTop_zero.comp (tendsto_norm_cocompact_atTop (E := V))).const_mul C`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `squeeze_zero' (Eventually.of_forall fun _ => norm_nonneg _) ?_ h1` and prove the remaining obligations. Use `filter_upwards [(tendsto_norm_cocompact_atTop (E := V)).eventually_gt_atTop 0] with x hx`. Rewrite using `[norm_smul, norm_pow, norm_norm, ← div_eq_mul_inv, le_div_iff₀ hx]`. Use `le_trans (le_of_eq ?_) (hC x)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tendsto_weight (f : 𝓢(V, ℂ)) (k n : ℕ) :
     Tendsto (fun x : V => ‖x‖ ^ k • iteratedFDeriv ℝ n f x) (coclosedCompact V) (𝓝 0) := by
@@ -99,9 +97,9 @@ Both sides reduce to the same expression.
 theorem wD_infty (k n : ℕ) (f : 𝓢(V, ℂ)) : wD k n f OnePoint.infty = 0 := rfl
 
 /- English proof (translation)
-Use `le_antisymm ((ContinuousMap.norm_le _ (apply_nonneg _ _)).2 fun x => ?_) (SchwartzMap.seminorm_le_bound ℂ k n f (norm_nonneg _) fun x => ?_)` and prove the remaining obligations. Proceed by induction on `x using OnePoint.rec with`. Consider the case `infty => rw [wD_infty, norm_zero]`. Conclude with `apply_nonneg _ _`. Consider the case `coe x => rw [wD_coe, norm_smul, norm_pow, norm_norm]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `SchwartzMap.le_seminorm ℂ k n f x`. Use `(wD k n f).norm_coe_le_norm (x : OnePoint V)` as an intermediate fact. Rewrite `this` using `[wD_coe, norm_smul, norm_pow, norm_norm]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_wD (k n : ℕ) (f : 𝓢(V, ℂ)) : ‖wD k n f‖ = SchwartzMap.seminorm ℂ k n f := by
   refine le_antisymm ((ContinuousMap.norm_le _ (apply_nonneg _ _)).2 fun x => ?_)
@@ -113,15 +111,13 @@ theorem norm_wD (k n : ℕ) (f : 𝓢(V, ℂ)) : ‖wD k n f‖ = SchwartzMap.se
     rwa [wD_coe, norm_smul, norm_pow, norm_norm] at this
 
 /- English proof (translation)
-Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ V ℂ) ((normSeminorm ℂ ℂ).comp L.toLinearMap) (continuous_norm.comp L.continuous)`. Set `J : 𝓢(V, ℂ) →ₗ[ℂ] (∀ i : s, C(OnePoint V, V [×i.1.2]→L[ℝ] ℂ))` to `LinearMap.pi fun i => wD i.1.1 i.1.2`. Establish `hJ : ∀ f, ‖L f‖ ≤ C * ‖J f‖` using `fun f => by`. Use `(hC f).trans ?_` and prove the remaining obligations. Rewrite using `[Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_left (Seminorm.finset_sup_apply_le (norm_nonneg _) fun i hi => ?_) C.2` and prove the remaining obligations. Conclude with `(norm_wD i.1 i.2 f).symm.le.trans (norm_le_pi_norm (J f) ⟨i, hi⟩)`. Establish `hker : LinearMap.ker J ≤ LinearMap.ker L.toLinearMap` using `fun f hf => by`. Use `hJ f` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker.1 hf, norm_zero, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `norm_le_zero_iff.1 this`. Set `L₀ : LinearMap.range J →ₗ[ℂ] ℂ` to `(LinearMap.ker J).liftQ L.toLinearMap hker ∘ₗ J.quotKerEquivRange.symm.toLinearMap`. Establish `hL₀ : ∀ f, L₀ ⟨J f, f, rfl⟩ = L f` using `fun f => by`. Simplify using `only [L₀, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[show J.quotKerEquivRange.symm ⟨J f, f, rfl⟩ = _ from J.quotKerEquivRange_symm_apply_image f ⟨f, rfl⟩]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Take `⟨L', hL', -⟩` from `exists_extension_norm_eq (LinearMap.range J) (L₀.mkContinuous C (by`. Introduce and unpack `⟨_, f, rfl⟩`. Rewrite using `[hL₀]`. Conclude with `hJ f))`.
-
-Conclude with `⟨s, L', fun f => ((hL' ⟨J f, f, rfl⟩).trans (hL₀ f)).symm⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_factor (L : 𝓢(V, ℂ) →L[ℂ] ℂ) : ∃ (s : Finset (ℕ × ℕ))
     (L' : (∀ i : s, C(OnePoint V, V [×i.1.2]→L[ℝ] ℂ)) →L[ℂ] ℂ), ∀ f, L f = L' fun i => wD i.1.1 i.1.2 f := by
@@ -150,15 +146,15 @@ theorem exists_factor (L : 𝓢(V, ℂ) →L[ℂ] ℂ) : ∃ (s : Finset (ℕ ×
 variable {T : Type} [MeasurableSpace T] {μ : Measure T}
 
 /- English proof (translation)
-Use `choose b hbi hb using hb`. Establish `hbd : ∀ n t x, ‖iteratedFDeriv ℝ n (f t) x‖ ≤ b n t` using `fun n t x => (SchwartzMap.norm_iteratedFDeriv_le_seminorm ℂ (f t) n x).trans (hb n t)`. Establish `hd : ∀ n t, Differentiable ℝ (iteratedFDeriv ℝ n (f t))` using `fun n t => ((f t).smooth ⊤).differentiable_iteratedFDeriv (by exact_mod_cast ENat.coe_lt_top n)`. Establish `step : ∀ n, (∀ x, AEStronglyMeasurable (fun t => iteratedFDeriv ℝ n (f t) x) μ) → ∀ x, AEStronglyMeasurable (fun t => fderiv ℝ (iteratedFDeriv ℝ n (f t)) x) μ ∧ HasFDerivAt (fun y => ∫ t, iteratedFDeriv ℝ n (f t) y ∂μ) (∫ t, fderiv ℝ (iteratedFDeriv ℝ n (f t)) x ∂μ) x`. Introduce `n h x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `Formalism.FourierDecayAlt.P.Ux10.aesm_fderiv (μ := μ) (x := x) (fun t => hd n t x) (Eventually.of_forall h)`. Use `⟨h1, hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun y t => iteratedFDeriv ℝ n (f t) y) (F' := fun y t => fderiv ℝ (iteratedFDeriv ℝ n (f t)) y) (bound := b (n + 1)) univ_mem (Eventually.of_forall h) ((hbi n).mono' (h x) (Eventually.of_forall fun t => hbd n t x)) h1 (Eve …` and prove the remaining obligations. Rewrite using `[norm_fderiv_iteratedFDeriv]`. Conclude with `hbd _ t z`. Establish `main : ∀ n, (∀ x, AEStronglyMeasurable (fun t => iteratedFDeriv ℝ n (f t) x) μ) ∧ (∀ x, iteratedFDeriv ℝ n (fun y => ∫ t, f t y ∂μ) x = ∫ t, iteratedFDeriv ℝ n (f t) x ∂μ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Simplify using `only [iteratedFDeriv_zero_eq_comp, Function.comp_apply]`. Conclude with `⟨fun x => (continuousMultilinearCurryFin0 ℝ V ℂ).symm.continuous.comp_aestronglyMeasurable (hm x), fun x => ((continuousMultilinearCurryFin0 ℝ V ℂ).symm.toLinearIsometry.integral_comp_comm _).symm⟩`.
+Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Simplify using `only [iteratedFDeriv_succ_eq_comp_left, Function.comp_apply]`. Use `⟨fun x => (LinearIsometryEquiv.continuous _).comp_aestronglyMeasurable (step n ih.1 x).1, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[funext ih.2, (step n ih.1 x).2.fderiv]`. Conclude with `((continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (n + 1) => V) ℂ).symm.toLinearIsometry.integral_comp_comm _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `⟨(main n).1, (main n).2, ?_⟩` and prove the remaining obligations. Rewrite using `[funext (main n).2]`. Conclude with `fun x => (step n (main n).1 x).2.differentiableAt`.
+A detailed English derivation is pending.
 -/
 theorem iter_integral (f : T → 𝓢(V, ℂ)) (hm : ∀ y, AEStronglyMeasurable (fun t => f t y) μ)
     (hb : ∀ n, ∃ b : T → ℝ, Integrable b μ ∧ ∀ t, SchwartzMap.seminorm ℂ 0 n (f t) ≤ b t) (n : ℕ) :
@@ -199,17 +195,17 @@ theorem iter_integral (f : T → 𝓢(V, ℂ)) (hm : ∀ y, AEStronglyMeasurable
   exact fun x => (step n (main n).1 x).2.differentiableAt
 
 /- English proof (translation)
-Establish `hI` using `iter_integral f hm (hb 0)`. Use `choose b hbi hb using hb`. Use `haveI : SecondCountableTopology (OnePoint V) := (onePointEquivSphereOfFinrankEq (ι := Fin (Module.finrank ℝ V + 1)) (V := V) (by simp)).secondCountableTopology`. Use `haveI : ∀ n, SecondCountableTopology (V [×n]→L[ℝ] ℂ) := fun n => by haveI : FiniteDimensional ℝ (V [×n]→L[ℝ] ℂ) := Module.Finite.of_injective ContinuousMultilinearMap.toMultilinearMapLinear ContinuousMultilinearMap.toMultilinearMap_injective haveI := FiniteDimensional.proper_real …`. Establish `hw : ∀ k n, Integrable (fun t => wD k n (f t)) μ` using `fun k n => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Use `(hbi k n).mono' (aesm_contMap _ fun x => ?_) (Eventually.of_forall fun t => (norm_wD k n _).le.trans (hb k n t))` and prove the remaining obligations. Proceed by induction on `x using OnePoint.rec with`. Consider the case `infty => exact aestronglyMeasurable_const`. Consider the case `coe x => exact ((hI n).1 x).const_smul (‖x‖ ^ k)`. Establish `hx : ∀ k n (x : V), ‖x‖ ^ k • iteratedFDeriv ℝ n (fun y => ∫ t, f t y ∂μ) x = (∫ t, wD k n (f t) ∂μ) x` using `fun k n x => by`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Rewrite using `[ContinuousMap.integral_apply (hw k n), (hI n).2.1, ← integral_smul]`. Both sides reduce to the same expression. Set `g : 𝓢(V, ℂ)` to `⟨fun y => ∫ t, f t y ∂μ, contDiff_of_differentiable_iteratedFDeriv fun n _ => (hI n).2.2, fun k n => ⟨‖∫ t, wD k n (f t) ∂μ‖, fun x => by`. Use `(∫ t, wD k n (f t) ∂μ).norm_coe_le_norm (x : OnePoint V)` as an intermediate fact. Rewrite using `[← hx, norm_smul, norm_pow, norm_norm] at this⟩⟩` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hg : ∀ k n, wD k n g = ∫ t, wD k n (f t) ∂μ` using `fun k n => by ext1 x`. Proceed by induction on `x using OnePoint.rec with`. Consider the case `infty => rw [ContinuousMap.integral_apply (hw k n)]`. Simplify using `only [wD_infty, integral_zero]`. Consider the case `coe x => exact hx k n x`.
+Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨g, fun _ => rfl, fun L => ?_⟩` and prove the remaining obligations. Take `⟨s, L', hL⟩` from `exists_factor L`. Establish `hi : Integrable (fun t (i : s) => wD i.1.1 i.1.2 (f t)) μ` using `Integrable.of_eval fun i => hw _ _`. Simplify using `only [hL]`. Use `⟨L'.integrable_comp hi, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[L'.integral_comp_comm hi]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hg, eval_integral fun i : s => hw i.1.1 i.1.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral (f : T → 𝓢(V, ℂ)) (hm : ∀ y, AEStronglyMeasurable (fun t => f t y) μ)
     (hb : ∀ k n, ∃ b : T → ℝ, Integrable b μ ∧ ∀ t, SchwartzMap.seminorm ℂ k n (f t) ≤ b t) :

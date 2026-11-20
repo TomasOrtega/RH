@@ -92,9 +92,9 @@ def locFr (B : Frames G) (t : T) (w : Pl D.host.E) {j : ℕ} (hj : j < D.R.m) :
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use `first`. Consider the case `(exact @_root_.GlobalTheory.SymmetricJacobianSignature.cell_volume_mul_coef)`. Consider the case `exact @_root_.GlobalTheory.SymmetricJacobianSignature.cell_volume_mul_coef`. Consider the case `exact _root_.GlobalTheory.SymmetricJacobianSignature.cell_volume_mul_coef`. Consider the case `(apply _root_.GlobalTheory.SymmetricJacobianSignature.cell_volume_mul_coef <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.SymmetricJacobianSignature.cell_volume_mul_coef <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.SymmetricJacobianSignature.cell_volume_mul_coef <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SymmetricJacobianSignature.cell_volume_mul_coef ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem vol_mul_colCoef : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ (s : ℤˣ), ∀ j ∈ idx D,
     ∀ la : Measure ((rowN ch.G j).subgroupOf (GfC (ch.G.V (.grid D.R.m j)))), la.IsHaarMeasure →

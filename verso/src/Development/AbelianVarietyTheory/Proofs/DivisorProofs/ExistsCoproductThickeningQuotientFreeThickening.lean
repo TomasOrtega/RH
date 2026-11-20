@@ -15,41 +15,39 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 namespace GlobalTheory.CopEx
 
 /- English proof (translation)
-Introduce `D Λ n U T hT hU`. Take `⟨h1, h2, h3, -⟩` from `GlobalTheory.T.hom_spec_points_levels D Λ`. Use `haveI : Algebra.Smooth D.R (Sec D.s U.unop.1) := (GlobalTheory.T.smooth_sections_mono_reduction_affine_inf D).1 U.unop`. Take `⟨m, pres, hpres⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 (inferInstance : Algebra.FiniteType D.R (Sec D.s U.unop.1))`. Take `⟨g, hgx, hgR⟩` from `h2 U T hU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose bl hbl using fun i : Fin m ↦ T.surj (g (pres (MvPolynomial.X i)))`. Take `⟨F, u, τ, hfree, hQ⟩` from `GlobalTheory.T.exists_freeThickening_level_finitelyMany_elements D.R D.I D.κ D.X₀ D.t n m T hT`. Set `ψ : MvPolynomial (Fin m) D.R →ₐ[D.R] F.B` to `MvPolynomial.aeval fun i ↦ u.φ (bl i) + τ i`. Establish `hψX : ∀ i, ψ (MvPolynomial.X i) = u.φ (bl i) + τ i` using `fun i ↦ MvPolynomial.aeval_X _ _`. Establish `hψπ : ∀ p, F.π (ψ p) = u.φ₀ (g (pres p))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : F.π.comp (ψ : MvPolynomial (Fin m) D.R →+* F.B) = u.φ₀.comp (g.comp (pres : MvPolynomial (Fin m) D.R →+* Sec D.s U.unop.1))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r show F.π (ψ (MvPolynomial.C r)) = u.φ₀ (g (pres (MvPolynomial.C r)))`. Establish `hC : MvPolynomial.C r = algebraMap D.R (MvPolynomial (Fin m) D.R) r` using `rfl`. Rewrite using `[hC, AlgHom.commutes, AlgHom.commutes, hgR, u.comm, u.φ.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingHom.coe_coe, hψX, map_add]`. Rewrite using `[(F.ker _).2 (hfree.2.1 i), add_zero, ← hbl i, u.comm]`. Conclude with `fun p ↦ RingHom.congr_fun e p`. Establish `hker : ∀ k ∈ RingHom.ker pres, ψ k ∈ F.J` using `fun k hk ↦ (F.ker _).1 (by rw [hψπ, (RingHom.mem_ker).1 hk, map_zero, map_zero])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `set 𝔟 : Ideal F.B := Ideal.span {y | ∃ j : ℕ, j ≠ 0 ∧ ∃ x ∈ ψ '' (RingHom.ker pres : Set _), y = F.δ.dpow j x} with h𝔟def`. Establish `h𝔟 : F.δ.IsSubDPIdeal 𝔟` using `(GlobalTheory.DPQuot.quotient_subDPIdeal F.B F.J F.δ).2 _ (by`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `hker k hk)`. Take `⟨G, q, hqs, hq0, hGJ, hGlev, hquniv⟩` from `GlobalTheory.T.exists_quotient_nilCrystallineThickening_of_subDPIdeal D.R D.I D.κ D.X₀ D.t F 𝔟 h𝔟`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψ𝔟 : ∀ k ∈ RingHom.ker pres, (q.φ.comp ψ) k = 0` using `fun k hk ↦ (hq0 _).2 (Ideal.subset_span ⟨1, one_ne_zero, ψ k, ⟨k, hk, rfl⟩, (F.δ.dpow_one (hker k hk)).symm⟩)`. Set `y : Sec D.s U.unop.1 →ₐ[D.R] G.B` to `(Ideal.Quotient.liftₐ (RingHom.ker pres) (q.φ.comp ψ) hψ𝔟).comp (Ideal.quotientKerAlgEquivOfSurjective hpres).symm.toAlgHom`. Establish `hy : ∀ p, y (pres p) = q.φ (ψ p)`. Introduce `p`. Establish `: (Ideal.quotientKerAlgEquivOfSurjective hpres).symm (pres p) = Ideal.Quotient.mk _ p` using `(AlgEquiv.symm_apply_eq _).2 rfl`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.liftₐ (RingHom.ker pres) (q.φ.comp ψ) hψ𝔟 ((Ideal.quotientKerAlgEquivOfSurjective hpres).symm (pres p)) = _`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hyπ : G.π.comp (y : Sec D.s U.unop.1 →+* G.B) = (u ≫ q).φ₀.comp g`. Use extensionality with `a`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨p, rfl⟩` from `hpres a`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingHom.coe_coe, hy]`. Rewrite using `[← q.comm, hψπ]`. Both sides reduce to the same expression. Take `⟨r, hr⟩` from `(h1 U G y).1 (by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hyπ, Cris.spMap_comp, Category.assoc, hgx, ← Category.assoc, (u ≫ q).pt])`. Use `⟨F, G, u, q, r, hQ, hfree.1, hqs, ?_, hGlev _ hfree.1, ?_⟩` and prove the remaining obligations. Introduce `b hb`. Rewrite `hb` using `[hGJ]`. Take `⟨j, hj, hjb⟩` from `(Ideal.mem_map_iff_of_surjective _ hqs).1 hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: b - j ∈ 𝔟` using `(hq0 _).1 (by rw [map_sub]; change q.φ b - q.φ j = 0; rw [← hjb]; exact sub_self _)`. Use `F.J.add_mem hj (h𝔟.isSubideal this)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Introduce `S hS a b`. Establish `hsame : ∀ x, S.π (b.φ (Λ.e U x)) = a.φ₀ (g x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `h3 U S.B₀ (b.φ₀.comp ((Λ.L.obj U).π.comp (Λ.e U : Sec D.s U.unop.1 →+* (Λ.L.obj U).B))) (a.φ₀.comp g) (by`. Rewrite using `[Cris.spMap_comp, Category.assoc, Λ.pt U, ← Category.assoc, b.pt, Cris.spMap_comp, Category.assoc, hgx, ← Category.assoc, a.pt])`. Introduce `x`. Rewrite using `[← b.comm]`. Conclude with `RingHom.congr_fun e x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Set `c : Fin m → S.B` to `fun i ↦ b.φ (Λ.e U (pres (MvPolynomial.X i))) - a.φ (bl i)`. Establish `hc : ∀ i, c i ∈ S.J`. Introduce `i`. Use `(S.ker _).1 ?_` and prove the remaining obligations. Simplify using `only [c, map_sub, hsame, ← a.comm, hbl i, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g', ⟨hg'u, hg'τ⟩, hg'uniq⟩` from `hfree.2.2 S hS a c hc`. Establish `hg'ψ : ∀ p, g'.φ (ψ p) = b.φ (Λ.e U (pres p))`. Establish `e : g'.φ.comp ψ = b.φ.comp ((Λ.e U).toAlgHom.comp pres)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `only [AlgHom.comp_apply, hψX, map_add, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe]`. Rewrite using `[hg'τ i, ← Thick.comp_φ, hg'u]`. Simplify using `only [c]`. Normalize the expressions using the abelian group laws. Conclude with `fun p ↦ AlgHom.congr_fun e p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hkill : ∀ z ∈ 𝔟, g'.φ z = 0`. Introduce `z hz`. Use `(Ideal.span_le (I := RingHom.ker (g'.φ : F.B →+* S.B))).2 ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, _, ⟨k, hk, rfl⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `g'.φ (F.δ.dpow j (ψ k)) = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdp` using `g'.dp.dpow_comp (n := j) _ (hker k hk)`. Express the relevant statement in the definitionally equal form `S.δ.dpow j (g'.φ (ψ k)) = g'.φ (F.δ.dpow j (ψ k)) at hdp`. Rewrite using `[← hdp, hg'ψ, (RingHom.mem_ker).1 hk, map_zero, map_zero, dpow_eval_zero _ hj]`. Take `⟨c0, hc0, hc0u⟩` from `hquniv S g' hkill`. Use `⟨c0, ⟨by rw [Category.assoc, hc0, hg'u], ?_⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use extensionality with `z`. Take `⟨x, rfl⟩` from `(Λ.e U).surjective z`. Take `⟨p, rfl⟩` from `hpres x`. Rewrite using `[Thick.comp_φ, hr, hy, ← Thick.comp_φ, hc0, hg'ψ]`. Introduce and unpack `c1 ⟨hc1a, hc1b⟩`.
-
-Use `hc0u c1 (hg'uniq (q ≫ c1) ⟨by rw [← Category.assoc, hc1a], fun i ↦ ?_⟩)` and prove the remaining obligations. Establish `hτ : τ i = ψ (MvPolynomial.X i) - u.φ (bl i)` using `by rw [hψX]; abel`. Rewrite using `[hτ, map_sub, Thick.comp_φ, Thick.comp_φ, ← hy, ← hr, ← Thick.comp_φ, hc1b, ← Thick.comp_φ q c1, ← Thick.comp_φ u, ← Category.assoc, hc1a]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cop : ∀ (D : Data) (Λ : Lift D) (n : ℕ) (U : AffOp D.X) (T : Thick D.κ D.t), IsLev T.δ (n + 1) →
     ⊤ ≤ (T.x ≫ D.i) ⁻¹ᵁ U.unop.1 → ∃ (F G : Thick D.κ D.t) (u : T ⟶ F) (q : F ⟶ G) (r : Λ.L.obj U ⟶ G),

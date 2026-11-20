@@ -6,7 +6,7 @@ open Finset Matrix
 namespace Formalism.CountingSumsFrames
 
 /- English proof (translation)
-Use extensionality with `m j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[swapCol]`. Simplify using `[swapCol, hj]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem submatrix_swapCol {R : Type} [CommRing R] {r k : ℕ} (h : r ≤ k) (H : Matrix (Fin r) (Fin k) R)
     (i : Fin r) (c : Fin k) :
@@ -18,11 +18,11 @@ theorem submatrix_swapCol {R : Type} [CommRing R] {r k : ℕ} (h : r ≤ k) (H :
   · simp [swapCol, hj]
 
 /- English proof (translation)
-Establish `: CharP A p` using `charP_of_injective_algebraMap (algebraMap F A).injective p`. Establish `: ExpChar A p` using `ExpChar.prime (Fact.out : p.Prime)`. Establish `: ExpChar F p` using `ExpChar.prime (Fact.out : p.Prime)`. Set `g : F →+* A` to `(algebraMap F A).comp (iterateFrobenius F p zj)`. Establish `hg : ∀ x, g x = algebraMap F A (x ^ p ^ zj)` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[g, iterateFrobenius_def]`. Establish `hmat : (Matrix.of fun l c' => (frameRow p r k (H.map (algebraMap F A)) (pos l) (t l) (cols c')) ^ p ^ (zj - pos l)) = (Matrix.of fun l m => t l m ^ p ^ (zj - pos l)) * (g.mapMatrix (H.submatrix id cols))`. Use extensionality with `l c'`. Simplify using `only [Matrix.of_apply, frameRow, Matrix.vecMul, dotProduct, Matrix.mul_apply, Matrix.map_apply, RingHom.mapMatrix_apply, Matrix.submatrix_apply, id, hg]`. Rewrite using `[sum_pow_char_pow]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, ← pow_add, Nat.add_sub_of_le (hpos l), map_pow]`. Unfold `piMinor`. Rewrite using `[hmat, Matrix.det_mul, ← RingHom.map_det, hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem piMinor_map {p r k : ℕ} [Fact p.Prime] {F A : Type} [Field F] [CharP F p] [CommRing A] [Algebra F A]
     [Nontrivial A] (H : Matrix (Fin r) (Fin k) F) (pos : Fin r → ℕ) (t : Fin r → Fin r → A) (zj : ℕ)

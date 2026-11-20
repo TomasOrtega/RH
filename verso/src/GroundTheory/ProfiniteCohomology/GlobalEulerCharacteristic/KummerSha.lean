@@ -26,7 +26,7 @@ def gsRootsLocalUnitsMor (v : S) :
       (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) ℓ).f
 
 /- English proof (translation)
-The claim follows from `(gsKummerLocalMap S ιs ℓ v).comm₁₂.symm`.
+A detailed English derivation is pending.
 -/
 theorem gsRootsLocalUnitsMor_eq (v : S) :
     gsRootsLocalUnitsMor S ιs ℓ v =
@@ -37,9 +37,9 @@ theorem gsRootsLocalUnitsMor_eq (v : S) :
 include hℓS in
 
 /- English proof (translation)
-Establish `h2` using `cohomologyMap_f_injective_of_subsingleton (localKummer_shortExact S ℓ v) 1 subsingleton_cohomology_one_galUnits`. Establish `h1 : Function.Injective (cohomologyMap (gsRootsOmegaMor S ιs ℓ v) 2).hom`. Establish `hc` using `congrArg (fun φ => cohomologyMap φ 2) (comp_repInvOfBijective (gsRootsOmegaMor S ιs ℓ v) (bijective_gsRootsOmegaMor S ιs ℓ hℓS v))`. Establish `hc'` using `(cohomologyMap_comp _ _ 2).symm.trans (hc.trans (cohomologyMap_id 2))`. Use `Function.LeftInverse.injective (g := (cohomologyMap (repInvOfBijective (gsRootsOmegaMor S ιs ℓ v) (bijective_gsRootsOmegaMor S ιs ℓ hℓS v)) 2).hom) fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun φ => φ.hom a) hc'`. Establish `e` using `cohomologyMap_comp (gsRootsOmegaMor S ιs ℓ v) (kummerSequence ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) ℓ).f 2`. Introduce `a b hab`. Establish `hab'` using `(congrArg (fun φ => φ.hom a) e).symm.trans ((hab : _).trans (congrArg (fun φ => φ.hom b) e))`. Conclude with `h1 (h2 hab')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cohomologyMap_gsRootsLocalUnitsMor_injective (v : S) :
     Function.Injective (cohomologyMap (gsRootsLocalUnitsMor S ιs ℓ v) 2).hom := by
@@ -62,9 +62,9 @@ theorem cohomologyMap_gsRootsLocalUnitsMor_injective (v : S) :
 include hℓS in
 
 /- English proof (translation)
-Establish `e1` using `cohomologyMap_cohomologyMapAlong (gsFinFamily S ιs v).toMonoidHom (continuous_toMonoidHom _) (𝟙 _) (gsRootsLocalUnitsMor S ιs ℓ v) (p := 2) x`. Establish `e2` using `cohomologyMapAlong_cohomologyMap (gsFinFamily S ιs v).toMonoidHom (continuous_toMonoidHom _) (rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) ℓ) (gsSUnitsLocalMor S ιs v) (p := 2) x`. Establish `e3` using `congrArg (fun m => (cohomologyMapAlong (gsFinFamily S ιs v).toMonoidHom (continuous_toMonoidHom _) m 2).hom x) ((Category.id_comp (gsRootsLocalUnitsMor S ιs ℓ v)).trans (gsRootsLocalUnitsMor_eq S ιs ℓ v))`. Establish `key : (cohomologyMap (gsRootsLocalUnitsMor S ιs ℓ v) 2).hom (ptRes (gsFinFamily S ιs) (gsRoots S ℓ) v 2 x) = (cohomologyMapAlong (gsFinFamily S ιs v).toMonoidHom (continuous_toMonoidHom _) (gsSUnitsLocalMor S ιs v) 2).hom ((cohomologyMap (rootsOfUnityToSUnits S (maxUnramifiedOuts …` using `e1.trans (e3.trans e2.symm)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `key.symm.trans ((congrArg (cohomologyMap (gsRootsLocalUnitsMor S ιs ℓ v) 2).hom h).trans (map_zero _))`. Introduce `h`. Conclude with `cohomologyMap_gsRootsLocalUnitsMor_injective S ιs ℓ hℓS v ((key.trans h).trans (map_zero _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ptRes_eq_zero_iff (v : S) (x : cohomology (gsRoots S ℓ) 2) :
     ptRes (gsFinFamily S ιs) (gsRoots S ℓ) v 2 x = 0 ↔
@@ -99,15 +99,13 @@ omit [NeZero ℓ] in
 include hℓS hℓ in
 
 /- English proof (translation)
-Establish `hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hℓS v h hv`. Establish `hy1 : ℓ ^ 1 • y = 0` using `by rw [pow_one]; exact hy`. Use `eq_zero_of_sUnitsBrauer_eq_zero K S ℓ hℓ hS y 1 hy1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_zero_of_brauerLocal_apply_eq_zero (gsLocalEmbeddings S ιs) _ fun w => ?_` and prove the remaining obligations. Break down `w with w | w` into its components or cases. Apply `placeInv_injective (K := K) (.inl w)` to reduce the goal to its premises. Use `(placeInv_inl_eq_zero (ℓ ^ 1) (hK.imp (fun h => h.pow) id) w _ ?_).trans (map_zero _).symm` and prove the remaining obligations. Establish `e : ℓ ^ 1 • brauerLocal (gsLocalEmbeddings S ιs) (sUnitsBrauer K S y) = 0`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_nsmul, ← map_nsmul, hy1, map_zero, map_zero]`. Conclude with `(map_nsmul (DFinsupp.evalAddMonoidHom (β := fun w => localGaloisCohomology K 2 w) (Sum.inl w : Place K.1)) (ℓ ^ 1) _).symm.trans ((congrArg (DFinsupp.evalAddMonoidHom (β := fun w => localGaloisCohomology K 2 w) (Sum.inl w : Place K.1)) e).trans (map_zero _))`. Distinguish the cases in `hw : w ∈ S`. Use `(congrArg (fun z => brauerLocal (gsLocalEmbeddings S ιs) z (.inr w)) (sUnitsBrauer_apply K S _)).trans ?_` and prove the remaining obligations. Use `(brauerLocal_gsBrauerInfl_inr K S (gsLocalEmbeddings S ιs) w _).trans ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : (gsLocalEmbeddings S ιs).fin w = ιs ⟨w, hw⟩` using `gsLocalEmbeddings_fin S ιs ⟨w, hw⟩`. Rewrite using `[hfin]`. Use `(gsLocalRes_sUnitsToUnits_eq S ιs ⟨w, hw⟩ _).trans ?_` and prove the remaining obligations. Rewrite using `[hloc ⟨w, hw⟩, map_zero, map_zero]`. Both sides reduce to the same expression.
-
-Conclude with `brauerLocal_sUnitsBrauer_inr K S _ _ w hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_gsSUnitsLocalMor_eq_zero (hK : Odd ℓ ∨ IsTotallyComplex K.1)
     (y : cohomology (galSUnitsMax K.1 ℚ̄ S) 2) (hy : ℓ • y = 0)
@@ -143,9 +141,9 @@ theorem eq_zero_of_gsSUnitsLocalMor_eq_zero (hK : Odd ℓ ∨ IsTotallyComplex K
 include hℓS hℓ in
 
 /- English proof (translation)
-Rewrite using `[mem_ptSha]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hloc : ∀ v : S, (cohomologyMapAlong (gsFinFamily S ιs v).toMonoidHom (continuous_toMonoidHom _) (gsSUnitsLocalMor S ιs v) 2).hom ((cohomologyMap (rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) ℓ) 2).hom x) = 0` using `fun v => (ptRes_eq_zero_iff S ιs ℓ hℓS v x).1 (congrFun hx v)`. Establish `h0 : (cohomologyMap (ℓ • 𝟙 (galSUnitsMax K.1 ℚ̄ S)) 2).hom ((cohomologyMap (rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) ℓ) 2).hom x) = 0` using `cohomologyMap_g_cohomologyMap_f_apply (S := sUnitsKummerSequence S (maxUnramifiedOutside K.1 ℚ̄ S) ℓ) 2 x`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `eq_zero_of_gsSUnitsLocalMor_eq_zero S ιs hℓS hℓ hK _ ((cohomologyMap_nsmul_id_apply (galSUnitsMax K.1 ℚ̄ S) ℓ 2 _).symm.trans h0) hloc`. Introduce `hy`. Use function extensionality and compare the values at `v`. Conclude with `(ptRes_eq_zero_iff S ιs ℓ hℓS v x).2 ((congrArg _ hy).trans (map_zero _))`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mem_ptSha_iff_cohomologyMap_eq_zero (hK : Odd ℓ ∨ IsTotallyComplex K.1)
     (x : cohomology (gsRoots S ℓ) 2) :
@@ -171,7 +169,7 @@ theorem mem_ptSha_iff_cohomologyMap_eq_zero (hK : Odd ℓ ∨ IsTotallyComplex K
 include hℓS hℓ in
 
 /- English proof (translation)
-Use `(mem_ptSha_iff_cohomologyMap_eq_zero S ιs hℓS hℓ hK x).trans ⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `exists_δ_eq_of_cohomologyMap_f_eq_zero (sUnitsKummerSequence_shortExact (Ω := ℚ̄) S ℓ hℓS) 1 2 rfl x h`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `congrArg (fun φ => φ.hom z) (δ_comp (sUnitsKummerSequence_shortExact (Ω := ℚ̄) S ℓ hℓS) 1 2 rfl)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_ptSha_iff_exists_δ (hK : Odd ℓ ∨ IsTotallyComplex K.1) (x : cohomology (gsRoots S ℓ) 2) :
     x ∈ ptSha (gsFinFamily S ιs) (gsRoots S ℓ) 2 ↔

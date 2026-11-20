@@ -15,7 +15,7 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (h : I.Ok) 
 include h in
 
 /- English proof (translation)
-The claim follows from `StepZero.form_smul ((I.Tp a).pref u 0) (lamT (B.hcW u) 0) (StepZero.levGAt_zero (I.Tp a) (h.idx_ok a)) (StepZero.levQAt_zero (I.Tp a) (h.idx_ok a)) φ b g p`.
+A detailed English derivation is pending.
 -/
 theorem col_smul (φ : ColsK I u) (b : Idx I.sel (I.tup a) (I.idx a) 0) (g : (I.stp u a 0).G b) (p : (I.stp u a 0).D b) :
     φ.1 ((I.stp u a 0).act b g p).1.1.deco = (I.stp u a 0).rho B.fields.emb (lamT (B.hcW u) 0) b g (φ.1 p.1.1.deco) :=
@@ -31,9 +31,9 @@ def colForm : ColsK I u →ₗ[B.fields.K] (I.stp u a 0).FormsK B.fields.emb (la
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `d`. Take `⟨p, rfl⟩` from `StepZero.exists_pt (Q := I.Q a) (StepZero.ysAt_zero (R := B.R) I.sel (I.tup a) (I.cst a)) d`. Set `b : Idx I.sel (I.tup a) (I.idx a) 0` to `(StepZero.idxUnique (h.idx_ok a)).default`. Establish `h1 : φ.1 ((I.stp u a 0).rep ((I.stp u a 0).cl b p)).1.1.deco = 0` using `congrFun (congrArg Subtype.val h0) ((I.stp u a 0).cl b p)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2` using `col_smul I h u a φ b ((I.stp u a 0).mv b p) ((I.stp u a 0).rep ((I.stp u a 0).cl b p))`. Rewrite `h2` using `[show (I.stp u a 0).act b _ _ = p from (I.stp u a 0).mv_smul b p]`. Conclude with `h2.trans ((congrArg _ h1).trans (map_zero _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colForm_eq_zero (φ : ColsK I u) (h0 : colForm I h u a hf φ = 0) : φ = 0 := by
   apply Subtype.ext
@@ -47,7 +47,7 @@ theorem colForm_eq_zero (φ : ColsK I u) (h0 : colForm I h u a hf φ = 0) : φ =
   exact h2.trans ((congrArg _ h1).trans (map_zero _))
 
 /- English proof (translation)
-Establish `h2` using `col_smul I h u a φ b ((I.stp u a 0).mv b p) ((I.stp u a 0).rep ((I.stp u a 0).cl b p))`. Rewrite `h2` using `[show (I.stp u a 0).act b _ _ = p from (I.stp u a 0).mv_smul b p]`. Use `Eq.trans ?_ (congrArg _ h2).symm` and prove the remaining obligations. Conclude with `(GStep.evV_rho_eq_tr (I.stp u a 0) B.fields.emb B.embLL (lamT (B.hcW u) 0) b _ _).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem trTo_colForm (φ : ColsK I u) (b : Idx I.sel (I.tup a) (I.idx a) 0) (p : (I.stp u a 0).D b) :
     (I.stp u a 0).trTo B.fields.emb B.embLL b p
@@ -60,7 +60,7 @@ theorem trTo_colForm (φ : ColsK I u) (b : Idx I.sel (I.tup a) (I.idx a) 0) (p :
   exact (GStep.evV_rho_eq_tr (I.stp u a 0) B.fields.emb B.embLL (lamT (B.hcW u) 0) b _ _).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Use `Eq.trans ?_ (trTo_colForm I h u a hf φ c.1 (((I.atIn u a).A 0).diaPt P e c)).symm` and prove the remaining obligations. Establish `e1 : (((I.atIn u a).A 0).diaPt P e c).1.1.deco = DecoSet.dia1 P e ((I.stp u a 0).rep c).1.1.deco` using `congrArg (fun q => q.1.1.deco) (PtY.mv_dia ((I.stp u a 0).rep c) P e)`. Rewrite using `[e1]`. Conclude with `congrArg (evV B.fields.emb (1 : Matrix (Fin (B.R.N 0)) (Fin (B.R.N 0)) B.fields.E) (lamT (B.hcW u) 0) B.embLL) (LocOp.ofMap_op_apply _ _ _ _ _ φ _)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embF_colForm_diaOp (P : (B.primes X).vT u) (e : (𝓞 B.fields.E ⧸ P.1.asIdeal)ˣ) (φ : ColsK I u) :
     (I.stp u a 0).embF B.fields.emb B.embLL (lamT (B.hcW u) 0) hf
@@ -76,11 +76,11 @@ theorem embF_colForm_diaOp (P : (B.primes X).vT u) (e : (𝓞 B.fields.E ⧸ P.1
     (LocOp.ofMap_op_apply _ _ _ _ _ φ _)
 
 /- English proof (translation)
-Establish `key : ∀ P : (B.primes X).vT u, (I.atT l u a).Nm P ((I.stp u a 0).embF B.fields.emb B.embLL (lamT (B.hcW u) 0) hf (colForm I h u a hf φ)) = (I.stp u a 0).embF B.fields.emb B.embLL (lamT (B.hcW u) 0) hf (colForm I h u a hf (NmOp (Pr` using `B.primes X) B.wts I.Ch u 0 P φ)) := by`. Introduce `P`. Establish `e : NmOp (Pr` using `B.primes X) B.wts I.Ch u 0 P φ = ∑ e ∈ @Finset.univ _ (Fintype.ofFinite (𝓞 B.fields.E ⧸ P.1.asIdeal)ˣ), diaOp (Pr := B.primes X) B.wts I.Ch u 0 P e φ := LinearMap.sum_apply _ _ _`. Rewrite using `[e, map_sum, map_sum]`. Use `(LinearMap.sum_apply _ _ _).trans (Finset.sum_congr (Finset.ext fun e => ?_) fun e _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `iff_of_true (@Finset.mem_univ _ (_) _) (@Finset.mem_univ _ (_) _)`. Conclude with `(embF_colForm_diaOp I h u a hf P e φ).symm`. Establish `hz : ∀ ψ : ColsK I u, (I.stp u a 0).embF B.fields.emb B.embLL (lamT (B.hcW u) 0) hf (colForm I h u a hf ψ) = 0 ↔ ψ = 0` using `fun ψ => (map_eq_zero_iff _ (StepZero.embF_injective _ _ _ _ hf)).trans ⟨colForm_eq_zero I h u a hf ψ, fun h0 => by rw [h0]; exact map_zero _⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hm`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Submodule.mem_iInf _).2 fun P => (hz _).1 ?_` and prove the remaining obligations. Conclude with `(key P).symm.trans ((Submodule.mem_iInf _).1 hm.2 P)`. Introduce `hm`. Use `⟨StepZero.embF_mem_Fi _ _ _ _ hf _, (Submodule.mem_iInf _).2 fun P => ?_⟩` and prove the remaining obligations. Conclude with `(key P).trans ((hz _).2 ((Submodule.mem_iInf _).1 hm P))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem embF_colForm_mem_Mram (l : I.Laws) (φ : ColsK I u) :
     (I.stp u a 0).embF B.fields.emb B.embLL (lamT (B.hcW u) 0) hf (colForm I h u a hf φ) ∈ (I.atT l u a).Mram ↔
@@ -110,7 +110,7 @@ theorem embF_colForm_mem_Mram (l : I.Laws) (φ : ColsK I u) :
     exact (key P).trans ((hz _).2 ((Submodule.mem_iInf _).1 hm P))
 
 /- English proof (translation)
-Establish `hx : x = colForm I h u a ((l.fmL u a).fam 0) φ` using `Subtype.ext (funext hc)`. Rewrite using `[hx]`. Conclude with `embF_colForm_mem_Mram I h u a ((l.fmL u a).fam 0) l φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCol_mem_ramSub_iff {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (h : I.Ok) (_hX : B.fields.Ok) (l : I.Laws)
     (u : B.Word) (a : I.ι) (x : ((I.fm l u a).lat 0).V) (φ : ColsK I u) (hc : IsCol I u a l x φ) :

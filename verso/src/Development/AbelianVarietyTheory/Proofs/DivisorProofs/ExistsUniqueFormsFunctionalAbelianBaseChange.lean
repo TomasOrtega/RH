@@ -23,13 +23,13 @@ open TensorProduct
 namespace GlobalTheory.BaseChangeForm
 
 /- English proof (translation)
-Establish `key : ∀ x : R' ⊗[R] G, ∃ f' : F', c' f' = e x ∧ ∀ ψ : F' →ₗ[R'] R', (∀ f, ψ (p f) = l (c f)) → ψ f' = LinearMap.liftBaseChange R' l x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp, fun ψ _ ↦ by simp⟩`. Consider the case `tmul b y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨f, rfl⟩` from `hc y`. Use `⟨b • p f, ?_, fun ψ hψ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hp, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[map_smul, hψ, LinearMap.liftBaseChange_tmul]`. Consider the case `add x y hx hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨a, ha, ha'⟩` from `hx`. Take `⟨b, hb, hb'⟩` from `hy`. Conclude with `⟨a + b, by rw [map_add, map_add, ha, hb], fun ψ hψ ↦ by rw [map_add, map_add, ha' ψ hψ, hb' ψ hψ]⟩`. Use `⟨LinearMap.liftBaseChange R' l ∘ₗ e.symm.toLinearMap ∘ₗ c', ⟨fun f hf ↦ ?_, fun f ↦ ?_⟩, fun ψ hψ ↦ LinearMap.ext fun f ↦ ?_⟩` and prove the remaining obligations. Simplify using `[hf]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hp]`. Take `⟨f', h1, h2⟩` from `key (e.symm (c' f))`. Establish `h3 : ψ (f - f') = 0` using `hψ.1 _ (by rw [map_sub, h1, LinearEquiv.apply_symm_apply, sub_self])`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Rewrite using `[h3, h2 ψ hψ.2]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -68,7 +68,7 @@ theorem existsUnique_of_baseChange {R R' : Type} [CommRing R] [CommRing R'] [Alg
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `hC hH R _ A _ g hab hdim R' _ _ A' φ hφ m l`. Take `⟨e, he⟩ : ∃ e : R' ⊗[R] GlobForm (A.hom ≫ 𝟙 (Sp R)) ≃ₗ[R'] GlobForm (A'.hom ≫ 𝟙 (Sp R')), ∀ c, IsPullForm m.w c (e (1 ⊗ₜ c))` from `((hH R A g hab hdim).2.2.2.2.2 R' A'.left A'.hom φ hφ).2.1`. Establish `hp : ∀ f, GlobalTheory.LieDual.glob _ (m.pullForm f) = e (1 ⊗ₜ GlobalTheory.LieDual.glob _ f)` using `fun f ↦ (GlobalTheory.T.affinePairRestriction_injective_firstCohomology φ (A'.hom ≫ 𝟙 (Sp R'))).2.1 ((GlobalTheory.LieDual.isPullForm_glob m f).symm.trans (he _))`. Take `⟨ψ, hψ, hu⟩` from `existsUnique_of_baseChange (GlobalTheory.LieDual.glob (A.hom ≫ 𝟙 (Sp R))) (GlobalTheory.LieDual.glob_surjective hC hH A g hab hdim) (GlobalTheory.LieDual.glob (A'.hom ≫ 𝟙 (Sp R'))) m.pullForm e hp l`. Conclude with `⟨ψ, ⟨fun f hf ↦ hψ.1 f (congrArg Subtype.val hf), hψ.2⟩, fun χ hχ ↦ hu χ ⟨fun f hf ↦ hχ.1 f (Subtype.ext hf), hχ.2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_functional : CrystallineSmoothLift → AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (R' : Type) [CommRing R'] [Algebra R R'] (A' : Over (Sp R')) (φ : A'.left ⟶ A.left), IsPullback φ A'.hom A.hom (spMap (algebraMap R R')) → ∀ (m : IsMor (dp0 R) (A.hom ≫ 𝟙 (Sp R)) (dp0 R') (A'.hom ≫ 𝟙 (Sp R')) (algebraMap R R') φ) (l : GlobForm (A.hom ≫ 𝟙 (Sp R)) →ₗ[R] R'), ∃! ψ : Form (A'.hom ≫ 𝟙 (Sp R')) →ₗ[R'] R', (∀ f, cmpForm (A'.hom ≫ 𝟙 (Sp R')) f = 0 → ψ f = 0) ∧ ∀ f, ψ (m.pullForm f) = l (GlobalTheory.LieDual.glob (A.hom ≫ 𝟙 (Sp R)) f) := by
   intro hC hH R _ A _ g hab hdim R' _ _ A' φ hφ m l

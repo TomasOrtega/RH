@@ -11,33 +11,33 @@ open scoped TensorProduct ENNReal nonZeroDivisors
 namespace GlobalTheory.SnMass.VolN
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ k r J Λ P f T A s hV a l hl`. Take `⟨c, hc, hσ, hlw⟩` from `hl`. Establish `hσ' : σ c = -c` using `hσ`. Use `⟨rowE (σ : E →+* E) J (fun i => P i a.castSucc) 0 c, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.rowE_mem_GN_of_form_add_trace_eq_zero F E σ k r J Λ P f T A s hV a 0 c ?_ ?_ ?_ hc` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `b _`. Simplify using `[form]`. Simplify using `[form, hσ']`. Introduce `b _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hE : ∀ w i j, gM A (rowE (σ : E →+* E) J (fun i => P i a.castSucc) 0 c) w i j = (if i = j then 1 else 0) + (if j = esI k r a then (if i = eI k r a then (s a : ℂ) * ((s a : ℂ) * w.embedding c) else 0) else 0)`. Introduce `w i j`. Establish `h0 : (A w *ᵥ fun l => w.embedding ((0 : Fin (2 * r + k + 1) → E) l)) = 0`. Establish `h1 : (fun l => w.embedding ((0 : Fin (2 * r + k + 1) → E) l)) = 0`. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, mulVec_zero]`. Rewrite using `[GlobalTheory.T.rowIsometry_entries_in_modelCoordinates F E σ k r J Λ P f T A s hV a 0 c w i j, h0]`. Simplify using `[herm]`. Establish `hne : ∀ b b' : Fin r, eI k r b ≠ esI k r b'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `b b' h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [eI, esI] at this`. Use linear arithmetic over natural numbers and integers. Establish `hnw : ∀ (j : Fin (k + 1)) (b : Fin r), wI k r j ≠ esI k r b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `j b h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [wI, esI] at this`. Use linear arithmetic over natural numbers and integers. Establish `hnw' : ∀ (j : Fin (k + 1)) (b : Fin r), eI k r b ≠ wI k r j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `j b h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [wI, eI] at this`. Use linear arithmetic over natural numbers and integers. Establish `hee : ∀ b b' : Fin r, b ≠ b' → eI k r b ≠ eI k r b'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `b b' hb h`. Apply `hb` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [eI] at this`. Conclude with `Fin.ext this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hss : ∀ b b' : Fin r, esI k r b = esI k r b' → b = b'`. Introduce `b b' h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [esI] at this`. Conclude with `Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `w show ((gM A _ w) (eI k r a) (esI k r a)).im = l w`. Rewrite using `[hE, hlw w]`. Simplify using `[hne a a, pow_two, mul_assoc, Complex.mul_im]`. Introduce and unpack `(p | b | p | b) hβ _ w`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (gM A _ w) (eI k r p.1.1) (eI k r p.1.2) = 0`. Rewrite using `[hE]`. Establish `h1 : eI k r p.1.1 ≠ eI k r p.1.2` using `hee _ _ (ne_of_lt p.2)`. Simplify using `[h1, (hne p.1.2 a)]`. Use function extensionality and compare the values at `j show (gM A _ w) (eI k r b) (wI k r j) = 0`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE]`. Simplify using `[hnw' j b, hnw j a]`. Use `show (gM A _ w) (eI k r p.1.1) (esI k r p.1.2) = 0`. Rewrite using `[hE]`. Establish `h1 : p.1.1 ≠ p.1.2` using `ne_of_lt p.2`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `h2 : p.1.2 = a`. Establish `h3 : eI k r p.1.1 ≠ eI k r a` using `hee _ _ (h2 ▸ h1)`. Simplify using `[hne p.1.1 p.1.2, h3]`. Establish `h3 : esI k r p.1.2 ≠ esI k r a` using `fun h => h2 (hss _ _ h)`. Simplify using `[hne p.1.1 p.1.2, h3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show ((gM A _ w) (eI k r b) (esI k r b)).im = 0`. Rewrite using `[hE]`. Establish `hb : b ≠ a` using `fun h => hβ (by rw [h])`. Establish `h3 : esI k r b ≠ esI k r a` using `fun h => hb (hss _ _ h)`. Simplify using `[hne b b, h3]`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_antidiag : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (k r : ℕ) (J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E) (Λ : Submodule (𝓞 E) (Fin (2 * r + k + 1) → E)) (P : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) E) (f : Matrix (Fin (2 * r + k + 1)) (Fin r) E) (T : F) (A : InfinitePlace E → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (s : Fin r → ℝ), IsVolData σ J Λ P f T A s → ∀ (a : Fin r) (l : InfinitePlace E → ℝ), l ∈ skewLat (σ : E →+* E) (dInv E (2 * (r - a.val))) (s a ^ 2) → ∃ γ ∈ GN (σ : E →+* E) J Λ P, (∀ w, cM k r (.inr (.inr (.inr a))) (Matrix.of.symm (gM A γ w)) = l w) ∧ ∀ β : Bk r, β ≠ (.inr (.inr (.inr a))) → degB r β ≤ degB r (.inr (.inr (.inr a))) → ∀ w, cM k r β (Matrix.of.symm (gM A γ w)) = 0 := by
   intro F E _ _ _ _ _ σ k r J Λ P f T A s hV a l hl

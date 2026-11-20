@@ -12,11 +12,9 @@ variable {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup
 def cosetInd (U : AddSubgroup X) (q : X ⧸ U) : X → ℂ := fun x => if (x : X ⧸ U) = q then 1 else 0
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (X ⧸ U) := QuotientAddGroup.discreteTopology hUo`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(IsLocallyConstant.of_discrete (fun q' : X ⧸ U => if q' = q then (1 : ℂ) else 0)).comp_continuous QuotientAddGroup.continuous_mk`. Establish `hK : IsCompact ((fun u => q.out + u) '' (U : Set X))` using `hUc.image (continuous_const.add continuous_id)`. Establish `hKc : IsClosed ((fun u => q.out + u) '' (U : Set X))` using `(Homeomorph.addLeft q.out).isClosedMap _ (AddSubgroup.isClosed_of_isOpen U hUo)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `HasCompactSupport.intro' hK hKc fun x hx => ?_` and prove the remaining obligations. Simplify using `only [cosetInd, ite_eq_right_iff, one_ne_zero, imp_false]`. Introduce `hxq`. Apply `hx` to reduce the goal to its premises. Use `⟨-q.out + x, ?_, by simp⟩` and prove the remaining obligations.
-
-Rewrite `hxq` using `[← QuotientAddGroup.out_eq' q]`. Conclude with `QuotientAddGroup.eq.mp hxq.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosetInd_mem_SB (U : AddSubgroup X) (hUo : IsOpen (U : Set X)) (hUc : IsCompact (U : Set X)) (q : X ⧸ U) :
     cosetInd U q ∈ SB X := by
@@ -36,15 +34,15 @@ theorem cosetInd_mem_SB (U : AddSubgroup X) (hUo : IsOpen (U : Set X)) (hUc : Is
     exact QuotientAddGroup.eq.mp hxq.symm
 
 /- English proof (translation)
-Establish `hN : ∀ x, {y | g (x + y) = g x} ∈ 𝓝 (0 : X)` using `fun x => ((hg.1.isOpen_fiber (g x)).preimage (continuous_const_add x)).mem_nhds (by simp)`. Use `choose W hWo _ hWN _ using fun x => H _ (hN x)`. Take `⟨t, -, hcov⟩` from `hg.2.isCompact.elim_nhds_subcover (fun x => {y | y - x ∈ W x}) fun x _ => ((hWo x).preimage (continuous_id.sub continuous_const)).mem_nhds (by simp)`. Establish `hNm : V ∩ ⋂ x ∈ t, (W x : Set X) ∈ 𝓝 (0 : X)` using `Filter.inter_mem hV ((Filter.biInter_finset_mem t).2 fun x _ => (hWo x).mem_nhds (W x).zero_mem)`. Take `⟨U, hUo, hUc, hUN, hUk⟩` from `H _ hNm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U, hUo, hUc, fun u hu => (hUN hu).1, hUk, ?_⟩` and prove the remaining obligations. Establish `hA : ∀ y ∈ tsupport g, ∀ u ∈ U, g (y + u) = g y`. Introduce `y hy u hu`. Take `⟨x, hxt, hyx⟩` from `Set.mem_iUnion₂.mp (hcov hy)`. Establish `hu' : u ∈ W x` using `Set.mem_iInter₂.mp (hUN hu).2 x hxt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : g (x + (y - x)) = g x` using `hWN x hyx`. Establish `h2 : g (x + (y - x + u)) = g x` using `hWN x ((W x).add_mem hyx hu')`. Rewrite `h1` using `[add_sub_cancel]`. Rewrite `h2` using `[← add_assoc, add_sub_cancel]`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y u hu`. Distinguish the cases in `hy : y ∈ tsupport g`. Conclude with `hA y hy u hu`. Distinguish the cases in `hyu : y + u ∈ tsupport g`. Use `hA _ hyu (-u) (U.neg_mem hu)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hyu]`.
+A detailed English derivation is pending.
 -/
 theorem exists_periodic {C : Set (X → ℂ)}
     (H : ∀ N ∈ 𝓝 (0 : X), ∃ U : AddSubgroup X, IsOpen (U : Set X) ∧ IsCompact (U : Set X) ∧ (U : Set X) ⊆ N ∧
@@ -80,23 +78,19 @@ theorem exists_periodic {C : Set (X → ℂ)}
   rw [image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hyu]
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (X ⧸ U) := QuotientAddGroup.discreteTopology hUo`. Establish `hout : ∀ x : X, g ((x : X ⧸ U).out) = g x` using `fun x => by`. Take `⟨h, hh⟩` from `QuotientAddGroup.mk_out_eq_add U x`. Rewrite using `[hh]`. Conclude with `hper x h h.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : (QuotientAddGroup.mk '' tsupport g : Set (X ⧸ U)).Finite` using `(hg.2.isCompact.image QuotientAddGroup.continuous_mk).finite_of_discrete`. Use `set T : Finset (X ⧸ U) := insert 0 hfin.toFinset with hT`. Establish `hsum : g = ∑ q ∈ T, g q.out • cosetInd U q`. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, cosetInd, mul_ite, mul_one, mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hx`. Conclude with `(hout x).symm`. Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `hxs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hx (Finset.mem_insert_of_mem (hfin.mem_toFinset.mpr ⟨x, hxs, rfl⟩))`. Establish `hkill : ∀ q : X ⧸ U, q ≠ 0 → a (cosetInd U q) = 0`. Introduce `q hq`. Establish `hx₀ : q.out ∉ U`. Introduce `hm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply `hq` to reduce the goal to its premises. Rewrite using `[← QuotientAddGroup.out_eq' q]`. Conclude with `(QuotientAddGroup.eq_zero_iff _).mpr hm`. Take `⟨χ, hχC, hχU, hχ1⟩` from `hUk _ hx₀`. Establish `hmul : (fun x => χ x * cosetInd U q x) = χ q.out • cosetInd U q`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [cosetInd, Pi.smul_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Use `split_ifs with hxq`. Establish `hm : -q.out + x ∈ U`. Rewrite `hxq` using `[← QuotientAddGroup.out_eq' q]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `QuotientAddGroup.eq.mp hxq.symm`. Use `hχU _ hm` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left]`. Then use the resulting hypothesis. Both sides reduce to the same expression. Establish `e` using `ha χ hχC _ (cosetInd_mem_SB U hUo hUc q)`.
-
-Rewrite `e` using `[hmul, map_smul, smul_eq_mul]`. Establish `: (χ q.out - 1) * a (cosetInd U q) = 0` using `by rw [sub_mul, e, one_mul, sub_self]`. Conclude with `(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hχ1)`. Use `conv_lhs => rw [hsum]`. Rewrite using `[map_sum, Finset.sum_eq_single (0 : X ⧸ U)]`.
-
-Rewrite using `[map_smul, smul_eq_mul, ← QuotientAddGroup.mk_zero, hout]`. Introduce `q _ hq`. Rewrite using `[map_smul, hkill q hq, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_insert_self _ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem apply_eq_of_periodic {C : Set (X → ℂ)} (a : (X → ℂ) →ₗ[ℂ] ℂ)
     (ha : ∀ χ ∈ C, ∀ g ∈ SB X, a (fun x => χ x * g x) = a g)
@@ -151,11 +145,11 @@ theorem apply_eq_of_periodic {C : Set (X → ℂ)} (a : (X → ℂ) →ₗ[ℂ] 
     exact absurd (Finset.mem_insert_self _ _) h
 
 /- English proof (translation)
-Introduce `X _ _ _ C H a ha`. Take `⟨U₀, hU₀o, hU₀c, -, hU₀k⟩` from `H Set.univ Filter.univ_mem`. Use `⟨a (cosetInd U₀ 0), fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨U, hUo, hUc, hUV, hUk, hper⟩` from `exists_periodic H hg (hU₀o.mem_nhds U₀.zero_mem)`. Establish `h1` using `apply_eq_of_periodic a ha U hUo hUc hUk hg hper`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `apply_eq_of_periodic a ha U hUo hUc hUk (cosetInd_mem_SB U₀ hU₀o hU₀c 0) fun x u hu => by`. Establish `: ((u : X) : X ⧸ U₀) = 0` using `(QuotientAddGroup.eq_zero_iff u).mpr (hUV hu)`. Simplify using `only [cosetInd, QuotientAddGroup.mk_add, this, add_zero]`. Establish `h0 : cosetInd U₀ (0 : X ⧸ U₀) 0 = 1` using `by simp [cosetInd]`. Rewrite `h2` using `[h0, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, h2, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eq_mul_apply_zero : ∀ (X : Type) [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
     (C : Set (X → ℂ)),

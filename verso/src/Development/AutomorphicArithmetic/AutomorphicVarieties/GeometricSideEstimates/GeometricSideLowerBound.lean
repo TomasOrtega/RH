@@ -2,19 +2,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Introduce `A V _ _ _ φ hs v hv`. Establish `ht : 0 < ‖φ v‖` using `norm_pos_iff.mpr hv`. Use `set t := ‖φ v‖ with htdef`. Establish `hn : ∀ k : ℕ, ‖φ (k • v)‖ = k * t`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ, norm_smul, Real.norm_natCast]`. Establish `hinj : Function.Injective (fun k : ℕ => k • v)`. Introduce `k l h`. Establish `h1 : (k : ℝ) * t = l * t`. Rewrite using `[← hn k, ← hn l]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun x => ‖φ x‖) h`. Conclude with `mul_right_cancel₀ ht.ne' h1` after adjusting the coercions. Use `set n := ⌊1 / t⌋₊ with hndef`. Establish `h1 : 1 / t < n + 1` using `Nat.lt_floor_add_one _`. Establish `h2 : (n : ℝ) ≤ 1 / t` using `Nat.floor_le (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : ∑ x ∈ (Finset.range (n + 1)).image (fun k : ℕ => k • v), Real.exp (-Real.pi * ‖φ x‖ ^ 2) ≤ ∑' x, Real.exp (-Real.pi * ‖φ x‖ ^ 2)` using `hs.sum_le_tsum _ (fun _ _ => (Real.exp_pos _).le)`. Rewrite `h3` using `[Finset.sum_image (fun a _ b _ h => hinj h)]`. Establish `h4 : ∑ _k ∈ Finset.range (n + 1), Real.exp (-Real.pi) ≤ ∑ k ∈ Finset.range (n + 1), Real.exp (-Real.pi * ‖φ (k • v)‖ ^ 2)`. Use `Finset.sum_le_sum fun k hk => Real.exp_le_exp.mpr ?_` and prove the remaining obligations. Establish `hk' : (k : ℝ) ≤ n` using `by exact_mod_cast Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h5 : (k : ℝ) * t ≤ 1`. Use `hk'.trans h2` as an intermediate fact. Rewrite `this` using `[le_div_iff₀ ht]`. Then use the resulting hypothesis. Establish `h6 : 0 ≤ (k : ℝ) * t` using `by positivity`. Establish `h7 : ((k : ℝ) * t) ^ 2 ≤ 1` using `by nlinarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hn]`. Use polynomial arithmetic with `[Real.pi_pos]`. Rewrite `h4` using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Move the coercions through the operations in `at h4`. Establish `h8 : 1 ≤ t * (n + 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[div_lt_iff₀ ht]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h9` using `mul_le_mul_of_nonneg_left (h4.trans h3) ht.le`. Establish `h10` using `mul_le_mul_of_nonneg_right h8 (Real.exp_pos (-Real.pi)).le`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.geometric_side_lower_bound :
     ThetaLow := by

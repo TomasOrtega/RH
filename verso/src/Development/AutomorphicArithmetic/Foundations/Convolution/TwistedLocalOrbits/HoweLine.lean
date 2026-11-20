@@ -7,9 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchim
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Matrix GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets UpperTheory.ConvolutionTheory.Loc
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n V _ _ π hs hi hg ϖ hϖ c`. Take `⟨a₀, h⟩` from `howeEx E n V π hs ϖ hϖ hg c`. Use `⟨max 1 a₀, fun a ha ψ hψ => ?_⟩` and prove the remaining obligations. Establish `h1` using `whitOne E n V π hs hi ψ hψ.continuous hψ.ne_one`. Set `f` to `(twKer π (unipB E (Fin n)) (GlobalTheory.LocGL.whitChar ψ n)).mkQ ∘ₗ (howeSpace π ψ (howeSet n ϖ a c)).subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf : Function.Injective f` using `(injective_iff_map_eq_zero f).2 fun v hv => Subtype.ext (howeInj E n V π hs ϖ hϖ a c (le_trans (le_max_left _ _) ha) ψ hψ v.1 v.2 ((Submodule.Quotient.mk_eq_zero _).1 hv))`. Establish `h2 : Module.rank ℂ (howeSpace π ψ (howeSet n ϖ a c)) ≤ 1` using `(LinearMap.rank_le_of_injective f hf).trans h1`. Establish `h3` using `Submodule.nontrivial_iff_ne_bot.2 (h a (le_trans (le_max_right _ _) ha) ψ hψ)`. Conclude with `Module.finrank_eq_of_rank_eq (le_antisymm (by simpa using h2) (by simpa using Cardinal.one_le_iff_pos.2 rank_pos))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Loc.howeLine :
     ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) E) V), IsSmooth π → π.IsIrreducible → GlobalTheory.LocGL.IsGeneric π → ∀ ϖ : Eˣ, valuation E (ϖ : E) = uniformizer E → ∀ c : ℤ, ∃ a₀ : ℤ, ∀ a ≥ a₀,

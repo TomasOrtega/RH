@@ -14,9 +14,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.StdPairConeChars
 
 /- English proof (translation)
-Establish `hϖ : GlobalTheory.SplitFlip.IsUnif (unifAt v)` using `(GlobalTheory.SplitFlip.exists_isUnif (k := Fv F v)).choose_spec`. Establish `h1 : ValuativeRel.valuation (Fv F v) ((unifAt v : (Fv F v)ˣ) : Fv F v) ≤ 1` using `hϖ.mem`. Introduce `x hx`. Use `h x ⟨hx.1, hx.2.trans ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_pow_eq_pow_val, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `pow_le_pow_right_of_le_one' h1 hem`.
+A detailed English derivation is pending.
 -/
 theorem condLE_mono {F : Type} [Field F] [NumberField F] {v : Pl F} {e m : ℕ} (hem : e ≤ m)
     {χ : (Fv F v)ˣ →* ℂˣ} (h : GlobalTheory.SplitFlip.CondLE (unifAt v) e χ) : GlobalTheory.SplitFlip.CondLE (unifAt v) m χ := by
@@ -28,19 +28,17 @@ theorem condLE_mono {F : Type} [Field F] [NumberField F] {v : Pl F} {e m : ℕ} 
   exact pow_le_pow_right_of_le_one' h1 hem
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hvT`. Establish `hϖ : GlobalTheory.SplitFlip.IsUnif (unifAt v.1)` using `(GlobalTheory.SplitFlip.exists_isUnif (k := Fv F v.1)).choose_spec`. Establish `hα` using `hT.chars.heckeα.1`. Establish `hβ` using `hT.chars.heckeβ.1`. Establish `hν : Continuous X.ν` using `(show Continuous fun x => X.α x / X.β x from hα.div' hβ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : {c | GlobalTheory.SplitFlip.CondLE (unifAt v.1) c (chrW X.ν (B.τ v))}.Nonempty` using `GlobalTheory.GaussNonvanish.exists_condLE hϖ _ (GlobalTheory.StepFacNe.chrW_continuous X.ν hν (B.τ v))`. Establish `hmem : GlobalTheory.SplitFlip.CondLE (unifAt v.1) (condExp (chrW X.ν (B.τ v))) (chrW X.ν (B.τ v))` using `Nat.sInf_mem hne`. Take `⟨eα, heα⟩` from `GlobalTheory.GaussNonvanish.exists_condLE hϖ _ (GlobalTheory.StepFacNe.chrW_continuous X.α hα (B.τ v))`. Take `⟨eβ, heβ⟩` from `GlobalTheory.GaussNonvanish.exists_condLE hϖ _ (GlobalTheory.StepFacNe.chrW_continuous X.β hβ (B.τ v))`. Establish `hram : ¬ UnrAt X.ν (splitPrime (B.τ v))` using `hT.chars.ram _ (by rw [splitPrime_under]; exact hvT)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x₀, hx₀, hx₀', hνx₀⟩` from `GlobalTheory.StepFacNe.chrW_ram X.ν (B.τ v) hram`. Establish `hx₀v : ValuativeRel.valuation (Fv F v.1) (x₀ : Fv F v.1) = 1`. Establish `h1` using `(GlobalTheory.GaussNonvanish.val_le_one_iff v.1 _).2 hx₀`. Establish `h2` using `(GlobalTheory.GaussNonvanish.val_le_one_iff v.1 _).2 hx₀'`. Establish `h3 : ValuativeRel.valuation (Fv F v.1) (x₀ : Fv F v.1) * ValuativeRel.valuation (Fv F v.1) ((x₀⁻¹ : (Fv F v.1)ˣ) : Fv F v.1) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hc1 : 1 ≤ condExp (chrW X.ν (B.τ v))`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0 : condExp (chrW X.ν (B.τ v)) = 0` using `by omega`. Establish `hm` using `hmem`. Rewrite `hm` using `[h0]`. Use `hνx₀ (hm x₀ ⟨hx₀v, ?_⟩)` and prove the remaining obligations. Rewrite using `[pow_zero, Units.val_one, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((ValuativeRel.valuation (Fv F v.1)).map_sub _ _).trans (by simp [hx₀v])`. Establish `hdiv : chrW X.ν (B.τ v) = chrW X.α (B.τ v) / chrW X.β (B.τ v)`. Use extensionality with `x`. Simplify using `[chrW, locChar, Chars.ν]`. Use `⟨hmem, hc1, hdiv, ⟨max eα eβ, condLE_mono (le_max_left _ _) heα, condLE_mono (le_max_right _ _) heβ⟩, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations.
-
-Conclude with `GlobalTheory.ChrWSmooth.isUnitaryChar_chrW X.α (B.τ v) x`. Conclude with `GlobalTheory.ChrWSmooth.isUnitaryChar_chrW X.β (B.τ v) x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nu_cond_at_ram : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ v : B.P, v.1 ∈ X.T →

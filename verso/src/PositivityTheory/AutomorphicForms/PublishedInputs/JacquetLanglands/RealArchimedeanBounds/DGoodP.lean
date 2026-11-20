@@ -11,7 +11,7 @@ namespace UpperTheory.Esk.GoodOperatorConjugation
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `lt_of_le_of_ne y.2 fun h1 => mem_nonunits_iff.1 ((IsLocalRing.mem_maximalIdeal _).1 hy) ?_` and prove the remaining obligations. Establish `h0 : (y : w.adicCompletion F) ≠ 0` using `fun e => by rw [e, map_zero] at h1; exact zero_ne_one h1`. Establish `hi : (y : w.adicCompletion F)⁻¹ ∈ w.adicCompletionIntegers F` using `by show Valued.v ((y : w.adicCompletion F)⁻¹) ≤ 1`. Rewrite using `[map_inv₀, h1, inv_one]`. Conclude with `⟨⟨y, ⟨_, hi⟩, Subtype.ext (mul_inv_cancel₀ h0), Subtype.ext (inv_mul_cancel₀ h0)⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem v_lt_of_max {w : Pl F} {y : w.adicCompletionIntegers F}
     (hy : y ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F)) : Valued.v (y : w.adicCompletion F) < 1 := by
@@ -23,11 +23,11 @@ theorem v_lt_of_max {w : Pl F} {y : w.adicCompletionIntegers F}
   exact ⟨⟨y, ⟨_, hi⟩, Subtype.ext (mul_inv_cancel₀ h0), Subtype.ext (inv_mul_cancel₀ h0)⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨k, hk, rfl⟩` from `hg`. Establish `hk'` using `Subgroup.mem_comap.1 hk`. Express the relevant statement in the definitionally equal form `![(0 : (w.adicCompletionIntegers F) ⧸ (IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ c)), 1] ᵥ* _ = ![0, 1] at hk'`. Rewrite `hk'` using `[funext_iff, Fin.forall_fin_two]`. Simplify using `[Matrix.vecMul, dotProduct] at hk'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨h1, h2⟩` from `hk'`. Establish `hle : IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ c ≤ IsLocalRing.maximalIdeal _` using `Ideal.pow_le_self hc`. Use `⟨fun a b => (k a b).2, v_lt_of_max (hle ?_), ?_⟩` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h1`. Establish `: k 1 1 - 1 ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F)` using `hle (Ideal.Quotient.eq.1 (by rw [h2, map_one]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `v_lt_of_max this`. Simplify using `using h3`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem congruence_subgroup_entry_valuations_alt {w : Pl F} {c : ℕ} (hc : c ≠ 0) {g : GL (Fin 2) (w.adicCompletion F)} (hg : g ∈ K1 w c) :
     (∀ a b, Valued.v ((g : Matrix (Fin 2) (Fin 2) (w.adicCompletion F)) a b) ≤ 1) ∧
@@ -50,14 +50,14 @@ theorem congruence_subgroup_entry_valuations_alt {w : Pl F} {c : ℕ} (hc : c �
     simpa using h3
 
 /- English proof (translation)
-Rewrite using `[Matrix.trace_mul_comm, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_conj {R : Type} [CommRing R] (X : GL (Fin 2) R) (T : Matrix (Fin 2) (Fin 2) R) :
     Matrix.trace (((X⁻¹ : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R) * T * (X : Matrix (Fin 2) (Fin 2) R)) = Matrix.trace T := by
   rw [Matrix.trace_mul_comm, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_mul, Matrix.det_mul, mul_comm, ← mul_assoc, ← Matrix.det_mul, Units.mul_inv, Matrix.det_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_conj' {R : Type} [CommRing R] (X : GL (Fin 2) R) (T : Matrix (Fin 2) (Fin 2) R) :
     Matrix.det (((X⁻¹ : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R) * T * (X : Matrix (Fin 2) (Fin 2) R)) = Matrix.det T := by
@@ -66,15 +66,15 @@ theorem det_conj' {R : Type} [CommRing R] (X : GL (Fin 2) R) (T : Matrix (Fin 2)
 variable [IsTotallyReal F]
 
 /- English proof (translation)
-Introduce `f hf x h`. Establish `hf' : ∀ g (h : Hc c), f (g * h) = χ h * f g` using `hf`. Establish `hzc : ∀ z, zc F z ∈ Hc c` using `fun z => Subgroup.mem_sup_right ⟨z, rfl⟩`. Establish `hχz : ∀ z, χ ⟨zc F z, hzc z⟩ = ω.1 (finId F z)` using `fun z => (hχ ⟨zc F z, hzc z⟩).2 1 (Subgroup.one_mem _) z (one_mul _).symm`. Establish `hK : f ∈ Hi.fixd (Hi.rtr ℂ (GF F) ℂ) (Kc c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu`. Use function extensionality and compare the values at `g`. Establish `hu' : u ∈ Hc c` using `Subgroup.mem_sup_left hu`. Establish `h1 : χ ⟨u, hu'⟩ = 1`. Rewrite using `[(hχ ⟨u, hu'⟩).2 u hu 1 (by rw [map_one, mul_one]), map_one, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Hi.rtr_apply, hf' g ⟨u, hu'⟩, h1, Units.val_one, one_mul]`. Establish `hs` using `(ha.act (GF F → ℂ) (Hi.rtr ℂ (GF F) ℂ) f hK).1`. Take `⟨k, hk, z, hz⟩` from `(hχ h).1`. Establish `hfix` using `congrFun (hs k hk) x`. Simplify using `only [Hi.rtr_apply, Finset.sum_apply] at hfix`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `∑ i, f (x * (h : GF F) * a i) = (χ h : ℂ) * ∑ i, f (x * a i)`. Rewrite using `[(hχ h).2 k hk z hz, ← hχz z, ← hfix, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hz, ← hf' (x * k * a i) ⟨zc F z, hzc z⟩]`. Establish `hc` using `Subgroup.mem_center_iff.1 (zc_center z) (a i)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Simplify using `only [mul_assoc]`. Rewrite using `[hc]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_of {c : Pl F → ℕ} {ω : HChar F} {χ : Hc c →* ℂˣ} (hχ : IsChi c ω χ) {W : List (Pl F)} {n : ℕ}
     {a : Fin n → GF F} (ha : IsReps c W a) : (mkDat c χ).Good a := by
@@ -104,37 +104,35 @@ theorem good_of {c : Pl F → ℕ} {ω : HChar F} {χ : Hc c →* ℂˣ} (hχ : 
   rw [hc]
 
 /- English proof (translation)
-Introduce `γ x i hmem`. Take `⟨k, hk, z, hz⟩` from `(hχ ⟨_, hmem⟩).1`. Establish `hz' : (a i)⁻¹ * (x⁻¹ * jF F γ * x) = k * zc F z` using `hz`. Establish `e : x⁻¹ * jF F γ * x = a i * (k * zc F z)` using `by rw [← hz', mul_inv_cancel_left]`. Take `⟨u, hu⟩` from `ha.loc i w hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `φ : GF F →* GL (Fin 2) (w.adicCompletion F)` to `Matrix.GeneralLinearGroup.map (pLoc F w)`. Set `ψ : F →+* w.adicCompletion F` to `(pLoc F w).comp (algebraMap F (Af F))`. Set `r : ℕ` to `W.count w`. Establish `hr : 0 < r` using `List.count_pos_iff.2 hw`. Set `p : w.adicCompletion F` to `((atFin w (unif w) ^ r : (w.adicCompletion F)ˣ) : w.adicCompletion F)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `zw : w.adicCompletion F` to `pLoc F w (z : Af F)`. Establish `e2` using `congrArg (fun g => ((φ g : GL (Fin 2) (w.adicCompletion F)) : Matrix (Fin 2) (Fin 2) (w.adicCompletion F))) e`. Simplify using `only [map_mul, map_inv, Units.val_mul] at e2`. Take `⟨M, hMk⟩ : ∃ M : Matrix (Fin 2) (Fin 2) (w.adicCompletion F), ((φ k : GL (Fin 2) (w.adicCompletion F)) : Matrix (Fin 2) (Fin 2) (w.adicCompletion F)) = M` from `⟨_, rfl⟩`. Rewrite `e2` using `[hMk]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA : ((φ (a i) : GL (Fin 2) (w.adicCompletion F)) : Matrix (Fin 2) (Fin 2) (w.adicCompletion F)) = !![p, (u : w.adicCompletion F); 0, 1]`. Rewrite using `[show φ (a i) = _ from hu]`. Both sides reduce to the same expression. Establish `hZ : ((φ (zc F z) : GL (Fin 2) (w.adicCompletion F)) : Matrix (Fin 2) (Fin 2) (w.adicCompletion F)) = !![zw, 0; 0, zw]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [φ, zw, zc, Matrix.GeneralLinearGroup.map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hT : ((φ (jF F γ) : GL (Fin 2) (w.adicCompletion F)) : Matrix (Fin 2) (Fin 2) (w.adicCompletion F)) = !![ψ (γ 0 0), ψ (γ 0 1); ψ (γ 1 0), ψ (γ 1 1)]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> rfl`. Establish `htr : ψ (γ.val.trace) = zw * (p * M 0 0 + u * M 1 0 + M 1 1)`. Use `tr_conj (φ x) ((φ (jF F γ) : GL (Fin 2) (w.adicCompletion F)))` as an intermediate fact. Rewrite `this` using `[e2, hA, hZ, hT, Matrix.eta_fin_two M, Matrix.mul_fin_two, Matrix.mul_fin_two, Matrix.trace_fin_two_of, Matrix.trace_fin_two_of]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.trace_fin_two, map_add]`. Express the relevant statement in the definitionally equal form `ψ (γ 0 0) + ψ (γ 1 1) = _`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdet : ψ (γ.val.det) = zw ^ 2 * (p * (M 0 0 * M 1 1 - M 0 1 * M 1 0))`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `det_conj' (φ x) ((φ (jF F γ) : GL (Fin 2) (w.adicCompletion F)))` as an intermediate fact. Rewrite `this` using `[e2, hA, hZ, hT, Matrix.eta_fin_two M, Matrix.mul_fin_two, Matrix.mul_fin_two, Matrix.det_fin_two_of, Matrix.det_fin_two_of]`. Rewrite using `[Matrix.det_fin_two, map_sub, map_mul, map_mul]`. Express the relevant statement in the definitionally equal form `ψ (γ 0 0) * ψ (γ 1 1) - ψ (γ 0 1) * ψ (γ 1 0) = _`. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hkl : φ k ∈ K1 w (c w)` using `Subgroup.mem_iInf.1 hk w`. Take `⟨hM, hM10, hM11⟩` from `congruence_subgroup_entry_valuations_alt hc hkl`. Simplify using `only [hMk] at hM hM10 hM11`. Establish `hp : Valued.v p < 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : Valued.v ((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) = WithZero.exp (-1 : ℤ)` using `unif_spec w`. Establish `h2 : WithZero.exp (-1 : ℤ) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Use `show Valued.v (((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) ^ r) < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, h1]`. Conclude with `pow_lt_one₀ zero_le h2 hr.ne'`. Establish `hu1 : Valued.v (u : w.adicCompletion F) ≤ 1` using `u.2`. Establish `ht : Valued.v (p * M 0 0 + u * M 1 0 + M 1 1) = 1`. Establish `h1 : Valued.v (p * M 0 0 + u * M 1 0 + (M 1 1 - 1)) < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_add_lt _ (Valuation.map_add_lt _ ?_ ?_) hM11` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (hM 0 0)) hp`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hu1) hM10`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show p * M 0 0 + u * M 1 0 + M 1 1 = 1 + (p * M 0 0 + u * M 1 0 + (M 1 1 - 1)) by ring]`. Conclude with `Valuation.map_one_add_of_lt _ h1`. Establish `hzw : zw ≠ 0` using `(Units.map (pLoc F w).toMonoidHom z).ne_zero`. Establish `ht0 : p * M 0 0 + u * M 1 0 + M 1 1 ≠ 0` using `fun e => by rw [e, map_zero] at ht; exact zero_ne_one ht`. Use `⟨fun h0 => ?_, fun h4 => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `htr` using `[h0, map_zero]`. Conclude with `mul_ne_zero hzw ht0 htr.symm`. Establish `h5` using `congrArg ψ h4`. Rewrite `h5` using `[map_pow, map_mul, htr, hdet, map_ofNat]`. Establish `h6 : (p * M 0 0 + u * M 1 0 + M 1 1) ^ 2 = 4 * (p * (M 0 0 * M 1 1 - M 0 1 * M 1 0))`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ (pow_ne_zero 2 hzw)` to reduce the goal to its premises. Take the linear combination `h5`. Establish `h7` using `congrArg Valued.v h6`. Rewrite `h7` using `[map_pow, ht, one_pow]`. Establish `h4v : Valued.v (4 : w.adicCompletion F) ≤ 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `natCast_mem (w.adicCompletionIntegers F) 4` as an intermediate fact. Rewrite `this` using `[Nat.cast_ofNat]`. Conclude with `this`. Establish `hd : Valued.v (M 0 0 * M 1 1 - M 0 1 * M 1 0) ≤ 1`. Apply the tactic sequence `refine le_trans (Valuation.map_sub _ _ _) (max_le ?_ ?_) <;> rw [map_mul] <;> exact mul_le_one' (hM _ _) (hM _ _)`.
-
-Establish `: Valued.v (4 * (p * (M 0 0 * M 1 1 - M 0 1 * M 1 0))) < 1`. Rewrite using `[map_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' h4v) (lt_of_le_of_lt (mul_le_of_le_one_right' hd) hp)`. Conclude with `absurd h7 (ne_of_gt this)`.
+A detailed English derivation is pending.
 -/
 theorem reg_of {c : Pl F → ℕ} {ω : HChar F} {χ : Hc c →* ℂˣ} (hχ : IsChi c ω χ) {W : List (Pl F)} {n : ℕ}
     {a : Fin n → GF F} (ha : IsReps c W a) {w : Pl F} (hw : w ∈ W) (hc : c w ≠ 0) : (mkDat c χ).Reg a := by
@@ -226,7 +224,7 @@ end UpperTheory.Esk.GoodOperatorConjugation
 namespace UpperTheory.Esk
 
 /- English proof (translation)
-Introduce `_ F _ _ _ c ω χ hχ W n a ha`. Conclude with `⟨GoodOperatorConjugation.good_of hχ ha, fun ⟨w, hw, hc⟩ => GoodOperatorConjugation.reg_of hχ ha hw hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem dGood : AMem → DGood := by
   intro _ F _ _ _ c ω χ hχ W n a ha

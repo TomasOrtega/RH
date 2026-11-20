@@ -19,9 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.Fam.LocLev
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a t f g hfg`. Establish `hv : ∀ n : Fin a.n, (a.pl n).1 ∈ (B.primes X).vGs` using `fun n => (hW.lev.2.1 _).1 (a.pl n).2`. Use `Finset.prod_bij' (fun P hP => a.pl.symm ⟨P.1, (hW.lev.2.1 _).2 (Finset.mem_filter.1 hP).2⟩) (fun n _ => (⟨(a.pl n).1, Finset.mem_union.2 (Or.inl (hv n))⟩ : GlobalTheory.QTw.BadPr I (W.P.I.tup t))) (fun _ _ => Finset.mem_univ _) (fun n _ => Finset.mem_filter.2 ⟨Finset.mem_univ _, …` and prove the remaining obligations. Introduce `P hP`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Introduce `n _`. Simplify using the standard rewrite rules. Introduce `P hP`. Apply `hfg` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
 Simplify using the standard rewrite rules.
 -/
@@ -40,7 +40,7 @@ theorem prod_bij_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : T
     apply hfg
     simp
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat hi n j hj`. Break down `lt_trichotomy (j + 2) B.R.m with h | h | h` into its components or cases. Conclude with `_root_.GlobalTheory.T.true_geometry_finite_index_alt_alt W hW u a ha hat n j hj h`. Conclude with `_root_.GlobalTheory.T.true_geometry_finite_index_alt_alt_alt W hW u a ha hat n j hj h`. Conclude with `_root_.GlobalTheory.T.true_geometry_row_pair_identity_alt W hW u a ha hat hi n j hj (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem loc_all_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → (∀ r s, (a.g.oT B.R.m rfl).iA r s = if r.val = s.val then 1 else 0) → ∀ (n : Fin a.n) (j : ℕ) (hj : j + 1 ≤ B.R.m), ∃ c : ℂ, c ≠ 0 ∧ ∀ t (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → ∀ (α : J.Ch j) (γ : J.Ch (j + 1)), ∃ Ξ : Matrix (Fin ((I.rec7 l Z).sp.X (j + 1)).rank) (Fin ((I.rec7 l Z).sp.X j).rank) (I.rec7 l Z).host.E → ℂ, GlobalTheory.LocMod.IsLocFac (I.rec7 l Z) (_root_.GlobalTheory.Fam.pk_z W).ψ _ _ (a.pl n).1 ((a.G n).cg j) Ξ ∧ ∀ (P : GlobalTheory.QTw.BadPr I (W.P.I.tup t)), P.1 = (a.pl n).1 → ∀ z, B.embLL (GlobalTheory.QTw.locXi J.A j (J.ι j α) (J.ι (j + 1) γ) P (GlobalTheory.QTw.homOf I l Z j hj z)) = c * Ξ z := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat hi n j hj
@@ -49,11 +49,9 @@ theorem loc_all_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC
   · exact _root_.GlobalTheory.T.true_geometry_finite_index_alt_alt_alt W hW u a ha hat n j hj h
   · exact _root_.GlobalTheory.T.true_geometry_row_pair_identity_alt W hW u a ha hat hi n j hj (by omega)
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat hi`. Use `choose c hc hspec using fun n j hj => _root_.GlobalTheory.Fam.LocLev.loc_all_alt W hW u a ha hat hi n j hj`. Use `⟨fun j => if h : j + 1 ≤ B.R.m then ∏ n, c n j h else 1, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[dif_pos (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun n _ => hc n j _`. Introduce `t J hR j hj α γ choose Ξ hΞ hΞe using fun n => hspec n j hj t J hR α γ`. Use `⟨Ξ, hΞ, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod, _root_.GlobalTheory.Fam.LocLev.prod_bij_alt W hW u a t _ (fun n => c n j hj * Ξ n z) (fun n P hP => hΞe n P hP z), Finset.prod_mul_distrib]`. Simplify using `only`.
-
-Rewrite using `[dif_pos hj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiLev_eq_const_mul_locFac_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → (∀ r s, (a.g.oT B.R.m rfl).iA r s = if r.val = s.val then 1 else 0) → ∃ C : ℕ → ℂ, (∀ j, j < B.R.m → C j ≠ 0) ∧ ∀ t (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → ∀ j (hj : j + 1 ≤ B.R.m) (α : J.Ch j) (γ : J.Ch (j + 1)), ∃ Ξl : Fin a.n → Matrix (Fin ((I.rec7 l Z).sp.X (j + 1)).rank) (Fin ((I.rec7 l Z).sp.X j).rank) (I.rec7 l Z).host.E → ℂ, (∀ n, GlobalTheory.LocMod.IsLocFac (I.rec7 l Z) (_root_.GlobalTheory.Fam.pk_z W).ψ _ _ (a.pl n).1 ((a.G n).cg j) (Ξl n)) ∧ ∀ z, B.embLL (∏ P ∈ Finset.univ.filter (fun P : GlobalTheory.QTw.BadPr I (W.P.I.tup t) => P.1 ∈ (B.primes X).vGs), GlobalTheory.QTw.locXi J.A j (J.ι j α) (J.ι (j + 1) γ) P (GlobalTheory.QTw.homOf I l Z j hj z)) = C j * ∏ n, Ξl n z := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat hi

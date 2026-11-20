@@ -8,23 +8,21 @@ open GlobalTheory.ConeBumpB
 open scoped GlobalTheory.VacAny
 
 /- English proof (translation)
-Introduce `Y N _ _ _ _ _ S L L' hL hL' p φ₀ hp hp' ξ hξ hξ'`. Use `haveI : CompactSpace L := isCompact_iff_compactSpace.mp hL`. Establish `hU : IsOpen ((L'.addSubgroupOf L : AddSubgroup L) : Set L)` using `hL'.preimage continuous_subtype_val`. Use `haveI : Finite (L ⧸ L'.addSubgroupOf L) := AddSubgroup.quotient_finite_of_isOpen _ hU`. Use `letI : Fintype (L ⧸ L'.addSubgroupOf L) := Fintype.ofFinite _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ s : Finset (L ⧸ L'.addSubgroupOf L), ∑ q ∈ s, ξ ((q.out : L) : Y) • p ((q.out : L) : Y) ∈ S` using `fun s => S.sum_mem fun q _ => S.smul_mem _ (hp _)`. Establish `hc : (Fintype.card (L ⧸ L'.addSubgroupOf L) : ℂ) ≠ 0`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Use `⟨(Fintype.card (L ⧸ L'.addSubgroupOf L) : ℂ)⁻¹ • ∑ q : L ⧸ L'.addSubgroupOf L, ξ ((q.out : L) : Y) • p ((q.out : L) : Y), S.smul_mem _ (hmem _), ?_⟩` and prove the remaining obligations. Introduce `J η hadd hsmul hη hJ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hJ0 : J 0 = 0`. Use `hsmul 0 0 S.zero_mem` as an intermediate fact. Simplify using `using this`. Establish `hsum : ∀ s : Finset (L ⧸ L'.addSubgroupOf L), J (∑ q ∈ s, ξ ((q.out : L) : Y) • p ((q.out : L) : Y)) = ∑ q ∈ s, ξ ((q.out : L) : Y) * η ((q.out : L) : Y) * J φ₀`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hJ0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hadd _ (S.smul_mem _ (hp _)) _ (hmem s), ih, hsmul _ _ (hp _), hJ, mul_assoc]`. Rewrite using `[hsmul _ _ (hmem _), hsum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[Finset.sum_congr rfl (fun q _ => by rw [h _ (q.out : L).2, one_mul]), Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`. Introduce `h push Not at h`. Take `⟨y₀, hy₀, hne⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinv : ∀ y : Y, ∀ l ∈ L', ξ (y + l) * η (y + l) * J φ₀ = ξ y * η y * J φ₀`. Introduce `y l hl`. Establish `h1 : η l * J φ₀ = J φ₀` using `by rw [← hJ, hp' l hl]`. Rewrite using `[hξ, hη, hξ' l hl, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hshift : ∀ q : L ⧸ L'.addSubgroupOf L, ξ ((((QuotientAddGroup.mk (⟨y₀, hy₀⟩ : L) : L ⧸ L'.addSubgroupOf L) + q).out : L) : Y) * η ((((QuotientAddGroup.mk (⟨y₀, hy₀⟩ : L) : L ⧸ L'.addSubgroupOf L) + q).out : L) : Y) * J φ₀ = (ξ y₀ * η y₀) * (ξ ((q.out : L) : Y) * η ((q.out : L) : …`. Introduce `q`. Establish `e : (QuotientAddGroup.mk (⟨y₀, hy₀⟩ : L) : L ⧸ L'.addSubgroupOf L) + q = QuotientAddGroup.mk ((⟨y₀, hy₀⟩ : L) + q.out)`. Rewrite using `[QuotientAddGroup.mk_add, QuotientAddGroup.out_eq']`. Take `⟨l, hl⟩` from `QuotientAddGroup.mk_out_eq_mul (L'.addSubgroupOf L) ((⟨y₀, hy₀⟩ : L) + q.out)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[e, hl, AddSubgroup.coe_add, hinv _ _ (AddSubgroup.mem_addSubgroupOf.mp l.2), AddSubgroup.coe_add, hξ, hη]`. Expand and normalize the polynomial expressions, which then agree. Establish `hre` using `Equiv.sum_comp (Equiv.addLeft (QuotientAddGroup.mk (⟨y₀, hy₀⟩ : L) : L ⧸ L'.addSubgroupOf L)) (fun q : L ⧸ L'.addSubgroupOf L => ξ ((q.out : L) : Y) * η ((q.out : L) : Y) * J φ₀)`. Simplify using `only [Equiv.coe_addLeft, hshift, ← Finset.mul_sum] at hre`. Establish `hz : ∑ q : L ⧸ L'.addSubgroupOf L, ξ ((q.out : L) : Y) * η ((q.out : L) : Y) * J φ₀ = 0`.
-
-Assume the negation of the conclusion as `hz`. Conclude with `hne (mul_right_cancel₀ hz (by rw [hre, one_mul]))`. Rewrite using `[hz, mul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_schwartz_character_average :
     ∀ (Y N : Type) [AddCommGroup Y] [TopologicalSpace Y] [IsTopologicalAddGroup Y] [AddCommGroup N] [Module ℂ N]

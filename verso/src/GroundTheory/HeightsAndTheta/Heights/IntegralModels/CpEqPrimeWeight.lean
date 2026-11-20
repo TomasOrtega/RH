@@ -11,7 +11,7 @@ Both sides reduce to the same expression.
 theorem cp_eq_primeWeight (p : ℕ) : cp p = GroundTheory.Heights₂.Heights.Model.primeWeight p := rfl
 
 /- English proof (translation)
-Unfold `cp`. Use `split_ifs`. Evaluate the numerical expressions. Establish `: (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`. Conclude with `div_nonneg zero_le_one (by linarith)`.
+Replace the relevant objects with their definitions. Evaluate the numerical expressions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cp_nonneg {p : ℕ} (hp : p.Prime) : 0 ≤ cp p := by
   unfold cp
@@ -21,7 +21,7 @@ theorem cp_nonneg {p : ℕ} (hp : p.Prime) : 0 ≤ cp p := by
     exact div_nonneg zero_le_one (by linarith)
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (add_nonneg (cp_nonneg hp) (by positivity)) (Real.log_nonneg (by exact_mod_cast hp.one_lt.le))`.
+A detailed English derivation is pending.
 -/
 theorem sumCp_term_nonneg (d : ℤ) {p : ℕ} (hp : p.Prime) :
     0 ≤ (cp p + 2 * (padicValInt p d : ℝ)) * Real.log p :=
@@ -29,19 +29,17 @@ theorem sumCp_term_nonneg (d : ℤ) {p : ℕ} (hp : p.Prime) :
     (Real.log_nonneg (by exact_mod_cast hp.one_lt.le))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hA d hd`. Take `⟨C, hC⟩` from `hA d hd`. Use `⟨C, fun B hB S hS => ?_⟩` and prove the remaining obligations. Establish `h` using `hC B hB S fun p hp => ⟨(hS p hp).1, Or.inl (hS p hp).2⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `h` using `[cp_eq_primeWeight]`. Introduce `hB d hd`. Take `⟨C, hC⟩` from `hB d hd`. Use `set T := d.natAbs.primeFactors`. Use `set K : ℝ := ∑ p ∈ T, (cp p + 2 * (padicValInt p d : ℝ)) * Real.log p`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : 0 ≤ K` using `Finset.sum_nonneg fun p hp => sumCp_term_nonneg d (Nat.mem_primeFactors.mp hp).1`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Use `⟨C + K / Real.log 2, fun B hB2 S hS => ?_⟩` and prove the remaining obligations. Establish `hlogB : Real.log 2 ≤ Real.log B` using `Real.log_le_log (by norm_num) hB2`. Establish `hterm : ∀ p ∈ S, (GroundTheory.Heights₂.Heights.Model.primeWeight p + 2 * (padicValInt p d : ℝ)) * Real.log p = (cp p + 2 * (padicValInt p d : ℝ)) * Real.log p` using `fun p _ => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[cp_eq_primeWeight]`. Establish `hsum : ∑ p ∈ S, (GroundTheory.Heights₂.Heights.Model.primeWeight p + 2 * (padicValInt p d : ℝ)) * Real.log p = ∑ p ∈ S, (cp p + 2 * (padicValInt p d : ℝ)) * Real.log p` using `Finset.sum_congr rfl hterm`. Establish `h1 : ∑ p ∈ S.filter (fun p : ℕ => (p : ℝ) ≤ B), (cp p + 2 * (padicValInt p d : ℝ)) * Real.log p ≤ C * Real.log B` using `hC B hB2 _ fun p hp => by`. Take `⟨hpS, hpB⟩` from `Finset.mem_filter.mp hp`. Conclude with `⟨(hS p hpS).1, hpB⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ∑ p ∈ S.filter (fun p : ℕ => ¬ (p : ℝ) ≤ B), (cp p + 2 * (padicValInt p d : ℝ)) * Real.log p ≤ K`. Use `Finset.sum_le_sum_of_subset_of_nonneg (fun p hp => ?_) (fun p hp _ => ?_)` and prove the remaining obligations. Take `⟨hpS, hpB⟩` from `Finset.mem_filter.mp hp`. Take `⟨hpp, hor⟩` from `hS p hpS`. Establish `hpd : (p : ℤ) ∣ d` using `hor.resolve_left hpB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mem_primeFactors.mpr ⟨hpp, Int.natCast_dvd.mp hpd, Int.natAbs_ne_zero.mpr hd⟩`. Conclude with `sumCp_term_nonneg d (Nat.mem_primeFactors.mp hp).1`. Establish `h3 : K ≤ K / Real.log 2 * Real.log B`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hl2]`. Conclude with `mul_le_mul_of_nonneg_left hlogB hK`.
-
-Establish `hsplit` using `Finset.sum_filter_add_sum_filter_not S (fun p : ℕ => (p : ℝ) ≤ B) (fun p => (cp p + 2 * (padicValInt p d : ℝ)) * Real.log p)`. Establish `: ∑ p ∈ S, (GroundTheory.Heights₂.Heights.Model.primeWeight p + 2 * (padicValInt p d : ℝ)) * Real.log p ≤ (C + K / Real.log 2) * Real.log B`. Rewrite using `[hsum, ← hsplit, add_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem SumCp.equiv :
     GroundTheory.Heights₂.Heights.Model.SumCp.Statement ↔ SumCp.Statement := by

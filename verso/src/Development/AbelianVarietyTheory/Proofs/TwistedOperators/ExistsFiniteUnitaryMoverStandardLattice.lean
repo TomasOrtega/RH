@@ -25,7 +25,7 @@ def glue (σ : R →+* R) (ε : R) (P Q : Matrix n n R) : Matrix n n R :=
   ε • P + σ ε • (Q.map σ)ᵀ + (1 - ε - σ ε) • (1 : Matrix n n R)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [glue, Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, hσ]`. Distinguish the cases in `h : i = j`. Apply the tactic sequence `subst h; simp <;> ring`. Apply the tactic sequence `simp [Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)] <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glue_cT (σ : R →+* R) (hσ : ∀ z, σ (σ z) = z) (ε : R) (P Q : Matrix n n R) :
     ((glue σ ε P Q).map σ)ᵀ = σ ε • (P.map σ)ᵀ + ε • Q + (1 - ε - σ ε) • (1 : Matrix n n R) := by
@@ -37,9 +37,9 @@ theorem glue_cT (σ : R →+* R) (hσ : ∀ z, σ (σ z) = z) (ε : R) (P Q : Ma
   · simp [Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)] <;> ring
 
 /- English proof (translation)
-Establish `hσσ : σ ε * σ ε = σ ε` using `by rw [← map_mul, hε]`. Establish `hσε : σ ε * ε = 0` using `by rw [mul_comm, hεσ]`. Establish `h1 : ε * (1 - ε - σ ε) = 0` using `by linear_combination (-1 : R) * hε - hεσ`. Establish `h2 : σ ε * (1 - ε - σ ε) = 0` using `by linear_combination (-1 : R) * hσσ - hσε`. Use `⟨hσσ, hσε, h1, h2, by rw [mul_comm, h1], by rw [mul_comm, h2], ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(1 : R) * hε + hσσ + 2 * hεσ`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem scal_facts (σ : R →+* R) (ε : R) (hε : ε * ε = ε) (hεσ : ε * σ ε = 0) :
     σ ε * σ ε = σ ε ∧ σ ε * ε = 0 ∧ ε * (1 - ε - σ ε) = 0 ∧ σ ε * (1 - ε - σ ε) = 0 ∧
@@ -52,7 +52,7 @@ theorem scal_facts (σ : R →+* R) (ε : R) (hε : ε * ε = ε) (hεσ : ε * 
   linear_combination (1 : R) * hε + hσσ + 2 * hεσ
 
 /- English proof (translation)
-Take `⟨-, -, h1, -⟩` from `scal_facts σ ε hε hεσ`. Simplify using `only [glue, smul_add, smul_smul, hε, hεσ, h1, zero_smul, add_zero]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem smul_glue (σ : R →+* R) (ε : R) (hε : ε * ε = ε) (hεσ : ε * σ ε = 0) (P Q : Matrix n n R) :
     ε • glue σ ε P Q = ε • P := by
@@ -60,7 +60,7 @@ theorem smul_glue (σ : R →+* R) (ε : R) (hε : ε * ε = ε) (hεσ : ε * �
   simp only [glue, smul_add, smul_smul, hε, hεσ, h1, zero_smul, add_zero]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, h3, h4, h5⟩` from `scal_facts σ ε hε hεσ`. Rewrite using `[glue_cT σ hσ]`. Simplify using `only [smul_add, smul_smul, h3, h4, h5, zero_smul, zero_add]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem off_smul_glue_cT (σ : R →+* R) (hσ : ∀ z, σ (σ z) = z) (ε : R) (hε : ε * ε = ε) (hεσ : ε * σ ε = 0)
     (P Q : Matrix n n R) :
@@ -70,17 +70,15 @@ theorem off_smul_glue_cT (σ : R →+* R) (hσ : ∀ z, σ (σ z) = z) (ε : R) 
   simp only [smul_add, smul_smul, h3, h4, h5, zero_smul, zero_add]
 
 /- English proof (translation)
-Take `⟨hσσ, hσε, h1, h2, h3, h4, h5⟩` from `scal_facts σ ε hε hεσ`. Establish `hsum : ε • (1 : Matrix n n R) + σ ε • (1 : Matrix n n R) + (1 - ε - σ ε) • (1 : Matrix n n R) = 1`. Rewrite using `[← add_smul, ← add_smul]`. Simplify using the standard rewrite rules. Establish `hsum' : σ ε • (1 : Matrix n n R) + ε • (1 : Matrix n n R) + (1 - ε - σ ε) • (1 : Matrix n n R) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[add_comm (σ ε • (1 : Matrix n n R))]`. Conclude with `hsum`. Establish `key : ∀ M N : Matrix n n R, ε • (M * N) = ε • (1 : Matrix n n R) → σ ε • ((N.map σ)ᵀ * (M.map σ)ᵀ) = σ ε • (1 : Matrix n n R)`. Introduce `M N hMN`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrArg σ (congrFun (congrFun hMN j) i)` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul] at this`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.transpose_apply, Matrix.map_apply, this]`. Distinguish the cases in `h : i = j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)]`. Rewrite using `[glue_cT σ hσ]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [glue, add_mul, mul_add, smul_mul_smul_comm, hε, hεσ, hσε, hσσ, h1, h2, h3, h4, h5, zero_smul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[hPQ, key P Q hPQ]`. Apply the tactic sequence `first | exact hsum | exact hsum'`. Simplify using `only [glue, add_mul, mul_add, smul_mul_smul_comm, hε, hεσ, hσε, hσσ, h1, h2, h3, h4, h5, zero_smul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[hQP, key Q P hQP]`.
-
-Apply the tactic sequence `first | exact hsum | exact hsum'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_unitary (σ : R →+* R) (hσ : ∀ z, σ (σ z) = z) (ε : R) (hε : ε * ε = ε) (hεσ : ε * σ ε = 0)
     (P Q : Matrix n n R) (hPQ : ε • (P * Q) = ε • (1 : Matrix n n R)) (hQP : ε • (Q * P) = ε • (1 : Matrix n n R)) :
@@ -117,19 +115,19 @@ end Alg
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hmul : ∀ g h : GA D S, fmtC S (g * h) = fmtC S g * fmtC S h`. Introduce `g h`. Simplify using `only [fmtC, cM, Formalism.L2.Theta.mt, map_mul, Units.val_mul, Matrix.map_mul]`. Establish `hone : fmtC S 1 = 1`. Simplify using `only [fmtC, cM, Formalism.L2.Theta.mt, map_one, Units.val_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]`. Set `G : GL (Fin S.rank) (GlobalTheory.AdLat.RA D.host.F D.host.E)` to `⟨fmtC S k, fmtC S k⁻¹, by rw [← hmul, mul_inv_cancel, hone], by rw [← hmul, inv_mul_cancel, hone]⟩`. Establish `hfg : (stdL D.host.E S.rank).FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hsp : Submodule.span D.host.E ((stdL D.host.E S.rank : Set (Fin S.rank → D.host.E))) = ⊤`. Rewrite using `[stdL, Submodule.span_span_of_tower]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (Set.range fun a : Fin S.rank => (Pi.single a (1 : D.host.E) : Fin S.rank → D.host.E)) = Set.range (Pi.basisFun D.host.E (Fin S.rank))`. Use extensionality with `v`. Simplify using `[Pi.basisFun_apply]`. Rewrite using `[this, (Pi.basisFun D.host.E (Fin S.rank)).span_eq]`. Take `⟨Λ, -, -, -, hΛ⟩` from `GlobalTheory.AdLat.exists_lattice_latOf D.host.F D.host.E S.rank _ G hfg hsp`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨Λ, fun u => ?_⟩` and prove the remaining obligations. Establish `hV : ∀ L : Lt D.host.E S.rank, ((hatV L : AddSubgroup _) : Set (Fin S.rank → AfE D)) = (GlobalTheory.AdLat.hat D.host.F (L : Set (Fin S.rank → D.host.E)) : Set _)` using `fun L => rfl`. Establish `hGi : ∀ z, fmtC S k⁻¹ *ᵥ (fmtC S k *ᵥ z) = z`. Introduce `z`. Rewrite using `[Matrix.mulVec_mulVec, ← hmul, inv_mul_cancel, hone, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use `⟨fmtC S k *ᵥ u, ?_, (hGi u).symm⟩` and prove the remaining obligations. Establish `: fmtC S k *ᵥ u ∈ ((hatV Λ : AddSubgroup _) : Set (Fin S.rank → AfE D))`. Rewrite using `[hV, hΛ]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨u, hu, rfl⟩`. Conclude with `this`. Introduce and unpack `⟨u₀, hu₀, rfl⟩`. Establish `: u₀ ∈ ((hatV Λ : AddSubgroup _) : Set (Fin S.rank → AfE D))` using `hu₀`. Rewrite `this` using `[hV, hΛ]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, rfl⟩` from `this`. Express the relevant statement in the definitionally equal form `fmtC S k⁻¹ *ᵥ (fmtC S k *ᵥ w) ∈ hatV (stdL D.host.E S.rank)`. Rewrite using `[hGi]`. Conclude with `hw`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mov (S : HSp D) (k : GA D S) :
     ∃ Λ' : Lt D.host.E S.rank, IsMov (fmtC S k⁻¹) Λ' (stdL D.host.E S.rank) := by
@@ -168,7 +166,7 @@ theorem exists_mov (S : HSp D) (k : GA D S) :
     rw [hGi]; exact hw
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smul_ringHom {R A : Type} [CommRing R] [CommRing A] (f : R →+* A) {m p : Type} (c : R) (M : Matrix m p R) :
     (c • M).map f = f c • M.map f := by
@@ -179,53 +177,49 @@ end GlobalTheory.MoverGlue
 open GlobalTheory.MoverGlue in
 
 /- English proof (translation)
-Introduce `D S T C hn ΛT hSD hAA βS βT hβS hβT Pg Q ξ hPg h2 e he a hab`. Take `⟨b, hab⟩` from `hab`. Establish `he2 : e * e = e` using `GlobalTheory.PlaceVec.idemSum_mul_self he`. Establish `hec : e * cA D e = 0` using `he.2`. Set `φ : (Af D.host.F ⊗[D.host.F] D.host.E) →+* EAf D` to `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).toAlgHom.toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ψ : EAf D →+* (Af D.host.F ⊗[D.host.F] D.host.E)` to `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).symm.toAlgHom.toRingHom`. Establish `hφψ : ∀ z, φ (ψ z) = z` using `fun z => AlgEquiv.apply_symm_apply _ z`. Establish `htoE : ∀ z : AE D, toEAf D z = φ (finPart D z)` using `fun z => rfl`. Set `σ : (Af D.host.F ⊗[D.host.F] D.host.E) →+* (Af D.host.F ⊗[D.host.F] D.host.E)` to `sigR (Af D.host.F) D.sp.cm.sig`. Establish `hσ : ∀ z, σ (σ z) = z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => show (Algebra.TensorProduct.map (AlgHom.id _ _) D.sp.cm.sig) ((Algebra.TensorProduct.map (AlgHom.id _ _) D.sp.cm.sig) (x ⊗ₜ y)) = x ⊗ₜ y`. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Conclude with `star_star y`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hfc : ∀ z : AE D, finPart D (cA D z) = σ (finPart D z)` using `fun z => GlobalTheory.UnitaryGlue.map_sigR (sndA D.host.F) D.sp.cm.sig z`. Use `set ε := finPart D e with hεdef`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hεε : ε * ε = ε` using `by rw [← map_mul, he2]`. Establish `hεσ : ε * σ ε = 0` using `by rw [← hfc, ← map_mul, hec, map_zero]`. Set `Bs : Matrix (Fin S.rank) (Fin S.rank) (Af D.host.F ⊗[D.host.F] D.host.E)` to `βS.val.map ψ`. Set `Bi : Matrix (Fin S.rank) (Fin S.rank) (Af D.host.F ⊗[D.host.F] D.host.E)` to `(βS⁻¹).val.map ψ`. Establish `hBB : Bs * Bi = 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hBB' : Bi * Bs = 1`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Set `P` to `finPart D a • Bs`. Set `Qm` to `finPart D b • Bi`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPQ : ε • (P * Qm) = ε • (1 : Matrix (Fin S.rank) (Fin S.rank) _)`. Rewrite using `[smul_mul_smul_comm, hBB, smul_smul, ← map_mul, ← map_mul, hab, he2]`. Establish `hQP : ε • (Qm * P) = ε • (1 : Matrix (Fin S.rank) (Fin S.rank) _)`. Rewrite using `[smul_mul_smul_comm, hBB', smul_smul, ← map_mul, ← map_mul, mul_comm b a, hab, he2]`. Take `⟨hu1, hu2⟩` from `glue_unitary σ hσ ε hεε hεσ P Qm hPQ hQP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set hf := glue σ ε P Qm with hhf`. Set `gfGL : GL (Fin S.rank) (Af D.host.F ⊗[D.host.F] D.host.E)` to `⟨hf, (hf.map σ)ᵀ, hu1, hu2⟩`. Establish `hJ : JR (F` using `D.host.F) (Af D.host.F) (HSpace.gram S) = 1 := by`. Rewrite using `[C.m.gS]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmem : gfGL ∈ HR (Af D.host.F) D.sp.cm.sig (HSpace.gram S)` using `by show Formalism.UG.cT σ hf * JR (F := D.host.F) (Af D.host.F) (HSpace.gram S) * hf = JR (F := D.host.F) (Af D.host.F) (HSpace.gram S)`. Rewrite using `[hJ, Matrix.mul_one]`. Conclude with `hu2`. Take `⟨g, hgC, hgf⟩` from `(GlobalTheory.UnitaryGlue.adelic_glue D S).1 gfGL hmem`. Take `⟨Λ', hΛ'⟩` from `exists_mov S g`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmt1 : Formalism.L2.Theta.mt T (1 : GA D T) = 1`. Simplify using `only [Formalism.L2.Theta.mt, map_one, Units.val_one]`. Establish `hact : ∀ x : WO S T, actO S T g 1 x = HMul.hMul (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)) (Formalism.L2.Theta.mt S g⁻¹)`. Introduce `x`. Use `show HMul.hMul (HMul.hMul (Formalism.L2.Theta.mt T 1) (x : Matrix (Fin T.rank) (Fin S.rank) (AE D))) (Formalism.L2.Theta.mt S g⁻¹) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hmt1, Matrix.one_mul]`. Establish `hKf : (Formalism.L2.Theta.mt S g⁻¹).map (finPart D) = (hf.map σ)ᵀ`. Establish `h1 : ((finHom S g⁻¹).val) = (Formalism.L2.Theta.mt S g⁻¹).map (finPart D)` using `rfl`. Rewrite using `[← h1, map_inv, hgf]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hKi : (Formalism.L2.Theta.mt S g⁻¹).map (infPart D) = 1`. Establish `h1 : ((infHom S g⁻¹).val) = (Formalism.L2.Theta.mt S g⁻¹).map (infPart D)` using `rfl`. Establish `hg1 : infHom S g = 1` using `hgC`. Rewrite using `[← h1, map_inv, hg1, inv_one, Units.val_one]`. Use `⟨g, Λ', ⟨hgC, ?_, ?_⟩, hΛ'⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[hact]`. Establish `hX : (1 - ε - σ ε) • x.map (finPart D) = x.map (finPart D)`. Use extensionality with `i j`. Use `congrArg (finPart D) (hx i j)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_mul, map_sub, map_sub, map_one, hfc]`. Simplify `this` using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Use extensionality with `i j`. Use `GlobalTheory.SplitScalar.adele_ext ?_ ?_` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (show (HMul.hMul (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)) (Formalism.L2.Theta.mt S g⁻¹)).map (infPart D) = x.map (infPart D) by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Matrix.map_mul, hKi, Matrix.mul_one]) i) j`. Simplify `h` using `only [Matrix.map_apply]`. Establish `h` using `congrFun (congrFun (show (HMul.hMul (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)) (Formalism.L2.Theta.mt S g⁻¹)).map (finPart D) = x.map (finPart D) by`. Rewrite using `[Matrix.map_mul, hKf]`. Use `conv_lhs => rw [← hX]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_mul, ← Matrix.mul_smul, off_smul_glue_cT σ hσ ε hεε hεσ, Matrix.mul_smul, Matrix.mul_one, hX]) i) j`. Simplify `h` using `only [Matrix.map_apply]`. Introduce `x hx`. Rewrite using `[hact]`. Establish `hcK : ((Formalism.L2.Theta.mt S g⁻¹).map (cA D))ᵀ.map (toEAf D) = hf.map φ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `hk` using `congrFun (congrFun hKf j) i`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply] at hk ⊢`. Rewrite using `[htoE, hfc, hk, hσ]`. Establish `hεhf : (toEAf D e) • hf.map φ = (toEAf D e * toEAf D a) • βS.val`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ε • hf = ε • P` using `smul_glue σ ε hεε hεσ P Qm`. Use extensionality with `i j`. Establish `h2` using `congrFun (congrFun h1 i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.map_apply] at h2 ⊢`. Rewrite using `[htoE, htoE, ← map_mul, h2]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [P, Bs, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hφψ, hεdef, mul_assoc]`. Use `set Z := (HMul.hMul ((x.map (cA D))ᵀ : Matrix (Fin S.rank) (Fin T.rank) (AE D)) ((HSpace.gram T).map (incA D))).map (toEAf D) with hZdef`. Establish `hxc : e • (x.map (cA D))ᵀ = (x.map (cA D))ᵀ`. Use extensionality with `i j`. Use `congrArg (cA D) (hx j i)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_mul, GlobalTheory.DualPairCheck.cA_cA]`. Simplify `this` using `only [Matrix.smul_apply, Matrix.transpose_apply, Matrix.map_apply, smul_eq_mul]`. Establish `hZ : toEAf D e • Z = Z`. Rewrite using `[hZdef]`. Use `conv_rhs => rw [← hxc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_mul, GlobalTheory.MoverGlue.map_smul_ringHom]`. Establish `hL2 : (HMul.hMul (((HMul.hMul (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)) (Formalism.L2.Theta.mt S g⁻¹)).map (cA D))ᵀ : Matrix (Fin S.rank) (Fin T.rank) (AE D)) ((HSpace.gram T).map (incA D))).map (toEAf D) = HMul.hMul (hf.map φ) Z`. Establish `h3 : (((HMul.hMul (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)) (Formalism.L2.Theta.mt S g⁻¹)).map (cA D))ᵀ : Matrix (Fin S.rank) (Fin T.rank) (AE D)) = HMul.hMul ((Formalism.L2.Theta.mt S g⁻¹).map (cA D))ᵀ ((x.map (cA D))ᵀ : Matrix (Fin S.rank) (Fin T.rank) (AE D))`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Rewrite using `[h3, Matrix.mul_assoc, Matrix.map_mul, hcK]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hLHS : HMul.hMul (HMul.hMul (βS⁻¹).val (HMul.hMul (hf.map φ) Z)) βT.val = (toEAf D e * toEAf D a) • HMul.hMul Z βT.val` using `by conv_lhs => rw [← hZ]`. Rewrite using `[Matrix.mul_smul, ← Matrix.smul_mul, hεhf, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `hRHS : toEAf D a • HMul.hMul βS.val (HMul.hMul (HMul.hMul (βS⁻¹).val Z) βT.val) = (toEAf D e * toEAf D a) • HMul.hMul Z βT.val`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Use `conv_lhs => rw [← hZ]`.
-
-Rewrite using `[Matrix.smul_mul, smul_smul, mul_comm (toEAf D a)]`. Unfold `GlobalTheory.LiftLevel.adjA frMapAdj`. Establish `hGS : (HSpace.gram S)⁻¹.map (incA D) = 1`. Rewrite using `[C.m.gS]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hGS]`. Simplify using `only [Matrix.one_mul]`. Rewrite using `[hL2, hLHS, ← hRHS]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LiftLevel.exists_mover : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.rank ≤ S.rank) (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → IsAA C.X.Λ ΛT → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (stdL D.host.E S.rank) → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ), Pg.Nonempty → (∀ PP, PP ∈ Pg ∨ PP ∈ Q → (2 : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ e : AE D, IsIdemSum e (Pg ∪ Q) → ∀ a : AE D, (∃ b : AE D, a * b = e) → ∃ (k₀ : GA D S) (Λ' : Lt D.host.E S.rank), GlobalTheory.LiftLevel.IsMover S T βS βT e a k₀ ∧ IsMov (fmtC S k₀⁻¹) Λ' (stdL D.host.E S.rank) := by
   intro D S T C hn ΛT hSD hAA βS βT hβS hβT Pg Q ξ hPg h2 e he a hab

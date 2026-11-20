@@ -19,13 +19,11 @@ private def baseChangePts {R A S K : Type} [CommRing R] [CommRing A] [CommRing S
     simp [Algebra.ofId_apply]
 
 /- English proof (translation)
-Introduce `hRank hSplitEq l d R S _ _ _ hE`. Use `haveI := hE.fin`. Use `haveI := hE.et`. Establish `hdeg : ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra (Localization.Away (l : R)) K], Nat.card (Localization.Away (l : R) ⊗[R] S →ₐ[Localization.Away (l : R)] K) = d`. Introduce `K _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra R K := ((algebraMap (Localization.Away (l : R)) K).comp (algebraMap R (Localization.Away (l : R)))).toAlgebra`. Use `haveI : IsScalarTower R (Localization.Away (l : R)) K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hl : (l : K) ≠ 0`. Establish `hu : IsUnit (algebraMap R (Localization.Away (l : R)) (l : R))` using `IsLocalization.Away.algebraMap_isUnit (l : R)`. Establish `hu'` using `hu.map (algebraMap (Localization.Away (l : R)) K)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using hu'.ne_zero`. Rewrite using `[Nat.card_congr baseChangePts]`. Conclude with `hE.deg K hl`. Establish `hn` using `hRank (Localization.Away (l : R)) (Localization.Away (l : R) ⊗[R] S) d hdeg`. Take `⟨T, _, _, _, _, _, hT⟩` from `Algebra.IsFiniteSplit.exists_tensorProduct_of_etale hn`.
-
-Take `⟨n, ⟨e⟩⟩` from `hT.nonempty_algEquiv_fun`. Take `⟨z, hz⟩` from `hSplitEq (Localization.Away (l : R)) (Localization.Away (l : R) ⊗[R] S) T (Fin n) e`. Conclude with `⟨T, inferInstance, inferInstance, n, z, FaithfulSMul.algebraMap_injective (Localization.Away (l : R)) T, hz⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.injSplit_of :
     RankOfDeg → SplitsOfEquiv → InjSplit := by

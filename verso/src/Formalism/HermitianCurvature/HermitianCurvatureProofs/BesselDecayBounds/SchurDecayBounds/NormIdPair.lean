@@ -13,23 +13,23 @@ variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Use `set A : Wp →L[ℂ] Wp := Aop z c π μW μN σ u v x with hA`. Establish `hiso : ∀ b ∈ UWset k r z, ∀ y y' : Wp, ⟪π b y, π b y'⟫_ℂ = ⟪y, y'⟫_ℂ`. Introduce `b hb y y'`. Set `T : Wp →ₗᵢ[ℂ] Wp` to `{ toLinearMap := (π b : Wp →ₗ[ℂ] Wp), norm_map' := hPi.2.2 b hb }`. Conclude with `T.inner_map_map y y'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hadj : ∀ b ∈ UWset k r z, ∀ y y' : Wp, ⟪π b y, y'⟫_ℂ = ⟪y, π b⁻¹ y'⟫_ℂ`. Introduce `b hb y y'`. Establish `hbinv : b⁻¹ ∈ UWset k r z` using `hGr.2.2.1 b hb`. Establish `h1 : b * b⁻¹ = 1` using `(hGr.2.1 b hb.1).1`. Establish `h2 : π b (π b⁻¹ y') = y'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hPi.2.1 b hb b⁻¹ hbinv`. Rewrite `h3` using `[h1, hPi.1]`. Establish `h4` using `congrArg (fun T : Wp →L[ℂ] Wp => T y') h3`. Simplify using `using h4.symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ y y' : Wp, star ⟪y, y'⟫_ℂ = ⟪y', y⟫_ℂ` using `fun y y' => inner_conj_symm y' y`. Establish `key : ∀ p : Mt k r × Mt k r, Matrix.of p.1 ∈ UWset k r z → Matrix.of p.2 ∈ Nset k r → Fx z c π μW μN σ u v ξ (sM p * x) = ⟪A ξ, beF z c π σ (σ x u) v p ξ⟫_ℂ`. Introduce `p h1 h2`. Establish `hmul : sM p ∈ UH (Hpk k r)` using `hGr.1 _ h1.1 _ h2.1`. Establish `hσ' : σ (sM p * x) u = σ (Matrix.of p.1 * Matrix.of p.2) (σ x u)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hSg.2.1 _ hmul _ hx]`. Both sides reduce to the same expression. Establish `heq : Aop z c π μW μN σ u v (sM p * x) = (psi k r z c (Matrix.of p.2) • π (Matrix.of p.1)).comp A` using `by show be z c π μW μN σ (σ (sM p * x) u) v = _`. Rewrite using `[hσ']`. Conclude with `be_equiv_of_int hGr hSg hPi hPs hM hint h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show Fx z c π μW μN σ u v ξ (sM p * x) = ⟪v, σ (sM p * x) u⟫_ℂ * star ⟪ξ, Aop z c π μW μN σ u v (sM p * x) ξ⟫_ℂ from rfl]`. Rewrite using `[show beF z c π σ (σ x u) v p = (⟪v, σ (Matrix.of p.1 * Matrix.of p.2) (σ x u)⟫_ℂ * star (psi k r z c (Matrix.of p.2))) • π (Matrix.of p.1)⁻¹ from rfl]`. Rewrite using `[heq, hσ', ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_apply, inner_smul_right, inner_smul_right, star_mul', hc, ← hadj _ h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hae : (fun p => Fx z c π μW μN σ u v ξ (sM p * x)) =ᵐ[μW.prod μN] fun p => ⟪A ξ, beF z c π σ (σ x u) v p ξ⟫_ℂ` using `by filter_upwards [hM.1] with p hp`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key p hp.1 hp.2`. Set `L : (Wp →L[ℂ] Wp) →L[ℂ] ℂ` to `(innerSL ℂ (A ξ)).comp (ContinuousLinearMap.apply ℂ Wp ξ)`. Establish `hL : ∀ T : Wp →L[ℂ] Wp, L T = ⟪A ξ, T ξ⟫_ℂ` using `fun T => by simp [L]`. Establish `hLint : Integrable (fun p => L (beF z c π σ (σ x u) v p)) (μW.prod μN)` using `L.integrable_comp hint`. Establish `hint2 : Integrable (fun p => ⟪A ξ, beF z c π σ (σ x u) v p ξ⟫_ℂ) (μW.prod μN)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `hLint` using `only [hL]`. Use `⟨hint2.congr hae.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_congr_ae hae]`. Establish `hI : ∫ p, ⟪A ξ, beF z c π σ (σ x u) v p ξ⟫_ℂ ∂(μW.prod μN) = ⟪A ξ, A ξ⟫_ℂ`. Repeatedly rewrite using `[← hL]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[L.integral_comp_comm hint, hL]`. Both sides reduce to the same expression. Rewrite using `[hI, inner_self_eq_norm_sq_to_K]`. Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem hs_one {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {μW μN : Measure (Mt k r)} {σ : Mx k r → (H →L[ℂ] H)}
@@ -93,31 +93,29 @@ theorem hs_one {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp 
   norm_num
 
 /- English proof (translation)
-Establish `hnu` using `nuStep k r H Wp z π μW μN μG ν σ hG`. Take `⟨⟨ε, lam, -, hds⟩, hHaar, -, -, ⟨-, hW1⟩, ⟨κ0, -, -, rfl⟩, -⟩` from `id hG`. Establish `: IsFiniteMeasure μW` using `⟨by rw [hW1]; exact ENNReal.one_lt_top⟩`. Establish `: SFinite μG` using `sfinite_haar hHaar`. Take `⟨d, hd, hSch⟩` from `id hS`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[fdegH_eq ⟨hd, hSch⟩ hu]`. Use `set μS := μW.prod (haarLie (Nset k r) κ0) with hμS`. Use `set Φ : Mt k r × (Mt k r × Mt k r) → ℂ := fun q => ⟪v, σ (Matrix.of q.1) u⟫_ℂ * star ⟪v, σ (sM q.2 * Matrix.of q.1) u⟫_ℂ * kx z c π ξ q.2 with hΦdef`. Establish `h1 : ∀ᵐ y ∂μG, Fx z c π μW (haarLie (Nset k r) κ0) σ u v ξ (Matrix.of y) = ∫ p, Φ (y, p) ∂μS` using `by filter_upwards [ae_UH_of_haar hHaar] with y hy`. Unfold `Fx Aop`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[star_ev_be (hI _ hy) ξ, ← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hM.1] with p hp`. Establish `hs : sM p ∈ UH (Hpk k r)` using `hGr.1 _ hp.1.1 _ hp.2.1`. Use `show _ = ⟪v, σ (Matrix.of y) u⟫_ℂ * star ⟪v, σ (sM p * Matrix.of y) u⟫_ℂ * kx z c π ξ p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hSg.2.1 _ hs _ hy, ContinuousLinearMap.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hΦ : Integrable Φ (μG.prod μS)`. Use `Integrable.mono' (hD.const_mul (‖ξ‖ ^ 2)) ?_ ?_` and prove the remaining obligations. Establish `m1 : AEStronglyMeasurable (fun q : Mt k r × (Mt k r × Mt k r) => ⟪v, σ (Matrix.of q.1) u⟫_ℂ) (μG.prod μS)` using `(coef_aesm hds hHaar u v).comp_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `m2` using `matrix_coefficient_ae_strongly_measurable hds hGr hHaar hM.1 u v`. Establish `m3 : AEStronglyMeasurable (fun q : Mt k r × (Mt k r × Mt k r) => kx z c π ξ q.2) (μG.prod μS)` using `(kx_aesm hM ξ).comp_snd`. Conclude with `(m1.mul (continuous_star.comp_aestronglyMeasurable m2)).mul m3`. Use `filter_upwards [(Measure.quasiMeasurePreserving_snd (μ := μG) (ν := μS)).ae hM.1] with q hq`. Establish `hk` using `norm_kx_le (c := c) hGr hPi ξ hq.1`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [Φ, norm_mul, norm_star]`. Combine the equalities or inequalities in the displayed calculation. Establish `hF : Integrable (fun y : Mt k r => Fx z c π μW (haarLie (Nset k r) κ0) σ u v ξ (Matrix.of y)) μG` using `hΦ.integral_prod_left.congr (h1.mono fun y hy => hy.symm)`. Establish `hu2 : ⟪u, u⟫_ℂ = ((‖u‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[inner_self_eq_norm_sq_to_K, Complex.ofReal_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h4 : ∀ᵐ p ∂μS, ∫ y, Φ (y, p) ∂μG = ((‖u‖ ^ 2 : ℝ) : ℂ) / (d : ℂ) * (star ⟪v, σ (sM p) v⟫_ℂ * kx z c π ξ p)` using `by filter_upwards [hM.1] with p hp`. Establish `hs : sM p ∈ UH (Hpk k r)` using `hGr.1 _ hp.1.1 _ hp.2.1`. Establish `hsi : (sM p)⁻¹ ∈ UH (Hpk k r)` using `(hGr.2.1 _ hs).2.2`. Establish `hss : sM p * (sM p)⁻¹ = 1` using `(hGr.2.1 _ hs).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hadj : ContinuousLinearMap.adjoint (σ (sM p)) = σ (sM p)⁻¹` using `Cv.adjoint_eq_of_iso _ _ (hSg.2.2 _ hs) (by rw [← hSg.2.1 _ hs _ hsi, hss, hSg.1])`. Establish `e0 : ∀ w : H, ⟪v, σ (sM p) w⟫_ℂ = ⟪σ (sM p)⁻¹ v, w⟫_ℂ` using `fun w => by`. Rewrite using `[← hadj, ContinuousLinearMap.adjoint_inner_left]`. Establish `hcongr : ∀ᵐ y ∂μG, Φ (y, p) = kx z c π ξ p * (⟪v, σ (Matrix.of y) u⟫_ℂ * star ⟪σ (sM p)⁻¹ v, σ (Matrix.of y) u⟫_ℂ)` using `by filter_upwards [ae_UH_of_haar hHaar] with y hy show ⟪v, σ (Matrix.of y) u⟫_ℂ * star ⟪v, σ (sM p * Matrix.of y) u⟫_ℂ * kx z c π ξ p = _`. Rewrite using `[hSg.2.1 _ hs _ hy, ContinuousLinearMap.comp_apply, e0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae hcongr, integral_const_mul, (hSch u v u (σ (sM p)⁻¹ v)).2]`. Establish `e1 : ⟪v, σ (sM p)⁻¹ v⟫_ℂ = star ⟪v, σ (sM p) v⟫_ℂ`. Rewrite using `[← hadj, ContinuousLinearMap.adjoint_inner_right, star_inner]`. Rewrite using `[e1, hu2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hFG : ∫ y, Fx z c π μW (haarLie (Nset k r) κ0) σ u v ξ (Matrix.of y) ∂μG = ((‖u‖ ^ 2 : ℝ) : ℂ) / (d : ℂ) * star ⟪ξ, be z c π μW (haarLie (Nset k r) κ0) σ v v ξ⟫_ℂ`. Rewrite using `[integral_congr_ae h1, integral_integral_swap (f := fun y p => Φ (y, p)) hΦ, integral_congr_ae h4, integral_const_mul, ← star_ev_be hIv ξ]`. Take `⟨-, hint, heq⟩` from `weilStep k r H Wp z π μW (haarLie (Nset k r) κ0) μG ν σ hG (Fx z c π μW (haarLie (Nset k r) κ0) σ u v ξ) hF`. Establish `hpt : ∀ᵐ x ∂ν, ‖be z c π μW (haarLie (Nset k r) κ0) σ (σ (Matrix.of x) u) v ξ‖ ^ 2 = (∫ p, Fx z c π μW (haarLie (Nset k r) κ0) σ u v ξ (sM p * Matrix.of x) ∂μS).re` using `by filter_upwards [hnu] with x hx`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hs_one hGr hSg hPi hPs hM ξ hx (hI _ hx)).2, Complex.ofReal_re]`. Both sides reduce to the same expression. Use `⟨hint.re.congr (hpt.mono fun x hx => hx.symm), ?_⟩` and prove the remaining obligations. Establish `hre` using `integral_re hint`. Simplify using `only [RCLike.re_to_complex] at hre`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_congr_ae hpt, hre, ← heq, hFG]`. Establish `e3 : ((‖u‖ ^ 2 : ℝ) : ℂ) / (d : ℂ) * star ⟪ξ, be z c π μW (haarLie (Nset k r) κ0) σ v v ξ⟫_ℂ = (((‖u‖ ^ 2 / d : ℝ)) : ℂ) * ⟪be z c π μW (haarLie (Nset k r) κ0) σ v v ξ, ξ⟫_ℂ`. Rewrite using `[star_inner]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e3, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem normId_pair {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {μW μN μG ν : Measure (Mt k r)} {σ : Mx k r → (H →L[ℂ] H)}

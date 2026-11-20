@@ -17,15 +17,13 @@ namespace GlobalTheory.Mum.BijDescent
 variable {X X' Y Y' : Scheme.{0}} {K : Type} [Fintype K]
 
 /- English proof (translation)
-Establish `le : ∀ j : K → L.ι, π ⁻¹ᵁ LB.wchart L φ j ≤ LB.wchart L (fun k => π ≫ φ k) j` using `fun j y hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`. Establish `desc : ∀ j : K → L.ι, ∃ a : Γ(Y, LB.wchart L φ j), (π.app _).hom a = (res (le j) (u.s j)).val` using `fun j => (hπ _).2 _`. Use `choose a ha using desc`. Establish `hun : ∀ j, IsUnit (a j)`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `(hπ (LB.wchart L φ j)).2 ((res (le j) (u.s j))⁻¹).val`. Use `IsUnit.of_mul_eq_one b ((hπ _).1 ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_one, ha j, hb]`. Conclude with `Units.mul_inv _`. Establish `hv : ∀ j (Z : Scheme.{0}) (r : Z ⟶ Y') (y : Z), π (r y) ∈ LB.wchart L φ j → gm (r ≫ π) y (LB.wchart L φ j) (hun j).unit = gm r y (LB.wchart L (fun k => π ≫ φ k) j) (u.s j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j Z r y hy`. Establish `e : pullU π _ (hun j).unit = res (le j) (u.s j)` using `Units.ext (ha j)`. Conclude with `(gm_pull r π y _ hy _).symm.trans ((congrArg (gm r y _) e).trans (gm_res r y (le j) hy _))`. Use `⟨⟨fun j => (hun j).unit⟩, fun j j' => Units.ext ((hπ (LB.wchart L φ j ⊓ LB.wchart L φ j')).1 ?_), fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Use `congrArg Units.val (unit_ext (a := pullU π _ _) (b := pullU π _ _) fun y hy => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy' : π y ∈ LB.wchart L φ j ⊓ LB.wchart L φ j'` using `hy`. Use `(gm_pull (𝟙 Y') π y _ hy' _).trans (Eq.trans ?_ (gm_pull (𝟙 Y') π y _ hy' _).symm)` and prove the remaining obligations. Use `((gm_res (𝟙 Y' ≫ π) y _ hy' _).trans ((hv j _ _ y hy'.1).trans (gen_trans hu (𝟙 Y') y (le j hy'.1) (le j' hy'.2)))).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_linComb L φ ε (𝟙 Y' ≫ π) y j j' hy'.1 hy'.2).trans ?_) ((gm_res (𝟙 Y' ≫ π) y _ hy' _).trans (hv j' _ _ y hy'.2)))` and prove the remaining obligations. Simplify using `only [trF, Category.id_comp]`.
-
-Rewrite using `[val_of _ (r ≫ π) z J (fun k => J (r ≫ π ≫ φ k)) (fun k => by rw [Category.assoc])]`. Conclude with `hv _ Z r z (Set.mem_iInter.2 fun k => hJ (r ≫ π ≫ φ k))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_descend_val_bij {L : LB X} (π : Y' ⟶ Y)
     (hπ : ∀ V : Y.Opens, Function.Bijective (π.app V).hom) (φ : K → (Y ⟶ X)) (ε : K → ℤ)
@@ -63,9 +61,9 @@ theorem exists_gen_descend_val_bij {L : LB X} (π : Y' ⟶ Y)
     exact hv _ Z r z (Set.mem_iInter.2 fun k => hJ (r ≫ π ≫ φ k))
 
 /- English proof (translation)
-Take `⟨t₁, ht₁, v₁⟩` from `exists_up hw hM hL a ha`. Take `⟨u, hu, vu⟩` from `exists_gen hM (φ' := fun k => π ≫ φ k) (ε' := ε) (fun U _ h => Finset.prod_congr rfl fun k _ => congrArg (fun q => h q ^ ε k) (hc k)) t₁ ht₁`. Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y') (z : Z) (I J), Good M z I → Good L z J → val u r z I = (∏ k, gw w (r ≫ φ' k) z (I ((r ≫ φ' k) ≫ F)) (J (r ≫ φ' k)) ^ ε k) * val a r z J`. Introduce `Z r z I J hI hJ`. Rewrite using `[vu Z r z I hI, val_of t₁ r z I (fun k => I ((r ≫ φ' k) ≫ F)) (fun k => by rw [Category.assoc])]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `v₁ Z r z _ _ (Set.mem_iInter.2 fun k => hI ((r ≫ φ' k) ≫ F)) (hJ.mem φ' r)`. Take `⟨t, ht, vt⟩` from `exists_gen_descend_val_bij π hπ φ ε u hu`. Conclude with `⟨t, ht, fun Z r z I J hI hJ => (vt Z r z I hI).trans (key Z r z I J hI hJ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_descend_bij {M : LB X} {L : LB X'} {F : X' ⟶ X} {w : LB.Iso L (M.pull F)} (hw : PGen w)
     (hM : M.IsLB) (hL : L.IsLB) (π : Y' ⟶ Y) (hπ : ∀ V : Y.Opens, Function.Bijective (π.app V).hom)

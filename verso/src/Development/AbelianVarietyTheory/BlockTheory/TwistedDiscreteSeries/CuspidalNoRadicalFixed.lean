@@ -83,7 +83,7 @@ def Statement : Prop :=
     CuspidalOperators V μ ∧ TypesForceCuspidal V μ
 
 /- English proof (translation)
-The claim follows from `(hasSum_kernel (GlobalTheory.Orb.continuous_of_mem_ccAd hf).2 x y).summable`.
+A detailed English derivation is pending.
 -/
 example {f : GA D V → ℂ} (hf : f ∈ CcGA V) (x y : GA D V) : Summable fun γ : GQ V => f (x⁻¹ * γ * y) :=
   (hasSum_kernel (GlobalTheory.Orb.continuous_of_mem_ccAd hf).2 x y).summable
@@ -91,7 +91,7 @@ example {f : GA D V → ℂ} (hf : f ∈ CcGA V) (x y : GA D V) : Summable fun �
 omit [μ.IsHaarMeasure] [μ.IsMulRightInvariant] in
 
 /- English proof (translation)
-Introduce `v` and use `by obtain ⟨Φ, hΦ, hi, -⟩ := h obtain ⟨f, h0, e⟩ := contains_iff.1 (hT v) obtain ⟨z, hz⟩ := DFunLike.ne_iff.1 h0 have h1 : Φ (f z) ≠ 0 := fun h => hz (hi (h.trans (map_zero Φ).symm)) obtain ⟨y, hy⟩ := DFunLike.ne_iff.1 h1 refine contains_iff.2 ⟨(ContinuousLinearMap.apply ℂ H y).to …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem containsTypes_finRes {H X W : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup X]
     [InnerProductSpace ℂ X] [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ (GfC V) W}
@@ -109,7 +109,7 @@ theorem containsTypes_finRes {H X W : Type} [NormedAddCommGroup H] [InnerProduct
 omit [μ.IsHaarMeasure] [μ.IsMulRightInvariant] in
 
 /- English proof (translation)
-Introduce `a b e ha hb` and use `by omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (h : V.rank = 1) (T : TypeDataG V) : NoRadicalFixed T := fun a b e ha hb => by omega
 

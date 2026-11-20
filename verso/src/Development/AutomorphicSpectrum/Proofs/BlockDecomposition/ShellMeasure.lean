@@ -16,45 +16,39 @@ namespace GlobalTheory.CompanionTheory.InvStep
 open GlobalTheory.ShellU GlobalTheory.GKConjScale GlobalTheory.UnipShiftU
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q hU n k hk hn y hyK hy _ _ μ _ hμ j`. Establish `hidx` using `relIndex_antiBall hU`. Take `⟨-, -, -, hv, -, hq2, -⟩` from `hU`. Establish `haa : lo k ≠ (lo k).rev`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_rev, Fin.coe_castLE] at this`. Use `k.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hshape` using `cellU_rankOne_shape L σ n k hk hn y hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `set a := lo k with ha`. Set `M : cellU y → Matrix (Fin n) (Fin n) L` to `fun u => (((u : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Set `c : cellU y → L` to `fun u => M u a a.rev`. Establish `hstr : ∀ u : cellU y, M u = 1 + Matrix.single a a.rev (c u)`. Introduce `u`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i l`. Rewrite using `[Matrix.add_apply, Matrix.single_apply]`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[Matrix.one_apply_ne haa, zero_add]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[add_zero]`. Conclude with `(hshape u).1 u.2 i l (fun h' => h ⟨h'.1.symm, h'.2.symm⟩)`. Establish `hprod : ∀ b d : L, (1 + Matrix.single a a.rev b) * (1 + Matrix.single a a.rev d) = 1 + Matrix.single a a.rev (b + d)`. Introduce `b d`. Rewrite using `[Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, Matrix.single_mul_single_of_ne _ _ _ _ haa.symm, Matrix.single_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Simplify using `only [Matrix.one_mul, Matrix.mul_one, add_zero]`. Normalize the expressions using the abelian group laws. Establish `hent : ∀ b : L, (1 + Matrix.single a a.rev b : Matrix (Fin n) (Fin n) L) a a.rev = b`. Introduce `b`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne haa, Matrix.single_apply_same, zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hM : ∀ u w : cellU y, M (u * w) = M u * M w` using `fun u w => rfl`. Establish `hmul : ∀ u w : cellU y, c (u * w) = c u + c w`. Introduce `u w`. Use `show M (u * w) a a.rev = c u + c w`. Rewrite using `[hM, hstr u, hstr w, hprod, hent]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hone : c 1 = 0` using `Matrix.one_apply_ne haa`. Establish `hinv : ∀ u, c u⁻¹ = -c u` using `fun u => by`. Use `hmul u⁻¹ u` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, hone]`. Take the linear combination `-this`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hanti : ∀ u, σ (c u) = -c u` using `fun u => by`. Use `(LGrp.mem_GU_iff σ n _).1 (u : GU σ n).2 a a.rev` as an intermediate fact. Rewrite `this` using `[Fin.rev_rev]`. Rewrite using `[← hinv]`. Conclude with `this.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : ∀ b : L, σ b = -b → ∃ u : cellU y, c u = b`. Introduce `b hb`. Set `g : GL (Fin n) L` to `⟨1 + Matrix.single a a.rev b, 1 + Matrix.single a a.rev (-b), by rw [hprod]; simp, by rw [hprod]; simp⟩`. Establish `hg : g ∈ GU σ n`. Rewrite using `[LGrp.mem_GU_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i l`. Use `show (1 + Matrix.single a a.rev (-b) : Matrix (Fin n) (Fin n) L) i l = σ ((1 + Matrix.single a a.rev b : Matrix (Fin n) (Fin n) L) l.rev i.rev)`. Rewrite using `[Matrix.add_apply, Matrix.add_apply, map_add, Matrix.one_apply, Matrix.one_apply, Matrix.single_apply, Matrix.single_apply, apply_ite σ, apply_ite σ, map_one, map_zero, hb]`. Use `congr 1`. Conclude with `if_congr (by rw [Fin.rev_inj, eq_comm]) rfl rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Rewrite using `[Fin.rev_inj, and_comm, Fin.rev_eq_iff]`. Use `⟨⟨⟨g, hg⟩, (hshape _).2 fun i l h => ?_⟩, hent b⟩` and prove the remaining obligations. Use `show (1 + Matrix.single a a.rev b : Matrix (Fin n) (Fin n) L) i l = _`. Rewrite using `[Matrix.add_apply, Matrix.single_apply, if_neg (fun h' => h ⟨h'.1.symm, h'.2.symm⟩), add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : cellU y →* Multiplicative L` to `{ toFun := fun u => Multiplicative.ofAdd (c u) map_one' := by simp only [hone]; rfl map_mul' := fun u w => by simp only [hmul]; rfl }`. Set `H : ℤ → Subgroup (cellU y)` to `fun j => (AddSubgroup.toSubgroup (antiBall σ j)).comap φ`. Establish `memH : ∀ j (u : cellU y), u ∈ H j ↔ Valued.v (c u) ≤ WithZero.exp j`. Introduce `j u`. Use `show (c u) ∈ antiBall σ j ↔ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_antiBall]`. Conclude with `⟨fun h => h.2, fun h => ⟨hanti u, h⟩⟩`. Establish `hset : ∀ j, (H j : Set (cellU y)) = c ⁻¹' {x : L | Valued.v x ≤ WithZero.exp j}` using `fun j => Set.ext (memH j)`. Establish `hc : Continuous c` using `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)).matrix_elem a a.rev`. Establish `hm : ∀ j, MeasurableSet (H j : Set (cellU y))` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hset]`. Conclude with `((isOpen_ball hv j).preimage hc).measurableSet`. Establish `hle : ∀ j, H j ≤ H (j + 1)` using `fun j u hu => (memH _ _).2 (((memH _ _).1 hu).trans (WithZero.exp_le_exp.2 (by omega)))`. Establish `hi : ∀ j, (H j).relIndex (H (j + 1)) = q` using `fun j => by show ((AddSubgroup.toSubgroup (antiBall σ j)).comap φ).relIndex ((AddSubgroup.toSubgroup (antiBall σ (j + 1))).comap φ) = q`. Rewrite using `[Subgroup.relIndex_comap, Subgroup.map_comap_eq_self, AddSubgroup.relIndex_toSubgroup, hidx]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb`. Take `⟨u, hu⟩` from `hsurj (Multiplicative.toAdd b) hb.1`. Conclude with `⟨u, congrArg Multiplicative.ofAdd hu⟩`. Establish `hint : ∀ u : cellU y, Valued.v (c u) ≤ 1 → ∀ i l, M u i l ∈ intL L`. Introduce `u hu i l`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hstr u, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `refine add_mem ?_ ?_ <;> split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Conclude with `hu`.
-
-Conclude with `zero_mem _`. Establish `hH0 : H 0 = (KU σ n).subgroupOf (cellU y)`. Use extensionality with `u`. Rewrite using `[memH, WithZero.exp_zero, Subgroup.mem_subgroupOf, ← SetLike.mem_coe, LFun.IntPtsUnitary.coe_KU, LFun.IntPtsUnitary.coe_GLint]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `h`. Conclude with `⟨hint u h, hint u⁻¹ (by rwa [hinv, Valuation.map_neg])⟩`. Introduce `h`. Conclude with `h.1 a a.rev`. Establish `hfin` using `measure_chain μ H (q := q) (by omega) hm hle hi (by rw [hH0]; exact hμ) j`.
-
-Establish `hmj` using `hm j`. Rewrite `hfin`, `hmj` using `[hset]`. Conclude with `⟨hmj, hfin⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem shell_measure' : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L]
     (ϖ : L) (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q → ∀ (n : ℕ) (k : Fin (n / 2)), ¬ k.val + 1 < n / 2 →
@@ -179,35 +173,29 @@ theorem shell_measure' : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplic
   exact ⟨hmj, hfin⟩
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q hU n k hk hn y hyK hy _ _ μ _ hμ t ht`. Use `haveI : SecondCountableTopology L := (GlobalTheory.LineUMod.locCompact_secondCountable hU).2`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) L) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → L))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) L)ᵐᵒᵖ := (MulOpposite.opHomeomorph (M := Matrix (Fin n) (Fin n) L)).symm.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin n) L) := Units.isEmbedding_embedProduct.secondCountableTopology`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (GU σ n) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SecondCountableTopology (cellU y) := TopologicalSpace.Subtype.secondCountableTopology _`. Take `⟨hKo, hKc⟩` from `GlobalTheory.LFun.IntPtsUnitary.isOpen_isCompact_KU L ϖ σ q n hU`. Use `haveI : LocallyCompactSpace (cellU y) := by`. Establish `hN : IsClosed (cellU y : Set (GU σ n))` using `(isClosed_cell _).preimage continuous_subtype_val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : IsOpen ((KU σ n).subgroupOf (cellU y) : Set (cellU y))` using `hKo.preimage continuous_subtype_val`. Establish `h2 : IsCompact ((KU σ n).subgroupOf (cellU y) : Set (cellU y))` using `hN.isClosedEmbedding_subtypeVal.isCompact_preimage hKc`. Conclude with `h2.locallyCompactSpace_of_mem_nhds_of_group (h1.mem_nhds (one_mem _))`. Establish `htinv` using `inv_offdiag t ht`. Establish `hdc` using `(GlobalTheory.WeylCell.diagConjU L σ n y _ hy t ht).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdc'` using `(GlobalTheory.WeylCell.diagConjU L σ n y _ hy t⁻¹ htinv).2`. Set `c : cellU y ≃* cellU y` to `{ toFun := fun u => ⟨t⁻¹ * u * t, hdc u u.2⟩ invFun := fun u => ⟨t * u * t⁻¹, by simpa using hdc' u u.2⟩ left_inv := fun u => Subtype.ext (by simp [mul_assoc]) right_inv := fun u => Subtype.ext (by simp [mul_assoc]) map_mul' := fun a b => Subtype.ext (by simp [mul_assoc]) }`. Establish `hc : Continuous c` using `((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _`. Establish `hc' : Continuous c.symm` using `((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _`. Use `haveI : (μ.map c).IsHaarMeasure := MulEquiv.isHaarMeasure_map μ c hc hc'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hE : MeasurableEmbedding c` using `(Homeomorph.mk c.toEquiv hc hc').measurableEmbedding`. Use `set T : Matrix (Fin n) (Fin n) L := ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hTd`. Use `set a : Fin n := lo k with ha`. Use `set r : ℤ := ordL (T a a) with hr`. Establish `hσv : ∀ x, Valued.v (σ x) = Valued.v x` using `hU.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hprod : σ (T a.rev a.rev) * T a a = 1`. Establish `hu` using `(GlobalTheory.LGrp.mem_GU_iff σ n (t : GL (Fin n) L)).1 t.2 a a`. Establish `h` using `congrFun (congrFun (Units.inv_mul (t : GL (Fin n) L)) a) a`. Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[← hu, h, Matrix.one_apply_eq]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `b _ hb`. Conclude with `mul_eq_zero_of_right _ (ht b a hb)`. Simplify using the standard rewrite rules. Establish `ha0 : T a a ≠ 0` using `right_ne_zero_of_mul_eq_one hprod`. Establish `hva : Valued.v (T a a) = ((Multiplicative.ofAdd (-r) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))` using `v_eq_ofAdd_ordL ha0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hva' : Valued.v (T a.rev a.rev) = ((Multiplicative.ofAdd r : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Establish `h` using `congrArg Valued.v hprod`. Rewrite `h` using `[map_mul, hσv, map_one, hva]`. Rewrite using `[eq_inv_of_mul_eq_one_left h, ← WithZero.coe_inv, ← ofAdd_neg, neg_neg]`. Set `S : ℤ → Set (cellU y)` to `fun j => {u : cellU y | Valued.v ((((u : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a a.rev) ≤ ((Multiplicative.ofAdd j : Multiplicative ℤ) : WithZero (Multiplicative ℤ))}`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsh : ∀ j : ℤ, MeasurableSet (S j) ∧ μ (S j) = (q : ENNReal) ^ j` using `shell_measure' L ϖ σ q hU n k hk hn y hyK hy μ hμ`. Establish `hpre : c ⁻¹' S 0 = S (-2 * r)`. Use extensionality with `u`. Simplify using `only [S, Set.mem_preimage, Set.mem_setOf_eq]`. Use `show Valued.v (((((t : GL (Fin n) L))⁻¹ * ((u : GU σ n) : GL (Fin n) L) * (t : GL (Fin n) L) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a a.rev) ≤ _ ↔ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gl_conj_apply_of_offdiag ht, map_mul, map_mul, map_inv₀, ← hTd, hva, hva', ← WithZero.coe_inv, mul_right_comm, ← WithZero.coe_mul, coe_mul_le_iff]`. Establish `e : ((Multiplicative.ofAdd (-r))⁻¹ * Multiplicative.ofAdd r)⁻¹ * Multiplicative.ofAdd (0 : ℤ) = (Multiplicative.ofAdd (-2 * r) : Multiplicative ℤ)`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Simplify using `only [toAdd_mul, toAdd_inv, toAdd_ofAdd]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Establish `hq0 : q ≠ 0` using `by have := hU.2.2.2.2.2.1; omega`. Use `set Q : ℝ≥0 := (q : ℝ≥0) ^ (-2 * r) with hQd`. Establish `hQ : (Q : ℝ≥0∞) = (q : ℝ≥0∞) ^ (-2 * r)`. Rewrite using `[hQd, ENNReal.coe_zpow (by exact_mod_cast hq0)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using the standard rewrite rules. Establish `hmap : μ.map c (S 0) = (q : ℝ≥0∞) ^ (-2 * r)`. Rewrite using `[Measure.map_apply hE.measurable (hsh 0).1, hpre, (hsh _).2]`. Establish `hS0 : μ (S 0) = 1` using `by rw [(hsh 0).2, zpow_zero]`. Establish `e` using `Measure.isMulLeftInvariant_eq_smul (μ.map c) μ`.
-
-Establish `hfac : Measure.haarScalarFactor (μ.map c) μ = Q`. Establish `h` using `congrArg (fun ν : Measure (cellU y) => ν (S 0)) e`. Simplify using `only [Measure.smul_apply, hS0, hmap, ENNReal.smul_def, smul_eq_mul, mul_one] at h`. Conclude with `ENNReal.coe_injective (h.symm.trans hQ.symm)`. Establish `hmu : μ.map c = Q • μ` using `e.trans (by rw [hfac])`.
-
-Use `⟨fun F => ?_, fun F => ?_⟩` and prove the remaining obligations. Use `(hE.integral_map (fun v : cellU y => F v)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hmu, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Use `congr 1`. Rewrite using `[hQd]`.
-
-Use `push_cast`. Both sides reduce to the same expression. Use `(hE.lintegral_map (fun v : cellU y => F v)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hmu, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul, hQ]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjScale' : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L]
     (ϖ : L) (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q → ∀ (n : ℕ) (k : Fin (n / 2)), ¬ k.val + 1 < n / 2 →
@@ -314,41 +302,35 @@ theorem conjScale' : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicativ
     rw [hmu, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul, hQ]
 
 /- English proof (translation)
-Establish `hne : a ≠ a'` using `fun e => by have := congrArg Fin.val e; omega`. Establish `hlt : a < a'` using `by rw [Fin.lt_iff_val_lt_val]; omega`. Establish `hrev' : a'.rev = a` using `by rw [← hrev, Fin.rev_rev]`. Establish `hνB : (ν : GL (Fin n) L) ∈ unipB L (Fin n)` using `(mem_unipB L).2 ⟨hν.1, hν.2⟩`. Use `set c : L := ((ν : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a a' with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσc : σ c = -c`. Establish `h` using `(GlobalTheory.LGrp.mem_GU_iff σ n (ν : GL (Fin n) L)).1 ν.2 a a'`. Rewrite `h` using `[hrev', hrev, unipB_inv_apply_succ hνB haa]`. Conclude with `h.symm`. Set `T : GL (Fin n) L` to `⟨Matrix.transvection a a' c, Matrix.transvection a a' (-c), (Matrix.transvection_mul_transvection_same a a' hne c (-c)).trans (by rw [add_neg_cancel, Matrix.transvection_zero]), (Matrix.transvection_mul_transvection_same a a' hne (-c) c).trans (by rw [neg_add_cancel, Matrix.trans …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTapp : ∀ (d : L) (i j : Fin n), Matrix.transvection a a' d i j = (if i = j then 1 else 0) + (if i = a ∧ j = a' then d else 0)`. Introduce `d i j`. Conclude with `transvection_apply' a a' d i j`. Establish `hT : ∀ i j, (T : Matrix (Fin n) (Fin n) L) i j = (if i = j then 1 else 0) + (if i = a ∧ j = a' then c else 0)` using `hTapp c`. Establish `hTi : ∀ i j, ((T⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = (if i = j then 1 else 0) + (if i = a ∧ j = a' then -c else 0)` using `hTapp (-c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTG : T ∈ GU σ n`. Rewrite using `[GlobalTheory.LGrp.mem_GU_iff]`. Introduce `i j`. Rewrite using `[hTi, hT]`. Establish `e1 : j.rev = i.rev ↔ i = j` using `by rw [Fin.rev_inj]; exact eq_comm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `e2 : (j.rev = a ∧ i.rev = a') ↔ (i = a ∧ j = a')`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨by rw [← Fin.rev_rev i, h2, hrev'], by rw [← Fin.rev_rev j, h1, hrev]⟩`. Introduce and unpack `⟨rfl, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `⟨hrev', hrev⟩`. Simplify using `only [e1, e2]`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`. Establish `hTB : T ∈ unipB L (Fin n)`. Use `(mem_unipB L).2 ⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hT, if_neg (ne_of_lt h).symm, if_neg (fun e => by obtain ⟨rfl, rfl⟩ := e; exact absurd h (not_lt.2 hlt.le)), add_zero]`. Rewrite using `[hT, if_pos rfl, if_neg (fun h => hne (h.1.symm.trans h.2)), add_zero]`. Establish `hback : ∀ i j, Equiv.swap a a' i = a → Equiv.swap a a' j = a' → i = a' ∧ j = a`. Introduce `i j h1 h2`. Conclude with `⟨by rw [← Equiv.swap_apply_self a a' i, h1, Equiv.swap_apply_left], by rw [← Equiv.swap_apply_self a a' j, h2, Equiv.swap_apply_right]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨T, hTG⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show T ∈ cell (y : GL (Fin n) L)`. Rewrite using `[mem_cell]`. Use `⟨hTB, mem_unipBLower.2 ⟨fun i j hij => ?_, fun i => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, conj_apply hy, hT, if_neg (fun e => (ne_of_lt hij) ((Equiv.injective _) e)), if_neg (fun e => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `hback i j e.1 e.2`. Rewrite `hij` using `[h1, h2]`. Conclude with `absurd hij (not_lt.2 hlt.le))]`. Simplify using the standard rewrite rules. Rewrite using `[Units.val_mul, Units.val_mul, conj_apply hy, hT, if_pos rfl, if_neg (fun h => hne (h.1.symm.trans h.2)), add_zero, mul_one, inv_mul_diag hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu g`. Establish `huB : (u : GL (Fin n) L) ∈ unipB L (Fin n)` using `(mem_cell.1 hu).1`. Use `set N : GL (Fin n) L := (u : GL (Fin n) L) * ν * (u : GL (Fin n) L)⁻¹ * T⁻¹ with hN`. Establish `hNB : N ∈ unipB L (Fin n)` using `mul_mem (mul_mem (mul_mem huB hνB) (inv_mem huB)) (inv_mem hTB)`. Establish `hNa : (N : Matrix (Fin n) (Fin n) L) a a' = 0`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hN, unipB_mul_apply_succ (mul_mem (mul_mem huB hνB) (inv_mem huB)) (inv_mem hTB) haa, unipB_mul_apply_succ (mul_mem huB hνB) (inv_mem huB) haa, unipB_mul_apply_succ huB hνB haa, unipB_inv_apply_succ hTB haa, unipB_inv_apply_succ huB haa, hT, if_neg hne, if_pos ⟨rfl, rfl⟩]`. Expand and normalize the polynomial expressions, which then agree. Set `b : GU σ n` to `y⁻¹ * u * ν * u⁻¹ * (⟨T, hTG⟩ : GU σ n)⁻¹ * y`. Establish `hbG : (b : GL (Fin n) L) = (y : GL (Fin n) L)⁻¹ * N * y`. Simplify using `only [b, hN, Subgroup.coe_mul, Subgroup.coe_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Establish `hbv : ∀ i j, ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = ((y⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i (Equiv.swap a a' i) * (N : Matrix (Fin n) (Fin n) L) (Equiv.swap a a' i) (Equiv.swap a a' j) * ((y : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (Equiv.swap a a' j …`. Introduce `i j`. Rewrite using `[hbG, Units.val_mul, Units.val_mul, conj_apply hy]`. Establish `hbB : IsBorelU b`.
+Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j hji`. Rewrite using `[hbv]`. It suffices to establish `h0 : (N : Matrix (Fin n) (Fin n) L) (Equiv.swap a a' i) (Equiv.swap a a' j) = 0 by`. Rewrite using `[h0, mul_zero, zero_mul]`. Break down `lt_trichotomy (Equiv.swap a a' i) (Equiv.swap a a' j) with h | h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨h1, h2⟩` from `swap_inversion haa h (by rwa [Equiv.swap_apply_self, Equiv.swap_apply_self])`. Rewrite using `[h1, h2]`. Conclude with `hNa`. Conclude with `absurd ((Equiv.injective _) h) (ne_of_lt hji).symm`. Conclude with `((mem_unipB L).1 hNB).1 _ _ h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hbd : ∀ i, ((b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = 1`. Introduce `i`. Rewrite using `[hbv, ((mem_unipB L).1 hNB).2, mul_one, inv_mul_diag hy]`. Establish `hchi : chiDeltaU q α b = 1`. Unfold `chiDeltaU`.
-
-Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `i _`. Use `split_ifs`. Rewrite using `[hbd, ordL_one]`. Simplify using the standard rewrite rules.
-
-Both sides reduce to the same expression. Establish `e : ∀ w : GU σ n, y⁻¹ * u * ν * g = (y⁻¹ * u * ν * u⁻¹ * w⁻¹ * y) * (y⁻¹ * (w * u) * g)` using `fun w => by group`. Establish `key` using `hφ b (y⁻¹ * (⟨T, hTG⟩ * u) * g) hbB`. Rewrite `key` using `[hchi, one_mul]`. Rewrite using `[e ⟨T, hTG⟩]`.
-
-Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shiftCore (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (q : ℕ) (n : ℕ)
     (a a' : Fin n) (hrev : a.rev = a') (haa : a'.val = a.val + 1) {m : ℕ} (α : Fin m → ℂ) (φ : GU σ n → ℂ)
@@ -459,9 +441,9 @@ theorem shiftCore (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))
     exact key
 
 /- English proof (translation)
-Establish `hs : simpleU k = Equiv.swap (lo k) (lo k).rev` using `by simp only [simpleU, if_neg hk]`. Rewrite `hy` using `[hs]`. Establish `haa : ((lo k).rev).val = (lo k).val + 1`. Take `⟨m, hm⟩` from `hn`. Use `k.2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Fin.val_rev, lo, Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers. Conclude with `shiftCore L σ q n (lo k) (lo k).rev rfl haa α φ hφ y hy ν hν`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem shiftEven (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (q : ℕ) (n : ℕ)
     (k : Fin (n / 2)) (hk : ¬ k.val + 1 < n / 2) (hn : Even n) {m : ℕ} (α : Fin m → ℂ) (φ : GU σ n → ℂ)
@@ -478,39 +460,33 @@ theorem shiftEven (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))
   exact shiftCore L σ q n (lo k) (lo k).rev rfl haa α φ hφ y hy ν hν
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q hq n k hk hn y hyK hy α φ hφ n' hn'`. Establish `hcell` using `mem_cellU_last_iff L ϖ σ q hq n k hk hn y hyK hy`. Establish `hw : simpleU k = Equiv.swap (lo k) (lo k).rev` using `by simp [simpleU, hk]`. Establish `hA` using `val_rev_lo_of_last k hk hn`. Establish `hnB : (n' : GL (Fin n) L) ∈ unipB L (Fin n)` using `(mem_unipB L).2 hn'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `p₀ : GU σ n` to `⟨blockKeepGL (lo k) (lo k).rev _ hnB, blockKeepGL_mem_GU _ _ hnB n'.2⟩`. Establish `hp₀ : ((p₀ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = blockKeep (lo k) (lo k).rev ((n' : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)` using `rfl`. Establish `hp : p₀ ∈ cellU y`. Use `(hcell p₀).2 ⟨⟨fun i j hij => ?_, fun i => ?_⟩, fun i j hij hor => ?_⟩` and prove the remaining obligations. Rewrite using `[hp₀]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `blockKeep split_ifs`. Conclude with `hn'.1 i j hij`. Conclude with `Matrix.one_apply_ne hij.ne'`. Rewrite using `[hp₀]`. Unfold `blockKeep split_ifs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `hn'.2 i`. Conclude with `Matrix.one_apply_eq i`. Rewrite using `[hp₀]`. Unfold `blockKeep`. Rewrite using `[if_neg, Matrix.one_apply_ne hij.ne]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨h1, -⟩, -, h2⟩`. Break down `hor with h | h` into its components or cases. Conclude with `absurd h1 (not_le.2 h)`. Conclude with `absurd h2 (not_le.2 h)`. Use `⟨⟨p₀, hp⟩, fun u x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkeep : ∀ v : GU σ n, v ∈ cellU y → blockKeep (lo k) (lo k).rev ((v : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = ((v : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)` using `fun v hv => blockKeep_eq_self _ _ _ ((hcell v).1 hv).1.1 ((hcell v).1 hv).1.2 ((hcell v).1 hv).2`. Establish `hB : ∀ v : GU σ n, v ∈ cellU y → (v : GL (Fin n) L) ∈ unipB L (Fin n)` using `fun v hv => (mem_unipB L).2 ((hcell v).1 hv).1`. Use `set c : GU σ n := (u : GU σ n) * p₀ with hc`. Establish `hcc : c ∈ cellU y` using `mul_mem u.2 hp`. Use `set M : GU σ n := (u : GU σ n) * n' * c⁻¹ with hM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hMB : (M : GL (Fin n) L) ∈ unipB L (Fin n)` using `mul_mem (mul_mem (hB _ u.2) hnB) (hB _ (inv_mem hcc))`. Establish `hM1 : blockKeep (lo k) (lo k).rev ((M : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1`. Establish `e1 : ((M : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = (((u : GU σ n) : GL (Fin n) L) * (n' : GL (Fin n) L) : GL (Fin n) L) * (((c⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)` using `rfl`. Rewrite using `[e1, blockKeep_mul _ _ _ _ ((mem_unipB L).1 (mul_mem (hB _ u.2) hnB)).1 ((mem_unipB L).1 (hB _ (inv_mem hcc))).1, Units.val_mul, blockKeep_mul _ _ _ _ ((mem_unipB L).1 (hB _ u.2)).1 hn'.1, hkeep _ u.2, hkeep _ (inv_mem hcc), ← hp₀, ← Units.val_mul, ← Units.val_mul]`. Establish `e2 : ((u : GU σ n) : GL (Fin n) L) * (p₀ : GL (Fin n) L) * ((c⁻¹ : GU σ n) : GL (Fin n) L) = ((c * c⁻¹ : GU σ n) : GL (Fin n) L)` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[e2, mul_inv_cancel]`. Both sides reduce to the same expression. Use `set g : GU σ n := y⁻¹ * M * y with hg`. Establish `hgv : (g : GL (Fin n) L) = (y : GL (Fin n) L)⁻¹ * (M : GL (Fin n) L) * (y : GL (Fin n) L)` using `rfl`. Establish `hgB : IsBorelU g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `i j hij`. Rewrite using `[hgv, GKFactor.weylRep_conj_apply hy]`. Establish `hz : ((M : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (simpleU k i) (simpleU k j) = 0`. Break down `lt_or_gt_of_ne (fun e : simpleU k i = simpleU k j => hij.ne' ((simpleU k).injective e)) with hl | hl` into its components or cases. Establish `hno` using `(swap_lt_swap_iff_of_add_two (lo k) (lo k).rev _ _ hA hl).not.1 (by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, Equiv.swap_apply_self, Equiv.swap_apply_self]`. Conclude with `not_lt.2 hij.le)`. Rewrite `hno` using `[not_or, not_lt, not_lt]`. Use `congrFun (congrFun hM1 (simpleU k i)) (simpleU k j)` as an intermediate fact. Unfold `blockKeep at this`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[if_pos ⟨⟨hno.1, hl.le.trans hno.2⟩, hno.1.trans hl.le, hno.2⟩, Matrix.one_apply_ne hl.ne]`. Conclude with `this`. Conclude with `((mem_unipB L).1 hMB).1 _ _ hl`. Rewrite using `[hz, mul_zero, zero_mul]`. Establish `hgd : ∀ i, ((g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[hgv, GKFactor.weylRep_conj_apply hy, ((mem_unipB L).1 hMB).2, mul_one, GKFactor.weylRep_inv_mul_diag hy]`. Establish `ho : ordL (1 : L) = 0`. Unfold `ordL`. Use `split_ifs with h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `: WithZero.unzero h = 1`. Apply `WithZero.coe_injective` to reduce the goal to its premises. Rewrite using `[WithZero.coe_unzero, map_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hchi : chiDeltaU q α g = 1`. Unfold `chiDeltaU`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
-
-Use `split_ifs`. Rewrite using `[hgd, ho]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish `h` using `hφ g (y⁻¹ * c * x) hgB`.
-
-Rewrite `h` using `[hchi, one_mul]`. Establish `e : y⁻¹ * (u : GU σ n) * n' * x = g * (y⁻¹ * c * x)`. Rewrite using `[hg, hM]`. Use `group`. Rewrite using `[e, h]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem shiftOdd : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q →

@@ -10,23 +10,19 @@ namespace Formalism.UG.P
 open Formalism.UG Formalism.UG.CS
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n _ _ σ J Λ hfin hspan g g' γ hγ hlat`. Use `set A := FiniteAdeleRing (𝓞 F) F with hA`. Use `set L := latS (F := F) A (tensInt (F := F) A (intOE E) (intAd F)) Λ with hL`. Use `set γA : GL n (E ⊗[F] A) := bc (inclE (F := F) A) γ with hγA`. Establish `hsig : ∀ e : E, sigR σ A (inclE (F` using `F) A e) = inclE (F := F) A (σ e) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `e`. Simplify using `[sigR, inclE]`. Establish `hγm : (γA : Matrix n n (E ⊗[F] A)) = (γ : Matrix n n E).map (inclE (F` using `F) A) := rfl`. Establish `hγU : γA ∈ UPts σ J A`. Express the relevant statement in the definitionally equal form `cT (sigR σ A) (γA : Matrix n n (E ⊗[F] A)) * J.map (inclE (F := F) A) * (γA : Matrix n n (E ⊗[F] A)) = J.map (inclE (F := F) A)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h0 : cT (σ : E →+* E) (γ : Matrix n n E) * J * (γ : Matrix n n E) = J` using `hγ`. Establish `hc : cT (sigR σ A) (γA : Matrix n n (E ⊗[F] A)) = (cT (σ : E →+* E) (γ : Matrix n n E)).map (inclE (F` using `F) A) := by`. Use extensionality with `i j`. Simplify using `[cT, hγm, hsig]`. Rewrite using `[hc, hγm, ← Matrix.map_mul, ← Matrix.map_mul, h0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `heq : globLat (γA * (g' : GL n (E ⊗[F] A))) Λ = globLat (g : GL n (E ⊗[F] A)) Λ`. Establish `h1` using `hGlobLatEquiv F E n Λ γ (g' : GL n (E ⊗[F] A)) 1 (one_mem _)`. Rewrite `h1` using `[mul_one]`. Rewrite using `[h1, hlat]`. Establish `hR : ∀ u : n → E ⊗[F] A, (((g : GL n (E ⊗[F] A))⁻¹ : GL n (E ⊗[F] A)) : Matrix n n _) *ᵥ u ∈ L ↔ (((γA * (g' : GL n (E ⊗[F] A)))⁻¹ : GL n (E ⊗[F] A)) : Matrix n n _) *ᵥ u ∈ L`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u`. Establish `h1` using `hSpanRecover F E n Λ hfin hspan (g : GL n (E ⊗[F] A)) u`. Establish `h2` using `hSpanRecover F E n Λ hfin hspan (γA * (g' : GL n (E ⊗[F] A))) u`. Rewrite `h2` using `[heq]`. Conclude with `h1.symm.trans h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set k : GL n (E ⊗[F] A) := (g : GL n (E ⊗[F] A))⁻¹ * (γA * (g' : GL n (E ⊗[F] A))) with hk`. Establish `hkS : k ∈ stabGL L`. Introduce `x`. Establish `h` using `hR (((γA * (g' : GL n (E ⊗[F] A)) : GL n (E ⊗[F] A)) : Matrix n n _) *ᵥ x)`. Rewrite `h` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `h.symm`. Establish `hkU : k ∈ UPts σ J A` using `mul_mem (inv_mem g.2) (mul_mem hγU g'.2)`. Rewrite using `[DoubleCoset.eq]`. Use `⟨⟨γA⁻¹, inv_mem hγU⟩, ?_, ⟨k, hkU⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_subgroupOf]`.
-
-Conclude with `⟨γ⁻¹, inv_mem hγ, map_inv _ _⟩`. Rewrite using `[Subgroup.mem_subgroupOf]`. Conclude with `Subgroup.mem_inf.mpr ⟨hkU, hkS⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, hk]`.
-
-Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem class_injective_of_span_recovery (hSpanRecover : Formalism.UG.CS.SpanRecover)
     (hGlobLatEquiv : Formalism.UG.CS.GlobLatEquiv) : Formalism.UG.CS.ClassInj := by

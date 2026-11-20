@@ -97,9 +97,9 @@ def HasVal [Fintype σ] [DecidableEq σ] (z : σ → B) (f : MvPowerSeries σ Q)
 variable {p} {θ : B →+* O}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h choose b _ hb using h`. Use `⟨(show MvPowerSeries σ B from fun α => b α), ?_⟩` and prove the remaining obligations. Use extensionality with `α`. Rewrite using `[coeff_map, hb α]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨s, rfl⟩ α`. Conclude with `⟨_, trivial, coeff_map ..⟩`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem In.top_iff {f : MvPowerSeries σ Q} :
     In (⊤ : Ideal B) f ↔ ∃ s : MvPowerSeries σ B, map (algebraMap B Q) s = f := by
@@ -114,11 +114,11 @@ theorem In.top_iff {f : MvPowerSeries σ Q} :
     exact ⟨_, trivial, coeff_map ..⟩
 
 /- English proof (translation)
-Establish `h0 : ∀ n i, constantCoeff (nmul μ n i) = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro i`. Simplify using `[nmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `i`. Rewrite using `[nmul, Function.iterate_succ_apply', ← nmul, op, at2]`. Establish `hs : ∀ j, constantCoeff (Sum.elim (nmul μ n) (fun i => (X i : MvPowerSeries (Fin d) B)) j) = 0`. Apply the tactic sequence `rintro (j | j) <;> simp [ih]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hs) hs (hμ i)`. Conclude with `hasSubst_of_constantCoeff_zero fun i => by`. Rewrite using `[up, ← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSubst_up_nmul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B}
     (hμ : ∀ i, constantCoeff (μ i) = 0) (n : ℕ) : HasSubst (up Q (nmul μ n)) := by
@@ -138,7 +138,7 @@ theorem hasSubst_up_nmul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B}
       map_zero]
 
 /- English proof (translation)
-The claim follows from `IsHausdorff.haus h.complete.toIsHausdorff x fun n => by rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton, sub_zero] exact hx n`.
+A detailed English derivation is pending.
 -/
 theorem IsFrame.eq_zero_of_forall_pow_dvd (h : IsFrame p Q θ) {x : B}
     (hx : ∀ n : ℕ, (p : B) ^ n ∣ x) : x = 0 :=
@@ -148,11 +148,11 @@ theorem IsFrame.eq_zero_of_forall_pow_dvd (h : IsFrame p Q θ) {x : B}
     exact hx n
 
 /- English proof (translation)
-Establish `key : ∀ m : ℕ, ∃ b : B, q - q' = algebraMap B Q (p ^ m * b)` using `fun m => by`. Take `⟨N, hN⟩` from `h1 m`. Take `⟨N', hN'⟩` from `h2 m`. Take `⟨b, hb⟩` from `hN _ (le_max_left N N')`. Take `⟨b', hb'⟩` from `hN' _ (le_max_right N N')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b - b', by rw [mul_sub, map_sub, ← hb, ← hb']; ring⟩`. Take `⟨b, hb⟩` from `key 0`. Establish `: (p : B) ^ 0 * b = 0` using `h.eq_zero_of_forall_pow_dvd fun m => by`. Take `⟨c, hc⟩` from `key m`. Conclude with `⟨c, h.inj (hb.symm.trans hc)⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hb` using `[this, map_zero, sub_eq_zero]`. Conclude with `hb`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasVal.unique [Fintype σ] [DecidableEq σ] (h : IsFrame p Q θ) {z : σ → B}
     {f : MvPowerSeries σ Q} {q q' : Q} (h1 : HasVal p z f q) (h2 : HasVal p z f q') : q = q' := by
@@ -170,11 +170,11 @@ theorem HasVal.unique [Fintype σ] [DecidableEq σ] (h : IsFrame p Q θ) {z : σ
   exact hb
 
 /- English proof (translation)
-Use `fun m => ⟨1, fun N hN => ⟨0, ?_⟩⟩` and prove the remaining obligations. Establish `: trunc' Q (Finsupp.equivFunOnFinite.symm fun _ : σ => N) (X i) = MvPolynomial.X i`. Use extensionality with `α`. Rewrite using `[coeff_trunc', coeff_X, MvPolynomial.coeff_X']`. Distinguish the cases in `h : α = Finsupp.single i 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos]`. Introduce `j`. Use `le_trans ?_ hN` and prove the remaining obligations. Apply the tactic sequence `rw [Finsupp.single_apply]; split_ifs <;> simp`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[h, Ne.symm h]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem HasVal.var [Fintype σ] [DecidableEq σ] (z : σ → B) (i : σ) :
     HasVal p z (X i : MvPowerSeries σ Q) (algebraMap B Q (z i)) := by
@@ -243,7 +243,7 @@ def IsLie [Algebra O Q] (f : MvPowerSeries (Fin d) Q) (l : G.dual.Lie) : Prop :=
       (p : O) ^ n ∣ l w - φ (c.ev n s)
 
 /- English proof (translation)
-Use `⟨fun H n z hz => ?_, fun H => ⟨fun n z hz => (H n z hz).imp fun _ hq => hq.1, fun n z q hz hq => ?_⟩⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `H.1 n z hz`. Conclude with `⟨q, hq, H.2 n z q hz hq⟩`. Take `⟨q', hq', hb⟩` from `H n z hz`. Rewrite using `[HasVal.unique h hq hq']` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem hasPeriod_iff [Algebra B Q] {θ : B →+* O} (h : IsFrame p Q θ) (t : G.Tate)
     (f : MvPowerSeries (Fin d) Q) (y : B) :
@@ -259,9 +259,9 @@ theorem hasPeriod_iff [Algebra B Q] {θ : B →+* O} (h : IsFrame p Q θ) (t : G
 variable {c} in
 
 /- English proof (translation)
-Use `sub_eq_zero.1 (h.eq_zero_of_forall_pow_dvd fun n => ?_)` and prove the remaining obligations. Use `choose z hz using fun j => h.surj (t.pt n (c.x n j))`. Take `⟨q, hq⟩` from `h1.1 n z hz`. Take `⟨b, hb⟩` from `h1.2 n z q hz hq`. Take `⟨b', hb'⟩` from `h2.2 n z q hz hq`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨b' - b, by linear_combination h.inj (hb.symm.trans hb')⟩`.
+A detailed English derivation is pending.
 -/
 theorem HasPeriod.unique [Algebra B Q] {θ : B →+* O} (h : IsFrame p Q θ) {t : G.Tate}
     {f : MvPowerSeries (Fin d) Q} {y y' : B} (h1 : c.HasPeriod θ t f y) (h2 : c.HasPeriod θ t f y') :
@@ -274,7 +274,7 @@ theorem HasPeriod.unique [Algebra B Q] {θ : B →+* O} (h : IsFrame p Q θ) {t 
   exact ⟨b' - b, by linear_combination h.inj (hb.symm.trans hb')⟩
 
 /- English proof (translation)
-Establish `h0 : c.HasPeriod θ t (X i : MvPowerSeries (Fin d) Q) (0 : B)` using `(c.hasPeriod_iff h t _ 0).2 fun n z _ => ⟨_, HasVal.var z i, z i, by simp⟩`. Conclude with `⟨fun H => H.unique h h0, fun H => H ▸ h0⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem hasPeriod_X_iff [Algebra B Q] {θ : B →+* O} (h : IsFrame p Q θ) (t : G.Tate) (i : Fin d)
     (y : B) : c.HasPeriod θ t (X i : MvPowerSeries (Fin d) Q) y ↔ y = 0 := by
@@ -283,9 +283,9 @@ theorem hasPeriod_X_iff [Algebra B Q] {θ : B →+* O} (h : IsFrame p Q θ) (t :
   exact ⟨fun H => H.unique h h0, fun H => H ▸ h0⟩
 
 /- English proof (translation)
-Use `⟨fun H n => ?_, fun H => ⟨fun n => In.top_iff.2 ((H n).imp fun _ hs => hs.1), fun n w φ s hφ hs => ?_⟩⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `In.top_iff.1 (H.1 n)`. Conclude with `⟨s, hs, fun w φ hφ => H.2 n w φ s hφ hs⟩`. Take `⟨s', hs', H'⟩` from `H n`. Establish `: s = s'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `α`. Conclude with `h (by simpa [coeff_map] using congrArg (coeff α) (hs.trans hs'.symm))`. Conclude with `this ▸ H' w φ hφ`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isLie_iff [Algebra O Q] (h : Function.Injective (algebraMap O Q))
     (f : MvPowerSeries (Fin d) Q) (l : G.dual.Lie) :
@@ -306,9 +306,9 @@ theorem isLie_iff [Algebra O Q] (h : Function.Injective (algebraMap O Q))
 variable {c} in
 
 /- English proof (translation)
-Use `LinearMap.ext fun w => sub_eq_zero.1 (IsHausdorff.haus' (I := Ideal.span {(p : O)}) _ fun n => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton, sub_zero]`. Take `⟨φ, hφ⟩` from `AugCot.d_surjective _ (w.1 n)`. Take `⟨s, hs⟩` from `In.top_iff.1 (h1.1 n)`. Use `dvd_sub (h1.2 n w φ s hφ hs) (h2.2 n w φ s hφ hs)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsLie.unique [Algebra O Q] [IsHausdorff (Ideal.span {(p : O)}) O]
     {f : MvPowerSeries (Fin d) Q} {l l' : G.dual.Lie} (h1 : c.IsLie f l) (h2 : c.IsLie f l') :
@@ -323,7 +323,7 @@ theorem IsLie.unique [Algebra O Q] [IsHausdorff (Ideal.span {(p : O)}) O]
   rwa [sub_sub_sub_cancel_right] at this
 
 /- English proof (translation)
-The claim follows from `(c.isLie_iff h 0 0).2 fun n => ⟨0, by rw [defect, ← coe_substAlgHom (hasSubst_up_nmul c.isLaw.const _), map_zero, map_zero, smul_zero, sub_zero], fun w φ _ => by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem isLie_zero [Algebra O Q] (h : Function.Injective (algebraMap O Q)) :
     c.IsLie (0 : MvPowerSeries (Fin d) Q) 0 :=
@@ -383,7 +383,7 @@ def IsNil {B O ι : Type} [CommRing B] [CommRing O] [Fintype ι] (θ : B →+* O
   ∃ N : ℕ, ∀ (v : ι → B) (i : ι), ¬IsUnit (θ ((fun w : ι → B => M.mulVec fun j => σ (w j))^[N] v i))
 
 /- English proof (translation)
-The claim follows from `Function.surjective_id inj := Subtype.val_injective denom q := by obtain ⟨⟨a, ⟨b, hb⟩⟩, h⟩ := IsLocalization.surj (nonZeroDivisors ℤ_[p]) q have hb0 : b ≠ 0 := nonZeroDivisors.ne_zero hb refine ⟨b.valuation, (PadicInt.unitCoeff hb0)⁻¹.val * a, ?_⟩ have h1 := congrArg (algebraMap …`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_padic (p : ℕ) [Fact p.Prime] : IsFrame p ℚ_[p] (RingHom.id ℤ_[p]) where
   surj := Function.surjective_id
@@ -411,9 +411,9 @@ theorem isFrame_padic (p : ℕ) [Fact p.Prime] : IsFrame p ℚ_[p] (RingHom.id �
   complete := PadicInt.maximalIdeal_eq_span_p (p := p) ▸ inferInstance
 
 /- English proof (translation)
-Introduce `h`. Establish `hp0 : (p : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Take `⟨b, -, hb⟩` from `h.1 1 0`. Rewrite `hb` using `[defect, subst_C]`. Simplify using `only [pow_one, map_sub, map_smul, coeff_zero_C, smul_eq_mul, mul_inv_cancel₀ hp0] at hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : (p : ℚ_[p])⁻¹ = algebraMap ℤ_[p] ℚ_[p] (1 - b)` using `by rw [map_sub, map_one, ← hb]; ring`. Establish `h2 : ‖((p : ℚ_[p])⁻¹)‖ ≤ 1` using `by rw [h1]; exact (1 - b).2`. Rewrite `h2` using `[norm_inv, Padic.norm_p, inv_inv]`. Conclude with `absurd (by exact_mod_cast h2) hp.out.one_lt.not_ge`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example (p : ℕ) [hp : Fact p.Prime] (G : PDivGroup p ℤ_[p]) (d : ℕ) (c : Chart G d)
     (l : G.dual.Lie) : ¬c.IsLie (C (p : ℚ_[p])⁻¹ : MvPowerSeries (Fin d) ℚ_[p]) l := by
@@ -428,7 +428,7 @@ example (p : ℕ) [hp : Fact p.Prime] (G : PDivGroup p ℤ_[p]) (d : ℕ) (c : C
   exact absurd (by exact_mod_cast h2) hp.out.one_lt.not_ge
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, p, dvd_rfl, by simp, fun b => by simp [Ideal.mem_span_singleton]⟩`.
+Supply the required witnesses or components.
 -/
 example (p : ℕ) [Fact p.Prime] :
     IsStep p (RingHom.id ℤ_[p]) (Ideal.span {(p : ℤ_[p])}) ⊤ :=

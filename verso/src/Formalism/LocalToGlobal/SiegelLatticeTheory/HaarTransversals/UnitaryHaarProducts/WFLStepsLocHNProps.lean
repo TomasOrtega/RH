@@ -10,20 +10,20 @@ namespace Formalism.L2.SG.Pf.WFL.HNL
 variable {n r : ℕ} {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ}
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (by rintro _ ⟨b, hb, rfl⟩; exact ⟨b, lt_of_lt_of_le hb h, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem spanLt_mono (e : Fin r → Fin n → ℂ) {a a' : ℕ} (h : a ≤ a') : spanLt e a ≤ spanLt e a' :=
   Submodule.span_mono (by rintro _ ⟨b, hb, rfl⟩; exact ⟨b, lt_of_lt_of_le hb h, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `S.closed_of_finiteDimensional.preimage ((continuous_id.sub continuous_const).matrix_mulVec continuous_const)`.
+A detailed English derivation is pending.
 -/
 private theorem isClosed_sub_one_mulVec_mem (v : Fin n → ℂ) (S : Submodule ℂ (Fin n → ℂ)) :
     IsClosed {g : Matrix (Fin n) (Fin n) ℂ | (g - 1) *ᵥ v ∈ S} :=
   S.closed_of_finiteDimensional.preimage ((continuous_id.sub continuous_const).matrix_mulVec continuous_const)
 
 /- English proof (translation)
-Simplify using `only [InN, InS, Set.setOf_and, Set.setOf_forall]`. Conclude with `((isClosed_iInter fun a => isClosed_sub_one_mulVec_mem _ _).inter (isClosed_sub_one_mulVec_mem _ _)).inter (isClosed_iInter fun y => isClosed_iInter fun _ => isClosed_sub_one_mulVec_mem _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_inN (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) :
     IsClosed {g : Matrix (Fin n) (Fin n) ℂ | InN ε e z g} := by
@@ -32,11 +32,9 @@ theorem isClosed_inN (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fi
     (isClosed_iInter fun y => isClosed_iInter fun _ => isClosed_sub_one_mulVec_mem _ _)
 
 /- English proof (translation)
-Establish `key : spanLt e a ≤ (spanLt e a).comap (Matrix.mulVecLin g)` using `by show Submodule.span ℂ _ ≤ _`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `hb' : b.1 < a` using `hb`. Establish `hsplit : g *ᵥ e b = (g - 1) *ᵥ e b + e b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Use `show Matrix.mulVecLin g (e b) ∈ spanLt e a`. Rewrite using `[Matrix.mulVecLin_apply, hsplit]`. Conclude with `add_mem (spanLt_mono e hb'.le (hg b)) (Submodule.subset_span ⟨b, hb', rfl⟩)`.
-
-Conclude with `key hx`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_of {g : Matrix (Fin n) (Fin n) ℂ} (hg : ∀ a : Fin r, (g - 1) *ᵥ e a ∈ spanLt e a.1)
     (a : ℕ) {x : Fin n → ℂ} (hx : x ∈ spanLt e a) : g *ᵥ x ∈ spanLt e a := by
@@ -53,11 +51,11 @@ theorem mulVec_mem_of {g : Matrix (Fin n) (Fin n) ℂ} (hg : ∀ a : Fin r, (g -
   exact key hx
 
 /- English proof (translation)
-Establish `hmap : ∀ y ∈ spanLt e a, Matrix.mulVecLin g y ∈ spanLt e a` using `fun y hy => mulVec_mem_of hg a hy`. Use `set φ := (Matrix.mulVecLin g).restrict hmap with hφ`. Establish `hinj : Function.Injective φ`. Introduce `u v huv`. Establish `h` using `congrArg (fun w : spanLt e a => gi *ᵥ (w : Fin n → ℂ)) huv`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hφ, LinearMap.restrict_coe_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec] at h`. Conclude with `Subtype.ext h`. Take `⟨y, hy⟩` from `LinearMap.injective_iff_surjective.mp hinj ⟨x, hx⟩`. Establish `hy' : g *ᵥ (y : Fin n → ℂ) = x`. Establish `h` using `congrArg Subtype.val hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `h` using `only [hφ, LinearMap.restrict_coe_apply, Matrix.mulVecLin_apply]`. Rewrite using `[← hy', Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Conclude with `y.2`.
+A detailed English derivation is pending.
 -/
 theorem inv_mulVec_mem_of {g gi : Matrix (Fin n) (Fin n) ℂ} (h1 : g * gi = 1) (h2 : gi * g = 1)
     (hg : ∀ a : Fin r, (g - 1) *ᵥ e a ∈ spanLt e a.1) (a : ℕ) {x : Fin n → ℂ} (hx : x ∈ spanLt e a) :
@@ -78,14 +76,14 @@ theorem inv_mulVec_mem_of {g gi : Matrix (Fin n) (Fin n) ℂ} (h1 : g * gi = 1) 
   exact y.2
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨⟨fun a => ?_, ?_⟩, fun y _ => ?_⟩ <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inN_one (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) :
     InN ε e z (1 : Matrix (Fin n) (Fin n) ℂ) := by
   refine ⟨⟨fun a => ?_, ?_⟩, fun y _ => ?_⟩ <;> simp
 
 /- English proof (translation)
-Simplify using `only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.one_mulVec, Matrix.mulVec_mulVec]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem mul_sub_one_mulVec (A B : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) :
     (A * B - 1) *ᵥ v = A *ᵥ ((B - 1) *ᵥ v) + (A - 1) *ᵥ v := by
@@ -93,9 +91,7 @@ theorem mul_sub_one_mulVec (A B : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ
   abel
 
 /- English proof (translation)
-Take `⟨⟨hA1, hA2⟩, hA3⟩` from `hA`. Take `⟨⟨hB1, hB2⟩, hB3⟩` from `hB`. Apply the tactic sequence `refine ⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩ <;> rw [mul_sub_one_mulVec]`. Conclude with `add_mem (mulVec_mem_of hA1 _ (hB1 a)) (hA1 a)`. Conclude with `add_mem (mulVec_mem_of hA1 _ hB2) hA2`.
-
-Conclude with `add_mem (mulVec_mem_of hA1 _ (hB3 y hy)) (hA3 y hy)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem inN_mul {A B : Matrix (Fin n) (Fin n) ℂ} (hA : InN ε e z A) (hB : InN ε e z B) :
     InN ε e z (A * B) := by
@@ -107,7 +103,7 @@ theorem inN_mul {A B : Matrix (Fin n) (Fin n) ℂ} (hA : InN ε e z A) (hB : InN
   · exact add_mem (mulVec_mem_of hA1 _ (hB3 y hy)) (hA3 y hy)
 
 /- English proof (translation)
-Simplify using `only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem inv_sub_one_mulVec {A Ai : Matrix (Fin n) (Fin n) ℂ} (h : Ai * A = 1) (v : Fin n → ℂ) :
     (Ai - 1) *ᵥ v = -(Ai *ᵥ ((A - 1) *ᵥ v)) := by
@@ -115,7 +111,7 @@ theorem inv_sub_one_mulVec {A Ai : Matrix (Fin n) (Fin n) ℂ} (h : Ai * A = 1) 
   abel
 
 /- English proof (translation)
-Take `⟨⟨hA1, hA2⟩, hA3⟩` from `hA`. Apply the tactic sequence `refine ⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩ <;> rw [inv_sub_one_mulVec h2] <;> refine neg_mem ?_`. Conclude with `inv_mulVec_mem_of h1 h2 hA1 _ (hA1 a)`. Conclude with `inv_mulVec_mem_of h1 h2 hA1 _ hA2`. Conclude with `inv_mulVec_mem_of h1 h2 hA1 _ (hA3 y hy)`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem inN_inv {A Ai : Matrix (Fin n) (Fin n) ℂ} (h1 : A * Ai = 1) (h2 : Ai * A = 1) (hA : InN ε e z A) :
     InN ε e z Ai := by
@@ -126,7 +122,7 @@ theorem inN_inv {A Ai : Matrix (Fin n) (Fin n) ℂ} (h1 : A * Ai = 1) (h2 : Ai *
   · exact inv_mulVec_mem_of h1 h2 hA1 _ (hA3 y hy)
 
 /- English proof (translation)
-Establish `h` using `LinearMap.eqOn_span' (R := ℂ) (f := Matrix.mulVecLin g) (g := LinearMap.id) (s := e '' {b | b.1 < a}) (by rintro _ ⟨b, -, rfl⟩; simp [hge b]) hx`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fix_of_span {g : Matrix (Fin n) (Fin n) ℂ} (hge : ∀ a, g *ᵥ e a = e a) (a : ℕ) {x : Fin n → ℂ}
     (hx : x ∈ spanLt e a) : g *ᵥ x = x := by
@@ -135,14 +131,14 @@ theorem fix_of_span {g : Matrix (Fin n) (Fin n) ℂ} (hge : ∀ a, g *ᵥ e a = 
   simpa using h
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec_mulVec, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_assoc, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_sub_one_mulVec {H M Hi : Matrix (Fin n) (Fin n) ℂ} (h : H * Hi = 1) (v : Fin n → ℂ) :
     (H * M * Hi - 1) *ᵥ v = H *ᵥ ((M - 1) *ᵥ (Hi *ᵥ v)) := by
   simp only [Matrix.mulVec_mulVec, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_assoc, h]
 
 /- English proof (translation)
-Establish `hH' : Hᴴ * Formalism.REAL.Jm ε * H = Formalism.REAL.Jm ε` using `hH`. Unfold `hJ`. Use `conv_rhs => rw [← hH']`. Simplify using `only [Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hJ_mulVec_of_inUJ {H : Matrix (Fin n) (Fin n) ℂ} (hH : Formalism.REAL.inUJ ε H) (x y : Fin n → ℂ) :
     hJ ε (H *ᵥ x) (H *ᵥ y) = hJ ε x y := by
@@ -152,13 +148,11 @@ private theorem hJ_mulVec_of_inUJ {H : Matrix (Fin n) (Fin n) ℂ} (hH : Formali
   simp only [Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hHi_e : ∀ a, Hi *ᵥ e a = e a` using `fun a => by conv_lhs => rw [← hge a]`. Rewrite using `[Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Establish `hHi_z : Hi *ᵥ z = z` using `by conv_lhs => rw [← hgz]`. Rewrite using `[Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Take `⟨⟨hM1, hM2⟩, hM3⟩` from `hM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `refine ⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩ <;> rw [conj_sub_one_mulVec h1]`. Rewrite using `[hHi_e, fix_of_span hge _ (hM1 a)]`. Conclude with `hM1 a`. Rewrite using `[hHi_z, fix_of_span hge _ hM2]`. Conclude with `hM2`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : ∀ a, hJ ε (e a) (Hi *ᵥ y) = 0` using `fun a => by`. Establish `h` using `hJ_mulVec_of_inUJ hH (e a) (Hi *ᵥ y)`. Rewrite `h` using `[hge a, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Rewrite using `[← h]`. Conclude with `hy a`.
-
-Rewrite using `[fix_of_span hge _ (hM3 _ hy')]`. Conclude with `hM3 _ hy'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inN_conj {H Hi M : Matrix (Fin n) (Fin n) ℂ} (hH : Formalism.REAL.inUJ ε H) (h1 : H * Hi = 1)
     (h2 : Hi * H = 1) (hge : ∀ a, H *ᵥ e a = e a) (hgz : H *ᵥ z = z) (hM : InN ε e z M) :
@@ -180,19 +174,19 @@ theorem inN_conj {H Hi M : Matrix (Fin n) (Fin n) ℂ} (hH : Formalism.REAL.inUJ
     rw [fix_of_span hge _ (hM3 _ hy')]; exact hM3 _ hy'
 
 /- English proof (translation)
-Rewrite using `[← Formalism.L2.SG.Pf.Tau.uMat_mul, mul_inv_cancel, Formalism.L2.SG.Pf.Tau.uMat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uMat_mul_inv (a : Formalism.REAL.UJ ε) : uMat a * uMat a⁻¹ = 1 := by
   rw [← Formalism.L2.SG.Pf.Tau.uMat_mul, mul_inv_cancel, Formalism.L2.SG.Pf.Tau.uMat_one]
 
 /- English proof (translation)
-Rewrite using `[← Formalism.L2.SG.Pf.Tau.uMat_mul, inv_mul_cancel, Formalism.L2.SG.Pf.Tau.uMat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uMat_inv_mul (a : Formalism.REAL.UJ ε) : uMat a⁻¹ * uMat a = 1 := by
   rw [← Formalism.L2.SG.Pf.Tau.uMat_mul, inv_mul_cancel, Formalism.L2.SG.Pf.Tau.uMat_one]
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_uMat : Continuous fun g : Formalism.REAL.UJ ε => uMat g :=
   Units.continuous_val.comp continuous_subtype_val
@@ -206,7 +200,7 @@ open Formalism.L2.SG.Pf.WFL.HNL
 variable {k r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [hJ, Formalism.REAL.Jm, Matrix.mulVec_diagonal, dotProduct, star_sum, star_mul', star_star, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp only [star_one, star_neg] <;> ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem hJ_swap_eq_star {n : ℕ} (ε : Fin n → Bool) (x y : Fin n → ℂ) :
     hJ ε y x = star (hJ ε x y) := by
@@ -216,35 +210,35 @@ private theorem hJ_swap_eq_star {n : ℕ} (ε : Fin n → Bool) (x y : Fin n →
   split_ifs <;> simp only [star_one, star_neg] <;> ring
 
 /- English proof (translation)
-Simplify using `only [hJ, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hJ_add_right' {n : ℕ} (ε : Fin n → Bool) (x y y' : Fin n → ℂ) :
     hJ ε x (y + y') = hJ ε x y + hJ ε x y' := by
   simp only [hJ, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `only [hJ, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hJ_smul_right_unitary_haar_products {n : ℕ} (ε : Fin n → Bool) (x y : Fin n → ℂ) (c : ℂ) :
     hJ ε x (c • y) = c * hJ ε x y := by
   simp only [hJ, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [hJ, Matrix.mulVec_sub, dotProduct_sub]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hJ_sub_right_unitary_haar_products {n : ℕ} (ε : Fin n → Bool) (x y y' : Fin n → ℂ) :
     hJ ε x (y - y') = hJ ε x y - hJ ε x y' := by
   simp only [hJ, Matrix.mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-The claim follows from `map_sum (AddMonoidHom.mk' (hJ ε x) (hJ_add_right' ε x)) v s`.
+A detailed English derivation is pending.
 -/
 private theorem hJ_right_sum {n : ℕ} (ε : Fin n → Bool) (x : Fin n → ℂ) {ι : Type} (s : Finset ι)
     (v : ι → Fin n → ℂ) : hJ ε x (∑ i ∈ s, v i) = ∑ i ∈ s, hJ ε x (v i) :=
   map_sum (AddMonoidHom.mk' (hJ ε x) (hJ_add_right' ε x)) v s
 
 /- English proof (translation)
-Unfold `colQ`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem colQ_eq_frame_vector (e f : Fin r → Fin (2 * r + k + 1) → ℂ) (wf : Fin k → Fin (2 * r + k + 1) → ℂ)
     (z0 : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)) :
@@ -254,15 +248,13 @@ private theorem colQ_eq_frame_vector (e f : Fin r → Fin (2 * r + k + 1) → �
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hcol : ∀ j, hJ ε (colQ e f wf z0 j) y = 0` using `fun j => by`. Break down `colQ_eq_frame_vector e f wf z0 j with ⟨a, ha⟩ | ⟨a, ha⟩ | ⟨b, hb⟩ | h0` into its components or cases. Rewrite using `[ha]`. Conclude with `he a`. Rewrite using `[ha]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf a`. Rewrite using `[hb]`. Conclude with `hw b`. Rewrite using `[h0]`. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `hv : (Qm e f wf z0)ᴴ *ᵥ (Formalism.REAL.Jm ε *ᵥ y) = 0`. Use function extensionality and compare the values at `j`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Qm, hJ, Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, Matrix.of_apply, Pi.star_apply]`. Use `_ = 0 := hcol j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Qm e f wf z0 * Qi ε e f wf z0 = 1` using `Qm_mul_Qi hF`. Unfold `Qi at h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.one_mulVec]`. Use `_ = 0 := by`.
-
-Rewrite using `[Matrix.mul_assoc (Formalism.QuantumDeterminants.Hpk k r), ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero, Matrix.mulVec_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_hJ_frame_eq_zero_of_isFrameJ {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
     {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ} (hF : IsFrameJ ε e f wf z0)
@@ -289,11 +281,11 @@ private theorem eq_zero_of_hJ_frame_eq_zero_of_isFrameJ {ε : Fin (2 * r + k + 1
           ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Take `⟨ee, ff, ef, ez, fz, zz, ww, ew, fw, zw⟩` from `hF`. Establish `hfe : ∀ c a, hJ ε (f c) (e a) = if c = a then 1 else 0` using `fun c a => by`. Rewrite using `[hJ_swap_eq_star, ef]`. Distinguish the cases in `h : a = c`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Establish `hze : ∀ a, hJ ε z0 (e a) = 0` using `fun a => by rw [hJ_swap_eq_star, ez]; simp`. Establish `hzf : ∀ a, hJ ε z0 (f a) = 0` using `fun a => by rw [hJ_swap_eq_star, fz]; simp`. Establish `hwe : ∀ b a, hJ ε (wf b) (e a) = 0` using `fun b a => by rw [hJ_swap_eq_star, ew]; simp`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwf : ∀ b a, hJ ε (wf b) (f a) = 0` using `fun b a => by rw [hJ_swap_eq_star, fw]; simp`. Establish `hwz : ∀ b, hJ ε (wf b) z0 = 0` using `fun b => by rw [hJ_swap_eq_star, zw]; simp`. Establish `key` using `eq_zero_of_hJ_frame_eq_zero_of_isFrameJ ⟨ee, ff, ef, ez, fz, zz, ww, ew, fw, zw⟩ (y := x - (∑ a, hJ ε (f a) x • e a + ∑ a, hJ ε (e a) x • f a - hJ ε z0 x • z0 + ∑ b, hJ ε (wf b) x • wf b)) (fun c => by simp [hJ_sub_right_unitary_haar_products, hJ_add_right', hJ_right_sum, hJ_smul …`. Conclude with `sub_eq_zero.mp key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eq_frame_expansion_of_isFrameJ {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
     {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ} (hF : IsFrameJ ε e f wf z0)
@@ -321,7 +313,7 @@ private theorem eq_frame_expansion_of_isFrameJ {ε : Fin (2 * r + k + 1) → Boo
   exact sub_eq_zero.mp key
 
 /- English proof (translation)
-Establish `hs : ∀ v, hJ ε x v = star (hJ ε v x)` using `fun v => hJ_swap_eq_star ε v x`. Rewrite using `[congrArg (hJ ε x) (eq_frame_expansion_of_isFrameJ hF x)]`. Simplify using `only [hJ_sub_right_unitary_haar_products, hJ_add_right', hJ_right_sum, hJ_smul_right_unitary_haar_products]`. Simplify using `only [hs]`. Rewrite using `[Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hJ_self_eq_frame_parseval {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
     {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ} (hF : IsFrameJ ε e f wf z0)
@@ -335,27 +327,25 @@ private theorem hJ_self_eq_frame_parseval {ε : Fin (2 * r + k + 1) → Bool} {e
   rw [Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `hinv : ∀ v, G *ᵥ v = v → hJ ε v (G *ᵥ x) = hJ ε v x` using `fun v hv => by`. Establish `h` using `HNL.hJ_mulVec_of_inUJ hG v x`. Rewrite `h` using `[hv]`. Then use the resulting hypothesis. Establish `hW : (∑ b, hJ ε (wf b) (G *ᵥ x) * star (hJ ε (wf b) (G *ᵥ x))) = ∑ b, hJ ε (wf b) x * star (hJ ε (wf b) x)`. Establish `h1` using `hJ_self_eq_frame_parseval hF (G *ᵥ x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hJ_self_eq_frame_parseval hF x`. Rewrite `h1` using `[HNL.hJ_mulVec_of_inUJ hG]`. Simplify using `only [hinv _ (he _), hinv _ (hf _), hinv _ hz0] at h1`. Rewrite `h1` using `[h2]`. Conclude with `(add_left_cancel h1).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hWr : (∑ b, Complex.normSq (hJ ε (wf b) (G *ᵥ x))) = ∑ b, Complex.normSq (hJ ε (wf b) x)`. Rewrite `hW` using `[Complex.star_def]`. Simplify using `only [Complex.mul_conj] at hW`. Conclude with `hW` after adjusting the coercions. Establish `n1 : 0 ≤ ∑ a, ‖hJ ε (f a) x‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2 : 0 ≤ ∑ a, ‖hJ ε (e a) x‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `n3 : 0 ≤ ‖hJ ε z0 x‖` using `norm_nonneg _`. Establish `n4 : 0 ≤ Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) x))` using `Real.sqrt_nonneg _`. Establish `hcf : ∀ a, ‖hJ ε (f a) (G *ᵥ x)‖ ≤ ∑ a, ‖hJ ε (f a) x‖ + ∑ a, ‖hJ ε (e a) x‖ + ‖hJ ε z0 x‖ + Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) x))` using `fun a => by`. Rewrite using `[hinv _ (hf a)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Finset.single_le_sum (fun a _ => norm_nonneg (hJ ε (f a) x)) (Finset.mem_univ a)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hce : ∀ a, ‖hJ ε (e a) (G *ᵥ x)‖ ≤ ∑ a, ‖hJ ε (f a) x‖ + ∑ a, ‖hJ ε (e a) x‖ + ‖hJ ε z0 x‖ + Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) x))` using `fun a => by`. Rewrite using `[hinv _ (he a)]`. Use `Finset.single_le_sum (fun a _ => norm_nonneg (hJ ε (e a) x)) (Finset.mem_univ a)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcz : ‖hJ ε z0 (G *ᵥ x)‖ ≤ ∑ a, ‖hJ ε (f a) x‖ + ∑ a, ‖hJ ε (e a) x‖ + ‖hJ ε z0 x‖ + Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) x))`. Rewrite using `[hinv _ hz0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcw : ∀ b, ‖hJ ε (wf b) (G *ᵥ x)‖ ≤ ∑ a, ‖hJ ε (f a) x‖ + ∑ a, ‖hJ ε (e a) x‖ + ‖hJ ε z0 x‖ + Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) x))` using `fun b => by`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖hJ ε (wf b) (G *ᵥ x)‖ ≤ Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) x))`. Rewrite using `[← hWr]`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd` using `congrFun (eq_frame_expansion_of_isFrameJ hF (G *ᵥ x)) i`.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_apply, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at hd`. Rewrite using `[hd]`. Establish `h4 : ∀ p q s t : ℂ, ‖p + q - s + t‖ ≤ ‖p‖ + ‖q‖ + ‖s‖ + ‖t‖` using `fun p q s t => (norm_add_le _ _).trans (add_le_add ((norm_sub_le _ _).trans (add_le_add (norm_add_le _ _) le_rfl)) le_rfl)`. Use `(h4 _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_add, mul_add, mul_add, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_le_add (add_le_add (add_le_add ?_ ?_) ?_) ?_` and prove the remaining obligations. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hcf a) (norm_nonneg (e a i))`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hce a) (norm_nonneg (f a i))`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right hcz (norm_nonneg (z0 i))`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun b _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hcw b) (norm_nonneg (wf b i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_mulVec_apply_le_frame_bound {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
     {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ} (hF : IsFrameJ ε e f wf z0)
@@ -430,9 +420,9 @@ private theorem norm_mulVec_apply_le_frame_bound {ε : Fin (2 * r + k + 1) → B
     exact mul_le_mul_of_nonneg_right (hcw b) (norm_nonneg (wf b i))
 
 /- English proof (translation)
-Use `⟨∑ j, ∑ i, (∑ a, ‖hJ ε (f a) (Pi.single j 1)‖ + ∑ a, ‖hJ ε (e a) (Pi.single j 1)‖ + ‖hJ ε z0 (Pi.single j 1)‖ + Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) (Pi.single j 1)))) * (∑ a, ‖e a i‖ + ∑ a, ‖f a i‖ + ‖z0 i‖ + ∑ b, ‖wf b i‖), fun G hG he hf hz0 i j => ?_⟩` and prove the remaining obligations. Establish `h` using `norm_mulVec_apply_le_frame_bound hF hG he hf hz0 (Pi.single j 1) i`. Rewrite `h` using `[Matrix.mulVec_single_one]`. Express the relevant statement in the definitionally equal form `‖G i j‖ ≤ _ at h`. Establish `key : ∀ T : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℝ, (∀ j' i', 0 ≤ T j' i') → T j i ≤ ∑ j', ∑ i', T j' i'` using `fun T hT => (Finset.single_le_sum (f := fun i' => T j i') (fun i' _ => hT j i') (Finset.mem_univ i)).trans (Finset.single_le_sum (f := fun j' => ∑ i', T j' i') (fun j' _ => Finset.sum_nonneg fun i' _ => hT j' i') (Finset.mem_univ j))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `h.trans (key (fun j' i' => (∑ a, ‖hJ ε (f a) (Pi.single j' 1)‖ + ∑ a, ‖hJ ε (e a) (Pi.single j' 1)‖ + ‖hJ ε z0 (Pi.single j' 1)‖ + Real.sqrt (∑ b, Complex.normSq (hJ ε (wf b) (Pi.single j' 1)))) * (∑ a, ‖e a i'‖ + ∑ a, ‖f a i'‖ + ‖z0 i'‖ + ∑ b, ‖wf b i'‖)) fun j' i' => ?_)` and prove the remaining obligations. Check the signs of the components of the expression.
+Reduce the conclusion to the remaining proof obligations. Check the signs of the components of the expression.
 -/
 private theorem exists_entry_bound_of_fixes_frame {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
     {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ} (hF : IsFrameJ ε e f wf z0) :
@@ -455,19 +445,15 @@ private theorem exists_entry_bound_of_fixes_frame {ε : Fin (2 * r + k + 1) → 
   positivity
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exists_entry_bound_of_fixes_frame hF`. Establish `hfixz : ∀ G : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, G *ᵥ z = z → G *ᵥ z0 = z0` using `fun G h => by rw [hz, Matrix.mulVec_smul, h]`. Establish `hinvfix : ∀ (g : Formalism.REAL.UJ ε) (v : Fin (2 * r + k + 1) → ℂ), uMat g *ᵥ v = v → uMat g⁻¹ *ᵥ v = v` using `fun g v h => by conv_lhs => rw [← h]`. Rewrite using `[Matrix.mulVec_mulVec, uMat_inv_mul, Matrix.one_mulVec]`. Establish `hclosed : IsClosed {g : Formalism.REAL.UJ ε | (∀ a, uMat g *ᵥ e a = e a) ∧ (∀ a, uMat g *ᵥ f a = f a) ∧ uMat g *ᵥ z = z}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Set.setOf_and, Set.setOf_forall]`. Apply the tactic sequence `refine (isClosed_iInter fun a => ?_).inter ((isClosed_iInter fun a => ?_).inter ?_) <;>`. Conclude with `isClosed_eq (continuous_uMat.matrix_mulVec continuous_const) continuous_const`. Establish `hB : IsCompact {A : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | ∀ i j, ‖A i j‖ ≤ C}`. Establish `h` using `isCompact_univ_pi fun (_ : Fin (2 * r + k + 1)) => isCompact_univ_pi fun (_ : Fin (2 * r + k + 1)) => isCompact_closedBall (0 : ℂ) C`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : {A : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | ∀ i j, ‖A i j‖ ≤ C} = Set.univ.pi fun (_ : Fin (2 * r + k + 1)) => Set.univ.pi fun (_ : Fin (2 * r + k + 1)) => Metric.closedBall (0 : ℂ) C`. Use `Set.ext fun A => ⟨fun hA => Set.mem_univ_pi.mpr fun i => Set.mem_univ_pi.mpr fun j => ?_, fun hA i j => ?_⟩` and prove the remaining obligations. Simplify `hA i j` using `[Metric.mem_closedBall, dist_zero_right]`. Establish `h'` using `Set.mem_univ_pi.mp (Set.mem_univ_pi.mp hA i) j`. Simplify `h'` using `[Metric.mem_closedBall, dist_zero_right]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `h`. Establish `hTc : IsClosed {p : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | p.1 * p.2 = 1 ∧ p.2 * p.1 = 1 ∧ Formalism.REAL.inUJ ε p.1}` using `(isClosed_eq (continuous_fst.matrix_mul continuous_snd) continuous_const).inter ((isClosed_eq (continuous_snd.matrix_mul continuous_fst) continuous_const).inter (isClosed_eq ((continuous_fst.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_fst) continuous_c …`. Establish `hK` using `(hB.prod hB).inter_right hTc`. Use `haveI := isCompact_iff_compactSpace.mp hK`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `ψ : ↥({A : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | ∀ i j, ‖A i j‖ ≤ C} ×ˢ {A : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | ∀ i j, ‖A i j‖ ≤ C} ∩ {p : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ × Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1) …` to `fun q => ⟨⟨q.1.1, q.1.2, q.2.2.1, q.2.2.2.1⟩, q.2.2.2.2⟩`. Establish `hψ : Continuous ψ`. Use `Continuous.subtype_mk (Units.continuous_iff.mpr ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `continuous_fst.comp continuous_subtype_val`. Conclude with `continuous_snd.comp continuous_subtype_val`.
-
-Use `(isCompact_range hψ).of_isClosed_subset hclosed ?_` and prove the remaining obligations. Introduce and unpack `g ⟨he, hf, hzz⟩`. Use `⟨⟨(uMat g, uMat g⁻¹), ⟨⟨?_, ?_⟩, uMat_mul_inv g, uMat_inv_mul g, g.2⟩⟩, ?_⟩` and prove the remaining obligations. Conclude with `hC _ g.2 he hf (hfixz _ hzz)`. Conclude with `hC _ (g⁻¹).2 (fun a => hinvfix g _ (he a)) (fun a => hinvfix g _ (hf a)) (hfixz _ (hinvfix g _ hzz))`.
-
-Conclude with `Subtype.ext (Units.ext rfl)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem frameFix_isCompact {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
     {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 z : Fin (2 * r + k + 1) → ℂ} {c : ℂ}
@@ -524,11 +510,9 @@ theorem frameFix_isCompact {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → 
   · exact Subtype.ext (Units.ext rfl)
 
 /- English proof (translation)
-Introduce `k r ε e f wf z0 z c hF hc hz`. Use `⟨(isClosed_inN ε e z).preimage continuous_uMat, frameFix_isCompact hF hz, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show InN ε e z (uMat 1)`. Rewrite using `[Formalism.L2.SG.Pf.Tau.uMat_one]`. Conclude with `inN_one ε e z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha b hb show InN ε e z (uMat (a * b))`. Rewrite using `[Formalism.L2.SG.Pf.Tau.uMat_mul]`. Conclude with `inN_mul ha hb`. Introduce `a ha`. Conclude with `inN_inv (uMat_mul_inv a) (uMat_inv_mul a) ha`.
-
-Introduce and unpack `h ⟨he, -, hzz⟩ m hm`. Rewrite using `[Formalism.L2.SG.Pf.Tau.uMat_mul, Formalism.L2.SG.Pf.Tau.uMat_mul]`. Conclude with `inN_conj h.2 (uMat_mul_inv h) (uMat_inv_mul h) he hzz hm`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locHNProps_holds : LocHNProps := by
   intro k r ε e f wf z0 z c hF hc hz

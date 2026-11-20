@@ -92,15 +92,15 @@ import Formalism.RealPlaceAnalysis.StatementC
 namespace Bl.general_b_fact_left_bis_form
 
 /- English proof (translation)
-Introduce `O _ _ V _ _ _ _ M y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x z _ _ hx hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, htz⟩` from `hz`. Use `⟨s * t, mul_ne_zero hs ht, ?_⟩` and prove the remaining obligations. Establish `e : (s * t) • (x + z) = t • (s • x) + s • (t • z)`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_comm t s]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `M.add_mem (M.smul_mem t hsx) (M.smul_mem s htz)`. Consider the case `smul a x _ hx`. Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨⟨n, d⟩, hnd⟩` from `IsLocalization.surj (nonZeroDivisors O) a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(d : O) * s, mul_ne_zero (nonZeroDivisors.ne_zero d.2) hs, ?_⟩` and prove the remaining obligations. Establish `e : ((d : O) * s) • (a • x) = n • (s • x)`. Rewrite using `[mul_comm, mul_smul, ← algebraMap_smul (Formalism.MainNotions.G.KK O) (d : O) (a • x), smul_smul, mul_comm (algebraMap O (Formalism.MainNotions.G.KK O) (d : O)) a]`. Simplify using `only at hnd`. Rewrite using `[hnd, algebraMap_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smul_comm s n x`. Rewrite using `[e]`. Conclude with `M.smul_mem n hsx`.
+A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {O : Type} [inst : CommRing.{0} O] [inst_1 : IsDomain.{0} O] {V : Type} [inst_2 : AddCommGroup.{0} V]

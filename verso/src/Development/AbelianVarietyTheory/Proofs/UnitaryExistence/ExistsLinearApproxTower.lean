@@ -12,28 +12,28 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[fv, TensorProduct.tmul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma fv_add (x y : Fin n → E) : fv F (x + y) = fv F x + fv F y := by
   funext i; simp [fv, TensorProduct.tmul_add]
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[fv, TensorProduct.tmul_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma fv_sub (x y : Fin n → E) : fv F (x - y) = fv F x - fv F y := by
   funext i; simp [fv, TensorProduct.tmul_sub]
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[fv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma fv_zero : fv F (0 : Fin n → E) = 0 := by
   funext i; simp [fv]
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp [fv_zero]`. Consider the case `succ k ih => rw [succ_nsmul, succ_nsmul, fv_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma fv_nsmul (N : ℕ) (x : Fin n → E) : fv F (N • x) = N • fv F x := by
   induction N with
@@ -42,7 +42,7 @@ lemma fv_nsmul (N : ℕ) (x : Fin n → E) : fv F (N • x) = N • fv F x := by
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [fv, Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma fv_smul (c : 𝓞 E) (x : Fin n → E) :
     fv F (c • x) = ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (c : E) : RA F E) • fv F x := by
@@ -52,7 +52,7 @@ lemma fv_smul (c : 𝓞 E) (x : Fin n → E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `hN' : (N : F) ≠ 0` using `by exact_mod_cast hN.ne'`. Rewrite `h` using `[← Nat.cast_smul_eq_nsmul F, ← Nat.cast_smul_eq_nsmul F]`. Use `congrArg (fun t => (N : F)⁻¹ • t) h` as an intermediate fact. Simplify `this` using `[smul_smul, inv_mul_cancel₀ hN']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma nsmul_cancel {N : ℕ} (hN : 0 < N) {z u : Fin n → RA F E} (h : N • z = N • u) : z = u := by
   have hN' : (N : F) ≠ 0 := by exact_mod_cast hN.ne'
@@ -62,11 +62,11 @@ lemma nsmul_cancel {N : ℕ} (hN : 0 < N) {z u : Fin n → RA F E} (h : N • z 
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, ha, c • x, L.smul_mem c hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 lemma smul_mem_hat (L : Submodule (𝓞 E) (Fin n → E)) (c : 𝓞 E) {z : Fin n → RA F E}
     (hz : z ∈ hat F (L : Set (Fin n → E))) :
@@ -83,9 +83,9 @@ lemma smul_mem_hat (L : Submodule (𝓞 E) (Fin n → E)) (c : 𝓞 E) {z : Fin 
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Establish `hN' : (N : E) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `h1 : N • ((N : E)⁻¹ • (x : Fin n → E)) = x`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, mul_inv_cancel₀ hN', one_smul]`. Establish `h2 : fv F ((N : E)⁻¹ • (x : Fin n → E)) = u`. Apply `nsmul_cancel hN` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← fv_nsmul, h1, h]`. Use `⟨⟨_, (hM _).1 (h2 ▸ hu)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `h1.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma exists_div {M : Submodule (𝓞 E) (Fin n → E)}
     (hM : ∀ v, fv F v ∈ hat F (M : Set (Fin n → E)) ↔ v ∈ M) {N : ℕ} (hN : 0 < N)
@@ -101,7 +101,7 @@ lemma exists_div {M : Submodule (𝓞 E) (Fin n → E)}
   exact h1.symm
 
 /- English proof (translation)
-Use `haveI : Module.Finite (𝓞 E) L := Module.Finite.iff_fg.2 hL`. Use `haveI : Module.FinitePresentation (𝓞 E) L := Module.finitePresentation_of_finite _ _`. Use `haveI : Module.Flat (𝓞 E) L := inferInstance`. Conclude with `Module.Flat.projective_of_finitePresentation`.
+A detailed English derivation is pending.
 -/
 lemma projective_of_fg (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
     Module.Projective (𝓞 E) L := by
@@ -112,7 +112,7 @@ lemma projective_of_fg (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `map_nsmul g.mulVecLin N z`.
+A detailed English derivation is pending.
 -/
 lemma mulVec_nsmul (g : Matrix (Fin n) (Fin n) (RA F E)) (N : ℕ) (z : Fin n → RA F E) :
     g *ᵥ (N • z) = N • (g *ᵥ z) := map_nsmul g.mulVecLin N z
@@ -139,33 +139,29 @@ end GlobalTheory.AdLat.Tower
 
 open GlobalTheory.AdLat.Tower in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n L g Λ hL hsp hΛ`. Take `⟨Λ', h1, hΛfg, hΛsp, hhat⟩` from `GlobalTheory.T.exists_lattice_rationalVectorsInAdelicTranslate F E n L g hL hsp`. Take `rfl : Λ = Λ'` from `SetLike.coe_injective (hΛ.trans h1.symm)`. Take `⟨hLc, hLa, -, -⟩` from `GlobalTheory.T.adelicCompletion_rational_points_and_approximation F E n L hL hsp`. Take `⟨hΛc, hΛa, -, -⟩` from `GlobalTheory.T.adelicCompletion_rational_points_and_approximation F E n Λ hΛfg hΛsp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set G : Matrix (Fin n) (Fin n) (RA F E) := g.val with hG`. Establish `hto : ∀ u ∈ hat F (L : Set (Fin n → E)), G *ᵥ u ∈ hat F (Λ : Set (Fin n → E))`. Introduce `u hu`. Rewrite using `[← SetLike.mem_coe, hhat]`. Conclude with `⟨u, hu, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hfrom : ∀ z ∈ hat F (Λ : Set (Fin n → E)), ∃ u ∈ hat F (L : Set (Fin n → E)), G *ᵥ u = z`. Introduce `z hz`. Rewrite `hz` using `[← SetLike.mem_coe, hhat]`. Conclude with `hz`. Establish `hinj : ∀ u u' : Fin n → RA F E, G *ᵥ u = G *ᵥ u' → u = u'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u u' h`. Use `congrArg (fun t => ((g⁻¹ : GL (Fin n) (RA F E)) : Matrix (Fin n) (Fin n) (RA F E)) *ᵥ t) h` as an intermediate fact. Simplify using `only [hG, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at this`. Conclude with `this`. Use `haveI := projective_of_fg L hL`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `key : ∀ N : ℕ, ∃ f : L →ₗ[𝓞 E] Λ, 0 < N → ∀ a : L, ∃ w ∈ hat F (L : Set (Fin n → E)), fv F (f a : Fin n → E) = G *ᵥ (fv F (a : Fin n → E) + N • w)`. Introduce `N`. Break down `Nat.eq_zero_or_pos N with h0 | hN` into its components or cases. Conclude with `⟨0, fun h => absurd h (by omega)⟩`. Establish `hsurj : Function.Surjective ((LinearMap.fst (𝓞 E) L Λ).comp (rel L Λ G N).subtype)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Take `⟨x, hx, w, hw, e⟩` from `hΛa N hN _ (hto _ ((hLc a).2 a.2))`. Take `⟨u, hu, rfl⟩` from `hfrom w hw`. Use `⟨⟨(a, ⟨x, hx⟩), -u, neg_mem hu, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add, mulVec_nsmul, Matrix.mulVec_neg, e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Take `⟨s, hs⟩` from `Module.projective_lifting_property _ LinearMap.id hsurj`. Use `⟨(LinearMap.snd (𝓞 E) L Λ).comp ((rel L Λ G N).subtype.comp s), fun _ a => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `(s a).2`. Establish `ha : (s a).1.1 = a` using `LinearMap.congr_fun hs a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e` using `[ha]`. Conclude with `⟨w, hw, e⟩`. Use `choose f hf using key`. Use `⟨f, hf, ?_, ?_⟩` and prove the remaining obligations. Introduce `N m hN hm a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨w, hw, e⟩` from `hf N hN a`. Take `⟨w', hw', e'⟩` from `hf (N * m) (Nat.mul_pos hN hm) a`. Take `⟨v, hv⟩` from `exists_div hΛc hN (f (N * m) a - f N a) (hto _ (sub_mem (nsmul_mem hw' m) hw)) (by`. Rewrite using `[Submodule.coe_sub, fv_sub, e, e', ← mulVec_nsmul, ← Matrix.mulVec_sub, smul_sub, mul_smul]`. Use `congr 1`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use the proof step `abel)`. Conclude with `⟨v, by rw [← hv]; abel⟩`. Introduce `N hN`. Use `⟨fun a => ⟨?_, ?_⟩, fun a' => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨w, hw, e⟩` from `hf N hN a`. Take `⟨u, hu, eu⟩` from `hfrom _ ((hΛc v).2 v.2)`. Establish `e2 : fv F (f N a : Fin n → E) = G *ᵥ (N • u)`. Rewrite using `[mulVec_nsmul, eu, ← fv_nsmul, hv]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e3` using `hinj _ _ (e.symm.trans e2)`. Conclude with `exists_div hLc hN a (sub_mem hu hw) (by rw [smul_sub, ← e3]; abel)`. Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨f N v, map_nsmul _ _ _⟩`. Take `⟨u, hu, eu⟩` from `hfrom _ ((hΛc a').2 a'.2)`.
-
-Take `⟨x, hx, w, hw, rfl⟩` from `hLa N hN u hu`. Take `⟨w', hw', e'⟩` from `hf N hN ⟨x, hx⟩`. Take `⟨v, hv⟩` from `exists_div hΛc hN (a' - f N ⟨x, hx⟩) (hto _ (sub_mem hw hw')) (by`. Rewrite using `[Submodule.coe_sub, fv_sub, ← eu, e', ← mulVec_nsmul, ← Matrix.mulVec_sub, smul_sub]`. Use `congr 1`.
-
-Use the proof step `abel)`. Conclude with `⟨⟨x, hx⟩, v, by rw [← hv]; abel⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AdLat.exists_linear_approx_tower : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (g : GL (Fin n) (RA F E)) (Λ : Submodule (𝓞 E) (Fin n → E)), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → (Λ : Set (Fin n → E)) = latOf F (g : Matrix (Fin n) (Fin n) (RA F E)) L → ∃ f : ℕ → (L →ₗ[𝓞 E] Λ), (∀ N : ℕ, 0 < N → ∀ a : L, ∃ w ∈ (hat F (L : Set (Fin n → E))), fv F (f N a : Fin n → E) = (g : Matrix (Fin n) (Fin n) (RA F E)) *ᵥ (fv F (a : Fin n → E) + N • w)) ∧ (∀ N m : ℕ, 0 < N → 0 < m → ∀ a, ∃ v, f (N * m) a = f N a + N • v) ∧ ∀ N : ℕ, 0 < N → (∀ a, (∃ v, f N a = N • v) ↔ ∃ v, a = N • v) ∧ ∀ a', ∃ a v, a' = f N a + N • v := by
   intro F E _ _ _ _ _ n L g Λ hL hsp hΛ

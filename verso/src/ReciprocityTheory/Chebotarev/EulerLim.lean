@@ -5,24 +5,24 @@ open NumberField Filter Topology
 namespace ReciprocityTheory.Cheb
 
 /- English proof (translation)
-Establish `hfin` using `Ideal.finite_factors (R := 𝓞 E) (I := a.1) a.2`. Conclude with `⟨hfin.toFinset, fun q hq => hfin.mem_toFinset.mpr hq⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_smooth {E : Type} [Field E] [NumberField E] (a : NZIdeal E) : ∃ S : Finset (Prm E), Smooth S a.1 := by
   have hfin := Ideal.finite_factors (R := 𝓞 E) (I := a.1) a.2
   exact ⟨hfin.toFinset, fun q hq => hfin.mem_toFinset.mpr hq⟩
 
 /- English proof (translation)
-Introduce `q hq` and use `hST (h q hq)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Smooth.mono {E : Type} [Field E] [NumberField E] {S T : Finset (Prm E)} {a : Ideal (𝓞 E)}
     (h : Smooth S a) (hST : S ⊆ T) : Smooth T a := fun q hq => hST (h q hq)
 
 /- English proof (translation)
-Unfold `HasProd`. Simplify using `only [SummationFilter.unconditional_filter]`. Establish `key : (fun S : Finset (Prm E) => ∏ q ∈ S, (1 - f q.asIdeal)⁻¹) = fun S => ∑' a : NZIdeal E, Set.indicator {a : NZIdeal E | Smooth S a.1} (fun a => f a.1) a`. Use function extensionality and compare the values at `S`. Conclude with `(euler_finite f hf1 hmul hsum hlt S).tsum_eq.symm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Use `tendsto_tsum_of_dominated_convergence (bound := fun a : NZIdeal E => ‖f a.1‖) hsum ?_ ?_` and prove the remaining obligations. Introduce `a`. Take `⟨S0, hS0⟩` from `exists_smooth a`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [eventually_ge_atTop S0] with S hS`. Establish `: a ∈ {a : NZIdeal E | Smooth S a.1}` using `Smooth.mono hS0 hS`. Rewrite using `[Set.indicator_of_mem this]`. Conclude with `Eventually.of_forall fun S a => norm_indicator_le_norm_self _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem euler_hasProd {E : Type} [Field E] [NumberField E] (f : Ideal (𝓞 E) → ℂ) (hf1 : f 1 = 1)
     (hmul : ∀ a b : Ideal (𝓞 E), f (a * b) = f a * f b)
@@ -45,15 +45,13 @@ theorem euler_hasProd {E : Type} [Field E] [NumberField E] (f : Ideal (𝓞 E) �
   · exact Eventually.of_forall fun S a => norm_indicator_le_norm_self _ _
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun q : Prm E => (⟨q.asIdeal, q.ne_bot⟩ : NZIdeal E))`. Introduce `q q' h`. Conclude with `IsDedekindDomain.HeightOneSpectrum.ext (congrArg Subtype.val h)`. Establish `hs1 : Summable (fun q : Prm E => ‖f q.asIdeal‖)`. Establish `h` using `hsum.comp_injective hinj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hs2 : Summable (fun q : Prm E => -f q.asIdeal)` using `(Summable.of_norm hs1).neg`. Establish `hs3 : Summable (fun q : Prm E => -Complex.log (1 - f q.asIdeal))`. Use `(Complex.summable_log_one_add_of_summable hs2).neg` as an intermediate fact. Simplify using `only [← sub_eq_add_neg] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hP` using `hs3.hasSum.cexp`. Establish `hne : ∀ q : Prm E, 1 - f q.asIdeal ≠ 0`. Introduce `q h`. Establish `h1 : f q.asIdeal = 1` using `(sub_eq_zero.mp h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hlt q` as an intermediate fact. Rewrite `this` using `[h1, norm_one]`. Conclude with `lt_irrefl _ this`. Establish `hP' : HasProd (fun q : Prm E => (1 - f q.asIdeal)⁻¹) (Complex.exp (∑' q : Prm E, -Complex.log (1 - f q.asIdeal)))`. Establish `e : (Complex.exp ∘ fun q : Prm E => -Complex.log (1 - f q.asIdeal)) = fun q : Prm E => (1 - f q.asIdeal)⁻¹`.
-
-Use function extensionality and compare the values at `q`. Rewrite using `[Function.comp_apply, Complex.exp_neg, Complex.exp_log (hne q)]`. Rewrite `hP` using `[e]`. Conclude with `hP`. Conclude with `hP'.unique (euler_hasProd f hf1 hmul hsum hlt)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem euler_exp_log {E : Type} [Field E] [NumberField E] (f : Ideal (𝓞 E) → ℂ) (hf1 : f 1 = 1)
     (hmul : ∀ a b : Ideal (𝓞 E), f (a * b) = f a * f b)

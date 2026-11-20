@@ -8,9 +8,9 @@ namespace PI.WGL
 open Formalism.BasicNotions MvPolynomial
 
 /- English proof (translation)
-Introduce `n N h lam sg hI`. Use `⟨XiB.xi_ne h lam sg, XiB.xi_mem h lam sg hI, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hlow hdiag`. Conclude with `XiB.xi_unitri h lam sg g hlow hdiag`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `XiB.xi_torus h lam sg hI t`. Introduce `a`. Conclude with `XiB.xi_last h lam sg hI a`. Introduce `x hx`. Conclude with `XiB.xi_unitary h lam sg x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem xi_coefficient_facts : XiFacts := by
   intro n N h lam sg hI

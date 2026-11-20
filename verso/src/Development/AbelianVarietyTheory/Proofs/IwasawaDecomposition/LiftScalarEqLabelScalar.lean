@@ -18,7 +18,7 @@ open GlobalTheory.Mem.R3.HasLabelling
 namespace GlobalTheory.Mem.R3.LamLab
 
 /- English proof (translation)
-Establish `ha : LinearMap.adjoint θ (θ x₀) = (c : ℂ) • x₀`. Use `ext_inner_right ℂ fun x' => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.adjoint_inner_left, h, inner_smul_left, Complex.conj_ofReal]`. Rewrite using `[ha, map_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_eig {X Y : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] [FiniteDimensional ℂ X]
     [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [FiniteDimensional ℂ Y] (θ : X →ₗ[ℂ] Y) (c : ℝ) (x₀ : X)
@@ -29,13 +29,11 @@ theorem adj_eig {X Y : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] [F
   rw [ha, map_smul]
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hD σ p i t hL hU hne`. Use `Y.tied.lift.lamP (Y.tup t) hU i σ _ hne fun y hy => ?_` and prove the remaining obligations. Use `set θ := D.what₂.thetaP (Y.tup t) ((i : ℕ) + 1) with hθ`. Take `⟨x, rfl⟩` from `GlobalTheory.T.liftThetaMap_surjective_onto_cuspForms_usedTuple h1 h2 h3 h4 D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH hD i t hU y`. Use `set K := (LinearMap.ker θ)ᗮ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : x - K.starProjection x ∈ LinearMap.ker θ`. Use `K.sub_starProjection_mem_orthogonal x` as an intermediate fact. Rewrite `this` using `[Submodule.orthogonal_orthogonal]`. Then use the resulting hypothesis. Establish `he : θ (K.starProjection x) = θ x`. Rewrite `hx0` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx0.symm`. Establish `hW : Y.mj.eW i (θ (K.starProjection x)) ∈ R.Wp3 i p`. Rewrite using `[he]`. Conclude with `hL.1 i ⟨θ x, hy, rfl⟩`. Establish `key` using `GlobalTheory.T.liftThetaMap_inner_eq_lambda_labelPart_baseLevel h1 h2 h3 h4 D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH hD i t p hU (K.starProjection x) (K.starProjection_apply_mem x) hW`.
-
-Use `adj_eig θ (R.lam3 i t p A3.A.v0) _ key` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigenvalue_eq_of_label : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ (σ : D.what₂.FT) (p : A3.fam3.base3.Ix) (i : Fin D.R.m) (t : T), HasLab Y σ p → (Y.tup t = D.what₂.mu0 ∨ ∃ w, Y.tup t = D.what₂.muAt w) → D.what₂.isot ((i : ℕ) + 1) σ ≠ ⊥ → D.what₂.lamP (Y.tup t) ((i : ℕ) + 1) σ = (s0Of R F).lam i t p A3.fam3.base3.v0 := by
   intro h1 h2 h3 h4 D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hD σ p i t hL hU hne

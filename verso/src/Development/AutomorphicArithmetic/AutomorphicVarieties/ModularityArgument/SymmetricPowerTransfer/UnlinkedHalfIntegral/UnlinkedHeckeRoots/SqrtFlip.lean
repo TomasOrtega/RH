@@ -2,17 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsComplexRingEquivExtendingSubfieldAut
 
 /- English proof (translation)
-Establish `hne : ∀ b : ℚ, b ^ 2 ≠ (p : ℚ)`. Introduce `b hb`. Apply `hp.irrational_sqrt` to reduce the goal to its premises. Use `⟨|b|, ?_⟩` and prove the remaining obligations. Establish `h2 : ((b : ℝ)) ^ 2 = (p : ℝ)` using `by exact_mod_cast hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← h2, Real.sqrt_sq_eq_abs]`. Use `push_cast`. Both sides reduce to the same expression. Take `⟨a, ha⟩` from `IsAlgClosed.exists_pow_nat_eq (p : Ω) (by norm_num : 0 < 2)`. Establish `hirr : Irreducible (Polynomial.X ^ 2 - Polynomial.C (p : ℚ))` using `X_pow_sub_C_irreducible_of_prime Nat.prime_two hne`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hev : ∀ x : Ω, x ^ 2 = (p : Ω) → Polynomial.aeval x (Polynomial.X ^ 2 - Polynomial.C (p : ℚ)) = 0`. Introduce `x hx`. Simplify using `[hx]`. Establish `hmon : (Polynomial.X ^ 2 - Polynomial.C (p : ℚ)).Monic` using `Polynomial.monic_X_pow_sub_C _ (by norm_num)`. Establish `hmin : minpoly ℚ (-a) = minpoly ℚ a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← minpoly.eq_of_irreducible_of_monic hirr (hev a ha) hmon, ← minpoly.eq_of_irreducible_of_monic hirr (hev (-a) (by rw [neg_sq, ha])) hmon]`. Take `⟨σ, hσ⟩` from `(Normal.minpoly_eq_iff_mem_orbit (F := ℚ) (E := Ω)).mp hmin`. Set `s : Ω ≃+* Ω` to `σ.toRingEquiv`. Establish `hsa : s a = -a` using `hσ`. Take `⟨g, hg⟩` from `GlobalTheory.FN.exists_ringEquiv_extend_of_embedding Ω ε s`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨g, ?_⟩` and prove the remaining obligations. Establish `hea : (ε a) ^ 2 = ((Real.sqrt p : ℝ) : ℂ) ^ 2`. Rewrite using `[← map_pow, ha, map_natCast, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Establish `hga : g (ε a) = -(ε a)` using `by rw [hg, hsa, map_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hea with h | h` into its components or cases. Rewrite using `[← h, hga]`. Establish `: ((Real.sqrt p : ℝ) : ℂ) = -(ε a)` using `by rw [h, neg_neg]`. Rewrite using `[this, map_neg, hga, neg_neg]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.Z.Sym.Unl.exists_ring_equiv_flip_sqrt (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsGalois ℚ Ω] [IsAlgClosed Ω]
     (ε : Ω →+* ℂ) (p : ℕ) (hp : p.Prime) :
@@ -50,7 +50,7 @@ private theorem UpperTheory.V.Z.Sym.Unl.exists_ring_equiv_flip_sqrt (Ω : Type) 
     rw [this, map_neg, hga, neg_neg]
 
 /- English proof (translation)
-Introduce `p hp` and use `UpperTheory.V.Z.Sym.Unl.exists_ring_equiv_flip_sqrt (AlgebraicClosure ℚ) (IsAlgClosed.lift (R := ℚ) (S := AlgebraicClosure ℚ) (M := ℂ)).toRingHom p hp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Unl.sqrtFlip :
     UpperTheory.V.Z.Sym.Unl.SqrtFlip := fun p hp =>

@@ -24,7 +24,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (A : Amb X) (u : Pr.Word) (m2 : ℕ)
 
 /- English proof (translation)
-Establish `h` using `P.2`. Simplify using `only [rowSG, uSG, hQ, Finset.union_empty] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_vGs_of (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (P : rowSG Pr sel mu) : P.1 ∈ Pr.vGs := by
   have h := P.2
@@ -32,7 +32,7 @@ theorem mem_vGs_of (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (P : rowSG Pr sel 
   exact h
 
 /- English proof (translation)
-Establish `: IsEmpty {P // P ∈ QE sel (mu : Chr X.F X.E X.K)}` using `⟨fun P => by simpa [hQ] using P.2⟩`. Simplify using `[LevQFam.chr, piChar]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem levQ_chr_one (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n : ℕ} (Θ : LevQFam X.E X.K n (QE sel (mu : Chr X.F X.E X.K))) (c : ↥Θ.grp) :
     Θ.chr c = 1 := by
@@ -41,7 +41,7 @@ theorem levQ_chr_one (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n : ℕ} (Θ : 
   rfl
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [inFr, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Simplify using `only [LinearEquiv.mul_apply, LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inFr_move {E : Type} [Field E] {a b : ℕ} (γ F κ : Sp E a ≃ₗ[E] Sp E a) (γ' F' κ' : Sp E b ≃ₗ[E] Sp E b) (x : HomE E a b) :
     inFr (γ * F * κ) (γ' * F' * κ') (γ'.toLinearMap ∘ₗ x ∘ₗ γ.symm.toLinearMap) = κ'.symm.toLinearMap ∘ₗ inFr F F' x ∘ₗ κ.toLinearMap := by
@@ -63,7 +63,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
 open Classical in
 
 /- English proof (translation)
-Use `Fintype.prod_equiv { toFun := fun P => ⟨P.1, mem_vGs_of sel mu hQ P⟩ invFun := fun w => ⟨w.1, Finset.mem_union_left _ w.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl } _ _ (fun _ => rfl)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem prod_rowSG_eq (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {M : Type} [CommMonoid M] (f : {w // w ∈ Pr.vGs} → M) :
     ∏ P : rowSG Pr sel mu, f ⟨P.1, mem_vGs_of sel mu hQ P⟩ = ∏ w : {w // w ∈ Pr.vGs}, f w := by
@@ -74,7 +74,7 @@ theorem prod_rowSG_eq (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {M : Type} [Com
       right_inv := fun _ => rfl } _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Establish `e : ∏ i, a i * z i = ∏ i, b i * y i` using `Finset.prod_congr rfl fun i _ => h i`. Rewrite `e` using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem prod_law_alg {ι K : Type} [Fintype ι] [CommRing K] (a b y z : ι → K) (φ : K) (h : ∀ i, a i * z i = b i * y i) :
     (∏ i, a i) * (φ * ∏ i, z i) = (∏ i, b i) * (φ * ∏ i, y i) := by
@@ -85,7 +85,7 @@ theorem prod_law_alg {ι K : Type} [Fintype ι] [CommRing K] (a b y z : ι → K
     _ = _ := by ring
 
 /- English proof (translation)
-Unfold `piChar`. Rewrite using `[MonoidHom.finsetProd_apply, Units.coe_prod]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem piChar_val {K : Type} [Field K] {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] (H : ∀ i, Subgroup (G i))
     (lam : ∀ i, ↥(H i) →* Kˣ) (x : ↥(Subgroup.pi Set.univ H)) :
@@ -95,7 +95,7 @@ theorem piChar_val {K : Type} [Field K] {ι : Type} [Fintype ι] {G : ι → Typ
   rfl
 
 /- English proof (translation)
-The claim follows from `piChar_val _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem levChr_val {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {SG : Finset (HeightOneSpectrum (𝓞 E))}
     (Λ : LevFam E K n SG) (x : ↥Λ.grp) :
@@ -103,19 +103,17 @@ theorem levChr_val {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {S
   piChar_val _ _ x
 
 /- English proof (translation)
-Introduce `i hi al be g g' p p'`. Establish `hG` using `mem_vGs_of (Pr := Pr) sel mu hQ`. Use `choose κ hκ hκr using fun P : rowSG Pr sel mu => frsF_smul sel mu p (L.levG i al) (L.levQ i al) g P (hG P)`. Use `choose κ' hκ' hκr' using fun P : rowSG Pr sel mu => frsF_smul sel mu p' (L.levG (i + 1) be) (L.levQ (i + 1) be) g' P (hG P)`. Establish `hfr : frsF sel mu (g • p) = fun P => g.1.1 * frsF sel mu p P * (κ P).1` using `funext hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr' : frsF sel mu (g' • p') = fun P => g'.1.1 * frsF sel mu p' P * (κ' P).1` using `funext hκ'`. Establish `hN : IsSdLat p.deco.1.N` using `⟨p.deco.2.lat, p.deco.2.uni⟩`. Establish `hN' : IsSdLat p'.deco.1.N` using `⟨p'.deco.2.lat, p'.deco.2.uni⟩`. Establish `hdeco : (g • p).deco = (g.1, (g.2.1 : GLG X.E (R.N i) Pr.vGs)) • p.deco` using `rfl`. Establish `hdeco' : (g' • p').deco = (g'.1, (g'.2.1 : GLG X.E (R.N (i + 1)) Pr.vGs)) • p'.deco` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `have hΞ : ∀ x, (∏ P : rowSG Pr sel mu, rhoS Ch sel mu i P (LinearEquiv.det (κ P).1 : X.Eˣ) * rhoT Ch sel mu i P (LinearEquiv.det (κ' P).1 : X.Eˣ)) * XiEntry Ch sel mu cst L i al be (g • p) (g' • p') (g'.1.1.toLinearMap ∘ₗ x ∘ₗ g.1.1.symm.toLinearMap) = ((((L.levG (i + 1) be).chr …`. Introduce `x`. Unfold `XiEntry`. Rewrite using `[hfr, hfr', hdeco, hdeco', phiT_smul]`. Simplify using `only [inFr_move]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc : ∀ P : rowSG Pr sel mu, rhoS Ch sel mu i P (LinearEquiv.det (κ P).1 : X.Eˣ) * rhoT Ch sel mu i P (LinearEquiv.det (κ' P).1 : X.Eˣ) * XiAt Ch sel mu cst i P (L.h i al P) (L.h (i + 1) be P) ((κ' P).1.symm.toLinearMap ∘ₗ inFr (frsF sel mu p P) (frsF sel mu p' P) x ∘ₗ (κ P).1.t …` using `fun P => hX i hi al be P (hG P) _ _ (κ P) (κ' P) (hκr P) (hκr' P) _`. Establish `hc : ((((L.levG (i + 1) be).chr g'.2.1 * ((L.levG i al).chr g.2.1)⁻¹ : X.Kˣ)) : X.K) = ∏ P : rowSG Pr sel mu, (((L.levG (i + 1) be ⟨P.1, hG P⟩).lam ⟨(g'.2.1 : GLG X.E (R.N (i + 1)) Pr.vGs) ⟨P.1, hG P⟩, g'.2.1.2 _ (Set.mem_univ _)⟩ : X.Kˣ) : X.K) * ((((L.levG i al ⟨P.1, hG P⟩).lam …`. Rewrite using `[prod_rowSG_eq sel mu hQ (fun w => (((L.levG (i + 1) be w).lam ⟨(g'.2.1 : GLG X.E (R.N (i + 1)) Pr.vGs) w, g'.2.1.2 _ (Set.mem_univ _)⟩ : X.Kˣ) : X.K) * ((((L.levG i al w).lam ⟨(g.2.1 : GLG X.E (R.N i) Pr.vGs) w, g.2.1.2 _ (Set.mem_univ _)⟩)⁻¹ : X.Kˣ) : X.K))]`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, levChr_val, levChr_val, Finset.prod_mul_distrib]`. Simplify using `only [Units.val_inv_eq_inv_val, Finset.prod_inv_distrib]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Conclude with `prod_law_alg _ _ _ _ _ hloc`. Apply the tactic sequence `have key := kerOf_move (hOk.th i hi.le) (cBof_pos sel mu cst u hT) hN hN' (frsF sel mu p) (frsF sel mu p') g.1 g'.1 κ κ' (XiEntry Ch sel mu cst L i al be p p') (XiEntry Ch sel mu cst L i al be (g • p) (g' • p')) _ (hinv i hi al be p p') hΞ`. Use `show matK W Ch sel mu cst L _ i al be (g • p) (g' • p') = _`. Unfold `matK`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hfr, hfr']`. Use `key.trans ?_` and prove the remaining obligations. Use `show _ = (frmRho (colValF W sel mu u (i + 1)) (L.levG (i + 1) be) (L.levQ (i + 1) be) g') ∘ₗ _ ∘ₗ (frmRho (colValF W sel mu u i) (L.levG i al) (L.levQ i al) g⁻¹)`. Simplify using `only [frmRho, MonoidHom.coe_mk, OneHom.coe_mk, levQ_chr_one sel mu hQ, mul_one, Prod.fst_inv, Prod.snd_inv, map_inv, LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]`. Use `congr 1`.
-
-Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem matEquiv_of (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (hT : 0 < Pr.T u)
     (hOk : ChTh.Ok (Ch := Ch) cst (chTh W Ch sel mu cst A u m2))
@@ -183,7 +181,7 @@ end MatThm
 section Inv
 
 /- English proof (translation)
-Unfold `divs at h`. Use `split_ifs at h with hf`. Conclude with `hf.mem_toFinset.mp h`. Simplify using `at h`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_divs_of {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P : HeightOneSpectrum A} (h : P ∈ divs a) :
     a ∈ P.asIdeal := by
@@ -198,7 +196,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   {u : Pr.Word}
 
 /- English proof (translation)
-Unfold `frsF`. Rewrite using `[dif_pos hP]`. Conclude with `(Deco.liftFr_spec (p.deco.2.hasLift ⟨P.1, hP⟩)).1 v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frsF_at {j : ℕ} (p : ChPt (R := R) sel mu u j) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) (v : Sp X.E (R.N j)) :
     frsF sel mu p P v ∈ p.deco.1.at P.1 ↔ v ∈ stdAt X.E (R.N j) P.1 := by
@@ -209,7 +207,7 @@ theorem frsF_at {j : ℕ} (p : ChPt (R := R) sel mu u j) (P : rowSG Pr sel mu) (
 open Classical in
 
 /- English proof (translation)
-Establish `h1 : frsF sel mu p P (Pi.single s 1) ∈ p.deco.1.at P.1` using `(frsF_at sel mu p P hP _).2 (xqSingle_mem (P := P.1) s)`. Establish `h2` using `hw P.1 (Finset.mem_union_right _ P.2) _ h1`. Establish `h3 : (frsF sel mu p' P).symm (w (frsF sel mu p P (Pi.single s 1))) ∈ stdAt X.E (R.N (i + 1)) P.1` using `(frsF_at sel mu p' P hP _).1 (by rwa [LinearEquiv.apply_symm_apply])`. Conclude with `(xqMem_stdAt (P := P.1) _).1 h3 l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inFr_int {i : ℕ} (p : ChPt (R := R) sel mu u i) (p' : ChPt (R := R) sel mu u (i + 1)) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs)
     (w : HomE X.E (R.N i) (R.N (i + 1))) (hw : w ∈ homAt (Sall sel mu u) p.deco.1.N p'.deco.1.N) (s : Fin (R.N i)) (l : Fin (R.N (i + 1))) :
@@ -223,9 +221,9 @@ theorem inFr_int {i : ℕ} (p : ChPt (R := R) sel mu u i) (p' : ChPt (R := R) se
 open Classical in
 
 /- English proof (translation)
-Establish `hq : (Col.qOf P.1 : X.E) ≠ 0` using `by exact_mod_cast (qOf_pos P.1).ne'`. Establish `e : ((cBof sel mu cst u : ℕ) : X.E) = (Col.qOf P.1 : X.E) ^ cst.B * (((Pr.T u * (∏ P' ∈ Finset.univ.erase P, Col.qOf P'.1) ^ cst.B : ℕ)) : X.E)`. Unfold `cBof`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun P' : rowSG Pr sel mu => Col.qOf P'.1) (Finset.mem_univ P)]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hq), one_mul]`. Use `xqIntAt_intCast (P := P.1) ((Pr.T u * (∏ P' ∈ Finset.univ.erase P, Col.qOf P'.1) ^ cst.B : ℕ) : ℤ)` as an intermediate fact. Simplify using `using this`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cB_div_int (P : rowSG Pr sel mu) :
     IntAt P.1 (((Col.qOf P.1 : X.E) ^ cst.B)⁻¹ * ((cBof sel mu cst u : ℕ) : X.E)) := by
@@ -243,15 +241,15 @@ theorem cB_div_int (P : rowSG Pr sel mu) :
 open Classical in
 
 /- English proof (translation)
-Take `⟨w, hw, rfl⟩` from `(mem_mulLat _ _ _).1 hz`. Establish `hphi : phiT X.K p.deco.1 p'.deco.1 (x + ((cBof sel mu cst u : ℕ) : 𝓞 X.E) • w) = phiT X.K p.deco.1 p'.deco.1 x`. Use `phiT_add_mul X.K p.deco p'.deco (Sall sel mu u) (fun P => Finset.mem_union_left _ P.2) (Pr.T u) (fun P => ?_) x _ ?_` and prove the remaining obligations. Establish `h1 : Pr.piT u ∈ P.1.asIdeal` using `mem_divs_of P.2`. Rewrite using `[← hPr.piT_norm u]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.1.asIdeal.mul_mem_right _ h1`. Use `(mem_mulLat _ _ _).2 ⟨(((∏ P : rowSG Pr sel mu, Col.qOf P.1) ^ cst.B : ℕ) : 𝓞 X.E) • w, Submodule.smul_mem _ _ hw, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul]`. Unfold `cBof`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hxi : ∀ P : rowSG Pr sel mu, XiAt Ch sel mu cst i P (L.h i al P) (L.h (i + 1) be P) (inFr (frsF sel mu p P) (frsF sel mu p' P) (x + ((cBof sel mu cst u : ℕ) : 𝓞 X.E) • w)) = XiAt Ch sel mu cst i P (L.h i al P) (L.h (i + 1) be P) (inFr (frsF sel mu p P) (frsF sel mu p' P) x)`. Introduce `P`. Establish `hP` using `mem_vGs_of (Pr := Pr) sel mu hQ P`. Establish `e : inFr (frsF sel mu p P) (frsF sel mu p' P) (x + ((cBof sel mu cst u : ℕ) : 𝓞 X.E) • w) = inFr (frsF sel mu p P) (frsF sel mu p' P) x + inFr (frsF sel mu p P) (frsF sel mu p' P) (((cBof sel mu cst u : ℕ) : 𝓞 X.E) • w)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [inFr, LinearMap.add_comp, LinearMap.comp_add]`. Rewrite using `[e]`. Use `hL.xiInv i hi al be P _ _ fun s l => ?_` and prove the remaining obligations. Establish `e2 : (inFr (frsF sel mu p P) (frsF sel mu p' P) (((cBof sel mu cst u : ℕ) : 𝓞 X.E) • w)) (Pi.single s 1) l = ((cBof sel mu cst u : ℕ) : X.E) * (inFr (frsF sel mu p P) (frsF sel mu p' P) w) (Pi.single s 1) l`. Simplify using `only [inFr, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul X.E (((cBof sel mu cst u : ℕ) : 𝓞 X.E)), map_smul, Pi.smul_apply, smul_eq_mul, map_natCast]`. Rewrite using `[e2, ← mul_assoc]`. Conclude with `(cB_div_int sel mu cst P).mul (inFr_int sel mu p p' P hP w hw s l)`. Unfold `XiEntry`. Rewrite using `[hphi, Finset.prod_congr rfl fun P _ => hxi P]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiEntry_inv (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (hPr : Pr.Ok) {G : ChGlob X R.m} {m2 : ℕ} (hL : L.Ok Ch sel mu cst G m2)
     (i : ℕ) (hi : i < m2) (al : L.β i) (be : L.β (i + 1)) (p : ChPt (R := R) sel mu u i) (p' : ChPt (R := R) sel mu u (i + 1))
@@ -299,19 +297,19 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (A : Amb X) (u : Pr.Word) (m2 : ℕ)
 
 /- English proof (translation)
-The claim follows from `qe_one sel`.
+A detailed English derivation is pending.
 -/
 theorem exceptional_primes_trivial_tuple : QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K) = ∅ := qe_one sel
 
 /- English proof (translation)
-The claim follows from `chTh_ok_amb W Ch sel _ cst A u m2 hm (hPr.T_prime u).pos (muqTie_of_allG Ch sel _ cst (bad_primes_over_g_trivial_tuple sel S)) hTh`.
+A detailed English derivation is pending.
 -/
 theorem chain_theta_ok_trivial_tuple (hm : m2 + 1 < R.m) (hPr : Pr.Ok) (hTh : ThHyp W Ch sel (mu0 X.F X.E X.K S) cst A u m2) :
     ChTh.Ok (Ch := Ch) cst (chTh W Ch sel (mu0 X.F X.E X.K S) cst A u m2) :=
   chTh_ok_amb W Ch sel _ cst A u m2 hm (hPr.T_prime u).pos (muqTie_of_allG Ch sel _ cst (bad_primes_over_g_trivial_tuple sel S)) hTh
 
 /- English proof (translation)
-The claim follows from `matEquiv_of W Ch sel _ cst L A u m2 (exceptional_primes_trivial_tuple sel S) (hPr.T_prime u).pos (chain_theta_ok_trivial_tuple W Ch sel S cst A u m2 hm hPr hTh) (fun i hi al be p p' x z hz => xiEntry_inv Ch sel _ cst L (exceptional_primes_trivial_tuple sel S) hPr hL i hi al be p …`.
+A detailed English derivation is pending.
 -/
 theorem matrix_equivariance_trivial_tuple (hm : m2 + 1 < R.m) (hPr : Pr.Ok) (hTh : ThHyp W Ch sel (mu0 X.F X.E X.K S) cst A u m2) {G : ChGlob X R.m}
     (hL : L.Ok Ch sel (mu0 X.F X.E X.K S) cst G m2)
@@ -330,7 +328,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (A : Amb X) (u : Pr.Word) (m2 : ℕ)
 
 /- English proof (translation)
-The claim follows from `cp1EquivOn_of W Ch sel _ cst L A u m2 (exceptional_primes_trivial_tuple sel S) (hPr.T_prime u).pos hPr (chain_theta_ok_trivial_tuple W Ch sel S cst A u m2 hm hPr hTh) hL b hY hPsi`.
+A detailed English derivation is pending.
 -/
 theorem penultimate_equivariance_trivial_tuple (hm : m2 + 1 < R.m) (hPr : Pr.Ok) (hTh : ThHyp W Ch sel (mu0 X.F X.E X.K S) cst A u m2) {G : ChGlob X R.m}
     (hL : L.Ok Ch sel (mu0 X.F X.E X.K S) cst G m2) (b : L.β (m2 + 1)) (hY : YbHyp (R := R) sel (mu0 X.F X.E X.K S) cst L u m2 b)

@@ -12,9 +12,9 @@ open ReciprocityTheory.ChartRestriction.DS PositivityTheory.UnitaryDecomposition
 namespace FarParameters
 
 /- English proof (translation)
-Establish `ht0 : 0 ≤ t` using `le_trans (sq_nonneg _) ht`. Establish `hs : A + B + 1 ≤ Real.sqrt t`. Establish `h2` using `Real.sqrt_le_sqrt ht`. Rewrite `h2` using `[Real.sqrt_sq (by linarith)]`. Then use the resulting hypothesis. Establish `hsq : Real.sqrt t ^ 2 = t` using `Real.sq_sqrt ht0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hs1 : 1 ≤ Real.sqrt t` using `by linarith`. Use `⟨?_, hs1⟩` and prove the remaining obligations. Establish `h3 : Real.sqrt t * (A + B + 1) ≤ Real.sqrt t * Real.sqrt t` using `mul_le_mul_of_nonneg_left hs (by linarith)`. Establish `h4 : 0 ≤ (Real.sqrt t - 1) * A` using `mul_nonneg (by linarith) hA`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem large_parameter_sqrt_bound {A B t : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B) (ht : (A + B + 1) ^ 2 ≤ t) :
     A + B * Real.sqrt t < t ∧ 1 ≤ Real.sqrt t := by
@@ -31,7 +31,7 @@ theorem large_parameter_sqrt_bound {A B t : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B) (
   nlinarith
 
 /- English proof (translation)
-The claim follows from `h.2`.
+A detailed English derivation is pending.
 -/
 theorem umem {n : ℕ} {ε : Fin n → Bool} (h : Formalism.REAL.UJ ε) : um h ∈ UJset ε :=
   h.2
@@ -39,35 +39,35 @@ theorem umem {n : ℕ} {ε : Fin n → Bool} (h : Formalism.REAL.UJ ε) : um h �
 end FarParameters
 
 /- English proof (translation)
-Introduce `hT hC n ε ε' e lam d d' g hfit hover hd'`. Take `⟨C0, hC0, hT'⟩` from `hT n ε ε' e lam d d' g hfit hover`. Take `⟨k, hk⟩ : ∃ k : ℝ, k = Real.sqrt (2 * C0)` from `⟨_, rfl⟩`. Establish `hk0 : 0 ≤ k` using `hk ▸ Real.sqrt_nonneg _`. Take `⟨J, hJ⟩ : ∃ J : ℕ, J = ⌈C0⌉₊ + 1` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hJC : C0 + 1 ≤ (J : ℝ)`. Rewrite using `[hJ]`. Use `push_cast`. Combine the linear relations using `[Nat.le_ceil C0]`. Establish `hJ0 : (0 : ℝ) ≤ J` using `Nat.cast_nonneg J`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Take `⟨A, hA⟩ : ∃ A : ℝ, A = ((n : ℝ) ^ 3 + 4 * n + 2 + 2 * J) + (4 * (J : ℝ) ^ 2 + 2 * J * n + 2 * J)` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B : ℝ, B = 2 * k + 4 * J * k` from `⟨_, rfl⟩`. Establish `hA0 : 0 ≤ A` using `by rw [hA]; positivity`. Establish `hB0 : 0 ≤ B` using `by rw [hB]; positivity`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨k + J + n, (A + B + 1) ^ 2, ?_⟩` and prove the remaining obligations. Introduce `t ht hHC hgap H _ _ _ π hDS`. Take `⟨hbig, hs1⟩` from `FarParameters.large_parameter_sqrt_bound hA0 hB0 ht`. Establish `ht0 : 0 ≤ t` using `le_trans (sq_nonneg _) ht`. Establish `hsq : Real.sqrt t ^ 2 = t` using `Real.sq_sqrt ht0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht1 : 1 ≤ t` using `by nlinarith`. Take `⟨hU, hDense, x, hx0, hxK, hxq⟩` from `hT' t ht1 hHC hgap H π hDS`. Establish `hS0 : 0 < C0 * t` using `by positivity`. Establish `hsqrt : Real.sqrt (2 * (C0 * t)) = k * Real.sqrt t`. Rewrite using `[hk, ← mul_assoc, Real.sqrt_mul (by positivity) t]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩ : ∃ s : ℝ, s = Real.sqrt t` from `⟨_, rfl⟩`. Rewrite `hbig`, `hs1`, `hsqrt`, `hsq` using `[← hs]`. Establish `hks : 0 ≤ k * s` using `mul_nonneg hk0 (by linarith)`. Establish `hJks : 0 ≤ (J : ℝ) * (k * s)` using `mul_nonneg hJ0 hks`. Establish `hbig' : A + B * s = ((n : ℝ) ^ 3 + 4 * n + 2 + 2 * J) + 2 * (k * s) + ((4 * (J : ℝ) ^ 2 + 2 * J * n + 2 * J) + 4 * (J * (k * s)))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hA, hB]`. Expand and normalize the polynomial expressions, which then agree. Establish `hP1 : 0 ≤ (n : ℝ) ^ 3 + 4 * n + 2 + 2 * J` using `by positivity`. Establish `hP2 : 0 ≤ 4 * (J : ℝ) ^ 2 + 2 * J * n + 2 * J` using `by positivity`. Establish `hcond1 : 2 * (C0 * t) < (J : ℝ) * (2 * (t - 2 * (Real.sqrt (2 * (C0 * t)) + J)) - 2 * n - 2)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsqrt]`. Establish `h1 : (4 * (J : ℝ) ^ 2 + 2 * J * n + 2 * J) + 4 * (J * (k * s)) < t` using `by linarith`. Establish `h2 : (J : ℝ) * (2 * (t - 2 * (k * s + J)) - 2 * n - 2) = 2 * J * t - ((4 * (J : ℝ) ^ 2 + 2 * J * n + 2 * J) + 4 * (J * (k * s)))` using `by ring`. Rewrite using `[h2]`. Establish `h3 : (2 * C0 + 1) * t ≤ 2 * J * t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `mul_le_mul_of_nonneg_right _ ht0` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish `hcond2 : (n : ℝ) ^ 3 + 4 * n + 2 + 2 * (Real.sqrt (2 * (C0 * t)) + J) ≤ t`. Rewrite using `[hsqrt]`.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hτ : ∀ a b : Fin n, a < b → t ≤ (t • d') a - (t • d') b`. Introduce `a b hab`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `mul_le_mul_of_nonneg_left (hd' a b hab) ht0` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the linear relations using `[mul_sub t (d' a) (d' b)]`. Take `⟨mu, hmu, hbd, hmap⟩` from `hC n ε' H (res e π) hU hDense (t • d') (C0 * t) t J x hS0 hx0 hxK (by simpa [mul_assoc] using hxq) hτ hcond1 hcond2`. Use `⟨mu, hmu, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Establish `h1` using `hbd a`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[hsqrt]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h1`. Rewrite using `[← hs]`. Establish `h2 : (J : ℝ) ≤ J * s`. Use `mul_le_mul_of_nonneg_left hs1 hJ0` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (n : ℝ) ≤ n * s`. Use `mul_le_mul_of_nonneg_left hs1 hn0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : (k + J + n) * s = k * s + J * s + n * s` using `by ring`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `H' _ _ _ σ hσ`. Take `⟨j, hj0, hj⟩` from `hmap H' σ hσ`. Use `⟨j, hj0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h y`. Conclude with `hj (um h) (FarParameters.umem h) y`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem far_of_trial_bound : Trial → Core → Far := by
   intro hT hC n ε ε' e lam d d' g hfit hover hd'

@@ -15,7 +15,7 @@ namespace GlobalTheory.EtC.Tr
 variable (R : Type) [CommRing R]
 
 /- English proof (translation)
-Take `⟨W, w, u, ⟨m, s, hs⟩, rfl⟩` from `hv`. Use `⟨m, fun j => w ≫ s j, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.splitBy_baseChange' hs w` as an intermediate fact. Rewrite using `[Category.assoc]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem splits_of_splitSieve {Z X S V : Scheme.{0}} {f : Z ⟶ X} {x : S ⟶ X} {v : V ⟶ S} (hv : splitSieve f x v) :
     Splits f (v ≫ x) := by
@@ -28,22 +28,22 @@ def splitSum {Z X V : Scheme.{0}} (f : Z ⟶ X) (y : V ⟶ X) (h : Splits f y) :
   ∑ j, (free R).map (yoneda.map (h.choose_spec.choose j))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.freeSheaf_sum_sections_eq_of_two_splittings R h.choose_spec.choose_spec hs`.
+A detailed English derivation is pending.
 -/
 theorem splitSum_eq {Z X V : Scheme.{0}} {f : Z ⟶ X} {y : V ⟶ X} (h : Splits f y) {m : ℕ} {s : Fin m → (V ⟶ Z)}
     (hs : SplitBy f y s) : splitSum R f y h = ∑ j, (free R).map (yoneda.map (s j)) :=
   GlobalTheory.T.freeSheaf_sum_sections_eq_of_two_splittings R h.choose_spec.choose_spec hs
 
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.T.splittingSieve_mem_etaleTopology f (𝟙 X)`. Set `σ : ∀ ⦃V : Scheme.{0}⦄ (v : V ⟶ X), splitSieve f (𝟙 X) v → (freeSch R V ⟶ freeSch R Z)` to `fun V v hv => splitSum R f (v ≫ 𝟙 X) (splits_of_splitSieve hv)`. Establish `hσ : ∀ ⦃V W : Scheme.{0}⦄ (v : V ⟶ X) (hv : splitSieve f (𝟙 X) v) (g : W ⟶ V), (free R).map (yoneda.map g) ≫ σ v hv = σ (g ≫ v) ((splitSieve f (𝟙 X)).downward_closed hv g)`. Introduce `V W v hv g`. Take `⟨m, s, hs⟩` from `splits_of_splitSieve hv`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hg` using `GlobalTheory.T.splitBy_baseChange' hs g`. Rewrite `hg` using `[← Category.assoc]`. Simplify using `only [σ, splitSum_eq R _ hs, splitSum_eq R _ hg, Preadditive.comp_sum, ← Functor.map_comp]`. Take `⟨t, ht⟩` from `GlobalTheory.T.exists_freeSch_hom_glue_of_etale_covering R (freeSch R Z) _ hT σ hσ`. Establish `key : ∀ t', IsTransfer R f t' → ∀ ⦃V : Scheme.{0}⦄ (v : V ⟶ X) (hv : splitSieve f (𝟙 X) v), (free R).map (yoneda.map v) ≫ t' = σ v hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t' ht' V v hv`. Take `⟨m, s, hs⟩` from `splits_of_splitSieve hv`. Simplify using `only [σ, splitSum_eq R _ hs]`. Use `ht'.apply_of_splitBy R hs` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨t, ?_, fun t' ht' => ?_⟩` and prove the remaining obligations. Introduce `S x m s hs hiso`. Use `GlobalTheory.T.freeSch_hom_ext_of_etale_covering R (freeSch R Z) _ _ _ (GlobalTheory.T.splittingSieve_mem_etaleTopology f x) (fun V v hv => ?_)` and prove the remaining obligations. Take `⟨m', s', hs'⟩` from `splits_of_splitSieve hv`. Establish `hvx : splitSieve f (𝟙 X) (v ≫ x)` using `⟨V, 𝟙 V, v ≫ x, (show Splits f ((v ≫ x) ≫ 𝟙 X) by rw [Category.comp_id]; exact ⟨m', s', hs'⟩), Category.id_comp _⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.T.splitBy_baseChange' ⟨hs, hiso⟩ v`. Rewrite using `[← Category.assoc, ← Functor.map_comp, ← Functor.map_comp, ht _ hvx, Preadditive.comp_sum]`. Simplify using `only [σ, ← Functor.map_comp]`. Rewrite using `[splitSum_eq R _ (show SplitBy f ((v ≫ x) ≫ 𝟙 X) (fun j => v ≫ s j) by rw [Category.comp_id]; exact h1)]`. Conclude with `GlobalTheory.T.freeSch_hom_ext_of_etale_covering R (freeSch R Z) _ _ _ hT fun V v hv => by rw [key t' ht' v hv, ht v hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_isTransfer {Z X : Scheme.{0}} (f : Z ⟶ X) [IsFinite f] [Etale f] :
     ∃! t, IsTransfer R f t := by

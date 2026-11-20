@@ -10,17 +10,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.
 open GlobalTheory.IndefiniteRowSideFullHecke.BadPrimesPeriodBound (recWts)
 
 /- English proof (translation)
-Establish `hw : DV.wSz D (j + 1) τ = (((D.hcW u τ).e ⟨j, hj⟩ : ℚ) : ℝ)`. Unfold `DV.wSz`. Rewrite using `[dif_pos ⟨by omega, by omega⟩, D.hcW_e]`. Both sides reduce to the same expression. Unfold `DV.nuRow`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[hw]`. Unfold `DV.srcPar Examples₂.wtN Examples₂.blkN`. Distinguish the cases in `hk : n < D.R.k`. Rewrite using `[dif_pos hk, dif_pos hk]`. Unfold `hcToWeightQ rhoVec wG Ranks.N`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : (n - D.R.k) / (D.R.t + 1) < D.R.m`. Establish `hN : n < D.R.k + j * (D.R.t + 1)` using `hn`. Establish `h2 : n - D.R.k < j * (D.R.t + 1)` using `Nat.sub_lt_left_of_lt_add (by omega) hN`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (n - D.R.k) / (D.R.t + 1) < j` using `Nat.div_lt_of_lt_mul (by rw [mul_comm]; exact h2)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hk, dif_neg hk, dif_pos hb, dif_pos hb]`. Establish `hnat : n = D.R.k + (n - D.R.k) / (D.R.t + 1) * (D.R.t + 1) + (n - D.R.k) % (D.R.t + 1)`. Use `Nat.div_add_mod (n - D.R.k) (D.R.t + 1)` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_comm]`. Use linear arithmetic over natural numbers and integers. Establish `key : (n : ℝ) = (D.R.k : ℝ) + (((n - D.R.k) / (D.R.t + 1) : ℕ) : ℝ) * ((D.R.t : ℝ) + 1) + (((n - D.R.k) % (D.R.t + 1) : ℕ) : ℝ)` using `by conv_lhs => rw [hnat]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `wG Ranks.N`. Use `push_cast`. Take the linear combination `key`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem nuRow_succ_eq_wt (D : D7) (u : D.what₂.Word) (j : ℕ) (hj : j < D.R.m) (τ : D.what₂.Tau) (n : ℕ) (hn : n < D.R.N j) :
     DV.nuRow D u (j + 1) τ n =
@@ -57,11 +57,11 @@ theorem nuRow_succ_eq_wt (D : D7) (u : D.what₂.Word) (j : ℕ) (hj : j < D.R.m
     linear_combination key
 
 /- English proof (translation)
-Introduce `D EX u j hj τ`. Unfold `nuAbs`. Use `show ∑ i ∈ Finset.range (D.R.N j), DV.nuRow D u (j + 1) τ i = _`. Rewrite using `[Finset.sum_range, Int.cast_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nuRow_succ_eq_wt D u j hj τ a a.2]`. Establish `h1` using `Wts.nuW_eq (recWts EX) u hj τ a`. Establish `h2` using `lamOf_wtN ((recWts EX).hc u τ) hj.le a`. Establish `h3 : (((recWts EX).nuW u (j + 1) τ).w a : ℝ) = ((((recWts EX).nuW u (j + 1) τ).w a : ℚ) : ℝ)`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, h1]`. Unfold `Wts.lamN`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem partitionSize : PartitionSize := by
   intro D EX u j hj τ

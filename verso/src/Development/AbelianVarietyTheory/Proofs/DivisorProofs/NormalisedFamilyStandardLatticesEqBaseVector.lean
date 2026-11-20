@@ -8,17 +8,15 @@ noncomputable section
 namespace GlobalTheory.NatAtStd
 
 /- English proof (translation)
-Establish `hr : ∀ x : E, x ∈ (algebraMap (𝓞 E) E).range ↔ IsIntegral ℤ x` using `fun x => ⟨by rintro ⟨a, rfl⟩; exact a.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`. Establish `hm : ∀ x : Fin N → E, x ∈ (Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)) ↔ ∀ k, IsIntegral ℤ (x k)` using `fun x => by`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, forall_true_left, Submodule.mem_one]`. Conclude with `forall_congr' fun k => hr (x k)`. Establish `hs : ∀ k : Fin N, (Pi.single k 1 : Fin N → E) ∈ (Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E))` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Introduce `j`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `isIntegral_one`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_zero`. Use `⟨Submodule.fg_pi fun _ => ?_, ?_, fun y => ⟨fun hy x hx => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Submodule.one_eq_span]`. Conclude with `Submodule.fg_span_singleton _`. Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin N)).span_eq]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `using hs k`. Rewrite using `[hr]`. Rewrite `hx`, `hy` using `[hm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `IsIntegral.sum _ fun i _ => ((hx i).map (starRingEnd E).toIntAlgHom).mul (hy i)`. Rewrite using `[hm]`. Introduce `k`. Use `h _ (hs k)` as an intermediate fact. Rewrite `this` using `[hr]`.
-
-Simplify `this` using `[stdH, Pi.single_apply, apply_ite]`.
+A detailed English derivation is pending.
 -/
 theorem isSD_pi (E : Type) [Field E] [NumberField E] [StarRing E] (N : ℕ) :
     IsSDLat E N (Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)) := by
@@ -52,13 +50,11 @@ theorem isSD_pi (E : Type) [Field E] [NumberField E] [StarRing E] (N : ℕ) :
     simpa [stdH, Pi.single_apply, apply_ite] using this
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨A, hA, rfl⟩`. Establish `h : ∀ i j, ∃ b : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E b = A i j` using `fun i j => by`. Establish `h1 : (Pi.single j 1 : Fin N → D.host.E) ∈ StandardLatticesGL3.stdL D N` using `fun k _ => by`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `e : k = j`. Substitute `e` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `Submodule.one_le.1 le_rfl`. Rewrite using `[Pi.single_eq_of_ne e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Establish `h2` using `Submodule.mem_one.1 (hA _ h1 i trivial)`. Simplify using `using h2`. Use `choose b hb using h`. Establish `e : A = (algebraMap (𝓞 D.host.E) D.host.E).mapMatrix (Matrix.of b)` using `Matrix.ext fun i j => (hb i j).symm`.
-
-Rewrite using `[e, ← RingHom.map_det]`. Conclude with `Submodule.mem_one.2 ⟨_, rfl⟩`. Conclude with `Submodule.one_le.2 (Submodule.subset_span ⟨1, fun v hv => by simpa using hv, Matrix.det_one.symm⟩)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detId_std (D : D7) (N : ℕ) : TaylorLogMetric.detId D (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N) = 1 := by
   classical
@@ -83,7 +79,7 @@ theorem detId_std (D : D7) (N : ℕ) : TaylorLogMetric.detId D (StandardLattices
   · exact Submodule.one_le.2 (Submodule.subset_span ⟨1, fun v hv => by simpa using hv, Matrix.det_one.symm⟩)
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Establish `h1` using `h.2 1`. Rewrite using `[Submodule.one_eq_span]`. Simplify using `using h1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem chi_one (D : D7) (χ : TaylorLogMetric.IdE D → ℂ) (h : TaylorLogMetric.IsChi D χ) : χ 1 = 1 := by
   letI := D.host.cmStar
@@ -92,7 +88,7 @@ theorem chi_one (D : D7) (χ : TaylorLogMetric.IdE D → ℂ) (h : TaylorLogMetr
   simpa using h1
 
 /- English proof (translation)
-Simplify using `[Base.chiFac, detId_std, chi_one D χ h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiFac_std (D : D7) (χ : TaylorLogMetric.IdE D → ℂ) (h : TaylorLogMetric.IsChi D χ) (a b : ℕ) :
     Base.chiFac χ a b (StandardLatticesGL3.stdL D a) (StandardLatticesGL3.stdL D b) = 1 := by
@@ -101,11 +97,9 @@ theorem chiFac_std (D : D7) (χ : TaylorLogMetric.IdE D → ℂ) (h : TaylorLogM
 variable (D : D7) (T : TaylorLogMetric.Tor D) {N N' : ℕ}
 
 /- English proof (translation)
-Establish `htop : A.addSubgroupOf A = ⊤` using `AddSubgroup.addSubgroupOf_self A`. Use `haveI hsub : Subsingleton (A ⧸ A.addSubgroupOf A) := by`. Rewrite using `[htop]`. Conclude with `QuotientAddGroup.subsingleton_quotient_top`. Set `q0 : A ⧸ A.addSubgroupOf A` to `QuotientAddGroup.mk 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨((Quotient.out q0 : A) : TaylorLogMetric.VC D N N'), Subtype.property _, fun G => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Establish `hi : (A.addSubgroupOf A).index = 1` using `by rw [htop]; exact AddSubgroup.index_top`. Unfold `TaylorLogMetric.Iop`. Rewrite using `[finsum_eq_single _ q0 (fun q hq => absurd (Subsingleton.elim q q0) hq), hi]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Iop_self (A : AddSubgroup (TaylorLogMetric.VC D N N')) :
     ∃ x ∈ A, ∀ G : TaylorLogMetric.VC D N N' → ℂ, TaylorLogMetric.Iop D T A A G = fun z => TaylorLogMetric.al D T x * TaylorLogMetric.U D T x G z := by
@@ -121,25 +115,25 @@ theorem Iop_self (A : AddSubgroup (TaylorLogMetric.VC D N N')) :
   simp
 
 /- English proof (translation)
-Simplify using `[TaylorLogMetric.Hf, neg_div]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_neg_right (z x : TaylorLogMetric.VC D N N') : TaylorLogMetric.Hf D T z (-x) = -TaylorLogMetric.Hf D T z x := by
   simp [TaylorLogMetric.Hf, neg_div]
 
 /- English proof (translation)
-Simplify using `[TaylorLogMetric.Hf, neg_div]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_neg_left (z x : TaylorLogMetric.VC D N N') : TaylorLogMetric.Hf D T (-z) x = -TaylorLogMetric.Hf D T z x := by
   simp [TaylorLogMetric.Hf, neg_div]
 
 /- English proof (translation)
-Simplify using `[TaylorLogMetric.Hf, add_mul, Finset.sum_add_distrib, add_div]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_add_left (z w x : TaylorLogMetric.VC D N N') : TaylorLogMetric.Hf D T (z + w) x = TaylorLogMetric.Hf D T z x + TaylorLogMetric.Hf D T w x := by
   simp [TaylorLogMetric.Hf, add_mul, Finset.sum_add_distrib, add_div]
 
 /- English proof (translation)
-Unfold `TaylorLogMetric.al`. Rewrite using `[Hf_neg_left, Hf_neg_right, neg_neg, ← mul_zpow]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem al_neg_mul (x : TaylorLogMetric.VC D N N') : TaylorLogMetric.al D T (-x) * TaylorLogMetric.al D T x = 1 := by
   unfold TaylorLogMetric.al
@@ -147,9 +141,9 @@ theorem al_neg_mul (x : TaylorLogMetric.VC D N N') : TaylorLogMetric.al D T (-x)
   simp
 
 /- English proof (translation)
-Establish `h` using `al_neg_mul D T x`. Unfold `TaylorLogMetric.U`. Simplify using `only [Hf_add_left, Hf_neg_left, Hf_neg_right, neg_add_cancel_right]`. Establish `he : Complex.exp (-(Real.pi : ℂ) * (TaylorLogMetric.Hf D T z x + -TaylorLogMetric.Hf D T x x) - (Real.pi : ℂ) * TaylorLogMetric.Hf D T x x / 2) * Complex.exp (-(Real.pi : ℂ) * -TaylorLogMetric.Hf D T z x - (Real.pi : ℂ) * - -TaylorLogMetric.Hf D T x x / 2) = 1`. Rewrite using `[← Complex.exp_add, ← Complex.exp_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(G z) * he * (TaylorLogMetric.al D T (-x) * TaylorLogMetric.al D T x) + G z * h`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem inv_op (x : TaylorLogMetric.VC D N N') (G : TaylorLogMetric.VC D N N' → ℂ) (z : TaylorLogMetric.VC D N N') :
     TaylorLogMetric.al D T (-x) * TaylorLogMetric.U D T (-x) (fun w => TaylorLogMetric.al D T x * TaylorLogMetric.U D T x G w) z = G z := by
@@ -164,15 +158,13 @@ theorem inv_op (x : TaylorLogMetric.VC D N N') (G : TaylorLogMetric.VC D N N' �
   linear_combination (G z) * he * (TaylorLogMetric.al D T (-x) * TaylorLogMetric.al D T x) + G z * h
 
 /- English proof (translation)
-Introduce `D cc dl B χ hχ hV a b ha hb`. Establish `hA : TaylorLogMetric.admitted D a b (StandardLatticesGL3.stdL D a) (StandardLatticesGL3.stdL D b)`. Use `letI := D.host.cmStar`. Conclude with `⟨ha, hb, isSD_pi _ a, isSD_pi _ b⟩`. Use `⟨hA, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx, hI⟩` from `Iop_self D B.tor (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D a) (StandardLatticesGL3.stdL D b))`. Establish `hTh : B.eNat χ a b (StandardLatticesGL3.stdL D a) (StandardLatticesGL3.stdL D b) ∈ TaylorLogMetric.Th D B.tor (StandardLatticesGL3.stdL D a) (StandardLatticesGL3.stdL D b)` using `(hV a b _ _ hA).1`. Establish `hfix` using `hTh.2 (-x) (neg_mem hx)`. Establish `he : B.eNat χ a b (StandardLatticesGL3.stdL D a) (StandardLatticesGL3.stdL D b) = fun z => TaylorLogMetric.al D B.tor x * TaylorLogMetric.U D B.tor x (fun w => TaylorLogMetric.al D B.tor x * TaylorLogMetric.U D B.tor x (B.thZero a b) w) z`. Use function extensionality and compare the values at `z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `Base.eNat Base.thMoved Base.thHalf`. Rewrite using `[chiFac_std D χ hχ, one_mul, hI, hI]`. Establish `h1 : B.eNat χ a b (StandardLatticesGL3.stdL D a) (StandardLatticesGL3.stdL D b) = fun w => TaylorLogMetric.al D B.tor x * TaylorLogMetric.U D B.tor x (B.thZero a b) w`. Use function extensionality and compare the values at `z`. Rewrite using `[← hfix z]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [he]`. Conclude with `inv_op D B.tor x _ z`. Use function extensionality and compare the values at `z`. Rewrite using `[← hfix z]`. Use `conv_lhs => rw [h1]`.
-
-Conclude with `inv_op D B.tor x _ z`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eNat_std : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (dl : ℂ) (B : Base D cc dl) (χ : TaylorLogMetric.IdE D → ℂ), TaylorLogMetric.IsChi D χ → B.VecP χ → ∀ a b : ℕ, Even a → Even b → TaylorLogMetric.admitted D a b (StandardLatticesGL3.stdL D a) (StandardLatticesGL3.stdL D b) ∧ B.eNat χ a b (StandardLatticesGL3.stdL D a) (StandardLatticesGL3.stdL D b) = B.thZero a b := by
   intro D cc dl B χ hχ hV a b ha hb

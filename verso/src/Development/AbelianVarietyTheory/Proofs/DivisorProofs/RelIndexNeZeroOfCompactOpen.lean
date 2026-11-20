@@ -6,7 +6,7 @@ open scoped Classical
 namespace GlobalTheory.RelIndexCompact
 
 /- English proof (translation)
-Establish `: CompactSpace L` using `isCompact_iff_compactSpace.mp hL`. Establish `ho : IsOpen ((K.subgroupOf L : Subgroup L) : Set L)` using `hK.preimage continuous_subtype_val`. Use `Subgroup.quotient_finite_of_isOpen _ ho` as an intermediate fact. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_compact_open {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] {K L : Subgroup G} (hL : IsCompact (L : Set G))
@@ -17,11 +17,11 @@ theorem relIndex_ne_zero_of_compact_open {G : Type} [Group G] [TopologicalSpace 
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_map]`. Establish `hc : Continuous (fun g : G => x * g * x⁻¹)` using `by fun_prop`. Use `⟨hK.image hc, ?_⟩` and prove the remaining obligations. Establish `: ((MulAut.conj x).toMonoidHom : G → G) '' (K : Set G) = (fun g : G => x⁻¹ * g * x) ⁻¹' (K : Set G)`. Use extensionality with `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[MulAut.conj_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Simplify `ha` using `[mul_assoc]`. Introduce `hy; exact ⟨x⁻¹ * y * x, hy, by group⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]; exact ho.preimage (by fun_prop)`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_map_isCompact_isOpen {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (K : Subgroup G) (x : G) (hK : IsCompact (K : Set G)) (ho : IsOpen (K : Set G)) :

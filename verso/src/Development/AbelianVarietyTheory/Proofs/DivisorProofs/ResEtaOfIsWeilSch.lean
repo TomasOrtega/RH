@@ -55,7 +55,7 @@ namespace GlobalTheory.RegSch.JointCont
 open GlobalTheory.StdUnn GlobalTheory.StdUnn.Model in
 
 /- English proof (translation)
-Simplify using `[submatrix_fromBlocks_mul, h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem levi_weyl_rel {R : Type} [CommRing R] {n : ℕ} {b c : Matrix (Fin n) (Fin n) R} (h1 : b * c = 1) (h2 : c * b = 1) :
     blk4 b 0 0 c * blk4 0 1 (-1) 0 = blk4 1 b 0 1 * blk4 0 1 (-1) 0 * blk4 1 c 0 1 *
@@ -65,33 +65,31 @@ theorem levi_weyl_rel {R : Type} [CommRing R] {n : ℕ} {b c : Matrix (Fin n) (F
 open GlobalTheory.StdUnn GlobalTheory.StdUnn.Model in
 
 /- English proof (translation)
-Take `⟨χ₀, h1, h2, -⟩` from `GlobalTheory.PlaceCompare.Spherical.exists_unram_char D V.rank`. Take `⟨ψ₀, h₀, lam, hlam, hψeq⟩` from `GlobalTheory.ThetaAllChar.exists_std hψ`. Establish `hsh : ψ = shift ψ₀ lam`. Use extensionality with `x`. Rewrite using `[hψeq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨ω₀, hω₀⟩` from `Inhab.weil_exists D n V ψ₀ h₀ lam hlam χ₀ h1 h2 θ hθ μ 𝓕 hμ`. Rewrite `hω₀` using `[← hsh]`. It suffices to establish `h : ∀ t, χ (idF D t) = χ₀ (idF D t) from ⟨h2.1, fun η hη a => (h a).trans (h2.2 η hη a)⟩`. Introduce `t`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `i₀ : Fin n` to `⟨0, hn⟩`. Set `dg : (AF D.host.F)ˣ → Mx D n n` to `fun u => Matrix.diagonal (Function.update 1 i₀ (idF D u : AE D))`. Establish `hmul : ∀ u u', dg u * dg u' = dg (u * u')` using `fun u u' => by`. Simplify using `only [dg, Matrix.diagonal_mul_diagonal, map_mul, Units.val_mul]`. Use `congr 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hone : dg 1 = 1` using `by simp [dg]`. Establish `hadj : ∀ u, adj (dg u) = dg u` using `fun u => by`. Use extensionality with `i j`. Simplify using `only [adj, dg, Matrix.transpose_apply, Matrix.map_apply, Matrix.diagonal_apply]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using `only [if_true, Function.update_self]`. Conclude with `GlobalTheory.HermTransversal.cA_algebraMap _`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update_of_ne hi]`. Simplify using `[hij, Ne.symm hij]`. Establish `e1 : dg t * dg t⁻¹ = 1` using `by rw [hmul, mul_inv_cancel, hone]`. Establish `e2 : dg t⁻¹ * dg t = 1` using `by rw [hmul, inv_mul_cancel, hone]`. Set `a : GL (Fin n) (AE D)` to `⟨dg t, dg t⁻¹, e1, e2⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdet : Matrix.GeneralLinearGroup.det a = idF D t`. Use `ext`. Simplify using `[a, dg, Finset.prod_update_of_mem]`. Take `⟨g, hg⟩` from `exists_levi (D := D) (n := n) a`. Take `⟨u, hu⟩` from `(exists_unip (dg t)).2 (hadj t)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u', hu'⟩` from `(exists_unip (dg t⁻¹)).2 (hadj t⁻¹)`. Take `⟨w, hw⟩` from `exists_weyl (D := D) (n := n)`. Establish `hinj : ∀ x y : StdUnn.G D n, mat x = mat y → x = y` using `fun x y h => Subtype.ext (Units.ext h)`. Establish `hrel : g * w = u * w * u' * (w * w * w) * u`. Use `hinj _ _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e4 : (adj (a⁻¹).1 : Mx D n n) = dg t⁻¹` using `hadj t⁻¹`. Rewrite `hg` using `[e4]`. Express the relevant statement in the definitionally equal form `mat g * mat w = mat u * mat w * mat u' * (mat w * mat w * mat w) * mat u`. Rewrite using `[hg, hw, hu, hu']`. Conclude with `levi_weyl_rel e1 e2`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S` to `ω.toHomUnits.eqLocus ω₀.toHomUnits`. Establish `hU : ∀ (x : StdUnn.G D n) (b : Mx D n n), mat x = blk4 1 b 0 1 → x ∈ S` using `fun x b hx => Units.ext (LinearMap.ext fun Φ => Subtype.ext (funext fun y => (hω.unip x b hx Φ y).trans (hω₀.unip x b hx Φ y).symm))`. Establish `hW : w ∈ S` using `Units.ext (LinearMap.ext fun Φ => Subtype.ext (funext fun y => (hω.weyl w hw Φ y).trans (hω₀.weyl w hw Φ y).symm))`. Establish `hgS : g ∈ S`. Rewrite using `[← S.mul_mem_cancel_right hW, hrel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `S.mul_mem (S.mul_mem (S.mul_mem (S.mul_mem (hU _ _ hu) hW) (hU _ _ hu')) (S.mul_mem (S.mul_mem hW hW) hW)) (hU _ _ hu)`. Establish `hge : ω g = ω₀ g` using `congrArg Units.val hgS`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.Published.ThetaConvModel.exists_schwartz θ V.rank n`. Establish `k1` using `hω.levi g a hg Φ 0`. Rewrite `k1` using `[hge, hω₀.levi g a hg Φ 0, hdet]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `z1 : ((0 : Mx D V.rank n) ⬝ a.1 : Mx D V.rank n) = 0` using `Matrix.zero_mul _`. Rewrite `k1` using `[z1]`. Establish `hp : npow (absA D (idF D t)) ((V.rank : ℂ) / 2) ≠ 0`. Establish `: absA D (idF D t) ≠ 0` using `((Group.isUnit _).map (absA D)).ne_zero`. Rewrite using `[npow, Complex.cpow_def_of_ne_zero (by exact_mod_cast this)]`.
-
-Conclude with `Complex.exp_ne_zero _`. Conclude with `Circle.ext (mul_right_cancel₀ hp (mul_right_cancel₀ hΦ k1)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resEta_of_isWeilSch {D : D7} {n : ℕ} (hn : 0 < n) {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : IsCharAF D.host.F ψ) {θ : InfFam D} (hθ : IsInfFam θ) {χ : (AE D)ˣ →* Circle}

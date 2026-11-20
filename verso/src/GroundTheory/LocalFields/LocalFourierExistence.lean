@@ -23,9 +23,9 @@ theorem ratAddCircleToReal_coe (q : ℚ) :
     ratAddCircleToReal (q : AddCircle (1 : ℚ)) = ((q : ℝ) : AddCircle (1 : ℝ)) := rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Proceed by induction on `x using QuotientAddGroup.induction_on with`. Consider the case `H q`. Rewrite `hx` using `[ratAddCircleToReal_coe, AddCircle.coe_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨n, hn⟩` from `hx`. Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_zmultiples_iff]`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `: ((n : ℚ) : ℝ) = (q : ℝ)` using `by simpa using hn`. Simplify using `using (Rat.cast_injective this)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ratAddCircleToReal_injective : Function.Injective ratAddCircleToReal := by
   rw [injective_iff_map_eq_zero]
@@ -49,15 +49,15 @@ theorem ratCircleChar_apply (x : AddCircle (1 : ℚ)) :
     ratCircleChar x = AddCircle.toCircle (ratAddCircleToReal x) := rfl
 
 /- English proof (translation)
-The claim follows from `(AddCircle.injective_toCircle one_ne_zero).comp ratAddCircleToReal_injective`.
+A detailed English derivation is pending.
 -/
 theorem ratCircleChar_injective : Function.Injective ratCircleChar :=
   (AddCircle.injective_toCircle one_ne_zero).comp ratAddCircleToReal_injective
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `ratCircleChar_injective` to reduce the goal to its premises. Rewrite using `[h, AddChar.map_zero_eq_one]`. Introduce and unpack `rfl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `AddChar.map_zero_eq_one _`.
+A detailed English derivation is pending.
 -/
 theorem ratCircleChar_eq_one_iff {x : AddCircle (1 : ℚ)} : ratCircleChar x = 1 ↔ x = 0 := by
   constructor
@@ -74,9 +74,9 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 section Existence
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Establish `h0 : (ϖ : K) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `hi : (ϖ : K)⁻¹ ≠ 0` using `inv_ne_zero h0`. Use `⟨(ϖ : K)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_valBall_iff_le_ord hi, ord_inv h0, ord_uniformizer hϖ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_valBall_iff_le_ord hi, ord_inv h0, ord_uniformizer hϖ]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_mem_valBall_neg_one_notMem_valBall_zero :
     ∃ x : K, x ∈ valBall K (-1) ∧ x ∉ valBall K 0 := by
@@ -89,9 +89,9 @@ theorem exists_mem_valBall_neg_one_notMem_valBall_zero :
     omega
 
 /- English proof (translation)
-Establish `hlc : IsLocallyConstant χ`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨{z | z - x ∈ valBall K n}, (isOpen_valBall n).preimage (continuous_id.sub continuous_const), by simp, fun z hz => ?_⟩` and prove the remaining obligations. Establish `e : x + (z - x) = z` using `by abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← e, AddChar.map_add_eq_mul, h _ hz, mul_one]`. Conclude with `hlc.continuous`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_isTrivialOn {χ : AddChar K Circle} {n : ℤ} (h : IsTrivialOn χ n) :
     Continuous χ := by
@@ -105,18 +105,18 @@ theorem continuous_of_isTrivialOn {χ : AddChar K Circle} {n : ℤ} (h : IsTrivi
   exact hlc.continuous
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exists_isTrivialOn χ, fun ⟨_, h⟩ => continuous_of_isTrivialOn h⟩`.
+Supply the required witnesses or components.
 -/
 theorem continuous_iff_exists_isTrivialOn (χ : AddChar K Circle) :
     Continuous χ ↔ ∃ n, IsTrivialOn χ n :=
   ⟨exists_isTrivialOn χ, fun ⟨_, h⟩ => continuous_of_isTrivialOn h⟩
 
 /- English proof (translation)
-Take `⟨x, hx1, hx0⟩` from `exists_mem_valBall_neg_one_notMem_valBall_zero (K := K)`. Set `π : K →+ K ⧸ valBall K 0` to `QuotientAddGroup.mk' (valBall K 0)`. Establish `hπx : π x ≠ 0`. Rewrite using `[Ne, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]` and apply the resulting hypothesis. Take `⟨c, hc⟩` from `CharacterModule.exists_character_apply_ne_zero_of_ne_zero hπx`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Set `ψ : AddChar K Circle` to `ratCircleChar.compAddMonoidHom ((c : K ⧸ valBall K 0 →+ AddCircle (1 : ℚ)).comp π)`. Establish `hψ : ∀ y, ψ y = ratCircleChar (c (π y))` using `fun _ => rfl`. Use `⟨ψ, fun y hy => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `: π y = 0`. Rewrite using `[QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]` and apply the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hψ, this, map_zero, AddChar.map_zero_eq_one]`. Conclude with `hc (ratCircleChar_eq_one_iff.mp ((hψ x).symm.trans (h x hx1)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_addChar_isTrivialOn_zero_not_isTrivialOn_neg_one :
     ∃ ψ : AddChar K Circle, IsTrivialOn ψ 0 ∧ ¬ IsTrivialOn ψ (-1) := by
@@ -135,9 +135,9 @@ theorem exists_addChar_isTrivialOn_zero_not_isTrivialOn_neg_one :
   · exact hc (ratCircleChar_eq_one_iff.mp ((hψ x).symm.trans (h x hx1)))
 
 /- English proof (translation)
-Take `⟨ψ, h0, h1⟩` from `exists_addChar_isTrivialOn_zero_not_isTrivialOn_neg_one (K := K)`. Establish `hc : Continuous ψ` using `continuous_of_isTrivialOn h0`. Establish `hne : ψ ≠ 1`. Introduce and unpack `rfl`. Conclude with `h1 fun _ _ => AddChar.one_apply _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ, hc, hne, le_antisymm ((isTrivialOn_iff hc hne 0).mp h0) ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `h1 ((isTrivialOn_iff hc hne (-1)).mpr (by omega))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_addChar_addCharConductor_eq_zero :
     ∃ ψ : AddChar K Circle, Continuous ψ ∧ ψ ≠ 1 ∧ addCharConductor ψ = 0 := by
@@ -151,9 +151,9 @@ theorem exists_addChar_addCharConductor_eq_zero :
   exact h1 ((isTrivialOn_iff hc hne (-1)).mpr (by omega))
 
 /- English proof (translation)
-Take `⟨ψ, hc, hne, h0⟩` from `exists_addChar_addCharConductor_eq_zero (K := K)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Establish `h0ϖ : (ϖ : K) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `ha : (ϖ : K) ^ (-n) ≠ 0` using `zpow_ne_zero _ h0ϖ`. Use `⟨ψ.mulShift ((ϖ : K) ^ (-n)), continuous_mulShift hc _, mulShift_ne_one hne ha, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hord : ord ((ϖ : K) ^ (-n)) = -n`. Simplify using `[ord, map_zpow₀, normalizedValuation_uniformizer hϖ]`. Rewrite using `[addCharConductor_mulShift hc hne ha, h0, hord]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_addChar_addCharConductor_eq (n : ℤ) :
     ∃ ψ : AddChar K Circle, Continuous ψ ∧ ψ ≠ 1 ∧ addCharConductor ψ = n := by
@@ -168,7 +168,7 @@ theorem exists_addChar_addCharConductor_eq (n : ℤ) :
   ring
 
 /- English proof (translation)
-Take `⟨ψ, hc, hne, -⟩` from `exists_addChar_addCharConductor_eq_zero (K := K)`. Conclude with `⟨ψ, hc, hne⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_addChar_continuous_ne_one :
     ∃ ψ : AddChar K Circle, Continuous ψ ∧ ψ ≠ 1 := by
@@ -176,7 +176,7 @@ theorem exists_addChar_continuous_ne_one :
   exact ⟨ψ, hc, hne⟩
 
 /- English proof (translation)
-Take `⟨ψ, hc, hne⟩` from `exists_addChar_continuous_ne_one (K := K)`. Conclude with `⟨selfDual hc hne⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_selfDual :
     Nonempty (Multiplicative K ≃ₜ* PontryaginDual (Multiplicative K)) := by

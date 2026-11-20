@@ -15,15 +15,15 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hn : ‖((l : ℕ) : PadicComplex l)‖ = (l : ℝ)⁻¹`. Establish `h` using `norm_zC ((l : ℕ) : ℤ_[l])`. Rewrite `h` using `[PadicInt.norm_p]`. Rewrite using `[← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[zC]`. Establish `key : ∀ k : ℕ, ‖((f x - g x : OC l) : PadicComplex l)‖ ≤ ((l : ℝ)⁻¹) ^ k`. Introduce `k`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec k x)`. Establish `hx : x = (x.appr k : ℤ_[l]) + y * (l : ℤ_[l]) ^ k` using `by rw [hy]; ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : f x - g x = (f y - g y) * ((l : ℕ) : OC l) ^ k` using `by conv_lhs => rw [hx]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ((f x - g x : OC l) : PadicComplex l) = ((f y - g y : OC l) : PadicComplex l) * ((l : ℕ) : PadicComplex l) ^ k`. Rewrite using `[h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[h2, norm_mul, norm_pow, hn]`. Conclude with `mul_le_of_le_one_left (by positivity) ((mem_OC _).1 (f y - g y).2)`. Establish `h0 : ‖((f x - g x : OC l) : PadicComplex l)‖ ≤ 0` using `ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (inv_lt_one_of_one_lt₀ hl)) key`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : f x - g x = 0` using `Subtype.ext (norm_le_zero_iff.1 h0)`. Conclude with `sub_eq_zero.1 h3`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_padicInt_OC_ext (f g : ℤ_[l] →+* OC l) (x : ℤ_[l]) : f x = g x := by
   have hl : (1 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).one_lt
@@ -52,7 +52,7 @@ theorem ringHom_padicInt_OC_ext (f g : ℤ_[l] →+* OC l) (x : ℤ_[l]) : f x =
   exact sub_eq_zero.1 h3
 
 /- English proof (translation)
-Apply `(frobeniusEquiv (OCb l) l).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, frobeniusEquiv_apply, frobenius_def, ← map_pow, frobeniusEquiv_symm_pow_p]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_frobeniusEquiv_symm_OCb (e : OCb l →+* OCb l) (x : OCb l) :
     e ((frobeniusEquiv (OCb l) l).symm x) = (frobeniusEquiv (OCb l) l).symm (e x) := by
@@ -61,11 +61,11 @@ theorem map_frobeniusEquiv_symm_OCb (e : OCb l →+* OCb l) (x : OCb l) :
     frobeniusEquiv_symm_pow_p]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Take `⟨θ, -, -, h1, -, h2⟩` from `exists_isTheta l P AI`. Conclude with `⟨θ, h1, h2⟩`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨θ, h1, h2⟩` from `ih`. Use `⟨θ.comp (WittVector.map (frobeniusEquiv (OCb l) l).symm.toRingHom), fun g a => ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `e : WittVector.map (frobeniusEquiv (OCb l) l).symm.toRingHom (AI.actW g a) = AI.actW g (WittVector.map (frobeniusEquiv (OCb l) l).symm.toRingHom a)` using `WittVector.ext fun k => (map_frobeniusEquiv_symm_OCb (AI.actT g).toRingHom (a.coeff k)).symm`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, e, h1]`. Establish `e : (frobeniusEquiv (OCb l) l).symm.toRingHom (AI.εroot j) = AI.εroot (j + 1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LocAinf.εroot, LocAinf.εroot, Function.iterate_succ_apply']`. Both sides reduce to the same expression. Rewrite using `[RingHom.comp_apply, WittVector.map_teichmuller, e, h2, add_assoc, add_comm 1 n]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_thetaShift_ringHom {P : LocPrime l} (AI : LocAinf l P) (n : ℕ) :
     ∃ θ : Ainf l →+* OC l,
@@ -91,7 +91,7 @@ theorem exists_thetaShift_ringHom {P : LocPrime l} (AI : LocAinf l P) (n : ℕ) 
       rw [RingHom.comp_apply, WittVector.map_teichmuller, e, h2, add_assoc, add_comm 1 n]
 
 /- English proof (translation)
-Introduce `l _ P AI n`. Take `⟨θ, h1, h2⟩` from `exists_thetaShift_ringHom AI n`. Conclude with `⟨{ toRingHom := θ commutes' := fun x => ringHom_padicInt_OC_ext (θ.comp (algebraMap ℤ_[l] (Ainf l))) (algebraMap ℤ_[l] (OC l)) x }, fun g a => h1 g a, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isThetaShift : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (n : ℕ),
     ∃ θ : Ainf l →ₐ[ℤ_[l]] OC l, IsThetaShift AI n θ := by

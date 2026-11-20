@@ -26,7 +26,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hc`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isCoord_frameCast {Z : Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} {Y : FlagCpt Z e} {k : Type}
     [Field k] {φ : c.F →+* k} {x x' : Sp k ⟶ Z.X} (h : x = x') {p : Sp k ⟶ Y.Y.X} {g : EigFrame Z φ x}
@@ -35,29 +35,27 @@ theorem isCoord_frameCast {Z : Model Xo c β} {F : Type} [Field F] [NumberField 
   exact hc
 
 /- English proof (translation)
-Take `⟨W, δ, a, hW, hδ, ha, hf, hc, hco⟩` from `GlobalTheory.T.exists_local_equation_flag_points E H Dw l Xo c O β Z σ F e C τ hτ`. Take `⟨hne, hd⟩` from `GlobalTheory.T.complexPoints_nonempty_dense_variety F C.Y (σ.comp e.toRingHom)`. Establish `hA` using `hd (C.π ⁻¹ᵁ (genBd Z).compl) ⟨genericPt C.Y (IsLocalRing.closedPoint C.Y.Fn), fun hb => hb ⟨_, congrArg (fun g => g (IsLocalRing.closedPoint C.Y.Fn)) C.y0_x⟩⟩`. Set `R` to `AnRead.all C.Y.str (σ.comp e.toRingHom) C.Y.dim`. Use `set A := ptsIn C.Y.str (σ.comp e.toRingHom) (C.π ⁻¹ᵁ (genBd Z).compl) with hAdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose u hu he using fun y => GlobalTheory.ShFam.Hor.Sec.exists_extension R C.π hA (isOpen_ptsIn (W y)) (ha y) (hf y) hh.2.2.1 hh.2.2.2`. Use `choose r hr using fun y => exists_unit_fnOf_eq (U := W y) (f := s * (δ y : C.Y.Fn)) fun x hx => (hδ y x hx).generatesAt_iff.1 (hs x)`. Establish `evu : ∀ y (z : CxPts C.Y.str (σ.comp e.toRingHom)), z ∈ ptsIn C.Y.str (σ.comp e.toRingHom) (W y) → ev C.Y.str (σ.comp e.toRingHom) _ (r y).val z * ev C.Y.str (σ.comp e.toRingHom) _ ((r y)⁻¹).val z = 1` using `fun y z hz => by`. Rewrite using `[← ev_mul, Units.mul_inv]`. Conclude with `ev_one hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `tr : ∀ y y' (z : CxPts C.Y.str (σ.comp e.toRingHom)), z ∈ ptsIn C.Y.str (σ.comp e.toRingHom) (W y) → z ∈ ptsIn C.Y.str (σ.comp e.toRingHom) (W y') → z ∈ A → h (a y z) * ev C.Y.str (σ.comp e.toRingHom) _ ((r y)⁻¹).val z = h (a y' z) * ev C.Y.str (σ.comp e.toRingHom) _ ((r y')⁻¹).v …` using `fun y y' z hy hy' hz => by`. Take `⟨t, ht⟩` from `exists_unit_fnOf_eq (U := W y ⊓ W y') (f := (δ y : C.Y.Fn) / (δ y' : C.Y.Fn)) fun x hx => (hδ y' x hx.2).iff_unitAt.1 (hδ y x hx.1)`. Establish `hyy` using `mem_ptsIn_inf.2 ⟨hy, hy'⟩`. Take `⟨M, N, hM, hN, hM0, hMN⟩` from `hc y y' (W y ⊓ W y') (gen_mem (mem_ptsIn.1 hyy)) t.val (ht _) z (mem_ptsIn_inf.2 ⟨hyy, hyy⟩)`. Establish `hin` using `(GlobalTheory.ShFam.Hor.Sec.inner_iff (ha y' z hy')).2 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e4` using `hh.2.1 _ _ M N hin hM hN`. Establish `e5 : h (a y z) = h (a y' z) * ev C.Y.str (σ.comp e.toRingHom) _ t.val z`. Use `mul_right_cancel₀ hM0 ?_` and prove the remaining obligations. Rewrite using `[e4, ← hMN]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `GlobalTheory.ShFam.Hor.Sec.ev_mul_eq (a := (r y').val) (b := t.val) (c := (r y).val) hy' hyy hy (fun _ _ _ => by`. Rewrite using `[hr, hr, ht]`. Use `(δ y').ne_zero` as an intermediate fact. Use the proof step `field_simp)`. Establish `e1` using `evu y z hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `e2` using `evu y' z hy'`. Rewrite using `[e5]`. Generalize the expression as in `ev C.Y.str (σ.comp e.toRingHom) _ t.val z = T at *`. Generalize the expression as in `ev C.Y.str (σ.comp e.toRingHom) _ ((r y)⁻¹).val z = I at *`. Generalize the expression as in `ev C.Y.str (σ.comp e.toRingHom) _ ((r y')⁻¹).val z = I' at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Generalize the expression as in `ev C.Y.str (σ.comp e.toRingHom) _ (r y).val z = A₀ at *`. Generalize the expression as in `ev C.Y.str (σ.comp e.toRingHom) _ (r y').val z = A₁ at *`. Generalize the expression as in `h (a y' z) = h' at *`. Take the linear combination `h' * ((-(T * I)) * e2 + (I' * I) * e3 + I' * e1)`. Set `pt (z : CxPts C.Y.str (σ.comp e.toRingHom)) : C.Y.X` to `z.1 (IsLocalRing.closedPoint ℂ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpt (z : CxPts C.Y.str (σ.comp e.toRingHom)) : z ∈ ptsIn C.Y.str (σ.comp e.toRingHom) (W (pt z))` using `mem_ptsIn.2 (hW _)`. Take `⟨q, hq, hqe⟩` from `GlobalTheory.ShFam.Hor.Sec.exists_holoOn_of_local (R := R) hA (S := Set.univ) (u := fun z => h (a (pt z) z) * ev C.Y.str (σ.comp e.toRingHom) _ ((r (pt z))⁻¹).val z) fun z _ => ⟨ptsIn C.Y.str (σ.comp e.toRingHom) (W (pt z)), fun w => u (pt z) w * ev C.Y.str (σ.comp e.toRingHom) _ …`. Rewrite using `[he (pt z) hw]`. Conclude with `tr _ _ w hw.1 (hpt w) hw.2⟩`. Take `⟨b, hb⟩` from `GlobalTheory.T.holomorphic_on_projective_const F C.Y (σ.comp e.toRingHom) R q hq`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨b, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x₀, g⟩ p v hin hx hcoord`. Establish `hp` using `hpt p`. Establish `hpA : p ∈ A` using `(GlobalTheory.ShFam.Hor.Sec.inner_iff hx).1 hin`. Establish `e0 : (a (pt p) p).1 = x₀` using `Subtype.ext ((ha _ p hp).trans hx.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `e0` using the available equality. Take `⟨M, N, hM, hN, hM0, hMv⟩` from `hco (pt p) (W (pt p)) (gen_mem (mem_ptsIn.1 hp)) (r (pt p)).val s (hr _ _) p (mem_ptsIn_inf.2 ⟨hp, hp⟩) g v hcoord`. Establish `e4` using `hh.2.1 (a (pt p) p) ⟨_, g⟩ M N hin hM hN`. Establish `e6 : h (a (pt p) p) * ev C.Y.str (σ.comp e.toRingHom) _ ((r (pt p))⁻¹).val p = b` using `(hqe ⟨trivial, hpA⟩).symm.trans (hb p)`. Establish `e1` using `evu _ p hp`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `mul_right_cancel₀ hM0 ?_` and prove the remaining obligations. Rewrite using `[e4]`. Generalize the expression as in `ev C.Y.str (σ.comp e.toRingHom) _ ((r (pt p))⁻¹).val p = I at *`. Generalize the expression as in `ev C.Y.str (σ.comp e.toRingHom) _ (r (pt p)).val p = A₀ at *`. Generalize the expression as in `h (a (pt p) p) = h' at *`.
-
-Take the linear combination `(N.det * A₀) * e6 - (h' * N.det) * e1 - b * hMv`.
+A detailed English derivation is pending.
 -/
 theorem rigid {Z : Model Xo c β} {σ : c.F →+* ℂ} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (C : FlagCpt Z e)
     {τ : E →+* ℂ} (hτ : τ (H.rt : E) = H.rt0) {h : CxFr Z σ → ℂ} (hh : HorFn τ h) {s : C.Y.Fn}
@@ -142,15 +140,15 @@ namespace GlobalTheory.ShFam.Horiz
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.ShFam.HolFrames.expo_detSym Dw _ _ τ.2]`. Take `⟨ρ, i⟩` from `z`. Use `show -(GlobalTheory.AllWt.wtOf Dw (GlobalTheory.FlatLine.flatWt Dw τ) 0).1 (ρ, (i : ℕ)) = _`. Distinguish the cases in `h : ρ (H.rt : E) = H.rt0`. Establish `hm : Dw.mult ρ = Dw.p` using `if_pos h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ρ ≠ conjEmb τ.1` using `fun e => GlobalTheory.AllWt.conj_not_mem τ (e ▸ h)`. Rewrite using `[GlobalTheory.AllWt.wtOf_big (GlobalTheory.FlatLine.flatWt Dw τ) 0 ⟨ρ, h⟩ i (hm ▸ i.2)]`. Distinguish the cases in `e : ρ = τ.1`. Simplify using `[GlobalTheory.FlatLine.flatWt, GlobalTheory.FlatLine.parWt, Subtype.ext_iff, e, Ne.symm (e ▸ h1)]`. Simplify using `[GlobalTheory.FlatLine.flatWt, GlobalTheory.FlatLine.parWt, Subtype.ext_iff, e, h1, Ne.symm e, Ne.symm h1]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm : Dw.mult ρ = Dw.q` using `if_neg h`. Establish `h1 : ρ ≠ τ.1` using `fun e => h (e ▸ τ.2)`. Use `GlobalTheory.AllWt.wtOf_small (GlobalTheory.FlatLine.flatWt Dw τ) 0 ⟨_, GlobalTheory.AllWt.conj_mem h⟩ i (hm ▸ i.2)` as an intermediate fact. Simplify using `only [GlobalTheory.AllWt.conjEmb_conjEmb] at this`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `e : ρ = conjEmb τ.1`. Establish `h2 : conjEmb ρ = τ.1` using `by rw [e, GlobalTheory.AllWt.conjEmb_conjEmb]`. Establish `h3 : (⟨conjEmb ρ, GlobalTheory.AllWt.conj_mem h⟩ : GlobalTheory.AllWt.Psi H) = τ` using `Subtype.ext h2`. Simplify using `[GlobalTheory.FlatLine.flatWt, GlobalTheory.FlatLine.parWt, h3, Ne.symm h1, e.symm]`. Establish `h2 : conjEmb ρ ≠ τ.1` using `fun e' => e (by rw [← e', GlobalTheory.AllWt.conjEmb_conjEmb])`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.FlatLine.flatWt, GlobalTheory.FlatLine.parWt, Subtype.ext_iff, Ne.symm h1, Ne.symm e, h2]`.
+A detailed English derivation is pending.
 -/
 theorem neg_exOf_flatWt (τ : GlobalTheory.AllWt.Psi H) (z : Letter Dw) :
     -GlobalTheory.AllWt.exOf Dw (GlobalTheory.FlatLine.flatWt Dw τ) 0 (some z) = expo Dw (detSym Dw (fun _ => false) none τ.1) z := by
@@ -181,25 +179,23 @@ end GlobalTheory.ShFam.Horiz
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.Geo GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ShFam GlobalTheory.ShFam.Pad in
 
 /- English proof (translation)
-Introduce `D A N j S κ s Φ k τ hτ f hf hflat`. Establish `hσ : Formalism.L2.PjFree.GoodEmb κ.c κ.σ₀` using `rfl`. Take `⟨hU, -, -, -⟩` from `s.unf κ.σ₀ hσ`. Take `⟨g, e, Fu, ik, φ, hEF, hun⟩` from `hU.2.2.2.2.2`. Use `choose x hm hx using fun i : Fin Fu.n => GlobalTheory.T.exists_hermitianPeriodLatticeBasis_same_signature _ A.H S.Dw (Fu.Di i) τ.1 (Fu.sig i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : 1 ≤ S.Dw.p + S.Dw.q` using `by have := S.two_le; have := S.rank_eq; omega`. Establish `hh` using `GlobalTheory.ShFam.Hor.horFn_horOf (Fu := Fu) (τ := τ.1) (x := x) (hm := hm) s.T hσ hr κ.good hx`. Take `⟨b, hb⟩` from `GlobalTheory.ShFam.Horiz.rigid (Φ.C k) τ.2 hh hflat`. Establish `hΨ : ∀ ρ : D.host.E →+* ℂ, Formalism.L2.PjFree.relab κ.c κ.σ₀ ρ ∈ ((s.U κ.σ₀).X k).Ψ ↔ ρ (A.H.rt : D.host.E) = A.H.rt0` using `fun ρ => ((hU.2.1 k).2 _).trans (ReciprocityTheory.ChartRestriction.G.PullbackSections.UH.relab_rt κ.c κ.σ₀ hσ ρ)`. Establish `hrel : Formalism.L2.PjFree.relab κ.c κ.σ₀ τ.1 = τ.1` using `GlobalTheory.LettersCheck.relab_val κ.c τ.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ'` using `(hΨ τ.1).2 τ.2`. Take `⟨c₀, hc₀, hper⟩` from `GlobalTheory.T.period_relabel_matrix _ A.H S.Dw κ.l κ.c κ.σ₀ N ((s.U κ.σ₀).X k) (Fu.Di (ik k)) τ.1 hτ' (φ k) (x (ik k)) (hm (ik k)) hU.1 (hU.2.1 k).1 τ.2 hΨ (hEF k) (hx (ik k))`. Establish `key : ∀ y (hy : y ∈ ((s.U κ.σ₀).X k).dom), c₀ * GlobalTheory.FlatLine.horizGen ⟨_, hτ'⟩ y = b * Formalism.L2.PjFree.rdU (s.U κ.σ₀) f k y`. Introduce `y hy`. Take `⟨Pm, h1, h2, h3, h4, -⟩` from `hun k ⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Q : (Fu.Di (ik k)).La →+ (Letter S.Dw → ℂ)` to `{ toFun := fun v z => Pm v (e.symm z) map_zero' := by funext z; simp map_add' := fun a b => by funext z; simp }`. Establish `hQ : ∀ v z, Q v z = Formalism.L2.PjFree.perFr ((s.U κ.σ₀).X k) y (φ k v : Fin N → D.host.E) (Formalism.L2.PjFree.relab κ.c κ.σ₀ z.1) z.2` using `fun v z => by`. Use `h1 v (e.symm z)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `GlobalTheory.T.period_unfolded_family_point _ A.H S.Dw κ.l s.Xo κ.c _ _ s.T.Z κ.σ₀ N g (s.U κ.σ₀) e Fu k (ik k) ⟨y, hy⟩ Pm h2 h3 h4 Q (fun _ _ => rfl)`. Establish `e1` using `GlobalTheory.ShFam.Hor.horOf_eq κ.good hx _ (ik k) Q hP`. Rewrite using `[← hper y hy Q hQ, ← e1]`. Establish `hc` using `GlobalTheory.T.flag_torus_algebraically_closed _ A.H S.Dw κ.l s.Xo κ.c _ _ s.T.Z _ κ.e κ.σ₀ N (s.U κ.σ₀) Φ hσ hU s.geo k ⟨y, hy⟩`. Use `letI : Field (CAt κ.σ₀) := inferInstanceAs (Field ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp1, hp2⟩` from `(GlobalTheory.T.coordinate_sections_of_weight _ A.H S.Dw κ.l s.Xo κ.c _ _ s.T.Z _ κ.e (Φ.C k) (CAt κ.σ₀) ((s.U κ.σ₀).un k ⟨y, hy⟩) (GlobalTheory.AllWt.exOf S.Dw (GlobalTheory.FlatLine.flatWt S.Dw τ) 0) rfl f hf _).2 ⟨hc, rfl⟩`. Establish `hn : (fun z => -GlobalTheory.AllWt.exOf S.Dw (GlobalTheory.FlatLine.flatWt S.Dw τ) 0 (some z)) = expo S.Dw (detSym S.Dw (fun _ => false) none τ.1)` using `funext (GlobalTheory.ShFam.Horiz.neg_exOf_flatWt τ)`. Rewrite `hp2` using `[hn]`. Establish `hstr : p ≫ (Φ.C k).Y.str = spMap (κ.σ₀.comp κ.e.toRingHom)`. Rewrite using `[← (Φ.C k).π_str, ← Category.assoc, hp1, ← Category.assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrArg (· ≫ spMap κ.e.toRingHom) (GlobalTheory.ShFam.Horiz.ptF_jQ_over s.T.Z _)).trans (GlobalTheory.ShFam.HolFrames.spMap_comp₂ _ _).symm`. Establish `hin : GlobalTheory.ShFam.Hor.Inner (GlobalTheory.ShFam.Horiz.cxOf s.T.Z ((s.U κ.σ₀).un k ⟨y, hy⟩)).1` using `fun hb' => hb' ⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Use `hb (GlobalTheory.ShFam.Horiz.cxOf s.T.Z ((s.U κ.σ₀).un k ⟨y, hy⟩)) ⟨p, hstr⟩ _ hin hp1.symm (GlobalTheory.ShFam.Horiz.isCoord_frameCast _ hp2)` as an intermediate fact. Rewrite using `[this]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrd : Formalism.L2.PjFree.rdU (s.U κ.σ₀) f k y = Formalism.L2.PjFree.toC (evR s.Xo κ.c f ((s.U κ.σ₀).un k ⟨y, hy⟩))` using `dif_pos hy`. Conclude with `hrd.symm`. Establish `ee : (⟨_, hτ'⟩ : ((s.U κ.σ₀).X k).Ψ) = ⟨τ.1, hτ⟩` using `Subtype.ext hrel`. Rewrite `key` using `[ee]`. Establish `hg : ∀ y ∈ ((s.U κ.σ₀).X k).dom, GlobalTheory.FlatLine.horizGen ⟨τ.1, hτ⟩ y ≠ 0` using `fun y hy => inv_ne_zero (hy _).1`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hne : ((s.U κ.σ₀).X k).dom.Nonempty`. Take `⟨y₀, hy₀⟩` from `hne`. Establish `hb0 : b ≠ 0` using `fun h0 => mul_ne_zero hc₀ (hg y₀ hy₀) (by rw [key y₀ hy₀, h0, zero_mul])`. Use `⟨Units.mk0 (c₀ / b) (div_ne_zero hc₀ hb0), fun y hy => ?_⟩` and prove the remaining obligations. Use `key y hy` as an intermediate fact.
-
-Rewrite using `[Units.val_mk0, div_mul_eq_mul_div, this, mul_div_cancel_left₀ _ hb0]`. Conclude with `⟨1, fun y hy => (hne ⟨y, hy⟩).elim⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ShFam.Horiz.rdU_eq_horizGen : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (τ : GlobalTheory.AllWt.Psi A.H) (hτ : τ.1 ∈ ((s.U κ.σ₀).X k).Ψ), ∀ f ∈ GlobalTheory.AllWt.secZ s.Xo κ.c (GlobalTheory.AllWt.exOf S.Dw (GlobalTheory.FlatLine.flatWt S.Dw τ) 0), IsFlat (Φ.C k) τ.1 ((Φ.C k).val f) → ∃ b : ℂˣ, ∀ x ∈ ((s.U κ.σ₀).X k).dom, Formalism.L2.PjFree.rdU (s.U κ.σ₀) f k x = b * GlobalTheory.FlatLine.horizGen ⟨τ.1, hτ⟩ x := by
   intro D A N j S κ s Φ k τ hτ f hf hflat

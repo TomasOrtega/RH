@@ -10,55 +10,51 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Establish `appLE_eq : ∀ {X Y : Scheme.{0}} (f g : X ⟶ Y), f = g → ∀ (U : Y.Opens) (V : X.Opens) (e : V ≤ f ⁻¹ᵁ U) (e' : V ≤ g ⁻¹ᵁ U), f.appLE U V e = g.appLE U V e'`. Introduce `X Y f g h U V e e'`. Substitute `h` using the available equality. Both sides reduce to the same expression. Establish `hJP : ∀ (Q : Ideal C), Q.IsPrime → J ≤ Q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `Q hQ z hz`. Establish `hz2 : z ^ 2 ∈ J ^ 2` using `Ideal.pow_mem_pow hz 2`. Rewrite `hz2` using `[hJ, Ideal.mem_bot]`. Conclude with `hQ.mem_of_pow_mem 2 (hz2 ▸ Q.zero_mem)`. Establish `hsurj : ∀ t : PrimeSpectrum C, ∃ t' : PrimeSpectrum (C ⧸ J), (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))).base t' = t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Establish `: (t.asIdeal.map (Ideal.Quotient.mk J)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hJP _ t.2)`. Use `⟨⟨t.asIdeal.map (Ideal.Quotient.mk J), this⟩, ?_⟩` and prove the remaining obligations. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show Ideal.comap (Ideal.Quotient.mk J) (t.asIdeal.map (Ideal.Quotient.mk J)) = t.asIdeal`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Conclude with `sup_eq_left.mpr (hJP _ t.2)`. Establish `hpt : ∀ (u : Spec (CommRingCat.of C) ⟶ P), Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)) ≫ u = Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)) ≫ u4 → ∀ t : PrimeSpectrum C, u.base t = u4.base t`. Introduce `u hu t`. Take `⟨t', rfl⟩` from `hsurj t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg (fun h => h.base t') hu`. Set `c : PrimeSpectrum C` to `IsLocalRing.closedPoint C`. Establish `hc4 : u4.base c ∈ O` using `o4 trivial`. Take `⟨W1, hW1, hpW1, -⟩` from `exists_isAffineOpen_mem_and_subset (x := π1.base (u4.base c)) (U := ⊤) trivial`. Take `⟨W2, hW2, hpW2, -⟩` from `exists_isAffineOpen_mem_and_subset (x := π2.base (u4.base c)) (U := ⊤) trivial`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Z, hZ, hpZ, hZsub⟩` from `exists_isAffineOpen_mem_and_subset (x := u4.base c) (U := O ⊓ π1 ⁻¹ᵁ W1 ⊓ π2 ⁻¹ᵁ W2) ⟨⟨hc4, hpW1⟩, hpW2⟩`. Establish `hZO : Z ≤ O` using `fun z hz => (hZsub hz).1.1`. Establish `hZ1 : Z ≤ π1 ⁻¹ᵁ W1` using `fun z hz => (hZsub hz).1.2`. Establish `hZ2 : Z ≤ π2 ⁻¹ᵁ W2` using `fun z hz => (hZsub hz).2`. Establish `hZk : ∀ (u : Spec (CommRingCat.of C) ⟶ P), (∀ t : PrimeSpectrum C, u.base t = u4.base t) → ⊤ ≤ u ⁻¹ᵁ Z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu t _`. Use `show u.base t ∈ Z`. Rewrite using `[hu t]`. Conclude with `((IsLocalRing.specializes_closedPoint (R := C) t).map u4.base.hom.continuous).mem_open Z.isOpen hpZ`. Establish `z1` using `hZk u1 (hpt u1 e1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `z2` using `hZk u2 (hpt u2 e2)`. Establish `z3` using `hZk u3 (hpt u3 e3)`. Establish `z4` using `hZk u4 (fun _ => rfl)`. Establish `key : ∀ (w : Spec (CommRingCat.of C) ⟶ P) (hw : ⊤ ≤ w ⁻¹ᵁ Z), w.appLE Z ⊤ hw ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom ≫ CommRingCat.ofHom (Ideal.Quotient.mk J) = (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)) ≫ w).appLE Z ⊤ (fun _ _ => hw trivial) ≫ (Scheme.ΓSpecIso (CommR …`. Introduce `w hw`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.appLE_comp_appLE (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))) w Z ⊤ ⊤ hw (fun _ _ => trivial), Category.assoc, ← Scheme.ΓSpecIso_naturality, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Establish `hmod : ∀ (u : Spec (CommRingCat.of C) ⟶ P) (hu : ⊤ ≤ u ⁻¹ᵁ Z), Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)) ≫ u = Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)) ≫ u4 → ∀ v, (u.appLE Z ⊤ hu ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom).hom v - (u4.appLE Z ⊤ z4 ≫ (Scheme.ΓS …`. Introduce `u hu he v`. Rewrite using `[← Ideal.Quotient.eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `k1` using `congrArg (fun φ => φ.hom v) (key u hu)`. Establish `k4` using `congrArg (fun φ => φ.hom v) (key u4 z4)`. Establish `k` using `appLE_eq _ _ he Z ⊤ (fun _ _ => hu trivial) (fun _ _ => z4 trivial)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at k1 k4 ⊢`. Rewrite using `[k1, k4, k]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a1, ha1⟩ : ∃ a : Γ(P, Z) →+* C, a = (u1.appLE Z ⊤ z1 ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom).hom` from `⟨_, rfl⟩`. Take `⟨a2, ha2⟩ : ∃ a : Γ(P, Z) →+* C, a = (u2.appLE Z ⊤ z2 ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom).hom` from `⟨_, rfl⟩`. Take `⟨a3, ha3⟩ : ∃ a : Γ(P, Z) →+* C, a = (u3.appLE Z ⊤ z3 ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom).hom` from `⟨_, rfl⟩`. Take `⟨a4, ha4⟩ : ∃ a : Γ(P, Z) →+* C, a = (u4.appLE Z ⊤ z4 ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom).hom` from `⟨_, rfl⟩`. Establish `d1 : ∀ v, a1 v - a4 v ∈ J` using `by rw [ha1, ha4]; exact hmod u1 z1 e1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `d2 : ∀ v, a2 v - a4 v ∈ J` using `by rw [ha2, ha4]; exact hmod u2 z2 e2`. Establish `d3 : ∀ v, a3 v - a4 v ∈ J` using `by rw [ha3, ha4]; exact hmod u3 z3 e3`. Establish `hsq : ∀ a b : C, a ∈ J → b ∈ J → a * b = 0`. Introduce `a b ha hb`. Establish `hab : a * b ∈ J ^ 2` using `by rw [pow_two]; exact Ideal.mul_mem_mul ha hb`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hab` using `[hJ]`. Conclude with `(Ideal.mem_bot).mp hab`. Set `ψ : Γ(P, Z) →+* C` to `{ toFun := fun v => a1 v - a2 v - a3 v + a4 v + a4 v map_one' := by simp only [map_one]; ring map_mul' := by`. Introduce `v w`. Simplify using `only [map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z11` using `hsq _ _ (d1 v) (d1 w)`. Establish `z12` using `hsq _ _ (d1 v) (d2 w)`. Establish `z13` using `hsq _ _ (d1 v) (d3 w)`. Establish `z21` using `hsq _ _ (d2 v) (d1 w)`. Establish `z22` using `hsq _ _ (d2 v) (d2 w)`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `z23` using `hsq _ _ (d2 v) (d3 w)`. Establish `z31` using `hsq _ _ (d3 v) (d1 w)`. Establish `z32` using `hsq _ _ (d3 v) (d2 w)`. Establish `z33` using `hsq _ _ (d3 v) (d3 w)`. Take the linear combination `z11 - z22 - z33 - (z11 - z12 - z13 - z21 + z22 + z23 - z31 + z32 + z33)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_zero' := by simp only [map_zero]; ring`. Use the proof step `map_add' := by intro v w; simp only [map_add]; ring }`. Establish `hc : ∀ (Wi : G1.Opens) (πi : P ⟶ G1) (hi : Z ≤ πi ⁻¹ᵁ Wi) (u u' : Spec (CommRingCat.of C) ⟶ P) (hu : ⊤ ≤ u ⁻¹ᵁ Z) (hu' : ⊤ ≤ u' ⁻¹ᵁ Z), u ≫ πi = u' ≫ πi → ∀ r, (u.appLE Z ⊤ hu ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom).hom ((πi.appLE Wi Z hi).hom r) = (u'.appLE Z ⊤ hu' ≫ (Scheme …`. Introduce `Wi πi hi u u' hu hu' h r`. Use `congrArg (fun φ => (φ ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom).hom r) ((Scheme.Hom.appLE_comp_appLE u πi Wi Z ⊤ hi hu).trans ((appLE_eq _ _ h Wi ⊤ _ _).trans (Scheme.Hom.appLE_comp_appLE u' πi Wi Z ⊤ hi hu').symm))` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `this` using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Establish `hside : ∀ (Wi : G1.Opens) (πi : P ⟶ G1) (hWi : IsAffineOpen Wi) (hi : Z ≤ πi ⁻¹ᵁ Wi), (∀ r, ψ ((πi.appLE Wi Z hi).hom r) = a4 ((πi.appLE Wi Z hi).hom r)) → (Spec.map (CommRingCat.ofHom ψ) ≫ hZ.fromSpec) ≫ πi = (Spec.map (CommRingCat.ofHom a4) ≫ hZ.fromSpec) ≫ πi`. Introduce `Wi πi hWi hi hr`. Rewrite using `[Category.assoc, Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec πi hWi hZ hi, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `r`. Conclude with `hr r`. Establish `hψ : CommRingCat.ofHom ψ = CommRingCat.ofHom a4`. Establish `hfrom : Spec.map (CommRingCat.ofHom ψ) ≫ hZ.fromSpec = Spec.map (CommRingCat.ofHom a4) ≫ hZ.fromSpec`. Apply `hmono` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hside W1 π1 hW1 hZ1` to reduce the goal to its premises. Introduce `r`. Establish `q12` using `hc W1 π1 hZ1 u1 u2 z1 z2 h12 r`. Establish `q34` using `hc W1 π1 hZ1 u3 u4 z3 z4 h34 r`. Rewrite `q12` using `[← ha1, ← ha2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `q34` using `[← ha3, ← ha4]`. Use `show a1 _ - a2 _ - a3 _ + a4 _ + a4 _ = a4 _`. Rewrite using `[q12, q34]`. Expand and normalize the polynomial expressions, which then agree. Apply `hside W2 π2 hW2 hZ2` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r`. Establish `q13` using `hc W2 π2 hZ2 u1 u3 z1 z3 h13 r`. Establish `q24` using `hc W2 π2 hZ2 u2 u4 z2 z4 h24 r`. Rewrite `q13` using `[← ha1, ← ha3]`. Rewrite `q24` using `[← ha2, ← ha4]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show a1 _ - a2 _ - a3 _ + a4 _ + a4 _ = a4 _`. Rewrite using `[q13, q24]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hfrom` using `[cancel_mono]`. Conclude with `Spec.map_inj.mp hfrom`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨s', hs'⟩ : ∃ s' : Γ(P, Z), s' = (P.presheaf.map (homOfLE hZO).op).hom s` from `⟨_, rfl⟩`. Establish `hfin : a1 s' - a2 s' - a3 s' + a4 s' = 0`. Establish `h` using `congrArg (fun φ => φ.hom s') hψ`. Simplify using `only [CommRingCat.hom_ofHom] at h`. Express the relevant statement in the definitionally equal form `a1 s' - a2 s' - a3 s' + a4 s' + a4 s' = a4 s' at h`.
-
-Take the linear combination `h`. Establish `hres : ∀ (u : Spec (CommRingCat.of C) ⟶ P) (hu : ⊤ ≤ u ⁻¹ᵁ O) (hz : ⊤ ≤ u ⁻¹ᵁ Z), (u.appLE O ⊤ hu).hom s = (u.appLE Z ⊤ hz).hom s'`. Introduce `u hu hz`. Rewrite using `[hs', ← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.map_appLE]`. Rewrite using `[hres u1 o1 z1, hres u2 o2 z2, hres u3 o3 z3, hres u4 o4 z4]`.
-
-Apply `(Scheme.ΓSpecIso (CommRingCat.of C)).commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises. Simplify using `only [map_add]`. Establish `hiso : ∀ (u : Spec (CommRingCat.of C) ⟶ P) (hz : ⊤ ≤ u ⁻¹ᵁ Z), (Scheme.ΓSpecIso (CommRingCat.of C)).commRingCatIsoToRingEquiv ((u.appLE Z ⊤ hz).hom s') = (u.appLE Z ⊤ hz ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom).hom s'` using `fun _ _ => rfl`. Rewrite using `[hiso u1 z1, hiso u2 z2, hiso u3 z3, hiso u4 z4, ← ha1, ← ha2, ← ha3, ← ha4]`. Take the linear combination `hfin`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem isHecke_div_and_resEtaPow_div {P G1 : Scheme.{0}} (π1 π2 : P ⟶ G1)
     (hmono : ∀ (T : Scheme.{0}) (f1 f2 : T ⟶ P), f1 ≫ π1 = f2 ≫ π1 → f1 ≫ π2 = f2 ≫ π2 → f1 = f2)
@@ -250,17 +246,17 @@ private theorem isHecke_div_and_resEtaPow_div {P G1 : Scheme.{0}} (π1 π2 : P �
   linear_combination hfin
 
 /- English proof (translation)
-Apply `(Scheme.ΓSpecIso (CommRingCat.of A)).commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises. Establish `hiso : ∀ x, (Scheme.ΓSpecIso (CommRingCat.of A)).commRingCatIsoToRingEquiv x = (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom x` using `fun _ => rfl`. Simplify using `only [map_add, hiso]`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_localization` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `m hm`. Establish `natm : ∀ (u : Spec (CommRingCat.of A) ⟶ P) (hu : ⊤ ≤ u ⁻¹ᵁ O), (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.AtPrime m))) ≫ u).appLE O ⊤ (fun _ _ => hu trivial) ≫ (Scheme.ΓSpecIso (CommRingCat.of (Localization.AtPrime m))).hom = u.appLE O ⊤ hu ≫ (Scheme.ΓSpecIso (CommR …`. Introduce `u hu`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.AtPrime m)))) u O ⊤ ⊤ hu (fun _ _ => trivial), Category.assoc, ← Scheme.ΓSpecIso_naturality, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `natE : ∀ (u : Spec (CommRingCat.of A) ⟶ P) (hu : ⊤ ≤ u ⁻¹ᵁ O), (Scheme.ΓSpecIso (CommRingCat.of (Localization.AtPrime m))).hom.hom (((Spec.map (CommRingCat.ofHom (algebraMap A (Localization.AtPrime m))) ≫ u).appLE O ⊤ (fun _ _ => hu trivial)).hom s) = algebraMap A (Localization.A …`. Introduce `u hu`. Use `congrArg (fun φ => φ.hom s) (natm u hu)` as an intermediate fact. Simplify `this` using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom]`. Establish `hsq : Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (J.map (algebraMap A (Localization.AtPrime m))))) ≫ Spec.map (CommRingCat.ofHom (algebraMap A (Localization.AtPrime m))) = Spec.map (CommRingCat.ofHom (Ideal.quotientMap (J.map (algebraMap A (Localization.AtPrime m))) (algebraM …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Establish `he : ∀ (u : Spec (CommRingCat.of A) ⟶ P), Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)) ≫ u = Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)) ≫ u4 → Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (J.map (algebraMap A (Localization.AtPrime m))))) ≫ Spec.map (CommRingCat.of …`. Introduce `u hu`. Rewrite using `[← Category.assoc, hsq, Category.assoc, hu, ← Category.assoc, ← hsq, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hloc` using `isHecke_div_and_resEtaPow_div π1 π2 hmono (Localization.AtPrime m) (J.map (algebraMap A (Localization.AtPrime m))) (by rw [← Ideal.map_pow, hJ, Ideal.map_bot]) (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.AtPrime m))) ≫ u1) (Spec.map (CommRingCat.ofHom (algebraMap A ( …`. Establish `h` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of (Localization.AtPrime m))).hom.hom hloc`. Simplify using `only [map_add] at h`. Rewrite `h` using `[natE u1 o1, natE u2 o2, natE u3 o3, natE u4 o4]`. Rewrite using `[map_sub, map_add, map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem isPair_and_isPair_of_isTriple {P G1 : Scheme.{0}} (π1 π2 : P ⟶ G1)
     (hmono : ∀ (T : Scheme.{0}) (f1 f2 : T ⟶ P), f1 ≫ π1 = f2 ≫ π1 → f1 ≫ π2 = f2 ≫ π2 → f1 = f2)
@@ -337,21 +333,19 @@ private theorem isPair_and_isPair_of_isTriple {P G1 : Scheme.{0}} (π1 π2 : P �
   linear_combination h
 
 /- English proof (translation)
-Introduce `S G _ B _ _ b A _ g J hJ x y hx1 hy1 V hx hy hxy h1 f`. Establish `hmono : ∀ (T : Scheme.{0}) (f1 f2 : T ⟶ (G ⊗ G).left), f1 ≫ (fst G G).left = f2 ≫ (fst G G).left → f1 ≫ (snd G G).left = f2 ≫ (snd G G).left → f1 = f2` using `fun T f1 f2 k1 k2 => Over.tensorObj_ext f1 f2 k1 k2`. Establish `eq_of : ∀ (a c : Over.mk (spMap g ≫ b) ⟶ G), spMap (Ideal.Quotient.mk J) ≫ a.left = spMap (Ideal.Quotient.mk J) ≫ (1 : Over.mk (spMap g ≫ b) ⟶ G).left → spMap (Ideal.Quotient.mk J) ≫ c.left = spMap (Ideal.Quotient.mk J) ≫ (1 : Over.mk (spMap g ≫ b) ⟶ G).left → spMap (Ideal.Quotie …`. Introduce `a c ha hc`. Apply `hmono` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst, ha]`. Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_snd, lift_snd, hc]`. Establish `m1 : (lift x y).left ≫ (μ : G ⊗ G ⟶ G).left = (x * y).left`. Rewrite using `[← Over.comp_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `m2 : (lift x 1).left ≫ (μ : G ⊗ G ⟶ G).left = x.left`. Rewrite using `[← Over.comp_left]`. Use `show (x * 1).left = x.left`. Rewrite using `[_root_.mul_one]`. Establish `m3 : (lift 1 y).left ≫ (μ : G ⊗ G ⟶ G).left = y.left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left]`. Use `show (1 * y).left = y.left`. Rewrite using `[_root_.one_mul]`. Establish `m4 : (lift (1 : Over.mk (spMap g ≫ b) ⟶ G) 1).left ≫ (μ : G ⊗ G ⟶ G).left = (1 : Over.mk (spMap g ≫ b) ⟶ G).left`. Rewrite using `[← Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ((1 : Over.mk (spMap g ≫ b) ⟶ G) * 1).left = _`. Rewrite using `[_root_.mul_one]`. Establish `oo : ∀ (u : (Over.mk (spMap g ≫ b)).left ⟶ (G ⊗ G).left) (w : (Over.mk (spMap g ≫ b)).left ⟶ G.left), u ≫ (μ : G ⊗ G ⟶ G).left = w → ⊤ ≤ w ⁻¹ᵁ V → ⊤ ≤ u ⁻¹ᵁ ((μ : G ⊗ G ⟶ G).left ⁻¹ᵁ V)`. Introduce `u w h hw`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `hw`. Establish `conv : ∀ (u : (Over.mk (spMap g ≫ b)).left ⟶ (G ⊗ G).left) (w : (Over.mk (spMap g ≫ b)).left ⟶ G.left) (h : u ≫ (μ : G ⊗ G ⟶ G).left = w) (hw : ⊤ ≤ w ⁻¹ᵁ V) (hu : ⊤ ≤ u ⁻¹ᵁ ((μ : G ⊗ G ⟶ G).left ⁻¹ᵁ V)), (w.appLE V ⊤ hw).hom f = (u.appLE ((μ : G ⊗ G ⟶ G).left ⁻¹ᵁ V) ⊤ hu).hom ((( …`. Introduce `u w h hw hu`. Substitute `h` using the available equality. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.appLE_comp_appLE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `o1` using `oo _ _ m1 hxy`. Establish `o2` using `oo _ _ m2 hx`. Establish `o3` using `oo _ _ m3 hy`. Establish `o4` using `oo _ _ m4 h1`. Rewrite using `[conv _ _ m1 hxy o1, conv _ _ m2 hx o2, conv _ _ m3 hy o3, conv _ _ m4 h1 o4]`.
-
-Conclude with `isPair_and_isPair_of_isTriple (fst G G).left (snd G G).left hmono A J hJ (lift x y).left (lift x 1).left (lift 1 y).left (lift (1 : Over.mk (spMap g ≫ b) ⟶ G) 1).left (by rw [← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst]) (by rw [← Over.comp_left, ← Over.comp_left, lift …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqzero_add : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (B : Type) [CommRing B] [IsLocalRing B] (b : Sp B ⟶ S) (A : Type) [CommRing A] (g : B →+* A) (J : Ideal A), J ^ 2 = ⊥ → ∀ x y : Over.mk (spMap g ≫ b) ⟶ G, spMap (Ideal.Quotient.mk J) ≫ x.left = spMap (Ideal.Quotient.mk J) ≫ (1 : Over.mk (spMap g ≫ b) ⟶ G).left → spMap (Ideal.Quotient.mk J) ≫ y.left = spMap (Ideal.Quotient.mk J) ≫ (1 : Over.mk (spMap g ≫ b) ⟶ G).left → ∀ (V : G.left.Opens) (hx : ⊤ ≤ x.left ⁻¹ᵁ V) (hy : ⊤ ≤ y.left ⁻¹ᵁ V) (hxy : ⊤ ≤ (x * y).left ⁻¹ᵁ V) (h1 : ⊤ ≤ (1 : Over.mk (spMap g ≫ b) ⟶ G).left ⁻¹ᵁ V) (f : Γ(G.left, V)), ((x * y).left.appLE V ⊤ hxy).hom f + ((1 : Over.mk (spMap g ≫ b) ⟶ G).left.appLE V ⊤ h1).hom f = (x.left.appLE V ⊤ hx).hom f + (y.left.appLE V ⊤ hy).hom f := by
   intro S G _ B _ _ b A _ g J hJ x y hx1 hy1 V hx hy hxy h1 f

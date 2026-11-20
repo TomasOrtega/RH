@@ -10,11 +10,9 @@ open Matrix
 variable {M g : ℕ}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective L.mulVec`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker L.mulVecLin`. Establish `h2 : Module.finrank ℝ (LinearMap.range L.mulVecLin) = g` using `hL`. Rewrite `h` using `[h2, Module.finrank_fin_fun]`. Establish `h3 : Module.finrank ℝ (LinearMap.ker L.mulVecLin) = 0` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : LinearMap.ker L.mulVecLin = ⊥` using `Submodule.finrank_eq_zero.mp h3`. Conclude with `LinearMap.ker_eq_bot.mp h4`. Establish `hP : (Matrix.diagonal D).PosDef` using `Matrix.posDef_diagonal_iff.mpr hD`. Establish `h` using `hP.conjTranspose_mul_mul_same hinj`. Rewrite `h` using `[Matrix.conjTranspose_eq_transpose_of_trivial]`.
-
-Conclude with `h.det_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_pos (L : Matrix (Fin M) (Fin g) ℝ) (hL : L.rank = g) (D : Fin M → ℝ)
     (hD : ∀ k, 0 < D k) : 0 < (L.transpose * Matrix.diagonal D * L).det := by
@@ -31,9 +29,9 @@ theorem det_pos (L : Matrix (Fin M) (Fin g) ℝ) (hL : L.rank = g) (D : Fin M �
   exact h.det_pos
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.ChartRestriction.DS.S7.det_mul_eq_sum_submatrix]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Establish `h : (L.transpose * Matrix.diagonal D).submatrix id (S.1.orderEmbOfFin S.2) = (L.submatrix (S.1.orderEmbOfFin S.2) id).transpose * Matrix.diagonal (fun j => D (S.1.orderEmbOfFin S.2 j))`. Use extensionality with `i j`. Simplify using `[Matrix.mul_diagonal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, Matrix.det_mul, Matrix.det_transpose, Matrix.det_diagonal]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_eq_sum (L X : Matrix (Fin M) (Fin g) ℝ) (D : Fin M → ℝ) :
     (L.transpose * Matrix.diagonal D * X).det = ∑ S : {S : Finset (Fin M) // S.card = g},
@@ -50,7 +48,7 @@ theorem det_eq_sum (L X : Matrix (Fin M) (Fin g) ℝ) (D : Fin M → ℝ) :
   ring
 
 /- English proof (translation)
-The claim follows from `|A.det * (A.updateCol k c).det| ≤ K * ‖c‖ * (A.det * A.det) := by by_cases hA : A.det = 0 · exact ⟨0, le_rfl, fun c k => by simp [hA]⟩ · let f : (Fin g → ℝ) →L[ℝ] (Fin g → ℝ) := LinearMap.toContinuousLinearMap (Matrix.cramer A) have hp : 0 < |A.det| := abs_pos.mpr hA refine ⟨‖f‖ …`.
+A detailed English derivation is pending.
 -/
 theorem block_bound (A : Matrix (Fin g) (Fin g) ℝ) : ∃ K : ℝ, 0 ≤ K ∧
     ∀ (c : Fin g → ℝ) (k : Fin g),
@@ -71,21 +69,19 @@ theorem block_bound (A : Matrix (Fin g) (Fin g) ℝ) : ∃ K : ℝ, 0 ≤ K ∧
       _ = _ := by field_simp
 
 /- English proof (translation)
-Introduce `M g L hL`. Use `choose K hK0 hK using fun S : {S : Finset (Fin M) // S.card = g} => block_bound (L.submatrix (S.1.orderEmbOfFin S.2) id)`. Use `⟨∑ S, K S, fun D b hD => ?_⟩` and prove the remaining obligations. Establish `hKs : 0 ≤ ∑ S, K S` using `Finset.sum_nonneg fun S _ => hK0 S`. Establish `hdet` using `det_pos L hL D hD`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set A := L.transpose * Matrix.diagonal D * L with hA`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).mpr fun k => ?_` and prove the remaining obligations. Establish `hx : A.det * (A⁻¹ * L.transpose * Matrix.diagonal D).mulVec b k = (L.transpose * Matrix.diagonal D * L.updateCol k b).det`. Establish `h1` using `Matrix.det_smul_inv_mulVec_eq_cramer A ((L.transpose * Matrix.diagonal D).mulVec b) (isUnit_iff_ne_zero.mpr hdet.ne')`. Establish `h2` using `congrFun h1 k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[Matrix.cramer_apply, Matrix.mulVec_mulVec, ← Matrix.mul_assoc]`. Rewrite using `[← smul_eq_mul, ← Pi.smul_apply, h2]`. Use `congr 1`. Use extensionality with `i j`. Distinguish the cases in `hj : j = k`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hj` using the available equality. Simplify using `[Matrix.mul_apply (M := L.transpose * Matrix.diagonal D), Matrix.mulVec, dotProduct]`. Simplify using `[hA, Matrix.mul_apply (M := L.transpose * Matrix.diagonal D), Matrix.updateCol_ne hj]`. Establish `hb : |(L.transpose * Matrix.diagonal D * L.updateCol k b).det| ≤ (∑ S, K S) * ‖b‖ * A.det`. Rewrite using `[hA, det_eq_sum, det_eq_sum, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun S _ => ?_)` and prove the remaining obligations. Use `set e := S.1.orderEmbOfFin S.2 with he`. Establish `hp : 0 ≤ ∏ j, D (e j)` using `Finset.prod_nonneg fun j _ => (hD _).le`. Establish `hu : (L.updateCol k b).submatrix e id = (L.submatrix e id).updateCol k (b ∘ e)`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.updateCol_ne hj]`. Establish `hn : ‖b ∘ e‖ ≤ ‖b‖` using `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).mpr fun i => norm_le_pi_norm b (e i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hKS : K S ≤ ∑ S, K S` using `Finset.single_le_sum (f := K) (fun S _ => hK0 S) (Finset.mem_univ S)`. Rewrite using `[abs_mul, abs_of_nonneg hp, hu, mul_left_comm]`. Use `mul_le_mul_of_nonneg_left ((hK S (b ∘ e) k).trans ?_) hp` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul hKS hn (norm_nonneg _) hKs) (mul_self_nonneg _)`. Rewrite `hb` using `[← hx, abs_mul, abs_of_pos hdet, mul_comm]`.
-
-Conclude with `le_of_mul_le_mul_right hb hdet`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weighted_least_squares_bound : ∀ (M g : ℕ) (L : Matrix (Fin M) (Fin g) ℝ), L.rank = g →
     ∃ K : ℝ, ∀ (D : Fin M → ℝ) (b : Fin M → ℝ), (∀ k, 0 < D k) →

@@ -24,19 +24,17 @@ open scoped TensorProduct Matrix
 open GlobalTheory.ShortMove GlobalTheory.ShortMoveIso
 
 /- English proof (translation)
-Establish `hemb : ∀ τ' : E →+* ℂ, Data.emb τ' (γ.1 *ᵥ v) = (γ.1.map τ') *ᵥ Data.emb τ' v` using `fun τ' => by`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb, Matrix.mulVec, dotProduct, map_sum]`. Establish `hdetγ : ∀ τ' : E →+* ℂ, IsUnit ((γ.1.map τ').det)` using `fun τ' => by`. Establish `hd : (γ.1.map τ').det = τ' γ.1.det` using `(RingHom.map_det τ' _).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hd]`. Conclude with `(Matrix.isUnits_det_units γ).map τ'`. Unfold `perFr`. Rewrite using `[hp, hG]`. Distinguish the cases in `h1 : τ ∈ X.Ψ`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos h1, dif_pos ((hΨ τ).2 h1)] split_ifs with h2`. Rewrite using `[hm τ h1, hemb, Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec (Data.emb τ v) (γ.1.map τ)⁻¹, Matrix.nonsing_inv_mul _ (hdetγ τ), Matrix.one_mulVec]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h1, dif_neg (mt (hΨ τ).1 h1)]`. Distinguish the cases in `h3 : conjEmb τ ∈ X.Ψ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos h3, dif_pos ((hΨ _).2 h3)] split_ifs with h4`. Establish `hu : (γ.1.map (conjEmb τ))ᵀ * X.Gm.map (conjEmb τ) * (γ.1.map (conjEmb τ)).map (starRingEnd ℂ) = X.Gm.map (conjEmb τ)`. Establish `e` using `congrArg (fun M => M.map (conjEmb τ)) (ustab_mat (Λ := ⊤) (γ := γ) ⟨hγ, fun _ => Iff.rfl⟩)`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map] at e`. Establish `hc : (γ.1.map (conjEmb τ)).map (starRingEnd ℂ) = (γ.1.map cc).map (conjEmb τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `[cc]`. Rewrite using `[hc]`. Conclude with `e`. Establish `hcol : ∀ j, col (γ.1.map (conjEmb τ) * mat x ⟨conjEmb τ, h3⟩) j = (γ.1.map (conjEmb τ)) *ᵥ col (mat x ⟨conjEmb τ, h3⟩) j` using `fun j => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `a`. Simplify using `[col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Establish `e1 : ∀ (A : Matrix (Fin r) (Fin r) ℂ) (c Y : Fin r → ℂ), (A *ᵥ c) ⬝ᵥ Y = c ⬝ᵥ (Aᵀ *ᵥ Y)` using `fun A c Y => by rw [Matrix.dotProduct_mulVec c Aᵀ Y, Matrix.vecMul_transpose]`. Rewrite using `[hm _ h3, hcol, hemb, hermC_eq, hermC_eq, star_mulVec', e1, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hu]`. Both sides reduce to the same expression.
-
-Rewrite using `[dif_neg h3, dif_neg (mt (hΨ _).1 h3)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perFr_of_unitary {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X X' : Data E r)
     (hΨ : ∀ τ, τ ∈ X'.Ψ ↔ τ ∈ X.Ψ) (hG : X'.Gm = X.Gm) (hp : X'.p0 = X.p0) {x : Frame X.Ψ r} {x' : Frame X'.Ψ r}
@@ -83,7 +81,7 @@ theorem perFr_of_unitary {E : Type} [Field E] [NumberField E] [IsCMField E] {r :
   rw [dif_neg h3, dif_neg (mt (hΨ _).1 h3)]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.UnifPoint.point_eq_iff_isometry_closed GlobalTheory.thetaUnifAV_all GlobalTheory.firstFiveLaws.1 E H Dw l Xo σ' g ty hr hσ hty (F.Di k) (F.Di k') (F.t k) (F.t k') P P' (F.u k P) (F.u k' P') (F.ex k P) (F.ex k' P') ⟨F.over_σ k P hP, hP, ⟨F.ex_add k P hP, F.ex_onto k …`.
+A detailed English derivation is pending.
 -/
 theorem point_eq_of_isometry {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {σ' : KA l →+* ℂ} {g : ℕ}
@@ -108,19 +106,19 @@ theorem point_eq_of_isometry {E : Type} [Field E] [NumberField E] [IsCMField E] 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨hΛ, hm⟩` from `hm`. Take `⟨hΛ', hm'⟩` from `hm'`. Take `⟨ht1, ht2⟩` from `transport (finHom V) (latGHat V) (fun g => (GlobalTheory.MarkCoset.latG_spec D V g).2) l.M γ h κ hκ`. Establish `hmem : ∀ v, v ∈ X.Λ ↔ finVec V v ∈ latGHat V h` using `fun v => by`. Rewrite using `[← (GlobalTheory.MarkCoset.latG_spec D V h).1, ← SetLike.mem_coe, hΛ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.ext_iff.1 (Set.image_id _) v`. Establish `hmem' : ∀ v, v ∈ X'.Λ ↔ finVec V v ∈ latGHat V (γ * h * κ)` using `fun v => by`. Rewrite using `[← (GlobalTheory.MarkCoset.latG_spec D V _).1, ← SetLike.mem_coe, hΛ']`. Conclude with `Set.ext_iff.1 (Set.image_id _) v`. Establish `hlat : ∀ v, v ∈ X.Λ ↔ δ.1 *ᵥ v ∈ X'.Λ` using `fun v => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmem, hmem', ht1, hδf]`. Establish `hM0 : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `hri : ∀ v, δ.1 *ᵥ ((δ⁻¹).1 *ᵥ v) = v` using `fun v => by rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hli : ∀ v, (δ⁻¹).1 *ᵥ (δ.1 *ᵥ v) = v` using `fun v => by rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Set `ψ : X.Λ ≃ₗ[𝓞 D.host.E] X'.Λ` to `{ toFun := fun v => ⟨δ.1 *ᵥ v.1, (hlat _).1 v.2⟩ invFun := fun v => ⟨(δ⁻¹).1 *ᵥ v.1, (hlat _).2 (by rw [hri]; exact v.2)⟩ map_add' := fun u v => Subtype.ext (Matrix.mulVec_add δ.1 u.1 v.1) map_smul' := fun a v => Subtype.ext (Matrix.mulVec_smul δ.1 a v.1) left_inv := fun v => Sub …`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `gam : A.La ≃ₗ[𝓞 D.host.E] A'.La` to `φ.trans (ψ.trans φ'.symm)`. Establish `hgam : ∀ a, (φ' (gam a) : Fin V.rank → D.host.E) = δ.1 *ᵥ (φ a : Fin V.rank → D.host.E)`. Introduce `a`. Simplify using `[gam, ψ]`. Establish `hG : X.Gm = -V.gram.transpose` using `hW.1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG' : X'.Gm = -V.gram.transpose` using `hW'.1`. Establish `hξ : X'.ξ0 = X.ξ0` using `hW'.2.trans hW.2.symm`. Use `⟨gam, fun a b => ?_, fun a ha => ?_, hgam⟩` and prove the remaining obligations. Establish `h1` using `hE' (gam a) (gam b)`. Rewrite `h1` using `[hgam, hgam, hG', hξ, hδu, ← hG, ← hE a b]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h1` after adjusting the coercions. Take `⟨z, hz, e⟩` from `ht2 (finVec V (φ (t (s a)) : Fin V.rank → D.host.E)) (finVec V (φ' (t' a) : Fin V.rank → D.host.E)) _ _ (hs a ha) (hm _ (map_mem_half _ s a ha)) (hm' a ha)`. Take `⟨w, hw, e'⟩` from `GlobalTheory.MarkCoset.finVec_div V l.M hM0 (δ.1 *ᵥ (φ (t (s a)) : Fin V.rank → D.host.E) - (φ' (t' a) : Fin V.rank → D.host.E)) z (by`. Rewrite using `[← e, hδf]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `TensorProduct.tmul_sub _ _ _)`. Use `⟨φ'.symm ⟨w, (hmem' w).2 (hw ▸ hz)⟩, φ'.injective (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[hgam, sub_eq_iff_eq_add'.1 e', map_add, map_nsmul, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem marked_isometry_half {D : D7} (V : HSp D) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H}
     (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
@@ -200,25 +198,25 @@ variable {D : D7} (V : HSp D) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hty` using `(GlobalTheory.Relab.relab_good _ H l c σ hσ).2.2.2 Dw g e`. Take `⟨k, x, t, ht⟩` from `hU.2.2.1 y`. Take `⟨h1, h4⟩` from `GlobalTheory.UnitFrames.frame_mul_triangular_orthonormal D.host.E V.rank (U.X k).p0 (U.X k).Ψ (U.X k).Gm (U.X k).Gm_herm`. Take `⟨x₁, b, hb, ho, hx₁⟩` from `h1 x.1 x.2`. Establish `hx₁d : x₁ ∈ (U.X k).dom` using `((GlobalTheory.UnitFrames.unit_frame_eq_orthonormal_mul_triangular D.host.E V.rank (U.X k).p0 (U.X k).Ψ (U.X k).Gm (U.X k).Gm_herm).2.1 x₁ ho).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t', ht'⟩` from `(hU.2.2.2.1 k k x ⟨x₁, hx₁d⟩).2 ⟨1, one_mem _, b, hb, by`. Establish `: lact 1 x.1 = x.1` using `funext fun τ => by`. Express the relevant statement in the definitionally equal form `((1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map τ.1 * mat x.1 τ) = _`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this, ← hx₁]⟩`. Take `⟨θ, hθ⟩` from `(GlobalTheory.Member.infiniteAdele_bijective D).1`. Take `⟨hAr, -, hL⟩` from `GlobalTheory.T.archimedeanMatrix_unitary_continuous_multiplicative D V θ hθ`. Establish `hG : ∀ k, (U.X k).Gm = -V.gramᵀ` using `fun k => (hW k).1`. Establish `hmem : ∀ k (τ : D.host.E →+* ℂ), τ ∈ (U.X k).Ψ ↔ τ D.host.sqrtMinusD = D.host.φ₀ D.host.sqrtMinusD`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k τ`. Rewrite using `[(hU.2.1 k).2 τ, hι.rt, hι.rt0]`. Establish `hex : ∀ τ : D.host.E →+* ℂ, ∃ u : Matrix (Fin V.rank) (Fin V.rank) ℂ, ∀ hτ : τ ∈ (U.X k).Ψ, uᵀ * (-V.gramᵀ).map τ * u.map (starRingEnd ℂ) = (-V.gramᵀ).map τ ∧ mat x₁ ⟨τ, hτ⟩ = u * x₀ τ`. Introduce `τ`. Distinguish the cases in `hτ : τ ∈ (U.X k).Ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨u, hu⟩` from `h4 τ (x₀ τ) (mat x₁ ⟨τ, hτ⟩) (hx₀ k τ hτ) ((ho ⟨τ, hτ⟩).trans (hx₀ k τ hτ).symm)`. Rewrite `hu` using `[hG]`. Conclude with `⟨u, fun _ => hu⟩`. Conclude with `⟨1, fun h' => absurd h' hτ⟩`. Use `choose u hu using hex`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hau⟩` from `hL u fun τ hτ => (hu τ ((hmem k τ).2 hτ)).1`. Take `⟨h₀, hh₀⟩` from `GlobalTheory.ShortMove.exists_marked_of_component D V H Dw l Xo _ g _ F hty _ rfl (U.X k) (ik k) (φ k) io (hW k) (hD.1.1 k) hι.emb hι.isom`. Take `⟨a₀, ha₀, f, hf, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 h₀`. Establish `hfin : finHom V (a₀ * f) = finHom V (a * f)`. Rewrite using `[map_mul, map_mul, show finHom V a₀ = 1 from ha₀, show finHom V a = 1 from ha]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hh : Marked V rfl io l (U.X k).Λ (fun a => (φ k (F.t (ik k) a) : Fin V.rank → D.host.E)) (a * f)`. Take `⟨e₁, e₂⟩` from `(GlobalTheory.T.adelicUnitaryLattice_rationalTranslate_invariance D V).2.1 _ _ hfin`. Unfold `Marked at hh₀ ⊢`. Rewrite `hh₀` using `[e₁, e₂, hfin]`. Then use the resulting hypothesis. Use `⟨a * f, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, hΛ, hm, hfr⟩` from `hD.2 (a * f)`. Take `⟨δ, hδu, hδf, hδa⟩` from `GlobalTheory.MarkCoset.rational_matrix V γ hγ`. Take `⟨gam, e₁, t₁, hgam⟩` from `marked_isometry_half V l io (U.X k) (U.X (dict (a * f)).1) _ _ (φ k) (φ _) (F.t _) (F.t _) LinearMap.id (a * f) γ 1 (hW k) (hW _) (hD.1.1 k) (hD.1.1 _) δ hδu hδf rfl (fun a _ => ⟨0, zero_mem _, by`. Rewrite using `[map_one, Units.val_one, Matrix.one_mulVec, smul_zero, add_zero]`. Use the proof step `rfl⟩) hh`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use the proof step `(by rw [mul_one]; exact ⟨hΛ, hm⟩)`. Take `⟨P, hPe, hP, hy, -⟩` from `hD.1.2 k ⟨x₁, hx₁d⟩`. Take `⟨P', hPe', hP', hy', -⟩` from `hD.1.2 (dict (a * f)).1 ⟨_, hdom _⟩`. Rewrite using `[ht.1, ← ht'.1, hy, hy']`. Apply the tactic sequence `refine point_eq_of_isometry F hpq hσ hty hA gam e₁ t₁ hP hP' fun v => funext fun j => ?_`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPe, hPe', hgam]`. Use `perFr_of_unitary _ _ (fun τ => by rw [hmem, hmem]) (by rw [hG, hG]) (by rw [(hU.2.1 _).1, (hU.2.1 _).1]) (by rw [hG]; exact hδu) (fun τ h h' => ?_) _ _ _` and prove the remaining obligations. Rewrite using `[hfr ⟨τ, h'⟩, GlobalTheory.LettersCheck.isInfEmb_unique τ _ _ (hth _ ⟨τ, h'⟩) (hθ τ), (hAr τ).2.1, (hAr τ).2.1, (hAr τ).2.2.1 f hf, hδa τ _ (hθ τ), hau τ ((hmem k τ).1 h), (hu τ h).2, Matrix.mul_one, ← Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_dict_over (hσ : GoodEmb c σ) (hA : l.A = 1) (hpq : 1 ≤ Dw.p + Dw.q)
     (hU : IsUnf U) (hW : ∀ k, ModelW V rfl (U.X k)) (hD : DictLat U V rfl dict io e F ik φ th x₀)
@@ -284,31 +282,29 @@ theorem exists_dict_over (hσ : GoodEmb c σ) (hA : l.A = 1) (hpq : 1 ≤ Dw.p +
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hσ` using the available equality. Establish `hσ : GoodEmb c c.F.val.toRingHom` using `rfl`. Establish `hc0' : c0 ≠ 0` using `by rintro rfl; rw [zero_pow hN.ne'] at hc0; exact zero_ne_one hc0`. Establish `hty` using `(GlobalTheory.Relab.relab_good _ H l c _ hσ).2.2.2 Dw g e`. Establish `hfree : ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra c.F K] (y y' : FrPt Xo c K), y'.x = y.x → evR Xo c f y' = evR Xo c f y` using `fun K _ _ _ y y' h => by`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, z', hz, -, hz'⟩` from `GlobalTheory.Frames.exists_complex_framed_pair _ _ _ _ Xo c K y y'`. Use `hz' f hf 1 (by` as an intermediate fact. Rewrite using `[map_one, one_mul]`. Conclude with `GlobalTheory.WeightZeroValue.evR_eq_of_same_point hf (by simpa using hz (𝟙 _) (by simpa using h)))`. Rewrite `this` using `[map_one, one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `val₀ : ∀ h : GA D V, ∃ hx : (dict h).2 ∈ (U.X (dict h).1).dom, toC (evR Xo c f (U.un _ ⟨_, hx⟩)) = c0 * ((xi (Matrix.GeneralLinearGroup.det (finHom V h)) : ℂˣ) : ℂ)`. Introduce `h`. Take `⟨γ, hγ, hΛ, hm, -⟩` from `hD.2 h`. Establish `hv` using `hval h γ ⟨hγ, hΛ, hm⟩`. Rewrite `hv` using `[map_mul, map_mul, map_mul, hxi γ hγ, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hx, ex⟩` from `rdU_eq U f _ _ (hv ▸ mul_ne_zero hc0' (Units.ne_zero _))`. Conclude with `⟨hx, ex.symm.trans hv⟩`. Use `choose hdom val₀ using val₀`. Establish `hroot : ∃ N : ℕ, 0 < N ∧ ∀ y : FrPt Xo c (CAt c.F.val.toRingHom), evR Xo c f y ^ N = 1` using `⟨N, hN, fun y => by`. Take `⟨h, hh⟩` from `exists_dict_over V U dict io e F ik φ th x₀ hσ hA hpq hU hW hD hι hth hx₀ hdom y`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.WeightZeroValue.evR_eq_of_same_point hf hh]`. Express the relevant statement in the definitionally equal form `toC (evR Xo c f _) ^ N = (1 : ℂ)`. Rewrite using `[val₀, mul_pow, hc0, ← Units.val_pow_eq_pow_val, hxN, Units.val_one, one_mul]⟩`. Establish `val : ∀ (h : GA D V) (i : Fin F.n) P (y : FrPt Xo c (CAt c.F.val.toRingHom)), i = ik (dict h).1 → IsPeriod (F.Di i) (fun j => relab c c.F.val.toRingHom (e j).1) P → y.x = F.u i P → toC (evR Xo c f y) = c0 * ((xi (Matrix.GeneralLinearGroup.det (finHom V h)) : ℂˣ) : ℂ)`. Introduce and unpack `h _ P y rfl hP hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P₀, -, hP₀, hy₀, -⟩` from `hD.1.2 (dict h).1 ⟨_, hdom h⟩`. Rewrite using `[← val₀, GlobalTheory.FiniteOrderConst.const_on_period_space _ H Dw l Xo c _ f hf hfree hroot g _ F hty _ P P₀ y _ hP hP₀ hy hy₀]`. Establish `pt : ∀ y : FrPt Xo c (CAt c.F.val.toRingHom), ∃ k P, IsPeriod (F.Di (ik k)) (fun j => relab c c.F.val.toRingHom (e j).1) P ∧ y.x = F.u (ik k) P`. Introduce `y`. Take `⟨k, x, t, ht⟩` from `hU.2.2.1 y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨P, -, hP, hy, -⟩` from `hD.1.2 k x`. Conclude with `⟨k, P, hP, ht.1.trans hy⟩`. Establish `hA' : ∀ {i i' : Fin F.n} (gam : (F.Di i).La ≃ₗ[𝓞 D.host.E] (F.Di i').La) a, ∃ x, gam (F.t i a) = F.t i' a + l.A • x` using `fun gam a => ⟨gam (F.t _ a) - F.t _ a, by rw [hA, one_smul, add_sub_cancel]⟩`. Take `⟨z, z', hz, -, hz'⟩` from `GlobalTheory.Frames.exists_complex_framed_pair _ _ _ _ Xo c K y y'`. Use `hz' f hf a ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `replace hz := hz _ hy`. Take `⟨k, P, hP, hyP⟩` from `pt z`. Take `⟨k', P', hP', hyP'⟩` from `pt z'`. Take `⟨h, hh⟩` from `GlobalTheory.ShortMove.exists_marked_of_component D V H Dw l Xo _ g _ F hty _ rfl (U.X k) (ik k) (φ k) io (hW k) (hD.1.1 k) hι.emb hι.isom`. Take `⟨γ₁, hγ₁, hΛ₁, hm₁, -⟩` from `hD.2 h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ₂, hγ₂, hΛ₂, hm₂, -⟩` from `hD.2 (h * κ)`. Take `⟨δ₁, hδu₁, hδf₁, -⟩` from `GlobalTheory.MarkCoset.rational_matrix V γ₁ hγ₁`. Take `⟨δ₂, hδu₂, hδf₂, -⟩` from `GlobalTheory.MarkCoset.rational_matrix V γ₂ hγ₂`. Take `⟨g₁, e₁, t₁, -⟩` from `marked_isometry_half V l io (U.X k) (U.X (dict h).1) _ _ (φ k) (φ _) (F.t _) (F.t _) LinearMap.id h γ₁ 1 (hW k) (hW _) (hD.1.1 k) (hD.1.1 _) δ₁ hδu₁ hδf₁ rfl (fun a _ => ⟨0, zero_mem _, by`. Rewrite using `[map_one, Units.val_one, Matrix.one_mulVec, smul_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `rfl⟩) hh`. Use the proof step `(by rw [mul_one]; exact ⟨hΛ₁, hm₁⟩)`. Take `⟨g₂, e₂, t₂, -⟩` from `marked_isometry_half V l io (U.X k) (U.X (dict (h * κ)).1) _ _ (φ k) (φ _) (F.t _) (F.t _) (s.f l.M) h γ₂ κ (hW k) (hW _) (hD.1.1 k) (hD.1.1 _) δ₂ hδu₂ hδf₂ hκ hκ' hh (by rw [mul_assoc]; exact ⟨hΛ₂, hm₂⟩)`. Take `⟨g₃, e₃, t₃⟩` from `GlobalTheory.LevStab.exists_isometry_of_levAut F hρ hP hP' (hyP ▸ hz.symm.trans hyP')`. Apply the tactic sequence `have i₁ : ik k = ik (dict h).1 := GlobalTheory.Dict.index_eq_of_marked_isometry F hpq hσ hty _ _ g₁ e₁ t₁ (hA' g₁)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `i₂ : ik k' = ik (dict (h * κ)).1`. Apply the tactic sequence `refine GlobalTheory.Dict.index_eq_of_marked_isometry F hpq hσ hty _ _ (g₃.symm.trans g₂) (fun a b => ?_) (fun a ha => ?_) (hA' _)`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, e₂, ← e₃, g₃.apply_symm_apply, g₃.apply_symm_apply]`. Take `⟨x, hx⟩` from `t₂ a ha`. Take `⟨z, hz⟩` from `exists_eq_nsmul l (t₃ a) (sub_mem (GlobalTheory.LevStab.map_mem_smul_top _ g₃.toLinearMap (GlobalTheory.LevStab.map_mem_smul_top _ _ (GlobalTheory.LevStab.map_mem_smul_top _ _ ha))) (GlobalTheory.LevStab.map_mem_smul_top _ _ ha))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x - g₂ (g₃.symm z), ?_⟩` and prove the remaining obligations. Establish `: F.t (ik k') a = g₃ (F.t (ik k) (s.f l.M a)) - l.M • z` using `by rw [← hz, sub_sub_cancel]`. Rewrite using `[LinearEquiv.trans_apply, this, map_sub, map_sub, g₃.symm_apply_apply, hx, map_nsmul, map_nsmul, smul_sub, add_sub_assoc]`. Express the relevant statement in the definitionally equal form `toC (evR Xo c f z') = (a : ℂ) * toC (evR Xo c f z)`. Rewrite using `[val _ _ P z i₁ hP hyP, val _ _ P' z' i₂ hP' hyP', ha, map_mul, map_mul, map_mul, Units.val_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem value_ratio (hσ : σ = c.F.val.toRingHom) (hA : l.A = 1) (hpq : 1 ≤ Dw.p + Dw.q)
     (hU : IsUnf U) (hW : ∀ k, ModelW V rfl (U.X k)) (hD : DictLat U V rfl dict io e F ik φ th x₀)

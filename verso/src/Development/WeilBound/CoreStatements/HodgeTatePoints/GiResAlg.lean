@@ -10,17 +10,15 @@ namespace PositivityTheory.HtPt.Gi
 variable {R : Type} [CommRing R] {T T' : Type} [CommGroup T] [CommGroup T']
 
 /- English proof (translation)
-Proceed by induction on `k generalizing f with`. Consider the case `zero`. Establish `e : (fun t : T => f (t ^ 0)) = algebraMap R (T → R) (f 1)`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `B.algebraMap_mem _`. Consider the case `succ k ih`. Set `L : (T × T → R) →ₗ[R] (T → R)` to `{ toFun := fun g t => g (t ^ k, t) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hmem : ∀ g ∈ prodSpan B, L g ∈ B`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `hx`. Conclude with `B.mul_mem (ih ha) hb`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `B.zero_mem`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `B.add_mem hx hy`. Consider the case `smul r x _ hx`. Rewrite using `[map_smul]`. Conclude with `B.smul_mem hx r`. Establish `e : (fun t : T => f (t ^ (k + 1))) = L (fun z : T × T => f (z.1 * z.2))`.
-
-Use function extensionality and compare the values at `t`. Simplify using `[L, pow_succ]`. Rewrite using `[e]`. Conclude with `hmem _ (hB.comul f hf)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_pull [Finite T] {B : Subalgebra R (T → R)} (hB : IsHopfOrder B) {f : T → R} (hf : f ∈ B) (k : ℕ) :
     (fun t => f (t ^ k)) ∈ B := by
@@ -61,9 +59,9 @@ def IsLoc (H : Subgroup T) (B : Subalgebra R (T → R)) : Prop :=
   ∀ f : T → R, (∀ t, ∃ b ∈ B, ∀ h ∈ H, b h = f (t * h)) → f ∈ B
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `∀ t : T, (fun x : H => f (t * H.subtype x)) ∈ resOrder H.subtype B`. Introduce `t`. Take `⟨b, hb, hbf⟩` from `hf t`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Subalgebra.mem_map.2 ⟨b, hb, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.CompanionTheory.Ar.BT.pullFun, hbf x x.2]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem isLoc_of_ind {H : Subgroup T} {B : Subalgebra R (T → R)}
     (h : B = indOrder H.subtype (resOrder H.subtype B)) : IsLoc H B := by
@@ -82,7 +80,7 @@ def cosetInd (R : Type) [CommRing R] (H : Subgroup T) (c : T ⧸ H) : T → R :=
   fun t => if (t : T ⧸ H) = c then 1 else 0
 
 /- English proof (translation)
-Establish `e : ((t * h : T) : T ⧸ H) = (t : T ⧸ H)` using `QuotientGroup.mk_mul_of_mem t hh`. Unfold `cosetInd`. Rewrite using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetInd_mul (H : Subgroup T) (c : T ⧸ H) (t : T) {h : T} (hh : h ∈ H) :
     cosetInd R H c (t * h) = cosetInd R H c t := by
@@ -91,7 +89,7 @@ theorem cosetInd_mul (H : Subgroup T) (c : T ⧸ H) (t : T) {h : T} (hh : h ∈ 
   rw [e]
 
 /- English proof (translation)
-Apply `hl` to reduce the goal to its premises. Introduce `t`. Use `⟨algebraMap R (T → R) (cosetInd R H c t), B.algebraMap_mem _, fun h hh => ?_⟩` and prove the remaining obligations. Simplify using `[cosetInd_mul H c t hh]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem cosetInd_mem {H : Subgroup T} {B : Subalgebra R (T → R)} (hl : IsLoc H B) (c : T ⧸ H) :
     cosetInd R H c ∈ B := by
@@ -101,7 +99,7 @@ theorem cosetInd_mem {H : Subgroup T} {B : Subalgebra R (T → R)} (hl : IsLoc H
   simp [cosetInd_mul H c t hh]
 
 /- English proof (translation)
-Simplify using `[cosetInd, Finset.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_cosetInd (H : Subgroup T) [Fintype (T ⧸ H)] (F : T ⧸ H → T → R) (t : T) :
     (∑ c, cosetInd R H c * F c) t = F t t := by
@@ -111,13 +109,13 @@ variable [Finite T'] {H : Subgroup T} {H' : Subgroup T'} {B : Subalgebra R (T �
   (ι : T →* T')
 
 /- English proof (translation)
-Set `L : (U × U → R) →ₗ[R] (U → R)` to `{ toFun := fun g x => g (u, x) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hmem : ∀ g ∈ prodSpan A, L g ∈ A`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `hx`. Use `A.smul_mem hb (a u) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[L]`. Consider the case `zero`.
+Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[map_zero]`. Conclude with `A.zero_mem`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `A.add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul r x _ hx`. Rewrite using `[map_smul]`. Conclude with `A.smul_mem hx r`. Conclude with `hmem _ (hA.comul f hf)`.
+A detailed English derivation is pending.
 -/
 private theorem translate_mem_of_isHopfOrder' {U : Type} [CommGroup U] {A : Subalgebra R (U → R)} (hA : IsHopfOrder A)
     {f : U → R} (hf : f ∈ A) (u : U) : (fun x => f (u * x)) ∈ A := by
@@ -145,17 +143,17 @@ private theorem translate_mem_of_isHopfOrder' {U : Type} [CommGroup U] {A : Suba
   exact hmem _ (hA.comul f hf)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg haveI : Fintype (T' ⧸ H') := Fintype.ofFinite _`. Establish `hex : ∀ t : T, ∃ f ∈ B', ∀ h ∈ H, g (t * h) = f (ι h)` using `fun t => hb _ (translate_mem_of_isHopfOrder' hB hg t)`. Use `choose fr hfr hfrH using hex`. Set `rep : T' ⧸ H' → T` to `fun c => if hc : ∃ t : T, (ι t : T' ⧸ H') = c then hc.choose else 1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrep : ∀ t0 : T, ((ι (rep (ι t0 : T' ⧸ H')) : T') : T' ⧸ H') = (ι t0 : T' ⧸ H')`. Introduce `t0`. Establish `hc : ∃ t : T, (ι t : T' ⧸ H') = (ι t0 : T' ⧸ H')` using `⟨t0, rfl⟩`. Simplify using `only [rep, dif_pos hc]`. Conclude with `hc.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `F : T' ⧸ H' → T' → R` to `fun c s => fr (rep c) ((ι (rep c))⁻¹ * s)`. Use `⟨∑ c, cosetInd R H' c * F c, ?_, ?_⟩` and prove the remaining obligations. Use `Subalgebra.sum_mem _ (fun c _ => Subalgebra.mul_mem _ (cosetInd_mem hl' c) ?_)` and prove the remaining obligations. Conclude with `translate_mem_of_isHopfOrder' hB' (hfr (rep c)) _`. Introduce `t0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sum_cosetInd]`. Use `set r := rep (ι t0 : T' ⧸ H') with hr`. Establish `hmem' : (ι r)⁻¹ * ι t0 ∈ H'` using `QuotientGroup.eq.mp (hrep t0)`. Establish `hmem : r⁻¹ * t0 ∈ H` using `hH _ (by simpa [map_mul, map_inv] using hmem')`. Use `hfrH r _ hmem` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `only [mul_inv_cancel_left] at this`. Simplify using `only [F, ← hr]`. Rewrite using `[this, map_mul, map_inv]`. Introduce and unpack `⟨f, hf, hgf⟩`. Apply `hl` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `t`. Take `⟨g', hg', hg'H⟩` from `ha _ (translate_mem_of_isHopfOrder' hB' hf (ι t))`. Use `⟨g', hg', fun h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[hg'H h hh, hgf, map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem res_iff_abs (hB : IsHopfOrder B) (hB' : IsHopfOrder B') (hl : IsLoc H B) (hl' : IsLoc H' B')
     (hH : ∀ t, ι t ∈ H' → t ∈ H)
@@ -199,9 +197,9 @@ abbrev torsJ (B' : Subalgebra R (T' → R)) (N : ℕ) : Ideal B' :=
   Ideal.span {g : B' | ∃ h ∈ B', ∀ t, g.1 t = h (t ^ N) - h 1}
 
 /- English proof (translation)
-Set `τ : B' →+* B'` to `{ toFun := fun g => ⟨fun x => g.1 (v * x), translate_mem_of_isHopfOrder' hB' g.2 v⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hle : torsJ B' N ≤ Ideal.comap τ (torsJ B' N)`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `g ⟨h, hh, hg⟩`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Apply `Ideal.subset_span` to reduce the goal to its premises. Use `⟨h, hh, fun x => ?_⟩` and prove the remaining obligations. Use `show g.1 (v * x) = h (x ^ N) - h 1`. Rewrite using `[hg, mul_pow, hv, one_mul]`. Conclude with `hle hj`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem translate_mem_torsJ_of_pow_eq_one {N : ℕ} (hB' : IsHopfOrder B') {v : T'} (hv : v ^ N = 1) (j : B')
     (hj : j ∈ torsJ B' N) :
@@ -223,27 +221,25 @@ private theorem translate_mem_torsJ_of_pow_eq_one {N : ℕ} (hB' : IsHopfOrder B
   exact hle hj
 
 /- English proof (translation)
-Use `haveI : Fintype (T' ⧸ H') := Fintype.ofFinite _`. Establish `hE : ∀ c : T' ⧸ H', cosetInd R H' c ∈ B'` using `fun c => cosetInd_mem hl' c`. Establish `hdecomp : f = ∑ c, (⟨cosetInd R H' c, hE c⟩ : B') * f`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `key` using `sum_cosetInd (R := R) H' (fun _ => f.1) x`. Simplify using `only [Finset.sum_apply, Pi.mul_apply] at key`. Simplify using `[Finset.sum_apply, key]`. Rewrite using `[hdecomp]`. Use `Ideal.sum_mem _ (fun c _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl⟩` from `QuotientGroup.mk_surjective c`. Distinguish the cases in `hs : s ^ N ∈ H'`. Take `⟨t, ht⟩` from `hdiv s hs`. Establish `hfu : (fun x => f.1 (ι t * x)) ∈ B'` using `translate_mem_of_isHopfOrder' hB' f.2 (ι t)`. Take `⟨j, hj, hjH⟩` from `hc _ hfu (fun t' => by show f.1 (ι t * ι t') = 0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul]`. Conclude with `hf _)`. Establish `hv : (ι t)⁻¹ ^ N = 1` using `by rw [inv_pow, hN, inv_one]`. Establish `hτ` using `translate_mem_torsJ_of_pow_eq_one hB' hv j hj`. Establish `heq : (⟨cosetInd R H' (s : T' ⧸ H'), hE _⟩ : B') * f = (⟨cosetInd R H' (s : T' ⧸ H'), hE _⟩ : B') * ⟨fun x => j.1 ((ι t)⁻¹ * x), translate_mem_of_isHopfOrder' hB' j.2 (ι t)⁻¹⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show cosetInd R H' (s : T' ⧸ H') x * f.1 x = cosetInd R H' (s : T' ⧸ H') x * j.1 ((ι t)⁻¹ * x)`. Distinguish the cases in `hx : (x : T' ⧸ H') = s`. Establish `hmem : (ι t)⁻¹ * x ∈ H'` using `QuotientGroup.eq.mp (ht.trans hx.symm)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hjH _ hmem, mul_inv_cancel_left]`. Simplify using `[cosetInd, hx]`. Rewrite using `[heq]`. Conclude with `Ideal.mul_mem_left _ _ hτ`. Set `h0 : T' → R` to `cosetInd R H' ((s : T' ⧸ H') ^ N)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hG : (fun x => h0 (x ^ N) - h0 1) ∈ B'`. Establish `h1` using `pow_pull hB' (hE ((s : T' ⧸ H') ^ N)) N`. Conclude with `Subalgebra.sub_mem _ h1 (B'.algebraMap_mem (h0 1))`. Set `G : B'` to `⟨fun x => h0 (x ^ N) - h0 1, hG⟩`. Establish `hGJ : G ∈ torsJ B' N` using `Ideal.subset_span ⟨h0, hE _, fun x => rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `heq : (⟨cosetInd R H' (s : T' ⧸ H'), hE _⟩ : B') * f = ((⟨cosetInd R H' (s : T' ⧸ H'), hE _⟩ : B') * f) * G`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show cosetInd R H' (s : T' ⧸ H') x * f.1 x = cosetInd R H' (s : T' ⧸ H') x * f.1 x * (h0 (x ^ N) - h0 1)`. Distinguish the cases in `hx : (x : T' ⧸ H') = s`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : h0 (x ^ N) = 1`. Simplify using `[h0, cosetInd, QuotientGroup.mk_pow, hx]`. Establish `e2 : h0 1 = 0`. Simplify using `only [h0, cosetInd]`. Rewrite using `[if_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Introduce `h1`. Apply `hs` to reduce the goal to its premises. Rewrite `h1` using `[← QuotientGroup.mk_pow]`. Use `QuotientGroup.eq.mp h1` as an intermediate fact. Simplify using `using this`.
-
-Rewrite using `[e1, e2, sub_zero, mul_one]`. Simplify using `[cosetInd, hx]`. Rewrite using `[heq]`. Conclude with `Ideal.mul_mem_left _ _ hGJ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_abs {N : ℕ} (hB' : IsHopfOrder B') (hl' : IsLoc H' B') (hN : ∀ t, ι t ^ N = 1)
     (hdiv : ∀ s : T', s ^ N ∈ H' → ∃ t, (ι t : T' ⧸ H') = s)

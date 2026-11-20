@@ -29,21 +29,19 @@ open ReciprocityTheory.ChartRestriction.G.Geo (mcPts IsMultiHomog SameOrbit)
 namespace GlobalTheory.CompanionTheory.ArchI
 
 /- English proof (translation)
-Establish `hC` using `hX.charZero`. Take `⟨-, hp₃, hp₄, -⟩` from `GlobalTheory.T.mixed_cycle_point_dictionary m n X i (D + 1) hX.dim_eq`. Establish `hP` using `hp₄ (hp₃.2 hC)`. Take `⟨J, ⟨R⟩⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.exists_anLogRes (GlobalTheory.T.resolution_exists_of_resolution_statement hK) hP`. Take `⟨S, hS, hJ⟩` from `R.homog`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨f, hfS, hfP⟩ : ∃ f ∈ S, f ∉ ptIdeal (i (genericPoint X)) := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `R.nondeg (hJ ▸ Ideal.span_le.2 h)`. Take `⟨a, ha⟩` from `hS f hfS`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfJ : f ∈ J` using `hJ ▸ Ideal.subset_span hfS`. Establish `hJz : ∀ z ∈ mcPts J, eval z (map (Int.castRingHom ℂ) f) = 0` using `fun z hz => hz.2 f hfJ`. Use `choose F hF' using fun x => GlobalTheory.T.multicone_point_descends_to_subvariety m n X i (R.lift x x) (R.mem x x (R.mem_U x))`. Establish `hU : ∀ x, ∀ y ∈ R.U x, IsUnder (PtsOver.map i rfl _ (F y)) (R.lift x y)` using `fun x y hy => GlobalTheory.T.isUnder_of_same_orbit m n _ _ _ (hF' y) (R.compat x y y ⟨hy, R.mem_U y⟩)`. Establish `key (x : R.X) (j : Fin R.A.n)` using `GlobalTheory.T.holomorphic_lift_gives_holomorphic_section m n X i D ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x) (fun v => R.lift x ((R.A.chart j).symm v)) (F ∘ (R.A.chart j).symm) ((R.A.chart j).isOpen_inter_preimage_symm (R.isOpen_U x)) (fun u hu => (ReciprocityTheory. …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hO (x : R.X) (j : Fin R.A.n)` using `(R.A.chart j).isOpen_inter_preimage_symm (R.isOpen_U x)`. Establish `hFc : Continuous F` using `continuous_iff_continuousAt.2 fun x => by`. Take `⟨j, hj⟩` from `R.A.cover x`. Establish `hm : R.A.chart j x ∈ (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x` using `⟨(R.A.chart j).map_source hj, by`. Simplify `R.mem_U x⟩` using `only [Set.mem_preimage, (R.A.chart j).left_inv hj]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h₁` using `((key x j).1.continuousAt ((hO x j).mem_nhds hm)).comp (f := R.A.chart j) (x := x) ((R.A.chart j).continuousAt hj)`. Use `h₁.congr ?_` and prove the remaining obligations. Use `filter_upwards [(R.A.chart j).open_source.mem_nhds hj] with w hw`. Simplify using `only [Function.comp_apply, (R.A.chart j).left_inv hw]`. Use `⟨R.X, inferInstance, inferInstance, inferInstance, R.A, F, {y | ∃ z, IsUnder (PtsOver.map i rfl _ y) z ∧ eval z (map (Int.castRingHom ℂ) f) = 0}, hFc, ?_, (GlobalTheory.T.hypersurface_complex_points_measurable_null m n X i D f a ha hfP).1, (GlobalTheory.T.hypersurface_complex_poi …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `W g j v hv set x := (R.A.chart j).symm v with hx`. Establish `hvO : v ∈ (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x` using `⟨hv.1, R.mem_U x⟩`. Establish `hcont` using `(key x j).1`. Establish `hO' : IsOpen (((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x) ∩ (F ∘ (R.A.chart j).symm) ⁻¹' ptsIn (i ≫ mpStr ℤ m n) σ₀ W)` using `hcont.isOpen_inter_preimage (hO x j) (isOpen_ptsIn W)`. Establish `hd` using `(key x j).2 W g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(SCV.analyticOnNhd_iff_differentiableOn hO').2 hd v ⟨hvO, hv.2⟩`. Introduce `y hy`. Take `⟨z, hz, hyz⟩` from `GlobalTheory.T.complex_point_lifts_to_multicone m n X i y`. Establish `hzJ : z ∉ mcPts J` using `fun h => hy ⟨z, hyz, hJz z h⟩`. Take `⟨x, hx⟩` from `R.surj z hz hzJ`.
-
-Conclude with `⟨x, (GlobalTheory.T.points_eq_iff_same_torus_orbit m n X i _ _ _ _ (hF' x) hyz).2 hx⟩`. Introduce `x x' hx e`. Use `R.inj x x' (fun h => hx ⟨_, hF' x, hJz _ h⟩) ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.T.points_eq_iff_same_torus_orbit m n X i _ _ _ _ (hF' x) (hF' x')).1 e`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_modif (hK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement) (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0})
     [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (D : ℕ) (hX : GlobalTheory.IsArithVar (i ≫ mpStr ℤ m n) D) :
@@ -106,27 +104,25 @@ theorem exists_modif (hK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKSta
     exact (GlobalTheory.T.points_eq_iff_same_torus_orbit m n X i _ _ _ _ (hF' x) (hF' x')).1 e
 
 /- English proof (translation)
-Take `⟨N, W, b, a, d, hcov, hWb, hd, hf⟩` from `GlobalTheory.T.rational_section_finite_open_cover ψ hr`. Use `set S := offSupp q σ (divOfRatSec ψ.isLB hr) with hSdef`. Establish `hSo : IsOpen S` using `isOpen_offSupp _`. Establish `hgc` using `GlobalTheory.T.log_norm_continuous_off_divisor ψ hψ hr`. Use `set g := GlobalTheory.Cartier.logNorm ψ r with hgdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Z' : Set (GlobalTheory.CxPts q σ) := Z ∪ ⋃ l, {y | y ∈ ptsIn q σ (W l) ∧ ev q σ (W l) (d l) y = 0} with hZ'def`. Establish `hpiece (l : Fin N) : MeasurableSet {y | y ∈ ptsIn q σ (W l) ∧ ev q σ (W l) (d l) y = 0}`. Establish `ho : IsOpen (ptsIn q σ (W l) ∩ ev q σ (W l) (d l) ⁻¹' {0}ᶜ)` using `(continuousOn_ev (d l)).isOpen_inter_preimage (isOpen_ptsIn _) isOpen_compl_singleton`. Establish `e : {y | y ∈ ptsIn q σ (W l) ∧ ev q σ (W l) (d l) y = 0} = ptsIn q σ (W l) \ (ptsIn q σ (W l) ∩ ev q σ (W l) (d l) ⁻¹' {0}ᶜ)`. Use extensionality with `y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_diff, Set.mem_inter_iff, Set.mem_preimage, Set.mem_compl_iff, Set.mem_singleton_iff, not_and, not_not]`. Conclude with `⟨fun h => ⟨h.1, fun _ => h.2⟩, fun h => ⟨h.1, h.2 h.1⟩⟩`. Rewrite using `[e]`. Conclude with `(isOpen_ptsIn _).measurableSet.diff ho.measurableSet`. Establish `hZ'm : MeasurableSet Z'` using `hZ.union (MeasurableSet.iUnion hpiece)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hZ'0 : ∀ c : GlobalTheory.AlgChart q σ D, volume (c.e.target ∩ c.e.symm ⁻¹' Z') = 0` using `fun c => by`. Rewrite using `[hZ'def, Set.preimage_union, Set.inter_union_distrib_left, Set.preimage_iUnion, Set.inter_iUnion]`. Use `measure_union_null (hZ0 c) (measure_iUnion_null fun l => ?_)` and prove the remaining obligations. Take `⟨h, hne⟩` from `hd l`. Conclude with `GlobalTheory.T.zero_locus_regular_function_null X q σ D c (W l) h (d l) hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hne : Nonempty (ChartPartition A)` using `existsPartition A`. Use `set Pt := hne.some`. Establish `hKK (j : Fin A.n)` using `image_closed_compact (A.chart j) (isClosed_tsupport (Pt.χ j)) (Pt.tsupport_subset j)`. Establish `hcovK : ∀ x, ∃ j, ∃ u ∈ (A.chart j) '' tsupport (Pt.χ j), (A.chart j).symm u = x` using `fun x => by`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, Pt.χ j x ≠ 0 := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `Pt.sum_eq_one x` as an intermediate fact. Simplify using `[h] at this`. Establish `hx : x ∈ tsupport (Pt.χ j)` using `subset_tsupport _ hj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `⟨j, _, ⟨x, hx, rfl⟩, (A.chart j).left_inv (Pt.tsupport_subset j hx)⟩`. Establish `hle` using `GlobalTheory.T.measure_zero_set_avoided_by_holomorphic_map A F hF H Z' hZ'm hZ'0 (fun y hy => hs y fun h => hy (Or.inl h)) (fun x x' hx => hi x x' fun h => hx (Or.inl h)) φ hφ ε (fun j => (A.chart j) '' tsupport (Pt.χ j)) (fun j => (hKK j).1) (fun j => (hKK j).2) hcovK`. Establish `hfin (j : Fin A.n)` using `GlobalTheory.T.lintegral_indicator_mul_locDens_pullback_lt_top A F hF H φ hφ ψ hψ g S Z' W b a d hcov hWb (fun l y hy hyS hyZ => hf l y hy hyS fun h0 => hyZ (Or.inr (Set.mem_iUnion.2 ⟨l, hy, h0⟩))) hSo hgc hZ'm j _ (hKK j).2 (hKK j).1`. Use `⟨hgc.aestronglyMeasurable hSo.measurableSet, ?_⟩` and prove the remaining obligations. Use `set h : GlobalTheory.CxPts q σ → ENNReal := S.indicator fun y => ‖g y‖ₑ with hh`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hhm : Measurable h`. Use `(hgc.enorm).measurable_piecewise (continuousOn_const (c := (0 : ENNReal)) (s := Sᶜ)) hSo.measurableSet` as an intermediate fact. Rewrite `this` using `[show S.piecewise (fun y => ‖g y‖ₑ) (fun _ => (0 : ENNReal)) = h from Set.piecewise_eq_indicator]`. Then use the resulting hypothesis. Use `show ∫⁻ y, ‖g y‖ₑ ∂(φ.chernPart D ε).restrict S < ⊤`. Rewrite using `[← lintegral_indicator hSo.measurableSet]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(lintegral_mono' hle le_rfl).trans_lt ?_` and prove the remaining obligations. Rewrite using `[lintegral_finset_sum_measure]`. Use `ENNReal.sum_lt_top.2 fun j _ => ?_` and prove the remaining obligations. Establish `hT` using `(A.chart j).open_target.measurableSet`. Establish `hc : ContinuousOn (F ∘ (A.chart j).symm) (A.chart j).target` using `hF.comp_continuousOn (A.chart j).continuousOn_symm`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hsub : (A.chart j) '' tsupport (Pt.χ j) \ (F ∘ (A.chart j).symm) ⁻¹' Z' ⊆ (A.chart j).target` using `Set.diff_subset.trans (hKK j).2`. Establish `hm₀ : AEMeasurable (F ∘ (A.chart j).symm) (volume.restrict ((A.chart j) '' tsupport (Pt.χ j) \ (F ∘ (A.chart j).symm) ⁻¹' Z'))` using `(hc.aemeasurable hT).mono_measure (Measure.restrict_mono hsub le_rfl)`. Establish `hdc` using `locDensCont A (fun _ => φ.locPot.pullback F hF) (fun _ => GlobalTheory.T.smooth_weight_pullback_is_potential A F hF H φ hφ) j`. Establish `hρ : AEMeasurable (fun u => ENNReal.ofReal |locDens A (fun _ => φ.locPot.pullback F hF) j u|) (volume.restrict ((A.chart j) '' tsupport (Pt.χ j) \ (F ∘ (A.chart j).symm) ⁻¹' Z'))` using `((ENNReal.continuous_ofReal.comp_continuousOn hdc.abs).aemeasurable hT).mono_measure (Measure.restrict_mono hsub le_rfl)`. Rewrite using `[lintegral_map' hhm.aemeasurable (hm₀.mono_ac (withDensity_absolutelyContinuous _ _))]`.
-
-Express the relevant statement in the definitionally equal form `∫⁻ u, (h ∘ F ∘ (A.chart j).symm) u ∂_ < ⊤`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul₀ hρ (hhm.comp_aemeasurable hm₀)]`. Use `lt_of_eq_of_lt (lintegral_congr fun u => ?_) (hfin j)` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Function.comp_apply, hh]`. Conclude with `mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_of_modif {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp ℤ} {σ : ℤ →+* ℂ} {D : ℕ}
     [CompactSpace (GlobalTheory.CxPts q σ)] {T : Type} [TopologicalSpace T] [CompactSpace T] [T2Space T]
@@ -217,7 +213,7 @@ namespace GlobalTheory.CompanionTheory.MixZ
 open GlobalTheory.CompanionTheory.ArchI in
 
 /- English proof (translation)
-Introduce `hK m n N M X _ i _ D hX r hr σ`. Take `rfl : σ = σ₀` from `Subsingleton.elim _ _`. Take `⟨T, _, _, _, A, F, Z, hF, H, hZ, hZ0, hs, hi⟩` from `exists_modif hK m n X i D hX`. Use `hX.compactSpace σ₀` as an intermediate fact. Conclude with `⟨integrableOn_of_modif A F hF H Z hZ hZ0 hs hi _ ((N.restr i).cInf σ₀) _ ((M.restr i).cInf σ₀) hr 1, integrableOn_of_modif A F hF H Z hZ hZ0 hs hi _ ((N.restr i).cInf σ₀) _ ((M.restr i).cInf σ₀) hr (-1)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem archIntegrableOn_of_resK : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → ArchIntegrableOn := by
   intro hK m n N M X _ i _ D hX r hr σ

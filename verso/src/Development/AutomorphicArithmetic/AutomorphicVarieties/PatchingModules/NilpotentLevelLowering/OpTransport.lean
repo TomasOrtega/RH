@@ -9,13 +9,11 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Set `eq : G.Γ ≃* G'.Γ` to `MulEquiv.ofBijective e.p ⟨hi, e.surj⟩`. Establish `hk : ∀ x, e.p (eq.symm x) = x` using `fun x => eq.apply_symm_apply x`. Establish `hcont : Continuous (eq.symm : G'.Γ → G.Γ)` using `(Continuous.homeoOfEquivCompactToT2 (f := eq.toEquiv) e.cont).symm.continuous`. Use `⟨Glob.Hom.mk eq.symm.toMonoidHom hcont eq.symm.surjective (fun g => ?_) ?_ (fun g => ?_) (fun v g => ?_) (fun v g => ?_), fun g => eq.symm_apply_apply g⟩` and prove the remaining obligations. Use `show G.η (eq.symm g) = G'.η g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e.η, hk]`. Use `show eq.symm G'.c = G.c`. Apply `hi` to reduce the goal to its premises. Rewrite using `[hk, e.c]`. Use `show G.ε (eq.symm g) = G'.ε g`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e.ε, hk]`. Use `show eq.symm _ = _`. Apply `hi` to reduce the goal to its premises. Rewrite using `[hk, e.φ]`. Use `show eq.symm _ = _`.
-
-Apply `hi` to reduce the goal to its premises. Rewrite using `[hk, e.φu]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ot_inv {l : ℕ} [Fact l.Prime] {L : Loc} {G G' : Glob l L} (e : G.Hom G') (hi : Function.Injective e.p) :
     ∃ k : G'.Hom G, ∀ g, k.p (e.p g) = g := by
@@ -40,9 +38,9 @@ private theorem ot_inv {l : ℕ} [Fact l.Prime] {L : Loc} {G G' : Glob l L} (e :
     rw [hk, e.φu]
 
 /- English proof (translation)
-Establish `key : ∀ z : MonoidAlgebra A H, MonoidAlgebra.mapDomainRingHom (Polynomial A) φ (MonoidAlgebra.mapRingHom H Polynomial.C z) = MonoidAlgebra.mapRingHom G Polynomial.C (MonoidAlgebra.mapDomainRingHom A φ z)`. Introduce `z`. Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `single m r => simp [MonoidAlgebra.mapRingHom_single]`. Use `show (-1) ^ 1 * ((D.D (Polynomial A)) (MonoidAlgebra.mapDomainRingHom (Polynomial A) φ (MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom H Polynomial.C y))).coeff (n - 1) = (-1) ^ 1 * ((D.D (Polynomial A)) (MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRing …`. Rewrite using `[map_sub, key]`. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ot_tr_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : GDet n A G) (φ : H →* G)
     (y : MonoidAlgebra A H) : (D.comap φ).tr y = D.tr (MonoidAlgebra.mapDomainRingHom A φ y) := by
@@ -62,7 +60,7 @@ private theorem ot_tr_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Gro
   simp
 
 /- English proof (translation)
-Apply `GDet.ext` to reduce the goal to its premises. Introduce `B _ _ x`. Use `show (D.D B) (MonoidAlgebra.mapDomainRingHom B φ (MonoidAlgebra.mapDomainRingHom B ψ x)) = (D.D B) (MonoidAlgebra.mapDomainRingHom B (φ.comp ψ) x)`. Rewrite using `[MonoidAlgebra.mapDomainRingHom_comp, RingHom.comp_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ot_comap_comap {n : ℕ} {A G H K : Type} [CommRing A] [Group G] [Group H] [Group K] (D : GDet n A G)
     (φ : H →* G) (ψ : K →* H) : (D.comap φ).comap ψ = D.comap (φ.comp ψ) := by
@@ -79,14 +77,14 @@ private theorem ot_single {A G H : Type} [CommRing A] [Group G] [Group H] (φ : 
     MonoidAlgebra.mapDomainRingHom A φ (MonoidAlgebra.single g a) = MonoidAlgebra.single (φ g) a := by simp
 
 /- English proof (translation)
-Simplify using `only [q1El, map_list_prod, List.map_ofFn, Function.comp_def, map_sub, ot_single, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mapDomain_charpoly_element {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (φ : H →* G) (g : H) (u : Fin n → A) :
     MonoidAlgebra.mapDomainRingHom A φ (q1El g u) = q1El (φ g) u := by
   simp only [q1El, map_list_prod, List.map_ofFn, Function.comp_def, map_sub, ot_single, map_one]
 
 /- English proof (translation)
-Simplify using `only [q2El, map_mul, map_list_prod, List.map_ofFn, Function.comp_def, map_sub, ot_single, apply_ite, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mapDomain_partial_charpoly_element {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (φ : H →* G) (g t : H) (u : Fin n → A)
     (i : Fin n) (y : A) : MonoidAlgebra.mapDomainRingHom A φ (q2El g t u i y) = q2El (φ g) (φ t) u i y := by
@@ -94,15 +92,15 @@ private theorem mapDomain_partial_charpoly_element {n : ℕ} {A G H : Type} [Com
     map_one]
 
 /- English proof (translation)
-Set `fh : FHom G'.frame G.frame` to `{ π := k.p, π_cont := k.cont, hη := k.η, hc := k.c, hε := k.ε, vl := id, gv := fun _ => MonoidHom.id _, gv_cont := fun _ => continuous_id, hφ := fun v g => (k.φ v g).symm, hI := fun _ _ hg => hg }`. Establish `hπ : fh.π₀ = k.p₀` using `rfl`. Take `⟨h1, h2, h3⟩` from `hc`. Establish `hfc : fh.Compat r' r`. Use `⟨fun i => by rw [hπ]; exact h1 i, fun v i => ?_, fun v i g hg => ?_, fun u g hg => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2]`. Both sides reduce to the same expression. Rewrite using `[h3]`. Both sides reduce to the same expression. Use `right`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, ?_⟩` and prove the remaining obligations. Take `⟨hgI, hgk⟩` from `Subgroup.mem_inf.mp hg`. Use `Subgroup.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `Subgroup.mem_map.mp hgI`. Use `Subgroup.mem_map.mpr ⟨x, hx, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (k.φu u x).symm`. Rewrite `hgk`, the goal using `[Subgroup.mem_iInf]`. Introduce `i`. Use `hgk i` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker, h1 i]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[MonoidHom.mem_ker, hπ]`. Conclude with `this`. Take `⟨p', hD, hψ⟩` from `exists_determinantPair_pullback l G'.frame G.frame fh O n r' r hfc (fun h0 => (p.isEmpty_of_zero h0).1) R p`. Conclude with `⟨p', hD, funext fun v => funext fun i => by rw [hψ]; rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem ot_pair {l : ℕ} [Fact l.Prime] {L : Loc} {G G' : Glob l L} (k : G'.Hom G) {O : Type} [CommRing O]
     [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ} {r : Resid G.frame O n} {r' : Resid G'.frame O n} (hc : Glob.Compat k r' r)
@@ -138,21 +136,19 @@ private theorem ot_pair {l : ℕ} [Fact l.Prime] {L : Loc} {G G' : Glob l L} (k 
   exact ⟨p', hD, funext fun v => funext fun i => by rw [hψ]; rfl⟩
 
 /- English proof (translation)
-Introduce `l _ L G0 O _ _ _ _ _ n r B _ _ _ u J D b G G' e h h' q N A Nq ph ta ex hi hh hR`. Take `⟨k, hk⟩` from `ot_inv e hi`. Establish `hek : ∀ x, e.p (k.p x) = x` using `fun x => by`. Take `⟨y, rfl⟩` from `e.surj x`. Rewrite using `[hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : h.p₀.comp k.p₀ = h'.p₀` using `MonoidHom.ext fun g => Subtype.ext (by show h.p (k.p (g : G'.Γ)) = h'.p (g : G'.Γ)`. Rewrite using `[← hh, hek])`. Establish `hpe : ∀ x, h'.p₀ (e.p₀ x) = h.p₀ x` using `fun x => Subtype.ext (hh (x : G.Γ))`. Establish `hke : ∀ x, k.p₀ (e.p₀ x) = x` using `fun x => Subtype.ext (hk (x : G.Γ))`. Take `⟨rN', hc'⟩` from `Core.resPull l L G' G0 h' n O r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hck : Glob.Compat k rN' A.rN`. Take `⟨h1, h2, h3⟩` from `hc'`. Take `⟨a1, a2, a3⟩` from `A.compat`. Use `⟨fun i => ?_, h2.trans a2.symm, h3.trans a3.symm⟩` and prove the remaining obligations. Rewrite using `[h1 i, a1 i, MonoidHom.comp_assoc, hcomp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p', hpD, hpψ⟩` from `ot_pair k hck A.p`. Establish `hmc : ∀ {S : Type} [CommRing S] (f : A.R →+* S), (A.p.D.comap k.p₀).map f = (A.p.D.map f).comap k.p₀` using `fun _ => rfl`. Establish `hlam : ∀ j : Fin D, (algebraMap (abelian₂ O Empty D) A.R) (MvPowerSeries.X (Sum.inr j)) = (algebraMap O A.R) (b.wt.c j) * ↑((p'.ψ (b.wt.v j) (b.wt.i j)) (b.wt.γ j)) - 1`. Introduce `j`. Rewrite using `[hpψ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `A.segmentWeightExponent j`. Establish `hβ : p'.Maps A.β.toRingHom (u.D.comap h'.p₀) u.ψ`. Use `⟨?_, fun v i => ?_⟩` and prove the remaining obligations. Rewrite using `[hpD, hmc, A.β_pair.1, ot_comap_comap, hcomp]`. Rewrite using `[hpψ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `A.β_pair.2 v i`. Use `⟨{ A with rN := rN' compat := hc' p := p' segmentWeightExponent := hlam β_pair := hβ }, ?_⟩` and prove the remaining obligations. Use `⟨?_, fun j g => ?_, fun j i g => ?_⟩` and prove the remaining obligations. Simplify using `only`. Simplify using `only [hpe]`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hR.two`. Simplify using `only`. Rewrite using `[hpD, hmc, ot_tr_comap, map_mul, ot_single, mapDomain_charpoly_element]`. Simplify using `only [hke]`. Conclude with `hR.rel1 j (k.p₀ g)`.
-
-Simplify using `only`. Rewrite using `[hpD, hmc, ot_tr_comap, map_mul, ot_single, mapDomain_partial_charpoly_element]`. Simplify using `only [hke]`. Conclude with `hR.rel2 j i (k.p₀ g)`.
+Simplify using the standard rewrite rules. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Lev.opTransport :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (b : TWBase u J Empty D) (G G' : Glob l L) (e : G.Hom G') (h : G.Hom G0) (h' : G'.Hom G0) (q N : ℕ) (A : OpMod b h q N) (Nq : Fin q → ℕ) (ph ta : Fin q → G.G₀) (ex : ℕ), Function.Injective e.p → (∀ g, h'.p (e.p g) = h.p g) → OpRel A Nq ph ta ex → ∃ A' : OpMod b h' q N, OpRel A' Nq (fun j => e.p₀ (ph j)) (fun j => e.p₀ (ta j)) ex := by

@@ -17,9 +17,9 @@ section Trace
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h` using `EigenSplit.isSplitting_complex E`. Establish `h1 : ρ a = ∑ τ : E →+* ℂ, τ (a : E) • EigenSplit.proj h ρ τ`. Use extensionality with `v`. Use `conv_lhs => rw [← EigenSplit.sum_proj h ρ v]`. Rewrite using `[map_sum, LinearMap.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun τ _ => EigenSplit.mem_eigenSub.1 (EigenSplit.proj_mem h ρ τ v) a`. Rewrite using `[h1, map_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, (EigenSplit.isProj_proj h ρ τ).trace, smul_eq_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_eq_sum_finrank {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (ρ : 𝓞 E →+* Module.End ℂ W) (a : 𝓞 E) :
@@ -38,11 +38,11 @@ theorem trace_eq_sum_finrank {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteD
   rw [map_smul, (EigenSplit.isProj_proj h ρ τ).trace, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Set `f : (E →+* ℂ) → (𝓞 E →* ℂ)` to `fun φ => (φ.comp (algebraMap (𝓞 E) E)).toMonoidHom`. Establish `hf : Function.Injective f`. Introduce `φ ψ hφ`. Apply `(EigenSplit.isSplitting_complex E).injective` to reduce the goal to its premises. Use extensionality with `a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `DFunLike.congr_fun hφ a`. Establish `hli` using `(linearIndependent_monoidHom (𝓞 E) ℂ).comp f hf`. Establish `hc` using `Fintype.linearIndependent_iff.1 hli (fun φ => m φ - n φ) (by`. Use function extensionality and compare the values at `a`. Use `h a` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Function.comp_apply, smul_eq_mul, Pi.zero_apply, sub_mul]`. Conclude with `this)`. Use function extensionality and compare the values at `φ`. Conclude with `sub_eq_zero.1 (hc φ)`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem eq_of_sum_eq {m n : (E →+* ℂ) → ℂ}
     (h : ∀ a : 𝓞 E, ∑ τ, m τ * τ (a : E) = ∑ τ, n τ * τ (a : E)) : m = n := by
@@ -63,25 +63,25 @@ theorem eq_of_sum_eq {m n : (E →+* ℂ) → ℂ}
   exact sub_eq_zero.1 (hc φ)
 
 /- English proof (translation)
-Set `φ : ℂ →ₐ[ℝ] Module.End ℝ W` to `Complex.liftAux (J : Module.End ℝ W) (by ext x; simp [hJ])`. Use `letI : Module ℂ W := Module.compHom W (φ : ℂ →+* Module.End ℝ W)`. Establish `hsm : ∀ (z : ℂ) (v : W), z • v = z.re • v + z.im • J v` using `fun z v => by`. Express the relevant statement in the definitionally equal form `φ z v = _`. Simplify using `[φ, Complex.liftAux_apply]`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Use `haveI : IsScalarTower ℝ ℂ W := ⟨fun r z v => by`. Simplify using `[hsm, smul_add, smul_smul]⟩`. Use `haveI : FiniteDimensional ℂ W := Module.Finite.of_restrictScalars_finite ℝ ℂ W`. Establish `hI : ∀ v : W, Complex.I • v = J v` using `fun v => by simp [hsm]`. Set `L : 𝓞 E → Module.End ℂ W` to `fun a => { toFun := ρ a map_add' := map_add _ map_smul' := fun z v => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `LinearMap.congr_fun (h a) v` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Simplify using `[hsm, this] }`. Set `ρ' : 𝓞 E →+* Module.End ℂ W` to `{ toFun := L map_one' := by ext v; simp [L] map_mul' := fun a b => by ext v; simp [L] map_zero' := by ext v; simp [L] map_add' := fun a b => by ext v; simp [L] }`. Establish `ht : ∀ a, LinearMap.trace ℝ W (ρ a) = 2 * (LinearMap.trace ℂ W (ρ' a)).re ∧ LinearMap.trace ℝ W (J ∘ₗ ρ a) = -2 * (LinearMap.trace ℂ W (ρ' a)).im` using `fun a => by`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `PeriodNonempty.trace_real (ρ' a)`. Establish `h2` using `PeriodNonempty.trace_real (Complex.I • ρ' a)`. Establish `e2 : (Complex.I • ρ' a).restrictScalars ℝ = J ∘ₗ ρ a`. Use extensionality with `v`. Conclude with `hI _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[e2, map_smul]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Establish `hd : ∀ τ : E →+* ℂ, Module.finrank ℝ (⨅ a : 𝓞 E, LinearMap.eqLocus (ρ a : W →ₗ[ℝ] W) ((τ (a : E)).re • LinearMap.id + (τ (a : E)).im • J) : Submodule ℝ W) = 2 * Module.finrank ℂ (EigenSplit.eigenSub ρ' (τ.comp (algebraMap (𝓞 E) E)))` using `fun τ => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⨅ a : 𝓞 E, LinearMap.eqLocus (ρ a : W →ₗ[ℝ] W) ((τ (a : E)).re • LinearMap.id + (τ (a : E)).im • J) : Submodule ℝ W) = (EigenSplit.eigenSub ρ' (τ.comp (algebraMap (𝓞 E) E))).restrictScalars ℝ`. Use extensionality with `v`. Rewrite using `[Submodule.restrictScalars_mem, EigenSplit.mem_eigenSub, Submodule.mem_iInf]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_eqLocus, hsm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this, ← Complex.finrank_real_complex, Module.finrank_mul_finrank]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `H τ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `eq_of_sum_eq (m := fun τ => (m τ : ℂ)) (n := fun τ => (Module.finrank ℂ (EigenSplit.eigenSub ρ' (τ.comp (algebraMap (𝓞 E) E))) : ℂ)) (fun a => by` as an intermediate fact. Rewrite using `[← trace_eq_sum_finrank ρ' a]`. Establish `h1` using `H a`. Establish `h2` using `ht a`. Apply the tactic sequence `apply Complex.ext <;> linarith [h1.1, h1.2, h2.1, h2.2])`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hd]`. Conclude with `congrArg (fun z : ℂ => 2 * z) (congrFun this τ).symm` after adjusting the coercions. Introduce `H a`. Establish `: ∀ τ, m τ = Module.finrank ℂ (EigenSplit.eigenSub ρ' (τ.comp (algebraMap (𝓞 E) E)))` using `fun τ => by`. Use `H τ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hd]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [this]`. Rewrite using `[← trace_eq_sum_finrank ρ' a]`. Conclude with `ht a`.
+A detailed English derivation is pending.
 -/
 theorem trace_iff_finrank {W : Type} [AddCommGroup W] [Module ℝ W] [FiniteDimensional ℝ W]
     (J : W →ₗ[ℝ] W) (hJ : ∀ x, J (J x) = -x) (ρ : 𝓞 E →+* Module.End ℝ W)
@@ -159,9 +159,9 @@ end Trace
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[Algebra.unramified_iff_forall]`. Prove the components needed by the constructor for the conclusion. Introduce `h P hP _`. Use `h ⟨P, hP⟩` as an intermediate fact. Conclude with `Ideal.ramificationIdx_eq_one P _`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `h ⟨P, hP⟩`. Break down `eq_or_ne P ⊥ with rfl | h0` into its components or cases. Conclude with `Algebra.isUnramifiedAt_bot`. Conclude with `Ideal.ramificationIdx_eq_one_iff.1 (h P hP h0)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem unramified_iff : Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E) ↔
     ∀ P : Ideal (𝓞 E), P.IsPrime → P ≠ ⊥ → P.ramificationIdx (𝓞 (maximalRealSubfield E)) = 1 := by
@@ -207,13 +207,13 @@ def hostFrom (H : IndefiniteRowSideFullHecke.HostConjugateIdeal.Host E) : Tor.Ho
   sqrt_neg_disc_sq := H.s₀_sq
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (H.bar_eq a)`.
+A detailed English derivation is pending.
 -/
 theorem bar_eq_conjO (H : Tor.Host E) (a : 𝓞 E) : H.bar a = IndefiniteRowSideFullHecke.HostConjugateIdeal.conjO E a :=
   RingOfIntegers.ext (H.bar_eq a)
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(1 + (H.rt : E)) / 2 = (H.w0 : E)`. Establish `: (2 : E) * H.w0 = 1 + H.rt` using `congrArg (algebraMap (𝓞 E) E) H.two_weight_eq_one_add_root`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hostTo_w₀ (H : Tor.Host E) : (hostTo H).w₀ = H.w0 := by
   apply RingOfIntegers.ext
@@ -222,7 +222,7 @@ theorem hostTo_w₀ (H : Tor.Host E) : (hostTo H).w₀ = H.w0 := by
   rw [← this]; ring
 
 /- English proof (translation)
-Consider the cases of `H`. Consider the cases of `H'`. Reduce the equality to equality of the corresponding arguments.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem host_ext {H H' : Tor.Host E} (h0 : H.d = H'.d) (h1 : H.rt = H'.rt) (h2 : H.w0 = H'.w0)
     (h3 : H.bar = H'.bar) (h4 : H.rt0 = H'.rt0) : H = H' := by
@@ -250,9 +250,9 @@ def hostEquiv : Tor.Host E ≃ IndefiniteRowSideFullHecke.HostConjugateIdeal.Hos
 section Datum
 
 /- English proof (translation)
-Use `⟨fun h1 h2 => ?_, (H.mem_Psi_or τ).resolve_left⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(starRingEnd ℂ) (τ H.s) = H.s₀ at h1`. Express the relevant statement in the definitionally equal form `τ H.s = H.s₀ at h2`. Rewrite `h1` using `[← IsCMField.complexEmbedding_complexConj, H.isCMField_complexConj_s_eq_neg, map_neg, h2]`. Establish `h3 : H.s₀ = 0` using `by linear_combination (-1 / 2 : ℂ) * h1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `H.s₀_sq`. Rewrite `h4` using `[h3]`. Conclude with `H.d_prime.ne_zero (by simpa using h4)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_comp_mem_iff (H : IndefiniteRowSideFullHecke.HostConjugateIdeal.Host E) (τ : E →+* ℂ) :
     (starRingEnd ℂ).comp τ ∈ H.Psi ↔ τ ∉ H.Psi := by
@@ -266,7 +266,7 @@ theorem conj_comp_mem_iff (H : IndefiniteRowSideFullHecke.HostConjugateIdeal.Hos
   exact H.d_prime.ne_zero (by simpa using h4)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conj_comp_conj_comp (τ : E →+* ℂ) : (starRingEnd ℂ).comp ((starRingEnd ℂ).comp τ) = τ := by
   ext x; simp
@@ -274,11 +274,11 @@ theorem conj_comp_conj_comp (τ : E →+* ℂ) : (starRingEnd ℂ).comp ((starRi
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_filter_add_sum_filter_not Finset.univ (fun τ => τ ∈ (hostTo H).Psi)]`. Use `congr 1`. Use `Finset.sum_congr (Finset.filter_congr fun _ _ => Iff.rfl) fun τ hτ => ?_` and prove the remaining obligations. Rewrite using `[if_pos (Finset.mem_filter.1 hτ).2]`. Use `Finset.sum_nbij' (fun τ => (starRingEnd ℂ).comp τ) (fun τ => (starRingEnd ℂ).comp τ) ?_ ?_ (fun τ _ => conj_comp_conj_comp τ) (fun τ _ => conj_comp_conj_comp τ) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `τ hτ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, conj_comp_mem_iff, not_not] at hτ ⊢`. Conclude with `hτ`. Introduce `τ hτ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hτ ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(conj_comp_mem_iff _ τ).2 hτ`. Introduce `τ hτ`. Rewrite using `[if_neg (by rw [conj_comp_mem_iff, not_not]; exact (Finset.mem_filter.1 hτ).2)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_type_eq (H : Tor.Host E) (p q : ℕ) (a : E) :
     ∑ τ ∈ Finset.univ.filter (fun τ : E →+* ℂ => τ (H.rt : E) = H.rt0),
@@ -312,9 +312,9 @@ def actHom (E La : Type) [Field E] [AddCommGroup La] [Module (𝓞 E) La] :
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `x`. Simplify using `[IndefiniteRowSideFullHecke.HostConjugateIdeal.actR, h]`. Introduce and unpack `rfl x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `[IndefiniteRowSideFullHecke.HostConjugateIdeal.actR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eq_actR_iff (a : 𝓞 E) (A : ℝ ⊗[ℤ] La →ₗ[ℝ] ℝ ⊗[ℤ] La) :
     (∀ x : La, A (1 ⊗ₜ x) = 1 ⊗ₜ (a • x)) ↔ A = IndefiniteRowSideFullHecke.HostConjugateIdeal.actR La a := by
@@ -326,15 +326,15 @@ theorem eq_actR_iff (a : 𝓞 E) (A : ℝ ⊗[ℤ] La →ₗ[ℝ] ℝ ⊗[ℤ] L
     simp [IndefiniteRowSideFullHecke.HostConjugateIdeal.actR]
 
 /- English proof (translation)
-Use `haveI : Module.Finite ℤ La := Module.Finite.trans (𝓞 E) La`. Establish `key : ∀ (hJ : ∀ x, J (J x) = -x) (h : ∀ a : 𝓞 E, J ∘ₗ IndefiniteRowSideFullHecke.HostConjugateIdeal.actR La a = IndefiniteRowSideFullHecke.HostConjugateIdeal.actR La a ∘ₗ J), _` using `fun hJ h => trace_iff_finrank J hJ (actHom E La) h (fun τ => if τ ∈ (hostTo H).Psi then p else q)`. Simplify using `only [← sum_type_eq] at key`. Simplify using `only [eq_actR_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2, h3, h4⟩`. Establish `h5` using `fun a => (h4 a _ _ rfl rfl).1`. Establish `h6` using `(key h1 h5).1 fun a => (h4 a _ _ rfl rfl).2`. Use `⟨h5, LinearMap.ext h1, h2, h3, fun τ hτ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `h6 τ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[if_pos hτ]`. Then use the resulting hypothesis. Use `h6 ((starRingEnd ℂ).comp τ)` as an intermediate fact. Rewrite `this` using `[if_neg (by rwa [conj_comp_mem_iff, not_not])]`. Then use the resulting hypothesis. Introduce and unpack `⟨h5, h1, h2, h3, h4⟩`. Establish `h1' : ∀ x, J (J x) = -x` using `LinearMap.congr_fun h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1', h2, h3, ?_⟩` and prove the remaining obligations. Introduce and unpack `a _ _ rfl rfl`. Use `⟨h5 a, (key h1' h5).2 (fun τ => ?_) a⟩` and prove the remaining obligations. Distinguish the cases in `hτ : τ ∈ (hostTo H).Psi`. Rewrite using `[if_pos hτ]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h4 τ hτ).1`. Rewrite using `[if_neg hτ]`. Use `(h4 _ ((conj_comp_mem_iff _ τ).2 hτ)).2` as an intermediate fact. Rewrite `this` using `[conj_comp_conj_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_domain_iff [Module.Finite (𝓞 E) La] (H : Tor.Host E) (EF : LinearMap.BilinForm ℤ La) (p q : ℕ)
     (J : ℝ ⊗[ℤ] La →ₗ[ℝ] ℝ ⊗[ℤ] La) :
@@ -420,28 +420,28 @@ variable (H : Tor.Host E)
 abbrev incl : 𝓞 (hostTo H).K →+* 𝓞 E := algebraMap (𝓞 (hostTo H).K) (𝓞 E)
 
 /- English proof (translation)
-The claim follows from `Algebra.IsIntegral.isIntegral _`.
+A detailed English derivation is pending.
 -/
 theorem rt_isIntegral : IsIntegral ℚ (H.rt : E) := Algebra.IsIntegral.isIntegral _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `hw : (H.w0 : E) ∈ (hostTo H).K`. Rewrite using `[← hostTo_w₀]`. Conclude with `div_mem (add_mem (one_mem _) (IntermediateField.mem_adjoin_simple_self ℚ _)) (ofNat_mem _ 2)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : IsIntegral ℤ (⟨_, hw⟩ : (hostTo H).K)` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ (hostTo H).K E) Subtype.val_injective).1 H.w0.2`. Establish `: Algebra.adjoin ℤ {H.w0} ≤ (incl H).toIntAlgHom.range` using `Algebra.adjoin_le (Set.singleton_subset_iff.2 ⟨⟨_, hi⟩, rfl⟩)`. Conclude with `this ha`. Introduce and unpack `⟨b, rfl⟩`. Establish `hb : ((incl H b : 𝓞 E) : E) ∈ Algebra.adjoin ℚ {(H.rt : E)}`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (rt_isIntegral H).isAlgebraic]`. Conclude with `(b : (hostTo H).K).2`. Establish `key : ∀ x ∈ Algebra.adjoin ℚ {(H.rt : E)}, ∃ N : ℤ, N ≠ 0 ∧ ∃ c ∈ CM.OK H, (c : E) = N * x`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `mem x hx`. Use `⟨1, one_ne_zero, H.rt, ?_, by simpa using hx.symm⟩` and prove the remaining obligations. Establish `: H.rt = (-1 : ℤ) + (2 : ℤ) * H.w0` using `by push_cast; rw [H.two_weight_eq_one_add_root]; ring`. Rewrite using `[this]`. Conclude with `CM.coord_mem H _ _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `algebraMap r`. Use `⟨r.den, by exact_mod_cast r.den_nz, (r.num : 𝓞 E), intCast_mem _ _, ?_⟩` and prove the remaining obligations. Establish `: (r.num : ℚ) = (r.den : ℚ) * r` using `by rw [Rat.den_mul_eq_num]`. Establish `h` using `congrArg (algebraMap ℚ E) this`. Rewrite `h` using `[map_mul, map_intCast, map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h.trans (by rw [Int.cast_natCast])`. Consider the case `add x y _ _ hx hy`. Take `⟨N, hN, c, hc, h⟩` from `hx`. Take `⟨N', hN', c', hc', h'⟩` from `hy`. Use `⟨N * N', mul_ne_zero hN hN', N' * c + N * c', add_mem (mul_mem (intCast_mem _ _) hc) (mul_mem (intCast_mem _ _) hc'), ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `(N' : E) * c + N * c' = _`. Rewrite using `[h, h']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N, hN, c, hc, h⟩` from `hx`. Take `⟨N', hN', c', hc', h'⟩` from `hy`. Use `⟨N * N', mul_ne_zero hN hN', c * c', mul_mem hc hc', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(c : E) * c' = _`. Rewrite using `[h, h']`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨N, hN, c, hc, h⟩` from `key _ hb`. Use `CM.mem_OK_of_int_mul_mem H hN ?_` and prove the remaining obligations. Rewrite using `[show (N : 𝓞 E) * incl H b = c from RingOfIntegers.ext h.symm]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_adjoin_iff (a : 𝓞 E) : a ∈ Algebra.adjoin ℤ {H.w0} ↔ ∃ b, incl H b = a := by
   constructor
@@ -490,9 +490,9 @@ theorem mem_adjoin_iff (a : 𝓞 E) : a ∈ Algebra.adjoin ℤ {H.w0} ↔ ∃ b,
     rwa [show (N : 𝓞 E) * incl H b = c from RingOfIntegers.ext h.symm]
 
 /- English proof (translation)
-Use `(IntermediateField.adjoin.finrank (rt_isIntegral H)).trans_le ?_` and prove the remaining obligations. Establish `hm : (Polynomial.X ^ 2 + Polynomial.C (H.d : ℚ)).Monic` using `by monicity!`. Use `minpoly.min ℚ (H.rt : E) hm (by` as an intermediate fact. Use `(hostTo H).s_sq` as an intermediate fact. Simplify using `only [map_add, map_pow, Polynomial.aeval_X, map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `add_eq_zero_iff_eq_neg.2 this)`. Rewrite `this` using `[Polynomial.degree_X_pow_add_C two_pos]`. Conclude with `Polynomial.natDegree_le_iff_degree_le.2 this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_K_le : Module.finrank ℚ (hostTo H).K ≤ 2 := by
   refine (IntermediateField.adjoin.finrank (rt_isIntegral H)).trans_le ?_
@@ -505,13 +505,13 @@ theorem finrank_K_le : Module.finrank ℚ (hostTo H).K ≤ 2 := by
   exact Polynomial.natDegree_le_iff_degree_le.2 this
 
 /- English proof (translation)
-The claim follows from `Ideal.map_injective_of_faithfullyFlat`.
+A detailed English derivation is pending.
 -/
 theorem map_incl_injective : Function.Injective (Ideal.map (incl H)) :=
   Ideal.map_injective_of_faithfullyFlat
 
 /- English proof (translation)
-Rewrite using `[IndefiniteRowSideFullHecke.HostConjugateIdeal.Host.conjIdeal, Ideal.map_map, Ideal.map_map]`. Use `congr 1`. Use extensionality with `b`. Conclude with `(H.bar_eq (incl H b)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_conjIdeal (I : Ideal (𝓞 (hostTo H).K)) :
     ((hostTo H).conjIdeal I).map (incl H) = (I.map (incl H)).map (H.bar : 𝓞 E →+* 𝓞 E) := by
@@ -521,21 +521,21 @@ theorem map_conjIdeal (I : Ideal (𝓞 (hostTo H).K)) :
   exact (H.bar_eq (incl H b)).symm
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (Subtype.ext (IsCMField.complexConj_apply_apply E _))`.
+A detailed English derivation is pending.
 -/
 theorem conj_conj (H : IndefiniteRowSideFullHecke.HostConjugateIdeal.Host E) (b : 𝓞 H.K) :
     RingOfIntegers.mapRingHom H.conjK (RingOfIntegers.mapRingHom H.conjK b) = b :=
   RingOfIntegers.ext (Subtype.ext (IsCMField.complexConj_apply_apply E _))
 
 /- English proof (translation)
-Rewrite using `[IndefiniteRowSideFullHecke.HostConjugateIdeal.Host.conjIdeal, IndefiniteRowSideFullHecke.HostConjugateIdeal.Host.conjIdeal, Ideal.map_map, show RingHom.comp _ _ = RingHom.id _ from RingHom.ext (conj_conj H), Ideal.map_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conjIdeal_conjIdeal (H : IndefiniteRowSideFullHecke.HostConjugateIdeal.Host E) (I : Ideal (𝓞 H.K)) : H.conjIdeal (H.conjIdeal I) = I := by
   rw [IndefiniteRowSideFullHecke.HostConjugateIdeal.Host.conjIdeal, IndefiniteRowSideFullHecke.HostConjugateIdeal.Host.conjIdeal, Ideal.map_map,
     show RingHom.comp _ _ = RingHom.id _ from RingHom.ext (conj_conj H), Ideal.map_id]
 
 /- English proof (translation)
-Rewrite using `[Ideal.map]`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq, mem_adjoin_iff, Set.mem_image, SetLike.mem_coe, Ideal.mem_comap]`. Conclude with `⟨fun ⟨h, b, hb⟩ => ⟨b, hb ▸ h, hb⟩, fun ⟨b, h, hb⟩ => ⟨hb ▸ h, b, hb⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem span_eq_map_comap (I : Ideal (𝓞 E)) :
     Ideal.span {a | a ∈ I ∧ a ∈ Algebra.adjoin ℤ {H.w0}} = (I.comap (incl H)).map (incl H) := by
@@ -546,17 +546,15 @@ theorem span_eq_map_comap (I : Ideal (𝓞 E)) :
   exact ⟨fun ⟨h, b, hb⟩ => ⟨b, hb ▸ h, hb⟩, fun ⟨b, h, hb⟩ => ⟨hb ▸ h, b, hb⟩⟩
 
 /- English proof (translation)
-Establish `hp' : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Establish `hp0 : Ideal.span {(p : ℤ)} ≠ ⊥` using `by simpa using hp.ne_zero`. Use `haveI hmax : (Ideal.span {(p : ℤ)}).IsMaximal := ((Ideal.span_singleton_prime hp'.ne_zero).mpr hp').isMaximal hp0`. Establish `hc` using `Ideal.card_primesOverFinset_le_finrank (𝓞 (hostTo H).K) ℚ (hostTo H).K hp0`. Rewrite `hc` using `[← Set.ncard_coe_finset, IsDedekindDomain.coe_primesOverFinset hp0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (hc.trans (finrank_K_le H)) ?_` and prove the remaining obligations. Set `c` to `RingOfIntegers.mapRingHom (hostTo H).conjK`. Establish `hmem : ∀ P : Ideal (𝓞 (hostTo H).K), P ∈ (Ideal.span {(p : ℤ)}).primesOver (𝓞 (hostTo H).K) → P.comap c ∈ (Ideal.span {(p : ℤ)}).primesOver (𝓞 (hostTo H).K)`. Introduce and unpack `P ⟨hP, ⟨hP'⟩⟩`. Use `⟨Ideal.comap_isPrime c P, ⟨?_⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP', Ideal.under, Ideal.under, Ideal.comap_comap]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`. Take `⟨⟨P, hP⟩⟩ : Nonempty ((Ideal.span {(p : ℤ)}).primesOver (𝓞 (hostTo H).K))` from `inferInstance`. Establish `hne : P ≠ P.comap c`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `he`. Establish `hM : (M : 𝓞 (hostTo H).K) ∈ P`. Establish `: (M : ℤ) ∈ Ideal.span {(p : ℤ)}` using `Ideal.mem_span_singleton.2 (by exact_mod_cast hpM)`. Rewrite `this` using `[hP.2.over, Ideal.under, Ideal.mem_comap]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hiff : ∀ J, (hostTo H).conjIdeal J ≤ P ↔ J ≤ P` using `fun J => by`. Rewrite using `[IndefiniteRowSideFullHecke.HostConjugateIdeal.Host.conjIdeal, Ideal.map_le_iff_le_comap, ← he]`. Establish `hI : I ≤ P`. Use `hP.1.mul_le.1 (h1.trans_le ((Ideal.span_singleton_le_iff_mem P).2 hM))` as an intermediate fact. Rewrite `this` using `[hiff, or_self]`. Then use the resulting hypothesis.
-
-Conclude with `hP.1.ne_top (top_le_iff.1 (h2 ▸ sup_le hI ((hiff I).2 hI)))`. Conclude with `(Set.one_lt_ncard (IsDedekindDomain.primesOver_finite _ _)).2 ⟨P, hP, _, hmem P hP, hne⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem split_of_factorisation {M : ℕ} {I : Ideal (𝓞 (hostTo H).K)}
     (h1 : I * (hostTo H).conjIdeal I = Ideal.span {(M : 𝓞 (hostTo H).K)})
@@ -595,13 +593,13 @@ theorem split_of_factorisation {M : ℕ} {I : Ideal (𝓞 (hostTo H).K)}
 variable {H}
 
 /- English proof (translation)
-The claim follows from `(l.fromK.trans (span_eq_map_comap H _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem map_comap_Mb (l : Tor.Level H) : (l.Mb.comap (incl H)).map (incl H) = l.Mb :=
   (l.fromK.trans (span_eq_map_comap H _)).symm
 
 /- English proof (translation)
-Apply `map_incl_injective H` to reduce the goal to its premises. Rewrite using `[conjIdeal_conjIdeal, Ideal.map_mul, map_conjIdeal, map_comap_Mb, mul_comm, l.prod, Ideal.map_span, Set.image_singleton, map_natCast]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem level_mul_conj (l : Tor.Level H) : (hostTo H).conjIdeal (l.Mb.comap (incl H)) *
     (hostTo H).conjIdeal ((hostTo H).conjIdeal (l.Mb.comap (incl H))) = Ideal.span {(l.M : 𝓞 (hostTo H).K)} := by
@@ -610,7 +608,7 @@ theorem level_mul_conj (l : Tor.Level H) : (hostTo H).conjIdeal (l.Mb.comap (inc
     Set.image_singleton, map_natCast]
 
 /- English proof (translation)
-Apply `map_incl_injective H` to reduce the goal to its premises. Rewrite using `[conjIdeal_conjIdeal, Ideal.map_sup, map_conjIdeal, map_comap_Mb, sup_comm, l.coprime, Ideal.map_top]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem level_coprime (l : Tor.Level H) : (hostTo H).conjIdeal (l.Mb.comap (incl H)) ⊔
     (hostTo H).conjIdeal ((hostTo H).conjIdeal (l.Mb.comap (incl H))) = ⊤ := by
@@ -629,7 +627,7 @@ def levelTo (l : Tor.Level H) : IndefiniteRowSideFullHecke.HostConjugateIdeal.Le
   one_le := l.A_pos
 
 /- English proof (translation)
-The claim follows from `(map_conjIdeal H L.MMbar).symm.trans (congrArg _ (conjIdeal_conjIdeal _ _))`.
+A detailed English derivation is pending.
 -/
 theorem MMbarO_map_bar (L : IndefiniteRowSideFullHecke.HostConjugateIdeal.Level (hostTo H)) :
     L.MMbarO.map (H.bar : 𝓞 E →+* 𝓞 E) = L.MM.map (incl H) :=
@@ -657,13 +655,13 @@ def levelFrom (L : IndefiniteRowSideFullHecke.HostConjugateIdeal.Level (hostTo H
   A_pos := L.one_le
 
 /- English proof (translation)
-The claim follows from `(congrArg (Ideal.map (incl H)) (conjIdeal_conjIdeal _ _)).trans (map_comap_Mb l)`.
+A detailed English derivation is pending.
 -/
 theorem levelTo_MMbarO (l : Tor.Level H) : (levelTo l).MMbarO = l.Mb :=
   (congrArg (Ideal.map (incl H)) (conjIdeal_conjIdeal _ _)).trans (map_comap_Mb l)
 
 /- English proof (translation)
-Consider the cases of `L`. Consider the cases of `L'`. Reduce the equality to equality of the corresponding arguments.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem level_ext {H : IndefiniteRowSideFullHecke.HostConjugateIdeal.Host E} {L L' : IndefiniteRowSideFullHecke.HostConjugateIdeal.Level H} (h0 : L.M = L'.M) (h1 : L.MM = L'.MM)
     (h2 : L.A = L'.A) : L = L' := by
@@ -687,7 +685,7 @@ def levelEquiv (H : Tor.Host E) : Tor.Level H ≃ IndefiniteRowSideFullHecke.Hos
 end Level
 
 /- English proof (translation)
-Rewrite using `[← Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E, Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E, Nat.mul_div_cancel _ two_pos]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem f_eq (H : IndefiniteRowSideFullHecke.HostConjugateIdeal.Host E) : H.f = Module.finrank ℚ E / 2 := by
   rw [← Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E,

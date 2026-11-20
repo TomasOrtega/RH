@@ -25,30 +25,28 @@ namespace TopDualSimpleStacked
 variable {K : Type} [Field K] [NumberField K] {i : ℕ} {T : Type} [Fintype T] [DecidableEq T]
 
 /- English proof (translation)
-Simplify using `[linForm, stackedDiag, apply_ite C, ite_mul, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linForm_stackedDiag (a : T → ℤ) (t : T) :
     linForm (ι := dualBlocks T) (ι₂ := dualBlocks T) (stackedDiag a) ⟨(), t⟩ = C (a t) * X ⟨(), t⟩ := by
   simp [linForm, stackedDiag, apply_ite C, ite_mul, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Simplify using `[graphMap, graphSecond]`.
+Simplify using the standard rewrite rules.
 -/
 theorem graphMap_second (P : Ideal (MRing (dualBlocks T))) (g : (Σ _ : Unit, T) → MRing (dualBlocks T))
     (t : T) : graphMap P g (graphSecond t) = C (Ideal.Quotient.mk P (g ⟨(), t⟩)) * X () := by
   simp [graphMap, graphSecond]
 
 /- English proof (translation)
-Simplify using `[graphMap, graphFirst, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem graphMap_first (P : Ideal (MRing (dualBlocks T))) (g : (Σ _ : Unit, T) → MRing (dualBlocks T))
     (c : ℤ) (t : T) : graphMap P g (C c * graphFirst t) = C (Ideal.Quotient.mk P (C c * X ⟨(), t⟩)) := by
   simp [graphMap, graphFirst, map_mul]
 
 /- English proof (translation)
-Introduce `h`. Break down `hP.mem_or_mem h with h1 | h1` into its components or cases. Establish `: c ∈ P.comap (C : ℤ →+* MRing (dualBlocks T))` using `h1`. Rewrite `this` using `[hhor]`. Conclude with `hc this`.
-
-Conclude with `ht h1`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_mul_X_not_mem {P : Ideal (MRing (dualBlocks T))} (hP : P.IsPrime) (hhor : IsHorizontal P)
     {c : ℤ} (hc : c ≠ 0) {t : T} (ht : (X ⟨(), t⟩ : MRing (dualBlocks T)) ∉ P) :
@@ -61,9 +59,9 @@ theorem C_mul_X_not_mem {P : Ideal (MRing (dualBlocks T))} (hP : P.IsPrime) (hho
   · exact ht h1
 
 /- English proof (translation)
-Use `hP` as an intermediate fact. Introduce `hm`. Establish `h0` using `RingHom.mem_ker.mp hm`. Rewrite `h0` using `[graphMap_second, linForm_stackedDiag]`. Establish `hne : Ideal.Quotient.mk P (C (a t) * X ⟨(), t⟩) ≠ 0` using `fun e => h (Ideal.Quotient.eq_zero_iff_mem.mp e)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero (fun e => hne (C_eq_zero.mp e)) (X_ne_zero _) h0`.
+A detailed English derivation is pending.
 -/
 theorem second_not_mem {P : Ideal (MRing (dualBlocks T))} (hP : P.IsPrime) (a : T → ℤ) {t : T}
     (h : (C (a t) * X ⟨(), t⟩ : MRing (dualBlocks T)) ∉ P) :
@@ -76,7 +74,7 @@ theorem second_not_mem {P : Ideal (MRing (dualBlocks T))} (hP : P.IsPrime) (a : 
   exact mul_ne_zero (fun e => hne (C_eq_zero.mp e)) (X_ne_zero _) h0
 
 /- English proof (translation)
-Use `hP` as an intermediate fact. Introduce `hm`. Establish `h0` using `RingHom.mem_ker.mp hm`. Rewrite `h0` using `[graphMap_first]`. Conclude with `h (Ideal.Quotient.eq_zero_iff_mem.mp (C_eq_zero.mp h0))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem first_not_mem {P : Ideal (MRing (dualBlocks T))} (hP : P.IsPrime) (a : T → ℤ) {t : T}
     (h : (C (a t) * X ⟨(), t⟩ : MRing (dualBlocks T)) ∉ P) :
@@ -88,7 +86,7 @@ theorem first_not_mem {P : Ideal (MRing (dualBlocks T))} (hP : P.IsPrime) (a : T
   exact h (Ideal.Quotient.eq_zero_iff_mem.mp (C_eq_zero.mp h0))
 
 /- English proof (translation)
-Use `RingHom.mem_ker.mpr ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_mul _ (graphSecond s), map_mul _ (graphSecond t), graphMap_second, graphMap_second, graphMap_first, graphMap_first, linForm_stackedDiag, linForm_stackedDiag]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem minor_mem (P : Ideal (MRing (dualBlocks T))) (a : T → ℤ) (s t : T) :
     graphSecond s * (C (a t) * graphFirst t) - graphSecond t * (C (a s) * graphFirst s) ∈
@@ -99,11 +97,11 @@ theorem minor_mem (P : Ideal (MRing (dualBlocks T))) (a : T → ℤ) (s t : T) :
   ring
 
 /- English proof (translation)
-Establish `hmin : ∀ s t, z ⟨Sum.inr (), s⟩ * ((a t : ℂ) * z ⟨Sum.inl (), t⟩) = z ⟨Sum.inr (), t⟩ * ((a s : ℂ) * z ⟨Sum.inl (), s⟩)`. Introduce `s t`. Establish `h` using `hz.2 _ (minor_mem P a s t)`. Simplify using `only [graphFirst, graphSecond, map_sub, map_mul, map_X, map_C, map_intCast, eval_X, eval_C, eq_intCast] at h`. Conclude with `sub_eq_zero.mp h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨t₁, ht₁⟩` from `hz.1 (Sum.inl ())`. Take `⟨t₂, ht₂⟩` from `hz.1 (Sum.inr ())`. Establish `hd : (a t₁ : ℂ) * z ⟨Sum.inl (), t₁⟩ ≠ 0` using `mul_ne_zero (Int.cast_ne_zero.mpr (ha t₁)) ht₁`. Establish `hs : ∀ s, z ⟨Sum.inr (), s⟩ = z ⟨Sum.inr (), t₁⟩ / ((a t₁ : ℂ) * z ⟨Sum.inl (), t₁⟩) * ((a s : ℂ) * z ⟨Sum.inl (), s⟩)`. Introduce `s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_eq_mul_div, eq_div_iff hd, hmin s t₁]`. Use `⟨_, fun h0 => ht₂ ?_, hs⟩` and prove the remaining obligations. Rewrite using `[hs t₂, h0, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scalar {P : Ideal (MRing (dualBlocks T))} {a : T → ℤ} (ha : ∀ t, a t ≠ 0)
     {z : (Σ k, stackedBlocks T k) → ℂ} (hz : z ∈ mcPts (graphIdeal P (linForm (stackedDiag a)))) :
@@ -126,7 +124,7 @@ theorem exists_scalar {P : Ideal (MRing (dualBlocks T))} {a : T → ℤ} (ha : �
   rw [hs t₂, h0, zero_mul]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum, dualEmbMatrix, hab t]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `[zsmul_eq_mul, map_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem dualEmbMatrix_mulVec {F F' : HermLattice K i} {b : Module.Basis T ℤ (dualLattice F)}
     {b' : Module.Basis T ℤ (dualLattice F')} {a : T → ℤ}
@@ -137,11 +135,11 @@ theorem dualEmbMatrix_mulVec {F F' : HermLattice K i} {b : Module.Basis T ℤ (d
   simp [zsmul_eq_mul, map_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `hrecF : dualRecover b hb (fun t => (a t : ℂ) * w ⟨(), t⟩) = dualRecover b' hb' (fun t => w ⟨(), t⟩)`. Unfold `dualRecover`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use function extensionality and compare the values at `t`. Rewrite using `[LinearEquiv.ofBijective_apply, Matrix.mulVecLin_apply, dualEmbMatrix_mulVec hab]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `(LinearEquiv.ofBijective (Matrix.mulVecLin (dualEmbMatrix b')) hb').apply_symm_apply (fun t => w ⟨(), t⟩)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.ofBijective_apply, Matrix.mulVecLin_apply]`. Conclude with `(congrFun this t).symm`. Establish `hrec : dualRecover (F` using `F.withStdMetric) b hb (fun t => (a t : ℂ) * w ⟨(), t⟩) = dualRecover (F := F'.withStdMetric) b' hb' (fun t => w ⟨(), t⟩) := hrecF`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show Real.sqrt (dualNormSq (F := F.withStdMetric) b hb fun t => (a t : ℂ) * w ⟨(), t⟩) = Real.sqrt (dualNormSq (F := F'.withStdMetric) b' hb' fun t => w ⟨(), t⟩)`. Simplify using `only [dualNormSq, hrec]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dualLine_h_stacked {F F' : HermLattice K i} {b : Module.Basis T ℤ (dualLattice F)}
     (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b)))
@@ -166,9 +164,9 @@ theorem dualLine_h_stacked {F F' : HermLattice K i} {b : Module.Basis T ℤ (dua
   rfl
 
 /- English proof (translation)
-Introduce `m hm k'`. Rewrite `hm` using `[MvPolynomial.support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Finsupp.single_apply]`. Establish `: ∀ j' : ι k', (⟨k, j⟩ : Σ k, ι k) ≠ ⟨k', j'⟩` using `fun j' e => h (congrArg Sigma.fst e).symm`. Simplify using `[Finsupp.single_apply, this, h, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_X_int {K' : Type} [Fintype K'] [DecidableEq K'] {ι : K' → Type} [∀ k, Fintype (ι k)]
     (k : K') (j : ι k) : IsMultiHomog (X ⟨k, j⟩ : MRing ι) (Pi.single k 1) := by
@@ -183,7 +181,7 @@ theorem isMultiHomog_X_int {K' : Type} [Fintype K'] [DecidableEq K'] {ι : K' �
     simp [Finsupp.single_apply, this, h, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[C_mul']`. Conclude with `hf m (MvPolynomial.support_smul hm) k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_C_mul {K' : Type} [Fintype K'] {ι : K' → Type} [∀ k, Fintype (ι k)] {f : MRing ι}
     {d : K' → ℕ} (hf : IsMultiHomog f d) (c : ℤ) : IsMultiHomog (C c * f) d := by
@@ -192,20 +190,20 @@ theorem isMultiHomog_C_mul {K' : Type} [Fintype K'] {ι : K' → Type} [∀ k, F
   exact hf m (MvPolynomial.support_smul hm) k
 
 /- English proof (translation)
-Rewrite using `[degFirst, pullDeg, Sum.inl_injective.extend_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem degFirst_inl : degFirst (Sum.inl ()) = 1 := by
   rw [degFirst, pullDeg, Sum.inl_injective.extend_apply]
 
 /- English proof (translation)
-Rewrite using `[degSecond, pullDeg, Function.extend_apply' _ _ _ (by rintro ⟨u, hu⟩; exact Sum.inr_ne_inl hu)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem degSecond_inl : degSecond (Sum.inl ()) = 0 := by
   rw [degSecond, pullDeg, Function.extend_apply' _ _ _ (by rintro ⟨u, hu⟩; exact Sum.inr_ne_inl hu)]
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `rcases k with u | u <;> cases u`. Simplify using `[degFirst_inl]`. Simplify using `[degFirst_inr]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem degFirst_eq (k : Unit ⊕ Unit) : degFirst k = ((Pi.single (Sum.inl ()) 1 : Unit ⊕ Unit → ℕ) k : ℤ) := by
   rcases k with u | u <;> cases u
@@ -213,7 +211,7 @@ theorem degFirst_eq (k : Unit ⊕ Unit) : degFirst k = ((Pi.single (Sum.inl ()) 
   · simp [degFirst_inr]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases k with u | u <;> cases u`. Simplify using `[degSecond_inl]`. Simplify using `[degSecond_inr]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem degSecond_eq (k : Unit ⊕ Unit) :
     degSecond k = ((Pi.single (Sum.inr ()) 1 : Unit ⊕ Unit → ℕ) k : ℤ) := by
@@ -224,11 +222,11 @@ theorem degSecond_eq (k : Unit ⊕ Unit) :
 open IndefiniteRowSideFullHecke.Inter in
 
 /- English proof (translation)
-Take `⟨c, hc, hcz⟩` from `exists_scalar ha hz`. Establish `hN : (pullHerm (isBlockMap_inr (ι` using `dualBlocks T)) (dualLine F.withStdMetric b hb)).h z = ‖c‖ * (pullHerm (isBlockMap_inl (ι₂ := dualBlocks T)) (dualLine F'.withStdMetric b' hb')).h z := by show (dualLine F.withStdMetric b hb).h (fun p => z (inrV p)) = ‖c‖ * (dualLine F'.withStdMetric b' hb').h (fun p => z (inlV p) …`. Establish `hfun : (fun p : Σ _ : Unit, T => z (inrV p)) = fun p => (fun _ : Unit => c) p.1 * ((fun q : Σ _ : Unit, T => (a q.2 : ℂ) * z (inlV q)) p)`. Use function extensionality and compare the values at `⟨u, s⟩`. Consider the cases of `u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Conclude with `hcz s`. Rewrite using `[hfun, (dualLine F.withStdMetric b hb).smul _ _ (fun _ => hc), dualLine_h_stacked hb hb' hab]`. Simplify using `[dualLine]`. Unfold `logNorm`. Rewrite using `[hN]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [graphSecond, graphFirst, map_X, map_mul, map_C, map_intCast, eval_X, eval_mul, eval_C, eq_intCast]`. Rewrite using `[hcz t, norm_mul, mul_div_mul_left _ _ (norm_ne_zero_iff.mpr hc)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logNorm_eq {F F' : HermLattice K i} {b : Module.Basis T ℤ (dualLattice F)}
     (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b)))
@@ -258,15 +256,15 @@ theorem logNorm_eq {F F' : HermLattice K i} {b : Module.Basis T ℤ (dualLattice
 open IndefiniteRowSideFullHecke.Inter in
 
 /- English proof (translation)
-Establish `hR` using `(hII (Unit ⊕ Unit) (stackedBlocks T)).2.2`. Establish `hv2 : IsBlockMap Sum.inr (inrV (ι` using `dualBlocks T) (ι₂ := dualBlocks T)) := isBlockMap_inr`. Establish `hv1 : IsBlockMap Sum.inl (inlV (ι` using `dualBlocks T) (ι₂ := dualBlocks T)) := isBlockMap_inl`. Establish `hNs` using `Inter.IsPullHerm.isSmoothHerm hv2 (isPullHerm_pullHerm hv2 (dualLine F.withStdMetric b hb)) (DualLineSemipositive.proof K i F.withStdMetric T b hb).1`. Establish `hMs` using `Inter.IsPullHerm.isSmoothHerm hv1 (isPullHerm_pullHerm hv1 (dualLine F'.withStdMetric b' hb')) (DualLineSemipositive.proof K i F'.withStdMetric T b' hb').1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNa : ∀ k, (pullHerm hv2 (dualLine F.withStdMetric b hb)).a k = ((Pi.single (Sum.inr ()) 1 : Unit ⊕ Unit → ℕ) k : ℤ)` using `degSecond_eq`. Establish `hMa : ∀ k, (pullHerm hv1 (dualLine F'.withStdMetric b' hb')).a k = ((Pi.single (Sum.inl ()) 1 : Unit ⊕ Unit → ℕ) k : ℤ)` using `degFirst_eq`. Establish `hYh : IsMultiHomog (graphSecond t : MRing (stackedBlocks T)) (Pi.single (Sum.inr ()) 1)` using `isMultiHomog_X_int (ι := stackedBlocks T) (Sum.inr ()) t`. Establish `hXh : IsMultiHomog (C (a t) * graphFirst t : MRing (stackedBlocks T)) (Pi.single (Sum.inl ()) 1)` using `isMultiHomog_C_mul (isMultiHomog_X_int (ι := stackedBlocks T) (Sum.inl ()) t) _`. Establish `rN` using `hR (stackedGraph b' a) n L _ (graphSecond t) _ hΓ hL hNs hNa hYh (second_not_mem hprime a ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `rM` using `hR (stackedGraph b' a) n L _ (C (a t) * graphFirst t) _ hΓ hL hMs hMa hXh (first_not_mem hprime a ht)`. Rewrite `rN`, `rM` using `[recR_eq]`. Establish `hint : arInt (stackedGraph b' a) (graphSecond t) (pullHerm (isBlockMap_inr (ι` using `dualBlocks T)) (dualLine F.withStdMetric b hb)) L = arInt (stackedGraph b' a) (C (a t) * graphFirst t) (pullHerm (isBlockMap_inl (ι₂ := dualBlocks T)) (dualLine F'.withStdMetric b' hb')) L := Inter.ptsIntegral_congr_pts _ _ fun z hz => logNorm_eq hb hb' hab ha t hz`. Establish `hS : (divSupp_finite (stackedGraph b' a) (graphSecond t)).toFinset.filter IsHorizontal = (divSupp_finite (stackedGraph b' a) (C (a t) * graphFirst t)).toFinset.filter IsHorizontal`. Use extensionality with `W`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset]`. Conclude with `⟨fun h => ⟨((hHor K i F F' T b b' a hi hab t W h.2).1).1 h.1, h.2⟩, fun h => ⟨((hHor K i F F' T b b' a hi hab t W h.2).1).2 h.1, h.2⟩⟩`. Establish `hcyc : cycR (II (Unit ⊕ Unit) (stackedBlocks T)) (stackedGraph b' a) L (graphSecond t) - vertR (stackedGraph b' a) L (graphSecond t) = cycR (II (Unit ⊕ Unit) (stackedBlocks T)) (stackedGraph b' a) L (C (a t) * graphFirst t) - vertR (stackedGraph b' a) L (C (a t) * graphFirst t)`. Rewrite using `[Inter.cycR_sub_vertR, Inter.cycR_sub_vertR, hS]`. Use `Finset.sum_congr rfl fun W hW => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hW` using `[Finset.mem_filter, Set.Finite.mem_toFinset]`. Rewrite using `[(hHor K i F F' T b b' a hi hab t W hW.2).2 ((hHor K i F F' T b b' a hi hab t W hW.2).1.2 hW.1)]`. Rewrite using `[rN, rM, hint]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem step (hHor : DualStackedGraphHorizontal.Statement) {F F' : HermLattice K i}
     {b : Module.Basis T ℤ (dualLattice F)} (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b)))
@@ -324,9 +322,9 @@ theorem step (hHor : DualStackedGraphHorizontal.Statement) {F F' : HermLattice K
   linarith
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `Fin.lastCases ?_ (fun m => ?_) x` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [Function.comp_apply, Fin.snoc_castSucc]`. Distinguish the cases in `h : Fin.castSucc m = j`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[Equiv.swap_apply_left, Function.update_of_ne (Fin.castSucc_ne_last m).symm]`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne h (Fin.castSucc_ne_last m), Function.update_of_ne h]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem update_comp_swap {α : Type*} {n : ℕ} (L : Fin (n + 1) → α) (j : Fin (n + 1)) (A : α) :
     Function.update L j A ∘ Equiv.swap j (Fin.last n) =
@@ -346,7 +344,7 @@ def rest {α : Type*} (M N : α) {n : ℕ} (k : Fin (n + 1)) : Fin n → α :=
   fun m => mix M N n k (Equiv.swap k (Fin.last n) (Fin.castSucc m))
 
 /- English proof (translation)
-Unfold `mix`. Use `split_ifs`. Conclude with `Or.inr rfl`. Conclude with `Or.inl rfl`.
+Replace the relevant objects with their definitions. Prove the second alternative. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem mix_mem {α : Type*} (M N : α) (n k : ℕ) (j : Fin (n + 1)) : mix M N n k j = M ∨ mix M N n k j = N := by
   unfold mix
@@ -355,9 +353,9 @@ theorem mix_mem {α : Type*} (M N : α) (n k : ℕ) (j : Fin (n + 1)) : mix M N 
   · exact Or.inl rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[mix]`. Establish `hj' : (j : ℕ) ≠ k` using `fun h => hj (Fin.ext h)`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hj]`. Simplify using `only [mix]`. Use `congr 1`. Conclude with `propext ⟨fun h => by omega, fun h => by omega⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mix_succ {α : Type*} (M N : α) (n : ℕ) (k : Fin (n + 1)) :
     mix M N n ((k : ℕ) + 1) = Function.update (mix M N n k) k N := by
@@ -372,7 +370,7 @@ theorem mix_succ {α : Type*} (M N : α) (n : ℕ) (k : Fin (n + 1)) :
     exact propext ⟨fun h => by omega, fun h => by omega⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[mix]`. Rewrite using `[Function.update_of_ne hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mix_self {α : Type*} (M N : α) (n : ℕ) (k : Fin (n + 1)) :
     mix M N n k = Function.update (mix M N n k) k M := by
@@ -383,19 +381,17 @@ theorem mix_self {α : Type*} (M N : α) (n : ℕ) (k : Fin (n + 1)) :
   · rw [Function.update_of_ne hj]
 
 /- English proof (translation)
-Establish `hsm : ∀ (k : ℕ) (A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι), IsSmoothHerm A → ∀ (j : Fin (n + 1)) (x : Fin (n + 1)), IsSmoothHerm (Function.update (mix M N n k) j A x)`. Introduce `k A hA j x`. Distinguish the cases in `hx : x = j`. Substitute `hx` using the available equality. Rewrite using `[Function.update_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA`. Rewrite using `[Function.update_of_ne hx]`. Apply the tactic sequence `rcases mix_mem M N n k x with h | h <;> rw [h]`. Conclude with `hM`. Conclude with `hN`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hterm : ∀ k : Fin (n + 1), I P (n + 1) (mix M N n ((k : ℕ) + 1)) - I P (n + 1) (mix M N n k) = I P (n + 1) (Fin.snoc (rest M N k) N) - I P (n + 1) (Fin.snoc (rest M N k) M)`. Introduce `k`. Establish `e1` using `hI.1 P (n + 1) (Function.update (mix M N n k) k N) (Equiv.swap k (Fin.last n)) hP (hsm k N hN k)`. Establish `e2` using `hI.1 P (n + 1) (Function.update (mix M N n k) k M) (Equiv.swap k (Fin.last n)) hP (hsm k M hM k)`. Rewrite `e1`, `e2` using `[update_comp_swap]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : I P (n + 1) (mix M N n ((k : ℕ) + 1)) = I P (n + 1) (Fin.snoc (rest M N k) N)`. Rewrite using `[mix_succ]`. Conclude with `e1.symm`. Establish `h2 : I P (n + 1) (mix M N n k) = I P (n + 1) (Fin.snoc (rest M N k) M)`. Establish `h3 : I P (n + 1) (mix M N n k) = I P (n + 1) (Function.update (mix M N n k) k M)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mix_self]`. Rewrite using `[h3]`. Conclude with `e2.symm`. Rewrite using `[h1, h2]`. Establish `hN' : mix M N n (n + 1) = fun _ => N`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Simplify using `[mix, j.isLt]`. Establish `hM' : mix M N n 0 = fun _ => M`. Use function extensionality and compare the values at `j`. Simplify using `[mix]`.
-
-Rewrite using `[← hN', ← hM', ← Finset.sum_range_sub (fun k => I P (n + 1) (mix M N n k)) (n + 1), ← Fin.sum_univ_eq_sum_range (fun k => I P (n + 1) (mix M N n (k + 1)) - I P (n + 1) (mix M N n k))]`. Conclude with `Finset.sum_congr rfl fun k _ => hterm k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem telescope {K' : Type} [Fintype K'] {ι : K' → Type} [∀ k, Fintype (ι k)]
     {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) → ℝ} (hI : IsIntersectionFamily I)
@@ -441,9 +437,9 @@ theorem telescope {K' : Type} [Fintype K'] {ι : K' → Type} [∀ k, Fintype (�
   exact Finset.sum_congr rfl fun k _ => hterm k
 
 /- English proof (translation)
-Establish `hP : IsArithVar (grassIdeal 1 1 n) (n + 1)`. Use `GrassArithVar.proof (CoordConeArithVar.proof IntDomainDim.proof) 1 1 n le_rfl` as an intermediate fact. Simplify using `using this`. Take `⟨h1, h2⟩` from `(Inter.Conservation.proof : ConservationStatement) (Fin 1) (plBlocks 1 1 n) (II (Fin 1) (plBlocks 1 1 n)) (hII _ _) (grassIdeal 1 1 n) n (fun _ => fsMulti (plBlocks 1 1 n)) 2 hP (fun _ => FsLineSmooth.proof _ _) Nat.prime_two`. Rewrite `h2` using `[h1, hGF n 2 Nat.prime_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlog : Real.log ((2 : ℕ) : ℝ) ≠ 0` using `(Real.log_pos (by norm_num)).ne'`. Establish `: ptsIntegral (grassIdeal 1 1 n) (pot fun _ : Fin n => fsMulti (plBlocks 1 1 n)) (fun _ => 1) = 1`. Establish `h3 : Real.log ((2 : ℕ) : ℝ) * 1 = Real.log ((2 : ℕ) : ℝ) * ptsIntegral (grassIdeal 1 1 n) (pot fun _ : Fin n => fsMulti (plBlocks 1 1 n)) (fun _ => 1)` using `by rw [mul_one]; exact h2`. Conclude with `(mul_left_cancel₀ hlog h3).symm`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geomDeg_proj_eq_one (hGF : GrassFibreDegree.Statement) {II : IntersectionSystem}
     (hII : IsIntersectionSystem II) (n : ℕ) :
@@ -468,39 +464,37 @@ end TopDualSimpleStacked
 open TopDualSimpleStacked IndefiniteRowSideFullHecke.Inter in
 
 /- English proof (translation)
-Introduce `K _ _ i F F' T _ _ b hb b' hb' a II hi hII hlt hcov hab`. Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by omega⟩`. Establish `hP' : IsArithVar (dualIdeal b') (n + 1)` using `DualArithVar.proof (CoordConeArithVar.proof IntDomainDim.proof) K (n + 1) F' T b' hi`. Establish `hP : IsArithVar (dualIdeal b) (n + 1)` using `DualArithVar.proof (CoordConeArithVar.proof IntDomainDim.proof) K (n + 1) F T b hi`. Establish `hprime : (dualIdeal b').IsPrime` using `hP'.2.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : ∀ t, a t ≠ 0`. Introduce `t h0`. Apply `b.ne_zero t` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hab t, h0, zero_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨t₀, ht₀⟩` from `hP'.2.1.2.2 ()`. Establish `hlin : (C (a t₀) * X ⟨(), t₀⟩ : MRing (dualBlocks T)) ∉ dualIdeal b'` using `C_mul_X_not_mem hprime hP'.2.2.1 (ha t₀) ht₀`. Establish `hv1 : IsBlockMap Sum.inl (inlV (ι` using `dualBlocks T) (ι₂ := dualBlocks T)) := isBlockMap_inl`. Establish `hv2 : IsBlockMap Sum.inr (inrV (ι` using `dualBlocks T) (ι₂ := dualBlocks T)) := isBlockMap_inr`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm'` using `(DualLineSemipositive.proof K (n + 1) F'.withStdMetric T b' hb').1`. Establish `hsm` using `(DualLineSemipositive.proof K (n + 1) F.withStdMetric T b hb).1`. Establish `hMs` using `Inter.IsPullHerm.isSmoothHerm hv1 (isPullHerm_pullHerm hv1 (dualLine F'.withStdMetric b' hb')) hsm'`. Establish `hNs` using `Inter.IsPullHerm.isSmoothHerm hv2 (isPullHerm_pullHerm hv2 (dualLine F.withStdMetric b hb)) hsm`. Establish `hform : ∀ q : Σ _ : Unit, T, IsMultiHomog (linForm (stackedDiag a) q) ((fun _ _ => 1 : Unit → Unit → ℕ) q.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨u, t⟩`. Consider the cases of `u`. Rewrite using `[linForm_stackedDiag]`. Establish `h` using `isMultiHomog_C_mul (isMultiHomog_X_int (ι := dualBlocks T) () t) (a t)`. Establish `he : (Pi.single () 1 : Unit → ℕ) = fun _ => 1`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Consider the cases of `u`. Simplify using the standard rewrite rules. Rewrite `h` using `[he]`. Then use the resulting hypothesis. Take `⟨hΓ, himg, hdeg⟩` from `hGr Unit (dualBlocks T) Unit (dualBlocks T) (dualIdeal b') (n + 1) (linForm (stackedDiag a)) (fun _ _ => 1) hP' hform (fun _ => ⟨t₀, by rw [linForm_stackedDiag]; exact hlin⟩)`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨G'⟩` from `Targets.genFibreExists Unit (dualBlocks T) (Unit ⊕ Unit) (stackedBlocks T) Sum.inl inlV _ (n + 1) isBlockMap_inl hΓ`. Take `⟨J', hJ', -⟩` from `Targets.existsUniqueAll G'.Φ _ (fibreIdx (stackedBlocks T) (Sum.inl : Unit → Unit ⊕ Unit))`. Establish `e1` using `hAI3 II hII Unit (dualBlocks T) (Unit ⊕ Unit) (stackedBlocks T) Sum.inl inlV _ (n + 1) G' J' (fun _ => dualLine F'.withStdMetric b' hb') (fun _ => pullHerm hv1 (dualLine F'.withStdMetric b' hb')) hv1 hΓ (by rw [himg]; exact hP') hJ' (fun _ => hsm') (fun _ => isPullHerm_pullHerm _ …`. Rewrite `e1` using `[hdeg G' J' hJ', himg]`. Take `⟨himg2, hdeg2⟩` from `hImg K (n + 1) F F' T b b' a hi hab`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨G⟩` from `Targets.genFibreExists Unit (dualBlocks T) (Unit ⊕ Unit) (stackedBlocks T) Sum.inr inrV _ (n + 1) isBlockMap_inr hΓ`. Take `⟨J, hJ, -⟩` from `Targets.existsUniqueAll G.Φ _ (fibreIdx (stackedBlocks T) (Sum.inr : Unit → Unit ⊕ Unit))`. Establish `e2` using `hAI3 II hII Unit (dualBlocks T) (Unit ⊕ Unit) (stackedBlocks T) Sum.inr inrV _ (n + 1) G J (fun _ => dualLine F.withStdMetric b hb) (fun _ => pullHerm hv2 (dualLine F.withStdMetric b hb)) hv2 hΓ (by rw [stackedGraph] at himg2; rw [himg2]; exact hP) hJ (fun _ => hsm) (fun _ => isP …`. Rewrite `hdeg2`, `himg2` using `[stackedGraph]`. Rewrite `e2` using `[hdeg2 G J hJ, himg2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htel` using `telescope (hII (Unit ⊕ Unit) (stackedBlocks T)) hΓ hMs hNs`. Establish `hstep : ∀ k : Fin (n + 1), II (Unit ⊕ Unit) (stackedBlocks T) (graphIdeal (dualIdeal b') (linForm (stackedDiag a))) (n + 1) (Fin.snoc (rest (pullHerm hv1 (dualLine F'.withStdMetric b' hb')) (pullHerm hv2 (dualLine F.withStdMetric b hb)) k) (pullHerm hv2 (dualLine F.withStdMetric …`. Introduce `k`. Establish `hL : ∀ m, (rest (pullHerm hv1 (dualLine F'.withStdMetric b' hb')) (pullHerm hv2 (dualLine F.withStdMetric b hb)) k m).a = degFirst ∨ (rest (pullHerm hv1 (dualLine F'.withStdMetric b' hb')) (pullHerm hv2 (dualLine F.withStdMetric b hb)) k m).a = degSecond`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `mix_mem (pullHerm hv1 (dualLine F'.withStdMetric b' hb')) (pullHerm hv2 (dualLine F.withStdMetric b hb)) n k (Equiv.swap k (Fin.last n) (Fin.castSucc m)) with h | h` into its components or cases. Use `left`. Simplify using `only [rest, h]`. Both sides reduce to the same expression. Use `right`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [rest, h]`. Both sides reduce to the same expression. Establish `hLs : ∀ m, IsSmoothHerm (rest (pullHerm hv1 (dualLine F'.withStdMetric b' hb')) (pullHerm hv2 (dualLine F.withStdMetric b hb)) k m)`. Introduce `m`. Break down `mix_mem (pullHerm hv1 (dualLine F'.withStdMetric b' hb')) (pullHerm hv2 (dualLine F.withStdMetric b hb)) n k (Equiv.swap k (Fin.last n) (Fin.castSucc m)) with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [rest, h]`. Conclude with `hMs`. Simplify using `only [rest, h]`. Conclude with `hNs`. Use `(step hHor hb hb' hi hab ha hII hΓ hprime hlin _ hLs).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Take `⟨hall, hone⟩` from `hFib K (n + 1) F F' T b b' a hi hlt hcov hab t₀ _ hL`. Use `split_ifs with hk`. Apply `hall` to reduce the goal to its premises. Introduce `m`. Substitute `hk` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [rest, Equiv.swap_self, Equiv.refl_apply, mix, Fin.coe_castSucc, Fin.val_last]`. Establish `hm : (m : ℕ) < n` using `by have := m.isLt; omega`. Rewrite using `[if_pos hm]`. Both sides reduce to the same expression. Apply `hone` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hkn : (k : ℕ) < n` using `Fin.val_lt_last hk`. Use `⟨⟨k, hkn⟩, ?_⟩` and prove the remaining obligations. Establish `hcs : Fin.castSucc (⟨k, hkn⟩ : Fin n) = k` using `Fin.ext rfl`. Simplify using `only [rest, hcs, Equiv.swap_apply_left, mix, Fin.val_last, lt_irrefl, if_false]`. Establish `: ¬ (n < (k : ℕ))` using `by omega`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg this]`. Both sides reduce to the same expression. Rewrite `htel` using `[Finset.sum_congr rfl fun k _ => hstep k, Finset.sum_ite_eq' Finset.univ (Fin.last n), if_pos (Finset.mem_univ _)]`. Establish `hg : geomDeg (grassIdeal 1 1 (n + 1 - 1)) (fsMulti (plBlocks 1 1 (n + 1 - 1))) (1 * 1 * (n + 1 - 1)) = 1`. Establish `h` using `geomDeg_proj_eq_one hGF hII (n + 1 - 1)`.
-
-Rewrite using `[show 1 * 1 * (n + 1 - 1) = n + 1 - 1 by ring]` and apply the resulting hypothesis. Rewrite using `[hg, mul_one]`. Move the coercions through the operations in `at e1 e2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem DualTopSimpleStacked.proof (hAI3 : Inter.PushforwardArithIntersection.Statement) (hGr : GraphStatement)
     (hImg : DualStackedGraphImage.Statement) (hHor : DualStackedGraphHorizontal.Statement)

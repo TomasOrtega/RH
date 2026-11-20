@@ -50,7 +50,7 @@ namespace GlobalTheory.LevCmp
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1, fun v hv => let ⟨s, _, a, _, c⟩ := h2 v hv; ⟨s, a, c.mem⟩, fun k v s hs => let ⟨_, _, c⟩ := h3 k v s hs; c.mem, fun κ hκ => (h4 κ hκ).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem grpShape_of {η : HChar D.host.E} {J : Subgroup (GAf D.host.E D.R.nV)} {χ : J →* ℂˣ} (h1 : NG.IsProdLevel J)
     (h2 : ParaShape D η J χ)
@@ -60,9 +60,9 @@ theorem grpShape_of {η : HChar D.host.E} {J : Subgroup (GAf D.host.E D.R.nV)} {
     fun κ hκ => (h4 κ hκ).1⟩
 
 /- English proof (translation)
-Take `⟨k, ⟨v⟩⟩` from `hG.2.2`. Take `⟨h1, s, hs⟩` from `hG.1 k v`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_class_trivial_stabiliser_at_typePlace D k s (hs ▸ h1)`. Use `haveI : Nontrivial W := by`. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Use `hρ` as an intermediate fact. Establish `h2 : (⊥ : Subrepresentation ρ) ≠ ⊤` using `bot_ne_top`. Conclude with `h2 (Subrepresentation.ext (Subsingleton.elim _ _))`. Conclude with `GlobalTheory.T.exists_ne_zero_algebraicModularForm_of_trivial_stabiliser _ _ K W ρ J χ g fun γ hγ hm => hg γ hγ (GlobalTheory.T.expectedShapeLevel_integral_and_unipotent_at_typePlaces D η J hG h _ hm).1 ((GlobalTheory.T.expectedShapeLevel_integral_and_unipotent_at_typePlaces D η …`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_form {η : HChar D.host.E} {J : Subgroup (GAf D.host.E D.R.nV)} (hG : GPlaces D) (h : GrpShape D η J)
     (K : Type) [Field K] (W : Type) [AddCommGroup W] [Module K W] (ρ : Representation K (GQ D.host.E D.R.nV) W)
@@ -80,7 +80,7 @@ theorem exists_form {η : HChar D.host.E} {J : Subgroup (GAf D.host.E D.R.nV)} (
     hg γ hγ (GlobalTheory.T.expectedShapeLevel_integral_and_unipotent_at_typePlaces D η J hG h _ hm).1 ((GlobalTheory.T.expectedShapeLevel_integral_and_unipotent_at_typePlaces D η J hG h _ hm).2 k v s hs)
 
 /- English proof (translation)
-Take `⟨a, ha, ha'⟩` from `hr`. Use `GlobalTheory.T.mem_parahoric_of_scalar_action_on_ramifiedParahoricForm L n r s V F J χ' a hF ha h.mem hE (fun κ hκ ht hd => (h1 _).2 ?_) fun κ hκ ht hd e => ha' ?_` and prove the remaining obligations. Rewrite using `[h.chr κ hκ ht 1 hd.symm, map_one]`. Rewrite using `[← h.chr κ hκ ht a hd.symm]`. Conclude with `(h1 _).1 e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem para_rigid {L : Type} [Field L] [NumberField L] [IsCMField L] {n r : ℕ} {s : SplitPlace L} {V : Type} [AddCommGroup V]
     [Module ℂ V] {F : GAf L n → V} {J : Subgroup (GAf L n)} {χ χ' : J →* ℂˣ}
@@ -95,38 +95,36 @@ theorem para_rigid {L : Type} [Field L] [NumberField L] [IsCMField L] {n r : ℕ
     exact (h1 _).1 e
 
 /- English proof (translation)
-Rewrite using `[← Units.val_inj, cx_apply, Units.val_one, map_eq_one_iff e e.injective, Units.val_eq_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cx_eq_one {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {K : Type} [Field K] (e : K →+* ℂ)
     {J : Subgroup (GAf L n)} (χ : J →* Kˣ) (κ : J) : cx e χ κ = 1 ↔ χ κ = 1 := by
   rw [← Units.val_inj, cx_apply, Units.val_one, map_eq_one_iff e e.injective, Units.val_eq_one]
 
 /- English proof (translation)
-Establish `x1` using `GlobalTheory.T.isProductLevel_definiteFormsRealisationAtTwist D X i b k Q ψ hA j`. Establish `x4 : NG.HypOutside (cell X b hA j).J (cx e (cell X b hA j).χ) (gPl D ∪ qPl D η)` using `fun κ hκ => by`. Establish `h` using `(cell X b hA j).hyp κ fun v hv => hκ v fun h => hv fun h' => h (x0 h')`. Conclude with `⟨h.1, fun h' => (cx_eq_one _ _ _).2 (h.2 h')⟩`. Establish `gm` using `grpShape_of m1 m2 (fun k v s hs => let ⟨a, c, _, _, d⟩ := m3 k v s hs; ⟨a, c, d⟩) m4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `gx` using `grpShape_of x1 x2 (fun k v s hs => let ⟨a, c, _, _, d⟩ := x3 k v s hs; ⟨a, c, d e he⟩) x4`. Take `⟨θ, J₁, e', V, _, _, ω, hθ, he', hω, j1, j2, j3⟩` from `hJ`. Take `⟨f, hf, hf0⟩` from `exists_form hG gm ℂ _ m.wt.ρ m.wt.irr m.χ`. Take `⟨f', hf', hf0'⟩` from `exists_form hG gx _ _ (cell X b hA j).ρ (cell X b hA j).irr (cell X b hA j).χ`. Choose the witnesses or unpack the hypotheses as in `⟨y, rfl⟩ : f ∈ LinearMap.range m.real := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[m.real_range]`. Take `⟨N, hN, h⟩` from `m.J_open`. Use `⟨⟨hf.1, N, hN, fun κ hκ g => ?_⟩, fun κ => funext fun g => hf.2 κ g⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h κ hκ`. Use `hf.2 ⟨κ, h1⟩ g` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[h2, Units.val_one, one_smul]`. Then use the resulting hypothesis. Take `⟨y', hy'⟩` from `(cell X b hA j).real.surjective ⟨f', hf'⟩`. Use `set F' : GAf D.host.E D.R.nV → V := fun g => ω (((cell X b hA j).real y').1 g) with hF'`. Establish `hF0 : F' ≠ 0` using `fun h => hf0' (funext fun g => hω (by`. Use `congrFun h g` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hF']`. Simplify using `only [hy'] at this`. Conclude with `this.trans (map_zero ω).symm))`. Establish `E1 : ∀ κ : m.J, Eig (m.real y) κ (m.χ κ : ℂˣ)` using `fun κ g => hf.2 κ g`. Establish `E2 : ∀ κ : (cell X b hA j).J, Eig F' κ (cx e' (cell X b hA j).χ κ : ℂˣ)` using `fun κ g => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `((cell X b hA j).real y').2.2 κ g` as an intermediate fact. Simplify using `only [hF', this, map_smulₛₗ, cx_apply]`. Establish `hr0 : 2 ≤ D.R.r` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; unfold Ranks.r; omega`. Establish `hr1 : D.R.r < D.R.nV` using `by have := D.R.rank_add_five_le; unfold Ranks.nV; omega`. Use `GlobalTheory.T.productLevel_eq_of_local_agreement _ _ _ _ _ _ _ (GlobalTheory.T.typePlaces_union_ramifiedPlaces_finite D η) m1 x1 m4 x4 fun u hu => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `hu with hu | hu` into its components or cases. Take `⟨kk, v, s, rfl, hs⟩` from `hG.2.1 u hu`. Take `⟨p, ξ, a1, a2, a3⟩` from `m3 kk v s hs`. Take `⟨p', ξ', b1, b2, b3⟩` from `x3 kk v s hs`. Take `rfl` from `GlobalTheory.T.heckeCharacter_splitPlaceComponent_unique _ η s ξ ξ' a2 b2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `D.host.g_prime kk`. Establish `hab : s.Above (D.host.g kk)`. Establish `h1 : ((D.host.g kk : ℕ) : 𝓞 D.host.E) ∈ s.w.asIdeal` using `hs ▸ (hG.1 kk v).1`. Use `show _ ∈ s.v.asIdeal`. Rewrite using `[← s.w_under]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show algebraMap _ (𝓞 D.host.E) _ ∈ s.w.asIdeal`. Rewrite using `[map_natCast]` and apply the resulting hypothesis. Establish `key` using `GlobalTheory.T.additiveCharacter_eq_of_common_unipotentLevel_eigenvector _ _ _ s (D.host.g kk) (D.host.g kk - 1) θ _ _ (m.real y) F' _ _ _ _ p p' ξ ξ hg hab ((Nat.coprime_self_sub_left hg.one_le).2 (Nat.coprime_one_left _)) hr0 hr1.le hθ hf0 hF0 a1 b1 a3 (b3 e' he') E1 E2 fun κ h …`. Use the proof step `⟨c, c', h1 y, h2 y', h3 kk v s hs hκ⟩`. Use `fun κ hκ => ⟨(a3.mem κ hκ).trans ((b3 e he).mem κ hκ).symm, fun h h' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u1, u2⟩` from `GlobalTheory.T.upperParahoric_lowerDet_unit_and_superdiag_integral _ _ _ s _ ((a3.mem κ hκ).1 h).1`. Establish `hne : NG.detDD s D.R.r (s.loc _ κ) ≠ 0` using `fun h0 => by simp [h0] at u1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[a3.chr κ h hκ (Units.mk0 _ hne) rfl, (b3 e he).chr κ h' hκ (Units.mk0 _ hne) rfl, key _ u2]`. Take `⟨s, ξ, rfl, a2, a3⟩` from `m2 u hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s', ξ', b1, b2, b3⟩` from `x2 _ hu`. Take `⟨s₁, c1, c2⟩` from `j1 _ hu`. Establish `hU : ∀ κ, TrivOutside {s.v} κ → NG.ParaRT s₁ D.R.r (s₁.loc _ κ) → κ ∈ Umax D.host.E D.R.nV` using `fun κ hκ hP => (GlobalTheory.HeckeScalarSph.loc_mem_GLint_iff s₁ (c1 ▸ hκ)).1 hP.1`. Establish `hs : s' = s` using `GlobalTheory.T.splitPlace_eq_of_automorphism_maps_parahoric _ _ _ s s' s₁ θ (by omega) hr1 b1 c1 hθ fun κ hκ hP => by`. Take `⟨c, c', h1, h2, -⟩` from `j3 κ (c2 κ (c1 ▸ hκ) hP)`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `(hθ.1 κ).2 (hU κ hκ hP)`. Establish `h4` using `(hθ.2 _ κ).2 hκ`. Conclude with `⟨para_rigid hf0 a3 (hram s ξ hu a2) (fun _ => Iff.rfl) E1 _ h3 h4 ⟨c, h1 y⟩, para_rigid hF0 b3 (hram s' ξ' (b1 ▸ hu) b2) (fun κ => (cx_eq_one _ _ _).trans (cx_eq_one _ _ _).symm) E2 _ h3 (b1 ▸ h4) ⟨c', h2 y'⟩⟩`. Substitute `hs` using the available equality. Take `rfl` from `GlobalTheory.T.heckeCharacter_splitPlaceComponent_unique _ η s' ξ ξ' a2 b2`.
-
-Use `fun κ hκ => ⟨(a3.mem κ hκ).trans (b3.mem κ hκ).symm, fun h h' => ?_⟩` and prove the remaining obligations. Take `⟨u1, -⟩` from `GlobalTheory.T.upperParahoric_lowerDet_unit_and_superdiag_integral _ _ _ s' _ ((a3.mem κ hκ).1 h)`. Establish `hne : NG.detDD s' D.R.r (s'.loc _ κ) ≠ 0` using `fun h0 => by simp [h0] at u1`. Rewrite using `[a3.chr κ h hκ (Units.mk0 _ hne) rfl, b3.chr κ h' hκ (Units.mk0 _ hne) rfl]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levEq {η : HChar D.host.E} {μ : D.what₂.Tup} {j' : ℕ} (m : MtReal D μ j') (X : NExpTied D) {i : D.ntw.Tw} (b : Bool) {k : ℕ}
     {Q : Finset (PlE D.host)} {ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ} (hA : NX.AdmTw D i k Q ψ) (j : Fin D.R.m)
@@ -212,7 +210,7 @@ theorem levEq {η : HChar D.host.E} {μ : D.what₂.Tup} {j' : ℕ} (m : MtReal 
     rw [a3.chr κ h hκ (Units.mk0 _ hne) rfl, b3.chr κ h' hκ (Units.mk0 _ hne) rfl]
 
 /- English proof (translation)
-Take `⟨i', Q', k', φ⟩` from `p`. Simplify using `only at h1 h2 h3`. Substitute `h1 h2 h3` using the available equality. Take `⟨ρ, hρ⟩` from `h`. Conclude with `⟨ρ, _, hρ, congrArg (fun ψ => (⟨i', Q', k', ψ⟩ : TwPack D)) (psiAt_psiAt b φ)⟩`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unpack {p : TwPack D} {b : Bool} {w : D.what₂.places.Pl} {ψ₀ : G D.host.E D.nd.Om →* (D.what₂.LL)ˣ}
     (h : GlobalTheory.TwistChoice.HasReading p b w ψ₀) {i : D.ntw.Tw} {Q : Finset (PlE D.host)} {k : ℕ} (h1 : p.1 = i) (h2 : p.2.1 = Q)
@@ -224,9 +222,9 @@ theorem unpack {p : TwPack D} {b : Bool} {w : D.what₂.places.Pl} {ψ₀ : G D.
   exact ⟨ρ, _, hρ, congrArg (fun ψ => (⟨i', Q', k', ψ⟩ : TwPack D)) (psiAt_psiAt b φ)⟩
 
 /- English proof (translation)
-Substitute `h1 h2 h3 h4` using the available equality. Take `⟨a, ha, rfl⟩` from `GlobalTheory.T.ringClassGroup_descents_differ_by_power_prime_to_l D _ _ b b' v v' ρ ρ' _ ψ ψ' _ hz ho hp hp'`. Apply the tactic sequence `refine ⟨if b = b' then a else -a, by split_ifs <;> simpa using ha, ?_⟩`. Use `congrArg (fun ψ => (⟨i', Q', k', ψ⟩ : TwPack D)) ?_` and prove the remaining obligations. Apply the tactic sequence `cases b <;> cases b'`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(inv_zpow ψ a).symm`. Conclude with `((inv_zpow' ψ (-a)).trans (congrArg (ψ ^ ·) (neg_neg a))).symm`. Conclude with `(zpow_neg ψ a).symm`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pack_pow {i i' : D.ntw.Tw} {k k' : ℕ} {b b' : Bool} {v v' : D.what₂.places.Pl} (ρ : Reading i k b v) (ρ' : Reading i' k' b' v')
     {Q Q' : Finset (PlE D.host)} {ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k)ˣ} {ψ' : D.ntw.RCG i' Q' →* (D.ntw.Ok i' k')ˣ}
@@ -245,17 +243,17 @@ theorem pack_pow {i i' : D.ntw.Tw} {k k' : ℕ} {b b' : Bool} {v v' : D.what₂.
   · rfl
 
 /- English proof (translation)
-Use `choose b₀ hb using hs`. Establish `h0 : ∀ v, ∃ p : TwPack D, GlobalTheory.TwistChoice.HasReading p (b₀ v) v (ψ₀ v) ∧ p.1 = s v ∧ p.2.1 = Q v ∧ p.2.2.1 = k v` using `fun v => by`. Take `⟨ρ⟩` from `(hb v).nonempty_reading (k v)`. Take `⟨ψ, hψ⟩` from `hex v _ ρ`. Use `⟨twPack D (s v) (b₀ v) (Q v) (k v) ψ, ⟨ρ, ?_⟩, rfl, rfl, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `show ρ.Pulls (BlochKatoReduction.Gen.psiAt (b₀ v) (BlochKatoReduction.Gen.psiAt (b₀ v) ψ)) _`. Rewrite using `[psiAt_psiAt]` and apply the resulting hypothesis. Use `choose p hp using h0`. Take `⟨o, ho⟩` from `GlobalTheory.TwistChoice.exists_orbitRep (D := D)`. Set `b : D.what₂.places.Pl → Bool` to `fun w => if o w = w then b₀ w else !b₀ (D.what₂.places.conj w)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h1 : ∀ v, ReadsAt (s v) (b v) v ∧ ∃ (ρ : Reading (s v) (k v) (b v) v) (ψ : D.ntw.RCG (s v) (Q v) →* (D.ntw.Ok (s v) (k v))ˣ), ρ.Pulls ψ (ψ₀ v) ∧ twPack D (s v) (b v) (Q v) (k v) ψ = p (o v)` using `fun v => by`. Distinguish the cases in `h2 : o v = v`. Establish `e : b v = b₀ v` using `if_pos h2`. Rewrite using `[e, h2]`. Conclude with `⟨hb v, unpack (hp v).1 (hp v).2.1 (hp v).2.2.1 (hp v).2.2.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : b v = !b₀ (D.what₂.places.conj v)` using `if_neg h2`. Establish `h3` using `(hb (D.what₂.places.conj v)).conj hG`. Establish `h4` using `(hp (D.what₂.places.conj v)).1.conj hG`. Rewrite `h3`, `h4` using `[D.what₂.places.conj_conj]`. Rewrite `h3` using `[c1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h4` using `[c4]`. Rewrite using `[e, (ho v).1.resolve_left h2]`. Conclude with `⟨h3, unpack h4 ((hp _).2.1.trans (c1 v)) ((hp _).2.2.1.trans (c2 v)) ((hp _).2.2.2.trans (c3 v))⟩`. Use `choose hr ρ ψ h2 h3 using h1`. Use `⟨b, ρ, ψ, hr, h2, fun w hne => ?_, fun v => by rw [h3, h3, (ho v).2]⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [b, (ho w).2, D.what₂.places.conj_conj]`. Break down `(ho w).1 with h | h` into its components or cases. Rewrite using `[if_neg (by rw [h]; exact hne.symm), if_pos h]`. Rewrite using `[if_pos h, if_neg (by rw [h]; exact hne), Bool.not_not]`.
+A detailed English derivation is pending.
 -/
 theorem exists_data (hG : IsGalois ℚ ↥D.LL0) (s : D.what₂.places.Pl → D.ntw.Tw) (Q : D.what₂.places.Pl → Finset (PlE D.host))
     (k : D.what₂.places.Pl → ℕ) (ψ₀ : D.what₂.places.Pl → (G D.host.E D.nd.Om →* (D.what₂.LL)ˣ))
@@ -303,9 +301,9 @@ abbrev kMap {i : D.ntw.Tw} {k : ℕ} {b : Bool} {v : D.what₂.places.Pl} (ρ : 
   IsFractionRing.map (K := FractionRing (D.ntw.Ok i k)) (L := FractionRing ρ.Oe) ρ.inj
 
 /- English proof (translation)
-Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ← (GlobalTheory.T.twistReading_induces_sideEmbedding_fixedField D i k b v ρ).2.1 x, hι]`. Both sides reduce to the same expression. Take `⟨-, art, ha, h⟩` from `hg`. Use `⟨art, ha, fun x σ e => (h x σ e).trans (Units.ext ?_)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show D.what₂.embLL (ψ₀ σ : D.what₂.LLˣ) = ι (kMap ρ (algebraMap _ _ ((ψ (D.ntw.art i Q σ) : (D.ntw.Ok i k)ˣ) : D.ntw.Ok i k)))`. Rewrite using `[← hι, hp σ]`. Simplify using `[IsFractionRing.map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reads_of_pulls {i : D.ntw.Tw} {k : ℕ} {b : Bool} {v : D.what₂.places.Pl} (ρ : Reading i k b v) {Q : Finset (PlE D.host)}
     {ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k)ˣ} {ψ₀ : G D.host.E D.nd.Om →* (D.what₂.LL)ˣ} {χ : HChar D.host.E} (hp : ρ.Pulls ψ ψ₀)
@@ -321,13 +319,11 @@ theorem reads_of_pulls {i : D.ntw.Tw} {k : ℕ} {b : Bool} {v : D.what₂.places
     simp [IsFractionRing.map]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional (NX.Kk D i k) (D.nexp.MtV i (j.1 + 1) b k Q ψ) := by`. Take `⟨S, hS⟩` from `D.nexp.MtLat_fg i (j.1 + 1) b k Q ψ`. Use `⟨S, ?_⟩` and prove the remaining obligations. Rewrite using `[← D.nexp.MtLat_span i (j.1 + 1) b k Q ψ, ← hS, Submodule.span_span_of_tower]`. Establish `h1` using `GlobalTheory.T.finrank_algebraicModularForms_complexification _ _ _ e _ _ _ _ _ (cell X b hA j).χ hw (cell X b hA j).J_open (Module.Finite.equiv (cell X b hA j).real)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(cell X b hA j).real.finrank_eq, ← h1]`. Establish `h2 : NG.TypeSp m.wt.ρ (cell X b hA j).J (cx e (cell X b hA j).χ) = NG.TypeSp m.wt.ρ m.J m.χ`. Take `⟨h3, h4⟩` from `h`. Use extensionality with `f`. Use `and_congr_right fun _ => ⟨fun H κ => ?_, fun H κ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4 κ.1 κ.2 (h3 ▸ κ.2)]`. Conclude with `H ⟨κ.1, h3 ▸ κ.2⟩`. Rewrite using `[← h4 κ.1 (h3.symm ▸ κ.2) κ.2]`. Conclude with `H ⟨κ.1, h3.symm ▸ κ.2⟩`. Rewrite using `[h2, ← m.real_range, LinearMap.finrank_range_of_inj m.real_inj]`.
-
-Take `⟨h3, h4⟩` from `D.what₂.jMt_basis μ j' (Module.Free.chooseBasis _ _)`. Rewrite using `[Module.finrank_eq_nat_card_basis (Module.Free.chooseBasis _ _), Module.finrank_eq_nat_card_basis (Module.Basis.mk h3 h4.ge)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_of_levEq {μ : D.what₂.Tup} {j' : ℕ} (m : MtReal D μ j') (X : NExpTied D) {i : D.ntw.Tw} (b : Bool) {k : ℕ}
     {Q : Finset (PlE D.host)} {ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ} (hA : NX.AdmTw D i k Q ψ) (j : Fin D.R.m)
@@ -354,25 +350,21 @@ theorem rank_of_levEq {μ : D.what₂.Tup} {j' : ℕ} (m : MtReal D μ j') (X : 
     Module.finrank_eq_nat_card_basis (Module.Basis.mk h3 h4.ge)]
 
 /- English proof (translation)
-Establish `hl : ∀ v, D.ntw.l (s v) = D.what₂.places.resChar v` using `fun v => let ⟨_, h⟩ := hs v`. Use the proof step `h.l_eq`. Establish `hQ : ∀ v v', χ v = χ v' → Q v = Q v'` using `fun v v' e => Finset.ext fun u => not_iff_not.1 (((h1 v).ram u).symm.trans (e ▸ (h1 v').ram u))`. Set `g : HChar D.host.E → ℕ → (G D.host.E D.nd.Om →* (D.what₂.LL)ˣ)` to `fun c n => @Classical.epsilon _ ⟨1⟩ fun ψ₀ => GalOf D c ψ₀ ∧ ∀ g, ψ₀ g ^ n = 1`. Set `ψ₀` to `fun v => g (χ v) (D.ntw.l (s v) ^ k v)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : ∀ v, GalOf D (χ v) (ψ₀ v) ∧ ∀ g, ψ₀ v g ^ (D.ntw.l (s v) ^ k v) = 1` using `fun v => Classical.epsilon_spec (GlobalTheory.T.exists_galoisCharacter_of_finiteOrder_heckeCharacter hP.what₂.art D (χ v) _ (pow_pos (D.ntw.lPrime _).out.pos _) (hl v ▸ h2 v) (hl v ▸ h3 v))`. Establish `c4 : ∀ v, ψ₀ (D.what₂.places.conj v) = ψ₀ v` using `fun v => by simp only [ψ₀, c1, (h7 v).1, (h7 v).2]`. Establish `hd` using `fun v b (ρ : Reading (s v) (k v) b v) =>`. Set `⟨a1, a2, a3⟩` to `GlobalTheory.T.galois_character_anti_ramified_exactly hP D _ (Q v) (χ v) (ψ₀ v) (D.ntw.lPrime (s v)).out (hl v ▸ h1 v) (hψ v).1`. Use the proof step `GlobalTheory.T.exists_ringClassGroup_descent_of_coeffFieldTwist D (s v) (k v) b v ρ (Q v) (ψ₀ v) (h1 v).split (h5 v) (hψ v).1.1 a1 (hψ v).2 a2 a3`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, ρ, ψ, hr, hp, hb, hc⟩` from `exists_data hG s Q k ψ₀ hs c1 (fun v => hQ _ _ (h7 v).1) (fun v => (h7 v).2) c4 fun v b ρ => (hd v b ρ).1`. Establish `hok` using `fun v => (hd v _ (ρ v)).2 _ (hp v)`. Use `choose ι hι using fun v => GlobalTheory.T.exists_complexEmbedding_readingFractionRing_over_coeffField D F (s v) (k v) (b v) v (ρ v)`. Establish `hlev` using `fun v hA j (hv : TwistedAt D v) =>`. Set `⟨a1, a2⟩` to `reads_of_pulls (ρ v) (hp v) (hψ v).1 (hι v)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `h8 v (b v) _ hA j hv (hl v) (hok v) _ a1 a2`. Establish `hrk : ∀ v, TwistedAt D v → GlobalTheory.TwistChoice.RankEq (s v) (b v) (Q v) (k v) (ψ v) v` using `fun v hv j j1 j2 => by`. Take `⟨j, rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Take `⟨a1, a2⟩` from `hlev v (GlobalTheory.MtRead.admissible_twist_of_twisting_character (hok v)) ⟨j, j2⟩ hv`. Conclude with `rank_of_levEq _ X _ _ ⟨j, j2⟩ _ a1 a2`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `C` to `GlobalTheory.TwistChoice.choiceOf s b Q k ψ hr ρ hrk`. Take `⟨tp, t1, t2⟩` from `htp C rfl`. Use `⟨C, tp, t1, t2, rfl, rfl, ⟨⟨fun a => hE.elim a, fun a => hE.elim a, fun a => hE.elim a, ⟨ψ₀, c4, hp, fun a => hE.elim a⟩, fun v x y z _ hx => (ρ v).emb_side x y z hx⟩, ⟨c1, fun v _ => (GlobalTheory.T.twistReading_induces_sideEmbedding_fixedField D _ _ _ _ (ρ v)).1, fun v _ x => ( …` and prove the remaining obligations. Establish `e' : s v' = s v` using `e`. Establish `key : k v' = k v ∧ χ v' = χ v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `a1` using `(GlobalTheory.T.twistReading_induces_sideEmbedding_fixedField D _ _ _ _ (ρ v)).1`. Establish `a2` using `(GlobalTheory.T.twistReading_induces_sideEmbedding_fixedField D _ _ _ _ (ρ v')).1`. Establish `a3` using `(GlobalTheory.T.twistReading_induces_sideEmbedding_fixedField D _ _ _ _ ((ρ v').conj hG)).1`. Rewrite `a2`, `a3` using `[e']`. Distinguish the cases in `hbb : b v' = b v`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite `a2` using `[hbb]`. Conclude with `h6 _ _ fun x hx => (a2 ⟨x, hx⟩).trans (a1 ⟨x, hx⟩).symm`. Apply the tactic sequence `have : (!b v') = b v := by revert hbb; cases b v <;> cases b v' <;> simp`. Rewrite `a3` using `[this]`. Establish `a4` using `h6 _ _ fun x hx => (a3 ⟨x, hx⟩).trans (a1 ⟨x, hx⟩).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(h7 v').2.symm.trans a4.1, (h7 v').1.symm.trans a4.2⟩`. Conclude with `pack_pow (ρ v) (ρ v') e' (hQ _ _ key.2) key.1 (by simp only [ψ₀, e', key.1, key.2]) (hl v ▸ h3 v) (hψ v).2 (hp v) (hp v')`. Introduce `v _ u hu _ A σ hA hσ y hy`. Take `⟨-, art, ha, h⟩` from `(hψ v).1`. Establish `a1` using `h.val_eq ha (((h1 v).ram u).2 hu) hA hσ`.
-
-Establish `a2 : y = (ψ₀ v σ : D.what₂.LLˣ)` using `D.what₂.embLL.injective (by rw [hy, t2, a1, inv_inv]; rfl)`. Rewrite using `[a2]`. Conclude with `hp v σ`. Introduce `v j j1 j2 hv hA`. Take `⟨j, rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`.
-
-Take `⟨⟨a1, a2⟩, -⟩` from `hlev v hA ⟨j, j2⟩ hv`. Conclude with `⟨ι v, hι v, a1, fun κ h h' => congrArg Units.val (a2 κ h h')⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_choice (hP : PrN) (hG : IsGalois ℚ ↥D.LL0) (hE : IsEmpty D.nd.Loc) (cf : CharFrame D) (M : MtFam D) (X : NExpTied D)
     (F : TwFrameC D) (xi : D.what₂.Tup → HChar D.host.E) (χ : D.what₂.places.Pl → HChar D.host.E)
@@ -449,7 +441,7 @@ theorem exists_choice (hP : PrN) (hG : IsGalois ℚ ↥D.LL0) (hE : IsEmpty D.nd
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
 
 /- English proof (translation)
-The claim follows from `w.ok.xi_inj range := w.xi_range mu0 := w.l.xi0 star := by show w.I.xi w.I.muStar = f.del rw [w.ok.xi_star, w.C_eq] star' := by show w.I.xi w.I.muStar' = f.del' rw [w.ok.xi_star', w.C_eq] tw := P.q.mu.tw on := P.q.mu.on off := P.q.mu.off sub := P.sub supp := P.supp`.
+A detailed English derivation is pending.
 -/
 theorem muIsW (x : St P) : V4.MuIsW (w.st x.o.Z) f T P.Wt w.I.xi where
   inj := w.ok.xi_inj
@@ -468,13 +460,13 @@ theorem muIsW (x : St P) : V4.MuIsW (w.st x.o.Z) f T P.Wt w.I.xi where
   supp := P.supp
 
 /- English proof (translation)
-The claim follows from `congrArg (Fr.at (w.st x.o.Z)) w.C_eq`.
+A detailed English derivation is pending.
 -/
 theorem cfOf_eq (x : St P) : cfOf x = Fr.at (w.st x.o.Z) f :=
   congrArg (Fr.at (w.st x.o.Z)) w.C_eq
 
 /- English proof (translation)
-Rewrite using `[cfOf_eq]`. Conclude with `(GlobalTheory.Mem.Top.TupTieW.tupTied_of_muIsW (w.st x.o.Z) f T P.Wt w.I.xi (muIsW x)).2.2.2 C fun v _ => (congrFun h v).trans (Model.qOf_eq v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tp (x : St P) (C : NChoice (Dof x)) (h : C.Q = QOf P) :
     ∃ tp : TupTied (Dof x) (cfOf x) C, tp.xi = w.I.xi ∧ tp.psi = T.psi := by
@@ -483,7 +475,7 @@ theorem exists_tp (x : St P) (C : NChoice (Dof x)) (h : C.Q = QOf P) :
     (congrFun h v).trans (Model.qOf_eq v)
 
 /- English proof (translation)
-The claim follows from `Finset.disjoint_left.2 fun u hu hS => by obtain ⟨p, hp, h3⟩ := h u hS rcases Finset.mem_insert.1 hp with rfl | hp exacts [h1 u hu h3, h2 u hu p hp h3]`.
+A detailed English derivation is pending.
 -/
 theorem disjoint_conductorPlaces_excludedSet {Q : Finset (PlE D.host)} {i : D.ntw.Tw} (h : OverSet D (D.ntw.S0 i) (insert (D.ntw.l i) (lowAll D)))
     (h1 : ∀ u ∈ Q, u ∉ placesOver D.host.E (D.ntw.l i)) (h2 : ∀ u ∈ Q, ∀ p ∈ lowAll D, u ∉ placesOver D.host.E p) :
@@ -493,9 +485,9 @@ theorem disjoint_conductorPlaces_excludedSet {Q : Finset (PlE D.host)} {i : D.nt
   exacts [h1 u hu h3, h2 u hu p hp h3]
 
 /- English proof (translation)
-Introduce `hCo hCW hHM hP hS hL`. Use `((GlobalTheory.T.choice_side_of_twisted hCo hCW hHM hP hS hL).and ((GlobalTheory.T.good_places_all_states hL).and (GlobalTheory.T.twistConductors_avoid_excludedPrimes.and ((GlobalTheory.T.bad_places_sub_of_admissible_twist hP hL).and ((GlobalTheory.T.side_read_hecke_of_admissible …` and prove the remaining obligations. Introduce and unpack `K B f T w - - ⟨a0, a1, a2, a3, a4, a5, a6, a7⟩ P x l s hs c1`. Establish `hl : ∀ v, (Dof x).ntw.l (s v) = B.places.resChar v` using `fun v => let ⟨_, h⟩ := hs v`. Use the proof step `h.l_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, tp, b1, b2, b3, b4, b5, b6, b7⟩` from `exists_choice (D := Dof x) hP B.coeffGaloisSubfield_isGalois l.a.A.bare (cfOf x) l.mt.M l.b.Bs.exp l.b.Bs.twF w.I.xi T.psi (QOf P) T.k s hs c1 (exists_tp x) (fun v => Model.qOf_eq (P := P) v ▸ T.psi_is v) T.psi_ord P.coh.roots (fun v hv => Model.qOf_off v fun h => hv ((Model.twis …`. Establish `hg` using `TupTie.good_set f T (w.xi_range ▸ Set.mem_range_self ((Dof x).what₂.muTw v))`. Conclude with `⟨levEq _ _ b hA j e he (a1 P x l.toLA) (fun s' ξ => GlobalTheory.T.exists_local_unit_character_nontrivial (Dof x) (cfOf x) j _ s' ξ hg.2.1 hg.2.2) (l.mt.mt.prod v j) (l.mt.mt.para v j) (l.mt.mt.uni v j) (l.mt.mt.hyp v j) (a3 P x l v _ b ψ hA j hv hl' hok) (a4 P x l v _ b ψ hA j h …`. Take `⟨c, hc⟩` from `a0 P x l C tp b1 b2 b3 (fun v _ => congrFun b4 v) b5 fun v _ => b6 v`. Conclude with `⟨c, hc.trans b7⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem choices_exist_for : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraModules → PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, SCk hL := by
   intro hCo hCW hHM hP hS hL

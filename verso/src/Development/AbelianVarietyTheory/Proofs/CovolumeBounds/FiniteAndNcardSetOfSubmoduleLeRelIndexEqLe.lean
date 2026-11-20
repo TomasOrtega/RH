@@ -9,7 +9,7 @@ section Subgroups
 variable {M : Type*} [AddCommGroup M]
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `e : (M ⧸ H) ≃+ ZMod p` using `addEquivOfPrimeCardEq (p := p) hH (Nat.card_zmod p)`. Use `⟨(e.toAddMonoidHom.comp (QuotientAddGroup.mk' H)).toIntLinearMap, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[AddMonoidHom.mem_ker]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ker_eq_of_index_prime {p : ℕ} (hp : p.Prime) (H : AddSubgroup M)
     (hH : H.index = p) : ∃ f : M →ₗ[ℤ] ZMod p, f.toAddMonoidHom.ker = H := by
@@ -20,11 +20,11 @@ theorem exists_ker_eq_of_index_prime {p : ℕ} (hp : p.Prime) (H : AddSubgroup M
   simp [AddMonoidHom.mem_ker]
 
 /- English proof (translation)
-Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Set `b` to `Module.finBasis ℤ M`. Set `φ : (Fin (finrank ℤ M) → ZMod p) → AddSubgroup M` to `fun w => (b.constr ℤ w).toAddMonoidHom.ker`. Establish `hsub : {H : AddSubgroup M | H.index = p} ⊆ φ '' Set.univ`. Introduce `H hH`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `exists_ker_eq_of_index_prime hp H hH`. Use `⟨(b.constr ℤ).symm f, Set.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `only [φ, LinearEquiv.apply_symm_apply]`. Conclude with `hf`. Use `(Set.encard_le_encard hsub).trans ((Set.encard_image_le _ _).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.encard_univ, ENat.card_eq_coe_fintype_card]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem encard_setOf_index_prime_le [Module.Free ℤ M] [Module.Finite ℤ M] {p : ℕ}
     (hp : p.Prime) :
@@ -44,11 +44,11 @@ theorem encard_setOf_index_prime_le [Module.Free ℤ M] [Module.Finite ℤ M] {p
   simp
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : H.FiniteIndex := ⟨h0⟩`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' (G := M ⧸ H) p hd`. Use `⟨(AddSubgroup.zmultiples x).comap (QuotientAddGroup.mk' H), ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AddSubgroup.mem_comap, QuotientAddGroup.mk'_apply]`. Rewrite using `[(QuotientAddGroup.eq_zero_iff y).2 hy]`. Conclude with `zero_mem _`. Establish `h1 : H = (⊥ : AddSubgroup (M ⧸ H)).comap (QuotientAddGroup.mk' H)`. Use extensionality with `y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h2` using `AddSubgroup.relIndex_comap (⊥ : AddSubgroup (M ⧸ H)) (QuotientAddGroup.mk' H) ((AddSubgroup.zmultiples x).comap (QuotientAddGroup.mk' H))`. Rewrite `h2` using `[← h1, AddSubgroup.map_comap_eq_self_of_surjective (QuotientAddGroup.mk'_surjective H), AddSubgroup.relIndex_bot_left, Nat.card_zmultiples, hx]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_le_relIndex_eq_prime {p : ℕ} (hp : p.Prime) (H : AddSubgroup M)
     (h0 : H.index ≠ 0) (hd : p ∣ H.index) :
@@ -70,9 +70,9 @@ theorem exists_le_relIndex_eq_prime {p : ℕ} (hp : p.Prime) (H : AddSubgroup M)
     exact h2
 
 /- English proof (translation)
-Establish `hfin : s.Finite` using `Set.finite_of_encard_le_coe hs`. Establish `key : (⋃ i ∈ s, t i).encard ≤ s.encard * b` using `by clear hs`. Proceed by induction on `s, hfin using Set.Finite.induction_on with`. Consider the case `empty => simp`. Consider the case `@insert i s hi _ ih`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Set.biUnion_insert, Set.encard_insert_of_notMem hi, add_mul, one_mul, add_comm]`. Conclude with `(Set.encard_union_le _ _).trans (add_le_add (ht i (Set.mem_insert _ _)) (ih fun j hj => ht j (Set.mem_insert_of_mem _ hj)))`. Use `key.trans ?_` and prove the remaining obligations. Use `push_cast`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem encard_biUnion_le_mul {α β : Type*} (s : Set α) (t : α → Set β) (a b : ℕ)
     (hs : s.encard ≤ a) (ht : ∀ i ∈ s, (t i).encard ≤ b) :
@@ -91,9 +91,9 @@ theorem encard_biUnion_le_mul {α β : Type*} (s : Set α) (t : α → Set β) (
   gcongr
 
 /- English proof (translation)
-Use extensionality with `H`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨H.addSubgroupOf K, h2, by simp [AddSubgroup.addSubgroupOf_map_subtype, h1]⟩`. Introduce and unpack `⟨H', h, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨AddSubgroup.map_subtype_le _, ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.relIndex, AddSubgroup.addSubgroupOf, AddSubgroup.comap_map_eq_self_of_injective K.subtype_injective]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setOf_le_relIndex_eq_image (K : AddSubgroup M) (m : ℕ) :
     {H : AddSubgroup M | H ≤ K ∧ H.relIndex K = m} =
@@ -109,15 +109,15 @@ theorem setOf_le_relIndex_eq_image (K : AddSubgroup M) (m : ℕ) :
     exact h
 
 /- English proof (translation)
-Proceed by induction on `m using induction_on_primes with`. Consider the case `zero => exact absurd rfl hm`. Consider the case `one`. Establish `: {H : AddSubgroup M | H.index = 1} = {⊤}` using `by ext H; simp`. Simplify using `[this]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `prime_mul p a hp ih`. Establish `ha : a ≠ 0` using `fun h => hm (by simp [h])`. Establish `hsub : {H : AddSubgroup M | H.index = p * a} ⊆ ⋃ K ∈ {K : AddSubgroup M | K.index = a}, {H | H ≤ K ∧ H.relIndex K = p}`. Introduce `H hH`. Establish `hH' : H.index = p * a` using `hH`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨K, hK, hr⟩` from `exists_le_relIndex_eq_prime hp H (hH' ▸ hm) (hH' ▸ dvd_mul_right _ _)`. Use `AddSubgroup.relIndex_mul_index hK` as an intermediate fact. Rewrite `this` using `[hr, hH']`. Conclude with `Set.mem_biUnion (x := K) (Nat.eq_of_mul_eq_mul_left hp.pos this) ⟨hK, hr⟩`. Use `(Set.encard_le_encard hsub).trans ((encard_biUnion_le_mul _ _ _ (p ^ finrank ℤ M) (ih ha) ?_).trans ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `K _`. Rewrite using `[setOf_le_relIndex_eq_image]`. Use `(Set.encard_image_le _ _).trans ?_` and prove the remaining obligations. Use `haveI : Module.Finite ℤ K := inferInstanceAs (Module.Finite ℤ K.toIntSubmodule)`. Use `haveI : Module.Free ℤ K := inferInstanceAs (Module.Free ℤ K.toIntSubmodule)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(encard_setOf_index_prime_le hp).trans ?_` and prove the remaining obligations. Establish `: finrank ℤ K ≤ finrank ℤ M` using `Submodule.finrank_le K.toIntSubmodule`. Conclude with `Nat.pow_le_pow_right hp.pos this` after adjusting the coercions. Rewrite using `[mul_pow, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem encard_setOf_index_eq_le [Module.Free ℤ M] [Module.Finite ℤ M] {m : ℕ} (hm : m ≠ 0) :
     {H : AddSubgroup M | H.index = m}.encard ≤ ((m ^ finrank ℤ M : ℕ) : ℕ∞) := by
@@ -149,14 +149,14 @@ theorem encard_setOf_index_eq_le [Module.Free ℤ M] [Module.Finite ℤ M] {m : 
     · rw [mul_pow, mul_comm]
 
 /- English proof (translation)
-The claim follows from `Set.finite_of_encard_le_coe (encard_setOf_index_eq_le hm)`.
+A detailed English derivation is pending.
 -/
 theorem finite_setOf_index_eq [Module.Free ℤ M] [Module.Finite ℤ M] {m : ℕ} (hm : m ≠ 0) :
     {H : AddSubgroup M | H.index = m}.Finite :=
   Set.finite_of_encard_le_coe (encard_setOf_index_eq_le hm)
 
 /- English proof (translation)
-Establish `h` using `encard_setOf_index_eq_le (M := M) hm`. Rewrite `h` using `[← (finite_setOf_index_eq (M := M) hm).cast_ncard_eq]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncard_setOf_index_eq_le [Module.Free ℤ M] [Module.Finite ℤ M] {m : ℕ} (hm : m ≠ 0) :
     {H : AddSubgroup M | H.index = m}.ncard ≤ m ^ finrank ℤ M := by
@@ -165,7 +165,7 @@ theorem ncard_setOf_index_eq_le [Module.Free ℤ M] [Module.Finite ℤ M] {m : �
   exact_mod_cast h
 
 /- English proof (translation)
-Use `⟨finite_setOf_index_eq hm, ?_⟩` and prove the remaining obligations. Simplify using `using ncard_setOf_index_eq_le (M := Fin ρ → ℤ) hm`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finite_and_ncard_setOf_index_pi_le (ρ : ℕ) {m : ℕ} (hm : m ≠ 0) :
     {H : AddSubgroup (Fin ρ → ℤ) | H.index = m}.Finite ∧
@@ -174,7 +174,7 @@ theorem finite_and_ncard_setOf_index_pi_le (ρ : ℕ) {m : ℕ} (hm : m ≠ 0) :
   simpa using ncard_setOf_index_eq_le (M := Fin ρ → ℤ) hm
 
 /- English proof (translation)
-Rewrite using `[setOf_le_relIndex_eq_image]`. Conclude with `(Set.encard_image_le _ _).trans (encard_setOf_index_eq_le hm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem encard_setOf_le_relIndex_eq_le (K : AddSubgroup M) [Module.Free ℤ K] [Module.Finite ℤ K]
     {m : ℕ} (hm : m ≠ 0) :
@@ -183,9 +183,7 @@ theorem encard_setOf_le_relIndex_eq_le (K : AddSubgroup M) [Module.Free ℤ K] [
   exact (Set.encard_image_le _ _).trans (encard_setOf_index_eq_le hm)
 
 /- English proof (translation)
-Use `haveI : Module.Free ℤ L.toAddSubgroup := inferInstanceAs (Module.Free ℤ L)`. Use `haveI : Module.Finite ℤ L.toAddSubgroup := inferInstanceAs (Module.Finite ℤ L)`. Use `le_trans ?_ (encard_setOf_le_relIndex_eq_le L.toAddSubgroup hm)` and prove the remaining obligations. Use `Set.encard_le_encard_of_injOn (f := Submodule.toAddSubgroup) ?_ Submodule.toAddSubgroup_injective.injOn` and prove the remaining obligations. Introduce and unpack `H ⟨h1, h2⟩`.
-
-Conclude with `⟨h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem encard_setOf_submodule_le_relIndex_eq_le {R : Type*} [Ring R] [Module R M]
     (L : Submodule R M) [Module.Free ℤ L] [Module.Finite ℤ L] {m : ℕ} (hm : m ≠ 0) :
@@ -200,7 +198,7 @@ theorem encard_setOf_submodule_le_relIndex_eq_le {R : Type*} [Ring R] [Module R 
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Establish `h` using `encard_setOf_submodule_le_relIndex_eq_le L hm`. Establish `hf` using `Set.finite_of_encard_le_coe h`. Use `⟨hf, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[← hf.cast_ncard_eq]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_and_ncard_setOf_submodule_le_relIndex_eq_le {R : Type*} [Ring R] [Module R M]
     (L : Submodule R M) [Module.Free ℤ L] [Module.Finite ℤ L] {m : ℕ} (hm : m ≠ 0) :
@@ -220,15 +218,15 @@ section DeterminedMaps
 open MeasureTheory Metric
 
 /- English proof (translation)
-Use `borelize V`. Set `μ : Measure V` to `Measure.addHaar`. Establish `hδ : 0 < d / 2` using `by positivity`. Establish `hρ : 0 < R + d / 2` using `by positivity`. Establish `D : Set.Pairwise (s : Set ι) (Function.onFun Disjoint fun i => ball (f i) (d / 2))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi j hj hij`. Apply `ball_disjoint_ball` to reduce the goal to its premises. Rewrite using `[dist_eq_norm, add_halves]`. Conclude with `h i hi j hj hij`. Establish `hsub : (⋃ i ∈ s, ball (f i) (d / 2)) ⊆ ball (0 : V) (R + d / 2)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Set.iUnion₂_subset fun i hi => ball_subset_ball' ?_` and prove the remaining obligations. Rewrite using `[dist_zero_right]`. Combine the linear relations using `[hs i hi]`. Establish `I : (s.card : ENNReal) * ENNReal.ofReal ((d / 2) ^ finrank ℝ V) * μ (ball 0 1) ≤ ENNReal.ofReal ((R + d / 2) ^ finrank ℝ V) * μ (ball 0 1)`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[measure_biUnion_finset D fun c _ => measurableSet_ball]`. Simplify using `only [μ.addHaar_ball_of_pos _ hδ, Finset.sum_const, nsmul_eq_mul, mul_assoc]`. Use `_ ≤ μ (ball (0 : V) (R + d / 2)) := measure_mono hsub`. Use `_ = _ := by simp only [μ.addHaar_ball_of_pos _ hρ]`. Establish `J` using `(ENNReal.mul_le_mul_iff_left (measure_ball_pos μ _ zero_lt_one).ne' measure_ball_lt_top.ne).1 I`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `K` using `ENNReal.toReal_le_of_le_ofReal (pow_nonneg hρ.le _) J`. Rewrite `K` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity), ENNReal.toReal_natCast]`. Establish `e : 1 + 2 * R / d = (R + d / 2) / (d / 2)` using `by field_simp; ring`. Rewrite using `[e, div_pow, le_div_iff₀ (by positivity)]`. Conclude with `K`.
+A detailed English derivation is pending.
 -/
 theorem card_le_of_family_separated {V ι : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] (s : Finset ι) (f : ι → V) {d R : ℝ} (hd : 0 < d) (hR : 0 ≤ R)
@@ -264,11 +262,11 @@ theorem card_le_of_family_separated {V ι : Type*} [NormedAddCommGroup V] [Norme
   exact K
 
 /- English proof (translation)
-Establish `hf : S.Finite`. Assume the negation of the conclusion as `hinf`. Take `⟨s, hs, hc⟩` from `Set.Infinite.exists_subset_card_eq hinf (⌊B⌋₊ + 1)`. Establish `h1` using `h s hs`. Rewrite `h1` using `[hc]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `Nat.lt_floor_add_one B`. Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hf, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.ncard_eq_toFinset_card S hf]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _ (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem finite_and_ncard_le_of_forall_finset {α : Type*} (S : Set α) (B : ℝ)
     (h : ∀ s : Finset α, (s : Set α) ⊆ S → (s.card : ℝ) ≤ B) :
@@ -286,7 +284,7 @@ theorem finite_and_ncard_le_of_forall_finset {α : Type*} (S : Set α) (B : ℝ)
   exact h _ (by simp)
 
 /- English proof (translation)
-Establish `h1` using `Submodule.finrank_quotient_add_finrank (Submodule.span ℤ (Set.range v))`. Rewrite `h1` using `[finrank_span_eq_card hv, Fintype.card_fin, hn]`. Establish `h2 : finrank ℤ (A ⧸ Submodule.span ℤ (Set.range v)) = 0` using `by omega`. Take `⟨k, hk, hx⟩` from `(Module.finrank_eq_zero_iff.1 h2) (Submodule.Quotient.mk x)`. Conclude with `⟨k, hk, by rwa [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero] at hx⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_zsmul_mem_span_of_linearIndependent {A : Type*} [AddCommGroup A]
     [Module.Finite ℤ A] {n : ℕ} (hn : finrank ℤ A = n) {v : Fin n → A}
@@ -299,7 +297,7 @@ theorem exists_zsmul_mem_span_of_linearIndependent {A : Type*} [AddCommGroup A]
   exact ⟨k, hk, by rwa [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero] at hx⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨k, hk, hx⟩` from `exists_zsmul_mem_span_of_linearIndependent hn hv x`. Establish `h1 : f (k • x) = g (k • x)` using `LinearMap.eqOn_span' (by rintro _ ⟨i, rfl⟩; exact h i) hx`. Rewrite `h1` using `[map_smul, map_smul]`. Conclude with `smul_right_injective B hk h1`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearMap_ext_of_linearIndependent {A B : Type*} [AddCommGroup A] [AddCommGroup B]
     [Module.Finite ℤ A] [Module.IsTorsionFree ℤ B] {n : ℕ} (hn : finrank ℤ A = n) {v : Fin n → A}
@@ -314,13 +312,11 @@ theorem linearMap_ext_of_linearIndependent {A B : Type*} [AddCommGroup A] [AddCo
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /- English proof (translation)
-Set `W : Submodule ℝ E` to `Submodule.span ℝ (Set.range fun i => (v i : E))`. Use `haveI : FiniteDimensional ℝ W := FiniteDimensional.span_of_finite ℝ (Set.finite_range _)`. Establish `hW : finrank ℝ W ≤ n`. Conclude with `(finrank_range_le_card (R := ℝ) (fun i => (v i : E))).trans (Fintype.card_fin n).le`. Establish `hmem : ∀ x : L, (x : E) ∈ W`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨k, hk, hx⟩` from `exists_zsmul_mem_span_of_linearIndependent hn hv x`. Establish `h1 : Submodule.span ℤ (Set.range v) ≤ (W.restrictScalars ℤ).comap L.subtype`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Establish `h2 : (k : ℝ) • (x : E) ∈ W`. Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `h1 hx`. Conclude with `(W.smul_mem_iff (by exact_mod_cast hk)).1 h2`.
-
-Use `finite_and_ncard_le_of_forall_finset _ _ fun s hs => ?_` and prove the remaining obligations. Use `(card_le_of_family_separated s (fun x : L => (⟨x, hmem x⟩ : W)) hd hR (fun i hi => hs hi) (fun i _ j _ hij => ?_)).trans ?_` and prove the remaining obligations. Conclude with `hL _ (L.sub_mem i.2 j.2) (sub_ne_zero.2 fun h => hij (Subtype.ext h))`. Conclude with `pow_le_pow_right₀ (le_add_of_nonneg_right (by positivity)) hW`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_and_ncard_setOf_norm_le_of_rank (L : Submodule ℤ E) [Module.Finite ℤ L] {n : ℕ}
     (hn : finrank ℤ L = n) {v : Fin n → L} (hv : LinearIndependent ℤ v) {d R : ℝ} (hd : 0 < d)
@@ -349,11 +345,9 @@ theorem finite_and_ncard_setOf_norm_le_of_rank (L : Submodule ℤ E) [Module.Fin
   · exact pow_le_pow_right₀ (le_add_of_nonneg_right (by positivity)) hW
 
 /- English proof (translation)
-Use `haveI : IsAddTorsionFree E := IsAddTorsionFree.of_isTorsionFree ℝ E`. Take `⟨hf, hc⟩` from `finite_and_ncard_setOf_norm_le_of_rank L hn hv hd hR hL`. Rewrite `hc` using `[Set.ncard_eq_toFinset_card _ hf]`. Use `finite_and_ncard_le_of_forall_finset _ _ fun s hs => ?_` and prove the remaining obligations. Establish `h1 : s.card ≤ (Fintype.piFinset fun _ : Fin n => hf.toFinset).card`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.card_le_card_of_injOn (fun g i => φ g (v i)) (fun g hg => ?_) (fun g hg g' hg' h => hφ (hs hg) (hs hg') ?_)` and prove the remaining obligations. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Set.Finite.mem_toFinset]`. Conclude with `fun i => hG g (hs hg) i`. Conclude with `linearMap_ext_of_linearIndependent hn hv fun i => congrFun h i`. Rewrite `h1` using `[Fintype.card_piFinset_const]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem finite_and_ncard_le_of_norm_apply_le (L : Submodule ℤ E) [Module.Finite ℤ L] {n : ℕ}
     (hn : finrank ℤ L = n) {v : Fin n → L} (hv : LinearIndependent ℤ v) {d R : ℝ} (hd : 0 < d)
@@ -377,7 +371,7 @@ theorem finite_and_ncard_le_of_norm_apply_le (L : Submodule ℤ E) [Module.Finit
     _ = _ := by rw [← pow_mul, sq]
 
 /- English proof (translation)
-Establish `h` using `finite_and_ncard_le_of_norm_apply_le L hn hv h1 (R := c * max lamN 0) (by positivity) hL G φ hφ fun g hg i => (hG g hg _).trans (mul_le_mul_of_nonneg_left ((hvN i).trans (le_max_left _ _)) hc)`. Break down `Nat.eq_zero_or_pos n with rfl | hn0` into its components or cases. Simplify using `using h`. Rewrite `h` using `[max_eq_left ((norm_nonneg _).trans (hvN ⟨0, hn0⟩)), ← mul_assoc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem finite_and_ncard_le_of_norm_map_le (L : Submodule ℤ E) [Module.Finite ℤ L] {n : ℕ}
     (hn : finrank ℤ L = n) {v : Fin n → L} (hv : LinearIndependent ℤ v) {lam1 lamN c : ℝ}
@@ -394,7 +388,7 @@ theorem finite_and_ncard_le_of_norm_map_le (L : Submodule ℤ E) [Module.Finite 
   · rwa [max_eq_left ((norm_nonneg _).trans (hvN ⟨0, hn0⟩)), ← mul_assoc] at h
 
 /- English proof (translation)
-The claim follows from `finite_and_ncard_le_of_norm_map_le L hn hv h1 hc hL hvN G LinearEquiv.toLinearMap LinearEquiv.toLinearMap_injective.injOn hG`.
+A detailed English derivation is pending.
 -/
 theorem finite_and_ncard_linearEquiv_le (L : Submodule ℤ E) [Module.Finite ℤ L] {n : ℕ}
     (hn : finrank ℤ L = n) {v : Fin n → L} (hv : LinearIndependent ℤ v) {lam1 lamN c : ℝ}
@@ -406,14 +400,14 @@ theorem finite_and_ncard_linearEquiv_le (L : Submodule ℤ E) [Module.Finite ℤ
     LinearEquiv.toLinearMap_injective.injOn hG
 
 /- English proof (translation)
-The claim follows from `LinearIndependent.of_comp L.subtype (hv.restrict_scalars' ℤ)`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_int_of_real (L : Submodule ℤ E) {ι : Type*} {v : ι → L}
     (hv : LinearIndependent ℝ fun i => (v i : E)) : LinearIndependent ℤ v :=
   LinearIndependent.of_comp L.subtype (hv.restrict_scalars' ℤ)
 
 /- English proof (translation)
-The claim follows from `finite_and_ncard_le_of_norm_map_le L ((ZLattice.rank ℝ L).trans hn) (linearIndependent_int_of_real L hv) h1 hc hL hvN G φ hφ hG`.
+A detailed English derivation is pending.
 -/
 theorem ZLattice_finite_and_ncard_le_of_norm_map_le [FiniteDimensional ℝ E] (L : Submodule ℤ E)
     [DiscreteTopology L] [IsZLattice ℝ L] {n : ℕ} (hn : finrank ℝ E = n) {v : Fin n → L}
@@ -427,9 +421,9 @@ theorem ZLattice_finite_and_ncard_le_of_norm_map_le [FiniteDimensional ℝ E] (L
     (linearIndependent_int_of_real L hv) h1 hc hL hvN G φ hφ hG
 
 /- English proof (translation)
-Set `ψ : G → L →ₗ[ℤ] L` to `fun g => ((φ g).restrictScalars ℤ).restrict (hφL g g.2)`. Establish `hψ : Set.InjOn ψ Set.univ`. Introduce `g _ g' _ h`. Use `Subtype.ext (hφ g.2 g'.2 ?_)` and prove the remaining obligations. Use `LinearMap.ext_on (IsZLattice.span_top (K := ℝ) (L := L)) fun x hx => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg Subtype.val (LinearMap.congr_fun h ⟨x, hx⟩)`. Take `⟨hf, hc⟩` from `ZLattice_finite_and_ncard_le_of_norm_map_le L hn (v := fun i => ⟨v i, hvL i⟩) hv h1 hc hL hvN Set.univ ψ hψ fun g _ x => hG g g.2 x x.2`. Rewrite `hc` using `[Set.ncard_univ, Nat.card_coe_set_eq]`. Conclude with `⟨Set.finite_coe_iff.1 (Set.finite_univ_iff.1 hf), hc⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ZLattice_finite_and_ncard_le_of_mapsTo [FiniteDimensional ℝ E] (L : Submodule ℤ E)
     [DiscreteTopology L] [IsZLattice ℝ L] {n : ℕ} (hn : finrank ℝ E = n) {v : Fin n → E}
@@ -454,7 +448,7 @@ theorem ZLattice_finite_and_ncard_le_of_mapsTo [FiniteDimensional ℝ E] (L : Su
 end DeterminedMaps
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ρ _ hm => finite_and_ncard_setOf_index_pi_le ρ (by omega), fun _ _ _ _ L _ _ _ hn _ _ _ h1 hc hL _ hv hvN G hG => finite_and_ncard_linearEquiv_le L hn hv h1 (zero_le_one.trans hc) hL hvN G hG⟩`.
+Supply the required witnesses or components.
 -/
 theorem card_subgroups_le_and_card_automorphisms_le :
     (∀ ρ m : ℕ, 1 ≤ m → {H : AddSubgroup (Fin ρ → ℤ) | H.index = m}.Finite ∧

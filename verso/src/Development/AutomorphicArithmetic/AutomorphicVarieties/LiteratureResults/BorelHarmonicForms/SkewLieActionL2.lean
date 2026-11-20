@@ -8,11 +8,11 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `ContAut.continuous_of_isOpen_stab E a _ ?_` and prove the remaining obligations. Set `S : Sm E a → Subgroup (GL (Fin a) (GlobalTheory.CuspRep.Af E))` to `fun θ => { carrier := {k | finRep E a k θ = θ} one_mem' := by simp mul_mem' := fun {x y} hx hy => by`. Simplify using `only [Set.mem_setOf_eq] at hx hy ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hy, hx]`. Use the proof step `inv_mem' := fun {x} hx => by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Use `conv_lhs => rw [← hx]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hle : S φ ≤ S (lie E a X φ)` using `fun k hk => by`. Establish `e : lie E a X (finRep E a k φ) = finRep E a k (lie E a X φ)` using `LinearMap.congr_fun (lie_rt_fin X k) φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hk' : finRep E a k φ = φ` using `hk`. Express the relevant statement in the definitionally equal form `finRep E a k (lie E a X φ) = lie E a X φ`. Rewrite using `[← e, hk']`. Conclude with `Subgroup.isOpen_mono hle h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem continuous_lie_of_level {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     (X : Lie E a) (φ : Sm E a) (h : IsOpen {k | act (.fin k) φ = φ}) : Continuous (lie E a X φ).1 := by
@@ -37,11 +37,11 @@ private theorem continuous_lie_of_level {E : Type} [Field E] [NumberField E] [Is
 
 open scoped GlobalTheory.CuspRep.CuspidalL2GL in
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ X φ ψ hφ hψ h1 h2 h3 h4`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.CovolGL.isMulRightInvariant E a μ`. Take `⟨c, c0, cadd, ccont, cder, -⟩` from `UpperTheory.V.Lit.Bor.oneParam E a X`. Establish `g0 : infGL E a (c 0) = 1` using `by rw [c0, map_one]`. Establish `key : ∀ (θ : Sm E a), IsOpen {k | act (.fin k) θ = θ} → ∀ (p : GlobalTheory.AutomorphicL2Unitary.MemL2Quotient (GlobalTheory.UnitaryBC.latticeGL E a) μ θ.1) (q : GlobalTheory.AutomorphicL2Unitary.MemL2Quotient (GlobalTheory.UnitaryBC.latticeGL E a) μ (lie E a X θ).1), HasDerivAt …` using `fun θ hθ p q => UpperTheory.V.Lit.Bor.derivative_right_translate_L2 (GA E a) _ μ θ.1 _ p q (fun s => infGL E a (c s)) (continuous_lie_of_level X θ hθ) ccont g0 (fun s t => by rw [cadd, map_mul]) (fun g => hasDerivAt_curve θ g c X c0 cder)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d` using `(key φ hφ h1 h3).inner ℂ (key ψ hψ h2 h4)`. Establish `hc : (fun s : ℝ => inner ℂ (GlobalTheory.AutomorphicL2Unitary.R (GlobalTheory.UnitaryBC.latticeGL E a) μ (infGL E a (c s)) h1.toL2) (GlobalTheory.AutomorphicL2Unitary.R (GlobalTheory.UnitaryBC.latticeGL E a) μ (infGL E a (c s)) h2.toL2)) = fun _ => inner ℂ h1.toL2 h2.toL2`. Use function extensionality and compare the values at `fun s => (LinearIsometry.mk (GlobalTheory.AutomorphicL2Unitary.R (GlobalTheory.UnitaryBC.latticeGL E a) μ (infGL E a (c s))).toLinearMap (GlobalTheory.AutomorphicL2Unitary.norm_R _)).inner_map_map _ _`. Rewrite `d` using `[hc]`. Establish `h` using `d.unique (hasDerivAt_const (0 : ℝ) _)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [g0, map_one, ContinuousLinearMap.one_apply] at h`. Conclude with `(add_comm _ _).trans h`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Bor.skew_lie_action_L2 :
     UpperTheory.V.Lit.Bor.SkewLieActionL2 := by

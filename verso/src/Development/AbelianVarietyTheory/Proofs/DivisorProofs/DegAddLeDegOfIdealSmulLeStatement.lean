@@ -5,7 +5,7 @@ import Formalism.MeanHeightDescent.DivisionInequalityWithCovolume
 open NumberField IsDedekindDomain Formalism.BasicNotions GlobalTheory.AllWt GlobalTheory.FlatLine
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TwistIdeal.deg_add_le_deg_of_ideal_smul_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDegAddLeDegOfIdealSmulLe.lean&line=62#L62)
 -/

@@ -35,13 +35,13 @@ def Places.sigma {k K : Type} [Field k] [Field K] [Algebra k K] {J : Type} [Fini
       simpa using hi
 
 /- English proof (translation)
-Establish `key : x ∈ (AlgebraicIndependent.matroid k K).closure ∅`. Establish `hB` using `AlgebraicIndependent.matroid_isBase_iff.2 hs`. Break down `s.eq_empty_or_nonempty with rfl | hne` into its components or cases. Rewrite using `[hB.closure_eq]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Use `hne.coe_sort` as an intermediate fact. Establish `e : (⋂ t : s, s \ {(t : K)}) = ∅`. Use `Set.eq_empty_of_forall_notMem fun y hy => ?_` and prove the remaining obligations. Rewrite `hy` using `[Set.mem_iInter]`. Conclude with `(hy ⟨y, (hy this.some).1⟩).2 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, hB.indep.closure_iInter_eq_biInter_closure_of_forall_subset fun _ => Set.diff_subset]`. Use `Set.mem_iInter.2 fun t => ?_` and prove the remaining obligations. Rewrite using `[AlgebraicIndependent.matroid_closure_eq]`. Conclude with `IntermediateField.isAlgebraic_adjoin_iff.1 (h t)`. Rewrite `key` using `[AlgebraicIndependent.matroid_closure_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsAlgebraic (IntermediateField.adjoin k (∅ : Set K)) x` using `IntermediateField.isAlgebraic_adjoin_iff.2 key`. Establish `: Algebra.IsAlgebraic k (IntermediateField.adjoin k (∅ : Set K))` using `(IntermediateField.isAlgebraic_adjoin_iff_isAlgebraic k K).2 (by simp)`. Conclude with `h2.restrictScalars k`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_forall_erase {k K : Type} [Field k] [Field K] [Algebra k K] {s : Set K}
     (hs : IsTranscendenceBasis k ((↑) : s → K)) {x : K}
@@ -67,7 +67,7 @@ theorem isAlgebraic_of_forall_erase {k K : Type} [Field k] [Field K] [Algebra k 
   exact h2.restrictScalars k
 
 /- English proof (translation)
-Establish `hB` using `AlgebraicIndependent.matroid_isBase_iff.2 hs`. Introduce `h`. Use `hB.indep.notMem_closure_diff_of_mem t.2 ?_` and prove the remaining obligations. Rewrite using `[AlgebraicIndependent.matroid_closure_eq]`. Conclude with `IntermediateField.isAlgebraic_adjoin_iff.1 h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transcendental_erase {k K : Type} [Field k] [Field K] [Algebra k K] {s : Set K}
     (hs : IsTranscendenceBasis k ((↑) : s → K)) (t : s) :
@@ -79,11 +79,11 @@ theorem transcendental_erase {k K : Type} [Field k] [Field K] [Algebra k K] {s :
   exact IntermediateField.isAlgebraic_adjoin_iff.1 h
 
 /- English proof (translation)
-Establish `: Algebra.EssFiniteType k K` using `IntermediateField.fg_top_iff.mp hfg`. Take `⟨s, hs, hsep⟩` from `exists_isTranscendenceBasis_and_isSeparable_of_perfectField k K`. Establish `: Algebra.EssFiniteType (IntermediateField.adjoin k (s : Set K)) K` using `Algebra.EssFiniteType.of_comp k _ K`. Establish `hfin : FiniteDimensional (IntermediateField.adjoin k (s : Set K)) K` using `Algebra.finite_of_essFiniteType_of_isAlgebraic`. Establish `H : ∀ t : (s : Set K), ∃ Pl : Places (IntermediateField.adjoin k ((s : Set K) \ {(t : K)})) K, ∀ x : K, (∀ i, x ∈ Pl.O i) → IsAlgebraic (IntermediateField.adjoin k ((s : Set K) \ {(t : K)})) x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t`. Establish `e : IntermediateField.adjoin k (s : Set K) = (IntermediateField.adjoin (IntermediateField.adjoin k ((s : Set K) \ {(t : K)})) {(t : K)}).restrictScalars k`. Rewrite using `[IntermediateField.adjoin_adjoin_left, Set.diff_union_of_subset (by simpa using t.2)]`. Rewrite `hsep`, `hfin` using `[e]`. Conclude with `GlobalTheory.T.exists_productFormulaPlaces_function_field _ K t (transcendental_erase hs t) hfin hsep`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose P hP using H`. Use `⟨Places.sigma _ P, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : IsAlgebraic k x` using `isAlgebraic_of_forall_erase hs fun t => hP t x fun i => hx ⟨t, i⟩`. Conclude with `minpoly.mem_range_of_degree_eq_one k x (IsAlgClosed.degree_eq_one_of_irreducible k (minpoly.irreducible hx'.isIntegral))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_places_of_fg (k : Type) [Field k] [IsAlgClosed k] (K : Type) [Field K] [Algebra k K]
     (hfg : (⊤ : IntermediateField k K).FG) :

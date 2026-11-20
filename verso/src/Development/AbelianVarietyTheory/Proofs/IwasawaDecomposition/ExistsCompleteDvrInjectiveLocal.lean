@@ -13,9 +13,7 @@ namespace GlobalTheory.LocalCompletion
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `O _ _ _ hic hn hd h0`. Use `haveI := hic`. Use `haveI := hn`. Use `haveI : IsDiscreteValuationRing O := GlobalTheory.CdvrExt.isDVR_of_ringKrullDim_eq_one hd`. Establish `hinj` using `GlobalTheory.algebraMap_adicCompletion_injective_of_dvr O`.
-
-Use `haveI : CharZero (AdicCompletion (maximalIdeal O) O) := charZero_of_injective_algebraMap hinj`. Use `⟨AdicCompletion (maximalIdeal O) O, inferInstance, inferInstance, inferInstance, algebraMap O (AdicCompletion (maximalIdeal O) O), ?_, hinj, inferInstance⟩` and prove the remaining obligations. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cDvr_embedding : ∀ (O : Type) [CommRing O] [IsDomain O] [IsLocalRing O], IsIntegrallyClosed O → IsNoetherianRing O → ringKrullDim O = 1 → CharZero O → ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsLocalRing W) (g : O →+* W), CDvr W ∧ Function.Injective g ∧ IsLocalHom g := by
   intro O _ _ _ hic hn hd h0

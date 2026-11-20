@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.Cyc.Decomp
 
 /- English proof (translation)
-Establish `e1 : Module.finrank Z T = d`. Rewrite using `[Module.finrank_eq_card_basis b, Fintype.card_fin]`. Establish `e2 : Module.finrank R (R ⊗[O] T) = Fintype.card ι` using `Module.finrank_eq_card_basis (Module.Basis.mk h1 h2.ge)`. Rewrite using `[← e1, ← e2, Module.finrank_baseChange, Module.finrank_mul_finrank]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_eq_finrank_mul_card {Z O R T : Type} [CommRing Z] [Nontrivial Z] [CommRing O]
     [Nontrivial O] [Algebra Z O] [Module.Free Z O] [CommRing R] [Nontrivial R] [Algebra O R]
@@ -26,7 +26,7 @@ theorem card_eq_finrank_mul_card {Z O R T : Type} [CommRing Z] [Nontrivial Z] [C
   rw [← e1, ← e2, Module.finrank_baseChange, Module.finrank_mul_finrank]
 
 /- English proof (translation)
-Use `haveI : Module.FaithfullyFlat Z O := inferInstance`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_tensor_of_free {Z O S : Type} [CommRing Z] [CommRing O]
     [Nontrivial O] [Algebra Z O] [Module.Free Z O] [CommRing S] [Nontrivial S] [Algebra Z S] :
@@ -36,11 +36,9 @@ theorem nontrivial_tensor_of_free {Z O S : Type} [CommRing Z] [CommRing O]
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `l _ K LL T d M A ι _ v hM h1 h2`. Use `haveI := freeOL LL`. Use `haveI := finiteOL LL`. Use `letI := zlMod LL T`. Take `⟨b, -, -⟩` from `hM`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Module.Free ↥(OL LL) ↥T.L.T := T.L.free`. Use `haveI : IsScalarTower ℤ_[l] ↥(OL LL) ↥T.L.T := IsScalarTower.of_algebraMap_smul (fun _ _ => rfl)`. Use `haveI : Nontrivial (RW LL) := nontrivial_tensor_of_free`. Establish `h` using `card_eq_finrank_mul_card (R := RW LL) b v h1 h2`. Use `⟨Module.finrank ℤ_[l] ↥(OL LL), Module.finBasis _ _, ⟨Fintype.equivOfCardEq ?_⟩⟩` and prove the remaining obligations.
-
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rank_count : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (d : ℕ) (M : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l)) (A : ↥(OL LL) → Matrix (Fin d) (Fin d) (PadicComplex l)) (ι : Type) [Fintype ι] (v : ι → TW (RW LL) T), IsMat K LL T M A → LinearIndependent (RW LL) v → Submodule.span (RW LL) (Set.range v) = ⊤ → ∃ (f : ℕ) (_ : Module.Basis (Fin f) ℤ_[l] ↥(OL LL)), Nonempty (Fin d ≃ Fin f × ι) := by
   intro l _ K LL T d M A ι _ v hM h1 h2

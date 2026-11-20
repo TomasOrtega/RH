@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitaryClassMass.LSLocA
 namespace PI.UnitaryGroupMassFormula.UJClassMass
 
 /- English proof (translation)
-The claim follows from `latStep_of_parts lsLat lsOne lsLoc`.
+A detailed English derivation is pending.
 -/
 theorem lattice_modification : LatStep := latStep_of_parts lsLat lsOne lsLoc
 

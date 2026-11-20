@@ -25,17 +25,17 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS.PrincIsog
 
 /- English proof (translation)
-Set `K` to `pullback ψ η[B]`. Set `inc : K ⟶ A` to `pullback.fst ψ η[B]`. Establish `hinc : inc ≫ ψ = 1`. Rewrite using `[pullback.condition, toUnit_unique (pullback.snd ψ η[B]) (toUnit K)]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hp` using `(IsPullback.of_hasPullback ψ η[B]).map (Over.forget (Sp k))`. Establish `he : Etale (pullback.snd ψ η[B]).left` using `MorphismProperty.of_isPullback (P := @Etale) hp ‹_›`. Establish `hw : (pullback.snd ψ η[B]).left = K.hom`. Simplify using `using Over.w (pullback.snd ψ η[B])`. Rewrite `he` using `[hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: IsReduced K.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced K.hom`. Establish `key : inc ^ n = 1`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Establish `: LocallyOfFiniteType ((inc ^ n).left ≫ A.hom)` using `by rw [Over.w]; infer_instance`. Use `ext_of_apply_eq A.hom Set.univ isClosed_univ.isLocallyClosed dense_univ (fun z _ hz => ?_) ((Over.w _).trans (Over.w _).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `p : Over.mk (𝟙 (Sp k)) ⟶ K` to `Over.homMk (pointOfClosedPoint K.hom z hz) (pointOfClosedPoint_comp _ _ _)`. Establish `e : p ≫ inc ^ n = p ≫ 1`. Rewrite using `[MonObj.comp_pow, MonObj.comp_one]`. Conclude with `h _ (by rw [Category.assoc, hinc, MonObj.comp_one])`. Establish `e'` using `congrArg (fun q => q.left (IsLocalRing.closedPoint k)) e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : p.left (IsLocalRing.closedPoint k) = z` using `pointOfClosedPoint_apply K.hom z hz _`. Simplify using `only [Over.comp_left] at e'`. Rewrite using `[← hz']`. Conclude with `e'`. Establish `hx' : x ≫ ψ = toUnit T ≫ η[B]` using `hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← pullback.lift_fst x (toUnit T) hx', ← MonObj.comp_pow]`. Express the relevant statement in the definitionally equal form `_ ≫ inc ^ n = 1`. Rewrite using `[key, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_etale {k : Type} [Field k] [IsAlgClosed k] {A B : Over (Sp k)} [GrpObj A] [GrpObj B]
     [IsSeparated A.hom] [LocallyOfFiniteType A.hom] (ψ : A ⟶ B) [Etale ψ.left] (n : ℕ)
@@ -71,7 +71,7 @@ theorem pow_eq_one_of_etale {k : Type} [Field k] [IsAlgClosed k] {A B : Over (Sp
   rw [key, MonObj.comp_one]
 
 /- English proof (translation)
-Establish `: CompactSpace ↥(pullback f x)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd f x)`. Take `⟨p, -⟩` from `(pullback.snd f x).surjective (default : PrimeSpectrum F)`. Take `⟨q, -, hq⟩` from `isClosed_univ.exists_closed_singleton (X := ↥(pullback f x)) ⟨p, trivial⟩`. Use `⟨pointOfClosedPoint (pullback.snd f x) q hq ≫ pullback.fst f x, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift_point {F : Type} [Field F] [IsAlgClosed F] {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f]
     [Surjective f] (x : Sp F ⟶ Y) : ∃ b : Sp F ⟶ X, b ≫ f = x := by
@@ -82,27 +82,25 @@ theorem exists_lift_point {F : Type} [Field F] [IsAlgClosed F] {X Y : Scheme.{0}
   rw [Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]
 
 /- English proof (translation)
-Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `A _ L hA hg hL hamp hN`. Take `⟨hfin, hmul, htriv⟩` from `GlobalTheory.KTrivPoints.finite_mul_kTriv k A hA L hL hamp`. Distinguish the cases in `h1 : ∀ x : 𝟙_ (Over (Sp k)) ⟶ A, GlobalTheory.MemKL A L x → x = 1`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨A, inferInstance, L, 𝟙 A, 𝟙 A, 1, hA, hg, hL, hamp, htriv h1, inferInstance, inferInstance, le_rfl, by simp⟩`. Use `push Not at h1`. Take `⟨x, hxK, hx1⟩` from `h1`. Establish `hfin' : {x : 𝟙_ (Over (Sp k)) ⟶ A | GlobalTheory.MemKL A L x}.Finite` using `hfin`. Establish `hord : IsOfFinOrder x`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `finite_powers.1 (hfin'.subset ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Proceed by induction on `j with`. Consider the case `zero => simpa using GlobalTheory.memKL_one hL _`. Consider the case `succ j hj => simpa [pow_succ] using hmul _ _ hj hxK`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hn : 1 ≤ orderOf x` using `hord.orderOf_pos`. Take `⟨A', _, ψ, hA', hψ, hψf, hψe, hψs, hker⟩` from `GlobalTheory.exists_quotient_abelian_by_finite_points k A hA (Subgroup.zpowers x) (finite_zpowers.2 hord)`. Take `⟨M, hM, hLM⟩` from `GlobalTheory.CyclicDescent.exists_descent k A A' hA L hL x _ hn rfl hxK ψ hψ hψf hψe hψs hker`. Establish `hamp'` using `GlobalTheory.SS.relAmple_of_finite_etale_isogeny k A A' hA hA' ψ hψ hψf hψe hψs L M hL hM hLM hamp`. Use `hA.proper` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA'.proper` as an intermediate fact. Use `hA.comm` as an intermediate fact. Use `hA'.comm` as an intermediate fact. Establish `hg' : SmoothOfRelativeDimension g A'.hom` using `GlobalTheory.SmoothDescent.smoothOfRelativeDimension_of_etale_cover k _ _ ψ.left A'.hom g hψe hψs inferInstance (by rw [Over.w]; exact hg)`. Establish `hxψ : x ≫ ψ = 1` using `(hker k (𝟙 _) x).2 ⟨x, Subgroup.mem_zpowers x, by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show toUnit (Over.mk (𝟙 (Sp k))) = 𝟙 (𝟙_ (Over (Sp k))) from toUnit_unique _ _]`. Conclude with `(Category.id_comp x).symm⟩`. Establish `hlt : {y : 𝟙_ (Over (Sp k)) ⟶ A' | GlobalTheory.MemKL A' M y}.ncard < N`. Rewrite using `[← hN]`. Use `lt_of_le_of_lt ?_ (Set.ncard_sdiff_singleton_lt_of_mem (a := x) hxK hfin')` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Set.ncard_le_ncard ?_ ((hfin'.sdiff).image (· ≫ ψ))).trans (Set.ncard_image_le hfin'.sdiff)` and prove the remaining obligations. Introduce `y hy`. Take `⟨b, hb⟩` from `exists_lift_point (F := k) ψ.left y.left`. Set `b' : 𝟙_ (Over (Sp k)) ⟶ A` to `Over.homMk b (by`. Rewrite using `[← Over.w ψ, ← Category.assoc, hb]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `Over.w _)`. Establish `hb' : b' ≫ ψ = y` using `Over.OverMorphism.ext hb`. Distinguish the cases in `hbx : b' = x`. Conclude with `⟨1, ⟨GlobalTheory.memKL_one hL _, fun h => hx1 (Eq.symm h)⟩, by`. Rewrite using `[← hb', hbx, hxψ]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `MonObj.one_comp ψ⟩`. Conclude with `⟨b', ⟨GlobalTheory.memKL_of_hom _ A A' ψ hψ L M hL hM hLM _ b' (hb' ▸ hy), hbx⟩, hb'⟩`. Take `⟨B, _, M', i, r, m, hB, hgB, hM', hampB, hK, hi, hr, hm, hri⟩` from `ih _ hlt A' M hA' hg' hM hamp' rfl`. Establish `hmon : IsMonHom (𝟙 A ^ orderOf x)` using `GlobalTheory.GrpTangent.mulN_eq_pow A _ ▸ GlobalTheory.GrpTangent.isMonHom_mulN A _`. Take `⟨⟨ψ', hψ', hc⟩, hepi⟩` from `GlobalTheory.exists_monHom_factor_of_flat_surjective _ A A' A ψ (𝟙 A ^ orderOf x) hψ hmon inferInstance hψs inferInstance fun T z hz => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Use `pow_eq_one_of_etale ψ _ (fun y hy => ?_) T z hz` and prove the remaining obligations. Take `⟨_, ⟨j, rfl⟩, rfl⟩` from `(hker k (𝟙 _) y).1 hy`. Rewrite using `[← MonObj.comp_pow, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, pow_orderOf_eq_one, one_zpow, MonObj.comp_one]`. Establish `hc' : ψ' ≫ ψ = 𝟙 A' ^ orderOf x`.
-
-Rewrite using `[← cancel_epi ψ, ← Category.assoc, hc, MonObj.pow_comp, MonObj.comp_pow, Category.id_comp, Category.comp_id]`. Use `⟨B, inferInstance, M', ψ ≫ i, r ≫ ψ', m * orderOf x, hB, hgB, hM', hampB, hK, inferInstance, inferInstance, Nat.mul_pos hm hn, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Category.assoc ψ', hc', MonObj.pow_comp, Category.id_comp, MonObj.comp_pow, hri, pow_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isogeny_of_ncard (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (g N : ℕ) :
     ∀ (A : Over (Sp k)) [GrpObj A] (L : LB A.left), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom →
@@ -171,7 +169,7 @@ theorem exists_isogeny_of_ncard (k : Type) [Field k] [IsAlgClosed k] [CharZero k
   rw [Category.assoc, ← Category.assoc ψ', hc', MonObj.pow_comp, Category.id_comp, MonObj.comp_pow, hri, pow_mul]
 
 /- English proof (translation)
-Introduce `k _ _ _ A _ g hA hg`. Take `⟨L, m, s, hL, hs, -⟩` from `GlobalTheory.SymVeryAmple.exists_symmetric_veryAmple k A hA`. Use `hA.proper` as an intermediate fact. Conclude with `exists_isogeny_of_ncard k g _ A L hA hg hL ((GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine A hL).2 (GlobalTheory.isAmpleLB_of_veryAmpleBy hs)) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isogeny_kTriv : ∀ (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (A : Over (Sp k)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∃ (B : Over (Sp k)) (_ : GrpObj B) (M : LB B.left) (i : A ⟶ B) (r : B ⟶ A) (m : ℕ), IsAbelianScheme B ∧ SmoothOfRelativeDimension g B.hom ∧ M.IsLB ∧ Out.RelAmple B M ∧ Out.KTriv B M ∧ IsMonHom i ∧ IsMonHom r ∧ 1 ≤ m ∧ r ≫ i = 𝟙 _ ^ m := by
   intro k _ _ _ A _ g hA hg

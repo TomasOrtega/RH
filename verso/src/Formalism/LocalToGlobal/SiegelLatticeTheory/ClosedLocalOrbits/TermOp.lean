@@ -69,7 +69,7 @@ def RatLink (x : X.B.I.GA) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) : Prop :=
     ∀ y, X.crd (γ y) = (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ X.crd y
 
 /- English proof (translation)
-Take `⟨M, h1, h2, h3, -⟩` from `h`. Conclude with `⟨M, h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ratLink_mem {x : X.B.I.GA} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h : RatLink X x γ) :
     x ∈ X.B.I.GFset := by
@@ -191,7 +191,7 @@ def chiL (κ : X.B.I.Gf) : ℂ :=
     if h : i.1 + 1 < D.R.k then hA X.B.I (X.bwd i) (X.B.I.fmat κ *ᵥ X.bw ⟨i.1 + 1, h⟩) else 0))
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.SG.HidaSetting.HidaSetting.chi2, Formalism.L2.SG.HidaSetting.chi2f, chiN, chiL, Formalism.L2.SG.HidaSetting.divN, mul_add]`. Conclude with `X.psiEf_add _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem level_char_eq_mul (κ : X.B.I.Gf) : X.chi2 κ = chiN X κ * chiL X κ := by
   simp only [Formalism.L2.SG.HidaSetting.HidaSetting.chi2, Formalism.L2.SG.HidaSetting.chi2f, chiN, chiL,

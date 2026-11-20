@@ -22,9 +22,9 @@ open Formalism.L2.SG.PoincareInHH.PoincareSetting
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `haveI := D.host.isCMField_hostE`. Establish `: Algebra.Unramified (𝓞 D.host.F) (𝓞 D.host.E)` using `Formalism.L2.Pj.unramBridge_holds D.host.E fun P hP => by`. Take `⟨θ, t, ht, hθ⟩` from `D.sp.cm.cmUnram.2.2 P hP`. Use `⟨θ, ?_⟩` and prove the remaining obligations. Establish `: RingOfIntegers.mapRingEquiv (IsCMField.complexConj D.host.E : D.host.E ≃+* D.host.E) θ = t` using `RingOfIntegers.ext ht.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[this]` and apply the resulting hypothesis. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem formallyUnramified_host (D : D7) : Algebra.FormallyUnramified (𝓞 D.host.F) (𝓞 D.host.E) := by
   haveI := D.host.isCMField_hostE
@@ -39,7 +39,7 @@ theorem formallyUnramified_host (D : D7) : Algebra.FormallyUnramified (𝓞 D.ho
   infer_instance
 
 /- English proof (translation)
-Establish `key : ∀ Z : Matrix (Fin m) (Fin m) ℂ, A⁻¹ * (A * Z * A⁻¹) * A = Z`. Introduce `Z`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul _ hA, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hA, Matrix.one_mul]`. Rewrite using `[← key M, h, key N]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cancel_conj {m : ℕ} (A M N : Matrix (Fin m) (Fin m) ℂ) (hA : IsUnit A.det)
     (h : A * M * A⁻¹ = A * N * A⁻¹) : M = N := by
@@ -51,21 +51,21 @@ theorem cancel_conj {m : ℕ} (A M N : Matrix (Fin m) (Fin m) ℂ) (hA : IsUnit 
   rw [← key M, h, key N]
 
 /- English proof (translation)
-Take `⟨hmeas, hex, huniq⟩` from `Y.FN_fund u`. Take `⟨hsurj, hinj, hmul⟩` from `GlobalTheory.T.transport_real_points_bijective_multiplicative D X θ C`. Take `⟨h8a, h8b⟩` from `GlobalTheory.T.integralUnipotent_eq_latticeUnipotent_coords D X θ C u`. Establish `hgrp` using `Formalism.L2.SG.Pf.IdMeet.noinfEqC_holds D X u Y.hK`. Establish `hA : ∀ w, IsUnit (Ac X C w).det`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Establish `h1` using `(GlobalTheory.T.bessel_transport_isometry_frame_adapted D X θ C u).1 w`. Establish `h2` using `(GlobalTheory.T.concrete_gram_hermitian_nondegenerate_lattice_selfDual D X).1.2`. Establish `e : ((Jc X).map w.embedding).det = w.embedding (Jc X).det` using `by rw [RingHom.map_det]; rfl`. Establish `h3 : ((Jc X).map w.embedding).det ≠ 0` using `by rw [e]; exact (map_ne_zero _).2 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[← h1, Matrix.det_mul, Matrix.det_mul]`. Conclude with `isUnit_iff_ne_zero.2 (right_ne_zero_of_mul h3)`. Use `⟨GlobalTheory.T.measurableSet_transported_real_points_image D X θ C _ hmeas, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hsurj x hx`. Take `⟨s, hs, hsg⟩` from `hex g`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, hc⟩` from `h8b s hs`. Use `⟨γ, ⟨hγ, trX X C (s * g), ⟨s * g, hsg, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Rewrite using `[hc w, ← hmul]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `γ' ⟨hγ', y, ⟨f, hf, rfl⟩, hy⟩`. Take `⟨s', hs', hc'⟩` from `h8a γ' hγ'`. Establish `hfe : f = s' * g`. Apply `hinj` to reduce the goal to its premises. Use function extensionality and compare the values at `w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun hy w` as an intermediate fact. Simplify using `only at this ⊢`. Rewrite using `[this, hc' w, ← hmul]`. Simplify using the standard rewrite rules. Establish `hmem : s' * s⁻¹ ∈ NOinf X u`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hs`, `hs'`, the goal using `[hgrp]`. Conclude with `Subgroup.mul_mem _ hs' (Subgroup.inv_mem _ hs)`. Establish `hss : s' * s⁻¹ = 1` using `huniq (s * g) hsg _ hmem (by rw [show s' * s⁻¹ * (s * g) = s' * g by group, ← hfe]; exact hf)`. Establish `hs'e : s' = s` using `by rw [mul_inv_eq_one] at hss; exact hss`. Substitute `hs'e` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w⟩ : Nonempty (InfinitePlace D.host.E)` from `inferInstance`. Establish `hm` using `cancel_conj _ _ _ (hA w) ((hc' w).trans (hc w).symm)`. Use `Matrix.ext fun i j => w.embedding.injective ?_` and prove the remaining obligations. Use `congrFun (congrFun hm i) j` as an intermediate fact. Simplify `this` using `only [Matrix.map_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isDomN (D : D7) (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (θ : ℝ) (C : Choice X θ) (u : D.what₂.Word) :
     GlobalTheory.SnMass.IsDomN (D.sp.cm.sig : D.host.E →+* D.host.E) (Jc X) (Lc X) (Pc X u) (Ac X C)
@@ -112,9 +112,9 @@ theorem isDomN (D : D7) (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (�
     simpa only [Matrix.map_apply] using this
 
 /- English proof (translation)
-Introduce `D X Y θ C u`. Take `⟨hs, hnum⟩` from `GlobalTheory.T.fundamental_domain_normalising_constants D`. Take `⟨hH, hSD⟩` from `GlobalTheory.T.concrete_gram_hermitian_nondegenerate_lattice_selfDual D X`. Take `⟨hF, hDu, hT⟩` from `GlobalTheory.T.wordFrame_dualTuple_gram_integrality D X u`. Take `⟨hM, hAd⟩` from `GlobalTheory.T.bessel_transport_isometry_frame_adapted D X θ C u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hI` using `GlobalTheory.T.covolume_integral_unipotentRadical_real_points D.host.F D.host.E D.sp.cm.sig D.R.k D.R.rS (Jc X) (Lc X) (Pc X u) (fc X) (Tc u) (Ac X C) (sc D) (GlobalTheory.AdelicU.isCMExt_host D) (formallyUnramified_host D) hH hSD hF hDu hT hM hs hAd`. Establish `h1` using `hI.2 _ (isDomN D X Y θ C u)`. Establish `hv : 0 ≤ 2 * D.host.v` using `by unfold Host.v Host.rdE; positivity`. Express the relevant statement in the definitionally equal form `(Measure.pi _ (trX X C '' Y.FN u)).toReal = _`. Rewrite using `[← GlobalTheory.T.measurePi_pointsAtInfinitePlacesCMType_image D, h1, hnum, ENNReal.toReal_ofReal (Real.rpow_nonneg hv _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ (D : D7) (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (θ : ℝ) (C : Choice X θ) (u : D.what₂.Word), (Measure.pi (fun _ : D.what₂.Tau => haarLie (Formalism.QuantumDeterminants.Nset D.R.k D.R.rS) 1) ((fun (x : X.B.I.Ginf) (τ : D.what₂.Tau) => (Matrix.of.symm (Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (x (vOf X τ))) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)) '' Y.FN u)).toReal = (2 * D.host.v) ^ (((D.R.rS : ℝ) ^ 2 + (D.R.rS : ℝ) * D.R.k + (D.R.rS : ℝ) / 2) * Fintype.card D.what₂.Tau) := by
   intro D X Y θ C u

@@ -7,15 +7,15 @@ namespace GlobalTheory.CharSplit
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Set `φ` to `IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k`. Establish `h1 : φ (uniformizer k) = WithZero.exp (-1)`. Apply `le_antisymm` to reduce the goal to its premises. Establish `: φ (uniformizer k) < 1`. Rewrite using `[← map_one φ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `φ.strictMono uniformizer_lt_one`. Establish `h0 : φ (uniformizer k) ≠ 0` using `by simpa using uniformizer_ne_zero`. Rewrite `this` using `[← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `: φ.symm (WithZero.exp (-1)) < 1`. Rewrite using `[← map_one φ.symm]`. Use `φ.symm.strictMono ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using φ.strictMono.monotone (le_uniformizer_iff.2 this)`. Establish `h0 : φ (valuation k (d : k)) ≠ 0` using `by simp`. Use `⟨-WithZero.log (φ (valuation k (d : k))), φ.injective ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ _ = φ _`. Rewrite using `[hϖ, map_zpow₀, h1, ← WithZero.exp_zsmul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[WithZero.exp_log h0]`.
+A detailed English derivation is pending.
 -/
 theorem valuation_eq_zpow_unif {ϖ : kˣ} (hϖ : IsUnif ϖ) (d : kˣ) :
     ∃ e : ℤ, valuation k (d : k) = valuation k (ϖ : k) ^ e := by
@@ -42,7 +42,7 @@ theorem valuation_eq_zpow_unif {ϖ : kˣ} (hϖ : IsUnif ϖ) (d : kˣ) :
   simp [WithZero.exp_log h0]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `valuation_eq_zpow_unif hϖ x`. Use `⟨e, ϖ ^ (-e) * x, ?_, by group⟩` and prove the remaining obligations. Establish `h0 : valuation k (ϖ : k) ^ e ≠ 0` using `zpow_ne_zero _ ((Valuation.ne_zero_iff _).2 ϖ.ne_zero)`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, he, _root_.zpow_neg]`. Conclude with `inv_mul_cancel₀ h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_zpow_mul_unit {ϖ : kˣ} (hϖ : IsUnif ϖ) (x : kˣ) :
     ∃ (m : ℤ) (u : kˣ), valuation k (u : k) = 1 ∧ x = ϖ ^ m * u := by
@@ -53,9 +53,9 @@ theorem exists_zpow_mul_unit {ϖ : kˣ} (hϖ : IsUnif ϖ) (x : kˣ) :
   exact inv_mul_cancel₀ h0
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ν ϖ hϖ hν`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨h1, h2⟩` from `h`. Apply `hν` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Use `ext1 x`. Take `⟨m, u, hu, rfl⟩` from `exists_zpow_mul_unit hϖ x`. Rewrite using `[map_mul, map_zpow, h1, h2 u hu, _root_.one_zpow, one_mul, MonoidHom.one_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_one_unif_or_unit : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ν : kˣ →* ℂˣ) (ϖ : kˣ), IsUnif ϖ → ν ≠ 1 →

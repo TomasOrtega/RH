@@ -25,7 +25,7 @@ theorem sortedIndices_eq_map_sort {n : ℕ} (J : Finset (Fin n)) :
     sortedIndices J = (J.sort (· ≤ ·)).map Fin.val := rfl
 
 /- English proof (translation)
-Simplify using `[sortedIndices, List.mem_map, Finset.mem_sort]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_sortedIndices {n : ℕ} (J : Finset (Fin n)) (a : ℕ) :
     a ∈ sortedIndices J ↔ ∃ j ∈ J, (j : ℕ) = a := by

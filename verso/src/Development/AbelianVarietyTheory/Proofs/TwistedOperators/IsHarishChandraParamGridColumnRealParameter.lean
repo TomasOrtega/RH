@@ -20,15 +20,13 @@ namespace GlobalTheory.Grid
 open GlobalTheory.SignedHC
 
 /- English proof (translation)
-Introduce `D _ i _ τ n lam ε hn hE`. Take `⟨hanti, q, hq, hS⟩` from `hE`. Use `⟨hanti, fun a => ?_⟩` and prove the remaining obligations. Establish `hmem : q a ∈ (grid D τ).weightX 0`. Establish `h0 : (q a, ε a) ∈ parP D i τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hS]`. Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ a)`. Break down `GridData.mem_parPi.1 h0 with ⟨l, hl, h⟩ | ⟨h1, _⟩ | ⟨l, h1, h2, h3, _⟩` into its components or cases. Conclude with `GridData.mem_weightX.2 (Or.inl (GridData.mem_tops.2 ⟨l, hl, (Prod.ext_iff.1 h).1⟩))`. Conclude with `GridData.mem_weightX.2 (Or.inr (Or.inl h1))`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `GridData.mem_weightX.2 (Or.inr (Or.inr (Or.inl ⟨l, by omega, h2, h3⟩)))`. Establish `hs : Odd (grid D τ).s` using `GlobalTheory.ChiGrid.odd_sLen D`. Take `⟨z, hz⟩` from `GlobalTheory.ChiGrid.inCoset_weightX_zero hs _ hmem`. Take `⟨u, hu⟩` from `GlobalTheory.ChiGrid.even_rankP D i`. Establish `hn' : (n : ℝ) = (u : ℝ) + u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: n = u + u` using `hn.trans hu`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨z + 1 - u, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hq a, hz, hn']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isHCParam_parP : ∀ (D : D7), HostHyp D → ∀ (i : ℕ), i ≤ D.R.m → ∀ (τ : D.what₂.Tau) (n : ℕ) (lam : Fin n → ℝ) (ε : Fin n → Bool), n = GlobalTheory.Grid.rkP D i → IsEnum (GlobalTheory.Grid.parP D i τ) lam ε → Formalism.QuantumDeterminants.IsHCParam lam := by
   intro D _ i _ τ n lam ε hn hE

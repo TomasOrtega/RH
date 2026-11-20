@@ -15,40 +15,40 @@ namespace PositivityTheory.SiegelWeilFormula.Ald.Asc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem incM_mul' {a b c : Type} [Fintype b] (A : Matrix a b E) (B : Matrix b c E) :
     incM F (A * B) = incM F A * incM F B := Matrix.map_mul
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem incM_one' {a : Type} [DecidableEq a] : incM F (1 : Matrix a a E) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> simp [diagCols, incM, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incM_diagCols (n : ℕ) : incM F (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) E) = diagCols (Fin n) := by
   ext i j
   rcases i with i | i <;> simp [diagCols, incM, Matrix.one_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[crdB]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem crdB_zero {m n : ℕ} (bs : Module.Basis (Fin 2) F E) : crdB bs (0 : Mx F E m n) = 0 := by
   funext k
   simp [crdB]
 
 /- English proof (translation)
-Simplify using `[Bf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Bf_zero_left {m n : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin m) (Fin m) E) (Z : Mx F E m n) :
     Bf σ J 0 Z = 0 := by
   simp [Bf]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.toCols₁, Matrix.toCols₂, incM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem split_cols {m n : ℕ} (b : GL (Fin n ⊕ Fin n) E) (N : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) :
     N.toCols₁ * (incM F b.1.toCols₁)ᵀ + N.toCols₂ * (incM F b.1.toCols₂)ᵀ = N * (incM F b.1)ᵀ := by
@@ -56,7 +56,7 @@ theorem split_cols {m n : ℕ} (b : GL (Fin n ⊕ Fin n) E) (N : Matrix (Fin m) 
   simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.toCols₁, Matrix.toCols₂, incM]
 
 /- English proof (translation)
-Use `⟨(w * (incM F (b⁻¹).1)ᵀ).toCols₁, (w * (incM F (b⁻¹).1)ᵀ).toCols₂, ?_⟩` and prove the remaining obligations. Rewrite using `[split_cols, Matrix.mul_assoc, ← Matrix.transpose_mul, ← incM_mul', Units.mul_inv, incM_one', Matrix.transpose_one, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_split {m n : ℕ} (b : GL (Fin n ⊕ Fin n) E) (w : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) :
     ∃ Z X : Mx F E m n, w = Z * (incM F b.1.toCols₁)ᵀ + X * (incM F b.1.toCols₂)ᵀ := by
@@ -70,31 +70,29 @@ namespace PositivityTheory.SiegelWeilFormula.Ald
 
 open Asc in
 /- English proof (translation)
-Introduce `hT _hA F E _ _ _ _ _ σ d dd0 had hrat`. Establish `hψ : IsStd d.B.ψ` using `d.ok.good.std`. Take `⟨S0, S0', hS⟩` from `GlobalTheory.T.darbouxCoordinateChange_realised_with_double F E σ d.ok.good.cm d.B.ψ hψ (Fin d.m) (Fin d.n ⊕ Fin d.n) d.κ (Fin d.m × Fin d.n × Fin 2) _ d.dd dd0 (by exact d.ok.dbl.rat) (by exact hrat)`. Establish `hop` using `hS.1`. Establish `rhoS : ∀ w, ∀ φ ∈ schA F d.κ, S0 (d.dd.rho d.B.ψ w φ) = dd0.rho d.B.ψ w (S0 φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w φ hφ`. Simplify using `only [Darboux.rho]`. Rewrite using `[hop.Heisenberg₂ _ _ hφ]`. Simplify using the standard rewrite rules. Establish `rhoS' : ∀ w, ∀ φ ∈ schA F (Fin d.m × Fin d.n × Fin 2), S0' (dd0.rho d.B.ψ w φ) = d.dd.rho d.B.ψ w (S0' φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `w φ hφ`. Establish `h1` using `rhoS w (S0' φ) (hop.pres' φ hφ)`. Rewrite `h1` using `[hop.right φ hφ]`. Establish `hm : d.dd.rho d.B.ψ w (S0' φ) ∈ schA F d.κ` using `GlobalTheory.EvZeroUniq.schr_mem_schA d.B.ψ hψ _ (hop.pres' φ hφ)`. Rewrite using `[← h1, hop.left _ hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set l' : ((Fin d.m × Fin d.n × Fin 2 → AF F) → ℂ) →ₗ[ℂ] ℂ := d.l ∘ₗ S0' with hl'`. Establish `hadm : l' ∈ (adeleClass F).adm (Fin d.m × Fin d.n × Fin 2)` using `hop.adm' d.l d.ok.dbl.adm`. Establish `hsurj : ∀ y : Fin d.m × Fin d.n × Fin 2 → AF F, ∃ Z : Mx F E d.m d.n, dd0.e (Z * (incM F d.b.1.toCols₁)ᵀ) = (0, y)`. Introduce `y`. Take `⟨Z, X, hw⟩` from `eq_split d.b (dd0.e.symm (0, y))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `had Z X`. Rewrite `h1` using `[← hw, LinearEquiv.apply_symm_apply]`. Establish `h2` using `had Z 0`. Rewrite `h2` using `[Matrix.zero_mul, add_zero, crdB_zero]`. Use `⟨Z, h2.trans ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3` using `congrArg Prod.snd h1`. Simplify using `only at h3`. Rewrite using `[← h3]`. Take `⟨t, ht0⟩` from `d.ok.frame.2`. Establish `ht : (d.b.1.toCols₁ : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E) = (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E) * (t.1 : Matrix (Fin d.n) (Fin d.n) E)` using `ht0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ (y : Fin d.m × Fin d.n × Fin 2 → AF F), ∀ φ ∈ schA F (Fin d.m × Fin d.n × Fin 2), l' (fun x => d.B.ψ (x ⬝ᵥ y) * φ x) = l' φ`. Introduce `y φ hφ`. Take `⟨Z, hZ⟩` from `hsurj y`. Establish `e1 : (fun x => d.B.ψ (x ⬝ᵥ y) * φ x) = dd0.rho d.B.ψ (Z * (incM F d.b.1.toCols₁)ᵀ) φ`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Darboux.rho, hZ, schr]`. Rewrite using `[e1, hl', LinearMap.comp_apply, rhoS' _ φ hφ, LinearMap.comp_apply]`. Establish `e2 : Z * (incM F d.b.1.toCols₁)ᵀ = ((Z * (incM F t.1)ᵀ : Mx F E d.m d.n)) * ((diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E)))ᵀ`. Rewrite using `[ht, incM_mul', incM_diagCols, Matrix.transpose_mul]`. Conclude with `(Matrix.mul_assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e2]`. Conclude with `d.ok.dbl.kill _ _ (hop.pres' φ hφ)`. Take `⟨c, hc⟩` from `GlobalTheory.T.character_invariant_adelic_form_eq_mul_eval_zero F d.B.ψ hψ (Fin d.m × Fin d.n × Fin 2) l' hadm hinv`. Establish `hform : ∀ Φ ∈ d.sch, ∀ X, d.T Φ X = c * S0 Φ (crdB d.bs X)`. Introduce `Φ hΦ X`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hΨ : d.dd.rho d.B.ψ (X * (incM F d.b.1.toCols₂)ᵀ) Φ ∈ schA F d.κ` using `GlobalTheory.EvZeroUniq.schr_mem_schA d.B.ψ hψ _ hΦ`. Establish `h0` using `had 0 X`. Rewrite `h0` using `[Matrix.zero_mul, zero_add]`. Simplify using `only [Bf_zero_left] at h0`. Establish `e1 : d.T Φ X = l' (S0 (d.dd.rho d.B.ψ (X * (incM F d.b.1.toCols₂)ᵀ) Φ))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl', LinearMap.comp_apply, hop.left _ hΨ]`. Both sides reduce to the same expression. Rewrite using `[e1, hc _ (hop.pres _ hΨ), rhoS _ _ hΦ]`. Simplify using `[Darboux.rho, h0, schr]`. Use `⟨S0, S0', c, ?_, hS, hform⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Take `⟨φ, hφ, hφ0⟩` from `GlobalTheory.T.exists_adelicSchwartz_ne_zero_at_origin F d.κ`. Establish `hz : d.T φ = 0`. Use function extensionality and compare the values at `X`. Rewrite using `[hform φ hφ X, zero_mul]`.
-
-Both sides reduce to the same expression. Conclude with `hφ0 (by rw [(hT.1 F E σ d).2.2 φ hφ hz]; rfl)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bigT : BigT := by
   intro hT _hA F E _ _ _ _ _ σ d dd0 had hrat

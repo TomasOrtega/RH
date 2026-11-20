@@ -15,7 +15,7 @@ section Blocks
 variable {A B : Type} [CommRing A] [CommRing B] {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [StdUnn.blk4, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockMatrix_map (f : A →+* B) (a b c d : Matrix (Fin n) (Fin n) A) :
     (StdUnn.blk4 a b c d).map f = StdUnn.blk4 (a.map f) (b.map f) (c.map f) (d.map f) := by
@@ -24,7 +24,7 @@ theorem blockMatrix_map (f : A →+* B) (a b c d : Matrix (Fin n) (Fin n) A) :
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [cT, StdUnn.blk4, Matrix.transpose_apply, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cT_blk4 (τ : A →+* A) (a b c d : Matrix (Fin n) (Fin n) A) :
     cT τ (StdUnn.blk4 a b c d) = StdUnn.blk4 (cT τ a) (cT τ c) (cT τ b) (cT τ d) := by
@@ -33,31 +33,31 @@ theorem cT_blk4 (τ : A →+* A) (a b c d : Matrix (Fin n) (Fin n) A) :
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_zero' (τ : A →+* A) : cT τ (0 : Matrix (Fin n) (Fin n) A) = 0 := by
   ext i j; simp [cT]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [cT, Matrix.one_apply, h, eq_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cT_one' (τ : A →+* A) : cT τ (1 : Matrix (Fin n) (Fin n) A) = 1 := by
   ext i j; by_cases h : i = j <;> simp [cT, Matrix.one_apply, h, eq_comm]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [cT, Matrix.one_apply, h, eq_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cT_neg_one (τ : A →+* A) : cT τ (-1 : Matrix (Fin n) (Fin n) A) = -1 := by
   ext i j; by_cases h : i = j <;> simp [cT, Matrix.one_apply, h, eq_comm]
 
 /- English proof (translation)
-Simplify using `[StdUnn.blkA, StdUnn.blk4, Matrix.submatrix_submatrix, Matrix.toBlocks_fromBlocks₁₁]`.
+Simplify using the standard rewrite rules.
 -/
 theorem upperLeft_blockMatrix (a b c d : Matrix (Fin n) (Fin n) A) : StdUnn.blkA (StdUnn.blk4 a b c d) = a := by
   simp [StdUnn.blkA, StdUnn.blk4, Matrix.submatrix_submatrix, Matrix.toBlocks_fromBlocks₁₁]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, StdUnn.blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockMatrix_mulVec_lower (a b c d : Matrix (Fin n) (Fin n) A) (x : Fin (n + n) → A) (i : Fin n) :
     (StdUnn.blk4 a b c d *ᵥ x) (finSumFinEquiv (Sum.inr i)) =
@@ -78,7 +78,7 @@ def matR (g : HA R σ Q) : Matrix (Fin (n + n)) (Fin (n + n)) (R ⊗[F] E) := (m
 variable {R σ} in
 
 /- English proof (translation)
-The claim follows from `matHom_injective R σ Q (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem ext_matR {g h : HA R σ Q} (e : matR R σ g = matR R σ h) : g = h :=
   matHom_injective R σ Q (Units.ext e)
@@ -94,9 +94,7 @@ Both sides reduce to the same expression.
 theorem matR_one : matR R σ (1 : HA R σ Q) = 1 := rfl
 
 /- English proof (translation)
-Substitute `hQ` using the available equality. Rewrite using `[JR, blockMatrix_map]`. Use `congr 1`. Conclude with `Matrix.map_zero _ (map_zero _)`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
-
-Rewrite using `[Matrix.map_neg _ (map_neg _), Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Matrix.map_zero _ (map_zero _)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem JR_eq (hQ : Q = StdUnn.blk4 0 1 (-1) 0) : JR (F := F) R Q = StdUnn.blk4 0 1 (-1) 0 := by
   subst hQ
@@ -119,7 +117,7 @@ Both sides reduce to the same expression.
 variable {R σ} in
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `b.2 i j`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cT_herm (b : HermR R σ n) : cT (sigR R σ) b.1 = b.1 := by
   ext i j; exact b.2 i j
@@ -152,7 +150,7 @@ Both sides reduce to the same expression.
 theorem mat_wLoc : matR R σ (wLoc R σ hQ) = StdUnn.blk4 0 1 (-1) 0 := rfl
 
 /- English proof (translation)
-The claim follows from `ext_matR (by simp only [matR_mul, mat_nLoc, StdUnn.Model.submatrix_fromBlocks_mul, AddSubgroup.coe_add] simp [add_comm])`.
+A detailed English derivation is pending.
 -/
 theorem nLoc_add (b b' : HermR R σ n) : nLoc R σ hQ (b + b') = nLoc R σ hQ b * nLoc R σ hQ b' :=
   ext_matR (by
@@ -160,7 +158,7 @@ theorem nLoc_add (b b' : HermR R σ n) : nLoc R σ hQ (b + b') = nLoc R σ hQ b 
     simp [add_comm])
 
 /- English proof (translation)
-The claim follows from `ext_matR (by rw [mat_nLoc, matR_one]; simpa using StdUnn.Model.block_matrix_one)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem nLoc_zero : nLoc R σ hQ (0 : HermR R σ n) = 1 :=
   ext_matR (by rw [mat_nLoc, matR_one]; simpa using StdUnn.Model.block_matrix_one)
@@ -180,16 +178,16 @@ def upperParabolic : Subgroup (HA R σ Q) := (stabGL (upperHalfR (F := F) (E := 
 variable {R σ Q}
 
 /- English proof (translation)
-Simplify using `[upperHalfR, funext_iff, LinearMap.funLeft_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_upperHalfR {x : Fin (n + n) → R ⊗[F] E} :
     x ∈ upperHalfR R ↔ ∀ i : Fin n, x (finSumFinEquiv (Sum.inr i)) = 0 := by
   simp [upperHalfR, funext_iff, LinearMap.funLeft_apply]
 
 /- English proof (translation)
-Establish `h` using `(hp (Pi.single (finSumFinEquiv (.inl j)) 1)).1 (mem_upperHalfR.2 fun k => by`. Establish `: (finSumFinEquiv (Sum.inr k : Fin n ⊕ Fin n)) ≠ finSumFinEquiv (.inl j)`. Rewrite using `[Ne, finSumFinEquiv.apply_eq_iff_eq]`. Simplify using the standard rewrite rules. Simplify using `only [Pi.single_eq_of_ne this])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2` using `mem_upperHalfR.1 h i`. Simplify `h2` using `only [Matrix.mulVec_single_one, Matrix.col_apply, matR]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lower_eq_zero {p : HA R σ Q} (hp : p ∈ upperParabolic R σ Q) (i j : Fin n) :
     matR R σ p (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0 := by
@@ -201,7 +199,7 @@ theorem lower_eq_zero {p : HA R σ Q} (hp : p ∈ upperParabolic R σ Q) (i j : 
   simpa only [Matrix.mulVec_single_one, Matrix.col_apply, matR] using h2
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [matR_mul, StdUnn.blkA, Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [lower_eq_zero hq, mul_zero, Finset.sum_const_zero, add_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blkA_mulR {p q : HA R σ Q} (hq : q ∈ upperParabolic R σ Q) :
     StdUnn.blkA (matR R σ (p * q)) = StdUnn.blkA (matR R σ p) * StdUnn.blkA (matR R σ q) := by
@@ -233,7 +231,7 @@ Both sides reduce to the same expression.
 theorem coe_aUp (p : upperParabolic R σ Q) : (aUp R σ Q p : R ⊗[F] E) = (StdUnn.blkA (matR R σ p.1)).det := rfl
 
 /- English proof (translation)
-Introduce `x` and use `by change x ∈ upperHalfR R ↔ matR R σ g *ᵥ x ∈ upperHalfR R simp only [mem_upperHalfR, hg, blockMatrix_mulVec_lower, Matrix.zero_mulVec, Pi.zero_apply, zero_add] constructor · intro h i rw [show (fun j => x (finSumFinEquiv (Sum.inr j))) = 0 from funext h, Matrix.mulVec_zero, Pi.z …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_siegelParabolic_of_blockUpperTriangular {g : HA R σ Q} {a b d d' : Matrix (Fin n) (Fin n) (R ⊗[F] E)}
     (hg : matR R σ g = StdUnn.blk4 a b 0 d) (hd : d' * d = 1) : g ∈ upperParabolic R σ Q := fun x => by
@@ -252,13 +250,13 @@ variable (hQ : Q = StdUnn.blk4 0 1 (-1) 0)
 include hQ
 
 /- English proof (translation)
-The claim follows from `mem_siegelParabolic_of_blockUpperTriangular (mat_nLoc R σ hQ b) (Matrix.one_mul 1)`.
+A detailed English derivation is pending.
 -/
 theorem nLoc_mem_upP (b : HermR R σ n) : nLoc R σ hQ b ∈ upperParabolic R σ Q :=
   mem_siegelParabolic_of_blockUpperTriangular (mat_nLoc R σ hQ b) (Matrix.one_mul 1)
 
 /- English proof (translation)
-The claim follows from `Units.ext (by rw [coe_aUp, mat_nLoc, upperLeft_blockMatrix, Matrix.det_one, Units.val_one])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem aUp_nLoc (b : HermR R σ n) : aUp R σ Q ⟨nLoc R σ hQ b, nLoc_mem_upP hQ b⟩ = 1 :=
   Units.ext (by rw [coe_aUp, mat_nLoc, upperLeft_blockMatrix, Matrix.det_one, Units.val_one])
@@ -273,7 +271,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
 variable {R σ} in
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, sigR_invol hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT (hσ : ∀ x, σ (σ x) = x) (M : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     cT (sigR R σ) (cT (sigR R σ) M) = M := by
@@ -296,7 +294,7 @@ theorem mat_mLoc (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) 
     matR R σ (mLoc R σ hσ hQ a) = StdUnn.blk4 a.1 0 0 (cT (sigR R σ) (a⁻¹).1) := rfl
 
 /- English proof (translation)
-The claim follows from `mem_siegelParabolic_of_blockUpperTriangular (mat_mLoc R σ hσ hQ a) (show cT (sigR R σ) a.1 * cT (sigR R σ) (a⁻¹).1 = 1 by rw [← cT_mul, Units.inv_mul, cT_one'])`.
+A detailed English derivation is pending.
 -/
 theorem mLoc_mem_upP (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (a : GL (Fin n) (R ⊗[F] E)) :
     mLoc R σ hσ hQ a ∈ upperParabolic R σ Q :=
@@ -304,7 +302,7 @@ theorem mLoc_mem_upP (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1)
     rw [← cT_mul, Units.inv_mul, cT_one'])
 
 /- English proof (translation)
-The claim follows from `Units.ext (by rw [coe_aUp, mat_mLoc, upperLeft_blockMatrix]; rfl)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem aUp_mLoc (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (a : GL (Fin n) (R ⊗[F] E)) :
     aUp R σ Q ⟨mLoc R σ hσ hQ a, mLoc_mem_upP R σ hσ hQ a⟩ = Matrix.GeneralLinearGroup.det a :=
@@ -315,7 +313,7 @@ variable {R' : Type} [CommRing R'] [Algebra F R']
 variable {R σ} in
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_map (φ : R →ₐ[F] R') (y : R ⊗[F] E) :
     sigR R' σ (Algebra.TensorProduct.map φ (AlgHom.id F E) y) =
@@ -337,7 +335,7 @@ variable (hQ : Q = StdUnn.blk4 0 1 (-1) 0)
 include hQ
 
 /- English proof (translation)
-Use `ext_matR (Matrix.ext fun r s => (GlobalTheory.AutFunCompare.mat_mapH σ Q φ _ r s).trans ?_)` and prove the remaining obligations. Use `congrFun (congrFun (blockMatrix_map (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom 1 b.1 0 1) r) s` as an intermediate fact. Rewrite `this` using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _)]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapH_nLoc (φ : R →ₐ[F] R') (b : HermR R σ n) :
     GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ Q φ (nLoc R σ hQ b) = nLoc R' σ hQ (hermMap φ b) := by
@@ -347,7 +345,7 @@ theorem mapH_nLoc (φ : R →ₐ[F] R') (b : HermR R σ n) :
   exact this
 
 /- English proof (translation)
-Use `ext_matR (Matrix.ext fun r s => (GlobalTheory.AutFunCompare.mat_mapH σ Q φ _ r s).trans ?_)` and prove the remaining obligations. Use `congrFun (congrFun (blockMatrix_map (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom 0 1 (-1) 0) r) s` as an intermediate fact. Rewrite `this` using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_zero _ (map_zero _), Matrix.map_neg _ (map_neg _), Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapH_wLoc (φ : R →ₐ[F] R') : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ Q φ (wLoc R σ hQ) = wLoc R' σ hQ := by
   refine ext_matR (Matrix.ext fun r s => (GlobalTheory.AutFunCompare.mat_mapH σ Q φ _ r s).trans ?_)
@@ -357,9 +355,7 @@ theorem mapH_wLoc (φ : R →ₐ[F] R') : GlobalTheory.IndefiniteRowSideFullHeck
   exact this
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (R ⊗[F] E) := IsModuleTopology.isTopologicalRing R _`. Rewrite using `[(isEmbedding_matHom R σ Q).continuous_iff, Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `((continuous_const.matrix_fromBlocks continuous_subtype_val continuous_const continuous_const).matrix_submatrix _ _ : Continuous fun b : HermR R σ n => StdUnn.blk4 1 b.1 0 1)`.
-
-Conclude with `((continuous_const.matrix_fromBlocks continuous_subtype_val.neg continuous_const continuous_const).matrix_submatrix _ _ : Continuous fun b : HermR R σ n => StdUnn.blk4 1 (-b.1) 0 1)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem continuous_nLoc [TopologicalSpace R] [IsTopologicalRing R] [FiniteDimensional F E] :
     Continuous (nLoc R σ hQ (n := n)) := by
@@ -380,7 +376,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] 
   {Q : Matrix (Fin (n + n)) (Fin (n + n)) E}
 
 /- English proof (translation)
-The claim follows from `mem_upperHalfR.2 fun i => by simp only [Matrix.mulVec, dotProduct] rw [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type] simp only [hM, mem_upperHalfR.1 hx, zero_mul, mul_zero, Finset.sum_const_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem_upperHalfR {M : Matrix (Fin (n + n)) (Fin (n + n)) (R ⊗[F] E)}
     (hM : ∀ i j : Fin n, M (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0) {x : Fin (n + n) → R ⊗[F] E}
@@ -390,7 +386,7 @@ theorem mulVec_mem_upperHalfR {M : Matrix (Fin (n + n)) (Fin (n + n)) (R ⊗[F] 
   simp only [hM, mem_upperHalfR.1 hx, zero_mul, mul_zero, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Use `⟨fun h i j => ⟨lower_eq_zero h i j, lower_eq_zero (inv_mem h) i j⟩, fun h x => ⟨mulVec_mem_upperHalfR fun i j => (h i j).1, fun hx => ?_⟩⟩` and prove the remaining obligations. Use `mulVec_mem_upperHalfR (fun i j => (h i j).2) hx` as an intermediate fact. Express the relevant statement in the definitionally equal form `matR R σ g⁻¹ *ᵥ (matR R σ g *ᵥ x) ∈ _ at this`. Rewrite `this` using `[Matrix.mulVec_mulVec, ← matR_mul, inv_mul_cancel, matR_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_siegelParabolic_iff {g : HA R σ Q} : g ∈ upperParabolic R σ Q ↔ ∀ i j : Fin n,
     matR R σ g (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0 ∧
@@ -402,7 +398,7 @@ theorem mem_siegelParabolic_iff {g : HA R σ Q} : g ∈ upperParabolic R σ Q �
   rwa [Matrix.mulVec_mulVec, ← matR_mul, inv_mul_cancel, matR_one, Matrix.one_mulVec] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, _, _, by rw [StdUnn.blk4, Matrix.fromBlocks_toBlocks (M.submatrix finSumFinEquiv finSumFinEquiv), Matrix.submatrix_submatrix] simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_blockMatrixTwoByTwoFin_eq {A : Type} (M : Matrix (Fin (n + n)) (Fin (n + n)) A) : ∃ a b c d, M = StdUnn.blk4 a b c d :=
   ⟨_, _, _, _, by
@@ -410,9 +406,9 @@ theorem exists_blockMatrixTwoByTwoFin_eq {A : Type} (M : Matrix (Fin (n + n)) (F
     simp⟩
 
 /- English proof (translation)
-Use `⟨lower_eq_zero, fun h => ?_⟩` and prove the remaining obligations. Take `⟨a, b, c, d, e⟩` from `exists_blockMatrixTwoByTwoFin_eq (matR R σ g)`. Take `rfl : c = 0` from `Matrix.ext fun i j => by`. Use `h i j` as an intermediate fact. Rewrite `this` using `[e, StdUnn.blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hu : cT (sigR R σ) (matR R σ g) * JR R Q * matR R σ g = JR R Q` using `g.2`. Rewrite `hu` using `[JR_eq R hQ, e, cT_blk4, cT_zero', StdUnn.Model.submatrix_fromBlocks_mul, StdUnn.Model.submatrix_fromBlocks_mul]`. Conclude with `mem_siegelParabolic_of_blockUpperTriangular e (d' := cT (sigR R σ) a) (by simpa using (StdUnn.Model.blockMatrixTwoByTwoFin_injective hu).2.1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_siegelParabolic_iff_lowerLeft_eq_zero (hQ : Q = StdUnn.blk4 0 1 (-1) 0) {g : HA R σ Q} : g ∈ upperParabolic R σ Q ↔
     ∀ i j : Fin n, matR R σ g (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0 := by
@@ -426,7 +422,7 @@ theorem mem_siegelParabolic_iff_lowerLeft_eq_zero (hQ : Q = StdUnn.blk4 0 1 (-1)
   exact mem_siegelParabolic_of_blockUpperTriangular e (d' := cT (sigR R σ) a) (by simpa using (StdUnn.Model.blockMatrixTwoByTwoFin_injective hu).2.1)
 
 /- English proof (translation)
-Introduce `h` and use `by have := lower_eq_zero h ⟨0, hn⟩ ⟨0, hn⟩ rw [mat_wLoc, StdUnn.blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply] at this simp at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wLoc_notMem_upP (hQ : Q = StdUnn.blk4 0 1 (-1) 0) [Nontrivial (R ⊗[F] E)] (hn : 0 < n) :
     wLoc R σ hQ ∉ upperParabolic R σ Q := fun h => by
@@ -435,13 +431,13 @@ theorem wLoc_notMem_upP (hQ : Q = StdUnn.blk4 0 1 (-1) 0) [Nontrivial (R ⊗[F] 
   simp at this
 
 /- English proof (translation)
-Introduce `_ _ e` and use `Subtype.ext (StdUnn.Model.blockMatrixTwoByTwoFin_injective (congrArg (matR R σ) e)).2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nLoc_injective (hQ : Q = StdUnn.blk4 0 1 (-1) 0) : Function.Injective (nLoc R σ hQ) := fun _ _ e =>
   Subtype.ext (StdUnn.Model.blockMatrixTwoByTwoFin_injective (congrArg (matR R σ) e)).2.1
 
 /- English proof (translation)
-The claim follows from `ext_matR (by simp only [matR_mul, mat_mLoc, StdUnn.Model.submatrix_fromBlocks_mul, mul_inv_rev, Units.val_mul, cT_mul, mul_zero, zero_mul, add_zero, zero_add])`.
+A detailed English derivation is pending.
 -/
 theorem mLoc_mul (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (a a' : GL (Fin n) (R ⊗[F] E)) :
     mLoc R σ hσ hQ (a * a') = mLoc R σ hσ hQ a * mLoc R σ hσ hQ a' :=
@@ -450,7 +446,7 @@ theorem mLoc_mul (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) 
       add_zero, zero_add])
 
 /- English proof (translation)
-The claim follows from `ext_matR (by rw [mat_mLoc, inv_one, Units.val_one, cT_one', StdUnn.Model.block_matrix_one, matR_one])`.
+A detailed English derivation is pending.
 -/
 theorem mLoc_one (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) :
     mLoc R σ hσ hQ (1 : GL (Fin n) (R ⊗[F] E)) = 1 :=
@@ -459,14 +455,14 @@ theorem mLoc_one (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) 
 variable {R' : Type} [CommRing R'] [Algebra F R'] (φ : R →ₐ[F] R')
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun r s => GlobalTheory.AutFunCompare.mat_mapH σ Q φ g r s`.
+A detailed English derivation is pending.
 -/
 theorem matR_mapH (g : HA R σ Q) : matR R' σ (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ Q φ g) =
     (matR R σ g).map (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom :=
   Matrix.ext fun r s => GlobalTheory.AutFunCompare.mat_mapH σ Q φ g r s
 
 /- English proof (translation)
-The claim follows from `mem_siegelParabolic_iff.2 fun i j => by rw [← map_inv, matR_mapH, matR_mapH, Matrix.map_apply, Matrix.map_apply, (mem_siegelParabolic_iff.1 hg i j).1, (mem_siegelParabolic_iff.1 hg i j).2, map_zero] exact ⟨rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mapH_mem_upP {g : HA R σ Q} (hg : g ∈ upperParabolic R σ Q) : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ Q φ g ∈ upperParabolic R' σ Q :=
   mem_siegelParabolic_iff.2 fun i j => by
@@ -475,7 +471,7 @@ theorem mapH_mem_upP {g : HA R σ Q} (hg : g ∈ upperParabolic R σ Q) : Global
     exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Units.ext ((congrArg (fun M => (StdUnn.blkA M).det) (matR_mapH φ p.1)).trans (RingHom.map_det (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom (StdUnn.blkA (matR R σ p.1))).symm)`.
+A detailed English derivation is pending.
 -/
 theorem aUp_mapH (p : upperParabolic R σ Q) : aUp R' σ Q ⟨GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ Q φ p, mapH_mem_upP φ p.2⟩ =
     Units.map (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom.toMonoidHom (aUp R σ Q p) :=
@@ -483,7 +479,7 @@ theorem aUp_mapH (p : upperParabolic R σ Q) : aUp R' σ Q ⟨GlobalTheory.Indef
     (RingHom.map_det (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom (StdUnn.blkA (matR R σ p.1))).symm)
 
 /- English proof (translation)
-Use `ext_matR ?_` and prove the remaining obligations. Rewrite using `[matR_mapH, mat_mLoc, mat_mLoc, blockMatrix_map, Matrix.map_zero _ (map_zero _), ← map_inv]`. Use `congr 1`. Conclude with `Matrix.ext fun i j => (sigR_map φ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mapH_mLoc (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (a : GL (Fin n) (R ⊗[F] E)) :
     GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ Q φ (mLoc R σ hσ hQ a) =
@@ -496,7 +492,7 @@ theorem mapH_mLoc (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0)
 variable [TopologicalSpace R]
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp (isEmbedding_matHom R σ Q).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_matR : Continuous (matR R σ (Q := Q)) :=
   Units.continuous_val.comp (isEmbedding_matHom R σ Q).continuous
@@ -504,7 +500,7 @@ theorem continuous_matR : Continuous (matR R σ (Q := Q)) :=
 variable [IsTopologicalRing R] [FiniteDimensional F E]
 
 /- English proof (translation)
-Establish `hA : Continuous fun g : HA R σ Q => StdUnn.blkA (matR R σ g)` using `continuous_matrix fun i j => continuous_matR.matrix_elem _ _`. Rewrite using `[Units.continuous_iff]`. Use `⟨hA.comp continuous_subtype_val, ?_⟩` and prove the remaining obligations. Use `(hA.comp (continuous_subtype_val.comp continuous_inv)).congr fun p => ?_` and prove the remaining obligations. Rewrite using `[← map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -517,9 +513,9 @@ theorem continuous_leviUp : Continuous (leviUp R σ Q) := by
   rw [← map_inv]; rfl
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := F) (E := E) (R := R)`. Establish `hd : Continuous (Matrix.GeneralLinearGroup.det : GL (Fin n) (R ⊗[F] E) → (R ⊗[F] E)ˣ)`. Rewrite using `[Units.continuous_iff]`. Use `⟨Units.continuous_val.matrix_det, (Units.continuous_coe_inv.matrix_det).congr fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `hd.comp continuous_leviUp`.
+A detailed English derivation is pending.
 -/
 theorem continuous_aUp : Continuous (aUp R σ Q) := by
   haveI := isTopologicalRing_tens (F := F) (E := E) (R := R)
@@ -530,9 +526,7 @@ theorem continuous_aUp : Continuous (aUp R σ Q) := by
   exact hd.comp continuous_leviUp
 
 /- English proof (translation)
-Use `haveI := t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := R)`. Establish `: (upperParabolic R σ Q : Set (HA R σ Q)) = ⋂ i : Fin n, ⋂ j : Fin n, ({g | matR R σ g (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0} ∩ {g | matR R σ g⁻¹ (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0})`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter, Set.mem_inter_iff, Set.mem_setOf_eq, SetLike.mem_coe, mem_siegelParabolic_iff]`. Rewrite using `[this]`.
-
-Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => (isClosed_eq (continuous_matR.matrix_elem _ _) continuous_const).inter (isClosed_eq ((continuous_matR.comp continuous_inv).matrix_elem _ _) continuous_const)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_upP [T2Space R] : IsClosed (upperParabolic R σ Q : Set (HA R σ Q)) := by
   haveI := t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := R)
@@ -576,7 +570,7 @@ def IntwConv [TopologicalSpace R] (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (db : Measur
 variable {R σ Q ν K}
 
 /- English proof (translation)
-The claim follows from `iwAbs_pos _ K g`.
+A detailed English derivation is pending.
 -/
 theorem hgtUp_pos (g : HA R σ Q) : 0 < hgtUp R σ Q ν K g := iwAbs_pos _ K g
 
@@ -587,59 +581,59 @@ theorem flatUp_apply (Φ : HA R σ Q → ℂ) (s₀ s : ℂ) (g : HA R σ Q) :
     flatUp R σ Q ν K Φ s₀ s g = Φ g * npow (hgtUp R σ Q ν K g) (s - s₀) := rfl
 
 /- English proof (translation)
-The claim follows from `flatSec_self Φ s₀`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem flatUp_self (Φ : HA R σ Q → ℂ) (s₀ : ℂ) : flatUp R σ Q ν K Φ s₀ s₀ = Φ := flatSec_self Φ s₀
 
 /- English proof (translation)
-The claim follows from `flatSec_flatSec Φ s₀ s₁ s`.
+A detailed English derivation is pending.
 -/
 theorem flatUp_flatUp (Φ : HA R σ Q → ℂ) (s₀ s₁ s : ℂ) :
     flatUp R σ Q ν K (flatUp R σ Q ν K Φ s₀ s₁) s₁ s = flatUp R σ Q ν K Φ s₀ s := flatSec_flatSec Φ s₀ s₁ s
 
 /- English proof (translation)
-The claim follows from `npow_ne_zero (hgtUp_pos g) _`.
+A detailed English derivation is pending.
 -/
 theorem sphUp_ne_zero (s : ℂ) (g : HA R σ Q) : sphUp R σ Q ν K s g ≠ 0 := npow_ne_zero (hgtUp_pos g) _
 
 /- English proof (translation)
-The claim follows from `funext fun g => by rw [flatUp_apply, sphUp, sphUp, ← npow_add (hgtUp_pos g)] congr 1; ring`.
+A detailed English derivation is pending.
 -/
 theorem flatUp_sphUp (s₀ s : ℂ) : flatUp R σ Q ν K (sphUp R σ Q ν K s₀) s₀ s = sphUp R σ Q ν K s := funext fun g => by
   rw [flatUp_apply, sphUp, sphUp, ← npow_add (hgtUp_pos g)]
   congr 1; ring
 
 /- English proof (translation)
-The claim follows from `h.iwAbs_mul p hk`.
+A detailed English derivation is pending.
 -/
 theorem hgtUp_mul (h : IsIwasawaUp R σ Q ν K) (p : upperParabolic R σ Q) {k : HA R σ Q} (hk : k ∈ K) :
     hgtUp R σ Q ν K (p * k) = ν (aUp R σ Q p) := h.iwAbs_mul p hk
 
 /- English proof (translation)
-The claim follows from `h.iwAbs_left p g`.
+A detailed English derivation is pending.
 -/
 theorem hgtUp_left (h : IsIwasawaUp R σ Q ν K) (p : upperParabolic R σ Q) (g : HA R σ Q) :
     hgtUp R σ Q ν K (p * g) = ν (aUp R σ Q p) * hgtUp R σ Q ν K g := h.iwAbs_left p g
 
 /- English proof (translation)
-The claim follows from `h.iwAbs_right g hk`.
+A detailed English derivation is pending.
 -/
 theorem hgtUp_right (h : IsIwasawaUp R σ Q ν K) (g : HA R σ Q) {k : HA R σ Q} (hk : k ∈ K) :
     hgtUp R σ Q ν K (g * k) = hgtUp R σ Q ν K g := h.iwAbs_right g hk
 
 /- English proof (translation)
-The claim follows from `h.iwAbs_of_mem hk`.
+A detailed English derivation is pending.
 -/
 theorem hgtUp_of_mem (h : IsIwasawaUp R σ Q ν K) {k : HA R σ Q} (hk : k ∈ K) : hgtUp R σ Q ν K k = 1 := h.iwAbs_of_mem hk
 
 /- English proof (translation)
-Rewrite using `[sphUp, hgtUp_of_mem h hk, one_npow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sphUp_of_mem (h : IsIwasawaUp R σ Q ν K) (s : ℂ) {k : HA R σ Q} (hk : k ∈ K) : sphUp R σ Q ν K s k = 1 := by
   rw [sphUp, hgtUp_of_mem h hk, one_npow]
 
 /- English proof (translation)
-The claim follows from `(h.iwAbs_coe ⟨_, mLoc_mem_upP R σ hσ hQ a⟩).trans (congrArg ν (aUp_mLoc R σ hσ hQ a))`.
+A detailed English derivation is pending.
 -/
 theorem hgtUp_mLoc (h : IsIwasawaUp R σ Q ν K) (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0)
     (a : GL (Fin n) (R ⊗[F] E)) : hgtUp R σ Q ν K (mLoc R σ hσ hQ a) = ν (Matrix.GeneralLinearGroup.det a) :=
@@ -648,7 +642,7 @@ theorem hgtUp_mLoc (h : IsIwasawaUp R σ Q ν K) (hσ : ∀ x, σ (σ x) = x) (h
 variable [TopologicalSpace R]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_psUp {μ : (R ⊗[F] E)ˣ →* Circle} {s : ℂ} {Φ : HA R σ Q → ℂ} : Φ ∈ psUp R σ Q ν K μ s ↔
     (∀ (p : upperParabolic R σ Q) (g : HA R σ Q),
@@ -656,14 +650,14 @@ theorem mem_psUp {μ : (R ⊗[F] E)ˣ →* Circle} {s : ℂ} {Φ : HA R σ Q →
   Iff.rfl
 
 /- English proof (translation)
-Simplify using `using (mem_psUp.1 hΦ).1 ⟨_, nLoc_mem_upP hQ b⟩ g`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem apply_nLoc_mul (hQ : Q = StdUnn.blk4 0 1 (-1) 0) {μ : (R ⊗[F] E)ˣ →* Circle} {s : ℂ} {Φ : HA R σ Q → ℂ}
     (hΦ : Φ ∈ psUp R σ Q ν K μ s) (b : HermR R σ n) (g : HA R σ Q) : Φ (nLoc R σ hQ b * g) = Φ g := by
   simpa using (mem_psUp.1 hΦ).1 ⟨_, nLoc_mem_upP hQ b⟩ g
 
 /- English proof (translation)
-Simplify `(mem_psUp.1 hΦ).1 ⟨_, mLoc_mem_upP R σ hσ hQ a⟩ g` using `only [aUp_mLoc]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem apply_mLoc_mul (hσ : ∀ x, σ (σ x) = x) (hQ : Q = StdUnn.blk4 0 1 (-1) 0) {μ : (R ⊗[F] E)ˣ →* Circle} {s : ℂ}
     {Φ : HA R σ Q → ℂ} (hΦ : Φ ∈ psUp R σ Q ν K μ s) (a : GL (Fin n) (R ⊗[F] E)) (g : HA R σ Q) :
@@ -678,21 +672,21 @@ theorem intwLoc_eq (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (db : Measure (HermR R σ n
     (g : HA R σ Q) : intwLoc R σ hQ db f s g = ∫ b, f s (wLoc R σ hQ * nLoc R σ hQ b * g) ∂db := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem intwConv_iff (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (db : Measure (HermR R σ n)) (f : ℂ → HA R σ Q → ℂ) (s : ℂ)
     (g : HA R σ Q) :
     IntwConv R σ hQ db f s g ↔ Integrable (fun b => f s (wLoc R σ hQ * nLoc R σ hQ b * g)) db := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `integral_add h h'`.
+A detailed English derivation is pending.
 -/
 theorem intwLoc_add (hQ : Q = StdUnn.blk4 0 1 (-1) 0) {db : Measure (HermR R σ n)} {f f' : ℂ → HA R σ Q → ℂ} {s : ℂ}
     {g : HA R σ Q} (h : IntwConv R σ hQ db f s g) (h' : IntwConv R σ hQ db f' s g) :
     intwLoc R σ hQ db (f + f') s g = intwLoc R σ hQ db f s g + intwLoc R σ hQ db f' s g := integral_add h h'
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := F) (E := E) (R := R)`. Use `haveI : BorelSpace (HermR R σ n) := ⟨rfl⟩`. Rewrite using `[intwLoc, intwLoc, ← integral_add_right_eq_self (fun b => f s (wLoc R σ hQ * nLoc R σ hQ b * g)) b₀]`. Simplify using `only [nLoc_add, mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intwLoc_nLoc_mul [IsTopologicalRing R] [FiniteDimensional F E] (hQ : Q = StdUnn.blk4 0 1 (-1) 0)
     (db : Measure (HermR R σ n)) [db.IsAddRightInvariant] (f : ℂ → HA R σ Q → ℂ) (s : ℂ) (b₀ : HermR R σ n)
@@ -705,33 +699,33 @@ theorem intwLoc_nLoc_mul [IsTopologicalRing R] [FiniteDimensional F E] (hQ : Q =
 variable [IsTopologicalRing R] [FiniteDimensional F E] [T2Space R]
 
 /- English proof (translation)
-The claim follows from `iwAbs_mul_of_triv (triv_of_isCompact (δ := ν.comp (aUp R σ Q)) isClosed_upP (hν.comp continuous_aUp) hK) p hk`.
+A detailed English derivation is pending.
 -/
 theorem hgtUp_mul_of_isCompact (hν : Continuous ν) (hK : IsCompact (K : Set (HA R σ Q))) (p : upperParabolic R σ Q) {k : HA R σ Q}
     (hk : k ∈ K) : hgtUp R σ Q ν K (p * k) = ν (aUp R σ Q p) :=
   iwAbs_mul_of_triv (triv_of_isCompact (δ := ν.comp (aUp R σ Q)) isClosed_upP (hν.comp continuous_aUp) hK) p hk
 
 /- English proof (translation)
-The claim follows from `isIwasawa_of_isCompact isClosed_upP (hν.comp continuous_aUp) hK h`.
+A detailed English derivation is pending.
 -/
 theorem isIwasawaUp_of_isCompact (hν : Continuous ν) (hK : IsCompact (K : Set (HA R σ Q)))
     (h : ∀ g : HA R σ Q, ∃ p : upperParabolic R σ Q, ∃ k ∈ K, g = p * k) : IsIwasawaUp R σ Q ν K :=
   isIwasawa_of_isCompact isClosed_upP (hν.comp continuous_aUp) hK h
 
 /- English proof (translation)
-The claim follows from `h.continuous_iwAbs isClosed_upP (hν.comp continuous_aUp) hK`.
+A detailed English derivation is pending.
 -/
 theorem continuous_hgtUp (h : IsIwasawaUp R σ Q ν K) (hν : Continuous ν) (hK : IsCompact (K : Set (HA R σ Q))) :
     Continuous (hgtUp R σ Q ν K) := h.continuous_iwAbs isClosed_upP (hν.comp continuous_aUp) hK
 
 /- English proof (translation)
-The claim follows from `h.npow_iwAbs_mem isClosed_upP (hν.comp continuous_aUp) hK _`.
+A detailed English derivation is pending.
 -/
 theorem sphUp_mem (h : IsIwasawaUp R σ Q ν K) (hν : Continuous ν) (hK : IsCompact (K : Set (HA R σ Q))) (s : ℂ) :
     sphUp R σ Q ν K s ∈ psUp R σ Q ν K 1 s := h.npow_iwAbs_mem isClosed_upP (hν.comp continuous_aUp) hK _
 
 /- English proof (translation)
-The claim follows from `h.flatSec_mem isClosed_upP (hν.comp continuous_aUp) hK hΦ s`.
+A detailed English derivation is pending.
 -/
 theorem flatUp_mem (h : IsIwasawaUp R σ Q ν K) (hν : Continuous ν) (hK : IsCompact (K : Set (HA R σ Q)))
     {μ : (R ⊗[F] E)ˣ →* Circle} {s₀ : ℂ} {Φ : HA R σ Q → ℂ} (hΦ : Φ ∈ psUp R σ Q ν K μ s₀) (s : ℂ) :
@@ -757,14 +751,14 @@ section
 omit [NumberField E]
 
 /- English proof (translation)
-Simplify using `only [mem_levelAll, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_KUpAd {g : GAd σ Q} : g ∈ KUpAd σ Q ↔
     (∀ v, proj σ Q v g ∈ KUpFin σ Q v) ∧ ∀ w, projArch σ Q w g ∈ KUpArch σ Q w := by
   simp only [mem_levelAll, map_one]
 
 /- English proof (translation)
-The claim follows from `mem_KUpAd.2 ⟨fun u => by by_cases e : u = v · subst e; simpa using hk · simp [proj_emb_ne σ Q e], fun w => by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem emb_mem_KUpAd {v : HeightOneSpectrum (𝓞 F)} {k : GLoc σ Q v} (hk : k ∈ KUpFin σ Q v) : emb σ Q v k ∈ KUpAd σ Q :=
   mem_KUpAd.2 ⟨fun u => by
@@ -773,7 +767,7 @@ theorem emb_mem_KUpAd {v : HeightOneSpectrum (𝓞 F)} {k : GLoc σ Q v} (hk : k
     · simp [proj_emb_ne σ Q e], fun w => by simp⟩
 
 /- English proof (translation)
-The claim follows from `mem_KUpAd.2 ⟨fun u => by simp, fun u => by by_cases e : u = w · subst e; simpa using hk · simp [projArch_embArch_ne σ Q e]⟩`.
+A detailed English derivation is pending.
 -/
 theorem embArch_mem_KUpAd {w : InfinitePlace F} {k : GArch σ Q w} (hk : k ∈ KUpArch σ Q w) :
     embArch σ Q w k ∈ KUpAd σ Q :=
@@ -783,25 +777,25 @@ theorem embArch_mem_KUpAd {w : InfinitePlace F} {k : GArch σ Q w} (hk : k ∈ K
     · simp [projArch_embArch_ne σ Q e]⟩
 
 /- English proof (translation)
-The claim follows from `mapH_nLoc _ σ hQ _ b`.
+A detailed English derivation is pending.
 -/
 theorem proj_nLoc (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (v : HeightOneSpectrum (𝓞 F)) (b : HermR (AF F) σ n) :
     proj σ Q v (nLoc _ σ hQ b) = nLoc _ σ hQ (hermMap (evFin F v) b) := mapH_nLoc _ σ hQ _ b
 
 /- English proof (translation)
-The claim follows from `mapH_nLoc _ σ hQ _ b`.
+A detailed English derivation is pending.
 -/
 theorem projArch_nLoc (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (w : InfinitePlace F) (b : HermR (AF F) σ n) :
     projArch σ Q w (nLoc _ σ hQ b) = nLoc _ σ hQ (hermMap (evInf F w) b) := mapH_nLoc _ σ hQ _ b
 
 /- English proof (translation)
-The claim follows from `mapH_wLoc _ σ hQ _`.
+A detailed English derivation is pending.
 -/
 theorem proj_wLoc (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (v : HeightOneSpectrum (𝓞 F)) :
     proj σ Q v (wLoc _ σ hQ) = wLoc _ σ hQ := mapH_wLoc _ σ hQ _
 
 /- English proof (translation)
-The claim follows from `mapH_wLoc _ σ hQ _`.
+A detailed English derivation is pending.
 -/
 theorem projArch_wLoc (hQ : Q = StdUnn.blk4 0 1 (-1) 0) (w : InfinitePlace F) :
     projArch σ Q w (wLoc _ σ hQ) = wLoc _ σ hQ := mapH_wLoc _ σ hQ _
@@ -825,19 +819,19 @@ Both sides reduce to the same expression.
     (projArchUp w p : GArch σ Q w) = projArch σ Q w p := rfl
 
 /- English proof (translation)
-The claim follows from `aUp_mapH _ p`.
+A detailed English derivation is pending.
 -/
 theorem aUp_projUp (v : HeightOneSpectrum (𝓞 F)) (p : upperParabolic (AF F) σ Q) :
     aUp _ σ Q (projUp v p) = unitFin F E v (aUp _ σ Q p) := aUp_mapH _ p
 
 /- English proof (translation)
-The claim follows from `aUp_mapH _ p`.
+A detailed English derivation is pending.
 -/
 theorem aUp_projArchUp (w : InfinitePlace F) (p : upperParabolic (AF F) σ Q) :
     aUp _ σ Q (projArchUp w p) = unitInf F E w (aUp _ σ Q p) := aUp_mapH _ p
 
 /- English proof (translation)
-Take `⟨p, k, hk, e⟩` from `hI (emb σ Q v g)`. Conclude with `⟨projUp v p, _, (mem_KUpAd.1 hk).1 v, by rw [coe_projUp, ← map_mul, ← e, proj_emb_self]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mul_fin (hI : ∀ g : GAd σ Q, ∃ p : upperParabolic (AF F) σ Q, ∃ k ∈ KUpAd σ Q, g = p * k)
     (v : HeightOneSpectrum (𝓞 F)) (g : GLoc σ Q v) : ∃ p : upperParabolic (Fv F v) σ Q, ∃ k ∈ KUpFin σ Q v, g = p * k := by
@@ -845,7 +839,7 @@ theorem exists_mul_fin (hI : ∀ g : GAd σ Q, ∃ p : upperParabolic (AF F) σ 
   exact ⟨projUp v p, _, (mem_KUpAd.1 hk).1 v, by rw [coe_projUp, ← map_mul, ← e, proj_emb_self]⟩
 
 /- English proof (translation)
-Take `⟨p, k, hk, e⟩` from `hI (embArch σ Q w g)`. Conclude with `⟨projArchUp w p, _, (mem_KUpAd.1 hk).2 w, by rw [coe_projArchUp, ← map_mul, ← e, projArch_embArch_self]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mul_arch (hI : ∀ g : GAd σ Q, ∃ p : upperParabolic (AF F) σ Q, ∃ k ∈ KUpAd σ Q, g = p * k)
     (w : InfinitePlace F) (g : GArch σ Q w) : ∃ p : upperParabolic w.Completion σ Q, ∃ k ∈ KUpArch σ Q w, g = p * k := by
@@ -855,9 +849,9 @@ theorem exists_mul_arch (hI : ∀ g : GAd σ Q, ∃ p : upperParabolic (AF F) σ
 end
 
 /- English proof (translation)
-Use `⟨fun h => ⟨fun w => mapH_mem_upP _ h, fun v => mapH_mem_upP _ h⟩, fun h => mem_siegelParabolic_iff.2 fun i j => ⟨adele_ext (fun w => ?_) fun v => ?_, adele_ext (fun w => ?_) fun v => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `(mem_siegelParabolic_iff.1 (h.1 w) i j).1`. Rewrite using `[map_zero]`. Conclude with `(mem_siegelParabolic_iff.1 (h.2 v) i j).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `(mem_siegelParabolic_iff.1 (h.1 w) i j).2`. Rewrite using `[map_zero]`. Conclude with `(mem_siegelParabolic_iff.1 (h.2 v) i j).2`.
+A detailed English derivation is pending.
 -/
 theorem mem_siegelParabolic_iff_forall_place {g : GAd σ Q} : g ∈ upperParabolic (AF F) σ Q ↔
     (∀ w, projArch σ Q w g ∈ upperParabolic _ σ Q) ∧ ∀ v, proj σ Q v g ∈ upperParabolic _ σ Q := by
@@ -895,7 +889,7 @@ Both sides reduce to the same expression.
     (embArchUp w p : GAd σ Q) = embArch σ Q w p := rfl
 
 /- English proof (translation)
-The claim follows from `idele_ext (fun w => by rw [← aUp_projArchUp, unitInf_ideleAt, show projArchUp w (embUp v p) = 1 from Subtype.ext (by simp), map_one]) fun u => by rw [← aUp_projUp] by_cases e : u = v · subst e; rw [unitFin_ideleAt_self, show projUp u (embUp u p) = p from Subtype.ext (by simp)] · …`.
+A detailed English derivation is pending.
 -/
 theorem aUp_embUp (v : HeightOneSpectrum (𝓞 F)) (p : upperParabolic (Fv F v) σ Q) :
     aUp _ σ Q (embUp v p) = ideleAt F E v (aUp _ σ Q p) :=
@@ -908,7 +902,7 @@ theorem aUp_embUp (v : HeightOneSpectrum (𝓞 F)) (p : upperParabolic (Fv F v) 
     · rw [unitFin_ideleAt_ne e, show projUp u (embUp v p) = 1 from Subtype.ext (proj_emb_ne σ Q e _), map_one]
 
 /- English proof (translation)
-The claim follows from `idele_ext (fun u => by rw [← aUp_projArchUp] by_cases e : u = w · subst e; rw [unitInf_ideleAtInf_self, show projArchUp u (embArchUp u p) = p from Subtype.ext (by simp)] · rw [unitInf_ideleAtInf_ne e, show projArchUp u (embArchUp w p) = 1 from Subtype.ext (projArch_embArch_ne σ Q …`.
+A detailed English derivation is pending.
 -/
 theorem aUp_embArchUp (w : InfinitePlace F) (p : upperParabolic w.Completion σ Q) :
     aUp _ σ Q (embArchUp w p) = ideleAtInf F E w (aUp _ σ Q p) :=
@@ -921,41 +915,41 @@ theorem aUp_embArchUp (w : InfinitePlace F) (p : upperParabolic w.Completion σ 
     rw [← aUp_projUp, unitFin_ideleAtInf, show projUp v (embArchUp w p) = 1 from Subtype.ext (by simp), map_one]
 
 /- English proof (translation)
-The claim follows from `haveI : Submodule.IsLattice E (stdLattice E (n + n)) := isLattice_stdLattice isCompact_stabLoc σ Q _ v`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_KUpFin (v : HeightOneSpectrum (𝓞 F)) : IsCompact (KUpFin σ Q v : Set (GLoc σ Q v)) :=
   haveI : Submodule.IsLattice E (stdLattice E (n + n)) := isLattice_stdLattice
   isCompact_stabLoc σ Q _ v
 
 /- English proof (translation)
-The claim follows from `haveI : Submodule.IsLattice E (stdLattice E (n + n)) := isLattice_stdLattice isOpen_stabLoc σ Q _ v`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_KUpFin (v : HeightOneSpectrum (𝓞 F)) : IsOpen (KUpFin σ Q v : Set (GLoc σ Q v)) :=
   haveI : Submodule.IsLattice E (stdLattice E (n + n)) := isLattice_stdLattice
   isOpen_stabLoc σ Q _ v
 
 /- English proof (translation)
-The claim follows from `Frames.isCompact_stabArch hc Q w _`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_KUpArch (hc : IsCMExt F E σ) (w : InfinitePlace F) : IsCompact (KUpArch σ Q w : Set (GArch σ Q w)) :=
   Frames.isCompact_stabArch hc Q w _
 
 /- English proof (translation)
-The claim follows from `haveI : Submodule.IsLattice E (stdLattice E (n + n)) := isLattice_stdLattice isCompact_levelAll hc Q _ _`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_KUpAd (hc : IsCMExt F E σ) : IsCompact (KUpAd σ Q : Set (GAd σ Q)) :=
   haveI : Submodule.IsLattice E (stdLattice E (n + n)) := isLattice_stdLattice
   isCompact_levelAll hc Q _ _
 
 /- English proof (translation)
-The claim follows from `haveI : Submodule.IsLattice E (stdLattice E (n + n)) := isLattice_stdLattice eventually_proj_mem_stabLoc σ Q _ g`.
+A detailed English derivation is pending.
 -/
 theorem eventually_proj_mem_KUpFin (g : GAd σ Q) : ∀ᶠ v in Filter.cofinite, proj σ Q v g ∈ KUpFin σ Q v :=
   haveI : Submodule.IsLattice E (stdLattice E (n + n)) := isLattice_stdLattice
   eventually_proj_mem_stabLoc σ Q _ g
 
 /- English proof (translation)
-The claim follows from `(Filter.eventually_cofinite.1 (eventually_proj_mem_KUpFin g)).subset fun v hv h' => hv (by simpa using hgtUp_mul_of_isCompact (continuous_absEv v) (isCompact_KUpFin v) 1 h')`.
+A detailed English derivation is pending.
 -/
 theorem finite_mulSupport_hgtUp (g : GAd σ Q) :
     (Function.mulSupport fun v => hgtUp _ σ Q (absEv F E v) (KUpFin σ Q v) (proj σ Q v g)).Finite :=
@@ -967,7 +961,7 @@ variable (hc : IsCMExt F E σ) (hI : ∀ g : GAd σ Q, ∃ p : upperParabolic (A
 include hI in
 
 /- English proof (translation)
-The claim follows from `isIwasawaUp_of_isCompact (continuous_absEv v) (isCompact_KUpFin v) (exists_mul_fin hI v)`.
+A detailed English derivation is pending.
 -/
 theorem isIwasawaUp_fin_of (v : HeightOneSpectrum (𝓞 F)) : IsIwasawaUp _ σ Q (absEv F E v) (KUpFin σ Q v) :=
   isIwasawaUp_of_isCompact (continuous_absEv v) (isCompact_KUpFin v) (exists_mul_fin hI v)
@@ -975,22 +969,22 @@ theorem isIwasawaUp_fin_of (v : HeightOneSpectrum (𝓞 F)) : IsIwasawaUp _ σ Q
 include hc hI
 
 /- English proof (translation)
-The claim follows from `isIwasawaUp_of_isCompact (continuous_absEw w) (isCompact_KUpArch hc w) (exists_mul_arch hI w)`.
+A detailed English derivation is pending.
 -/
 theorem isIwasawaUp_arch_of (w : InfinitePlace F) : IsIwasawaUp _ σ Q (absEw F E w) (KUpArch σ Q w) :=
   isIwasawaUp_of_isCompact (continuous_absEw w) (isCompact_KUpArch hc w) (exists_mul_arch hI w)
 
 /- English proof (translation)
-The claim follows from `haveI := t2Space_adeleRing' (F := F) isIwasawaUp_of_isCompact continuous_absE (isCompact_KUpAd hc) hI`.
+A detailed English derivation is pending.
 -/
 theorem isIwasawaUp_ad_of : IsIwasawaUp _ σ Q (absE F E) (KUpAd σ Q) :=
   haveI := t2Space_adeleRing' (F := F)
   isIwasawaUp_of_isCompact continuous_absE (isCompact_KUpAd hc) hI
 
 /- English proof (translation)
-Take `⟨p, k, hk, rfl⟩` from `hI g`. Rewrite using `[hgtUp_mul (isIwasawaUp_ad_of hc hI) p hk, absE_apply]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun w _ => by`. Rewrite using `[map_mul, ← coe_projArchUp, hgtUp_mul (isIwasawaUp_arch_of hc hI w) _ ((mem_KUpAd.1 hk).2 w), aUp_projArchUp]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finprod_congr fun v => by`. Rewrite using `[map_mul, ← coe_projUp, hgtUp_mul (isIwasawaUp_fin_of hI v) _ ((mem_KUpAd.1 hk).1 v), aUp_projUp]`.
+A detailed English derivation is pending.
 -/
 theorem hgtUp_ad_eq_of (g : GAd σ Q) : hgtUp _ σ Q (absE F E) (KUpAd σ Q) g =
     (∏ w, hgtUp _ σ Q (absEw F E w) (KUpArch σ Q w) (projArch σ Q w g)) *
@@ -1034,7 +1028,7 @@ Both sides reduce to the same expression.
 theorem matR_adele (g : StdUnn.G D n) : matR (AF D.host.F) D.sp.cm.sig g = StdUnn.mat g := rfl
 
 /- English proof (translation)
-Take `⟨p, hp, k, hk, e⟩` from `StdUnn.Iwasawa.exists_mul D n g`. Conclude with `⟨⟨p, hp⟩, k, hk, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mul_adele (g : StdUnn.G D n) : ∃ p : upperParabolic (AF D.host.F) D.sp.cm.sig (StdUnn.Jst D n),
     ∃ k ∈ KUpAd D.sp.cm.sig (StdUnn.Jst D n), g = p * k := by
@@ -1042,27 +1036,27 @@ theorem exists_mul_adele (g : StdUnn.G D n) : ∃ p : upperParabolic (AF D.host.
   exact ⟨⟨p, hp⟩, k, hk, e⟩
 
 /- English proof (translation)
-The claim follows from `isIwasawaUp_fin_of (exists_mul_adele D n) v`.
+A detailed English derivation is pending.
 -/
 theorem isIwasawaUp_fin (v : HeightOneSpectrum (𝓞 D.host.F)) :
     IsIwasawaUp _ D.sp.cm.sig (StdUnn.Jst D n) (absEv D.host.F D.host.E v) (KUpFin _ _ v) :=
   isIwasawaUp_fin_of (exists_mul_adele D n) v
 
 /- English proof (translation)
-The claim follows from `isIwasawaUp_arch_of (isCMExt_host D) (exists_mul_adele D n) w`.
+A detailed English derivation is pending.
 -/
 theorem isIwasawaUp_arch (w : InfinitePlace D.host.F) :
     IsIwasawaUp _ D.sp.cm.sig (StdUnn.Jst D n) (absEw D.host.F D.host.E w) (KUpArch _ _ w) :=
   isIwasawaUp_arch_of (isCMExt_host D) (exists_mul_adele D n) w
 
 /- English proof (translation)
-The claim follows from `isIwasawaUp_ad_of (isCMExt_host D) (exists_mul_adele D n)`.
+A detailed English derivation is pending.
 -/
 theorem isIwasawaUp_ad : IsIwasawaUp _ D.sp.cm.sig (StdUnn.Jst D n) (absA D) (StdUnn.K D n) :=
   isIwasawaUp_ad_of (isCMExt_host D) (exists_mul_adele D n)
 
 /- English proof (translation)
-The claim follows from `sphUp_mem (isIwasawaUp_fin D n v) (continuous_absEv v) (isCompact_KUpFin v) s`.
+A detailed English derivation is pending.
 -/
 theorem sphUp_mem_fin (v : HeightOneSpectrum (𝓞 D.host.F)) (s : ℂ) :
     sphUp _ D.sp.cm.sig (StdUnn.Jst D n) (absEv D.host.F D.host.E v) (KUpFin _ _ v) s ∈
@@ -1070,7 +1064,7 @@ theorem sphUp_mem_fin (v : HeightOneSpectrum (𝓞 D.host.F)) (s : ℂ) :
   sphUp_mem (isIwasawaUp_fin D n v) (continuous_absEv v) (isCompact_KUpFin v) s
 
 /- English proof (translation)
-The claim follows from `sphUp_mem (isIwasawaUp_arch D n w) (continuous_absEw w) (isCompact_KUpArch (isCMExt_host D) w) s`.
+A detailed English derivation is pending.
 -/
 theorem sphUp_mem_arch (w : InfinitePlace D.host.F) (s : ℂ) :
     sphUp _ D.sp.cm.sig (StdUnn.Jst D n) (absEw D.host.F D.host.E w) (KUpArch _ _ w) s ∈
@@ -1080,9 +1074,9 @@ theorem sphUp_mem_arch (w : InfinitePlace D.host.F) (s : ℂ) :
 variable {D n} in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `g`. Take `⟨p, k, hk, rfl⟩` from `exists_mul_adele D n g`. Rewrite using `[hgtUp_mul (isIwasawaUp_ad D n) p hk]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h p p.2 (leviUp _ _ _ p) rfl k hk`. Introduce and unpack `rfl p hp a ha k hk`. Rewrite using `[show a = leviUp (AF D.host.F) D.sp.cm.sig (StdUnn.Jst D n) ⟨p, hp⟩ from Units.ext ha.symm]`. Conclude with `hgtUp_mul (isIwasawaUp_ad D n) ⟨p, hp⟩ hk`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHeight_iff {H : StdUnn.G D n → ℝ≥0} :
     StdUnn.IsHeight H ↔ H = hgtUp _ D.sp.cm.sig (StdUnn.Jst D n) (absA D) (StdUnn.K D n) := by
@@ -1099,7 +1093,7 @@ theorem isHeight_iff {H : StdUnn.G D n → ℝ≥0} :
 variable {D n} in
 
 /- English proof (translation)
-Rewrite using `[isHeight_iff.1 h]`. Conclude with `hgtUp_ad_eq_of (isCMExt_host D) (exists_mul_adele D n) g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHeight_eq_prod {H : StdUnn.G D n → ℝ≥0} (h : StdUnn.IsHeight H) (g : StdUnn.G D n) : H g =
     (∏ w, hgtUp _ D.sp.cm.sig (StdUnn.Jst D n) (absEw D.host.F D.host.E w) (KUpArch _ _ w) (projArch _ _ w g)) *
@@ -1108,7 +1102,7 @@ theorem isHeight_eq_prod {H : StdUnn.G D n → ℝ≥0} (h : StdUnn.IsHeight H) 
   exact hgtUp_ad_eq_of (isCMExt_host D) (exists_mul_adele D n) g
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.ext fun _ => Matrix.ext_iff.symm`.
+A detailed English derivation is pending.
 -/
 theorem hermN_eq : ResAniso.hermN D n = HermR (AF D.host.F) D.sp.cm.sig n :=
   AddSubgroup.ext fun _ => Matrix.ext_iff.symm
@@ -1116,12 +1110,12 @@ theorem hermN_eq : ResAniso.hermN D n = HermR (AF D.host.F) D.sp.cm.sig n :=
 def hermAddEquiv : ResAniso.hermN D n ≃+ HermR (AF D.host.F) D.sp.cm.sig n := AddEquiv.addSubgroupCongr (hermN_eq D n)
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_hermAddEquiv : Continuous (hermAddEquiv D n) := continuous_subtype_val.subtype_mk _
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_hermAddEquiv_symm : Continuous (hermAddEquiv D n).symm := continuous_subtype_val.subtype_mk _
 
@@ -1154,7 +1148,7 @@ Both sides reduce to the same expression.
 theorem hermEquiv_eq (b : ResAniso.hermN D n) : hermEquiv D n b = hermAddEquiv D n b := rfl
 
 /- English proof (translation)
-Take `⟨i1, -⟩` from `GlobalTheory.MixModel.lattice_Mx D n n`. Use `haveI : BorelSpace (Mx D n n) := ⟨rfl⟩`. Use `haveI : BorelSpace (HermR (AF D.host.F) D.sp.cm.sig n) := ⟨rfl⟩`. Conclude with `(hermAddEquiv D n).isAddHaarMeasure_map db (continuous_hermAddEquiv D n) (continuous_hermAddEquiv_symm D n)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isAddHaarMeasure_map_hermEquiv (db : Measure (ResAniso.hermN D n)) [db.IsAddHaarMeasure] :
     (db.map (hermEquiv D n)).IsAddHaarMeasure := by
@@ -1164,19 +1158,19 @@ theorem isAddHaarMeasure_map_hermEquiv (db : Measure (ResAniso.hermN D n)) [db.I
   exact (hermAddEquiv D n).isAddHaarMeasure_map db (continuous_hermAddEquiv D n) (continuous_hermAddEquiv_symm D n)
 
 /- English proof (translation)
-The claim follows from `ext_matR (ResAniso.mat_nElt b)`.
+A detailed English derivation is pending.
 -/
 theorem nElt_eq (b : ResAniso.hermN D n) :
     ResAniso.nElt b = nLoc (AF D.host.F) D.sp.cm.sig (Jst_eq D n) (hermEquiv D n b) :=
   ext_matR (ResAniso.mat_nElt b)
 
 /- English proof (translation)
-The claim follows from `ext_matR (ResAniso.mat_wElt D n)`.
+A detailed English derivation is pending.
 -/
 theorem wElt_eq : ResAniso.wElt D n = wLoc (AF D.host.F) D.sp.cm.sig (Jst_eq D n) := ext_matR (ResAniso.mat_wElt D n)
 
 /- English proof (translation)
-Rewrite using `[intwLoc, (hermEquiv D n).measurableEmbedding.integral_map]`. Simplify using `only [ResAniso.intw, nElt_eq, wElt_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem intw_eq (db : Measure (ResAniso.hermN D n)) (f : ℂ → StdUnn.G D n → ℂ) (s : ℂ) (g : StdUnn.G D n) :
     ResAniso.intw db f s g = intwLoc (AF D.host.F) D.sp.cm.sig (Jst_eq D n) (db.map (hermEquiv D n)) f s g := by
@@ -1184,7 +1178,7 @@ theorem intw_eq (db : Measure (ResAniso.hermN D n)) (f : ℂ → StdUnn.G D n �
   simp only [ResAniso.intw, nElt_eq, wElt_eq]
 
 /- English proof (translation)
-Rewrite using `[IntwConv, (hermEquiv D n).measurableEmbedding.integrable_map_iff]`. Simplify using `only [nElt_eq, wElt_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem intwConv_map_iff (db : Measure (ResAniso.hermN D n)) (f : ℂ → StdUnn.G D n → ℂ) (s : ℂ) (g : StdUnn.G D n) :
     IntwConv (AF D.host.F) D.sp.cm.sig (Jst_eq D n) (db.map (hermEquiv D n)) f s g ↔
@@ -1201,19 +1195,19 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
   {Q : Matrix (Fin (n + n)) (Fin (n + n)) E} (hQ : Q = StdUnn.blk4 0 1 (-1) 0)
 
 /- English proof (translation)
-Simplify using `[matR_mul, mat_wLoc, StdUnn.Model.submatrix_fromBlocks_mul]`.
+Simplify using the standard rewrite rules.
 -/
 example : matR R σ (wLoc R σ hQ * wLoc R σ hQ) = StdUnn.blk4 (-1) 0 0 (-1) := by
   simp [matR_mul, mat_wLoc, StdUnn.Model.submatrix_fromBlocks_mul]
 
 /- English proof (translation)
-Simplify using `[matR_mul, mat_wLoc, mat_nLoc, StdUnn.Model.submatrix_fromBlocks_mul]`.
+Simplify using the standard rewrite rules.
 -/
 example (b : HermR R σ n) : matR R σ (wLoc R σ hQ * nLoc R σ hQ b) = StdUnn.blk4 0 1 (-1) (-b.1) := by
   simp [matR_mul, mat_wLoc, mat_nLoc, StdUnn.Model.submatrix_fromBlocks_mul]
 
 /- English proof (translation)
-The claim follows from `ext_matR (by simp only [matR_mul, mat_mLoc, mat_nLoc, StdUnn.Model.submatrix_fromBlocks_mul, h, mul_zero, zero_mul, add_zero, zero_add, mul_one, one_mul] rw [mul_assoc _ (cT _ _), ← cT_mul, Units.inv_mul, cT_one', mul_one])`.
+A detailed English derivation is pending.
 -/
 example (hσ : ∀ x, σ (σ x) = x) (a : GL (Fin n) (R ⊗[F] E)) (b b' : HermR R σ n)
     (h : b'.1 = a.1 * b.1 * cT (sigR R σ) a.1) :
@@ -1224,7 +1218,7 @@ example (hσ : ∀ x, σ (σ x) = x) (a : GL (Fin n) (R ⊗[F] E)) (b b' : HermR
     rw [mul_assoc _ (cT _ _), ← cT_mul, Units.inv_mul, cT_one', mul_one])
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨integrable_dirac (by simp), by rw [intwLoc, integral_dirac, nLoc_zero, mul_one]⟩`.
+Supply the required witnesses or components.
 -/
 example [TopologicalSpace R] [MeasurableSingletonClass (HermR R σ n)] (f : ℂ → HA R σ Q → ℂ) (s : ℂ) (g : HA R σ Q) :
     IntwConv R σ hQ (Measure.dirac 0) f s g ∧ intwLoc R σ hQ (Measure.dirac 0) f s g = f s (wLoc R σ hQ * g) :=

@@ -24,7 +24,7 @@ def Same (p : X ⟶ Sp k) (σ : k →+* ℂ) (p' : X ⟶ Sp k') (σ' : k' →+* 
     (MvPolynomial.eval₂Hom (algX p U) x).Etale ↔ (MvPolynomial.eval₂Hom (algX p' U) x).Etale
 
 /- English proof (translation)
-Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -35,7 +35,7 @@ instance isIso_spMap (φ : k ≃+* k') : IsIso (spMap φ.toRingHom) :=
   inferInstanceAs (IsIso (Spec.map φ.toCommRingCatIso.hom))
 
 /- English proof (translation)
-Establish `e : MvPolynomial.eval₂Hom (f.comp φ.toRingHom) x = (MvPolynomial.eval₂Hom f x).comp (MvPolynomial.mapEquiv (Fin D) φ).toRingHom` using `MvPolynomial.ringHom_ext (fun a => by simp) fun a => by simp`. Rewrite using `[e]`. Conclude with `RingHom.Etale.respectsIso.cancel_left_isIso (MvPolynomial.mapEquiv (Fin D) φ).toCommRingCatIso.hom (CommRingCat.ofHom (MvPolynomial.eval₂Hom f x))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_iff (φ : k ≃+* k') {A : Type} [CommRing A] (f : k' →+* A) {D : ℕ} (x : Fin D → A) :
     (MvPolynomial.eval₂Hom (f.comp φ.toRingHom) x).Etale ↔ (MvPolynomial.eval₂Hom f x).Etale := by
@@ -47,11 +47,11 @@ theorem etale_iff (φ : k ≃+* k') {A : Type} [CommRing A] (f : k' →+* A) {D 
     (CommRingCat.ofHom (MvPolynomial.eval₂Hom f x))
 
 /- English proof (translation)
-Use `⟨fun y => ?_, fun U D x => ?_⟩` and prove the remaining obligations. Establish `e : spMap σ = spMap (σ.comp φ.symm.toRingHom) ≫ spMap φ.toRingHom`. Rewrite using `[← spMap_comp]`. Use `congr 1`. Use extensionality with `a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[← w, e, ← Category.assoc, cancel_mono]`. Establish `e : algX p U = (algX p' U).comp φ.toRingHom`. Use `TopForm.appLE_comp_algX (φ := 𝟙 X) ((Category.id_comp p).trans w.symm) (le_refl U)` as an intermediate fact. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a`. Establish `e₁ : (𝟙 X : X ⟶ X).appLE U U (le_refl U) = 𝟙 _` using `(Category.id_comp _).trans (X.presheaf.map_id _)`. Rewrite using `[e₁]`. Both sides reduce to the same expression. Rewrite using `[e, etale_iff]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem same (φ : k ≃+* k') {p : X ⟶ Sp k} {p' : X ⟶ Sp k'} (w : p' ≫ spMap φ.toRingHom = p) (σ : k →+* ℂ) :
     Same p σ p' (σ.comp φ.symm.toRingHom) := by
@@ -78,7 +78,7 @@ variable {p : X ⟶ Sp k} {σ : k →+* ℂ} {p' : X ⟶ Sp k'} {σ' : k' →+* 
 include S in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun y => (S.1 y).symm, fun U D x => (S.2 U D x).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem symm : Same p' σ' p σ := ⟨fun y => (S.1 y).symm, fun U D x => (S.2 U D x).symm⟩
 
@@ -101,19 +101,19 @@ def chart {D : ℕ} (c : AlgChart p' σ' D) : AlgChart p σ D where
   holo := c.holo
 
 /- English proof (translation)
-Introduce `c` and use `⟨S.symm.chart c, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem chart_surjective (D : ℕ) : Function.Surjective (S.chart (D := D)) := fun c => ⟨S.symm.chart c, rfl⟩
 
 /- English proof (translation)
-Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Conclude with `⟨W, ι, inferInstance, g, F, O, h₁, h₂, h₃, h₄, S.pt.continuous.continuousAt.eventually h₅⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cInfAt {f : CxPts p' σ' → ℝ} {y : CxPts p σ} (h : CInfAt f (S.pt y)) : CInfAt (fun z => f (S.pt z)) y := by
   obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h
   exact ⟨W, ι, inferInstance, g, F, O, h₁, h₂, h₃, h₄, S.pt.continuous.continuousAt.eventually h₅⟩
 
 /- English proof (translation)
-Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Conclude with `⟨W, ι, inferInstance, g, F, O, h₁, h₂, h₃, h₄, S.pt.continuous.continuousAt.eventually h₅⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vInfAt {f : CxPts p' σ' → ℂ} {y : CxPts p σ} (h : VInfAt f (S.pt y)) : VInfAt (fun z => f (S.pt z)) y := by
   obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h
@@ -133,7 +133,7 @@ def measIso : Measure (CxPts p' σ') ≃o Measure (CxPts p σ) :=
 variable {B : LB X} (ψ : Weight p' σ' B) (D : ℕ)
 
 /- English proof (translation)
-Use `Eq.trans ?_ (S.measIso.map_iSup _).symm` and prove the remaining obligations. Use `((S.chart_surjective D).iSup_comp _).symm.trans (iSup_congr fun c => ?_)` and prove the remaining obligations. Establish `h : AEMeasurable c.e.symm ((volume.restrict c.e.target).withDensity ((fun y => ENNReal.ofReal ((ε : ℤ) * c.chernDens ψ y)) ∘ c.e.symm))` using `(c.e.continuousOn_symm.aemeasurable c.e.open_target.measurableSet).mono_ac (withDensity_absolutelyContinuous _ _)`. Conclude with `(AEMeasurable.map_map_of_aemeasurable S.pt.symm.measurable.aemeasurable h).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chernPart_wt (ε : ℤˣ) : (S.wt ψ).chernPart D ε = (ψ.chernPart D ε).map S.pt.symm := by
   refine Eq.trans ?_ (S.measIso.map_iSup _).symm
@@ -145,7 +145,7 @@ theorem chernPart_wt (ε : ℤˣ) : (S.wt ψ).chernPart D ε = (ψ.chernPart D �
   exact (AEMeasurable.map_map_of_aemeasurable S.pt.symm.measurable.aemeasurable h).symm
 
 /- English proof (translation)
-Unfold `Weight.ChernIntegrableOn`. Rewrite using `[chernPart_wt, chernPart_wt]`. Conclude with `⟨(integrableOn_map_equiv S.pt.symm.toMeasurableEquiv).2 h.1, (integrableOn_map_equiv S.pt.symm.toMeasurableEquiv).2 h.2⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem chernIntegrableOn_wt {T : Set (CxPts p σ)} {f : CxPts p σ → ℝ}
     (h : ψ.ChernIntegrableOn D (S.pt.symm ⁻¹' T) (f ∘ S.pt.symm)) : (S.wt ψ).ChernIntegrableOn D T f := by
@@ -155,7 +155,7 @@ theorem chernIntegrableOn_wt {T : Set (CxPts p σ)} {f : CxPts p σ → ℝ}
     (integrableOn_map_equiv S.pt.symm.toMeasurableEquiv).2 h.2⟩
 
 /- English proof (translation)
-Unfold `Weight.chernInt`. Rewrite using `[chernPart_wt, chernPart_wt]`. Conclude with `congrArg₂ (· - ·) (setIntegral_map_equiv S.pt.symm.toMeasurableEquiv _ _) (setIntegral_map_equiv S.pt.symm.toMeasurableEquiv _ _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chernInt_wt (T : Set (CxPts p σ)) (f : CxPts p σ → ℝ) :
     (S.wt ψ).chernInt D T f = ψ.chernInt D (S.pt.symm ⁻¹' T) (f ∘ S.pt.symm) := by
@@ -189,13 +189,13 @@ def vm {E : X.Modules} {r : ℕ} (h : VMetric p' E r) : VMetric p E r where
   conj σ σ' c y y' e := h.conj _ _ c ((same φ w σ).pt y) ((same φ w σ').pt y') e
 
 /- English proof (translation)
-Introduce `σ c y hy a b` and use `(same φ w σ).vInfAt (H _ c ((same φ w σ).pt y) hy a b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCInf_vm {E : X.Modules} {r : ℕ} {h : VMetric p' E r} (H : h.IsCInf) : (vm φ w h).IsCInf :=
   fun σ c y hy a b => (same φ w σ).vInfAt (H _ c ((same φ w σ).pt y) hy a b)
 
 /- English proof (translation)
-Unfold `comb`. Proceed by induction on `(Finset.univ : Finset ι).toList with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ih]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -213,20 +213,20 @@ section Sub
 variable [IsIntegral X] (L M : HermLB p') {r : M.B.ι → X.functionFieldˣ} (hr : IsRatSec M.B r)
 
 /- English proof (translation)
-Introduce `σ` and use `(same φ w σ).chernIntegrableOn_wt _ _ (h _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem archIntegrable_lb {e : ℕ} (h : L.ArchIntegrable M e hr) : (lb φ w L).ArchIntegrable (lb φ w M) e hr :=
   fun σ => (same φ w σ).chernIntegrableOn_wt _ _ (h _)
 
 /- English proof (translation)
-The claim follows from `(finsum_congr fun σ => (same φ w σ).chernInt_wt _ _ _ _).trans (finsum_comp_equiv (embEquiv φ) (f := fun σ => (L.φ σ).chernInt e (offSupp p' σ (M.div hr)) (logNorm (M.φ σ) r)))`.
+A detailed English derivation is pending.
 -/
 theorem archInt_lb (e : ℕ) : (lb φ w L).archInt (lb φ w M) e hr = L.archInt M e hr :=
   (finsum_congr fun σ => (same φ w σ).chernInt_wt _ _ _ _).trans (finsum_comp_equiv (embEquiv φ)
     (f := fun σ => (L.φ σ).chernInt e (offSupp p' σ (M.div hr)) (logNorm (M.φ σ) r)))
 
 /- English proof (translation)
-The claim follows from `congrArg (_ - ·) ((finsum_congr fun σ => finsum_comp_equiv (same φ w σ).pt.toEquiv (f := fun y => logNorm (M.φ _) r y)).trans (finsum_comp_equiv (embEquiv φ) (f := fun σ => ∑ᶠ y : CxPts p' σ, logNorm (M.φ σ) r y)))`.
+A detailed English derivation is pending.
 -/
 theorem curveDeg_lb [IsLocallyNoetherian X] : (lb φ w M).curveDeg hr = M.curveDeg hr :=
   congrArg (_ - ·) ((finsum_congr fun σ => finsum_comp_equiv (same φ w σ).pt.toEquiv
@@ -238,12 +238,12 @@ end Sub
 include w in
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, w]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_base (i : Y ⟶ X) : (i ≫ p') ≫ spMap φ.toRingHom = i ≫ p := by rw [Category.assoc, w]
 
 /- English proof (translation)
-The claim follows from `H.vertical point Z i _ _ _ hc hd r hr := (H.point Z i hc hd r hr).trans (curveDeg_lb φ (comp_base φ w i) (L.restr i) hr).symm recursion Z i _ _ _ hc e he hd m r hr := have h₀ := H.recursion Z i hc e he hd m r hr ⟨archIntegrable_lb φ (comp_base φ w i) (L.restr i) ((L.restr i).pow …`.
+A detailed English derivation is pending.
 -/
 theorem isArithHeight_lb {L : HermLB p'} {h : X → ℝ} (H : L.IsArithHeight h) : (lb φ w L).IsArithHeight h where
   vertical := H.vertical
@@ -256,7 +256,7 @@ theorem isArithHeight_lb {L : HermLB p'} {h : X → ℝ} (H : L.IsArithHeight h)
 include w in
 
 /- English proof (translation)
-Use `h.isDomain` as an intermediate fact. Use `h.finite` as an intermediate fact. Use `AlterationOrder.isArithVar_of_int φ.toMulEquiv.isDomain (Module.Finite.equiv φ.symm.toAddEquiv.toIntLinearEquiv) ?_` and prove the remaining obligations. Rewrite using `[AlterationOrder.hom_ext_int (p ≫ _) (p' ≫ spMap (Int.castRingHom k'))]`. Conclude with `AlterationOrder.isArithVar_int h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isArithVar {d : ℕ} (h : IsArithVar p' d) : IsArithVar p d := by
   have := h.isDomain
@@ -267,7 +267,7 @@ theorem isArithVar {d : ℕ} (h : IsArithVar p' d) : IsArithVar p d := by
   exact AlterationOrder.isArithVar_int h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `none => rfl`. Consider the case `some i => rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem fam_vm {E : X.Modules} {r : ℕ} {h : VMetric p' E r} (H : h.IsCInf) (F : FlagSp E r) :
     F.fam (isCInf_vm φ w H) (VMetric.det (isCInf_vm φ w H)) =
@@ -280,9 +280,9 @@ theorem fam_vm {E : X.Modules} {r : ℕ} {h : VMetric p' E r} (H : h.IsCInf) (F 
 end Global
 
 /- English proof (translation)
-Use `⟨isArithVar φ rfl hp, vm φ rfl h, isCInf_vm φ rfl H, fun σ y₀ y e c _ => ?_, ?_⟩` and prove the remaining obligations. Take `rfl : y = (same φ rfl σ).pt y₀` from `Subtype.ext e`. Both sides reduce to the same expression. Introduce and unpack `F z e a ⟨y, Φ, h₁, h₂, h₃⟩`. Use `⟨y, Φ, h₁, ⟨fun n => ?_, h₂.2⟩, h₃⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg, e⟩` from `h₂.1 n`. Rewrite using `[fam_vm φ rfl H, lb_comb]`. Conclude with `⟨g, isArithHeight_lb φ _ hg, e⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_sameMet (k k' : Type) [CommRing k] [CommRing k'] (φ : k ≃+* k') (X : Scheme.{0}) (p : X ⟶ Sp k') (d : ℕ)
     (hp : IsArithVar p d) (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) :

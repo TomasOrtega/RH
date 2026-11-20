@@ -25,7 +25,7 @@ variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj A] 
 variable {Ω : Type} [Field Ω] [IsAlgClosed Ω]
 
 /- English proof (translation)
-The claim follows from `Z2.two_cls_eMap hA hB hD hD' l mu α s L hL e m hm h₁ h₂ hα hα' h₁' h₂'`.
+A detailed English derivation is pending.
 -/
 theorem two_cls_eMap (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A ⊗ B).left} (hD : IsDual A B P)
     (hD' : IsDual B A (swap P)) (l : A ⟶ B) [IsMonHom l] (mu : B ⟶ A) [IsMonHom mu] (α : Matrix (Fin 4) (Fin 4) ℤ)
@@ -40,7 +40,7 @@ theorem two_cls_eMap (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (
   Z2.two_cls_eMap hA hB hD hD' l mu α s L hL e m hm h₁ h₂ hα hα' h₁' h₂'
 
 /- English proof (translation)
-The claim follows from `Z2.two_cls_pow hA hB hD hD' l mu α s L hL e n h'`.
+A detailed English derivation is pending.
 -/
 theorem two_cls_pow (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A ⊗ B).left} (hD : IsDual A B P)
     (hD' : IsDual B A (swap P)) (l : A ⟶ B) [IsMonHom l] (mu : B ⟶ A) [IsMonHom mu] (α : Matrix (Fin 4) (Fin 4) ℤ)

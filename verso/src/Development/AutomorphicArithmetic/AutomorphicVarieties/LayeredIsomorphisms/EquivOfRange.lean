@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LayeredIsomorphism
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
 /- English proof (translation)
-Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hx`. Rewrite using `[map_pow, hσ, pow_right_comm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_root {K : Type} [Field K] {N : ℕ} [NeZero N] {ζ x : K} (hζ : IsPrimitiveRoot ζ N)
     (σ : K →+* K) {a : ℕ} (hσ : σ ζ = ζ ^ a) (hx : x ^ N = 1) : σ x = x ^ a := by
@@ -12,7 +12,7 @@ private theorem act_root {K : Type} [Field K] {N : ℕ} [NeZero N] {ζ x : K} (h
   rw [map_pow, hσ, pow_right_comm]
 
 /- English proof (translation)
-Take `⟨i, -, h⟩` from `hζ.eq_pow_of_pow_eq_one (ξ := τ ζ) (by rw [← map_pow, hζ.pow_eq_one, map_one])`. Conclude with `⟨i, h.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_pow {N : ℕ} [NeZero N] {ζ : CyclotomicField N ℚ} (hζ : IsPrimitiveRoot ζ N)
     (τ : CyclotomicField N ℚ ≃ₐ[ℚ] CyclotomicField N ℚ) : ∃ a : ℕ, τ ζ = ζ ^ a := by
@@ -20,7 +20,7 @@ private theorem exists_pow {N : ℕ} [NeZero N] {ζ : CyclotomicField N ℚ} (h�
   exact ⟨i, h.symm⟩
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Conclude with `⟨fun h x => h _ ⟨x, rfl⟩, fun h _ ⟨x, hx⟩ => hx ▸ h x⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem mem_fix {E K : Type} [Field E] [Field K] [Algebra ℚ E] [Algebra ℚ K] (j : E →ₐ[ℚ] K)
     (τ : K ≃ₐ[ℚ] K) : τ ∈ j.fieldRange.fixingSubgroup ↔ ∀ x : E, τ (j x) = j x := by
@@ -28,14 +28,14 @@ private theorem mem_fix {E K : Type} [Field E] [Field K] [Algebra ℚ E] [Algebr
   exact ⟨fun h x => h _ ⟨x, rfl⟩, fun h _ ⟨x, hx⟩ => hx ▸ h x⟩
 
 /- English proof (translation)
-Take `⟨u, hu, e⟩` from `hb`. Conclude with `⟨u, hu, e.trans ((ZMod.natCast_eq_natCast_iff _ _ _).2 h).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem ker_congr (A : AbF) {a b : ℕ} (h : a ≡ b [MOD A.m]) (hb : A.ker b) : A.ker a := by
   obtain ⟨u, hu, e⟩ := hb
   exact ⟨u, hu, e.trans ((ZMod.natCast_eq_natCast_iff _ _ _).2 h).symm⟩
 
 /- English proof (translation)
-Use `letI : Algebra K L := f.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ K L := IsScalarTower.of_algebraMap_eq fun r => (f.commutes r).symm`. Conclude with `⟨σ.restrictNormal K, fun x => (σ.restrictNormal_commutes K x).symm⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_res {K L : Type} [Field K] [Field L] [Algebra ℚ K] [Algebra ℚ L] [Normal ℚ K]
     (f : K →ₐ[ℚ] L) (σ : L ≃ₐ[ℚ] L) : ∃ τ : K ≃ₐ[ℚ] K, ∀ x : K, σ (f x) = f (τ x) := by
@@ -44,7 +44,7 @@ private theorem exists_res {K L : Type} [Field K] [Field L] [Algebra ℚ K] [Alg
   exact ⟨σ.restrictNormal K, fun x => (σ.restrictNormal_commutes K x).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨((g.equivFieldRange.trans (IntermediateField.equivOfEq e)).trans g'.equivFieldRange.symm).toRingEquiv⟩`.
+Supply the required witnesses or components.
 -/
 private theorem equiv_of_range {F L L' Ω : Type} [Field F] [Field L] [Field L'] [Field Ω] [Algebra F L]
     [Algebra F L'] [Algebra F Ω] (g : L →ₐ[F] Ω) (g' : L' →ₐ[F] Ω) (e : g.fieldRange = g'.fieldRange) :
@@ -52,9 +52,9 @@ private theorem equiv_of_range {F L L' Ω : Type} [Field F] [Field L] [Field L']
   ⟨((g.equivFieldRange.trans (IntermediateField.equivOfEq e)).trans g'.equivFieldRange.symm).toRingEquiv⟩
 
 /- English proof (translation)
-Establish `e : g.fieldRange = g'.fieldRange`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup g.fieldRange, ← InfiniteGalois.fixedField_fixingSubgroup g'.fieldRange]`. Use `congr 1`. Use extensionality with `σ`. Rewrite using `[mem_fix, mem_fix, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `equiv_of_range g g' e`.
+A detailed English derivation is pending.
 -/
 private theorem equiv_of_fix {L L' Ω : Type} [Field L] [Field L'] [Field Ω] [Algebra ℚ L] [Algebra ℚ L']
     [Algebra ℚ Ω] [IsGalois ℚ Ω] (g : L →ₐ[ℚ] Ω) (g' : L' →ₐ[ℚ] Ω)
@@ -68,23 +68,19 @@ private theorem equiv_of_fix {L L' Ω : Type} [Field L] [Field L'] [Field Ω] [A
   exact equiv_of_range g g' e
 
 /- English proof (translation)
-Introduce `A L L' _ _ _ _ hL hL'`. Take `⟨N, hN, i, ζ, hm, hζ, H0⟩` from `hL`. Take `⟨N', hN', j, ζ', hm', hζ', H⟩` from `hL'`. Use `haveI : NeZero A.m := ⟨A.pos.ne'⟩`. Use `haveI : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := CyclotomicField.isCyclotomicExtension _ ℚ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Use `haveI : IsCyclotomicExtension {N'} ℚ (CyclotomicField N' ℚ) := CyclotomicField.isCyclotomicExtension _ ℚ`. Use `haveI : IsAbelianGalois ℚ (CyclotomicField N ℚ) := IsCyclotomicExtension.isAbelianGalois {N} ℚ _`. Use `haveI : IsAbelianGalois ℚ (CyclotomicField N' ℚ) := IsCyclotomicExtension.isAbelianGalois {N'} ℚ _`. Use `haveI : IsGalois ℚ (AlgebraicClosure ℚ) := by first`. Consider the case `exact @IsAlgClosure.isGalois ℚ (AlgebraicClosure ℚ) _ _ (AlgebraicClosure.instAlgebra ℚ) _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `convert @IsAlgClosure.isGalois ℚ (AlgebraicClosure ℚ) _ _ (AlgebraicClosure.instAlgebra ℚ) _ _`. Set `f : CyclotomicField N ℚ →ₐ[ℚ] AlgebraicClosure ℚ` to `IsAlgClosed.lift`. Set `f' : CyclotomicField N' ℚ →ₐ[ℚ] AlgebraicClosure ℚ` to `IsAlgClosed.lift`. Use `equiv_of_fix (f.comp i) (f'.comp j) fun σ => ?_` and prove the remaining obligations. Take `⟨τ, hσ⟩` from `exists_res f σ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τ', hσ'⟩` from `exists_res f' σ`. Take `⟨a, hτ⟩` from `exists_pow hζ τ`. Take `⟨b, hb⟩` from `exists_pow hζ' τ'`. Take `⟨k, hk⟩` from `id hm`. Take `⟨k', hk'⟩` from `id hm'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hω : IsPrimitiveRoot (f (ζ ^ k)) A.m` using `(hζ.pow (NeZero.pos N) (by rw [hk, mul_comm])).map_of_injective f.injective`. Establish `hω' : IsPrimitiveRoot (f' (ζ' ^ k')) A.m` using `(hζ'.pow (NeZero.pos N') (by rw [hk', mul_comm])).map_of_injective f'.injective`. Establish `h1 : σ (f (ζ ^ k)) = f (ζ ^ k) ^ a`. Rewrite using `[hσ, map_pow τ, hτ, pow_right_comm, map_pow f]`. Establish `h2 : σ (f' (ζ' ^ k')) = f' (ζ' ^ k') ^ b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[hσ', map_pow τ', hb, pow_right_comm, map_pow f']`. Establish `h3 : σ (f (ζ ^ k)) = f (ζ ^ k) ^ b` using `act_root hω' (σ : AlgebraicClosure ℚ →+* AlgebraicClosure ℚ) h2 hω.pow_eq_one`. Establish `hab : a ≡ b [MOD A.m]`. Use `((hω.isOfFinOrder A.pos.ne').pow_eq_pow_iff_modEq).1 (h1.symm.trans h3)` as an intermediate fact. Rewrite `this` using `[← hω.eq_orderOf]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : A.ker a ↔ A.ker b` using `⟨ker_congr A hab.symm, ker_congr A hab⟩`. Establish `e1 : (∀ x, σ ((f.comp i) x) = (f.comp i) x) ↔ ∀ x, τ (i x) = i x`. Use `forall_congr' fun x => ?_` and prove the remaining obligations. Use `show σ (f (i x)) = f (i x) ↔ _`. Rewrite using `[hσ]`.
-
-Conclude with `f.injective.eq_iff`. Establish `e2 : (∀ x, σ ((f'.comp j) x) = (f'.comp j) x) ↔ ∀ x, τ' (j x) = j x`. Use `forall_congr' fun x => ?_` and prove the remaining obligations. Use `show σ (f' (j x)) = f' (j x) ↔ _`. Rewrite using `[hσ']`.
-
-Conclude with `f'.injective.eq_iff`. Rewrite using `[e1, e2, H0 τ a hτ, H τ' b hb, h4]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Win.abiso :
     ∀ (A : AbF) (L L' : Type) [Field L] [NumberField L] [Field L'] [NumberField L'],

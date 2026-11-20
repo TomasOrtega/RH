@@ -15,11 +15,9 @@ open GroundTheory.Heights₂.Heights.Regular (analyticAt_comp_symm_of_holoOn con
 namespace LevelTowerAlt
 
 /- English proof (translation)
-Establish `hV : x ∈ interior (U ∩ {y | AnalyticAt ℂ f y})` using `mem_interior_iff_mem_nhds.2 (inter_mem hU hf.eventually_analyticAt)`. Establish `hi : Function.Injective (fderiv ℂ f x)` using `HoloInjDerivInj.proof m f _ isOpen_interior (fun y hy => (interior_subset hy).2) (hinj.mono fun y hy => (interior_subset hy).1) x hV`. Set `e : (Fin m → ℂ) ≃L[ℂ] (Fin m → ℂ)` to `(LinearEquiv.ofInjectiveEndo (fderiv ℂ f x : (Fin m → ℂ) →ₗ[ℂ] Fin m → ℂ) hi).toContinuousLinearEquiv`. Establish `he : (e : (Fin m → ℂ) →L[ℂ] Fin m → ℂ) = fderiv ℂ f x` using `by ext1 v`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Establish `hs : HasStrictFDerivAt f (e : (Fin m → ℂ) →L[ℂ] Fin m → ℂ) x`. Rewrite using `[he]`. Conclude with `hf.hasStrictFDerivAt`. Use `⟨hs.localInverse f e x, ?_, hs.localInverse_apply_image, hs.eventually_right_inverse, hs.eventually_left_inverse, ?_⟩` and prove the remaining obligations. Conclude with `(hs.toOpenPartialHomeomorph f).analyticAt_symm' (i := e) hs.mem_toOpenPartialHomeomorph_source hf he.symm`.
-
-Rewrite using `[hs.to_localInverse.hasFDerivAt.fderiv]`. Conclude with `e.symm.bijective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_inverse {m : ℕ} {f : (Fin m → ℂ) → Fin m → ℂ} {x : Fin m → ℂ} (hf : AnalyticAt ℂ f x)
     {U : Set (Fin m → ℂ)} (hU : U ∈ 𝓝 x) (hinj : Set.InjOn f U) :
@@ -45,7 +43,7 @@ theorem exists_local_inverse {m : ℕ} {f : (Fin m → ℂ) → Fin m → ℂ} {
     exact e.symm.bijective
 
 /- English proof (translation)
-Use `⟨fun v => Complex.log (T v / T u) + (Real.log ‖T u‖ : ℝ), (AnalyticAt.clog (hT.div analyticAt_const h0) (by simp [div_self h0])).add analyticAt_const, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hT.continuousAt.eventually_ne h0] with v hv`. Rewrite using `[Complex.add_re, Complex.log_re, Complex.ofReal_re, norm_div, Real.log_div (norm_ne_zero_iff.2 hv) (norm_ne_zero_iff.2 h0)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_log_re {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {T : E → ℂ} {u : E}
     (hT : AnalyticAt ℂ T u) (h0 : T u ≠ 0) :
@@ -58,7 +56,7 @@ theorem exists_log_re {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {T 
   ring
 
 /- English proof (translation)
-Introduce `j` and use `⟨A.holo j a, A.holo a j⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem compat_atlas {d : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtlas d X) (a : Fin A.n) :
     IsCompatChart A (A.chart a) := fun j => ⟨A.holo j a, A.holo a j⟩
@@ -68,7 +66,7 @@ section Model
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {P : Ideal (MRing J)} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `analyticAt_pi_iff.2 fun p => (hc p.1).mul (analyticAt_pi_iff.1 hg p)`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_torusSmul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {c : E → K → ℂ}
     {g : E → (Σ k, J k) → ℂ} {u : E} (hc : ∀ k, AnalyticAt ℂ (fun v => c v k) u) (hg : AnalyticAt ℂ g u) :
@@ -76,33 +74,31 @@ theorem analyticAt_torusSmul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ
   analyticAt_pi_iff.2 fun p => (hc p.1).mul (analyticAt_pi_iff.1 hg p)
 
 /- English proof (translation)
-The claim follows from `((M.fibre z hz _ (VertFactorSmooth.torusSmul_mem_mcPts hP hz hc)).2 ⟨c, hc, rfl⟩).symm`.
+A detailed English derivation is pending.
 -/
 theorem proj_torusSmul (hP : IsMultiHomogIdeal P) (M : CxModel P n) {z : (Σ k, J k) → ℂ} (hz : z ∈ mcPts P)
     {c : K → ℂ} (hc : ∀ k, c k ≠ 0) : M.proj (torusSmul c z) = M.proj z :=
   ((M.fibre z hz _ (VertFactorSmooth.torusSmul_mem_mcPts hP hz hc)).2 ⟨c, hc, rfl⟩).symm
 
 /- English proof (translation)
-The claim follows from `(M.cont (g u) hm.self_of_nhds).tendsto.comp (tendsto_nhdsWithin_iff.2 ⟨hg, hm⟩)`.
+A detailed English derivation is pending.
 -/
 theorem continuousAt_proj (M : CxModel P n) {E : Type*} [TopologicalSpace E] {g : E → (Σ k, J k) → ℂ} {u : E}
     (hg : ContinuousAt g u) (hm : ∀ᶠ v in 𝓝 u, g v ∈ mcPts P) : ContinuousAt (fun v => M.proj (g v)) u :=
   (M.cont (g u) hm.self_of_nhds).tendsto.comp (tendsto_nhdsWithin_iff.2 ⟨hg, hm⟩)
 
 /- English proof (translation)
-Take `⟨V, T, hV, htV, hTa, hTt, hTV⟩` from `hT`. Take `⟨U, hU, hxU, s, hs, hsh⟩` from `M.sections (M.proj (χ.γ t))`. Take `⟨c₀, hc₀, hγ⟩` from `(M.fibre _ (hs _ hxU).1 _ (χ.mem t ht)).1 (hs _ hxU).2`. Use `set x₀ := M.proj (χ.γ t) with hx₀`. Set `σ : (Fin n → ℂ) → (Σ k, J k) → ℂ` to `fun y => torusSmul c₀ (s (e.symm y))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hσa : AnalyticAt ℂ σ (e x₀)` using `analyticAt_torusSmul (fun _ => analyticAt_const) (analyticAt_pi_iff.2 fun p => analyticAt_comp_symm_of_holoOn he (hsh p) hxU hsrc)`. Establish `hσ0 : σ (e x₀) = χ.γ t` using `by show torusSmul c₀ (s (e.symm (e x₀))) = _`. Rewrite using `[e.left_inv hsrc, ← hγ]`. Establish `hΦa : AnalyticAt ℂ (fun y => T (σ y)) (e x₀)` using `AnalyticAt.comp (g := T) (f := σ) (by rw [hσ0]; exact hTa _ htV) hσa`. Establish `hΦ0 : T (σ (e x₀)) = t` using `by rw [hσ0, hTt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFΦ : ∀ᶠ y in 𝓝 (e x₀), e (M.proj (χ.γ (T (σ y)))) = y`. Establish `h1 : ∀ᶠ y in 𝓝 (e x₀), y ∈ e.target` using `e.open_target.mem_nhds (e.map_source hsrc)`. Establish `h2 : ∀ᶠ y in 𝓝 (e x₀), e.symm y ∈ U` using `(e.continuousAt_symm (e.map_source hsrc)).eventually (hU.mem_nhds (by rw [e.left_inv hsrc]; exact hxU))`. Establish `h3 : ∀ᶠ y in 𝓝 (e x₀), σ y ∈ V` using `hσa.continuousAt.eventually (hV.mem_nhds (by rw [hσ0]; exact htV))`. Use `filter_upwards [h1, h2, h3] with y h1 h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm : σ y ∈ mcPts P` using `VertFactorSmooth.torusSmul_mem_mcPts hP (hs _ h2).1 hc₀`. Take `⟨hb, c, hc, hz⟩` from `hTV _ ⟨h3, hm⟩`. Establish `h4 : M.proj (χ.γ (T (σ y))) = M.proj (σ y)` using `(M.fibre _ (χ.mem _ hb) _ hm).2 ⟨c, hc, hz⟩`. Establish `h5 : M.proj (σ y) = e.symm y` using `(proj_torusSmul hP M (hs _ h2).1 hc₀).trans (hs _ h2).2`. Rewrite using `[h4, h5, e.right_inv h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hga, hg0, hgr, -, hgb⟩` from `exists_local_inverse hΦa hFΦ fun y hy y' hy' h => by`. Establish `h' : T (σ y) = T (σ y')` using `h`. Establish `hy1 : e (M.proj (χ.γ (T (σ y)))) = y` using `hy`. Establish `hy2 : e (M.proj (χ.γ (T (σ y')))) = y'` using `hy'`. Rewrite using `[← hy1, ← hy2, h']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hΦ0] at hga hg0 hgr hgb`. Establish `heq : (fun t' => e (M.proj (χ.γ t'))) =ᶠ[𝓝 t] g`. Establish `h1 : Tendsto g (𝓝 t) (𝓝 (e x₀))` using `hg0 ▸ hga.continuousAt.tendsto`. Use `filter_upwards [hgr, h1.eventually hFΦ] with t' h2 h3`. Rewrite `h3` using `[h2]`.
-
-Conclude with `h3`. Conclude with `⟨hga.congr heq.symm, by rw [heq.fderiv_eq]; exact hgb⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chart_local_gen (hP : IsMultiHomogIdeal P) (M : CxModel P n) {Bd : Set ((Σ k, J k) → ℂ)}
     (χ : SncChart P n Bd) {e : OpenPartialHomeomorph M.Xc (Fin n → ℂ)} (he : IsCompatChart M.atlas e)
@@ -159,13 +155,13 @@ variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {II : In
   (D : ComponentData II Ψ K J Ω W) (M : XModel D)
 
 /- English proof (translation)
-Establish `hF` using `(chart_local_gen hP M χ he ht (by rw [← proj_torusSmul hP M (χ.mem t ht) hc, ← hgu]; exact hsrc) hT).1`. Take `⟨V, T, hV, htV, hTa, hTt, hTV⟩` from `hT`. Establish `hc' : ∀ k, c⁻¹ k ≠ 0` using `fun k => inv_ne_zero (hc k)`. Set `g' : E → (Σ k, J k) → ℂ` to `fun v => torusSmul c⁻¹ (g v)`. Establish `hg' : AnalyticAt ℂ g' u` using `analyticAt_torusSmul (fun _ => analyticAt_const) hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg0 : g' u = χ.γ t`. Use function extensionality and compare the values at `p`. Use `show c⁻¹ p.1 * g u p = _`. Rewrite using `[hgu]`. Simplify using `[torusSmul, inv_mul_cancel_left₀ (hc p.1)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : AnalyticAt ℂ (fun v => T (g' v)) u` using `AnalyticAt.comp (g := T) (f := g') (by rw [hg0]; exact hTa _ htV) hg'`. Establish `h2 : AnalyticAt ℂ (fun v => e (M.proj (χ.γ (T (g' v))))) u` using `AnalyticAt.comp (g := fun t' => e (M.proj (χ.γ t'))) (f := fun v => T (g' v)) (by rw [hg0, hTt]; exact hF) h1`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [hm, hg'.continuousAt.eventually (hV.mem_nhds (by rw [hg0]; exact htV))] with v hv hvV`. Establish `hm' : g' v ∈ mcPts P` using `VertFactorSmooth.torusSmul_mem_mcPts hP hv hc'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hb, d, hd, hz⟩` from `hTV _ ⟨hvV, hm'⟩`. Rewrite using `[(M.fibre _ (χ.mem _ hb) _ hm').2 ⟨d, hd, hz⟩, proj_torusSmul hP M hv hc']`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_proj_gen {P : Ideal (MRing J)} {n : ℕ} (hP : IsMultiHomogIdeal P) (M : CxModel P n)
     {Bd : Set ((Σ k, J k) → ℂ)} (χ : SncChart P n Bd) {e : OpenPartialHomeomorph M.Xc (Fin n → ℂ)}
@@ -199,7 +195,7 @@ theorem analyticAt_proj_gen {P : Ideal (MRing J)} {n : ℕ} (hP : IsMultiHomogId
   rw [(M.fibre _ (χ.mem _ hb) _ hm').2 ⟨d, hd, hz⟩, proj_torusSmul hP M hv hc']
 
 /- English proof (translation)
-Take `⟨a, t, ht, c, hc, hgu⟩` from `D.chart_cover _ hm.self_of_nhds`. Establish `ht' : t ∈ ball (0 : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) 1` using `mem_ball_zero_iff.2 (ht.trans_lt (by norm_num))`. Conclude with `analyticAt_proj_gen (n := D.n) D.arith.2.1.2.1 M (D.chart a) he ht' (GlobalTheory.T.chart_local_analytic_trivialization K J II Ψ Ω W D a t ht') hg hm hsrc hc hgu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem analyticAt_proj {e : OpenPartialHomeomorph M.Xc (Fin D.n → ℂ)} (he : IsCompatChart M.atlas e)
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : E → (Σ k, J k) → ℂ} {u : E} (hg : AnalyticAt ℂ g u)
@@ -212,7 +208,7 @@ theorem analyticAt_proj {e : OpenPartialHomeomorph M.Xc (Fin D.n → ℂ)} (he :
     hg hm hsrc hc hgu
 
 /- English proof (translation)
-Use `filter_upwards [(continuousAt_proj M hg hm).eventually (e.open_source.mem_nhds hsrc)] with v hv`. Simplify using `only [Function.comp_apply, e.left_inv hv]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comp_proj_eventuallyEq {β : Type*} (G : M.Xc → β) (e : OpenPartialHomeomorph M.Xc (Fin D.n → ℂ))
     {E : Type*} [TopologicalSpace E] {g : E → (Σ k, J k) → ℂ} {u : E} (hg : ContinuousAt g u)
@@ -222,7 +218,7 @@ theorem comp_proj_eventuallyEq {β : Type*} (G : M.Xc → β) (e : OpenPartialHo
   simp only [Function.comp_apply, e.left_inv hv]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `M.atlas.cover (M.proj (g u))`. Conclude with `(AnalyticAt.comp (f := fun v => M.atlas.chart j (M.proj (g v))) (analyticAt_comp_symm_of_holoOn (compat_atlas _ j) hG hU hj) (analyticAt_proj D M (compat_atlas _ j) hg hm hj)).congr (comp_proj_eventuallyEq D M G _ hg.continuousAt hm hj)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem analyticAt_holoOn_proj {U : Set M.Xc} {G : M.Xc → ℂ} (hG : M.atlas.HoloOn U G)
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : E → (Σ k, J k) → ℂ} {u : E} (hg : AnalyticAt ℂ g u)
@@ -235,7 +231,7 @@ theorem analyticAt_holoOn_proj {U : Set M.Xc} {G : M.Xc → ℂ} (hG : M.atlas.H
     (comp_proj_eventuallyEq D M G _ hg.continuousAt hm hj)
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `M.atlas.cover (M.proj (g u))`. Establish `h : AnalyticAt ℝ (fun v => M.atlas.chart j (M.proj (g v))) u` using `(analyticAt_proj D M (compat_atlas _ j) hg hm hj).restrictScalars`. Conclude with `(ContDiffAt.comp (f := fun v => M.atlas.chart j (M.proj (g v))) u (contDiffAt_comp_symm_of_smoothOn (compat_atlas _ j) hUo hG hU hj) h.contDiffAt).congr_of_eventuallyEq (comp_proj_eventuallyEq D M G _ hg.continuousAt hm hj).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_smoothOn_proj {U : Set M.Xc} (hUo : IsOpen U) {G : M.Xc → ℝ} (hG : M.atlas.SmoothOn U G)
     {m : ℕ} {g : (Fin m → ℂ) → (Σ k, J k) → ℂ} {u : Fin m → ℂ} (hg : AnalyticAt ℂ g u)

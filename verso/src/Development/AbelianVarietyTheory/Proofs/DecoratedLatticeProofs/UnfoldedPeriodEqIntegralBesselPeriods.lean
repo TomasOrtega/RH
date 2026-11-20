@@ -27,9 +27,9 @@ open scoped ENNReal
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hfix : ∀ y ∈ fixSet X u, X.B.I.fmat g *ᵥ incl X.B.I y = incl X.B.I y` using `hg`. Establish `hm : X.B.I.fmat (n * g) = X.B.I.fmat n * X.B.I.fmat g` using `by simp [Formalism.MainNotions.S.AutInst.fmat]`. Establish `key : ∀ y ∈ fixSet X u, (X.B.I.fmat (n * g) - 1) *ᵥ incl X.B.I y = (X.B.I.fmat n - 1) *ᵥ incl X.B.I y`. Introduce `y hy`. Rewrite using `[hm, Matrix.sub_mulVec, Matrix.sub_mulVec, ← Matrix.mulVec_mulVec, hfix y hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key _ (Or.inl (Or.inl ⟨a, rfl⟩))]`. Conclude with `hn.1 a`. Rewrite using `[key _ (Or.inr rfl)]`. Conclude with `hn.2.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_sfin (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word) {n : X.B.I.Gf} (hn : n ∈ X.NfinU u)
     {g : X.B.I.Gf} (hg : g ∈ Hfin X u) : n * g ∈ SfinU X u := by
@@ -44,9 +44,7 @@ theorem mul_mem_sfin (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what
   · rw [key _ (Or.inr rfl)]; exact hn.2.1
 
 /- English proof (translation)
-Unfold `Ph at hx`. Use `split_ifs at hx with hd`. Take `⟨n, g, k, hdec⟩` from `hd`. Take `⟨hn, hk, he⟩` from `hdec`. Conclude with `⟨n * (g : X.B.I.Gf), mul_mem_sfin X u hn g.2, k, hk, he⟩`.
-
-Conclude with `absurd rfl hx`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ph_supp (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter) (T : Cu X u hK) (x : X.B.I.GA)
     (hx : Ph X u hK T x ≠ 0) : ∃ s ∈ SfinU X u, ∃ k ∈ X.K2, x.2 = s * X.xu u * k := by
@@ -66,14 +64,14 @@ open scoped ENNReal
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [psiBes, psiE]`. Conclude with `hψ.2.1 _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_psiBes {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
     (θ : D.host.E) (z : Fin S₀.rank → D.host.E) (n : GA D S) : ‖psiBes ψ d θ z n‖ = 1 := by
   simp only [psiBes, psiE]; exact hψ.2.1 _
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Conclude with `mul_assoc _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_mul_assoc (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (γ s : GA D (D.sp.Y 0)) (y : X.B.I.Ginf) (x : X.B.I.Gf) :
@@ -87,41 +85,37 @@ set_option maxHeartbeats 1000000 in
 open GlobalTheory.Core.MiFold in
 
 /- English proof (translation)
-Introduce `D X h u ψ A B hK hψ Fs hFs`. Take `⟨-, -, -, 𝓢, h𝓢, h𝓢fin, hI⟩` from `GlobalTheory.T.besselGroup_quotient_fundamentalDomain_cocompact D D.R.rS B.lev`. Take `⟨c, hc, hQ⟩` from `GlobalTheory.T.fold_integral_besselQuotient_supportedFunctions D X h u ψ A B 𝓢 h𝓢 Fs hFs`. Use `⟨(c : ℂ), fun T => ?_⟩` and prove the remaining obligations. Establish `hPh` using `Formalism.L2.SG.PoincareInHH.Cut.phProps_closed X u hK (Formalism.L2.SG.Pf.ksetSplit_holds X u) (Formalism.L2.SG.Pf.unipotent_in_level X u) (Formalism.L2.SG.Pf.ratLevi_holds X u) (Formalism.L2.SG.Pf.psiProd_holds X u) T`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hgrp` using `GlobalTheory.Core.Mi.besGrp_eq_sGroup D X h u ψ A B`. Establish `hph` using `GlobalTheory.Core.Mi.PhCol.ph_colForm D X h u ψ A B hK T`. Use `set Φ : X.B.I.Ginf → besGrp B.d B.o → X.B.I.GA := fun y s => iotaX X h s.1 * (y, X.xu u) with hΦdef`. Establish `hι : Continuous fun s : besGrp B.d B.o => iotaX X h s.1` using `(iotaX X h).continuous.comp continuous_subtype_val`. Establish `hΦ : Measurable (Function.uncurry Φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Measurable fun p : X.B.I.Ginf × besGrp B.d B.o => (iotaX X h p.2.1).1 * p.1` using `((continuous_fst.comp hι).measurable.comp measurable_snd).mul measurable_fst`. Establish `h2 : Measurable fun p : X.B.I.Ginf × besGrp B.d B.o => (iotaX X h p.2.1).2 * X.xu u` using `((continuous_snd.comp hι).measurable.comp measurable_snd).mul_const _`. Conclude with `h1.prodMk h2`. Take `⟨C, hC⟩` from `GlobalTheory.T.bessel_column_scalar_form_norm_bound D X h u ψ A B hK T`. Establish `hbd : ∀ y (s : besGrp B.d B.o), ‖Ph X u hK T (Φ y s)‖ ≤ C * ‖X.Wu u y‖`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y s`. Take `⟨n, hn, a, ha⟩` from `(GlobalTheory.CharLaws.mem_besGrp B.d B.o s.1).1 s.2`. Simplify using `only [hΦdef, ha, hph.2 n hn a y, norm_mul, norm_star, norm_psiBes hψ.1, one_mul]`. Conclude with `hC _ _`. Establish `hWu : ∫⁻ y, ‖X.Wu u y‖ₑ ∂(X.nuQ u) < ⊤` using `(X.Wu_spec u).2.2.2.1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfin : ∀ K : ℝ, 0 ≤ K → ∀ G : X.B.I.GA → ℂ, (∀ x, ‖G x‖ ≤ K * ‖Ph X u hK T x‖) → ∫⁻ y, ∫⁻ s in 𝓢, ‖G (Φ y s)‖ₑ ∂B.lev.μR ∂(X.nuQ u) < ⊤`. Introduce `K hK0 G hG`. Establish `hpt : ∀ y (s : besGrp B.d B.o), ‖G (Φ y s)‖ₑ ≤ ENNReal.ofReal (K * |C|) * ‖X.Wu u y‖ₑ`. Introduce `y s`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ← ENNReal.ofReal_mul (by positivity)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `ENNReal.ofReal_le_ofReal ((hG _).trans ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left ((hbd y s).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (norm_nonneg _))) hK0`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = B.lev.μR 𝓢 * ENNReal.ofReal (K * |C|) * ∫⁻ y, ‖X.Wu u y‖ₑ ∂(X.nuQ u) := by`. Rewrite using `[← lintegral_const_mul' _ _ (ENNReal.mul_ne_top h𝓢fin.ne ENNReal.ofReal_ne_top)]`. Simplify using `only [mul_assoc]`. Use `_ < ⊤ := ENNReal.mul_lt_top (ENNReal.mul_lt_top h𝓢fin ENNReal.ofReal_lt_top) hWu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set P : (X.B.I.GA → ENNReal) → Prop := fun F => (∀ γ ∈ Srat X u, ∀ x, F (γ * x) = F x) ∧ (∀ k ∈ X.K2, ∀ x, F (x * (1, k)) = F x) ∧ (∀ x, F x ≠ 0 → ∃ s ∈ SfinU X u, ∃ k ∈ X.K2, x.2 = s * X.xu u * k) with hPdef`. Establish `hQ' : ∀ F : X.B.I.GA → ENNReal, Measurable F → P F → ∫⁻ x in Fs, F x ∂(X.B.I.muA X.B.μf) = ENNReal.ofReal c * ∫⁻ y, ∫⁻ s in 𝓢, F (Φ y s) ∂B.lev.μR ∂(X.nuQ u)` using `fun F hF hP => hQ F hF hP.1 hP.2.1 hP.2.2`. Establish `hsupp : ∀ G : X.B.I.GA → ℂ, (∀ x, G x ≠ 0 → Ph X u hK T x ≠ 0) → ∀ φ : ℂ → ENNReal, φ 0 = 0 → ∀ x, φ (G x) ≠ 0 → ∃ s ∈ SfinU X u, ∃ k ∈ X.K2, x.2 = s * X.xu u * k`. Introduce `G hG φ hφ x hx`. Use `ph_supp X u hK T x (hG x ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Rewrite `hx` using `[h0, hφ]`. Conclude with `hx rfl`. Establish `hchi : ∀ k ∈ X.K2, ‖X.chi2 k‖ = 1` using `hK.2.2.2.2`. Establish `hint : IntegrableOn (Ph X u hK T) Fs (X.B.I.muA X.B.μf)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hPh.1.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[HasFiniteIntegral, hQ' (fun x => ‖Ph X u hK T x‖ₑ) hPh.1.enorm ⟨fun γ hγ x => by dsimp only; rw [hPh.2.1 γ hγ x], fun k hk x => by dsimp only; rw [hPh.2.2.1 x k hk, enorm_mul, ← ofReal_norm_eq_enorm (X.chi2 k), hchi k hk, ENNReal.ofReal_one, one_mul], hsupp (Ph X u hK T) (fun x …`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hfin 1 zero_le_one _ fun x => by rw [one_mul])`. Use `⟨hint, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨Cf, hCf⟩` from `hf.bdd`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hCf0 : 0 ≤ Cf` using `(norm_nonneg _).trans (hCf 1)`. Establish `hfm : Measurable f` using `hf.cont.measurable`. Take `⟨G, hGdef⟩ : ∃ G : X.B.I.GA → ℂ, G = fun x => f x * Ph X u hK T x` from `⟨_, rfl⟩`. Establish `hGl : ∀ γ ∈ Srat X u, ∀ x, G (γ * x) = G x`. Introduce `γ hγ x`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using `only [hGdef, hPh.2.1 γ hγ x, hf.left γ (Subgroup.mem_inf.1 hγ).1 x]`. Establish `hGr : ∀ k ∈ X.K2, ∀ x, G (x * (1, k)) = G x`. Introduce `k hk x`. Establish `h1 : star (X.chi2 k) * X.chi2 k = 1`. Rewrite using `[Complex.star_def, Complex.conj_mul', hchi k hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Simplify using `only [hGdef, hPh.2.2.1 x k hk, hf.right k hk x]`. Combine the equalities or inequalities in the displayed calculation. Establish `hGs : ∀ x, G x ≠ 0 → Ph X u hK T x ≠ 0` using `fun x hx h0 => hx (by simp only [hGdef, h0, mul_zero])`. Establish `hGm : Measurable G` using `by rw [hGdef]; exact hfm.mul hPh.1`.
+Substitute using the available equality. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hGb : ∀ x, ‖G x‖ ≤ Cf * ‖Ph X u hK T x‖` using `fun x => by`. Rewrite using `[hGdef, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hCf x) (norm_nonneg _)`. Take `⟨-, hfold⟩` from `GlobalTheory.T.integral_fold_via_lintegral_formula (X.B.I.muA X.B.μf) Fs (X.nuQ u) B.lev.μR 𝓢 h𝓢fin Φ hΦ c hc.le P hQ' G hGm (fun φ hφ => ⟨fun γ hγ x => by simp only [hGl γ hγ x], fun k hk x => by simp only [hGr k hk x], hsupp G hGs φ hφ⟩) (hfin Cf hCf0 G hGb)`. Rewrite using `[show (∫ x in Fs, f x * Ph X u hK T x ∂(X.B.I.muA X.B.μf)) = ∫ x in Fs, G x ∂(X.B.I.muA X.B.μf) by rw [hGdef], hfold]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Substitute `hGdef` using the available equality. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `hcont : ContinuousOn (fun g => f (iotaX X h g * (y, X.xu u)) * Ph X u hK T (iotaX X h g * (y, X.xu u))) (besGrp B.d B.o : Set (GA D (D.sp.Y 0)))`. Use `ContinuousOn.mul ?_ (GlobalTheory.T.bessel_column_function_continuousOn_bessel_group D X h u ψ A B hK T y hψ.1)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hf.cont.comp ((iotaX X h).continuous.mul continuous_const)).continuousOn`. Establish `hinv : ∀ γ ∈ GQ (D.sp.Y 0) ⊓ besGrp B.d B.o, ∀ s ∈ besGrp B.d B.o, f (iotaX X h (γ * s) * (y, X.xu u)) * Ph X u hK T (iotaX X h (γ * s) * (y, X.xu u)) = f (iotaX X h s * (y, X.xu u)) * Ph X u hK T (iotaX X h s * (y, X.xu u))`. Introduce `γ hγ s _`. Establish `hγ'` using `(hgrp.2 γ).1 hγ`. Use `hGl _ hγ' (iotaX X h s * (y, X.xu u))` as an intermediate fact.
-
-Simplify using `only at this`. Conclude with `(congrArg (fun z => f z * Ph X u hK T z) (iota_mul_assoc X h γ s y (X.xu u))).trans this`. Establish `hIy` using `(hI _ hcont hinv).2`. Use `hIy.trans ?_` and prove the remaining obligations. Simplify using `only [BesLev.per, besPer, besFun]`.
-
-Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun n => ?_)` and prove the remaining obligations. Simplify using `only [hph.2 n.1 n.2 a y]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Core.Mi.unfoldedPer : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (A : HSp D) (B : SBes X h u ψ A) (hK : X.LevelSubgroupCharacter), IsStdChar D ψ (-1) → ∀ Fs : Set X.B.I.GA, IsFundamentalDomain (Srat X u) Fs (X.B.I.muA X.B.μf) → ∃ c : ℂ, ∀ (T : Cu X u hK), IntegrableOn (Ph X u hK T) Fs (X.B.I.muA X.B.μf) ∧ ∀ f : X.B.I.GA → ℂ, RowFun X f → ∫ x in Fs, f x * Ph X u hK T x ∂(X.B.I.muA X.B.μf) = c * ∫ y, B.lev.per ψ (B.colForm T.1 (X.Wu u y)) (fun g => f (iotaX X h g * (y, X.xu u))) ∂(X.nuQ u) := by
   intro D X h u ψ A B hK hψ Fs hFs

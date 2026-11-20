@@ -39,7 +39,7 @@ def mulF : ↥LL.1 ⊗[ℚ_[l]] P.R.BdR →ₐ[ℚ_[l]] P.R.BdR :=
   Algebra.TensorProduct.lift (embF P LL) (AlgHom.id ℚ_[l] P.R.BdR) fun _ _ => Commute.all _ _
 
 /- English proof (translation)
-Simplify using `[mulF]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mulF_tmul (c : ↥LL.1) (b : P.R.BdR) : mulF P LL (c ⊗ₜ[ℚ_[l]] b) = embF P LL c * b := by
   simp [mulF]
@@ -62,9 +62,9 @@ section Lemmas
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) (LL : FinExt l) (m : ℕ)
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add r s hr hs => simp only [map_add, LinearMap.add_apply, hr, hs, add_smul]`. Consider the case `tmul c b`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`. Consider the case `tmul v b'`. Use function extensionality and compare the values at `j`. Simplify using `only [GlobalTheory.DRFil.sm_tmul, coordF_tmul, mulF_tmul, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -83,15 +83,15 @@ theorem coordF_sm (r : ↥LL.1 ⊗[ℚ_[l]] P.R.BdR) (x : (Fin m → ↥LL.1) �
       ring
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.DeRhamSymbol.mem_iff K 0 _).2 (GlobalTheory.DeRhamSymbol.om_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem embF_mem_fil (K : FinExt l) (c : ↥LL.1) : embF P LL c ∈ (P.PD K).Fil 0 :=
   (GlobalTheory.DeRhamSymbol.mem_iff K 0 _).2 (GlobalTheory.DeRhamSymbol.om_mem _)
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hx`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, Pi.add_apply]`. Conclude with `add_mem ha hb`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul v b`. Use `(P.PD K).Fil_mul 0 n _ _ (embF_mem_fil P LL K (v j)) b.2` as an intermediate fact. Rewrite `this` using `[zero_add]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coordF_mem_fil (K : FinExt l) {n : ℤ} {x : (Fin m → ↥LL.1) ⊗[ℚ_[l]] P.R.BdR}
     (hx : x ∈ FilV (P.PD K) (LL := ↥LL.1) (V := Fin m → ↥LL.1) n) (j : Fin m) :
@@ -106,9 +106,9 @@ theorem coordF_mem_fil (K : FinExt l) {n : ℤ} {x : (Fin m → ↥LL.1) ⊗[ℚ
     simpa using this
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hr`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add]`. Conclude with `add_mem ha hb`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul v b`. Use `(P.PD K).Fil_mul 0 n _ _ (embF_mem_fil P LL K v) b.2` as an intermediate fact. Rewrite `this` using `[zero_add]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mulF_mem_fil (K : FinExt l) {n : ℤ} {r : ↥LL.1 ⊗[ℚ_[l]] P.R.BdR}
     (hr : r ∈ FilV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) n) : mulF P LL r ∈ (P.PD K).Fil n := by
@@ -122,11 +122,11 @@ theorem mulF_mem_fil (K : FinExt l) {n : ℤ} {r : ↥LL.1 ⊗[ℚ_[l]] P.R.BdR}
     simpa using this
 
 /- English proof (translation)
-Take `⟨n, a, c, h, h1⟩` from `GlobalTheory.DRFil.idem_repr P.R.BdR τ`. Rewrite using `[h, map_sum]`. Establish `e : ∀ i, mulF P LL (a i ⊗ₜ[ℚ_[l]] algebraMap ↥K.1 P.R.BdR (c i)) = algebraMap (Om l) P.R.BdR (((a i * τ (c i) : ↥LL.1)) : Om l)`. Introduce `i`. Rewrite using `[mulF_tmul, embF_apply, IntermediateField.coe_mul, map_mul, hτ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [e, ← map_sum]`. Establish `h2` using `congrArg (fun x : ↥LL.1 => (x : Om l)) h1`. Simplify using `only [IntermediateField.coe_sum, IntermediateField.coe_one] at h2`. Simplify using `only [IntermediateField.coe_mul] at h2 ⊢`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulF_idem (K : FinExt l) [FiniteDimensional ℚ_[l] ↥K.1] (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1)
     (hτ : ∀ x : ↥K.1, ((τ x : ↥LL.1) : Om l) = (x : Om l)) :
@@ -145,13 +145,13 @@ theorem mulF_idem (K : FinExt l) [FiniteDimensional ℚ_[l] ↥K.1] (τ : ↥K.1
   rw [h2, map_one]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero`. Simplify using `only [map_zero, Pi.zero_apply]`. Conclude with `(Matrix.mulVec_zero _).symm`. Consider the case `add a b ha hb`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add, ha, hb, ← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Consider the case `tmul v b`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hfix : ∀ c : ↥LL.1, P.actQdR (g : GQ l) (embF P LL c) = embF P LL c` using `fun c => by`. Rewrite using `[embF_apply, P.actQdR_Om, hg _ c.2]`. Use function extensionality and compare the values at `j`. Simplify using `only [actVdR, AlgebraTensorModule.map_tmul, coordF_tmul, repOf_apply, P.PD_actdR, Matrix.mulVec, dotProduct, Matrix.map_apply, map_mul, hfix, map_sum]`. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.toLinearMap_apply, LinearMap.coe_restrictScalars, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe]`. Rewrite using `[mul_assoc]`. Conclude with `congrArg _ (congrArg _ (P.PD_actdR K g b))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordF_act (K : FinExt l) (r : ↥(GK K) →* Matrix.GeneralLinearGroup (Fin m) ↥LL.1)
     (g : ↥(GK K)) (hg : ∀ x ∈ LL.1, (g : GQ l) x = x) (x : (Fin m → ↥LL.1) ⊗[ℚ_[l]] P.R.BdR) :

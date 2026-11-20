@@ -6,7 +6,7 @@ open scoped Classical
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-The claim follows from `|∑ i ∈ Finset.range n, f (x₀ + i) - ∫ t in x₀..x₀ + n, f t| ≤ f 0 := by have hmono : MonotoneOn f (Set.Iic 0) := by intro s hs t ht hst apply hf rw [abs_of_nonpos (Set.mem_Iic.mp ht), abs_of_nonpos (Set.mem_Iic.mp hs)] linarith have hanti : AntitoneOn f (Set.Ici 0) := by intro s …`.
+A detailed English derivation is pending.
 -/
 theorem unimodal_sum_integral (f : ℝ → ℝ) (h0 : ∀ t, 0 ≤ f t)
     (hf : ∀ s t, |s| ≤ |t| → f t ≤ f s) (x₀ : ℝ) (n : ℕ) :
@@ -124,13 +124,13 @@ theorem unimodal_sum_integral (f : ℝ → ℝ) (h0 : ∀ t, 0 ≤ f t)
     linarith
 
 /- English proof (translation)
-Establish `hc : Continuous (fun t : ℝ => Real.sqrt (1 - t ^ 2))` using `by fun_prop`. Establish `hi : ∀ p q : ℝ, IntervalIntegrable (fun t : ℝ => Real.sqrt (1 - t ^ 2)) MeasureTheory.volume p q` using `fun p q => hc.intervalIntegrable p q`. Rewrite using `[← intervalIntegral.integral_add_adjacent_intervals (hi a (-1)) (hi (-1) b), ← intervalIntegral.integral_add_adjacent_intervals (hi (-1) 1) (hi 1 b), integral_sqrt_one_sub_sq]`. Establish `z1 : ∫ t in a..(-1), Real.sqrt (1 - t ^ 2) = 0`. Rewrite using `[intervalIntegral.integral_congr (g := fun _ => (0:ℝ))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `t ht`. Rewrite `ht` using `[Set.uIcc_of_le ha]`. Apply `Real.sqrt_eq_zero'.mpr` to reduce the goal to its premises. Use polynomial arithmetic with `[ht.1, ht.2]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `z2 : ∫ t in (1:ℝ)..b, Real.sqrt (1 - t ^ 2) = 0`. Rewrite using `[intervalIntegral.integral_congr (g := fun _ => (0:ℝ))]`. Simplify using the standard rewrite rules. Introduce `t ht`. Rewrite `ht` using `[Set.uIcc_of_le hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Real.sqrt_eq_zero'.mpr` to reduce the goal to its premises. Use polynomial arithmetic with `[ht.1, ht.2]`. Rewrite using `[z1, z2]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_sqrt_one_sub_sq_wide (a b : ℝ) (ha : a ≤ -1) (hb : 1 ≤ b) :
     ∫ t in a..b, Real.sqrt (1 - t ^ 2) = Real.pi / 2 := by
@@ -157,13 +157,13 @@ theorem integral_sqrt_one_sub_sq_wide (a b : ℝ) (ha : a ≤ -1) (hb : 1 ≤ b)
   ring
 
 /- English proof (translation)
-Establish `hxγ : 0 < x / γ` using `div_pos hx hγ`. Establish `hr : 0 < Real.sqrt (x / γ)` using `Real.sqrt_pos.mpr hxγ`. Establish `hr2 : Real.sqrt (x / γ) ^ 2 = x / γ` using `Real.sq_sqrt hxγ.le`. Establish `key : ∀ t : ℝ, 2 * Real.sqrt ((x - γ * t ^ 2) / α) = (2 * Real.sqrt (x / α)) * Real.sqrt (1 - (t / Real.sqrt (x / γ)) ^ 2)`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (x - γ * t ^ 2) / α = (x / α) * (1 - (t / Real.sqrt (x / γ)) ^ 2)`. Rewrite using `[div_pow, hr2]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, Real.sqrt_mul (div_nonneg hx.le hα.le)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Repeatedly rewrite using `[key]`. Rewrite using `[intervalIntegral.integral_const_mul, intervalIntegral.integral_comp_div (fun u => Real.sqrt (1 - u ^ 2)) hr.ne', integral_sqrt_one_sub_sq_wide]`. Rewrite using `[smul_eq_mul]`. Establish `hs : Real.sqrt (x / α) * Real.sqrt (x / γ) = x / Real.sqrt (α * γ)`. Rewrite using `[← Real.sqrt_mul (div_nonneg hx.le hα.le), show x / α * (x / γ) = x ^ 2 / (α * γ) by field_simp, Real.sqrt_div (sq_nonneg x), Real.sqrt_sq hx.le]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_iff₀ hr]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[le_div_iff₀ hr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem integral_ellipse_width (α γ x a b : ℝ) (hα : 0 < α) (hγ : 0 < γ) (hx : 0 < x)
     (ha : a ≤ -Real.sqrt (x / γ)) (hb : Real.sqrt (x / γ) ≤ b) :
@@ -195,7 +195,7 @@ theorem integral_ellipse_width (α γ x a b : ℝ) (hα : 0 < α) (hγ : 0 < γ)
   · rw [le_div_iff₀ hr]; linarith
 
 /- English proof (translation)
-The claim follows from `|(F.card : ℝ) - 2 * Real.sqrt (y / α)| ≤ 1 := by rcases lt_or_ge y 0 with hy | hy · refine ⟨∅, fun m => ?_, ?_⟩ · simp only [Finset.notMem_empty, false_iff, not_le] have := mul_nonneg hα.le (sq_nonneg ((m : ℝ) + c)) linarith · rw [Real.sqrt_eq_zero'.mpr (div_nonpos_of_nonpos_of_n …`.
+A detailed English derivation is pending.
 -/
 theorem row_count (α c y : ℝ) (hα : 0 < α) :
     ∃ F : Finset ℤ, (∀ m : ℤ, m ∈ F ↔ α * (m + c) ^ 2 ≤ y) ∧
@@ -237,7 +237,7 @@ theorem row_count (α c y : ℝ) (hα : 0 < α) :
       constructor <;> linarith
 
 /- English proof (translation)
-The claim follows from `|(({v : ℤ × ℤ | qForm α γ l θ₁ θ₂ v ≤ x}.ncard : ℕ) : ℝ) - Real.pi / Real.sqrt (α * γ) * x| ≤ 10 * Real.sqrt x := by intro α γ l θ₁ θ₂ x hα hγ hx have hα0 : 0 < α := by linarith have hγ0 : 0 < γ := by linarith have hx0 : 0 < x := by linarith choose F hF hFb using fun k : ℤ => row …`.
+A detailed English derivation is pending.
 -/
 theorem qForm_count : ∀ α γ l θ₁ θ₂ x : ℝ, 1 ≤ α → 1 ≤ γ → 1 ≤ x →
     {v : ℤ × ℤ | qForm α γ l θ₁ θ₂ v ≤ x}.Finite ∧

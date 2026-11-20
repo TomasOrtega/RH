@@ -22,11 +22,11 @@ noncomputable section
 namespace GlobalTheory.StepLevelP.IoLevPf
 
 /- English proof (translation)
-Establish `h1` using `(mem_multT θ M J χ u).1 hu`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Establish `h2` using `GlobalTheory.mult_value_left_cont_level θ M J χ _ h1 f`. Establish `h3 : ∀ g, u (PiTensorProduct.tprod ℂ f) g = (PiTensorProduct.lift.symm u) f g` using `fun g => by simp`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun γ hγ g => ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, Pi.smul_apply, h3, h3, h2.1 γ hγ g]`. Rewrite using `[map_smul, Pi.smul_apply, Pi.smul_apply, h3, h3, h2.2.2 k hk g, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Use `⟨fun γ hγ g => ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, Pi.add_apply, Pi.add_apply, hx.1 γ hγ g, hy.1 γ hγ g]`. Rewrite using `[map_add, Pi.add_apply, Pi.add_apply, hx.2 k hk g, hy.2 k hk g]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem multT_val {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) (J : Set (GA D V))
     (χ : GA D V → ℂ) (u : SmT M →ₗ[ℂ] (GA D V → ℂ)) (hu : u ∈ MultT θ M J χ) (v : SmT M) :
@@ -53,31 +53,29 @@ namespace GlobalTheory.StepLevelP
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hW t j hj F hF κ hκ φ x g`. Establish `hC` using `hW.bot.hyp.2.2.2.1`. Establish `hL : (pk W).Is W.P.A3.A.μ0` using `hC.lev`. Establish `hθ : IsInfFam (pk W).θ` using `hC.models.inf`. Establish `hio` using `hC.chain.ioY t j (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκG : κ ∈ GfC (Yc D j)` using `hκ.1`. Establish `hκP : Lev.finE (Yc D j) κ ∈ parLev D.sp.cm (Yc D j).gram ((pk W).βY j) ((pk W).datYt t j (pk W).triv)` using `hκ.2.1`. Establish `hκH : rTup ((pk W).βY j) ((pk W).datYt t j (pk W).triv) (Lev.finE (Yc D j) κ) ∈ (lvP W).H` using `hκ.2.2`. Establish `hκl : IsLevelLift (Yc D j) ((pk W).βY j) ((pk W).datYt t j (pk W).triv) (rTup ((pk W).βY j) ((pk W).datYt t j (pk W).triv) (Lev.finE (Yc D j) κ)) κ` using `⟨hκG, hκP, rfl⟩`. Take `⟨κ', hκ'⟩` from `GlobalTheory.ChainLiftEquiv.liftsExist_chain (pk W) hL t (j + 1) hj (rTup ((pk W).βY j) ((pk W).datYt t j (pk W).triv) (Lev.finE (Yc D j) κ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hj' : j < D.R.m` using `by omega`. Establish `hlaw` using `GlobalTheory.StepLaw.step_law (pk W).toLevCh hL t j (j + 1) rfl hj' hθ (D.sp.Y_sig _) (D.sp.Y_sig _) (r_le_Y _) (r_le_Y _) (by rw [D.sp.Y_rank _ (min_le_right _ _), min_eq_left hj'.le]; rfl) (by rw [D.sp.Y_rank _ (min_le_right _ _), min_eq_left hj.le]; rfl) (GlobalTheory.Chain.Va …`. Establish `hsS : levChi (Yc D j) ((pk W).βY j) (flagL ((pk W).datYt t j (pk W).triv)) κ ≠ 0` using `levChi_ne_zero _ _`. Establish `hsT : levChi (Yc D (j + 1)) ((pk W).βY (j + 1)) (flagL ((pk W).datYt t (j + 1) (pk W).triv)) κ' ≠ 0` using `levChi_ne_zero _ _`. Establish `hlaw' : (levChi (Yc D j) ((pk W).βY j) (flagL ((pk W).datYt t j (pk W).triv)) κ)⁻¹ • (pk W).ωY t j (κ, κ') ((pk W).vY t j) = (levChi (Yc D (j + 1)) ((pk W).βY (j + 1)) (flagL ((pk W).datYt t (j + 1) (pk W).triv)) κ')⁻¹ • (pk W).vY t j` using `hlaw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : (pk W).ωY t j (κ, κ') ((pk W).vY t j) = (levChi (Yc D j) ((pk W).βY j) (flagL ((pk W).datYt t j (pk W).triv)) κ * (levChi (Yc D (j + 1)) ((pk W).βY (j + 1)) (flagL ((pk W).datYt t (j + 1) (pk W).triv)) κ')⁻¹) • (pk W).vY t j`. Rewrite using `[mul_smul, ← hlaw', smul_smul, mul_inv_cancel₀ hsS, one_smul]`. Establish `hpt` using `GlobalTheory.FiniteFock.om_pureTensorO_of_finite (pk W).ψ (pk W).θ _ _ _ _ ((pk W).ωY t j) hθ (hC.chain.ωY t j hj) _ _ _ _ ((pk W).vY t j) (hC.chain.ptY t j hj) κ hκG κ' hκ'.1 _ hv φ`. Establish `hker` using `GlobalTheory.thetaKO_rat_left_and_eigen_right (pk W).ψ _ _ _ _ ((pk W).ωY t j) (hC.chain.ωY t j hj) ((pk W).ptY t j φ) (hC.chain.ptY t j hj φ)`. Establish `hκ'H : rTup ((pk W).βY (j + 1)) ((pk W).datYt t (j + 1) (pk W).triv) (Lev.finE (Yc D (j + 1)) κ') ∈ (lvP W).H`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hκ'.2.2]`. Conclude with `hκH`. Establish `hκ'P : κ' ∈ levS (Yc D (j + 1)) ((pk W).βY (j + 1)) ((pk W).datYt t (j + 1) (lvP W))` using `⟨hκ'.1, hκ'.2.1, hκ'H⟩`. Establish `e1 : levChi (Yc D j) ((pk W).βY j) ((pk W).datYt t j (lvP W)) κ = (((lvP W).chi ⟨_, hκH⟩ : ℂˣ) : ℂ) * levChi (Yc D j) ((pk W).βY j) (flagL ((pk W).datYt t j (pk W).triv)) κ`. Unfold `levChi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Use `erw [levFn_withP (L := (pk W).datYt t j (pk W).triv) (lvP W), extendOne_of_mem _ hκH, Units.val_mul]`. Both sides reduce to the same expression. Establish `hsub : (⟨_, hκ'H⟩ : (lvP W).H) = ⟨_, hκH⟩` using `Subtype.ext hκ'.2.2`. Establish `e2 : levChi (Yc D (j + 1)) ((pk W).βY (j + 1)) ((pk W).datYt t (j + 1) (lvP W)) κ' = (((lvP W).chi ⟨_, hκH⟩ : ℂˣ) : ℂ) * levChi (Yc D (j + 1)) ((pk W).βY (j + 1)) (flagL ((pk W).datYt t (j + 1) (pk W).triv)) κ'`. Unfold `levChi`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `erw [levFn_withP (L := (pk W).datYt t (j + 1) (pk W).triv) (lvP W), extendOne_of_mem _ hκ'H, Units.val_mul, hsub]`. Both sides reduce to the same expression. Establish `hfd : ((pk W).νY t (j + 1)).IsHaarMeasure ∧ IsFundamentalDomain (GQ (Yc D (j + 1))) ((pk W).fdY t (j + 1)) ((pk W).νY t (j + 1))`. Break down `Nat.lt_or_ge (j + 1 + 1) D.R.m with h | h` into its components or cases. Use `hC.models.νY t (j + 1) h` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨this.1.1, this.2⟩`. Establish `e : j + 1 = D.R.m - 1` using `by omega`. Rewrite using `[e]`. Use `hC.models.νY' t` as an intermediate fact. Conclude with `⟨this.1.1, this.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable (Yc D (j + 1))`. Establish `htg : IsTopologicalGroup (GA D (Yc D (j + 1)))`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)` as an intermediate fact. Conclude with `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig (Yc D (j + 1)).gram))`. Use `haveI := hfd.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hR : ((pk W).νY t (j + 1)).IsMulRightInvariant := GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D _ _ hfd.1`. Establish `hmap : Measure.map (fun h => h * κ') ((pk W).νY t (j + 1)) = (pk W).νY t (j + 1)` using `map_mul_right_eq_self _ κ'`. Establish `hFv` using `fun v => GlobalTheory.StepLevelP.IoLevPf.multT_val (pk W).θ ((pk W).MY (j + 1)) _ _ F.1 hF v`. Establish `hpt' : (pk W).ωY t j (κ, κ') ((pk W).ptY t j φ) = (levChi (Yc D j) ((pk W).βY j) (flagL ((pk W).datYt t j (pk W).triv)) κ * (levChi (Yc D (j + 1)) ((pk W).βY (j + 1)) (flagL ((pk W).datYt t (j + 1) (pk W).triv)) κ')⁻¹) • (pk W).ptY t j φ` using `hpt`. Establish `hth` using `hker.2 κ κ' _ hpt'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hint` using `GlobalTheory.fundamentalDomain_setIntegral_mul_right (GQ (Yc D (j + 1))) ((pk W).νY t (j + 1)) ((pk W).fdY t (j + 1)) hfd.2 κ' hmap (fun h => thetaKO ((pk W).ωY t j) (g * κ) h ((pk W).ptY t j φ) * F.1 x h) (fun γ hγ h => by`. Establish `h1` using `hker.1 1 (GQ (Yc D j)).one_mem γ hγ (g * κ) h`. Rewrite `h1` using `[one_mul]`. Simplify using `only [h1, (hFv x).1 γ hγ h])`. Use the proof step `(hio.integ F φ x (g * κ))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hpw : ∀ h, thetaKO ((pk W).ωY t j) (g * κ) (h * κ') ((pk W).ptY t j φ) * F.1 x (h * κ') = (levChi (Yc D j) ((pk W).βY j) (flagL ((pk W).datYt t j (pk W).triv)) κ * (levChi (Yc D (j + 1)) ((pk W).βY (j + 1)) (flagL ((pk W).datYt t (j + 1) (pk W).triv)) κ')⁻¹ * levChi (Yc D (j + 1) …` using `fun h => by`. Rewrite using `[hth, (hFv x).2 κ' hκ'P]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hio.eq F φ x (g * κ), ← hio.eq F φ x g]`. Unfold `Lift.liftInt`.
-
-Rewrite using `[← hint.2]`. Simplify using `only [hpw]`. Rewrite using `[integral_const_mul, e1, e2]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem io_levChi : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ t j, j + 1 < D.R.m → ∀ F : (pk W).CC t (j + 1), F.1 ∈ CP (pk W) (lvP W) t (j + 1) → ∀ κ ∈ levS (Yc D j) ((pk W).βY j) ((pk W).datYt t j (lvP W)), ∀ φ x g, ((pk W).ioY t j F).1 ((pk W).ItY j φ x) (g * κ) = levChi (Yc D j) ((pk W).βY j) ((pk W).datYt t j (lvP W)) κ * ((pk W).ioY t j F).1 ((pk W).ItY j φ x) g := by
   intro D L hT Gi Gl Kc Yd cX ex W hW t j hj F hF κ hκ φ x g

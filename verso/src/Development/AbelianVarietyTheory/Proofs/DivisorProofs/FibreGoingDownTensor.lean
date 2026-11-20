@@ -4,37 +4,29 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S A C _ _ _ _ _ u _ Q₁ _ hle h2`. Set `p` to `u.comap (algebraMap A (A ⊗[S] C))`. Set `p₁` to `u.comap (algebraMap S (A ⊗[S] C))`. Establish `hp : p₁ = p.comap (algebraMap S A)`. Simplify using `only [p, p₁, Ideal.comap_comap, ← IsScalarTower.algebraMap_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `K₁` to `p₁.ResidueField`. Set `K` to `p.ResidueField`. Use `letI : Algebra K₁ K := (Ideal.ResidueField.mapₐ p₁ p (Algebra.ofId S A) hp).toAlgebra`. Use `haveI : IsScalarTower S K₁ K := IsScalarTower.of_algebraMap_eq (fun s => ((Ideal.ResidueField.mapₐ p₁ p (Algebra.ofId S A) hp).commutes s).symm)`. Set `F₁` to `p₁.Fiber C`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `E` to `F₁ ⊗[K₁] K`. Set `e1 : p.Fiber (A ⊗[S] C) ≃ₐ[K] K ⊗[S] C` to `Algebra.TensorProduct.cancelBaseChange S A K K C`. Set `e2 : K ⊗[K₁] F₁ ≃ₐ[K] K ⊗[S] C` to `Algebra.TensorProduct.cancelBaseChange S K₁ K K C`. Set `e3 : K ⊗[K₁] F₁ ≃ₐ[K₁] E` to `Algebra.TensorProduct.comm K₁ K F₁`. Use `haveI : Module.Flat F₁ E := inferInstance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Algebra.HasGoingDown F₁ E := inferInstance`. Set `Φ : p.Fiber (A ⊗[S] C) ≃+* E` to `(e1.toRingEquiv.trans e2.symm.toRingEquiv).trans e3.toRingEquiv`. Establish `hΦ : ∀ c : C, Φ (Algebra.TensorProduct.includeRight (Algebra.TensorProduct.includeRight c : A ⊗[S] C)) = algebraMap F₁ E (Algebra.TensorProduct.includeRight c)`. Introduce `c`. Simplify using `only [Φ, e1, e2, e3, Algebra.TensorProduct.includeRight_apply, RingEquiv.trans_apply, AlgEquiv.toRingEquiv_eq_coe, AlgEquiv.coe_ringEquiv, Algebra.TensorProduct.cancelBaseChange_tmul, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `erw [Algebra.TensorProduct.cancelBaseChange_symm_tmul]`. Both sides reduce to the same expression. Use `haveI : u.LiesOver p := ⟨rfl⟩`. Set `isoA` to `PrimeSpectrum.primesOverOrderIsoFiber A (A ⊗[S] C) p`. Set `ub` to `isoA ⟨u, inferInstance, inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hub : ub.asIdeal.comap (Algebra.TensorProduct.includeRight : A ⊗[S] C →ₐ[A] p.Fiber (A ⊗[S] C)) = u`. Use `congrArg Subtype.val (isoA.symm_apply_apply ⟨u, inferInstance, inferInstance⟩)` as an intermediate fact. Conclude with `this`. Establish `hmem : ∀ y : A ⊗[S] C, (Algebra.TensorProduct.includeRight : A ⊗[S] C →ₐ[A] p.Fiber (A ⊗[S] C)) y ∈ ub.asIdeal ↔ y ∈ u` using `fun y => Iff.of_eq (congrArg (y ∈ ·) hub)`. Use `haveI : Q₁.LiesOver p₁ := ⟨h2.symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `iso₁` to `PrimeSpectrum.primesOverOrderIsoFiber S C p₁`. Set `Qb` to `iso₁ ⟨Q₁, inferInstance, inferInstance⟩`. Establish `hQb : Qb.asIdeal.comap (Algebra.TensorProduct.includeRight : C →ₐ[S] F₁) = Q₁`. Use `congrArg Subtype.val (iso₁.symm_apply_apply ⟨Q₁, inferInstance, inferInstance⟩)` as an intermediate fact. Conclude with `this`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ue : Ideal E` to `ub.asIdeal.comap (Φ.symm : E →+* p.Fiber (A ⊗[S] C))`. Use `haveI : ue.IsPrime := Ideal.comap_isPrime _ _`. Set `w : Ideal F₁` to `ue.comap (algebraMap F₁ E)`. Use `haveI : w.IsPrime := Ideal.comap_isPrime _ _`. Use `haveI : ue.LiesOver w := ⟨rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : w.comap (Algebra.TensorProduct.includeRight : C →ₐ[S] F₁) = u.comap (Algebra.TensorProduct.includeRight : C →ₐ[S] A ⊗[S] C)`. Use extensionality with `c`. Express the relevant statement in the definitionally equal form `Φ.symm (algebraMap F₁ E (Algebra.TensorProduct.includeRight c)) ∈ ub.asIdeal ↔ _`. Rewrite using `[← hΦ, RingEquiv.symm_apply_apply]`. Conclude with `hmem _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hwle : Qb.asIdeal ≤ w`. Set `u₁` to `u.comap (Algebra.TensorProduct.includeRight : C →ₐ[S] A ⊗[S] C)`. Use `haveI : u₁.IsPrime := Ideal.comap_isPrime _ _`. Use `haveI : u₁.LiesOver p₁ := ⟨by show p₁ = u₁.comap (algebraMap S C)`. Use extensionality with `s`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[u₁, p₁]⟩`. Set `wP : PrimeSpectrum F₁` to `⟨w, inferInstance⟩`. Establish `hsym : (iso₁.symm wP).1 = u₁` using `hw`. Establish `key : iso₁.symm Qb ≤ iso₁.symm wP` using `by show (iso₁.symm Qb).1 ≤ (iso₁.symm wP).1`. Rewrite using `[hsym, iso₁.symm_apply_apply]`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hle`. Conclude with `(iso₁.symm.le_iff_le.mp key : Qb ≤ wP)`. Take `⟨P, hPle, hPprime, hPover⟩` from `Ideal.exists_ideal_le_liesOver_of_le (p := Qb.asIdeal) (q := w) ue hwle`. Use `⟨(P.comap (Φ : p.Fiber (A ⊗[S] C) →+* E)).comap (Algebra.TensorProduct.includeRight : A ⊗[S] C →ₐ[A] p.Fiber (A ⊗[S] C)), inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
-
-Rewrite using `[← hmem]`. Use `hPle hx` as an intermediate fact. Simplify `this` using `[ue]`. Use extensionality with `c`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_comap]`.
-
-Use `erw [hΦ c]`. Rewrite using `[← hQb, Ideal.mem_comap, ← Ideal.mem_comap, ← Ideal.under_def, ← hPover.over]`. Use extensionality with `a`. Set `J : Ideal K` to `(P.comap (Φ : p.Fiber (A ⊗[S] C) →+* E)).comap (algebraMap K (p.Fiber (A ⊗[S] C)))`. Use `haveI : J.IsPrime := Ideal.comap_isPrime _ _`.
-
-Establish `hJ : J = ⊥` using `Ideal.eq_bot_of_prime J`. Establish `hx : (Algebra.TensorProduct.includeRight : A ⊗[S] C →ₐ[A] p.Fiber (A ⊗[S] C)) (algebraMap A (A ⊗[S] C) a) = algebraMap K (p.Fiber (A ⊗[S] C)) (algebraMap A K a)`. Rewrite using `[AlgHom.commutes, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hx]`. Express the relevant statement in the definitionally equal form `algebraMap A K a ∈ J ↔ _`.
-
-Rewrite using `[hJ, Ideal.mem_bot, Ideal.algebraMap_residueField_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_going_down_tensor : ∀ (S A C : Type) [CommRing S] [CommRing A] [CommRing C] [Algebra S A] [Algebra S C]
     (u : Ideal (TensorProduct S A C)) [u.IsPrime] (Q₁ : Ideal C) [Q₁.IsPrime],

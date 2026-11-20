@@ -7,7 +7,7 @@ open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X m c d M hm hc hd hc6 hd6 hL t w ht hw`. Conclude with `⟨PC.eqv Ω ε X m c d M hm hc hd hc6 hd6 hL t w ht hw, PC.coc Ω ε X m c d M hm hc hd hc6 hd6 hL t w ht hw, PC.loc Ω ε X m c d M hm hc hd hc6 hd6 hL t w ht hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Kato.Sym.pCoc :
     UpperTheory.V.Z.Kato.Sym.PCoc := by

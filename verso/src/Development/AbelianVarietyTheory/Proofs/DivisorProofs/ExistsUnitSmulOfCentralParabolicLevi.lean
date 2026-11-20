@@ -20,19 +20,19 @@ open GlobalTheory.ResidueEisenstein.ModConj
 namespace GlobalTheory.CentralLevi
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r m X Y Z J₀ f g hg hc`. Take `⟨lv, hlv⟩` from `GlobalTheory.SphEis.exists_isLv F E σ n J (r + 1) m X Y Z J₀ f`. Set `Dα : GL (Fin (r + 1)) (AF F ⊗[F] E) → GL (Fin (r + 1)) (AF F ⊗[F] E)` to `fun α => ⟨cT (sigR (AF F) σ) (α⁻¹).1, cT (sigR (AF F) σ) α.1, by rw [← Formalism.UG.cT_mul, Units.mul_inv, Formalism.UG.cT_one], by rw [← Formalism.UG.cT_mul, Units.inv_mul, Formalism.UG.cT_one]⟩`. Establish `hmem : ∀ α, lv α ∈ GlobalTheory.StdPar.levi σ J X Y {Fin.last r}` using `fun α => by`. Use `Subgroup.mem_iInf.2 fun k => Subgroup.mem_iInf.2 fun hk => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hk` using `[Finset.mem_singleton]`. Substitute `hk` using the available equality. Conclude with `⟨⟨α, trivial, hlv.onC α⟩, ⟨Dα α, trivial, hlv.onD α⟩⟩`. Take `⟨B, -, hB⟩` from `(Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hg (Fin.last r)) (Finset.mem_singleton_self _)).1`. Express the relevant statement in the definitionally equal form `GL (Fin (r + 1)) (AF F ⊗[F] E) at B`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(matHom _ σ J g).1 * adMat F X = adMat F X * B.1 at hB`. Establish `hL : adMat F (cT (σ : E →+* E) Y * J) * adMat F X = 1`. Rewrite using `[← Matrix.map_mul, f.dc, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hcomm : ∀ α : GL (Fin (r + 1)) (AF F ⊗[F] E), B.1 * α.1 = α.1 * B.1` using `fun α => by`. Establish `e` using `congrArg (fun h => (matHom _ σ J h).1 * adMat F X) (hc (lv α) (hmem α))`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, Units.val_mul] at e`. Establish `e1 : (matHom _ σ J g).1 * (matHom _ σ J (lv α)).1 * adMat F X = adMat F X * (B.1 * α.1)`. Rewrite using `[Matrix.mul_assoc, hlv.onC, ← Matrix.mul_assoc, hB, Matrix.mul_assoc]`. Establish `e2 : (matHom _ σ J (lv α)).1 * (matHom _ σ J g).1 * adMat F X = adMat F X * (α.1 * B.1)`. Rewrite using `[Matrix.mul_assoc, hB, ← Matrix.mul_assoc, hlv.onC, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (adMat F (cT (σ : E →+* E) Y * J) * ·) (e1.symm.trans (e.trans e2))` as an intermediate fact. Simplify `this` using `only [← Matrix.mul_assoc, hL, Matrix.one_mul]`. Take `⟨c, hcB⟩` from `Matrix.mem_range_scalar_of_commute_transvectionStruct (M := B.1) fun t => (hcomm ⟨t.toMatrix, t.inv.toMatrix, t.mul_inv, t.inv_mul⟩).symm`. Establish `hu : IsUnit c`. Establish `h1` using `congrFun (congrFun (Units.mul_inv B) 0) 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hcB, Matrix.scalar_apply, Matrix.diagonal_mul, Matrix.one_apply_eq]`. Conclude with `⟨⟨c, _, h1, by rw [mul_comm]; exact h1⟩, rfl⟩`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[hB, ← hcB, IsUnit.unit_spec]`. Use extensionality with `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.scalar_apply, Matrix.mul_diagonal, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_unit_smul_of_central : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r m : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), GlobalTheory.SphEis.Fr σ J X Y Z J₀ → ∀ g ∈ GlobalTheory.StdPar.levi σ J X Y {Fin.last r}, (∀ k ∈ GlobalTheory.StdPar.levi σ J X Y {Fin.last r}, g * k = k * g) → ∃ l : (AF F ⊗[F] E)ˣ, (matHom _ σ J g).1 * adMat F X = (l : AF F ⊗[F] E) • adMat F X := by
   intro F E _ _ _ _ _ σ n J r m X Y Z J₀ f g hg hc

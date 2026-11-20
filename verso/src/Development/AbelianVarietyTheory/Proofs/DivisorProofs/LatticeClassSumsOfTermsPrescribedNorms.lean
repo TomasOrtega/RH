@@ -12,9 +12,9 @@ open Filter Topology
 namespace GlobalTheory.UPoinc.USum.ClassTerms
 
 /- English proof (translation)
-Use `haveI : CompleteSpace M := FiniteDimensional.complete ℚ_[p] M`. Set `g : I → M` to `fun i => ⟨f i, hf i⟩`. Establish `hg : Tendsto g cofinite (𝓝 0)`. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Simplify `h0` using `[g]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hs : Summable g` using `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero hg`. Use `hs.hasSum.map M.subtype continuous_subtype_val` as an intermediate fact. Conclude with `this.summable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem summable_of_mem_fd {p : ℕ} [Fact p.Prime] {I : Type} (M : Submodule ℚ_[p] (PadicAlgCl p))
     [FiniteDimensional ℚ_[p] M] (f : I → PadicAlgCl p) (hf : ∀ i, f i ∈ M)
@@ -29,15 +29,15 @@ theorem summable_of_mem_fd {p : ℕ} [Fact p.Prime] {I : Type} (M : Submodule �
   exact this.summable
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `IsAlgClosed.exists_root (Polynomial.X ^ 2 - Polynomial.X - 1 : Polynomial (PadicAlgCl p)) (by`. Establish `hd : (Polynomial.X ^ 2 - Polynomial.X - 1 : Polynomial (PadicAlgCl p)).degree = 2` using `by compute_degree!`. Rewrite using `[hd]`. Use the proof step `decide)`. Establish `h2 : u ^ 2 = u + 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Polynomial.IsRoot] at hu`. Take the linear combination `hu`. Establish `hle : ‖u‖ ≤ 1`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ‖u‖ ^ 2 ≤ max ‖u‖ ‖(1 : PadicAlgCl p)‖`. Rewrite using `[← norm_pow, h2]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`. Rewrite `h3` using `[norm_one, max_eq_left h.le]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle' : ‖u - 1‖ ≤ 1`. Use `IsUltrametricDist.norm_add_le_max u (-1)` as an intermediate fact. Rewrite `this` using `[← sub_eq_add_neg, norm_neg, norm_one]`. Conclude with `this.trans (max_le hle le_rfl)`. Establish `hprod : ‖u‖ * ‖u - 1‖ = 1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite using `[← norm_mul, show u * (u - 1) = 1 by linear_combination h2, norm_one]`. Establish `a1` using `mul_le_mul_of_nonneg_left hle' (norm_nonneg u)`. Establish `a2` using `mul_le_mul_of_nonneg_right hle (norm_nonneg (u - 1))`. Conclude with `⟨u, le_antisymm hle (by nlinarith), le_antisymm hle' (by nlinarith)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_sub_one_unit (p : ℕ) [Fact p.Prime] :
     ∃ u : PadicAlgCl p, ‖u‖ = 1 ∧ ‖u - 1‖ = 1 := by
@@ -66,59 +66,51 @@ theorem exists_unit_sub_one_unit (p : ℕ) [Fact p.Prime] :
   exact ⟨u, le_antisymm hle (by nlinarith), le_antisymm hle' (by nlinarith)⟩
 
 /- English proof (translation)
-Take `⟨u₀, hu1, hu2⟩` from `exists_unit_sub_one_unit p`. Use `set D : Set Y := C \ {χ₀} with hD`. Use `set A : Subalgebra ℚ_[p] (PadicAlgCl p) := Algebra.adjoin ℚ_[p] ({s, u₀} : Set (PadicAlgCl p)) with hA`. Set `M : Submodule ℚ_[p] (PadicAlgCl p)` to `Subalgebra.toSubmodule A`. Use `haveI : FiniteDimensional ℚ_[p] M := Algebra.finite_adjoin_of_finite_of_isIntegral (by simp) (fun x _ => Algebra.IsIntegral.isIntegral x)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsA : s ∈ A` using `Algebra.subset_adjoin (by simp)`. Establish `huA : u₀ ∈ A` using `Algebra.subset_adjoin (by simp)`. Establish `hexp : Tendsto (fun χ => Real.exp (-q χ)) cofinite (𝓝 0)` using `Real.tendsto_exp_atBot.comp (tendsto_neg_atTop_atBot.comp hq)`. Establish `hsumm : ∀ w : Y → PadicAlgCl p, (∀ χ, w χ ∈ A) → (∀ χ, ‖w χ‖ = Real.exp (-q χ)) → Summable (D.indicator w)`. Introduce `w hwA hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `summable_of_mem_fd M _ (fun χ => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `h : χ ∈ D`. Rewrite using `[Set.indicator_of_mem h]`. Conclude with `hwA χ`. Rewrite using `[Set.indicator_of_notMem h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.zero_mem`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun χ => ?_) hexp` and prove the remaining obligations. Distinguish the cases in `h : χ ∈ D`. Rewrite using `[Set.indicator_of_mem h, hw]`. Rewrite using `[Set.indicator_of_notMem h, norm_zero]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Check the signs of the components of the expression. Establish `hSle : ∀ w : Y → PadicAlgCl p, (∀ χ, ‖w χ‖ = Real.exp (-q χ)) → ‖∑' χ, D.indicator w χ‖ ≤ Real.exp (-q χ₀)`. Introduce `w hw`. Use `IsUltrametricDist.norm_tsum_le_of_forall_le (fun χ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : χ ∈ D`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.indicator_of_mem h, hw]`. Conclude with `Real.exp_le_exp.mpr (neg_le_neg (hmin χ h.1))`. Rewrite using `[Set.indicator_of_notMem h, norm_zero]`. Check the signs of the components of the expression. Establish `key : ∀ w : Y → PadicAlgCl p, (∀ χ, w χ ∈ A) → (∀ χ, ‖w χ‖ = Real.exp (-q χ)) → (∃ κ, ‖G κ - ∑' χ, D.indicator w χ‖ = Real.exp (-q χ₀)) → ∃ t : Y → K → PadicAlgCl p, (∀ χ ∈ C, ∀ κ, ‖t χ κ‖ ≤ Real.exp (-q χ)) ∧ (∀ χ ∈ C, ∃ κ, ‖t χ κ‖ = Real.exp (-q χ)) ∧ ∀ κ, HasSum (fun χ : C => …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `w hwA hw hex`. Use `set S := ∑' χ, D.indicator w χ with hSdef`. Establish `hsum` using `hsumm w hwA hw`. Establish `hS` using `hSle w hw`. Use `⟨fun χ κ => if χ = χ₀ then G κ - S else w χ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `χ hχ κ`. Distinguish the cases in `h : χ = χ₀`. Substitute `h` using the available equality. Simplify using `only [if_true]`. Rewrite using `[sub_eq_add_neg]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hG κ) (by rw [norm_neg]; exact hS))`. Simplify using `only [h, if_false, hw, le_refl]`. Introduce `χ hχ`. Distinguish the cases in `h : χ = χ₀`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨κ, hκ⟩` from `hex`. Conclude with `⟨κ, by simpa using hκ⟩`. Conclude with `⟨Classical.arbitrary K, by simp only [h, if_false, hw]⟩`. Introduce `κ`. Establish `h1 : HasSum (fun χ => if χ = χ₀ then G κ - S else 0) (G κ - S)` using `hasSum_ite_eq _ _`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h2` using `h1.add hsum.hasSum`. Rewrite `h2` using `[sub_add_cancel]`. Use `(hasSum_subtype_iff_indicator (f := fun χ => if χ = χ₀ then G κ - S else w χ)).mpr ?_` and prove the remaining obligations. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `χ`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `h : χ = χ₀`. Substitute `h` using the available equality. Establish `: χ ∉ D` using `fun hh => hh.2 rfl`. Simplify using `[Set.indicator_of_mem h0, Set.indicator_of_notMem this]`. Distinguish the cases in `hc : χ ∈ C`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `: χ ∈ D` using `⟨hc, h⟩`. Simplify using `[Set.indicator_of_mem hc, Set.indicator_of_mem this, h]`. Establish `: χ ∉ D` using `fun hh => hc hh.1`. Simplify using `[Set.indicator_of_notMem hc, Set.indicator_of_notMem this, h]`. Use `set rr : Y → PadicAlgCl p := fun χ => s ^ n χ with hrr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hrA : ∀ χ, rr χ ∈ A` using `fun χ => A.pow_mem hsA _`. Establish `hrn : ∀ χ, ‖rr χ‖ = Real.exp (-q χ)` using `fun χ => by simp [rr, norm_pow, hs]`. Distinguish the cases in `hstrict : ∀ χ ∈ C, χ ≠ χ₀ → q χ₀ < q χ`. Take `⟨κ, hκ⟩` from `hG' hstrict`. Use `key rr hrA hrn ⟨κ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : ‖∑' χ, D.indicator rr χ‖ < Real.exp (-q χ₀)`. Distinguish the cases in `hDe : D.Nonempty`. Use `haveI : Nonempty D := hDe.to_subtype`. Establish `hqD : Tendsto (fun x : D => q x) cofinite atTop` using `hq.comp Subtype.val_injective.tendsto_cofinite`. Take `⟨a₁, ha₁⟩` from `hqD.exists_forall_le`.
+Check the signs of the components of the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt₁ : q χ₀ < q a₁` using `hstrict a₁ a₁.2.1 (fun h => a₁.2.2 h)`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_tsum_le_of_forall_le (C := Real.exp (-q a₁)) (fun χ => ?_)) (Real.exp_lt_exp.mpr (neg_lt_neg hlt₁))` and prove the remaining obligations. Distinguish the cases in `h : χ ∈ D`. Rewrite using `[Set.indicator_of_mem h, hrn]`. Conclude with `Real.exp_le_exp.mpr (neg_le_neg (ha₁ ⟨χ, h⟩))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem h, norm_zero]`. Check the signs of the components of the expression. Establish `hz : D.indicator rr = 0` using `funext fun χ => Set.indicator_of_notMem (fun h => hDe ⟨χ, h⟩) _`. Simplify using `only [hz, Pi.zero_apply, tsum_zero, norm_zero]`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[sub_eq_add_neg, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_neg, hκ]; exact hlt.ne'), norm_neg, hκ, max_eq_left hlt.le]`. Use `push_neg at hstrict`. Take `⟨χ₁, hχ₁C, hχ₁ne, hχ₁le⟩` from `hstrict`. Establish `hq₁ : q χ₁ = q χ₀` using `le_antisymm hχ₁le (hmin χ₁ hχ₁C)`. Establish `hχ₁D : χ₁ ∈ D` using `⟨hχ₁C, hχ₁ne⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `set κ₀ : K := Classical.arbitrary K`. Distinguish the cases in `hc : ‖G κ₀ - ∑' χ, D.indicator rr χ‖ = Real.exp (-q χ₀)`. Conclude with `key rr hrA hrn ⟨κ₀, hc⟩`. Use `set w : Y → PadicAlgCl p := Function.update rr χ₁ (u₀ * rr χ₁) with hwdef`. Establish `hwA : ∀ χ, w χ ∈ A`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Introduce `χ`. Distinguish the cases in `h : χ = χ₁`. Substitute `h` using the available equality. Simplify using `only [w, Function.update_self]`. Conclude with `A.mul_mem huA (hrA _)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [w, Function.update_of_ne h]`. Conclude with `hrA χ`. Establish `hwn : ∀ χ, ‖w χ‖ = Real.exp (-q χ)`. Introduce `χ`. Distinguish the cases in `h : χ = χ₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Simplify using `only [w, Function.update_self, norm_mul, hu1, _root_.one_mul, hrn]`. Simplify using `only [w, Function.update_of_ne h, hrn]`. Use `key w hwA hwn ⟨κ₀, ?_⟩` and prove the remaining obligations. Establish `hind : D.indicator w = Function.update (D.indicator rr) χ₁ (u₀ * rr χ₁)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `χ`. Distinguish the cases in `h : χ = χ₁`. Substitute `h` using the available equality. Simplify using `[w, Set.indicator_of_mem hχ₁D]`. Distinguish the cases in `hd : χ ∈ D`.
-
-Simplify using `[w, Set.indicator_of_mem hd, Function.update_of_ne h]`. Simplify using `[w, Set.indicator_of_notMem hd, Function.update_of_ne h]`. Establish `hS' : ∑' χ, D.indicator w χ = u₀ * rr χ₁ - rr χ₁ + ∑' χ, D.indicator rr χ`. Rewrite using `[hind]`. Use `((hsumm rr hrA hrn).hasSum.update χ₁ (u₀ * rr χ₁))` as an intermediate fact.
-
-Rewrite `this` using `[Set.indicator_of_mem hχ₁D]`. Conclude with `this.tsum_eq`. Establish `hle : ‖G κ₀ - ∑' χ, D.indicator rr χ‖ < Real.exp (-q χ₀)`. Use `lt_of_le_of_ne ?_ hc` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg]`.
-
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hG κ₀) (by rw [norm_neg]; exact hSle rr hrn))`. Establish `hn1 : ‖-((u₀ - 1) * rr χ₁)‖ = Real.exp (-q χ₀)`. Rewrite using `[norm_neg, norm_mul, hu2, _root_.one_mul, hrn, hq₁]`. Establish `: G κ₀ - ∑' χ, D.indicator w χ = (G κ₀ - ∑' χ, D.indicator rr χ) + -((u₀ - 1) * rr χ₁)`. Rewrite using `[hS']`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hn1]; exact hle.ne), hn1, max_eq_right hle.le]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_class {p : ℕ} [Fact p.Prime] {Y K : Type} [Nonempty Y] [Nonempty K] (q : Y → ℝ) (s : PadicAlgCl p)
     (n : Y → ℕ) (hq : Tendsto q cofinite atTop) (hs : ∀ χ, ‖s‖ ^ n χ = Real.exp (-q χ))
@@ -268,23 +260,21 @@ namespace GlobalTheory.UPoinc.USum
 open GlobalTheory.UPoinc.USum.ClassTerms in
 
 /- English proof (translation)
-Introduce `p _ Y K _ _ m q s n hq hs F hF hle heq`. Establish `hrefl : ∀ x : Y, CongMod m x x` using `fun x => ⟨0, by simp⟩`. Establish `hsymm : ∀ x y : Y, CongMod m x y → CongMod m y x`. Introduce and unpack `x y ⟨w, hw⟩`. Conclude with `⟨-w, by rw [hw]; simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `htrans : ∀ x y z : Y, CongMod m x y → CongMod m y z → CongMod m x z`. Introduce and unpack `x y z ⟨w, hw⟩ ⟨w', hw'⟩`. Conclude with `⟨w' + w, by rw [hw, hw', smul_add]; abel⟩`. Set `R : Setoid Y` to `⟨CongMod m, ⟨hrefl, fun h => hsymm _ _ h, fun h h' => htrans _ _ _ h h'⟩⟩`. Establish `hR : ∀ x y : Y, Quotient.mk R x = Quotient.mk R y ↔ CongMod m x y` using `fun x y => ⟨fun h => Quotient.exact h, fun h => Quotient.sound h⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmin : ∀ c : Quotient R, ∃ χ₀, Quotient.mk R χ₀ = c ∧ ∀ χ, Quotient.mk R χ = c → q χ₀ ≤ q χ`. Introduce `c`. Take `⟨x, rfl⟩` from `Quotient.exists_rep c`. Set `Cs : Set Y` to `{χ | Quotient.mk R χ = Quotient.mk R x}`. Use `haveI : Nonempty Cs := ⟨⟨x, rfl⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hqC : Tendsto (fun a : Cs => q a) cofinite atTop` using `hq.comp Subtype.val_injective.tendsto_cofinite`. Take `⟨a, ha⟩` from `hqC.exists_forall_le`. Conclude with `⟨a, a.2, fun χ hχ => ha ⟨χ, hχ⟩⟩`. Use `choose z hzc hzmin using hmin`. Establish `hone : ∀ c : Quotient R, ∃ t : Y → K → PadicAlgCl p, (∀ χ ∈ {χ | Quotient.mk R χ = c}, ∀ κ, ‖t χ κ‖ ≤ Real.exp (-q χ)) ∧ (∀ χ ∈ {χ | Quotient.mk R χ = c}, ∃ κ, ‖t χ κ‖ = Real.exp (-q χ)) ∧ ∀ κ, HasSum (fun χ : {χ | Quotient.mk R χ = c} => t χ κ) (F (z c) κ)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c`. Use `one_class q s n hq hs {χ | Quotient.mk R χ = c} (z c) (hzc c) (hzmin c) (F (z c)) (fun κ => hle _ κ (fun χ hχ => hzmin c χ (((hR _ _).2 hχ).trans (hzc c)))) ?_` and prove the remaining obligations. Introduce `H`. Conclude with `heq (z c) (fun χ hχ hne => H χ (((hR _ _).2 hχ).trans (hzc c)) hne)`. Use `choose tc htc1 htc2 htc3 using hone`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun χ κ => tc (Quotient.mk R χ) χ κ, fun χ κ => htc1 _ χ rfl κ, fun χ => htc2 _ χ rfl, ?_⟩` and prove the remaining obligations. Introduce `ν κ δ hδ`. Use `set c := Quotient.mk R ν with hc`. Establish `hFz : F (z c) κ = F ν κ` using `hF _ _ κ ((hR _ _).1 (hzc c))`. Establish `ht : Tendsto (fun T : Finset {χ | Quotient.mk R χ = c} => ∑ χ ∈ T, tc c χ κ) atTop (𝓝 (F ν κ))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hFz]`. Conclude with `htc3 c κ`. Take `⟨T₀, hT₀⟩` from `Metric.tendsto_atTop.1 ht δ hδ`. Use `⟨T₀.map (Function.Embedding.subtype _), fun S hSc hS₀ => ?_⟩` and prove the remaining obligations. Establish `hTT : T₀ ≤ S.subtype (fun χ => Quotient.mk R χ = c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[Finset.mem_subtype]`. Conclude with `hS₀ x (Finset.mem_map_of_mem _ hx) ((hR _ _).1 x.2)`. Establish `h1` using `hT₀ _ hTT`. Express the relevant statement in the definitionally equal form `dist (∑ χ ∈ S.subtype (fun χ => Quotient.mk R χ = c), tc c χ κ) (F ν κ) < δ at h1`.
-
-Rewrite `h1` using `[Finset.sum_subtype_eq_sum_filter (fun χ => tc c χ κ), Finset.filter_true_of_mem (fun χ hχ => (hR _ _).2 (hSc χ hχ))]`. Establish `hsum : ∑ χ ∈ S, tc (Quotient.mk R χ) χ κ = ∑ χ ∈ S, tc c χ κ` using `Finset.sum_congr rfl (fun χ hχ => by rw [(hR _ _).2 (hSc χ hχ)])`. Use `show ‖F ν κ - ∑ χ ∈ S, tc (Quotient.mk R χ) χ κ‖ ≤ δ`. Rewrite using `[hsum, ← dist_eq_norm, dist_comm]`. Conclude with `h1.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classSum_of_terms : ∀ (p : ℕ) [Fact p.Prime] (Y K : Type) [AddCommGroup Y] [Nonempty K] (m : ℕ) (q : Y → ℝ) (s : PadicAlgCl p) (n : Y → ℕ), Filter.Tendsto q Filter.cofinite Filter.atTop → (∀ χ, ‖s‖ ^ n χ = Real.exp (-q χ)) → ∀ F : Y → K → PadicAlgCl p, (∀ ν ν' κ, CongMod m ν ν' → F ν κ = F ν' κ) → (∀ ν κ, (∀ χ, CongMod m χ ν → q ν ≤ q χ) → ‖F ν κ‖ ≤ Real.exp (-q ν)) → (∀ ν, (∀ χ, CongMod m χ ν → χ ≠ ν → q ν < q χ) → ∃ κ, ‖F ν κ‖ = Real.exp (-q ν)) → ∃ t : Y → K → PadicAlgCl p, (∀ χ κ, ‖t χ κ‖ ≤ Real.exp (-q χ)) ∧ (∀ χ, ∃ κ, ‖t χ κ‖ = Real.exp (-q χ)) ∧ ∀ ν κ (δ : ℝ), 0 < δ → ∃ S₀ : Finset Y, ∀ S : Finset Y, (∀ χ ∈ S, CongMod m χ ν) → (∀ χ ∈ S₀, CongMod m χ ν → χ ∈ S) → ‖F ν κ - ∑ χ ∈ S, t χ κ‖ ≤ δ := by
   intro p _ Y K _ _ m q s n hq hs F hF hle heq

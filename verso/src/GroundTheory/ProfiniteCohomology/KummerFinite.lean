@@ -18,7 +18,7 @@ def monoidHomRootsOfUnityEquiv (G : Type*) [Group G] (hG : ∀ g : G, g ^ n = 1)
   right_inv ψ := by ext; rfl
 
 /- English proof (translation)
-Establish `: HasEnoughRootsOfUnity K (Monoid.exponent G)` using `HasEnoughRootsOfUnity.of_dvd K (Monoid.exponent_dvd_of_forall_pow_eq_one hG)`. Rewrite using `[Nat.card_congr (monoidHomRootsOfUnityEquiv G hG), CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma card_monoidHom_rootsOfUnity (G : Type*) [CommGroup G] [Finite G]
     (hG : ∀ g : G, g ^ n = 1) : Nat.card (G →* rootsOfUnity n K) = Nat.card G := by
@@ -28,7 +28,7 @@ lemma card_monoidHom_rootsOfUnity (G : Type*) [CommGroup G] [Finite G]
     CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity]
 
 /- English proof (translation)
-The claim follows from `.of_injective _ DFunLike.coe_injective`.
+A detailed English derivation is pending.
 -/
 lemma finite_monoidHom_rootsOfUnity (G : Type*) [Group G] [Finite G] :
     Finite (G →* rootsOfUnity n K) :=
@@ -44,7 +44,7 @@ variable (L : Type*) [Field L] [Algebra K L]
 omit [NeZero n] [HasEnoughRootsOfUnity K n] in
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (UnitsModPow.pow_eq_one K n x.1)`.
+A detailed English derivation is pending.
 -/
 lemma kummerGroup_pow_eq_one (x : kummerGroup K n L) : x ^ n = 1 :=
   Subtype.ext (UnitsModPow.pow_eq_one K n x.1)
@@ -54,11 +54,11 @@ variable {K n L}
 omit [NeZero n] [HasEnoughRootsOfUnity K n] in
 
 /- English proof (translation)
-Set `f : Gal(L/K) → Lˣ` to `fun σ => Units.map (algebraMap K L : K →* L) (χ σ)`. Establish `hf : groupCohomology.IsMulCocycle₁ f`. Introduce `g h`. Use `ext`. Simplify using `only [f, map_mul, Units.val_mul, Units.coe_map, MonoidHom.coe_coe, AlgEquiv.smul_units_def, AlgEquiv.commutes]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨β, hβ⟩` from `groupCohomology.isMulCoboundary₁_of_isMulCocycle₁_of_aut_to_units f hf`. Use `⟨β, fun σ => ?_⟩` and prove the remaining obligations. Use `congrArg Units.val (hβ σ)` as an intermediate fact. Simplify using `only [AlgEquiv.smul_units_def, Units.val_div_eq_div_val, Units.coe_map, MonoidHom.coe_coe, f] at this`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this, div_mul_cancel₀ _ β.ne_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma exists_eigenvector_of_character [FiniteDimensional K L] (χ : Gal(L/K) →* Kˣ) :
     ∃ β : Lˣ, ∀ σ : Gal(L/K), σ (β : L) = algebraMap K L (χ σ : K) * β := by
@@ -79,9 +79,9 @@ lemma exists_eigenvector_of_character [FiniteDimensional K L] (χ : Gal(L/K) →
 omit [NeZero n] [HasEnoughRootsOfUnity K n] in
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_eigenvector_of_character χ`. Establish `hfix : ∀ σ : Gal(L/K), σ ((β : L) ^ n) = (β : L) ^ n`. Introduce `σ`. Rewrite using `[map_pow, hβ σ, mul_pow, ← map_pow, ← Units.val_pow_eq_pow_val, ← map_pow, Monoid.exponent_dvd_iff_forall_pow_eq_one.mp hexp σ, map_one, Units.val_one, map_one, one_mul]`. Take `⟨b, hb⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed (F := K) _).mpr hfix`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Rewrite `hb` using `[map_zero]`. Conclude with `pow_ne_zero n β.ne_zero hb.symm`. Conclude with `⟨Units.mk0 b hb0, β, hb.symm, hβ⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma exists_kummer_eigenvector [FiniteDimensional K L] [IsGalois K L]
     (hexp : Monoid.exponent Gal(L/K) ∣ n) (χ : Gal(L/K) →* Kˣ) :
@@ -102,11 +102,11 @@ lemma exists_kummer_eigenvector [FiniteDimensional K L] [IsGalois K L]
 variable (K n L)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_one]`. Introduce `x hx`. Take `⟨a, ha, α, hα⟩` from `exists_rep x`. Establish `hfix : ∀ σ : Gal(L/K), σ α = α` using `fun σ => (kummerPairing_eq_one_iff σ x ha hα).mp (DFunLike.congr_fun hx σ)`. Take `⟨b, rfl⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed (F := K) α).mpr hfix`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Rewrite `hα` using `[map_zero, zero_pow (NeZero.ne n)]`. Conclude with `(map_ne_zero (algebraMap K L)).mpr a.ne_zero hα.symm`. Establish `hba : (Units.mk0 b hb0) ^ n = a`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify `hα)` using `using (algebraMap K L).injective (by simpa`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← ha, OneMemClass.coe_one, QuotientGroup.eq_one_iff]`. Conclude with `mem_unitsPow.mpr ⟨_, hba⟩`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kummerPairingRight_injective [FiniteDimensional K L] [IsGalois K L] :
     Function.Injective (kummerPairingRight K n L) := by
@@ -128,11 +128,11 @@ theorem kummerPairingRight_injective [FiniteDimensional K L] [IsGalois K L] :
   exact mem_unitsPow.mpr ⟨_, hba⟩
 
 /- English proof (translation)
-Set `_ : CommGroup Gal(L/K)` to `{ (inferInstance : Group Gal(L/K)) with mul_comm := fun a b => (IsMulCommutative.is_comm (M := Gal(L/K))).comm a b }`. Establish `: HasEnoughRootsOfUnity K (Monoid.exponent Gal(L/K))` using `HasEnoughRootsOfUnity.of_dvd K hexp`. Rewrite using `[injective_iff_map_eq_one]`. Introduce `σ hσ`. Assume the negation of the conclusion as `hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨χ, hχ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity Gal(L/K) K hne`. Take `⟨a, β, hβ, hχβ⟩` from `exists_kummer_eigenvector hexp χ`. Establish `hx : (a : UnitsModPow K n) ∈ kummerGroup K n L` using `mk_mem_kummerGroup.mpr ⟨β, hβ⟩`. Establish `h1 : σ β = β` using `(kummerPairing_eq_one_iff σ ⟨_, hx⟩ rfl hβ).mp (DFunLike.congr_fun hσ ⟨_, hx⟩)`. Rewrite `h1` using `[hχβ σ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : algebraMap K L (χ σ : K) = 1` using `mul_right_cancel₀ (ne_zero_of_pow_eq_algebraMap hβ) (h1.trans (one_mul β).symm)`. Apply `hχ` to reduce the goal to its premises. Use `ext`. Simplify using `using (algebraMap K L).injective (h2.trans (map_one _).symm)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kummerPairingLeft_injective [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) :
@@ -157,7 +157,7 @@ theorem kummerPairingLeft_injective [FiniteDimensional K L] [IsGalois K L]
   simpa using (algebraMap K L).injective (h2.trans (map_one _).symm)
 
 /- English proof (translation)
-The claim follows from `have := finite_monoidHom_rootsOfUnity (K := K) (n := n) Gal(L/K) Finite.of_injective _ (kummerPairingRight_injective K n L)`.
+A detailed English derivation is pending.
 -/
 theorem kummerGroup_finite [FiniteDimensional K L] [IsGalois K L] :
     Finite (kummerGroup K n L) :=
@@ -165,9 +165,9 @@ theorem kummerGroup_finite [FiniteDimensional K L] [IsGalois K L] :
   Finite.of_injective _ (kummerPairingRight_injective K n L)
 
 /- English proof (translation)
-Set `_ : CommGroup Gal(L/K)` to `{ (inferInstance : Group Gal(L/K)) with mul_comm := fun a b => (IsMulCommutative.is_comm (M := Gal(L/K))).comm a b }`. Use `kummerGroup_finite K n L` as an intermediate fact. Use `finite_monoidHom_rootsOfUnity (K := K) (n := n) Gal(L/K)` as an intermediate fact. Use `finite_monoidHom_rootsOfUnity (K := K) (n := n) (kummerGroup K n L)` as an intermediate fact. Rewrite using `[← IsGalois.card_aut_eq_finrank]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem card_kummerGroup [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) :
@@ -190,9 +190,9 @@ theorem card_kummerGroup [FiniteDimensional K L] [IsGalois K L]
           card_monoidHom_rootsOfUnity (kummerGroup K n L) (kummerGroup_pow_eq_one K n L)
 
 /- English proof (translation)
-Use `kummerGroup_finite K n L` as an intermediate fact. Use `finite_monoidHom_rootsOfUnity (K := K) (n := n) (kummerGroup K n L)` as an intermediate fact. Rewrite using `[Nat.bijective_iff_injective_and_card]`. Use `⟨kummerPairingLeft_injective K n L hexp, ?_⟩` and prove the remaining obligations. Rewrite using `[IsGalois.card_aut_eq_finrank, ← card_kummerGroup K n L hexp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(card_monoidHom_rootsOfUnity (kummerGroup K n L) (kummerGroup_pow_eq_one K n L)).symm`.
+A detailed English derivation is pending.
 -/
 theorem kummerPairingLeft_bijective [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) :
@@ -205,9 +205,9 @@ theorem kummerPairingLeft_bijective [FiniteDimensional K L] [IsGalois K L]
   exact (card_monoidHom_rootsOfUnity (kummerGroup K n L) (kummerGroup_pow_eq_one K n L)).symm
 
 /- English proof (translation)
-Set `_ : CommGroup Gal(L/K)` to `{ (inferInstance : Group Gal(L/K)) with mul_comm := fun a b => (IsMulCommutative.is_comm (M := Gal(L/K))).comm a b }`. Use `finite_monoidHom_rootsOfUnity (K := K) (n := n) Gal(L/K)` as an intermediate fact. Rewrite using `[Nat.bijective_iff_injective_and_card]`. Use `⟨kummerPairingRight_injective K n L, ?_⟩` and prove the remaining obligations. Rewrite using `[card_kummerGroup K n L hexp, ← IsGalois.card_aut_eq_finrank]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(card_monoidHom_rootsOfUnity Gal(L/K) (Monoid.exponent_dvd_iff_forall_pow_eq_one.mp hexp)).symm`.
+A detailed English derivation is pending.
 -/
 theorem kummerPairingRight_bijective [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) :
@@ -246,11 +246,11 @@ Both sides reduce to the same expression.
     (σ : Gal(L/K)) : kummerGroupEquivDual K n L hexp x σ = kummerPairing K n L σ x := rfl
 
 /- English proof (translation)
-Use `set E := kummerField K n L (kummerGroup K n L)`. Establish `hbot : E.fixingSubgroup = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `σ hσ`. Rewrite using `[Subgroup.mem_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `kummerPairingLeft_injective K n L hexp` to reduce the goal to its premises. Rewrite using `[map_one]`. Use extensionality with `x : 1`. Take `⟨a, ha, α, hα⟩` from `exists_rep x`. Establish `hαE : α ∈ E` using `IntermediateField.subset_adjoin _ _ ⟨a, ha ▸ x.2, hα⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kummerPairingLeft_apply, MonoidHom.one_apply]`. Conclude with `(kummerPairing_eq_one_iff σ x ha hα).mpr (hσ ⟨α, hαE⟩)`. Rewrite using `[← IsGalois.fixedField_fixingSubgroup E, hbot, IntermediateField.fixedField_bot]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kummerField_kummerGroup [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) :
@@ -270,7 +270,7 @@ theorem kummerField_kummerGroup [FiniteDimensional K L] [IsGalois K L]
   rw [← IsGalois.fixedField_fixingSubgroup E, hbot, IntermediateField.fixedField_bot]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← kummerField_kummerGroup K n L hexp]`. Apply `IntermediateField.adjoin.mono` to reduce the goal to its premises. Introduce and unpack `α ⟨a, -, hα⟩`. Conclude with `⟨ne_zero_of_pow_eq_algebraMap hα, a, hα.symm⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem adjoin_nthRoots_eq_top [FiniteDimensional K L] [IsGalois K L]
     [IsMulCommutative Gal(L/K)] (hexp : Monoid.exponent Gal(L/K) ∣ n) :

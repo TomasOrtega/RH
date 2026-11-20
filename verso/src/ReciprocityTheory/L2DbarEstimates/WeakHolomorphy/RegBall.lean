@@ -8,15 +8,13 @@ open MeasureTheory Metric Set Filter Topology Complex
 open scoped ENNReal
 
 /- English proof (translation)
-Distinguish the cases in `hr0 : 0 < r`. Use `⟨mollify n r u, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `hx' : closedBall x r ⊆ Ω`. Use `(Metric.closedBall_subset_closedBall' ?_).trans hr` and prove the remaining obligations. Rewrite `hx` using `[Metric.mem_ball]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(mollify_differentiableAt hΩ hu hw hr0 hx').differentiableWithinAt`. Rewrite using `[Filter.EventuallyEq, ae_restrict_iff' measurableSet_ball] filter_upwards [mollify_tendsto_ae hu] with x hx hxb`. Rewrite `hxb` using `[Metric.mem_ball]`. Establish `hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), mollify n t u x = mollify n r u x` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (Iio_mem_nhds hr0)] with t ht1 ht2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht1' : 0 < t` using `ht1`. Establish `ht2' : t < r` using `ht2`. Use `mollify_indep hΩ hu hw ht1' hr0 ((Metric.closedBall_subset_closedBall' ?_).trans hr)` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : Tendsto (fun t => mollify n t u x) (𝓝[>] 0) (𝓝 (mollify n r u x))` using `tendsto_const_nhds.congr' (hev.mono fun t ht => ht.symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `tendsto_nhds_unique hx h2`. Establish `h0 : ball c r = ∅` using `Metric.ball_eq_empty.2 (not_lt.1 hr0)`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `differentiableOn_empty`.
-
-Rewrite using `[h0, Measure.restrict_empty]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reg_ball {n : ℕ} {Ω : Set (V n)} {u : V n → ℂ} (hΩ : IsOpen Ω) (hu : Integrable u)
     (hw : WeakHolo Ω u) (c : V n) (r : ℝ) (hr : closedBall c (3 * r) ⊆ Ω) :
@@ -45,21 +43,19 @@ theorem reg_ball {n : ℕ} {Ω : Set (V n)} {u : V n → ℂ} (hΩ : IsOpen Ω) 
     · rw [h0, Measure.restrict_empty]
 
 /- English proof (translation)
-Introduce `n Ω u hΩ hw`. Apply `reg_glue hΩ` to reduce the goal to its premises. Introduce `x hx`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hΩ x hx`. Establish `hr0 : 0 < ε / 8` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h5 : closedBall x (5 * (ε / 8)) ⊆ Ω` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Establish `h4 : ball x (4 * (ε / 8)) ⊆ closedBall x (5 * (ε / 8))` using `Metric.ball_subset_closedBall.trans (Metric.closedBall_subset_closedBall (by linarith))`. Establish `h4Ω : ball x (4 * (ε / 8)) ⊆ Ω` using `h4.trans h5`. Use `set u' := (closedBall x (5 * (ε / 8))).indicator u with hu'def`. Establish `hu' : Integrable u'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu'def, integrable_indicator_iff measurableSet_closedBall]`. Conclude with `hw.1.integrableOn_compact_subset h5 (isCompact_closedBall _ _)`. Establish `hw' : WeakHolo (ball x (4 * (ε / 8))) u'`. Use `⟨hu'.locallyIntegrable.locallyIntegrableOn _, fun g hg v => ?_⟩` and prove the remaining obligations. Establish `hzero : ∀ z, z ∉ tsupport g → dbarDir g z v = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `h0 : fderiv ℝ g z = 0`. Rewrite using `[(notMem_tsupport_iff_eventuallyEq.mp hz).fderiv_eq]`. Simplify using the standard rewrite rules. Simplify using `[dbarDir, h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hts : tsupport g ⊆ ball x (4 * (ε / 8))` using `hg.2.2`. Establish `hpt : ∀ z, u' z * dbarDir g z v = u z * dbarDir g z v`. Introduce `z`. Distinguish the cases in `hz : z ∈ tsupport g`. Rewrite using `[hu'def, Set.indicator_of_mem (h4 (hts hz))]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hzero z hz]`. Establish `h1` using `hw.2 g ⟨hg.1, hg.2.1, hts.trans h4Ω⟩ v`. Rewrite `h1` using `[setIntegral_eq_integral_of_forall_compl_eq_zero (fun z hz => by simp [hzero z (fun h => hz (hts.trans h4Ω h))])]`. Rewrite using `[setIntegral_eq_integral_of_forall_compl_eq_zero (fun z hz => by simp [hzero z (fun h => hz (hts h))])]`. Repeatedly rewrite using `[hpt]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1`. Take `⟨U, hU, hae⟩` from `reg_ball (Ω := ball x (4 * (ε / 8))) Metric.isOpen_ball hu' hw' x (ε / 8) (Metric.closedBall_subset_ball (by linarith))`. Use `⟨ε / 8, hr0, (Metric.ball_subset_ball (by linarith)).trans h4Ω, U, hU, ?_⟩` and prove the remaining obligations. Use `Filter.EventuallyEq.trans ?_ hae` and prove the remaining obligations. Use `ae_restrict_of_forall_mem measurableSet_ball (fun z hz => ?_)` and prove the remaining obligations.
-
-Rewrite using `[hu'def, Set.indicator_of_mem (h4 (Metric.ball_subset_ball (by linarith) hz))]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reg : RegStatement := by
   intro n Ω u hΩ hw

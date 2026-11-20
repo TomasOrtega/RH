@@ -26,15 +26,15 @@ theorem mulW_mk (𝔭 : Ideal (𝓞 F)) {w : 𝓞 K} (hw : w ∈ extP K 𝔭) (j
     mulW 𝔭 hw j (Ideal.Quotient.mk _ z) = Ideal.Quotient.mk _ (w * z) := rfl
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_map_of_mem _ h1`.
+A detailed English derivation is pending.
 -/
 theorem map_mem {𝔭 : Ideal (𝓞 F)} {ϖ : 𝓞 F} (h1 : ϖ ∈ 𝔭) : ι ϖ ∈ extP K 𝔭 :=
   Ideal.mem_map_of_mem _ h1
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `ha` using `[mulW_mk, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `idealPowerSpanBounds.mem_of_mul_mem h𝔭 (v := 1) (j := j + 1) h2 (by rwa [show 1 + (j + 1) = j + 2 by ring])`.
+A detailed English derivation is pending.
 -/
 theorem mulW_injective {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {ϖ : 𝓞 F} (h1 : ϖ ∈ 𝔭) (h2 : ϖ ∉ 𝔭 ^ 2)
     (j : ℕ) : Function.Injective (mulW (K := K) 𝔭 (map_mem h1) j) := by
@@ -46,11 +46,11 @@ theorem mulW_injective {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {ϖ : �
   exact idealPowerSpanBounds.mem_of_mul_mem h𝔭 (v := 1) (j := j + 1) h2 (by rwa [show 1 + (j + 1) = j + 2 by ring])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Establish `h3` using `idealPowerSpanBounds.map_pow_le_span_sup (K := K) h𝔭 (c := 1) h2 (j + 2) (by rwa [pow_one])`. Take `⟨u, hu, e, he, hue⟩` from `Submodule.mem_sup.1 h3`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.1 hu`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Ideal.Quotient.mk _ r, ?_⟩` and prove the remaining obligations. Rewrite using `[mulW_mk, Ideal.Quotient.eq, ← hue]`. Establish `: ι ϖ * r - (r * ι ϖ + e) = -e` using `by ring`. Rewrite using `[this]`. Conclude with `neg_mem he`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨b, rfl⟩`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Conclude with `⟨_, Ideal.mul_mem_right _ _ (map_mem h1), (mulW_mk 𝔭 _ j z).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inQ_iff_range {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {ϖ : 𝓞 F} (h1 : ϖ ∈ 𝔭) (h2 : ϖ ∉ 𝔭 ^ 2)
     (j : ℕ) (a : AQ K 𝔭 (j + 2)) : InQ 𝔭 (j + 2) a ↔ ∃ b, mulW (K := K) 𝔭 (map_mem h1) j b = a := by
@@ -69,15 +69,15 @@ theorem inQ_iff_range {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {ϖ : �
     exact ⟨_, Ideal.mul_mem_right _ _ (map_mem h1), (mulW_mk 𝔭 _ j z).symm⟩
 
 /- English proof (translation)
-Use `choose z hz using fun i => Ideal.Quotient.mk_surjective (y i)`. Take `rfl : (fun i => Ideal.Quotient.mk _ (z i)) = y` from `funext hz`. Simplify using `only [mulW_mk, Ideal.Quotient.factor_mk, sg_mk, ← map_mul, ← map_sum]`. Rewrite using `[Ideal.Quotient.eq, Ideal.Quotient.eq]`. Establish `e1 : ∑ i, conjO K (ι ϖ * z i) * (ι ϖ * z i) = ι ϖ ^ 2 * ∑ i, conjO K (z i) * z i`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, idealPowerSpanBounds.conjO_map hF]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ϖ * ϖ ∉ 𝔭 ^ (1 + 1 + 1)` using `idealPowerSpanBounds.mul_notMem h𝔭.isPrime (idealPowerSpanBounds.ne_bot h𝔭) h2 h2`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h4` using `add_mem h hn`. Establish `e2 : ι ϖ ^ 2 * ∑ i, conjO K (z i) * z i - n + (n - ι ϖ ^ 2 * n') = ι (ϖ * ϖ) * (∑ i, conjO K (z i) * z i - n')` using `by rw [map_mul]; ring`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[e2]`. Conclude with `idealPowerSpanBounds.mem_of_mul_mem h𝔭 (v := 2) (j := j) h3 (by rwa [show 2 + j = j + 2 by ring])`. Introduce `h`. Establish `h4 : ι ϖ ^ 2 * (∑ i, conjO K (z i) * z i - n') ∈ extP K 𝔭 ^ (j + 2)`. Rewrite using `[show j + 2 = 2 + j by ring, pow_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_mul (Ideal.pow_mem_pow (map_mem h1) 2) h`. Establish `h5` using `sub_mem h4 hn`. Establish `e2 : ι ϖ ^ 2 * (∑ i, conjO K (z i) * z i - n') - (n - ι ϖ ^ 2 * n') = ι ϖ ^ 2 * ∑ i, conjO K (z i) * z i - n` using `by ring`. Rewrite `h5` using `[e2]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_iff (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {ϖ : 𝓞 F} (h1 : ϖ ∈ 𝔭)
     (h2 : ϖ ∉ 𝔭 ^ 2) (j : ℕ) {M : ℕ} {n n' : 𝓞 K} (hn : n - ι ϖ ^ 2 * n' ∈ extP K 𝔭 ^ (j + 2))
@@ -115,13 +115,13 @@ theorem norm_iff (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaxim
     rwa [e2] at h5
 
 /- English proof (translation)
-Use `finite_AQ (K := K) h𝔭 (j + 1)` as an intermediate fact. Use `finite_AQ (K := K) h𝔭 j` as an intermediate fact. Establish `hle : extP K 𝔭 ^ (j + 1) ≤ extP K 𝔭 ^ j` using `Ideal.pow_le_pow_right (Nat.le_succ j)`. Set `f : (Fin M → AQ K 𝔭 (j + 1)) →+ (Fin M → AQ K 𝔭 j)` to `AddMonoidHom.compLeft (Ideal.Quotient.factor hle).toAddMonoidHom (Fin M)`. Establish `hf : Function.Surjective f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `b`. Use `choose a ha using fun i => Ideal.Quotient.factor_surjective hle (b i)`. Conclude with `⟨a, funext ha⟩`. Establish `hq : 0 < Ideal.absNorm 𝔭` using `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 (idealPowerSpanBounds.ne_bot h𝔭))`. Establish `hker : Nat.card f.ker = Ideal.absNorm 𝔭 ^ (2 * M)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `HermitianSublattices.card_preimage f hf (fun _ => True)`. Rewrite `h0` using `[Nat.card_congr (Equiv.subtypeUnivEquiv (fun _ => trivial)), Nat.card_congr (Equiv.subtypeUnivEquiv (fun _ => trivial)), Nat.card_fun, Nat.card_fun, Nat.card_fin, card_AQ hK hF, card_AQ hK hF]`. Apply `Nat.eq_of_mul_eq_mul_right (pow_pos (pow_pos hq (2 * j)) M)` to reduce the goal to its premises. Rewrite using `[← h0, ← pow_mul, ← pow_mul, ← pow_add]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hker]`. Conclude with `HermitianSublattices.card_preimage f hf T`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_red (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     (j M : ℕ) (T : (Fin M → AQ K 𝔭 j) → Prop) :
@@ -152,11 +152,11 @@ theorem card_red (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFi
   exact HermitianSublattices.card_preimage f hf T
 
 /- English proof (translation)
-Unfold `cntI cnt`. Rewrite using `[← card_red hK hF h𝔭 j M (fun y => ∑ i, sg hF 𝔭 j (y i) * y i = Ideal.Quotient.mk _ n')]`. Use `symm`. Use `Nat.card_congr (Equiv.ofBijective (fun y => ⟨fun i => mulW 𝔭 (map_mem h1) j (y.1 i), fun i => (inQ_iff_range h𝔭 h1 h2 j _).2 ⟨_, rfl⟩, (norm_iff hF h𝔭 h1 h2 j hn y.1).2 y.2⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `y y' h`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `mulW_injective h𝔭 h1 h2 j (congrFun (congrArg Subtype.val h) i)`. Introduce and unpack `⟨x, hx1, hx2⟩ choose y hy using fun i => (inQ_iff_range h𝔭 h1 h2 j _).1 (hx1 i)`. Take `rfl : (fun i => mulW 𝔭 (map_mem h1) j (y i)) = x` from `funext hy`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨y, (norm_iff hF h𝔭 h1 h2 j hn y).1 hx2⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem cntI_add_two (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {ϖ : 𝓞 F} (h1 : ϖ ∈ 𝔭) (h2 : ϖ ∉ 𝔭 ^ 2) (j M : ℕ) {n n' : 𝓞 K}
@@ -179,13 +179,13 @@ theorem cntI_add_two (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
     exact ⟨⟨y, (norm_iff hF h𝔭 h1 h2 j hn y).1 hx2⟩, rfl⟩
 
 /- English proof (translation)
-Unfold `cntI`. Rewrite using `[Nat.card_eq_zero]`. Use `left`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx1, hx2⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `choose z hz hzx using hx1`. Take `rfl : (fun i => Ideal.Quotient.mk _ (z i)) = x` from `funext hzx`. Simplify using `only [sg_mk, ← map_mul, ← map_sum] at hx2`. Rewrite `hx2` using `[Ideal.Quotient.eq]`. Establish `h1 : ∑ i, conjO K (z i) * z i - n ∈ extP K 𝔭 ^ 2` using `Ideal.pow_le_pow_right (by omega) hx2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ∑ i, conjO K (z i) * z i ∈ extP K 𝔭 ^ 2`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sq]`. Use `Ideal.mul_mem_mul ?_ (hz i)` and prove the remaining obligations. Use `idealPowerSpanBounds.conjO_mem_pow hF 𝔭 1 (z i) (by rw [pow_one]; exact hz i)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Apply `hn` to reduce the goal to its premises. Use `sub_mem h2 h1` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cntI_eq_zero (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (j M : ℕ) {n : 𝓞 K}
     (hn : n ∉ extP K 𝔭 ^ 2) : cntI hF 𝔭 (j + 2) M n = 0 := by
@@ -210,7 +210,7 @@ theorem cntI_eq_zero (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (j M : ℕ) {n : 
   rwa [sub_sub_cancel] at this
 
 /- English proof (translation)
-Take `⟨z, hz, rfl⟩` from `ha`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, pow_one]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_inQ_one {𝔭 : Ideal (𝓞 F)} {a : AQ K 𝔭 1} (ha : InQ 𝔭 1 a) : a = 0 := by
   obtain ⟨z, hz, rfl⟩ := ha
@@ -218,9 +218,9 @@ theorem eq_zero_of_inQ_one {𝔭 : Ideal (𝓞 F)} {a : AQ K 𝔭 1} (ha : InQ �
   exact hz
 
 /- English proof (translation)
-Unfold `cntI`. Rewrite using `[Nat.card_eq_one_iff_unique]`. Use `⟨⟨fun x y => ?_⟩, ⟨⟨0, fun i => ⟨0, zero_mem _, map_zero _⟩, ?_⟩⟩⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[eq_zero_of_inQ_one (x.2.1 i), eq_zero_of_inQ_one (y.2.1 i)]`. Use `symm`. Simplify using `only [Pi.zero_apply, mul_zero, Finset.sum_const_zero]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, pow_one]`. Conclude with `hn`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cntI_one_of_mem (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (M : ℕ) {n : 𝓞 K}
     (hn : n ∈ extP K 𝔭) : cntI hF 𝔭 1 M n = 1 := by
@@ -236,9 +236,9 @@ theorem cntI_one_of_mem (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (M : ℕ) {n :
     exact hn
 
 /- English proof (translation)
-Unfold `cntI`. Rewrite using `[Nat.card_eq_zero]`. Use `left`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx1, hx2⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hn` to reduce the goal to its premises. Establish `h0 : ∑ i, sg hF 𝔭 1 (x i) * x i = 0` using `Finset.sum_eq_zero fun i _ => by rw [eq_zero_of_inQ_one (hx1 i), mul_zero]`. Rewrite `hx2` using `[h0]`. Use `Ideal.Quotient.eq_zero_iff_mem.1 hx2.symm` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cntI_one_of_notMem (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (M : ℕ) {n : 𝓞 K}
     (hn : n ∉ extP K 𝔭) : cntI hF 𝔭 1 M n = 0 := by

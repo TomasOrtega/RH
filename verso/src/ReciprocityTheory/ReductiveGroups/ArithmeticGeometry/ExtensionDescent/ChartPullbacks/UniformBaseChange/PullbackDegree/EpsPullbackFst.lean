@@ -18,7 +18,7 @@ open Semi
 section Adj
 
 /- English proof (translation)
-Rewrite using `[Adjunction.homEquiv_unit, Adjunction.homEquiv_unit, Adjunction.homEquiv_unit, Functor.map_mul, MonObj.comp_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem homEquiv_mul {S S' : Scheme.{0}} (φ : S' ⟶ S) (X : Over S') (A : Over S) [GrpObj A]
     (a b : (Over.map φ).obj X ⟶ A) :
@@ -28,7 +28,7 @@ theorem homEquiv_mul {S S' : Scheme.{0}} (φ : S' ⟶ S) (X : Over S') (A : Over
     Functor.map_mul, MonObj.comp_mul]
 
 /- English proof (translation)
-Rewrite using `[Adjunction.homEquiv_unit, Functor.map_one, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem homEquiv_one {S S' : Scheme.{0}} (φ : S' ⟶ S) (X : Over S') (A : Over S) [GrpObj A] :
     (Over.mapPullbackAdj φ).homEquiv X A 1 = 1 := by
@@ -44,7 +44,7 @@ theorem toBase_eq_symm {S S' : Scheme.{0}} (f : S' ⟶ S) (A : Over S) (T : Over
   rfl
 
 /- English proof (translation)
-Establish `h1 : (Functor.LaxMonoidal.ε (Over.pullback f)).left ≫ pullback.snd (𝟙_ (Over S)).hom f = 𝟙 S'` using `Over.w (Functor.LaxMonoidal.ε (Over.pullback f))`. Establish `h2 : pullback.fst (𝟙_ (Over S)).hom f = pullback.snd (𝟙_ (Over S)).hom f ≫ f` using `(Category.comp_id _).symm.trans pullback.condition`. Rewrite using `[h2, ← Category.assoc, h1]`. Conclude with `Category.id_comp f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_pullback_fst {S S' : Scheme.{0}} (f : S' ⟶ S) :
     (Functor.LaxMonoidal.ε (Over.pullback f)).left ≫ pullback.fst (𝟙_ (Over S)).hom f = f := by
@@ -57,7 +57,7 @@ theorem eps_pullback_fst {S S' : Scheme.{0}} (f : S' ⟶ S) :
   exact Category.id_comp f
 
 /- English proof (translation)
-Simplify using `only [eSec, Functor.obj.η_def, Over.comp_left, Category.assoc]`. Use `erw [pullback.lift_fst]`. Rewrite using `[← Category.assoc, eps_pullback_fst f]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSec_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) (A : Over S) [GrpObj A] :
     eSec ((Over.pullback f).obj A) ≫ pullback.fst A.hom f = f ≫ eSec A := by
@@ -66,7 +66,7 @@ theorem eSec_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) (A : Over S) [GrpObj A]
   rw [← Category.assoc, eps_pullback_fst f]
 
 /- English proof (translation)
-Simplify using `[Functor.obj.ι_def]`. Conclude with `pullback.lift_fst _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) (A : Over S) [GrpObj A] :
     (ι[(Over.pullback f).obj A]).left ≫ pullback.fst A.hom f = pullback.fst A.hom f ≫ (ι[A]).left := by
@@ -92,7 +92,7 @@ abbrev pF (φ : R →+* R') (A : Over (Spec (CommRingCat.of R))) : (pA φ A).lef
   (Iso.refl (pA φ A)).hom.left ≫ pullback.fst A.hom (specOf φ)
 
 /- English proof (translation)
-Simplify using `[pF]`.
+Simplify using the standard rewrite rules.
 -/
 lemma pF_eq (φ : R →+* R') (A : Over (Spec (CommRingCat.of R))) :
     pF φ A = pullback.fst A.hom (specOf φ) := by
@@ -123,7 +123,7 @@ def pc (φ : R →+* R') {A : Over (Spec (CommRingCat.of R))}
   (Over.mapPullbackAdj (specOf φ)).homEquiv _ _ (toUnit _ ≫ x)
 
 /- English proof (translation)
-Rewrite using `[pF_eq]`. Establish `hsymm : (((Over.mapPullbackAdj (specOf φ)).homEquiv _ A).symm (pc φ x)).left = (pc φ x).left ≫ pullback.fst A.hom (specOf φ)` using `rfl`. Rewrite using `[← hsymm]`. Simplify using `only [pc, Equiv.symm_apply_apply, Over.comp_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 lemma pc_pr (φ : R →+* R') {A : Over (Spec (CommRingCat.of R))}
     (x : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ A) :
@@ -136,7 +136,7 @@ lemma pc_pr (φ : R →+* R') {A : Over (Spec (CommRingCat.of R))}
   congr 1
 
 /- English proof (translation)
-Simplify using `only [pc, padd]`. Establish `key` using `homEquiv_mul (specOf φ) (𝟙_ (Over (Spec (CommRingCat.of R')))) A (toUnit ((Over.map (specOf φ)).obj (𝟙_ (Over (Spec (CommRingCat.of R'))))) ≫ x) (toUnit ((Over.map (specOf φ)).obj (𝟙_ (Over (Spec (CommRingCat.of R'))))) ≫ y)`. Rewrite `key` using `[← MonObj.comp_mul]`. Conclude with `key`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pc_add (φ : R →+* R') {A : Over (Spec (CommRingCat.of R))} [GrpObj A] [IsCommMonObj A]
     (x y : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ A) :
@@ -160,7 +160,7 @@ abbrev kapS : Spec (CommRingCat.of (FractionRing R')) ⟶ Spec (CommRingCat.of (
   Spec.map (CommRingCat.ofHom (kap φ hφ))
 
 /- English proof (translation)
-Simplify using `only [kapS, jK, specOf, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[kap, IsLocalization.map_eq]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma kapS_comm : kapS φ hφ ≫ jK R = jK R' ≫ specOf φ := by
   simp only [kapS, jK, specOf, ← Spec.map_comp]

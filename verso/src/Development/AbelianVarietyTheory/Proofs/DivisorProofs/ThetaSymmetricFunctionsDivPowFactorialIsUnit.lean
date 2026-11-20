@@ -14,21 +14,21 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `k Ω _ _ _ A _ N c a j hca hcb hj hjb`. Establish `hpow : c a ^ N.factorial ≠ 0` using `pow_ne_zero _ hca`. Set `d : Fin N → A` to `fun b => ⟨c b / c a, hcb b⟩`. Establish `hd : ∀ j' : Fin N, symTup c j' / c a ^ N.factorial = ((symTup d j' : A) : Ω)`. Introduce `j'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : c = fun b => c a * ((d b : A) : Ω)`. Use function extensionality and compare the values at `b`. Use `show c b = c a * (c b / c a)`. Clear the denominators using the available nonvanishing facts. Establish `h2` using `(GlobalTheory.UMin.symTup_basic).1 Ω N (fun b => ((d b : A) : Ω)) (c a) j'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(GlobalTheory.UMin.symTup_basic).2.2.1 A Ω A.val.toRingHom N d j'`. Establish `h4 : symTup c j' = c a ^ N.factorial * symTup (fun b => ((d b : A) : Ω)) j'`. Rewrite using `[← h2, ← h1]`. Rewrite using `[h4, mul_div_cancel_left₀ _ hpow]`. Conclude with `h3.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hda : d a = 1` using `Subtype.ext (by show c a / c a = 1; exact div_self hca)`. Take `⟨k0, hk1, hk2, hku⟩` from `GlobalTheory.exists_isUnit_esymm_of_eq_one A (Fin N) d a hda`. Rewrite `hk2` using `[Fintype.card_fin]`. Set `j' : Fin N` to `⟨k0 - 1, by omega⟩`. Establish `hk0 : (j' : ℕ) + 1 = k0` using `by show k0 - 1 + 1 = k0; omega`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hu : IsUnit (symTup d j')`. Unfold `symTup`. Rewrite using `[hk0]`. Conclude with `hku.pow _`. Set `x : A` to `⟨symTup c j / c a ^ N.factorial, by rw [hd j]; exact (symTup d j).2⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `z : A` to `⟨symTup c j' / symTup c j, hjb j'⟩`. Establish `hxz : symTup d j' = x * z`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((symTup d j' : A) : Ω) = (symTup c j / c a ^ N.factorial) * (symTup c j' / symTup c j)`. Rewrite using `[← hd j']`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `hu` using `[hxz]`. Establish `hx : IsUnit x` using `isUnit_of_mul_isUnit_left hu`. Use `⟨div_ne_zero hj hpow, x.2, ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hx.exists_right_inv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hv' : (symTup c j / c a ^ N.factorial) * (v : Ω) = 1`. Use `congrArg (fun t : A => (t : Ω)) hv` as an intermediate fact. Simplify using `using this`. Rewrite using `[← eq_inv_of_mul_eq_one_right hv']`. Conclude with `v.2`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UMin.symTup_div_pow_isUnit_of_dvd : ∀ (k Ω : Type) [CommRing k] [Field Ω] [Algebra k Ω] (A : Subalgebra k Ω) [IsLocalRing A] (N : ℕ) (c : Fin N → Ω) (a j : Fin N), c a ≠ 0 → (∀ b, c b / c a ∈ A) → symTup c j ≠ 0 → (∀ b, symTup c b / symTup c j ∈ A) → symTup c j / c a ^ N.factorial ≠ 0 ∧ symTup c j / c a ^ N.factorial ∈ A ∧ (symTup c j / c a ^ N.factorial)⁻¹ ∈ A := by
   intro k Ω _ _ _ A _ N c a j hca hcb hj hjb

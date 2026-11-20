@@ -11,9 +11,9 @@ namespace HostParam.Seam
 variable {M : ℕ} [NeZero M] (Ξ : Subgroup (DirichletCharacter ℂ M))
 
 /- English proof (translation)
-Establish `hM : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `h1` using `hQ.trans (Nat.lcm_dvd_mul _ _)`. Use `⟨fun l hl h2 h => ?_, (Nat.le_of_dvd (by positivity) h1).trans (le_of_eq (by ring))⟩` and prove the remaining obligations. Establish `h3 : l ∣ M` using `(hl.dvd_mul.1 (h.trans h1)).resolve_left fun h4 => h2 ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).1 (hl.dvd_of_dvd_pow h4))`. Use `Nat.le_of_dvd hM h3` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨h3, by omega⟩`.
+Supply the required witnesses or components.
 -/
 private theorem conductor_divisor_bounds {φ : Frame} {H : HostRaw φ} {e b : ℕ} (hQ : H.QS ∣ Nat.lcm (2 ^ (e + 2)) M) (hb : 4 * M ≤ b) :
     (∀ l : ℕ, l.Prime → l ≠ 2 → l ∣ H.QS → l ∣ M ∧ 4 * l ≤ b) ∧ H.QS ≤ 4 * M * 2 ^ e := by
@@ -26,9 +26,9 @@ private theorem conductor_divisor_bounds {φ : Frame} {H : HostRaw φ} {e b : �
   exact ⟨h3, by omega⟩
 
 /- English proof (translation)
-Establish `hM : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `he2 : 2 ≤ e` using `(pow_le_pow_iff_right₀ (by norm_num : (1 : ℕ) < 2)).1 (by omega)`. Establish `hs' : ∀ l : ℕ, l.Prime → l ≠ 2 → l ∣ M → jacobiSym (-(d : ℤ)) l = 1` using `fun l hl h2 h => hs l hl h2 (by have := Nat.le_of_dvd hM h; omega)`. Establish `fin : ∀ {φ : Frame} {H : HostRaw φ}, φ.e = e → H.QS ≤ 4 * M * 2 ^ e → H.QS ≤ 4 * M * φ.ord` using `fun {φ H} h1 h2 => h2.trans (Nat.mul_le_mul_left _ (h1 ▸ φ.two_pow_le_ord))`. Distinguish the cases in `hev : ∀ χ ∈ Ξ, χ.Even`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨r1, r2⟩` from `conductor_divisor_bounds (H := EvenGrp.host Ξ e hev hH hc he2 hs') (EvenGrp.QS_dvd Ξ e) hb`. Conclude with `⟨_, HostAx.ofRaw (EvenGrp.host Ξ e hev hH hc he2 hs'), (anyFrame_window Ξ).2.1 e hev, rfl, rfl, rfl, EvenGrp.o_eq Ξ e hev, ⟨EvenGrp.psQ Ξ e hev hH hc he2 hs', EvenGrp.exists_sqq Ξ e hev hH hc he2 hs', EvenGrp.exact Ξ e hev hH hc he2 hs', EvenGrp.QS_le Ξ e hev he, by rw [EvenGrp.o …`. Take `⟨r1, r2⟩` from `conductor_divisor_bounds (H := AnyGrp.host Ξ e hH hc he2 hs') (EvenGrp.QS_dvd Ξ e) hb`. Conclude with `⟨_, HostAx.ofRaw (AnyGrp.host Ξ e hH hc he2 hs'), rfl, rfl, rfl, rfl, AnyGrp.o_eq Ξ e, ⟨AnyGrp.psQ Ξ e hH hc he2 hs', AnyGrp.exists_sqq Ξ e hH hc he2 hs', AnyGrp.exact Ξ e hH hc he2 hs', AnyGrp.QS_le Ξ e he, by rw [AnyGrp.o_eq]; exact ho, hq3, hs, fun l h1 h2 h3 => (r1 l h1 h2 h3 …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fieldRows_any_ord {e q d b : ℕ} (hH : HostHyp q d) (hq3 : q ≠ 3) (hc : Nat.Coprime M (q * d))
     (he : 4 * M ≤ 2 ^ e) (ho : Nat.card Ξ ^ 64 ≤ 2 ^ e) (hb : 4 * M ≤ b)

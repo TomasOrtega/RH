@@ -8,9 +8,9 @@ namespace CofactorOrder
 variable {K : Type} [Field K] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Take `⟨L, L', D, hL⟩` from `Matrix.Pivot.exists_list_transvec_mul_mul_list_transvec_eq_diagonal M`. Establish `hdet : ∀ T : List (TransvectionStruct n K), (T.map TransvectionStruct.toMatrix).prod.det = 1`. Introduce `T`. Proceed by induction on `T with`. Consider the case `nil => simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `cons t T ih => rw [List.map_cons, List.prod_cons, det_mul, ih, TransvectionStruct.det, one_mul]`. Conclude with `⟨_, _, D, hdet L, hdet L', hL⟩`.
+Treat this case separately. Supply the required witnesses or components.
 -/
 theorem exists_diag (M : Matrix n n K) :
     ∃ (P Q : Matrix n n K) (D : n → K), P.det = 1 ∧ Q.det = 1 ∧ P * M * Q = diagonal D := by
@@ -24,7 +24,7 @@ theorem exists_diag (M : Matrix n n K) :
   exact ⟨_, _, D, hdet L, hdet L', hL⟩
 
 /- English proof (translation)
-Establish `hu : IsUnit P` using `(isUnit_iff_isUnit_det P).mpr (by rw [hP]; exact isUnit_one)`. Conclude with `(mulVec_injective_iff_isUnit.mpr hu) (by rw [h, mulVec_zero])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mulVec_eq_zero_of_det {P : Matrix n n K} (hP : P.det = 1) {v : n → K}
     (h : P *ᵥ v = 0) : v = 0 := by
@@ -32,7 +32,7 @@ theorem mulVec_eq_zero_of_det {P : Matrix n n K} (hP : P.det = 1) {v : n → K}
   exact (mulVec_injective_iff_isUnit.mpr hu) (by rw [h, mulVec_zero])
 
 /- English proof (translation)
-Use `LinearMap.ker_eq_bot'.mpr fun v hv => ?_` and prove the remaining obligations. Rewrite `hv` using `[mulVecLin_apply]`. Conclude with `mulVec_eq_zero_of_det hP hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_eq_bot_of_det {P : Matrix n n K} (hP : P.det = 1) :
     LinearMap.ker P.mulVecLin = ⊥ := by
@@ -41,17 +41,15 @@ theorem ker_eq_bot_of_det {P : Matrix n n K} (hP : P.det = 1) :
   exact mulVec_eq_zero_of_det hP hv
 
 /- English proof (translation)
-Use `set V := LinearMap.ker M.mulVecLin`. Establish `hmem : ∀ i : {i // D i = 0}, Q *ᵥ Pi.single i.1 (1 : K) ∈ V`. Introduce `i`. Rewrite using `[LinearMap.mem_ker, mulVecLin_apply]`. Apply `mulVec_eq_zero_of_det hP` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [mulVec_mulVec, ← Matrix.mul_assoc, h]`. Use function extensionality and compare the values at `k`. Rewrite using `[mulVec_diagonal]`. Distinguish the cases in `hk : k = i.1`. Substitute `hk` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[i.2]`. Simplify using `[hk]`. Establish `hsingle : LinearIndependent K (fun i : {i // D i = 0} => (Pi.single i.1 (1 : K) : n → K))`. Use `(Pi.basisFun K n).linearIndependent.comp Subtype.val (Subtype.val_injective (p := fun i => D i = 0))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `hli : LinearIndependent K (fun i : {i // D i = 0} => (⟨_, hmem i⟩ : V))`. Apply `LinearIndependent.of_comp V.subtype` to reduce the goal to its premises. Establish `hmapped` using `hsingle.map' Q.mulVecLin (ker_eq_bot_of_det hQ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (⇑V.subtype ∘ fun i : {i // D i = 0} => (⟨_, hmem i⟩ : V)) = ⇑Q.mulVecLin ∘ fun i => (Pi.single i.1 (1 : K) : n → K)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `hmapped`.
-
-Conclude with `hli.fintype_card_le_finrank`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_le_finrank {M P Q : Matrix n n K} {D : n → K} [DecidablePred fun i => D i = 0]
     (hP : P.det = 1) (hQ : Q.det = 1) (h : P * M * Q = diagonal D) :
@@ -85,11 +83,11 @@ theorem card_le_finrank {M P Q : Matrix n n K} {D : n → K} [DecidablePred fun 
   exact hli.fintype_card_le_finrank
 
 /- English proof (translation)
-Take `⟨P, Q, D, hP, hQ, hPQ⟩` from `exists_diag M`. Establish `hone` using `Fintype.card_le_one_iff.mp ((card_le_finrank hP hQ hPQ).trans h)`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ∀ j, j ≠ i → D j ≠ 0 := by`. Distinguish the cases in `hex : ∃ i, D i = 0`. Take `⟨i, hi0⟩` from `hex`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i, fun j hj hj0 => hj (congrArg Subtype.val (hone ⟨j, hj0⟩ ⟨i, hi0⟩))⟩`. Use `push Not at hex`. Conclude with `⟨Classical.arbitrary n, fun j _ => hex j⟩`. Introduce `hM`. Establish `hdiag : (diagonal D).adjugate = 0`.
+Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hPQ, adjugate_mul_distrib, adjugate_mul_distrib, hM, Matrix.zero_mul, Matrix.mul_zero]`. Establish `hii` using `congrFun (congrFun hdiag i) i`. Rewrite `hii` using `[adjugate_diagonal, diagonal_apply_eq, Matrix.zero_apply]`. Conclude with `Finset.prod_ne_zero_iff.mpr (fun j hj => hi j (Finset.ne_of_mem_erase hj)) hii`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjugate_ne_zero [Nonempty n] (M : Matrix n n K)
     (h : Module.finrank K (LinearMap.ker M.mulVecLin) ≤ 1) : M.adjugate ≠ 0 := by
@@ -110,11 +108,9 @@ theorem adjugate_ne_zero [Nonempty n] (M : Matrix n n K)
   exact Finset.prod_ne_zero_iff.mpr (fun j hj => hi j (Finset.ne_of_mem_erase hj)) hii
 
 /- English proof (translation)
-Establish `hmap : (Ψ.map fun p => p.coeff 0) = constantCoeff.mapMatrix Ψ`. Use extensionality with `i j`. Simplify using `[constantCoeff_apply]`. Establish `hne` using `adjugate_ne_zero _ h`. Rewrite `hne` using `[hmap, ← RingHom.map_adjugate]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Apply `hne` to reduce the goal to its premises. Use extensionality with `b c`. Rewrite using `[RingHom.mapMatrix_apply, map_apply, Matrix.zero_apply, constantCoeff_apply]`.
-
-Conclude with `X_dvd_iff.mp (hall b c)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coeff_adjugate_ne_zero [Nonempty n] (Ψ : Matrix n n K[X])
     (h : Module.finrank K (LinearMap.ker (Ψ.map fun p => p.coeff 0).mulVecLin) ≤ 1) :
@@ -132,7 +128,7 @@ theorem exists_coeff_adjugate_ne_zero [Nonempty n] (Ψ : Matrix n n K[X])
   exact X_dvd_iff.mp (hall b c)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [map_apply, Matrix.mul_apply, Polynomial.finsetSum_coeff, Polynomial.coeff_mul_C, Polynomial.coeff_C_mul, Finset.sum_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_coeff_mul (P Q : Matrix n n K) (Ψ : Matrix n n K[X]) (k : ℕ) :
     ((P.map C * Ψ * Q.map C).map fun p => p.coeff k) = P * (Ψ.map fun p => p.coeff k) * Q := by
@@ -141,37 +137,35 @@ theorem map_coeff_mul (P Q : Matrix n n K) (Ψ : Matrix n n K[X]) (k : ℕ) :
     Polynomial.coeff_C_mul, Finset.sum_mul]
 
 /- English proof (translation)
-Take `⟨s, hs⟩ : ∃ s : n → K[X], s = fun i => if D i = 0 then X else 1` from `⟨_, rfl⟩`. Take `⟨T, hT⟩ : ∃ T : Matrix n n K[X], T = Matrix.of fun i j => if D i = 0 then divX (Θ i j) else Θ i j` from `⟨_, rfl⟩`. Establish `h0 : ∀ i j, (Θ i j).coeff 0 = diagonal D i j` using `fun i j => by`. Simplify using `using congrFun (congrFun hD i) j`. Establish `hfac : Θ = diagonal s * T`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[diagonal_mul, hs, hT, of_apply]`. Distinguish the cases in `hi : D i = 0`. Establish `hc : (Θ i j).coeff 0 = 0`. Rewrite using `[h0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hi]`. Simplify using `[diagonal_apply_ne _ hij]`. Establish `hX` using `X_mul_divX_add (Θ i j)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hX` using `[hc, C_0, add_zero]`. Simplify using `only [hi, if_true]`. Conclude with `hX.symm`. Simplify using `[hi]`. Establish `hadj : ∀ b c, Θ.adjugate b c = T.adjugate b c * ∏ j ∈ Finset.univ.erase c, s j`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b c`. Rewrite using `[hfac, adjugate_mul_distrib, adjugate_diagonal, mul_diagonal]`. Establish `hprod : ∀ c, (∏ j ∈ Finset.univ.erase c, s j) ∣ X ^ Fintype.card {i // D i = 0}`. Introduce `c`. Establish `hall : ∏ j, s j = X ^ Fintype.card {i // D i = 0}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hs, Finset.prod_ite, Fintype.card_subtype]`. Rewrite using `[← hall]`. Conclude with `Finset.prod_dvd_prod_of_subset _ _ _ (Finset.erase_subset _ _)`. Establish `hrow : ∀ (v : n → K) (i : n), ((T.map fun p => p.coeff 0) *ᵥ v) i = if D i = 0 then ((Θ.map fun p => p.coeff 1) *ᵥ v) i else D i * v i`. Introduce `v i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : D i = 0`. Simplify using `[Matrix.mulVec, dotProduct, hT, hi, coeff_divX]`. Simplify using `[Matrix.mulVec, dotProduct, hT, hi, h0, diagonal_apply]`. Establish `hker : Module.finrank K (LinearMap.ker (T.map fun p => p.coeff 0).mulVecLin) ≤ 1`. Assume the negation of the conclusion as `hlt`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push Not at hlt`. Use `set V := LinearMap.ker (T.map fun p => p.coeff 0).mulVecLin`. Establish `h2 : 1 + 1 ≤ Module.finrank K V` using `hlt`. Establish `hinj : Function.Injective (Fin.castLE h2)` using `fun a b hab => Fin.ext (by simpa using congrArg Fin.val hab)`. Establish `hf` using `(Module.finBasis K V).linearIndependent.comp _ hinj`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hli` using `hf.map' V.subtype (Submodule.ker_subtype V)`. Use `H (fun j => (V.subtype ∘ (Module.finBasis K V ∘ Fin.castLE h2)) j) (fun j i => if D i = 0 then 0 else -((Θ.map fun p => p.coeff 1) *ᵥ (V.subtype ∘ (Module.finBasis K V ∘ Fin.castLE h2)) j) i / D i) ?_ hli` and prove the remaining obligations. Introduce `j`. Use `set v := (V.subtype ∘ (Module.finBasis K V ∘ Fin.castLE h2)) j with hv`. Establish `hvk : (T.map fun p => p.coeff 0) *ᵥ v = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(Module.finBasis K V (Fin.castLE h2 j)).2` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, mulVecLin_apply]`. Conclude with `this`. Establish `hvi : ∀ i, (if D i = 0 then ((Θ.map fun p => p.coeff 1) *ᵥ v) i else D i * v i) = 0`. Introduce `i`.
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hrow, hvk]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Rewrite using `[hD]`. Use function extensionality and compare the values at `i`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[mulVec_diagonal]`. Distinguish the cases in `hi : D i = 0`. Simplify using `[hi]`. Use `hvi i` as an intermediate fact. Simplify using `only [hi, if_false] at this`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `using this`. Rewrite using `[hD]`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, mulVec_diagonal]`. Distinguish the cases in `hi : D i = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `hvi i` as an intermediate fact. Simplify using `only [hi, if_true] at this`. Simplify using `[hi, this]`. Simplify using `only [hi, if_false]`. Rewrite using `[Pi.zero_apply, ← mul_div_assoc, mul_div_cancel_left₀ _ hi, add_neg_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, c, hbc⟩` from `exists_coeff_adjugate_ne_zero T hker`. Use `⟨b, c, fun hdvd => hbc ?_⟩` and prove the remaining obligations. Rewrite `hdvd` using `[hadj]`. Take `⟨r, hr⟩` from `hprod c`. Establish `h3` using `Dvd.dvd.mul_right hdvd r`.
-
-Rewrite `h3` using `[mul_assoc, ← hr, pow_succ, mul_comm (X ^ _) X]`. Conclude with `(mul_dvd_mul_iff_right (pow_ne_zero _ X_ne_zero)).mp h3`.
+A detailed English derivation is pending.
 -/
 theorem diag_case [Nonempty n] (Θ : Matrix n n K[X]) (D : n → K)
     [DecidablePred fun i => D i = 0] (hD : (Θ.map fun p => p.coeff 0) = diagonal D)
@@ -267,17 +261,17 @@ end CofactorOrder
 open CofactorOrder in
 
 /- English proof (translation)
-Establish `: Nonempty (Fin a)` using `⟨⟨0, Nat.pos_of_ne_zero ha⟩⟩`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Take `⟨b, c, hbc⟩` from `exists_coeff_adjugate_ne_zero Ψ (by simpa using hν)`. Conclude with `⟨b, c, by simpa using hbc⟩`. Take `⟨P, Q, D, hP, hQ, hPQ⟩` from `exists_diag (Ψ.map fun p => p.coeff 0)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hΘ0 : ((P.map C * Ψ * Q.map C).map fun p => p.coeff 0) = diagonal D`. Rewrite using `[map_coeff_mul]`. Conclude with `hPQ`. Establish `hz` using `card_le_finrank hP hQ hPQ`. Establish `HΘ : ∀ x0 x1 : Fin (1 + 1) → Fin a → K, (∀ j, ((P.map C * Ψ * Q.map C).map fun p => p.coeff 0).mulVec (x0 j) = 0 ∧ ((P.map C * Ψ * Q.map C).map fun p => p.coeff 1).mulVec (x0 j) + ((P.map C * Ψ * Q.map C).map fun p => p.coeff 0).mulVec (x1 j) = 0) → ¬ LinearIndependent K x0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x0 x1 hx hli`. Use `H (fun j => Q *ᵥ x0 j) (fun j => Q *ᵥ x1 j) (fun j => ?_) (hli.map' Q.mulVecLin (ker_eq_bot_of_det hQ))` and prove the remaining obligations. Take `⟨h0, h1⟩` from `hx j`. Rewrite `h0`, `h1` using `[map_coeff_mul]`. Rewrite `h1` using `[map_coeff_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Apply `mulVec_eq_zero_of_det hP` to reduce the goal to its premises. Simplify `h0` using `only [mulVec_mulVec, ← Matrix.mul_assoc]`. Apply `mulVec_eq_zero_of_det hP` to reduce the goal to its premises. Simplify `h1` using `only [mulVec_add, mulVec_mulVec, ← Matrix.mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨b, c, hbc⟩` from `diag_case _ D hΘ0 HΘ`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hbc` to reduce the goal to its premises. Establish `hle : Fintype.card {i // D i = 0} + 1 ≤ 2 * m + 1` using `by omega`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(pow_dvd_pow X hle).trans ?_` and prove the remaining obligations. Rewrite using `[adjugate_mul_distrib, adjugate_mul_distrib, ← Matrix.mul_assoc]`. Simplify using `only [Matrix.mul_apply]`. Conclude with `Finset.dvd_sum fun l _ => Dvd.dvd.mul_right (Finset.dvd_sum fun k _ => Dvd.dvd.mul_left (hcon k l) _) _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_not_X_pow_dvd_adjugate_of_firstOrderKernel (K : Type) [Field K] (a m : ℕ)
     (Ψ : Matrix (Fin a) (Fin a) (Polynomial K))

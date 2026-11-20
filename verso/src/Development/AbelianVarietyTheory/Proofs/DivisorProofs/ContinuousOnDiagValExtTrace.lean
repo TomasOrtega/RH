@@ -18,13 +18,13 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ
   [IsScalarTower ℝ ℂ E] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
 
 /- English proof (translation)
-Introduce `v hv`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Establish `he : (fun w => diagVal (extTrace K w) ξ) =ᶠ[𝓝 v] fun w => (-Complex.I * (kappa * (secondForm K w ξ * secondFormAdj K w ξ).trace)).re` using `by filter_upwards [hW.mem_nhds hv] with w hw`. Rewrite using `[diagVal, extTrace_eq ((hK w hw).of_le (by norm_cast)) (eventually_of_mem (hW.mem_nhds hw) hp)]`. Use `ContinuousAt.congr ?_ he.symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : IsUnit (K v).det` using `(hp v hv).det_pos.ne'.isUnit`. Establish `hsu : IsUnit (subGram (K v)).det` using `(posDef_subGram (hp v hv)).det_pos.ne'.isUnit`. Establish `h0 : MContDiffAt 0 K v` using `(hK v hv).of_le (by simp)`. Establish `hc : MContDiffAt 0 (fun w => conn K w ξ) v` using `(hK v hv).conn hu (by simp) ξ`. Establish `hs : MContDiffAt 0 (fun w => secondForm K w ξ) v` using `fun a b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [secondForm_eq]`. Conclude with `hc (Sum.inr a) (Sum.inl b)`. Establish `ha : MContDiffAt 0 (fun w => secondFormAdj K w ξ) v` using `((h0.subGram.transpose.inv (by rwa [det_transpose])).mul hs.conjTranspose).mul (h0.quotGram hsu).transpose`. Establish `hM` using `hs.mul ha`. Establish `ht : ContinuousAt (fun w => (secondForm K w ξ * secondFormAdj K w ξ).trace) v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.trace, Matrix.diag]`. Conclude with `(ContDiffAt.sum fun i _ => hM i i).continuousAt`. Conclude with `Complex.continuous_re.continuousAt.comp (f := fun w => -Complex.I * (kappa * (secondForm K w ξ * secondFormAdj K w ξ).trace)) (continuousAt_const.mul (continuousAt_const.mul ht))`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_diagVal_extTrace {K : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} {W : Set E}
     (hW : IsOpen W) (hK : ∀ v ∈ W, MContDiffAt ∞ K v) (hp : ∀ v ∈ W, (K v).PosDef) (ξ : E) :
@@ -64,19 +64,15 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+*
   {S : ShortComplex X.Modules} {r s : ℕ} {h : Met p σ S.X₂ (r + s)}
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_adapted hS h₁ h₃ y`. Use `set W := c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ a.U with hWdef`. Establish `hWo : IsOpen W` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn a.U)`. Establish `hyW : c.e y ∈ W` using `ChartGlue.mem_over c.e hy ha`. Take `⟨ε, hε, hεW⟩` from `Metric.isOpen_iff.1 hWo _ hyW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set B := Metric.closedBall (c.e y) (ε / 2) with hBdef`. Establish `hBW : B ⊆ W` using `(Metric.closedBall_subset_ball (by linarith)).trans hεW`. Establish `hBt : B ⊆ c.e.target` using `hBW.trans inter_subset_left`. Use `set K : ReciprocityTheory.L2DbarEstimates.V 1 → Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ := fun v => h.gram a.frame (c.e.symm v) with hKdef`. Establish `hK : ∀ v ∈ W, MContDiffAt ∞ K v` using `fun v hv => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hz` using `c.e.map_target hv.1`. Use `(H.gram a.frame hv.2).mContDiffAt c hz` as an intermediate fact. Rewrite `this` using `[c.e.right_inv hv.1]`. Then use the resulting hypothesis. Establish `hp : ∀ v ∈ W, (K v).PosDef` using `fun v hv => h.posDef_gram_frame hS a hv.2`. Establish `hg` using `continuousOn_diagVal_extTrace hWo hK hp (EuclideanSpace.single 0 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `set T := c.e.symm '' B with hTdef`. Establish `hTc : IsCompact T` using `(isCompact_closedBall _ _).image_of_continuousOn (c.e.continuousOn_symm.mono hBt)`. Establish `hTs : T ⊆ c.e.source`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `c.e.map_target (hBt hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hTB : c.e '' T = B`. Rewrite using `[hTdef, Set.image_image]`. Conclude with `(Set.image_congr fun v hv => c.e.right_inv (hBt hv)).trans (Set.image_id' B)`. Use `⟨T, ?_, ?_⟩` and prove the remaining obligations. Use `mem_of_superset ((c.e.isOpen_inter_preimage Metric.isOpen_ball).mem_nhds ⟨hy, Metric.mem_ball_self (half_pos hε)⟩) fun z hz => ⟨c.e z, ?_, c.e.left_inv hz.1⟩` and prove the remaining obligations.
-
-Conclude with `Metric.ball_subset_closedBall hz.2`. Rewrite using `[bcMeas_apply hS h₁ h₃ c H hTc.isClosed.measurableSet hTs, hTB]`. Establish `e : ∀ v ∈ B, ENNReal.ofReal (h.bcDens hS h₁ h₃ c (c.e.symm v)) = ENNReal.ofReal (2 * diagVal (extTrace K v) (EuclideanSpace.single 0 1))` using `fun v hv => by`. Rewrite using `[bcDens_eq hS h₁ h₃ a c H (c.e.map_target (hBt hv)) (hBW hv).2, bcForm, c.e.right_inv (hBt hv)]`. Rewrite using `[setLIntegral_congr_fun Metric.isClosed_closedBall.measurableSet e]`.
-
-Conclude with `Integrable.lintegral_lt_top (((continuousOn_const.mul (hg.mono hBW))).integrableOn_compact (isCompact_closedBall _ _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcMeas_finiteAtFilter_nhds [SecondCountableTopology (CxPts p σ)] [T2Space (CxPts p σ)]
     (hS : S.ShortExact) (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s) (H : h.IsCInf)
@@ -122,9 +118,9 @@ theorem bcMeas_finiteAtFilter_nhds [SecondCountableTopology (CxPts p σ)] [T2Spa
 end Met
 
 /- English proof (translation)
-Introduce `k _ X p hp hg S r s h hS h₁ h₃ H σ`. Use `CxPts.compactSpace σ hp` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ hp` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver σ hp` as an intermediate fact. Take `⟨R⟩` from `hg σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(isCompact_univ.measure_lt_top_of_nhdsWithin fun y _ => ?_).ne` and prove the remaining obligations. Take `⟨i, hi⟩` from `R.cover y`. Conclude with `(Met.bcMeas_finiteAtFilter_nhds hS h₁ h₃ (H σ) (R.chart i) hi).filter_mono nhdsWithin_le_nhds`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem VMetric.bcFinite_of_curve : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k),
     IsProjOver p → GenSmooth p 1 → ∀ (S : ShortComplex X.Modules) (r s : ℕ)

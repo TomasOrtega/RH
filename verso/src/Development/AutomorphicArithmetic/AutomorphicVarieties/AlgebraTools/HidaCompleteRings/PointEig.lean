@@ -6,23 +6,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HidaC
 open UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite TensorProduct
 
 /- English proof (translation)
-Introduce `Λ T K M _ _ _ _ _ _ _ _ _ _ _ x`. Use `letI : Algebra T K := x.toRingHom.toAlgebra`. Use `haveI : IsScalarTower Λ T K := IsScalarTower.of_algebraMap_eq fun r => (x.commutes r).symm`. Use `haveI : Module.Finite T M := Module.Finite.of_restrictScalars_finite Λ T M`. Establish `hne : Nontrivial (K ⊗[T] M)` using `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.fibreNe`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : K ⊗[Λ] M →ₗ[K] K ⊗[T] M` to `TensorProduct.AlgebraTensorModule.lift ((LinearMap.restrictScalarsₗ Λ T M (K ⊗[T] M) K).comp (TensorProduct.AlgebraTensorModule.mk T K K M))`. Establish `hφt : ∀ (k : K) (m : M), φ (k ⊗ₜ[Λ] m) = k ⊗ₜ[T] m`. Introduce `k m`. Simplify using `[φ]`. Set `A : T → Module.End K (K ⊗[Λ] M)` to `fun t => (Algebra.lsmul Λ Λ M t).baseChange K`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : ∀ (t : T) (k : K) (m : M), A t (k ⊗ₜ[Λ] m) = k ⊗ₜ[Λ] (t • m)`. Introduce `t k m`. Simplify using `[A]`. Establish `hc : ∀ s t, Commute (A s) (A t)`. Introduce `s t`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show A s * A t = A t * A s`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `tmul k m`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hA, hA, hA, hA, smul_comm]`. Consider the case `add a b ha hb`. Rewrite `ha`, `hb`, the goal using `[Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[map_add, map_add, ha, hb, map_add, map_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hφA : ∀ t y, φ (A t y) = x t • φ y`. Introduce `t y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k m`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Rewrite using `[hA, hφt, hφt, ← TensorProduct.smul_tmul, TensorProduct.smul_tmul']`. Use `congr 1`. Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add, ha, hb, map_add, smul_add]`. Establish `hφ0 : φ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `hall : ∀ p : K ⊗[T] M, p = 0`. Introduce `p`. Proceed by induction on `p using TensorProduct.induction_on with`. Consider the case `zero => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `tmul k m => rw [← hφt, h0, LinearMap.zero_apply]`. Consider the case `add a b ha hb => rw [ha, hb, add_zero]`. Take `⟨p, hp⟩` from `exists_ne (0 : K ⊗[T] M)`. Conclude with `hp (hall p)`. Conclude with `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.eigOfQuot A hc (fun t => x t) φ hφ0 hφA`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.pointEig :
     ∀ {Λ T K M : Type*} [CommRing Λ] [CommRing T] [Algebra Λ T] [Field K] [Algebra Λ K] [AddCommGroup M] [Module Λ M] [Module T M] [IsScalarTower Λ T M] [Module.Finite Λ M] [FaithfulSMul T M] (x : T →ₐ[Λ] K), ∃ y : K ⊗[Λ] M, y ≠ 0 ∧ ∀ t : T, (Algebra.lsmul Λ Λ M t).baseChange K y = x t • y := by

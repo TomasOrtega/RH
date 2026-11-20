@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G M _ _ _ _ χ h`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨(fun y => x⁻¹ * y) ⁻¹' (↑χ.ker : Set G), h.preimage (continuous_const.mul continuous_id), ?_, ?_⟩` and prove the remaining obligations. Simplify using `[MonoidHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `y hy`. Establish `hy' : χ (x⁻¹ * y) = 1` using `MonoidHom.mem_ker.mp hy`. Rewrite `hy'` using `[map_mul, map_inv]`. Conclude with `(inv_mul_eq_one.mp hy').symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.LocallyConstantOfKernelCapelliIdentities.locConst_of_ker :
     ∀ {G M : Type} [inst : Group G]

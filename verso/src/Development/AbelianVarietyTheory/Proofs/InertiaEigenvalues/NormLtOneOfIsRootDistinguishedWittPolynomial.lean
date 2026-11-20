@@ -14,15 +14,15 @@ namespace GlobalTheory.RootLt
 open Polynomial
 
 /- English proof (translation)
-Establish `hw : w ∈ Submodule.span ℤ_[l] (Set.range (WittVector.teichmuller l : Fq l a → Wq l a))`. Rewrite using `[span_teich]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Take `⟨z, rfl⟩` from `hx`. Use `set ω := GlobalTheory.TameFrob.iotaO l a (WittVector.teichmuller l z)`. Establish `hω : ω ^ l ^ a = ω`. Simplify using `only [ω]`. Rewrite using `[← map_pow, ← map_pow, Fq.pow_card]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h2 : 1 < l ^ a` using `Nat.one_lt_pow (NeZero.ne a) (Fact.out : l.Prime).one_lt`. Establish `h3 : ‖ω‖ ^ 1 < ‖ω‖ ^ l ^ a` using `pow_lt_pow_right₀ h h2`. Rewrite `h3` using `[pow_one, ← norm_pow, hω]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `lt_irrefl _ h3`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Consider the case `smul c x _ hx`. Rewrite using `[Algebra.smul_def, map_mul, GlobalTheory.TameFrob.iotaO_algebraMap, norm_mul]`. Establish `hc : ‖algebraMap ℚ_[l] (Om l) (c : ℚ_[l])‖ ≤ 1` using `(PadicAlgCl.norm_extends l (c : ℚ_[l])).le.trans c.2`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_iotaO_le_one (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (w : Wq l a) :
     ‖GlobalTheory.TameFrob.iotaO l a w‖ ≤ 1 := by
@@ -53,19 +53,19 @@ theorem norm_iotaO_le_one (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (w : Wq 
       _ = 1 := one_mul 1
 
 /- English proof (translation)
-Introduce `l _ a _ P hP hdiv x hx`. Use `set d := P.natDegree with hd`. Break down `Nat.eq_zero_or_pos d with h0 | hpos` into its components or cases. Establish `: P = 1` using `Polynomial.eq_one_of_monic_natDegree_zero hP h0`. Rewrite `hx` using `[this, Polynomial.map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Polynomial.IsRoot] at hx`. Assume the negation of the conclusion as `hge`. Use `push_neg at hge`. Establish `hlpos : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnl : ‖GlobalTheory.TameFrob.iotaO l a (l : Wq l a)‖ = (l : ℝ)⁻¹`. Rewrite using `[map_natCast, ← map_natCast (algebraMap ℚ_[l] (Om l)), PadicAlgCl.norm_extends, Padic.norm_p]`. Establish `hcoef : ∀ i < d, ‖GlobalTheory.TameFrob.iotaO l a (P.coeff i)‖ ≤ (l : ℝ)⁻¹`. Introduce `i hi`. Take `⟨c, hc⟩` from `hdiv i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hc, map_mul, norm_mul, hnl]`. Combine the equalities or inequalities in the displayed calculation. Establish `hxd : (1 : ℝ) ≤ ‖x‖ ^ d` using `one_le_pow₀ hge`. Establish `heq : x ^ d + ∑ i ∈ Finset.range d, GlobalTheory.TameFrob.iotaO l a (P.coeff i) * x ^ i = 0`. Establish `h` using `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[Polynomial.IsRoot, hP.as_sum]`. Simplify `h` using `[Polynomial.eval_finset_sum, Polynomial.map_add, Polynomial.map_pow, Polynomial.map_sum, Polynomial.map_mul]`. Establish `hsum : ‖∑ i ∈ Finset.range d, GlobalTheory.TameFrob.iotaO l a (P.coeff i) * x ^ i‖ ≤ (l : ℝ)⁻¹ * ‖x‖ ^ d`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.1 hi`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_mul (hcoef i hi') (pow_le_pow_right₀ hge hi'.le) (by positivity) (by positivity)`. Establish `hxeq : x ^ d = -∑ i ∈ Finset.range d, GlobalTheory.TameFrob.iotaO l a (P.coeff i) * x ^ i` using `eq_neg_of_add_eq_zero_left heq`. Establish `h1 : ‖x‖ ^ d ≤ (l : ℝ)⁻¹ * ‖x‖ ^ d`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2 : (l : ℝ)⁻¹ * ‖x‖ ^ d < ‖x‖ ^ d`. Establish `: (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hl1`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `lt_irrefl _ (h1.trans_lt h2)`.
+A detailed English derivation is pending.
 -/
 theorem norm_lt_one_of_isRoot : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (P : Polynomial (Wq l a)), P.Monic →
     (∀ i < P.natDegree, (l : Wq l a) ∣ P.coeff i) → ∀ x : Om l, (P.map (GlobalTheory.TameFrob.iotaO l a)).IsRoot x → ‖x‖ < 1 := by

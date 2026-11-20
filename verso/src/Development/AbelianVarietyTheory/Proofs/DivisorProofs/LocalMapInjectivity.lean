@@ -13,9 +13,9 @@ noncomputable def iotaZ : ℚ_[p] ⊗[ℚ] G.F →ₐ[ℚ_[p]] ℚ_[p] ⊗[ℚ] 
   Algebra.TensorProduct.map (AlgHom.id ℚ_[p] ℚ_[p]) (IsScalarTower.toAlgHom ℚ G.F G.C)
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y`. Express the relevant statement in the definitionally equal form `(Algebra.ofId ℚ_[p] (Matrix (Fin G.n) (Fin G.n) (G.Fw i)) a) * (G.rho i (algebraMap G.F G.C y)) = algebraMap (G.Fw i) _ (algebraMap ℚ_[p] (G.Fw i) a * G.embW i y)`. Rewrite using `[G.rho_F, Algebra.ofId_apply, map_mul, ← IsScalarTower.algebraMap_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 -/
 theorem locW_iotaZ (i : Fin G.m) (z : ℚ_[p] ⊗[ℚ] G.F) :
     G.locW i (iotaZ G z) = algebraMap (G.Fw i) (Matrix (Fin G.n) (Fin G.n) (G.Fw i)) (G.liftW i z) := by
@@ -29,7 +29,7 @@ theorem locW_iotaZ (i : Fin G.m) (z : ℚ_[p] ⊗[ℚ] G.F) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y`. Simplify using `[iotaZ, starT_tmul, G.star_F]`. Consider the case `add x y hx hy => simp only [map_add, MulOpposite.unop_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem starT_iotaZ (z : ℚ_[p] ⊗[ℚ] G.F) :
     (starT G.star ℚ_[p] (iotaZ G z)).unop = iotaZ G (conjT G.F ℚ_[p] z) := by
@@ -40,11 +40,9 @@ theorem starT_iotaZ (z : ℚ_[p] ⊗[ℚ] G.F) :
   | add x y hx hy => simp only [map_add, MulOpposite.unop_add, hx, hy]
 
 /- English proof (translation)
-Establish `hJ : z ∈ (⊥ : Ideal (ℚ_[p] ⊗[ℚ] G.F)).jacobson`. Rewrite using `[Ideal.jacobson, Ideal.mem_sInf]`. Introduce and unpack `M ⟨-, hM⟩`. Apply the tactic sequence `obtain ⟨i, hi | hi⟩ := GlobalTheory.MaxIdealTensorPadic.main p G M hM <;> rw [hi, RingHom.mem_ker]`. Conclude with `h1 i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Conclude with `h2 i`. Use `haveI : IsArtinianRing (ℚ_[p] ⊗[ℚ] G.F) := IsArtinianRing.of_finite ℚ_[p] _`. Take `⟨k, hk⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := ℚ_[p] ⊗[ℚ] G.F)`. Establish `hk0 : z ^ k = 0`. Use `Ideal.pow_mem_pow hJ k` as an intermediate fact.
-
-Rewrite `this` using `[hk]`. Simplify using `using this`. Use `haveI := GlobalTheory.padic_tensor_numberField_isReduced p G.F`. Conclude with `IsReduced.eq_zero _ ⟨k, hk0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inj_Z (z : ℚ_[p] ⊗[ℚ] G.F) (h1 : ∀ i, G.liftW i z = 0) (h2 : ∀ i, G.liftW i (conjT G.F ℚ_[p] z) = 0) :
     z = 0 := by
@@ -64,11 +62,11 @@ theorem inj_Z (z : ℚ_[p] ⊗[ℚ] G.F) (h1 : ∀ i, G.liftW i z = 0) (h2 : ∀
   exact IsReduced.eq_zero _ ⟨k, hk0⟩
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `hx.add_right hy`. Consider the case `tmul a y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `d using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => exact hx.add_left hy`. Consider the case `tmul b c`. Simplify using `only [iotaZ, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, IsScalarTower.coe_toAlgHom']`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (b ⊗ₜ c) * (a ⊗ₜ algebraMap G.F G.C y) = (a ⊗ₜ algebraMap G.F G.C y) * (b ⊗ₜ c)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_comm b a, Algebra.commutes]`.
+A detailed English derivation is pending.
 -/
 theorem iotaZ_comm (d : ℚ_[p] ⊗[ℚ] G.C) (z : ℚ_[p] ⊗[ℚ] G.F) : Commute d (iotaZ G z) := by
   induction z using TensorProduct.induction_on with
@@ -85,29 +83,25 @@ theorem iotaZ_comm (d : ℚ_[p] ⊗[ℚ] G.C) (z : ℚ_[p] ⊗[ℚ] G.F) : Commu
         Algebra.commutes]
 
 /- English proof (translation)
-Use `letI algD : Algebra G.F (ℚ_[p] ⊗[ℚ] G.C) := RingHom.toAlgebra' ((iotaZ G).toRingHom.comp (Algebra.TensorProduct.includeRight.toRingHom)) (by`. Introduce `c d`. Use `show iotaZ G ((1 : ℚ_[p]) ⊗ₜ c) * d = d * iotaZ G ((1 : ℚ_[p]) ⊗ₜ c)`. Conclude with `(iotaZ_comm G d _).symm.eq)`. Use `letI algZ : Algebra G.F (ℚ_[p] ⊗[ℚ] G.F) := Algebra.TensorProduct.rightAlgebra`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Set `f : G.C →ₐ[G.F] ℚ_[p] ⊗[ℚ] G.C` to `{ (Algebra.TensorProduct.includeRight : G.C →ₐ[ℚ] ℚ_[p] ⊗[ℚ] G.C).toRingHom with commutes' := fun c => by show (1 : ℚ_[p]) ⊗ₜ algebraMap G.F G.C c = iotaZ G ((1 : ℚ_[p]) ⊗ₜ c)`. Simplify using `[iotaZ] }`. Set `g : (ℚ_[p] ⊗[ℚ] G.F) →ₐ[G.F] ℚ_[p] ⊗[ℚ] G.C` to `{ (iotaZ G).toRingHom with commutes' := fun c => rfl }`. Set `Φ` to `Algebra.TensorProduct.lift f g (fun c z => iotaZ_comm G _ _)`. Establish `hΦ1 : ∀ z, Φ ((1 : G.C) ⊗ₜ z) = iotaZ G z` using `fun z => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Algebra.TensorProduct.lift_tmul, map_one, one_mul]`. Both sides reduce to the same expression. Establish `hΦs : Function.Surjective Φ`. Introduce `d`. Proceed by induction on `d using TensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul a c`. Use `⟨c ⊗ₜ (a ⊗ₜ (1 : G.F)), ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.lift_tmul]`. Use `show ((1 : ℚ_[p]) ⊗ₜ c) * iotaZ G (a ⊗ₜ 1) = a ⊗ₜ c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `[iotaZ, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add x y hx hy`. Take `⟨x', rfl⟩` from `hx`. Take `⟨y', rfl⟩` from `hy`. Conclude with `⟨x' + y', map_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ψ : ℚ_[p] ⊗[ℚ] G.C →+* ((i : Fin G.m) → Matrix (Fin G.n) (Fin G.n) (G.Fw i)) × ((i : Fin G.m) → (Matrix (Fin G.n) (Fin G.n) (G.Fw i))ᵐᵒᵖ)` to `RingHom.prod (RingHom.pi fun i => (G.locW i).toRingHom) (RingHom.pi fun i => (RingHom.op (G.locW i).toRingHom).comp (starT G.star ℚ_[p]))`. Establish `hψ : ∀ d, ψ d = 0 ↔ (∀ i, G.locW i d = 0) ∧ ∀ i, G.locW i (starT G.star ℚ_[p] d).unop = 0`. Introduce `d`. Simplify using `only [ψ, Prod.ext_iff, funext_iff, RingHom.prod_apply, Pi.ringHom_apply, Prod.fst_zero, Prod.snd_zero, Pi.zero_apply, RingHom.comp_apply]`. Use `and_congr Iff.rfl (forall_congr' fun i => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Rewrite using `[← MulOpposite.unop_inj]`. Both sides reduce to the same expression. Set `J : TwoSidedIdeal (G.C ⊗[G.F] (ℚ_[p] ⊗[ℚ] G.F))` to `TwoSidedIdeal.ker (ψ.comp Φ.toRingHom)`. Establish `hJ : J = ⊥`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hz0, hz⟩` from `GroundTheory.Brauer.exists_one_tmul_mem_of_ne_bot J hne`. Apply `hz0` to reduce the goal to its premises. Rewrite `hz` using `[TwoSidedIdeal.mem_ker, RingHom.comp_apply]`. Express the relevant statement in the definitionally equal form `ψ (Φ ((1 : G.C) ⊗ₜ z)) = 0 at hz`. Rewrite `hz` using `[hΦ1, hψ]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : Nonempty (Fin G.n) := ⟨⟨0, G.n_pos⟩⟩`. Apply `inj_Z G z` to reduce the goal to its premises. Introduce `i`. Use `hz.1 i` as an intermediate fact. Rewrite `this` using `[locW_iotaZ]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(FaithfulSMul.algebraMap_injective (G.Fw i) _) (this.trans (map_zero _).symm)`. Introduce `i`. Use `hz.2 i` as an intermediate fact. Rewrite `this` using `[starT_iotaZ, locW_iotaZ]`. Conclude with `(FaithfulSMul.algebraMap_injective (G.Fw i) _) (this.trans (map_zero _).symm)`.
-
-Take `⟨y, rfl⟩` from `hΦs x`. Establish `hy : y ∈ J`. Rewrite using `[TwoSidedIdeal.mem_ker]`. Conclude with `(hψ _).2 ⟨h1, h2⟩`. Rewrite `hy` using `[hJ, TwoSidedIdeal.mem_bot]`.
-
-Rewrite using `[hy, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locW_inj (x : ℚ_[p] ⊗[ℚ] G.C) (h1 : ∀ i, G.locW i x = 0)
     (h2 : ∀ i, G.locW i (starT G.star ℚ_[p] x).unop = 0) : x = 0 := by

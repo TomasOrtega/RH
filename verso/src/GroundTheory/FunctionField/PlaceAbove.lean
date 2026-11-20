@@ -13,7 +13,7 @@ def LiesOver (w : Place k K') (v : Place k K) : Prop :=
 
 omit [IsScalarTower k K K'] in
 /- English proof (translation)
-Rewrite using `[← ValuationSubring.mem_comap, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem LiesOver.mem_iff {w : Place k K'} {v : Place k K} (h : w.LiesOver v) {x : K} :
     algebraMap K K' x ∈ w.ring ↔ x ∈ v.ring := by
@@ -21,7 +21,7 @@ theorem LiesOver.mem_iff {w : Place k K'} {v : Place k K} (h : w.LiesOver v) {x 
 
 omit [IsScalarTower k K K'] in
 /- English proof (translation)
-The claim follows from `h.mem_iff.2 hx`.
+A detailed English derivation is pending.
 -/
 theorem LiesOver.algebraMap_mem {w : Place k K'} {v : Place k K} (h : w.LiesOver v) {x : K}
     (hx : x ∈ v.ring) : algebraMap K K' x ∈ w.ring :=
@@ -52,14 +52,14 @@ theorem liesOver_comap [Algebra.IsAlgebraic K K'] (w : Place k K') : w.LiesOver 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Place.ext h, fun h => congrArg Place.ring h⟩`.
+Supply the required witnesses or components.
 -/
 theorem liesOver_iff_comap_eq [Algebra.IsAlgebraic K K'] {w : Place k K'} {v : Place k K} :
     w.LiesOver v ↔ w.comap = v :=
   ⟨fun h => Place.ext h, fun h => congrArg Place.ring h⟩
 
 /- English proof (translation)
-Use `Place.eq_of_le (v := v) (w := w.comap) fun x hx => ValuationSubring.mem_comap.2 (h x hx)` as an intermediate fact. Conclude with `liesOver_iff_comap_eq.2 this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liesOver_of_le [IsFunctionField k K] [Algebra.IsAlgebraic K K'] {w : Place k K'}
     {v : Place k K} (h : ∀ x ∈ v.ring, algebraMap K K' x ∈ w.ring) : w.LiesOver v := by
@@ -67,19 +67,17 @@ theorem liesOver_of_le [IsFunctionField k K] [Algebra.IsAlgebraic K K'] {w : Pla
   exact liesOver_iff_comap_eq.2 this.symm
 
 /- English proof (translation)
-Set `f : v.ring →+* K'` to `(algebraMap K K').comp v.ring.subtype`. Establish `hf : Function.Injective f` using `(algebraMap K K').injective.comp Subtype.val_injective`. Set `g : v.ring →+* f.range` to `f.rangeRestrict`. Establish `hg : Function.Bijective g` using `⟨fun a b h => hf (congrArg Subtype.val h), f.rangeRestrict_surjective⟩`. Set `I : Ideal f.range` to `(IsLocalRing.maximalIdeal v.ring).map g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hI : I ≠ ⊤` using `fun h => (IsLocalRing.maximalIdeal.isMaximal v.ring).ne_top ((Ideal.map_eq_top_of_bijective g hg).1 h)`. Take `⟨B, hAB, hIB⟩` from `Ideal.image_subset_nonunits_valuationSubring I hI`. Establish `hmem : ∀ a : v.ring, a ∈ IsLocalRing.maximalIdeal v.ring → f a ∈ B.nonunits` using `fun a ha => hIB ⟨g a, Ideal.mem_map_of_mem g ha, rfl⟩`. Establish `hAB' : ∀ a : v.ring, f a ∈ B` using `fun a => hAB (RingHom.mem_range_self f a)`. Take `⟨x, hx0, hx⟩` from `v.exists_valuation_lt_one_ne_zero`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hxO : x ∈ v.ring` using `(v.ring.valuation_le_one_iff x).1 hx.le`. Establish `hfx : algebraMap K K' x ∈ B.nonunits` using `hmem ⟨x, hxO⟩ ((v.ring.valuation_lt_one_iff _).2 hx)`. Use `⟨⟨B, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `htop`. Break down `B.mem_nonunits_iff_or.1 hfx with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hx0 ((algebraMap K K').injective (h.trans (map_zero _).symm))`. Conclude with `h (htop ▸ ValuationSubring.mem_top _)`. Introduce `c`. Rewrite using `[IsScalarTower.algebraMap_apply k K K']`. Conclude with `hAB' ⟨_, v.algebraMap_mem c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[ValuationSubring.mem_comap]`. Assume the negation of the conclusion as `hyv`. Establish `hy0 : y ≠ 0` using `fun h => hyv (h ▸ v.ring.zero_mem)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinv : y⁻¹ ∈ v.ring.nonunits` using `v.ring.inv_mem_nonunits_iff.2 (Or.inr hyv)`. Take `⟨hr, hrm⟩` from `v.ring.mem_nonunits_iff_exists_mem_maximalIdeal.1 hinv`. Establish `h1 : algebraMap K K' y⁻¹ ∈ B.nonunits` using `hmem _ hrm`. Rewrite `h1` using `[map_inv₀]`. Break down `B.inv_mem_nonunits_iff.1 h1 with h | h` into its components or cases.
-
-Conclude with `hy0 ((algebraMap K K').injective (h.trans (map_zero _).symm))`. Conclude with `h hy`. Introduce `y hy`. Conclude with `ValuationSubring.mem_comap.2 (hAB' ⟨y, hy⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_liesOver (v : Place k K) : ∃ w : Place k K', w.LiesOver v := by
   let f : v.ring →+* K' := (algebraMap K K').comp v.ring.subtype
@@ -127,11 +125,11 @@ abbrev LiesOver.algebra {w : Place k K'} {v : Place k K} (h : w.LiesOver v) :
 
 omit [IsScalarTower k K K'] in
 /- English proof (translation)
-Set `` to `h.algebra`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Rewrite `ha`, the goal using `[ValuationSubring.valuation_eq_one_iff]`. Establish `hw : w.ring.valuation (algebraMap K K' (a : K)) = 1` using `ha`. Establish `ha0 : (a : K) ≠ 0`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hw` using `[h0, map_zero, map_zero]`. Conclude with `zero_ne_one hw`. Establish `hinv : (a : K)⁻¹ ∈ v.ring`. Rewrite using `[← h.mem_iff, ← w.ring.valuation_le_one_iff, map_inv₀, map_inv₀, hw, inv_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(v.ring.valuation_le_one_iff _).2 hinv`. Rewrite `h1` using `[map_inv₀, inv_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ha0))]`. Conclude with `le_antisymm (v.ring.valuation_le_one a) h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LiesOver.isLocalHom {w : Place k K'} {v : Place k K} (h : w.LiesOver v) :
     let := h.algebra
@@ -151,7 +149,7 @@ theorem LiesOver.isLocalHom {w : Place k K'} {v : Place k K} (h : w.LiesOver v) 
   exact le_antisymm (v.ring.valuation_le_one a) h1
 
 /- English proof (translation)
-Set `` to `h.algebra`. Conclude with `IsScalarTower.of_algebraMap_eq fun c => Subtype.ext (IsScalarTower.algebraMap_apply k K K' c)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem LiesOver.isScalarTower {w : Place k K'} {v : Place k K} (h : w.LiesOver v) :
     let := h.algebra
@@ -161,9 +159,9 @@ theorem LiesOver.isScalarTower {w : Place k K'} {v : Place k K} (h : w.LiesOver 
     Subtype.ext (IsScalarTower.algebraMap_apply k K K' c)
 
 /- English proof (translation)
-Take `⟨y, hy, hfin⟩` from `IsFunctionField.exists_transcendental_finiteDimensional (k := k) (K := K)`. Establish `hb` using `(isTranscendenceBasis_singleton hy hfin).algebraMap_comp (A := K')`. Establish `hr : Set.range (⇑(algebraMap K K') ∘ ((↑) : ({y} : Set K) → K)) = {algebraMap K K' y}`. Rewrite using `[Set.range_comp, Subtype.range_coe, Set.image_singleton]`. Establish `halg` using `hb.isAlgebraic_field`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `halg` using `[hr]`. Use `essFiniteType (k := k) (K := K)` as an intermediate fact. Establish `: Algebra.EssFiniteType k K'` using `Algebra.EssFiniteType.comp k K K'`. Establish `: Algebra.EssFiniteType (IntermediateField.adjoin k {algebraMap K K' y}) K'` using `Algebra.EssFiniteType.of_comp k _ K'`. Conclude with `⟨⟨algebraMap K K' y, (algebraicIndependent_singleton_iff (⟨y, rfl⟩ : ({y} : Set K))).1 hb.1, Algebra.finite_of_essFiniteType_of_isAlgebraic⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem _root_.GroundTheory.FunctionField.IsFunctionField.of_finiteDimensional [IsFunctionField k K]
     [FiniteDimensional K K'] : IsFunctionField k K' := by
@@ -189,13 +187,13 @@ noncomputable def uniformizer (v : Place k K) : K :=
   Classical.choose v.exists_ord_eq_one
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec v.exists_ord_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem ord_uniformizer (v : Place k K) : v.ord v.uniformizer = 1 :=
   Classical.choose_spec v.exists_ord_eq_one
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 := v.ord_uniformizer rw [h, ord_zero] at h1 exact zero_ne_one h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem uniformizer_ne_zero (v : Place k K) : v.uniformizer ≠ 0 := fun h => by
   have h1 := v.ord_uniformizer
@@ -212,7 +210,7 @@ noncomputable def inertiaDeg (w : Place k K') (v : Place k K) : ℕ :=
 
 omit [IsFunctionField k K] [IsFunctionField k K'] [IsScalarTower k K K'] in
 /- English proof (translation)
-Set `` to `h.algebra`. Conclude with `Module.isTorsionFree_iff_algebraMap_injective.2 fun a b hab => Subtype.ext ((algebraMap K K').injective (congrArg Subtype.val hab))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem LiesOver.isTorsionFree {w : Place k K'} {v : Place k K} (h : w.LiesOver v) :
     letI := h.algebra
@@ -224,9 +222,9 @@ theorem LiesOver.isTorsionFree {w : Place k K'} {v : Place k K} (h : w.LiesOver 
 omit [IsScalarTower k K K'] in
 
 /- English proof (translation)
-Set `` to `h.algebra`. Use `h.isLocalHom` as an intermediate fact. Use `h.isTorsionFree` as an intermediate fact. Set `: Algebra v.ring K'` to `((algebraMap K K').comp (algebraMap v.ring K)).toAlgebra`. Establish `: IsScalarTower v.ring K K'` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsScalarTower v.ring w.ring K'` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: w.heightOneSpectrum.asIdeal.LiesOver v.heightOneSpectrum.asIdeal` using `inferInstanceAs ((IsLocalRing.maximalIdeal w.ring).LiesOver (IsLocalRing.maximalIdeal v.ring))`. Conclude with `IsDedekindDomain.HeightOneSpectrum.valuation_liesOver K' v.heightOneSpectrum w.heightOneSpectrum x`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LiesOver.valuation_algebraMap {w : Place k K'} {v : Place k K} (h : w.LiesOver v) (x : K) :
     letI := h.algebra
@@ -245,7 +243,7 @@ theorem LiesOver.valuation_algebraMap {w : Place k K'} {v : Place k K} (h : w.Li
     w.heightOneSpectrum x
 
 /- English proof (translation)
-Set `` to `h.algebra`. Establish `h1` using `h.valuation_algebraMap v.uniformizer`. Establish `hπ : algebraMap K K' v.uniformizer ≠ 0` using `(map_ne_zero _).2 v.uniformizer_ne_zero`. Rewrite `h1` using `[v.valuation_eq_exp_neg_ord v.uniformizer_ne_zero, v.ord_uniformizer, w.valuation_eq_exp_neg_ord hπ, ← WithZero.exp_nsmul, WithZero.exp_inj, nsmul_eq_mul]`. Rewrite using `[ramificationIdx]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -262,9 +260,9 @@ theorem LiesOver.ramificationIdx'_eq {w : Place k K'} {v : Place k K} (h : w.Lie
   omega
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Set `` to `h.algebra`. Establish `h1` using `h.valuation_algebraMap x`. Establish `hx' : algebraMap K K' x ≠ 0` using `(map_ne_zero _).2 hx`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[v.valuation_eq_exp_neg_ord hx, w.valuation_eq_exp_neg_ord hx', ← WithZero.exp_nsmul, WithZero.exp_inj, nsmul_eq_mul, h.ramificationIdx'_eq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem LiesOver.ord_algebraMap {w : Place k K'} {v : Place k K} (h : w.LiesOver v) (x : K) :
     w.ord (algebraMap K K' x) = w.ramificationIdx v * v.ord x := by
@@ -280,7 +278,7 @@ theorem LiesOver.ord_algebraMap {w : Place k K'} {v : Place k K} (h : w.LiesOver
 omit [IsFunctionField k K'] in
 
 /- English proof (translation)
-Set `` to `h.algebra`. Use `h.isLocalHom` as an intermediate fact. Use `h.isScalarTower` as an intermediate fact. Conclude with `Module.finrank_mul_finrank k v.ResidueField w.ResidueField`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LiesOver.deg_mul_finrank {w : Place k K'} {v : Place k K} (h : w.LiesOver v) :
     letI := h.algebra
@@ -294,7 +292,7 @@ theorem LiesOver.deg_mul_finrank {w : Place k K'} {v : Place k K} (h : w.LiesOve
 omit [IsFunctionField k K'] in
 
 /- English proof (translation)
-Set `` to `h.algebra`. Use `h.isLocalHom` as an intermediate fact. Rewrite using `[inertiaDeg, ← h.deg_mul_finrank, Nat.mul_div_cancel_left _ v.deg_pos]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem LiesOver.finrank_residueField {w : Place k K'} {v : Place k K} (h : w.LiesOver v) :
     letI := h.algebra
@@ -305,7 +303,7 @@ theorem LiesOver.finrank_residueField {w : Place k K'} {v : Place k K} (h : w.Li
   rw [inertiaDeg, ← h.deg_mul_finrank, Nat.mul_div_cancel_left _ v.deg_pos]
 
 /- English proof (translation)
-Set `` to `h.algebra`. Use `h.isLocalHom` as an intermediate fact. Rewrite using `[← h.finrank_residueField, ← h.deg_mul_finrank, mul_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem LiesOver.deg_eq {w : Place k K'} {v : Place k K} (h : w.LiesOver v) :
     w.deg = w.inertiaDeg v * v.deg := by

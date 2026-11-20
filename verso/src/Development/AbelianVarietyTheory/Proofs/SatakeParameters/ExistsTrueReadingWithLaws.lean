@@ -20,27 +20,23 @@ open GlobalTheory.WeilDeligne GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.S
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.CuspRep.host_isCMField D.host`. Establish `HR` using `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 s.w)`. Establish `hlaws : RecLaws (rcAt hL D s.w)` using `HR.recLaws`. Establish `hrow : ∀ σ, ∃ τ : Irr (s.w.adicCompletion D.host.E) D.R.r, D.what₂.isot (D.nd.j i) σ ≠ ⊥ → IsLocS (P.rep σ).S s τ.toIrrRep`. Introduce `σ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hσ : D.what₂.isot (D.nd.j i) σ ≠ ⊥`. Take `⟨τ, hτ⟩` from `GlobalTheory.T.isotypic_row_local_split_exists D P.rep (D.nd.j i) (hR i).some σ hσ s`. Conclude with `⟨Irr.ofIrrRep τ, fun _ => hτ⟩`. Conclude with `⟨default, fun h => absurd h hσ⟩`. Use `choose row hrow using hrow`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrep : ∀ Q : D.naut.AV i, ∃ τ : Irr (s.w.adicCompletion D.host.E) (D.R.r + D.R.t), IsLocS (n` using `D.R.nV) (P.H.av.S i Q) s τ.toIrrRep := by`. Introduce `Q`. Take `⟨τ, hτ, -⟩` from `GlobalTheory.T.splitPlaceLocalComponent_exists_unique_class D.host.E D.R.nV (P.H.av.rep i Q) s`. Conclude with `⟨Irr.ofIrrRep τ, hτ⟩`. Use `choose rep hrep using hrep`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hjr` using `D.nd.j_range i`. Set `j0 : Fin D.R.m` to `⟨D.nd.j i - 1, by omega⟩`. Establish `hj0 : j0.1 + 1 = D.nd.j i` using `by simp only [j0]; omega`. Establish `hmuC` using `P.chr.muC i j0 hj0`. Take `⟨μ, hμ, -, hμu⟩` from `GlobalTheory.T.heckeChar_localComponent_exists_unique_unitary D.host.E (P.tp.tup (D.nd.mu i) j0) s.w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμU : GlobalTheory.SmGL.IsUnitaryChar μ` using `hμu (hmuC ▸ (P.chr.e1 (D.naut.muC i)).2)`. Establish `hμP : IsComp (P.chr.e1 (D.naut.muC i)).1 s.w μ` using `hmuC ▸ hμ`. Establish `eμ` using `GlobalTheory.T.rank_one_local_component_det hAF hL D P (D.naut.muC i) s.w μ hμP`. Take `⟨η, hη, -, -⟩` from `GlobalTheory.T.heckeChar_localComponent_exists_unique_unitary D.host.E P.cf.eta⁻¹ s.w`. Establish `hηP : IsComp (P.chr.e1 D.naut.etaTinv).1 s.w η` using `P.chr.etaTinv ▸ hη`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eη` using `GlobalTheory.T.rank_one_local_component_det hAF hL D P D.naut.etaTinv s.w η hηP`. Establish `hun : GlobalTheory.SplitWeil.IsUnram η`. Use `(hlaws.sph 1 (Irr.ofDet 1 η hηP.1)).1 (by rw [← eη]; exact (P.T.unr s.w _).1 (D.naut.etaTinv_def s.w).1)` as an intermediate fact. Introduce `x hx`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : (fun _ : Fin 1 => x) ∈ torusO (s.w.adicCompletion D.host.E) (Fin 1)` using `fun _ => hx`. Establish `h2` using `hv ⟨_, iwahori_le_KO _ _ (diagT_mem_iwahori hI)⟩`. Establish `h3 : Matrix.GeneralLinearGroup.det (diagT (s.w.adicCompletion D.host.E) (Fin 1) fun _ => x) = x` using `by ext; simp [val_diagT]`. Establish `h4 : (η x : ℂ) * (show ℂ from v) = (show ℂ from v)`. Establish `h5 : detRep (Fin 1) η (diagT (s.w.adicCompletion D.host.E) (Fin 1) fun _ => x) v = (show ℂ from v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `h2.trans (by simp)`. Establish `h6` using `(ofChar_apply (detChar (Fin 1) η) (diagT (s.w.adicCompletion D.host.E) (Fin 1) fun _ => x) (show ℂ from v)).symm.trans h5`. Rewrite `h6` using `[detChar_apply, h3]`. Conclude with `h6`. Use `ext`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_right₀ hv0).1 h4`. Use `⟨⟨rcAt hL D s.w, row, rep, μ, η⁻¹, ⟨hμ.1, hμU⟩, ⟨hηP.1.inv, fun x hx => by simp [hun x hx]⟩, fun σ hσ => (P.row i).1 σ s _ (hrow σ hσ), fun Q => ?_, fun c hc => ?_, fun c hc => ?_⟩, rfl, hrow, hrep, fun j hj => ?_, ⟨hη.1.inv, fun x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[D.nbc.embAV_loc, P.H.emb]`. Conclude with `P.au _ _ _ _ s _ (hrep Q)`. Rewrite using `[eμ]`.
-
-Conclude with `((hlaws.iso 1 c (Irr.ofDet 1 μ hμP.1)).2 hc).symm`. Rewrite `hc` using `[inv_inv]`. Rewrite using `[eη]`. Conclude with `((hlaws.iso 1 c (Irr.ofDet 1 η hηP.1)).2 hc).symm`. Establish `: j = j0` using `Fin.ext (by simp only [j0]; omega)`.
-
-Substitute `this` using the available equality. Conclude with `hμ`. Rewrite using `[MonoidHom.inv_apply, hη.2 x]`. Conclude with `inv_inv _`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem readAt_exists (hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7)
     (P : Pin hL D) (hR : ∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) (i : D.nd.Loc)
@@ -114,15 +110,13 @@ theorem readAt_exists (hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (h
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hAF hL D P hR`. Use `haveI := GlobalTheory.CuspRep.host_isCMField D.host`. Establish `hex : ∀ w : PlE D.host, IsSplitPl D.host w → ∃ s : SplitPlace D.host.E, s.w = w`. Introduce `w hw`. Take `⟨w', hw'⟩` from `GlobalTheory.ToricFactor.exists_isConjPl w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, -, hs, -⟩` from `GlobalTheory.SplitConjPlace.splitEx_all D w' (GlobalTheory.ConjugatePlaceSplitting.isSplitPl_of_isConjPl hw hw')`. Conclude with `⟨s, GlobalTheory.ToricFactor.isConjPl_unique hs (GlobalTheory.ToricFactor.isConjPl_symm hw')⟩`. Establish `key : ∀ i (w : PlE D.host), IsSplitPl D.host w → ∃ X : ReadAt P.T i w, X.rc = rcAt hL D w ∧ ∀ (s : SplitPlace D.host.E), s.w = w → ∀ Y : ReadAt P.T i s.w, HEq Y X → (∀ σ, D.what₂.isot (D.nd.j i) σ ≠ ⊥ → IsLocS (P.rep σ).S s (Y.row σ).toIrrRep) ∧ (∀ Q, IsLocS (n` using `D.R.nV) (P.H.av.S i Q) s (Y.rep Q).toIrrRep) ∧ (∀ j : Fin D.R.m, j.1 + 1 = D.nd.j i → IsComp (P.tp.tup (D.nd.mu i) j) s.w Y.mu) ∧ IsComp P.cf.eta s.w Y.eta := by`. Introduce `i w hw`. Take `⟨s₀, rfl⟩` from `hex w hw`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨X, h1, h2⟩` from `GlobalTheory.TrueReading.readAt_exists hAF hL D P hR i s₀`. Use `⟨X, h1, fun s hs Y hY => ?_⟩` and prove the remaining obligations. Take `rfl` from `GlobalTheory.SplitUniq.splitPlace_eq_of_w_eq D.host.E s s₀ hs`. Take `rfl` from `eq_of_heq hY`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `choose S hS using key`. Use `⟨S, ⟨fun i w hw => (hS i w hw).1, fun i s hw σ hσ => ((hS i s.w hw).2 s rfl _ HEq.rfl).1 σ hσ, fun i s hw Q => ((hS i s.w hw).2 s rfl _ HEq.rfl).2.1 Q, fun i w hw j hj => ?_, fun i w hw => ?_⟩, fun i w hw => ?_, fun i w hw => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `hex w hw`. Conclude with `((hS i s.w hw).2 s rfl _ HEq.rfl).2.2.1 j hj`. Take `⟨s, rfl⟩` from `hex w hw`.
-
-Conclude with `((hS i s.w hw).2 s rfl _ HEq.rfl).2.2.2`. Rewrite using `[(hS i w hw).1]`. Conclude with `(GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 w)).recLaws`. Rewrite using `[(hS i w hw).1]`. Conclude with `GlobalTheory.LocLanglands.IsRec.recSupp (GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 w))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_true_reading : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D),
     (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) →

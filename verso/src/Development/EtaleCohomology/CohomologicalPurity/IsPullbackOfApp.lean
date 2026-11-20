@@ -6,13 +6,13 @@ open CategoryTheory Limits Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity.Thom.ExcSp
 
 /- English proof (translation)
-Establish `hsupp : ∀ s ∈ x.support, s ∈ Set.range t`. Introduce `s hs`. Establish `h1 : (Finsupp.mapDomain r x) (r s) ≠ 0`. Rewrite using `[Finsupp.mapDomain_apply hr]`. Conclude with `Finsupp.mem_support_iff.1 hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h]`. Establish `h2 : r s ∈ (Finsupp.mapDomain b y).support` using `Finsupp.mem_support_iff.2 h1`. Establish `h3` using `Finsupp.mapDomain_support h2`. Take `⟨c, -, hc⟩` from `Finset.mem_image.1 h3`. Take `⟨a, ha, -⟩` from `hpb s c hc.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, ha⟩`. Use `⟨x.comapDomain t ht.injOn, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finsupp.mapDomain_comapDomain t ht x hsupp`. Apply `Finsupp.mapDomain_injective hb` to reduce the goal to its premises. Rewrite using `[← Finsupp.mapDomain_comp]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: b ∘ l = r ∘ t` using `funext fun a => (w a).symm`. Rewrite using `[this, Finsupp.mapDomain_comp, Finsupp.mapDomain_comapDomain t ht x hsupp, h]`.
+A detailed English derivation is pending.
 -/
 theorem fin_pb {α β γ δ M : Type*} [AddCommMonoid M] (t : α → β) (l : α → γ) (r : β → δ) (b : γ → δ)
     (w : ∀ a, r (t a) = b (l a)) (hpb : ∀ x y, r x = b y → ∃ a, t a = x ∧ l a = y)
@@ -38,7 +38,7 @@ theorem fin_pb {α β γ δ M : Type*} [AddCommMonoid M] (t : α → β) (l : α
     rw [this, Finsupp.mapDomain_comp, Finsupp.mapDomain_comapDomain t ht x hsupp, h]
 
 /- English proof (translation)
-The claim follows from `IsPullback.of_isLimit' ⟨w⟩ (evaluationJointlyReflectsLimits _ fun j => (isLimitMapConePullbackConeEquiv ((evaluation J C).obj j) w).symm (h j).isLimit)`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_of_app {J C : Type*} [Category J] [Category C] {A B X Y : J ⥤ C}
     {t : A ⟶ B} {l : A ⟶ X} {r : B ⟶ Y} {b : X ⟶ Y} (w : t ≫ r = l ≫ b)
@@ -47,15 +47,15 @@ theorem isPullback_of_app {J C : Type*} [Category J] [Category C] {A B X Y : J �
     (isLimitMapConePullbackConeEquiv ((evaluation J C).obj j) w).symm (h j).isLimit)
 
 /- English proof (translation)
-Take `⟨w, hinj, hex⟩` from `(Types.isPullback_iff _ _ _ _).1 hpb`. Establish `ht : Function.Injective t` using `fun x y h => hinj x y ⟨h, hb (by`. Use `ConcreteCategory.congr_hom w x` as an intermediate fact. Establish `h2` using `ConcreteCategory.congr_hom w y`. Simplify using `only [ConcreteCategory.comp_apply, types_comp_apply] at this h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this, ← h2, h])⟩`. Establish `hw : ∀ a : ULift.{1} A', ULift.up (r (t a.down)) = ULift.up (b (l a.down))` using `fun a => by`. Use `ConcreteCategory.congr_hom w a.down` as an intermediate fact. Simplify using `only [ConcreteCategory.comp_apply, types_comp_apply] at this`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `sq : (ModuleCat.free (ULift.{1} R)).map (uliftFunctor.{1}.map t) ≫ (ModuleCat.free (ULift.{1} R)).map (uliftFunctor.{1}.map r) = (ModuleCat.free (ULift.{1} R)).map (uliftFunctor.{1}.map l) ≫ (ModuleCat.free (ULift.{1} R)).map (uliftFunctor.{1}.map b)`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, ← Functor.map_comp, ← Functor.map_comp, w]`. Use `IsPullback.of_map (forget (ModuleCat (ULift.{1} R))) sq ?_` and prove the remaining obligations. Rewrite using `[Types.isPullback_iff]`. Use `⟨congrArg (forget _).map sq, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x y ⟨h1, -⟩`. Establish `hu : Function.Injective (uliftFunctor.{1}.map t)` using `fun a c h => ULift.ext _ _ (ht (congrArg ULift.down h))`. Conclude with `Finsupp.mapDomain_injective hu h1`. Introduce `x y h`. Conclude with `fin_pb (uliftFunctor.{1}.map t) (uliftFunctor.{1}.map l) (uliftFunctor.{1}.map r) (uliftFunctor.{1}.map b) hw (fun x y h => by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha1, ha2⟩` from `hex x.down y.down (congrArg ULift.down h)`. Conclude with `⟨ULift.up a, ULift.ext _ _ ha1, ULift.ext _ _ ha2⟩)`. Use the proof step `(fun a c h => ULift.ext _ _ (ht (congrArg ULift.down h)))`. Use the proof step `(fun a c h => ULift.ext _ _ (hr (congrArg ULift.down h)))`. Use the proof step `(fun a c h => ULift.ext _ _ (hb (congrArg ULift.down h))) x y h`.
+A detailed English derivation is pending.
 -/
 theorem modfree_pb (R : Type) [CommRing R] {A' A B' B : Type} (t : A' ⟶ B') (l : A' ⟶ A) (r : B' ⟶ B)
     (b : A ⟶ B) (hpb : IsPullback t l r b) (hr : Function.Injective r) (hb : Function.Injective b) :
@@ -92,9 +92,9 @@ theorem modfree_pb (R : Type) [CommRing R] {A' A B' B : Type} (t : A' ⟶ B') (l
       (fun a c h => ULift.ext _ _ (hb (congrArg ULift.down h))) x y h
 
 /- English proof (translation)
-Introduce `R _ A' A B' B t l r b hpb hr hb`. Establish `hP : IsPullback ((freeP R).map t) ((freeP R).map l) ((freeP R).map r) ((freeP R).map b)`. Use `isPullback_of_app (by rw [← Functor.map_comp, ← Functor.map_comp, hpb.w]) fun U => ?_` and prove the remaining obligations. Establish `hrU : Mono (r.app U)` using `by rw [NatTrans.mono_iff_mono_app] at hr; exact hr U`. Establish `hbU : Mono (b.app U)` using `by rw [NatTrans.mono_iff_mono_app] at hb; exact hb U`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `modfree_pb R _ _ _ _ (hpb.map ((evaluation _ _).obj U)) ((mono_iff_injective _).1 hrU) ((mono_iff_injective _).1 hbU)`. Conclude with `hP.map (presheafToSheaf _ _)`.
+A detailed English derivation is pending.
 -/
 theorem leafFreePb : LeafFreePb := by
   intro R _ A' A B' B t l r b hpb hr hb
@@ -107,7 +107,7 @@ theorem leafFreePb : LeafFreePb := by
   exact hP.map (presheafToSheaf _ _)
 
 /- English proof (translation)
-The claim follows from `leafCokIso_of leafFreePb`.
+A detailed English derivation is pending.
 -/
 theorem LeafCokIso_of : LeafCokIso := leafCokIso_of leafFreePb
 

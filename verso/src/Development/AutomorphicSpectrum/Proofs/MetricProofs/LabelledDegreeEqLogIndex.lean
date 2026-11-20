@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.PlurisubharmonicCones.LabelDegreeLog
 open NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GroundTheory.Heights₂.Heights
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `LevelTowerAlt.label_degree_log_index` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FPlurisubharmonicCones%2FLabelDegreeLogIndex.lean&line=5#L5)
 -/

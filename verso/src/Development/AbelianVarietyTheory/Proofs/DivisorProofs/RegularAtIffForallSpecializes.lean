@@ -16,9 +16,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 namespace GlobalTheory.RegCodimOne
 
 /- English proof (translation)
-Use `haveI := IsNormalScheme.isDiscreteValuationRing_stalk hz`. Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible (X.presheaf.stalk z)`. Establish `h` using `le_ordTop_vw_iff (F := X.functionField) ht 0 g`. Rewrite `h` using `[ordTop_vw_of_ne_zero _ hg, WithTop.coe_le_coe]`. Establish `e : Scheme.ord g z = WithZero.log (Ring.ordFrac (X.presheaf.stalk z) g)` using `(Scheme.ord_eq_iff hz hg).2 (WithZero.exp_log ((map_ne_zero _).2 hg)).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `Iff.trans ⟨fun ⟨a, ha⟩ => ⟨a, by simp [ha]⟩, fun ⟨a, ha⟩ => ⟨a, by simp [ha]⟩⟩ h.symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem regAt_iff_ord_nonneg {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     [GlobalTheory.IsNormalScheme X] {z : X} (hz : Order.coheight z = 1) {g : X.functionField} (hg : g ≠ 0) :
@@ -33,11 +33,11 @@ theorem regAt_iff_ord_nonneg {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetheria
   refine Iff.trans ⟨fun ⟨a, ha⟩ => ⟨a, by simp [ha]⟩, fun ⟨a, ha⟩ => ⟨a, by simp [ha]⟩⟩ h.symm
 
 /- English proof (translation)
-Introduce `X _ _ _ D x f`. Take `⟨g, hg⟩` from `D.exists_isEqn x`. Take `⟨U, hU, hgU⟩` from `hg.exists_nhds`. Establish `hne : (f : X.functionField) * (g : X.functionField) ≠ 0` using `mul_ne_zero f.ne_zero g.ne_zero`. Establish `key : ∀ z, z ⤳ x → Scheme.ord (f : X.functionField) z + D.mult z = Scheme.ord ((f : X.functionField) * (g : X.functionField)) z` using `fun z hz => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(hgU z (hz.mem_open U.isOpen hU)).mult_eq, Scheme.ord_mul f.ne_zero g.ne_zero]`. Rewrite using `[hg.regularAt_iff]`. Use `⟨fun h z hz => ?_, fun h => regAt_of_forall_coheight_eq_one fun z hz h1 => ?_⟩` and prove the remaining obligations. Rewrite using `[key z hz]`. Distinguish the cases in `h1 : Order.coheight z = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `(regAt_iff_ord_nonneg h1 hne).1 (GlobalTheory.Discrepancy.regAt_of_specializes hz h)`. Rewrite using `[Scheme.ord_eq_zero_of_coheight_neq_one h1]`. Conclude with `(regAt_iff_ord_nonneg h1 hne).2 (key z hz ▸ h z hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regularAt_iff_forall_specializes : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (D : CartierDiv X) (x : X) (f : X.functionFieldˣ), D.RegularAt x (f : X.functionField) ↔ ∀ z, z ⤳ x → 0 ≤ Scheme.ord (f : X.functionField) z + D.mult z := by
   intro X _ _ _ D x f

@@ -14,7 +14,7 @@ section Gen
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
 
 /- English proof (translation)
-Use `show (∀ h : K, ρ (h : G) v = ((1 : K →* ℂˣ) h : ℂ) • v) ↔ _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_fixed_iff (K : Subgroup G) (v : V) : v ∈ fixed ρ K ↔ ∀ k : K, ρ (k : G) v = v := by
   show (∀ h : K, ρ (h : G) v = ((1 : K →* ℂˣ) h : ℂ) • v) ↔ _
@@ -35,14 +35,14 @@ def genSub (M : Submodule ℂ V) : Subrepresentation ρ where
     exact this hv
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `Submodule.subset_span ⟨1, x, hx, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem le_genSub (M : Submodule ℂ V) : M ≤ (genSub ρ M).toSubmodule := by
   intro x hx
   exact Submodule.subset_span ⟨1, x, hx, by simp⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨g, x, hx, rfl⟩`. Conclude with `U.apply_mem_toSubmodule g (h hx)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem genSub_le (M : Submodule ℂ V) (U : Subrepresentation ρ) (h : M ≤ U.toSubmodule) :
     (genSub ρ M).toSubmodule ≤ U.toSubmodule := by
@@ -51,9 +51,9 @@ theorem genSub_le (M : Submodule ℂ V) (U : Subrepresentation ρ) (h : M ≤ U.
   exact U.apply_mem_toSubmodule g (h hx)
 
 /- English proof (translation)
-Establish `h1 : ρ g u - u = c - ρ g c`. Rewrite `h` using `[map_add]`. Rewrite using `[sub_eq_sub_iff_add_eq_add, h, add_comm]`. Establish `h2 : ρ g u - u ∈ U.toSubmodule ⊓ C.toSubmodule`. Use `⟨sub_mem (U.apply_mem_toSubmodule g hu) hu, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1]`. Conclude with `sub_mem hc (C.apply_mem_toSubmodule g hc)`. Rewrite `h2` using `[hUC]`. Conclude with `sub_eq_zero.1 ((Submodule.mem_bot ℂ).1 h2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_split (U C : Subrepresentation ρ) (hUC : U.toSubmodule ⊓ C.toSubmodule = ⊥) (g : G)
     {u c : V} (hu : u ∈ U.toSubmodule) (hc : c ∈ C.toSubmodule) (h : ρ g (u + c) = u + c) :
@@ -69,27 +69,23 @@ theorem fixed_split (U C : Subrepresentation ρ) (hUC : U.toSubmodule ⊓ C.toSu
   exact sub_eq_zero.1 ((Submodule.mem_bot ℂ).1 h2)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨w, hwF, hwW, hw0⟩ : ∃ w, w ∈ fixed ρ K ∧ w ∈ W.toSubmodule ∧ w ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `h1` to reduce the goal to its premises. Rewrite using `[Submodule.eq_bot_iff]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Conclude with `hcon x hx.1 hx.2`. Use `{ exists_pair_ne := ⟨⊥, ⊤, ?_⟩, eq_bot_or_eq_top := ?_ }` and prove the remaining obligations. Introduce `h`. Establish `h1' : (⟨w, hwW⟩ : W.toSubmodule) ∈ (⊤ : Subrepresentation W.toRepresentation).toSubmodule` using `Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1'` using `[← h]`. Establish `h2' : (⟨w, hwW⟩ : W.toSubmodule) = 0` using `(Submodule.mem_bot ℂ).1 h1'`. Conclude with `hw0 (congrArg Subtype.val h2')`. Introduce `U`. Set `U' : Subrepresentation ρ` to `{ toSubmodule := U.toSubmodule.map W.toSubmodule.subtype apply_mem_toSubmodule := by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g v hv`. Take `⟨u, hu, rfl⟩` from `Submodule.mem_map.1 hv`. Conclude with `Submodule.mem_map.2 ⟨W.toRepresentation g u, U.apply_mem_toSubmodule g hu, rfl⟩ }`. Establish `hU'le : U'.toSubmodule ≤ W.toSubmodule`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, _, rfl⟩` from `Submodule.mem_map.1 hv`. Conclude with `u.2`. Distinguish the cases in `hF : fixed ρ K ⊓ U'.toSubmodule = ⊥`. Use `left`. Take `⟨C, hC⟩` from `hcompl U'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hFC : fixed ρ K ⊓ W.toSubmodule ≤ C.toSubmodule`. Introduce and unpack `x ⟨hxF, hxW⟩`. Establish `hx : x ∈ U'.toSubmodule ⊔ C.toSubmodule`. Rewrite using `[hC.sup_eq_top]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨u, hu, c, hc, rfl⟩` from `Submodule.mem_sup.1 hx`. Establish `huF : u ∈ fixed ρ K` using `(mem_fixed_iff ρ K u).2 fun k => fixed_split ρ U' C hC.inf_eq_bot k hu hc ((mem_fixed_iff ρ K _).1 hxF k)`. Establish `hu0 : u ∈ fixed ρ K ⊓ U'.toSubmodule` using `⟨huF, hu⟩`. Rewrite `hu0` using `[hF]`. Rewrite using `[(Submodule.mem_bot ℂ).1 hu0, zero_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc`. Establish `hWC` using `h3 C hFC`. Apply `Subrepresentation.ext` to reduce the goal to its premises. Use `show U.toSubmodule = (⊥ : Submodule ℂ W.toSubmodule)`. Rewrite using `[Submodule.eq_bot_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hm : (u : V) ∈ U'.toSubmodule ⊓ C.toSubmodule` using `⟨Submodule.mem_map_of_mem hu, hWC u.2⟩`. Rewrite `hm` using `[hC.inf_eq_bot]`. Conclude with `Subtype.ext ((Submodule.mem_bot ℂ).1 hm)`. Use `right`.
-
-Establish `hWU` using `h3 U' (h2 U' hU'le hF)`. Apply `Subrepresentation.ext` to reduce the goal to its premises. Use `show U.toSubmodule = (⊤ : Submodule ℂ W.toSubmodule)`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
-
-Take `⟨u, hu, hux⟩` from `Submodule.mem_map.1 (hWU x.2)`. Establish `: u = x` using `Subtype.ext hux`. Rewrite using `[← this]`. Conclude with `hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irreducible_of_fixed (K : Subgroup G)
     (hcompl : ∀ S : Subrepresentation ρ, ∃ T : Subrepresentation ρ, IsCompl S.toSubmodule T.toSubmodule)
@@ -162,21 +158,19 @@ theorem irreducible_of_fixed (K : Subgroup G)
 end Gen
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨v, hvS, hv0⟩ : ∃ v ∈ S.toSubmodule, v ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hS` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show S.toSubmodule = (⊥ : Submodule ℂ V)`. Rewrite using `[Submodule.eq_bot_iff]`. Conclude with `hcon`. Take `⟨K, hKo, hKc, hKv⟩` from `hsmall {g | ρ g v = v} ((hA.1 v).mem_nhds (by simp))`. Establish `hFd : FiniteDimensional ℂ (fixed ρ K)` using `hA.2 K hKo hKc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvF : v ∈ fixed ρ K` using `(mem_fixed_iff ρ K v).2 fun k => hKv k.2`. Establish `hex : ∃ n, ∃ W : Subrepresentation ρ, W.toSubmodule ≤ S.toSubmodule ∧ fixed ρ K ⊓ W.toSubmodule ≠ ⊥ ∧ Module.finrank ℂ (fixed ρ K ⊓ W.toSubmodule : Submodule ℂ V) = n`. Use `⟨_, S, le_rfl, ?_, rfl⟩` and prove the remaining obligations. Introduce `h`. Establish `: v ∈ fixed ρ K ⊓ S.toSubmodule` using `⟨hvF, hvS⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Conclude with `hv0 ((Submodule.mem_bot ℂ).1 this)`. Take `⟨W, hWS, hW0, hWn⟩` from `Nat.find_spec hex`. Use `set W₀ := genSub ρ (fixed ρ K ⊓ W.toSubmodule) with hW₀def`. Establish `hW₀W : W₀.toSubmodule ≤ W.toSubmodule` using `genSub_le ρ _ W inf_le_right`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hF₀ : fixed ρ K ⊓ W₀.toSubmodule = fixed ρ K ⊓ W.toSubmodule` using `le_antisymm (inf_le_inf_left _ hW₀W) (le_inf inf_le_left (le_genSub ρ _))`. Use `⟨W₀, ?_, hW₀W.trans hWS, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hW0` to reduce the goal to its premises. Rewrite using `[← hF₀, h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inf_bot_eq _`. Use `irreducible_of_fixed ρ K hcompl W₀ (by rwa [hF₀]) ?_ ?_` and prove the remaining obligations. Introduce `U hU hUne`. Establish `hmin` using `Nat.find_min' hex ⟨U, hU.trans (hW₀W.trans hWS), hUne, rfl⟩`. Rewrite `hmin` using `[← hWn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: FiniteDimensional ℂ (fixed ρ K ⊓ W.toSubmodule : Submodule ℂ V)` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `hle : fixed ρ K ⊓ U.toSubmodule ≤ fixed ρ K ⊓ W.toSubmodule` using `hF₀ ▸ inf_le_inf_left _ hU`. Establish `heq` using `Submodule.eq_of_le_of_finrank_le hle hmin`. Rewrite using `[hF₀, ← heq]`. Conclude with `inf_le_right`.
-
-Introduce `U hU`. Rewrite `hU` using `[hF₀]`. Conclude with `genSub_le ρ _ U hU`.
+A detailed English derivation is pending.
 -/
 theorem exists_irreducible_le {G V : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V)

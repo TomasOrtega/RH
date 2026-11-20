@@ -13,7 +13,7 @@ def lastDiag (t : ℂ) : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ :=
   Matrix.of fun i j => if i = Fin.last r ∧ j = Fin.last r then t else 0
 
 /- English proof (translation)
-Use extensionality with `i`. Distinguish the cases in `hi : i = Fin.last r`. Substitute `hi` using the available equality. Simplify using `[lastDiag, Matrix.mulVec, dotProduct]`. Simplify using `[lastDiag, Matrix.mulVec, dotProduct, hi]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lastDiag_mulVec (t : ℂ) (α : Fin (r + 1) → ℂ) :
     lastDiag t *ᵥ α = Pi.single (Fin.last r) (t * α (Fin.last r)) := by
@@ -24,23 +24,23 @@ theorem lastDiag_mulVec (t : ℂ) (α : Fin (r + 1) → ℂ) :
   · simp [lastDiag, Matrix.mulVec, dotProduct, hi]
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero, Ne, ← Matrix.exists_mulVec_eq_zero_iff]`. Introduce and unpack `⟨v, hv0, hv⟩`. Apply `hv0` to reduce the goal to its premises. Establish `hZi : Z⁻¹ * Z = 1` using `Matrix.nonsing_inv_mul Z hZ`. Establish `hZhi : (Zᴴ)⁻¹ * Zᴴ = 1` using `Matrix.nonsing_inv_mul _ (by rw [Matrix.det_conjTranspose]; exact hZ.star)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hv` using `[Matrix.fromBlocks_mulVec]`. Establish `h1 : lastDiag (-(T : ℂ)) *ᵥ (v ∘ Sum.inl) + Z *ᵥ (v ∘ Sum.inr) = 0`. Use function extensionality and compare the values at `fun i => by simpa only [Sum.elim_inl, Pi.zero_apply] using congrFun hv (Sum.inl i)`. Establish `h2 : Zᴴ *ᵥ (v ∘ Sum.inl) + lastDiag (-(T' : ℂ)) *ᵥ (v ∘ Sum.inr) = 0`. Use function extensionality and compare the values at `fun i => by simpa only [Sum.elim_inr, Pi.zero_apply] using congrFun hv (Sum.inr i)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h1`, `h2` using `[lastDiag_mulVec]`. Establish `h1' : Z *ᵥ (v ∘ Sum.inr) = Pi.single (Fin.last r) ((T : ℂ) * (v ∘ Sum.inl) (Fin.last r))`. Rewrite using `[eq_neg_of_add_eq_zero_right h1, ← Pi.single_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2' : Zᴴ *ᵥ (v ∘ Sum.inl) = Pi.single (Fin.last r) ((T' : ℂ) * (v ∘ Sum.inr) (Fin.last r))`. Rewrite using `[eq_neg_of_add_eq_zero_left h2, ← Pi.single_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hy : v ∘ Sum.inr = Z⁻¹ *ᵥ Pi.single (Fin.last r) ((T : ℂ) * (v ∘ Sum.inl) (Fin.last r))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← h1', Matrix.mulVec_mulVec, hZi, Matrix.one_mulVec]`. Establish `hx : v ∘ Sum.inl = (Zᴴ)⁻¹ *ᵥ Pi.single (Fin.last r) ((T' : ℂ) * (v ∘ Sum.inr) (Fin.last r))`. Rewrite using `[← h2', Matrix.mulVec_mulVec, hZhi, Matrix.one_mulVec]`. Establish `hsingle : ∀ (N : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (c : ℂ) (i : Fin (r + 1)), (N *ᵥ Pi.single (Fin.last r) c) i = N i (Fin.last r) * c`. Introduce `N c i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hinv : (Zᴴ)⁻¹ (Fin.last r) (Fin.last r) = starRingEnd ℂ (Z⁻¹ (Fin.last r) (Fin.last r))`. Rewrite using `[← Matrix.conjTranspose_nonsing_inv]`. Both sides reduce to the same expression. Establish `hyl` using `congrFun hy (Fin.last r)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hxl` using `congrFun hx (Fin.last r)`. Rewrite `hyl`, `hxl` using `[hsingle]`. Rewrite `hxl` using `[hinv]`. Establish `hprod : (v ∘ Sum.inl) (Fin.last r) * (1 - (T : ℂ) * T' * (Z⁻¹ (Fin.last r) (Fin.last r) * starRingEnd ℂ (Z⁻¹ (Fin.last r) (Fin.last r)))) = 0`. Take the linear combination `hxl + (starRingEnd ℂ (Z⁻¹ (Fin.last r) (Fin.last r)) * (T' : ℂ)) * hyl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hx0 : (v ∘ Sum.inl) (Fin.last r) = 0` using `(mul_eq_zero.mp hprod).resolve_right hG`. Establish `hy0 : (v ∘ Sum.inr) (Fin.last r) = 0` using `by rw [hyl, hx0]; ring`. Rewrite `hy` using `[hx0, mul_zero, Pi.single_zero, Matrix.mulVec_zero]`. Rewrite `hx` using `[hy0, mul_zero, Pi.single_zero, Matrix.mulVec_zero]`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the cases of `s with`. Consider the case `inl i => exact congrFun hx i`. Consider the case `inr i => exact congrFun hy i`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem gram_isUnit (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (hZ : IsUnit Z.det) (T T' : ℝ)
     (hG : 1 - (T : ℂ) * T' * (Z⁻¹ (Fin.last r) (Fin.last r) * starRingEnd ℂ (Z⁻¹ (Fin.last r) (Fin.last r))) ≠ 0) :

@@ -7,7 +7,7 @@ open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using M.ab_one (F := F)`. Consider the case `succ n ih => rw [pow_succ, pow_succ, ← ih]`. Conclude with `M.ab_mul _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem ab_pow' {F : Type} [Field F] [NumberField F] (ρ : IdeleGroup F) (n : ℕ) :
     ab (ρ ^ n) = ab ρ ^ n := by
@@ -16,21 +16,19 @@ private theorem ab_pow' {F : Type} [Field F] [NumberField F] (ρ : IdeleGroup F)
   | succ n ih => rw [pow_succ, pow_succ, ← ih]; exact M.ab_mul _ _
 
 /- English proof (translation)
-Introduce `F _ _ C ρ hC hρ`. Establish `hcont : Continuous fun a : IdeleGroup F => (ab a)⁻¹ ^ 2` using `(M.continuous_ab.inv₀ fun a => (M.ab_pos a).ne').pow 2`. Take `⟨B, hB⟩` from `hC.bddAbove_image hcont.continuousOn`. Establish `hBC : ∀ c ∈ C, (ab c)⁻¹ ^ 2 ≤ B` using `fun c hc => hB ⟨c, hc, rfl⟩`. Use `set q : ℝ := (ab ρ)⁻¹ ^ 2 with hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ0 : 0 < ab ρ` using `by linarith`. Establish `hq0 : 0 ≤ q` using `by positivity`. Establish `hq1 : q < 1`. Establish `: (ab ρ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hρ`. Establish `h0 : 0 ≤ (ab ρ)⁻¹` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hterm : ∀ n : ℕ, ∫⁻ a in (ρ ^ n * ·) '' C, M.wt a ∂(ideleMeasure F) ≤ ENNReal.ofReal q ^ n * (ENNReal.ofReal B * ideleMeasure F C)`. Introduce `n`. Establish `hS : MeasurableSet ((ρ ^ n * ·) '' C)` using `(hC.image (continuous_mul_left _)).measurableSet`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ : ideleMeasure F ((ρ ^ n * ·) '' C) = ideleMeasure F C`. Rewrite using `[Set.image_mul_left]`. Conclude with `measure_preimage_mul _ _ _`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' hS ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨c, hc, rfl⟩`. Rewrite using `[← ENNReal.ofReal_pow hq0, ← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `e : (ab (ρ ^ n * c))⁻¹ ^ 2 = q ^ n * (ab c)⁻¹ ^ 2`. Rewrite using `[M.ab_mul, ab_pow', hq, mul_inv, mul_pow, inv_pow, inv_pow, inv_pow, inv_pow, ← pow_mul, ← pow_mul, mul_comm n 2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_left (hBC c hc) (by positivity)`. Use `_ = ENNReal.ofReal q ^ n * (ENNReal.ofReal B * ideleMeasure F C) := by`. Rewrite using `[setLIntegral_const, hμ, mul_assoc]`. Establish `hr : ENNReal.ofReal q < 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_one]`. Conclude with `(ENNReal.ofReal_lt_ofReal_iff one_pos).2 hq1`. Establish `hfin : ENNReal.ofReal B * ideleMeasure F C < ⊤` using `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hC.measure_lt_top`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.tsum_mul_right, ENNReal.tsum_geometric]`.
-
-Use `_ < ⊤ := ENNReal.mul_lt_top (ENNReal.inv_lt_top.2 (tsub_pos_iff_lt.2 hr)) hfin`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.M.ideleSum :
     ∀ (F : Type) [Field F] [NumberField F] (C : Set (IdeleGroup F)) (ρ : IdeleGroup F), IsCompact C → 1 < ab ρ → ∫⁻ a in ⋃ n : ℕ, (ρ ^ n * ·) '' C, M.wt a ∂(ideleMeasure F) < ⊤ := by

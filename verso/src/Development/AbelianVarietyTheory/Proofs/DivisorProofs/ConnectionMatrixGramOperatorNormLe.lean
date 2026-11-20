@@ -11,7 +11,7 @@ namespace GlobalTheory.ConnPointwise
 variable {g : ℕ}
 
 /- English proof (translation)
-Rewrite using `[gnorm, form_eq_sum]`. Use `congr 1`. Simplify using `only [Matrix.one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gnorm_one_eq (v : Fin g → ℂ) : gnorm 1 v = √(∑ a, ‖v a‖ ^ 2) := by
   rw [gnorm, form_eq_sum]
@@ -22,13 +22,13 @@ theorem gnorm_one_eq (v : Fin g → ℂ) : gnorm 1 v = √(∑ a, ‖v a‖ ^ 2)
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, ofReal_re]
 
 /- English proof (translation)
-Use `opNorm_le_of_bound (by positivity) fun v => ?_` and prove the remaining obligations. Rewrite using `[gnorm_one_eq, gnorm_one_eq]`. Use `set S := ∑ a, ‖v a‖ ^ 2 with hS`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `hrw : (g : ℝ) * E * √S = √(((g : ℝ) * E) ^ 2 * S)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (by positivity)]`. Rewrite using `[hrw]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Establish `hrow : ∀ j, ‖(M *ᵥ v) j‖ ^ 2 ≤ E ^ 2 * (g * S)` using `fun j => by`. Establish `h1 : ‖(M *ᵥ v) j‖ ≤ E * ∑ k, ‖v k‖`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Simplify using `only [mulVec, dotProduct]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (h j k) (norm_nonneg _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (∑ k, ‖v k‖) ^ 2 ≤ g * S`. Use `sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun k => ‖v k‖)` as an intermediate fact. Simplify `this` using `[hS]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem opNorm_one_le_of_entry (M : Matrix (Fin g) (Fin g) ℂ) {E : ℝ} (hE : 0 ≤ E)
     (h : ∀ j k, ‖M j k‖ ≤ E) : opNorm 1 1 M ≤ g * E := by
@@ -56,21 +56,21 @@ theorem opNorm_one_le_of_entry (M : Matrix (Fin g) (Fin g) ℂ) {E : ℝ} (hE : 
     _ = ((g : ℝ) * E) ^ 2 * S := by simp; ring
 
 /- English proof (translation)
-Establish `hdet : IsUnit Y.det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Take `⟨x, hx, hx0⟩` from `(Matrix.exists_mulVec_eq_zero_iff).2 h0`. Establish `h1` using `hY x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[hx0, dotProduct_zero]`. Establish `h2 : x ⬝ᵥ x ≤ 0` using `by nlinarith [show 0 ≤ x ⬝ᵥ x from Finset.sum_nonneg fun i _ => mul_self_nonneg (x i)]`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `h3 : ∀ i ∈ Finset.univ, 0 ≤ x i * x i` using `fun i _ => mul_self_nonneg _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `(Finset.sum_eq_zero_iff_of_nonneg h3).1 (le_antisymm h2 (Finset.sum_nonneg h3)) i (Finset.mem_univ _)` as an intermediate fact. Simplify using `using mul_self_eq_zero.1 this`. Use `⟨hdet, fun j k => ?_⟩` and prove the remaining obligations. Use `set u := Y⁻¹ *ᵥ Pi.single k 1 with hu`. Establish `hYu : Y *ᵥ u = Pi.single k 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, mulVec_mulVec, mul_nonsing_inv _ hdet, one_mulVec]`. Apply the tactic sequence `have hentry : Y⁻¹ j k = u j := by`. Rewrite using `[hu, mulVec_single_one]`. Both sides reduce to the same expression. Use `set N := u ⬝ᵥ u with hN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : 0 ≤ N` using `Finset.sum_nonneg fun i _ => mul_self_nonneg (u i)`. Establish `hcomp : ∀ i, u i ^ 2 ≤ N` using `fun i => by`. Rewrite using `[hN, dotProduct, sq]`. Conclude with `Finset.single_le_sum (f := fun i => u i * u i) (fun i _ => mul_self_nonneg (u i)) (Finset.mem_univ i)`. Establish `h1 : c * N ≤ u k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hY u` as an intermediate fact. Rewrite `this` using `[hYu, dotProduct_single, mul_one]`. Then use the resulting hypothesis. Establish `huk : 0 ≤ u k` using `le_trans (mul_nonneg hc.le hN0) h1`. Establish `h2 : c ^ 2 * N ^ 2 ≤ N`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : c ^ 2 * N ≤ 1`. Break down `hN0.eq_or_lt with h | h` into its components or cases. Rewrite using `[← h]`. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (c * u j) ^ 2 ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hentry, le_div_iff₀ hc, mul_comm]`. Use `(sq_le_one_iff_abs_le_one _).1 h4` as an intermediate fact. Rewrite `this` using `[abs_mul, abs_of_pos hc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem inv_entry_le (Y : Matrix (Fin g) (Fin g) ℝ) {c : ℝ} (hc : 0 < c)
     (hY : ∀ x, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ Y *ᵥ x) : IsUnit Y.det ∧ ∀ j k, |Y⁻¹ j k| ≤ 1 / c := by
@@ -124,9 +124,9 @@ namespace GlobalTheory.ConnPointwise
 variable {g : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `h (Pi.single k 1)`. Establish `hs : ‖(Pi.single k (1 : ℝ) : Fin g → ℝ)‖ ≤ 1` using `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => by`. Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, hi]`. Rewrite `h1` using `[mulVec_single_one]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem entry_le_of_mulVec (P : Matrix (Fin g) (Fin g) ℝ) {W : ℝ} (hW : 0 ≤ W)
     (h : ∀ x, ‖P *ᵥ x‖ ≤ W * ‖x‖) (j k : Fin g) : |P j k| ≤ W := by
@@ -149,21 +149,19 @@ namespace GlobalTheory
 open GlobalTheory.ConnPointwise
 
 /- English proof (translation)
-Introduce `g a Y Bs Dm s t c K W hc hK hW hY ht hB hD`. Take `⟨hdet, hinv⟩` from `inv_entry_le Y hc hY`. Establish `hmapinv : (Y.map Complex.ofReal)⁻¹ = (Y⁻¹).map Complex.ofReal`. Apply `inv_eq_left_inv` to reduce the goal to its premises. Use `show (Y⁻¹).map Complex.ofRealHom * Y.map Complex.ofRealHom = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, nonsing_inv_mul _ hdet, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hBe : ∀ i j k, |(Y⁻¹ * Bs i) j k| ≤ W / t i` using `fun i j k => by`. Use `entry_le_of_mulVec _ hW (hB i) j k` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul, abs_mul, abs_of_pos (ht i)]`. Rewrite using `[le_div_iff₀ (ht i), mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hE0 : 0 ≤ (g : ℝ) * K / c + W * ∑ i, ‖s i‖ / t i`. Establish `: 0 ≤ ∑ i, ‖s i‖ / t i` using `Finset.sum_nonneg fun i _ => div_nonneg (norm_nonneg _) (ht i).le`. Check the signs of the components of the expression. Apply the tactic sequence `refine opNorm_one_le_of_entry _ hE0 fun j k => ?_`.
+Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmapinv]`. Establish `hexp : ((Y⁻¹).map Complex.ofReal * ((1 / (2 * Complex.I)) • (Dm + ∑ i, s i • (Bs i).map Complex.ofReal))) j k = (1 / (2 * Complex.I)) * (∑ l, ((Y⁻¹ j l : ℝ) : ℂ) * Dm l k + ∑ i, s i * (((Y⁻¹ * Bs i) j k : ℝ) : ℂ))`. Simplify using `only [mul_apply, Matrix.smul_apply, Matrix.add_apply, Matrix.sum_apply, map_apply, smul_eq_mul, ofReal_sum, ofReal_mul, Finset.mul_sum, mul_add, Finset.sum_add_distrib]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring`. Rewrite using `[hexp, norm_mul]`. Establish `hhalf : ‖(1 / (2 * Complex.I) : ℂ)‖ ≤ 1` using `by simp; norm_num`. Establish `hA : ‖∑ l, ((Y⁻¹ j l : ℝ) : ℂ) * Dm l k‖ ≤ g * K / c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `mul_le_mul (hinv j l) (hD l k) (norm_nonneg _) (by positivity)`. Use `_ = g * K / c := by simp; ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hBs : ‖∑ i, s i * (((Y⁻¹ * Bs i) j k : ℝ) : ℂ)‖ ≤ W * ∑ i, ‖s i‖ / t i`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs]`.
-
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem connMatrix_opNorm_le : ∀ (g a : ℕ) (Y : Matrix (Fin g) (Fin g) ℝ) (Bs : Fin a → Matrix (Fin g) (Fin g) ℝ) (Dm : Matrix (Fin g) (Fin g) ℂ) (s : Fin a → ℂ) (t : Fin a → ℝ) (c K W : ℝ), 0 < c → 0 ≤ K → 0 ≤ W → (∀ x, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ Y *ᵥ x) → (∀ i, 0 < t i) → (∀ i x, ‖(t i • (Y⁻¹ * Bs i)) *ᵥ x‖ ≤ W * ‖x‖) → (∀ j k, ‖Dm j k‖ ≤ K) → opNorm 1 1 ((Y.map Complex.ofReal)⁻¹ * ((1 / (2 * Complex.I)) • (Dm + ∑ i, s i • (Bs i).map Complex.ofReal))) ≤ g * (g * K / c + W * ∑ i, ‖s i‖ / t i) := by
   intro g a Y Bs Dm s t c K W hc hK hW hY ht hB hD

@@ -8,21 +8,21 @@ open scoped Matrix
 namespace GlobalTheory.PELU
 
 /- English proof (translation)
-Simplify using `[spMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_id_complex : spMap (RingHom.id ℂ) = 𝟙 (Sp ℂ) := by
   simp [spMap]
 
 /- English proof (translation)
-Take `⟨f, φ, pb, gp, hact, hL, heta⟩` from `hBC`. Establish `M` using `GlobalTheory.T.uniformisationAt_correspond_of_cartesian O bar g ρ R ℂ σ (RingHom.id ℂ) Λ F F' N f φ gp hact hL heta`. Establish `base : ∀ y' : Sp ℂ ⟶ F'.X, y' ≫ F'.s = spMap (RingHom.id ℂ) → (y' ≫ f) ≫ F.s = spMap σ`. Introduce `y' hy`. Rewrite using `[Category.assoc, pb.w, ← Category.assoc, hy, spMap_id_complex, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y' hy`. Take `⟨D', t, P, e, hC, hU⟩` from `hF.pts (y' ≫ f) (base y' hy)`. Take `⟨e', hU', -⟩` from `(M D' t P y' hy (base y' hy)).2 e hU`. Conclude with `⟨D', t, P, e', hC, hU'⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `D' t P hC hP`. Take `⟨y, e, hU⟩` from `hF.occ D' t P hC hP`. Establish `w : y ≫ F.s = spMap (RingHom.id ℂ) ≫ spMap σ`. Rewrite using `[hU.1, spMap_id_complex, Category.id_comp]`. Take `⟨y', rfl, hy'⟩ : ∃ y', y' ≫ f = y ∧ y' ≫ F'.s = spMap (RingHom.id ℂ)` from `⟨pb.lift y _ w, pb.lift_fst _ _ w, pb.lift_snd _ _ w⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e', hU', -⟩` from `(M D' t P y' hy' (base y' hy')).2 e hU`. Conclude with `⟨y', e', hU'⟩`. Introduce `D' D'' t t' P P' y y' e e' hU hU' w h hw hP`. Take `⟨e₁, hU₁, -⟩` from `(M D' t P y hU.1 (base y hU.1)).1 e hU`. Take `⟨e₂, hU₂, -⟩` from `(M D'' t' P' y' hU'.1 (base y' hU'.1)).1 e' hU'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hf : y ≫ f = y' ≫ f` using `hF.sep D' D'' t t' P P' _ _ e₁ e₂ hU₁ hU₂ w h hw hP`. Conclude with `pb.hom_ext hf (hU.1.trans hU'.1.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fineAt_of_isBC (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+* Matrix (Fin g) (Fin g) ℂ) (R : Type)
     [CommRing R] (σ : R →+* ℂ) (Λ : Type) (F : Fam R O Λ g) (N : ℕ) (C : ∀ D' : PLat O bar, (Λ → D'.La) → Prop)

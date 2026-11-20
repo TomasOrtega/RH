@@ -12,9 +12,9 @@ open scoped LaurentSeries
 namespace GlobalTheory.ArcCM
 
 /- English proof (translation)
-Rewrite using `[← Fintype.prod_subtype_mul_prod_subtype (fun v => (k v).isSome = true) (fun v => F v (k v))]`. Establish `h2 : ∏ w : {v // ¬ (k v).isSome = true}, F w.1 (k w.1) = 1`. Use `Finset.prod_eq_one (fun w _ => ?_)` and prove the remaining obligations. Establish `hw : k w.1 = none` using `by simpa using w.2`. Rewrite using `[hw, h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, _root_.mul_one]`. Use `Finset.prod_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Rewrite using `[Option.some_get]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_option_eq_prod_isSome_of_none_eq_one {V M : Type} [Fintype V] [CommMonoid M] {g : ℕ} (k : V → Option (Fin g))
     (F : V → Option (Fin g) → M) (h1 : ∀ v, F v none = 1) :
@@ -29,7 +29,7 @@ private theorem prod_option_eq_prod_isSome_of_none_eq_one {V M : Type} [Fintype 
   rw [Option.some_get]
 
 /- English proof (translation)
-Unfold `MLine.prodPow`. Use `congr 1`. Conclude with `prod_option_eq_prod_isSome_of_none_eq_one k (fun v o => (o.elim MLine.one ℓ).I ^ mu v) (fun v => by simp [MLine.one])`. Use function extensionality and compare the values at `σ`. Conclude with `prod_option_eq_prod_isSome_of_none_eq_one k (fun v o => (o.elim MLine.one ℓ).n σ ^ mu v) (fun v => by simp [MLine.one])`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem mLine_prodPow_option_elim_eq_prodPow_isSome {K : Type} [Field K] [NumberField K] {g : ℕ} (ℓ : Fin g → MLine K)
     {V : Type} [Fintype V] (k : V → Option (Fin g)) (mu : V → ℕ) :
@@ -42,11 +42,11 @@ private theorem mLine_prodPow_option_elim_eq_prodPow_isSome {K : Type} [Field K]
     exact prod_option_eq_prod_isSome_of_none_eq_one k (fun v o => (o.elim MLine.one ℓ).n σ ^ mu v) (fun v => by simp [MLine.one])
 
 /- English proof (translation)
-Rewrite using `[mLine_prodPow_option_elim_eq_prodPow_isSome ℓ k mu]`. Establish `hN` using `degree_norm_base K g abelian₂ ℓ de La logOm {v // (k v).isSome = true} (fun w => (k w.1).get w.2) (fun w => mu w.1) n h`. Establish `hLa : 1 ≤ La` using `h.2.2.2.1`. Establish `hP : 0 ≤ pDeg logOm + (1 / 2) * Real.log La`. Establish `h0` using `Real.log_nonneg hLa`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `abs_nonneg logOm`. Unfold `pDeg`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hN.1, le_trans hN.2 (mul_le_mul_of_nonneg_left ?_ hP)⟩` and prove the remaining obligations. Establish `hs : ∑ w : {v // (k v).isSome = true}, (mu w.1 : ℝ) ≤ ∑ v, (mu v : ℝ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun v => (k v).isSome = true) (fun v => (mu v : ℝ))]`. Establish `h0 : 0 ≤ ∑ w : {v // ¬ (k v).isSome = true}, (mu w.1 : ℝ)` using `Finset.sum_nonneg (fun _ _ => Nat.cast_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgG : (g : ℝ) * n ≤ (G : ℝ) * n` using `mul_le_mul_of_nonneg_right (by exact_mod_cast hG) (Nat.cast_nonneg n)`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -77,9 +77,9 @@ theorem ndeg_line_option_le {K : Type} [Field K] [NumberField K] {g : ℕ} (abel
   linarith
 
 /- English proof (translation)
-Introduce `hK E _ _ _ H Dw l c K₁ _ _ _ a e th jj n' La c₁ s logOm mo n hLa hdeg`. Use `letI := H.starRing`. Establish `hcm` using `cmNumbers_of_good hK E H l c (Dw.p - 1) (Dw.q - 1) (Module.finrank ℚ E / 2) s.toCMPart.obj La logOm (fun _ => rfl) s.good s.L s.L_good hLa hdeg`. Establish `hg : a.D₀.P.g ≤ Module.finrank ℚ E / 2 * (Dw.p + Dw.q)`. Establish `h9 : a.D₀.P.g = Module.finrank ℚ E / 2 * (Dw.p - 1 + (Dw.q - 1))` using `s.good.2.2.2.2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h9]`. Apply `Nat.mul_le_mul_left` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Conclude with `ndeg_line_option_le (K := K₁) s.LamL s.L.ℓ s.Tl.dual La logOm (fun v : ArcLt Dw => s.kind v.1 v.2.2) mo n (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) hcm hg`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem valLine_ndeg_le : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (a : ArcIn Dw l (RingHom.id c.F) K₁ (algebraMap c.F K₁)) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K₁)) (th : a.D₀.P.L.Sec) (jj : ℤ) (n' : ℕ) (La c₁ : ℝ) (s : CMIn a e th jj n' La c₁) (logOm : ℝ) (mo : ArcLt Dw →₀ ℕ) (n : ℕ), 1 ≤ La → LamDegSt H logOm → (s.valLine mo n).Good ∧ (s.valLine mo n).ndeg ≤ (pDeg logOm + (1 / 2) * Real.log La) * (((∑ v, mo v : ℕ) : ℝ) + ((Module.finrank ℚ E / 2 * (Dw.p + Dw.q) * n : ℕ) : ℝ)) := by
   intro hK E _ _ _ H Dw l c K₁ _ _ _ a e th jj n' La c₁ s logOm mo n hLa hdeg

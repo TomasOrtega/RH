@@ -5,7 +5,7 @@ namespace GlobalTheory.SymmProd
 open scoped Matrix
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zpow_finsum_eq {U : Type} [CommGroup U] {ι : Type} (s : Finset ι) (x : U) (f : ι → ℤ) :
     x ^ (∑ i ∈ s, f i) = ∏ i ∈ s, x ^ f i := by
@@ -15,9 +15,9 @@ theorem zpow_finsum_eq {U : Type} [CommGroup U] {ι : Type} (s : Finset ι) (x :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add, ih]
 
 /- English proof (translation)
-Establish `h : ∀ k l, (e • (Mᵀ * W * M)) k l = ∑ i, ∑ j, (M i k * M j l) * (e * W i j)`. Introduce `k l`. Simplify using `only [Matrix.smul_apply, Matrix.mul_apply, Matrix.transpose_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [h, zpow_finsum_eq, ← Finset.prod_zpow, ← zpow_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem prod_collect {U : Type} [CommGroup U] {r : ℕ} (W M : Matrix (Fin r) (Fin r) ℤ)
     (lam : Fin r → Fin r → U) (e : ℤ) :
@@ -40,7 +40,7 @@ theorem prod_collect {U : Type} [CommGroup U] {r : ℕ} (W M : Matrix (Fin r) (F
         Finset.prod_congr rfl fun k _ => Finset.prod_comm
 
 /- English proof (translation)
-Simplify using `only [Matrix.sub_apply, Matrix.transpose_apply, zpow_sub, Finset.prod_mul_distrib, Finset.prod_inv_distrib]`. Rewrite using `[mul_inv_eq_one, Finset.prod_comm]`. Conclude with `Finset.prod_congr rfl fun k _ => Finset.prod_congr rfl fun l _ => by rw [hlam]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_antisymm {U : Type} [CommGroup U] {r : ℕ} (D : Matrix (Fin r) (Fin r) ℤ)
     (lam : Fin r → Fin r → U) (hlam : ∀ k l, lam k l = lam l k) :
@@ -51,11 +51,11 @@ theorem prod_antisymm {U : Type} [CommGroup U] {r : ℕ} (D : Matrix (Fin r) (Fi
   exact Finset.prod_congr rfl fun k _ => Finset.prod_congr rfl fun l _ => by rw [hlam]
 
 /- English proof (translation)
-Simplify using `only [prod_collect]`. Rewrite using `[← prod_antisymm (Aᵀ * W) lam hlam, Finset.prod_comm]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← zpow_finsum_eq, ← Matrix.sum_apply]`. Use `congrArg (fun M : Matrix (Fin r) (Fin r) ℤ => lam k l ^ M k l) ?_` and prove the remaining obligations. Establish `h2 : Wᵀ * A = W - W * A`. Rewrite using `[eq_sub_iff_add_eq, add_comm, ← add_mul]`. Conclude with `hW.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.sum_univ_four, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_zero, h2]`. Use `noncomm_ring`.
+A detailed English derivation is pending.
 -/
 theorem prod_four_maps_eq_one (U : Type) [CommGroup U] {r : ℕ} (W A : Matrix (Fin r) (Fin r) ℤ)
     (lam : Fin r → Fin r → U) (hlam : ∀ k l, lam k l = lam l k)

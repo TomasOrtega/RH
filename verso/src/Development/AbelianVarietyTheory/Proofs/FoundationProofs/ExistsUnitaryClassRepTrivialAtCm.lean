@@ -16,11 +16,9 @@ open NumberField IsDedekindDomain Formalism.UG Formalism.UG.P
 open scoped TensorProduct Matrix
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {1 + φ a * x}) (fun h' => h (Ideal.span_singleton_eq_top.1 h'))`. Establish `h1 : 1 + φ a * x ∈ m` using `hle (Ideal.mem_span_singleton_self _)`. Establish `hm' : (m.comap φ).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' φ hφ m`. Establish `h2 : a ∈ m.comap φ`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Take `⟨y, i, hi, e⟩` from `hm'.exists_inv hn`. Establish `: i = 1 + a * (-y)` using `by linear_combination e`. Conclude with `hm'.ne_top (Ideal.eq_top_of_isUnit_mem _ hi (this ▸ ha _))`. Establish `h3 : φ a * x ∈ m` using `m.mul_mem_right _ h2`.
-
-Conclude with `hm.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using sub_mem h1 h3))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unit_of_integral {A R : Type} [CommRing A] [CommRing R] (φ : A →+* R) (hφ : φ.IsIntegral)
     (a : A) (ha : ∀ c, IsUnit (1 + a * c)) (x : R) : IsUnit (1 + φ a * x) := by
@@ -38,17 +36,15 @@ theorem unit_of_integral {A R : Type} [CommRing A] [CommRing R] (φ : A →+* R)
   exact hm.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using sub_mem h1 h3))
 
 /- English proof (translation)
-Establish `key : ∀ m : MaximalSpectrum B, {z : K | (1 + ι z • h).det ∈ m.asIdeal}.Finite`. Introduce `m`. Use `haveI := m.isMaximal`. Use `letI : Field (B ⧸ m.asIdeal) := Ideal.Quotient.field _`. Set `π` to `Ideal.Quotient.mk m.asIdeal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `P` to `((-h).map π).charpolyRev`. Establish `hP : P ≠ 0`. Introduce `h0`. Use `Matrix.eval_charpolyRev (M := (-h).map π)` as an intermediate fact. Rewrite `this` using `[show ((-h).map π).charpolyRev = 0 from h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Use `((P.roots.toFinset.finite_toSet).preimage (f := π.comp ι) (π.comp ι).injective.injOn).subset fun z hz => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_roots hP, Polynomial.IsRoot]`. Establish `h1 : π (1 + ι z • h).det = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hz`. Rewrite using `[← h1, RingHom.map_det]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Polynomial.evalRingHom _ (Matrix.det _) = _`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij] <;> exact mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hfin : (⋃ m : MaximalSpectrum B, {z : K | (1 + ι z • h).det ∈ m.asIdeal}).Finite` using `Set.finite_iUnion key`. Take `⟨z, hz, hn⟩` from `hZ.exists_notMem_finite hfin`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {(1 + ι z • h).det}) (fun h' => hu (Ideal.span_singleton_eq_top.1 h'))`.
-
-Conclude with `hn (Set.mem_iUnion.2 ⟨⟨m, hm⟩, hle (Ideal.mem_span_singleton_self _)⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_unit_det {K B : Type} [Field K] [CommRing B] [IsArtinianRing B] (ι : K →+* B) {n : ℕ}
     (h : Matrix (Fin n) (Fin n) B) (Z : Set K) (hZ : Z.Infinite) :
@@ -86,17 +82,15 @@ theorem exists_unit_det {K B : Type} [Field K] [CommRing B] [IsArtinianRing B] (
   exact hn (Set.mem_iUnion.2 ⟨⟨m, hm⟩, hle (Ideal.mem_span_singleton_self _)⟩)
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hne`. Use `set d := c z - z with hd`. Establish `hd0 : d ≠ 0` using `sub_ne_zero.2 hz`. Establish `hcd : c d = -d` using `by rw [hd, map_sub, hc]; ring`. Establish `h1 : ∀ t : ℕ, 1 - (t : K) * d ≠ 0 ∧ 1 + (t : K) * d ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Establish `e : c (1 - (t : K) * d) = 1 + (t : K) * d`. Rewrite using `[map_sub, map_one, map_mul, map_natCast, hcd]`. Expand and normalize the polynomial expressions, which then agree. Establish `a : 1 - (t : K) * d ≠ 0` using `fun h => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'` using `e`. Rewrite `h'` using `[h, map_zero]`. Establish `: (2 : K) = 0` using `by linear_combination h - h'`. Conclude with `two_ne_zero this`. Conclude with `⟨a, by rw [← e]; exact (map_ne_zero c).2 a⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Set.infinite_of_injective_forall_mem (f := fun t : ℕ => (1 + (t : K) * d) / (1 - (t : K) * d)) (fun s t hst => ?_) fun t => ?_` and prove the remaining obligations. Simplify using `only at hst`. Rewrite `hst` using `[div_eq_div_iff (h1 s).1 (h1 t).1]`. Establish `: 2 * d * ((s : K) - t) = 0` using `by linear_combination hst`. Establish `h2` using `(mul_eq_zero.1 this).resolve_left (mul_ne_zero two_ne_zero hd0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sub_eq_zero.1 h2` after adjusting the coercions. Take `⟨a, b⟩` from `h1 t`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_add, map_sub, map_one, map_mul, map_natCast, hcd, mul_neg, sub_neg_eq_add, ← sub_eq_add_neg]`. Clear the denominators using the available nonvanishing facts.
-
-Establish `: 1 + (1 + (t : K) * d) / (1 - (t : K) * d) = 2 / (1 - (t : K) * d)` using `by field_simp; ring`. Rewrite using `[this]`. Conclude with `div_ne_zero two_ne_zero a`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normOne_infinite {K : Type} [Field K] [CharZero K] (c : K →+* K) (hc : ∀ x, c (c x) = x)
     (hne : ∃ z, c z ≠ z) : {z : K | z * c z = 1 ∧ 1 + z ≠ 0}.Infinite := by
@@ -141,9 +135,9 @@ def matIn {R : Type} [CommRing R] (O : Subring R) (n : ℕ) : Subring (Matrix (F
   neg_mem' := fun {a} ha i j => neg_mem (ha i j)
 
 /- English proof (translation)
-Set `X' : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨X i j, hX i j⟩`. Establish `hu : IsUnit (1 + a • X').det`. Rewrite using `[Matrix.det_one_add_smul, add_assoc, pow_two, ← mul_assoc, ← add_mul, mul_comm]`. Conclude with `ha _`. Use `⟨(1 + a • X')⁻¹.map O.subtype, fun i j => ((1 + a • X')⁻¹ i j).2, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (1 + (a : R) • X) = (1 + a • X').map O.subtype`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij, X'] <;> rfl`. Rewrite using `[e, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_inv {R : Type} [CommRing R] (O : Subring R) {n : ℕ} (a : O) (ha : ∀ x : O, IsUnit (1 + a * x))
     (X : Matrix (Fin n) (Fin n) R) (hX : X ∈ matIn O n) :
@@ -168,16 +162,16 @@ local notation "𝒮" => tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E)
 local notation "ιA" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-Rewrite using `[levelafC, map_natCast]`. Conclude with `map_natCast (Algebra.TensorProduct.includeRight : 𝔸 →ₐ[F] 𝒜) m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelafC_nat (m : ℕ) : levelafC (F := F) E (m : 𝓞 F) = (m : 𝒜) := by
   rw [levelafC, map_natCast]
   exact map_natCast (Algebra.TensorProduct.includeRight : 𝔸 →ₐ[F] 𝒜) m
 
 /- English proof (translation)
-Take `⟨d, hd, h⟩` from `levelaf_denom x`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {d}))`. Use `⟨Ideal.absNorm (Ideal.span {d}), Nat.pos_of_ne_zero ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← levelafC_nat, ← hc, levelafC_mul, mul_assoc]`. Conclude with `mul_mem (levelafC_mem _) h`.
+A detailed English derivation is pending.
 -/
 theorem denom (x : 𝒜) : ∃ m : ℕ, 0 < m ∧ (m : 𝒜) * x ∈ 𝒮 := by
   obtain ⟨d, hd, h⟩ := levelaf_denom x
@@ -188,9 +182,9 @@ theorem denom (x : 𝒜) : ∃ m : ℕ, 0 < m ∧ (m : 𝒜) * x ∈ 𝒮 := by
     exact mul_mem (levelafC_mem _) h
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `denom x`. Take `⟨b, t, ht, e⟩` from `csGlob_approx csGlob_intAdApprox ((m * D : ℕ) : 𝓞 F) (Nat.cast_ne_zero.2 (by positivity)) _ h`. Use `⟨(m : E)⁻¹ * algebraMap (𝓞 E) E b, t, ht, ?_⟩` and prove the remaining obligations. Establish `h1 : ιA (m : E)⁻¹ * (m : 𝒜) = 1`. Rewrite using `[← map_natCast ιA, ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hm.ne'), map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[levelafC_nat, Nat.cast_mul]`. Rewrite using `[map_mul]`. Take the linear combination `(ιA (m : E)⁻¹) * e + ((D : 𝒜) * t - x) * h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem approx (x : 𝒜) (D : ℕ) (hD : 0 < D) : ∃ y : E, ∃ o ∈ 𝒮, x = ιA y + (D : 𝒜) * o := by
   obtain ⟨m, hm, h⟩ := denom x
@@ -204,20 +198,20 @@ theorem approx (x : 𝒜) (D : ℕ) (hD : 0 < D) : ∃ y : E, ∃ o ∈ 𝒮, x 
   linear_combination (ιA (m : E)⁻¹) * e + ((D : 𝒜) * t - x) * h1
 
 /- English proof (translation)
-Rewrite using `[← levelaf_valued_algebraMap, map_natCast (algebraMap (𝓞 F) F), map_natCast (algebraMap F _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_nat (w : HeightOneSpectrum (𝓞 F)) (p : ℕ) :
     Valued.v (p : w.adicCompletion F) = w.valuation F (algebraMap (𝓞 F) F p) := by
   rw [← levelaf_valued_algebraMap, map_natCast (algebraMap (𝓞 F) F), map_natCast (algebraMap F _)]
 
 /- English proof (translation)
-Establish `h1 : Valued.v (1 + (p : v.adicCompletion F) * (c : 𝔸) v) = 1`. Apply `Valuation.map_one_add_of_lt` to reduce the goal to its premises. Rewrite using `[Valuation.map_mul, val_nat]`. Conclude with `mul_lt_one_of_lt_of_le ((v.valuation_lt_one_iff_mem _).2 hp) ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (c.2 v))`. Establish `h0 : 1 + (p : v.adicCompletion F) * (c : 𝔸) v ≠ 0` using `fun h => by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one h1`. Use `IsUnit.of_mul_eq_one ⟨1 - afsplitI v 1 + afsplitI v (1 + (p : v.adicCompletion F) * (c : 𝔸) v)⁻¹, add_mem (sub_mem (one_mem _) (afsplitI_mem_intAd v _ (one_mem _))) (afsplitI_mem_intAd v _ ?_)⟩ ?_` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, h1, inv_one]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(1 + (a : 𝔸) * (c : 𝔸)) * _ = 1`. Rewrite using `[ha]`. Use extensionality with `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [afsplit_add_apply, afsplit_mul_apply, afsplit_sub_apply, afsplit_one_apply, afsplitI_self, sub_self, zero_add, mul_inv_cancel₀ h0]`. Simplify using `only [afsplit_add_apply, afsplit_mul_apply, afsplit_sub_apply, afsplit_one_apply, afsplitI_ne v w h, zero_mul, add_zero, sub_zero, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem unit_intAd (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) (hp : (p : 𝓞 F) ∈ v.asIdeal)
     (a : intAd F) (ha : (a : 𝔸) = afsplitI v p) (c : intAd F) : IsUnit (1 + a * c) := by
@@ -247,13 +241,9 @@ def incInt : intAd F →+* 𝒮 :=
     fun y => Subring.subset_closure (Or.inr ⟨y, rfl⟩)
 
 /- English proof (translation)
-Introduce and unpack `⟨x, hx⟩`. Use `Subring.closure_induction (p := fun x hx => (incInt (F := F) (E := E)).IsIntegralElem ⟨x, hx⟩) ?_ ?_ ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `x (⟨⟨e, ⟨b, rfl⟩⟩, rfl⟩ | ⟨y, rfl⟩)`. Set `ψ : 𝓞 E →+* 𝒮` to `(RingHom.comp ιA (algebraMap (𝓞 E) E)).codRestrict _ fun y => Subring.subset_closure (Or.inl ⟨⟨_, ⟨y, rfl⟩⟩, rfl⟩)`. Establish `h : IsIntegral ℤ (ψ b)` using `map_isIntegral_int ψ (Algebra.IsIntegral.isIntegral b)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `letI := (incInt (F := F) (E := E)).toAlgebra`. Conclude with `h.tower_top (A := intAd F)`. Conclude with `RingHom.isIntegralElem_map (incInt (F := F) (E := E)) (x := y)`. Conclude with `RingHom.isIntegralElem_zero _`. Conclude with `RingHom.isIntegralElem_one _`.
-
-Introduce `x y _ _ hx hy`. Conclude with `hx.add _ hy`. Introduce `x _ hx`. Conclude with `hx.neg _`. Introduce `x y _ _ hx hy`.
-
-Conclude with `hx.mul _ hy`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem incInt_integral : (incInt (F := F) (E := E)).IsIntegral := by
   rintro ⟨x, hx⟩
@@ -273,7 +263,7 @@ theorem incInt_integral : (incInt (F := F) (E := E)).IsIntegral := by
   · intro x y _ _ hx hy; exact hx.mul _ hy
 
 /- English proof (translation)
-Rewrite using `[← afsplit_decomp, map_natCast, ← afsplitIE_tmul]`. Use `congr 1`. Conclude with `(map_natCast (Algebra.TensorProduct.includeRight : v.adicCompletion F →ₐ[F] E ⊗[F] v.adicCompletion F) p).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem eps_mul_nat (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) :
     afsplitEps E v * (p : 𝒜) = (1 : E) ⊗ₜ[F] afsplitI v p := by
@@ -283,13 +273,13 @@ theorem eps_mul_nat (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) :
     v.adicCompletion F →ₐ[F] E ⊗[F] v.adicCompletion F) p).symm
 
 /- English proof (translation)
-Establish `h1 : (1 - afsplitI v 1) * algebraMap F 𝔸 (p : F)⁻¹ ∈ intAd F`. Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `only [afsplit_mul_apply, afsplit_sub_apply, afsplit_one_apply, afsplitI_self, sub_self, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `zero_mem _`. Simplify using `only [afsplit_mul_apply, afsplit_sub_apply, afsplit_one_apply, afsplitI_ne v w h, sub_zero, one_mul]`. Express the relevant statement in the definitionally equal form `algebraMap F (w.adicCompletion F) (p : F)⁻¹ ∈ _`. Establish `: w.valuation F (algebraMap (𝓞 F) F p) = 1` using `le_antisymm (w.valuation_le_one _) (not_lt.1 fun h' => h (hv w ((w.valuation_lt_one_iff_mem _).1 h')))`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, map_inv₀, map_natCast (algebraMap F _), val_nat, this, inv_one]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (p : 𝒜) * (incInt (E` using `E) ⟨_, h1⟩ : 𝒜) = 1 - afsplitEps E v := by`. Express the relevant statement in the definitionally equal form `(p : 𝒜) * (Algebra.TensorProduct.includeRight : 𝔸 →ₐ[F] 𝒜) _ = _`. Rewrite using `[← map_natCast (Algebra.TensorProduct.includeRight : 𝔸 →ₐ[F] 𝒜), ← map_mul]`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.includeRight : 𝔸 →ₐ[F] 𝒜) ((p : 𝔸) * ((1 - afsplitI v 1) * algebraMap F 𝔸 (p : F)⁻¹)) = _`. Rewrite using `[mul_left_comm, ← map_natCast (algebraMap F 𝔸), ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hp), map_one (algebraMap F 𝔸), mul_one, map_sub, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨(incInt (E := E) ⟨_, h1⟩ : 𝒜) ^ k * (1 - afsplitEps E v), mul_mem (pow_mem (Subtype.property _) _) (sub_mem (one_mem _) (afsplit_eps_int v)), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_pow, h2, ← pow_succ]`. Conclude with `(IsIdempotentElem.pow_succ_eq k (afsplit_om_idem v)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_sub_eps (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) (hp : p ≠ 0)
     (hv : ∀ w : HeightOneSpectrum (𝓞 F), (p : 𝓞 F) ∈ w.asIdeal → w = v) (k : ℕ) :
@@ -320,9 +310,9 @@ theorem one_sub_eps (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) (hp : p ≠ 0)
   exact (IsIdempotentElem.pow_succ_eq k (afsplit_om_idem v)).symm
 
 /- English proof (translation)
-Take `⟨M, hM, h⟩` from `denom x`. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hM.ne' p hp.ne_one`. Take `⟨t, ht, e⟩` from `one_sub_eps (E := E) v p hp.ne_zero hv (k + a)`. Use `⟨m, Nat.pos_of_ne_zero (by rintro rfl; exact hm (dvd_zero _)), ((Nat.Prime.coprime_iff_not_dvd hp).2 hm).symm, t * _, mul_mem ht h, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zero_at (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) (hp : p.Prime)
     (hv : ∀ w : HeightOneSpectrum (𝓞 F), (p : 𝓞 F) ∈ w.asIdeal → w = v) (x : 𝒜) (k : ℕ) :
@@ -335,29 +325,23 @@ theorem zero_at (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) (hp : p.Prime)
   rw [e]; push_cast; ring
 
 /- English proof (translation)
-Establish `hσσ : ∀ x, sigR c 𝔸 (sigR c 𝔸 x) = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y => simp [sigR, hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) E).map ιA = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Use `haveI : Nontrivial (E ⊗[F] v.adicCompletion F) := (Algebra.TensorProduct.includeRight_injective (R := F) (A := E) (B := v.adicCompletion F) (algebraMap F E).injective).nontrivial`. Use `haveI : IsArtinianRing (E ⊗[F] v.adicCompletion F) := by haveI : IsArtinianRing (v.adicCompletion F ⊗[F] E) := IsArtinianRing.of_finite (v.adicCompletion F) _`. Conclude with `(Algebra.TensorProduct.comm F (v.adicCompletion F) E).surjective.isArtinianRing`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set h := (g.map (sigR c 𝔸))ᵀ with hh`. Take `⟨lam, ⟨hl1, hl2⟩, hu⟩` from `exists_unit_det (inclE (F := F) (E := E) (v.adicCompletion F)) (h.map (prV (E := E) v)) _ (normOne_infinite (c : E →+* E) hc hne)`. Establish `hu' : IsUnit (1 + ιA lam • (afsplitEps E v • h + (1 - afsplitEps E v) • (1 : Matrix (Fin n) (Fin n) 𝒜))).det`. Establish `e : 1 + ιA lam • (afsplitEps E v • h + (1 - afsplitEps E v) • (1 : Matrix (Fin n) (Fin n) 𝒜)) = afsplitC v (1 + inclE (F` using `F) (E := E) (v.adicCompletion F) lam • h.map (prV (E := E) v)) (ιA (1 + lam) • 1) := by`. Establish `e1 : 1 + inclE (F` using `F) (E := E) (v.adicCompletion F) lam • h.map (prV (E := E) v) = (1 + ιA lam • h).map (prV (E := E) v) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), GlobalTheory.UnRep.WeakApprox.map_smul'', afsplit_prV_inclE]`. Use extensionality with `i j`. Rewrite using `[e1, afsplitC_apply, Matrix.map_apply, afsplit_decomp, map_add, map_one]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Use `Matrix.isUnit_det_of_right_inverse (B := afsplitC v (1 + inclE (F := F) (E := E) (v.adicCompletion F) lam • h.map (prV (E := E) v))⁻¹ (ιA (1 + lam)⁻¹ • 1)) ?_` and prove the remaining obligations. Rewrite using `[afsplitC_mul, Matrix.mul_nonsing_inv _ hu, Matrix.smul_mul, Matrix.mul_smul, smul_smul, ← map_mul, mul_inv_cancel₀ hl2, map_one, one_smul, mul_one, afsplitC_one]`. Take `⟨γ, hγ, X, hX, e⟩` from `GlobalTheory.UnRep.WeakApprox.core ιA (c : E →+* E) (sigR c 𝔸) (csScale_sigR_incl c) hc hσσ (1 : Matrix (Fin n) (Fin n) E) (by rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]) (by simp) two_ne_zero (matIn 𝒮 n) (fun M => by choose m hm0 hm using fun ij : Fin n …`. Use `⟨∏ ij, m ij, Finset.prod_pos fun ij _ => hm0 ij, fun i j => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, ← Finset.prod_erase_mul _ _ (Finset.mem_univ (i, j)), Nat.cast_mul, mul_assoc]`. Conclude with `mul_mem (natCast_mem _ _) (hm (i, j)))`. Use the proof step `(afsplitEps E v) (afsplit_eps_idem v) (afsplit_sigR_eps c v)`. Use the proof step `(fun h0 => by`. Use `afsplit_prV_eps (E := E) v` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[h0, map_zero]`. Conclude with `zero_ne_one this)`. Use the proof step `(fun X hX i j => mul_mem (afsplit_eps_int v) (hX i j)) p hp`. Use the proof step `(fun X hX => by`. Set `a : intAd F` to `⟨afsplitI v p, afsplitI_mem_intAd v _ (natCast_mem _ _)⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨W, hW, e⟩` from `mat_inv 𝒮 (incInt a) (unit_of_integral _ incInt_integral a (unit_intAd v p hpv a rfl)) X hX`. Use `⟨W, hW, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul 𝒜, smul_smul, eps_mul_nat]`. Conclude with `e)`. Use the proof step `(fun M D hD => by choose y o ho hyo using fun i j => approx (M i j) D hD`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨Matrix.of y, Matrix.of o - ((Matrix.of o).map (sigR c 𝔸))ᵀ, fun i j => sub_mem (ho i j) (csScale_sigR_mem c (ho j i)), ?_⟩` and prove the remaining obligations. Rewrite using `[h1, inv_one, one_mul, mul_one, one_mul, mul_one]`. Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, nsmul_eq_mul]`. Rewrite using `[hyo i j, hyo j i, map_add, map_mul, map_natCast]`.
-
-Use the proof step `ring)`. Use `g h hg`. Use the proof step `(by`. Establish `e2 : h.map (sigR c 𝔸) = gᵀ` using `by ext i j; exact hσσ _`. Rewrite using `[h1, mul_one, e2, ← Matrix.transpose_mul, mul_eq_one_comm.1 hg, Matrix.transpose_one])`.
-
-Use `lam hl1 hu' 1 one_pos`. Use `⟨γ, ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite `hγ` using `[mul_one]`. Use `congrArg Matrix.transpose (mul_eq_one_comm.1 hγ)` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`.
-
-Conclude with `this`. Establish `e1` using `congrFun (congrFun e i) j`. Rewrite `e1` using `[one_smul, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, mul_sub, sub_eq_iff_eq_add]`. Rewrite using `[e1]`. Conclude with `add_mem (hX i j) (mul_mem (afsplit_eps_int v) (afsplit_one_mem _ i j))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rat (c : E →ₐ[F] E) (hc : ∀ x, c (c x) = x) (hne : ∃ z, c z ≠ z)
     (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) (hp : 0 < p) (hpv : (p : 𝓞 F) ∈ v.asIdeal) {n : ℕ}
@@ -447,13 +431,11 @@ theorem exists_rat (c : E →ₐ[F] E) (hc : ∀ x, c (c x) = x) (hne : ∃ z, c
     exact add_mem (hX i j) (mul_mem (afsplit_eps_int v) (afsplit_one_mem _ i j))
 
 /- English proof (translation)
-Establish `ho : ∀ i j, (1 - afsplitEps E v) * (1 : Matrix (Fin n) (Fin n) 𝒜) i j ∈ 𝒮` using `fun i j => mul_mem (sub_mem (one_mem _) (afsplit_eps_int v)) (afsplit_one_mem _ i j)`. Use `⟨afsplitU v (bc (prV (E := E) v) h⁻¹) 1, afsplitU_mem v c _ _ _ (afsplit_bc_mem c _ v _ (inv_mem hh)) (one_mem _), fun i j => ⟨?_, ?_⟩, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[afsplitU_coe, afsplitC_apply, afsplit_coe_bc_prV, Matrix.map_apply, afsplit_decomp, hinv, Matrix.transpose_apply, Matrix.map_apply]`. Use `add_mem ?_ (ho i j)` and prove the remaining obligations. Use `csScale_sigR_mem c (hi j i)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, afsplit_sigR_eps]`. Then use the resulting hypothesis. Rewrite using `[afsplitU_inv_coe, ← map_inv, inv_inv, inv_one, afsplitC_apply, afsplit_coe_bc_prV, Matrix.map_apply, afsplit_decomp]`. Conclude with `add_mem (hi i j) (ho i j)`. Establish `: h * afsplitU v (bc (prV (E` using `E) v) h⁻¹) 1 = afsplitU v 1 h := by`. Establish `e` using `afsplitU_mul v (bc (prV (E := E) v) h) (bc (prV (E := E) v) h⁻¹) h 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[← map_mul, mul_inv_cancel, map_one, mul_one]`. Rewrite using `[e]`. Use `congr 1`. Conclude with `(Units.ext (afsplitC_decomp v (h : Matrix (Fin n) (Fin n) 𝒜))).symm`. Rewrite using `[this, afsplitU_coe, afsplitC_apply, Units.val_one, ← Matrix.map_apply (f := afsplitIE v), afsplit_one_map, Matrix.smul_apply, smul_eq_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_int (c : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (h : GL (Fin n) 𝒜)
     (hh : h ∈ UPts c (1 : Matrix (Fin n) (Fin n) E) 𝔸)
@@ -489,9 +471,7 @@ theorem exists_int (c : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) {n : ℕ
 end Ad
 
 /- English proof (translation)
-Establish `h1 : Prime (p : 𝓞 ℚ)`. Rewrite using `[← MulEquiv.prime_iff Rat.ringOfIntegersEquiv, map_natCast]`. Conclude with `Nat.prime_iff_prime_int.1 hp`. Set `v : HeightOneSpectrum (𝓞 ℚ)` to `⟨Ideal.span {(p : 𝓞 ℚ)}, (Ideal.span_singleton_prime h1.ne_zero).2 h1, by rw [Ne, Ideal.span_singleton_eq_bot]; exact h1.ne_zero⟩`. Use `⟨v, Ideal.mem_span_singleton_self _, fun w hw => HeightOneSpectrum.ext ?_⟩` and prove the remaining obligations.
-
-Conclude with `(v.isMaximal.eq_of_le w.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hw)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_place (p : ℕ) (hp : p.Prime) : ∃ v : HeightOneSpectrum (𝓞 ℚ), (p : 𝓞 ℚ) ∈ v.asIdeal ∧
     ∀ w : HeightOneSpectrum (𝓞 ℚ), (p : 𝓞 ℚ) ∈ w.asIdeal → w = v := by
@@ -511,11 +491,11 @@ open scoped BigOperators
 open GlobalTheory.NormSum.RepAt GlobalTheory.NormSum.PtsMem in
 
 /- English proof (translation)
-Introduce `D N p hp g`. Take `⟨v, hv, hw⟩` from `exists_place p hp`. Establish `hcc : ∀ x, D.host.conj (D.host.conj x) = x` using `fun x => D.host.φ₀.injective (by`. Establish `h1` using `D.host.conjE_apply D.host.φ₀ (D.host.conj x)`. Establish `h2` using `D.host.conjE_apply D.host.φ₀ x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.trans (by rw [show D.host.φ₀ (D.host.conj x) = _ from h2, Complex.conj_conj]))`. Take `⟨γ, hγ, hi⟩` from `exists_rat (F := ℚ) (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) hcc (Formalism.MainNotions.ModuliIntegralCharts.H1.ConjugateMinimaInstance.conj_ne D) v p hp.pos hv _ ((mem_GA D _).1 g.2)`. Take `⟨γA, hγA⟩` from `exists_isRat D γ hγ`. Take `⟨k, hk, hint, htriv⟩` from `exists_int (F := ℚ) (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) v ((γA * g : GA D N) : GL (Fin N) (AE D)) (γA * g).2 (Units.inv_eq_of_mul_eq_one_left ((mem_GA D _).1 (γA * g).2)) (fun i j => by`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, show ((γA : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) = _ from hγA]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hi i j)`. Use `⟨γA, ⟨k, hk⟩, γ, hγA, hint, fun i j l => ?_⟩` and prove the remaining obligations. Use `zero_at (F := ℚ) v p hp hw ((((γA * g : GA D N) : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) i j - (1 : Matrix (Fin N) (Fin N) (AE D)) i j) l` as an intermediate fact. Rewrite `this` using `[← htriv i j]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.NormSum.exists_rep_trivial_at : ∀ D : D7, oddRep D := by
   intro D N p hp g

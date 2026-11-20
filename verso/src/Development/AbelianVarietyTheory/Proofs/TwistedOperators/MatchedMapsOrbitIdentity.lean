@@ -24,29 +24,27 @@ namespace GlobalTheory.LineMatch
 open Filter GlobalTheory.WeilM GlobalTheory.AdelicU
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ a a' B G X om om' R Rf hMt γ hγ Φ Φ' hPM Φ₁ Φ₁' hd hd'`. Take `⟨δ, hδ⟩` from `GlobalTheory.T.exists_lieDerivative_polynomialFock_seesaw B G X om om' hMt.triple γ hγ`. Take `⟨δ', hδ'⟩` from `GlobalTheory.T.exists_line_operator_polynomial hP B G X om om' hMt.triple γ hγ`. Take `⟨T, hT, m, m', f, φ, f', φ', hf, hf', rfl, rfl, heq⟩` from `hPM`. Establish `hcof : ∀ {κ : Type} (ψs vac : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ), (∀ v ∉ T, ψs v = vac v) → ∀ᶠ v in cofinite, ψs v = vac v` using `fun ψs vac h => Filter.eventually_cofinite.mpr (T.finite_toSet.subset fun v hv => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h'`. Conclude with `hv (h v h'))`. Establish `hpd : ∀ i x, HasDerivAt (fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) x) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (δ (f i)) (φ i) x) 0` using `fun i x => (hδ (f i) (hf i).1).2 _ (GlobalTheory.T.restricted_finprod_pure_tensor_adelic_schwartz F _ (φ i) (hf i).2.1 (((hcof _ _ (hf i).2.2).and hMt.triple.geo.hM.std).mono fun v h => h.1.trans h.2) (f i)) x`. Establish `hpd' : ∀ j x, HasDerivAt (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f' j) (φ' j)) x) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (δ' (f' j)) (φ' j) x) 0` using `fun j x => (hδ' (f' j) (hf' j).1).2 _ (GlobalTheory.T.restricted_finprod_pure_tensor_adelic_schwartz F _ (φ' j) (hf' j).2.1 (((hcof _ _ (hf' j).2.2).and hMt.triple.geo.hM'.std).mono fun v h => h.1.trans h.2) (f' j)) x`. Establish `hΦ₁ : Φ₁ = ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (δ (f i)) (φ i)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Establish `hs` using `HasDerivAt.sum (u := Finset.univ) fun i _ => hpd i x`. Establish `e : (∑ i, fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) x) = fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) x`. Use function extensionality and compare the values at `t`. Rewrite using `[Finset.sum_apply, map_sum, Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[e]`. Rewrite using `[(hd x).unique hs, Finset.sum_apply]`. Establish `hΦ₁' : Φ₁' = ∑ j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (δ' (f' j)) (φ' j)`. Use function extensionality and compare the values at `x`. Establish `hs` using `HasDerivAt.sum (u := Finset.univ) fun j _ => hpd' j x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (∑ j, fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f' j) (φ' j)) x) = fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) (∑ j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f' j) (φ' j)) x`. Use function extensionality and compare the values at `t`. Rewrite using `[Finset.sum_apply, map_sum, Finset.sum_apply]`. Rewrite `hs` using `[e]`. Rewrite using `[(hd' x).unique hs, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR` using `hMt.real`. Use `set P := G.M.Pol B.ψ B.emb with hPdef`. Set `pP : P →ₗ[ℂ] R.Pi` to `R.p ∘ₗ P.subtype`. Establish `hsurj : Function.Surjective pP`. Rewrite using `[← LinearMap.range_eq_top, LinearMap.range_comp, Submodule.range_subtype]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hR.quot.onto`. Set `g : P →ₗ[ℂ] R.Pi` to `R.p ∘ₗ δ ∘ₗ P.subtype`. Establish `h0'` using `hδ' 0 (zero_mem _)`. Establish `hker : LinearMap.ker pP ≤ LinearMap.ker g`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [LinearMap.mem_ker] at hx ⊢`. Use `hR.lie γ hγ x.1 x.2 0 (zero_mem _) (δ x.1) (δ' 0) (hδ x.1 x.2).2 h0'.2 (by simpa [pP] using hx)` as an intermediate fact. Simplify `this` using `[g]`. Set `L : R.Pi →ₗ[ℂ] R.Pi` to `(LinearMap.ker pP).liftQ g hker ∘ₗ (pP.quotKerEquivOfSurjective hsurj).symm.toLinearMap`. Establish `hL : ∀ x ∈ P, L (R.p x) = R.p (δ x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `e : (pP.quotKerEquivOfSurjective hsurj).symm (R.p x) = Submodule.Quotient.mk ⟨x, hx⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [L, LinearMap.comp_apply, LinearEquiv.coe_coe, e, Submodule.liftQ_apply]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hL' : ∀ x ∈ G.M'.Pol B.ψ B.emb, L (R.p' x) = R.p' (δ' x)`. Introduce `x hx`. Take `⟨y, hy, hyx⟩` from `(Submodule.eq_top_iff'.mp hR.quot.onto (R.p' x))`. Rewrite using `[← hyx, hL y hy]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hR.lie γ hγ y hy x hx (δ y) (δ' x) (hδ y hy).2 (hδ' x hx).2 hyx`. Substitute `hΦ₁ hΦ₁'` using the available equality. Use `⟨T, hT, m, m', fun i => δ (f i), φ, fun j => δ' (f' j), φ', fun i => ⟨(hδ (f i) (hf i).1).1, (hf i).2.1, (hf i).2.2⟩, fun j => ⟨(hδ' (f' j) (hf' j).1).1, (hf' j).2.1, (hf' j).2.2⟩, rfl, rfl, ?_⟩` and prove the remaining obligations. Use `congrArg (LinearMap.rTensor _ L) heq` as an intermediate fact. Simplify using `only [map_sum, LinearMap.rTensor_tmul] at this`.
-
-Simplify `this` using `only [hL _ (hf _).1, hL' _ (hf' _).1]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem polMatch_deriv : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

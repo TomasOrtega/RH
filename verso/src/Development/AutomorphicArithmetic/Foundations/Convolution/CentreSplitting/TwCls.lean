@@ -9,23 +9,21 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ θ φ hφ ψ hψ`. Establish `hmemS : ∀ g, θ.e.symm g ∈ rationalGLOne K n ↔ g ∈ rationalGLOne K n` using `fun g => by`. Establish `h` using `θ.mem_gam (θ.e.symm g)`. Rewrite `h` using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpresS : MeasurePreserving θ.e.symm μ μ` using `MeasurePreserving.symm θ.e.toHomeomorph.toMeasurableEquiv θ.pres`. Take `⟨hmk, hT⟩` from `UpperTheory.ConvolutionTheory.K.qmapPres (rationalGLOne K n) μ θ.e.symm hmemS hpresS`. Set `T : RightCosetSpace (rationalGLOne K n) → RightCosetSpace (rationalGLOne K n)` to `fun y => mk _ (θ.e.symm (Quotient.out y))`. Establish `hTmk : ∀ x, T (mk _ x) = mk _ (θ.e.symm x)` using `hmk`. Establish `hTc : Continuous T`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(isOpenQuotientMap_mk (rationalGLOne K n)).isQuotientMap.continuous_iff.2 ?_` and prove the remaining obligations. Establish `h : T ∘ mk _ = mk _ ∘ θ.e.symm` using `funext hTmk`. Rewrite using `[h]`. Conclude with `(continuous_mk _).comp θ.e.symm.continuous`. Set `Φ` to `cuspQuot φ.2.1.isLeftInvariant`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Ψ` to `cuspQuot ψ.2.1.isLeftInvariant`. Establish `hΦc : Continuous Φ` using `continuous_cuspQuot _ φ.2.1.continuous`. Establish `hΨc : Continuous Ψ` using `continuous_cuspQuot _ ψ.2.1.continuous`. Establish `hb` using `(UpperTheory.ConvolutionTheory.Dp.clsBasic K n μ).2.2.2`. Establish `hout : ∀ (χ : cuspForms K n) (y : RightCosetSpace (rationalGLOne K n)), χ.1 ((Quotient.out y : normOneGL K n) : AdelicGLn.AdelicGL K n) = cuspQuot χ.2.1.isLeftInvariant y` using `fun χ y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : mk (rationalGLOne K n) (Quotient.out y) = y` using `Quotient.out_eq y`. Use `conv_rhs => rw [← h]`. Rewrite using `[cuspQuot_mk]`. Establish `hφa : (clsL μ φ : RightCosetSpace (rationalGLOne K n) → ℂ) =ᵐ[quotientMeasure (rationalGLOne K n) μ] Φ` using `(hb φ hφ).trans (Filter.Eventually.of_forall (hout φ))`. Establish `hψa : (clsL μ ψ : RightCosetSpace (rationalGLOne K n) → ℂ) =ᵐ[quotientMeasure (rationalGLOne K n) μ] Ψ` using `(hb ψ hψ).trans (Filter.Eventually.of_forall (hout ψ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU : (θ.U (clsL μ ψ) : RightCosetSpace (rationalGLOne K n) → ℂ) =ᵐ[quotientMeasure (rationalGLOne K n) μ] Ψ ∘ T` using `(θ.U_spec _).trans (hT.quasiMeasurePreserving.ae_eq_comp hψa)`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Establish `h1 : Ψ ∘ T =ᵐ[quotientMeasure (rationalGLOne K n) μ] Φ`. Rewrite `hU` using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hU.symm.trans hφa`. Establish `h2 : Ψ ∘ T = Φ` using `(Continuous.ae_eq_iff_eq _ (hΨc.comp hTc) hΦc).1 h1`. Establish `h3` using `congrFun h2 (mk _ (θ.e x))`. Simplify using `only [Function.comp_apply, hTmk, ContinuousMulEquiv.symm_apply_apply] at h3`. Simplify `h3` using `only [Ψ, Φ, cuspQuot_mk]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Establish `h2 : Ψ ∘ T = Φ`. Use function extensionality and compare the values at `y`. Take `⟨x, rfl⟩` from `mk_surjective _ y`. Simplify using `only [Function.comp_apply, hTmk, Ψ, Φ, cuspQuot_mk]`.
-
-Rewrite using `[h, ContinuousMulEquiv.apply_symm_apply]`. Rewrite `hU` using `[h2]`. Conclude with `Lp.ext (hU.trans hφa.symm)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.twCls :
     UpperTheory.ConvolutionTheory.Dp.TwCls := by

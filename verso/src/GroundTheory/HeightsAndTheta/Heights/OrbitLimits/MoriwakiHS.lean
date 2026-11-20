@@ -11,9 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 noncomputable section
 
 /- English proof (translation)
-Use `tendsto_order.2 ⟨fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hc, hlo ((T - a) / 2) (by linarith)] with n hcn hn`. Rewrite using `[lt_div_iff₀ hcn]`. Use `mul_lt_mul_of_pos_right (show a < T - (T - a) / 2 by linarith) hcn` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hc, hup ((a - T) / 2) (by linarith)] with n hcn hn`. Rewrite using `[div_lt_iff₀ hcn]`. Use `mul_lt_mul_of_pos_right (show T + (a - T) / 2 < a by linarith) hcn` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tendsto_div_of_bounds {h c : ℕ → ℝ} {T : ℝ} (hc : ∀ᶠ n in atTop, 0 < c n)
     (hlo : ∀ ε : ℝ, 0 < ε → ∀ᶠ n in atTop, (T - ε) * c n ≤ h n)
@@ -30,7 +30,7 @@ theorem tendsto_div_of_bounds {h c : ℕ → ℝ} {T : ℝ} (hc : ∀ᶠ n in at
     linarith
 
 /- English proof (translation)
-Use `filter_upwards [eventually_ge_atTop 1] with n hn`. Establish `: (0 : ℝ) < n` using `by exact_mod_cast hn`. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem eventually_pos_normaliser (D : ℕ) :
     ∀ᶠ n : ℕ in atTop, (0 : ℝ) < (n : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ) := by
@@ -39,7 +39,7 @@ theorem eventually_pos_normaliser (D : ℕ) :
   positivity
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D A P0 II hII har hb hP0 hs hc hnef hgen hht`. Conclude with `tendsto_div_of_bounds (h := smallSectionCount (IsSmallH (mCoordIdeal y) y A) (chartLat y A.a)) (c := fun n : ℕ => (n : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)) (eventually_pos_normaliser D) (hL K ι Ω y D A P0 II hII har hb hP0 hs hc hnef hgen hht) (hU K ι Ω y D A P0 II hII har hb …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem MoriwakiHS.of_found (hL : NefCountLower.Statement) (hU : NefCountUpper.Statement) :
     ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement := by

@@ -70,7 +70,7 @@ def DivPushPointStatement : Prop :=
           ∑ᶠ w ∈ fibre W' Ψ y, sheetDensity W' Ψ (pot L) (fun z => Real.log (B.h z)) y w
 
 /- English proof (translation)
-The claim follows from `finsum_mem_eq_finite_toFinset_sum g _`.
+A detailed English derivation is pending.
 -/
 theorem finsum_divSupp_eq {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (P : Ideal (MRing ι)) (s : MRing ι) (g : Ideal (MRing ι) → ℝ) :
@@ -80,13 +80,13 @@ theorem finsum_divSupp_eq {K : Type} [Fintype K] {ι : K → Type} [∀ k, Finty
   finsum_mem_eq_finite_toFinset_sum g _
 
 /- English proof (translation)
-Introduce `K _ ι _ P J n R L A B s r m W BW hP hL hA hB1 hB0 hs hsnc hBW`. Take `⟨Ψ, hΨ⟩` from `hC K ι P n A s hP hs`. Rewrite using `[hF K ι P J n R L A B s r m W BW Ψ hP hL hA hB1 hB0 hs hsnc hBW hΨ]`. Establish `hv : (fun z => Real.log (B.h z)) = logNorm B.inv 1`. Use function extensionality and compare the values at `fun z => (logNorm_inv_one B z).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hAr : ∀ W' ∈ divSupp P s, IsHorizontal W' → IsArithVar W' (n + 1)` using `fun W' hW hH => (divSuppArith K ι P (n + 1) A s W' hP hs hW).1 hH`. Repeatedly rewrite using `[finsum_divSupp_eq P s]`. Rewrite using `[integral_finsetSum]`. Use `Finset.sum_congr rfl fun W' hW' => ?_` and prove the remaining obligations. Rewrite `hW'` using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA'` using `hAr W' hW'.1 hW'.2`. Rewrite using `[integral_const_mul, hv, ptsIntegral_eq_at hE hB hA' (hΨ W' hW'.1 hW'.2) hL (isSmoothHerm_inv hB1) (isSectionOn_inv_one hA'.2.1.1 hB0)]`. Both sides reduce to the same expression. Introduce `W' hW'`. Rewrite `hW'` using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA'` using `hAr W' hW'.1 hW'.2`. Rewrite using `[hv]`. Conclude with `(hI K ι W' n Ψ L B.inv 1 hA' (hΨ W' hW'.1 hW'.2) hL (isSmoothHerm_inv hB1) (isSectionOn_inv_one hA'.2.1.1 hB0)).const_mul _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resDivPush_of_fibre (hE : ResExistsStatement) (hB : ResBridgeStatement)
     (hI : PtsIntegrableStatement) (hC : DivPushCommonProjStatement)

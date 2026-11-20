@@ -18,7 +18,7 @@ set_option maxHeartbeats 2000000
 namespace GlobalTheory.Mem.R3.Rw.JmtUp
 
 /- English proof (translation)
-Consider the cases of `e1`. Consider the cases of `e2`. Substitute `hτ` using the available equality. Use `heq_of_eq (LinearMap.congr_fun (LinearMap.ext_on_range (hs τ) fun k => ?_) x)` and prove the remaining obligations. Rewrite using `[hg, hg']`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem agree {D : D7} {T : Type} {W : Type} [AddCommGroup W] [Module ℂ W] (U U' : D.what₂.Tup → Prop) {n : Fin D.R.m → T → ℕ}
     (tup tup' : T → D.what₂.Tup) (e1 : HEq tup' tup)
@@ -50,7 +50,7 @@ noncomputable def gOf (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R F X0) (i : Fin 
     D.what₂.Mt μ ((i : ℕ) + 1) →ₗ[ℂ] Val Y i := (Submodule.subtype _).comp (Y.IL.jMt μ h i).toLinearMap
 
 /- English proof (translation)
-The claim follows from `agree U (Used0 D) tup Y.tup e1 eM Y.eMt e2 i _ g (gOf Y i) hs hg (fun t h y => Y.mtRead i t h y) μ τ hτ h h' x`.
+A detailed English derivation is pending.
 -/
 theorem side (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R F X0) (i : Fin D.R.m) (U : D.what₂.Tup → Prop) (tup : T → D.what₂.Tup) (e1 : HEq Y.tup tup)
     (eM : ∀ (i : Fin D.R.m) t, (Fin (lDim D A3.A F.P0 F.ψ0 i t) → D.what₂.LL) ≃ₗ[D.what₂.LL] D.what₂.MtL (tup t) ((i : ℕ) + 1))
@@ -65,15 +65,15 @@ theorem side (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R F X0) (i : Fin D.R.m) (U
 end Side
 
 /- English proof (translation)
-Introduce `K B f T w Z Wt S' N h p0 t p0' t' hs μ hμ hμ' i x`. Establish `H` using `side t'.r.Y ((by with_unfolding_all exact (i :)))`. Establish `a1` using `hs.tup`. Establish `a2` using `hs.eMt`. Consider the cases of `t' with | mk hX' r' exAt' inGeo' grpAt' grp' mu' exact' untw' emt0' emt' etaF' rowInt' idx' => ?_`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `r' with | mk z' holds' Y' ZZ' tupix' => ?_`. Consider the cases of `z' with | mk Xg' tr' core' alg_eq' R' cG' geo' pins' lev' idG' good' muz' le' ks' => ?_`. Name the introduced variables `alg'`. Establish `e1 : Xg' = t.r.z.Xg` using `hs.Xg`. Establish `e2 : tr' = t.r.z.tr` using `hs.tr`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `e1 e2` using the available equality. Establish `e3 : core' = R3.Tr.coreJ (a` using `⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (upL Z S' N h) t.r.z.core := eq_of_heq hs.core`. Substitute `e3` using the available equality. Establish `e4 : alg' = t.r.z.alg`. Apply `Algebra.algebra_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Apply `(w.D Z).what₂.embLL.injective` to reduce the goal to its premises. Conclude with `(alg_eq' y).trans (t.r.z.alg_eq y).symm`. Substitute `e4` using the available equality. Establish `e5 : R' = R3.Tr.real3 (a` using `⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (upL Z S' N h) (iK := t.r.z.alg) t.r.z.R := eq_of_heq hs.R`.
+Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e5` using the available equality. Establish `e6 : cG' = t.r.z.cG` using `eq_of_heq hs.cG`. Substitute `e6` using the available equality. Conclude with `(by with_unfolding_all exact ((H ((by with_unfolding_all exact ((Formalism.IndefR.RecTie.Used0 (w.D Z)) :))) ((by with_unfolding_all exact (t.r.Y.tup :))) ((by with_unfolding_all exact (a1 :))) ((by with_unfolding_all exact (t.r.Y.eMt :))) ((by with_unfolding_all exact (a2 :))) ( …`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem jMt_rowsSame : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl) (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) (p0 : BaseLevelRowSide (w.D Z)) (t : RowsT K w Z Wt p0) (p0' : BaseLevelRowSide (w.D (upL Z S' N h))) (t' : RowsT K w (upL Z S' N h) Wt p0'), RowsSame t t' → ∀ (μ : (w.D Z).what₂.Tup) (hμ : Formalism.IndefR.RecTie.Used0 (w.D Z) μ) (hμ' : Formalism.IndefR.RecTie.Used0 (w.D (upL Z S' N h)) μ) (i : Fin (w.D Z).R.m) (x : (w.D Z).what₂.Mt μ ((i : ℕ) + 1)), HEq (t'.r.Y.IL.jMt μ hμ' i x).1 (t.r.Y.IL.jMt μ hμ i x).1 := by
   intro K B f T w Z Wt S' N h p0 t p0' t' hs μ hμ hμ' i x

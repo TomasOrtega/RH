@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.GoodMetric.ChernSpan
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [kron_one]`. Consider the case `succ n ih => rw [pow_succ, ih, ← kron_mul, pow_succ, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem kron_pow' {R : Type} [CommRing R] {M N : ℕ} (a : Matrix (Fin M) (Fin M) R)
     (b : Matrix (Fin N) (Fin N) R) (n : ℕ) : kron a b ^ n = kron (a ^ n) (b ^ n) := by
@@ -19,7 +19,7 @@ theorem kron_pow' {R : Type} [CommRing R] {M N : ℕ} (a : Matrix (Fin M) (Fin M
   | succ n ih => rw [pow_succ, ih, ← kron_mul, pow_succ, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[kron, ← Matrix.trace_kronecker]`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.reindex_apply, Matrix.submatrix_apply]`. Conclude with `Equiv.sum_comp finProdFinEquiv.symm fun x => Matrix.kroneckerMap (· * ·) a b x x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_kron' {R : Type} [CommRing R] {M N : ℕ} (a : Matrix (Fin M) (Fin M) R)
     (b : Matrix (Fin N) (Fin N) R) : (kron a b).trace = a.trace * b.trace := by
@@ -28,9 +28,9 @@ theorem trace_kron' {R : Type} [CommRing R] {M N : ℕ} (a : Matrix (Fin M) (Fin
   exact Equiv.sum_comp finProdFinEquiv.symm fun x => Matrix.kroneckerMap (· * ·) a b x x
 
 /- English proof (translation)
-Establish `hc : Commute (kron L (1 : Matrix (Fin N) (Fin N) R)) (kron (1 : Matrix (Fin M) (Fin M) R) L')`. Unfold `Commute SemiconjBy`. Rewrite using `[← kron_mul, ← kron_mul, mul_one, one_mul, mul_one, one_mul]`. Rewrite using `[hc.add_pow, Matrix.trace_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[kron_pow', kron_pow', one_pow, one_pow, ← kron_mul, mul_one, one_mul, ← Nat.cast_comm, ← nsmul_eq_mul, Matrix.trace_smul, nsmul_eq_mul, trace_kron', mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_pow_kron_add {R : Type} [CommRing R] {M N : ℕ} (L : Matrix (Fin M) (Fin M) R)
     (L' : Matrix (Fin N) (Fin N) R) (i : ℕ) :

@@ -24,13 +24,13 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.Spec
 namespace UpperTheory.Et
 
 /- English proof (translation)
-The claim follows from `UpperTheory.etaleCohomology_descent_of_cech_cover GlobalTheory.T.quasiIso_hypercohomology_bijective GlobalTheory.T.etaleCohomology_negative_vanishing_degree_zero GlobalTheory.T.etaleCohomology_twisted_filtered_colimit_continuity GlobalTheory.T.strictlyHenselianLocalRing_acyclic_e …`.
+A detailed English derivation is pending.
 -/
 theorem affine_proper_base_change : GlobalTheory.EtC.E1 :=
   UpperTheory.etaleCohomology_descent_of_cech_cover GlobalTheory.T.quasiIso_hypercohomology_bijective GlobalTheory.T.etaleCohomology_negative_vanishing_degree_zero GlobalTheory.T.etaleCohomology_twisted_filtered_colimit_continuity GlobalTheory.T.strictlyHenselianLocalRing_acyclic_every_sheaf GlobalTheory.T.integralSurjection_cechDescent_tateTwist EtaleCovers.intersectionNumber_baseChange HenselianIdempotents.intersectionNumber_baseChange QuasiAffineEquivalence.intersectionNumber_baseChange EtaleDescentEtaleAxioms.intersectionNumber_baseChange CechLevelsEtaleAxioms.intersectionNumber_baseChange
 
 /- English proof (translation)
-The claim follows from `E2.main ⟨GlobalTheory.T.quasiIso_hypercohomology_bijective, GlobalTheory.T.etC_a2, GlobalTheory.T.levelwiseEquivalence_isEquivalence, GlobalTheory.T.mayerVietoris_equivalence_of_cover, GlobalTheory.T.positiveDegreeClasses_die_on_etaleCover, GlobalTheory.T.etaleCohomology_coeffici …`.
+A detailed English derivation is pending.
 -/
 theorem proper_base_change : GlobalTheory.EtC.E2 :=
   E2.main ⟨GlobalTheory.T.quasiIso_hypercohomology_bijective, GlobalTheory.T.etC_a2, GlobalTheory.T.levelwiseEquivalence_isEquivalence, GlobalTheory.T.mayerVietoris_equivalence_of_cover, GlobalTheory.T.positiveDegreeClasses_die_on_etaleCover, GlobalTheory.T.etaleCohomology_coefficient_longExactSequence, GlobalTheory.T.etaleCohomology_coefficientRing_invariance, GlobalTheory.T.etaleCohomology_negative_vanishing_degree_zero, GlobalTheory.T.etaleCohomology_bijective_of_support_bijective, GlobalTheory.T.etaleCohomology_twisted_filtered_colimit_continuity, GlobalTheory.T.strictlyHenselianLocalRing_acyclic_every_sheaf, GlobalTheory.T.etC_b3, GlobalTheory.T.integralSurjection_cechDescent_tateTwist, GlobalTheory.T.absolutelyIntegrallyClosed_domain_tateTwistAcyclic, affine_proper_base_change⟩

@@ -5,17 +5,17 @@ open Matrix Classical PositivityTheory.Rg.Rs GlobalTheory.CompanionTheory.GLFirs
 namespace GlobalTheory.CompanionTheory.GapOpCount
 
 /- English proof (translation)
-Introduce `k _ _ n a ha`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, a i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `ha (funext h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hax₀ : a ⬝ᵥ Pi.single i (a i)⁻¹ = 1`. Rewrite using `[dotProduct_single, mul_inv_cancel₀ hi]`. Establish `hfib : ∀ c : k, (Finset.univ.filter (fun x : Fin (n + 1) → k => a ⬝ᵥ x = c)).card = (Finset.univ.filter (fun x : Fin (n + 1) → k => a ⬝ᵥ x = 1)).card`. Introduce `c`. Apply `Finset.card_bij' (fun x _ => x + (1 - c) • Pi.single i (a i)⁻¹) (fun x _ => x - (1 - c) • Pi.single i (a i)⁻¹)` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `case hi =>`. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`. Rewrite using `[dotProduct_add, dotProduct_smul, hax₀, hx, smul_eq_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `case hj =>`. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`. Rewrite using `[dotProduct_sub, dotProduct_smul, hax₀, hx, smul_eq_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `case left_inv =>`. Introduce `x _`. Simplify using the standard rewrite rules. Use `case right_inv =>`. Introduce `x _`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `htot : (Finset.univ : Finset (Fin (n + 1) → k)).card = ∑ c : k, (Finset.univ.filter (fun x : Fin (n + 1) → k => a ⬝ᵥ x = c)).card` using `Finset.card_eq_sum_card_fiberwise (fun x _ => Finset.mem_univ (a ⬝ᵥ x))`. Establish `hcard : (Finset.univ : Finset (Fin (n + 1) → k)).card = Fintype.card k ^ (n + 1)`. Rewrite using `[Finset.card_univ, Fintype.card_fun, Fintype.card_fin]`. Rewrite using `[← hcard, htot, Finset.sum_congr rfl (fun c _ => hfib c), Finset.sum_const, Finset.card_univ, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_dotProduct_eq_one :
     ∀ (k : Type) [Field k] [Fintype k] (n : ℕ) (a : Fin (n + 1) → k), a ≠ 0 →

@@ -10,21 +10,19 @@ open scoped ContDiff Manifold
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `𝔸 _ _ _ _ G 𝔤 h _ _ ν _ K hK hν κ hκ`. Use `haveI := secondCountableTopology_subgroup_units G`. Use `haveI := h.locallyCompactSpace`. Take `⟨ψ, hψ1, -, hψc, -⟩` from `exists_continuous_one_zero_of_isCompact hK isClosed_empty (Set.disjoint_empty K)`. Rewrite using `[IsExpLieAlgebra.isSmoothFun_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g`. Establish `hae : ∀ᵐ y ∂ν, y ∈ K`. Rewrite using `[ae_iff]`. Conclude with `hν`. Establish `e : (fun Y : 𝔤 => ∫ y, κ (g * h.expG Y * y) ∂ν) = fun Y => ∫ y, ((ψ y : ℝ) : ℂ) * κ (g * h.expG Y * y) ∂ν`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `Y`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with y hy`. Simplify using `[hψ1 hy]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI := h.chartedSpace`. Use `haveI := h.lieGroup ∞`. Establish `hκg : ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ (fun x : G => κ (g * x))` using `ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hκ (contMDiff_const.mul contMDiff_id)`. Use `set Φ : 𝔤 → G → ℂ := fun Y y => κ (g * h.expG Y * y) with hΦdef`. Establish `hΦ : ∀ y₀ : G, ContDiff ℝ ∞ (fun q : 𝔤 × 𝔤 => Φ q.1 (y₀ * h.expG q.2))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y₀`. Use `h.contDiff_comp_expG_mul_expG hκg contDiff_fst y₀ contDiff_snd` as an intermediate fact. Simplify `this` using `[hΦdef, mul_assoc]`. Establish `hΦY : ∀ y : G, ContDiff ℝ ∞ (fun Y => Φ Y y)`. Introduce `y`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `h.contDiff_comp_expG_mul_expG hκg contDiff_id y (contDiff_const (c := (0 : 𝔤)))` as an intermediate fact. Simplify `this` using `[hΦdef, mul_assoc]`. Establish `hD : ∀ (k : ℕ) (Y : 𝔤) (y : G), iteratedFDeriv ℝ k (fun Y => ((ψ y : ℝ) : ℂ) * Φ Y y) Y = ((ψ y : ℝ) : ℂ) • iteratedFDeriv ℝ k (fun Y => Φ Y y) Y`. Introduce `k Y y`. Establish `e : (fun Y => ((ψ y : ℝ) : ℂ) * Φ Y y) = ((ψ y : ℝ) : ℂ) • fun Y => Φ Y y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `Y`. Simplify using `[smul_eq_mul]`. Rewrite using `[e, iteratedFDeriv_const_smul_apply ((hΦY y).contDiffAt.of_le (by exact_mod_cast le_top))]`. Express the relevant statement in the definitionally equal form `ContDiff ℝ ∞ fun Y : 𝔤 => ∫ y, ((ψ y : ℝ) : ℂ) * Φ Y y ∂ν`. Use `contDiff_integral_of_iteratedFDeriv (μ := ν) (fun (Y : 𝔤) (y : G) => ((ψ y : ℝ) : ℂ) * Φ Y y) (fun y => contDiff_const.mul (hΦY y)) (fun k => ?_) (fun Y₀ => ?_)` and prove the remaining obligations.
-
-Establish `hc` using `h.continuous_iteratedFDeriv_param Φ hΦ k`. Use `(((Complex.continuous_ofReal.comp ψ.continuous).comp continuous_snd).smul hc).congr fun q => ?_` and prove the remaining obligations. Conclude with `(hD k q.1 q.2).symm`. Use `⟨Set.univ, Filter.univ_mem, tsupport ψ, hψc, fun Y _ y hy => ?_⟩` and prove the remaining obligations. Simplify using `[image_eq_zero_of_notMem_tsupport hy]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSmoothFun_integral_mul_right : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤) [MeasurableSpace G] [BorelSpace G] (ν : Measure G) [IsFiniteMeasure ν] (K : Set G), IsCompact K → ν Kᶜ = 0 → ∀ κ : G → ℂ, h.IsSmoothFun κ → h.IsSmoothFun (fun z => ∫ y, κ (z * y) ∂ν) := by
   intro 𝔸 _ _ _ _ G 𝔤 h _ _ ν _ K hK hν κ hκ

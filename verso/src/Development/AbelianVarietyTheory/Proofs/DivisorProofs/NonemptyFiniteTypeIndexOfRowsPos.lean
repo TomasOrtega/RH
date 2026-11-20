@@ -20,11 +20,11 @@ noncomputable section
 namespace GlobalTheory.Div
 
 /- English proof (translation)
-Introduce `K _ _ _ G _ _ Pl0 I0 Ty T m s A3 P ψ Zs hOk hin hpos`. Assume the negation of the conclusion as `hne`. Establish `hfalse : ∀ x, ¬ A3.fam3.IsType3 (A3.fam3.RI A3.fam3.F.μ0) id x`. Introduce and unpack `x ⟨p, hp, -⟩`. Conclude with `hne ⟨⟨p, hp⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hsame` using `A3.fam3.sameTypes_base3 hOk P ψ hin`. Establish `hbot : Formalism.L2.Col.eigSum (A3.fam3.RI A3.fam3.F.μ0).opAll (A3.fam3.IsType3 (A3.fam3.RI A3.fam3.F.μ0) id) = ⊥`. Unfold `Formalism.L2.Col.eigSum`. Simplify using `[hfalse]`. Rewrite `hsame` using `[hbot, BlockDat.good_part_coordinates_bot, le_bot_iff]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `FamIn3.side3 DefFam3.side3 DefSide.Pos at hpos`. Simplify using `only [BlockDat.dZ, subDim] at hpos`. Rewrite `hpos` using `[hsame]`. Simplify using `at hpos`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nonempty_ix_of_pos : ∀ {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m s : ℕ} (A3 : FamIn3 K G Pl0 I0 Ty T m) (P : Subgroup G) (ψ : P →* Kˣ) (Zs : DefSub A3.fam3.amb3), A3.fam3.Ok3 s → Zs.InBlock → (A3.side3 P ψ Zs).Pos → Nonempty A3.fam3.base3.Ix := by
   intro K _ _ _ G _ _ Pl0 I0 Ty T m s A3 P ψ Zs hOk hin hpos

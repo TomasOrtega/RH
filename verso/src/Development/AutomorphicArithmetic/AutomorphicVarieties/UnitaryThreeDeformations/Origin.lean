@@ -4,21 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Establish `hsupp : ∀ n : σ →₀ ℕ, n ≠ 0 → n.support.Nonempty` using `fun n hn => Finsupp.support_nonempty_iff.mpr hn`. Set `sel : (σ →₀ ℕ) → σ → Prop` to `fun n i => ∃ h : n ≠ 0, (hsupp n h).choose = i`. Set `q : σ → MvPowerSeries σ O` to `fun i m => if sel (m + Finsupp.single i 1) i then MvPowerSeries.coeff (m + Finsupp.single i 1) p else 0`. Establish `hX : ∀ (n : σ →₀ ℕ) (i : σ) (f : MvPowerSeries σ O), MvPowerSeries.coeff n (MvPowerSeries.X i * f) = if Finsupp.single i 1 ≤ n then MvPowerSeries.coeff (n - Finsupp.single i 1) f else 0`. Introduce `n i f`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show (MvPowerSeries.X i : MvPowerSeries σ O) = MvPowerSeries.monomial (Finsupp.single i 1) 1 from rfl, MvPowerSeries.coeff_monomial_mul, one_mul]`. Establish `hq : ∀ (i : σ) (m : σ →₀ ℕ), MvPowerSeries.coeff m (q i) = if sel (m + Finsupp.single i 1) i then MvPowerSeries.coeff (m + Finsupp.single i 1) p else 0` using `fun i m => rfl`. Establish `hdec : p = ∑ i, MvPowerSeries.X i * q i`. Use extensionality with `n`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hX, hq]`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hp]`. Use `symm`.
+Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[if_neg]`. Introduce `hle`. Use `hle i` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Use `set j := (hsupp n hn).choose with hj`. Establish `hjmem : j ∈ n.support` using `(hsupp n hn).choose_spec`. Establish `hjle : Finsupp.single j 1 ≤ n`. Rewrite using `[Finsupp.single_le_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hjmem)`. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[if_pos hjle, tsub_add_cancel_of_le hjle, if_pos ⟨hn, rfl⟩]`. Introduce `b _ hb`. Distinguish the cases in `hble : Finsupp.single b 1 ≤ n`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[if_pos hble, tsub_add_cancel_of_le hble, if_neg]`. Introduce and unpack `⟨_, hb'⟩`. Conclude with `hb hb'.symm`. Rewrite using `[if_neg hble]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ j) h`. Rewrite using `[hdec, map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[map_mul, hφ, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.UnitaryThreeInertia.map_eq_zero_of_cc {O A σ : Type} [CommRing O] [CommRing A] [Fintype σ]
     (φ : MvPowerSeries σ O →+* A) (hφ : ∀ i, φ (MvPowerSeries.X i) = 0) (p : MvPowerSeries σ O)
@@ -73,9 +73,9 @@ private theorem UpperTheory.V.UnitaryThreeInertia.map_eq_zero_of_cc {O A σ : Ty
   rw [map_mul, hφ, zero_mul]
 
 /- English proof (translation)
-Establish `h0 : MvPowerSeries.constantCoeff (p - algebraMap O (MvPowerSeries σ O) (MvPowerSeries.constantCoeff p)) = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.mpr rfl`. Establish `h` using `UpperTheory.V.UnitaryThreeInertia.map_eq_zero_of_cc (φ : MvPowerSeries σ O →+* O) (fun i => hφ i) _ h0`. Rewrite `h` using `[map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : φ (algebraMap O (MvPowerSeries σ O) (MvPowerSeries.constantCoeff p)) = MvPowerSeries.constantCoeff p`. Rewrite using `[AlgHom.commutes]`. Both sides reduce to the same expression. Conclude with `h.trans h2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.UnitaryThreeInertia.map_eq_cc {O σ : Type} [CommRing O] [Fintype σ]
     (φ : MvPowerSeries σ O →ₐ[O] O) (hφ : ∀ i, φ (MvPowerSeries.X i) = 0) (p : MvPowerSeries σ O) :
@@ -93,17 +93,17 @@ private theorem UpperTheory.V.UnitaryThreeInertia.map_eq_cc {O σ : Type} [CommR
   exact h.trans h2
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hF g₁ hg₁ R _ _ _ u hu W hW`. Take `⟨f, hf, -⟩` from `hu.univ O (F.rz O) (UpperTheory.V.UnitaryThreeInertia.isPt_rz F hF g₁)`. Establish `hz : ∀ i, f (W.z i) = 0`. Introduce `i`. Take `⟨g, a, b, -, -, hzi⟩` from `hW.var i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hzi, map_sub]`. Establish `h1 : f ((u g).mat a b) = ((F.rz O) g).mat a b`. Rewrite using `[← hf]`. Both sides reduce to the same expression. Establish `h2 : f (((F.rz R) g).mat a b) = ((F.rz O) g).mat a b` using `by show f (algebraMap O R _) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[AlgHom.commutes]`. Both sides reduce to the same expression. Rewrite using `[h1, h2, sub_self]`. Use `haveI := W.fin`. Set `ψ : MvPowerSeries W.σ O →ₐ[O] O` to `f.comp W.π`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : ∀ p, ψ p = MvPowerSeries.constantCoeff p` using `UpperTheory.V.UnitaryThreeInertia.map_eq_cc ψ (fun i => hz i)`. Establish `hO : W.HasOrigin`. Introduce `p hp`. Rewrite using `[← hψ]`. Use `show f (W.π p) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hp, map_zero]`. Use `⟨hO, ?_⟩` and prove the remaining obligations. Establish `heq : W.origin hO = f`. Use extensionality with `x`. Take `⟨p, rfl⟩` from `W.surj x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[UpperTheory.V.Alg.WPres.origin_π, ← hψ]`. Both sides reduce to the same expression. Rewrite using `[heq, hf]`. Conclude with `MonoidHom.ext fun g => rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.hasOrigin :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]

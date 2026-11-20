@@ -30,19 +30,17 @@ namespace GlobalTheory.FlagFreeSmooth
 open Limits
 
 /- English proof (translation)
-Use `@Fintype.induction_empty_option (fun α _ => ∀ (Z : α → Scheme.{0}) (ρ : ∀ a, Z a ⟶ B) (d : α → ℕ), (∀ a, SmoothOfRelativeDimension (d a) (ρ a)) → ∃ (Y : Scheme.{0}) (π : Y ⟶ B) (p : ∀ a, Y ⟶ Z a), (∀ a, p a ≫ ρ a = π) ∧ SmoothOfRelativeDimension (∑ a, d a) π ∧ ∀ (T : Scheme.{0}) …` and prove the remaining obligations. Introduce `α β _ e ih Z ρ d hρ`. Use `letI : Fintype α := Fintype.ofEquiv β e.symm`. Take `⟨Y, π, p, hp, hY, H⟩` from `ih (fun a => Z (e a)) (fun a => ρ (e a)) (fun a => d (e a)) fun a => hρ _`. Set `p' : ∀ b, Y ⟶ Z b` to `Equiv.piCongrLeft (fun b => Y ⟶ Z b) e p`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hp' (a : α) : p' (e a) = p a` using `Equiv.piCongrLeft_apply_apply _ _ _ _`. Establish `hs : ∑ a, d (e a) = ∑ b, d b` using `Equiv.sum_comp e d`. Rewrite `hY` using `[hs]`. Use `⟨Y, π, p', e.forall_congr_right.1 fun a => by rw [hp', hp], hY, fun T g h hh => ?_⟩` and prove the remaining obligations. Take `⟨g', ⟨h₁, h₂⟩, u⟩` from `H T g (fun a => h (e a)) fun a => hh _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g', ⟨h₁, e.forall_congr_right.1 fun a => by rw [hp', h₂]⟩, fun y hy => u y ⟨hy.1, fun a => by rw [← hp', hy.2]⟩⟩`. Introduce `Z ρ d _`. Establish `h0 : (∑ a : PEmpty, d a) = 0` using `by simp`. Rewrite using `[h0]`. Conclude with `⟨B, 𝟙 B, fun a => a.elim, fun a => a.elim, inferInstance, fun T g _ _ => ⟨g, ⟨Category.comp_id g, fun a => a.elim⟩, fun y hy => (Category.comp_id y).symm.trans hy.1⟩⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `α _ ih Z ρ d hρ`. Take `⟨Y, π, p, hp, hY, H⟩` from `ih (fun a => Z (some a)) (fun a => ρ (some a)) (fun a => d (some a)) fun a => hρ _`. Establish `: SmoothOfRelativeDimension (d none) (pullback.fst π (ρ none))` using `haveI := smoothOfRelativeDimension_isStableUnderBaseChange (n := d none) MorphismProperty.pullback_fst (P := @SmoothOfRelativeDimension (d none)) π (ρ none) (hρ none)`. Establish `hs : SmoothOfRelativeDimension (∑ a, d a) (pullback.fst π (ρ none) ≫ π)`. Rewrite using `[Fintype.sum_option]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Use `⟨pullback π (ρ none), pullback.fst _ _ ≫ π, fun a => Option.rec (pullback.snd _ _) (fun a => pullback.fst _ _ ≫ p a) a, ?_, hs, fun T g h hh => ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | a)`. Conclude with `pullback.condition.symm`. Conclude with `(Category.assoc _ _ _).trans (congrArg _ (hp a))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨g', ⟨h₁, h₂⟩, u⟩` from `H T g (fun a => h (some a)) fun a => hh _`. Use `⟨pullback.lift g' (h none) (h₁.trans (hh none).symm), ⟨by rw [pullback.lift_fst_assoc, h₁], ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | a)`. Conclude with `pullback.lift_snd _ _ _`. Conclude with `(pullback.lift_fst_assoc _ _ _ _).trans (h₂ a)`.
-
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[pullback.lift_fst]`. Conclude with `u _ ⟨(Category.assoc _ _ _).trans hy.1, fun a => (Category.assoc _ _ _).trans (hy.2 (some a))⟩`. Rewrite using `[pullback.lift_snd]`. Conclude with `hy.2 none`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_widePullback_smooth {B : Scheme.{0}} (ι : Type) [Fintype ι] :
     ∀ (Z : ι → Scheme.{0}) (ρ : ∀ a, Z a ⟶ B) (d : ι → ℕ), (∀ a, SmoothOfRelativeDimension (d a) (ρ a)) →
@@ -103,7 +101,7 @@ end GlobalTheory.FlagFreeSmooth
 namespace GlobalTheory.FlagFreeSmooth
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.FlagZ.smooth_dim_isArithVar_part Unit (Unit × Fin (n + 1)) n Prod.fst Prod.snd).1`. Rewrite `h` using `[(GlobalTheory.FlagZ.Count.card_cellVar Unit n).1]`. Unfold `dimFl at h`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smooth_flStr_unit (n : ℕ) : SmoothOfRelativeDimension (n * (n - 1) / 2) (GlobalTheory.FlagZ.flStr Unit n) := by
   have h := (GlobalTheory.FlagZ.smooth_dim_isArithVar_part Unit (Unit × Fin (n + 1)) n Prod.fst Prod.snd).1
@@ -128,7 +126,7 @@ def univFlag (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) :
   isIso_last := isIso_incl_last ι N τ
 
 /- English proof (translation)
-Introduce `T g fl'`. Take `⟨g', hg'⟩` from `GlobalTheory.T.flag_variety_lift_exists ι N T g fl'`. Conclude with `⟨g', hg', fun y hy => GlobalTheory.T.flag_variety_lift_unique ι N T g fl' y g' hy hg'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isFlagBundle_univFlag (ι : Type) [Fintype ι] (N : ℕ) :
     IsFlagBundle (flStr ι N) (fun _ : ι => SheafOfModules.free (R := (Sp ℤ).ringCatSheaf) (Fin N)) (fun _ => N)
@@ -138,7 +136,7 @@ theorem isFlagBundle_univFlag (ι : Type) [Fintype ι] (N : ℕ) :
   exact ⟨g', hg', fun y hy => GlobalTheory.T.flag_variety_lift_unique ι N T g fl' y g' hy hg'⟩
 
 /- English proof (translation)
-Introduce `n` and use `⟨Fl Unit n, flStr Unit n, univFlag Unit n, isFlagBundle_univFlag Unit n, smooth_flStr_unit n⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_single_int : ∀ (n : ℕ), ∃ (Y : Scheme.{0}) (π : Y ⟶ Sp ℤ) (fl : ∀ _ : Unit, Vert.Flag ((Scheme.Modules.pullback π).obj (SheafOfModules.free (R := (Sp ℤ).ringCatSheaf) (Fin n))) n), IsFlagBundle π (fun _ : Unit => SheafOfModules.free (R := (Sp ℤ).ringCatSheaf) (Fin n)) (fun _ => n) fl ∧ SmoothOfRelativeDimension (n * (n - 1) / 2) π := fun n =>
   ⟨Fl Unit n, flStr Unit n, univFlag Unit n, isFlagBundle_univFlag Unit n, smooth_flStr_unit n⟩
@@ -150,9 +148,9 @@ namespace GlobalTheory.FlagFreeSmooth
 open Limits
 
 /- English proof (translation)
-Take `⟨Y, π, fl, hfl, hs⟩` from `exists_single_int n`. Set `g : B ⟶ Sp ℤ` to `specZIsTerminal.from B`. Establish `hbc` using `GlobalTheory.T.isFlagBundle_pullback' (Sp ℤ) Y B π g Unit _ (fun _ => n) fl hfl`. Take `⟨e⟩` from `GlobalTheory.T.pullback_free_module_iso B (Sp ℤ) g n`. Establish `hiso` using `GlobalTheory.FlagIsoBundle.isFlagBundle_of_iso B (pullback π g) (pullback.snd π g) Unit _ (fun _ : Unit => SheafOfModules.free (R := B.ringCatSheaf) (Fin n)) (fun _ => n) _ (fun _ => e) hbc`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: SmoothOfRelativeDimension (n * (n - 1) / 2) (pullback.snd π g)` using `haveI := smoothOfRelativeDimension_isStableUnderBaseChange (n := n * (n - 1) / 2) MorphismProperty.pullback_snd (P := @SmoothOfRelativeDimension (n * (n - 1) / 2)) π g hs`. Conclude with `⟨_, _, _, hiso, this⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_single (B : Scheme.{0}) (n : ℕ) :
     ∃ (Y : Scheme.{0}) (π : Y ⟶ B) (fl : ∀ _ : Unit, Vert.Flag ((Scheme.Modules.pullback π).obj
@@ -171,7 +169,7 @@ theorem exists_single (B : Scheme.{0}) (n : ℕ) :
   exact ⟨_, _, _, hiso, this⟩
 
 /- English proof (translation)
-Introduce `B ι _ r`. Use `choose Z ρ fl hfl hs using fun a => exists_single B (r a)`. Take `⟨Y, π, p, hp, hY, H⟩` from `exists_widePullback_smooth ι Z ρ (fun a => r a * (r a - 1) / 2) hs`. Conclude with `⟨Y, π, _, GlobalTheory.FlagFamily.isFlagBundle_of_widePullback (fun a => SheafOfModules.free (R := B.ringCatSheaf) (Fin (r a))) r ρ fl hfl π p hp H, hY⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (B : Scheme.{0}) (ι : Type) [Fintype ι] (r : ι → ℕ), ∃ (Y : Scheme.{0}) (π : Y ⟶ B) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (SheafOfModules.free (R := B.ringCatSheaf) (Fin (r a)))) (r a)), IsFlagBundle π (fun a => SheafOfModules.free (R := B.ringCatSheaf) (Fin (r a))) r fl ∧ SmoothOfRelativeDimension (∑ a, r a * (r a - 1) / 2) π := by
   intro B ι _ r

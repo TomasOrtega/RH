@@ -28,9 +28,9 @@ def rQ (Θ : PDF R D) {P Q : ObjectProperty D} (h : Q ≤ P) (c : R) :
   nat _ _ := rfl
 
 /- English proof (translation)
-Use `(Function.Bijective.of_comp_iff' zq _).1 ?_` and prove the remaining obligations. Establish `e : ⇑((rQ Θ' hQ' c).pull j) ∘ ⇑((m.o (IdF.span _ c) fun _ => le_rfl).pull j) = ⇑(((subQ m Q Q' hQ' hG).o (IdF.span _ c) fun _ => le_rfl).pull j) ∘ ⇑((rA Θ hQ).pull j)`. Use function extensionality and compare the values at `x`. Use `((CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) (m.o (IdF.span _ c) fun _ => le_rfl) (rQ Θ' hQ' c) j x).1).symm.trans (Eq.trans ?_ ((CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) (rA Θ hQ) ((subQ m Q Q' hQ' hG).o (IdF.span _ c) fun _ => le_ …` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `g.comp z0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bij_of_sub {c : R} (m : QMor (Θ.res P.ι) (Θ'.res P'.ι) (IdF.span _ c)) (Q : ObjectProperty D) (Q' : ObjectProperty D')
     (hQ : Q ≤ P) (hQ' : Q' ≤ P') (hG : ∀ T : Q'.FullSubcategory, Q (m.G.obj ⟨T.obj, hQ' _ T.property⟩).obj) (j : ℕ)

@@ -8,21 +8,19 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 namespace GlobalTheory.TrueGeo
 
 /- English proof (translation)
-Introduce `F _ _ C Y A M L k cf hI y`. Take `⟨hcf, r, -, -, hfin⟩` from `hI`. Use `M.ar.isNoetherian` as an intermediate fact. Establish `hcov : (Set.univ : Set M.X) ⊆ ⋃ i, (L.B.U i : Set M.X)`. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : x ∈ (⨆ i, L.B.U i : M.X.Opens)` using `by rw [L.isLB.cover]; trivial`. Take `⟨i, hi⟩` from `Opens.mem_iSup.mp hx`. Conclude with `Set.mem_iUnion.mpr ⟨i, hi⟩`. Take `⟨S, hS⟩` from `isCompact_univ.elim_finite_subcover (fun i => (L.B.U i : Set M.X)) (fun i => (L.B.U i).isOpen) hcov`. Set `a : L.B.ι → AlgebraicClosure F` to `fun i => valAt y.1 (((eqn A.D (below y.1))⁻¹ ^ (k : ℕ) * r (fun _ => i) : Y.Fnˣ) : Y.Fn)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : ∀ i, {v : HeightOneSpectrum (𝓞 F) | a i ≠ 0 ∧ ∃ e : Ext v, e.w (a i) ≠ 1}.Finite`. Introduce `i`. Distinguish the cases in `h : a i = 0`. Simplify using `[h]`. Conclude with `(GlobalTheory.TrueGeo.finite_ext_ne_one F (a i) h).subset fun v hv => hv.2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(hcf.union (S.finite_toSet.biUnion fun i _ => hB i)).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨e, he⟩`. Take `⟨yt, hyt, hU⟩` from `GlobalTheory.TrueGeo.exists_valuationRing_point F Y M v e y`. Take `⟨i, hiS, hi⟩` from `Set.mem_iUnion₂.mp (hS (Set.mem_univ (yt (IsLocalRing.closedPoint e.O))))`. Establish `h` using `hfin v e y yt (fun _ => i) hyt (hU _ hi).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[Set.mem_union, not_or]`. Take `⟨h1, h2⟩` from `hcon`. Establish `h1' : cf v = 0` using `by simpa using h1`. Establish `hlog : Real.log (e.w (a i)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h0 : a i = 0`. Simplify using `[h0]`. Establish `: e.w (a i) = 1`. Assume the negation of the conclusion as `hne`. Conclude with `h2 (Set.mem_iUnion₂.mpr ⟨i, hiS, h0, e, hne⟩)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[this]`. Establish `h3 : ((k : ℕ) : ℝ) * A.lg v e y = 0`. Rewrite using `[h, h1', mul_zero, sub_zero]`. Conclude with `hlog`. Establish `hk : ((k : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast k.ne_zero`.
-
-Conclude with `he ((mul_eq_zero.mp h3).resolve_left hk)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_places_lg_ne_zero : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (M : TrueGeo.Model Y) (L : HermLB M.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ), A.Induced M L k cf → ∀ y : AlgPt Y, {v : HeightOneSpectrum (𝓞 F) | ∃ e : Ext v, A.lg v e y ≠ 0}.Finite := by
   intro F _ _ C Y A M L k cf hI y

@@ -12,13 +12,13 @@ namespace GlobalTheory.CompanionTheory.SW.Core.ThetaBound
 variable {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-The claim follows from `Function.Injective.countable (Module.finBasis ℚ F).equivFun.injective`.
+A detailed English derivation is pending.
 -/
 theorem countable_field : Countable F :=
   Function.Injective.countable (Module.finBasis ℚ F).equivFun.injective
 
 /- English proof (translation)
-Rewrite using `[← InfinitePlace.sum_mult_eq]`. Establish `: ∀ w : InfinitePlace F, w.mult = 1` using `fun w => by`. Simplify using `[InfinitePlace.mult, h.isReal w]`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem card_places (h : IsTotallyReal F) :
     Fintype.card (InfinitePlace F) = Module.finrank ℚ F := by
@@ -28,15 +28,15 @@ theorem card_places (h : IsTotallyReal F) :
   simp [this]
 
 /- English proof (translation)
-Establish `hcont : Continuous fun y : ι → ℝ => y ⬝ᵥ (P *ᵥ y)` using `by fun_prop`. Establish `hsph : ∃ c : ℝ, 0 < c ∧ ∀ u ∈ Metric.sphere (0 : ι → ℝ) 1, c ≤ u ⬝ᵥ (P *ᵥ u)`. Break down `(Metric.sphere (0 : ι → ℝ) 1).eq_empty_or_nonempty with he | hne` into its components or cases. Conclude with `⟨1, one_pos, by simp [he]⟩`. Take `⟨u₀, hu₀, hmin⟩` from `(isCompact_sphere (0 : ι → ℝ) 1).exists_isMinOn hne hcont.continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨u₀ ⬝ᵥ (P *ᵥ u₀), ?_, fun u hu => hmin hu⟩` and prove the remaining obligations. Establish `hne0 : u₀ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hu₀`. Simplify using `using hP.dotProduct_mulVec_pos hne0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨c, hc, hb⟩` from `hsph`. Use `⟨c, hc, fun y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Establish `hn : ‖y‖ ≠ 0` using `norm_ne_zero_iff.mpr hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu : ‖y‖⁻¹ • y ∈ Metric.sphere (0 : ι → ℝ) 1`. Simplify using `[norm_smul, hn]`. Use `hb _ hu` as an intermediate fact. Establish `e : (‖y‖⁻¹ • y) ⬝ᵥ (P *ᵥ (‖y‖⁻¹ • y)) = (‖y‖⁻¹) ^ 2 * (y ⬝ᵥ (P *ᵥ y))`. Rewrite using `[Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e]`. Establish `h2 : 0 < ‖y‖ ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem posDef_lower {P : Matrix ι ι ℝ} (hP : P.PosDef) :
     ∃ c : ℝ, 0 < c ∧ ∀ y : ι → ℝ, c * ‖y‖ ^ 2 ≤ y ⬝ᵥ (P *ᵥ y) := by
@@ -69,7 +69,7 @@ theorem posDef_lower {P : Matrix ι ι ℝ} (hP : P.PosDef) :
     _ = y ⬝ᵥ (P *ᵥ y) := by field_simp
 
 /- English proof (translation)
-Use `choose c hc hb using fun w => posDef_lower (hP w)`. Take `⟨w₀, hw₀⟩` from `Finite.exists_min c`. Use `⟨c w₀, hc w₀, fun w y => le_trans ?_ (hb w y)⟩` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (hw₀ w) (by positivity)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem posDef_lower_family {W : Type} [Finite W] [Nonempty W] (P : W → Matrix ι ι ℝ)
     (hP : ∀ w, (P w).PosDef) :
@@ -80,7 +80,7 @@ theorem posDef_lower_family {W : Type} [Finite W] [Nonempty W] (P : W → Matrix
   exact mul_le_mul_of_nonneg_right (hw₀ w) (by positivity)
 
 /- English proof (translation)
-Unfold `gauss`. Rewrite using `[Complex.norm_exp, Complex.re_sum, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[Complex.sub_re, Complex.mul_re, Complex.mul_im]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -96,7 +96,7 @@ theorem norm_gauss (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ))
   ring
 
 /- English proof (translation)
-Establish `hs : 0 ≤ ∑ w, ‖x w‖ ^ 2` using `Finset.sum_nonneg fun w _ => by positivity`. Establish `: ‖x‖ ≤ Real.sqrt (∑ w, ‖x w‖ ^ 2)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).mpr fun w => Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun w => ‖x w‖ ^ 2) (fun w _ => by positivity) (Finset.mem_univ w)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sq_norm_le_sum {W : Type} [Fintype W] (x : W → ι → ℝ) :
     ‖x‖ ^ 2 ≤ ∑ w, ‖x w‖ ^ 2 := by
@@ -108,9 +108,9 @@ theorem sq_norm_le_sum {W : Type} [Fintype W] (x : W → ι → ℝ) :
     _ = _ := Real.sq_sqrt hs
 
 /- English proof (translation)
-Rewrite using `[norm_gauss, Real.exp_le_exp, neg_le_neg_iff]`. Establish `h1 : t' * c * ∑ w, ‖x w‖ ^ 2 ≤ ∑ w, (τ w).im * (x w ⬝ᵥ (P w *ᵥ x w))`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : t' * c * ‖x‖ ^ 2 ≤ t' * c * ∑ w, ‖x w‖ ^ 2` using `mul_le_mul_of_nonneg_left (sq_norm_le_sum x) (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem gauss_bound (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ))
     (P : InfinitePlace F → Matrix ι ι ℝ) (τ : InfinitePlace F → ℂ) {c t' : ℝ} (hc : 0 < c)
@@ -130,7 +130,7 @@ theorem gauss_bound (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)
     _ ≤ _ := mul_le_mul_of_nonneg_left (h2.trans h1) Real.pi_pos.le
 
 /- English proof (translation)
-Unfold `wt`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem wt_bound (M : ℕ) (τ : InfinitePlace F → ℂ) {T : ℝ} (h0 : ∀ w, 0 ≤ (τ w).im)
     (hT : ∀ w, (τ w).im ≤ T) :
@@ -142,9 +142,9 @@ theorem wt_bound (M : ℕ) (τ : InfinitePlace F → ℂ) {T : ℝ} (h0 : ∀ w,
     _ = _ := by rw [Finset.prod_const, Finset.card_univ, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `hφ`. Take `⟨C, hC⟩` from `hcs.exists_bound_of_continuous hlc.continuous`. Establish `hK : IsCompact (⋃ i, (fun y : ι → A F => y i) '' tsupport φ)` using `isCompact_iUnion fun i => hcs.isCompact.image (continuous_apply i)`. Take `⟨N, hN, hb⟩` from `(GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.2.2.1 _ hK`. Use `⟨max C 0, le_max_right _ _, N, hN, fun y => (hC y).trans (le_max_left _ _), fun y hy i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hb _ (Set.mem_iUnion.mpr ⟨i, y, subset_tsupport _ hy, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem phi_bound {φ : (ι → A F) → ℂ} (hφ : SB φ) :
     ∃ C₀ : ℝ, 0 ≤ C₀ ∧ ∃ N : ℕ, 0 < N ∧
@@ -158,7 +158,7 @@ theorem phi_bound {φ : (ι → A F) → ℂ} (hφ : SB φ) :
   exact hb _ (Set.mem_iUnion.mpr ⟨i, y, subset_tsupport _ hy, rfl⟩)
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology (A F) := (GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.1`. Use `measurable_pi_iff.mpr fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.measurable_sum _ fun j _ => (h i j).mul_const _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_fin {Ω : Type} [MeasurableSpace Ω] [MeasurableSpace (A F)] [BorelSpace (A F)]
     {gf : Ω → Matrix ι ι (A F)} (h : ∀ i j, Measurable fun ω => gf ω i j) (x : ι → F) :
@@ -169,7 +169,7 @@ theorem measurable_fin {Ω : Type} [MeasurableSpace Ω] [MeasurableSpace (A F)] 
   exact Finset.measurable_sum _ fun j _ => (h i j).mul_const _
 
 /- English proof (translation)
-Use `measurable_pi_iff.mpr fun w => measurable_pi_iff.mpr fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.measurable_sum _ fun j _ => (h w i j).mul_const _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_inf {Ω : Type} [MeasurableSpace Ω] {gi : Ω → InfinitePlace F → Matrix ι ι ℝ}
     (h : ∀ w i j, Measurable fun ω => gi ω w i j) (ρ : InfinitePlace F → (F →+* ℝ)) (x : ι → F) :
@@ -179,7 +179,7 @@ theorem measurable_inf {Ω : Type} [MeasurableSpace Ω] {gi : Ω → InfinitePla
   exact Finset.measurable_sum _ fun j _ => (h w i j).mul_const _
 
 /- English proof (translation)
-Unfold `gauss`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_gauss (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ))
     (P : InfinitePlace F → Matrix ι ι ℝ) (τ : InfinitePlace F → ℂ) :
@@ -188,7 +188,7 @@ theorem continuous_gauss (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+*
   fun_prop
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology (A F) := (GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.1`. Unfold `thTerm`. Conclude with `(hφ.1.continuous.measurable.comp (measurable_fin hf x)).mul ((continuous_gauss B ρ P τ).measurable.comp (measurable_inf hi ρ x))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_term {Ω : Type} [MeasurableSpace Ω] [MeasurableSpace (A F)] [BorelSpace (A F)]
     (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ)
@@ -208,9 +208,9 @@ namespace GlobalTheory.CompanionTheory.SW.Core.ThetaBound
 variable {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Distinguish the cases in `hp : ∀ i, (N : A F) * (gf *ᵥ fun j => algebraMap F (A F) (x.1 j)) i ∈ Oh F`. Rewrite using `[Set.indicator_of_mem (by exact hp), ← ENNReal.ofReal_mul hC₀, ← ofReal_norm]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Unfold `thTerm`. Rewrite using `[norm_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (hb _) (gauss_bound B ρ P τ hc ht' hlow hτ _) (norm_nonneg _) hC₀`. Establish `h0 : φ (gf *ᵥ fun j => algebraMap F (A F) (x.1 j)) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hp (hs _ h)`. Simplify using `[thTerm, h0]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem term_le (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ))
     (P : InfinitePlace F → Matrix ι ι ℝ) (gf : Matrix ι ι (A F)) (gi : InfinitePlace F → Matrix ι ι ℝ)
@@ -235,9 +235,9 @@ theorem term_le (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ))
     simp [thTerm, h0]
 
 /- English proof (translation)
-Establish `hs : Real.sqrt (T / κ) = Real.sqrt T * Real.sqrt κ⁻¹`. Rewrite using `[div_eq_mul_inv, Real.sqrt_mul hT.le]`. Establish `hsT : 0 < Real.sqrt T ^ n` using `pow_pos (Real.sqrt_pos.mpr hT) n`. Establish `h1 : w * (Real.sqrt T ^ n)⁻¹ ≤ Real.sqrt κ⁻¹ ^ n`. Rewrite using `[← div_eq_mul_inv, div_le_iff₀ hsT, mul_comm (Real.sqrt κ⁻¹ ^ n), ← mul_pow, ← hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw`. Establish `h2 : 0 ≤ w * (Real.sqrt T ^ n)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem add_le_mul_pow_of_sq_le_of_le_mul {w T κ C₀ C' : ℝ} {n : ℕ} (hT : 0 < T) (hκ : 0 < κ) (hC₀ : 0 ≤ C₀) (hw0 : 0 ≤ w)
     (hw : w ≤ Real.sqrt (T / κ) ^ n) :
@@ -255,29 +255,25 @@ theorem add_le_mul_pow_of_sq_le_of_le_mul {w T κ C₀ C' : ℝ} {n : ℕ} (hT :
     _ ≤ _ := mul_le_mul_of_nonneg_left h1 (by positivity)
 
 /- English proof (translation)
-Introduce `F _ _ _ _ ι _ _ M B ρ P hQ Ω _ Pr gf gi hCD φ hφ κ t hκ ht`. Take `⟨htr, -, -, -, -, hP, -⟩` from `hQ`. Take `⟨-, hgi, hgf, -, hcnt⟩` from `hCD`. Use `haveI : SecondCountableTopology (A F) := (GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.1`. Use `haveI : Countable F := countable_field`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hOh : MeasurableSet (Oh F)` using `(GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.1.measurableSet`. Take `⟨C₀, hC₀, N, hN, hb, hs⟩` from `phi_bound hφ`. Take `⟨c, hc, hlow⟩` from `posDef_lower_family P hP`. Take `⟨Cc, hCc⟩` from `hcnt N hN`. Take `⟨C', hC'⟩` from `GlobalTheory.CompanionTheory.SW.Core.GaussianDyadic.gaussian_sum_of_counting (Module.finrank ℚ F * M) (Real.pi * c) t Cc (mul_pos Real.pi_pos hc) ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hC' {x : ι → F // x ≠ 0} Ω Pr (fun ω x => ‖(fun w => gi ω w *ᵥ fun j => ρ w (x.1 j) : InfinitePlace F → ι → ℝ)‖) (fun ω x => ∀ i, (N : A F) * (gf ω *ᵥ fun j => algebraMap F (A F) (x.1 j)) i ∈ Oh F) (fun x => continuous_norm.measurable.comp (measurable_inf hgi ρ x.1)) (fun x => by`. Establish `e : {ω | ∀ i, (N : A F) * (gf ω *ᵥ fun j => algebraMap F (A F) (x.1 j)) i ∈ Oh F} = ⋂ i, (fun ω => (N : A F) * (gf ω *ᵥ fun j => algebraMap F (A F) (x.1 j)) i) ⁻¹' Oh F`. Use extensionality with `ω`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `MeasurableSet.iInter fun i => ?_` and prove the remaining obligations. Conclude with `(((measurable_pi_apply i).comp (measurable_fin hgf x.1)).const_mul _) hOh)`. Use the proof step `(fun ω x => norm_nonneg _)`. Use the proof step `(fun R hR => by`. Use `le_trans (le_of_eq ?_) ((hCc R hR).trans (le_of_eq ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `lintegral_congr fun ω => ?_` and prove the remaining obligations. Unfold `cnt`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Establish `hiff : (x ∈ {x : {x : ι → F // x ≠ 0} | (∀ i, (N : A F) * (gf ω *ᵥ fun j => algebraMap F (A F) (x.1 j)) i ∈ Oh F) ∧ ‖(fun w => gi ω w *ᵥ fun j => ρ w (x.1 j) : InfinitePlace F → ι → ℝ)‖ ≤ R}) ↔ (x.1 ∈ {x : ι → F | (∀ i v, ((N : A F) * (gf ω *ᵥ fun j => algebraMap F (A F) (x j)) i …`. Simplify using `only [Set.mem_setOf_eq]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pi_norm_le_iff_of_nonneg hR.le]`. Both sides reduce to the same expression. Distinguish the cases in `h : x.1 ∈ {x : ι → F | (∀ i v, ((N : A F) * (gf ω *ᵥ fun j => algebraMap F (A F) (x j)) i) v ∈ v.adicCompletionIntegers F) ∧ ∀ w, ‖gi ω w *ᵥ fun j => ρ w (x j)‖ ≤ R}`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (hiff.mpr h)]`. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (hiff.mp h'))]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congr 3 ring_nf)`. Use `⟨C₀ * |C'| * Real.sqrt κ⁻¹ ^ (Module.finrank ℚ F * M), fun τ hτ hκτ => ?_⟩` and prove the remaining obligations. Use `⟨measurable_term B ρ P hgf hgi hφ τ, ?_⟩` and prove the remaining obligations. Take `⟨v₀, hv₀⟩` from `Finite.exists_min fun w => (τ w).im`. Establish `ht' : t ≤ (τ v₀).im` using `hτ v₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `ht'pos : 0 < (τ v₀).im` using `ht.trans_le ht'`. Establish `hk` using `key (τ v₀).im ht'`. Establish `hterm : ∫⁻ ω, ∑' x : {x : ι → F // x ≠ 0}, ‖thTerm B ρ P (gf ω) (gi ω) φ τ x.1‖ₑ ∂Pr ≤ ENNReal.ofReal C₀ * ENNReal.ofReal (C' * (Real.sqrt (τ v₀).im ^ (Module.finrank ℚ F * M))⁻¹)`. Use `le_trans ?_ (mul_le_mul_right hk _)` and prove the remaining obligations. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `lintegral_mono fun ω => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun x => ?_` and prove the remaining obligations. Use `(term_le B ρ P (gf ω) (gi ω) hC₀ hb hs τ hc ht'pos hlow hv₀ x).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw0 : 0 ≤ wt M τ`. Unfold `wt`. Conclude with `Finset.prod_nonneg fun w _ => by positivity`. Establish `hwb : wt M τ ≤ Real.sqrt ((τ v₀).im / κ) ^ (Module.finrank ℚ F * M)`. Rewrite using `[← card_places htr]`.
-
-Use `wt_bound M τ (fun w => (ht.trans_le (hτ w)).le) fun w => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀' hκ]`. Conclude with `hκτ v₀ w`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul hw0, ENNReal.ofReal_mul hC₀]`.
-
-Use `_ ≤ _ := ENNReal.ofReal_le_ofReal (add_le_mul_pow_of_sq_le_of_le_mul ht'pos hκ hC₀ hw0 hwb)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_integral_bound : ∀ (F : Type) [Field F] [NumberField F], ∀ [MeasurableSpace (A F)] [BorelSpace (A F)], ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (M : ℕ) (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ), QSetup M B ρ P → ∀ (Ω : Type) [MeasurableSpace Ω] (Pr : Measure Ω) (gf : Ω → Matrix ι ι (A F)) (gi : Ω → InfinitePlace F → Matrix ι ι ℝ), CountData M B ρ Pr gf gi → ∀ φ : (ι → A F) → ℂ, SB φ → ∀ κ t : ℝ, 0 < κ → 0 < t → ∃ C : ℝ, ∀ τ : InfinitePlace F → ℂ, (∀ w, t ≤ (τ w).im) → (∀ v w, κ * (τ w).im ≤ (τ v).im) → (∀ x, Measurable fun ω => thTerm B ρ P (gf ω) (gi ω) φ τ x) ∧ ENNReal.ofReal (wt M τ) * ∫⁻ ω, ∑' x : {x : ι → F // x ≠ 0}, ‖thTerm B ρ P (gf ω) (gi ω) φ τ x.1‖ₑ ∂Pr ≤ ENNReal.ofReal C := by
   intro F _ _ _ _ ι _ _ M B ρ P hQ Ω _ Pr gf gi hCD φ hφ κ t hκ ht

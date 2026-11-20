@@ -10,25 +10,25 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.WpFam
 
 /- English proof (translation)
-Introduce `K _ ι Λ₀ Λ₁ T a S hT ha hmul hS`. Establish `hιa : ι a ≠ 0` using `(map_ne_zero ι).mpr ha`. Take `⟨hS1, hS2, hS3⟩` from `hS`. Establish `hex : ∀ P ∈ S, ∃ k k' : K, ι k = P ∧ T k k'`. Introduce `P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, hb⟩` from `hT.rat₀ _ (hS1 P hP).1`. Take `⟨k', hk'⟩` from `hT.left (b / a)`. Use `⟨b / a, k', ?_, hk'⟩` and prove the remaining obligations. Rewrite using `[map_div₀, hb]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `choose! k k' hk hT' using hex`. Use `set φ : ℂ → ℂ := fun P => ι (k' P) with hφ`. Establish `himg : ∀ P ∈ S, ι a * φ P ∈ Λ₁.lattice ∧ φ P ∉ Λ₁.lattice`. Introduce `P hP`. Establish `h1` using `hT.mem_iff _ _ (hmul _ _ (hT' P hP))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hT.mem_iff _ _ (hT' P hP)`. Rewrite `h1` using `[map_mul, map_mul, hk P hP]`. Rewrite `h2` using `[hk P hP]`. Conclude with `⟨h1.mp (hS1 P hP).1, fun h => (hS1 P hP).2 (h2.mpr h)⟩`. Establish `hdiff : ∀ P ∈ S, ∀ Q ∈ S, φ P - φ Q ∈ Λ₁.lattice → P = Q`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `P hP Q hQ h`. Establish `h1` using `hT.mem_iff _ _ (hT.sub _ _ _ _ (hT' P hP) (hT' Q hQ))`. Rewrite `h1` using `[map_sub, map_sub, hk P hP, hk Q hQ]`. Conclude with `hS2 P hP Q hQ (h1.mpr h)`. Use `⟨φ, S.image φ, ⟨?_, ?_, ?_⟩, ⟨fun P hP => Finset.mem_coe.mpr (Finset.mem_image_of_mem φ hP), fun P hP Q hQ h => hdiff P hP Q hQ (by rw [h, sub_self]; exact zero_mem _), ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P' hP'`. Take `⟨P, hP, rfl⟩` from `Finset.mem_image.mp hP'`. Conclude with `himg P hP`. Introduce `P' hP' Q' hQ' h`. Take `⟨P, hP, rfl⟩` from `Finset.mem_image.mp hP'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ, rfl⟩` from `Finset.mem_image.mp hQ'`. Rewrite using `[hdiff P hP Q hQ h]`. Introduce `z hz hz'`. Take `⟨c, hc⟩` from `hT.rat₁ _ hz`. Establish `hzc : ι (c / a) = z` using `by rw [map_div₀, hc]; field_simp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, hm⟩` from `hT.right (c / a)`. Establish `h1` using `hT.mem_iff _ _ (hmul _ _ hm)`. Establish `h2` using `hT.mem_iff _ _ hm`. Rewrite `h1` using `[map_mul, map_mul, hzc]`. Rewrite `h2` using `[hzc]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨P, hP, hmP⟩` from `hS3 (ι m) (h1.mpr hz) (fun h => hz' (h2.mp h))`. Use `⟨φ P, Finset.mem_image_of_mem φ hP, ?_⟩` and prove the remaining obligations. Establish `h3` using `hT.mem_iff _ _ (hT.sub _ _ _ _ hm (hT' P hP))`. Rewrite `h3` using `[map_sub, map_sub, hk P hP, hzc]`. Conclude with `h3.mp hmP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `P' hP'`. Take `⟨P, hP, rfl⟩` from `Finset.mem_image.mp (Finset.mem_coe.mp hP')`. Conclude with `⟨P, hP, rfl⟩`. Introduce `P hP`. Conclude with `⟨k P, k' P, hk P hP, rfl, hT' P hP⟩`.
+A detailed English derivation is pending.
 -/
 theorem kerReps_transport : ∀ (K : Type) [Field K] (ι : K →+* ℂ) (Λ₀ Λ₁ : PeriodPair) (T : K → K → Prop) (a : K) (S : Finset ℂ), IsTr ι Λ₀ Λ₁ T → a ≠ 0 → (∀ x x', T x x' → T (a * x) (a * x')) → IsKerReps Λ₀ (ι a) S → ∃ (φ : ℂ → ℂ) (S' : Finset ℂ), IsKerReps Λ₁ (ι a) S' ∧ Set.BijOn φ S S' ∧ ∀ P ∈ S, ∃ k k' : K, ι k = P ∧ ι k' = φ P ∧ T k k' := by
   intro K _ ι Λ₀ Λ₁ T a S hT ha hmul hS

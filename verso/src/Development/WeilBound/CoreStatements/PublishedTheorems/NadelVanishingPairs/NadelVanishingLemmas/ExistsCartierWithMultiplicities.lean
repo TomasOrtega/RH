@@ -11,17 +11,17 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.LogPair
 
 /- English proof (translation)
-Use `haveI := hufd v`. Use `haveI : Ring.KrullDimLE 1 (X.presheaf.stalk v) := krullDimLE_of_coheight_le hv.le`. Distinguish the cases in `hF : IsField (X.presheaf.stalk v)`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := X.presheaf.stalk v) h`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b', hbb'⟩` from `hF.mul_inv_cancel hb0`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← hab, map_zero, zero_div]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a', haa'⟩` from `hF.mul_inv_cancel ha0`. Use `⟨a * b', ?_, ?_⟩` and prove the remaining obligations. Use `isUnit_iff_exists_inv.mpr ⟨a' * b, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hab, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: algebraMap (X.presheaf.stalk v) X.functionField b * algebraMap (X.presheaf.stalk v) X.functionField b' = 1`. Rewrite using `[← map_mul, hbb', map_one]`. Rewrite using `[eq_div_iff (fun h' => hb0 (IsFractionRing.injective (X.presheaf.stalk v) X.functionField (by rw [h', map_zero]))), mul_assoc, mul_comm _ (algebraMap _ _ b), this, mul_one]`. Use `haveI : IsDiscreteValuationRing (X.presheaf.stalk v) := by`. Establish `hmax : ∀ I : Ideal (X.presheaf.stalk v), I ≠ ⊥ → I.IsPrime → I.IsMaximal` using `Ring.krullDimLE_one_iff_of_isPrime_bot.mp inferInstance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : IsLocalRing.maximalIdeal (X.presheaf.stalk v) ≠ ⊥` using `IsLocalRing.isField_iff_maximalIdeal_eq.not.mp hF`. Establish `key` using `(IsDiscreteValuationRing.TFAE (X.presheaf.stalk v) hF).out 3 0`. Conclude with `key.mp ⟨inferInstance, ⟨IsLocalRing.maximalIdeal _, ⟨hne, inferInstance⟩, fun P hP => IsLocalRing.eq_maximalIdeal (hmax P hP.1 hP.2)⟩⟩`. Establish `h1 : Scheme.ordHom v hv h = 1`. Use `(Scheme.ord_eq_iff hv h0 (n := 0)).mp hord` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `using this`. Establish `hmem : h ∈ MonoidHom.mker (Ring.ordFrac (X.presheaf.stalk v) (K` using `X.functionField)) := MonoidHom.mem_mker.mpr h1`. Rewrite `hmem` using `[Ring.mker_ordFrac_eq_isUnitSubmonoid]`. Take `⟨a, ha, rfl⟩` from `hmem`. Conclude with `⟨a, ha, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem unitAt_of_ord_eq_zero_coheight_one {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hufd : ∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) {v : X}
@@ -65,7 +65,7 @@ private theorem unitAt_of_ord_eq_zero_coheight_one {X : Scheme.{0}} [IsIntegral 
     obtain ⟨a, ha, rfl⟩ := hmem
     exact ⟨a, ha, rfl⟩
 /- English proof (translation)
-Establish `h` using `Scheme.ord_mul (x := v) (one_ne_zero : (1 : X.functionField) ≠ 0) one_ne_zero`. Rewrite `h` using `[mul_one]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem Scheme_ord_one {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] (v : X) :
     Scheme.ord (1 : X.functionField) v = 0 := by
@@ -74,7 +74,7 @@ private theorem Scheme_ord_one {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoether
   omega
 
 /- English proof (translation)
-Set `φ : (X.functionField)ˣ →* Multiplicative ℤ` to `{ toFun := fun a => Multiplicative.ofAdd (Scheme.ord (a : X.functionField) v) map_one' := by simp [Scheme_ord_one] map_mul' := fun a b => by`. Rewrite using `[Units.val_mul, Scheme.ord_mul a.ne_zero b.ne_zero, ofAdd_add] }`. Establish `h` using `map_zpow φ g n`. Establish `h2` using `congrArg Multiplicative.toAdd h`. Simplify `h2` using `[φ, toAdd_zpow, smul_eq_mul]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem Scheme_ord_units_zpow {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (g : (X.functionField)ˣ) (n : ℤ) (v : X) :
@@ -90,7 +90,7 @@ private theorem Scheme_ord_units_zpow {X : Scheme.{0}} [IsIntegral X] [IsLocally
   simpa [φ, toAdd_zpow, smul_eq_mul] using h2
 
 /- English proof (translation)
-Establish `h` using `Scheme.ord_mul (x := v) g.ne_zero (g⁻¹).ne_zero`. Rewrite `h` using `[Units.mul_inv, Scheme_ord_one]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem Scheme_ord_units_inv {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (g : (X.functionField)ˣ) (v : X) :
@@ -101,11 +101,9 @@ private theorem Scheme_ord_units_inv {X : Scheme.{0}} [IsIntegral X] [IsLocallyN
   omega
 
 /- English proof (translation)
-Use `haveI : GlobalTheory.IsNormalScheme X := ⟨fun x => inferInstance, fun x => by haveI := hufd x; infer_instance⟩`. Establish `key : ∀ g : (X.functionField)ˣ, (∀ v ∈ U, Scheme.ord (g : X.functionField) v = 0) → RegAt y (g : X.functionField)`. Introduce `g hg`. Apply `regAt_of_forall_coheight_eq_one` to reduce the goal to its premises. Introduce `z hz hz1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(unitAt_of_ord_eq_zero_coheight_one hufd hz1 g.ne_zero (hg z (hz.mem_open U.isOpen hy))).regAt`. Take `⟨a, ha⟩` from `key h hord`. Take `⟨b, hb⟩` from `key h⁻¹ (fun v hv => by rw [Scheme_ord_units_inv, hord v hv, neg_zero])`. Use `⟨a, ?_, ha⟩` and prove the remaining obligations. Establish `hab : algebraMap (X.presheaf.stalk y) X.functionField (a * b) = algebraMap (X.presheaf.stalk y) X.functionField 1`.
-
-Rewrite using `[map_mul, ha, hb, map_one, Units.mul_inv]`. Conclude with `isUnit_iff_exists_inv.mpr ⟨b, IsFractionRing.injective _ _ hab⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unitAt_of_ord_eq_zero_on_open {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hufd : ∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) {y : X} (U : X.Opens)
@@ -128,9 +126,9 @@ private theorem unitAt_of_ord_eq_zero_on_open {X : Scheme.{0}} [IsIntegral X] [I
   exact isUnit_iff_exists_inv.mpr ⟨b, IsFractionRing.injective _ _ hab⟩
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨⊤, trivial, 1, fun v _ => by simp [Scheme_ord_one]⟩`. Consider the case `insert z S hzS ih`. Take `⟨U1, hx1, f1, hf1⟩` from `ih (fun w hw => hS w (Finset.mem_insert_of_mem hw))`. Take `⟨U2, hx2, π, hπ⟩` from `PrimeDivCartier.exists_local_eqn X hufd z (hS z (Finset.mem_insert_self z S)) x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨U1 ⊓ U2, ⟨hx1, hx2⟩, f1 * π ^ (c z), fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hzS, Units.val_mul, Scheme.ord_mul f1.ne_zero (π ^ c z).ne_zero, Scheme_ord_units_zpow, hf1 v hv.1, hπ v hv.2]`. Apply the tactic sequence `split_ifs <;> simp [add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem exists_local_unit_ord_eq_finite_sum {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     [DecidableEq X] (hufd : ∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) (c : X → ℤ)
@@ -149,15 +147,13 @@ private theorem exists_local_unit_ord_eq_finite_sum {X : Scheme.{0}} [IsIntegral
     split_ifs <;> simp [add_comm]
 
 /- English proof (translation)
-Introduce `X _ _ hufd c hfin hc`. Establish `hS : ∀ z ∈ hfin.toFinset, Order.coheight z = 1` using `fun z hz => hc z (hfin.mem_toFinset.mp hz)`. Establish `hsum : ∀ v, (∑ z ∈ hfin.toFinset, if v = z then c z else 0) = c v`. Introduce `v`. Rewrite using `[Finset.sum_ite_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hv`. Both sides reduce to the same expression. Establish `: c v = 0`. Assume the negation of the conclusion as `h'`. Conclude with `hv (hfin.mem_toFinset.mpr h')`.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this.symm`. Use `choose U hxU f hf using fun x => exists_local_unit_ord_eq_finite_sum hufd c hfin.toFinset hS x`. Establish `hmem : (fun x => germOf x (f x)) ∈ cartierGroup X`. Introduce `x`. Use `⟨U x, hxU x, f x, fun y hy => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[germOf_eq_iff]`. Establish `hu` using `unitAt_of_ord_eq_zero_on_open hufd (U x ⊓ U y) ⟨hy, hxU y⟩ (f x * (f y)⁻¹) (fun v hv => by`. Rewrite using `[Units.val_mul, Scheme.ord_mul (f x).ne_zero ((f y)⁻¹).ne_zero, Scheme_ord_units_inv, hf x v hv.1, hf y v hv.2, add_neg_cancel])`. Simplify `hu` using `[div_eq_mul_inv]`. Set `D : CartierDiv X` to `(⟨fun x => germOf x (f x), hmem⟩ : cartierGroup X)`.
-
-Use `⟨D, fun z => ?_⟩` and prove the remaining obligations. Establish `he : D.IsEqn z (f z)` using `rfl`. Rewrite using `[he.mult_eq, hf z z (hxU z), hsum]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Cartier.CartierDiv.exists_mult_eq_of_locallyFactorial :
     ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X],

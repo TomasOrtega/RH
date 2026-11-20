@@ -7,9 +7,9 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[eval₂_eq, eval₂_eq, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ d.support, d i = n`. Establish `h` using `hf (mem_support_iff.1 hd)`. Simplify `h` using `[Finsupp.weight_apply, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Finset.prod_congr rfl (fun i _ => mul_pow (y i) t (d i)), Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval₂_mul_const_of_isHomogeneous {σ R S : Type*} [CommSemiring R] [CommSemiring S]
     (g : R →+* S) (y : σ → S) (t : S) {f : MvPolynomial σ R} {n : ℕ} (hf : f.IsHomogeneous n) :
@@ -26,9 +26,9 @@ theorem eval₂_mul_const_of_isHomogeneous {σ R S : Type*} [CommSemiring R] [Co
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `d hd`. Establish `h` using `hf d (mem_support_iff.2 hd)`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [Pi.one_apply, smul_eq_mul, mul_one]`. Rewrite using `[Fintype.sum_sigma]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => h k`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_of_isMultiHomog {f : MvPolynomial (Σ k, ι k) ℂ} {a : K → ℕ}
     (hf : IsMultiHomog f a) : f.IsHomogeneous (∑ k, a k) := by
@@ -40,7 +40,7 @@ theorem isHomogeneous_of_isMultiHomog {f : MvPolynomial (Σ k, ι k) ℂ} {a : K
   exact Finset.sum_congr rfl fun k _ => h k
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ k)]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hj)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_update_eq {M : Type*} [CommMonoid M] [DecidableEq K] (x : (Σ k, ι k) → M)
     (p : (k : K) → ι k) (k : K) (v : ι k) :
@@ -52,9 +52,9 @@ theorem prod_update_eq {M : Type*} [CommMonoid M] [DecidableEq K] (x : (Σ k, ι
     rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]
 
 /- English proof (translation)
-Repeatedly rewrite using `[prod_update_eq x p]`. Rewrite using `[Finset.prod_mul_distrib, mul_assoc]`. Use `congr 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Rewrite using `[Finset.prod_congr rfl fun k _ => Finset.prod_erase_mul Finset.univ (fun j => x ⟨j, p j⟩) (Finset.mem_univ k)]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_const, Finset.card_univ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_prod_update {M : Type*} [CommMonoid M] [DecidableEq K] (x : (Σ k, ι k) → M)
     (p p' : (k : K) → ι k) :
@@ -69,14 +69,14 @@ theorem prod_prod_update {M : Type*} [CommMonoid M] [DecidableEq K] (x : (Σ k, 
   rw [Finset.prod_const, Finset.card_univ]
 
 /- English proof (translation)
-Simplify using `[segreMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem segreMap_X (p : (k : K) → ι k) :
     segreMap (X p : MvPolynomial ((k : K) → ι k) ℂ) = ∏ k, X ⟨k, p k⟩ := by
   simp [segreMap]
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq, segreIdeal, Ideal.mem_comap, map_sub, h, sub_self]`. Conclude with `P.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_eq_of_segreMap_eq (P : Ideal (MvPolynomial (Σ k, ι k) ℂ))
     {φ ψ : MvPolynomial ((k : K) → ι k) ℂ} (h : segreMap φ = segreMap ψ) :
@@ -85,7 +85,7 @@ theorem mk_eq_of_segreMap_eq (P : Ideal (MvPolynomial (Σ k, ι k) ℂ))
   exact P.zero_mem
 
 /- English proof (translation)
-Simplify using `only [segreW, ← map_prod, ← map_mul, ← map_pow]`. Apply `mk_eq_of_segreMap_eq` to reduce the goal to its premises. Simplify using `only [map_mul, map_prod, map_pow, segreMap_X]`. Conclude with `prod_prod_update (X : (Σ k, ι k) → MvPolynomial (Σ k, ι k) ℂ) p p'`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem segreW_prod_update [DecidableEq K] (P : Ideal (MvPolynomial (Σ k, ι k) ℂ))
     (p p' : (k : K) → ι k) :
@@ -97,7 +97,7 @@ theorem segreW_prod_update [DecidableEq K] (P : Ideal (MvPolynomial (Σ k, ι k)
   exact prod_prod_update (X : (Σ k, ι k) → MvPolynomial (Σ k, ι k) ℂ) p p'
 
 /- English proof (translation)
-Take `⟨k, v⟩` from `q`. Simplify using `only [segreW, ← map_mul]`. Apply `mk_eq_of_segreMap_eq` to reduce the goal to its premises. Simplify using `only [map_mul, segreMap_X]`. Rewrite using `[prod_update_eq X p k v, prod_update_eq X p' k (p k), prod_update_eq X p' k v, ← Finset.mul_prod_erase Finset.univ (fun j => (X ⟨j, p j⟩ : MvPolynomial (Σ k, ι k) ℂ)) (Finset.mem_univ k)]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -115,15 +115,15 @@ theorem segreW_exchange [DecidableEq K] (P : Ideal (MvPolynomial (Σ k, ι k) �
   ring
 
 /- English proof (translation)
-Establish `h1 : segreMap (aeval (fun q : Σ k, ι k => (X (Function.update p q.1 q.2) : MvPolynomial ((k : K) → ι k) ℂ)) f) = aeval (fun q : Σ k, ι k => segreMap (X (Function.update p q.1 q.2) : MvPolynomial ((k : K) → ι k) ℂ)) f`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Establish `hY : (fun q : Σ k, ι k => segreMap (X (Function.update p q.1 q.2) : MvPolynomial ((k : K) → ι k) ℂ)) = fun q => X q * ∏ j ∈ Finset.univ.erase q.1, (X ⟨j, p j⟩ : MvPolynomial (Σ k, ι k) ℂ)`. Use function extensionality and compare the values at `q`. Rewrite using `[segreMap_X, prod_update_eq X p q.1 q.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hY]`. Establish `key : ∀ m ∈ f.support, aeval (fun q : Σ k, ι k => X q * ∏ j ∈ Finset.univ.erase q.1, (X ⟨j, p j⟩ : MvPolynomial (Σ k, ι k) ℂ)) (monomial m (f.coeff m)) = (∏ k, (∏ j ∈ Finset.univ.erase k, (X ⟨j, p j⟩ : MvPolynomial (Σ k, ι k) ℂ)) ^ a k) * monomial m (f.coeff m)`. Introduce `m hm`. Establish `hdeg` using `hf m hm`. Rewrite using `[aeval_monomial, monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _), MvPolynomial.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[mul_pow]`. Rewrite using `[Finset.prod_mul_distrib]`. Establish `hc : ∏ q : (Σ k, ι k), (∏ j ∈ Finset.univ.erase q.1, (X ⟨j, p j⟩ : MvPolynomial (Σ k, ι k) ℂ)) ^ m q = ∏ k, (∏ j ∈ Finset.univ.erase k, (X ⟨j, p j⟩ : MvPolynomial (Σ k, ι k) ℂ)) ^ a k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hdeg k]`. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Use `conv_lhs => rw [f.as_sum]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segreMap_aeval_update [DecidableEq K] (p : (k : K) → ι k) {f : MvPolynomial (Σ k, ι k) ℂ}
     {a : K → ℕ} (hf : IsMultiHomog f a) :
@@ -173,7 +173,7 @@ abbrev invW (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → ι k) :
   Localization.mk 1 ⟨segreW P p, 1, pow_one _⟩
 
 /- English proof (translation)
-Rewrite using `[invW, Localization.mk_mul, mul_one, one_mul]`. Conclude with `Localization.mk_self (⟨segreW P p, 1, pow_one _⟩ : Submonoid.powers (segreW P p))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_one_mul_invW (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → ι k) :
     Localization.mk (segreW P p) 1 * invW P p = 1 := by
@@ -181,7 +181,7 @@ theorem mk_one_mul_invW (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K)
   exact Localization.mk_self (⟨segreW P p, 1, pow_one _⟩ : Submonoid.powers (segreW P p))
 
 /- English proof (translation)
-Rewrite using `[invW, Localization.mk_pow, Localization.mk_mul, one_pow, mul_one, one_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem mk_pow_eq_mul_invW (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → ι k)
     (a : MvPolynomial ((k : K) → ι k) ℂ ⧸ segreIdeal P) (n : ℕ) (h : segreW P p ^ n ∈ Submonoid.powers (segreW P p)) :
@@ -191,7 +191,7 @@ theorem mk_pow_eq_mul_invW (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k :
   congr 1
 
 /- English proof (translation)
-Simplify using `only [Localization.mk_one_eq_algebraMap]`. Establish `h` using `MvPolynomial.eval₂_comp_left ((algebraMap (MvPolynomial τ ℂ ⧸ I) (Localization M)).comp (Ideal.Quotient.mk I)) (algebraMap ℂ (MvPolynomial τ ℂ)) Y f`. Rewrite `h` using `[RingHom.comp_apply]`. Rewrite using `[aeval_def, h]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem eval₂_mk_one {τ : Type} (I : Ideal (MvPolynomial τ ℂ)) (M : Submonoid (MvPolynomial τ ℂ ⧸ I))
     {σ : Type} (Y : σ → MvPolynomial τ ℂ) (f : MvPolynomial σ ℂ) :
@@ -206,7 +206,7 @@ theorem eval₂_mk_one {τ : Type} (I : Ideal (MvPolynomial τ ℂ)) (M : Submon
   congr 1
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_pow_inv_eq {R : Type*} [CommRing R] (Q W W' t : R) (c : ℕ) (E : Q * W = W' * W ^ c)
     (ht : W * t = 1) : Q * t ^ c = W' * t := by
@@ -218,11 +218,11 @@ theorem mul_pow_inv_eq {R : Type*} [CommRing R] (Q W W' t : R) (c : ℕ) (E : Q 
 variable [Nonempty K]
 
 /- English proof (translation)
-Use `letI := segreGraded hP`. Introduce and unpack `⟨x, hx⟩`. Take `⟨q, hq, rfl⟩` from `Submodule.mem_map.1 hx`. Establish `hq' : q.IsHomogeneous 0` using `(mem_homogeneousSubmodule 0 q).1 hq`. Use `⟨q.coeff 0, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[SetLike.GradeZero.coe_algebraMap]`. Distinguish the cases in `h0 : q = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hC : q = C (q.coeff 0)` using `totalDegree_eq_zero_iff_eq_C.1 (hq'.totalDegree h0) show _ = (Ideal.Quotient.mkₐ ℂ (segreIdeal P)) q nth_rewrite 2 [hC]`. Conclude with `((Ideal.Quotient.mkₐ ℂ _).commutes (q.coeff 0)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem segreGrading_algebraMap_surjective {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P) :
     letI := segreGraded hP
@@ -243,9 +243,7 @@ theorem segreGrading_algebraMap_surjective {P : Ideal (MvPolynomial (Σ k, ι k)
     exact ((Ideal.Quotient.mkₐ ℂ _).commutes (q.coeff 0)).symm
 
 /- English proof (translation)
-Use `letI := segreGraded hP`. Use `haveI : Algebra.FiniteType ℂ (MvPolynomial ((k : K) → ι k) ℂ ⧸ segreIdeal P) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℂ (segreIdeal P)) (Ideal.Quotient.mkₐ_surjective ℂ _)`. Use `haveI : IsScalarTower ℂ (segreGrading P 0) (MvPolynomial ((k : K) → ι k) ℂ ⧸ segreIdeal P) := IsScalarTower.of_algebraMap_eq fun c => by`. Rewrite using `[← SetLike.GradeZero.coe_algebraMap (segreGrading P) c]`. Both sides reduce to the same expression.
-
-Conclude with `Algebra.FiniteType.of_restrictScalars_finiteType ℂ (segreGrading P 0) _`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem segreRing_finiteType {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P) :
     letI := segreGraded hP
@@ -267,11 +265,11 @@ open AlgebraicGeometry CategoryTheory HomogeneousLocalization
 variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (𝒜 : ℕ → Submodule R A) [GradedAlgebra 𝒜]
 
 /- English proof (translation)
-Establish `hg : Proj.basicOpenToSpec 𝒜 f ≫ Proj.awayι 𝒜 f f_deg hm = (Proj.basicOpen 𝒜 f).ι` using `by show (Proj.basicOpenIsoSpec 𝒜 f f_deg hm).hom ≫ ((Proj.basicOpenIsoSpec 𝒜 f f_deg hm).inv ≫ (Proj.basicOpen 𝒜 f).ι) = _`. Rewrite using `[Iso.hom_inv_id_assoc]`. Establish `hB : (Proj.basicOpen 𝒜 f).ι ≫ Proj.toSpecZero 𝒜 = Proj.basicOpenToSpec 𝒜 f ≫ Spec.map (CommRingCat.ofHom (fromZeroRingHom 𝒜 (Submonoid.powers f)))`. Rewrite using `[← Proj.awayι_toSpecZero 𝒜 f f_deg hm, ← Category.assoc, hg]`. Establish `h1 : (Proj.toSpecZero 𝒜).appLE ⊤ (Proj.basicOpen 𝒜 f) le_top ≫ (Proj.basicOpen 𝒜 f).topIso.inv = (Proj.toSpecZero 𝒜).appTop ≫ (Proj.basicOpen 𝒜 f).ι.appTop`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Opens.topIso_inv]`. Use `erw [Scheme.Hom.appLE_map]`. Establish `h2 : (Proj.toSpecZero 𝒜).appLE ⊤ (Proj.basicOpen 𝒜 f) le_top ≫ (Proj.basicOpen 𝒜 f).topIso.inv = ((Scheme.ΓSpecIso (CommRingCat.of (𝒜 0))).hom ≫ CommRingCat.ofHom (fromZeroRingHom 𝒜 (Submonoid.powers f)) ≫ Proj.awayToSection 𝒜 f) ≫ (Proj.basicOpen 𝒜 f).topIso.inv`. Rewrite using `[h1, ← Scheme.Hom.comp_appTop, hB, Scheme.Hom.comp_appTop]`. Establish `hA : Scheme.Hom.appTop (Proj.basicOpenToSpec 𝒜 f) = (Scheme.ΓSpecIso (CommRingCat.of (HomogeneousLocalization.Away 𝒜 f))).hom ≫ Proj.awayToSection 𝒜 f ≫ (Proj.basicOpen 𝒜 f).topIso.inv` using `Proj.basicOpenToSpec_app_top 𝒜 f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA]`. Rewrite using `[← Category.assoc, Scheme.ΓSpecIso_naturality]`. Simplify using `only [Category.assoc]`. Establish `h3` using `(cancel_mono (Proj.basicOpen 𝒜 f).topIso.inv).1 h2`. Rewrite using `[h3, Iso.inv_hom_id_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toSpecZero_appLE_basicOpen {f : A} {m : ℕ} (f_deg : f ∈ 𝒜 m) (hm : 0 < m) :
     (Scheme.ΓSpecIso (CommRingCat.of (𝒜 0))).inv ≫ (Proj.toSpecZero 𝒜).appLE ⊤ (Proj.basicOpen 𝒜 f) le_top =

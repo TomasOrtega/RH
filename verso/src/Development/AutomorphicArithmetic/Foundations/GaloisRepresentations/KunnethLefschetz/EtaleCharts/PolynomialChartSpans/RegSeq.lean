@@ -6,13 +6,13 @@ noncomputable section
 namespace UpperTheory.Gal.KunnethLefschetz.G
 
 /- English proof (translation)
-Establish `h0 : MvPolynomial.coeff 0 (p l) = 0`. Establish `h1` using `congrArg (MvPolynomial.coeff (Finsupp.single l 1)) h`. Rewrite `h1` using `[MvPolynomial.coeff_sum, MvPolynomial.coeff_zero, Finset.sum_eq_single l]`. Simplify `h1` using `[MvPolynomial.coeff_X_mul']`. Introduce `m _ hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MvPolynomial.coeff_X_mul']`. Simplify using `[Finsupp.single_apply, hm.symm, hm]`. Simplify using the standard rewrite rules. Establish `hs : (Set.range fun m : Fin d => (MvPolynomial.X m : MvPolynomial (Fin d) A)) = MvPolynomial.X '' (Set.univ : Set (Fin d))`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[hs, MvPolynomial.mem_ideal_span_X_image]`. Introduce `m hm`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: m = 0`. Use extensionality with `i`. Simplify using `using hne i (Set.mem_univ i)`. Substitute `this` using the available equality. Conclude with `(MvPolynomial.mem_support_iff.mp hm) h0`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private lemma mem_span_X_of_sum_eq_zero {A : Type} [CommRing A] {d : ℕ} (p : Fin d → MvPolynomial (Fin d) A)
     (h : ∑ m, MvPolynomial.X m * p m = 0) (l : Fin d) :
@@ -39,17 +39,15 @@ private lemma mem_span_X_of_sum_eq_zero {A : Type} [CommRing A] {d : ℕ} (p : F
   exact (MvPolynomial.mem_support_iff.mp hm) h0
 
 /- English proof (translation)
-Take `rfl : v = fun l => algebraMap (MvPolynomial (Fin d) A) C (MvPolynomial.X l)` from `funext hv`. Choose the witnesses or unpack the hypotheses as in `⟨b, hbI, hb⟩ : ∃ b : Fin d → C, (∀ l, b l ∈ Ideal.span (Set.range fun l => algebraMap (MvPolynomial (Fin d) A) C (MvPolynomial.X l))) ∧ ∑ l, b l * algebraMap (MvPolynomial (Fin d) A) C (MvPolynomial.X l) = ∑ l, a l * algebraMap (MvPolynomial (Fin d) A) C (MvPolynomial.X l) := by`. Express the relevant statement in the definitionally equal form `_ ∈ _ • Submodule.span C _ at ha`. Rewrite `ha` using `[Submodule.mem_ideal_smul_span_iff_exists_sum]`. Take `⟨β, hβ, hsum⟩` from `ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨β, hβ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsum, Finsupp.sum_fintype]`. Simplify using `[smul_eq_mul]`. Simplify using the standard rewrite rules. Establish `hmem : ∀ r ∈ Ideal.span (Set.range fun m : Fin d => (MvPolynomial.X m : MvPolynomial (Fin d) A)), algebraMap (MvPolynomial (Fin d) A) C r ∈ Ideal.span (Set.range fun l => algebraMap (MvPolynomial (Fin d) A) C (MvPolynomial.X l))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `r hr`. Establish `hm` using `Ideal.mem_map_of_mem (algebraMap (MvPolynomial (Fin d) A) C) hr`. Rewrite `hm` using `[Ideal.map_span, ← Set.range_comp]`. Conclude with `hm`. Establish `hc : ∑ l, (MvPolynomial.X l : MvPolynomial (Fin d) A) • (a l - b l) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Algebra.smul_def, mul_sub, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_zero]`. Simplify using `only [mul_comm (algebraMap (MvPolynomial (Fin d) A) C _)]`. Conclude with `hb.symm`. Take `⟨k, α, y, hxy, hrel⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (R := MvPolynomial (Fin d) A) (M := C) (f := fun l => MvPolynomial.X l) (x := fun l => a l - b l) hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcl : a l - b l ∈ Ideal.span (Set.range fun l => algebraMap (MvPolynomial (Fin d) A) C (MvPolynomial.X l))`. Rewrite using `[show a l - b l = _ from hxy l]`. Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_right _ _ (hmem _ (mem_span_X_of_sum_eq_zero (fun m => α m j) (hrel j) l))`.
-
-Simplify using `using Ideal.add_mem _ hcl (hbI l)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma main {A C : Type} [CommRing A] [CommRing C] {d : ℕ} [Algebra (MvPolynomial (Fin d) A) C]
     [Module.Flat (MvPolynomial (Fin d) A) C] (v : Fin d → C)
@@ -95,7 +93,7 @@ private lemma main {A C : Type} [CommRing A] [CommRing C] {d : ℕ} [Algebra (Mv
   simpa using Ideal.add_mem _ hcl (hbI l)
 
 /- English proof (translation)
-Introduce `A C _ _ d φ hφ a ha l`. Use `letI := φ.toAlgebra`. Use `haveI : Module.Flat (MvPolynomial (Fin d) A) C := hφ`. Rewrite `ha` using `[pow_two]`. Conclude with `main (A := A) (fun l => φ (MvPolynomial.X l)) (fun _ => rfl) a ha l`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regSeq : RegSeq := by
   intro A C _ _ d φ hφ a ha l

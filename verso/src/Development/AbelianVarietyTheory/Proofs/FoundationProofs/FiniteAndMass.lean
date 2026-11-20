@@ -16,13 +16,13 @@ open Formalism.BasicNotions Formalism.MainNotions.StandardLattice Formalism.Main
 open scoped TensorProduct Matrix
 
 /- English proof (translation)
-Use `haveI := h.1`. Take `⟨n, ⟨φ⟩⟩` from `Finite.exists_equiv_fin (Formalism.UG.ClassSet Γ K)`. Establish `e : ∀ g, Unfold.stab Γ K g = Formalism.UG.stabAt Γ K g` using `fun g => by`. Use extensionality with `γ`. Simplify using `only [Unfold.stab, Formalism.UG.stabAt, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, fun i => (φ.symm i).out, fun x => ?_, fun i j γ γ' k k' e => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, e⟩` from `(DoubleCoset.eq Γ K _ x).1 (DoubleCoset.out_eq' Γ K (DoubleCoset.mk Γ K x))`. Use `⟨φ (DoubleCoset.mk Γ K x), ⟨γ, hγ⟩, ⟨k, hk⟩, ?_⟩` and prove the remaining obligations. Conclude with `e.trans (congrArg (fun c : Formalism.UG.ClassSet Γ K => γ * c.out * k) (φ.symm_apply_apply _).symm)`. Apply `φ.symm.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← DoubleCoset.out_eq' _ _ (φ.symm i), ← DoubleCoset.out_eq' _ _ (φ.symm j)]`. Use `(DoubleCoset.eq _ _ _ _).2 ⟨(γ'⁻¹ * γ : Γ), (γ'⁻¹ * γ).2, (k * k'⁻¹ : K), (k * k'⁻¹).2, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, mul_assoc, mul_assoc, ← mul_assoc (γ : G), ← mul_assoc, ← mul_assoc, mul_assoc _ _ (k : G), e]`. Simplify using `[mul_assoc]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h.2 _`. Rewrite using `[classMass_eq_sum_of_bijective (fun i => (φ.symm i).out)]`. Simplify using `only [e]`. Simplify using `only [DoubleCoset.out_eq']`. Conclude with `φ.symm.bijective`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_reps {G : Type} [Group G] {Γ K : Subgroup G} (h : FiniteClasses Γ K) :
     ∃ (n : ℕ) (g : Fin n → G), (∀ x : G, ∃ i, ∃ γ : Γ, ∃ k : K, x = (γ : G) * g i * k) ∧
@@ -56,9 +56,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
 
 /- English proof (translation)
-Use extensionality with `g`. Establish `h1 : g ∈ ((((Formalism.UG.levelAfL σ J Λ).subgroupOf (Formalism.UG.UPts σ J (Af F))).comap (swapPts (Af F) σ J : HA (Af F) σ J →* Formalism.UG.UPts σ J (Af F))).comap π) ↔ (swapPts (Af F) σ J (π g) : GL (Fin M) (E ⊗[F] Af F)) ∈ Formalism.UG.stabGL (Formalism.L2.Herm.hatL (F` using `F) Λ) := ⟨fun h => h.2, fun h => ⟨(swapPts (Af F) σ J (π g)).2, h⟩⟩`. Rewrite using `[h1, coe_swapPts, hπ g]`. Establish `h2 : ∀ y : Fin M → Af F ⊗[F] E, (fun i => GlobalTheory.LevSplit.swp F E ((finMat σ J g *ᵥ y) i)) = (finMat σ J g).map (GlobalTheory.LevSplit.swp F E) *ᵥ fun i => GlobalTheory.LevSplit.swp F E (y i)` using `fun y => funext fun i => RingHom.map_mulVec _ _ _ i`. Express the relevant statement in the definitionally equal form `(∀ y, y ∈ latHat F E (Λ : Set (Fin M → E)) ↔ finMat σ J g *ᵥ y ∈ latHat F E (Λ : Set (Fin M → E))) ↔ ∀ x, x ∈ Formalism.L2.Herm.hatL (F := F) Λ ↔ (finMat σ J g).map (GlobalTheory.LevSplit.swp F E) *ᵥ x ∈ Formalism.L2.Herm.hatL (F := F) Λ`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [GlobalTheory.LevSplit.latHat_iff, h2]`. Use `⟨fun h x => ?_, fun h y => h _⟩` and prove the remaining obligations. Use `choose y hy using fun i => (GlobalTheory.LevSplit.swp_bij (F := F) (E := E)).2 (x i)`. Use `h y` as an intermediate fact. Simplify `this` using `only [hy]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem levelK_eq {π : HA (AF F) σ J →* HA (Af F) σ J} (hπ : IsFinProj σ J π)
     (Λ : Submodule (𝓞 E) (Fin M → E)) :
@@ -90,11 +90,11 @@ section Space
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [inst : StarRing E] [Algebra F E]
 
 /- English proof (translation)
-Set `h' : (Fin W.rank → E) →ₗ⋆[E] (Fin W.rank → E) →ₗ[E] E` to `Matrix.toLinearMapₛₗ₂' E (starRingEnd E) (RingHom.id E) ((1 : E) • W.gram)`. Express the relevant statement in the definitionally equal form `Formalism.HermitianLatticesTheory.mass h' (tMap (Formalism.L2.Herm.crd W) W.L0) = _`. Establish `he : ∀ x y, h' (Formalism.L2.Herm.crd W x) (Formalism.L2.Herm.crd W y) = W.hT x y` using `fun x y => by`. Rewrite using `[Formalism.L2.Herm.hT_crd hc]`. Simplify using `only [h', one_smul, Matrix.toLinearMapₛₗ₂'_apply, Formalism.UG.hform, RingHom.id_apply, smul_eq_mul]`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star _ * _ = star _ * _ * _`. Expand and normalize the polynomial expressions, which then agree. Take `⟨h1, h2, -⟩` from `Formalism.HermitianLatticesTheory.massBasic _ _ W.hT W.herm (GlobalTheory.IndefiniteRowSideFullHecke.MassFormulaPositivity.trace_pos hc.cmUnram.2.1 W hW hs) W.L0 W.standardTuple_isLattice`. Establish `h3` using `mass_transport (Formalism.L2.Herm.crd W).symm (isoSymm _ he) (tMap (Formalism.L2.Herm.crd W) W.L0) (by rwa [tMap_symm]) (by rwa [tMap_symm])`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h3` using `[tMap_symm]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mass_coord (hc : CMData F E) (W : HSpace E) (hW : W.SigOK) (hs : ∀ τ, W.sig τ = (W.rank, 0))
     (hσ : ∀ e, (hc.sig : E →+* E) ((hc.sig : E →+* E) e) = e) :
@@ -117,7 +117,7 @@ theorem mass_coord (hc : CMData F E) (W : HSpace E) (hW : W.SigOK) (hs : ∀ τ,
   rwa [tMap_symm] at h3
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, mem_tMap]`. Express the relevant statement in the definitionally equal form `W.frame.equivFun.symm x ∈ W.L0 ↔ _`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_tMap (W : HSpace E) : (tMap (Formalism.L2.Herm.crd W) W.L0 : Set (Fin W.rank → E)) = latCoord W := by
   ext x
@@ -127,11 +127,9 @@ theorem coe_tMap (W : HSpace E) : (tMap (Formalism.L2.Herm.crd W) W.L0 : Set (Fi
   rfl
 
 /- English proof (translation)
-Establish `hσ : IsCMExt F E hc.sig` using `⟨hc.totReal, hc.cmUnram.1, hc.deg2, hc.cmUnram.2.1⟩`. Establish `hL` using `tMap_lattice (Formalism.L2.Herm.crd W) W.L0 W.standardTuple_isLattice`. Establish `hf : Module.Finite (𝓞 E) (tMap (Formalism.L2.Herm.crd W) W.L0)` using `Module.Finite.iff_fg.2 hL.fg`. Take `⟨π, hπ, -⟩` from `existsUnique_isFinProj hc.sig W.gram`. Rewrite using `[levelW, ← coe_tMap, levelK_eq hπ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[finiteClasses_comap π _ _ hπ.surjective hπ.injOn, hπ.map_ratIn]`. Conclude with `finiteClasses_lattice hσ hJ hd _ hf hL.span_eq_top`. Establish `hi : ∀ e, (hc.sig : E →+* E) ((hc.sig : E →+* E) e) = e` using `fun e => star_star e`. Rewrite using `[← hπ.unitaryMass_eq, unitaryMass_lattice_eq_genus_mass hσ hJ hd hi _ hf hL.span_eq_top]`.
-
-Conclude with `mass_coord hc W hW hs hi`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_and_mass (hc : CMData F E) (W : HSpace E) (hW : W.SigOK) (hs : ∀ τ, W.sig τ = (W.rank, 0))
     (hJ : IsHermND hc.sig W.gram) (hd : Formalism.UG.IsTotDef hc.sig W.gram) :
@@ -154,11 +152,9 @@ end Space
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D W hW hs θ hθ A hA`. Rewrite using `[GlobalTheory.DecompCompare.KSub_eq D W hW hs θ hθ A hA]`. Establish `hd : Formalism.UG.IsTotDef D.sp.cm.sig W.gram` using `GlobalTheory.DefiniteQuotient.isTotDef_of_posDef W fun τ => by`. Use `hW (Formalism.BasicNotions.TH.tauE D τ)` as an intermediate fact. Rewrite `this` using `[hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`. Take `⟨h1, h2⟩` from `finite_and_mass D.sp.cm W hW hs (GlobalTheory.DefiniteQuotient.gram_hermND W) hd`. Use `haveI := Unfold.borelHA D.sp.cm.sig W.gram`. Use `⟨(GlobalTheory.DecompCompare.isOpen_levelW D W).measurableSet, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2]`.
-
-Conclude with `exists_reps h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem defClassDecomp : ∀ D : D7, DefClassDecomp D := by
   intro D W hW hs θ hθ A hA

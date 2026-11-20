@@ -16,9 +16,9 @@ namespace DiscreteGroups.sglob.DzType
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `h1` using `hTR L Ω g A v hv hgv hgv2 aL haL π (by rw [hvN]; exact hπ) t y hy`. Establish `h2` using `hTR E' Ω g A w' h' hgw hgw2 a' ha' π (by rw [hwN]; exact hπ) t' x hx`. Rewrite `h1` using `[htt]`. Establish `e : algebraMap L Ω (y : L) - algebraMap E' Ω (x : E') = ((t' : G E' Ω) π / π - algebraMap E' Ω (x : E')) - ((t' : G E' Ω) π / π - algebraMap L Ω (y : L))` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt h2 h1)`.
+A detailed English derivation is pending.
 -/
 theorem tr_match (hTR : TameRec) {L E' Ω : Type} [Field L] [NumberField L] [IsTotallyComplex L] [Field E'] [NumberField E']
     [IsTotallyComplex E'] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra E' Ω] [IsAlgClosure E' Ω]
@@ -44,17 +44,15 @@ theorem tr_match (hTR : TameRec) {L E' Ω : Type} [Field L] [NumberField L] [IsT
   exact lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt h2 h1)
 
 /- English proof (translation)
-Establish `hg1 : 1 < g` using `(Fact.out : g.Prime).one_lt`. Establish `hdvd : (g - 1) ∣ (g ^ n - 1)`. Simplify using `using Nat.sub_dvd_pow_sub_pow g 1 n`. Use `set e := (g ^ n - 1) / (g - 1) with he`. Establish `hπE : (π ^ e) ^ (normV w - 1) = (g : Ω)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvN, ← pow_mul, he, Nat.div_mul_cancel hdvd, hπ]`. Establish `h1` using `hTR E Ω g A w h hgv hgv2 a ha (π ^ e) hπE s y hy`. Establish `h2` using `hTR E' Ω g A w' h' hgw hgw2 a' ha' π (by rw [hwN]; exact hπ) t' x hx`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `hπ0 : π ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Rewrite `hπ` using `[h0, zero_pow (by have := Nat.one_lt_pow hn.ne' hg1; omega)]`. Conclude with `(Nat.cast_ne_zero.mpr (Fact.out : g.Prime).ne_zero) hπ.symm`. Establish `e1 : (s : G E Ω) (π ^ e) / π ^ e = ((t' : G E' Ω) π / π) ^ e`. Rewrite using `[map_pow, htt, div_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[e1]`. Establish `hr1 : A.valuation ((t' : G E' Ω) π / π) ≤ 1`. Establish `hd : ((t' : G E' Ω) : G E' Ω) ∈ Dec (F` using `E') A := Ine_le_Dec A t'.2`. Conclude with `(val_ratio hd hπ0).le`. Establish `hx1 : A.valuation (algebraMap E' Ω (x : E')) ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[A.valuation_le_one_iff]`. Establish `h3 : IsIntegral ℤ (algebraMap E' Ω (x : E'))` using `x.2.map (algebraMap E' Ω).toIntAlgHom`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (h3.tower_top (A := A))`. Conclude with `hz ▸ z.2`. Establish `h3` using `cong_pow hr1 hx1 h2 e`.
-
-Establish `e2 : algebraMap E Ω (y : E) - algebraMap E' Ω (x : E') ^ e = (((t' : G E' Ω) π / π) ^ e - algebraMap E' Ω (x : E') ^ e) - (((t' : G E' Ω) π / π) ^ e - algebraMap E Ω (y : E))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt h3 h1)`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_base (hTR : TameRec) {E E' Ω : Type} [Field E] [NumberField E] [IsTotallyComplex E] [Field E'] [NumberField E']
     [IsTotallyComplex E'] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] [Algebra E' Ω] [IsAlgClosure E' Ω]

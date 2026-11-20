@@ -12,7 +12,7 @@ namespace GlobalTheory.JacProj
 variable {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.one_mul v, ← d.sum_eq_one]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coords {m : ℕ} (v : Mx D S.rank m) :
     v = d.jX ⬝ (d.pX ⬝ v) + d.j0 ⬝ (d.p0 ⬝ v) + d.jY ⬝ (d.pY ⬝ v) := by
@@ -20,14 +20,14 @@ theorem coords {m : ℕ} (v : Mx D S.rank m) :
   simp only [Matrix.add_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[mt_inv, d.pY_eq, adj_mul]`. Simplify using `only [Matrix.mul_assoc, gA_giA_cancel]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pY_inv (g : GA D S) : d.pY ⬝ mt S g⁻¹ = adj (mt S g ⬝ d.jX) ⬝ gA S := by
   rw [mt_inv, d.pY_eq, adj_mul]
   simp only [Matrix.mul_assoc, gA_giA_cancel]
 
 /- English proof (translation)
-Rewrite using `[mt_inv, d.p0_eq, adj_mul]`. Simplify using `only [Matrix.mul_assoc, gA_giA_cancel]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem witt_anisotropic_projection_unitary_inv_eq (g : GA D S) : d.p0 ⬝ mt S g⁻¹ = giA S₀ ⬝ (adj (mt S g ⬝ d.j0) ⬝ gA S) := by
   rw [mt_inv, d.p0_eq, adj_mul]
@@ -37,7 +37,7 @@ def Keeps (g : GA D S) : Prop :=
   d.p0 ⬝ (mt S g ⬝ d.jX) = 0 ∧ d.pY ⬝ (mt S g ⬝ d.jX) = 0 ∧ d.pY ⬝ (mt S g ⬝ d.j0) = 0
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.mul_one A, ← d.sum_eq_one]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expand {k m : ℕ} (Q : Mx D k S.rank) (A B : Mx D S.rank S.rank) (v : Mx D S.rank m) :
     Q ⬝ ((A * B) ⬝ v) = Q ⬝ (A ⬝ d.jX) ⬝ (d.pX ⬝ (B ⬝ v)) + Q ⬝ (A ⬝ d.j0) ⬝ (d.p0 ⬝ (B ⬝ v)) +
@@ -46,7 +46,7 @@ theorem expand {k m : ℕ} (Q : Mx D k S.rank) (A B : Mx D S.rank S.rank) (v : M
   simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `e` using `coords d (mt S g ⬝ d.jX)`. Rewrite `e` using `[h.1, h.2.1]`. Simplify `e` using `only [Matrix.mul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem keeps_jX {g : GA D S} (h : Keeps d g) : mt S g ⬝ d.jX = d.jX ⬝ (d.pX ⬝ (mt S g ⬝ d.jX)) := by
   have e := coords d (mt S g ⬝ d.jX)
@@ -54,7 +54,7 @@ theorem keeps_jX {g : GA D S} (h : Keeps d g) : mt S g ⬝ d.jX = d.jX ⬝ (d.pX
   simpa only [Matrix.mul_zero, add_zero] using e
 
 /- English proof (translation)
-Establish `e` using `coords d (mt S g ⬝ d.j0)`. Rewrite `e` using `[h.2.2]`. Simplify `e` using `only [Matrix.mul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem preserves_flag_anisotropic_action {g : GA D S} (h : Keeps d g) :
     mt S g ⬝ d.j0 = d.jX ⬝ (d.pX ⬝ (mt S g ⬝ d.j0)) + d.j0 ⬝ (d.p0 ⬝ (mt S g ⬝ d.j0)) := by
@@ -63,13 +63,13 @@ theorem preserves_flag_anisotropic_action {g : GA D S} (h : Keeps d g) :
   simpa only [Matrix.mul_zero, add_zero] using e
 
 /- English proof (translation)
-Establish `hXX : ∀ {k : ℕ} (M : Mx D ρ k), adj d.jX ⬝ (gA S ⬝ (d.jX ⬝ M)) = 0` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc (gA S), ← Matrix.mul_assoc, d.gram_XX, Matrix.zero_mul]`. Establish `hX0 : ∀ {k : ℕ} (M : Mx D S₀.rank k), adj d.jX ⬝ (gA S ⬝ (d.j0 ⬝ M)) = 0` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc (gA S), ← Matrix.mul_assoc, d.wittDecomp_gram_X_anisotropic, Matrix.zero_mul]`. Establish `h0X : ∀ {k : ℕ} (M : Mx D ρ k), adj d.j0 ⬝ (gA S ⬝ (d.jX ⬝ M)) = 0` using `fun M => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc (gA S), ← Matrix.mul_assoc, d.gram_0X, Matrix.zero_mul]`. Establish `h00 : ∀ {k : ℕ} (M : Mx D S₀.rank k), adj d.j0 ⬝ (gA S ⬝ (d.j0 ⬝ M)) = gA S₀ ⬝ M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc (gA S), ← Matrix.mul_assoc, d.gram_00]`. Establish `hu : adj (mt S g ⬝ d.j0) ⬝ (gA S ⬝ (mt S g ⬝ d.j0)) = gA S₀`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[adj_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = gA S₀ := by rw [mt_unitary, d.gram_00]`. Rewrite `hu` using `[preserves_flag_anisotropic_action d h]`. Generalize the expression as in `d.pX ⬝ (mt S g ⬝ d.j0) = P at hu`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `d.p0 ⬝ (mt S g ⬝ d.j0) = C at hu ⊢`. Simplify `hu` using `only [adj_add, adj_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, hXX, hX0, h0X, h00, Matrix.mul_zero, zero_add, add_zero]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem keeps_unitary {g : GA D S} (h : Keeps d g) :
     adj (d.p0 ⬝ (mt S g ⬝ d.j0)) ⬝ (gA S₀ ⬝ (d.p0 ⬝ (mt S g ⬝ d.j0))) = gA S₀ := by
@@ -93,9 +93,9 @@ theorem keeps_unitary {g : GA D S} (h : Keeps d g) :
     Matrix.mul_zero, zero_add, add_zero] using hu
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mt_mul, expand, h.1, h'.1, h'.2.1]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero]`. Rewrite using `[mt_mul, expand, h.2.1, h'.1, h'.2.1]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mt_mul, expand, h.2.1, h.2.2, h'.2.2]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem keeps_mul {g g' : GA D S} (h : Keeps d g) (h' : Keeps d g') : Keeps d (g * g') := by
   refine ⟨?_, ?_, ?_⟩
@@ -107,9 +107,9 @@ theorem keeps_mul {g g' : GA D S} (h : Keeps d g) (h' : Keeps d g') : Keeps d (g
     simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Take `⟨P, hP⟩ : ∃ P : Mx D ρ ρ, mt S g ⬝ d.jX = d.jX ⬝ P` from `⟨_, keeps_jX d h⟩`. Take `⟨P', C, hC⟩ : ∃ (P' : Mx D ρ S₀.rank) (C : Mx D S₀.rank S₀.rank), mt S g ⬝ d.j0 = d.jX ⬝ P' + d.j0 ⬝ C` from `⟨_, _, preserves_flag_anisotropic_action d h⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, witt_anisotropic_projection_unitary_inv_eq, hC]`. Simplify using `only [adj_add, adj_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, d.gram_XX, d.gram_0X, Matrix.mul_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc, pY_inv, hP]`. Simplify using `only [adj_mul, Matrix.mul_assoc, d.gram_XX, Matrix.mul_zero]`. Rewrite using `[← Matrix.mul_assoc, pY_inv, hP]`. Simplify using `only [adj_mul, Matrix.mul_assoc, d.wittDecomp_gram_X_anisotropic, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem keeps_inv {g : GA D S} (h : Keeps d g) : Keeps d g⁻¹ := by
   obtain ⟨P, hP⟩ : ∃ P : Mx D ρ ρ, mt S g ⬝ d.jX = d.jX ⬝ P := ⟨_, keeps_jX d h⟩
@@ -124,9 +124,9 @@ theorem keeps_inv {g : GA D S} (h : Keeps d g) : Keeps d g⁻¹ := by
     simp only [adj_mul, Matrix.mul_assoc, d.wittDecomp_gram_X_anisotropic, Matrix.mul_zero]
 
 /- English proof (translation)
-Establish `e` using `preserves_flag_anisotropic_action d h`. Rewrite `e` using `[h1, Matrix.mul_one]`. Take `⟨P, hP⟩ : ∃ P : Mx D ρ S₀.rank, mt S g ⬝ d.j0 = d.jX ⬝ P + d.j0` from `⟨_, e⟩`. Rewrite using `[← Matrix.mul_assoc, witt_anisotropic_projection_unitary_inv_eq, hP]`. Simplify using `only [adj_add, adj_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, d.wittDecomp_gram_X_anisotropic, d.gram_00, Matrix.mul_zero, zero_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `giA_mul_gA S₀`.
+A detailed English derivation is pending.
 -/
 theorem preserves_flag_anisotropic_block_one_inv {g : GA D S} (h : Keeps d g) (h1 : d.p0 ⬝ (mt S g ⬝ d.j0) = 1) : d.p0 ⬝ (mt S g⁻¹ ⬝ d.j0) = 1 := by
   have e := preserves_flag_anisotropic_action d h
@@ -138,7 +138,7 @@ theorem preserves_flag_anisotropic_block_one_inv {g : GA D S} (h : Keeps d g) (h
   exact giA_mul_gA S₀
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> rw [mt_one, Matrix.one_mul]`. Conclude with `d.p0_jX`. Conclude with `d.pY_jX`. Conclude with `d.pY_j0`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem keeps_one : Keeps d 1 := by
   refine ⟨?_, ?_, ?_⟩ <;> rw [mt_one, Matrix.one_mul]
@@ -161,11 +161,11 @@ def keepSub1 : Subgroup (GA D S) where
   inv_mem' := fun {a} ha => ⟨keeps_inv d ha.1, preserves_flag_anisotropic_block_one_inv d ha.1 ha.2⟩
 
 /- English proof (translation)
-Introduce `n hn`. Take `⟨T, b, -, hX, h0⟩` from `exists_blocks d hn`. Establish `eX : ∀ {k : ℕ} (Q : Mx D k S.rank), Q ⬝ (mt S n ⬝ d.jX) = Q ⬝ d.jX + Q ⬝ d.jX ⬝ T` using `fun Q => by`. Rewrite using `[hX, Matrix.mul_add, Matrix.mul_assoc]`. Establish `e0 : ∀ {k : ℕ} (Q : Mx D k S.rank), Q ⬝ (mt S n ⬝ d.j0) = Q ⬝ d.j0 + Q ⬝ d.jX ⬝ b` using `fun Q => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, Matrix.mul_add, Matrix.mul_assoc]`. Use `show (_ ∧ _ ∧ _) ∧ _`. Use `⟨⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[eX, d.p0_jX, Matrix.zero_mul, add_zero]`. Rewrite using `[eX, d.pY_jX, Matrix.zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0, d.pY_j0, d.pY_jX, Matrix.zero_mul, add_zero]`. Rewrite using `[e0, d.p0_j0, d.p0_jX, Matrix.zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flag_le : flagN d ≤ keepSub1 d := by
   intro n hn
@@ -182,9 +182,9 @@ theorem flag_le : flagN d ≤ keepSub1 d := by
   · rw [e0, d.p0_j0, d.p0_jX, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨h, rfl⟩`. Use `show _ ∧ _ ∧ _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[d.wittDecomp_anisotropicEmbedding_inclX, d.p0_jX]`. Rewrite using `[d.wittDecomp_anisotropicEmbedding_inclX, d.pY_jX]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[d.wittDecomp_anisotropicEmbedding_inclAnisotropic, ← Matrix.mul_assoc, d.pY_j0, Matrix.zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem range_le : d.emb0.range ≤ keepSub d := by
   rintro _ ⟨h, rfl⟩
@@ -195,13 +195,13 @@ theorem range_le : d.emb0.range ≤ keepSub d := by
   · rw [d.wittDecomp_anisotropicEmbedding_inclAnisotropic, ← Matrix.mul_assoc, d.pY_j0, Matrix.zero_mul]
 
 /- English proof (translation)
-The claim follows from `sup_le (fun _ hg => (flag_le d hg).1) (range_le d)`.
+A detailed English derivation is pending.
 -/
 theorem jac_le : (flagN d ⊔ d.emb0.range : Subgroup (GA D S)) ≤ keepSub d :=
   sup_le (fun _ hg => (flag_le d hg).1) (range_le d)
 
 /- English proof (translation)
-Establish `h1 : d.p0 ⬝ (mt S n ⬝ d.j0) = 1` using `(flag_le d hn).2`. Rewrite using `[mt_mul, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, ← Matrix.mul_assoc (mt S n), ← Matrix.mul_assoc d.p0, h1, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem witt_anisotropic_block_flag_mul_embedded {n : GA D S} (hn : n ∈ flagN d) (h : GA D S₀) :
     d.p0 ⬝ (mt S (n * d.emb0 h) ⬝ d.j0) = mt S₀ h := by
@@ -213,7 +213,7 @@ def proj (g : (flagN d ⊔ d.emb0.range : Subgroup (GA D S))) : GA D S₀ :=
   ofMat S₀ (d.p0 ⬝ (mt S g.1 ⬝ d.j0)) (keeps_unitary d (jac_le d g.2))
 
 /- English proof (translation)
-Apply `continuous_of_mt` to reduce the goal to its premises. Simplify using `only [proj, mt_ofMat]`. Conclude with `continuous_const.matrix_mul (((continuous_mt S).comp continuous_subtype_val).matrix_mul continuous_const)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_proj : Continuous (proj d) := by
   apply continuous_of_mt
@@ -221,7 +221,7 @@ theorem continuous_proj : Continuous (proj d) := by
   exact continuous_const.matrix_mul (((continuous_mt S).comp continuous_subtype_val).matrix_mul continuous_const)
 
 /- English proof (translation)
-Apply `mt_injective S₀` to reduce the goal to its premises. Simplify using `only [proj, mt_ofMat]`. Conclude with `witt_anisotropic_block_flag_mul_embedded d n.2 h`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proj_mul (h : GA D S₀) (n : flagN d) :
     proj d ⟨n.1 * d.emb0 h, mul_mem (Subgroup.mem_sup_left n.2) (Subgroup.mem_sup_right ⟨h, rfl⟩)⟩ = h := by
@@ -230,7 +230,7 @@ theorem proj_mul (h : GA D S₀) (n : flagN d) :
   exact witt_anisotropic_block_flag_mul_embedded d n.2 h
 
 /- English proof (translation)
-Introduce `D S S₀ ρ d`. Conclude with `⟨proj d, continuous_proj d, proj_mul d⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_continuous_proj : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ),
     ∃ p : (flagN d ⊔ d.emb0.range : Subgroup (GA D S)) → GA D S₀, Continuous p ∧

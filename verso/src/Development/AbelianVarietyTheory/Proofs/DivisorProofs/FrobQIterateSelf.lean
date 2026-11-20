@@ -6,7 +6,7 @@ open ReciprocityTheory.DiscreteGroups.LocalClassField Matrix GlobalTheory.LKRes
 namespace GlobalTheory.LKRes
 
 /- English proof (translation)
-Introduce `p _ r hr x`. Establish `h : (⇑(frobQ p r) : Qr p r → Qr p r) = ⇑(GlobalTheory.LKLoc.frobR p (Q0 p) r)` using `rfl`. Rewrite using `[h]`. Conclude with `GlobalTheory.LKLoc.frobR_iterate_self p (Q0 p) (by infer_instance) r hr x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobQ_iterate_self : ∀ (p : ℕ) [Fact p.Prime] (r : ℕ), 0 < r → ∀ x : Qr p r, (⇑(frobQ p r))^[r] x = x := by
   intro p _ r hr x

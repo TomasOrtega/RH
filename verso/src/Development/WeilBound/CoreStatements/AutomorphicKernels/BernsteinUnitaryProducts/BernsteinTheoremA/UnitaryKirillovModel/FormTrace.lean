@@ -18,11 +18,11 @@ def IsRieszRepresentative (C : Sesq V) (A : W →ₗ[ℂ] V) (N : Module.End ℂ
 variable {B₀ W}
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hd : ((N x : V) - (N' x : V)) ≠ 0` using `sub_ne_zero.2 hne`. Establish `hp` using `hpos _ hd`. Establish `h1` using `h x (N x - N' x)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `h' x (N x - N' x)`. Establish `e : B₀ ((N x : V) - (N' x : V)) ((N x - N' x : W) : V) = 0`. Rewrite using `[map_sub, LinearMap.sub_apply, h1, h2, sub_self]`. Establish `hc : ((N x - N' x : W) : V) = (N x : V) - (N' x : V)` using `rfl`. Rewrite `e` using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[e]`. Simplify using `at hp`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem riesz_unique (hpos : ∀ v, v ≠ 0 → 0 < (B₀ v v).re) {C : Sesq V} {A : W →ₗ[ℂ] V}
     {N N' : Module.End ℂ W} (h : IsRieszRepresentative B₀ W C A N) (h' : IsRieszRepresentative B₀ W C A N') : N = N' := by
@@ -40,7 +40,7 @@ theorem riesz_unique (hpos : ∀ v, v ≠ 0 → 0 < (B₀ v v).re) {C : Sesq V} 
   simp at hp
 
 /- English proof (translation)
-Rewrite using `[← (Module.finBasis ℂ W).sum_repr u, Submodule.coe_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, h i]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem antilin_ext_basis [FiniteDimensional ℂ W] (φ ψ : V →ₗ⋆[ℂ] ℂ)
     (h : ∀ i, φ (Module.finBasis ℂ W i : V) = ψ (Module.finBasis ℂ W i : V)) (u : W) : φ u = ψ u := by
@@ -49,15 +49,15 @@ theorem antilin_ext_basis [FiniteDimensional ℂ W] (φ ψ : V →ₗ⋆[ℂ] �
   rw [Submodule.coe_smul, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, h i]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ W`. Set `β : Sesq V → (W →ₗ[ℂ] V) → (W →ₗ[ℂ] (Fin (Module.finrank ℂ W) → ℂ))` to `fun C A => LinearMap.pi fun i => (C.flip (b i : V)) ∘ₗ A`. Establish `hβ : ∀ C A w i, β C A w i = C (A w) (b i)` using `fun _ _ _ _ => rfl`. Establish `hinj : Function.Injective (β B₀ W.subtype)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Assume the negation of the conclusion as `hne`. Use `hpos w (fun h' => hne (Subtype.ext h'))` as an intermediate fact. Establish `hz` using `antilin_ext_basis (W := W) (B₀ w) 0 (fun i => by`. Use `congrFun hw i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hβ]`. Simplify using `using this) w`. Rewrite `this` using `[hz]`. Simplify using `at this`. Set `e` to `LinearMap.linearEquivOfInjective (β B₀ W.subtype) hinj (by simp)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `⟨e.symm.toLinearMap ∘ₗ β C A, fun x y => ?_⟩` and prove the remaining obligations. Use `antilin_ext_basis (W := W) (B₀ _) (C (A x)) (fun i => ?_) y` and prove the remaining obligations. Establish `h1 : β B₀ W.subtype (e.symm (β C A x)) = β C A x`. Use `e.apply_symm_apply (β C A x)` as an intermediate fact. Rewrite `this` using `[LinearMap.linearEquivOfInjective_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Use `congrFun h1 i` as an intermediate fact. Rewrite `this` using `[hβ, hβ]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem riesz_exists [FiniteDimensional ℂ W] (hpos : ∀ v, v ≠ 0 → 0 < (B₀ v v).re) (C : Sesq V)
     (A : W →ₗ[ℂ] V) : ∃ N, IsRieszRepresentative B₀ W C A N := by
@@ -108,7 +108,7 @@ def rN {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G))
   Classical.choose (riesz_exists hpos C (resA μ hρ K f))
 
 /- English proof (translation)
-The claim follows from `haveI := hρ.2 K hKc hKo Classical.choose_spec (riesz_exists hpos C (resA μ hρ K f))`.
+A detailed English derivation is pending.
 -/
 theorem rN_spec {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G)) (C : Sesq V)
     (f : locallyConstantCompactSupport G ℂ ℂ) : IsRieszRepresentative B₀ _ C (resA μ hρ K f) (rN μ hρ hpos hKc hKo C f) :=
@@ -120,11 +120,11 @@ def DK {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G))
   LinearMap.trace ℂ _ (rN μ hρ hpos hKc hKo C f)
 
 /- English proof (translation)
-Establish `hc : ∀ u ∈ coinvariantsKer ρ K, B₀ u y = 0`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨κ, w⟩, rfl⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hinv κ w y`. Rewrite `h1` using `[hy κ κ.2]`. Use `show B₀ (ρ κ w - w) y = 0`. Rewrite using `[map_sub, LinearMap.sub_apply, h1, sub_self]`. Consider the case `zero => simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y' _ _ hx hy' => rw [map_add, LinearMap.add_apply, hx, hy', add_zero]`. Consider the case `smul a x _ hx => rw [map_smul, LinearMap.smul_apply, hx, smul_zero]`. Use `hc _ (sub_fixedProj_mem hρ.1 hKc hKo z)` as an intermediate fact. Rewrite `this` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `this.symm`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem B0_fixedProj (hinv : ∀ g v w, B₀ (ρ g v) (ρ g w) = B₀ v w) {K : Subgroup G} (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) (z y : V) (hy : y ∈ fixedVectors ρ K) :
@@ -146,9 +146,9 @@ theorem B0_fixedProj (hinv : ∀ g v w, B₀ (ρ g v) (ρ g w) = B₀ v w) {K : 
   exact this.symm
 
 /- English proof (translation)
-Set `F : HeckeAlgebra μ` to `f`. Establish `hmem : F ∈ biInvariant μ K` using `fun k hk x => hf k hk x`. Establish `hri` using `(mem_biInvariant_iff_idem hKc hKo).1 hmem`. Establish `e : groupConv μ (f : G → ℂ) (idem μ hKc hKo) = f`. Use `congrArg (fun F' : HeckeAlgebra μ => (F' : G → ℂ)) hri.2` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[HeckeAlgebra.coe_mul]`. Conclude with `this`. Rewrite using `[heckeLin_apply, heckeLin_apply, ← heckeAct_idem_eq_fixedProj (μ := μ) hKc hKo hρ.1, ← heckeAct_groupConv f.2 (idem μ hKc hKo).mem (hρ.1 _), e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeLin_fixedProj {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G))
     (f : locallyConstantCompactSupport G ℂ ℂ) (hf : BiInv K f) (v : V) :
@@ -164,15 +164,13 @@ theorem heckeLin_fixedProj {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo :
     ← heckeAct_groupConv f.2 (idem μ hKc hKo).mem (hρ.1 _), e]
 
 /- English proof (translation)
-Use `haveI := hρ.2 K hKc hKo`. Use `haveI := hρ.2 K' hK'c hK'o`. Establish `hWW : fixedVectors ρ K ≤ fixedVectors ρ K'` using `fixedVectors_antitone ρ hle`. Set `ι : fixedVectors ρ K →ₗ[ℂ] fixedVectors ρ K'` to `Submodule.inclusion hWW`. Set `p : fixedVectors ρ K' →ₗ[ℂ] fixedVectors ρ K` to `fixedProj ρ hρ.1 hKc hKo ∘ₗ (fixedVectors ρ K').subtype`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sN'` using `rN_spec μ hρ hpos hK'c hK'o C f`. Establish `sN` using `rN_spec μ hρ hpos hKc hKo C f`. Establish `h1 : rN μ hρ hpos hK'c hK'o C f = rN μ hρ hpos hK'c hK'o C f ∘ₗ ι ∘ₗ p`. Use `riesz_unique hpos sN' fun x y => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, sN']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show C (heckeLin μ hρ.1 f (fixedProj ρ hρ.1 hKc hKo (x : V) : V)) y = C (heckeLin μ hρ.1 f x) y`. Rewrite using `[heckeLin_fixedProj μ hρ hKc hKo f hf]`. Establish `h2 : p ∘ₗ rN μ hρ hpos hK'c hK'o C f ∘ₗ ι = rN μ hρ hpos hKc hKo C f`. Use `riesz_unique hpos (fun x y => ?_) sN` and prove the remaining obligations. Use `show B₀ (fixedProj ρ hρ.1 hKc hKo (rN μ hρ hpos hK'c hK'o C f (ι x) : V) : V) y = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[B0_fixedProj hρ hinv hKc hKo _ _ y.2]`. Use `sN' (ι x) (ι y)` as an intermediate fact. Conclude with `this`. Unfold `DK`. Combine the equalities or inequalities in the displayed calculation.
-
-Both sides reduce to the same expression. Use `_ = LinearMap.trace ℂ _ (p ∘ₗ (rN μ hρ hpos hK'c hK'o C f ∘ₗ ι)) := LinearMap.trace_comp_comm' _ _`. Use `_ = LinearMap.trace ℂ _ (rN μ hρ hpos hKc hKo C f) := congrArg _ h2`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem DK_mono (hinv : ∀ g v w, B₀ (ρ g v) (ρ g w) = B₀ v w) {K K' : Subgroup G} (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) (hK'c : IsCompact (K' : Set G)) (hK'o : IsOpen (K' : Set G)) (hle : K' ≤ K)
@@ -215,25 +213,25 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   {B₀ : Sesq V} (hpos : ∀ v, v ≠ 0 → 0 < (B₀ v v).re)
 
 /- English proof (translation)
-Introduce `k hk x` and use `hf k (hle hk) x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem BiInv.mono {K K' : Subgroup G} {f : G → ℂ} (hf : BiInv K f) (hle : K' ≤ K) : BiInv K' f :=
   fun k hk x => hf k (hle hk) x
 
 /- English proof (translation)
-Introduce `k hk x` and use `⟨by simp [(hf k hk x).1, (hg k hk x).1], by simp [(hf k hk x).2, (hg k hk x).2]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem BiInv.add {K : Subgroup G} {f g : G → ℂ} (hf : BiInv K f) (hg : BiInv K g) : BiInv K (f + g) :=
   fun k hk x => ⟨by simp [(hf k hk x).1, (hg k hk x).1], by simp [(hf k hk x).2, (hg k hk x).2]⟩
 
 /- English proof (translation)
-Introduce `k hk x` and use `⟨by simp [(hf k hk x).1], by simp [(hf k hk x).2]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem BiInv.smul {K : Subgroup G} {f : G → ℂ} (c : ℂ) (hf : BiInv K f) : BiInv K (c • f) :=
   fun k hk x => ⟨by simp [(hf k hk x).1], by simp [(hf k hk x).2]⟩
 
 /- English proof (translation)
-Take `⟨K, hKc, hK⟩` from `exists_forall_mul_left_mul_right f.2`. Conclude with `⟨K, hKc, fun k hk x => ⟨by simpa using hK k hk x 1 (one_mem _), by simpa using hK 1 (one_mem _) x k hk⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_K (f : locallyConstantCompactSupport G ℂ ℂ) :
     ∃ K : OpenSubgroup G, IsCompact (K : Set G) ∧ BiInv (K : Subgroup G) f := by
@@ -241,7 +239,7 @@ theorem exists_K (f : locallyConstantCompactSupport G ℂ ℂ) :
   exact ⟨K, hKc, fun k hk x => ⟨by simpa using hK k hk x 1 (one_mem _), by simpa using hK 1 (one_mem _) x k hk⟩⟩
 
 /- English proof (translation)
-Use `riesz_unique hpos (rN_spec μ hρ hpos hKc hKo _ f) fun x y => ?_` and prove the remaining obligations. Establish `s1` using `rN_spec μ hρ hpos hKc hKo C₁ f x y`. Establish `s2` using `rN_spec μ hρ hpos hKc hKo C₂ f x y`. Use `show B₀ ((rN μ hρ hpos hKc hKo C₁ f x : V) + (rN μ hρ hpos hKc hKo C₂ f x : V)) y = _`. Rewrite using `[map_add, LinearMap.add_apply, s1, s2, LinearMap.add_apply, LinearMap.add_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rN_add_C {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G)) (C₁ C₂ : Sesq V)
     (f : locallyConstantCompactSupport G ℂ ℂ) :
@@ -253,7 +251,7 @@ theorem rN_add_C {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K
   rw [map_add, LinearMap.add_apply, s1, s2, LinearMap.add_apply, LinearMap.add_apply]
 
 /- English proof (translation)
-Use `riesz_unique hpos (rN_spec μ hρ hpos hKc hKo _ f) fun x y => ?_` and prove the remaining obligations. Establish `s1` using `rN_spec μ hρ hpos hKc hKo C f x y`. Use `show B₀ (c • (rN μ hρ hpos hKc hKo C f x : V)) y = _`. Rewrite using `[map_smul, LinearMap.smul_apply, s1, LinearMap.smul_apply, LinearMap.smul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rN_smul_C {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G)) (c : ℂ) (C : Sesq V)
     (f : locallyConstantCompactSupport G ℂ ℂ) :
@@ -264,9 +262,9 @@ theorem rN_smul_C {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (
   rw [map_smul, LinearMap.smul_apply, s1, LinearMap.smul_apply, LinearMap.smul_apply]
 
 /- English proof (translation)
-Use `riesz_unique hpos (rN_spec μ hρ hpos hKc hKo C _) fun x y => ?_` and prove the remaining obligations. Establish `s1` using `rN_spec μ hρ hpos hKc hKo C f₁ x y`. Establish `s2` using `rN_spec μ hρ hpos hKc hKo C f₂ x y`. Use `show B₀ ((rN μ hρ hpos hKc hKo C f₁ x : V) + (rN μ hρ hpos hKc hKo C f₂ x : V)) y = C (heckeLin μ hρ.1 (f₁ + f₂) x) y`. Rewrite using `[map_add, LinearMap.add_apply, s1, s2, heckeLin_add μ hρ.1, LinearMap.add_apply, map_add, LinearMap.add_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rN_add_f {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G)) (C : Sesq V)
     (f₁ f₂ : locallyConstantCompactSupport G ℂ ℂ) :
@@ -280,7 +278,7 @@ theorem rN_add_f {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K
   rfl
 
 /- English proof (translation)
-Use `riesz_unique hpos (rN_spec μ hρ hpos hKc hKo C _) fun x y => ?_` and prove the remaining obligations. Establish `s1` using `rN_spec μ hρ hpos hKc hKo C f x y`. Use `show B₀ (c • (rN μ hρ hpos hKc hKo C f x : V)) y = C (heckeLin μ hρ.1 (c • f) x) y`. Rewrite using `[map_smul, LinearMap.smul_apply, s1, heckeLin_smul μ hρ.1, LinearMap.smul_apply, map_smul, LinearMap.smul_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rN_smul_f {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G)) (C : Sesq V) (c : ℂ)
     (f : locallyConstantCompactSupport G ℂ ℂ) :
@@ -295,9 +293,9 @@ def DF (C : Sesq V) (f : locallyConstantCompactSupport G ℂ ℂ) : ℂ :=
   DK μ hρ hpos (Classical.choose_spec (exists_K f)).1 (Classical.choose (exists_K f)).isOpen C f
 
 /- English proof (translation)
-Establish `hL` using `Classical.choose_spec (exists_K f)`. Use `set L := Classical.choose (exists_K f)`. Establish `hMc : IsCompact ((K ⊓ (L : Subgroup G) : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hKc.inter_right L.isClosed`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hMo : IsOpen ((K ⊓ (L : Subgroup G) : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hKo.inter L.isOpen`. Unfold `DF`. Rewrite using `[← DK_mono μ hρ hpos hinv hL.1 L.isOpen hMc hMo inf_le_right C f hL.2, DK_mono μ hρ hpos hinv hKc hKo hMc hMo inf_le_left C f hf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DF_eq (hinv : ∀ g v w, B₀ (ρ g v) (ρ g w) = B₀ v w) (C : Sesq V) (f : locallyConstantCompactSupport G ℂ ℂ)
     {K : Subgroup G} (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G)) (hf : BiInv K f) :

@@ -9,17 +9,15 @@ open Module
 variable {k : Type} [Field k] [Fintype k]
 
 /- English proof (translation)
-Establish `: Finite V` using `Module.finite_of_finite k`. Set `b : Module.Basis (Fin e) k U` to `Module.finBasisOfFinrankEq k U hU`. Establish `key : ∀ g : U →ₗ[k] V, Function.Injective g ↔ LinearIndependent k (g ∘ b)`. Introduce `g`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hg`. Conclude with `b.linearIndependent.map' g (LinearMap.ker_eq_bot.mpr hg)`. Introduce `hli`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[LinearMap.mem_ker]`. Establish `hsum : ∑ i, (b.repr x i) • (g ∘ b) i = 0`. Establish `h0 : g (∑ i, (b.repr x i) • b i) = 0` using `by rw [b.sum_repr]; exact hx`. Rewrite `h0` using `[map_sum]`. Simplify `h0` using `only [Function.comp_apply, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc` using `Fintype.linearIndependent_iff.mp hli _ hsum`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Simplify using `[hc i]`. Establish `E : {g : U →ₗ[k] V // Function.Injective g} ≃ {s : Fin e → V // LinearIndependent k s}` using `{ toFun := fun g => ⟨g.1 ∘ b, (key g.1).mp g.2⟩ invFun := fun s => ⟨b.constr k s.1, (key _).mpr (by`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : (b.constr k s.1 : U → V) ∘ b = s.1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[hs]`. Conclude with `s.2)⟩`.
-
-Use `left_inv := fun g => Subtype.ext (b.ext fun i => by simp)`. Use `right_inv := fun s => Subtype.ext (funext fun i => by simp) }`. Rewrite using `[Nat.card_congr E, card_linearIndependent (K := k) (V := V) (k := e) (by omega), hV, Finset.prod_range (fun j => Fintype.card k ^ n - Fintype.card k ^ j)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_injective {U V : Type} [AddCommGroup U] [Module k U] [AddCommGroup V] [Module k V]
     [FiniteDimensional k U] [FiniteDimensional k V] {e n : ℕ}
@@ -60,9 +58,9 @@ theorem card_injective {U V : Type} [AddCommGroup U] [Module k U] [AddCommGroup 
     Finset.prod_range (fun j => Fintype.card k ^ n - Fintype.card k ^ j)]
 
 /- English proof (translation)
-Establish `hQ : finrank k (V ⧸ K) = ρ`. Use `Submodule.finrank_quotient_add_finrank K` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `E : {f : V →ₗ[k] V // LinearMap.ker f = K} ≃ {g : (V ⧸ K) →ₗ[k] V // Function.Injective g}` using `{ toFun := fun f => ⟨K.liftQ f.1 (le_of_eq f.2.symm), LinearMap.ker_eq_bot.mp (Submodule.ker_liftQ_eq_bot _ _ _ (le_of_eq f.2))⟩ invFun := fun g => ⟨g.1.comp K.mkQ, by`. Rewrite using `[LinearMap.ker_comp, LinearMap.ker_eq_bot.mpr g.2, Submodule.comap_bot, Submodule.ker_mkQ]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `left_inv := fun f => Subtype.ext (Submodule.liftQ_mkQ K f.1 _)`. Use `right_inv := fun g => Subtype.ext (Submodule.linearMap_qext K (Submodule.liftQ_mkQ K _ _)) }`. Rewrite using `[Nat.card_congr E]`. Conclude with `card_injective hQ hV (by omega)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_ker_eq {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     {n ρ : ℕ} (hV : finrank k V = n) (hρ : ρ ≤ n) (K : Submodule k V)
@@ -86,15 +84,13 @@ theorem card_ker_eq {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional 
   exact card_injective hQ hV (by omega)
 
 /- English proof (translation)
-Establish `: Finite V` using `Module.finite_of_finite k`. Establish `: Finite (V →ₗ[k] V)` using `Module.finite_of_finite k`. Establish `: Finite (Submodule k V)` using `Finite.of_injective (fun K : Submodule k V => (K : Set V)) SetLike.coe_injective`. Use `letI : Fintype {K : Submodule k V // finrank k K = n - ρ} := Fintype.ofFinite _`. Establish `E : {f : V →ₗ[k] V // finrank k (LinearMap.range f) = ρ} ≃ Σ K : {K : Submodule k V // finrank k K = n - ρ}, {f : V →ₗ[k] V // LinearMap.ker f = K.1}` using `{ toFun := fun f => ⟨⟨LinearMap.ker f.1, by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1` using `LinearMap.finrank_range_add_finrank_ker f.1`. Establish `h2` using `f.2`. Use the proof step `omega⟩, ⟨f.1, rfl⟩⟩`. Use `invFun := fun p => ⟨p.2.1, by`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker p.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `p.1.2`. Establish `h3` using `p.2.2`. Rewrite `h1` using `[h3]`. Use the proof step `omega⟩`. Use `left_inv := fun f => rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Substitute using the available equality. Both sides reduce to the same expression.
 
-Use `right_inv := by`. Introduce and unpack `⟨⟨K, hK⟩, ⟨f, hf⟩⟩`. Simplify using `only at hf`. Substitute `hf` using the available equality. Use `rfl }`.
-
-Rewrite using `[Nat.card_congr E, Nat.card_sigma, Finset.sum_congr rfl (fun a _ => card_ker_eq hV hρ a.1 a.2), Finset.sum_const, Finset.card_univ, smul_eq_mul, Nat.card_eq_fintype_card (α := {K : Submodule k V // finrank k K = n - ρ})]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_rank_eq {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     {n ρ : ℕ} (hV : finrank k V = n) (hρ : ρ ≤ n) :
@@ -132,11 +128,11 @@ theorem card_rank_eq {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional
     Nat.card_eq_fintype_card (α := {K : Submodule k V // finrank k K = n - ρ})]
 
 /- English proof (translation)
-Establish `: Finite V` using `Module.finite_of_finite k`. Establish `: Finite (Submodule k V)` using `Finite.of_injective (fun K : Submodule k V => (K : Set V)) SetLike.coe_injective`. Set `eV : Module.Dual k V ≃ₗ[k] V` to `((Module.finBasis k V).toDualEquiv).symm`. Establish `hDual : ∀ K : Submodule k V, finrank k (K.dualAnnihilator) = finrank k V - finrank k K`. Introduce `K`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Subspace.finrank_add_finrank_dualAnnihilator_eq K` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Set `F : {K : Submodule k V // finrank k K = d} → {K : Submodule k V // finrank k K = n - d}` to `fun K => ⟨(K.1.dualAnnihilator).map (eV : Module.Dual k V →ₗ[k] V), by`. Rewrite using `[LinearEquiv.finrank_map_eq, hDual, hV, K.2]⟩`. Apply `Nat.card_le_card_of_injective F` to reduce the goal to its premises.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `K₁ K₂ h`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : (K₁.1.dualAnnihilator).map (eV : Module.Dual k V →ₗ[k] V) = (K₂.1.dualAnnihilator).map (eV : Module.Dual k V →ₗ[k] V)` using `congrArg Subtype.val h`. Establish `h2` using `Submodule.map_injective_of_injective eV.injective h1`. Conclude with `Subspace.dualAnnihilator_inj.mp h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_sub_le {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     {n : ℕ} (hV : finrank k V = n) (d : ℕ) (hd : d ≤ n) :
@@ -164,7 +160,7 @@ theorem card_sub_le {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional 
   exact Subspace.dualAnnihilator_inj.mp h2
 
 /- English proof (translation)
-Apply `le_antisymm (card_sub_le hV d hd)` to reduce the goal to its premises. Use `card_sub_le hV (n - d) (Nat.sub_le n d)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self hd]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem card_sub_symm {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     {n : ℕ} (hV : finrank k V = n) (d : ℕ) (hd : d ≤ n) :
@@ -175,7 +171,7 @@ theorem card_sub_symm {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensiona
   rwa [Nat.sub_sub_self hd] at this
 
 /- English proof (translation)
-Apply `Nat.card_congr` to reduce the goal to its premises. Conclude with `Equiv.subtypeEquiv (Matrix.toLin' : Matrix (Fin n) (Fin n) k ≃ₗ[k] ((Fin n → k) →ₗ[k] (Fin n → k))).toEquiv (fun D => by show D.rank = ρ ↔ finrank k (LinearMap.range (Matrix.toLin' D)) = ρ`. Rewrite using `[Matrix.toLin'_apply']`. Use the proof step `rfl)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_matrix_rank (n ρ : ℕ) :
     Nat.card {D : Matrix (Fin n) (Fin n) k // D.rank = ρ} =
@@ -189,7 +185,7 @@ theorem card_matrix_rank (n ρ : ℕ) :
       rfl)
 
 /- English proof (translation)
-Establish `hV : finrank k (Fin n → k) = n` using `Module.finrank_fin_fun k`. Rewrite using `[card_matrix_rank, card_matrix_rank, card_rank_eq hV h, card_rank_eq hV (Nat.sub_le n ρ), Nat.sub_sub_self h, card_sub_symm hV ρ h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rank_symm (k : Type) [Field k] [Fintype k] (n ρ : ℕ) (h : ρ ≤ n) :
     Nat.card {D : Matrix (Fin n) (Fin n) k // D.rank = ρ} *

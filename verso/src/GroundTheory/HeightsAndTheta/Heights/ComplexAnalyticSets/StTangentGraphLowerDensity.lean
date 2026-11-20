@@ -28,7 +28,7 @@ def TangentGraphLowerDensity.axisMap : (↥({0} : Finset (Fin 2)) → ℂ) →L[
       else 0)
 
 /- English proof (translation)
-Establish `h : ((2 * d : ℕ) : ℝ) = ((Module.finrank ℝ (EuclideanSpace ℂ (Fin d)) : ℕ) : ℝ)`. Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ (Fin d)), Complex.finrank_real_complex, finrank_euclideanSpace_fin]`. Rewrite using `[h]`. Conclude with `Metric.isOpen_ball.measure_pos _ ⟨0, Metric.mem_ball_self one_pos⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TangentGraphLowerDensity.unitBall_pos (d : ℕ) :
     0 < μH[((2 * d : ℕ) : ℝ)] (Metric.ball (0 : EuclideanSpace ℂ (Fin d)) 1) := by

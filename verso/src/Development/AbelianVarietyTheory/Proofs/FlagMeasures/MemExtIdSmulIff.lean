@@ -9,11 +9,11 @@ open scoped InnerProductSpace ComplexOrder TensorProduct Pointwise Classical
 namespace GlobalTheory.RowLev.DualIdeal
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `ht`. Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ y' hy'`. Use `⟨t * ⟨_, (hd x).1 hx y' hy'⟩, Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self t), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hs t y' x).symm`. Introduce `H`. Use `⟨((u⁻¹ : Aˣ) : A) • y, (hd _).2 fun y' hy' => ?_, ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `H y' hy'`. Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, ← e, Subring.coe_mul, ← hu, mul_comm (w : A), Units.inv_mul_cancel_left]`. Conclude with `w.2`. Use `show (t : A) • _ = y`. Rewrite using `[← hu, smul_smul, Units.mul_inv, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_dual_iff {A V : Type} [CommRing A] [AddCommGroup V] [Module A V] (S : Subring A)
     (L : Submodule S V) (h : V → V → A) (hs : ∀ (a : A) x y, h x (a • y) = a * h x y)
@@ -35,7 +35,7 @@ theorem smul_dual_iff {A V : Type} [CommRing A] [AddCommGroup V] [Module A V] (S
       rw [← hu, smul_smul, Units.mul_inv, one_smul]
 
 /- English proof (translation)
-Unfold `hAf Formalism.UG.hform`. Simplify using `only [Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => mul_left_comm _ _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hAf_smul (I : AutInst) (a : I.E ⊗[I.F] Af I.F) (x y : Fin I.n → (I.E ⊗[I.F] Af I.F)) :
     hAf I x (a • y) = a * hAf I x y := by
@@ -44,7 +44,7 @@ theorem hAf_smul (I : AutInst) (a : I.E ⊗[I.F] Af I.F) (x y : Fin I.n → (I.E
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => mul_left_comm _ _ _
 
 /- English proof (translation)
-Introduce `I 𝔞 h𝔞 y`. Take `⟨⟨t, ht, e⟩, -⟩` from `GlobalTheory.T.integralAdeleIdealOfIdeal_principal_and_inter I 𝔞 h𝔞`. Rewrite using `[e]`. Conclude with `smul_dual_iff (IntAf I.F I.E) I.Lf (hAf I) (hAf_smul I) (GlobalTheory.T.adelicLattice_selfDual_hermitian I) t ht y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_extId_smul_iff : ∀ (I : AutInst) (𝔞 : Ideal (𝓞 I.E)), 𝔞 ≠ ⊥ → ∀ y : Fin I.n → (I.E ⊗[I.F] Af I.F), y ∈ extId I 𝔞 • I.Lf ↔ ∀ y' ∈ I.Lf, ∃ z ∈ extId I 𝔞, (z : (I.E ⊗[I.F] Af I.F)) = hAf I y' y := by
   intro I 𝔞 h𝔞 y

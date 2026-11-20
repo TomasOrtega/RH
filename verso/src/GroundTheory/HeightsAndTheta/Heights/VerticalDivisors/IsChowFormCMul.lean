@@ -10,7 +10,7 @@ open MvPolynomial NumberField IsDedekindDomain
 noncomputable section
 
 /- English proof (translation)
-Use `⟨mul_ne_zero (C_ne_zero.mpr hc) hf.1, fun g => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (C c : MvPolynomial (Fin k × Fin n) F)` using `hc.isUnit.map C`. Rewrite using `[hf.2 g, IsUnit.mul_left_dvd hu]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isChowForm_C_mul {F : Type*} [Field F] {n k : ℕ} {I : Ideal (MvPolynomial (Fin n) F)}
     {f : MvPolynomial (Fin k × Fin n) F} (hf : IsChowForm I k f) {c : F} (hc : c ≠ 0) :
@@ -20,7 +20,7 @@ theorem isChowForm_C_mul {F : Type*} [Field F] {n k : ℕ} {I : Ideal (MvPolynom
   rw [hf.2 g, IsUnit.mul_left_dvd hu]
 
 /- English proof (translation)
-Simplify using `[specFirst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem specFirst_C_mul {R : Type*} [CommSemiring R] {n k : ℕ} (c : R)
     (f : MvPolynomial (Fin (k + 1) × Fin n) R) (u : Fin n → R) :
@@ -28,17 +28,15 @@ theorem specFirst_C_mul {R : Type*} [CommSemiring R] {n k : ℕ} (c : R)
   simp [specFirst]
 
 /- English proof (translation)
-Introduce `K _ _ n e I f u hI hf hu v`. Take `⟨c, g, hc, hg, hprim⟩` from `h2 K v _ f hf.1`. Establish `hcf : IsChowForm I (e + 1) (g.map (algebraMap (𝓞 K) K))`. Rewrite using `[hg]`. Conclude with `isChowForm_C_mul hf hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1a, h1b⟩` from `h1 K n e I g u v hI hcf hu hprim`. Rewrite `h1a` using `[hg, specFirst_C_mul, gaussNorm_C_mul]`. Rewrite `h1b` using `[hg, gaussNorm_C_mul]`. Rewrite using `[h3]`. Use `set a := NumberField.HeightOneSpectrum.adicAbv K v c`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N : ℝ := (Ideal.absNorm v.asIdeal : ℝ)`. Use `set D := vertDeg e I u v`. Establish `hN : 0 < N`. Establish `h` using `Ideal.absNorm_ne_zero_of_nonZeroDivisors (⟨v.asIdeal, mem_nonZeroDivisors_of_ne_zero v.ne_bot⟩ : nonZeroDivisors (Ideal (𝓞 K)))`. Establish `h' : 0 < Ideal.absNorm v.asIdeal` using `Nat.pos_of_ne_zero h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.cast_pos.mpr h'`. Establish `ha : a ≠ 0`. Introduce `h0`. Rewrite `h1b` using `[h0, zero_mul]`. Conclude with `zero_ne_one h1b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfu : 0 < gaussNorm v (specFirst f fun j => (u j : K))`. Use `lt_of_le_of_ne (gaussNorm_nonneg v _) fun h0 => ?_` and prove the remaining obligations. Rewrite `h1a` using `[← h0, mul_zero, zero_mul]`. Conclude with `zero_ne_one h1a`. Establish `hff : gaussNorm v f = gaussNorm v (specFirst f fun j => (u j : K)) * N ^ D`.
-
-Establish `e1 : a * gaussNorm v f = a * (gaussNorm v (specFirst f fun j => (u j : K)) * N ^ D)`. Rewrite using `[h1b, ← mul_assoc, h1a]`. Conclude with `mul_left_cancel₀ ha e1`. Rewrite using `[hff, Real.log_mul hfu.ne' (pow_ne_zero _ hN.ne'), Real.log_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Main.proof (h1 : GaussEq.Statement) (h2 : PrimitiveScale.Statement)
     (h3 : VertTermEq.Statement) : ChowFormSectionVertical.Statement := by

@@ -22,7 +22,7 @@ def tt_tens_sheafify : Prop :=
   ∀ (R : Type) [CommRing R] (I J : Cx R), TensPre I J → ∃ (K : Cx R) (μ : Pair I J K), μ.IsTensor
 
 /- English proof (translation)
-Introduce `R _ I J`. Take `⟨T⟩` from `hpre R I J`. Conclude with `hsh R I J T`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tt_tens_ex_of (hpre : tt_tens_pre) (hsh : tt_tens_sheafify) : tt_tens_ex := by
   intro R _ I J

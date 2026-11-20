@@ -16,11 +16,11 @@ open scoped BigOperators
 namespace GlobalTheory.ArchNorm
 
 /- English proof (translation)
-Establish `hint : ∀ x ∈ hS.toFinset, IsIntegral ℚ x` using `fun x hx => (mem_algebraicClosure_iff.1 (h x (hS.mem_toFinset.1 hx))).isIntegral`. Set `p : Polynomial ℚ` to `∏ x ∈ hS.toFinset, minpoly ℚ x`. Establish `hp : p ≠ 0` using `Finset.prod_ne_zero_iff.2 fun x hx => minpoly.ne_zero (hint x hx)`. Establish `hsp : p.IsSplittingField ℚ (IntermediateField.adjoin ℚ (p.rootSet ℂ))` using `IntermediateField.adjoin_rootSet_isSplittingField (IsAlgClosed.splits _)`. Use `Polynomial.IsSplittingField.finiteDimensional (IntermediateField.adjoin ℚ (p.rootSet ℂ)) p` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Normal.of_isSplittingField (F := ℚ) (E := IntermediateField.adjoin ℚ (p.rootSet ℂ)) p` as an intermediate fact. Use `⟨IntermediateField.adjoin ℚ (p.rootSet ℂ), inferInstance, ⟨⟩, fun x hx => ?_⟩` and prove the remaining obligations. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises. Rewrite using `[Polynomial.mem_rootSet]`. Use `⟨hp, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_zero (hS.mem_toFinset.2 hx) (minpoly.aeval ℚ x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_galois (S : Set ℂ) (hS : S.Finite) (h : ∀ x ∈ S, x ∈ Qbar) :
     ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ IsGalois ℚ M ∧ ∀ x ∈ S, x ∈ M := by
@@ -40,9 +40,9 @@ theorem exists_galois (S : Set ℂ) (hS : S.Finite) (h : ∀ x ∈ S, x ∈ Qbar
   exact Finset.prod_eq_zero (hS.mem_toFinset.2 hx) (minpoly.aeval ℚ x)
 
 /- English proof (translation)
-Establish `hle : M ≤ Qbar` using `le_algebraicClosure ℚ ℂ M`. Set `: Algebra M Qbar` to `(IntermediateField.inclusion hle).toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ M Qbar` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `: Algebra.IsAlgebraic ℚ Qbar` using `algebraicClosure.isAlgebraic ℚ ℂ`. Establish `: Algebra.IsAlgebraic M Qbar` using `Algebra.IsAlgebraic.tower_top (K := ℚ) M`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩` from `IsAlgClosed.surjective_domRestrict_of_isAlgebraic (K := ℚ) (L := M) (M := ℂ) (E := Qbar) ρ`. Use `⟨φ, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ]`. Unfold `TaylorLogMetric.liftM`. Rewrite using `[dif_pos hx, dif_pos (hle hx)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -62,7 +62,7 @@ theorem exists_extension (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ 
   rfl
 
 /- English proof (translation)
-Unfold `nrm1Sq`. Simplify using `only [MeasureTheory.average_eq, smul_eq_mul]`. Conclude with `mul_nonneg (by positivity) (MeasureTheory.integral_nonneg fun z => by positivity)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lattice_unitNormSq_nonneg (Λ : AddSubgroup ℂ) (g : ℂ → ℂ) : 0 ≤ nrm1Sq Λ g := by
   unfold nrm1Sq
@@ -70,13 +70,13 @@ theorem lattice_unitNormSq_nonneg (Λ : AddSubgroup ℂ) (g : ℂ → ℂ) : 0 �
   exact mul_nonneg (by positivity) (MeasureTheory.integral_nonneg fun z => by positivity)
 
 /- English proof (translation)
-The claim follows from `Real.sInf_nonneg fun _ h => h.1.le`.
+A detailed English derivation is pending.
 -/
 theorem area_nonneg (Λ : AddSubgroup ℂ) : 0 ≤ area Λ :=
   Real.sInf_nonneg fun _ h => h.1.le
 
 /- English proof (translation)
-Break down `le_or_gt y 0 with h | h` into its components or cases. Conclude with `h.trans (Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem le_exp_posLog (y : ℝ) : y ≤ Real.exp (Real.posLog y) := by
   rcases le_or_gt y 0 with h | h
@@ -85,7 +85,7 @@ theorem le_exp_posLog (y : ℝ) : y ≤ Real.exp (Real.posLog y) := by
       _ ≤ _ := Real.exp_le_exp.2 (le_max_right _ _)
 
 /- English proof (translation)
-Use `(Real.posLog_le_posLog hy h).trans ?_` and prove the remaining obligations. Rewrite using `[Real.posLog_apply, Real.log_exp]`. Conclude with `max_le hE le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posLog_le_of_le_exp {y E : ℝ} (hy : 0 ≤ y) (hE : 0 ≤ E) (h : y ≤ Real.exp E) :
     Real.posLog y ≤ E := by
@@ -94,7 +94,7 @@ theorem posLog_le_of_le_exp {y E : ℝ} (hy : 0 ≤ y) (hE : 0 ≤ E) (h : y ≤
   exact max_le hE le_rfl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem pow_le_exp {y t k : ℝ} {n : ℕ} (hy : 0 ≤ y) (ht : 0 ≤ t) (h : y ≤ Real.exp t) (hn : (n : ℝ) ≤ k) :
     y ^ n ≤ Real.exp (k * t) := by
@@ -103,7 +103,7 @@ theorem pow_le_exp {y t k : ℝ} {n : ℕ} (hy : 0 ≤ y) (ht : 0 ≤ t) (h : y 
     _ ≤ _ := Real.exp_le_exp.2 (mul_le_mul_of_nonneg_right hn ht)
 
 /- English proof (translation)
-Rewrite using `[Real.exp_add]`. Conclude with `mul_le_mul hx h hy (Real.exp_pos _).le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_le_exp {x y s t : ℝ} (hy : 0 ≤ y) (hx : x ≤ Real.exp s) (h : y ≤ Real.exp t) :
     x * y ≤ Real.exp (s + t) := by
@@ -111,16 +111,16 @@ theorem mul_le_exp {x y s t : ℝ} (hy : 0 ≤ y) (hx : x ≤ Real.exp s) (h : y
   exact mul_le_mul hx h hy (Real.exp_pos _).le
 
 /- English proof (translation)
-Combine the linear relations using `[Real.add_one_le_exp y]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem le_exp_self (y : ℝ) : y ≤ Real.exp y := by linarith [Real.add_one_le_exp y]
 
 /- English proof (translation)
-Establish `hf' : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Use `pow_le_exp (by positivity) (by positivity) ?_ ?_` and prove the remaining obligations. Establish `e1 : (f : ℝ) ^ 2 * (k : ℝ) ^ 4 ≤ Real.exp (4 * l)`. Use `le_trans ?_ (pow_le_exp (y := (f : ℝ) * (2 * n)) (n := 4) (by nlinarith) hl h1 (by norm_num))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_pow]`. Conclude with `mul_le_mul (pow_le_pow_right₀ hf' (by norm_num)) (pow_le_pow_left₀ hk0 hk 4) (by positivity) (by positivity)`. Establish `e2 : r ^ 2 ≤ Real.exp (2 * L)` using `pow_le_exp hr hL h2 (by norm_num)`. Rewrite using `[mul_assoc (12 : ℝ)]`. Conclude with `mul_le_exp (by positivity) (mul_le_exp (by positivity) (le_exp_self 12) e1) e2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `push_cast`. Use `pow_le_pow_left₀ hk0 hk 2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem cls_le_exp (f k : ℕ) (n r l L : ℝ) (hf : 1 ≤ f) (hk : (k : ℝ) ≤ 2 * n) (hr : 0 ≤ r)
     (hl : 0 ≤ l) (hL : 0 ≤ L) (h1 : (f : ℝ) * (2 * n) ≤ Real.exp l) (h2 : r ≤ Real.exp L) :
@@ -144,37 +144,37 @@ theorem cls_le_exp (f k : ℕ) (n r l L : ℝ) (hf : 1 ≤ f) (hk : (k : ℝ) �
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `hf' : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hn : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hd' : (d : ℝ) ≤ 2 * N` using `by exact_mod_cast hd`. Establish `ha' : (a : ℝ) ≤ 2 * N` using `by exact_mod_cast had.trans hd`. Establish `hQ' : (1 : ℝ) ≤ Q` using `by exact_mod_cast hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`. Establish `hd0 : (0 : ℝ) ≤ d` using `Nat.cast_nonneg d`. Establish `hs0 : (0 : ℝ) ≤ s` using `Nat.cast_nonneg s`. Generalize the expression as in `(N : ℝ) = n at *`. Establish `hm1 : B * (2 * n) = Real.exp (Real.log (B * (2 * n)))` using `(Real.exp_log (by positivity)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hm0 : 0 ≤ Real.log (B * (2 * n))` using `Real.log_nonneg (by nlinarith)`. Establish `hfn : 1 ≤ (f : ℝ) * (2 * n)` using `by nlinarith`. Establish `hl1 : (f : ℝ) * (2 * n) * B = Real.exp (Real.log ((f : ℝ) * (2 * n) * B))` using `(Real.exp_log (by positivity)).symm`. Establish `hl0 : 0 ≤ Real.log ((f : ℝ) * (2 * n) * B)` using `Real.log_nonneg (by nlinarith)`. Establish `hq1 : (Q : ℝ) ≤ Real.exp (Real.log Q)` using `(Real.exp_log (by positivity)).ge`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : 0 ≤ Real.log Q` using `Real.log_nonneg hQ'`. Establish `hr1 : r ≤ Real.exp L` using `(Real.exp_log (by positivity)).ge.trans (Real.exp_le_exp.2 hrL)`. Establish `hv1` using `le_exp_posLog ν`. Establish `hv0 : 0 ≤ Real.posLog ν` using `Real.posLog_nonneg`. Establish `hu1` using `le_exp_posLog A⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0 : 0 ≤ Real.posLog A⁻¹` using `Real.posLog_nonneg`. Generalize the expression as in `Real.log (B * (2 * n)) = m at *`. Generalize the expression as in `Real.log ((f : ℝ) * (2 * n) * B) = l at *`. Generalize the expression as in `Real.log Q = q at *`. Generalize the expression as in `Real.posLog ν = v at *`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Real.posLog A⁻¹ = u at *`. Establish `hfl : (f : ℝ) * (2 * n) ≤ Real.exp l` using `by nlinarith`. Establish `had' : (a : ℝ) * d ≤ 4 * n ^ 2` using `by nlinarith`. Establish `hG : ((f * a * d : ℕ) : ℝ) ≤ 4 * f * n ^ 2` using `by push_cast; nlinarith`. Establish `hG0 : (0 : ℝ) ≤ ((f * a * d : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hcd.trans (cls_le_exp f d n r l L hf hd' (by linarith) hl0 (by linarith) hfl hr1)`. Establish `e2` using `hca.trans (cls_le_exp f a n r l L hf ha' (by linarith) hl0 (by linarith) hfl hr1)`. Establish `e3 : (ch : ℝ) ≤ Real.exp (24 * f * n ^ 2 * (12 + 4 * l + 2 * L) + 8 * n ^ 2 * q)`. Establish `: (ch : ℝ) ≤ cd * (Q : ℝ) ^ (d ^ 2 + 4)` using `by exact_mod_cast hch`. Use `this.trans (mul_le_exp (by positivity) e1 (pow_le_exp (by positivity) hq0 hq1 ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `e4 : (cT : ℝ) ≤ Real.exp (4 * f * n * B * 2)`. Establish `: (cT : ℝ) ≤ (2 : ℝ) ^ (d * s)` using `by exact_mod_cast hcT`. Use `this.trans (pow_le_exp (by positivity) (by positivity) (le_exp_self 2) ?_)` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Use `mul_le_mul hd' hs hs0 (by positivity)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e5 : (ca : ℝ) ^ 2 ≤ Real.exp (2 * (24 * f * n ^ 2 * (12 + 4 * l + 2 * L)))` using `pow_le_exp (by positivity) (by positivity) e2 (by norm_num)`. Establish `e6 : (Q : ℝ) ^ (a * d) ≤ Real.exp (4 * n ^ 2 * q)` using `pow_le_exp (by positivity) hq0 hq1 (by push_cast; exact had')`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e7 : ((a.factorial : ℝ) ^ s) ^ 2 ≤ Real.exp (2 * (2 * f * B * (2 * n * m)))`. Use `pow_le_exp (by positivity) (by positivity) (pow_le_exp (by positivity) (by positivity) ?_ hs) (by norm_num)` and prove the remaining obligations. Establish `: (a.factorial : ℝ) ≤ (a : ℝ) ^ a` using `by exact_mod_cast Nat.factorial_le_pow a`. Conclude with `this.trans (pow_le_exp ha0 hm0 (by nlinarith) ha')`. Establish `e8 : (2 * ((f * a * d : ℕ) : ℝ) * r + 1) ^ (f * a * d) ≤ Real.exp (4 * f * n ^ 2 * (3 + (2 * l + L)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `pow_le_exp (by positivity) (by positivity) ?_ hG` and prove the remaining obligations. Establish `h1 : ((f : ℝ) * (2 * n)) ^ 2 ≤ Real.exp (2 * l)` using `pow_le_exp (by positivity) hl0 hfl (by norm_num)`. Establish `h2 : ((f * a * d : ℕ) : ℝ) ≤ Real.exp (2 * l)`. Use `hG.trans (le_trans ?_ h1)` and prove the remaining obligations. Establish `: 0 ≤ f * n ^ 2 * (f - 1)` using `by have : 0 ≤ (f : ℝ) - 1 := by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities. Establish `h3` using `mul_le_exp (by linarith) h2 hr1`. Establish `h4 : 1 ≤ Real.exp (2 * l + L)` using `Real.one_le_exp (by linarith)`. Establish `h5` using `mul_le_exp (Real.exp_pos _).le (le_exp_self 3) (le_refl (Real.exp (2 * l + L)))`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e9 : ν ^ (f * a * d) ≤ Real.exp (4 * f * n ^ 2 * v)` using `pow_le_exp hν hv0 hv1 hG`. Establish `e10 : (2 * Real.exp 1 * Real.pi * B / A) ^ (a * s) ≤ Real.exp (4 * f * n * B * (2 + 1 + 4 + m + u))`. Use `pow_le_exp (by positivity) (by positivity) ?_ ?_` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_exp (by positivity) (mul_le_exp (by positivity) (mul_le_exp (by positivity) (mul_le_exp (by positivity) (le_exp_self 2) le_rfl) (Real.pi_le_four.trans (le_exp_self 4))) ?_) hu1` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Use `push_cast`. Use `mul_le_mul ha' hs hs0 (by positivity)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mul_le_exp (by positivity) (mul_le_exp (by positivity) e3 e4) (mul_le_exp (by positivity) (mul_le_exp (by positivity) e5 e6) (mul_le_exp (by positivity) e7 (mul_le_exp (by positivity) (mul_le_exp (by positivity) (mul_le_exp (by positivity) (le_exp_self 3) e8) e9) e10)))).trans ( …` and prove the remaining obligations. Establish `hn2 : 1 ≤ n ^ 2` using `by nlinarith`. Establish `t2 : 1 ≤ (f : ℝ) * n ^ 2` using `by nlinarith`. Establish `t1 : 0 ≤ (f : ℝ) * n * B` using `by positivity`. Establish `p1` using `mul_nonneg t1 hm0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p2` using `mul_le_mul_of_nonneg_left hL t1`. Establish `p3` using `mul_nonneg (zero_le_one.trans t2) hl0`. Establish `p4` using `mul_le_mul_of_nonneg_left hL (zero_le_one.trans t2)`. Establish `p5` using `mul_nonneg (zero_le_one.trans hn2) hq0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sizes (f N a d s Q ch cT ca cd : ℕ) (B L r ν A : ℝ) (hf : 1 ≤ f) (hN : 1 ≤ N) (had : a ≤ d)
     (hd : d ≤ 2 * N) (hs : (s : ℝ) ≤ 2 * f * B) (hQ : 0 < Q) (hB : 1 ≤ B) (hL : 1 ≤ L) (hr : 1 ≤ r)
@@ -278,11 +278,11 @@ theorem sizes (f N a d s Q ch cT ca cd : ℕ) (B L r ν A : ℝ) (hf : 1 ≤ f) 
   linarith
 
 /- English proof (translation)
-Unfold `lamOf at hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, rfl⟩` from `hx`. Use `AddSubgroup.subset_closure ⟨c * a, cc.mul_mem_right a hc, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, ← map_mul]`. Use `congr 2`. Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [neg_mul]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_lamOf (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a : 𝓞 D.host.K) {w : ℂ}
     (hw : w ∈ lamOf D cc δ) : w * D.host.φ₀ ((a : D.host.K) : D.host.E) ∈ lamOf D cc δ := by
@@ -298,7 +298,7 @@ theorem mul_mem_lamOf (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a : 𝓞
   | neg x _ hx => rw [neg_mul]; exact neg_mem hx
 
 /- English proof (translation)
-Use `(Finset.sum_le_card_nsmul _ _ X fun p _ => h p).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.card_univ, Fintype.card_prod, nsmul_eq_mul, Nat.cast_mul, Nat.card_eq_fintype_card]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_prod_le {α β : Type} [Fintype α] [Fintype β] (g : α × β → ℝ) (X : ℝ) (h : ∀ p, g p ≤ X) :
     ∑ p, g p ≤ (Nat.card α : ℝ) * (Fintype.card β : ℝ) * X := by
@@ -308,45 +308,39 @@ theorem sum_prod_le {α β : Type} [Fintype α] [Fintype β] (g : α × β → �
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨C₀, hC₀, hmean⟩` from `GlobalTheory.T.exists_bound_means_posLog_area_normalisedTheta`. Use `⟨1100 + 4 * C₀, by positivity, ?_⟩` and prove the remaining obligations. Introduce `D hI cc δ t0 Q hc ht hQ K _ _ _ σ N B L P x hN hB hL hrL hdL hsm hx`. Take `⟨-, -, hr, hf, hcard, -⟩` from `GlobalTheory.T.derivationDenominators_and_hostField_sizes D hI.g1`. Take `⟨hdata, htor⟩` from `(GlobalTheory.T.admJ_and_torsion_data_algebraic D hI.g1).2 cc δ hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hcd, hJ⟩` from `GlobalTheory.NormSum.cls_finite_card_le D P.d`. Take `⟨hfin, hch⟩` from `hJ P.J P.J_le P.idx_ne`. Establish `hca` using `(GlobalTheory.NormSum.cls_finite_card_le D P.a).2.1`. Establish `hcT` using `(GlobalTheory.MinorBound.minor_bound D P.a P.d P.n (fun _ => 0) 0 1 B one_pos hB le_rfl hsm.2 (differentiable_const _) (fun z => by simp)).1`. Establish `hcoord` using `GlobalTheory.T.thetaPair_coordinates_conjugate_bound D hI cc δ t0 Q hc ht P hQ B hB hsm.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `_ : Fintype (Cls D P.d P.J)` to `Fintype.ofFinite _`. Establish `hwp : wpF (lamOf D cc δ) t0 ∈ Qbar`. Use `(htor t0 ⟨2, two_pos, by exact_mod_cast ht.1⟩ fun h0 => ?_).1` and prove the remaining obligations. Take `⟨a, ha⟩` from `GlobalTheory.NormSum.exists_integer_map_eq_w0 D`. Establish `h1` using `mul_mem_lamOf D cc δ a h0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[ha, mul_comm]`. Conclude with `ht.2.1 h1`. Establish `hz : ∀ h T, P.coord h T ∈ Qbar` using `fun h T => by`. Take `⟨t', ht'⟩` from `(hI.t0Ex cc δ hc).2 Qbar Qbar.val hdata.2.1 hdata.2.2`. Conclude with `(hcoord Qbar.val t' ht' h T).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `b` to `Module.finBasis ℚ K`. Take `⟨M, hM1, hM2, hM⟩` from `exists_galois (Set.range (fun i => σ (b i)) ∪ Set.range (fun p : Cls D P.d P.J × Tup D P.a P.d P.n => P.coord p.1.out p.2) ∪ {g2 (lamOf D cc δ), g3 (lamOf D cc δ), wpF (lamOf D cc δ) t0}) (((Set.finite_range _).union (Set.finite_range _)).union (Set.toFinite _)) (by`. Introduce and unpack `y ((⟨i, rfl⟩ | ⟨p, rfl⟩) | rfl | rfl | rfl)`. Conclude with `mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) (b i)).algHom σ.toRatAlgHom)`. Conclude with `hz _ _`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdata.2.1`. Conclude with `hdata.2.2`. Conclude with `hwp)`. Establish `hσ : ∀ y, σ y ∈ M` using `fun y => by`. Rewrite using `[← b.sum_repr y, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_rat_smul]`. Conclude with `M.smul_mem (hM _ (Or.inl (Or.inl ⟨i, rfl⟩)))`. Establish `h2 : g2 (lamOf D cc δ) ∈ M` using `hM _ (Or.inr (by simp))`. Establish `h3 : g3 (lamOf D cc δ) ∈ M` using `hM _ (Or.inr (by simp))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : wpF (lamOf D cc δ) t0 ∈ M` using `hM _ (Or.inr (by simp))`. Establish `hzM : ∀ p : Cls D P.d P.J × Tup D P.a P.d P.n, P.coord p.1.out p.2 ∈ M` using `fun p => hM _ (Or.inl (Or.inr ⟨p, rfl⟩))`. Use `choose t htt using fun ρ : M →ₐ[ℚ] ℂ => (hI.t0Ex cc δ hc).2 M ρ h2 h3`. Take `⟨hu, hv⟩` from `hmean D hI cc δ t0 hc ht L hL hrL hdL M h2 h3 h4 t htt`. Use `(GlobalTheory.ArchMean.meanInf_posLog_le K σ x M (Cls D P.d P.J × Tup D P.a P.d P.n) (fun p => ((gam D P.J p.1.out : ℚ))⁻¹) (fun p => ⟨P.coord p.1.out p.2, hzM p⟩) hσ (fun p => by positivity) ?_).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hx, Pair.norm, finsum_eq_sum_of_fintype, Fintype.sum_prod_type]`. Use `push_cast`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[Pair.sq, Complex.ofReal_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Complex.mul_conj']`. Use `push_cast`. Both sides reduce to the same expression. Establish `hs : ((∑ τ, P.n τ : ℕ) : ℝ) ≤ 2 * fF D * B`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Finset.sum_le_card_nsmul _ _ _ fun τ _ => hsm.2 τ).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.card_univ, hcard, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hf' : (1 : ℝ) ≤ fF D` using `by exact_mod_cast hf`. Establish `hn : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hm0 : 0 ≤ Real.log (B * (2 * (N : ℝ)))` using `Real.log_nonneg (by nlinarith)`. Establish `hfn : 1 ≤ (fF D : ℝ) * (2 * (N : ℝ))` using `by nlinarith`. Establish `hl0 : 0 ≤ Real.log ((fF D : ℝ) * (2 * (N : ℝ)) * B)` using `Real.log_nonneg (by nlinarith)`. Establish `hq0 : 0 ≤ Real.log Q` using `Real.log_natCast_nonneg Q`. Use `set E₀ : ℝ := 1100 * fF D * (2 * (N : ℝ)) * B * (L + Real.log (B * (2 * (N : ℝ)))) + 1100 * fF D * (N : ℝ) ^ 2 * (L + Real.log ((fF D : ℝ) * (2 * (N : ℝ)) * B)) + 1100 * (N : ℝ) ^ 2 * Real.log Q with hE₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ ρ : M →ₐ[ℚ] ℂ, Real.posLog (∑ p : Cls D P.d P.J × Tup D P.a P.d P.n, ((((gam D P.J p.1.out : ℚ))⁻¹ : ℚ) : ℝ) * ‖ρ ⟨P.coord p.1.out p.2, hzM p⟩‖ ^ 2) ≤ E₀ + (4 * fF D * (N : ℝ) ^ 2 * Real.posLog (nrm1Sq (lamConj M ρ (lamOf D cc δ)) (GL3Theta.th0 (lamConj M ρ (lamOf D cc δ) …`. Introduce `ρ`. Take `⟨ρ', hρ⟩` from `exists_extension M ρ`. Establish `hl : lamConj Qbar ρ' (lamOf D cc δ) = lamConj M ρ (lamOf D cc δ)`. Unfold `lamConj`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hρ _ h2, hρ _ h3]`. Establish `hb` using `hcoord ρ' (t ρ) (hl ▸ htt ρ)`. Rewrite `hb` using `[hl]`. Establish `h5 : 0 ≤ Real.posLog (nrm1Sq (lamConj M ρ (lamOf D cc δ)) (GL3Theta.th0 (lamConj M ρ (lamOf D cc δ)) (t ρ)))` using `Real.posLog_nonneg`. Establish `h6 : 0 ≤ Real.posLog (area (lamConj M ρ (lamOf D cc δ)))⁻¹` using `Real.posLog_nonneg`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `posLog_le_of_le_exp (by positivity) (by positivity) (le_trans ?_ (sizes (fF D) N P.a P.d (∑ τ, P.n τ) Q (Nat.card (Cls D P.d P.J)) (Fintype.card (Tup D P.a P.d P.n)) _ _ B L D.host.rdE _ _ hf hN P.a_le hsm.1 hs hQ hB hL hr hrL (lattice_unitNormSq_nonneg _ _) (area_nonneg _) (hch. …` and prove the remaining obligations. Use `sum_prod_le _ _ fun p => ?_` and prove the remaining obligations. Use `le_trans ?_ (hb p.1.out p.2).2` and prove the remaining obligations. Establish `hg` using `(GlobalTheory.StabOrder.gam_ne_zero_dvd_invariant D P.d P.J P.J_le p.1.out).1`. Establish `hg1 : ((((gam D P.J p.1.out : ℚ))⁻¹ : ℚ) : ℝ) ≤ 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Conclude with `inv_le_one_of_one_le₀ (by exact_mod_cast Nat.one_le_iff_ne_zero.2 hg)`. Establish `he : cj Qbar ρ' (P.coord p.1.out p.2) = ρ ⟨P.coord p.1.out p.2, hzM p⟩`. Unfold `cj`. Rewrite using `[hρ _ (hzM p)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `TaylorLogMetric.liftM`. Rewrite using `[dif_pos (hzM p)]`. Rewrite using `[he]`. Conclude with `mul_le_of_le_one_left (by positivity) hg1`. Use `clear_value E₀`.
-
-Establish `hM0 : (0 : ℝ) < Module.finrank ℚ M` using `by exact_mod_cast Module.finrank_pos`. Use `(div_le_div_of_nonneg_right (Finset.sum_le_sum fun ρ _ => key ρ) hM0.le).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, AlgHom.card, nsmul_eq_mul, add_div, add_div, mul_div_cancel_left₀ _ hM0.ne', mul_div_assoc, mul_div_assoc]`. Establish `p1` using `mul_le_mul_of_nonneg_left hu (show (0 : ℝ) ≤ 4 * fF D * N * B by positivity)`. Establish `p2` using `mul_le_mul_of_nonneg_left hv (show (0 : ℝ) ≤ 4 * fF D * (N : ℝ) ^ 2 by positivity)`.
-
-Establish `p3 : 0 ≤ C₀ * fF D * N * B * L` using `by positivity`. Establish `p4 : 0 ≤ C₀ * fF D * N * B * Real.log (B * (2 * (N : ℝ)))` using `by positivity`. Establish `p5 : 0 ≤ C₀ * fF D * (N : ℝ) ^ 2 * Real.log ((fF D : ℝ) * (2 * (N : ℝ)) * B)` using `by positivity`. Establish `p6 : 0 ≤ C₀ * (N : ℝ) ^ 2 * Real.log Q` using `by positivity`. Rewrite using `[hE₀]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_meanInf_posLog_le : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7), Inp D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ) (Q : ℕ), Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → 0 < Q → ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (σ : K →+* ℂ) (N : ℕ) (B L : ℝ) (P : Pair D cc δ t0 Q) (x : K), 1 ≤ N → 1 ≤ B → 1 ≤ L → Real.log D.host.rdE ≤ L → |logDerivativeAtOne D| ≤ L → P.Small N B → σ x = (P.norm : ℂ) → Formalism.PairingDivisionLocalBalance.meanInf K (fun v => Real.posLog ‖v.embedding x‖) ≤ C * fF D * (2 * (N : ℝ)) * B * (L + Real.log (B * (2 * (N : ℝ)))) + C * fF D * (N : ℝ) ^ 2 * (L + Real.log ((fF D : ℝ) * (2 * (N : ℝ)) * B)) + C * (N : ℝ) ^ 2 * Real.log Q := by
   obtain ⟨C₀, hC₀, hmean⟩ := GlobalTheory.T.exists_bound_means_posLog_area_normalisedTheta

@@ -8,15 +8,13 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Al
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ Ξ' S h`. Establish `h1 : ∀ X : Matrix (Fin a) (Fin a) (Cinf E), (Ξ.dmat (toL X), Ξ'.dmat (toL X)) ∈ S`. Introduce `X`. Establish `e : (Ξ.dmat (toL X), Ξ'.dmat (toL X)) = ∑ τ : E →+* ℂ, ∑ i, ∑ j, (X.map (coord τ)) i j • (eL Ξ.dmat τ i j, eL Ξ'.dmat τ i j)`. Rewrite using `[lieDecomp E a _ Ξ.dmat X, lieDecomp E a _ Ξ'.dmat X]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [hol_apply, Prod.fst_sum, Prod.smul_fst]`. Simplify using `only [hol_apply, Prod.snd_sum, Prod.smul_snd]`. Rewrite using `[e]`. Conclude with `S.sum_mem fun τ _ => S.sum_mem fun i _ => S.sum_mem fun j _ => S.smul_mem (h τ i j) _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun X => h1 (Matrix.of X), fun y => ?_⟩` and prove the remaining obligations. Set `H : Submonoid (GL (Fin a) (Cinf E))` to `{ carrier := {y | (Ξ.mat y, Ξ'.mat y) ∈ S} one_mem' := by`. Express the relevant statement in the definitionally equal form `(Ξ.mat 1, Ξ'.mat 1) ∈ S`. Rewrite using `[map_one, map_one]`. Conclude with `S.one_mem`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Use the proof step `mul_mem' := by`. Introduce `x y hx hy`. Express the relevant statement in the definitionally equal form `(Ξ.mat (x * y), Ξ'.mat (x * y)) ∈ S`. Rewrite using `[map_mul, map_mul]`. Conclude with `S.mul_mem hx hy }`.
-
-Use `expGen E a H (fun X y hy => ?_) y` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Ξ.mat y, Ξ'.mat y) ∈ S`. Rewrite using `[expMat E a Ξ X y hy, expMat E a Ξ' X y hy]`. Conclude with `expSub _ _ S _ _ (h1 X)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.pairAlg :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (Ξ Ξ' : AlgRep E a)

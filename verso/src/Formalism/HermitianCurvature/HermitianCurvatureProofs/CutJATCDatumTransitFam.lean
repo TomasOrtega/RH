@@ -17,22 +17,22 @@ def ONb (k r : ℕ) (e : Fin (k + 1) → Fin (2 * r + k + 1) → ℂ) : Prop :=
     ∀ a b, herm (Hpk k r) (e a) (e b) = if a = b then (if a.val = k then -1 else 1) else 0
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> simp only [Hpk] <;> split_ifs <;> first | rfl | (exfalso; omega)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_out_in {i j : Fin (2 * r + k + 1)} (hi : i.val < r ∨ r + k < i.val) (hj : r ≤ j.val ∧ j.val ≤ r + k) :
     Hpk k r i j = 0 ∧ Hpk k r j i = 0 := by
   constructor <;> simp only [Hpk] <;> split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `[herm, bvec, dotProduct, Matrix.mulVec, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_bvec_bvec (i j : Fin (2 * r + k + 1)) : herm (Hpk k r) (bvec i) (bvec j) = Hpk k r j i := by
   simp [herm, bvec, dotProduct, Matrix.mulVec, Pi.single_apply]
 
 /- English proof (translation)
-Establish `hc : ∀ l, (Hpk k r *ᵥ bvec i) l = Hpk k r l i` using `fun l => by`. Simplify using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`. Simplify using `only [herm, dotProduct, hc]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hl : r ≤ l.val ∧ l.val ≤ r + k`. Rewrite using `[(hpk_out_in hi hl).2, mul_zero]`. Rewrite using `[Pi.star_apply, hw l (by omega), star_zero, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_bvec_w {i : Fin (2 * r + k + 1)} (hi : i.val < r ∨ r + k < i.val) {w : Fin (2 * r + k + 1) → ℂ}
     (hw : inWb k r w) : herm (Hpk k r) (bvec i) w = 0 := by
@@ -46,9 +46,9 @@ theorem herm_bvec_w {i : Fin (2 * r + k + 1)} (hi : i.val < r ∨ r + k < i.val)
   · rw [Pi.star_apply, hw l (by omega), star_zero, zero_mul]
 
 /- English proof (translation)
-Establish `hc : herm (Hpk k r) w (bvec i) = (Hpk k r *ᵥ w) i`. Simplify using `[herm, bvec, dotProduct, Pi.single_apply]`. Rewrite using `[hc]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l _`. Distinguish the cases in `hl : r ≤ l.val ∧ l.val ≤ r + k`. Rewrite using `[(hpk_out_in hi hl).1, zero_mul]`. Rewrite using `[hw l (by omega), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_w_bvec {i : Fin (2 * r + k + 1)} (hi : i.val < r ∨ r + k < i.val) {w : Fin (2 * r + k + 1) → ℂ}
     (hw : inWb k r w) : herm (Hpk k r) w (bvec i) = 0 := by
@@ -63,7 +63,7 @@ theorem herm_w_bvec {i : Fin (2 * r + k + 1)} (hi : i.val < r ∨ r + k < i.val)
   · rw [hw l (by omega), mul_zero]
 
 /- English proof (translation)
-Simplify using `only [fam]`. Rewrite using `[dif_pos h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fam_in {e : Fin (k + 1) → Fin (2 * r + k + 1) → ℂ} {i : Fin (2 * r + k + 1)} (h : r ≤ i.val ∧ i.val ≤ r + k) :
     fam k r e i = e ⟨i.val - r, by omega⟩ := by
@@ -71,7 +71,7 @@ theorem fam_in {e : Fin (k + 1) → Fin (2 * r + k + 1) → ℂ} {i : Fin (2 * r
   rw [dif_pos h]
 
 /- English proof (translation)
-Simplify using `only [fam]`. Rewrite using `[dif_neg]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem fam_out {e : Fin (k + 1) → Fin (2 * r + k + 1) → ℂ} {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val) :
     fam k r e i = bvec i := by
@@ -80,9 +80,9 @@ theorem fam_out {e : Fin (k + 1) → Fin (2 * r + k + 1) → ℂ} {i : Fin (2 * 
   omega
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases hi : r ≤ i.val ∧ i.val ≤ r + k <;> by_cases hj : r ≤ j.val ∧ j.val ≤ r + k`. Rewrite using `[fam_in hi, fam_in hj, he.2]`. Simplify using `only [Hpk]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff, Fin.val_mk] at *) <;> first | rfl | (exfalso; omega)`. Rewrite using `[fam_in hi, fam_out (i := j) (by omega), herm_w_bvec (i := j) (by omega) (he.1 _), (hpk_out_in (i := j) (j := i) (by omega) hi).1]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fam_out (i := i) (by omega), fam_in hj, herm_bvec_w (i := i) (by omega) (he.1 _), (hpk_out_in (i := i) (j := j) (by omega) hj).2]`. Rewrite using `[fam_out (i := i) (by omega), fam_out (i := j) (by omega), herm_bvec_bvec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem famGram {e : Fin (k + 1) → Fin (2 * r + k + 1) → ℂ} (he : ONb k r e) (i j : Fin (2 * r + k + 1)) :
     herm (Hpk k r) (fam k r e i) (fam k r e j) = Hpk k r j i := by
@@ -97,9 +97,9 @@ theorem famGram {e : Fin (k + 1) → Fin (2 * r + k + 1) → ℂ} (he : ONb k r 
   · rw [fam_out (i := i) (by omega), fam_out (i := j) (by omega), herm_bvec_bvec]
 
 /- English proof (translation)
-Use `i.isLt` as an intermediate fact. Break down `hi with hi | hi` into its components or cases. Use `left`. Conclude with `⟨⟨i.val, hi⟩, Fin.ext rfl⟩`. Use `right`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨⟨2 * r + k - i.val, by omega⟩, Fin.ext ?_⟩` and prove the remaining obligations. Use `show i.val = 2 * r + k - (2 * r + k - i.val)`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem out_cases {i : Fin (2 * r + k + 1)} (hi : i.val < r ∨ r + k < i.val) :
     (∃ a : Fin r, i = eI k r a) ∨ (∃ a : Fin r, i = esI k r a) := by
@@ -113,7 +113,7 @@ theorem out_cases {i : Fin (2 * r + k + 1)} (hi : i.val < r ∨ r + k < i.val) :
     omega
 
 /- English proof (translation)
-Take `⟨_, h2⟩` from `hg`. Break down `out_cases hi with ⟨a, rfl⟩ | ⟨a, rfl⟩` into its components or cases. Conclude with `(h2 a (by rw [Fin.val_last]; exact a.isLt)).1`. Conclude with `(h2 a (by rw [Fin.val_last]; exact a.isLt)).2`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem glev_fix {g : Q.Mx k r} (hg : g ∈ Q.Glev k r (Fin.last r)) {i : Fin (2 * r + k + 1)}
     (hi : i.val < r ∨ r + k < i.val) : g *ᵥ bvec i = bvec i := by
@@ -123,7 +123,7 @@ theorem glev_fix {g : Q.Mx k r} (hg : g ∈ Q.Glev k r (Fin.last r)) {i : Fin (2
   · exact (h2 a (by rw [Fin.val_last]; exact a.isLt)).2
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `hg`. Conclude with `⟨h1, fun a _ => h2 a⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem uw_glev {z : Fin (2 * r + k + 1) → ℂ} {g : Q.Mx k r} (hg : g ∈ UWset k r z) : g ∈ Q.Glev k r (Fin.last r) := by
   obtain ⟨h1, h2, -⟩ := hg

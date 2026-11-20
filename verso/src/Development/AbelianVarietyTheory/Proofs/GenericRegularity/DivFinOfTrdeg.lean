@@ -20,7 +20,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Reg
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[IntermediateField.fg_top_iff]`. Use `haveI : Algebra.EssFiniteType K (FractionRing (MvPolynomial σ K)) := Algebra.EssFiniteType.comp K (MvPolynomial σ K) _`. Conclude with `Algebra.EssFiniteType.comp F K _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fg_lemma {F K : Type} [Field F] [Field K] [Algebra F K] (σ : Type) [Finite σ]
     (h : (⊤ : IntermediateField F K).FG) :
@@ -31,7 +31,7 @@ private theorem fg_lemma {F K : Type} [Field F] [Field K] [Algebra F K] (σ : Ty
   exact Algebra.EssFiniteType.comp F K _
 
 /- English proof (translation)
-Establish `h1 : Algebra.trdeg (MvPolynomial σ K) (FractionRing (MvPolynomial σ K)) = 0` using `trdeg_eq_zero_iff.2 (IsLocalization.isAlgebraic _ (nonZeroDivisors _))`. Establish `h2` using `trdeg_add_eq (A := FractionRing (MvPolynomial σ K)) K (MvPolynomial σ K)`. Rewrite `h2` using `[h1, add_zero, MvPolynomial.trdeg_of_isDomain, Cardinal.lift_id]`. Establish `h3` using `trdeg_add_eq (A := FractionRing (MvPolynomial σ K)) F K`. Rewrite using `[← h3, h, ← h2, Nat.cast_add, Nat.cast_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem trdeg_fractionRing_mvPolynomial {F K : Type} [Field F] [Field K] [Algebra F K] (σ : Type) [Finite σ] (n : ℕ)
     (h : Algebra.trdeg F K = n) :
@@ -44,9 +44,9 @@ private theorem trdeg_fractionRing_mvPolynomial {F K : Type} [Field F] [Field K]
   rw [← h3, h, ← h2, Nat.cast_add, Nat.cast_card]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ d hD hdim hw hjc htr Z r hr`. Take `⟨hfg, htd⟩` from `kap_fg_trdeg E H Dw l Xo c`. Establish `hFG : (⊤ : IntermediateField c.F (Om Z)).FG` using `fg_lemma (FlagVar Dw) (hfg Z)`. Establish `hT : Algebra.trdeg c.F (Om Z) = d.D`. Rewrite using `[hdim]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `trdeg_fractionRing_mvPolynomial (FlagVar Dw) Dw.dim (htd Z)`. Establish `hrk : ∀ G, Module.finrank (Om Z) (AG Z G) = 1` using `fun G => finrank_span_singleton (AddMonoidAlgebra.single_ne_zero.mpr one_ne_zero)`. Conclude with `(GlobalTheory.finite_support_and_density_and_aemeasurable.1 c.F (Comp Xo c) (fun Z => Om Z) (WTZ E) (fun Z => AC Z) (fun Z G => AG Z G) d Z hD hFG hT hrk (hw Z) (hjc Z) (htr Z)).1 r hr`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem divFin_of_trdeg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ [Fintype (Comp Xo c)] (d : ReciprocityTheory.ChartRestriction.G.T0.Data c.F (Comp Xo c) (fun Z => Om Z) (WTZ E) (fun Z => AC Z)), 1 ≤ d.D → d.D = Dw.dim + Nat.card (FlagVar Dw) → (∀ Z j, d.w j Z ∈ AG Z d.wL) → (∀ Z, d.w (d.jc Z) Z ≠ 0) → (∀ Z, ReciprocityTheory.ChartRestriction.G.AR.Up.TrdegD d Z) → DivFin d := by
   intro E _ _ _ H Dw l Xo c _ d hD hdim hw hjc htr Z r hr

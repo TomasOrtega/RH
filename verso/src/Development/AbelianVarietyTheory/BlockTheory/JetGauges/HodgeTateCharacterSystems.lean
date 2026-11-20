@@ -17,7 +17,7 @@ variable {O : Type u} [CommRing O] [IsLocalRing O] (G : Over (Spec (CommRingCat.
 def unitSec : Spec (CommRingCat.of O) ⟶ G.left := η[G].left
 
 /- English proof (translation)
-The claim follows from `Over.w η[G]`.
+A detailed English derivation is pending.
 -/
 lemma unitSec_hom : unitSec G ≫ G.hom = 𝟙 _ := Over.w η[G]
 
@@ -39,18 +39,18 @@ def augMap : CommRingCat.of (LocRing G) ⟶ CommRingCat.of O :=
   Scheme.stalkClosedPointTo (unitSec G)
 
 /- English proof (translation)
-The claim follows from `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (unitSec G)`.
+A detailed English derivation is pending.
 -/
 lemma spec_augMap : Spec.map (augMap G) ≫ fromLoc G = unitSec G :=
   Scheme.Spec_stalkClosedPointTo_fromSpecStalk (unitSec G)
 
 /- English proof (translation)
-The claim follows from `Spec.map_preimage _`.
+A detailed English derivation is pending.
 -/
 lemma spec_strMap : Spec.map (strMap G) = fromLoc G ≫ G.hom := Spec.map_preimage _
 
 /- English proof (translation)
-Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, spec_strMap, ← Category.assoc, spec_augMap, unitSec_hom, Spec.map_id]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 lemma strMap_augMap : strMap G ≫ augMap G = 𝟙 _ := by
   apply Spec.map_injective
@@ -71,7 +71,7 @@ instance : Module O (Cotangent G) := inferInstanceAs (Module O (augIdeal G).Cota
 abbrev Lie : Type u := Module.Dual O (Cotangent G)
 
 /- English proof (translation)
-Rewrite using `[augIdeal, RingHom.mem_ker]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma sub_aug_mem (a : LocRing G) : a - algebraMap O (LocRing G) (aug G a) ∈ augIdeal G := by
   rw [augIdeal, RingHom.mem_ker]
@@ -81,9 +81,9 @@ def dAt (a : LocRing G) : Cotangent G :=
   (augIdeal G).toCotangent ⟨a - algebraMap O (LocRing G) (aug G a), sub_aug_mem G a⟩
 
 /- English proof (translation)
-Unfold `dAt`. Establish `e : (⟨a + b - algebraMap O (LocRing G) (aug G (a + b)), sub_aug_mem G (a + b)⟩ : augIdeal G) = ⟨a - algebraMap O (LocRing G) (aug G a), sub_aug_mem G a⟩ + ⟨b - algebraMap O (LocRing G) (aug G b), sub_aug_mem G b⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [map_add, Submodule.coe_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `map_add _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dAt_add (a b : LocRing G) : dAt G (a + b) = dAt G a + dAt G b := by
   unfold dAt
@@ -97,9 +97,9 @@ lemma dAt_add (a b : LocRing G) : dAt G (a + b) = dAt G a + dAt G b := by
   exact map_add _ _ _
 
 /- English proof (translation)
-Unfold `dAt`. Establish `e : (⟨algebraMap O (LocRing G) r - algebraMap O (LocRing G) (aug G (algebraMap O (LocRing G) r)), sub_aug_mem G _⟩ : augIdeal G) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero _`.
+A detailed English derivation is pending.
 -/
 lemma dAt_algebraMap (r : O) : dAt G (algebraMap O (LocRing G) r) = 0 := by
   unfold dAt
@@ -111,11 +111,11 @@ lemma dAt_algebraMap (r : O) : dAt G (algebraMap O (LocRing G) r) = 0 := by
   exact map_zero _
 
 /- English proof (translation)
-Unfold `dAt`. Establish `ha` using `sub_aug_mem G a`. Establish `hb` using `sub_aug_mem G b`. Establish `e : (⟨a * b - algebraMap O (LocRing G) (aug G (a * b)), sub_aug_mem G (a * b)⟩ : augIdeal G) = algebraMap O (LocRing G) (aug G a) • ⟨b - algebraMap O (LocRing G) (aug G b), hb⟩ + algebraMap O (LocRing G) (aug G b) • ⟨a - algebraMap O (LocRing G) (aug G a), ha⟩ + ⟨(a - algebraMap …`. Apply `Subtype.ext` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [map_mul, Submodule.coe_add, Submodule.coe_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : (augIdeal G).toCotangent ⟨(a - algebraMap O (LocRing G) (aug G a)) * (b - algebraMap O (LocRing G) (aug G b)), Ideal.mul_mem_left _ _ hb⟩ = 0`. Rewrite using `[Ideal.toCotangent_eq_zero, pow_two]`. Conclude with `Ideal.mul_mem_mul ha hb`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `show (augIdeal G).toCotangent (_ + _ + _) = aug G a • (augIdeal G).toCotangent _ + aug G b • (augIdeal G).toCotangent _`. Rewrite using `[map_add, map_add, hz, add_zero, map_smul, map_smul, algebraMap_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dAt_mul (a b : LocRing G) : dAt G (a * b) = aug G a • dAt G b + aug G b • dAt G a := by
   unfold dAt
@@ -193,9 +193,7 @@ def tangentPt {R : Type u} [CommRing R] [Algebra O R] (v : Cotangent G →ₗ[O]
     exact (tangentAlg v).commutes r)
 
 /- English proof (translation)
-Use `show (Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).hom.hom ((Spec.map (CommRingCat.ofHom (tangentAlg v).toRingHom) ≫ fromLoc G).appTop.hom s) = _`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.comp_apply, fromLoc, Scheme.fromSpecStalk_appTop]`. Simplify using `only [CommRingCat.comp_apply, homOfLE_refl, op_id, CategoryTheory.Functor.map_id, CommRingCat.id_apply]`. Rewrite using `[← CommRingCat.comp_apply (Scheme.Hom.appTop _), Scheme.ΓSpecIso_naturality]`. Use `show (tangentAlg v) ((Scheme.ΓSpecIso (G.left.presheaf.stalk (origin G))).hom ((Scheme.ΓSpecIso (G.left.presheaf.stalk (origin G))).inv (G.left.presheaf.germ ⊤ (origin G) trivial s))) = _`.
-
-Rewrite using `[Iso.inv_hom_id_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma readFn_tangentPt {R : Type u} [CommRing R] [Algebra O R] (v : Cotangent G →ₗ[O] R)
     (s : Γ(G.left, ⊤)) :
@@ -217,7 +215,7 @@ section Characters
 variable {S : Scheme.{u}} {G : Over S} [GrpObj G]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Rewrite using `[mulN.eq_1, pow_zero, Hom.one_def, ← Category.assoc, toUnit_unique (x ≫ toUnit G) (toUnit T)]`. Consider the case `succ n ih`. Rewrite using `[mulN.eq_2, ← Category.assoc, comp_lift, ih, Category.comp_id, pow_succ, Hom.mul_def]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma comp_mulN {T : Over S} (x : T ⟶ G) (N : ℕ) : x ≫ mulN G N = x ^ N := by
   induction N with
@@ -230,14 +228,14 @@ def torsionLift {N : ℕ} {T : Over S} (x : T ⟶ G) (hx : x ^ N = 1) : T ⟶ to
   Limits.pullback.lift x (toUnit T) (by rw [comp_mulN, hx, Hom.one_def])
 
 /- English proof (translation)
-The claim follows from `Limits.pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma torsionLift_ι {N : ℕ} {T : Over S} (x : T ⟶ G) (hx : x ^ N = 1) :
     torsionLift x hx ≫ torsion.ι G N = x :=
   Limits.pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Rewrite using `[← comp_mulN]`. Express the relevant statement in the definitionally equal form `Limits.pullback.fst (mulN G N) η ≫ mulN G N = 1`. Rewrite using `[Limits.pullback.condition, Hom.one_def, toUnit_unique (Limits.pullback.snd _ _) (toUnit _)]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma torsion_ι_pow (N : ℕ) : torsion.ι G N ^ N = 1 := by
   rw [← comp_mulN]
@@ -319,11 +317,9 @@ def HodgeTateInclusion (O : ValuationSubring C) (p : ℕ) (G : Over (Spec (CommR
   (∃ ζ : O, IsPrimitiveRoot ζ p) ∧ ∀ ζ : O, IsPrimitiveRoot ζ p → HTInclusionAt G p ζ
 
 /- English proof (translation)
-Take `⟨hp, hac, hcz, -, -⟩` from `h`. Use `haveI := hac`. Use `haveI := hcz`. Use `haveI : NeZero (p : C) := ⟨by exact_mod_cast hp.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot C p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hmem : ζ ∈ O`. Apply `O.mem_of_valuation_le_one` to reduce the goal to its premises. Establish `h1 : O.valuation ζ ^ p = 1` using `by rw [← map_pow, hζ.pow_eq_one, map_one]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
-
-Establish `h2` using `one_lt_pow' hlt hp.ne_zero`. Rewrite `h2` using `[h1]`. Conclude with `lt_irrefl _ h2`. Conclude with `⟨⟨ζ, hmem⟩, IsPrimitiveRoot.of_map_of_injective (f := O.subtype) (by exact hζ) Subtype.coe_injective⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsPadicCompleteSetting.exists_isPrimitiveRoot {O : ValuationSubring C} {p : ℕ}
     (h : IsPadicCompleteSetting O p) : ∃ ζ : O, IsPrimitiveRoot ζ p := by

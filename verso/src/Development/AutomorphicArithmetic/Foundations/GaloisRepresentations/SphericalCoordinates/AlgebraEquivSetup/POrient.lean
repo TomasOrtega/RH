@@ -17,7 +17,7 @@ private def dv (A : Arith E) (n : ℕ) (σ : E →+* ℂ) (i : Fin n) : ℂ :=
   if 0 < (σ (A.hd n i : E)).re then Complex.I else -Complex.I
 
 /- English proof (translation)
-Take `⟨-, -, h1, h2⟩` from `hS E A n σ i`. Distinguish the cases in `h : InfinitePlace.mk σ = InfinitePlace.mk A.τ₀ ∧ (i : ℕ) = 0`. Conclude with `(h1 h).ne'`. Conclude with `(h2 h).ne`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 private theorem hd_ne (hS : HdSign) (A : Arith E) (n : ℕ) (σ : E →+* ℂ) (i : Fin n) : (σ (A.hd n i : E)).re ≠ 0 := by
   obtain ⟨-, -, h1, h2⟩ := hS E A n σ i
@@ -26,22 +26,22 @@ private theorem hd_ne (hS : HdSign) (A : Arith E) (n : ℕ) (σ : E →+* ℂ) (
   · exact (h2 h).ne
 
 /- English proof (translation)
-Apply the tactic sequence `unfold dv; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dv_sq (A : Arith E) (n : ℕ) (σ : E →+* ℂ) (i : Fin n) : dv A n σ i * dv A n σ i = -1 := by
   unfold dv; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `unfold dv; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dv_conj (A : Arith E) (n : ℕ) (σ : E →+* ℂ) (i : Fin n) :
     (starRingEnd ℂ) (dv A n σ i) = -dv A n σ i := by
   unfold dv; split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gramAt, Arith.H, Matrix.transpose_apply, Matrix.map_apply, Matrix.diagonal_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gram_diag (A : Arith E) (n : ℕ) (σ : E →+* ℂ) :
     gramAt (A.H n) σ = Matrix.diagonal fun i => σ (A.hd n i : E) := by
@@ -53,13 +53,13 @@ private theorem gram_diag (A : Arith E) (n : ℕ) (σ : E →+* ℂ) :
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Establish `hh : h = ((h.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [hi])`. Use `split_ifs with hp`. Rewrite using `[abs_of_pos hp]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hh]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Rewrite using `[hh]`. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[abs_of_neg (lt_of_le_of_ne (not_lt.mp hp) hr)]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hh]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hh]`. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem real_abs (h : ℂ) (hi : h.im = 0) (hr : h.re ≠ 0) :
     -Complex.I * (h * (if 0 < h.re then Complex.I else -Complex.I)) = ((|h.re| : ℝ) : ℂ) ∧
@@ -87,7 +87,7 @@ private theorem real_abs (h : ℂ) (hi : h.im = 0) (hr : h.re ≠ 0) :
 
 open scoped ComplexOrder in
 /- English proof (translation)
-Rewrite using `[Matrix.posDef_diagonal_iff]`. Introduce `i`. Conclude with `Complex.zero_lt_real.mpr (ha i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem posDiag {n : ℕ} (a : Fin n → ℝ) (ha : ∀ i, 0 < a i) :
     (Matrix.diagonal fun i => ((a i : ℝ) : ℂ)).PosDef := by
@@ -97,37 +97,33 @@ private theorem posDiag {n : ℕ} (a : Fin n → ℝ) (ha : ∀ i, 0 < a i) :
 
 open scoped Classical ComplexOrder in
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `(cmField_real_tensor_matrix_bijective_cmType hT A n).2 (fun τ : Phi A => Matrix.diagonal (dv A n τ.1))`. Establish `hJτ : ∀ τ : Phi A, evM τ.1 J = Matrix.diagonal (dv A n τ.1)` using `fun τ => congrFun hJ τ`. Establish `hne : ∀ (σ : E →+* ℂ) (i : Fin n), σ (A.hd n i : E) ≠ 0` using `fun σ i h0 => hd_ne hS A n σ i (by rw [h0]; simp)`. Take `⟨β, hβ1, hβ2⟩` from `hrep`. Use `⟨J, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(cmField_real_tensor_matrix_bijective_cmType hT A n).1 (funext fun τ => ?_) dsimp only` and prove the remaining obligations. Rewrite using `[map_mul, map_neg, map_one, hJτ, Matrix.diagonal_mul_diagonal]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Simplify using `[dv_sq]`. Simplify using `[Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]`. Use `(cmField_real_tensor_matrix_bijective_cmType hT A n).1 (funext fun τ => ?_) dsimp only` and prove the remaining obligations. Establish `key` using `evM_star (A.H n) (A.herm n) (A.det_ne n) τ.1 J`. Rewrite `key` using `[gram_diag, hJτ, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Rewrite using `[map_neg, hJτ]`. Use extensionality with `i j`. Establish `hk` using `congrFun (congrFun key i) j`. Rewrite `hk` using `[Matrix.diagonal_mul]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Substitute `hij` using the available equality. Simplify using `only [Matrix.diagonal_apply_eq, Pi.star_apply, Matrix.neg_apply] at hk ⊢`. Apply `mul_left_cancel₀ (hne τ.1 i)` to reduce the goal to its premises. Rewrite using `[hk, Complex.star_def, dv_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Matrix.diagonal_apply_ne _ hij, Matrix.neg_apply, neg_zero] at hk ⊢`. Conclude with `(mul_eq_zero.mp hk).resolve_left (hne τ.1 i)`. Introduce `x hx`. Rewrite using `[cmField_hermitianForm_baseChange_real_eq_sum hT A n (β : ℚ ⊗[ℤ] (Fin n → 𝓞 E) →ₗ[ℚ] Fin n → E) hβ1]`. Establish `hterm : ∀ k : Phi A × Fin n, Th (fun τ : Phi A => (τ : E →+* ℂ)) (β : ℚ ⊗[ℤ] (Fin n → 𝓞 E) →ₗ[ℚ] Fin n → E) (actOn rep ℝ J x) k = dv A n k.1.1 k.2 * Th (fun τ : Phi A => (τ : E →+* ℂ)) (β : ℚ ⊗[ℤ] (Fin n → 𝓞 E) →ₗ[ℚ] Fin n → E) x k`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨τ, i⟩`. Rewrite using `[Th_act (fun τ : Phi A => (τ : E →+* ℂ)) (β : ℚ ⊗[ℤ] (Fin n → 𝓞 E) →ₗ[ℚ] Fin n → E) rep hβ2 J x τ i, hJτ, Matrix.mulVec_diagonal]`. Establish `hz : ∃ k, Th (fun τ : Phi A => (τ : E →+* ℂ)) (β : ℚ ⊗[ℤ] (Fin n → 𝓞 E) →ₗ[ℚ] Fin n → E) x k ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hx` to reduce the goal to its premises. Apply `cmType_trace_embedding_injective_of_linearEquiv hT A n β` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `k`. Conclude with `hc k`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨k₀, hk₀⟩` from `hz`. Establish `tp` using `fun (τ : Phi A) (i : Fin n) (z : ℂ) => term_pos (τ.1 A.δ) (τ.1 (A.hd n i : E)) z (hS E A n τ.1 i).2.1 (A.δ_sign τ.1 τ.2) (hS E A n τ.1 i).1 (hd_ne hS A n τ.1 i)`. Apply `Finset.sum_pos'` to reduce the goal to its premises. Introduce and unpack `⟨τ, i⟩ -`. Rewrite using `[hterm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `dv`. Conclude with `mul_nonneg two_pos.le (tp τ i _).1`. Use `⟨k₀, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Take `⟨τ, i⟩` from `k₀`. Rewrite using `[hterm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `dv`. Conclude with `mul_pos two_pos ((tp τ i _).2 hk₀)`. Introduce `v`. Take `⟨τ, hτv, -⟩` from `(hT E A).2.2.1 v`. Substitute `hτv` using the available equality.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hω` using `(hT E A).2.2.2`. Break down `InfinitePlace.embedding_mk_eq (τ : E →+* ℂ) with he | he` into its components or cases. Rewrite using `[he, if_pos τ.2, gram_diag, hJτ, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_smul]`. Establish `hf : (-Complex.I • fun i => τ.1 (A.hd n i : E) * dv A n τ.1 i) = fun i => (((|(τ.1 (A.hd n i : E)).re| : ℝ)) : ℂ)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `(real_abs _ (hS E A n τ.1 i).1 (hd_ne hS A n τ.1 i)).1`. Rewrite using `[hf]`. Conclude with `posDiag _ fun i => abs_pos.mpr (hd_ne hS A n τ.1 i)`. Establish `hc : ¬ (ComplexEmbedding.conjugate (τ : E →+* ℂ)) (A.ω : E) = A.τ₀ (A.ω : E)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `h`. Rewrite `h` using `[ComplexEmbedding.conjugate_coe_eq, τ.2]`. Conclude with `hω (Complex.conj_eq_iff_im.mp h)`. Rewrite using `[he, if_neg hc, gram_diag, evM_conj, hJτ, Matrix.diagonal_map (map_zero _), Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_smul]`. Establish `hf : (Complex.I • fun i => (ComplexEmbedding.conjugate (τ : E →+* ℂ)) (A.hd n i : E) * (starRingEnd ℂ) (dv A n τ.1 i)) = fun i => (((|(τ.1 (A.hd n i : E)).re| : ℝ)) : ℂ)`.
-
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[Complex.conj_eq_iff_im.mpr (hS E A n τ.1 i).1]`. Conclude with `(real_abs _ (hS E A n τ.1 i).1 (hd_ne hS A n τ.1 i)).2`. Rewrite using `[hf]`.
-
-Conclude with `posDiag _ fun i => abs_pos.mpr (hd_ne hS A n τ.1 i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orient_core (hT : TraceType) (hS : HdSign) (A : Arith E) (n : ℕ)
     (rep : Matrix (Fin n) (Fin n) E →ₐ[ℚ] Module.End ℚ (ℚ ⊗[ℤ] (Fin n → 𝓞 E))) (hrep : RepOK A n rep) :
@@ -226,7 +222,7 @@ private theorem orient_core (hT : TraceType) (hS : HdSign) (A : Arith E) (n : �
 end UpperTheory.Gal.W2.Seed.Ori
 
 /- English proof (translation)
-Introduce `hT hS E _ _ _ A n hn hs p _ P rep hrep`. Conclude with `UpperTheory.Gal.W2.Seed.Ori.orient_core hT hS A n rep hrep`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pOrient :
     TraceType → HdSign → Orient := by

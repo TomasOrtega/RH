@@ -19,15 +19,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Introduce `hnu`. Establish `hunder : (G.pl.w G.pl.v0).under (𝓞 D.host.F) = G.pl.v0` using `G.pl.under_w (G.pl.mem_S0_of_sum_eq.2 (Or.inl rfl))`. Establish `hnotS1 : G.pl.v0 ∉ S1 D` using `G.ch.basePlace_not_mem_chiGridBadPlaces`. Establish `hoff : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q t → PP.under (𝓞 D.host.F) ≠ (G.pl.w G.pl.v0).under (𝓞 D.host.F)`. Introduce `PP hPP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hunder]`. Break down `hPP with hP | hP` into its components or cases. Introduce `heq`. Apply `hnotS1` to reduce the goal to its premises. Take `⟨k, hk⟩` from `(hL.Pg PP).1 hP`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Establish `hmem` using `GlobalTheory.LevelPlaces.mem_of_div L.C.P k PP hk`. Establish `hF : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (PP.under (𝓞 D.host.F)).asIdeal`. Simplify using `using hmem`. Rewrite using `[← heq, S1_mem_OmF]`. Use `fin_cases k`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Prove the first alternative.
 
-Conclude with `Or.inl hF`. Conclude with `Or.inr (Or.inl hF)`. Conclude with `G.pl.levelPlace_ne_basePlace t PP hP`. Take `⟨hxi, hmu⟩` from `(GlobalTheory.levCh_unramified_places D T L μ₀ hL t).2.2.2 _ hoff`. Establish `hchi` using `(G.ch.lev0 (D.R.m - i) (by omega) (by omega) _ hunder).2`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hchi` to reduce the goal to its premises. Introduce `x hx`. Establish `h` using `hnu x hx`. Simplify using `only [SqNum.nuH, div_eq_mul_inv, HChar.loc_mul, HChar.loc_inv, hmu j x hx, hxi x hx, one_mul] at h`. Conclude with `inv_eq_one.mp h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem squareNuHeckeCharacter_not_unramified_at_chosenPlace {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (t : T) (i j : Fin D.R.m) :
     ¬ (SqNum.nuH G t i j).UnrAt (G.pl.w G.pl.v0) := by

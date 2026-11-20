@@ -19,9 +19,7 @@ noncomputable section
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Introduce `D S ν 𝓕 hν h𝓕 F hF a`. Use `haveI : IsTopologicalGroup (GA D S) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D S) := ⟨rfl⟩`. Use `haveI : Countable (GQ S) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig S.gram`. Use `haveI : ν.IsMulRightInvariant := Formalism.IndefR.Eqv.unimodGA_holds S ν hν`.
-
-Conclude with `GlobalTheory.setIntegral_fundamentalDomain_mul_right h𝓕 a F hF`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem setIntegral_fd_mul_right : ∀ (D : D7) (S : HSp D) (ν : Measure (GA D S)) (𝓕 : Set (GA D S)), ν.IsHaarMeasure → IsFundamentalDomain (GQ S) 𝓕 ν → ∀ F : GA D S → ℂ, (∀ γ ∈ GQ S, ∀ g, F (γ * g) = F g) → ∀ a : GA D S, ∫ g in 𝓕, F (g * a) ∂ν = ∫ g in 𝓕, F g ∂ν := by
   intro D S ν 𝓕 hν h𝓕 F hF a

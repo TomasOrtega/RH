@@ -14,14 +14,14 @@ abbrev adj {P : PSh} {G : Shv R} (a : (free R).obj P ⟶ G) : (freeP R).obj P �
   toSheafify Scheme.etaleTopology ((freeP R).obj P) ≫ a.hom
 
 /- English proof (translation)
-Use `ext1`. Conclude with `sheafify_hom_ext _ _ _ G.property h`.
+A detailed English derivation is pending.
 -/
 theorem adj_inj {P : PSh} {G : Shv R} (a b : (free R).obj P ⟶ G) (h : adj R a = adj R b) : a = b := by
   ext1
   exact sheafify_hom_ext _ _ _ G.property h
 
 /- English proof (translation)
-Use `show toSheafify _ _ ≫ (sheafifyMap _ ((freeP R).map φ) ≫ a.hom) = _`. Use `show _ = (freeP R).map φ ≫ toSheafify _ _ ≫ a.hom`. Use `erw [toSheafify_naturality_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem adj_comp {P Q : PSh} {G : Shv R} (φ : P ⟶ Q) (a : (free R).obj Q ⟶ G) :
     adj R ((free R).map φ ≫ a) = (freeP R).map φ ≫ adj R a := by
@@ -30,7 +30,7 @@ theorem adj_comp {P Q : PSh} {G : Shv R} (φ : P ⟶ Q) (a : (free R).obj Q ⟶ 
   erw [toSheafify_naturality_assoc]
 
 /- English proof (translation)
-Simplify using `[freeP, gen]`. Use `erw [ModuleCat.free_map_apply]`. Both sides reduce to the same expression.
+Simplify by unfolding definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem freePresheaf_obj_map_freeMk (P : PSh) {W W' : Scheme.{0}ᵒᵖ} (h : W ⟶ W') (x : P.obj W) :
     ((freeP R).obj P).map h (gen R P x) = gen R P (P.map h x) := by
@@ -39,7 +39,7 @@ theorem freePresheaf_obj_map_freeMk (P : PSh) {W W' : Scheme.{0}ᵒᵖ} (h : W �
   rfl
 
 /- English proof (translation)
-Simplify using `[freeP, gen]`. Use `erw [ModuleCat.free_map_apply]`. Both sides reduce to the same expression.
+Simplify by unfolding definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem freePresheaf_map_freeMk {P Q : PSh} (φ : P ⟶ Q) (W : Scheme.{0}ᵒᵖ) (x : P.obj W) :
     ((freeP R).map φ).app W (gen R P x) = gen R Q (φ.app W x) := by
@@ -48,7 +48,7 @@ theorem freePresheaf_map_freeMk {P Q : PSh} (φ : P ⟶ Q) (W : Scheme.{0}ᵒᵖ
   rfl
 
 /- English proof (translation)
-Rewrite using `[← ConcreteCategory.comp_apply, ← (adj R a).naturality, ConcreteCategory.comp_apply, freePresheaf_obj_map_freeMk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adj_val {X Y : Scheme.{0}} {G : Shv R} (a : (free R).obj (yoneda.obj X) ⟶ G) (x : Y ⟶ X) :
     (adj R a).app (op Y) (gen R (yoneda.obj X) (W := op Y) x) =
@@ -57,17 +57,17 @@ theorem adj_val {X Y : Scheme.{0}} {G : Shv R} (a : (free R).obj (yoneda.obj X) 
   simp
 
 /- English proof (translation)
-Set `Z : Bool → Scheme.{0}` to `fun i => Bool.rec V U i`. Set `φ : ∀ i, Z i ⟶ X` to `fun i => Bool.rec (motive := fun i => Z i ⟶ X) g f i`. Establish `hS : Sieve.ofArrows Z φ ∈ Scheme.etaleTopology X`. Apply `Precoverage.generate_mem_toGrothendieck` to reduce the goal to its premises. Use `(Scheme.ofArrows_mem_precoverage_iff _).2 ⟨fun x => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : x ∈ Set.range f ∪ Set.range g` using `hcov ▸ Set.mem_univ x`. Break down `hx with hx | hx` into its components or cases. Conclude with `⟨true, hx⟩`. Conclude with `⟨false, hx⟩`. Apply the tactic sequence `cases i <;> infer_instance`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hf'` using `congrArg (adj R) hf`. Establish `hg'` using `congrArg (adj R) hg`. Rewrite `hf'`, `hg'` using `[adj_comp, adj_comp]`. Establish `key : (adj R a).app (op X) (gen R (yoneda.obj X) (W` using `op X) (𝟙 X)) = (adj R b).app (op X) (gen R (yoneda.obj X) (W := op X) (𝟙 X)) := by`. Use `Presheaf.IsSheaf.isSeparated G.property _ _ hS _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Y' h hh`. Take `⟨W, k, _, ⟨i⟩, rfl⟩` from `hh`. Rewrite using `[← adj_val, ← adj_val]`. Consider the cases of `i`. Use `congrArg (fun t => t.app (op _) (gen R (yoneda.obj V) (W := op _) k)) hg'` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Simplify `this` using `[freePresheaf_map_freeMk]`. Use `congrArg (fun t => t.app (op _) (gen R (yoneda.obj U) (W := op _) k)) hf'` as an intermediate fact. Simplify `this` using `[freePresheaf_map_freeMk]`. Apply `adj_inj` to reduce the goal to its premises. Use extensionality with `Y : 2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Proceed by induction on `Y with | op Y => ?_`. Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨x⟩`. Conclude with `(adj_val R a x).trans ((congrArg _ key).trans (adj_val R b x).symm)`.
+Proceed by induction. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ext_of_cover {U V X : Scheme.{0}} (f : U ⟶ X) (g : V ⟶ X) [IsOpenImmersion f] [IsOpenImmersion g]
     (hcov : Set.range f ∪ Set.range g = Set.univ) {G : Shv R} (a b : (free R).obj (yoneda.obj X) ⟶ G)
@@ -105,11 +105,9 @@ theorem ext_of_cover {U V X : Scheme.{0}} (f : U ⟶ X) (g : V ⟶ X) [IsOpenImm
   exact (adj_val R a x).trans ((congrArg _ key).trans (adj_val R b x).symm)
 
 /- English proof (translation)
-Introduce `R _ U V X f g _ _ hcov`. Establish `: PreservesLimitsOfShape WalkingCospan sch` using `by unfold sch; infer_instance`. Establish `: sch.PreservesMonomorphisms` using `preservesMonomorphisms_of_preservesLimitsOfShape _`. Use `⟨inferInstance, inferInstance, fun n => ⟨fun {G} a b h => ?_⟩⟩` and prove the remaining obligations. Apply `ext_of_cover R f g hcov a b` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (free R).map ((sch.map f).app n) ≫ a = (free R).map ((sch.map f).app n) ≫ b`. Simplify using `using congrArg (biprod.inl ≫ ·) h`. Conclude with `h1`. Establish `h1 : (free R).map ((sch.map g).app n) ≫ a = (free R).map ((sch.map g).app n) ≫ b`. Simplify using `using congrArg (biprod.inr ≫ ·) h`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem openCov : LateralTheory.E.MayerVietorisSequence.OpenCov := by
   intro R _ U V X f g _ _ hcov

@@ -11,27 +11,23 @@ open scoped TensorProduct
 open Classical
 noncomputable section
 /- English proof (translation)
-Introduce `hP D θ V S M hθ ψ hψ _hcusp W hW hψW hWK b hpos hherm _hK hskew`. Use `set G := GlobalTheory.CuspGK.gkGen θ M ψ with hGdef`. Establish `hsm` using `GlobalTheory.KTypeAdm.isAutFunSm_of_mem_gkGen θ M hθ hψ`. Take `⟨U, hU, hlev⟩` from `GlobalTheory.KTypeAdm.level_gkGen θ M hψ`. Establish `hY : GlobalTheory.KTypeProj.KStable θ M (W ⊓ G)` using `GlobalTheory.KTypeProj.kStable_inf θ M hWK (GlobalTheory.KTypeProj.kStable_gkGen θ M ψ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hYf : FiniteDimensional ℂ ↥(W ⊓ G) := Submodule.finiteDimensional_of_le inf_le_left`. Establish `hcont : ∀ f ∈ W ⊓ G, Continuous f` using `fun f hf => (hsm f hf.2).cont`. Use `choose ρ hρc hρT using GlobalTheory.T.exists_continuousRep_rightTranslation_maxCompactStable θ V S M hθ (W ⊓ G) hYf hY hcont`. Establish `hGK` using `GlobalTheory.CuspGK.isGKSub_gkGen θ M ψ`. Establish `hGsm : G ≤ GlobalTheory.Mem.AutSpace.SmFun θ V` using `fun f hf => (hsm f hf).smooth`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hGC : ∀ τ Z, ∀ f ∈ G, RderC θ V τ Z f ∈ G` using `fun τ Z f hf => by`. Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem (V := V) τ Z`. Conclude with `G.add_mem (hGK.lie τ _ h1 f hf) (G.smul_mem _ (hGK.lie τ _ h2 f hf))`. Establish `hsym : ∀ τ k, ∀ x ∈ G, ∀ y ∈ G, b x (gelf θ V τ k y) = b (gelf θ V τ k x) y` using `fun τ => GlobalTheory.T.gelfandInvariants_symmetric_of_derivativeAdjoint θ V hθ τ G hGsm (hGC τ) b (GlobalTheory.T.complexDerivative_adjoint_of_skew_form θ V τ G b (hskew τ))`. Set `F : D.what₂.Tau × ℕ → (GA D V → ℂ) → (GA D V → ℂ)` to `fun i => gelf θ V i.1 i.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFG : ∀ i, ∀ x ∈ G, F i x ∈ G` using `fun i => GlobalTheory.KTypeAdm.gelf_mem_of_isGKSub θ M hGK i.1 i.2`. Establish `hFadd : ∀ i, ∀ x ∈ G, ∀ y ∈ G, F i (x + y) = F i x + F i y` using `fun i x hx y hy => (GlobalTheory.Mem.AutSpace.linOnSm_gelf (θ := θ) (V := V) i.1 i.2).add x (hGsm hx) y (hGsm hy)`. Establish `hFsmul : ∀ i (a : ℂ), ∀ x ∈ G, F i (a • x) = a • F i x` using `fun i a x _ => (GlobalTheory.Mem.AutSpace.linOnSm_gelf (θ := θ) (V := V) i.1 i.2).smul a x`. Establish `hFcomm : ∀ i j, ∀ x ∈ G, F i (F j x) = F j (F i x)` using `fun i j x hx => GlobalTheory.CentreComm.comm_gelf (GlobalTheory.Mem.AutSpace.linOnSm_gelf (θ := θ) (V := V) i.1 i.2) (fun Z => GlobalTheory.CentreComm.gelf_RderC hθ i.1 j.1 i.2 Z) j.2 x (hGsm hx)`. Take `⟨Wz, hWz, hψz, hWzst⟩` from `hψ.zfin`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := hWz`. Use `haveI : FiniteDimensional ℂ ↥(Wz ⊓ G) := Submodule.finiteDimensional_of_le inf_le_left`. Take `⟨C, hC⟩` from `GlobalTheory.T.exists_jointEigenDecomposition_commuting_symmetricOps F (Wz ⊓ G) inferInstance (fun i x hx => ⟨hWzst i.1 i.2 x hx.1, hFG i x hx.2⟩) (fun i x hx y hy => hFadd i x hx.2 y hy.2) (fun i a x hx => hFsmul i a x hx.2) (fun i j x hx => hFcomm i j x hx.2) b (fun x hx => hpo …`. Establish `hGS : G ≤ ⨆ c ∈ C, Submodule.span ℂ {h | h ∈ G ∧ ∀ i : D.what₂.Tau × ℕ, gelf θ V i.1 i.2 h = c i • h}`. Use `GlobalTheory.CuspGK.gkGen_le θ M ?_ (GlobalTheory.T.isGKSubmodule_iSup_gelfandJointEigenspaces θ V S M hθ ψ hψ C)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hC ψ ⟨hψz, GlobalTheory.CuspGK.mem_gkGen θ M ψ⟩` as an intermediate fact. Use `(iSup₂_mono fun c _ => Submodule.span_mono ?_) this` and prove the remaining obligations. Conclude with `fun h hh => ⟨hh.1.2, hh.2⟩`. Use `set P := GlobalTheory.KTypeProj.typeSpan (GlobalTheory.KTypeProj.rhoK θ M) (W ⊓ G) G with hPdef`. Establish `hPG : P ≤ G` using `GlobalTheory.KTypeProj.typeSpan_le _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hPst : ∀ i, ∀ x ∈ P, F i x ∈ P` using `fun i => GlobalTheory.T.gelfandInvariant_mem_intertwinedTypeSpan θ V S M hθ ψ hψ (W ⊓ G) i.1 i.2`. Establish `hdec` using `GlobalTheory.T.mem_iSup_jointEigenspaces_inf_of_stableSubmodule F G P C hFG hFadd hFsmul hPG hPst (fun x hx => hGS hx)`. Establish `htype : ∀ τ, ∀ h ∈ P, GlobalTheory.Published.AutFin.HasTypeAt θ V τ (M.ε τ) (M.fr τ) (ρ τ) h`. Introduce `τ`. Set `Q : Submodule ℂ (GA D V → ℂ)` to `{ carrier := {h | GlobalTheory.Published.AutFin.HasTypeAt θ V τ (M.ε τ) (M.fr τ) (ρ τ) h} add_mem' := fun ha hb x => Submodule.add_mem _ (ha x) (hb x) zero_mem' := fun x => Submodule.zero_mem _ smul_mem' := fun c f hf x => Submodule.smul_mem _ c (hf x) }`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPQ : P ≤ Q`. Use `iSup₂_le fun T hT => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `hρT τ T hT.2 ⟨w, hw⟩`. Conclude with `fun h hh => hPQ hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hfr : GlobalTheory.Published.AutFin.IsFrameFam V M.ε M.fr` using `fun τ => ⟨M.fr_unit τ, M.fr_gram τ⟩`. Establish `hfin : ∀ c : D.what₂.Tau × ℕ → ℂ, FiniteDimensional ℂ (Submodule.span ℂ (GlobalTheory.Published.AutFin.forms θ V U M.ε M.fr ρ (fun τ k => c (τ, k))))` using `fun c => hP.harishChandraFinite D θ hθ V U hU M.ε M.fr hfr (fun _ => ↥(W ⊓ G)) ρ hρc _`. Establish `hle : P ≤ C.sup fun c => Submodule.span ℂ (GlobalTheory.Published.AutFin.forms θ V U M.ε M.fr ρ (fun τ k => c (τ, k)))`. Introduce `x hx`. Use `hdec x hx` as an intermediate fact.
-
-Rewrite `this` using `[← Finset.sup_eq_iSup]`. Establish `key : ∀ c : D.what₂.Tau × ℕ → ℂ, Submodule.span ℂ {h | h ∈ P ∧ ∀ i, F i h = c i • h} ≤ Submodule.span ℂ (GlobalTheory.Published.AutFin.forms θ V U M.ε M.fr ρ (fun τ k => c (τ, k)))` using `fun c => Submodule.span_mono (by`. Introduce and unpack `h ⟨hP', hc⟩`. Conclude with `⟨hsm h (hPG hP'), fun u hu hu' g => hlev h (hPG hP') u hu hu' g, fun τ => htype τ h hP', fun τ k => hc (τ, k)⟩)`. Conclude with `Finset.sup_mono_fun (fun c _ => key c) this`.
-
-Use `haveI : ∀ c : D.what₂.Tau × ℕ → ℂ, FiniteDimensional ℂ (Submodule.span ℂ (GlobalTheory.Published.AutFin.forms θ V U M.ε M.fr ρ (fun τ k => c (τ, k)))) := hfin`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KTypeAdm.finiteDimensional_span_of_admissible_KType : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →
@@ -130,7 +126,7 @@ open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.KTypeAdm.finiteDimensional_span_of_admissible_KType | exact _root_.GlobalTheory.KTypeAdm.finiteDimensional_span_of_admissible_KType | (intros; apply _root_.GlobalTheory.KTypeAdm.finiteDimensional_span_of_admissible_KType <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.admissible_KType_span_finiteDimensional : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →

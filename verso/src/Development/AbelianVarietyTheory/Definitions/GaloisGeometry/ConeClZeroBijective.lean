@@ -14,14 +14,14 @@ open GlobalTheory.CatCoh GlobalTheory.CechDR
 universe v u
 
 /- English proof (translation)
-Rewrite `h` using `[one_smul, neg_one_smul, add_neg_eq_zero]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_zsmul_add {A : Type*} [AddCommGroup A] {x y : A} (h : (1 : ℤ) • x + (-1 : ℤ) • y = 0) :
     x = y := by
   rw [one_smul, neg_one_smul, add_neg_eq_zero] at h; exact h
 
 /- English proof (translation)
-Rewrite using `[one_smul, neg_one_smul, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zsmul_add_cancel {A : Type*} [AddCommGroup A] (x : A) : (1 : ℤ) • x + (-1 : ℤ) • x = 0 := by
   rw [one_smul, neg_one_smul, add_neg_cancel]
@@ -31,7 +31,7 @@ section Zero
 variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[eq_of_heq hu]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_cochain_congr (M : C ⥤ ModuleCat.{0} R) (f : CatH.Cn M 0) {t t' : ComposableArrows C 0}
     (h : t = t') {Y : C} (u : t.obj (Fin.last 0) ⟶ Y) (u' : t'.obj (Fin.last 0) ⟶ Y) (hu : HEq u u') :
@@ -40,9 +40,9 @@ theorem map_cochain_congr (M : C ⥤ ModuleCat.{0} R) (f : CatH.Cn M 0) {t t' : 
   rw [eq_of_heq hu]
 
 /- English proof (translation)
-Set `s` to `ComposableArrows.mk₁ φ`. Establish `h0 : (M.map (CatH.toLast 0 s)).hom (f (CatH.face 0 s)) = f (ComposableArrows.mk₀ T')` using `(map_cochain_congr M f (t := CatH.face 0 s) (t' := ComposableArrows.mk₀ T') (ComposableArrows.ext₀ rfl) (CatH.toLast 0 s) (𝟙 T') HEq.rfl).trans (congrArg (fun g : M.obj T' ⟶ M.obj T' ↦ g.hom (f (ComposableArrows.mk₀ T'))) (M.map_id T'))`. Establish `h1 : (M.map (CatH.toLast 1 s)).hom (f (CatH.face 1 s)) = (M.map φ).hom (f (ComposableArrows.mk₀ T))` using `map_cochain_congr M f (t := CatH.face 1 s) (t' := ComposableArrows.mk₀ T) (ComposableArrows.ext₀ rfl) (CatH.toLast 1 s) φ HEq.rfl`. Establish `e : ∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (M.map (CatH.toLast i s)).hom (f (CatH.face i s)) = 0` using `congrFun hf s`. Rewrite `e` using `[Fin.sum_univ_two, h0, h1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Fin.val_zero, Fin.val_one, pow_zero, pow_one] at e`. Conclude with `(eq_of_zsmul_add e).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem compat_of_d_eq_zero (M : C ⥤ ModuleCat.{0} R) {f : CatH.Cn M 0} (hf : CatH.d M 0 f = 0)
     {T T' : C} (φ : T ⟶ T') :
@@ -65,7 +65,7 @@ theorem compat_of_d_eq_zero (M : C ⥤ ModuleCat.{0} R) {f : CatH.Cn M 0} (hf : 
 variable (F : C ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-The claim follows from `| 0 => rfl | n + 1 => by change (TotF F (n + 1) n).map _ = ⊥ rw [TotF_eq_bot F (Nat.lt_succ_self n), Submodule.map_bot]`.
+A detailed English derivation is pending.
 -/
 theorem BF_self : ∀ n : ℕ, BF F n n = ⊥
   | 0 => rfl
@@ -74,9 +74,9 @@ theorem BF_self : ∀ n : ℕ, BF F n n = ⊥
     rw [TotF_eq_bot F (Nat.lt_succ_self n), Submodule.map_bot]
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_zero _).2 fun x hx ↦ ?_, LinearMap.range_eq_top.1 (Hyp.fil_zero F n)⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `HypF.mk_surjective F 0 n x`. Establish `h : c.1 ∈ BTot F n` using `Hyp.mk_eq_zero.1 hx`. Use `HypF.mk_eq_zero.2 ?_` and prove the remaining obligations. Break down `n with _ | n` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h`. Take `⟨e, he⟩` from `h`. Conclude with `⟨e, by rw [TotF_zero]; trivial, he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem HypF.toHyp_zero_bijective (n : ℕ) : Function.Bijective (HypF.toHyp F 0 n) := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun x hx ↦ ?_,
@@ -95,22 +95,22 @@ def ofTop (n : ℕ) : Term F 0 n →ₗ[R] Tot F n :=
 variable {F}
 
 /- English proof (translation)
-The claim follows from `Pi.single_eq_same (M := fun b : Bidegree n ↦ Term F b.1.1 b.1.2) _ _`.
+A detailed English derivation is pending.
 -/
 theorem ofTop_same {n : ℕ} (c : Term F 0 n) (h : 0 + n = n) : ofTop F n c ⟨(0, n), h⟩ = c :=
   Pi.single_eq_same (M := fun b : Bidegree n ↦ Term F b.1.1 b.1.2) _ _
 
 /- English proof (translation)
-The claim follows from `fun b hb ↦ Pi.single_eq_of_ne (M := fun b : Bidegree n ↦ Term F b.1.1 b.1.2) (fun e ↦ by rw [e] at hb; exact lt_irrefl _ hb) _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ofTop_mem_TotF {n : ℕ} (c : Term F 0 n) : ofTop F n c ∈ TotF F n n := fun b hb ↦
   Pi.single_eq_of_ne (M := fun b : Bidegree n ↦ Term F b.1.1 b.1.2)
     (fun e ↦ by rw [e] at hb; exact lt_irrefl _ hb) _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨(a, q), h⟩`. Break down `a with _ | a` into its components or cases. Take `rfl : q = n` from `by simpa using h`. Conclude with `(ofTop_same _ _).symm`. Establish `hq : q < n` using `by dsimp only at h; omega`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc _ hq, ofTop_mem_TotF _ _ hq]`.
+A detailed English derivation is pending.
 -/
 theorem eq_ofTop {n : ℕ} {c : Tot F n} (hc : c ∈ TotF F n n) :
     c = ofTop F n (c ⟨(0, n), zero_add n⟩) := by
@@ -122,13 +122,13 @@ theorem eq_ofTop {n : ℕ} {c : Tot F n} (hc : c ∈ TotF F n n) :
     rw [hc _ hq, ofTop_mem_TotF _ _ hq]
 
 /- English proof (translation)
-Use `⟨ofTop_mem_TotF c, funext fun ⟨(a, q), h⟩ ↦ ?_⟩` and prove the remaining obligations. Simplify using `only at h`. Establish `hH : totH F n (ofTop F n c) ⟨(a, q), h⟩ = 0`. Break down `a with _ | _ | a` into its components or cases. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Take `rfl : q = n` from `by omega`. Rewrite using `[totH_succ, ofTop_same, h1]`. Rewrite using `[totH_succ, ofTop_mem_TotF c _ (by dsimp only; omega), map_zero]`. Establish `hV : totV F n (ofTop F n c) ⟨(a, q), h⟩ = 0`. Break down `q with _ | q` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Both sides reduce to the same expression. Break down `a with _ | a` into its components or cases. Take `rfl : q = n` from `by omega`. Rewrite using `[totV_succ, ofTop_same, h2, smul_zero]`. Rewrite using `[totV_succ, ofTop_mem_TotF c _ (by dsimp only; omega), map_zero, smul_zero]`.
+Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dTot_apply, hH, hV, add_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ofTop_mem_ZF {n : ℕ} {c : Term F 0 n} (h1 : dH F 0 n c = 0) (h2 : dV F 0 n c = 0) :
     ofTop F n c ∈ ZF F n n := by
@@ -150,7 +150,7 @@ theorem ofTop_mem_ZF {n : ℕ} {c : Term F 0 n} (h1 : dH F 0 n c = 0) (h2 : dV F
   rw [dTot_apply, hH, hV, add_zero]; rfl
 
 /- English proof (translation)
-Rewrite using `[dTot_apply, totH_zero, totV_succ, zero_add, pow_zero, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dTot_top {n : ℕ} (c : Tot F n) (h : 0 + (n + 1) = n + 1) :
     dTot F n c ⟨(0, n + 1), h⟩ = dV F 0 n (c ⟨(0, n), zero_add n⟩) := by
@@ -176,9 +176,9 @@ theorem coneTerm_apply {q : ℕ} (ω : Om R B q) (s : ComposableArrows C 0) :
 include he in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Establish `k : ∀ i : Fin 2, ((OmF F q).map (CatH.toLast i s)).hom (coneTerm e q ω (CatH.face i s)) = (SemiHom.of_algHom (e (s.obj (Fin.last 1)))).mOm q ω` using `fun i ↦ SemiHom.mOm_mOm _ (semiHom_mp F (CatH.toLast i s)) _ (he _) ω`. Express the relevant statement in the definitionally equal form `∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • ((OmF F q).map (CatH.toLast i s)).hom (coneTerm e q ω (CatH.face i s)) = 0`. Rewrite using `[Fin.sum_univ_two, k, k]`. Simplify using `only [Fin.val_zero, Fin.val_one, pow_zero, pow_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `zsmul_add_cancel _`.
+A detailed English derivation is pending.
 -/
 theorem dH_coneTerm {q : ℕ} (ω : Om R B q) : dH F 0 q (coneTerm e q ω) = 0 := by
   funext s
@@ -192,7 +192,7 @@ theorem dH_coneTerm {q : ℕ} (ω : Om R B q) : dH F 0 q (coneTerm e q ω) = 0 :
   exact zsmul_add_cancel _
 
 /- English proof (translation)
-The claim follows from `funext fun _ ↦ (SemiHom.mOm_dOm _ ω).symm`.
+A detailed English derivation is pending.
 -/
 theorem dV_coneTerm {q : ℕ} (ω : Om R B q) :
     dV F 0 q (coneTerm e q ω) = coneTerm e (q + 1) (dOm R B q ω) :=
@@ -208,19 +208,19 @@ def coneF (n : ℕ) : LinearMap.ker (dOm R B n) →ₗ[R] HypF F n n := HypF.mk 
 def coneCl (n : ℕ) : LinearMap.ker (dOm R B n) →ₗ[R] Hyp F n := HypF.toHyp F n n ∘ₗ coneF e he n
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨coneF e he n ω, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem coneCl_mem_fil {n : ℕ} (ω : LinearMap.ker (dOm R B n)) : coneCl e he n ω ∈ Hyp.fil F n n :=
   ⟨coneF e he n ω, rfl⟩
 
 /- English proof (translation)
-Use `Hyp.mk_eq_zero.2 ⟨ofTop F n (coneTerm e n η), ?_⟩` and prove the remaining obligations. Establish `hm : dTot F n (ofTop F n (coneTerm e n η)) ∈ TotF F (n + 1) (n + 1)`. Introduce and unpack `⟨⟨a, q⟩, h⟩ hq`. Simplify using `only at h hq`. Establish `hH : totH F n (ofTop F n (coneTerm e n η)) ⟨(a, q), h⟩ = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Break down `a with _ | _ | a` into its components or cases. Both sides reduce to the same expression. Take `rfl : q = n` from `by omega`. Rewrite using `[totH_succ, ofTop_same, dH_coneTerm e he]`. Rewrite using `[totH_succ, ofTop_mem_TotF _ _ (by dsimp only; omega), map_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : totV F n (ofTop F n (coneTerm e n η)) ⟨(a, q), h⟩ = 0`. Break down `q with _ | q` into its components or cases. Both sides reduce to the same expression. Rewrite using `[totV_succ, ofTop_mem_TotF _ _ (by dsimp only; omega), map_zero, smul_zero]`. Rewrite using `[dTot_apply, hH, hV, add_zero]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_ofTop hm, dTot_top, ofTop_same, dV_coneTerm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coneCl_dOm {n : ℕ} (η : Om R B n) : coneCl e he (n + 1) ⟨dOm R B n η, dOm_dOm η⟩ = 0 := by
   refine Hyp.mk_eq_zero.2 ⟨ofTop F n (coneTerm e n η), ?_⟩
@@ -247,7 +247,7 @@ def backOm (q : ℕ) : Om R (F.obj T₀) q →ₗ[R] Om R B q :=
   (SemiHom.of_algHom (AlgEquiv.ofBijective _ hb).symm.toAlgHom).mOm q
 
 /- English proof (translation)
-The claim follows from `(SemiHom.mOm_mOm (SemiHom.of_algHom (e T₀)) _ (SemiHom.of_algHom (AlgHom.id R B)) (fun b ↦ (AlgEquiv.ofBijective _ hb).symm_apply_apply b) ω).trans (SemiHom.mOm_id _ (fun _ ↦ rfl) ω)`.
+A detailed English derivation is pending.
 -/
 theorem backOm_coneTerm {q : ℕ} (ω : Om R B q) :
     backOm e hb q (coneTerm e q ω (ComposableArrows.mk₀ T₀)) = ω :=
@@ -258,9 +258,9 @@ theorem backOm_coneTerm {q : ℕ} (ω : Om R B q) :
 include hb in
 
 /- English proof (translation)
-Use `⟨fun h ↦ ?_, fun ⟨η, hη⟩ ↦ ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Hyp.mk_eq_zero.1 h`. Establish `h1` using `congrFun hc ⟨(0, n + 1), zero_add _⟩`. Rewrite `h1` using `[dTot_top]`. Establish `h2` using `congrFun (h1.trans (ofTop_same (coneTerm e (n + 1) ω.1) _)) (ComposableArrows.mk₀ T₀)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨backOm e hb n (c ⟨(0, n), zero_add n⟩ (ComposableArrows.mk₀ T₀)), ?_⟩` and prove the remaining obligations. Rewrite using `[← backOm_coneTerm e hb ω.1, ← h2]`. Conclude with `(SemiHom.mOm_dOm _ _).symm`. Rewrite using `[show ω = ⟨dOm R B n η, dOm_dOm η⟩ from Subtype.ext hη.symm, coneCl_dOm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneCl_eq_zero_iff {n : ℕ} (ω : LinearMap.ker (dOm R B (n + 1))) :
     coneCl e he (n + 1) ω = 0 ↔ ∃ η, dOm R B n η = ω.1 := by
@@ -277,13 +277,13 @@ theorem coneCl_eq_zero_iff {n : ℕ} (ω : LinearMap.ker (dOm R B (n + 1))) :
 include hb in
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_zero _).2 fun ω hω ↦ ?_, fun x ↦ ?_⟩` and prove the remaining obligations. Establish `h1 : ofTop F n (coneTerm e n ω.1) ∈ BF F n n` using `HypF.mk_eq_zero.1 hω`. Rewrite `h1` using `[BF_self]`. Establish `h2` using `(ofTop_same (coneTerm e n ω.1) (zero_add n)).symm.trans (congrFun (show ofTop F n (coneTerm e n ω.1) = 0 from h1) _)`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← backOm_coneTerm e hb ω.1, h2]`. Conclude with `map_zero _`. Take `⟨c, rfl⟩` from `HypF.mk_surjective F n n x`. Establish `h1` using `dH_lead F (zero_add n) c`. Establish `h2` using `(dTot_top c.1 (zero_add _)).symm.trans (congrFun (show dTot F n c.1 = 0 from c.2.2) _)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨backOm e hb n (c.1 ⟨(0, n), zero_add n⟩ (ComposableArrows.mk₀ T₀)), ?_⟩, ?_⟩` and prove the remaining obligations. Use `(SemiHom.mOm_dOm _ _).symm.trans ?_` and prove the remaining obligations. Establish `h3 : dOm R (F.obj T₀) n (c.1 ⟨(0, n), zero_add n⟩ (ComposableArrows.mk₀ T₀)) = 0` using `congrFun h2 (ComposableArrows.mk₀ T₀)`. Conclude with `(congrArg (backOm e hb (n + 1)) h3).trans (map_zero _)`. Use `congrArg (HypF.mk F n n) (Subtype.ext ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(congrArg (ofTop F n) (funext fun s ↦ ?_)).trans (eq_ofTop c.2.1).symm` and prove the remaining obligations. Take `⟨T, rfl⟩` from `s.mk₀_surjective`. Use `Eq.trans ?_ (compat_of_d_eq_zero (OmF F n) h1 (h.to T))` and prove the remaining obligations. Conclude with `SemiHom.mOm_mOm _ (SemiHom.of_algHom (e T)) (semiHom_mp F (h.to T)) (fun b ↦ (he (h.to T) _).symm.trans (congrArg (mp F (h.to T)) ((AlgEquiv.ofBijective _ hb).apply_symm_apply b))) _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coneF_bijective (h : Limits.IsInitial T₀) (n : ℕ) : Function.Bijective (coneF e he n) := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun ω hω ↦ ?_, fun x ↦ ?_⟩
@@ -314,7 +314,7 @@ theorem coneF_bijective (h : Limits.IsInitial T₀) (n : ℕ) : Function.Bijecti
 include hb in
 
 /- English proof (translation)
-The claim follows from `(HypF.toHyp_zero_bijective F 0).comp (coneF_bijective e he hb h 0)`.
+A detailed English derivation is pending.
 -/
 theorem coneCl_zero_bijective (h : Limits.IsInitial T₀) : Function.Bijective (coneCl e he 0) :=
   (HypF.toHyp_zero_bijective F 0).comp (coneF_bijective e he hb h 0)

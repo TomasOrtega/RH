@@ -7,7 +7,7 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hcL_cons p Y n`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem hcL_cons_of {F : Type} [Field F] (p : Σ m : ℕ, GL (Fin m) F → ℂ)
     (Y : List (Σ m : ℕ, GL (Fin m) F → ℂ)) (b : ℕ) (h : (Y.map Sigma.fst).sum = b) (n : ℕ) :
@@ -16,21 +16,19 @@ private theorem hcL_cons_of {F : Type} [Field F] (p : Σ m : ℕ, GL (Fin m) F �
   exact hcL_cons p Y n
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite G`. Use `haveI := Fintype.ofFinite X`. Use `haveI := Fintype.ofFinite Z`. Establish `key : ∀ p : G, (∑ x, ∑ p' : Subtype B, u x * (v p' * if I p ∧ tl p = x ∧ br p = p'.1 then T p else 0)) = if h : A p then w ⟨p, h⟩ * T p else 0`. Introduce `p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hI : I p`. Distinguish the cases in `hB : B (br p)`. Establish `hAp : A p` using `(hA p).2 ⟨hI, hB⟩`. Rewrite using `[dif_pos hAp, hw p hAp hB, Fintype.sum_eq_single (tl p), Fintype.sum_eq_single ⟨br p, hB⟩]`. Simplify using `[hI]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `q hq`. Rewrite using `[if_neg]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨_, _, h⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hq (Subtype.ext h.symm)`. Introduce `x hx`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `q _`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨_, h, _⟩`. Conclude with `hx h.symm`. Rewrite using `[dif_neg (fun h => hB ((hA p).1 h).2)]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x _`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `q _`. Rewrite using `[if_neg]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨_, _, h⟩`. Conclude with `hB (h ▸ q.2)`. Rewrite using `[dif_neg (fun h => hI ((hA p).1 h).1)]`. Simplify using `[hI]`. Simplify using `only [finsum_eq_sum_of_fintype, Finset.mul_sum]`.
-
-Rewrite using `[Finset.sum_congr rfl fun x _ => Finset.sum_comm, Finset.sum_comm, Finset.sum_congr rfl fun p _ => key p, ← Fintype.sum_subtype_add_sum_subtype A, Finset.sum_congr rfl fun p _ => dif_pos p.2, Finset.sum_congr rfl (fun (p : {p // ¬A p}) _ => dif_neg p.2), Finset.sum_const_zero, ad …`.
+A detailed English derivation is pending.
 -/
 private theorem collapse {G X Z : Type} [Finite G] [Finite X] [Finite Z]
     (A : G → Prop) (B : Z → Prop) (I : G → Prop) (tl : G → X) (br : G → Z)
@@ -83,19 +81,17 @@ private theorem collapse {G X Z : Type} [Finite G] [Finite X] [Finite Z]
     Finset.sum_congr rfl (fun (p : {p // ¬A p}) _ => dif_neg p.2), Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Introduce `hF2 hRes hPar F _ _ s`. Proceed by induction on `s with`. Consider the case `zero`. Introduce `d n hd`. Use `⟨1, one_ne_zero, fun Y T _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : n = 0` using `by rw [← hd]; simp`. Substitute `hn` using the available equality. Establish `hall : ∀ g : GL (Fin 0) F, g ∈ GlobalTheory.SmGL.parab F (GlobalTheory.SmGL.stdBlocks d hd)` using `fun g => GlobalTheory.SmGL.mem_parab_iff.2 fun a => a.elim0`. Simplify using `only [List.ofFn_zero, hcL_nil, star_one, one_mul, Fin.prod_univ_zero]`. Conclude with `(finsum_comp_equiv (Equiv.subtypeUnivEquiv hall)).symm`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ s ih`. Introduce `d n hd`. Establish `hn : n = d 0 + ∑ i : Fin s, d i.succ` using `by rw [← hd, Fin.sum_univ_succ]`. Take `⟨c1, hc1, h1⟩` from `hF2 F (d 0) (∑ i : Fin s, d i.succ) n hn`. Take `⟨c2, hc2, h2⟩` from `ih (fun i => d i.succ) _ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c1 * c2, mul_ne_zero hc1 hc2, fun Y T hT => ?_⟩` and prove the remaining obligations. Establish `htail : (List.map Sigma.fst (List.ofFn fun i : Fin s => (⟨d i.succ, Y i.succ⟩ : Σ m : ℕ, GL (Fin m) F → ℂ))).sum = ∑ i : Fin s, d i.succ`. Simplify using `[List.sum_ofFn]`. Rewrite using `[List.ofFn_succ, hcL_cons_of _ _ _ htail, h1 _ _ T hT]`. Establish `h2'` using `fun x => h2 (fun i => Y i.succ) _ (hRes F _ _ n hn T hT x)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_congr fun x => by rw [h2' x, mul_left_comm], ← mul_finsum, ← mul_assoc]`. Use `clear h1 h2 h2' ih htail hF2 hRes`. Use `congrArg (c1 * c2 * ·) ?_` and prove the remaining obligations. Unfold `UpperTheory.Gal.InertialTypesAlt.resT`. Establish `hc` using `collapse (fun p => p ∈ GlobalTheory.SmGL.parab F (GlobalTheory.SmGL.stdBlocks d hd)) (fun z => z ∈ GlobalTheory.SmGL.parab F (GlobalTheory.SmGL.stdBlocks (fun i => d i.succ) rfl)) (GlobalTheory.Shin.InPar (d 0)) (GlobalTheory.Shin.tlG (d 0)) (GlobalTheory.Shin.brG (d 0) _) (fun p …`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `p hp hp'`. Take `⟨h0, hs⟩` from `(hPar F s n d hd _ rfl p).2 hp hp'`. Rewrite using `[Fin.prod_univ_succ, h0, star_mul']`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [hs i])`.
-
-Use `hc` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.frobL :
     FrobTwo → ResCl → ParCons → FrobL := by

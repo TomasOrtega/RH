@@ -16,14 +16,14 @@ def comb (φ : G ⟶ G) (m n : ℤ) : G ⟶ G := (𝟙 G) ^ m * φ ^ n
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-Simplify using `[comb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comb_one_zero (φ : G ⟶ G) : comb φ 1 0 = 𝟙 G := by simp [comb]
 
 /- English proof (translation)
-Establish `h1 : IsMonHom (1 : G ⟶ G)` using `by rw [Hom.one_def]; infer_instance`. Establish `hm : ∀ f g : G ⟶ G, IsMonHom f → IsMonHom g → IsMonHom (f * g)` using `fun f g _ _ => by`. Rewrite using `[Hom.mul_def]`. Use `infer_instance`. Proceed by induction on `n using Int.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rwa [zpow_zero]`. Consider the case `succ n h => rw [zpow_add_one]`. Conclude with `hm _ _ h inferInstance`. Consider the case `pred n h => rw [zpow_sub_one]`. Conclude with `hm _ _ h inferInstance`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isMonHom_zpow (f : G ⟶ G) [IsMonHom f] (n : ℤ) : IsMonHom (f ^ n) := by
   have h1 : IsMonHom (1 : G ⟶ G) := by rw [Hom.one_def]; infer_instance
@@ -35,7 +35,7 @@ theorem isMonHom_zpow (f : G ⟶ G) [IsMonHom f] (n : ℤ) : IsMonHom (f ^ n) :=
   | pred n h => rw [zpow_sub_one]; exact hm _ _ h inferInstance
 
 /- English proof (translation)
-Use `isMonHom_zpow (𝟙 G) m` as an intermediate fact. Use `isMonHom_zpow φ n` as an intermediate fact. Rewrite using `[comb, Hom.mul_def]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonHom_comb (φ : G ⟶ G) [IsMonHom φ] (m n : ℤ) : IsMonHom (comb φ m n) := by
   have := isMonHom_zpow (𝟙 G) m
@@ -44,7 +44,7 @@ theorem isMonHom_comb (φ : G ⟶ G) [IsMonHom φ] (m n : ℤ) : IsMonHom (comb 
   infer_instance
 
 /- English proof (translation)
-Simplify using `only [comb, zpow_add]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comb_add (φ : G ⟶ G) (m n m' n' : ℤ) :
     comb φ (m + m') (n + n') = comb φ m n * comb φ m' n' := by
@@ -52,7 +52,7 @@ theorem comb_add (φ : G ⟶ G) (m n m' n' : ℤ) :
   exact mul_mul_mul_comm _ _ _ _
 
 /- English proof (translation)
-Simplify using `only [mul_zpow, ← zpow_mul, zpow_add]`. The two sides agree by associativity and commutativity.
+Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity.
 -/
 theorem zpow_identity {M : Type*} [CommGroup M] (x y : M) (a b m n m' n' : ℤ) :
     (x ^ m * y ^ n) ^ m' * (y ^ m * (x ^ a * y ^ b) ^ n) ^ n' =
@@ -61,7 +61,7 @@ theorem zpow_identity {M : Type*} [CommGroup M] (x y : M) (a b m n m' n' : ℤ) 
   ac_rfl
 
 /- English proof (translation)
-Establish `e : comb φ m n ≫ φ = φ ^ m * comb φ a b ^ n`. Rewrite using `[comb, MonObj.mul_comp, GrpObj.zpow_comp, GrpObj.zpow_comp, Category.id_comp, h]`. Use `conv_lhs => rw [comb.eq_1 φ m' n', MonObj.comp_mul, GrpObj.comp_zpow, GrpObj.comp_zpow, Category.comp_id, e]`. Conclude with `zpow_identity (M := G ⟶ G) _ _ _ _ _ _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_comp (φ : G ⟶ G) [IsMonHom φ] {a b : ℤ} (h : φ ≫ φ = comb φ a b) (m n m' n' : ℤ) :
     comb φ m n ≫ comb φ m' n' =

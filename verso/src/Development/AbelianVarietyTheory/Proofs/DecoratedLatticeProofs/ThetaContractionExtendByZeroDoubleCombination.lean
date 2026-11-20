@@ -9,7 +9,7 @@ namespace GlobalTheory.ContrComb
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1 : (o.resS S).symm (u, x) + (o.resS S).symm (a, 0) = (o.resS S).symm (u + a, x)`. Rewrite using `[← map_add]`. Simplify using the standard rewrite rules. Simplify using `only [heisO]`. Rewrite using `[o.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_right, add_zero, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_resS_symm_zero {V₀ A L : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (o : OrthDec V₀ A L) (S : HSp D)
     (f : WO V₀ S → ℂ) (a u : WO A S) (x : WO L S) :
@@ -21,7 +21,7 @@ theorem heisO_resS_symm_zero {V₀ A L : HSp D} (ψ : AddChar (AF D.host.F) ℂ)
   rw [o.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_right, add_zero, h1]
 
 /- English proof (translation)
-Establish `h1 : (o.resT S).symm (v, x) + (o.resT S).symm (b, 0) = (o.resT S).symm (v + b, x)`. Rewrite using `[← map_add]`. Simplify using the standard rewrite rules. Simplify using `only [heisO]`. Rewrite using `[o.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_right, add_zero, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_resT_symm_zero {T A L : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (o : OrthDec T A L) (S : HSp D)
     (f : WO S T → ℂ) (b v : WO S A) (x : WO S L) :
@@ -33,7 +33,7 @@ theorem heisO_resT_symm_zero {T A L : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (o
   rw [o.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_right, add_zero, h1]
 
 /- English proof (translation)
-Establish `inj : Function.Injective fun a : WO A S => (o.resS S).symm (a, 0)` using `fun a b h => (Prod.ext_iff.1 ((o.resS S).symm.injective h)).1`. Conclude with `Finsupp.sum_mapDomain_index_inj (h := fun u x => x • heisO ψ V₀ S u f) inj`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comb_extS {V₀ A L : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (o : OrthDec V₀ A L) (S : HSp D)
     (c : WO A S →₀ ℂ) (f : WO V₀ S → ℂ) :
@@ -43,7 +43,7 @@ theorem comb_extS {V₀ A L : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (o : OrthD
   exact Finsupp.sum_mapDomain_index_inj (h := fun u x => x • heisO ψ V₀ S u f) inj
 
 /- English proof (translation)
-Establish `inj : Function.Injective fun b : WO S A => (o.resT S).symm (b, 0)` using `fun a b h => (Prod.ext_iff.1 ((o.resT S).symm.injective h)).1`. Conclude with `Finsupp.sum_mapDomain_index_inj (h := fun u x => x • heisO ψ S T u f) inj`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comb_extT {T A L : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (o : OrthDec T A L) (S : HSp D)
     (c : WO S A →₀ ℂ) (f : WO S T → ℂ) :
@@ -53,15 +53,13 @@ theorem comb_extT {T A L : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (o : OrthDec 
   exact Finsupp.sum_mapDomain_index_inj (h := fun u x => x • heisO ψ S T u f) inj
 
 /- English proof (translation)
-Introduce `D ρ σ B B' l S vL ψ f₁ f₂ hint c c'`. Use function extensionality and compare the values at `u v`. Rewrite using `[comb_extS, comb_extT]`. Simplify using `only [contr, biComb, comb, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, heisO_resS_symm_zero, heisO_resT_symm_zero]`. Simplify using `only [heisO]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hI : ∀ a b, Integrable (fun w => f₂ ((B'.o.resT S).symm (v + b, w)) * f₁ ((B.o.resS S).symm (u + a, l.κ S w))) (vL.μ.restrict vL.𝓕)` using `fun a b => hint (u + a) (v + b)`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[mul_comm, Finset.sum_mul_sum]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Use `_ = ∑ a ∈ c.support, ∑ b ∈ c'.support, (c a * ψ (symplOH B.A S u a) * (c' b * ψ (symplOH S B'.A v b))) * contr l S vL f₁ f₂ (u + a) (v + b) := by`. Rewrite using `[integral_finset_sum _ fun a _ => integrable_finset_sum _ fun b _ => (hI a b).const_mul _]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun b _ => (hI a b).const_mul _]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Both sides reduce to the same expression. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contr_comb_ext : ∀ (D : D7) (ρ σ : ℕ) (B : BesLev D ρ) (B' : BesLev D σ) (l : Link B B'.L B'.ζ) (S : HSp D)
     (vL : VolM D B'.L.rank S.rank) (ψ : AddChar (AF D.host.F) ℂ) (f₁ : WO B.V₀ S → ℂ) (f₂ : WO S B'.V₀ → ℂ),

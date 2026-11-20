@@ -30,7 +30,7 @@ theorem galPointsHom_zero (σ : Gal(L/K)) : galPointsHom K L W σ 0 = 0 :=
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem galPointsHom_some (σ : Gal(L/K)) {x y : L}
     (h : (W.baseChange L).toAffine.Nonsingular x y) :
@@ -39,7 +39,7 @@ theorem galPointsHom_some (σ : Gal(L/K)) {x y : L}
   ⟨_, rfl⟩
 
 /- English proof (translation)
-Take `⟨h', e⟩` from `galPointsHom_some K L W σ h`. Rewrite using `[e]`. Simplify using `only [Affine.Point.some.injEq]`. Conclude with `⟨hx, hy⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem galPointsHom_some_eq_self {σ : Gal(L/K)} {x y : L}
     (h : (W.baseChange L).toAffine.Nonsingular x y) (hx : σ x = x) (hy : σ y = y) :
@@ -128,7 +128,7 @@ section Discrete
 variable {K L : Type u} [Field K] [Field L] [Algebra K L] [DecidableEq L] (W : WeierstrassCurve K)
 
 /- English proof (translation)
-Establish `: FiniteDimensional K K⟮x⟯` using `adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)`. Establish `: FiniteDimensional K K⟮y⟯` using `adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral y)`. Use `Subgroup.isOpen_mono (H₁ := (K⟮x⟯).fixingSubgroup ⊓ (K⟮y⟯).fixingSubgroup) (fun σ hσ => h σ (apply_eq_of_mem_fixingSubgroup_adjoin hσ.1) (apply_eq_of_mem_fixingSubgroup_adjoin hσ.2)) ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inf]`. Conclude with `(fixingSubgroup_isOpen _).inter (fixingSubgroup_isOpen _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_of_forall_apply_eq_apply_eq_mem [Algebra.IsIntegral K L] (H : Subgroup Gal(L/K))
     (x y : L) (h : ∀ σ : Gal(L/K), σ x = x → σ y = y → σ ∈ H) : IsOpen (H : Set Gal(L/K)) := by
@@ -141,7 +141,7 @@ theorem isOpen_of_forall_apply_eq_apply_eq_mem [Algebra.IsIntegral K L] (H : Sub
   exact (fixingSubgroup_isOpen _).inter (fixingSubgroup_isOpen _)
 
 /- English proof (translation)
-Break down `P with _ | ⟨x, y, hP⟩` into its components or cases. Establish `: H = ⊤` using `eq_top_iff.mpr fun σ _ => h σ rfl`. Rewrite using `[this]`. Conclude with `isOpen_univ`. Conclude with `isOpen_of_forall_apply_eq_apply_eq_mem H x y fun σ hx hy => h σ (galPointsHom_some_eq_self K L W hP hx hy)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_stabilizer_point [Algebra.IsIntegral K L] (H : Subgroup Gal(L/K))
     (P : (W.baseChange L).toAffine.Point) (h : ∀ σ, galPointsHom K L W σ P = P → σ ∈ H) :

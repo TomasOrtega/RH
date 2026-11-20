@@ -9,11 +9,11 @@ noncomputable section
 namespace PI.OpWords
 
 /- English proof (translation)
-Introduce `K _ _ k d A B h`. Establish `hmono : ∀ g : Fin k →₀ ℕ, A (mono K k d g) = B (mono K k d g)`. Introduce `g`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `h1` using `congrArg (coeff (Finsupp.sumElim m g)) h`. Rewrite `h1` using `[coeff_kappa, coeff_kappa]`. Conclude with `mul_left_cancel₀ (invFact_ne_zero g) h1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_sum_mono F, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, hmono g]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symbolMapInjective : KappaInj := by
   intro K _ _ k d A B h
@@ -31,13 +31,13 @@ theorem symbolMapInjective : KappaInj := by
   rw [map_smul, map_smul, hmono g]
 
 /- English proof (translation)
-Introduce `K _ _ k d A`. Use `show kappa K k d A ∈ weightedHomogeneousSubmodule K (wx k) d ⊓ weightedHomogeneousSubmodule K (wxi k) d`. Establish `key : ∀ m g : Fin k →₀ ℕ, coeff (Finsupp.sumElim m g) (kappa K k d A) ≠ 0 → m.degree = d ∧ g.degree = d`. Introduce `m g h`. Rewrite `h` using `[coeff_kappa]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : coeff m (A (mono K k d g) : MvPolynomial (Fin k) K) ≠ 0` using `right_ne_zero_of_mul h`. Use `⟨degree_of_coeff_ne _ h2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hg`. Establish `h0 : mono K k d g = 0`. Unfold `mono`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hg]`. Rewrite `h2` using `[h0, map_zero]`. Simplify using `at h2`. Apply the tactic sequence `refine Submodule.mem_inf.2 ⟨?_, ?_⟩ <;> rw [mem_weightedHomogeneousSubmodule] <;> intro n hn <;>`. Take `⟨m, g, rfl⟩` from `exists_sumElim n`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[weight_wx]`. Conclude with `(key m g hn).1`. Rewrite using `[weight_wxi]`. Conclude with `(key m g hn).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symbolMapBihomogeneous : KappaBihom := by
   intro K _ _ k d A
@@ -62,9 +62,9 @@ theorem symbolMapBihomogeneous : KappaBihom := by
     exact (key m g hn).2
 
 /- English proof (translation)
-Introduce `K _ _ k d a b A`. Rewrite using `[kappa_apply, kappa_apply, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Ed_val, Derivation.map_smul, mul_smul_comm]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Derivation.leibniz, pderiv_inl_xi, smul_zero, zero_add, add_zero, smul_eq_mul]`. Rewrite using `[pderiv_rename Sum.inl_injective, map_mul, rename_X]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symbolMapMulLeft : KappaLeft := by
   intro K _ _ k d a b A
@@ -77,13 +77,13 @@ theorem symbolMapMulLeft : KappaLeft := by
   ring
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on'`. Use `next u c =>`. Rewrite using `[pderiv_monomial, coeff_monomial, coeff_monomial]`. Distinguish the cases in `h : u = n + Finsupp.single i 1`. Substitute `h` using the available equality.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg h, zero_mul] split_ifs with h2`. Establish `hu : u i = 0`. Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2, tsub_add_cancel_of_le]`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Simplify using `[hu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `next p q hp hq =>`. Rewrite using `[map_add, coeff_add, coeff_add, hp, hq, add_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem coeff_pderiv_eq_coeff_add_single_mul_multinomial_depth {σ : Type} {K : Type} [Field K] (i : σ) (P : MvPolynomial σ K)
     (n : σ →₀ ℕ) : coeff n (pderiv i P) = coeff (n + Finsupp.single i 1) P * ((n i : K) + 1) := by
@@ -108,15 +108,15 @@ private theorem coeff_pderiv_eq_coeff_add_single_mul_multinomial_depth {σ : Typ
     rw [map_add, coeff_add, coeff_add, hp, hq, add_mul]
 
 /- English proof (translation)
-Introduce `K _ _ k d a b A`. Apply `pol_ext` to reduce the goal to its premises. Introduce `m g`. Rewrite using `[coeff_kappa, Module.End.mul_apply, Ed_mono, map_smul, Submodule.coe_smul, coeff_smul, coeff_X_mul']`. Distinguish the cases in `hb : g b = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg (by simp [hb])]`. Simplify using `[hb]`. Rewrite using `[if_pos (by simp [hb]), sumElim_sub_single_inr, coeff_pderiv_eq_coeff_add_single_mul_multinomial_depth, sumElim_add_single_inr, coeff_kappa]`. Simplify using `only [Finsupp.sumElim_apply, Sum.elim_inr]`. Establish `h1` using `invFact_add_single (K := K) (g - single b 1) a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `invFact_add_single (K := K) (g - single b 1) b`. Establish `hle : single b 1 ≤ g`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[tsub_add_cancel_of_le hle]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ((g - single b 1 : Fin k →₀ ℕ) b : K) + 1 = (g b : K)`. Establish `h4 : (g - single b 1 : Fin k →₀ ℕ) b + 1 = g b`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Conclude with `h4` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h3]`. Take the linear combination `(coeff m (A (mono K k d (g - single b 1 + single a 1)) : MvPolynomial (Fin k) K)) * h2 - (coeff m (A (mono K k d (g - single b 1 + single a 1)) : MvPolynomial (Fin k) K)) * h1`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem symbolMapMulRight : KappaRight := by
   intro K _ _ k d a b A
@@ -144,19 +144,19 @@ theorem symbolMapMulRight : KappaRight := by
       (coeff m (A (mono K k d (g - single b 1 + single a 1)) : MvPolynomial (Fin k) K)) * h1
 
 /- English proof (translation)
-Establish `hprod : ∀ f : Fin k → ℕ, ∏ i, (X (Sum.inl i) * X (Sum.inr i) : Pol K k) ^ f i = monomial (Finsupp.sumElim (Finsupp.equivFunOnFinite.symm f) (Finsupp.equivFunOnFinite.symm f)) 1`. Introduce `f`. Rewrite using `[monomial_eq, map_one, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_sum_type]`. Simplify using `[mul_pow, Finset.prod_mul_distrib]`. Rewrite using `[tt, Finset.sum_pow_eq_sum_piAntidiag, coeff_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hprod, ← map_natCast (C : K →+* Pol K k), coeff_C_mul, coeff_monomial, sumElim_inj, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `h : m = g ∧ g.degree = d`. Take `⟨hmg, hd⟩` from `h`. Rewrite using `[if_pos ⟨hmg, hd⟩, Finset.sum_eq_single (⇑g)]`. Simplify using `[hmg]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `f _ hf`. Rewrite using `[if_neg]`. Introduce and unpack `⟨_, h2⟩`. Apply `hf` to reduce the goal to its premises. Rewrite using `[← h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `hnot`. It suffices to derive a contradiction. Apply `hnot` to reduce the goal to its premises. Rewrite using `[Finset.mem_piAntidiag]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun i _ => Finset.mem_univ i⟩` and prove the remaining obligations. Rewrite using `[← hd, Finsupp.degree_eq_sum]`. Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun f hf => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2⟩`. Apply `h` to reduce the goal to its premises. Use `⟨h1.symm.trans h2, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, Finsupp.degree_eq_sum]`. Establish `h3` using `(Finset.mem_piAntidiag.1 hf).1`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using h3`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem coeff_sumElim_tt_pow (K : Type) [Field K] (k d : ℕ) (m g : Fin k →₀ ℕ) :
     coeff (Finsupp.sumElim m g) (tt K k ^ d) =
@@ -197,15 +197,13 @@ private theorem coeff_sumElim_tt_pow (K : Type) [Field K] (k d : ℕ) (m g : Fin
     simpa using h3
 
 /- English proof (translation)
-Introduce `K _ _ k d`. Apply `pol_ext` to reduce the goal to its premises. Introduce `m g`. Rewrite using `[coeff_kappa, Module.End.one_apply, mono_val, coeff_smul, smul_eq_mul, coeff_sumElim_tt_pow]`. Distinguish the cases in `h : m = g ∧ g.degree = d`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨hmg, hd⟩` from `h`. Rewrite using `[if_pos hd, if_pos ⟨hmg, hd⟩, coeff_monomial, if_pos hmg.symm, mul_one]`. Establish `hspec` using `Nat.multinomial_spec (Finset.univ : Finset (Fin k)) ⇑g`. Establish `hsum : ∑ i, g i = d` using `by rw [← hd, Finsupp.degree_eq_sum]`. Rewrite `hspec` using `[hsum]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcast : ((d.factorial : ℕ) : K) = (∏ i, ((g i).factorial : K)) * (Nat.multinomial Finset.univ ⇑g : K)`. Conclude with `hspec.symm` after adjusting the coercions. Establish `hM : (Nat.multinomial Finset.univ ⇑g : K) ≠ 0`. Introduce `h0`. Rewrite `hcast` using `[h0, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `(Nat.cast_ne_zero.2 (Nat.factorial_ne_zero d)) hcast`. Unfold `invFact`. Rewrite using `[prodFact_fintype, hcast, mul_inv, mul_assoc, inv_mul_cancel₀ hM, mul_one]`. Rewrite using `[if_neg h, mul_zero] split_ifs with hd`. Rewrite using `[coeff_monomial, if_neg (fun hgm => h ⟨hgm.symm, hd⟩), mul_zero]`.
-
-Rewrite using `[coeff_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symbolMapOne : KappaId := by
   intro K _ _ k d

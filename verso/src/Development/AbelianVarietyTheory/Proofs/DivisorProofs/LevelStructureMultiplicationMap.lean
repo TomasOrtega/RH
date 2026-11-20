@@ -39,14 +39,14 @@ theorem ptHom_apply (θ : TorsPt G N A) (B : Type) [CommRing B] [Algebra R B] (z
     ptHom θ B z = toConv (θ.pt B z) := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg toConv (θ.nat B C φ z)`.
+A detailed English derivation is pending.
 -/
 theorem ptHom_torsMap (θ : TorsPt G N A) {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C]
     (φ : B →ₐ[R] C) (z : Tors G N B) : ptHom θ C (torsMap φ z) = ptsPush A φ (ptHom θ B z) :=
   congrArg toConv (θ.nat B C φ z)
 
 /- English proof (translation)
-Take `⟨V, hV⟩` from `h.opn`. Introduce `x y hxy`. Conclude with `(hV B).injOn trivial trivial (congrArg ofConv hxy)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ptHom_injective {K : Type} [Field K] [Algebra R K] {θ : TorsPt G N A} (h : IsLevel K θ)
     (B : Type) [CommRing B] [Algebra R B] : Function.Injective (ptHom θ B) := by
@@ -60,12 +60,12 @@ Both sides reduce to the same expression.
 theorem tors_pow_val {B : Type} [CommRing B] [Algebra R B] (z : Tors G N B) (n : ℕ) : (z ^ n).1 = z.1 ^ n := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext z.2`.
+A detailed English derivation is pending.
 -/
 theorem tors_pow_self {B : Type} [CommRing B] [Algebra R B] (z : Tors G N B) : z ^ N = 1 := Subtype.ext z.2
 
 /- English proof (translation)
-Establish `h0 : PrimeSpectrum.comap (j.comp f) (IsLocalRing.closedPoint B) ∈ V` using `h ⟨IsLocalRing.closedPoint B, rfl⟩`. Rewrite `h0` using `[PrimeSpectrum.comap_comp_apply, IsLocalRing.comap_closedPoint]`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hs` using `(IsLocalRing.specializes_closedPoint (R := S) x).map (PrimeSpectrum.continuous_comap f)`. Conclude with `hs.mem_open V.isOpen h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem range_subset_of_local {S B : Type} [CommRing S] [IsLocalRing S] [CommRing B] [IsLocalRing B] (f : A →+* S)
     (j : S →+* B) [IsLocalHom j] (V : (Sp A).Opens) (h : Set.range (spMap (j.comp f)) ⊆ V) :
@@ -84,7 +84,7 @@ variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {
   {θ : TorsPt G N A} {θ' : TorsPt G (N * m) A'} {g : A' →ₐc[R] A}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ptHom θ B ⟨z.1, congrArg Subtype.val hz⟩, congrArg toConv (hg B ⟨z.1, congrArg Subtype.val hz⟩)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ptsMap_of_tors
     (hg : ∀ (B : Type) [CommRing B] [Algebra R B] (z : Tors G N B),
@@ -96,7 +96,7 @@ theorem exists_ptsMap_of_tors
 end
 
 /- English proof (translation)
-Introduce `x y hxy` and use `ofConv_injective (AlgHom.ext fun a => h (DFunLike.congr_fun (congrArg ofConv hxy) a))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ptsPush_injective {R A B C : Type} [CommRing R] [CommRing A] [Bialgebra R A] [CommRing B] [Algebra R B]
     [CommRing C] [Algebra R C] (φ : B →ₐ[R] C) (h : Function.Injective φ) : Function.Injective (ptsPush A φ) :=
@@ -110,7 +110,7 @@ theorem ptsPush_ptsPush {R A B C D : Type} [CommRing R] [CommRing A] [Bialgebra 
     ptsPush A ψ (ptsPush A φ x) = ptsPush A (ψ.comp φ) x := rfl
 
 /- English proof (translation)
-Rewrite using `[ptsPush_ptsPush, Subsingleton.elim (ψ.comp (Algebra.ofId R C)) (Algebra.ofId R D)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptsPush_ofId {R A C D : Type} [CommRing R] [CommRing A] [Bialgebra R A]
     [CommRing C] [Algebra R C] [CommRing D] [Algebra R D] (ψ : C →ₐ[R] D) (x : WithConv (A →ₐ[R] R)) :
@@ -125,31 +125,29 @@ theorem ptsPush_ptsMap {R A A' C D : Type} [CommRing R] [CommRing A] [Bialgebra 
     ptsPush A' ψ (pointsMap C g x) = pointsMap D g (ptsPush A ψ x) := rfl
 
 /- English proof (translation)
-Take `⟨z, s₀, hz⟩` from `GlobalTheory.T.level_structure_local_points R K G hG (N * m) (mul_ne_zero hN hm) A' θ' h' B φ.ofConv`. Set `s : WithConv (A' →ₐ[R] R)` to `toConv s₀`. Use `replace hz : φ = ptHom θ' B z * ptsPush A' (Algebra.ofId R B) s := hz`. Establish `hRK : Function.Injective (Algebra.ofId R K)` using `IsFractionRing.injective R K`. Establish `hs : s ^ (N * m) = 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ptsPush_injective _ hRK` to reduce the goal to its premises. Take `⟨w, hw⟩` from `h'.gen.2 (ptsPush A' (Algebra.ofId R K) s).ofConv`. Establish `hw' : ptHom θ' K w = ptsPush A' (Algebra.ofId R K) s` using `congrArg toConv hw`. Rewrite using `[map_pow, ← hw', ← map_pow, tors_pow_self, map_one, map_one]`. Set `q : PrimeSpectrum R` to `PrimeSpectrum.comap (algebraMap R B) (IsLocalRing.closedPoint B)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `S` to `Localization.AtPrime q.asIdeal`. Establish `hu : ∀ y : q.asIdeal.primeCompl, IsUnit (Algebra.ofId R B y)` using `fun y => (IsLocalRing.notMem_maximalIdeal.1 y.2)`. Set `j : S →ₐ[R] B` to `IsLocalization.liftAlgHom hu`. Establish `hj : IsLocalHom (j : S →+* B)` using `⟨fun a ha => by`. Take `⟨⟨x, y⟩, rfl⟩` from `IsLocalization.mk'_surjective q.asIdeal.primeCompl a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalization.AtPrime.isUnit_mk'_iff S q.asIdeal]`. Establish `h1 : (j : S →+* B) (IsLocalization.mk' S x y) * algebraMap R B y = algebraMap R B x`. Rewrite using `[← j.commutes, ← j.commutes, RingHom.coe_coe, ← map_mul, IsLocalization.mk'_spec]`. Conclude with `IsLocalRing.notMem_maximalIdeal.2 (h1 ▸ ha.mul (hu y))⟩`. Establish `huK : ∀ y : q.asIdeal.primeCompl, IsUnit (Algebra.ofId R K y)` using `fun y => IsUnit.mk0 _ fun h0 => y.2 (by rw [hRK (h0.trans (map_zero _).symm)]; exact q.asIdeal.zero_mem)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `i : S →ₐ[R] K` to `IsLocalization.liftAlgHom huK`. Establish `hi : Function.Injective i`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨⟨x, y⟩, rfl⟩` from `IsLocalization.mk'_surjective q.asIdeal.primeCompl a`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : i (IsLocalization.mk' S x y) * algebraMap R K y = algebraMap R K x`. Rewrite using `[← i.commutes, ← i.commutes, ← map_mul, IsLocalization.mk'_spec]`. Rewrite `h1` using `[ha, zero_mul]`. Establish `hx : x = 0` using `hRK (h1.symm.trans (map_zero _).symm)`. Simplify using `[hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `sS` to `ptsPush A' (Algebra.ofId R S) s`. Establish `hsB : ptsPush A' j sS = ptsPush A' (Algebra.ofId R B) s` using `ptsPush_ofId j s`. Establish `ht : ptsPush A' j (sS ^ N) = ptHom θ' B (z⁻¹ ^ N)`. Rewrite using `[map_pow, hsB, map_pow, map_inv, inv_pow, eq_inv_iff_mul_eq_one, ← mul_pow, mul_comm, ← hz, hφ]`. Take `⟨V, hV⟩` from `h'.opn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, -, hh⟩` from `(hV S).surjOn (a := (sS ^ N).ofConv) (range_subset_of_local _ (j : S →+* B) V (by`. Use `(hV B).mapsTo (x := z⁻¹ ^ N) trivial` as an intermediate fact. Rewrite `this` using `[show θ'.pt B (z⁻¹ ^ N) = j.comp (sS ^ N).ofConv from (congrArg ofConv ht).symm]`. Conclude with `this))`. Use `replace hh : ptHom θ' S h = sS ^ N := congrArg toConv hh`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hhm : h ^ m = 1` using `ptHom_injective h' S (by`. Rewrite using `[map_pow, hh, ← pow_mul, ← map_pow, hs, map_one, map_one])`. Take `⟨y₀, hy₀⟩` from `GlobalTheory.T.semiabelian_local_point_divisible R K G hG q h.1 N hN`. Set `y : Tors G (N * m) S` to `⟨y₀, by rw [pow_mul, hy₀]; exact congrArg Subtype.val hhm⟩`. Establish `hy : y ^ N = h` using `Subtype.ext hy₀`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `u` to `sS * (ptHom θ' S y)⁻¹`. Establish `huN : u ^ N = 1`. Rewrite using `[mul_pow, inv_pow, ← map_pow (ptHom θ' S), hy, hh, mul_inv_cancel]`. Choose the witnesses or unpack the hypotheses as in `⟨ψ₁, hψ₁⟩ : ∃ ψ, u = pointsMap S g ψ := by`. Take `⟨v, hv⟩` from `h'.gen.2 (ptsPush A' i u).ofConv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `replace hv : ptHom θ' K v = ptsPush A' i u := congrArg toConv hv`. Take `⟨χ, hχ⟩` from `exists_ptsMap_of_tors hg v (ptHom_injective h' K (by`. Rewrite using `[map_pow, hv, ← map_pow, huN, map_one, map_one]))`. Take `⟨c, hc⟩` from `exists_algHom_comp_eq (A := R) (K := K) χ.ofConv`. Use `⟨ptsPush A (Algebra.ofId R S) (toConv c), ptsPush_injective i hi ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hv, hχ, ptsPush_ptsMap, ptsPush_ofId]`. Conclude with `congrArg (fun x => pointsMap K g (toConv x)) hc.symm`. Establish `hφ' : φ = ptHom θ' B (z * torsMap j y) * ptsPush A' j u`. Rewrite using `[hz, map_mul, ptHom_torsMap, map_mul, map_inv, hsB, _root_.mul_assoc, mul_comm (ptsPush A' _ s), mul_inv_cancel_left]`. Take `⟨ψ₂, hψ₂⟩` from `exists_ptsMap_of_tors hg (z * torsMap j y) (ptHom_injective h' B (by`.
-
-Rewrite `hφ` using `[hφ', mul_pow, ← map_pow (ptsPush A' j), huN, map_one, _root_.mul_one]`. Rewrite using `[map_pow, hφ, map_one]))`. Conclude with `⟨ψ₂ * ptsPush A j ψ₁, by rw [hφ', hψ₂, hψ₁, ptsPush_ptsMap, map_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ptsMap_of_local (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K]
     [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
@@ -228,13 +226,13 @@ theorem exists_ptsMap_of_local (R K : Type) [CommRing R] [IsDomain R] [IsIntegra
   exact ⟨ψ₂ * ptsPush A j ψ₁, by rw [hφ', hψ₂, hψ₁, ptsPush_ptsMap, map_mul]⟩
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N m hN hm A _ _ _ _ _ A' _ _ _ _ _ θ θ' h h' g hg`. Use `le_antisymm ?_ fun a ha => ?_` and prove the remaining obligations. Introduce `a ha`. Set `Q` to `A' ⧸ torsionIdeal R A' N`. Set `π : A' →ₐ[R] Q` to `Ideal.Quotient.mkₐ R _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hπ : toConv π ^ N = 1` using `(torsionIdeal_le_ker_iff N π).1 fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 ha`. Use `Ideal.Quotient.eq_zero_iff_mem.1 (show π a = 0 from ?_)` and prove the remaining obligations. Use `Module.eq_zero_of_localization_maximal (R := Q) (fun P _ => Localization.AtPrime P) (fun P _ => Algebra.linearMap Q (Localization.AtPrime P)) _ fun P _ => ?_` and prove the remaining obligations. Set `l` to `IsScalarTower.toAlgHom R Q (Localization.AtPrime P)`. Take `⟨ψ, hψ⟩` from `exists_ptsMap_of_local R K G hG N m hN hm A A' θ θ' h' g hg (Localization.AtPrime P) (ptsPush A' l (toConv π)) (by rw [← map_pow, hπ, map_one])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `h1 : l (π a) = ψ.ofConv ((g : A' →ₐ[R] A) a)` using `DFunLike.congr_fun (congrArg ofConv hψ) a`. Rewrite `h1` using `[RingHom.mem_ker.1 ha, map_zero]`. Conclude with `h1`. Use `(GlobalTheory.T.finite_hopf_points_separate R K A).2.1 _ fun ψ => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `h.gen.2 ψ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(torsionIdeal_le_ker_iff N ((θ.pt K w).comp (g : A' →ₐ[R] A))).2 ?_ ha` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pointsMap K g (ptHom θ K w) ^ N = 1`. Rewrite using `[← map_pow, ← map_pow, tors_pow_self, map_one, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_eq_torsionIdeal : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N m : ℕ), N ≠ 0 → m ≠ 0 → ∀ (A : Type) [CommRing A] [HopfAlgebra R A] [IsCocomm R A] [Module.Finite R A] [Module.Projective R A] (A' : Type) [CommRing A'] [HopfAlgebra R A'] [IsCocomm R A'] [Module.Finite R A'] [Module.Projective R A'] (θ : TorsPt G N A) (θ' : TorsPt G (N * m) A'), IsLevel K θ → IsLevel K θ' → ∀ g : A' →ₐc[R] A, (∀ (B : Type) [CommRing B] [Algebra R B] (z : Tors G N B), θ'.pt B (torsIncl (Dvd.intro m rfl) z) = (θ.pt B z).comp (g : A' →ₐ[R] A)) → RingHom.ker (g : A' →ₐ[R] A) = torsionIdeal R A' N := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N m hN hm A _ _ _ _ _ A' _ _ _ _ _ θ θ' h h' g hg

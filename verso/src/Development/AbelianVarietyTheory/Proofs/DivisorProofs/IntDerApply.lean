@@ -42,7 +42,7 @@ Both sides reduce to the same expression.
     intDer δ a = δ a := rfl
 
 /- English proof (translation)
-Unfold `iterOp`. Proceed by induction on `(List.finRange n) with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => simpa using ih`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iterOp_zero {A : Type} {n : ℕ} (ds : Fin n → A → A) (f : A) : iterOp ds 0 f = f := by
   unfold iterOp

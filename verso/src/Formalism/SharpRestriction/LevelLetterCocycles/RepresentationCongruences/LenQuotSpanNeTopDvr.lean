@@ -22,17 +22,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 omit [Algebra O LL] in
 
 /- English proof (translation)
-Establish `hI : Ideal.span {t} ≠ ⊥` using `by rwa [Ne, Ideal.span_singleton_eq_bot]`. Establish `hA : IsArtinianRing (O ⧸ Ideal.span {t})`. Rewrite using `[isArtinianRing_iff_isNoetherianRing_krullDimLE_zero]`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Ring.krullDimLE_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `J hJ`. Establish `hsurj : Function.Surjective (Ideal.Quotient.mk (Ideal.span {t}))` using `Ideal.Quotient.mk_surjective`. Establish `hJ' : (J.comap (Ideal.Quotient.mk (Ideal.span {t}))).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hne : J.comap (Ideal.Quotient.mk (Ideal.span {t})) ≠ ⊥`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hI` to reduce the goal to its premises. Rewrite using `[eq_bot_iff, ← h]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 hx]`. Conclude with `J.zero_mem`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmax` using `hJ'.isMaximal hne`. Use `⟨⟨hJ.ne_top, fun K hK => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hKtop`. Establish `hK' : K.comap (Ideal.Quotient.mk (Ideal.span {t})) ≠ ⊤` using `fun h => hKtop (by`. Rewrite using `[← Ideal.map_comap_of_surjective _ hsurj K, h, Ideal.map_top])`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : J.comap (Ideal.Quotient.mk (Ideal.span {t})) ≤ K.comap (Ideal.Quotient.mk (Ideal.span {t}))` using `Ideal.comap_mono hK.le`. Establish `heq` using `hmax.eq_of_le hK' hle`. Apply `hK.ne` to reduce the goal to its premises. Rewrite using `[← Ideal.map_comap_of_surjective _ hsurj K, ← heq, Ideal.map_comap_of_surjective _ hsurj J]`. Rewrite using `[Module.length_ne_top_iff, isFiniteLength_iff_isNoetherian_isArtinian]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `haveI := hA`. Conclude with `⟨inferInstance, isArtinian_of_surjective_algebraMap (R := O ⧸ Ideal.span {t}) Ideal.Quotient.mk_surjective⟩`.
+A detailed English derivation is pending.
 -/
 theorem len_quot_span_ne_top_dvr [IsDomain O] [IsDiscreteValuationRing O] (t : O) (ht : t ≠ 0) :
     Module.length O (O ⧸ Ideal.span {t}) ≠ ⊤ := by
@@ -68,37 +68,35 @@ theorem len_quot_span_ne_top_dvr [IsDomain O] [IsDiscreteValuationRing O] (t : O
     Ideal.Quotient.mk_surjective⟩
 
 /- English proof (translation)
-Take `⟨s, hs, hscard⟩` from `hgen`. Establish `hrep : ∀ x ∈ latticeFiniteCohomology PD T₂.L, ∃ y : G → T₂.V, ∃ hy : y ∈ latticeCocycles T₂.L, y ∈ latticeFiniteCocycles PD T₂.L ∧ Submodule.mkQ _ (⟨y, hy⟩ : latticeCocycles T₂.L) = x`. Introduce `x hx`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.1 hx`. Conclude with `⟨z.1, z.2, hz, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `r : LatticeCohomology T₂.L → (G → T₂.V)` to `fun x => if hx : x ∈ latticeFiniteCohomology PD T₂.L then (hrep x hx).choose else 0`. Set `s' : Finset (G → T₂.V)` to `s.image r`. Establish `hmemH : ∀ x ∈ s, x ∈ latticeFiniteCohomology PD T₂.L` using `fun x hx => hs ▸ Submodule.subset_span hx`. Establish `hrx : ∀ x (hx : x ∈ latticeFiniteCohomology PD T₂.L), r x = (hrep x hx).choose` using `fun x hx => by`. Simplify using `only [r, dif_pos hx]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs'Z : (↑s' : Set (G → T₂.V)) ⊆ latticeFiniteCocycles PD T₂.L`. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hy`. Rewrite using `[hrx x (hmemH x hx)]`. Conclude with `(hrep x (hmemH x hx)).choose_spec.choose_spec.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : latticeCoboundaries T₂.L ≤ F.ImF PD`. Unfold `LatHom.ImF`. Conclude with `le_sup_right`. Establish `hZZ : Submodule.span O (↑Z : Set (G → T₂.V)) ≤ latticeFiniteCocycles PD T₂.L` using `Submodule.span_le.2 (fun x hx => hZ x hx)`. Establish `hspan : Submodule.span O (↑s' : Set (G → T₂.V)) ⊔ (F.ImF PD ⊓ latticeFiniteCocycles PD T₂.L) = latticeFiniteCocycles PD T₂.L`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hNle : Submodule.span O (↑s' : Set (G → T₂.V)) ⊔ (F.ImF PD ⊓ latticeFiniteCocycles PD T₂.L) ≤ latticeFiniteCocycles PD T₂.L` using `sup_le (Submodule.span_le.2 hs'Z) inf_le_right`. Use `le_antisymm hNle ?_` and prove the remaining obligations. Introduce `c hc`. Establish `hcZ1 : c ∈ latticeCocycles T₂.L` using `(Submodule.mem_inf.1 hc).1`. Establish `hq : Submodule.mkQ _ (⟨c, hcZ1⟩ : latticeCocycles T₂.L) ∈ latticeFiniteCohomology PD T₂.L` using `Submodule.mem_map_of_mem hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : latticeFiniteCohomology PD T₂.L ≤ ((Submodule.span O (↑s' : Set (G → T₂.V)) ⊔ (F.ImF PD ⊓ latticeFiniteCocycles PD T₂.L)).comap (latticeCocycles T₂.L).subtype).map (Submodule.mkQ _)`. Rewrite using `[← hs, Submodule.span_le]`. Introduce `x hx`. Take `⟨hy, _, hyq⟩` from `(hrep x (hmemH x hx)).choose_spec`. Use `⟨⟨(hrep x (hmemH x hx)).choose, hy⟩, ?_, hyq⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (hrep x (hmemH x hx)).choose ∈ Submodule.span O (↑s' : Set (G → T₂.V)) ⊔ (F.ImF PD ⊓ latticeFiniteCocycles PD T₂.L)`. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨x, hx, ?_⟩` and prove the remaining obligations. Conclude with `hrx x (hmemH x hx)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y, hyN, hyq⟩` from `hle hq`. Establish `hyN' : (y : G → T₂.V) ∈ Submodule.span O (↑s' : Set (G → T₂.V)) ⊔ (F.ImF PD ⊓ latticeFiniteCocycles PD T₂.L)` using `hyN`. Rewrite `hyq` using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Establish `h2 : (y : G → T₂.V) - c ∈ latticeCoboundaries T₂.L` using `by simpa using Submodule.mem_comap.1 hyq`. Establish `hd : c - (y : G → T₂.V) ∈ latticeCoboundaries T₂.L`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(latticeCoboundaries T₂.L).neg_mem h2`. Simplify using `using h3`. Establish `hyZ : (y : G → T₂.V) ∈ latticeFiniteCocycles PD T₂.L` using `hNle hyN'`. Establish `hdI : c - (y : G → T₂.V) ∈ F.ImF PD ⊓ latticeFiniteCocycles PD T₂.L` using `Submodule.mem_inf.2 ⟨hB hd, (latticeFiniteCocycles PD T₂.L).sub_mem hc hyZ⟩`. Establish `e1 : c = (y : G → T₂.V) + (c - (y : G → T₂.V))` using `by abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `Submodule.add_mem _ hyN' (Submodule.mem_sup_right hdI)`. Establish `hexp : ∀ q ∈ latticeFiniteCocycles PD T₂.L, (PD.p ^ e : ℕ) • q ∈ Submodule.span O (↑Z : Set (G → T₂.V)) ⊔ (F.ImF PD ⊓ latticeFiniteCocycles PD T₂.L)`. Introduce `q hq`. Establish `h` using `he q hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, hi, z, hz, hiz⟩` from `Submodule.mem_sup.1 h`. Establish `hzZ : z ∈ latticeFiniteCocycles PD T₂.L` using `hZZ hz`. Rewrite using `[← Nat.cast_smul_eq_nsmul O, Nat.cast_pow, ← hiz]`. Establish `hiZ : i ∈ latticeFiniteCocycles PD T₂.L`. Establish `e2 : i = ((PD.p : O) ^ e) • q - z` using `by rw [← hiz]; abel`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `(latticeFiniteCocycles PD T₂.L).sub_mem ((latticeFiniteCocycles PD T₂.L).smul_mem _ hq) hzZ`. Rewrite using `[add_comm]`. Conclude with `Submodule.add_mem_sup hz (Submodule.mem_inf.2 ⟨hi, hiZ⟩)`. Establish `hlift : ∀ q ∈ Submodule.span O (↑Z : Set (G → T₂.V)), (PD.p ^ e' : ℕ) • q ∈ F.ImF PD ⊓ latticeFiniteCocycles PD T₂.L`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `q hq`. Establish `hqZ : q ∈ latticeFiniteCocycles PD T₂.L` using `hZZ hq`. Rewrite using `[← Nat.cast_smul_eq_nsmul O, Nat.cast_pow]`. Conclude with `Submodule.mem_inf.2 ⟨hL q hqZ, (latticeFiniteCocycles PD T₂.L).smul_mem _ hqZ⟩`. Establish `key` using `Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingBounds.length_quotient_le_of_two_step O (G → T₂.V) PD.p g₁ Z.card e e' (latticeFiniteCocycles PD T₂.L) (F.ImF PD ⊓ latticeFiniteCocycles PD T₂.L) s' Z inf_le_right (Finset.card_image_le.trans hscard) le_rfl (fun z hz => hZ …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomap : (F.ImF PD ⊓ latticeFiniteCocycles PD T₂.L).comap (latticeFiniteCocycles PD T₂.L).subtype = (F.ImF PD).comap (latticeFiniteCocycles PD T₂.L).subtype`. Rewrite using `[Submodule.comap_inf, Submodule.comap_subtype_self, inf_top_eq]`. Rewrite `key` using `[hcomap]`. Establish `hcol : F.col PD ≤ ((g₁ * e + Z.card * e' : ℕ) : ℕ∞) * lenOl PD (O` using `O) := key`. Establish `hlen : lenOl PD (O` using `O) ≠ ⊤ := len_quot_span_ne_top_dvr (O := O) _ hp0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `ENat.ne_top_iff_exists.1 hlen`. Rewrite `hcol` using `[← hk, ← Nat.cast_mul]`. Establish `hcolfin : F.col PD ≠ ⊤` using `fun h => ENat.coe_ne_top _ (top_le_iff.1 (h ▸ hcol))`. Take `⟨mm, hmm⟩` from `ENat.ne_top_iff_exists.1 hcolfin`. Use `⟨mm, k, hmm.symm, hk.symm, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hcol` using `[← hmm]`. Establish `h4 : mm ≤ (g₁ * e + Z.card * e') * k` using `by exact_mod_cast hcol`. Establish `h5 : (mm : ℝ) ≤ (((g₁ * e + Z.card * e') * k : ℕ) : ℝ)` using `by exact_mod_cast h4`. Move the coercions through the operations in `at h5`. Conclude with `h5`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem colLeR_of_exponent [IsDomain O] [IsDiscreteValuationRing O] (PD : PeriodData G Qp K₀ K B BdR)
     (hp0 : ((PD.p : ℕ) : O) ≠ 0) {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (g₁ e e' : ℕ)

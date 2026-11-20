@@ -22,24 +22,24 @@ variable {p : ℕ} [Fact p.Prime]
 def Zc (p : ℕ) [Fact p.Prime] : Subring ℂ_[p] := (Int.castRingHom ℂ_[p]).range.topologicalClosure
 
 /- English proof (translation)
-The claim follows from `Subring.le_topologicalClosure _ ⟨k, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem int_mem (k : ℤ) : (k : ℂ_[p]) ∈ Zc p :=
   Subring.le_topologicalClosure _ ⟨k, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Subring.isClosed_topologicalClosure _`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_Zc : IsClosed (Zc p : Set ℂ_[p]) := Subring.isClosed_topologicalClosure _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Zc_iff {a : ℂ_[p]} :
     a ∈ Zc p ↔ a ∈ closure (Set.range (fun n : ℤ => (n : ℂ_[p]))) := Iff.rfl
 
 /- English proof (translation)
-Introduce `h`. Rewrite `ha` using `[h, norm_zero]`. Conclude with `zero_ne_one ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_norm {a : ℂ_[p]} (ha : ‖a‖ = 1) : a ≠ 0 := by
   intro h
@@ -47,18 +47,16 @@ theorem ne_zero_of_norm {a : ℂ_[p]} (ha : ‖a‖ = 1) : a ≠ 0 := by
   exact zero_ne_one ha
 
 /- English proof (translation)
-The claim follows from `normZ_lt.2 dvd_rfl`.
+A detailed English derivation is pending.
 -/
 theorem norm_p_lt : ‖((p : ℤ) : ℂ_[p])‖ < 1 := normZ_lt.2 dvd_rfl
 
 /- English proof (translation)
-Establish `hp : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 Fact.out`. Establish `hN1 : ‖(N : ℂ_[p])‖ = 1` using `normZ_one hN`. Establish `hN0 : (N : ℂ_[p]) ≠ 0` using `ne_zero_of_norm hN1`. Rewrite using `[mem_Zc_iff, Metric.mem_closure_iff]`. Introduce `ε hε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, hj⟩` from `exists_pow_lt_of_lt_one hε (norm_p_lt (p := p))`. Establish `hcop : IsCoprime N ((p : ℤ) ^ j)` using `IsCoprime.pow_right ((Prime.coprime_iff_not_dvd hp).2 hN).symm`. Take `⟨u, v, huv⟩` from `hcop`. Use `⟨(u : ℂ_[p]), ⟨u, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e : ((N : ℂ_[p]))⁻¹ - (u : ℂ_[p]) = (N : ℂ_[p])⁻¹ * ((v : ℂ_[p]) * ((p : ℤ) : ℂ_[p]) ^ j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (u : ℂ_[p]) * (N : ℂ_[p]) + (v : ℂ_[p]) * ((p : ℤ) : ℂ_[p]) ^ j = 1`. Conclude with `congrArg (fun z : ℤ => (z : ℂ_[p])) huv` after adjusting the coercions. Clear the denominators using the available nonvanishing facts. Take the linear combination `-h1`. Rewrite using `[dist_eq_norm, e, norm_mul, norm_inv, hN1, inv_one, one_mul, norm_mul, norm_pow]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_int_mem {N : ℤ} (hN : ¬ (p : ℤ) ∣ N) : ((N : ℂ_[p]))⁻¹ ∈ Zc p := by
   have hp : Prime (p : ℤ) := Nat.prime_iff_prime_int.1 Fact.out
@@ -82,13 +80,13 @@ theorem inv_int_mem {N : ℤ} (hN : ¬ (p : ℤ) ∣ N) : ((N : ℂ_[p]))⁻¹ �
     _ < ε := by rw [one_mul]; exact hj
 
 /- English proof (translation)
-Establish `hc0` using `ne_zero_of_norm h1`. Establish `hcl : c⁻¹ ∈ closure (Zc p : Set ℂ_[p])`. Rewrite using `[Metric.mem_closure_iff]`. Introduce `ε hε`. Take `⟨_, ⟨k, rfl⟩, hk⟩` from `(Metric.mem_closure_iff.1 (mem_Zc_iff.1 hc)) (min ε 1) (lt_min hε one_pos)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hk` using `[dist_eq_norm]`. Establish `hk' : ‖(k : ℂ_[p]) - c‖ < 1`. Rewrite using `[norm_sub_rev]`. Conclude with `hk.trans_le (min_le_right _ _)`. Establish `hk1 : ‖(k : ℂ_[p])‖ = 1` using `norm_one_of_close hk' h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0` using `ne_zero_of_norm hk1`. Establish `hpk : ¬ (p : ℤ) ∣ k` using `fun h => (normZ_lt.2 h).ne hk1`. Use `⟨_, inv_int_mem hpk, ?_⟩` and prove the remaining obligations. Establish `e : c⁻¹ - (k : ℂ_[p])⁻¹ = c⁻¹ * (k : ℂ_[p])⁻¹ * ((k : ℂ_[p]) - c)`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dist_eq_norm, e, norm_mul, norm_mul, norm_inv, norm_inv, h1, hk1, inv_one, one_mul, one_mul, norm_sub_rev]`. Conclude with `hk.trans_le (min_le_left _ _)`. Rewrite `hcl` using `[isClosed_Zc.closure_eq]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem inv_mem_Zc {c : ℂ_[p]} (hc : c ∈ Zc p) (h1 : ‖c‖ = 1) : c⁻¹ ∈ Zc p := by
   have hc0 := ne_zero_of_norm h1
@@ -123,11 +121,9 @@ Both sides reduce to the same expression.
 theorem pairsK_eq : pairsK dK p ι = closure (Set.range (em dK ι)) := rfl
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show ι _ + ι _ = ι _`. Rewrite using `[← map_add]`. Use `congr 1`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show ι _ + ι _ = ι _`. Rewrite using `[← map_add]`. Use `congr 1`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem em_add (a b : ℤ × ℤ) : em dK ι a + em dK ι b = em dK ι (a.1 + b.1, a.2 + b.2) := by
   refine Prod.ext ?_ ?_
@@ -143,11 +139,9 @@ theorem em_add (a b : ℤ × ℤ) : em dK ι a + em dK ι b = em dK ι (a.1 + b.
     ring
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show -ι _ = ι _`. Rewrite using `[← map_neg]`. Use `congr 1`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show -ι _ = ι _`. Rewrite using `[← map_neg]`. Use `congr 1`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem em_neg (a : ℤ × ℤ) : -em dK ι a = em dK ι (-a.1, -a.2) := by
   refine Prod.ext ?_ ?_
@@ -163,7 +157,7 @@ theorem em_neg (a : ℤ × ℤ) : -em dK ι a = em dK ι (-a.1, -a.2) := by
     ring
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show ι _ = _`. Simplify using the standard rewrite rules. Use `show ι _ = _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem em_int (k : ℤ) : em dK ι (k, 0) = ((k : ℂ_[p]), (k : ℂ_[p])) := by
   refine Prod.ext ?_ ?_
@@ -173,9 +167,9 @@ theorem em_int (k : ℤ) : em dK ι (k, 0) = ((k : ℂ_[p]), (k : ℂ_[p])) := b
     simp
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show ι _ = ι _`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments.
 
-Use `show ι _ = ι _`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem em_swap (a : ℤ × ℤ) : (em dK ι a).swap = em dK ι (a.1 + a.2, -a.2) := by
   refine Prod.ext ?_ ?_
@@ -191,7 +185,7 @@ theorem em_swap (a : ℤ × ℤ) : (em dK ι a).swap = em dK ι (a.1 + a.2, -a.2
 variable {dK}
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k : ℤ, (dK : ℤ) + 1 = 4 * k` from `⟨((dK : ℤ) + 1) / 4, by omega⟩`. Establish `hdiv : ((dK : ℤ) + 1) / 4 = k` using `by omega`. Establish `hk' : (dK : ℂ) + 1 = 4 * (k : ℂ)` using `by exact_mod_cast congrArg (fun z : ℤ => (z : ℂ)) hk`. Rewrite using `[hdiv, Formalism.L2.Th1.D.CurveNormEndomorphisms.omega_sq]`. Take the linear combination `(-1 / 4 : ℂ) * hk'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem omega_sq' (hmod : dK % 4 = 3) :
     omegaK dK ^ 2 = omegaK dK - (((((dK : ℤ) + 1) / 4 : ℤ)) : ℂ) := by
@@ -202,11 +196,11 @@ theorem omega_sq' (hmod : dK % 4 = 3) :
   linear_combination (-1 / 4 : ℂ) * hk'
 
 /- English proof (translation)
-Establish `h` using `omega_sq' hmod`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show ι _ * ι _ = ι _`. Rewrite using `[← map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h ⊢`. Take the linear combination `((a.2 : ℂ) * (b.2 : ℂ)) * h`. Use `show ι _ * ι _ = ι _`. Rewrite using `[← map_mul]`. Use `congr 1`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Move the coercions through the operations in `at h ⊢`. Take the linear combination `((a.2 : ℂ) * (b.2 : ℂ)) * h`.
+A detailed English derivation is pending.
 -/
 theorem em_mul (hmod : dK % 4 = 3) (a b : ℤ × ℤ) : em dK ι a * em dK ι b =
     em dK ι (a.1 * b.1 - a.2 * b.2 * (((dK : ℤ) + 1) / 4), a.1 * b.2 + b.1 * a.2 + a.2 * b.2) := by
@@ -224,7 +218,7 @@ theorem em_mul (hmod : dK % 4 = 3) (a b : ℤ × ℤ) : em dK ι a * em dK ι b 
     linear_combination ((a.2 : ℂ) * (b.2 : ℂ)) * h
 
 /- English proof (translation)
-Use `show ι _ + ι _ = _`. Rewrite using `[← map_add, ← map_intCast ι]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem em_sum (a : ℤ × ℤ) : (em dK ι a).1 + (em dK ι a).2 = ((2 * a.1 + a.2 : ℤ) : ℂ_[p]) := by
   show ι _ + ι _ = _
@@ -234,7 +228,7 @@ theorem em_sum (a : ℤ × ℤ) : (em dK ι a).1 + (em dK ι a).2 = ((2 * a.1 + 
   ring
 
 /- English proof (translation)
-Use `show ι _ * ι _ = _`. Rewrite using `[← map_mul, OrthogonalGaussModelNormLemmas.prod_bar hmod, map_intCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem em_prod (hmod : dK % 4 = 3) (a : ℤ × ℤ) :
     (em dK ι a).1 * (em dK ι a).2 = ((normInt dK a.1 a.2 : ℤ) : ℂ_[p]) := by
@@ -242,7 +236,7 @@ theorem em_prod (hmod : dK % 4 = 3) (a : ℤ × ℤ) :
   rw [← map_mul, OrthogonalGaussModelNormLemmas.prod_bar hmod, map_intCast]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨OrthogonalGaussModelNormLemmas.norm_le_one_of_quad (em_sum ι a) (em_prod ι hmod a) (normZ_le _), OrthogonalGaussModelNormLemmas.norm_le_one_of_quad (by rw [add_comm]; exact em_sum ι a) (by rw [mul_comm]; exact em_prod ι hmod a) (normZ_le _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem em_norm_le (hmod : dK % 4 = 3) (a : ℤ × ℤ) :
     ‖(em dK ι a).1‖ ≤ 1 ∧ ‖(em dK ι a).2‖ ≤ 1 :=
@@ -267,25 +261,25 @@ def S0 (hmod : dK % 4 = 3) : Subring (ℂ_[p] × ℂ_[p]) where
 def OO (hmod : dK % 4 = 3) : Subring (ℂ_[p] × ℂ_[p]) := (S0 ι hmod).topologicalClosure
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_OO (hmod : dK % 4 = 3) {z : ℂ_[p] × ℂ_[p]} : z ∈ OO ι hmod ↔ z ∈ pairsK dK p ι := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Subring.le_topologicalClosure _ ⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem em_mem (hmod : dK % 4 = 3) (a : ℤ × ℤ) : em dK ι a ∈ OO ι hmod :=
   Subring.le_topologicalClosure _ ⟨a, rfl⟩
 
 /- English proof (translation)
-The claim follows from `closure_minimal (s := Set.range (em dK ι)) (t := {z | P z}) (by rintro _ ⟨a, rfl⟩; exact h a) hc hz`.
+A detailed English derivation is pending.
 -/
 theorem OO_induction (hmod : dK % 4 = 3) {P : ℂ_[p] × ℂ_[p] → Prop} (hc : IsClosed {z | P z})
     (h : ∀ a, P (em dK ι a)) {z : ℂ_[p] × ℂ_[p]} (hz : z ∈ OO ι hmod) : P z :=
   closure_minimal (s := Set.range (em dK ι)) (t := {z | P z}) (by rintro _ ⟨a, rfl⟩; exact h a) hc hz
 
 /- English proof (translation)
-The claim follows from `map_mem_closure continuous_swap hz (by rintro _ ⟨a, rfl⟩ exact ⟨_, (em_swap dK ι a).symm⟩)`.
+A detailed English derivation is pending.
 -/
 theorem swap_mem (hmod : dK % 4 = 3) {z : ℂ_[p] × ℂ_[p]} (hz : z ∈ OO ι hmod) :
     z.swap ∈ OO ι hmod :=
@@ -294,7 +288,7 @@ theorem swap_mem (hmod : dK % 4 = 3) {z : ℂ_[p] × ℂ_[p]} (hz : z ∈ OO ι 
     exact ⟨_, (em_swap dK ι a).symm⟩)
 
 /- English proof (translation)
-The claim follows from `OO_induction ι hmod (P := fun z => ‖z.1‖ ≤ 1 ∧ ‖z.2‖ ≤ 1) ((isClosed_le continuous_fst.norm continuous_const).inter (isClosed_le continuous_snd.norm continuous_const)) (em_norm_le ι hmod) hz`.
+A detailed English derivation is pending.
 -/
 theorem norm_le (hmod : dK % 4 = 3) {z : ℂ_[p] × ℂ_[p]} (hz : z ∈ OO ι hmod) :
     ‖z.1‖ ≤ 1 ∧ ‖z.2‖ ≤ 1 :=
@@ -303,7 +297,7 @@ theorem norm_le (hmod : dK % 4 = 3) {z : ℂ_[p] × ℂ_[p]} (hz : z ∈ OO ι h
       (isClosed_le continuous_snd.norm continuous_const)) (em_norm_le ι hmod) hz
 
 /- English proof (translation)
-The claim follows from `OO_induction ι hmod (P := fun z => z.1 + z.2 ∈ Zc p) (isClosed_Zc.preimage (continuous_fst.add continuous_snd)) (fun a => by rw [em_sum]; exact int_mem _) hz`.
+A detailed English derivation is pending.
 -/
 theorem sum_mem (hmod : dK % 4 = 3) {z : ℂ_[p] × ℂ_[p]} (hz : z ∈ OO ι hmod) : z.1 + z.2 ∈ Zc p :=
   OO_induction ι hmod (P := fun z => z.1 + z.2 ∈ Zc p)
@@ -311,7 +305,7 @@ theorem sum_mem (hmod : dK % 4 = 3) {z : ℂ_[p] × ℂ_[p]} (hz : z ∈ OO ι h
     (fun a => by rw [em_sum]; exact int_mem _) hz
 
 /- English proof (translation)
-The claim follows from `OO_induction ι hmod (P := fun z => z.1 * z.2 ∈ Zc p) (isClosed_Zc.preimage (continuous_fst.mul continuous_snd)) (fun a => by rw [em_prod ι hmod]; exact int_mem _) hz`.
+A detailed English derivation is pending.
 -/
 theorem prod_mem (hmod : dK % 4 = 3) {z : ℂ_[p] × ℂ_[p]} (hz : z ∈ OO ι hmod) : z.1 * z.2 ∈ Zc p :=
   OO_induction ι hmod (P := fun z => z.1 * z.2 ∈ Zc p)
@@ -319,7 +313,7 @@ theorem prod_mem (hmod : dK % 4 = 3) {z : ℂ_[p] × ℂ_[p]} (hz : z ∈ OO ι 
     (fun a => by rw [em_prod ι hmod]; exact int_mem _) hz
 
 /- English proof (translation)
-The claim follows from `map_mem_closure (f := fun c : ℂ_[p] => (c, c)) (continuous_id.prodMk continuous_id) hc (by rintro _ ⟨k, rfl⟩ exact ⟨(k, 0), em_int dK ι k⟩)`.
+A detailed English derivation is pending.
 -/
 theorem diag_mem (hmod : dK % 4 = 3) {c : ℂ_[p]} (hc : c ∈ Zc p) : (c, c) ∈ OO ι hmod :=
   map_mem_closure (f := fun c : ℂ_[p] => (c, c)) (continuous_id.prodMk continuous_id) hc (by
@@ -327,11 +321,11 @@ theorem diag_mem (hmod : dK % 4 = 3) {c : ℂ_[p]} (hc : c ∈ Zc p) : (c, c) �
     exact ⟨(k, 0), em_int dK ι k⟩)
 
 /- English proof (translation)
-Establish `h` using `sum_mem ι hmod ha`. Establish `h2' : ¬ (p : ℤ) ∣ 2`. Introduce `h`. Establish `h' : p ∣ 2` using `by exact_mod_cast h`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 h')`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi` using `inv_int_mem h2'`. Establish `h0 : ((2 : ℤ) : ℂ_[p]) ≠ 0` using `ne_zero_of_norm (normZ_one h2')`. Establish `e : a = ((2 : ℤ) : ℂ_[p])⁻¹ * (a + a)`. Clear the denominators using the available nonvanishing facts. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(Zc p).mul_mem hi h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_int (hmod : dK % 4 = 3) (h2 : p ≠ 2) {a : ℂ_[p]} (ha : (a, a) ∈ OO ι hmod) :
     a ∈ Zc p := by
@@ -350,11 +344,9 @@ theorem diag_int (hmod : dK % 4 = 3) (h2 : p ≠ 2) {a : ℂ_[p]} (ha : (a, a) �
   exact (Zc p).mul_mem hi h
 
 /- English proof (translation)
-Establish `hc : ‖z.1 * z.2‖ = 1` using `by rw [norm_mul, h1, h2, one_mul]`. Establish `hi` using `diag_mem ι hmod (inv_mem_Zc (prod_mem ι hmod hz) hc)`. Establish `e : (z.1⁻¹, z.2⁻¹) = z.swap * ((z.1 * z.2)⁻¹, (z.1 * z.2)⁻¹)`. Establish `a0` using `ne_zero_of_norm h1`. Establish `b0` using `ne_zero_of_norm h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show z.1⁻¹ = z.2 * (z.1 * z.2)⁻¹`. Clear the denominators using the available nonvanishing facts. Use `show z.2⁻¹ = z.1 * (z.1 * z.2)⁻¹`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[e]`. Conclude with `(OO ι hmod).mul_mem (swap_mem ι hmod hz) hi`.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem (hmod : dK % 4 = 3) {z : ℂ_[p] × ℂ_[p]} (hz : z ∈ OO ι hmod) (h1 : ‖z.1‖ = 1)
     (h2 : ‖z.2‖ = 1) : (z.1⁻¹, z.2⁻¹) ∈ OO ι hmod := by
@@ -372,7 +364,7 @@ theorem inv_mem (hmod : dK % 4 = 3) {z : ℂ_[p] × ℂ_[p]} (hz : z ∈ OO ι h
   exact (OO ι hmod).mul_mem (swap_mem ι hmod hz) hi
 
 /- English proof (translation)
-The claim follows from `isUnit_iff_exists_inv.2 ⟨⟨_, inv_mem ι hmod z.2 h1 h2⟩, Subtype.ext (Prod.ext (mul_inv_cancel₀ (ne_zero_of_norm h1)) (mul_inv_cancel₀ (ne_zero_of_norm h2)))⟩`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_norm (hmod : dK % 4 = 3) (z : OO ι hmod) (h1 : ‖z.1.1‖ = 1) (h2 : ‖z.1.2‖ = 1) :
     IsUnit z :=
@@ -380,9 +372,9 @@ theorem isUnit_of_norm (hmod : dK % 4 = 3) (z : OO ι hmod) (h1 : ‖z.1.1‖ = 
     (mul_inv_cancel₀ (ne_zero_of_norm h1)) (mul_inv_cancel₀ (ne_zero_of_norm h2)))⟩
 
 /- English proof (translation)
-Establish `h : (u : OO ι hmod).1 * ((u⁻¹ : (OO ι hmod)ˣ) : OO ι hmod).1 = 1` using `congrArg Subtype.val u.mul_inv`. Establish `hu` using `norm_le ι hmod (u : OO ι hmod).2`. Establish `hv` using `norm_le ι hmod ((u⁻¹ : (OO ι hmod)ˣ) : OO ι hmod).2`. Establish `aux : ∀ x y : ℂ_[p], ‖x‖ ≤ 1 → ‖y‖ ≤ 1 → x * y = 1 → ‖x‖ = 1`. Introduce `x y hx hy hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `le_antisymm hx ?_` and prove the remaining obligations. Establish `h3 : ‖x‖ * ‖y‖ = 1` using `by rw [← norm_mul, hxy, norm_one]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨aux _ _ hu.1 hv.1 (congrArg Prod.fst h), aux _ _ hu.2 hv.2 (congrArg Prod.snd h)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components.
 -/
 theorem norm_of_unit (hmod : dK % 4 = 3) (u : (OO ι hmod)ˣ) :
     ‖(u : OO ι hmod).1.1‖ = 1 ∧ ‖(u : OO ι hmod).1.2‖ = 1 := by
@@ -417,7 +409,7 @@ Both sides reduce to the same expression.
 theorem tau_apply (hmod : dK % 4 = 3) (z : OO ι hmod) : tau ι hmod z = z.1.1 := rfl
 
 /- English proof (translation)
-Apply `diag_int ι hmod h2` to reduce the goal to its premises. Establish `e : (z.1, z.1) = z` using `Prod.ext rfl (congrArg Prod.fst hs).symm`. Rewrite using `[e]`. Conclude with `hz`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfadj (hmod : dK % 4 = 3) (h2 : p ≠ 2) {z : ℂ_[p] × ℂ_[p]} (hz : z ∈ OO ι hmod)
     (hs : z.swap = z) : z.1 ∈ Zc p := by
@@ -427,21 +419,21 @@ theorem selfadj (hmod : dK % 4 = 3) (h2 : p ≠ 2) {z : ℂ_[p] × ℂ_[p]} (hz 
   exact hz
 
 /- English proof (translation)
-Establish `hsmall : ∀ z : ℤ, z ≠ 0 → z.natAbs < 5 → ‖(z : ℂ_[p])‖ = 1`. Introduce `z hz hlt`. Apply `normZ_one` to reduce the goal to its premises. Introduce `hd`. Establish `h1` using `Nat.le_of_dvd (Int.natAbs_pos.2 hz) (Int.natCast_dvd.1 hd)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `sub_le : ∀ x y : ℂ_[p], ‖x - y‖ ≤ max ‖x‖ ‖y‖`. Introduce `x y`. Rewrite using `[sub_eq_add_neg, ← norm_neg y]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `excl : ∀ (x : ℂ_[p]) (j k : ℤ), ‖((j - k : ℤ) : ℂ_[p])‖ = 1 → ¬ (‖x - (j : ℂ_[p])‖ < 1 ∧ ‖x - (k : ℂ_[p])‖ < 1)`. Introduce and unpack `x j k h ⟨h1, h2⟩`. Establish `e : ((j - k : ℤ) : ℂ_[p]) = (x - (k : ℂ_[p])) - (x - (j : ℂ_[p]))`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[e]`. Establish `h3` using `sub_le (x - (k : ℂ_[p])) (x - (j : ℂ_[p]))`. Rewrite `h3` using `[h]`. Conclude with `absurd h3 (not_le.2 (max_lt h2 h1))`. Establish `le1 : ∀ (x : ℂ_[p]) (k : ℤ), ‖x‖ ≤ 1 → ‖x - (k : ℂ_[p])‖ ≤ 1` using `fun x k hx => (sub_le _ _).trans (max_le hx (normZ_le k))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a12` using `excl a 1 2 (hsmall _ (by decide) (by decide))`. Establish `a13` using `excl a 1 3 (hsmall _ (by decide) (by decide))`. Establish `a23` using `excl a 2 3 (hsmall _ (by decide) (by decide))`. Establish `b12` using `excl b 1 2 (hsmall _ (by decide) (by decide))`. Establish `b13` using `excl b 1 3 (hsmall _ (by decide) (by decide))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b23` using `excl b 2 3 (hsmall _ (by decide) (by decide))`. Establish `hk : ∃ k : ℤ, k ≠ 0 ∧ k.natAbs < 5 ∧ ¬ ‖a - (k : ℂ_[p])‖ < 1 ∧ ¬ ‖b - (k : ℂ_[p])‖ < 1`. Distinguish the cases in `A1 : ‖a - ((1 : ℤ) : ℂ_[p])‖ < 1`. Distinguish the cases in `B2 : ‖b - ((2 : ℤ) : ℂ_[p])‖ < 1`. Conclude with `⟨3, by decide, by decide, fun h => a13 ⟨A1, h⟩, fun h => b23 ⟨B2, h⟩⟩`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨2, by decide, by decide, fun h => a12 ⟨A1, h⟩, B2⟩`. Distinguish the cases in `B1 : ‖b - ((1 : ℤ) : ℂ_[p])‖ < 1`. Distinguish the cases in `A2 : ‖a - ((2 : ℤ) : ℂ_[p])‖ < 1`. Conclude with `⟨3, by decide, by decide, fun h => a23 ⟨A2, h⟩, fun h => b13 ⟨B1, h⟩⟩`. Conclude with `⟨2, by decide, by decide, A2, fun h => b12 ⟨B1, h⟩⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨1, by decide, by decide, A1, B1⟩`. Take `⟨k, k0, k5, hak, hbk⟩` from `hk`. Conclude with `⟨k, hsmall k k0 k5, le_antisymm (le1 a k ha) (not_lt.1 hak), le_antisymm (le1 b k hb) (not_lt.1 hbk)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_shift (h5 : 5 ≤ p) {a b : ℂ_[p]} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) :
     ∃ k : ℤ, ‖(k : ℂ_[p])‖ = 1 ∧ ‖a - (k : ℂ_[p])‖ = 1 ∧ ‖b - (k : ℂ_[p])‖ = 1 := by
@@ -488,9 +480,9 @@ theorem exists_shift (h5 : 5 ≤ p) {a b : ℂ_[p]} (ha : ‖a‖ ≤ 1) (hb : �
     le_antisymm (le1 b k hb) (not_lt.1 hbk)⟩
 
 /- English proof (translation)
-Take `⟨ha, hb⟩` from `norm_le ι hmod α.2`. Take `⟨k, hk, hak, hbk⟩` from `exists_shift h5 ha hb`. Establish `hu : IsUnit (⟨((k : ℂ_[p]), (k : ℂ_[p])), diag_mem ι hmod (int_mem k)⟩ : OO ι hmod)` using `isUnit_of_norm ι hmod _ hk hk`. Establish `hv : IsUnit (α - ⟨((k : ℂ_[p]), (k : ℂ_[p])), diag_mem ι hmod (int_mem k)⟩ : OO ι hmod)` using `isUnit_of_norm ι hmod _ hak hbk`. Use `⟨hu.unit, hv.unit, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsUnit.unit_spec, IsUnit.unit_spec]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem two_units (hmod : dK % 4 = 3) (h5 : 5 ≤ p) (α : OO ι hmod) :
     ∃ u v : (OO ι hmod)ˣ, α = u + v := by
@@ -508,11 +500,11 @@ def Dn (hmod : dK % 4 = 3) : Set (OO ι hmod) :=
   {z | ∃ a : ℤ × ℤ, ¬ (p : ℤ) ∣ normInt dK a.1 a.2 ∧ z.1 = em dK ι a}
 
 /- English proof (translation)
-Rewrite using `[closure_subtype, Metric.mem_closure_iff]`. Introduce `ε hε`. Take `⟨h1, h2⟩` from `norm_of_unit ι hmod u`. Establish `hm : (u : OO ι hmod).1 ∈ closure (Set.range (em dK ι))` using `(u : OO ι hmod).2`. Take `⟨_, ⟨a, rfl⟩, ha⟩` from `Metric.mem_closure_iff.1 hm (min ε 1) (lt_min hε one_pos)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨em dK ι a, ⟨⟨_, em_mem ι hmod a⟩, ⟨a, ?_, rfl⟩, rfl⟩, ha.trans_le (min_le_left _ _)⟩` and prove the remaining obligations. Establish `hlt` using `ha.trans_le (min_le_right _ _)`. Rewrite `hlt` using `[Prod.dist_eq, max_lt_iff, dist_eq_norm, dist_eq_norm]`. Establish `e1 : ‖(em dK ι a).1‖ = 1` using `norm_one_of_close (by rw [norm_sub_rev]; exact hlt.1) h1`. Establish `e2 : ‖(em dK ι a).2‖ = 1` using `norm_one_of_close (by rw [norm_sub_rev]; exact hlt.2) h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hd`. Establish `h3 : ‖((normInt dK a.1 a.2 : ℤ) : ℂ_[p])‖ < 1` using `normZ_lt.2 hd`. Rewrite `h3` using `[← em_prod ι hmod, norm_mul, e1, e2, one_mul]`. Conclude with `lt_irrefl _ h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense (hmod : dK % 4 = 3) (u : (OO ι hmod)ˣ) : (u : OO ι hmod) ∈ closure (Dn ι hmod) := by
   rw [closure_subtype, Metric.mem_closure_iff]
@@ -535,19 +527,17 @@ end CalcPAux
 open CalcPAux in
 
 /- English proof (translation)
-Introduce `dK L hmod hcm p _ h5 ι hW`. Establish `hp2 : p ≠ 2` using `by omega`. Establish `h2 : ‖(2 : ℂ_[p])‖ = 1` using `OrthogonalGaussModelNormLemmas.norm_two p hp2`. Establish `hM : Formalism.L2.Th1.A.IntModel (curveL p L ι)` using `⟨hW.1, hW.2.1, hW.2.2.1, hW.2.2.2.1, hW.2.2.2.2.1⟩`. Take `⟨-, hFr, hF1⟩` from `Formalism.L2.Th1.C.curve_frame_unit_ball ℂ_[p] h2 _ hM (ι (Formalism.L2.Th1.F.s2 L))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb2 : (curveL p L ι).b₂ = 0` using `(Formalism.L2.Th1.A.shortInv ℂ_[p] _ _).1`. Set `_ : StarRing (OO ι hmod)` to `starOO ι hmod`. Establish `key` using `(Formalism.L2.Th1.C.curveEndoUnitBall ℂ_[p] h2 _ hM (ι (Formalism.L2.Th1.F.s2 L)) (OO ι hmod) (tau ι hmod) (continuous_fst.comp continuous_subtype_val) (Continuous.subtype_mk (continuous_swap.comp continuous_subtype_val) _) (fun z hz => selfadj ι hmod hp2 z.2 (congrArg Subtype.va …`. Introduce `α hα`. Take `⟨⟨m, n⟩, hN, hα⟩` from `hα`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨S, neg, xP, yP, g1, g2, g3, g4, g5⟩` from `hD dK L hmod hcm p ι hW m n hN`. Establish `t1 : tau ι hmod α = ι ((m : ℂ) + (n : ℂ) * omegaK dK)` using `congrArg Prod.fst hα`. Establish `t2 : tau ι hmod (star α) = ι ((m : ℂ) + (n : ℂ) * (1 - omegaK dK))` using `congrArg Prod.snd hα`. Use `⟨S, inferInstance, neg, xP, yP, ?_, g2, g3, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[t1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `g1`. Rewrite using `[t1, t2]`. Conclude with `g4`. Rewrite using `[t1]`. Conclude with `OrthogonalGaussModelNormLemmas.norm_eq_one_of_quad (em_sum ι (m, n)) (em_prod ι hmod (m, n)) (normZ_one hN)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb2]`. Simplify using the standard rewrite rules. Rewrite using `[t1, t2]`. Conclude with `g5)).1`. Use `⟨hFr, hF1, fun a b hab => ?_, fun a ha => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h` using `key ⟨(a, b), hab⟩`. Conclude with `⟨h.1, h.2.1, h.2.2.1⟩`. Establish `hz : a ∈ closure (Set.range (fun n : ℤ => (n : ℂ_[p])))` using `diag_int ι hmod hp2 ha`. Conclude with `closure_minimal (s := Set.range (fun n : ℤ => (n : ℂ_[p]))) (t := {z : ℂ_[p] | Formalism.L2.Th1.C.IsBinomScalar (unitBall ℂ_[p]) z}) (by`. Introduce and unpack `_ ⟨n, rfl⟩`.
-
-Conclude with `Formalism.L2.Th1.C.intBinomScalar ℂ_[p] _ n)`. Use the proof step `(Formalism.L2.Th1.C.binomClosed ℂ_[p] _ (Formalism.L2.Th1.C.unit_ball_closed ℂ_[p])) hz`.
+A detailed English derivation is pending.
 -/
 theorem CalcP_of (hD : CMDatum) : CalcP := by
   intro dK L hmod hcm p _ h5 ι hW

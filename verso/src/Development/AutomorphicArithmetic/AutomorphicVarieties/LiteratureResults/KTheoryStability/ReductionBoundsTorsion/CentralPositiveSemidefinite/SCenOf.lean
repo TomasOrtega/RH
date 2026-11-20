@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 namespace PositivityTheory.KB
 
 /- English proof (translation)
-The claim follows from `CentralizerFixed.join (fun L _ _ => CentralizerFixed.span_units (L := L)) CentralizerFixed.tScal CentralizerFixed.tSimp (CentralizerFixed.tAv_of CentralizerFixed.tScal CentralizerFixed.tSimp) hEv`.
+A detailed English derivation is pending.
 -/
 theorem sCen_of (hEv : SEv) : SCen :=
   CentralizerFixed.join (fun L _ _ => CentralizerFixed.span_units (L := L)) CentralizerFixed.tScal CentralizerFixed.tSimp

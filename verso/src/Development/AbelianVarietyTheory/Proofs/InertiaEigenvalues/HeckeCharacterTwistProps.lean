@@ -28,14 +28,14 @@ def finQuot (D : D7) : (AE D)ˣ →* (GlobalTheory.FinalJoin.AfE D)ˣ :=
   (Units.map (finPart D).toMonoidHom).comp (quotC D)
 
 /- English proof (translation)
-Rewrite using `[← RingHom.map_mul, Units.mul_inv, RingHom.map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finPart_mul_inv (x : (AE D)ˣ) :
     finPart D (x : AE D) * finPart D ((x⁻¹ : (AE D)ˣ) : AE D) = 1 := by
   rw [← RingHom.map_mul, Units.mul_inv, RingHom.map_one]
 
 /- English proof (translation)
-Use `show finPart D ((x : AE D) * sigR (AF D.host.F) D.sp.cm.sig ((x⁻¹ : (AE D)ˣ) : AE D)) = _`. Rewrite using `[RingHom.map_mul, GlobalTheory.DetRootChar.finPart_sigR]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finQuot_val (x : (AE D)ˣ) :
     ((finQuot D x : (GlobalTheory.FinalJoin.AfE D)ˣ) : Af D.host.F ⊗[D.host.F] D.host.E) =
@@ -44,7 +44,7 @@ theorem finQuot_val (x : (AE D)ˣ) :
   rw [RingHom.map_mul, GlobalTheory.DetRootChar.finPart_sigR]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ * sigR (Af D.host.F) D.sp.cm.sig _ = 1`. Rewrite using `[finQuot_val]`. Conclude with `GlobalTheory.DetOnto.norm_one _ (GlobalTheory.DetOnto.sigR_sigR D) (finPart_mul_inv x)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normOne_finQuot (x : (AE D)ˣ) : GlobalTheory.FinalJoin.NormOne (finQuot D x) := by
   change _ * sigR (Af D.host.F) D.sp.cm.sig _ = 1
@@ -52,7 +52,7 @@ theorem normOne_finQuot (x : (AE D)ˣ) : GlobalTheory.FinalJoin.NormOne (finQuot
   exact GlobalTheory.DetOnto.norm_one _ (GlobalTheory.DetOnto.sigR_sigR D) (finPart_mul_inv x)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `h1` using `congrArg (finPart D) hx`. Rewrite `h1` using `[RingHom.map_mul, GlobalTheory.DetRootChar.finPart_sigR]`. Rewrite using `[finQuot_val, h1, mul_assoc, ← RingHom.map_mul, finPart_mul_inv x, RingHom.map_one, mul_one, GlobalTheory.DetRootChar.finPart_det]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finQuot_of_isDetRoot {V : HSp D} {g : GA D V} {x : (AE D)ˣ} (hx : IsDetRoot V g x) :
     finQuot D x = Matrix.GeneralLinearGroup.det (finHom V g) := by
@@ -63,7 +63,7 @@ theorem finQuot_of_isDetRoot {V : HSp D} {g : GA D V} {x : (AE D)ˣ} (hx : IsDet
     GlobalTheory.DetRootChar.finPart_det]
 
 /- English proof (translation)
-Rewrite using `[finQuot_val]`. Use `show finPart D (incA D (e : D.host.E)) * sigR (Af D.host.F) D.sp.cm.sig (finPart D (incA D ((e⁻¹ : D.host.Eˣ) : D.host.E))) = _`. Use `show ((1 : Af D.host.F) ⊗ₜ[D.host.F] (e : D.host.E)) * ((1 : Af D.host.F) ⊗ₜ[D.host.F] D.sp.cm.sig ((e⁻¹ : D.host.Eˣ) : D.host.E)) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finQuot_incA (e : D.host.Eˣ) :
     ((finQuot D (Units.map (incA D).toMonoidHom e) : (GlobalTheory.FinalJoin.AfE D)ˣ) : GlobalTheory.FinalJoin.AfE D) =

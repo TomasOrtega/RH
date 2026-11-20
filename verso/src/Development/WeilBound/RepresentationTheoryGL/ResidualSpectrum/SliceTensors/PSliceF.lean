@@ -21,7 +21,7 @@ namespace PositivityTheory.Rg.Rs.SliceClasses
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
 
 /- English proof (translation)
-Simplify using `only [An.ctn]`. Rewrite using `[← GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip, constantTerm_unipGL_mul (GlobalTheory.CompanionTheory.LeftInv.isLeftInvariant_of_isAutForm E N φ hφ)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ctn_unip {φ : Sm E N} (hφ : IsAutForm φ) (r : ℕ) (x : BlockIx N r → Ad E) (g : GA E N) :
     An.ctn r φ.1 (unip x * g) = An.ctn r φ.1 g := by
@@ -30,7 +30,7 @@ theorem ctn_unip {φ : Sm E N} (hφ : IsAutForm φ) (r : ℕ) (x : BlockIx N r �
     constantTerm_unipGL_mul (GlobalTheory.CompanionTheory.LeftInv.isLeftInvariant_of_isAutForm E N φ hφ)]
 
 /- English proof (translation)
-Simplify using `only [An.ctn, constantTerm]`. Use `congr 2`. Use function extensionality and compare the values at `X`. Rewrite using `[← mul_assoc, ← GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_comm, mul_assoc, hinv]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem ctn_splitCentre {φ : Sm E N} (hinv : ∀ t g, φ.1 (splitCentre E N t * g) = φ.1 g) (r : ℕ) (t : ℝ) (g : GA E N) :
     An.ctn r φ.1 (splitCentre E N t * g) = An.ctn r φ.1 g := by
@@ -40,9 +40,9 @@ theorem ctn_splitCentre {φ : Sm E N} (hinv : ∀ t g, φ.1 (splitCentre E N t *
   rw [← mul_assoc, ← GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_comm, mul_assoc, hinv]
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (BlockIx (r + s) r → Ad E) := borel _`. Establish `: BorelSpace (BlockIx (r + s) r → Ad E)` using `⟨rfl⟩`. Take `⟨μ, hμ, hD, hint⟩` from `JDict.exists_normed E (r + s) r`. Establish `key : ∀ (f : GA E (r + s) → ℂ) g, ∫ x in unipFundamentalDomain E (r + s) r, f (unip x * g) ∂μ = An.ctn r f g`. Introduce `f g`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hint]`. Simplify using `only [An.ctn, constantTerm, GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip]`. Rewrite using `[← key, ← key]`. Conclude with `integral_unip_lev_mul E r s φ hφ.left hφ.level μ _ hμ hD γ g`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ctn_lev_rat {r s : ℕ} {φ : Sm E (r + s)} (hφ : IsAutForm φ) (γ : GL (Fin r) E × GL (Fin s) E)
     (g : GA E (r + s)) :
@@ -59,9 +59,9 @@ theorem ctn_lev_rat {r s : ℕ} {φ : Sm E (r + s)} (hφ : IsAutForm φ) (γ : G
   exact integral_unip_lev_mul E r s φ hφ.left hφ.level μ _ hμ hD γ g
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (BlockIx N r → Ad E) := borel _`. Establish `: BorelSpace (BlockIx N r → Ad E)` using `⟨rfl⟩`. Take `⟨μ, hμ, hD, hint⟩` from `JDict.exists_normed E N r`. Establish `key : ∀ (f : GA E N → ℂ) g, ∫ x in unipFundamentalDomain E N r, f (unip x * g) ∂μ = An.ctn r f g`. Introduce `f g`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hint]`. Simplify using `only [An.ctn, constantTerm, GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip]`. Take `⟨C, n, h⟩` from `Growth.ct_growth E N r φ hφ μ _ hμ hD g`. Conclude with `⟨C, n, fun y => by rw [← key]; exact h y⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ctn_growth {φ : Sm E N} (hφ : IsAutForm φ) (r : ℕ) (g : GA E N) :
     ∃ (C : ℝ) (n : ℕ), ∀ y, ‖An.ctn r φ.1 (g * infGL E N y)‖ ≤ C * height y ^ n := by
@@ -77,9 +77,9 @@ theorem ctn_growth {φ : Sm E N} (hφ : IsAutForm φ) (r : ℕ) (g : GA E N) :
   exact ⟨C, n, fun y => by rw [← key]; exact h y⟩
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `unip_mul_aT N r (-t) x`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h1 : aT E N r t * aT E N r (-t) = 1` using `by rw [← aT_add, add_neg_cancel, aT_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_assoc, ← aT_add, neg_add_cancel, aT_zero, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = unip y * aT E N r t := by rw [hy, ← mul_assoc, h1, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem aT_mul_unip (N r : ℕ) (t : ℝ) (x : BlockIx N r → Ad E) :
     ∃ y : BlockIx N r → Ad E, aT E N r t * unip x = unip y * aT E N r t := by
@@ -93,29 +93,29 @@ theorem aT_mul_unip (N r : ℕ) (t : ℝ) (x : BlockIx N r → Ad E) :
 variable {r s : ℕ}
 
 /- English proof (translation)
-Establish `hAφ` using `hV.aut φ hφ`. Establish `hN : ∀ (x : BlockIx (r + s) r → Ad E) (g : GA E (r + s)), (T φ).1 (unip x * g) = (T φ).1 g`. Introduce `x g`. Rewrite using `[hTval φ hφ, hTval φ hφ]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `aT_mul_unip (r + s) r t x`. Rewrite using `[← mul_assoc, hy, mul_assoc, ctn_unip hAφ]`. Establish `hM : ∀ (γ : GL (Fin r) E × GL (Fin s) E) (g : GA E (r + s)), (T φ).1 (lev (Ad E) r s (ratGL E r γ.1, ratGL E s γ.2) * g) = (T φ).1 g`. Introduce `γ g`. Rewrite using `[hTval φ hφ, hTval φ hφ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, aT_comm_lev, mul_assoc, ctn_lev_rat hAφ]`. Set `L` to `GlobalTheory.DiscClosure.stabSub φ`. Establish `hLo : IsOpen (L : Set (GL (Fin (r + s)) (Af E)))` using `hAφ.level`. Establish `hLv : ∀ h ∈ L, finRep E (r + s) h (T φ) = T φ` using `fun h hh => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `hequiv (.fin h) φ hφ`. Establish `hh' : finRep E (r + s) h φ = φ` using `hh`. Express the relevant statement in the definitionally equal form `T (finRep E (r + s) h φ) = finRep E (r + s) h (T φ) at e`. Rewrite using `[← e, hh']`. Set `S` to `GlobalTheory.CuspRep.LocEx.orbSpan (T φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI : FiniteDimensional ℂ S := by haveI := hAφ.kfin`. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun κ => cptRep E (r + s) κ φ)).map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨κ, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨κ, rfl⟩, hequiv (.cpt κ) φ hφ⟩`. Set `ρ` to `GlobalTheory.PRep.sub (cptRep E (r + s)) S (GlobalTheory.CuspRep.LocEx.orbSpan_stable (T φ))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hρ : GlobalTheory.Published.AutFin.IsContRep ρ` using `GlobalTheory.CuspRep.LocEx.isContRep_sub S _`. Establish `hC : ∀ g : GA E (r + s), (fun κ : Kinf E (r + s) => (cptRep E (r + s) κ (T φ)).1 g) ∈ GlobalTheory.Published.AutFin.coeffSpan ρ` using `fun g => GlobalTheory.Published.AutFinGL.type_of_map ρ S.subtype (fun _ _ => rfl) ⟨T φ, Submodule.subset_span ⟨1, by simp⟩⟩ g`. Establish `hG : ∀ g₀ : GA E (r + s), ∃ (C : ℝ) (n : ℕ), ∀ y, ‖(T φ).1 (g₀ * infGL E (r + s) y)‖ ≤ C * height y ^ n`. Introduce `g₀`. Use `choose C n hCn using fun t => ctn_growth hAφ r (aT E (r + s) r t * g₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ t ∈ τs, ‖a t‖ * |C t|, ∑ t ∈ τs, n t, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hTval φ hφ, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun t ht => ?_)` and prove the remaining obligations. Establish `hy` using `one_le_height y`. Establish `e1 : height y ^ n t ≤ height y ^ (∑ t ∈ τs, n t)` using `pow_le_pow_right₀ hy (Finset.single_le_sum (fun _ _ => Nat.zero_le _) ht)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hp : (0 : ℝ) ≤ height y ^ n t` using `pow_nonneg (by linarith) _`. Combine the equalities or inequalities in the displayed calculation. Establish `hsc : ∀ (τ : E →+* ℂ) (u : ℂ), ∃ c : ℂ, ∀ ψ ∈ V, cap τ u ψ = c • ψ` using `fun τ u => GlobalTheory.DiscLocEx.exists_scalarD hV (Algebra.subset_adjoin ⟨τ, u, rfl⟩) (GlobalTheory.SpehInfChar.cap_commute_act τ u)`. Use `choose cc hcc using hsc`. Set `J : Set (Module.End ℂ (Sm E (r + s)))` to `{z | ∃ (τ : E →+* ℂ) (u : ℂ), z = Polynomial.aeval (cap (a := r + s) τ u) (Polynomial.X - Polynomial.C (cc τ u))}`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hJZ : J ⊆ Zalg E (r + s)`. Introduce and unpack `_ ⟨τ, u, rfl⟩`. Conclude with `aeval_mem_Zalg (cap_mem_Zalg τ u) _`. Establish `hJ : Cofin J` using `GlobalTheory.CompanionTheory.CTFin.MonicCofin.cofin_of_monic E (r + s) J hJZ fun τ u => ⟨_, Polynomial.monic_X_sub_C _, τ, u, rfl⟩`. Establish `hZ : ∀ z ∈ J, z (T φ) = 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨τ, u, rfl⟩`. Simplify using `only [map_sub, Polynomial.aeval_X, Polynomial.aeval_C, LinearMap.sub_apply, Module.algebraMap_end_apply]`. Rewrite using `[← GlobalTheory.SpehInfChar.cap_comm_quot (fun X ψ hψ => hV.stable (.lie X) ψ hψ) T hequiv τ u φ hφ, hcc τ u φ hφ, map_smul, sub_self]`. Establish `hgood : T φ ∈ goodCT L ρ J` using `⟨hN, hM, hLv, hC, hG, hZ⟩`. Take `⟨J₁, J₂, c₁, c₂, k₁, k₂⟩` from `centre J hJ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∀ m : GA E r × GA E s, lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) g) = lev (Ad E) r s m * finGL E (r + s) g * infGL E (r + s) (Unitary.toUnits k)`. Introduce `m`. Rewrite using `[infGL_comm, mul_assoc]`. Use `⟨fun m₂ => ?_, fun m₁ => ?_⟩` and prove the remaining obligations. Take `⟨L₁, ρ₁, -, -, h⟩` from `Slice1.slice_mem_genSpace E r s L hLo S ρ hρ J hJ J₁ c₁ k₁ g k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hG, hG'⟩` from `h (T φ) hgood m₂`. Conclude with `⟨G, hG.1, fun m₁ => by rw [hG', e]⟩`. Take `⟨L₂, ρ₂, -, -, h⟩` from `Slice2.slice2 E r s L hLo S ρ hρ J hJ J₂ c₂ k₂ g k`. Take `⟨G, hG, hG'⟩` from `h (T φ) hgood m₁`. Conclude with `⟨G, hG.1, fun m₂ => by rw [hG', e]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem F_slices (V : Submodule ℂ (Sm E (r + s))) (hV : IsDiscrete V) (T : Sm E (r + s) →ₗ[ℂ] Sm E (r + s))
     (hequiv : ∀ o, ∀ φ ∈ V, T (act o φ) = act o (T φ)) (τs : Finset ℝ) (a : ℝ → ℂ)

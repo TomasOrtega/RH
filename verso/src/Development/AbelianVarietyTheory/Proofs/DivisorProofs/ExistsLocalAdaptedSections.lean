@@ -13,21 +13,21 @@ set_option autoImplicit false
 namespace GlobalTheory.FlagCls
 
 /- English proof (translation)
-Proceed by induction on `k using Fin.induction with`. Consider the case `zero`. Take `⟨W, e, -, hpW, hWU, he⟩` from `(fl.isVB 0).exists_affine hp`. Use `⟨W, fun _ => 0, hWU, hpW, fun j hj => ?_⟩` and prove the remaining obligations. Take `rfl : j = 0` from `Fin.le_zero_iff.1 hj`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e, he, fun i => i.elim0⟩`. Consider the case `succ k ih`. Take `⟨W, s, hWU, hpW, H⟩` from `ih`. Take `⟨V, c, -, hpV, hVW, hc⟩` from `(fl.isVB_gr k).exists_affine hpW`. Take `⟨T, hTV, hpT, u, hu⟩` from `VBExt.exists_lifts (fl.π k) c hpV`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hTW : T ≤ W` using `hTV.trans hVW`. Use `⟨T, fun n => if n = k then (fl.ι k.succ).app T (u 0) else resM N hTW (s n), hTW.trans hWU, hpT, fun j hj => ?_⟩` and prove the remaining obligations. Break down `hj.lt_or_eq with hj | rfl` into its components or cases. Establish `hj' : j ≤ k.castSucc` using `Fin.le_castSucc_iff.2 hj`. Take `⟨t, ht, e⟩` from `H j hj'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨_, ht.res hTW, fun i => ?_⟩` and prove the remaining obligations. Establish `: (i : ℕ) ≠ k`. Establish `h1` using `i.2`. Establish `h2 : (j : ℕ) ≤ k` using `hj'`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [if_neg this]`. Rewrite using `[app_resM, e]`. Take `⟨t, ht, e⟩` from `H k.castSucc le_rfl`. Establish `hS : (ShortComplex.mk (fl.step k) (cokernel.π (fl.step k)) (cokernel.condition _)).ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`. Establish `hu' : IsFrame fun i => (fl.π k).app T (u i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[funext hu]`. Conclude with `hc.res hTV`. Establish `hf` using `(VBExt.isFrame_sumElim hS (ht.res hTW) hu').comp_equiv (finSumFinEquiv (m := k) (n := 1)).symm`. Use `⟨_, hf, fun i : Fin (k + 1) => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.addCases with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `left i`. Establish `: ((Fin.castAdd 1 i : Fin (k + 1)) : ℕ) ≠ k` using `i.2.ne`. Simplify using `only [if_neg this, Function.comp_apply, finSumFinEquiv_symm_apply_castAdd, Sum.elim_inl]`. Use `(QCoh.app_app _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[fl.step_ι, app_resM]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `congrArg _ (e i)`. Consider the case `right i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Establish `: ((Fin.natAdd k (0 : Fin 1) : Fin (k + 1)) : ℕ) = k` using `rfl`. Simplify using `only [if_pos this, Function.comp_apply, finSumFinEquiv_symm_apply_natAdd, Sum.elim_inr]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_adapted_upTo {Y : Scheme.{0}} {N : Y.Modules} {r : ℕ} (fl : Vert.Flag N r) {p : Y} {U : Y.Opens}
     (hp : p ∈ U) (k : Fin (r + 1)) :
@@ -77,9 +77,9 @@ theorem exists_adapted_upTo {Y : Scheme.{0}} {N : Y.Modules} {r : ℕ} (fl : Ver
         simp only [if_pos this, Function.comp_apply, finSumFinEquiv_symm_apply_natAdd, Sum.elim_inr]
 
 /- English proof (translation)
-Introduce `Y N r fl p U hp`. Take `⟨W, s, hWU, hpW, H⟩` from `exists_adapted_upTo fl hp (Fin.last r)`. Use `⟨W, fun i => s i, hWU, hpW, ?_, fun k => H k (Fin.le_last k)⟩` and prove the remaining obligations. Take `⟨t, ht, e⟩` from `H (Fin.last r) le_rfl`. Use `ht.map_iso (fl.ι (Fin.last r))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[funext e]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adapted : ∀ (Y : Scheme.{0}) (N : Y.Modules) (r : ℕ) (fl : Vert.Flag N r) (p : Y) (U : Y.Opens),
     p ∈ U → ∃ (W : Y.Opens) (s : Fin r → Γ(N, W)), W ≤ U ∧ p ∈ W ∧ Adapted fl s := by

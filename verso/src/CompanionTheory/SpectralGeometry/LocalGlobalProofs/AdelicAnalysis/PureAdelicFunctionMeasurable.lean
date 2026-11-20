@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.PureMeas
 
 /- English proof (translation)
-Take `⟨⟨-, scA, -⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Establish `scA' : SecondCountableTopology (Ainf F × Af F)` using `scA`. Use `haveI : SecondCountableTopology (Ainf F) := (isEmbedding_prodMkLeft (0 : Af F)).secondCountableTopology`. Use `haveI : T2Space (Ainf F) := GlobalTheory.CompanionTheory.AdeleTop.t2Space_infiniteAdeleRing_of_numberField_field F`. Conclude with `(GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Ainf F)).2.2.2.2.2.2.2.1 n M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem borelSpace_ainf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (n M : ℕ) :
@@ -25,7 +25,7 @@ theorem borelSpace_ainf (F E : Type) [Field F] [NumberField F] [Field E] [Number
   exact (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Ainf F)).2.2.2.2.2.2.2.1 n M
 
 /- English proof (translation)
-Take `⟨⟨lcA, scA, t2A⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI := lcA`. Use `haveI := scA`. Use `haveI := t2A`. Conclude with `(GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (AF F)).2.2.2.2.2.2.2.1 n M`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem borelSpace_af (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (n M : ℕ) :
@@ -37,7 +37,7 @@ theorem borelSpace_af (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
   exact (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (AF F)).2.2.2.2.2.2.2.1 n M
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Use `haveI : LocallyCompactSpace (Fv F v) := inferInstance`. Use `haveI : SecondCountableTopology (Fv F v) := inferInstance`. Use `haveI : T2Space (Fv F v) := inferInstance`. Conclude with `(GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)).2.2.2.2.2.2.2.1 n M`.
+A detailed English derivation is pending.
 -/
 theorem borelSpace_fv (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (n M : ℕ) (v : HeightOneSpectrum (𝓞 F)) :
@@ -49,9 +49,9 @@ theorem borelSpace_fv (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
   exact (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)).2.2.2.2.2.2.2.1 n M
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ d b n M S φinf φ hφinf hφ`. Take `⟨hpi, hpf, hpv, -, hint, -⟩` from `GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hσ d b n M`. Use `haveI := borelSpace_af F E σ hσ n M`. Use `haveI := borelSpace_ainf F E σ hσ n M`. Use `haveI : ∀ v, BorelSpace (Fin n → Fin M → Fv F v ⊗[F] E) := fun v => borelSpace_fv F E σ hσ n M v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Measurable.indicator ?_ (hint S).measurableSet` and prove the remaining obligations. Use `(hφinf.comp hpi.measurable).mul ?_` and prove the remaining obligations. Use `Finset.measurable_prod _ fun v _ => ?_` and prove the remaining obligations. Conclude with `(hφ v).comp ((hpv v).comp hpf).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_pureL : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ) (S : Finset (HeightOneSpectrum (𝓞 F))) (φinf : (Fin n → Fin M → Ainf F ⊗[F] E) → ℝ≥0∞) (φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℝ≥0∞), Measurable φinf → (∀ v, Measurable (φ v)) → Measurable (pureL b S φinf φ) := by
   intro F E _ _ _ _ _ σ hσ d b n M S φinf φ hφinf hφ

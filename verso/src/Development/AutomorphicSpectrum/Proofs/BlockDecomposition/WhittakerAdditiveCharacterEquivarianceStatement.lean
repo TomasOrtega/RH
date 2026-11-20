@@ -5,7 +5,7 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open scoped ValuativeRel
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WhittakerPsi.sPsi | exact GlobalTheory.CompanionTheory.WhittakerPsi.sPsi | (intros; apply GlobalTheory.CompanionTheory.WhittakerPsi.sPsi <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.whittaker_additive_character_equivariance : Ad3.SchwartzSpaceL2.SPsi := by
   first | exact @GlobalTheory.CompanionTheory.WhittakerPsi.sPsi | exact GlobalTheory.CompanionTheory.WhittakerPsi.sPsi | (intros; apply GlobalTheory.CompanionTheory.WhittakerPsi.sPsi <;> assumption)

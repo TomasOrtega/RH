@@ -15,7 +15,7 @@ open GlobalTheory.CompanionTheory.Ar.Num
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
 /- English proof (translation)
-Simplify using `[annSub, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_annSub_iff {n k : ℕ} {v : Fin n → Ω} :
     v ∈ annSub Ω n k ↔ ∀ j : Fin n, (j : ℕ) < k → v j = 0 := by
@@ -31,7 +31,7 @@ theorem stepCoord_apply {n : ℕ} (i : Fin n) (v : annSub Ω n i) :
     stepCoord Ω i v = (v : Fin n → Ω) i := rfl
 
 /- English proof (translation)
-Introduce `c`. Use `⟨⟨Pi.single i c, mem_annSub_iff.2 fun j hj => ?_⟩, by simp [stepCoord_apply]⟩` and prove the remaining obligations. Establish `: j ≠ i` using `by rintro rfl; exact lt_irrefl _ hj`. Simplify using `[Pi.single_apply, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem stepCoord_surjective {n : ℕ} (i : Fin n) : Function.Surjective (stepCoord Ω i) := by
   classical
@@ -41,9 +41,9 @@ theorem stepCoord_surjective {n : ℕ} (i : Fin n) : Function.Surjective (stepCo
   simp [Pi.single_apply, this]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.mem_ker, stepCoord_apply, mem_annSub_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h j hj`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hj with hj | hj` into its components or cases. Conclude with `mem_annSub_iff.1 v.2 j hj`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.ext hj]`. Conclude with `h`. Introduce `h`. Conclude with `h i (Nat.lt_succ_self _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_ker_stepCoord {n : ℕ} (i : Fin n) (v : annSub Ω n i) :
     v ∈ LinearMap.ker (stepCoord Ω i) ↔ (v : Fin n → Ω) ∈ annSub Ω n ((i : ℕ) + 1) := by
@@ -57,9 +57,9 @@ theorem mem_ker_stepCoord {n : ℕ} (i : Fin n) (v : annSub Ω n i) :
     exact h i (Nat.lt_succ_self _)
 
 /- English proof (translation)
-Take `⟨ρ, h1, h2, h3⟩` from `h`. Establish `hle : ∀ v, ρ v ∈ annSub Ω n i` using `fun v => mem_annSub_iff.2 fun j hj => mem_annSub_iff.1 (h1 v) j (Nat.lt_succ_of_lt hj)`. Use `⟨(ρ.comp (annSub Ω n i).subtype).codRestrict _ fun v => hle _, fun v => ?_, fun u hu => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ker_stepCoord]`. Conclude with `h1 _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h2 _ ((mem_ker_stepCoord i u).1 hu)`. Conclude with `h3 _ hv`.
+A detailed English derivation is pending.
 -/
 theorem summand_step {n : ℕ} {L : AddSubgroup (Fin n → Ω)} (i : Fin n)
     (h : Summand L (annSub Ω n ((i : ℕ) + 1))) :
@@ -76,11 +76,11 @@ theorem summand_step {n : ℕ} {L : AddSubgroup (Fin n → Ω)} (i : Fin n)
   · exact h3 _ hv
 
 /- English proof (translation)
-Establish `hA` using `((GlobalTheory.T.locally_free_summand_criterion R (annSub Ω n i) n 0 L hL).2 h₀).1`. Establish `hB` using `((GlobalTheory.T.locally_free_summand_criterion R (LinearMap.ker (stepCoord Ω i)) _ 0 _ hA).2 (summand_step i h₁)).2`. Establish `hr : Module.finrank Ω (annSub Ω n i) - Module.finrank Ω (LinearMap.ker (stepCoord Ω i)) = 1`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker (stepCoord Ω i)`. Rewrite `h` using `[LinearMap.range_eq_top.2 (stepCoord_surjective i), finrank_top, Module.finrank_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hB` using `[hr]`. Establish `hC` using `(locFree_map_mkQ_iff R (stepCoord Ω i) (stepCoord_surjective i) _).1 hB`. Use `hC using 1` and compare the differences between its conclusion and the goal. Use extensionality with `c`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, ⟨hv, hv'⟩, rfl⟩`. Conclude with `⟨⟨v, hv'⟩, hv, rfl⟩`. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨v, ⟨hv, v.2⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem locFree_step (R : Subalgebra o Ω) {n : ℕ} {L : AddSubgroup (Fin n → Ω)} (hL : LocFree R n L)
     (i : Fin n) (h₀ : Summand L (annSub Ω n i)) (h₁ : Summand L (annSub Ω n ((i : ℕ) + 1))) :
@@ -102,13 +102,13 @@ theorem locFree_step (R : Subalgebra o Ω) {n : ℕ} {L : AddSubgroup (Fin n →
     exact ⟨v, ⟨hv, v.2⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hc hB h1 h2`. Take `⟨hg, hbc⟩` from `GlobalTheory.T.lattice_good_base_change D R p w χ hc hB h1`. Use `⟨fun τ i => locFree_step R (hg τ).1 i (h2.ann τ i) (h2.ann τ ((i : ℕ) + 1)), ?_⟩` and prove the remaining obligations. Introduce `C _ _ _ _ RC hRC τ i`. Establish `haf` using `((hbc C RC hRC).2 τ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs` using `(GlobalTheory.T.locally_free_base_change_summand R RC hRC (bcMap Ω C (Fin n)) (isBaseChange_bcMap Ω C _) (D.af R p (χ τ)) (annSub Ω n i) (hg τ).1.1 (h2.ann τ i)).2`. Rewrite `hs` using `[span_bcMap_annSub]`. Unfold `LieLatticeData.dId`. Rewrite using `[haf, hs]`. Establish `hm` using `SpanExact.map_spanOver RC (bcMap Ω C (Fin n) '' ((D.af R p (χ τ) ⊓ (annSub Ω n i).toAddSubgroup : AddSubgroup _) : Set (Fin n → Ω))) (LinearMap.proj i : (Fin n → C) →ₗ[C] C)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `himg : algebraMap Ω C '' (((D.af R p (χ τ) ⊓ (annSub Ω n i).toAddSubgroup : AddSubgroup _).map (Pi.evalAddMonoidHom (fun _ => Ω) i) : AddSubgroup Ω) : Set Ω) = (LinearMap.proj i : (Fin n → C) →ₗ[C] C) '' (bcMap Ω C (Fin n) '' ((D.af R p (χ τ) ⊓ (annSub Ω n i).toAddSubgroup : AddS …`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨v, hv, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨v, hv, rfl⟩, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨v, hv, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨v, hv, rfl⟩, rfl⟩`. Rewrite using `[himg, ← hm]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem main : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (w : Ω) (χ : Sg → F → Ω), CharData R p w χ → D.Base R p w → D.Good₁ R p χ → D.Good₂ R p χ → (∀ τ i, LocFree R 1 (D.dId R p (χ τ) i)) ∧ ∀ (C : Type) [Field C] [Algebra o C] [Algebra Ω C] [IsScalarTower o Ω C] (RC : Subalgebra o C), (∀ a ∈ R, algebraMap Ω C a ∈ RC) → ∀ τ i, (D.bc RC).dId RC p (fun a => algebraMap Ω C (χ τ a)) i = spanOver RC (algebraMap Ω C '' D.dId R p (χ τ) i) := by
   intro o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hc hB h1 h2

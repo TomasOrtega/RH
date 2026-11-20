@@ -6,23 +6,19 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R _ F`. Establish `hc : ∀ {E E' E'' : Spc} (f : E ⟶ E') (g : E' ⟶ E'') (n : ℤ), ⇑(pull R (f ≫ g) F n) = ⇑(pull R f F n) ∘ ⇑(pull R g F n)`. Introduce `E E' E'' f g n`. Use function extensionality and compare the values at `x`. Conclude with `pull_comp R f g F n x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hid : ∀ (E : Spc) (n : ℤ), ⇑(pull R (𝟙 E) F n) = id`. Introduce `E n`. Use function extensionality and compare the values at `x`. Conclude with `pull_id R E F n x`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `E E' f hf n haveI := hf`. Establish `h1 : Function.LeftInverse (pull R (inv f) F n) (pull R f F n)`. Introduce `x`. Use `congrFun (hc (inv f) f n) x` as an intermediate fact. Rewrite `this` using `[IsIso.inv_hom_id, hid]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this.symm`. Establish `h2 : Function.RightInverse (pull R (inv f) F n) (pull R f F n)`. Introduce `x`. Use `congrFun (hc f (inv f) n) x` as an intermediate fact. Rewrite `this` using `[IsIso.hom_inv_id, hid]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.symm`. Conclude with `⟨h1.injective, h2.surjective⟩`. Introduce `E E' E'' f g`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hf hg n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `(hf n).comp (hg n)`. Introduce `hf hfg n`. Use `hfg n` as an intermediate fact. Rewrite `this` using `[hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Function.Bijective.of_comp_iff' (hf n) _).mp this`. Introduce `hg hfg n`. Use `hfg n` as an intermediate fact. Rewrite `this` using `[hc]`. Conclude with `(Function.Bijective.of_comp_iff _ (hg n)).mp this`.
-
-Introduce `E E' f hq n`. Conclude with `GlobalTheory.T.quasiIso_hypercohomology_bijective R ((chains R).map f) F n`. Introduce `E E' f hf`. Prove the components needed by the constructor for the conclusion. Introduce `h n hn haveI := h n hn`.
-
-Conclude with `(hf n).1.subsingleton`. Introduce `h n hn haveI := h n hn`. Conclude with `(Equiv.ofBijective _ (hf n)).symm.subsingleton`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eqv_basic : ∀ (R : Type) [CommRing R] (F : Shv R), (∀ (E E' : Spc) (f : E ⟶ E'), IsIso f → Eqv R f F) ∧ (∀ (E E' E'' : Spc) (f : E ⟶ E') (g : E' ⟶ E''), (Eqv R f F → Eqv R g F → Eqv R (f ≫ g) F) ∧ (Eqv R f F → Eqv R (f ≫ g) F → Eqv R g F) ∧ (Eqv R g F → Eqv R (f ≫ g) F → Eqv R f F)) ∧ (∀ (E E' : Spc) (f : E ⟶ E'), QuasiIso ((chains R).map f) → Eqv R f F) ∧ ∀ (E E' : Spc) (f : E ⟶ E'), Eqv R f F → (AcycF R E F ↔ AcycF R E' F) := by
   intro R _ F

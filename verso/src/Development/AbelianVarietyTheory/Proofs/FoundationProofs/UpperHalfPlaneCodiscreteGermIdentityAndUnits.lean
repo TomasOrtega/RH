@@ -13,21 +13,21 @@ open Filter Topology
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-The claim follows from `isOpen_lt continuous_const Complex.continuous_im`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Hs : IsOpen Hs := isOpen_lt continuous_const Complex.continuous_im
 
 /- English proof (translation)
-The claim follows from `(convex_halfSpace_im_gt 0).isPreconnected`.
+A detailed English derivation is pending.
 -/
 theorem isPreconnected_Hs : IsPreconnected Hs := (convex_halfSpace_im_gt 0).isPreconnected
 
 /- English proof (translation)
-Rewrite using `[Filter.neBot_iff]`. Introduce `h`. Establish `h0 : (∅ : Set ℂ) ∈ Filter.codiscreteWithin Hs` using `h ▸ Filter.mem_bot`. Rewrite `h0` using `[mem_codiscreteWithin_iff_forall_mem_nhdsNE]`. Establish `hI : Complex.I ∈ Hs` using `by show (0 : ℝ) < Complex.I.im; simp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `h0 Complex.I hI`. Rewrite `h1` using `[Set.empty_union]`. Establish `h2 : Hs ∈ 𝓝[≠] Complex.I` using `mem_nhdsWithin_of_mem_nhds (isOpen_Hs.mem_nhds hI)`. Establish `h3 : (∅ : Set ℂ) ∈ 𝓝[≠] Complex.I`. Use `Filter.inter_mem h2 h1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `(Filter.empty_mem_iff_bot.mp h3 ▸ (inferInstance : (𝓝[≠] Complex.I).NeBot)).ne rfl`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem codiscreteWithin_Hs_neBot : (Filter.codiscreteWithin Hs).NeBot := by
   rw [Filter.neBot_iff]
@@ -44,9 +44,9 @@ theorem codiscreteWithin_Hs_neBot : (Filter.codiscreteWithin Hs).NeBot := by
   exact (Filter.empty_mem_iff_bot.mp h3 ▸ (inferInstance : (𝓝[≠] Complex.I).NeBot)).ne rfl
 
 /- English proof (translation)
-Use `haveI := codiscreteWithin_Hs_neBot`. Establish `han : AnalyticOnNhd ℂ a Hs` using `ha.analyticOnNhd isOpen_Hs`. Break down `han.eqOn_zero_or_eventually_ne_zero_of_preconnected isPreconnected_Hs with h | h` into its components or cases. Conclude with `fun z hz => h hz`. It suffices to derive a contradiction.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `he : a =ᶠ[Filter.codiscreteWithin Hs] (0 : ℂ → ℂ)` using `Filter.Germ.coe_eq.mp h0`. Take `⟨z, hz1, hz2⟩` from `(h.and he).exists`. Conclude with `hz1 hz2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eqOn_zero_of_germ_eq_zero {a : ℂ → ℂ} (ha : DifferentiableOn ℂ a Hs) (h0 : (a : Mero) = 0) :
     ∀ z ∈ Hs, a z = 0 := by
@@ -60,15 +60,13 @@ theorem eqOn_zero_of_germ_eq_zero {a : ℂ → ℂ} (ha : DifferentiableOn ℂ a
     exact hz1 hz2
 
 /- English proof (translation)
-Use `haveI := codiscreteWithin_Hs_neBot`. Use `⟨inferInstance, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b ha hb hab z hz`. Establish `h0 : ((a - b : ℂ → ℂ) : Mero) = 0`. Rewrite using `[Filter.Germ.coe_sub, hab, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `eqOn_zero_of_germ_eq_zero (ha.sub hb) h0 z hz` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Introduce `a ha hne`. Establish `han : AnalyticOnNhd ℂ a Hs` using `ha.analyticOnNhd isOpen_Hs`. Establish `hev : ∀ᶠ z in Filter.codiscreteWithin Hs, a z ≠ 0`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `han.eqOn_zero_or_eventually_ne_zero_of_preconnected isPreconnected_Hs with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Rewrite using `[← Filter.Germ.coe_zero, Filter.Germ.coe_eq]`. Use `filter_upwards [Filter.self_mem_codiscreteWithin Hs] with z hz`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h hz`. Conclude with `h`. Use `⟨hev, ?_⟩` and prove the remaining obligations. Use `⟨⟨(a : Mero), ((fun z => (a z)⁻¹ : ℂ → ℂ) : Mero), ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← Filter.Germ.coe_mul, ← Filter.Germ.coe_one, Filter.Germ.coe_eq] filter_upwards [hev] with z hz`.
-
-Simplify using `[hz]`. Rewrite using `[← Filter.Germ.coe_mul, ← Filter.Germ.coe_one, Filter.Germ.coe_eq] filter_upwards [hev] with z hz`. Simplify using `[hz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem germ_main : Nontrivial Mero ∧ (∀ a b : ℂ → ℂ, DifferentiableOn ℂ a Hs → DifferentiableOn ℂ b Hs → (a : Mero) = (b : Mero) → ∀ z ∈ Hs, a z = b z) ∧ ∀ a : ℂ → ℂ, DifferentiableOn ℂ a Hs → (a : Mero) ≠ 0 → (∀ᶠ z in Filter.codiscreteWithin Hs, a z ≠ 0) ∧ IsUnit (a : Mero) := by
   haveI := codiscreteWithin_Hs_neBot
@@ -98,7 +96,7 @@ theorem germ_main : Nontrivial Mero ∧ (∀ a b : ℂ → ℂ, DifferentiableOn
       simp [hz]
 
 /- English proof (translation)
-The claim follows from `germ_main`.
+A detailed English derivation is pending.
 -/
 example : Nontrivial Mero ∧ (∀ a b : ℂ → ℂ, DifferentiableOn ℂ a Hs → DifferentiableOn ℂ b Hs → (a : Mero) = (b : Mero) → ∀ z ∈ Hs, a z = b z) ∧ ∀ a : ℂ → ℂ, DifferentiableOn ℂ a Hs → (a : Mero) ≠ 0 → (∀ᶠ z in Filter.codiscreteWithin Hs, a z ≠ 0) ∧ IsUnit (a : Mero) := germ_main
 

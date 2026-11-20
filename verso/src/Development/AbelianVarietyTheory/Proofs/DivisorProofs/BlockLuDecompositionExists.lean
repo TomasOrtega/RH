@@ -8,13 +8,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.FlagZ GlobalTheor
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨fun i => ((Finset.range (i + 1)).filter (· ∈ S)).card, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Use `Finset.card_le_card (Finset.filter_subset_filter _ ?_)` and prove the remaining obligations. Conclude with `Finset.range_subset_range.2 (by omega)`. Introduce `i j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h1, h2⟩`. Use `Finset.card_lt_card ⟨Finset.filter_subset_filter _ (Finset.range_subset_range.2 (by omega)), ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `: s ∈ (Finset.range (j + 1)).filter (· ∈ S)` using `h (by simp [hs]; omega)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Assume the negation of the conclusion as `hne`. Use `absurd h (not_lt.2 (Finset.card_le_card ?_))` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hs ⊢`. Use `⟨?_, hs.2⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `hne ⟨s, hs.2, by omega, by omega⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_monotone_blockFun (S : Set ℕ) :
     ∃ f : ℕ → ℕ, Monotone f ∧ ∀ i j : ℕ, (∃ s ∈ S, j < s ∧ s ≤ i) ↔ f j < f i := by
@@ -41,23 +41,23 @@ theorem exists_monotone_blockFun (S : Set ℕ) :
       exact hne ⟨s, hs.2, by omega, by omega⟩
 
 /- English proof (translation)
-Introduce `A _ N S g hm`. Take `⟨l, u, hl0, hl1, hu, hg⟩` from `exists_lower_mul_upper_of_leading_minors N g.1 hm`. Take `⟨f₀, hf, hS⟩` from `exists_monotone_blockFun S`. Set `f : Fin N → ℕ` to `fun i => f₀ i`. Establish `hlt : ∀ i j : Fin N, f i < f j → i < j` using `fun i j h => hf.reflect_lt h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `d : Matrix (Fin N) (Fin N) A` to `Matrix.of fun i j => if f i = f j then l i j else 0`. Establish `hdd : d.det = 1` using `det_eq_one_of_lower_unitriangular d (fun i j h => by simp [d, hl0 i j h]) (fun i => by simp [d, hl1])`. Establish `hdu : IsUnit d.det` using `by rw [hdd]; exact isUnit_one`. Establish `hld : l.det = 1` using `det_eq_one_of_lower_unitriangular l hl0 hl1`. Establish `hd1 : d.BlockTriangular f` using `fun i j h => by simp [d, h.ne']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd2 : d.BlockTriangular (OrderDual.toDual ∘ f)` using `fun i j h => by`. Establish `h' : f i < f j` using `h`. Simplify using `[d, h'.ne]`. Use `letI := Matrix.invertibleOfIsUnitDet d hdu`. Establish `hi1` using `Matrix.blockTriangular_inv_of_blockTriangular hd1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hi2` using `Matrix.blockTriangular_inv_of_blockTriangular hd2`. Establish `hLu : IsUnit (l * d⁻¹)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_mul, hld, one_mul]`. Conclude with `Matrix.isUnit_nonsing_inv_det d hdu`. Take `⟨L, hL⟩` from `hLu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : (L⁻¹ * g).1 = d * u`. Establish `: g.1 = L.1 * (d * u)`. Rewrite using `[hL, hg, Matrix.mul_assoc, ← Matrix.mul_assoc d⁻¹, Matrix.nonsing_inv_mul _ hdu, Matrix.one_mul]`. Rewrite using `[Units.val_mul, this, ← mul_assoc, Units.inv_mul, one_mul]`. Use `⟨L, L⁻¹ * g, by rw [mul_inv_cancel_left], ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Rewrite `hij` using `[hS]`. Establish `hij' : f i ≤ f j` using `not_lt.1 hij`. Rewrite using `[hL, ← Matrix.mul_nonsing_inv d hdu, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy (f k) (f j) with h | h | h` into its components or cases. Rewrite using `[hi2 (i := k) (j := j) h, mul_zero, mul_zero]`. Distinguish the cases in `h' : f i = f k`. Simplify using `[d, h']`. Establish `: l i k = 0` using `hl0 i k (hlt _ _ (lt_of_le_of_ne (h ▸ hij') h'))`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[d, this]`. Rewrite using `[hi1 (i := k) (j := j) h, mul_zero, mul_zero]`. Introduce `i j hij`. Rewrite `hij` using `[hS]`. Establish `hu' : u.BlockTriangular f` using `fun i j h => hu (hlt _ _ h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Conclude with `(hd1.mul hu') hij`.
+A detailed English derivation is pending.
 -/
 theorem exists_blockLower_mul_blockUpper :
     ∀ (A : Type) [CommRing A] (N : ℕ) (S : Set ℕ) (g : GL (Fin N) A), (∀ (k : ℕ) (hk : k ≤ N), IsUnit (g.1.submatrix (Fin.castLE hk) (Fin.castLE hk)).det) → ∃ L b : GL (Fin N) A, g = L * b ∧ (∀ i j : Fin N, ¬ (∃ s ∈ S, (j : ℕ) < s ∧ s ≤ (i : ℕ)) → L.1 i j = (1 : Matrix (Fin N) (Fin N) A) i j) ∧ ∀ i j : Fin N, (∃ s ∈ S, (j : ℕ) < s ∧ s ≤ (i : ℕ)) → b.1 i j = 0 := by

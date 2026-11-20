@@ -15,20 +15,20 @@ noncomputable section
 namespace GlobalTheory.ThK.PlaneEv
 
 /- English proof (translation)
-Simplify using `[Formalism.BasicNotions.TH.Jm, Formalism.UG.Jpq, Matrix.fromBlocks_transpose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jm_transpose (P Q : ℕ) : (Formalism.BasicNotions.TH.Jm P Q)ᵀ = Formalism.BasicNotions.TH.Jm P Q := by
   simp [Formalism.BasicNotions.TH.Jm, Formalism.UG.Jpq, Matrix.fromBlocks_transpose]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_zero {R : Type} [CommRing R] [Invertible (2 : R)] {V : Type} [AddCommGroup V] [Module R V] {Bf : V → V → R}
     {κ : Type} [Fintype κ] (co : Darboux Bf κ) (ψ : AddChar R ℂ) (w : V) : co.rho ψ w 0 = 0 := by
   funext x; simp [Darboux.rho, schr]
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `GlobalTheory.T.adapted_plane_left_inverse F E σ B d d₁ r' s' i₀ i₁ W W₁ H' hW hH`. Use `⟨L.map (B.emb w).1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hL, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem leftInv_at {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {d d₁ r' s' i₀ i₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁}
@@ -39,7 +39,7 @@ theorem leftInv_at {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   rw [← Matrix.map_mul, hL, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.adapted_plane_cartan_involution F E σ B d d₁ r' s' i₀ i₁ W W₁ H' hB hW hH w (leftInv_at hW hH w)`.
+A detailed English derivation is pending.
 -/
 theorem cartan_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {d d₁ r' s' i₀ i₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁}
@@ -48,7 +48,7 @@ theorem cartan_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   GlobalTheory.T.adapted_plane_cartan_involution F E σ B d d₁ r' s' i₀ i₁ W W₁ H' hB hW hH w (leftInv_at hW hH w)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.adapted_plane_signature_drop F E σ B d d₁ r' s' i₀ i₁ W W₁ H' hB hW hH w (leftInv_at hW hH w)`.
+A detailed English derivation is pending.
 -/
 theorem sig_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {d d₁ r' s' i₀ i₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁}
@@ -57,15 +57,15 @@ theorem sig_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   GlobalTheory.T.adapted_plane_signature_drop F E σ B d d₁ r' s' i₀ i₁ W W₁ H' hB hW hH w (leftInv_at hW hH w)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M₁ hB hX hW hH hDer hLaws`. Use `choose A hA hAθ using fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists n r s (X.J.map (B.emb w).1) (X.θ w) (hX.sig w) (hX.cartan w)`. Use `choose C hC hCθ using fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists d₁ (r' - 1) (s' - 1) (Complex.I • W₁.J.map (B.emb w).1) (W₁.θ w) (sig_one hB hW hH w) (cartan_one hB hW hH w)`. Establish `hFr : GlobalTheory.RealLift.Framed B.emb (incM F X.J) (incM F W₁.J) 1 Complex.I A C` using `⟨one_mul _, fun w => by rw [incM_map_piInf_emb, one_smul]; exact hA w, fun w => by rw [incM_map_piInf_emb]; exact hC w⟩`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives hDer F E σ (Fin n) (Fin d₁) (Fin n × Fin d₁) r s (r' - 1) (s' - 1) B.ψ B.emb _ _ M₁.co 1 Complex.I A C hB.cm hB.std hFr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨Φ (PiTensorProduct.tprod ℂ fun _ => 1), fun g₀ hg₀ => ?_⟩` and prove the remaining obligations. Take `⟨ε, hε⟩` from `hg₀`. Use `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hDer F E σ (Fin n) (Fin d₁) (Fin n × Fin d₁) r s (r' - 1) (s' - 1) B.ψ B.emb _ _ M₁.co 1 Complex.I A C Φ hB.cm hB.std hFr hΦ g₀ ε ?_` and prove the remaining obligations. Introduce `u u' hu hu' c hc hc' f f' hf hf'`. Establish `hz : ∀ v, M₁.co.rho B.ψ v 0 = 0` using `rho_zero M₁.co B.ψ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hε u u' hu hu' ?_ f f' ((hLaws F (Fin n × Fin d₁) g₀ f f).1 _ (fun t => hz _) hf) ((hLaws F (Fin n × Fin d₁) g₀ f' f').1 _ (fun t => hz _) hf')` and prove the remaining obligations. Introduce `w`. Rewrite using `[hc' w, hc w]`. Establish `h1 : Matrix.transpose (C w) * (W₁.θ w)ᵀ = Formalism.BasicNotions.TH.Jm (r' - 1) (s' - 1) * (C w)ᵀ`. Rewrite using `[← Matrix.transpose_mul, hCθ w, Matrix.transpose_mul, jm_transpose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hAθ w]`. Simplify using `only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = X.θ w * (A w * c w * (C w)ᵀ) * (W₁.θ w)ᵀ := by`. Rewrite using `[← h1]`. Simplify using `only [Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem vac_line_of_model : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ r s r' s' i₀ i₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (M₁ : Model σ X W₁),

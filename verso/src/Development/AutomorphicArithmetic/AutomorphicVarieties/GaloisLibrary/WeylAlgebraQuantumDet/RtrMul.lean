@@ -3,15 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open Matrix UpperTheory.V.Weyl
 
 /- English proof (translation)
-Introduce `n`. Prove the components needed by the constructor for the conclusion. Introduce `f`. Establish `e : (rtr (1 : Matrix (Fin n) (Fin n) ℂ) : Pol n →ₐ[ℂ] Pol n) = AlgHom.id ℂ (Pol n)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨i, j⟩`. Simplify using `[rtr, Matrix.one_apply, mul_ite, Finset.sum_ite_eq']`. Rewrite using `[e]`. Both sides reduce to the same expression. Introduce `g h f`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (rtr (g * h) : Pol n →ₐ[ℂ] Pol n) = (rtr g).comp (rtr h)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Rewrite using `[AlgHom.comp_apply]`. Simplify using `only [rtr, MvPolynomial.aeval_X, map_sum]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hx : ∀ x, (MvPolynomial.aeval (fun ij : Fin n × Fin n => ∑ k, MvPolynomial.X (ij.1, k) * MvPolynomial.C (g k ij.2)) : MvPolynomial (Fin n × Fin n) ℂ →ₐ[ℂ] MvPolynomial (Fin n × Fin n) ℂ) (MvPolynomial.X (i, x) * MvPolynomial.C (h x j)) = ∑ k, MvPolynomial.X (i, k) * MvPolynomial. …`. Introduce `x`. Rewrite using `[map_mul, MvPolynomial.aeval_X, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, Finset.sum_mul]`. Simplify using `only [mul_assoc, ← map_mul]`. Simplify using `only [hx, Matrix.mul_apply, map_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.Weyl.rtrMul :
     ∀ (n : ℕ), (∀ f : Pol n, rtr 1 f = f) ∧ ∀ (g h : Matrix (Fin n) (Fin n) ℂ) (f : Pol n), rtr (g * h) f = rtr g (rtr h f) := by

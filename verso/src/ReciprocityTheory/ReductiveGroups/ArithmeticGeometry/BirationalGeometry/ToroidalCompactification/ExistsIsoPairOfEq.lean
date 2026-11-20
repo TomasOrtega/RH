@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Establish `e : X.presheaf.map (homOfLE h').op ≫ X.presheaf.map (homOfLE h).op = X.presheaf.map (homOfLE (h.trans h')).op`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression. Apply `Units.ext` to reduce the goal to its premises. Conclude with `congrArg (fun φ => φ.hom (x : Γ(X, U))) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h : W ≤ V) (h' : V ≤ U)
     (x : Γ(X, U)ˣ) : res h (res h' x) = res (h.trans h') x := by
@@ -22,7 +22,7 @@ private theorem res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h : W ≤ V) (
   exact congrArg (fun φ => φ.hom (x : Γ(X, U))) e
 
 /- English proof (translation)
-Establish `hW : W ≤ L.U i ⊓ L.U j ⊓ L.U k` using `le_inf h₁ (h₂.trans inf_le_right)`. Establish `key` using `congrArg (⇑(res hW)) (hL.cocycle i j k)`. Simplify using `only [map_mul, res_res_lemma] at key`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem res_g_mul_res_g_eq_res_g_of_isLB {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (i j k : L.ι) {W : X.Opens}
     (h₁ : W ≤ L.U i ⊓ L.U j) (h₂ : W ≤ L.U j ⊓ L.U k) (h₃ : W ≤ L.U i ⊓ L.U k) :
@@ -33,9 +33,9 @@ private theorem res_g_mul_res_g_eq_res_g_of_isLB {X : Scheme.{0}} {L : LB X} (hL
   exact key
 
 /- English proof (translation)
-Establish `hU : f y ∈ U` using `h hy`. Establish `e : X.presheaf.map (homOfLE h).op ≫ f.app V ≫ Y.presheaf.germ (f ⁻¹ᵁ V) y hy = f.app U ≫ Y.presheaf.germ (f ⁻¹ᵁ U) y hU`. Rewrite using `[← Category.assoc, Scheme.Hom.naturality, Category.assoc]`. Use `congr 1`. Conclude with `TopCat.Presheaf.germ_res _ _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Unfold `gm`. Rewrite using `[dif_pos hy, dif_pos hU]`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `congrArg (fun φ => φ.hom (x : Γ(X, U))) e`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem gm_res_toroidal_compactification {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) {U V : X.Opens} (h : V ≤ U)
     (hy : f y ∈ V) (x : Γ(X, U)ˣ) : gm f y V (res h x) = gm f y U x := by
@@ -51,11 +51,11 @@ private theorem gm_res_toroidal_compactification {X Y : Scheme.{0}} (f : Y ⟶ X
   exact congrArg (fun φ => φ.hom (x : Γ(X, U))) e
 
 /- English proof (translation)
-Introduce and unpack `⟨p₁, p₂⟩ ⟨q₁, q₂⟩`. Establish `h₀ : L.U p₁ ⊓ L.U p₂ ⊓ (L.U q₁ ⊓ L.U q₂) ≤ L.U p₁ ⊓ L.U p₂` using `inf_le_left`. Establish `h₁ : L.U p₁ ⊓ L.U p₂ ⊓ (L.U q₁ ⊓ L.U q₂) ≤ L.U p₁ ⊓ L.U q₁` using `le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)`. Establish `h₂ : L.U p₁ ⊓ L.U p₂ ⊓ (L.U q₁ ⊓ L.U q₂) ≤ L.U q₁ ⊓ L.U q₂` using `inf_le_right`. Establish `h₃ : L.U p₁ ⊓ L.U p₂ ⊓ (L.U q₁ ⊓ L.U q₂) ≤ L.U p₁ ⊓ L.U q₂` using `le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_right)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₄ : L.U p₁ ⊓ L.U p₂ ⊓ (L.U q₁ ⊓ L.U q₂) ≤ L.U p₂ ⊓ L.U q₂` using `le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)`. Establish `c₁` using `res_g_mul_res_g_eq_res_g_of_isLB hL p₁ q₁ q₂ h₁ h₂ h₃`. Establish `c₂` using `res_g_mul_res_g_eq_res_g_of_isLB hL p₁ p₂ q₂ h₀ h₄ h₃`. Establish `key : res h₀ (L.g p₁ p₂) = res h₁ (L.g p₁ q₁) * (res h₄ (L.g p₂ q₂))⁻¹ * res h₂ (L.g q₁ q₂)`. Rewrite using `[mul_right_comm, c₁, ← c₂, mul_inv_cancel_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 private theorem isGen_g_iso_self_of_isLB {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) :
     (⟨fun p : L.ι × L.ι => L.g p.1 p.2⟩ : LB.Iso L L).IsGen := by
@@ -76,7 +76,7 @@ private theorem isGen_g_iso_self_of_isLB {X : Scheme.{0}} {L : LB X} (hL : L.IsL
   exact key
 
 /- English proof (translation)
-Establish `hW : f y ∈ L.U j ⊓ L.U i` using `⟨hj, hi⟩`. Establish `h₂ : L.U j ⊓ L.U i ≤ L.U i ⊓ L.U j` using `le_of_eq (inf_comm _ _)`. Establish `h₃ : L.U j ⊓ L.U i ≤ L.U j ⊓ L.U j` using `le_inf inf_le_left inf_le_left`. Rewrite using `[← gm_res_toroidal_compactification f y h₂ hW (L.g i j), ← gm_res_toroidal_compactification f y (le_refl (L.U j ⊓ L.U i)) hW (L.g j i), ← map_mul (gm f y (L.U j ⊓ L.U i)), res_g_mul_res_g_eq_res_g_of_isLB hL j i j (le_refl _) h₂ h₃, ← res_res_lemma (inf_le_left : L.U j ⊓ L.U i ≤ …`. Simplify using `only [map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem gm_g_mul_gm_g_swap_eq_one_of_isLB {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) (y : Y)
     {i j : L.ι} (hi : f y ∈ L.U i) (hj : f y ∈ L.U j) :
@@ -91,9 +91,9 @@ private theorem gm_g_mul_gm_g_swap_eq_one_of_isLB {X Y : Scheme.{0}} {L : LB X} 
   simp only [map_one]
 
 /- English proof (translation)
-Consider the cases of `h`. Use `⟨⟨fun p : L₁.L.ι × L₁.L.ι => L₁.L.g p.1 p.2⟩, ⟨fun p : L₁.L.ι × L₁.L.ι => L₁.L.g p.1 p.2⟩, isGen_g_iso_self_of_isLB L₁.isLB, isGen_g_iso_self_of_isLB L₁.isLB, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p`. Conclude with `L₁.rigGen p.1 p.2`. Introduce `p`.
+Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `L₁.rigGen p.1 p.2`. Introduce `Y f y i j hi hj`. Conclude with `gm_g_mul_gm_g_swap_eq_one_of_isLB L₁.isLB f y hi hj`.
+A detailed English derivation is pending.
 -/
 theorem exists_iso_pair_of_eq {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L₁ L₂ : RigLB G}
     (h : L₁ = L₂) :

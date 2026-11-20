@@ -11,11 +11,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.Glob
 
 /- English proof (translation)
-Introduce `s x y hs hx hy`. Establish `key : ∀ z : ℤ, s = s.map (z - ·) → 2 * s.sum = (Multiset.card s : ℤ) * z`. Introduce `z hz`. Establish `h1 : (s.map (z - ·)).sum = (Multiset.card s : ℤ) * z - s.sum`. Rewrite using `[Multiset.sum_map_sub, Multiset.map_const', Multiset.sum_replicate, Multiset.map_id']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[nsmul_eq_mul]`. Establish `h2 : s.sum = (Multiset.card s : ℤ) * z - s.sum` using `by conv_lhs => rw [hz]`. Conclude with `h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : (Multiset.card s : ℤ) ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mt Multiset.card_eq_zero.mp hs)` after adjusting the coercions. Use `(key x hx).symm.trans (key y hy)` as an intermediate fact. Conclude with `mul_left_cancel₀ hc this`.
+A detailed English derivation is pending.
 -/
 theorem symm_multiset_centre_unique : ∀ (s : Multiset ℤ) (x y : ℤ), s ≠ 0 → s = s.map (x - ·) → s = s.map (y - ·) → x = y := by
   intro s x y hs hx hy

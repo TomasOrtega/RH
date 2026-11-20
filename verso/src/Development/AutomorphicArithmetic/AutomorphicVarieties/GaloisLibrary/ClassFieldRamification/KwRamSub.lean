@@ -7,15 +7,13 @@ open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheor
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `Ω _ _ _ L _ _ M hM hram`. Take `⟨n, ⟨g⟩⟩` from `kwRam L M hM hram`. Use `haveI : NeZero (M ^ n) := ⟨by positivity⟩`. Use `haveI : NeZero ((M ^ n : ℕ) : ℚ) := ⟨by exact_mod_cast (show M ^ n ≠ 0 by positivity)⟩`. Use `haveI : IsCyclotomicExtension {M ^ n} ℚ (CyclotomicField (M ^ n) ℚ) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `CyclotomicField.isCyclotomicExtension (M ^ n) ℚ` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Conclude with `Subsingleton.elim _ _`. Use `haveI : NumberField (CyclotomicField (M ^ n) ℚ) := IsCyclotomicExtension.numberField {M ^ n} ℚ _`. Establish `hgal : IsGalois ℚ L` using `IsAbelianGalois.toIsGalois`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ξ, hξ⟩ : ∃ z : CyclotomicField (M ^ n) ℚ, IsPrimitiveRoot z (M ^ n)` from `⟨_, IsCyclotomicExtension.zeta_spec _ ℚ _⟩`. Set `ψ : CyclotomicField (M ^ n) ℚ →ₐ[ℚ] Ω` to `IsAlgClosed.lift`. Use `⟨n, ψ ξ, hξ.map_of_injective ψ.injective, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have hnorm : (ψ.comp g).fieldRange = L := @AlgHom.fieldRange_of_normal ℚ Ω _ _ _ L (by convert hgal.to_normal; all_goals first | rfl | exact Subsingleton.elim _ _) (ψ.comp g)`. Rewrite using `[← hnorm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Introduce `x hx`. Take `⟨y, rfl⟩` from `AlgHom.mem_fieldRange.mp hx`. Establish `hy : g y ∈ Algebra.adjoin ℚ {ξ}`. Rewrite using `[IsCyclotomicExtension.adjoin_primitive_root_eq_top hξ]`. Discharge the goal by the elementary cases of `trivial`.
-
-Establish `hψ : ψ (g y) ∈ Algebra.adjoin ℚ {ψ ξ}`. Rewrite using `[← Set.image_singleton, ← AlgHom.map_adjoin]`. Conclude with `⟨g y, hy, rfl⟩`. Conclude with `IntermediateField.algebra_adjoin_le_adjoin ℚ {ψ ξ} hψ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.kwRamSub :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosed Ω] (L : IntermediateField ℚ Ω) [NumberField L] [IsAbelianGalois ℚ L] (M : ℕ), 0 < M → (∀ p : ℕ, p.Prime → ¬ p ∣ M → UnramAt L p) → ∃ (n : ℕ) (ζ : Ω), IsPrimitiveRoot ζ (M ^ n) ∧ L ≤ ℚ⟮ζ⟯ := by

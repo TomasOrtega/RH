@@ -8,19 +8,17 @@ open GlobalTheory.K5 GlobalTheory.KumDlog
 namespace GlobalTheory.KumDlog
 
 /- English proof (translation)
-Use `letI : Module (On p n) Ω := Module.compHom Ω ι.toRingHom`. Establish `hsm : ∀ (r : On p n) (w : Ω), r • w = ι r * w` using `fun _ _ => rfl`. Use `haveI : IsScalarTower (O0 p) (On p n) Ω := ⟨fun r s w => by`. Rewrite using `[hsm, hsm, map_smul, smul_mul_assoc]⟩`. Set `N : Submodule (On p n) Ω` to `{ carrier := {w | IsInt p w} add_mem' := fun ha hb => int_add ha hb zero_mem' := int_zero smul_mem' := fun r w hw => by show IsInt p (r • w)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsm]`. Conclude with `int_mul (hS _ (hι r)) hw }`. Establish `memN : ∀ w, w ∈ N ↔ IsInt p w` using `fun _ => Iff.rfl`. Establish `key : ∀ w w' : Ω, IsInt p (w - w') → N.mkQ w = N.mkQ w'` using `fun w w' h => (Submodule.Quotient.eq N).2 h`. Set `L : On p n →ₗ[O0 p] Ω ⧸ N` to `{ toFun := fun u => N.mkQ (D (ι u)) map_add' := fun u v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_add]`. Use `key _ _ ?_` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `int_congr (hD.1 _ (hι u) _ (hι v)) (by ring)`. Use the proof step `map_smul' := fun r u => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.id_apply]`. Rewrite using `[← LinearMap.map_smul_of_tower]`. Use `key _ _ ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def, Algebra.smul_def]`. Conclude with `hD.alg_mul hS r (hι u) }`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `d : Derivation (O0 p) (On p n) (Ω ⧸ N)` to `Derivation.mk' L (fun u v => by show N.mkQ (D (ι (u * v))) = u • N.mkQ (D (ι v)) + v • N.mkQ (D (ι u))`. Rewrite using `[← LinearMap.map_smul, ← LinearMap.map_smul, ← map_add]`. Use `key _ _ ?_` and prove the remaining obligations. Rewrite using `[hsm, hsm, map_mul]`. Conclude with `int_congr (hD.2.1 _ (hι u) _ (hι v)) (by ring))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : ∀ u, d.liftKaehlerDifferential (KaehlerDifferential.D (O0 p) (On p n) u) = N.mkQ (D (ι u))` using `fun u => by`. Rewrite using `[Derivation.liftKaehlerDifferential_comp_D]`. Both sides reduce to the same expression. Establish `h2` using `congrArg d.liftKaehlerDifferential hrel`. Simplify using `only [map_add, LinearMap.map_smul, hd] at h2`.
-
-Rewrite `h2` using `[← LinearMap.map_smul, ← LinearMap.map_smul, ← LinearMap.map_smul, ← map_add, ← sub_eq_zero, ← map_sub, ← LinearMap.mem_ker, N.ker_mkQ, memN, hsm, hsm, hsm]`. Conclude with `int_congr h2 (by ring)`.
+A detailed English derivation is pending.
 -/
 theorem kaehler_rel_isInt (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω]
     (n : ℕ) (ι : On p n →ₐ[O0 p] Ω) (S : Subalgebra (O0 p) Ω) (hS : ∀ x ∈ S, IsInt p x)

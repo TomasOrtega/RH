@@ -21,13 +21,13 @@ open Filter Topology ArithmeticFunction MeasureTheory
 private noncomputable def dom (t : ℝ) : ℝ := 1 / (t * Real.log t ^ 2)
 
 /- English proof (translation)
-Establish `key : ∀ x ∈ Set.Ioi a, HasDerivAt (fun t => -(Real.log t)⁻¹) (dom x) x`. Introduce `x hx`. Establish `hx1 : 1 < x` using `lt_trans ha hx`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hl : Real.log x ≠ 0` using `(Real.log_pos hx1).ne'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : HasDerivAt (fun t => -(Real.log t)⁻¹) (-(-x⁻¹ / Real.log x ^ 2)) x` using `((Real.hasDerivAt_log hx0.ne').inv hl).neg`. Use `h.congr_deriv ?_` and prove the remaining obligations. Use `show _ = 1 / (x * Real.log x ^ 2)`. Clear the denominators using the available nonvanishing facts. Use `integrableOn_Ioi_deriv_of_nonneg (g := fun t => -(Real.log t)⁻¹) (l := 0) ?_ key ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(((Real.continuousAt_log (by linarith)).inv₀ (Real.log_pos ha).ne').neg).continuousWithinAt`. Introduce `x hx`. Establish `hx1 : 1 < x` using `lt_trans ha hx`. Establish `: 0 < Real.log x` using `Real.log_pos hx1`. Use `show 0 ≤ 1 / (x * Real.log x ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Check the signs of the components of the expression. Use `Real.tendsto_log_atTop.inv_tendsto_atTop.neg` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 private lemma dom_integrableOn {a : ℝ} (ha : 1 < a) : IntegrableOn dom (Set.Ioi a) := by
   have key : ∀ x ∈ Set.Ioi a, HasDerivAt (fun t => -(Real.log t)⁻¹) (dom x) x := by
@@ -51,11 +51,11 @@ private lemma dom_integrableOn {a : ℝ} (ha : 1 < a) : IntegrableOn dom (Set.Io
     simpa using this
 
 /- English proof (translation)
-Establish `hL : 0 < Real.log x` using `Real.log_pos hx`. Establish `hs : 0 < c * Real.sqrt (Real.log x)` using `mul_pos hc (Real.sqrt_pos.mpr hL)`. Establish `h4 : (c * Real.sqrt (Real.log x)) ^ 4 = c ^ 4 * Real.log x ^ 2`. Rewrite using `[mul_pow]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[show (4:ℕ) = 2 * 2 from rfl, pow_mul, Real.sq_sqrt hL.le]`. Establish `hexp` using `Real.pow_div_factorial_le_exp _ hs.le 4`. Rewrite `hexp` using `[h4]`. Establish `hf : ((Nat.factorial 4 : ℕ) : ℝ) = 24` using `by norm_num [Nat.factorial]`. Rewrite `hexp` using `[hf]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[neg_mul, Real.exp_neg, div_div, inv_le_comm₀ (Real.exp_pos _) (by positivity), inv_div]`. Conclude with `hexp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exp_sqrt_le {c : ℝ} (hc : 0 < c) {x : ℝ} (hx : 1 < x) :
     Real.exp (-c * Real.sqrt (Real.log x)) ≤ 24 / c ^ 4 / Real.log x ^ 2 := by
@@ -80,15 +80,15 @@ private noncomputable def RemBound (a : ℕ → ℂ) (m : ℂ) : Prop :=
 private noncomputable def aChi {N : ℕ} (χ : DirichletCharacter ℂ N) (n : ℕ) : ℂ := ((vonMangoldt n : ℝ) : ℂ) * χ (n : ZMod N)
 
 /- English proof (translation)
-Take `⟨c, C, hc, hSW⟩` from `Formalism.ZeroFreeDirichlet.siegelWalfisz 1 one_pos`. Use `⟨C * (24 / c ^ 4), max 2 (Real.exp N), lt_of_lt_of_le one_lt_two (le_max_left _ _), ?_⟩` and prove the remaining obligations. Introduce `t ht`. Establish `h2 : 2 ≤ t` using `le_trans (le_max_left _ _) ht`. Establish `ht0 : 0 < t` using `by linarith`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : (N : ℝ) ≤ Real.log t ^ (1:ℝ)`. Rewrite using `[Real.rpow_one]`. Establish `he` using `le_trans (le_max_right _ _) ht`. Combine the equalities or inequalities in the displayed calculation. Establish `hb : ‖PI.psi0 χ t‖ ≤ C * t * Real.exp (-c * Real.sqrt (Real.log t))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hb0` using `hSW N χ t h2 hq`. Distinguish the cases in `hc : χ = 1`. Simplify `hb0` using `[PI.psi0, Formalism.ZeroFreeDirichlet.psiChi, hc]`. Simplify `hb0` using `[PI.psi0, Formalism.ZeroFreeDirichlet.psiChi, hc]`. Establish `he` using `exp_sqrt_le hc (x := t) (by linarith)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hC : 0 ≤ C`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Use `mul_neg_of_neg_of_pos (mul_neg_of_neg_of_pos hneg ht0) (Real.exp_pos (-c * Real.sqrt (Real.log t)))` as an intermediate fact. Combine the linear relations using `[norm_nonneg (PI.psi0 χ t)]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private lemma psi0_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) :
     ∃ K x₁ : ℝ, 1 < x₁ ∧ ∀ t : ℝ, x₁ ≤ t → ‖PI.psi0 χ t‖ ≤ K * t / Real.log t ^ 2 := by
@@ -118,31 +118,27 @@ private lemma psi0_bound {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) :
     _ = C * (24 / c ^ 4) * t / Real.log t ^ 2 := by ring
 
 /- English proof (translation)
-Take `⟨K, x₁, hx₁, hK⟩` from `psi0_bound χ`. Establish `hX1 : 1 < max x₁ y` using `lt_of_lt_of_le hx₁ (le_max_left _ _)`. Establish `h1 : Measurable (fun u : ℝ => ∑ n ∈ Icc 1 ⌊u⌋₊, ((vonMangoldt n : ℝ) : ℂ) * χ (n : ZMod N))` using `(measurable_from_nat (f := fun m : ℕ => ∑ n ∈ Icc 1 m, ((vonMangoldt n : ℝ) : ℂ) * χ (n : ZMod N))).comp Nat.measurable_floor`. Establish `hm : Measurable (PI.psi0 χ)`. Distinguish the cases in `hc : χ = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `e : PI.psi0 χ = fun u : ℝ => (∑ n ∈ Icc 1 ⌊u⌋₊, ((vonMangoldt n : ℝ) : ℂ) * χ (n : ZMod N)) - (u : ℂ)`. Use function extensionality and compare the values at `u`. Simplify using `[PI.psi0, hc]`. Rewrite using `[e]`. Conclude with `h1.sub Complex.measurable_ofReal`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : PI.psi0 χ = fun u : ℝ => ∑ n ∈ Icc 1 ⌊u⌋₊, ((vonMangoldt n : ℝ) : ℂ) * χ (n : ZMod N)`. Use function extensionality and compare the values at `u`. Simplify using `[PI.psi0, hc]`. Rewrite using `[e]`. Conclude with `h1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmeas : Measurable (fun u : ℝ => PI.psi0 χ u / (u : ℂ) ^ 2)` using `hm.div (Complex.measurable_ofReal.pow_const 2)`. Establish `hsplit : Set.Ioi y ⊆ Set.Ioc y (max x₁ y) ∪ Set.Ioi (max x₁ y)`. Introduce `u hu`. Distinguish the cases in `h : u ≤ max x₁ y`. Conclude with `Or.inl ⟨hu, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Or.inr (lt_of_not_ge h)`. Use `IntegrableOn.mono_set ?_ hsplit` and prove the remaining obligations. Use `IntegrableOn.union ?_ ?_` and prove the remaining obligations. Use `Measure.integrableOn_of_bounded (M := (∑ n ∈ Icc 1 ⌊max x₁ y⌋₊, vonMangoldt n) + max x₁ y) (by simp [Real.volume_Ioc]) hmeas.aestronglyMeasurable ?_` and prove the remaining obligations. Rewrite using `[ae_restrict_iff' measurableSet_Ioc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Filter.Eventually.of_forall (fun u hu => ?_)` and prove the remaining obligations. Establish `hu1 : 1 ≤ u` using `le_trans hy hu.1.le`. Establish `hsum : ‖∑ n ∈ Icc 1 ⌊u⌋₊, ((vonMangoldt n : ℝ) : ℂ) * χ (n : ZMod N)‖ ≤ ∑ n ∈ Icc 1 ⌊max x₁ y⌋₊, vonMangoldt n`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n _`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg vonMangoldt_nonneg]`. Conclude with `mul_le_of_le_one_right vonMangoldt_nonneg (χ.norm_le_one _)`. Use `_ ≤ ∑ n ∈ Icc 1 ⌊max x₁ y⌋₊, vonMangoldt n := by`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs and assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `Finset.Icc_subset_Icc_right (Nat.floor_le_floor hu.2)`. Use `intros`. Conclude with `vonMangoldt_nonneg`. Establish `hden : 1 ≤ ‖(u:ℂ)^2‖`. Rewrite using `[norm_pow, Complex.norm_real, Real.norm_of_nonneg (by linarith)]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[norm_div]`. Combine the equalities or inequalities in the displayed calculation. Unfold `PI.psi0`. Use `(norm_sub_le _ _).trans (add_le_add hsum ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hc`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (by linarith)]`. Conclude with `hu.2`. Rewrite using `[norm_zero]`. Combine the linear relations using `[le_max_right x₁ y]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdom` using `(dom_integrableOn hX1).const_mul K`. Use `Integrable.mono' hdom hmeas.aestronglyMeasurable ?_` and prove the remaining obligations. Rewrite using `[ae_restrict_iff' measurableSet_Ioi]`. Use `Filter.Eventually.of_forall (fun u hu => ?_)` and prove the remaining obligations. Establish `hu' : x₁ ≤ u` using `le_trans (le_max_left _ _) (le_of_lt hu)`.
-
-Establish `hu1 : 1 < u` using `lt_of_lt_of_le hx₁ hu'`. Establish `hu0 : 0 < u` using `by linarith`. Establish `hlog : Real.log u ≠ 0` using `(Real.log_pos hu1).ne'`. Establish `hb` using `hK u hu'`. Rewrite using `[norm_div, norm_pow, Complex.norm_real, Real.norm_of_nonneg hu0.le]`.
-
-Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private lemma psi_zero_div_sq_integrable {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (y : ℝ) (hy : 1 ≤ y) :
     IntegrableOn (fun u : ℝ => PI.psi0 χ u / (u : ℂ) ^ 2) (Set.Ioi y) := by
@@ -220,7 +216,7 @@ private lemma psi_zero_div_sq_integrable {N : ℕ} [NeZero N] (χ : DirichletCha
           field_simp
 
 /- English proof (translation)
-Unfold `G0`. Rewrite using `[if_neg h]`. Unfold `Formalism.HermitianLattices.ZeroFreeRegionGL2.Gchi Formalism.HermitianLattices.GL2PrimeSums.Gchi aChi`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma gChi_ne {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (h : χ ≠ 1) (y : ℝ) :
     G0 χ y = Formalism.HermitianLattices.GL2PrimeSums.Gchi (aChi χ) (-(logDerivLAtOne χ)) y := by
@@ -230,7 +226,7 @@ private lemma gChi_ne {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (h : 
   ring
 
 /- English proof (translation)
-Unfold `G0`. Rewrite using `[if_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma gChi_one {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (h : χ = 1) (y : ℝ) :
     G0 χ y = ((Formalism.HermitianLattices.GL2PrimeSums.Gone (fun n => vonMangoldt n) y : ℝ) : ℂ) := by
@@ -239,16 +235,16 @@ private lemma gChi_one {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (h :
   rfl
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLattices.GL2a2.log_deriv_series N χ h`.
+A detailed English derivation is pending.
 -/
 private lemma series_aChi {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (h : χ ≠ 1) :
     Tendsto (fun M : ℕ => ∑ n ∈ Icc 1 M, aChi χ n / (n : ℂ)) atTop (𝓝 (-(logDerivLAtOne χ))) :=
   Formalism.HermitianLattices.GL2a2.log_deriv_series N χ h
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hN : N = 1`. Use `hp` as an intermediate fact. Unfold `DirichletCharacter.IsPrimitive at this`. Rewrite `this` using `[DirichletCharacter.conductor_one]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Substitute `hN` using the available equality. Conclude with `MulChar.one_apply (isUnit_of_subsingleton _)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private lemma one_apply_of_primitive {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (hp : χ.IsPrimitive) (h : χ = 1)
     (n : ℕ) : χ (n : ZMod N) = 1 := by
@@ -261,15 +257,15 @@ private lemma one_apply_of_primitive {N : ℕ} [NeZero N] {χ : DirichletCharact
   subst hN
   exact MulChar.one_apply (isUnit_of_subsingleton _)
 /- English proof (translation)
-Establish `hint` using `psi_zero_div_sq_integrable χ y hy`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `hlim : Tendsto (fun U => ∫ u in y..U, PI.psi0 χ u / (u:ℂ)^2) atTop (𝓝 (∫ u in Set.Ioi y, PI.psi0 χ u / (u:ℂ)^2))` using `intervalIntegral_tendsto_integral_Ioi y hint tendsto_id`. Distinguish the cases in `h : χ = 1`. Take `⟨I, hI, hG⟩` from `Formalism.HermitianLattices.GL2PrimeSums.smoothedRemainderRealIntegralFormula (fun n => vonMangoldt n) Formalism.HermitianLattices.GL2a2.psi_zero_integral_constant y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hone` using `one_apply_of_primitive hp h`. Establish `hfun : (fun u : ℝ => PI.psi0 χ u / (u:ℂ)^2) = fun u => (((Formalism.HermitianLattices.GL2PrimeSums.psumR (fun n => vonMangoldt n) u - u) / u ^ 2 : ℝ) : ℂ)`. Use function extensionality and compare the values at `u`. Simplify using `only [PI.psi0, if_pos h, hone, mul_one, Formalism.HermitianLattices.GL2PrimeSums.psumR]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hlim2 : Tendsto (fun U => ∫ u in y..U, PI.psi0 χ u / (u:ℂ)^2) atTop (𝓝 (I : ℂ))`. Rewrite using `[hfun]`. Repeatedly rewrite using `[intervalIntegral.integral_ofReal]`. Conclude with `(Complex.continuous_ofReal.tendsto _).comp hI`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tendsto_nhds_unique hlim hlim2, gChi_one h, hG]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨I, hI, hG⟩` from `Formalism.HermitianLattices.GL2PrimeSums.smoothedRemainderIntegralFormula (aChi χ) (-(logDerivLAtOne χ)) (series_aChi h) y hy`. Establish `hfun : (fun u : ℝ => Formalism.HermitianLattices.GL2PrimeSums.psum (aChi χ) u / (u:ℂ)^2) = fun u => PI.psi0 χ u / (u:ℂ)^2`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `u`. Simplify using `[Formalism.HermitianLattices.GL2PrimeSums.psum, PI.psi0, aChi, h]`. Rewrite `hI` using `[hfun]`. Rewrite using `[tendsto_nhds_unique hlim hI, gChi_ne h, hG]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem l21a {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hp : χ.IsPrimitive) (y : ℝ) (hy : 1 ≤ y) :
     IntegrableOn (fun u : ℝ => PI.psi0 χ u / (u : ℂ) ^ 2) (Set.Ioi y) ∧
@@ -306,7 +302,7 @@ private theorem l21a {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hp : 
 end
 
 /- English proof (translation)
-Introduce `N _ χ hp y hy`. Conclude with `(l21a χ hp y hy).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem g_integral :
     ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ.IsPrimitive → ∀ y : ℝ, 1 ≤ y →

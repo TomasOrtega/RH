@@ -16,20 +16,20 @@ variable {D : D7}
 abbrev cE (D : D7) : D.host.E →+* D.host.E := (D.sp.cm.sig : D.host.E →+* D.host.E)
 
 /- English proof (translation)
-The claim follows from `star_star x`.
+A detailed English derivation is pending.
 -/
 theorem cE_cE (x : D.host.E) : cE D (cE D x) = x := star_star x
 
 /- English proof (translation)
-Simplify using `[cA, incA, sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inc (x : D.host.E) : cA D (incA D x) = incA D (cE D x) := by
   simp [cA, incA, sigR, inclR]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Establish `: D.sp.cm.sig (D.sp.cm.sig e) = e` using `star_star e`. Simplify using `[cA, sigR, this]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem cA_cA (x : AE D) : cA D (cA D x) = x := by
   induction x using TensorProduct.induction_on with
@@ -40,13 +40,11 @@ theorem cA_cA (x : AE D) : cA D (cA D x) = x := by
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Establish `hg' : Formalism.UG.cT c g.val * J * g.val = J` using `hg`. Establish `hc` using `congrArg (fun M => M.map c) hg'`. Simplify using `only [Matrix.map_mul] at hc`. Establish `e : (Formalism.UG.cT c g.val).map c = Formalism.UG.cT c (g.val.map c)` using `rfl`. Rewrite `hc` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hAB : P.val * (P⁻¹).val = 1` using `P.mul_inv`. Use `show Formalism.UG.cT c (P.val * g.val.map c * (P⁻¹).val) * J * (P.val * g.val.map c * (P⁻¹).val) = J`. Generalize the expression as in `(P⁻¹).val = B at *`. Generalize the expression as in `P.val = A at *`. Generalize the expression as in `g.val.map c = G at *`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT c B * (Formalism.UG.cT c A * J * A) * B := by rw [hP, hc]`. Use `_ = Formalism.UG.cT c (A * B) * J * (A * B) := by`.
-
-Rewrite using `[Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [hAB, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_map_mem_unitaryGroup {R : Type} [CommRing R] {n : ℕ} (c : R →+* R) (J : Matrix (Fin n) (Fin n) R) (P g : GL (Fin n) R)
     (hP : Formalism.UG.cT c P.val * J * P.val = J.map c) (hg : g ∈ Formalism.UG.UJ c J) :
@@ -86,9 +84,9 @@ def autGL : GL (Fin V.rank) (AE D) →* GL (Fin V.rank) (AE D) :=
   (MulAut.conj s.PA).toMonoidHom.comp (Matrix.GeneralLinearGroup.map (cA D))
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M => M.map (incA D)) s.iso`. Simplify using `only [Matrix.map_mul] at h`. Establish `e1 : (Formalism.UG.cT (cE D) s.P.val).map (incA D) = Formalism.UG.cT (cA D) s.PA.val`. Use extensionality with `i j`. Conclude with `(cA_inc _).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e2 : (V.gram.map (cE D)).map (incA D) = (V.gram.map (incA D)).map (cA D)`. Use extensionality with `i j`. Conclude with `(cA_inc _).symm`. Rewrite `h` using `[e1, e2]`. Conclude with `h`.
+By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoA : Formalism.UG.cT (cA D) s.PA.val * V.gram.map (incA D) *
     s.PA.val = (V.gram.map (incA D)).map (cA D) := by
@@ -105,7 +103,7 @@ theorem isoA : Formalism.UG.cT (cA D) s.PA.val * V.gram.map (incA D) *
   exact h
 
 /- English proof (translation)
-The claim follows from `conj_map_mem_unitaryGroup (cA D) (V.gram.map (incA D)) s.PA g s.isoA hg`.
+A detailed English derivation is pending.
 -/
 theorem autGL_mem (g : GL (Fin V.rank) (AE D)) (hg : g ∈ HR (AF D.host.F) D.sp.cm.sig V.gram) :
     s.autGL g ∈ HR (AF D.host.F) D.sp.cm.sig V.gram :=
@@ -123,7 +121,7 @@ theorem mt_aut (g : GA D V) : mt V (s.aut g) =
 end ConjIsom
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `V.herm.eq (V.frame j) (V.frame i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem gram_herm (V : HSp D) : Formalism.UG.cT (cE D) V.gram = V.gram := by
   funext i j
@@ -163,7 +161,7 @@ def basConj {X : ThetaX D} {T : ThetaTied D X} {Wl : WeilTied D X T} (K : KfinTi
   ConjIsom.ofOrth V (Matrix.nonsingInvUnit (K.bas V) (K.bas_unit V hV)) (K.bas_orth V hV)
 
 /- English proof (translation)
-Use `set Q := Matrix.nonsingInvUnit (K.bas V) (K.bas_unit V hV)`. Establish `h : (basConj K V hV).P * Matrix.GeneralLinearGroup.map (cE D) Q = Q` using `inv_mul_cancel_right Q _`. Conclude with `congrArg Units.val h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem basConj_fix {X : ThetaX D} {T : ThetaTied D X} {Wl : WeilTied D X T} (K : KfinTied Wl) (V : HSp D) (hV : V.SigOK) :
     (basConj K V hV).P.val * (K.bas V).map (cE D) = K.bas V := by

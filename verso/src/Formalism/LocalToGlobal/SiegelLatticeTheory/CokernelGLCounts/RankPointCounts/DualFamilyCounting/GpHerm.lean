@@ -15,13 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Establish `hY` using `LatA.shape_mul X0⁻¹ (Gq D xs) (inv_up X0 hup hd) (inv_diag X0 hup hd) (LatA.shape_inv X0 hup hd hs) (gram_mem X xs hxs)`. Introduce `b a`. Unfold `Gp`. Rewrite using `[Matrix.mul_apply]`. Use `Submodule.sum_mem _ fun e _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.conjTranspose_apply]`. Break down `lt_trichotomy e a with h | h | h` into its components or cases. Rewrite using `[inv_up X0 hup hd a e h, star_zero, mul_zero]`. Conclude with `Submodule.zero_mem _`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_diag X0 hup hd, star_one, mul_one]`. Conclude with `hY b e`. Establish `hz : star (X0⁻¹ a e) ∈ aaD D a * (aaD D e)⁻¹` using `star_mem_iQ (show X0⁻¹ a e ∈ iQ D a e from LatA.shape_inv X0 hup hd hs a e h)`. Establish `hYe : (X0⁻¹ * Gq D xs) b e ∈ aaD D e * aaD D b` using `by rw [mul_comm]; exact hY b e`. Establish `key : star (X0⁻¹ a e) * (X0⁻¹ * Gq D xs) b e ∈ aaD D a * aaD D b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← LatA.aa_cancel2 e a b]`. Conclude with `FractionalIdeal.mul_mem_mul hz hYe`. Rewrite using `[mul_comm (aaD D b) (aaD D a), mul_comm ((X0⁻¹ * Gq D xs) b e)]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem Gp_mem (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (xs : Fin D.R.rS → (VS D).V)
     (hup : ∀ b a : Fin D.R.rS, a < b → X0 b a = 0) (hd : ∀ a, X0 a a = 1)
@@ -46,9 +46,9 @@ theorem Gp_mem (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (xs : Fin D.R.rS
     exact key
 
 /- English proof (translation)
-Establish `hG : (Gq D xs)ᴴ = Gq D xs`. Use `Matrix.ext fun b c => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply]`. Use `show star ((VS D).hT (xs c) (xs b)) = (VS D).hT (xs b) (xs c)`. Rewrite using `[Alg.hsw, star_star]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Gp`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hG, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gp_herm (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (xs : Fin D.R.rS → (VS D).V) :
     (Gp D X0 xs)ᴴ = Gp D X0 xs := by
@@ -61,9 +61,9 @@ theorem Gp_herm (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (xs : Fin D.R.r
   rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hG, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `b a`. Simplify using `only [Xc, Matrix.map_apply]`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression. Substitute `h2` using the available equality.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, map_one]`. Establish `: a < b` using `lt_of_le_of_ne (not_lt.1 h1) (Ne.symm h2)`. Rewrite using `[hup b a this, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Xc_blkQ (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (xs : Fin D.R.rS → (VS D).V)
     (M : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E)
@@ -78,7 +78,7 @@ theorem Xc_blkQ (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (xs : Fin D.R.r
     rw [hup b a this, map_zero]
 
 /- English proof (translation)
-Use extensionality with `b c`. Simplify using `only [Gc, Matrix.map_apply]`. Rewrite using `[show Gq D xs b c = (VS D).hT (xs b) (xs c) from rfl, rowV_gram X u v (xs b) (xs c) (hW c)]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Gc_blkQ (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (xs : Fin D.R.rS → (VS D).V)
     (M : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (hW : ∀ b, InW X (xs b)) (v : InfinitePlace X.B.I.F) :
@@ -89,7 +89,7 @@ theorem Gc_blkQ (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (xs : Fin D.R.r
   rfl
 
 /- English proof (translation)
-Unfold `Hc`. Rewrite using `[Xc_blkQ X u X0 xs M hup hd v, Gc_blkQ X u X0 xs M hW v, map_inv' X0 hup hd]`. Establish `hc : ((X0⁻¹).map (embS D (X.pl v)))ᴴ = ((X0⁻¹)ᴴ).map (embS D (X.pl v))` using `(Matrix.conjTranspose_map _ fun t => emb_star X v t).symm`. Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Hc_blkQ (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (xs : Fin D.R.rS → (VS D).V)
     (M : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E)

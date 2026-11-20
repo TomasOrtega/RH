@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.Com
 open scoped ENNReal NNReal MatrixGroups Kronecker
 
 /- English proof (translation)
-Establish `h : ρ w ((B *ᵥ y) i) = ∑ j, ρ w (B i j) * ρ w (y j)`. Simplify using `[mulVec, dotProduct, map_sum, map_mul]`. Rewrite using `[h]`. Simplify using `only [mulVec, dotProduct, DM, emb, Fintype.sum_prod_type_right, blockDiagonal_apply]`. Rewrite using `[Finset.sum_eq_single w]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `v _ hv`. Simplify using `[Ne.symm hv]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem DM_mulVec_emb_apply {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι]
     [DecidableEq ι] [DecidableEq (InfinitePlace F)] (B : Matrix ι ι F)
@@ -28,9 +28,9 @@ theorem DM_mulVec_emb_apply {F : Type} [Field F] [NumberField F] {ι : Type} [Fi
   · simp
 
 /- English proof (translation)
-Establish `h : ∀ w, ρ w (a ⬝ᵥ (B *ᵥ y)) = ∑ i, ρ w (a i) * ρ w ((B *ᵥ y) i)`. Introduce `w`. Simplify using `[dotProduct, map_sum, map_mul]`. Simplify using `only [h]`. Rewrite using `[dotProduct, Fintype.sum_prod_type_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [DM_mulVec_emb_apply, emb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_dotProduct_DM {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι]
     [DecidableEq ι] [DecidableEq (InfinitePlace F)] (B : Matrix ι ι F)
@@ -44,7 +44,7 @@ theorem emb_dotProduct_DM {F : Type} [Field F] [NumberField F] {ι : Type} [Fint
   simp only [DM_mulVec_emb_apply, emb]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, mulVec, toA, Bf, map_sum, map_mul, Matrix.map_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toA_dotProduct_Bf {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι]
     (B : Matrix ι ι F) (a y : ι → F) :
@@ -52,7 +52,7 @@ theorem toA_dotProduct_Bf {F : Type} [Field F] [NumberField F] {ι : Type} [Fint
   simp only [dotProduct, mulVec, toA, Bf, map_sum, map_mul, Matrix.map_apply]
 
 /- English proof (translation)
-Take `⟨hT, -, -, -, hρ, -, -⟩` from `hQ`. Rewrite using `[chiB, toA_dotProduct_Bf, hψ.2, emb_dotProduct_DM, sum_rho_eq_trace hT hρ]`. Use `norm_cast`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem chiB_toA_eq_exp (F : Type) [Field F] [NumberField F] (ψ : AddChar (A F) ℂ)
     (hψ : IsStdChar F ψ) (ι : Type) [Fintype ι] [DecidableEq ι]

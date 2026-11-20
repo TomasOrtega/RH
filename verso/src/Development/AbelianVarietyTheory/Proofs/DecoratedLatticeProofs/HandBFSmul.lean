@@ -11,7 +11,7 @@ namespace GlobalTheory.HandHom
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w₀`. Simplify using `only [HypDec.mixS, Pi.smul_apply, smul_eq_mul, HypDec.integrandS_eq]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `a'`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -24,7 +24,7 @@ theorem mixS_smul {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (T : HSp D)
   congr 1; funext a'; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w₀`. Simplify using `only [HypDec.mixT, Pi.smul_apply, smul_eq_mul, HypDec.integrandT_eq]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `a'`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -37,7 +37,7 @@ theorem mixT_smul {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (S : HSp D)
   congr 1; funext a'; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [GlobalTheory.MixPer.flatAt, GlobalTheory.MixPer.flatFun, GlobalTheory.MixPer.evalAt, mixS_smul, mixT_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -58,21 +58,21 @@ namespace GlobalTheory.HandHom
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Unf.flatBF, GlobalTheory.MixPer.flat, flatAt_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flatBF_smul {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} (s : StepBF ψ B J) (a : ℂ) (Ψ : WO B.V J.W → ℂ) :
     flatBF s (a • Ψ) = a • flatBF s Ψ := by
   simp only [GlobalTheory.Unf.flatBF, GlobalTheory.MixPer.flat, flatAt_smul]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Unf.flatFB, GlobalTheory.MixPer.flatLast, flatAt_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flatFB_smul {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (s : StepFB ψ J B) (a : ℂ) (Ψ : WO J.W B.V → ℂ) :
     flatFB s (a • Ψ) = a • flatFB s Ψ := by
   simp only [GlobalTheory.Unf.flatFB, GlobalTheory.MixPer.flatLast, flatAt_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h w`. Simplify using `only [GlobalTheory.Unf.handBF, LinearMap.map_smul, Pi.smul_apply, smul_eq_mul]`. Repeatedly rewrite using `[mul_left_comm (φ _) a]`. Rewrite using `[integral_const_mul, star_mul']`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem handBF_smul {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} (s : StepBF ψ B J) {L' : HSp D}
     {ζ' : Fin L'.rank → D.host.E} (l : Link B L' ζ') (φ : GA D B.A → ℂ) (a : ℂ) (Ξ : WO B.V₀ J.W₀ → ℂ) :
@@ -83,7 +83,7 @@ theorem handBF_smul {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} (s : StepBF �
   rw [integral_const_mul, star_mul']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h w`. Simplify using `[GlobalTheory.Unf.handBF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem handBF_zero {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} (s : StepBF ψ B J) {L' : HSp D}
     {ζ' : Fin L'.rank → D.host.E} (l : Link B L' ζ') (φ : GA D B.A → ℂ) :
@@ -92,7 +92,7 @@ theorem handBF_zero {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} (s : StepBF �
   simp [GlobalTheory.Unf.handBF]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h₁`. Simplify using `only [GlobalTheory.Unf.handFB, GlobalTheory.Unf.pairKer, GlobalTheory.MixPer.contractT, GlobalTheory.MixPer.thPair, LinearMap.map_smul, Pi.smul_apply, smul_eq_mul, star_mul']`. Repeatedly rewrite using `[show ∀ x y : ℂ, b * x * (star c * y) = (star c * b) * (x * y) from fun x y => by ring, integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion repeatedly using the stated equalities.
 -/
 theorem handFB_smul {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (s : StepFB ψ J B)
     (vL : VolM D B.L.rank J.W₀.rank) (c b : ℂ) (Y : GA D J.W₀ → WO J.W₀ B.L → ℂ) (Ξ : WO J.W₀ B.V₀ → ℂ) :
@@ -103,7 +103,7 @@ theorem handFB_smul {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (s : St
   simp_rw [show ∀ x y : ℂ, b * x * (star c * y) = (star c * b) * (x * y) from fun x y => by ring, integral_const_mul]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Unf.BesLev.per, GlobalTheory.MixPer.besPer, GlobalTheory.MixPer.besFun, Pi.smul_apply, smul_eq_mul]`. Repeatedly rewrite using `[show ∀ x y z : ℂ, a * x * (b * y) * z = (a * b) * (x * y * z) from fun x y z => by ring, integral_const_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion repeatedly using the stated equalities.
 -/
 theorem per_smul {ρ : ℕ} (B : BesLev D ρ) (ψ : AddChar (AF D.host.F) ℂ) (a b : ℂ) (φ : GA D B.A → ℂ) (f : GA D B.V → ℂ) :
     B.per ψ (a • φ) (b • f) = a * b * B.per ψ φ f := by
@@ -116,9 +116,9 @@ namespace GlobalTheory.HandHom
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `D ψ σ B J B' s₁ s₂ l vL φ`. Use `⟨fun Ψ₁ Ψ₂ a b => ?_, fun Ξ₂ => ?_, fun a b φ' f => per_smul B' ψ a b φ' f⟩` and prove the remaining obligations. Rewrite using `[flatBF_smul, flatFB_smul, handBF_smul, handFB_smul, star_star]`. Rewrite using `[handBF_zero]`. Use function extensionality and compare the values at `h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[GlobalTheory.Unf.handFB, GlobalTheory.Unf.pairKer, GlobalTheory.MixPer.contractT, GlobalTheory.MixPer.thPair]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hand_hom : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (B : BesLev D (σ + 1)) (J : JacLev D (σ + 1)) (B' : BesLev D σ) (s₁ : StepBF ψ B J) (s₂ : StepFB ψ J B') (l : Link B B'.L B'.ζ) (vL : VolM D B'.L.rank J.W₀.rank) (φ : GA D B.A → ℂ), (∀ (Ψ₁ : WO B.V J.W → ℂ) (Ψ₂ : WO J.W B'.V → ℂ) (a b : ℂ), handFB s₂ vL (handBF s₁ l φ (flatBF s₁ (a • Ψ₁))) (flatFB s₂ (b • Ψ₂)) = (a * b) • handFB s₂ vL (handBF s₁ l φ (flatBF s₁ Ψ₁)) (flatFB s₂ Ψ₂)) ∧ (∀ Ξ₂, handFB s₂ vL (handBF s₁ l φ 0) Ξ₂ = 0) ∧ ∀ (a b : ℂ) (φ' : GA D B'.A → ℂ) (f : GA D B'.V → ℂ), B'.per ψ (a • φ') (b • f) = a * b * B'.per ψ φ' f := by
   intro D ψ σ B J B' s₁ s₂ l vL φ

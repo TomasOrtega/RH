@@ -6,23 +6,21 @@ noncomputable section
 open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Sig UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Introduce `k _ _ _ _ V n`. Prove the components needed by the constructor for the conclusion. Establish `hm : ∀ {a b : GL (Fin n) k}, (∃ x ∈ (glIwa k n).N, ∃ t ∈ V.TH n, ∃ y ∈ (glIwa k n).Nm V.c, a = x * t * y) → (∃ x ∈ (glIwa k n).N, ∃ t ∈ V.TH n, ∃ y ∈ (glIwa k n).Nm V.c, b = x * t * y) → ∃ x ∈ (glIwa k n).N, ∃ t ∈ V.TH n, ∃ y ∈ (glIwa k n).Nm V.c, a * b = x * t * y`. Introduce and unpack `_ _ ⟨x, hx, t, ht, y, hy, rfl⟩ ⟨x', hx', t', ht', y', hy', rfl⟩`. Take `⟨x2, hx2, s, hs, y2, hy2, h⟩` from `(glIwa k n).swap V.c y hy x' hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨x * (t * x2 * t⁻¹), mul_mem hx ((glIwa k n).T_N t (V.levelTorus_le_torus ht) x2 hx2), t * s * t', mul_mem (mul_mem ht (V.Tc_le_TH hs)) ht', (t'⁻¹ * y2 * t'⁻¹⁻¹) * y', mul_mem ((glIwa k n).T_Nm V.c t'⁻¹ (inv_mem (V.levelTorus_le_torus ht')) y2 hy2) hy', ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : ∀ a ∈ (glIwa k n).N, ∃ x ∈ (glIwa k n).N, ∃ t ∈ V.TH n, ∃ y ∈ (glIwa k n).Nm V.c, a = x * t * y` using `fun a ha => ⟨a, ha, 1, one_mem _, 1, one_mem _, by simp⟩`. Establish `h2 : ∀ a ∈ V.TH n, ∃ x ∈ (glIwa k n).N, ∃ t ∈ V.TH n, ∃ y ∈ (glIwa k n).Nm V.c, a = x * t * y` using `fun a ha => ⟨1, one_mem _, a, ha, 1, one_mem _, by simp⟩`. Establish `h3 : ∀ a ∈ (glIwa k n).Nm V.c, ∃ x ∈ (glIwa k n).N, ∃ t ∈ V.TH n, ∃ y ∈ (glIwa k n).Nm V.c, a = x * t * y` using `fun a ha => ⟨1, one_mem _, 1, one_mem _, a, ha, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `K : Subgroup (GL (Fin n) k)` to `{ carrier := {g | ∃ x ∈ (glIwa k n).N, ∃ t ∈ V.TH n, ∃ y ∈ (glIwa k n).Nm V.c, g = x * t * y} mul_mem' := hm one_mem' := h1 1 (one_mem _) inv_mem' := by`. Introduce and unpack `_ ⟨x, hx, t, ht, y, hy, rfl⟩`. Use `hm (h3 _ (inv_mem hy)) (hm (h2 _ (inv_mem ht)) (h1 _ (inv_mem hx)))` as an intermediate fact. Simplify `this }` using `only [_root_.mul_inv_rev, Set.mem_setOf_eq]`. Conclude with `fun g hg => (show V.J n ≤ K from sup_le (sup_le h1 h2) h3) hg`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce and unpack `m a ha a' ha' _ ⟨s, hs, rfl⟩ _ ⟨s', hs', rfl⟩ b hb b' hb' h`. Establish `hT : ∀ s : Fin n → kˣ, (∀ i, s i ∈ V.H) → dg s ∈ KO k (Fin n)` using `fun s h => V.J_le_KO (V.dg_mem h)`. Establish `k1` using `Kc_conj (mul_mem (hT s' fun i => hs' i trivial) (V.J_le_KO (V.Nm_le hb'))) h`. Use `set κ := dg s' * b' * ((a * diagT k (Fin n) s * b)⁻¹ * (a' * diagT k (Fin n) s' * b')) * (dg s' * b')⁻¹ with hκ`. Use `set l := dg s * (b * b'⁻¹) * (dg s')⁻¹ with hl`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : a⁻¹ * a' = l * κ`. Establish `: l * κ = dg s * b * ((a * diagT k (Fin n) s * b)⁻¹ * (a' * diagT k (Fin n) s' * b')) * (dg s' * b')⁻¹`. Rewrite using `[hl, hκ]`. Use `group`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Establish `hl0 : l ∈ KO k (Fin n)` using `mul_mem (mul_mem (hT s fun i => hs i trivial) (V.J_le_KO (V.Nm_le (mul_mem hb (inv_mem hb'))))) (inv_mem (hT s' fun i => hs' i trivial))`. Establish `hl1 : ∀ i j, i < j → (l : Matrix (Fin n) (Fin n) k) i j = 0` using `fun i j hij => by`. Rewrite using `[hl, dg, dg, ← map_inv, Units.val_mul, Units.val_mul, val_diagT, val_diagT, mul_diagonal, diagonal_mul, (GlAx.mem_low.1 (mul_mem hb (inv_mem hb')).1).1 i j hij]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hu` using `mul_mem (inv_mem ha) ha'`. Use `mem_Kc_of hu.2 fun i j => ?_` and prove the remaining obligations. Break down `le_or_gt j i with hij | hij` into its components or cases. Rewrite using `[GlAx.up_sub_one hu.1 hij]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : ((a⁻¹ * a').val - 1) i j = ∑ r, l.val i r * (κ.val - 1) r j`. Rewrite using `[← Matrix.mul_apply, Matrix.mul_sub, Matrix.mul_one, Matrix.sub_apply, Matrix.sub_apply, hl1 i j hij, one_apply_ne hij.ne, e, Units.val_mul]`. Rewrite using `[e2]`. Use `Valuation.map_sum_le _ fun r _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
-
-Conclude with `(mul_le_mul' (GlAx.bd_zero.1 (GlAx.mem_KO.1 hl0).1 i r) ((GlAx.mem_Kc.1 k1).1 r j)).trans_eq (one_mul _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Sig.factJ : UpperTheory.V.Z.Sym.Sig.FactJ := by
   intro k _ _ _ _ V n

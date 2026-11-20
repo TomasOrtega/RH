@@ -20,7 +20,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {hR : Rd.R
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `e` using `O.eigX`. Introduce `h0`. Rewrite `e` using `[h0]`. Use `smul_ne_zero (div_ne_zero hχ.2.2 (pow_ne_zero _ ?_)) O.ne e.symm` and prove the remaining obligations. Conclude with `((hχ.2.1 (.inl ())).trans hc).trans_ne one_ne_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sq_ne (c : F.Γ → ℂ) (hc : c (.inl ()) = 1) (hχ : Chi (fun x => F.g x i) (X F i) c χ) (O : BO F i χ) :
     convF (F.B i).ν ((F.β i).sq (F.m - 1)).ψ O.F ≠ 0 := by
@@ -32,7 +32,7 @@ theorem sq_ne (c : F.Γ → ℂ) (hc : c (.inl ()) = 1) (hχ : Chi (fun x => F.g
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `e` using `O.eigFin (.inr (.inr x)) (F.ptL i (F.d.hL _ (F₀.C.le i) x.1.1 x.2.1 x.2.2)) rfl ⟨rfl, rfl, rfl, rfl, rfl⟩`. Rewrite `e` using `[hχ.2.1 (.inr (.inr x)), hχ.2.1 (.inl ()), hc, div_one]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_h (c : F.Γ → ℂ) (hc : c (.inl ()) = 1) (hχ : Chi (fun x => F.g x i) (X F i) c χ) (O : BO F i χ)
     (x : {w : Pl E // w ∈ F₀.Sec ∧ F.d.Good w} × ℕ × Bool) :

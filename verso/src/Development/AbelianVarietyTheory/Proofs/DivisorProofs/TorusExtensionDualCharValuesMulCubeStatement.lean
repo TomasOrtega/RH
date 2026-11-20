@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.MBLow.Cl Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.DualMult.mult_vE | exact GlobalTheory.DualMult.mult_vE | (intros; apply GlobalTheory.DualMult.mult_vE <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.torusExtension_dualCharValues_mul_cube : ∀ {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionRing R) ℂ] {N : NumD ℂ}
     (ν : NumOf D ℂ N) (gm : GtPt D (TE R ℂ)) (χ χ' : D.X),

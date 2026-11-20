@@ -15,7 +15,7 @@ namespace MinimalPrimePlace
 variable {A B : Type*} [CommRing A] [CommRing B]
 
 /- English proof (translation)
-Establish `hx : x ∈ sInf (minimalPrimes A)` using `Submodule.mem_sInf.2 h`. Establish `hrad : sInf (minimalPrimes A) = (⊥ : Ideal A).radical` using `Ideal.sInf_minimalPrimes`. Rewrite `hx` using `[hrad]`. Take `⟨k, hk⟩` from `hx`. Conclude with `IsNilpotent.eq_zero ⟨k, Ideal.mem_bot.1 hk⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_mem_minimalPrimes [IsReduced A] {x : A} (h : ∀ q ∈ minimalPrimes A, x ∈ q) :
     x = 0 := by
@@ -26,7 +26,7 @@ theorem eq_zero_of_forall_mem_minimalPrimes [IsReduced A] {x : A} (h : ∀ q ∈
   exact IsNilpotent.eq_zero ⟨k, Ideal.mem_bot.1 hk⟩
 
 /- English proof (translation)
-Apply the tactic sequence `refine mem_nonZeroDivisors_iff.2 ⟨fun y hy ↦ ?_, fun y hy ↦ ?_⟩ <;>`. Use `eq_zero_of_forall_mem_minimalPrimes fun q hq ↦ ?_` and prove the remaining obligations. Conclude with `(hq.1.1.mem_or_mem (hy ▸ q.zero_mem : w * y ∈ q)).resolve_left (hw q hq)`. Conclude with `(hq.1.1.mem_or_mem (hy ▸ q.zero_mem : y * w ∈ q)).resolve_right (hw q hq)`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_nonZeroDivisors_of_notMem_minimalPrimes [IsReduced A] {w : A}
     (hw : ∀ q ∈ minimalPrimes A, w ∉ q) : w ∈ nonZeroDivisors A := by
@@ -36,20 +36,18 @@ theorem mem_nonZeroDivisors_of_notMem_minimalPrimes [IsReduced A] {w : A}
   · exact (hq.1.1.mem_or_mem (hy ▸ q.zero_mem : y * w ∈ q)).resolve_right (hw q hq)
 
 /- English proof (translation)
-The claim follows from `le_antisymm h (hq'.2 hq.1 h)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_le_of_mem_minimalPrimes {q q' : Ideal A} (hq : q ∈ minimalPrimes A) (hq' : q' ∈ minimalPrimes A)
     (h : q ≤ q') : q = q' :=
   le_antisymm h (hq'.2 hq.1 h)
 
 /- English proof (translation)
-Establish `hfin` using `minimalPrimes.finite_of_isNoetherianRing A`. Establish `hpP : p.IsPrime` using `hp.1.1`. Establish `hF : ¬ (hfin.toFinset.erase p).inf id ≤ p`. Rewrite using `[hpP.inf_le']`. Introduce and unpack `⟨q, hq, hqp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `hq` using `[Finset.mem_erase, Set.Finite.mem_toFinset]`. Conclude with `hq.1 (eq_of_le_of_mem_minimalPrimes hq.2 hp hqp)`. Take `⟨s, hsF, hsp⟩` from `SetLike.not_le_iff_exists.1 hF`. Establish `hsq : ∀ q ∈ minimalPrimes A, q ≠ p → s ∈ q` using `fun q hq hqp ↦ Finset.inf_le (f := id) (Finset.mem_erase.2 ⟨hqp, hfin.mem_toFinset.2 hq⟩) hsF`. Establish `hU : ¬ ((p : Set A) ⊆ ⋃ q ∈ minimalPrimes A \ {p}, ((fun q : Ideal A ↦ q) q : Set A))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.subset_union_prime_finite (hfin.subset Set.sdiff_subset) p p (fun q hq _ _ ↦ hq.1.1.1)]`. Introduce and unpack `⟨q, hq, hpq⟩`. Conclude with `hq.2 (eq_of_le_of_mem_minimalPrimes hp hq.1 hpq).symm`. Take `⟨t, htp, htU⟩` from `Set.not_subset.1 hU`. Use `⟨s, t, htp, hsp, fun q hq hqp ↦ ⟨hsq q hq hqp, fun htq ↦ htU ?_⟩⟩` and prove the remaining obligations.
-
-Conclude with `Set.mem_biUnion (⟨hq, hqp⟩ : q ∈ minimalPrimes A \ {p}) htq`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_separating [IsNoetherianRing A] {p : Ideal A} (hp : p ∈ minimalPrimes A) :
     ∃ s t : A, t ∈ p ∧ s ∉ p ∧ ∀ q ∈ minimalPrimes A, q ≠ p → s ∈ q ∧ t ∉ q := by
@@ -72,7 +70,7 @@ theorem exists_separating [IsNoetherianRing A] {p : Ideal A} (hp : p ∈ minimal
   exact Set.mem_biUnion (⟨hq, hqp⟩ : q ∈ minimalPrimes A \ {p}) htq
 
 /- English proof (translation)
-The claim follows from `fun _u hu ↦ mem_nonZeroDivisors_of_ne_zero fun h ↦ Set.disjoint_left.1 (Ideal.disjoint_nonZeroDivisors_of_mem_minimalPrimes hker) (RingHom.mem_ker.2 h) hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_comap_nonZeroDivisors [IsDomain B] (π : A →+* B) (hker : RingHom.ker π ∈ minimalPrimes A) :
     nonZeroDivisors A ≤ (nonZeroDivisors B).comap π := fun _u hu ↦
@@ -84,7 +82,7 @@ abbrev fracMap [IsDomain B] (π : A →+* B) (hker : RingHom.ker π ∈ minimalP
   IsLocalization.map (S := FractionRing A) (FractionRing B) π (le_comap_nonZeroDivisors π hker)
 
 /- English proof (translation)
-Rewrite using `[Polynomial.aeval_def, Polynomial.aeval_def, Polynomial.eval₂_map, Polynomial.hom_eval₂, IsLocalization.map_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fracMap_aeval [IsDomain B] (π : A →+* B) (hker : RingHom.ker π ∈ minimalPrimes A) (x : FractionRing A)
     (G : Polynomial A) :
@@ -93,7 +91,7 @@ theorem fracMap_aeval [IsDomain B] (π : A →+* B) (hker : RingHom.ker π ∈ m
     IsLocalization.map_comp]
 
 /- English proof (translation)
-Take `⟨G, hG, hGx⟩` from `hx`. Use `⟨G.map π, hG.map π, ?_⟩` and prove the remaining obligations. Establish `h` using `fracMap_aeval π hker x G`. Rewrite `h` using `[Polynomial.aeval_def, Polynomial.aeval_def, hGx, map_zero]`. Conclude with `h.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_fracMap [IsDomain B] (π : A →+* B) (hker : RingHom.ker π ∈ minimalPrimes A) {x : FractionRing A}
     (hx : IsIntegral A x) : IsIntegral B (fracMap π hker x) := by
@@ -104,25 +102,23 @@ theorem isIntegral_fracMap [IsDomain B] (π : A →+* B) (hker : RingHom.ker π 
   exact h.symm
 
 /- English proof (translation)
-Take `⟨s, t, htp, hsp, hq⟩` from `exists_separating hker`. Establish `hpP : (RingHom.ker π).IsPrime` using `hker.1.1`. Establish `hπt : π t = 0` using `RingHom.mem_ker.1 htp`. Establish `hπs : π s ≠ 0` using `fun h ↦ hsp (RingHom.mem_ker.2 h)`. Establish `hst : ∀ c, c ∉ RingHom.ker π → c * s + t ∈ nonZeroDivisors A`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c hc`. Use `mem_nonZeroDivisors_of_notMem_minimalPrimes fun q hqm hmem ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hqp : q = RingHom.ker π`. Rewrite `hmem` using `[hqp]`. Establish `hcs : c * s ∈ RingHom.ker π` using `by simpa using (RingHom.ker π).sub_mem hmem htp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `hpP.mem_or_mem hcs with h | h` into its components or cases. Conclude with `hc h`. Conclude with `hsp h`. Take `⟨hs, ht⟩` from `hq q hqm hqp`. Conclude with `ht (by simpa using q.sub_mem hmem (q.mul_mem_left c hs))`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : A) ∉ RingHom.ker π` using `fun h ↦ hpP.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Establish `hw : s + t ∈ nonZeroDivisors A` using `by simpa using hst 1 h1`. Establish `hsa : ∀ a ∈ RingHom.ker π, s * a = 0` using `fun a ha ↦ eq_zero_of_forall_mem_minimalPrimes fun q hqm ↦ by`. Distinguish the cases in `hqp : q = RingHom.ker π`. Rewrite using `[hqp]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_left _ _ ha`. Conclude with `Ideal.mul_mem_right _ _ (hq q hqm hqp).1`. Establish `hinj` using `IsFractionRing.injective B (FractionRing B)`. Use `⟨IsLocalization.mk' (FractionRing A) s (⟨s + t, hw⟩ : nonZeroDivisors A), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fracMap π hker) (IsLocalization.mk'_spec (FractionRing A) s (⟨s + t, hw⟩ : nonZeroDivisors A))`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[map_mul, IsLocalization.map_eq, IsLocalization.map_eq]`. Simplify using `only [map_add, hπt, add_zero] at h`. Establish `hne : algebraMap B (FractionRing B) (π s) ≠ 0` using `fun h0 ↦ hπs (hinj (by rw [h0, map_zero]))`. Conclude with `mul_right_cancel₀ hne (h.trans (one_mul _).symm)`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨a, u⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors A) z`. Establish `h` using `congrArg (fracMap π hker) (IsLocalization.mk'_spec (FractionRing A) a u)`. Rewrite `h` using `[map_mul, hz, zero_mul, IsLocalization.map_eq]`. Establish `ha : a ∈ RingHom.ker π` using `RingHom.mem_ker.2 (hinj (by rw [← h, map_zero]))`. Establish `hu : IsUnit (algebraMap A (FractionRing A) ((s + t) * u))` using `IsLocalization.map_units (FractionRing A) (⟨(s + t) * u, Submonoid.mul_mem _ hw u.2⟩ : nonZeroDivisors A)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(hu.mul_left_eq_zero).1 ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_mul_mul_comm, IsLocalization.mk'_spec, IsLocalization.mk'_spec, ← map_mul, hsa a ha, map_zero]`. Introduce `y`. Take `⟨⟨b, v⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors B) y`. Take `⟨a, rfl⟩` from `hπ b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Take `⟨c, hc⟩` from `hπ v`. Establish `hcp : c ∉ RingHom.ker π` using `fun h ↦ nonZeroDivisors.ne_zero v.2 (by rw [← hc]; exact RingHom.mem_ker.1 h)`. Use `⟨IsLocalization.mk' (FractionRing A) (a * s) (⟨c * s + t, hst c hcp⟩ : nonZeroDivisors A), ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.map_mk', IsLocalization.mk'_eq_iff_eq]`. Use `congr 1`.
-
-Simplify using `only [map_mul, map_add, hπt, add_zero, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_fracMap_unit [IsNoetherianRing A] [IsReduced A] [IsDomain B] (π : A →+* B)
     (hπ : Function.Surjective π) (hker : RingHom.ker π ∈ minimalPrimes A) :
@@ -179,9 +175,9 @@ theorem exists_fracMap_unit [IsNoetherianRing A] [IsReduced A] [IsDomain B] (π 
     ring
 
 /- English proof (translation)
-Take `⟨g, hg, hgx⟩` from `hx`. Take `⟨G, hGmap, -, hG⟩` from `Polynomial.lifts_and_degree_eq_and_monic (Polynomial.mem_lifts_of_surjective hπ g) hg`. Use `⟨Polynomial.X * G, Polynomial.monic_X.mul hG, ?_⟩` and prove the remaining obligations. Establish `hz : e * Polynomial.aeval (e * x) G = 0`. Use `hek _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fracMap_aeval, hGmap, map_mul, he1, one_mul, Polynomial.aeval_def]`. Conclude with `hgx`. Rewrite `hz` using `[Polynomial.aeval_def]`. Rewrite using `[Polynomial.eval₂_mul, Polynomial.eval₂_X]`. Take the linear combination `x * hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isIntegral_mul_of_fracMap [IsDomain B] (π : A →+* B) (hπ : Function.Surjective π)
     (hker : RingHom.ker π ∈ minimalPrimes A) {e x : FractionRing A} (he1 : fracMap π hker e = 1)
@@ -205,7 +201,7 @@ def normMap [IsDomain B] (π : A →+* B) (hker : RingHom.ker π ∈ minimalPrim
     (integralClosure B (FractionRing B)) fun x ↦ isIntegral_fracMap π hker x.2
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (IsLocalization.map_eq (S := FractionRing A) (Q := FractionRing B) (g := π) (hy := le_comap_nonZeroDivisors π hker) (x := a))`.
+A detailed English derivation is pending.
 -/
 theorem normMap_algebraMap [IsDomain B] (π : A →+* B) (hker : RingHom.ker π ∈ minimalPrimes A) (a : A) :
     normMap π hker (algebraMap A (integralClosure A (FractionRing A)) a) =
@@ -214,17 +210,15 @@ theorem normMap_algebraMap [IsDomain B] (π : A →+* B) (hker : RingHom.ker π 
     (hy := le_comap_nonZeroDivisors π hker) (x := a))
 
 /- English proof (translation)
-Set `_ : Algebra R (Localization.AtPrime P')` to `((algebraMap S (Localization.AtPrime P')).comp φ).toAlgebra`. Establish `halg : ∀ r, algebraMap R (Localization.AtPrime P') r = algebraMap S _ (φ r)` using `fun _ ↦ rfl`. Establish `: IsLocalization (P'.comap φ).primeCompl (Localization.AtPrime P')`. Rewrite using `[isLocalization_iff]`. Use `⟨fun y ↦ ?_, fun z ↦ ?_, fun {x y} h ↦ ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[halg]`. Conclude with `IsLocalization.map_units (Localization.AtPrime P') (⟨φ y, y.2⟩ : P'.primeCompl)`. Take `⟨⟨b, v⟩, rfl⟩` from `IsLocalization.mk'_surjective P'.primeCompl z`. Take `⟨a, rfl⟩` from `hφ b`. Take `⟨c, hc⟩` from `hφ (v : S)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcP : c ∈ (P'.comap φ).primeCompl` using `by show φ c ∉ P'`. Rewrite using `[hc]`. Conclude with `v.2`. Use `⟨(a, ⟨c, hcP⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [halg, hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `IsLocalization.mk'_spec _ _ _`. Rewrite `h` using `[halg, halg]`. Take `⟨c', hc'⟩` from `(IsLocalization.eq_iff_exists P'.primeCompl _).1 h`. Take `⟨c0, hc0⟩` from `hφ (c' : S)`. Establish `hcP : ε * c0 ∈ (P'.comap φ).primeCompl` using `by show φ (ε * c0) ∉ P'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hε1, one_mul, hc0]`. Conclude with `c'.2`. Use `⟨⟨ε * c0, hcP⟩, ?_⟩` and prove the remaining obligations. Establish `hz` using `hε (c0 * (x - y)) (by rw [map_mul, map_sub, hc0, mul_sub, hc', sub_self])`. Use `show ε * c0 * x = ε * c0 * y`.
-
-Take the linear combination `hz`. Conclude with `⟨(IsLocalization.algEquiv (P'.comap φ).primeCompl (Localization.AtPrime (P'.comap φ)) (Localization.AtPrime P')).toRingEquiv, fun r ↦ AlgEquiv.commutes _ r⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_localization_ringEquiv {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S)
     (hφ : Function.Surjective φ) (ε : R) (hε1 : φ ε = 1) (hε : ∀ z, φ z = 0 → ε * z = 0) (P' : Ideal S)
@@ -263,13 +257,13 @@ theorem exists_localization_ringEquiv {R S : Type*} [CommRing R] [CommRing S] (�
     (Localization.AtPrime P')).toRingEquiv, fun r ↦ AlgEquiv.commutes _ r⟩
 
 /- English proof (translation)
-Take `⟨e, he1, hek, hsurj⟩` from `exists_fracMap_unit π hπ hker`. Establish `he : IsIntegral A e`. Simplify using `using isIntegral_mul_of_fracMap π hπ hker (x := 1) he1 hek (by rw [map_one]; exact isIntegral_one)`. Establish `hφ : Function.Surjective (normMap π hker)`. Introduce `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `hsurj y`. Establish `hint : IsIntegral A (e * x)` using `isIntegral_mul_of_fracMap π hπ hker he1 hek (by rw [hx]; exact y.2)`. Use `⟨⟨e * x, hint⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show fracMap π hker (e * x) = y`. Rewrite using `[map_mul, he1, one_mul, hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hε1 : normMap π hker ⟨e, he⟩ = 1` using `Subtype.ext he1`. Establish `hε : ∀ z, normMap π hker z = 0 → ⟨e, he⟩ * z = 0` using `fun z hz ↦ Subtype.ext (hek z (congrArg Subtype.val hz))`. Use `P'.isMaximal` as an intermediate fact. Take `⟨E, hE⟩` from `exists_localization_ringEquiv (normMap π hker) hφ ⟨e, he⟩ hε1 hε P'.asIdeal`. Use `⟨⟨P'.asIdeal.comap (normMap π hker), Ideal.comap_isMaximal_of_surjective _ hφ⟩, fun a ↦ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ord_ringEquiv E, hE, normMap_algebraMap]`.
+A detailed English derivation is pending.
 -/
 theorem exists_maximal_ord_eq [IsNoetherianRing A] [IsReduced A] [IsDomain B] (π : A →+* B)
     (hπ : Function.Surjective π) (hker : RingHom.ker π ∈ minimalPrimes A)
@@ -303,19 +297,17 @@ end MinimalPrimePlace
 open MinimalPrimePlace in
 
 /- English proof (translation)
-Introduce `n I J q hI hJ hJq P'`. Establish `hle : I.map (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q)))) ≤ J.map (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q))))` using `Ideal.map_mono hJ.1.2`. Set `π : curveLocalRing I q →+* curveLocalRing J q` to `Ideal.Quotient.factor hle`. Establish `hπalg : ∀ f, π (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) f) = algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing J q) f` using `fun f ↦ Ideal.Quotient.factor_mk hle _`. Establish `hJd : Disjoint ((RingHom.ker (eval q)).primeCompl : Set (MvPolynomial (Fin n) ℂ)) J` using `Set.disjoint_left.2 fun x hx hxJ ↦ hx (hJq hxJ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJP : (J.map (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q))))).IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint _ _ J hJ.1.1 hJd`. Establish `hJc : (J.map (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q))))).comap (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q)))) = J` using `IsLocalization.under_map_of_isPrime_disjoint _ _ hJ.1.1 hJd`. Establish `_ : IsDomain (curveLocalRing J q)` using `Ideal.Quotient.isDomain _`. Establish `_ : IsReduced (curveLocalRing I q)` using `isReduced_curveLocalRing I q hI`. Establish `hkerJ : ∀ f, algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing J q) f = 0 ↔ f ∈ J`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem (I := J.map (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q))))) (a := algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q))) f)).trans (by rw [← Ideal.mem_comap, hJc])`. Establish `hker : RingHom.ker π ∈ minimalPrimes (curveLocalRing I q)`. Use `⟨⟨RingHom.ker_isPrime π, bot_le⟩, fun Q hQ hQle ↦ ?_⟩` and prove the remaining obligations. Establish `_ : Q.IsPrime` using `hQ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIQ : I ≤ Q.comap (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q))` using `fun f hf ↦ by`. Establish `h0 : algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) f = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ hf)`. Use `show _ ∈ Q`. Rewrite using `[h0]`. Conclude with `Q.zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQJ : Q.comap (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q)) ≤ J` using `fun f hf ↦ (hkerJ f).1 (by rw [← hπalg]; exact RingHom.mem_ker.1 (hQle hf))`. Establish `hJQ` using `hJ.2 ⟨Ideal.comap_isPrime _ Q, hIQ⟩ hQJ`. Introduce `z hz`. Take `⟨f, s, hs, hfs⟩` from `curveLocalRing_eq_div I q z`. Establish `hf : algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) f ∈ Q` using `hJQ ((hkerJ f).1 (by rw [← hπalg, ← hfs, map_mul, RingHom.mem_ker.1 hz, zero_mul]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hf` using `[← hfs]`. Conclude with `(Ideal.mul_unit_mem_iff_mem Q hs).1 hf`. Take `⟨P, hP⟩` from `exists_maximal_ord_eq π (Ideal.Quotient.factor_surjective hle) hker P'`. Use `⟨P, fun f ↦ ?_⟩` and prove the remaining obligations. Establish `h` using `hP (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) f)`.
-
-Rewrite `h` using `[hπalg]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MinimalPrimePlace.proof : MinimalPrimePlace.Statement := by
   intro n I J q hI hJ hJq P'

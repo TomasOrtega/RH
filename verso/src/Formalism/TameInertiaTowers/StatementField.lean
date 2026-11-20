@@ -26,7 +26,7 @@ def HypOdd (q d : ℕ) : Prop := q.Prime ∧ d.Prime ∧ q ≠ d ∧ q ≠ 2 ∧
 def HypQD (q d : ℕ) : Prop := q.Prime ∧ d.Prime ∧ q % 8 = 3 ∧ d % 8 = 7
 
 /- English proof (translation)
-Take `⟨hq, hd, h3, h7⟩` from `h`. Apply the tactic sequence `refine ⟨hq, hd, ?_, ?_, ?_⟩ <;> omega`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem HypQD.toHypOdd {q d : ℕ} (h : HypQD q d) : HypOdd q d := by
   obtain ⟨hq, hd, h3, h7⟩ := h

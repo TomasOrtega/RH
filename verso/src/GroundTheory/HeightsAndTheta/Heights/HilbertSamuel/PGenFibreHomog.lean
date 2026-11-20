@@ -13,7 +13,7 @@ namespace GenFibreHomog
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_sigma]`. Simplify using `[NumbersDVR.blockWeight, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_block_eq_weight (m : (Σ k, ι k) →₀ ℕ) (k : K) :
     ∑ i, m ⟨k, i⟩ = Finsupp.weight (NumbersDVR.blockWeight ι) m k := by
@@ -21,7 +21,7 @@ theorem sum_block_eq_weight (m : (Σ k, ι k) →₀ ℕ) (k : K) :
   simp [NumbersDVR.blockWeight, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite using `[sum_block_eq_weight, hf (mem_support_iff.mp hm)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMultiHomog_of_weighted {f : MRing ι} {b : K → ℕ}
     (hf : IsWeightedHomogeneous (NumbersDVR.blockWeight ι) f b) : IsMultiHomog f b := by
@@ -29,11 +29,11 @@ theorem isMultiHomog_of_weighted {f : MRing ι} {b : K → ℕ}
   rw [sum_block_eq_weight, hf (mem_support_iff.mp hm)]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial m c`. Establish `hm` using `isWeightedHomogeneous_monomial (NumbersDVR.blockWeight ι) m c (rfl : Finsupp.weight (NumbersDVR.blockWeight ι) m = _)`. Rewrite using `[ProjLine.mConeMap_eq_of_isMultiHomog y (isMultiHomog_of_weighted hm), weightedHomogeneousComponent_of_mem ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr hm)]`. Establish `hX : (∏ k, (X k : MvPolynomial K Ω) ^ Finsupp.weight (NumbersDVR.blockWeight ι) m k) = monomial (Finsupp.equivFunOnFinite.symm (Finsupp.weight (NumbersDVR.blockWeight ι) m)) 1`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (by simp)]`. Simplify using the standard rewrite rules. Rewrite using `[hX, coeff_C_mul, coeff_monomial]`. Distinguish the cases in `h : b = Finsupp.weight (NumbersDVR.blockWeight ι) m`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (fun h' => h (Finsupp.equivFunOnFinite.symm.injective h').symm)]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => rw [map_add, coeff_add, hp, hq, map_add, map_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem coeff_mConeMap {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (b : K → ℕ) (f : MRing ι) :
     coeff (Finsupp.equivFunOnFinite.symm b) (mConeMap y f) =
@@ -57,7 +57,7 @@ theorem coeff_mConeMap {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (b : K �
   | add p q hp hq => rw [map_add, coeff_add, hp, hq, map_add, map_add]
 
 /- English proof (translation)
-Introduce `f hf b`. Establish `hf' : mConeMap y f = 0` using `RingHom.mem_ker.mp hf`. Use `RingHom.mem_ker.mpr ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mConeMap y _ = 0`. Rewrite using `[ProjLine.mConeMap_eq_of_isMultiHomog y (isMultiHomog_of_weighted (weightedHomogeneousComponent_isWeightedHomogeneous b f)), ← coeff_mConeMap, hf', coeff_zero, map_zero, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMultiHomogIdeal_mCoordIdeal {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) :
     NumbersDVR.IsMultiHomogIdeal (R := ℤ) (mCoordIdeal y) := by
@@ -74,7 +74,7 @@ attribute [local instance] MvPolynomial.weightedGradedAlgebra
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce `b f hf`. Establish `key : (DirectSum.decompose (weightedHomogeneousSubmodule R (NumbersDVR.blockWeight ι)) f b : MvPolynomial (Σ k, ι k) R) = weightedHomogeneousComponent (NumbersDVR.blockWeight ι) b f` using `weightedDecomposition.decompose'_apply R (NumbersDVR.blockWeight ι) f b`. Rewrite using `[key]`. Conclude with `h f hf b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_of_isMultiHomogIdeal {R : Type} [CommRing R] {I : Ideal (MvPolynomial (Σ k, ι k) R)}
     (h : NumbersDVR.IsMultiHomogIdeal I) :
@@ -92,13 +92,13 @@ open GenFibreHomog in
 attribute [local instance] MvPolynomial.weightedGradedAlgebra in
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Ω _ y`. Establish `hI` using `isHomogeneous_of_isMultiHomogIdeal (isMultiHomogIdeal_mCoordIdeal y)`. Take `⟨S, hS⟩` from `(Ideal.IsHomogeneous.iff_exists _ _).mp hI`. Establish `hJ : ((mCoordIdeal y).map (MvPolynomial.map (Int.castRingHom ℚ))).IsHomogeneous (weightedHomogeneousSubmodule ℚ (NumbersDVR.blockWeight ι))`. Rewrite using `[hS, Ideal.map_span]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.homogeneous_span _ _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨s, -, rfl⟩, rfl⟩`. Take `⟨b, hb⟩` from `s.2`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite `hb`, the goal using `[mem_weightedHomogeneousSubmodule]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `d hd`. Apply `hb` to reduce the goal to its premises. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[coeff_map, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `f hf b`. Conclude with `weightedHomogeneousComponent_mem_of_mem ℚ _ hJ hf b`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GenFibreHomog.proof : GenFibreHomog.Statement := by
   intro K _ _ ι _ Ω _ y

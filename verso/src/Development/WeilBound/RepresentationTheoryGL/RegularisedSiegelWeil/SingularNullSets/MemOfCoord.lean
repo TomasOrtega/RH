@@ -16,9 +16,9 @@ namespace PositivityTheory.Rg.Rsw.L.LApproxId
 open GlobalTheory.CompanionTheory.SiegelND.Coef.TestN
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a c`. Establish `h' : GlobalTheory.MixModel.adj X = X` using `h`. Use `congrFun (congrFun h' a) c` as an intermediate fact. Simplify `this` using `[GlobalTheory.MixModel.adj, Matrix.transpose_apply, Matrix.map_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Express the relevant statement in the definitionally equal form `GlobalTheory.MixModel.adj X = X`. Use extensionality with `a c`. Simplify `h a c` using `[GlobalTheory.MixModel.adj, Matrix.transpose_apply, Matrix.map_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem memHA (D : D7) (t : ℕ) (X : Mx D t t) : X ∈ hermA D t ↔ X ∈ HermR (AF D.host.F) D.sp.cm.sig t := by
   constructor
@@ -32,9 +32,9 @@ theorem memHA (D : D7) (t : ℕ) (X : Mx D t t) : X ∈ hermA D t ↔ X ∈ Herm
     simpa [GlobalTheory.MixModel.adj, Matrix.transpose_apply, Matrix.map_apply] using h a c
 
 /- English proof (translation)
-Establish `h' : GlobalTheory.MixModel.adj X = X` using `h`. Express the relevant statement in the definitionally equal form `GlobalTheory.MixModel.adj (e • X) = e • X`. Use extensionality with `a c`. Use `congrFun (congrFun h' a) c` as an intermediate fact. Simplify using `only [GlobalTheory.MixModel.adj, Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, he] at this ⊢`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_memA (D : D7) (t : ℕ) (e : AE D) (he : cA D e = e) (X : Mx D t t) (h : X ∈ hermA D t) :
     e • X ∈ hermA D t := by
@@ -47,7 +47,7 @@ theorem smul_memA (D : D7) (t : ℕ) (e : AE D) (he : cA D e = e) (X : Mx D t t)
   rw [this]
 
 /- English proof (translation)
-Simplify using `only [pch, halfTr, trA, pairHerm, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pch_eq (D : D7) (t : ℕ) (ψ : AddChar (AF D.host.F) ℂ) (X T : Mx D t t) (hX : X ∈ hermA D t)
     (hT : T ∈ hermA D t) :
@@ -55,7 +55,7 @@ theorem pch_eq (D : D7) (t : ℕ) (ψ : AddChar (AF D.host.F) ℂ) (X T : Mx D t
   simp only [pch, halfTr, trA, pairHerm, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply]
 
 /- English proof (translation)
-The claim follows from `(hCo_smul _ b ε X X (by rw [← heS, hX]) i).symm`.
+A detailed English derivation is pending.
 -/
 theorem coord_fix (D : D7) (t : ℕ) (e : AE D) (ε : AF D.host.F) (heS : e = algebraMap (AF D.host.F) (AE D) ε)
     {d : ℕ} (b : Module.Basis (Fin d) D.host.F D.host.E)
@@ -64,9 +64,9 @@ theorem coord_fix (D : D7) (t : ℕ) (e : AE D) (ε : AF D.host.F) (heS : e = al
   (hCo_smul _ b ε X X (by rw [← heS, hX]) i).symm
 
 /- English proof (translation)
-Establish `hyA : y.1 ∈ hermA D t` using `(memHA D t y.1).2 y.2`. Establish `hY` using `(memHA D t _).1 (smul_memA D t e hcA y.1 hyA)`. Establish `h1 : eA ⟨e • y.1, hY⟩ = eA y`. Use function extensionality and compare the values at `i`. Rewrite using `[heA, hCo_smul _ b ε y ⟨e • y.1, hY⟩ (by rw [← heS]) i, ← heA, hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val (eA.injective h1)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_coord (D : D7) (t : ℕ) (e : AE D) (ε : AF D.host.F) (heS : e = algebraMap (AF D.host.F) (AE D) ε)
     (hcA : cA D e = e) {d : ℕ} (b : Module.Basis (Fin d) D.host.F D.host.E)
@@ -83,13 +83,11 @@ theorem mem_of_coord (D : D7) (t : ℕ) (e : AE D) (ε : AF D.host.F) (heS : e =
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Establish `hfix : ∀ (x : hermS D t e) i, ε * eA ⟨x.1.1, (memHA D t x.1.1).1 x.1.2⟩ i = eA ⟨x.1.1, (memHA D t x.1.1).1 x.1.2⟩ i` using `fun x i => by`. Rewrite using `[heA]`. Conclude with `coord_fix D t e ε heS b ⟨x.1.1, (memHA D t x.1.1).1 x.1.2⟩ x.2 i`. Establish `hinv : ∀ v : Idx t d → fixE ε, e • (eA.symm (fun i => (v i).1)).1 = (eA.symm (fun i => (v i).1)).1` using `fun v => mem_of_coord D t e ε heS hcA b eA heA _ (fun i => by rw [eA.apply_symm_apply]; exact (v i).2)`. Use `⟨{ toFun := fun x i => ⟨eA ⟨x.1.1, (memHA D t x.1.1).1 x.1.2⟩ i, hfix x i⟩ invFun := fun v => ⟨⟨(eA.symm (fun i => (v i).1)).1, (memHA D t _).2 (eA.symm _).2⟩, hinv v⟩ left_inv := fun x => by` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use `right_inv := fun v => by`. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use the proof step `map_add' := fun x y => by`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Express the relevant statement in the definitionally equal form `eA _ i = eA _ i + eA _ i`. Conclude with `congrFun (map_add eA ⟨x.1.1, (memHA D t x.1.1).1 x.1.2⟩ ⟨y.1.1, (memHA D t y.1.1).1 y.1.2⟩) i`. Use `continuous_toFun := continuous_pi fun i => Continuous.subtype_mk ((continuous_apply i).comp (eA.continuous.comp ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _))) _`. Use `continuous_invFun := ((continuous_subtype_val.comp (eA.symm.continuous.comp (continuous_pi fun i => continuous_subtype_val.comp (continuous_apply i)))).subtype_mk _).subtype_mk _ },`. Use `fun x i => rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem exTheta' (D : D7) (t : ℕ) (e : AE D) (ε : AF D.host.F) (heS : e = algebraMap (AF D.host.F) (AE D) ε)
     (hcA : cA D e = e) {d : ℕ} (b : Module.Basis (Fin d) D.host.F D.host.E)
@@ -123,7 +121,7 @@ theorem exTheta' (D : D7) (t : ℕ) (e : AE D) (ε : AF D.host.F) (heS : e = alg
     fun x i => rfl⟩
 
 /- English proof (translation)
-Establish `h : e = LIdemEx.eS S` using `LIdemEx.ae_ext _ _ (fun w => by rw [he.1 w, (LIdemEx.isIdem_eS S).1 w]) (fun v => by rw [he.2 v, (LIdemEx.isIdem_eS S).2 v])`. Conclude with `h.trans rfl`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem e_eq (D : D7) (S : Finset (Pl D)) (e : AE D) (he : IsIdem S e) :
     e = algebraMap (AF D.host.F) (AE D) ((1, LIdemEx.indS S) : AF D.host.F) := by

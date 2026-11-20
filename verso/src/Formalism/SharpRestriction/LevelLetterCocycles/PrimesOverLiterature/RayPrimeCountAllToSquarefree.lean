@@ -13,7 +13,7 @@ def Stmt : Prop :=
           Y ^ (1 - ε') ≤ (count K m Y : ℝ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Nat.prime_three, rfl, dvd_refl _⟩`.
+Supply the required witnesses or components.
 -/
 example : (3 : ℕ).Prime ∧ 3 % 4 = 3 ∧ 4 * 3 ∣ (12 : ℕ) := ⟨Nat.prime_three, rfl, dvd_refl _⟩
 

@@ -29,14 +29,14 @@ Both sides reduce to the same expression.
     (rightInc A b : K ⊗[ℂ] κ') = 1 ⊗ₜ b := rfl
 
 /- English proof (translation)
-Simplify using `[polyMap]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem coe_polyMap_X (A : Subalgebra ℂ K) {m : ℕ} (v : Fin m → A) (i : Fin m) :
     (polyMap (κ' := κ') A v (MvPolynomial.X i) : K ⊗[ℂ] κ') = (v i : K) ⊗ₜ 1 := by
   simp [polyMap]
 
 /- English proof (translation)
-Simplify using `[polyMap]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem coe_polyMap_C (A : Subalgebra ℂ K) {m : ℕ} (v : Fin m → A) (b : κ') :
     (polyMap (κ' := κ') A v (MvPolynomial.C b) : K ⊗[ℂ] κ') = 1 ⊗ₜ b := by

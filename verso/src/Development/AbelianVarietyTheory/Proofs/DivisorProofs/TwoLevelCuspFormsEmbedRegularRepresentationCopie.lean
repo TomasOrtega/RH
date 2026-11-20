@@ -25,7 +25,7 @@ def deg1 (M : TwoLevels E r U C) (W : Submodule ℂ (C → M.dom → ℂ)) : Sub
   (W.comap (HA M).val.toLinearMap).map ((Polynomial.monomial 1).restrictScalars ℂ)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_homogeneousExponentsOneBlock (M : TwoLevels E r U C) (W : Submodule ℂ (C → M.dom → ℂ)) (p : Polynomial (HA M)) :
     p ∈ deg1 M W ↔ ∃ f : HA M, (f : C → M.dom → ℂ) ∈ W ∧ Polynomial.monomial 1 f = p := Iff.rfl
@@ -60,11 +60,9 @@ theorem deg1Equiv_coe (M : TwoLevels E r U C) (W : Submodule ℂ (C → M.dom �
     ((deg1Equiv M W hW f : deg1 M W) : Polynomial (HA M)) = Polynomial.monomial 1 ⟨f, hW f f.2⟩ := rfl
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨F, hF, rfl⟩` from `hf`. Establish `e : M.res F * pb M k (M.res u0) * pb M h (M.res u0) = M.res (F * M.pull k u0 * M.pull h u0)` using `rfl`. Rewrite using `[e, two_smul, ← add_assoc]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨_, GlobalTheory.T.twoLevelCuspForms_mul_mem_add_weight E r U C M _ _ _ _ (GlobalTheory.T.twoLevelCuspForms_mul_mem_add_weight E r U C M _ _ _ _ hF (GlobalTheory.T.twoLevelCuspForms_pull_mem E r U C M mu u0 k hu0)) (GlobalTheory.T.twoLevelCuspForms_pull_mem …`. Consider the case `zero => simp`. Consider the case `add f g _ _ hf hg => rw [add_mul, add_mul]`. Conclude with `add_mem hf hg`. Consider the case `smul z f _ hf => rw [smul_mul_assoc, smul_mul_assoc]`.
-
-Conclude with `Submodule.smul_mem _ z hf`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_pb_mem_cusp (M : TwoLevels E r U C) (ka mu : Wt M.Ψ r) (u0 : C → Frame M.Ψ r → ℂ) (hu0 : u0 ∈ M.SS mu)
     (k h : U) {f : C → M.dom → ℂ} (hf : f ∈ M.cusp ka) :
@@ -85,45 +83,39 @@ end GlobalTheory.CuspEmb
 open GlobalTheory.CuspEmb in
 
 /- English proof (translation)
-Introduce `E _ _ _ r U C _ _ _ _ M ka ρ hρ ep c0 hR H hL`. Use `haveI : Fintype U := Fintype.ofFinite U`. Take `⟨u0, hu0, hdet⟩` from `GlobalTheory.T.exists_cuspForm_independent_translates E r H C (sub M H) hL (sOf M) (even_sOf M) (le_sOf M)`. Establish `hu0' : u0 ∈ M.SS (deMul M.Ψ r M.p0 (sOf M))` using `hu0`. Establish `hVHA : ∀ f ∈ M.cusp ka, f ∈ HA M` using `fun f hf => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.span_le (p := Subalgebra.toSubmodule (HA M))).2 ?_ hf` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Conclude with `GlobalTheory.T.twoLevelCuspForms_restrict_holInvariant E r U C M ka F hF`. Establish `h2HA : ∀ f ∈ M.cusp (ka + 2 • deMul M.Ψ r M.p0 (sOf M)), f ∈ HA M` using `fun f hf => by`. Use `(Submodule.span_le (p := Subalgebra.toSubmodule (HA M))).2 ?_ hf` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨F, hF, rfl⟩`. Conclude with `GlobalTheory.T.twoLevelCuspForms_restrict_holInvariant E r U C M _ F hF`. Take `⟨a, hcoc, hform⟩` from `GlobalTheory.T.exists_cocycle_pullbackRepresentation E r U C M ka ρ hρ (fun f hf => (hVHA f hf).2)`. Take `⟨h1, hlaw⟩` from `GlobalTheory.T.twistedPullbackPolynomial_rightAction_of_cocycle E r U C M a hcoc`. Set `act : U →* (Polynomial (HA M) →ₐ[ℂ] Polynomial (HA M))` to `{ toFun := fun k => tw M (fun c => (a k⁻¹ c : ℂ)) k⁻¹ map_one' := by show tw M (fun c => (a 1⁻¹ c : ℂ)) 1⁻¹ = 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_one]`. Conclude with `h1`. Use the proof step `map_mul' := fun g h => by`. Simplify using `only [mul_inv_rev]`. Rewrite using `[← hlaw]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `rfl }`. Set `ut : HA M` to `⟨M.res u0, GlobalTheory.T.twoLevelCuspForms_restrict_holInvariant E r U C M _ u0 hu0'⟩`. Establish `hact : ∀ k, act k (Polynomial.C ut) = Polynomial.C (pbA M k⁻¹ ut)` using `fun k => tw_C M _ _ _`. Establish `hactm : ∀ k (f : HA M), act k (Polynomial.monomial 1 f) = Polynomial.monomial 1 (cst M (fun c => (a k⁻¹ c : ℂ)) * pbA M k⁻¹ f)` using `fun k f => tw_monomial_one M _ _ _`. Establish `hnz : (Matrix.of fun h g : H => act ((h : U) * g) (Polynomial.C ut)).det ∈ nonZeroDivisors (Polynomial (HA M))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (Matrix.of fun h g : H => act ((h : U) * g) (Polynomial.C ut)) = (Polynomial.C : HA M →+* Polynomial (HA M)).mapMatrix (Matrix.of fun h g : H => pbA M ((h : U) * g)⁻¹ ut)`. Use `Matrix.ext fun h g => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, RingHom.mapMatrix_apply, Matrix.map_apply, hact, mul_inv_rev]`. Rewrite using `[e, ← RingHom.map_det]`. Use `GlobalTheory.T.polynomialC_holInvariant_mem_nonZeroDivisors E r U C M _ fun c => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, hne⟩` from `hdet c`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Set `φ : HA M →+* ℂ` to `((Pi.evalRingHom _ (⟨x, hx⟩ : M.dom)).comp (Pi.evalRingHom _ c)).comp (HA M).val.toRingHom`. Establish `e2 : ((Matrix.of fun h g : H => pbA M ((h : U) * g)⁻¹ ut).det : C → M.dom → ℂ) c ⟨x, hx⟩ = φ (Matrix.of fun h g : H => pbA M ((h : U) * g)⁻¹ ut).det` using `rfl`. Rewrite using `[e2, RingHom.map_det]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : φ.mapMatrix (Matrix.of fun h g : H => pbA M ((h : U) * g)⁻¹ ut) = ((Matrix.of fun h h' : H => M.pull ((h : U) * h') u0 c x).submatrix (Equiv.inv H) (Equiv.inv H)).transpose`. Use extensionality with `h g`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.transpose_apply, Matrix.submatrix_apply, Equiv.inv_apply, mul_inv_rev]`. Both sides reduce to the same expression. Rewrite using `[e3, Matrix.det_transpose, Matrix.det_submatrix_equiv_self]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hne`. Set `V` to `deg1 M (M.cusp ka)`. Set `V2` to `deg1 M (M.cusp (ka + 2 • deMul M.Ψ r M.p0 (sOf M)))`. Set `V1 : Submodule ℂ (Polynomial (HA M))` to `Submodule.span ℂ {p | ∃ x ∈ V, ∃ h : H, p = x * act h (Polynomial.C ut)}`. Set `e` to `deg1Equiv M (M.cusp ka) hVHA`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `e2` to `deg1Equiv M _ h2HA`. Use `haveI : Module.Finite ℂ (M.cusp (ka + 2 • deMul M.Ψ r M.p0 (sOf M))) := hR.2.1`. Use `haveI : FiniteDimensional ℂ V2 := LinearEquiv.finiteDimensional e2`. Set `ρ' : Representation ℂ U V` to `{ toFun := fun k => e.toLinearMap ∘ₗ ρ k ∘ₗ e.symm.toLinearMap map_one' := by ext; simp map_mul' := fun g h => by ext; simp }`. Establish `hρ' : ∀ g x, ((ρ' g x : V) : Polynomial (HA M)) = act g x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `g x`. Take `⟨f, rfl⟩` from `e.surjective x`. Establish `e1 : ρ' g (e f) = e (ρ g f)` using `by simp [ρ']`. Rewrite using `[e1, deg1Equiv_coe, deg1Equiv_coe, hactm]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c x`. Use `hform g⁻¹ f c x` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hV1 : ∀ h : H, ∀ x ∈ V, x * act h (Polynomial.C ut) ∈ V1` using `fun h x hx => Submodule.subset_span ⟨x, hx, h, rfl⟩`. Establish `hactV : ∀ (k : U), ∀ x ∈ V, act k x ∈ V` using `fun k x hx => by`. Use `hρ' k ⟨x, hx⟩` as an intermediate fact. Rewrite using `[← this]`. Conclude with `(ρ' k ⟨x, hx⟩).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Establish `hV1s : ∀ h : H, ∀ x ∈ V1, act h x ∈ V1`. Introduce `h x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem p hp`. Take `⟨y, hy, k, rfl⟩` from `hp`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `Submodule.subset_span ⟨act h y, hactV h y hy, h * k, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Subgroup.coe_mul, map_mul act]`. Both sides reduce to the same expression. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `smul z x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ z hx`. Establish `hV2 : ∀ h : H, ∀ x ∈ V1, x * act h (Polynomial.C ut) ∈ V2`. Introduce `h x hx`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem p hp`. Take `⟨y, hy, k, rfl⟩` from `hp`. Take `⟨f, hf, rfl⟩` from `(mem_homogeneousExponentsOneBlock M _ y).1 hy`. Rewrite using `[hact, hact, Polynomial.monomial_mul_C, Polynomial.monomial_mul_C]`.
-
-Use `(mem_homogeneousExponentsOneBlock M _ _).2 ⟨_, ?_, rfl⟩` and prove the remaining obligations. Conclude with `mul_pb_mem_cusp M ka _ u0 hu0' _ _ hf`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`.
-
-Consider the case `smul z x _ hx => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ z hx`. Take `⟨n, ⟨j, hj, hjeq⟩, hn⟩` from `GlobalTheory.T.embedsInRegularRepresentationCopies_of_groupDeterminant ℂ U (Polynomial (HA M)) act H (Polynomial.C ut) hnz V V1 V2 ρ' hρ' hV1 hV1s hV2`. Use `⟨n, ⟨j ∘ₗ e.toLinearMap, hj.comp e.injective, fun h v i => ?_⟩, ?_⟩` and prove the remaining obligations. Use `hjeq h (e v) i` as an intermediate fact.
-
-Establish `e1 : ρ' h (e v) = e (ρ h v)` using `by simp [ρ']`. Rewrite `this` using `[e1]`. Conclude with `this`. Rewrite `hn` using `[← e2.finrank_eq]`. Conclude with `hn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CuspEmb.cusp_embReg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [Finite U]
     [Finite C] [MulAction U C] (M : TwoLevels E r U C), ∀ (ka : Wt M.Ψ r) (ρ : Representation ℂ U (M.cusp ka)),

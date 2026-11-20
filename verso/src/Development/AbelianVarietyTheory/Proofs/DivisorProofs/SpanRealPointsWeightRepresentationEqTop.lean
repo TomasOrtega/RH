@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.BCT.TrKer
 
 /- English proof (translation)
-Introduce `E _ _ _ n lam`. Conclude with `span_wInf lam`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem span_range_wInf_comp_infU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ)
     (lam : InfinitePlace E → DomWeight n),

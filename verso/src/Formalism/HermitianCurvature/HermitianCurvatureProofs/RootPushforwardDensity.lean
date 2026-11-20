@@ -9,7 +9,7 @@ namespace Formalism.FourierDecayAlt.P.NthRootMeasurability
 open Formalism.FourierDecayAlt.crystallineComparison
 
 /- English proof (translation)
-Simplify using `[ContinuousLinearMap.det, LinearMap.det_restrictScalars, Algebra.norm_complex_eq, Complex.normSq_eq_norm_sq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem detC (d : ℂ) :
     ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) d).restrictScalars ℝ).det = ‖d‖ ^ 2 := by
@@ -23,13 +23,13 @@ def R (s k : ℕ) (w : ℂ) : ℂ := zeta s ^ k * w ^ ((s : ℂ)⁻¹)
 def A (s k : ℕ) : Set ℂ := {z | z ≠ 0 ∧ R s k (z ^ s) = z}
 
 /- English proof (translation)
-Unfold `R`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_R (s k : ℕ) : Measurable (R s k) := by
   unfold R; fun_prop
 
 /- English proof (translation)
-Establish `h1 : MeasurableSet {z : ℂ | z ≠ 0}` using `(measurableSet_singleton (0 : ℂ)).compl`. Establish `h2 : MeasurableSet {z : ℂ | R s k (z ^ s) = z}` using `measurableSet_eq_fun ((measurable_R s k).comp (by fun_prop)) measurable_id`. Conclude with `h1.inter h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurableSet_A (s k : ℕ) : MeasurableSet (A s k) := by
   have h1 : MeasurableSet {z : ℂ | z ≠ 0} := (measurableSet_singleton (0 : ℂ)).compl
@@ -38,7 +38,7 @@ theorem measurableSet_A (s k : ℕ) : MeasurableSet (A s k) := by
   exact h1.inter h2
 
 /- English proof (translation)
-Unfold `R zeta`. Rewrite using `[mul_pow, ← pow_mul, mul_comm k s, pow_mul, (Complex.isPrimitiveRoot_exp s hs).pow_eq_one, one_pow, one_mul, Complex.cpow_nat_inv_pow w hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem R_pow (s k : ℕ) (hs : s ≠ 0) (w : ℂ) : R s k w ^ s = w := by
   unfold R zeta
@@ -46,14 +46,14 @@ theorem R_pow (s k : ℕ) (hs : s ≠ 0) (w : ℂ) : R s k w ^ s = w := by
     one_pow, one_mul, Complex.cpow_nat_inv_pow w hs]
 
 /- English proof (translation)
-The claim follows from `(Complex.isPrimitiveRoot_exp s hs).nthRoots_eq (Complex.cpow_nat_inv_pow w hs)`.
+A detailed English derivation is pending.
 -/
 theorem nthRoots_eq_R (s : ℕ) (hs : s ≠ 0) (w : ℂ) :
     nthRoots s w = (Multiset.range s).map (fun k => R s k w) :=
   (Complex.isPrimitiveRoot_exp s hs).nthRoots_eq (Complex.cpow_nat_inv_pow w hs)
 
 /- English proof (translation)
-Rewrite using `[nthRoots_eq_R s hs, Multiset.map_map, Finset.sum_eq_multiset_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_roots (s : ℕ) (hs : s ≠ 0) (H : ℂ → ENNReal) (w : ℂ) :
     ((nthRoots s w).map H).sum = ∑ k ∈ Finset.range s, H (R s k w) := by
@@ -61,11 +61,11 @@ theorem sum_roots (s : ℕ) (hs : s ≠ 0) (H : ℂ → ENNReal) (w : ℂ) :
   rfl
 
 /- English proof (translation)
-Introduce `j hj k hk hjk`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `z hzj hzk`. Apply `hjk` to reduce the goal to its premises. Simplify using `only [Finset.coe_range, Set.mem_Iio] at hj hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `e : zeta s ^ j * (z ^ s) ^ ((s : ℂ)⁻¹) = zeta s ^ k * (z ^ s) ^ ((s : ℂ)⁻¹)`. Use `hzj.2.trans hzk.2.symm` as an intermediate fact. Simplify `this` using `[R]`. Establish `hα : (z ^ s) ^ ((s : ℂ)⁻¹) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hzj.2` as an intermediate fact. Simplify using `only [R, h0, mul_zero] at this`. Conclude with `hzj.1 this.symm`. Conclude with `(Complex.isPrimitiveRoot_exp s hs).pow_inj hj hk (mul_right_cancel₀ hα e)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem A_disjoint (s : ℕ) (hs : s ≠ 0) :
     Set.PairwiseDisjoint (↑(Finset.range s) : Set ℕ) (A s) := by
@@ -85,9 +85,9 @@ theorem A_disjoint (s : ℕ) (hs : s ≠ 0) :
   exact (Complex.isPrimitiveRoot_exp s hs).pow_inj hj hk (mul_right_cancel₀ hα e)
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [Set.mem_iUnion, Finset.mem_range, Set.mem_compl_iff, Set.mem_singleton_iff, A, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, _, hz, _⟩`. Conclude with `hz`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz`. Establish `hmem : z ∈ nthRoots s (z ^ s)` using `(mem_nthRoots (Nat.pos_of_ne_zero hs)).mpr rfl`. Rewrite `hmem` using `[nthRoots_eq_R s hs, Multiset.mem_map]`. Take `⟨k, hk, hkz⟩` from `hmem`. Conclude with `⟨k, Multiset.mem_range.mp hk, hz, hkz⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem A_union (s : ℕ) (hs : s ≠ 0) : (⋃ k ∈ Finset.range s, A s k) = {0}ᶜ := by
   ext z
@@ -102,11 +102,11 @@ theorem A_union (s : ℕ) (hs : s ≠ 0) : (⋃ k ∈ Finset.range s, A s k) = {
     exact ⟨k, Multiset.mem_range.mp hk, hz, hkz⟩
 
 /- English proof (translation)
-Use extensionality with `c`. Simplify using `only [Set.mem_image, Set.mem_compl_iff, Set.mem_singleton_iff, A, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, ⟨hz, _⟩, rfl⟩`. Conclude with `mul_ne_zero (inv_ne_zero hu) (pow_ne_zero _ hz)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hc`. Use `⟨R s k (u * c), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `R_pow s k hs (u * c)` as an intermediate fact. Rewrite `this` using `[h0, zero_pow hs]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero hu hc this.symm`. Rewrite using `[R_pow s k hs]`. Rewrite using `[R_pow s k hs, ← mul_assoc, inv_mul_cancel₀ hu, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_A (s k : ℕ) (hs : s ≠ 0) (u : ℂ) (hu : u ≠ 0) :
     (fun z => u⁻¹ * z ^ s) '' A s k = {0}ᶜ := by
@@ -125,7 +125,7 @@ theorem image_A (s k : ℕ) (hs : s ≠ 0) (u : ℂ) (hu : u ≠ 0) :
     · rw [R_pow s k hs, ← mul_assoc, inv_mul_cancel₀ hu, one_mul]
 
 /- English proof (translation)
-Introduce `z hz z' hz' e`. Establish `e' : z ^ s = z' ^ s` using `mul_left_cancel₀ (inv_ne_zero hu) e`. Rewrite using `[← hz.2, ← hz'.2, e']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem injOn_A (s k : ℕ) (u : ℂ) (hu : u ≠ 0) : InjOn (fun z => u⁻¹ * z ^ s) (A s k) := by
   intro z hz z' hz' e
@@ -133,11 +133,11 @@ theorem injOn_A (s k : ℕ) (u : ℂ) (hu : u ≠ 0) : InjOn (fun z => u⁻¹ * 
   rw [← hz.2, ← hz'.2, e']
 
 /- English proof (translation)
-Repeatedly rewrite using `[sum_roots s hs H]`. Rewrite using `[lintegral_finsetSum (Finset.range s) (f := fun k c => H (R s k (u * c))) (fun k _ => hH.comp ((measurable_R s k).comp (measurable_const_mul u)))]`. Establish `step : ∀ k, ∫⁻ c, H (R s k (u * c)) = ∫⁻ z in A s k, ENNReal.ofReal (‖u⁻¹ * (s * z ^ (s - 1))‖ ^ 2) * H z`. Introduce `k`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[MeasureTheory.restrict_compl_singleton]`. Use `_ = ∫⁻ c in (fun z => u⁻¹ * z ^ s) '' A s k, H (R s k (u * c)) := by`. Rewrite using `[image_A s k hs u hu]`. Use `_ = ∫⁻ z in A s k, ENNReal.ofReal |((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) (u⁻¹ * (s * z ^ (s - 1)))).restrictScalars ℝ).det| * H (R s k (u * (u⁻¹ * z ^ s))) := lintegral_image_eq_lintegral_abs_det_fderiv_mul volume (measurableSet_A s k) (fun z _ => (((hasDerivAt_pow s z) …`. Use `_ = _ := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `setLIntegral_congr_fun (measurableSet_A s k) (fun z hz => ?_)` and prove the remaining obligations. Rewrite using `[detC, abs_of_nonneg (sq_nonneg _), ← mul_assoc (u) u⁻¹, mul_inv_cancel₀ hu, one_mul, hz.2]`. Repeatedly rewrite using `[step]`. Rewrite using `[← lintegral_biUnion_finset (A_disjoint s hs) (fun k _ => measurableSet_A s k), A_union s hs, MeasureTheory.restrict_compl_singleton]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (s : ℕ) (hs : s ≠ 0) (u : ℂ) (hu : u ≠ 0) (H : ℂ → ENNReal) (hH : Measurable H) :
     ∫⁻ c, ((nthRoots s (u * c)).map H).sum =
@@ -167,9 +167,9 @@ theorem core (s : ℕ) (hs : s ≠ 0) (u : ℂ) (hu : u ≠ 0) (H : ℂ → ENNR
     MeasureTheory.restrict_compl_singleton]
 
 /- English proof (translation)
-Take `⟨s', rfl⟩ : ∃ s', s = s' + 1` from `⟨s - 1, by omega⟩`. Take `⟨M', rfl⟩ : ∃ M', M = M' + 2` from `⟨M - 2, by omega⟩`. Rewrite using `[show s' + 1 - 1 = s' by omega, show M' + 2 + (s' + 1) - 2 = M' + s' + 1 by omega, show M' + 2 - 2 = M' by omega, show M' + 2 + (s' + 1) - 3 = M' + s' by omega]`. Simplify using `only [norm_mul, norm_inv, norm_pow, norm_neg, norm_one, one_pow, one_mul, Complex.norm_natCast]`. Establish `hT : 0 < ‖t‖` using `norm_pos_iff.mpr ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hR : 0 < ‖z‖` using `norm_pos_iff.mpr hz`. Generalize the expression as in `‖t‖ = T at hT ⊢`. Generalize the expression as in `‖z‖ = ρ at hR ⊢`. Use `push_cast`. Simplify using `only [inv_pow, mul_pow, ← pow_mul]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -195,13 +195,11 @@ theorem real_id (s M : ℕ) (hs : 1 ≤ s) (hM : 2 ≤ M) (t z : ℂ) (ht : t �
   ring
 
 /- English proof (translation)
-Introduce `s M t g hs hM ht hg`. Establish `hs0 : s ≠ 0` using `by omega`. Establish `hu : ((-1 : ℂ) ^ (s + 1) * t ^ (s - 1)) ≠ 0` using `mul_ne_zero (pow_ne_zero _ (by norm_num)) (pow_ne_zero _ ht)`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr (fun c => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (-1 : ℂ) ^ (s + 1) * (c * t ^ (s - 1)) = ((-1 : ℂ) ^ (s + 1) * t ^ (s - 1)) * c by ring, ← Multiset.sum_map_mul_left]`. Use `congr 1`. Use `Multiset.map_congr rfl (fun z hz => ?_)` and prove the remaining obligations. Rewrite `hz` using `[mem_nthRoots (by omega)]`. Rewrite using `[hz, inv_mul_cancel_left₀ hu]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∫⁻ z, ENNReal.ofReal (‖((-1 : ℂ) ^ (s + 1) * t ^ (s - 1))⁻¹ * (s * z ^ (s - 1))‖ ^ 2) * (ENNReal.ofReal (‖t‖ ^ (2 * (s - 1) * (M + s - 2)) * ‖((-1 : ℂ) ^ (s + 1) * t ^ (s - 1))⁻¹ * z ^ s‖ ^ (2 * (M - 2)) / (‖t‖ ^ (2 * (s - 1) ^ 2) * (s : ℝ) ^ 2)) * (ENNReal.ofReal (‖z‖ ^ (2 * …`. Use `(Measurable.ennreal_ofReal (by fun_prop)).mul ((Measurable.ennreal_ofReal (by fun_prop)).mul hg))` and prove the remaining obligations. Use `_ = _ := by`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Measure.ae_ne volume (0 : ℂ)] with z hz`.
-
-Rewrite using `[← mul_assoc, ← mul_assoc, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), real_id s M hs hM t z ht hz]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem densityChange_ok : DensityChange := by
   intro s M t g hs hM ht hg
@@ -237,7 +235,7 @@ theorem densityChange_ok : DensityChange := by
 end Formalism.FourierDecayAlt.P.NthRootMeasurability
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.NthRootMeasurability.densityChange_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.rootPushforwardDensity : Formalism.FourierDecayAlt.crystallineComparison.DensityChange :=
   Formalism.FourierDecayAlt.P.NthRootMeasurability.densityChange_ok

@@ -20,7 +20,7 @@ variable {E : Type*} [Field E] [NumberField E]
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `: IsIntegral ℤ (n : E)`. Simplify using `using isIntegral_algebraMap (R := ℤ) (A := E) (x := (n : ℤ))`. Conclude with `this.mul hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isIntegral_natCast_mul {n : ℕ} {x : E} (hx : IsIntegral ℤ x) :
     IsIntegral ℤ ((n : E) * x) := by
@@ -31,7 +31,7 @@ theorem isIntegral_natCast_mul {n : ℕ} {x : E} (hx : IsIntegral ℤ x) :
 omit [NumberField E] in
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `hab`. Establish `: ((a * k : ℕ) : E) * x = (k : E) * ((a : E) * x)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `isIntegral_natCast_mul hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_mul_of_dvd {a b : ℕ} {x : E} (hx : IsIntegral ℤ ((a : E) * x)) (hab : a ∣ b) :
     IsIntegral ℤ ((b : E) * x) := by
@@ -41,11 +41,11 @@ theorem isIntegral_mul_of_dvd {a b : ℕ} {x : E} (hx : IsIntegral ℤ ((a : E) 
   exact isIntegral_natCast_mul hx
 
 /- English proof (translation)
-Take `⟨y, hy, hyx⟩` from `exists_integral_multiples ℤ ℚ (L := E) {x}`. Establish `hyx` using `hyx x (Finset.mem_singleton_self x)`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩` and prove the remaining obligations. Rewrite `hyx` using `[zsmul_eq_mul]`. Establish `hc : ((y.natAbs : ℕ) : E) = ((y.natAbs : ℤ) : E)` using `(Int.cast_natCast _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Break down `Int.natAbs_eq y with h | h` into its components or cases. Rewrite using `[← h]` and apply the resulting hypothesis. Establish `h' : (y.natAbs : ℤ) = -y` using `by omega`. Rewrite using `[h', Int.cast_neg, neg_mul]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hyx.neg`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_isIntegral (x : E) : ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : E) * x) := by
   obtain ⟨y, hy, hyx⟩ := exists_integral_multiples ℤ ℚ (L := E) {x}
@@ -63,7 +63,7 @@ theorem exists_nat_mul_isIntegral (x : E) : ∃ n : ℕ, 0 < n ∧ IsIntegral �
 omit [Field E] [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qm7.exists_common_multiple s P hP hex`.
+A detailed English derivation is pending.
 -/
 theorem exists_common_multiple {ι : Type*} (s : Finset ι) (P : ι → ℕ → Prop)
     (hP : ∀ i a b, P i a → a ∣ b → P i b) (hex : ∀ i ∈ s, ∃ a, 0 < a ∧ P i a) :
@@ -71,11 +71,9 @@ theorem exists_common_multiple {ι : Type*} (s : Finset ι) (P : ι → ℕ → 
   _root_.UpperTheory.Reformulated.B.Qm7.exists_common_multiple s P hP hex
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hJ`. Take `⟨d, hd, hS⟩` from `exists_common_multiple S (fun s n => IsIntegral ℤ ((n : E) * s)) (fun _ _ _ h hab => isIntegral_mul_of_dvd h hab) (fun s _ => exists_nat_mul_isIntegral s)`. Use `⟨d, hd, fun j hj => ?_⟩` and prove the remaining obligations. Proceed by induction on `hj using AddSubgroup.closure_induction with`. Consider the case `mem x hx => exact hS x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [mul_zero]`. Conclude with `isIntegral_zero`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `hx.add hy`. Consider the case `neg x _ hx => rw [mul_neg]`.
-
-Conclude with `hx.neg`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_den_of_fg {J : AddSubgroup E} (hJ : J.FG) :
     ∃ d : ℕ, 0 < d ∧ ∀ j ∈ J, IsIntegral ℤ ((d : E) * j) := by
@@ -96,7 +94,7 @@ def intMultiples (N : ℕ) : AddSubgroup E :=
 
 omit [NumberField E] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intMultiples {N : ℕ} {x : E} : x ∈ intMultiples E N ↔ IsIntegral ℤ ((N : E)⁻¹ * x) :=
   Iff.rfl
@@ -114,87 +112,79 @@ variable {F E : Type*} [Field F] [Field E] [NumberField E] [Algebra F E]
 variable {W : Type*} [AddCommGroup W] [Module E W]
 
 /- English proof (translation)
-Introduce `D`. Use `set B := h.toSesq`. Establish `cc : ∀ a : E, conjHom F E (conjHom F E a) = a` using `fun a => conj_conj (F := F) a`. Establish `ci : ∀ a : E, IsIntegral ℤ a → IsIntegral ℤ (conjHom F E a)` using `fun a ha => ha.map (conjHom F E).toIntAlgHom`. Establish `cn : ∀ N : ℕ, conjHom F E (N : E) = N` using `fun N => map_natCast _ N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsym : ∀ x y, conjHom F E (B x y) = B y x` using `fun x y => h.isSymm.eq x y`. Establish `hsmul : ∀ (a : E) x y, B (a • x) y = conjHom F E a * B x y`. Introduce `a x y`. Rewrite using `[LinearMap.map_smulₛₗ₂, smul_eq_mul]`. Take `⟨T, hT, hTJ⟩` from `IdealClassesFinite.proof E`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hdT⟩` from `exists_common_multiple hT.toFinset (fun J n => J.FG → J ≠ ⊥ → (∀ j ∈ J, IsIntegral ℤ ((n : E) * j)) ∧ ∃ j₀ ∈ J, j₀ ≠ 0 ∧ IsIntegral ℤ ((n : E) * j₀⁻¹)) (fun J a b hJ hab hfg hne => by`. Take `⟨h1, j₀, hj₀, hj₀0, h2⟩` from `hJ hfg hne`. Conclude with `⟨fun j hj => isIntegral_mul_of_dvd (h1 j hj) hab, j₀, hj₀, hj₀0, isIntegral_mul_of_dvd h2 hab⟩)`. Use the proof step `(fun J _ => by`. Distinguish the cases in `hfg : J.FG`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Distinguish the cases in `hne : J = ⊥`. Conclude with `⟨1, one_pos, fun _ h => absurd hne h⟩`. Take `⟨a, ha, haJ⟩` from `exists_den_of_fg hfg`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀, hj₀0⟩ : ∃ j₀ ∈ J, j₀ ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `push Not at hc`. Conclude with `hne ((AddSubgroup.eq_bot_iff_forall J).2 hc)`. Take `⟨b, hb, hbj⟩` from `exists_nat_mul_isIntegral j₀⁻¹`. Conclude with `⟨a * b, Nat.mul_pos ha hb, fun _ _ => ⟨fun j hj => isIntegral_mul_of_dvd (haJ j hj) (dvd_mul_right a b), j₀, hj₀, hj₀0, isIntegral_mul_of_dvd hbj (dvd_mul_left b a)⟩⟩`. Conclude with `⟨1, one_pos, fun h _ => absurd h hfg⟩)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m := D.factorial with hm_def`. Establish `hm : 0 < m` using `Nat.factorial_pos D`. Establish `hmd : 0 < m * d` using `Nat.mul_pos hm hd`. Use `set k := 2 * m * d ^ 3 with hk_def`. Establish `hk : 0 < k` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm0 : (m : E) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Establish `hd0 : (d : E) ≠ 0` using `Nat.cast_ne_zero.2 hd.ne'`. Establish `hk0 : (k : E) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Use `⟨{A | intMultiples E (m * d) ≤ A ∧ (∀ x ∈ A, (m * d * d) • x ∈ intMultiples E (m * d)) ∧ A.FG} ×ˢ {A | intMultiples E k ≤ A ∧ (∀ x ∈ A, (k * d) • x ∈ intMultiples E k) ∧ A.FG}, (finite_sandwich _ (by positivity)).prod (finite_sandwich _ (by positivity)), k * d, Nat.mul_pos hk hd, …` and prove the remaining obligations. Introduce `La l hD hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hLat` using `hD.isLattice`. Establish `hint : ∀ x ∈ La, ∀ y ∈ La, IsIntegral ℤ (B x y)` using `fun x hx y hy => (mem_integralClosure_iff ℤ E).1 (hD.integral x hx y hy)`. Establish `hsm : ∀ {a : E}, IsIntegral ℤ a → ∀ {x}, x ∈ La → a • x ∈ La` using `fun ha _ hx => hLat.smul_mem ⟨_, ha⟩ _ hx`. Establish `hdual : ∀ y, (∀ x ∈ La, IsIntegral ℤ (B y x)) → (m : E) • y ∈ La`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hy' : y ∈ dualLattice h La` using `fun x hx => (mem_integralClosure_iff ℤ E).2 (hy x hx)`. Take `⟨t, ht⟩ : La.relIndex (dualLattice h La) ∣ m` from `Nat.dvd_factorial (Nat.pos_of_ne_zero hD.index_ne_zero) hD.index_le`. Rewrite using `[Nat.cast_smul_eq_nsmul, ht, mul_nsmul]`. Conclude with `La.nsmul_mem (La.nsmul_relIndex_mem hy') t`. Choose the witnesses or unpack the hypotheses as in `⟨v₁, hv₁l, hv₁0⟩ : ∃ v₁ ∈ l, v₁ ≠ 0 := by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Submodule.exists_mem_ne_zero_of_ne_bot fun h0 => ?_` and prove the remaining obligations. Use `hl.1` as an intermediate fact. Rewrite `this` using `[h0, finrank_bot]`. Conclude with `zero_ne_one this`. Use `set J₁ := La.map (B v₁).toAddMonoidHom with hJ₁_def`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hJ₁fg : J₁.FG` using `fg_map_of_fg hLat.fg _`. Establish `hJ₁ne : J₁ ≠ ⊥`. Introduce `h0`. Apply `hv₁0` to reduce the goal to its premises. Apply `h.nonsingular.1` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_zero]`. Use `LinearMap.ext_on hLat.span_eq_top (fun x hx => ?_)` and prove the remaining obligations. Establish `: B v₁ x ∈ J₁` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[h0, AddSubgroup.mem_bot]`. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hJ₁st : ∀ a : 𝓞 E, ∀ x ∈ J₁, (a : E) * x ∈ J₁`. Introduce and unpack `a _ ⟨x, hx, rfl⟩`. Conclude with `⟨(a : E) • x, hLat.smul_mem a x hx, by simp⟩`. Take `⟨J, hJT, c, hc, hJ₁⟩` from `hTJ J₁ hJ₁fg hJ₁ne hJ₁st`. Establish `hJfg : J.FG`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `fg_of_le_fg (fun j hj => ?_) (fg_map_of_fg hJ₁fg (AddMonoidHom.mulLeft c⁻¹))` and prove the remaining obligations. Use `⟨c * j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ₁]`. Conclude with `⟨j, hj, rfl⟩`. Simplify using `[← mul_assoc, inv_mul_cancel₀ hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hJne : J ≠ ⊥`. Introduce `h0`. Conclude with `hJ₁ne (by rw [hJ₁, h0, AddSubgroup.map_bot])`. Take `⟨hdJ, j₀, hj₀J, hj₀0, hdj₀⟩` from `hdT J (hT.mem_toFinset.2 hJT) hJfg hJne`. Use `set v := conjHom F E c⁻¹ • v₁ with hv_def`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hBv : ∀ x, B v x = c⁻¹ * B v₁ x`. Introduce `x`. Rewrite using `[hv_def, hsmul, cc]`. Establish `hvJ : ∀ x ∈ La, B v x ∈ J`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: B v₁ x ∈ J₁` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[hJ₁]`. Take `⟨j, hj, hjx⟩` from `this`. Rewrite using `[hBv, ← hjx]`. Simplify `hj` using `[← mul_assoc, inv_mul_cancel₀ hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJv : ∀ j ∈ J, ∃ x ∈ La, B v x = j`. Introduce `j hj`. Establish `: c * j ∈ J₁` using `by rw [hJ₁]; exact ⟨j, hj, rfl⟩`. Take `⟨x, hx, hxj⟩` from `this`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hBv]`. Establish `hxj' : B v₁ x = c * j` using `hxj`. Rewrite using `[hxj', ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`. Establish `hv0 : v ≠ 0` using `smul_ne_zero ((map_ne_zero _).2 (inv_ne_zero hc)) hv₁0`. Establish `hvl : v ∈ l` using `l.smul_mem _ hv₁l`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hvv : B v v = 0` using `hl.2 v hvl v hvl`. Establish `hdvx : ∀ x ∈ La, IsIntegral ℤ ((d : E) * B v x)` using `fun x hx => hdJ _ (hvJ x hx)`. Take `⟨x₁, hx₁, hx₁j⟩` from `hJv j₀ hj₀J`. Establish `hcj₀ : conjHom F E j₀ ≠ 0` using `(map_ne_zero _).2 hj₀0`. Establish `hIlo : intMultiples E (m * d) ≤ lineCoeffs (E` using `E) La v := by`.
+Clear the denominators using the available nonvanishing facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite `hx` using `[mem_intMultiples]`. Generalize the expression as in `ho : ((m * d : ℕ) : E)⁻¹ * x = o at hx`. Establish `hxo : x = (m : E) * ((d : E) * o)`. Rewrite using `[← ho]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Express the relevant statement in the definitionally equal form `x • v ∈ La`. Rewrite using `[hxo, ← smul_smul]`. Use `hdual _ fun z hz => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[hsmul, map_mul, cn, mul_comm (d : E), mul_assoc]`. Conclude with `(ci o hx).mul (hdvx z hz)`. Establish `hIup : ∀ a ∈ lineCoeffs (E` using `E) La v, IsIntegral ℤ ((d : E) * a) := by`. Introduce `a ha`. Establish `ha' : a • v ∈ La` using `ha`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsIntegral ℤ (conjHom F E a * j₀)`. Use `hint _ ha' x₁ hx₁` as an intermediate fact. Rewrite `this` using `[hsmul, hx₁j]`. Then use the resulting hypothesis. Establish `h2 : conjHom F E ((d : E) * a) = conjHom F E a * j₀ * ((d : E) * j₀⁻¹)`. Rewrite using `[map_mul, cn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Use `ci _ ((h1.mul hdj₀))` as an intermediate fact. Rewrite `this` using `[← h2, cc]`. Then use the resulting hypothesis. Use `set q := B x₁ x₁ / (conjHom F E j₀ * j₀) with hq_def`. Establish `hq : conjHom F E q = q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hq_def, map_div₀, hsym, map_mul, cc, mul_comm j₀]`. Establish `hq2 : conjHom F E (q / 2) = q / 2` using `by rw [map_div₀, hq, map_ofNat]`. Establish `hqi : IsIntegral ℤ ((d : E) ^ 2 * q)`. Establish `e1 : (d : E) ^ 2 * q = B x₁ x₁ * ((d : E) * j₀⁻¹) * conjHom F E ((d : E) * j₀⁻¹)`. Rewrite using `[hq_def, map_mul, map_inv₀, cn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`. Conclude with `((hint _ hx₁ _ hx₁).mul hdj₀).mul (ci _ hdj₀)`. Use `set w := j₀⁻¹ • x₁ - (q / 2) • v with hw_def`. Establish `hBw : ∀ x, B w x = conjHom F E j₀⁻¹ * B x₁ x - q / 2 * B v x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[hw_def, LinearMap.map_sub₂, hsmul, hsmul, hq2]`. Establish `hvw : B v w = 1`. Rewrite using `[hw_def, (B v).map_sub, (B v).map_smul, (B v).map_smul, smul_eq_mul, smul_eq_mul, hx₁j, hvv, mul_zero, sub_zero, inv_mul_cancel₀ hj₀0]`. Establish `hww : B w w = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBw, hvw]`. Establish `hx₁v : B x₁ v = conjHom F E j₀` using `by rw [← hsym, hx₁j]`. Rewrite using `[hw_def, (B x₁).map_sub, (B x₁).map_smul, (B x₁).map_smul, smul_eq_mul, smul_eq_mul, hx₁v, map_inv₀, hq_def]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hw0 : w ≠ 0`. Introduce `h0`. Rewrite `hvw` using `[h0, map_zero]`. Conclude with `zero_ne_one hvw`. Establish `hKlo : intMultiples E k ≤ lineCoeffs (E` using `E) La w := by`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb`. Rewrite `hb` using `[mem_intMultiples]`. Generalize the expression as in `ho : ((k : ℕ) : E)⁻¹ * b = o at hb`. Establish `hbo : b = (k : E) * o` using `by rw [← ho]; field_simp`. Express the relevant statement in the definitionally equal form `b • w ∈ La`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hw_def, smul_sub, smul_smul, smul_smul]`. Use `La.sub_mem (hsm ?_ hx₁) ?_` and prove the remaining obligations. Establish `: b * j₀⁻¹ = ((2 * m * d ^ 2 : ℕ) : E) * o * ((d : E) * j₀⁻¹)`. Rewrite using `[hbo, hk_def]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(isIntegral_natCast_mul hb).mul hdj₀`. Apply `hIlo` to reduce the goal to its premises. Rewrite using `[mem_intMultiples]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((m * d : ℕ) : E)⁻¹ * (b * (q / 2)) = (d : E) ^ 2 * q * o`. Rewrite using `[hbo, hk_def]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `hqi.mul hb`. Establish `hKup : ∀ b ∈ lineCoeffs (E` using `E) La w, IsIntegral ℤ ((d : E) * b) := by`. Introduce `b hb`. Establish `hb' : b • w ∈ La` using `hb`. Use `hdvx _ hb'` as an intermediate fact.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_smul, smul_eq_mul, hvw, mul_one]`. Then use the resulting hypothesis. Use `⟨v, w, hvl, ⟨hvv, hww, hvw⟩, ⟨⟨hIlo, fun a ha => ?_, LineCoeffsFG.proof W La v hLat.fg hv0⟩, ⟨hKlo, fun b hb => ?_, LineCoeffsFG.proof W La w hLat.fg hw0⟩⟩, fun x hx => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul, mem_intMultiples]`. Establish `: ((m * d : ℕ) : E)⁻¹ * ((m * d * d : ℕ) * a) = (d : E) * a` using `by push_cast; field_simp`. Rewrite using `[this]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hIup a ha`. Rewrite using `[nsmul_eq_mul, mem_intMultiples]`. Establish `: ((k : ℕ) : E)⁻¹ * ((k * d : ℕ) * b) = (d : E) * b` using `by push_cast; field_simp`. Rewrite using `[this]`. Conclude with `hKup b hb`.
-
-Apply `hIlo` to reduce the goal to its premises. Rewrite using `[mem_intMultiples]`. Establish `: ((m * d : ℕ) : E)⁻¹ * (((k * d : ℕ) : E) * B w x) = 2 * (d : E) ^ 2 * conjHom F E ((d : E) * j₀⁻¹) * B x₁ x - (d : E) ^ 2 * q * ((d : E) * B v x)`. Rewrite using `[hBw, hk_def, map_mul, cn]`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Use `IsIntegral.sub ?_ (hqi.mul (hdvx x hx))` and prove the remaining obligations. Establish `h2 : IsIntegral ℤ (2 * (d : E) ^ 2)`. Use `isIntegral_natCast_mul (n := 2 * d ^ 2) (isIntegral_one : IsIntegral ℤ (1 : E))` as an intermediate fact.
-
-Simplify using `using this`. Conclude with `(h2.mul (ci _ hdj₀)).mul (hint _ hx₁ _ hx)`. Apply `hKlo` to reduce the goal to its premises. Rewrite using `[mem_intMultiples]`. Establish `: ((k : ℕ) : E)⁻¹ * (((k * d : ℕ) : E) * B v x) = (d : E) * B v x` using `by push_cast; field_simp`.
-
-Rewrite using `[this]`. Conclude with `hdvx x hx`.
+A detailed English derivation is pending.
 -/
 theorem LineNormalForm.proof (h : HermitianForm F E W) : LineNormalForm.Statement h := by
   classical

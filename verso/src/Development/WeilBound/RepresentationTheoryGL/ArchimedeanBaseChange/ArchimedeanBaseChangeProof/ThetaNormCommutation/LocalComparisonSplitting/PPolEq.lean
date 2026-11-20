@@ -10,7 +10,7 @@ open scoped Classical
 namespace PositivityTheory.Rg.BcB.G8
 
 /- English proof (translation)
-Establish `h2 : thetaE E n u = u⁻¹` using `eq_inv_of_mul_eq_one_right hu.2`. Rewrite using `[hu.1, map_mul, map_inv, h2, nrm]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poleq_norm (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (u : GL (Fin n) E)
     (hu : IsTransl u) (d : GL (Fin n) E) : d * u⁻¹ * thE E n (d * u⁻¹) = nrm d := by

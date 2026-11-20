@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorV
 import Mathlib
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_generator_valuation_prime_dvd_pow_sub_of_finite_padicInt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsGeneratorValuationPrimeDvdPowSubOfFinitePa.lean&line=5#L5)
 -/

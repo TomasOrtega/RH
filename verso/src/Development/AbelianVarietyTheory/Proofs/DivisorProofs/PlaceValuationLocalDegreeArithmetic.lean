@@ -16,15 +16,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ _`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w a b ha hb`. Conclude with `Formalism.DivisionValues.ValuationRepresentative.vw_mul w a b ha hb`. Introduce `w m d hd hmd`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `hmd`. Establish `hm0 : m ≠ 0` using `by rintro rfl; simp at hd`. Establish `hk0 : k ≠ 0` using `by rintro rfl; simp at hd`. Establish `hnn : ∀ n : ℕ, 0 ≤ Formalism.DivisionValues.vw w (n : K)`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `Formalism.DivisionValues.ValuationRepresentative.vw_int_nonneg w ((n : ℕ) : 𝓞 K)`. Simplify using `using h`. Use `⟨hnn m, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ (by exact_mod_cast hm0) (by exact_mod_cast hk0)]`. Combine the linear relations using `[hnn k]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd`. Establish `hf` using `FractionalIdeal.finite_factors (K := K) (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (d : K))`. Rewrite `hf` using `[Filter.eventually_cofinite]`. Use `hf.subset ?_` and prove the remaining obligations. Introduce `w hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hw`. Introduce `d hd s`. Conclude with `Formalism.EigenvalueLevelCeiling.sum_lw_vw_natCast_le s d hd.ne'`.
+A detailed English derivation is pending.
 -/
 theorem vw_lw_arith : ∀ {K : Type} [Field K] [NumberField K] [StarRing K],
     (∀ (w : HeightOneSpectrum (𝓞 K)) (a b : K), a ≠ 0 → b ≠ 0 → Formalism.DivisionValues.vw w (a * b) = Formalism.DivisionValues.vw w a + Formalism.DivisionValues.vw w b) ∧

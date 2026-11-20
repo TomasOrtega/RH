@@ -13,9 +13,7 @@ variable (k K : Type) [Field k] [Field K] [Algebra k K] {F : Type} [Field F] [Al
   {d : ℕ} (x : Fin (d + 1) → F)
 
 /- English proof (translation)
-Establish `hA : x j.succ / x 0 ∈ rA k x {0}`. Unfold `rA`. Conclude with `Algebra.subset_adjoin ⟨0, Finset.mem_singleton_self 0, j.succ, rfl⟩`. Unfold `rB`. Rewrite using `[Subalgebra.mem_restrictScalars]`.
-
-Conclude with `isIntegral_algebraMap (R := rA k x {0}) (A := K) (x := ⟨_, hA⟩)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tco_mem (j : Fin d) : algebraMap F K (x j.succ / x 0) ∈ rB k K x {0} := by
   have hA : x j.succ / x 0 ∈ rA k x {0} := by

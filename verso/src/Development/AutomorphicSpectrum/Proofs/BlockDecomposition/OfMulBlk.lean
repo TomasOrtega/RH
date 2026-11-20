@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.Parseval
 open Ad3 Ad3.LR Ad3.LR.C
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r c`. Apply the tactic sequence `fin_cases c <;> simp [cat, blk, Matrix.mul_apply, Fin.sum_univ_succ]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma of_mul_blk (h : M22) (z : Fin 2 → ℝ) :
     Matrix.of.symm (Matrix.of h * blk z) = cat h (fun r => h r 0 * z 0 + h r 1 * z 1) := by
@@ -19,7 +19,7 @@ lemma of_mul_blk (h : M22) (z : Fin 2 → ℝ) :
   fin_cases c <;> simp [cat, blk, Matrix.mul_apply, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Establish `hD : (Matrix.of h).det = h 0 0 * h 1 1 - h 0 1 * h 1 0`. Simplify using `[Matrix.det_fin_two]`. Simplify using `only [dualF, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hD]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -34,17 +34,17 @@ lemma dualF_pair (h : M22) (ζ : ℝ) (z : Fin 2 → ℝ) (hd : (Matrix.of h).de
   ring
 
 /- English proof (translation)
-Introduce `Φ h ζ hd`. Set `L : (Fin 2 → ℝ) →ₗ[ℝ] (Fin 2 → ℝ)` to `Matrix.toLin' (Matrix.of h)`. Establish `hLdet : LinearMap.det L = (Matrix.of h).det` using `LinearMap.det_toLin' _`. Establish `hLz : ∀ z, L z = fun r => h r 0 * z 0 + h r 1 * z 1`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `r`. Simplify using `[L, Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Set `G : (Fin 2 → ℝ) → ℂ` to `fun y => Φ (cat h y) * Complex.exp (2 * Real.pi * Complex.I * ((dualF h ζ 0 * y 0 + dualF h ζ 1 * y 1 : ℝ) : ℂ))`. Establish `hcat : Continuous (fun y : Fin 2 → ℝ => cat h y)`. Use `continuous_pi fun r => continuous_pi fun c => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases c`. Simplify `continuous_const` using `[cat]`. Simplify `continuous_const` using `[cat]`. Simplify `continuous_apply r` using `[cat]`. Establish `hG : Continuous G`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Φ.continuous.comp hcat).mul (Complex.continuous_exp.comp ?_)` and prove the remaining obligations. Use `continuous_const.mul (Complex.continuous_ofReal.comp ?_)` and prove the remaining obligations. Use `fun_prop`. Establish `hmap : Measure.map L (volume : Measure (Fin 2 → ℝ)) = ENNReal.ofReal |(LinearMap.det L)⁻¹| • volume` using `Measure.map_linearMap_addHaar_eq_smul_addHaar volume (by rw [hLdet]; exact hd)`. Establish `hint : ∫ z, G (L z) = ∫ y, G y ∂(Measure.map L volume)` using `(integral_map L.continuous_of_finiteDimensional.aemeasurable hG.aestronglyMeasurable).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hgz : gz Φ h ζ = ∫ z, G (L z)`. Unfold `gz`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [G]`. Rewrite using `[of_mul_blk, hLz, dualF_pair h ζ z hd]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hgz, hint, hmap, integral_smul_measure, hLdet, ENNReal.toReal_ofReal (abs_nonneg _), abs_inv]`. Simplify using `[fz, G, Complex.real_smul]`.
+A detailed English derivation is pending.
 -/
 theorem gz_eq_fz : ∀ (Φ : Ad3.LR.Sw) (h : Ad3.LR.M22) (ζ : ℝ), (Matrix.of h).det ≠ 0 →
     GlobalTheory.CompanionTheory.Parseval.gz Φ h ζ = ((|(Matrix.of h).det|⁻¹ : ℝ) : ℂ) *

@@ -17,25 +17,23 @@ section Alg
 variable {R A α β : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) [Fintype α] [Fintype β]
 end Alg
 /- English proof (translation)
-Take `⟨hs, h0, θ, -, hθ⟩` from `hφ`. Establish `hAt` using `(latAtV_at_stable X W v).1`. Take `⟨r₀, x₀, h₀, h₁⟩` from `exists_base (Fin n × Fin d) v`. Establish `hv : ∀ γ ∈ latAtV X W v, schr (psiAt B.ψ v) (locCo M.co v γ) φ = _` using `fun γ hγ => (eq_of_acts v h₁ (h₀ φ hs) (GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v γ (hAt γ hγ) φ)).trans (eq_of_acts v h₁ (h₀ φ hs) (hθ γ hγ)).symm`. Use `set θ' := inclR (F := F) (AF F) (θ : E)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eigen dd hB.std {z | ∃ γ₁ ∈ latAtV X W v, ∃ γ₂ ∈ latAtV X W v, z = Matrix.fromCols γ₁ᵀ γ₂ᵀ} ?_ ?_ (fun z => B.ψ (⅟(2 : AF F) * symp (cA σ) θ' (incM F W.J) (dbl (incM F X.J)) z z)) (sb_box_loc hs (sb_star hs)) ?_ ?_ (omd g) (hsp.pres g) (hsp.adm g) (actB (cA σ) g) (hsp.impl g) ?_ …` and prove the remaining obligations. Introduce and unpack `_ ⟨γ₁, h1, γ₂, h2, rfl⟩ u hu`. Use extensionality with `i (j | j)`. Use `exacts [congrFun (congrFun (hAt _ h1 u hu) j) i, congrFun (congrFun (hAt _ h2 u hu) j) i]`. Introduce `z hz h`.
+Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ez : z = Matrix.fromCols (z.toCols₁ᵀ)ᵀ (z.toCols₂ᵀ)ᵀ` using `(Matrix.fromCols_toCols z).symm`. Use `⟨_, _root_.PositivityTheory.ThK.Vac.mem_latAtV_k hB hX hW v (fun u hu => ?_) fun γ hγ => ?_, _, _root_.PositivityTheory.ThK.Vac.mem_latAtV_k hB hX hW v (fun u hu => ?_) fun γ hγ => ?_, ez⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `congrFun (congrFun (hz u hu) j) (Sum.inl i)`. Use `h _ ⟨γ, hγ, 0, zero_mem _, rfl⟩` as an intermediate fact.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[ez, symp_dbl, symp_zero, sub_zero]`. Then use the resulting hypothesis. Use extensionality with `i j`. Conclude with `congrFun (congrFun (hz u hu) j) (Sum.inr i)`. Use `h _ ⟨0, zero_mem _, -γ, neg_mem hγ, rfl⟩` as an intermediate fact. Rewrite `this` using `[ez, symp_dbl, symp_zero, zero_sub, ← neg_one_smul (AF F) γ, symp_smul, neg_one_mul, neg_neg]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `Function.ne_iff.1 h0`. Conclude with `fun e => mul_ne_zero hx (star_ne_zero.2 hx) (congrFun e (Sum.elim x x))`. Introduce and unpack `_ ⟨γ₁, h1, γ₂, h2, rfl⟩`. Establish `e : locCo dd v (Matrix.fromCols γ₁ᵀ γ₂ᵀ) = (Sum.elim (locCo M.co v γ₁).1 (locCo M.co v γ₂).1, Sum.elim (locCo M.co v γ₁).2 (-(locCo M.co v γ₂).2))`. Use `hdd γ₁ᵀ γ₂ᵀ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hd', hd']`. Apply the tactic sequence `ext (i | i) <;> simp [locCo, this]`. Establish `a2 : At (evFin F v) (⅟(2 : AF F) * symp (cA σ) θ' (incM F X.J) (incM F W.J) γ₂ γ₂)` using `fun u hu => by`. Rewrite using `[smul_eq_mul, mul_left_comm, ← symp_smul, hAt _ h2 u hu, symp_zero, mul_zero]`. Rewrite using `[e, schr_box hB.std, hv _ h1, hv _ h2, symp_dbl, mul_sub, sub_eq_add_neg, AddChar.map_add_eq_mul, ← star_psi hB.std a2]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [boxFun, Pi.star_apply, Pi.smul_apply, smul_eq_mul, star_mul']`. Expand and normalize the polynomial expressions, which then agree. Introduce `u hu`. Establish `: u * (g.1.1 - 1)ᵀ = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← idem_smul hg, Matrix.transpose_smul, Matrix.mul_smul, ← Matrix.smul_mul]`. Express the relevant statement in the definitionally equal form `(sg v 1 • u) * _ = 0`. Rewrite using `[hu, Matrix.zero_mul]`. Rewrite `this` using `[Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.mul_one, sub_eq_zero]`. Then use the resulting hypothesis. Introduce and unpack `_ ⟨γ₁, h1, γ₂, h2, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨a, ha, b, hb, c, hc, e, he, eg⟩` from `hg'`. Use `⟨Matrix.fromCols γ₁ᵀ γ₂ᵀ * ((g⁻¹).1.1)ᵀ, ⟨a * γ₁ + b * γ₂, add_mem (mul_latAtV ha h1) (mul_latAtV hb h2), c * γ₁ + e * γ₂, add_mem (mul_latAtV hc h1) (mul_latAtV he h2), ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eg, Matrix.fromBlocks_transpose, Matrix.fromCols_mul_fromBlocks]`. Simplify using `only [Matrix.transpose_add, Matrix.transpose_mul]`. Establish `: g.1.1 * (g⁻¹).1.1 = 1` using `g.1.mul_inv`.
-
-Rewrite using `[actB, Matrix.mul_assoc, ← Matrix.transpose_mul, this, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[symp, symp, hTens_mul (cA σ) _ (g⁻¹).2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dbl_eigen_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {X : Spc F E n} {W : Spc F E d} {r s r' s' : ℕ} (hX : X.IsHerm σ B r s)
     (hW : W.IsSkew σ B r' s') {M : Model σ X W} {φ} (hφ : M.IsVac B.ψ v φ)

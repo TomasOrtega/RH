@@ -10,9 +10,9 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.CompanionTheory.PartialZeta
 
 /- English proof (translation)
-Introduce `F _ _ χ hχ`. Establish `htop : χ.conductor = ⊤`. Establish `h` using `(χ.map_idealLevel_le_ker_iff (𝔪 := ⊤) top_ne_bot).1 ((map_idealLevel_le_standardOpenSubgroup ⊤).trans hχ)`. Rewrite `h` using `[Ideal.dvd_iff_le, top_le_iff]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HeckeCharacter.discrNormConductor, htop, Ideal.absNorm_top, GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.dF]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem discrNormConductor_eq_dF_of_unramified :
     ∀ (F : Type) [Field F] [NumberField F] (χ : HeckeCharacter F),

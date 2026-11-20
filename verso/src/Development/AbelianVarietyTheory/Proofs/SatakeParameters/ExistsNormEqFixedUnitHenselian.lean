@@ -7,11 +7,11 @@ open Polynomial
 namespace GlobalTheory.HenselianNorm
 
 /- English proof (translation)
-Take `⟨s, hs, hsI⟩` from `HenselianRing.is_henselian (I := I) (X ^ 2 + X - C (n * e)) (by monicity!) 0 (by`. Simplify using `only [eval_sub, eval_add, eval_pow, eval_X, eval_C]`. Simplify using `using I.mul_mem_left n he)`. Use the proof step `(by simp)`. Establish `h0 : eval s (X ^ 2 + X - C (n * e)) = 0` using `hs`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [eval_sub, eval_add, eval_pow, eval_X, eval_C] at h0`. Rewrite `hsI` using `[sub_zero]`. Take `⟨U, hU⟩` from `(Ideal.mem_jacobson_bot.mp (HenselianRing.jac hsI)) 1`. Establish `hinv : (s + 1) * (↑U⁻¹ : R) = 1`. Rewrite using `[show s + 1 = (U : R) by rw [hU]; ring]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `U.mul_inv`. Establish `hnt : n * (e * ↑U⁻¹) = s`. Take the linear combination `(-(↑U⁻¹ : R)) * h0 + s * hinv`. Use `⟨e * ↑U⁻¹, I.mul_mem_right _ he, ?_⟩` and prove the remaining obligations. Take the linear combination `(e * ↑U⁻¹) * hnt + e * hinv`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_mem_add_mul_sq_eq {R : Type*} [CommRing R] (I : Ideal R) [HenselianRing R I]
     (n : R) {e : R} (he : e ∈ I) : ∃ t ∈ I, t + n * t ^ 2 = e := by
@@ -34,13 +34,13 @@ theorem exists_mem_add_mul_sq_eq {R : Type*} [CommRing R] (I : Ideal R) [Henseli
   linear_combination (e * ↑U⁻¹) * hnt + e * hinv
 
 /- English proof (translation)
-Take `⟨t, htI, ht⟩` from `exists_mem_add_mul_sq_eq I (w * c w) he`. Establish `hct : c t = t`. Establish `h1 : c t + w * c w * c t ^ 2 = e`. Establish `h` using `congrArg c ht`. Simplify using `only [map_add, map_mul, map_pow, hc, hce] at h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `h`. Establish `hm : w * c w * (t + c t) ∈ I` using `I.mul_mem_left _ (I.add_mem htI (hI t htI))`. Take `⟨U, hU⟩` from `(Ideal.mem_jacobson_bot.mp (HenselianRing.jac hm)) 1`. Establish `hz : (t - c t) * (U : R) = 0`. Rewrite using `[hU]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `ht - h1`. Establish `h2` using `(U.isUnit.mul_left_eq_zero).mp hz`. Take the linear combination `-h2`. Use `⟨1 + w * t, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_one, map_mul, hct]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `ht + t * hw`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_norm_eq_one_add {R : Type*} [CommRing R] (I : Ideal R) [HenselianRing R I]
     (c : R →+* R) (hc : ∀ x, c (c x) = x) (hI : ∀ x ∈ I, c x ∈ I) {w : R} (hw : w + c w = 1)
@@ -63,27 +63,25 @@ theorem exists_norm_eq_one_add {R : Type*} [CommRing R] (I : Ideal R) [Henselian
   linear_combination ht + t * hw
 
 /- English proof (translation)
-Introduce `R _ I _ _ c hc hI hω u hcu hu`. Take `⟨ω, D, hD⟩` from `hω`. Establish `hcD : (c ω - ω) * c ↑D⁻¹ = 1`. Establish `h` using `congrArg c D.mul_inv`. Rewrite `h` using `[map_mul, map_one, hD, map_sub, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hw : ω * ↑D⁻¹ + c (ω * ↑D⁻¹) = 1`. Establish `hinv : (↑D⁻¹ : R) * (ω - c ω) = 1` using `by rw [← hD]; exact D.inv_mul`. Rewrite using `[map_mul]`. Take the linear combination `(1 - ω * ↑D⁻¹) * hcD - ω * c ↑D⁻¹ * hinv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hI' : I ≤ I.comap c` using `fun x hx => hI x hx`. Set `cb : R ⧸ I →+* R ⧸ I` to `Ideal.quotientMap I c hI'`. Establish `hmk : ∀ x, cb (Ideal.Quotient.mk I x) = Ideal.Quotient.mk I (c x)` using `fun x => Ideal.quotientMap_mk`. Establish `hcb : ∀ x, cb (cb x) = x`. Introduce `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[hmk, hmk, hc]`. Establish `hunit : IsUnit (Ideal.Quotient.mk I ω - cb (Ideal.Quotient.mk I ω))`. Rewrite using `[hmk, ← map_sub, ← hD]`. Conclude with `D.isUnit.map _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨xb, hxb⟩` from `GlobalTheory.T.finite_involution_fixed_unit_eq_mul_conj (R ⧸ I) cb hcb ⟨_, hunit⟩ (Ideal.Quotient.mk I u) (by rw [hmk, hcu]) (hu.map _)`. Take `⟨x₀, rfl⟩` from `Ideal.Quotient.mk_surjective xb`. Rewrite `hxb` using `[hmk, ← map_mul]`. Establish `hmem : x₀ * c x₀ - u ∈ I` using `Ideal.Quotient.eq.mp hxb`. Take `⟨U, rfl⟩` from `hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcU : c ↑U⁻¹ = ↑U⁻¹`. Establish `h : (U : R) * c ↑U⁻¹ = 1`. Rewrite using `[← hcu, ← map_mul, U.mul_inv, map_one]`. Conclude with `(Units.inv_eq_of_mul_eq_one_right h).symm`. Take `⟨a, ha⟩ : ∃ a, a = (x₀ * c x₀ - ↑U) * ↑U⁻¹` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `haI : a ∈ I` using `ha ▸ I.mul_mem_right _ hmem`. Establish `hca : c a = a`. Rewrite using `[ha]`. Simplify using `only [map_mul, map_sub, hc, hcu, hcU]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, hV⟩` from `(Ideal.mem_jacobson_bot.mp (HenselianRing.jac haI)) 1`. Establish `hcV : c ↑V = ↑V` using `by rw [hV, map_add, map_mul, map_one, hca]`. Establish `hcVi : c ↑V⁻¹ = ↑V⁻¹`. Establish `h : (V : R) * c ↑V⁻¹ = 1`. Rewrite using `[← hcV, ← map_mul, V.mul_inv, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `(Units.inv_eq_of_mul_eq_one_right h).symm`. Establish `heI : (↑V⁻¹ : R) - 1 ∈ I`. Establish `h : (↑V⁻¹ : R) - 1 = -(↑V⁻¹ * a)`. Take the linear combination `(-(↑V⁻¹ : R)) * hV + V.inv_mul`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `I.neg_mem (I.mul_mem_left _ haI)`. Take `⟨y, hy⟩` from `exists_norm_eq_one_add I c hc hI hw heI (by rw [map_sub, hcVi, map_one])`. Establish `hvU : x₀ * c x₀ = ↑U * ↑V`. Rewrite using `[hV, ha]`. Take the linear combination `(-(x₀ * c x₀ - ↑U)) * U.mul_inv`.
-
-Use `⟨x₀ * y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Take the linear combination `(x₀ * c x₀) * hy + (↑V⁻¹ : R) * hvU + (↑U : R) * V.mul_inv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_norm_eq : ∀ (R : Type) [CommRing R] (I : Ideal R) [HenselianRing R I]
     [Finite (R ⧸ I)] (c : R →+* R), (∀ x, c (c x) = x) → (∀ x ∈ I, c x ∈ I) →

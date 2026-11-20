@@ -9,13 +9,11 @@ noncomputable section
 namespace GlobalTheory.InterpCurv
 
 /- English proof (translation)
-Establish `he : HasDerivAt (fun w => Real.exp (κ * (w - L))) (Real.exp (κ * (v - L)) * κ) v`. Establish `h1 : HasDerivAt (fun w => κ * (w - L)) κ v`. Simplify using `using ((hasDerivAt_id v).sub_const L).const_mul κ`. Conclude with `h1.exp`. Establish `hpos : 0 < 1 + Real.exp (κ * (v - L))` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(he.const_add 1).inv hpos.ne'`. Establish `h3 : HasDerivAt (logisticFactor κ L) (-(Real.exp (κ * (v - L)) * κ) / (1 + Real.exp (κ * (v - L))) ^ 2) v`. Establish `: logisticFactor κ L = fun w => (1 + Real.exp (κ * (w - L)))⁻¹`. Use function extensionality and compare the values at `w`. Simplify using `[logisticFactor]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [logisticFactor]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_logisticFactor (κ L v : ℝ) :
     HasDerivAt (logisticFactor κ L)
@@ -37,7 +35,7 @@ theorem hasDerivAt_logisticFactor (κ L v : ℝ) :
   ring
 
 /- English proof (translation)
-Establish `h` using `hasDerivAt_logisticFactor κ L v`. Establish `h' : HasDerivAt (fun w => -κ * logisticFactor κ L w * (1 - logisticFactor κ L w)) (-κ * (-κ * logisticFactor κ L v * (1 - logisticFactor κ L v)) * (1 - logisticFactor κ L v) + -κ * logisticFactor κ L v * (0 - -κ * logisticFactor κ L v * (1 - logisticFactor κ L v))) v` using `(h.const_mul (-κ)).mul ((hasDerivAt_const v (1:ℝ)).sub h)`. Conclude with `h'.congr_deriv (by ring)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_logisticFactor_deriv (κ L v : ℝ) :
     HasDerivAt (fun w => -κ * logisticFactor κ L w * (1 - logisticFactor κ L w))
@@ -51,23 +49,21 @@ theorem hasDerivAt_logisticFactor_deriv (κ L v : ℝ) :
   exact h'.congr_deriv (by ring)
 
 /- English proof (translation)
-Introduce `χ hχ κ L t u hL hu`. Use `set s := logisticFactor κ L with hs`. Use `set s1 : ℝ → ℝ := fun w => -κ * s w * (1 - s w) with hs1`. Establish `hf : weightProfile χ κ L t = fun v => t * (χ (v / L) * s v)`. Use function extensionality and compare the values at `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[weightProfile_eq]`. Establish `hopen : ContDiffOn ℝ ∞ χ (Ioi 0)` using `hχ.smooth.mono Ioi_subset_Ici_self`. Establish `hd1 : ContDiffOn ℝ ∞ (deriv χ) (Ioi 0)` using `hopen.deriv_of_isOpen isOpen_Ioi (by simp)`. Establish `hχd : ∀ y, 0 < y → HasDerivAt χ (deriv χ y) y` using `fun y hy => ((hopen.contDiffAt (Ioi_mem_nhds hy)).differentiableAt (by simp)).hasDerivAt`. Establish `hχdd : ∀ y, 0 < y → HasDerivAt (deriv χ) (deriv (deriv χ) y) y` using `fun y hy => ((hd1.contDiffAt (Ioi_mem_nhds hy)).differentiableAt (by simp)).hasDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiv : ∀ v : ℝ, HasDerivAt (fun w : ℝ => w / L) (1 / L) v` using `fun v => (hasDerivAt_id v).div_const L`. Establish `hg : ∀ v, 0 < v → HasDerivAt (fun w => χ (w / L)) (deriv χ (v / L) / L) v`. Introduce `v hv`. Establish `: HasDerivAt (fun w => χ (w / L)) (deriv χ (v / L) * (1 / L)) v` using `(hχd (v / L) (div_pos hv hL)).comp v (hdiv v)`. Conclude with `this.congr_deriv (by ring)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg1 : ∀ v, 0 < v → HasDerivAt (fun w => deriv χ (w / L) / L) (deriv (deriv χ) (v / L) / L ^ 2) v`. Introduce `v hv`. Establish `hc` using `hχdd (v / L) (div_pos hv hL)`. Establish `h0 : HasDerivAt (fun w => deriv χ (w / L)) (deriv (deriv χ) (v / L) * (1 / L)) v` using `HasDerivAt.comp (h₂ := deriv χ) v hc (hdiv v)`. Conclude with `(h0.div_const L).congr_deriv (by field_simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsd : ∀ v, HasDerivAt s (s1 v) v` using `fun v => hasDerivAt_logisticFactor κ L v`. Establish `hs1d : ∀ v, HasDerivAt s1 (κ ^ 2 * s v * (1 - s v) * (1 - 2 * s v)) v` using `fun v => hasDerivAt_logisticFactor_deriv κ L v`. Use `set F1 : ℝ → ℝ := fun v => t * (deriv χ (v / L) / L * s v + χ (v / L) * s1 v) with hF1`. Establish `hfd : ∀ v, 0 < v → HasDerivAt (weightProfile χ κ L t) (F1 v) v`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf]`. Establish `: HasDerivAt (fun w => t * (χ (w / L) * s w)) (t * (deriv χ (v / L) / L * s v + χ (v / L) * s1 v)) v` using `((hg v hv).mul (hsd v)).const_mul t`. Conclude with `this`. Establish `hderiv_ev : deriv (weightProfile χ κ L t) =ᶠ[𝓝 u] F1` using `by filter_upwards [Ioi_mem_nhds hu] with v hv`. Conclude with `(hfd v hv).deriv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `⟨?_, (hfd u hu).deriv, ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Establish `hχc : ContDiffAt ℝ 2 χ (u / L)` using `(hopen.contDiffAt (Ioi_mem_nhds (div_pos hu hL))).of_le (WithTop.coe_le_coe.mpr le_top)`. Establish `hgc : ContDiffAt ℝ 2 (fun w => χ (w / L)) u` using `hχc.comp u (contDiffAt_id.div_const L)`. Establish `hsc : ContDiff ℝ 2 s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs]`. Unfold `logisticFactor`. Use `contDiff_const.div ?_ (fun x => by positivity)` and prove the remaining obligations. Conclude with `contDiff_const.add ((contDiff_const.mul (contDiff_id.sub contDiff_const)).exp)`. Conclude with `contDiffAt_const.mul (hgc.mul hsc.contDiffAt)`.
-
-Rewrite using `[hderiv_ev.deriv_eq]`. Establish `: HasDerivAt F1 (t * ((deriv (deriv χ) (u / L) / L ^ 2 * s u + deriv χ (u / L) / L * s1 u) + (deriv χ (u / L) / L * s1 u + χ (u / L) * (κ ^ 2 * s u * (1 - s u) * (1 - 2 * s u))))) u` using `(((hg1 u hu).mul (hsd u)).add ((hg u hu).mul (hs1d u))).const_mul t`. Rewrite using `[this.deriv]`. Simplify using `only [hs1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem weightProfile_second_deriv : ∀ (χ : ℝ → ℝ), IsCutoff χ → ∀ (κ L t u : ℝ), 0 < L → 0 < u → ContDiffAt ℝ 2 (weightProfile χ κ L t) u ∧ deriv (weightProfile χ κ L t) u = t * (deriv χ (u / L) / L * logisticFactor κ L u + χ (u / L) * (-κ * logisticFactor κ L u * (1 - logisticFactor κ L u))) ∧ deriv (deriv (weightProfile χ κ L t)) u = t * (deriv (deriv χ) (u / L) / L ^ 2 * logisticFactor κ L u + 2 * (deriv χ (u / L) / L) * (-κ * logisticFactor κ L u * (1 - logisticFactor κ L u)) + χ (u / L) * (κ ^ 2 * logisticFactor κ L u * (1 - logisticFactor κ L u) * (1 - 2 * logisticFactor κ L u))) := by
   intro χ hχ κ L t u hL hu

@@ -15,17 +15,13 @@ def NondegOn (h : V →ₗ⋆[K] V →ₗ[K] K) (W : Submodule K V) : Prop :=
   ∀ ξ ∈ W, ξ ≠ 0 → ∃ w ∈ W, h w ξ ≠ 0
 
 /- English proof (translation)
-Take `⟨t, ht0, htM⟩` from `hM.span w hw`. Establish `hsp` using `hM.span ξ hξ`. Set `A : AddSubgroup K` to `{ carrier := {c | c • ξ ∈ M} add_mem' := fun {a b} ha hb => by show (a + b) • ξ ∈ M`. Rewrite using `[add_smul]`. Conclude with `M.add_mem ha hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := by show (0 : K) • ξ ∈ M`. Rewrite using `[zero_smul]`. Conclude with `M.zero_mem`. Use the proof step `neg_mem' := fun {a} ha => by show (-a) • ξ ∈ M`. Rewrite using `[neg_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.neg_mem ha }`. Establish `hA : ∀ c, c ∈ A ↔ c • ξ ∈ M` using `fun c => Iff.rfl`. Take `⟨α, hαA, hα0, hα⟩` from `hS.principal A (fun s hs a ha => by`. Rewrite `ha`, the goal using `[hA]`. Rewrite using `[mul_smul]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hM.smul_mem s hs _ ha)`. Use the proof step `(by`. Take `⟨t', ht'0, ht'M⟩` from `hsp`. Conclude with `⟨t', (hA t').2 ht'M, ht'0⟩)`. Use the proof step `⟨star t * h w ξ, mul_ne_zero (star_ne_zero.2 ht0) hn, fun a ha => by`.
-
-Rewrite `ha` using `[hA]`. Establish `hi` using `hM.int _ htM _ ha`. Establish `e : h (t • w) (a • ξ) = star t * h w ξ * a`. Rewrite using `[LinearMap.map_smulₛₗ₂, map_smul, smul_eq_mul, smul_eq_mul, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[← e]`. Conclude with `hi⟩`. Conclude with `⟨α, hα0, (hA α).1 hαA, fun c hc => hα c ((hA c).2 hc)⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_primitive' (hS : IsHermSemilocal S) (hM : IsLatIn S h W M) {ξ w : V} (hξ : ξ ∈ W)
     (hw : w ∈ W) (hn : h w ξ ≠ 0) :
@@ -66,15 +62,15 @@ theorem exists_primitive' (hS : IsHermSemilocal S) (hM : IsLatIn S h W M) {ξ w 
   exact ⟨α, hα0, (hA α).1 hαA, fun c hc => hα c ((hA c).2 hc)⟩
 
 /- English proof (translation)
-Establish `hu0 : u ≠ 0` using `hu.1`. Establish `hξ0 : ξ ≠ 0`. Introduce and unpack `rfl`. Apply `hu0` to reduce the goal to its premises. Rewrite using `[← hξu]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨l, hl0, hlM, hprim⟩` from `exists_primitive' hS hM hξ hξ (by rw [hξu]; exact hu0)`. Establish `hyy : h (l • ξ) (l • ξ) = star l * l * u`. Rewrite using `[LinearMap.map_smulₛₗ₂, map_smul, smul_eq_mul, smul_eq_mul, starRingEnd_apply, hξu]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hN : star l * l ∈ S`. Establish `hi` using `hM.int _ hlM _ hlM`. Rewrite `hi` using `[hyy]`. Establish `e` using `S.mul_mem hi hu.2.2`. Rewrite `e` using `[mul_assoc, mul_inv_cancel₀ hu0, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨b, hb1, hbS⟩` from `Formalism.HermitianLattices.Ext.L3.WA.exists_norm_one_mul_mem hS hN`. Use `⟨l • ξ, hlM, smul_ne_zero hl0 hξ0, ⟨l, rfl⟩, fun c hc => ?_, l * b, hbS, ?_⟩` and prove the remaining obligations. Establish `e` using `hprim (c * l) (by rwa [mul_smul])`. Rewrite `e` using `[mul_assoc, mul_inv_cancel₀ hl0, mul_one]`. Then use the resulting hypothesis. Rewrite using `[hyy, star_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(star l * l * u)) * hb1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_primitive_norm' (hS : IsHermSemilocal S) (hM : IsLatIn S h W M) {ξ : V} (hξ : ξ ∈ W)
     {u : K} (hu : IsUnitIn S u) (hξu : h ξ ξ = u) :
@@ -103,9 +99,9 @@ theorem exists_primitive_norm' (hS : IsHermSemilocal S) (hM : IsLatIn S h W M) {
     linear_combination (-(star l * l * u)) * hb1
 
 /- English proof (translation)
-Take `⟨y, hy, -, -, hprim, a, ha, hyy⟩` from `exists_primitive_norm' hS hM.toIsLatIn hξ hu hξu`. Take `⟨w, hw, hn⟩` from `hM.exists_not_dv hπ hy hprim`. Establish `huf : star u = u`. Establish `e : starRingEnd K (h ξ ξ) = h ξ ξ` using `by first`. Consider the case `exact hs ξ ξ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact hs.eq ξ ξ`. Rewrite `e` using `[hξu, starRingEnd_apply]`. Conclude with `e`. Conclude with `exists_norm_of_not_dv hS hπ hs hM.smul_mem hM.int hy hw ha hu huf hyy hn`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsSD.exists_norm' (hS : IsHermSemilocal S) (hπ : IsUnif S π) (hs : h.IsSymm)
     (hM : IsSD S h W M) {ξ : V} (hξ : ξ ∈ W) {u : K}
@@ -122,9 +118,9 @@ theorem IsSD.exists_norm' (hS : IsHermSemilocal S) (hπ : IsUnif S π) (hs : h.I
   exact exists_norm_of_not_dv hS hπ hs hM.smul_mem hM.int hy hw ha hu huf hyy hn
 
 /- English proof (translation)
-Take `⟨w, hw, hn⟩` from `hnd ξ hξ hξ0`. Take `⟨l, hl0, hlM, hprim⟩` from `exists_primitive' hS hM.toIsLatIn hξ hw hn`. Establish `hprim' : ∀ c : K, c • (l • ξ) ∈ M → c ∈ S`. Introduce `c hc`. Establish `e` using `hprim (c * l) (by rwa [mul_smul])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[mul_assoc, mul_inv_cancel₀ hl0, mul_one]`. Then use the resulting hypothesis. Take `⟨w', hw', hn'⟩` from `hM.exists_not_dv hπ hlM hprim'`. Conclude with `exists_unit_norm hS hπ hs hM.smul_mem hM.int hlM hw' hn'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsSD.exists_unit_norm' (hS : IsHermSemilocal S) (hπ : IsUnif S π) (hs : h.IsSymm)
     (hnd : NondegOn h W) (hM : IsSD S h W M) {ξ : V} (hξ : ξ ∈ W) (hξ0 : ξ ≠ 0) :
@@ -139,9 +135,9 @@ theorem IsSD.exists_unit_norm' (hS : IsHermSemilocal S) (hπ : IsUnif S π) (hs 
   exact exists_unit_norm hS hπ hs hM.smul_mem hM.int hlM hw' hn'
 
 /- English proof (translation)
-Introduce `ξ hξ hξ0`. Rewrite `hξ` using `[mem_cutW]`. Take `⟨w, hw, hwξ⟩` from `hnd ξ hξ.1 hξ0`. Use `⟨w - (h x w * (h x x)⁻¹) • x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_cutW]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨W.sub_mem hw (W.smul_mem _ hx), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, smul_eq_mul, inv_mul_cancel_right₀ hxx, sub_self]`. Rewrite using `[map_sub, LinearMap.sub_apply, map_smulₛₗ, LinearMap.smul_apply, hξ.2, smul_zero, sub_zero]`. Conclude with `hwξ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nondegOn_cut (hnd : NondegOn h W) {x : V} (hx : x ∈ W) (hxx : h x x ≠ 0) :
     NondegOn h (cutW h W x) := by

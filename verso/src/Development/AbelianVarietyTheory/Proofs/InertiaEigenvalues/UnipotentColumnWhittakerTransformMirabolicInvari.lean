@@ -9,23 +9,23 @@ open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.CuspRep Glob
 namespace GlobalTheory.CuspGeneric
 
 /- English proof (translation)
-Introduce `i k h` and use `hγ i k (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsMir.succ {E : Type} [Field E] {a m : ℕ} {γ : GL (Fin a) E} (hγ : IsMir m γ) : IsMir (m + 1) γ :=
   fun i k h => hγ i k (by omega)
 
 /- English proof (translation)
-Introduce `E _ _ a ψ hψ m f hma hf γ hγ g`. Establish `key` using `GlobalTheory.T.whittakerCoefficient_rationalMirabolic_mul E a ψ hψ m f hf.cont hf.left γ hγ.succ (eLast a (m + 1)) g`. Unfold `colT`. Rewrite using `[key]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `t`. Set `s0 : UnipotentBlockColumnIndex a (m + 1) (m + 1)` to `⟨(⟨m, by omega⟩, ⟨m + 1, hma⟩), Nat.lt_succ_self m, le_refl _, le_refl _⟩`. Rewrite using `[Finset.sum_eq_single s0]`. Establish `h1 : eLast (E` using `E) a (m + 1) s0 = 1 := by simp [eLast, s0]`. Rewrite using `[h1, one_mul, hγ _ _ (Or.inl (le_refl m))]`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht` using `t.2.1`. Simplify using `only [eLast, Matrix.one_apply]`. Distinguish the cases in `h : (t.1.1 : ℕ) = m`. Rewrite using `[if_pos (Fin.ext h.symm), if_pos (by omega)]`. Rewrite using `[if_neg (fun e => h (congrArg Fin.val e).symm), if_neg (by omega)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `s _ hs`. Establish `h0 : eLast (E` using `E) a (m + 1) s = 0 := by`. Simplify using `only [eLast]`. Rewrite using `[if_neg]`. Introduce `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hs` to reduce the goal to its premises. Establish `h2` using `s.2.2`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Prod.ext (Fin.ext (by simp [s0]; omega)) (Fin.ext (by simp [s0]; omega))`. Rewrite using `[h0, zero_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem colT_isMir_invariant : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (ψ : AddChar (Ad E) ℂ), StdPsi ψ →
     ∀ (m : ℕ) (f : GA E a → ℂ), m + 1 < a → Good ψ (m + 1) f → ∀ γ : GL (Fin a) E, IsMir m γ →

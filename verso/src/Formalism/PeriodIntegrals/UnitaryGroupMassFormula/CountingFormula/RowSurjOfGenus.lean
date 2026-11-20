@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.Differe
 namespace PI.UnitaryGroupMassFormula.CntFormula.RowsMassW
 
 /- English proof (translation)
-The claim follows from `rowSurj_of hJ partner_vector_exists lattice_integral lamUnimod lattice_flag_exists local_genus_exists`.
+A detailed English derivation is pending.
 -/
 theorem rowSurj_of_genus (hJ : UnimodOneGenus) : RowSurj :=
   rowSurj_of hJ partner_vector_exists lattice_integral lamUnimod lattice_flag_exists local_genus_exists

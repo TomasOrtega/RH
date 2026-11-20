@@ -14,18 +14,16 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Conclude with `(contDiff_apply ℂ ℂ b).comp (contDiff_apply ℂ (Fin n → ℂ) a)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_entry (a b : Fin n) {m : ℕ∞ω} :
     ContDiff ℂ m (fun z : Matrix (Fin n) (Fin n) ℂ => z a b) := by
   exact (contDiff_apply ℂ ℂ b).comp (contDiff_apply ℂ (Fin n → ℂ) a)
 
 /- English proof (translation)
-Unfold `lead`. Distinguish the cases in `h : i ≤ n`. Simplify using `only [h, dif_pos]`. Simplify using `only [Matrix.det_apply, Units.smul_def]`. Use `ContDiff.sum fun σ _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContDiff.const_smul _ ?_` and prove the remaining obligations. Use `contDiff_prod fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply]`. Apply the tactic sequence `exact contDiff_entry _ _`. Simplify using `only [h, dif_neg, not_false_eq_true]`.
-
-Conclude with `contDiff_const`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_lead (i : ℕ) {m : ℕ∞ω} : ContDiff ℂ m (lead (n := n) i) := by
   unfold lead
@@ -41,9 +39,7 @@ theorem contDiff_lead (i : ℕ) {m : ℕ∞ω} : ContDiff ℂ m (lead (n := n) i
     exact contDiff_const
 
 /- English proof (translation)
-Establish `hl : ContDiffAt ℂ m (lead (n` using `n) i) z := (contDiff_lead i).contDiffAt`. Break down `k with k | k` into its components or cases. Simplify using `only [Int.ofNat_eq_coe, zpow_natCast]`. Conclude with `hl.pow k`. Simplify using `only [zpow_negSucc]`.
-
-Conclude with `(hl.pow (k + 1)).inv (pow_ne_zero _ hz)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffAt_zpow_lead (i : ℕ) (k : ℤ) {z : Matrix (Fin n) (Fin n) ℂ} (hz : lead i z ≠ 0)
     {m : ℕ∞ω} : ContDiffAt ℂ m (fun w => lead i w ^ k) z := by
@@ -55,7 +51,7 @@ theorem contDiffAt_zpow_lead (i : ℕ) (k : ℤ) {z : Matrix (Fin n) (Fin n) ℂ
     exact (hl.pow (k + 1)).inv (pow_ne_zero _ hz)
 
 /- English proof (translation)
-Unfold `PhiM`. Conclude with `contDiffAt_prod fun i _ => contDiffAt_zpow_lead _ _ (hz i)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiffAt_phiM (μ : Fin n → ℤ) {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ OmegaSet n)
     {m : ℕ∞ω} : ContDiffAt ℂ m (PhiM μ) z := by
@@ -63,16 +59,16 @@ theorem contDiffAt_phiM (μ : Fin n → ℤ) {z : Matrix (Fin n) (Fin n) ℂ} (h
   exact contDiffAt_prod fun i _ => contDiffAt_zpow_lead _ _ (hz i)
 
 /- English proof (translation)
-Conclude with `(contDiffAt_phiM μ hz (m := 1)).differentiableAt (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_phiM (μ : Fin n → ℤ) {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ OmegaSet n) :
     DifferentiableAt ℂ (PhiM μ) z := by
   exact (contDiffAt_phiM μ hz (m := 1)).differentiableAt (by norm_num)
 
 /- English proof (translation)
-Establish `hl : HasDerivAt (fun t : ℂ => z + t • v) v 0`. Establish `h` using `((hasDerivAt_id (0 : ℂ)).smul_const v).const_add z`. Rewrite `h` using `[one_smul]`. Conclude with `h`. Establish `hF' : HasFDerivAt F (fderiv ℂ F z) (z + (0 : ℂ) • v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hF.hasFDerivAt`. Conclude with `hF'.comp_hasDerivAt (0 : ℂ) hl`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_line {F : Matrix (Fin n) (Fin n) ℂ → ℂ} {z : Matrix (Fin n) (Fin n) ℂ}
     (hF : DifferentiableAt ℂ F z) (v : Matrix (Fin n) (Fin n) ℂ) :
@@ -90,9 +86,9 @@ def mulLeftCLM (Y : Matrix (Fin n) (Fin n) ℂ) :
   LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℂ Y)
 
 /- English proof (translation)
-Unfold `Lhol`. Establish `hc : DifferentiableAt ℂ (fderiv ℂ F) z` using `(hF.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hu : HasFDerivAt (fun y : Matrix (Fin n) (Fin n) ℂ => Y * y) (mulLeftCLM Y) z` using `(mulLeftCLM Y).hasFDerivAt`. Establish `h` using `hc.hasFDerivAt.clm_apply hu`. Use `erw [h.fderiv]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem lhol_lhol_eq {F : Matrix (Fin n) (Fin n) ℂ → ℂ} {z : Matrix (Fin n) (Fin n) ℂ}
     (hF : ContDiffAt ℂ 2 F z) (X Y : Matrix (Fin n) (Fin n) ℂ) :
@@ -107,9 +103,9 @@ theorem lhol_lhol_eq {F : Matrix (Fin n) (Fin n) ℂ → ℂ} {z : Matrix (Fin n
   rfl
 
 /- English proof (translation)
-Rewrite using `[lhol_lhol_eq hF, lhol_lhol_eq hF]`. Establish `hs` using `hF.isSymmSndFDerivAt (by simp)`. Establish `h1 : fderiv ℂ (fderiv ℂ F) z (Y * z) (X * z) = fderiv ℂ (fderiv ℂ F) z (X * z) (Y * z)` using `hs _ _`. Establish `h2 : fderiv ℂ F z ((Y * X - X * Y) * z) = fderiv ℂ F z (Y * (X * z)) - fderiv ℂ F z (X * (Y * z))`. Rewrite using `[Matrix.sub_mul, map_sub, Matrix.mul_assoc, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-h1 - h2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem lhol_comm {F : Matrix (Fin n) (Fin n) ℂ → ℂ} {z : Matrix (Fin n) (Fin n) ℂ}
     (hF : ContDiffAt ℂ 2 F z) (X Y : Matrix (Fin n) (Fin n) ℂ) :

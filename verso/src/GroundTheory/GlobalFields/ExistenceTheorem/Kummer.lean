@@ -18,7 +18,7 @@ variable {K : Type*} [Field K] [NumberField K] {M : Type*} [Field M] [NumberFiel
   [IsAbelianGalois K M]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K c`. Rewrite using `[reciprocityMap_mk, reciprocityMap_mk, restrictNormal_ideleSymbol]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem reciprocityMap_intermediateField (L : IntermediateField K M) (c : IdeleClassGroup K) :
     reciprocityMap K L c = (reciprocityMap K M c).restrictNormal L := by
@@ -26,11 +26,11 @@ theorem reciprocityMap_intermediateField (L : IntermediateField K M) (c : IdeleC
   rw [reciprocityMap_mk, reciprocityMap_mk, restrictNormal_ideleSymbol]
 
 /- English proof (translation)
-Use extensionality with `c`. Rewrite using `[← ker_reciprocityMap, MonoidHom.mem_ker, reciprocityMap_intermediateField, AlgEquiv.restrictNormal_eq_one_iff]`. Rewrite using `[← IntermediateField.mem_fixingSubgroup_iff, IntermediateField.fixingSubgroup_fixedField]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hd, hdc⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hk : d⁻¹ * c ∈ (reciprocityMap K M).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hdc, inv_mul_cancel]`. Rewrite `hk` using `[ker_reciprocityMap]`. Simplify using `using N.mul_mem hd (hN hk)`. Introduce `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨c, hc, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem range_ideleClassNorm_fixedField (N : Subgroup (IdeleClassGroup K))
     (hN : (ideleClassNorm K M).range ≤ N) :
@@ -49,7 +49,7 @@ theorem range_ideleClassNorm_fixedField (N : Subgroup (IdeleClassGroup K))
     exact ⟨c, hc, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, range_ideleClassNorm_fixedField N hN⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_intermediateField_range_ideleClassNorm_eq_of_le (N : Subgroup (IdeleClassGroup K))
     (hN : (ideleClassNorm K M).range ≤ N) :
@@ -63,7 +63,7 @@ section Open
 variable {K : Type u} [Field K] [NumberField K] {n : ℕ} [NeZero n]
 
 /- English proof (translation)
-Rewrite using `[coe_finiteProj, ← WithZero.exp_log (valued_ne_zero v x)]`. Establish `h' : WithZero.log (Valued.v ((x : 𝔸[K]).2 v)) = 0`. Rewrite `h` using `[ord]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h', WithZero.exp_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem IdeleGroup.valued_finiteProj_eq_one_of_ord_eq_zero {v : HeightOneSpectrum (𝓞 K)}
     {x : IdeleGroup K} (h : ord v x = 0) :
@@ -75,11 +75,11 @@ theorem IdeleGroup.valued_finiteProj_eq_one_of_ord_eq_zero {v : HeightOneSpectru
   rw [h', WithZero.exp_zero]
 
 /- English proof (translation)
-Use `𝔪.mem_congruenceSubgroup.2 ⟨fun v ↦ ?_, fun w _ ↦ ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hzS v hv]`. Conclude with `one_mem _`. Establish `he : 𝔪.exponent v = 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hv (hS v h)`. Establish `h1` using `valued_finiteProj_eq_one_of_ord_eq_zero (hzo v hv)`. Rewrite using `[he, mem_unitsLevel]`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_zero, neg_zero, WithZero.exp_zero]`. Conclude with `Valuation.map_sub_le _ h1.le (by simp)`. Rewrite using `[hzi w.1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_congruenceSubgroup_of_eq_one (𝔪 : Modulus K) {S : Set (HeightOneSpectrum (𝓞 K))}
     (hS : ∀ v, 𝔪.exponent v ≠ 0 → v ∈ S) {z : IdeleGroup K} (hzS : ∀ v ∈ S, finiteProj v z = 1)
@@ -101,31 +101,27 @@ theorem mem_congruenceSubgroup_of_eq_one (𝔪 : Modulus K) {S : Set (HeightOneS
     simp
 
 /- English proof (translation)
-Take `⟨𝔪, -, h𝔪⟩` from `Modulus.exists_congruenceSubgroup_le (N.comap (IdeleClassGroup.mk K)) (hN.preimage (IdeleClassGroup.continuous_mk K))`. Take `⟨S₀, hS₀⟩` from `exists_finset_sup_sIdeles_eq_top (K := K)`. Establish `hn0 : Ideal.span {(n : 𝓞 K)} ≠ 0`. Rewrite using `[Ideal.zero_eq_bot, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `NeZero.ne n` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set P := (Ideal.finite_factors hn0).toFinset`. Use `set T := 𝔪.finite_support_exponent.toFinset`. Use `set S := S₀ ∪ T ∪ P with hSdef`. Establish `hsub : (S₀ : Set (HeightOneSpectrum (𝓞 K))) ⊆ S`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hSdef, Finset.mem_coe.1 hv]`. Use `⟨S, fun v hv ↦ ?_, sup_sIdeles_eq_top_of_subset hsub hS₀, ?_⟩` and prove the remaining obligations. Establish `: v ∈ P`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[hSdef, this]`. Rewrite using `[Subgroup.map_le_iff_le_comap]`. Introduce `x hx`. Use `choose α hα using fun v : S ↦ hx.1 v.1 (Finset.mem_coe.2 v.2)`. Use `choose β hβ using fun w ↦ hx.2.1 w`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `y : IdeleGroup K` to `(∏ v : S, finiteEmbedding v.1 (α v)) * ∏ w, infiniteEmbedding w (β w)`. Establish `hyS : ∀ v : S, finiteProj v.1 y = α v`. Introduce `v`. Simplify using `only [y, map_mul, map_prod, finiteProj_infiniteEmbedding, Finset.prod_const_one, mul_one]`. Rewrite using `[Finset.prod_eq_single v (fun u _ hu ↦ finiteProj_finiteEmbedding_of_ne (fun h ↦ hu (Subtype.ext h.symm)) _) (by simp), finiteProj_finiteEmbedding]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hyo : ∀ v ∉ S, finiteProj v y = 1`. Introduce `v hv`. Simplify using `only [y, map_mul, map_prod, finiteProj_infiniteEmbedding, Finset.prod_const_one, mul_one]`. Conclude with `Finset.prod_eq_one fun u _ ↦ finiteProj_finiteEmbedding_of_ne (fun h ↦ hv (by rw [h]; exact u.2)) _`. Establish `hyi : ∀ w, infiniteProj w y = β w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Simplify using `only [y, map_mul, map_prod, infiniteProj_finiteEmbedding, Finset.prod_const_one, one_mul]`. Rewrite using `[Finset.prod_eq_single w (fun u _ hu ↦ infiniteProj_infiniteEmbedding_of_ne (fun h ↦ hu h.symm) _) (by simp), infiniteProj_infiniteEmbedding]`. Use `set z := (y ^ n)⁻¹ * x with hz`. Establish `hzS : ∀ v ∈ (S : Set (HeightOneSpectrum (𝓞 K))), finiteProj v z = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v hv`. Rewrite using `[hz, map_mul, map_inv, map_pow, hyS ⟨v, hv⟩, ← hα ⟨v, hv⟩, powMonoidHom_apply, inv_mul_cancel]`. Establish `hzo : ∀ v ∉ (S : Set (HeightOneSpectrum (𝓞 K))), ord v z = 0`. Introduce `v hv`. Establish `hyv : ord v y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ord, ← coe_finiteProj, hyo v hv, Units.val_one, map_one, WithZero.log_one, neg_zero]`. Establish `hxv : ord v x = 0` using `hx.2.2 v (by simpa using hv)`. Rewrite using `[hz, ord_mul, ord_inv]`. Establish `hpow' : ∀ k : ℕ, ord v (y ^ k) = 0`. Introduce `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, ord_mul, ih, hyv, add_zero]`. Rewrite using `[hpow' n, hxv]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzi : ∀ w, infiniteProj w z = 1`. Introduce `w`. Rewrite using `[hz, map_mul, map_inv, map_pow, hyi w, ← hβ w, powMonoidHom_apply, inv_mul_cancel]`. Establish `hzU : z ∈ 𝔪.congruenceSubgroup` using `mem_congruenceSubgroup_of_eq_one 𝔪 (S := (S : Set (HeightOneSpectrum (𝓞 K)))) (fun v hv ↦ by`. Establish `: v ∈ T`.
-
-Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `hv`. Simplify using `[hSdef, this]) hzS hzo hzi`. Establish `hxyz : x = y ^ n * z` using `by rw [hz, mul_inv_cancel_left]`. Rewrite using `[hxyz]`.
-
-Use `Subgroup.mul_mem _ ?_ (h𝔪 hzU)` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, map_pow]`. Conclude with `hpow _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_map_powerSubgroup_le (N : Subgroup (IdeleClassGroup K))
     (hN : IsOpen (N : Set (IdeleClassGroup K))) (hpow : ∀ c, c ^ n ∈ N) :
@@ -214,7 +210,7 @@ section Existence
 variable {K : Type u} [Field K] [NumberField K] {n : ℕ} [NeZero n] [HasEnoughRootsOfUnity K n]
 
 /- English proof (translation)
-Take `⟨S, hS, hJ, hle⟩` from `exists_map_powerSubgroup_le N hN hpow`. Use `⟨S, hS, hJ, exists_intermediateField_range_ideleClassNorm_eq_of_le N ?_⟩` and prove the remaining obligations. Rewrite using `[range_ideleClassNorm_sUnitKummerField S hS hJ]`. Conclude with `hle`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intermediateField_range_ideleClassNorm_eq (N : Subgroup (IdeleClassGroup K))
     (hN : IsOpen (N : Set (IdeleClassGroup K))) (hpow : ∀ c, c ^ n ∈ N) :
@@ -229,9 +225,9 @@ theorem exists_intermediateField_range_ideleClassNorm_eq (N : Subgroup (IdeleCla
   exact hle
 
 /- English proof (translation)
-Take `⟨S, -, -, L, hL⟩` from `exists_intermediateField_range_ideleClassNorm_eq N hN hpow`. Use `⟨L, inferInstance, inferInstance, inferInstance, inferInstance, ?_, hL⟩` and prove the remaining obligations. Establish `hexpM : ∀ τ : Gal(sUnitKummerField K n (S : Set (HeightOneSpectrum (𝓞 K)))/K), τ ^ n = 1` using `Monoid.exponent_dvd_iff_forall_pow_eq_one.1 (kummerExtension_exponent_dvd K n _ _)`. Use `Monoid.exponent_dvd_iff_forall_pow_eq_one.2 fun τ ↦ ?_` and prove the remaining obligations. Take `⟨τ', rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := L) (E := sUnitKummerField K n (S : Set (HeightOneSpectrum (𝓞 K)))) τ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_pow, hexpM, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isAbelianGalois_range_ideleClassNorm_eq (N : Subgroup (IdeleClassGroup K))
     (hN : IsOpen (N : Set (IdeleClassGroup K))) (hpow : ∀ c, c ^ n ∈ N) :

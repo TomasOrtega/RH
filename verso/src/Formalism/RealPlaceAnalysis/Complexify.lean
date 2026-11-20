@@ -27,7 +27,7 @@ def Kset {n : ℕ} (ε : Fin n → Bool) : Set (Matrix (Fin n) (Fin n) ℂ) :=
 def hs {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : ℝ := ∑ i, ∑ j, ‖g i j‖ ^ 2
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `cases ε a <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Jm_mul_self {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   unfold Jm
@@ -37,9 +37,9 @@ lemma Jm_mul_self {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   cases ε a <;> norm_num
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.star_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `cases ε a <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Jm_conjTranspose {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   unfold Jm

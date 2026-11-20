@@ -25,11 +25,11 @@ namespace GlobalTheory.LowerHarm
 open MvPolynomial
 
 /- English proof (translation)
-Rewrite using `[f.as_sum, map_sum]`. Use `totalDegree_finsetSum_le fun s hs => ?_` and prove the remaining obligations. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `h0 : s i = 0`. Simplify using `[h0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `(totalDegree_monomial_le _ _).trans ?_` and prove the remaining obligations. Establish `e : s = (s - Finsupp.single i 1) + Finsupp.single i 1`. Rewrite using `[tsub_add_cancel_of_le]`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `e2` using `congrArg Finsupp.degree e`. Rewrite `e2` using `[map_add, Finsupp.degree_single]`. Establish `h3` using `(le_totalDegree hs).trans h`. Express the relevant statement in the definitionally equal form `s.degree ≤ k + 1 at h3`. Express the relevant statement in the definitionally equal form `(s - Finsupp.single i 1).degree ≤ k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -54,17 +54,17 @@ theorem deg_pderiv_succ {σ : Type} (i : σ) (f : MvPolynomial σ ℂ) (k : ℕ)
     omega
 
 /- English proof (translation)
-Rewrite using `[totalDegree_eq_zero_iff_eq_C.1 (Nat.le_zero.1 h), pderiv_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_of_deg_zero {σ : Type} (i : σ) (f : MvPolynomial σ ℂ) (h : f.totalDegree ≤ 0) : pderiv i f = 0 := by
   rw [totalDegree_eq_zero_iff_eq_C.1 (Nat.le_zero.1 h), pderiv_C]
 
 /- English proof (translation)
-Establish `hil : i ≠ l` using `by intro h; subst h; omega`. Establish `h1 : decide ((i : ℕ) < p τ) = false` using `decide_eq_false (by omega)`. Establish `h2 : decide ((l : ℕ) < p τ) = true` using `decide_eq_true hl`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single l]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.raiO, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.lowO, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.sgn, h1, h2, hil, LinearMap.sum_apply]`. Introduce `k _ hk`. Simplify using `[Matrix.single_apply, Ne.symm hk]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.single_apply, Ne.symm hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fockT_lower {D : D7} {n m : ℕ} (τ : D.what₂.Tau) (p : D.what₂.Tau → ℕ) (i l : Fin m)
     (hi : p τ ≤ (i : ℕ)) (hl : (l : ℕ) < p τ) (P : PolF D m n) :
@@ -83,7 +83,7 @@ theorem fockT_lower {D : D7} {n m : ℕ} (τ : D.what₂.Tau) (p : D.what₂.Tau
   · simp
 
 /- English proof (translation)
-Rewrite using `[fockT_lower τ p i l hi hl, totalDegree_neg]`. Conclude with `totalDegree_finsetSum_le fun j _ => deg_pderiv_succ _ _ _ (deg_pderiv_succ _ _ (k + 1) h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_deg {D : D7} {n m : ℕ} (τ : D.what₂.Tau) (p : D.what₂.Tau → ℕ) (i l : Fin m)
     (hi : p τ ≤ (i : ℕ)) (hl : (l : ℕ) < p τ) (P : PolF D m n) (k : ℕ) (h : P.totalDegree ≤ k + 2) :
@@ -93,7 +93,7 @@ theorem lower_deg {D : D7} {n m : ℕ} (τ : D.what₂.Tau) (p : D.what₂.Tau �
   exact totalDegree_finsetSum_le fun j _ => deg_pderiv_succ _ _ _ (deg_pderiv_succ _ _ (k + 1) h)
 
 /- English proof (translation)
-Rewrite using `[fockT_lower τ p i l hi hl]`. Simplify using `[pderiv_of_deg_zero _ _ (deg_pderiv_succ _ _ 0 h)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lower_zero {D : D7} {n m : ℕ} (τ : D.what₂.Tau) (p : D.what₂.Tau → ℕ) (i l : Fin m)
     (hi : p τ ≤ (i : ℕ)) (hl : (l : ℕ) < p τ) (P : PolF D m n) (h : P.totalDegree ≤ 1) :
@@ -103,13 +103,13 @@ theorem lower_zero {D : D7} {n m : ℕ} (τ : D.what₂.Tau) (p : D.what₂.Tau 
   simp [pderiv_of_deg_zero _ _ (deg_pderiv_succ _ _ 0 h)]
 
 /- English proof (translation)
-Introduce `D n m p W _ _ _ M hM hne`. Establish `hex : ∃ d, ∃ ψ ∈ M, ψ ≠ 0 ∧ ∀ w, (ψ w).totalDegree ≤ d`. Take `⟨ψ, hψ, hψ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Set `b` to `Module.finBasis ℂ W`. Use `⟨Finset.univ.sup fun j => (ψ (b j)).totalDegree, ψ, hψ, hψ0, fun w => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← b.sum_repr w, map_sum]`. Use `totalDegree_finsetSum_le fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `(totalDegree_smul_le _ _).trans (Finset.le_sup (f := fun j => (ψ (b j)).totalDegree) (Finset.mem_univ j))`. Take `⟨ψ, hψ, hψ0, hdeg⟩` from `Nat.find_spec hex`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ, hψ, hψ0, fun w τ i l hi hl => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne'`. Establish `hL` using `hM ψ hψ τ i l hi hl`. Establish `hL0 : GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < p τ)) (Matrix.single i l (1 : ℂ)) ∘ₗ ψ ≠ 0` using `fun h => hne' (by simpa using LinearMap.congr_fun h w)`. Break down `Nat.lt_or_ge (Nat.find hex) 2 with h2 | h2` into its components or cases.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `hne' (lower_zero τ p i l hi hl _ (by have := hdeg w; omega))`. Take `⟨k, hk⟩ : ∃ k, Nat.find hex = k + 2` from `⟨Nat.find hex - 2, by omega⟩`. Use `Nat.find_min' hex ⟨_, hL, hL0, fun w' => lower_deg τ p i l hi hl _ k (hk ▸ hdeg w')⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lower_to_harmonic : ∀ (D : D7) (n m : ℕ) (p : D.what₂.Tau → ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (M : Submodule ℂ (W →ₗ[ℂ] PolF D m n)), (∀ ψ ∈ M, ∀ (τ : D.what₂.Tau) (i l : Fin m), p τ ≤ (i : ℕ) → (l : ℕ) < p τ → GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < p τ)) (Matrix.single i l (1 : ℂ)) ∘ₗ ψ ∈ M) → M ≠ ⊥ → ∃ ψ ∈ M, ψ ≠ 0 ∧ ∀ w' : W, ∀ (τ' : D.what₂.Tau) (i l : Fin m), p τ' ≤ (i : ℕ) → (l : ℕ) < p τ' → GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ' (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < p τ')) (Matrix.single i l (1 : ℂ)) (ψ w') = 0 := by
   intro D n m p W _ _ _ M hM hne

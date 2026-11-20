@@ -17,14 +17,14 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨s, hs, h1⟩` from `h`. Conclude with `⟨s, hs, fun y hy => Or.inl (h1 y hy)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem good_of_toral {x : IrrGL k} (h : Toral x) : Good x := by
   obtain ⟨s, hs, h1⟩ := h
   exact ⟨s, hs, fun y hy => Or.inl (h1 y hy)⟩
 
 /- English proof (translation)
-Take `⟨h, z, rfl, -, -, e, he⟩` from `hs`. Take `⟨a, -, rfl⟩` from `Multiset.mem_map.1 hy`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hx`. Take `⟨w, hw, hw0⟩` from `DepthZero.fixed_of_isSubquotient e (fun a => (z a).rep) he ⟨v, hv, hv0⟩ a`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨w, hw, hw0⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fixed_ne_bot_of_mem_support {x : IrrGL k} (hx : fixed x.rep (KOne k (Fin x.1)) ≠ ⊥)
     {s : Multiset (IrrGL k)} (hs : HasSupport x.rep s) {y : IrrGL k} (hy : y ∈ s) :
@@ -36,7 +36,7 @@ theorem fixed_ne_bot_of_mem_support {x : IrrGL k} (hx : fixed x.rep (KOne k (Fin
   exact (Submodule.ne_bot_iff _).2 ⟨w, hw, hw0⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `GlobalTheory.LocGL.SupportRing.exists_hasSupport hZ x`. Conclude with `⟨s, hs, fun y hy => Or.inr ⟨hk, y, 1, isSmoothChar_one, fixed_ne_bot_of_mem_support hx hs hy, (IrrGL.tw_one y _).symm⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem good_of_fixed_KOne (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing)
     (hk : ∃ (g : ℕ) (_ : Fact g.Prime) (i : ℚ_[g] ≃+* k), Continuous i) (x : IrrGL k)
@@ -46,7 +46,7 @@ theorem good_of_fixed_KOne (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing
     (IrrGL.tw_one y _).symm⟩⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SphSupport.toral_and_good_of_isSpherical hBZ k x hx).2`.
+A detailed English derivation is pending.
 -/
 theorem good_of_isSpherical (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (x : IrrGL k) (hx : IsSpherical x.rep) :
     Good x :=

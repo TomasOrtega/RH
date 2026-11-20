@@ -7,7 +7,7 @@ open CategoryTheory AlgebraicGeometry
 namespace LateralTheory.EtaleTrace
 
 /- English proof (translation)
-Introduce `k _ _ d X p hp hc`. Use `hp.2` as an intermediate fact. Establish `: Smooth p` using `SmoothOfRelativeDimension.smooth d p`. Conclude with `GlobalTheory.isIntegral_of_smooth_field_of_connectedSpace p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LCompInt_of : LCompInt := by
   intro k _ _ d X p hp hc

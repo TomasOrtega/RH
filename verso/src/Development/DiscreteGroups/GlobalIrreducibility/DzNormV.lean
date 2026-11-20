@@ -13,7 +13,7 @@ namespace DiscreteGroups.sglob.DzType
 variable {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (g : ℕ) [hg : Fact g.Prime]
 
 /- English proof (translation)
-Use `DiscreteGroups.sglob.DzIso.norm_lt_of_lt i hi hu` as an intermediate fact. Rewrite `this` using `[Valued.toNormedField.norm_lt_one_iff]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem val_lt_one_of_norm_lt_one (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) (u : ℚ_[g])
     (hu : ‖u‖ < 1) : Valued.v (i u) < 1 := by
@@ -21,7 +21,7 @@ theorem val_lt_one_of_norm_lt_one (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : C
   rwa [Valued.toNormedField.norm_lt_one_iff] at this
 
 /- English proof (translation)
-Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E)]`. Establish `e : Valued.v (algebraMap E (w.adicCompletion E) (y : E)) = w.valuation E (y : E)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (R := 𝓞 E) w (y : E)`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_val_lt_one (y : 𝓞 E) (h : Valued.v (algebraMap E (w.adicCompletion E) (y : E)) < 1) :
     y ∈ w.asIdeal := by
@@ -31,7 +31,7 @@ theorem mem_of_val_lt_one (y : 𝓞 E) (h : Valued.v (algebraMap E (w.adicComple
   rwa [e] at h
 
 /- English proof (translation)
-Establish `e : Valued.v (algebraMap E (w.adicCompletion E) (y : E)) = w.valuation E (y : E)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (R := 𝓞 E) w (y : E)`. Rewrite using `[e]`. Conclude with `w.valuation_le_one y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_le_one_int (y : 𝓞 E) : Valued.v (algebraMap E (w.adicCompletion E) (y : E)) ≤ 1 := by
   have e : Valued.v (algebraMap E (w.adicCompletion E) (y : E)) = w.valuation E (y : E) :=
@@ -53,27 +53,23 @@ theorem alg_natCast (a : ℕ) : algebraMap E (w.adicCompletion E) (((a : 𝓞 E)
   simp
 
 /- English proof (translation)
-Establish `hres : ∀ y : 𝓞 E, ∃ a : ℕ, y - (a : 𝓞 E) ∈ w.asIdeal`. Introduce `y`. Use `set x := i.symm (algebraMap E (w.adicCompletion E) (y : E)) with hx`. Establish `hxy : i x = algebraMap E (w.adicCompletion E) (y : E)` using `by rw [hx, RingEquiv.apply_symm_apply]`. Establish `hxn : ‖x‖ ≤ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hx0 : x ≠ 0` using `by intro h; rw [h, norm_zero] at hc; exact absurd hc (by norm_num)`. Establish `h1 : ‖x⁻¹‖ < 1` using `by rw [norm_inv]; exact inv_lt_one_of_one_lt₀ hc`. Establish `h2` using `val_lt_one_of_norm_lt_one w g i hi _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_inv₀, hxy, map_inv₀]`. Establish `h3` using `val_le_one_int w y`. Establish `hy0 : Valued.v (algebraMap E (w.adicCompletion E) (y : E)) ≠ 0`. Introduce `h0`. Rewrite `h2` using `[h0, inv_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: i x ≠ 0` using `(map_ne_zero i).mpr hx0`. Rewrite `this` using `[hxy]`. Conclude with `this ((Valuation.zero_iff _).mp h0)`. Establish `h4 : 1 ≤ (Valued.v (algebraMap E (w.adicCompletion E) (y : E)))⁻¹` using `one_le_inv₀ (zero_lt_iff.mpr hy0) |>.mpr h3`. Conclude with `absurd h2 (not_lt.mpr h4)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `xz : ℤ_[g]` to `⟨x, hxn⟩`. Take `⟨a, -, ha⟩` from `PadicInt.exists_mem_range xz`. Use `⟨a, mem_of_val_lt_one w _ ?_⟩` and prove the remaining obligations. Establish `h5 : ‖x - a‖ < 1`. Establish `h` using `(PadicInt.mem_nonunits).mp ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_natCast]`. Conclude with `h`. Establish `h6` using `val_lt_one_of_norm_lt_one w g i hi _ h5`. Rewrite `h6` using `[map_sub, hxy, map_natCast]`. Rewrite using `[alg_sub_natCast]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h6`. Establish `hgw : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal`. Apply `mem_of_val_lt_one w` to reduce the goal to its premises. Use `val_lt_one_of_norm_lt_one w g i hi (g : ℚ_[g]) Padic.norm_p_lt_one` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[alg_natCast]`. Conclude with `this`. Use `haveI : w.asIdeal.IsPrime := w.isPrime`. Establish `hgQ : ((g : ℕ) : 𝓞 E ⧸ w.asIdeal) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk w.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgw`. Use `haveI : CharP (𝓞 E ⧸ w.asIdeal) g := (CharP.charP_iff_prime_eq_zero hg.out).mpr hgQ`. Set `f : ZMod g →+* 𝓞 E ⧸ w.asIdeal` to `ZMod.castHom (dvd_refl g) _`. Establish `hinj : Function.Injective f` using `f.injective`. Establish `hsurj : Function.Surjective f`.
-
-Introduce `q`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Take `⟨a, ha⟩` from `hres y`. Use `⟨(a : ZMod g), ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.castHom_apply, ZMod.cast_natCast (dvd_refl g), ← map_natCast (Ideal.Quotient.mk w.asIdeal), Ideal.Quotient.eq]`.
-
-Rewrite using `[← neg_mem_iff, neg_sub]`. Conclude with `ha`. Unfold `normV`. Rewrite using `[← Nat.card_congr (RingEquiv.ofBijective f ⟨hinj, hsurj⟩).toEquiv, Nat.card_zmod]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normV_eq_of_padic (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) : normV w = g := by
   classical

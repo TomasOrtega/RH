@@ -10,13 +10,13 @@ open GroundTheory.Global
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `hm : ∀ w : InfinitePlace E, w.mult = 2` using `fun w => by`. Simplify using `[InfinitePlace.mult, InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w)]`. Establish `e1 : pInf E (infGL E a h).val.det = h.val.det`. Rewrite using `[RingHom.map_det]`. Conclude with `congrArg (fun y : GL (Fin a) (Cinf E) => y.val.det) (pInf_infGL h)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : pFin E (infGL E a h).val.det = 1`. Rewrite using `[RingHom.map_det]`. Conclude with `(congrArg (fun y : GL (Fin a) (Af E) => y.val.det) (pFin_infGL h)).trans Matrix.det_one`. Establish `h1 : ∀ v : InfinitePlace E, ‖((infGL E a h).val.det : Ad E).1 v‖ = ‖h.val.det v‖` using `fun v => by`. Rewrite using `[← (InfinitePlace.Completion.isometry_extensionEmbedding v).norm_map_of_map_zero (map_zero _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `congrArg norm (congrFun e1 v)`. Establish `h2 : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 E), ‖((infGL E a h).val.det : Ad E).2 v‖ = 1` using `fun v => by`. Express the relevant statement in the definitionally equal form `‖pFin E (infGL E a h).val.det v‖ = 1`. Rewrite using `[e2]`. Conclude with `norm_one`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(IdeleGroup.ideleModule E (AdelicGLn.det E a (infGL E a h)) : ℝ) = _`. Rewrite using `[IdeleGroup.ideleModule_eq]`. Express the relevant statement in the definitionally equal form `(∏ v : InfinitePlace E, ‖((infGL E a h).val.det : Ad E).1 v‖ ^ v.mult) * ∏ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 E), ‖((infGL E a h).val.det : Ad E).2 v‖ = _`. Simplify using `only [h1, h2, finprod_one, mul_one, hm]`.
+A detailed English derivation is pending.
 -/
 private theorem cv_mod (h : GL (Fin a) (Cinf E)) :
     (Reduction.detModule E a (infGL E a h) : ℝ) = ∏ w : InfinitePlace E, ‖h.val.det w‖ ^ 2 := by
@@ -42,13 +42,13 @@ private theorem cv_mod (h : GL (Fin a) (Cinf E)) :
   simp only [h1, h2, finprod_one, mul_one, hm]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise (s := Finset.univ) (g := fun τ : E →+* ℂ => InfinitePlace.mk τ)]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hne : ComplexEmbedding.conjugate w.embedding ≠ w.embedding` using `fun h => InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w) (InfinitePlace.isReal_iff.2 h)`. Establish `hf : (Finset.univ.filter fun τ : E →+* ℂ => InfinitePlace.mk τ = w) = {w.embedding, ComplexEmbedding.conjugate w.embedding}`. Use extensionality with `τ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Break down `InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases. Conclude with `Or.inl h.symm`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `right`. Rewrite using `[h]`. Conclude with `(ComplexEmbedding.involutive_conjugate E τ).symm`. Apply the tactic sequence `rintro (rfl | rfl) <;> simp`. Rewrite using `[hf, Finset.sum_pair hne.symm]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `coord`. Simplify using `[hne.symm]`.
+A detailed English derivation is pending.
 -/
 private theorem cv_sum (x : Cinf E) : ∑ τ : E →+* ℂ, coord τ x = ∑ w : InfinitePlace E, (x w + starRingEnd ℂ (x w)) := by
   classical
@@ -72,7 +72,7 @@ private theorem cv_sum (x : Cinf E) : ∑ τ : E →+* ℂ, coord τ x = ∑ w :
   simp [hne.symm]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.MovedPointDeterminant.cv_det h0 hd`.
+A detailed English derivation is pending.
 -/
 private theorem cv_det {m : ℝ → Matrix (Fin a) (Fin a) ℂ} {Y : Matrix (Fin a) (Fin a) ℂ} (h0 : m 0 = 1)
     (hd : ∀ i j, HasDerivAt (fun s => m s i j) (Y i j) 0) : HasDerivAt (fun s => (m s).det) (∑ i, Y i i) 0 :=
@@ -81,19 +81,19 @@ private theorem cv_det {m : ℝ → Matrix (Fin a) (Fin a) ℂ} {Y : Matrix (Fin
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ r X hX`. Take `⟨c, h0, hadd, hc, hd, -⟩` from `UpperTheory.V.Lit.Bor.oneParam E r X`. Use `⟨c, h0, hadd, hc, hd, fun s => ?_⟩` and prove the remaining obligations. Establish `hD : ∀ w : InfinitePlace E, HasDerivAt (fun s => (c s).val.det w) (∑ i, X i i w) 0` using `fun w => by`. Apply the tactic sequence `have h1 := cv_det (m := fun s => (c s).val.map fun x => x w) (Y := fun i j => X i j w) (by rw [h0]; ext i j; by_cases h : i = j <;> simp [Matrix.one_apply, h]) fun i j => hasDerivAt_pi.1 (hasDerivAt_pi.1 (hasDerivAt_pi.1 hd i) j) w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Conclude with `RingHom.map_det (Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) w) (c s).val`. Set `Q : ℝ → ℂ` to `fun s => ∏ w : InfinitePlace E, ((c s).val.det w * starRingEnd ℂ ((c s).val.det w))`. Establish `hQ0 : Q 0 = 1` using `by simp [Q, h0]`. Establish `hQm : ∀ s t, Q (s + t) = Q s * Q t` using `fun s t => by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Q, hadd, Units.val_mul, Matrix.det_mul, Pi.mul_apply, map_mul, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun w _ => by ring`. Establish `hQd : HasDerivAt Q 0 0`. Establish `h` using `HasDerivAt.fun_finsetProd (u := Finset.univ) fun (w : InfinitePlace E) _ => (hD w).fun_mul (hD w).star`. Use `h.congr_deriv (Eq.symm ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hX` using `[Finset.sum_comm]`. Simplify using `only [cv_sum] at hX`. Rewrite `hX` using `[Finset.sum_comm]`. Use `hX.symm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h0, Finset.sum_add_distrib]`. Establish `hall : ∀ t, HasDerivAt Q 0 t` using `fun t => by`. Establish `h1 : HasDerivAt (fun u => Q (u - t)) 0 t`. Use `HasDerivAt.scomp t (g₁ := Q) (h := fun u => u - t) (by simpa using hQd) ((hasDerivAt_id t).sub_const t)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `h1.const_mul (Q t)`. Rewrite `h2` using `[mul_zero]`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Q u = Q t * Q (u - t)`. Rewrite using `[← hQm, add_sub_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQ : Q s = 1` using `(is_const_of_deriv_eq_zero (fun t => (hall t).differentiableAt) (fun t => (hall t).deriv) s 0).trans hQ0`. Use `mem_normOneGL_iff_detModule.2 (Subtype.ext ?_)` and prove the remaining obligations. Use `(cv_mod (c s)).trans ?_` and prove the remaining obligations. Simplify using `only [Q, Complex.mul_conj'] at hQ`. Conclude with `hQ` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.one_parameter_subgroup_norm_one :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r : ℕ) (X : Lie E r), ∑ τ : E →+* ℂ, ∑ i, coord τ (X i i) = 0 →

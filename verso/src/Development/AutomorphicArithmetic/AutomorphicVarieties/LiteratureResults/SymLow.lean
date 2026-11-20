@@ -18,7 +18,7 @@ def SymCubeQ : Prop :=
       P.HasSat w {α ^ 3, α ^ 2 * β, α * β ^ 2, β ^ 3}
 
 /- English proof (translation)
-Introduce `π hr hn` and use `by obtain ⟨P, hP, hs⟩ := h π hr hn 2 one_le_two refine ⟨P, hP, hs.mono fun w ⟨α, β, h1, h2⟩ => ⟨α, β, h1, ?_⟩⟩ have e0 : (Finset.range (2 + 1)).val = ({0, 1, 2} : Multiset ℕ) := by decide rw [e0] at h2 simpa using h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SymSat.sq (h : SymSat) : SymSqQ := fun π hr hn => by
   obtain ⟨P, hP, hs⟩ := h π hr hn 2 one_le_two

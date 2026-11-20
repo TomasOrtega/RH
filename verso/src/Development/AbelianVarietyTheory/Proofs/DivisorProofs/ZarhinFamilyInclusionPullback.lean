@@ -14,7 +14,7 @@ section
 variable {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B]
 
 /- English proof (translation)
-Unfold `incZ pa mkZ`. Rewrite using `[lift_fst_assoc]`. Conclude with `(Out.powIsLimit A 4).fac (Fan.mk A _) ⟨i⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incZ_pa (i : Fin 4) : incZ A B ≫ pa A B i = if i = 0 then 𝟙 A else 1 := by
   unfold incZ pa mkZ
@@ -22,7 +22,7 @@ theorem incZ_pa (i : Fin 4) : incZ A B ≫ pa A B i = if i = 0 then 𝟙 A else 
   exact (Out.powIsLimit A 4).fac (Fan.mk A _) ⟨i⟩
 
 /- English proof (translation)
-Unfold `incZ pb mkZ`. Rewrite using `[lift_snd_assoc]`. Conclude with `(Out.powIsLimit B 4).fac (Fan.mk A _) ⟨j⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incZ_pb (j : Fin 4) : incZ A B ≫ pb A B j = 1 := by
   unfold incZ pb mkZ
@@ -31,11 +31,11 @@ theorem incZ_pb (j : Fin 4) : incZ A B ≫ pb A B j = 1 := by
 end
 
 /- English proof (translation)
-Introduce `h M d S t c B _ _ Q la mu hZ _ _ _ _ _ _ _`. Establish `hQ : Q.IsLB` using `hZ.2.1.isLB`. Establish `hq0 : ∀ {Y : Over S} (a : Y ⟶ c.A), CechPic.pull (lift a (1 : Y ⟶ B)).left (cls Q hZ.2.1.isLB) = 0` using `fun a => evc_one_right hZ.2.1.isLB hZ.2.1.zero a`. Establish `hp0 : ∀ {Y : Over S}, CechPic.pull (lift (1 : Y ⟶ c.A) (1 : Y ⟶ c.A)).left (cls c.P c.isLB) = 0` using `evc_one_left c.isLB c.rig₁ 1`. Establish `hp1 : CechPic.pull (lift (fst c.A c.A) (snd c.A c.A)).left (cls c.P c.isLB) = cls c.P c.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lift_fst_snd, Over.id_left, pull_id]`. Use `(cls_eq_iff c.isLB (pull_isLB (zarhinBundle_isLineBundle _ _ _ _ _ _) _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull (zarhinBundle_isLineBundle _ _ _ _ _ _), cls_zP]`. Unfold `zCls`. Simplify using `only [map_add, map_sum, map_zsmul, ← pull_comp, ← Over.comp_left, comp_lift, tensorHom_fst_assoc, tensorHom_snd_assoc, incZ_pa, incZ_pb, Fin.sum_univ_four]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonObj.comp_one, Category.comp_id, ↓reduceIte, Fin.isValue, Fin.reduceEq, one_ne_zero, hq0, hp0, hp1, smul_zero, add_zero, zero_add, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zarhinBundle_pullback_inclusion : ∀ (h M d : ℕ) (S : Scheme.{0}) (t : S ⟶ Sp (cycAway M)) (c : SiegPre h M (zetaAway M) t) (B : Over S) [GrpObj B] [IsCommMonObj B] (Q : LB (c.A ⊗ B).left) (la : c.A ⟶ B) (mu : B ⟶ c.A) (hZ : GlobalTheory.ZarhinFam.ZData c d B Q la mu), 1 ≤ h → 3 ≤ M → Odd M → 0 < d → M.Coprime d → IsUnit ((d : ℕ) : Γ(S, ⊤)) → SiegKerBy c d → LBIso c.P ((GlobalTheory.ZarhinFam.zP c.A B c.isLB hZ.2.1.isLB d mu).pull (GlobalTheory.ZarhinFam.incZ c.A B ⊗ₘ GlobalTheory.ZarhinFam.incZ c.A B).left) := by
   intro h M d S t c B _ _ Q la mu hZ _ _ _ _ _ _ _

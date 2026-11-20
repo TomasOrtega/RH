@@ -12,7 +12,7 @@ section Local
 variable {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq]
 
 /- English proof (translation)
-Take `⟨n, u, rfl⟩` from `exists_eq_unit_mul_zpow₂ hp hy`. Establish `hu : algebraMap W Qq (u : W) ≠ 0` using `(u.isUnit.map (algebraMap W Qq)).ne_zero`. Rewrite using `[← mul_assoc, ordP_mul_zpow hp (mul_ne_zero hx hu), ordP_mul_unit hp hx, ordP_eq hp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ordP_mul [IsDomain W] [IsDiscreteValuationRing W] [IsFractionRing W Qq] {p : ℕ} (hp : Irreducible (p : W))
     {x y : Qq} (hx : x ≠ 0) (hy : y ≠ 0) : ordP W p (x * y) = ordP W p x + ordP W p y := by
@@ -21,11 +21,11 @@ theorem ordP_mul [IsDomain W] [IsDiscreteValuationRing W] [IsFractionRing W Qq] 
   rw [← mul_assoc, ordP_mul_zpow hp (mul_ne_zero hx hu), ordP_mul_unit hp hx, ordP_eq hp]
 
 /- English proof (translation)
-Unfold `colSpan`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨c, rfl⟩, rfl⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[Matrix.mulVec, Matrix.mul_apply, dotProduct]`. Introduce and unpack `⟨c, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `⟨_, ⟨c, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[Matrix.mulVec, Matrix.mul_apply, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem colSpan_mul {k : ℕ} (A g : Matrix (Fin k) (Fin k) Qq) :
     (colSpan W g).map ((Matrix.mulVecLin A).restrictScalars W) = colSpan W (A * g) := by
@@ -44,13 +44,13 @@ theorem colSpan_mul {k : ℕ} (A g : Matrix (Fin k) (Fin k) Qq) :
     simp [Matrix.mulVec, Matrix.mul_apply, dotProduct]
 
 /- English proof (translation)
-The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 A.isUnit).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem gl_det_ne {k : ℕ} (A : GL (Fin k) Qq) : (A : Matrix (Fin k) (Fin k) Qq).det ≠ 0 :=
   ((Matrix.isUnit_iff_isUnit_det _).1 A.isUnit).ne_zero
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `hL`. Establish `hA : IsUnit (A : Matrix (Fin k) (Fin k) Qq).det` using `(Matrix.isUnit_iff_isUnit_det _).1 A.isUnit`. Rewrite using `[colSpan_mul, lenLat_colSpan hp _ (by rw [Matrix.det_mul]; exact hA.mul hg), lenLat_colSpan hp g hg, Matrix.det_mul, ordP_mul hp hA.ne_zero hg.ne_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lenLat_map [IsDomain W] [IsDiscreteValuationRing W] [IsFractionRing W Qq] {p : ℕ} (hp : Irreducible (p : W))
     {k : ℕ} (A : GL (Fin k) Qq) {L : Submodule W (Fin k → Qq)} (hL : IsLattice W L) :
@@ -67,7 +67,7 @@ end Local
 variable {p : ℕ} [Fact p.Prime] (X : Sys p)
 
 /- English proof (translation)
-Apply the tactic sequence `cases j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gamAt_ord (j : ℕ) (c : X.Lv.comp j) (γ : (X.Lv.lev j c).Γ) (v : X.Pl) :
     ordP (X.G.P.W v) p (gamAt X j c γ v : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)).det =
@@ -76,7 +76,7 @@ theorem gamAt_ord (j : ℕ) (c : X.Lv.comp j) (γ : (X.Lv.lev j c).Γ) (v : X.Pl
   cases j <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Apply the tactic sequence `cases j <;> exact map_mul _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gamAt_mul (j : ℕ) (c : X.Lv.comp j) (γ γ' : (X.Lv.lev j c).Γ) :
     gamAt X j c (γ * γ') = fun v => gamAt X j c γ v * gamAt X j c γ' v := by
@@ -84,7 +84,7 @@ theorem gamAt_mul (j : ℕ) (c : X.Lv.comp j) (γ γ' : (X.Lv.lev j c).Γ) :
   cases j <;> exact map_mul _ _ _
 
 /- English proof (translation)
-Rewrite using `[gamAt_ord]`. Establish `hS` using `(X.Pj j).setting (X.vJ j v)`. Use `hS.frac_alt` as an intermediate fact. Conclude with `lenLat_map hS.p_unif _ (hL _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem len_smul (j : ℕ) (c : X.Lv.comp j) (γ : (X.Lv.lev j c).Γ) (L : (X.Pj j).Tup) (hL : (X.Pj j).IsLatTup L)
     (v : X.Pl) :
@@ -100,9 +100,9 @@ section Kap
 variable (Kc : Type) [Field Kc] [Algebra (K0 p) Kc] [Algebra X.G.Kf Kc]
 
 /- English proof (translation)
-Unfold `cA`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_mul, Matrix.det_mul, map_mul, mul_zpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_mul (j : ℕ) (B B' : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) :
     cA X Kc j (fun v => B v * B' v) = cA X Kc j B * cA X Kc j B' := by
@@ -114,7 +114,7 @@ theorem cA_mul (j : ℕ) (B B' : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.
   rw [Units.val_mul, Matrix.det_mul, map_mul, mul_zpow]
 
 /- English proof (translation)
-Unfold `cA`. Use `Finset.prod_ne_zero_iff.2 fun v _ => Finset.prod_ne_zero_iff.2 fun s _ => zpow_ne_zero _ ?_` and prove the remaining obligations. Conclude with `(map_ne_zero _).2 (gl_det_ne (B v))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cA_ne_zero (j : ℕ) (B : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) : cA X Kc j B ≠ 0 := by
   unfold cA
@@ -126,9 +126,9 @@ def pP (K : Type) [Field K] (j : ℕ) (B : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1
     ordP (X.G.P.W v) p (B v : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)).det))
 
 /- English proof (translation)
-Unfold `pP`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hS` using `X.G.P.setting v`. Use `hS.frac_alt` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Matrix.det_mul, ordP_mul hS.p_unif (gl_det_ne (B v)) (gl_det_ne (B' v)), ← zpow_add₀ hp0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pPart_mul {K : Type} [Field K] (hp0 : (p : K) ≠ 0) (j : ℕ)
     (B B' : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) :
@@ -143,14 +143,14 @@ theorem pPart_mul {K : Type} [Field K] (hp0 : (p : K) ≠ 0) (j : ℕ)
   ring
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun _ _ => zpow_ne_zero _ hp0`.
+A detailed English derivation is pending.
 -/
 theorem pPart_ne_zero {K : Type} [Field K] (hp0 : (p : K) ≠ 0) (j : ℕ)
     (B : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) : pP X K j B ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun _ _ => zpow_ne_zero _ hp0
 
 /- English proof (translation)
-Unfold `pP`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, map_natCast]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pPart_map (j : ℕ) (B : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) :
     algebraMap X.G.Kf Kc (pP X X.G.Kf j B) = pP X Kc j B := by
@@ -169,7 +169,7 @@ theorem kapG_eq (j : ℕ) (c : X.Lv.comp j) (γ : (X.Lv.lev j c).Γ) :
     kapG X Kc j c γ = chiC X Kc j c γ * cA X Kc j (gamAt X j c γ) * pP X Kc j (gamAt X j c γ) := rfl
 
 /- English proof (translation)
-Unfold `chiC`. Rewrite using `[map_mul, Units.val_mul, map_mul, map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiC_mul (j : ℕ) (c : X.Lv.comp j) (γ γ' : (X.Lv.lev j c).Γ) :
     chiC X Kc j c (γ * γ') = chiC X Kc j c γ * chiC X Kc j c γ' := by
@@ -177,7 +177,7 @@ theorem chiC_mul (j : ℕ) (c : X.Lv.comp j) (γ γ' : (X.Lv.lev j c).Γ) :
   rw [map_mul, Units.val_mul, map_mul, map_mul]
 
 /- English proof (translation)
-The claim follows from `((((X.Lv.lev j c).χ γ).isUnit.map (algebraMap X.G.O X.G.Kf)).map (algebraMap X.G.Kf Kc)).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem chiC_ne_zero (j : ℕ) (c : X.Lv.comp j) (γ : (X.Lv.lev j c).Γ) : chiC X Kc j c γ ≠ 0 :=
   ((((X.Lv.lev j c).χ γ).isUnit.map (algebraMap X.G.O X.G.Kf)).map (algebraMap X.G.Kf Kc)).ne_zero
@@ -187,7 +187,7 @@ variable (hp0 : (p : Kc) ≠ 0)
 include hp0
 
 /- English proof (translation)
-Rewrite using `[kapG_eq, kapG_eq, kapG_eq, gamAt_mul, cA_mul, pPart_mul X hp0, chiC_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kapG_mul (j : ℕ) (c : X.Lv.comp j) (γ γ' : (X.Lv.lev j c).Γ) :
     kapG X Kc j c (γ * γ') = kapG X Kc j c γ * kapG X Kc j c γ' := by
@@ -195,14 +195,14 @@ theorem kapG_mul (j : ℕ) (c : X.Lv.comp j) (γ γ' : (X.Lv.lev j c).Γ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[kapG_eq]`. Conclude with `mul_ne_zero (mul_ne_zero (chiC_ne_zero X Kc j c γ) (cA_ne_zero X Kc j _)) (pPart_ne_zero X hp0 j _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapG_ne_zero (j : ℕ) (c : X.Lv.comp j) (γ : (X.Lv.lev j c).Γ) : kapG X Kc j c γ ≠ 0 := by
   rw [kapG_eq]
   exact mul_ne_zero (mul_ne_zero (chiC_ne_zero X Kc j c γ) (cA_ne_zero X Kc j _)) (pPart_ne_zero X hp0 j _)
 
 /- English proof (translation)
-Establish `h` using `kapG_mul X Kc hp0 j c 1 1`. Rewrite `h` using `[mul_one]`. Conclude with `(mul_eq_left₀ (kapG_ne_zero X Kc hp0 j c 1)).1 h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapG_one (j : ℕ) (c : X.Lv.comp j) : kapG X Kc j c 1 = 1 := by
   have h := kapG_mul X Kc hp0 j c 1 1
@@ -214,7 +214,7 @@ omit hp0
 variable (hfin : ∀ j c, (X.Lv.lev j c).FinClasses)
 
 /- English proof (translation)
-Unfold `delt`. Rewrite using `[dif_pos h]`. Conclude with `⟨_, (Classical.choose_spec (repOf_ex X.Lv hfin j c L h).exists).1, (Classical.choose_spec (repOf_ex X.Lv hfin j c L h).exists).2.choose_spec⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem delt_spec (j : ℕ) (c : X.Lv.comp j) (L : (X.Pj j).Tup) (h : (X.Pj j).IsLatTup L) :
     ∃ L0 : (X.Pj j).Tup, (c, L0) ∈ repOf X.Lv hfin j ∧ L = (X.Lv.lev j c).smul (delt X hfin j c L) L0 := by
@@ -225,9 +225,9 @@ theorem delt_spec (j : ℕ) (c : X.Lv.comp j) (L : (X.Pj j).Tup) (h : (X.Pj j).I
     (Classical.choose_spec (repOf_ex X.Lv hfin j c L h).exists).2.choose_spec⟩
 
 /- English proof (translation)
-Establish `hL` using `repOf_lat X.Lv hfin j (c, L0) h0`. Take `⟨L1, h1, e1⟩` from `delt_spec X hfin j c L0 hL`. Establish `h10 : L1 = L0` using `(repOf_ex X.Lv hfin j c L0 hL).unique ⟨h1, _, e1⟩ ⟨h0, 1, (lsmul_one _ L0).symm⟩`. Substitute `h10` using the available equality. Use `show (kapG X Kc j c (delt X hfin j c L1))⁻¹ = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK j c L1 _ hL e1.symm, inv_one]`.
+A detailed English derivation is pending.
 -/
 theorem chiN_rep (hK : KapStab X Kc) (j : ℕ) (c : X.Lv.comp j) (L0 : (X.Pj j).Tup)
     (h0 : (c, L0) ∈ repOf X.Lv hfin j) : chiN X Kc hfin j (c, L0) = 1 := by
@@ -241,18 +241,18 @@ theorem chiN_rep (hK : KapStab X Kc) (j : ℕ) (c : X.Lv.comp j) (L0 : (X.Pj j).
 include hp0
 
 /- English proof (translation)
-Introduce `j c L γ hL hγ`. Rewrite using `[h j c γ L hL hγ, kapG_one X Kc hp0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem kapStab_of_trivStab (h : ∀ j c, (X.Lv.lev j c).TrivStab) : KapStab X Kc := by
   intro j c L γ hL hγ
   rw [h j c γ L hL hγ, kapG_one X Kc hp0]
 
 /- English proof (translation)
-Establish `hL' : (X.Pj j).IsLatTup ((X.Lv.lev j c).smul γ L)` using `(Formalism.MainNotions.FormalGroupSystem.Pf.latTup_smul _ _ γ L).2 hL`. Take `⟨L0, h0, e0⟩` from `delt_spec X hfin j c L hL`. Take `⟨L1, h1, e1⟩` from `delt_spec X hfin j c _ hL'`. Use `set δ := delt X hfin j c L with hδ`. Use `set δ' := delt X hfin j c ((X.Lv.lev j c).smul γ L) with hδ'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (X.Lv.lev j c).smul γ L = (X.Lv.lev j c).smul (γ * δ) L0`. Rewrite using `[lsmul_mul, ← e0]`. Establish `h10 : L1 = L0` using `(repOf_ex X.Lv hfin j c _ hL').unique ⟨h1, δ', e1⟩ ⟨h0, γ * δ, e2⟩`. Substitute `h10` using the available equality. Establish `hst : (X.Lv.lev j c).smul ((γ * δ)⁻¹ * δ') L1 = L1`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lsmul_mul, ← e1, e2, lsmul_inv_lsmul]`. Establish `hk` using `hK j c L1 ((γ * δ)⁻¹ * δ') (repOf_lat X.Lv hfin j (c, L1) h0) hst`. Establish `hd : δ' = (γ * δ) * ((γ * δ)⁻¹ * δ')` using `by group`. Use `show (kapG X Kc j c δ')⁻¹ = (kapG X Kc j c γ)⁻¹ * (kapG X Kc j c δ)⁻¹`. Rewrite using `[hd, kapG_mul X Kc hp0, hk, mul_one, kapG_mul X Kc hp0, mul_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiN_smul (hK : KapStab X Kc) (j : ℕ) (c : X.Lv.comp j) (γ : (X.Lv.lev j c).Γ) (L : (X.Pj j).Tup)
     (hL : (X.Pj j).IsLatTup L) :
@@ -280,7 +280,7 @@ section Ker
 variable (Kc : Type) [Field Kc] [Algebra (K0 p) Kc] [Algebra X.G.Kf Kc]
 
 /- English proof (translation)
-Unfold `derAt`. Use `split_ifs`. Rewrite using `[MvPowerSeries.coeff_C_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derAt_C_mul (j : ℕ) (n : X.ZA j →₀ ℕ) (a : Kc) (f : MvPowerSeries (X.ZA j) Kc) :
     derAt X Kc j n (MvPowerSeries.C a * f) = a * derAt X Kc j n f := by
@@ -291,7 +291,7 @@ theorem derAt_C_mul (j : ℕ) (n : X.ZA j →₀ ℕ) (a : Kc) (f : MvPowerSerie
   · rw [mul_zero]
 
 /- English proof (translation)
-Rewrite using `[delF_apply, delF_apply]`. Unfold `pairD`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[derAt_C_mul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem delF_C_mul (j : ℕ) (G : (X.Pj j).Xsp) (a : Kc) (f : MvPowerSeries (X.ZA j) Kc) :
     delF X Kc j G (MvPowerSeries.C a * f) = a • delF X Kc j G f := by
@@ -304,7 +304,7 @@ theorem delF_C_mul (j : ℕ) (G : (X.Pj j).Xsp) (a : Kc) (f : MvPowerSeries (X.Z
 def eSX (j : ℕ) (La : X.Lt j) : X.G.Kf := ∏ v : X.Pl, (p : X.G.Kf) ^ (X.vm v (j + 1) * len X v j La.2)
 
 /- English proof (translation)
-Unfold `eSX pP`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[len_smul X j c γ L hL v, ← zpow_add₀ hpK]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -331,13 +331,13 @@ def VtIn (Gd : ∀ j, (X.Pj j).Xsp → Prop) : Prop := ∀ j, ∀ G ∈ (X.Pj j)
 def VtGood : Prop := VtIn X (GoodG X Kc)
 
 /- English proof (translation)
-Establish `hpK : (p : X.G.Kf) ≠ 0` using `fun h => hp0 (by rw [← map_natCast (algebraMap X.G.Kf Kc), h, map_zero])`. Establish `e1 : ((((X.Lv.lev j c).χ γ : X.G.Oˣ) : X.G.O) • (X.Lv.lev j c).actX γ G) = (algebraMap X.G.O X.G.Kf (((X.Lv.lev j c).χ γ : X.G.Oˣ) : X.G.O)) • (X.Pj j).natAct (fun v => (X.Lv.lev j c).act v γ) G` using `(algebraMap_smul X.G.Kf _ _).symm`. Establish `e2` using `hD j (fun v => (X.Lv.lev j c).act v γ) G (Th0 j (c, L) La') hGood`. Establish `e3 : SA X Kc j (glAt X j fun v => (X.Lv.lev j c).act v γ) (Th0 j (c, L) La') = Th0 j (c, (X.Lv.lev j c).smul γ L) La'` using `(hG j c L La' γ hL).symm`. Rewrite `e2` using `[e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `thFN`. Rewrite using `[delF_C_mul, delF_C_mul, e1, map_smul, LinearMap.smul_apply, e2, chiN_smul X Kc hp0 hfin hK j c γ L hL, eSX_smul X hpK j c γ L hL]`. Rewrite using `[← algebraMap_smul Kc (eSX X j (c, L) * pP X X.G.Kf j (gamAt X j c γ) * t), ← algebraMap_smul Kc (algebraMap X.G.O X.G.Kf (((X.Lv.lev j c).χ γ : X.G.Oˣ) : X.G.O)), ← algebraMap_smul Kc (eSX X j (c, L) * t), smul_smul, smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Establish `hk` using `kapG_ne_zero X Kc hp0 j c γ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hk'` using `kapG_eq X Kc j c γ`. Rewrite using `[map_mul, map_mul, map_mul, pPart_map]`. Use `show _ * ((kapG X Kc j c γ)⁻¹ * _) * chiC X Kc j c γ * cA X Kc j (gamAt X j c γ) = _`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hk']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ker_smul (hp0 : (p : Kc) ≠ 0) {Gd : ∀ j, (X.Pj j).Xsp → Prop} (hD : DelEquivOn X Kc Gd) (hG : GeoLaw X Kc Th0) (hK : KapStab X Kc) (j : ℕ)
     (c : X.Lv.comp j) (L : (X.Pj j).Tup) (La' : X.Lt (j + 1)) (γ : (X.Lv.lev j c).Γ) (G : (X.Pj j).Xsp)
@@ -376,18 +376,18 @@ section Geo
 variable (Kc : Type) [Field Kc] [Algebra (K0 p) Kc] [Algebra X.G.Kf Kc]
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun ⟨v, (s, a, b)⟩ => by simp [actS]`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_actS (j : ℕ) (B : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) :
     MvPowerSeries.HasSubst (actS X Kc j B) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero fun ⟨v, (s, a, b)⟩ => by simp [actS]
 
 /- English proof (translation)
-Take `⟨v, s, a, b⟩` from `z`. Simplify using `only [actS]`. Rewrite using `[subst_lin (hasSubst_actS X Kc j B)]`. Simplify using `only [MvPowerSeries.subst_X (hasSubst_actS X Kc j B), actS]`. Distinguish the cases in `hs : IsOddPos s`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_pos hs]`. Rewrite using `[sum_lin (MvPowerSeries.C) (mAt X Kc j v s ((B' v)⁻¹ : GL _ _)) (mAt X Kc j v s ((B v)⁻¹ : GL _ _)) (fun a' => (MvPowerSeries.X ⟨v, (s, a', b)⟩ : MvPowerSeries (X.ZA j) Kc)) a, mAt_mul, ← Units.val_mul, ← mul_inv_rev]`. Simplify using `only [if_neg hs]`. Establish `h` using `sum_lin (MvPowerSeries.C) (mAt X Kc j v s (B' v)).transpose (mAt X Kc j v s (B v)).transpose (fun a' => (MvPowerSeries.X ⟨v, (s, a', b)⟩ : MvPowerSeries (X.ZA j) Kc)) a`. Simplify using `only [Matrix.transpose_apply] at h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, ← Matrix.transpose_mul, mAt_mul, ← Units.val_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subst_actS (j : ℕ) (B B' : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) (z : X.ZA j) :
     MvPowerSeries.subst (actS X Kc j B) (actS X Kc j B' z) = actS X Kc j (fun v => B v * B' v) z := by
@@ -407,7 +407,7 @@ theorem subst_actS (j : ℕ) (B B' : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.
     rfl
 
 /- English proof (translation)
-Unfold `SA`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hasSubst_actS X Kc j B') (hasSubst_actS X Kc j B)]`. Simplify using `only [subst_actS]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem SA_mul (j : ℕ) (B B' : ∀ v : X.Pl, GL (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) (f : MvPowerSeries (X.ZA j) Kc) :
     SA X Kc j B (SA X Kc j B' f) = SA X Kc j (fun v => B v * B' v) f := by
@@ -427,13 +427,11 @@ def StabGeo : Prop :=
     (X.Lv.lev j c).smul ε L0 = L0 → SA X Kc j (gamAt X j c ε) (ThR j (c, L0) La') = ThR j (c, L0) La'
 
 /- English proof (translation)
-Introduce `j c L La' γ hL`. Establish `hL' : (X.Pj j).IsLatTup ((X.Lv.lev j c).smul γ L)` using `(Formalism.MainNotions.FormalGroupSystem.Pf.latTup_smul _ _ γ L).2 hL`. Take `⟨L0, h0, e0⟩` from `delt_spec X hfin j c L hL`. Take `⟨L1, h1, e1⟩` from `delt_spec X hfin j c _ hL'`. Use `show SA X Kc j (gamAt X j c (delt X hfin j c ((X.Lv.lev j c).smul γ L))) (ThR j (c, (X.Lv.lev j c).smul (delt X hfin j c ((X.Lv.lev j c).smul γ L))⁻¹ ((X.Lv.lev j c).smul γ L)) La') = SA X Kc j (gamAt X j c γ) (SA X Kc j (gamAt X j c (delt X hfin j c L)) (ThR j (c, (X.Lv.lev j c) …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set δ := delt X hfin j c L with hδ`. Use `set δ' := delt X hfin j c ((X.Lv.lev j c).smul γ L) with hδ'`. Establish `e2 : (X.Lv.lev j c).smul γ L = (X.Lv.lev j c).smul (γ * δ) L0`. Rewrite using `[lsmul_mul, ← e0]`. Establish `h10 : L1 = L0` using `(repOf_ex X.Lv hfin j c _ hL').unique ⟨h1, δ', e1⟩ ⟨h0, γ * δ, e2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `h10` using the available equality. Establish `hst : (X.Lv.lev j c).smul ((γ * δ)⁻¹ * δ') L1 = L1`. Rewrite using `[lsmul_mul, ← e1, e2, lsmul_inv_lsmul]`. Establish `r1 : (X.Lv.lev j c).smul δ'⁻¹ ((X.Lv.lev j c).smul γ L) = L1` using `by conv_lhs => rw [e1]`. Conclude with `lsmul_inv_lsmul _ _ _`.
-
-Establish `r0 : (X.Lv.lev j c).smul δ⁻¹ L = L1` using `by conv_lhs => rw [e0]`. Conclude with `lsmul_inv_lsmul _ _ _`. Rewrite using `[r1, r0, SA_mul, ← gamAt_mul]`. Establish `hd : δ' = (γ * δ) * ((γ * δ)⁻¹ * δ')` using `by group`. Use `conv_lhs => rw [hd, gamAt_mul, ← SA_mul, hS j c L1 La' _ h0 hst]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geoLaw_thGeo (hS : StabGeo X Kc hfin ThR) : GeoLaw X Kc (thGeo X Kc hfin ThR) := by
   intro j c L La' γ hL
@@ -463,9 +461,9 @@ theorem geoLaw_thGeo (hS : StabGeo X Kc hfin ThR) : GeoLaw X Kc (thGeo X Kc hfin
   conv_lhs => rw [hd, gamAt_mul, ← SA_mul, hS j c L1 La' _ h0 hst]
 
 /- English proof (translation)
-Establish `hL` using `repOf_lat X.Lv hfin j (c, L0) h0`. Take `⟨L1, h1, e1⟩` from `delt_spec X hfin j c L0 hL`. Establish `h10 : L1 = L0` using `(repOf_ex X.Lv hfin j c L0 hL).unique ⟨h1, _, e1⟩ ⟨h0, 1, (lsmul_one _ L0).symm⟩`. Substitute `h10` using the available equality. Use `show SA X Kc j (gamAt X j c (delt X hfin j c L1)) (ThR j (c, (X.Lv.lev j c).smul (delt X hfin j c L1)⁻¹ L1) La') = _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `delt X hfin j c L1 = δ at e1 ⊢`. Establish `r : (X.Lv.lev j c).smul δ⁻¹ L1 = L1` using `(congrArg (fun T => (X.Lv.lev j c).smul δ⁻¹ T) e1).trans (lsmul_inv_lsmul (X.Lv.lev j c) δ L1)`. Rewrite using `[r, hS j c L1 La' _ h0 e1.symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thGeo_rep (hS : StabGeo X Kc hfin ThR) (j : ℕ) (c : X.Lv.comp j) (L0 : (X.Pj j).Tup) (La' : X.Lt (j + 1))
     (h0 : (c, L0) ∈ repOf X.Lv hfin j) : thGeo X Kc hfin ThR j (c, L0) La' = ThR j (c, L0) La' := by
@@ -481,14 +479,14 @@ theorem thGeo_rep (hS : StabGeo X Kc hfin ThR) (j : ℕ) (c : X.Lv.comp j) (L0 :
   rw [r, hS j c L1 La' _ h0 e1.symm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Apply the tactic sequence `cases j <;> exact map_one _`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gamAt_one (j : ℕ) (c : X.Lv.comp j) : gamAt X j c 1 = fun _ => 1 := by
   funext v
   cases j <;> exact map_one _
 
 /- English proof (translation)
-Take `⟨v, s, a, b⟩` from `z`. Simplify using `only [actS, inv_one, Units.val_one, mAt_one, Matrix.one_apply]`. Distinguish the cases in `hs : IsOddPos s`. Simplify using `only [if_pos hs, apply_ite MvPowerSeries.C, map_one, map_zero, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Simplify using `only [if_neg hs, apply_ite MvPowerSeries.C, map_one, map_zero, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem actS_one (j : ℕ) (z : X.ZA j) : actS X Kc j (fun _ => 1) z = MvPowerSeries.X z := by
   obtain ⟨v, s, a, b⟩ := z
@@ -500,7 +498,7 @@ theorem actS_one (j : ℕ) (z : X.ZA j) : actS X Kc j (fun _ => 1) z = MvPowerSe
       Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Unfold `SA`. Establish `: actS X Kc j (fun _ => 1) = MvPowerSeries.X` using `funext (actS_one X Kc j)`. Rewrite using `[this]`. Conclude with `congrFun MvPowerSeries.subst_self f`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SA_one (j : ℕ) (f : MvPowerSeries (X.ZA j) Kc) : SA X Kc j (fun _ => 1) f = f := by
   unfold SA
@@ -509,7 +507,7 @@ theorem SA_one (j : ℕ) (f : MvPowerSeries (X.ZA j) Kc) : SA X Kc j (fun _ => 1
   exact congrFun MvPowerSeries.subst_self f
 
 /- English proof (translation)
-Introduce `j c L0 La' ε h0 hε`. Rewrite using `[h j c ε L0 (repOf_lat X.Lv hfin j (c, L0) h0) hε, gamAt_one, SA_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem stabGeo_of_trivStab (h : ∀ j c, (X.Lv.lev j c).TrivStab) : StabGeo X Kc hfin ThR := by
   intro j c L0 La' ε h0 hε
@@ -520,7 +518,7 @@ end Geo
 section Rec
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem pC_ne_zero : (p : ℂ_[p]) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero
 
@@ -541,7 +539,7 @@ abbrev pendN : Pend X :=
   pendC X E hfin hst be (thFN X ℂ_[p] hfin Th0)
 
 /- English proof (translation)
-Set `_` to `wittFractionAlgebraCp p`. Set `_` to `algKfC E`. Introduce `hD hG hK j _ c L La' γ G hGd hL _`. Conclude with `ker_smul X ℂ_[p] hfin Th0 pC_ne_zero hD hG hK j c L La' γ G hL hGd _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem invariance_on_equivariant_values {Gd : ∀ j, (X.Pj j).Xsp → Prop} :
     letI := wittFractionAlgebraCp p
@@ -553,7 +551,7 @@ theorem invariance_on_equivariant_values {Gd : ∀ j, (X.Pj j).Xsp → Prop} :
   exact ker_smul X ℂ_[p] hfin Th0 pC_ne_zero hD hG hK j c L La' γ G hL hGd _
 
 /- English proof (translation)
-Set `_` to `wittFractionAlgebraCp p`. Set `_` to `algKfC E`. Introduce `hD hV hG hK j hj c L La' γ G hGv hL hL'`. Conclude with `invariance_on_equivariant_values X E hfin hst be Th0 hD hG hK j hj c L La' γ G (hV j G hGv) hL hL'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem invariance_normalised_kernel (D : Formalism.BasicNotions.D7) {Gd : ∀ j, (X.Pj j).Xsp → Prop} :
     letI := wittFractionAlgebraCp p
@@ -566,7 +564,7 @@ theorem invariance_normalised_kernel (D : Formalism.BasicNotions.D7) {Gd : ∀ j
   exact invariance_on_equivariant_values X E hfin hst be Th0 hD hG hK j hj c L La' γ G (hV j G hGv) hL hL'
 
 /- English proof (translation)
-Set `_` to `wittFractionAlgebraCp p`. Set `_` to `algKfC E`. Introduce and unpack `hK j ⟨c, L0⟩ La' h0`. Unfold `thFN`. Rewrite using `[chiN_rep X ℂ_[p] hfin hK j c L0 h0, map_one, one_mul]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem thFN_rep :
     letI := wittFractionAlgebraCp p
@@ -585,7 +583,7 @@ abbrev pendR (ThR : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (X.ZA j) �
   pendN X E hfin hst be (thGeo X ℂ_[p] hfin ThR)
 
 /- English proof (translation)
-Set `_` to `wittFractionAlgebraCp p`. Set `_` to `algKfC E`. Introduce and unpack `hS hK j ⟨c, L0⟩ La' h0`. Use `show thFN X ℂ_[p] hfin (thGeo X ℂ_[p] hfin ThR) j (c, L0) La' = _`. Rewrite using `[thFN_rep X E hfin _ hK j (c, L0) La' h0, thGeo_rep X ℂ_[p] hfin ThR hS j c L0 La' h0]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pendR_ThF_rep (ThR : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (X.ZA j) ℂ_[p]) :
     letI := wittFractionAlgebraCp p
@@ -599,7 +597,7 @@ theorem pendR_ThF_rep (ThR : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (X
   rw [thFN_rep X E hfin _ hK j (c, L0) La' h0, thGeo_rep X ℂ_[p] hfin ThR hS j c L0 La' h0]
 
 /- English proof (translation)
-Set `_` to `wittFractionAlgebraCp p`. Set `_` to `algKfC E`. Introduce `hD hV hS hK`. Conclude with `invariance_normalised_kernel X E hfin hst be _ D hD hV (geoLaw_thGeo X ℂ_[p] hfin ThR hS) hK`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem invariance_representatives (D : Formalism.BasicNotions.D7) (ThR : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (X.ZA j) ℂ_[p])
     {Gd : ∀ j, (X.Pj j).Xsp → Prop} :
@@ -613,7 +611,7 @@ theorem invariance_representatives (D : Formalism.BasicNotions.D7) (ThR : ∀ j,
   exact invariance_normalised_kernel X E hfin hst be _ D hD hV (geoLaw_thGeo X ℂ_[p] hfin ThR hS) hK
 
 /- English proof (translation)
-Set `_` to `wittFractionAlgebraCp p`. Set `_` to `algKfC E`. Introduce `hD hV`. Conclude with `invariance_representatives X E hfin hst be D ThR hD hV (stabGeo_of_trivStab X ℂ_[p] hfin ThR hT) (kapStab_of_trivStab X ℂ_[p] pC_ne_zero hT)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem invariance_representatives_trivial (D : Formalism.BasicNotions.D7) (ThR : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (X.ZA j) ℂ_[p])
     {Gd : ∀ j, (X.Pj j).Xsp → Prop} (hT : ∀ j c, (X.Lv.lev j c).TrivStab) :
@@ -627,9 +625,9 @@ theorem invariance_representatives_trivial (D : Formalism.BasicNotions.D7) (ThR 
     (kapStab_of_trivStab X ℂ_[p] pC_ne_zero hT)
 
 /- English proof (translation)
-Proceed by induction on `s generalizing x with`. Consider the case `zero => exact ⟨x, rfl⟩`. Consider the case `succ s ih`. Take `⟨y, hy⟩` from `(X.G.P.setting v).frob x`. Take `⟨z, hz⟩` from `ih (x ^ p + (p : X.G.P.W v) * y)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, RingAut.mul_apply, hy, hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_pow_int (v : X.Pl) (s : ℕ) (x : X.G.P.W v) :
     ∃ y : X.G.P.W v, (X.G.P.σ v ^ s) (algebraMap (X.G.P.W v) (X.G.P.Qq v) x) = algebraMap (X.G.P.W v) (X.G.P.Qq v) y := by
@@ -642,7 +640,7 @@ theorem sig_pow_int (v : X.Pl) (s : ℕ) (x : X.G.P.W v) :
     rw [pow_succ, RingAut.mul_apply, hy, hz]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `sig_pow_int X v s.val x`. Use `show ‖E.iK (X.G.P.ι v ((X.G.P.σ v ^ s.val) (algebraMap (X.G.P.W v) (X.G.P.Qq v) x)))‖ ≤ 1`. Rewrite using `[hy, (X.G.P.setting v).ι_comp]`. Conclude with `E.int _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_tw_int (v : X.Pl) (s : Fin (X.G.P.n' v)) (x : X.G.P.W v) :
     letI := wittFractionAlgebraCp p
@@ -654,9 +652,9 @@ theorem norm_tw_int (v : X.Pl) (s : Fin (X.G.P.n' v)) (x : X.G.P.W v) :
   exact E.int _
 
 /- English proof (translation)
-Set `_` to `wittFractionAlgebraCp p`. Set `_` to `algKfC E`. Use `le_antisymm (norm_tw_int X E v s _) ?_` and prove the remaining obligations. Establish `h1 : tw X ℂ_[p] v s (algebraMap (X.G.P.W v) (X.G.P.Qq v) (u : X.G.P.W v)) * tw X ℂ_[p] v s (algebraMap (X.G.P.W v) (X.G.P.Qq v) ((u⁻¹ : (X.G.P.W v)ˣ) : X.G.P.W v)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_mul, norm_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_tw_unit (v : X.Pl) (s : Fin (X.G.P.n' v)) (u : (X.G.P.W v)ˣ) :
     letI := wittFractionAlgebraCp p
@@ -676,9 +674,9 @@ theorem norm_tw_unit (v : X.Pl) (s : Fin (X.G.P.n' v)) (u : (X.G.P.W v)ˣ) :
     _ = _ := mul_one _
 
 /- English proof (translation)
-Set `_` to `wittFractionAlgebraCp p`. Set `_` to `algKfC E`. Establish `hS` using `X.G.P.setting v`. Use `hS.frac_alt` as an intermediate fact. Take `⟨n, u, rfl⟩` from `exists_eq_unit_mul_zpow₂ hS.p_unif hx`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ordP_eq hS.p_unif, map_mul, map_zpow₀, map_natCast, norm_mul, norm_zpow, norm_tw_unit X E v s u, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_tw (v : X.Pl) (s : Fin (X.G.P.n' v)) {x : X.G.P.Qq v} (hx : x ≠ 0) :
     letI := wittFractionAlgebraCp p
@@ -692,7 +690,7 @@ theorem norm_tw (v : X.Pl) (s : Fin (X.G.P.n' v)) {x : X.G.P.Qq v} (hx : x ≠ 0
   rw [ordP_eq hS.p_unif, map_mul, map_zpow₀, map_natCast, norm_mul, norm_zpow, norm_tw_unit X E v s u, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a S ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, zpow_add₀ hr, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_eq {ι : Type} (S : Finset ι) {r : ℝ} (hr : r ≠ 0) (e : ι → ℤ) :
     ∏ i ∈ S, r ^ e i = r ^ ∑ i ∈ S, e i := by
@@ -702,7 +700,7 @@ theorem prod_zpow_eq {ι : Type} (S : Finset ι) {r : ℝ} (hr : r ≠ 0) (e : �
   | insert a S ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, zpow_add₀ hr, ih]
 
 /- English proof (translation)
-Unfold `Sys.vm`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : IsOddPos s <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_sign_w (v : X.Pl) (l : ℕ) :
     ∑ s : Fin (X.G.P.n' v), (if IsOddPos s then -1 else 1) * X.w v l s = X.vm v l := by
@@ -712,13 +710,13 @@ theorem sum_sign_w (v : X.Pl) (l : ℕ) :
   by_cases h : IsOddPos s <;> simp [h]
 
 /- English proof (translation)
-Set `_` to `wittFractionAlgebraCp p`. Set `_` to `algKfC E`. Establish `hr : ‖(p : ℂ_[p])‖ ≠ 0` using `norm_ne_zero_iff.2 pC_ne_zero`. Rewrite using `[kapG_eq, norm_mul, norm_mul]`. Establish `h1 : ‖chiC X ℂ_[p] j c γ‖ = 1` using `norm_unit E.iK E.int _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ‖cA X ℂ_[p] j (gamAt X j c γ)‖ * ‖pP X ℂ_[p] j (gamAt X j c γ)‖ = 1`. Unfold `cA pP`. Rewrite using `[norm_prod, norm_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Rewrite using `[norm_prod, norm_zpow]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∀ s : Fin (X.G.P.n' v), ‖(tw X ℂ_[p] v s (gamAt X j c γ v : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)).det) ^ ((if IsOddPos s then -1 else 1) * X.w v (j + 1) s)‖ = ‖(p : ℂ_[p])‖ ^ (ordP (X.G.P.W v) p (gamAt X j c γ v : Matrix (Fin ((X.Pj j).m + 1)) (F …`. Introduce `s`. Rewrite using `[norm_zpow, norm_tw X E v s (gl_det_ne _), ← zpow_mul]`. Rewrite using `[Finset.prod_congr rfl fun s _ => h3 s, prod_zpow_eq _ hr, ← Finset.mul_sum, sum_sign_w, ← zpow_add₀ hr]`. Establish `: ∀ a b : ℤ, a * b + -(b * a) = 0` using `fun a b => by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, zpow_zero]`. Rewrite using `[h1, one_mul, h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_kapG (j : ℕ) (c : X.Lv.comp j) (γ : (X.Lv.lev j c).Γ) :
     letI := wittFractionAlgebraCp p
@@ -749,7 +747,7 @@ theorem norm_kapG (j : ℕ) (c : X.Lv.comp j) (γ : (X.Lv.lev j c).Γ) :
   rw [h1, one_mul, h2]
 
 /- English proof (translation)
-Set `_` to `wittFractionAlgebraCp p`. Set `_` to `algKfC E`. Use `show ‖(kapG X ℂ_[p] j La.1 (delt X hfin j La.1 La.2))⁻¹‖ = 1`. Rewrite using `[norm_inv, norm_kapG X E, inv_one]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_chiN (j : ℕ) (La : X.Lt j) :
     letI := wittFractionAlgebraCp p

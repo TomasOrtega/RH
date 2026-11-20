@@ -5,11 +5,11 @@ open NumberField IsDedekindDomain ValuativeRel GlobalTheory.PRep GlobalTheory.Sm
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hinj : ∀ i ∈ (Finset.range t).val, ∀ j ∈ (Finset.range t).val, t - 1 - i = t - 1 - j → i = j`. Introduce `i hi j hj h`. Simplify using `only [Finset.mem_val, Finset.mem_range] at hi hj`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Multiset.Nodup.ext (Multiset.Nodup.map_on hinj (Finset.range t).nodup) (Finset.range t).nodup]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Simplify using `only [Multiset.mem_map, Finset.mem_val, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 
-Introduce `hy`. Conclude with `⟨t - 1 - y, by omega, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem range_val_map_rev (t : ℕ) :
     (Finset.range t).val.map (fun i : ℕ => t - 1 - i) = (Finset.range t).val := by
@@ -27,7 +27,7 @@ private theorem range_val_map_rev (t : ℕ) :
     exact ⟨t - 1 - y, by omega, by omega⟩
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Units.val_inv_eq_inv_val, GlobalTheory.LFun.coe_npowU, GlobalTheory.LFun.coe_npowU]`. Unfold `GlobalTheory.LFun.npow`. Conclude with `Complex.cpow_neg _ _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem npowU_neg {K : Type} [Field K] [NumberField K]
     (w : HeightOneSpectrum (𝓞 K)) (z : ℂ) :
@@ -38,11 +38,11 @@ private theorem npowU_neg {K : Type} [Field K] [NumberField K]
   exact Complex.cpow_neg _ _
 
 /- English proof (translation)
-Introduce `K _ _ w x t`. Unfold `GlobalTheory.LFun.seg`. Rewrite using `[Multiset.map_map]`. Use `conv_rhs => rw [← range_val_map_rev t, Multiset.map_map]`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Simplify using `only [Finset.mem_val, Finset.mem_range] at hi`. Simplify using `only [Function.comp_apply, mul_inv, ← npowU_neg]`. Use `congr 2`. Rewrite using `[Nat.sub_sub, Nat.cast_sub (by omega : 1 + i ≤ t)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Loc.segInv :
     UpperTheory.Gal.TP.Loc.SegInv := by

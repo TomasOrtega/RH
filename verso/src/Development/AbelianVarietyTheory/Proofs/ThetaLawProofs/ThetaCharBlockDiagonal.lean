@@ -14,7 +14,7 @@ namespace GlobalTheory.ThetaPow
 variable {j g G : ℕ}
 
 /- English proof (translation)
-Unfold `dotProduct`. Rewrite using `[← e.sum_comp, Fintype.sum_prod_type]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dotProduct_blocks {R : Type*} [CommRing R] (e : Fin j × Fin g ≃ Fin G) (x y : Fin G → R) :
     x ⬝ᵥ y = ∑ i : Fin j, (fun k => x (e (i, k))) ⬝ᵥ (fun k => y (e (i, k))) := by
@@ -22,9 +22,9 @@ theorem dotProduct_blocks {R : Type*} [CommRing R] (e : Fin j × Fin g ≃ Fin G
   rw [← e.sum_comp, Fintype.sum_prod_type]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [mulVec, dotProduct, of_apply]`. Rewrite using `[← e.sum_comp, Fintype.sum_prod_type]`. Simplify using `only [Equiv.symm_apply_apply, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_eq_single i]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[Ne.symm hc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_blocks {R : Type*} [CommRing R] (e : Fin j × Fin g ≃ Fin G)
     (M : Matrix (Fin g) (Fin g) R) (y : Fin G → R) (i : Fin j) :
@@ -42,11 +42,11 @@ theorem mulVec_blocks {R : Type*} [CommRing R] (e : Fin j × Fin g ≃ Fin G)
   · simp
 
 /- English proof (translation)
-Use `posDef_iff_dotProduct_mulVec.2 ⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Use extensionality with `p q`. Establish `h` using `hM.1.apply (e.symm p).2 (e.symm q).2`. Simplify using `only [conjTranspose_apply, of_apply, star_trivial] at h ⊢`. Distinguish the cases in `hpq : (e.symm p).1 = (e.symm q).1`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hpq, if_pos hpq.symm, h]`. Rewrite using `[if_neg hpq, if_neg (Ne.symm hpq)]`. Rewrite using `[dotProduct_blocks e]`. Simplify using `only [mulVec_blocks]`. Take `⟨p, hp⟩` from `Function.ne_iff.1 hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_pos' (fun i _ => ?_) ⟨(e.symm p).1, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Conclude with `hM.posSemidef.dotProduct_mulVec_nonneg _`. Use `(posDef_iff_dotProduct_mulVec.1 hM).2 (x := fun k => x (e ((e.symm p).1, k))) ?_` and prove the remaining obligations. Use `Function.ne_iff.2 ⟨(e.symm p).2, ?_⟩` and prove the remaining obligations. Simplify using `using hp`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem posDef_blocks (e : Fin j × Fin g ≃ Fin G) {M : Matrix (Fin g) (Fin g) ℝ} (hM : M.PosDef) :
     (Matrix.of fun p q => if (e.symm p).1 = (e.symm q).1 then
@@ -77,9 +77,9 @@ theorem blockEquiv_apply (e : Fin j × Fin g ≃ Fin G) (m : Fin G → ℤ) (i :
     blockEquiv e m i k = m (e (i, k)) := rfl
 
 /- English proof (translation)
-Unfold `CanTh.thTerm`. Rewrite using `[← Complex.exp_sum, dotProduct_blocks e, dotProduct_blocks e (y := z + _), Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mulVec_blocks]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_def, Equiv.symm_apply_apply, blockEquiv_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thTerm_blocks (e : Fin j × Fin g ≃ Fin G) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ)
     (z : Fin G → ℂ) (m : Fin G → ℤ) :
@@ -101,11 +101,11 @@ namespace GlobalTheory
 open ThetaPow in
 
 /- English proof (translation)
-Introduce `τ'`. Use `⟨?_, ?_, fun z => ?_⟩` and prove the remaining obligations. Use extensionality with `p q`. Simplify using `only [τ', transpose_apply, of_apply]`. Distinguish the cases in `hpq : (e.symm p).1 = (e.symm q).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hpq, if_pos hpq.symm, hs.apply]`. Rewrite using `[if_neg hpq, if_neg (Ne.symm hpq)]`. Use `posDef_blocks e hp using 1` and compare the differences between its conclusion and the goal. Use extensionality with `p q`. Simplify using `only [τ', map_apply, of_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[CanTh.thetaChar_eq_tsum τ' (fun p => a (e.symm p).2) (fun p => b (e.symm p).2) z]`. Simplify using `only [τ', thTerm_blocks]`. Rewrite using `[(blockEquiv e).tsum_eq (fun m => ∏ i : Fin j, CanTh.thTerm τ a b (fun k => z (e (i, k))) (m i))]`. Conclude with `(CanTh.hasSum_prod_thTerm (τ := fun _ : Fin j => τ) (fun _ => CanTh.mem_thetaDomain hp) (fun _ => a) (fun _ => b) (fun i k => z (e (i, k)))).tsum_eq`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaChar_blockDiagonal (j g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ) (G : ℕ)
     (e : Fin j × Fin g ≃ Fin G) (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) :

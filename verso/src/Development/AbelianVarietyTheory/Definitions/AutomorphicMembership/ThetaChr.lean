@@ -91,19 +91,19 @@ def IsBuiltE (𝒮 : Slots) : V4.Slot := positionOf (BuiltE 𝒮)
 def IsGoodE (𝒮 : Slots) : V4.Slot := positionOf (GoodE 𝒮)
 
 /- English proof (translation)
-The claim follows from `positionOf_mono (fun _ _ _ _ _ _ _ ⟨b, _⟩ => ⟨b⟩) K X f T c h`.
+A detailed English derivation is pending.
 -/
 theorem IsBuiltE.isBuilt {𝒮 : Slots} (K X f T c) (h : IsBuiltE 𝒮 K X f T c) : IsBuilt 𝒮 K X f T c :=
   positionOf_mono (fun _ _ _ _ _ _ _ ⟨b, _⟩ => ⟨b⟩) K X f T c h
 
 /- English proof (translation)
-The claim follows from `positionOf_mono (fun _ _ _ _ _ _ _ ⟨⟨b, _⟩, g⟩ => ⟨⟨b⟩, g⟩) K X f T c h`.
+A detailed English derivation is pending.
 -/
 theorem IsGoodE.isGood {𝒮 : Slots} (K X f T c) (h : IsGoodE 𝒮 K X f T c) : IsGood 𝒮 K X f T c :=
   positionOf_mono (fun _ _ _ _ _ _ _ ⟨⟨b, _⟩, g⟩ => ⟨⟨b⟩, g⟩) K X f T c h
 
 /- English proof (translation)
-The claim follows from `positionOf_mono (fun _ _ _ _ _ _ _ h => h.1) K X f T c h`.
+A detailed English derivation is pending.
 -/
 theorem IsGoodE.isBuiltE {𝒮 : Slots} (K X f T c) (h : IsGoodE 𝒮 K X f T c) : IsBuiltE 𝒮 K X f T c :=
   positionOf_mono (fun _ _ _ _ _ _ _ h => h.1) K X f T c h

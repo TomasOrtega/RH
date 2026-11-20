@@ -21,7 +21,7 @@ variable {S : Scheme.{0}} (P : PolAV S)
 def toProd : P.A.left ⟶ (baseOver S ⊗ P.A).left := (λ_ P.A).inv.left
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => f.left) (λ_ P.A).inv_hom_id`. Simplify using `only [Over.comp_left, Over.id_left, leftUnitor_hom] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toProd_snd : toProd P ≫ (snd (baseOver S) P.A).left = 𝟙 _ := by
   have h := congrArg (fun f => f.left) (λ_ P.A).inv_hom_id
@@ -30,9 +30,7 @@ theorem toProd_snd : toProd P ≫ (snd (baseOver S) P.A).left = 𝟙 _ := by
 
 variable {P}
 /- English proof (translation)
-Introduce `y hy`. Establish `hy' : y ∈ P.L.U (j ())` using `Set.mem_iInter.1 hy ()`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `show (toProd P ≫ (snd (baseOver S) P.A).left).base y ∈ P.L.U (j ())`. Rewrite using `[toProd_snd]`.
-
-Conclude with `hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_le {n : ℕ} (j : PUnit → P.L.ι) :
     (lbPow P.L n).U j ≤ toProd P ⁻¹ᵁ (LPow P.A P.L (n : ℤ) (baseOver S)).U (fun _ => j ()) := by
@@ -45,14 +43,14 @@ end GlobalTheory.TrSecDesc
 
 namespace GlobalTheory.TrSecDesc
 /- English proof (translation)
-Simplify using `only [res, pullU, Units.coe_map, MonoidHom.coe_coe, Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_res_pullU {X Y : Scheme.{0}} (f : Y ⟶ X) (U : X.Opens) {W : Y.Opens} (h : W ≤ f ⁻¹ᵁ U) (x : Γ(X, U)ˣ) :
     ((res h (pullU f U x) : Γ(Y, W)ˣ) : Γ(Y, W)) = (f.appLE U W h).hom x := by
   simp only [res, pullU, Units.coe_map, MonoidHom.coe_coe, Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply]
 
 /- English proof (translation)
-Rewrite using `[map_pow, coe_res_pullU, coe_res_pullU, ← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_res_pullU_pow {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (U : X.Opens) (V : Y.Opens) (W : Z.Opens)
     (h1 : V ≤ g ⁻¹ᵁ U) (h2 : W ≤ f ⁻¹ᵁ V) (h3 : W ≤ (f ≫ g) ⁻¹ᵁ U) (x : Γ(X, U)ˣ) (n : ℕ) :
@@ -61,7 +59,7 @@ theorem appLE_res_pullU_pow {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (U 
   rw [map_pow, coe_res_pullU, coe_res_pullU, ← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Substitute `hfg` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem res_pullU_of_eq {X Y : Scheme.{0}} {f g : Y ⟶ X} (hfg : f = g) (U : X.Opens) {W : Y.Opens} (h : W ≤ f ⁻¹ᵁ U)
     (x : Γ(X, U)ˣ) : res h (pullU f U x) = res (hfg ▸ h) (pullU g U x) := by
@@ -69,9 +67,9 @@ theorem res_pullU_of_eq {X Y : Scheme.{0}} {f g : Y ⟶ X} (hfg : f = g) (U : X.
 
 variable {S : Scheme.{0}} {P : PolAV S}
 /- English proof (translation)
-Simplify using `only [LPow, LB.LinComb, Units.coe_prod, Fin.prod_univ_one, Fintype.prod_unique, zpow_natCast, Units.val_pow_eq_pow_val]`. Simplify using `only [lbPow, LB.LinComb, Units.coe_prod, Fintype.prod_unique, zpow_natCast, Units.val_pow_eq_pow_val]`. Use `(appLE_res_pullU_pow (toProd P) (snd (baseOver S) P.A).left (P.L.U (i ()) ⊓ P.L.U (j ())) ((P.L.wchart (fun _ : Fin 1 => (snd (baseOver S) P.A).left) fun _ => i ()) ⊓ P.L.wchart (fun _ : Fin 1 => (snd (baseOver S) P.A).left) fun _ => j ()) (P.L.wchart (fun _ : PUnit => 𝟙 P.A.left …` and prove the remaining obligations. Rewrite using `[toProd_snd]`. Introduce `z hz`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨Set.mem_iInter.1 hz.1 (), Set.mem_iInter.1 hz.2 ()⟩`. Rewrite using `[res_pullU_of_eq (toProd_snd P)]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem g_eq {n : ℕ} (i j : PUnit → P.L.ι)
     (e : (lbPow P.L n).U i ⊓ (lbPow P.L n).U j ≤ toProd P ⁻¹ᵁ ((LPow P.A P.L (n : ℤ) (baseOver S)).U (fun _ => i ()) ⊓

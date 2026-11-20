@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.CrysFrobCoord
 
 /- English proof (translation)
-Use `set S := Submodule.span B (Set.range u)`. Take `⟨w, -, hu⟩` from `h (N ⧸ S) 0`. Establish `h1` using `hu S.mkQ (fun x => by`. Simplify using `using (Submodule.Quotient.mk_eq_zero S).2 (Submodule.subset_span ⟨x, rfl⟩))`. Establish `h2` using `hu 0 (fun x => by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `: S.mkQ y = 0` using `by rw [h1, ← h2]; rfl`. Conclude with `(Submodule.Quotient.mk_eq_zero S).1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem span_range_eq_top {A B M N : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] {f : A →+* B} {u : M →ₛₗ[f] N} (h : SemiBC u) :
@@ -29,9 +29,9 @@ theorem span_range_eq_top {A B M N : Type} [CommRing A] [CommRing B] [AddCommGro
   exact (Submodule.Quotient.mk_eq_zero S).1 this
 
 /- English proof (translation)
-Unfold `IsFrac at h h'`. Take `⟨⟨_, s, rfl⟩, hs⟩` from `LocalizedModule.mk_eq.1 (h.symm.trans h')`. Establish `h2` using `congrArg lam hs`. Simplify using `only [Submonoid.smul_def, hlam, map_pow, hb] at h2`. Establish `h3` using `mul_left_cancel₀ (pow_ne_zero s hd) h2`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `mul_left_cancel₀ (pow_ne_zero k' hd) ?_` and prove the remaining obligations. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frac_indep {A M B : Type} [CommRing A] [AddCommGroup M] [Module A M] [CommRing B] [IsDomain B]
     (d : A) (J : A →+* B) (hd : J d ≠ 0) (lam : M →+ B) (hlam : ∀ r y, lam (r • y) = J r * lam y)
@@ -46,17 +46,15 @@ theorem frac_indep {A M B : Type} [CommRing A] [AddCommGroup M] [Module A M] [Co
   rw [h3]; ring
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ Submodule.span A S, ∃ n k, IsFrac d (Φ y) n k ∧ lam n = J d ^ k * F y`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨n, k, hn⟩` from `exists_isFrac d (Φ y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, k, hn, h0 y hy n k hn⟩`. Consider the case `zero => exact ⟨0, 0, by simp [IsFrac], by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨n, k, hn, en⟩` from `hx`. Take `⟨m, j, hm, em⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨d ^ j • n + d ^ k • m, k + j, ?_, ?_⟩` and prove the remaining obligations. Unfold `IsFrac at hn hm ⊢`. Rewrite using `[map_add, hn, hm, LocalizedModule.mk_add_mk]`. Use `congr 1`. Conclude with `Subtype.ext (pow_add d k j).symm`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, hlam, hlam, en, em, map_add, map_pow, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul r x _ hx`. Take `⟨n, k, hn, en⟩` from `hx`. Use `⟨φ r • n, k, ?_, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `IsFrac at hn ⊢`. Rewrite using `[map_smulₛₗ, hn, RingHom.comp_apply, algebraMap_smul, LocalizedModule.smul'_mk]`. Rewrite using `[hlam, hF, en]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨n', k', h', e'⟩` from `key y (hS ▸ Submodule.mem_top)`.
-
-Conclude with `frac_indep d J hd lam hlam h h' e'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem frac_formula {A M B : Type} [CommRing A] [AddCommGroup M] [Module A M] [CommRing B] [IsDomain B]
     (d : A) (φ : A →+* A)
@@ -96,9 +94,9 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {O K : Type} [CommRi
   [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] (t : Wq l a →ₐ[ℤ_[l]] O) (e : ℕ)
 
 /- English proof (translation)
-Use extensionality with `n`. Establish `: coeff n (frobS l a x) = if l ∣ n then sigma l a (coeff (n / l) x) else 0`. Simplify using `only [frobS, RingHom.comp_apply, coeff_map, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, coeff_expand]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[coeff_frob, coeff_toAc, coeff_toAc, this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[emb_sigma]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frob_toAc (x : (Wq l a)⟦X⟧) (τ : ZMod a) :
     frob K l (toAc t K x (τ - 1) : K⟦X⟧) = (toAc t K (frobS l a x) τ : K⟦X⟧) := by
@@ -112,7 +110,7 @@ theorem frob_toAc (x : (Wq l a)⟦X⟧) (τ : ZMod a) :
   · simp
 
 /- English proof (translation)
-Establish `hX : toAc t K X = fun _ => uIn (A O K)`. Use function extensionality and compare the values at `fun τ => Subtype.ext ((congrArg (PowerSeries.map _) (PowerSeries.map_X _)).trans (PowerSeries.map_X _))`. Rewrite using `[eis, map_add, map_pow, hX, map_natCast]`. Simplify using `[E]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coe_toAc_eis (τ : ZMod a) : (toAc t K (eis l a e) τ : K⟦X⟧) = E K l e := by
   have hX : toAc t K X = fun _ => uIn (A O K) :=
@@ -124,19 +122,19 @@ theorem coe_toAc_eis (τ : ZMod a) : (toAc t K (eis l a e) τ : K⟦X⟧) = E K 
 end Maps
 
 /- English proof (translation)
-Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P EE c _ hc PP hl p J g φ₂ hJp hJφ hφg hg lam hlam hlamtr y n k h τ i`. Establish `hK : CharZero K` using `charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Establish `hl0 : (l : K) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hl1 : (l : K⟦X⟧) ≠ 0` using `fun h => hl0 (by simpa using congrArg constantCoeff h)`. Establish `hl2 : (l : K⟦X⟧⟦X⟧) ≠ 0` using `fun h => hl1 (by simpa using congrArg constantCoeff h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : E K l e ≠ 0` using `fun h => hl0 (by`. Simplify `congrArg constantCoeff h)` using `[E, NeZero.ne e]`. Establish `hJE : J τ (p.f (eis l a e)) = g (frob K l (E K l e))`. Rewrite using `[hJp, ← frob_toAc, coe_toAc_eis]`. Establish `hJE0 : g (frob K l (E K l e)) ≠ 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_ne_zero_iff _ hg, map_ne_zero_iff _ (frob_injective l)]`. Conclude with `hE`. Set `lam' : EE.M PP →+ K⟦X⟧⟦X⟧` to `{ toFun := fun y => lam y τ i, map_zero' := by simp, map_add' := by simp }`. Set `F : EE.M PP →+ K⟦X⟧⟦X⟧` to `{ toFun := fun y => (((P.mx (τ - 1)).map (frob K l)).map g *ᵥ fun j => φ₂ (lam y (τ - 1) j)) i map_zero' := by simp [Matrix.mulVec, dotProduct] map_add' := by simp [Matrix.mulVec, dotProduct, mul_add, Finset.sum_add_distrib] }`. Establish `hJl : J τ (l : PP.A) = l` using `map_natCast _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `frac_formula (l : PP.A) PP.D.φ (EE.Φ PP ⟨l, hl⟩) (J τ) (hJl ▸ hl2) lam' (fun r y => hlam r y τ i) F ?_ _ (span_range_eq_top (EE.tr_bc p)) ?_ y n k h` as an intermediate fact. Rewrite `this` using `[hJl]`. Conclude with `this`. Introduce `r y`. Simplify using `only [F, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.mulVec, dotProduct, hlam, map_mul, hJφ, Finset.mul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Introduce and unpack `_ ⟨x, rfl⟩ n k h`. Take `⟨m', k', hm'⟩` from `exists_isFrac (A := (ϖ.prism a).A) (eis l a e) (EE.Φ (ϖ.prism a) ⟨eis l a e, Ideal.mem_span_singleton_self _⟩ x)`. Take `⟨r, hr⟩` from `EE.Φ_nat p ⟨eis l a e, Ideal.mem_span_singleton_self _⟩ ⟨l, hl⟩ x m' k' n k hm' h`. Establish `h1` using `congrArg (fun y => lam y τ i) hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hlam, map_sub, Pi.sub_apply, map_zero, Pi.zero_apply, map_pow, map_mul, hJl, hJE] at h1`. Establish `h2` using `sub_eq_zero.1 ((mul_eq_zero.1 h1).resolve_left (pow_ne_zero _ (mul_ne_zero hJE0 hl2)))`. Rewrite `h2` using `[hlamtr, hc x m' k' hm']`. Rewrite using `[hJl]`. Use `mul_left_cancel₀ (pow_ne_zero k' hJE0) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `_ * lam n τ i = _`. Rewrite using `[← h2]`. Simplify using `only [F, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.mulVec, dotProduct, hlamtr, hφg, PhiMod.phi_apply, frobV_apply, map_mul, map_pow, map_sum, Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frob_in_coordinates : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (EE : FCrys l ↥(OL (ϖ.field a))) (c : EE.M (ϖ.prism a) →+ Vec K a ι), (∀ (w : (ϖ.prism a).A) (x : EE.M (ϖ.prism a)), c (w • x) = fun τ i => (toAc t K w τ : K⟦X⟧) * c x τ i) → (∀ (x m : EE.M (ϖ.prism a)) (k : ℕ), IsFrac (A := (ϖ.prism a).A) (eis l a e) (EE.Φ (ϖ.prism a) ⟨eis l a e, Ideal.mem_span_singleton_self _⟩ x) m k → c m = fun τ i => E K l e ^ k * P.phi (c x) τ i) → ∀ (PP : Obj l ↥(OL (ϖ.field a))) (hl : (l : PP.A) ∈ PP.I) (p : GlobalTheory.Prism.Hom (ϖ.prism a) PP) (J : ZMod a → PP.A →+* K⟦X⟧⟦X⟧) (g : K⟦X⟧ →+* K⟦X⟧⟦X⟧) (φ₂ : K⟦X⟧⟦X⟧ →+* K⟦X⟧⟦X⟧), (∀ τ (w : (Wq l a)⟦X⟧), J τ (p.f w) = g (toAc t K (frobS l a w) τ : K⟦X⟧)) → (∀ τ y, J τ (PP.D.φ y) = φ₂ (J (τ - 1) y)) → (∀ f, φ₂ (g f) = g (frob K l f)) → Function.Injective g → ∀ lam : EE.M PP →+ (ZMod a → ι → K⟦X⟧⟦X⟧), (∀ (r : PP.A) (y : EE.M PP) τ i, lam (r • y) τ i = J τ r * lam y τ i) → (∀ x τ i, lam (EE.tr p x) τ i = g (frob K l (c x (τ - 1) i))) → ∀ (y n : EE.M PP) (k : ℕ), IsFrac (l : PP.A) (EE.Φ PP ⟨l, hl⟩ y) n k → ∀ τ i, lam n τ i = (l : K⟦X⟧⟦X⟧) ^ k * (((P.mx (τ - 1)).map (frob K l)).map g *ᵥ fun j => φ₂ (lam y (τ - 1) j)) i := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P EE c _ hc PP hl p J g φ₂ hJp hJφ hφg hg lam hlam hlamtr y n k h τ i

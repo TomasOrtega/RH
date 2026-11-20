@@ -8,9 +8,7 @@ namespace GlobalTheory.TorusTateFree
 open scoped nonZeroDivisors in
 
 /- English proof (translation)
-Set `f : M →ₗ[𝓞 E] E ⊗[𝓞 E] M` to `TensorProduct.mk (𝓞 E) E M 1`. Establish `hb : IsBaseChange E f` using `TensorProduct.isBaseChange _ _ _`. Use `haveI h1 : IsLocalizedModule (𝓞 E)⁰ f := (isLocalizedModule_iff_isBaseChange (𝓞 E)⁰ E f).2 hb`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid (𝓞 E) ℤ⁰) E := IsIntegralClosure.isLocalization ℤ ℚ E (𝓞 E)`. Use `haveI h2 : IsLocalizedModule (Algebra.algebraMapSubmonoid (𝓞 E) ℤ⁰) f := (isLocalizedModule_iff_isBaseChange _ E f).2 hb`.
-
-Use `haveI h3 : IsLocalizedModule ℤ⁰ (f.restrictScalars ℤ) := IsLocalizedModule.restrictScalars _ f`. Rewrite using `[← IsLocalizedModule.finrank_eq ℤ⁰ (f.restrictScalars ℤ) le_rfl, ← IsLocalizedModule.finrank_eq (𝓞 E)⁰ f le_rfl, ← IsLocalization.finrank_eq ℚ ℤ⁰ le_rfl, ← IsLocalization.finrank_eq E (𝓞 E)⁰ le_rfl, Module.finrank_mul_finrank]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finrank_int_tower (E : Type) [Field E] [NumberField E] (M : Type) [AddCommGroup M]
     [Module (𝓞 E) M] : Module.finrank ℤ M = Module.finrank ℚ E * Module.finrank (𝓞 E) M := by
@@ -28,15 +26,13 @@ private theorem finrank_int_tower (E : Type) [Field E] [NumberField E] (M : Type
     Module.finrank_mul_finrank]
 
 /- English proof (translation)
-Use `set I : Ideal R := Ideal.span {m} with hI`. Establish `: IsArtinianRing (R ⧸ I)` using `isArtinian_of_finite`. Take `⟨b⟩` from `Module.nonempty_basis_of_flat_of_finrank_eq (R ⧸ I) ((R ⧸ I) ⊗[R] N) (Module.finrank R N) (fun P => by`. Use `P.isMaximal` as an intermediate fact. Set `: Field ((R ⧸ I) ⧸ P.asIdeal)` to `Ideal.Quotient.field _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(TensorProduct.AlgebraTensorModule.cancelBaseChange R (R ⧸ I) ((R ⧸ I) ⧸ P.asIdeal) ((R ⧸ I) ⧸ P.asIdeal) N).finrank_eq]`. Establish `h1` using `Module.rankAtStalk_baseChange (R := R) (M := N) (S := (R ⧸ I) ⧸ P.asIdeal) ⊥`. Rewrite `h1` using `[Module.rankAtStalk_eq_finrank_of_free, Module.rankAtStalk_eq, Ideal.finrank_fiber_eq_finrank]`. Conclude with `h1)`. Establish `h1 : Submodule.span R (Set.range b) = ⊤`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← Submodule.restrictScalars_span R (R ⧸ I) Ideal.Quotient.mk_surjective, b.span_eq, Submodule.restrictScalars_top]`. Set `q` to `TensorProduct.quotTensorEquivQuotSMul N I`. Use `choose v hv using fun k => Submodule.Quotient.mk_surjective _ (q (b k))`. Use `⟨v, fun x => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 (h1 ▸ Submodule.mem_top : q.symm (Submodule.Quotient.mk x) ∈ Submodule.span R (Set.range b))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : x - ∑ k, c k • v k ∈ (I • ⊤ : Submodule R N)`. Rewrite using `[← Submodule.Quotient.eq, ← q.apply_symm_apply (Submodule.Quotient.mk x), ← hc, map_sum, ← Submodule.mkQ_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, Submodule.mkQ_apply, hv]`. Rewrite `h2` using `[hI, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
-
-Take `⟨z, -, hz⟩` from `h2`. Conclude with `⟨c, z, by rw [hz]; abel⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_span_mod {R N : Type} [CommRing R] [IsDomain R] [AddCommGroup N] [Module R N]
     [Module.Finite R N] [Module.Projective R N] (m : R) [Finite (R ⧸ Ideal.span {m})] :
@@ -71,17 +67,17 @@ private theorem exists_span_mod {R N : Type} [CommRing R] [IsDomain R] [AddCommG
   exact ⟨c, z, by rw [hz]; abel⟩
 
 /- English proof (translation)
-Introduce `E _ _ ℓ hℓ W _ _ ρ L hstab hfin κ _ hrk`. Use `letI : Module (𝓞 E) W := Module.compHom W ρ`. Establish `hs : ∀ (a : 𝓞 E) (z : W), a • z = ρ a z` using `fun _ _ => rfl`. Set `N : Submodule (𝓞 E) W` to `{ carrier := L add_mem' := fun ha hb => L.add_mem ha hb zero_mem' := L.zero_mem smul_mem' := fun a z hz => hstab a z hz }`. Set `e : L ≃ₗ[ℤ] N` to `AddEquiv.toIntLinearEquiv { toFun := fun x => ⟨x.1, x.2⟩ invFun := fun x => ⟨x.1, x.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_add' := fun _ _ => rfl }`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: Module.Finite ℤ N` using `Module.Finite.equiv e`. Establish `: Module.Finite (𝓞 E) N` using `Module.Finite.of_restrictScalars_finite ℤ _ _`. Establish `: Module.IsTorsionFree (𝓞 E) W`. Use `Module.IsTorsionFree.of_smul_eq_zero fun a z h => or_iff_not_imp_left.2 fun ha => ?_` and prove the remaining obligations. Take `⟨b, n, hn, h1⟩` from `Algebra.IsAlgebraic.exists_smul_eq_mul ℤ (1 : 𝓞 E) ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (n : 𝓞 E) = b * a` using `by rw [mul_comm, ← h1]; simp`. Establish `h3 : (n : ℂ) • z = 0`. Rewrite using `[Int.cast_smul_eq_zsmul, ← Int.cast_smul_eq_zsmul (𝓞 E), h2, mul_smul, h, smul_zero]`. Conclude with `(smul_eq_zero.1 h3).resolve_left (Int.cast_ne_zero.2 hn)`. Establish `: Module.FinitePresentation (𝓞 E) N` using `Module.finitePresentation_of_finite _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Flat (𝓞 E) N` using `inferInstance`. Establish `: Module.Projective (𝓞 E) N` using `Module.Flat.projective_of_finitePresentation`. Establish `: Finite (𝓞 E ⧸ Ideal.span {(ℓ : 𝓞 E)})` using `Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hℓ.out.ne_zero)`. Establish `hr : Fintype.card κ = Module.finrank (𝓞 E) N`. Rewrite `hrk` using `[e.finrank_eq, finrank_int_tower E N, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(Nat.eq_of_mul_eq_mul_right Module.finrank_pos hrk).symm`. Set `σ : κ ≃ Fin (Module.finrank (𝓞 E) N)` to `Fintype.equivFinOfCardEq hr`. Take `⟨v, hv⟩` from `exists_span_mod (N := N) (ℓ : 𝓞 E)`. Use `⟨fun k => v (σ k), fun k => (v (σ k)).2, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨c, z, h⟩` from `hv ⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun k => c (σ k), z, z.2, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg N.subtype h`. Rewrite `h1` using `[map_add, map_sum, map_smul, Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, ← σ.sum_comp]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gens_mod : ∀ (E : Type) [Field E] [NumberField E] (ℓ : ℕ) [Fact ℓ.Prime] (W : Type) [AddCommGroup W] [Module ℂ W]
     (ρ : 𝓞 E →+* Module.End ℂ W) (L : Submodule ℤ W), (∀ a z, z ∈ L → ρ a z ∈ L) → Module.Finite ℤ L →
@@ -129,15 +125,15 @@ theorem exists_gens_mod : ∀ (E : Type) [Field E] [NumberField E] (ℓ : ℕ) [
   exact h1
 
 /- English proof (translation)
-Introduce `E _ _ ℓ hℓ W _ _ ρ M _ ex hadd hsurj L hL β hβ α hα κ _ y hyL hy`. Establish `h0 : (ℓ : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hℓ.out.ne_zero`. Set `φ : W →+ Additive M` to `AddMonoidHom.mk' (fun z => Additive.ofMul (ex z)) hadd`. Establish `hpow : ∀ (z : W) (n : ℕ), ex z ^ n = ex ((n : ℂ) • z)` using `fun z n => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_nsmul φ n z).symm`. Set `lv : GlobalTheory.HTLat.Tate ℓ M →+ Additive M` to `AddMonoidHom.mk' (fun t => Additive.ofMul (t.lev 1)) fun _ _ => rfl`. Set `T : κ → GlobalTheory.HTLat.Tate ℓ M` to `fun k => GlobalTheory.HTLat.Tate.mk (fun n => ex (((ℓ : ℂ) ^ n)⁻¹ • y k)) fun n => ⟨by rw [hpow, smul_smul, Nat.cast_pow, mul_inv_cancel₀ (pow_ne_zero _ h0), one_smul, hL]; exact hyL k, by rw [hpow, smul_smul, pow_succ', mul_inv, mul_inv_cancel_left₀ h0]⟩`. Use `⟨T, fun t => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hsurj (t.lev 1)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwL : (ℓ : ℂ) • w ∈ L`. Rewrite using `[← hL, ← hpow, hw]`. Simplify using `using t.lev_pow 1`. Take `⟨c, z, hz, h⟩` from `hy _ hwL`. Establish `h1 : w = ∑ k, ρ (c k) (((ℓ : ℂ) ^ 1)⁻¹ • y k) + z`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inv_smul_smul₀ h0 w, h, smul_add, inv_smul_smul₀ h0, Finset.smul_sum, pow_one]`. Simplify using `only [map_smul]`. Establish `h2 : lv (t - ∑ k, α (c k) (T k)) = 0`. Establish `h3 : lv t = φ w` using `congrArg Additive.ofMul hw.symm`. Establish `h4 : φ z = 0` using `congrArg Additive.ofMul ((hL z).2 hz)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, sub_eq_zero, h3, h1, map_add, h4, add_zero, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => congrArg Additive.ofMul ?_` and prove the remaining obligations. Conclude with `(hβ _ _).trans (hα _ (T k) 1).symm`. Take `⟨s, hs⟩` from `GlobalTheory.TateSpan.exists_eq_p_smul_of_lev_one (t - ∑ k, α (c k) (T k)) h2`. Conclude with `⟨c, s, by rw [← hs]; abel⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_tate_gens : ∀ (E : Type) [Field E] [NumberField E] (ℓ : ℕ) [Fact ℓ.Prime] (W : Type) [AddCommGroup W] [Module ℂ W]
     (ρ : 𝓞 E →+* Module.End ℂ W) (M : Type) [CommGroup M] (ex : W → M), (∀ z w, ex (z + w) = ex z * ex w) →
@@ -179,21 +175,21 @@ theorem exists_tate_gens : ∀ (E : Type) [Field E] [NumberField E] (ℓ : ℕ) 
   exact ⟨c, s, by rw [← hs]; abel⟩
 
 /- English proof (translation)
-Introduce `E _ _ ℓ _ W _ _ ρ M _ ex hadd hsurj L hL hfin β hβ α hα hfree hfinT κ _ hrkL hrkT`. Establish `hstab : ∀ a z, z ∈ L → ρ a z ∈ L` using `fun a z hz => by`. Rewrite `hz`, the goal using `[← hL]`. Rewrite using `[hβ, hz, map_one]`. Take `⟨y, hyL, hy⟩` from `exists_gens_mod E ℓ W ρ L hstab hfin κ hrkL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT⟩` from `exists_tate_gens E ℓ W ρ M ex hadd hsurj L hL β hβ α hα κ y hyL hy`. Set `act : ℤ_[ℓ] ⊗[ℤ] 𝓞 E →ₐ[ℤ_[ℓ]] Module.End ℤ_[ℓ] (GlobalTheory.HTLat.Tate ℓ M)` to `Algebra.TensorProduct.lift (Algebra.ofId _ _) α.toIntAlgHom (fun x a => Algebra.commute_algebraMap_left x _)`. Establish `hact : ∀ a, act ((1 : ℤ_[ℓ]) ⊗ₜ a) = α a` using `fun a => by`. Use `(Algebra.TensorProduct.lift_tmul _ _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, one_mul]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `F : (κ → ℤ_[ℓ] ⊗[ℤ] 𝓞 E) →ₗ[ℤ_[ℓ]] GlobalTheory.HTLat.Tate ℓ M` to `{ toFun := fun r => ∑ k, act (r k) (T k) map_add' := fun r s => by`. Simplify using `only [Pi.add_apply, map_add, LinearMap.add_apply, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun c r => by`. Simplify using `only [Pi.smul_apply, map_smul, LinearMap.smul_apply, Finset.smul_sum, RingHom.id_apply] }`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hF : ∀ r, F r = ∑ k, act (r k) (T k)` using `fun r => rfl`. Establish `hmem : ∀ c : κ → 𝓞 E, ∑ k, α (c k) (T k) ∈ LinearMap.range F` using `fun c => ⟨fun k => (1 : ℤ_[ℓ]) ⊗ₜ c k, by simp only [hF, hact]⟩`. Establish `hI : IsLocalRing.maximalIdeal ℤ_[ℓ] ≤ (⊥ : Ideal ℤ_[ℓ]).jacobson`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Establish `hle : (⊤ : Submodule ℤ_[ℓ] (GlobalTheory.HTLat.Tate ℓ M)) ≤ LinearMap.range F ⊔ IsLocalRing.maximalIdeal ℤ_[ℓ] • ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t _`. Take `⟨c, s, rfl⟩` from `hT t`. Use `Submodule.add_mem_sup (hmem c) (Submodule.smul_mem_smul ?_ trivial)` and prove the remaining obligations. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.subset_span rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurjF : Function.Surjective F` using `LinearMap.range_eq_top.1 (top_le_iff.1 (Submodule.le_of_le_smul_of_le_jacobson_bot Module.Finite.fg_top hI hle))`. Establish `hrkR : Module.finrank ℤ_[ℓ] (κ → ℤ_[ℓ] ⊗[ℤ] 𝓞 E) = Fintype.card κ * Module.finrank ℚ E`. Rewrite using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, smul_eq_mul, Module.finrank_baseChange, NumberField.RingOfIntegers.rank]`. Set `e` to `LinearEquiv.ofFinrankEq (κ → ℤ_[ℓ] ⊗[ℤ] 𝓞 E) (GlobalTheory.HTLat.Tate ℓ M) (hrkR.trans hrkT.symm)`. Establish `hinj : Function.Injective F`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `OrzechProperty.injective_of_surjective_endomorphism (e.symm.toLinearMap ∘ₗ F) (e.symm.surjective.comp hsurjF)`. Rewrite `h` using `[LinearMap.coe_comp]`. Conclude with `h.of_comp`. Use `⟨LinearEquiv.ofBijective F ⟨hinj, hsurjF⟩, fun a r => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F _ = α a (F r)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF, hF, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, hact]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tate_free_of_lattice : ∀ (E : Type) [Field E] [NumberField E] (ℓ : ℕ) [Fact ℓ.Prime] (W : Type) [AddCommGroup W] [Module ℂ W]
     (ρ : 𝓞 E →+* Module.End ℂ W) (M : Type) [CommGroup M] (ex : W → M), (∀ z w, ex (z + w) = ex z * ex w) →

@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.InertiaFieldUnram
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.InertiaFixedValue.valuation_eq_zpow_of_ine_fixed`.
+A detailed English derivation is pending.
 -/
 theorem valuation_eq_zpow : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω), OverL l A → ∀ x : Ω, x ≠ 0 → (∀ s ∈ Ine (F := ℚ) A, s x = x) → ∃ k : ℤ, A.valuation x = A.valuation (l : Ω) ^ k :=
   GlobalTheory.InertiaFixedValue.valuation_eq_zpow_of_ine_fixed

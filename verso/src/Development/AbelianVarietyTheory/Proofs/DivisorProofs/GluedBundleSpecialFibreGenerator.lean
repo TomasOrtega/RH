@@ -21,11 +21,11 @@ namespace GlobalTheory.UnitGlue
 open GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits
 
 /- English proof (translation)
-Take `⟨ha, hm⟩` from `ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal.1 hp`. Establish `hpV : ((p : V) : V) ∈ IsLocalRing.maximalIdeal V`. Use `hm using 1` and compare the differences between its conclusion and the goal. Use `ext`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hk : (p : IsLocalRing.ResidueField V) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue V) p]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 hpV`. Set `q : reducedSpecialFibre s ⟶ Spec (.of (IsLocalRing.ResidueField V))` to `(specialFibre s).nilradical.subschemeι ≫ pullback.snd _ _`. Establish `e : (p : Γ(reducedSpecialFibre s, U)) = ((reducedSpecialFibre s).presheaf.map (homOfLE le_top).op).hom (q.appTop.hom ((Scheme.ΓSpecIso (.of (IsLocalRing.ResidueField V))).inv.hom (p : IsLocalRing.ResidueField V)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_natCast]`. Rewrite using `[e, hk]`. Simplify using `only [map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem natCast_eq_zero_reducedSpecialFibre {F : Type} [Field F] (V : ValuationSubring F)
     [IsDiscreteValuationRing V] (p : ℕ) (hp : (p : F) ∈ V.nonunits) {X : Scheme.{0}} (s : X ⟶ Sp V)
@@ -49,9 +49,9 @@ theorem natCast_eq_zero_reducedSpecialFibre {F : Type} [Field F] (V : ValuationS
   simp only [map_zero]
 
 /- English proof (translation)
-Use `haveI : IsReduced (reducedSpecialFibre s) := GlobalTheory.RedFibreField.isReduced_nilradical_subscheme _`. Take `⟨n, hn⟩` from `hu`. Rewrite `hn` using `[Ideal.mem_span_singleton]`. Establish `h0 : (((reducedSpecialι s).app W).hom (u : Γ(X, W)) - 1) ^ n = 0`. Establish `hd` using `map_dvd ((reducedSpecialι s).app W).hom hn`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[map_natCast, natCast_eq_zero_reducedSpecialFibre V p hp s, map_pow, map_sub, map_one]`. Conclude with `zero_dvd_iff.1 hd`. Establish `h1 : ((reducedSpecialι s).app W).hom (u : Γ(X, W)) - 1 = 0` using `IsReduced.eq_zero _ ⟨n, h0⟩`. Use `ext`. Conclude with `sub_eq_zero.1 h1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem pullU_reducedSpecialι_eq_one {F : Type} [Field F] (V : ValuationSubring F)
     [IsDiscreteValuationRing V] (p : ℕ) (hp : (p : F) ∈ V.nonunits) {X : Scheme.{0}} (s : X ⟶ Sp V)
@@ -70,7 +70,7 @@ theorem pullU_reducedSpecialι_eq_one {F : Type} [Field F] (V : ValuationSubring
   exact sub_eq_zero.1 h1
 
 /- English proof (translation)
-Unfold `gU`. Rewrite using `[dif_pos hR]`. Conclude with `hR.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gU_ratioProp {p : ℕ} [Fact p.Prime] {X : Scheme.{0}} {Xw : X.Opens}
     {K : (Sp 𝓞_ℂ_[p] ⟶ X) → Set ℂ_[p]} (h : ∀ x : X, UnitChartAt p Xw K x) (x y : X)
@@ -80,9 +80,9 @@ theorem gU_ratioProp {p : ℕ} [Fact p.Prime] {X : Scheme.{0}} {Xw : X.Opens}
   exact hR.choose_spec
 
 /- English proof (translation)
-Introduce `F _ V _ p _ hp X s Xw K h hR`. Use `⟨⟨fun _ => 1⟩, ?_⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[map_one, map_one, _root_.mul_one]`. Use `symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Establish `key : ∀ (W : (reducedSpecialFibre s).Opens) (k : PUnit) (hh : W ≤ reducedSpecialι s ⁻¹ᵁ ((glueLB h).U (i k) ⊓ (glueLB h).U (j k))), res hh (pullU (reducedSpecialι s) _ ((glueLB h).g (i k) (j k))) ^ (1 : ℤ) = 1`. Introduce `W k hh`. Rewrite using `[pullU_reducedSpecialι_eq_one V p hp s (W := (glueLB h).U (i k) ⊓ (glueLB h).U (j k)) (u := (glueLB h).g (i k) (j k)) (gU_ratioProp h _ _ (hR _ _)).2, map_one, one_zpow]`. Conclude with `@Finset.prod_eq_one PUnit (Γ(reducedSpecialFibre s, LB.wchart (glueLB h) (fun _ : PUnit => reducedSpecialι s) i ⊓ LB.wchart (glueLB h) (fun _ : PUnit => reducedSpecialι s) j)ˣ) Finset.univ _ _ (fun k _ => key _ k _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glueLB_reducedSpecial_gen : ∀ (F : Type) [Field F] (V : ValuationSubring F) [IsDiscreteValuationRing V] (p : ℕ) [Fact p.Prime], (p : F) ∈ V.nonunits → ∀ (X : Scheme.{0}) (s : X ⟶ Sp V) (Xw : X.Opens) (K : (Sp 𝓞_ℂ_[p] ⟶ X) → Set ℂ_[p]) (h : ∀ x : X, UnitChartAt p Xw K x), (∀ x y : X, ∃ u, RatioProp h x y u) → ∃ t : ((glueLB h).pull (GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.reducedSpecialι s)).Gen, t.IsGen := by
   intro F _ V _ p _ hp X s Xw K h hR

@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.PlaneBasisInv
 
 /- English proof (translation)
-Take `⟨hrs, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin n` to `finSumFinEquiv.trans (finCongr hrs)`. Set `A' : Matrix (Fin n) (Fin n) ℂ` to `A.submatrix id e.symm`. Establish `h1 : A'ᵀ * M * A'.map star = (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1)).submatrix e.symm e.symm`. Rewrite using `[← hA]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[A', Matrix.mul_apply, Matrix.submatrix_apply, Matrix.transpose_apply, Matrix.map_apply]`. Establish `h2 : (A'ᵀ * M * A'.map star).det ≠ 0`. Rewrite using `[h1, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`. Simplify using `[Matrix.det_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Apply `h2` to reduce the goal to its premises. Rewrite using `[Matrix.det_mul, Matrix.det_mul, h0]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_ne_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
@@ -34,9 +34,9 @@ theorem det_ne_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : Has
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Use `det_ne_of_hasSig (h w)` as an intermediate fact. Introduce `h0`. Apply `this` to reduce the goal to its premises. Establish `e` using `RingHom.map_det (B.emb w).1 J`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `e` using `[RingHom.mapMatrix_apply]`. Rewrite using `[Matrix.det_smul, ← e, h0, map_zero, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_ne_of_sig {n r s : ℕ} (c : ℂ)
     (B : Base F E) (J : Matrix (Fin n) (Fin n) E) (h : ∀ w, HasSig (c • J.map (B.emb w).1) r s) : J.det ≠ 0 := by
@@ -49,7 +49,7 @@ theorem det_ne_of_sig {n r s : ℕ} (c : ℂ)
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ε : E)
     (hJ : ∀ i j, σ (J j i) = ε * J i j) (x y : Fin n → E) : σ (form σ J x y) = ε * form σ J y x := by
@@ -58,15 +58,15 @@ theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Establish `lin : ∀ z, s * form σ Y.J H.x z + t * form σ Y.J H.y z + form σ Y.J (H.ι *ᵥ u) z = 0`. Introduce `z`. Use `congrArg (fun w => form σ Y.J w z) h0` as an intermediate fact. Simplify `this` using `[form, add_dotProduct, smul_dotProduct]`. Establish `hs : s = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `lin H.y` as an intermediate fact. Rewrite `this` using `[h.xy, h.yy, (h.orth u).2]`. Simplify using `using this`. Establish `hyx : form σ Y.J H.y H.x ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `form_swap hσ Y.J ε hJ H.x H.y` as an intermediate fact. Rewrite `this` using `[h.xy, h0]`. Simplify using `at this`. Establish `ht : t = 0`. Use `lin H.x` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h.xx, (h.orth u).1]`. Simplify `this` using `[hyx]`. Use `⟨hs, ht, ?_⟩` and prove the remaining obligations. Establish `hu : H.ι *ᵥ u = 0` using `by simpa [hs, ht] using h0`. Apply `Matrix.eq_zero_of_vecMul_eq_zero h₁` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← h.gram, ← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose, hu]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem indep {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) (B : Base F E) {n n₁ : ℕ} (H : Plane E n n₁)
     (Y : Spc F E n) (Y₁ : Spc F E n₁) (i₀ i₁ : ℕ) (h : H.IsAdapted σ B Y Y₁ i₀ i₁) (ε : E)
@@ -96,15 +96,13 @@ theorem indep {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) (B : Base F E) {
   simp
 
 /- English proof (translation)
-Introduce `hd`. Take `⟨c, hc, hMc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hd`. Establish `huniv : (Finset.univ : Finset (Fin n)) = insert k₀ (insert k₁ (Finset.univ.image g))`. Use extensionality with `i`. Simplify using `using hall i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsum : ∀ f : Fin n → E, ∑ i, f i = f k₀ + f k₁ + ∑ j, f (g j)`. Introduce `f`. Rewrite using `[huniv, Finset.sum_insert (by simp [h01, hg0]), Finset.sum_insert (by simp [hg1]), Finset.sum_image (fun a _ b _ hab => hg hab), add_assoc]`. Take `⟨e0, e1, e2⟩` from `indep hσ B H Y Y₁ i₀ i₁ h ε hJ h₁ (c k₀) (c k₁) (fun j => c (g j)) (by`. Use extensionality with `r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Use `congrFun hMc r` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Rewrite `this` using `[hsum]`. Simplify using `only [hx, hy, hι] at this`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Use the proof step `ring)`. Apply `hc` to reduce the goal to its premises. Use extensionality with `i`. Break down `hall i with rfl | rfl | ⟨j, rfl⟩` into its components or cases.
-
-Conclude with `e0`. Conclude with `e1`. Conclude with `congrFun e2 j`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem det_ne {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) (B : Base F E) {n n₁ : ℕ} (H : Plane E n n₁)
     (Y : Spc F E n) (Y₁ : Spc F E n₁) (i₀ i₁ : ℕ) (h : H.IsAdapted σ B Y Y₁ i₀ i₁) (ε : E)
@@ -138,7 +136,7 @@ theorem det_ne {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) (B : Base F E) 
   · exact congrFun e2 j
 
 /- English proof (translation)
-Establish `e` using `RingHom.map_det τ.toRingHom M`. Rewrite `e` using `[RingHom.mapMatrix_apply]`. Express the relevant statement in the definitionally equal form `IsUnit (M.map τ.toRingHom).det`. Rewrite using `[← e]`. Conclude with `(Ne.isUnit h).map _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_map {v : Pl F} (τ : E →ₐ[F] Fv F v) {n : ℕ} (M : Matrix (Fin n) (Fin n) E) (h : M.det ≠ 0) :
     IsUnit (M.map τ).det := by
@@ -149,39 +147,39 @@ theorem isUnit_map {v : Pl F} (τ : E →ₐ[F] Fv F v) {n : ℕ} (M : Matrix (F
   exact (Ne.isUnit h).map _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁`. Establish `hσ : ∀ x, σ (σ x) = x`. Introduce `x`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hT.base.cm.2.2.2, hT.base.cm.2.2.2, star_star]`. Prove the components needed by the constructor for the conclusion. Set `M : Matrix (Fin (b + 2)) (Fin (b + 2)) E` to `fun r i => if h0 : i.1 = 0 then H.x r else if h : i.1 = b + 1 then H.y r else H.ι r ⟨i.1 - 1, by have := i.2; omega⟩`. Establish `hM : GlobalTheory.PlaneBasis.basV B.τ₁ H = M.map B.τ₁`. Use `Matrix.ext fun r i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.map_apply]`. Simplify using `only [GlobalTheory.PlaneBasis.basV, M]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[hM]`. Apply `isUnit_map` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `det_ne hσ B H _ _ _ _ hC.hH 1 (fun i j => by rw [hT.geo.hV'.herm, one_mul]) (det_ne_of_sig 1 B _ (fun w => by rw [one_smul]; exact hT₁.geo.hV'.sig w)) M ⟨0, by omega⟩ ⟨b + 1, by omega⟩ (fun j => ⟨j.1 + 1, by omega⟩) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `j k hjk`. Simplify using `only [Fin.mk.injEq] at hjk`. Conclude with `Fin.ext (by omega)`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Simplify using the standard rewrite rules. Introduce `j`. Use `j.2` as an intermediate fact. Simplify using `only [ne_eq, Fin.mk.injEq]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `i`. Use `i.2` as an intermediate fact. Distinguish the cases in `h0 : i.1 = 0`. Conclude with `Or.inl (Fin.ext h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : i.1 = b + 1`. Conclude with `Or.inr (Or.inl (Fin.ext h1))`. Conclude with `Or.inr (Or.inr ⟨⟨i.1 - 1, by omega⟩, Fin.ext (by simp only; omega)⟩)`. Introduce `r`. Simplify using `[M]`.
+Prove the second alternative. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Simplify using `[M]`. Introduce `r j`. Use `j.2` as an intermediate fact. Establish `h1 : j.1 ≠ b` using `by omega`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[M, h1]`. Set `M : Matrix (Fin (a + (b + 2))) (Fin (a + (b + 2))) E` to `fun r j => if ha : j.1 = a then H'.x r else if hb : j.1 = a + b + 1 then H'.y r else if h : j.1 < a then H'.ι r ⟨j.1, by omega⟩ else H'.ι r ⟨j.1 - 1, by have := j.2; omega⟩`. Establish `hM : GlobalTheory.PlaneBasis.basW B.τ₁ H' = M.map B.τ₁`. Use `Matrix.ext fun r i => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.PlaneBasis.basW, M]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[hM]`. Apply `isUnit_map` to reduce the goal to its premises. Apply the tactic sequence `refine det_ne hσ B H' _ _ _ _ hC.hH' (-1) (fun i j => by rw [hT.geo.hW.skew, neg_one_mul]) (det_ne_of_sig Complex.I B _ hT₁.geo.hW.sig) M ⟨a, by omega⟩ ⟨a + b + 1, by omega⟩ (fun j => ⟨if j.1 < a then j.1 else j.1 + 1, by have := j.2; split_ifs <;> omega⟩) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j k hjk`. Simplify using `only [Fin.mk.injEq] at hjk`. Apply `Fin.ext` to reduce the goal to its premises. Apply the tactic sequence `split_ifs at hjk <;> omega`. Simplify using `only [ne_eq, Fin.mk.injEq]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `intro j; simp only [ne_eq, Fin.mk.injEq]; split_ifs <;> omega`. Apply the tactic sequence `intro j; have := j.2; simp only [ne_eq, Fin.mk.injEq]; split_ifs <;> omega`. Introduce `i`. Use `i.2` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : i.1 = a`. Conclude with `Or.inl (Fin.ext h0)`. Distinguish the cases in `h1 : i.1 = a + b + 1`. Conclude with `Or.inr (Or.inl (Fin.ext h1))`. Distinguish the cases in `h2 : i.1 < a`.
+Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the second alternative. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Conclude with `Or.inr (Or.inr ⟨⟨i.1, by omega⟩, Fin.ext (by simp [h2])⟩)`. Apply the tactic sequence `exact Or.inr (Or.inr ⟨⟨i.1 - 1, by omega⟩, Fin.ext (by simp only; split_ifs <;> omega)⟩)`. Introduce `r`. Simplify using `[M]`. Introduce `r`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : a + b + 1 ≠ a` using `by omega`. Simplify using `only [M, dif_neg h1, dif_pos]`. Introduce `r j`. Use `j.2` as an intermediate fact. Distinguish the cases in `h2 : j.1 < a`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h3 : j.1 ≠ a` using `by omega`. Establish `h4 : j.1 ≠ a + b + 1` using `by omega`. Simplify using `[M, h2, h3, h4]`. Establish `h3 : j.1 + 1 ≠ a` using `by omega`. Establish `h4 : j.1 ≠ a + b` using `by omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : ¬ j.1 + 1 < a` using `by omega`. Simplify using `[M, h2, h3, h4, h5]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem basis_isUnit_det : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

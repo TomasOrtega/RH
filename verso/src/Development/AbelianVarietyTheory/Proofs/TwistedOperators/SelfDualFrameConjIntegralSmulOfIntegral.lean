@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ConjIntegral
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `S.sum_mem fun k _ => S.mul_mem (hA i k) (hB k j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_int {R : Type} [CommRing R] (S : Subring R) {n : ℕ} {A B : Matrix (Fin n) (Fin n) R}
     (hA : ∀ i j, A i j ∈ S) (hB : ∀ i j, B i j ∈ S) (i j : Fin n) : (A * B) i j ∈ S := by
@@ -21,9 +21,9 @@ theorem mul_int {R : Type} [CommRing R] (S : Subring R) {n : ℕ} {A B : Matrix 
   exact S.sum_mem fun k _ => S.mul_mem (hA i k) (hB k j)
 
 /- English proof (translation)
-Establish `e1 : γi = Gi * (γ.map σ)ᵀ * G`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : σ a • γi = Gi * ((a • γ).map σ)ᵀ * G`. Establish `: (a • γ).map σ = σ a • γ.map σ`. Use extensionality with `i j`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.map_apply, Matrix.smul_apply, map_mul]`. Rewrite using `[this, Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, e1]`. Establish `hc : ∀ i j, ((a • γ).map σ)ᵀ i j ∈ S` using `fun i j => hσ _ (ha j i)`. Rewrite using `[e2]`. Conclude with `mul_int S (mul_int S hGi hc) hG`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_int {R : Type} [CommRing R] (S : Subring R) (σ : R →+* R) (hσ : ∀ s ∈ S, σ s ∈ S) {n : ℕ}
     (G Gi γ γi : Matrix (Fin n) (Fin n) R) (hG : ∀ i j, G i j ∈ S) (hGi : ∀ i j, Gi i j ∈ S) (hGG : Gi * G = 1)
@@ -43,7 +43,7 @@ theorem conj_int {R : Type} [CommRing R] (S : Subring R) (σ : R →+* R) (hσ :
   exact mul_int S (mul_int S hGi hc) hG
 
 /- English proof (translation)
-Establish `hu' : (γi.map σ)ᵀ * G * γi = G`. Establish `h1 : (γi.map σ)ᵀ * (γ.map σ)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, hγ, Matrix.map_one σ (map_zero σ) (map_one σ), Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨conj_int S σ hσ G Gi γi γ hG hGi hGG hγ' hu' a ha', conj_int S σ hσ G Gi γ γi hG hGi hGG hγ hu a ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components.
 -/
 theorem conj_int_both {R : Type} [CommRing R] (S : Subring R) (σ : R →+* R) (hσ : ∀ s ∈ S, σ s ∈ S) {n : ℕ}
     (G Gi γ γi : Matrix (Fin n) (Fin n) R) (hG : ∀ i j, G i j ∈ S) (hGi : ∀ i j, Gi i j ∈ S) (hGG : Gi * G = 1)
@@ -59,11 +59,11 @@ theorem conj_int_both {R : Type} [CommRing R] (S : Subring R) (σ : R →+* R) (
   exact ⟨conj_int S σ hσ G Gi γi γ hG hGi hGG hγ' hu' a ha', conj_int S σ hσ G Gi γ γi hG hGi hGG hγ hu a ha⟩
 
 /- English proof (translation)
-Establish `hcT : ∀ A C : Matrix (Fin n) (Fin n) R, Formalism.UG.cT σ (A * C) = Formalism.UG.cT σ C * Formalism.UG.cT σ A`. Introduce `A C`. Simplify using `only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`. Establish `e : Formalism.UG.cT σ Bi * Formalism.UG.cT σ B = 1`. Rewrite using `[← hcT, hB']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Formalism.UG.cT, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT σ (Bi * H * B) * _ * _ = _`. Rewrite using `[hcT, hcT]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = Formalism.UG.cT σ B * J * B := by rw [e, hB', Matrix.mul_one, Matrix.mul_one, hH]`.
+A detailed English derivation is pending.
 -/
 theorem unit_conj {R : Type} [CommRing R] (σ : R →+* R) {n : ℕ} (B Bi H J : Matrix (Fin n) (Fin n) R)
     (hB : Bi * B = 1) (hB' : B * Bi = 1) (hH : Formalism.UG.cT σ H * J * H = J) :
@@ -87,11 +87,11 @@ namespace GlobalTheory.ConjIntegral
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D T ΛT βT hsd hβ h hh γ hγ a h1 h2`. Take `⟨m, s, s', hs, hd⟩` from `GlobalTheory.LatVacDual.dualFamily D T ΛT hsd`. Take `⟨G, hG⟩` from `GlobalTheory.FrameGram.exists_unit_adelic star (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) (fun _ => GlobalTheory.LevSplit.sigR_int) (fun _ => rfl) T.gram βT ΛT hβ (fun y hy => (hsd.2 y).1 hy) s s' hs hd`. Establish `hσ : ∀ x ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) x ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun _ hx => GlobalTheory.LevSplit.sigR_int hx`. Establish `hGm : ∀ i j, (intGL D.host.F D.host.E T.rank G).1 i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun i j => (G.1 i j).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGi : ∀ i j, (intGL D.host.F D.host.E T.rank G⁻¹).1 i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun i j => ((G⁻¹).1 i j).2`. Establish `hGG : (intGL D.host.F D.host.E T.rank G⁻¹).1 * (intGL D.host.F D.host.E T.rank G).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Establish `hhu : Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) h.1 * T.gram.map (Formalism.UG.inclE (Formalism.L2.Herm.Af D.host.F)) * h.1 = T.gram.map (Formalism.UG.inclE (Formalism.L2.Herm.Af D.host.F))` using `hh`. Establish `hγ1 : γ.1 = (βT⁻¹).1 * h.1 * βT.1` using `by rw [hγ]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `unit_conj (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) βT.1 (βT⁻¹).1 h.1 _ (Units.inv_mul βT) (Units.mul_inv βT) hhu`. Rewrite `hu` using `[← hγ1, ← hG]`. Establish `key` using `conj_int_both _ _ hσ _ _ γ.1 (γ⁻¹).1 hGm hGi hGG (Units.mul_inv γ) (Units.inv_mul γ) hu (toEAf D a) h1 h2`. Rewrite using `[GlobalTheory.AdelicLatMove.toEAf_cA a]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_smul_isIntM : ∀ {D : D7} (T : HSp D) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βT : GL (Fin T.rank) (EAf D)), IsSelfDualC T ΛT → IsFrame βT ΛT → ∀ (h : GL (Fin T.rank) (EAf D)), h ∈ UA D.sp.cm T.gram → ∀ (γ : GL (Fin T.rank) (EAf D)), γ = βT⁻¹ * h * βT → ∀ (a : AE D), IsIntM (toEAf D a • γ.1) → IsIntM (toEAf D a • (γ⁻¹ : GL (Fin T.rank) (EAf D)).1) → IsIntM (toEAf D (cA D a) • γ.1) ∧ IsIntM (toEAf D (cA D a) • (γ⁻¹ : GL (Fin T.rank) (EAf D)).1) := by
   intro D T ΛT βT hsd hβ h hh γ hγ a h1 h2

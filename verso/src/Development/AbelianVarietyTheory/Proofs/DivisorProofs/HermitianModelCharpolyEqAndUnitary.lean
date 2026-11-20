@@ -9,7 +9,7 @@ namespace GlobalTheory.ModelCharpoly
 open GlobalTheory.InertUnitOrb
 
 /- English proof (translation)
-Set `b : Module.Basis (Fin n) K.E B.A` to `(Pi.basisFun K.E (Fin n)).map ψ.symm`. Establish `hm : LinearMap.toMatrix b b (LinearMap.mulLeft K.E B.g) = γ`. Use extensionality with `i j`. Simplify using `[b, LinearMap.toMatrix_apply, h]`. Rewrite using `[InvAlg.P, ← LinearMap.charpoly_toMatrix (LinearMap.mulLeft K.E B.g) b, hm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_eq (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (n : ℕ) (γ : Matrix (Fin n) (Fin n) K.E)
     (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)) (h : ∀ y, ψ (B.g * y) = γ *ᵥ ψ y) : γ.charpoly = B.P := by
@@ -20,11 +20,11 @@ theorem charpoly_eq (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.
   rw [InvAlg.P, ← LinearMap.charpoly_toMatrix (LinearMap.mulLeft K.E B.g) b, hm]
 
 /- English proof (translation)
-Establish `key : ∀ a b : Fin n → K.E, stdH K n (γ *ᵥ a) (γ *ᵥ b) = stdH K n a b`. Introduce `a b`. Take `⟨y, rfl⟩` from `ψ.surjective a`. Take `⟨z, rfl⟩` from `ψ.surjective b`. Rewrite using `[← h, ← h, hh, hh, InvAlg.herm, InvAlg.herm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[map_mul B.σ]`. Combine the equalities or inequalities in the displayed calculation. Use extensionality with `i j`. Use `key (Pi.single j 1) (Pi.single i 1)` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `[stdH, Matrix.mulVec_single, Pi.single_apply, Matrix.mul_apply, Matrix.one_apply, mul_comm] at this`. Simplify using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify `this` using `[mul_comm, eq_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unitary (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (n : ℕ) (γ : Matrix (Fin n) (Fin n) K.E)
     (x : B.Aˣ) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)) (h : ∀ y, ψ (B.g * y) = γ *ᵥ ψ y)
@@ -46,7 +46,7 @@ theorem unitary (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvA
   simpa [mul_comm, eq_comm] using this
 
 /- English proof (translation)
-Introduce `K B n γ x ψ hM`. Conclude with `⟨charpoly_eq K B n γ ψ hM.2.1, unitary K B n γ x ψ hM.2.1 hM.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem model_charpoly_unitary : ∀ (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (n : ℕ)
     (γ : Matrix (Fin n) (Fin n) K.E) (x : B.Aˣ) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)),

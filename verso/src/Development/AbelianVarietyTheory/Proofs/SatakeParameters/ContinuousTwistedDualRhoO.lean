@@ -14,7 +14,7 @@ namespace GlobalTheory.HTW.RecS.Model
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.FrobeniusOrbits Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions Formalism.MainNotions.N GlobalTheory.HTW.Rec GlobalTheory.HTW.RecS
 
 /- English proof (translation)
-The claim follows from `(goodO_finExt_integers _ Cx.LL).1`.
+A detailed English derivation is pending.
 -/
 theorem coefExt_dvr {D : D7} (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) (Cx : TruncatedSeriesCountingIdentities.CoefExt D i w hw) :
@@ -26,7 +26,7 @@ section Std
 variable {l : ℕ} [Fact l.Prime] {K LL : FinExt l} {k : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩ j`. Conclude with `(u j).2`. Introduce `h`. Conclude with `⟨fun j => ⟨x j, h j⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_stdG_OL (x : Fin k → ↥LL.1) : x ∈ stdG ↥(OL LL) ↥LL.1 k ↔ ∀ j, x j ∈ OL LL := by
   constructor
@@ -62,14 +62,14 @@ def stdLat (M : ↥(GK K) →* Matrix (Fin k) (Fin k) ↥LL.1) (hO : ∀ g a b, 
         simp [Pi.single_apply] }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearEquiv.refl _ _, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem stdLat_isMatRep (M : ↥(GK K) →* Matrix (Fin k) (Fin k) ↥LL.1) (hO : ∀ g a b, M g a b ∈ OL LL)
     (hc : ∀ v, Continuous fun g => (M g).mulVec v) : IsMatRep (stdLat M hO hc) M :=
   ⟨LinearEquiv.refl _ _, fun _ _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `Module.finrank_fin_fun _`.
+A detailed English derivation is pending.
 -/
 theorem finrank_stdLat (M : ↥(GK K) →* Matrix (Fin k) (Fin k) ↥LL.1) (hO : ∀ g a b, M g a b ∈ OL LL)
     (hc : ∀ v, Continuous fun g => (M g).mulVec v) : Module.finrank ↥LL.1 (stdLat M hO hc).V = k :=
@@ -82,7 +82,7 @@ def latId (T : Lat K LL) : LatHom T.L T.L where
   T_le _ h := h
 
 /- English proof (translation)
-Introduce `y hy` and use `⟨y, hy, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem latId_onto (T : Lat K LL) : (latId T).Onto := fun y hy => ⟨y, hy, rfl⟩
 
@@ -94,7 +94,7 @@ variable {D : D7} (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w
   (Cx : TruncatedSeriesCountingIdentities.CoefExt D i w hw)
 
 /- English proof (translation)
-Establish `h1 : Br.loc D.nbr i w hw M g a b ∈ OL (D.nbr i w hw).LL` using `((D.nbr i w hw).eO (M (decS D.nd w (Br.iota D.nbr i w hw g)) a b)).2`. Express the relevant statement in the definitionally equal form `Cx.inc (Br.loc D.nbr i w hw M g a b) ∈ OL Cx.LL`. Conclude with `IsIntegral.map ((IntermediateField.inclusion Cx.le).restrictScalars ℤ_[D.nd.l i]) h1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem locC_mem_OL {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw)
     (a b : Fin k) : TruncatedSeriesCountingIdentities.locC Cx M g a b ∈ OL Cx.LL := by
@@ -110,9 +110,9 @@ section Glob
 variable {D : D7} (i : D.nd.Loc) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g : GE D.nd => ((((chiU D.nd i 1)⁻¹ g : (D.nd.O i)ˣ)) : D.nd.O i)`. Establish `e : (fun g : GE D.nd => ((((chiU D.nd i 1)⁻¹ g : (D.nd.O i)ˣ)) : D.nd.O i)) = fun g => ((D.nd.chi i 1 g⁻¹ : (D.nd.O i)ˣ) : D.nd.O i)`. Use function extensionality and compare the values at `g`. Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `(D.nd.chi_cont i 1).comp continuous_inv`. Establish `hW : Continuous fun g => WpO D.nd i ρ π g` using `h1.smul hρ`. Establish `hε : Continuous fun g : GE D.nd => ((epsU D.nd i g : (D.nd.O i)ˣ) : D.nd.O i)` using `GlobalTheory.LocalInv.eps_cont D.nd i`. Conclude with `hε.smul (hW.comp continuous_inv).matrix_transpose`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_twistedDual_rhoO (hρ : Continuous fun g => rhoO D.nd i ρ π g) : Continuous fun g => T2O D.nd i ρ π g := by
   have h1 : Continuous fun g : GE D.nd => ((((chiU D.nd i 1)⁻¹ g : (D.nd.O i)ˣ)) : D.nd.O i) := by
@@ -139,7 +139,7 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
 def phiK : KK D.nd i →+* ↥Cx.LL.1 := Cx.inc.comp (Br.toLLK (D.nbr i w hw))
 
 /- English proof (translation)
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Cx.inc ((D.nbr i w hw).toLL (M _ a b)) = Cx.inc (Br.toLLK (D.nbr i w hw) (toK D.nd i (M _ a b)))`. Rewrite using `[GlobalTheory.WordJumpsCompare.toLLK_toK]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem locC_eq_map {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw) :
     TruncatedSeriesCountingIdentities.locC Cx M g = (mapM (toK D.nd i) M (decS D.nd w (Br.iota D.nbr i w hw g))).map (phiK i w hw Cx) := by
@@ -149,7 +149,7 @@ theorem locC_eq_map {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i
   rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[mapM, rDuO, twistM, dualM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapM_rDuO (h : GE D.nd) :
     mapM (toK D.nd i) (rDuO D.nd i r π) h = toK D.nd i (((chiU D.nd i 1 * epsU D.nd i) h : (D.nd.O i)ˣ) : D.nd.O i) •
@@ -158,7 +158,7 @@ theorem mapM_rDuO (h : GE D.nd) :
   simp [mapM, rDuO, twistM, dualM]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[mapM, T2O, WpO, twistM, dualM]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mapM_T2O (h : GE D.nd) :
     mapM (toK D.nd i) (T2O D.nd i ρ π) h = toK D.nd i (((chiU D.nd i 1 * epsU D.nd i) h : (D.nd.O i)ˣ) : D.nd.O i) •
@@ -176,19 +176,19 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
   (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (Cx : TruncatedSeriesCountingIdentities.CoefExt D i w hw)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hd`. Set `A : Matrix (Fin D.R.r) (Fin D.R.nV) (KK D.nd i)` to `LinearMap.toMatrix' ((LinearMap.fst (KK D.nd i) _ _).comp e.toLinearMap)`. Set `B : Matrix (Fin D.R.nV) (Fin D.R.r) (KK D.nd i)` to `LinearMap.toMatrix' (e.symm.toLinearMap.comp (LinearMap.inl (KK D.nd i) _ _))`. Establish `hA : ∀ u, A.mulVec u = (e u).1` using `fun u => by simp [A, LinearMap.toMatrix'_mulVec]`. Establish `hAB : A * B = 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hint : ∀ h : GE D.nd, A * mapM (toK D.nd i) (rO D.nd i r π) h = mapM (toK D.nd i) (rhoO D.nd i ρ π) h * A`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hA, hA, he]`. Set `φ` to `phiK i w hw Cx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `At : Matrix (Fin D.R.nV) (Fin D.R.r) ↥Cx.LL.1` to `A.transpose.map φ`. Establish `hinj : Function.Injective At.mulVec`. Establish `h1 : B.transpose.map φ * At = 1`. Rewrite using `[← Matrix.map_mul, ← Matrix.transpose_mul, hAB, Matrix.transpose_one, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Introduce `u v huv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (B.transpose.map φ).mulVec huv` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Use `⟨1, fun _ => π, LinearMap.pi fun _ => Matrix.mulVecLin At, ?_, fun g v => ?_⟩` and prove the remaining obligations. Introduce `u v huv`. Conclude with `hinj (congrFun huv 0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `At.mulVec ((TruncatedSeriesCountingIdentities.locC Cx (T2O D.nd i ρ π) g).mulVec v) = (TruncatedSeriesCountingIdentities.locC Cx (rDuO D.nd i r π) g).mulVec (At.mulVec v)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 1`. Rewrite using `[locC_eq_map, locC_eq_map, mapM_rDuO, mapM_T2O]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hK : ∀ (s : KK D.nd i) (h : GE D.nd), A.transpose * (s • (mapM (toK D.nd i) (rhoO D.nd i ρ π) h).transpose) = (s • (mapM (toK D.nd i) (rO D.nd i r π) h).transpose) * A.transpose`. Introduce `s h`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, ← Matrix.transpose_mul, ← Matrix.transpose_mul, hint]`. Simplify using `only [At]`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, hK]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSubOfSums_T2O (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) :
     IsSubOfSums (matRep (TruncatedSeriesCountingIdentities.locC Cx (T2O D.nd i ρ π))) fun x : D.nd.X i => ⇑(TruncatedSeriesCountingIdentities.locC Cx (rDuO D.nd i r x)) := by
@@ -236,7 +236,7 @@ theorem isSubOfSums_T2O (hd : TruncatedSeriesCountingIdentities.SemisimpleDecomp
 end Sub2
 
 /- English proof (translation)
-Set `T` to `stdLat (TruncatedSeriesCountingIdentities.locC Cx (T2O D.nd i ρ π)) (locC_mem_OL i w hw Cx _) (fun v => locC_cont D i _ (continuous_twistedDual_rhoO i ρ π h.contρ) w hw Cx v)`. Conclude with `⟨T, T, latId T, isSubOfSums_T2O i r ρ π w hw Cx h.dec, stdLat_isMatRep _ _ _, latId_onto T, finrank_stdLat _ _ _⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_lattices {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)

@@ -13,13 +13,13 @@ open scoped MatrixGroups ModularForm Manifold Topology
 namespace GlobalTheory.OddFrame
 
 /- English proof (translation)
-Establish `hM : (0 : ℝ) < M` using `by exact_mod_cast (Nat.zero_le a).trans_lt ha`. Establish `haM : (a : ℝ) < M` using `by exact_mod_cast ha`. Establish `h1 : (fun τ : ℍ => (Function.Periodic.qParam (M : ℝ) (τ : ℂ) ^ a)⁻¹) =O[atImInfty] fun τ : ℍ => Real.exp (2 * Real.pi * τ.im * a / M)`. Use `Asymptotics.IsBigO.of_norm_le fun τ => le_of_eq ?_` and prove the remaining obligations. Rewrite using `[norm_inv, norm_pow, Function.Periodic.norm_qParam, ← Real.exp_nat_mul, ← Real.exp_neg, coe_im]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `(h1.mul hg).trans_tendsto ?_` and prove the remaining obligations. Establish `hr : -2 * Real.pi * (1 - a / M) < 0`. Establish `: (a : ℝ) / M < 1` using `(div_lt_one hM).2 haM`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.pi_pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : Tendsto (fun τ : ℍ => τ.im) atImInfty atTop` using `tendsto_comap`. Use `(Real.tendsto_exp_atBot.comp (h2.const_mul_atTop_of_neg hr)).congr fun τ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tendsto_inv_qParam_pow_mul {M a : ℕ} (ha : a < M) {g : ℍ → ℂ}
     (hg : g =O[atImInfty] fun τ : ℍ => Real.exp (-2 * Real.pi * τ.im)) :
@@ -42,13 +42,13 @@ theorem tendsto_inv_qParam_pow_mul {M a : ℕ} (ha : a < M) {g : ℍ → ℂ}
   rw [← Real.exp_add]; congr 1; ring
 
 /- English proof (translation)
-Establish `H` using `fun j => GlobalTheory.T.slashQExpansionCoeffWidth_transform M Γ (w j) (F j) hM hΓ (hF j).2`. Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.T.coeff_eq_zero_of_sum_plusMinusReps_eq_zero M Γ r s (fun x n => ∑ j, c j * co M (w j) (F j) x n - if n = a then co M (w l) (F l) x a else 0) hM hs ?_ ?_ ?_ ?_ x n hn` and prove the remaining obligations. Introduce `x n`. Simplify using `only [fun j => (H j).1, mul_sub, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `split_ifs with h`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `γ hγ x n`. Simplify using `only [fun j => (H j).2.1 γ hγ]`. Introduce `x n`. Simplify using `only [fun j => (H j).2.2 (hF j).1, mul_neg, Finset.sum_neg_distrib]`. Apply the tactic sequence `split_ifs <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_ite_eq' (Finset.range M) a, if_pos (Finset.mem_range.2 ha), ← hc i, Finset.sum_comm, sub_eq_zero]`. Simplify using `only [Matrix.mulVec, dotProduct, leadM, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [← Finset.mul_sum, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_mul_co_eq {M : ℕ} {Γ : Subgroup SL(2, ℤ)} {r : ℕ} {s : Fin r → SL(2, ℤ)} {w : Fin r → ℤ}
     {F : Fin r → ℍ → ℂ} (hM : 0 < M) (hΓ : CongruenceSubgroup.Gamma M ≤ Γ) (hs : IsReps Γ s)
@@ -79,23 +79,21 @@ theorem sum_mul_co_eq {M : ℕ} {Γ : Subgroup SL(2, ℤ)} {r : ℕ} {s : Fin r 
     exact Finset.sum_congr rfl fun j _ => by rw [← Finset.mul_sum, mul_comm]
 
 /- English proof (translation)
-Use `set c : Fin r → ℕ → Fin r → ℂ := fun l a => (leadM M s w F)⁻¹.mulVec fun i => co M (w l) (F l) (s i) a with hcdef`. Establish `hc : ∀ l a i, (leadM M s w F).mulVec (c l a) i = co M (w l) (F l) (s i) a`. Introduce `l a i`. Simplify using `only [hcdef]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hdet), Matrix.one_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set t : ℍ → ℂ := fun τ => Function.Periodic.qParam (M : ℝ) (τ : ℂ) with ht`. Establish `ht0 : ∀ τ, t τ ≠ 0` using `fun τ => Complex.exp_ne_zero _`. Use `⟨fun τ => Matrix.of fun j l => ∑ a ∈ Finset.range M, c l a j * (t τ ^ a)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun l => ?_` and prove the remaining obligations. Establish `hlim : Tendsto (fun τ : ℍ => leadM M s w F i l + ∑ a ∈ Finset.range M, ∑ j, c l a j * ((t τ ^ a)⁻¹ * ((F j ∣[w j] s i) τ - ∑ n ∈ Finset.range M, co M (w j) (F j) (s i) n * t τ ^ n))) atImInfty (𝓝 (leadM M s w F i l + ∑ a ∈ Finset.range M, ∑ j, c l a j * 0))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `tendsto_const_nhds.add (tendsto_finsetSum _ fun a ha => tendsto_finsetSum _ fun j _ => ?_)` and prove the remaining obligations. Conclude with `(tendsto_inv_qParam_pow_mul (Finset.mem_range.1 ha) (GlobalTheory.T.slash_sub_qExpansion_partialSum_isBigO M Γ (w j) (F j) hM hΓ (hF j).2 (s i))).const_mul _`. Simplify using `only [mul_zero, Finset.sum_const_zero, add_zero] at hlim`. Use `hlim.congr fun τ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, evM, leadM, Matrix.of_apply, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm (s := Finset.univ), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `ha'` using `Finset.mem_range.1 ha`. Establish `key : ∑ j, c l a j * ∑ n ∈ Finset.range M, co M (w j) (F j) (s i) n * t τ ^ n = co M (w l) (F l) (s i) a * t τ ^ a`. Simplify using `only [Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_comm]`. Establish `: ∀ n ∈ Finset.range M, ∑ j, c l a j * (co M (w j) (F j) (s i) n * t τ ^ n) = if n = a then co M (w l) (F l) (s i) a * t τ ^ a else 0`. Introduce `n hn`. Simplify using `only [← mul_assoc, ← Finset.sum_mul]`. Rewrite using `[sum_mul_co_eq hM hΓ hs hF l ha' (c l a) (hc l a) (s i) (Finset.mem_range.1 hn)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq' (Finset.range M) a, if_pos ha]`. Establish `hta : t τ ^ a ≠ 0` using `pow_ne_zero _ (ht0 τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `e : co M (w l) (F l) (s i) a = ∑ j, (t τ ^ a)⁻¹ * (c l a j * ∑ n ∈ Finset.range M, co M (w j) (F j) (s i) n * t τ ^ n)`. Rewrite using `[← Finset.mul_sum, key]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `tendsto_pi_nhds.2 fun j => tendsto_pi_nhds.2 fun l => ?_` and prove the remaining obligations. Establish `hΔ : ModularForm.discriminant =O[atImInfty] fun τ : ℍ => Real.exp (-2 * Real.pi * τ.im)`. Simplify `CuspFormClass.exp_decay_atImInfty CuspForm.discriminant one_pos one_mem_strictPeriods_SL` using `[CuspForm.coe_discriminant]`. Establish `hlim : Tendsto (fun τ : ℍ => ∑ a ∈ Finset.range M, c l a j * ((t τ ^ a)⁻¹ * ModularForm.discriminant τ)) atImInfty (𝓝 (∑ a ∈ Finset.range M, c l a j * 0))` using `tendsto_finsetSum _ fun a ha => (tendsto_inv_qParam_pow_mul (Finset.mem_range.1 ha) hΔ).const_mul _`. Simplify using `only [mul_zero, Finset.sum_const_zero] at hlim`.
-
-Use `hlim.congr fun τ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_tendsto_evM_mul (M : ℕ) (Γ : Subgroup SL(2, ℤ)) (r : ℕ) (s : Fin r → SL(2, ℤ)) (w : Fin r → ℤ)
     (F : Fin r → ℍ → ℂ) (hM : 0 < M) (hΓ : CongruenceSubgroup.Gamma M ≤ Γ) (hs : IsReps Γ s)

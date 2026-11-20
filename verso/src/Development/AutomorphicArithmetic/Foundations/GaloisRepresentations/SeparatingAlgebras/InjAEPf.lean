@@ -2,11 +2,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Separ
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `hN n`. Establish `h : ∀ i j : Fin n, ∀ᵐ θ : Fin n → UnitAddCircle, i ≠ j → pt θ i ≠ pt θ j`. Introduce `i j`. Distinguish the cases in `hij : i = j`. Conclude with `Filter.Eventually.of_forall (fun θ h => absurd hij h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hp : (MvPolynomial.X i - MvPolynomial.X j : MvPolynomial (Fin n) ℂ) ≠ 0` using `sub_ne_zero.mpr (fun e => hij (MvPolynomial.X_injective e)) filter_upwards [hN n _ hp] with θ hθ _ e`. Apply `hθ` to reduce the goal to its premises. Simplify using `[e]`. Establish `h2 : ∀ᵐ θ : Fin n → UnitAddCircle, ∀ i j : Fin n, i ≠ j → pt θ i ≠ pt θ j` using `ae_all_iff.2 fun i => ae_all_iff.2 fun j => h i j`. Use `filter_upwards [h2] with θ hθ i j e`.
-
-Assume the negation of the conclusion as `hne`. Conclude with `hθ i j hne e`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.injAE_pf :
     UpperTheory.Gal.Gen.NullZero → UpperTheory.Gal.Gen.InjAE := by

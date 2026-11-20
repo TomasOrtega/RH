@@ -9,7 +9,7 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.MassFibre
 
 /- English proof (translation)
-Establish `h1` using `Subgroup.card_mul_index (H.subgroupOf K)`. Establish `h2 : Nat.card (H.subgroupOf K) = Nat.card H` using `Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_mul_relIndex {G : Type} [Group G] (H K : Subgroup G) (hle : H ≤ K) :
     Nat.card H * H.relIndex K = Nat.card K := by
@@ -20,11 +20,9 @@ theorem card_mul_relIndex {G : Type} [Group G] (H K : Subgroup G) (hle : H ≤ K
   exact h1
 
 /- English proof (translation)
-Use `split_ifs with h`. Establish `: (H : Set G).Infinite`. Break down `Nat.card_eq_zero.mp h with h' | h'` into its components or cases. Conclude with `absurd h' (not_isEmpty_of_nonempty _)`. Conclude with `Set.infinite_coe_iff.mp h'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Set.encard_eq_top_iff.mpr this]`. Both sides reduce to the same expression. Establish `hf : (H : Set G).Finite`. Use `Nat.finite_of_card_ne_zero h` as an intermediate fact. Conclude with `Set.toFinite _`.
-
-Rewrite using `[← hf.cast_ncard_eq, ← Nat.card_coe_set_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem encard_coe_subgroup {G : Type} [Group G] (H : Subgroup G) :
     ((H : Set G).encard : ℝ≥0∞) = if Nat.card H = 0 then ⊤ else (Nat.card H : ℝ≥0∞) := by
@@ -41,13 +39,11 @@ theorem encard_coe_subgroup {G : Type} [Group G] (H : Subgroup G) :
     rfl
 
 /- English proof (translation)
-Establish `hc` using `card_mul_relIndex H K hle`. Rewrite using `[encard_coe_subgroup, encard_coe_subgroup]`. Distinguish the cases in `hK : Nat.card K = 0`. Establish `hH : Nat.card H = 0`. Rewrite `hc` using `[hK]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Nat.mul_eq_zero.mp hc with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hr`. Simplify using `[hH, hK]`. Establish `hH : Nat.card H ≠ 0`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `hc` using `[h, zero_mul]`. Conclude with `hK hc.symm`. Rewrite using `[if_neg hH, if_neg hK, ← hc]`. Use `push_cast`.
-
-Rewrite using `[ENNReal.mul_inv (Or.inl (by exact_mod_cast hH)) (Or.inl (by simp)), mul_comm, mul_assoc, ENNReal.inv_mul_cancel (by exact_mod_cast hr) (by simp), mul_one]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_encard_eq_relIndex_mul {G : Type} [Group G] (H K : Subgroup G) (hle : H ≤ K)
     (hr : H.relIndex K ≠ 0) :
@@ -78,13 +74,13 @@ noncomputable def wt {G : Type} [Group G] (Γ : Subgroup G) {Y : Type} [MulActio
   ((((Γ ⊓ MulAction.stabilizer G y : Subgroup G) : Set G).encard : ℝ≥0∞))⁻¹
 
 /- English proof (translation)
-Unfold `wt`. Use `congr 2`. Establish `hset : ((Γ ⊓ MulAction.stabilizer G (γ • y) : Subgroup G) : Set G) = (fun h => γ * h * γ⁻¹) '' ((Γ ⊓ MulAction.stabilizer G y : Subgroup G) : Set G)`. Use extensionality with `x`. Simplify using `only [Subgroup.coe_inf, Set.mem_inter_iff, SetLike.mem_coe, MulAction.mem_stabilizer_iff, Set.mem_image]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx1, hx2⟩`. Use `⟨γ⁻¹ * x * γ, ⟨?_, ?_⟩, by group⟩` and prove the remaining obligations. Conclude with `Γ.mul_mem (Γ.mul_mem (Γ.inv_mem hγ) hx1) hγ`. Rewrite using `[mul_smul, mul_smul, hx2, inv_smul_smul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h, ⟨hh1, hh2⟩, rfl⟩`. Use `⟨Γ.mul_mem (Γ.mul_mem hγ hh1) (Γ.inv_mem hγ), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, mul_smul, inv_smul_smul, hh2]`. Rewrite using `[hset, Function.Injective.encard_image]`. Introduce `a b hab`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hab`.
+A detailed English derivation is pending.
 -/
 theorem wt_smul {G : Type} [Group G] (Γ : Subgroup G) {Y : Type} [MulAction G Y] (γ : G)
     (hγ : γ ∈ Γ) (y : Y) : wt Γ (γ • y) = wt Γ y := by
@@ -108,7 +104,7 @@ theorem wt_smul {G : Type} [Group G] (Γ : Subgroup G) {Y : Type} [MulAction G Y
   simpa using hab
 
 /- English proof (translation)
-Take `⟨γ, rfl⟩` from `h`. Use `show wt Γ (γ • y) = wt Γ y`. Rewrite using `[Subgroup.smul_def]`. Conclude with `wt_smul Γ γ γ.2 y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_of_mem_orbit {G : Type} [Group G] (Γ : Subgroup G) {Y : Type} [MulAction G Y]
     {y y' : Y} (h : y' ∈ MulAction.orbit Γ y) : wt Γ y' = wt Γ y := by
@@ -118,7 +114,7 @@ theorem wt_of_mem_orbit {G : Type} [Group G] (Γ : Subgroup G) {Y : Type} [MulAc
   exact wt_smul Γ γ γ.2 y
 
 /- English proof (translation)
-The claim follows from `wt_of_mem_orbit Γ (Quotient.mk_out (s := MulAction.orbitRel Γ Y) y)`.
+A detailed English derivation is pending.
 -/
 theorem wt_out_mk {G : Type} [Group G] (Γ : Subgroup G) {Y : Type} [MulAction G Y] (y : Y) :
     wt Γ (Quotient.out (Quotient.mk (MulAction.orbitRel Γ Y) y : MulAction.orbitRel.Quotient Γ Y)) = wt Γ y :=
@@ -129,45 +125,39 @@ end GlobalTheory.MassFibre
 namespace GlobalTheory.MassFibre
 
 /- English proof (translation)
-Distinguish the cases in `hz : Quotient.out O ∈ S`. Use `swap`. Rewrite using `[if_neg hz, mul_zero] haveI : IsEmpty {P // fbar P = O} := by`. Use `⟨fun ⟨P, hP⟩ => ?_⟩` and prove the remaining obligations. Establish `h1 : Quotient.mk (MulAction.orbitRel Γ Z) (f (Quotient.out P)) = Quotient.mk (MulAction.orbitRel Γ Z) (Quotient.out O)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hfbar, Quotient.out_eq, Quotient.out_eq, hP]`. Take `⟨γ, hγ⟩` from `Quotient.exact h1`. Conclude with `(hemp _ hz).false ⟨(γ⁻¹ : G) • Quotient.out P, by`. Rewrite using `[hf, ← hγ]`. Simplify using `[Subgroup.smul_def]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_pos hz]`. Take `⟨z, hzO⟩ : ∃ z, Quotient.out O = z` from `⟨_, rfl⟩`. Rewrite `hz`, the goal using `[hzO]`. Establish `hOz : Quotient.mk (MulAction.orbitRel Γ Z) z = O` using `by rw [← hzO, Quotient.out_eq]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Δ : Subgroup G` to `Γ ⊓ MulAction.stabilizer G z`. Establish `hΔ : ∀ {g : G}, g ∈ Δ ↔ g ∈ Γ ∧ g • z = z` using `fun {g} => by`. Simplify using `[Δ, Subgroup.mem_inf, MulAction.mem_stabilizer_iff]`. Set `p : SubMulAction Δ Y` to `{ carrier := f ⁻¹' {z} smul_mem' := fun δ y hy => by`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hy ⊢`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.smul_def, hf, hy]`. Conclude with `(hΔ.mp δ.2).2 }`. Establish `hmem : ∀ y : Y, y ∈ p ↔ f y = z` using `fun y => Iff.rfl`. Set `e : p ≃ {y // f y = z}` to `Equiv.subtypeEquivRight hmem`. Use `haveI : Finite {y // f y = z} := (hfin z hz).1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Finite p := Finite.of_equiv _ e.symm`. Establish `hcard : Nat.card p = n` using `(Nat.card_congr e).trans (hfin z hz).2`. Set `φ : MulAction.orbitRel.Quotient Δ p → {P // fbar P = O}` to `fun Q => ⟨Quotient.mk _ (Quotient.out Q : p).1, by`. Rewrite using `[hfbar, (hmem _).mp (Quotient.out Q).2, hOz]⟩`. Establish `hinj : Function.Injective φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Q1 Q2 h`. Establish `h'` using `congrArg Subtype.val h`. Take `⟨γ, hγ⟩` from `Quotient.exact h'`. Establish `hγΔ : (γ : G) ∈ Δ`. Use `hΔ.mpr ⟨γ.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy1` using `(hmem _).mp (Quotient.out Q1).2`. Establish `hy2` using `(hmem _).mp (Quotient.out Q2).2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Quotient.out_equiv_out]`. Use `⟨⟨γ, hγΔ⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hγ`. Establish `hsurj : Function.Surjective φ`. Introduce and unpack `⟨P, hP⟩`. Establish `h1 : Quotient.mk (MulAction.orbitRel Γ Z) (f (Quotient.out P)) = Quotient.mk (MulAction.orbitRel Γ Z) z`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hfbar, Quotient.out_eq, hP, hOz]`. Take `⟨γ, hγ⟩` from `Quotient.exact h1`. Set `y' : p` to `⟨(γ⁻¹ : G) • Quotient.out P, by`. Rewrite using `[hmem, hf, ← hγ]`. Simplify using `[Subgroup.smul_def]⟩`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Quotient.mk _ y', Subtype.ext ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ⟩` from `(Quotient.mk_out (s := MulAction.orbitRel Δ p) y')`. Use `show Quotient.mk _ _ = P`. Use `conv_rhs => rw [← Quotient.out_eq P]`. Apply `Quotient.sound` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨(δ : G) * (γ : G)⁻¹, Γ.mul_mem (hΔ.mp δ.2).1 (Γ.inv_mem γ.2)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hδ]`. Use `show ((δ : G) * (γ : G)⁻¹) • Quotient.out P = (δ : G) • ((γ⁻¹ : G) • Quotient.out P)`. Rewrite using `[mul_smul]`. Establish `hw : ∀ y : p, wt Γ (y : Y) = ((MulAction.orbit Δ y).ncard : ℝ≥0∞) * wt Γ z`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `y`. Establish `hy` using `(hmem _).mp y.2`. Establish `hle : (Γ ⊓ MulAction.stabilizer G (y : Y) : Subgroup G) ≤ Δ`. Introduce `g hg`. Rewrite `hg` using `[Subgroup.mem_inf, MulAction.mem_stabilizer_iff]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `hΔ.mpr ⟨hg.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, ← hf, hg.2]`. Establish `hsub : (Γ ⊓ MulAction.stabilizer G (y : Y) : Subgroup G).subgroupOf Δ = MulAction.stabilizer Δ y`. Use extensionality with `δ`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_inf, MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Conclude with `Subtype.ext h`. Introduce `h`. Conclude with `⟨(hΔ.mp δ.2).1, congrArg Subtype.val h⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hri : (Γ ⊓ MulAction.stabilizer G (y : Y) : Subgroup G).relIndex Δ = (MulAction.orbit Δ y).ncard`. Rewrite using `[Subgroup.relIndex, hsub, MulAction.index_stabilizer]`. Establish `hne : (MulAction.orbit Δ y).ncard ≠ 0` using `(Set.ncard_pos (Set.toFinite _)).mpr ⟨y, MulAction.mem_orbit_self y⟩ |>.ne'`. Unfold `wt`. Rewrite using `[inv_encard_eq_relIndex_mul _ _ hle (hri ▸ hne), hri]`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (Equiv.ofBijective φ ⟨hinj, hsurj⟩).tsum_eq]`. Use `haveI : Fintype (MulAction.orbitRel.Quotient Δ p) := Fintype.ofFinite _`. Rewrite using `[tsum_fintype]`. Establish `hterm : ∀ Q : MulAction.orbitRel.Quotient Δ p, wt Γ (Quotient.out (Equiv.ofBijective φ ⟨hinj, hsurj⟩ Q).1) = ((MulAction.orbit Δ (Quotient.out Q)).ncard : ℝ≥0∞) * wt Γ z`. Introduce `Q`.
-
-Rewrite using `[← hw]`. Conclude with `wt_out_mk Γ _`. Repeatedly rewrite using `[hterm, ← Finset.sum_mul]`. Use `congr 1`. Establish `hsum : ∑ Q : MulAction.orbitRel.Quotient Δ p, (MulAction.orbit Δ (Quotient.out Q)).ncard = n`.
-
-Rewrite using `[← hcard, Nat.card_congr (MulAction.selfEquivSigmaOrbits Δ p), Nat.card_sigma]`. Use `Finset.sum_congr rfl (fun Q _ => ?_)` and prove the remaining obligations. Rewrite using `[Nat.card_coe_set_eq]`. Rewrite using `[← hsum]`. Use `push_cast`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fibre_sum {G : Type} [Group G] (Γ : Subgroup G) {Y Z : Type} [MulAction G Y] [MulAction G Z]
     (f : Y → Z) (S : Set Z) (n : ℕ) (hf : ∀ (g : G) (y : Y), f (g • y) = g • f y)
@@ -289,11 +279,11 @@ theorem fibre_sum {G : Type} [Group G] (Γ : Subgroup G) {Y Z : Type} [MulAction
   rfl
 
 /- English proof (translation)
-Introduce `G _ Γ Y Z _ _ f S n hf hS hfin hemp`. Set `fbar : MulAction.orbitRel.Quotient Γ Y → MulAction.orbitRel.Quotient Γ Z` to `Quotient.map' f (fun a b h => by`. Take `⟨γ, hγ⟩` from `h`. Use `⟨γ, ?_⟩` and prove the remaining obligations. Use `show (γ : G) • f b = f a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hf, ← hγ]`. Use the proof step `rfl)`. Establish `hfbar : ∀ y, fbar (Quotient.mk _ y) = Quotient.mk _ (f y)` using `fun y => rfl`. Establish `key` using `fibre_sum Γ f S n hf hfin hemp fbar hfbar`. Express the relevant statement in the definitionally equal form `∑' o : MulAction.orbitRel.Quotient Γ Y, wt Γ (Quotient.out o) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (Equiv.sigmaFiberEquiv fbar).tsum_eq, ENNReal.tsum_sigma', ← ENNReal.tsum_mul_left]`. Use `tsum_congr (fun O => ?_)` and prove the remaining obligations. Conclude with `key O`.
+A detailed English derivation is pending.
 -/
 theorem mass_fibre : ∀ {G : Type} [Group G] (Γ : Subgroup G) (Y Z : Type) [MulAction G Y] [MulAction G Z] (f : Y → Z) (S : Set Z) (n : ℕ), (∀ (g : G) (y : Y), f (g • y) = g • f y) → (∀ (g : G) (z : Z), z ∈ S → g • z ∈ S) → (∀ z ∈ S, Finite {y // f y = z} ∧ Nat.card {y // f y = z} = n) → (∀ z, z ∉ S → IsEmpty {y // f y = z}) → (∑' o : MulAction.orbitRel.Quotient Γ Y, ((((Γ ⊓ MulAction.stabilizer G o.out : Subgroup G) : Set G).encard : ℝ≥0∞))⁻¹) = (n : ℝ≥0∞) * ∑' o : MulAction.orbitRel.Quotient Γ Z, if o.out ∈ S then ((((Γ ⊓ MulAction.stabilizer G o.out : Subgroup G) : Set G).encard : ℝ≥0∞))⁻¹ else 0 := by
   intro G _ Γ Y Z _ _ f S n hf hS hfin hemp

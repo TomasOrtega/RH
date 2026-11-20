@@ -7,11 +7,9 @@ open MeasureTheory Metric Filter Topology
 open scoped ENNReal
 
 /- English proof (translation)
-Introduce `c r F u hF hu hL`. Establish `hset : Metric.ball c r \ {y | F y = 0} = Metric.ball c r ∩ F ⁻¹' {(0 : ℂ)}ᶜ`. Apply `Set.ext` to reduce the goal to its premises. Introduce `y`. Simplify using `[Set.mem_diff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hZ : IsOpen (Metric.ball c r \ {y | F y = 0})`. Rewrite using `[hset]`. Conclude with `hF.continuousOn.isOpen_inter_preimage Metric.isOpen_ball isOpen_compl_singleton`. Establish `hint : IntegrableOn (fun z => ‖u z‖ ^ 2) (Metric.ball c r \ {z | F z = 0})`. Use `⟨((hu.continuousOn.norm).pow 2).aestronglyMeasurable hZ.measurableSet, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun z => by positivity)).2 hL`. Conclude with `C.ext n (Metric.ball c r) F u Metric.isOpen_ball hF hu hint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ext (n : ℕ) : EXTStatement n := by
   intro c r F u hF hu hL
@@ -28,21 +26,19 @@ theorem ext (n : ℕ) : EXTStatement n := by
   exact C.ext n (Metric.ball c r) F u Metric.isOpen_ball hF hu hint
 
 /- English proof (translation)
-Introduce `c r F hF h` and use `C.extNull n c r F hF h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem extNull (n : ℕ) : EXTNullStatement n :=
   fun c r F hF h => C.extNull n c r F hF h
 
 /- English proof (translation)
-Introduce `R u ρ hu hρ hR`. Establish `h` using `C.mv n 0 R u ρ hu hρ`. Simplify using `only [sub_zero] at h`. Establish `hc : ∀ x : ℂ, ENNReal.ofReal (‖x‖ ^ 2) = ‖x‖ₑ ^ 2` using `fun x => by`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ∀ y : V n, y ∉ Metric.ball (0 : V n) R → ρ ‖y‖ = 0`. Introduce `y hy`. Apply `hR` to reduce the goal to its premises. Simplify `hy` using `[Metric.mem_ball, dist_zero_right, not_lt]`. Establish `e1 : ∫⁻ y in Metric.ball (0 : V n) R, ρ ‖y‖ = ∫⁻ y : V n, ρ ‖y‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `setLIntegral_eq_of_support_subset` to reduce the goal to its premises. Introduce `y hy`. Assume the negation of the conclusion as `hb`. Conclude with `hy (hz y hb)`. Establish `e2 : ∫⁻ y in Metric.ball (0 : V n) R, ‖u y‖ₑ ^ 2 * ρ ‖y‖ = ∫⁻ y : V n, ‖u y‖ₑ ^ 2 * ρ ‖y‖`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `setLIntegral_eq_of_support_subset` to reduce the goal to its premises. Introduce `y hy`. Assume the negation of the conclusion as `hb`. Conclude with `hy (by simp [hz y hb])`. Repeatedly rewrite using `[hc]`.
-
-Rewrite using `[← e1, ← e2]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mv (n : ℕ) : MVStatement n := by
   intro R u ρ hu hρ hR
@@ -70,23 +66,23 @@ theorem mv (n : ℕ) : MVStatement n := by
   exact h
 
 /- English proof (translation)
-Introduce `hn` and use `C.mvDiv n hn`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mvBlowup (n : ℕ) : MVBlowupStatement n :=
   fun hn => C.mvDiv n hn
 
 /- English proof (translation)
-Introduce `hn s`. Rewrite using `[← C.mvPow n s hn]`. Establish `h0 : volume ({0} : Set (V n)) = 0`. Set `i : Fin n` to `⟨0, hn⟩`. Establish `hF : DifferentiableOn ℂ (fun z : V n => z i) (Metric.ball 0 1)` using `(EuclideanSpace.proj i : V n →L[ℂ] ℂ).differentiable.differentiableOn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hne : ∃ z ∈ Metric.ball (0 : V n) 1, (fun z : V n => z i) z ≠ 0`. Use `⟨EuclideanSpace.single i (1 / 2 : ℂ), ?_, ?_⟩` and prove the remaining obligations. Evaluate the numerical expressions using `[Metric.mem_ball, EuclideanSpace.norm_single]`. Evaluate the numerical expressions using `[EuclideanSpace.single_apply]`. Establish `hnull` using `C.extNull n 0 1 _ hF hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Apply `measure_mono_null _ hnull` to reduce the goal to its premises. Introduce `z hz`. Simplify using `only [Set.mem_singleton_iff] at hz`. Substitute `hz` using the available equality. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hae : ∀ᵐ z ∂(volume.restrict (Metric.ball (0 : V n) 1)), ENNReal.ofReal ‖z‖ ^ (-2 * s) = ENNReal.ofReal (‖z‖ ^ (-2 * s))`. Use `ae_restrict_of_ae ?_` and prove the remaining obligations. Use `filter_upwards [compl_mem_ae_iff.2 h0] with z hz`. Establish `hz' : z ≠ 0` using `by simpa using hz`. Conclude with `ENNReal.ofReal_rpow_of_pos (norm_pos_iff.2 hz')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lintegral_congr_ae hae]`. Establish `hm : AEStronglyMeasurable (fun z : V n => ‖z‖ ^ (-2 * s)) (volume.restrict (Metric.ball (0 : V n) 1))` using `(continuous_norm.measurable.pow_const _).aestronglyMeasurable`. Establish `hnn : 0 ≤ᵐ[volume.restrict (Metric.ball (0 : V n) 1)] fun z : V n => ‖z‖ ^ (-2 * s)` using `Filter.Eventually.of_forall fun z => by positivity`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨hm, (hasFiniteIntegral_iff_ofReal hnn).2 h⟩`. Introduce `h`. Conclude with `(hasFiniteIntegral_iff_ofReal hnn).1 h.2`.
+A detailed English derivation is pending.
 -/
 theorem mvInt (n : ℕ) : MVIntStatement n := by
   intro hn s

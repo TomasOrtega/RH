@@ -11,13 +11,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan.StarMultiplicity
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar hCM q φ lab w ψ' hDom hφ hlab hw hc1 hψ' hsub hstar M hM`. Take `⟨hs1, hs2, hs3⟩` from `hstar`. Establish `key : ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → ∀ (n : ℕ) (γ' : Fin n → LinearMap.BilinForm ℤ X) (hγ' : IsCell bar ψ' γ'), LinearIndependent ℤ γ' → (∀ i, IsPrim bar (⟨γ' i, hγ'.mem i⟩ : balForms bar X)) → (∃ ( …`. Introduce `X _ _ _ _ hX n γ' hγ' hli hpr`. Break down `hs3 X hX n γ' hγ' with ⟨m, γ, hγ, hw0, hin⟩ | ⟨m, γ, β₀, m', s, h, hγ, hβ₀, hpsd, hw1, hcone, hcut, hpos, hin⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `left`. Conclude with `GlobalTheory.T.old_cell_mult_le_after_star O bar hCM q φ lab w ψ' hDom hφ hlab M hM X hX n γ' hγ' hli hpr m γ hγ (hs1 X hX m γ hγ hw0) hw0 hin`. Use `right`. Conclude with `GlobalTheory.T.new_cell_mult_lt_after_star O bar hCM q φ lab w ψ' hlab hw hc1 M hM X hX n γ' hγ' hli hpr m γ β₀ m' s h hγ hβ₀ hpsd hw1 hcone hcut hpos (hs2 X hX m γ hγ β₀ hβ₀ hpsd hw1 hcone m' s h hcut hpos) hin`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `GlobalTheory.PolFan.maxMult`. Use `iSup_le fun X => iSup_le fun _ => iSup_le fun _ => iSup_le fun _ => iSup_le fun _ => iSup_le fun hX => iSup_le fun n => iSup_le fun γ' => iSup_le fun hγ' => iSup_le fun hli => iSup_le fun hpr => ?_` and prove the remaining obligations. Break down `key X hX n γ' hγ' hli hpr with ⟨_, hle, _⟩ | hlt` into its components or cases. Conclude with `hle` after adjusting the coercions. Conclude with `hlt.le` after adjusting the coercions.
-
-Introduce `X _ _ _ _ hX m δ hδ`. Take `⟨hc, hli, hpr, hEq⟩` from `hδ`. Break down `key X hX m δ hc hli hpr with ⟨hφ', _, hno⟩ | hlt` into its components or cases. Conclude with `⟨⟨hφ', hli, hpr, hEq⟩, hno⟩`. Conclude with `absurd hEq (ne_of_lt hlt)`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem starMult : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O), CMOrd O bar → ∀ (q : ℕ) (φ lab w ψ' : InvFun O),
     (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) →

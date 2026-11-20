@@ -23,13 +23,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Establish `hF : PD.Fil b ≤ PD.Fil a`. Proceed by induction on `b, hab using Int.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ k _ ih => exact (PD.Fil_anti k).trans ih`. Unfold `Formalism.MainNotions.WachCoordinates.FilLev Formalism.WeaklyAdmissibleFiltrations.FilCris`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Apply `Submodule.map_mono` to reduce the goal to its premises. Apply `Submodule.map_mono` to reduce the goal to its premises. Apply `inf_le_inf_right` to reduce the goal to its premises. Apply `inf_le_inf_left` to reduce the goal to its premises. Apply `Submodule.comap_mono` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `Formalism.WeaklyAdmissibleFiltrations.FilV`. Introduce `x hx`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.mp hx`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul v f => exact LinearMap.mem_range.mpr ⟨v ⊗ₜ ⟨f.1, hF f.2⟩, by simp⟩`. Consider the case `add y z hy hz`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ (hy (LinearMap.mem_range_self _ _)) (hz (LinearMap.mem_range_self _ _))`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filtrationLevel_antitone (T : LocLat G Qp LL O) (i : ZMod n) {a b : ℤ} (hab : a ≤ b) :
     Formalism.MainNotions.WachCoordinates.FilLev W T i 0 b ≤ Formalism.MainNotions.WachCoordinates.FilLev W T i 0 a := by
@@ -55,23 +55,21 @@ theorem filtrationLevel_antitone (T : LocLat G Qp LL O) (i : ZMod n) {a b : ℤ}
     exact Submodule.add_mem _ (hy (LinearMap.mem_range_self _ _)) (hz (LinearMap.mem_range_self _ _))
 
 /- English proof (translation)
-Take `⟨hA, -, -, -, -, ⟨-, hcr, -⟩, -, hm, -, -⟩` from `hS`. Set `e : K₀ ≃ₐ[Qp] K` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hA.1`. Set `τ : K →ₐ[Qp] LL` to `(W.emb i).comp e.symm.toAlgHom`. Establish `hτ' : τ.comp (IsScalarTower.toAlgHom Qp K₀ K) = W.emb i`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `congrArg (W.emb i) (e.symm_apply_apply x)`. Establish `hτ : Formalism.MainNotions.LiftingTheory.Over W τ i` using `hτ'`. Take `⟨-, hdiff⟩` from `hD hA T₂ hcr i τ hτ`. Take `⟨hfinE, -, hFR⟩` from `(hDq hA.1 T₂.V T₂.ρ hcr).2 τ`. Use `haveI := hfinE`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : ∀ a : ℤ, Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 a ≤ DdRE PD T₂.ρ τ`. Introduce `a`. Establish `h1 : Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 a = FildR PD T₂.ρ τ a`. Rewrite using `[hFR a, hτ']`. Unfold `Formalism.MainNotions.WachCoordinates.FilLev`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Nat.cast_zero, sub_zero, pow_zero]`. Use `congr 1`. Conclude with `Submodule.map_id _`. Rewrite using `[h1]`. Conclude with `inf_le_left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfin : ∀ a : ℤ, FiniteDimensional LL (Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 a)` using `fun a => Module.Finite.of_injective (Submodule.inclusion (hle a)) (Submodule.inclusion_injective (hle a))`. Use `haveI := hfin (-(η : ℤ))`. Use `haveI := hfin 0`. Establish `h0E : Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 0 ≤ Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 (-(η : ℤ))` using `filtrationLevel_antitone W T₂ i (by omega)`. Set `g` to `(Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 0).mkQ ∘ₗ (Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 (-(η : ℤ))).subtype`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrange : (Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 (-(η : ℤ))).map (Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 0).mkQ = LinearMap.range g`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Establish `hker : LinearMap.ker g = (Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 0).comap (Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 (-(η : ℤ))).subtype`. Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ]`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hrn` using `[hker, (Submodule.comapSubtypeEquivOfLe h0E).finrank_eq]`. Establish `h1 : Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 ((η : ℤ) + 1) ≤ Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 0` using `filtrationLevel_antitone W T₂ i (by omega)`. Establish `hmono : finrank LL ↥(Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 ((η : ℤ) + 1)) ≤ finrank LL ↥(Formalism.MainNotions.WachCoordinates.FilLev W T₂ i 0 0)`. Rewrite using `[← (Submodule.comapSubtypeEquivOfLe h1).finrank_eq]`. Conclude with `Submodule.finrank_le _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum` using `hdiff (-(η : ℤ)) ((η : ℤ) + 1) (by omega)`. Establish `hIco : Finset.Ico (-(η : ℤ)) ((η : ℤ) + 1) = Finset.Icc (-(η : ℤ)) (η : ℤ)`. Use extensionality with `x`. Simplify using `only [Finset.mem_Ico, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite `hsum` using `[hIco]`. Establish `hmm` using `hm i τ hτ`. Rewrite using `[hrange]`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem filtration_quotient_finiteDimensional [NeZero n] (hD : Sh.FilDim W) {d : ℕ} {T₁ T₂ : LocLat G Qp LL O}
     {F : LatHom T₁.L T₂.L} {b : ZMod n → ℕ} {S η m : ℕ} (hDq : DdREqDcris PD LL)
@@ -135,7 +133,7 @@ theorem filtration_quotient_finiteDimensional [NeZero n] (hD : Sh.FilDim W) {d :
   omega
 
 /- English proof (translation)
-Take `⟨⟨u, hu, hq⟩, -, -⟩` from `hR hA i ζ hζ`. Rewrite using `[map_pow, hq]`. Conclude with `pow_ne_zero _ (mul_ne_zero hu.ne_zero PowerSeries.X_ne_zero)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_q_pow_ne_zero [NeZero n] (hR : Sh.ExpRing W) (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (i : ZMod n) (ζ : LL)
     (hζ : IsPrimitiveRoot ζ PD.p) (k : ℕ) : W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W ^ k) ≠ 0 := by
@@ -145,11 +143,9 @@ theorem level_q_pow_ne_zero [NeZero n] (hR : Sh.ExpRing W) (hA : Formalism.MainN
   exact pow_ne_zero _ (mul_ne_zero hu.ne_zero PowerSeries.X_ne_zero)
 
 /- English proof (translation)
-Use `haveI : Module.Finite O₁ Q := Module.Finite.iff_fg.mpr hQ`. Use `haveI : Module.Free O₁ Q := Module.free_of_finite_type_torsion_free'`. Set `bQ` to `Module.finBasis O₁ Q`. Use `⟨Finset.univ.image bQ, ?_, ?_⟩` and prove the remaining obligations. Use `Finset.card_image_le.trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_univ, Fintype.card_fin]`. Establish `hli : LinearIndependent O₁ (fun j => (bQ j : Fin r → L₁))` using `bQ.linearIndependent.map' Q.subtype (Submodule.ker_subtype Q)`. Establish `hli' : LinearIndependent L₁ (fun j => (bQ j : Fin r → L₁))` using `(LinearIndependent.iff_fractionRing (R := O₁) (K := L₁)).mp hli`. Establish `h` using `hli'.fintype_card_le_finrank`. Simplify using `using h`.
-
-Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ]`. Conclude with `bQ.span_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_finset_card_le_span_eq_top_of_fg {O₁ L₁ : Type} [CommRing O₁] [IsDomain O₁] [IsPrincipalIdealRing O₁]
     [Field L₁] [Algebra O₁ L₁] [IsFractionRing O₁ L₁] {r : ℕ} (Q : Submodule O₁ (Fin r → L₁))
@@ -170,55 +166,45 @@ private lemma exists_finset_card_le_span_eq_top_of_fg {O₁ L₁ : Type} [CommRi
     exact bQ.span_eq
 
 /- English proof (translation)
-Establish `hS0` using `hS`. Take `⟨hA, -, -, -, ⟨ζ, hζ⟩, ⟨-, hcr, -⟩, -, -, -, -⟩` from `hS0`. Establish `key : ∀ c ∈ evens n d, ∃ (r : ℕ) (ψ : ↥F₁ →ₗ[O] (Fin r → LL)), r ≤ m ∧ ∀ f, ψ f = 0 ↔ uh c f ∈ W.N T₂`. Introduce `c hc`. Establish `hex` using `fun f : ↥F₁ => (hE hA T₂ hcr (c + 1) ζ hζ).1 (uh c f) _ (hq c hc f) (level_q_pow_ne_zero W hR hA (c + 1) ζ hζ η)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `D : ↥F₁ → ℤ → T₂.V ⊗[Qp] BdR` to `fun f => (hex f).exists.choose`. Establish `hD1` using `fun f : ↥F₁ => (hex f).exists.choose_spec`. Establish `hadd : ∀ f g, D (f + g) = D f + D g` using `fun f g => (hex (f + g)).unique (hD1 (f + g)) (by`. Establish `h` using `(hE hA T₂ hcr (c + 1) ζ hζ).2.2.1 _ _ _ _ (hD1 f) (hD1 g)`. Rewrite `h` using `[← (uh c).map_add f g]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h)`. Establish `hsm : ∀ (a : O) f, D (a • f) = fun k => algebraMap O LL a • D f k` using `fun a f => (hex (a • f)).unique (hD1 (a • f)) (by`. Establish `h` using `(hE hA T₂ hcr (c + 1) ζ hζ).2.2.2.1 a _ _ (hD1 f)`. Rewrite `h` using `[← (uh c).map_smul a f]`. Conclude with `h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hLK : ∀ f, D f 0 ∈ Formalism.MainNotions.WachCoordinates.FilLev W T₂ (c + 1) 0 (-(η : ℤ)) ∧ (uh c f ∈ W.N T₂ ↔ D f 0 ∈ Formalism.MainNotions.WachCoordinates.FilLev W T₂ (c + 1) 0 0)` using `fun f => (hK hA T₂ hcr (c + 1) ζ hζ (uh c f) (D f) (hdl c hc f) (hD1 f) ⟨0, by rw [pow_zero, one_smul]; exact hg c hc f⟩).2 η (hq c hc f)`. Take `⟨hfinQ, hrk⟩` from `filtration_quotient_finiteDimensional W hD hDq hS (c + 1)`. Set `Mq` to `(Formalism.MainNotions.WachCoordinates.FilLev W T₂ (c + 1) 0 (-(η : ℤ))).map (Formalism.MainNotions.WachCoordinates.FilLev W T₂ (c + 1) 0 0).mkQ`. Use `haveI hfinQ' : FiniteDimensional LL ↥Mq := hfinQ`. Set `bas` to `Module.finBasis LL ↥Mq`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `φ0 : ↥F₁ → ↥Mq` to `fun f => ⟨(Formalism.MainNotions.WachCoordinates.FilLev W T₂ (c + 1) 0 0).mkQ (D f 0), Submodule.mem_map_of_mem (hLK f).1⟩`. Establish `hφadd : ∀ f g, φ0 (f + g) = φ0 f + φ0 g` using `fun f g => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (Formalism.MainNotions.WachCoordinates.FilLev W T₂ (c + 1) 0 0).mkQ (D (f + g) 0) = (Formalism.MainNotions.WachCoordinates.FilLev W T₂ (c + 1) 0 0).mkQ (D f 0) + (Formalism.MainNotions.WachCoordinates.FilLev W T₂ (c + 1) 0 0).mkQ (D g 0)`. Rewrite using `[hadd f g, Pi.add_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `map_add _ _ _`. Establish `hφsmul : ∀ (a : O) f, φ0 (a • f) = algebraMap O LL a • φ0 f` using `fun a f => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (Formalism.MainNotions.WachCoordinates.FilLev W T₂ (c + 1) 0 0).mkQ (D (a • f) 0) = algebraMap O LL a • (Formalism.MainNotions.WachCoordinates.FilLev W T₂ (c + 1) 0 0).mkQ (D f 0)`. Rewrite using `[hsm a f]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `LinearMap.map_smul _ _ _`. Use `⟨Module.finrank LL ↥Mq, { toFun := fun f => bas.equivFun (φ0 f), map_add' := ?_, map_smul' := ?_ }, hrk, ?_⟩` and prove the remaining obligations. Introduce `f g show bas.equivFun (φ0 (f + g)) = bas.equivFun (φ0 f) + bas.equivFun (φ0 g)`. Rewrite using `[hφadd, map_add]`. Introduce `a f show bas.equivFun (φ0 (a • f)) = a • bas.equivFun (φ0 f)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hφsmul, LinearEquiv.map_smul, algebraMap_smul]`. Introduce `f show bas.equivFun (φ0 f) = 0 ↔ uh c f ∈ W.N T₂`. Rewrite using `[LinearEquiv.map_eq_zero_iff, (hLK f).2]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : (Formalism.MainNotions.WachCoordinates.FilLev W T₂ (c + 1) 0 0).mkQ (D f 0) = 0` using `congrArg Subtype.val h`. Rewrite `h'` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h'`. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Use `show (Formalism.MainNotions.WachCoordinates.FilLev W T₂ (c + 1) 0 0).mkQ (D f 0) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h`. Establish `main : ∀ l : List (ZMod n), (∀ c ∈ l, c ∈ evens n d) → ∃ (k : ℕ) (Fl : ℕ → Submodule O FF), k ≤ l.length ∧ Fl 0 = F₁ ∧ Fl k ≤ F₁ ∧ (∀ i < k, PStep lenO m cc (Fl i) (Fl (i + 1)) True) ∧ (m = 0 → Fl k = F₁) ∧ ∀ c ∈ l, ∀ f : ↥F₁, (f : FF) ∈ Fl k → uh c f ∈ W.N T₂`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Proceed by induction on `l with`. Consider the case `nil`. Introduce `_`. Conclude with `⟨0, fun _ => F₁, Nat.zero_le _, rfl, le_rfl, fun i hi => absurd hi (Nat.not_lt_zero _), fun _ => rfl, fun c hc => by simp at hc⟩`. Consider the case `cons a l ih`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `hsub`. Take `⟨k, Fl, hk, h0, hFl, hstep, hm0, hN⟩` from `ih (fun c hc => hsub c (by simp [hc]))`. Establish `haE : a ∈ evens n d` using `hsub a (by simp)`. Take `⟨r, ψ, hr, hψ⟩` from `key a haE`. Set `C : Submodule O FF` to `Fl k ⊓ (LinearMap.ker ψ).map F₁.subtype`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnew : PStep lenO m cc (Fl k) C True`. Set `ob0 : ↥(Fl k) →ₗ[O] (Fin r → LL)` to `ψ ∘ₗ Submodule.inclusion hFl`. Use `haveI : Module.Finite O ↥(Fl k) := Module.Finite.iff_fg.mpr (IsNoetherian.noetherian (Fl k))`. Establish `hfg : (LinearMap.range ob0).FG`. Rewrite using `[LinearMap.range_eq_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Module.finite_def.mp inferInstance).map ob0`. Take `⟨s, hs, hspan⟩` from `exists_finset_card_le_span_eq_top_of_fg (LinearMap.range ob0) hfg`. Use `⟨inf_le_left, ↥(LinearMap.range ob0), inferInstance, inferInstance, ob0.rangeRestrict, ?_, fun _ => ⟨s, hs.trans hr, hspan⟩, fun h => absurd trivial h⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[← LinearMap.mem_ker, LinearMap.ker_rangeRestrict, LinearMap.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0x`. Conclude with `Submodule.mem_inf.mpr ⟨x.2, Submodule.mem_map.mpr ⟨Submodule.inclusion hFl x, LinearMap.mem_ker.mpr h0x, rfl⟩⟩`. Introduce `hx`. Take `⟨g, hg0, hgx⟩` from `Submodule.mem_map.mp (Submodule.mem_inf.mp hx).2`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgeq : g = Submodule.inclusion hFl x` using `Subtype.ext hgx`. Rewrite `hg0` using `[hgeq]`. Conclude with `LinearMap.mem_ker.mp hg0`. Establish `hC : m = 0 → C = Fl k`. Introduce `h0m`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm inf_le_left` to reduce the goal to its premises. Introduce `x hx`. Establish `hxF : x ∈ F₁` using `hFl hx`. Establish `hr0 : r = 0` using `by omega`. Substitute `hr0` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Submodule.mem_inf.mpr ⟨hx, Submodule.mem_map.mpr ⟨⟨x, hxF⟩, LinearMap.mem_ker.mpr (Subsingleton.elim _ _), rfl⟩⟩`. Use `⟨k + 1, fun j => if j ≤ k then Fl j else C, by simp only [List.length_cons]; omega, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (if 0 ≤ k then Fl 0 else C) = F₁`. Rewrite using `[if_pos (Nat.zero_le k)]`. Conclude with `h0`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (if k + 1 ≤ k then Fl (k + 1) else C) ≤ F₁`. Rewrite using `[if_neg (by omega)]`. Conclude with `inf_le_left.trans hFl`. Introduce `i hi show PStep lenO m cc (if i ≤ k then Fl i else C) (if i + 1 ≤ k then Fl (i + 1) else C) True`. Distinguish the cases in `hik : i < k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos hik.le, if_pos (show i + 1 ≤ k by omega)]`. Conclude with `hstep i hik`. Establish `hik' : i = k` using `by omega`. Rewrite using `[if_pos (by omega), if_neg (by omega), hik']`. Conclude with `hnew`.
-
-Introduce `h0m show (if k + 1 ≤ k then Fl (k + 1) else C) = F₁`. Rewrite using `[if_neg (by omega), hC h0m, hm0 h0m]`. Introduce `c hc f hf`. Establish `hf' : (f : FF) ∈ C`. Establish `h : (f : FF) ∈ (if k + 1 ≤ k then Fl (k + 1) else C)` using `hf`.
-
-Rewrite `h` using `[if_neg (by omega)]`. Then use the resulting hypothesis. Break down `List.mem_cons.mp hc with hca | hc'` into its components or cases. Take `⟨g, hg0, hgf⟩` from `Submodule.mem_map.mp (Submodule.mem_inf.mp hf').2`. Establish `hgeq : g = f` using `Subtype.ext hgf`. Rewrite `hg0` using `[hgeq]`.
-
-Rewrite using `[hca]`. Conclude with `(hψ f).mp (LinearMap.mem_ker.mp hg0)`. Conclude with `hN c hc' f (Submodule.mem_inf.mp hf').1`. Take `⟨k, Fl, hk, h0, hFl, hstep, hm0, hN⟩` from `main (evens n d).toList (fun c hc => Finset.mem_toList.mp hc)`. Use `⟨Fl k, hFl, ⟨k, Fl, Finset.range k, h0, rfl, Finset.Subset.refl _, ?_, ?_, ?_⟩, hm0, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Finset.card_range]`. Simplify using `using hk`. Simplify using the standard rewrite rules. Introduce `i hi`. Establish `e : (i ∈ Finset.range k) = True` using `eq_true (Finset.mem_range.mpr hi)`.
-
-Rewrite using `[e]`. Conclude with `hstep i hi`. Introduce `c hc f hf`. Conclude with `hN c (Finset.mem_toList.mpr hc) f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem passage_to_quotient [NeZero n] (hK : Sh.LemK W) (hD : Sh.FilDim W) (hR : Sh.ExpRing W)
     (hE : Sh.ExpRules W) {d : ℕ} {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L T₂.L}

@@ -11,25 +11,23 @@ namespace Formalism.L2.SG.Pf.CovolIdx
 variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
 
 /- English proof (translation)
-Use `haveI : Finite (A ⧸ B.subgroupOf A) := Nat.finite_of_card_ne_zero (by rw [← Subgroup.index_eq_card]; exact hfin)`. Use `letI : Fintype (A ⧸ B.subgroupOf A) := Fintype.ofFinite _`. Establish `hmk : ∀ q : A ⧸ B.subgroupOf A, ((Quotient.out q : A) : A ⧸ B.subgroupOf A) = q` using `fun q => QuotientGroup.out_eq' q`. Use `⟨⋃ q : A ⧸ B.subgroupOf A, (fun x => ((Quotient.out q : A) : G) * x) ⁻¹' KA, MeasurableSet.iUnion fun q => measurable_const_mul _ hKA, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ⟨ha, har⟩, hau⟩` from `hKAu r hr`. Take `⟨q, hq⟩ : ∃ q : A ⧸ B.subgroupOf A, q = ((⟨a, ha⟩ : A) : A ⧸ B.subgroupOf A)` from `⟨_, rfl⟩`. Establish `hqB : ((Quotient.out q : A) : G)⁻¹ * a ∈ B`. Establish `h1` using `QuotientGroup.eq.mp ((hmk q).trans hq)`. Rewrite `h1` using `[Subgroup.mem_subgroupOf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`. Use `⟨((Quotient.out q : A) : G)⁻¹ * a, ⟨⟨A.mul_mem (A.inv_mem (Quotient.out q).2) ha, hqB⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Set.mem_iUnion.mpr ⟨q, ?_⟩ show ((Quotient.out q : A) : G) * (((Quotient.out q : A) : G)⁻¹ * a * r) ∈ KA` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_inv_cancel_left]`. Conclude with `har`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `s' ⟨⟨hs'A, hs'B⟩, hs'K⟩`. Take `⟨q', hq'⟩` from `Set.mem_iUnion.mp hs'K`. Establish `hq'' : ((Quotient.out q' : A) : G) * s' * r ∈ KA`. Rewrite using `[mul_assoc]`. Conclude with `hq'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((Quotient.out q' : A) : G) * s' = a` using `hau _ ⟨A.mul_mem (Quotient.out q').2 hs'A, hq''⟩`. Establish `e2 : q' = q`. Rewrite using `[hq, ← hmk q']`. Apply `QuotientGroup.eq.mpr` to reduce the goal to its premises. Rewrite using `[Subgroup.mem_subgroupOf]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `e3 : ((((Quotient.out q' : A))⁻¹ * ⟨a, ha⟩ : A) : G) = s'` using `(eq_inv_mul_of_mul_eq e1).symm`. Rewrite using `[e3]`. Conclude with `hs'B`. Substitute `e2` using the available equality. Conclude with `eq_inv_mul_of_mul_eq e1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hdisj : Pairwise (fun q q' : A ⧸ B.subgroupOf A => AEDisjoint μ ((fun x => ((Quotient.out q : A) : G) * x) ⁻¹' KA) ((fun x => ((Quotient.out q' : A) : G) * x) ⁻¹' KA))`. Introduce `q q' hne`. Use `show μ (_ ∩ _) = 0`. Use `measure_mono_null (?_ : _ ⊆ Rᶜ) hR` and prove the remaining obligations. Introduce `x hx hxR`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hne` to reduce the goal to its premises. Establish `e` using `(hKAu x hxR).unique ⟨(Quotient.out q).2, hx.1⟩ ⟨(Quotient.out q').2, hx.2⟩`. Establish `e'` using `congrArg (fun z : A => (z : A ⧸ B.subgroupOf A)) (Subtype.ext e : Quotient.out q = Quotient.out q')`. Simplify using `only [hmk] at e'`. Conclude with `e'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hmeas : ∀ q : A ⧸ B.subgroupOf A, μ ((fun x => ((Quotient.out q : A) : G) * x) ⁻¹' KA) = μ KA`. Introduce `q`. Rewrite using `[← Measure.map_apply (measurable_const_mul _) hKA, hinv _ (Quotient.out q).2]`. Rewrite using `[measure_iUnion₀ hdisj (fun q => (measurable_const_mul _ hKA).nullMeasurableSet), tsum_fintype]`. Simplify using `only [hmeas, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
-
-Use `congr 1`. Rewrite using `[Subgroup.relIndex, Subgroup.index_eq_card, Nat.card_eq_fintype_card]`.
+A detailed English derivation is pending.
 -/
 theorem fd_sub (μ : Measure G) (R : Set G) (hR : μ Rᶜ = 0) (A B : Subgroup G) [Countable A]
     (hinv : ∀ s ∈ A, μ.map (fun x => s * x) = μ) (hAR : ∀ s ∈ A, ∀ r ∈ R, s * r ∈ R)
@@ -96,19 +94,17 @@ theorem fd_sub (μ : Measure G) (R : Set G) (hR : μ Rᶜ = 0) (A B : Subgroup G
     rw [Subgroup.relIndex, Subgroup.index_eq_card, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Take `⟨K1, hK1m, hK1u, hK1μ⟩` from `fd_sub μ R hR A B hinvA hAR KA hKA hKAu hfinA`. Take `⟨K2, hK2m, hK2u, hK2μ⟩` from `fd_sub μ R hR B A hinvB hBR KB hKB hKBu hfinB`. Rewrite `hK2u` using `[inf_comm]`. Use `haveI : Countable ↥(A ⊓ B) := Function.Injective.countable (Subgroup.inclusion_injective (inf_le_left : A ⊓ B ≤ A))`. Use `letI : MeasurableSpace ↥(A ⊓ B) := ⊤`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : MeasurableSMul ↥(A ⊓ B) G := { measurable_const_smul := fun c => measurable_const_mul (c : G) measurable_smul_const := fun _ => measurable_from_top }`. Use `haveI : SMulInvariantMeasure ↥(A ⊓ B) G μ := ⟨fun c s hs => by show μ ((fun x => (c : G) * x) ⁻¹' s) = μ s`. Rewrite using `[← Measure.map_apply (measurable_const_mul _) hs, hinvA _ c.2.1]⟩`. Establish `hRa : ∀ᵐ x ∂μ, x ∈ R` using `ae_iff.mpr hR`. Establish `mkfd : ∀ K : Set G, MeasurableSet K → (∀ r ∈ R, ∃! s, s ∈ A ⊓ B ∧ s * r ∈ K) → IsFundamentalDomain ↥(A ⊓ B) K μ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `K hK hu`. Use `⟨hK.nullMeasurableSet, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hRa] with x hx`. Take `⟨s, ⟨hs, hsK⟩, -⟩` from `hu x hx`. Conclude with `⟨⟨s, hs⟩, hsK⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g h hgh show μ (((fun x => g • x) '' K) ∩ ((fun x => h • x) '' K)) = 0`. Use `measure_mono_null (?_ : _ ⊆ Rᶜ) hR` and prove the remaining obligations. Introduce `y hy hyR`. Apply `hgh` to reduce the goal to its premises. Take `⟨x1, hx1, e1⟩` from `hy.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x2, hx2, e2⟩` from `hy.2`. Establish `k1 : (g : G)⁻¹ * y ∈ K`. Rewrite using `[← e1]`. Use `show (g : G)⁻¹ * ((g : G) * x1) ∈ K`. Rewrite using `[inv_mul_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hx1`. Establish `k2 : (h : G)⁻¹ * y ∈ K`. Rewrite using `[← e2]`. Use `show (h : G)⁻¹ * ((h : G) * x2) ∈ K`. Rewrite using `[inv_mul_cancel_left]`.
-
-Conclude with `hx2`. Establish `e` using `(hu y hyR).unique ⟨(A ⊓ B).inv_mem g.2, k1⟩ ⟨(A ⊓ B).inv_mem h.2, k2⟩`. Conclude with `Subtype.ext (inv_injective e)`. Establish `key : μ K1 = μ K2` using `(mkfd K1 hK1m hK1u).measure_eq (mkfd K2 hK2m hK2u)`. Rewrite using `[mul_comm, ← hK1μ, key, hK2μ, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covol_commens (μ : Measure G) (R : Set G) (hR : μ Rᶜ = 0) (A B : Subgroup G) [Countable A] [Countable B]
     (hinvA : ∀ s ∈ A, μ.map (fun x => s * x) = μ) (hinvB : ∀ s ∈ B, μ.map (fun x => s * x) = μ)

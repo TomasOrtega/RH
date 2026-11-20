@@ -11,11 +11,11 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompRat
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c hD hsig hC`. Establish `hex : ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H D.p D.q ty` using `by classical`. Set `m : (E →+* ℂ) → ℕ` to `fun τ => if τ (H.rt : E) = H.rt0 then D.p else D.q`. Set `e` to `(Fintype.equivFin (Σ τ : E →+* ℂ, Fin (m τ))).symm`. Establish `h : ∀ τ, Nat.card {i // (e i).1 = τ} = m τ` using `fun τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_congr ((e.subtypeEquiv (q := fun x => x.1 = τ) fun _ => Iff.rfl).trans (Equiv.sigmaSubtype τ))]`. Simplify using the standard rewrite rules. Conclude with `⟨_, fun i => (e i).1, fun τ => ⟨fun hτ => by rw [h]; simp [m, hτ], fun hτ => by rw [h]; simp [m, hτ]⟩⟩`. Take `⟨g, ty, hty⟩` from `hex`. Take `⟨F⟩` from `GlobalTheory.closing_of_abelianSchemeLaws E H D l Xo (algebraMap (KA l) ℂ) g ty hD rfl hty`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.coeffField_algClosed_in_functionField_of_aut_fix_periods E H D l Xo _ g ty F hD rfl hty (fun _ => rfl) c fun τ hτ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.periodSpaces_fixed_by_cmCurveTorsionFixingAutomorphism E H D l Xo _ g ty F hD rfl hty (fun _ => rfl) hsig τ (fun x => hτ _ (c.le x.2)) (hC τ hτ)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fnAlgClosed_of_curveOver_lcm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l), 1 ≤ D.p + D.q → (D.p = 0 ∨ D.q = 0 ∨ (3 ≤ D.p + D.q ∧ (∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0))) → CurveOver H c.F l.M' → FnAlgClosed Xo c := by
   intro E _ _ _ H D l Xo c hD hsig hC

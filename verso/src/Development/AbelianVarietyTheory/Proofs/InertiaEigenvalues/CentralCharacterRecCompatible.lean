@@ -27,7 +27,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Rewrite using `[WD.lpZero, WD.charPol_mk]`. Conclude with `Polynomial.eq_one_of_monic_natDegree_zero (LinearMap.charpoly_monic _) (by rw [LinearMap.charpoly_natDegree]; simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charPol_lpZero (σ : Weil h) : (WD.lpZero h).charPol σ = 1 := by
   rw [WD.lpZero, WD.charPol_mk]
@@ -35,7 +35,7 @@ theorem charPol_lpZero (σ : Weil h) : (WD.lpZero h).charPol σ = 1 := by
     (by rw [LinearMap.charpoly_natDegree]; simp)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [sumList, charPol_lpZero]`. Consider the case `cons b l ih`. Establish `: sumList (b :: l) = WD.lpSum b (sumList l)` using `rfl`. Rewrite using `[this, WD.charPol_lpSum, ih, List.map_cons, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem charPol_sumList (l : List (WD h)) (σ : Weil h) :
     (sumList l).charPol σ = (l.map fun y => y.charPol σ).prod := by
@@ -46,7 +46,7 @@ theorem charPol_sumList (l : List (WD h)) (σ : Weil h) :
     rw [this, WD.charPol_lpSum, ih, List.map_cons, List.prod_cons]
 
 /- English proof (translation)
-Rewrite using `[IrrGL.nu, H.twist, H.one, lpChar_lpOfChar, WD.lpTw]`. Use `congr 1`. Conclude with `ha.absPow_comp s`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem nu_eq {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {e : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ} {rc : IrrGL (w.adicCompletion E) → WD h}
@@ -56,9 +56,9 @@ theorem nu_eq {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
   exact ha.absPow_comp s
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.T.weilDeligne_charpoly_twist_special E Ω A w h (rc Δ.first)).2 Δ.len σ, Segment.ms, Multiset.map_map]`. Establish `h1 : ∀ j : Fin Δ.len, (rc (Δ.term j)).charPol σ = ((rc Δ.first).lpTw ((j : ℕ) : ℝ)).charPol σ`. Introduce `j`. Rewrite using `[Segment.term, show (((j : ℕ) : ℂ)) = ((((j : ℕ) : ℝ)) : ℂ) by push_cast; rfl, nu_eq H]`. Express the relevant statement in the definitionally equal form `_ = ∏ j : Fin Δ.len, (fun y => (rc y).charPol σ) (Δ.term j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [h1]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun j => ((rc Δ.first).lpTw (j : ℝ)).charPol σ) Δ.len]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charPol_seg {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {e : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ} {rc : IrrGL (w.adicCompletion E) → WD h}
@@ -79,9 +79,9 @@ end GlobalTheory.LocLanglands.SuppLaw
 namespace GlobalTheory.LocLanglands
 
 /- English proof (translation)
-Introduce `hEx hZ hG hBZ E Ω _ _ _ _ _ A w h a ha e rc H x s hs σ`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨𝔪, hm⟩` from `hEx (w.adicCompletion E) x`. Establish `h1` using `GlobalTheory.T.langlandsClassification_supercuspidalSupport_multisegment hZ _ 𝔪 x hm`. Take `rfl : s = msupp 𝔪` from `GlobalTheory.T.supercuspidalSupport_unique_GL hG hBZ hZ _ x s _ hs h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H.langlands 𝔪.toList x (by rw [Multiset.coe_toList]; exact hm), segSum, SuppLaw.charPol_sumList, List.map_map, msupp, Multiset.map_bind, Multiset.prod_bind]`. Establish `hl : ∀ (l : List (Segment (w.adicCompletion E))) (F : Segment (w.adicCompletion E) → ℂ[X]), (l.map F).prod = ((l : Multiset _).map F).prod` using `fun l F => by rw [Multiset.map_coe, Multiset.prod_coe]`. Rewrite using `[hl, Multiset.coe_toList]`. Conclude with `congrArg Multiset.prod (Multiset.map_congr rfl fun Δ _ => SuppLaw.charPol_seg H Δ σ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charPol_eq_prod_support : LanglandsExhaustionGL → ZelevinskyPolynomialRing → GeometricLemma →
     BernsteinZelevinskyFiniteness → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]

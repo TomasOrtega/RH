@@ -8,11 +8,11 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.UsCost
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a t ih`. Establish `ha : 0 ≤ f a ∧ f a ≤ c` using `hf a (by simp)`. Establish `ht : ∀ x ∈ t, 0 ≤ f x ∧ f x ≤ c` using `fun x hx => hf x (by simp [hx])`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ (t.map f).prod`. Apply `List.prod_nonneg` to reduce the goal to its premises. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `List.mem_map.1 hy`. Conclude with `(ht x hx).1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.map_cons, List.prod_cons, List.length_cons, pow_succ']`. Conclude with `mul_le_mul ha.2 (ih ht) h0 hc`.
+A detailed English derivation is pending.
 -/
 theorem top_prod_map_le {α : Type*} (l : List α) (f : α → ℝ) (c : ℝ)
     (hf : ∀ x ∈ l, 0 ≤ f x ∧ f x ≤ c) (hc : 0 ≤ c) : (l.map f).prod ≤ c ^ l.length := by
@@ -30,14 +30,14 @@ theorem top_prod_map_le {α : Type*} (l : List α) (f : α → ℝ) (c : ℝ)
     exact mul_le_mul ha.2 (ih ht) h0 hc
 
 /- English proof (translation)
-Unfold `lsz`. Conclude with `le_max_left _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem top_lsz_ge_one {k r : ℕ} (X : B.Mat k r) : 1 ≤ lsz X := by
   unfold lsz
   exact le_max_left _ _
 
 /- English proof (translation)
-Apply `List.prod_nonneg` to reduce the goal to its premises. Introduce `a ha`. Take `⟨X, -, rfl⟩` from `List.mem_map.1 ha`. Conclude with `le_trans zero_le_one (top_lsz_ge_one X)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem top_prod_lsz_nonneg {k r : ℕ} (l : List (B.Mat k r)) : 0 ≤ (l.map lsz).prod := by
   apply List.prod_nonneg
@@ -46,64 +46,56 @@ theorem top_prod_lsz_nonneg {k r : ℕ} (l : List (B.Mat k r)) : 0 ≤ (l.map ls
   exact le_trans zero_le_one (top_lsz_ge_one X)
 
 /- English proof (translation)
-Unfold `B.gN`. Conclude with `Real.sqrt_nonneg _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem top_gN_nonneg {k r : ℕ} (g : B.Mat k r) : 0 ≤ B.gN g := by
   unfold B.gN
   exact Real.sqrt_nonneg _
 
 /- English proof (translation)
-Introduce `hM hR hRt hLt hZt hD hS21`. Introduce `k p s ρ σ d hd hs K hK hKpos Q`. Take `⟨CL, hCL⟩` from `hL k (p + s) ρ`. Take `⟨CS, hCS⟩` from `hS21 k p s ρ σ d hd hs K hK hKpos`. Use `choose Cz hCz using fun q : ℕ => hZ hM hR hZt hD hS21 k p s ρ σ d hd hs K hK hKpos q`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set C1 : ℝ := max 1 (CL * CS ^ 2) with hC1def`. Establish `hC1ge : 1 ≤ C1` using `le_max_left _ _`. Use `⟨(∑ q ∈ Finset.range (Q + 1), max (Cz q) 0) * C1 ^ Q, ?_⟩` and prove the remaining obligations. Introduce `E _ _ F₁ A₁ B₁ hStar ξ u v q hu hv hq Z γ hZdet hγ`. Set `u'` to `u.map (cj k (p + s) ρ ξ.1.1)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `v'` to `v.map (cj k (p + s) ρ ξ.1.2)`. Set `H : B.Mat k (p + s + ρ) → E` to `B.dLR u' v' F₁`. Establish `hfun : (fun Z' : G.Mat s => B.dLR u v (fun γ' => F₁ (gaXi k ρ σ d ξ Z' γ')) γ) = fun Z' => H (gaXi k ρ σ d ξ Z' γ)`. Use function extensionality and compare the values at `Z'`. Conclude with `congrFun (hW hLt hRt k p s ρ σ d ξ Z' E F₁ u v) γ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfun]`. Establish `hcjP : ∀ (x : RC k (p + s) ρ) (Y : B.Mat k ρ), B.unitLie k ρ Y → inLieP k (p + s) ρ (cj k (p + s) ρ x Y)` using `fun x Y hY => (hD k (p + s) ρ x).1 Y hY.1`. Establish `hu' : ∀ X ∈ u', inLieP k (p + s) ρ X`. Introduce `X hX`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hcjP _ Y (hu Y hY)`. Establish `hv' : ∀ X ∈ v', inLieP k (p + s) ρ X`. Introduce `X hX`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Conclude with `hcjP _ Y (hv Y hY)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hwl : ∀ x ∈ wL u' ++ wR v', B.inLie k (p + s + ρ) x.2`. Introduce `x hx`. Simplify using `only [List.mem_append, wL, wR, List.mem_map] at hx`. Break down `hx with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases. Conclude with `(hu' X hX).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `(hv' X hX).1`. Establish `hHeq : H = Dw (wL u' ++ wR v') F₁` using `dLR_eq _ _ _`. Establish `hg0 : gaXi k ρ σ d ξ Z γ ∈ B.GV k (p + s + ρ)` using `(hZS hM hR k p s ρ σ d hd E F₁ Q hStar.1 ξ Z γ hZdet hγ).1`. Establish `hB₁ : 0 ≤ B₁`. Establish `h0` using `hStar.2.2 [] [] (by simp [unitP]) (by simp [unitP]) (by simp) _ hg0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (mul_nonneg (Real.rpow_nonneg (top_gN_nonneg _) _) (norm_nonneg _)) h0`. Establish `hC0 : 0 ≤ (∑ q ∈ Finset.range (Q + 1), max (Cz q) 0) * C1 ^ Q` using `mul_nonneg (Finset.sum_nonneg fun q _ => le_max_right _ _) (pow_nonneg (le_trans zero_le_one hC1ge) _)`. Distinguish the cases in `hKg : ‖DjU k (p + s) ρ (gaXi k ρ σ d ξ Z γ)‖ ∈ K`. Take `⟨hg1, hRn1, hRn2, -⟩` from `hCS ξ Z γ hγ hKg set g0 := gaXi k ρ σ d ξ Z γ with hg0def set X0 := B.gN g0 with hX0def`. Establish `hX0pos : 0 < X0` using `lt_of_lt_of_le zero_lt_one hg1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hX0nn : 0 ≤ X0` using `hX0pos.le`. Establish `hCkH : B.CkOn (q : ℕ∞) (B.GV k (p + s + ρ)) H`. Rewrite using `[hHeq]`. Apply `CkOn_Dw hwl` to reduce the goal to its premises. Apply `sCkOn_mono _ hStar.1` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : q + (u.length + v.length) ≤ Q` using `by omega`. Simplify using `only [List.length_append, wL, wR, List.length_map, u', v']`. Conclude with `hl` after adjusting the coercions. Set `β : ℝ` to `B₁ * X0 ^ (-A₁) * ((u'.map lsz).prod * (v'.map lsz).prod)`. Establish `hw : ∀ w : List (B.Mat k (p + s + ρ)), (∀ X ∈ w, inLieP k (p + s) ρ X) → w.length ≤ q → ‖B.Rw w H g0‖ ≤ β * (w.map lsz).prod`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `w hwP hwl'`. Establish `hcomm` using `hC k (p + s + ρ) E F₁ Q hStar.1 u' v' w (fun X hX => (hu' X hX).1) (fun X hX => (hv' X hX).1) (fun X hX => (hwP X hX).1) (by simp only [List.length_map, u', v']; omega) g0 hg0`. Rewrite using `[hcomm]`. Establish `hsc` using `hS k (p + s) ρ E F₁ A₁ Q B₁ K hStar u' (w ++ v') hu' (by`. Introduce `X hX`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Break down `List.mem_append.1 hX with h | h` into its components or cases. Conclude with `hwP X h`. Conclude with `hv' X h)`. Use the proof step `(by simp only [List.length_append, List.length_map, u', v']; omega) g0 hg0`. Establish `hprod : ((u' ++ (w ++ v')).map lsz).prod = (u'.map lsz).prod * ((w.map lsz).prod * (v'.map lsz).prod)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [List.map_append, List.prod_append]`. Rewrite `hsc` using `[hprod]`. Establish `hpowpos : 0 < X0 ^ A₁` using `Real.rpow_pos_of_pos hX0pos _`. Establish `hle : ‖B.dLR u' (w ++ v') F₁ g0‖ ≤ B₁ * ((u'.map lsz).prod * ((w.map lsz).prod * (v'.map lsz).prod)) / X0 ^ A₁`. Rewrite using `[le_div_iff₀ hpowpos]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[hsc]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [β]`. Rewrite using `[Real.rpow_neg hX0nn]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hcd, hbd⟩` from `hCz q E H β hCkH ξ Z γ hZdet hγ hKg hw`. Use `⟨hcd, le_trans hbd ?_⟩` and prove the remaining obligations. Establish `hlet : ∀ x : RC k (p + s) ρ, B.gN (Rn k (p + s) ρ x) ≤ CS * X0 ^ (p + s) → ∀ Y, B.unitLie k ρ Y → lsz (cj k (p + s) ρ x Y) ≤ C1 * X0 ^ (2 * (p + s + ρ))`. Introduce `x hx Y hY`. Establish `h1` using `hCL x Y hY.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hn0 : 0 ≤ B.gN (Rn k (p + s) ρ x)` using `top_gN_nonneg _`. Establish `hl1` using `top_lsz_ge_one (cj k (p + s) ρ x Y)`. Establish `hCL0 : 0 ≤ CL` using `by nlinarith [sq_nonneg (B.gN (Rn k (p + s) ρ x))]`. Establish `hsq : B.gN (Rn k (p + s) ρ x) ^ 2 ≤ (CS * X0 ^ (p + s)) ^ 2` using `pow_le_pow_left₀ hn0 hx 2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc : 0 ≤ C1 * X0 ^ (2 * (p + s + ρ))` using `mul_nonneg (le_trans zero_le_one hC1ge) (pow_nonneg hX0nn _)`. Establish `hu'b : (u'.map lsz).prod ≤ (C1 * X0 ^ (2 * (p + s + ρ))) ^ u.length`. Establish `h` using `top_prod_map_le u' lsz (C1 * X0 ^ (2 * (p + s + ρ))) (fun X hX => by`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Conclude with `⟨le_trans zero_le_one (top_lsz_ge_one _), hlet _ hRn1 Y (hu Y hY)⟩) hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `h` using `only [List.length_map, u']`. Establish `hv'b : (v'.map lsz).prod ≤ (C1 * X0 ^ (2 * (p + s + ρ))) ^ v.length`. Establish `h` using `top_prod_map_le v' lsz (C1 * X0 ^ (2 * (p + s + ρ))) (fun X hX => by`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Conclude with `⟨le_trans zero_le_one (top_lsz_ge_one _), hlet _ hRn2 Y (hv Y hY)⟩) hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Simplify `h` using `only [List.length_map, v']`. Establish `hβ : β ≤ B₁ * X0 ^ (-A₁) * (C1 ^ Q * X0 ^ (2 * (p + s + ρ) * (u.length + v.length)))`. Establish `h1 : (u'.map lsz).prod * (v'.map lsz).prod ≤ (C1 * X0 ^ (2 * (p + s + ρ))) ^ (u.length + v.length)`. Rewrite using `[pow_add]`. Conclude with `mul_le_mul hu'b hv'b (top_prod_lsz_nonneg _) (pow_nonneg hc _)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : (C1 * X0 ^ (2 * (p + s + ρ))) ^ (u.length + v.length) ≤ C1 ^ Q * X0 ^ (2 * (p + s + ρ) * (u.length + v.length))`. Rewrite using `[mul_pow, ← pow_mul]`. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hC1ge (by omega)) (pow_nonneg hX0nn _)`. Conclude with `mul_le_mul_of_nonneg_left (h1.trans h2) (mul_nonneg hB₁ (Real.rpow_nonneg hX0nn _))`. Establish `hβ0 : 0 ≤ β` using `mul_nonneg (mul_nonneg hB₁ (Real.rpow_nonneg hX0nn _)) (mul_nonneg (top_prod_lsz_nonneg _) (top_prod_lsz_nonneg _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hX5 : 0 ≤ X0 ^ (5 * ((p + s + ρ : ℕ) : ℝ) * (q : ℝ))` using `Real.rpow_nonneg hX0nn _`. Establish `hexp : X0 ^ (-A₁ + 5 * ((p + s + ρ : ℕ) : ℝ) * (q : ℝ) + 2 * ((p + s + ρ : ℕ) : ℝ) * ((u.length + v.length : ℕ) : ℝ)) = X0 ^ (-A₁) * X0 ^ (5 * ((p + s + ρ : ℕ) : ℝ) * (q : ℝ)) * X0 ^ (2 * (p + s + ρ) * (u.length + v.length))`. Rewrite using `[Real.rpow_add hX0pos, Real.rpow_add hX0pos, ← Real.rpow_natCast]`. Use `congr 2`. Use `push_cast`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hmax : max (Cz q) 0 ≤ ∑ q ∈ Finset.range (Q + 1), max (Cz q) 0` using `Finset.single_le_sum (f := fun q => max (Cz q) 0) (fun i _ => le_max_right _ _) (Finset.mem_range.mpr (by omega))`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg hX0nn _)` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ hB₁` to reduce the goal to its premises.
-
-Conclude with `mul_le_mul_of_nonneg_right hmax (pow_nonneg (le_trans zero_le_one hC1ge) _)`. Establish `hcont : Continuous fun g : B.Mat k (p + s + ρ) => ‖DjU k (p + s) ρ g‖`. Establish `hZc : Continuous fun g : B.Mat k (p + s + ρ) => Zh k (p + s) ρ g` using `continuous_pi fun a => continuous_pi fun b => (continuous_apply _).comp (continuous_apply _)`. Conclude with `hZc.matrix_det.norm`. Establish `hOopen : IsOpen {g : B.Mat k (p + s + ρ) | ‖DjU k (p + s) ρ g‖ ∉ K}` using `hK.isClosed.isOpen_compl.preimage hcont`.
-
-Establish `hF0 : ∀ g ∈ B.GV k (p + s + ρ), g ∈ {g : B.Mat k (p + s + ρ) | ‖DjU k (p + s) ρ g‖ ∉ K} → F₁ g = 0`. Introduce `g hg hgO`. Assume the negation of the conclusion as `hne`. Conclude with `hgO (hStar.2.1 g hg hne)`. Establish `hH0 : ∀ g ∈ B.GV k (p + s + ρ), g ∈ {g : B.Mat k (p + s + ρ) | ‖DjU k (p + s) ρ g‖ ∉ K} → H g = 0`.
-
-Introduce `g hg hgO`. Rewrite using `[hHeq]`. Conclude with `Dw_vanish hOopen hwl hF0 g hg hgO`. Take `⟨hcd, hz⟩` from `hO hM hR k p s ρ σ d hd E H _ hOopen hH0 ξ Z γ hZdet hγ hKg q`. Use `⟨hcd, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hz, norm_zero]`. Conclude with `mul_nonneg (mul_nonneg hC0 hB₁) (Real.rpow_nonneg (top_gN_nonneg _) _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitarySum_cost_of_parts (hW : WordsId) (hL : LetterSize) (hS : StarScale) (hC : CommLR) (hO : OffK)
     (hZS : ZSmooth) (hZ : ZCost) : DerivativeCostFromComponents := by

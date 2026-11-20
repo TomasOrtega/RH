@@ -16,14 +16,14 @@ open scoped ComplexOrder MatrixOrder
 variable {k m n : ℕ}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cartan_swap {G s : Matrix (Fin k) (Fin k) ℂ} (h : IsCartanInv G s) : sᴴ * G = G * s := by
   calc sᴴ * G = sᴴ * G * (s * s) := by rw [h.1, Matrix.mul_one]
     _ = G * s := by rw [← Matrix.mul_assoc, h.2.1]
 
 /- English proof (translation)
-Establish `h1 : (G * s)ᴴ = G * s` using `h.2.2.1`. Establish `h2 : sᴴ * sᴴ = 1` using `by rw [← conjTranspose_mul, h.1, conjTranspose_one]`. Rewrite `h1` using `[conjTranspose_mul, ← cartan_swap h]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cartan_herm {G s : Matrix (Fin k) (Fin k) ℂ} (h : IsCartanInv G s) : Gᴴ = G := by
   have h1 : (G * s)ᴴ = G * s := h.2.2.1
@@ -33,32 +33,32 @@ theorem cartan_herm {G s : Matrix (Fin k) (Fin k) ℂ} (h : IsCartanInv G s) : G
     _ = G := by rw [h1, ← Matrix.mul_assoc, h2, Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv h.1`.
+A detailed English derivation is pending.
 -/
 theorem cartanInvolution_inv_eq_self {G s : Matrix (Fin k) (Fin k) ℂ} (h : IsCartanInv G s) : s⁻¹ = s :=
   Matrix.inv_eq_left_inv h.1
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_inv_rev, cartanInvolution_inv_eq_self h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cartan_inv_mul {G s : Matrix (Fin k) (Fin k) ℂ} (h : IsCartanInv G s) : (G * s)⁻¹ = s * G⁻¹ := by
   rw [Matrix.mul_inv_rev, cartanInvolution_inv_eq_self h]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← h.2.1]`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← conjTranspose_nonsing_inv, cartanInvolution_inv_eq_self h, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cartan_inv_conj {G s : Matrix (Fin k) (Fin k) ℂ} (h : IsCartanInv G s) : s * G⁻¹ * sᴴ = G⁻¹ := by
   conv_rhs => rw [← h.2.1]
   rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← conjTranspose_nonsing_inv, cartanInvolution_inv_eq_self h, Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨B, hB, rfl⟩` from `CStarAlgebra.isStrictlyPositive_iff_eq_star_mul_self.mp hP.isStrictlyPositive`. Take `⟨C, hC, rfl⟩` from `CStarAlgebra.isStrictlyPositive_iff_eq_star_mul_self.mp hQ.isStrictlyPositive`. Establish `e : (star B * B * xᴴ * (star C * C) * x).trace = ((C * x * Bᴴ)ᴴ * (C * x * Bᴴ)).trace`. Simplify using `only [star_eq_conjTranspose, conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[Matrix.trace_mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Establish `hy : C * x * Bᴴ ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Establish `hB' : IsUnit (Bᴴ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hB.star`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hC' : IsUnit C.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hC`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ hB', Matrix.nonsing_inv_mul_cancel_left _ _ hC']`. Use `_ = 0 := by rw [h0, Matrix.mul_zero, Matrix.zero_mul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(posSemidef_conjTranspose_mul_self (C * x * Bᴴ)).trace_nonneg`. Establish `h2 : ((C * x * Bᴴ)ᴴ * (C * x * Bᴴ)).trace ≠ 0` using `fun h0 => hy (Matrix.trace_conjTranspose_mul_self_eq_zero_iff.1 h0)`. Conclude with `(Complex.pos_iff.1 (lt_of_le_of_ne h1 h2.symm)).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trace_pos {P : Matrix (Fin n) (Fin n) ℂ} {Q : Matrix (Fin m) (Fin m) ℂ} (hP : P.PosDef) (hQ : Q.PosDef)
     {x : Matrix (Fin m) (Fin n) ℂ} (hx : x ≠ 0) : 0 < (P * xᴴ * Q * x).trace.re := by
@@ -84,7 +84,7 @@ theorem trace_pos {P : Matrix (Fin n) (Fin n) ℂ} {Q : Matrix (Fin m) (Fin m) �
   exact (Complex.pos_iff.1 (lt_of_le_of_ne h1 h2.symm)).1
 
 /- English proof (translation)
-Establish `e : t * (t * x * s) * s = x`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [cplxO, Matrix.mul_smul, Matrix.smul_mul, smul_smul, e, Complex.I_mul_I, neg_smul, one_smul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 -/
 theorem cplxO_cplxO {s : Matrix (Fin n) (Fin n) ℂ} {t : Matrix (Fin m) (Fin m) ℂ} (hs : s * s = 1) (ht : t * t = 1)
     (x : Matrix (Fin m) (Fin n) ℂ) : cplxO s t (cplxO s t x) = -x := by
@@ -94,7 +94,7 @@ theorem cplxO_cplxO {s : Matrix (Fin n) (Fin n) ℂ} {t : Matrix (Fin m) (Fin m)
   simp only [cplxO, Matrix.mul_smul, Matrix.smul_mul, smul_smul, e, Complex.I_mul_I, neg_smul, one_smul]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.trace_conjTranspose]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hG, hH, Matrix.mul_assoc]`. Rewrite using `[Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tr_conj {G : Matrix (Fin n) (Fin n) ℂ} {H : Matrix (Fin m) (Fin m) ℂ} (hG : Gᴴ = G) (hH : Hᴴ = H)
     (x y : Matrix (Fin m) (Fin n) ℂ) : (G⁻¹ * xᴴ * H * y).trace = star (G⁻¹ * yᴴ * H * x).trace := by
@@ -104,7 +104,7 @@ theorem tr_conj {G : Matrix (Fin n) (Fin n) ℂ} {H : Matrix (Fin m) (Fin m) ℂ
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[cplxO, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, cartan_inv_mul hG, ← Matrix.mul_assoc, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tr_J_left {G s : Matrix (Fin n) (Fin n) ℂ} {H t : Matrix (Fin m) (Fin m) ℂ} (hG : IsCartanInv G s)
     (x y : Matrix (Fin m) (Fin n) ℂ) :
@@ -114,9 +114,9 @@ theorem tr_J_left {G s : Matrix (Fin n) (Fin n) ℂ} {H t : Matrix (Fin m) (Fin 
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `e : (G * s)⁻¹ * (t * y * s)ᴴ * (H * t) * x = G⁻¹ * yᴴ * H * x`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [cartan_inv_mul hG, conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [cartan_inv_conj hG, hH.2.1]`. Rewrite using `[tr_J_left hG, cplxO, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.trace_smul, e, smul_eq_mul, ← mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem tr_J_J {G s : Matrix (Fin n) (Fin n) ℂ} {H t : Matrix (Fin m) (Fin m) ℂ} (hG : IsCartanInv G s)
     (hH : IsCartanInv H t) (x y : Matrix (Fin m) (Fin n) ℂ) :
@@ -132,7 +132,7 @@ theorem tr_J_J {G s : Matrix (Fin n) (Fin n) ℂ} {H t : Matrix (Fin m) (Fin m) 
 end Mat
 
 /- English proof (translation)
-Unfold `Host.xi0`. Rewrite using `[map_div₀, map_neg, map_one, map_mul, map_natCast, tauE_sqrtMinusD, Complex.div_re]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem realPlace_imaginaryGenerator_re_eq_zero (D : D7) (τ : D.what₂.Tau) : (tauE D τ D.host.xi0).re = 0 := by
   unfold Host.xi0
@@ -140,7 +140,7 @@ theorem realPlace_imaginaryGenerator_re_eq_zero (D : D7) (τ : D.what₂.Tau) : 
   simp
 
 /- English proof (translation)
-Simplify using `[omAt, hAt, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omAt_zero_right {D : D7} (S T : HSp D) (τ : D.what₂.Tau) (x : Matrix (Fin T.rank) (Fin S.rank) ℂ)
     {y : Matrix (Fin T.rank) (Fin S.rank) ℂ} (h : y = 0) : omAt S T τ x y = 0 := by
@@ -148,7 +148,7 @@ theorem omAt_zero_right {D : D7} (S T : HSp D) (τ : D.what₂.Tau) (x : Matrix 
 
 open scoped ComplexOrder in
 /- English proof (translation)
-Establish `e : hAt S T τ (cplxO s t x) x = Complex.I * ((gramAt D S τ * s)⁻¹ * xᴴ * (gramAt D T τ * t) * x).trace` using `tr_J_left hs _ _`. Establish `p` using `mul_pos (xi_zero_im_pos D τ) (trace_pos hs.2.2.inv ht.2.2 hx)`. Simplify using `only [omAt, e, Complex.mul_re, Complex.mul_im, realPlace_imaginaryGenerator_re_eq_zero, Complex.I_re, Complex.I_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem omAt_J_neg {D : D7} (S T : HSp D) (τ : D.what₂.Tau) {s : Matrix (Fin S.rank) (Fin S.rank) ℂ}
     {t : Matrix (Fin T.rank) (Fin T.rank) ℂ} (hs : IsCartanInv (gramAt D S τ) s) (ht : IsCartanInv (gramAt D T τ) t)
@@ -160,13 +160,13 @@ theorem omAt_J_neg {D : D7} (S T : HSp D) (τ : D.what₂.Tau) {s : Matrix (Fin 
   linarith
 
 /- English proof (translation)
-Introduce `D S T sS sT hS hT`. Use `⟨fun x => ?_, fun x y => ?_, fun x y => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Conclude with `cplxO_cplxO (hS τ).1 (hT τ).1 _`. Rewrite using `[omO_apply, omO_apply, ← Finset.sum_neg_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e : hAt S T τ (y τ) (x τ) = star (hAt S T τ (x τ) (y τ))` using `tr_conj (cartan_herm (hS τ)) (cartan_herm (hT τ)) _ _`. Simplify using `only [omAt, e, Complex.mul_re, realPlace_imaginaryGenerator_re_eq_zero, Complex.star_def, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[omO_apply, omO_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e : hAt S T τ (jO S T sS sT x τ) (jO S T sS sT y τ) = hAt S T τ (x τ) (y τ)` using `tr_J_J (hS τ) (hT τ) _ _`. Simplify using `only [omAt, e]`. Take `⟨τ₀, h0⟩` from `Function.ne_iff.1 hx`. Rewrite using `[omO_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_neg' (fun τ _ => ?_) ⟨τ₀, Finset.mem_univ _, omAt_J_neg S T τ₀ (hS τ₀) (hT τ₀) h0⟩` and prove the remaining obligations. Distinguish the cases in `h : x τ = 0`. Conclude with `(omAt_zero_right S T τ _ h).le`. Conclude with `(omAt_J_neg S T τ (hS τ) (hT τ) h).le`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem form_alt_inv_def : ∀ (D : D7) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ), (∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) → (∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) → (∀ x, jO S T sS sT (jO S T sS sT x) = -x) ∧ (∀ x y, omO S T x y = -omO S T y x) ∧ (∀ x y, omO S T (jO S T sS sT x) (jO S T sS sT y) = omO S T x y) ∧ ∀ x, x ≠ 0 → omO S T (jO S T sS sT x) x < 0 := by
   intro D S T sS sT hS hT

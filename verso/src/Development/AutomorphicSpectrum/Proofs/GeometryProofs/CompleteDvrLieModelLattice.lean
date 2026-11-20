@@ -9,13 +9,11 @@ open AlgebraicGeometry CategoryTheory
 open scoped Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Establish `c'` using `IsLocalRing.specializes_closedPoint ((Spec.map (CommRingCat.ofHom (algebraMap T.V T.Fr))) (IsLocalRing.closedPoint T.Fr))`. Establish `e2` using `Scheme.stalkClosedPointTo_comp (Spec.map (CommRingCat.ofHom (algebraMap T.V T.Fr))) zV`. Establish `e3` using `Scheme.germ_stalkClosedPointTo_Spec (CommRingCat.ofHom (algebraMap T.V T.Fr))`. Establish `e4` using `ΓSpecIso_hom_stalkClosedPointIso_inv (CommRingCat.of T.V)`. Establish `e4' : (stalkClosedPointIso (CommRingCat.of T.V)).inv = (Scheme.ΓSpecIso (CommRingCat.of T.V)).inv ≫ (Spec (CommRingCat.of T.V)).presheaf.germ ⊤ (IsLocalRing.closedPoint _) trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e4, Iso.inv_hom_id_assoc]`. Establish `e6` using `TopCat.Presheaf.germ_stalkSpecializes (Spec (CommRingCat.of T.V)).presheaf (U := ⊤) (y := IsLocalRing.closedPoint _) trivial c'`. Establish `e5 : (Spec (CommRingCat.of T.V)).presheaf.stalkSpecializes c' ≫ Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom (algebraMap T.V T.Fr))) = (stalkClosedPointIso (CommRingCat.of T.V)).hom ≫ CommRingCat.ofHom (algebraMap T.V T.Fr)`. Rewrite using `[← Iso.inv_comp_eq, e4', Category.assoc]`. Use `erw [reassoc_of% e6]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `erw [e3]`. Rewrite using `[Iso.inv_hom_id_assoc]`. Express the relevant statement in the definitionally equal form `X.presheaf.stalkSpecializes c ≫ Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom (algebraMap T.V T.Fr)) ≫ zV) = _`. Rewrite using `[e2]`. Use `erw [Scheme.Hom.stalkSpecializes_stalkMap_assoc zV _ _ c']`.
-
-Rewrite using `[e5, Scheme.stalkClosedPointTo, Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_unitary_diagonal_of_isHermitian {X : Scheme.{0}} (T : CDVR) (zV : Spec (CommRingCat.of T.V) ⟶ X)
     (c : centre (FinRd.Roots.gen T zV) ⤳ centre zV) :
@@ -46,31 +44,27 @@ private theorem exists_unitary_diagonal_of_isHermitian {X : Scheme.{0}} (T : CDV
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `X G _ _ Ω _ ξ L₀ _ _ M T zV EC _ _ _ _ MC A evT hX _ h hz hR L r b e Tm w hT hF hb hw`. Take `⟨-, hF2⟩` from `hF`. Establish `c : centre (FinRd.Roots.gen T zV) ⤳ centre zV` using `zV.base.hom.map_specializes (IsLocalRing.specializes_closedPoint _)`. Establish `hK : ∀ s, (Scheme.stalkClosedPointTo (FinRd.Roots.gen T zV)).hom (ConcreteCategory.hom (X.presheaf.stalkSpecializes c) s) = algebraMap T.V T.Fr ((Scheme.stalkClosedPointTo zV).hom s)`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `DFunLike.congr_fun (CommRingCat.hom_ext_iff.mp (exists_unitary_diagonal_of_isHermitian T zV c)) s` as an intermediate fact. Use `first`. Consider the case `exact this`. Consider the case `simpa only [CommRingCat.comp_apply, CommRingCat.hom_ofHom] using this`. Establish `hsc : ∀ {x : L₀} {y : EC}, M.ValAt (FinRd.Roots.gen T zV) x (MC.pt y) → ∀ s : X.presheaf.stalk (centre (FinRd.Roots.gen T zV)), M.ValAt (FinRd.Roots.gen T zV) (genMap ξ ⟨centre (FinRd.Roots.gen T zV), hz⟩ s • x) (MC.pt ((Scheme.stalkClosedPointTo (FinRd.Roots.gen T zV)).hom s • y …`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy s`. Use `LieModel.ValAt.smul hxy hz s` as an intermediate fact. Rewrite `this` using `[← LieModel.pt_smul]`. Then use the resulting hypothesis. Establish `hzero : ∀ {x : L₀} {y : EC}, M.ValAt (FinRd.Roots.gen T zV) x (MC.pt y) → M.ValAt (FinRd.Roots.gen T zV) 0 (MC.pt 0)`. Introduce `x y hxy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hsc hxy 0` as an intermediate fact. Rewrite `this` using `[map_zero, zero_smul]`. Use `erw [map_zero, zero_smul] at this`. Conclude with `this`. Establish `hsum : ∀ (s : Finset (Fin r)) (f : Fin r → L₀) (g : Fin r → EC), M.ValAt (FinRd.Roots.gen T zV) 0 (MC.pt 0) → (∀ j ∈ s, M.ValAt (FinRd.Roots.gen T zV) (f j) (MC.pt (g j))) → M.ValAt (FinRd.Roots.gen T zV) (∑ j ∈ s, f j) (MC.pt (∑ j ∈ s, g j))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `s f g h0 hf`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, MC.add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `LieModel.ValAt.add (hf a (Finset.mem_insert_self a s)) (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))`. Establish `hA : ∀ (a : A) (j : Fin r), M.ValAt (FinRd.Roots.gen T zV) ((a : Ω) • e j) (MC.pt (evT a • w j))`. Introduce `a j`. Take `⟨h1, s, hs1, hs2⟩` from `hR a`. Use `hsc (hw j) s` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hs1, hs2]`. Conclude with `this`. Establish `hv : ∀ i, M.ValAt (FinRd.Roots.gen T zV) (b i) (MC.pt (∑ j, evT ⟨Tm i j, hT i j⟩ • w j))`. Introduce `i`. Rewrite using `[hb i]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hsum _ _ _ (hzero (hw i)) (fun j _ => hA ⟨Tm i j, hT i j⟩ j)`. Unfold `LieModel.fibAt`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `w' ⟨h', x, hx, hxv⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx' : x ∈ Submodule.span (regAt ξ ⟨centre zV, h⟩) (Set.range b)`. Rewrite using `[← hF2]`. Conclude with `hx`. Take `⟨cf, hcf⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp hx'`. Use `choose s hs using fun i => RingHom.mem_range.mp (cf i).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : M.ValAt (FinRd.Roots.gen T zV) x (MC.pt (∑ i, algebraMap T.V T.Fr ((Scheme.stalkClosedPointTo zV).hom (s i)) • ∑ j, evT ⟨Tm i j, hT i j⟩ • w j))`. Rewrite using `[← hcf]`. Use `hsum _ _ _ (hzero hxv) fun i _ => ?_` and prove the remaining obligations. Use `hsc (hv i) (ConcreteCategory.hom (X.presheaf.stalkSpecializes c) (s i))` as an intermediate fact. Rewrite `this` using `[LieTangent.genMap_specializes ⟨centre zV, h⟩ hz c, hK, hs i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Subring.smul_def]`. Conclude with `this`. Establish `hw'` using `MC.inj (LieModel.ValAt.unique hX hxv key)`. Rewrite using `[hw']`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises.
-
-Use `⟨h, b i, ?_, hv i⟩` and prove the remaining obligations. Rewrite using `[hF2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.complete_dvr_lie_model_lattice : ∀ (X : AlgebraicGeometry.Scheme.{0}) (G : CategoryTheory.Over X) [CategoryTheory.GrpObj G] [CategoryTheory.IsCommMonObj G] (Ω : Type) [Field Ω] (ξ : AlgebraicGeometry.Spec (CommRingCat.of Ω) ⟶ X) (L₀ : Type) [AddCommGroup L₀] [Module Ω L₀] (M : LieModel G ξ L₀) (T : CDVR) (zV : AlgebraicGeometry.Spec (CommRingCat.of T.V) ⟶ X) (EC : Type) [AddCommGroup EC] [Module T.Fr EC] [Module T.V EC] [IsScalarTower T.V T.Fr EC] (MC : LieModel G (FinRd.Roots.gen T zV) EC) (A : Subring Ω) (evT : A →+* T.Fr), IsCptGen ξ → AlgebraicGeometry.Smooth G.hom → ∀ (h : genPt ξ ⤳ centre zV), genPt ξ ⤳ centre (FinRd.Roots.gen T zV) → FinRd.Roots.ReadsPt ξ A T evT zV → ∀ (L : Lat ξ L₀) (r : ℕ) (b e : Fin r → L₀) (Tm : Matrix (Fin r) (Fin r) Ω) (w : Fin r → EC) (hT : ∀ i j, Tm i j ∈ A), L.IsFrameAt b ⟨centre zV, h⟩ → (∀ i, b i = ∑ j, Tm i j • e j) → (∀ j, M.ValAt (FinRd.Roots.gen T zV) (e j) (MC.pt (w j))) → M.fibAt L zV MC = Submodule.span T.V (Set.range fun i => ∑ j, evT ⟨Tm i j, hT i j⟩ • w j) := by
   intro X G _ _ Ω _ ξ L₀ _ _ M T zV EC _ _ _ _ MC A evT hX _ h hz hR L r b e Tm w hT hF hb hw

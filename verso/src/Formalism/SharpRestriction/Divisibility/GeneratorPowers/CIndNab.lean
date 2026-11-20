@@ -16,9 +16,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   (Xo : Moduli Dw l) (c : Coeff l)
 
 /- English proof (translation)
-Use `letI : Algebra ℚ S := ((algebraMap c.F S).comp (algebraMap ℚ c.F)).toAlgebra`. Establish `key : ∀ (K : ℤ) (k : ℕ), K = (k : ℤ) → ∀ G : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L K (ptO Xo y.x)), ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b, nab y K (G b) (colOf m b) = ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b, nab' y K (G b) (colOf m b)`. Introduce and unpack `K k rfl G`. Conclude with `hU E H Dw l Xo c nab nab' h h' S y k n G a P hP`. Unfold `thExpr`.
+Equip the data with the indicated structure. Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `key _ (l.M ^ 2) (Nat.cast_pow l.M 2).symm F`.
+A detailed English derivation is pending.
 -/
 theorem thExpr_eq (hU : ThExprUniqSt) [StarRing (𝓞 E)] (nab nab' : NabV Xo c) (h : IsNab Xo c nab)
     (h' : IsNab Xo c nab') {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) {n : ℕ}
@@ -37,7 +37,7 @@ theorem thExpr_eq (hU : ThExprUniqSt) [StarRing (𝓞 E)] (nab nab' : NabV Xo c)
   exact key _ (l.M ^ 2) (Nat.cast_pow l.M 2).symm F
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S', i1, i2, φ, y', F, hff, hmap, hvt, hv⟩`. Conclude with `⟨S', i1, i2, φ, y', F, hff, hmap, hvt, hv.trans (thExpr_eq Xo c hU nab nab' h h' y' a P hP F)⟩`. Introduce and unpack `⟨S', i1, i2, φ, y', F, hff, hmap, hvt, hv⟩`. Conclude with `⟨S', i1, i2, φ, y', F, hff, hmap, hvt, hv.trans (thExpr_eq Xo c hU nab nab' h h' y' a P hP F).symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem thValAt_iff (hU : ThExprUniqSt) [StarRing (𝓞 E)] (nab nab' : NabV Xo c) (h : IsNab Xo c nab)
     (h' : IsNab Xo c nab') {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) {n : ℕ}
@@ -54,9 +54,9 @@ end CIndNab
 open CIndNab in
 
 /- English proof (translation)
-Introduce `_ nab nab' h h' a n _`. Establish `hU` using `thExprUniq_of_chartIndep2 hC`. Use `Set.ext fun f => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, P, hP, hf⟩`. Conclude with `⟨x, P, hP, fun p y => (thValAt_iff Xo c hU nab nab' h h' y x a P hP _).1 (hf p y)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, P, hP, hf⟩`. Conclude with `⟨x, P, hP, fun p y => (thValAt_iff Xo c hU nab nab' h h' y x a P hP _).2 (hf p y)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem nabUniq_of_chartIndep2 (hC : ChartIndepSt2) {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : Host E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) : NabUniq Xo c := by

@@ -34,7 +34,7 @@ noncomputable abbrev lowerBoundaryWithoutBlowup (T : MarkedIdealWithBoundary.{u}
 
 @[simp]
 /- English proof (translation)
-Simplify using `[lowerBoundaryWithoutBlowup]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lowerBoundaryWithoutBlowup_eq (T : MarkedIdealWithBoundary.{u}) : lowerBoundaryWithoutBlowup T = T.boundary := by
   simp [lowerBoundaryWithoutBlowup]
@@ -64,7 +64,7 @@ noncomputable def ambientTowerOfLowerResolution (hres : FunctorialResolution.Blo
     hres hno hpr
 
 /- English proof (translation)
-The claim follows from `containedComponentsIdeal_eq_ker T j hj h`.
+A detailed English derivation is pending.
 -/
 theorem containedComponentsIdeal_eq_ker_ι_comp_subschemeι_of_isOpen (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (h : IsOpen {x : ↥(T.boundary.get ⟨j, hj⟩).subscheme |
@@ -80,7 +80,7 @@ theorem containedComponentsIdeal_eq_ker_ι_comp_subschemeι_of_isOpen (T : Marke
   containedComponentsIdeal_eq_ker T j hj h
 
 /- English proof (translation)
-The claim follows from `containedComponentsIdeal_eq_top_of_not_isOpen T j hj h`.
+A detailed English derivation is pending.
 -/
 theorem containedComponentsIdeal_eq_top_of_not_isOpen_setOf_connectedComponent (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (h : ¬ IsOpen {x : ↥(T.boundary.get ⟨j, hj⟩).subscheme |
@@ -90,7 +90,7 @@ theorem containedComponentsIdeal_eq_top_of_not_isOpen_setOf_connectedComponent (
   containedComponentsIdeal_eq_top_of_not_isOpen T j hj h
 
 /- English proof (translation)
-Use `hdn.2` as an intermediate fact. Use `(divisorReductionSeq_eq_liftSeqFromDivisor_of_eq_top hres hno T alg j hj hcs hZ).trans ?_` and prove the remaining obligations. Conclude with `liftSeqFromDivisor_eq_toMarkedSequence hres hno T alg j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) id hdn.1 hpr hmk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem divisorReductionSeq_eq_of_containedComponentsIdeal_eq_top (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -112,7 +112,7 @@ theorem divisorReductionSeq_eq_of_containedComponentsIdeal_eq_top (hres : Functo
     hdn.1 hpr hmk
 
 /- English proof (translation)
-Use `hdn.2` as an intermediate fact. Use `(divisorReductionSeq_eq_liftSeqFromDivisor_prepend hres hno T alg j hj hcs hZ hb).trans ?_` and prove the remaining obligations. Conclude with `liftSeqFromDivisor_eq_toMarkedSequence hres hno T alg j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) (BlowupSequenceData.prepend (containedComponentsIdeal T j hj) hb) hdn.1 hpr hmk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem divisorReductionSeq_eq_of_isBlowupAlongIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})

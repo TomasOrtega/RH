@@ -21,7 +21,7 @@ section Val
 variable {F : Type} [Field F] {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
 
 /- English proof (translation)
-The claim follows from `((gs_unit r z _ (hJ.mem φ r) _).symm.trans (gs_eq_stalkConst r z (fun w _ => (Subsingleton.elim (α := PrimeSpectrum F) z w) ▸ hJ.mem φ r) _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem const_vF (t : LB.Gen (LB.LinComb L φ ε)) (r : Sp F ⟶ Y) {z : Sp F} {J : (Sp F ⟶ X) → L.ι} (hJ : Good L z J) :
     stalkConst z (vF t r J) = (val t r z J).val :=
@@ -29,14 +29,14 @@ theorem const_vF (t : LB.Gen (LB.LinComb L φ ε)) (r : Sp F ⟶ Y) {z : Sp F} {
     (fun w _ => (Subsingleton.elim (α := PrimeSpectrum F) z w) ▸ hJ.mem φ r) _)).symm
 
 /- English proof (translation)
-The claim follows from `(gs_eq_stalkConst r z (fun w _ => (Subsingleton.elim (α := PrimeSpectrum F) z w) ▸ hJ.mem φ r) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem const_sF (s : LB.Sec (LB.LinComb L φ ε)) (r : Sp F ⟶ Y) {z : Sp F} {J : (Sp F ⟶ X) → L.ι} (hJ : Good L z J) :
     stalkConst z (sF s r J) = sval s r z J :=
   (gs_eq_stalkConst r z (fun w _ => (Subsingleton.elim (α := PrimeSpectrum F) z w) ▸ hJ.mem φ r) _).symm
 
 /- English proof (translation)
-The claim follows from `(stalkConst z).injective ((const_vF t r hJ).trans ((congrArg Units.val h).trans (const_vF t' r' hJ').symm))`.
+A detailed English derivation is pending.
 -/
 theorem vF_congr {X' Y' : Scheme.{0}} {L' : LB X'} {K' : Type} [Fintype K'] {φ' : K' → (Y' ⟶ X')} {ε' : K' → ℤ}
     {t : LB.Gen (LB.LinComb L φ ε)} {r : Sp F ⟶ Y} {z : Sp F} {J : (Sp F ⟶ X) → L.ι} (hJ : Good L z J)
@@ -46,21 +46,19 @@ theorem vF_congr {X' Y' : Scheme.{0}} {L' : LB X'} {K' : Type} [Fintype K'] {φ'
 end Val
 
 /- English proof (translation)
-Introduce `hG R R' _ _ _ _ φ D D' hD hS F _ _ _ hF N ν th' hgen hth`. Take `⟨c, hc⟩` from `hS`. Establish `hT : (TF (R` using `R') F).hom ≫ spMap φ = (TF (R := R) F).hom := base_comm fun r => (hF r).symm`. Establish `hj : jFK (R` using `R') F ≫ jK R' ≫ spMap φ = jFK (R := R) F ≫ jK R := (Category.assoc _ _ _).symm.trans hT`. Set `z : Sp F` to `IsLocalRing.closedPoint F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `J' : (Sp F ⟶ D'.P.A.left) → D'.P.L.ι` to `fun ψ => c (ν.J (ψ ≫ proj hD))`. Establish `hJ : Good D.P.L z ν.J` using `fun ψ => ν.good ψ trivial`. Establish `good' : ∀ ψ : Sp F ⟶ D'.P.A.left, ⊤ ≤ ψ ⁻¹ᵁ D'.P.L.U (J' ψ)` using `fun ψ y _ => (hc _ ψ y _ (ν.good (ψ ≫ proj hD) (x := y) trivial)).1`. Establish `hJ' : Good D'.P.L z J'` using `fun ψ => good' ψ trivial`. Establish `one : ∀ ψ : Sp F ⟶ D'.P.A.left, Geo.Tor.gw hD.w ψ z (ν.J (ψ ≫ proj hD)) (J' ψ) = 1` using `fun ψ => (hc _ ψ z _ (hJ (ψ ≫ proj hD))).2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `one' : ∀ ψ : Sp F ⟶ D'.P.A.left, om hD.w z ν.J J' ψ = 1` using `one`. Establish `one'' : ∀ x : TF (R` using `R') F ⟶ D'.P.A, wVal hD.w z ν.J J' x = 1 := fun x => one x.left`. Set `P : (TF (R` to `R') F ⟶ D'.P.A) ≃* (TF (R := R) F ⟶ D.P.A) := MulEquiv.ofBijective (MonoidHom.mk' (pushF (pull_grp hD) hT) (pushF_mul _ _)) ⟨pushF_injective (pull_grp hD) hT, pushF_surjective (pull_grp hD) hT⟩`. Take `⟨eA, heA⟩ : ∃ eA : N.A ≃* (TF (R` from `R') F ⟶ D'.P.A), ∀ x, pushF (pull_grp hD) hT (eA x) = ν.eA x := ⟨ν.eA.trans P.symm, fun x => P.apply_symm_apply _⟩`. Establish `hl : ∀ x, (eA x).left ≫ proj hD = (ν.eA x).left` using `fun x => congrArg (fun q => q.left) (heA x)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨eX, heX⟩ : ∃ eX : N.X ≃+ D'.X, ∀ y, hD.xe (eX y) = ν.eX y` from `⟨ν.eX.trans hD.xe.symm, fun y => hD.xe.apply_symm_apply _⟩`. Establish `rig : vF (L` using `D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig (TF (R := R) F).hom ν.J = vF (L := D'.P.L) (φ := fun _ : PUnit => eSec D'.P.A) (ε := fun _ => 1) D'.rig (TF (R := R') F).hom J' := by`. Establish `e` using `ArcPull.rig_val hD (Z := Sp F) _ _ hj hJ hJ'`. Rewrite `e` using `[one', _root_.one_mul]`. Conclude with `vF_congr hJ hJ' ((val_pull hJ _ _ _).symm.trans (e.trans (val_pull hJ' _ _ _)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ J := J', good := good', th := th', th_gen := hgen, eA := eA, eX := eX c_eq := fun χ => ?_, θ_eq := fun x y u => ?_, σ_eq := fun x => ?_, th_eq := fun x => ?_ ψ_eq := fun χ => ?_ }, heX, hl⟩` and prove the remaining obligations. Apply `pushF_injective (pull_grp hD) hT` to reduce the goal to its premises. Rewrite using `[heA, ν.c_eq, ← heX]`. Conclude with `Over.OverMorphism.ext ((cPoint_proj hD (T := TF (R := R) F) (T' := TF (R := R') F) (𝟙 _) (hT.trans (Category.id_comp _).symm) _).trans (Category.id_comp _)).symm`. Establish `k` using `thS_push (pull_grp hD) hT ((isGen_iff _).1 hD.w_gen) hG hJ hJ' (eA x) (eA y) (eA u)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [one'', heA, inv_one, _root_.one_mul] at k`. Conclude with `(ν.θ_eq x y u).trans (vF_congr hJ hJ' k)`. Establish `k` using `PsiEvenPull.sym_pull hG hD (Z := Sp F) (eA x).left z hJ hJ'`. Rewrite `k` using `[one, one, inv_one, _root_.one_mul, _root_.one_mul]`. Use `(ν.σ_eq x).trans (vF_congr hJ hJ' (Eq.trans ?_ k))` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun q => val (Z := Sp F) D.sym q z ν.J) (hl x).symm`. Establish `k` using `hth (Sp F) (eA x).left z ν.J J' hJ hJ'`. Rewrite `k` using `[one, Units.val_one, _root_.one_mul]`. Rewrite using `[← rig, ν.th_eq x]`. Use `(stalkConst z).injective ((const_sF _ _ hJ).trans (Eq.trans ?_ (k.trans (const_sF _ _ hJ').symm)))` and prove the remaining obligations.
-
-Conclude with `congrArg (fun q => sval (Z := Sp F) ν.th q z ν.J) (hl x).symm`. Establish `k` using `ArcPull.psi_val hD (Z := Sp F) _ _ hj hJ hJ' (eX χ)`. Rewrite `k` using `[one', inv_one, _root_.one_mul, heX]`. Rewrite using `[← rig, ν.ψ_eq χ]`. Conclude with `congrArg (· * _) (vF_congr hJ hJ' k)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_numOf_strict_pull : GlobalFnsSt → ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (φ : R →+* R') (D : DegPre R) (D' : DegPre R') (hD : IsPullDeg φ D D'), Strict hD.w → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] [Algebra (FractionRing R') F], (∀ x, algebraMap (FractionRing R') F (algebraMap R' _ (φ x)) = algebraMap (FractionRing R) F (algebraMap R _ x)) → ∀ (N : NumD F) (ν : NumOf D F N) (th' : H0 D'.P.L 1), (∀ s : H0 D'.P.L 1, ∃ r : R', ∀ j, s.f j = resTop _ (scal D'.P.A.hom r) * th'.f j) → (∀ (Z : Scheme.{0}) (r : Z ⟶ D'.P.A.left) (z : Z) (J : (Z ⟶ D.P.A.left) → D.P.L.ι) (J' : (Z ⟶ D'.P.A.left) → D'.P.L.ι), Good D.P.L z J → Good D'.P.L z J' → sval ν.th (r ≫ PsiEvenPull.proj hD) z J = (gw hD.w r z (J (r ≫ PsiEvenPull.proj hD)) (J' r)).val * sval th' r z J') → ∃ ν' : NumOf D' F N, (∀ y, hD.xe (ν'.eX y) = ν.eX y) ∧ ∀ x, (ν'.eA x).left ≫ PsiEvenPull.proj hD = (ν.eA x).left := by
   intro hG R R' _ _ _ _ φ D D' hD hS F _ _ _ hF N ν th' hgen hth

@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.Mem.HFld
 
 /- English proof (translation)
-Use `choose n Wt hWok hWcov using hF`. Use `choose s hsalg hs using hT`. Use `⟨fun P f F F₀ Ξ => Finset.univ.biUnion fun i : Fin (n P f F F₀ Ξ) => s (Wt P f F F₀ Ξ i).1 (Wt P f F F₀ Ξ i).2.1 (Wt P f F F₀ Ξ i).2.2 (hWok P f F F₀ Ξ i).1 (hWok P f F F₀ Ξ i).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `P f F F₀ Ξ z hz`. Take `⟨i, -, hi⟩` from `Finset.mem_biUnion.1 hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hsalg _ _ _ _ _ z hi`. Introduce `B px I hB hI hS a`. Take `⟨i, hi⟩` from `hWcov B.toPre I.C B.KsC B.fixedCoefficientFieldInComplex (Set.range I.xi) B px I hB hI rfl HEq.rfl rfl rfl HEq.rfl`. Conclude with `hs _ _ _ _ _ B px I hB hI hi (fun z hz => hS z (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, hz⟩)) a`.
+A detailed English derivation is pending.
 -/
 theorem heckeFields_of (hF : ∀ (P : Pre) (f : Top.Fr P) (F F₀ : IntermediateField ℚ ℂ) (Ξ : Set (Formalism.L2.Host.HChar P.host.E)),
   ∃ (n : ℕ) (Wt : Fin n → Σ B0 : Base, Σ px0 : PreX B0.toPre, Col2.ColIn B0 px0),
@@ -47,7 +47,7 @@ theorem heckeFields_of (hF : ∀ (P : Pre) (f : Top.Fr P) (F F₀ : Intermediate
     exact hs _ _ _ _ _ B px I hB hI hi (fun z hz => hS z (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, hz⟩)) a
 
 /- English proof (translation)
-The claim follows from `heckeFields_of GlobalTheory.T.exists_finite_columnConfigurations_witnesses GlobalTheory.T.exists_finite_algebraic_set_heckeFields_split`.
+A detailed English derivation is pending.
 -/
 theorem heckeFields :
     ∃ So : ∀ P : Pre, Top.Fr P → IntermediateField ℚ ℂ → IntermediateField ℚ ℂ → Set (Formalism.L2.Host.HChar P.host.E) → Finset ℂ,

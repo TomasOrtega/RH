@@ -13,9 +13,9 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 open UpperTheory.Gal.GamX
 
 /- English proof (translation)
-Use `GlobalTheory.FrobDense.eq_one_of_unif (ψ.loc w) (fun y hy => ?_) x` and prove the remaining obligations. Establish `h2` using `unif_spec w`. Establish `h3` using `hu (y * (atFin w (unif w))⁻¹) (by`. Unfold `IsUnitAt`. Unfold `IsUnifAt at hy h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hy, h2]`. Conclude with `mul_inv_cancel₀ WithZero.exp_ne_zero)`. Rewrite `h3` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h3.trans hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem loc_one_of' {L : Type} [Field L] [NumberField L] (ψ : HChar L) (w : HeightOneSpectrum (𝓞 L))
     (hu : ψ.UnrAt w) (hv : ψ.val w = 1) (x : (w.adicCompletion L)ˣ) : ψ.loc w x = 1 := by
@@ -30,11 +30,11 @@ private theorem loc_one_of' {L : Type} [Field L] [NumberField L] (ψ : HChar L) 
   exact h3.trans hv
 
 /- English proof (translation)
-Set `ρ : HChar L` to `a * b⁻¹`. Establish `hl : ∀ u x, ρ.loc u x = a.loc u x * (b.loc u x)⁻¹` using `fun _ _ => rfl`. Establish `hev : ∀ᶠ u : HeightOneSpectrum (𝓞 L) in Filter.cofinite, ρ.UnrAt u ∧ ρ.val u = 1` using `by filter_upwards [h] with u hu`. Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hl, hu.1 x hx, hu.2.1 x hx]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `e : ρ.val u = a.val u * (b.val u)⁻¹` using `rfl`. Rewrite using `[e, hu.2.2, mul_inv_cancel]`. Establish `h1 : ρ.1 = 1` using `GlobalTheory.FrobDense.eq_one_of_away ρ.1 ρ.2.1 ρ.2.2 (Filter.eventually_cofinite.1 hev).toFinset fun w hw y => by`. Use `not_not.1 (fun h => hw ((Set.Finite.mem_toFinset _).2 h))` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `loc_one_of' ρ w this.1 this.2 y`. Establish `h2 : ρ = 1` using `Subtype.ext h1`. Conclude with `mul_inv_eq_one.1 h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eq_of_ae {L : Type} [Field L] [NumberField L] (a b : HChar L)
     (h : ∀ᶠ u : HeightOneSpectrum (𝓞 L) in Filter.cofinite, a.UnrAt u ∧ b.UnrAt u ∧ a.val u = b.val u) : a = b := by
@@ -54,13 +54,13 @@ private theorem eq_of_ae {L : Type} [Field L] [NumberField L] (a b : HChar L)
   exact mul_inv_eq_one.1 h2
 
 /- English proof (translation)
-Unfold `RkLiftOf RkLift`. Introduce `hN K L _ _ _ _ _ _ _ ψ ψ' hW v w`. Take `⟨ξ, hξ⟩` from `hN K L ψ`. It suffices to establish `e : ψ' = ξ by rw [e]; exact (hξ v w).1`. Use `eq_of_ae _ _ ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hW, (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under K L).eventually (Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified ψ)), Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified ψ')] with u h1 h2 …`. Establish `h2' : ψ.UnrAt (u.under (𝓞 K))` using `h2`. Establish `h3' : ψ'.UnrAt u` using `h3`. Establish `hl : u.asIdeal.LiesOver (u.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Take `⟨-, hu, d⟩` from `hξ (u.under (𝓞 K)) ⟨u, hl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, c⟩` from `hu h2'`. Establish `hnv : ∀ {F : Type} [Field F] [NumberField F] (x : HeightOneSpectrum (𝓞 F)), normV x = Ideal.absNorm x.asIdeal` using `fun x => by rw [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hf : normV u = normV (u.under (𝓞 K)) ^ fdeg (⟨u, hl⟩ : PlacesOver L (u.under (𝓞 K)))`. Rewrite using `[hnv, hnv]`. Conclude with `d`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB, hB'⟩` from `h1 _ hf`. Take `rfl` from `CG.HasSat.unique hB (CG.hasSat_ofChar h2')`. Establish `e` using `CG.HasSat.unique hB' (CG.hasSat_ofChar h3')`. Rewrite `e` using `[Multiset.map_singleton, Multiset.singleton_inj]`. Conclude with `⟨h3', b, e.symm.trans c.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.GamX.rkLiftOf :
     UpperTheory.Gal.GamX.RkLiftOf := by

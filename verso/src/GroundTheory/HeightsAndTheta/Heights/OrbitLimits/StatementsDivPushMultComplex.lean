@@ -17,11 +17,11 @@ def DivPushMultComplex.Statement : Prop :=
     multAt I W = multAt (I.map (MvPolynomial.map (Int.castRingHom ℂ))) Wa
 
 /- English proof (translation)
-Establish `hprime : (Ideal.span {(Xc 2 0 : MRing (PBlk 2))}).IsPrime` using `(Ideal.span_singleton_prime (X_ne_zero _)).mpr X_prime`. Establish `hprimeC : (Ideal.span {(X ⟨(), 0⟩ : MRingOver ℂ (PBlk 2))}).IsPrime` using `(Ideal.span_singleton_prime (X_ne_zero _)).mpr X_prime`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.minimalPrimes_eq_subsingleton_self]`. Conclude with `Set.mem_singleton _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsHorizontal, eq_bot_iff]`. Introduce `c hc`. Rewrite `hc` using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Take `⟨q, hq⟩` from `hc`. Establish `h` using `congrArg constantCoeff hq`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Rewrite using `[Ideal.map_span, Set.image_singleton, Xc, map_X, Ideal.minimalPrimes_eq_subsingleton_self]`. Conclude with `Set.mem_singleton _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DivPushMultComplex.hyps_inhabited :
     (Ideal.span {Xc 2 0} : Ideal (MRing (PBlk 2))) ∈ (Ideal.span {Xc 2 0} : Ideal (MRing (PBlk 2))).minimalPrimes ∧

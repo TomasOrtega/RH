@@ -20,7 +20,7 @@ abbrev baseIncl (e : ℕ) : Spec (CommRingCat.of (R ⧸ I ^ (0 + 1))) ⟶ Spec (
   Spec.map (CommRingCat.ofHom (Ideal.Quotient.factor (Ideal.pow_le_pow_right (by omega : 0 + 1 ≤ e + 1))))
 
 /- English proof (translation)
-Simplify using `only [baseIncl, thick, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.factor_comp_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem baseIncl_comp (e : ℕ) : baseIncl R I e ≫ thick R I e = thick R I 0 := by
   simp only [baseIncl, thick, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.factor_comp_mk]
@@ -31,21 +31,21 @@ def incl (e : ℕ) (G : Over (Spec (CommRingCat.of R))) :
     (by simp) (by simp [baseIncl_comp])
 
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem incl_fst (e : ℕ) (G : Over (Spec (CommRingCat.of R))) :
     incl R I e G ≫ (fstG I e G).left = (fstG I 0 G).left :=
   (pullback.lift_fst _ _ _).trans (Category.comp_id _)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem incl_snd (e : ℕ) (G : Over (Spec (CommRingCat.of R))) :
     incl R I e G ≫ pullback.snd G.hom (thick R I e) = pullback.snd G.hom (thick R I 0) ≫ baseIncl R I e :=
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Use `IsPullback.of_right ?_ (incl_snd R I e G) (IsPullback.of_hasPullback G.hom (thick R I e))` and prove the remaining obligations. Establish `h1 : incl R I e G ≫ pullback.fst G.hom (thick R I e) = pullback.fst G.hom (thick R I 0)` using `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Rewrite using `[h1, baseIncl_comp]`. Conclude with `IsPullback.of_hasPullback G.hom (thick R I 0)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_incl (e : ℕ) (G : Over (Spec (CommRingCat.of R))) :
     IsPullback (incl R I e G) (pullback.snd G.hom (thick R I 0)) (pullback.snd G.hom (thick R I e))
@@ -63,9 +63,9 @@ namespace GlobalTheory.ClosedFibre
 variable (R : Type) [CommRing R] (I : Ideal R)
 
 /- English proof (translation)
-Establish `hc : (fstG I e G).left ≫ G.hom = pullback.snd G.hom (thick R I e) ≫ thick R I e` using `pullback.condition`. Rewrite using `[hc]`. Establish `h` using `congr($(Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ (e + 1))))).hom a)`. Simplify using `only [GlobalTheory.AbLaw.cst, RingHom.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, CommRingCat.hom_ofHom] at h ⊢`. Use `erw [← h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cst_fst (e : ℕ) (G : Over (Spec (CommRingCat.of R))) (V : (thickObj R I e G).left.Opens) (a : R) :
     GlobalTheory.AbLaw.cst ((fstG I e G).left ≫ G.hom) V a =
@@ -79,7 +79,7 @@ theorem cst_fst (e : ℕ) (G : Over (Spec (CommRingCat.of R))) (V : (thickObj R 
   rfl
 
 /- English proof (translation)
-Rewrite using `[cst_fst, Ideal.Quotient.eq_zero_iff_mem.2 ha, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cst_eq_zero (e : ℕ) (G : Over (Spec (CommRingCat.of R)))
     (V : (thickObj R I e G).left.Opens) (a : R) (ha : a ∈ I ^ (e + 1)) :
@@ -87,9 +87,9 @@ theorem cst_eq_zero (e : ℕ) (G : Over (Spec (CommRingCat.of R)))
   rw [cst_fst, Ideal.Quotient.eq_zero_iff_mem.2 ha, map_zero]
 
 /- English proof (translation)
-Establish `hq : incl R I e G ≫ ((fstG I e G).left ≫ G.hom) = (fstG I 0 G).left ≫ G.hom`. Rewrite using `[← Category.assoc, incl_fst]`. Rewrite using `[← hq]`. Simplify using `only [GlobalTheory.AbLaw.cst, GlobalTheory.AbLaw.rs, RingHom.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`. Use `congr($((incl R I e G).naturality (homOfLE (le_top : V ≤ ⊤)).op).hom (((fstG I e G).left ≫ G.hom).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Conclude with `this.trans rfl`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem app_cst (e : ℕ) (G : Over (Spec (CommRingCat.of R)))
     (V : (thickObj R I e G).left.Opens) (a : R) :
@@ -105,13 +105,11 @@ theorem app_cst (e : ℕ) (G : Over (Spec (CommRingCat.of R)))
   exact this.trans rfl
 
 /- English proof (translation)
-Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `h : I ^ (e + 1) ≤ I ^ (0 + 1)` using `Ideal.pow_le_pow_right (by omega)`. Establish `hx : (x : PrimeSpectrum (R ⧸ I ^ (e + 1))) ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.factor h))`. Rewrite using `[range_comap_of_surjective _ _ (Ideal.Quotient.factor_surjective h)]`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `ha' : a ∈ I ^ (0 + 1)`. Simplify `ha` using `[RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `ha'` using `[zero_add, pow_one]`. Use `x.2.mem_of_pow_mem (e + 1) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Ideal.Quotient.mk (I ^ (e + 1)) a ^ (e + 1) = 0`. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow ha' _`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`.
-
-Conclude with `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_baseIncl (e : ℕ) : Surjective (baseIncl R I e) := by
   refine ⟨fun x => ?_⟩
@@ -133,7 +131,7 @@ theorem surjective_baseIncl (e : ℕ) : Surjective (baseIncl R I e) := by
   exact hx
 
 /- English proof (translation)
-The claim follows from `(MorphismProperty.of_isPullback (P := @Surjective) (isPullback_incl R I e G).flip (surjective_baseIncl R I e)).surj`.
+A detailed English derivation is pending.
 -/
 theorem incl_surjective (e : ℕ) (G : Over (Spec (CommRingCat.of R))) :
     Function.Surjective ⇑(incl R I e G) :=
@@ -141,9 +139,9 @@ theorem incl_surjective (e : ℕ) (G : Over (Spec (CommRingCat.of R))) :
     (surjective_baseIncl R I e)).surj
 
 /- English proof (translation)
-Establish `H` using `isPullback_incl R I e G`. Establish `po` using `(GlobalTheory.AbLaw.isPushout_cst H hV (V' := incl R I e G ⁻¹ᵁ V) rfl).flip`. Establish `hsurj : Function.Surjective (CommRingCat.ofHom (Ideal.Quotient.factor (Ideal.pow_le_pow_right (by omega : 0 + 1 ≤ e + 1) : I ^ (e + 1) ≤ I ^ (0 + 1)))).hom` using `Ideal.Quotient.factor_surjective (Ideal.pow_le_pow_right (by omega : 0 + 1 ≤ e + 1))`. Take `⟨h1, h2⟩` from `GlobalTheory.TorsionChart.pushout_inl_surjective_and_ker po hsurj`. Rewrite `h1`, `h2` using `[← Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨GlobalTheory.AbLaw.isAffineOpen_preimage_of_isPullback H hV, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, CommRingCat.hom_ofHom, CommRingCat.hom_ofHom, Ideal.Quotient.factor_ker, Ideal.map_map]`. Establish `hc : (GlobalTheory.AbLaw.cst (pullback.snd G.hom (thick R I e)) V).comp (Ideal.Quotient.mk (I ^ (e + 1))) = GlobalTheory.AbLaw.cst ((fstG I e G).left ≫ G.hom) V` using `RingHom.ext fun a => (cst_fst R I e G V a).symm`. Rewrite using `[hc, zero_add, pow_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem app_incl (e : ℕ) (G : Over (Spec (CommRingCat.of R))) (V : (thickObj R I e G).left.Opens)
     (hV : IsAffineOpen V) :
@@ -171,13 +169,13 @@ namespace GlobalTheory.ClosedFibre
 open MvPolynomial in
 
 /- English proof (translation)
-Substitute `hD` using the available equality. Establish `hev : ∀ P : MvPolynomial (Fin m) R, eval₂ (GlobalTheory.AbLaw.cst p (X.basicOpen h)) (fun l => GlobalTheory.AbLaw.rs X hle (r l)) P = GlobalTheory.AbLaw.rs X hle (eval₂ (GlobalTheory.AbLaw.cst p N₀) r P)`. Introduce `P`. Rewrite using `[MvPolynomial.hom_eval₂]`. Use `congr 1`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `RingHom.ext fun a => (GlobalTheory.AbLaw.rs_cst p hle a).symm`. Establish `hl` using `hN₀.isLocalization_basicOpen h`. Take `⟨⟨a, ⟨s, hs⟩⟩, has⟩` from `IsLocalization.surj (Submonoid.powers h) g`. Establish `hsu : IsUnit (GlobalTheory.AbLaw.rs X hle s)` using `IsLocalization.map_units (M := Submonoid.powers h) Γ(X, X.basicOpen h) ⟨s, hs⟩`. Take `⟨Pa, Qa, hQa, ha⟩` from `hgen a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Ps, Qs, hQs, hsq⟩` from `hgen s`. Use `⟨Pa * Qs, Ps * Qa, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂_mul, hev, hev, ← hsq, map_mul]`. Conclude with `(hsu.mul (hQs.map _)).mul (hQa.map _)`. Simplify using `only [MvPolynomial.eval₂_mul, hev]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hsq, ← ha]`. Simplify using `only [map_mul]`. Establish `has' : g * GlobalTheory.AbLaw.rs X hle s = GlobalTheory.AbLaw.rs X hle a` using `has`. Rewrite using `[← has']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gen_basicOpen {X : Scheme.{0}} {R : Type} [CommRing R] (p : X ⟶ Spec (CommRingCat.of R)) {N₀ : X.Opens}
     (hN₀ : IsAffineOpen N₀) {m : ℕ} (r : Fin m → Γ(X, N₀))
@@ -220,49 +218,43 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ G L k s₀ i hyp e w hw hunit`. Establish `hjp : GlobalTheory.ClosedFibre.incl R (maximalIdeal R) e G ≫ (fstG (maximalIdeal R) e G).left = (fstG (maximalIdeal R) 0 G).left` using `GlobalTheory.ClosedFibre.incl_fst R _ e G`. Take `⟨w₀, rfl⟩` from `GlobalTheory.ClosedFibre.incl_surjective R (maximalIdeal R) e G w`. Use `set jm := GlobalTheory.ClosedFibre.incl R (maximalIdeal R) e G with hjdef`. Use `set pe : (thickObj R (maximalIdeal R) e G).left ⟶ G.left := (fstG (maximalIdeal R) e G).left with hpe`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set p₀ : (thickObj R (maximalIdeal R) 0 G).left ⟶ G.left := (fstG (maximalIdeal R) 0 G).left with hp₀`. Establish `hgc : ∀ (y : (thickObj R (maximalIdeal R) 0 G).left) (s : H0 L k), pe (jm y) ∈ secChart L i → secGerm p₀ y s i = (jm.stalkMap y).hom (secGerm pe (jm y) s i)`. Introduce `y s hy`. Rewrite using `[← hjp]`. Conclude with `secGerm_comp jm pe y s hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw₀ : p₀ w₀ ∈ secChart L i`. Rewrite using `[← hjp, Scheme.Hom.comp_apply]`. Conclude with `hw`. Establish `hu₀ : IsUnit (secGerm p₀ w₀ s₀ i)` using `by rw [hgc w₀ s₀ hw]; exact hunit.map _`. Take `⟨N₀, m, σ, r₀, hwN₀, hN₀, hN₀le, hgerm₀, hgen₀⟩` from `hyp w₀ hw₀ hu₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, ha⟩ : ∃ a, a = (pe.app (secChart L i)).hom (s₀.f i)` from `⟨_, rfl⟩`. Establish `hmemU₁ : ∀ y : (thickObj R (maximalIdeal R) e G).left, (hy : pe y ∈ secChart L i) → (y ∈ (thickObj R (maximalIdeal R) e G).left.basicOpen a ↔ IsUnit (secGerm pe y s₀ i))`. Introduce `y hy`. Rewrite using `[Scheme.mem_basicOpen _ a y hy, ha]`. Conclude with `(iff_of_eq (congrArg IsUnit (gs_eq pe y _ hy (s₀.f i)))).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hwU₁` using `(hmemU₁ _ hw).2 hunit`. Take `⟨V, hV, hwV, hVle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 (thickObj R (maximalIdeal R) e G).left.isBasis_affineOpens hwU₁`. Establish `hV' : IsAffineOpen V` using `hV`. Take `⟨hVaff, hVsurj, -⟩` from `GlobalTheory.ClosedFibre.app_incl R (maximalIdeal R) e G V hV'`. Take `⟨f₀, g₀, hfg, hw₀f⟩` from `exists_basicOpen_le_affine_inter hN₀ hVaff w₀ ⟨hwN₀, hwV⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨F, hF⟩` from `hVsurj g₀`. Establish `hNaff : IsAffineOpen ((thickObj R (maximalIdeal R) e G).left.basicOpen F)` using `hV'.basicOpen F`. Establish `hjN : jm ⁻¹ᵁ (thickObj R (maximalIdeal R) e G).left.basicOpen F = (thickObj R (maximalIdeal R) 0 G).left.basicOpen f₀`. Rewrite using `[Scheme.preimage_basicOpen, hF, hfg]`. Establish `hwN : jm w₀ ∈ (thickObj R (maximalIdeal R) e G).left.basicOpen F` using `by show w₀ ∈ jm ⁻¹ᵁ (thickObj R (maximalIdeal R) e G).left.basicOpen F`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hjN]`. Conclude with `hw₀f`. Establish `hNU₁ : (thickObj R (maximalIdeal R) e G).left.basicOpen F ≤ (thickObj R (maximalIdeal R) e G).left.basicOpen a` using `((thickObj R (maximalIdeal R) e G).left.basicOpen_le F).trans hVle`. Establish `hU₁c : (thickObj R (maximalIdeal R) e G).left.basicOpen a ≤ pe ⁻¹ᵁ secChart L i` using `(thickObj R (maximalIdeal R) e G).left.basicOpen_le a`. Establish `hDN₀ : jm ⁻¹ᵁ (thickObj R (maximalIdeal R) e G).left.basicOpen F ≤ N₀`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hjN]`. Conclude with `(thickObj R (maximalIdeal R) 0 G).left.basicOpen_le f₀`. Establish `hu₁ : IsUnit (GlobalTheory.AbLaw.rs _ hU₁c a)` using `(thickObj R (maximalIdeal R) e G).left.toRingedSpace.isUnit_res_basicOpen a`. Set `ρ : Fin m → Γ((thickObj R (maximalIdeal R) e G).left, (thickObj R (maximalIdeal R) e G).left.basicOpen a)` to `fun l => GlobalTheory.AbLaw.rs _ hU₁c ((pe.app (secChart L i)).hom ((σ l).f i)) * ↑(hu₁.unit⁻¹)`. Set `r : Fin m → Γ((thickObj R (maximalIdeal R) e G).left, (thickObj R (maximalIdeal R) e G).left.basicOpen F)` to `fun l => GlobalTheory.AbLaw.rs _ hNU₁ (ρ l)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hρ : ∀ l, ρ l * GlobalTheory.AbLaw.rs _ hU₁c a = GlobalTheory.AbLaw.rs _ hU₁c ((pe.app (secChart L i)).hom ((σ l).f i))`. Introduce `l`. Simplify using `only [ρ]`. Rewrite using `[_root_.mul_assoc, IsUnit.val_inv_mul, _root_.mul_one]`. Establish `hg1 : ∀ y ∈ (thickObj R (maximalIdeal R) e G).left.basicOpen a, ∀ x : Γ((thickObj R (maximalIdeal R) e G).left, pe ⁻¹ᵁ secChart L i), gs (𝟙 (thickObj R (maximalIdeal R) e G).left) y ((thickObj R (maximalIdeal R) e G).left.basicOpen a) (GlobalTheory.AbLaw.rs _ hU₁c x) = gs (𝟙 (thi …` using `fun y hy x => gs_res (𝟙 _) y hU₁c hy x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg2 : ∀ (y : (thickObj R (maximalIdeal R) e G).left) (hy : pe y ∈ secChart L i) (b : Γ(G.left, secChart L i)), gs (𝟙 (thickObj R (maximalIdeal R) e G).left) y (pe ⁻¹ᵁ secChart L i) ((pe.app (secChart L i)).hom b) = gs pe y (secChart L i) b`. Introduce `y hy b`. Rewrite using `[gs_pull (𝟙 (thickObj R (maximalIdeal R) e G).left) pe y _ hy, Category.id_comp]`. Establish `hsa : ∀ (y : (thickObj R (maximalIdeal R) e G).left) (hy : pe y ∈ secChart L i), gs (𝟙 (thickObj R (maximalIdeal R) e G).left) y (pe ⁻¹ᵁ secChart L i) a = secGerm pe y s₀ i`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ha]`. Conclude with `hg2 y hy _`. Establish `hgermN : ∀ y ∈ (thickObj R (maximalIdeal R) e G).left.basicOpen F, IsUnit (secGerm pe y s₀ i) ∧ ∀ l, secGerm pe y (σ l) i = gs (𝟙 _) y ((thickObj R (maximalIdeal R) e G).left.basicOpen F) (r l) * secGerm pe y s₀ i`. Introduce `y hy`. Establish `hy₁` using `hNU₁ hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hyc` using `hU₁c hy₁`. Use `⟨(hmemU₁ y hyc).1 hy₁, fun l => ?_⟩` and prove the remaining obligations. Establish `e1` using `congrArg (gs (𝟙 _) y ((thickObj R (maximalIdeal R) e G).left.basicOpen a)) (hρ l)`. Rewrite `e1` using `[gs_mul _ _ _ hy₁, hg1 y hy₁, hg1 y hy₁, hsa y hyc]`. Express the relevant statement in the definitionally equal form `gs pe y _ _ = _ * gs pe y _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hg2 y hyc ((σ l).f i), ← e1]`. Simplify using `only [r]`. Rewrite using `[gs_res (𝟙 _) y hNU₁ hy]`. Use `⟨(thickObj R (maximalIdeal R) e G).left.basicOpen F, m, σ, r, hwN, hNaff, hNU₁.trans hU₁c, hgermN, fun g => ?_⟩` and prove the remaining obligations. Establish `hjr : ∀ l, (jm.app _).hom (r l) = GlobalTheory.AbLaw.rs _ hDN₀ (r₀ l)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `l`. Apply `fn_ext` to reduce the goal to its premises. Introduce `y hy`. Establish `hyN₀` using `hDN₀ hy`. Establish `hyN : jm y ∈ (thickObj R (maximalIdeal R) e G).left.basicOpen F` using `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hyc : pe (jm y) ∈ secChart L i` using `hU₁c (hNU₁ hyN)`. Rewrite using `[gs_pull (𝟙 _) jm y _ hyN, Category.id_comp, gs_res (𝟙 _) y hDN₀ hy]`. Use `(hgerm₀ y hyN₀).1.mul_left_injective ?_` and prove the remaining obligations. Use `show gs jm y _ (r l) * secGerm p₀ y s₀ i = gs (𝟙 _) y N₀ (r₀ l) * secGerm p₀ y s₀ i`. Rewrite using `[← (hgerm₀ y hyN₀).2 l, hgc y (σ l) hyc, hgc y s₀ hyc, (hgermN (jm y) hyN).2 l, map_mul, gs_stalkMap jm y _ hyN]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hjc : (jm.app _).hom.comp (GlobalTheory.AbLaw.cst (pe ≫ G.hom) ((thickObj R (maximalIdeal R) e G).left.basicOpen F)) = GlobalTheory.AbLaw.cst (p₀ ≫ G.hom) (jm ⁻¹ᵁ (thickObj R (maximalIdeal R) e G).left.basicOpen F)` using `RingHom.ext fun x => GlobalTheory.ClosedFibre.app_cst R (maximalIdeal R) e G _ x`. Establish `hjev : ∀ P : MvPolynomial (Fin m) R, (jm.app _).hom (MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (pe ≫ G.hom) ((thickObj R (maximalIdeal R) e G).left.basicOpen F)) r P) = MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (p₀ ≫ G.hom) (jm ⁻¹ᵁ (thickObj R (maximalIdeal R) e G).left.basicOp …`. Introduce `P`. Rewrite using `[MvPolynomial.hom_eval₂, hjc]`. Simplify using `only [hjr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨P, Q, hQ, hPQ⟩` from `GlobalTheory.ClosedFibre.gen_basicOpen (p₀ ≫ G.hom) hN₀ r₀ hgen₀ f₀ _ hDN₀ hjN ((jm.app _).hom g)`. Take `⟨-, hNsurj, hNker⟩` from `GlobalTheory.ClosedFibre.app_incl R (maximalIdeal R) e G _ hNaff`. Establish `hnil : ∀ x ∈ Ideal.map (GlobalTheory.AbLaw.cst (pe ≫ G.hom) ((thickObj R (maximalIdeal R) e G).left.basicOpen F)) (maximalIdeal R), IsNilpotent x`. Introduce `x hx`. Use `⟨e + 1, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : x ^ (e + 1) ∈ Ideal.map (GlobalTheory.AbLaw.cst (pe ≫ G.hom) ((thickObj R (maximalIdeal R) e G).left.basicOpen F)) (maximalIdeal R ^ (e + 1))`. Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_mem_pow hx _`. Establish `h0 : Ideal.map (GlobalTheory.AbLaw.cst (pe ≫ G.hom) ((thickObj R (maximalIdeal R) e G).left.basicOpen F)) (maximalIdeal R ^ (e + 1)) = ⊥`. Rewrite using `[Ideal.map_eq_bot_iff_le_ker]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Conclude with `RingHom.mem_ker.2 (GlobalTheory.ClosedFibre.cst_eq_zero R (maximalIdeal R) e G _ x hx)`. Rewrite `h1` using `[h0]`. Conclude with `h1`. Use `⟨P, Q, ?_, ?_⟩` and prove the remaining obligations.
-
-Establish `hQ' : IsUnit ((jm.app _).hom (MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (pe ≫ G.hom) ((thickObj R (maximalIdeal R) e G).left.basicOpen F)) r Q))`. Rewrite using `[hjev]`. Conclude with `hQ`. Take `⟨v, hv⟩` from `hQ'.exists_right_inv`. Take `⟨v', rfl⟩` from `hNsurj v`.
-
-Establish `hk : MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (pe ≫ G.hom) ((thickObj R (maximalIdeal R) e G).left.basicOpen F)) r Q * v' - 1 ∈ RingHom.ker (jm.app _).hom`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, map_one, hv, sub_self]`. Establish `hu` using `(hnil _ (hNker hk)).isUnit_one_add`. Rewrite `hu` using `[add_sub_cancel]`. Conclude with `isUnit_of_mul_isUnit_left hu`.
-
-Apply `hNker` to reduce the goal to its premises. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, hjev, hjev, hPQ, sub_self]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.ratio_gen_mod_of_closedFibre : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (G : Over (Sp R)) (L : LB G.left) (k : ℕ) (s₀ : H0 L k) (i : Fin 1 → L.ι), (∀ w : (thickObj R (maximalIdeal R) 0 G).left, (fstG (maximalIdeal R) 0 G).left w ∈ secChart L i → IsUnit (secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left w s₀ i) → ∃ (N : (thickObj R (maximalIdeal R) 0 G).left.Opens) (m : ℕ) (σ : Fin m → H0 L k) (r : Fin m → Γ((thickObj R (maximalIdeal R) 0 G).left, N)), w ∈ N ∧ IsAffineOpen N ∧ N ≤ (fstG (maximalIdeal R) 0 G).left ⁻¹ᵁ secChart L i ∧ (∀ y ∈ N, IsUnit (secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left y s₀ i) ∧ ∀ l, secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left y (σ l) i = gs (𝟙 _) y N (r l) * secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left y s₀ i) ∧ ∀ g : Γ((thickObj R (maximalIdeal R) 0 G).left, N), ∃ P Q : MvPolynomial (Fin m) R, IsUnit (MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) 0 G).left) ((fstG (maximalIdeal R) 0 G).left ≫ G.hom) N) r Q) ∧ g * MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) 0 G).left) ((fstG (maximalIdeal R) 0 G).left ≫ G.hom) N) r Q = MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) 0 G).left) ((fstG (maximalIdeal R) 0 G).left ≫ G.hom) N) r P) → ∀ (e : ℕ) (w : (thickObj R (maximalIdeal R) e G).left), (fstG (maximalIdeal R) e G).left w ∈ secChart L i → IsUnit (secGerm (Y := (thickObj R (maximalIdeal R) e G).left) (fstG (maximalIdeal R) e G).left w s₀ i) → ∃ (N : (thickObj R (maximalIdeal R) e G).left.Opens) (m : ℕ) (σ : Fin m → H0 L k) (r : Fin m → Γ((thickObj R (maximalIdeal R) e G).left, N)), w ∈ N ∧ IsAffineOpen N ∧ N ≤ (fstG (maximalIdeal R) e G).left ⁻¹ᵁ secChart L i ∧ (∀ y ∈ N, IsUnit (secGerm (Y := (thickObj R (maximalIdeal R) e G).left) (fstG (maximalIdeal R) e G).left y s₀ i) ∧ ∀ l, secGerm (Y := (thickObj R (maximalIdeal R) e G).left) (fstG (maximalIdeal R) e G).left y (σ l) i = gs (𝟙 _) y N (r l) * secGerm (Y := (thickObj R (maximalIdeal R) e G).left) (fstG (maximalIdeal R) e G).left y s₀ i) ∧ ∀ g : Γ((thickObj R (maximalIdeal R) e G).left, N), ∃ P Q : MvPolynomial (Fin m) R, IsUnit (MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) e G).left) ((fstG (maximalIdeal R) e G).left ≫ G.hom) N) r Q) ∧ g * MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) e G).left) ((fstG (maximalIdeal R) e G).left ≫ G.hom) N) r Q - MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) e G).left) ((fstG (maximalIdeal R) e G).left ≫ G.hom) N) r P ∈ Ideal.map (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) e G).left) ((fstG (maximalIdeal R) e G).left ≫ G.hom) N) (maximalIdeal R) := by
   intro R _ _ _ G L k s₀ i hyp e w hw hunit

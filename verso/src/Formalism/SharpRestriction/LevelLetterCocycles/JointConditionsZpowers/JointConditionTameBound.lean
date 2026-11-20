@@ -21,7 +21,7 @@ def LocLat.ofGRep (A : GRep G Qp LL O) (L : Lattice (O := O) A.ρ) : LocLat G Qp
 variable (Yt : LocLat G Qp LL O) (p : Yt.V →ₗ[LL] LL) (e₀ : Yt.V) (hpe : p e₀ = 1)
 
 /- English proof (translation)
-Introduce `g u hu`. Rewrite `hu`, the goal using `[LinearMap.mem_ker]`. Conclude with `(hp g u).trans hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_stable (hp : ∀ g v, p (Yt.ρ g v) = p v) :
     ∀ g, ∀ u ∈ LinearMap.ker p, Yt.ρ g u ∈ LinearMap.ker p := by
@@ -41,7 +41,7 @@ Both sides reduce to the same expression.
 theorem kerProj_coe (v : Yt.V) : ((kerProj Yt p e₀ hpe v : ↥(LinearMap.ker p)) : Yt.V) = v - p v • e₀ := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[kerProj_coe, LinearMap.mem_ker.mp u.2, zero_smul, sub_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem kerProj_of_mem (u : ↥(LinearMap.ker p)) : kerProj Yt p e₀ hpe (u : Yt.V) = u := by
   apply Subtype.ext
@@ -51,9 +51,9 @@ def kerT : Submodule O ↥(LinearMap.ker p) :=
   Yt.L.T.comap ((LinearMap.ker p).subtype.restrictScalars O)
 
 /- English proof (translation)
-Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Conclude with `⟨(u : Yt.V), hu, kerProj_of_mem Yt p e₀ hpe u⟩`. Introduce and unpack `⟨v, hv, rfl⟩ show ((kerProj Yt p e₀ hpe v : ↥(LinearMap.ker p)) : Yt.V) ∈ Yt.L.T`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[kerProj_coe]`. Take `⟨a, ha⟩` from `hint v hv`. Rewrite using `[← ha, algebraMap_smul]`. Conclude with `Yt.L.T.sub_mem hv (Yt.L.T.smul_mem a he₀)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerT_eq_map (hint : ∀ v ∈ Yt.L.T, p v ∈ Set.range (algebraMap O LL)) (he₀ : e₀ ∈ Yt.L.T) :
     kerT Yt p = Yt.L.T.map ((kerProj Yt p e₀ hpe).restrictScalars O) := by
@@ -69,9 +69,9 @@ theorem kerT_eq_map (hint : ∀ v ∈ Yt.L.T, p v ∈ Set.range (algebraMap O LL
     exact Yt.L.T.sub_mem hv (Yt.L.T.smul_mem a he₀)
 
 /- English proof (translation)
-Use `Yt.L.free` as an intermediate fact. Establish `: Module.Finite O ↥Yt.L.T` using `Module.Finite.iff_fg.mpr Yt.L.fg`. Set `N' : Submodule O ↥Yt.L.T` to `LinearMap.ker ((p.restrictScalars O) ∘ₗ Yt.L.T.subtype)`. Take `⟨n, ⟨b⟩⟩` from `Submodule.nonempty_basis_of_pid (Module.Free.chooseBasis O ↥Yt.L.T) N'`. Establish `hN : Module.Free O ↥N'` using `Module.Free.of_basis b`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `eqv : ↥N' ≃ₗ[O] ↥(kerT Yt p)` to `{ toFun := fun t => ⟨⟨(t : ↥Yt.L.T), t.2⟩, (t : ↥Yt.L.T).2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl invFun := fun u => ⟨⟨((u : ↥(LinearMap.ker p)) : Yt.V), u.2⟩, (u : ↥(LinearMap.ker p)).2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Conclude with `Module.Free.of_equiv eqv`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem kerT_free [IsDomain O] [IsPrincipalIdealRing O] : Module.Free O ↥(kerT Yt p) := by
   have := Yt.L.free
@@ -90,11 +90,11 @@ theorem kerT_free [IsDomain O] [IsPrincipalIdealRing O] : Module.Free O ↥(kerT
 
 include hpe in
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `u _`. Establish `h1 : (u : Yt.V) ∈ Submodule.span LL (Yt.L.T : Set Yt.V)`. Rewrite using `[Yt.L.span]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Establish `h2` using `Submodule.mem_map_of_mem (f := kerProj Yt p e₀ hpe) h1`. Rewrite `h2` using `[kerProj_of_mem, Submodule.map_span]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite using `[SetLike.mem_coe, kerT_eq_map Yt p e₀ hpe hint he₀]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨v, hv, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem kerT_span (hint : ∀ v ∈ Yt.L.T, p v ∈ Set.range (algebraMap O LL)) (he₀ : e₀ ∈ Yt.L.T) :
     Submodule.span LL ((kerT Yt p : Submodule O ↥(LinearMap.ker p)) : Set ↥(LinearMap.ker p)) = ⊤ := by

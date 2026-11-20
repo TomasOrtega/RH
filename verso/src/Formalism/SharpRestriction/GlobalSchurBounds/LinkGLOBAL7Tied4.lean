@@ -16,7 +16,7 @@ def ColumnValuationFromTwistCompatibility : Prop :=
   ∀ D : D7, Formalism.L2.Forms.ColsTiedSym D → flipTwoThree.adm3 D → ∀ u : D.what₂.Word, Nonempty (flipTwoThree.ColVal D u)
 
 /- English proof (translation)
-Unfold `tCVTies at hT`. Take `⟨x0, hx⟩` from `hT`. Use `⟨x0, fun x hx0 i u => ?_⟩` and prove the remaining obligations. Take `⟨⟨t⟩, ha⟩` from `hx x hx0 i`. Conclude with `hCV _ t ha u`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tCV_of_tied {eps : ℝ} (Fm : FamP eps) (hCV : ColumnValuationFromTwistCompatibility) (hT : tCVTies Fm) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u) := by

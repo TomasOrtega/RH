@@ -67,7 +67,7 @@ def Canon [IsLocalRing R] (Q : Data R) (G : Over (Sp R)) [GrpObj G] [IsCommMonOb
       LBIso P ((abelian₂ G' U'.LG.L).pull (lift (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f) : G2 G ⟶ G2 G').left)
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem Canon.isLB [IsLocalRing R] {Q : Data R} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {P : LB (G2 G).left}
     (h : Canon Q G P) : P.IsLB := h.1
@@ -81,7 +81,7 @@ def PFactor.ofFactor {D D' : DegPre R} (F : Factor D D') (hF : F.Alg) (hB : D.Ta
   alg := hF
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem PFactor.ofFactor_e {D D' : DegPre R} (F : Factor D D') (hF : F.Alg) (hB : D.TauBimult) :
     (PFactor.ofFactor F hF hB).e = F.e ∧ (PFactor.ofFactor F hF hB).f = F.f := ⟨rfl, rfl⟩
@@ -90,7 +90,7 @@ def Wit.pfac : PFactor (PolDeg.Wit.ofDeg InhTate.tatePre InhTate.tauBimult) Wit.
   PFactor.ofFactor Wit.fac Wit.fac_alg InhTate.tauBimult
 
 /- English proof (translation)
-The claim follows from `Wit.fac_e`.
+A detailed English derivation is pending.
 -/
 theorem Wit.pfac_e : Wit.pfac.e ≠ 0 ∧ Wit.pfac.e ≠ 1 := Wit.fac_e
 

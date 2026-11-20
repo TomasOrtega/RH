@@ -11,7 +11,7 @@ set_option autoImplicit false
 namespace GlobalTheory.Adelic.GenericRel
 
 /- English proof (translation)
-Rewrite using `[eval₂_eq, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `: a.degree = d` using `by rw [Finsupp.degree_eq_weight_one]; exact hp (mem_support_iff.1 ha)`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[← this, Finsupp.degree_apply, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval₂_mul_of_isHomogeneous {σ R A : Type} [CommSemiring R] [CommSemiring A] (φ : R →+* A)
     {p : MvPolynomial σ R} {d : ℕ} (hp : p.IsHomogeneous d) (c : A) (v : σ → A) :
@@ -30,9 +30,9 @@ noncomputable def relFn (c : S.L.ι) {r e : ℕ} (u : Fin r → Fin S.N → F) (
     (fun i => (S.comb (u i)).f c) (a k) * zfun th c ^ (k : ℕ)
 
 /- English proof (translation)
-Establish `h` using `(le_iff_ptOf_mem x _).2 hx`. Establish `hc : (valMap x _ h).hom.comp ((resG S.Y le_top).comp (algebraMap F Γ(S.Y, ⊤))) = S.baseHom x`. Use extensionality with `b`. Conclude with `((valR_eq x _ h _).symm.trans (valR_res x le_top h _)).trans (S.valR_algebraMap x b)`. Simplify using `only [relFn, valR_eq x _ h, map_add, map_sum, map_mul, map_pow, eval₂_comp_left, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem valR_relFn {K : Type} [Field K] (x : Sp K ⟶ S.Y) (c : S.L.ι) (hx : ptOf x ∈ S.L.U c) {r e : ℕ}
     (u : Fin r → Fin S.N → F) (th : (lbPow S.L e).Sec) (m : ℕ) (a : Fin m → MvPolynomial (Fin r) F) :
@@ -46,17 +46,17 @@ theorem valR_relFn {K : Type} [Field K] (x : Sp K ⟶ S.Y) (c : S.L.ι) (hx : pt
   rfl
 
 /- English proof (translation)
-Establish `hxU : ptOf x.1 ∈ S.L.U (S.chartAt (ptOf x.1))` using `S.mem_chartAt _`. Establish `hηU : ptOf (resPt η) ∈ S.L.U (S.chartAt (ptOf x.1))`. Rewrite using `[ptOf_resPt]`. Conclude with `(hη.mem_open_set_iff (S.L.U _).isOpen).2 ⟨_, trivial, hxU⟩`. Take `⟨c0, hc0, hv, hp⟩` from `S.exists_frame_change (resPt η) _ hηU`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzero : valR (resPt η) _ (relFn S (S.chartAt (ptOf x.1)) u th m a) = 0`. Rewrite using `[valR_relFn S _ _ hηU, hp (e : ℤ) th]`. Simplify using `only [hv, zpow_natCast, eval₂_mul_of_isHomogeneous _ (ha _)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_add, Finset.mul_sum, mul_pow, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, show e * m = e * (m - k) + e * k by`. Rewrite using `[← mul_add, Nat.sub_add_cancel k.2.le], pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `_ = 0 := by rw [h0, mul_zero]`. Establish `hb : S.Y.basicOpen (relFn S (S.chartAt (ptOf x.1)) u th m a) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Establish `hm : η ∈ S.Y.basicOpen (relFn S (S.chartAt (ptOf x.1)) u th m a)` using `(hη.mem_open_set_iff (S.Y.basicOpen _).isOpen).2 ⟨y, trivial, hy⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[← ptOf_resPt η]`. Conclude with `((valR_ne_zero_iff (resPt η) hηU _).2 hm hzero).elim`. Establish `hf : relFn S (S.chartAt (ptOf x.1)) u th m a = 0` using `by haveI := hY`. Conclude with `(basicOpen_eq_bot_iff _).1 hb`. Establish `key` using `valR_relFn S x.1 _ hxU u th m a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[hf, valR_zero x.1 _ ((le_iff_ptOf_mem _ _).2 hxU)]`. Establish `e2 : ∀ i, valR x.1 _ ((S.comb (u i)).f (S.chartAt (ptOf x.1))) = ∑ j, algebraMap F K (u i j) * S.coords x.1 j` using `fun i => (S.val_comb x.1 (u i)).trans (by rw [LinSys.baseHom_ptOver])`. Simplify using `only [e2, LinSys.baseHom_ptOver] at key`. Simplify using `only [aeval_def]`. Conclude with `key.symm`.
+A detailed English derivation is pending.
 -/
 theorem relation_of_generic (F : Type) [Field F] (S : LinSys F) (hY : AlgebraicGeometry.IsIntegral S.Y)
     (r e : ℕ) (u : Fin r → Fin S.N → F) (th : (lbPow S.L e).Sec) (η : S.Y) (hη : IsGenericPoint η Set.univ)

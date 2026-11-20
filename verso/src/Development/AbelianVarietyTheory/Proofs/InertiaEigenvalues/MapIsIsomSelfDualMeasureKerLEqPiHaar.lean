@@ -13,7 +13,7 @@ namespace GlobalTheory.JR.MeasTransport
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show star (a • c i) = a • star (c i)`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, star_mul', hU.star_fix, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_smul_vec [hU : Unram F E] {r : ℕ} (a : F) (c : Fin r → E) : star (a • c) = a • star c := by
   funext i
@@ -34,23 +34,23 @@ theorem trForm_apply [Unram F E] {r : ℕ} (c b : Fin r → E) :
     trForm (F := F) r c b = Algebra.trace F E (star c ⬝ᵥ b) := rfl
 
 /- English proof (translation)
-Set `σ : E ≃ₐ[F] E` to `AlgEquiv.ofRingEquiv (f := starRingAut) (fun a => hU.star_fix a)`. Conclude with `Algebra.trace_eq_of_algEquiv σ z`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem trace_star [hU : Unram F E] (z : E) : Algebra.trace F E (star z) = Algebra.trace F E z := by
   let σ : E ≃ₐ[F] E := AlgEquiv.ofRingEquiv (f := starRingAut) (fun a => hU.star_fix a)
   exact Algebra.trace_eq_of_algEquiv σ z
 
 /- English proof (translation)
-Use `⟨fun c b => ?_⟩` and prove the remaining obligations. Rewrite using `[trForm_apply, trForm_apply, ← trace_star (F := F) (star b ⬝ᵥ c), ← star_dotProduct_star, star_star]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trForm_symm [Unram F E] (r : ℕ) : (trForm (F := F) (E := E) r).IsSymm := by
   refine ⟨fun c b => ?_⟩
   rw [trForm_apply, trForm_apply, ← trace_star (F := F) (star b ⬝ᵥ c), ← star_dotProduct_star, star_star]
 
 /- English proof (translation)
-Use `haveI : CharZero F := hU.charZero`. Assume the negation of the conclusion as `hc`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, c i ≠ 0 := by`. Assume the negation of the conclusion as `h'`. Use `push_neg at h'`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc (funext h')`. Establish `h1` using `h (Pi.single i (star (c i))⁻¹)`. Rewrite `h1` using `[trForm_apply, dotProduct_single, Pi.star_apply, mul_inv_cancel₀ (star_ne_zero.mpr hi), ← map_one (algebraMap F E), Algebra.trace_algebraMap, hU.finrank_eq]`. Evaluate the numerical expressions using `at h1`.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem trForm_sepLeft [hU : Unram F E] (r : ℕ) (c : Fin r → E) (h : ∀ b, trForm (F := F) r c b = 0) : c = 0 := by
   haveI : CharZero F := hU.charZero
@@ -65,16 +65,16 @@ theorem trForm_sepLeft [hU : Unram F E] (r : ℕ) (c : Fin r → E) (h : ∀ b, 
   norm_num at h1
 
 /- English proof (translation)
-Use `⟨fun c h => trForm_sepLeft (F := F) r c h, fun b h => trForm_sepLeft (F := F) r b fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[(trForm_symm r).eq]`. Conclude with `h c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trForm_nondeg [Unram F E] (r : ℕ) : (trForm (F := F) (E := E) r).Nondegenerate := by
   refine ⟨fun c h => trForm_sepLeft (F := F) r c h, fun b h => trForm_sepLeft (F := F) r b fun c => ?_⟩
   rw [(trForm_symm r).eq]; exact h c
 
 /- English proof (translation)
-Take `⟨b⟩` from `(GlobalTheory.JR.Et.quadratic_structure F E A).1`. Use `haveI : Module.Free A.K A.L := Module.Free.of_basis b`. Use `haveI : Module.Finite A.K A.L := Module.Finite.of_basis b`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hU.finrank_eq]; norm_num)`. Use `haveI : Module.Finite F A.L := Module.Finite.trans A.K A.L`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `haveI : Module.Finite E A.L := Module.Finite.of_restrictScalars_finite F E A.L`. Unfold `Et.kerL Et.psiK`. Rewrite using `[hx, Algebra.trace_trace (R := F) (S := E) (T := A.L), ← Algebra.trace_trace (R := F) (S := A.K) (T := A.L)]`. Use `congr 2`. Rewrite using `[show algebraMap A.K A.L x * star y' * y = x • (star y' * y) by rw [Algebra.smul_def, mul_assoc], map_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem kerL_eq [hU : Unram F E] (A : Et F E) (ψ : AddChar F ℂ) {r : ℕ} {x : A.K} {j : A.L ≃ₗ[E] (Fin r → E)}
     (hx : A.IsIsom x j) (y' y : A.L) :
@@ -98,7 +98,7 @@ namespace GlobalTheory.JR.MeasTransport
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [AddChar.map_zero_eq_one]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem addChar_sum (ψ : AddChar F ℂ) {ι : Type} (s : Finset ι) (f : ι → F) :
     ψ (∑ i ∈ s, f i) = ∏ i ∈ s, ψ (f i) := by
@@ -108,25 +108,19 @@ theorem addChar_sum (ψ : AddChar F ℂ) {ι : Type} (s : Finset ι) (f : ι →
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]
 
 /- English proof (translation)
-Use `letI := M.mE`. Use `haveI := M.bE`. Use `haveI := M.haarE`. Use `haveI : IsUltrametricDist E := hU.ultraE`. Use `haveI : LocallyCompactSpace F := hU.lcF`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `haveI : LocallyCompactSpace E := hU.lcE`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Use `haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hU.finrank_eq]; norm_num)`. Use `haveI : IsModuleTopology F E := isModuleTopologyOfFiniteDimensional`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsModuleTopology F (Fin r → E) := IsModuleTopology.instPi`. Set `O : AddSubgroup (Fin r → E)` to `{ carrier := {v | ∀ i, ‖v i‖ ≤ 1} zero_mem' := by intro i; simp add_mem' := fun {a b} ha hb i => (IsUltrametricDist.norm_add_le_max (a i) (b i)).trans (max_le (ha i) (hb i)) neg_mem' := fun {a} ha i => by simpa using ha i }`. Establish `hmem : ∀ v, v ∈ O ↔ ∀ i, ‖v i‖ ≤ 1` using `fun v => Iff.rfl`. Establish `hOset : (O : Set (Fin r → E)) = Set.univ.pi fun _ => Metric.closedBall (0 : E) 1`. Use extensionality with `v`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `[O, Set.mem_pi]`. Establish `hOo : IsOpen (O : Set (Fin r → E))`. Rewrite using `[hOset]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => IsUltrametricDist.isOpen_closedBall _ one_ne_zero`. Establish `hOk : IsCompact (O : Set (Fin r → E))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hOset]`. Conclude with `isCompact_univ_pi fun _ => isCompact_closedBall 0 1`. Establish `hc` using `((GlobalTheory.T.unramifiedStandardAddChar_conductor_properties F E).2 ψ hψ).2.2.2`. Establish `hdual : {y | ∀ x ∈ O, ψ (trForm (F` using `F) r x y) = 1} = (O : Set (Fin r → E)) := by`. Use extensionality with `y`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, hmem]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Use `(hc (y i)).1 fun e he => ?_` and prove the remaining obligations. Establish `h1` using `h (Pi.single i (star e)) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[hU.norm_star, he]`. Simplify using `[hk])`.
-
-Rewrite `h1` using `[trForm_apply]`. Simplify `h1` using `[dotProduct, Pi.single_apply, apply_ite star]`. Introduce `h x hx`. Rewrite using `[trForm_apply, dotProduct, map_sum, addChar_sum]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Pi.star_apply]`. Conclude with `(hc (y i)).2 (h i) (star (x i)) (by rw [hU.norm_star]; exact hx i)`. Establish `hvol : (Measure.pi fun _ : Fin r => M.μE) O = 1`. Rewrite using `[hOset, Measure.pi_pi]`. Simplify using `[M.volE]`.
-
-Use `haveI : (Measure.pi fun _ : Fin r => M.μE).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Establish `key` using `(GlobalTheory.T.selfDual_iff_lattice_volume_and_plancherel_alt F E ψ hψ (Fin r → E) (trForm r) (trForm_symm r) (trForm_nondeg r) (Measure.pi fun _ : Fin r => M.μE) inferInstance).1 O hOo hOk |>.1`. Rewrite using `[key, hdual, hvol, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_selfDual [hU : Unram F E] (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) (r : ℕ) (M : Meas r F E) :
     letI := M.mE
@@ -182,19 +176,15 @@ theorem pi_selfDual [hU : Unram F E] (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) (
   rw [key, hdual, hvol, one_mul]
 
 /- English proof (translation)
-Use `haveI : IsUltrametricDist E := hU.ultraE`. Use `haveI : LocallyCompactSpace F := hU.lcF`. Use `haveI : LocallyCompactSpace E := hU.lcE`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Use `haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hU.finrank_eq]; norm_num)`. Use `haveI : IsModuleTopology F E := isModuleTopologyOfFiniteDimensional`. Use `haveI : IsModuleTopology F (Fin r → E) := IsModuleTopology.instPi`. Use `haveI : IsTopologicalAddGroup A.L := IsModuleTopology.topologicalAddGroup F A.L`. Use `haveI : ContinuousAdd A.L := IsModuleTopology.toContinuousAdd F A.L`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : ContinuousSMul F A.L := IsModuleTopology.toContinuousSMul F A.L`. Set `jF : A.L ≃ₗ[F] (Fin r → E)` to `j.restrictScalars F`. Establish `hc : Continuous jF` using `IsModuleTopology.continuous_of_linearMap jF.toLinearMap`. Establish `hcs : Continuous jF.symm` using `IsModuleTopology.continuous_of_linearMap jF.symm.toLinearMap`. Set `jC : A.L ≃L[F] (Fin r → E)` to `{ jF with continuous_toFun := hc, continuous_invFun := hcs }`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcoe : (⇑jC : A.L → Fin r → E) = ⇑j` using `rfl`. Establish `hme : MeasurableEmbedding (⇑j)` using `by rw [← hcoe]; exact jC.toHomeomorph.measurableEmbedding`. Use `haveI := hμ.1`. Establish `hfour : ∀ (g : (Fin r → E) → ℂ) (y : A.L), fourB (Measure.map j μ) (fun a b => ψ (trForm (F` using `F) r a b)) g (j y) = fourB μ (A.kerL ψ x) (g ∘ j) y := by`. Introduce `g y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Unfold `fourB`. Rewrite using `[hme.integral_map]`. Simplify using `only [Function.comp, kerL_eq A ψ hx, trForm_apply]`. Use `⟨by rw [← hcoe]; exact jC.isAddHaarMeasure_map μ, fun f hf v => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `j.surjective v`.
-
-Establish `hfj : IsTest (f ∘ j)`. Use `⟨hf.1.comp_continuous (by rw [← hcoe]; exact jC.continuous), ?_⟩` and prove the remaining obligations. Rewrite using `[← hcoe]`. Conclude with `hf.2.comp_homeomorph jC.toHomeomorph`. Rewrite using `[hfour]`.
-
-Establish `h2 : (fourB (Measure.map j μ) (fun a b => ψ (trForm (F` using `F) r a b)) f) ∘ j = fourB μ (A.kerL ψ x) (f ∘ j) :=`. Use function extensionality and compare the values at `fun y => hfour f y`. Rewrite using `[h2, hμ.2 _ hfj y]`. Simplify using `[map_neg]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_selfDual [hU : Unram F E] [MeasurableSpace E] [BorelSpace E] (A : Et F E) (ψ : AddChar F ℂ) {r : ℕ}
     {x : A.K} {j : A.L ≃ₗ[E] (Fin r → E)} (hx : A.IsIsom x j) (μ : Measure A.L) (hμ : SelfDual μ (A.kerL ψ x)) :
@@ -236,11 +226,7 @@ theorem map_selfDual [hU : Unram F E] [MeasurableSpace E] [BorelSpace E] (A : Et
   simp [map_neg]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU A ψ hψ r M x j hx`. Use `⟨fun y' y => kerL_eq A ψ hx y' y, fun μ hμ => ?_⟩` and prove the remaining obligations. Use `letI := M.mE`. Use `haveI := M.bE`. Use `haveI : IsUltrametricDist E := hU.ultraE`.
-
-Use `haveI : LocallyCompactSpace F := hU.lcF`. Use `haveI : LocallyCompactSpace E := hU.lcE`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Use `haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hU.finrank_eq]; norm_num)`.
-
-Use `haveI : IsModuleTopology F E := isModuleTopologyOfFiniteDimensional`. Use `haveI : IsModuleTopology F (Fin r → E) := IsModuleTopology.instPi`. Take `⟨⟨μ0, _, huniq⟩, _⟩` from `GlobalTheory.JR.SelfDualUniq.selfDual_exists_unique_isTest F E ψ hψ (Fin r → E) (trForm r) (trForm_symm r) (trForm_nondeg r)`. Conclude with `(huniq _ (map_selfDual A ψ hx μ hμ)).trans (huniq _ (pi_selfDual ψ hψ r M)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem map_isIsom_eq_pi : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (r : ℕ) (M : Meas r F E) (x : A.K) (j : A.L ≃ₗ[E] (Fin r → E)), A.IsIsom x j → (∀ y' y, A.kerL ψ x y' y = ψ (Algebra.trace F E (star (j y') ⬝ᵥ j y))) ∧ ∀ μ : Measure A.L, SelfDual μ (A.kerL ψ x) → (letI := M.mE; Measure.map j μ = Measure.pi fun _ : Fin r => M.μE) := by
   intro F E _ _ _ _ hU A ψ hψ r M x j hx

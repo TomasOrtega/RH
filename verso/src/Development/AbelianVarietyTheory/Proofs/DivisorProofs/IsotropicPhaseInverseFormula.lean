@@ -15,14 +15,14 @@ open GlobalTheory.UnipMass
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map _ _ ((1 : AF F) ⊗ₜ[F] a) = (1 : AF F) ⊗ₜ[F] σ a`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cA_inclR' (σ : E →ₐ[F] E) (a : E) : cA σ (inclR (F := F) (AF F) a) = inclR (F := F) (AF F) (σ a) := by
   show Algebra.TensorProduct.map _ _ ((1 : AF F) ⊗ₜ[F] a) = (1 : AF F) ⊗ₜ[F] σ a
   simp
 
 /- English proof (translation)
-Simplify using `only [hA, Pi.add_apply, map_add]`. Rewrite using `[show (fun i => cA σ (w i) + cA σ (w' i)) = (fun i => cA σ (w i)) + fun i => cA σ (w' i) from rfl, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_add_right' (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v w w' : Fin n → AE F E) :
     hA σ J v (w + w') = hA σ J v w + hA σ J v w' := by
@@ -31,7 +31,7 @@ theorem hA_add_right' (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n)
     Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `only [hA, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[show (fun i => cA σ β * cA σ (w i)) = cA σ β • (fun i => cA σ (w i)) from rfl, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem hA_smul_right' (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v w : Fin n → AE F E) (β : AE F E) :
     hA σ J v (β • w) = cA σ β * hA σ J v w := by
@@ -40,14 +40,14 @@ theorem hA_smul_right' (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n
     dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [hA, form, incV, incM, dotProduct, Matrix.mulVec, map_sum, map_mul, Matrix.map_apply, cA_inclR']`.
+Simplify using the standard rewrite rules.
 -/
 theorem hA_incV' (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
     hA σ J (incV F v) (incV F w) = inclR (F := F) (AF F) (form σ J v w) := by
   simp only [hA, form, incV, incM, dotProduct, Matrix.mulVec, map_sum, map_mul, Matrix.map_apply, cA_inclR']
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [incM, incV, Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_mulVec_incV' {m n : ℕ} (A : Matrix (Fin m) (Fin n) E) (v : Fin n → E) :
     incM F A *ᵥ incV F v = incV F (A *ᵥ v) := by
@@ -55,7 +55,7 @@ theorem incM_mulVec_incV' {m n : ℕ} (A : Matrix (Fin m) (Fin n) E) (v : Fin n 
   simp only [incM, incV, Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, incM, Matrix.map_apply, cA_inclR']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cA_mulVec_incM (σ : E →ₐ[F] E) {m n : ℕ} (A : Matrix (Fin m) (Fin n) E) (z : Fin n → AE F E) :
     (fun i => cA σ ((incM F A *ᵥ z) i)) = incM F (A.map σ) *ᵥ fun i => cA σ (z i) := by
@@ -63,7 +63,7 @@ theorem cA_mulVec_incM (σ : E →ₐ[F] E) {m n : ℕ} (A : Matrix (Fin m) (Fin
   simp only [Matrix.mulVec, dotProduct, map_sum, map_mul, incM, Matrix.map_apply, cA_inclR']
 
 /- English proof (translation)
-Unfold `hA`. Rewrite using `[cA_mulVec_incM, Matrix.mulVec_mulVec, dotProduct_comm, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, dotProduct_comm, Matrix.mulVec_mulVec]`. Use `congr 2`. Simplify using `[incM, Matrix.map_mul, Matrix.transpose_map, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem hA_incM (σ : E →ₐ[F] E) {m n : ℕ} (J : Matrix (Fin m) (Fin m) E) (A : Matrix (Fin m) (Fin n) E)
     (a z : Fin n → AE F E) :
@@ -75,7 +75,7 @@ theorem hA_incM (σ : E →ₐ[F] E) {m n : ℕ} (J : Matrix (Fin m) (Fin m) E) 
   simp [incM, Matrix.map_mul, Matrix.transpose_map, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ hH u w z β hu`. Unfold `GlobalTheory.IsoPhase.phase`. Rewrite using `[hu, hA_add_right', hA_add_right', hA_smul_right', hA_incV', hA_incV', (hH.orth w).1, (hH.orth w).2, ← incM_mulVec_incV', hA_incM, hH.gram]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phase_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B W W₁ i₀ i₁ →
     ∀ (u : UA σ W.J) (w : Fin d₁ → E) (z : Fin d₁ → AE F E) (β : AE F E),

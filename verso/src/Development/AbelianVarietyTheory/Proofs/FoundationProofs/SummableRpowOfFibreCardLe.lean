@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.SummCount
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => exact .of_finite`. Consider the case `succ N ih`. Establish `h` using `hg.mul_of_nonneg ih h0 fun x => Finset.prod_nonneg fun i _ => h0 _`. Rewrite using `[← (Fin.consEquiv fun _ : Fin (N + 1) => α).summable_iff]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h.congr fun p => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_succ, Fin.consEquiv]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem summable_prod_fin_tuple {α : Type} {g : α → ℝ} (hg : Summable g) (h0 : ∀ a, 0 ≤ g a)
     (N : ℕ) : Summable fun x : Fin N → α => ∏ i, g (x i) := by
@@ -18,7 +18,7 @@ theorem summable_prod_fin_tuple {α : Type} {g : α → ℝ} (hg : Summable g) (
     simp [Fin.prod_univ_succ, Fin.consEquiv]
 
 /- English proof (translation)
-Establish `hx : 0 < b ^ m` using `pow_pos hb m`. Rewrite using `[Real.inv_rpow hx.le, ← Real.rpow_neg hx.le, pow_mul', ← Real.rpow_natCast (b ^ m) n, ← Real.rpow_add hx, ← Real.rpow_natCast b m, ← Real.rpow_mul hb.le, ← Real.rpow_mul_natCast hb.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pow_mul_inv_rpow_eq {b t : ℝ} (hb : 0 < b) (n m : ℕ) :
     b ^ (n * m) * ((b ^ m)⁻¹) ^ t = (b ^ ((n : ℝ) - t)) ^ m := by
@@ -30,17 +30,15 @@ theorem pow_mul_inv_rpow_eq {b t : ℝ} (hb : 0 < b) (n m : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `hb0 : 0 < b` using `zero_lt_one.trans hb`. Establish `ht0 : 0 ≤ t` using `le_trans (Nat.cast_nonneg n) ht.le`. Break down `isEmpty_or_nonempty ι with hι | ⟨⟨q0⟩⟩` into its components or cases. Conclude with `.of_finite`. Establish `hP : ∀ m : Fin n → ℕ, 0 < ∏ i, (b ^ m i)⁻¹` using `fun m => by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : 0 ≤ C` using `(mul_nonneg_iff_of_pos_right (hP (k q0))).1 ((hh q0).1.trans (hh q0).2)`. Use `set r := b ^ ((n : ℝ) - t) with hr`. Establish `hr0 : 0 ≤ r` using `Real.rpow_nonneg hb0.le _`. Establish `hr1 : r < 1` using `Real.rpow_lt_one_of_one_lt_of_neg hb (by linarith)`. Use `set g : (Fin n → ℕ) → ℝ := fun m => C * C ^ t * ∏ i, r ^ m i with hg_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Establish `hg0 : ∀ m, 0 ≤ g m` using `fun m => by`. Simplify using `only [hg_def]`. Check the signs of the components of the expression. Establish `hg : Summable g` using `(summable_prod_fin_tuple (summable_geometric_of_lt_one hr0 hr1) (fun _ => pow_nonneg hr0 _) n).mul_left _`. Establish `key : ∀ q, h q ^ t ≤ C ^ t * ∏ i, ((b ^ k q i)⁻¹) ^ t` using `fun q => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.finset_prod_rpow _ _ (fun i _ => by positivity), ← Real.mul_rpow hC (hP _).le]`. Conclude with `Real.rpow_le_rpow (hh q).1 (hh q).2 ht0`. Use `summable_of_sum_le (c := ∑' m, g m) (fun q => Real.rpow_nonneg (hh q).1 _) fun T => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := k) (t := T.image k) (fun q hq => Finset.mem_image_of_mem k hq)]`. Use `le_trans (Finset.sum_le_sum fun m _ => ?_) (hg.sum_le_tsum _ (fun m _ => hg0 m))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `key q` as an intermediate fact. Rewrite `this` using `[(Finset.mem_filter.1 hq).2]`. Then use the resulting hypothesis. Use `_ = ((T.filter (k · = m)).card : ℝ) * (C ^ t * ∏ i, ((b ^ m i)⁻¹) ^ t) := by`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`.
-
-Use `_ ≤ (C * ∏ i, b ^ (n * m i)) * (C ^ t * ∏ i, ((b ^ m i)⁻¹) ^ t) := mul_le_mul_of_nonneg_right (hT m _ fun q hq => (Finset.mem_filter.1 hq).2) (mul_nonneg (Real.rpow_nonneg hC _) (Finset.prod_nonneg fun i _ => Real.rpow_nonneg (by positivity) _))`. Use `_ = g m := by`. Simplify using `only [hg_def, hr, ← pow_mul_inv_rpow_eq hb0 n, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem summable_rpow_of_fibre_card_le (ι : Type) (n : ℕ) (b C t : ℝ) (k : ι → Fin n → ℕ)
     (h : ι → ℝ) (hb : 1 < b) (ht : (n : ℝ) < t)

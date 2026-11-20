@@ -16,13 +16,13 @@ def tc (ε : Fin n → Bool) (i j k : Pos n) : ℂ := if Tri ε i j k then 1 els
 def cc (ε : Fin n → Bool) (i : Pos n) : ℂ := if cpt ε i then 1 else 0
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Prod.ext (h.2.2.2.1.trans h'.2.2.2.1.symm) (h.2.2.2.2.trans h'.2.2.2.2.symm))`.
+A detailed English derivation is pending.
 -/
 theorem tri_uniq {i j k k' : Pos n} (h : Tri ε i j k) (h' : Tri ε i j k') : k = k' :=
   Subtype.ext (Prod.ext (h.2.2.2.1.trans h'.2.2.2.1.symm) (h.2.2.2.2.trans h'.2.2.2.2.symm))
 
 /- English proof (translation)
-Use `split_ifs with h`. Establish `ht : Tri ε i j ⟨(i.1.1, j.1.2), i.2.trans (h.2.2 ▸ j.2)⟩` using `⟨h.1, h.2.1, h.2.2, rfl, rfl⟩`. Rewrite using `[Finset.sum_eq_single _ (fun k _ hk => by rw [tc, if_neg fun h' => hk (tri_uniq h' ht), zero_smul]) (by simp), tc, if_pos ht, one_smul]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [tc, if_neg fun h' => h ⟨h'.1, h'.2.1, h'.2.2.1⟩, zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_tc {M : Type} [AddCommGroup M] [Module ℂ M] (i j : Pos n) (f : Pos n → M) :
     ∑ k, tc ε i j k • f k = if h : cpt ε i ∧ cpt ε j ∧ i.1.2 = j.1.1 then
@@ -34,13 +34,13 @@ theorem sum_tc {M : Type} [AddCommGroup M] [Module ℂ M] (i j : Pos n) (f : Pos
   · exact Finset.sum_eq_zero fun k _ => by rw [tc, if_neg fun h' => h ⟨h'.1, h'.2.1, h'.2.2.1⟩, zero_smul]
 
 /- English proof (translation)
-Establish `h1` using `sum_tc (ε := ε) p q (fun i => tc ε i r k)`. Establish `h2` using `sum_tc (ε := ε) q r (fun j => tc ε p j k)`. Simplify using `only [smul_eq_mul] at h1 h2`. Rewrite using `[h1, h2]`. Take `⟨⟨a, b⟩, _⟩` from `p`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨b', c⟩, _⟩` from `q`. Take `⟨⟨c', d⟩, _⟩` from `r`. Simplify using `only [tc, Tri, cpt]`. Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hc : c = c'`. Substitute `hc` using the available equality. Simplify using `only [dite_eq_ite]`. Apply the tactic sequence `cases ε a <;> cases ε b <;> cases ε c <;> cases ε d <;> simp`. Simplify using `[hc]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tc_assoc (p q r k : Pos n) : ∑ i, tc ε p q i * tc ε i r k = ∑ j, tc ε q r j * tc ε p j k := by
   have h1 := sum_tc (ε := ε) p q (fun i => tc ε i r k)
@@ -65,26 +65,24 @@ section Ring
 variable {R : Type} [Ring R] [Algebra ℂ R] (E : Fin n → Fin n → R) (an cr : Pos n → R)
 
 /- English proof (translation)
-Establish `: (2 : ℂ) • x = 0` using `by rw [two_smul]; exact add_eq_zero_iff_eq_neg.2 h`. Rewrite using `[← one_smul ℂ x, ← inv_mul_cancel₀ (two_ne_zero' ℂ), mul_smul, this, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem self_neg {x : R} (h : x = -x) : x = 0 := by
   have : (2 : ℂ) • x = 0 := by rw [two_smul]; exact add_eq_zero_iff_eq_neg.2 h
   rw [← one_smul ℂ x, ← inv_mul_cancel₀ (two_ne_zero' ℂ), mul_smul, this, smul_zero]
 
 /- English proof (translation)
-Use `set T : Pos n → Pos n → R := fun i j => ∑ k, tc ε i j k • (E k.1.1 k.1.2 * (an i * an j)) with hT`. Use `set U : Pos n → Pos n → R := fun i j => (cc ε i * cc ε j) • (E i.1.1 i.1.2 * E j.1.1 j.1.2 * (an i * an j)) with hU`. Establish `e : (∑ i, cc ε i • (E i.1.1 i.1.2 * an i)) * (∑ i, cc ε i • (E i.1.1 i.1.2 * an i)) = ∑ i, ∑ j, U i j`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_mul_smul_comm, hU, mul_assoc, ← mul_assoc (an i), ← (h1 _ _ i).eq]`. Simplify using `only [mul_assoc]`. Establish `key : ∀ i j, U i j + U j i = T i j + T j i`. Introduce `i j`. Establish `ha : an j * an i = -(an i * an j)` using `eq_neg_of_add_eq_zero_right (haa i j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hT, hU, sum_tc (f := fun k => E k.1.1 k.1.2 * (an i * an j)), sum_tc (f := fun k => E k.1.1 k.1.2 * (an j * an i))]`. Rewrite using `[ha]`. Distinguish the cases in `ci : cpt ε i`. Use `swap`. Simplify using `[cc, ci]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `cj : cpt ε j`. Use `swap`. Simplify using `[cc, cj]`. Use `hE i.1.1 i.1.2 j.1.1 j.1.2 ci cj` as an intermediate fact. Simplify using `only [cc, eq_true ci, eq_true cj, if_true, true_and, mul_one, one_smul, mul_neg, ← sub_eq_add_neg, ← sub_mul, this]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [sub_mul, sub_eq_add_neg, add_mul]`. Rewrite using `[e, ← sub_eq_zero]`. Apply `self_neg` to reduce the goal to its premises. Rewrite using `[eq_neg_iff_add_eq_zero]`. Establish `s1 : ∑ i, ∑ j, U i j = ∑ i, ∑ j, U j i` using `Finset.sum_comm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `s2 : ∑ i, ∑ j, T i j = ∑ i, ∑ j, T j i` using `Finset.sum_comm`. Establish `s3 : ∑ i, ∑ j, U i j + ∑ i, ∑ j, U j i = ∑ i, ∑ j, T i j + ∑ i, ∑ j, T j i`. Simplify using `only [← Finset.sum_add_distrib, key]`. Rewrite `s3` using `[← s1, ← s2]`. Express the relevant statement in the definitionally equal form `(∑ i, ∑ j, U i j - ∑ i, ∑ j, T i j) + (∑ i, ∑ j, U i j - ∑ i, ∑ j, T i j) = 0`.
-
-Rewrite using `[sub_add_sub_comm, s3, sub_self]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem koszul_differential_sq (hE : KRel ε E) (h1 : ∀ a b i, Commute (E a b) (an i)) (haa : ∀ i j, an i * an j + an j * an i = 0) :
     (∑ i, cc ε i • (E i.1.1 i.1.2 * an i)) * (∑ i, cc ε i • (E i.1.1 i.1.2 * an i)) =
@@ -123,20 +121,20 @@ theorem koszul_differential_sq (hE : KRel ε E) (h1 : ∀ a b i, Commute (E a b)
   rw [sub_add_sub_comm, s3, sub_self]
 
 /- English proof (translation)
-Establish `h : ∀ i j, an i * an j = -(an j * an i)` using `fun i j => eq_neg_of_add_eq_zero_left (haa i j)`. Rewrite using `[mul_assoc, h i l, mul_neg, ← mul_assoc, h j l, neg_mul, neg_neg, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_aa (haa : ∀ i j, an i * an j + an j * an i = 0) (l i j : Pos n) : an j * an i * an l = an l * (an j * an i) := by
   have h : ∀ i j, an i * an j = -(an j * an i) := fun i j => eq_neg_of_add_eq_zero_left (haa i j)
   rw [mul_assoc, h i l, mul_neg, ← mul_assoc, h j l, neg_mul, neg_neg, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [Finset.mul_sum (s := univ) (f := fun i => ∑ j, ∑ k, tc ε i j k • (cr k * an j * an i)), Finset.sum_mul (s := univ) (f := fun i => ∑ j, ∑ k, tc ε i j k • (cr k * an j * an i)), ← Finset.sum_add_distrib, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc, ← smul_add, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Establish `e : ∀ l : Pos n, cc ε l • (E l.1.1 l.1.2 * an l) * (cr k * an j * an i) + cr k * an j * an i * cc ε l • (E l.1.1 l.1.2 * an l) = if l = k then cc ε l • (E l.1.1 l.1.2 * (an j * an i)) else 0`. Introduce `l`. Establish `c1 : cr k * an j * an i * (E l.1.1 l.1.2 * an l) = E l.1.1 l.1.2 * (cr k * an l * (an j * an i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, ← (((h2 _ _ k).mul_right (h1 _ _ j)).mul_right (h1 _ _ i)).eq, mul_assoc, mul_assoc (cr k), mul_assoc (cr k), comm_aa an haa, mul_assoc (cr k)]`. Establish `c2 : E l.1.1 l.1.2 * an l * (cr k * an j * an i) = E l.1.1 l.1.2 * (an l * cr k * (an j * an i))`. Simplify using `only [mul_assoc]`. Rewrite using `[smul_mul_assoc, mul_smul_comm, ← smul_add, c1, c2, ← mul_add, ← add_mul, hac]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [e, Finset.sum_ite_eq', mem_univ, if_true]`. Rewrite using `[eq_neg_of_add_eq_zero_left (haa j i), tc]`. Use `split_ifs with h`. Simplify using `[cc, h.cptk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem koszul_differential_anticommutator (h1 : ∀ a b i, Commute (E a b) (an i)) (h2 : ∀ a b i, Commute (E a b) (cr i))
     (haa : ∀ i j, an i * an j + an j * an i = 0) (hac : ∀ i j, an i * cr j + cr j * an i = if i = j then 1 else 0) :
@@ -170,23 +168,21 @@ theorem koszul_differential_anticommutator (h1 : ∀ a b i, Commute (E a b) (an 
   · simp
 
 /- English proof (translation)
-Set `t : Pos n × Pos n × Pos n → ℂ` to `fun p => tc ε p.1 p.2.1 p.2.2`. Establish `e : (∑ i, ∑ j, ∑ k, tc ε i j k • (cr k * an j * an i)) = ∑ p : Pos n × Pos n × Pos n, t p • (cr p.2.2 * an p.2.1 * an p.1)`. Simplify using `only [Fintype.sum_prod_type, t]`. Establish `ex : ∀ i j k i' j' k' : Pos n, cr k * an j * an i * (cr k' * an j' * an i') = (if i = k' then cr k * (an j * (an j' * an i')) else 0) - (if j = k' then cr k * (an j' * an i' * an i) else 0) + cr k * cr k' * ((an j * an i) * (an j' * an i'))`. Introduce `i j k i' j' k'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `a1` using `eq_sub_of_add_eq (hac i k')`. Establish `a2` using `eq_sub_of_add_eq (hac j k')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[a1, mul_sub, mul_assoc (an j)]`. Use `_ = _ := by`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a2, comm_aa an haa i i' j']`. Apply the tactic sequence `split_ifs <;> noncomm_ring`. Rewrite using `[e, Finset.sum_mul_sum]`. Simplify using `only [smul_mul_smul_comm, ex, smul_add, smul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Establish `h3 : ∑ p : Pos n × Pos n × Pos n, ∑ q : Pos n × Pos n × Pos n, (t p * t q) • (cr p.2.2 * cr q.2.2 * ((an p.2.1 * an p.1) * (an q.2.1 * an q.1))) = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `self_neg` to reduce the goal to its premises. Use `conv_lhs => rw [Finset.sum_comm]`. Simplify using `only [← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (t q), eq_neg_of_add_eq_zero_left (hcc q.2.2 p.2.2), neg_mul, smul_neg, ← mul_assoc (an q.2.1 * an q.1), comm_aa an haa, mul_assoc (an p.2.1), comm_aa an haa, ← mul_assoc (an p.2.1)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3, add_zero, sub_eq_zero]`. Establish `L : ∑ p : Pos n × Pos n × Pos n, ∑ q : Pos n × Pos n × Pos n, (t p * t q) • (if p.1 = q.2.2 then cr p.2.2 * (an p.2.1 * (an q.2.1 * an q.1)) else 0) = ∑ p, ∑ q, ∑ r, ∑ k, (∑ i, tc ε p q i * tc ε i r k) • (cr k * (an r * an q * an p))`. Simplify using `only [Fintype.sum_prod_type, t, smul_ite, smul_zero, Finset.sum_ite_eq, mem_univ, if_true, Finset.sum_smul]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Conclude with `(Finset.sum_congr rfl fun r _ => Finset.sum_comm).trans Finset.sum_comm`. Use `_ = ∑ x : Pos n × Pos n, ∑ y : Pos n × Pos n × Pos n, (tc ε x.1 x.2 y.1 * tc ε y.1 y.2.1 y.2.2) • (cr y.2.2 * (an y.2.1 * an x.2 * an x.1)) := by`. Simplify using `only [Fintype.sum_prod_type]`. Use `_ = _ := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [Fintype.sum_prod_type, mul_comm (tc ε _ _ _) (tc ε _ _ _), mul_assoc]`. Establish `R' : ∑ p : Pos n × Pos n × Pos n, ∑ q : Pos n × Pos n × Pos n, (t p * t q) • (if p.2.1 = q.2.2 then cr p.2.2 * (an q.2.1 * an q.1 * an p.1) else 0) = ∑ p, ∑ q, ∑ r, ∑ k, (∑ j, tc ε q r j * tc ε p j k) • (cr k * (an r * an q * an p))`. Simplify using `only [Fintype.sum_prod_type, t, smul_ite, smul_zero, Finset.sum_ite_eq, mem_univ, if_true, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Fintype.sum_prod_type]`. Use `_ = _ := by`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Fintype.sum_prod_type]`.
-
-Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm (tc ε p _ _)]`. Rewrite using `[L, R']`. Simplify using `only [tc_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beta_sq (haa : ∀ i j, an i * an j + an j * an i = 0) (hcc : ∀ i j, cr i * cr j + cr j * cr i = 0)
     (hac : ∀ i j, an i * cr j + cr j * an i = if i = j then 1 else 0) :
@@ -252,11 +248,11 @@ theorem beta_sq (haa : ∀ i j, an i * an j + an j * an i = 0) (hcc : ∀ i j, c
 end Ring
 
 /- English proof (translation)
-Introduce `n ε V _ _ E hE`. Establish `e : bd ε E = (∑ i, cc ε i • ((lift n (E i.1.1 i.1.2) : Module.End ℂ (Cn n V)) * ann i)) + ∑ i, ∑ j, ∑ k, tc ε i j k • (cre k * ann j * ann i : Module.End ℂ (Cn n V))`. Simplify using `only [bd, cc, tc, ite_smul, one_smul, zero_smul]`. Establish `hL : KRel ε fun a b => (lift n (E a b) : Module.End ℂ (Cn n V))`. Introduce `a b c d h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun (hE a b c d h1 h2) (x A)` as an intermediate fact. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa using this`. Establish `h1 : ∀ a b i, Commute (lift n (E a b) : Module.End ℂ (Cn n V)) (ann i)` using `fun a b i => LinearMap.ext fun y => lift_ann _ _ y`. Establish `h2 : ∀ a b i, Commute (lift n (E a b) : Module.End ℂ (Cn n V)) (cre i)` using `fun a b i => LinearMap.ext fun y => lift_cre _ _ y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, add_mul, mul_add, mul_add, koszul_differential_sq _ ann hL h1 ann_ann, beta_sq ann cre ann_ann cre_cre ann_cre, add_zero, add_assoc, koszul_differential_anticommutator _ ann cre h1 h2 ann_ann ann_cre, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem koszul_differential_sq_zero : BdSq := by
   intro n ε V _ _ E hE

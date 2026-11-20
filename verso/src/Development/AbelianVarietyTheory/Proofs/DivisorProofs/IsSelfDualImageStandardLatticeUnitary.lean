@@ -6,7 +6,7 @@ open Polynomial Matrix GlobalTheory.LatOrb
 namespace GlobalTheory.LatOrb
 
 /- English proof (translation)
-Simplify using `only [herm, mulVec, dotProduct, map_sum, map_mul, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun k _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_mulVec_right {K : Type} [Field K] (σ : K →+* K)
     {n : ℕ} (g : Matrix (Fin n) (Fin n) K) (y u : Fin n → K) :
@@ -18,17 +18,17 @@ theorem herm_mulVec_right {K : Type} [Field K] (σ : K →+* K)
   ring
 
 /- English proof (translation)
-Establish `hg' : g * (g.map σ)ᵀ = 1` using `mul_eq_one_comm.mp hg`. Establish `hσO : ∀ z ∈ (algebraMap O K).range, σ z ∈ (algebraMap O K).range`. Introduce and unpack `z ⟨a, rfl⟩`. Take `⟨b, hb⟩` from `hO a`. Conclude with `⟨b, hb.symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `y`. Rewrite using `[mem_matLat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩ x hx`. Rewrite `hx` using `[mem_matLat]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, hv, rfl⟩` from `hx`. Rewrite using `[herm_mulVec_right, Matrix.mulVec_mulVec, hg, Matrix.one_mulVec]`. Unfold `herm`. Use `Subring.sum_mem _ (fun k _ => Subring.mul_mem _ ((mem_stdLat u).mp hu k) (hσO _ ((mem_stdLat v).mp hv k)))` and prove the remaining obligations. Introduce `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(g.map σ)ᵀ *ᵥ y, ?_, by rw [Matrix.mulVec_mulVec, hg', Matrix.one_mulVec]⟩` and prove the remaining obligations. Rewrite using `[mem_stdLat]`. Introduce `j`. Establish `hx : g *ᵥ (Pi.single j 1 : Fin n → K) ∈ matLat O g (stdLat O n)`. Rewrite using `[mem_matLat]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Pi.single j 1, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_stdLat]`. Introduce `i`. Distinguish the cases in `hij : i = j`. Substitute `hij; exact ⟨1, by simp⟩` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `⟨0, by simp [Pi.single_apply, hij]⟩`. Use `h _ hx` as an intermediate fact. Rewrite `this` using `[herm_mulVec_right]`. Simplify `this` using `[herm, Pi.single_apply, map_one]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem selfDual_matLat_stdLat {O K : Type} [CommRing O] [Field K] [Algebra O K] (σ : K →+* K)
     (_hinv : ∀ x, σ (σ x) = x) (hO : ∀ a : O, ∃ b : O, σ (algebraMap O K a) = algebraMap O K b)

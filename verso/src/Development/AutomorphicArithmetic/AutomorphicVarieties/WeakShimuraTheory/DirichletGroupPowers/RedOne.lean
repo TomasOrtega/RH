@@ -10,11 +10,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `l _ c m hm x hx hres`. Use `haveI := c.dvr`. Use `haveI := c.fin`. Take `⟨-, -, -, -, -, -, -, -, hunit⟩` from `dvrFacts l c.O`. Establish `hmu : IsUnit ((m : ℕ) : c.O)` using `hunit m ((Nat.Prime.coprime_iff_not_dvd (Fact.out : l.Prime)).1 hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgeom : (∑ i ∈ Finset.range m, (x : c.O) ^ i) * ((x : c.O) - 1) = 0`. Rewrite using `[geom_sum_mul, ← Units.val_pow_eq_pow_val, hx, Units.val_one, sub_self]`. Establish `hsum : IsUnit (∑ i ∈ Finset.range m, (x : c.O) ^ i)`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, map_sum]`. Simplify using `only [map_pow, hres, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr` using `hmu.map (residue c.O)`. Rewrite `hr` using `[map_natCast]`. Conclude with `hr.ne_zero`. Establish `h0 : (x : c.O) - 1 = 0` using `(hsum.mul_right_eq_zero).1 hgeom`. Conclude with `Units.ext (sub_eq_zero.1 h0)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.large₂.redOne :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l) (m : ℕ), l.Coprime m → ∀ x : c.Oˣ, x ^ m = 1 → residue c.O (x : c.O) = 1 → x = 1 := by

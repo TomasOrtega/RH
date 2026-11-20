@@ -3,15 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `choose p hp using fun x : Localization.AtPrime 𝔭 => IsLocalization.mk'_surjective 𝔭.primeCompl x`. Set `sx : Localization.AtPrime 𝔭 → 𝔭.primeCompl` to `fun x => (p x).2`. Use `⟨((∏ x ∈ F, sx x : 𝔭.primeCompl) : R), (∏ x ∈ F, sx x).2, ?_⟩` and prove the remaining obligations. Introduce `c hc κ hκ x hx`. Establish `hdvd : ((sx x : 𝔭.primeCompl) : R) ∣ c`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `dvd_trans ?_ hc` and prove the remaining obligations. Rewrite using `[Submonoid.coe_finset_prod]`. Conclude with `Finset.dvd_prod_of_mem (fun y => ((sx y : 𝔭.primeCompl) : R)) hx`. Take `⟨m, hm⟩` from `hdvd`. Establish `hκa : ∀ r : R, κ (algebraMap R (Localization.Away c) r) = algebraMap R (Localization.AtPrime 𝔭) r` using `fun r => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← RingHom.comp_apply, hκ]`. Use `⟨algebraMap R _ (p x).1 * algebraMap R _ m * IsLocalization.Away.invSelf c, ?_⟩` and prove the remaining obligations. Establish `hinv : algebraMap R (Localization.AtPrime 𝔭) c * κ (IsLocalization.Away.invSelf (S` using `Localization.Away c) c) = 1 := by`. Rewrite using `[← hκa, ← map_mul, IsLocalization.Away.mul_invSelf, map_one]`. Use `(?_ : _ = IsLocalization.mk' (Localization.AtPrime 𝔭) (p x).1 (p x).2).trans (hp x)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[IsLocalization.eq_mk'_iff_mul_eq, map_mul, map_mul, hκa, hκa]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = algebraMap R (Localization.AtPrime 𝔭) (p x).1 := by`.
-
-Rewrite using `[← hm, hinv, mul_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finset_mem_range_of_away_dvd (R : Type) [CommRing R] (𝔭 : Ideal R) [𝔭.IsPrime]
     (F : Finset (Localization.AtPrime 𝔭)) :

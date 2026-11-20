@@ -6,37 +6,33 @@ open Formalism.MainNotions.N
 namespace GlobalTheory
 
 /- English proof (translation)
-Distinguish the cases in `h : ∀ s ∈ S, η s = 1`. Use `⟨X, 0, by simp, fun g hg => hX g hg (h g hg), fun g _ => by simp⟩` and prove the remaining obligations. Use `push Not at h`. Take `⟨s, hs, hs1⟩` from `h`. Establish `hsm : η s = -1` using `(Int.units_eq_one_or _).resolve_left hs1`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : c 1 = 1`. Establish `h` using `hc 1 1`. Rewrite `h` using `[one_mul]`. Rewrite using `[h]`. Conclude with `hcc 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcinv : ∀ a, c a⁻¹ = c a`. Introduce `a`. Combine the equalities or inequalities in the displayed calculation. Establish `hX' : ∀ t ∈ S, η t = 1 → ∀ M, P t * (X * M) = c t • (X * (Q t * M))`. Introduce `t ht het M`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, hX t ht het, Matrix.smul_mul, Matrix.mul_assoc]`. Use `set Y := c s • (P s * X * Q s⁻¹) with hY`. Establish `key1 : ∀ g ∈ S, η g = 1 → P g * Y = c g • (Y * Q g)`. Introduce `g hg he`. Establish `ht : s⁻¹ * g * s ∈ S` using `S.mul_mem (S.mul_mem (S.inv_mem hs) hg) hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `het : η (s⁻¹ * g * s) = 1` using `by simp [he]`. Establish `hPgs : ∀ M, P g * (P s * M) = P s * (P (s⁻¹ * g * s) * M)`. Introduce `M`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← hP, ← hP]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Establish `hQt : Q (s⁻¹ * g * s) * Q s⁻¹ = Q s⁻¹ * Q g`. Rewrite using `[← hQ, ← hQ]`. Use `congr 1`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hct : c (s⁻¹ * g * s) = c g`. Rewrite using `[hc, hc, hcinv]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hY, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc, hPgs, hX' _ ht het, hQt, hct, smul_smul, mul_comm]`. Establish `key2 : ∀ g ∈ S, η g = -1 → P g * X = c g • (Y * Q g) ∧ P g * Y = c g • (X * Q g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg he`. Establish `hu : s⁻¹ * g ∈ S` using `S.mul_mem (S.inv_mem hs) hg`. Establish `heu : η (s⁻¹ * g) = 1` using `by simp [he, hsm]`. Establish `hv : g * s ∈ S` using `S.mul_mem hg hs`. Establish `hev : η (g * s) = 1` using `by simp [he, hsm]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Establish `hPg : P g = P s * P (s⁻¹ * g)`. Rewrite using `[← hP]`. Use `congr 1`. Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hQu : Q (s⁻¹ * g) = Q s⁻¹ * Q g`. Rewrite using `[← hQ]`. Establish `hcu : c (s⁻¹ * g) = c s * c g` using `by rw [hc, hcinv]`. Establish `e1 : P g * X = P s * (P (s⁻¹ * g) * (X * 1))`. Rewrite using `[hPg, Matrix.mul_one, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, hX' _ hu heu, Matrix.mul_one, hQu, hcu]`. Simplify using `only [hY, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc, smul_smul, mul_comm]`. Establish `hPv : ∀ M, P g * (P s * M) = P (g * s) * M`. Introduce `M`. Rewrite using `[← Matrix.mul_assoc, ← hP]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hQv : Q (g * s) * Q s⁻¹ = Q g`. Rewrite using `[← hQ]`. Use `congr 1`. Use `group`. Establish `hcv : c (g * s) = c g * c s` using `hc g s`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [hY, Matrix.mul_smul, Matrix.mul_assoc, hPv, hX' _ hv hev, hQv, hcv, smul_smul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Use `⟨(2 : k)⁻¹ • (X + Y), (2 : k)⁻¹ • (X - Y), by module, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `Int.units_eq_one_or (η g) with he | he` into its components or cases. Simplify using `only [Matrix.mul_smul, Matrix.mul_add, Matrix.smul_mul, Matrix.add_mul, hX g hg he, key1 g hg he] module`. Take `⟨a1, a2⟩` from `key2 g hg he`. Simplify using `only [Matrix.mul_smul, Matrix.mul_add, Matrix.smul_mul, Matrix.add_mul, a1, a2]`. Use `module`.
-
-Introduce `g hg`. Break down `Int.units_eq_one_or (η g) with he | he` into its components or cases. Simplify using `only [Matrix.mul_smul, Matrix.mul_sub, Matrix.smul_mul, Matrix.sub_mul, hX g hg he, key1 g hg he, he, Units.val_one, Int.cast_one, mul_one] module`. Take `⟨a1, a2⟩` from `key2 g hg he`. Simplify using `only [Matrix.mul_smul, Matrix.mul_sub, Matrix.smul_mul, Matrix.sub_mul, a1, a2, he, Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one, mul_neg, mul_one]`.
-
-Use `module`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_intertwiner_decomp_of_kernel_intertwines {Γ k : Type} [Group Γ] [Field k] [CharZero k] {n : ℕ}
     (P Q : Γ → Matrix (Fin n) (Fin n) k) (hP : ∀ a b, P (a * b) = P a * P b)
@@ -133,7 +129,7 @@ private theorem exists_intertwiner_decomp_of_kernel_intertwines {Γ k : Type} [G
       module
 
 /- English proof (translation)
-Introduce `Γ k _ _ _ n σ σ' S χ η X hX`. Take `⟨X₁, X₂, hsum, h₁, h₂⟩` from `exists_intertwiner_decomp_of_kernel_intertwines (fun g => ((σ' g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) (fun g => ((σ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) (fun a b => by simp [map_mul]) (fun a b => by simp [map_mul]) (fun g => ((χ g : ℤ) : k)) (fun a b => by simp …`. Use `⟨X₁, X₂, hsum, h₁, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[h₂ g hg]`. Simplify using `[MonoidHom.mul_apply, Units.val_mul, Int.cast_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem twistedIntertwiner_decomp_of_quadraticKernel :
     ∀ (Γ k : Type) [Group Γ] [Field k] [CharZero k] (n : ℕ) (σ σ' : Γ →* GL (Fin n) k) (S : Subgroup Γ) (χ η : Γ →* ℤˣ) (X : Matrix (Fin n) (Fin n) k), (∀ g ∈ S, η g = 1 → ((σ' g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X = ((χ g : ℤ) : k) • (X * ((σ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))) → ∃ X₁ X₂ : Matrix (Fin n) (Fin n) k, X = X₁ + X₂ ∧ (∀ g ∈ S, ((σ' g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X₁ = ((χ g : ℤ) : k) • (X₁ * ((σ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))) ∧ (∀ g ∈ S, ((σ' g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X₂ = (((χ * η) g : ℤ) : k) • (X₂ * ((σ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))) := by

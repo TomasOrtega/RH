@@ -20,11 +20,11 @@ noncomputable section
 namespace GlobalTheory.HeightCounting.Up
 open GlobalTheory.Mem.R3.Tr in
 /- English proof (translation)
-Introduce `hPr hSer hL cDep`. Use `StepW.trans (_root_.GlobalTheory.T.geoLaws_iC_at_levelB1_of_serN hPr hSer hL) (StepW.of_all fun K B f T w _ _ hq P x l => ?_)` and prove the remaining obligations. Establish `hlaw` using `hq P x l`. Take `⟨x', hl', ho, hLc⟩` from `_root_.GlobalTheory.T.exists_levelB2_twist_of_thetaTie hL x l (GlobalTheory.GeoTie.geoNTh hlaw) (GlobalTheory.GeoTie.geoTie hlaw)`. Take `⟨o', fits', G_eq', etaF', bk', m', copy', coh', s', r', pin'⟩` from `x'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only at ho`. Substitute `ho` using the available equality. Use `⟨⟨oTw x (thTw (Dof x) (GlobalTheory.GeoTie.geoNTh hlaw)), fits', G_eq', etaF', bk', m', copy', coh', s', r', pin'⟩, hl', fun hLs => ?_⟩` and prove the remaining obligations. Take `⟨G, hF, hTie⟩` from `hLs`. Establish `eL : m'.z.R.toRealDat.toLevCh = (by with_unfolding_all exact ((levCh (a` using `x.o.Z) (oTw x (thTw (Dof x) (GlobalTheory.GeoTie.geoNTh hlaw))).Z x.m.z.R.toRealDat.toLevCh) :)) := eq_of_heq hLc`.
+Simplify by unfolding definitions. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show ListPin _ m'.z.R.toRealDat.toLevCh cDep K.s.b`. Rewrite using `[eL]`. Conclude with `⟨(by with_unfolding_all exact ((GlobalTheory.Mem.GridMove.gdC (a := x.o.Z) (oTw x (thTw (Dof x) (GlobalTheory.GeoTie.geoNTh hlaw))).Z G) :)), ⟨(by with_unfolding_all exact (hF.values :)), (by with_unfolding_all exact (hF.roots :))⟩, kc% hTie⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem points_step_alt_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, ∀ cDep : ℝ, _root_.GlobalTheory.HeightCounting.Up.ModuliPointsExistList' hL cDep := by
   intro hPr hSer hL cDep
@@ -50,7 +50,7 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.points_step_alt_alt | exact _root_.GlobalTheory.HeightCounting.Up.points_step_alt_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.points_step_alt_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.moduliPointsExistList_of_inputs_serN : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, ∀ cDep : ℝ, _root_.GlobalTheory.HeightCounting.Up.ModuliPointsExistList' hL cDep := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.points_step_alt_alt | exact _root_.GlobalTheory.HeightCounting.Up.points_step_alt_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.points_step_alt_alt <;> assumption)

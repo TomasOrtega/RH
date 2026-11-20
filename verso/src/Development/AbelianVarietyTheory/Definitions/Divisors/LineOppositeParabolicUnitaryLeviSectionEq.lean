@@ -31,7 +31,7 @@ Both sides reduce to the same expression.
 def charRep (χ : G →* ℂˣ) : Representation ℂ G ℂ := twist χ (Representation.trivial ℂ G ℂ)
 
 /- English proof (translation)
-Simplify using `[charRep]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem charRep_apply (χ : G →* ℂˣ) (g : G) (z : ℂ) : charRep χ g z = (χ g : ℂ) * z := by
   simp [charRep]
@@ -40,7 +40,7 @@ def extProd (π : Representation ℂ G V) (π' : Representation ℂ H W) : Repre
   Representation.tprod (π.comp (MonoidHom.fst G H)) (π'.comp (MonoidHom.snd G H))
 
 /- English proof (translation)
-Simplify using `[extProd]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem extProd_tmul (π : Representation ℂ G V) (π' : Representation ℂ H W) (g : G × H) (v : V) (w : W) :
     extProd π π' g (v ⊗ₜ w) = π g.1 v ⊗ₜ π' g.2 w := by
@@ -66,7 +66,7 @@ def IsZonal (ρ : Representation ℂ G V) (K : Subgroup G) (ω : G → ℂ) : Pr
   ∃ v ∈ fixed ρ K, ∃ l : Module.Dual ℂ V, (∀ k ∈ K, ∀ x, l (ρ k x) = l x) ∧ l v = 1 ∧ ω = coeff ρ v l
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h k hk`. Simplify using `using h ⟨k, hk⟩`. Introduce `h k`. Simplify using `using h k k.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fixed {ρ : Representation ℂ G V} {K : Subgroup G} {v : V} :
     v ∈ fixed ρ K ↔ ∀ k ∈ K, ρ k v = v := by
@@ -75,7 +75,7 @@ theorem mem_fixed {ρ : Representation ℂ G V} {K : Subgroup G} {v : V} :
   · intro h k; simpa using h k k.2
 
 /- English proof (translation)
-Take `⟨v, hv, l, hl, h1, rfl⟩` from `h`. Use `⟨by simpa [coeff] using h1, fun k₁ h₁ k₂ h₂ g => ?_⟩` and prove the remaining obligations. Simplify using `only [coeff, map_mul, Module.End.mul_apply]`. Rewrite using `[mem_fixed.1 hv k₂ h₂, hl k₁ h₁]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsZonal.one_and_biinv {ρ : Representation ℂ G V} {K : Subgroup G} {ω : G → ℂ} (h : IsZonal ρ K ω) :
     ω 1 = 1 ∧ ∀ k₁ ∈ K, ∀ k₂ ∈ K, ∀ g, ω (k₁ * g * k₂) = ω g := by
@@ -85,7 +85,7 @@ theorem IsZonal.one_and_biinv {ρ : Representation ℂ G V} {K : Subgroup G} {ω
   rw [mem_fixed.1 hv k₂ h₂, hl k₁ h₁]
 
 /- English proof (translation)
-Take `⟨v, hv, l, -, h1, -⟩` from `h`. Introduce `h0`. Rewrite `hv` using `[h0, Submodule.mem_bot]`. Simplify using `[hv] at h1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsZonal.isSpherical {ρ : Representation ℂ G V} {K : Subgroup G} {ω : G → ℂ} (h : IsZonal ρ K ω) :
     IsSpherical ρ K := by
@@ -95,9 +95,9 @@ theorem IsZonal.isSpherical {ρ : Representation ℂ G V} {K : Subgroup G} {ω :
   simp [hv] at h1
 
 /- English proof (translation)
-Unfold `twKer Representation.Coinvariants.ker`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, v, rfl⟩; exact ⟨(n, v), by simp⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨n, v⟩, rfl⟩; exact ⟨n, v, by simp⟩`.
+Assume the hypotheses and unpack their components.
 -/
 theorem twKer_one_eq (ρ : Representation ℂ G V) (N : Subgroup G) :
     twKer ρ N 1 = Representation.Coinvariants.ker (ρ.comp N.subtype) := by
@@ -109,9 +109,9 @@ theorem twKer_one_eq (ρ : Representation ℂ G V) (N : Subgroup G) :
   · rintro ⟨⟨n, v⟩, rfl⟩; exact ⟨n, v, by simp⟩
 
 /- English proof (translation)
-Unfold `twKer Representation.Coinvariants.ker`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, v, rfl⟩; exact ⟨(n, (ψ n : ℂ) • v), by simp [smul_smul]⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨n, v⟩, rfl⟩; exact ⟨n, ((ψ n : ℂ))⁻¹ • v, by simp [smul_smul]⟩`.
+Assume the hypotheses and unpack their components.
 -/
 theorem twKer_eq (ρ : Representation ℂ G V) (N : Subgroup G) (ψ : N →* ℂˣ) :
     twKer ρ N ψ = Representation.Coinvariants.ker (twist ψ⁻¹ (ρ.comp N.subtype)) := by
@@ -148,9 +148,9 @@ def coinvFst (ρ : Representation ℂ (G × H) V) :
     exact ⟨⟨g, by simp⟩, rfl⟩)
 
 /- English proof (translation)
-Establish `hne : (⊥ : Subrepresentation (charRep χ)) ≠ ⊤` using `fun h => bot_ne_top (congrArg Subrepresentation.toSubmodule h)`. Use `haveI : Nontrivial (Subrepresentation (charRep χ)) := ⟨⟨_, _, hne⟩⟩`. Use `⟨fun S => ?_⟩` and prove the remaining obligations. Break down `eq_bot_or_eq_top S.toSubmodule with h | h` into its components or cases. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr (Subrepresentation.toSubmodule_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem charRep_irreducible (χ : G →* ℂˣ) : (charRep χ).IsIrreducible := by
   have hne : (⊥ : Subrepresentation (charRep χ)) ≠ ⊤ := fun h =>
@@ -162,11 +162,11 @@ theorem charRep_irreducible (χ : G →* ℂˣ) : (charRep χ).IsIrreducible := 
   · exact Or.inr (Subrepresentation.toSubmodule_injective h)
 
 /- English proof (translation)
-Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun x y => x * starRingEnd ℂ y) (fun _ _ _ => by ring) (fun _ _ _ => by simp [mul_assoc]) (fun _ _ _ => by simp [mul_add]) (fun _ _ _ => by simp [mul_left_comm]), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v w`. Simplify using `[mul_comm]`. Introduce `v hv`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply, Complex.mul_conj, Complex.ofReal_re]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Complex.normSq_pos.2 hv`. Introduce `g v w`. Establish `: (χ g : ℂ) * starRingEnd ℂ (χ g : ℂ) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, h g]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.mk₂'ₛₗ_apply, charRep_apply, map_mul]`. Take the linear combination `(v * starRingEnd ℂ w) * this`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem charRep_unitarisable (χ : G →* ℂˣ) (h : ∀ g, ‖(χ g : ℂ)‖ = 1) : IsUnitarisable (charRep χ) := by
   refine ⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun x y => x * starRingEnd ℂ y)
@@ -188,7 +188,7 @@ section Top
 variable {G V : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isSmooth_iff (ρ : Representation ℂ G V) : IsSmooth ρ ↔ SplitWeil.IsSmoothRep ρ := Iff.rfl
 
@@ -205,9 +205,7 @@ theorem smoothDual_apply (ρ : Representation ℂ G V) (g : G) (l : smoothPart �
     (smoothDual ρ g l).1 v = l.1 (ρ g⁻¹ v) := rfl
 
 /- English proof (translation)
-Introduce `v`. Establish `: {g : G | smoothRep ρ g v = v} = {g : G | ρ g v.1 = v.1}`. Use extensionality with `g`. Conclude with `Subtype.ext_iff`. Rewrite using `[this]`.
-
-Conclude with `v.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothRep_isSmooth (ρ : Representation ℂ G V) : IsSmooth (smoothRep ρ) := by
   intro v
@@ -247,9 +245,9 @@ def modulus (U : Subgroup G) (hU : IsClosed (U : Set G)) : Subgroup.normalizer (
       simp only [this, mulEquivHaarChar_trans, mul_comm] }
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace U := hU.locallyCompactSpace`. Establish `h` using `mulEquivHaarChar_smul_preimage μ (X := conjAut U g '' X) (conjAut U g)`. Rewrite `h` using `[Set.preimage_image_eq _ (conjAut U g).injective]`. Establish `e : modulus U hU g = mulEquivHaarChar (conjAut U g)` using `by borelize ↥U`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem modulus_measure (U : Subgroup G) (hU : IsClosed (U : Set G)) [MeasurableSpace U] [BorelSpace U]
     (μ : Measure U) [μ.IsHaarMeasure] [μ.Regular] (g : Subgroup.normalizer (U : Set G)) (X : Set U) :
@@ -287,7 +285,7 @@ def L : Subgroup G := P.s.range
 def sQ : M →* P.Q := P.s.codRestrict P.Q P.s_mem
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, rfl⟩`. Conclude with `⟨q.2, hq⟩`. Introduce and unpack `⟨h, e⟩`. Conclude with `⟨⟨g, h⟩, e, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_U {g : G} : g ∈ P.U ↔ ∃ h : g ∈ P.Q, P.p ⟨g, h⟩ = 1 := by
   constructor
@@ -295,20 +293,20 @@ theorem mem_U {g : G} : g ∈ P.U ↔ ∃ h : g ∈ P.Q, P.p ⟨g, h⟩ = 1 := b
   · rintro ⟨h, e⟩; exact ⟨⟨g, h⟩, e, rfl⟩
 
 /- English proof (translation)
-Introduce `_ h` and use `(P.mem_U.1 h).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem U_le_Q : P.U ≤ P.Q := fun _ h => (P.mem_U.1 h).1
 
 /- English proof (translation)
-Introduce `a b h` and use `by rw [← P.p_s a, ← P.p_s b]; congr 1; exact Subtype.ext h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem s_injective : Function.Injective P.s := fun a b h => by
   rw [← P.p_s a, ← P.p_s b]; congr 1; exact Subtype.ext h
 
 /- English proof (translation)
-Establish `key : ∀ q ∈ P.Q, ∀ u ∈ P.U, q * u * q⁻¹ ∈ P.U`. Introduce `q hq u hu`. Take `⟨h, e⟩` from `P.mem_U.1 hu`. Use `⟨⟨q, hq⟩ * ⟨u, h⟩ * ⟨q, hq⟩⁻¹, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, map_mul, e, map_inv, mul_one, mul_inv_cancel]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `q hq`. Use `Subgroup.mem_normalizer_iff.2 fun u => ⟨key q hq u, fun h => ?_⟩` and prove the remaining obligations. Use `key q⁻¹ (inv_mem hq) _ h` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Q_le_normalizer : P.Q ≤ Subgroup.normalizer (P.U : Set G) := by
   have key : ∀ q ∈ P.Q, ∀ u ∈ P.U, q * u * q⁻¹ ∈ P.U := by
@@ -322,7 +320,7 @@ theorem Q_le_normalizer : P.Q ≤ Subgroup.normalizer (P.U : Set G) := by
   simpa [mul_assoc] using this
 
 /- English proof (translation)
-Use `⟨(P.sQ (P.p q))⁻¹ * q, ?_, rfl⟩` and prove the remaining obligations. Establish `: P.p (P.sQ (P.p q)) = P.p q` using `P.p_s _`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem decomp (q : P.Q) : (P.s (P.p q))⁻¹ * q ∈ P.U := by
   refine ⟨(P.sQ (P.p q))⁻¹ * q, ?_, rfl⟩
@@ -330,7 +328,7 @@ theorem decomp (q : P.Q) : (P.s (P.p q))⁻¹ * q ∈ P.U := by
   simp [this]
 
 /- English proof (translation)
-Establish `: IsClosed (P.p.ker : Set P.Q)` using `isClosed_singleton.preimage P.cont_p`. Conclude with `P.closed_Q.isClosedMap_subtype_val _ this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem closed_U [T1Space M] : IsClosed (P.U : Set G) := by
   have : IsClosed (P.p.ker : Set P.Q) := isClosed_singleton.preimage P.cont_p
@@ -397,7 +395,7 @@ theorem delta_apply (q : P.Q) :
     P.delta q = modulus P.U P.closed_U ⟨P.s (P.p q), P.Q_le_normalizer (P.s_mem _)⟩ := rfl
 
 /- English proof (translation)
-Take `⟨_, e⟩` from `P.mem_U.1 h`. Establish `e' : P.p q = 1` using `e`. Simplify using `only [delta, MonoidHom.comp_apply, e', map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem delta_of_mem_U (q : P.Q) (h : (q : G) ∈ P.U) : P.delta q = 1 := by
   obtain ⟨_, e⟩ := P.mem_U.1 h
@@ -409,7 +407,7 @@ def deltaHalf : P.Q →* ℂˣ :=
     ((NNReal.sqrtHom : ℝ≥0 →* ℝ≥0).comp P.delta)).toHomUnits
 
 /- English proof (translation)
-Simplify using `[deltaHalf, NNReal.sqrtHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem deltaHalf_coe (q : P.Q) : (P.deltaHalf q : ℂ) = (Real.sqrt (P.delta q) : ℝ) := by
   simp [deltaHalf, NNReal.sqrtHom]
@@ -430,13 +428,13 @@ theorem nInd_apply (σ : Representation ℂ M W) (g x : G) (f : P.IndSpace σ) :
     (P.nInd σ g f).1.1 x = f.1.1 (x * g) := rfl
 
 /- English proof (translation)
-The claim follows from `f.1.2 q g`.
+A detailed English derivation is pending.
 -/
 theorem IndSpace.law {σ : Representation ℂ M W} (f : P.IndSpace σ) (q : P.Q) (g : G) :
     f.1.1 (q * g) = (P.deltaHalf q : ℂ) • σ (P.p q) (f.1.1 g) := f.1.2 q g
 
 /- English proof (translation)
-The claim follows from `smoothRep_isSmooth _`.
+A detailed English derivation is pending.
 -/
 theorem nInd_isSmooth (σ : Representation ℂ M W) : IsSmooth (P.nInd σ) := smoothRep_isSmooth _
 
@@ -444,7 +442,7 @@ def rJac (π : Representation ℂ G V) : Representation ℂ M (Jacquet π P.U) :
   twist (P.deltaHalf.comp P.sQ)⁻¹ (jacquet π P.U P.s fun m => P.Q_le_normalizer (P.s_mem m))
 
 /- English proof (translation)
-Simplify using `[rJac, jacquet]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rJac_mk (π : Representation ℂ G V) (m : M) (v : V) :
     P.rJac π m (Submodule.Quotient.mk v) =
@@ -458,7 +456,7 @@ def IsCuspSupport [IsTopologicalGroup M] (π : Representation ℂ G V) (σ : Rep
   σ.IsIrreducible ∧ IsSupercuspidal σ ∧ P.IsConstituent π σ
 
 /- English proof (translation)
-Use `haveI : Subsingleton P.U := by rw [h]; infer_instance`. Establish `: conjAut P.U (Subgroup.inclusion P.Q_le_normalizer (P.sQ (P.p q))) = ContinuousMulEquiv.refl _` using `ContinuousMulEquiv.ext fun _ => Subsingleton.elim _ _`. Simplify using `only [delta, modulus, MonoidHom.comp_apply, MonoidHom.coe_mk, OneHom.coe_mk, this, mulEquivHaarChar_refl]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem delta_of_U_eq_bot (h : P.U = ⊥) (q : P.Q) : P.delta q = 1 := by
   haveI : Subsingleton P.U := by rw [h]; infer_instance
@@ -497,7 +495,7 @@ def blockL (k : Type) [Field k] (b : n → α) : Subgroup (GL n k) where
     · exact (blockQ k b).inv_mem (fun _ _ h => hx _ _ (ne_of_gt h)) h
 
 /- English proof (translation)
-Introduce `_ hx _ _ h` and use `hx _ _ (ne_of_gt h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blockL_le (b : n → α) : blockL k b ≤ blockQ k b := fun _ hx _ _ h => hx _ _ (ne_of_gt h)
 
@@ -505,11 +503,11 @@ def blockPart (b : n → α) (A : Matrix n n k) : Matrix n n k := fun i j => if 
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blockPart, mul_apply]`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy (b l) (b i) with h' | h' | h'` into its components or cases.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[hA h']`. Simplify using `[h', h]`. Simplify using `[hB (h ▸ h' : b j < b l)]`. Use `(Finset.sum_eq_zero fun l _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `h' : b i = b l`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[← h', h]`. Simplify using `[h']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockPart_mul {b : n → α} {A B : Matrix n n k} (hA : A.BlockTriangular b) (hB : B.BlockTriangular b) :
     blockPart b (A * B) = blockPart b A * blockPart b B := by
@@ -540,13 +538,13 @@ Both sides reduce to the same expression.
 theorem blockProj_val (b : n → α) (q : blockQ k b) : (blockProj b q).val = blockPart b (q : GL n k).val := rfl
 
 /- English proof (translation)
-Introduce `i j h` and use `by simp [blockProj_val, blockPart, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blockProj_mem (b : n → α) (q : blockQ k b) : blockProj b q ∈ blockL k b :=
   fun i j h => by simp [blockProj_val, blockPart, h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `e : b i = b j`. Simplify using `[blockProj_val, blockPart, e]`. Simplify using `[blockProj_val, blockPart, e, h i j e]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blockProj_of_mem (b : n → α) (q : blockQ k b) (h : (q : GL n k) ∈ blockL k b) : blockProj b q = q := by
   ext i j
@@ -582,7 +580,7 @@ theorem diagEntries_val {b : n → α} (hb : Function.Injective b) (q : blockQ k
     (diagEntries hb q i : k) = (q : GL n k).val i i := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [diagHom_val, diagEntries_val, blockProj_val, blockPart, diagonal_apply, h, hb.eq_iff]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diagHom_diagEntries {b : n → α} (hb : Function.Injective b) (q : blockQ k b) :
     diagHom k n (diagEntries hb q) = blockProj b q := by
@@ -592,7 +590,7 @@ theorem diagHom_diagEntries {b : n → α} (hb : Function.Injective b) (q : bloc
 variable [TopologicalSpace k] [IsTopologicalRing k] [T2Space k]
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨hf, hf.comp continuous_inv⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toHomUnits {G A : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Monoid A]
     [TopologicalSpace A] (f : G →* A) (hf : Continuous f) : Continuous f.toHomUnits :=
@@ -605,16 +603,16 @@ instance locallyCompact_GL [LocallyCompactSpace k] : LocallyCompactSpace (GL n k
 
 omit [IsTopologicalRing k] [T2Space k] in
 /- English proof (translation)
-The claim follows from `Units.continuous_val.matrix_elem i j`.
+A detailed English derivation is pending.
 -/
 theorem continuous_entry (i j : n) : Continuous fun g : GL n k => g.val i j :=
   Units.continuous_val.matrix_elem i j
 
 omit [IsTopologicalRing k] in
 /- English proof (translation)
-Establish `: (blockQ k b : Set (GL n k)) = ⋂ i, ⋂ j, ⋂ _ : b j < b i, {g | g.val i j = 0}`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter]`. Conclude with `⟨fun h _ _ e => h e, fun h _ _ e => h _ _ e⟩`. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `exact isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (continuous_entry i j) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_blockQ (b : n → α) : IsClosed (blockQ k b : Set (GL n k)) := by
   have : (blockQ k b : Set (GL n k)) = ⋂ i, ⋂ j, ⋂ _ : b j < b i, {g | g.val i j = 0} := by
@@ -625,9 +623,9 @@ theorem isClosed_blockQ (b : n → α) : IsClosed (blockQ k b : Set (GL n k)) :=
 
 omit [IsTopologicalRing k] in
 /- English proof (translation)
-Establish `: (blockL k b : Set (GL n k)) = ⋂ i, ⋂ j, ⋂ _ : b i ≠ b j, {g | g.val i j = 0}`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter]`. Conclude with `⟨fun h _ _ e => h _ _ e, fun h _ _ e => h _ _ e⟩`. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `exact isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (continuous_entry i j) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_blockL (b : n → α) : IsClosed (blockL k b : Set (GL n k)) := by
   have : (blockL k b : Set (GL n k)) = ⋂ i, ⋂ j, ⋂ _ : b i ≠ b j, {g | g.val i j = 0} := by
@@ -641,7 +639,7 @@ instance locallyCompact_blockL [LocallyCompactSpace k] (b : n → α) : LocallyC
 
 omit [T2Space k] in
 /- English proof (translation)
-Use `continuous_toHomUnits _ (continuous_matrix fun i j => ?_)` and prove the remaining obligations. Use `show Continuous fun q : blockQ k b => if b i = b j then (q : GL n k).val i j else 0`. Use `split_ifs`. Apply the tactic sequence `exact (continuous_entry i j).comp continuous_subtype_val`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_blockProj (b : n → α) : Continuous (blockProj (k := k) b) := by
   refine continuous_toHomUnits _ (continuous_matrix fun i j => ?_)
@@ -665,7 +663,7 @@ def stdParOp (k : Type) [Field k] [TopologicalSpace k] [IsTopologicalRing k] [T2
     LeviDatum (GL n k) (blockL k b) := stdPar k (α := αᵒᵈ) b
 
 /- English proof (translation)
-Use `le_antisymm (fun g hg i j h => ?_) (le_inf (blockL_le b) (blockL_le (α := αᵒᵈ) b))` and prove the remaining obligations. Break down `lt_or_gt_of_ne h with h | h` into its components or cases. Conclude with `hg.2 h`. Conclude with `hg.1 h`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem blockQ_inf_dual (b : n → α) : blockQ k b ⊓ blockQ k (α := αᵒᵈ) b = blockL k b := by
   refine le_antisymm (fun g hg i j h => ?_) (le_inf (blockL_le b) (blockL_le (α := αᵒᵈ) b))
@@ -674,7 +672,7 @@ theorem blockQ_inf_dual (b : n → α) : blockQ k b ⊓ blockQ k (α := αᵒᵈ
   · exact hg.1 h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, (blockQ_inf_dual b).trans (Subgroup.range_subtype _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem stdPar_isOpposite (b : n → α) : (stdPar k b).IsOpposite (stdParOp k b) :=
   ⟨rfl, (blockQ_inf_dual b).trans (Subgroup.range_subtype _).symm⟩
@@ -717,7 +715,7 @@ def borelIn [LinearOrder n] (H : Subgroup (GL n k))
 omit [TopologicalSpace k] [IsTopologicalRing k] [T2Space k] in
 
 /- English proof (translation)
-Introduce `i j e` and use `by simp [blockProj_val, blockPart, h i j e]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blockProj_mem_blockL {β : Type} [LinearOrder β] (b : n → α) (c : n → β) (q : blockQ k c)
     (h : (q : GL n k) ∈ blockL k b) : blockProj c q ∈ blockL k b :=
@@ -732,9 +730,9 @@ def twoBlocks (a d : Type) : a ⊕ d → ℕ := Sum.elim (fun _ => 0) fun _ => 1
 
 omit [TopologicalSpace k] [IsTopologicalRing k] [T2Space k] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h; ext i j; exact h (by simp [twoBlocks])`. Introduce and unpack `h (i | i) (j | j) e`. Simplify using `[twoBlocks] at e`. Simplify using `[twoBlocks] at e`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `congrFun (congrFun h i) j`. Simplify using `[twoBlocks] at e`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_blockQ_two {g : GL (a ⊕ d) k} : g ∈ blockQ k (twoBlocks a d) ↔ g.val.toBlocks₂₁ = 0 := by
   constructor
@@ -747,9 +745,9 @@ theorem mem_blockQ_two {g : GL (a ⊕ d) k} : g ∈ blockQ k (twoBlocks a d) ↔
 
 omit [TopologicalSpace k] [IsTopologicalRing k] [T2Space k] in
 /- English proof (translation)
-Establish `hx` using `mem_blockQ_two.1 x.2`. Establish `hy` using `mem_blockQ_two.1 y.2`. Establish `e : ((x * y : blockQ k (twoBlocks a d)) : GL (a ⊕ d) k).val = x.1.val * y.1.val` using `rfl`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `conv_lhs => rw [← fromBlocks_toBlocks x.1.val, ← fromBlocks_toBlocks y.1.val, fromBlocks_multiply]`. Simplify using `[hy]`. Use `conv_lhs => rw [← fromBlocks_toBlocks x.1.val, ← fromBlocks_toBlocks y.1.val, fromBlocks_multiply]`. Simplify using `[hx]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toBlocks_mul (x y : blockQ k (twoBlocks a d)) :
     ((x * y : blockQ k (twoBlocks a d)) : GL (a ⊕ d) k).val.toBlocks₁₁ = x.1.val.toBlocks₁₁ * y.1.val.toBlocks₁₁ ∧
@@ -794,7 +792,7 @@ Both sides reduce to the same expression.
 theorem blockPar_s_val (m : GL a k × GL d k) : ((blockPar k a d).s m).val = fromBlocks m.1.val 0 0 m.2.val := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem blockPar_p_val (q : (blockPar k a d).Q) :
     ((blockPar k a d).p q).1.val = q.1.val.toBlocks₁₁ ∧ ((blockPar k a d).p q).2.val = q.1.val.toBlocks₂₂ := ⟨rfl, rfl⟩
@@ -835,7 +833,7 @@ def unrTorus {k n : Type} [Field k] [Fintype n] (v : k →*₀ WithZero (Multipl
   ∏ i, (unrChar v (α i)).comp (Pi.evalMonoidHom (fun _ : n => kˣ) i)
 
 /- English proof (translation)
-Simplify using `[unrTorus]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unrTorus_apply {k n : Type} [Field k] [Fintype n] (v : k →*₀ WithZero (Multiplicative ℤ)) (α : n → ℂˣ)
     (t : n → kˣ) : unrTorus v α t = ∏ i, unrChar v (α i) (t i) := by
@@ -864,20 +862,20 @@ theorem vZ_apply (x : k) : vZ k x = IsNonarchimedeanLocalField.valueGroupWithZer
 variable {k}
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `[unrChar_apply, vZ_apply, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem unrChar_isUnram (z : ℂˣ) : SplitWeil.IsUnram (unrChar (vZ k) z) := by
   intro x hx
   simp [unrChar_apply, vZ_apply, hx]
 
 /- English proof (translation)
-Use `set e := IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k`. Establish `hne : e (valuation k (ϖ : k)) ≠ 0` using `by simp`. Establish `hlt : e (valuation k (ϖ : k)) < 1`. Rewrite using `[← map_one e]`. Conclude with `e.strictMono h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `valuation_surjective (e.symm (WithZero.exp (-1 : ℤ)))`. Establish `hx' : e (valuation k x) = WithZero.exp (-1 : ℤ)` using `by rw [hx]; simp`. Establish `hx1 : valuation k x < 1`. Rewrite using `[← e.strictMono.lt_iff_lt, hx', map_one, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : WithZero.exp (-1 : ℤ) ≤ e (valuation k (ϖ : k))`. Rewrite using `[← hx']`. Conclude with `e.strictMono.monotone (hmax x hx1)`. Rewrite `hlt` using `[← WithZero.exp_log hne, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite `hle` using `[← WithZero.exp_log hne, WithZero.exp_le_exp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: WithZero.log (e (valuation k (ϖ : k))) = -1` using `by omega`. Rewrite using `[unrChar_apply, vZ_apply, this]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem unrChar_uniformiser (z : ℂˣ) (ϖ : kˣ) (h1 : valuation k (ϖ : k) < 1)
     (hmax : ∀ x : k, valuation k x < 1 → valuation k x ≤ valuation k (ϖ : k)) : unrChar (vZ k) z ϖ = z := by
@@ -917,7 +915,7 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {α : T
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Unfold `antiJ`. Use `congr 1`. Rewrite using `[Fin.ext_iff, Fin.val_rev]`. Apply `propext` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 -/
 theorem antiJ_apply (n : ℕ) (i j : Fin n) : antiJ L n i j = if j = i.rev then 1 else 0 := by
   unfold antiJ
@@ -928,14 +926,14 @@ theorem antiJ_apply (n : ℕ) (i j : Fin n) : antiJ L n i j = if j = i.rev then 
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Simplify using `[mul_apply, antiJ_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem antiJ_mul_apply (n : ℕ) (A : Matrix (Fin n) (Fin n) L) (i j : Fin n) : (antiJ L n * A) i j = A i.rev j := by
   simp [mul_apply, antiJ_apply]
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Simplify using `only [mul_apply, antiJ_apply, eq_comm (a := j), Fin.rev_eq_iff]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mul_antiJ_apply (n : ℕ) (A : Matrix (Fin n) (Fin n) L) (i j : Fin n) : (A * antiJ L n) i j = A i j.rev := by
   simp only [mul_apply, antiJ_apply, eq_comm (a := j), Fin.rev_eq_iff]
@@ -944,9 +942,9 @@ theorem mul_antiJ_apply (n : ℕ) (A : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 
 /- English proof (translation)
-Establish `h1 : g ∈ GU σ n ↔ cT σ g.val * antiJ L n = antiJ L n * (g⁻¹).val` using `by show cT σ g.val * antiJ L n * g.val = antiJ L n ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h conv_rhs => rw [← h]`. Rewrite using `[Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Introduce `h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Rewrite using `[h1, ← Matrix.ext_iff]`. Simplify using `only [antiJ_mul_apply, mul_antiJ_apply, cT, transpose_apply, map_apply]`. Conclude with `⟨fun h i j => by simpa using (h i.rev j).symm, fun h i j => by simpa using (h i.rev j).symm⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_GU_iff (σ : L →+* L) (n : ℕ) (g : GL (Fin n) L) :
     g ∈ GU σ n ↔ ∀ i j, (g⁻¹).val i j = σ (g.val j.rev i.rev) := by
@@ -965,12 +963,12 @@ theorem mem_GU_iff (σ : L →+* L) (n : ℕ) (g : GL (Fin n) L) :
 def SelfDualBlocks {n : ℕ} (b : Fin n → α) : Prop := ∀ i j, b i.rev < b j.rev ↔ b j < b i
 
 /- English proof (translation)
-Introduce `_ _` and use `Fin.rev_lt_rev`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem selfDualBlocks_id (n : ℕ) : SelfDualBlocks (id : Fin n → Fin n) := fun _ _ => Fin.rev_lt_rev
 
 /- English proof (translation)
-Introduce `i j` and use `hb j i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SelfDualBlocks.dual {n : ℕ} {b : Fin n → α} (hb : SelfDualBlocks b) : SelfDualBlocks (α := αᵒᵈ) b :=
   fun i j => hb j i
@@ -978,9 +976,9 @@ theorem SelfDualBlocks.dual {n : ℕ} {b : Fin n → α} (hb : SelfDualBlocks b)
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 
 /- English proof (translation)
-Rewrite `hq`, the goal using `[mem_GU_iff]`. Introduce `i j`. Establish `e : b j.rev = b i.rev ↔ b i = b j`. Rewrite using `[← not_iff_not, ← ne_eq, ← ne_eq, ne_iff_lt_or_gt, ne_iff_lt_or_gt, hb, hb]`. Rewrite using `[← map_inv, blockProj_val, blockProj_val]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [blockPart, e]`. Use `split_ifs`. Conclude with `hq i j`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockProj_mem_GU (σ : L →+* L) {n : ℕ} {b : Fin n → α} (hb : SelfDualBlocks b) (q : blockQ L b)
     (hq : (q : GL (Fin n) L) ∈ GU σ n) : blockProj b q ∈ GU σ n := by
@@ -1003,7 +1001,7 @@ def parUOp (σ : L →+* L) {n : ℕ} {b : Fin n → α} (hb : SelfDualBlocks b)
   parU (α := αᵒᵈ) σ hb.dual
 
 /- English proof (translation)
-Use `⟨rfl, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Conclude with `fun g hg => ⟨⟨g.1, g.2, (blockQ_inf_dual b).le hg⟩, rfl⟩`. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `⟨(parU σ hb).s_mem m, (parUOp σ hb).s_mem m⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem parU_isOpposite (σ : L →+* L) {n : ℕ} {b : Fin n → α} (hb : SelfDualBlocks b) :
     (parU σ hb).IsOpposite (parUOp σ hb) := by
@@ -1015,7 +1013,7 @@ theorem parU_isOpposite (σ : L →+* L) {n : ℕ} {b : Fin n → α} (hb : Self
 def lineBlocks (n : ℕ) (i : Fin n) : ℤ := (if i.val + 1 = n then 1 else 0) - (if i.val = 0 then 1 else 0)
 
 /- English proof (translation)
-Introduce `i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Simplify using `only [lineBlocks, Fin.val_rev]`. Apply the tactic sequence `split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem selfDualBlocks_line (n : ℕ) : SelfDualBlocks (lineBlocks n) := by
   intro i j
@@ -1030,15 +1028,15 @@ def borelU (σ : L →+* L) (n : ℕ) : LeviDatum (GU σ n) (torusU σ n) :=
   borelIn _ (blockProj_mem_GU σ (selfDualBlocks_id n))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ _ e => h e, fun h _ _ e => h _ _ e⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_borelU_Q (σ : L →+* L) (n : ℕ) (g : GU σ n) : g ∈ (borelU σ n).Q ↔ IsBorelU g :=
   ⟨fun h _ _ e => h e, fun h _ _ e => h _ _ e⟩
 
 /- English proof (translation)
-Rewrite using `[LeviDatum.mem_U]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, e⟩`. Conclude with `⟨(mem_borelU_Q σ n g).1 h, fun i => congrArg (fun t : torusU σ n => (t.1 i : L)) e⟩`. Introduce and unpack `⟨h, e⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(mem_borelU_Q σ n g).2 h, Subtype.ext (funext fun i => Units.ext (e i))⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_borelU_U (σ : L →+* L) (n : ℕ) (g : GU σ n) : g ∈ (borelU σ n).U ↔ IsUnipU g := by
   rw [LeviDatum.mem_U]
@@ -1065,7 +1063,7 @@ instance locallyCompact_leviU (σ : L →+* L) {n : ℕ} (b : Fin n → α) [Loc
   exact h.locallyCompactSpace
 
 /- English proof (translation)
-Use `IsClosed.locallyCompactSpace (s := (GU σ n : Set (GL (Fin n) L))) ?_` and prove the remaining obligations. Conclude with `isClosed_eq (((Units.continuous_val.matrix_map hσ).matrix_transpose.matrix_mul continuous_const).matrix_mul Units.continuous_val) continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem locallyCompact_GU [LocallyCompactSpace L] (σ : L →+* L) (hσ : Continuous σ) (n : ℕ) :
     LocallyCompactSpace (GU σ n) := by
@@ -1079,7 +1077,7 @@ def unrU (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : �
     (Pi.evalMonoidHom (fun _ : Fin n => Lˣ) (Fin.castLE (Nat.div_le_self n 2) i))
 
 /- English proof (translation)
-Unfold `ordL`. Use `split_ifs with h`. Simplify using `[h]`. Rewrite using `[WithZero.toAdd_unzero_eq_log]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordL_eq (x : L) : ordL x = -WithZero.log (Valued.v x) := by
   unfold ordL
@@ -1088,7 +1086,7 @@ theorem ordL_eq (x : L) : ordL x = -WithZero.log (Valued.v x) := by
   · rw [WithZero.toAdd_unzero_eq_log]
 
 /- English proof (translation)
-Simplify using `[unrU, unrChar_apply, ordL_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unrU_apply {n : ℕ} (α : Fin (n / 2) → ℂˣ) (t : Fin n → Lˣ) :
     unrU L α t = ∏ i, α i ^ ordL (t (Fin.castLE (Nat.div_le_self n 2) i) : L) := by
@@ -1117,17 +1115,17 @@ def bcParam (n : ℕ) (α : Fin (n / 2) → ℂˣ) : Multiset ℂˣ :=
 def twParam (z : ℂˣ) (n : ℕ) (α : Fin (n / 2) → ℂˣ) : Multiset ℂˣ := (bcParam n α).map (z⁻¹ * ·)
 
 /- English proof (translation)
-Simplify using `[bcParam]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_bcParam (n : ℕ) (α : Fin (n / 2) → ℂˣ) : (bcParam n α).card = n := by
   simp [bcParam]; omega
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Establish `key : ∀ γ : Fin (n / 2) → ℂˣ, Finset.univ.val.map γ + Finset.univ.val.map (fun i => (γ i)⁻¹) = ∑ i, ({γ i, (γ i)⁻¹} : Multiset ℂˣ)`. Introduce `γ`. Establish `: ∀ f : Fin (n / 2) → ℂˣ, ∑ i, ({f i} : Multiset ℂˣ) = Finset.univ.val.map f` using `fun f => by`. Rewrite using `[Finset.sum_eq_multiset_sum, ← Multiset.sum_map_singleton (Finset.univ.val.map f), Multiset.map_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [Multiset.insert_eq_cons, ← Multiset.singleton_add, Finset.sum_add_distrib, this]`. Unfold `bcParam`. Rewrite using `[key, key, ← Equiv.sum_comp w]`. Use `congr 1`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Break down `hw i with e | e` into its components or cases. Rewrite using `[e]`. Rewrite using `[e, inv_inv, Multiset.pair_comm]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcParam_of_weylConj {n : ℕ} {α β : Fin (n / 2) → ℂˣ} (h : WeylConjU α β) : bcParam n α = bcParam n β := by
   obtain ⟨w, hw⟩ := h
@@ -1150,15 +1148,13 @@ end Unitary
 section Examples
 
 /- English proof (translation)
-Establish `hδ : ∀ q, (P.deltaHalf q : ℂ) = 1` using `fun q => by simp [P.deltaHalf_coe, P.delta_of_U_eq_bot hU]`. Use `⟨⊤, ⟨⟨⟨fun f => f.1.1.1 1, fun _ _ => rfl⟩, fun _ _ => rfl⟩, fun g => ?_⟩, fun z => ?_⟩` and prove the remaining obligations. Use extensionality with `f`. Use `LeviDatum.IndSpace.law P f.1 ⟨g, hQ g⟩ 1` as an intermediate fact. Rewrite `this` using `[hδ, one_smul, charRep_apply, ← hω]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show f.1.1.1 (1 * g) = charRep ω g (f.1.1.1 1)`. Rewrite using `[one_mul, charRep_apply, ← this, mul_one]`. Use `⟨⟨⟨⟨fun g => (ω g : ℂ) * z, fun q g => ?_⟩, ?_⟩, trivial⟩, by simp⟩` and prove the remaining obligations. Use `show (ω (q * g) : ℂ) * z = (P.deltaHalf q : ℂ) • charRep χ (P.p q) ((ω g : ℂ) * z)`. Rewrite using `[hδ, one_smul, charRep_apply, ← hω, map_mul, Units.val_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `(congrArg IsOpen ?_).mpr (hs z)` and prove the remaining obligations. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, charRep_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: (ω (1 * g) : ℂ) * z = (ω 1 : ℂ) * z` using `congrFun (congrArg Subtype.val h) 1`. Simplify using `using this`. Introduce `h`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Use `show (ω (x * g) : ℂ) * z = (ω x : ℂ) * z`.
-
-Rewrite using `[map_mul, Units.val_mul, mul_assoc, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSubquot_char_of_top {G M : Type} [Group G] [TopologicalSpace G] [Group M] [TopologicalSpace M]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [T1Space M] (P : LeviDatum G M) (hU : P.U = ⊥) (χ : M →* ℂˣ)
@@ -1187,9 +1183,9 @@ theorem isSubquot_char_of_top {G M : Type} [Group G] [TopologicalSpace G] [Group
         rw [map_mul, Units.val_mul, mul_assoc, h]
 
 /- English proof (translation)
-Introduce `z`. Distinguish the cases in `hz : z = 0`. Simplify using `[hz]`. Establish `: {g : G | charRep ω g z = z} = (ω.ker : Set G)`. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[hz]`. Rewrite using `[this]`. Conclude with `ω.ker.isOpen_of_mem_nhds h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmooth_charRep {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (ω : G →* ℂˣ)
     (h : {g | ω g = 1} ∈ nhds (1 : G)) : IsSmooth (charRep ω) := by
@@ -1205,9 +1201,9 @@ open ValuativeRel
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `isSmooth_charRep _ ?_` and prove the remaining obligations. Establish `h1 : {y : k | valuation k y = valuation k 1} ∈ nhds (1 : k)`. Set `_` to `IsTopologicalAddGroup.rightUniformSpace k`. Use `isUniformAddGroup_of_addCommGroup (G := k)` as an intermediate fact. Conclude with `Valued.locally_const (R := k) (x := 1) (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun g : GL n k => g.val.det` using `Units.continuous_val.matrix_det`. Establish `h2` using `hc.continuousAt (x := 1) (show _ ∈ nhds (1 : GL n k).val.det by simpa using h1)`. Use `Filter.mem_of_superset h2 fun g hg => hμ _ ?_` and prove the remaining obligations. Simplify using `using hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isSmooth_unram_det {n : Type} [Fintype n] [DecidableEq n] {μ : kˣ →* ℂˣ} (hμ : SplitWeil.IsUnram μ) :
     IsSmooth (charRep (μ.comp (Matrix.GeneralLinearGroup.det (n := n)))) := by
@@ -1222,15 +1218,15 @@ theorem isSmooth_unram_det {n : Type} [Fintype n] [DecidableEq n] {μ : kˣ →*
   simpa using hg
 
 /- English proof (translation)
-Establish `hs` using `isSmooth_unram_det (n := Fin 1) (unrChar_isUnram (k := k) z)`. Use `⟨⟨fun _ => z, by simp, ⟨hs, charRep_irreducible _⟩, isSubquot_char_of_top _ ?_ _ _ ?_ ?_ hs⟩, ?_⟩` and prove the remaining obligations. Use `eq_bot_iff.2 fun g hg => ?_` and prove the remaining obligations. Take `⟨h, e⟩` from `(LeviDatum.mem_U _).1 hg`. Use `Subgroup.mem_bot.2 (Units.ext (Matrix.ext fun i j => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : i = j` from `Subsingleton.elim _ _`. Conclude with `(congrArg (fun t : Fin 1 → kˣ => (t i : k)) e).trans (by simp)`. Introduce `g i j h`. Conclude with `absurd h (by rw [Subsingleton.elim i j]; exact lt_irrefl _)`. Introduce `q`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[unrTorus_apply, Fin.prod_univ_one, MonoidHom.comp_apply]`. Use `congr 1`. Conclude with `Units.ext (Matrix.det_fin_one _)`. Introduce `h`. Establish `: (1 : ℂ) ∈ fixed (charRep ((unrChar (vZ k) z).comp (Matrix.GeneralLinearGroup.det (n` using `Fin 1)))) (SplitWeil.KO k (Fin 1)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_fixed]`. Introduce and unpack `_ ⟨g, rfl⟩`. Rewrite using `[charRep_apply, MonoidHom.comp_apply, unrChar_isUnram z _ ?_]`. Simplify using the standard rewrite rules. Use `(Valuation.integer.integers (valuation k)).valuation_unit (Matrix.GeneralLinearGroup.det g)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[Matrix.det_fin_one]`. Rewrite `this` using `[h]`. Simplify using `at this`.
+A detailed English derivation is pending.
 -/
 theorem hasSatake_GL_one (z : ℂˣ) :
     HasSatakeGL (charRep ((unrChar (vZ k) z).comp (Matrix.GeneralLinearGroup.det (n := Fin 1)))) {z} := by
@@ -1260,11 +1256,11 @@ theorem hasSatake_GL_one (z : ℂˣ) :
     simp at this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Set `g : GL (Fin 2) k` to `⟨!![1, 1; 0, 1], !![1, -1; 0, 1], by simp [← Matrix.one_fin_two], by simp [← Matrix.one_fin_two]⟩`. Establish `hg : g ∈ (borelGL k (Fin 2)).U`. Use `(LeviDatum.mem_U _).2 ⟨fun i j e => ?_, funext fun i => Units.ext ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [g]`. Apply the tactic sequence `show g.val i i = 1 fin_cases i <;> simp [g]`. Rewrite `hg` using `[h, Subgroup.mem_bot]`. Simplify `congrArg (fun x : GL (Fin 2) k => x.val 0 1) hg` using `[g]`. Introduce `h`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `g : GL (Fin 2) k` to `⟨!![1, 0; 1, 1], !![1, 0; -1, 1], by simp [← Matrix.one_fin_two], by simp [← Matrix.one_fin_two]⟩`. Establish `hg : g ∈ (borelGL k (Fin 2)).Q` using `h ▸ Subgroup.mem_top g`. Simplify `hg (show (id 0 : Fin 2) < id 1 by decide)` using `[g]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem borelGL_two_nontrivial : (borelGL k (Fin 2)).U ≠ ⊥ ∧ (borelGL k (Fin 2)).Q ≠ ⊤ := by
   constructor
@@ -1286,11 +1282,9 @@ open Formalism.UG
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Take `⟨-, hv, -, hϖ, -, hq, hcard⟩` from `h`. Use `haveI : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).IsNontrivial := ⟨ϖ, by rw [hϖ]; exact WithZero.coe_ne_zero, by rw [hϖ, ← WithZero.coe_one, ne_eq, WithZero.coe_inj]; decide⟩`. Use `letI : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).RankOne := Valuation.IsRankOneDiscrete.rankOne _ (e := 2) (by norm_num)`. Establish `hp` using `(Valued.integer.properSpace_iff_completeSpace_and_isDiscreteValuationRing_integer_and_finite_residueField (K := L)).2 ⟨inferInstance, (Valued.v : Valuation L _).valuationSubring_isDiscreteValuationRing, Nat.finite_of_card_ne_zero (by`. Use `ne_of_eq_of_ne hcard (pow_ne_zero _ (by omega)))⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : LocallyCompactSpace L := by open scoped Valued in exact inferInstance`. Use `locallyCompact_GU σ (continuous_of_continuousAt_zero σ ?_) n` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, (Valued.hasBasis_nhds_zero L _).tendsto_iff (Valued.hasBasis_nhds_zero L _)]`. Use `fun γ _ => ⟨γ, trivial, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`.
-
-Rewrite using `[show Valued.v.restrict (σ x) = Valued.v.restrict x from (Valuation.restrict_inj _).2 (hv x)]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem locallyCompact_GU_of_unram [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (n : ℕ) :
     LocallyCompactSpace (GU σ n) := by
@@ -1312,13 +1306,11 @@ theorem locallyCompact_GU_of_unram [CompleteSpace L] {ϖ : L} {σ : L →+* L} {
   rwa [show Valued.v.restrict (σ x) = Valued.v.restrict x from (Valuation.restrict_inj _).2 (hv x)]
 
 /- English proof (translation)
-Take `⟨hσ, -, -, -, ⟨z, -, hz⟩, -⟩` from `h`. Establish `hx : σ z - z ≠ 0` using `fun e => by simp [e] at hz`. Set `g : GL (Fin 2) L` to `⟨!![1, σ z - z; 0, 1], !![1, -(σ z - z); 0, 1], by simp [← Matrix.one_fin_two], by simp [← Matrix.one_fin_two]⟩`. Establish `hg : g ∈ GU σ 2`. Rewrite using `[mem_GU_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Use `show !![1, -(σ z - z); 0, 1] i j = σ (!![1, σ z - z; 0, 1] j.rev i.rev)`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Fin.rev, hσ]`. Establish `hu : (⟨g, hg⟩ : GU σ 2) ∈ (borelU σ 2).U`. Rewrite using `[mem_borelU_U]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i j e => ?_, fun i => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [g]`. Apply the tactic sequence `fin_cases i <;> simp [g]`. Introduce `e`. Rewrite `hu` using `[e, Subgroup.mem_bot]`.
-
-Conclude with `hx (by simpa [g] using congrArg (fun x : GU σ 2 => x.1.val 0 1) hu)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem borelU_two_nontrivial {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) : (borelU σ 2).U ≠ ⊥ := by
   obtain ⟨hσ, -, -, -, ⟨z, -, hz⟩, -⟩ := h
@@ -1354,7 +1346,7 @@ def tensorFst (ω : Representation ℂ (G × H) V) (τ : Representation ℂ G W)
   Representation.tprod ω (τ.comp (MonoidHom.fst G H))
 
 /- English proof (translation)
-Simplify using `[tensorFst]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem tensorFst_tmul (ω : Representation ℂ (G × H) V) (τ : Representation ℂ G W) (g : G × H) (v : V)
     (w : W) : tensorFst ω τ g (v ⊗ₜ w) = ω g v ⊗ₜ τ g.1 w := by
@@ -1365,7 +1357,7 @@ def coinvTensor (ω : Representation ℂ (G × H) V) (τ : Representation ℂ G 
   coinvFst (tensorFst ω τ)
 
 /- English proof (translation)
-Simplify using `[coinvTensor, coinvFst_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coinvTensor_mk (ω : Representation ℂ (G × H) V) (τ : Representation ℂ G W) (h : H) (v : V) (w : W) :
     coinvTensor ω τ h (Submodule.Quotient.mk (v ⊗ₜ w)) = Submodule.Quotient.mk (ω (1, h) v ⊗ₜ w) := by
@@ -1387,7 +1379,7 @@ theorem coinvChar_mk (χ : A →* ℂˣ) (ρ : Representation ℂ (A × H) V) (h
     coinvChar χ ρ h (Submodule.Quotient.mk v) = Submodule.Quotient.mk (ρ (1, h) v) := rfl
 
 /- English proof (translation)
-Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Conclude with `Submodule.subset_span ⟨⟨(a, 1), a, rfl⟩, v, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coinvChar_rel (χ : A →* ℂˣ) (ρ : Representation ℂ (A × H) V) (a : A) (v : V) :
     (Submodule.Quotient.mk (ρ (a, 1) v) : TwJacquet ρ (MonoidHom.inl A H).range (charFst H χ)) =
@@ -1396,9 +1388,9 @@ theorem coinvChar_rel (χ : A →* ℂˣ) (ρ : Representation ℂ (A × H) V) (
   exact Submodule.subset_span ⟨⟨(a, 1), a, rfl⟩, v, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a v`. Use `h (Submodule.subset_span ⟨⟨(a, 1), a, rfl⟩, v, rfl⟩)` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, map_smul, sub_eq_zero]`. Conclude with `this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨_, a, rfl⟩, v, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, map_sub, map_smul, sub_eq_zero]`. Conclude with `h a v`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twKer_charFst_le_ker (χ : A →* ℂˣ) (ρ : Representation ℂ (A × H) V) (f : V →ₗ[ℂ] W) :
     twKer ρ (MonoidHom.inl A H).range (charFst H χ) ≤ LinearMap.ker f ↔
@@ -1437,13 +1429,11 @@ theorem coinvCharMid_mk (χ : A →* ℂˣ) (ρ : Representation ℂ (G × (A ×
     coinvCharMid χ ρ g (Submodule.Quotient.mk v) = Submodule.Quotient.mk (ρ (g.1, 1, g.2) v) := rfl
 
 /- English proof (translation)
-Establish `key : ∀ (a : A) (v : ℂ ⊗[ℂ] W), extProd (charRep χ') π (a, 1) v = (χ' a : ℂ) • v`. Introduce `a v`. Proceed by induction on `v with`. Consider the case `zero => simp`. Consider the case `tmul x w => simp [TensorProduct.smul_tmul']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Rewrite using `[eq_bot_iff, ← LinearMap.ker_id, twKer_charFst_le_ker]`. Conclude with `key`.
+Treat this case separately. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨a, ha⟩` from `DFunLike.ne_iff.1 h`. Establish `hne : (χ' a : ℂ) - χ a ≠ 0` using `sub_ne_zero.2 fun e => ha (Units.ext e.symm)`. Use `eq_top_iff.2 fun v _ => Submodule.subset_span ⟨⟨(a, 1), a, rfl⟩, ((χ' a : ℂ) - χ a)⁻¹ • v, ?_⟩` and prove the remaining obligations. Use `show v = extProd (charRep χ') π (a, 1) _ - (χ a : ℂ) • _`.
-
-Rewrite using `[key, ← sub_smul, smul_inv_smul₀ hne]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twKer_charFst_extProd (χ χ' : A →* ℂˣ) (π : Representation ℂ H W) :
     (χ = χ' → twKer (extProd (charRep χ') π) (MonoidHom.inl A H).range (charFst H χ) = ⊥) ∧
@@ -1468,9 +1458,9 @@ theorem twKer_charFst_extProd (χ χ' : A →* ℂˣ) (π : Representation ℂ H
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Take `⟨v, l, rfl⟩` from `h`. Use `⟨l, ⟨(LinearMap.applyₗ v).comp (Submodule.subtype _), ?_⟩, rfl⟩` and prove the remaining obligations. Use `SmGL.mem_smoothPart_of_nhds (Filter.mem_of_superset ((hρ v).mem_nhds (by simp)) fun g hg => ?_)` and prove the remaining obligations. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Use `show m.1 (ρ g⁻¹⁻¹ v) = m.1 v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_inv, show ρ g v = v from hg]`.
+A detailed English derivation is pending.
 -/
 theorem IsMatrixCoeff.checkFun {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) {c : G → ℂ} (h : IsMatrixCoeff ρ c) :
     IsMatrixCoeff (smoothDual ρ) (checkFun c) := by
@@ -1498,14 +1488,14 @@ def prodLeft (H : Type) [Group H] [TopologicalSpace H] : LeviDatum (H × G) (H �
     (P.cont_p.comp ((continuous_snd.comp continuous_subtype_val).subtype_mk _))
 
 /- English proof (translation)
-Rewrite using `[mem_U, mem_U]`. Conclude with `⟨fun ⟨h, e⟩ => ⟨⟨h, congrArg Prod.fst e⟩, congrArg Prod.snd e⟩, fun ⟨⟨h, e⟩, e'⟩ => ⟨h, Prod.ext e e'⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_prod_U (H : Type) [Group H] [TopologicalSpace H] (g : G × H) : g ∈ (P.prod H).U ↔ g.1 ∈ P.U ∧ g.2 = 1 := by
   rw [mem_U, mem_U]
   exact ⟨fun ⟨h, e⟩ => ⟨⟨h, congrArg Prod.fst e⟩, congrArg Prod.snd e⟩, fun ⟨⟨h, e⟩, e'⟩ => ⟨h, Prod.ext e e'⟩⟩
 
 /- English proof (translation)
-Rewrite using `[mem_U, mem_U]`. Conclude with `⟨fun ⟨h, e⟩ => ⟨congrArg Prod.fst e, h, congrArg Prod.snd e⟩, fun ⟨e', h, e⟩ => ⟨h, Prod.ext e' e⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_prodLeft_U (H : Type) [Group H] [TopologicalSpace H] (g : H × G) :
     g ∈ (P.prodLeft H).U ↔ g.1 = 1 ∧ g.2 ∈ P.U := by
@@ -1513,7 +1503,7 @@ theorem mem_prodLeft_U (H : Type) [Group H] [TopologicalSpace H] (g : H × G) :
   exact ⟨fun ⟨h, e⟩ => ⟨congrArg Prod.fst e, h, congrArg Prod.snd e⟩, fun ⟨e', h, e⟩ => ⟨h, Prod.ext e' e⟩⟩
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_U, mem_U]`. Conclude with `exists_congr fun h => map_eq_one_iff e.symm e.symm.injective`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reparam_U {M' : Type} [Group M'] [TopologicalSpace M'] (e : M' ≃ₜ* M) : (P.reparam e).U = P.U := by
   ext g
@@ -1521,7 +1511,7 @@ theorem reparam_U {M' : Type} [Group M'] [TopologicalSpace M'] (e : M' ≃ₜ* M
   exact exists_congr fun h => map_eq_one_iff e.symm e.symm.injective
 
 /- English proof (translation)
-Use extensionality with `g`. Conclude with `⟨fun ⟨m, h⟩ => ⟨e m, h⟩, fun ⟨m, h⟩ => ⟨e.symm m, (congrArg P.s (e.apply_symm_apply m)).trans h⟩⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem reparam_L {M' : Type} [Group M'] [TopologicalSpace M'] (e : M' ≃ₜ* M) : (P.reparam e).L = P.L := by
   ext g
@@ -1530,14 +1520,14 @@ theorem reparam_L {M' : Type} [Group M'] [TopologicalSpace M'] (e : M' ≃ₜ* M
 variable {P} {P' : LeviDatum G M}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨congrArg (·.comp e.toMulEquiv.toMonoidHom) h.1, h.2.trans (P.reparam_L e).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsOpposite.reparam (h : P.IsOpposite P') {M' : Type} [Group M'] [TopologicalSpace M'] (e : M' ≃ₜ* M) :
     (P.reparam e).IsOpposite (P'.reparam e) :=
   ⟨congrArg (·.comp e.toMulEquiv.toMonoidHom) h.1, h.2.trans (P.reparam_L e).symm⟩
 
 /- English proof (translation)
-Use `⟨congrArg (·.prodMap (MonoidHom.id H)) h.1, le_antisymm (fun g hg => ?_) ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩ : g.1 ∈ P.L` from `h.2.le hg`. Conclude with `⟨(m, g.2), Prod.ext hm rfl⟩`. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `h.2.ge ⟨m.1, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem IsOpposite.prod (h : P.IsOpposite P') (H : Type) [Group H] [TopologicalSpace H] :
     (P.prod H).IsOpposite (P'.prod H) := by
@@ -1569,33 +1559,33 @@ Both sides reduce to the same expression.
 theorem extProd_eq (π : Representation ℂ G V) (π' : Representation ℂ H W) : extProd π π' = SmGL.extTensor π π' := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isSubquot_iff (π : Representation ℂ G W) (ρ : Representation ℂ G V) :
     IsSubquot π ρ ↔ SmGL.IsSubquotient π ρ := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem hasFiniteLength_iff (ρ : Representation ℂ G V) : HasFiniteLength ρ ↔ SmGL.HasFiniteLength ρ := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isUnitarisable_iff (ρ : Representation ℂ G V) : IsUnitarisable ρ ↔ SmGL.IsUnitarisable ρ := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isSpherical_iff (ρ : Representation ℂ G V) (K : Subgroup G) : IsSpherical ρ K ↔ SmGL.IsSphericalFor ρ K :=
   Iff.rfl
 
 /- English proof (translation)
-Establish `key : ∀ l : Module.Dual ℂ V, l ∈ fixed ρ.dual K ↔ ∀ k ∈ K, ∀ x, l (ρ k x) = l x` using `fun l => by`. Rewrite using `[mem_fixed]`. Prove the components needed by the constructor for the conclusion. Introduce `h k hk x`. Simplify `LinearMap.congr_fun (h k⁻¹ (inv_mem hk)) x` using `[Module.Dual.transpose_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h k hk`. Conclude with `LinearMap.ext fun x => h k⁻¹ (inv_mem hk) x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, l, hl, h1, rfl⟩`. Conclude with `⟨v, hv, l, (key l).2 hl, h1, fun _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨v, hv, l, hl, h1, h⟩`. Conclude with `⟨v, hv, l, (key l).1 hl, h1, funext h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isZonal_iff (ρ : Representation ℂ G V) (K : Subgroup G) (ω : G → ℂ) : IsZonal ρ K ω ↔ SmGL.IsZonal ρ K ω := by
   have key : ∀ l : Module.Dual ℂ V, l ∈ fixed ρ.dual K ↔ ∀ k ∈ K, ∀ x, l (ρ k x) = l x := fun l => by
@@ -1620,7 +1610,7 @@ theorem smoothDual_eq [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Represen
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem unrChar_eq (z : ℂˣ) : unrChar (vZ k) z = SmGL.unrChar k z := MonoidHom.ext fun _ => rfl
 
@@ -1662,70 +1652,70 @@ Both sides reduce to the same expression.
 @[simp] theorem midIdx_val (i : Fin n) : (midIdx i).val = i.val + 1 := rfl
 
 /- English proof (translation)
-The claim follows from `Fin.cases h0 (fun j => Fin.lastCases hl hm j) i`.
+A detailed English derivation is pending.
 -/
 theorem lineCases {p : Fin (n + 2) → Prop} (h0 : p 0) (hm : ∀ i, p (midIdx i)) (hl : p (Fin.last (n + 1))) (i) : p i :=
   Fin.cases h0 (fun j => Fin.lastCases hl hm j) i
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_castSucc]`. Conclude with `(add_assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_line {M : Type} [AddCommMonoid M] (f : Fin (n + 2) → M) :
     ∑ i, f i = f 0 + ∑ i, f (midIdx i) + f (Fin.last (n + 1)) := by
   rw [Fin.sum_univ_succ, Fin.sum_univ_castSucc]; exact (add_assoc _ _ _).symm
 
 /- English proof (translation)
-Use `ext`. Use `i.2` as an intermediate fact. Simplify using `only [Fin.val_rev, midIdx_val]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 @[simp] theorem rev_midIdx (i : Fin n) : (midIdx i).rev = midIdx i.rev := by
   ext; have := i.2; simp only [Fin.val_rev, midIdx_val]; omega
 
 /- English proof (translation)
-The claim follows from `Fin.succ_ne_zero _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem midIdx_ne_zero (i : Fin n) : midIdx i ≠ 0 := Fin.succ_ne_zero _
 
 /- English proof (translation)
-Introduce `e` and use `by have := congrArg Fin.val e; have := i.2; simp only [midIdx_val, Fin.val_last] at *; omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 @[simp] theorem midIdx_ne_last (i : Fin n) : midIdx i ≠ Fin.last (n + 1) := fun e => by
   have := congrArg Fin.val e; have := i.2; simp only [midIdx_val, Fin.val_last] at *; omega
 
 /- English proof (translation)
-The claim follows from `(midIdx_ne_zero i).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zero_ne_midIdx (i : Fin n) : 0 ≠ midIdx i := (midIdx_ne_zero i).symm
 
 /- English proof (translation)
-The claim follows from `(midIdx_ne_last i).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem last_ne_midIdx (i : Fin n) : Fin.last (n + 1) ≠ midIdx i := (midIdx_ne_last i).symm
 
 /- English proof (translation)
-The claim follows from `Fin.last_pos.ne`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem zero_ne_lastIdx : (0 : Fin (n + 2)) ≠ Fin.last (n + 1) := Fin.last_pos.ne
 
 /- English proof (translation)
-Simplify using `only [Fin.ext_iff, midIdx_val]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 @[simp] theorem midIdx_inj {i j : Fin n} : midIdx i = midIdx j ↔ i = j := by
   simp only [Fin.ext_iff, midIdx_val]; omega
 
 /- English proof (translation)
-Simplify using `[lineBlocks]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lineBlocks_zero : lineBlocks (n + 2) 0 = -1 := by simp [lineBlocks]
 
 /- English proof (translation)
-Use `i.2` as an intermediate fact. Rewrite using `[lineBlocks, midIdx_val, if_neg (by omega), if_neg (by omega), sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem lineBlocks_mid (i : Fin n) : lineBlocks (n + 2) (midIdx i) = 0 := by
   have := i.2
   rw [lineBlocks, midIdx_val, if_neg (by omega), if_neg (by omega), sub_zero]
 
 /- English proof (translation)
-Simplify using `[lineBlocks]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lineBlocks_last : lineBlocks (n + 2) (Fin.last (n + 1)) = 1 := by simp [lineBlocks]
 
@@ -1744,13 +1734,13 @@ Both sides reduce to the same expression.
 @[simp] theorem lineMat_zero_zero : lineMat a h d 0 0 = a := rfl
 
 /- English proof (translation)
-Simplify using `[lineMat, midIdx]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lineMat_mid_mid (i j : Fin n) : lineMat a h d (midIdx i) (midIdx j) = h i j := by
   simp [lineMat, midIdx]
 
 /- English proof (translation)
-Simplify using `[lineMat, ← Fin.succ_last]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lineMat_last_last : lineMat a h d (Fin.last (n + 1)) (Fin.last (n + 1)) = d := by
   simp [lineMat, ← Fin.succ_last]
@@ -1776,19 +1766,19 @@ Both sides reduce to the same expression.
 @[simp] theorem lineMat_last_zero : lineMat a h d (Fin.last (n + 1)) 0 = 0 := rfl
 
 /- English proof (translation)
-Simplify using `[lineMat, midIdx, ← Fin.succ_last]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lineMat_mid_last (i : Fin n) : lineMat a h d (midIdx i) (Fin.last (n + 1)) = 0 := by
   simp [lineMat, midIdx, ← Fin.succ_last]
 
 /- English proof (translation)
-Simplify using `[lineMat, midIdx, ← Fin.succ_last]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lineMat_last_mid (j : Fin n) : lineMat a h d (Fin.last (n + 1)) (midIdx j) = 0 := by
   simp [lineMat, midIdx, ← Fin.succ_last]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `induction i using lineCases <;> induction j using lineCases <;> simp [mul_apply, sum_line]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lineMat_mul (a' d' : L) (h' : Matrix (Fin n) (Fin n) L) :
     lineMat a h d * lineMat a' h' d' = lineMat (a * a') (h * h') (d * d') := by
@@ -1796,7 +1786,7 @@ theorem lineMat_mul (a' d' : L) (h' : Matrix (Fin n) (Fin n) L) :
   induction i using lineCases <;> induction j using lineCases <;> simp [mul_apply, sum_line]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `induction i using lineCases <;> induction j using lineCases <;>`. Simplify using `[Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem lineMat_one : lineMat (1 : L) (1 : Matrix (Fin n) (Fin n) L) 1 = 1 := by
   ext i j
@@ -1815,7 +1805,7 @@ Both sides reduce to the same expression.
 theorem lineEmb_val (x : Lˣ × GL (Fin n) L × Lˣ) : (lineEmb L n x).val = lineMat (x.1 : L) x.2.1.val (x.2.2 : L) := rfl
 
 /- English proof (translation)
-Introduce `i j`. Apply the tactic sequence `induction i using lineCases <;> induction j using lineCases <;> simp [lineEmb_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lineEmb_mem (x : Lˣ × GL (Fin n) L × Lˣ) : lineEmb L n x ∈ blockL L (lineBlocks (n + 2)) := by
   intro i j
@@ -1841,7 +1831,7 @@ def lineMid (L : Type) [Field L] (n : ℕ) : blockL L (lineBlocks (n + 2)) →* 
 variable {σ : L →+* L}
 
 /- English proof (translation)
-Rewrite using `[mem_GU_iff, ← map_inv]`. Establish `hh` using `(mem_GU_iff σ n h.1).1 h.2`. Introduce `i j`. Apply the tactic sequence `induction i using lineCases <;> induction j using lineCases <;> simp [lineEmb_val, hσ, ← hh]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lineEmb_mem_GU [Valued L (WithZero (Multiplicative ℤ))] (hσ : ∀ x, σ (σ x) = x) (u : Lˣ) (h : GU σ n) :
     lineEmb L n (u, h.1, (Units.map σ.toMonoidHom u)⁻¹) ∈ GU σ (n + 2) := by
@@ -1864,7 +1854,7 @@ def lineSec (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (n : ℕ) : Lˣ × GU 
     rw [← map_mul]; simp [mul_comm])
 
 /- English proof (translation)
-Simplify using `[lineSec, lineEmb_val]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lineSec_val (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (x : Lˣ × GU σ n) :
     (lineSec σ hσ n x).1.val = lineMat (x.1 : L) x.2.1.val (σ x.1)⁻¹ := by
@@ -1948,13 +1938,13 @@ Both sides reduce to the same expression.
 theorem lineParUOp_Q : (lineParUOp σ hσ hc n).Q = (parUOp σ (selfDualBlocks_line (n + 2))).Q := rfl
 
 /- English proof (translation)
-The claim follows from `(parU_isOpposite σ _).reparam _`.
+A detailed English derivation is pending.
 -/
 theorem lineParU_isOpposite : (lineParU σ hσ hc n).IsOpposite (lineParUOp σ hσ hc n) :=
   (parU_isOpposite σ _).reparam _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun i j => if_pos ((lineBlocks_mid i).trans (lineBlocks_mid j).symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem lineParU_p (q : (lineParU σ hσ hc n).Q) :
     (((lineParU σ hσ hc n).p q).1 : L) = q.1.1.val 0 0 ∧
@@ -1962,7 +1952,7 @@ theorem lineParU_p (q : (lineParU σ hσ hc n).Q) :
   ⟨rfl, fun i j => if_pos ((lineBlocks_mid i).trans (lineBlocks_mid j).symm)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun i j => if_pos ((lineBlocks_mid i).trans (lineBlocks_mid j).symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem lineParUOp_p (q : (lineParUOp σ hσ hc n).Q) :
     (((lineParUOp σ hσ hc n).p q).1 : L) = q.1.1.val 0 0 ∧
@@ -1972,11 +1962,11 @@ theorem lineParUOp_p (q : (lineParUOp σ hσ hc n).Q) :
 omit hσ hc [Valued L (WithZero (Multiplicative ℤ))] in
 
 /- English proof (translation)
-Establish `h1 : g.1.val *ᵥ Pi.single c 1 = g.1.val c c • Pi.single c 1`. Use extensionality with `l`. Distinguish the cases in `hl : l = c`. Simplify using `[hl]`. Simplify using `[hl, h l hl]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2 : (Pi.single c 1 : Fin n → L) = g.1.val c c • ((g.1⁻¹).val *ᵥ Pi.single c 1)`. Rewrite using `[← mulVec_smul, ← h1, mulVec_mulVec, Units.inv_mul, one_mulVec]`. Establish `h0 : g.1.val c c ≠ 0` using `fun e => by simpa [e] using congrFun h2 c`. Establish `hjr : j.rev ≠ c` using `fun e => hj (by rw [← e, Fin.rev_rev])`. Establish `h3 : (g.1⁻¹).val j.rev c = 0` using `by simpa [hjr, h0] using congrFun h2 j.rev`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[(mem_GU_iff σ _ g.1).1 g.2, Fin.rev_rev]`. Conclude with `(map_eq_zero σ).1 h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_eq_zero_of_col (g : GU σ n) (c : Fin n) (h : ∀ i, i ≠ c → g.1.val i c = 0) (j : Fin n) (hj : j ≠ c.rev) :
     g.1.val c.rev j = 0 := by
@@ -1994,9 +1984,9 @@ theorem row_eq_zero_of_col (g : GU σ n) (c : Fin n) (h : ∀ i, i ≠ c → g.1
   exact (map_eq_zero σ).1 h3
 
 /- English proof (translation)
-Use `show g.1.val.BlockTriangular (lineBlocks (n + 2)) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h i hi`. Apply the tactic sequence `induction i using lineCases <;> first | exact absurd rfl hi | (refine h ?_; simp; done)`. Introduce `h i j e`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'` using `row_eq_zero_of_col σ g 0 h`. Rewrite `h'` using `[Fin.rev_zero]`. Apply the tactic sequence `induction i using lineCases <;> induction j using lineCases <;> first | (exfalso; simp at e; done) | (refine h _ ?_; simp; done) | (refine h' _ ?_; simp; done)`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mem_lineParU_Q (g : GU σ (n + 2)) : g ∈ (lineParU σ hσ hc n).Q ↔ ∀ i, i ≠ 0 → g.1.val i 0 = 0 := by
   show g.1.val.BlockTriangular (lineBlocks (n + 2)) ↔ _
@@ -2010,9 +2000,9 @@ theorem mem_lineParU_Q (g : GU σ (n + 2)) : g ∈ (lineParU σ hσ hc n).Q ↔ 
       first | (exfalso; simp at e; done) | (refine h _ ?_; simp; done) | (refine h' _ ?_; simp; done)
 
 /- English proof (translation)
-Use `show (∀ ⦃i j⦄, lineBlocks (n + 2) i < lineBlocks (n + 2) j → g.1.val i j = 0) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h i hi`. Apply the tactic sequence `induction i using lineCases <;> first | exact absurd rfl hi | (refine h ?_; simp; done)`. Introduce `h i j e`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'` using `row_eq_zero_of_col σ g _ h`. Rewrite `h'` using `[Fin.rev_last]`. Apply the tactic sequence `induction i using lineCases <;> induction j using lineCases <;> first | (exfalso; simp at e; done) | (refine h _ ?_; simp; done) | exact h _ (Fin.last_pos).ne | (refine h' _ ?_; simp; done)`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mem_lineParUOp_Q (g : GU σ (n + 2)) :
     g ∈ (lineParUOp σ hσ hc n).Q ↔ ∀ i, i ≠ Fin.last (n + 1) → g.1.val i (Fin.last (n + 1)) = 0 := by
@@ -2027,9 +2017,9 @@ theorem mem_lineParUOp_Q (g : GU σ (n + 2)) :
       first | (exfalso; simp at e; done) | (refine h _ ?_; simp; done) | exact h _ (Fin.last_pos).ne | (refine h' _ ?_; simp; done)
 
 /- English proof (translation)
-Rewrite using `[mem_lineParU_Q]`. Prove the components needed by the constructor for the conclusion. Use `fun h => ⟨g.1.val 0 0, funext fun l => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : l = 0`. Simplify using `[hl]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hl, h l hl]`. Introduce and unpack `⟨a, h⟩ i hi`. Simplify `congrFun h i` using `[hi]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_lineParU_Q_iff_smul (g : GU σ (n + 2)) :
     g ∈ (lineParU σ hσ hc n).Q ↔ ∃ a : L, g.1.val *ᵥ Pi.single 0 1 = a • Pi.single 0 1 := by
@@ -2043,9 +2033,9 @@ theorem mem_lineParU_Q_iff_smul (g : GU σ (n + 2)) :
     simpa [hi] using congrFun h i
 
 /- English proof (translation)
-Rewrite using `[LeviDatum.mem_U, ← mem_lineParU_Q σ hσ hc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, e⟩`. Use `lineParU_p σ hσ hc ⟨g, h⟩` as an intermediate fact. Rewrite `this` using `[e]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨h, this.1.symm, fun i j => (this.2 i j).symm⟩`. Introduce and unpack `⟨h, e, e'⟩`. Use `lineParU_p σ hσ hc ⟨g, h⟩` as an intermediate fact. Conclude with `⟨h, Prod.ext (Units.ext (this.1.trans e)) (Subtype.ext (Units.ext (Matrix.ext fun i j => (this.2 i j).trans (e' i j))))⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mem_lineParU_U (g : GU σ (n + 2)) :
     g ∈ (lineParU σ hσ hc n).U ↔ (∀ i, i ≠ 0 → g.1.val i 0 = 0) ∧ g.1.val 0 0 = 1 ∧
@@ -2062,7 +2052,7 @@ theorem mem_lineParU_U (g : GU σ (n + 2)) :
       (Subtype.ext (Units.ext (Matrix.ext fun i j => (this.2 i j).trans (e' i j))))⟩
 
 /- English proof (translation)
-Introduce `g hg` and use `(mem_lineParU_Q σ hσ hc g).2 fun i hi => (mem_borelU_Q σ _ g).1 hg i 0 (Fin.pos_of_ne_zero hi)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem borelU_le_lineParU : (borelU σ (n + 2)).Q ≤ (lineParU σ hσ hc n).Q := fun g hg =>
   (mem_lineParU_Q σ hσ hc g).2 fun i hi => (mem_borelU_Q σ _ g).1 hg i 0 (Fin.pos_of_ne_zero hi)
@@ -2070,9 +2060,9 @@ theorem borelU_le_lineParU : (borelU σ (n + 2)).Q ≤ (lineParU σ hσ hc n).Q 
 def borelLineLevi (n : ℕ) : LeviDatum (Lˣ × GU σ n) (Lˣ × torusU σ n) := (borelU σ n).prodLeft Lˣ
 
 /- English proof (translation)
-Use `show x.2 ∈ (borelU σ n).Q ↔ _`. Rewrite using `[mem_borelU_Q, mem_borelU_Q]`. Simplify using `only [IsBorelU, lineSec_val]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j e`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `induction i using lineCases <;> induction j using lineCases <;> first | exact absurd e (lt_irrefl _) | (rw [lineMat_mid_mid]; exact h _ _ (Nat.lt_of_succ_lt_succ e)) | simp`. Introduce `h i j e`. Simplify using `using h (midIdx i) (midIdx j) (Nat.succ_lt_succ e)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_borelLineLevi_Q (x : Lˣ × GU σ n) :
     x ∈ (borelLineLevi σ n).Q ↔ lineSec σ hσ n x ∈ (borelU σ (n + 2)).Q := by
@@ -2092,7 +2082,7 @@ def unrL (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (z : �
   unrChar (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).toMonoidWithZeroHom z
 
 /- English proof (translation)
-Simplify using `[unrL, unrChar_apply, ordL_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unrL_apply (z : ℂˣ) (x : Lˣ) : unrL L z x = z ^ ordL (x : L) := by
   simp [unrL, unrChar_apply, ordL_eq]
@@ -2101,11 +2091,11 @@ def consParam (z : ℂˣ) (α : Fin (n / 2) → ℂˣ) : Fin ((n + 2) / 2) → �
   (Fin.cons z α : Fin (n / 2 + 1) → ℂˣ) ∘ Fin.cast (Nat.add_div_right n two_pos)
 
 /- English proof (translation)
-Establish `key : ∀ f : ℂˣ → ℂˣ, Finset.univ.val.map (fun i => f (consParam z α i)) = f z ::ₘ Finset.univ.val.map fun i => f (α i)` using `fun f => by`. Establish `h` using `congrArg (Multiset.map fun i => f ((Fin.cons z α : Fin (n / 2 + 1) → ℂˣ) i)) (congrArg Finset.val (Finset.map_univ_equiv (finCongr (Nat.add_div_right n two_pos))))`. Rewrite `h` using `[Finset.map_val, Multiset.map_map, Fin.univ_succ]`. Use `h.trans ?_` and prove the remaining obligations. Simplify using `[Function.comp_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1` using `key id`. Establish `h2` using `key (·⁻¹)`. Simplify using `only [id] at h1`. Unfold `bcParam`. Rewrite using `[h1, h2, Nat.add_mod_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Multiset.insert_eq_cons, ← Multiset.singleton_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem bcParam_consParam (z : ℂˣ) (α : Fin (n / 2) → ℂˣ) :
     bcParam (n + 2) (consParam z α) = bcParam n α + {z, z⁻¹} := by
@@ -2125,7 +2115,7 @@ theorem bcParam_consParam (z : ℂˣ) (α : Fin (n / 2) → ℂˣ) :
   abel
 
 /- English proof (translation)
-Simplify using `[twParam, bcParam_consParam]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twParam_consParam (w z : ℂˣ) (α : Fin (n / 2) → ℂˣ) :
     twParam w (n + 2) (consParam z α) = twParam w n α + {w⁻¹ * z, w⁻¹ * z⁻¹} := by
@@ -2135,20 +2125,20 @@ def stringParam (q : ℂˣ) (t : ℤ) : Multiset ℂˣ :=
   (Multiset.range t.toNat).map fun i : ℕ => q ^ (2 * (i : ℤ) + 1 - t)
 
 /- English proof (translation)
-Simplify using `[stringParam, Int.toNat_of_nonpos h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stringParam_of_nonpos (q : ℂˣ) {t : ℤ} (h : t ≤ 0) : stringParam q t = 0 := by
   simp [stringParam, Int.toNat_of_nonpos h]
 
 /- English proof (translation)
-Simplify using `[stringParam]`.
+Simplify using the standard rewrite rules.
 -/
 theorem card_stringParam (q : ℂˣ) (t : ℤ) : (stringParam q t).card = t.toNat := by simp [stringParam]
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le h`. Establish `e : ((m : ℤ) + 2).toNat = (m + 1) + 1` using `by omega`. Establish `r : Multiset.range (m + 1) = 0 ::ₘ (Multiset.range m).map (· + 1)`. Simplify using `only [Multiset.range, List.range_succ_eq_map, Multiset.map_coe, Multiset.cons_coe]`. Rewrite using `[stringParam, stringParam, e, Multiset.range_succ, r, Int.toNat_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Multiset.map_cons, Multiset.map_map, Function.comp_def, Multiset.insert_eq_cons, ← Multiset.singleton_add, Multiset.map_add, Multiset.map_singleton]`. Establish `h1 : 2 * (((m + 1 : ℕ) : ℕ) : ℤ) + 1 - (m + 2) = m + 1` using `by push_cast; ring`. Establish `h2 : 2 * ((0 : ℕ) : ℤ) + 1 - (m + 2) = -(m + 1)` using `by push_cast; ring`. Establish `h3 : ∀ i : ℕ, 2 * ((i + 1 : ℕ) : ℤ) + 1 - (m + 2) = 2 * i + 1 - m` using `fun i => by push_cast; ring`. Simplify using `only [h1, h2, h3]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -2168,12 +2158,12 @@ theorem stringParam_add_two (q : ℂˣ) {t : ℤ} (h : 0 ≤ t) :
   abel
 
 /- English proof (translation)
-Simplify using `[stringParam]`.
+Simplify using the standard rewrite rules.
 -/
 example (q : ℂˣ) : stringParam q 1 = {1} := by simp [stringParam]
 
 /- English proof (translation)
-Simplify `stringParam_add_two q le_rfl` using `[stringParam_of_nonpos]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 example (q : ℂˣ) : stringParam q 2 = {q⁻¹, q} := by
   simpa [stringParam_of_nonpos] using stringParam_add_two q le_rfl
@@ -2181,7 +2171,7 @@ example (q : ℂˣ) : stringParam q 2 = {q⁻¹, q} := by
 variable {ϖ : L} {σ : L →+* L} {q : ℕ}
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero σ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, (Valued.hasBasis_nhds_zero L _).tendsto_iff (Valued.hasBasis_nhds_zero L _)]`. Use `fun γ _ => ⟨γ, trivial, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Rewrite using `[show Valued.v.restrict (σ x) = Valued.v.restrict x from (Valuation.restrict_inj _).2 (h.2.1 x)]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem continuous_of_unramInv (h : IsUnramInv ϖ σ q) : Continuous σ := by
   refine continuous_of_continuousAt_zero σ ?_
@@ -2191,20 +2181,20 @@ theorem continuous_of_unramInv (h : IsUnramInv ϖ σ q) : Continuous σ := by
   rwa [show Valued.v.restrict (σ x) = Valued.v.restrict x from (Valuation.restrict_inj _).2 (h.2.1 x)]
 
 /- English proof (translation)
-The claim follows from `(lineLevi σ hσ hc n).toHomeomorph.isClosedEmbedding.locallyCompactSpace`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompact_lineLevi (hσ : ∀ x, σ (σ x) = x) (hc : Continuous σ) [LocallyCompactSpace (GU σ (n + 2))] :
     LocallyCompactSpace (Lˣ × GU σ n) :=
   (lineLevi σ hσ hc n).toHomeomorph.isClosedEmbedding.locallyCompactSpace
 
 /- English proof (translation)
-Take `⟨z, -, hz⟩` from `h.2.2.2.2.1`. Establish `hx : σ z - z ≠ 0` using `fun e => by simp [e] at hz`. Establish `hne : (0 : Fin (n + 2)) ≠ Fin.last (n + 1)` using `Fin.last_pos.ne`. Set `g : GL (Fin (n + 2)) L` to `⟨transvection 0 (Fin.last (n + 1)) (σ z - z), transvection 0 (Fin.last (n + 1)) (-(σ z - z)), by simp [transvection_mul_transvection_same _ _ hne], by simp [transvection_mul_transvection_same _ _ hne]⟩`. Establish `hg : g ∈ GU σ (n + 2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[mem_GU_iff]`. Introduce `i j`. Use `show transvection 0 (Fin.last (n + 1)) (-(σ z - z)) i j = σ (transvection 0 (Fin.last (n + 1)) (σ z - z) j.rev i.rev)`. Apply the tactic sequence `induction i using lineCases <;> induction j using lineCases <;>`. Simplify using `[transvection, Matrix.one_apply, Matrix.single_apply, h.1, apply_ite σ, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu : (⟨g, hg⟩ : GU σ (n + 2)) ∈ (lineParU σ h.1 (continuous_of_unramInv h) n).U`. Rewrite using `[mem_lineParU_U]`. Use `⟨fun i hi => ?_, ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `[g, transvection, hi, hne.symm]`. Simplify using `[g, transvection, hne.symm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[g, transvection, Matrix.one_apply, (midIdx_ne_zero i).symm]`. Introduce `e`. Rewrite `hu` using `[e, Subgroup.mem_bot]`. Conclude with `hx (by simpa [g, transvection, hne] using congrArg (fun x : GU σ (n + 2) => x.1.val 0 (Fin.last (n + 1))) hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineParU_nontrivial (h : IsUnramInv ϖ σ q) (n : ℕ) :
     (lineParU σ h.1 (continuous_of_unramInv h) n).U ≠ ⊥ := by
@@ -2231,7 +2221,7 @@ theorem lineParU_nontrivial (h : IsUnramInv ϖ σ q) (n : ℕ) :
   exact hx (by simpa [g, transvection, hne] using congrArg (fun x : GU σ (n + 2) => x.1.val 0 (Fin.last (n + 1))) hu)
 
 /- English proof (translation)
-The claim follows from `locallyCompact_GU_of_unram h (n + 2) IsSmooth ((lineParU σ h.1 (continuous_of_unramInv h) n).nInd (extProd (charRep (unrL L z)) π₁)) := haveI := locallyCompact_GU_of_unram h (n + 2) LeviDatum.nInd_isSmooth _ _`.
+A detailed English derivation is pending.
 -/
 example [CompleteSpace L] (h : IsUnramInv ϖ σ q) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π₁ : Representation ℂ (GU σ n) V) (z : ℂˣ) :

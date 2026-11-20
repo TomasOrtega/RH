@@ -30,7 +30,7 @@ open Formalism.FourierDecayAlt.P.TwoByOneBlock Formalism.FourierDecayAlt.P.BigCe
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `Hb`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hb_mul_self : Hb k * Hb k = 1 := by
   unfold Hb
@@ -40,7 +40,7 @@ theorem hb_mul_self : Hb k * Hb k = 1 := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Apply `Matrix.isUnit_det_of_left_inverse (B := Hb k * μᴴ * Hb k)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem isUnit_det_of_hb {μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (h : μᴴ * Hb k * μ = Hb k) :
     IsUnit μ.det := by
@@ -49,19 +49,19 @@ theorem isUnit_det_of_hb {μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (h : μ�
     _ = 1 := by rw [h, hb_mul_self]
 
 /- English proof (translation)
-Use `⟨WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul hA hn.1) hB, ?_, ?_⟩` and prove the remaining obligations. Introduce `a i hai`. Establish `hea : ¬ mid k r (eI k r a)`. Use `a.isLt` as an intermediate fact. Simplify using `only [mid, eI]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (eI k r a)]`. Rewrite using `[hB1 _ _ hea, if_pos rfl, mul_one, Matrix.mul_apply, Finset.sum_eq_single (eI k r a)]`. Rewrite using `[hn.2.1 a (eI k r a) (by simp [eI]), if_pos rfl, mul_one, hA1 _ _ hea]`. Introduce `l _ hl`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hla : a.val ≤ l.val`. Rewrite using `[hn.2.1 a l hla, if_neg hl, mul_zero]`. Establish `hlm : ¬ mid k r l` using `by have := a.isLt; simp only [mid]; omega`. Rewrite using `[hA1 i l hlm, if_neg (by rw [Fin.ext_iff]; omega), zero_mul]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `l _ hl`. Rewrite using `[hB1 _ _ hea, if_neg hl, mul_zero]`. Simplify using the standard rewrite rules. Introduce `i j hj1 hj2 hi`. Establish `hjm : mid k r j` using `⟨hj1, hj2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply]`. Establish `key : ∀ m, (A * n) i m * B m j = A i m * B m j`. Introduce `m`. Distinguish the cases in `hm : mid k r m`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single m]`. Rewrite using `[hn.2.2 m m hm.1 hm.2 hm.1, if_pos rfl, mul_one]`. Introduce `l _ hl`. Distinguish the cases in `hlr : r ≤ l.val`. Rewrite using `[hn.2.2 l m hm.1 hm.2 hlr, if_neg hl, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hlm : ¬ mid k r l` using `by simp only [mid]; omega`. Rewrite using `[hA1 i l hlm, if_neg (by rw [Fin.ext_iff]; omega), zero_mul]`. Simplify using the standard rewrite rules. Rewrite using `[hB3 m j hjm hm, mul_zero, mul_zero]`. Rewrite using `[Finset.sum_congr rfl (fun m _ => key m), ← Matrix.mul_apply, hAB, Matrix.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_of_levi (A B n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (hAB : A * B = 1) (hA : A ∈ UH (Hpk k r)) (hB : B ∈ UH (Hpk k r))
@@ -104,15 +104,15 @@ theorem conj_mem_of_levi (A B n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k +
     rw [Finset.sum_congr rfl (fun m _ => key m), ← Matrix.mul_apply, hAB, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hg₁` using `big_cell_mem_holds k r c μ₁ hc h₁`. Establish `hg` using `big_cell_mem_holds k r c μ hc h`. Establish `u₁` using `WeylGroupFacts.isUnit_of_uh hg₁`. Establish `hμ₁` using `isUnit_det_of_hb h₁`. Use `⟨WeylGroupFacts.uh_mul (WeylGroupFacts.uh_inv hg₁) hg, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j hj`. Rewrite using `[Matrix.mul_apply, Finset.sum_congr rfl (fun l _ => by rw [bc_out_col c μ μ₁ l j hj]), ← Matrix.mul_apply, Matrix.nonsing_inv_mul _ u₁, Matrix.one_apply]`. Introduce `m j hj hm`. Take `⟨t, rfl⟩` from `mid_exists hj`. Establish `e1 : (Pi.single (wI k r t) 1 : Fin (2 * r + k + 1) → ℂ) = jV k r (Pi.single t 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : mid k r i`. Take `⟨s, rfl⟩` from `mid_exists hi`. Rewrite using `[jV_wI]`. Simplify using `only [Pi.single_apply, wI_inj.eq_iff]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[jV_out _ hi, Pi.single_apply, if_neg (fun he : i = wI k r t => hi (he ▸ mid_wI t))]`. Establish `col : ((bigCell k r c μ₁)⁻¹ * bigCell k r c μ) m (wI k r t) = (((bigCell k r c μ₁)⁻¹ * bigCell k r c μ) *ᵥ Pi.single (wI k r t) 1) m`. Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `back : ∀ v : Fin (k + 1) → ℂ, jV k r v = bigCell k r c μ₁ *ᵥ jV k r (μ₁⁻¹ *ᵥ v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[bigCell_mulVec_jV, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hμ₁, Matrix.one_mulVec]`. Rewrite using `[col, ← Matrix.mulVec_mulVec, e1, bigCell_mulVec_jV, back, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ u₁, Matrix.one_mulVec, jV_out _ hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cellQuot_props (c : Fin r → ℂ) (μ₁ μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     (hc : ∀ a, c a ≠ 0) (h₁ : μ₁ᴴ * Hb k * μ₁ = Hb k) (h : μᴴ * Hb k * μ = Hb k) :
@@ -147,15 +147,13 @@ theorem cellQuot_props (c : Fin r → ℂ) (μ₁ μ : Matrix (Fin (k + 1)) (Fin
       Matrix.nonsing_inv_mul _ u₁, Matrix.one_mulVec, jV_out _ hm]
 
 /- English proof (translation)
-Introduce `k r c μ₁ μ hc h₁ h n`. Establish `u₁` using `WeylGroupFacts.isUnit_of_uh (big_cell_mem_holds k r c μ₁ hc h₁)`. Establish `u` using `WeylGroupFacts.isUnit_of_uh (big_cell_mem_holds k r c μ hc h)`. Take `⟨hA, hA1, hA3⟩` from `cellQuot_props c μ₁ μ hc h₁ h`. Take `⟨hB, hB1, hB3⟩` from `cellQuot_props c μ μ₁ hc h h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hinv : ((bigCell k r c μ₁)⁻¹ * bigCell k r c μ)⁻¹ = (bigCell k r c μ)⁻¹ * bigCell k r c μ₁`. Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ u₁]`. Establish `hAB : (bigCell k r c μ₁)⁻¹ * bigCell k r c μ * ((bigCell k r c μ)⁻¹ * bigCell k r c μ₁) = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ u, Matrix.nonsing_inv_mul _ u₁]`. Establish `hBA : (bigCell k r c μ)⁻¹ * bigCell k r c μ₁ * ((bigCell k r c μ₁)⁻¹ * bigCell k r c μ) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ u₁, Matrix.nonsing_inv_mul _ u]`. Rewrite using `[hinv]`. Prove the components needed by the constructor for the conclusion. Conclude with `conj_mem_of_levi _ _ n hAB hA hB hA1 hB1 hB3`. Introduce `hn'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `conj_mem_of_levi _ _ _ hBA hB hA hB1 hA1 hA3 hn'` as an intermediate fact. Establish `e : (bigCell k r c μ)⁻¹ * bigCell k r c μ₁ * ((bigCell k r c μ₁)⁻¹ * bigCell k r c μ * n * ((bigCell k r c μ)⁻¹ * bigCell k r c μ₁)) * ((bigCell k r c μ₁)⁻¹ * bigCell k r c μ) = n`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = n := by rw [hBA, Matrix.one_mul, Matrix.mul_one]`.
-
-Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem levi_conj_mem_iff : ∀ (k r : ℕ) (c : Fin r → ℂ) (μ₁ μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ),
     (∀ a, c a ≠ 0) → μ₁ᴴ * Formalism.QuantumDeterminants.Hb k * μ₁ = Formalism.QuantumDeterminants.Hb k →

@@ -13,7 +13,7 @@ noncomputable section
 variable (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
 
 /- English proof (translation)
-The claim follows from `(gsRestrict_gsLift K S).surjective`.
+A detailed English derivation is pending.
 -/
 theorem gsRestrict_surjective : Function.Surjective (gsRestrict K S) :=
   (gsRestrict_gsLift K S).surjective
@@ -22,7 +22,7 @@ def gsQuotientEquiv : galUnramifiedOutside K.1 ℚ̄ S ≃* K.1.fixingSubgroup �
   (QuotientGroup.quotientKerEquivOfSurjective (gsRestrict K S) (gsRestrict_surjective K S)).symm
 
 /- English proof (translation)
-Rewrite using `[gsQuotientEquiv, MulEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gsQuotientEquiv_gsRestrict (σ : K.1.fixingSubgroup) :
     gsQuotientEquiv K S (gsRestrict K S σ) = QuotientGroup.mk σ := by
@@ -30,14 +30,14 @@ theorem gsQuotientEquiv_gsRestrict (σ : K.1.fixingSubgroup) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[MulEquiv.symm_apply_eq, gsQuotientEquiv_gsRestrict]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gsQuotientEquiv_symm_mk (σ : K.1.fixingSubgroup) :
     (gsQuotientEquiv K S).symm (QuotientGroup.mk σ) = gsRestrict K S σ := by
   rw [MulEquiv.symm_apply_eq, gsQuotientEquiv_gsRestrict]
 
 /- English proof (translation)
-Establish `: T2Space (galUnramifiedOutside K.1 ℚ̄ S)` using `galois_t2Space K.1 (maxUnramifiedOutside K.1 ℚ̄ S)`. Conclude with `((continuous_gsRestrict K S).isClosedMap).isQuotientMap (continuous_gsRestrict K S) (gsRestrict_surjective K S)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isQuotientMap_gsRestrict : Topology.IsQuotientMap (gsRestrict K S) := by
   have : T2Space (galUnramifiedOutside K.1 ℚ̄ S) := galois_t2Space K.1 (maxUnramifiedOutside K.1 ℚ̄ S)
@@ -45,7 +45,7 @@ theorem isQuotientMap_gsRestrict : Topology.IsQuotientMap (gsRestrict K S) := by
     (gsRestrict_surjective K S)
 
 /- English proof (translation)
-Rewrite using `[(isQuotientMap_gsRestrict K S).continuous_iff]`. Establish `e : (gsQuotientEquiv K S).toMonoidHom ∘ gsRestrict K S = QuotientGroup.mk' (gsKernel K S)`. Use function extensionality and compare the values at `fun σ => gsQuotientEquiv_gsRestrict K S σ`. Rewrite using `[e]`. Conclude with `continuous_quotientGroup_mk' _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_gsQuotientEquiv : Continuous (gsQuotientEquiv K S).toMonoidHom := by
   rw [(isQuotientMap_gsRestrict K S).continuous_iff]
@@ -55,7 +55,7 @@ theorem continuous_gsQuotientEquiv : Continuous (gsQuotientEquiv K S).toMonoidHo
   exact continuous_quotientGroup_mk' _
 
 /- English proof (translation)
-Rewrite using `[(QuotientGroup.isQuotientMap_mk (gsKernel K S)).continuous_iff]`. Establish `e : (gsQuotientEquiv K S).symm.toMonoidHom ∘ (QuotientGroup.mk : K.1.fixingSubgroup → _) = gsRestrict K S` using `funext fun σ => gsQuotientEquiv_symm_mk K S σ`. Rewrite using `[e]`. Conclude with `continuous_gsRestrict K S`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_gsQuotientEquiv_symm : Continuous (gsQuotientEquiv K S).symm.toMonoidHom := by
   rw [(QuotientGroup.isQuotientMap_mk (gsKernel K S)).continuous_iff]
@@ -68,11 +68,11 @@ abbrev unitsInvariantsGsKernel :=
   Representation.invariants ((unitsLimitRep K).ρ.comp (gsKernel K S).subtype)
 
 /- English proof (translation)
-Establish `: IsGalois ℚ ℚ̄` using `IsAlgClosure.isGalois ℚ ℚ̄`. Set `KS' : IntermediateField ℚ ℚ̄` to `(maxUnramifiedOutside K.1 ℚ̄ S).restrictScalars ℚ`. Establish `h : (((Additive.toMul (a : Additive ℚ̄ˣ)) : ℚ̄ˣ) : ℚ̄) ∈ IntermediateField.fixedField KS'.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `g hg`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hK : g ∈ K.1.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg _ ((maxUnramifiedOutside K.1 ℚ̄ S).algebraMap_mem (⟨y, hy⟩ : K.1))`. Establish `hN : (⟨g, hK⟩ : K.1.fixingSubgroup) ∈ gsKernel K S` using `(mem_gsKernel_iff K S _).2 fun y hy => (IntermediateField.mem_fixingSubgroup_iff _ _).1 hg y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `a.2 ⟨⟨g, hK⟩, hN⟩` as an intermediate fact. Conclude with `congrArg (fun z : Additive ℚ̄ˣ => ((Additive.toMul z : ℚ̄ˣ) : ℚ̄)) this`. Rewrite `h` using `[InfiniteGalois.fixedField_fixingSubgroup KS']`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_maxUnramifiedOutside_of_mem_invariantsGsKernel (a : unitsInvariantsGsKernel K S) :
     (((Additive.toMul (a : Additive ℚ̄ˣ)) : ℚ̄ˣ) : ℚ̄) ∈ maxUnramifiedOutside K.1 ℚ̄ S := by
@@ -111,11 +111,11 @@ theorem coe_invariantsGsKernelFun (a : unitsInvariantsGsKernel K S) :
   rfl
 
 /- English proof (translation)
-Use `⟨fun a b h => ?_, fun y => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `congrArg (fun z : Additive (maxUnramifiedOutside K.1 ℚ̄ S)ˣ => (((Additive.toMul z : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄)) h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨Additive.ofMul (Units.map (maxUnramifiedOutside K.1 ℚ̄ S).val.toRingHom.toMonoidHom (Additive.toMul y)), fun σ => ?_⟩, ?_⟩` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `hσ` using `(mem_gsKernel_iff K S σ.1).1 σ.2 _ (Additive.toMul y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ).1.2`. Conclude with `hσ`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem invariantsGsKernelFun_bijective : Function.Bijective (invariantsGsKernelFun K S) := by
   refine ⟨fun a b h => ?_, fun y => ?_⟩
@@ -136,9 +136,9 @@ theorem invariantsGsKernelFun_bijective : Function.Bijective (invariantsGsKernel
       rfl
 
 /- English proof (translation)
-Establish `hτ` using `gsRestrict_gsLift K S τ`. Establish `h1 : gsQuotientEquiv K S τ = QuotientGroup.mk (gsLift K S τ)`. Rewrite using `[← gsQuotientEquiv_gsRestrict, hτ]`. Use `(congrArg (fun q => invariantsGsKernelFun K S ((((unitsLimitRep K).quotientToInvariants (gsKernel K S)).ρ q) a)) h1).trans ?_` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h2` using `gsRestrict_apply K S (gsLift K S τ) ⟨_, mem_maxUnramifiedOutside_of_mem_invariantsGsKernel K S a⟩`. Rewrite `h2` using `[hτ]`. Conclude with `h2.symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariantsGsKernelFun_smul (τ : galUnramifiedOutside K.1 ℚ̄ S) (a : unitsInvariantsGsKernel K S) :
     invariantsGsKernelFun K S
@@ -173,7 +173,7 @@ instance isIso_cohomologyMapAlong_invariantsGsKernelMor (n : ℕ) :
     (continuous_gsQuotientEquiv_symm K S) _ (invariantsGsKernelFun_bijective K S) n
 
 /- English proof (translation)
-Rewrite using `[gsBrauerInfl, ← cohomologyMapAlong_comp, cohomologyInfl]`. Use `cohomologyMapAlong_congr _ _ _ _ (MonoidHom.ext fun σ => gsQuotientEquiv_gsRestrict K S σ) (fun a => ?_) n` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `coe_invariantsGsKernelFun K S a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem cohomologyMapAlong_invariantsGsKernelMor_comp_gsBrauerInfl (n : ℕ) :
     cohomologyMapAlong (gsQuotientEquiv K S).toMonoidHom (continuous_gsQuotientEquiv K S)
@@ -189,13 +189,11 @@ theorem cohomologyMapAlong_invariantsGsKernelMor_comp_gsBrauerInfl (n : ℕ) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (cohomologyMapAlong (gsQuotientEquiv K S).toMonoidHom (continuous_gsQuotientEquiv K S) (invariantsGsKernelMor K S) 3).hom` using `(ModuleCat.epi_iff_surjective _).1 inferInstance`. Establish `hinj : Function.Injective (cohomologyMapAlong (gsQuotientEquiv K S).toMonoidHom (continuous_gsQuotientEquiv K S) (invariantsGsKernelMor K S) 3).hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Take `⟨x0, hx0⟩` from `hsurj (cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 3 x)`. Establish `hk0 : ℓ ^ k • x0 = 0`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(map_nsmul _ (ℓ ^ k) x0).trans ?_` and prove the remaining obligations. Use `(congrArg (fun z => ℓ ^ k • z) hx0).trans ?_` and prove the remaining obligations. Use `(map_nsmul (cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 3) (ℓ ^ k) x).symm.trans ?_` and prove the remaining obligations. Use `(congrArg _ hx).trans ?_` and prove the remaining obligations. Conclude with `(map_zero _).trans (map_zero _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hinf : (cohomologyInfl (unitsLimitRep K) (gsKernel K S) 3).hom x0 = 0`. Establish `: Subsingleton (cohomology (unitsLimitRep K) 3)` using `subsingleton_cohomology_three_unitsLimitRep K`. Conclude with `Subsingleton.elim _ _`. Establish `h0` using `eq_zero_of_cohomologyInfl_three_eq_zero (unitsLimitRep K) (gsKernel K S) (isClosed_gsKernel K S) (isZero_cohomology_one_gsKernel K S) ℓ (exists_coprime_smul_cohomology_two_gsKernel K S hℓ hS) x0 hinf k hk0`. Apply `(cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 3).injective` to reduce the goal to its premises.
-
-Rewrite using `[← hx0, h0, map_zero, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_h3_gsUnits (ℓ : ℕ) (hℓ : ℓ.Prime)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)

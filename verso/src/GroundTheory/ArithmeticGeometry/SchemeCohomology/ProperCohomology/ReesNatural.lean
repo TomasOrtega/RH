@@ -14,7 +14,7 @@ variable {A : Type u} [CommRing A] {I : Ideal A} {X : Scheme.{u}} [X.Over (Spec 
   {F : X.Modules} {V V' : X.Opens} (hle : V' ≤ V)
 
 /- English proof (translation)
-Use `Scheme.Hom.appLE_map (X ↘ Spec (.of A)) (U := ⊤) (le_top : V ≤ _) (homOfLE hle).op` as an intermediate fact. Conclude with `congrArg (fun f : Γ(Spec (.of A), ⊤) ⟶ Γ(X, V') => f.hom ((Scheme.ΓSpecIso (.of A)).inv a)) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma algV_res (a : A) : resO hle (algV X V a) = algV X V' a := by
   have := Scheme.Hom.appLE_map (X ↘ Spec (.of A)) (U := ⊤) (le_top : V ≤ _) (homOfLE hle).op
@@ -27,7 +27,7 @@ abbrev resS : Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V) →+* Γ(reesScheme I X,
   resO (Scheme.Hom.preimage_mono _ hle)
 
 /- English proof (translation)
-Use `Scheme.Hom.appLE_map (reesSnd I X) (U := ⊤) (le_top : reesPr I X ⁻¹ᵁ V ≤ _) (homOfLE (Scheme.Hom.preimage_mono _ hle)).op` as an intermediate fact. Conclude with `congrArg (fun f : Γ(Spec (.of (reesAlgebra I)), ⊤) ⟶ Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V') => f.hom ((Scheme.ΓSpecIso (.of (reesAlgebra I))).inv r)) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma resS_reesInr (r : reesAlgebra I) : resS I hle (reesInr I V r) = reesInr I V' r := by
   have := Scheme.Hom.appLE_map (reesSnd I X) (U := ⊤) (le_top : reesPr I X ⁻¹ᵁ V ≤ _)
@@ -36,7 +36,7 @@ lemma resS_reesInr (r : reesAlgebra I) : resS I hle (reesInr I V r) = reesInr I 
     f.hom ((Scheme.ΓSpecIso (.of (reesAlgebra I))).inv r)) this
 
 /- English proof (translation)
-Use `(reesPr I X).naturality (homOfLE hle).op` as an intermediate fact. Conclude with `(congrArg (fun f : Γ(X, V) ⟶ Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V') => f.hom c) this).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma resS_prApp (c : Γ(X, V)) :
     resS I hle ((reesPr I X).app V c) = (reesPr I X).app V' (resO hle c) := by
@@ -44,11 +44,9 @@ lemma resS_prApp (c : Γ(X, V)) :
   exact (congrArg (fun f : Γ(X, V) ⟶ Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V') => f.hom c) this).symm
 
 /- English proof (translation)
-Establish `h` using `(isPushout_rees (I := I) hV).hom_ext (k := CommRingCat.ofHom ((reesRingHom hV').comp (resS I hle))) (l := CommRingCat.ofHom ((Polynomial.mapRingHom (resO hle)).comp (reesRingHom hV))) (by`. Use `CommRingCat.hom_ext (RingHom.ext fun c => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `reesRingHom hV' (resS I hle ((reesPr I X).app V c)) = (reesRingHom hV ((reesPr I X).app V c)).map (resO hle)`. Rewrite using `[resS_prApp, reesRingHom_inl, reesRingHom_inl, Polynomial.map_C])`. Use the proof step `(by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `CommRingCat.hom_ext (RingHom.ext fun r => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `reesRingHom hV' (resS I hle (reesInr I V r)) = (reesRingHom hV (reesInr I V r)).map (resO hle)`. Rewrite using `[resS_reesInr, reesRingHom_inr, reesRingHom_inr, Polynomial.map_map]`. Use `congr 1`. Conclude with `RingHom.ext fun a => (algV_res hle a).symm)`.
-
-Conclude with `congrArg (fun f : Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V) ⟶ CommRingCat.of (Polynomial Γ(X, V')) => f.hom s) h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma reesRingHom_res (hV : IsAffineOpen V) (hV' : IsAffineOpen V')
     (s : Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V)) :
@@ -86,7 +84,7 @@ Both sides reduce to the same expression.
 lemma resFA_apply (m : Γ(F, V)) : resFA (A := A) F hle m = resF F hle m := rfl
 
 /- English proof (translation)
-Use `φ.mapPresheaf.naturality (homOfLE h).op` as an intermediate fact. Conclude with `congrArg (fun f => f.hom y) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma app_resF {M N : X.Modules} (φ : M ⟶ N) {U U' : X.Opens} (h : U' ≤ U) (y : Γ(M, U)) :
     φ.app U' (resF M h y) = resF N h (φ.app U y) := by
@@ -96,13 +94,13 @@ lemma app_resF {M N : X.Modules} (φ : M ⟶ N) {U U' : X.Opens} (h : U' ≤ U) 
 variable (hF : IsCoherent F) (hV : IsAffineOpen V) (hV' : IsAffineOpen V')
 
 /- English proof (translation)
-Establish `hy : y ∈ Submodule.span Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V) (Set.range (unitPr I F V))`. Rewrite using `[(isBaseChangeAt_reesPr (I := I) hF hV).span_range]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hy using Submodule.span_induction generalizing n with`. Consider the case `mem z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Take `⟨m, rfl⟩` from `hz`. Establish `hres : resF _ (Scheme.Hom.preimage_mono _ hle) (unitPr I F V m) = unitPr I F V' (resF F hle m)` using `(Etale.pullbackUnitApp_res (reesPr I X) F (homOfLE hle) m).symm`. Rewrite using `[hres, theta₁_unitPr, theta₁_unitPr, PolynomialModule.coeff_single, PolynomialModule.coeff_single, Finsupp.single_apply, Finsupp.single_apply]`. Use `split_ifs`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Conclude with `(map_zero _).symm`. Consider the case `zero => simp`. Consider the case `add z z' _ _ hz hz'`. Simplify using `only [map_add, PolynomialModule.coeff_add, Finsupp.add_apply, hz, hz']`. Consider the case `smul s z _ hz`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Scheme.Modules.map_smul, theta₁_smul, theta₁_smul, reesRingHom_res hle hV hV', PolynomialModule.smul_apply, PolynomialModule.smul_apply, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map, hz, resF_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma theta₁_res_coeff
     (y : Γ((Scheme.Modules.pullback (reesPr I X)).obj F, reesPr I X ⁻¹ᵁ V)) (n : ℕ) :
@@ -133,7 +131,7 @@ lemma theta₁_res_coeff
     rw [Polynomial.coeff_map, hz, resF_smul]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `surjective_reesSheafπ_app hF (hV.preimage (reesPr I X)) x`. Rewrite using `[← app_resF, reesSectionsEquiv_apply, reesSectionsEquiv_apply, reesSectionsMap_π, reesSectionsMap_π]`. Apply `PolynomialModule.coeff_injective` to reduce the goal to its premises. Use extensionality with `n`. Conclude with `theta₁_res_coeff hle hF hV hV' y n`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem reesSectionsEquiv_res (x : Γ(reesSheaf I F, reesPr I X ⁻¹ᵁ V)) :
     (reesSectionsEquiv I hF hV' (resF _ (Scheme.Hom.preimage_mono _ hle) x) :

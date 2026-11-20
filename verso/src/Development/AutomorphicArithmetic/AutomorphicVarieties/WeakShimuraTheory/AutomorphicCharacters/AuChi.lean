@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ c`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use extensionality with `g`. Simplify using `only [W.pushCh, chiO, cycBar, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, MonoidHom.coe_coe, RingHom.coe_comp]`. Conclude with `IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l) _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : Continuous (algebraMap ℚ_[l] (Qbar l))` using `continuous_algebraMap ℚ_[l] (Qbar l)`. Establish `h2 : Continuous (PadicInt.Coe.ringHom (p` using `l)) := continuous_subtype_val`. Establish `h3 : Continuous ⇑((algebraMap ℚ_[l] (Qbar l)).comp (PadicInt.Coe.ringHom (p` using `l))) := h1.comp h2`. Conclude with `(Continuous.units_map (((algebraMap ℚ_[l] (Qbar l)).comp (PadicInt.Coe.ringHom (p := l))) : ℤ_[l] →* Qbar l) h3).comp (continuous_cycZ F Ω l)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.auChi :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] (c : Coef l), W.pushCh (algebraMap c.O (PadicAlgCl l)) (chiO F Ω l c.O) = cycBar F Ω l ∧ Continuous (cycBar F Ω l) := by

@@ -6,25 +6,23 @@ namespace PI.UnitaryGroupMassFormula.TBIdemDen
 open ReciprocityTheory.ChartRestriction.G.TB NumberField TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ C _ _ _ ι _ _ b τ σ`. Establish `hev : evAt σ (idemOf b τ) = ∑ i, σ (trDual b i) * τ (b i)`. Simplify using `only [evAt, idemOf, map_sum, Algebra.TensorProduct.productMap_apply_tmul, AlgHom.id_apply, RingHom.toRatAlgHom_apply]`. Rewrite using `[hev]`. Establish `hexp : ∀ y : E, y = ∑ i, Algebra.trace ℚ E (y * b i) • trDual b i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y`. Use `conv_lhs => rw [← (trDual b).sum_repr y]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[trDual, LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply]`. Use `set σ' : E →ₐ[ℚ] C := σ.toRatAlgHom with hσ'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set τ' : E →ₐ[ℚ] C := τ.toRatAlgHom with hτ'`. Set `c : (E →ₐ[ℚ] C) → C` to `fun φ => ∑ i, φ (b i) * σ' (trDual b i)`. Establish `hc : ∀ y : E, ∑ φ : E →ₐ[ℚ] C, c φ * φ y = σ' y`. Introduce `y`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [c, Finset.sum_mul, Finset.mul_sum, map_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun φ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ i, σ' (Algebra.trace ℚ E (y * b i) • trDual b i) := by`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← trace_eq_sum_embeddings C, Algebra.smul_def, map_mul σ', AlgHom.commutes]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = σ' y := by rw [← map_sum, ← hexp]`. Establish `hinj : Function.Injective (fun φ : E →ₐ[ℚ] C => (φ : E →* C))`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `φ ψ h`. Use extensionality with `x`. Conclude with `DFunLike.congr_fun h x`. Establish `hli` using `(linearIndependent_monoidHom E C).comp _ hinj`. Establish `hz` using `Fintype.linearIndependent_iff.1 hli (fun φ => c φ - if φ = σ' then 1 else 0) (by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Function.comp_apply, smul_eq_mul, Pi.zero_apply, MonoidHom.coe_coe, sub_mul, Finset.sum_sub_distrib, hc y, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self])`. Establish `key` using `hz τ'`. Rewrite `key` using `[sub_eq_zero]`. Establish `hiff : (τ' = σ') ↔ (σ = τ)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `x`. Conclude with `(DFunLike.congr_fun h x).symm`. Introduce `h`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hτ', hσ', h]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [c]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
-
-Both sides reduce to the same expression. Use `_ = _ := by`. Rewrite using `[key]`. Conclude with `if_congr hiff rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem idemEval : IdemEvalSt := by
   intro E _ _ C _ _ _ ι _ _ b τ σ

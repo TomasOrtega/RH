@@ -25,7 +25,7 @@ noncomputable section
 namespace GlobalTheory.FlatUnitInt
 
 /- English proof (translation)
-Unfold `vAdd`. Rewrite using `[map_pow, WithZero.log_pow, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vAdd_pow_nat {K : Type} [Field K] [NumberField K] (w : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (x : K)
     (k : ℕ) : vAdd w (x ^ k) = k * vAdd w x := by
@@ -34,7 +34,7 @@ theorem vAdd_pow_nat {K : Type} [Field K] [NumberField K] (w : IsDedekindDomain.
   ring
 
 /- English proof (translation)
-Establish `h1 : w.valuation K (algebraMap (𝓞 K) K q) < 1` using `(w.valuation_lt_one_iff_mem (K := K) _).2 h`. Establish `h0 : w.valuation K (q : K) ≠ 0` using `(Valuation.ne_zero_iff _).2 hq`. Use `(WithZero.log_lt_log h0 one_ne_zero).2 h1` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`. Unfold `vAdd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -48,13 +48,13 @@ theorem one_le_vAdd_int {K : Type} [Field K] [NumberField K] (w : IsDedekindDoma
   omega
 
 /- English proof (translation)
-Use `set N : ℕ := ∏ w ∈ S, Ideal.absNorm w.asIdeal with hN`. Establish `hN0 : N ≠ 0` using `Finset.prod_ne_zero_iff.2 fun w _ h => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hNK : (N : K) ≠ 0` using `Nat.cast_ne_zero.2 hN0`. Use `⟨N ^ ⌈B⌉₊, Nat.pos_of_ne_zero (pow_ne_zero _ hN0), fun w => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `Formalism.L2.Pj.vAdd_int_nonneg w (a := ((N ^ ⌈B⌉₊ : ℕ) : 𝓞 K)) (by have : ((N ^ ⌈B⌉₊ : ℕ) : K) ≠ 0 := Nat.cast_ne_zero.2 (pow_ne_zero _ hN0); simpa using this)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hmem : ((N : ℕ) : 𝓞 K) ∈ w.asIdeal`. Rewrite using `[hN, Nat.cast_prod, ← Finset.mul_prod_erase S _ hw]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem w.asIdeal)`. Establish `h1 : (1 : ℤ) ≤ vAdd w (N : K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `one_le_vAdd_int w (q := ((N : ℕ) : 𝓞 K)) (by simpa using hNK) hmem` as an intermediate fact. Simplify using `using this`. Rewrite using `[Nat.cast_pow, vAdd_pow_nat]`. Use `push_cast`. Establish `h2 : (1 : ℝ) ≤ (vAdd w (N : K) : ℝ)` using `by exact_mod_cast h1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h3 : B ≤ (⌈B⌉₊ : ℝ)` using `Nat.le_ceil B`. Use polynomial arithmetic with `[Nat.cast_nonneg (α := ℝ) ⌈B⌉₊]`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_vAdd {K : Type} [Field K] [NumberField K]
     (S : Finset (IsDedekindDomain.HeightOneSpectrum (𝓞 K))) (B : ℝ) :
@@ -79,7 +79,7 @@ theorem exists_nat_vAdd {K : Type} [Field K] [NumberField K]
     nlinarith [Nat.cast_nonneg (α := ℝ) ⌈B⌉₊]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FlatDenom.unit_pow_denom`.
+A detailed English derivation is pending.
 -/
 theorem integral_inverse : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (n : ℤ) (Z : Comp Y.d.Xo₂ Y.d.c₂) (τ : Psi T.Q.H) (s i : Rul Y.d.Xo₂ Y.d.c₂), (s ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (Formalism.L2.Pj.exZ (T.Q.Dw j) (wtOf (T.Q.Dw j) (n • GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ) 0)) ∧ i ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (-Formalism.L2.Pj.exZ (T.Q.Dw j) (wtOf (T.Q.Dw j) (n • GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ) 0)) ∧ GlobalTheory.FlatLine.idem Z * s = s ∧ GlobalTheory.FlatLine.idem Z * i = i ∧ s * i = GlobalTheory.FlatLine.idem Z ∧ (∀ σ, GoodEmb Y.d.c₂ σ → ∃ C : ℝ, ∀ z ∈ framesOn (Y.U σ) Z, GlobalTheory.AllWt.homN (Y.U σ) (xiR D) (wtOf (T.Q.Dw j) (n • GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ) 0) s z ≤ C ∧ GlobalTheory.AllWt.homN (Y.U σ) (xiR D) (-(wtOf (T.Q.Dw j) (n • GlobalTheory.FlatLine.flatWt (T.Q.Dw j) τ) 0)) i z ≤ C)) → ∃ m : ℕ, 0 < m ∧ ∀ la, ∀ v ∈ GlobalTheory.FlatLine.valOn Z la, 0 ≤ v ((m : Y.d.c₂.F) • s) ∧ 0 ≤ v ((m : Y.d.c₂.F) • i) :=
   GlobalTheory.FlatDenom.unit_pow_denom

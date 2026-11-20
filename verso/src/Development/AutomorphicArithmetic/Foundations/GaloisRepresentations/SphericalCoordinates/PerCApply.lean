@@ -58,14 +58,14 @@ def perC {L : Type} [AddCommGroup L] (P₀ : L →+ (Fin g → ℂ)) (C : Matrix
   (GlobalTheory.PeriodCoord.realMap 1 C).toAddMonoidHom.comp P₀
 
 /- English proof (translation)
-Simplify using `[perC, GlobalTheory.PeriodCoord.realMap_apply, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem perC_apply {L : Type} [AddCommGroup L] (P₀ : L →+ (Fin g → ℂ)) (C : Matrix (Fin g) (Fin g) ℂ) (x : L) :
     perC P₀ C x = P₀ x + C *ᵥ star (P₀ x) := by
   simp [perC, GlobalTheory.PeriodCoord.realMap_apply, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[perC_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem perC_zero {L : Type} [AddCommGroup L] (P₀ : L →+ (Fin g → ℂ)) : perC P₀ 0 = P₀ := by
   ext x

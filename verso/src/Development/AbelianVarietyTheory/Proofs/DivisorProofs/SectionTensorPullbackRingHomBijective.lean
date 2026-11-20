@@ -6,17 +6,17 @@ open scoped TensorProduct
 namespace GlobalTheory.HilbAff
 
 /- English proof (translation)
-Use `letI := (secAlg A g U).toAlgebra`. Set `W : (pullback (str A B) g).Opens` to `pullback.snd (str A B) g ⁻¹ᵁ (U : T.Opens)`. Establish `H` using `IsPullback.of_hasPullback (str A B) g`. Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := (U : T.Opens)) (UX := ⊤) (UY := W) le_top le_top (by simp [W])).1 (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) U.2 (isAffineOpen_top _))`. Establish `P₁` using `CommRingCat.isPushout_tensorProduct A Γ(T, U) B`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P₂ : IsPushout (CommRingCat.ofHom (algebraMap A Γ(T, U))) (CommRingCat.ofHom (algebraMap A B)) ((pullback.snd (str A B) g).app U) ((Scheme.ΓSpecIso (CommRingCat.of B)).inv ≫ (pullback.fst (str A B) g).appLE ⊤ W (by simp))`. Use `po.flip.of_iso (Scheme.ΓSpecIso (CommRingCat.of A)) (Iso.refl _) (Scheme.ΓSpecIso (CommRingCat.of B)) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← Iso.inv_comp_eq]`. Both sides reduce to the same expression. Establish `h1` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap A B))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← h1, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Establish `e : CommRingCat.ofHom (theta A B g U) = (P₁.isoIsPushout _ _ P₂).hom`. Apply `P₁.hom_ext` to reduce the goal to its premises. Rewrite using `[IsPushout.inl_isoIsPushout_hom]`. Use extensionality with `c`. Use `theta_tmul A B g U c 1` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [map_one, mul_one] at this`. Conclude with `this`. Rewrite using `[IsPushout.inr_isoIsPushout_hom]`. Use extensionality with `b`. Use `theta_tmul A B g U 1 b` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_one, one_mul] at this`. Conclude with `this`. Establish `: IsIso (CommRingCat.ofHom (theta A B g U))` using `by rw [e]; infer_instance`. Conclude with `ConcreteCategory.bijective_of_isIso (CommRingCat.ofHom (theta A B g U))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theta_bijective (A B : Type) [CommRing A] [CommRing B] [Algebra A B] {T : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A)) (U : T.affineOpens) :

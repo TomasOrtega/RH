@@ -24,13 +24,13 @@ theorem dcToOrbit_mk (G : Type) [Group G] (H K : Subgroup G) (g : G) :
     dcToOrbit G H K (Quotient.mk _ g) = Quotient.mk _ (QuotientGroup.mk g : G ⧸ K) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `q₁ q₂ he`. Proceed by induction on `q₁ using Quotient.inductionOn with | h a => ?_`. Proceed by induction on `q₂ using Quotient.inductionOn with | h b => ?_`. Rewrite `he` using `[dcToOrbit_mk, dcToOrbit_mk]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h, hh⟩` from `Quotient.exact he`. Express the relevant statement in the definitionally equal form `((h : G) • (QuotientGroup.mk b : G ⧸ K)) = _ at hh`. Rewrite `hh` using `[MulAction.Quotient.smul_mk, smul_eq_mul, QuotientGroup.eq]`. Apply `Quotient.sound` to reduce the goal to its premises. Apply `DoubleCoset.rel_iff.2` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(h : G)⁻¹, H.inv_mem h.2, ((h * b)⁻¹ * a)⁻¹, K.inv_mem hh, ?_⟩` and prove the remaining obligations. Use `group`. Introduce `o`. Proceed by induction on `o using Quotient.inductionOn with | h x => ?_`. Proceed by induction on `x using QuotientGroup.induction_on with | H g => ?_`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Supply the required witnesses or components.
 
-Conclude with `⟨Quotient.mk _ g, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem dcToOrbit_bijective (G : Type) [Group G] (H K : Subgroup G) :
     Function.Bijective (dcToOrbit G H K) := by
@@ -52,11 +52,11 @@ theorem dcToOrbit_bijective (G : Type) [Group G] (H K : Subgroup G) :
     exact ⟨Quotient.mk _ g, rfl⟩
 
 /- English proof (translation)
-Introduce `G _ H K F hF`. Set `e` to `Equiv.ofBijective _ (dcToOrbit_bijective G H K)`. Rewrite using `[← finsum_comp_equiv e]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Establish `heq : e q = Quotient.mk _ (QuotientGroup.mk (Quotient.out q) : G ⧸ K)` using `by show dcToOrbit G H K q = _ conv_lhs => rw [← Quotient.out_eq q]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hrel : MulAction.orbitRel H (G ⧸ K) (Quotient.out (e q)) (QuotientGroup.mk (Quotient.out q))`. Apply `Quotient.exact` to reduce the goal to its premises. Rewrite using `[Quotient.out_eq, heq]`. Take `⟨h, hh⟩` from `hrel`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hh, hF]`. Use `congr 2`. Establish `h1` using `Nat.card_congr (Classical.choice (stabilizer_equiv_locPart G H K (Quotient.out q)))`. Rewrite using `[← h1]`. Conclude with `(Nat.card_congr (MulAction.stabilizerEquivStabilizerOfOrbitRel (G := H) (a := h • (QuotientGroup.mk (Quotient.out q) : G ⧸ K)) (b := (QuotientGroup.mk (Quotient.out q) : G ⧸ K)) (MulAction.orbitRel_apply.2 ⟨h, rfl⟩)).toEquiv).symm` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_doubleCoset_eq_sum_orbit : ∀ (G : Type) [Group G] (H K : Subgroup G) (F : G ⧸ K → ℂ), (∀ h : H, ∀ x : G ⧸ K, F (h • x) = F x) →
     ∑ᶠ q : DoubleCoset.Quotient (H : Set G) (K : Set G),

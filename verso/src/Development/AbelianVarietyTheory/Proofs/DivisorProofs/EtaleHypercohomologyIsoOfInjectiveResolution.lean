@@ -8,7 +8,7 @@ namespace GlobalTheory.EtC.InjResCmp
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem cpush_id (K I : Cx R) (n : ℤ) (x : CohomologyClass K I n) : cpush K (𝟙 I) n x = x := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
@@ -16,7 +16,7 @@ theorem cpush_id (K I : Cx R) (n : ℤ) (x : CohomologyClass K I n) : cpush K (�
   simp [zcomp]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp, Cochain.ofHom_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem cpush_comp (K : Cx R) {I J L : Cx R} (f : I ⟶ J) (g : J ⟶ L) (n : ℤ) (x : CohomologyClass K I n) :
     cpush K (f ≫ g) n x = cpush K g n (cpush K f n x) := by
@@ -25,9 +25,9 @@ theorem cpush_comp (K : Cx R) {I J L : Cx R} (f : I ⟶ J) (g : J ⟶ L) (n : �
   simp [zcomp, Cochain.ofHom_comp]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Take `⟨z, hz⟩` from `Cochain.equivHomotopy f g h`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk _ = CohomologyClass.mk _`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨x.1.comp z (by omega), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[δ_comp x.1 z (by omega) (n + 1) 0 n (by omega) (by omega) (by omega)]`. Simplify using `[zcomp, hz, Cochain.comp_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cpush_homotopy (K : Cx R) {I J : Cx R} {f g : I ⟶ J} (h : Homotopy f g) (n : ℤ) (x : CohomologyClass K I n) :
     cpush K f n x = cpush K g n x := by
@@ -42,11 +42,11 @@ theorem cpush_homotopy (K : Cx R) {I J : Cx R} {f g : I ⟶ J} (h : Homotopy f g
 
 open DerivedCategory in
 /- English proof (translation)
-Use `letI := HasDerivedCategory.standard (Shv R)`. Establish `: QuasiIso (resAug M)` using `(inferInstance : QuasiIso (injectiveResolution M).ι')`. Set `e : Q.obj C ≅ Q.obj (res R M)` to `(asIso (Q.map ε)).symm ≪≫ asIso (Q.map (resAug M))`. Take `⟨g, hg⟩` from `(CochainComplex.IsKInjective.Qh_map_bijective ((HomotopyCategory.quotient _ _).obj C) (res R M)).surjective ((quotientCompQhIso (Shv R)).hom.app C ≫ e.hom ≫ (quotientCompQhIso (Shv R)).inv.app (res R M))`. Take `⟨u, rfl⟩` from `(HomotopyCategory.quotient _ _).map_surjective g`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[← isIso_Q_map_iff_quasiIso]`. Establish `h1` using `quotientCompQhIso_hom_naturality u`. Establish `h2 : Q.map u = (quotientCompQhIso (Shv R)).inv.app C ≫ Qh.map ((HomotopyCategory.quotient _ _).map u) ≫ (quotientCompQhIso (Shv R)).hom.app (res R M)`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h2, hg]`. Use `infer_instance`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quasiIso (M : Shv R) (C : Cx R) (ε : sgl M ⟶ C) [QuasiIso ε] [(res R M).IsKInjective] :
     ∃ u : C ⟶ res R M, QuasiIso u := by
@@ -67,11 +67,9 @@ theorem exists_quasiIso (M : Shv R) (C : Cx R) (ε : sgl M ⟶ C) [QuasiIso ε] 
   infer_instance
 
 /- English proof (translation)
-Introduce `R _ M C ε hC hI hε K n`. Use `haveI := hC`. Use `haveI : ∀ t, Injective (C.X t) := hI`. Use `haveI := hε`. Use `haveI : C.IsKInjective := isKInjective_of_injective C 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : (res R M).IsKInjective := (inferInstance : (injectiveResolution M).cochainComplex.IsKInjective)`. Take `⟨u, hu⟩` from `exists_quasiIso M C ε`. Take `⟨e, -⟩` from `(CochainComplex.IsKInjective.quasiIso_iff u).1 hu`. Conclude with `⟨{ toFun := cpush K e.inv n invFun := cpush K e.hom n left_inv := fun x => by`. Express the relevant statement in the definitionally equal form `cpush K e.hom n (cpush K e.inv n x) = x`.
-
-Rewrite using `[← cpush_comp, cpush_homotopy K e.homotopyInvHomId, cpush_id]`. Use `right_inv := fun y => by`. Express the relevant statement in the definitionally equal form `cpush K e.inv n (cpush K e.hom n y) = y`. Rewrite using `[← cpush_comp, cpush_homotopy K e.homotopyHomInvId, cpush_id]`. Use the proof step `map_add' := map_add _ }⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hyper_iso_of_injective_resolution : ∀ (R : Type) [CommRing R] (M : Shv R) (C : Cx R) (ε : sgl M ⟶ C),
     C.IsStrictlyGE 0 → (∀ t, Injective (C.X t)) → QuasiIso ε → ∀ (K : Cx R) (n : ℤ),

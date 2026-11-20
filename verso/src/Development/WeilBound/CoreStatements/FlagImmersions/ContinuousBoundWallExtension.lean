@@ -11,13 +11,13 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 namespace RootFieldNumerics
 
 /- English proof (translation)
-Break down `lt_trichotomy x 0 with hx | hx | hx` into its components or cases. Take `⟨q, h1, h2⟩` from `exists_rat_btwn (show x < min (x + δ) 0 from lt_min (by linarith) hx)`. Establish `m1` using `min_le_left (x + δ) 0`. Establish `m2` using `min_le_right (x + δ) 0`. Use `⟨q, ?_, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[abs_of_neg hx, abs_of_nonpos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Conclude with `⟨0, by simp [hx], by simp [hx, hδ.le]⟩`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 
-Take `⟨q, h1, h2⟩` from `exists_rat_btwn (show max (x - δ) 0 < x from max_lt (by linarith) hx)`. Establish `m1` using `le_max_left (x - δ) 0`. Establish `m2` using `le_max_right (x - δ) 0`. Use `⟨q, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[abs_of_pos hx, abs_of_nonneg (by linarith)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_rat_near_le (δ : ℝ) (hδ : 0 < δ) (x : ℝ) : ∃ q : ℚ, |(q : ℝ)| ≤ |x| ∧ |(q : ℝ) - x| ≤ δ := by
   rcases lt_trichotomy x 0 with hx | hx | hx
@@ -40,27 +40,25 @@ theorem exists_rat_near_le (δ : ℝ) (hδ : 0 < δ) (x : ℝ) : ∃ q : ℚ, |(
       constructor <;> linarith
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j c₀ b τ₀ Φ hj hjN hc hΦ hrat lam hlam`. Establish `hex : ∀ n : ℕ, ∀ x : ℝ, ∃ q : ℚ, |(q:ℝ)| ≤ |x| ∧ |(q:ℝ) - x| ≤ c₀ / 4 * (1 / ((n:ℝ) + 1))` using `fun n x => exists_rat_near_le _ (by positivity) x`. Use `choose F hF1 hF2 using hex`. Set `A : ℕ → Wt Ψ N` to `fun n τ i => (F n (lam τ i) : ℝ)`. Establish `hδ : ∀ n : ℕ, c₀ / 4 * (1 / ((n:ℝ) + 1)) ≤ c₀ / 4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Establish `h1 : 1 / ((n:ℝ) + 1) ≤ 1`. Rewrite using `[div_le_one (by positivity)]`. Combine the linear relations using `[(n.cast_nonneg : (0:ℝ) ≤ n)]`. Conclude with `mul_le_of_le_one_right (by positivity) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hent : ∀ n τ k, k < N → ent (A n) τ k = (F n (ent lam τ k) : ℝ)`. Introduce `n τ k hk`. Simplify using `[ent, hk, A]`. Establish `hclose : ∀ n τ k, k < N → |ent (A n) τ k - ent lam τ k| ≤ c₀ / 4`. Introduce `n τ k hk`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hent n τ k hk]`. Conclude with `(hF2 n _).trans (hδ n)`. Establish `hin : ∀ n, InWall j τ₀ (c₀ / 2) (A n)`. Introduce `n`. Take `⟨hn, hg0, hgτ, hcg⟩` from `hlam`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj1 : j - 1 < N` using `by omega`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (by norm_num)).2 fun τ => (pi_norm_le_iff_of_nonneg (by norm_num)).2 fun i => ?_` and prove the remaining obligations. Establish `h1 : ‖lam τ i‖ ≤ 1 / 2` using `(norm_le_pi_norm (lam τ) i).trans ((norm_le_pi_norm lam τ).trans hn)`. Simplify using `only [Real.norm_eq_abs, A] at h1 ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `(hF1 n _).trans h1`. Simplify using `only [gap] at hg0 ⊢`. Rewrite using `[hent n τ₀ _ hj1, hent n τ₀ _ hjN, show ent lam τ₀ (j - 1) = ent lam τ₀ j by linarith]`. Expand and normalize the polynomial expressions, which then agree. Introduce `τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hgτ τ hτ`. Simplify using `only [gap] at h ⊢`. Establish `a1` using `abs_le.1 (hclose n τ _ hj1)`. Establish `a2` using `abs_le.1 (hclose n τ _ hjN)`. Combine the linear relations using `[a1.1, a1.2, a2.1, a2.2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ i hi hij`. Establish `h` using `hcg τ i hi hij`. Establish `a1` using `abs_le.1 (hclose n τ i (by omega))`. Establish `a2` using `abs_le.1 (hclose n τ (i + 1) hi)`. Combine the linear relations using `[a1.1, a1.2, a2.1, a2.2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAr : ∀ n, IsRatWt (A n)` using `fun n τ i => ⟨F n (lam τ i), rfl⟩`. Establish `htend : Tendsto A atTop (𝓝 lam)`. Rewrite using `[tendsto_pi_nhds]`. Introduce `τ`. Rewrite using `[tendsto_pi_nhds]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `hlim : Tendsto (fun n : ℕ => c₀ / 4 * (1 / ((n:ℝ) + 1))) atTop (𝓝 0)`. Simplify using `using (tendsto_one_div_add_atTop_nhds_zero_nat).const_mul (c₀ / 4)`. Use `squeeze_zero (fun n => norm_nonneg _) (fun n => ?_) hlim` and prove the remaining obligations.
-
-Simplify using `only [A, Real.norm_eq_abs]`. Conclude with `hF2 n _`. Establish `hΦt : Tendsto (fun n => |Φ (A n)|) atTop (𝓝 |Φ lam|)` using `(continuous_abs.tendsto _).comp ((hΦ.tendsto lam).comp htend)`. Conclude with `le_of_tendsto' hΦt fun n => hrat _ (hAr n) (hin n)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_bound_wall_extension : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (j : ℕ) (c₀ b : ℝ) (τ₀ : Ψ) (Φ : Wt Ψ N → ℝ), 1 ≤ j → j < N → 0 < c₀ → Continuous Φ → (∀ lam, IsRatWt lam → InWall j τ₀ (c₀ / 2) lam → |Φ lam| ≤ b) → ∀ lam, InWall j τ₀ c₀ lam → |Φ lam| ≤ b := by
   intro Ψ _ _ N j c₀ b τ₀ Φ hj hjN hc hΦ hrat lam hlam

@@ -19,14 +19,14 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (A : Amb X) (u : Pr.Word) (m2 : ℕ)
 
 /- English proof (translation)
-The claim follows from `chTh_ok_ambD W Ch sel _ cst A u m2 hm (hPr.T_prime u).pos (muqTie_of_allG Ch sel _ cst (bad_primes_over_g_trivial_tuple sel S)) hTh`.
+A detailed English derivation is pending.
 -/
 theorem chTh_ok_mu0D (hm : m2 + 1 < R.m) (hPr : Pr.Ok) (hTh : ThHypD W Ch sel (mu0 X.F X.E X.K S) cst A u m2) :
     ChTh.Ok (Ch := Ch) cst (chTh W Ch sel (mu0 X.F X.E X.K S) cst A u m2) :=
   chTh_ok_ambD W Ch sel _ cst A u m2 hm (hPr.T_prime u).pos (muqTie_of_allG Ch sel _ cst (bad_primes_over_g_trivial_tuple sel S)) hTh
 
 /- English proof (translation)
-The claim follows from `matEquiv_of W Ch sel _ cst L A u m2 (exceptional_primes_trivial_tuple sel S) (hPr.T_prime u).pos (chTh_ok_mu0D W Ch sel S cst A u m2 hm hPr hTh) (fun i hi al be p p' x z hz => xiEntry_inv Ch sel _ cst L (exceptional_primes_trivial_tuple sel S) hPr hL i hi al be p p' x z hz) hX`.
+A detailed English derivation is pending.
 -/
 theorem matEquiv_mu0D (hm : m2 + 1 < R.m) (hPr : Pr.Ok) (hTh : ThHypD W Ch sel (mu0 X.F X.E X.K S) cst A u m2) {G : ChGlob X R.m}
     (hL : L.Ok Ch sel (mu0 X.F X.E X.K S) cst G m2)
@@ -36,7 +36,7 @@ theorem matEquiv_mu0D (hm : m2 + 1 < R.m) (hPr : Pr.Ok) (hTh : ThHypD W Ch sel (
     (fun i hi al be p p' x z hz => xiEntry_inv Ch sel _ cst L (exceptional_primes_trivial_tuple sel S) hPr hL i hi al be p p' x z hz) hX
 
 /- English proof (translation)
-The claim follows from `cp1EquivOn_of W Ch sel _ cst L A u m2 (exceptional_primes_trivial_tuple sel S) (hPr.T_prime u).pos hPr (chTh_ok_mu0D W Ch sel S cst A u m2 hm hPr hTh) hL b hY hPsi`.
+A detailed English derivation is pending.
 -/
 theorem cp1EquivOn_mu0D (hm : m2 + 1 < R.m) (hPr : Pr.Ok) (hTh : ThHypD W Ch sel (mu0 X.F X.E X.K S) cst A u m2) {G : ChGlob X R.m}
     (hL : L.Ok Ch sel (mu0 X.F X.E X.K S) cst G m2) (b : L.β (m2 + 1)) (hY : YbHyp (R := R) sel (mu0 X.F X.E X.K S) cst L u m2 b)
@@ -53,7 +53,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-The claim follows from `stepC_ok_deg W Ch sel mu cst A u (m2 + 1) hm _ hT _ _ hq hs heqT`.
+A detailed English derivation is pending.
 -/
 theorem chTh_thTop_okD (A : Amb X) (u : Pr.Word) (m2 : ℕ) (hm : m2 + 1 < R.m) (hT : 0 < Pr.T u) (hq : MuqTie Ch sel mu cst)
     (hs : A.AnaStepD (R.N (m2 + 1)) (R.N (m2 + 1 + 1)) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u) (stepDeg W u (m2 + 1)))
@@ -64,9 +64,9 @@ theorem chTh_thTop_okD (A : Amb X) (u : Pr.Word) (m2 : ℕ) (hm : m2 + 1 < R.m) 
   stepC_ok_deg W Ch sel mu cst A u (m2 + 1) hm _ hT _ _ hq hs heqT
 
 /- English proof (translation)
-Break down `Nat.lt_or_ge m2 i with h | h` into its components or cases. Establish `e : i = m2 + 1` using `by omega`. Substitute `e` using the available equality. Establish `h2` using `hTh.2.1`. Rewrite `h2` using `[hm]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Conclude with `hTh.1 i h`.
+A detailed English derivation is pending.
 -/
 theorem anaStepD_of_thHypD (A : Amb X) (u : Pr.Word) (m2 : ℕ) (hm : R.m = m2 + 2) (hTh : ThHypD W Ch sel mu cst A u m2) (i : ℕ) (hi : i < R.m) :
     A.AnaStepD (R.N i) (R.N (i + 1)) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u) (stepDeg W u i) := by
@@ -91,11 +91,11 @@ section Ev
 variable {X : Fields} {a b : ℕ}
 
 /- English proof (translation)
-Establish `hloc : jetMap (fun m => σ₀ (J m)) n (MvPolynomial.map σ₀ (P : Pol X.K X.Tau a)) = jetMap (fun m => c * jetC cD Θ m) n (MvPolynomial.map σ₀ (P : Pol X.K X.Tau a))` using `jet_local_rationality ℂ X.Tau a b lam n _ _ hJ _ (map_mem_VV σ₀ lam (P : Pol X.K X.Tau a) P.2)`. Rewrite using `[sharp_evV σ₀ lam n s' hn P, unfTh_polFn, jetMap_shift]`. Use function extensionality and compare the values at `y'`. Use `show evFr _ (shiftOf lam') σ₀ (jetOp lam lam' J n P).1 y' = c * ((dePow σ₀ b s y')⁻¹ * polFn σ₀ b _ y')`. Rewrite using `[evFr_apply, jetOp_coe lam lam' n hV, ← eval_map, map_jetMap, hloc, jetMap_smul, smul_eval, polFn_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : (∏ τ, (y'.1 τ).det ^ shiftOf lam' τ) = (dePow σ₀ b s y')⁻¹`. Unfold `dePow`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `show (y'.1 τ).det ^ (lam' τ).detShift = ((y'.1 τ).det ^ s τ)⁻¹`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, _root_.zpow_neg]`. Rewrite using `[hd]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem unfTh_evD (σ₀ : X.K →+* ℂ) (cD : X.Tau → ℂ) (Θ : VCx X.Tau a b → ℂ) (lam : X.Tau → DomWeight a) (lam' : X.Tau → DomWeight b)
     (n : X.Tau → ℕ) (s' s : X.Tau → ℤ) (hn : ∀ τ, s' τ + (lam τ).detShift = (n τ : ℤ)) (hs : ∀ τ, (lam' τ).detShift = -s τ)
@@ -118,7 +118,7 @@ theorem unfTh_evD (σ₀ : X.K →+* ℂ) (cD : X.Tau → ℂ) (Θ : VCx X.Tau a
   ring
 
 /- English proof (translation)
-Substitute `hσ` using the available equality. Rewrite using `[kerOf_tab Am Sall SB cA cB hA hB sel mU mI lam lam' n N fr N' fr' hN hN' Ξ, LinearMap.smul_apply, LinearMap.map_smulₛₗ, unfTh_evD Am.σ₀ Am.cD (Am.thDat Sall cA cB N N' Ξ) lam lam' n s' s hn hs hV _ (Am.chiF a b N N')⁻¹ (kernel_table_spec_degree X Am a b Sall cA cB _ hA hB hsm hr …`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem unfTh_kerOfD (Am : Amb X) (σ₀ : X.K →+* ℂ) (hσ : Am.σ₀ = σ₀) (Sall SB : Finset (HeightOneSpectrum (𝓞 X.E))) (cA cB : ℕ) (hA : 0 < cA) (hB : 0 < cB)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (mU : HeightOneSpectrum (𝓞 X.E) → X.Kˣ) (mI : SB → X.E → X.K)
@@ -145,7 +145,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-The claim follows from `unfTh_kerOfD Am σ₀ hσ (Sall sel mu u) (rowSG Pr sel mu) (cAof sel mu cst) (cBof sel mu cst u) (cAof_pos sel mu cst) (cBof_pos sel mu cst u hT) sel (mUof Ch mu i) (muAt Ch sel mu cst i) (W.lamTrue u i) (W.lamTrue u (i + 1)) (nuLast W u i) (sSharpC W u i) (sDivC W u i) (sSharpC_add …`.
+A detailed English derivation is pending.
 -/
 theorem unfTh_stepCD (Am : Amb X) (σ₀ : X.K →+* ℂ) (hσ : Am.σ₀ = σ₀) (u : Pr.Word) (hT : 0 < Pr.T u) {i : ℕ} (hi : i < R.m)
     (hV : JetInVVStep W u i (W.lamTrue u (i + 1))) (hsm : Am.ESmooth (R.N i) (R.N (i + 1)))

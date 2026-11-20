@@ -21,7 +21,7 @@ def glue {R : Type} (a b : Matrix (Fin nT) (Fin nS) R) : Matrix (Fin (nT + nT)) 
   fun i j => Sum.elim a b (finSumFinEquiv.symm i) j
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show Sum.elim a b (finSumFinEquiv.symm (finSumFinEquiv (Sum.inl i))) j = a i j`. Rewrite using `[Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem top_glue (a b : WOF F E nS nT) : topR (glue a b : WOF F E nS (nT + nT)) = a := by
   ext i j
@@ -29,7 +29,7 @@ theorem top_glue (a b : WOF F E nS nT) : topR (glue a b : WOF F E nS (nT + nT)) 
   rw [Equiv.symm_apply_apply]; rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show Sum.elim a b (finSumFinEquiv.symm (finSumFinEquiv (Sum.inr i))) j = b i j`. Rewrite using `[Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bot_glue (a b : WOF F E nS nT) : botR (glue a b : WOF F E nS (nT + nT)) = b := by
   ext i j
@@ -37,7 +37,7 @@ theorem bot_glue (a b : WOF F E nS nT) : botR (glue a b : WOF F E nS (nT + nT)) 
   rw [Equiv.symm_apply_apply]; rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨k, rfl⟩` from `finSumFinEquiv.surjective i`. Break down `k with k | k` into its components or cases. Conclude with `congrFun (congrFun h1 k) j`. Conclude with `congrFun (congrFun h2 k) j`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem tb_ext {x y : WOF F E nS (nT + nT)} (h1 : topR x = topR y) (h2 : botR x = botR y) : x = y := by
   ext i j
@@ -47,7 +47,7 @@ theorem tb_ext {x y : WOF F E nS (nT + nT)} (h1 : topR x = topR y) (h2 : botR x 
   · exact congrFun (congrFun h2 k) j
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `finSumFinEquiv.surjective i`. Break down `k with k | k` into its components or cases. Conclude with `((continuous_apply j).comp ((continuous_apply k).comp continuous_fst)).congr fun p : WOF F E nS nT × WOF F E nS nT => (congrFun (congrFun (top_glue p.1 p.2) k) j).symm`. Conclude with `((continuous_apply j).comp ((continuous_apply k).comp continuous_snd)).congr fun p : WOF F E nS nT × WOF F E nS nT => (congrFun (congrFun (bot_glue p.1 p.2) k) j).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem continuous_glue : Continuous fun p : WOF F E nS nT × WOF F E nS nT => (glue p.1 p.2 : WOF F E nS (nT + nT)) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -69,25 +69,25 @@ def glueE : (WOF F E nS nT × WOF F E nS nT) ≃+ WOF F E nS (nT + nT) where
     (by rw [botR_add, bot_glue, bot_glue, bot_glue]; rfl)
 
 /- English proof (translation)
-Take `⟨γ, rfl⟩` from `h`. Conclude with `⟨γ.submatrix (finSumFinEquiv ∘ Sum.inl) id, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem top_rat {x : WOF F E nS (nT + nT)} (h : x ∈ ratLF F E nS (nT + nT)) : topR x ∈ ratLF F E nS nT := by
   obtain ⟨γ, rfl⟩ := h
   exact ⟨γ.submatrix (finSumFinEquiv ∘ Sum.inl) id, rfl⟩
 
 /- English proof (translation)
-Take `⟨γ, rfl⟩` from `h`. Conclude with `⟨γ.submatrix (finSumFinEquiv ∘ Sum.inr) id, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bot_rat {x : WOF F E nS (nT + nT)} (h : x ∈ ratLF F E nS (nT + nT)) : botR x ∈ ratLF F E nS nT := by
   obtain ⟨γ, rfl⟩ := h
   exact ⟨γ.submatrix (finSumFinEquiv ∘ Sum.inr) id, rfl⟩
 
 /- English proof (translation)
-Take `⟨γ, rfl⟩` from `ha`. Take `⟨γ', rfl⟩` from `hb`. Use `⟨glue γ γ', tb_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[top_glue]`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `show incAF F E (Sum.elim γ γ' (finSumFinEquiv.symm (finSumFinEquiv (Sum.inl i))) j) = incAF F E (γ i j)`. Rewrite using `[Equiv.symm_apply_apply]`. Both sides reduce to the same expression. Rewrite using `[bot_glue]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show incAF F E (Sum.elim γ γ' (finSumFinEquiv.symm (finSumFinEquiv (Sum.inr i))) j) = incAF F E (γ' i j)`. Rewrite using `[Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem glue_rat {a b : WOF F E nS nT} (ha : a ∈ ratLF F E nS nT) (hb : b ∈ ratLF F E nS nT) :
     (glue a b : WOF F E nS (nT + nT)) ∈ ratLF F E nS (nT + nT) := by
@@ -105,23 +105,21 @@ theorem glue_rat {a b : WOF F E nS nT} (ha : a ∈ ratLF F E nS nT) (hb : b ∈ 
 
 variable (F E nS nT) in
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS nT`. Take `⟨j1, j2, j3, j4, j5, -⟩` from `GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS (nT + nT)`. Establish `: BorelSpace (WOF F E nS nT)` using `⟨rfl⟩`. Establish `: BorelSpace (WOF F E nS (nT + nT))` using `⟨rfl⟩`. Take `⟨μ, 𝓕, hμ, h𝓕, -⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WOF F E nS nT) (ratLF F E nS nT) K hK hKc).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc' : Continuous (glueE F E nS nT).symm` using `continuous_topR.prodMk continuous_botR`. Set `eh : (WOF F E nS nT × WOF F E nS nT) ≃ₜ WOF F E nS (nT + nT)` to `{ (glueE F E nS nT).toEquiv with continuous_toFun := continuous_glue, continuous_invFun := hc' }`. Set `em` to `eh.toMeasurableEquiv`. Establish `mp : MeasurePreserving em.symm ((μ.prod μ).map em) (μ.prod μ)` using `(⟨em.measurable, rfl⟩ : MeasurePreserving em (μ.prod μ) ((μ.prod μ).map em)).symm em`. Establish `qt : Measure.QuasiMeasurePreserving topR ((μ.prod μ).map em) μ` using `Measure.quasiMeasurePreserving_fst.comp mp.quasiMeasurePreserving`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `qb : Measure.QuasiMeasurePreserving botR ((μ.prod μ).map em) μ` using `Measure.quasiMeasurePreserving_snd.comp mp.quasiMeasurePreserving`. Use `⟨μ, 𝓕, (μ.prod μ).map em, topR ⁻¹' 𝓕 ∩ botR ⁻¹' 𝓕, hμ, h𝓕, (glueE F E nS nT).isAddHaarMeasure_map (μ.prod μ) continuous_glue hc', ⟨?_, ?_, ?_⟩, fun φ χ => ?_⟩` and prove the remaining obligations. Conclude with `(h𝓕.nullMeasurableSet.preimage qt).inter (h𝓕.nullMeasurableSet.preimage qb)`. Use `filter_upwards [qt.ae h𝓕.ae_covers, qb.ae h𝓕.ae_covers] with x ⟨a, ha⟩ ⟨b, hb⟩`. Use `⟨⟨glue a.1 b.1, glue_rat a.2 b.2⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show topR (glue a.1 b.1 + x) ∈ 𝓕`. Rewrite using `[topR_add, top_glue]`. Conclude with `ha`. Use `show botR (glue a.1 b.1 + x) ∈ 𝓕`. Rewrite using `[botR_add, bot_glue]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hb`. Introduce `g g' hne`. Set `a : ratLF F E nS nT` to `⟨topR g.1, top_rat g.2⟩`. Set `a' : ratLF F E nS nT` to `⟨topR g'.1, top_rat g'.2⟩`. Set `b : ratLF F E nS nT` to `⟨botR g.1, bot_rat g.2⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Set `b' : ratLF F E nS nT` to `⟨botR g'.1, bot_rat g'.2⟩`. Distinguish the cases in `h1 : a = a'`. Establish `h2 : b ≠ b'` using `fun h2 => hne (Subtype.ext (tb_ext (congrArg Subtype.val h1) (congrArg Subtype.val h2)))`. Use `measure_mono_null ?_ (qb.preimage_null (h𝓕.aedisjoint h2))` and prove the remaining obligations. Introduce and unpack `x ⟨⟨y, hy, e⟩, ⟨y', hy', e'⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨⟨botR y, hy.2, by rw [← e]; rfl⟩, ⟨botR y', hy'.2, by rw [← e']; rfl⟩⟩`. Use `measure_mono_null ?_ (qt.preimage_null (h𝓕.aedisjoint h1))` and prove the remaining obligations. Introduce and unpack `x ⟨⟨y, hy, e⟩, ⟨y', hy', e'⟩⟩`. Conclude with `⟨⟨topR y, hy.1, by rw [← e]; rfl⟩, ⟨topR y', hy'.1, by rw [← e']; rfl⟩⟩`. Rewrite using `[setIntegral_map_equiv, ← setIntegral_prod_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e1 : em ⁻¹' (topR ⁻¹' 𝓕 ∩ botR ⁻¹' 𝓕) = 𝓕 ×ˢ 𝓕`. Use extensionality with `p`. Use `show (topR (glue p.1 p.2) ∈ 𝓕 ∧ botR (glue p.1 p.2) ∈ 𝓕) ↔ _`. Rewrite using `[top_glue, bot_glue]`. Both sides reduce to the same expression.
-
-Rewrite using `[e1]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Use `show φ (topR (glue p.1 p.2)) * χ (botR (glue p.1 p.2)) = _`. Rewrite using `[top_glue, bot_glue]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prod_domain : ∃ (μ : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT))
     (μ₂ : Measure (WOF F E nS (nT + nT))) (𝓕₂ : Set (WOF F E nS (nT + nT))),
@@ -180,7 +178,7 @@ theorem exists_prod_domain : ∃ (μ : Measure (WOF F E nS nT)) (𝓕 : Set (WOF
 variable {σ : E →ₐ[F] E} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E}
 
 /- English proof (translation)
-Unfold `actOF`. Rewrite using `[inv_one, show mtF σ JS 1 = 1 from rfl, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_one_left {m : ℕ} {J : Matrix (Fin m) (Fin m) E} (h : GAF σ J) (x : WOF F E nS m) :
     actOF σ JS J 1 h x = (mtF σ J h * x : Matrix (Fin m) (Fin nS) (AEF F E)) := by
@@ -188,9 +186,9 @@ theorem act_one_left {m : ℕ} {J : Matrix (Fin m) (Fin m) E} (h : GAF σ J) (x 
   rw [inv_one, show mtF σ JS 1 = 1 from rfl, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[act_one_left, act_one_left, e]`. Use extensionality with `i j`. Take `⟨k, rfl⟩` from `finSumFinEquiv.surjective i`. Rewrite using `[Matrix.mul_apply, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [glue, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `k with k | k` into its components or cases. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using `[Matrix.one_apply]`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem act_glue (h : GAF σ JT) (hd : GAF σ (dblG JT))
     (e : mtF σ (dblG JT) hd = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks (mtF σ JT h) 0 0 1))
@@ -207,25 +205,23 @@ theorem act_glue (h : GAF σ JT) (hd : GAF σ (dblG JT))
     rfl
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E n m`. Establish `: BorelSpace (WOF F E n m)` using `⟨rfl⟩`. Establish `: Countable (ratLF F E n m)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `⟨by`. Rewrite using `[Measure.restrict_apply_univ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (G := WOF F E n m) (ratLF F E n m) hK hKc μ h𝓕⟩`. Establish `hint : ∀ g g', IsThetaFunOF σ J J' ξ₀ ψ g → IsThetaFunOF σ J J' ξ₀ ψ g' → Integrable (fun x => g x * star (g' x)) (μ.restrict 𝓕)` using `fun g g' hg hg' => by`. Establish `hcont : Continuous fun x => g x * star (g' x)` using `hg.cont.mul hg'.cont.star`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hcont.continuousOn`. Use `Integrable.of_bound hcont.aestronglyMeasurable C (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, h⟩` from `hKc w`. Rewrite using `[← prod_periodic hψ.2.1 hg hg' hγ w]`. Conclude with `hC _ h`. Establish `h1 : ∀ i i' x, A i x * star (A i' x) = B i x * star (B i' x)` using `fun i i' x => by`. Establish `key` using `GlobalTheory.SeparatingCharacters.eq_zero_of_coefficients_eq_zero (WOF F E n m) (ratLF F E n m) K hK hKc (ratLF F E n m) (fun γ x => ψ (symplOF σ J J' ξ₀ x γ)) (fun γ => hψ.1.comp (continuous_symplOF_left _)) (fun γ x y => by simp only [symplOF_add_left, AddChar.map_add_eq_mul]) …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hann x]`. Conclude with `⟨fun h γ hγ => h ⟨γ, hγ⟩, fun h γ => h γ γ.2⟩)`. Use `μ 𝓕 hμ h𝓕 (fun x => A i x * star (A i' x) - B i x * star (B i' x))`. Use the proof step `(((hA i).cont.mul (hA i').cont.star).sub ((hB i).cont.mul (hB i').cont.star))`. Use the proof step `(fun γ hγ x => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_periodic hψ.2.1 (hA i) (hA i') hγ, prod_periodic hψ.2.1 (hB i) (hB i') hγ])`. Use the proof step `(fun γ => by`. Take `⟨k, k1, k2⟩` from `hH γ i`. Establish `e : (fun x => ψ (symplOF σ J J' ξ₀ x γ) * (A i x * star (A i' x) - B i x * star (B i' x))) = fun x => A k x * star (A i' x) - B k x * star (B i' x)`. Use function extensionality and compare the values at `x`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← k1, ← k2, heis_rat hskew (hA i) γ.2, heis_rat hskew (hB i) γ.2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_sub (hint _ _ (hA k) (hA i')) (hint _ _ (hB k) (hB i')), hs, sub_self])`. Conclude with `sub_eq_zero.1 (congrFun key x)`. Establish `h2 : ∀ i i' x y, A i x * star (A i' y) = B i x * star (B i' y)` using `fun i i' x y => by`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, k1, k2⟩` from `hH (y - x) i'`. Establish `h` using `h1 i k x`. Rewrite `h` using `[← k1, ← k2]`. Simplify using `only [heisOF, add_sub_cancel, star_mul'] at h`. Take the linear combination `ψ (symplOHF σ J J' ξ₀ x (y - x)) * h - (A i x * star (A i' y) - B i x * star (B i' y)) * mul_star_psi hψ.2.1 (symplOHF σ J J' ξ₀ x (y - x))`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : ∀ i y, ‖A i y‖ = ‖B i y‖` using `fun i y => by`. Use `congrArg norm (h2 i i y y)` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_mul, norm_star, norm_star]`. Conclude with `(mul_self_inj_of_nonneg (norm_nonneg _) (norm_nonneg _)).1 this`. Distinguish the cases in `h0 : ∃ i y, A i y ≠ 0`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i₀, y, hy⟩` from `h0`. Establish `hs : star (A i₀ y) ≠ 0` using `star_ne_zero.2 hy`. Use `⟨star (B i₀ y) / star (A i₀ y), ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_star, norm_star, ← hn, div_self (norm_ne_zero_iff.2 hy)]`. Use function extensionality and compare the values at `x`.
-
-Rewrite using `[Pi.smul_apply, smul_eq_mul, div_mul_eq_mul_div, eq_div_iff hs, h2, mul_comm]`. Use `push Not at h0`. Use `⟨1, norm_one, fun i => funext fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, h0, eq_comm, ← norm_eq_zero, ← hn, h0, norm_zero]`.
+A detailed English derivation is pending.
 -/
 theorem abstract {n m : ℕ} {J : Matrix (Fin n) (Fin n) E} {J' : Matrix (Fin m) (Fin m) E} {ξ₀ : E} {ψ : AddChar (AF F) ℂ}
     (hψ : IsCharAF F ψ) (hskew : ∀ x y : WOF F E n m, symplOF σ J J' ξ₀ y x = -symplOF σ J J' ξ₀ x y)
@@ -301,19 +297,17 @@ end PositivityTheory.ThKW.DblSchur
 
 open PositivityTheory.ThKW.DblSchur PositivityTheory.ThKW.Dbl Formalism.IndefR.DatumF MeasureTheory GlobalTheory.DblTargetDelta in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ χS χT ω hω ωd hωd h hd e`. Establish `hψ : IsCharAF F B.ψ` using `(GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B hB).1`. Establish `hinv : ∀ e, σ (σ e) = e` using `fun e => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]`. Establish `hT'` using `GlobalTheory.WeilSchrodinger.DblTargetF.isHermND_dblG hT`. Establish `hth` using `fun w f hf => GlobalTheory.HeisThetaF.isThetaFunOF_heisOF F E σ B hB nS nT JS JT ξ₀ w f hf`. Take `⟨μ, 𝓕, μ₂, 𝓕₂, hμ, h𝓕, hμ₂, h𝓕₂, hprod⟩` from `exists_prod_domain F E nS nT`. Set `T` to `{f // IsThetaFunOF σ JS JT ξ₀ B.ψ f}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hδ : ∀ f₁ f₂ g₁ g₂ : WOF F E nS nT → ℂ, ∫ x in 𝓕₂, deltaT f₁ f₂ x * star (deltaT g₁ g₂ x) ∂μ₂ = (∫ x in 𝓕, f₁ x * star (g₁ x) ∂μ) * ∫ x in 𝓕, conj (f₂ (-x)) * star (conj (g₂ (-x))) ∂μ` using `fun f₁ f₂ g₁ g₂ => by`. Rewrite using `[← hprod]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [deltaT_apply, star_mul']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc, H⟩` from `abstract hψ (GlobalTheory.T.adelicSymplecticTraceForm_alternating_swap F E σ hinv _ _ JS _ hS hT' ξ₀ hσξ) (GlobalTheory.T.rational_points_self_annihilator_symplectic_standardChar F E σ B hB _ _ JS _ hS hT' ξ₀ hξ) (fun p : T × T => ωd (1, hd) (deltaT p.1.1 p.2.1)) (fun p => deltaT …`. Establish `e1 : actOF σ JS JT 1 h (actOF σ JS JT 1 h⁻¹ (topR w)) = topR w`. Rewrite using `[← GlobalTheory.WeilPartsF.actOF_mul, mul_one, mul_inv_cancel, act_one_left, show mtF σ JT 1 = 1 from rfl, Matrix.one_mul]`. Establish `e2 : actOF σ JS _ 1 hd (glue (actOF σ JS JT 1 h⁻¹ (topR w)) (botR w)) = w`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[act_glue h hd e, e1]`. Conclude with `tb_ext (top_glue _ _) (bot_glue _ _)`. Use `⟨(⟨_, hth (actOF σ JS JT 1 h⁻¹ (topR w)) _ p.1.2⟩, ⟨_, hth (-botR w) _ p.2.2⟩), ?_, ?_⟩` and prove the remaining obligations. Use `hωd.om_heis 1 hd (glue (actOF σ JS JT 1 h⁻¹ (topR w)) (botR w)) _ (theta_delta hψ.2.1 p.1.2 p.2.2)` as an intermediate fact. Rewrite `this` using `[e2, heis_delta hψ.2.1, top_glue, bot_glue]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm`. Use `hω.om_heis 1 h (actOF σ JS JT 1 h⁻¹ (topR w)) _ p.1.2` as an intermediate fact. Rewrite `this` using `[e1]`. Use `show _ = deltaT (ω (1, h) _) _`. Rewrite using `[this, heis_delta hψ.2.1])`.
-
-Use `μ₂ 𝓕₂ hμ₂ h𝓕₂ (fun p q => by`. Rewrite using `[GlobalTheory.ThetaSchurF.scalar_eq hψ.2.1 μ₂ 𝓕₂ hμ₂ h𝓕₂ (ωd (1, hd)) (hωd.om_pres _) (hωd.om_unit μ₂ 𝓕₂ hμ₂ h𝓕₂ _) _ _ (theta_delta hψ.2.1 p.1.2 p.2.2) (theta_delta hψ.2.1 q.1.2 q.2.2), hδ, hδ, GlobalTheory.ThetaSchurF.scalar_eq hψ.2.1 μ 𝓕 hμ h𝓕 (ω (1, h)) (hω.om_pres _) (hω.om_ …`. Conclude with `⟨c, hc, fun f₁ f₂ h₁ h₂ => H (⟨f₁, h₁⟩, ⟨f₂, h₂⟩)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.ThKW.weil_rep_unitary_pair_equivariant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

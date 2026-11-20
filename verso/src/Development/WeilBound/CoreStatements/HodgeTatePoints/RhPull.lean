@@ -9,13 +9,13 @@ open scoped Matrix
 namespace PositivityTheory.HtPt.Rh
 
 /- English proof (translation)
-Introduce `p C _ R _ _ N N' _ _ M M' j K hM hG g hg`. Rewrite `hg` using `[← hM]`. Take `⟨g', hg', rfl⟩` from `hg`. Establish `hinv : g' ∈ invFun M' ⊥` using `⟨hg', fun x k hk => by rw [AddSubgroup.mem_bot.1 hk, add_zero]⟩`. Establish `h1 : g' ∈ Algebra.adjoin R ((afFun p (invFun M' ⊥) : Submodule R (N' → C)) : Set (N' → C))` using `hG hinv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(fun x => g' (j x)) ∈ Algebra.adjoin R ((afFun p (invFun M K) : Submodule R (N → C)) : Set (N → C))`. Use `clear hg' hinv`. Proceed by induction on `h1 using Algebra.adjoin_induction with`. Consider the case `mem f hf`. Use `Algebra.subset_adjoin ⟨?_, fun x y => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hM]`. Conclude with `⟨f, hf.1.1, rfl⟩`. Use `hf.2 (j x) (j y)` as an intermediate fact. Simplify `this` using `only [map_add]`. Consider the case `algebraMap r => exact Subalgebra.algebraMap_mem _ r`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately.
 
-Consider the case `add f f' _ _ h h' => exact Subalgebra.add_mem _ h h'`. Consider the case `mul f f' _ _ h h' => exact Subalgebra.mul_mem _ h h'`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sub_pull : ∀ (p : ℕ) (C : Type) [Field C] (R : Type) [CommRing R] [Algebra R C] (N N' : Type) [AddCommGroup N] [AddCommGroup N'] (M : Submodule R (N → C)) (M' : Submodule R (N' → C)) (j : N →+ N') (K : AddSubgroup N), M'.map (LinearMap.funLeft R C (j : N → N')) = invFun M K → GenAF p M' ⊥ → GenAF p M K := by
   intro p C _ R _ _ N N' _ _ M M' j K hM hG g hg

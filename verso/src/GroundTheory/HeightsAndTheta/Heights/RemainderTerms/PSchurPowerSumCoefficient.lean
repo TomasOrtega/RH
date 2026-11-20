@@ -11,13 +11,13 @@ open MvPolynomial Finset
 noncomputable section
 
 /- English proof (translation)
-Introduce `N r k hk1 hkN nu hanti hsum`. Establish `hhom` using `h3 (Fin N) r nu`. Rewrite `hhom` using `[hsum]`. Take `⟨S, hS, hw⟩` from `h1 N k (schur (Fin N) nu) (Schur.schur_isSymmetric (σ := Fin N) nu) hhom`. Use `⟨S, hS, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1` using `h2 N k hk1 hkN S hw`. Rewrite `e1` using `[hS, h4 N r k nu hk1 hkN hanti hsum]`. Establish `hk : (k : ℂ) ≠ 0` using `by exact_mod_cast (show k ≠ 0 by omega)`. Apply `Rat.cast_injective (α := ℂ)` to reduce the goal to its premises. Use `split_ifs with h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[if_pos h]`. Use `push_cast`. Rewrite using `[eq_div_iff hk]`. Take the linear combination `-e1`. Rewrite `e1` using `[if_neg h]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Break down `mul_eq_zero.mp e1.symm with h0 | h0` into its components or cases. Conclude with `absurd h0 hk`. Conclude with `h0`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem SchurPowerSumCoefficient.proof (h1 : SchWeightedPreimage.Statement)
     (h2 : SchEvalPowerSumHom.Statement) (h3 : SchSchurHomogeneous.Statement)

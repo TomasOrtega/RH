@@ -11,7 +11,7 @@ private def toGLQ (M : Matrix (Fin 2) (Fin 2) ℤ) (hM : M.det ≠ 0) : GL (Fin 
     (by rw [← RingHom.map_det]; simpa using hM)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[toGL_val M hM]`. Simplify using `[toGLQ, Matrix.GeneralLinearGroup.map]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma toGL_eq_map (M : Matrix (Fin 2) (Fin 2) ℤ) (hM : M.det ≠ 0) :
     toGL M = Matrix.GeneralLinearGroup.map (Rat.castHom ℝ) (toGLQ M hM) := by
@@ -20,7 +20,7 @@ private lemma toGL_eq_map (M : Matrix (Fin 2) (Fin 2) ℤ) (hM : M.det ≠ 0) :
   simp [toGLQ, Matrix.GeneralLinearGroup.map]
 
 /- English proof (translation)
-Rewrite `hc`, the goal using `[isCusp_SL2Z_iff]`. Take `⟨c, rfl⟩` from `hc`. Rewrite using `[toGL_eq_map M hM]`. Conclude with `⟨toGLQ M hM • c, by rw [← Rat.coe_castHom, OnePoint.map_smul]⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma isCusp_SL2Z_toGL_smul (M : Matrix (Fin 2) (Fin 2) ℤ) (hM : M.det ≠ 0) {c : OnePoint ℝ}
     (hc : IsCusp c 𝒮ℒ) : IsCusp (toGL M • c) 𝒮ℒ := by
@@ -30,7 +30,7 @@ lemma isCusp_SL2Z_toGL_smul (M : Matrix (Fin 2) (Fin 2) ℤ) (hM : M.det ≠ 0) 
   exact ⟨toGLQ M hM • c, by rw [← Rat.coe_castHom, OnePoint.map_smul]⟩
 
 /- English proof (translation)
-Introduce `k M G hM hG`. Use `⟨MDifferentiable.slash hG.1 k (toGL M), fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[← OnePoint.IsZeroAt.smul_iff]`. Conclude with `hG.2 _ (isCusp_SL2Z_toGL_smul M hM.ne' hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspAll_slash_toGL : ∀ (k : ℤ) (M : Matrix (Fin 2) (Fin 2) ℤ) (G : ℍ → ℂ), 0 < M.det →
     CuspAll k G → CuspAll k (G ∣[k] toGL M) := by

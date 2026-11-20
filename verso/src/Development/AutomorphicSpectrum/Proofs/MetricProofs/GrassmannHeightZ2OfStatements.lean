@@ -16,7 +16,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `hSys hHS hBig hResK`. Conclude with `GlobalTheory.T.grassmann_height_Z2_of_inputs_and_Z2 (GlobalTheory.T.pullback_inputs_of_statements hSys hHS hBig hResK) hSys (hsLinks_of_moriwaki hHS hBig).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem grassmann_height_Z2_of_systems :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement →

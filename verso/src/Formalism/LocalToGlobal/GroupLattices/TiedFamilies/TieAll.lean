@@ -45,7 +45,7 @@ variable {D sc Ce Lc I ψ hd H0 hL T B hBs hB}
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-The claim follows from `N.same ex := fun u w hg => ex_C D sc Ce Lc I ψ hd H0 hL T B hBs hB u (N.same u) w hg (evRatRep_rec T (gatTiesC D sc Ce Lc I ψ hd) u w hg B (N.blk u w hg)) (N.psi0 u) pos := pos chi := N.chi`.
+A detailed English derivation is pending.
 -/
 theorem CmpLeft.core (N : CmpLeft D sc Ce Lc I ψ hd H0 hL T B hBs hB)
     (pos : ∀ u w hg v (s : Fin (((recC D sc Ce Lc I ψ hd).gat u w hg).P.n' v)) (x : D.host.E),
@@ -64,7 +64,7 @@ theorem CmpLeft.core (N : CmpLeft D sc Ce Lc I ψ hd H0 hL T B hBs hB)
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-The claim follows from `cmpHyp0P_of_cmpCore (N.core pos) (fun u w hg => gatIs_recC D sc Ce Lc I ψ hd H0 hL (fun u w h => isHyperbolicAt_rec_of_placeIdentification D u w h (I u w h)) u w hg) N.valInt`.
+A detailed English derivation is pending.
 -/
 theorem CmpLeft.toHyp0P (N : CmpLeft D sc Ce Lc I ψ hd H0 hL T B hBs hB)
     (pos : ∀ u w hg v (s : Fin (((recC D sc Ce Lc I ψ hd).gat u w hg).P.n' v)) (x : D.host.E),

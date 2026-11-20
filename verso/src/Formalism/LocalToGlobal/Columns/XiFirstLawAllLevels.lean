@@ -16,7 +16,7 @@ section Pts
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply]`. Conclude with `clL_ext_apply c κ v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clX_ext_toLin {n : ℕ} (c : ℕ) (κ : Sp E n ≃ₗ[E] Sp E n) :
     ((clL_ext c κ : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) : Sp E (n + c) →ₗ[E] Sp E (n + c)) =
@@ -26,38 +26,38 @@ theorem clX_ext_toLin {n : ℕ} (c : ℕ) (κ : Sp E n ≃ₗ[E] Sp E n) :
   exact clL_ext_apply c κ v
 
 /- English proof (translation)
-Simplify using `[ciExtM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem clX_extM_cc {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) (i j : Fin n) : ciExtM c A (Fin.castAdd c i) (Fin.castAdd c j) = A i j := by
   simp [ciExtM]
 
 /- English proof (translation)
-Simplify using `[ciExtM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem clX_extM_cn {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) (i : Fin n) (j : Fin c) : ciExtM c A (Fin.castAdd c i) (Fin.natAdd n j) = 0 := by
   simp [ciExtM]
 
 /- English proof (translation)
-Simplify using `[ciExtM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem clX_extM_nc {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) (i : Fin c) (j : Fin n) : ciExtM c A (Fin.natAdd n i) (Fin.castAdd c j) = 0 := by
   simp [ciExtM]
 
 /- English proof (translation)
-Simplify using `[ciExtM, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem clX_extM_nn {n c : ℕ} (A : Matrix (Fin n) (Fin n) E) (i j : Fin c) :
     ciExtM c A (Fin.natAdd n i) (Fin.natAdd n j) = if i = j then 1 else 0 := by
   simp [ciExtM, Matrix.one_apply]
 
 /- English proof (translation)
-Apply `LinearMap.toMatrix'.injective` to reduce the goal to its premises. Rewrite using `[LinearMap.toMatrix'_comp, clX_ext_toLin, LinearMap.toMatrix'_toLin']`. Unfold `Loc.xx1`. Rewrite using `[LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_toLin']`. Use extensionality with `l s`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.mul_apply, Fin.sum_univ_add]`. Use `Fin.addCases (fun s0 => ?_) (fun s1 => ?_) s` and prove the remaining obligations. Simplify using `only [clX_extM_cc, clX_extM_nc, mul_zero, Finset.sum_const_zero, add_zero, Matrix.of_apply, Fin.val_castAdd]`. Establish `hnf : ∀ m : Fin n', ¬ Loc.IsFree n' n c l.1 m.1` using `fun m h => by unfold Loc.IsFree at h; omega`. Rewrite using `[dif_neg (hnf s0), dif_pos s0.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dif_neg (hnf _), dif_pos (Fin.is_lt _)]`. Distinguish the cases in `hl : l.1 < n`. Simplify using `only [dif_pos hl, LinearMap.toMatrix'_comp, Matrix.mul_apply]`. Simplify using `only [dif_neg hl, zero_mul, Finset.sum_const_zero]`. Simplify using `only [clX_extM_cn, clX_extM_nn, mul_zero, Finset.sum_const_zero, zero_add, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, Matrix.of_apply, Fin.val_natAdd]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hs : ¬ (n' + s1.1 < n')` using `by omega`. Distinguish the cases in `hf : Loc.IsFree n' n c l.1 (n' + s1.1)`. Rewrite using `[dif_pos hf, dif_pos hf]`. Rewrite using `[dif_neg hf, dif_neg hf, dif_neg hs, dif_neg hs]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem free_point_comp_equiv {n' c' n c : ℕ} (y : HomE E n' n) (κ : Sp E n' ≃ₗ[E] Sp E n') (t : Loc.FC n' c' n c → E) :
     Loc.xx1 (y ∘ₗ κ.toLinearMap) t = Loc.xx1 y t ∘ₗ (clL_ext c' κ).toLinearMap := by
@@ -83,7 +83,7 @@ theorem free_point_comp_equiv {n' c' n c : ℕ} (y : HomE E n' n) (κ : Sp E n' 
     · rw [dif_neg hf, dif_neg hf, dif_neg hs, dif_neg hs]
 
 /- English proof (translation)
-Rewrite using `[clL_ext_apply, ciExtM_fix]`. Introduce `l`. Unfold `Loc.eN`. Rewrite using `[if_neg (by simp; omega)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem clX_ext_eN {n c : ℕ} (κ : Sp E n ≃ₗ[E] Sp E n) {s : ℕ} (hs : n ≤ s) : clL_ext c κ (Loc.eN E (n + c) s) = Loc.eN E (n + c) s := by
   rw [clL_ext_apply, ciExtM_fix]
@@ -92,7 +92,7 @@ theorem clX_ext_eN {n c : ℕ} (κ : Sp E n ≃ₗ[E] Sp E n) {s : ℕ} (hs : n 
   rw [if_neg (by simp; omega)]
 
 /- English proof (translation)
-Unfold `Loc.chArg`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply]`. Simplify using `only [LinearEquiv.coe_coe]`. Rewrite using `[clX_ext_eN κ (by omega)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem clX_chArg_comp {n' c' n c : ℕ} (x : HomE E (n' + c') (n + c)) (κ : Sp E n' ≃ₗ[E] Sp E n') :
     Loc.chArg (n' := n') (n := n) (c := c) (x ∘ₗ (clL_ext c' κ).toLinearMap) = Loc.chArg (n' := n') (n := n) (c := c) x := by
@@ -103,7 +103,7 @@ theorem clX_chArg_comp {n' c' n c : ℕ} (x : HomE E (n' + c') (n + c)) (κ : Sp
   rw [clX_ext_eN κ (by omega)]
 
 /- English proof (translation)
-Unfold `Loc.E1`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem first_sum_scalar_mul {k K : Type} [CommRing k] [Field K] {n' c' n c : ℕ} (psi : k → K) (vals : Finset k) (wt : K) (a : K)
     (Φ : Loc.SF k K (n' + c') (n + c)) (xj : (Fin n' → k) →ₗ[k] (Fin n → k)) :
@@ -114,7 +114,7 @@ theorem first_sum_scalar_mul {k K : Type} [CommRing k] [Field K] {n' c' n c : �
   ring
 
 /- English proof (translation)
-Unfold `Loc.E1`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[free_point_comp_equiv, clX_chArg_comp]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem first_sum_source_change {K : Type} [Field K] {n' c' n c : ℕ} (psi : E → K) (vals : Finset E) (wt : K) (Φ : Loc.SF E K (n' + c') (n + c))
     (y : HomE E n' n) (κ : Sp E n' ≃ₗ[E] Sp E n') :
@@ -132,11 +132,11 @@ section Res
 variable {k : Type} [CommRing k]
 
 /- English proof (translation)
-Establish `h1` using `h l.1 s.1 l.2 s.2`. Rewrite `h1` using `[residue_basisVec_eq_single s.2]`. Unfold `Loc.atN at h1`. Rewrite `h1` using `[dif_pos l.2]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h2 : l.1 < n ∧ s.1 < n`. Rewrite using `[if_pos h2, if_pos h2]`. Rewrite using `[if_neg h2, if_neg h2]`. Distinguish the cases in `h3 : l = s`. Rewrite using `[if_pos h3, if_pos (congrArg Fin.val h3)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h3, if_neg (fun h4 => h3 (Fin.ext h4))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem clX_ent_fin {n c : ℕ} (φ : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) (a : ℕ → ℕ → k)
     (h : ∀ l s, l < n + c → s < n + c → Loc.atN (φ (Loc.eN k (n + c) s)) l = if l < n ∧ s < n then a l s else if l = s then 1 else 0)
@@ -154,23 +154,23 @@ theorem clX_ent_fin {n c : ℕ} (φ : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c)
     · rw [if_neg h3, if_neg (fun h4 => h3 (Fin.ext h4))]
 
 /- English proof (translation)
-Establish `hent` using `clX_ent_fin φ a h`. Use `⟨fun v j => ?_, fun s hs => ?_, fun v l => ?_⟩` and prove the remaining obligations. Rewrite using `[residue_linearEquiv_apply_eq_sum, Fin.sum_univ_add]`. Establish `e1 : ∀ m : Fin n, φ (Pi.single (Fin.castAdd c m) 1) (Fin.natAdd n j) = 0`. Introduce `m`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hent, if_neg (by simp), if_neg (fun h' => by have := congrArg Fin.val h'; simp at this; omega)]`. Establish `e2 : ∀ m : Fin c, φ (Pi.single (Fin.natAdd n m) 1) (Fin.natAdd n j) = if j = m then 1 else 0`. Introduce `m`. Rewrite using `[hent, if_neg (by simp)]`. Distinguish the cases in `hm : j = m`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hm, if_pos rfl, if_pos rfl]`. Rewrite using `[if_neg hm, if_neg (fun h' => hm (Fin.ext (by have := congrArg Fin.val h'; simp at this; exact this)))]`. Simplify using `only [e1, e2, zero_mul, Finset.sum_const_zero, zero_add, ite_mul, one_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use function extensionality and compare the values at `l`. Rewrite using `[residue_linearEquiv_apply_eq_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hsN : s < n + c`. Rewrite using `[Finset.sum_eq_single (⟨s, hsN⟩ : Fin (n + c))]`. Rewrite using `[hent, if_neg (fun h' => by simp at h'; omega)]`. Unfold `Loc.eN`. Distinguish the cases in `hl : l = ⟨s, hsN⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hl, zero_mul, if_neg (fun h' => hl (Fin.ext h'))]`. Introduce `b _ hb`. Unfold `Loc.eN`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg (fun h' => hb (Fin.ext h')), mul_zero]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Establish `h0 : Loc.eN k (n + c) s = 0`. Use function extensionality and compare the values at `l'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `Loc.eN`. Rewrite using `[if_neg (by omega)]`. Both sides reduce to the same expression. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[residue_linearEquiv_apply_eq_sum, Fin.sum_univ_add]`. Establish `e1 : ∀ m : Fin n, φ (Pi.single (Fin.castAdd c m) 1) (Fin.castAdd c l) = a l.1 m.1`. Introduce `m`. Rewrite using `[hent, if_pos ⟨by simp, by simp⟩]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : ∀ m : Fin c, φ (Pi.single (Fin.natAdd n m) 1) (Fin.castAdd c l) = 0`. Introduce `m`. Rewrite using `[hent, if_neg (by simp), if_neg (fun h' => by have := congrArg Fin.val h'; simp at this; omega)]`. Simplify using `only [e1, e2, zero_mul, Finset.sum_const_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clX_fix_of_ent {n c : ℕ} (φ : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) (a : ℕ → ℕ → k)
     (h : ∀ l s, l < n + c → s < n + c → Loc.atN (φ (Loc.eN k (n + c) s)) l = if l < n ∧ s < n then a l s else if l = s then 1 else 0) :
@@ -223,9 +223,9 @@ theorem clX_fix_of_ent {n c : ℕ} (φ : (Fin (n + c) → k) ≃ₗ[k] (Fin (n +
     simp only [e1, e2, zero_mul, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Use `⟨fun i v hv => ?_, hvec n le_rfl, fun i => ?_⟩` and prove the remaining obligations. Introduce `l hl`. Establish `hl' : ¬ l.1 < n` using `fun h' => hl (show l.1 < n + i by omega)`. Take `⟨j, rfl⟩ : ∃ j : Fin c, Fin.natAdd n j = l` from `⟨⟨l.1 - n, by omega⟩, Fin.ext (by simp; omega)⟩`. Rewrite using `[hfix]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv _ hl`. Rewrite using `[hvec (n + i) (by omega), sub_self]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clX_R1cond {n c : ℕ} (φ : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) (hfix : ∀ v (j : Fin c), φ v (Fin.natAdd n j) = v (Fin.natAdd n j))
     (hvec : ∀ s, n ≤ s → φ (Loc.eN k (n + c) s) = Loc.eN k (n + c) s) : Loc.R1cond k n c φ := by
@@ -247,15 +247,15 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)}
 
 /- English proof (translation)
-Introduce `P hP κ κ' hκ hκ' hκh hκh' y`. Establish `hPhi : PhiAt Ch mu cst.sharp i P.1 = LocE.PhiGS (qOf P.1) (psi0P Ch P.1) (chiP Ch P.1) R.k R.rS R.r R.t (i + 1) (cOf R i) (R.N i) (cOf R (i + 1)) (R.N (i + 1))`. Unfold `PhiAt`. Rewrite using `[if_pos hP, hs, if_pos rfl]`. Establish `hE : ∀ z, E1at Ch sel mu cst i P 1 1 z = Loc.om (muAt Ch sel mu cst i P) (LocE.vP P.1 (qOf P.1)) (cst.sq P) (1 : AutY X R i) (1 : AutY X R (i + 1)) (fun _ => (1 : X.K)) 0 * Loc.E1 (n'` using `R.N i) (c' := cOf R i) (n := R.N (i + 1)) (c := cOf R (i + 1)) (cst.psi P) (LocE.valsQ X.E (qOf P.1) cst.A cst.B) (((qOf P.1 : X.K) ^ cst.B)⁻¹) (PhiAt Ch mu cst.sharp i P.1) z := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z`. Unfold `E1at omPhi`. Rewrite using `[firstUnfolding_omega_factor]`. Both sides reduce to the same expression. Establish `hγ : clL_ext (cOf R (i + 1)) κ'.symm ∈ LocE.JGsym P.1 (qOf P.1) R.k R.rS R.r R.t (R.N (i + 1)) (cOf R (i + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← clL_ext_symm]`. Conclude with `Subgroup.inv_mem _ hκh'`. Establish `hlaw` using `hΦ P hP _ hγ _ hκh`. Establish `hsub : i + 1 - 1 = i` using `Nat.add_sub_cancel i 1`. Rewrite `hlaw` using `[hsub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE, hE, hT P hP κ' hκ' hκh' (y ∘ₗ κ.toLinearMap), first_sum_source_change]`. Establish `hfun : (fun x => PhiAt Ch mu cst.sharp i P.1 ((clL_ext (cOf R (i + 1)) κ'.symm).toLinearMap ∘ₗ (x ∘ₗ (clL_ext (cOf R i) κ).toLinearMap))) = fun x => (LocE.lamGBS (qOf P.1) (psi0P Ch P.1) (chiP Ch P.1) R.k R.r R.t (i + 1) (R.N (i + 1)) (cOf R (i + 1)) (clL_ext (cOf R (i + 1)) κ'.s …`. Use function extensionality and compare the values at `x`. Rewrite using `[hPhi, ← clL_ext_det (cOf R (i + 1)) κ'.symm, ← clL_ext_det (cOf R i) κ]`. Conclude with `hlaw x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hfun, first_sum_scalar_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem xi_first_law_of_target {i : ℕ} (hs : cst.sharp = true) (hT : XiTgtLaw Ch sel mu cst i)
     (hΦ : ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs → PhiGSLaw P.1 (qOf P.1) (psi0P Ch P.1) (chiP Ch P.1) R.k R.rS R.r R.t (i + 1) (cOf R i) (R.N i)

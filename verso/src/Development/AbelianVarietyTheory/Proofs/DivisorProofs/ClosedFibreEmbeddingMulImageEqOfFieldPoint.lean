@@ -11,21 +11,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Take `⟨Ω', _, io, e, l', he, hl1, hl2⟩` from `E.fib Ω s κ hs`. Use `haveI : IsMonHom e.hom := he`. Establish `hP` using `isGrpPullback_pullback G' (spMap io ≫ s)`. Establish `hY : IsGrpPullback ((Over.pullback (spMap io ≫ s)).obj G') E.Y (spMap (io.comp κ)) (e.hom.left ≫ pullback.fst E.Y.hom (spMap (io.comp κ)))` using `((isGrpPullback_of_iso e).comp (isGrpPullback_pullback E.Y (spMap (io.comp κ)))).congr (Category.id_comp _) rfl`. Set `sec : (Over.mk s ⟶ G') → (Over.mk (𝟙 (Sp Ω')) ⟶ (Over.pullback (spMap io ≫ s)).obj G')` to `fun z => Over.homMk (pullback.lift (spMap io ≫ z.left) (𝟙 _) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Over.w z, Category.id_comp]`. Use the proof step `rfl)) (pullback.lift_snd _ _ _)`. Establish `sec_fst : ∀ z, (sec z).left ≫ pullback.fst G'.hom (spMap io ≫ s) = spMap io ≫ z.left` using `fun z => pullback.lift_fst _ _ _`. Establish `sec_mul : sec (x * y) = sec x * sec y`. Set `r : Over.mk (𝟙 (Sp Ω') ≫ (spMap io ≫ s)) ⟶ Over.mk s` to `Over.homMk (spMap io) (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₁` using `hP.2 (Over.mk (𝟙 (Sp Ω'))) (sec x) (sec y) (r ≫ x) (r ≫ y) (sec_fst x).symm (sec_fst y).symm`. Rewrite `e₁` using `[← MonObj.comp_mul]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[sec_fst, ← e₁]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h1` using `Over.w (sec (x * y))`. Establish `h2` using `Over.w (sec x * sec y)`. Simplify using `only [Over.mk_hom] at h1 h2`. Conclude with `h1.trans h2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `cp : (Over.mk s ⟶ G') → (Over.mk (spMap (io.comp κ)) ⟶ E.Y)` to `fun z => Over.homMk ((sec z).left ≫ e.hom.left ≫ pullback.fst E.Y.hom (spMap (io.comp κ))) (by`. Establish `h` using `Over.w (pushPt hY.1.w (sec z))`. Simplify using `only [Over.mk_hom, pushPt, Over.homMk_left] at h`. Simplify using `using h)`. Establish `cp_mul : (cp x * cp y).left = (cp (x * y)).left`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₂` using `hY.2 (Over.mk (𝟙 (Sp Ω'))) (sec x) (sec y) (pushPt hY.1.w (sec x)) (pushPt hY.1.w (sec y)) rfl rfl`. Rewrite `e₂` using `[← sec_mul]`. Use `Eq.trans ?_ e₂` and prove the remaining obligations. Conclude with `mul_left_congr (Category.id_comp (spMap (io.comp κ))).symm _ _ _ _ rfl rfl`. Establish `img : ∀ (z : Over.mk s ⟶ G') (d : Sp Ω ⟶ N.U.left), N.Pt s d z.left → (cp z).left ≫ E.j = spMap io ≫ d ≫ fU`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `z d ⟨z₀, h₁, _, h₃⟩`. Establish `hsec : (sec z).left ≫ l' = spMap io ≫ z₀ ≫ l`. Rewrite using `[← cancel_mono E.H.ι, Category.assoc, hl1, sec_fst, Category.assoc, Category.assoc, hl, h₃]`. Use `show ((sec z).left ≫ e.hom.left ≫ pullback.fst E.Y.hom (spMap (io.comp κ))) ≫ E.j = _`. Rewrite using `[Category.assoc, Category.assoc, ← hl2, ← Category.assoc, hsec, Category.assoc, Category.assoc, hf, ← Category.assoc z₀, h₁]`.
-
-Conclude with `⟨Ω', inferInstance, io, cp x, cp y, img x a ha, img y b hb, by rw [cp_mul]; exact img _ c hc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem closed_product_image (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (M : Modif R) (G' : Over M.S) [GrpObj G']
     (E : Emb M.π G') (N : Near M.π G') (fU : N.U.left ⟶ PSpace R E.N) (l : pullback N.U.hom M.π ⟶ E.H.toScheme)

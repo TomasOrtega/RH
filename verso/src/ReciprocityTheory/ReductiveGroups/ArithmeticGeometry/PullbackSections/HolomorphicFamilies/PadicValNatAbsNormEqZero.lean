@@ -19,9 +19,9 @@ theorem algebraMap_smul_oe (σ : E ≃ₐ[ℚ] E) (x : 𝓞 E) :
     algebraMap (𝓞 E) E (σ • x) = σ (algebraMap (𝓞 E) E x) := rfl
 
 /- English proof (translation)
-Rewrite using `[← coeSubmodule_differentIdeal ℤ ℚ, IsLocalization.mem_coeSubmodule]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨x, h, rfl⟩`. Introduce and unpack `⟨y, hy, e⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← (IsFractionRing.injective (𝓞 E) E) e]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_differentIdeal_iff (x : 𝓞 E) : x ∈ differentIdeal ℤ (𝓞 E) ↔
     algebraMap (𝓞 E) E x ∈ (1 / Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 E) E) : Submodule (𝓞 E) E) := by
@@ -33,9 +33,9 @@ theorem mem_differentIdeal_iff (x : 𝓞 E) : x ∈ differentIdeal ℤ (𝓞 E) 
     rwa [← (IsFractionRing.injective (𝓞 E) E) e]
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[Submodule.mem_traceDual]`. Introduce `a ha`. Take `⟨o, rfl⟩` from `Submodule.mem_one.mp ha`. Establish `hb : τ.symm (algebraMap (𝓞 E) E o) ∈ (1 : Submodule (𝓞 E) E)` using `Submodule.mem_one.mpr ⟨τ.symm • o, algebraMap_smul_oe τ.symm o⟩`. Establish `key` using `hy _ hb`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `key`, the goal using `[Algebra.traceForm_apply]`. Rewrite `key` using `[← Algebra.trace_eq_of_algEquiv τ, map_mul, AlgEquiv.apply_symm_apply]`. Conclude with `key`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceDual_smul (τ : E ≃ₐ[ℚ] E) {y : E} (hy : y ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 E) E)) :
     τ y ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 E) E) := by
@@ -50,9 +50,9 @@ theorem traceDual_smul (τ : E ≃ₐ[ℚ] E) {y : E} (hy : y ∈ Submodule.trac
   exact key
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_differentIdeal_iff]`. Rewrite `hx`, the goal using `[Submodule.mem_div_iff_forall_mul_mem]`. Introduce `y hy`. Establish `h1` using `hx (σ.symm y) (traceDual_smul σ.symm hy)`. Take `⟨o, ho⟩` from `Submodule.mem_one.mp h1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Submodule.mem_one.mpr ⟨σ • o, ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_smul_oe, ho, algebraMap_smul_oe, map_mul, AlgEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mem_differentIdeal (σ : E ≃ₐ[ℚ] E) {x : 𝓞 E} (hx : x ∈ differentIdeal ℤ (𝓞 E)) :
     σ • x ∈ differentIdeal ℤ (𝓞 E) := by
@@ -65,9 +65,9 @@ theorem smul_mem_differentIdeal (σ : E ≃ₐ[ℚ] E) {x : 𝓞 E} (hx : x ∈ 
   rw [algebraMap_smul_oe, ho, algebraMap_smul_oe, map_mul, AlgEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using smul_mem_differentIdeal σ h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Conclude with `smul_mem_differentIdeal σ⁻¹ h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smul_differentIdeal (σ : E ≃ₐ[ℚ] E) : σ • differentIdeal ℤ (𝓞 E) = differentIdeal ℤ (𝓞 E) := by
   ext x
@@ -79,18 +79,18 @@ theorem smul_differentIdeal (σ : E ≃ₐ[ℚ] E) : σ • differentIdeal ℤ (
     exact smul_mem_differentIdeal σ⁻¹ h
 
 /- English proof (translation)
-Rewrite using `[Ideal.pointwise_smul_def, Ideal.map_span, Set.image_singleton, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_span_nat (σ : E ≃ₐ[ℚ] E) (ℓ : ℕ) :
     σ • Ideal.span {(ℓ : 𝓞 E)} = Ideal.span {(ℓ : 𝓞 E)} := by
   rw [Ideal.pointwise_smul_def, Ideal.map_span, Set.image_singleton, map_natCast]
 
 /- English proof (translation)
-Set `f` to `MulDistribMulAction.toMulEquiv (Ideal (𝓞 E)) σ`. Establish `hf : ∀ I : Ideal (𝓞 E), f I = σ • I` using `fun _ => rfl`. Establish `hX' : (normalizedFactors X).prod = X` using `(associated_iff_eq.mp (prod_normalizedFactors (by simpa using hX)))`. Establish `hprime : ∀ p ∈ (normalizedFactors X).map f, Prime p`. Introduce `p hp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨q, hq, rfl⟩` from `Multiset.mem_map.mp hp`. Conclude with `(MulEquiv.prime_iff f).mpr (prime_of_normalized_factor q hq)`. Establish `hmap : normalizedFactors (σ • X) = (normalizedFactors X).map f`. Establish `h1 : ((normalizedFactors X).map f).prod = σ • X`. Apply the tactic sequence `rw [← map_multiset_prod f, hX'] <;> rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, normalizedFactors_prod_of_prime hprime]`. Rewrite using `[hmap, ← hf]`. Conclude with `Multiset.count_map_eq_count' f _ f.injective P`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count_smul (σ : E ≃ₐ[ℚ] E) {P X : Ideal (𝓞 E)} (hP : P.IsPrime) (hP0 : P ≠ ⊥) (hQ : (σ • P).IsPrime)
     (hQ0 : σ • P ≠ ⊥) (hX : X ≠ ⊥) :
@@ -117,9 +117,9 @@ section Norm
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons b s ih`. Establish `hb : b ≠ 0` using `h b (Multiset.mem_cons_self b s)`. Establish `hs : ∀ x ∈ s, x ≠ 0` using `fun x hx => h x (Multiset.mem_cons_of_mem hx)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : s.prod ≠ 0` using `Multiset.prod_ne_zero (fun h0 => hs 0 h0 rfl)`. Rewrite using `[Multiset.prod_cons, padicValNat.mul hb hp, Multiset.map_cons, Multiset.sum_cons, ih hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem padicValNat_multiset_prod (ℓ : ℕ) [Fact ℓ.Prime] (s : Multiset ℕ) (h : ∀ x ∈ s, x ≠ 0) :
     padicValNat ℓ s.prod = (s.map (padicValNat ℓ)).sum := by
@@ -132,7 +132,7 @@ theorem padicValNat_multiset_prod (ℓ : ℕ) [Fact ℓ.Prime] (s : Multiset ℕ
     rw [Multiset.prod_cons, padicValNat.mul hb hp, Multiset.map_cons, Multiset.sum_cons, ih hs]
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `congrArg (algebraMap (𝓞 E) E) h`. Rewrite `h2` using `[map_natCast, map_zero, Nat.cast_eq_zero]`. Conclude with `hℓ.out.ne_zero h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero_oe (ℓ : ℕ) [hℓ : Fact ℓ.Prime] : (ℓ : 𝓞 E) ≠ 0 := by
   intro h
@@ -141,14 +141,14 @@ theorem natCast_ne_zero_oe (ℓ : ℕ) [hℓ : Fact ℓ.Prime] : (ℓ : 𝓞 E) 
   exact hℓ.out.ne_zero h2
 
 /- English proof (translation)
-Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `natCast_ne_zero_oe ℓ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_nat_ne_bot (ℓ : ℕ) [Fact ℓ.Prime] : Ideal.span {(ℓ : 𝓞 E)} ≠ ⊥ := by
   rw [Ne, Ideal.span_singleton_eq_bot]
   exact natCast_ne_zero_oe ℓ
 
 /- English proof (translation)
-Rewrite using `[Ideal.mem_normalizedFactors_iff (span_nat_ne_bot ℓ)]`. Conclude with `⟨hQ, (Ideal.span_singleton_le_iff_mem Q).mpr hl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_factors_span (ℓ : ℕ) [Fact ℓ.Prime] {Q : Ideal (𝓞 E)} (hQ : Q.IsPrime) (hQ0 : Q ≠ ⊥)
     (hl : (ℓ : 𝓞 E) ∈ Q) : Q ∈ normalizedFactors (Ideal.span {(ℓ : 𝓞 E)}) := by
@@ -156,7 +156,7 @@ theorem mem_factors_span (ℓ : ℕ) [Fact ℓ.Prime] {Q : Ideal (𝓞 E)} (hQ :
   exact ⟨hQ, (Ideal.span_singleton_le_iff_mem Q).mpr hl⟩
 
 /- English proof (translation)
-Establish `hQ'` using `(Ideal.mem_normalizedFactors_iff (span_nat_ne_bot ℓ)).mp hQ`. Use `⟨hQ'.1, ?_, (Ideal.span_singleton_le_iff_mem Q).mp hQ'.2⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `hQ'` using `[h0, le_bot_iff]`. Conclude with `span_nat_ne_bot ℓ hQ'.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_mem_factors_span (ℓ : ℕ) [Fact ℓ.Prime] {Q : Ideal (𝓞 E)}
     (hQ : Q ∈ normalizedFactors (Ideal.span {(ℓ : 𝓞 E)})) : Q.IsPrime ∧ Q ≠ ⊥ ∧ (ℓ : 𝓞 E) ∈ Q := by
@@ -167,27 +167,21 @@ theorem of_mem_factors_span (ℓ : ℕ) [Fact ℓ.Prime] {Q : Ideal (𝓞 E)}
   exact span_nat_ne_bot ℓ hQ'.2
 
 /- English proof (translation)
-Establish `hv : ∀ Q : Ideal (𝓞 E), Q.IsPrime → Q ≠ ⊥ → (ℓ : 𝓞 E) ∉ Q → padicValNat ℓ (Ideal.absNorm Q) = 0`. Introduce `Q hQp hQ0 hlQ`. Apply `padicValNat.eq_zero_of_not_dvd` to reduce the goal to its premises. Introduce `hdvd`. Use `haveI : Q.IsMaximal := hQp.isMaximal hQ0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Use `letI : Field (𝓞 E ⧸ Q) := Ideal.Quotient.field Q`. Establish `hfin : Finite (𝓞 E ⧸ Q)`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `hQ0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := Fintype.ofFinite (𝓞 E ⧸ Q)`. Use `haveI := ringChar.charP (𝓞 E ⧸ Q)`. Take `⟨n, hp, hcard⟩` from `FiniteField.card (𝓞 E ⧸ Q) (ringChar (𝓞 E ⧸ Q))`. Establish `hN : Ideal.absNorm Q = Fintype.card (𝓞 E ⧸ Q)`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hdvd` using `[hN, hcard]`. Establish `heq : ℓ = ringChar (𝓞 E ⧸ Q)` using `(Nat.prime_dvd_prime_iff_eq (Fact.out : ℓ.Prime) hp).mp ((Fact.out : ℓ.Prime).dvd_of_dvd_pow hdvd)`. Apply `hlQ` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, heq, ringChar.Nat.cast_ringChar]`. Establish `hX' : (normalizedFactors X).prod = X` using `associated_iff_eq.mp (prod_normalizedFactors (by simpa using hX))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hN : Ideal.absNorm X = ((normalizedFactors X).map Ideal.absNorm).prod` using `by conv_lhs => rw [← hX']`. Conclude with `map_multiset_prod Ideal.absNorm _`. Establish `hnz : ∀ x ∈ (normalizedFactors X).map Ideal.absNorm, x ≠ 0`. Introduce `x hx`. Take `⟨Q, hQ, rfl⟩` from `Multiset.mem_map.mp hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `ne_zero_of_mem_normalizedFactors hQ`. Rewrite using `[hN, padicValNat_multiset_prod ℓ _ hnz, Multiset.map_map, Finset.sum_multiset_map_count]`. Simplify using `only [smul_eq_mul, Function.comp_apply]`. Use `set A := (normalizedFactors X).toFinset`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set B := (normalizedFactors (Ideal.span {(ℓ : 𝓞 E)})).toFinset`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_subset Finset.subset_union_left` to reduce the goal to its premises. Introduce `Q hQ hQA`. Establish `hQB : Q ∈ B`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_union.mp hQ with h | h` into its components or cases. Conclude with `absurd h hQA`. Conclude with `h`. Establish `hc : (normalizedFactors X).count Q = 0` using `Multiset.count_eq_zero.mpr (fun h => hQA (Multiset.mem_toFinset.mpr h))`. Rewrite using `[hc, zero_mul]`.
-
-Use `_ = ∑ Q ∈ B, (normalizedFactors X).count Q * padicValNat ℓ (Ideal.absNorm Q) := by`. Use `symm`. Apply `Finset.sum_subset Finset.subset_union_right` to reduce the goal to its premises. Introduce `Q hQ hQB`. Establish `hQA : Q ∈ (normalizedFactors X)`.
-
-Break down `Finset.mem_union.mp hQ with h | h` into its components or cases. Conclude with `Multiset.mem_toFinset.mp h`. Conclude with `absurd h hQB`. Establish `hQp : Q.IsPrime` using `Ideal.isPrime_of_prime (prime_of_normalized_factor Q hQA)`. Establish `hQ0 : Q ≠ ⊥` using `ne_zero_of_mem_normalizedFactors hQA`.
-
-Establish `hl : (ℓ : 𝓞 E) ∉ Q` using `fun h => hQB (Multiset.mem_toFinset.mpr (mem_factors_span ℓ hQp hQ0 h))`. Rewrite using `[hv Q hQp hQ0 hl, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicValNat_absNorm_eq_sum (ℓ : ℕ) [Fact ℓ.Prime] {X : Ideal (𝓞 E)} (hX : X ≠ ⊥) :
     padicValNat ℓ (Ideal.absNorm X) = ∑ Q ∈ (normalizedFactors (Ideal.span {(ℓ : 𝓞 E)})).toFinset,
@@ -254,7 +248,7 @@ theorem padicValNat_absNorm_eq_sum (ℓ : ℕ) [Fact ℓ.Prime] {X : Ideal (𝓞
         rw [hv Q hQp hQ0 hl, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_span_singleton, ← map_natCast (algebraMap ℤ (𝓞 E)), Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank, Int.natAbs_pow, Int.natAbs_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absNorm_span_nat (ℓ : ℕ) : Ideal.absNorm (Ideal.span {(ℓ : 𝓞 E)}) = ℓ ^ Module.finrank ℚ E := by
   rw [Ideal.absNorm_span_singleton, ← map_natCast (algebraMap ℤ (𝓞 E)), Algebra.norm_algebraMap,
@@ -265,9 +259,9 @@ end Norm
 section Main
 
 /- English proof (translation)
-Establish `hne : (ℓ : ℤ) ≠ 0` using `by exact_mod_cast hℓ.ne_zero`. Establish `hpr : (Ideal.span {(ℓ : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hne).mpr (Nat.prime_iff_prime_int.mp hℓ)`. Establish `hmax : (Ideal.span {(ℓ : ℤ)}).IsMaximal` using `hpr.isMaximal (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hne)`. Use `haveI := hP`. Use `⟨hmax.eq_of_le ?_ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(inferInstance : (P.under ℤ).IsPrime).ne_top`. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under, Ideal.mem_comap]`. Simplify using `using hl`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem liesOver_span (E : Type) [Field E] [NumberField E] (ℓ : ℕ) (hℓ : ℓ.Prime) {P : Ideal (𝓞 E)}
     (hP : P.IsPrime) (hl : (ℓ : 𝓞 E) ∈ P) : P.LiesOver (Ideal.span {(ℓ : ℤ)}) := by
@@ -283,23 +277,21 @@ theorem liesOver_span (E : Type) [Field E] [NumberField E] (ℓ : ℕ) (hℓ : �
     simpa using hl
 
 /- English proof (translation)
-Introduce `E _ _ _ ℓ a m hℓ hm hd P hP hl`. Use `haveI : Fact ℓ.Prime := ⟨hℓ⟩`. Establish `hP0 : P ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `natCast_ne_zero_oe (E := E) ℓ (Ideal.mem_bot.mp hl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : Ideal.absNorm (differentIdeal ℤ (𝓞 E)) = (discr E).natAbs` using `NumberField.absNorm_differentIdeal E (𝓞 E)`. Establish `hD0 : differentIdeal ℤ (𝓞 E) ≠ ⊥`. Introduce `h`. Rewrite `hnorm` using `[h, Ideal.absNorm_bot]`. Conclude with `NumberField.discr_ne_zero E (Int.natAbs_eq_zero.mp hnorm.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm (dvd_zero ℓ)`. Establish `hA : padicValNat ℓ (Ideal.absNorm (differentIdeal ℤ (𝓞 E))) = a`. Rewrite using `[hnorm, hd, padicValNat.mul (pow_ne_zero _ hℓ.ne_zero) hm0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hm, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn : padicValNat ℓ (Ideal.absNorm (Ideal.span {(ℓ : 𝓞 E)})) = Module.finrank ℚ E`. Rewrite using `[absNorm_span_nat, padicValNat.prime_pow]`. Establish `htrans : ∀ Q ∈ (normalizedFactors (Ideal.span {(ℓ : 𝓞 E)})).toFinset, ∃ σ : E ≃ₐ[ℚ] E, σ • P = Q`. Introduce `Q hQ`. Take `⟨hQp, -, hlQ⟩` from `of_mem_factors_span ℓ (Multiset.mem_toFinset.mp hQ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI := hP`. Use `haveI := hQp`. Establish `hPQ : P.under ℤ = Q.under ℤ`. Rewrite using `[← (liesOver_span E ℓ hℓ hP hl).over, ← (liesOver_span E ℓ hℓ hQp hlQ).over]`. Take `⟨σ, hσ⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (A := ℤ) (B := 𝓞 E) (G := E ≃ₐ[ℚ] E) P Q hPQ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨σ, hσ.symm⟩`. Establish `hN : ∀ (σ : E ≃ₐ[ℚ] E) (Q : Ideal (𝓞 E)), Ideal.absNorm (σ • Q) = Ideal.absNorm Q`. Introduce `σ Q`. Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `Nat.card_congr (Ideal.quotientEquiv Q (σ • Q) (MulSemiringAction.toRingEquiv _ _ σ) (by rw [Ideal.pointwise_smul_def]; rfl)).toEquiv.symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hconst : ∀ X : Ideal (𝓞 E), X ≠ ⊥ → (∀ σ : E ≃ₐ[ℚ] E, σ • X = X) → padicValNat ℓ (Ideal.absNorm X) = (normalizedFactors (Ideal.span {(ℓ : 𝓞 E)})).toFinset.card * ((normalizedFactors X).count P * padicValNat ℓ (Ideal.absNorm P))`. Introduce `X hX hXσ`. Rewrite using `[padicValNat_absNorm_eq_sum ℓ hX, Finset.sum_congr rfl (g := fun _ => (normalizedFactors X).count P * padicValNat ℓ (Ideal.absNorm P)), Finset.sum_const, smul_eq_mul]`. Introduce `Q hQ`. Take `⟨σ, rfl⟩` from `htrans Q hQ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hQp, hQ0, -⟩` from `of_mem_factors_span ℓ (Multiset.mem_toFinset.mp hQ)`. Establish `hc` using `count_smul σ hP hP0 hQp hQ0 hX`. Rewrite `hc` using `[hXσ σ]`. Rewrite using `[hN σ P, hc]`. Establish `h1` using `hconst _ hD0 (fun σ => smul_differentIdeal σ)`.
-
-Establish `h2` using `hconst _ (span_nat_ne_bot ℓ) (fun σ => smul_span_nat σ ℓ)`. Rewrite `h1` using `[hA]`. Rewrite `h2` using `[hn]`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem diffExp : DiffExpSt := by
   intro E _ _ _ ℓ a m hℓ hm hd P hP hl
@@ -359,7 +351,7 @@ theorem diffExp : DiffExpSt := by
   ring
 
 /- English proof (translation)
-Use `haveI : Fact ℓ.Prime := ⟨hℓ⟩`. Establish `hP0 : P ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `natCast_ne_zero_oe (E := E) ℓ (Ideal.mem_bot.mp hl)`. Conclude with `Multiset.count_pos.mpr (mem_factors_span ℓ hP hP0 hl)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem count_span_pos (E : Type) [Field E] [NumberField E] (ℓ : ℕ) (hℓ : ℓ.Prime) {P : Ideal (𝓞 E)}
     (hP : P.IsPrime) (hl : (ℓ : 𝓞 E) ∈ P) : 0 < (normalizedFactors (Ideal.span {(ℓ : 𝓞 E)})).count P := by

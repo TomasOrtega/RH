@@ -10,7 +10,7 @@ namespace Formalism.MainNotions.GappedMultiplicityBounds
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.StandardLattice PI.UnitaryGroupMassFormula.HCFdegRGap
 
 /- English proof (translation)
-Establish `h0 : (0 : ℝ) ≤ (N : ℝ) * ((Finset.univ.filter (fun a => ε a = true)).card : ℝ) * ((Finset.univ.filter (fun a => ε a = false)).card : ℝ)` using `by positivity`. Use `show (N : ℝ) * ((Finset.univ.filter (fun a => ε a = true)).card : ℝ) * ((Finset.univ.filter (fun a => ε a = false)).card : ℝ) + 1 < h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem thrDS_lt {N : ℕ} (ε : Fin N → Bool) {h : ℝ}
     (hh : 32 * (N : ℝ) * ((Finset.univ.filter (fun a => ε a = true)).card : ℝ) *
@@ -23,19 +23,19 @@ theorem thrDS_lt {N : ℕ} (ε : Fin N → Bool) {h : ℝ}
   linarith
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hDS.2.2.2.2.2.1`. Establish `hset : {S' : Submodule ℂ H | IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S'} = {S}`. Use extensionality with `S'`. Prove the components needed by the constructor for the conclusion. Introduce `hS'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hL N ε lam H σ hlam hDS h hg hthr S' S hS' hS`. Introduce `hS'`. Rewrite `hS'` using `[Set.mem_singleton_iff]`. Rewrite using `[hS']`. Conclude with `hS`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : lowKSub ε lam σ = S` using `by show sSup {S' : Submodule ℂ H | IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S'} = S`. Rewrite using `[hset, sSup_singleton]`. Establish `hKU : Formalism.REAL.Kset ε ⊆ UJset ε`. Introduce `g hg`. Establish `hg' : g ∈ Matrix.unitaryGroup (Fin N) ℂ ∧ g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * g` using `hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hu, hc⟩` from `hg'`. Establish `h1 : star g * g = 1` using `by first`. Consider the case `exact unitary.star_mul_self_of_mem hu`. Consider the case `exact Unitary.star_mul_self_of_mem hu`. Consider the case `exact (Matrix.mem_unitaryGroup_iff').mp hu`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Matrix.star_eq_conjTranspose]`. Use `show Matrix.conjTranspose g * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε`. Rewrite using `[mul_assoc, ← hc, ← mul_assoc, h1, one_mul]`. Establish `hU` using `hDS.2.2.1`. Establish `hK : IsURepOn (Formalism.REAL.Kset ε) σ`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Establish an intermediate fact.
 
-Unfold `IsURepOn Formalism.QuantumDeterminants.IsCRepOn`. Conclude with `⟨⟨hU.1.1, fun a ha b hb => hU.1.2 a (hKU ha) b (hKU hb)⟩, fun g hg v => hU.2.1 g (hKU hg) v, fun v => (hU.2.2 v).mono hKU⟩`. Establish `hpt : ∀ a, (Formalism.QuantumDeterminants.lowK ε lam + Formalism.REAL.rhoC ε) a = lam a + StandardLattice.rhoN ε a`. Introduce `a`. Simplify using `only [Formalism.QuantumDeterminants.lowK, Pi.add_apply, Pi.sub_apply, sub_add_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[hsub, hW N ε (Formalism.QuantumDeterminants.lowK ε lam) H σ S hK hS]`. Simplify using `only [hpt]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finrank_lowK_eqG (hW : DiscreteSeriesWeylDimension.WeylForK) (hL : DiscreteSeriesWeylDimension.LowKMultOneG) {N : ℕ} (ε : Fin N → Bool)
     (lam : Fin N → ℝ) (hlam : Formalism.QuantumDeterminants.IsHCParam lam) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -83,21 +83,19 @@ theorem finrank_lowK_eqG (hW : DiscreteSeriesWeylDimension.WeylForK) (hL : Discr
   rfl
 
 /- English proof (translation)
-Introduce `N ε lam ep0 h0 H _ _ σ w p q hp hq hlam hgap he1 he2 hh0 hDS hw`. Establish `hNpq : (N : ℝ) = p + q`. Use `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin N))) (fun a => ε a = true)` as an intermediate fact. Establish `h' : (Finset.univ.filter (fun a => ε a = true)).card + (Finset.univ.filter (fun a => ε a = false)).card = N` using `by simpa using this`. Use `show (N : ℝ) = ((Finset.univ.filter (fun a => ε a = true)).card : ℝ) + ((Finset.univ.filter (fun a => ε a = false)).card : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h''` using `congrArg (fun x : ℕ => (x : ℝ)) h'`. Move the coercions through the operations in `at h''`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbig : 32 * (N : ℝ) * p * q + 2 < h0` using `gap_big hp hq hNpq he1 he2 hh0`. Establish `hp' : 1 ≤ (Finset.univ.filter (fun a => ε a = true)).card`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : (1 : ℝ) ≤ ((Finset.univ.filter (fun a => ε a = true)).card : ℝ)` using `hp`. Conclude with `h` after adjusting the coercions. Establish `hq' : 1 ≤ (Finset.univ.filter (fun a => ε a = false)).card`. Establish `h : (1 : ℝ) ≤ ((Finset.univ.filter (fun a => ε a = false)).card : ℝ)` using `hq`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfw` using `hf N ε lam h0 hp' hq' hlam hgap hbig H σ w hDS hw`. Establish `hτ` using `finrank_lowK_eqG hW hL ε lam hlam σ hDS h0 hgap (thrDS_lt ε hbig)`. Establish `hep : 0 < ep0` using `lt_of_lt_of_le (Real.exp_pos _) he1`. Establish `hnn` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.fdegHC_nonneg lam hlam`. Rewrite using `[hfw, hτ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨by nlinarith, ?_⟩` and prove the remaining obligations. Establish `hle` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.fdegHC_le_dTau ε lam hlam`. Establish `hτ0 : 0 < StandardLattice.dTau ε lam` using `StandardLattice.formalDegreeFactor_pos_of_strictAnti ε lam hlam.1`. Establish `hexp : p * q = ((StandardLattice.nPlus ε * StandardLattice.nMinus ε : ℕ) : ℝ)` using `by push_cast; rfl`. Rewrite using `[hexp, Real.rpow_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp1 : 1 ≤ StandardLattice.nPlus ε`. Establish `h : (1 : ℝ) ≤ ((StandardLattice.nPlus ε : ℕ) : ℝ)` using `hp`. Conclude with `h` after adjusting the coercions. Establish `hq1 : 1 ≤ StandardLattice.nMinus ε`. Establish `h : (1 : ℝ) ≤ ((StandardLattice.nMinus ε : ℕ) : ℝ)` using `hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h` after adjusting the coercions. Establish `hN` using `StandardLattice.count_plus_add_count_minus N ε`. Establish `hL1` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.lamAbs_ge_one lam hlam (by omega)`. Establish `hpq : (1 : ℝ) ≤ 3 * p * q` using `by nlinarith`. Establish `hX : StandardLattice.lamAbs lam ≤ 3 * p * q * StandardLattice.lamAbs lam` using `by nlinarith`.
-
-Establish `hpow : StandardLattice.lamAbs lam ^ (StandardLattice.nPlus ε * StandardLattice.nMinus ε) ≤ (3 * p * q * StandardLattice.lamAbs lam) ^ (StandardLattice.nPlus ε * StandardLattice.nMinus ε)` using `pow_le_pow_left₀ (by linarith) hX _`. Establish `hpos : 0 ≤ (3 * p * q * StandardLattice.lamAbs lam) ^ (StandardLattice.nPlus ε * StandardLattice.nMinus ε)` using `pow_nonneg (by nlinarith) _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem theorem_three_of_gap_bound (s : (n : ℕ) → (Fin n → Bool) → NNReal)
     (hf : ∀ (N : ℕ) (ε : Fin N → Bool) (lam : Fin N → ℝ) (h : ℝ),
@@ -158,39 +156,37 @@ theorem theorem_three_of_gap_bound (s : (n : ℕ) → (Fin n → Bool) → NNRea
     _ ≤ 4 * StandardLattice.dTau ε lam * (3 * p * q * StandardLattice.lamAbs lam) ^ (StandardLattice.nPlus ε * StandardLattice.nMinus ε) := by nlinarith
 
 /- English proof (translation)
-Introduce `cd s hc` and use `theorem_three_of_gap_bound s (PI.UnitaryGroupMassFormula.HCFdegRGap.hCFdegRGap_holds cd s hc) hW hL`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem theorem_three_of_weyl_gapped_multiplicity (hW : DiscreteSeriesWeylDimension.WeylForK) (hL : DiscreteSeriesWeylDimension.LowKMultOneG) : Formalism.MainNotions.RT.DiscreteSeriesDegreeBoundsAllScales :=
   fun cd s hc => theorem_three_of_gap_bound s (PI.UnitaryGroupMassFormula.HCFdegRGap.hCFdegRGap_holds cd s hc) hW hL
 
 /- English proof (translation)
-The claim follows from `theorem_three_of_weyl_gapped_multiplicity weylForK_closed Formalism.MainNotions.BesselDiscreteSeries.lowest_K_type_mult_one_of_gaps`.
+A detailed English derivation is pending.
 -/
 theorem explicit_bound_all_scales : Formalism.MainNotions.RT.DiscreteSeriesDegreeBoundsAllScales :=
   theorem_three_of_weyl_gapped_multiplicity weylForK_closed Formalism.MainNotions.BesselDiscreteSeries.lowest_K_type_mult_one_of_gaps
 
 /- English proof (translation)
-Establish `hAll : StandardLattice.DiscreteSeriesDegreeBoundsOfGap D` using `Formalism.MainNotions.RT.theorem_three_under_scale_of_general (theorem_three_of_weyl_gapped_multiplicity hW hL) D hc`. Introduce `ep0 he1 he2 ρ hgap`. Establish `hHC` using `line_param_harish_chandra D ρ`. Establish `hp : ((Finset.univ.filter (fun a => epsSH D.R a = true)).card : ℝ) = (pY D : ℝ)`. Establish `: (Finset.univ.filter (fun a => epsSH D.R a = true)).card = nPlus (epsSH D.R)` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, sign_vector_eq_line_sign, count_plus_finCast, count_plus_line_sign]`. Establish `hq : ((Finset.univ.filter (fun a => epsSH D.R a = false)).card : ℝ) = (qY D : ℝ)`. Establish `: (Finset.univ.filter (fun a => epsSH D.R a = false)).card = nMinus (epsSH D.R)` using `rfl`. Rewrite using `[this, sign_vector_eq_line_sign, count_minus_finCast, count_minus_line_sign]`. Establish `hN : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = (D.R.r : ℝ)` using `by rw [dimS_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg' : Formalism.QuantumDeterminants.GapAtLeast (epsSH D.R) (lamSH D.R (D.hc ρ)) (spectralGapLowerBound D ep0)`. Rewrite using `[sign_vector_eq_line_sign, param_vector_eq_line_param]`. Conclude with `gapAtLeast_finCast _ _ _ _ hgap`. Establish `hp1 : (1 : ℝ) ≤ ((Finset.univ.filter (fun a => epsSH D.R a = true)).card : ℝ)`. Rewrite using `[hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(signature_counts_ge_one D).1` after adjusting the coercions. Establish `hq1 : (1 : ℝ) ≤ ((Finset.univ.filter (fun a => epsSH D.R a = false)).card : ℝ)`. Rewrite using `[hq]`. Conclude with `(signature_counts_ge_one D).2` after adjusting the coercions. Establish `hsum : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = ((Finset.univ.filter (fun a => epsSH D.R a = true)).card : ℝ) + ((Finset.univ.filter (fun a => epsSH D.R a = false)).card : ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h'` using `congrArg (fun x : ℕ => (x : ℝ)) (card_add_card (epsSH D.R))`. Move the coercions through the operations in `at h' ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbig` using `gap_big (h0 := spectralGapLowerBound D ep0) hp1 hq1 hsum (by rw [hN]; exact he1) he2 (le_of_eq (by rw [hp, hq, hN]; unfold spectralGapLowerBound; rw [Nat.cast_min]))`. Establish `hq0 : ((ReciprocityTheory.ChartRestriction.DS.S7.q0 (epsSH D.R) : ℕ) : ℝ) ≤ ((Finset.univ.filter (fun a => epsSH D.R a = true)).card : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `: ReciprocityTheory.ChartRestriction.DS.S7.q0 (epsSH D.R) ≤ (Finset.univ.filter (fun a => epsSH D.R a = true)).card` using `min_le_left _ _`. Conclude with `this` after adjusting the coercions. Establish `hmax : max (2 * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ)) (8 * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) * (ReciprocityTheory.ChartRestriction.DS.S7.q0 (epsSH D.R) : ℝ)) < spectralGapLowerBound D ep0`. Generalize the expression as in `((Finset.univ.filter (fun a => epsSH D.R a = true)).card : ℝ) = p at *`. Generalize the expression as in `((Finset.univ.filter (fun a => epsSH D.R a = false)).card : ℝ) = q at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `((ReciprocityTheory.ChartRestriction.DS.S7.q0 (epsSH D.R) : ℕ) : ℝ) = r at *`. Generalize the expression as in `((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = n at *`. Establish `hpq : 1 ≤ p * q` using `by nlinarith`. Establish `hn : 1 ≤ n` using `by linarith`. Establish `hrpq : r ≤ p * q` using `by nlinarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[max_lt_iff]`. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `hEx` using `dsigEx_at D hdt ρ (ReciprocityTheory.ChartRestriction.DS.G2.discrete_series_exists_large_gap _ (epsSH D.R) _ hHC (spectralGapLowerBound D ep0) hg' (Or.inr hmax))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨H, i1, i2, σ, hDS, hF⟩` from `hEx`. Establish `hcs : CompleteSpace H` using `hDS.1`. Establish `hnt : Nontrivial H` using `hDS.2.1`. Take `⟨w, hw⟩` from `exists_ne (0 : H)`. Establish `hdt'` using `finrank_lowK_eqG hW hL (epsSH D.R) (lamSH D.R (D.hc ρ)) hHC σ hDS (spectralGapLowerBound D ep0) hg' (thrDS_lt (epsSH D.R) hbig)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `hAll _ (epsSH D.R) (lamSH D.R (D.hc ρ)) ep0 (spectralGapLowerBound D ep0) H σ w (by rw [hp]; exact_mod_cast (signature_counts_ge_one D).1) (by rw [hq]; exact_mod_cast (signature_counts_ge_one D).2) hHC hg' (by rw [hN]; exact he1) he2 (by rw [hp, hq, hN]; unfold spectralGapLowerBo …`. Rewrite `key` using `[formal_degree_of_eq _ σ _ hF w hw, hp, hq, hdt']`. Rewrite `key` using `[← dimV_eq_fdegHC _ hHC.1]`. Rewrite `key` using `[sign_vector_eq_line_sign, param_vector_eq_line_param, dim_weyl_finCast, formal_degree_finCast, abs_param_sup_finCast]`. Use `⟨key.1, ?_⟩` and prove the remaining obligations.
-
-Establish `e : ((pY D : ℝ) * (qY D : ℝ)) = ((pY D * qY D : ℕ) : ℝ)` using `by push_cast; rfl`. Rewrite `key` using `[e, Real.rpow_natCast]`. Conclude with `key.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theorem_three_rows_of_real_place (D : D7) (hc : cdScaleTie D) (hdt : dsigTie D) (hW : DiscreteSeriesWeylDimension.WeylForK)
     (hL : DiscreteSeriesWeylDimension.LowKMultOneG) : StandardLattice.SigmaDegreeTwoSidedBoundOfGap D := by
@@ -257,7 +253,7 @@ theorem theorem_three_rows_of_real_place (D : D7) (hc : cdScaleTie D) (hdt : dsi
   exact key.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun x _ _ i => theorem_three_rows_of_real_place (Fm.D x i) (Fm.ties x i).cdScale_tie (Fm.ties x i).dsig_tie weylForK_closed hL⟩`.
+Supply the required witnesses or components.
 -/
 theorem theorem_three_family_of_gapped_multiplicity {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (hL : DiscreteSeriesWeylDimension.LowKMultOneG) :
     Formalism.MainNotions.flipTwoThree.fam0 Fm Formalism.MainNotions.StandardLattice.SigmaDegreeTwoSidedBoundOfGap :=
@@ -265,13 +261,13 @@ theorem theorem_three_family_of_gapped_multiplicity {eps : ℝ} (Fm : Formalism.
     weylForK_closed hL⟩
 
 /- English proof (translation)
-The claim follows from `theorem_three_family_of_gapped_multiplicity Fm Formalism.MainNotions.BesselDiscreteSeries.lowest_K_type_mult_one_of_gaps`.
+A detailed English derivation is pending.
 -/
 theorem explicit_bound_family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Formalism.MainNotions.flipTwoThree.fam0 Fm Formalism.MainNotions.StandardLattice.SigmaDegreeTwoSidedBoundOfGap :=
   theorem_three_family_of_gapped_multiplicity Fm Formalism.MainNotions.BesselDiscreteSeries.lowest_K_type_mult_one_of_gaps
 
 /- English proof (translation)
-Introduce `x i`. Conclude with `theorem_three_rows_of_real_place (Fm.D x i) (Fm.ties x i).cdScale_tie (Fm.ties x i).dsig_tie weylForK_closed Formalism.MainNotions.BesselDiscreteSeries.lowest_K_type_mult_one_of_gaps`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem theorem_three_rows_family_holds {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : StandardLattice.FamilySigmaDegreeTwoSidedBound Fm := by
   intro x i
@@ -279,17 +275,15 @@ theorem theorem_three_rows_family_holds {eps : ℝ} (Fm : Formalism.MainNotions.
     weylForK_closed Formalism.MainNotions.BesselDiscreteSeries.lowest_K_type_mult_one_of_gaps
 
 /- English proof (translation)
-Unfold `StandardLattice.dTau`. Apply `div_nonneg` to reduce the goal to its premises. Apply `Finset.prod_nonneg` to reduce the goal to its premises. Introduce `a _`. Apply `Finset.prod_nonneg` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b hb`. Rewrite `hb` using `[Finset.mem_filter]`. Take `⟨_, hab, hs⟩` from `hb`. Establish `h1 : L b < L a` using `hL hab`. Establish `h2 : StandardLattice.rhoN S b ≤ StandardLattice.rhoN S a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `StandardLattice.rhoN`. Establish `c1 : ((Finset.univ.filter (fun x => b < x ∧ S x ≠ S b)).card : ℝ) ≤ ((Finset.univ.filter (fun x => a < x ∧ S x ≠ S a)).card : ℝ)`. Conclude with `Finset.card_le_card (by` after adjusting the coercions. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨lt_trans hab hx.1, by rw [hs]; exact hx.2⟩)`. Establish `c2 : ((Finset.univ.filter (fun x => x < a ∧ S x ≠ S a)).card : ℝ) ≤ ((Finset.univ.filter (fun x => x < b ∧ S x ≠ S b)).card : ℝ)`. Conclude with `Finset.card_le_card (by` after adjusting the coercions. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `⟨lt_trans hx.1 hab, by rw [← hs]; exact hx.2⟩)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Apply `mul_nonneg` to reduce the goal to its premises. Unfold `StandardLattice.facProd`.
-
-Conclude with `Finset.prod_nonneg (fun i _ => by positivity)`. Unfold `StandardLattice.facProd`. Conclude with `Finset.prod_nonneg (fun i _ => by positivity)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem dTau_nonneg_of_strictAnti {N : ℕ} (S : Fin N → Bool) (L : Fin N → ℝ) (hL : StrictAnti L) :
     0 ≤ StandardLattice.dTau S L := by
@@ -325,17 +319,17 @@ private theorem dTau_nonneg_of_strictAnti {N : ℕ} (S : Fin N → Bool) (L : Fi
       exact Finset.prod_nonneg (fun i _ => by positivity)
 
 /- English proof (translation)
-Unfold `StandardLattice.FamilyTheoremThree`. Introduce `x i`. Unfold `StandardLattice.PointsLemma`. Establish `h` using `theorem_three_rows_family_holds Fm x i`. Unfold `StandardLattice.SigmaDegreeTwoSidedBoundOfGap at h`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `ep0 h1 h2 ρ hg`. Establish `hr : (1 : ℝ) ≤ ((Fm.D x i).R.r : ℝ)`. Break down `Nat.eq_zero_or_pos (Fm.D x i).R.r with h0 | h0` into its components or cases. Rewrite `h1` using `[h0]`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h0` after adjusting the coercions. Establish `h8 : (8192 : ℝ) ≤ C3 * ((Fm.D x i).R.r : ℝ)` using `by nlinarith`. Establish `hM : 0 ≤ ((min (pY (Fm.D x i)) (qY (Fm.D x i)) : ℕ) : ℝ) * (((pY (Fm.D x i) : ℕ) : ℝ) * ((qY (Fm.D x i) : ℕ) : ℝ)) ^ 3 * Real.log ((Fm.D x i).R.r : ℝ)`. Use `Real.log_natCast_nonneg (Fm.D x i).R.r` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `key : StandardLattice.spectralGapLowerBound (Fm.D x i) ep0 ≤ StandardLattice.gap3 (Fm.D x i) C3 ep0` using `by clear h hg h1 h2`. Unfold `StandardLattice.spectralGapLowerBound StandardLattice.gap3`. Use `gcongr ?_ / _`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 h8) hM]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hl, hu⟩` from `h ep0 h1 h2 ρ (fun a b hab => le_trans key (hg a b hab))`. Use `⟨hl, le_trans hu ?_⟩` and prove the remaining obligations. Establish `hT` using `dTau_nonneg_of_strictAnti (rowSgn (Fm.D x i)) (rowLam (Fm.D x i) ρ) (StandardLattice.line_param_strictAnti (Fm.D x i) ρ)`. Establish `hA : 0 ≤ lamAbs (rowLam (Fm.D x i) ρ)` using `Real.iSup_nonneg (fun a => Real.iSup_nonneg (fun b => abs_nonneg _))`. Establish `h3 : (3 : ℝ) ≤ C3 * ((Fm.D x i).R.r : ℝ)` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hP : 0 ≤ ((pY (Fm.D x i) : ℕ) : ℝ) * ((qY (Fm.D x i) : ℕ) : ℝ) * lamAbs (rowLam (Fm.D x i) ρ)`. Check the signs of the components of the expression. Use `mul_le_mul_of_nonneg_left ?_ (mul_nonneg (by norm_num) hT)` and prove the remaining obligations. Use `gcongr ?_ ^ _`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 h3) hP]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem theorem_three_family_large_constant {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C3 : ℝ) (hC3 : 8192 ≤ C3) : StandardLattice.FamilyTheoremThree Fm C3 := by
   unfold StandardLattice.FamilyTheoremThree

@@ -13,7 +13,7 @@ def incl (F : Type) [Field F] (e : Fin d → Fin r) : Matrix (Fin r) (Fin d) F :
   (1 : Matrix (Fin r) (Fin r) F).submatrix id e
 
 /- English proof (translation)
-Use extensionality with `a a'`. Simplify using `[incl, Matrix.mul_apply, Matrix.one_apply, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incl_transpose_mul (e : Fin d ↪ Fin r) : (incl F e)ᵀ * incl F e = 1 := by
   ext a a'
@@ -32,7 +32,7 @@ def extendMat (e : Fin d ↪ Fin r) : Matrix (Fin d) (Fin d) F →* Matrix (Fin 
     simp only [Matrix.mul_add, Matrix.add_mul, one_mul, mul_one, add_assoc]
 
 /- English proof (translation)
-Simplify using `only [extendMat, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.add_apply, Matrix.mul_apply, incl, Matrix.transpose_apply, Matrix.submatrix_apply, id, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extendMat_apply (e : Fin d ↪ Fin r) (g : Matrix (Fin d) (Fin d) F) (i j : Fin r) :
     extendMat e g i j = (1 : Matrix (Fin r) (Fin r) F) i j +
@@ -41,7 +41,7 @@ theorem extendMat_apply (e : Fin d ↪ Fin r) (g : Matrix (Fin d) (Fin d) F) (i 
     Matrix.transpose_apply, Matrix.submatrix_apply, id, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[extendMat_apply]`. Simplify using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem extendMat_in (e : Fin d ↪ Fin r) (g : Matrix (Fin d) (Fin d) F) (a a' : Fin d) :
     extendMat e g (e a) (e a') = g a a' := by
@@ -49,9 +49,9 @@ theorem extendMat_in (e : Fin d ↪ Fin r) (g : Matrix (Fin d) (Fin d) F) (a a' 
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[extendMat_apply]`. Break down `h with h | h` into its components or cases. Establish `: ∀ a, i ≠ e a` using `fun a ha => h ⟨a, ha.symm⟩`. Simplify using `[this]`. Establish `: ∀ a, j ≠ e a` using `fun a ha => h ⟨a, ha.symm⟩`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extendMat_out (e : Fin d ↪ Fin r) (g : Matrix (Fin d) (Fin d) F) (i j : Fin r)
     (h : i ∉ Set.range e ∨ j ∉ Set.range e) : extendMat e g i j = (1 : Matrix (Fin r) (Fin r) F) i j := by
@@ -68,7 +68,7 @@ def blockEnum (b : Fin r → ℕ) (c : ℕ) (h : (block b c).card = d) : Fin d �
   ((block b c).orderEmbOfFin h).toEmbedding
 
 /- English proof (translation)
-Conclude with `(Finset.mem_filter.1 (Finset.orderEmbOfFin_mem (block b c) h a)).2`.
+A detailed English derivation is pending.
 -/
 theorem blockEnum_mem (b : Fin r → ℕ) (c : ℕ) (h : (block b c).card = d) (a : Fin d) :
     b (blockEnum b c h a) = c := by
@@ -103,7 +103,7 @@ def IsoGL {d d' : ℕ} {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGro
   ∃ h : d' = d, Nonempty (Representation.Equiv ρ (h ▸ ρ' : Representation ℂ (GL (Fin d) F) W'))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, h⟩ => h, fun h => ⟨rfl, h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isoGL_iff {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     (ρ : Representation ℂ (GL (Fin d) F) W) (ρ' : Representation ℂ (GL (Fin d) F) W') :
@@ -140,7 +140,7 @@ def ProductIsoIff : Prop :=
 def IrrPar : Prop := ProductIrreducible ∧ ProductIsoIff
 
 /- English proof (translation)
-Use `top_le_iff.1 (le_trans ?_ (le_iSup _ (Representation.IntertwiningMap.id τ)))` and prove the remaining obligations. Introduce `v _`. Conclude with `⟨v, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isIsotypicOf_self {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ G V) :
     IsIsotypicOf τ τ := by
@@ -149,9 +149,9 @@ theorem isIsotypicOf_self {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
   exact ⟨v, rfl⟩
 
 /- English proof (translation)
-Use `{ toNontrivial := ⟨⟨⊥, ⊤, fun h => ?_⟩⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Use `congrArg Subrepresentation.toSubmodule h` as an intermediate fact. Conclude with `bot_ne_top (α := Submodule ℂ ℂ) this`. Break down `eq_bot_or_eq_top (α := Submodule ℂ ℂ) S.toSubmodule with h | h` into its components or cases. Conclude with `Or.inl (Subrepresentation.ext h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr (Subrepresentation.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem trivial_irreducible (G : Type) [Group G] : (Representation.trivial ℂ G ℂ).IsIrreducible := by
   refine { toNontrivial := ⟨⟨⊥, ⊤, fun h => ?_⟩⟩, eq_bot_or_eq_top := fun S => ?_ }
@@ -162,9 +162,9 @@ theorem trivial_irreducible (G : Type) [Group G] : (Representation.trivial ℂ G
     · exact Or.inr (Subrepresentation.ext h)
 
 /- English proof (translation)
-Use `⟨⟨monotone_const, trivial_irreducible _, fun _ _ => rfl, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `S ⟨i, j, -, hi, hj⟩`. Conclude with `absurd (Subsingleton.elim i j ▸ hi) hj`. Introduce and unpack `c ⟨_, rfl⟩`. Conclude with `⟨trivial_irreducible _, by simp [block], isIsotypicOf_self _⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `c ⟨_, rfl⟩ c' ⟨_, rfl⟩ h`. Conclude with `absurd rfl h`.
+A detailed English derivation is pending.
 -/
 example : IsRegularCusp (F := F) (fun _ : Fin 1 => 0) (Representation.trivial ℂ _ ℂ) (fun _ => 1) (fun _ => ℂ)
     (fun _ => Representation.trivial ℂ _ ℂ) := by

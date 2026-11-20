@@ -17,9 +17,9 @@ namespace GlobalTheory.SplitWeilChar
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨η, hη, h0, h⟩` from `GlobalTheory.SplitCharCond.exists_idem q`. Establish `hm : (pairA D.host.F 0 η ⊗ₜ[D.host.F] (1 : D.host.E) : AE D) ∈ intAt D (· = q.v)`. Use `⟨⟨?_, ?_⟩, AddSubgroup.subset_closure ⟨η, hη, 1, rfl⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : Ainf D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Conclude with `TensorProduct.zero_tmul _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mem_iInf.2 fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV D.host.F w.1 η ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Rewrite using `[h0 w.1 w.2, TensorProduct.zero_tmul]`. Use `GlobalTheory.SplitCharCond.pr_int q (hU.1 _ hm).2.2` as an intermediate fact. Rewrite `this` using `[map_mul, GlobalTheory.SplitCharCond.pr_pair_tmul q h, map_one, map_one, mul_one]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem splitPlace_polarisationDatum_inv_integral (q : SplitPt D k) (hU : q.UnitAA) : q.pr (incA D D.host.xi0⁻¹) ∈ 𝒪[k] := by
   obtain ⟨η, hη, h0, h⟩ := GlobalTheory.SplitCharCond.exists_idem q
@@ -34,11 +34,11 @@ theorem splitPlace_polarisationDatum_inv_integral (q : SplitPt D k) (hU : q.Unit
   rwa [map_mul, GlobalTheory.SplitCharCond.pr_pair_tmul q h, map_one, map_one, mul_one] at this
 
 /- English proof (translation)
-Establish `h1` using `(Valuation.mem_integer_iff _ _).1 (GlobalTheory.SplitCharCond.xi_zero_projection_integral q hU)`. Establish `h2` using `(Valuation.mem_integer_iff _ _).1 (splitPlace_polarisationDatum_inv_integral q hU)`. Establish `hm : q.pr (incA D D.host.xi0) * q.pr (incA D D.host.xi0⁻¹) = 1`. Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one, map_one]`. Establish `h3` using `congrArg (valuation k) hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_mul, map_one]`. Assume the negation of the conclusion as `hne`. Establish `hlt : valuation k (q.pr (incA D D.host.xi0)) < 1` using `lt_of_le_of_ne h1 hne`. Establish `: valuation k (q.pr (incA D D.host.xi0)) * valuation k (q.pr (incA D D.host.xi0⁻¹)) < 1` using `mul_lt_one_of_lt_of_le hlt h2`. Rewrite `this` using `[h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ this`.
+A detailed English derivation is pending.
 -/
 theorem valuation_pr_incA_xi0_eq_one_of_unitAA (q : SplitPt D k) (hU : q.UnitAA) : valuation k (q.pr (incA D D.host.xi0)) = 1 := by
   have h1 := (Valuation.mem_integer_iff _ _).1 (GlobalTheory.SplitCharCond.xi_zero_projection_integral q hU)
@@ -59,15 +59,15 @@ end GlobalTheory.SplitWeilChar
 namespace GlobalTheory.SplitWeilChar
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q ψ hψ hU`. Take `⟨⟨ψk, hk⟩, -⟩` from `GlobalTheory.LocChar.weil_char_split D k (ofSplit q) ψ hψ`. Use `set u : k := q.pr (incA D D.host.xi0) with hu`. Establish `hv : valuation k u = 1` using `valuation_pr_incA_xi0_eq_one_of_unitAA q hU`. Establish `hu0 : u ≠ 0` using `fun h => by rw [h, map_zero] at hv; exact zero_ne_one hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `χ : AddChar k Circle` to `ψk.mulShift u⁻¹`. Establish `hχ : q.IsChar ψ χ`. Introduce `a`. Establish `e1 : (χ a : ℂ) = psiE ψ (incA D D.host.xi0 * q.sec (u⁻¹ * a))` using `hk (u⁻¹ * a)`. Establish `e2` using `GlobalTheory.SplitCharCond.sec_mul_pr q (u⁻¹ * a) (incA D D.host.xi0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[← hu, show u⁻¹ * a * u = a by field_simp]`. Rewrite using `[e1, ← e2]`. Establish `hc1 : HasConductor χ 1` using `GlobalTheory.SplitCharCond.hasConductor_one D k q ψ χ hψ hχ hU`. Establish `hcu : HasConductor χ (Units.mk0 u hu0)`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mk0, hv]`. Use `hc1 x` as an intermediate fact. Rewrite `this` using `[Units.val_one, map_one]`. Then use the resulting hypothesis. Establish `he : ψk = χ.mulShift ((Units.mk0 u hu0 : kˣ) : k)`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [χ, AddChar.mulShift_apply, Units.val_mk0]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hu0, one_mul]`. Use `⟨ψk, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `GlobalTheory.CollapseCompare.hasConductor_mulShift hcu`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_char_conductor_one : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → q.UnitAA → ∃ ψk : AddChar k Circle, (ofSplit q).IsChar ψ ψk ∧ HasConductor ψk 1 := by
   intro D k _ _ _ _ q ψ hψ hU

@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.ConjugateSelfDu
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `x`. Conclude with `(hr x).1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem continuous_family_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (hr : GoodR D.nd i r) : Formalism.MainNotions.TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r := by
@@ -18,7 +18,7 @@ theorem continuous_family_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd 
   exact (hr x).1
 
 /- English proof (translation)
-Introduce `x W hW`. Take `⟨W', hW', hc⟩` from `(hr x).2.1 W hW`. Conclude with `⟨W', hW', hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem semisimple_family_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (hr : GoodR D.nd i r) : Formalism.MainNotions.TruncatedSeriesCountingIdentities.admSS (D := D) i r := by
@@ -27,7 +27,7 @@ theorem semisimple_family_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd 
   exact ⟨W', hW', hc⟩
 
 /- English proof (translation)
-Introduce `w hw`. Conclude with `⟨(D.nbr i w hw).eO_alg, ⟨(D.nbr i w hw).eO_cont, (D.nbr i w hw).eO_symm_cont⟩, hdeg w hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem coefficient_compatibility_of (D : D7) (i : D.nd.Loc)
     (hdeg : ∀ w (hw : w ∈ placesOver D.host.E (D.nd.l i)), Br.DegW D.nbr i w hw) :
@@ -36,11 +36,11 @@ theorem coefficient_compatibility_of (D : D7) (i : D.nd.Loc)
   exact ⟨(D.nbr i w hw).eO_alg, ⟨(D.nbr i w hw).eO_cont, (D.nbr i w hw).eO_symm_cont⟩, hdeg w hw⟩
 
 /- English proof (translation)
-Establish `hm : IsOpen ((IsLocalRing.maximalIdeal (D.nd.O a) : Ideal (D.nd.O a)) : Set (D.nd.O a))`. Simplify using `using (isAdic_iff.mp (D.nd.O_adic a)).1 1`. Establish `hset : ((redRep D.nd a ρ).ker : Set (G D.host.E D.nd.Om)) = ⋂ i, ⋂ j, (fun g => ((ρ g : GL (Fin n) (D.nd.O a)) : Matrix (Fin n) (Fin n) (D.nd.O a)) i j - (1 : Matrix (Fin n) (Fin n) (D.nd.O a)) i j) ⁻¹' ((IsLocalRing.maximalIdeal (D.nd.O a) : Ideal (D.nd.O a)) : Set (D.nd.O a))`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter, Set.mem_preimage]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.ext_iff, ← Matrix.ext_iff]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Establish `h1 : ((1 : GL (Fin n) (IsLocalRing.ResidueField (D.nd.O a))) : Matrix (Fin n) (Fin n) (IsLocalRing.ResidueField (D.nd.O a))) i j = IsLocalRing.residue (D.nd.O a) ((1 : Matrix (Fin n) (Fin n) (D.nd.O a)) i j)`. Rewrite using `[Units.val_one, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h1]`. Conclude with `Ideal.Quotient.eq`. Rewrite using `[hset]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Conclude with `hm.preimage ((h.matrix_elem i j).sub continuous_const)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_redRep (D : D7) (a : D.nd.Loc) {n : ℕ} (ρ : G D.host.E D.nd.Om →* GL (Fin n) (D.nd.O a))
     (h : Continuous (fun g => ((ρ g : GL (Fin n) (D.nd.O a)) : Matrix (Fin n) (Fin n) (D.nd.O a)))) :
@@ -67,17 +67,17 @@ theorem isOpen_ker_redRep (D : D7) (a : D.nd.Loc) {n : ℕ} (ρ : G D.host.E D.n
   exact hm.preimage ((h.matrix_elem i j).sub continuous_const)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hdec`. Apply `Polynomial.map_injective (toK D.nd i) (IsFractionRing.injective (D.nd.O i) (KK D.nd i))` to reduce the goal to its premises. Rewrite using `[Polynomial.map_mul, Polynomial.map_prod, ← Matrix.charpoly_map, ← Matrix.charpoly_map]`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Use `show (mapM (toK D.nd i) (rO D.nd i r π) g).charpoly = (mapM (toK D.nd i) (rhoO D.nd i ρ π) g).charpoly * ∏ c ∈ Finset.Icc 1 D.R.t, (X - C (toK D.nd i ((chiU D.nd i c g : (D.nd.O i)ˣ) : D.nd.O i)))`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmat : ∀ {m : ℕ} (M : Matrix (Fin m) (Fin m) (KK D.nd i)), (Matrix.toLin' M).charpoly = M.charpoly`. Introduce `m M`. Rewrite using `[← LinearMap.charpoly_toMatrix (Matrix.toLin' M) (Pi.basisFun (KK D.nd i) (Fin m)), LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin']`. Establish `hconj : e.conj (Matrix.toLin' (mapM (toK D.nd i) (rO D.nd i r π) g)) = (Matrix.toLin' (mapM (toK D.nd i) (rhoO D.nd i ρ π) g)).prodMap (Matrix.toLin' (Matrix.diagonal fun c : Fin D.R.t => toK D.nd i ((chiU D.nd i ((c : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i)))`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Take `⟨u, rfl⟩` from `e.surjective p`. Simplify using `only [LinearEquiv.conj_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, Matrix.toLin'_apply, LinearMap.prodMap_apply]`. Rewrite using `[he g u]`. Use `Prod.ext rfl (funext fun c => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec_diagonal]`. Establish `hdiag : (Matrix.diagonal fun c : Fin D.R.t => toK D.nd i ((chiU D.nd i ((c : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i)).charpoly = ∏ c : Fin D.R.t, (X - C (toK D.nd i ((chiU D.nd i ((c : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i)))`. Establish `hch : Matrix.charmatrix (Matrix.diagonal fun c : Fin D.R.t => toK D.nd i ((chiU D.nd i ((c : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i)) = Matrix.diagonal fun c : Fin D.R.t => (X - C (toK D.nd i ((chiU D.nd i ((c : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i)))`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hab` using the available equality. Simplify using `[Matrix.charmatrix_apply]`. Simplify using `[Matrix.charmatrix_apply, hab, Matrix.diagonal_apply_ne _ hab]`. Rewrite using `[Matrix.charpoly, hch, Matrix.det_diagonal]`. Establish `hidx : ∏ c : Fin D.R.t, (X - C (toK D.nd i ((chiU D.nd i ((c : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i))) = ∏ c ∈ Finset.Icc 1 D.R.t, (X - C (toK D.nd i ((chiU D.nd i c g : (D.nd.O i)ˣ) : D.nd.O i)))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.prod_univ_eq_prod_range (fun c => X - C (toK D.nd i ((chiU D.nd i (c + 1) g : (D.nd.O i)ˣ) : D.nd.O i))), Finset.range_eq_Ico, Finset.prod_Ico_add' (fun c => X - C (toK D.nd i ((chiU D.nd i c g : (D.nd.O i)ˣ) : D.nd.O i))) 0 D.R.t 1]`. Use `congr 1`. Rewrite using `[← hmat, ← LinearEquiv.charpoly_conj e, hconj, LinearMap.charpoly_prodMap, hmat, hmat, hdiag, hidx]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_of_decomp (D : D7) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
@@ -136,13 +136,13 @@ def AbsIrreducibleDistinct (D : D7) (i : D.nd.Loc)
   ∀ x, AbsIrrDistinct (repK D.nd i r x)
 
 /- English proof (translation)
-Establish `h2 : ∀ x (g : GE D.nd), (mapM (IsLocalRing.residue (D.nd.O i)) (rO D.nd i r x) g).charpoly = (mapM (IsLocalRing.residue (D.nd.O i)) (rhoO D.nd i ρ π) g).charpoly * ∏ c ∈ Finset.Icc 1 D.R.t, (X - C (IsLocalRing.residue (D.nd.O i) ((chiU D.nd i c g : (D.nd.O i)ˣ) : D.nd.O i)))`. Introduce `x g`. Establish `e1` using `(((h32 i).2.2 r hr).2.2.1).2 x π g`. Establish `e2` using `congrArg (Polynomial.map (IsLocalRing.residue (D.nd.O i))) (charpoly_of_decomp D i r ρ π hdec g)`. Rewrite `e2` using `[Polynomial.map_mul, Polynomial.map_prod, ← Matrix.charpoly_map, ← Matrix.charpoly_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `e1.trans (e2.trans ?_)` and prove the remaining obligations. Use `congr 1`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `⟨hc, h2, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrb : IsRhoBar D.nd i (redRep D.nd i (ρ π))`. Use `⟨isOpen_ker_redRep D i _ hcont, ?_⟩` and prove the remaining obligations. Introduce `x w hw B σ hB' hσ`. Rewrite using `[← (hr x).2.2 w hw B σ hB' hσ, ← Matrix.charpoly_map]`. Conclude with `(h2 x σ).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `hB (D.nd.l i) D.R.r _ (hN9 i hHG _ hrb).1`. Conclude with `span_descent (D.naut.kFbar i) (fun g => mapM (IsLocalRing.residue (D.nd.O i)) (rhoO D.nd i ρ π) g) h3`.
+A detailed English derivation is pending.
 -/
 theorem galois_condition_three_of (D : D7) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))

@@ -10,19 +10,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ S π hπ G' _ E N fU l hl hlf L hT G β i hβ hi hu`. Take `⟨θ, OY, ⟨y₀, hy₀⟩, hθ⟩` from `hT`. Use `haveI := E.imm`. Take `⟨W, hW, hWY⟩` from `(E.j.isEmbedding.isInducing.isOpen_iff).1 OY.isOpen`. Establish `hrng` using `GlobalTheory.T.closedPoint_range_eq_fixedGroup_image R S π G' E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∀ z, E.H.ι (l z) = N.u z` using `fun z => by rw [← Scheme.Hom.comp_apply, hl]`. Establish `e2 : ∀ z, E.f (l z) = fU (pullback.fst N.U.hom π z)` using `fun z => by`. Rewrite using `[← Scheme.Hom.comp_apply, hlf, Scheme.Hom.comp_apply]`. Establish `e3 : ∀ z, β (N.u z) = i.left (pullback.fst N.U.hom π z)` using `fun z => by`. Rewrite using `[← Scheme.Hom.comp_apply, hu, Scheme.Hom.comp_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e4 : ∀ x, G.hom (β x) = π (G'.hom x)` using `fun x => by`. Rewrite using `[← Scheme.Hom.comp_apply, hβ, Scheme.Hom.comp_apply]`. Establish `hWj : ∀ y, y ∈ OY ↔ E.j y ∈ W` using `fun y => by show y ∈ (OY : Set E.Y.left) ↔ _`. Rewrite using `[← hWY]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨θ, ⟨i.left '' (fU ⁻¹' W), i.left.isOpenEmbedding.isOpenMap _ (hW.preimage fU.continuous)⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨g₀, hg₀c, hg₀f⟩` from `hrng.2 hπ y₀`. Take `⟨z, hz⟩` from `N.all (E.H.ι g₀) hg₀c`. Establish `hlz : l z = g₀` using `E.H.ι.isOpenEmbedding.injective (by rw [e1, hz])`. Use `⟨i.left (pullback.fst N.U.hom π z), ⟨pullback.fst N.U.hom π z, ?_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show fU (pullback.fst N.U.hom π z) ∈ W`. Rewrite using `[← e2 z, hlz, hg₀f]`. Conclude with `(hWj y₀).1 hy₀`. Rewrite using `[← e3, e4, hz]`. Conclude with `hg₀c`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `g ⟨w, hw, hwg⟩ hc`. Establish `hc' : π (G'.hom g) = closedPoint R` using `by rw [← e4]; exact hc`. Take `⟨z, rfl⟩` from `N.all g hc'`. Establish `hzw : pullback.fst N.U.hom π z = w` using `i.left.isOpenEmbedding.injective (by rw [hwg, ← e3])`. Establish `hc'' : π (G'.hom (E.H.ι (l z))) = closedPoint R` using `by rw [e1]; exact hc'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, hy⟩` from `hrng.1 (l z) hc''`. Establish `hyO : y ∈ OY` using `(hWj y).2 (by rw [← hy, e2, hzw]; exact hw)`. Take `⟨k, hk⟩` from `hθ (l z) y hyO hc'' hy`. Conclude with `⟨k, by rwa [e1] at hk⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.exists_open_theta_descent : ∀ (R : Type) [CommRing R] [IsLocalRing R] (S : Scheme.{0}) (π : S ⟶ Sp R), Surjective π → ∀ (G' : Over S) [GrpObj G'] (E : Emb π G') (N : Near π G') (fU : N.U.left ⟶ PSpace R E.N) (l : pullback N.U.hom π ⟶ E.H.toScheme), l ≫ E.H.ι = N.u → l ≫ E.f = pullback.fst _ _ ≫ fU → ∀ (L : LB G'.left), E.Theta L → ∀ (G : Over (Sp R)) (β : G'.left ⟶ G.left) (i : N.U ⟶ G), β ≫ G.hom = G'.hom ≫ π → IsOpenImmersion i.left → N.u ≫ β = pullback.fst _ _ ≫ i.left → ∃ (θ : L.Sec) (O : G.left.Opens), (∃ g ∈ O, G.hom g = closedPoint R) ∧ ∀ g : G'.left, β g ∈ O → G.hom (β g) = closedPoint R → ∃ k, g ∈ G'.left.basicOpen (θ.f k) := by
   intro R _ _ S π hπ G' _ E N fU l hl hlf L hT G β i hβ hi hu

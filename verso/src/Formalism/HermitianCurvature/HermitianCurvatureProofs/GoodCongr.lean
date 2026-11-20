@@ -16,7 +16,7 @@ variable {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] [FiniteDimensiona
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
 
 /- English proof (translation)
-Use `⟨h.1.congr fun q hq => hΨ q.1 q.2 hq.2, fun K hK hK0 => ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hz⟩` from `h.2 K hK hK0`. Conclude with `⟨C, hC, fun v hv τ hτ => by rw [hΨ v τ (hK0 hτ), hz v hv τ hτ]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem good_congr {Φ Ψ : X → V1 E} (h : Good Φ) (hΨ : ∀ v τ, τ ≠ 0 → (Ψ v : ℂ → E) τ = (Φ v : ℂ → E) τ) :
     Good Ψ := by
@@ -25,15 +25,15 @@ theorem good_congr {Φ Ψ : X → V1 E} (h : Good Φ) (hΨ : ∀ v τ, τ ≠ 0 
   exact ⟨C, hC, fun v hv τ hτ => by rw [hΨ v τ (hK0 hτ), hz v hv τ hτ]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨contDiffOn_const.congr fun _ _ => rfl, fun _ _ _ => ⟨∅, isCompact_empty, fun _ _ _ _ => rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_zero : Good (fun _ : X => (0 : V1 E)) :=
   ⟨contDiffOn_const.congr fun _ _ => rfl, fun _ _ _ => ⟨∅, isCompact_empty, fun _ _ _ _ => rfl⟩⟩
 
 /- English proof (translation)
-Use `⟨(h.1.add h'.1).congr fun _ _ => rfl, fun K hK hK0 => ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hz⟩` from `h.2 K hK hK0`. Take `⟨C', hC', hz'⟩` from `h'.2 K hK hK0`. Use `⟨C ∪ C', hC.union hC', fun v hv τ hτ => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_union, not_or] at hv`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show (Φ v : ℂ → E) τ + (Ψ v : ℂ → E) τ = 0`. Rewrite using `[hz v hv.1 τ hτ, hz' v hv.2 τ hτ, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_add {Φ Ψ : X → V1 E} (h : Good Φ) (h' : Good Ψ) : Good (fun v => Φ v + Ψ v) := by
   refine ⟨(h.1.add h'.1).congr fun _ _ => rfl, fun K hK hK0 => ?_⟩
@@ -45,7 +45,7 @@ theorem good_add {Φ Ψ : X → V1 E} (h : Good Φ) (h' : Good Ψ) : Good (fun v
   rw [hz v hv.1 τ hτ, hz' v hv.2 τ hτ, add_zero]
 
 /- English proof (translation)
-Use `⟨(h.1.const_smul c).congr fun _ _ => rfl, fun K hK hK0 => ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hz⟩` from `h.2 K hK hK0`. Use `⟨C, hC, fun v hv τ hτ => ?_⟩` and prove the remaining obligations. Use `show c • (Φ v : ℂ → E) τ = 0`. Rewrite using `[hz v hv τ hτ, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_smul {Φ : X → V1 E} (h : Good Φ) (c : ℂ) : Good (fun v => c • Φ v) := by
   refine ⟨(h.1.const_smul c).congr fun _ _ => rfl, fun K hK hK0 => ?_⟩
@@ -55,7 +55,7 @@ theorem good_smul {Φ : X → V1 E} (h : Good Φ) (c : ℂ) : Good (fun v => c �
   rw [hz v hv τ hτ, smul_zero]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (good_zero : Good (fun _ : X => (0 : V1 E)))`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `good_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_sum {ι : Type*} (s : Finset ι) (Φ : ι → X → V1 E) (h : ∀ i ∈ s, Good (Φ i)) :
     Good (fun v => ∑ i ∈ s, Φ i v) := by
@@ -67,9 +67,9 @@ theorem good_sum {ι : Type*} (s : Finset ι) (Φ : ι → X → V1 E) (h : ∀ 
     exact good_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Establish `hm2 : ContDiffOn ℝ ∞ (fun q : X × ℂ => m q.2) (UX X)` using `hm.comp contDiff_snd.contDiffOn fun q hq => hq.2`. Use `⟨(hm2.smul h.1).congr fun _ _ => rfl, fun K hK hK0 => ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hz⟩` from `h.2 K hK hK0`. Use `⟨C, hC, fun v hv τ hτ => ?_⟩` and prove the remaining obligations. Use `show m τ • (Φ v : ℂ → E) τ = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz v hv τ hτ, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem good_opM {Φ : X → V1 E} (h : Good Φ) (m : ℂ → ℂ) (hm : ContDiffOn ℝ ∞ m {τ | τ ≠ 0}) :
     Good (fun v => opM m hm (Φ v)) := by
@@ -86,9 +86,9 @@ def dzF (Φ : X → V1 E) : X → V1 E := fun v => ⟨PBP.dz (Φ v : ℂ → E),
 def dzbF (Φ : X → V1 E) : X → V1 E := fun v => ⟨PBP.dzb (Φ v : ℂ → E), contDiffOn_wirtinger_dzbar (Φ v).2⟩
 
 /- English proof (translation)
-Establish `hc : ContDiffOn ℝ ∞ (fun q : X × ℂ => PBP.dz (Φ q.1 : ℂ → E) q.2) (UX X)`. Unfold `PBP.dz`. Conclude with `((cd_partial h 1).sub ((cd_partial h Complex.I).const_smul Complex.I)).const_smul _`. Use `⟨hc.congr fun _ _ => rfl, fun K hK hK0 => ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hz⟩` from `fderiv_zero_of h hK hK0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C, hC, fun v hv τ hτ => ?_⟩` and prove the remaining obligations. Use `show PBP.dz (Φ v : ℂ → E) τ = 0`. Unfold `PBP.dz`. Rewrite using `[hz v hv τ hτ]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_dz {Φ : X → V1 E} (h : Good Φ) : Good (dzF Φ) := by
   have hc : ContDiffOn ℝ ∞ (fun q : X × ℂ => PBP.dz (Φ q.1 : ℂ → E) q.2) (UX X) := by
@@ -103,9 +103,9 @@ theorem good_dz {Φ : X → V1 E} (h : Good Φ) : Good (dzF Φ) := by
   simp
 
 /- English proof (translation)
-Establish `hc : ContDiffOn ℝ ∞ (fun q : X × ℂ => PBP.dzb (Φ q.1 : ℂ → E) q.2) (UX X)`. Unfold `PBP.dzb`. Conclude with `((cd_partial h 1).add ((cd_partial h Complex.I).const_smul Complex.I)).const_smul _`. Use `⟨hc.congr fun _ _ => rfl, fun K hK hK0 => ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hz⟩` from `fderiv_zero_of h hK hK0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C, hC, fun v hv τ hτ => ?_⟩` and prove the remaining obligations. Use `show PBP.dzb (Φ v : ℂ → E) τ = 0`. Unfold `PBP.dzb`. Rewrite using `[hz v hv τ hτ]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_dzb {Φ : X → V1 E} (h : Good Φ) : Good (dzbF Φ) := by
   have hc : ContDiffOn ℝ ∞ (fun q : X × ℂ => PBP.dzb (Φ q.1 : ℂ → E) q.2) (UX X) := by
@@ -120,7 +120,7 @@ theorem good_dzb {Φ : X → V1 E} (h : Good Φ) : Good (dzbF Φ) := by
   simp
 
 /- English proof (translation)
-Use `show off0 (fun τ => τ • PBP.dz (f : ℂ → E) τ + κ • (f : ℂ → E) τ) τ = _`. Rewrite using `[off0, if_neg hτ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opP_apply (κ : ℂ) (f : V1 E) {τ : ℂ} (hτ : τ ≠ 0) :
     ((opP κ f : V1 E) : ℂ → E) τ = τ • PBP.dz (f : ℂ → E) τ + κ • (f : ℂ → E) τ := by
@@ -128,7 +128,7 @@ theorem opP_apply (κ : ℂ) (f : V1 E) {τ : ℂ} (hτ : τ ≠ 0) :
   rw [off0, if_neg hτ]
 
 /- English proof (translation)
-Use `show off0 (fun τ => conj τ • PBP.dzb (f : ℂ → E) τ + κ • (f : ℂ → E) τ) τ = _`. Rewrite using `[off0, if_neg hτ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opPb_apply (κ : ℂ) (f : V1 E) {τ : ℂ} (hτ : τ ≠ 0) :
     ((opPb κ f : V1 E) : ℂ → E) τ = conj τ • PBP.dzb (f : ℂ → E) τ + κ • (f : ℂ → E) τ := by
@@ -146,9 +146,9 @@ def OK (T : Module.End ℂ (V1 E)) : Prop :=
 variable {μ ℓ}
 
 /- English proof (translation)
-Introduce `τ hτ`. Use `show (f : ℂ → E) τ + (g : ℂ → E) τ = ∫ v, ℓ v ((Φ v : ℂ → E) τ + (Ψ v : ℂ → E) τ) ∂μ`. Rewrite using `[hf τ hτ, hg τ hτ, ← integral_add (good_int μ ℓ h hℓ hτ) (good_int μ ℓ h' hℓ hτ)]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`.
+A detailed English derivation is pending.
 -/
 theorem int_add {Φ Ψ : X → V1 E} {f g : V1 E} (hℓ : Continuous ℓ) (h : Good Φ) (h' : Good Ψ)
     (hf : IsInt μ ℓ Φ f) (hg : IsInt μ ℓ Ψ g) : IsInt μ ℓ (fun v => Φ v + Ψ v) (f + g) := by
@@ -160,9 +160,9 @@ theorem int_add {Φ Ψ : X → V1 E} {f g : V1 E} (hℓ : Continuous ℓ) (h : G
   rw [map_add]
 
 /- English proof (translation)
-Introduce `τ hτ`. Use `show c • (f : ℂ → E) τ = ∫ v, ℓ v (c • (Φ v : ℂ → E) τ) ∂μ`. Rewrite using `[hf τ hτ, ← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem int_smul {Φ : X → V1 E} {f : V1 E} (hf : IsInt μ ℓ Φ f) (c : ℂ) :
     IsInt μ ℓ (fun v => c • Φ v) (c • f) := by
@@ -174,7 +174,7 @@ theorem int_smul {Φ : X → V1 E} {f : V1 E} (hf : IsInt μ ℓ Φ f) (c : ℂ)
   rw [map_smul]
 
 /- English proof (translation)
-Introduce `τ _`. Use `show (0 : E) = ∫ v, ℓ v (0 : E) ∂μ`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem int_zero : IsInt μ ℓ (fun _ : X => (0 : V1 E)) 0 := by
   intro τ _
@@ -182,7 +182,7 @@ theorem int_zero : IsInt μ ℓ (fun _ : X => (0 : V1 E)) 0 := by
   simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (int_zero : IsInt μ ℓ (fun _ : X => (0 : V1 E)) 0)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `int_add hℓ (h a (Finset.mem_insert_self a s)) (good_sum s Φ fun i hi => h i (Finset.mem_insert_of_mem hi)) (hf a (Finset.mem_insert_self a s)) (ih (fun i hi => h i (Finset.mem_insert_of_mem hi)) fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem int_sum {ι : Type*} (hℓ : Continuous ℓ) (s : Finset ι) (Φ : ι → X → V1 E) (f : ι → V1 E)
     (h : ∀ i ∈ s, Good (Φ i)) (hf : ∀ i ∈ s, IsInt μ ℓ (Φ i) (f i)) :
@@ -197,17 +197,17 @@ theorem int_sum {ι : Type*} (hℓ : Continuous ℓ) (s : Finset ι) (Φ : ι �
       (ih (fun i hi => h i (Finset.mem_insert_of_mem hi)) fun i hi => hf i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `⟨good_zero, int_zero⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ok_zero : OK μ ℓ (0 : Module.End ℂ (V1 E)) := fun _ _ _ _ => ⟨good_zero, int_zero⟩
 
 /- English proof (translation)
-Introduce `_ _ h hf` and use `⟨h, hf⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ok_one : OK μ ℓ (1 : Module.End ℂ (V1 E)) := fun _ _ h hf => ⟨h, hf⟩
 
 /- English proof (translation)
-Introduce `Φ f hΦ hf` and use `⟨good_add (h Φ f hΦ hf).1 (h' Φ f hΦ hf).1, int_add hℓ (h Φ f hΦ hf).1 (h' Φ f hΦ hf).1 (h Φ f hΦ hf).2 (h' Φ f hΦ hf).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ok_add (hℓ : Continuous ℓ) {T T' : Module.End ℂ (V1 E)} (h : OK μ ℓ T) (h' : OK μ ℓ T') :
     OK μ ℓ (T + T') := fun Φ f hΦ hf =>
@@ -215,35 +215,35 @@ theorem ok_add (hℓ : Continuous ℓ) {T T' : Module.End ℂ (V1 E)} (h : OK μ
     (h' Φ f hΦ hf).2⟩
 
 /- English proof (translation)
-Introduce `Φ f hΦ hf` and use `h _ _ (h' Φ f hΦ hf).1 (h' Φ f hΦ hf).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ok_mul {T T' : Module.End ℂ (V1 E)} (h : OK μ ℓ T) (h' : OK μ ℓ T') : OK μ ℓ (T * T') :=
   fun Φ f hΦ hf => h _ _ (h' Φ f hΦ hf).1 (h' Φ f hΦ hf).2
 
 /- English proof (translation)
-Introduce `Φ f hΦ hf` and use `⟨good_smul (h Φ f hΦ hf).1 c, int_smul (h Φ f hΦ hf).2 c⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ok_smul {T : Module.End ℂ (V1 E)} (h : OK μ ℓ T) (c : ℂ) : OK μ ℓ (c • T) := fun Φ f hΦ hf =>
   ⟨good_smul (h Φ f hΦ hf).1 c, int_smul (h Φ f hΦ hf).2 c⟩
 
 /- English proof (translation)
-Rewrite using `[← neg_one_smul ℂ T]`. Conclude with `ok_smul h (-1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ok_neg {T : Module.End ℂ (V1 E)} (h : OK μ ℓ T) : OK μ ℓ (-T) := by
   rw [← neg_one_smul ℂ T]
   exact ok_smul h (-1)
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `ok_smul ok_one c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ok_alg (c : ℂ) : OK μ ℓ (algebraMap ℂ (Module.End ℂ (V1 E)) c) := by
   rw [Algebra.algebraMap_eq_smul_one]
   exact ok_smul ok_one c
 
 /- English proof (translation)
-Introduce `Φ f hΦ hf`. Use `⟨good_opM hΦ m hm, fun τ hτ => ?_⟩` and prove the remaining obligations. Use `show m τ • (f : ℂ → E) τ = ∫ v, ℓ v (m τ • (Φ v : ℂ → E) τ) ∂μ`. Rewrite using `[hf τ hτ, ← integral_smul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ok_opM (m : ℂ → ℂ) (hm : ContDiffOn ℝ ∞ m {τ | τ ≠ 0}) : OK μ ℓ (opM (E := E) m hm) := by
   intro Φ f hΦ hf
@@ -255,9 +255,9 @@ theorem ok_opM (m : ℂ → ℂ) (hm : ContDiffOn ℝ ∞ m {τ | τ ≠ 0}) : O
   rw [map_smul]
 
 /- English proof (translation)
-Introduce `Φ f hΦ hf`. Establish `hg : Good (fun v => opM (fun τ => τ) cd_id (dzF Φ v) + κ • Φ v)` using `good_add (good_opM (good_dz hΦ) _ _) (good_smul hΦ κ)`. Use `⟨good_congr hg fun v τ hτ => by rw [opP_apply κ _ hτ]; rfl, fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `i1 : Integrable (fun v => τ • ℓ v (PBP.dz (Φ v : ℂ → E) τ)) μ` using `(good_int μ ℓ (good_dz hΦ) hℓ hτ).smul τ`. Establish `i2 : Integrable (fun v => κ • ℓ v ((Φ v : ℂ → E) τ)) μ` using `(good_int μ ℓ hΦ hℓ hτ).smul κ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[opP_apply κ f hτ, dz_int μ ℓ hΦ hℓ hf hτ, hf τ hτ, ← integral_smul, ← integral_smul, ← integral_add i1 i2]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[opP_apply κ _ hτ, map_add, map_smul, map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem ok_opP (hℓ : Continuous ℓ) (κ : ℂ) : OK μ ℓ (opP (E := E) κ) := by
   intro Φ f hΦ hf
@@ -272,9 +272,9 @@ theorem ok_opP (hℓ : Continuous ℓ) (κ : ℂ) : OK μ ℓ (opP (E := E) κ) 
   rw [opP_apply κ _ hτ, map_add, map_smul, map_smul]
 
 /- English proof (translation)
-Introduce `Φ f hΦ hf`. Establish `hg : Good (fun v => opM (fun τ => conj τ) cd_conj (dzbF Φ v) + κ • Φ v)` using `good_add (good_opM (good_dzb hΦ) _ _) (good_smul hΦ κ)`. Use `⟨good_congr hg fun v τ hτ => by rw [opPb_apply κ _ hτ]; rfl, fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `i1 : Integrable (fun v => conj τ • ℓ v (PBP.dzb (Φ v : ℂ → E) τ)) μ` using `(good_int μ ℓ (good_dzb hΦ) hℓ hτ).smul (conj τ)`. Establish `i2 : Integrable (fun v => κ • ℓ v ((Φ v : ℂ → E) τ)) μ` using `(good_int μ ℓ hΦ hℓ hτ).smul κ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[opPb_apply κ f hτ, dzb_int μ ℓ hΦ hℓ hf hτ, hf τ hτ, ← integral_smul, ← integral_smul, ← integral_add i1 i2]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[opPb_apply κ _ hτ, map_add, map_smul, map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem ok_opPb (hℓ : Continuous ℓ) (κ : ℂ) : OK μ ℓ (opPb (E := E) κ) := by
   intro Φ f hΦ hf

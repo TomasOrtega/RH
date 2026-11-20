@@ -14,17 +14,17 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] {K : T
   [Module.Finite K H] {β : LinearMap.BilinForm K H}
 
 /- English proof (translation)
-The claim follows from `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq (K := K) (V := H)).symm).1 hβ`.
+A detailed English derivation is pending.
 -/
 theorem surj (hβ : Function.Injective β) : Function.Surjective β :=
   (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq (K := K) (V := H)).symm).1 hβ
 
 /- English proof (translation)
-Establish `hnd : β.Nondegenerate`. Use `⟨fun x hx => hβ (by ext y; simp [hx y]), fun y hy => hβ ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[hs, hy x]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : β.orthogonal F = F`. Use extensionality with `s`. Rewrite using `[LinearMap.BilinForm.mem_orthogonal_iff, hF s]`. Use `forall₂_congr fun w _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `β w s = 0 ↔ _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hs, neg_eq_zero]`. Establish `h` using `LinearMap.BilinForm.finrank_orthogonal hnd F`. Rewrite `h` using `[e]`. Use `F.finrank_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_mul_finrank (hβ : Function.Injective β) (hs : ∀ s w, β s w = - β w s) {F : Submodule K H}
     (hF : IsLagr β F) : finrank K F + finrank K F = finrank K H := by
@@ -45,7 +45,7 @@ theorem two_mul_finrank (hβ : Function.Injective β) (hs : ∀ s w, β s w = - 
 
 omit [IsDomain R] [IsDiscreteValuationRing R] [Module.Finite K H] in
 /- English proof (translation)
-Take `⟨a, ha, h⟩` from `FractionalIdeal.isFractional_of_fg (S := nonZeroDivisors R) (hΛ.map (φ.restrictScalars R))`. Use `⟨a, ha, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `h (φ x) ⟨x, hx, rfl⟩`. Conclude with `Submodule.mem_one.2 ⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_denom {Λ : Submodule R H} (hΛ : Λ.FG) (φ : H →ₗ[K] K) :
     ∃ a ∈ nonZeroDivisors R, ∀ x ∈ Λ, a • φ x ∈ (1 : Submodule R K) := by
@@ -55,21 +55,21 @@ theorem exists_denom {Λ : Submodule R H} (hΛ : Λ.FG) (φ : H →ₗ[K] K) :
   exact Submodule.mem_one.2 ⟨y, hy⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ, hker⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Take `⟨s, rfl⟩` from `surj hβ φ`. Establish `h0 : ∀ x ∈ Λ, β s x = 0` using `fun x hx => hker (Submodule.subset_span hx)`. Establish `hsF : s ∈ F`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hF s]`. Introduce `w hw`. Assume the negation of the conclusion as `hsw`. Take `⟨a, ha, hh⟩` from `exists_denom hΛ (β.flip w)`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible R`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ha0 : algebraMap R K a ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors ha`. Establish `hπ0 : algebraMap R K π ≠ 0` using `by simpa using hπ.ne_zero`. Establish `hm : ((algebraMap R K a * algebraMap R K π * β s w)⁻¹ • s) ∈ Λ ⊔ F.restrictScalars R`. Rewrite using `[h.2, LinearMap.BilinForm.mem_dualSubmodule]`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h0 y hy.1]`. Take `⟨x, hx, f, hf, e⟩` from `Submodule.mem_sup.1 hm`. Take `⟨y, hy⟩` from `Submodule.mem_one.1 (hh x hx)`. Establish `e2` using `congrArg (fun z => β z w) e`. Simplify using `only [map_add, LinearMap.add_apply, map_smul, LinearMap.smul_apply, (hF f).1 hf w hw, add_zero, smul_eq_mul] at e2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hy` using `[LinearMap.BilinForm.flip_apply, e2, Algebra.smul_def]`. Use `hπ.not_isUnit (IsUnit.of_mul_eq_one y (IsFractionRing.injective R K ?_))` and prove the remaining obligations. Rewrite using `[map_mul, hy, map_one]`. Clear the denominators using the available nonvanishing facts. Apply `hφ` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Take `⟨a, ha, hh⟩` from `exists_denom hΛ (β x)`. Establish `hm : a • x ∈ Λ ⊔ F.restrictScalars R`. Rewrite using `[h.2, LinearMap.BilinForm.mem_dualSubmodule]`. Introduce `y hy`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hh y hy.1` as an intermediate fact. Rewrite using `[← algebraMap_smul K a x, map_smul, LinearMap.smul_apply, algebraMap_smul]` and apply the resulting hypothesis. Take `⟨y, hy, f, hf, e⟩` from `Submodule.mem_sup.1 hm`. Establish `e2` using `congrArg (β s) e`. Rewrite `e2` using `[map_add, h0 y hy, (hF s).1 hsF f hf, add_zero, ← algebraMap_smul K a x, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 e2.symm).resolve_left (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors ha)`.
+A detailed English derivation is pending.
 -/
 theorem span_eq_top (hβ : Function.Injective β) {F : Submodule K H} (hF : IsLagr β F)
     {Λ : Submodule R H} (hΛ : Λ.FG) (h : IsAdapted β F (Λ ⊓ F.restrictScalars R) Λ) :
@@ -114,21 +114,19 @@ theorem span_eq_top (hβ : Function.Injective β) {F : Submodule K H} (hF : IsLa
 
 omit [Module.Finite K H] in
 /- English proof (translation)
-Use `haveI : Submodule.IsLattice K Λ := ⟨hΛ, hsp⟩`. Use `haveI : Module.Finite R Λ := Module.Finite.iff_fg.2 hΛ`. Use `haveI : Module.IsTorsionFree R H := .trans_faithfulSMul R K H`. Set `N : Submodule R Λ` to `(F.restrictScalars R).comap Λ.subtype`. Use `haveI : Module.IsTorsionFree R (Λ ⧸ N) := by`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Module.IsTorsionFree.of_smul_eq_zero fun r x hx => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `N.mkQ_surjective x`. Rewrite `hx` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Distinguish the cases in `hr : r = 0`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `Or.inl hr`. Use `right`. Establish `hx' : algebraMap R K r • (x : H) ∈ F` using `by rw [algebraMap_smul]; exact hx`. Conclude with `(F.smul_mem_iff (by simpa using hr)).1 hx'`. Set `bN` to `Module.finBasis R N`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Set `bQ` to `Module.finBasis R (Λ ⧸ N)`. Use `⟨_, _, (bN.sumQuot bQ).extendOfIsLattice K, ?_, ?_⟩` and prove the remaining obligations. Use `congrArg (Submodule.map Λ.subtype) (bN.sumQuot bQ).span_eq` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Use `this.symm.trans ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congr 2`. Use extensionality with `i`. Simplify using the standard rewrite rules. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : x ∈ Submodule.span K (Λ : Set H)` using `hsp ▸ trivial`. Take `⟨r, hr⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors R) K _ x hx'`. Rewrite `hr` using `[Submodule.span_eq, Submonoid.smul_def]`. Establish `hr0 : algebraMap R K r ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors r.2`. Establish `hN : (⟨_, hr⟩ : Λ) ∈ N` using `(F.restrictScalars R).smul_mem _ hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrArg (fun z : N => ((z : Λ) : H)) (bN.sum_repr ⟨_, hN⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at e`. Rewrite using `[← Submodule.smul_mem_iff _ hr0, algebraMap_smul, ← e]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, by simp⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `: ((bN i : Λ) : H) ∈ F` using `(bN i).2`. Simplify using `using this`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_basis_adapted_lattice_subspace (F : Submodule K H) {Λ : Submodule R H} (hΛ : Λ.FG)
     (hsp : Submodule.span K (Λ : Set H) = ⊤) :
@@ -176,9 +174,9 @@ theorem exists_basis_adapted_lattice_subspace (F : Submodule K H) {Λ : Submodul
       simpa using this
 
 /- English proof (translation)
-Take `⟨a, c, e, h₁, h₂⟩` from `exists_basis_adapted_lattice_subspace F hΛ hsp`. Establish `ha : finrank K F = a`. Rewrite using `[h₂]`. Conclude with `(finrank_span_eq_card (e.linearIndependent.comp _ Sum.inl_injective)).trans (Fintype.card_fin a)`. Establish `hc : finrank K H = a + c` using `by simp [finrank_eq_card_basis e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `two_mul_finrank hβ hs hF` as an intermediate fact. Take `rfl : a = n` from `by omega`. Take `rfl : c = a` from `by omega`. Conclude with `⟨e, h₁, h₂⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_basis (hβ : Function.Injective β) (hs : ∀ s w, β s w = - β w s) {F : Submodule K H}
     (hF : IsLagr β F) {Λ : Submodule R H} (hΛ : Λ.FG) (hsp : Submodule.span K (Λ : Set H) = ⊤) {n : ℕ}
@@ -200,9 +198,9 @@ noncomputable def blk {n : ℕ} (β : LinearMap.BilinForm K H) (e : Basis (Fin n
 
 omit [Module.Finite K H] in
 /- English proof (translation)
-Rewrite using `[← Matrix.det_permute']`. Establish `: (LinearMap.BilinForm.toMatrix e β).submatrix id (Equiv.sumComm (Fin n) (Fin n)) = Matrix.fromBlocks (-(blk β e).transpose) 0 (Matrix.of fun i j => β (e (Sum.inr i)) (e (Sum.inr j))) (blk β e)`. Use extensionality with `(i | i) (j | j)`. Simplify `hs _ _` using `[blk, LinearMap.BilinForm.toMatrix_apply]`. Simplify `h0 _ _` using `[blk, LinearMap.BilinForm.toMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[LinearMap.BilinForm.toMatrix_apply]`. Simplify using `[blk, LinearMap.BilinForm.toMatrix_apply]`. Rewrite using `[this, Matrix.det_fromBlocks_zero₁₂, Matrix.det_neg, Matrix.det_transpose, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_gram (hs : ∀ s w, β s w = - β w s) {n : ℕ} (e : Basis (Fin n ⊕ Fin n) K H)
     (h0 : ∀ i j, β (e (Sum.inl i)) (e (Sum.inl j)) = 0) :
@@ -221,7 +219,7 @@ theorem det_gram (hs : ∀ s w, β s w = - β w s) {n : ℕ} (e : Basis (Fin n �
 
 omit [IsDomain R] [IsDiscreteValuationRing R] [IsFractionRing R K] in
 /- English proof (translation)
-Use `choose f hf using fun i j => Submodule.mem_one.1 (h i j)`. Establish `: A = (Matrix.of f).map (algebraMap R K)` using `by ext i j; simp [hf]`. Conclude with `⟨Matrix.of f, this, by rw [RingHom.map_det, this]; rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem det_mem {ι : Type} [Fintype ι] [DecidableEq ι] {A : Matrix ι ι K}
     (h : ∀ i j, A i j ∈ (1 : Submodule R K)) : ∃ A₀ : Matrix ι ι R, A = A₀.map (algebraMap R K) ∧
@@ -232,11 +230,9 @@ theorem det_mem {ι : Type} [Fintype ι] [DecidableEq ι] {A : Matrix ι ι K}
 
 omit [IsDomain R] [IsDiscreteValuationRing R] [IsFractionRing R K] [Module.Finite K H] in
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨j, rfl⟩` from `h`. Rewrite using `[e.repr_self, Finsupp.single_apply]`. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Conclude with `zero_mem _`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
-
-Consider the case `smul r x _ hx`. Rewrite using `[← algebraMap_smul K r x, map_smul, Finsupp.smul_apply, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_mem {ι : Type} (e : Basis ι K H) {x : H} (hx : x ∈ Submodule.span R (Set.range e)) (i : ι) :
     e.repr x i ∈ (1 : Submodule R K) := by
@@ -256,15 +252,15 @@ theorem repr_mem {ι : Type} (e : Basis ι K H) {x : H} (hx : x ∈ Submodule.sp
 
 omit [IsDomain R] [IsDiscreteValuationRing R] [IsFractionRing R K] in
 /- English proof (translation)
-Establish `key : ∀ j : Fin n, ∃ x ∈ Λ, ∀ k, β x (e (Sum.inl k)) = e.coord (Sum.inl j) (e (Sum.inl k))`. Introduce `j`. Take `⟨s, hs⟩` from `surj hβ (e.coord (Sum.inl j))`. Establish `hm : s ∈ Λ ⊔ F.restrictScalars R`. Rewrite using `[h.2, LinearMap.BilinForm.mem_dualSubmodule]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Rewrite using `[hs]`. Conclude with `repr_mem e (h₁ ▸ hy.1) _`. Take `⟨x, hx, f, hf, rfl⟩` from `Submodule.mem_sup.1 hm`. Use `⟨x, hx, fun k => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs, map_add, LinearMap.add_apply, (hF f).1 hf _ (h₂ k), add_zero]`. Use `choose x hx hk using key`. Take `⟨A, -, hA⟩` from `det_mem (R := R) (A := Matrix.of fun j i => e.repr (x j) (Sum.inr i)) fun j i => repr_mem e (h₁ ▸ hx j) _`. Use `⟨A.det, ?_⟩` and prove the remaining obligations. Rewrite using `[← hA, ← Matrix.det_mul, ← Matrix.det_one (n := Fin n)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `j k`. Use `hk j k` as an intermediate fact. Rewrite `this` using `[← e.sum_repr (x j)]`. Simplify using `only [map_sum, map_add, map_smul, Fintype.sum_sum_type, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, (hF _).1 (h₂ _) _ (h₂ _), smul_zero, Finset.sum_const_zero, zero_add] at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, blk, Matrix.of_apply, ← smul_eq_mul]`. Rewrite using `[this]`. Simplify using `[Finsupp.single_apply, Matrix.one_apply, eq_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_inv (hβ : Function.Injective β) {F : Submodule K H} (hF : IsLagr β F) {Λ : Submodule R H}
     (h : IsAdapted β F (Λ ⊓ F.restrictScalars R) Λ) {n : ℕ} (e : Basis (Fin n ⊕ Fin n) K H)
@@ -297,23 +293,21 @@ theorem exists_inv (hβ : Function.Injective β) {F : Submodule K H} (hF : IsLag
   simp [Finsupp.single_apply, Matrix.one_apply, eq_comm]
 
 /- English proof (translation)
-Use `⟨rfl, le_antisymm (sup_le hle fun c hc => ?_) fun s hsd => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.BilinForm.mem_dualSubmodule]`. Introduce `y hy`. Rewrite using `[(hC c).1 hc y hy.2]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsp` using `span_eq_top hβ hF hΛ h`. Establish `hn` using `two_mul_finrank hβ hs hF`. Generalize the expression as in `finrank K F = n at hn`. Take `⟨e, e₁, e₂⟩` from `exists_basis hβ hs hF hΛ hsp hn`. Take `⟨g, g₁, g₂⟩` from `exists_basis hβ hs hC hΛ hsp hn`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `eF : ∀ i, e (Sum.inl i) ∈ F` using `fun i => e₂.ge (Submodule.subset_span ⟨i, rfl⟩)`. Establish `gC : ∀ i, g (Sum.inl i) ∈ C` using `fun i => g₂.ge (Submodule.subset_span ⟨i, rfl⟩)`. Establish `eΛ : ∀ i, e i ∈ Λ` using `fun i => e₁.ge (Submodule.subset_span ⟨i, rfl⟩)`. Establish `gΛ : ∀ i, g i ∈ Λ` using `fun i => g₁.ge (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨z, hz⟩` from `exists_inv hβ hF h e e₁ eF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `de` using `det_gram hs e fun i j => (hF _).1 (eF i) _ (eF j)`. Establish `dg` using `det_gram hs g fun i j => (hC _).1 (gC i) _ (gC j)`. Take `⟨Q, -, hQ⟩` from `det_mem (R := R) (A := g.toMatrix e) fun i j => repr_mem g (g₁ ▸ eΛ j) i`. Take `⟨Y, hY, hY'⟩` from `det_mem (R := R) (A := blk β g) fun i j => (LinearMap.BilinForm.mem_dualSubmodule β).1 (hle (gΛ _)) _ ⟨gΛ _, gC j⟩`. Establish `hd` using `congrArg Matrix.det (LinearMap.BilinForm.toMatrix_mul_basis_toMatrix g e β)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hQ]`. Establish `hu : IsUnit Y.det`. Use `IsUnit.of_mul_eq_one (Y.det * z ^ 2 * Q.det ^ 2) (IsFractionRing.injective R K ?_)` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, map_one]`. Rewrite using `[← hY']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ((-1 : K) ^ n) ≠ 0` using `pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)`. Apply `mul_left_cancel₀ hm` to reduce the goal to its premises. Rewrite `de` using `[← hd]`. Take the linear combination `(-(algebraMap R K z ^ 2 * algebraMap R K Q.det ^ 2)) * dg + (algebraMap R K z ^ 2) * de + (-1) ^ n * (algebraMap R K z * (blk β e).det + 1) * hz`. Use `choose v hv using fun k => Submodule.mem_one.1 ((LinearMap.BilinForm.mem_dualSubmodule β).1 hsd (g (Sum.inl k)) ⟨gΛ _, gC k⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `c : Fin n → R` to `Matrix.vecMul v Y⁻¹`. Establish `hc : Matrix.vecMul c Y = v`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hu, Matrix.vecMul_one]`. Use `Submodule.mem_sup.2 ⟨∑ i, c i • g (Sum.inr i), Submodule.sum_mem _ fun i _ => Λ.smul_mem _ (gΛ _), s - ∑ i, c i • g (Sum.inr i), ?_, by abel⟩` and prove the remaining obligations. Use `(hC _).2 fun w hw => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: C ≤ LinearMap.ker (β (s - ∑ i, c i • g (Sum.inr i)))`. Use `g₂.le.trans (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hYe : ∀ i, β (g (Sum.inr i)) (g (Sum.inl k)) = algebraMap R K (Y i k)` using `fun i => congrFun (congrFun hY i) k`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, map_sum, LinearMap.sub_apply, LinearMap.sum_apply, ← algebraMap_smul K (c _), map_smul, LinearMap.smul_apply, hYe, ← hv k, ← hc, smul_eq_mul]`.
-
-Simplify using `[Matrix.vecMul, dotProduct]`. Conclude with `this hw`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adapted (hβ : Function.Injective β) (hs : ∀ s w, β s w = - β w s) {F C : Submodule K H}
     (hF : IsLagr β F) (hC : IsLagr β C) {Λ : Submodule R H} (hΛ : Λ.FG)
@@ -370,7 +364,7 @@ theorem adapted (hβ : Function.Injective β) (hs : ∀ s w, β s w = - β w s) 
 end TwoLagr
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hβ hs hF hC hΛ h hle` and use `TwoLagr.adapted hβ hs hF hC hΛ h hle`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAdapted_of_le_dualSubmodule : ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (H : Type 1) [AddCommGroup H] [Module K H] [Module R H] [IsScalarTower R K H] [Module.Finite K H] (β : LinearMap.BilinForm K H) (F C : Submodule K H) (Λ : Submodule R H), Function.Injective β → (∀ s w, β s w = - β w s) → IsLagr β F → IsLagr β C → Λ.FG → IsAdapted β F (Λ ⊓ F.restrictScalars R) Λ → Λ ≤ β.dualSubmodule (Λ ⊓ C.restrictScalars R) → IsAdapted β C (Λ ⊓ C.restrictScalars R) Λ :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hβ hs hF hC hΛ h hle => TwoLagr.adapted hβ hs hF hC hΛ h hle

@@ -10,9 +10,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `IsNilpotent.eq_zero (mem_nilradical.1 ?_)` and prove the remaining obligations. Rewrite using `[nilradical_eq_sInf, Ideal.mem_sInf]`. Introduce `p hp`. Use `haveI : p.IsPrime := hp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.algebraMap_residueField_eq_zero, map_sub, h _ (algebraMap S p.ResidueField), sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_field_maps {S : Type} [CommRing S] [_root_.IsReduced S] {a b : S}
     (h : ∀ (L : Type) [Field L] (ψ : S →+* L), ψ a = ψ b) : a = b := by
@@ -24,7 +24,7 @@ theorem eq_of_field_maps {S : Type} [CommRing S] [_root_.IsReduced S] {a b : S}
   rw [← Ideal.algebraMap_residueField_eq_zero, map_sub, h _ (algebraMap S p.ResidueField), sub_self]
 
 /- English proof (translation)
-The claim follows from `eq_of_field_maps fun L _ ψ => letI : Algebra K L := (ψ.comp (algebraMap K S)).toAlgebra h L { ψ with commutes' := fun _ => rfl }`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_field_algHoms {K S : Type} [CommRing K] [CommRing S] [Algebra K S] [_root_.IsReduced S] {a b : S}
     (h : ∀ (L : Type) [Field L] [Algebra K L] (ψ : S →ₐ[K] L), ψ a = ψ b) : a = b :=
@@ -33,11 +33,11 @@ theorem eq_of_field_algHoms {K S : Type} [CommRing K] [CommRing S] [Algebra K S]
     h L { ψ with commutes' := fun _ => rfl }
 
 /- English proof (translation)
-Apply `TopCat.Presheaf.section_ext Z.sheaf V` to reduce the goal to its premises. Introduce `p hp`. Take `⟨_, ⟨W, hW, rfl⟩, hpW, hWV⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open hp V.isOpen`. Establish `hWV : W ≤ V` using `hWV`. Establish `e0 : ev (tau hW) V (tau_le hW hWV) a = ev (tau hW) V (tau_le hW hWV) b` using `eq_of_field_maps fun L _ ψ => by`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h L (spMap ψ ≫ tau hW) (le_preimage_comp _ (tau_le hW hWV))` as an intermediate fact. Rewrite `this` using `[ev_spMap ψ _ V (tau_le hW hWV)]`. Then use the resulting hypothesis. Rewrite `e0` using `[ev_tau hW hWV, ev_tau hW hWV]`. Establish `e1` using `Z.presheaf.germ_res_apply (homOfLE hWV) p hpW a`. Establish `e2` using `Z.presheaf.germ_res_apply (homOfLE hWV) p hpW b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e1.symm.trans ((congrArg _ e0).trans e2)`.
+A detailed English derivation is pending.
 -/
 theorem ext_ev_field {Z : Scheme.{0}} [IsReduced Z] {V : Z.Opens} {a b : Γ(Z, V)}
     (h : ∀ (L : Type) [Field L] (z : Sp L ⟶ Z) (hz : ⊤ ≤ z ⁻¹ᵁ V), ev z V hz a = ev z V hz b) : a = b := by
@@ -55,13 +55,11 @@ theorem ext_ev_field {Z : Scheme.{0}} [IsReduced Z] {V : Z.Opens} {a b : Γ(Z, V
   exact e1.symm.trans ((congrArg _ e0).trans e2)
 
 /- English proof (translation)
-Set `I` to `{W : Z.Opens // IsAffineOpen W ∧ W ≤ V}`. Use `choose a ha using fun i : I => loc i.1 i.2.1 i.2.2`. Establish `hc : ∀ p ∈ V, ∃ i : I, p ∈ i.1` using `fun p hp => by`. Take `⟨_, ⟨W, hW, rfl⟩, hpW, hWV⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open hp V.isOpen`. Conclude with `⟨⟨W, hW, hWV⟩, hpW⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, -⟩` from `Z.sheaf.existsUnique_gluing' (fun i : I => i.1) V (fun i => homOfLE i.2.2) (fun p hp => TopologicalSpace.Opens.mem_iSup.2 (hc p hp)) a (fun i j => by`. Use `ext_ev_field (a := resG Z inf_le_left (a i)) (b := resG Z inf_le_right (a j)) fun L _ z hz => ?_` and prove the remaining obligations. Establish `hi` using `le_preimage_mono inf_le_left hz`. Establish `hj` using `le_preimage_mono inf_le_right hz`. Rewrite using `[ev_res z _ hz hi, ev_res z _ hz hj]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `uniq L z (le_preimage_mono i.2.2 hi) _ _ (ha i L z hi) (ha j L z hj))`. Use `⟨s, fun L _ z hz => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hc (z (IsLocalRing.closedPoint L)) (hz (Set.mem_univ _))`. Establish `hi' : ⊤ ≤ z ⁻¹ᵁ i.1` using `((IsLocalRing.closed_point_mem_iff (U := z ⁻¹ᵁ i.1)).1 hi).ge`. Establish `e : ev z V hz s = ev z i.1 hi' (a i)` using `(ev_res z i.2.2 hi' hz s).symm.trans (congrArg _ (hs i))`.
-
-Conclude with `e ▸ ha i L z hi'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem glue_field {Z : Scheme.{0}} [IsReduced Z] (V : Z.Opens)
     (R : ∀ (L : Type) [Field L], (Sp L ⟶ Z) → L → Prop)
@@ -93,15 +91,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 namespace FlagCover
 
 /- English proof (translation)
-Use `letI := β.toAlgebra`. Use `haveI : IsDomain O := hi.isDomain β`. Use `haveI : FaithfulSMul O c.F := (faithfulSMul_iff_algebraMap_injective O c.F).2 hi`. Use `haveI : IsFractionRing O c.F := IsFractionRing.of_field O c.F fun x => by`. Take `⟨a, b, hb, h⟩` from `hs x`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨a, b, (eq_div_iff hb).2 h⟩`. Establish `h1 : IsPreimmersion (spMap β)` using `IsPreimmersion.of_isLocalization (R := O) (S := c.F) (nonZeroDivisors O)`. Establish `h2 : Flat (spMap β)`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `IsLocalization.flat c.F (nonZeroDivisors O)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Y.jQ_open` as an intermediate fact. Establish `h3 : IsPreimmersion Y.j` using `by unfold Model.j; infer_instance`. Establish `h4 : Flat Y.j` using `by unfold Model.j; infer_instance`. Establish `h5 : IsPreimmersion X.inc` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip h3`. Establish `: ∀ x : X.Yo, _root_.IsReduced (X.Yo.presheaf.stalk x)` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(X.normal (X.inc x)).1` as an intermediate fact. Set `_` to `(X.inc.stalkMap x).hom.toAlgebra`. Establish `: Module.Flat (X.YY.presheaf.stalk (X.inc x)) (X.Yo.presheaf.stalk x)` using `Flat.stalkMap X.inc x`. Establish `: IsLocalHom (algebraMap (X.YY.presheaf.stalk (X.inc x)) (X.Yo.presheaf.stalk x))` using `inferInstanceAs (IsLocalHom (X.inc.stalkMap x).hom)`. Establish `: Module.FaithfullyFlat (X.YY.presheaf.stalk (X.inc x)) (X.Yo.presheaf.stalk x)` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`.
-
-Set `e` to `RingEquiv.ofBijective (X.inc.stalkMap x).hom ⟨FaithfulSMul.algebraMap_injective (X.YY.presheaf.stalk (X.inc x)) (X.Yo.presheaf.stalk x), X.inc.stalkMap_surjective x⟩`. Conclude with `isReduced_of_injective e.symm e.symm.injective`. Conclude with `isReduced_of_isReduced_stalk _`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isReduced_Yo (hi : Function.Injective β) (hs : ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a)
     (X : FlagCover Y) : IsReduced X.Yo := by
@@ -135,7 +131,7 @@ theorem isReduced_Yo (hi : Function.Injective β) (hs : ∀ x : c.F, ∃ a b : O
   exact isReduced_of_isReduced_stalk _
 
 /- English proof (translation)
-Take `⟨p, a, u, hu⟩` from `(evLaws_genFr_atlas E H Dw l Xo c).1.test S y`. Rewrite using `[FlagTan.evR_eq hf hu, FlagTan.evR_eq hf (PullbackSections.frMap_trans a φ hu h)]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evR_frMap_of_isReduced {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     [_root_.IsReduced S] {f : Rul Xo c}
@@ -148,7 +144,7 @@ theorem evR_frMap_of_isReduced {S T : Type} [CommRing S] [Algebra c.F S] [CommRi
 variable {X : FlagCover Y} {e : Ix Dw → ℤ}
 
 /- English proof (translation)
-The claim follows from `letI : Algebra c.F S := ((ev (w ≫ pullback.snd X.π Y.j ≫ pullback.snd _ _) ⊤ le_top).comp (toΓ c.F)).toAlgebra ⟨this, fun k hz => X.exists_chartFr w (spMap_ev_top _).symm k hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_alg_chartFr {S : Type} [CommRing S] (w : Sp S ⟶ X.Yo) :
     ∃ _ : Algebra c.F S, ∀ (k : X.F.J) (hz : ⊤ ≤ (w ≫ X.inc) ⁻¹ᵁ X.F.U k),
@@ -158,13 +154,13 @@ theorem exists_alg_chartFr {S : Type} [CommRing S] (w : Sp S ⟶ X.Yo) :
   ⟨this, fun k hz => X.exists_chartFr w (spMap_ev_top _).symm k hz⟩
 
 /- English proof (translation)
-Use `glue_field _ (fun L _ z x => ∀ [Algebra c.F L] (hz : ⊤ ≤ (z ≫ X.inc) ⁻¹ᵁ X.F.U k) (Q : FrPt Xo c L), X.F.ChartFr k (z ≫ X.inc) hz Q → X.pt Q = z → x = evR Xo c f Q) (fun L _ z hz' x y hx hy => ?_) fun W hW hle => ?_` and prove the remaining obligations. Take `⟨_, h⟩` from `exists_alg_chartFr z`. Take `⟨Q, hQ, ez⟩` from `h k fun p hp => mem_pull.1 (hz' hp)`. Conclude with `(hx _ Q hQ ez).trans (hy _ Q hQ ez).symm`. Take `⟨_, h⟩` from `exists_alg_chartFr (tau hW)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q₀, hQ₀, e₀⟩` from `h k fun p hp => mem_pull.1 (tau_le hW hle hp)`. Use `⟨evR Xo c f Q₀, fun L _ z hzW _ hz Q hQ ez => ?_⟩` and prove the remaining obligations. Establish `e1 : spMap (ev z W hzW) ≫ tau hW = z` using `spMap_ev z hW hzW`. Establish `e2 : spMap ((ev z W hzW).comp (algebraMap c.F Γ(X.Yo, W))) = spMap (algebraMap c.F L)`. Rewrite using `[← spMap_comp', ← frX_snd Q₀, ← frX_snd Q, ← X.pt_snd Q₀, ← X.pt_snd Q, e₀, ez]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Category.assoc, e1]`. Establish `e3 : (ev z W hzW).comp (algebraMap c.F Γ(X.Yo, W)) = algebraMap c.F L` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e2)`. Set `φ : Γ(X.Yo, W) →ₐ[c.F] L` to `{ ev z W hzW with commutes' := fun r => DFunLike.congr_fun e3 r }`. Take `⟨Q', hQ'⟩` from `exists_frMap φ Q₀`. Establish `e4 : spMap φ.toRingHom ≫ tau hW ≫ X.inc = z ≫ X.inc`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ X.inc) e1`. Rewrite using `[hQ.unique (hQ₀.frMap hQ' e4 hz)]`. Conclude with `(evR_frMap_of_isReduced hf hQ').symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coef [IsReduced X.Yo] {f : Rul Xo c}
     (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f) (k : X.F.J) :
@@ -195,17 +191,17 @@ theorem exists_coef [IsReduced X.Yo] {f : Rul Xo c}
     exact (evR_frMap_of_isReduced hf hQ').symm
 
 /- English proof (translation)
-Use `choose a ha using exists_coef (X := X) (e := e) hf.1`. Set `s : X.SecO e` to `⟨fun j => a (j PUnit.unit), fun j j' => ext_ev_field fun L _ z hw => by`. Take `⟨k, rfl⟩ : ∃ k, j = fun _ => k` from `⟨j PUnit.unit, rfl⟩`. Take `⟨k', rfl⟩ : ∃ k, j' = fun _ => k` from `⟨j' PUnit.unit, rfl⟩`. Establish `hh : ⊤ ≤ (z ≫ X.inc) ⁻¹ᵁ (X.F.U k ⊓ X.F.U k')` using `fun p hp => ⟨(mem_pull (F := X.inc)).1 (hw hp).1, (mem_pull (F := X.inc)).1 (hw hp).2⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz` using `le_preimage_mono inf_le_left hh`. Establish `hz'` using `le_preimage_mono inf_le_right hh`. Take `⟨_, h⟩` from `exists_alg_chartFr z`. Take `⟨Q, hQ, ez⟩` from `h k hz`. Take `⟨Q', hQ', ez'⟩` from `h k' hz'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwt` using `FlagTan.evR_frBor hf (hQ.frBor hQ' hh)`. Rewrite using `[map_mul]`. Use `(ev_res z _ hw (le_pull hz) _).trans ((ha k L z _ hz Q hQ ez).trans (Eq.trans ?_ (congrArg₂ (· * ·) ((ev_pull_g (X.F.LL e) X.inc (fun _ => k) (fun _ => k') z hw hh).trans (X.F.ev_LL_g e k k' _ hh)).symm ((ev_res z _ hw (le_pull hz') _).trans (ha k' L z _ hz' Q' hQ' ez')).symm)))` and prove the remaining obligations. Rewrite using `[hwt, ← mul_assoc, ← Units.val_mul]`. Establish `: (∏ ix, X.F.TAt k k' (z ≫ X.inc) hh ix ^ (-e ix)) * ∏ ix, X.F.TAt k k' (z ≫ X.inc) hh ix ^ e ix = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules. Rewrite using `[this, Units.val_one, one_mul]⟩`. Use `⟨s, funext fun p => funext fun P => ?_⟩` and prove the remaining obligations. Use `haveI : _root_.IsReduced p.R := (Ideal.isRadical_iff_quotient_reduced _).1 p.rad`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `eq_of_field_algHoms (K := c.F) fun L _ _ ψ => ?_` and prove the remaining obligations. Take `⟨P', hP⟩` from `exists_frMap ψ P`. Take `⟨k, hz⟩` from `exists_chart_of_isLocalRing X.F.cover (X.pt P' ≫ X.inc)`. Take `⟨Q, t, hQ, ht⟩` from `X.exists_chartFr_frBor P' k hz`. Establish `hc : coef s k (X.pt P') hz = evR Xo c f Q` using `ha k L _ _ hz Q hQ (X.pt_frBor ht)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← FlagTan.evR_eq hf.1 hP, FlagTan.evR_frBor hf ht, ← hc]`. Use `(val_frMap s hP).symm.trans ?_` and prove the remaining obligations. Use `val_eq s hQ ht` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_toRule_eq [IsReduced X.Yo] {f : Rul Xo c} (hf : f ∈ GlobalTheory.AllWt.secZ Xo c e) :
     ∃ s : X.SecO e, toRule s = f := by
@@ -243,9 +239,9 @@ theorem exists_toRule_eq [IsReduced X.Yo] {f : Rul Xo c} (hf : f ∈ GlobalTheor
   convert val_eq s hQ ht
 
 /- English proof (translation)
-Use `TieUniq.sec_ext fun j => ext_ev_field fun S _ w hw => ?_` and prove the remaining obligations. Take `⟨k, rfl⟩ : ∃ k, j = fun _ => k` from `⟨j PUnit.unit, rfl⟩`. Establish `hz : ⊤ ≤ (w ≫ X.inc) ⁻¹ᵁ X.F.U k` using `fun p hp => mem_pull.1 (hw hp)`. Take `⟨_, h'⟩` from `exists_alg_chartFr w`. Take `⟨Q, hQ, rfl⟩` from `h' k hz`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(val_chartFr s hQ).symm.trans (((evR_toRule_of_isReduced s Q).symm.trans ((congrArg (evR Xo c · Q) h).trans (evR_toRule_of_isReduced s' Q))).trans (val_chartFr s' hQ))`.
+A detailed English derivation is pending.
 -/
 theorem toRule_injective [IsReduced X.Yo] {s s' : X.SecO e} (h : toRule s = toRule s') : s = s' := by
   refine TieUniq.sec_ext fun j => ext_ev_field fun S _ w hw => ?_

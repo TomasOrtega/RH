@@ -13,9 +13,9 @@ open scoped ContDiff Real Topology
 namespace GlobalTheory.BcUnique
 
 /- English proof (translation)
-Rewrite using `[HolAtlas.loc, dif_pos hx, ← delAt_dbarAt_fun hu]`. Establish `e : (A.e i) ((A.e i).symm x) = x` using `(A.e i).right_inv hx`. Use `(GlobalTheory.SecForm.DdcGerm.ddc_eq_of_eventuallyEq A _ _ (fun x => algebraMap ℂ (Alt n) (u x)) ?_).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A.loc (A.fn g) i =ᶠ[𝓝 ((A.e i) ((A.e i).symm x))] _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [(A.e i).open_target.mem_nhds hx] with w hw`. Rewrite using `[HolAtlas.loc, dif_pos hw, ← h w]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `kappa • delAt _ ((A.e i) ((A.e i).symm x)) = _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_ddc_fn {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n) (g : M → ℝ) (i : A.ι) {x : V n}
     (hx : x ∈ (A.e i).target) {u : V n → ℝ} (hu : ContDiffAt ℝ 2 u x) (h : ∀ v, g ((A.e i).symm v) = u v) :
@@ -32,9 +32,9 @@ theorem loc_ddc_fn {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n) 
     rw [e]
 
 /- English proof (translation)
-Set `L : V n →L[ℂ] ℂ` to `EuclideanSpace.proj c`. Use `leviForm_comp_holo (u := φ) (φ := L) (z := x) hφ L.contDiff.contDiffAt v w` as an intermediate fact. Rewrite `this` using `[L.fderiv]`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[← leviForm_one_one_eq_laplacian hφ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : L v = v c • (1 : ℂ)` using `by simp [L]`. Establish `h2 : L w = w c • (1 : ℂ)` using `by simp [L]`. Rewrite using `[h1, h2, map_smulₛₗ, map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul, smul_eq_mul, mul_left_comm, mul_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem leviForm_coord {n : ℕ} (c : Fin n) {φ : ℂ → ℝ} {x : V n} (hφ : ContDiffAt ℝ 2 φ (x c)) (v w : V n) :
     leviForm (fun y : V n => φ (y c)) x v w = v c * (starRingEnd ℂ) (w c) * ((Laplacian.laplacian φ (x c) / 4 : ℝ) : ℂ) := by
@@ -50,13 +50,13 @@ theorem leviForm_coord {n : ℕ} (c : Fin n) {φ : ℂ → ℝ} {x : V n} (hφ :
   rfl
 
 /- English proof (translation)
-Introduce `M _ A φ hφ j x hx`. Establish `h2 : ContDiff ℝ 2 φ` using `hφ.of_le (by norm_cast)`. Establish `hu : ContDiffAt ℝ 2 (fun y : V (1 + 1) => φ (y (Fin.last 1))) x` using `(h2.comp ((EuclideanSpace.proj (Fin.last 1) : V (1 + 1) →L[ℂ] ℂ).restrictScalars ℝ).contDiff).contDiffAt`. Rewrite using `[loc_ddc_fn (famAtlas A) _ (j, sphFin) hx hu fun v => rfl]`. Simplify using `only [ofValues, ddc, leviForm_coord (Fin.last 1) h2.contDiffAt, AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_smul, sym, smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc (a : Fin (1 + 1)) (ha : a ≠ Fin.last 1) : coordVec a (Fin.last 1) = (0 : ℂ)`. Establish `h : (1 : Fin (1 + 1)) ≠ a` using `ha.symm`. Simplify using `[coordVec, h]`. Rewrite using `[Finset.sum_eq_single (Fin.last 1) (fun a _ ha => by`. Simplify using `only [hc a ha, zero_mul, mul_zero, map_zero, zero_smul, Finset.sum_const_zero]) (by simp),`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `Finset.sum_eq_single (Fin.last 1) (fun a _ ha => by`. Simplify using `only [hc a ha, zero_mul, mul_zero, map_zero, zero_smul, Finset.sum_const_zero]) (by simp)]`. Use `congr 1`. Establish `: (π : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Simplify using `only [coordVec, kappa, EuclideanSpace.single_apply, if_true, map_one]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem loc_ddc_snd : ∀ (M : Type) [TopologicalSpace M] (A : HolAtlas M 1) (φ : ℂ → ℝ), ContDiff ℝ ∞ φ → ∀ (j : A.ι) (x : V (1 + 1)), x ∈ ((famAtlas A).e (j, sphFin)).target → (famAtlas A).loc ((famAtlas A).ddc ((famAtlas A).fn fun y => y.2.elim 0 φ)) (j, sphFin) x = ((Laplacian.laplacian φ (x (Fin.last 1)) / (4 * π) : ℝ) : ℂ) • ((Complex.I / 2) • (dz (Fin.last 1) * dzb (Fin.last 1))) := by
   intro M _ A φ hφ j x hx

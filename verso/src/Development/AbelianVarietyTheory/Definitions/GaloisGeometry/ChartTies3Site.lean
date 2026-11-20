@@ -20,11 +20,9 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : J' = J` from `by ext x y; exact hJ x y`. Rewrite using `[reL_rfl]`. Use `⟨fun x hx => ?_, fun hT => ?_, fun hb hT x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : reGL rfl _ x ∈ S.Uloc v` using `hx`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hx'` using `[Formalism.L2.Forms.reGL_rfl]`. Conclude with `S.Uloc_lev v hx'`. Conclude with `self_dual_lattice_at F E a σ J' v S.Lb T S.Lb_fin (fun x hx y hy => S.Lb_int y hy x hx) (fun y hy => S.Lb_dual y hy) hT`. Use `show reGL rfl _ x ∈ S.Uloc v`. Rewrite using `[Formalism.L2.Forms.reGL_rfl, S.Uloc_hyp v hb hT]`.
-
-Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formsLev_re {a b : ℕ} (h : a = b) (σ : E →ₐ[F] E) (J : Matrix (Fin a) (Fin a) E) (J' : Matrix (Fin b) (Fin b) E)
     (hJ : ∀ x y, J' x y = J (Fin.cast h.symm x) (Fin.cast h.symm y)) {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
@@ -54,7 +52,7 @@ variable {D : D7} {X0 : Formalism.L2.Herm.Herm0 D} {u : D.what₂.Word} {w : D.w
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `hypTJC_of_le ((Z.loc Fl ht i hi).t β) (fun w' _ => (formsLev_re (rankN D (i + 1) hi) D.sp.cm.sig (D.sp.X (i + 1)).gram (gramN D (i + 1) hi) (gramN_apply D (i + 1) hi) ((Z.Fo i hi).K β).lev w').1) (fun w' h => (formsLev_re (rankN D (i + 1) hi) D.sp.cm.sig (D.sp.X (i + 1)).gram (gr …`.
+A detailed English derivation is pending.
 -/
 theorem hypTJC_site (Z : SiteD X0 u w hg M) (Fl : Fills (D.gat u w hg)) (ht : Fl.t = D.R.t)
     (hT : ∀ i hi, ¬ D.what₂.places.resChar w ∣ (Z.Fo i hi).T) (i : ℕ) (hi : i + 1 ≤ D.R.m) (β : (Z.Fo i hi).Ch) :
@@ -68,7 +66,7 @@ theorem hypTJC_site (Z : SiteD X0 u w hg M) (Fl : Fills (D.gat u w hg)) (ht : Fl
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `hypTJ_of_ge ((Z.loc Fl ht i hi).t β) (fun w' h => (formsLev_re (rankN D (i + 1) hi) D.sp.cm.sig (D.sp.X (i + 1)).gram (gramN D (i + 1) hi) (gramN_apply D (i + 1) hi) ((Z.Fo i hi).K β).lev w').2.2 (fun hb => hbad i hi w' hb h) (T_not_mem hg.1 (hT i hi) w' h)) (fun w' h => (formsLe …`.
+A detailed English derivation is pending.
 -/
 theorem hypTJ_site (Z : SiteD X0 u w hg M) (Fl : Fills (D.gat u w hg)) (ht : Fl.t = D.R.t)
     (hT : ∀ i hi, ¬ D.what₂.places.resChar w ∣ (Z.Fo i hi).T)

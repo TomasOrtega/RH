@@ -11,7 +11,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Use `Finite.injective_iff_bijective.1 fun τ τ' h => ?_` and prove the remaining obligations. Use extensionality with `a`. Establish `h1 : σ (embF c τ a) = σ (embF c τ' a)` using `congrArg (fun f : E →+* ℂ => f a) h`. Conclude with `congrArg Subtype.val (σ.injective h1)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relab_bijective (c : Coeff l) (σ : c.F →+* ℂ) : Function.Bijective (relab (E := E) c σ) := by
   refine Finite.injective_iff_bijective.1 fun τ τ' h => ?_
@@ -20,7 +20,7 @@ theorem relab_bijective (c : Coeff l) (σ : c.F →+* ℂ) : Function.Bijective 
   exact congrArg Subtype.val (σ.injective h1)
 
 /- English proof (translation)
-Use extensionality with `a`. Establish `h1 : embF c (conjEmb τ) a = embF c τ (IsCMField.complexConj E a)` using `Subtype.ext (IsCMField.complexEmbedding_complexConj E τ a).symm`. Use `show σ (embF c (conjEmb τ) a) = starRingEnd ℂ (relab c σ τ a)`. Rewrite using `[h1]`. Conclude with `IsCMField.complexEmbedding_complexConj E (relab c σ τ) a`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relab_conj (c : Coeff l) (σ : c.F →+* ℂ) (τ : E →+* ℂ) :
     relab c σ (conjEmb τ) = conjEmb (relab c σ τ) := by
@@ -32,7 +32,7 @@ theorem relab_conj (c : Coeff l) (σ : c.F →+* ℂ) (τ : E →+* ℂ) :
   exact IsCMField.complexEmbedding_complexConj E (relab c σ τ) a
 
 /- English proof (translation)
-Simplify using `[laU, Function.leftInverse_invFun (relab_bijective c σ).1 τ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem laU_upper (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (k : U.Comp) (τ : E →+* ℂ)
     (hτ : relab c σ τ ∈ (U.X k).Ψ) (i : ℕ) (hi : (U.X k).p0 + i < r) :
@@ -40,7 +40,7 @@ theorem laU_upper (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (n : �
   simp [laU, Function.leftInverse_invFun (relab_bijective c σ).1 τ]
 
 /- English proof (translation)
-Establish `h1 : ¬ (U.X k).p0 ≤ (U.X k).p0 - 1 - i` using `by omega`. Establish `h2 : (U.X k).p0 - 1 - ((U.X k).p0 - 1 - i) = i` using `by omega`. Simplify using `only [laU, h1, if_false, h2, ← relab_conj, Function.leftInverse_invFun (relab_bijective c σ).1 (conjEmb τ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem laU_lower (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (k : U.Comp) (τ : E →+* ℂ)
     (hτ : relab c σ τ ∈ (U.X k).Ψ) (i : ℕ) (hi : i < (U.X k).p0) (hr : (U.X k).p0 - 1 - i < r) :
@@ -50,11 +50,11 @@ theorem laU_lower (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (n : �
   simp only [laU, h1, if_false, h2, ← relab_conj, Function.leftInverse_invFun (relab_bijective c σ).1 (conjEmb τ)]
 
 /- English proof (translation)
-Establish `hjj : (j : ℕ) ≤ j'` using `hj`. Break down `hb with hb | hb` into its components or cases. Establish `hb' : (U.X k).p0 ≤ (j' : ℕ)` using `hb.trans hjj`. Use `hd.1 (Function.invFun (relab c σ) τ.1) (show (j : ℕ) - (U.X k).p0 ≤ (j' : ℕ) - (U.X k).p0 by omega)` as an intermediate fact. Simplify using `only [laU, hb, hb', if_true]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ¬ (U.X k).p0 ≤ (j' : ℕ)` using `by omega`. Establish `h2 : ¬ (U.X k).p0 ≤ (j : ℕ)` using `by omega`. Use `hd.1 (Function.invFun (relab c σ) (conjEmb τ.1)) (show (U.X k).p0 - 1 - (j' : ℕ) ≤ (U.X k).p0 - 1 - (j : ℕ) by omega)` as an intermediate fact.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [laU, h1, h2, if_false]`. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem laU_antitone (U : Unf Xo c σ r) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hd : Dom a n) (k : U.Comp)
     (τ : (U.X k).Ψ) (j j' : Fin r) (hj : j ≤ j') (hb : (U.X k).p0 ≤ (j : ℕ) ∨ (j' : ℕ) < (U.X k).p0) :
@@ -75,7 +75,7 @@ theorem laU_antitone (U : Unf Xo c σ r) {a : (E →+* ℂ) × ℕ → ℕ} {n :
     omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k τ j`. Establish `: (n + 2) / 2 = n / 2 + 1` using `by omega`. Simplify using `only [laU, this]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem laU_add_two (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     laU U a (n + 2) = laU U (fun x => a x + 1) n := by
@@ -85,7 +85,7 @@ theorem laU_add_two (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (n : 
   split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k τ j`. Establish `: (2 * m + 1) / 2 = 2 * m / 2` using `by omega`. Simplify using `only [laU, this]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem laU_odd (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (m : ℕ) : laU U a (2 * m + 1) = laU U a (2 * m) := by
   funext k τ j
@@ -93,18 +93,18 @@ theorem laU_odd (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (m : ℕ)
   simp only [laU, this]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h'`. Conclude with `h ((X.cmType τ).2 h')`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem conj_mem (X : Data E r) {τ : E →+* ℂ} (h : τ ∉ X.Ψ) : conjEmb τ ∈ X.Ψ := by
   by_contra h'
   exact h ((X.cmType τ).2 h')
 
 /- English proof (translation)
-Establish `e : ∀ ρ : E →+* ℂ, Data.emb ρ (b • v) = ρ b • Data.emb ρ v` using `fun ρ => by`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb]`. Unfold `perFr`. Use `split_ifs with h hi h' hj`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.mulVec_smul]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite using `[e]`. Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, conjEmb, RingHom.comp_apply, Complex.conj_conj, Finset.mul_sum]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perFr_smul (X : Data E r) (x : Frame X.Ψ r) (b : E) (v : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
     perFr X x (b • v) τ i = τ b * perFr X x v τ i := by
@@ -122,7 +122,7 @@ theorem perFr_smul (X : Data E r) (x : Frame X.Ψ r) (b : E) (v : Fin r → E) (
   · simp
 
 /- English proof (translation)
-Establish `h0 : X.p0 - 1 - i = 0` using `by omega`. Unfold `perFr`. Rewrite using `[dif_neg h, dif_pos (conj_mem X h), dif_pos (h0 ▸ hr)]`. Simplify using `only [h0]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem perFr_beyond (X : Data E r) (x : Frame X.Ψ r) (v : Fin r → E) {τ : E →+* ℂ} (h : τ ∉ X.Ψ) (hr : 0 < r)
     {i : ℕ} (hi : X.p0 ≤ i + 1) :
@@ -134,7 +134,7 @@ theorem perFr_beyond (X : Data E r) (x : Frame X.Ψ r) (v : Fin r → E) {τ : E
   simp only [h0]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k x`. Distinguish the cases in `h : x ∈ (U.X k).dom`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, Pi.mul_apply, h, dif_pos]`. Conclude with `evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f g (U.un k ⟨x, h⟩)`. Simplify using `[rdU, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rdU_mul (U : Unf Xo c σ r) (f g : Rul Xo c) : rdU U (f * g) = rdU U f * rdU U g := by
   funext k x
@@ -144,9 +144,9 @@ theorem rdU_mul (U : Unf Xo c σ r) (f g : Rul Xo c) : rdU U (f * g) = rdU U f *
   · simp [rdU, h]
 
 /- English proof (translation)
-Introduce `h'`. Establish `h1 : starRingEnd ℂ H.rt0 = H.rt0`. Establish `: starRingEnd ℂ ((σ.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ) = H.rt0` using `h'`. Rewrite `this` using `[show (σ.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ = H.rt0 from h]`. Then use the resulting hypothesis. Establish `him : H.rt0.im = 0` using `Complex.conj_eq_iff_im.1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hre` using `congrArg Complex.re H.sqrt_neg_disc_sq`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Simplify using `only [sq, Complex.mul_re, him, Complex.neg_re, Complex.natCast_re] at hre`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem not_good_conj (h : GoodEmb c σ) : ¬ GoodEmb c ((starRingEnd ℂ).comp σ) := by
   intro h'

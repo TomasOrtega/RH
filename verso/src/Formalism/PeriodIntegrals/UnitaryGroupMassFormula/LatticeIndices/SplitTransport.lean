@@ -8,11 +8,11 @@ namespace MassDataIdxRes
 open NumberField IsDedekindDomain Ideal
 
 /- English proof (translation)
-Introduce `h`. Apply `hI` to reduce the goal to its premises. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : f.symm y ∈ I.comap (f : A →+* B)`. Rewrite using `[Ideal.mem_comap]`. Simplify using `using hy`. Rewrite `h1` using `[h, Ideal.mem_bot]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hy`. Rewrite `hy` using `[Ideal.mem_bot]`. Rewrite using `[hy]`. Conclude with `I.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comap_ringEquiv_ne_bot {A B : Type} [CommRing A] [CommRing B] (f : A ≃+* B)
     (I : Ideal B) (hI : I ≠ ⊥) : I.comap (f : A →+* B) ≠ ⊥ := by
@@ -32,13 +32,13 @@ private theorem comap_ringEquiv_ne_bot {A B : Type} [CommRing A] [CommRing B] (f
     exact I.zero_mem
 
 /- English proof (translation)
-Establish `hrk : Module.finrank ℚ K = Module.finrank ℚ L` using `(e.toRatAlgEquiv.toLinearEquiv).finrank_eq`. Rewrite using `[hrk, ← h]`. Set `g : 𝓞 K ≃+* 𝓞 L` to `NumberField.RingOfIntegers.mapRingEquiv e`. Use `Set.ncard_congr (fun w _ => (⟨w.asIdeal.comap (g.symm : 𝓞 L →+* 𝓞 K), (by haveI := w.isPrime; infer_instance), comap_ringEquiv_ne_bot g.symm w.asIdeal w.ne_bot⟩ : HeightOneSpectrum (𝓞 L))) ?_ ?_ ?_` and prove the remaining obligations. Introduce `w hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_setOf_eq, Ideal.mem_comap] at hw ⊢`. Simplify using `using hw`. Introduce `a b _ _ hab`. Establish `h1` using `congrArg HeightOneSpectrum.asIdeal hab`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Establish `h2` using `SetLike.ext_iff.mp h1 (g x)`. Simplify `h2` using `[Ideal.mem_comap]`. Introduce `w hw`. Use `⟨⟨w.asIdeal.comap (g : 𝓞 K →+* 𝓞 L), (by haveI := w.isPrime; infer_instance), comap_ringEquiv_ne_bot g w.asIdeal w.ne_bot⟩, ?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_setOf_eq, Ideal.mem_comap] at hw ⊢`. Simplify using `using hw`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -80,11 +80,9 @@ namespace MassDataIdxSteps
 open NumberField Formalism.L2.SG.TypedSets Formalism.L2.SG.HidaSetting
 
 /- English proof (translation)
-Establish `hgp : Fact (gOf p).Prime` using `⟨gOf_prime X p⟩`. Establish `hmem : ((gOf p : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal`. Establish `hty` using `(mem_typSet X.B.I.F (D.host.g 0) (D.host.g 1) (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero p.1).1 p.2`. Unfold `gOf`. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `h`. Conclude with `hty.resolve_left h`. Establish `hsplit : {w : IsDedekindDomain.HeightOneSpectrum (𝓞 X.B.I.E) | ((gOf p : ℕ) : 𝓞 X.B.I.E) ∈ w.asIdeal}.ncard = Module.finrank ℚ X.B.I.E`. Unfold `gOf`. Use `split_ifs`.
-
-Conclude with `MassDataIdxRes.split_transport X.ιE _ (D.nd.g_split 0)`. Conclude with `MassDataIdxRes.split_transport X.ιE _ (D.nd.g_split 1)`. Take `⟨he, hf⟩` from `MassDataIdxRes.locDeg_one_below (F := X.B.I.F) (E := X.B.I.E) (gOf p) hsplit p.1 hmem`. Take `⟨hc, hn⟩` from `MassDataIdxRes.arith_of_loc (gOf p) p.1 hmem he hf`. Conclude with `⟨hc, hmem, hn⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem resArith_holds {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (p : TypX X) : ResArith X p := by
   have hgp : Fact (gOf p).Prime := ⟨gOf_prime X p⟩
@@ -106,7 +104,7 @@ theorem resArith_holds {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (p : 
   exact ⟨hc, hmem, hn⟩
 
 /- English proof (translation)
-The claim follows from `stResZ_of X p (resArith_holds X p)`.
+A detailed English derivation is pending.
 -/
 theorem stResZ_holds {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (p : TypX X) : StResZ X p :=
   stResZ_of X p (resArith_holds X p)

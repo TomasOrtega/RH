@@ -5,21 +5,19 @@ open Formalism.ConjugateSelfDual (Qbar)
 universe u v
 
 /- English proof (translation)
-Set `f' : W₁ →ₗ[K] W₀` to `f.restrict hW`. Establish `hf' : Function.Injective f'` using `fun x y h => Subtype.ext (hf (congrArg Subtype.val h))`. Set `A` to `LinearMap.toMatrix b₁ b₀ f'`. Establish `hA : ∀ j, f (b₁ j).1 = ∑ i, A i j • (b₀ i).1`. Introduce `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2` using `congrArg W₀.subtype (b₀.sum_repr (f' (b₁ j)))`. Rewrite `e2` using `[map_sum]`. Simplify using `only [map_smul, Submodule.subtype_apply] at e2`. Simplify using `only [A, LinearMap.toMatrix_apply]`. Conclude with `e2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A, ?_, fun σ => ?_⟩` and prove the remaining obligations. Introduce `v w h`. Establish `key : ∀ u : Fin d₁ → K, A.mulVec u = b₀.repr (f' (b₁.equivFun.symm u))`. Introduce `u`. Establish `hu : ⇑(b₁.repr (b₁.equivFun.symm u)) = u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Use `LinearMap.toMatrix_mulVec_repr b₁ b₀ f' (b₁.equivFun.symm u)` as an intermediate fact. Rewrite `this` using `[hu]`. Conclude with `this`. Rewrite `h` using `[key, key]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `b₁.equivFun.symm.injective (hf' (b₀.repr.injective (Finsupp.ext fun i => congrFun h i)))`. Establish `hli : LinearIndependent K (fun i => (b₀ i).1)` using `b₀.linearIndependent.map' W₀.subtype (Submodule.ker_subtype _)`. Use extensionality with `i j`. Establish `e₁ : g₀ σ (f (b₁ j).1) = ∑ i, (ρ₀ σ * A) i j • (b₀ i).1`. Rewrite using `[hA, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_smul, h₀, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`. Establish `e₂ : f (g₁ σ (b₁ j).1) = ∑ i, (A * ρ₁ σ) i j • (b₀ i).1`. Rewrite using `[h₁, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, hA, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`. Establish `e₃ : ∑ i, ((ρ₀ σ * A) i j - (A * ρ₁ σ) i j) • (b₀ i).1 = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`.
-
-Rewrite using `[← e₁, ← e₂, hc, sub_self]`. Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.1 hli _ e₃ i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intertwine_of_restrict {K V₁ V₀ G : Type*} [Field K] [AddCommGroup V₁] [Module K V₁]
     [AddCommGroup V₀] [Module K V₀] (f : V₁ →ₗ[K] V₀) (hf : Function.Injective f) {d₁ d₀ : ℕ}
@@ -71,7 +69,7 @@ private theorem intertwine_of_restrict {K V₁ V₀ G : Type*} [Field K] [AddCom
     exact sub_eq_zero.mp (Fintype.linearIndependent_iff.1 hli _ e₃ i)
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, bcMap_fst, galMap_fst, bcMap_fst, galMap_fst_assoc]`. Rewrite using `[Category.assoc, Category.assoc, bcMap_snd, galMap_snd, galMap_snd, reassoc_of% bcMap_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem galMap_bcMap {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {X Y : Scheme.{0}}
     {p : X ⟶ sp k} {q : Y ⟶ sp k} (f : Y ⟶ X) (h : f ≫ p = q) (σ : Ω ≃ₐ[k] Ω) :
@@ -82,17 +80,15 @@ private theorem galMap_bcMap {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {
   · rw [Category.assoc, Category.assoc, bcMap_snd, galMap_snd, galMap_snd, reassoc_of% bcMap_snd]
 
 /- English proof (translation)
-Introduce `hL hP E Ω _ _ _ _ _ l _ H θ O _ _ C D hN hO d₁ d₀ ρ₁ ρ₀ ⟨b₁, h₁⟩ ⟨b₀, h₀⟩`. Establish `hl : (l : E) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Take `⟨hinj, -⟩` from `hP l hl C hO Ω`. Establish `hop'` using `fun g => hL l hl C D hN Ω g`. Set `P : Htot l (sch.obj ((low D).geomZ Ω)) →ₗ[ℚ_[l]] Htot l (sch.obj (H.geomZ Ω))` to `(etG l E Ω).pull (piK C) (piK_snd C)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hop'' : ∀ g, hop l H Ω g ∘ₗ P = (D.m g : ℚ_[l]) • (P ∘ₗ hop l (low D) Ω g)` using `hop'`. Establish `hinj' : Function.Injective (P.baseChange (Qbar l))` using `hinj`. Establish `hW : ∀ x ∈ piece l (low D) Ω (Qbar l) (fun g => θ g / D.m g), P.baseChange (Qbar l) x ∈ piece l H Ω (Qbar l) θ`. Introduce `x hx`. Simplify using `only [piece, Submodule.mem_iInf, Module.End.mem_eigenspace_iff] at hx ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g`. Establish `hm : ((D.m g : ℕ) : Qbar l) ≠ 0` using `Nat.cast_ne_zero.mpr (D.lies g).1.ne'`. Establish `e : (hop l H Ω g).baseChange (Qbar l) (P.baseChange (Qbar l) x) = ((hop l H Ω g ∘ₗ P).baseChange (Qbar l)) x`. Rewrite using `[LinearMap.baseChange_comp]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, hop'', LinearMap.baseChange_smul, LinearMap.smul_apply, LinearMap.baseChange_comp, LinearMap.comp_apply, hx g, map_smul, ← algebraMap_smul (Qbar l) (D.m g : ℚ_[l]), map_natCast, smul_smul, mul_div_cancel₀ _ hm]`. Establish `hc : ∀ (σ : Ω ≃ₐ[E] Ω) x, galV l H Ω (Qbar l) σ (P.baseChange (Qbar l) x) = P.baseChange (Qbar l) (galV l (low D) Ω (Qbar l) σ x)`. Introduce `σ x`. Establish `e : galTot l Ω H.q σ ∘ₗ P = P ∘ₗ galTot l Ω (low D).q σ`. Establish `e'` using `congrArg (fun u => pullTot l (sch.map u)) (galMap_bcMap (Ω := Ω) (piK C) (piK_snd C) σ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Functor.map_comp, pullTot_comp] at e'`. Conclude with `e'`. Establish `e2` using `congrArg (fun u => LinearMap.baseChange (Qbar l) u x) e`. Simplify using `only [LinearMap.baseChange_comp] at e2`. Conclude with `e2`.
-
-Conclude with `intertwine_of_restrict _ hinj' _ _ b₁ b₀ hW (galV l (low D) Ω (Qbar l)) (galV l H Ω (Qbar l)) hc (fun σ => (ρ₁ σ).val) (fun σ => (ρ₀ σ).val) h₁ h₀`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.jLowPiece :
     HopLies → PieceLe → PositivityTheory.AutomorphicGaloisHodgeTate.G8.LowPiece := by

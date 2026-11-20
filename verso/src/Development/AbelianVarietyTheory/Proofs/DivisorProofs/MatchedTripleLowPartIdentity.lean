@@ -34,57 +34,49 @@ open MeasureTheory
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM N hmax hker v`. Use `set D := GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁ with hDdef`. Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.T.unitary_adelic_group_topology F E σ (a + a') G.W.J`. Use `haveI := i1`. Use `haveI := i2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := i3`. Use `haveI := i4`. Use `haveI := GlobalTheory.T.discreteTopology_rational_unitary F E σ (a + a') G.W.J`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain (ratU σ G.W.J) (Measure.haar)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set μ : Measure (UA σ G.W.J) := Measure.haar with hμdef`. Establish `hμ : μ.IsHaarMeasure` using `inferInstance`. Establish `lin` using `GlobalTheory.T.matched_pair_theta_local_global hK F E σ B a a' G X om om' R Rf hM`. Establish `sq` using `(GlobalTheory.T.square_integrability hK F E σ B a a' G X om om' hM.triple μ 𝓕 hμ h𝓕).2`. Establish `I0 : G.M'.I om' 0 = 0` using `by simpa using lin 0 D.zero_mem 0 D.zero_mem 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `Iadd : ∀ x ∈ D, ∀ y ∈ D, G.M'.I om' (x + y) = G.M'.I om' x + G.M'.I om' y`. Introduce `x hx y hy`. Simplify using `using lin x hx y hy 1`. Establish `Ismul : ∀ c : ℂ, ∀ x ∈ D, G.M'.I om' (c • x) = c • G.M'.I om' x`. Introduce `c x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify `lin 0 D.zero_mem x hx c` using `[I0]`. Set `Bf : GlobalTheory.ThK.Fn F a' (a + a') → GlobalTheory.ThK.Fn F a' (a + a') → ℂ` to `fun Φ Ψ => ∫ x in 𝓕, G.M'.I om' Φ x * conj (G.M'.I om' Ψ x) ∂μ`. Establish `hint : ∀ Φ ∈ D, ∀ Ψ ∈ D, Integrable (fun x => G.M'.I om' Φ x * conj (G.M'.I om' Ψ x)) (μ.restrict 𝓕)`. Introduce `Φ hΦ Ψ hΨ`. Establish `e : (fun x => G.M'.I om' Φ x * conj (G.M'.I om' Ψ x)) = fun x => (((‖G.M'.I om' (Φ + (1 : ℂ) • Ψ) x‖ ^ 2 : ℝ) : ℂ) - ((‖G.M'.I om' (Φ + (-1 : ℂ) • Ψ) x‖ ^ 2 : ℝ) : ℂ) + Complex.I * ((‖G.M'.I om' (Φ + Complex.I • Ψ) x‖ ^ 2 : ℝ) : ℂ) - Complex.I * ((‖G.M'.I om' (Φ + (-Complex.I) • …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[lin Φ hΦ Ψ hΨ 1, lin Φ hΦ Ψ hΨ (-1), lin Φ hΦ Ψ hΨ Complex.I, lin Φ hΦ Ψ hΨ (-Complex.I)]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, one_mul]`. Conclude with `GlobalTheory.ThetaFacCompl.mul_conj_polar _ _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : ∀ c : ℂ, Integrable (fun x => ((‖G.M'.I om' (Φ + c • Ψ) x‖ ^ 2 : ℝ) : ℂ)) (μ.restrict 𝓕)` using `fun c => Integrable.ofReal (sq _ (D.add_mem hΦ (D.smul_mem c hΨ)))`. Conclude with `((((hi 1).sub (hi (-1))).add ((hi Complex.I).const_mul Complex.I)).sub ((hi (-Complex.I)).const_mul Complex.I)).div_const 4`. Establish `hself : ∀ Φ, Bf Φ Φ = ((∫ x in 𝓕, ‖G.M'.I om' Φ x‖ ^ 2 ∂μ : ℝ) : ℂ)`. Introduce `Φ`. Simplify using `only [Bf]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hadd : ∀ x ∈ D, ∀ y ∈ D, ∀ z ∈ D, Bf (x + y) z = Bf x z + Bf y z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `x hx y hy z hz`. Simplify using `only [Bf, Iadd x hx y hy, Pi.add_apply, add_mul]`. Conclude with `integral_add (hint x hx z hz) (hint y hy z hz)`. Establish `hsmul : ∀ c : ℂ, ∀ x ∈ D, ∀ y ∈ D, Bf (c • x) y = c * Bf x y`. Introduce `c x hx y _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Bf, Ismul c x hx, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul c _`. Establish `hherm : ∀ x ∈ D, ∀ y ∈ D, Bf y x = starRingEnd ℂ (Bf x y)`. Introduce `x _ y _`. Simplify using `only [Bf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `[map_mul, mul_comm]`. Establish `hpos : ∀ x ∈ D, 0 ≤ (Bf x x).re`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `x _`. Rewrite using `[hself, Complex.ofReal_re]`. Conclude with `integral_nonneg fun t => sq_nonneg _`. Establish `hzero : ∀ x ∈ D, Bf x x = 0 → G.M'.I om' x = 0`. Introduce `x hx h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `GlobalTheory.T.matched_pair_theta_archimedean hK F E σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 x hx` to reduce the goal to its premises. Rewrite `h0` using `[hself]`. Establish `h0' : ∫ t in 𝓕, ‖G.M'.I om' x t‖ ^ 2 ∂μ = 0` using `by exact_mod_cast h0`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun t => sq_nonneg _) (sq x hx)).1 h0'`. Use `filter_upwards [hae] with t ht`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `using ht`. Establish `hstab` using `GlobalTheory.T.matched_pair_theta_exists_data hK F E σ B a a' G X om om' R Rf hM`. Establish `rinv` using `GlobalTheory.T.matched_pair_theta_finite_places hK F E σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕`. Set `ρ : UAtSub σ G.W (evFin F v) →* Module.End ℂ (GlobalTheory.ThK.Fn F a' (a + a'))` to `(om'.comp (MonoidHom.inr _ _)).comp (UAtSub σ G.W (evFin F v)).subtype`. Establish `hρapp : ∀ g : UAtSub σ G.W (evFin F v), ρ g = om' (1, g.1)` using `fun g => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hinv2 : ∀ x, σ (σ x) = x` using `GlobalTheory.ThK.Inhab.conj_conj hM.triple.base.cm`. Establish `hD : ∀ g : UAtSub σ G.W (evFin F v), ∀ x ∈ D, ρ g x ∈ D` using `fun g x hx => hstab.1 v g.1 g.2 x hx`. Establish `hinvB : ∀ g : UAtSub σ G.W (evFin F v), ∀ x ∈ D, ∀ y ∈ D, Bf (ρ g x) (ρ g y) = Bf x y`. Introduce `g x hx y hy`. Establish `e1 : G.M'.I om' (ρ g x) = fun t => G.M'.I om' x (t * g.1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun t => GlobalTheory.ThetaFacCompl.I_transl _ _ _ _ _`. Establish `e2 : G.M'.I om' (ρ g y) = fun t => G.M'.I om' y (t * g.1)`. Use function extensionality and compare the values at `fun t => GlobalTheory.ThetaFacCompl.I_transl _ _ _ _ _`. Simplify using `only [Bf]`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `rinv x hx y hy g.1`. Establish `hsm : ∀ Φ ∈ D, ∃ U ∈ 𝓝 (1 : UA σ G.W.J), ∀ h ∈ U, h ∈ UAt σ G.W (evFin F v) → om' (1, h) Φ = Φ`. Introduce `Φ hΦ`. Take `⟨L, hL, P, hPΦ, -, -, -, hPfix, -⟩` from `GlobalTheory.T.matched_theta_descent_nonvanishing hK F E σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 ⟨Φ, hΦ⟩`. Take `⟨U, hUo, hU1, hUL⟩` from `hL.2`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U, hUo.mem_nhds hU1, fun h hh hv => ?_⟩` and prove the remaining obligations. Establish `hfin : h ∈ GlobalTheory.ThKAdm.FinPt σ G.W`. Introduce `u hu`. Apply `hv u` to reduce the goal to its premises. Use `show evalV F v (sndA F u) = 0`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `e : sndA F u = u.2` using `rfl`. Establish `hu' : u.2 = 0` using `hu`. Rewrite using `[e, hu', map_zero]`. Use `hPfix ⟨Φ, hΦ⟩ h (hUL ⟨hh, hfin⟩)` as an intermediate fact. Rewrite `this` using `[hPΦ]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Set `𝒦 : Set (Subgroup (UAtSub σ G.W (evFin F v)))` to `{K | ∃ K' : Subgroup (UA σ G.W.J), K = K'.comap (UAtSub σ G.W (evFin F v)).subtype ∧ (∀ g ∈ K', g ∈ UAt σ G.W (evFin F v)) ∧ IsCompact (K' : Set (UA σ G.W.J)) ∧ (∃ O : Set (UA σ G.W.J), IsOpen O ∧ (1 : UA σ G.W.J) ∈ O ∧ ∀ g ∈ O, g ∈ UAt σ G.W (evFin F v) → g ∈ K')}`. Take `⟨S, hSD, hS⟩` from `GlobalTheory.T.hermitian_form_invariant_quotient_definite ρ 𝒦 Bf D N hD hmax.le hmax.ne (fun g x hx => hmax.stab.fin v g.1 g.2 x hx) hadd hsmul hherm hpos hinvB (fun x hx h0 => hker x hx (hzero x hx h0)) (by`. Introduce `x hx`. Take `⟨U, hU, hUx⟩` from `hsm x hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨K', hK'1, hK'2, hK'3, hK'4⟩` from `GlobalTheory.T.exists_compactSubgroup_unitaryPoints_supportedAtPlace hinv2 G.W v U hU`. Use `⟨K'.comap (UAtSub σ G.W (evFin F v)).subtype, ⟨K', rfl, hK'1, hK'2, hK'3⟩, fun k hk => ?_⟩` and prove the remaining obligations. Conclude with `hUx k.1 (hK'4 hk) k.2)`. Use the proof step `(by`. Introduce and unpack `K ⟨K', rfl, hK'1, hK'2, -⟩ x hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨U, hU, hUx⟩` from `hsm x hx`. Use `GlobalTheory.T.compact_orbit_smooth_vector_finite (om'.comp (MonoidHom.inr _ _)) K' hK'2 x ⟨U, hU, fun h hh hk => hUx h hh (hK'1 h hk)⟩` as an intermediate fact. Use `this.subset ?_` and prove the remaining obligations. Introduce and unpack `y ⟨k, hk, rfl⟩`. Conclude with `⟨k.1, hk, rfl⟩)`.
-
-Use the proof step `(by`. Introduce and unpack `K ⟨K', rfl, hK'1, hK'2, hK'3⟩ x hx`. Take `⟨s, hsD, hs⟩` from `GlobalTheory.T.matched_local_eval_weil hK F E σ B a a' G X om om' R Rf hM v K' hK'1 hK'2 hK'3 x hx`. Use `⟨s, hsD, fun y hy hfix => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hIz⟩` from `hs y hy (fun k hk => hfix ⟨k, hK'1 k hk⟩ hk)`.
-
-Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Simplify using `only [Bf, hIz, Pi.zero_apply, zero_mul, integral_zero])`. Use `⟨S, hSD, ?_⟩` and prove the remaining obligations. Establish `hT' : Set.range ρ = GlobalTheory.ThKLocSS.opsAt om' v`. Use extensionality with `T`.
-
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨g.1, g.2, rfl⟩`. Introduce and unpack `⟨h, hh, rfl⟩`. Conclude with `⟨⟨h, hh⟩, rfl⟩`.
-
-Rewrite using `[← hT']` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exsimple : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ N, GlobalTheory.ThetaFac.IsMaxTh B om' (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) N → (∀ Ψ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), G.M'.I om' Ψ = 0 → Ψ ∈ N) → ∀ v : Pl F, ∃ S : Submodule ℂ (GlobalTheory.ThK.Fn F a' (a + a')), S ≤ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) ∧ GlobalTheory.ThKLocSS.IsSimpleOver (GlobalTheory.ThKLocSS.opsAt om' v) N S := by
   intro hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM N hmax hker v

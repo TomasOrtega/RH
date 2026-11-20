@@ -16,20 +16,20 @@ def Lev (ε : Fin n → Bool) (m : ℕ) (f : Matrix (Fin n) (Fin n) ℂ → ℂ)
   (Continuous fun g : S7.UJ ε => f (S7.toM g)) ∧ LevelF ε f (-(m : ℝ))
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity`.
+A detailed English derivation is pending.
 -/
 theorem hs_nonneg (h : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ Formalism.REAL.hs h :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := fun a => ∑ i, ‖h a i‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ j)`.
+A detailed English derivation is pending.
 -/
 theorem row_le_hs (h : Matrix (Fin n) (Fin n) ℂ) (j : Fin n) : ∑ i, ‖h j i‖ ^ 2 ≤ Formalism.REAL.hs h :=
   Finset.single_le_sum (f := fun a => ∑ i, ‖h a i‖ ^ 2)
     (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ j)
 
 /- English proof (translation)
-Establish `h1 : ‖∑ i, h j i * a i‖ ≤ ∑ i, ‖h j i‖ * ‖a i‖` using `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun _ _ => norm_mul _ _))`. Establish `h2 : (∑ i, ‖h j i‖ * ‖a i‖) ^ 2 ≤ (∑ i, ‖h j i‖ ^ 2) * ∑ i, ‖a i‖ ^ 2` using `Finset.sum_mul_sq_le_sq_mul_sq _ _ _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem row_cs (h : Matrix (Fin n) (Fin n) ℂ) (j : Fin n) (a : Fin n → ℂ) :
     ‖∑ i, h j i * a i‖ ^ 2 ≤ Formalism.REAL.hs h * ∑ i, ‖a i‖ ^ 2 := by
@@ -43,11 +43,11 @@ theorem row_cs (h : Matrix (Fin n) (Fin n) ℂ) (j : Fin n) (a : Fin n → ℂ) 
       mul_le_mul_of_nonneg_right (row_le_hs h j) (Finset.sum_nonneg fun _ _ => by positivity)
 
 /- English proof (translation)
-Establish `hs0` using `hs_nonneg h`. Establish `hT : 0 ≤ ∑ i, ‖a i‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`. Establish `hcs` using `row_cs h j a`. Rewrite using `[← Finset.sum_mul]`. Break down `hs0.eq_or_lt with h0 | hpos` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hcs` using `[← h0, zero_mul]`. Establish `hz : ‖∑ i, h j i * a i‖ ^ 2 = 0` using `le_antisymm hcs (by positivity)`. Rewrite using `[hz, zero_mul]`. Conclude with `mul_nonneg hT (Real.rpow_nonneg hs0 _)`. Establish `e : Formalism.REAL.hs h ^ (-((m + 1 : ℕ) : ℝ)) = Formalism.REAL.hs h ^ (-(m : ℝ)) * (Formalism.REAL.hs h)⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_add, Nat.cast_one, neg_add, Real.rpow_add hpos, Real.rpow_neg_one]`. Establish `hr` using `Real.rpow_nonneg hs0 (-(m : ℝ))`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem row_bound (h : Matrix (Fin n) (Fin n) ℂ) (j : Fin n) (a : Fin n → ℂ) (m : ℕ) :
     ‖∑ i, h j i * a i‖ ^ 2 * Formalism.REAL.hs h ^ (-((m + 1 : ℕ) : ℝ)) ≤
@@ -72,14 +72,14 @@ theorem row_bound (h : Matrix (Fin n) (Fin n) ℂ) (j : Fin n) (a : Fin n → �
           field_simp
 
 /- English proof (translation)
-Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem enorm_sq_mul (x : ℂ) (r : ℝ) :
     ‖x‖ₑ ^ 2 * ENNReal.ofReal r = ENNReal.ofReal (‖x‖ ^ 2 * r) := by
   rw [ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.hs`. Use `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(((S7.continuous_toM ε).matrix_elem i j).norm).pow 2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_hs (ε : Fin n → Bool) : Continuous fun g : S7.UJ ε => Formalism.REAL.hs (S7.toM g) := by
   unfold Formalism.REAL.hs
@@ -87,7 +87,7 @@ theorem continuous_hs (ε : Fin n → Bool) : Continuous fun g : S7.UJ ε => For
   exact (((S7.continuous_toM ε).matrix_elem i j).norm).pow 2
 
 /- English proof (translation)
-The claim follows from `(hf.measurable.enorm.pow_const 2).mul (ENNReal.measurable_ofReal.comp ((continuous_hs ε).measurable.pow_const s))`.
+A detailed English derivation is pending.
 -/
 theorem measurable_term (ε : Fin n → Bool) {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (s : ℝ)
     (hf : Continuous fun g : S7.UJ ε => f (S7.toM g)) :
@@ -96,9 +96,9 @@ theorem measurable_term (ε : Fin n → Bool) {f : Matrix (Fin n) (Fin n) ℂ �
     (ENNReal.measurable_ofReal.comp ((continuous_hs ε).measurable.pow_const s))
 
 /- English proof (translation)
-Use `⟨continuous_finsetSum _ fun i _ => ((S7.continuous_toM ε).matrix_elem j i).mul (hf i).1, ?_⟩` and prove the remaining obligations. Unfold `LevelF`. Use `lt_of_le_of_lt (lintegral_mono fun g => ?_) (b := ∫⁻ g : S7.UJ ε, ∑ i, ‖f i (S7.toM g)‖ₑ ^ 2 * ENNReal.ofReal (Formalism.REAL.hs (S7.toM g) ^ (-(m : ℝ))) ∂Measure.haar) ?_` and prove the remaining obligations. Establish `hr` using `fun k : ℝ => Real.rpow_nonneg (hs_nonneg (S7.toM g)) k`. Simplify using `only [enorm_sq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← ENNReal.ofReal_sum_of_nonneg fun _ _ => mul_nonneg (by positivity) (hr _)]`. Conclude with `ENNReal.ofReal_le_ofReal (row_bound _ j _ m)`. Rewrite using `[lintegral_finsetSum _ fun i _ => measurable_term ε _ (hf i).1]`. Conclude with `ENNReal.sum_lt_top.2 fun i _ => (hf i).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_row (ε : Fin n → Bool) (m : ℕ) (f : Fin n → Matrix (Fin n) (Fin n) ℂ → ℂ)
     (hf : ∀ i, Lev ε m (f i)) (j : Fin n) : Lev ε (m + 1) fun g => ∑ i, g j i * f i g := by
@@ -115,9 +115,9 @@ theorem lev_row (ε : Fin n → Bool) (m : ℕ) (f : Fin n → Matrix (Fin n) (F
     exact ENNReal.sum_lt_top.2 fun i _ => (hf i).2
 
 /- English proof (translation)
-Set `μ : Measure (S7.UJ ε)` to `Formalism.REAL.muG ε`. Use `haveI : μ.IsHaarMeasure := Formalism.REAL.instIsHaarMuG n ε`. Establish `h' : MemLp (fun g : S7.UJ ε => F (S7.toM g)) 2 μ` using `h`. Establish `h2 : ∫⁻ g : S7.UJ ε, ‖F (S7.toM g)‖ₑ ^ 2 ∂μ < ⊤`. Use `lintegral_rpow_enorm_lt_top_of_eLpNorm_lt_top (p := 2) two_ne_zero ENNReal.ofNat_ne_top h'.2` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul (Measure.haar : Measure (S7.UJ ε)) μ, lintegral_smul_measure]`. Conclude with `ENNReal.mul_lt_top (by simp) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_zero_of_memLp (ε : Fin n → Bool) (F : Matrix (Fin n) (Fin n) ℂ → ℂ)
     (h : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)) :
@@ -132,9 +132,9 @@ theorem level_zero_of_memLp (ε : Fin n → Bool) (F : Matrix (Fin n) (Fin n) �
   exact ENNReal.mul_lt_top (by simp) h2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h1 : Continuous fun g : S7.UJ ε => σ (S7.toM g) (u : H)` using `(hσ.2.2 (u : H)).comp_continuous (S7.continuous_toM ε) fun g => g.2`. Conclude with `continuous_const.inner h1`. Unfold `LevelF`. Use `level_zero_of_memLp ε (baseCoef σ D ξ u) (hsq (u : H) ξ)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem lev_base (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (D : Submodule ℂ H) (ξ : H)
@@ -149,7 +149,7 @@ theorem lev_base (ε : Fin n → Bool) {H : Type} [NormedAddCommGroup H] [InnerP
     simpa using this
 
 /- English proof (translation)
-The claim follows from `| [], _, _, _, _, _, h, u => h u | s :: ss, X, c, χ, js, m, h, u => by have key := lev_path ε ss (step X (χ s)) (stepCoef X (χ s) c (js.headD s)) (χ + Pi.single s 1) js.tail (m + 1) (fun w => lev_row ε m (fun i => c ((show stepSub X (χ s) from w).1 i)) (fun i => h _) (js.headD s) …`.
+A detailed English derivation is pending.
 -/
 theorem lev_path (ε : Fin n → Bool) : ∀ (ss : List (Fin n)) (X : GMod n)
     (c : X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)) (χ : Fin n → ℂ) (js : List (Fin n)) (m : ℕ),
@@ -162,7 +162,7 @@ theorem lev_path (ε : Fin n → Bool) : ∀ (ss : List (Fin n)) (X : GMod n)
     exact key
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ D E hK χ ss hσ hsq`. Use `⟨(ss.length : ℝ), fun i u => ?_⟩` and prove the remaining obligations. Establish `key` using `lev_path ε ss ⟨D, E, hK.gl⟩ (baseCoef σ D (i.1 : H)) χ i.2 0 (fun u => lev_base ε σ D _ hσ hsq u) u`. Rewrite `key` using `[zero_add]`. Conclude with `key.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem growth : Growth := by
   intro n ε H _ _ _ σ D E hK χ ss hσ hsq

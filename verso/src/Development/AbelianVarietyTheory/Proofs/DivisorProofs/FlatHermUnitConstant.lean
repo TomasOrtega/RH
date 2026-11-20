@@ -12,24 +12,24 @@ namespace GlobalTheory.LKGeo
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_zero]; exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntAf_zero : IsIntAf (0 : AfP p) := fun v => by rw [map_zero]; exact zero_mem _
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_add]; exact add_mem (ha v) (hb v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntAf_add {a b : AfP p} (ha : IsIntAf a) (hb : IsIntAf b) : IsIntAf (a + b) := fun v => by
   rw [map_add]; exact add_mem (ha v) (hb v)
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_neg]; exact neg_mem (ha v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntAf_neg {a : AfP p} (ha : IsIntAf a) : IsIntAf (-a) := fun v => by
   rw [map_neg]; exact neg_mem (ha v)
 
 /- English proof (translation)
-Introduce `v` and use `by rw [Int.cast_smul_eq_zsmul, map_zsmul, map_mul] exact zsmul_mem (mul_mem (ha v) (hb v)) n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntAf_zsmul_mul (n : ℤ) {a b : AfP p} (ha : IsIntAf a) (hb : IsIntAf b) :
     IsIntAf ((n : ℚ) • (a * b)) := fun v => by
@@ -37,7 +37,7 @@ theorem isIntAf_zsmul_mul (n : ℤ) {a b : AfP p} (ha : IsIntAf a) (hb : IsIntAf
   exact zsmul_mem (mul_mem (ha v) (hb v)) n
 
 /- English proof (translation)
-Rewrite using `[LinearMap.BilinForm.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, _root_.mul_one, zsmul_eq_mul, _root_.mul_one]`. Conclude with `isIntAf_zsmul_mul _ ha ha'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formInt_gen (D : Datum p) (a a' : AfP p) (x y : D.La) (ha : IsIntAf a) (ha' : IsIntAf a') :
     IsIntAf ((D.EF.baseChange ℚ).baseChange (AfP p) (a ⊗ₜ ((1 : ℚ) ⊗ₜ x)) (a' ⊗ₜ ((1 : ℚ) ⊗ₜ y))) := by
@@ -45,15 +45,11 @@ theorem formInt_gen (D : Datum p) (a a' : AfP p) (x y : D.La) (ha : IsIntAf a) (
   exact isIntAf_zsmul_mul _ ha ha'
 
 /- English proof (translation)
-Introduce `p _ D v w hv hw`. Use `set B := (D.EF.baseChange ℚ).baseChange (AfP p)`. Establish `hgen : ∀ z ∈ {z | ∃ (a : AfP p) (x : D.La), IsIntAf a ∧ z = a ⊗ₜ ((1 : ℚ) ⊗ₜ x)}, ∀ w ∈ LaHat D, IsIntAf (B z w)`. Introduce and unpack `z ⟨a, x, ha, rfl⟩ w hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `mem w hw'`. Take `⟨a', y, ha', rfl⟩` from `hw'`. Conclude with `formInt_gen D a a' x y ha ha'`. Consider the case `zero => rw [map_zero]`. Conclude with `isIntAf_zero`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `add w₁ w₂ _ _ h₁ h₂ => rw [map_add]`. Conclude with `isIntAf_add h₁ h₂`. Consider the case `neg w _ h => rw [map_neg]`. Conclude with `isIntAf_neg h`. Proceed by induction on `hv using AddSubgroup.closure_induction with`.
-
-Consider the case `mem z hz => exact hgen z hz w hw`. Consider the case `zero => rw [map_zero, LinearMap.zero_apply]`. Conclude with `isIntAf_zero`. Consider the case `add v₁ v₂ _ _ h₁ h₂ => rw [map_add, LinearMap.add_apply]`. Conclude with `isIntAf_add h₁ h₂`.
-
-Consider the case `neg v _ h => rw [map_neg, LinearMap.neg_apply]`. Conclude with `isIntAf_neg h`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem formInt_laHat : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (v w : AfP p ⊗[ℚ] VQ D), v ∈ LaHat D → w ∈ LaHat D →
     IsIntAf ((D.EF.baseChange ℚ).baseChange (AfP p) v w) := by

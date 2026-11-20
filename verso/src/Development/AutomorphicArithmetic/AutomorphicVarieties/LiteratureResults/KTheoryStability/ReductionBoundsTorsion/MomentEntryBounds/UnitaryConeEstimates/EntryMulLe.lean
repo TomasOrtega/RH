@@ -10,7 +10,7 @@ namespace PositivityTheory.KB.MomentRationality.Cz.Pk
 variable {ι : Type} {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hA i k) (hB k j) (norm_nonneg _) ((norm_nonneg _).trans (hA i k))`. Use `_ = N * (a * b) := by simp`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_mul_le {A B : Matrix (Fin N) (Fin N) ℂ} {a b : ℝ} (hA : ∀ i j, ‖A i j‖ ≤ a)
     (hB : ∀ i j, ‖B i j‖ ≤ b) (i j : Fin N) : ‖(A * B) i j‖ ≤ N * (a * b) := by
@@ -23,11 +23,11 @@ theorem entry_mul_le {A B : Matrix (Fin N) (Fin N) ℂ} {a b : ℝ} (hA : ∀ i 
     _ = N * (a * b) := by simp
 
 /- English proof (translation)
-Rewrite using `[adjugate_apply]`. Establish `hb : ∀ k l, (NormedField.toAbsoluteValue ℂ) (A.updateRow j (Pi.single i 1) k l) ≤ max M 1`. Introduce `k l`. Use `show ‖A.updateRow j (Pi.single i 1) k l‖ ≤ max M 1`. Break down `eq_or_ne k j with rfl | hk` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[updateRow_self]`. Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hl]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[updateRow_ne hk]`. Conclude with `(hA k l).trans (le_max_left _ _)`. Establish `h` using `Matrix.det_le hb`. Rewrite `h` using `[nsmul_eq_mul, Fintype.card_fin]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_le {A : Matrix (Fin N) (Fin N) ℂ} {M : ℝ} (hA : ∀ i j, ‖A i j‖ ≤ M) (i j : Fin N) :
     ‖adjugate A i j‖ ≤ (N.factorial : ℝ) * (max M 1) ^ N := by
@@ -46,25 +46,21 @@ theorem adj_le {A : Matrix (Fin N) (Fin N) ℂ} {M : ℝ} (hA : ∀ i j, ‖A i 
   exact h
 
 /- English proof (translation)
-Use `⟨N * (N * (M * Real.exp 1) * ((N.factorial : ℝ) * (max M 1) ^ N)), ?_⟩` and prove the remaining obligations. Introduce `h p p' u s s' hss hh hp hp' hpM hp'M hpd hp'd hu heq i j`. Use `set a := diagonal (fun i => ((Real.exp (s i) : ℝ) : ℂ)) with ha`. Use `set a' := diagonal (fun i => ((Real.exp (s' i) : ℝ) : ℂ)) with ha'`. Use `set ai := diagonal (fun i => ((Real.exp (-s i) : ℝ) : ℂ)) with hai`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `haai : a * ai = 1`. Rewrite using `[ha, hai, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add, add_neg_cancel, Real.exp_zero, Complex.ofReal_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hpadj : p * adjugate p = 1` using `by rw [mul_adjugate, hpd, one_smul]`. Establish `hrec : h * p * a * ai * adjugate p = h`. Rewrite using `[show h * p * a * ai * adjugate p = h * (p * (a * ai) * adjugate p) by simp only [Matrix.mul_assoc], haai, Matrix.mul_one, hpadj, Matrix.mul_one]`. Rewrite `hrec` using `[heq]`. Establish `hdet' : IsUnit (p' * a').det`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[det_mul, hp'd, one_mul, ha', det_diagonal]`. Conclude with `IsUnit.mk0 _ (Finset.prod_ne_zero_iff.2 fun k _ => by exact_mod_cast (Real.exp_pos _).ne')`. Establish `hu_eq : u = (p' * a')⁻¹ * (h * p * a)`. Rewrite using `[heq, Matrix.nonsing_inv_mul_cancel_left (A := p' * a') (B := u) hdet']`. Establish `hut : u.BlockTriangular id` using `by haveI := invertibleOfIsUnitDet (p' * a') hdet'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hu_eq]`. Conclude with `(blockTriangular_inv_of_blockTriangular (hp'.mul (blockTriangular_diagonal _))).mul ((hh.mul hp).mul (blockTriangular_diagonal _))`. Establish `hstar : star u * u = 1` using `(mem_unitaryGroup_iff'.1 hu)`. Establish `hinv : u⁻¹ = star u` using `Matrix.inv_eq_left_inv hstar`. Establish `hut' : (star u).BlockTriangular id`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[← hinv]`. Use `haveI : Invertible u := invertibleOfLeftInverse _ _ hstar`. Conclude with `blockTriangular_inv_of_blockTriangular hut`. Establish `hoff : ∀ k l, k ≠ l → u k l = 0`. Introduce `k l hkl`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_gt_of_ne hkl with h1 | h1` into its components or cases. Use `hut' (show id k < id l from h1)` as an intermediate fact. Rewrite `this` using `[star_apply]`. Simplify using `using this`. Conclude with `hut h1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : ∀ k l, ‖(a' * u * ai) k l‖ ≤ Real.exp 1`. Introduce `k l`. Rewrite using `[ha', hai, mul_diagonal, diagonal_mul]`. Distinguish the cases in `hkl : k = l`. Substitute `hkl` using the available equality.
-
-Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), abs_of_pos (Real.exp_pos _)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hoff k l hkl]`. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
-
-Rewrite using `[← hrec, show p' * a' * u * ai * adjugate p = p' * (a' * u * ai) * adjugate p by`. Simplify using `only [Matrix.mul_assoc]]`. Conclude with `entry_mul_le (entry_mul_le hp'M hD) (adj_le hpM) i j`.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tri (M : ℝ) : ∃ R0 : ℝ, ∀ (h p p' u : Matrix (Fin N) (Fin N) ℂ) (s s' : Fin N → ℝ),
     (∀ i, |s i - s' i| ≤ 1) → h.BlockTriangular id → p.BlockTriangular id → p'.BlockTriangular id →

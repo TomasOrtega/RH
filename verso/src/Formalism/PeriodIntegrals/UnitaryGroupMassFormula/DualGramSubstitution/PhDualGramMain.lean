@@ -9,15 +9,15 @@ namespace PI.UnitaryGroupMassFormula.PhDualGram
 open PI.FglGram MvPowerSeries
 
 /- English proof (translation)
-Introduce `p _ l ex ph S hD hG κ ι _ _ b b' hb hb' hI`. Take `⟨hex0, hinv, hph0⟩` from `hD`. Take `⟨hl0, hinvl⟩` from `PI.FglPhSplit.Wk.compositionalInverseSymm ℂ_[p] l ex hex0 hinv`. Set `eι : ι ≃ Fin (Fintype.card ι)` to `Fintype.equivFin ι`. Set `E : ι ⊕ ι ≃ Fin (Fintype.card ι + Fintype.card ι)` to `(Equiv.sumCongr eι eι).trans finSumFinEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hE : ∀ e e', E (Sum.inl e) < E (Sum.inr e')`. Introduce `e e'`. Simplify using `only [E, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Sum.map_inr, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd]`. Use `(eι e).isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hS : ∀ j i, Sum.elim b b' (E.symm j) i ∈ S`. Introduce `j i`. Break down `E.symm j with e | e` into its components or cases. Use `exacts [hb e i, hb' e i]`. Establish `h` using `simeq_ren (p := p) E.symm (hG κ _ (fun j => Sum.elim b b' (E.symm j)) hS)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[ren_PhOn hex0 hl0 E (Sum.elim b b'), gramRhs_dual hex0 hph0 hl0 hinvl b b' hI E hE, map_sum]`. Use `(congrArg (Simeq _) ?_).mp h` and prove the remaining obligations. Unfold `beSum`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[ren_be hex0 hl0 _ (constantCoeff_X _) (constantCoeff_X _)]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Xv, ren_X, Equiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem phDualGram_main : PhDualGram := by
   intro p _ l ex ph S hD hG κ ι _ _ b b' hb hb' hI

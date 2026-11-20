@@ -11,29 +11,27 @@ open UpperTheory.Gal.G3 (sp)
 namespace UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Introduce `E _ Γ _ X O _ _ K₀ K₁ i Y Y' pY π' s h01 hQ0 hQ1 Ω _ _ y σ hy`. Set `T : ∀ u : Γ, u ∈ K₀ → (X.Z i ⟶ X.Z i)` to `fun u hu => X.tr i i u (hQ0.adm u hu).1 (hQ0.adm u hu).2`. Establish `hT : ∀ a b (ha : a ∈ K₀) (hb : b ∈ K₀), T a ha ≫ T b hb = T (b * a) (K₀.mul_mem hb ha)` using `fun a b ha hb => X.tr_mul _ _ _ _ _ _ _ _ _ _ _`. Establish `hTc : ∀ a b (ha : a ∈ K₀) (hb : b ∈ K₀), a = b → T a ha = T b hb`. Introduce and unpack `a b ha hb rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Establish `h1 : ∀ h1 : (1 : Γ) ∈ K₀, T 1 h1 = 𝟙 _` using `fun h1 => X.tr_self _ _ _ _ (X.K i).one_mem`. Establish `hinv1 : ∀ w (hw : w ∈ K₀), w ∈ K₁ → T w hw ≫ π' = π'` using `fun w hw hw1 => hQ1.inv w hw1 _ _`. Establish `hinv0 : ∀ w (hw : w ∈ K₀), T w hw ≫ π' ≫ s = π' ≫ s` using `fun w hw => hQ0.inv w hw _ _`. Take `⟨x, hx⟩` from `hQ0.onto Ω y σ hy`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `f : K₀ → { y' // y' ≫ s = y }` to `fun u => ⟨x ≫ T (u : Γ)⁻¹ (K₀.inv_mem u.2) ≫ π', by`. Rewrite using `[Category.assoc, Category.assoc, hinv0 _ (K₀.inv_mem u.2), hx]⟩`. Establish `key : ∀ u v : K₀, f u = f v ↔ (u : Γ)⁻¹ * v ∈ K₁`. Introduce `u v`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `hv : (x ≫ T (u : Γ)⁻¹ (K₀.inv_mem u.2)) ≫ π' = (x ≫ T (v : Γ)⁻¹ (K₀.inv_mem v.2)) ≫ π'`. Simplify `congrArg Subtype.val h` using `[f]`. Take `⟨w, hw1, a, b, he⟩` from `hQ1.fib Ω _ _ hv`. Establish `hw0` using `h01 hw1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he' : x ≫ T (v : Γ)⁻¹ (K₀.inv_mem v.2) = x ≫ T (w * (u : Γ)⁻¹) (K₀.mul_mem hw0 (K₀.inv_mem u.2))`. Rewrite using `[he, Category.assoc]`. Conclude with `congrArg (x ≫ ·) (hT _ _ (K₀.inv_mem u.2) hw0)`. Establish `hm : v.1 * w * (u : Γ)⁻¹ ∈ K₀` using `K₀.mul_mem (K₀.mul_mem v.2 hw0) (K₀.inv_mem u.2)`. Establish `hfix : x ≫ T (v.1 * w * (u : Γ)⁻¹) hm = x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p1 : w * (u : Γ)⁻¹ ∈ K₀` using `K₀.mul_mem hw0 (K₀.inv_mem u.2)`. Establish `e1 : T (v.1 * w * (u : Γ)⁻¹) hm = T (w * (u : Γ)⁻¹) p1 ≫ T v.1 v.2` using `(hTc _ _ hm (K₀.mul_mem v.2 p1) (by group)).trans (hT _ _ p1 v.2).symm`. Establish `e2 : T (v : Γ)⁻¹ (K₀.inv_mem v.2) ≫ T v.1 v.2 = 𝟙 _` using `(hT _ _ (K₀.inv_mem v.2) v.2).trans ((hTc _ _ (K₀.mul_mem v.2 (K₀.inv_mem v.2)) K₀.one_mem (by group)).trans (h1 K₀.one_mem))`. Rewrite using `[e1, ← Category.assoc, ← he', Category.assoc, e2, Category.comp_id]`. Establish `ht` using `hQ0.free _ hm _ _ Ω x hfix`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `(hQ0.adm _ (K₀.inv_mem u.2)).2 _ ht`. Use `K₁.mul_mem (hQ1.le hc) (K₁.inv_mem hw1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Introduce `h`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show x ≫ T (u : Γ)⁻¹ (K₀.inv_mem u.2) ≫ π' = x ≫ T (v : Γ)⁻¹ (K₀.inv_mem v.2) ≫ π'`. Establish `hk : ((u : Γ)⁻¹ * v)⁻¹ ∈ K₀` using `h01 (K₁.inv_mem h)`. Establish `e : T (v : Γ)⁻¹ (K₀.inv_mem v.2) = T (u : Γ)⁻¹ (K₀.inv_mem u.2) ≫ T _ hk` using `(hTc _ _ (K₀.inv_mem v.2) (K₀.mul_mem hk (K₀.inv_mem u.2)) (by group)).trans (hT _ _ (K₀.inv_mem u.2) hk).symm`. Rewrite using `[e, Category.assoc, hinv1 _ hk (K₁.inv_mem h)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `F : K₀ ⧸ K₁.subgroupOf K₀ → { y' // y' ≫ s = y }` to `Quotient.lift f (fun u v huv => (key u v).2 (Subgroup.mem_subgroupOf.mp (QuotientGroup.leftRel_apply.mp huv)))`. Establish `hinj : Function.Injective F`. Introduce `a b`. Proceed by induction on `a using QuotientGroup.induction_on with`. Consider the case `H u`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `b using QuotientGroup.induction_on with`. Consider the case `H v`. Introduce `h`. Conclude with `QuotientGroup.eq.mpr (Subgroup.mem_subgroupOf.mpr ((key u v).1 h))`. Establish `hsurj : Function.Surjective F`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨y', hy'⟩`. Take `⟨x', hx'⟩` from `hQ1.onto Ω y' σ (by rw [← Category.assoc, hy', hy])`. Take `⟨u, hu, a, b, hxe⟩` from `hQ0.fib Ω x x' (by rw [hx, ← Category.assoc, hx', hy'])`. Use `⟨QuotientGroup.mk ⟨u⁻¹, K₀.inv_mem hu⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use `show x ≫ T (u⁻¹)⁻¹ (K₀.inv_mem (K₀.inv_mem hu)) ≫ π' = y'`. Rewrite using `[hTc (u⁻¹)⁻¹ u (K₀.inv_mem (K₀.inv_mem hu)) hu (inv_inv u), ← Category.assoc]`. Rewrite using `[← hx', hxe]`. Rewrite using `[Subgroup.relIndex, Subgroup.index_eq_card]`. Conclude with `(Nat.card_congr (Equiv.ofBijective F ⟨hinj, hsurj⟩)).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degGen_holds : DegGen := by
   intro E _ Γ _ X O _ _ K₀ K₁ i Y Y' pY π' s h01 hQ0 hQ1 Ω _ _ y σ hy

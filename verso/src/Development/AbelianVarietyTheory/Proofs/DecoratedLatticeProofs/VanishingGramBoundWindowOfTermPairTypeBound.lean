@@ -7,9 +7,9 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.ThresholdCubicInequalitySig
 namespace GlobalTheory.Core.Deg
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT C0 hcb hcT`. Take `⟨CH, Ch, Cp, hCH, hCh, hCp, H⟩` from `hT Cg cb Cu cT CT C0 hcb hcT`. Take `⟨C₀, H2⟩` from `H (Cp + 4) le_rfl`. Take `⟨C'₀, Cl₀, H3⟩` from `H2 (max C₀ (2 * (CH + 1))) (le_max_left _ _)`. Take `⟨Cl₁, H4⟩` from `GlobalTheory.T.pairsAmplitudeBound_of_typeBound CH Ch Cp (max C₀ (2 * (CH + 1))) hCH hCh hCp (le_max_right _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max C'₀ 1, max Cl₀ Cl₁, fun C' Cl hC' hCl D large₂ X Y _ _ u hTies _ h0 hC hAbs => ?_⟩` and prove the remaining obligations. Establish `hK2 : Formalism.MainNotions.NonGenericAndKTwoTheorems.KTwoHypotheses D large₂ C' Cl Cg cb Cu cT CT C0` using `Formalism.MainNotions.NonGenericAndKTwoTheorems.Hyp_of D large₂ C' Cl Cg cb Cu cT CT C0 h0.2.1 h0.1 h0.2.2 ((le_max_right _ _).trans hC')`. Establish `hType` using `H3 C' Cl ((le_max_left _ _).trans hC') ((le_max_left _ _).trans hCl) D large₂ X Y u hTies hK2 hC`. Establish `hPairs` using `H4 C' Cl Cg cb Cu cT CT C0 D large₂ X Y u ((le_max_right _ _).trans hCl) hK2 hC hType`. Conclude with `GlobalTheory.T.deg_termSumBoundOfPairsAmplitude C' Cl Cg cb Cu cT CT C0 D large₂ X Y u hK2 hC hAbs hPairs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vanishingGramBoundWindow_of_termPairTypeBound (hT : GlobalTheory.TypeAsm.TypeP) : VanishingGramTermsBoundWindow := by
   intro Cg cb Cu cT CT C0 hcb hcT
@@ -25,7 +25,7 @@ theorem vanishingGramBoundWindow_of_termPairTypeBound (hT : GlobalTheory.TypeAsm
   exact GlobalTheory.T.deg_termSumBoundOfPairsAmplitude C' Cl Cg cb Cu cT CT C0 D large₂ X Y u hK2 hC hAbs hPairs
 
 /- English proof (translation)
-The claim follows from `vanishingGramBoundWindow_of_termPairTypeBound`.
+A detailed English derivation is pending.
 -/
 example : GlobalTheory.TypeAsm.TypeP → GlobalTheory.Core.Deg.VanishingGramTermsBoundWindow := vanishingGramBoundWindow_of_termPairTypeBound
 

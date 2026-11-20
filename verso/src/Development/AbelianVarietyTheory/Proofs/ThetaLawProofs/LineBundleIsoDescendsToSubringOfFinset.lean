@@ -21,7 +21,7 @@ open GlobalTheory.KeyPow GlobalTheory.KeyKa
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨t, f, h⟩` from `exists_lbIso_of_isLimit (Spread.bcDiagram pB A) (X := pullback pB (spMap (algebraMap k A))) (fun s => Spread.bcMap pB (Algebra.adjoin k (s.unop : Set A)).val) (fun f => (Spread.bcCone pB A).w f) (Spread.isLimitBcCone pB A) (i := .op ∅) (M.pull (pullback.fst _ _)) (N.pull (pullbac …`. Establish `H₂` using `LBIso.chartPull (chartPullIn M _ _ _) (chartPullIn N _ _ _) h`. Use `⟨t.unop, ?_⟩` and prove the remaining obligations. Conclude with `LBIso.chartPull (chartPullSame M _ _ _ (𝟙 _) fun _ => ((Category.id_comp _).trans (Spread.bcMap_fst pB _)).symm) (chartPullSame N _ _ _ (𝟙 _) fun _ => ((Category.id_comp _).trans (Spread.bcMap_fst pB _)).symm) H₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_finset_lbIso_adjoin {k A : Type} [CommRing k] [CommRing A] [Algebra k A]
     {B : Scheme.{0}} (pB : B ⟶ Sp k) [QuasiCompact pB] [QuasiSeparated pB] (M N : LB B)
@@ -48,13 +48,13 @@ theorem exists_finset_lbIso_adjoin {k A : Type} [CommRing k] [CommRing A] [Algeb
       ((Category.id_comp _).trans (Spread.bcMap_fst pB _)).symm) H₂
 
 /- English proof (translation)
-Introduce `S _ R₀ X X₀ f f₀ π _ _ M N hp hM hN H`. Establish `same : ∀ {Y Y' : Scheme.{0}} (a : Y ⟶ X₀) (j : Y' ⟶ Y) (a' : Y' ⟶ X₀), a' = j ≫ a → LBIso (M.pull a) (N.pull a) → LBIso (M.pull a') (N.pull a')` using `fun a j a' e h => LBIso.chartPull (chartPullSame M _ _ _ j fun _ => e) (chartPullSame N _ _ _ j fun _ => e) h`. Establish `hp' : IsPullback π f f₀ (spMap (algebraMap R₀ S))` using `hp`. Establish `H₁` using `same π hp'.isoPullback.inv (pullback.fst f₀ (spMap (algebraMap R₀ S))) (IsPullback.isoPullback_inv_fst hp').symm H`. Take `⟨s, H₂⟩` from `exists_finset_lbIso_adjoin f₀ M N hM hN H₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨s, fun R₁ h hs X₁ f₁ π₁ hp₁ ↦ ?_⟩` and prove the remaining obligations. Establish `hle : (Algebra.adjoin R₀ (s : Set S)).toSubring ≤ R₁`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hs hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `algebraMap r => exact h r.2`. Consider the case `add x y _ _ hx hy => exact R₁.add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact R₁.mul_mem hx hy`. Set `g : Algebra.adjoin R₀ (s : Set S) →+* R₁` to `Subring.inclusion hle`. Establish `hg : spMap g ≫ spMap (algebraMap R₀ (Algebra.adjoin R₀ (s : Set S))) = spMap (Subring.inclusion h)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Set `m : X₁ ⟶ pullback f₀ (spMap (algebraMap R₀ (Algebra.adjoin R₀ (s : Set S))))` to `pullback.lift π₁ (f₁ ≫ spMap g) (by rw [Category.assoc, hg, hp₁.w])`. Conclude with `same _ m π₁ (pullback.lift_fst _ _ _).symm H₂`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem lbIso_descends_to_subring_containing_finset :
     ∀ (S : Type) [CommRing S] (R₀ : Subring S) (X X₀ : Scheme.{0}) (f : X ⟶ Sp S) (f₀ : X₀ ⟶ Sp R₀) (π : X ⟶ X₀) [QuasiCompact f₀] [QuasiSeparated f₀] (M N : LB X₀), IsPullback π f f₀ (spMap R₀.subtype) → M.IsLB → N.IsLB → LBIso (M.pull π) (N.pull π) → ∃ F : Finset S, ∀ (R₁ : Subring S) (h : R₀ ≤ R₁), (F : Set S) ⊆ R₁ → ∀ (X₁ : Scheme.{0}) (f₁ : X₁ ⟶ Sp R₁) (π₁ : X₁ ⟶ X₀), IsPullback π₁ f₁ f₀ (spMap (Subring.inclusion h)) → LBIso (M.pull π₁) (N.pull π₁) := by

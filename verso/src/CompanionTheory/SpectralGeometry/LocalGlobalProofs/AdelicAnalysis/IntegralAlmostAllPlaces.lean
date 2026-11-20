@@ -5,14 +5,14 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.GoodInt
 
 /- English proof (translation)
-Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`.
+A detailed English derivation is pending.
 -/
 theorem valued_algebraMap {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (x : F) :
     Valued.v (algebraMap F (Fv F v) x) = v.valuation F x := by
   exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x
 
 /- English proof (translation)
-Establish `h` using `HeightOneSpectrum.Support.finite (𝓞 F) x`. Rewrite using `[Filter.eventually_cofinite]`. Use `h.subset fun v hv => ?_` and prove the remaining obligations. Conclude with `not_le.mp hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eventually_le_one {F : Type} [Field F] [NumberField F] (x : F) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, v.valuation F x ≤ 1 := by
@@ -22,7 +22,7 @@ theorem eventually_le_one {F : Type} [Field F] [NumberField F] (x : F) :
   exact not_le.mp hv
 
 /- English proof (translation)
-Use `filter_upwards [eventually_le_one x, eventually_le_one x⁻¹] with v h1 h2`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Rewrite `h2` using `[map_inv₀]`. Establish `h0 : v.valuation F x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`. Conclude with `(inv_le_one₀ (zero_lt_iff.mpr h0)).mp h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_eq_one {F : Type} [Field F] [NumberField F] (x : F) (hx : x ≠ 0) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, v.valuation F x = 1 := by
@@ -33,7 +33,7 @@ theorem eventually_eq_one {F : Type} [Field F] [NumberField F] (x : F) (hx : x �
   exact (inv_le_one₀ (zero_lt_iff.mpr h0)).mp h2
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.basis R b).repr ((1 : R) ⊗ₜ[F] x) k = _`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_inclR {F E : Type} [Field F] [Field E] [Algebra F E] {d : ℕ} (b : Module.Basis (Fin d) F E)
     (R : Type) [CommRing R] [Algebra F R] (x : E) (k : Fin d) :
@@ -43,9 +43,9 @@ theorem repr_inclR {F E : Type} [Field F] [Field E] [Algebra F E] {d : ℕ} (b :
   simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ d b`. Use `⟨fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h : ∀ k : Fin d, ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, v.valuation F (b.repr x k) ≤ 1` using `fun k => eventually_le_one _ filter_upwards [Filter.eventually_all.mpr h] with v hv k`. Rewrite using `[repr_inclR, HeightOneSpectrum.mem_adicCompletionIntegers, valued_algebraMap]`. Conclude with `hv k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [eventually_eq_one x hx] with v hv`. Rewrite using `[valued_algebraMap, hv]`.
+A detailed English derivation is pending.
 -/
 theorem rational_integral_units : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), (∀ x : E, ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr (inclR (Fv F v) x) k ∈ v.adicCompletionIntegers F) ∧ ∀ x : F, x ≠ 0 → ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, Valued.v (algebraMap F (Fv F v) x) = 1 := by
   intro F E _ _ _ _ _ σ _ d b

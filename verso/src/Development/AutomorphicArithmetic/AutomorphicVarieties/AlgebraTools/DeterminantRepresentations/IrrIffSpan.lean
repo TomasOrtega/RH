@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IrrIffS
 open Polynomial Matrix
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qe4.irrIffSpan`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.irrIffSpan :
     ∀ {K G ι : Type} [Field K] [IsAlgClosed K] [Group G] [Fintype ι] [DecidableEq ι] (ρ : G →* Matrix ι ι K),

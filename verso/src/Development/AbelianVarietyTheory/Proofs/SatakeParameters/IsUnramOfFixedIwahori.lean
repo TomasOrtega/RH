@@ -9,7 +9,7 @@ open GlobalTheory.LocGL GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWe
 namespace GlobalTheory.IwahoriSupport
 
 /- English proof (translation)
-Establish `H : GlobalTheory.SmGL.IsCuspSupport ρ (fun _ : Fin n => 1) fun a => detRep (Fin 1) (χ a)` using `⟨hi, fun a => ⟨one_pos, isIrreducible_ofChar _, isCuspidal_detRep_one (hχ a)⟩, _, h.trans (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k n χ)⟩`. Conclude with `hasSupport_of_isCuspSupport H`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasSupport_chars {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]

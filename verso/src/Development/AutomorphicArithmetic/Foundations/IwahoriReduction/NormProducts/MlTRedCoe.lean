@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Matrix MatrixGroups Topology
 
 /- English proof (translation)
-Use `haveI : ContinuousSMul ℤ_[l] (PadicAlgCl l) := by`. Use `⟨?_⟩` and prove the remaining obligations. Establish `: (fun q : ℤ_[l] × PadicAlgCl l => q.1 • q.2) = fun q => (q.1 : ℚ_[l]) • q.2`. Use function extensionality and compare the values at `q`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(continuous_subtype_val.comp continuous_fst).smul continuous_snd`. Establish `hfg : (Subalgebra.toSubmodule c.O).FG` using `Module.Finite.iff_fg.1 c.fin`. Conclude with `Submodule.isCompact_of_fg hfg`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Kd.K4.mlT_cpt {l : ℕ} [Fact l.Prime] (c : Coef l) : IsCompact (c.O : Set (Qbar l)) := by
   haveI : ContinuousSMul ℤ_[l] (PadicAlgCl l) := by
@@ -21,9 +21,9 @@ private theorem UpperTheory.Kd.K4.mlT_cpt {l : ℕ} [Fact l.Prime] (c : Coef l) 
   exact Submodule.isCompact_of_fg hfg
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Take `⟨M, hM⟩` from `(UpperTheory.Kd.K4.mlT_cpt c).isBounded.exists_norm_le`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt M h`. Use `hM _ (c.O.pow_mem ha n)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Kd.K4.mlT_le {l : ℕ} [Fact l.Prime] (c : Coef l) {a : Qbar l} (ha : a ∈ c.O) : ‖a‖ ≤ 1 := by
   by_contra h
@@ -35,7 +35,7 @@ private theorem UpperTheory.Kd.K4.mlT_le {l : ℕ} [Fact l.Prime] (c : Coef l) {
   linarith
 
 /- English proof (translation)
-Establish `h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Kd.K4.mlT_lt (l : ℕ) [Fact l.Prime] : ‖((l : ℕ) : Qbar l)‖ < 1 := by
   have h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l]) := by simp
@@ -43,9 +43,9 @@ private theorem UpperTheory.Kd.K4.mlT_lt (l : ℕ) [Fact l.Prime] : ‖((l : ℕ
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Establish `hsum` using `(hA Ω ε X l n).2.2.2.1`. Use `⟨fun σ hσ => ?_, fun σ hσ τ hτ => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hI Ω ε X l N w n).2.2.2.2.1 ι S _ fun i hi => (h i hi).inv σ hσ`. Establish `e : (∑ i ∈ S, z i σ) + X.galB l σ (∑ i ∈ S, z i τ) = ∑ i ∈ S, (z i σ + X.galB l σ (z i τ))`. Rewrite using `[map_sum, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hsum ι S _ _ fun i hi => (h i hi).coc σ hσ τ hτ`. Use `choose! T hT using fun i hi => (h i hi).loc`. Use `⟨S.biUnion T, fun σ hσ τ hτ hst => ?_⟩` and prove the remaining obligations. Conclude with `hsum ι S _ _ fun i hi => hT i hi σ hσ τ hτ fun a ha => hst a (Finset.mem_biUnion.2 ⟨i, hi, ha⟩)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Kd.K4.mlT_topSum (hA : SApi) (hI : SInvApi) {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w n M : ℕ) {ι : Type} (S : Finset ι)
@@ -64,9 +64,9 @@ private theorem UpperTheory.Kd.K4.mlT_topSum (hA : SApi) (hI : SInvApi) {Ω : Ty
     exact hsum ι S _ _ fun i hi => hT i hi σ hσ τ hτ fun a ha => hst a (Finset.mem_biUnion.2 ⟨i, hi, ha⟩)
 
 /- English proof (translation)
-Establish `hc` using `hC Ω ε X l N w n hN A κ`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using hc.1.refl 0`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hc.2.2.1 _ _ _ _ (h a (by simp)) (ih fun i hi => h i (by simp [hi]))).1`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Kd.K4.mlT_cohSum (hC : SCohApi) {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w n : ℕ) (hN : 0 < N) {A : Type} [CommGroup A]
@@ -81,7 +81,7 @@ private theorem UpperTheory.Kd.K4.mlT_cohSum (hC : SCohApi) {Ω : Type} [Field �
     exact (hc.2.2.1 _ _ _ _ (h a (by simp)) (ih fun i hi => h i (by simp [hi]))).1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s y`. Simplify using `[shB, Finset.sum_apply, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.Kd.K4.mlT_shSum {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime]
     (M : ℕ) {ι : Type} (S : Finset ι) (z : ι → (Ω ≃ₐ[ℚ] Ω) → X.Fn l) :
@@ -90,7 +90,7 @@ private theorem UpperTheory.Kd.K4.mlT_shSum {Ω : Type} [Field Ω] [Algebra ℚ 
   simp [shB, Finset.sum_apply, map_sum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s y`. Simplify using `only [GlobalTheory.KA.push, Finset.sum_apply]`. Conclude with `Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Kd.K4.mlT_pushSum {Γ : Type} [Group Γ] {B A M ι : Type} [Fintype B] [DecidableEq A] [AddCommMonoid M]
     (π : B → A) (S : Finset ι) (f : ι → Γ → B → M) :
@@ -100,9 +100,9 @@ private theorem UpperTheory.Kd.K4.mlT_pushSum {Γ : Type} [Group Γ] {B A M ι :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use `haveI := Fact.mk hp`. Establish `hu : IsUnit (l : ZMod p)` using `(ZMod.isUnit_iff_coprime l p).2 h.symm`. Establish `hu2 : IsUnit ((l : ZMod p) ^ (2 * k))` using `hu.pow _`. Unfold `lsqInv inv1`. Rewrite using `[dif_pos hu2, dif_pos hu, inv_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Kd.K4.mlT_lsq (l p : ℕ) (hp : p.Prime) (h : Nat.Coprime p l) (k : ℕ) :
     lsqInv l p k = inv1 p l ^ (2 * k) := by
@@ -125,7 +125,7 @@ Both sides reduce to the same expression.
 private theorem UpperTheory.Kd.K4.mlT_pi_coe (l p r : ℕ) [Fact l.Prime] : (⇑(mlT_pi l p r)) = Prod.map id (redL l r) := rfl
 
 /- English proof (translation)
-Rewrite using `[mlT_pi_coe]`. Use `Function.Surjective.prodMap Function.surjective_id ?_` and prove the remaining obligations. Conclude with `ZMod.unitsMap_surjective (pow_dvd_pow l (Nat.le_succ r))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Kd.K4.mlT_pi_surj (l p r : ℕ) [Fact l.Prime] : Function.Surjective (mlT_pi l p r) := by
   rw [mlT_pi_coe]
@@ -141,53 +141,47 @@ private def UpperTheory.Kd.K4.mlT_red (l n r N p : ℕ) :
 attribute [-instance] GlobalTheory.KZ.ClsMod.neZero_pow
 
 /- English proof (translation)
-Introduce `hSym hA hI hBS hS hC hZc hT hNr hNn l _ Ω _ _ _ ε X N _ e hlN hl2 he`. Establish `hN : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Take `⟨c₁, hc₁⟩` from `UpperTheory.Kd.K4.mlB hA hI hBS hS ε X l N (2 * e - 1) hN`. Use `⟨c₁, fun c₀ hc₀ ι gN A W pr x c d gm ψ cf hAd p _ hp hpc => ?_⟩` and prove the remaining obligations. Take `⟨hc1, hd1, hcc, hdc, hadd, hsm, hint, heq, -, -, hg0, -⟩` from `hAd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hk : 2 * e + 1 - 2 = 2 * e - 1` using `by omega`. Establish `hcy` using `(hS Ω ε X N hN).2.2.2.2.2.2.2`. Establish `hHyp : ∀ r₀, Hyp l N c d (gm r₀)` using `fun r₀ => ⟨hl2, hlN, hc1, hd1, hcc, hdc, hg0 r₀⟩`. Establish `hLaws : ∃ ws, UpperTheory.V.Z.Kato.Sym.Laws X l c d ws` using `hSym Ω ε X l c d Fact.out hc1 hd1 (Nat.Coprime.coprime_dvd_right ⟨l * N, by ring⟩ hcc) (Nat.Coprime.coprime_dvd_right ⟨l * N, by ring⟩ hdc)`. Establish `hL : LiftsWith X l N (2 * e - 1) (cL X l N (2 * e - 1))` using `Classical.epsilon_spec (UpperTheory.Kd.K4.liftH ε X l N (2 * e - 1) hl2 hN hlN ⟨e - 1, by omega⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkm : ∀ r (s t : Ω ≃ₐ[ℚ] Ω), kT l r p (s * t) = kT l r p s * kT l r p t`. Introduce `r s t`. Simplify using `[kT, (hcy p s).2.1 t, mul_comm]`. Set `κ : ∀ r, (Ω ≃ₐ[ℚ] Ω) →* (ZMod p)ˣ × (ZMod (l ^ r))ˣ` to `fun r => MonoidHom.mk' (kT l r p) (hkm r)`. Establish `hκ : ∀ r s, κ r s = kT l r p s` using `fun _ _ => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `zz : ℕ → ℕ → (Ω ≃ₐ[ℚ] Ω) → X.Fn l` to `fun n r σ => ∑ r₀, clsT X l n r N p x c d (2 * e - 1) (gm r₀) σ`. Set `tt : ∀ (_ r : ℕ), (ZMod p)ˣ × (ZMod (l ^ r))ˣ` to `fun n r => (inv1 p l ^ (2 * (r + n)), 1)`. Set `Z : ∀ (_ r : ℕ), (Ω ≃ₐ[ℚ] Ω) → (ZMod p)ˣ × (ZMod (l ^ r))ˣ → X.Fn l` to `fun n r s y => GlobalTheory.KA.push (mlT_red l n r N p) (shB X l (lvT l n r N p) (zz n r)) s (y * tt n r)`. Establish `hZeq : ∀ n r, Z n r = ∑ r₀, YT X l n r N p x c d (2 * e - 1) (gm r₀)`. Introduce `n r`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `s y`. Establish `e1 : shB X l (lvT l n r N p) (zz n r) = ∑ r₀, shB X l (lvT l n r N p) (clsT X l n r N p x c d (2 * e - 1) (gm r₀))` using `mlT_shSum X l _ _ _`. Simplify using `only [Z, e1, mlT_pushSum, Finset.sum_apply, tt]`. Use `Finset.sum_congr rfl fun r₀ _ => ?_` and prove the remaining obligations. Establish `e2 : y * (inv1 p l ^ (2 * (r + n)), (1 : (ZMod (l ^ r))ˣ)) = (y.1 * inv1 p l ^ (2 * (r + n)), y.2)` using `Prod.ext rfl (mul_one _)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Both sides reduce to the same expression. Establish `hπκ : ∀ r s, mlT_pi l p r (κ (r + 1) s) = κ r s`. Introduce `r s`. Use `Prod.ext rfl ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `redL l r (cycMod (F := ℚ) (Ω := Ω) l (r + 1) s)⁻¹ = (cycMod (F := ℚ) (Ω := Ω) l r s)⁻¹`. Rewrite using `[(hZc Ω l (r + 1) s).1, (hZc Ω l r s).1, ← (hcy (l ^ (r + 1)) s).2.2.2.2 (l ^ r) (pow_dvd_pow l (Nat.le_succ r))]`. Conclude with `map_inv _ _`. Establish `hred : ∀ n r s, mlT_red l n r N p (cycM (lvT l n r N p) s)⁻¹ = κ r s`. Introduce `n r s`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv, hκ]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Units.map _ (cycM (lvT l n r N p) s))⁻¹ = (cycM p s)⁻¹`. Rewrite using `[(hcy (lvT l n r N p) s).2.2.2.2 p]`. Express the relevant statement in the definitionally equal form `(Units.map _ (cycM (lvT l n r N p) s))⁻¹ = (cycMod (F := ℚ) (Ω := Ω) l r s)⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hZc Ω l r s).1]`. Conclude with `congrArg (·⁻¹) ((hcy (lvT l n r N p) s).2.2.2.2 (l ^ r) ((Dvd.dvd.mul_right (pow_dvd_pow l (Nat.le_add_right r n)) (N * N)).mul_right p))`. Establish `htop : ∀ n r, TopCoc X l N (2 * e - 1) n (lvT l n r N p) (zz n r)` using `fun n r => mlT_topSum hA hI X l N _ n _ Finset.univ _ fun r₀ _ => hT Ω ε X l N p x c d _ (gm r₀) (hHyp r₀) hp hpc hLaws hL n r`. Establish `hcr : ∀ n r, CohB X l N (2 * e - 1) n (κ r) (GlobalTheory.KA.push (mlT_pi l p r) (Z n (r + 1))) (Z n r)`. Introduce `n r`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hZeq, hZeq, mlT_pi_coe, mlT_pushSum]`. Conclude with `mlT_cohSum hC X l N _ n hN _ Finset.univ _ _ fun r₀ _ => hNr Ω ε X l N p x c d _ (gm r₀) (hHyp r₀) hp hpc hLaws hL n r`. Establish `hcn : ∀ n r, CohB X l N (2 * e - 1) n (κ r) (Z (n + 1) r) (Z n r)`. Introduce `n r`. Rewrite using `[hZeq, hZeq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `mlT_cohSum hC X l N _ n hN _ Finset.univ _ _ fun r₀ _ => hNn Ω ε X l N p x c d _ (gm r₀) (hHyp r₀) hp hpc hLaws hL n r`. Take `⟨YB, hYB, hcoc, hcont, hcomp, hlast⟩` from `hc₁ c₀ hc₀ (fun r => (ZMod p)ˣ × (ZMod (l ^ r))ˣ) (fun r => mlT_pi l p r) κ (fun n r => lvT l n r N p) (fun n r => mlT_red l n r N p) tt zz Z (fun r => mlT_pi_surj l p r) hπκ hred (fun _ _ _ _ => rfl) htop hcr hcn`. Set `prA : X.Fn l →+ (Fin 2 → Qbar l)` to `AddMonoidHom.mk' pr hadd`. Establish `hprA : ∀ b, prA b = pr b` using `fun _ => rfl`. Establish `hpush : ∀ {B A' : Type} [Fintype B] [DecidableEq A'] (π : B → A') (f : (Ω ≃ₐ[ℚ] Ω) → B → X.Fn l) s y, pr (GlobalTheory.KA.push π f s y) = GlobalTheory.KA.push π (fun s y => pr (f s y)) s y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `B A' _ _ π f s y`. Conclude with `map_sum prA _ _`. Establish `hln : ∀ n d, d ∈ X.B N l (2 * e - 1) → ∀ i, ‖pr ((l : ℤ_[l]) ^ n • d) i‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖`. Introduce `n d hd i`. Establish `e1 : algebraMap ℚ_[l] (Qbar l) (((l : ℤ_[l]) ^ n : ℤ_[l]) : ℚ_[l]) = ((l : ℕ) : Qbar l) ^ n` using `by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsm, e1, Pi.smul_apply, smul_eq_mul, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (mlT_le cf (hint d hd i))`. Establish `hfix : ∀ (M : ℕ) [NeZero M] (s : Ω ≃ₐ[ℚ] Ω) (y : (ZMod M)ˣ), (repM M y : Ω ≃ₐ[ℚ] Ω)⁻¹ * s * repM M (y * (cycM M s)⁻¹) ∈ fixMu Ω M`. Introduce `M _ s y`. Establish `h1 : cycM M (1 : Ω ≃ₐ[ℚ] Ω) = 1` using `((hcy M 1).2.2.2.1).1 (one_mem _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : cycM M (repM M y : Ω ≃ₐ[ℚ] Ω)⁻¹ * y = 1`. Use `(hcy M (repM M y : Ω ≃ₐ[ℚ] Ω)⁻¹).2.1 (repM M y)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, h1, (hcy M s).2.2.1 y, eq_comm]`. Then use the resulting hypothesis. Rewrite using `[(hcy M _).2.2.2.1, (hcy M _).2.1, (hcy M _).2.1, (hcy M s).2.2.1]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨fun r s y => pr (YB r s y), fun r n => ?_, fun r s s' y => ?_, fun r => ?_, fun r y i => ?_, fun r s u i => hint _ (hYB r s u) i⟩` and prove the remaining obligations. Take `⟨bB, hbB, b, hb, h⟩` from `hlast r n`. Use `⟨bB, fun σ hσ => ?_, fun y => pr (b y), fun y i => hint _ (hb y) i, fun s y i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `LiftB X l N (2 * e + 1 - 2) n c₀ (∑ r₀, clsT X l n r N p x c d (2 * e + 1 - 2) (gm r₀) σ) (bB σ)`. Rewrite using `[hk]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `hbB σ hσ`. Take `⟨dd, hdd, hde⟩` from `h s y`. Establish `hty : y * tt n r = (y.1 * lsqInv l p (r + n), y.2)`. Rewrite using `[mlT_lsq l p hp (Nat.Coprime.coprime_dvd_right ⟨N * c * d, by ring⟩ hpc) (r + n)]`. Conclude with `Prod.ext rfl (mul_one _)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hf : (fun s y => pr (shB X l (lvT l n r N p) bB s y)) = fun s y => rhoK W e ψ (repM (lvT l n r N p) y) *ᵥ pr (bB ((repM (lvT l n r N p) y)⁻¹ * s * repM (lvT l n r N p) (y * (cycM (lvT l n r N p) s)⁻¹)))`. Use function extensionality and compare the values at `s y`. Conclude with `heq _ _ (hbB _ (hfix _ s y)).1`. Establish `hsh : pr (GlobalTheory.KA.push (mlT_red l n r N p) (shB X l (lvT l n r N p) bB) s (y * tt n r)) = YfBT X l pr W e ψ n r N p bB s (y.1 * lsqInv l p (r + n), y.2)`. Rewrite using `[hpush, hty, hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hdec : YB r s y = GlobalTheory.KA.push (mlT_red l n r N p) (shB X l (lvT l n r N p) bB) s (y * tt n r) + (X.galB l s (b (y * κ r s)) - b y) + (l : ℤ_[l]) ^ n • dd`. Rewrite using `[← hde]`. Normalize the expressions using the abelian group laws. Establish `hprY : pr (YB r s y) = YfBT X l pr W e ψ n r N p bB s (y.1 * lsqInv l p (r + n), y.2) + (rhoK W e ψ s *ᵥ pr (b (y * cycT l r p s)) - pr (b y)) + pr ((l : ℤ_[l]) ^ n • dd)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hdec, hadd, hadd, ← hprA (_ - _), map_sub, hprA, hprA, heq _ _ (hb _), hsh]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `‖pr (YB r s y) i - (YfBT X l pr W e ψ n r N p bB s (y.1 * lsqInv l p (r + n), y.2) + (rhoK W e ψ s *ᵥ pr (b (y * cycT l r p s)) - pr (b y))) i‖ ≤ _`. Establish `e3 : ∀ a b : Fin 2 → Qbar l, (a + b) i - a i = b i` using `fun a b => by simp`. Rewrite using `[hprY, e3]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hln n dd hdd i`. Express the relevant statement in the definitionally equal form `pr (YB r (s * s') y) = pr (YB r s y) + rhoK W e ψ s *ᵥ pr (YB r s' (y * cycT l r p s))`. Rewrite using `[hcoc, hadd, heq _ _ (hYB _ _ _)]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `s y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `pr (YB r s y) = GlobalTheory.KA.push (Prod.map id (redL l r)) (fun s y => pr (YB (r + 1) s y)) s y`. Rewrite using `[hcomp r]`. Conclude with `hpush _ _ s y`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `s`.
-
-Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε' hε`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε (mlT_lt l)`. Rewrite `hn` using `[← norm_pow]`. Use `filter_upwards [hcont r n s y] with t ht`.
-
-Take `⟨dd, hdd, hde⟩` from `ht`. Rewrite using `[dist_eq_norm]`. Establish `e1 : pr (YB r t y) i - pr (YB r s y) i = pr ((l : ℤ_[l]) ^ n • dd) i`. Rewrite using `[← hde, ← hprA (_ - _), map_sub, hprA, hprA]`. Both sides reduce to the same expression.
-
-Rewrite using `[e1]`. Conclude with `lt_of_le_of_lt (hln n dd hdd i) hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.K4.mlTOf :
     SymEx → SApi → SInvApi → SBStab → SSlD → SCohApi → SCycZ → STopT → KatoTwistedClassNormCompatibleCyclotomic → KatoTwistedClassCompatibleModPowers → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (N : ℕ) [NeZero N] (e : ℕ),

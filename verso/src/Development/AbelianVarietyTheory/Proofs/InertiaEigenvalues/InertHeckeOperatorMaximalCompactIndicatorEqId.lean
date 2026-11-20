@@ -25,25 +25,25 @@ namespace GlobalTheory.InertHeckeOne
 open Classical in
 
 /- English proof (translation)
-Introduce `L _ _ _ n v w Dv U hU W _ _ f hf`. Establish `hfU : ∀ κ ∈ U, ∀ g, f (g * κ) = f g` using `fun κ hκ g => congrFun (hf κ hκ) g`. Establish `key : ∀ x : GAf L n, TrivOutside {v} x → Dv.hval (Formalism.UG.dosetInd ℂ (Formalism.UG.KU Dv.σw n) 1) (Dv.loc x) = if x ∈ U then 1 else 0`. Introduce `x hx`. Establish `hg` using `GlobalTheory.T.inertLocal_mem_unitaryGroup_antidiagonalForm L n v w Dv x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `InertDatum.hval`. Rewrite using `[dif_pos hg]`. Distinguish the cases in `hxU : x ∈ U`. Rewrite using `[if_pos hxU]`. Establish `hK` using `GlobalTheory.T.inertLocal_mem_integralPoints_of_latticeStabilizer L n v w Dv x ((hU x hx).1 hxU) hg`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Formalism.UG.dosetInd`. Rewrite using `[Set.indicator_of_mem]`. Both sides reduce to the same expression. Rewrite using `[DoubleCoset.mem_doubleCoset]`. Conclude with `⟨_, hK, 1, one_mem _, by simp⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[if_neg hxU]`. Unfold `Formalism.UG.dosetInd`. Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce `hmem`. Rewrite `hmem` using `[DoubleCoset.mem_doubleCoset]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, b, hb, e⟩` from `hmem`. Establish `hK : (⟨Dv.loc x, hg⟩ : Formalism.UG.GU Dv.σw n) ∈ Formalism.UG.KU Dv.σw n`. Rewrite using `[e, mul_one]`. Conclude with `mul_mem ha hb`. Establish `hK'` using `hK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.UG.KU, Subgroup.mem_subgroupOf, Formalism.UG.intPts, Subgroup.mem_inf] at hK'`. Apply `hxU` to reduce the goal to its premises. Use `(hU x hx).2 (GlobalTheory.InertUmax.mem_Umax_of_trivOutside_of_loc_integral L n v w Dv x hx ?_)` and prove the remaining obligations. Introduce `i j`. Conclude with `GlobalTheory.InertUmax.entries_mem_of_range _ _ hK'.2 i j`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use function extensionality and compare the values at `g`. Unfold `heckeFunI`. Establish `h1 : TrivOutside {v} (1 : GAf L n)`. Introduce `u _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[finsum_eq_single _ ((1 : GAf L n) : GAf L n ⧸ U)]`. Establish `hc : ∃ x : GAf L n, (x : GAf L n ⧸ U) = ((1 : GAf L n) : GAf L n ⧸ U) ∧ TrivOutside {v} x` using `⟨1, rfl, h1⟩`. Rewrite using `[dif_pos hc]`. Establish `hmem : hc.choose ∈ U`. Use `QuotientGroup.eq.1 hc.choose_spec.1.symm` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Rewrite using `[key _ hc.choose_spec.2, if_pos hmem, one_smul, hfU _ hmem]`. Introduce `c hc1 split_ifs with hc`. Rewrite using `[key _ hc.choose_spec.2, if_neg, zero_smul]`. Introduce `hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hc1` to reduce the goal to its premises. Rewrite using `[← hc.choose_spec.1]`. Conclude with `QuotientGroup.eq.2 (by simpa using U.inv_mem hmem)`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem heckeFunI_one : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (U : Subgroup (GAf L n)), (∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n)) → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (f : GAf L n → W), (∀ κ ∈ U, NG.rt L n κ f = f) → heckeFunI L n U Dv (Formalism.UG.dosetInd ℂ (Formalism.UG.KU Dv.σw n) 1) f = f := by
   intro L _ _ _ n v w Dv U hU W _ _ f hf

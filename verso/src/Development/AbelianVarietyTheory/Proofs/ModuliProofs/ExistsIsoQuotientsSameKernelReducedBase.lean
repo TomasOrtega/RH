@@ -22,11 +22,11 @@ open PrimCocycle
 variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
 
 /- English proof (translation)
-Establish `key : ∀ {N : LB B.left}, N.IsLB → ∃ u : LB.Gen (LB.LinComb N (fun I => (lift x y).left ≫ lamφ B I) lamε), u.IsGen` using `fun {N} hN => by`. Take `⟨u, hu, -⟩` from `exists_gen hN (φ := PEmpty.elim) (ε := PEmpty.elim) (φ' := fun I => (lift x y).left ≫ lamφ B I) (ε' := lamε) (fun U _ g => by`. Use `(Fintype.prod_empty _).trans (Eq.symm ((prod_lam x y g).trans ?_))` and prove the remaining obligations. Break down `h with rfl | rfl` into its components or cases. Rewrite using `[_root_.one_mul, mul_right_comm (g y.left), mul_inv_cancel, _root_.one_mul, inv_mul_cancel]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.mul_one, mul_inv_cancel, _root_.one_mul, inv_mul_cancel]) (LB.oneGen N)`. Use the proof step `(fun _ _ => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm)`. Conclude with `⟨u, hu⟩`. Take `⟨u, hu⟩` from `key hM`. Take `⟨u', hu'⟩` from `key hM'`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `LBIso.chartPull (chartPullOut M (lamφ B) lamε _ _ fun _ => rfl) (chartPullOut M' (lamφ B) lamε _ _ fun _ => rfl) (IsoDescent.lbIso_of_gens hM hM' _ _ _ _ u hu u' hu')`. Conclude with `gen_chartPull (IsoDescent.chartPullDiv _ _ _) w hw`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_axis {M M' : LB B.left} (hM : M.IsLB) (hM' : M'.IsLB) {T : Over S} (x y : T ⟶ B)
     (h : x = 1 ∨ y = 1) : ∃ t : ((LB.div (abelian₂ B M') (abelian₂ B M)).pull (lift x y).left).Gen, t.IsGen := by
@@ -48,7 +48,7 @@ theorem exists_gen_axis {M M' : LB B.left} (hM : M.IsLB) (hM' : M'.IsLB) {T : Ov
   exact gen_chartPull (IsoDescent.chartPullDiv _ _ _) w hw
 
 /- English proof (translation)
-Apply the tactic sequence `have e : ∀ I, lamφ A I ≫ ψ.left = (ψ ⊗ₘ ψ).left ≫ lamφ B I := fun I => congrArg (fun q => q.left) ((psum_hom (MonoidHom.mk' (fun z : A ⊗ A ⟶ A => z ≫ ψ) fun a b => MonObj.mul_comp a b ψ) (x2 A) I.down).trans ((congrArg (fun q => psum B q I.down) (funext fun i => by fin_cases i <; …`. Take `⟨v, hv⟩` from `h`. Take `⟨v', hv'⟩` from `h'`. Take `⟨w, hw⟩` from `LBIso.chartPull (chartPullOut M (lamφ B) lamε _ _ e) (chartPullOut M' (lamφ B) lamε _ _ e) (LBIso.trans (DVR.linComb_isLB _ hM _ _) (DVR.linComb_isLB _ hL _ _) (DVR.linComb_isLB _ hM' _ _) (iso_linComb ((isGen_iff v).1 hv) (lamφ A) lamε).symm (iso_linComb ((isGen_iff v').1 hv') ( …`. Conclude with `gen_chartPull (IsoDescent.chartPullDiv _ _ _) w hw`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_gen_tensor {L : LB A.left} {M M' : LB B.left} (hL : L.IsLB) (hM : M.IsLB) (hM' : M'.IsLB) (ψ : A ⟶ B)
     [IsMonHom ψ] (h : LBIso L (M.pull ψ.left)) (h' : LBIso L (M'.pull ψ.left)) :
@@ -72,17 +72,17 @@ namespace GlobalTheory
 open HkIso HeckePoint
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l p S _ s o o₁ o₂ ψ₁ ψ₂ K hp hpM ⟨⟨hom₁, fin₁, et₁, sur₁, lin₁, bun₁⟩, lev₁⟩ ⟨⟨hom₂, fin₂, et₂, sur₂, lin₂, bun₂⟩, lev₂⟩ ker₁ ker₂ hK`. Establish `hab` using `isAbelianScheme_of_proper o.t o.proper`. Establish `hab₁` using `isAbelianScheme_of_proper o₁.t o₁.proper`. Establish `hab₂` using `isAbelianScheme_of_proper o₂.t o₂.proper`. Use `o₁.proper` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `o₂.proper` as an intermediate fact. Take `⟨α, homα, hα, uα⟩` from `GlobalTheory.T.exists_unique_factor_through_etale_isogeny_reduced S _ _ _ ψ₁ ψ₂ hab hab₁ inferInstance hom₁ fin₁ et₁ sur₁ hom₂ fun k _ _ t x hx => (ker₂ k t x).2 ((ker₁ k t x).1 hx)`. Take `⟨β, -, hβ, -⟩` from `GlobalTheory.T.exists_unique_factor_through_etale_isogeny_reduced S _ _ _ ψ₂ ψ₁ hab hab₂ inferInstance hom₂ fin₂ et₂ sur₂ hom₁ fun k _ _ t x hx => (ker₁ k t x).2 ((ker₂ k t x).1 hx)`. Establish `: Epi ψ₁.left` using `Flat.epi_of_flat_of_surjective _`. Establish `: Epi ψ₁` using `Over.epi_of_epi_left ψ₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Epi ψ₂.left` using `Flat.epi_of_flat_of_surjective _`. Establish `: Epi ψ₂` using `Over.epi_of_epi_left ψ₂`. Establish `: IsIso α` using `⟨β, by rw [← cancel_epi ψ₁, reassoc_of% hα, hβ, Category.comp_id], by rw [← cancel_epi ψ₂, reassoc_of% hβ, hα, Category.comp_id]⟩`. Establish `linα : ∀ a, o₁.t.act.act a ≫ α = α ≫ o₂.t.act.act a` using `fun a => by`. Rewrite using `[← cancel_epi ψ₁, ← reassoc_of% lin₁, hα, reassoc_of% hα, lin₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hunit : IsUnit ((p ^ 2 : ℕ) : Γ(S, ⊤))`. Use `((baseKA l).unit (p ^ 2) (pow_pos hp.pos 2)).map (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of (KA l))).inv.hom)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `i₀ : (lbPow o.t.PP.L (p ^ 2)).IsLB` using `DVR.linComb_isLB _ o.t.PP.isLB _ _`. Establish `i₁` using `pull_isLB o₁.t.PP.isLB (𝟙 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i₂` using `pull_isLB o₂.t.PP.isLB α.left`. Establish `hlam : LBIso (abelian₂ o₁.t.G (o₁.t.PP.L.pull (𝟙 _))) (abelian₂ o₁.t.G (o₂.t.PP.L.pull α.left))` using `GlobalTheory.T.triv_of_axes_triv_pullback_etale_isogeny S _ _ ψ₁ o₁.t.PP.L _ (p ^ 2) hab hab₁ o₁.t.PP.isLB o₁.ample (LB.isLB_div (DVR.linComb_isLB _ i₂ _ _) (DVR.linComb_isLB _ i₁ _ _)) hom₁ fin₁ et₁ sur₁ (pow_pos hp.pos 2) hunit (fun k _ _ t x hx => hK k t x ((ker₁ k t x).1 hx)) …`. Rewrite using `[Category.id_comp, ← Over.comp_left, hα]) bun₂))`. Establish `hiso` using `iso_of_lam o₁.t o₂.t α linα hlam`. Establish `: IsMonHom (asIso α).hom` using `homα`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p₀, hp₀⟩` from `exists_inv_mod hp hpM`. Use `⟨{ cm := CubeMap.ofHom α, cart := isGrpPullback_of_iso (asIso α), base := rfl act := fun a => congrArg (fun q => q.left) (linα a) lin := isPullCubical_of_iso globalFns_holds hab₁ α _ _ hiso eta := fun a => ?_, etaA := fun a => ?_ }, congrArg (fun q => q.left) hα⟩` and prove the remaining obligations. Rewrite using `[Category.id_comp, ← (lev₁ p₀ hp₀ a).1, ← (lev₂ p₀ hp₀ a).1, ← hα, ← Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[Category.id_comp, ← (lev₁ p₀ hp₀ a).2, ← (lev₂ p₀ hp₀ a).2, ← hα, ← Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

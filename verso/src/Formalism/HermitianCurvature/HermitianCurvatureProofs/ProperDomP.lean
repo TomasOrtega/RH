@@ -10,7 +10,7 @@ namespace Formalism.FourierDecayAlt.P.PBQ
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `properA Bj B0 (fun q hq => leviElement_mem_GV q hq) (fun y hy hyG => levi_move_into_big_cell k p ρ B0.z B0.z' B0.z_mem B0.z'_mem y hy hyG) Cs hCs`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem properE {k p ρ n : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq)
@@ -31,7 +31,7 @@ end Formalism.FourierDecayAlt.P.PBQ
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p j hj Cs hCs`. Conclude with `PBQ.properE (p.T.bs j) p.T.base _ Cs hCs`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem proper_left_variables_domain : PBQ.ProperDomP := by
   intro Wp Wq _ _ _ _ _ _ P p j hj Cs hCs

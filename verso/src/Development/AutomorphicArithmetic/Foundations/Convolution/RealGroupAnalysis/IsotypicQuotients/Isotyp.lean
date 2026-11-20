@@ -8,7 +8,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Pp
 open private UpperTheory.V.Af.RealLocalComponent.isotypic from Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.LocCompR
 
 /- English proof (translation)
-Introduce `F _ _ _ π v σ h x`. Establish `h1` using `(UpperTheory.V.Af.RealLocalComponent.isotypic π v σ h).2`. Use `(show (⊤ : Submodule ℂ π.V) ≤ _ from h1 ▸ iSup_le fun f => ?_) Submodule.mem_top` and prove the remaining obligations. Conclude with `fun y hy => Submodule.subset_span ⟨f.1, f.2, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Pp.isotyp :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], UpperTheory.ConvolutionTheory.R2.Pp.Isotyp F := by

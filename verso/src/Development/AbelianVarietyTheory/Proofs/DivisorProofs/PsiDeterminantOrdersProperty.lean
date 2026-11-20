@@ -12,23 +12,19 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ ψ hψ N Δ Δ' a c c' hD hD' hO hO'`. Take `⟨hAdom, -, hker, -, hnu, hxi, -⟩` from `GlobalTheory.AinfXi.ainf_local_xi_order p C v O hv ε hε`. Take `⟨hmu0, hmu, -⟩` from `GlobalTheory.DetInv.mu_coeff_zero_ne_zero p C v O hv ε hε`. Establish `hinj : Function.Injective (algebraMap O C)` using `hv.hom_inj`. Apply the tactic sequence `have hinA : ∀ x : Ainf p O, (inA x : RL p O Λ) = x ⊗ₜ[ℤ_[p]] (1 : Λ) := fun x => by first | rfl | simp [inA, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ : ∀ (σ : Λ →+* O) (f : RL p O Λ →+* O), IsTheta σ f → ∀ x, f (inA x) = WittVector.fontaineTheta O p x`. Introduce `σ f hf x`. Rewrite using `[hinA, hf, map_one, mul_one]`. Establish `hθxi : WittVector.fontaineTheta O p (xi ε) = 0`. Rewrite using `[← RingHom.mem_ker, hker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Establish `hψmu : ψ (inA (mu ε)) = inA (nu ε)`. Rewrite using `[hinA, hψ, hinA, phiInv_mu]`. Establish `hu' : ∀ (σ : Λ →+* O) (f : RL p O Λ →+* O), IsTheta σ f → algebraMap O C (f (ψ Δ')) ≠ 0`. Introduce `σ f hf h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `hD'.1`. Establish `h1` using `congrArg (fun x => algebraMap O C (f (ψ x))) hk`. Simplify using `only [map_pow, map_mul, hψmu, hθ σ f hf, h0, zero_mul] at h1`. Conclude with `pow_ne_zero N ((map_ne_zero_iff _ hinj).mpr hnu) h1`. Take `⟨g, hΔg, g₁, hgg⟩` from `hD.2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨g', hΔg', -⟩` from `hD'.2`. Set `ι` to `{q : (Λ →+* O) × (RL p O Λ →+* O) // IsTheta q.1 q.2}`. Establish `hξ : (inA (xi ε) : RL p O Λ) ∈ nonZeroDivisors (RL p O Λ)` using `GlobalTheory.DetInv.inA_mem_nonZeroDivisors p C v O hv ε hε Λ (xi ε) hxi`. Take `⟨b, hb⟩` from `GlobalTheory.DetInv.dvd_of_lead_orders_eq (RL p O Λ) C ι (fun i => (algebraMap O C).comp i.1.2) (inA (xi ε)) N (fun i => a i.1.1) (fun i => c i.1.1) (fun i => c' i.1.1) Δ Δ' (ψ Δ) (ψ Δ') g g' g₁ hξ (fun i => by show algebraMap O C (i.1.2 (inA (xi ε))) = 0`. Rewrite using `[hθ _ _ i.2, hθxi, map_zero])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun r hr => GlobalTheory.T.relative_lattice_element_property p C v O hv ε hε Λ r (fun σ f hf => hinj (by`. Simplify using `using hr ⟨(σ, f), hf⟩)))`. Use the proof step `(fun i => (hO i.1.1 i.1.2 i.2).1) (fun i => (hO i.1.1 i.1.2 i.2).2.1)`. Use the proof step `(fun i => (hO i.1.1 i.1.2 i.2).2.2) (fun i => (hO' i.1.1 i.1.2 i.2).2.2)`. Use `hΔg hΔg' (fun i => by simpa using hu' i.1.1 i.1.2 i.2) hgg.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `haveI := hAdom`. Take `⟨Δs, hΔs⟩` from `hD.1`. Establish `hcoeff : (mu ε ^ N).coeff 0 ≠ 0` using `by haveI : IsDomain (PreTilt O p) := PreTilt.isDomain C v O hv p`. Establish `: ∀ n : ℕ, (mu ε ^ n).coeff 0 = (mu ε).coeff 0 ^ n`. Introduce `n`.
-
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, WittVector.mul_coeff_zero, ih, pow_succ]`. Rewrite using `[this]`. Conclude with `pow_ne_zero N hmu0`.
-
-Use `GlobalTheory.DetInv.dvd_of_twisted_eq (RL p O Λ) ψ (inA (mu ε ^ N)) Δ Δs Δ' g b (GlobalTheory.DetInv.inA_mem_nonZeroDivisors p C v O hv ε hε Λ _ (pow_ne_zero N hmu)) (by show Δ * Δs = algebraMap (Ainf p O) (RL p O Λ) (mu ε ^ N)` and prove the remaining obligations. Rewrite using `[map_pow]; exact hΔs.symm) hΔg (by rw [hb] at hΔg'; exact hΔg') ?_`. Conclude with `GlobalTheory.T.ainf_coefficient_psi_property p C v O hv Λ ψ hψ (mu ε ^ N) hcoeff`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_detElt_orders_eq : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ (ψ : RL p O Λ →+* RL p O Λ), IsPsi ψ → ∀ (N : ℕ) (Δ Δ' : RL p O Λ) (a : (Λ →+* O) → ℕ) (c : (Λ →+* O) → C) (c' : (Λ →+* O) → C), IsDetElt ε ψ N Δ → IsDetElt ε ψ N Δ' → HasOrders C ε N Δ a c → HasOrders C ε N Δ' a c' → Δ ∣ Δ' := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ ψ hψ N Δ Δ' a c c' hD hD' hO hO'

@@ -12,23 +12,23 @@ noncomputable section
 namespace GlobalTheory.ColActionD
 
 /- English proof (translation)
-Introduce `ι l _ _ _ _ P Q R S φ hφ G _ _ k hk hkJ`. Set `A : G → (∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) →ₗ[ℝ] (∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ)` to `fun g => { toFun := fun c w => c w * (k g w)ᵀ map_add' := fun c c' => by ext w : 1; simp [Matrix.add_mul] map_smul' := fun r c => by ext w : 1; simp [Matrix.smul_mul] }`. Set `T : G → (l ⊕ l → ℝ) →ₗ[ℝ] (l ⊕ l → ℝ)` to `fun g => φ.toLinearMap ∘ₗ A g ∘ₗ φ.symm.toLinearMap`. Establish `hT : ∀ g c, T g (φ c) = φ (fun w => c w * (k g w)ᵀ)` using `fun g c => by simp [T, A]`. Establish `hsy : ∀ g u v, sympl (T g u) (T g v) = sympl u v`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g u v`. Take `⟨c, rfl⟩` from `φ.surjective u`. Take `⟨c', rfl⟩` from `φ.surjective v`. Rewrite using `[hT, hT, hφ, hφ]`. Simplify using `only [GlobalTheory.ColAction.signed_sum_mul_transpose _ _ _ (hkJ g _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmem : ∀ g, LinearMap.toMatrix' (T g) ∈ Matrix.symplecticGroup l ℝ` using `fun g => GlobalTheory.ColAction.mem_symplecticGroup_of_sympl _ (fun u v => by simpa only [LinearMap.toMatrix'_mulVec] using hsy g u v)`. Establish `hTmul : ∀ g h, T (g * h) = T g ∘ₗ T h`. Introduce `g h`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `u`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, rfl⟩` from `φ.surjective u`. Use `show T (g * h) (φ c) = T g (T h (φ c))`. Rewrite using `[hT, hT, hT]`. Use `congr 1`. Use extensionality with `w : 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[map_mul, Pi.mul_apply, Matrix.transpose_mul, Matrix.mul_assoc]`. Establish `hT1 : T 1 = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `u`. Take `⟨c, rfl⟩` from `φ.surjective u`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT]`. Simplify using the standard rewrite rules. Set `s : G →* Matrix.symplecticGroup l ℝ` to `{ toFun := fun g => ⟨LinearMap.toMatrix' (T g), hmem g⟩ map_one' := by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hT1, LinearMap.toMatrix'_id]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use the proof step `map_mul' := fun g h => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hTmul, LinearMap.toMatrix'_comp]`. Use `rfl }`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨s, ?_, fun g c => ?_⟩` and prove the remaining obligations. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Establish `e : ∀ g, LinearMap.toMatrix' (T g) a b = φ (fun w => φ.symm (Pi.single b 1) w * (k g w)ᵀ) a`. Introduce `g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearMap.toMatrix'_apply, ← hT, φ.apply_symm_apply]`. Simplify using `only [e]`. Conclude with `(continuous_apply a).comp ((LinearMap.continuous_of_finiteDimensional φ.toLinearMap).comp (continuous_pi fun w => continuous_const.matrix_mul ((continuous_apply w).comp hk).matrix_transpose))`. Use `show LinearMap.toMatrix' (T g) *ᵥ φ c = _`. Rewrite using `[LinearMap.toMatrix'_mulVec, hT]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_symplectic_hom_of_unitary_dep : ∀ (ι l : Type) [Fintype ι] [DecidableEq ι] [Fintype l] [DecidableEq l] (P Q R S : ι → ℕ)
     (φ : (∀ w : ι, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) ≃ₗ[ℝ] (l ⊕ l → ℝ)),

@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.ConjCarry
 
 /- English proof (translation)
-Establish `hrec` using `Formalism.UG.P.span_recovery_of_integral_adelic_approx Formalism.UG.P.integral_adele_approximation_holds F E (Fin N) Lb hfin hspan x u`. Establish `hlat : latAd x Lb = Formalism.UG.CS.globLat x Lb` using `Submodule.span_eq (Formalism.UG.CS.globLat x Lb)`. Rewrite using `[hlat]`. Conclude with `hrec`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hatL_latAd_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {N : ℕ}
     (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb : Submodule (𝓞 E) (Fin N → E))
@@ -26,7 +26,7 @@ theorem mem_hatL_latAd_iff {F E : Type} [Field F] [NumberField F] [Field E] [Num
   exact hrec
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[mem_hatL_latAd_iff (C * y) M hfin hspan, mem_hatL_latAd_iff C M hfin hspan, Matrix.mulVec_mulVec, ← Units.val_mul]`. Establish `e : C⁻¹ * (C * y * C⁻¹)⁻¹ = (C * y)⁻¹` using `by group`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem carries_conj {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {N : ℕ}
     (C y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (M : Submodule (𝓞 E) (Fin N → E))
@@ -38,7 +38,7 @@ theorem carries_conj {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   rw [e]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[cT, sigR, inclE]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_map_incl {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R] {N : ℕ}
     (σ : E →ₐ[F] E) (M : Matrix (Fin N) (Fin N) E) :
@@ -51,11 +51,9 @@ end GlobalTheory.ConjCarry
 namespace GlobalTheory.ConjCarry
 
 /- English proof (translation)
-Use `set R := FiniteAdeleRing (𝓞 F) F`. Use `set s := sigR σ R`. Use `set Cm : Matrix (Fin N) (Fin N) (E ⊗[F] R) := ((ratA F co : GL (Fin N) (E ⊗[F] R)) : Matrix (Fin N) (Fin N) (E ⊗[F] R)) with hCm`. Use `set Ci : Matrix (Fin N) (Fin N) (E ⊗[F] R) := (((ratA F co)⁻¹ : GL (Fin N) (E ⊗[F] R)) : Matrix (Fin N) (Fin N) (E ⊗[F] R)) with hCi`. Use `set Y : Matrix (Fin N) (Fin N) (E ⊗[F] R) := (y : Matrix (Fin N) (Fin N) (E ⊗[F] R)) with hY`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCm' : Cm = co.1.map (inclE (F` using `F) R) := rfl`. Establish `hJ : cT s Cm * Cm = J.map (inclE (F` using `F) R) := by`. Rewrite using `[hCm', cT_map_incl, ← Matrix.map_mul, hco]`. Establish `hy' : cT s Y * J.map (inclE (F` using `F) R) * Y = J.map (inclE (F := F) R) := hy`. Establish `hCC : Cm * Ci = 1`.
-
-Rewrite using `[hCm, hCi, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h1 : (1 : Matrix (Fin N) (Fin N) E).map (inclE (F` using `F) R) = 1 := Matrix.map_one _ (map_zero _) (map_one _)`. Use `show cT s ((ratA F co * y * (ratA F co)⁻¹ : GL (Fin N) (E ⊗[F] R)) : Matrix (Fin N) (Fin N) (E ⊗[F] R)) * (1 : Matrix (Fin N) (Fin N) E).map (inclE (F := F) R) * ((ratA F co * y * (ratA F co)⁻¹ : GL (Fin N) (E ⊗[F] R)) : Matrix (Fin N) (Fin N) (E ⊗[F] R)) = (1 : Matrix (Fin N) (F …`. Rewrite using `[h1, Units.val_mul, Units.val_mul, ← hCm, ← hCi, ← hY, Matrix.mul_one, cT_mul, cT_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem conj_mem_std {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (σ : E →ₐ[F] E) (J : Matrix (Fin N) (Fin N) E) (co : GL (Fin N) E)
@@ -89,21 +87,17 @@ end GlobalTheory.ConjCarry
 namespace GlobalTheory.ConjCarry
 
 /- English proof (translation)
-Use `set R := FiniteAdeleRing (𝓞 F) F`. Use `set s := sigR σ R`. Use `set u := Matrix.GeneralLinearGroup.det y with hu`. Use `⟨Units.map (Matrix.scalar (Fin 1) : E ⊗[F] R →+* Matrix (Fin 1) (Fin 1) (E ⊗[F] R)).toMonoidHom u, ?_, ?_⟩` and prove the remaining obligations. Establish `hy' : cT s (y : Matrix (Fin N) (Fin N) (E ⊗[F] R)) * J.map (inclE (F` using `F) R) * (y : Matrix (Fin N) (Fin N) (E ⊗[F] R)) = J.map (inclE (F := F) R) := hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdet` using `congrArg Matrix.det hy'`. Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `hcT : ∀ M : Matrix (Fin N) (Fin N) (E ⊗[F] R), (cT s M).det = s M.det`. Introduce `M`. Unfold `cT`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hJu : IsUnit (J.map (inclE (F` using `F) R)).det := by show IsUnit ((inclE (F := F) R).mapMatrix J).det`. Rewrite using `[← RingHom.map_det]`. Use `IsUnit.map _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hco' : IsUnit (co : Matrix (Fin N) (Fin N) E).det`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.isUnit _`. Rewrite using `[← hco, Matrix.det_mul]`. Use `IsUnit.mul ?_ hco'` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `cT`. Rewrite using `[Matrix.det_transpose]`. Use `show IsUnit (((σ : E →+* E)).mapMatrix (co : Matrix (Fin N) (Fin N) E)).det`. Rewrite using `[← RingHom.map_det]`. Conclude with `hco'.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hdet` using `[hcT]`. Establish `hn : s (u : E ⊗[F] R) * (u : E ⊗[F] R) = 1`. Establish `h2 : (s (u : E ⊗[F] R) * (u : E ⊗[F] R)) * (J.map (inclE (F` using `F) R)).det = 1 * (J.map (inclE (F := F) R)).det := by`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hJu.mul_right_cancel h2`.
-
-Establish `h1 : (1 : Matrix (Fin 1) (Fin 1) E).map (inclE (F` using `F) R) = 1 := Matrix.map_one _ (map_zero _) (map_one _)`. Use `show cT s _ * (1 : Matrix (Fin 1) (Fin 1) E).map (inclE (F := F) R) * _ = (1 : Matrix (Fin 1) (Fin 1) E).map (inclE (F := F) R)`. Rewrite using `[h1, Matrix.mul_one]`. Use extensionality with `a b`. Use `fin_cases a`.
-
-Use `fin_cases b`. Simplify using `[cT, Matrix.mul_apply, hn]`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.det, Matrix.det_fin_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_stdUnitaryPoint_det_eq_unitaryPoint_det {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (σ : E →ₐ[F] E) (J : Matrix (Fin N) (Fin N) E) (co : GL (Fin N) E)
@@ -156,7 +150,7 @@ theorem exists_stdUnitaryPoint_det_eq_unitaryPoint_det {F E : Type} [Field F] [N
     simp [Matrix.GeneralLinearGroup.det, Matrix.det_fin_one]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv, mul_right_comm, mul_inv_cancel, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_conj {R : Type} [CommRing R] {N : ℕ} (C y : GL (Fin N) R) :
     Matrix.GeneralLinearGroup.det (C * y * C⁻¹) = Matrix.GeneralLinearGroup.det y := by
@@ -169,13 +163,11 @@ namespace GlobalTheory.TwV
 open GlobalTheory.ConjCarry in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPins hTie i hi β y`. Establish `hco` using `hPins.crd_orth i hi`. Establish `hLbf` using `((St i hi).K β).lev.Lb_fin`. Establish `hLbs` using `((St i hi).K β).lev.Lb_span`. Take `⟨e1, hCf, hCs⟩` from `GlobalTheory.T.companion_lattice_eq_point_lattice_over_companion D i hi (A.crd i hi) hco a 1 _ hLbf hLbs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e2` using `(GlobalTheory.T.companion_lattice_eq_point_lattice_over_companion D i hi (A.crd i hi) hco a y _ hLbf hLbs).1`. Establish `e1' : latCo D.sp (gramN D i hi) (A.crd i hi) a 1 ((St i hi).K β).lev.Lb = latAd (ratA D.host.F (A.crd i hi)) (compan (sp` using `D.sp) (gramN D i hi) a ((St i hi).K β).lev.Lb) := by`. Use `e1` as an intermediate fact. Simplify using `only [OneMemClass.coe_one, mul_one] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨conj_mem_std (sigD D) (gramN D i hi) (A.crd i hi) hco y.1 y.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1', e2]`. Conclude with `carries_conj _ _ _ hCf hCs`. Take `⟨d, hd, hdd⟩` from `exists_stdUnitaryPoint_det_eq_unitaryPoint_det (sigD D) (gramN D i hi) (A.crd i hi) hco y.1 y.2`. Use `⟨⟨d, hd⟩, hdd, ?_⟩` and prove the remaining obligations.
-
-Conclude with `hdd.trans (GlobalTheory.ConjCarry.det_conj (ratA D.host.F (A.crd i hi)) y.1).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conj_crd_unitary_carries : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ i (hi : i ≤ D.R.m) β (y : UA D i hi), ratA D.host.F (A.crd i hi) * y.1 * (ratA D.host.F (A.crd i hi))⁻¹ ∈ Formalism.L2.Herm.UstdAf D.sp.cm (D.R.N i) ∧ Formalism.L2.Herm.Carries (ratA D.host.F (A.crd i hi) * y.1 * (ratA D.host.F (A.crd i hi))⁻¹) (latCo D.sp (gramN D i hi) (A.crd i hi) a 1 ((St i hi).K β).lev.Lb) (latCo D.sp (gramN D i hi) (A.crd i hi) a y.1 ((St i hi).K β).lev.Lb) ∧ ∃ d : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm, Matrix.GeneralLinearGroup.det d.1 = Matrix.GeneralLinearGroup.det y.1 ∧ Formalism.L2.Herm.IsDetOf D.sp.cm d (ratA D.host.F (A.crd i hi) * y.1 * (ratA D.host.F (A.crd i hi))⁻¹)) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPins hTie i hi β y

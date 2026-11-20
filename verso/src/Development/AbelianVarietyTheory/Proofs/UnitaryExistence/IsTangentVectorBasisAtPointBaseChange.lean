@@ -15,13 +15,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.Frames
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo S T _ _ φ x n v hv`. Use `Xo.univ.t.semi.comm` as an intermediate fact. Use `Xo.univ.t.semi.smooth` as an intermediate fact. Establish `h₁` using `isGrpPullback_pullback Xo.univ.t.G x`. Establish `h₂` using `isGrpPullback_pullback ((Over.pullback x).obj Xo.univ.t.G) (spMap φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃` using `h₂.comp h₁`. Establish `: IsCommMonObj ((Over.pullback x).obj Xo.univ.t.G)` using `Functor.isCommMonObj_obj`. Establish `: IsCommMonObj ((Over.pullback (spMap φ)).obj ((Over.pullback x).obj Xo.univ.t.G))` using `Functor.isCommMonObj_obj`. Take `⟨a₁, b₁⟩` from `GlobalTheory.T.lieBasis_iff_tangentBasis_pullback_universal E H Dw l Xo S x _ _ h₁`. Take `⟨-, b₃⟩` from `GlobalTheory.T.lieBasis_iff_tangentBasis_pullback_universal E H Dw l Xo T _ _ _ h₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose u hu using fun i => a₁ (v i) (hv.1 i)`. Establish `hb : IsLieBasis u` using `(b₁ n u).2 (by rw [funext hu]; exact hv)`. Establish `hs : Smooth ((Over.pullback x).obj Xo.univ.t.G).hom` using `inferInstanceAs (Smooth (pullback.snd Xo.univ.t.G.hom x))`. Take `⟨u', hb', hu'⟩` from `GlobalTheory.exists_isLieBasis_baseChange S T φ _ _ _ h₂ hs n u hb`. Establish `e : Chart.dualMapR φ = dualMap φ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext a <;> rfl`. Establish `key` using `(b₃ n u').1 hb'`. Use `key using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[← Category.assoc, hu', e, Category.assoc, hu]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tanBasis_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S T : Type) [CommRing S] [CommRing T] (φ : S →+* T) (x : Sp S ⟶ Xo.X) (n : ℕ) (v : Fin n → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)), TanBasis x v → TanBasis (spMap φ ≫ x) (fun i => spMap (dualMap φ) ≫ v i) := by
   intro E _ _ _ H Dw l Xo S T _ _ φ x n v hv

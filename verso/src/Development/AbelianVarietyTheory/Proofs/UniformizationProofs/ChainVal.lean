@@ -19,9 +19,9 @@ namespace GlobalTheory.UU
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Take `⟨h, ⟨gs, h₀, hs, hl⟩, hz⟩` from `hg`. Establish `key : ∀ i (hi : i < k + 1), (gs ⟨i, hi⟩).b = g.b ^ i`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => exact fun _ => h₀.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i ih`. Conclude with `fun hi => (hs ⟨i, by omega⟩).1.trans ((congrArg (· * g.b) (ih (by omega))).trans (pow_succ _ _).symm)`. Establish `hl' : gs ⟨k, Nat.lt_succ_self k⟩ = h` using `hl`. Rewrite using `[← key k (Nat.lt_succ_self k), hl']`. Conclude with `hz.1`.
+Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GtTors.base_pow {k : ℕ} {g : GtPtF D F} (hg : GtTors D k g) : g.b ^ k = 1 := by
   obtain ⟨h, ⟨gs, h₀, hs, hl⟩, hz⟩ := hg
@@ -35,15 +35,15 @@ theorem GtTors.base_pow {k : ℕ} {g : GtPtF D F} (hg : GtTors D k g) : g.b ^ k 
   rw [← key k (Nat.lt_succ_self k), hl']; exact hz.1
 
 /- English proof (translation)
-Take `⟨h, ⟨gs, h₀, hs, hl⟩, hz⟩` from `hg`. Establish `C : IsCub (cubV D.cub z J)` using `isCub_cubV D.cub hJ`. Establish `key : ∀ i (hi : i < k + 1), (gs ⟨i, hi⟩).b = g.b ^ i ∧ val ((gs ⟨i, hi⟩).s mu) σ.left z J * cubN (th D z J) i 1 (σ ≫ g.b) (cP D T mu) = val (g.s mu) σ.left z J ^ i`. Introduce `i`. Proceed by induction on `i with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact fun _ => ⟨h₀.1, (_root_.mul_one _).trans ((val_corr hJ (h₀.2 mu) σ.left).trans ((val_one _).trans (pow_zero _).symm))⟩`. Consider the case `succ i ih`. Introduce `hi`. Take `⟨b₁, v₁⟩` from `ih (by omega)`. Take `⟨b₂, v₂⟩` from `hs ⟨i, by omega⟩`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨b₂.trans ((congrArg (· * g.b) b₁).trans (pow_succ _ _).symm), ?_⟩` and prove the remaining obligations. Establish `e` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_cub D.cub σ hJ _ _ _))).symm.trans ((val_corr hJ (v₂ mu) σ.left).trans (val_mul hJ _ _ _))`. Establish `e₁ : σ ≫ (gs (Fin.castSucc ⟨i, by omega⟩)).b = 1 * (σ ≫ g.b) ^ i`. Rewrite using `[_root_.one_mul]`. Conclude with `(congrArg (σ ≫ ·) b₁).trans (map_pow (preHom σ) _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂ : σ ≫ DegPre.cF D F mu = cP D T mu` using `comp_cP D σ mu`. Rewrite `e` using `[e₁, e₂, C.s01, C.s12]`. Rewrite using `[cubN, Finset.prod_range_succ, mul_comm (∏ _ ∈ _, _), ← _root_.mul_assoc, pow_succ, ← v₁, cubN]`. Conclude with `(congrArg₂ (· * ·) e rfl).trans (mul_right_comm _ _ _)`. Establish `hk` using `(key k (Nat.lt_succ_self k)).2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl' : gs ⟨k, Nat.lt_succ_self k⟩ = h` using `hl`. Rewrite `hk` using `[hl']`. Rewrite using `[← hk]`. Conclude with `congrArg₂ (· * ·) ((val_corr hJ (hz.2 mu) σ.left).trans (val_one _)).symm rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GtTors.chain_val {k : ℕ} {g : GtPtF D F} (hg : GtTors D k g) {T : Over (Spec (CommRingCat.of R))}
     (σ : T ⟶ TF (R := R) F) {z : T.left} {J : (T.left ⟶ D.P.A.left) → D.P.L.ι} (hJ : Good D.P.L z J) (mu : D.X) :
@@ -76,7 +76,7 @@ theorem GtTors.chain_val {k : ℕ} {g : GtPtF D F} (hg : GtTors D k g) {T : Over
   exact congrArg₂ (· * ·) ((val_corr hJ (hz.2 mu) σ.left).trans (val_one _)).symm rfl
 
 /- English proof (translation)
-The claim follows from `(gen_u D F hG k α (α + 0) g.b (by rw [add_zero, hg.base_pow, _root_.mul_one]) _ (mulGen_isGen _ _ _ _ _ _ _ (g.isGen α) hw) (fun U _ h => by refine (Fintype.prod_sum_type _).trans ?_ rw [Fin.prod_univ_four, Fin.prod_univ_two] show h (cP D _ α * g.b).left ^ (-1 : ℤ) * h (cP D _ α) …`.
+A detailed English derivation is pending.
 -/
 theorem GtTors.val_phi (hG : GlobalFnsSt) {k : ℕ} {g : GtPtF D F} (hg : GtTors D k g)
     (w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F g.b) (DegPre.lineε k))) (hw : w.IsGen) (α : D.X)
@@ -95,13 +95,11 @@ theorem GtTors.val_phi (hG : GlobalFnsSt) {k : ℕ} {g : GtPtF D F} (hg : GtTors
     ac_rfl)).2 u hu hc T ρ z J hJ
 
 /- English proof (translation)
-Establish `z₁ : DegPre.zF D F ≫ fst _ _ = 𝟙 _` using `lift_fst _ _`. Establish `z₂ : DegPre.zF D F ≫ DegPre.prB D F = 1` using `lift_snd _ _`. Establish `z₃ : (DegPre.zF D F ≫ DegPre.trF D F mu) ≫ DegPre.prB D F = cP D _ mu`. Rewrite using `[trF_eq, Category.assoc, tr_pr, MonObj.comp_mul, z₂, ← Category.assoc, z₁, Category.id_comp, _root_.one_mul]`. Establish `H` using `gen_u D F hG k α (α + k • mu) (cP D _ mu) (by rw [cPoint_add, cPoint_nsmul]) (LB.pullGen D.P.L _ _ u (DegPre.zF D F).left) (pullGen_isGen _ _ _ _ hu _) (fun U _ h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `p₃` using `prod_fam D F (DegPre.zF D F) (α + k • mu) k h`. Establish `p₄` using `prod_fam D F (DegPre.zF D F ≫ DegPre.trF D F mu) α k h`. Rewrite `p₃` using `[z₂, _root_.mul_one]`. Rewrite `p₄` using `[z₃]`. Simplify using `only [Over.comp_left, Category.assoc] at p₄`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Eq.trans (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ p₃ (prod_neg _ _ p₄)) ?_` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Use the proof step `module)`. Rewrite `H` using `[← trF_eq]`.
-
-Conclude with `H.2 u hu (corr_of_val D.P.isLB fun _ _ _ => rfl) T ρ z J hJ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_delta (hG : GlobalFnsSt) (k : ℕ) (α mu : D.X)
     (u : LB.Gen (LB.LinComb D.P.L (DegPre.deltaφ D F k α mu) (DegPre.deltaε k))) (hu : u.IsGen)
@@ -127,15 +125,15 @@ theorem val_delta (hG : GlobalFnsSt) (k : ℕ) (α mu : D.X)
   exact H.2 u hu (corr_of_val D.P.isLB fun _ _ _ => rfl) T ρ z J hJ
 
 /- English proof (translation)
-Introduce `hG R _ _ D F _ _ k g hg α mu w u p p' hw hu hp hp' hc hc' y J hJ`. Establish `C : IsCub (th D (T` using `DegPre.BF D F) y J) := isCub_cubV D.cub hJ`. Establish `hm : fst (TF (R` using `R) F) D.P.A ≫ cP D _ mu = cP D _ mu := comp_cP D _ mu`. Establish `hy : (fst (TF (R` using `R) F) D.P.A ≫ g.b) ^ k = 1 := (map_pow (preHom (fst (TF (R := R) F) D.P.A)) _ _).symm.trans ((congrArg (preHom (fst (TF (R := R) F) D.P.A)) hg.base_pow).trans (map_one _))`. Establish `t₁` using `gt_nsmul (fst (TF (R := R) F) D.P.A) hJ g α mu k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t₃` using `hg.chain_val (fst (TF (R := R) F) D.P.A) hJ mu`. Establish `key` using `C.comm k _ _ _ (DegPre.prB D F) _ _ _ 1 1 1 t₁ (by rw [hy, C.face₂]) t₃`. Establish `e₁` using `hg.val_phi hG w hw (α + k • mu) p' hp' hc' _ (𝟙 _) y J hJ`. Establish `e₂` using `hg.val_phi hG w hw α p hp hc _ (DegPre.trPt D F (cP D _ mu)) y J hJ`. Establish `e₃` using `val_delta hG k α mu u hu _ (𝟙 _) y J hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₄` using `val_delta hG k α mu u hu _ (DegPre.trPt D F g.b) y J hJ`. Rewrite `e₁` using `[Category.id_comp, Over.id_left, uVal_id, val_mul hJ, cPoint_add, cPoint_nsmul]`. Rewrite `e₂` using `[tr_fst, uVal_tr, val_mul hJ, hm]`. Rewrite `e₃` using `[Category.id_comp, Over.id_left, uVal_id, hm]`. Rewrite `e₄` using `[tr_fst, uVal_tr, hm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hy, _root_.mul_one (cP D _ α)]`. Use `(congrArg₂ (· * ·) e₁ e₄).trans (Eq.trans ?_ (congrArg₂ (· * ·) e₃ ((congrArg (fun q : DegPre.BF D F ⟶ DegPre.BF D F => val p q.left y J) (trF_eq D F mu)).trans e₂)).symm)` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `key'` using `congrArg Additive.ofMul key`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one] at key' ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := abel) key'`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem phi_comm : (GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (N : ℕ) (g : GtPtF D F), GtTors D N g → ∀ (α mu : D.X) (w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F g.b) (DegPre.lineε N))) (u : LB.Gen (LB.LinComb D.P.L (DegPre.deltaφ D F N α mu) (DegPre.deltaε N))) (p : LB.Gen (LB.LinComb D.P.L (DegPre.phiφ D F 0 α g.b) (DegPre.deltaε N))) (p' : LB.Gen (LB.LinComb D.P.L (DegPre.phiφ D F 0 (α + N • mu) g.b) (DegPre.deltaε N))), w.IsGen → u.IsGen → p.IsGen → p'.IsGen → LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ p (DegPre.zF D F).left) (LB.mulGen D.P.L _ _ _ _ (g.s α) w) → LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ p' (DegPre.zF D F).left) (LB.mulGen D.P.L _ _ _ _ (g.s (α + N • mu)) w) → ∀ z J, Good D.P.L z J → val p' (𝟙 _) z J * val u (DegPre.trPt D F g.b).left z J = val u (𝟙 _) z J * val p (DegPre.trF D F mu).left z J) := by
   intro hG R _ _ D F _ _ k g hg α mu w u p p' hw hu hp hp' hc hc' y J hJ

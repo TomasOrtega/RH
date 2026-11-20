@@ -7,13 +7,11 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.FrobUnit
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hb`. Take `⟨b', hb'⟩` from `hF.surj (↑u⁻¹ : O)`. Establish `hx0 : θ (b * b' - 1) = 0`. Rewrite using `[map_sub, map_mul, hb', ← hu, map_one, Units.mul_inv, sub_self]`. Take `⟨y, -, hy⟩` from `hF.pd _ hx0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI := hF.complete`. Establish `hj : (p : B) * y ∈ (⊥ : Ideal B).jacobson` using `IsAdicComplete.le_jacobson_bot _ (Ideal.mul_mem_right _ _ (Ideal.subset_span (Set.mem_singleton (p : B))))`. Establish `hu1` using `(Ideal.mem_jacobson_bot.1 hj) (-(-1) ^ p)`. Establish `hgeom` using `mul_neg_geom_sum (-(b * b' - 1)) p`. Establish `h2 : (1 - -(b * b' - 1)) * ∑ i ∈ Finset.range p, (-(b * b' - 1)) ^ i = (p : B) * y * (-(-1) ^ p) + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgeom, neg_pow, hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : IsUnit (1 - -(b * b' - 1))` using `isUnit_of_mul_isUnit_left (h2 ▸ hu1)`. Establish `h4 : (1 - -(b * b' - 1)) = b * b'` using `by ring`. Rewrite `h3` using `[h4]`.
-
-Conclude with `isUnit_of_mul_isUnit_left h3`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_isUnit_map {p : ℕ} {B O Q : Type} [CommRing B] [CommRing Q] [CommRing O]
     [Algebra B Q] {θ : B →+* O} (hF : IsFrame p Q θ) (b : B) (hb : IsUnit (θ b)) : IsUnit b := by
@@ -36,9 +34,9 @@ theorem isUnit_of_isUnit_map {p : ℕ} {B O Q : Type} [CommRing B] [CommRing Q] 
   exact isUnit_of_mul_isUnit_left h3
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap O C a) (Fact.out : p.Prime).pos`. Establish `h1 : v z ≤ 1`. Use `hv.map_le_one a` as an intermediate fact. Rewrite `this` using `[← hz, map_pow]`. Conclude with `(pow_le_one_iff_of_nonneg zero_le' (Fact.out : p.Prime).ne_zero).1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `hv.exists_of_le_one h1`. Conclude with `⟨r, hv.hom_inj (by rw [map_pow, hr, hz])⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C]
     {v : Valuation C NNReal} {O : Type} [CommRing O] [Algebra O C] (hv : v.Integers O) (a : O) :
@@ -52,33 +50,31 @@ theorem exists_pow_eq {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed
   exact ⟨r, hv.hom_inj (by rw [map_pow, hr, hz])⟩
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hL hμ k e hB hA U hU`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Establish `hm : ∀ x : O, ¬IsUnit x ↔ x ∈ IsLocalRing.maximalIdeal O` using `fun x => (IsLocalRing.mem_maximalIdeal x).symm`. Establish `hpm : ((p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O` using `(hm _).1 (Fact.out)`. Establish `hσ : ∀ b, ∃ z, F.σ b = b ^ p + (p : F.B) * z` using `fun b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `F.σ_pow b`. Conclude with `⟨z, by rw [← hz]; ring⟩`. Establish `hσm : ∀ b, F.θ b ∈ IsLocalRing.maximalIdeal O → F.θ (F.σ b) ∈ IsLocalRing.maximalIdeal O`. Introduce `b hb`. Take `⟨z, hz⟩` from `hσ b`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, map_add, map_pow, map_mul, map_natCast]`. Conclude with `Ideal.add_mem _ (Ideal.pow_mem_of_mem _ hb _ (Fact.out : p.Prime).pos) (Ideal.mul_mem_right _ _ hpm)`. Establish `key : ∀ w : Fin d ⊕ Fin k → F.B, (∀ l, ¬IsUnit (F.θ (U.mulVec (fun j => F.σ (w j)) l))) → ∀ l, ¬IsUnit (F.θ (w l))`. Introduce `w hw`. Establish `h1` using `GlobalTheory.T.quasiLog_first_block_small_of_frobenius p C v O hv ε hε F G d c μ' hL hμ k e hB hA U hU w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `GlobalTheory.T.small_mod_maximal_of_frobenius_image_small p C v O hv ε hε F G d c μ' hL hμ k e hB hA U hU (fun j => w (Sum.inr j)) (by`. Introduce `l`. Rewrite using `[hm]`. Establish `hsplit : U.mulVec (fun j => F.σ ((Sum.elim (fun _ => 0) (fun j => w (Sum.inr j)) : Fin d ⊕ Fin k → F.B) j)) l = U.mulVec (fun j => F.σ (w j)) l - ∑ m, U l m * F.σ ((Sum.elim (fun i => w (Sum.inl i)) (fun _ => 0) : Fin d ⊕ Fin k → F.B) m)`. Simplify using `only [Matrix.mulVec, dotProduct, ← Finset.sum_sub_distrib, ← mul_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `cases m <;> simp`. Rewrite using `[hsplit, map_sub]`. Use `Ideal.sub_mem _ ((hm _).1 (hw l)) ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Ideal.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `Ideal.mul_mem_left _ _ (hσm _ ?_)` and prove the remaining obligations. Consider the cases of `m with`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `inl i => simpa using (hm _).1 (h1 i)`. Consider the case `inr j => simp)`. Introduce `l`. Consider the cases of `l with`. Consider the case `inl i => exact h1 i`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `inr j => exact h2 j`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Apply `isUnit_of_isUnit_map F.frame` to reduce the goal to its premises. Rewrite using `[RingHom.map_det]`. Assume the negation of the conclusion as `hdet`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set M := (U.map F.θ).map (IsLocalRing.residue O) with hMdef`. Establish `hM : M.det = 0`. Rewrite using `[show M = (IsLocalRing.residue O).mapMatrix (F.θ.mapMatrix U) from rfl, ← RingHom.map_det]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 ((hm _).1 hdet)`. Take `⟨x, hx0, hx⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlift : ∀ l, ∃ b : F.B, IsLocalRing.residue O (F.θ b) ^ p = x l`. Introduce `l`. Take `⟨a, ha⟩` from `IsLocalRing.residue_surjective (x l)`. Take `⟨r, hr⟩` from `exists_pow_eq (p := p) hv a`. Take `⟨b, hb⟩` from `F.frame.surj r`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, by rw [hb, ← map_pow, hr, ha]⟩`. Use `choose w hw using hlift`. Establish `hres : ∀ b, IsLocalRing.residue O (F.θ (F.σ b)) = IsLocalRing.residue O (F.θ b) ^ p`. Introduce `b`. Take `⟨z, hz⟩` from `hσ b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hz, map_add, map_pow, map_mul, map_natCast, map_add, map_pow, map_mul, (IsLocalRing.residue_eq_zero_iff _).2 hpm, zero_mul, add_zero]`. Establish `hk` using `key w (by`. Introduce `l`. Rewrite using `[hm, ← IsLocalRing.residue_eq_zero_iff]`. Use `congrFun hx l` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Matrix.mulVec, dotProduct, hMdef, Matrix.map_apply, Pi.zero_apply] at this ⊢`. Rewrite using `[map_sum, map_sum]`. Simplify `this)` using `[hres, hw]`. Apply `hx0` to reduce the goal to its premises. Use function extensionality and compare the values at `l`.
-
-Rewrite using `[← hw l, (IsLocalRing.residue_eq_zero_iff _).2 ((hm _).1 (hk l)), zero_pow (Fact.out : p.Prime).ne_zero, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_matrix_isUnit : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (μ' : Fin d → MvPowerSeries (Fin d ⊕ Fin d) F.B), IsLift F.θ μ' → (∀ i, map F.θ (μ' i) = c.μ i) → ∀ (k : ℕ) (e : Fin d ⊕ Fin k → MvPowerSeries (Fin d) F.Q), IsBasis μ' e → IsAdapted F.θ μ' e → ∀ U : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B, (∀ i, In (⊤ : Ideal F.B) (frob p F.s (e i) - comb (fun l => (U * blk d k (p : F.B) 1) l i) e) ∧ ∀ i', i = Sum.inl i' → In (Ideal.span {(p : F.B)}) (frob p F.s (e i) - comb (fun l => (U * blk d k (p : F.B) 1) l i) e)) → IsUnit U := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hL hμ k e hB hA U hU

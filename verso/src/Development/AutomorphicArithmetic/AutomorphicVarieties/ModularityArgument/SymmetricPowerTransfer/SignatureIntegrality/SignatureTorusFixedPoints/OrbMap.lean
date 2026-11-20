@@ -5,9 +5,7 @@ open MulAction
 namespace UpperTheory.V.Z.Sym.Sig
 
 /- English proof (translation)
-Establish `hc : C.map (MulAut.conj t).toMonoidHom = C`. Rewrite using `[MulEquiv.toMonoidHom_eq_coe, ← Subgroup.mem_normalizer_iff_map_conj_eq, Subgroup.normalizer_eq_top_iff.mpr hC]`. Conclude with `Subgroup.mem_top t`. Rewrite using `[stabilizer_smul_eq_stabilizer_map_conj]`. Use `conv_lhs => rw [← hc]`.
-
-Conclude with `Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj t).injective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem relIndex_smul {T Y : Type} [Group T] [MulAction T Y] (C : Subgroup T) (hC : C.Normal)
     (t : T) (y : Y) : (stabilizer T (t • y)).relIndex C = (stabilizer T y).relIndex C := by
@@ -19,17 +17,17 @@ private theorem relIndex_smul {T Y : Type} [Group T] [MulAction T Y] (C : Subgro
   exact Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj t).injective
 
 /- English proof (translation)
-Establish `hkT : ∀ (t : T) (y : Y), k (t • y) = k y`. Introduce `t y`. Rewrite using `[hk, hk, hφ, hinv]`. Establish `hst : ∀ y : Y, stabilizer T (φ y) = stabilizer T y`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `t`. Rewrite using `[mem_stabilizer_iff, mem_stabilizer_iff, ← hφ]`. Conclude with `φ.injective.eq_iff`. Establish `cls' : ∀ (y z : Y'), z ∈ orbit T y → ((stabilizer T z).relIndex C : ℂ) * k' z = ((stabilizer T y).relIndex C : ℂ) * k' y`. Introduce `y z h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `mem_orbit_iff.mp h`. Rewrite using `[relIndex_smul C hC, hinv]`. Set `q : orbitRel.Quotient T Y ≃ orbitRel.Quotient T Y'` to `Quotient.congr φ (by`. Introduce `a b`. Rewrite using `[orbitRel_apply, orbitRel_apply, mem_orbit_iff, mem_orbit_iff]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, h⟩`. Conclude with `⟨t, by rw [← hφ, h]⟩`. Introduce and unpack `⟨t, h⟩`. Conclude with `⟨t, φ.injective (by rw [hφ, h])⟩)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Unfold `wcount`. Use `finsum_eq_of_bijective q q.bijective ?_` and prove the remaining obligations. Introduce `o`. Establish `hq : q o = Quotient.mk _ (φ (Quotient.out o))` using `by conv_lhs => rw [← Quotient.out_eq o]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `ho : Quotient.out (q o) ∈ orbit T (φ (Quotient.out o))`. Rewrite using `[← orbitRel_apply]`. Conclude with `Quotient.exact (by rw [Quotient.out_eq]; exact hq)`. Rewrite using `[cls' _ _ ho, hst, ← hk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wcount_congr {T Y Y' : Type} [Group T] [MulAction T Y] [MulAction T Y']
     (C : Subgroup T) (hC : C.Normal) (φ : Y ≃ Y') (hφ : ∀ (t : T) (y : Y), φ (t • y) = t • φ y)
@@ -82,11 +80,11 @@ private theorem qmap_mk {G G' : Type} [Group G] [Group G'] (e : G →* G') (U' :
     qmap e U' (g : G ⧸ U'.comap e) = (e g : G' ⧸ U') := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`. Take `⟨b, rfl⟩` from `QuotientGroup.mk_surjective y`. Rewrite `h` using `[qmap_mk, qmap_mk, QuotientGroup.eq]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[QuotientGroup.eq, Subgroup.mem_comap, map_mul, map_inv]`. Conclude with `h`. Introduce `z`. Take `⟨c, rfl⟩` from `QuotientGroup.mk_surjective z`. Take `⟨a, rfl⟩` from `he.2 c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, qmap_mk e U' a⟩`.
+A detailed English derivation is pending.
 -/
 private theorem qmap_bij {G G' : Type} [Group G] [Group G'] (e : G →* G') (he : Function.Bijective e)
     (U' : Subgroup G') : Function.Bijective (qmap e U') := by
@@ -103,9 +101,9 @@ private theorem qmap_bij {G G' : Type} [Group G] [Group G'] (e : G →* G') (he 
     exact ⟨a, qmap_mk e U' a⟩
 
 /- English proof (translation)
-Establish `hu : z⁻¹ * (z : G' ⧸ U').out ∈ U'` using `QuotientGroup.eq.mp (QuotientGroup.out_eq' (z : G' ⧸ U')).symm`. Take `⟨u, hu, hw⟩ : ∃ u ∈ U', (z : G' ⧸ U').out = z * u` from `⟨_, hu, (mul_inv_cancel_left z _).symm⟩`. Rewrite using `[hw, ← hf u hu (z⁻¹ * x * θ' z)]`. Use `congr 1`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 private theorem f_out {G' : Type} [Group G'] (θ' : G' →* G') (U' : Subgroup G') (f : G' → ℂ)
     (hf : ∀ u ∈ U', ∀ x, f (u⁻¹ * x * θ' u) = f x) (x z : G') :
@@ -122,27 +120,25 @@ private theorem f_out {G' : Type} [Group G'] (θ' : G' →* G') (U' : Subgroup G
 end UpperTheory.V.Z.Sym.Sig
 
 /- English proof (translation)
-Introduce `T G G' _ _ _ e he ι C θ θ' hθ U' f δ hf hδ hC`. Set `E : G ≃* G'` to `MulEquiv.ofBijective e he`. Establish `hc : ∀ (g : G), e (g⁻¹ * δ * θ g) = (e g)⁻¹ * e δ * θ' (e g)`. Introduce `g`. Rewrite using `[map_mul, map_mul, map_inv, hθ]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `letI : MulAction T (G ⧸ U'.comap e) := MulAction.compHom _ ι`. Use `letI : MulAction T (G' ⧸ U') := MulAction.compHom _ (e.comp ι)`. Unfold `UpperTheory.V.Z.Sym.orb`. Use `UpperTheory.V.Z.Sym.Sig.wcount_congr C hC (Equiv.ofBijective _ (UpperTheory.V.Z.Sym.Sig.qmap_bij e he U')) ?_ _ _ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t y`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective y`. Rewrite using `[MulAction.compHom_smul_def, MulAction.compHom_smul_def]`. Simplify using `only [Equiv.ofBijective_apply, MulAction.Quotient.smul_coe, smul_eq_mul, UpperTheory.V.Z.Sym.Sig.qmap_mk, map_mul, MonoidHom.comp_apply]`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Equiv.ofBijective_apply]`. Use `conv_rhs => rw [← QuotientGroup.out_eq' y, UpperTheory.V.Z.Sym.Sig.qmap_mk, UpperTheory.V.Z.Sym.Sig.f_out θ' U' f hf]`. Rewrite using `[hc]`. Introduce `t y`. Take `⟨z, rfl⟩` from `QuotientGroup.mk_surjective y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MulAction.compHom_smul_def, MulAction.Quotient.smul_coe, smul_eq_mul, UpperTheory.V.Z.Sym.Sig.f_out θ' U' f hf, UpperTheory.V.Z.Sym.Sig.f_out θ' U' f hf, MonoidHom.comp_apply]`. Use `congr 1`. Establish `h1 : e ((ι t)⁻¹ * δ * θ (ι t)) = e δ` using `by rw [hδ]`. Rewrite `h1` using `[hc]`. Establish `key : (e (ι t) * z)⁻¹ * e δ * θ' (e (ι t) * z) = z⁻¹ * ((e (ι t))⁻¹ * e δ * θ' (e (ι t))) * θ' z`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Use `group`. Rewrite using `[key, h1]`. Unfold `UpperTheory.V.Z.Sym.FinOrb`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨S, hS⟩`. Use `⟨S.image e, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `he.2 y`. Rewrite `hy` using `[← hc]`. Take `⟨t, s, hs, u, hu, rfl⟩` from `hS g hy`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨t, e s, Finset.mem_image_of_mem e hs, e u, hu, by simp [map_mul]⟩`. Introduce and unpack `⟨S, hS⟩`. Use `⟨S.image E.symm, fun g hg => ?_⟩` and prove the remaining obligations. Simplify using `only at hg`. Rewrite `hg` using `[hc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, s, hs, u, hu, h⟩` from `hS (e g) hg`. Use `⟨t, E.symm s, Finset.mem_image_of_mem _ hs, E.symm u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap] show E (E.symm u) ∈ U'`. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `hu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `E.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]`. Conclude with `h`. Introduce `y`. Use extensionality with `t`.
-
-Simplify using `only [Subgroup.mem_comap, mem_stabilizer_iff, MonoidHom.comp_apply, MulAction.Quotient.smul_coe, smul_eq_mul, QuotientGroup.eq, map_mul, map_inv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Sig.orbMap :
     UpperTheory.V.Z.Sym.Sig.OrbMap := by

@@ -56,7 +56,7 @@ def frameC {Q : ObjectProperty (Thick L)} {d : ℕ} (E : Frame (sP Q) d) : Frame
   bij := E.bij
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem polyC_crit {Q : ObjectProperty (Thick L)} (P : Poly (sP Q)) (r : ℤ)
     (h : P.Crit (fun _ => IdF.bot _) r) : (polyC c P).Crit (fun _ => IdF.bot _) r := h
@@ -67,7 +67,7 @@ section G
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Ideal.span {(l : T.obj.B) ^ m} = Ideal.span {T.obj.i ((l : O) ^ m)}`. Rewrite using `[map_pow, map_natCast]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lm_eq_span (Q : ObjectProperty (Thick (smFun X q))) (m : ℕ) (T : Q.FullSubcategory) :
     lm (l := l) T.obj m = (IdF.span (sP Q).A ((l : O) ^ m)).S T := by
@@ -89,7 +89,7 @@ theorem gρ_mk (h : OL l O) (Q : ObjectProperty (Thick (smFun X q))) (m : ℕ) (
     gρ h Q m hQ P hP T (Ideal.Quotient.mk (lm (l := l) T.obj m) a) = Ideal.Quotient.mk _ a := rfl
 
 /- English proof (translation)
-Introduce `x y hxy`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective (show GB (l := l) T.obj m from x)`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective (show GB (l := l) T.obj m from y)`. Establish `e : Ideal.Quotient.mk ((IdF.span (sP Q).A ((l : O) ^ m)).S T) (show T.obj.B from a) = Ideal.Quotient.mk _ (show T.obj.B from b)` using `hxy`. Conclude with `Ideal.Quotient.eq.2 ((lm_eq_span Q m T).ge (Ideal.Quotient.eq.1 e))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gρ_inj (h : OL l O) (Q : ObjectProperty (Thick (smFun X q))) (m : ℕ) (hQ : ∀ T, Q T → Good (l := l) T m)
     (P : ObjectProperty (Thick (Lm h q m))) (hP : ∀ T, P ((GF h Q m hQ).obj T)) (T : Q.FullSubcategory) :
@@ -132,7 +132,7 @@ section Gen
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R}
 
 /- English proof (translation)
-Consider the cases of `a`. Consider the cases of `b`. Reduce the equality to equality of the corresponding arguments. Conclude with `funext h`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem IdF.ext' {a b : IdF A} (h : ∀ T, a.S T = b.S T) : a = b := by
   cases a
@@ -141,9 +141,9 @@ theorem IdF.ext' {a b : IdF A} (h : ∀ T, a.S T = b.S T) : a = b := by
   exact funext h
 
 /- English proof (translation)
-Use `CrystallineSemistableComparison.P.mapH_bij _ (fun n => ⟨fun x y hxy => ?_, fun y => ?_⟩) j` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Use `(h _).1 ?_` and prove the remaining obligations. Use `congrFun hxy s` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨fun s => Function.surjInv (h _).2 (y s), funext fun s => Function.surjInv_eq (h _).2 (y s)⟩`.
+A detailed English derivation is pending.
 -/
 theorem idM_bij {R' : Type} [CommRing R'] {σ : R →+* R'} {F : C ⥤ ModuleCat.{0} R} {F' : C ⥤ ModuleCat.{0} R'}
     (τ : ∀ T, F.obj T →ₛₗ[σ] F'.obj T)
@@ -158,9 +158,9 @@ theorem idM_bij {R' : Type} [CommRing R'] {σ : R →+* R'} {F : C ⥤ ModuleCat
   · exact ⟨fun s => Function.surjInv (h _).2 (y s), funext fun s => Function.surjInv_eq (h _).2 (y s)⟩
 
 /- English proof (translation)
-Take `rfl : a = a'` from `IdF.ext' ha`. Take `rfl : b = b'` from `IdF.ext' hb`. Use `idM_bij (sqLe (a := a) (b := b) (a' := a) (b' := b) (fun T => le_rfl) (fun T => le_rfl)).τ (sqLe (a := a) (b := b) (a' := a) (b' := b) (fun T => le_rfl) (fun T => le_rfl)).nat (fun T => ?_) j` and prove the remaining obligations. Establish `e : (sqLe (a` using `a) (b := b) (a' := a) (b' := b) (fun T => le_rfl) (fun T => le_rfl)).τ T = LinearMap.id := by`. Use extensionality with `⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Function.bijective_id`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqLe_bij {a b a' b' : IdF A} (ha : ∀ T, a.S T = a'.S T) (hb : ∀ T, b.S T = b'.S T) (j : ℕ) :
     Function.Bijective ((sqLe (a := a) (b := b) (a' := a') (b' := b') (fun T => (ha T).le) (fun T => (hb T).le)).pull j) := by
@@ -180,7 +180,7 @@ section Lk
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
 
 /- English proof (translation)
-Use `(CrystallineSemistableComparison.P.prism (σ := RingHom.id O) ((gQ h Q m hQ P hP).o b hb) ((gP h Q m hQ P hP).comp (sqLe (a := IdF.top (sP Q).A) (a' := IdF.top (sP Q).A) (fun _ => le_rfl) hb')) (𝟙 _) (fun T y => ?_) j x).trans ((CrystallineSemistableComparison.P.pull_comp (σ'' := …` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective (show GB (l := l) T.obj m from y)`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem gQ_o (h : OL l O) (Q : ObjectProperty (Thick (smFun X q))) (m : ℕ) (hQ : ∀ T, Q T → Good (l := l) T m)
     (P : ObjectProperty (Thick (Lm h q m))) (hP : ∀ T, P ((GF h Q m hQ).obj T)) (b : IdF (sP Q).A)
@@ -210,7 +210,7 @@ def smulM (m : CH.Mor F F' (RingHom.id R)) (n : R) : CH.Mor F F' (RingHom.id R) 
     rw [m.nat, map_smul]
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `CrystallineSemistableComparison.CechClassBoundaries.clsSurj x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem smulM_pull (m : CH.Mor F F' (RingHom.id R)) (n : R) (j : ℕ) (x : CH.H F j) :
     (smulM m n).pull j x = n • m.pull j x := by
@@ -218,13 +218,13 @@ theorem smulM_pull (m : CH.Mor F F' (RingHom.id R)) (n : R) (j : ℕ) (x : CH.H 
   rfl
 
 /- English proof (translation)
-Set `e : (∀ _ : Unit, R ⊗[R] M) ≃+ M` to `(AddEquiv.piUnique (fun _ : Unit => R ⊗[R] M)).trans (TensorProduct.lid R M).toAddEquiv`. Establish `he : ∀ n x, e (Pi.single () (n ⊗ₜ x)) = n • x` using `fun n x => by simp [e]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Establish `: ∀ x, f x = g (e.symm x)` using `fun x => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2 : g (Pi.single () ((1 : R) ⊗ₜ x)) = f x` using `(hg () 1 x).trans (one_smul _ _)`. Establish `h3 : e.symm x = Pi.single () ((1 : R) ⊗ₜ x)`. Use `(AddEquiv.symm_apply_eq e).2 ?_` and prove the remaining obligations. Rewrite using `[he, one_smul]`. Rewrite using `[h3, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (f : M → M') = (e.symm.trans g)` using `funext this`. Rewrite using `[e2]`. Conclude with `(e.symm.trans g).bijective`. Introduce `hf`. Use `⟨e.trans (AddEquiv.ofBijective f.toAddMonoidHom hf), fun _ n x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `f (e _) = _`. Rewrite using `[he, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_iff {M M' : Type 1} [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M'] (f : M →ₗ[R] M') :
     Tens R (N := fun _ : Unit => R) (M := fun _ => M) (M' := M') (fun _ n x => n • f x) ↔ Function.Bijective f := by
@@ -248,9 +248,9 @@ theorem tens_iff {M M' : Type 1} [AddCommGroup M] [Module R M] [AddCommGroup M']
     rw [he, map_smul]
 
 /- English proof (translation)
-Establish `key` using `GlobalTheory.CompanionTheory.CosieveBC.base_change_of_cover (σ := RingHom.id R) m.G (ι := Unit) (fun _ => R) (fun _ => F) F' (fun _ n T => (smulM m n).τ T) (fun _ n _ _ φ x => (smulM m n).nat φ x) (fun _ n n' T x => by simp [smulM, add_smul]) (fun _ r n T x => by simp [smulM, mul …`. Take `⟨g, hg⟩` from `key`. Conclude with `(tens_iff (m.pull j)).1 ⟨g, fun i n x => (hg i n x).trans (smulM_pull m n j x)⟩`. Take `⟨g, hg⟩` from `(tens_iff ((morU m (U := capS U S) (U' := capS U' S) fun T hT α hα => h α T (hT α hα)).pull j)).2 (H S hS j)`. Use `⟨g, fun i n x => (hg i n x).trans ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, rfl⟩` from `CrystallineSemistableComparison.CechClassBoundaries.clsSurj x`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cover_bij (m : CH.Mor F F' (RingHom.id R)) {A : Type} [Fintype A] (U : A → ObjectProperty C)
     (U' : A → ObjectProperty C') (hU : ∀ α, Cosieve (U α)) (hU' : ∀ α, Cosieve (U' α)) (hc : ∀ T, ∃ α, U α T)
@@ -282,7 +282,7 @@ theorem pt_G (h : OL l O) (T : Thick (smFun X q)) (m : ℕ) (hT : Good (l := l) 
     pt (GObj h T m hT) = Spec.map (CommRingCat.ofHom (thG (l := l) T m)) ≫ pt T := rfl
 
 /- English proof (translation)
-Unfold `InU`. Rewrite using `[pt_G]`. Introduce `x _`. Conclude with `hV (show (Spec.map (CommRingCat.ofHom (thG (l := l) T m))) x ∈ ⊤ from trivial)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inU_G (h : OL l O) (T : Thick (smFun X q)) (m : ℕ) (hT : Good (l := l) T m) {V : X.Opens} (hV : InU V T) :
     InU V (GObj h T m hT) := by
@@ -292,7 +292,7 @@ theorem inU_G (h : OL l O) (T : Thick (smFun X q)) (m : ℕ) (hT : Good (l := l)
   exact hV (show (Spec.map (CommRingCat.ofHom (thG (l := l) T m))) x ∈ ⊤ from trivial)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LogCris.evalAt_map _ (pt T) hV hV' f`.
+A detailed English derivation is pending.
 -/
 theorem ev_G (h : OL l O) (T : Thick (smFun X q)) (m : ℕ) (hT : Good (l := l) T m) {V : X.Opens} (hV : InU V T)
     (hV' : InU V (GObj h T m hT)) (f : Γ(X, V)) :
@@ -300,7 +300,7 @@ theorem ev_G (h : OL l O) (T : Thick (smFun X q)) (m : ℕ) (hT : Good (l := l) 
   GlobalTheory.LogCris.evalAt_map _ (pt T) hV hV' f
 
 /- English proof (translation)
-Establish `key : ∀ (y : Spec (CommRingCat.of (T'.B ⧸ T'.J)) ⟶ X) (hy : y = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ pt T) (hh : ⊤ ≤ y ⁻¹ᵁ V), GlobalTheory.Cris.evalAt y V hh f = Ideal.quotientMap T'.J φ.φ φ.hle (ev T h f)`. Introduce `y hy hh`. Substitute `hy` using the available equality. Conclude with `GlobalTheory.LogCris.evalAt_map (B := CommRingCat.of (T.B ⧸ T.J)) (B' := CommRingCat.of (T'.B ⧸ T'.J)) _ (pt T) h hh f`. Conclude with `key _ (Site.pt_hom φ) h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ev_hom {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ} {κ : O →+* R ⧸ I} {V : X.Opens}
     {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (h : InU V T) (h' : InU V T') (f : Γ(X, V)) :
@@ -314,11 +314,11 @@ theorem ev_hom {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p :
   exact key _ (Site.pt_hom φ) h'
 
 /- English proof (translation)
-Establish `hV` using `inU_G h cO.D m hT cO.inV`. Take `⟨σ₀⟩` from `hg.1 _ hV`. Establish `hy : ∀ i, ((show (GObj h cO.D m hT).B from Ideal.Quotient.mk (lm (l` using `l) cO.D m) (cO.t i)) - σ₀.φ (cL.t i)) ∈ (GObj h cO.D m hT).J := by`. Introduce `i`. Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a1` using `ev_G h cO.D m hT cO.inV hV (c.t i)`. Establish `a2` using `ev_hom σ₀ cL.inV hV (c.t i)`. Rewrite `a1` using `[ht i]`. Rewrite `a2` using `[hcL i]`. Conclude with `a1.symm.trans a2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, h1, -⟩` from `hg.2 _ σ₀ _ hy`. Conclude with `⟨σ, fun i => by simpa using h1 i⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sig (h : OL l O) {W : X.Opens} {d : ℕ} (c : Coord q W d) (m : ℕ)
     (cL : Chart (pdm h m) l q (κm l O m) W d)

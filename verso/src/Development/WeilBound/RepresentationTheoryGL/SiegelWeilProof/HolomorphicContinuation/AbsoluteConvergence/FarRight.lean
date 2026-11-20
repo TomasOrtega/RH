@@ -17,31 +17,27 @@ variable {m n : ℕ} {ε : Fin m → Bool} {c t : ℝ} {p q : ℕ} {e : ℤ} {sL
   {sec I : PX m n →ₗ[ℂ] (G → ℂ)} {Λ : Set ((G → ℂ) → ℂ)}
 
 /- English proof (translation)
-Use `haveI := hν`. Establish `hcK : IsCompact (Set.range fun k : KR n => g * ι ((k : GR n) * yy i))` using `isCompact_range (continuous_const.mul (hG.ιcont.comp (continuous_subtype_val.mul continuous_const)))`. Take `⟨u, hu, hbd⟩` from `hmaj _ hcK`. Take `⟨B, hB⟩` from `(isCompact_univ (X := KR n)).exists_bound_of_continuousOn hκ.continuousOn`. Set `F : GlobalTheory.Eis.Cosets Pp Γ → KR n → ℂ` to `fun q' k => κ k * GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z 1) (g * ι ((k : GR n) * yy i)) q'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcont : ∀ q', Continuous (F q')`. Introduce `q'`. Establish `h` using `Far.cont_hz hD hL hG z (yy i) (GlobalTheory.Eis.term Pp Γ id g q')`. Use `hκ.mul ?_` and prove the remaining obligations. Simplify `h` using `[GlobalTheory.Eis.term, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hbound : ∀ q' k, ‖F q' k‖ ≤ B * u q'`. Introduce `q' k`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hB k trivial) (hbd _ ⟨k, rfl⟩ q') (norm_nonneg _) (le_trans (norm_nonneg _) (hB k trivial))`. Establish `hint : ∀ q', Integrable (F q') ν` using `fun q' => Integrable.mono' (integrable_const (B * u q')) (hcont q').aestronglyMeasurable (ae_of_all _ (hbound q'))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsumm : Summable fun q' => ∫ k, ‖F q' k‖ ∂ν`. Use `Summable.of_nonneg_of_le (fun q' => integral_nonneg fun _ => norm_nonneg _) (fun q' => integral_mono (hint q').norm (integrable_const (B * u q')) (hbound q')) ?_` and prove the remaining obligations. Simplify using `only [integral_const, smul_eq_mul]`. Conclude with `(hu.mul_left B).mul_left _`. Establish `hq : ∀ q', ∫ k, F q' k ∂ν = ∑ j, M (z - s₀) i j * GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z (QQ j)) g q'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `q'`. Establish `h` using `Far.pointId hD hL hG hMid z i (GlobalTheory.Eis.term Pp Γ id g q')`. Simplify `h` using `[F, GlobalTheory.Eis.term, mul_assoc]`. Establish `hzero : ∀ q', u q' = 0 → F q' = fun _ => 0`. Introduce `q' h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Establish `h1` using `hbound q' k`. Rewrite `h1` using `[h0, mul_zero]`. Conclude with `norm_le_zero_iff.mp h1`. Set `S : Set (GlobalTheory.Eis.Cosets Pp Γ)` to `Function.support u`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Countable S := hu.countable_support.to_subtype`. Establish `hout : ∀ q', q' ∉ S → u q' = 0` using `fun q' h => Function.notMem_support.mp h`. Establish `e1 : ∀ k, ∑' q', F q' k = ∑' q' : S, F q' k`. Introduce `k`. Use `(tsum_subtype_eq_of_support_subset ?_).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `q' hq'`. Assume the negation of the conclusion as `h`. Apply `hq'` to reduce the goal to its premises. Use `show F q' k = 0`. Rewrite using `[hzero q' (hout q' h)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∑' q', ∫ k, F q' k ∂ν = ∑' q' : S, ∫ k, F q' k ∂ν`. Use `(tsum_subtype_eq_of_support_subset ?_).symm` and prove the remaining obligations. Introduce `q' hq'`. Assume the negation of the conclusion as `h`. Apply `hq'` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show ∫ k, F q' k ∂ν = 0`. Rewrite using `[hzero q' (hout q' h)]`. Simplify using the standard rewrite rules. Establish `hL1 : ∫ k, κ k * GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ z 1) (g * ι ((k : GR n) * yy i)) ∂ν = ∫ k, ∑' q' : S, F q' k ∂ν`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[← e1 k]`. Simplify using `only [F, GlobalTheory.Eis.cosetSum]`. Rewrite using `[tsum_mul_left]`. Establish `hswap : ∫ k, ∑' q' : S, F q' k ∂ν = ∑' q' : S, ∫ k, F q' k ∂ν` using `(integral_tsum_of_summable_integral_norm (F := fun (q' : S) k => F q' k) (fun q' => hint q') (hsumm.subtype S)).symm`.
-
-Rewrite using `[hL1, hswap, ← e2]`. Repeatedly rewrite using `[hq]`. Rewrite using `[Summable.tsum_finsetSum (fun j _ => (hsum j).mul_left _)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[tsum_mul_left]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem farId [MeasurableSpace (KR n)] [BorelSpace (KR n)] (hD : CayleyBlocksInvertible) (hL : LocData ε c t p q e sL ρ)
     (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) {ν : Measure (KR n)} {κ : KR n → ℂ} {N : ℕ}
@@ -135,7 +131,7 @@ namespace PositivityTheory.Rg.Sw.AbsSt
 open PositivityTheory.Rg.Sw
 
 /- English proof (translation)
-Introduce `hI hD hM _hH m n ε c t p q e sL ρ hL G _ _ _ _ _ _ Pp Γ ι s₀ Ht sec I Λ hG`. Take `⟨σ, h1, h2, hmaj⟩` from `Far.farHol hI hM hD hL hG`. Use `⟨σ, h1, h2, ?_⟩` and prove the remaining obligations. Introduce `_ _ ν κ N yy QQ M hν hκ hMid z hzr g i`. Conclude with `Far.farId hD hL hG hν hκ hMid (hmaj z hzr) g (fun j => h2 (QQ j) g z hzr) i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem farRight : Iwa → CayleyBlocksInvertible → Mult → HolParam → FarRight := by
   intro hI hD hM _hH m n ε c t p q e sL ρ hL G _ _ _ _ _ _ Pp Γ ι s₀ Ht sec I Λ hG

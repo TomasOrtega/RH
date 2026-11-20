@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.Isom
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.TracePowEq.trace_pow_eq`. Consider the case `exact _root_.GlobalTheory.TracePowEq.trace_pow_eq`. Consider the case `(apply _root_.GlobalTheory.TracePowEq.trace_pow_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TracePowEq.trace_pow_eq <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.TracePowEq.trace_pow_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TracePowEq.trace_pow_eq ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem trace_pow_rect {A : Type} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n → Fin n → A) (E' : Fin m → Fin m → A)
     (P : Matrix (Fin m) (Fin n) ℂ) (Q : Matrix (Fin n) (Fin m) ℂ) (hPQ : P * Q = 1) (hQP : Q * P = 1)
@@ -49,7 +49,7 @@ def conjSm (hθ : IsInfFam θ) :
   map_add' f g := LinearMap.ext fun x => by simp
 
 /- English proof (translation)
-Use `show I.trSm hθ (f ((I.trSm hθ).symm (I.trSm hθ x))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjSm_apply (hθ : IsInfFam θ) (f : Module.End ℂ (GlobalTheory.Mem.AutSpace.SmFun θ V)) (x : GlobalTheory.Mem.AutSpace.SmFun θ V) :
     I.conjSm hθ f (I.trSm hθ x) = I.trSm hθ (f x) := by
@@ -57,13 +57,13 @@ theorem conjSm_apply (hθ : IsInfFam θ) (f : Module.End ℂ (GlobalTheory.Mem.A
   rw [LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => by simp [conjSm]`.
+A detailed English derivation is pending.
 -/
 theorem conjSm_smul (hθ : IsInfFam θ) (c : ℂ) (f : Module.End ℂ (GlobalTheory.Mem.AutSpace.SmFun θ V)) :
     I.conjSm hθ (c • f) = c • I.conjSm hθ f := LinearMap.ext fun x => by simp [conjSm]
 
 /- English proof (translation)
-Use `LinearMap.ext fun ψ => ?_` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `(I.trSm hθ).surjective ψ`. Rewrite using `[conjSm_apply]`. Conclude with `Subtype.ext (I.RderC_tr hθ τ Z φ.1)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derEnd_tr (hθ : IsInfFam θ) (τ : D.what₂.Tau) (Z : Matrix (Fin V'.rank) (Fin V'.rank) ℂ) :
     GlobalTheory.Mem.RealTranslate.derEnd hθ τ Z = I.conjSm hθ (GlobalTheory.Mem.RealTranslate.derEnd hθ τ (I.symm.adP τ Z)) := by
@@ -73,7 +73,7 @@ theorem derEnd_tr (hθ : IsInfFam θ) (τ : D.what₂.Tau) (Z : Matrix (Fin V'.r
   exact Subtype.ext (I.RderC_tr hθ τ Z φ.1)
 
 /- English proof (translation)
-Rewrite using `[matrix_eq_sum_single (I.symm.adP τ _)]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Use `congr 1`. Simplify using `[adP, pT, qT, symm, Matrix.mul_apply, Matrix.single, ite_and]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem symm_adP_single (τ : D.what₂.Tau) (a b : Fin V'.rank) :
     I.symm.adP τ (Matrix.single a b 1) = ∑ c, ∑ d, (I.qT τ c a * I.pT τ b d) • (Matrix.single c d 1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) := by
@@ -84,15 +84,15 @@ theorem symm_adP_single (τ : D.what₂.Tau) (a b : Fin V'.rank) :
   simp [adP, pT, qT, symm, Matrix.mul_apply, Matrix.single, ite_and]
 
 /- English proof (translation)
-Introduce `D V V' I θ hθ τ k φ hφ`. Set `E0 : Fin V.rank → Fin V.rank → Module.End ℂ (GlobalTheory.Mem.AutSpace.SmFun θ V)` to `fun c d => GlobalTheory.Mem.RealTranslate.derEnd hθ τ (Matrix.single c d 1)`. Set `E' : Fin V'.rank → Fin V'.rank → Module.End ℂ (GlobalTheory.Mem.AutSpace.SmFun θ V')` to `fun a b => GlobalTheory.Mem.RealTranslate.derEnd hθ τ (Matrix.single a b 1)`. Establish `key` using `trace_pow_rect (fun c d => I.conjSm hθ (E0 c d)) E' (I.pT τ) (I.qT τ) (I.pT_qT τ) (I.qT_pT τ) (fun a b => by`. Simplify using `only [E', E0]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[I.derEnd_tr hθ τ, I.symm_adP_single τ a b]`. Simplify using `only [map_sum, LinearMap.map_smul, conjSm_smul]) (k + 1)`. Establish `hm : Matrix.of (fun c d => I.conjSm hθ (E0 c d)) = (I.conjSm hθ).mapMatrix (Matrix.of E0)`. Use extensionality with `c d`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `hs : ∑ c, (((I.conjSm hθ).mapMatrix (Matrix.of E0)) ^ (k + 1)) c c = I.conjSm hθ (∑ c, (Matrix.of E0 ^ (k + 1)) c c)`. Rewrite using `[← RingHom.map_pow, map_sum]`. Both sides reduce to the same expression. Rewrite `key` using `[hm, hs, ← GlobalTheory.SmoothForms.gelfA_eq_sum_pow, ← GlobalTheory.SmoothForms.gelfA_eq_sum_pow]`. Establish `e1` using `GlobalTheory.Mem.RealTranslate.gelf_eq hθ τ k (I.trSm hθ ⟨φ, hφ⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `GlobalTheory.Mem.RealTranslate.gelf_eq hθ τ k (⟨φ, hφ⟩ : GlobalTheory.Mem.AutSpace.SmFun θ V)`. Use `e1.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(GlobalTheory.SmoothForms.gelfA E' k (I.trSm hθ ⟨φ, hφ⟩)).1 = _`. Rewrite using `[key, conjSm_apply]`. Use `show I.tr _ = I.tr _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`.
+A detailed English derivation is pending.
 -/
 theorem gelf_tr : ∀ (D : D7) (V V' : HSp D) (I : GlobalTheory.Mem.Isom.IsoMat V V') (θ : InfF D), IsInfFam θ →
     ∀ (τ : D.what₂.Tau) (k : ℕ) (φ : GA D V → ℂ), φ ∈ GlobalTheory.Mem.AutSpace.SmFun θ V →

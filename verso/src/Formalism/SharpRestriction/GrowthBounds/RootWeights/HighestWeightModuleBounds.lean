@@ -11,7 +11,7 @@ open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Simplify using `only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem v2rep_mem_weightSp (E : GLOps n K V) (mu : Fin n → ℤ) (x : V) :
     x ∈ weightSp E mu ↔ ∀ a, E a a x = (mu a : K) • x := by
@@ -19,9 +19,9 @@ theorem v2rep_mem_weightSp (E : GLOps n K V) (mu : Fin n → ℤ) (x : V) :
     Module.End.one_apply, sub_eq_zero]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f : Module.End K V => f x) (hR a b c d)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Rewrite `h` using `[sub_eq_iff_eq_add']`. Rewrite using `[h]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem v2rep_comm (E : GLOps n K V) (hR : SatisfiesGLRelations E) (a b c d : Fin n) (x : V) :
     E a b (E c d x) = E c d (E a b x) + ((if b = c then E a d x else 0) - (if d = a then E c b x else 0)) := by
@@ -33,11 +33,11 @@ theorem v2rep_comm (E : GLOps n K V) (hR : SatisfiesGLRelations E) (a b c d : Fi
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[v2rep_mem_weightSp]`. Introduce `c`. Rewrite using `[v2rep_comm E hR c c a b x, hx c, map_smul]`. Apply the tactic sequence `by_cases hca : c = a <;> by_cases hcb : c = b`. Substitute `hca` using the available equality.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Substitute `hcb` using the available equality. Simplify using `[rootW]`. Substitute `hca` using the available equality. Simplify using `[rootW, hcb, Ne.symm hcb]`. Use `module`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `hcb` using the available equality. Simplify using `[rootW, hca]`. Use `module`. Simplify using `[rootW, hca, hcb, Ne.symm hcb]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem v2rep_shift (E : GLOps n K V) (hR : SatisfiesGLRelations E) (a b : Fin n) (ν : Fin n → ℤ) (x : V)
     (hx : x ∈ weightSp E ν) : E a b x ∈ weightSp E (ν + rootW a b) := by
@@ -60,13 +60,13 @@ def cyclicLevelSubmodule (E : GLOps n K V) (v : V) : ℕ → Submodule K V
   | k + 1 => cyclicLevelSubmodule E v k ⊔ ⨆ ab : Fin n × Fin n, ⨆ (_ : ab.2 < ab.1), (cyclicLevelSubmodule E v k).map (E ab.1 ab.2)
 
 /- English proof (translation)
-Conclude with `le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem v2rep_Y_le (E : GLOps n K V) (v : V) (k : ℕ) : cyclicLevelSubmodule E v k ≤ cyclicLevelSubmodule E v (k + 1) := by
   exact le_sup_left
 
 /- English proof (translation)
-Use `show E a b x ∈ cyclicLevelSubmodule E v k ⊔ _`. Use `Submodule.mem_sup_right ?_` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem (a, b) ?_` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem h ?_` and prove the remaining obligations. Conclude with `Submodule.mem_map_of_mem hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem v2rep_Y_low (E : GLOps n K V) (v : V) (k : ℕ) (a b : Fin n) (h : b < a) (x : V) (hx : x ∈ cyclicLevelSubmodule E v k) :
     E a b x ∈ cyclicLevelSubmodule E v (k + 1) := by
@@ -77,19 +77,15 @@ theorem v2rep_Y_low (E : GLOps n K V) (v : V) (k : ℕ) (a b : Fin n) (h : b < a
   exact Submodule.mem_map_of_mem hx
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `c d hcd x hx`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Rewrite using `[map_smul]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Break down `hcd.lt_or_eq with hlt | heq` into its components or cases. Rewrite using `[hv.2.2 c d hlt]`. Conclude with `Submodule.zero_mem _`. Substitute `heq` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(v2rep_mem_weightSp E mu v).1 hv.2.1 c]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self v)`. Consider the case `succ k ih`. Establish `hany : ∀ p q : Fin n, ∀ y ∈ cyclicLevelSubmodule E v k, E p q y ∈ cyclicLevelSubmodule E v (k + 1)`. Introduce `p q y hy`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `lt_or_ge q p with hqp | hpq` into its components or cases. Conclude with `v2rep_Y_low E v k p q hqp y hy`. Conclude with `v2rep_Y_le E v k (ih p q hpq y hy)`. Introduce `c d hcd`. It suffices to establish `hs : cyclicLevelSubmodule E v (k + 1) ≤ (cyclicLevelSubmodule E v (k + 1)).comap (E c d) from fun x hx => hs hx`.
+Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `sup_le (fun y hy => v2rep_Y_le E v k (ih c d hcd y hy)) ?_` and prove the remaining obligations. Use `iSup_le fun ab => iSup_le fun hab => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `y hy`. Rewrite using `[Submodule.mem_comap, Submodule.mem_comap, v2rep_comm E hR c d ab.1 ab.2 y]`.
-
-Use `Submodule.add_mem _ (v2rep_Y_low E v k ab.1 ab.2 hab _ (ih c d hcd y hy)) ?_` and prove the remaining obligations. Use `Submodule.sub_mem _ ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hany c ab.2 y hy`. Conclude with `Submodule.zero_mem _`.
-
-Use `split_ifs`. Conclude with `hany ab.1 d y hy`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem v2rep_Y_up (E : GLOps n K V) (hR : SatisfiesGLRelations E) (mu : Fin n → ℤ) (v : V) (hv : IsHWV E mu v) (k : ℕ) :
     ∀ c d : Fin n, c ≤ d → ∀ x ∈ cyclicLevelSubmodule E v k, E c d x ∈ cyclicLevelSubmodule E v k := by
@@ -128,7 +124,7 @@ theorem v2rep_Y_up (E : GLOps n K V) (hR : SatisfiesGLRelations E) (mu : Fin n �
       · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Break down `lt_or_ge b a with hba | hab` into its components or cases. Conclude with `v2rep_Y_low E v k a b hba y hy`. Conclude with `v2rep_Y_le E v k (v2rep_Y_up E hR mu v hv k a b hab y hy)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem v2rep_Y_all (E : GLOps n K V) (hR : SatisfiesGLRelations E) (mu : Fin n → ℤ) (v : V) (hv : IsHWV E mu v) (k : ℕ)
     (a b : Fin n) (y : V) (hy : y ∈ cyclicLevelSubmodule E v k) : E a b y ∈ cyclicLevelSubmodule E v (k + 1) := by
@@ -137,11 +133,11 @@ theorem v2rep_Y_all (E : GLOps n K V) (hR : SatisfiesGLRelations E) (mu : Fin n 
   · exact v2rep_Y_le E v k (v2rep_Y_up E hR mu v hv k a b hab y hy)
 
 /- English proof (translation)
-Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem u hu`. Take `⟨ab, rfl⟩` from `hu`. Introduce `k x hx`. Conclude with `⟨k + 1, v2rep_Y_all E hR mu v hv k ab.1 ab.2 x hx⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `one`. Introduce `k x hx`. Conclude with `⟨k, hx⟩`. Consider the case `mul u₁ u₂ _ _ h₁ h₂`. Introduce `k x hx`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k₂, hk₂⟩` from `h₂ k x hx`. Take `⟨k₁, hk₁⟩` from `h₁ k₂ _ hk₂`. Conclude with `⟨k₁, hk₁⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem v2rep_Umon_Y (E : GLOps n K V) (hR : SatisfiesGLRelations E) (mu : Fin n → ℤ) (v : V) (hv : IsHWV E mu v)
     (u : Module.End K V) (hu : u ∈ Umon E) : ∀ k, ∀ x ∈ cyclicLevelSubmodule E v k, ∃ k', u x ∈ cyclicLevelSubmodule E v k' := by
@@ -163,13 +159,13 @@ def dominantWeightSubmodule [NeZero n] (E : GLOps n K V) (mu : Fin n → ℤ) : 
   ⨆ ν ∈ {ν : Fin n → ℤ | mu (lastIdx n) ≤ ν (lastIdx n) ∧ ν 0 ≤ mu 0}, weightSp E ν
 
 /- English proof (translation)
-Use `iSup₂_le fun ν hν => ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[Submodule.mem_comap]`. Establish `hs` using `v2rep_shift E hR a b ν x hx`. Establish `ha0 : a ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `h` using `[h0]`. Conclude with `absurd h (Fin.not_lt_zero b)`. Establish `hbl : b ≠ lastIdx n`. Introduce `hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (a : ℕ) ≤ n - 1` using `Nat.le_sub_one_of_lt a.2`. Establish `h2 : (b : ℕ) < a` using `h`. Rewrite `h2` using `[hb]`. Simplify using `[lastIdx] at h2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `(le_iSup₂ (f := fun ν (_ : ν ∈ {ν : Fin n → ℤ | mu (lastIdx n) ≤ ν (lastIdx n) ∧ ν 0 ≤ mu 0}) => weightSp E ν) (ν + rootW a b) ?_) hs` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hν`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp only [Pi.add_apply, rootW, Pi.sub_apply, Pi.single_apply, Ne.symm hbl, if_false, sub_zero] split_ifs <;> omega`. Apply the tactic sequence `simp only [Pi.add_apply, rootW, Pi.sub_apply, Pi.single_apply, Ne.symm ha0, if_false, zero_sub] split_ifs <;> omega`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem v2rep_Good_low [NeZero n] (E : GLOps n K V) (hR : SatisfiesGLRelations E) (mu : Fin n → ℤ) (a b : Fin n) (h : b < a) :
     dominantWeightSubmodule E mu ≤ (dominantWeightSubmodule E mu).comap (E a b) := by
@@ -198,9 +194,9 @@ theorem v2rep_Good_low [NeZero n] (E : GLOps n K V) (hR : SatisfiesGLRelations E
     split_ifs <;> omega
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `(Submodule.span_singleton_le_iff_mem _ _).2 ?_` and prove the remaining obligations. Conclude with `(le_iSup₂ (f := fun ν (_ : ν ∈ {ν : Fin n → ℤ | mu (lastIdx n) ≤ ν (lastIdx n) ∧ ν 0 ≤ mu 0}) => weightSp E ν) mu ⟨le_rfl, le_rfl⟩) hv.2.1`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `sup_le ih (iSup_le fun ab => iSup_le fun hab => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Conclude with `ih.trans (v2rep_Good_low E hR mu ab.1 ab.2 hab)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v2rep_Y_Good [NeZero n] (E : GLOps n K V) (hR : SatisfiesGLRelations E) (mu : Fin n → ℤ) (v : V) (hv : IsHWV E mu v)
     (k : ℕ) : cyclicLevelSubmodule E v k ≤ dominantWeightSubmodule E mu := by
@@ -215,7 +211,7 @@ theorem v2rep_Y_Good [NeZero n] (E : GLOps n K V) (hR : SatisfiesGLRelations E) 
     exact ih.trans (v2rep_Good_low E hR mu ab.1 ab.2 hab)
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ n _ E hR mu v hv u hu`. Take `⟨k, hk⟩` from `v2rep_Umon_Y E hR mu v hv u hu 0 v (Submodule.mem_span_singleton_self v)`. Conclude with `v2rep_Y_Good E hR mu v hv k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem highest_weight_module_bounds : HighestWeightModuleWeightBounds := by
   intro K V _ _ _ _ n _ E hR mu v hv u hu

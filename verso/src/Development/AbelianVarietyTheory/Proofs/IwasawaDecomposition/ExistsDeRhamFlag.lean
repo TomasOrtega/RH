@@ -31,7 +31,7 @@ variable {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {V : ValuationSubring c.
   {X : Scheme.{0}} {π : X ⟶ M.X} {ty : (E →+* ℂ) → Finset ℕ}
 
 /- English proof (translation)
-Use `⟨fun h σ k hk => h σ k (Finset.mem_insert_of_mem hk), fun h σ k hk i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hk with rfl | hk` into its components or cases. Conclude with `absurd hi (Nat.not_lt_zero _)`. Conclude with `h σ k hk i hi`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sameFlag_insert_zero {X₀ : Scheme.{0}} {t : SAB H X₀} {R : Type} [CommRing R] (x : Sp R ⟶ X₀)
     (u u' : Vecs Dw t R) : SameFlag (fun σ => insert 0 (ty σ)) t x u u' ↔ SameFlag ty t x u u' := by
@@ -41,7 +41,7 @@ theorem sameFlag_insert_zero {X₀ : Scheme.{0}} {t : SAB H X₀} {R : Type} [Co
   · exact h σ k hk i hi
 
 /- English proof (translation)
-Simplify using `only [PreAtlas.FlagAt, sameFlag_insert_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flagAt_insert_zero (A : PreAtlas M X) {K : Type} [Field K] (w : Sp K ⟶ X) (u : Vecs Dw M.t K) :
     A.FlagAt π (fun σ => insert 0 (ty σ)) w u ↔ A.FlagAt π ty w u := by
@@ -70,9 +70,9 @@ def PiLocalization₂ (Z : Mdl Y i₀) (k : (E →+* ℂ) → ℕ) : Prop :=
     ∀ Z'' : Mdl Y i₀, HasDR Z'' → (∃ g, IsMap Z'' Z g) → ∃ h, MapsTo Z'' A h
 
 /- English proof (translation)
-Use `isDiscreteValuationRing_V Z.i.c W hp hW` as an intermediate fact. Use `⟨Z.X, Z.π, _, (atlasOf Z).addZero, 𝟙 _, geoOf Z, Category.id_comp _, fun σ => Finset.subset_insert _ _, fun σ => Finset.insert_subset (by simp) (hZ σ), fun σ => by simp, fun σ => GlobalTheory.T.atlas_integral_at_index_zero E H Dw _ _ _ _ _ _ _ _ _ σ, fun K _ w u h => ?_, fun Z'' …` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Conclude with `(flagAt_insert_zero _ w u).1 h`. Take `⟨τ, mu, u, h1, h2, h3, h4⟩` from `hg.2 k w hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨τ, mu, u, h1, h2, h3, (flagAt_insert_zero _ _ _).2 h4⟩`.
+A detailed English derivation is pending.
 -/
 theorem stage_zero (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀)
     (hZ : ∀ σ, Z.ty σ ⊆ Finset.range (Dw.mult σ + 1)) : PiLocalization₂ Z fun _ => 0 := by
@@ -86,33 +86,27 @@ theorem stage_zero (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i�
     exact ⟨τ, mu, u, h1, h2, h3, (flagAt_insert_zero _ _ _).2 h4⟩
 
 /- English proof (translation)
-Use `isDiscreteValuationRing_V Z.i.c W hp hW` as an intermediate fact. Establish `: CharZero Z.i.c.F` using `RingHom.charZero Z.i.c.F.val.toRingHom`. Take `⟨X, π, ty, A₀, f, geo, hf, s₁, s₂, s₃, int, fl, mn⟩` from `h`. Take `⟨D₀, N, hEm⟩` from `GlobalTheory.T.exists_adapted_embedding E H Dw _ _ _ _ _ _ _ _ A₀ σ (k σ) geo (GlobalTheory.T.nonempty_adapted_of_intStep E H Dw _ _ _ _ _ _ _ _ A₀ σ (k σ) geo (int σ))`. Take `⟨A, hA, α, hα⟩` from `GlobalTheory.T.exists_atlas_refining_cocycle E H Dw _ _ _ _ _ _ _ _ A₀ D₀.C`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `D : Adapted A σ (k σ)` to `⟨D₀.C, D₀.b, fun a K _ w hw u hu => D₀.int a K w hw u ((hA K w _).1 hu), D₀.coord⟩`. Establish `ex : ∃ r, k σ + r + 1 ∈ ty σ ∨ k σ + r + 1 = Dw.mult σ` using `⟨Dw.mult σ - k σ - 1, Or.inr (by omega)⟩`. Set `r` to `Nat.find ex`. Establish `hr : k σ + r + 1 ∈ ty σ ∨ k σ + r + 1 = Dw.mult σ` using `Nat.find_spec ex`. Establish `hj : k σ + r + 1 ≤ Dw.mult σ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hr with h | h` into its components or cases. Conclude with `Nat.lt_succ_iff.1 (Finset.mem_range.1 (s₂ σ h))`. Conclude with `h.le`. Establish `gap : ∀ e ∈ ty σ, e ≤ k σ ∨ k σ + r + 1 ≤ e` using `fun e he => by`. Distinguish the cases in `h : e ≤ k σ`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact.
 
-Conclude with `Or.inl h`. Establish `: r ≤ e - k σ - 1` using `Nat.find_min' ex (Or.inl (by rwa [show k σ + (e - k σ - 1) + 1 = e by omega]))`. Conclude with `Or.inr (by omega)`. Take `⟨Sb, hSb⟩` from `GlobalTheory.T.adapted_next_step_type E H Dw _ _ _ _ _ _ _ _ A σ (k σ) r D hj hr α hα`. Take `⟨Cl⟩` from `GlobalTheory.T.nonempty_closure_of_embedding _ X (π ≫ (Y Z.i).s) geo.proj geo.normal geo.flat D.C N hEm A.ch r Sb`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ty'` to `Function.update ty σ (insert (k σ + 1) (ty σ))`. Establish `t₁ : ty' σ = insert (k σ + 1) (ty σ)` using `Function.update_self _ _ _`. Establish `t₂ : ∀ σ', σ' ≠ σ → ty' σ' = ty σ'` using `fun σ' h => Function.update_of_ne h _ _`. Take `⟨A', rel⟩` from `GlobalTheory.T.adapted_substep_closure E H Dw _ _ _ _ _ _ _ _ A σ (k σ) r D hj hk Sb Cl ty' hSb hr gap t₁ t₂`. Establish `down : ∀ (K : Type) [Field K] (w : Sp K ⟶ Cl.Z') (u : Vecs Dw (Y Z.i).t K), A'.FlagAt w u → A₀.FlagAt (w ≫ Cl.f) u` using `fun K _ w u hu => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, φ, -, hfr, -⟩` from `id hu`. Rewrite `hfr` using `[← Category.assoc]`. Take `⟨U, rfl⟩` from `exists_up fun σ i => (hfr.1 σ i).1`. Conclude with `(hA K _ _).1 ((rel K w U).1 hu).1`. Establish `geo' : Geo (Y Z.i) (Cl.f ≫ π)` using `⟨by rw [Category.assoc]; exact Cl.proj, Cl.normal, by rw [Category.assoc]; exact Cl.flat, A'.cover ▸ by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[A'.cover, Scheme.Hom.comp_base, TopCat.coe_comp, Set.preimage_comp, ← A.cover, ← Cl.carrier_eq]`. Conclude with `Cl.dense⟩`. Establish `s₂' : ∀ σ', ty' σ' ⊆ Finset.range (Dw.mult σ' + 1)` using `fun σ' => by`. Distinguish the cases in `e : σ' = σ`. Substitute `e` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[t₁]`. Conclude with `Finset.insert_subset (Finset.mem_range.2 (by omega)) (s₂ _)`. Rewrite using `[t₂ σ' e]`. Conclude with `s₂ σ'`. Use `⟨Cl.Z', Cl.f ≫ π, ty', A', Cl.f ≫ f, geo', by rw [Category.assoc, hf], fun σ' => ?_, s₂', fun σ' => ?_, fun σ' => ?_, fun K _ w u hu => ?_, fun Z'' hd hg => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `e : σ' = σ`. Substitute `e` using the available equality. Rewrite using `[t₁]`. Conclude with `(s₁ _).trans (Finset.subset_insert _ _)`. Rewrite using `[t₂ σ' e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `s₁ σ'`. Distinguish the cases in `e : σ' = σ`. Substitute `e` using the available equality. Rewrite using `[t₁, h₁, Finset.range_add_one]`. Conclude with `Finset.insert_subset_insert _ (s₃ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[t₂ σ' e, h₂ σ' e]`. Conclude with `s₃ σ'`. Distinguish the cases in `e : σ' = σ`. Substitute `e` using the available equality. Rewrite using `[h₁]`.
-
-Conclude with `GlobalTheory.T.adapted_linear_pullback E H Dw _ _ _ _ _ _ _ _ A σ' (k σ') D hk _ Cl.f Cl.L ty' A' rel`. Rewrite using `[h₂ σ' e]`. Conclude with `GlobalTheory.T.atlas_pullback_preserves_step E H Dw _ _ _ _ _ _ _ _ A₀ σ' (k σ') _ Cl.f ty' A' down (int σ')`. Rewrite using `[← Category.assoc]`. Conclude with `fl K _ u (down K w u hu)`.
-
-Take `⟨g, hg'⟩` from `mn Z'' hd hg`. Take `⟨g₀, hc, -⟩` from `hg`. Establish `hg'' : MapsTo Z'' A g` using `fun K _ w hw => by`. Take `⟨τ, mu, u, h1, h2, h3, h4⟩` from `hg' K w hw`. Conclude with `⟨τ, mu, u, h1, h2, h3, (hA K _ _).2 h4⟩`.
-
-Conclude with `GlobalTheory.T.atlas_model_comparison E H Dw Xo p W Y i₀ Z.i _ _ ty' A' Z'' hp hW geo' hc.2.1 (fun σ' => hd.1 σ' ▸ s₂' σ') (GlobalTheory.T.adapted_closure_local_system E H Dw Xo p W Y i₀ Z.i X π ty A σ (k σ) r D hk Sb Cl ty' A' Z'' g rel hd hg'')`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stage_succ (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) {k k' : (E →+* ℂ) → ℕ} (σ : E →+* ℂ)
     (hk : k σ < Dw.mult σ) (h₁ : k' σ = k σ + 1) (h₂ : ∀ σ', σ' ≠ σ → k' σ' = k σ') (h : PiLocalization₂ Z k) : PiLocalization₂ Z k' := by
@@ -188,13 +182,13 @@ theorem stage_succ (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i�
       (GlobalTheory.T.adapted_closure_local_system E H Dw Xo p W Y i₀ Z.i X π ty A σ (k σ) r D hk Sb Cl ty' A' Z'' g rel hd hg'')
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `k _ h`. Take `rfl : k = fun _ => 0` from `funext fun σ => Finset.sum_eq_zero_iff.1 h σ (Finset.mem_univ _)`. Conclude with `stage_zero hp hW Z hZ`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `k hk h`. Take `⟨σ, -, hσ⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (h ▸ n.succ_ne_zero : ∑ σ, k σ ≠ 0)`. Establish `e₁ : Function.update k σ (k σ - 1) σ = k σ - 1` using `Function.update_self _ _ _`. Use `stage_succ hp hW Z (k := Function.update k σ (k σ - 1)) σ (by have := hk σ; omega) (by omega) (fun σ' e => (Function.update_of_ne e _ _).symm) (ih _ (fun σ' => ?_) ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `e : σ' = σ`. Substitute `e` using the available equality. Use `hk σ'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_of_ne e]`.
+Substitute using the available equality. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk σ'`. Rewrite using `[Finset.sum_update_of_mem (Finset.mem_univ _)]`. Rewrite `h` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ σ), Finset.erase_eq]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem stage_all (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀)
     (hZ : ∀ σ, Z.ty σ ⊆ Finset.range (Dw.mult σ + 1)) (n : ℕ) :
@@ -219,9 +213,9 @@ theorem stage_all (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀
       omega
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W hp hW Y i₀ Z hZ`. Take `⟨X, π, ty, A, f, geo, hf, s₁, s₂, s₃, int, fl, mn⟩` from `stage_all hp hW Z hZ _ Dw.mult (fun _ => le_rfl) rfl`. Take `⟨Z', e, hi, hty, m₁, m₂, m₃⟩` from `GlobalTheory.T.exists_model_of_atlas E H Dw Xo p W Y i₀ Z.i X π ty A Z.dvd Z.le geo`. Establish `full : ∀ σ, Z'.ty σ = Finset.range (Dw.mult σ + 1)` using `fun σ => hty ▸ (s₂ σ).antisymm (s₃ σ)`. Use `⟨Z', hi, GlobalTheory.T.hasDR_of_full_intStep E H Dw Xo p W Y i₀ Z' full fun σ => m₃ σ _ (int σ), ⟨e.hom ≫ f, ⟨hi ▸ ⟨dvd_rfl, le_rfl, dvd_rfl⟩, hi ▸ le_rfl, hty ▸ s₁⟩, m₂ _ _ _ (atlasOf Z) f hf fl⟩, fun Z'' hd hg => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h, hh⟩` from `mn Z'' hd hg`. Take `⟨g, hc, -⟩` from `hg`. Conclude with `⟨h ≫ e.inv, ⟨hi ▸ hc.1, hi ▸ hc.2.1, fun σ => by rw [full, hd.1]⟩, m₁ Z'' h hh⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isDRFlag : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Y : LocalSystem Xo p W) (i₀ : Idx H p), ∀ Z : Mdl Y i₀, (∀ σ, Z.ty σ ⊆ Finset.range (Dw.mult σ + 1)) → ∃ Z', IsDRFlag Z Z' := by
   intro E _ _ _ H Dw Xo p W hp hW Y i₀ Z hZ

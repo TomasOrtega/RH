@@ -25,9 +25,9 @@ noncomputable section
 namespace GlobalTheory.Hk3.OpsRowsTuple
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.GoodPrimes.offS_iff]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl`. Simplify using `only [Finset.mem_image, Finset.mem_union, not_exists, not_and]`. Use `forall₂_congr fun PP _ => ⟨fun h => ⟨fun e => h (by rw [e]), fun e => h (GlobalTheory.LevelPlaces.under_eq_of_isConjPl e)⟩, fun h e => ?_⟩` and prove the remaining obligations. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq e.symm with h1 | h1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h.1 h1.symm`. Conclude with `h.2 (GlobalTheory.GoodPrimes.isConjPl_iff.2 h1)`.
+A detailed English derivation is pending.
 -/
 theorem offS_badPl_iff {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (t : T) (w : Pl D.host.E) :
@@ -42,17 +42,15 @@ theorem offS_badPl_iff {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} 
   · exact h.2 (GlobalTheory.GoodPrimes.isConjPl_iff.2 h1)
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC hS t`. Establish `hgp` using `GlobalTheory.GoodPrimes.good_primes R F hC.lev`. Establish `hg` using `hgp.2.1`. Establish `hoff` using `offS_badPl_iff R t`. Establish `h0 : ∀ P, Good R t P → Good R A.μ0 P` using `fun P hP => (hg t P hP).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ` using `hC.lev.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)`. Consider the cases of `hβ with`. Consider the case `intro n hβ`. Establish `lev` using `fun P (hP : Good R t P) => GlobalTheory.T.level_operators_at_prime_off_level_datum (Yc D 0) (R.βY 0) (R.ΛY 0) _ (R.dat0 R.triv) hβ P (by rw [Nat.cast_pow]; exact fun hm => (hg _ P (h0 P hP)).1 (P.isPrime.mem_of_pow_mem n hm)) (fun PP hPP => h0 P hP PP (hPP.imp id fun h => absurd …`. Establish `H` using `GlobalTheory.Hk3.OpsRows.exists_ops (θ := R.θ) (M := R.MY 0) (levG _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) (GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t) R.ν0 R.fd0 hC.models.inf hC.models.ν0.1.1 hC.models.ν0.2 hS.2.1 R.HE _ hC.mod …`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : Good R t P`. Take `⟨_, _, _, _, hO, -⟩` from `hB`. Conclude with `(hoff P).1 hO`. Conclude with `⟨hP, (((lev P hP).2.1 _ d B).1 hB).2⟩,`. Use `fun hB => ((lev P hB.1).2.1 _ d B).2 ⟨(hoff P).2 hB.1, hB.2⟩⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun P hP => (lev P hP).1)`. Use the proof step `(fun P hP c U hU => by`. Take `⟨hU1, hU2⟩` from `(mem_goodPart _ _ _ _ _ _).1 hU`. Use `(mem_goodPart _ _ _ _ _ _).2 ⟨(lev P hP).2.2.2.2 _ _ _ c hC.models.inf U hU1, fun v => ?_⟩` and prove the remaining obligations. Establish `hfix : ∀ k ∈ hyp (Yc D 0) P, ∀ g, U v (g * k) = U v g` using `fun k hk g => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.Hk3.OpsRows.mult_lev hU1 v k ((lev P hP).1 k hk).1 g, ((lev P hP).1 k hk).2, one_mul]`. Rewrite using `[postOn_apply]`. Use `conv_rhs => rw [← hU2 v]`. Simplify using `only [RealDat.e0, gaL, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
-
-Use `congr 1`. Conclude with `(lev P hP).2.2.2.1 c _ _ hfix)`. Consider the cases of `H with`. Consider the case `intro h H2`. Conclude with `⟨h, H2.1, H2.2.1, fun c => H2.2.2.2.1 _, fun c => H2.2.2.2.2 _⟩`.
+Reduce the equality to equality of the corresponding arguments. Split into cases according to the possible forms of the given data. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ops_tuple : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → GlobalTheory.Hk3.SchurAll R → ∀ t : T, ∃ h : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ R.HE.H, (∀ P, GlobalTheory.Hk3.Good R t P → ∀ c x, R.HE.e (h P c x) = postOn (R.MY 0) (GlobalTheory.Hk3.hk (Yc D 0) P c) (R.HE.e x)) ∧ GlobalTheory.Hk3.NormalFam (GlobalTheory.Hk3.Good R t) h ∧ (∀ (c : Pl D.host.E → List ℤ → ℂ) P, GlobalTheory.Hk3.Good R t P → ∀ cc, ∀ x ∈ GlobalTheory.Hk3.EEc R (GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t) c, h P cc x = GlobalTheory.Hk3.evC (Yc D 0) P (fun d => c P (dualLab d)) cc • x) ∧ ∀ (c : Pl D.host.E → List ℤ → ℂ) x, (∀ P d, GlobalTheory.Hk3.Good R t P → GlobalTheory.Hk3.IsLab (Yc D 0) P d → h P (Finsupp.single d 1) x = c P (dualLab d) • x) → x ∈ GlobalTheory.Hk3.EEc R (GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t) c := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC hS t

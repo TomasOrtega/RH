@@ -30,15 +30,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Simplify using `[unfFam]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unfFam_self (U : Formalism.L2.PjFree.Unf Xo c σ r) : unfFam U σ = U := by
   simp [unfFam]
 
 /- English proof (translation)
-Establish `hinj` using `fun (W : GlobalTheory.Dict.UW U) => GlobalTheory.Dict.UW.ik_injective hσ hU h1 W`. Take `⟨-, -, -, -, -, g, e, F, ik, φ, hiso, hP⟩` from `hU`. Establish `h` using `hinj ⟨g, e, F, ik, φ, hiso, hP⟩`. Establish `hP2` using `hP`. Use `choose Pm h1' h2' h3' h4' h5' using hP2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨g, e, F, ik, φ, hiso, Pm, h1', h2', fun k x => ⟨h3' k x, h4' k x⟩, h5'⟩, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_unfWit_inj {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) (h1 : 1 ≤ r) : ∃ W : UnfWit U, Function.Injective W.ik := by
@@ -50,7 +50,7 @@ theorem exists_unfWit_inj {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formali
   exact ⟨⟨g, e, F, ik, φ, hiso, Pm, h1', h2', fun k x => ⟨h3' k x, h4' k x⟩, h5'⟩, h⟩
 
 /- English proof (translation)
-Take `⟨ψ, σ', k, x, rfl | rfl, h2, h3, h4, h5, h6⟩` from `h`. Take `rfl : σ' = σ` from `h2`. Use `⟨k, x, h4, Subtype.ext (h5.trans ((congrArg (· ≫ y.1) (Spec.map_id _)).trans (Category.id_comp _))), fun τ i => by rw [h6 τ i, spMap_dualMap_id, Category.id_comp]⟩` and prove the remaining obligations. Conclude with `(not_good_conj c (σ := σ) hσ (h2 ▸ h3)).elim`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hodgeFrame_comp {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.PjFree.GoodEmb c σ) {y : CxPts (genStr Z) σ}
     {g : EigFrame Z σ (y.1 ≫ genι Z)} (h : IsHodgeFrame (unfFam U) y g) :
@@ -63,15 +63,13 @@ theorem hodgeFrame_comp {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism
   · exact (not_good_conj c (σ := σ) hσ (h2 ▸ h3)).elim
 
 /- English proof (translation)
-Establish `hr : Set.range y.1 ⊆ Set.range Z.jQ`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `rfl : p = IsLocalRing.closedPoint ℂ` from `Subsingleton.elim _ _`. Conclude with `not_not.1 hy`. Use `Z.jQ_open` as an intermediate fact.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `xF` to `IsOpenImmersion.lift Z.jQ y.1 hr`. Establish `hxF : xF ≫ Z.jQ = y.1` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hs : xF ≫ pullback.snd _ _ = spMap (algebraMap c.F (CAt σ))`. Establish `h2` using `y.2`. Rewrite `h2` using `[← hxF, Category.assoc, Z.jQ_over]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `ho : (xF ≫ pullback.fst _ _) ≫ Xo.s = sOf c (CAt σ)`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs]`. Conclude with `OpenReg.spMap_comp _ _`. Establish `: IsLocalRing (CAt σ)` using `inferInstanceAs (IsLocalRing ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩ : ∃ z : FrPt Xo c (CAt σ), z.x = xF ≫ pullback.fst _ _` from `GlobalTheory.FlagTan.exists_frPt _ ho`. Take `⟨k, f, t, hb⟩` from `hU.2.2.1 z`. Take `⟨x, hx, b, hb', e⟩` from `ortho_holds r _ f.1 f.2`. Take `⟨t', ht⟩` from `(hU.2.2.2.1 k k ⟨x, KU.orth_dom _ hx⟩ f).2 ⟨1, one_mem _, b, hb', by rw [KU.lact_one, ← e]⟩`. Use `⟨k, ⟨x, KU.orth_dom _ hx⟩, hx, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[cxPt_congr (ht.1.symm.trans hb.1.symm)]`. Conclude with `Subtype.ext (Eq.trans (congrArg (· ≫ Z.jQ) (pullback.hom_ext ((ptF_fst z).trans hz) ((ptF_snd z).trans hs.symm))) hxF)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orth {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf U)
     {y : CxPts (genStr Z) σ} (hy : ¬ LiesIn y (genBd Z)) :
@@ -101,15 +99,13 @@ theorem exists_orth {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.
     (pullback.hom_ext ((ptF_fst z).trans hz) ((ptF_snd z).trans hs.symm))) hxF)
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Establish `hco : g.co f τ = (cxFrame Z q).co f τ`. Establish `h1 : g.co (cxFrame Z q) τ = 1`. Use `EigFrame.co_eq fun k => ?_` and prove the remaining obligations. Rewrite using `[← hg τ k]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `isCombAtG_single _ _ (g.tan τ) k using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.one_apply, Pi.single_apply]`. Rewrite using `[← EigFrame.co_mul g (cxFrame Z q) f τ, h1, Matrix.one_mul]`. Establish `hx : GlobalTheory.AllWt.ptF (S` using `CAt σ) q ≫ Z.jQ ≫ genι Z = (cxPt Z q).1 ≫ genι Z := (Category.assoc _ _ _).symm`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `L` to `lieEquiv (S := CAt σ) Z q hx`. Use `⟨(tv ((pushE Z.m (GlobalTheory.AllWt.ptF (S := CAt σ) q) hx).symm (f.vec τ b))).left, isTan_tv _, ?_, ?_⟩` and prove the remaining obligations. Establish `h2` using `left_pushE Z.m (GlobalTheory.AllWt.ptF (S := CAt σ) q) hx ((pushE Z.m (GlobalTheory.AllWt.ptF (S := CAt σ) q) hx).symm (f.vec τ b))`. Conclude with `h2.symm.trans (congrArg (fun v => (tv v).left) (LinearEquiv.apply_symm_apply (pushE Z.m (GlobalTheory.AllWt.ptF (S := CAt σ) q) hx) (f.vec τ b)))`. Use `show IsCombAt q.x (q.u τ) _ (tv (L.symm (f.vec τ b))).left`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(isComb_iff (t := Xo.univ.t) (S := CAt σ) (fun i => tanOf (q.tan τ i)) _ (L.symm (f.vec τ b))).2 (L.injective ?_)` and prove the remaining obligations. Rewrite using `[hco]`. Establish `e1` using `(cxFrame Z q).vec_eq f τ b`. Use `(LinearEquiv.apply_symm_apply L _).trans ?_` and prove the remaining obligations. Rewrite using `[map_sum, e1]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(LinearEquiv.map_smul L _ _).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_lift_comb (q : FrPt Xo c (CAt σ)) {y : CxPts (genStr Z) σ} (hq : cxPt Z q = y)
     (g f : EigFrame Z σ (y.1 ≫ genι Z)) (hg : ∀ τ i, g.v τ i = (cxFrame Z q).v τ i) (τ : E →+* ℂ)
@@ -162,31 +158,25 @@ open GlobalTheory.ShFam.Hor.LogCh
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z σ d g ty Fu ch i B P hB hBt hPer hPd hPu V φ F hstr`. Use `set R := {b ∈ B | ch.e.symm b ∈ ptsIn (genStr Z) σ V.1 ∧ ¬ LiesIn (ch.e.symm b) (genBd Z)} with hR`. Break down `B.eq_empty_or_nonempty with hBe | ⟨b₀, hb₀⟩` into its components or cases. Use `⟨0, fun τ k => ?_, fun b hb => by simp [hBe] at hb⟩` and prove the remaining obligations. Establish `: R = ∅`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `b`. Simplify using `[hR, hBe]`. Rewrite using `[this]`. Conclude with `differentiableOn_empty`. Set `L` to `EuclideanSpace.equiv (Fin d) ℂ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set B₁ : Set (Fin d → ℂ) := L.symm ⁻¹' B with hB₁`. Establish `hB₁o : IsOpen B₁` using `hB.preimage L.symm.continuous`. Set `P₂ : (Fin d → ℂ) → ((Fu.Di i).La →+ (Fin g → ℂ))` to `fun x => if L.symm x ∈ B then P (L.symm x) else P b₀`. Establish `hP₂ : ∀ x, IsPeriod (Fu.Di i) ty (P₂ x)` using `fun x => by`. Distinguish the cases in `h : L.symm x ∈ B`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [P₂, if_pos h]`. Conclude with `hPer _ h`. Simplify using `only [P₂, if_neg h]`. Conclude with `hPer _ hb₀`. Establish `hP₂d : ∀ a, DifferentiableOn ℂ (fun x => P₂ x a) B₁` using `fun a => ((hPd a).comp L.symm.differentiableOn fun x hx => hx).congr fun x hx => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [P₂, if_pos (show L.symm x ∈ B from hx), Function.comp_apply]`. Establish `hP₂L : ∀ b ∈ B, P₂ (L b) = P b` using `fun b hb => by`. Simplify using `only [P₂, ContinuousLinearEquiv.symm_apply_apply, if_pos hb]`. Establish `hover : ∀ x, Fu.u i (P₂ x) ≫ Xo.s = spMap σ ≫ spMap (IntermediateField.inclusion c.le).toRingHom` using `fun x => by`. Rewrite using `[Fu.over_σ i _ (hP₂ x), ← Spec.map_comp]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Set `p : (Fin d → ℂ) → (Sp ℂ ⟶ Xo.XF c)` to `fun x => pullback.lift _ _ (hover x)`. Establish `hu : ∀ x, Fu.u i (P₂ x) = p x ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)` using `fun x => (pullback.lift_fst _ _ _).symm`. Establish `hs : ∀ x, p x ≫ pullback.snd _ _ = spMap σ` using `fun x => pullback.lift_snd _ _ _`. Establish `hpq : ∀ b ∈ B, ∀ q : FrPt Xo c (CAt σ), cxPt Z q = ch.e.symm b → p (L b) = GlobalTheory.AllWt.ptF (S` using `CAt σ) q := fun b hb q hq => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[← hu, hP₂L b hb, hPu b hb q hq.symm]`. Conclude with `(GlobalTheory.TrueCx.ptC_fst q).symm`. Rewrite using `[hs]`. Conclude with `(GlobalTheory.TrueCx.ptC_snd q).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hσφ : ∀ {y : CxPts (genStr Z) σ} (h : y ∈ ptsIn (genStr Z) σ V.1), σ = (evHom h).comp φ` using `fun {y} h => by`. Establish `e : spMap σ = spMap ((evHom h).comp φ)`. Rewrite using `[← y.2, ← spMap_evHom h, Category.assoc, hstr, ← Spec.map_comp]`. Both sides reduce to the same expression. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hRV : ∀ b ∈ R, ⊤ ≤ (p (L b) ≫ Z.jQ) ⁻¹ᵁ V.1` using `fun b hb => by`. Establish `hx : (ch.e.symm b).1 ≫ genι Z = spMap (evHom hb.2.1) ≫ LogKS.chart V ≫ genι Z`. Rewrite using `[← Category.assoc, spMap_evHom hb.2.1]`. Take `⟨f, -⟩` from `F.exists_isMap (evHom hb.2.1) (hσφ hb.2.1) hx`. Take `⟨q, hq, -⟩` from `GlobalTheory.T.exists_framedComplexPoint_of_eigenFrame_off_boundary _ _ _ _ _ _ _ _ Z σ _ hb.2.2 f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpq b hb.1 q hq]`. Use `show ⊤ ≤ (cxPt Z q).1 ⁻¹ᵁ V.1`. Rewrite using `[hq]`. Conclude with `hb.2.1`. Use `choose W hW hWd using fun (a : Σ τ : E →+* ℂ, Fin (Dw.mult τ)) => GlobalTheory.T.expCoordinates_tangentField_holomorphic_periodMap _ _ _ _ _ _ _ _ Z σ g ty Fu i d B₁ P₂ p hu V (F.v a.1 a.2) hB₁o hP₂ hP₂d hs (F.tan a.1 a.2)`.
-
-Use `⟨fun b τ k => W ⟨τ, k⟩ (L b), fun τ k => ?_, fun b hb hy f hf q hq τ k w hwt hw2 => ?_⟩` and prove the remaining obligations. Conclude with `(hW ⟨τ, k⟩).comp L.differentiableOn fun b hb => ⟨by simpa [hB₁] using hb.1, hRV b hb⟩`. Establish `hd` using `hWd ⟨τ, k⟩ (L b) (by simpa [hB₁] using hb) (ch.e.symm b) hy (by rw [hpq b hb q hq, ← hq]; rfl)`. Establish `hfv : spMap (dualMap (evHom hy)) ≫ F.v τ k = w ≫ Z.m.φ` using `by rw [hw2, hf τ k]`. Rewrite `hd` using `[hfv]`.
-
-Establish `hbase : w ≫ Z.oF.t.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ p (L b)`. Rewrite using `[hpq b hb q hq]`. Conclude with `hwt.1`. Establish `h` using `isDerivAt0_ex_of_push Z Fu (p (L b)) i (P₂ (L b)) (hP₂ _) (hu _) hbase hd`. Rewrite `h` using `[hP₂L b hb]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_expCoord_of_base : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (d g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (ch : AlgChart (genStr Z) σ d) (i : Fin Fu.n) (B : Set (ReciprocityTheory.L2DbarEstimates.V d)) (P : ReciprocityTheory.L2DbarEstimates.V d → ((Fu.Di i).La →+ (Fin g → ℂ))), IsOpen B → B ⊆ ch.e.target → (∀ b ∈ B, IsPeriod (Fu.Di i) ty (P b)) → (∀ v, DifferentiableOn ℂ (fun b => P b v) B) → (∀ b ∈ B, ∀ y : FrPt Xo c (CAt σ), ch.e.symm b = cxPt Z y → Fu.u i (P b) = y.x) → ∀ (V : (gen Z).affineOpens) (φ : c.F →+* Γ(gen Z, V.1)) (F : EigFrame Z φ (LogKS.chart V ≫ genι Z)), LogKS.chart V ≫ genStr Z = spMap φ → ∃ z : ReciprocityTheory.L2DbarEstimates.V d → ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Fin g → ℂ), (∀ τ k, DifferentiableOn ℂ (fun b => z b τ k) {b ∈ B | ch.e.symm b ∈ ptsIn (genStr Z) σ V.1 ∧ ¬ LiesIn (ch.e.symm b) (genBd Z)}) ∧ ∀ b ∈ B, ∀ (hy : ch.e.symm b ∈ ptsIn (genStr Z) σ V.1) (f : EigFrame Z σ ((ch.e.symm b).1 ≫ genι Z)), F.IsMap (evHom hy) f → ∀ q : FrPt Xo c (CAt σ), cxPt Z q = ch.e.symm b → ∀ τ k (w : Sp (DualNumber ℂ) ⟶ Z.oF.t.G.left), IsTanAtG Z.oF.t (GlobalTheory.AllWt.ptF (S := CAt σ) q) w → w ≫ Z.m.φ = f.v τ k → IsDerivAt0 (fun v => (Fu.ex i (P b) v).left) (z b τ k) (w ≫ Z.m0.toSABMap.φ) := by
   classical
@@ -273,33 +263,31 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Set `ρ : U.Comp → (E →+* ℂ) → (E →+* ℂ)` to `fun k τ => if Formalism.L2.PjFree.relab c σ τ ∈ (U.X k).Ψ then Formalism.L2.PjFree.relab c σ τ else ComplexEmbedding.conjugate (Formalism.L2.PjFree.relab c σ τ)`. Use `⟨fun k τ => ((2 * ((ρ k τ) (-(U.X k).ξ0)).im : ℝ) : ℂ), fun k τ h => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ((ρ k τ) (-(U.X k).ξ0)).im = 0`. Establish `h' : (((2 * ((ρ k τ) (-(U.X k).ξ0)).im : ℝ) : ℂ)) = 0` using `h`. Establish `: 2 * ((ρ k τ) (-(U.X k).ξ0)).im = 0` using `by exact_mod_cast h'`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (ρ k τ) (-(U.X k).ξ0) = 0` using `Complex.ext (re_xi (U.X k) _) h1`. Conclude with `(U.X k).ξ0_ne (neg_eq_zero.1 ((map_eq_zero _).1 h2))`. Introduce `k x hx i P hP Hm hH hPu τ zz uu T hder hT`. Take `⟨hp0, hty⟩` from `hU.2.1 k`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨f, hf⟩` from `FrameUnif.exists_letter_equiv (U.X k).Ψ (U.X k).cmType Dw.p Dw.q r hU.1 (Formalism.L2.PjFree.relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Rewrite `hf` using `[← hp0]`. Establish `hper (v) : W.Pm k x v = perVec (U.X k) (W.e.trans f) x.1 (W.φ k v : Fin r → E)` using `funext fun j => by`. Rewrite using `[W.Pm_eq, perVec, Equiv.trans_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hf (W.e j)`. Generalize the expression as in `f (W.e j) = t at h ⊢`. Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`. Simplify using `only at h ⊢`. Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by omega), Formalism.L2.PjFree.perFr, dif_pos a, dif_pos hn]`. Rewrite using `[if_pos (by omega), Formalism.L2.PjFree.perFr, dif_neg a, dif_pos (show conjEmb (Formalism.L2.PjFree.relab c σ (W.e j).1) ∈ (U.X k).Ψ from hτ), dif_pos hn]`. Both sides reduce to the same expression. Use `set D := diagXi (U.X k) (W.e.trans f) with hDdef`. Establish `hD : ∀ j : Fin (Dw.mult τ), D (W.e.symm ⟨τ, j⟩) = ((2 * ((ρ k τ) (-(U.X k).ξ0)).im : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[hDdef, diagXi, Equiv.trans_apply, Equiv.apply_symm_apply]`. Break down `hf ⟨τ, j⟩ with ⟨a, h1, -⟩ | ⟨a, h1, -, -⟩` into its components or cases. Rewrite using `[h1]`. Simplify using `only [ρ, if_pos a]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Simplify using `only [ρ, if_neg a]`. Establish `him : ∀ v w, (hermForm (diagonal D) (W.Pm k x v) (W.Pm k x w)).im = (W.F.Di (W.ik k)).EF v w`. Introduce `v w`. Rewrite using `[hper, hper, im_diag_ortho _ _ _ hx, ← W.iso]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `p` using `W.period k x`. Take `⟨hPx, hv⟩` from `W.lie k x`. Take `⟨h, gam, hex, hh, hiso, -⟩` from `familyUnif_exp_unique E H Dw l Xo _ _ _ W.F i (W.ik k) P _ hP p (by rw [← hPx]; exact hPu)`. Use `set A := LinearMap.toMatrix' h.toLinearMap with hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAv : ∀ z, A *ᵥ z = h z` using `fun z => by rw [hA, LinearMap.toMatrix'_mulVec]; rfl`. Establish `hcol (b) : A *ᵥ zz b = ∑ j, T j b • (Pi.single (W.e.symm ⟨τ, j⟩) 1 : Fin W.g → ℂ)`. Establish `d1` using `(DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ _ _ W.F _ _ p _ ((U.un k x).u τ) _ (hv τ) _ (uu b)).1 (hPx ▸ hT b)`. Establish `d2` using `(ExpChain.isDerivAt0_ex_iff E H Dw l Xo _ _ _ W.F _ P hP _ _ h.toLinearMap p hex _ _).1 (hder b)`. Establish `tn` using `isDerivAt0_ex_isTanAt E H Dw l Xo _ _ _ W.F _ _ p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hAv]`. Conclude with `(tn.2.2 _ (tn.1 _ _ d2)).unique d2 d1`. Establish `key` using `UnitDet.eq_of_im_hermForm_eq _ hP.2.2.2.1 (Aᵀ * (diagonal D * A.map (starRingEnd ℂ))) Hm (by`. Introduce and unpack `_ ⟨v, rfl⟩ _ ⟨w, rfl⟩`. Rewrite using `[← UnitDet.hermForm_mulVec, hAv, hAv, ← hh, ← hh, him, hiso, hH])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsupp : ∀ b, diagonal D *ᵥ star (∑ j, T j b • (Pi.single (W.e.symm ⟨τ, j⟩) 1 : Fin W.g → ℂ)) = (((2 * ((ρ k τ) (-(U.X k).ξ0)).im : ℝ) : ℂ) • (1 : Matrix (Fin W.g) (Fin W.g) ℂ)) *ᵥ star (∑ j, T j b • (Pi.single (W.e.symm ⟨τ, j⟩) 1 : Fin W.g → ℂ))`. Introduce `b`. Simplify using `only [smul_mulVec, Matrix.one_mulVec]`. Use function extensionality and compare the values at `p'`. Rewrite using `[mulVec_diagonal, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hp : ∃ j, W.e.symm ⟨τ, j⟩ = p'`. Take `⟨j, rfl⟩` from `hp`. Rewrite using `[hD j]`. Use `push_neg at hp`. Establish `: (∑ j, T j b • (Pi.single (W.e.symm ⟨τ, j⟩) 1 : Fin W.g → ℂ)) p' = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [Pi.smul_apply, Pi.single_eq_of_ne (hp j).symm, smul_zero]`. Simplify using `[Pi.star_apply, this]`. Use extensionality with `b b'`. Rewrite using `[of_apply, ← key, ← UnitDet.hermForm_mulVec, hcol, hcol, hermForm, hsupp, ← hermForm]`.
-
-Use `beta_reduce`. Generalize the expression as in `(((2 * ((ρ k τ) (-(U.X k).ξ0)).im : ℝ) : ℂ)) = dd`. Use `clear hsupp key hcol hAv hiso hh hex hper him hD hf hT hder hH hPu`. Establish `hi : ∀ j j' : Fin (Dw.mult τ), W.e.symm ⟨τ, j⟩ = W.e.symm ⟨τ, j'⟩ ↔ j = j'` using `fun j j' => by simp`. Simplify using `[hermForm, smul_mulVec, sum_dotProduct, dotProduct_sum, star_sum, Pi.single_apply, hi, mul_apply, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_diag_riem {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) (W : UnfWit U) :
@@ -416,31 +404,29 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   [SmoothOfRelativeDimension Dw.dim (genStr Z)] {σ : c.F →+* ℂ}
 
 /- English proof (translation)
-Use `set U' := unfFam U σ with hU'def`. Establish `hU' : Formalism.L2.PjFree.IsUnf U'` using `by rw [hU'def, unfFam_self]; exact hU`. Establish `h1 : 1 ≤ Dw.p + Dw.q`. Use `a.2` as an intermediate fact. Unfold `Datum.mult at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs at this <;> omega`. Take `⟨W, hinj⟩` from `exists_unfWit_inj hσ hU' h1`. Take `⟨d, hd0, hd⟩` from `exists_diag_riem hσ hU' W`. Take `⟨k₀, x₀, -, hq₀⟩` from `exists_orth (Z := Z) hσ hU' hbd`. Take `⟨ch, hch⟩` from `AlgChart.exists_mem_source (p := genStr Z) (σ := σ) (D := Dw.dim) y₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, B, P, hB, hb₀, hBt, hPer, hPhol, hPu⟩` from `GlobalTheory.ShFam.chart_lift_periods _ _ _ _ _ _ _ _ Z σ Dw.dim W.g _ W.F ch (U'.un k₀ x₀) (hq₀ ▸ hch)`. Rewrite `hb₀` using `[hq₀]`. Take `⟨Hm, hHm, hHs⟩` from `GlobalTheory.RiemSmooth.exists_riem_contDiffOn _ _ _ _ _ _ σ W.g _ W.F i Dw.dim B P hB hPer hPhol`. Take `⟨z, hz, hzl⟩` from `GlobalTheory.ShFam.ExpCoord.exists_expCoord_of_base _ _ _ _ _ _ _ _ Z σ Dw.dim W.g _ W.F ch i B P hB hBt hPer hPhol hPu V φ F hstr`. Establish `hik : ∀ c0 ∈ B, ∀ k (x : (U'.X k).dom), cxPt Z (U'.un k x) = ch.e.symm c0 → W.ik k = i` using `fun c0 hc0 k x hkx => W.F.disj _ _ _ _ (W.period k x) (hPer c0 hc0) ((W.lie k x).1.symm.trans (hPu c0 hc0 _ hkx.symm).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk₀ : W.ik k₀ = i` using `hik _ hb₀ k₀ x₀ (by rw [ch.e.left_inv hch]; exact hq₀)`. Use `set B' : Set (ReciprocityTheory.L2DbarEstimates.V Dw.dim) := {c ∈ B | ch.e.symm c ∈ ptsIn (genStr Z) σ V.1 ∧ ¬ LiesIn (ch.e.symm c) (genBd Z)} with hB'`. Establish `hB'o : IsOpen B'`. Establish `h1` using `ch.e.continuousOn_symm.isOpen_inter_preimage ch.e.open_target ((isOpen_ptsIn (p := genStr Z) (σ := σ) V.1).inter (isOpen_not_liesIn (p := genStr Z) (σ := σ) (genBd Z)))`. Establish `e : B' = B ∩ (ch.e.target ∩ ch.e.symm ⁻¹' (ptsIn (genStr Z) σ V.1 ∩ {y | ¬ LiesIn y (genBd Z)}))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h1, hBt h1, h2, h3⟩`. Introduce and unpack `⟨h1, -, h2, h3⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨h1, h2, h3⟩`. Rewrite using `[e]`. Conclude with `hB.inter h1`. Establish `hz' : ∀ τ k p, ContDiffOn ℝ ∞ (fun c => z c τ k p) B'` using `fun τ k p => GlobalTheory.ChartGlue.contDiffOn_real hB'o ((differentiableOn_pi.1 (hz τ k)) p)`. Set `G : ReciprocityTheory.L2DbarEstimates.V Dw.dim → ℂ` to `fun c => ((2 * Real.pi : ℝ) : ℂ) / d k₀ τ * hermForm (Hm c) (z c τ b) (z c τ a)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : ContDiffOn ℝ ∞ G B'`. Establish `hc : ∀ p, ContDiffOn ℝ ∞ (fun c => star (z c τ a p)) B'` using `fun p => Complex.conjCLE.contDiff.comp_contDiffOn (hz' τ a p)`. Establish `e : G = fun c => ((2 * Real.pi : ℝ) : ℂ) / d k₀ τ * ∑ p, z c τ b p * ∑ q, Hm c p q * star (z c τ a q)`. Use function extensionality and compare the values at `c`. Simplify using `only [G, hermForm, dotProduct, Matrix.mulVec, Pi.star_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `contDiffOn_const.mul (ContDiffOn.sum fun p _ => (hz' τ b p).mul (ContDiffOn.sum fun q _ => ((hHs p q).mono fun c hc => hc.1).mul (hc q)))`. Use `⟨ch.e.source ∩ ch.e ⁻¹' B', fun y => G (ch.e y), ch.e.isOpen_inter_preimage hB'o, ⟨hch, hb₀, by rw [ch.e.left_inv hch]; exact hV, by rw [ch.e.left_inv hch]; exact hbd⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c'`. Establish `ht : ContDiffOn ℝ ∞ (ch.e ∘ c'.e.symm) (c'.e.target ∩ c'.e.symm ⁻¹' ch.e.source)` using `(contDiffOn_piLp 2).2 fun a => GlobalTheory.ChartGlue.contDiffOn_real (GlobalTheory.ChartGlue.isOpen_over c'.e ch.e.open_source) (differentiableOn_euclidean.1 (AlgChart.holo_trans c' ch) a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(Complex.reCLM.contDiff.comp_contDiffOn hG).comp (ht.mono fun v hv => ⟨hv.1, hv.2.1⟩) fun v hv => hv.2.2`. Introduce `c'`. Establish `ht : ContDiffOn ℝ ∞ (ch.e ∘ c'.e.symm) (c'.e.target ∩ c'.e.symm ⁻¹' ch.e.source)` using `(contDiffOn_piLp 2).2 fun a => GlobalTheory.ChartGlue.contDiffOn_real (GlobalTheory.ChartGlue.isOpen_over c'.e ch.e.open_source) (differentiableOn_euclidean.1 (AlgChart.holo_trans c' ch) a)`. Conclude with `(Complex.imCLM.contDiff.comp_contDiffOn hG).comp (ht.mono fun v hv => ⟨hv.1, hv.2.1⟩) fun v hv => hv.2.2`. Introduce and unpack `y ⟨hys, hyB⟩ hy f hf show _ = G (ch.e y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨c0, hc0, rfl⟩ : ∃ c0 ∈ B', ch.e.symm c0 = y` from `⟨ch.e y, hyB, ch.e.left_inv hys⟩`. Rewrite using `[ch.e.right_inv (hBt hc0.1)]`. Establish `hex : ∃ g, IsHodgeFrame (unfFam U) (ch.e.symm c0) g`. Take `⟨k, x, hx, hkx⟩` from `exists_orth (Z := Z) hσ hU' hc0.2.2`. Rewrite using `[← hkx]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `⟨_, isHodgeFrame_cxFrame (U := unfFam U) hσ hx⟩`. Establish `hg : (hodgeMet Z U).gram (ch.e.symm c0) f τ = ((2 * Real.pi : ℝ) : ℂ) • ((hex.choose.co f τ)ᴴ * hex.choose.co f τ)` using `dif_pos hex`. Take `⟨k, x, hx, hkx, hv⟩` from `hodgeFrame_comp hσ hex.choose_spec`. Establish `hk : k = k₀` using `hinj ((hik c0 hc0.1 k x hkx).trans hk₀.symm)`. Substitute `hk` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `choose w hwt hwm hwc using fun bb => exists_lift_comb (U'.un k x) hkx hex.choose f hv τ bb`. Establish `hder : ∀ bb, IsDerivAt0 (fun v => (W.F.ex i (P c0) v).left) (z c0 τ bb) (w bb ≫ Z.m0.toSABMap.φ)` using `fun bb => hzl c0 hc0.1 hy f hf (U'.un k x) hkx τ bb (w bb) (hwt bb) (hwm bb)`. Establish `hmat` using `hd k x hx i (P c0) (hPer c0 hc0.1) (Hm c0) (hHm c0 hc0.1).2.2 (hPu c0 hc0.1 _ hkx.symm) τ (z c0 τ) (fun bb => w bb ≫ Z.m0.toSABMap.φ) (hex.choose.co f τ) hder hwc`. Establish `e` using `congrFun (congrFun hmat a) b`. Simplify using `only [of_apply, Matrix.smul_apply, smul_eq_mul] at e`.
-
-Rewrite using `[hg, Matrix.smul_apply, smul_eq_mul]`. Use `show _ = ((2 * Real.pi : ℝ) : ℂ) / d k τ * hermForm (Hm c0) (z c0 τ b) (z c0 τ a)`. Rewrite using `[e]`. Clear denominators, using `[hd0 k τ]` for the nonvanishing conditions.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem gram_smooth_near {U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)} (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) (V : (gen Z).affineOpens) (φ : c.F →+* Γ(gen Z, V.1))
@@ -543,7 +529,7 @@ end AuxLocal
 open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ProjVar GlobalTheory.FlagBundle GlobalTheory.LieBase GlobalTheory.CxPts GlobalTheory.Cartier
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z _ σ U hσ hU`. Conclude with `GlobalTheory.ShFam.EigMet.smoothOn_of_locally (hodgeMet Z U) _ fun V φ F τ a b hV y₀ hy₀ hV₀ => GlobalTheory.HodgeSmooth.gram_smooth_near hσ hU V φ F τ a b hV y₀ hy₀ hV₀`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LieBase.hodgeMet_smoothOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) [SmoothOfRelativeDimension Dw.dim (genStr Z)] (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → (hodgeMet Z U).SmoothOn (manifold Z σ) {y | ¬ LiesIn y (genBd Z)} := by
   intro E _ _ _ H Dw l Xo c O _ β Z _ σ U hσ hU

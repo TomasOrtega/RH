@@ -15,7 +15,7 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.IP
 
 /- English proof (translation)
-Introduce `D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP omh homh Φ₁ Φ₂ h₁ h₂`. Take `⟨-, -, -, hθ, -, -, hcA, hcB, -⟩` from `hP.setting`. Establish `hc` using `GlobalTheory.T.doubled_cartanInvolution_commute_maximalCompact D θ A sA a hθ hcA hP.maj_eq`. Establish `hb` using `GlobalTheory.T.doublingSeesawTensorMap_polynomial_fock_vector D ψ θ A B sA sB hP.weil.std hθ Φ₁ Φ₂ h₁ h₂`. Conclude with `GlobalTheory.T.fock_vector_finite_under_compact_commuting_cartan D ψ θ (dblSp A) B 1 χB omh _ sB homh hθ hc.1 hcB (Khat A a) (isCompact_Khat A a) hc.2 _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem delta_isKFinVec : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (sA : RealMat A) (sB : RealMat B) (t : ℕ) (cA : CptF A) (a : GL (Fin A.rank) (AE D)) (om : WRep A B) (ν : Measure (WO A B)) (𝓕 : Set (WO A B)), Pair ψ θ A B χA χB sA sB t cA a om ν 𝓕 → ∀ omh : WRep (dblSp A) B, IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ Φ₁ Φ₂, IsFockVec ψ θ A B sA sB Φ₁ → IsFockVec ψ θ A B sA sB Φ₂ → IsKFinVec omh (Khat A a) (delta A B Φ₁ Φ₂) := by
   intro D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP omh homh Φ₁ Φ₂ h₁ h₂

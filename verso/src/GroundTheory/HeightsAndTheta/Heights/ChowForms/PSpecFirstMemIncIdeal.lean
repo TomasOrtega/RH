@@ -8,15 +8,15 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `F _ n e I W f t hf hIW ht`. Rewrite using `[mem_incIdeal_iff]`. Introduce and unpack `v ⟨x, hx0, hxW, hv⟩`. Set `w : Fin (e + 1) × Fin n → AlgebraicClosure F` to `fun ij => Fin.cases (motive := fun _ => AlgebraicClosure F) (algebraMap F (AlgebraicClosure F) (t ij.2)) (fun i => v (i, ij.2)) ij.1`. Establish `hw : w ∈ incidence I (e + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨x, hx0, fun g hg => hxW g (hIW hg), fun i => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Establish `h` using `hxW _ ht`. Simplify `h` using `[w, linForm, map_sum, aeval_X, aeval_C]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ i => simpa [w] using hv i`. Establish `hfw : aeval w f = 0` using `(hf.2 f).mpr dvd_rfl w hw`. Establish `hev : aeval v (specFirst f t) = aeval w f`. Rewrite using `[specFirst, aeval_bind₁]`. Use `congr 2`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `ij`. Take `⟨i, j⟩` from `ij`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [specFirstVar, w]`. Consider the case `succ i => simp [specFirstVar, w]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hev, hfw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem SpecFirstMemIncIdeal.proof : SpecFirstMemIncIdeal.Statement := by
   intro F _ n e I W f t hf hIW ht

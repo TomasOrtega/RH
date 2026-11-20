@@ -8,7 +8,7 @@ noncomputable section
 
 open NumberField MeasureTheory GroundTheory.Global nonZeroDivisors in
 /- English proof (translation)
-Establish `h2` using `(integrable_zetaBound (K := K) hz hk L).smul_measure_nnreal (c := (μ.map e).haarScalarFactor (ideleMeasure K))`. Rewrite `h2` using `[← Measure.isMulLeftInvariant_eq_smul]`. Conclude with `(h2.comp_measurable e.continuous.measurable).lintegral_lt_top`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.ThKCT.Tate.transport {K G : Type} [Field K] [NumberField K] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] (e : G ≃ₜ* IdeleGroup K) (μ : Measure G) [μ.IsHaarMeasure] {z : ℝ} (hz : 1 < z) {k : ℕ}
@@ -36,14 +36,14 @@ variable (F E) in
 abbrev Φ : AE F E ≃ₐ[AF F] AdeleRing (𝓞 E) E := adeleTensorAlgEquivLeft F E
 
 /- English proof (translation)
-Use `haveI := isModuleTopology_adeleRing (K := F) (L := E)`. Conclude with `IsModuleTopology.continuous_of_linearMap (Φ F E).toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem cont_Φ : Continuous (Φ F E) := by
   haveI := isModuleTopology_adeleRing (K := F) (L := E)
   exact IsModuleTopology.continuous_of_linearMap (Φ F E).toLinearMap
 
 /- English proof (translation)
-Use `haveI := isModuleTopology_adeleRing (K := F) (L := E)`. Use `haveI := (ideleTop F E).1.1`. Conclude with `IsModuleTopology.continuous_of_linearMap (Φ F E).symm.toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem cont_Φ_symm : Continuous (Φ F E).symm := by
   haveI := isModuleTopology_adeleRing (K := F) (L := E)
@@ -63,9 +63,9 @@ Both sides reduce to the same expression.
 theorem Ψ_val (l : (AE F E)ˣ) : ((Ψ F E l : IdeleGroup E) : AdeleRing (𝓞 E) E) = Φ F E l := rfl
 
 /- English proof (translation)
-Rewrite using `[← GroundTheory.Automorphic.EllipticTorus.ideleModule_ideleNorm (K := F), IdeleGroup.ideleModule_apply, IdeleGroup.infiniteModule, IdeleGroup.finiteModule, coe_ideleNorm, Ψ_val, Algebra.norm_eq_of_algEquiv, GlobalTheory.Doubling.absE_apply, NNReal.coe_mul, NNReal.coe_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Doubling.absEw_unitInf, NNReal.coe_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[show ((∏ᶠ v, GlobalTheory.Doubling.absEv F E v (GlobalTheory.Doubling.unitFin F E v l) : ℝ≥0) : ℝ) = _ from NNReal.toRealHom.toMonoidHom.map_finprod (GlobalTheory.Doubling.finite_mulSupport_absEv l)]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Doubling.absEv_unitFin]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absE_eq (l : (AE F E)ˣ) : (absE F E l : ℝ) = IdeleGroup.ideleModule E (Ψ F E l) := by
   rw [← GroundTheory.Automorphic.EllipticTorus.ideleModule_ideleNorm (K := F), IdeleGroup.ideleModule_apply, IdeleGroup.infiniteModule,
@@ -82,7 +82,7 @@ theorem absE_eq (l : (AE F E)ˣ) : (absE F E l : ℝ) = IdeleGroup.ideleModule E
     rfl
 
 /- English proof (translation)
-Use `congrFun ((InfiniteAdeleRing.denseRange_algebraMap F).equalizer ((InfinitePlace.Completion.isometry_extensionEmbedding W).continuous.comp ((continuous_apply W).comp (GroundTheory.Global.InfinitePlace.continuous_infiniteAdeleRingMap (K := F) (L := E)))) ((InfinitePlace.Completion. …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding W (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (L := E) (algebraMap F (InfiniteAdeleRing F) k) W) = _`. Rewrite using `[GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap_algebraMap]`. Conclude with `(InfinitePlace.Completion.extensionEmbedding_coe W ((WithAbs.equiv W.1).symm (algebraMap F E k))).trans ((RingHom.congr_fun h k).trans (InfinitePlace.Completion.extensionEmbedding_coe w ((WithAbs.equiv w.1).symm k)).symm)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_map (W : InfinitePlace E) {w : InfinitePlace F} (h : W.embedding.comp (algebraMap F E) = w.embedding)
     (b : InfiniteAdeleRing F) :
@@ -99,9 +99,9 @@ theorem ext_map (W : InfinitePlace E) {w : InfinitePlace F} (h : W.embedding.com
     ((RingHom.congr_fun h k).trans (InfinitePlace.Completion.extensionEmbedding_coe w ((WithAbs.equiv w.1).symm k)).symm)
 
 /- English proof (translation)
-Proceed by induction on `l using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `map_zero _`. Consider the case `add x y hx hy => rw [map_add, map_add, ← hx, ← hy]`. Conclude with `map_add _ _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul a x`. Rewrite using `[adeleTensorAlgEquivLeft_tmul]`. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding W ((algebraMap E (AdeleRing (𝓞 E) E) x).1 W * GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (L := E) a.1 W) = InfinitePlace.Completion.extensionEmbedding w (a.1 w) * W.embedding x`. Rewrite using `[map_mul, ext_map W h, mul_comm]`. Conclude with `congrArg _ (InfinitePlace.Completion.extensionEmbedding_coe W ((WithAbs.equiv W.1).symm x))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_Φ (W : InfinitePlace E) {w : InfinitePlace F} (h : W.embedding.comp (algebraMap F E) = w.embedding) (l : AE F E) :
     InfinitePlace.Completion.extensionEmbedding W ((Φ F E l).1 W) = piInf (⟨W.embedding, h⟩ : EmbOver E w) l := by
@@ -117,9 +117,9 @@ theorem ext_Φ (W : InfinitePlace E) {w : InfinitePlace F} (h : W.embedding.comp
     exact congrArg _ (InfinitePlace.Completion.extensionEmbedding_coe W ((WithAbs.equiv W.1).symm x))
 
 /- English proof (translation)
-Use `haveI := h.1`. Set `w` to `InfinitePlace.mk (W.embedding.comp (algebraMap F E))`. Establish `hw : W.embedding.comp (algebraMap F E) = w.embedding` using `(InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 (IsTotallyReal.isReal w))).symm`. Rewrite using `[← (InfinitePlace.Completion.isometry_extensionEmbedding W).norm_map_of_map_zero (map_zero _), ext_Φ W hw]`. Use `le_trans (le_of_eq ?_) (Finset.single_le_sum (f := fun w => ‖piInf (τ w) (l : AE F E)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ w))` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(GlobalTheory.Doubling.absEw_eq_sq h (⟨W.embedding, hw⟩ : EmbOver E w) (GlobalTheory.Doubling.unitInf F E w l)).symm.trans (GlobalTheory.Doubling.absEw_eq_sq h (τ w) (GlobalTheory.Doubling.unitInf F E w l))` as an intermediate fact. Conclude with `congrArg NNReal.toReal ((pow_left_inj₀ zero_le' zero_le' two_ne_zero).1 this)`.
+A detailed English derivation is pending.
 -/
 theorem norm_le (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (W : InfinitePlace E) (l : (AE F E)ˣ) :
     ‖(Φ F E l).1 W‖ ≤ ∑ w, ‖piInf (τ w) (l : AE F E)‖ := by
@@ -135,9 +135,9 @@ theorem norm_le (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
   exact congrArg NNReal.toReal ((pow_left_inj₀ zero_le' zero_le' two_ne_zero).1 this)
 
 /- English proof (translation)
-Set `u : AF F` to `((0 : Ainf F), (1 : Af F))`. Establish `h0` using `congrArg (Φ F E) (h u (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)))`. Rewrite `h0` using `[map_smul, map_zero, map_sub, Algebra.smul_def]`. Establish `h1` using `congrArg Prod.snd h0`. Express the relevant statement in the definitionally equal form `finiteAdeleMap F E 1 * ((Φ F E l).2 - (Φ F E c).2) = 0 at h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h1` using `[map_one, one_mul, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem snd_eq {l c : AE F E} (h : At (evI F) (l - c)) : (Φ F E l).2 = (Φ F E c).2 := by
   let u : AF F := ((0 : Ainf F), (1 : Af F))
@@ -150,13 +150,13 @@ theorem snd_eq {l c : AE F E} (h : At (evI F) (l - c)) : (Φ F E l).2 = (Φ F E 
 end Tate
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB μ hμ z hz`. Take `⟨-, _, _, _, _, _, -⟩` from `ideleTop F E`. Establish `hz1 : (1 : ℝ) < z` using `by exact_mod_cast hz`. Establish `hk : 2 * (z : ℝ) + 2 < (2 * z + 3 : ℕ)` using `by push_cast; linarith`. Use `⟨(2 * z + 3) * Fintype.card (InfinitePlace E), fun C hC => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨L, hL⟩` from `exists_subset_idealFiniteAdeles (hC.image (continuous_snd.comp (Tate.cont_Φ (F := F) (E := E))))`. Use `lt_of_le_of_lt ?_ (Tate.transport (Tate.Ψ F E) μ hz1 hk L)` and prove the remaining obligations. Establish `hT : IsOpen {l : (AE F E)ˣ | (Tate.Φ F E l).2 ∈ idealFiniteAdeles L}` using `(isOpen_idealFiniteAdeles L).preimage (continuous_snd.comp (Tate.cont_Φ.comp Units.continuous_val))`. Use `le_trans (lintegral_mono_set (t := {l : (AE F E)ˣ | (Tate.Φ F E l).2 ∈ idealFiniteAdeles L}) fun l ⟨c, hc, hl⟩ => hL ⟨c, hc, (Tate.snd_eq hl).symm⟩) ?_` and prove the remaining obligations. Use `le_trans (setLIntegral_mono' hT.measurableSet fun l hl => ENNReal.ofReal_le_ofReal ?_) (setLIntegral_le_lintegral _ _)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : (IdeleGroup.toFinite E (Tate.Ψ F E l) : FiniteAdeleRing (𝓞 E) E) ∈ idealFiniteAdeles L` using `hl`. Rewrite using `[finiteZetaBound, if_pos hm, Tate.absE_eq, ← Real.rpow_natCast, ideleModule_rpow_eq, infiniteZetaBound, Finset.prod_div_distrib, div_mul_eq_mul_div]`. Use `div_le_div_of_nonneg_left (mul_nonneg (Finset.prod_nonneg fun _ _ => by positivity) (Real.rpow_nonneg (IdeleGroup.finiteModule_pos _).le _)) (Finset.prod_pos fun _ _ => by positivity) ?_` and prove the remaining obligations. Rewrite using `[pow_mul, ← Finset.card_univ, ← Finset.prod_const]`. Use `Finset.prod_le_prod (fun _ _ => by positivity) fun W _ => pow_le_pow_left₀ (by positivity) ?_ _` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `add_le_add le_rfl (Tate.norm_le hB.cm B.emb W l)`.
+A detailed English derivation is pending.
 -/
 theorem tateAbs : TateAbs := by
   intro F E _ _ _ _ _ σ B hB μ hμ z hz

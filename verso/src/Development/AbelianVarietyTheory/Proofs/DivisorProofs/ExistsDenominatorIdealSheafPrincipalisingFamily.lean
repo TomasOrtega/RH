@@ -26,7 +26,7 @@ def idealOn (V : X.Opens) : Ideal Γ(X, V) := Ideal.span (gens w V)
 variable {w}
 
 /- English proof (translation)
-Introduce `h j y hy`. Rewrite using `[fnOf_resG]`. Conclude with `ha (e h) j y (e hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDen.res {U V : X.Opens} (e : V ≤ U) {a : Γ(X, U)} (ha : IsDen w U a) :
     IsDen w V (resG X e a) := by
@@ -35,7 +35,7 @@ theorem IsDen.res {U V : X.Opens} (e : V ≤ U) {a : Γ(X, U)} (ha : IsDen w U a
   exact ha (e h) j y (e hy)
 
 /- English proof (translation)
-Take `⟨a, ha, j, hj⟩` from `hb`. Conclude with `⟨resG X e a, ha.res e, j, fun h => by rw [fnOf_resG, fnOf_resG, hj]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem res_mem_gens {U V : X.Opens} (e : V ≤ U) {b : Γ(X, U)} (hb : b ∈ gens w U) :
     resG X e b ∈ gens w V := by
@@ -43,21 +43,19 @@ theorem res_mem_gens {U V : X.Opens} (e : V ≤ U) {b : Γ(X, U)} (hb : b ∈ ge
   exact ⟨resG X e a, ha.res e, j, fun h => by rw [fnOf_resG, fnOf_resG, hj]⟩
 
 /- English proof (translation)
-Distinguish the cases in `hg : genericPoint X ∈ X.basicOpen f`. Use `swap`. Establish `: b = 0` using `Cartier.fn_ext fun h => (hg h).elim`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU' : genericPoint X ∈ U` using `X.basicOpen_le f hg`. Use `hU.isLocalization_basicOpen f` as an intermediate fact. Take `⟨a', ha', j, hj⟩` from `hb`. Take `⟨⟨a, _, n, rfl⟩, e⟩` from `IsLocalization.surj (Submonoid.powers f) a'`. Establish `e' : fnOf _ hg a' * fnOf U hU' f ^ n = fnOf U hU' a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fnOf _ hg) e` as an intermediate fact. Simplify using `only [map_mul, map_pow] at this`. Express the relevant statement in the definitionally equal form `fnOf _ hg a' * fnOf _ hg (resG X (X.basicOpen_le f) f) ^ n = fnOf _ hg (resG X (X.basicOpen_le f) a) at this`. Rewrite `this` using `[fnOf_resG, fnOf_resG]`. Then use the resulting hypothesis. Establish `hreg : ∀ i, ∀ x ∈ X.basicOpen f, RegAt x (fnOf U hU' a * w i)` using `fun i x hx => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e', mul_right_comm]`. Conclude with `(ha' hg i x hx).mul (GlobalTheory.TrueGeo.SmallSec.regAt_pow (regAt_fnOf (X.basicOpen_le f hx) hU' f) n)`. Use `fun i => GlobalTheory.InvertIdeal.exists_mul_pow hU hU' f hg (hreg i)` as an intermediate fact. Use `choose m γ hγ using this`. Use `set M := ∑ i, m i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hm : ∀ i, m i ≤ M` using `fun i => Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `key : ∀ i, fnOf U hU' (γ i * f ^ (M - m i)) = fnOf U hU' (a * f ^ M) * w i` using `fun i => by`. Rewrite using `[map_mul, map_mul, hγ, map_pow, map_pow, ← Nat.add_sub_cancel' (hm i), pow_add]`. Simplify using `only [Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hden : IsDen w U (a * f ^ M)` using `fun h i y hy => by`. Rewrite using `[← key i]`. Conclude with `regAt_fnOf hy _ _`. Establish `hgen : γ j * f ^ (M - m j) ∈ gens w U` using `⟨_, hden, j, fun h => key j⟩`. Establish `hu : IsUnit (resG X (X.basicOpen_le f) f)` using `IsLocalization.Away.algebraMap_isUnit f`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hb0 : resG X (X.basicOpen_le f) (γ j * f ^ (M - m j)) = b * resG X (X.basicOpen_le f) f ^ (n + M)` using `Cartier.fn_ext fun h => by`. Rewrite using `[fnOf_resG, key, map_mul (fnOf _ h), map_pow, fnOf_resG, hj, map_mul, map_pow, ← e']`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : b = resG X (X.basicOpen_le f) (γ j * f ^ (M - m j)) * ((hu.unit⁻¹ : _) : Γ(X, X.basicOpen f)) ^ (n + M)`. Rewrite using `[hb0, mul_assoc, ← mul_pow, hu.mul_val_inv, one_pow, mul_one]`.
-
-Rewrite using `[hb]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (Ideal.subset_span hgen))`.
+A detailed English derivation is pending.
 -/
 theorem mem_map_of_mem_gens_basicOpen [Fintype ι] {U : X.Opens} (hU : IsAffineOpen U) (f : Γ(X, U))
     {b : Γ(X, X.basicOpen f)} (hb : b ∈ gens w (X.basicOpen f)) :
@@ -118,13 +116,11 @@ Both sides reduce to the same expression.
 theorem idealSheaf_ideal [Fintype ι] (U : X.affineOpens) : (idealSheaf w).ideal U = idealOn w U.1 := rfl
 
 /- English proof (translation)
-Take `⟨_, ⟨W, hW, rfl⟩, hηW, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (genericPoint X)) isOpen_univ`. Establish `hW' : IsAffineOpen W` using `hW`. Use `choose β γ hβ hγ using fun j => GlobalTheory.InvertIdeal.exists_denom hW' hηW hηW (regAt_genericPoint (w j))`. Establish `hβ0 : ∀ j, fnOf W hηW (β j) ≠ 0` using `fun j => ((unitAt_fnOf_iff hηW hηW (β j)).2 (hβ j)).ne_zero`. Use `set d := ∏ j, β j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hd : ∀ j, fnOf W hηW d * w j = fnOf W hηW (γ j) * fnOf W hηW (∏ i ∈ Finset.univ.erase j, β i)` using `fun j => by`. Rewrite using `[hγ, show d = β j * ∏ i ∈ Finset.univ.erase j, β i from (Finset.mul_prod_erase _ _ (Finset.mem_univ j)).symm, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hden : IsDen w W d` using `fun h j y hy => by`. Rewrite using `[hd j]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(regAt_fnOf hy _ _).mul (regAt_fnOf hy _ _)`. Establish `hgen : d ∈ gens w W` using `⟨d, hden, i₀, fun h => by rw [h1, mul_one]⟩`. Establish `hd0 : fnOf W hηW d ≠ 0`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun j _ => hβ0 j`.
-
-Introduce `hbot`. Establish `hmem : d ∈ (idealSheaf w).ideal ⟨W, hW⟩` using `Ideal.subset_span hgen`. Rewrite `hmem` using `[hbot]`. Conclude with `hd0 (by rw [(Ideal.mem_bot).1 hmem, map_zero])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealSheaf_ne_bot [Fintype ι] (i₀ : ι) (h1 : w i₀ = 1) : idealSheaf w ≠ ⊥ := by
   classical
@@ -149,11 +145,11 @@ theorem idealSheaf_ne_bot [Fintype ι] (i₀ : ι) (h1 : w i₀ = 1) : idealShea
   exact hd0 (by rw [(Ideal.mem_bot).1 hmem, map_zero])
 
 /- English proof (translation)
-Take `⟨V, hyV, ha⟩` from `GlobalTheory.InvertIdeal.exists_common_open hy`. Use `choose a ha using ha`. Take `⟨_, ⟨W, hW, rfl⟩, hyW, hWV⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hyV V.isOpen`. Establish `e : W ≤ V` using `hWV`. Establish `hηW : genericPoint X ∈ W` using `gen_mem hyW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfa : ∀ j, fnOf W hηW (resG X e (a j)) = w j / w k` using `fun j => by rw [fnOf_resG, ha]`. Establish `hden : IsDen w W (resG X e (a i₀))` using `fun h j x hx => by`. Rewrite using `[hfa, h1, one_div, inv_mul_eq_div, ← hfa j]`. Conclude with `regAt_fnOf hx _ _`. Establish `hgen : (1 : Γ(X, W)) ∈ gens w W` using `⟨_, hden, k, fun h => by rw [map_one, hfa, h1, one_div, inv_mul_cancel₀ hk]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Scheme.IdealSheafData.mem_support_iff_of_mem (U := ⟨W, hW⟩) hyW, Scheme.mem_zeroLocus_iff]`. Introduce `H`. Conclude with `H 1 (Ideal.subset_span hgen) (by rw [Scheme.basicOpen_one]; exact hyW)`.
+A detailed English derivation is pending.
 -/
 theorem notMem_support [Finite ι] [Fintype ι] (i₀ : ι) (h1 : w i₀ = 1) {y : X} {k : ι} (hk : w k ≠ 0)
     (hy : ∀ j, RegAt y (w j / w k)) : y ∉ (idealSheaf w).support := by
@@ -172,7 +168,7 @@ theorem notMem_support [Finite ι] [Fintype ι] (i₀ : ι) (h1 : w i₀ = 1) {y
   exact H 1 (Ideal.subset_span hgen) (by rw [Scheme.basicOpen_one]; exact hyW)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.TrueGeo.SmallSec.fnMap_fnOf s hη hW (hA hA'), ← fnOf_resG hA hA']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fnOf_appLE {Y' : Scheme.{0}} [IsIntegral Y'] (s : Y' ⟶ X)
     (hη : s (genericPoint Y') ⤳ genericPoint X) {W : X.Opens} {A : Y'.Opens} (hA : A ≤ s ⁻¹ᵁ W)
@@ -182,35 +178,33 @@ theorem fnOf_appLE {Y' : Scheme.{0}} [IsIntegral Y'] (s : Y' ⟶ X)
   rfl
 
 /- English proof (translation)
-Take `⟨_, ⟨W, hW, rfl⟩, hyW, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (s y')) isOpen_univ`. Take `⟨U0, f0, sectionFrameQuotient, hf0, hI0⟩` from `hE y'`. Take `⟨t, htle, hyt⟩` from `U0.2.exists_basicOpen_le (V := U0.1 ⊓ s ⁻¹ᵁ W) ⟨y', sectionFrameQuotient, hyW⟩ sectionFrameQuotient`. Establish `hAW : Y'.basicOpen t ≤ s ⁻¹ᵁ W` using `fun x hx => (htle hx).2`. Establish `hA' : genericPoint Y' ∈ Y'.basicOpen t` using `gen_mem hyt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hηW : genericPoint X ∈ W` using `gen_mem hyW`. Use `set F := resG Y' (Y'.basicOpen_le t) f0 with hFdef`. Establish `hIA : ((idealSheaf w).comap s).ideal (Y'.affineBasicOpen t) = Ideal.span {F}`. Rewrite using `[← Scheme.IdealSheafData.map_ideal_basicOpen, hI0, Ideal.map_span, Set.image_singleton]`. Establish `hmap : Ideal.map (s.appLE W (Y'.basicOpen t) hAW).hom (idealOn w W) = Ideal.span {F}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hIA, GlobalTheory.Principalise.comapIdealAffine _ s ⟨W, hW⟩ (Y'.affineBasicOpen t) hAW]`. Both sides reduce to the same expression. Use `set φ := fnOf (Y'.basicOpen t) hA'`. Use `set w' := fun j => GlobalTheory.TrueGeo.SmallSec.fnMap s hη (w j) with hw'`. Establish `hφ : ∀ c : Γ(X, W), φ ((s.appLE W (Y'.basicOpen t) hAW).hom c) = GlobalTheory.TrueGeo.SmallSec.fnMap s hη (fnOf W hηW c)` using `fun c => fnOf_appLE s hη hAW hA' hηW c`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF0 : φ F ≠ 0`. Establish `hU0 : genericPoint Y' ∈ U0.1` using `Y'.basicOpen_le t hA'`. Establish `: Nontrivial Γ(Y', U0.1)` using `(fnOf U0.1 hU0).domain_nontrivial`. Rewrite using `[hFdef, fnOf_resG]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `nonZeroDivisors.ne_zero hf0 (fnOf_injective _ hU0 (h.trans (map_zero _).symm))`. Establish `key : ∀ x ∈ Ideal.map (s.appLE W (Y'.basicOpen t) hAW).hom (idealOn w W), ∃ C : ι → Y'.functionField, φ x = ∑ j, w' j * C j ∧ ∀ i j, ∃ r : Γ(Y', Y'.basicOpen t), w' i * C j = φ F * φ r`. Introduce `x hx`. Rewrite `hx` using `[idealOn, Ideal.map_span]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem x hx`. Take `⟨b, ⟨a, ha, j₀, hb⟩, rfl⟩` from `hx`. Use `⟨Pi.single j₀ (GlobalTheory.TrueGeo.SmallSec.fnMap s hη (fnOf W hηW a)), ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, hb hηW, map_mul, Finset.sum_eq_single j₀ (fun j _ hj => by rw [Pi.single_eq_of_ne hj, mul_zero]) (by simp), Pi.single_eq_same, mul_comm]`. Distinguish the cases in `hj : j = j₀`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hj` using the available equality. Rewrite using `[Pi.single_eq_same]`. Take `⟨bi, hbi⟩` from `exists_fnOf_eq hηW fun y hy => ha hηW i y hy`. Establish `hmem : (s.appLE W (Y'.basicOpen t) hAW).hom bi ∈ Ideal.span {F}` using `hmap ▸ Ideal.mem_map_of_mem _ (Ideal.subset_span ⟨a, ha, i, fun _ => hbi⟩)`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 hmem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[hw', ← map_mul, mul_comm (w i), ← hbi, ← hφ, ← hr, map_mul, mul_comm]`. Rewrite using `[Pi.single_eq_of_ne hj, mul_zero]`. Conclude with `⟨0, by rw [map_zero, mul_zero]⟩`. Consider the case `zero => exact ⟨0, by simp, fun i j => ⟨0, by simp⟩⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨C, hC, hC'⟩` from `hx`. Take `⟨D, hD, hD'⟩` from `hy`. Use `⟨C + D, by rw [map_add, hC, hD, ← Finset.sum_add_distrib]; simp only [Pi.add_apply, mul_add], fun i j => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `hC' i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨r', hr'⟩` from `hD' i j`. Conclude with `⟨r + r', by simp only [Pi.add_apply, mul_add, hr, hr', map_add]⟩`. Consider the case `smul c x _ hx`. Take `⟨C, hC, hC'⟩` from `hx`. Use `⟨fun j => φ c * C j, ?_, fun i j => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_mul, map_mul, hC, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Take `⟨r, hr⟩` from `hC' i j`. Use `⟨c * r, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_left_comm, hr]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨C, hC, hC'⟩` from `key F (hmap ▸ Ideal.mem_span_singleton_self F)`. Use `choose r hr using hC'`. Establish `hreg : ∀ i j, RegAt y' (w' i * (C j / φ F))` using `fun i j => by`. Rewrite using `[mul_div_assoc', hr, mul_div_cancel_left₀ _ hF0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `regAt_fnOf hyt _ _`. Establish `he1 : ∑ j, (fun _ => (1 : Y'.functionField)) j * (w' j * (C j / φ F)) = 1`. Simplify using `only [one_mul, mul_div_assoc']`. Rewrite using `[← Finset.sum_div, ← hC, div_self hF0]`. Take `⟨k, hk⟩` from `GlobalTheory.InvertIdeal.exists_unitAt (x := y') (c := fun _ => 1) (g := fun j => w' j * (C j / φ F)) (fun _ => ⟨1, map_one _⟩) (fun j => hreg j j) he1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hk0 : w' k * (C k / φ F) ≠ 0` using `hk.ne_zero`. Use `⟨k, left_ne_zero_of_mul hk0, fun j => ?_⟩` and prove the remaining obligations. Establish `e : w' j / w' k = (w' j * (C k / φ F)) * (w' k * (C k / φ F))⁻¹`. Establish `h2 : C k / φ F ≠ 0` using `right_ne_zero_of_mul hk0`. Rewrite using `[← div_eq_mul_inv, mul_div_mul_right _ _ h2]`.
-
-Express the relevant statement in the definitionally equal form `RegAt y' (w' j / w' k)`. Rewrite using `[e]`. Conclude with `(hreg j k).mul hk.inv.regAt`.
+A detailed English derivation is pending.
 -/
 theorem exists_dvd_of_effCartier [Fintype ι] {Y' : Scheme.{0}} [IsIntegral Y'] (s : Y' ⟶ X)
     (hη : s (genericPoint Y') ⤳ genericPoint X)
@@ -301,7 +295,7 @@ theorem exists_dvd_of_effCartier [Fintype ι] {Y' : Scheme.{0}} [IsIntegral Y'] 
   exact (hreg j k).mul hk.inv.regAt
 
 /- English proof (translation)
-Introduce `Y _ N w i₀ U h1 hU`. Use `⟨idealSheaf w, idealSheaf_ne_bot i₀ h1, fun y hy => ?_, fun Y' _ s hη hE y' => exists_dvd_of_effCartier s (specializes_of_eq hη) hE y'⟩` and prove the remaining obligations. Take `⟨k, hk, hreg⟩` from `hU y hy`. Conclude with `notMem_support i₀ h1 hk hreg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_idealSheaf : ∀ (Y : Scheme.{0}) [IsIntegral Y] (N : ℕ) (w : Fin (N + 1) → Y.functionField) (i₀ : Fin (N + 1)) (U : Y.Opens),
     w i₀ = 1 → (∀ y ∈ U, ∃ k, w k ≠ 0 ∧ ∀ j, GlobalTheory.Cartier.RegAt y (w j / w k)) →

@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.A
 
 open MeasureTheory Set in
 /- English proof (translation)
-Establish `h : {z : ℂ | z.re = c} = Complex.measurableEquivRealProd ⁻¹' (({c} : Set ℝ) ×ˢ (univ : Set ℝ))`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[h, Complex.volume_preserving_equiv_real_prod.measure_preimage_equiv, Measure.volume_eq_prod, Measure.prod_prod]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.V.Af.Rs.line_null (c : ℝ) : volume {z : ℂ | z.re = c} = 0 := by
   have h : {z : ℂ | z.re = c} = Complex.measurableEquivRealProd ⁻¹' (({c} : Set ℝ) ×ˢ (univ : Set ℝ)) := by
@@ -14,13 +14,11 @@ private theorem UpperTheory.V.Af.Rs.line_null (c : ℝ) : volume {z : ℂ | z.re
 
 open MeasureTheory Set in
 /- English proof (translation)
-Introduce `_`. Unfold `UpperTheory.V.Af.Rs.FdNull`. Rewrite using `[UpperHalfPlane.volume_eq_lintegral]`. Apply `setLIntegral_measure_zero` to reduce the goal to its premises. Establish `h0 : volume (Metric.sphere (0 : ℂ) 1 ∪ ({z : ℂ | z.re = 1 / 2} ∪ {z : ℂ | z.re = -(1 / 2)})) = 0` using `measure_union_null (Measure.addHaar_sphere _ _ _) (measure_union_null (UpperTheory.V.Af.Rs.line_null _) (UpperTheory.V.Af.Rs.line_null _))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `measure_mono_null ?_ h0` and prove the remaining obligations. Introduce and unpack `_ ⟨z, ⟨⟨h1, h2⟩, h3⟩, rfl⟩`. Distinguish the cases in `hs : 1 < Complex.normSq (z : ℂ)`. Use `right`. Establish `h4 : ¬ |z.re| < 1 / 2` using `fun h => h3 ⟨hs, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : |z.re| = 1 / 2` using `le_antisymm h2 (not_lt.mp h4)`. Conclude with `(abs_eq (by norm_num)).mp h5`. Use `left`. Establish `h5 : Complex.normSq (z : ℂ) = 1` using `le_antisymm (not_lt.mp hs) h1`. Rewrite `h5` using `[Complex.normSq_eq_norm_sq]`.
-
-Rewrite using `[mem_sphere_zero_iff_norm]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rs.fdNull :
     UpperTheory.V.Af.Rs.VolMap → UpperTheory.V.Af.Rs.FdNull := by

@@ -14,9 +14,9 @@ open scoped ComplexOrder
 namespace GlobalTheory.MetFam
 
 /- English proof (translation)
-Introduce `D A N j S κ s T b Q θ hθ σ' y₀ _`. Establish `: Nonempty T` using `⟨y₀ (IsLocalRing.closedPoint ℂ)⟩`. Use `Q.smoothDim` as an intermediate fact. Use `Q.isAb.proper` as an intermediate fact. Use `s.T.Z.t.semi.smooth` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `s.T.Z.t.semi.separated` as an intermediate fact. Conclude with `(LieVB.isVB_omega_of_isGrpPullback hθ (GlobalTheory.DRBaseEx.isVB_omega s.T.Z)).rank_unique (LieVB.isVB_omega Q.A Q.g)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_mult_eq_relDim : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (T : Scheme.{0}) (b : T ⟶ s.T.Z.X) (Q : Out.PolAV T) (θ : Q.A.left ⟶ s.T.Z.t.G.left), IsGrpPullback Q.A s.T.Z.t.G b θ → ∀ (σ' : κ.c.F →+* ℂ) (y₀ : Sp ℂ ⟶ T), EigFrame s.T.Z σ' (y₀ ≫ b) → ∑ τ : D.host.E →+* ℂ, S.Dw.mult τ = Q.g := by
   intro D A N j S κ s T b Q θ hθ σ' y₀ _

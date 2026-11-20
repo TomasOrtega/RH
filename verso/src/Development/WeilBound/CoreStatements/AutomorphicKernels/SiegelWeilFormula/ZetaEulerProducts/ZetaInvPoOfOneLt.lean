@@ -13,7 +13,7 @@ namespace PositivityTheory.Lord
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hx1 : x ≠ 1`. Introduce and unpack `rfl`. Simplify using `at hx`. Conclude with `PO.of_analytic ((zeta_analyticAt K hx1).inv (zeta_euler K hx).2)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zeta_inv_po_of_one_lt (K : Type) [Field K] [NumberField K] {x : ℂ} (hx : 1 < x.re) :
     PO (fun s => (continuedDedekindZeta K s)⁻¹) x 0 := by
@@ -23,9 +23,9 @@ theorem zeta_inv_po_of_one_lt (K : Type) [Field K] [NumberField K] {x : ℂ} (hx
   exact PO.of_analytic ((zeta_analyticAt K hx1).inv (zeta_euler K hx).2)
 
 /- English proof (translation)
-Establish `hN` using `two_le_absNorm F v`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Simplify using `using factor_zo_zero _ hN`. Rewrite using `[if_neg hj]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using factor_zo _ hN 1 (by simp) j hj`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem factorF_zo (v : HeightOneSpectrum (𝓞 F)) (j : ℤ) :
     ZO (fun s : ℂ => 1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s)) (j : ℂ) (if j = 0 then 1 else 0) := by
@@ -37,17 +37,15 @@ theorem factorF_zo (v : HeightOneSpectrum (𝓞 F)) (j : ℤ) :
     simpa using factor_zo _ hN 1 (by simp) j hj
 
 /- English proof (translation)
-Take `⟨hFr, hFc, -, -⟩` from `cm_places h`. Establish `hfac : ∀ (v : HeightOneSpectrum (𝓞 F)) (x : ℂ), AnalyticAt ℂ (fun s : ℂ => 1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s)) x` using `fun v x => by`. Simplify using `using factor_analytic _ (by have := two_le_absNorm F v; omega) 1 x`. Use `⟨fun s => (continuedDedekindZeta F s)⁻¹ * ∏ v ∈ S, (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((meromorphicOn_continuedDedekindZeta F x trivial).inv).mul (meromorphicAt_prod S _ fun v _ => (hfac v x).meromorphicAt.inv)`. Introduce `s hs`. Establish `hs0 : 0 < s.re` using `by linarith`. Establish `key` using `hasProd_compl_finset (fun v => 1 - eSp E v ^ j * (Ideal.absNorm v.asIdeal : ℂ) ^ (-s)) (fun v => 1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s)) _ S S (Finset.Subset.refl S) (zeta_euler F hs).1 (fun v _ => by simpa using factor_ne_zero _ (two_le_absNorm F v) 1 s (by simp) hs0) (fun v _ …`. Rewrite `key` using `[Finset.sdiff_self, Finset.prod_empty, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `key`. Distinguish the cases in `hj1 : 1 ≤ j`. Establish `hj0 : j ≠ 0` using `by omega`. Establish `hre : 1 < (j : ℂ).re`. Take `⟨k, hk⟩` from `hj`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Complex.intCast_re]`. Conclude with `(by omega : (1 : ℤ) < j)` after adjusting the coercions. Establish `hP` using `(zeta_inv_po_of_one_lt F hre).mul (PO.prod S (fun v s => (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))⁻¹) (fun _ => if j = 0 then 1 else 0) fun v _ => (factorF_zo v j).inv)`. Rewrite using `[if_pos hj1]`. Conclude with `hP.mono (by simp [hj0])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg hj1]`. Establish `hle : j ≤ 0` using `by omega`. Establish `hP` using `(zeta_zo_nonpos F j hle).inv.mul (PO.prod S (fun v s => (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))⁻¹) (fun _ => if j = 0 then 1 else 0) fun v _ => (factorF_zo v j).inv)`. Establish `hpos : 0 < Module.finrank ℚ F` using `Module.finrank_pos`. Use `hP.mono ?_` and prove the remaining obligations.
-
-Distinguish the cases in `hj0 : j = 0`. Apply the tactic sequence `simp [hj0, hFr, hFc] <;> omega`. Simplify using `[hj0, hFr, hFc, hj]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lOrd_even (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (S : Finset (HeightOneSpectrum (𝓞 F))) (j : ℤ)
     (hj : Even j) :
@@ -97,7 +95,7 @@ theorem lOrd_even (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (S : Finset (HeightO
       · simp [hj0, hFr, hFc, hj]
 
 /- English proof (translation)
-Unfold `HasProd at h ⊢`. Use `h.inv₀ ha using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Conclude with `Finset.prod_inv_distrib _`.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem hasProd_inv' {ι : Type} {f : ι → ℂ} {a : ℂ} (h : HasProd f a) (ha : a ≠ 0) :
     HasProd (fun i => (f i)⁻¹) a⁻¹ := by
@@ -107,37 +105,33 @@ private theorem hasProd_inv' {ι : Type} {f : ι → ℂ} {a : ℂ} (h : HasProd
   exact Finset.prod_inv_distrib _
 
 /- English proof (translation)
-Take `⟨-, -, hEr, hEc⟩` from `cm_places h`. Establish `h2 : Module.finrank F E = 2` using `h.2.2.1`. Establish `hj0 : j ≠ 0`. Introduce and unpack `rfl`. Conclude with `hj ⟨0, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hfacF : ∀ (v : HeightOneSpectrum (𝓞 F)) (x : ℂ), AnalyticAt ℂ (fun s : ℂ => 1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s)) x` using `fun v x => by`. Simplify using `using factor_analytic _ (by have := two_le_absNorm F v; omega) 1 x`. Establish `hfacE : ∀ (P : HeightOneSpectrum (𝓞 E)) (x : ℂ), AnalyticAt ℂ (fun s : ℂ => 1 - (Ideal.absNorm P.asIdeal : ℂ) ^ (-s)) x` using `fun P x => by`. Simplify using `using factor_analytic _ (by have := two_le_absNorm E P; omega) 1 x`. Establish `hfac : ∀ (v : HeightOneSpectrum (𝓞 F)) (x : ℂ), AnalyticAt ℂ (fun s : ℂ => 1 - eSp E v * (Ideal.absNorm v.asIdeal : ℂ) ^ (-s)) x` using `fun v x => factor_analytic _ (by have := two_le_absNorm F v; omega) _ x`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hneF : ∀ (v : HeightOneSpectrum (𝓞 F)) (s : ℂ), 0 < s.re → (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s)) ≠ 0` using `fun v s hs => by`. Simplify using `using factor_ne_zero _ (two_le_absNorm F v) 1 s (by simp) hs`. Establish `hneE : ∀ (P : HeightOneSpectrum (𝓞 E)) (s : ℂ), 0 < s.re → (1 - (Ideal.absNorm P.asIdeal : ℂ) ^ (-s)) ≠ 0` using `fun P s hs => by`. Simplify using `using factor_ne_zero _ (two_le_absNorm E P) 1 s (by simp) hs`. Establish `hneFj : ∀ v : HeightOneSpectrum (𝓞 F), (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-(j : ℂ))) ≠ 0` using `fun v => by simpa using factor_ne_zero_int _ (two_le_absNorm F v) 1 (by simp) j hj0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hesp : ∀ v : HeightOneSpectrum (𝓞 F), eSp E v ^ j = eSp E v` using `fun v => by`. Rewrite using `[eSp_zpow, if_neg hj]`. Use `set T : Finset (HeightOneSpectrum (𝓞 F)) := S ∪ (badSet_finite F E).toFinset with hT`. Use `⟨fun s => ((continuedDedekindZeta E s)⁻¹ * continuedDedekindZeta F s * ∏ v ∈ T, ((∏ P ∈ fib F E v, (1 - (Ideal.absNorm P.asIdeal : ℂ) ^ (-s))) * (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))⁻¹)⁻¹) * ∏ v ∈ T \ S, (1 - eSp E v * (Ideal.absNorm v.asIdeal : ℂ) ^ (-s)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `((((meromorphicOn_continuedDedekindZeta E x trivial).inv).mul (meromorphicOn_continuedDedekindZeta F x trivial)).mul ?_).mul ?_` and prove the remaining obligations. Conclude with `meromorphicAt_prod T _ fun v _ => ((meromorphicAt_prod (fib F E v) _ fun P _ => (hfacE P x).meromorphicAt).mul (hfacF v x).meromorphicAt.inv).inv`. Conclude with `meromorphicAt_prod (T \ S) _ fun v _ => (hfac v x).meromorphicAt`. Introduce `s hs`. Establish `hs0 : 0 < s.re` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hFinv : HasProd (fun v : HeightOneSpectrum (𝓞 F) => (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))⁻¹) (continuedDedekindZeta F s)`. Use `hasProd_inv' (zeta_euler F hs).1 (inv_ne_zero (zeta_euler F hs).2)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `hg` using `(zetaE_grouped (F := F) (E := E) hs).mul hFinv`. Establish `key` using `hasProd_compl_finset (fun v => 1 - eSp E v * (Ideal.absNorm v.asIdeal : ℂ) ^ (-s)) (fun v => (∏ P ∈ fib F E v, (1 - (Ideal.absNorm P.asIdeal : ℂ) ^ (-s))) * (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))⁻¹) _ T S Finset.subset_union_left hg (fun v _ => mul_ne_zero (Finset.prod_ne_zer …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hvb : v ∉ badSet F E` using `fun hb => hv (Finset.mem_union_right _ ((badSet_finite F E).mem_toFinset.2 hb))`. Rewrite using `[local_factor F E h2 v hvb s, mul_comm (1 - _) (1 - _), mul_assoc, mul_inv_cancel₀ (hneF v s hs0), mul_one])`. Simplify using `only [hesp]`. Conclude with `key`. Establish `hZg : ∀ v : HeightOneSpectrum (𝓞 F), ZO (fun s => (∏ P ∈ fib F E v, (1 - (Ideal.absNorm P.asIdeal : ℂ) ^ (-s))) * (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))⁻¹) (j : ℂ) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `v`. Establish `h1` using `ZO.prod (fib F E v) (fun P s => 1 - (Ideal.absNorm P.asIdeal : ℂ) ^ (-s)) (fun _ => 0) (fun P _ => by`. Use `factorF_zo P j` as an intermediate fact. Rewrite using `[if_neg hj0] at this)` and apply the resulting hypothesis. Establish `h3 : ZO (fun s => (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))⁻¹) (j : ℂ) 0` using `ZO.of_analytic ((hfacF v j).inv (hneFj v)) (inv_ne_zero (hneFj v))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h1.mul h3` as an intermediate fact. Simplify using `only [Finset.sum_const_zero, add_zero] at this`. Conclude with `this`. Establish `hPg : PO (fun s => ∏ v ∈ T, ((∏ P ∈ fib F E v, (1 - (Ideal.absNorm P.asIdeal : ℂ) ^ (-s))) * (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))⁻¹)⁻¹) (j : ℂ) 0`. Use `PO.prod T (fun v s => ((∏ P ∈ fib F E v, (1 - (Ideal.absNorm P.asIdeal : ℂ) ^ (-s))) * (1 - (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))⁻¹)⁻¹) (fun _ => 0) (fun v _ => (hZg v).inv)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_const_zero] at this`. Conclude with `this`. Establish `hPf : PO (fun s => ∏ v ∈ T \ S, (1 - eSp E v * (Ideal.absNorm v.asIdeal : ℂ) ^ (-s))) (j : ℂ) 0`. Use `PO.prod (T \ S) (fun v s => 1 - eSp E v * (Ideal.absNorm v.asIdeal : ℂ) ^ (-s)) (fun _ => 0) (fun v _ => PO.of_analytic (hfac v j))` as an intermediate fact. Simplify using `only [Finset.sum_const_zero] at this`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this`. Distinguish the cases in `hj1 : 1 ≤ j`. Rewrite using `[if_pos hj1]`. Distinguish the cases in `hj1' : j = 1`. Substitute `hj1'` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨AE, hAE, hAE1, hevE⟩` from `zeta_pole E`. Take `⟨AF, hAF, -, hevF⟩` from `zeta_pole F`. Establish `hc : ((1 : ℤ) : ℂ) = 1` using `by simp`. Establish `hZ : PO (fun s => (continuedDedekindZeta E s)⁻¹ * continuedDedekindZeta F s) ((1 : ℤ) : ℂ) 0`. Rewrite using `[hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun s => AF s / AE s, hAF.div hAE hAE1, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hevE, hevF, self_mem_nhdsWithin] with s hE hF hs`. Establish `hs1 : s - 1 ≠ 0` using `sub_ne_zero.2 hs`. Rewrite using `[← hE, ← hF, pow_zero, one_mul, mul_div_mul_left _ _ hs1, div_eq_inv_mul]`. Conclude with `((hZ.mul hPg).mul hPf).mono (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hre : 1 < (j : ℂ).re`. Simplify using `only [Complex.intCast_re]`. Conclude with `(by omega : (1 : ℤ) < j)` after adjusting the coercions. Establish `hj1c : (j : ℂ) ≠ 1` using `by exact_mod_cast hj1'`. Establish `hZ` using `(zeta_inv_po_of_one_lt E hre).mul (PO.of_analytic (zeta_analyticAt F hj1c))`.
-
-Conclude with `((hZ.mul hPg).mul hPf).mono (by norm_num)`. Rewrite using `[if_neg hj1, if_neg hj0]`. Establish `hle : j ≤ 0` using `by omega`. Establish `hj1c : (j : ℂ) ≠ 1` using `by exact_mod_cast (by omega : j ≠ 1)`. Establish `hZ` using `((zeta_zo_nonpos E j hle).inv).mul (PO.of_analytic (zeta_analyticAt F hj1c))`.
-
-Use `((hZ.mul hPg).mul hPf).mono ?_` and prove the remaining obligations. Simplify using `[hEr, hEc, hj, hj0]`.
+A detailed English derivation is pending.
 -/
 theorem lOrd_odd (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (S : Finset (HeightOneSpectrum (𝓞 F))) (j : ℤ)
     (hj : ¬ Even j) :
@@ -252,7 +246,7 @@ theorem lOrd_odd (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (S : Finset (HeightOn
       simp [hEr, hEc, hj, hj0]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h S j`. Distinguish the cases in `hj : Even j`. Conclude with `lOrd_even σ h S j hj`. Conclude with `lOrd_odd σ h S j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.Gen.lOrd : LOrd := by
   intro F E _ _ _ _ _ σ h S j

@@ -21,7 +21,7 @@ section Abs
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.LGrp.nabs_eq_zpow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem nabs_eq_residue (z : kˣ) :
     nabs k z = (GroundTheory.LocalField.residueCard k : ℝ) ^ (-GroundTheory.LocalField.ord (z : k)) := by
@@ -29,7 +29,7 @@ private theorem nabs_eq_residue (z : kˣ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.LocalField.norm_quasiChar_apply (GlobalTheory.DelEps.GaussBridge.continuous_of_isSmoothChar hχ) z, GroundTheory.LocalField.modulus_of_ne_zero z.ne_zero, nabs_eq_residue]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem norm_smooth_char {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (z : kˣ) :
     ‖(χ z : ℂ)‖ = nabs k z ^ GroundTheory.LocalField.quasiCharExponent χ := by
@@ -38,13 +38,13 @@ private theorem norm_smooth_char {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (
   simp
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hq : (1 : ℝ) < GroundTheory.LocalField.residueCard k`. Conclude with `GroundTheory.LocalField.one_lt_residueCard` after adjusting the coercions. Establish `hL` using `Real.log_pos hq`. Establish `h1 : GroundTheory.LocalField.ord ((GroundTheory.LocalField.unifUnit k : kˣ) : k) = 1`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using GroundTheory.LocalField.ord_unifUnit_zpow (K := k) 1`. Establish `hlog : Real.log (nabs k (GroundTheory.LocalField.unifUnit k)) = -Real.log (GroundTheory.LocalField.residueCard k)`. Rewrite using `[nabs_eq_residue, h1, Real.log_zpow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hpos` using `GlobalTheory.SmGL.nabs_pos' k (GroundTheory.LocalField.unifUnit k)`. Establish `ha : ‖((χ (GroundTheory.LocalField.unifUnit k) : ℂˣ) : ℂ)‖ ≠ 0`. Simplify using the standard rewrite rules. Unfold `GroundTheory.LocalField.quasiCharExponent`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.pow_apply, Units.val_mul, Units.val_pow_eq_pow_val, val_absPow_ofReal, norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg hpos.le _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : (nabs k (GroundTheory.LocalField.unifUnit k) ^ s) ^ d ≠ 0` using `pow_ne_zero _ (Real.rpow_pos_of_pos hpos _).ne'`. Simplify using `only [Real.logb]`. Rewrite using `[Real.log_mul ha hb, Real.log_pow, Real.log_rpow hpos, hlog]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem exponent_mul_absPow {χ χ' : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (hχ' : IsSmoothChar χ') (d : ℕ) (s : ℝ)
     (e : χ' = χ * absPow k (s : ℂ) ^ d) :
@@ -76,15 +76,15 @@ private theorem exponent_mul_absPow {χ χ' : kˣ →* ℂˣ} (hχ : IsSmoothCha
 end Abs
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a ha`. Set `ω₀ : IrrGL (HeightOneSpectrum.adicCompletion E w) → ((HeightOneSpectrum.adicCompletion E w)ˣ →* ℂˣ)` to `fun y => Classical.choose (clBasic (HeightOneSpectrum.adicCompletion E w) y).1`. Establish `hω₀ : ∀ y, IsSmoothChar (ω₀ y) ∧ HasCentralChar y.rep (ω₀ y) ∧ ∀ ω', HasCentralChar y.rep ω' → ω' = ω₀ y` using `fun y => Classical.choose_spec (clBasic (HeightOneSpectrum.adicCompletion E w) y).1`. Use `⟨fun y => GroundTheory.LocalField.quasiCharExponent (ω₀ y) / y.fst, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn : (x.fst : ℝ) ≠ 0` using `by exact_mod_cast hx.ne'`. Prove the components needed by the constructor for the conclusion. Introduce `s`. Establish `hc` using `PositivityTheory.RgUd.UOrder.hasCentralChar_nu_u x (hω₀ x).2.1 (s : ℂ)`. Establish `heq` using `(hω₀ (x.nu (s : ℂ))).2.2 _ hc`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfst : (x.nu (s : ℂ)).fst = x.fst`. Unfold `IrrGL.nu`. Conclude with `((clBasic _ x).2.1 _ _).1`. Establish `hsm : IsSmoothChar (ω₀ x * absPow (HeightOneSpectrum.adicCompletion E w) (s : ℂ) ^ x.fst)`. Rewrite using `[heq]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hω₀ _).1`. Use `show GroundTheory.LocalField.quasiCharExponent (ω₀ (x.nu (s : ℂ))) / ((x.nu (s : ℂ)).fst : ℝ) = GroundTheory.LocalField.quasiCharExponent (ω₀ x) / x.fst + s`. Rewrite using `[← heq, hfst, exponent_mul_absPow (hω₀ x).1 hsm x.fst s rfl]`. Clear the denominators using the available nonvanishing facts. Introduce `ω hω J hJ hunit σ`.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hωeq` using `(hω₀ x).2.2 ω hω`. Substitute `hωeq` using the available equality. Take `⟨-, -, -, -, -, -, -, -, hξ⟩` from `wDBasic E Ω A w h J`. Unfold `GlobalTheory.WeilDeligne.WD.lpTw`. Rewrite using `[(hξ _ _).2.2.1 σ, norm_mul, norm_pow, hunit σ, one_mul, hJ, ← ha.absPow_comp, MonoidHom.comp_apply, val_absPow_ofReal, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (GlobalTheory.SmGL.nabs_pos' _ _).le _), norm_smooth_char (hω₀ x).1, ← Real.rpow_natCast, ← Real.rpow_m …`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expo : Expo := by
   intro E Ω _ _ _ _ _ A w h a ha

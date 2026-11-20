@@ -12,9 +12,9 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.Glob PositivityTheory.Rg.Sw.G
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `InK InG at hk`. Take `⟨hG, hU⟩` from `hk`. Establish `hU' : k * kᴴ = 1` using `mul_eq_one_comm.mp hU`. Establish `hc : JJ n * k = k * JJ n`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hc` using `[← fromBlocks_toBlocks k]`. Unfold `JJ at hc`. Rewrite `hc` using `[fromBlocks_multiply, fromBlocks_multiply, fromBlocks_inj]`. Simplify using `at hc`. Conclude with `⟨hc.1, hc.2.1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem inK_blocks (k : M2 n) (hk : InK k) :
     k.toBlocks₂₁ = -k.toBlocks₁₂ ∧ k.toBlocks₂₂ = k.toBlocks₁₁ := by
@@ -32,13 +32,13 @@ theorem inK_blocks (k : M2 n) (hk : InK k) :
   exact ⟨hc.1, hc.2.1⟩
 
 /- English proof (translation)
-Rewrite using `[mM, Matrix.inv_eq_right_inv hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mM_unitary (u : Matrix (Fin n) (Fin n) ℂ) (hu : uᴴ * u = 1) : mM u = fromBlocks u 0 0 u := by
   rw [mM, Matrix.inv_eq_right_inv hu]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[dR, Matrix.diagonal_apply_eq, Complex.ofReal_cos, Complex.ofReal_sin, mul_comm I, Complex.exp_mul_I]`. Simplify using `[dR, Matrix.diagonal_apply_ne _ h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dR_cos_add_sin (θ : Fin n → ℝ) :
     (dR fun j => Real.cos (θ j)) + I • (dR fun j => Real.sin (θ j)) = diagonal fun j => cexp (I * (θ j : ℂ)) := by
@@ -49,9 +49,9 @@ theorem dR_cos_add_sin (θ : Fin n → ℝ) :
   · simp [dR, Matrix.diagonal_apply_ne _ h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[dR, Matrix.diagonal_apply_eq, Complex.ofReal_cos, Complex.ofReal_sin, ← neg_mul, mul_comm I, Complex.exp_mul_I, Complex.cos_neg, Complex.sin_neg]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[dR, Matrix.diagonal_apply_ne _ h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dR_cos_sub_sin (θ : Fin n → ℝ) :
     (dR fun j => Real.cos (θ j)) - I • (dR fun j => Real.sin (θ j)) = diagonal fun j => cexp (-(I * (θ j : ℂ))) := by
@@ -64,9 +64,9 @@ theorem dR_cos_sub_sin (θ : Fin n → ℝ) :
   · simp [dR, Matrix.diagonal_apply_ne _ h]
 
 /- English proof (translation)
-Establish `hs : star (I : ℂ) = -I` using `by rw [Complex.star_def, Complex.conj_I]`. Simplify using `only [conjTranspose_add, conjTranspose_smul, hs, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Rewrite using `[← e11, ← sub_eq_zero]`. Establish `hI : I * (-I) = (1 : ℂ)` using `by rw [mul_neg, Complex.I_mul_I, neg_neg]`. Establish `h2 : Aᴴ * B = Bᴴ * A` using `by rw [← sub_eq_zero, sub_eq_add_neg]; exact e12`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hI, one_smul, h2, neg_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem uni_I (A B : Matrix (Fin n) (Fin n) ℂ) (e11 : Aᴴ * A + Bᴴ * B = 1) (e12 : Aᴴ * B + -(Bᴴ * A) = 0) :
     (A + I • B)ᴴ * (A + I • B) = 1 := by
@@ -80,9 +80,9 @@ theorem uni_I (A B : Matrix (Fin n) (Fin n) ℂ) (e11 : Aᴴ * A + Bᴴ * B = 1)
   abel
 
 /- English proof (translation)
-Establish `hs : star (I : ℂ) = -I` using `by rw [Complex.star_def, Complex.conj_I]`. Simplify using `only [conjTranspose_sub, conjTranspose_smul, hs, sub_mul, mul_sub, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Rewrite using `[← e11, ← sub_eq_zero]`. Establish `hI : I * (-I) = (1 : ℂ)` using `by rw [mul_neg, Complex.I_mul_I, neg_neg]`. Establish `h2 : Aᴴ * B = Bᴴ * A` using `by rw [← sub_eq_zero, sub_eq_add_neg]; exact e12`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hI, one_smul, h2, neg_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem uni_mI (A B : Matrix (Fin n) (Fin n) ℂ) (e11 : Aᴴ * A + Bᴴ * B = 1) (e12 : Aᴴ * B + -(Bᴴ * A) = 0) :
     (A - I • B)ᴴ * (A - I • B) = 1 := by
@@ -96,45 +96,39 @@ theorem uni_mI (A B : Matrix (Fin n) (Fin n) ℂ) (e11 : Aᴴ * A + Bᴴ * B = 1
   abel
 
 /- English proof (translation)
-Take `⟨h21, h22⟩` from `inK_blocks k hk`. Establish `hU : kᴴ * k = 1` using `hk.2`. Use `set A := k.toBlocks₁₁ with hA0`. Use `set B := k.toBlocks₁₂ with hB0`. Establish `hkA : k = fromBlocks A B (-B) A` using `by conv_lhs => rw [← fromBlocks_toBlocks k]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h21, h22]`. Establish `hE : Aᴴ * A + Bᴴ * B = 1 ∧ Aᴴ * B + -(Bᴴ * A) = 0`. Rewrite `hU` using `[hkA, fromBlocks_conjTranspose, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_inj]`. Take `⟨h1, h2, -, -⟩` from `hU`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `[conjTranspose_neg]`. Simplify `h2` using `[conjTranspose_neg]`. Use `set W := A + I • B with hW0`. Use `set V := A - I • B with hV0`. Establish `hW : Wᴴ * W = 1` using `uni_I A B hE.1 hE.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : Vᴴ * V = 1` using `uni_mI A B hE.1 hE.2`. Establish `hV' : V * Vᴴ = 1` using `mul_eq_one_comm.mp hV`. Establish `hX : (W * Vᴴ)ᴴ * (W * Vᴴ) = 1`. Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc, ← Matrix.mul_assoc Wᴴ, hW, Matrix.one_mul, hV']`. Take `⟨P, w, hP, hP', hw, hXd⟩` from `VacU.unitary_diag (W * Vᴴ) hX`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set θ : Fin n → ℝ := fun j => Complex.arg (w j) / 2 with hθ`. Use `set D : Matrix (Fin n) (Fin n) ℂ := diagonal fun j => cexp (I * (θ j : ℂ)) with hD`. Use `set Db : Matrix (Fin n) (Fin n) ℂ := diagonal fun j => cexp (-(I * (θ j : ℂ))) with hDb`. Establish `hDDb : D * Db = 1`. Rewrite using `[hD, hDb, diagonal_mul_diagonal, ← diagonal_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[← Complex.exp_add, add_neg_cancel, Complex.exp_zero]`. Establish `hDbH : Dbᴴ = D`. Rewrite using `[hD, hDb, diagonal_conjTranspose]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.star_apply]`. Rewrite using `[Complex.star_def, ← Complex.exp_conj, map_neg, map_mul, Complex.conj_I, Complex.conj_ofReal, neg_mul, neg_neg]`. Establish `hDb2 : Db * Db = (diagonal w)ᴴ`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hDb, diagonal_mul_diagonal, diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.star_apply]`. Establish `hwj : w j = cexp (↑(Complex.arg (w j)) * I)` using `by conv_lhs => rw [← Complex.norm_mul_exp_arg_mul_I (w j)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hw j, Complex.ofReal_one, one_mul]`. Rewrite using `[← Complex.exp_add]`. Use `conv_rhs => rw [hwj]`. Rewrite using `[Complex.star_def, ← Complex.exp_conj, map_mul, Complex.conj_I, Complex.conj_ofReal]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hθ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set u' := Db * Pᴴ * W with hu0`. Establish `hu' : u'ᴴ * u' = 1`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu0, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hDbH]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hDDb, Matrix.mul_one, hP', Matrix.mul_one, hW]`. Establish `hPD : P * D * u' = W`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hPDb : P * Db * u' = V`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hDb2, hXd, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = V := by`. Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc, hW, Matrix.mul_one]`. Establish `hCS` using `dR_cos_add_sin θ`. Establish `hCSm` using `dR_cos_sub_sin θ`. Rewrite `hCS` using `[← hD]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hCSm` using `[← hDb]`. Use `set C := dR fun j => Real.cos (θ j) with hC0`. Use `set S := dR fun j => Real.sin (θ j) with hS0`. Establish `e1 : P * C * u' + I • (P * S * u') = W`. Rewrite using `[← hPD, ← hCS, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : P * C * u' - I • (P * S * u') = V`. Rewrite using `[← hPDb, ← hCSm, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hXA : P * C * u' = A`. Establish `h` using `congrArg₂ (· + ·) e1 e2`. Simplify using `only [hW0, hV0] at h`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2 : (2 : ℂ) • (P * C * u') = (2 : ℂ) • A`. Rewrite using `[two_smul, two_smul]`. Apply the tactic sequence `convert h using 1 <;> abel`. Conclude with `smul_right_injective _ two_ne_zero h2`. Establish `hYB : P * S * u' = B`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg₂ (· - ·) e1 e2`. Simplify using `only [hW0, hV0] at h`. Establish `h2 : (2 * I) • (P * S * u') = (2 * I) • B`. Rewrite using `[mul_smul, mul_smul, two_smul, two_smul]`. Apply the tactic sequence `convert h using 1 <;> abel`.
-
-Conclude with `smul_right_injective _ (mul_ne_zero two_ne_zero Complex.I_ne_zero) h2`. Use `⟨P, u', θ, hP, hu', fun j => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Complex.neg_pi_lt_arg (w j)` as an intermediate fact. Simplify using `only [hθ]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `Complex.arg_le_pi (w j)` as an intermediate fact. Simplify using `only [hθ]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `hkA.trans ?_` and prove the remaining obligations. Rewrite using `[mM_unitary P hP, mM_unitary u' hu', kth_eq, fromBlocks_multiply, fromBlocks_multiply]`.
-
-Simplify using `only [Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul]`. Rewrite using `[← hC0, ← hS0]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, neg_zero, add_zero, hXA, hYB]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kak (k : M2 n) (hk : InK k) :
     ∃ (u u' : Matrix (Fin n) (Fin n) ℂ) (θ : Fin n → ℝ), uᴴ * u = 1 ∧ u'ᴴ * u' = 1 ∧

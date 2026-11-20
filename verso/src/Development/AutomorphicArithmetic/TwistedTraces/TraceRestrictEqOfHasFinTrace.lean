@@ -3,11 +3,11 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.C.Sf
 
 /- English proof (translation)
-Introduce `S _ _ Q Q' _ g t m e hQ hg hgQ hm he`. Take `⟨hfd, hr⟩` from `hg`. Use `haveI := hfd`. Establish `hWQ : LinearMap.range g ≤ Q`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Conclude with `hgQ x`. Set `p : Q' →ₗ[ℂ] LinearMap.range g` to `(g ∘ₗ e).codRestrict (LinearMap.range g) fun x => LinearMap.mem_range_self g (e x)`. Set `q : LinearMap.range g →ₗ[ℂ] Q'` to `Submodule.inclusion (hWQ.trans hQ)`. Establish `e1 : m = q ∘ₗ p`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hm x`. Establish `e2 : g.restrict (p` using `LinearMap.range g) (q := LinearMap.range g) (fun v _ => LinearMap.mem_range_self g v) = p ∘ₗ q := by`. Use extensionality with `x`. Conclude with `congrArg g (he (q x) (hWQ x.2)).symm`. Rewrite using `[e1, LinearMap.trace_comp_comm', ← e2, hr]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.trace_restrict_eq_of_hasFinTrace :
     ∀ (S : Type) [AddCommGroup S] [Module ℂ S] (Q Q' : Submodule ℂ S) [FiniteDimensional ℂ Q'] (g : S →ₗ[ℂ] S) (t : ℂ) (m : Module.End ℂ Q') (e : Q' →ₗ[ℂ] S), Q ≤ Q' → HasFinTrace g t → (∀ x, g x ∈ Q) → (∀ x : Q', ((m x : Q') : S) = g (e x)) → (∀ x : Q', (x : S) ∈ Q → e x = x) → LinearMap.trace ℂ Q' m = t := by

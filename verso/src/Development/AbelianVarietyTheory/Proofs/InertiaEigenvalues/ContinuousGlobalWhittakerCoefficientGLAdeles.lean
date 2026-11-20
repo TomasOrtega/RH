@@ -10,11 +10,11 @@ namespace GlobalTheory.JSW.WhitCont
 open GroundTheory.Automorphic.FourierWhittaker
 
 /- English proof (translation)
-Introduce `E _ _ a F hF ⟨C, hC⟩`. Use `set μ := (vecMeasure E (Pos a)).restrict (vecDomain E (Pos a)) with hμ`. Use `haveI : IsFiniteMeasure μ := ⟨by rw [hμ, Measure.restrict_apply_univ, vecMeasure_vecDomain]; exact ENNReal.one_lt_top⟩`. Establish `hψ : Continuous fun X : Pos a → Ad E => (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ)` using `continuous_subtype_val.comp (GroundTheory.Global.continuous_adelicChar.comp (continuous_supSum 0).neg)`. Establish `hj : Continuous fun p : GA E a × (Pos a → Ad E) => F (uGL p.2 * p.1) * (GroundTheory.Global.adelicChar E (-supSum 0 p.2) : ℂ)` using `(hF.comp ((continuous_uGL.comp continuous_snd).mul continuous_fst)).mul (hψ.comp continuous_snd)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : GlobalTheory.JSW.whit F = fun g => ∫ X, F (uGL X * g) * (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ) ∂μ` using `rfl`. Rewrite using `[e]`. Use `continuous_of_dominated (bound := fun _ => C) (fun g => ?_) (fun g => ?_) (integrable_const C) ?_` and prove the remaining obligations. Establish `h1 : Continuous fun X : Pos a → Ad E => (g, X)` using `continuous_const.prodMk continuous_id`. Conclude with `(hj.comp h1).aestronglyMeasurable`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.Eventually.of_forall fun X => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Circle.norm_coe, mul_one]`. Conclude with `hC _`. Use `Filter.Eventually.of_forall fun X => ?_` and prove the remaining obligations. Conclude with `(hF.comp (continuous_const.mul continuous_id)).mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_whit : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (F : GA E a → ℂ), Continuous F →
     (∃ C : ℝ, ∀ g, ‖F g‖ ≤ C) → Continuous (GlobalTheory.JSW.whit F) := by

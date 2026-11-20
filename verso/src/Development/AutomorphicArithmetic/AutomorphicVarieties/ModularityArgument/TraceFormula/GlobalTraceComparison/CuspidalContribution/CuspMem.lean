@@ -14,13 +14,13 @@ section Lin
 variable {M O : Type*} [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Set `U : Submodule ℂ M` to `sInf {W | φ ∈ W ∧ ∀ o, ∀ x ∈ W, act o x ∈ W}`. Establish `hUC : U ≤ C` using `sInf_le ⟨hφ, hC⟩`. Establish `hφU : φ ∈ U` using `Submodule.mem_sInf.2 fun W hW => hW.1`. Establish `hUs : ∀ o, ∀ x ∈ U, act o x ∈ U` using `fun o x hx => Submodule.mem_sInf.2 fun W hW => hW.2 o x (Submodule.mem_sInf.1 hx W hW)`. Establish `hle` using `UpperTheory.V.TR.SS.le_sSup_minimal act U hUs fun W hW hs => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨D, -, d2, d3, d4⟩` from `hc W (hW.trans hUC) hs`. Use `⟨D ⊓ U, inf_le_right, fun o x hx => ⟨d2 o x hx.1, hUs o x hx.2⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← inf_assoc, d3, bot_inf_eq]`. Rewrite using `[← sup_inf_assoc_of_le _ hW, d4, inf_eq_right.2 hUC]`. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `h0 ((Submodule.mem_bot ℂ).1 ((hle.trans (sSup_le ?_)) hφU))` and prove the remaining obligations. Introduce and unpack `V ⟨v1, v2, v3, v4⟩`. Take `⟨D, d1, d2, d3, d4⟩` from `hc V (v1.trans hUC) v2`. Distinguish the cases in `hD : φ ∈ D`. Rewrite using `[← d3]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_inf le_rfl (v1.trans (sInf_le ⟨hD, d2⟩))`. Conclude with `absurd ⟨V, D, v1.trans hUC, d1, v2, v3, v4, d2, d3, d4, hD⟩ hn`.
+A detailed English derivation is pending.
 -/
 private theorem exists_irr_compl (act : O → Module.End ℂ M) (C : Submodule ℂ M) (hC : ∀ o, ∀ x ∈ C, act o x ∈ C)
     (hc : ∀ U ≤ C, (∀ o, ∀ x ∈ U, act o x ∈ U) →
@@ -48,7 +48,7 @@ private theorem exists_irr_compl (act : O → Module.End ℂ M) (C : Submodule �
   · exact absurd ⟨V, D, v1.trans hUC, d1, v2, v3, v4, d2, d3, d4, hD⟩ hn
 
 /- English proof (translation)
-Introduce `U hU hUs`. Take `⟨D₀, -, a2, a3, a4⟩` from `hc U (hU.trans hD) hUs`. Use `⟨D₀ ⊓ D, inf_le_right, fun o x hx => ⟨a2 o x hx.1, hs o x hx.2⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← inf_assoc, a3, bot_inf_eq]`. Rewrite using `[← sup_inf_assoc_of_le _ hU, a4, inf_eq_right.2 hD]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem compl_sub (act : O → Module.End ℂ M) {C D : Submodule ℂ M}
     (hc : ∀ U ≤ C, (∀ o, ∀ x ∈ U, act o x ∈ U) →
@@ -65,13 +65,13 @@ private theorem compl_sub (act : O → Module.End ℂ M) {C D : Submodule ℂ M}
 end Lin
 
 /- English proof (translation)
-Establish `hc : IsCompl (V.comap C.subtype) (D.comap C.subtype)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[disjoint_iff, ← Submodule.comap_inf, h1, Submodule.comap_bot, Submodule.ker_subtype]`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce and unpack `⟨x, hx⟩ -`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨v, hv, d, hd, rfl⟩` from `Submodule.mem_sup.1 (h2.ge hx)`. Conclude with `Submodule.mem_sup.2 ⟨⟨v, hV hv⟩, hv, ⟨d, hD hd⟩, hd, rfl⟩`. Set `p : C →ₗ[ℂ] V` to `(Submodule.comapSubtypeEquivOfLe hV).toLinearMap ∘ₗ Submodule.projectionOnto _ _ hc`. Establish `hp : ∀ x : C, x.1 - (p x).1 ∈ D` using `fun x => by`. Take `⟨v, hv, d, hd, rfl⟩` from `Submodule.mem_sup.1 (hc.sup_eq_top.ge (Submodule.mem_top (x := x)))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : Submodule.projectionOnto _ _ hc v = ⟨v, hv⟩` using `Submodule.projectionOnto_apply_left hc ⟨v, hv⟩`. Establish `e2 : Submodule.projectionOnto _ _ hc d = 0` using `Submodule.projectionOnto_apply_right hc ⟨d, hd⟩`. Establish `: (p (v + d)).1 = v.1`. Simplify using `only [p, LinearMap.comp_apply, map_add, e1, e2, map_zero, add_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using `using hd`. Use `⟨p, hp, fun x v h => Subtype.ext (sub_eq_zero.1 ((Submodule.mem_bot ℂ).1 (h1.le ⟨V.sub_mem (p x).2 v.2, ?_⟩)))⟩` and prove the remaining obligations. Use `D.sub_mem h (hp x)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem exists_proj {M : Type*} [AddCommGroup M] [Module ℂ M] {C V D : Submodule ℂ M} (hV : V ≤ C) (hD : D ≤ C)
     (h1 : V ⊓ D = ⊥) (h2 : V ⊔ D = C) :
@@ -105,7 +105,7 @@ private noncomputable def stRep (C : Submodule ℂ (Sm E a)) (hC : IsStable C) :
   GlobalTheory.PRep.sub (finRep E a) C fun k => hC (.fin k)
 
 /- English proof (translation)
-Use `p2 _ _ ?_` and prove the remaining obligations. Use `hD (.fin g) _ (p1 y)` as an intermediate fact. Rewrite `this` using `[map_sub]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem proj_rep {C V D : Submodule ℂ (Sm E a)} (hC : IsStable C) (hV : IsStable V) (hD : IsStable D)
     (p : C →ₗ[ℂ] V) (p1 : ∀ x : C, x.1 - (p x).1 ∈ D) (p2 : ∀ (x : C) (v : V), x.1 - v.1 ∈ D → p x = v)
@@ -116,7 +116,7 @@ private theorem proj_rep {C V D : Submodule ℂ (Sm E a)} (hC : IsStable C) (hV 
   exact this
 
 /- English proof (translation)
-Establish `h1 : IsSatVecGL w (locOf (stRep C hC) w) x B` using `IsSatVecGL.of_map C.subtype (fun _ _ => rfl) Subtype.val_injective hx`. Establish `h2 : IsSatVecGL w (π.locRep w) (f x) B` using `h1.map f (fun g y => hf _ y) h0`. Take `⟨B', hB⟩` from `GlobalTheory.CompanionTheory.SatAe.exists_hasSatGL_locRep π w ((Submodule.ne_bot_iff _).2 ⟨f x, h2.2.1, h0⟩)`. Rewrite `hB` using `[(hB.2 _ h2.2.1 h0).unique h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem hasSat_of_map {C : Submodule ℂ (Sm E a)} (hC : IsStable C) (π : CuspSub E a) (f : C →ₗ[ℂ] π.V)
     (hf : ∀ g (y : C), f (stRep C hC g y) = π.finPart g (f y)) (w : Pl E) (B : Multiset ℂˣ) {x : C}
@@ -133,15 +133,15 @@ end UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp.GeneralLocalHecke
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp.GeneralLocalHecke in
 /- English proof (translation)
-Introduce `E _ _ _ N hN bad hbad K W φ m B h hc`. Establish `hb` using `ciBasic capAct E N m`. Establish `hc0` using `ciCompl (ciBasic capAct) E N hN m`. Establish `hφ : φ ∈ CI N m` using `mem_CI.2 ⟨hc, fun t => (h.cap t).2⟩`. Take `⟨V, D, v1, d1, v2, v3, v4, d2, h1, h2, hφD⟩` from `exists_irr_compl act (CI N m) hb.1 hc0 hφ h.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `π : CuspSub E N` to `⟨V, fun ψ hψ => (mem_CI.1 (v1 hψ)).1, v2, v3, v4⟩`. Set `x : CI N m` to `⟨φ, hφ⟩`. Take `⟨p, p1, p2⟩` from `exists_proj v1 d1 h1 h2`. Take `⟨q, q1, q2⟩` from `exists_proj d1 v1 (by rwa [inf_comm]) (by rwa [sup_comm])`. Establish `hp0 : p x ≠ 0` using `fun e => hφD (by simpa [e, x] using p1 x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS : ∀ w ∉ bad, HasSatGL w (π.locRep w) (B w)` using `fun w hw => hasSat_of_map hb.1 π p (proj_rep hb.1 v2 d2 p p1 p2) w (B w) (x := x) (h.sat w hw) hp0`. Establish `hq : q x = 0`. Assume the negation of the conclusion as `hq0`. Establish `hq0' : (q x).1 ≠ 0` using `fun e => hq0 (Subtype.ext e)`. Take `⟨V', D', u1, e1, u2, u3, u4, e2, g1, g2, hD'⟩` from `exists_irr_compl act D d2 (compl_sub act hc0 d1 d2) (q x).2 hq0'`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `π' : CuspSub E N` to `⟨V', fun ψ hψ => (mem_CI.1 (d1 (u1 hψ))).1, u2, u3, u4⟩`. Take `⟨p', p1', p2'⟩` from `exists_proj u1 e1 g1 g2`. Establish `hp0' : p' (q x) ≠ 0` using `fun e => hD' (by simpa [e] using p1' (q x))`. Establish `hS' : ∀ w ∉ bad, HasSatGL w (π'.locRep w) (B w)` using `fun w hw => hasSat_of_map hb.1 π' (p' ∘ₗ q) (fun g y => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, proj_rep hb.1 d2 v2 q q1 q2, proj_rep d2 u2 e2 p' p1' p2']`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl) w (B w) (x := x) (h.sat w hw) hp0'`. Establish `e : V = V'` using `UpperTheory.V.Af.strongMultOneC E N π π' (Filter.eventually_cofinite.2 (hbad.subset fun w hw => by_contra fun hn => hw ⟨B w, hS w hn, hS' w hn⟩))`. Conclude with `v3 (eq_bot_iff.2 (h1 ▸ le_inf le_rfl (e.le.trans u1)))`. Establish `hφV : φ ∈ V` using `by simpa [hq, x] using q1 x`. Conclude with `⟨π, hφV, fun t => ⟨(h.cap t).1, fun u ψ hψ => (mem_CI.1 (v1 hψ)).2 t u⟩, fun w hw => (CG.hasSat_mk π w _).2 (hS w hw)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp.cuspMem :
     CuspMem := by

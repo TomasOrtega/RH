@@ -26,7 +26,7 @@ variable [Algebra (MvPolynomial ι k) S] [Algebra k S]
 include ι
 
 /- English proof (translation)
-Establish `h : IsBaseChange S (KaehlerDifferential.map k k (MvPolynomial ι k) S)` using `KaehlerDifferential.isBaseChange_of_formallyEtale k (MvPolynomial ι k) S`. Use `⟨(Algebra.TensorProduct.basis S (KaehlerDifferential.mvPolynomialBasis k ι)).map h.equiv, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [Module.Basis.map_apply, Algebra.TensorProduct.basis_apply, KaehlerDifferential.mvPolynomialBasis_apply, IsBaseChange.equiv_tmul, one_smul, KaehlerDifferential.map_D]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem exists_basisKaehler :
     ∃ b : Module.Basis ι S (KaehlerDifferential k S),
@@ -44,7 +44,7 @@ noncomputable def basisKaehler : Module.Basis ι S (KaehlerDifferential k S) :=
   (exists_basisKaehler k ι S).choose
 
 /- English proof (translation)
-The claim follows from `(exists_basisKaehler k ι S).choose_spec i`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem basisKaehler_apply (i : ι) :
     basisKaehler k ι S i = KaehlerDifferential.D k S (coord k ι S i) :=
@@ -54,7 +54,7 @@ private noncomputable def partialDerivFun (i : ι) (s : S) : S :=
   (basisKaehler k ι S).repr (KaehlerDifferential.D k S s) i
 
 /- English proof (translation)
-Introduce `x y`. Use `show (basisKaehler k ι S).repr (KaehlerDifferential.D k S (x + y)) i = (basisKaehler k ι S).repr (KaehlerDifferential.D k S x) i + (basisKaehler k ι S).repr (KaehlerDifferential.D k S y) i`. Rewrite using `[map_add, map_add, Finsupp.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem partialFun_map_add (i : ι) :
     ∀ x y : S, partialDerivFun k ι S i (x + y) = partialDerivFun k ι S i x + partialDerivFun k ι S i y := by
@@ -65,9 +65,9 @@ private theorem partialFun_map_add (i : ι) :
   rw [map_add, map_add, Finsupp.add_apply]
 
 /- English proof (translation)
-Introduce `c x`. Establish `h1 : c • x = algebraMap k S c * x` using `Algebra.smul_def c x`. Establish `h2 : KaehlerDifferential.D k S (c • x) = algebraMap k S c • KaehlerDifferential.D k S x`. Rewrite using `[h1, Derivation.leibniz, Derivation.map_algebraMap, smul_zero, add_zero]`. Use `show (basisKaehler k ι S).repr (KaehlerDifferential.D k S (c • x)) i = c • (basisKaehler k ι S).repr (KaehlerDifferential.D k S x) i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, LinearEquiv.map_smul, Finsupp.smul_apply, smul_eq_mul, ← Algebra.smul_def]`.
+A detailed English derivation is pending.
 -/
 private theorem partialFun_map_smul (i : ι) :
     ∀ (c : k) (x : S),
@@ -87,7 +87,7 @@ private noncomputable def partialDerivLinear (i : ι) : S →ₗ[k] S where
   map_smul' := partialFun_map_smul k ι S i
 
 /- English proof (translation)
-Introduce `a b`. Establish `h : KaehlerDifferential.D k S (a * b) = a • KaehlerDifferential.D k S b + b • KaehlerDifferential.D k S a` using `(KaehlerDifferential.D k S).leibniz a b`. Establish `h2 : (basisKaehler k ι S).repr (KaehlerDifferential.D k S (a * b)) i = a * (basisKaehler k ι S).repr (KaehlerDifferential.D k S b) i + b * (basisKaehler k ι S).repr (KaehlerDifferential.D k S a) i`. Rewrite using `[h, map_add, Finsupp.add_apply, LinearEquiv.map_smul, LinearEquiv.map_smul, Finsupp.smul_apply, Finsupp.smul_apply, smul_eq_mul, smul_eq_mul]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem partialLinear_leibniz (i : ι) :
     ∀ a b : S, partialDerivLinear k ι S i (a * b)
@@ -113,7 +113,7 @@ theorem partialDeriv_apply (i : ι) (s : S) :
     partialDeriv k ι S i s = (basisKaehler k ι S).repr (KaehlerDifferential.D k S s) i := rfl
 
 /- English proof (translation)
-Rewrite using `[partialDeriv_apply, ← basisKaehler_apply k ι S j, Module.Basis.repr_self, Finsupp.single_apply]`. Conclude with `if_congr eq_comm rfl rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem partialDeriv_coord [DecidableEq ι] (i j : ι) :
     partialDeriv k ι S i (coord k ι S j) = if i = j then (1 : S) else 0 := by
@@ -122,7 +122,7 @@ Rewrite using `[partialDeriv_apply, ← basisKaehler_apply k ι S j, Module.Basi
   exact if_congr eq_comm rfl rfl
 
 /- English proof (translation)
-Rewrite using `[partialDeriv_apply, ← basisKaehler_apply k ι S i, Module.Basis.repr_self, Finsupp.single_eq_same]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem partialDeriv_coord_self (i : ι) :
     partialDeriv k ι S i (coord k ι S i) = 1 := by
@@ -130,7 +130,7 @@ theorem partialDeriv_coord_self (i : ι) :
     Finsupp.single_eq_same]
 
 /- English proof (translation)
-Rewrite using `[partialDeriv_coord k ι S i j, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem partialDeriv_coord_of_ne (i j : ι) (h : i ≠ j) :
     partialDeriv k ι S i (coord k ι S j) = 0 := by
@@ -140,7 +140,7 @@ theorem partialDeriv_coord_of_ne (i j : ι) (h : i ≠ j) :
 omit [Algebra (MvPolynomial ι k) S] [IsScalarTower k (MvPolynomial ι k) S]
   [Algebra.FormallyEtale (MvPolynomial ι k) S] in
 /- English proof (translation)
-Proceed by induction on `t using Finset.cons_induction_on`. Simplify using the standard rewrite rules. Name the introduced variables `a u hu ih`. Rewrite using `[Finset.sum_cons, Finset.sum_cons, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem sum_smul_derivation_apply (c : ι → S) (f : ι → Derivation k S S)
     (s : S) (t : Finset ι) :
@@ -152,11 +152,11 @@ private theorem sum_smul_derivation_apply (c : ι → S) (f : ι → Derivation 
     rfl
 
 /- English proof (translation)
-Take `⟨hι⟩` from `nonempty_fintype ι`. Use `Submodule.eq_top_iff'.mpr fun D => ?_` and prove the remaining obligations. Establish `key : D = ∑ i : ι, D (coord k ι S i) • partialDeriv k ι S i`. Use extensionality with `s`. Establish `h1 : ∑ i : ι, partialDeriv k ι S i s • KaehlerDifferential.D k S (coord k ι S i) = KaehlerDifferential.D k S s`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[← Module.Basis.sum_repr (basisKaehler k ι S) (KaehlerDifferential.D k S s)]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [basisKaehler_apply, partialDeriv_apply]`. Establish `h2 : D.liftKaehlerDifferential (∑ i : ι, partialDeriv k ι S i s • KaehlerDifferential.D k S (coord k ι S i)) = D.liftKaehlerDifferential (KaehlerDifferential.D k S s)` using `by rw [h1]`. Simplify using `only [map_sum, map_smul, Derivation.liftKaehlerDifferential_comp_D] at h2`. Rewrite using `[sum_smul_derivation_apply, ← h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [smul_eq_mul, mul_comm]`. Rewrite using `[key]`. Conclude with `sum_mem fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self i))`.
+A detailed English derivation is pending.
 -/
 theorem span_range_partialDeriv [Finite ι] :
     Submodule.span S (Set.range (partialDeriv k ι S)) = (⊤ : Submodule S (Derivation k S S)) := by
@@ -179,9 +179,9 @@ theorem span_range_partialDeriv [Finite ι] :
     Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self i))
 
 /- English proof (translation)
-Use extensionality with `s`. Establish `hsum : (∑ i : ι, D (coord k ι S i) • partialDeriv k ι S i) s = ∑ i : ι, D (coord k ι S i) * partialDeriv k ι S i s` using `sum_smul_derivation_apply k ι S (fun i => D (coord k ι S i)) (partialDeriv k ι S) s Finset.univ`. Rewrite using `[hsum]`. Establish `h1 : D s = D.liftKaehlerDifferential (KaehlerDifferential.D k S s)`. Rewrite using `[Derivation.liftKaehlerDifferential_comp_D]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : KaehlerDifferential.D k S s = ∑ i : ι, (basisKaehler k ι S).repr (KaehlerDifferential.D k S s) i • basisKaehler k ι S i` using `((basisKaehler k ι S).sum_repr (KaehlerDifferential.D k S s)).symm`. Rewrite using `[h1, h2, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, basisKaehler_apply, Derivation.liftKaehlerDifferential_comp_D, smul_eq_mul, ← partialDeriv_apply]`. Conclude with `mul_comm _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_sum_smul_partialDeriv [Fintype ι] (D : Derivation k S S) :
     D = ∑ i : ι, D (coord k ι S i) • partialDeriv k ι S i := by
@@ -204,13 +204,13 @@ theorem eq_sum_smul_partialDeriv [Fintype ι] (D : Derivation k S S) :
   exact mul_comm _ _
 
 /- English proof (translation)
-Establish `hli : LinearIndependent S (partialDeriv k ι S)`. Rewrite using `[linearIndependent_iff']`. Introduce `s g hg j hj`. Establish `h0 : (∑ i ∈ s, g i • partialDeriv k ι S i) (coord k ι S j) = 0`. Rewrite using `[hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h0` using `[sum_smul_derivation_apply k ι S g (partialDeriv k ι S) (coord k ι S j) s]`. Establish `key : ∑ i ∈ s, g i * partialDeriv k ι S i (coord k ι S j) = g j * partialDeriv k ι S j (coord k ι S j)`. Use `Finset.sum_eq_single j ?_ ?_` and prove the remaining obligations. Introduce `i _ hij`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[partialDeriv_coord_of_ne k ι S i j hij, mul_zero]`. Introduce `hj'`. Conclude with `absurd hj hj'`. Rewrite `h0` using `[key, partialDeriv_coord_self, mul_one]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hsp : ⊤ ≤ Submodule.span S (Set.range (partialDeriv k ι S))` using `(span_range_partialDeriv k ι S).ge`. Conclude with `⟨Module.Basis.mk hli hsp, fun i => Module.Basis.mk_apply hli hsp i⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_basisDerivation [Fintype ι] [DecidableEq ι] :
     ∃ b : Module.Basis ι S (Derivation k S S), ∀ i : ι, b i = partialDeriv k ι S i := by
@@ -240,7 +240,7 @@ noncomputable def basisDerivation [Fintype ι] [DecidableEq ι] :
   (exists_basisDerivation k ι S).choose
 
 /- English proof (translation)
-The claim follows from `(exists_basisDerivation k ι S).choose_spec i`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem basisDerivation_apply [Fintype ι] [DecidableEq ι] (i : ι) :
     basisDerivation k ι S i = partialDeriv k ι S i :=

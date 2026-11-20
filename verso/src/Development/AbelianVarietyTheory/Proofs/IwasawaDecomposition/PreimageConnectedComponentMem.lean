@@ -15,17 +15,15 @@ open Formalism.MainNotions.DIV.Cons (intO)
 namespace GlobalTheory.ShFam.PtComp
 
 /- English proof (translation)
-Use `CompSplitPfD.cspD_disj (fun x => ?_) Z Z' hZ hZ' hne` and prove the remaining obligations. Take `⟨_, ⟨V, hV, rfl⟩, hxV, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hV' : IsAffineOpen V` using `hV`. Establish `h1` using `HasRingHomProperty.appLE (P := @Smooth) f hsm ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ (fun p _ => by simp)`. Set `ψ : K →+* Γ(X, V)` to `(f.appLE ⊤ V (fun p _ => by simp)).hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hψ : ψ.Smooth` using `RingHom.Smooth.comp (RingHom.Smooth.of_bijective (Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv.bijective) h1`. Set `_ : Algebra K Γ(X, V)` to `ψ.toAlgebra`. Establish `: Algebra.Smooth K Γ(X, V)` using `hψ`. Take `⟨r, hr, n, _, _, _⟩` from `Algebra.IsSmoothAt.exists_isStandardEtale_mvPolynomial (R := K) (p := (hV'.primeIdealOf ⟨x, hxV⟩).asIdeal)`. Use `⟨PrimeSpectrum (Localization.Away r), inferInstance, hV'.fromSpec ∘ PrimeSpectrum.comap (algebraMap Γ(X, V) (Localization.Away r)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hV'.fromSpec.isOpenEmbedding).comp (PrimeSpectrum.localization_away_isOpenEmbedding _ r)`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : hV'.primeIdealOf ⟨x, hxV⟩ ∈ Set.range (PrimeSpectrum.comap (algebraMap Γ(X, V) (Localization.Away r))) := by`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away r) r]`. Conclude with `hr`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show hV'.fromSpec (PrimeSpectrum.comap (algebraMap Γ(X, V) (Localization.Away r)) z) = x`. Rewrite using `[hz]`. Conclude with `hV'.fromSpec_primeIdealOf ⟨x, hxV⟩`. Introduce `a b y ha hb hay hby`. Establish `: IsIntegrallyClosed (MvPolynomial (Fin n) K)` using `UniqueFactorizationMonoid.instIsIntegrallyClosed`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmin : ∀ a : PrimeSpectrum (Localization.Away r), (∀ a', a' ⤳ a → a' = a) → a.asIdeal ∈ minimalPrimes (Localization.Away r)`. Introduce `a ha`. Use `⟨⟨a.isPrime, bot_le⟩, fun J hJ hJa => ?_⟩` and prove the remaining obligations. Use `ha ⟨J, hJ.1⟩ ((PrimeSpectrum.le_iff_specializes _ _).1 hJa)` as an intermediate fact. Conclude with `(congrArg PrimeSpectrum.asIdeal this).ge`.
-
-Conclude with `PrimeSpectrum.ext (CompSplitPfC.cspC_minimal_unique (MvPolynomial (Fin n) K) (q := y.asIdeal) (hmin a ha) (hmin b hb) ((PrimeSpectrum.le_iff_specializes _ _).2 hay) ((PrimeSpectrum.le_iff_specializes _ _).2 hby))`.
+A detailed English derivation is pending.
 -/
 theorem disjoint_of_smooth {K : Type} [Field K] {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of K)) (hsm : Smooth f)
     (Z Z' : Set X) (hZ : Z ∈ irreducibleComponents X) (hZ' : Z' ∈ irreducibleComponents X) (hne : Z ≠ Z') :
@@ -68,13 +66,11 @@ theorem disjoint_of_smooth {K : Type} [Field K] {X : Scheme.{0}} (f : X ⟶ Spec
       ((PrimeSpectrum.le_iff_specializes _ _).2 hby))
 
 /- English proof (translation)
-Establish `hV` using `irreducibleComponent_mem_irreducibleComponents z`. Establish `hU : irreducibleComponent z = (⋃ W ∈ irreducibleComponents X \ {irreducibleComponent z}, W)ᶜ`. Use extensionality with `p`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, not_exists]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hp W hW hpW`. Conclude with `Set.disjoint_left.1 (hd _ hW.1 _ hV hW.2) hpW hp`. Introduce `hp`. Assume the negation of the conclusion as `hpZ`. Conclude with `hp _ ⟨irreducibleComponent_mem_irreducibleComponents p, fun h => hpZ ((show irreducibleComponent p = _ from h) ▸ mem_irreducibleComponent)⟩ mem_irreducibleComponent`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ho : IsOpen (irreducibleComponent z)`. Rewrite using `[hU]`. Conclude with `((hfin.subset Set.diff_subset).isClosed_biUnion fun W hW => isClosed_of_mem_irreducibleComponents _ hW.1).isOpen_compl`. Establish `e : connectedComponent z = irreducibleComponent z` using `((IsClopen.connectedComponent_subset ⟨isClosed_irreducibleComponent, ho⟩ mem_irreducibleComponent)).antisymm irreducibleComponent_subset_connectedComponent`. Rewrite using `[e]`.
-
-Conclude with `⟨hV, ho⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem connectedComponent_mem {X : Type} [TopologicalSpace X] (hfin : (irreducibleComponents X).Finite)
     (hd : ∀ Z ∈ irreducibleComponents X, ∀ Z' ∈ irreducibleComponents X, Z ≠ Z' → Disjoint Z Z') (z : X) :
@@ -101,9 +97,9 @@ theorem connectedComponent_mem {X : Type} [TopologicalSpace X] (hfin : (irreduci
   exact ⟨hV, ho⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hne`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := π) (g := x) p (IsLocalRing.closedPoint Ω) (Subsingleton.elim (α := PrimeSpectrum K) _ _)`. Use `LocallyOfFiniteType.jacobsonSpace (pullback.snd π x)` as an intermediate fact. Take `⟨c, hcO, hc'⟩` from `nonempty_inter_closedPoints (Z := pullback.fst π x ⁻¹' O) ⟨z, show pullback.fst π x z ∈ O from hz ▸ hp⟩ (hO.preimage (pullback.fst π x).continuous).isLocallyClosed`. Establish `hc : IsClosed {c}` using `hc'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨pointOfClosedPoint (pullback.snd π x) c hc ≫ pullback.fst π x, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc]`. Use `show pullback.fst π x (pointOfClosedPoint (pullback.snd π x) c hc a) ∈ O`. Rewrite using `[pointOfClosedPoint_apply]`. Conclude with `hcO`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point {K Ω : Type} [Field K] [Field Ω] [IsAlgClosed Ω] {X : Scheme.{0}} (π : X ⟶ Sp K)
     [LocallyOfFiniteType π] (x : Sp Ω ⟶ Sp K) {O : Set X} (hO : IsOpen O) (hne : O.Nonempty) :
@@ -127,9 +123,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Use `isProper_genStr Z` as an intermediate fact. Establish `: IsLocallyNoetherian (gen Z)` using `LocallyOfFiniteType.isLocallyNoetherian (genStr Z)`. Establish `: CompactSpace (gen Z)` using `QuasiCompact.compactSpace_of_compactSpace (genStr Z)`. Establish `: IsNoetherian (gen Z)` using `{}`. Take `⟨h1, h2⟩` from `connectedComponent_mem TopologicalSpace.NoetherianSpace.finite_irreducibleComponents (fun W hW W' hW' => disjoint_of_smooth (genStr Z) hsm W W' hW hW') z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Z.jQ_open` as an intermediate fact. Conclude with `preimage_mem_irreducibleComponents h1 Z.jQ.isOpenEmbedding (Z.jQ_dense.inter_open_nonempty _ h2 ⟨z, mem_connectedComponent⟩)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem preimage_connectedComponent_mem (Z : Model Xo c β) (hsm : Smooth (genStr Z)) (z : gen Z) :
     Z.jQ ⁻¹' connectedComponent z ∈ irreducibleComponents (Xo.XF c) := by
@@ -148,11 +144,11 @@ end Free
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ)
 
 /- English proof (translation)
-Establish `hσ : Formalism.L2.PjFree.GoodEmb κ.c κ.σ₀` using `rfl`. Establish `hne : ∀ k, ((s.U κ.σ₀).X k).dom.Nonempty` using `fun k => GlobalTheory.OrbitScalar.exists_mem_dom _`. Take `⟨q, hq⟩` from `GlobalTheory.UnifComp.exists_equiv_comp _ _ _ _ _ _ κ.σ₀ N (s.U κ.σ₀) hσ (s.unf _ hσ).1 hne s.geo`. Establish `hsm : Smooth (genStr s.T.Z)` using `haveI := s.T.smooth`. Use the proof step `SmoothOfRelativeDimension.smooth S.Dw.dim _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨q, fun k z => ⟨?_, fun h => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`. Assume the negation of the conclusion as `hn`. Set `pt : Sp (CAt κ.σ₀)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)`. Conclude with `Set.disjoint_left.1 (CompSplitPfD.cspD_comp_disj _ _ (q k) ⟨_, preimage_connectedComponent_mem s.T.Z hsm z⟩ fun e => hn (congrArg Subtype.val e)) (hq k x pt) (hx pt)`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx⟩` from `hne k`. Use `⟨⟨x, hx⟩, fun pt => ?_⟩` and prove the remaining obligations. Use `hq k ⟨x, hx⟩ pt` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equiv : ∃ q : s.Comp ≃ Comp (S.Xo κ.l) κ.c, ∀ k z,
     OnComp s k z ↔ (q k).1 = s.T.Z.jQ ⁻¹' connectedComponent z := by
@@ -173,9 +169,7 @@ theorem exists_equiv : ∃ q : s.Comp ≃ Comp (S.Xo κ.l) κ.c, ∀ k z,
     exact this
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `exists_equiv s`. Establish `hsm : Smooth (genStr s.T.Z)` using `haveI := s.T.smooth`. Use the proof step `SmoothOfRelativeDimension.smooth S.Dw.dim _`. Use `⟨q.symm ⟨_, preimage_connectedComponent_mem s.T.Z hsm z⟩, (hq _ _).2 (by rw [Equiv.apply_symm_apply]), fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.eq_symm_apply]`.
-
-Conclude with `Subtype.ext ((hq _ _).1 hk)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_onComp (z : gen s.T.Z) : ∃! k, OnComp s k z := by
   obtain ⟨q, hq⟩ := exists_equiv s
@@ -186,7 +180,7 @@ theorem existsUnique_onComp (z : gen s.T.Z) : ∃! k, OnComp s k z := by
   exact Subtype.ext ((hq _ _).1 hk)
 
 /- English proof (translation)
-Take `⟨k, hk, -⟩` from `existsUnique_onComp s (y.y pt)`. Establish `: ∃ k, ∀ pt', OnComp s k (y.y pt')` using `⟨k, fun pt' => (Subsingleton.elim (α := PrimeSpectrum Qb) pt pt') ▸ hk⟩`. Conclude with `Classical.epsilon_spec this pt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem onComp_compPt (y : Pt s) (pt : Sp Qb) : OnComp s (compPt s y) (y.y pt) := by
   obtain ⟨k, hk, -⟩ := existsUnique_onComp s (y.y pt)
@@ -195,13 +189,13 @@ theorem onComp_compPt (y : Pt s) (pt : Sp Qb) : OnComp s (compPt s y) (y.y pt) :
   exact Classical.epsilon_spec this pt
 
 /- English proof (translation)
-Introduce `k`. Take `⟨q, hq⟩` from `exists_equiv s`. Establish `hsm : Smooth (genStr s.T.Z)` using `haveI := s.T.smooth`. Use the proof step `SmoothOfRelativeDimension.smooth S.Dw.dim _`. Use `s.T.Z.jQ_open` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `κ.c.fin` as an intermediate fact. Establish `: IsAlgClosed Qb` using `(algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Set `φ : κ.c.F →+* Qb` to `(IsAlgClosed.lift : κ.c.F →ₐ[ℚ] Qb).toRingHom`. Establish `ho : IsOpen (q k).1` using `(CompSplitPfB.cspB_isClopen (CompSplitPfD.cspD_comp_disj _ _) (q k)).isOpen`. Take `⟨g, hg, hgO⟩` from `exists_point (genStr s.T.Z) (spMap φ) (s.T.Z.jQ.isOpenEmbedding.isOpenMap _ ho) ((q k).2.1.nonempty.image _)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f⟩` from `GlobalTheory.ShFam.EigLoc.exists_eigFrame _ _ _ _ _ _ _ _ s.T.Z Qb φ g hg`. Set `y : Pt s` to `⟨φ, g, hg, f.v, f.tan, f.eig, f.basis⟩`. Set `pt : Sp Qb` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum Qb)`. Take `⟨a, ha, hag⟩` from `hgO pt`. Use `⟨y, (existsUnique_onComp s (g pt)).unique (onComp_compPt s y pt) ((hq _ _).2 ?_)⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Use `Set.disjoint_left.1 (CompSplitPfD.cspD_comp_disj _ _ (q k) ⟨_, preimage_connectedComponent_mem s.T.Z hsm (g pt)⟩ fun e => hn (congrArg Subtype.val e)) ha ?_` and prove the remaining obligations. Use `show s.T.Z.jQ a ∈ connectedComponent (g pt)`. Rewrite using `[hag]`. Conclude with `mem_connectedComponent`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compPt_surjective : Function.Surjective (compPt s) := by
   intro k

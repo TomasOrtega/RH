@@ -11,7 +11,7 @@ import Formalism.ThetaLiftIndependence.ThetaOrbitSums.DetSwap
 namespace Formalism.ThetaLiftIndependence
 
 /- English proof (translation)
-The claim follows from `gaussOp_eq`.
+A detailed English derivation is pending.
 -/
 theorem final_gaussOp : GaussOp := gaussOp_eq
 

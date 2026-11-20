@@ -58,15 +58,15 @@ import Formalism.RealPlaceAnalysis.StatementC
 namespace Bl.general_b_fact_left_further
 
 /- English proof (translation)
-Introduce `n mu hd c m`. Establish `ha : Antitone mu` using `hd`. Unfold `Formalism.MainNotions.G.colH`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : Finset.Iic m ⊆ Finset.univ.filter (fun k => c ≤ mu k)`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_Iic]`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ k, le_trans h (ha hk)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h1` using `Finset.card_le_card hsub`. Rewrite `h1` using `[Fin.card_Iic]`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hsub : Finset.univ.filter (fun k => c ≤ mu k) ⊆ Finset.Iio m`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_filter]`. Rewrite using `[Finset.mem_Iio]`. Assume the negation of the conclusion as `hkm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hmk : m ≤ k` using `not_lt.mp hkm`. Conclude with `hc (le_trans hk.2 (ha hmk))`. Establish `h1` using `Finset.card_le_card hsub`. Rewrite `h1` using `[Fin.card_Iio]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {n : Nat} {mu : Fin n → Int},

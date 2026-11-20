@@ -19,7 +19,7 @@ def extMat (b : Fin r → Fin s) (c : Fin s) :
     simp
 
 /- English proof (translation)
-Simplify using `[extMat, Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) i.2, Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) j.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extMat_in (b : Fin r → Fin s) (c : Fin s) (g : Matrix {i // b i = c} {i // b i = c} K)
     (i j : {i // b i = c}) : extMat b c g i.1 j.1 = g i j := by
@@ -27,9 +27,9 @@ theorem extMat_in (b : Fin r → Fin s) (c : Fin s) (g : Matrix {i // b i = c} {
     Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) j.2]
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases hi : b i = c <;> by_cases hj : b j = c`. Conclude with `absurd ⟨hi, hj⟩ h`. Establish `: i ≠ j` using `fun e => hj (e ▸ hi)`. Simplify using `[extMat, Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) hi, Equiv.sumCompl_symm_apply_of_neg (p := fun a => b a = c) hj, this]`. Establish `: i ≠ j` using `fun e => hi (e ▸ hj)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[extMat, Equiv.sumCompl_symm_apply_of_neg (p := fun a => b a = c) hi, Equiv.sumCompl_symm_apply_of_pos (p := fun a => b a = c) hj, this]`. Simplify using `[extMat, Equiv.sumCompl_symm_apply_of_neg (p := fun a => b a = c) hi, Equiv.sumCompl_symm_apply_of_neg (p := fun a => b a = c) hj, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extMat_out (b : Fin r → Fin s) (c : Fin s) (g : Matrix {i // b i = c} {i // b i = c} K) (i j : Fin r)
     (h : ¬ (b i = c ∧ b j = c)) : extMat b c g i j = (1 : Matrix (Fin r) (Fin r) K) i j := by
@@ -56,7 +56,7 @@ def blockExt (b : Fin r → Fin s) (c : Fin s) :
       Matrix.one_apply_ne (fun e => hne (congrArg b e))]
 
 /- English proof (translation)
-The claim follows from `extMat_in b c _ i j`.
+A detailed English derivation is pending.
 -/
 theorem blockExt_in (b : Fin r → Fin s) (c : Fin s) (g : GL {i // b i = c} K) (i j : {i // b i = c}) :
     (((blockExt b c g : blockTri (κ := K) (natBlocks b)) : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) i.1 j.1 =
@@ -64,7 +64,7 @@ theorem blockExt_in (b : Fin r → Fin s) (c : Fin s) (g : GL {i // b i = c} K) 
   extMat_in b c _ i j
 
 /- English proof (translation)
-The claim follows from `extMat_out b c _ i j h`.
+A detailed English derivation is pending.
 -/
 theorem blockExt_out (b : Fin r → Fin s) (c : Fin s) (g : GL {i // b i = c} K) (i j : Fin r)
     (h : ¬ (b i = c ∧ b j = c)) :
@@ -73,7 +73,7 @@ theorem blockExt_out (b : Fin r → Fin s) (c : Fin s) (g : GL {i // b i = c} K)
   extMat_out b c _ i j h
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `x y`. Conclude with `blockExt_in b c g x y`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem levi_blockExt_same (b : Fin r → Fin s) (c : Fin s) (g : GL {i // b i = c} K) :
     levi K b c (Subgroup.inclusion (blockTri_le_parab b) (blockExt b c g)) = g := by
@@ -82,9 +82,9 @@ theorem levi_blockExt_same (b : Fin r → Fin s) (c : Fin s) (g : GL {i // b i =
   exact blockExt_in b c g x y
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `x y`. Use `blockExt_out b c g x.1 y.1 (fun e => h (x.2.symm.trans e.1))` as an intermediate fact. Use `show (((blockExt b c g : blockTri (κ := K) (natBlocks b)) : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) x.1 y.1 = (1 : Matrix _ _ K) x y`. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply, Subtype.ext_iff]`.
+A detailed English derivation is pending.
 -/
 theorem levi_blockExt_ne (b : Fin r → Fin s) {c c' : Fin s} (h : c' ≠ c) (g : GL {i // b i = c} K) :
     levi K b c' (Subgroup.inclusion (blockTri_le_parab b) (blockExt b c g)) = 1 := by
@@ -99,9 +99,9 @@ theorem levi_blockExt_ne (b : Fin r → Fin s) {c c' : Fin s} (h : c' ≠ c) (g 
 variable (b : Fin r → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K))
 
 /- English proof (translation)
-Rewrite using `[leviTensor_apply]`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Distinguish the cases in `h : c' = c`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[levi_blockExt_same, Function.update_self]`. Rewrite using `[levi_blockExt_ne b h, Function.update_of_ne h, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem leviTensor_blockExt (c : Fin s) (g : GL {i // b i = c} K) :
     leviTensor b lam (blockExt b c g) = PiTensorProduct.map

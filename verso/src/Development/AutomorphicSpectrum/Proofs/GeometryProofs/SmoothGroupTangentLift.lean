@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.CompanionTheory.Ar.Chart
 
 /- English proof (translation)
-Set `k : Over.mk (spMap g ≫ x) ⟶ Over.mk x` to `Over.homMk (spMap g) rfl`. Establish `h : (1 : Over.mk (spMap g ≫ x) ⟶ G) = k ≫ (1 : Over.mk x ⟶ G)`. Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (k ≫ toUnit _) (toUnit _)]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem one_left_spMap {S : Scheme.{0}} (G : Over S) [GrpObj G] {R A : Type} [CommRing R] [CommRing A]
     (x : Sp R ⟶ S) (g : R →+* A) :
@@ -20,15 +20,15 @@ theorem one_left_spMap {S : Scheme.{0}} (G : Over S) [GrpObj G] {R A : Type} [Co
   rw [h]; rfl
 
 /- English proof (translation)
-Set `t : Sp R ⟶ G.left` to `(1 : Over.mk x ⟶ G).left`. Set `q : PrimeSpectrum R` to `⟨p, inferInstance⟩`. Set `q' : Sp R` to `q`. Take `⟨V, hV, hqV, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := G.hom (t q')) trivial`. Take `⟨U, hU, hqU, hUV⟩` from `exists_isAffineOpen_mem_and_subset (X := G.left) (U := G.hom ⁻¹ᵁ V) (x := t q') hqV`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hUV' : U ≤ G.hom ⁻¹ᵁ V` using `hUV`. Establish `hopen : IsOpen {y : PrimeSpectrum R | t (show Sp R from y) ∈ U}` using `(t ⁻¹ᵁ U).isOpen`. Take `⟨_, ⟨f, rfl⟩, hqf, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (show q ∈ _ from hqU) hopen`. Use `⟨f, hqf, U, V, hU, hV, hUV', HasRingHomProperty.appLE @Smooth G.hom inferInstance ⟨V, hV⟩ ⟨U, hU⟩ hUV', ?_⟩` and prove the remaining obligations. Set `a : Sp (Localization.Away f) ⟶ Sp R` to `spMap (algebraMap R (Localization.Away f))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hrange : Set.range (a ≫ t) ⊆ Set.range hU.fromSpec`. Rewrite using `[hU.range_fromSpec]`. Introduce and unpack `_ ⟨y, rfl⟩`. Apply `hsub` to reduce the goal to its premises. Establish `: (PrimeSpectrum.comap (algebraMap R (Localization.Away f))) y ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.Away f)))` using `⟨y, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[PrimeSpectrum.localization_away_comap_range (Localization.Away f) f]`. Conclude with `this`. Set `l` to `IsOpenImmersion.lift hU.fromSpec (a ≫ t) hrange`. Use `⟨(Spec.preimage l).hom, ?_⟩` and prove the remaining obligations. Establish `hl : spMap (Spec.preimage l).hom = l`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[spMap]`. Rewrite using `[one_left_spMap, hl]`. Conclude with `(IsOpenImmersion.lift_fac _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart_at_point (S : Scheme.{0}) (G : Over S) [GrpObj G] [Smooth G.hom] (R : Type) [CommRing R]
     (x : Sp R ⟶ S) (p : Ideal R) [p.IsPrime] :

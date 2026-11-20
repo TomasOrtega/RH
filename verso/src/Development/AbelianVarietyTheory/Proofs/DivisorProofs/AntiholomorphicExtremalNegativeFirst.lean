@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HolRead.AntiHol
 
 /- English proof (translation)
-Take `⟨hl, r, hr, hS⟩` from `he`. Use `⟨fun a b hab => neg_lt_neg (hl (Fin.rev_lt_rev.2 hab)), fun a => -r (Fin.rev a), fun a => by simp [hr], ?_⟩` and prove the remaining obligations. Rewrite using `[← dualPar_dualPar S, hS]`. Use extensionality with `z`. Simplify using `only [dualPar, Finset.mem_image, Finset.mem_univ, true_and]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, rfl⟩, rfl⟩`. Conclude with `⟨Fin.rev a, by simp⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨_, ⟨Fin.rev a, rfl⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isEnum_dual {n : ℕ} {S : SPar} {lam : Fin n → ℝ} {ε : Fin n → Bool} (he : IsEnum (dualPar S) lam ε) :
     IsEnum S (fun a => -lam (Fin.rev a)) (fun a => ε (Fin.rev a)) := by
@@ -30,14 +30,14 @@ theorem isEnum_dual {n : ℕ} {S : SPar} {lam : Fin n → ℝ} {ε : Fin n → B
     exact ⟨_, ⟨Fin.rev a, rfl⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Finset.card_equiv Fin.revPerm (by simpa using h)`.
+A detailed English derivation is pending.
 -/
 theorem card_rev {n : ℕ} (P Q : Fin n → Prop) [DecidablePred P] [DecidablePred Q] (h : ∀ b, P b ↔ Q (Fin.rev b)) :
     (Finset.univ.filter P).card = (Finset.univ.filter Q).card :=
   Finset.card_equiv Fin.revPerm (by simpa using h)
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.lowK, Pi.add_apply, Pi.sub_apply, Formalism.REAL.rhoN, Formalism.REAL.rhoC]`. Rewrite using `[card_rev (fun b => a < b ∧ ε (Fin.rev b) ≠ ε (Fin.rev a)) (fun b => b < Fin.rev a ∧ ε b ≠ ε (Fin.rev a)) (fun b => by simp), card_rev (fun b => b < a ∧ ε (Fin.rev b) ≠ ε (Fin.rev a)) (fun b => Fin.rev a < b ∧ ε b ≠ ε (Fin.rev a)) (fun b => by simp), card_rev (fun b => a < b ∧ ε …`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lowK_rev {n : ℕ} (lam : Fin n → ℝ) (ε : Fin n → Bool) (a : Fin n) :
     Formalism.QuantumDeterminants.lowK (fun a => ε (Fin.rev a)) (fun a => -lam (Fin.rev a)) a = -Formalism.QuantumDeterminants.lowK ε lam (Fin.rev a) := by
@@ -53,17 +53,17 @@ theorem lowK_rev {n : ℕ} (lam : Fin n → ℝ) (ε : Fin n → Bool) (a : Fin 
   ring
 
 /- English proof (translation)
-Establish `e : negS ε = Finset.univ.map (Fin.castLEEmb hq)`. Use extensionality with `a`. Simplify using `only [negS, Finset.mem_filter, Finset.mem_univ, true_and, h, Finset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha' : (a : ℕ) < q`. Assume the negation of the conclusion as `hc`. Simplify using `[hc] at ha`. Conclude with `⟨⟨a, ha'⟩, rfl⟩`. Introduce and unpack `⟨i, rfl⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Establish `hc : (negS ε).card = q` using `by rw [e, Finset.card_map, Finset.card_univ, Fintype.card_fin]`. Establish `hm : a ∈ negS ε` using `by simpa [negS, h] using ha`. Establish `hf : ∀ i : Fin (negS ε).card, (((negS ε).orderEmbOfFin rfl i : Fin n) : ℕ) = i`. Use `Finset.orderEmbOfFin_unique (s := negS ε) (rfl : (negS ε).card = _) (f := fun i : Fin (negS ε).card => (⟨i, by have := i.2; omega⟩ : Fin n)) (fun i => by have := i.2; simp [negS, h]; omega) (fun i j hij => hij)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[← this]`. Establish `h1 : revNeg ε a = (revOn ε ⟨a, hm⟩ : Fin n)` using `Equiv.Perm.ofSubtype_apply_of_mem _ hm`. Use `set i := ((negS ε).orderIsoOfFin rfl).symm ⟨a, hm⟩ with hi`. Establish `h2 : (a : ℕ) = i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hf i]`. Establish `: ((negS ε).orderIsoOfFin rfl i : Fin n) = a` using `by rw [hi, OrderIso.apply_symm_apply]`. Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `h3 : ((revOn ε ⟨a, hm⟩ : Fin n) : ℕ) = (Fin.rev i : ℕ)` using `hf (Fin.rev i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h3, Fin.val_rev]`. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem revNeg_first {n q : ℕ} {ε : Fin n → Bool} (hq : q ≤ n) (h : ∀ a, ε a = if (a : ℕ) < q then false else true)
     (a : Fin n) (ha : (a : ℕ) < q) : (revNeg ε a : ℕ) = q - 1 - a := by
@@ -101,7 +101,7 @@ def flipFun {n : ℕ} (q : ℕ) (c : Fin n) : Fin n :=
   if (c : ℕ) < q then c else ⟨n - 1 - (c - q), by have := c.2; omega⟩
 
 /- English proof (translation)
-Unfold `flipFun`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flipFun_val {n : ℕ} (q : ℕ) (c : Fin n) :
     (flipFun q c : ℕ) = if (c : ℕ) < q then (c : ℕ) else n - 1 - (c - q) := by
@@ -109,7 +109,7 @@ theorem flipFun_val {n : ℕ} (q : ℕ) (c : Fin n) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Introduce `c` and use `by apply Fin.ext have := c.2 rw [flipFun_val, flipFun_val] split_ifs <;> omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem flipFun_invol {n : ℕ} (q : ℕ) : Function.Involutive (flipFun (n := n) q) := fun c => by
   apply Fin.ext
@@ -120,27 +120,27 @@ theorem flipFun_invol {n : ℕ} (q : ℕ) : Function.Involutive (flipFun (n := n
 def flipPerm {n : ℕ} (q : ℕ) : Equiv.Perm (Fin n) := (flipFun_invol q).toPerm
 
 /- English proof (translation)
-The claim follows from `flipFun_val q c`.
+A detailed English derivation is pending.
 -/
 theorem flipPerm_val {n : ℕ} (q : ℕ) (c : Fin n) :
     (flipPerm q c : ℕ) = if (c : ℕ) < q then (c : ℕ) else n - 1 - (c - q) := flipFun_val q c
 
 /- English proof (translation)
-Establish `hok` using `Formalism.L2.NTheta.holOK_kapW h p q hpq`. Take `⟨rfl, h1⟩` from `GlobalTheory.HolDS.enum_holPar hok (isEnum_dual he)`. Take `⟨_, h2⟩` from `GlobalTheory.HolDS.lowK_holPar hok (isEnum_dual he)`. Simplify using `only [Fin.cast_eq_self, lowK_rev] at h1 h2`. Establish `hε : ∀ a, ε a = if (a : ℕ) < q then false else true`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a`. Take `⟨x, hx⟩` from `finSumFinEquiv.surjective (Fin.rev a)`. Establish `h3` using `(h1 x).2`. Rewrite `h3` using `[hx, Fin.rev_rev]`. Establish `h4` using `congrArg Fin.val hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `a.2` as an intermediate fact. Break down `x with i | i` into its components or cases. Use `i.2` as an intermediate fact. Simplify using `at h4`. Rewrite using `[h3, if_neg (by omega)]; rfl`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `i.2` as an intermediate fact. Simplify using `at h4`. Rewrite using `[h3, if_pos (by omega)]; rfl`. Use `⟨hε, fun c => ?_⟩` and prove the remaining obligations. Establish `hc` using `c.2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hv` using `flipPerm_val q c`. Distinguish the cases in `hcq : (c : ℕ) < q`. Rewrite `hv` using `[if_pos hcq]`. Establish `h5` using `revNeg_first (by omega) hε (flipPerm q c) (by omega)`. Establish `h6 : revNeg ε (flipPerm q c) = Fin.rev (finSumFinEquiv (Sum.inr ⟨c, hcq⟩))`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[h6, ← neg_eq_iff_eq_neg, h2]`. Simplify using `[wtCol, Formalism.L2.NTheta.kapW, Formalism.L2.NTheta.kapQ, hcq]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hv` using `[if_neg hcq]`. Establish `h5` using `revNeg_of_pos ε (a := flipPerm q c) (by rw [hε, if_neg (by omega)])`. Establish `h6 : revNeg ε (flipPerm q c) = Fin.rev (finSumFinEquiv (Sum.inl ⟨c - q, by omega⟩))`. Rewrite using `[h5]`. Apply `Fin.ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[h6, ← neg_eq_iff_eq_neg, h2]`. Simplify using `[wtCol, Formalism.L2.NTheta.kapW, Formalism.L2.NTheta.kapQ, hcq]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem shape {R : Ranks} (h : HCParam R) {p q n : ℕ} (hpq : p + q = R.r) {lam : Fin n → ℝ} {ε : Fin n → Bool}
     (he : IsEnum (dualPar (Formalism.L2.NTheta.holPar p q (Formalism.L2.NTheta.kapW h p q))) lam ε) :
@@ -189,7 +189,7 @@ theorem shape {R : Ranks} (h : HCParam R) {p q n : ℕ} (hpq : p + q = R.r) {lam
 variable {D : D7} (θ : InfFam D) (V : HSp D)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use `deriv_comp_neg (fun t : ℝ => φ (g * oneP θ V ρ X t)) 0` as an intermediate fact. Simplify `this` using `only [Rder, oneP, smul_neg, neg_smul, neg_zero, Pi.neg_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Rder_neg (ρ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (φ : GA D V → ℂ) :
     Rder θ V ρ (-X) φ = -Rder θ V ρ X φ := by
@@ -198,14 +198,14 @@ theorem Rder_neg (ρ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ)
   simpa only [Rder, oneP, smul_neg, neg_smul, neg_zero, Pi.neg_apply] using this
 
 /- English proof (translation)
-The claim follows from `deriv.star`.
+A detailed English derivation is pending.
 -/
 theorem Rder_conj (ρ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (φ : GA D V → ℂ) (g : GA D V) :
     Rder θ V ρ X (fun g => starRingEnd ℂ (φ g)) g = starRingEnd ℂ (Rder θ V ρ X φ g) :=
   deriv.star
 
 /- English proof (translation)
-Establish `h : conjAt V ρ (-Z) = -conjAt V ρ Z` using `by simp [conjAt]`. Unfold `RderC`. Rewrite using `[h, ← neg_add, neg_sub_neg, ← neg_sub Z, smul_neg, smul_neg, Rder_neg, Rder_neg, smul_neg, neg_add]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem RderC_neg (ρ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (φ : GA D V → ℂ) :
     RderC θ V ρ (-Z) φ = -RderC θ V ρ Z φ := by
@@ -214,7 +214,7 @@ theorem RderC_neg (ρ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ
   rw [h, ← neg_add, neg_sub_neg, ← neg_sub Z, smul_neg, smul_neg, Rder_neg, Rder_neg, smul_neg, neg_add]
 
 /- English proof (translation)
-Unfold `RderC`. Rewrite using `[hZ, add_comm (conjAt V ρ Z), ← neg_sub Z, smul_neg, Rder_neg]`. Simplify using `[Rder_conj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem RderC_conj (ρ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hZ : conjAt V ρ (conjAt V ρ Z) = Z)
     (φ : GA D V → ℂ) (g : GA D V) :
@@ -224,7 +224,7 @@ theorem RderC_conj (ρ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) �
   simp [Rder_conj]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_mul_self {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   unfold Formalism.REAL.Jm
@@ -234,9 +234,9 @@ theorem Jm_mul_self {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * For
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.star_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_herm {n : ℕ} (ε : Fin n → Bool) : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε := by
   unfold Formalism.REAL.Jm
@@ -249,9 +249,9 @@ theorem Jm_herm {n : ℕ} (ε : Fin n → Bool) : (Formalism.REAL.Jm ε)ᴴ = Fo
 variable {V} {S : D.what₂.Tau → SPar} (M : DSModel V S)
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit ρ)`. Establish `h1 : M.fr ρ * (M.fr ρ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Establish `h3 : (M.fr ρ)⁻¹ᴴ * (M.fr ρ)ᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Establish `h4 : ∀ Y : Matrix (Fin V.rank) (Fin V.rank) ℂ, (M.fr ρ)⁻¹ᴴ * ((M.fr ρ)ᴴ * Y) = Y` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, h3, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `conjAt`. Rewrite using `[← M.fr_gram ρ, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.inv_eq_left_inv (Jm_mul_self (M.ε ρ)), ← conjTranspose_nonsing_inv]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, h4, Matrix.mul_neg, Matrix.neg_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conjAt_frame (ρ : D.what₂.Tau) (W : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     conjAt V ρ ((M.fr ρ)⁻¹ * W * M.fr ρ) =
@@ -267,17 +267,17 @@ theorem conjAt_frame (ρ : D.what₂.Tau) (W : Matrix (Fin V.rank) (Fin V.rank) 
   simp only [conjTranspose_mul, Matrix.mul_assoc, h4, Matrix.mul_neg, Matrix.neg_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[RderC_conj, conjAt_frame]`. Establish `h1 : Formalism.REAL.Jm (M.ε ρ) * (Matrix.single a b (1 : ℂ))ᴴ * Formalism.REAL.Jm (M.ε ρ) = Matrix.single b a 1 ∨ Formalism.REAL.Jm (M.ε ρ) * (Matrix.single a b (1 : ℂ))ᴴ * Formalism.REAL.Jm (M.ε ρ) = -Matrix.single b a 1`. Unfold `Formalism.REAL.Jm`. Distinguish the cases in `hab : M.ε ρ a = M.ε ρ b`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Use `left`. Use extensionality with `i j`. Simplify using `only [mul_diagonal, diagonal_mul, conjTranspose_apply, Matrix.single_apply]`. Distinguish the cases in `hij : a = j ∧ b = i`. Take `⟨rfl, rfl⟩` from `hij`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hab]`. Apply the tactic sequence `split_ifs <;> simp_all`. Rewrite using `[if_neg hij, if_neg (fun h' : b = i ∧ a = j => hij h'.symm)]`. Simplify using the standard rewrite rules. Use `right`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [mul_diagonal, diagonal_mul, conjTranspose_apply, Matrix.single_apply, Matrix.neg_apply]`. Distinguish the cases in `hij : a = j ∧ b = i`. Apply the tactic sequence `obtain ⟨rfl, rfl⟩ := hij split_ifs <;> simp_all`. Rewrite using `[if_neg hij, if_neg (fun h' : b = i ∧ a = j => hij h'.symm)]`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Break down `h1 with h1 | h1` into its components or cases. Rewrite using `[h1, Matrix.mul_neg, Matrix.neg_mul, RderC_neg, h]`. Simplify using the standard rewrite rules. Rewrite using `[h1, neg_neg, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[conjAt_frame, conjAt_frame]`. Use `congr 2`. Simplify using `only [conjTranspose_neg, conjTranspose_mul, Jm_herm, conjTranspose_conjTranspose, Matrix.mul_neg, Matrix.neg_mul, neg_neg, ← Matrix.mul_assoc, Jm_mul_self, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Jm_mul_self, Matrix.mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_killed (ρ : D.what₂.Tau) (a b : Fin V.rank) (φ : GA D V → ℂ)
     (h : RderC θ V ρ ((M.fr ρ)⁻¹ * Matrix.single b a 1 * M.fr ρ) φ = 0) :
@@ -317,7 +317,7 @@ theorem conj_killed (ρ : D.what₂.Tau) (a b : Fin V.rank) (φ : GA D V → ℂ
     rw [Matrix.mul_assoc, Jm_mul_self, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hA`. Establish `h1 : (A⁻¹.submatrix id e)⁻¹ = A.submatrix e id`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[submatrix_mul_equiv, Matrix.nonsing_inv_mul _ hd, submatrix_id_id]`. Rewrite using `[h1, submatrix_mul_equiv, submatrix_mul_equiv, submatrix_id_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem perm_conj {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hA : IsUnit A) (e : Equiv.Perm (Fin n))
     (W : Matrix (Fin n) (Fin n) ℂ) :
@@ -333,25 +333,23 @@ end GlobalTheory.HolRead.AntiHol
 open GlobalTheory.HolRead.AntiHol in
 
 /- English proof (translation)
-Introduce `D θ V S M h p q hθ hpq hV hS v hv`. Establish `hsh` using `fun ρ => shape (h ρ) hpq (hS ρ ▸ M.enum ρ)`. Use `⟨fun ρ => (M.fr ρ)⁻¹.submatrix id (flipPerm q), fun ρ => ?_, fun J χ T hT => ⟨?_, fun ρ c d hcd => ?_, fun ρ t g => ?_⟩⟩` and prove the remaining obligations. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit ρ)`. Establish `h1 : M.fr ρ * (M.fr ρ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (M.fr ρ)⁻¹ᴴ * gramAt D V ρ * (M.fr ρ)⁻¹ = Formalism.REAL.Jm (M.ε ρ)`. Rewrite using `[← M.fr_gram ρ, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← conjTranspose_mul, h1, conjTranspose_one, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one]`. Establish `h3 : ((M.fr ρ)⁻¹.submatrix id (flipPerm q))ᴴ * gramAt D V ρ * (M.fr ρ)⁻¹.submatrix id (flipPerm q) = ((M.fr ρ)⁻¹ᴴ * gramAt D V ρ * (M.fr ρ)⁻¹).submatrix (flipPerm q) (flipPerm q)` using `rfl`. Use `beta_reduce`. Rewrite using `[h3, h2, Formalism.REAL.Jm, submatrix_diagonal_equiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `c`. Use `c.2` as an intermediate fact. Establish `hv` using `flipPerm_val q c`. Simplify using `only [Function.comp, (hsh ρ).1]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : (c : ℕ) < q`. Rewrite `hv` using `[if_pos hc]`. Simplify using `[hv, hc]`. Rewrite `hv` using `[if_neg hc]`. Establish `: ¬ (flipPerm q c : ℕ) < q` using `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this, hc]`. Introduce `k τs Xs hX g`. Conclude with `Complex.conjCLE.contDiff.comp ((hT.aut v).smooth k τs Xs hX g)`. Establish `hk` using `(GlobalTheory.T.extremal_vector_annihilated D θ V S M J χ T hθ hT v hv ρ q false (hsh ρ).1).1 (flipPerm q d) (flipPerm q c) (by`. Use `c.2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `d.2` as an intermediate fact. Establish `hc` using `flipPerm_val q c`. Establish `hd` using `flipPerm_val q d`. Establish `hcd' : (c : ℕ) < d` using `hcd`. Simplify using `only [KillPair, (hsh ρ).1, Fin.lt_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs at hc hd <;> split_ifs <;> simp <;> omega)`. Establish `h1 : Matrix.single c d (1 : ℂ) = (Matrix.single (flipPerm q c) (flipPerm q d) 1).submatrix (flipPerm q) (flipPerm q)`. Use extensionality with `i j`. Simplify using `[Matrix.single_apply]`. Use `beta_reduce`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, perm_conj _ (M.fr_unit ρ)]`. Conclude with `conj_killed θ M ρ _ _ _ hk`. Establish `hk` using `(GlobalTheory.T.extremal_vector_annihilated D θ V S M J χ T hθ hT v hv ρ q false (hsh ρ).1).2 (fun a => t ((flipPerm q).symm a)) g`. Establish `h1 : diagonal (fun c => Complex.exp ((t c : ℂ) * Complex.I)) = (diagonal fun a => Complex.exp ((t ((flipPerm q).symm a) : ℂ) * Complex.I)).submatrix (flipPerm q) (flipPerm q)`. Rewrite using `[submatrix_diagonal_equiv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `c`. Simplify using the standard rewrite rules. Use `beta_reduce`. Rewrite using `[h1, perm_conj _ (M.fr_unit ρ), hk, map_mul, ← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I, ← Equiv.sum_comp (flipPerm q)]`.
-
-Use `congr 2`. Simplify using `only [extWt, (hsh ρ).2, Equiv.symm_apply_apply, neg_mul, Finset.sum_neg_distrib]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HolRead.conj_extVec_isHolFor : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (h : D.what₂.Tau → HCParam D.R) (p q : ℕ), IsInfFam θ → p + q = D.R.r → V.rank = D.R.r → (∀ ρ, S ρ = dualPar (Formalism.L2.NTheta.holPar p q (Formalism.L2.NTheta.kapW (h ρ) p q))) → ∀ v : M.Vec, IsExtVec M v → ∃ x : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, NegFirst V q x ∧ ∀ (J : Set (GA D V)) (χ : GA D V → ℂ) (T : MMap M), IsMultMap θ M J χ T → IsHolFor θ V x (fun ρ c => wtCol (h ρ) p q c) (fun g => starRingEnd ℂ (T v g)) := by
   intro D θ V S M h p q hθ hpq hV hS v hv

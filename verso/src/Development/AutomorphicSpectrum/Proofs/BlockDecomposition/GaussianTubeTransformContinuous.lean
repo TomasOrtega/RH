@@ -7,15 +7,15 @@ open MeasureTheory Filter Topology PositivityTheory.RgEis GlobalTheory.Companion
 namespace GlobalTheory.CompanionTheory.TubeFourier
 
 /- English proof (translation)
-Simplify using `[dot, pt, rdot]`.
+Simplify using the standard rewrite rules.
 -/
 theorem re_dot_pt_eq_rdot (x y t : ℝ × ℝ) : (dot (pt x y) t).re = rdot x t := by
   simp [dot, pt, rdot]
 
 /- English proof (translation)
-Establish `h1 : Integrable (fun x : ℝ => Real.exp (-1 * x ^ 2))` using `integrable_exp_neg_mul_sq one_pos`. Establish `h` using `h1.mul_prod h1`. Establish `e : (fun y : ℝ × ℝ => Real.exp (-(y.1 ^ 2 + y.2 ^ 2))) = fun z : ℝ × ℝ => Real.exp (-1 * z.1 ^ 2) * Real.exp (-1 * z.2 ^ 2)`. Use function extensionality and compare the values at `z`. Rewrite using `[← Real.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Rewrite using `[e]`. Conclude with `h`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_gaussian_plane :
     Integrable (fun y : ℝ × ℝ => Real.exp (-(y.1 ^ 2 + y.2 ^ 2))) (volume : Measure (ℝ × ℝ)) := by
@@ -30,21 +30,17 @@ theorem integrable_gaussian_plane :
   exact h
 
 /- English proof (translation)
-Establish `hform : ∀ y t : ℝ × ℝ, dot (pt x y) t = ((x.1 * t.1 + x.2 * t.2 : ℝ) : ℂ) + ((y.1 * t.1 + y.2 * t.2 : ℝ) : ℂ) * Complex.I`. Introduce `y t`. Apply the tactic sequence `apply Complex.ext <;> simp [dot, pt]`. Establish `hdt : ∀ y : ℝ × ℝ, Continuous (fun t : ℝ × ℝ => Complex.exp (-dot (pt x y) t))`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Repeatedly rewrite using `[hform]`. Use `fun_prop`. Establish `hdy : ∀ t : ℝ × ℝ, Continuous (fun y : ℝ × ℝ => Complex.exp (-dot (pt x y) t))`. Introduce `t`. Repeatedly rewrite using `[hform]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Use `fun_prop`. Establish `hnorm : ∀ y t : ℝ × ℝ, ‖Complex.exp (-dot (pt x y) t)‖ = Real.exp (-rdot x t)`. Introduce `y t`. Rewrite using `[Complex.norm_exp, Complex.neg_re, re_dot_pt_eq_rdot]`. Rewrite using `[continuous_iff_continuousAt]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `p₀`. Take `⟨U, hU, M, hM⟩` from `hb p₀.2`. Establish `hr : Continuous (fun p : (ℝ × ℝ) × T => Real.exp (-rdot x p.1))`. Unfold `rdot`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hV : ∀ᶠ p in 𝓝 p₀, Real.exp (-rdot x p.1) < Real.exp (-rdot x p₀.1) + 1` using `(hr.tendsto p₀).eventually (eventually_lt_nhds (lt_add_one _))`. Establish `hU' : ∀ᶠ p in 𝓝 p₀, p.2 ∈ U` using `continuous_snd.continuousAt.preimage_mem_nhds hU`. Unfold `phi`. Use `continuousAt_of_dominated (bound := fun y => (Real.exp (-rdot x p₀.1) + 1) * (|M| * Real.exp (-(y.1 ^ 2 + y.2 ^ 2)))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun p => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Continuous.aestronglyMeasurable` to reduce the goal to its premises. Conclude with `(hdy p.1).smul (hG.comp (continuous_id.prodMk continuous_const))`. Use `filter_upwards [hV, hU'] with p hp1 hp2`. Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, hnorm]`.
-
-Establish `hg` using `hM p.2 hp2 y`. Establish `hg' : ‖G p.2 (pt x y)‖ ≤ |M| * Real.exp (-(y.1 ^ 2 + y.2 ^ 2))` using `hg.trans (mul_le_mul_of_nonneg_right (le_abs_self M) (Real.exp_pos _).le)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(integrable_gaussian_plane.const_mul _).const_mul _`. Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations.
-
-Conclude with `(((hdt y).comp continuous_fst).smul (hG.comp (continuous_const.prodMk continuous_snd))).continuousAt`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phi_joint_continuous (X : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] (T : Type) [TopologicalSpace T]
     [FirstCountableTopology T] (G : T → ℂ × ℂ → X) (x : ℝ × ℝ)

@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FockCompact
 
 /- English proof (translation)
-Take `⟨ε, hε, hB, -⟩` from `h`. Establish `hd : (Bᴴ * G * B).det ≠ 0`. Rewrite using `[hB, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.mpr fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases hε a with ⟨h1, -⟩ | ⟨h1, -⟩ <;> simp [h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hd` using `[Matrix.det_mul]`. Conclude with `isUnit_iff_ne_zero.mpr (right_ne_zero_of_mul hd)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_isUnit_of_onb {k : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} {p : ℕ}
     (h : Formalism.IndefR.Datum.IsONBasis G s B p) : IsUnit B.det := by
@@ -27,15 +27,15 @@ theorem det_isUnit_of_onb {k : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} {p : �
   exact isUnit_iff_ne_zero.mpr (right_ne_zero_of_mul hd)
 
 /- English proof (translation)
-Establish `hu` using `det_isUnit_of_onb h`. Take `⟨ε, hε, -, hs⟩` from `h`. Take `⟨-, hκ0⟩` from `hκ`. Establish `hBi : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv B hu`. Establish `hiB : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul B hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : (diagonal fun a => (ε a : ℂ)) * κ = κ * diagonal fun a => (ε a : ℂ)`. Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Distinguish the cases in `hij : (i.val < p ↔ j.val < p)`. Establish `hij' : ε i = ε j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hε i with ⟨hi1, hi2⟩ | ⟨hi1, hi2⟩ <;> rcases hε j with ⟨hj1, hj2⟩ | ⟨hj1, hj2⟩`. Rewrite using `[hi1, hj1]`. Conclude with `absurd (hij.mp hi2) (by omega)`. Conclude with `absurd (hij.mpr hj2) (by omega)`. Rewrite using `[hi1, hj1]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hij', mul_comm]`. Rewrite using `[hκ0 i j hij, mul_zero, zero_mul]`. Establish `hs' : s = B * (diagonal fun a => (ε a : ℂ)) * B⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs']`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc B⁻¹ B, hiB, one_mul, ← mul_assoc B⁻¹ B, hiB, one_mul, ← mul_assoc _ κ, hcomm, mul_assoc κ]`.
+A detailed English derivation is pending.
 -/
 theorem comm_of_onb {k : ℕ} {G s B κ : Matrix (Fin k) (Fin k) ℂ} {p : ℕ}
     (h : Formalism.IndefR.Datum.IsONBasis G s B p) (hκ : IsKMat p κ) : s * (B * κ * B⁻¹) = B * κ * B⁻¹ * s := by
@@ -64,7 +64,7 @@ theorem comm_of_onb {k : ℕ} {G s B κ : Matrix (Fin k) (Fin k) ℂ} {p : ℕ}
   rw [← mul_assoc B⁻¹ B, hiB, one_mul, ← mul_assoc B⁻¹ B, hiB, one_mul, ← mul_assoc _ κ, hcomm, mul_assoc κ]
 
 /- English proof (translation)
-Take `⟨-, h1, h2⟩` from `h`. Use `⟨Eq.trans ?_ h1, fun ρ hρ => Eq.trans ?_ (h2 ρ hρ)⟩` and prove the remaining obligations. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Both sides reduce to the same expression.
 -/
 theorem compAt_of_atTau {D : D7} {θ : InfFam D} {S : HSp D} {τ : D.what₂.Tau}
     {M : Matrix (Fin S.rank) (Fin S.rank) ℂ} {g : GA D S} (h : IsAtTau θ S τ M g) :
@@ -75,19 +75,17 @@ theorem compAt_of_atTau {D : D7} {θ : InfFam D} {S : HSp D} {τ : D.what₂.Tau
   · rfl
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om hW hθ sS BS sT BT pS pT hpS hpT hcS hcT hoS hoT f hf τ κS κT hκS hκT g h hg hh c hc P`. Establish `hstd : IsStdChar D ψ (-1)` using `hW.std`. Take `⟨hgτ, hgρ⟩` from `compAt_of_atTau hg`. Take `⟨hhτ, hhρ⟩` from `compAt_of_atTau hh`. Establish `hcomS : ∀ ρ, sS ρ * compAt θ ρ (Formalism.L2.Theta.mt S g) = compAt θ ρ (Formalism.L2.Theta.mt S g) * sS ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `ρ`. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality. Rewrite using `[hgτ]`. Conclude with `comm_of_onb (hoS ρ) hκS`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgρ ρ hρ, mul_one, one_mul]`. Establish `hcomT : ∀ ρ, sT ρ * compAt θ ρ (Formalism.L2.Theta.mt T h) = compAt θ ρ (Formalism.L2.Theta.mt T h) * sT ρ`. Introduce `ρ`. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hhτ]`. Conclude with `comm_of_onb (hoT ρ) hκT`. Rewrite using `[hhρ ρ hρ, mul_one, one_mul]`. Establish `key` using `(GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ S T χS χT om hW hθ sS sS BS (fun ρ => compAt θ ρ (Formalism.L2.Theta.mt S g) * BS ρ) sT sT BT (fun ρ => compAt θ ρ (Formalism.L2.Theta.mt T h) * BT ρ) g h hcomS hcomT (fun _ => rfl) (fun _ => rfl) f hf P).2`. Rewrite using `[key, hc, GlobalTheory.FiniteFock.pureTensorO_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `GlobalTheory.T.fockPolynomialVector_maximalCompact_moved_bases D ψ θ S T hstd hθ sS BS sT BT pS pT hpS hpT hcS hcT hoS hoT f hf τ κS κT hκS hκT (fun ρ => compAt θ ρ (Formalism.L2.Theta.mt S g) * BS ρ) (fun ρ => compAt θ ρ (Formalism.L2.Theta.mt T h) * BT ρ) ?_ ?_ ?_ P`. Rewrite using `[e2]`. Use `show compAt θ τ (Formalism.L2.Theta.mt S g) * BS τ = BS τ * κS`. Rewrite using `[hgτ, mul_assoc, Matrix.nonsing_inv_mul _ (det_isUnit_of_onb (hoS τ)), mul_one]`. Use `show compAt θ τ (Formalism.L2.Theta.mt T h) * BT τ = BT τ * κT`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hhτ, mul_assoc, Matrix.nonsing_inv_mul _ (det_isUnit_of_onb (hoT τ)), mul_one]`. Introduce `ρ hρ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show compAt θ ρ (Formalism.L2.Theta.mt S g) * BS ρ = BS ρ`. Rewrite using `[hgρ ρ hρ, one_mul]`.
-
-Use `show compAt θ ρ (Formalism.L2.Theta.mt T h) * BT ρ = BT ρ`. Rewrite using `[hhρ ρ hρ, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_pureTensorO_compact : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : OmT S T), IsWeilDatumO ψ S T χS χT om → IsInfFam θ → ∀ (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (pS pT : D.what₂.Tau → ℕ), (∀ ρ, pS ρ ≤ S.rank) → (∀ ρ, pT ρ ≤ T.rank) → (∀ ρ, IsCartanInv (gramAt D S ρ) (sS ρ)) → (∀ ρ, IsCartanInv (gramAt D T ρ) (sT ρ)) → (∀ ρ, IsONBasis (gramAt D S ρ) (sS ρ) (BS ρ) (pS ρ)) → (∀ ρ, IsONBasis (gramAt D T ρ) (sT ρ) (BT ρ) (pT ρ)) → ∀ f, IsThetaFunO ψ S T f → ∀ (τ : D.what₂.Tau) κS κT, IsKMat (pS τ) κS → IsKMat (pT τ) κT → ∀ g h, IsAtTau θ S τ (BS τ * κS * (BS τ)⁻¹) g → IsAtTau θ T τ (BT τ * κT * (BT τ)⁻¹) h → ∀ c : ℂ, om (g, h) f = c • f → ∀ P, om (g, h) (pureTensorO ψ θ S T sS sT BS BT f P) = c • pureTensorO ψ θ S T sS sT BS BT f (fockSub τ (pS τ) (pT τ) κS κT P) := by
   intro D ψ θ S T χS χT om hW hθ sS BS sT BT pS pT hpS hpT hcS hcT hoS hoT f hf τ κS κT hκS hκT g h hg hh c hc P

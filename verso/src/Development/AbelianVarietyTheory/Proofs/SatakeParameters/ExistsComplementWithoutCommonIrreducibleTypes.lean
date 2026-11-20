@@ -39,7 +39,7 @@ Both sides reduce to the same expression.
 theorem toSubmodule_bot : (⊥ : Subrepresentation ρ).toSubmodule = ⊥ := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h h'`. Conclude with `h (Subrepresentation.toSubmodule_injective h')`. Introduce and unpack `h rfl`. Conclude with `h rfl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_bot_iff_toSubmodule {S : Subrepresentation ρ} : S ≠ ⊥ ↔ S.toSubmodule ≠ ⊥ := by
   constructor
@@ -57,23 +57,21 @@ namespace TypeComplement
 variable {K V : Type} [Group K] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ K V}
 
 /- English proof (translation)
-Take `⟨s₀, hs₀, hfs₀⟩` from `hne`. Establish `hinj : Function.Injective (f ∘ₗ S.toSubmodule.subtype)`. Set `Kr : Subrepresentation ρ` to `preRep f hf S ⊥`. Establish `hK : Kr ≤ S` using `fun v hv => hv.1`. Break down `hS.le_iff.mp hK with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Establish `hx' : (x : V) ∈ Kr.toSubmodule`. Use `⟨x.2, ?_⟩` and prove the remaining obligations. Use `show f x ∈ (⊥ : Submodule ℂ V)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hx`. Rewrite `hx'` using `[h]`. Simplify using `only [toSubmodule_bot, Submodule.mem_bot] at hx'`. Simplify using `using Subtype.ext hx'`. It suffices to derive a contradiction.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `: s₀ ∈ Kr.toSubmodule` using `by rw [h]; exact hs₀`. Conclude with `hfs₀ ((Submodule.mem_bot ℂ).mp (show f s₀ ∈ (⊥ : Submodule ℂ V) from this.2))`. Use `⟨⟨?_, fun C hC => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[ne_bot_iff_toSubmodule]`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: f s₀ ∈ (imRep f hf S).toSubmodule` using `⟨s₀, hs₀, rfl⟩`. Rewrite `this` using `[h]`. Conclude with `hfs₀ ((Submodule.mem_bot ℂ).mp this)`. Assume the negation of the conclusion as `hC0`. Take `⟨c, hc, hc0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (ne_bot_iff_toSubmodule.mp hC0)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨s, hs, rfl⟩ : c ∈ (imRep f hf S).toSubmodule` from `hC.le hc`. Establish `hB : preRep f hf S C ≤ S` using `fun v hv => hv.1`. Break down `hS.le_iff.mp hB with h | h` into its components or cases. Establish `: s ∈ (preRep f hf S C).toSubmodule` using `⟨hs, hc⟩`. Rewrite `this` using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [toSubmodule_bot, Submodule.mem_bot] at this`. Conclude with `hc0 (by simp [this])`. Establish `hle : imRep f hf S ≤ C`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Establish `: t ∈ (preRep f hf S C).toSubmodule` using `by rw [h]; exact ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Conclude with `this.2`. Conclude with `lt_irrefl _ (lt_of_lt_of_le hC hle)`. Establish `hr : LinearMap.range (f ∘ₗ S.toSubmodule.subtype) = (imRep f hf S).toSubmodule`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Both sides reduce to the same expression.
-
-Set `e : S.toSubmodule ≃ₗ[ℂ] (imRep f hf S).toSubmodule` to `(LinearEquiv.ofInjective _ hinj).trans (LinearEquiv.ofEq _ _ hr)`. Use `⟨Representation.Equiv.mk e fun k => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[e, Subrepresentation.toRepresentation, hf]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem imRep_atom (f : V →ₗ[ℂ] V) (hf : ∀ k v, f (ρ k v) = ρ k (f v)) {S : Subrepresentation ρ}
     (hS : IsAtom S) (hne : ∃ s ∈ S.toSubmodule, f s ≠ 0) :
@@ -132,35 +130,29 @@ namespace GlobalTheory
 namespace TypeComplement
 
 /- English proof (translation)
-Introduce `K V _ _ _ ρ hss hsum X hcl`. Use `haveI : ComplementedLattice (Subrepresentation ρ) := hss`. Set `Y : Subrepresentation ρ` to `supRep (fun S => IsAtom S ∧ ¬ S ≤ X)`. Establish `hYle : ∀ S : Subrepresentation ρ, IsAtom S → ¬ S ≤ X → S.toSubmodule ≤ Y.toSubmodule` using `fun S hA hn => le_iSup₂ (f := fun (S : Subrepresentation ρ) (_ : IsAtom S ∧ ¬ S ≤ X) => S.toSubmodule) S ⟨hA, hn⟩`. Take `⟨Y₀, hY₀⟩` from `exists_isCompl X`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hXY₀ : IsCompl X.toSubmodule Y₀.toSubmodule`. Prove the components needed by the constructor for the conclusion. Rewrite using `[disjoint_iff]`. Conclude with `congrArg Subrepresentation.toSubmodule hY₀.inf_eq_bot`. Rewrite using `[codisjoint_iff]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `congrArg Subrepresentation.toSubmodule hY₀.sup_eq_top`. Set `p : V →ₗ[ℂ] V` to `X.toSubmodule.projection Y₀.toSubmodule hXY₀`. Establish `hp : ∀ k v, p (ρ k v) = ρ k (p v)`. Introduce `k v`. Establish `hv : v ∈ X.toSubmodule ⊔ Y₀.toSubmodule` using `by rw [hXY₀.sup_eq_top]; trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.mp hv`. Establish `h1 : ∀ {a b : V}, a ∈ X.toSubmodule → b ∈ Y₀.toSubmodule → p (a + b) = a`. Introduce `a b ha hb`. Rewrite using `[map_add, Submodule.projection_apply_of_mem_left _ ha]`. Establish `: p b = 0` using `(Submodule.projection_apply_eq_zero_iff hXY₀).mpr hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, add_zero]`. Rewrite using `[map_add, h1 (X.apply_mem_toSubmodule k hx) (Y₀.apply_mem_toSubmodule k hy), h1 hx hy]`. Establish `hYY₀ : Y.toSubmodule ≤ Y₀.toSubmodule`. Use `iSup₂_le fun S ⟨hA, hn⟩ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hne : ∃ s ∈ S.toSubmodule, p s ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hc fun s hs => (Submodule.projection_apply_eq_zero_iff hXY₀).mp (h s hs)`. Take `⟨_, ⟨e⟩⟩` from `imRep_atom p hp hA hne`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : imRep p hp S ≤ X`. Introduce and unpack `_ ⟨s, _, rfl⟩`. Conclude with `Submodule.projection_apply_mem hXY₀ s`. Conclude with `hn (hcl S _ hA hle ⟨e⟩)`. Establish `hdisj : X.toSubmodule ⊓ Y.toSubmodule = ⊥` using `eq_bot_iff.mpr ((inf_le_inf_left _ hYY₀).trans (disjoint_iff.mp hXY₀.disjoint).le)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Y, ⟨disjoint_iff.mpr hdisj, codisjoint_iff.mpr ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `eq_top_iff.mpr ?_` and prove the remaining obligations. Use `show (⊤ : Subrepresentation ρ).toSubmodule ≤ _`. Use `(hsum ⊤).le.trans (iSup₂_le fun S ⟨hA, _⟩ => ?_)` and prove the remaining obligations. Distinguish the cases in `hSX : S ≤ X`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_sup_of_le_left hSX`. Conclude with `le_sup_of_le_right (hYle S hA hSX)`. Introduce `S₁ S₂ hS₁ _ hY hX`. Use `⟨fun e => ?_⟩` and prove the remaining obligations. Establish `h₁ : S₁ ≤ X` using `hcl S₁ S₂ hS₁ hX ⟨e⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hS₁.1` to reduce the goal to its premises. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Rewrite using `[toSubmodule_bot, eq_bot_iff, ← hdisj]`. Conclude with `le_inf h₁ hY`. Introduce `T hT`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hX : X.toSubmodule ≤ X.toSubmodule.comap T`. Use `(hsum X).le.trans (iSup₂_le fun S ⟨hA, hSX⟩ => ?_)` and prove the remaining obligations. Distinguish the cases in `hne : ∃ s ∈ S.toSubmodule, T s ≠ 0`. Take `⟨hA', ⟨e⟩⟩` from `imRep_atom T hT hA hne`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : imRep T hT S ≤ X` using `hcl _ S hA' hSX ⟨e.symm⟩`. Conclude with `fun s hs => hle ⟨s, hs, rfl⟩`. Use `push_neg at hne`. Introduce `s hs`. Use `show T s ∈ X.toSubmodule`.
-
-Rewrite using `[hne s hs]`. Conclude with `zero_mem _`. Conclude with `hX hv`. Establish `hY : Y.toSubmodule ≤ Y.toSubmodule.comap T`. Use `iSup₂_le fun S ⟨hA, hn⟩ => ?_` and prove the remaining obligations.
-
-Distinguish the cases in `hne : ∃ s ∈ S.toSubmodule, T s ≠ 0`. Take `⟨hA', ⟨e⟩⟩` from `imRep_atom T hT hA hne`. Establish `hnX : ¬ imRep T hT S ≤ X` using `fun hle => hn (hcl S _ hA hle ⟨e⟩)`. Conclude with `fun s hs => hYle _ hA' hnX ⟨s, hs, rfl⟩`. Use `push_neg at hne`.
-
-Introduce `s hs`. Use `show T s ∈ Y.toSubmodule`. Rewrite using `[hne s hs]`. Conclude with `zero_mem _`. Conclude with `hY hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_typeComplement : ∀ (K V : Type) [Group K] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ K V), ρ.IsSemisimpleRepresentation → (∀ X : Subrepresentation ρ, X.toSubmodule = ⨆ (S : Subrepresentation ρ) (_ : IsAtom S ∧ S ≤ X), S.toSubmodule) → ∀ X : Subrepresentation ρ, (∀ S₁ S₂ : Subrepresentation ρ, IsAtom S₁ → S₂ ≤ X → Nonempty (S₁.toRepresentation.Equiv S₂.toRepresentation) → S₁ ≤ X) → ∃ Y : Subrepresentation ρ, IsCompl X.toSubmodule Y.toSubmodule ∧ (∀ S₁ S₂ : Subrepresentation ρ, IsAtom S₁ → IsAtom S₂ → S₁ ≤ Y → S₂ ≤ X → IsEmpty (S₁.toRepresentation.Equiv S₂.toRepresentation)) ∧ ∀ T : V →ₗ[ℂ] V, (∀ k v, T (ρ k v) = ρ k (T v)) → (∀ v ∈ X.toSubmodule, T v ∈ X.toSubmodule) ∧ ∀ v ∈ Y.toSubmodule, T v ∈ Y.toSubmodule := by
   intro K V _ _ _ ρ hss hsum X hcl

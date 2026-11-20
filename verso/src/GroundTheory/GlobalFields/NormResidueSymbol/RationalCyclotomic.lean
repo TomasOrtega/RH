@@ -27,25 +27,25 @@ abbrev cycRestrict : Gal(ℚ̄/ℚ) →* Gal(maxCyclotomic/ℚ) :=
   AlgEquiv.restrictNormalHom maxCyclotomic
 
 /- English proof (translation)
-Establish `: IsGalois ℚ ℚ̄` using `IsAlgClosure.isGalois ℚ ℚ̄`. Conclude with `AlgEquiv.restrictNormalHom_surjective ℚ̄`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cycRestrict_surjective : Function.Surjective cycRestrict := by
   have : IsGalois ℚ ℚ̄ := IsAlgClosure.isGalois ℚ ℚ̄
   exact AlgEquiv.restrictNormalHom_surjective ℚ̄
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictNormal_commutes σ maxCyclotomic x`.
+A detailed English derivation is pending.
 -/
 theorem coe_cycRestrict_apply (σ : Gal(ℚ̄/ℚ)) (x : maxCyclotomic) :
     ((cycRestrict σ x : maxCyclotomic) : ℚ̄) = σ x :=
   AlgEquiv.restrictNormal_commutes σ maxCyclotomic x
 
 /- English proof (translation)
-Rewrite using `[ker_character]`. Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker, IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `coe_cycRestrict_apply σ ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[h, AlgEquiv.one_apply]`. Conclude with `this.symm`. Introduce `h`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_cycRestrict_apply, AlgEquiv.one_apply]`. Conclude with `h x x.2`.
+A detailed English derivation is pending.
 -/
 theorem ker_cycRestrict : cycRestrict.ker = character.ker := by
   rw [ker_character]
@@ -67,7 +67,7 @@ def cycCharacter : Gal(maxCyclotomic/ℚ) ≃* ℤ̂ˣ :=
       (QuotientGroup.quotientKerEquivOfSurjective character character_surjective))
 
 /- English proof (translation)
-Establish `h : (QuotientGroup.quotientKerEquivOfSurjective cycRestrict cycRestrict_surjective).symm (cycRestrict σ) = (σ : Gal(ℚ̄/ℚ) ⧸ cycRestrict.ker)`. Rewrite using `[MulEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Rewrite using `[cycCharacter, MulEquiv.trans_apply, MulEquiv.trans_apply, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cycCharacter_cycRestrict (σ : Gal(ℚ̄/ℚ)) : cycCharacter (cycRestrict σ) = character σ := by
   have h : (QuotientGroup.quotientKerEquivOfSurjective cycRestrict cycRestrict_surjective).symm
@@ -78,7 +78,7 @@ theorem cycCharacter_cycRestrict (σ : Gal(ℚ̄/ℚ)) : cycCharacter (cycRestri
   rfl
 
 /- English proof (translation)
-Take `⟨σ, rfl⟩` from `cycRestrict_surjective τ`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[cycCharacter_cycRestrict, SubmonoidClass.coe_pow]`. Rewrite using `[coe_cycRestrict_apply]`. Conclude with `character_spec σ n (by rw [← SubmonoidClass.coe_pow, hζ, OneMemClass.coe_one])`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycCharacter_spec (τ : Gal(maxCyclotomic/ℚ)) (n : ℕ+) {ζ : maxCyclotomic}
     (hζ : ζ ^ (n : ℕ) = 1) :
@@ -94,9 +94,9 @@ def unitPart : IdeleClassGroup ℚ →* ℤ̂ˣ :=
     ((MonoidHom.snd _ _).comp RationalIdeles.ideleClassGroupEquiv.toMulEquiv.toMonoidHom)
 
 /- English proof (translation)
-Introduce `w`. Take `⟨x, hx⟩` from `RationalIdeles.ideleClassGroupEquiv.surjective (1, Units.map padicEquiv.toRingHom.toMonoidHom w)`. Use `⟨x, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `only [unitPart, MonoidHom.comp_apply, MonoidHom.coe_snd, Units.coe_map]`. Express the relevant statement in the definitionally equal form `padicEquiv.symm ((RationalIdeles.ideleClassGroupEquiv x).2 : _) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hx]`. Simplify using `[ofPadics_toPadics]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unitPart_surjective : Function.Surjective unitPart := by
   intro w
@@ -109,7 +109,7 @@ theorem unitPart_surjective : Function.Surjective unitPart := by
   simp [ofPadics_toPadics]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `toPadics (padicEquiv.symm _) q = _`. Rewrite using `[← padicEquiv_apply, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toPadicInt_unitPart (x : IdeleClassGroup ℚ) (q : Nat.Primes) :
     toPadicInt q (unitPart x : ℤ̂) =
@@ -122,14 +122,14 @@ def reciprocityMap : IdeleClassGroup ℚ →* Gal(maxCyclotomic/ℚ) :=
   cycCharacter.symm.toMonoidHom.comp unitPart⁻¹
 
 /- English proof (translation)
-Simplify using `[reciprocityMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cycCharacter_reciprocityMap (x : IdeleClassGroup ℚ) :
     cycCharacter (reciprocityMap x) = (unitPart x)⁻¹ := by
   simp [reciprocityMap]
 
 /- English proof (translation)
-Introduce `τ`. Take `⟨x, hx⟩` from `unitPart_surjective (cycCharacter τ)⁻¹`. Use `⟨x, cycCharacter.injective ?_⟩` and prove the remaining obligations. Rewrite using `[cycCharacter_reciprocityMap, hx, inv_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem reciprocityMap_surjective : Function.Surjective reciprocityMap := by
   intro τ
@@ -138,7 +138,7 @@ theorem reciprocityMap_surjective : Function.Surjective reciprocityMap := by
   rw [cycCharacter_reciprocityMap, hx, inv_inv]
 
 /- English proof (translation)
-Rewrite using `[← cycCharacter.injective.eq_iff, map_one, cycCharacter_reciprocityMap, inv_eq_one]`. Establish `h : unitPart x = Units.map padicEquiv.symm.toRingHom.toMonoidHom (RationalIdeles.ideleClassGroupEquiv x).2`. Both sides reduce to the same expression. Rewrite using `[h, ← map_one (Units.map padicEquiv.symm.toRingHom.toMonoidHom)]`. Conclude with `(Units.map_injective (f := padicEquiv.symm.toRingHom.toMonoidHom) padicEquiv.symm.injective).eq_iff`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reciprocityMap_eq_one_iff (x : IdeleClassGroup ℚ) :
     reciprocityMap x = 1 ↔ (RationalIdeles.ideleClassGroupEquiv x).2 = 1 := by

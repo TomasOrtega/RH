@@ -22,7 +22,7 @@ def mkInd {P : Subgroup G} (σ : Representation F P W) (f : G → W)
   ⟨⟨f, h1⟩, mem_smoothPart_of_nhds (h2.mono fun _ hu => Subtype.ext (funext hu))⟩
 
 /- English proof (translation)
-The claim follows from `Filter.mem_of_superset (IsOpen.mem_nhds f.2 (by simp)) fun g hg x => congrFun (congrArg Subtype.val (show ind P σ g f.1 = f.1 from hg)) x`.
+A detailed English derivation is pending.
 -/
 theorem eventually_inv {P : Subgroup G} {σ : Representation F P W} (f : smoothPart (ind P σ)) :
     ∀ᶠ u in 𝓝 (1 : G), ∀ x, f.1.1 (x * u) = f.1.1 x :=
@@ -30,17 +30,15 @@ theorem eventually_inv {P : Subgroup G} {σ : Representation F P W} (f : smoothP
     congrFun (congrArg Subtype.val (show ind P σ g f.1 = f.1 from hg)) x
 
 /- English proof (translation)
-Set `T : smoothPart (ind Q Θ) →ₗ[F] smoothPart (ind R ρ)` to `{ toFun := fun f => mkInd ρ (fun g => ev (f.1.1 g)) (fun r g => by rw [← hev, ← f.1.2 ⟨r, hRQ r.2⟩ g]) ((eventually_inv f).mono fun u hu x => by rw [hu]) map_add' := fun f g => by ext x; exact map_add ev _ _ map_smul' := fun c f => by ext x; exact map_smul ev _ _ }`. Establish `hext : ∀ y y', (∀ q, ev (Θ q y) = ev (Θ q y')) → y = y'` using `fun y y' h => sub_eq_zero.1 (hinj _ fun q => by rw [map_sub, map_sub, h, sub_self])`. Establish `h1 : Function.Injective T`. Introduce `f f' h`. Use extensionality with `g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `hext _ _ fun q => ?_` and prove the remaining obligations. Rewrite using `[← f.1.2 q g, ← f'.1.2 q g]`. Conclude with `congrFun (congrArg (fun φ => φ.1.1) h) _`. Establish `h2 : Function.Surjective T`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ g : G, ∃ y, ∀ q : Q, ev (Θ q y) = h.1.1 (q * g)` using `fun g => by`. Use `hsurj (fun q => h.1.1 (q * g)) (fun r q => ?_) ?_` and prove the remaining obligations. Rewrite using `[← h.1.2 r, ← mul_assoc]`. Both sides reduce to the same expression. Establish `hc : Tendsto (fun u : Q => g⁻¹ * u * g) (𝓝 1) (𝓝 1)` using `Continuous.tendsto' (by fun_prop) _ _ (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hc.eventually (eventually_inv h)).mono fun u hu q => ?_` and prove the remaining obligations. Rewrite using `[← hu (q * g)]`. Simplify using `[mul_assoc]`. Use `choose y hy using key`. Use `⟨mkInd Θ y (fun p g => hext _ _ fun q => ?_) ((eventually_inv h).mono fun u hu x => hext _ _ fun q => ?_), ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, hy, hy, ← mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[hy, hy, ← mul_assoc, hu]`. Use extensionality with `g`. Conclude with `(by simpa using hy g 1 : ev (y g) = h.1.1 g)`.
-
-Conclude with `⟨.mk (LinearEquiv.ofBijective T ⟨h1, h2⟩) fun g => by ext f x; rfl⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem trans_ind {Q R : Subgroup G} (hRQ : R ≤ Q) (Θ : Representation F Q Y) (ρ : Representation F R Z)
     (ev : Y →ₗ[F] Z) (hev : ∀ (r : R) y, ev (Θ ⟨r, hRQ r.2⟩ y) = ρ r (ev y))
@@ -87,7 +85,7 @@ def evalAt {P : Subgroup M} (σ : Representation F P W) (m : M) : smoothPart (in
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [hx, hy]`. Consider the case `tmul y x => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem coord_rTensor {ι : Type} [DecidableEq ι] (b : Module.Basis ι F X) (f : Y →ₗ[F] W) (y : Y ⊗[F] X)
     (i : ι) : TensorProduct.equivFinsuppOfBasisRight b (f.rTensor X y) i =
@@ -98,9 +96,9 @@ theorem coord_rTensor {ι : Type} [DecidableEq ι] (b : Module.Basis ι F X) (f 
   | tmul y x => simp
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis F X`. Apply `(TensorProduct.equivFinsuppOfBasisRight b).injective` to reduce the goal to its premises. Use extensionality with `i m`. Use `coord_rTensor b (evalAt σ m) y i` as an intermediate fact. Rewrite `this` using `[h]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm.trans (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem tensor_inj {P : Subgroup M} (σ : Representation F P W) (y : smoothPart (ind P σ) ⊗[F] X)
     (h : ∀ m, (evalAt σ m).rTensor X y = 0) : y = 0 := by
@@ -113,15 +111,13 @@ theorem tensor_inj {P : Subgroup M} (σ : Representation F P W) (y : smoothPart 
   exact this.symm.trans (by simp)
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis F X`. Set `E` to `TensorProduct.equivFinsuppOfBasisRight (M := W) b`. Take `⟨t, -, ht⟩` from `hK.elim_nhds_subcover (fun x => {z | ψ z = ψ x}) fun x _ => by`. Establish `hc : Tendsto (fun z : M => x⁻¹ * z) (𝓝 x) (𝓝 1)` using `Continuous.tendsto' (by fun_prop) _ _ (by simp)`. Conclude with `(hc.eventually h2).mono fun z hz => by simpa using hz x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f` to `fun i => mkInd σ (fun m => E (ψ m) i) (fun p m => by rw [h1, coord_rTensor]) (h2.mono fun u hu x => by rw [hu])`. Establish `hf : ∀ i, f i ≠ 0 → i ∈ t.biUnion fun x => (E (ψ x)).support` using `fun i hi => by`. Assume the negation of the conclusion as `hn`. Apply `hi` to reduce the goal to its premises. Use extensionality with `m`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨p, c, hc, rfl⟩` from `hPK m`. Take `⟨x, hx, hcx⟩` from `Set.mem_iUnion₂.1 (ht hc)`. Establish `h0 : E (ψ x) i = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hn (Finset.mem_biUnion.2 ⟨x, hx, Finsupp.mem_support_iff.2 h0⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show E (ψ (p * c)) i = 0`. Rewrite using `[h1, coord_rTensor, show ψ c = ψ x from hcx, h0, map_zero]`. Use `⟨(TensorProduct.equivFinsuppOfBasisRight b).symm (Finsupp.onFinset _ f hf), fun m => ?_⟩` and prove the remaining obligations. Apply `E.injective` to reduce the goal to its premises. Use extensionality with `i`.
-
-Rewrite using `[coord_rTensor, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tensor_surj {P : Subgroup M} (σ : Representation F P W) {K : Set M} (hK : IsCompact K)
     (hPK : ∀ m, ∃ p : P, ∃ c ∈ K, m = p * c) (ψ : M → W ⊗[F] X)
@@ -155,27 +151,25 @@ theorem tensor_surj {P : Subgroup M} (σ : Representation F P W) {K : Set M} (hK
   rfl
 
 /- English proof (translation)
-Establish `hval : ∀ (q : Q) (y : smoothPart (ind P σ) ⊗[F] X), (evalAt σ 1).rTensor X (TensorProduct.map (smInd P σ (ℓ q)) (τ q) y) = (τ q).lTensor W ((evalAt σ (ℓ q)).rTensor X y)` using `fun q y => by`. Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul f x`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [TensorProduct.map_tmul, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul]`. Use `congr 1`. Conclude with `congrArg f.1.1 (one_mul _)`. Establish `hmul : ∀ (q q' : Q) (z : W ⊗[F] X), (τ q).lTensor W ((τ q').lTensor W z) = (τ (q * q')).lTensor W z` using `fun q q' z => by`. Rewrite using `[map_mul, ← LinearMap.lTensor_comp_apply]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hone : ∀ z : W ⊗[F] X, (τ 1).lTensor W z = z` using `fun z => by`. Rewrite using `[map_one, Module.End.one_eq_id, LinearMap.lTensor_id]`. Both sides reduce to the same expression. Use `trans_ind hRQ Θ ρ (i.toLinearMap ∘ₗ (evalAt σ 1).rTensor X ∘ₗ j.toLinearMap) (fun r y => ?_) (fun y hy => ?_) (fun φ h1 h2 => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[hj, hval, hi ⟨r, hRQ r.2⟩ r.2]`. Use `congr 1`. Generalize the expression as in `j y = z`. Proceed by induction on `z with`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul f x`. Simplify using `only [TensorProduct.map_tmul, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul]`. Use `congr 1`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg f.1.1 (mul_one _).symm).trans (f.1.2 ⟨_, (hR ⟨r, hRQ r.2⟩).1 r.2⟩ 1)`. Rewrite using `[← j.map_eq_zero_iff]`. Use `tensor_inj σ _ fun m => ?_` and prove the remaining obligations. Use `hy (s m)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, i.map_eq_zero_iff] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hj, hval, hls]`. Rewrite using `[← hone ((evalAt σ m).rTensor X _), ← inv_mul_cancel (s m), ← hmul, this, map_zero]`. Establish `h1' : ∀ (q : Q) (h : ℓ q ∈ P) (q' : Q), i.symm (φ (q * q')) = (σ ⟨ℓ q, h⟩).rTensor X ((τ q).lTensor W (i.symm (φ q')))` using `fun q h q' => by`. Rewrite using `[LinearEquiv.symm_apply_eq, ← LinearMap.comp_apply, LinearMap.rTensor_comp_lTensor, ← hi q ((hR q).2 h), i.apply_symm_apply]`. Conclude with `h1 ⟨q, (hR q).2 h⟩ q'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcomm : ∀ (A : W →ₗ[F] W) (B : X →ₗ[F] X) z, B.lTensor W (A.rTensor X z) = A.rTensor X (B.lTensor W z)` using `fun A B z => by`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.comp_apply, LinearMap.rTensor_comp_lTensor, LinearMap.lTensor_comp_rTensor]`. Take `⟨y, hy⟩` from `tensor_surj σ hK hPK (fun m => (τ (s m)⁻¹).lTensor W (i.symm (φ (s m)))) (fun p m => by`. Rewrite using `[map_mul, h1' (s p) (by rw [hls]; exact p.2), hcomm, hmul]`. Simplify using `only [hls, mul_inv_rev, inv_mul_cancel_right])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Establish `hc : Tendsto s (𝓝 1) (𝓝 1)` using `hs.tendsto' _ _ (map_one s)`. Establish `hc' : Tendsto (fun u : M => u⁻¹) (𝓝 1) (𝓝 1)` using `continuous_inv.tendsto' _ _ inv_one`. Use `filter_upwards [hc.eventually h2, hc'.eventually hτ] with u hu hu' x`. Rewrite using `[map_mul, hu, mul_inv_rev, map_mul, ← map_inv s u, hu', one_mul])`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨j.symm y, fun q => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[hj, hval, j.apply_symm_apply, hy, hmul, ← LinearEquiv.eq_symm_apply]`. Establish `h0 : ℓ (q * (s (ℓ q))⁻¹) = 1` using `by rw [map_mul, map_inv, hls, mul_inv_cancel]`. Use `h1' (q * (s (ℓ q))⁻¹) (h0 ▸ one_mem P) (s (ℓ q))` as an intermediate fact.
-
-Rewrite `this` using `[inv_mul_cancel_right, show (⟨_, h0 ▸ one_mem P⟩ : P) = 1 from Subtype.ext h0, map_one, Module.End.one_eq_id, LinearMap.rTensor_id]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stage {Q R : Subgroup G} (hRQ : R ≤ Q) {P : Subgroup M} (ℓ : Q →* M) (s : M →* Q)
     (hs : Continuous s) (hls : ∀ m, ℓ (s m) = m) (hR : ∀ q : Q, (q : G) ∈ R ↔ ℓ q ∈ P)
@@ -279,20 +273,20 @@ theorem pr_snd {R : Type} [CommRing R] (e : a ⊕ b ≃ n) (q : parab R (two e))
     ((pr e q).2 : Matrix b b R) i j = ((q : GL n R) : Matrix n n R) (e (.inr i)) (e (.inr j)) := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (leviTwo R a b).symm (leviProj_leviEmb R (two e) (leviTwo R a b g))`.
+A detailed English derivation is pending.
 -/
 theorem pr_sec {R : Type} [CommRing R] (e : a ⊕ b ≃ n) (g : GL a R × GL b R) : pr e (sec e g) = g :=
   congrArg (leviTwo R a b).symm (leviProj_leviEmb R (two e) (leviTwo R a b g))
 
 /- English proof (translation)
-The claim follows from `((continuous_leviEmb R (two e)).comp (continuous_leviTwo R)).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sec {R : Type} [CommRing R] [TopologicalSpace R] (e : a ⊕ b ≃ n) :
     Continuous (sec (R := R) e) :=
   ((continuous_leviEmb R (two e)).comp (continuous_leviTwo R)).subtype_mk _
 
 /- English proof (translation)
-Rewrite using `[det_parab, Fintype.prod_bool, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_pr {R : Type} [CommRing R] (e : a ⊕ b ≃ n) (q : parab R (two e)) :
     GeneralLinearGroup.det (q : GL n R) =
@@ -303,7 +297,7 @@ theorem det_pr {R : Type} [CommRing R] (e : a ⊕ b ≃ n) (q : parab R (two e))
 def dl (e : a ⊕ b ≃ n) : parab k (two e) →* ℂˣ := (deltaHalf k (Two a b)).comp (leviProj k (two e))
 
 /- English proof (translation)
-Rewrite using `[← deltaHalf_two]`. Conclude with `congrArg (deltaHalf k (Two a b)) ((leviTwo k a b).apply_symm_apply _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dl_apply (e : a ⊕ b ≃ n) (q : parab k (two e)) :
     dl e q = absPow k ((Fintype.card b : ℂ) / 2) (GeneralLinearGroup.det (pr e q).1) *
@@ -312,7 +306,7 @@ theorem dl_apply (e : a ⊕ b ≃ n) (q : parab k (two e)) :
   exact congrArg (deltaHalf k (Two a b)) ((leviTwo k a b).apply_symm_apply _).symm
 
 /- English proof (translation)
-Establish `h` using `((isSmoothChar_deltaHalf k (m := Two a b)).comp (leviTwo k a b).toMonoidHom (continuous_leviTwo k)).mem_nhds (one_mem _)`. Use `Filter.mem_of_superset h fun u hu => ?_` and prove the remaining obligations. Conclude with `(congrArg (deltaHalf k (Two a b)) (leviProj_leviEmb k (two e) (leviTwo k a b u))).trans hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dl_sec (e : a ⊕ b ≃ n) : ∀ᶠ u in 𝓝 (1 : GL a k × GL b k), dl e (sec e u) = 1 := by
   have h := ((isSmoothChar_deltaHalf k (m := Two a b)).comp (leviTwo k a b).toMonoidHom
@@ -331,7 +325,7 @@ theorem dat_apply (e : a ⊕ b ≃ n) (ρ : Representation ℂ (GL a k × GL b k
     (w : W) : dat e ρ q w = (dl e q : ℂ) • ρ (pr e q) w := rfl
 
 /- English proof (translation)
-Take `⟨p, hp, c, hc, h⟩` from `iwasawa_blockTriangular k n (fun i => (blk (two e) i).toNat) g`. Use `⟨⟨p, fun i j hij => hp ?_⟩, c, hc, h⟩` and prove the remaining obligations. Use `revert hij`. Simplify using `only`. Apply the tactic sequence `cases blk (two e) i <;> cases blk (two e) j <;> simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem iwasawa_two (e : a ⊕ b ≃ n) (g : GL n k) :
     ∃ p : parab k (two e), ∃ c ∈ (KO k n : Set (GL n k)), g = p * c := by
@@ -360,7 +354,7 @@ theorem tauFst_apply (e : a ⊕ b ≃ n) (π : Representation ℂ (GL a k) W) (q
     tauFst e π q w = (dl e q : ℂ) • π (pr e q).1 w := rfl
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul f x`. Rewrite using `[dat_apply, extTensor_tmul, TensorProduct.map_tmul, ← TensorProduct.tmul_smul, tauSnd_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem dat_snd (e : a ⊕ b ≃ n) (π₁ : Representation ℂ (GL a k) V₁) (π₂ : Representation ℂ (GL b k) V₂)
     (q : parab k (two e)) (y : V₁ ⊗[ℂ] V₂) :
@@ -372,7 +366,7 @@ theorem dat_snd (e : a ⊕ b ≃ n) (π₁ : Representation ℂ (GL a k) V₁) (
     rw [dat_apply, extTensor_tmul, TensorProduct.map_tmul, ← TensorProduct.tmul_smul, tauSnd_apply]
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul f x`. Rewrite using `[dat_apply, extTensor_tmul, map_smul, TensorProduct.comm_tmul, TensorProduct.comm_tmul, TensorProduct.map_tmul, ← TensorProduct.tmul_smul, tauFst_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem dat_fst (e : a ⊕ b ≃ n) (π₁ : Representation ℂ (GL a k) V₁) (π₂ : Representation ℂ (GL b k) V₂)
     (q : parab k (two e)) (y : V₁ ⊗[ℂ] V₂) :
@@ -386,7 +380,7 @@ theorem dat_fst (e : a ⊕ b ≃ n) (π₁ : Representation ℂ (GL a k) V₁) (
       TensorProduct.map_tmul, ← TensorProduct.tmul_smul, tauFst_apply]
 
 /- English proof (translation)
-The claim follows from `stage hRQ ((MonoidHom.fst _ _).comp (pr e)) ((sec e).comp (MonoidHom.inl _ _)) ((continuous_sec e).comp (Continuous.prodMk_left 1)) (fun m => congrArg Prod.fst (pr_sec e (m, 1))) hR SplitFlip.isCompact_KO (iwasawa_two f) σ (tauSnd e π) ((((Continuous.prodMk_left 1).tendsto 1).eve …`.
+A detailed English derivation is pending.
 -/
 theorem stage_fst (e : ab ⊕ c ≃ n) (f : a ⊕ b ≃ ab) {R : Subgroup (GL n k)} (hRQ : R ≤ parab k (two e))
     (hR : ∀ q : parab k (two e), (q : GL n k) ∈ R ↔ (pr e q).1 ∈ parab k (two f))
@@ -405,7 +399,7 @@ theorem stage_fst (e : ab ⊕ c ≃ n) (f : a ⊕ b ≃ ab) {R : Subgroup (GL n 
     _ (.refl _ _) (fun q y => dat_snd e _ π q y) ρ i hi
 
 /- English proof (translation)
-The claim follows from `stage hRQ ((MonoidHom.snd _ _).comp (pr e)) ((sec e).comp (MonoidHom.inr _ _)) ((continuous_sec e).comp (Continuous.prodMk_right 1)) (fun m => congrArg Prod.snd (pr_sec e (1, m))) hR SplitFlip.isCompact_KO (iwasawa_two f) σ (tauFst e π) ((((Continuous.prodMk_right 1).tendsto 1).e …`.
+A detailed English derivation is pending.
 -/
 theorem stage_snd (e : a ⊕ bc ≃ n) (f : b ⊕ c ≃ bc) {R : Subgroup (GL n k)} (hRQ : R ≤ parab k (two e))
     (hR : ∀ q : parab k (two e), (q : GL n k) ∈ R ↔ (pr e q).2 ∈ parab k (two f))
@@ -424,19 +418,19 @@ theorem stage_snd (e : a ⊕ bc ≃ n) (f : b ⊕ c ≃ bc) {R : Subgroup (GL n 
     _ (TensorProduct.comm _ _ _) (fun q y => dat_fst e π _ q y) ρ i hi
 
 /- English proof (translation)
-Establish `g₁ : (pr f₁ p₁).1 = (pr e₂ q₂).1`. Use extensionality with `i j`. Rewrite using `[pr_fst, ← hp₁, pr_fst, pr_fst, Ha, Ha, hq]`. Establish `g₂ : (pr f₁ p₁).2 = (pr f₂ p₂).1`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[pr_snd, ← hp₁, pr_fst, pr_fst, ← hp₂, pr_snd, Hb, Hb, hq]`. Establish `g₃ : (pr e₁ q₁).2 = (pr f₂ p₂).2`. Use extensionality with `i j`. Rewrite using `[pr_snd, pr_snd, ← hp₂, pr_snd, Hc, Hc, hq]`. Establish `hd : dl e₁ q₁ * dl f₁ p₁ = dl e₂ q₂ * dl f₂ p₂`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c₁ : (Fintype.card ab : ℂ) = Fintype.card a + Fintype.card b`. Rewrite using `[← Fintype.card_congr f₁, Fintype.card_sum, Nat.cast_add]`. Establish `c₂ : (Fintype.card bc : ℂ) = Fintype.card b + Fintype.card c`. Rewrite using `[← Fintype.card_congr f₂, Fintype.card_sum, Nat.cast_add]`. Rewrite using `[dl_apply, dl_apply, dl_apply, dl_apply, hp₁, hp₂, det_pr f₁ p₁, det_pr f₂ p₂, g₁, g₂, g₃, c₁, c₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [neg_add, add_div, absPow_add, MonoidHom.mul_apply, map_mul]`. Generalize the expression as in `GeneralLinearGroup.det (pr e₂ q₂).1 = x`. Generalize the expression as in `GeneralLinearGroup.det (pr f₂ p₂).1 = y`. Generalize the expression as in `GeneralLinearGroup.det (pr f₂ p₂).2 = w`. Apply `Units.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Proceed by induction on `z with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul y x`. Proceed by induction on `y with`. Consider the case `zero => simp only [TensorProduct.zero_tmul, map_zero]`. Consider the case `add x y hx hy => simp only [TensorProduct.add_tmul, map_add, hx, hy]`. Consider the case `tmul y z`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[TensorProduct.comm_tmul, TensorProduct.assoc_symm_tmul, TensorProduct.map_tmul, TensorProduct.map_tmul, dat_apply, dat_apply, extTensor_tmul, extTensor_tmul, g₁, g₂, TensorProduct.comm_tmul, tauSnd_apply, tauFst_apply, g₃, TensorProduct.smul_tmul_smul, TensorProduct.smul_tmul_sm …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem action_eq (e₁ : ab ⊕ c ≃ n) (f₁ : a ⊕ b ≃ ab) (e₂ : a ⊕ bc ≃ n) (f₂ : b ⊕ c ≃ bc)
     (Ha : ∀ i, e₁ (.inl (f₁ (.inl i))) = e₂ (.inl i))
@@ -487,17 +481,13 @@ theorem action_eq (e₁ : ab ⊕ c ≃ n) (f₁ : a ⊕ b ≃ ab) (e₂ : a ⊕ 
         ← Units.val_mul, ← hd, mul_comm]
 
 /- English proof (translation)
-Set `R : Subgroup (GL n k)` to `parab k (two e₁) ⊓ parab k (two e₂)`. Establish `hR₁ : ∀ q : parab k (two e₁), (q : GL n k) ∈ R ↔ (pr e₁ q).1 ∈ parab k (two f₁)` using `fun q => by`. Use `⟨fun h => (mem_parab_two k).2 fun j i => ?_, fun h => ⟨q.2, (mem_parab_two k).2 fun j i => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[pr_fst, Ha, Hb]`. Conclude with `(mem_parab_two k).1 h.2 _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j | j, rfl⟩` from `f₂.surjective j`. Rewrite using `[← Ha, ← Hb]`. Conclude with `(mem_parab_two k).1 h j i`. Rewrite using `[← Ha, ← Hc]`. Conclude with `(mem_parab_two k).1 q.2 _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hR₂ : ∀ q : parab k (two e₂), (q : GL n k) ∈ R ↔ (pr e₂ q).2 ∈ parab k (two f₂)` using `fun q => by`. Use `⟨fun h => (mem_parab_two k).2 fun j i => ?_, fun h => ⟨(mem_parab_two k).2 fun j i => ?_, q.2⟩⟩` and prove the remaining obligations. Rewrite using `[pr_snd, ← Hc, ← Hb]`. Conclude with `(mem_parab_two k).1 h.1 _ _`. Take `⟨i | i, rfl⟩` from `f₁.surjective i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[Ha, Hc]`. Conclude with `(mem_parab_two k).1 q.2 _ _`. Rewrite using `[Hb, Hc]`. Conclude with `(mem_parab_two k).1 h j i`. Set `ι₁ : R →* parab k (two e₁)` to `Subgroup.inclusion inf_le_left`.
-
-Set `ρ : Representation ℂ R ((V₁ ⊗[ℂ] V₂) ⊗[ℂ] V₃)` to `Representation.tprod ((dat f₁ (extTensor π₁ π₂)).comp ((((MonoidHom.fst _ _).comp (pr e₁)).comp ι₁).codRestrict _ fun r => (hR₁ (ι₁ r)).1 r.2)) ((tauSnd e₁ π₃).comp ι₁)`. Establish `hρ : ∀ (g : GL n k) (h : g ∈ R), ρ ⟨g, h⟩ = TensorProduct.map (dat f₁ (extTensor π₁ π₂) ⟨(pr e₁ ⟨g, h.1⟩).1, (hR₁ ⟨g, h.1⟩).1 h⟩) (tauSnd e₁ π₃ ⟨g, h.1⟩)` using `fun g h => rfl`. Establish `E₁` using `stage_fst e₁ f₁ (R := R) inf_le_left hR₁ (dat f₁ (extTensor π₁ π₂)) π₃ ρ (.refl _ _) (fun q h z => by rw [hρ]; rfl)`. Establish `E₂` using `stage_snd e₂ f₂ (R := R) inf_le_right hR₂ (dat f₂ (extTensor π₂ π₃)) π₁ ρ ((TensorProduct.comm _ _ _).trans (TensorProduct.assoc _ _ _ _).symm) (fun q h z => by`. Rewrite using `[hρ]`.
-
-Conclude with `action_eq e₁ f₁ e₂ f₂ Ha Hb Hc π₁ π₂ π₃ _ q _ _ rfl rfl rfl z)`. Conclude with `Nonempty.map2 (fun x y => x.trans y.symm) E₁ E₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind₂_assoc (e₁ : ab ⊕ c ≃ n) (f₁ : a ⊕ b ≃ ab) (e₂ : a ⊕ bc ≃ n) (f₂ : b ⊕ c ≃ bc)
     (Ha : ∀ i, e₁ (.inl (f₁ (.inl i))) = e₂ (.inl i))
@@ -548,7 +538,7 @@ theorem ind₂_assoc (e₁ : ab ⊕ c ≃ n) (f₁ : a ⊕ b ≃ ab) (e₂ : a �
 end Blocks
 
 /- English proof (translation)
-Introduce `k _ _ _ _ r s t V₁ V₂ V₃ _ _ _ _ _ _ π₁ π₂ π₃ _ _ _`. Conclude with `ind₂_assoc (stdSum rfl) (stdSum rfl) (stdSum (Nat.add_assoc r s t).symm) (stdSum rfl) (fun i => Fin.ext (by simp)) (fun i => Fin.ext (by simp)) (fun i => Fin.ext (by simp [add_assoc])) π₁ π₂ π₃`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem prod₂_assoc : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r s t : ℕ) (V₁ V₂ V₃ : Type) [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂] [Module ℂ V₂] [AddCommGroup V₃] [Module ℂ V₃] (π₁ : Representation ℂ (GL (Fin r) k) V₁) (π₂ : Representation ℂ (GL (Fin s) k) V₂) (π₃ : Representation ℂ (GL (Fin t) k) V₃), IsSmooth π₁ → IsSmooth π₂ → IsSmooth π₃ → Nonempty ((prod₂ (prod₂ π₁ π₂) π₃).Equiv (ind₂ (stdSum (Nat.add_assoc r s t).symm) (extTensor π₁ (prod₂ π₂ π₃)))) := by
   intro k _ _ _ _ r s t V₁ V₂ V₃ _ _ _ _ _ _ π₁ π₂ π₃ _ _ _

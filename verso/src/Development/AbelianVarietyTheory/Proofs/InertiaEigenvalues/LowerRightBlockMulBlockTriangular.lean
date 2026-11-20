@@ -20,11 +20,9 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 
 /- English proof (translation)
-Establish `hfin : (φ '' (J : Set G)).Finite` using `hA.subset (by rintro _ ⟨κ, hκ, rfl⟩; exact hφ κ hκ)`. Establish `hs : ∀ x : ↥(φ '' (J : Set G)), ∃ u, u ∈ J ∧ φ u = x.1` using `fun x => x.2`. Use `choose s hsJ hsφ using hs`. Use `haveI := hfin.fintype`. Use `⟨Finset.univ.image s, fun u hu => ?_, fun κ hκ => ⟨s ⟨φ κ, κ, hκ, rfl⟩, ⟨?_, ?_⟩, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 hu`. Conclude with `hsJ x`. Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ _)`. Conclude with `(h _ (hsJ _) _ hκ).2 (hsφ _)`. Introduce and unpack `u ⟨hu, hu'⟩`.
-
-Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 hu`. Use `congr 1`. Conclude with `Subtype.ext ((hsφ x).symm.trans ((h _ (hsJ x) _ hκ).1 hu'))`.
+Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_reps {G X : Type} [Group G] (J J' : Subgroup G) (φ : G → X) (A : Set X) (hA : A.Finite)
     (hφ : ∀ κ ∈ J, φ κ ∈ A) (h : ∀ u ∈ J, ∀ κ ∈ J, u⁻¹ * κ ∈ J' ↔ φ u = φ κ) :
@@ -45,7 +43,7 @@ theorem exists_reps {G X : Type} [Group G] (J J' : Subgroup G) (φ : G → X) (A
     exact Subtype.ext ((hsφ x).symm.trans ((h _ (hsJ x) _ hκ).1 hu'))
 
 /- English proof (translation)
-Unfold `ext1`. Rewrite using `[dif_pos ha, dif_pos hb, dif_pos (mul_mem ha hb), ← map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extension_by_one_mul {G H : Type} [Group G] [Monoid H] (K : Subgroup G) (f : K →* H) {a b : G} (ha : a ∈ K) (hb : b ∈ K) :
     ext1 K f (a * b) = ext1 K f a * ext1 K f b := by
@@ -54,7 +52,7 @@ theorem extension_by_one_mul {G H : Type} [Group G] [Monoid H] (K : Subgroup G) 
   rfl
 
 /- English proof (translation)
-The claim follows from `extension_by_one_mul _ _ ha hb`.
+A detailed English derivation is pending.
 -/
 theorem lowerRightBlock_mul_blockTriangular {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) {a b : GL (Fin n) κ} (ha : a ∈ blockTri (blk2 r))
     (hb : b ∈ blockTri (blk2 r)) : upperLeftBlock hr (a * b) = upperLeftBlock hr a * upperLeftBlock hr b :=
@@ -64,9 +62,9 @@ def firstBlocks (B : Base S T) (ψ : Twist D Circle) (k : Bridge.Gf S) : G0 B.G.
   rTup B.F.βS (B.levS ψ) (Formalism.UG.bc (Lev.swapAE D) k.1)
 
 /- English proof (translation)
-Establish `pa` using `lev_le_parLev ha`. Establish `pb` using `lev_le_parLev hb`. Use function extensionality and compare the values at `PP`. Use `show upperLeftBlock B.hr (redFn B.F.βS PP.1 (Formalism.UG.bc (Lev.swapAE D) (a.1 * b.1))) = upperLeftBlock B.hr (redFn B.F.βS PP.1 (Formalism.UG.bc (Lev.swapAE D) a.1)) * upperLeftBlock B.hr (redFn B.F.βS PP.1 (Formalism.UG.bc (Lev.swapAE D) b.1))`. Establish `e : redFn B.F.βS PP.1 (Formalism.UG.bc (Lev.swapAE D) a.1 * Formalism.UG.bc (Lev.swapAE D) b.1) = redFn B.F.βS PP.1 (Formalism.UG.bc (Lev.swapAE D) a.1) * redFn B.F.βS PP.1 (Formalism.UG.bc (Lev.swapAE D) b.1)` using `extension_by_one_mul (St B.F.βS) (redAt B.F.βS PP.1) (Base.mem_St_of_mem_levJ ha) (Base.mem_St_of_mem_levJ hb)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, e]`. Conclude with `lowerRightBlock_mul_blockTriangular _ (blockTri_blkOf_le _ _ (parLev_g pa PP.2)) (blockTri_blkOf_le _ _ (parLev_g pb PP.2))`.
+A detailed English derivation is pending.
 -/
 theorem firstBlocks_mul (B : Base S T) (ψ : Twist D Circle) {a b : Bridge.Gf S} (ha : a ∈ B.levJ ψ) (hb : b ∈ B.levJ ψ) :
     firstBlocks B ψ (a * b) = firstBlocks B ψ a * firstBlocks B ψ b := by
@@ -82,16 +80,16 @@ theorem firstBlocks_mul (B : Base S T) (ψ : Twist D Circle) {a b : Bridge.Gf S}
   exact lowerRightBlock_mul_blockTriangular _ (blockTri_blkOf_le _ _ (parLev_g pa PP.2)) (blockTri_blkOf_le _ _ (parLev_g pb PP.2))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Subgroup.mem_bot.1 h.2, fun h => ⟨mem_parLev.2 (by exact mem_parLev.1 hk.1), Subgroup.mem_bot.2 h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_princ_iff (B : Base S T) (ψ : Twist D Circle) {k : Bridge.Gf S} (hk : k ∈ B.levJ ψ) :
     k ∈ (princ B).levJ ψ ↔ firstBlocks B ψ k = 1 :=
   ⟨fun h => Subgroup.mem_bot.1 h.2, fun h => ⟨mem_parLev.2 (by exact mem_parLev.1 hk.1), Subgroup.mem_bot.2 h⟩⟩
 
 /- English proof (translation)
-Introduce `D S T B _ ψ _`. Use `exists_reps _ _ (firstBlocks B ψ) (B.G.P.H : Set _) (Set.finite_coe_iff.1 (finite_H B.G.P)) (fun κ hκ => hκ.2) fun u hu κ hκ => ?_` and prove the remaining obligations. Establish `hm` using `mul_mem (inv_mem hu) hκ`. Establish `e` using `firstBlocks_mul B ψ hu hm`. Rewrite `e` using `[mul_inv_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_princ_iff B ψ hm, e]`. Conclude with `left_eq_mul.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reps_levJ : ∀ {D : Formalism.BasicNotions.D7} {S T : Formalism.BasicNotions.TH.HSp D} (B : GlobalTheory.ExportSeries.Base S T), GlobalTheory.ExportSeries.Base.Good B → ∀ (ψ : GlobalTheory.ExportSeries.Twist D Circle), GlobalTheory.ExportSeries.Base.admitted B (GlobalTheory.ExportSeries.Twist.Q ψ) → ∃ (F : Finset ↥(Formalism.IndefR.Bridge.Gf S)), (∀ u ∈ F, u ∈ GlobalTheory.ExportSeries.Base.levJ B ψ) ∧ ∀ κ ∈ GlobalTheory.ExportSeries.Base.levJ B ψ, ∃! u : ↥(Formalism.IndefR.Bridge.Gf S), u ∈ F ∧ u⁻¹ * κ ∈ GlobalTheory.ExportSeries.Base.levJ (GlobalTheory.FlatVecSum.princ B) ψ := by
   intro D S T B _ ψ _

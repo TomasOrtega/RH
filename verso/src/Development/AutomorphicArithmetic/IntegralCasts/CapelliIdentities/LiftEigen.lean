@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `T V _ _ _ ρ ψ μ v y hv hne hy hmod _`. Take `⟨s, hs⟩ : ∃ s, μ s ≠ ψ s` from `DFunLike.ne_iff.mp hne`. Establish `hs' : ((μ s : ℂˣ) : ℂ) - ((ψ s : ℂˣ) : ℂ) ≠ 0` using `sub_ne_zero.mpr fun h => hs (Units.ext h)`. Use `⟨ρ s y - ((ψ s : ℂˣ) : ℂ) • y, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hy` to reduce the goal to its premises. Establish `h1` using `hmod s`. Rewrite `h1` using `[sub_eq_zero.mp h0, ← sub_smul, ← neg_sub, neg_smul, neg_mem_iff]`. Conclude with `(Submodule.smul_mem_iff _ hs').mp h1`. Introduce `t`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `Submodule.mem_span_singleton.mp (hmod t)`. Establish `hty : ρ t y = ((μ t : ℂˣ) : ℂ) • y + b • v`. Rewrite using `[hb]`. Normalize the expressions using the abelian group laws. Establish `hcomm : ρ t (ρ s y) = ρ s (ρ t y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_comm]`. Rewrite using `[map_sub, map_smul, hcomm, hty, map_add, map_smul, map_smul, hv s]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.R4.lift_eigen :
     ∀ {T V : Type} [inst : CommGroup T]

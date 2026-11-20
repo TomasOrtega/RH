@@ -20,7 +20,7 @@ namespace GlobalTheory.HeightCounting.Up
 variable {hL : GlobalTheory.Published.LocalLanglandsGL}
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `h`. Conclude with `⟨{ b with nx := ⟨b.nx.1, Classical.choice (hN _ _ _ _ _ _ _ _ _ _ _ _ _ b.nx.2)⟩ }, hb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem builtE_of_nExt {N N' : NExt hL} {S : SExt} {Γ : GeoP}
     (hN : ∀ K B f T w Z Wt p0 t nch n xd c, N' K B f T w Z Wt p0 t nch n xd c → Nonempty (N K B f T w Z Wt p0 t nch n xd c))
@@ -41,7 +41,7 @@ noncomputable def wptOfNExt {N N' : NExt hL} {S : SExt} {Γ : GeoP}
   ⟨q.B, q.f, q.T, q.w, q.Z, q.O, witOfNExt hN q.x⟩
 
 /- English proof (translation)
-Establish `r` using `h.recPin`. Conclude with `⟨⟨h.x, h.a, h.ax, h.y, { s := ⟨r.s.host, r.s.cols, r.s.full, r.s.g, r.s.theta, r.s.twE, r.s.twGood, r.s.chr, r.s.gal, r.s.nn, r.s.exp, r.s.chiD, r.s.twF, r.s.types, r.s.cover, r.s.plB, r.s.thetaChr, r.s.dt, r.s.pieces, r.s.inK, r.s.geo, r.s.tw⟩ k := ⟨r.k.std, r.k.O, r.k.ent, r.k. …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem bwit_of_nExt {N N' : NExt hL} {S : SExt} {Γ : GeoP}
     (hN : ∀ K B f T w Z Wt p0 t nch n xd c, N' K B f T w Z Wt p0 t nch n xd c → Nonempty (N K B f T w Z Wt p0 t nch n xd c))
@@ -56,7 +56,7 @@ theorem bwit_of_nExt {N N' : NExt hL} {S : SExt} {Γ : GeoP}
     h.s, h.pt, h.sx, h.eF, h.fi, h.uS, h.parts, h.cW, h.d3b, h.side, h.colPins⟩⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Fc.Row.map (fun _ _ _ b => b) hQ (fun K β c b _ t => hL K β c b t) h`.
+A detailed English derivation is pending.
 -/
 theorem row_mono_id {Bd : GlobalTheory.Fc.BdT} {Q Q₁ : V4.Slot} {Lk Lk₁ : GlobalTheory.Fc.LkT Bd} {H : ∀ 𝒜 : FamClass, GlobalTheory.Fc.RawSel Bd 𝒜 → Prop}
     (hQ : ∀ K X f T c, Q₁ K X f T c → Q K X f T c) (hL : ∀ K β c b, Lk₁ K β c b → Lk K β c b)
@@ -64,14 +64,14 @@ theorem row_mono_id {Bd : GlobalTheory.Fc.BdT} {Q Q₁ : V4.Slot} {Lk Lk₁ : Gl
   GlobalTheory.Fc.Row.map (fun _ _ _ b => b) hQ (fun K β c b _ t => hL K β c b t) h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Fc.eventuallyAllScaleContexts_mono_of_imp (fun _ H => H.imp fun _ _ _ _ t k C W V S N G c q => t k C W V S N G c (hQ _ _ _ _ _ q)) h`.
+A detailed English derivation is pending.
 -/
 theorem largeBaseProperty_anti {KP : ∀ B : Base, Fr B.toPre → Prop} {Q Q₁ R : V4.Slot} (hQ : ∀ K X f T c, Q₁ K X f T c → Q K X f T c)
     (h : GlobalTheory.Fc.LargeBaseCondition KP Q R) : GlobalTheory.Fc.LargeBaseCondition KP Q₁ R :=
   GlobalTheory.Fc.eventuallyAllScaleContexts_mono_of_imp (fun _ H => H.imp fun _ _ _ _ t k C W V S N G c q => t k C W V S N G c (hQ _ _ _ _ _ q)) h
 
 /- English proof (translation)
-Take `⟨R, hR, h⟩` from `h`. Conclude with `⟨R, largeBaseProperty_anti hQ hR, hr _ _ (fun _ _ _ _ _ t => ⟨hQ' _ _ _ _ _ t.1, t.2⟩) h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eventually_coreProperty_mono_fewerCores {KP : ∀ B : Base, Fr B.toPre → Prop} {Q Q₁ Q' Q'₁ : V4.Slot} {r r₁ : V4.Slot → Prop}
     (hQ : ∀ K X f T c, Q₁ K X f T c → Q K X f T c) (hQ' : ∀ K X f T c, Q'₁ K X f T c → Q' K X f T c)
@@ -85,9 +85,9 @@ end GlobalTheory.HeightCounting.Up
 namespace GlobalTheory.HeightCounting.Up
 
 /- English proof (translation)
-Introduce `hL N N' S Γ hN`. Establish `hB : ∀ K X f T c, IsBuiltE (prmR N' S Γ).s K X f T c → IsBuiltE (prmR N S Γ).s K X f T c` using `positionOf_mono (builtE_of_nExt hN)`. Establish `hG : ∀ K X f T c, IsGoodE (prmR N' S Γ).s K X f T c → IsGoodE (prmR N S Γ).s K X f T c` using `positionOf_mono fun K B f T w Z c h => ⟨builtE_of_nExt hN K B f T w Z c h.1, h.2⟩`. Establish `hLk : ∀ K β c b, IsLinked (prmR N' S Γ) K β c b → IsLinked (prmR N S Γ) K β c b`. Introduce and unpack `K β c b ⟨q, b', ⟨h⟩, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨wptOfNExt hN q, b', bwit_of_nExt hN q b' h, e⟩`. Use `⟨hB, hG, hLk, fun M DR A => ?_⟩` and prove the remaining obligations. Conclude with `{ hn4 := eventually_coreProperty_mono_fewerCores hB hG (fun _ _ hS h => row_mono_id hS hLk h) A.hn4 jOn := eventually_coreProperty_mono_fewerCores hB hG (fun _ _ hS h => row_mono_id hS hLk h) A.jOn hInstR := eventually_coreProperty_mono_fewerCores hB hG (fun _ _ hS h => row_mono_ …`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rows_of_stronger_nExt : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N N' : NExt hL) (S : SExt) (Γ : GeoP), (∀ K B f T w Z Wt p0 t nch n xd c, N' K B f T w Z Wt p0 t nch n xd c → Nonempty (N K B f T w Z Wt p0 t nch n xd c)) → (∀ K X f T c, IsBuiltE (prmR N' S Γ).s K X f T c → IsBuiltE (prmR N S Γ).s K X f T c) ∧ (∀ K X f T c, IsGoodE (prmR N' S Γ).s K X f T c → IsGoodE (prmR N S Γ).s K X f T c) ∧ (∀ K β c b, IsLinked (prmR N' S Γ) K β c b → IsLinked (prmR N S Γ) K β c b) ∧ ∀ (M : FamClass → Prop) (DR : GlobalTheory.Fc.R1.DefT), GlobalTheory.Fc.AllRows KPx (IsBuiltE (prmR N S Γ).s) (IsGoodE (prmR N S Γ).s) (IsLinked (prmR N S Γ)) M DR → GlobalTheory.Fc.AllRows KPx (IsBuiltE (prmR N' S Γ).s) (IsGoodE (prmR N' S Γ).s) (IsLinked (prmR N' S Γ)) M DR := by
   intro hL N N' S Γ hN

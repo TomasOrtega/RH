@@ -11,11 +11,11 @@ open scoped TensorProduct
 namespace UpperTheory.ConvolutionTheory.D
 
 /- English proof (translation)
-Establish `hγ : ((up R γ).val).map s = (up R γ).val`. Use extensionality with `i j`. Simplify using `[up]`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C r`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Use extensionality with `i j`. Simplify using `[Matrix.algebraMap_matrix_apply, apply_ite s]`. Consider the case `add p q hp hq => rw [map_add, Polynomial.map_add, map_add, ← hp, ← hq, Matrix.map_add _ (map_add s)]`. Consider the case `monomial m r h`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Matrix.map_mul, h, Polynomial.map_mul (p := C r * X ^ m), map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[hγ]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem aeval_map_sg {k R : Type} [CommRing k] [CommRing R] [Algebra k R] {n : ℕ} (s : R ≃ₐ[k] R)
     (γ : GL (Fin n) k) (p : R[X]) :
@@ -33,7 +33,7 @@ private theorem aeval_map_sg {k R : Type} [CommRing k] [CommRing R] [Algebra k R
     simp [hγ]
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simp [nm]`. Consider the case `succ q ih`. Rewrite using `[Finset.prod_range_succ, map_mul, ← ih, ← aeval_map_sg, ← ha]`. Simplify using `only [nm, List.range_succ, List.map_append, List.prod_append, List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one, Units.val_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -49,31 +49,31 @@ private theorem nm_aeval {k R : Type} [CommRing k] [CommRing R] [Algebra k R] {n
     rfl
 
 /- English proof (translation)
-Use `haveI := (galBase k R k σ q hσ).1`. Use `set χ := eval₂RingHom j (algebraMap A T α) with hχ`. Establish `hch : (up R γ).val.charpoly = P`. Rewrite using `[hP, cp, ← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨-, hc, hk⟩` from `conjSep k R n (up R γ).val (by rw [hch, hP]; exact hγ.map)`. Rewrite `hk` using `[hch]`. Establish `hφ : φ.comp χ = AdjoinRoot.mk P`. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hχ, hφj]`. Simplify using `[hχ, hφα]`. Establish `hker : ∀ p, χ p = 0 ↔ P ∣ p`. Introduce `p`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite using `[← AdjoinRoot.mk_eq_zero, ← hφ, RingHom.comp_apply, h, map_zero]`. Introduce and unpack `⟨u, rfl⟩`. Rewrite using `[map_mul, hχ, coe_eval₂RingHom, h0, zero_mul]`. Establish `heq : ∀ p p', χ p = χ p' ↔ aeval (up R γ).val p = aeval (up R γ).val p'`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `p p'`. Rewrite using `[← sub_eq_zero, ← map_sub, hker, ← hk, map_sub, sub_eq_zero]`. Establish `hjp : ∀ (i : ℕ) r, (τ ^ i) (j r) = j ((σ ^ i) r)`. Introduce `i`. Proceed by induction on `i with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ i ih => intro r`. Rewrite using `[pow_succ, pow_succ, AlgEquiv.mul_apply, AlgEquiv.mul_apply, hj, ih]`. Establish `hχp : ∀ (i : ℕ) p, (τ ^ i) (χ p) = χ (p.map ((σ ^ i : R ≃ₐ[k] R) : R →+* R))`. Introduce `i p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: ((τ ^ i : T ≃ₐ[A] T) : T →+* T).comp χ = χ.comp (mapRingHom ((σ ^ i : R ≃ₐ[k] R) : R →+* R))`. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify `hjp i r` using `[hχ]`. Simplify using `[hχ, -AlgEquiv.coe_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `DFunLike.congr_fun this p`. Establish `key : ∀ p, Algebra.norm A (χ p) = α ↔ aeval (up R γ).val (∏ i ∈ Finset.range q, p.map ((σ ^ i : R ≃ₐ[k] R) : R →+* R)) = (up R γ).val`. Introduce `p`. Rewrite using `[← hτ.inj.eq_iff, normProd A T τ q hτ]`. Simplify using `only [hχp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_prod]`. Establish `h1 : algebraMap A T α = χ X` using `by simp [hχ]`. Rewrite using `[h1, heq, aeval_X]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, h1, h2⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨p, hp⟩` from `hc a.val (congrArg Units.val h2.eq)`. Conclude with `⟨χ p, (key p).2 (by rw [← nm_aeval σ γ p a hp, h1])⟩`. Introduce and unpack `⟨z, hz⟩`. Take `⟨p, rfl⟩` from `hs z`. Establish `h1` using `(key p).1 hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : IsUnit (aeval (up R γ).val p)`. Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hσ.pos.ne'`. Establish `h2` using `h1`. Rewrite `h2` using `[Finset.prod_range_succ', mul_comm, map_mul]`. Establish `h3 : p.map ((σ ^ 0 : R ≃ₐ[k] R) : R →+* R) = p`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite `h2` using `[h3]`. Establish `h4` using `congrArg Matrix.det h2`. Rewrite `h4` using `[Matrix.det_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Conclude with `isUnit_of_mul_isUnit_left (h4 ▸ (Matrix.isUnit_iff_isUnit_det _).1 (up R γ).isUnit)`. Use `⟨hu.unit, Units.ext (by rw [nm_aeval σ γ p hu.unit rfl, h1]), Units.ext ?_⟩` and prove the remaining obligations. Establish `: aeval (up R γ).val (p * X) = aeval (up R γ).val (X * p)` using `by rw [mul_comm]`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem core {k R A T : Type} [Field k] [CommRing R] [Algebra k R] [CommRing A] [CommRing T] [Algebra A T]
     [Module.Free A T] {n : ℕ} (σ : R ≃ₐ[k] R) (τ : T ≃ₐ[A] T) (q : ℕ) (hσ : IsGal σ q) (hτ : IsGal τ q)
@@ -146,9 +146,9 @@ private theorem core {k R A T : Type} [Field k] [CommRing R] [Algebra k R] [Comm
     simpa using this
 
 /- English proof (translation)
-Establish `: g.comp (AdjoinRoot.mk p) = (eval₂RingHom j (g (AdjoinRoot.root p))).comp (mapRingHom i)`. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `DFunLike.congr_fun this f`.
+A detailed English derivation is pending.
 -/
 private theorem mk_eval {F R T : Type} [CommRing F] [CommRing R] [CommRing T] (p : F[X]) (g : AdjoinRoot p →+* T)
     (j : R →+* T) (i : F →+* R) (h : ∀ c, g (AdjoinRoot.of p c) = j (i c)) (f : F[X]) :
@@ -167,20 +167,20 @@ private noncomputable def rootMap {F : Type} [CommRing F] (p : F[X]) (R : Type) 
     exact this)
 
 /- English proof (translation)
-The claim follows from `AdjoinRoot.liftAlgHom_root ..`.
+A detailed English derivation is pending.
 -/
 private theorem rootMap_root {F : Type} [CommRing F] (p : F[X]) (R : Type) [CommRing R] [Algebra F R] (P : R[X])
     (hP : P = p.map (algebraMap F R)) : rootMap p R P hP (AdjoinRoot.root p) = AdjoinRoot.root P :=
   AdjoinRoot.liftAlgHom_root ..
 
 /- English proof (translation)
-Establish `hm` using `mk_eval (cp γ) (algebraMap (AdjoinRoot (cp γ)) (AdjoinRoot (cp γ) ⊗[F] E)) (inc (AdjoinRoot (cp γ))) (algebraMap F E) (fun c => by`. Rewrite using `[← AdjoinRoot.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight.commutes c).symm)`. Use `core σ (ext (AdjoinRoot (cp γ)) σ) q hσ (galExt F E _ σ q hσ) γ hγ (inc _) _ (fun r => by simp [ext, inc]) _ rfl ?_ ?_ (Algebra.TensorProduct.lift (rootMap (cp γ) E _ rfl) (AdjoinRoot.ofAlgHom F _) fun _ _ => Commute.all _ _).toRingHom (fun r => by simp [inc]) (by simp [rootMap_r …` and prove the remaining obligations. Rewrite using `[← RingHom.range_eq_top, eq_top_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `t -`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y hx hy => exact add_mem hx hy`. Consider the case `tmul x e`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `x using AdjoinRoot.induction_on with`. Consider the case `ih f`. Use `⟨f.map (algebraMap F E) * C e, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, coe_eval₂RingHom, ← hm]`. Simplify using `[inc]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem second (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E ≃ₐ[F] E) (q : ℕ) (hσ : IsGal σ q)
     (n : ℕ) (γ : GL (Fin n) F) (hγ : (cp γ).Separable) :
@@ -206,21 +206,21 @@ private theorem second (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E �
   · rw [← hm]; simp
 
 /- English proof (translation)
-Establish `hc : cp (up k γ) = (cp γ).map (algebraMap F k)`. Rewrite using `[cp, cp, ← Matrix.charpoly_map]`. Both sides reduce to the same expression. Set `j : k ⊗[F] E →ₐ[F] (k ⊗[F] AdjoinRoot (cp γ)) ⊗[F] E` to `Algebra.TensorProduct.map Algebra.TensorProduct.includeLeft (AlgHom.id F E)`. Establish `hm` using `mk_eval (cp γ) ((algebraMap (k ⊗[F] AdjoinRoot (cp γ)) ((k ⊗[F] AdjoinRoot (cp γ)) ⊗[F] E)).comp (Algebra.TensorProduct.includeRight : AdjoinRoot (cp γ) →ₐ[F] k ⊗[F] AdjoinRoot (cp γ)).toRingHom) j.toRingHom (algebraMap F (k ⊗[F] E)) (fun c => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← AdjoinRoot.algebraMap_eq]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.comp_apply, RingHom.coe_coe, AlgHom.commutes]`. Rewrite using `[← IsScalarTower.algebraMap_apply])`. Use `core (ext k σ) (ext (k ⊗[F] AdjoinRoot (cp γ)) σ) q (galExt F E _ σ q hσ) (galExt F E _ σ q hσ) (up k γ) (hc ▸ hγ.map) j.toRingHom _ ?_ ((cp γ).map (algebraMap F (k ⊗[F] E))) ?_ ?_ ?_ (Algebra.TensorProduct.lift (Algebra.TensorProduct.lift ((AdjoinRoot.ofAlgHom F _).comp Algebra. …` and prove the remaining obligations. Introduce `r`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x e => simp [j, ext]`. Rewrite using `[hc, Polynomial.map_map, ← IsScalarTower.algebraMap_eq]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.range_eq_top, eq_top_iff]`. Introduce and unpack `t -`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y hx hy => exact add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul x e`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [TensorProduct.zero_tmul]`. Conclude with `zero_mem _`. Consider the case `add x y hx hy => rw [TensorProduct.add_tmul]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `tmul c x`. Proceed by induction on `x using AdjoinRoot.induction_on with`. Consider the case `ih f`. Use `⟨f.map (algebraMap F _) * C (c ⊗ₜ e), ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, coe_eval₂RingHom]`. Use `erw [← hm]`. Simplify using `[j]`. Use `erw [← hm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `r`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x e => simp [j, ← map_mul]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem first (F E k : Type) [Field F] [Field E] [Algebra F E] [Field k] [Algebra F k] (σ : E ≃ₐ[F] E) (q : ℕ)
     (hσ : IsGal σ q) (n : ℕ) (γ : GL (Fin n) F) (hγ : (cp γ).Separable) :
@@ -275,13 +275,13 @@ private theorem first (F E k : Type) [Field F] [Field E] [Algebra F E] [Field k]
 end UpperTheory.ConvolutionTheory.D
 
 /- English proof (translation)
-Introduce `F E k _ _ _ _ _ σ q hσ n γ hγ`. Use `⟨?_, second F E σ q hσ n γ hγ⟩` and prove the remaining obligations. Rewrite using `[← first F E k σ q hσ n γ hγ]`. Establish `hc : cp (up k γ) = (cp γ).map (algebraMap F k)`. Rewrite using `[cp, cp, ← Matrix.charpoly_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `he : (cp γ).map ((inc k).comp (algebraMap F E)) = (cp (up k γ)).map (algebraMap k (k ⊗[F] E))`. Rewrite using `[hc, Polynomial.map_map, ← IsScalarTower.algebraMap_eq]`. Use `congr 1`. Conclude with `RingHom.ext fun c => Algebra.TensorProduct.includeRight.commutes c`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨δ, hδ⟩`. Take `⟨x, hx⟩` from `nmRep k _ (ext k σ) q (galExt F E _ σ q hσ) n δ (up k γ) (hc ▸ hγ.map) hδ`. Conclude with `⟨_, hx⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, ha, -⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, cp, cp, ← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.D.nmAlg :
     UpperTheory.ConvolutionTheory.D.NmAlg := by

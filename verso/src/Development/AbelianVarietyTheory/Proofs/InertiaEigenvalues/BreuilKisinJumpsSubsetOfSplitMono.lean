@@ -16,7 +16,7 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
 omit [CompleteSpace K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] in
 
 /- English proof (translation)
-The claim follows from `(mem_invL_A_iff l).2 ⟨‖c‖, fun n => by rw [coeff_C] split_ifs · exact le_rfl · simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem C_mem_invL (c : K) : (C c : K⟦X⟧) ∈ invL l (A O K) :=
   (mem_invL_A_iff l).2 ⟨‖c‖, fun n => by
@@ -28,7 +28,7 @@ theorem C_mem_invL (c : K) : (C c : K⟦X⟧) ∈ invL l (A O K) :=
 omit [CompleteSpace K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Use `W.smul_mem ⟨C c, hB (C_mem_invL c)⟩ hx` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `τ i : 2`. Simplify using `[Subalgebra.smul_def, PowerSeries.smul_eq_C_mul]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smul_mem_of_invL {B : Subalgebra O K⟦X⟧} (hB : invL l (A O K) ≤ B)
     (W : Submodule B (Vec K a ι)) (c : K) {x : Vec K a ι} (hx : x ∈ W) : c • x ∈ W := by
@@ -39,7 +39,7 @@ theorem smul_mem_of_invL {B : Subalgebra O K⟦X⟧} (hB : invL l (A O K) ≤ B)
 
 omit [CompleteSpace K] [NeZero a] [TameDescentExponentData K l e a] [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `using Ezpow_natCast (K := K) l e 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Ezpow_zero : Ezpow K l e 0 = 1 := by
   simpa using Ezpow_natCast (K := K) l e 0
@@ -47,7 +47,7 @@ theorem Ezpow_zero : Ezpow K l e 0 = 1 := by
 omit [CompleteSpace K] [NeZero a] [TameDescentExponentData K l e a] [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite `hv`, the goal using `[mem_shiftE]`. Use `W.smul_mem ⟨_, hB ((Ezpow_mem_invL_A_iff (O := O) (e := e)).2 (sub_nonneg.2 h))⟩ hv` as an intermediate fact. Rewrite `this` using `[Subalgebra.smul_def, smul_smul, ← Ezpow_add, show j - i + -j = -i by ring]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem shiftE_le {B : Subalgebra O K⟦X⟧} (hB : invL l (A O K) ≤ B)
     (W : Submodule B (Vec K a ι)) {i j : ℤ} (h : i ≤ j) : shiftE l e j W ≤ shiftE l e i W := by
@@ -58,7 +58,7 @@ theorem shiftE_le {B : Subalgebra O K⟦X⟧} (hB : invL l (A O K) ≤ B)
 
 omit [CompleteSpace K] [NeZero a] [TameDescentExponentData K l e a] [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[mem_shiftE, neg_zero, Ezpow_zero, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shiftE_zero {B : Subalgebra O K⟦X⟧} (W : Submodule B (Vec K a ι)) {v : Vec K a ι} :
     v ∈ shiftE l e 0 W ↔ v ∈ W := by
@@ -75,11 +75,11 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
 omit [CompleteSpace K] in
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[mem_shiftE]`. Establish `hym : y = Ezpow K l e k • (Ezpow K l e (-k) • y)`. Rewrite using `[smul_smul, ← Ezpow_add, add_neg_cancel, Ezpow_zero, one_smul]`. Generalize the expression as in `Ezpow K l e (-k) • y = m at hy hym`. Substitute `hym` using the available equality.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Substitute using the available equality.
 
-Establish `h0` using `Ezpow_neg_mul (K := K) (l := l) (e := e) k`. Establish `key : Ezpow K l e (-k) • D.EN (Ezpow K l e k • m) = ((k : K⟦X⟧) * N K (E K l e)) • m + D.EN m`. Rewrite using `[PhiMod.EN_apply, PhiMod.conn_smul, smul_add, smul_smul, E_mul_N_Ezpow, smul_comm (E K l e) (Ezpow K l e k) (D.conn m), ← PhiMod.EN_apply, smul_add, smul_smul, smul_smul, h0, one_smul]`. Use `congr 1`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Take the linear combination `((k : K⟦X⟧) * N K (E K l e)) * h0`. Rewrite using `[key]`. Use `add_mem ?_ (D.EN_mem_Man hy)` and prove the remaining obligations. Conclude with `(D.Mext (Rpi O K l e)).smul_mem ⟨_, mul_mem (intCast_mem _ k) (N_mem (derivative_mem_R l (E_mem l e _)))⟩ hy`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem EN_mem_shiftE_Man (D : BKDat O K l e a ι η H) (k : ℤ) {y : Vec K a ι}
     (hy : y ∈ shiftE l e k (D.Mext (Rpi O K l e))) : D.EN y ∈ shiftE l e k (D.Mext (Rpi O K l e)) := by
@@ -119,9 +119,9 @@ noncomputable def cst : ℕ → K
 
 omit [IsUltrametricDist K] [CompleteSpace K] [NeZero a] [TameDescentExponentData K l e a] in
 /- English proof (translation)
-Establish `: CharZero K` using `(RingHom.charZero_iff (algebraMap ℚ_[l] K).injective).1 inferInstance`. Proceed by induction on `n with`. Consider the case `zero => exact one_ne_zero`. Consider the case `succ n ih`. Use `mul_ne_zero ?_ ih` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Establish `he : 0 < e` using `Nat.pos_of_ne_zero (NeZero.ne e)`. Conclude with `(by positivity : (((n + 1 : ℕ) : ℤ) * e * l : ℤ) ≠ 0)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cst_ne_zero (n : ℕ) : cst (K := K) l e n ≠ 0 := by
   have : CharZero K := (RingHom.charZero_iff (algebraMap ℚ_[l] K).injective).1 inferInstance
@@ -151,7 +151,7 @@ theorem proj_succ (n : ℕ) (v : Vec K a ι) : proj P (n + 1) v =
     P.EN (proj P n v) + ((((n + 1 : ℕ) : ℤ) * e * l : ℤ) : K) • proj P n v := rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[proj_succ, proj_succ, map_add, Hom.app_EN, LinearMap.map_smul_of_tower, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem app_proj {Q : PhiMod O K l e a κ} (F : Hom P Q) (n : ℕ) (v : Vec K a ι) :
     F.app (proj P n v) = proj Q n (F.app v) := by
@@ -161,9 +161,9 @@ theorem app_proj {Q : PhiMod O K l e a κ} (F : Hom P Q) (n : ℕ) (v : Vec K a 
     rw [proj_succ, proj_succ, map_add, Hom.app_EN, LinearMap.map_smul_of_tower, ih]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [proj_zero]`. Simplify using `using hx`. Consider the case `succ n ih`. Rewrite using `[proj_succ]`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.Proof.eulerE_add_smul_mem_eisenstein_shift_graded.EN_add_smul_mem_shiftE' D ((n : ℤ) + 1) _ ih` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Conclude with `this`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem proj_mem_shiftE_Lan (D : BKDat O K l e a ι η H) (n : ℕ) {x : Vec K a ι}
     (hx : x ∈ shiftE l e 1 (D.ext (Rpi O K l e))) :
@@ -177,13 +177,13 @@ theorem proj_mem_shiftE_Lan (D : BKDat O K l e a ι η H) (n : ℕ) {x : Vec K a
     exact this
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [proj_zero]`. Simplify using `[cst]`. Consider the case `succ n ih`. Establish `hp : proj D.toPhiMod n x ∈ D.ext (Rpi O K l e)`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1` using `shiftE_le (invL_A_le_Rpi l e) (D.ext (Rpi O K l e)) (show (0 : ℤ) ≤ 1 by omega) ih`. Rewrite `h1` using `[shiftE_zero]`. Simplify using `using add_mem h1 (smul_mem_of_invL (invL_A_le_Rpi l e) _ (cst (K := K) l e n) hx)`. Establish `h2` using `GlobalTheory.Proof.eulerE_add_smul_mem_eisenstein_shift_graded.EN_add_smul_mem_shiftE' D 0 _ ((shiftE_zero _).2 hp)`. Simplify using `only [zero_mul, Int.cast_zero, zero_smul, add_zero, zero_add] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `smul_mem_of_invL (invL_A_le_Rpi l e) _ ((((n + 1 : ℕ) : ℤ) * e * l : ℤ) : K) ih`. Establish `: proj D.toPhiMod (n + 1) x - cst (K` using `K) l e (n + 1) • x = D.EN (proj D.toPhiMod n x) + ((((n + 1 : ℕ) : ℤ) * e * l : ℤ) : K) • (proj D.toPhiMod n x - cst (K := K) l e n • x) := by`. Rewrite using `[proj_succ, cst, smul_sub, smul_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem h2 h3`.
+A detailed English derivation is pending.
 -/
 theorem proj_sub_mem (D : BKDat O K l e a ι η H) (n : ℕ) {x : Vec K a ι}
     (hx : x ∈ D.ext (Rpi O K l e)) :
@@ -206,7 +206,7 @@ theorem proj_sub_mem (D : BKDat O K l e a ι η H) (n : ℕ) {x : Vec K a ι}
     exact add_mem h2 h3
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact hy`. Consider the case `succ n ih`. Rewrite using `[proj_succ]`. Conclude with `add_mem (EN_mem_shiftE_Man D k ih) (smul_mem_of_invL (invL_A_le_Rpi l e) _ _ ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_mem_shiftE_Man (D : BKDat O K l e a ι η H) (n : ℕ) (k : ℤ) {y : Vec K a ι}
     (hy : y ∈ shiftE l e k (D.Mext (Rpi O K l e))) :
@@ -228,13 +228,13 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
   [TameDescentExponentData K l e a] {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] {η H : ℕ}
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_shiftE]`. Rewrite `hv` using `[← LinearMap.map_smul]`. Generalize the expression as in `Ezpow K l e (-k) • v = w at hv ⊢`. Use `mem_tot.2 fun τ => mem_vecs.2 fun i => ?_` and prove the remaining obligations. Take `⟨Λ, hΛA, hΛ⟩` from `hΛ τ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : Matrix.mulVec Λ (F.app w τ) = (l : K) ^ n • w τ`. Rewrite using `[Hom.app_apply, Matrix.mulVec_mulVec, hΛ]`. Use `first`. Consider the case `rw [Matrix.smul_mulVec, Matrix.one_mulVec]`. Consider the case `(ext j; simp [Matrix.mulVec, dotProduct, Matrix.one_apply])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2 : (Matrix.mulVec Λ (F.app w τ)) i ∈ Rpi O K l e`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subalgebra.sum_mem _ fun j _ => mul_mem (A_le_Rpi l e (hΛA i j)) (mem_vecs.1 (mem_tot.1 hv τ) j)`. Rewrite `h2` using `[h1, Pi.smul_apply, PowerSeries.smul_eq_C_mul]`. Establish `h3` using `mul_mem (invL_A_le_Rpi l e (C_mem_invL (O := O) ((l : K) ^ n)⁻¹)) h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ((l : K) ^ n) ≠ 0`. Establish `: CharZero K` using `(RingHom.charZero_iff (algebraMap ℚ_[l] K).injective).1 inferInstance`. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Rewrite `h3` using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hl, map_one, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_of_app_mem {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : Hom P Q) (n : ℕ)
     (hΛ : ∀ τ : ZMod a, ∃ Λ : Matrix ι κ K⟦X⟧, (∀ i k, Λ i k ∈ A O K) ∧
@@ -263,7 +263,7 @@ theorem mem_of_app_mem {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : 
   rwa [← mul_assoc, ← map_mul, inv_mul_cancel₀ hl, map_one, one_mul] at h3
 
 /- English proof (translation)
-Establish `h1` using `D.smul_mem_Mext (A_le_Rpi l e) (mem_shiftE.1 hz)`. Rewrite `h1` using `[← Ezpow_natCast, smul_smul, ← Ezpow_add]`. Use `shiftE_le (invL_A_le_Rpi l e) _ (show k ≤ j - η by omega) (mem_shiftE.2 ?_)` and prove the remaining obligations. Rewrite using `[show -(j - (η : ℤ)) = (η : ℤ) + -j by ring]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_shiftE_Man_of_Lan (D : BKDat O K l e a ι η H) {j k : ℤ} (h : k + η ≤ j) {z : Vec K a ι}
     (hz : z ∈ shiftE l e j (D.ext (Rpi O K l e))) : z ∈ shiftE l e k (D.Mext (Rpi O K l e)) := by
@@ -273,7 +273,7 @@ theorem mem_shiftE_Man_of_Lan (D : BKDat O K l e a ι η H) {j k : ℤ} (h : k +
   rwa [show -(j - (η : ℤ)) = (η : ℤ) + -j by ring]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_shiftE]`. Use `FilAn.mem_extInvL_of_Ezpow_smul D.toPhiMod (i := (η : ℤ) + 1) h ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← Ezpow_add, show (η : ℤ) + 1 + -1 = ((η : ℕ) : ℤ) by ring, Ezpow_natCast]`. Conclude with `D.smul_mem_Mext (le_away _ _) hv`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_shiftE_one_of_mem (D : BKDat O K l e a ι η H) {v : Vec K a ι}
     (hv : v ∈ D.ext (invL l (A O K))) (h : v ∈ shiftE l e 1 (D.ext (Rpi O K l e))) :
@@ -284,7 +284,7 @@ theorem mem_shiftE_one_of_mem (D : BKDat O K l e a ι η H) {v : Vec K a ι}
   exact D.smul_mem_Mext (le_away _ _) hv
 
 /- English proof (translation)
-Use `sup_le inf_le_left fun v hv => ?_` and prove the remaining obligations. Use `shiftE_le le_rfl _ (show (0 : ℤ) ≤ 1 by omega) hv` as an intermediate fact. Rewrite `this` using `[shiftE_zero]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem filL_le_ext (P : PhiMod O K l e a ι) (k : ℤ) : P.filL k ≤ P.ext (invL l (A O K)) := by
   refine sup_le inf_le_left fun v hv => ?_
@@ -292,13 +292,13 @@ theorem filL_le_ext (P : PhiMod O K l e a ι) (k : ℤ) : P.filL k ≤ P.ext (in
   rwa [shiftE_zero] at this
 
 /- English proof (translation)
-The claim follows from `sup_le_sup_right (inf_le_inf_left _ (shiftE_le le_rfl _ (by omega))) _`.
+A detailed English derivation is pending.
 -/
 theorem filL_anti (P : PhiMod O K l e a ι) (k : ℤ) : P.filL (k + 1) ≤ P.filL k :=
   sup_le_sup_right (inf_le_inf_left _ (shiftE_le le_rfl _ (by omega))) _
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_shiftE]`. Rewrite using `[← LinearMap.map_smul]`. Conclude with `h _ hv`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_mem_shiftE {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : Hom P Q)
     {B : Subalgebra O K⟦X⟧} {W₀ : Submodule B (Vec K a ι)} {W₁ : Submodule B (Vec K a κ)}
@@ -309,7 +309,7 @@ theorem app_mem_shiftE {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : 
   exact h _ hv
 
 /- English proof (translation)
-Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hv`. Rewrite using `[map_add]`. Conclude with `add_mem (Submodule.mem_sup_left (Submodule.mem_inf.2 ⟨F.app_mem_ext (le_away _ _) hy.1, app_mem_shiftE F (fun v hv => F.app_mem_Mext (le_away _ _) hv) k hy.2⟩)) (Submodule.mem_sup_right (app_mem_shiftE F (fun v hv => F.app_mem_ext (le_away _ _) hv) 1 hz))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_mem_filL {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : Hom P Q) (k : ℤ)
     {v : Vec K a ι} (hv : v ∈ P.filL k) : F.app v ∈ Q.filL k := by
@@ -321,17 +321,17 @@ theorem app_mem_filL {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : Ho
     (Submodule.mem_sup_right (app_mem_shiftE F (fun v hv => F.app_mem_ext (le_away _ _) hv) 1 hz))
 
 /- English proof (translation)
-Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 hF`. Take `⟨-, hyM⟩` from `Submodule.mem_inf.1 hy`. Establish `hxL : x ∈ D₀.ext (Rpi O K l e)` using `D₀.ext_mono (invL_A_le_Rpi l e) hx`. Establish `hyM' : y ∈ shiftE l e k (D₁.Mext (Rpi O K l e))` using `mem_shiftE.2 (D₁.Mext_mono (invL_A_le_Rpi l e) (mem_shiftE.1 hyM))`. Establish `hz' : z ∈ shiftE l e 1 (D₁.ext (Rpi O K l e))` using `mem_shiftE.2 (D₁.ext_mono (invL_A_le_Rpi l e) (mem_shiftE.1 hz))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N : ℕ := (k + η).toNat`. Establish `h1` using `proj_mem_shiftE_Man D₁ N k hyM'`. Establish `h3` using `mem_shiftE_Man_of_Lan D₁ (k := k) (by omega) (proj_mem_shiftE_Lan D₁ N hz')`. Establish `hw : F.app (proj D₀.toPhiMod N x) ∈ shiftE l e k (D₁.Mext (Rpi O K l e))`. Rewrite using `[app_proj, ← hyz, map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `add_mem h1 h3`. Establish `hw'` using `mem_of_app_mem F n hΛ k hw`. Establish `hs` using `proj_sub_mem D₀ N hxL`. Establish `hwL : proj D₀.toPhiMod N x ∈ D₀.ext (Rpi O K l e)`. Establish `h4` using `shiftE_le (invL_A_le_Rpi l e) (D₀.ext (Rpi O K l e)) (show (0 : ℤ) ≤ 1 by omega) hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h4` using `[shiftE_zero]`. Simplify using `using add_mem h4 (smul_mem_of_invL (invL_A_le_Rpi l e) _ (cst (K := K) l e N) hxL)`. Take `⟨y', hy', hwy'⟩` from `FilAn.exists_mem_filL_of_mem_inf D₀.toPhiMod k (Submodule.mem_inf.2 ⟨hwL, hw'⟩)`. Establish `hv : cst (K` using `K) l e N • x - y' ∈ shiftE l e 1 (D₀.ext (Rpi O K l e)) := by`. Use `sub_mem hwy' hs` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hvL : cst (K` using `K) l e N • x - y' ∈ D₀.ext (invL l (A O K)) := sub_mem (smul_mem_of_invL le_rfl _ _ hx) (filL_le_ext _ _ hy')`. Establish `hv'` using `mem_shiftE_one_of_mem D₀ hvL hv`. Establish `hc : cst (K` using `K) l e N • x ∈ D₀.filL k := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `add_mem hy' (Submodule.mem_sup_right hv' : _ ∈ D₀.filL k)` as an intermediate fact. Simplify using `using this`. Use `smul_mem_of_invL le_rfl _ (cst (K := K) l e N)⁻¹ hc` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ (cst_ne_zero N), one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_filL_of_app_mem (D₀ : BKDat O K l e a ι η H) (D₁ : BKDat O K l e a κ η H)
     (F : Hom D₀.toPhiMod D₁.toPhiMod) (n : ℕ)
@@ -378,9 +378,9 @@ end GlobalTheory.BK.SubJumps
 open GlobalTheory.BK in
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a _ _ _ _ _ ι κ _ _ _ _ η H D₀ D₁ F n hΛ i hi h1`. Apply `hi` to reduce the goal to its premises. Use `le_antisymm (SubJumps.filL_anti _ i) fun x hx => ?_` and prove the remaining obligations. Establish `h2` using `SubJumps.app_mem_filL F i hx`. Rewrite `h2` using `[← h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `SubJumps.mem_filL_of_app_mem D₀ D₁ F n hΛ (i + 1) (SubJumps.filL_le_ext _ _ hx) h2`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BK.jumps_subset_of_split_mono : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (ι κ : Type) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (η H : ℕ) (D₀ : BKDat O K l e a ι η H) (D₁ : BKDat O K l e a κ η H) (F : GlobalTheory.BK.Hom D₀.toPhiMod D₁.toPhiMod) (n : ℕ), (∀ τ : ZMod a, ∃ Λ : Matrix ι κ K⟦X⟧, (∀ i k, Λ i k ∈ A O K) ∧ Λ * F.mat τ = (l : K) ^ n • (1 : Matrix ι ι K⟦X⟧)) → D₀.jumps ⊆ D₁.jumps := by
   intro O K _ _ _ _ _ _ l e a _ _ _ _ _ ι κ _ _ _ _ η H D₀ D₁ F n hΛ i hi h1

@@ -15,15 +15,15 @@ end UpperTheory.TNZ.CuspidalSupport₂
 namespace UpperTheory.TNZ
 open CuspidalSupport₂ in
 /- English proof (translation)
-Introduce `hL k _ _ _ _ d X _ _ σ hs hi η hη hdv`. Take `⟨v, hv0, hv⟩` from `hdv`. Use `set τ := twist σ (detChar (Fin d) η⁻¹) with hτ`. Establish `hτs : IsSmooth τ` using `isSmooth_twist hs hη.inv.detChar`. Establish `hτi : τ.IsIrreducible` using `isIrreducible_twist hi _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadm : IsAdmissible τ` using `(hL.bz k).1 (Fin d) X τ hτs hτi`. Establish `hI : fixed τ (iwahori k (Fin d)) ≠ ⊥`. Use `(Submodule.ne_bot_iff _).2 ⟨v, fun h => ?_, hv0⟩` and prove the remaining obligations. Establish `hg` using `hv h.1 (iwahori_le_KO k _ h.2)`. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (detChar (Fin d) η⁻¹ h.1 : ℂ) • σ h.1 v = v`. Rewrite using `[hg, smul_smul, detChar_apply, MonoidHom.inv_apply, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Take `⟨α, hα⟩` from `GlobalTheory.SatakeExists.exists_isSubquotient_prinSeries hadm hτi hI`. Set `χ : Fin d → kˣ →* ℂˣ` to `fun i => unrChar k (α i)`. Establish `h1` using `hα.trans (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k d χ)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `isSubquotient_twist h1 (detChar (Fin d) η)`. Rewrite `h2` using `[hτ, twist_twist_inv]`. Establish `hχs : ∀ i, IsSmoothChar (χ i)` using `fun i => isSmoothChar_of_isUnram (isUnram_unrChar (k := k) (α i))`. Set `φ` to `multiProdTwistEquiv (Equiv.sigmaUnique (Fin d) fun _ => Fin 1) (fun i => detRep (Fin 1) (χ i)) hη`. Establish `h3` using `h2.trans (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfam : (fun i => twist (detRep (Fin 1) (χ i)) (detChar (Fin 1) η)) = fun i => detRep (Fin 1) (η * χ i)` using `funext fun i => twist_detRep_one _ _`. Rewrite `h3` using `[hfam]`. Use `⟨fun j => η * χ j, fun j => ⟨hη.mul (hχs j), fun u hu => ?_⟩, hi, fun j => ⟨one_pos, isIrreducible_ofChar _, isCuspidal_detRep_one (hη.mul (hχs j))⟩, _, h3⟩` and prove the remaining obligations. Use `show η u * unrChar k (α j) u = η u`. Rewrite using `[isUnram_unrChar (k := k) (α j) u hu, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_cuspSupp_alt : _root_.UpperTheory.TNZ.Step_cuspSupp_alt := by
   intro hL k _ _ _ _ d X _ _ σ hs hi η hη hdv

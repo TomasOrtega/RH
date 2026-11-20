@@ -12,15 +12,13 @@ open scoped Classical
 namespace UpperTheory.ConvolutionTheory.RankTwoDescent
 
 /- English proof (translation)
-Use `set R : Set (Fin 4 → ℚ) := {ξ | ξ ≠ 0 ∧ qr δ ξ = 0}`. Use `set Q : Set (Fin 4 → ℚ) := {ξ | qr δ ξ ≠ 0}`. Establish `h0 : qr δ 0 = 0` using `by simp [qr]`. Establish `hpt : ∀ ξ, f ξ = (({0} : Set (Fin 4 → ℚ)).indicator f ξ + R.indicator f ξ) + Q.indicator f ξ`. Introduce `ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hq : qr δ ξ = 0`. Distinguish the cases in `hξ : ξ = 0`. Substitute `hξ` using the available equality. Simplify using `[R, Q, h0]`. Simplify using `[R, Q, hξ, hq]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hξ : ξ ≠ 0` using `fun e => hq (e ▸ h0)`. Simplify using `[R, Q, hξ, hq]`. Establish `s0` using `hf.indicator ({0} : Set (Fin 4 → ℚ))`. Establish `sR` using `hf.indicator R`. Establish `sQ` using `hf.indicator Q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[tsum_subtype R f, tsum_subtype Q f]`. Establish `e0 : ∑' ξ, ({0} : Set (Fin 4 → ℚ)).indicator f ξ = f 0`. Rewrite using `[← tsum_subtype]`. Simplify using the standard rewrite rules. Rewrite using `[← e0, ← (s0.tsum_add sR), ← ((s0.add sR).tsum_add sQ)]`.
-
-Conclude with `tsum_congr hpt`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tsum_split (δ : ℚ) (f : (Fin 4 → ℚ) → ℂ) (hf : Summable f) :
     ∑' ξ, f ξ = f 0 + (∑' ξ : ({ξ | ξ ≠ 0 ∧ qr δ ξ = 0} : Set (Fin 4 → ℚ)), f ξ) +
@@ -47,14 +45,14 @@ private theorem tsum_split (δ : ℚ) (f : (Fin 4 → ℚ) → ℂ) (hf : Summab
   exact tsum_congr hpt
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cD]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cD_one (g : G1 ℚ) : cD 1 g = g := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [cD]
 
 /- English proof (translation)
-Simplify using `[ab]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ab_one' : ab (1 : (A ℚ)ˣ) = 1 := by
   simp [ab]
@@ -62,9 +60,9 @@ private theorem ab_one' : ab (1 : (A ℚ)ˣ) = 1 := by
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {D : Dat ℚ E}
 
 /- English proof (translation)
-Establish `e : D.herm (0 : V4 ℚ) = 0`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Dat.herm, Dat.mkE]`. Establish `e2 : D.unherm (0 : Matrix (Fin 2) (Fin 2) (A E)) = 0`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases i <;> simp [Dat.unherm, Dat.co]`. Simplify using `[Dat.act, e, e2]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem act_zero (h : GL (Fin 2) (A E)) : D.act h (0 : V4 ℚ) = 0 := by
   have e : D.herm (0 : V4 ℚ) = 0 := by
@@ -76,9 +74,9 @@ private theorem act_zero (h : GL (Fin 2) (A E)) : D.act h (0 : V4 ℚ) = 0 := by
   simp [Dat.act, e, e2]
 
 /- English proof (translation)
-Establish `h1` using `W.comm x g`. Rewrite `h1` using `[hx, cD_one]`. Establish `h2 : W.Om g (W.L x ph) = W.L x (W.Om g ph)`. Use `congrArg (fun T : Module.End ℂ (S4 ℚ) => T ph) h1` as an intermediate fact. Simplify `this.symm` using `[Module.End.mul_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hz : rp (0 : Fin 4 → ℚ) = (0 : V4 ℚ)`. Use function extensionality and compare the values at `i`. Simplify using `[rp]`. Rewrite using `[h2, W.L_apply, hx, ab_one', hz, act_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem om_zero (W : Weil D) (g : G1 ℚ) (ph : S4 ℚ) (x : GL (Fin 2) (A E)) (hx : nu ℚ x = 1) :
     (W.Om g (W.L x ph)).1 (rp 0) = (W.Om g ph).1 (rp 0) := by
@@ -93,27 +91,25 @@ private theorem om_zero (W : Weil D) (g : G1 ℚ) (ph : S4 ℚ) (x : GL (Fin 2) 
   simp
 
 /- English proof (translation)
-Take `⟨b, a, k', hk', hg⟩` from `UpperTheory.ConvolutionTheory.R2.M.iwa ℚ g`. Establish `hapos : 0 < ab a` using `(IdeleGroup.ideleModule ℚ a).2`. Take `⟨B, hB⟩` from `hMaj E D W M N P ph hph φ hφ {y} isCompact_singleton (by rintro k rfl; exact hy) (ab a) hapos 0`. Establish `hB' : ∀ h : G1 E, (Summable fun ξ : Fin 4 → ℚ => ‖(W.Om g (W.L (gl h * y) ph)).1 (rp ξ)‖) ∧ (∑' ξ : Fin 4 → ℚ, ‖(W.Om g (W.L (gl h * y) ph)).1 (rp ξ)‖) * ‖φ.1 (gl h * y)‖ ≤ B * ab a ^ 2`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hB b a k' hk' le_rfl h y rfl` as an intermediate fact. Rewrite `this` using `[← hg]`. Conclude with `⟨this.1, this.2.1⟩`. Establish `hnu : ∀ h : G1 E, nu ℚ (gl h * y) = 1` using `fun h => by rw [nu_mul, hgl, hy, one_mul]`. Establish `hcφ : Continuous φ.1` using `GlobalTheory.T.automorphicForm_GL_continuous E 2 φ (P.cusp φ hφ).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcg : Continuous fun h : G1 E => gl h` using `by fun_prop`. Establish `hcx : Continuous fun h : G1 E => gl h * y` using `hcg.mul continuous_const`. Use `haveI : IsFiniteMeasure (N.μ.restrict N.D) := ⟨by simpa using hV⟩`. Establish `hint : ∀ S : Set (Fin 4 → ℚ), IntegrableOn (fun h : G1 E => ThOn S (W.Om g (W.L (gl h * y) ph)).1 * φ.1 (gl h * y)) N.D N.μ`. Introduce `S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc1 : Continuous fun h : G1 E => ThOn S (W.Om g (W.L (gl h * y) ph)).1` using `(hTh E D W M N P ph hph S).comp_continuous (f := fun h : G1 E => (g, gl h * y)) (continuous_const.prodMk hcx) (fun h => hnu h)`. Establish `hc : Continuous fun h : G1 E => ThOn S (W.Om g (W.L (gl h * y) ph)).1 * φ.1 (gl h * y)` using `hc1.mul (hcφ.comp hcx)`. Use `Integrable.of_bound hc.aestronglyMeasurable (B * ab a ^ 2) (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Take `⟨hs, hb⟩` from `hB' h`. Establish `hle : ‖ThOn S (W.Om g (W.L (gl h * y) ph)).1‖ ≤ ∑' ξ : Fin 4 → ℚ, ‖(W.Om g (W.L (gl h * y) ph)).1 (rp ξ)‖`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsS` using `hs.subtype S`. Use `(norm_tsum_le_tsum_norm hsS).trans ?_` and prove the remaining obligations. Conclude with `tsum_comp_le_tsum_of_inj hs (fun _ => norm_nonneg _) Subtype.val_injective`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul_of_nonneg_right hle (norm_nonneg _)).trans hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set c : ℂ := (W.Om g ph).1 (rp 0)`. Establish `hz : ∀ h : G1 E, ThOn {0} (W.Om g (W.L (gl h * y) ph)).1 = c`. Introduce `h`. Establish `e : ThOn {0} (W.Om g (W.L (gl h * y) ph)).1 = (W.Om g (W.L (gl h * y) ph)).1 (rp 0)`. Simplify using `[ThOn]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `om_zero W g ph _ (hnu h)`. Establish `hφi : IntegrableOn (fun h : G1 E => c * φ.1 (gl h * y)) N.D N.μ`. Use `(hint {0}).congr (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only [hz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ h : G1 E, Th (W.Om g (W.L (gl h * y) ph)).1 * φ.1 (gl h * y) = c * φ.1 (gl h * y) + ThOn {ξ | ξ ≠ 0 ∧ qr D.δ ξ = 0} (W.Om g (W.L (gl h * y) ph)).1 * φ.1 (gl h * y) + ThOn {ξ | qr D.δ ξ ≠ 0} (W.Om g (W.L (gl h * y) ph)).1 * φ.1 (gl h * y)`. Introduce `h`. Establish `hsp` using `tsum_split D.δ (fun ξ => (W.Om g (W.L (gl h * y) ph)).1 (rp ξ)) (hB' h).1.of_norm`. Establish `e0 : (W.Om g (W.L (gl h * y) ph)).1 (rp 0) = c` using `om_zero W g ph _ (hnu h)`. Establish `: Th (W.Om g (W.L (gl h * y) ph)).1 = c + ThOn {ξ | ξ ≠ 0 ∧ qr D.δ ξ = 0} (W.Om g (W.L (gl h * y) ph)).1 + ThOn {ξ | qr D.δ ξ ≠ 0} (W.Om g (W.L (gl h * y) ph)).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e0]`. Conclude with `hsp`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `z1 : ∫ h in N.D, φ.1 (gl h * y) ∂N.μ = 0` using `hMean E D W M N P φ hφ y`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `z2 : ∫ h in N.D, ThOn {ξ | ξ ≠ 0 ∧ qr D.δ ξ = 0} (W.Om g (W.L (gl h * y) ph)).1 * φ.1 (gl h * y) ∂N.μ = 0` using `hR1 E D W M N P ph hph φ hφ g y hy`. Simplify using `only [mean]`. Simplify using `only [hpt]`. Establish `i1 : IntegrableOn (fun h : G1 E => c * φ.1 (gl h * y) + ThOn {ξ | ξ ≠ 0 ∧ qr D.δ ξ = 0} (W.Om g (W.L (gl h * y) ph)).1 * φ.1 (gl h * y)) N.D N.μ` using `hφi.add (hint _)`. Rewrite using `[integral_add i1 (hint _), integral_add hφi (hint _), integral_const_mul, z1, z2]`.
-
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem core (hMaj : Maj) (hTh : ThCont) (hMean : MeanZero) (hR1 : Rank1)
     (W : Weil D) (M : Meas ℚ) (N : MeasE E) (P : CuspSub E 2) (hV : N.μ N.D < ⊤)
@@ -189,9 +185,9 @@ private theorem core (hMaj : Maj) (hTh : ThCont) (hMean : MeanZero) (hR1 : Rank1
 end UpperTheory.ConvolutionTheory.RankTwoDescent
 
 /- English proof (translation)
-Introduce `hMaj hTh hMean hR1 E _ _ _ D W M N P ph hph φ hφ`. Use function extensionality and compare the values at `g`. Establish `hS` using `szLaws E D`. Simplify using `only [f0, fOn, J1]`. Use `congrArg (UI (E := E)) (funext fun z => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `core hMaj hTh hMean hR1 W M N P (UpperTheory.ConvolutionTheory.RankTwoDescent.volE E N) ph hph φ hφ g (sZ D z) (hS.2.2.1 z) hS.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.f0Eq :
     Maj → ThCont → MeanZero → Rank1 → ThetaLiftEqAnisotropicPart := by

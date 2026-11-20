@@ -13,13 +13,9 @@ noncomputable section
 namespace GlobalTheory.FramesFGP
 
 /- English proof (translation)
-Use `haveI : F.IsQuasicoherent := GlobalTheory.OmegaGlobal.isQuasicoherent_of_frames h`. Use `choose U n e hx he using h`. Establish `hU` using `isAffineOpen_top (Sp O)`. Set `s : Set Γ(Sp O, ⊤)` to `{f | ∃ x, (Sp O).basicOpen f ≤ U x}`. Establish `hs : Ideal.span s = ⊤`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hU.self_le_iSup_basicOpen_iff]`. Introduce `y _`. Take `⟨f, hf, hyf⟩` from `hU.exists_basicOpen_le (V := U y) ⟨y, hx y⟩ (by simp)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, y, hf⟩, hyf⟩`. Use `haveI (g : s) := hU.isLocalization_basicOpen g.1`.
-
-Use `haveI (g : s) := GlobalTheory.QCoh.isLocalizedModule_resBasicOpen F hU g.1`. Set `b (g : s) : Module.Basis (Fin (n g.2.choose)) Γ(Sp O, (Sp O).basicOpen g.1) Γ(F, (Sp O).basicOpen g.1)` to `(he g.2.choose).basis g.2.choose_spec`. Use `haveI (g : s) : Module.Free Γ(Sp O, (Sp O).basicOpen g.1) Γ(F, (Sp O).basicOpen g.1) := .of_basis (b g)`. Use `haveI (g : s) : Module.Finite Γ(Sp O, (Sp O).basicOpen g.1) Γ(F, (Sp O).basicOpen g.1) := .of_basis (b g)`. Use `haveI (g : s) : Module.Flat Γ(Sp O, ⊤) Γ(F, (Sp O).basicOpen g.1) := by haveI : Module.Flat Γ(Sp O, ⊤) Γ(Sp O, (Sp O).basicOpen g.1) := IsLocalization.flat _ (Submonoid.powers g.1)`.
-
-Conclude with `Module.Flat.trans Γ(Sp O, ⊤) Γ(Sp O, (Sp O).basicOpen g.1) _`. Use `haveI hfp : Module.FinitePresentation Γ(Sp O, ⊤) Γ(F, ⊤) := Module.FinitePresentation.of_localizationSpan' s hs (Mₚ := fun g : s => Γ(F, (Sp O).basicOpen g.1)) (Rₚ := fun g : s => Γ(Sp O, (Sp O).basicOpen g.1)) (fun g => GlobalTheory.QCoh.resBasicOpen F g.1) fun _ => Module.finit …`. Use `haveI : Module.Flat Γ(Sp O, ⊤) Γ(F, ⊤) := Module.flat_of_isLocalized_span Γ(Sp O, ⊤) Γ(F, ⊤) s hs (fun g : s => Γ(F, (Sp O).basicOpen g.1)) (fun g => GlobalTheory.QCoh.resBasicOpen F g.1) fun _ => inferInstance`. Conclude with `⟨inferInstance, Module.Flat.projective_of_finitePresentation⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_projective_top {O : Type} [CommRing O] (F : (Sp O).Modules)
     (h : ∀ x : Sp O, ∃ (U : (Sp O).Opens) (n : ℕ) (s : Fin n → Γ(F, U)),
@@ -60,13 +56,11 @@ theorem finite_projective_top {O : Type} [CommRing O] (F : (Sp O).Modules)
 end GlobalTheory.FramesFGP
 
 /- English proof (translation)
-Introduce `O _ A _ h`. Take `⟨h1, h2⟩` from `GlobalTheory.FramesFGP.finite_projective_top (GlobalTheory.LieVB.omega A) h`. Use `letI : Module Γ(Sp O, ⊤) (Wmod A) := inferInstanceAs (Module Γ(Sp O, ⊤) Γ(GlobalTheory.LieVB.omega A, ⊤))`. Use `haveI : Module.Finite Γ(Sp O, ⊤) (Wmod A) := h1`. Use `haveI : Module.Projective Γ(Sp O, ⊤) (Wmod A) := h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hb : Function.Bijective (GlobalTheory.LieVB.cst O)` using `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of O)).inv`. Set `E : O ≃+* Γ(Sp O, ⊤)` to `RingEquiv.ofBijective (GlobalTheory.LieVB.cst O) hb`. Use `letI : Algebra O Γ(Sp O, ⊤) := (GlobalTheory.LieVB.cst O).toAlgebra`. Use `haveI : IsScalarTower O Γ(Sp O, ⊤) (Wmod A) := .of_algebraMap_smul fun _ _ => rfl`. Use `haveI : Module.Finite O Γ(Sp O, ⊤) := Module.Finite.of_surjective (Algebra.linearMap O Γ(Sp O, ⊤)) hb.2`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨Module.Finite.trans Γ(Sp O, ⊤) (Wmod A), ?_⟩` and prove the remaining obligations. Use `haveI : RingHomInvPair (E.symm : Γ(Sp O, ⊤) →+* O) (E : O →+* Γ(Sp O, ⊤)) := ⟨RingHom.ext E.apply_symm_apply, RingHom.ext E.symm_apply_apply⟩`. Use `haveI : RingHomInvPair (E : O →+* Γ(Sp O, ⊤)) (E.symm : Γ(Sp O, ⊤) →+* O) := .symm _ _`. Set `e : Wmod A ≃ₛₗ[(E.symm : Γ(Sp O, ⊤) →+* O)] Wmod A` to `{ toFun := id invFun := id map_add' := fun _ _ => rfl map_smul' := fun r m => by`. Express the relevant statement in the definitionally equal form `r • m = GlobalTheory.LieVB.cst O (E.symm r) • m`.
-
-Use `congr 1`. Conclude with `(E.apply_symm_apply r).symm`. Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl }`. Conclude with `Module.Projective.of_equiv e`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FramesFGP.finite_projective_wmod : ∀ (O : Type) [CommRing O] (A : Over (Sp O)) [GrpObj A],
     (∀ x : Sp O, ∃ (U : (Sp O).Opens) (n : ℕ) (s : Fin n → Γ(GlobalTheory.LieVB.omega A, U)),

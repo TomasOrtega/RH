@@ -5,19 +5,19 @@ open IsLocalRing
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Use `GlobalTheory.localizationAtPrime_isDiscreteValuationRing_of_height_eq_one O p h1` as an intermediate fact. Set `R` to `Localization.AtPrime p`. Establish `hinj : Function.Injective (algebraMap O R)` using `IsLocalization.injective R p.primeCompl_le_nonZeroDivisors`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Take `⟨⟨π, s⟩, hs⟩` from `IsLocalization.surj p.primeCompl ϖ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsu : IsUnit (algebraMap O R s)` using `IsLocalization.map_units R s`. Establish `hπ : Irreducible (algebraMap O R π)`. Establish `e : algebraMap O R π = ϖ * algebraMap O R s` using `hs.symm`. Rewrite using `[e]`. Conclude with `(irreducible_mul_isUnit hsu).2 hϖ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmax` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 hπ`. Use `⟨π, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsLocalization.AtPrime.to_map_mem_maximal_iff R p π, hmax]`. Conclude with `Ideal.mem_span_singleton_self _`. Introduce and unpack `rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hπ.ne_zero (map_zero _)`. Introduce `y hy`. Rewrite `hy` using `[← IsLocalization.AtPrime.to_map_mem_maximal_iff R p y, hmax, Ideal.mem_span_singleton]`. Take `⟨z, hz⟩` from `hy`. Take `⟨⟨t, r⟩, hr⟩` from `IsLocalization.surj p.primeCompl z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨r, r.2, t, hinj ?_⟩` and prove the remaining obligations. Establish `hr' : z * algebraMap O R r = algebraMap O R t` using `hr`. Rewrite using `[map_mul, map_mul, hz, ← hr']`. Expand and normalize the polynomial expressions, which then agree. Establish `hh' : algebraMap O R h ≠ 0` using `fun h0 => hh (hinj (by rw [h0, map_zero]))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hh' hπ`. Take `⟨⟨c, b⟩, hb⟩` from `IsLocalization.surj p.primeCompl (u : R)`. Establish `hb' : (u : R) * algebraMap O R b = algebraMap O R c` using `hb`. Use `⟨n, b, c, b.2, ?_, hinj ?_⟩` and prove the remaining obligations. Establish `hcu : IsUnit (algebraMap O R c)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hb']`. Conclude with `u.isUnit.mul (IsLocalization.map_units R b)`. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff R p c).1 hcu`. Rewrite using `[map_mul, map_mul, map_pow, hu, ← hb']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_uniformiser_mul_eq_mul_pow_of_height_eq_one (O : Type) [CommRing O] [IsDomain O]
     [IsNoetherianRing O] [IsIntegrallyClosed O] (p : Ideal O) [hp : p.IsPrime] (h1 : p.height = 1)
@@ -62,27 +62,25 @@ theorem exists_uniformiser_mul_eq_mul_pow_of_height_eq_one (O : Type) [CommRing 
       ring
 
 /- English proof (translation)
-Introduce `O C _ _ _ _ _ _ _ _ _ h hh hsq p hp h1 hP`. Take `⟨u, g, hg⟩` from `hsq`. Take `⟨π, hπp, hπ0, hgen, n, b, c, hb, hc, hbc⟩` from `exists_uniformiser_mul_eq_mul_pow_of_height_eq_one O p h1 h hh`. Set `P : Ideal C` to `Ideal.map (algebraMap O C) p`. Set `R` to `Localization.AtPrime P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : O →+* R` to `(algebraMap C R).comp (algebraMap O C)`. Establish `hcomap : P.comap (algebraMap O C) = p` using `Ideal.comap_map_eq_self_of_faithfullyFlat p`. Establish `hinjR : Function.Injective (algebraMap C R)` using `IsLocalization.injective R P.primeCompl_le_nonZeroDivisors`. Establish `hinjC : Function.Injective (algebraMap O C)` using `FaithfulSMul.algebraMap_injective O C`. Establish `hinj : Function.Injective φ` using `hinjR.comp hinjC`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit : ∀ s ∉ p, IsUnit (φ s)`. Introduce `s hs`. Use `(IsLocalization.AtPrime.isUnit_to_map_iff R P (algebraMap O C s)).2 ?_` and prove the remaining obligations. Introduce `hm`. Conclude with `hs (hcomap ▸ (Ideal.mem_comap.2 hm))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hπR : φ π ≠ 0` using `fun h0 => hπ0 (hinj (by rw [h0, map_zero]))`. Establish `hmax : maximalIdeal R = Ideal.span {φ π}`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, Ideal.map_le_iff_le_comap]`. Introduce `y hy`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hd⟩` from `hgen y hy`. Rewrite using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Establish `hd' : φ π ∣ φ s * φ y` using `by rw [← map_mul]; exact map_dvd φ hd`. Conclude with `(hunit s hs).dvd_mul_left.1 hd'`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff R P (algebraMap O C π)).2 (Ideal.mem_map_of_mem _ hπp)`. Establish `hnf : ¬ IsField R`. Introduce `hf`. Rewrite `hf` using `[isField_iff_maximalIdeal_eq, hmax, Ideal.span_singleton_eq_bot]`. Conclude with `hπR hf`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvr : IsDiscreteValuationRing R` using `((IsDiscreteValuationRing.TFAE R hnf).out 4 0).1 (show (maximalIdeal R).IsPrincipal from ⟨⟨φ π, hmax⟩⟩)`. Establish `hirr : Irreducible (φ π)` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).2 hmax`. Establish `hhR : φ h = algebraMap C R u * algebraMap C R g ^ 2` using `by show algebraMap C R (algebraMap O C h) = _`. Rewrite using `[hg, map_mul, map_pow]`. Establish `hg0 : algebraMap C R g ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `hh` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hhR, h0, map_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, v, hv⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hg0 hirr`. Establish `huR : IsUnit (algebraMap C R u)` using `u.isUnit.map _`. Establish `hnm : 2 * m = n`. Use `IsDiscreteValuationRing.unit_mul_pow_congr_pow hirr hirr ((hunit b hb).unit * huR.unit * v ^ 2) (hunit c hc).unit _ _ ?_` and prove the remaining obligations. Establish `e` using `congrArg φ hbc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `e` using `[map_mul, map_mul, map_pow, hhR, hv]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, IsUnit.unit_spec]`. Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨π ^ m, b, c, hb, hc, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hbc, ← hnm]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_mul_sq_of_faithfullyFlat_of_map_isPrime : ∀ (O C : Type) [CommRing O] [IsDomain O] [IsNoetherianRing O] [IsIntegrallyClosed O] [CommRing C] [IsDomain C] [IsNoetherianRing C] [Algebra O C] [Module.FaithfullyFlat O C] (h : O), h ≠ 0 → (∃ (u : Cˣ) (g : C), algebraMap O C h = u * g ^ 2) → ∀ p : Ideal O, p.IsPrime → p.height = 1 → (Ideal.map (algebraMap O C) p).IsPrime → ∃ a b c : O, b ∉ p ∧ c ∉ p ∧ b * h = c * a ^ 2 := by
   intro O C _ _ _ _ _ _ _ _ _ h hh hsq p hp h1 hP

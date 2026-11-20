@@ -7,7 +7,7 @@ namespace PositivityTheory.SiegelWeilFormula.KFPB
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Establish `e : (fun t : ℝ => K (t • ξ)) = K ∘ (ContinuousLinearMap.toSpanSingleton ℝ ξ)`. Use function extensionality and compare the values at `t`. Simplify using `[ContinuousLinearMap.toSpanSingleton_apply]`. Rewrite using `[e, iteratedDeriv_eq_iteratedFDeriv, ContinuousLinearMap.iteratedFDeriv_comp_right _ hK _ (by exact_mod_cast hk)]`. Simplify using `[ContinuousMultilinearMap.compContinuousLinearMap_apply, ContinuousLinearMap.toSpanSingleton_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iteratedDeriv_line {N : ℕ} (K : EuclideanSpace ℝ ι → ℂ) (hK : ContDiff ℝ N K) (ξ : EuclideanSpace ℝ ι)
     {k : ℕ} (hk : k ≤ N) :
@@ -19,9 +19,9 @@ theorem iteratedDeriv_line {N : ℕ} (K : EuclideanSpace ℝ ι → ℂ) (hK : C
   simp [ContinuousMultilinearMap.compContinuousLinearMap_apply, ContinuousLinearMap.toSpanSingleton_apply]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing p with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hd : deriv (fun t : ℝ => p.eval (t : ℂ)) = fun t : ℝ => (Polynomial.derivative p).eval (t : ℂ)`. Use function extensionality and compare the values at `t`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `((Polynomial.hasDerivAt p (t : ℂ)).comp_ofReal).deriv`. Rewrite using `[iteratedDeriv_succ', hd, ih]`. Use function extensionality and compare the values at `t`. Rewrite using `[Function.iterate_succ_apply]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_poly_real (p : Polynomial ℂ) (k : ℕ) :
     iteratedDeriv k (fun t : ℝ => p.eval (t : ℂ)) = fun t : ℝ => (Polynomial.derivative^[k] p).eval (t : ℂ) := by
@@ -36,7 +36,7 @@ theorem iteratedDeriv_poly_real (p : Polynomial ℂ) (k : ℕ) :
     rw [Function.iterate_succ_apply]
 
 /- English proof (translation)
-Rewrite using `[iteratedDeriv_poly_real]`. Simplify using `only [Complex.ofReal_zero]`. Rewrite using `[← Polynomial.coeff_zero_eq_eval_zero, Polynomial.coeff_iterate_derivative, zero_add, Nat.descFactorial_self, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem iteratedDeriv_poly_real_zero (p : Polynomial ℂ) (k : ℕ) :
     iteratedDeriv k (fun t : ℝ => p.eval (t : ℂ)) 0 = (k.factorial : ℂ) * p.coeff k := by
@@ -46,9 +46,9 @@ theorem iteratedDeriv_poly_real_zero (p : Polynomial ℂ) (k : ℕ) :
     Nat.descFactorial_self, nsmul_eq_mul]
 
 /- English proof (translation)
-Establish `h1 : K ξ = p.eval 1` using `by simpa using hpK 1`. Rewrite using `[h1, Polynomial.eval_eq_sum_range' (n := N + 1) (by omega)]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k ≤ N` using `by simpa [Finset.mem_range, Nat.lt_succ_iff] using hk`. Establish `e : (fun t : ℝ => K (t • ξ)) = fun t : ℝ => p.eval (t : ℂ)` using `funext hpK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← iteratedDeriv_line K hK ξ hk', e, iteratedDeriv_poly_real_zero]`. Establish `hf : (k.factorial : ℂ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero k`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 -/
 theorem K_eq_sum {N : ℕ} (K : EuclideanSpace ℝ ι → ℂ) (hK : ContDiff ℝ N K) (ξ : EuclideanSpace ℝ ι)
     (p : Polynomial ℂ) (hp : p.natDegree ≤ N) (hpK : ∀ t : ℝ, K (t • ξ) = p.eval (t : ℂ)) :
@@ -64,11 +64,11 @@ theorem K_eq_sum {N : ℕ} (K : EuclideanSpace ℝ ι → ℂ) (hK : ContDiff �
   simp
 
 /- English proof (translation)
-Use `⟨∑ r : Fin k → ι, MvPolynomial.C (M (fun j => EuclideanSpace.single (r j) (1 : ℝ))) * ∏ j, MvPolynomial.X (r j), ?_, fun η => ?_⟩` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_finsetSum _ _).trans (Finset.sup_le fun r _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.totalDegree_C, zero_add]`. Use `(MvPolynomial.totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[MvPolynomial.totalDegree_X]`. Establish `hη : η = ∑ i, η i • EuclideanSpace.single i (1 : ℝ)`. Use extensionality with `i`. Simplify using `[Pi.single_apply]`. Establish `e1 : M (fun _ => η) = M (fun _ => ∑ i, η i • EuclideanSpace.single i (1 : ℝ))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hη]`. Rewrite using `[e1, M.map_sum]`. Simplify using `only [M.map_smul_univ, map_sum, map_mul, MvPolynomial.eval_C, map_prod, MvPolynomial.eval_X]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.real_smul, Complex.ofReal_prod, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem multi_poly (k : ℕ) (M : ContinuousMultilinearMap ℝ (fun _ : Fin k => EuclideanSpace ℝ ι) ℂ) :
     ∃ Q : MvPolynomial ι ℂ, Q.totalDegree ≤ k ∧
@@ -92,9 +92,9 @@ theorem multi_poly (k : ℕ) (M : ContinuousMultilinearMap ℝ (fun _ : Fin k =>
     rw [Complex.real_smul, Complex.ofReal_prod, mul_comm]
 
 /- English proof (translation)
-Use `choose Q hQd hQ using fun k => multi_poly k (iteratedFDeriv ℝ k K 0)`. Use `⟨∑ k ∈ Finset.range (N + 1), MvPolynomial.C (((k.factorial : ℂ))⁻¹) * Q k, ?_, fun η => ?_⟩` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_finsetSum _ _).trans (Finset.sup_le fun k hk => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.totalDegree_C, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk' : k ≤ N` using `by simpa [Finset.mem_range, Nat.lt_succ_iff] using hk`. Conclude with `(hQd k).trans hk'`. Take `⟨p, hp, hpK⟩` from `H η`. Rewrite using `[K_eq_sum K hK η p hp hpK]`. Simplify using `only [map_sum, map_mul, MvPolynomial.eval_C, hQ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem line_poly {ι : Type} [Fintype ι] (N : ℕ) (K : EuclideanSpace ℝ ι → ℂ) (hK : ContDiff ℝ N K)
     (H : ∀ ξ : EuclideanSpace ℝ ι, ∃ p : Polynomial ℂ, p.natDegree ≤ N ∧ ∀ t : ℝ, K (t • ξ) = p.eval (t : ℂ)) :

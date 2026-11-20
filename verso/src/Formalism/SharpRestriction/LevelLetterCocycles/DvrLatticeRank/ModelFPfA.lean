@@ -11,7 +11,7 @@ section Ser
 variable {LL V : Type} [Field LL] [AddCommGroup V] [Module LL V]
 
 /- English proof (translation)
-Distinguish the cases in `h : (Function.support t).Finite`. Rewrite using `[finsum_eq_sum _ h]`. Conclude with `Submodule.sum_mem _ fun j _ => ht j`. Rewrite using `[finsum_of_infinite_support h]`. Conclude with `Submodule.zero_mem _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_mem_sub {ι : Type} (S : Submodule LL V) (t : ι → V) (ht : ∀ j, t j ∈ S) :
     ∑ᶠ j, t j ∈ S := by
@@ -23,9 +23,9 @@ theorem finsum_mem_sub {ι : Type} (S : Submodule LL V) (t : ι → V) (ht : ∀
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Unfold `serMul`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `j hj`. Simplify using `only [Function.mem_support, Finset.coe_range, Set.mem_Iio] at hj ⊢`. Assume the negation of the conclusion as `hjN`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hjN`. Apply `hj` to reduce the goal to its premises. Rewrite using `[hf (i - j) (by omega), smul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem serMul_eq_sum (g : PowerSeries LL) (f : ℤ → V) (m : ℤ) (hf : ∀ k < m, f k = 0)
     (i : ℤ) (N : ℕ) (hN : i - m < N) :
@@ -40,7 +40,7 @@ theorem serMul_eq_sum (g : PowerSeries LL) (f : ℤ → V) (m : ℤ) (hf : ∀ k
   rw [hf (i - j) (by omega), smul_zero]
 
 /- English proof (translation)
-Unfold `serMul`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `j hj`. Simplify using `[PowerSeries.coeff_one, hj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem serMul_one (f : ℤ → V) (i : ℤ) : serMul (1 : PowerSeries LL) f i = f i := by
   unfold serMul
@@ -50,9 +50,9 @@ theorem serMul_one (f : ℤ → V) (i : ℤ) : serMul (1 : PowerSeries LL) f i =
     simp [PowerSeries.coeff_one, hj]
 
 /- English proof (translation)
-Unfold `serMul`. Apply `finsum_mem_sub` to reduce the goal to its premises. Introduce `j`. Distinguish the cases in `hj : j < m`. Rewrite using `[hg j hj, zero_smul]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_mem _ _ (hS (by omega) (hf (i - j)))`.
+A detailed English derivation is pending.
 -/
 theorem serMul_mem (S : ℤ → Submodule LL V) (hS : Monotone S) (g : PowerSeries LL) (m : ℕ)
     (hg : ∀ j < m, PowerSeries.coeff j g = 0) (f : ℤ → V) (hf : ∀ i, f i ∈ S i) (i : ℤ) :
@@ -65,21 +65,17 @@ theorem serMul_mem (S : ℤ → Submodule LL V) (hS : Monotone S) (g : PowerSeri
   · exact Submodule.smul_mem _ _ (hS (by omega) (hf (i - j)))
 
 /- English proof (translation)
-Establish `key : ∀ i, (∀ i' < i, f i' ∈ S i') → f i ∈ S i`. Introduce `i ih`. Distinguish the cases in `hi : i < m₀`. Rewrite using `[hf0 i hi]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_neg at hi`. Establish `hN : i + m - m₀ < (((i + m - m₀).toNat + m + 1 : ℕ) : ℤ)` using `by omega`. Establish `hsum` using `serMul_eq_sum g f m₀ hf0 (i + m) ((i + m - m₀).toNat + m + 1) hN`. Establish `hmN : m ∈ Finset.range ((i + m - m₀).toNat + m + 1)` using `Finset.mem_range.mpr (by omega)`. Rewrite `hsum` using `[← Finset.add_sum_erase _ _ hmN]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrest : ∑ j ∈ (Finset.range ((i + m - m₀).toNat + m + 1)).erase m, PowerSeries.coeff j g • f (i + m - j) ∈ S i`. Use `Submodule.sum_mem _ fun j hj => ?_` and prove the remaining obligations. Establish `hjm : j ≠ m` using `Finset.ne_of_mem_erase hj`. Break down `Nat.lt_or_gt_of_ne hjm with hlt | hgt` into its components or cases. Rewrite using `[hg j hlt, zero_smul]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_mem _ _ (hS (by omega) (ih _ (by omega)))`. Establish `hmain : PowerSeries.coeff m g • f i ∈ S i`. Establish `h1` using `hF i`. Rewrite `h1` using `[hsum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `Submodule.sub_mem _ h1 hrest`. Simplify using `only [add_sub_cancel_right] at h2`. Simplify using `using h2`. Conclude with `(Submodule.smul_mem_iff _ hgm).mp hmain`. Establish `hall : ∀ n : ℕ, ∀ i, i < m₀ + n → f i ∈ S i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `i hi`. Rewrite using `[hf0 i (by simpa using hi)]`.
-
-Conclude with `Submodule.zero_mem _`. Consider the case `succ n ihn`. Introduce `i hi`. Apply `key` to reduce the goal to its premises. Introduce `i' hi'`.
-
-Conclude with `ihn i' (by push_cast at hi; omega)`. Conclude with `hall ((i - m₀).toNat + 1) i (by omega)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem serMul_inv (S : ℤ → Submodule LL V) (hS : Monotone S) (g : PowerSeries LL) (m : ℕ)
     (hg : ∀ j < m, PowerSeries.coeff j g = 0) (hgm : PowerSeries.coeff m g ≠ 0) (f : ℤ → V)
@@ -136,7 +132,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Establish `h1 : W.lev c ζ (1 - letE c : LetA O n) = 0` using `W.lev_letter c ζ _ (by simp [letE])`. Rewrite `h1` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_letE (c : ZMod n) (ζ : LL) : W.lev c ζ (letE c : LetA O n) = 1 := by
   have h1 : W.lev c ζ (1 - letE c : LetA O n) = 0 :=
@@ -145,21 +141,21 @@ theorem lev_letE (c : ZMod n) (ζ : LL) : W.lev c ζ (letE c : LetA O n) = 1 := 
   exact h1.symm
 
 /- English proof (translation)
-The claim follows from `W.levN_smul T c ζ a x k`.
+A detailed English derivation is pending.
 -/
 theorem levN_eq_serMul (T : LocLat G Qp LL O) (c : ZMod n) (ζ : LL) (a : LetA O n) (x : ↥(W.N T))
     (k : ℤ) : W.levN T c ζ (a • x) k = serMul (W.lev c ζ a) (W.levN T c ζ x) k :=
   W.levN_smul T c ζ a x k
 
 /- English proof (translation)
-Rewrite using `[levN_eq_serMul, lev_letE, serMul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levN_letE (T : LocLat G Qp LL O) (c : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ) :
     W.levN T c ζ ((letE c : LetA O n) • x) k = W.levN T c ζ x k := by
   rw [levN_eq_serMul, lev_letE, serMul_one]
 
 /- English proof (translation)
-Use `show (W.φA ^ (W.s - 1)) W.q = W.q`. Rewrite using `[hs, Nat.sub_self, pow_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Q_eq_q (hs : W.s = 1) : W.Q = W.q := by
   show (W.φA ^ (W.s - 1)) W.q = W.q
@@ -167,23 +163,21 @@ theorem Q_eq_q (hs : W.s = 1) : W.Q = W.q := by
   rfl
 
 /- English proof (translation)
-Establish `: Fact PD.p.Prime` using `⟨PD.hp⟩`. Establish `hprim : IsPrimitiveRoot ζ (PD.p ^ 1)`. Establish `h` using `IsPrimitiveRoot.orderOf ζ`. Rewrite `h` using `[orderOf_eq_prime hζ hζ1]`. Rewrite using `[pow_one]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨E, hE0, hED, hE⟩` from `W.lev_π i ζ ⟨1, hprim⟩`. Establish `hprod : (letπ : LetA O n) * W.q = (1 + letπ) ^ PD.p - 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.mul_apply, Pi.sub_apply, Pi.pow_apply, Pi.add_apply, Pi.one_apply, letπ, LocWach.q]`. Conclude with `W.q₀_def`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hl` using `congrArg (W.lev i ζ) hprod`. Rewrite `hl` using `[map_mul, map_sub, map_pow, map_add, map_one, hE]`. Rewrite using `[Q_eq_q W hs]`. Establish `hp0 : (PD.p : LL) ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `W.v_l` as an intermediate fact. Rewrite `this` using `[h, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe this`. Establish `ha0 : PowerSeries.constantCoeff (W.lev i ζ letπ) = ζ - 1`. Establish `h` using `congrArg PowerSeries.constantCoeff hE`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h` using `[map_add, map_one, map_mul, PowerSeries.constantCoeff_C, hE0, mul_one]`. Take the linear combination `h`. Establish `hz : ζ - 1 ≠ 0` using `sub_ne_zero.2 hζ1`. Establish `hc0 : PowerSeries.constantCoeff (W.lev i ζ W.q) = 0`. Establish `h` using `congrArg PowerSeries.constantCoeff hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[map_mul, map_sub, map_one, map_pow, map_mul, PowerSeries.constantCoeff_C, hE0, mul_one, hζ, sub_self, ha0]`. Conclude with `(mul_eq_zero.1 h).resolve_left hz`. Use `⟨hc0, ?_⟩` and prove the remaining obligations. Take `⟨b', hb'⟩` from `PowerSeries.X_dvd_iff.2 hc0`. Establish `hEp : PowerSeries.coeff 1 (E ^ PD.p) = (PD.p : LL)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : PowerSeries.derivative LL (E ^ PD.p) = (PD.p : LL) • E ^ PD.p`. Rewrite using `[Derivation.leibniz_pow, hED, smul_eq_mul, ← pow_succ, Nat.sub_add_cancel PD.hp.one_lt.le, Nat.cast_smul_eq_nsmul]`. Establish `h` using `congrArg (PowerSeries.coeff 0) hd`. Establish `hc : PowerSeries.coeff 0 (E ^ PD.p) = 1`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, hE0, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h` using `[PowerSeries.coeff_derivative, PowerSeries.coeff_smul, hc]`. Simplify using `using h`. Establish `h1` using `congrArg (PowerSeries.coeff 1) hl`. Rewrite `h1` using `[hb', mul_left_comm, PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_mul, ha0, mul_pow, ← map_pow, hζ, map_one, one_mul, map_sub, hEp, PowerSeries.coeff_one, if_neg one_ne_zero, sub_zero]`. Rewrite using `[hb', PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`.
-
-Introduce `h0`. Rewrite `h1` using `[h0, mul_zero]`. Conclude with `hp0 h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levQ_pt (hs : W.s = 1) (i : ZMod n) (ζ : LL) (hζ : ζ ^ PD.p = 1) (hζ1 : ζ ≠ 1) :
     PowerSeries.constantCoeff (W.lev i ζ W.Q) = 0 ∧ PowerSeries.coeff 1 (W.lev i ζ W.Q) ≠ 0 := by

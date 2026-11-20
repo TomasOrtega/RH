@@ -33,7 +33,7 @@ private theorem jetSubstP_apply_mk {κ κ' : Type} (m : ℕ) (φ : κ → MvPoly
   rfl
 
 /- English proof (translation)
-Take `⟨i, j⟩` from `p`. Rewrite using `[jetSubstP_apply_mk, aeval_X]`. Apply the tactic sequence `fin_cases i <;> simp`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swJ_X (m : ℕ) (p : Fin 2 × Fin d) :
     swJ (S := S) d m (Ideal.Quotient.mk _ (X p)) = Ideal.Quotient.mk _ (X (Equiv.swap (0 : Fin 2) 1 p.1, p.2)) := by
@@ -42,7 +42,7 @@ theorem swJ_X (m : ℕ) (p : Fin 2 × Fin d) :
   fin_cases i <;> simp
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, swJ_X, AlgHom.id_apply, Equiv.swap_apply_self]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem swJ_swJ (m : ℕ) : (swJ (S := S) d m).comp (swJ d m) = AlgHom.id S _ := by
   apply Ideal.Quotient.algHom_ext
@@ -52,7 +52,7 @@ theorem swJ_swJ (m : ℕ) : (swJ (S := S) d m).comp (swJ d m) = AlgHom.id S _ :=
     Equiv.swap_apply_self]
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [Finsupp.degree, Finsupp.sum]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem degree_eq_sum_lemma_2 {τ : Type} (e : τ →₀ ℕ) : e.degree = ∑ i ∈ e.support, e i := by
   first
@@ -60,7 +60,7 @@ private theorem degree_eq_sum_lemma_2 {τ : Type} (e : τ →₀ ℕ) : e.degree
   | simp [Finsupp.degree, Finsupp.sum]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact map_add Finsupp.degree a b`. Consider the case `(rw [degree_eq_sum_lemma_2, degree_eq_sum_lemma_2, degree_eq_sum_lemma_2]`. Conclude with `Finsupp.sum_add_index' (h := fun _ k => k) (fun _ => rfl) (fun _ _ _ => rfl))`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem degree_add_lemma_3 {τ : Type} (a b : τ →₀ ℕ) : (a + b).degree = a.degree + b.degree := by
   first
@@ -69,7 +69,7 @@ private theorem degree_add_lemma_3 {τ : Type} (a b : τ →₀ ℕ) : (a + b).d
      exact Finsupp.sum_add_index' (h := fun _ k => k) (fun _ => rfl) (fun _ _ _ => rfl))
 
 /- English proof (translation)
-Distinguish the cases in `h : e i = 0`. Rewrite using `[h]`. Conclude with `Nat.zero_le _`. Rewrite using `[degree_eq_sum_lemma_2]`. Conclude with `Finset.single_le_sum (f := fun j => e j) (fun _ _ => Nat.zero_le _) (Finsupp.mem_support_iff.2 h)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem le_degree_lemma_4 {τ : Type} (e : τ →₀ ℕ) (i : τ) : e i ≤ e.degree := by
   by_cases h : e i = 0
@@ -79,15 +79,15 @@ private theorem le_degree_lemma_4 {τ : Type} (e : τ →₀ ℕ) (i : τ) : e i
       (Finsupp.mem_support_iff.2 h)
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x e with`. Consider the case `zero => exact absurd he (Nat.not_lt_zero _)`. Consider the case `succ n ih`. Rewrite `hx` using `[pow_succ]`. Use `revert e`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mul_induction_on hx (fun a ha b hb => ?_) (fun y z hy hz => ?_)` and prove the remaining obligations. Introduce `e he`. Establish `hle : orig S τ ≤ RingHom.ker (MvPolynomial.constantCoeff : MvPolynomial τ S →+* S)` using `Ideal.span_le.2 (by rintro _ ⟨i, rfl⟩; simp)`. Establish `hb0 : coeff 0 b = 0`. Establish `h0 : MvPolynomial.constantCoeff b = 0` using `RingHom.mem_ker.1 (hle hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Rewrite using `[coeff_mul]`. Use `Finset.sum_eq_zero fun u hu => ?_` and prove the remaining obligations. Establish `hu'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hu`. Distinguish the cases in `h1 : u.1.degree < n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ih a ha u.1 h1, zero_mul]`. Establish `hd : u.1.degree + u.2.degree = e.degree` using `by rw [← hu', degree_add_lemma_3]`. Establish `h2 : u.2 = 0`. Use extensionality with `i`. Use `le_degree_lemma_4 u.2 i` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Finsupp.coe_zero, Pi.zero_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h2, hb0, mul_zero]`. Introduce `e he`. Rewrite using `[coeff_add, hy e he, hz e he, add_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_eq_zero_of_mem_orig_pow_lemma_5 {τ : Type} (n : ℕ) (x : MvPolynomial τ S)
     (hx : x ∈ orig S τ ^ n) (e : τ →₀ ℕ) (he : e.degree < n) : coeff e x = 0 := by
@@ -120,11 +120,11 @@ private theorem coeff_eq_zero_of_mem_orig_pow_lemma_5 {τ : Type} (n : ℕ) (x :
       rw [coeff_add, hy e he, hz e he, add_zero]
 
 /- English proof (translation)
-Unfold `degLE`. Rewrite using `[Finset.mem_filter, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩`. Rewrite using `[degree_eq_sum_lemma_2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Introduce `h`. Use `⟨⟨fun i => ⟨e i, by have := le_degree_lemma_4 e i; omega⟩, Finset.mem_univ _, ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[degree_eq_sum_lemma_2]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem mem_degLE_lemma_6 {τ : Type} [Fintype τ] [DecidableEq τ] (m : ℕ) (e : τ →₀ ℕ) :
     e ∈ degLE m ↔ e.degree ≤ m := by
@@ -142,7 +142,7 @@ private theorem mem_degLE_lemma_6 {τ : Type} [Fintype τ] [DecidableEq τ] (m :
       exact h
 
 /- English proof (translation)
-Rewrite using `[psTrunc, coeff_sum]`. Simplify using `only [coeff_monomial, Finset.sum_ite_eq', mem_degLE_lemma_6]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem coeff_psTrunc_lemma_7 {τ : Type} [Fintype τ] [DecidableEq τ] (m : ℕ)
     (f : MvPowerSeries τ S) (e : τ →₀ ℕ) :
@@ -151,9 +151,9 @@ private theorem coeff_psTrunc_lemma_7 {τ : Type} [Fintype τ] [DecidableEq τ] 
   simp only [coeff_monomial, Finset.sum_ite_eq', mem_degLE_lemma_6]
 
 /- English proof (translation)
-Rewrite using `[p.as_sum]`. Use `Ideal.sum_mem _ fun e he => ?_` and prove the remaining obligations. Establish `hn : n ≤ e.degree`. Assume the negation of the conclusion as `hlt`. Conclude with `(MvPolynomial.mem_support_iff.1 he) (h e (not_le.1 hlt))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.pow_le_pow_right hn ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.monomial_eq, degree_eq_sum_lemma_2, Finsupp.prod, ← Finset.prod_pow_eq_pow_sum]`. Use `Ideal.mul_mem_left _ _ (Ideal.prod_mem_prod fun i _ => Ideal.pow_mem_pow ?_ _)` and prove the remaining obligations. Conclude with `Ideal.subset_span ⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem mem_orig_pow_of_coeff_lemma_8 {τ : Type} (n : ℕ) (p : MvPolynomial τ S)
     (h : ∀ e : τ →₀ ℕ, e.degree < n → coeff e p = 0) : p ∈ orig S τ ^ n := by
@@ -168,7 +168,7 @@ private theorem mem_orig_pow_of_coeff_lemma_8 {τ : Type} (n : ℕ) (p : MvPolyn
   exact Ideal.subset_span ⟨i, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[psJet, Ideal.Quotient.eq]`. Use `mem_orig_pow_of_coeff_lemma_8 (m + 1) _ fun e he => ?_` and prove the remaining obligations. Establish `he' : e.degree ≤ m` using `Nat.lt_succ_iff.1 he`. Rewrite using `[coeff_sub, coeff_psTrunc_lemma_7, if_pos he', h e he', sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem psJet_eq_mk_lemma_9 {τ : Type} [Fintype τ] [DecidableEq τ] (m : ℕ)
     (f : MvPowerSeries τ S) (p : MvPolynomial τ S)
@@ -180,9 +180,9 @@ private theorem psJet_eq_mk_lemma_9 {τ : Type} [Fintype τ] [DecidableEq τ] (m
   rw [coeff_sub, coeff_psTrunc_lemma_7, if_pos he', h e he', sub_self]
 
 /- English proof (translation)
-Use `show psJet m (f * g) = Ideal.Quotient.mk (orig S τ ^ (m + 1)) (psTrunc m f) * Ideal.Quotient.mk (orig S τ ^ (m + 1)) (psTrunc m g)`. Rewrite using `[← map_mul]`. Use `psJet_eq_mk_lemma_9 m _ _ fun e he => ?_` and prove the remaining obligations. Rewrite using `[coeff_mul, MvPowerSeries.coeff_mul]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hx`. Establish `hd : x.1.degree + x.2.degree = e.degree` using `by rw [← hx', degree_add_lemma_3]`. Rewrite using `[coeff_psTrunc_lemma_7, coeff_psTrunc_lemma_7, if_pos (by omega), if_pos (by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem psJet_mul_lemma_10 {τ : Type} [Fintype τ] [DecidableEq τ] (m : ℕ)
     (f g : MvPowerSeries τ S) : psJet m (f * g) = psJet m f * psJet m g := by
@@ -197,9 +197,9 @@ private theorem psJet_mul_lemma_10 {τ : Type} [Fintype τ] [DecidableEq τ] (m 
   rw [coeff_psTrunc_lemma_7, coeff_psTrunc_lemma_7, if_pos (by omega), if_pos (by omega)]
 
 /- English proof (translation)
-Rewrite using `[show (1 : Jet S τ m) = Ideal.Quotient.mk (orig S τ ^ (m + 1)) 1 from (map_one _).symm]`. Use `psJet_eq_mk_lemma_9 m 1 1 fun e _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_one, MvPowerSeries.coeff_one]`. Distinguish the cases in `h : e = 0`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem psJet_one_lemma_11 {τ : Type} [Fintype τ] [DecidableEq τ] (m : ℕ) :
     psJet m (1 : MvPowerSeries τ S) = 1 := by
@@ -211,9 +211,9 @@ private theorem psJet_one_lemma_11 {τ : Type} [Fintype τ] [DecidableEq τ] (m 
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Use extensionality with `e`. Establish `h1` using `h e.degree`. Rewrite `h1` using `[psJet, psJet, Ideal.Quotient.eq]`. Establish `h2` using `coeff_eq_zero_of_mem_orig_pow_lemma_5 _ _ h1 e (Nat.lt_succ_self _)`. Rewrite `h2` using `[coeff_sub, coeff_psTrunc_lemma_7, coeff_psTrunc_lemma_7, if_pos le_rfl, if_pos le_rfl, sub_eq_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 private theorem eq_of_psJet_lemma_12 {τ : Type} [Fintype τ] [DecidableEq τ] (f g : MvPowerSeries τ S)
     (h : ∀ m, psJet m f = psJet m g) : f = g := by
@@ -225,15 +225,13 @@ private theorem eq_of_psJet_lemma_12 {τ : Type} [Fintype τ] [DecidableEq τ] (
   exact h2
 
 /- English proof (translation)
-Establish `hdeg : (Finsupp.single q 1).degree = 1`. Rewrite using `[degree_eq_sum_lemma_2, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same]`. Establish `hs : psTrunc m (MvPowerSeries.X q : MvPowerSeries τ S) = if 1 ≤ m then X q else 0`. Use extensionality with `e`. Rewrite using `[coeff_psTrunc_lemma_7, MvPowerSeries.coeff_X]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h2 : e = Finsupp.single q 1`. Substitute `h2` using the available equality. Rewrite using `[hdeg]`. Distinguish the cases in `h3 : 1 ≤ m`. Simplify using `[h3, MvPolynomial.coeff_X]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h3]`. Establish `h4 : coeff e (X q : MvPolynomial τ S) = 0`. Rewrite using `[MvPolynomial.coeff_X']`. Conclude with `if_neg (Ne.symm h2)`. Apply the tactic sequence `split_ifs <;> simp [h4, h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.Quotient.eq, hs]`. Use `split_ifs with h`. Rewrite using `[sub_self]`. Conclude with `Ideal.zero_mem _`. Establish `hm : m = 0` using `by omega`.
-
-Substitute `hm` using the available equality. Rewrite using `[zero_sub, zero_add, pow_one]`. Conclude with `Ideal.neg_mem_iff _ |>.2 (Ideal.subset_span ⟨q, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_psTrunc_X {τ : Type} [Fintype τ] [DecidableEq τ] (m : ℕ) (q : τ) :
     (Ideal.Quotient.mk (orig S τ ^ (m + 1)) (psTrunc m (MvPowerSeries.X q))) = Ideal.Quotient.mk _ (X q) := by
@@ -271,11 +269,11 @@ private theorem jetMap_mk_lemma_13 {κ κ' : Type} (m : ℕ) (φ : κ → MvPoly
   rfl
 
 /- English proof (translation)
-Establish `ha : ∀ p : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((fun p : Fin 2 × Fin d => (![pt S d 1, pt S d 0] : Fin 2 → Pt S 2 d) p.1 p.2) p) = 0`. Introduce and unpack `⟨i, j⟩`. Apply the tactic sequence `fin_cases i <;> simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.ev`. Rewrite using `[psJet_subst m _ ha f]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `DFunLike.congr_fun ?_ (psJet m f)` and prove the remaining obligations. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[swJ_X, jetMap_mk_lemma_13, aeval_X]`. Apply the tactic sequence `fin_cases i <;> simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt, mk_psTrunc_X]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psJet_ev_swap (m : ℕ) (f : PS S 2 d) :
     psJet m (ev (n := 2) ![pt S d 1, pt S d 0] f) = swJ d m (psJet m f) := by
@@ -308,7 +306,7 @@ def axV (b : Bool) (k : Fin 2) (j : Fin d) : MvPolynomial (Fin 1 × Fin d) S :=
   if (k = 1) = b then X ((0 : Fin 1), j) else 0
 
 /- English proof (translation)
-Rewrite using `[jetSubstP_apply_mk, aeval_X]`. Apply the tactic sequence `cases b <;> fin_cases k <;> simp [axV]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem axJ_X (m : ℕ) (b : Bool) (k : Fin 2) (j : Fin d) :
     axJ (S := S) d m b (Ideal.Quotient.mk _ (X (k, j))) = Ideal.Quotient.mk _ (axV d b k j) := by
@@ -316,7 +314,7 @@ theorem axJ_X (m : ℕ) (b : Bool) (k : Fin 2) (j : Fin d) :
   cases b <;> fin_cases k <;> simp [axV]
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨k, j⟩`. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, swJ_X, axJ_X]`. Apply the tactic sequence `cases b <;> fin_cases k <;> simp [axV]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem axJ_swJ (m : ℕ) (b : Bool) : (axJ (S := S) d m b).comp (swJ d m) = axJ d m (!b) := by
   apply Ideal.Quotient.algHom_ext
@@ -326,18 +324,18 @@ theorem axJ_swJ (m : ℕ) (b : Bool) : (axJ (S := S) d m b).comp (swJ d m) = axJ
   cases b <;> fin_cases k <;> simp [axV]
 
 /- English proof (translation)
-Simplify using `[psTrunc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psTrunc_zero {τ : Type} [Fintype τ] [DecidableEq τ] (m : ℕ) :
     psTrunc m (0 : MvPowerSeries τ S) = 0 := by
   simp [psTrunc]
 
 /- English proof (translation)
-Establish `ha : ∀ p : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((fun p : Fin 2 × Fin d => ((if b then ![0, pt S d 0] else ![pt S d 0, 0]) : Fin 2 → Pt S 1 d) p.1 p.2) p) = 0`. Introduce and unpack `⟨i, j⟩`. Apply the tactic sequence `cases b <;> fin_cases i <;> simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.ev`. Rewrite using `[psJet_subst m _ ha f]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `DFunLike.congr_fun ?_ (psJet m f)` and prove the remaining obligations. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨k, j⟩`. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[axJ_X, jetMap_mk_lemma_13, aeval_X]`. Apply the tactic sequence `cases b <;> fin_cases k <;> simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt, mk_psTrunc_X, axV, psTrunc_zero]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psJet_ev_ax (m : ℕ) (f : PS S 2 d) (b : Bool) :
     psJet m (ev (n := 1) (if b then ![0, pt S d 0] else ![pt S d 0, 0]) f) = axJ d m b (psJet m f) := by
@@ -363,7 +361,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : S
 variable {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G)
 
 /- English proof (translation)
-Simplify using `only [scaleGenG, Units.val_mul, map_mul, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scaleGenG_scaleGenG {Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ t.G.left)) (ε : K → ℤ)
     (v w : Γ(Y, ⊤)ˣ) (g : LB.Gen (LB.LinComb t.PP.L φ ε)) :
@@ -371,19 +369,19 @@ theorem scaleGenG_scaleGenG {Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → 
   simp only [scaleGenG, Units.val_mul, map_mul, mul_assoc]
 
 /- English proof (translation)
-Conclude with `map_mul (Units.map (toΓ A).toMonoidHom) a b`.
+A detailed English derivation is pending.
 -/
 theorem unitΓ_mul {A : Type} [CommRing A] (a b : Aˣ) : unitΓ (a * b) = unitΓ a * unitΓ b := by
   exact map_mul (Units.map (toΓ A).toMonoidHom) a b
 
 /- English proof (translation)
-Conclude with `map_one (Units.map (toΓ A).toMonoidHom)`.
+A detailed English derivation is pending.
 -/
 theorem unitΓ_one {A : Type} [CommRing A] : unitΓ (1 : Aˣ) = 1 := by
   exact map_one (Units.map (toΓ A).toMonoidHom)
 
 /- English proof (translation)
-Establish `h1` using `FBIdLB.scale_eq_of_corr t hL (DVR.corr_refl _ hg) (v := 1) (v' := v) (by rw [FBIdLB.scaleGenG_one]; exact h)`. Conclude with `h1.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unit_eq_one_of_corr (hL : t.PP.L.IsLB) {Y : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ t.G.left)}
     {ε : K → ℤ} {g : LB.Gen (LB.LinComb t.PP.L φ ε)} (hg : g.IsGen) {v : Γ(Y, ⊤)ˣ}
@@ -393,15 +391,15 @@ theorem unit_eq_one_of_corr (hL : t.PP.L.IsLB) {Y : Scheme.{0}} {K : Type} [Fint
   exact h1.symm
 
 /- English proof (translation)
-Take `⟨u, hu, hc⟩` from `hfr.sy m`. Establish `hge` using `hfr.gen m`. Establish `hhh : (homAt x0 (swJ (S` using `S) d m)).left ≫ (homAt x0 (swJ d m)).left = 𝟙 _ := by`. Rewrite using `[← Over.comp_left, homAt_comp, swJ_swJ, homAt_id]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1` using `DVR.corr_pullGen hc (homAt x0 (swJ (S := S) d m)).left`. Rewrite `h1` using `[FBIdLB.pullGen_scaleGenG]`. Establish `h2` using `DVR.corr_trans hL (DVR.corr_pullGen_comp (e m) (homAt x0 (swJ (S := S) d m)).left (homAt x0 (swJ (S := S) d m)).left) (DVR.corr_trans hL (DVR.corr_pullGen_of_eq (e m) hge _ _ hhh) (DVR.corr_pullGen_id (e m)))`. Establish `h3` using `DVR.corr_trans hL h1 (FBIdLB.corr_scaleGenG t h2 _)`. Establish `h4` using `DVR.corr_trans hL hc (FBIdLB.corr_scaleGenG t h3 (unitΓ u⁻¹))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `erw [scaleGenG_scaleGenG] at h4`. Establish `h5` using `unit_eq_one_of_corr t hL hge h4`. Rewrite `h5` using `[FBIdLB.unitΓ_homAt, ← unitΓ_mul, ← unitΓ_one]`. Establish `h6` using `FBIdLB.unitΓ_injective h5`. Establish `h7 : (u : Jet S (Fin 2 × Fin d) m) * swJ d m u = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8` using `congrArg (fun w : (Jet S (Fin 2 × Fin d) m)ˣ => (w⁻¹ : (Jet S (Fin 2 × Fin d) m)ˣ)) h6`. Simplify using `only [inv_one, mul_inv_rev, inv_inv, map_inv] at h8`. Establish `h9` using `congrArg Units.val h8`. Simplify using `only [Units.val_one, Units.val_mul, Units.coe_map] at h9`. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h9`. Rewrite using `[← hu]`. Conclude with `h7`.
+A detailed English derivation is pending.
 -/
 theorem sy_unit (hL : t.PP.L.IsLB) {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S}
     {act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S} {ph1 ph2 : MvPowerSeries (Fin 3 × Fin d) S}
@@ -435,7 +433,7 @@ theorem sy_unit (hL : t.PP.L.IsLB) {F : Fin d → MvPowerSeries (Fin 2 × Fin d)
   exact h7
 
 /- English proof (translation)
-Use `eq_of_psJet_lemma_12 _ _ fun m => ?_` and prove the remaining obligations. Rewrite using `[psJet_mul_lemma_10, psJet_ev_swap, sy_unit t x0 d x hL hfr m, psJet_one_lemma_11]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sy_inv_of (hL : t.PP.L.IsLB) {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S}
     {act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S} {ph1 ph2 : MvPowerSeries (Fin 3 × Fin d) S}
@@ -446,15 +444,13 @@ theorem sy_inv_of (hL : t.PP.L.IsLB) {F : Fin d → MvPowerSeries (Fin 2 × Fin 
   rw [psJet_mul_lemma_10, psJet_ev_swap, sy_unit t x0 d x hL hfr m, psJet_one_lemma_11]
 
 /- English proof (translation)
-Use `psJet_inj fun m => ?_` and prove the remaining obligations. Rewrite using `[psJet_ev_ax, psJet_one]`. Take `⟨u, hu, hc⟩` from `hfr.sy m`. Establish `hA : ∀ b' : Bool, LB.Gen.Corr t.PP.L _ _ _ _ (LB.pullGen t.PP.L (cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)]) (cε 2) (e m) (homAt x0 (axJ (S` using `S) d m b')).left) (LB.oneGen t.PP.L) := by`. Introduce `b'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `b'`. Conclude with `(hax m).2`. Conclude with `(hax m).1`. Establish `hcomp : (homAt x0 (axJ (S` using `S) d m b)).left ≫ (homAt x0 (swJ (S := S) d m)).left = (homAt x0 (axJ (S := S) d m (!b))).left := by`. Rewrite using `[← Over.comp_left, homAt_comp, axJ_swJ]`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `DVR.corr_pullGen hc (homAt x0 (axJ (S := S) d m b)).left`. Rewrite `h1` using `[FBIdLB.pullGen_scaleGenG]`. Establish `h2` using `DVR.corr_trans hL (DVR.corr_pullGen_comp (e m) (homAt x0 (swJ (S := S) d m)).left (homAt x0 (axJ (S := S) d m b)).left) (DVR.corr_pullGen_of_eq (e m) (hfr.gen m) _ _ hcomp)`. Establish `h3` using `DVR.corr_trans hL h1 (FBIdLB.corr_scaleGenG t h2 _)`. Establish `hAB` using `DVR.corr_trans hL (hA b) (DVR.corr_symm (hA (!b)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `FBIdLB.scale_eq_of_corr t hL hAB (v := 1) (by rw [FBIdLB.scaleGenG_one]; exact h3)`. Rewrite `h4` using `[FBIdLB.unitΓ_homAt, ← unitΓ_one]`. Establish `h5` using `FBIdLB.unitΓ_injective h4`. Establish `h6` using `congrArg (fun w : (Jet S (Fin 1 × Fin d) m)ˣ => ((w⁻¹ : (Jet S (Fin 1 × Fin d) m)ˣ) : Jet S (Fin 1 × Fin d) m)) h5`. Simplify using `only [inv_one, Units.val_one, map_inv, inv_inv, Units.coe_map] at h6`.
-
-Rewrite using `[← hu]`. Conclude with `h6.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sy_ax_of (hL : t.PP.L.IsLB) {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S}
     {act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S} {ph1 ph2 : MvPowerSeries (Fin 3 × Fin d) S}

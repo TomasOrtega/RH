@@ -12,7 +12,7 @@ section Flag
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
 
 /- English proof (translation)
-The claim follows from `(Formalism.HermitianLatticesTheory.isom S.hT).one_mem`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_isom : (1 : S.V ≃ₗ[E] S.V) ∈ Formalism.HermitianLatticesTheory.isom S.hT := (Formalism.HermitianLatticesTheory.isom S.hT).one_mem
 
@@ -23,7 +23,7 @@ theorem mapFlag_one (F : FlagG S r T) : mapFlag 1 one_mem_isom F = F := by
   rfl
 
 /- English proof (translation)
-Unfold `mapLF`. Rewrite using `[dif_pos one_mem_isom, mapFlag_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mapLF_one (F : LFlag S r T) : mapLF 1 F = F := by
   unfold mapLF
@@ -39,9 +39,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Use `⟨1, (Formalism.UG.UJ _ _).one_mem, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v`. Simplify using `[uMat]`. Conclude with `(Formalism.MainNotions.LeviCoordinates.rrg_P_inv_mul _ v).symm`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ratLink_one : RatLink X 1 1 := by
   refine ⟨1, (Formalism.UG.UJ _ _).one_mem, ?_, ?_, ?_⟩
@@ -72,11 +72,11 @@ section Gam
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} (TR : TypedRed X)
 
 /- English proof (translation)
-Unfold `Gam1 Formalism.L2.SG.GGMirabolic.gamProd`. Simplify using `only [Pi.one_apply, Formalism.L2.SG.GGMirabolic.gam_one]`. Establish `hprod : (∏ v, ((Fintype.card (GL (Fin D.R.k) (TR.Fq v)) : ℂ) / (Formalism.L2.SG.GGMirabolic.cardU (TR.Fq v) D.R.k : ℂ))) = ((∏ v, ((Fintype.card (GL (Fin D.R.k) (TR.Fq v)) : ℝ) / (Formalism.L2.SG.GGMirabolic.cardU (TR.Fq v) D.R.k : ℝ)) : ℝ) : ℂ)`. Use `push_cast`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[hprod, Complex.ofReal_re]`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `v _`. Apply `div_pos` to reduce the goal to its premises. Conclude with `Fintype.card_pos` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hU : 0 < Formalism.L2.SG.GGMirabolic.cardU (TR.Fq v) D.R.k`. Unfold `Formalism.L2.SG.GGMirabolic.cardU`. Use `Nat.card_pos_iff.mpr ⟨⟨⟨1, ?_⟩⟩, inferInstance⟩` and prove the remaining obligations. Use `⟨fun i => by simp, fun i j hij => by simp [Matrix.one_apply_ne (ne_of_lt hij).symm]⟩` and prove the remaining obligations. Conclude with `hU` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gamma_one_pos : 0 < Gam1 TR := by
   unfold Gam1 Formalism.L2.SG.GGMirabolic.gamProd

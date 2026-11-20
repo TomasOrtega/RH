@@ -18,11 +18,7 @@ def IdeleTop : Prop :=
     ∀ μ : Measure (AE F E)ˣ, μ.IsHaarMeasure → SigmaFinite μ ∧ μ.IsInvInvariant ∧ μ.IsMulRightInvariant ∧ μ.Regular
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI h1 : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
-
-Take `⟨e0⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI h2 : LocallyCompactSpace (AE F E) := e0.isClosedEmbedding.locallyCompactSpace`. Use `haveI h3 : SecondCountableTopology (AE F E) := e0.secondCountableTopology`. Use `haveI h4 : T2Space (AE F E) := e0.isEmbedding.t2Space`. Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.secondCountableTopology`.
-
-Use `haveI : LocallyCompactSpace (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI h5 : SecondCountableTopology (AE F E)ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI h6 : LocallyCompactSpace (AE F E)ˣ := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI h7 : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Conclude with `⟨⟨h1, h2, h3, h4⟩, h6, h5, inferInstance, inferInstance, h7, fun μ _ => ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ideleTop : IdeleTop := by
   intro F E _ _ _ _ _

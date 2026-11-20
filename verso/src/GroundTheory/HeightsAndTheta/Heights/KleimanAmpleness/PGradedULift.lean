@@ -11,15 +11,15 @@ noncomputable section
 universe u v
 
 /- English proof (translation)
-Introduce `S _ N M _ _ _ _ 𝓜`. Set `e : M ≃ₗ[S] ULift.{u} M` to `(ULift.moduleEquiv (R := S)).symm`. Set `eP : M ≃ₗ[Poly S N] ULift.{u} M` to `(ULift.moduleEquiv (R := Poly S N)).symm`. Set `pc : ℤ → Submodule S (ULift.{u} M)` to `fun c => (𝓜.piece c).map (e : M →ₗ[S] ULift.{u} M)`. Establish `hpc : ∀ c, pc c = Submodule.orderIsoMapComap e (𝓜.piece c)` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hint : DirectSum.IsInternal pc`. Establish `h0` using `(DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top _).1 𝓜.isInternal`. Use `(DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `: pc = (Submodule.orderIsoMapComap e) ∘ 𝓜.piece` using `funext hpc`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0.1.map_orderIso _`. Establish `h1 : (⨆ c, pc c) = Submodule.orderIsoMapComap e (⨆ c, 𝓜.piece c)`. Rewrite using `[OrderIso.map_iSup]`. Both sides reduce to the same expression. Rewrite using `[h1, h0.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(Submodule.orderIsoMapComap e).map_top`. Set `𝓜' : GradedPMod S N (ULift.{u} M)` to `{ piece := pc isInternal := hint smul_mem := by`. Introduce `d c p m hp hm`. Take `⟨x, hx, rfl⟩` from `hm`. Use `⟨p • x, 𝓜.smul_mem d c p x hp hx, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `rfl }`. Use `⟨ULift.{u} M, inferInstance, inferInstance, inferInstance, inferInstance, 𝓜', ⟨eP.toLinearMap, fun c m hm => ⟨m, hm, rfl⟩⟩, ⟨eP.symm.toLinearMap, fun c m hm => ?_⟩, fun m => rfl, fun m => rfl⟩` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `hm`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GradedULift.proof : GradedULift.Statement.{u, v} := by
   intro S _ N M _ _ _ _ 𝓜

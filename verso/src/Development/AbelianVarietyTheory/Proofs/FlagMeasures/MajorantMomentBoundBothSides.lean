@@ -33,7 +33,7 @@ def swapS {k r : ℕ} {W : LocW k r} (A : LocS W) : LocS (swapW W) where
   deg := A.deg
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14⟩` from `h`. Conclude with `⟨h2, h1, h4, h3, h6, h5, h7, h10, h11, h8, h9, h12, h14, h13⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem goodW_swap {D : D7} {τ : D.what₂.Tau} {w w' : D.what₂.Word} {θ : ℝ} {W : LocW D.R.k D.R.rS}
     (h : GoodW D τ w w' θ W) : GoodW D τ w' w θ (swapW W) := by
@@ -41,7 +41,7 @@ theorem goodW_swap {D : D7} {τ : D.what₂.Tau} {w w' : D.what₂.Word} {θ : �
   exact ⟨h2, h1, h4, h3, h6, h5, h7, h10, h11, h8, h9, h12, h14, h13⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩` from `h`. Conclude with `⟨h1, h2, h4, h3, h5, h6, h7, h8, h10, h9, h11⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem goodS_swap {D : D7} {W : LocW D.R.k D.R.rS} {lam : Fin (2 * D.R.rS + D.R.k + 1) → ℝ} {A : LocS W}
     (h : GoodS D lam A) : GoodS D lam (swapS A) := by
@@ -49,25 +49,25 @@ theorem goodS_swap {D : D7} {W : LocW D.R.k D.R.rS} {lam : Fin (2 * D.R.rS + D.R
   exact ⟨h1, h2, h4, h3, h5, h6, h7, h8, h10, h9, h11⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `h`. Conclude with `⟨h2, h1, h4, h3, h5.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hypTT_swap {D : D7} {w w' : D.what₂.Word} (h : HypTT D w w') : HypTT D w' w := by
   obtain ⟨h1, h2, h3, h4, h5⟩ := h
   exact ⟨h2, h1, h4, h3, h5.symm⟩
 
 /- English proof (translation)
-Unfold `Scale.b Scale.L`. Conclude with `Real.one_le_exp (Real.rpow_nonneg (by linarith [s.one_lt_alt]) _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem one_le_b (s : Scale) : 1 ≤ s.b := by
   unfold Scale.b Scale.L
   exact Real.one_le_exp (Real.rpow_nonneg (by linarith [s.one_lt_alt]) _)
 
 /- English proof (translation)
-Introduce `a`. Establish `hr : 1 ≤ D.R.rS` using `by unfold Ranks.rS; omega`. Establish `hr3 : (1 : ℝ) ≤ (D.R.rS : ℝ) ^ 3` using `one_le_pow₀ (by exact_mod_cast hr)`. Establish `hb` using `one_le_b large₂.sc`. Establish `h` using `hM hZ τ w w' hT θ hθ W hW lam' hl S hS a (24 * D.R.rS ^ 3 + 1) (by push_cast; linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h.trans (mul_le_mul_left (ENNReal.ofReal_le_ofReal ?_) _)` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]`. Use `Real.rpow_le_rpow_of_exponent_le hb ?_` and prove the remaining obligations. Establish `h1 : CMo ≤ max CMo 0` using `le_max_left _ _`. Establish `h2 : (0 : ℝ) ≤ (D.R.m : ℝ) * ((24 * D.R.rS ^ 3 + 1 : ℕ) : ℝ)` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `mul_le_mul_of_nonneg_right h1 h2`. Rewrite using `[Nat.cast_mul 2, Nat.cast_ofNat]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem momBd_one (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn C1 CMo : ℝ) (hm : 4 ≤ D.R.m)
     (hM : MomIn D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 25 CMo) (hZ : HypZ D large₂ C' Cl Cg cb Cu cT CT C0)
@@ -90,7 +90,7 @@ theorem momBd_one (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 C
   nlinarith
 
 /- English proof (translation)
-Introduce `D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 CMo hm hM hZ τ w w' hT θ hθ W hW lam' hl S hS`. Conclude with `⟨momBd_one D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 CMo hm hM hZ τ w w' hT θ hθ W hW lam' hl S hS, momBd_one D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 CMo hm hM hZ τ w' w (hypTT_swap hT) θ hθ (swapW W) (goodW_swap hW) lam' hl (swapS S) (goodS_swap hS)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem momBd_both : ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn C1 CMo : ℝ), 4 ≤ D.R.m →
     MomIn D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 25 CMo → HypZ D large₂ C' Cl Cg cb Cu cT CT C0 →

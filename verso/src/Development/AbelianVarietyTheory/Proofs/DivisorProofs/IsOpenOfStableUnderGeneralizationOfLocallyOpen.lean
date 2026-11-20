@@ -4,21 +4,17 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B _ _ U hgen hloc`. Use `set I := PrimeSpectrum.vanishingIdeal (Uᶜ) with hI`. Establish `hIle : ∀ q : PrimeSpectrum B, q ∈ Uᶜ → I ≤ q.asIdeal`. Introduce `q hq f hf`. Conclude with `(PrimeSpectrum.mem_vanishingIdeal _ f).1 hf q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ x : PrimeSpectrum B, x.asIdeal ∈ I.minimalPrimes → x ∉ U`. Introduce `x hx hxU`. Take `⟨g, hg, hgU⟩` from `hloc x hxU`. Establish `hfin` using `Ideal.finite_minimalPrimes_of_isNoetherianRing B I`. Use `set S := hfin.toFinset.erase x.asIdeal with hS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hJ : ¬ S.inf id ≤ x.asIdeal`. Introduce `h`. Take `⟨P, hPS, hPx⟩` from `(Ideal.IsPrime.inf_le' x.isPrime).1 h`. Establish `hPm : P ∈ I.minimalPrimes` using `(Set.Finite.mem_toFinset hfin).1 (Finset.mem_of_mem_erase hPS)`. Establish `hne : P ≠ x.asIdeal` using `Finset.ne_of_mem_erase hPS`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne (le_antisymm hPx (hx.2 hPm.1 hPx))`. Take `⟨c, hcJ, hcx⟩` from `Set.not_subset.1 hJ`. Establish `hgc : g * c ∈ I`. Rewrite using `[hI, PrimeSpectrum.mem_vanishingIdeal]`. Introduce `q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Take `⟨P, hPm, hPq⟩` from `Ideal.exists_minimalPrimes_le (hIle q hq)`. Distinguish the cases in `hPx : P = x.asIdeal`. Distinguish the cases in `hgq : g ∈ q.asIdeal`. Conclude with `q.asIdeal.mul_mem_right c hgq`. Conclude with `absurd (hgU q (show x.asIdeal ≤ q.asIdeal by rw [← hPx]; exact hPq) hgq) hq`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPS : P ∈ S` using `Finset.mem_erase.2 ⟨hPx, (Set.Finite.mem_toFinset hfin).2 hPm⟩`. Establish `: S.inf id ≤ P` using `Finset.inf_le (f := id) hPS`. Conclude with `q.asIdeal.mul_mem_left g (hPq (this hcJ))`. Break down `x.isPrime.mem_or_mem (hx.1.2 hgc) with h | h` into its components or cases. Conclude with `hg h`.
-
-Conclude with `hcx h`. Establish `hcl : IsClosed (Uᶜ)`. Rewrite using `[← closure_subset_iff_isClosed, ← PrimeSpectrum.zeroLocus_vanishingIdeal_eq_closure]`. Introduce `q hq`. Establish `hIq : I ≤ q.asIdeal` using `(PrimeSpectrum.mem_zeroLocus _ _).1 hq`.
-
-Take `⟨P, hPm, hPq⟩` from `Ideal.exists_minimalPrimes_le hIq`. Introduce `hqU`. Conclude with `key ⟨P, hPm.1.1⟩ hPm (hgen _ _ hPq hqU)`. Conclude with `isClosed_compl_iff.1 hcl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isOpen_of_stableUnderGeneralization_of_locally_open_in_closure :
     ∀ (B : Type) [CommRing B] [IsNoetherianRing B] (U : Set (PrimeSpectrum B)),

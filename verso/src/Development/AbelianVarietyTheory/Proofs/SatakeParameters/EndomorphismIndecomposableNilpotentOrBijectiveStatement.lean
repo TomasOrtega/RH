@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EndomorphismInde
 import Mathlib
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.endo_indecomposable_finite_length_nilpotent_or_bijective` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FEndomorphismIndecomposableNilpotentOrBijective.lean&line=5#L5)
 -/

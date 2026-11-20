@@ -20,7 +20,7 @@ instance isTopologicalRing_tens : IsTopologicalRing (R ⊗[F] E) :=
   IsModuleTopology.isTopologicalRing R (R ⊗[F] E)
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F E`. Set `e : R ⊗[F] E ≃ₗ[R] (Fin (Module.finrank F E) → R)` to `(Algebra.TensorProduct.basis R b).equivFun`. Conclude with `⟨Fin (Module.finrank F E), inferInstance, ⟨{ e.toEquiv with continuous_toFun := IsModuleTopology.continuous_of_linearMap e.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap }⟩⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_homeomorph_tens :
     ∃ (ι : Type) (_ : Fintype ι), Nonempty (R ⊗[F] E ≃ₜ (ι → R)) := by
@@ -41,9 +41,9 @@ instance t2Space_tensorProduct_finiteExtension : T2Space (R ⊗[F] E) := by
   exact h.isEmbedding.t2Space
 
 /- English proof (translation)
-Establish `e : (sigR R σ : R ⊗[F] E → R ⊗[F] E) = (σ.toLinearMap.baseChange R : R ⊗[F] E → R ⊗[F] E)`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r y => simp [sigR, LinearMap.baseChange_tmul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Rewrite using `[e]`. Conclude with `IsModuleTopology.continuous_of_linearMap _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_sigR (σ : E →ₐ[F] E) : Continuous (sigR R σ) := by
   have e : (sigR R σ : R ⊗[F] E → R ⊗[F] E) = (σ.toLinearMap.baseChange R : R ⊗[F] E → R ⊗[F] E) := by
@@ -64,7 +64,7 @@ instance t2Space_matrix_tensor : T2Space (Matrix (Fin M) (Fin M) (R ⊗[F] E)) :
   inferInstanceAs (T2Space (Fin M → Fin M → R ⊗[F] E))
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : GL (Fin M) (R ⊗[F] E) => Formalism.UG.cT (sigR R σ) (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR R J * (g : Matrix (Fin M) (Fin M) (R ⊗[F] E))`. Unfold `Formalism.UG.cT`. Conclude with `(((Units.continuous_val.matrix_map (continuous_sigR R σ)).matrix_transpose).matrix_mul continuous_const).matrix_mul Units.continuous_val`. Conclude with `isClosed_eq hc continuous_const`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isClosed_HR (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) :
     IsClosed (HR R σ J : Set (GL (Fin M) (R ⊗[F] E))) := by

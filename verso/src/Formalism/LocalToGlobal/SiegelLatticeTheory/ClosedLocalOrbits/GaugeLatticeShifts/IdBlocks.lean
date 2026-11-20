@@ -17,11 +17,11 @@ def IrrOn (H : Set G) (π : G → (V →L[ℂ] V)) : Prop :=
   ∀ U : Submodule ℂ V, (∀ h ∈ H, ∀ x ∈ U, π h x ∈ U) → U = ⊥ ∨ U = ⊤
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial V with hV | hV` into its components or cases. Conclude with `⟨0, fun x => Subsingleton.elim _ _⟩`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue T`. Use `⟨c, fun x => ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ h ∈ H, ∀ y ∈ Module.End.eigenspace T c, π h y ∈ Module.End.eigenspace T c`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h hh y hy`. Rewrite `hy`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[hT h hh, hy, map_smul]`. Break down `hirr _ hinv with h0 | h1` into its components or cases. Conclude with `absurd h0 (Module.End.hasEigenvalue_iff.1 hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `: x ∈ Module.End.eigenspace T c` using `h1 ▸ Submodule.mem_top`. Conclude with `Module.End.mem_eigenspace_iff.1 this`.
+A detailed English derivation is pending.
 -/
 theorem schur_scalar (H : Set G) (π : G → (V →L[ℂ] V)) (hirr : IrrOn H π) (T : V →ₗ[ℂ] V)
     (hT : ∀ h ∈ H, ∀ x, T (π h x) = π h (T x)) : ∃ c : ℂ, ∀ x, T x = c • x := by
@@ -46,39 +46,35 @@ variable {G V : Type*} [Group G] [MeasurableSpace G] [NormedAddCommGroup V] [Inn
   [FiniteDimensional ℂ V]
 
 /- English proof (translation)
-Establish `hae : ∀ᵐ g ∂μ, g ∈ H`. Rewrite using `[ae_iff]`. Conclude with `hc`. Establish `hnorm : ∀ g ∈ H, ‖π g w‖ = ‖w‖` using `fun g hg => by`. Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, hu g hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `F : V → G → V` to `fun x g => ⟪π g w, x⟫_ℂ • π g w`. Establish `hFm : ∀ x, AEStronglyMeasurable (F x) μ` using `fun x => ((hs w).inner aestronglyMeasurable_const).smul (hs w)`. Establish `hFi : ∀ x, Integrable (F x) μ`. Introduce `x`. Use `Integrable.of_bound (hFm x) (‖w‖ * ‖x‖ * ‖w‖) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `filter_upwards [hae] with g hg`. Combine the equalities or inequalities in the displayed calculation. Set `T : V →ₗ[ℂ] V` to `{ toFun := fun x => ∫ g, F x g ∂μ map_add' := by`. Introduce `x y`. Rewrite using `[← integral_add (hFi x) (hFi y)]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [F, inner_add_right, add_smul]`. Use the proof step `map_smul' := by`. Introduce `c x`. Rewrite using `[RingHom.id_apply, ← integral_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [F, inner_smul_right, mul_smul] }`. Establish `hT : ∀ x, T x = ∫ g, F x g ∂μ` using `fun x => rfl`. Establish `hcomm : ∀ k ∈ H, ∀ x, T (π k x) = π k (T x)`. Introduce `k hk x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hT, hT, ← (π k).integral_comp_comm (hFi x)]`. Establish `h1 : ∫ g, π k (F x g) ∂μ = ∫ g, F (π k x) (k * g) ∂μ`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with g hg`. Simplify using `only [F, map_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hm k hk g hg]`. Use `show _ = ⟪π k (π g w), π k x⟫_ℂ • π k (π g w)`. Rewrite using `[hu k hk]`. Rewrite using `[h1, ← integral_map (hmeas k).aemeasurable (by rw [hi k hk]; exact hFm (π k x)), hi k hk]`. Take `⟨c, hcT⟩` from `schur_scalar H π hirr T hcomm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hq : ∀ x, ⟪x, T x⟫_ℂ = ((∫ g, ‖⟪π g w, x⟫_ℂ‖ ^ 2 ∂μ : ℝ) : ℂ)`. Introduce `x`. Rewrite using `[hT, ← integral_inner (hFi x), ← integral_complex_ofReal]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [F, inner_smul_right]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← inner_conj_symm x (π g w), Complex.mul_conj']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hbd : ∀ x, Integrable (fun g => ‖⟪π g w, x⟫_ℂ‖ ^ 2) μ`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Integrable.of_bound (((hs w).inner aestronglyMeasurable_const).norm.pow 2) ((‖w‖ * ‖x‖) ^ 2) ?_` and prove the remaining obligations. Use `filter_upwards [hae] with g hg`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Use `norm_inner_le_norm (𝕜 := ℂ) (π g w) x` as an intermediate fact. Rewrite `this` using `[hnorm g hg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `gcongr`. Use `set b := stdOrthonormalBasis ℂ V`. Establish `htr : (c * Module.finrank ℂ V : ℂ) = ((μ.real Set.univ * ‖w‖ ^ 2 : ℝ) : ℂ)`. Establish `e1 : ∀ i, ⟪b i, T (b i)⟫_ℂ = c`. Introduce `i`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcT, inner_smul_right, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]`. Simplify using the standard rewrite rules. Establish `e2 : ∑ i, ⟪b i, T (b i)⟫_ℂ = c * Module.finrank ℂ V`. Simplify using `only [e1, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← e2]`. Simplify using `only [hq]`. Rewrite using `[← Complex.ofReal_sum, ← integral_finsetSum _ (fun i _ => hbd (b i))]`. Use `congr 1`. Establish `: ∀ g, ∑ i, ‖⟪π g w, b i⟫_ℂ‖ ^ 2 = ‖π g w‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Repeatedly rewrite using `[norm_inner_symm (π g w)]`. Conclude with `b.sum_sq_norm_inner_right (π g w)`. Repeatedly rewrite using `[this]`. Rewrite using `[integral_congr_ae (g := fun _ => ‖w‖ ^ 2) (by filter_upwards [hae] with g hg; rw [hnorm g hg])]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Measure.real]`. Break down `Nat.eq_zero_or_pos (Module.finrank ℂ V) with hd | hd` into its components or cases. Establish `: Subsingleton V` using `Module.finrank_zero_iff.1 hd`. Rewrite using `[Subsingleton.elim ξ 0]`. Simplify using `[hd]`.
-
-Establish `hq2` using `hq ξ`. Rewrite `hq2` using `[hcT, inner_smul_right, inner_self_eq_norm_sq_to_K]`. Establish `hdn : (Module.finrank ℂ V : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `hc' : c = ((μ.real Set.univ * ‖w‖ ^ 2 : ℝ) : ℂ) / Module.finrank ℂ V`. Rewrite using `[← htr]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite `hq2` using `[hc']`. Establish `e : ((μ.real Set.univ * ‖w‖ ^ 2 * ‖ξ‖ ^ 2 / Module.finrank ℂ V : ℝ) : ℂ) = ((μ.real Set.univ * ‖w‖ ^ 2 : ℝ) : ℂ) / (Module.finrank ℂ V : ℂ) * ((‖ξ‖ : ℂ) ^ 2)` using `by push_cast; ring`. Conclude with `(hq2.symm.trans e.symm)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem schur_avg (H : Set G) (π : G → (V →L[ℂ] V)) (μ : Measure G) [IsFiniteMeasure μ]
     (hc : μ Hᶜ = 0) (hm : ∀ g ∈ H, ∀ h ∈ H, π (g * h) = π g * π h)
@@ -182,11 +178,11 @@ def IsFundL (Γ Ω : Set G) : Prop :=
   MeasurableSet Ω ∧ (∀ x, ∃ s ∈ Γ, s * x ∈ Ω) ∧ ∀ x ∈ Ω, ∀ s ∈ Γ, s * x ∈ Ω → s = 1
 
 /- English proof (translation)
-Use `haveI : Countable Γ := hc.to_subtype`. Establish `hU : P = ⋃ a : Γ, P ∩ {n | (a : G) * n ∈ Q}`. Use extensionality with `n`. Simplify using `only [Set.mem_iUnion, Set.mem_inter_iff, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hn`. Take `⟨a, ha, haQ⟩` from `hex n`. Conclude with `⟨⟨a, ha⟩, hn, haQ⟩`. Introduce and unpack `⟨a, hn, _⟩`. Conclude with `hn`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [hU]`. Use `measure_iUnion ?_ (fun a => hP.inter ((measurable_const_mul (a : G)) hQ))` and prove the remaining obligations. Introduce `a b hab`. Use `Set.disjoint_left.2 fun n h1 h2 => hab ?_` and prove the remaining obligations. Conclude with `Subtype.ext (hun n a a.2 b b.2 h1.2 h2.2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measure_decomp (Γ P Q : Set G) (μ : Measure G) (hc : Γ.Countable) (hP : MeasurableSet P)
     (hQ : MeasurableSet Q) (hex : ∀ n, ∃ a ∈ Γ, a * n ∈ Q)
@@ -209,17 +205,17 @@ theorem measure_decomp (Γ P Q : Set G) (μ : Measure G) (hc : Γ.Countable) (hP
   exact Subtype.ext (hun n a a.2 b b.2 h1.2 h2.2)
 
 /- English proof (translation)
-Use `set A : Set G := {n | n * y ∈ Ω}`. Establish `hA : MeasurableSet A` using `(measurable_mul_const y) hΩ.1`. Establish `hexA : ∀ m, ∃ b ∈ Γ, b * m ∈ A`. Introduce `m`. Take `⟨s, hs, h⟩` from `hΩ.2.1 (m * y)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨s, hs, by simpa [A, mul_assoc] using h⟩`. Establish `hunA : ∀ m, ∀ b ∈ Γ, ∀ b' ∈ Γ, b * m ∈ A → b' * m ∈ A → b = b'`. Introduce `m b hb b' hb' h1 h2`. Establish `h3 : (b' * b⁻¹) * (b * m * y) ∈ Ω`. Simplify `h2` using `[A, mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hΩ.2.2 _ h1 _ (hmul _ hb' _ (hinv _ hb)) h3` as an intermediate fact. Conclude with `(mul_inv_eq_one.1 this).symm`. Establish `hunB : ∀ n, ∀ a ∈ Γ, ∀ a' ∈ Γ, a * n ∈ Ω → a' * n ∈ Ω → a = a'`. Introduce `n a ha a' ha' h1 h2`. Establish `h3 : (a' * a⁻¹) * (a * n) ∈ Ω` using `by simpa [mul_assoc] using h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hΩ.2.2 _ h1 _ (hmul _ ha' _ (hinv _ ha)) h3` as an intermediate fact. Conclude with `(mul_inv_eq_one.1 this).symm`. Rewrite using `[measure_decomp Γ A Ω μ hc hA hΩ.1 hΩ.2.1 hunB, measure_decomp Γ Ω A μ hc hΩ.1 hA hexA hunA]`. Establish `hterm : ∀ a : Γ, μ (A ∩ {n | (a : G) * n ∈ Ω}) = μ (Ω ∩ {m | (a : G)⁻¹ * m ∈ A})`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hS : MeasurableSet (Ω ∩ {m | (a : G)⁻¹ * m ∈ A})` using `hΩ.1.inter ((measurable_const_mul _) hA)`. Use `Measure.map_apply (μ := μ) (measurable_const_mul (a : G)) hS` as an intermediate fact. Rewrite `this` using `[hi a a.2]`. Rewrite using `[this]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use extensionality with `n`. Simplify using `[A, and_comm]`. Repeatedly rewrite using `[hterm]`. Set `e : Γ ≃ Γ` to `⟨fun a => ⟨(a : G)⁻¹, hinv a a.2⟩, fun a => ⟨(a : G)⁻¹, hinv a a.2⟩, fun a => by simp, fun a => by simp⟩`. Conclude with `(e.tsum_eq (fun b : Γ => μ (Ω ∩ {m | (b : G) * m ∈ A}))).symm.trans rfl |>.symm ▸ rfl`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem fund_vol (Γ Ω : Set G) (μ : Measure G) (hc : Γ.Countable)
     (hmul : ∀ a ∈ Γ, ∀ b ∈ Γ, a * b ∈ Γ) (hinv : ∀ a ∈ Γ, a⁻¹ ∈ Γ)
@@ -265,9 +261,9 @@ variable {G V : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [Topol
   [OpensMeasurableSpace G] [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
 
 /- English proof (translation)
-Establish `hae : ∀ᵐ g ∂μ, g ∈ H` using `by rw [ae_iff]; exact hc`. Use `Integrable.of_bound (((hs w).inner aestronglyMeasurable_const).norm.pow 2) ((‖w‖ * ‖ξ‖) ^ 2) ?_` and prove the remaining obligations. Use `filter_upwards [hae] with g hg`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Use `norm_inner_le_norm (𝕜 := ℂ) (π g w) ξ` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[show ‖π g w‖ = ‖w‖ by rw [@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, hu g hg]]`. Use `gcongr`.
+A detailed English derivation is pending.
 -/
 theorem integrable_sq (H : Set G) (π : G → (V →L[ℂ] V)) (μ : Measure G) [IsFiniteMeasure μ]
     (hc : μ Hᶜ = 0) (hu : ∀ g ∈ H, ∀ x y, ⟪π g x, π g y⟫_ℂ = ⟪x, y⟫_ℂ)
@@ -282,23 +278,21 @@ theorem integrable_sq (H : Set G) (π : G → (V →L[ℂ] V)) (μ : Measure G) 
   gcongr
 
 /- English proof (translation)
-Use `set c := ENNReal.ofReal (μH.real Set.univ * ‖ξ‖ ^ 2 / Module.finrank ℂ V) with hcdef`. Use `set q : V → ℝ≥0∞ := fun v => ‖⟪v, ξ⟫_ℂ‖ₑ ^ 2 with hqdef`. Establish `hq : Continuous q` using `(ENNReal.continuous_pow 2).comp (continuous_id.inner continuous_const).enorm`. Use `set f : G → ℝ≥0∞ := Ω.indicator (fun x => q (W x)) with hfdef`. Establish `hf : Measurable f` using `((hq.comp hWc).measurable).indicator hΩ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hψq : ∀ s ∈ S, ∀ v, q (ψ s • v) = q v`. Introduce `s hs v`. Simplify using `only [q]`. Rewrite using `[← ofReal_norm, ← ofReal_norm, inner_smul_left, norm_mul, RCLike.norm_conj, hψ s hs, one_mul]`. Establish `hqv : ∀ w : V, ∫⁻ h, q (π h w) ∂μH = c * ‖w‖ₑ ^ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Establish `hi` using `integrable_sq H π μH hH hπu hπs w ξ`. Establish `e0 : ∀ h, q (π h w) = ENNReal.ofReal (‖⟪π h w, ξ⟫_ℂ‖ ^ 2)`. Introduce `h`. Simplify using `only [q]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ofReal_norm, ENNReal.ofReal_pow (norm_nonneg _)]`. Repeatedly rewrite using `[e0]`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hi (Filter.Eventually.of_forall fun _ => by positivity), schur_avg H π μH hH (fun a ha b hb => hπm a (hHS ha) b (hHS hb)) hπu hHi (fun g => measurable_const_mul g) hπs hirr w ξ]`. Rewrite using `[hcdef, ← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← lintegral_indicator hΩ.1, hweil f hf]`. Establish `hin : ∀ x, ∫⁻ s, f (s * x) ∂((μN.prod μH).map (fun p => p.1 * p.2)) = μN Ω * (c * ‖W x‖ₑ ^ 2)`. Introduce `x`. Rewrite using `[lintegral_map (f := fun s => f (s * x)) (hf.comp (measurable_mul_const x)) measurable_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lintegral_prod_symm (f := fun a : G × G => f (a.1 * a.2 * x)) ((hf.comp (measurable_mul_const x)).comp measurable_mul).aemeasurable]`. Establish `hHa : ∀ᵐ h ∂μH, h ∈ H` using `by rw [ae_iff]; exact hH`. Establish `hNa : ∀ᵐ n ∂μN, n ∈ N` using `by rw [ae_iff]; exact hN`. Establish `hae : ∀ᵐ h ∂μH, ∫⁻ n, f (n * h * x) ∂μN = μN Ω * q (π h (W x))` using `by filter_upwards [hHa] with h hh`. Establish `e1 : ∀ᵐ n ∂μN, f (n * h * x) = {n | n * (h * x) ∈ Ω}.indicator (fun _ => q (π h (W x))) n` using `by filter_upwards [hNa] with n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hnh : n * h ∈ S` using `hNH n hn h hh`. Establish `hmem : (n ∈ {n | n * (h * x) ∈ Ω}) ↔ n * h * x ∈ Ω` using `by simp [mul_assoc]`. Distinguish the cases in `h1 : n * h * x ∈ Ω`. Rewrite using `[Set.indicator_of_mem (hmem.2 h1), hfdef, Set.indicator_of_mem h1] show q (W (n * h * x)) = q (π h (W x))`. Rewrite using `[hW _ hnh, hψq _ hnh, hπm _ (hNS hn) _ (hHS hh), hπN n hn, one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem (fun h2 => h1 (hmem.1 h2)), hfdef, Set.indicator_of_notMem h1]`. Rewrite using `[lintegral_congr_ae e1, lintegral_indicator_const (s := {n | n * (h * x) ∈ Ω}) ((measurable_mul_const (h * x)) hΩ.1), fund_vol Γ Ω μN hc hmul hinv hNi hΩ, mul_comm]`. Establish `hqs : AEMeasurable (fun h => q (π h (W x))) μH` using `(hq.comp_aestronglyMeasurable (hπs (W x))).aemeasurable`. Rewrite using `[lintegral_congr_ae hae, lintegral_const_mul'' _ hqs, hqv]`. Repeatedly rewrite using `[hin]`.
-
-Establish `hm : Measurable (fun x => ‖W x‖ₑ ^ 2)` using `hWc.enorm.measurable.pow_const 2`. Rewrite using `[lintegral_const_mul _ (hm.const_mul c), lintegral_const_mul _ hm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold_sq (μG μN μH ν : Measure G) [SFinite μN] [IsFiniteMeasure μH]
     (S N H Γ Ω : Set G) (π : G → (V →L[ℂ] V)) (ψ : G → ℂ) (W : G → V)
@@ -370,9 +364,9 @@ variable {G V : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [Topol
   [OpensMeasurableSpace G] [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
 
 /- English proof (translation)
-Establish `h0 : ((A - (c : ℂ) • ContinuousLinearMap.id ℂ V : V →L[ℂ] V) : V →ₗ[ℂ] V) = 0`. Use `(inner_map_self_eq_zero _).1 fun x => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.coe_sub', ContinuousLinearMap.coe_smul', ContinuousLinearMap.coe_id', ContinuousLinearMap.coe_coe, Pi.sub_apply, Pi.smul_apply, id, inner_sub_left, inner_smul_left]`. Rewrite using `[← inner_conj_symm (A x) x, h x, inner_self_eq_norm_sq_to_K, Complex.conj_ofReal, Complex.conj_ofReal]`. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `sub_self _`. Use extensionality with `x`. Use `LinearMap.congr_fun h0 x` as an intermediate fact. Simplify using `only [ContinuousLinearMap.coe_sub', ContinuousLinearMap.coe_coe, Pi.sub_apply, LinearMap.zero_apply, sub_eq_zero] at this`. Conclude with `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_smul_of_inner (A : V →L[ℂ] V) (c : ℝ) (h : ∀ ξ, ⟪ξ, A ξ⟫_ℂ = ((c * ‖ξ‖ ^ 2 : ℝ) : ℂ)) :
     A = (c : ℂ) • ContinuousLinearMap.id ℂ V := by
@@ -390,25 +384,23 @@ theorem eq_smul_of_inner (A : V →L[ℂ] V) (c : ℝ) (h : ∀ ξ, ⟪ξ, A ξ�
   exact this
 
 /- English proof (translation)
-Establish `hU : ∀ ξ : V, ∫⁻ x in Ω, ‖⟪W x, ξ⟫_ℂ‖ₑ ^ 2 ∂μG = μN Ω * ENNReal.ofReal (μH.real Set.univ * ‖ξ‖ ^ 2 / Module.finrank ℂ V)`. Introduce `ξ`. Rewrite using `[unfold_sq μG μN μH ν S N H Γ Ω π ψ W hweil hNS hHS hNH hπm hπN hπu hψ hW hWc hN hH hHi hπs hirr hc hmul hinv hNi hΩ ξ, hWn, mul_one]`. Use `set F : G → (V →L[ℂ] V) := fun x => (innerSL ℂ (W x)).smulRight (W x) with hFdef`. Establish `hFc : Continuous F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Continuous fun x => innerSL ℂ (W x)` using `(innerSL ℂ).continuous.comp hWc`. Conclude with `((ContinuousLinearMap.smulRightL ℂ V V).continuous.comp h1).clm_apply hWc`. Use `set b := stdOrthonormalBasis ℂ V`. Establish `hpar : ∀ w : V, ‖w‖ₑ ^ 2 = ∑ i, ‖⟪w, b i⟫_ℂ‖ₑ ^ 2`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `b.sum_sq_norm_inner_right w`. Repeatedly rewrite using `[← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Rewrite using `[← ENNReal.ofReal_sum_of_nonneg (fun _ _ => by positivity), ← e]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_inner_symm]`. Establish `hint : Integrable F (μG.restrict Ω)`. Use `⟨hFc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`. Establish `e1 : ∀ x, ‖F x‖ₑ = ‖W x‖ₑ ^ 2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x`. Rewrite using `[← ofReal_norm, hFdef]`. Simplify using `only`. Rewrite using `[ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm, ← sq, ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`. Repeatedly rewrite using `[e1, hpar]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lintegral_finsetSum (f := fun i x => ‖⟪W x, b i⟫_ℂ‖ₑ ^ 2) _ (fun i _ => ((ENNReal.continuous_pow 2).comp (hWc.inner continuous_const).enorm).measurable)]`. Repeatedly rewrite using `[hU]`. Conclude with `ENNReal.sum_lt_top.2 fun i _ => ENNReal.mul_lt_top hΩf.lt_top ENNReal.ofReal_lt_top`. Use `eq_smul_of_inner _ _ fun ξ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.integral_apply hint, ← integral_inner (hint.apply_continuousLinearMap ξ)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ x, ⟪ξ, F x ξ⟫_ℂ = ((‖⟪W x, ξ⟫_ℂ‖ ^ 2 : ℝ) : ℂ)`. Introduce `x`. Simplify using `only [hFdef, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_smul_right]`. Rewrite using `[← inner_conj_symm ξ (W x), Complex.mul_conj']`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e2]`. Rewrite using `[integral_complex_ofReal]`. Use `congr 1`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (f := fun x => ‖⟪W x, ξ⟫_ℂ‖ ^ 2) (Filter.Eventually.of_forall fun _ => by positivity) (((continuous_pow 2).comp (hWc.inner continuous_const).norm).aestronglyMeasurable)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `e3 : ∀ x, ENNReal.ofReal (‖⟪W x, ξ⟫_ℂ‖ ^ 2) = ‖⟪W x, ξ⟫_ℂ‖ₑ ^ 2`. Introduce `x`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`. Repeatedly rewrite using `[e3]`. Rewrite using `[hU, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]`.
-
-Simplify using `only [Measure.real]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem oo_eq (μG μN μH ν : Measure G) [SFinite μN] [IsFiniteMeasure μH]
     (S N H Γ Ω : Set G) (π : G → (V →L[ℂ] V)) (ψ : G → ℂ) (W : G → V)
@@ -484,15 +476,13 @@ section WeilInt
 variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G]
 
 /- English proof (translation)
-Use `set F : G → ℝ≥0∞ := fun x => ∫⁻ s, ENNReal.ofReal (f (s * x)) ∂μS with hFdef`. Establish `hFm : Measurable F`. Establish `: Measurable (Function.uncurry fun x s => ENNReal.ofReal (f (s * x)))` using `ENNReal.measurable_ofReal.comp (hf.comp (measurable_snd.mul measurable_fst))`. Conclude with `this.lintegral_prod_right'`. Establish `hW` using `hweil (fun x => ENNReal.ofReal (f x)) (ENNReal.measurable_ofReal.comp hf)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : ∫⁻ x, F x ∂ν < ⊤` using `by show ∫⁻ x, ∫⁻ s, ENNReal.ofReal (f (s * x)) ∂μS ∂ν < ⊤`. Rewrite using `[← hW]`. Conclude with `hfi.lintegral_lt_top`. Establish `hae : ∀ᵐ x ∂ν, F x < ⊤` using `ae_lt_top hFm hlt.ne`. Establish `hint : ∀ x, ∫ s, f (s * x) ∂μS = (F x).toReal` using `fun x => integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun s => h0 _) (hf.comp (measurable_mul_const x)).aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Use `⟨(hf.comp (measurable_mul_const x)).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`. Establish `e : ∀ s, ‖f (s * x)‖ₑ = ENNReal.ofReal (f (s * x))` using `fun s => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← ofReal_norm, Real.norm_eq_abs, abs_of_nonneg (h0 _)]`. Repeatedly rewrite using `[e]`. Conclude with `hx`. Repeatedly rewrite using `[hint]`. Conclude with `integrable_toReal_of_lintegral_ne_top hFm.aemeasurable hlt.ne`.
-
-Repeatedly rewrite using `[hint]`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall h0) hf.aestronglyMeasurable, integral_toReal hFm.aemeasurable hae]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem weil_nonneg (μG μS ν : Measure G) [SFinite μS]
     (hweil : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂μG = ∫⁻ x, (∫⁻ s, f (s * x) ∂μS) ∂ν)
@@ -528,11 +518,9 @@ theorem weil_nonneg (μG μS ν : Measure G) [SFinite μS]
     congr 1
 
 /- English proof (translation)
-Take `⟨hp1, hp2, hp3⟩` from `weil_nonneg μG μS ν hweil (fun x => max (f x) 0) (hf.max measurable_const) (fun x => le_max_right _ _) hfi.pos_part`. Take `⟨hn1, hn2, hn3⟩` from `weil_nonneg μG μS ν hweil (fun x => max (-f x) 0) (hf.neg.max measurable_const) (fun x => le_max_right _ _) hfi.neg_part`. Establish `hsplit : ∀ y, f y = max (f y) 0 - max (-f y) 0` using `fun y => (max_zero_sub_max_neg_zero_eq_self _).symm`. Establish `hin : ∀ᵐ x ∂ν, ∫ s, f (s * x) ∂μS = ∫ s, max (f (s * x)) 0 ∂μS - ∫ s, max (-f (s * x)) 0 ∂μS` using `by filter_upwards [hp1, hn1] with x h1 h2`. Rewrite using `[← integral_sub h1 h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun s => hsplit _)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hp1, hn1] with x h1 h2`. Conclude with `(h1.sub h2).congr (Filter.Eventually.of_forall fun s => (hsplit _).symm)`. Conclude with `(hp2.sub hn2).congr (hin.mono fun x hx => hx.symm)`.
-
-Rewrite using `[integral_congr_ae hin, integral_sub hp2 hn2, ← hp3, ← hn3, ← integral_sub hfi.pos_part hfi.neg_part]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun y => hsplit y)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_real (μG μS ν : Measure G) [SFinite μS]
     (hweil : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂μG = ∫⁻ x, (∫⁻ s, f (s * x) ∂μS) ∂ν)
@@ -556,15 +544,13 @@ theorem weil_real (μG μS ν : Measure G) [SFinite μS]
     exact integral_congr_ae (Filter.Eventually.of_forall fun y => hsplit y)
 
 /- English proof (translation)
-Take `⟨hr1, hr2, hr3⟩` from `weil_real μG μS ν hweil (fun x => (g x).re) (Complex.measurable_re.comp hg) hgi.re`. Take `⟨hi1, hi2, hi3⟩` from `weil_real μG μS ν hweil (fun x => (g x).im) (Complex.measurable_im.comp hg) hgi.im`. Establish `h1 : ∀ᵐ x ∂ν, Integrable (fun s => g (s * x)) μS` using `by filter_upwards [hr1, hi1] with x h1 h2`. Conclude with `Integrable.re_im_iff.1 ⟨h1, h2⟩`. Establish `hre : ∀ᵐ x ∂ν, (∫ s, g (s * x) ∂μS).re = ∫ s, (g (s * x)).re ∂μS` using `by filter_upwards [h1] with x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(integral_re hx).symm`. Establish `him : ∀ᵐ x ∂ν, (∫ s, g (s * x) ∂μS).im = ∫ s, (g (s * x)).im ∂μS` using `by filter_upwards [h1] with x hx`. Conclude with `(integral_im hx).symm`. Establish `h2 : Integrable (fun x => ∫ s, g (s * x) ∂μS) ν`. Use `Integrable.re_im_iff.1 ⟨hr2.congr (hre.mono fun x hx => hx.symm), hi2.congr (him.mono fun x hx => hx.symm)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨h1, Complex.ext ?_ ?_⟩` and prove the remaining obligations. Establish `e1` using `integral_re hgi`. Establish `e2` using `integral_re h2`. Simplify using `only [RCLike.re_to_complex] at e1 e2`. Rewrite using `[← e1, ← e2, integral_congr_ae hre]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hr3`. Establish `e1` using `integral_im hgi`. Establish `e2` using `integral_im h2`. Simplify using `only [RCLike.im_to_complex] at e1 e2`. Rewrite using `[← e1, ← e2, integral_congr_ae him]`.
-
-Conclude with `hi3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_complex (μG μS ν : Measure G) [SFinite μS]
     (hweil : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂μG = ∫⁻ x, (∫⁻ s, f (s * x) ∂μS) ∂ν)
@@ -603,23 +589,21 @@ variable {G V V' : Type*} [Group G] [MeasurableSpace G] [NormedAddCommGroup V] [
   [FiniteDimensional ℂ V] [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] [FiniteDimensional ℂ V']
 
 /- English proof (translation)
-Establish `hae : ∀ᵐ g ∂μ, g ∈ H` using `by rw [ae_iff]; exact hc`. Establish `hnorm : ∀ g ∈ H, ‖π g w‖ = ‖w‖` using `fun g hg => by`. Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, hu g hg]`. Establish `hnormσ : ∀ g ∈ H, ‖σ g w'‖ = ‖w'‖` using `fun g hg => by`. Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, huσ g hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `F : V' → G → V` to `fun x g => ⟪σ g w', x⟫_ℂ • π g w`. Establish `hFm : ∀ x, AEStronglyMeasurable (F x) μ` using `fun x => ((hsσ w').inner aestronglyMeasurable_const).smul (hs w)`. Establish `hFi : ∀ x, Integrable (F x) μ`. Introduce `x`. Use `Integrable.of_bound (hFm x) (‖w'‖ * ‖x‖ * ‖w‖) ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hae] with g hg`. Combine the equalities or inequalities in the displayed calculation. Set `T : V' →ₗ[ℂ] V` to `{ toFun := fun x => ∫ g, F x g ∂μ map_add' := by`. Introduce `x y`. Rewrite using `[← integral_add (hFi x) (hFi y)]`.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [F, inner_add_right, add_smul]`. Use the proof step `map_smul' := by`. Introduce `c x`. Rewrite using `[RingHom.id_apply, ← integral_smul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [F, inner_smul_right, mul_smul] }`. Establish `hT : ∀ x, T x = ∫ g, F x g ∂μ` using `fun x => rfl`. Establish `hcomm : ∀ k ∈ H, ∀ x, T (σ k x) = π k (T x)`. Introduce `k hk x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hT, hT, ← (π k).integral_comp_comm (hFi x)]`. Establish `h1 : ∫ g, π k (F x g) ∂μ = ∫ g, F (σ k x) (k * g) ∂μ`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with g hg`. Simplify using `only [F, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm k hk g hg, hmσ k hk g hg]`. Use `show _ = ⟪σ k (σ g w'), σ k x⟫_ℂ • π k (π g w)`. Rewrite using `[huσ k hk]`. Rewrite using `[h1, ← integral_map (hmeas k).aemeasurable (by rw [hi k hk]; exact hFm (σ k x)), hi k hk]`. Establish `hT0` using `hne T hcomm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : ⟪ξ, T η⟫_ℂ = 0` using `by rw [hT0]; simp`. Rewrite `h` using `[hT, ← integral_inner (hFi η)]`. Rewrite using `[← h]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [F, inner_smul_right]`.
-
-Rewrite using `[inner_conj_symm]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem schur_cross (H : Set G) (π : G → (V →L[ℂ] V)) (σ : G → (V' →L[ℂ] V')) (μ : Measure G) [IsFiniteMeasure μ]
     (hc : μ Hᶜ = 0) (hm : ∀ g ∈ H, ∀ h ∈ H, π (g * h) = π g * π h)
@@ -686,23 +670,23 @@ variable {G V V' : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [To
   [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] [FiniteDimensional ℂ V']
 
 /- English proof (translation)
-Use extensionality with `η`. Use `ext_inner_left ℂ fun ξ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.integral_apply hint η, ← integral_inner (hint.apply_continuousLinearMap η) ξ]`. Simplify using `only [ContinuousLinearMap.zero_apply, inner_zero_right]`. Use `set g0 : G → ℂ := fun x => starRingEnd ℂ ⟪W x, ξ⟫_ℂ * ⟪W' x, η⟫_ℂ with hg0`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e0 : ∀ x, ⟪ξ, ((innerSL ℂ (W' x)).smulRight (W x)) η⟫_ℂ = g0 x`. Introduce `x`. Simplify using `only [hg0, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_smul_right]`. Rewrite using `[inner_conj_symm]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[e0]`. Establish `hg0c : Continuous g0` using `(Complex.continuous_conj.comp (hWc.inner continuous_const)).mul (hW'c.inner continuous_const)`. Use `set g : G → ℂ := Ω.indicator g0 with hgdef`. Establish `hgm : Measurable g` using `hg0c.measurable.indicator hΩ.1`. Establish `hgi : Integrable g μG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(integrable_indicator_iff hΩ.1).2 ?_` and prove the remaining obligations. Use `(hint.apply_continuousLinearMap η).const_inner (𝕜 := ℂ) ξ` as an intermediate fact. Conclude with `this.congr (Filter.Eventually.of_forall fun x => e0 x)`. Rewrite using `[← integral_indicator hΩ.1]`. Take `⟨hae, heq⟩` from `weil_complex μG ((μN.prod μH).map (fun p => p.1 * p.2)) ν hweil g hgm hgi`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Use `integral_eq_zero_of_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Establish `hxp : Integrable (fun p : G × G => g (p.1 * p.2 * x)) (μN.prod μH)` using `(integrable_map_measure hx.1 measurable_mul.aemeasurable).1 hx`. Rewrite using `[integral_map measurable_mul.aemeasurable hx.1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_prod_symm (fun p : G × G => g (p.1 * p.2 * x)) hxp]`. Establish `hHa : ∀ᵐ h ∂μH, h ∈ H` using `by rw [ae_iff]; exact hH`. Establish `hNa : ∀ᵐ n ∂μN, n ∈ N` using `by rw [ae_iff]; exact hN`. Establish `hin : ∀ᵐ h ∂μH, ∫ n, g (n * h * x) ∂μN = (μN Ω).toReal * (starRingEnd ℂ ⟪π h (W x), ξ⟫_ℂ * ⟪σ h (W' x), η⟫_ℂ)` using `by filter_upwards [hHa] with h hh`. Establish `e1 : ∀ᵐ n ∂μN, g (n * h * x) = {n | n * (h * x) ∈ Ω}.indicator (fun _ => starRingEnd ℂ ⟪π h (W x), ξ⟫_ℂ * ⟪σ h (W' x), η⟫_ℂ) n` using `by filter_upwards [hNa] with n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hnh : n * h ∈ S` using `hNH n hn h hh`. Establish `hmem : (n ∈ {n | n * (h * x) ∈ Ω}) ↔ n * h * x ∈ Ω` using `by simp [mul_assoc]`. Distinguish the cases in `h1 : n * h * x ∈ Ω`. Rewrite using `[Set.indicator_of_mem (hmem.2 h1), hgdef, Set.indicator_of_mem h1]`. Simplify using `only [hg0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hW _ hnh, hW' _ hnh, hπm _ (hNS hn) _ (hHS hh), hσm _ (hNS hn) _ (hHS hh), hπN n hn, hσN n hn, one_mul, one_mul, inner_smul_left, inner_smul_left, map_mul, Complex.conj_conj]`. Establish `hψ1 : ψ (n * h) * starRingEnd ℂ (ψ (n * h)) = 1`. Rewrite using `[Complex.mul_conj', hψ _ hnh]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_notMem (fun h2 => h1 (hmem.1 h2)), hgdef, Set.indicator_of_notMem h1]`. Rewrite using `[integral_congr_ae e1, integral_indicator_const (s := {n | n * (h * x) ∈ Ω}) _ ((measurable_mul_const (h * x)) hΩ.1), Measure.real, fund_vol Γ Ω μN hc hmul hinv hNi hΩ, Complex.real_smul]`. Rewrite using `[integral_congr_ae hin, integral_const_mul, schur_cross H π σ μH hH (fun a ha b hb => hπm a (hHS ha) b (hHS hb)) (fun a ha b hb => hσm a (hHS ha) b (hHS hb)) hπu hσu hHi (fun g => measurable_const_mul g) hπs hσs hne (W x) ξ (W' x) η, mul_zero]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cross_zero (μG μN μH ν : Measure G) [SFinite μN] [IsFiniteMeasure μH]
     (S N H Γ Ω : Set G) (π : G → (V →L[ℂ] V)) (σ : G → (V' →L[ℂ] V')) (ψ : G → ℂ) (W : G → V) (W' : G → V')
@@ -788,9 +772,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.TermOp.KExpCut
 
 /- English proof (translation)
-Unfold `psiR`. Establish `hS : ∑ a, (rootCoord ε e f z g a + star (rootCoord ε e f z g a)) = ((∑ a, 2 * (rootCoord ε e f z g a).re : ℝ) : ℂ)`. Use `push_cast`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.add_conj]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hS, show 2 * (Real.pi : ℂ) * Complex.I * (((∑ a, 2 * (rootCoord ε e f z g a).re : ℝ) : ℂ) / (gg : ℂ)) = ((2 * Real.pi * ((∑ a, 2 * (rootCoord ε e f z g a).re) / gg) : ℝ) : ℂ) * Complex.I by push_cast; ring]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_psiR {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ)
     (g : Matrix (Fin n) (Fin n) ℂ) : ‖psiR ε gg e f z g‖ = 1 := by
@@ -808,22 +792,22 @@ theorem norm_psiR {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r → 
 variable {D : D7} {X : HidaSetting D}
 
 /- English proof (translation)
-Simplify using `only [HidaSetting.psiInfU, psiInf, norm_prod, norm_psiR, Finset.prod_const_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_psiInfU (u : D.what₂.Word) (s : X.B.I.Ginf) : ‖X.psiInfU u s‖ = 1 := by
   simp only [HidaSetting.psiInfU, psiInf, norm_prod, norm_psiR, Finset.prod_const_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_mulVec, Matrix.sub_mulVec, ← Matrix.mulVec_mulVec, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_fix {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ) (h : B *ᵥ x = x) :
     (A * B - 1) *ᵥ x = (A - 1) *ᵥ x := by
   rw [Matrix.sub_mulVec, Matrix.sub_mulVec, ← Matrix.mulVec_mulVec, h]
 
 /- English proof (translation)
-Introduce `v`. Establish `hm : uMat ((n * h) v) = uMat (n v) * uMat (h v)` using `by simp [uMat]`. Establish `he : ∀ a, uMat (h v) *ᵥ rv X.B.I v (X.eR a) = rv X.B.I v (X.eR a)` using `fun a => hh v _ (Or.inl (Or.inl ⟨a, rfl⟩))`. Establish `hz : uMat (h v) *ᵥ rv X.B.I v (X.zR u) = rv X.B.I v (X.zR u)` using `hh v _ (Or.inr rfl)`. Take `⟨⟨hne, hnz⟩, _⟩` from `hn v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm, mulVec_fix _ _ _ (he a)]`. Conclude with `hne a`. Rewrite using `[hm, mulVec_fix _ _ _ hz]`. Conclude with `hnz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nh_mem (u : D.what₂.Word) (n h : X.B.I.Ginf) (hn : n ∈ X.NinfU u) (hh : h ∈ Hinf X u) :
     n * h ∈ X.SinfU u := by
@@ -840,7 +824,7 @@ theorem nh_mem (u : D.what₂.Word) (n h : X.B.I.Ginf) (hn : n ∈ X.NinfU u) (h
     exact hnz
 
 /- English proof (translation)
-Use `show IsClosed {s : X.B.I.Ginf | ∀ v, ∀ x ∈ fixSet X u, uMat (s v) *ᵥ rv X.B.I v x = rv X.B.I v x}`. Simplify using `only [Set.setOf_forall]`. Use `isClosed_iInter fun v => isClosed_iInter fun x => isClosed_iInter fun _ => isClosed_eq ?_ continuous_const` and prove the remaining obligations. Conclude with `Continuous.matrix_mulVec ((Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply v)) continuous_const`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_Hinf (u : D.what₂.Word) : IsClosed ((Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf) := by
   show IsClosed {s : X.B.I.Ginf | ∀ v, ∀ x ∈ fixSet X u, uMat (s v) *ᵥ rv X.B.I v x = rv X.B.I v x}
@@ -850,9 +834,9 @@ theorem isClosed_Hinf (u : D.what₂.Word) : IsClosed ((Hinf X u : Subgroup X.B.
     continuous_const
 
 /- English proof (translation)
-Establish `hc : ContinuousOn (fun g => X.piU u g x) ((Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf)` using `((X.piU_rep u).2.2.2.2 x).mono (fun s hs => hinf_le_sinf X u s hs)`. Establish `hm` using `hc.aestronglyMeasurable (μ := X.muH u) (isClosed_Hinf u).measurableSet`. Establish `hae : ∀ᵐ g ∂(X.muH u), g ∈ ((Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf)`. Rewrite using `[ae_iff]`. Conclude with `(X.muH_haar u).2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hm` using `[Measure.restrict_eq_self_of_ae_mem hae]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem piU_aesm (u : D.what₂.Word) (x : X.Vpi u) : AEStronglyMeasurable (fun g => X.piU u g x) (X.muH u) := by
   have hc : ContinuousOn (fun g => X.piU u g x) ((Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf) :=
@@ -867,7 +851,7 @@ variable (X) in
 def PiIrr (u : D.what₂.Word) : Prop := IrrOn ((Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf) (X.piU u)
 
 /- English proof (translation)
-Use extensionality with `ξ`. Simplify using `[rankOneInnerOperator_apply, inner_smul_left, smul_smul, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rk1_smul_right {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] (v : V) (c : ℂ) (w : V') :
@@ -876,13 +860,11 @@ theorem rk1_smul_right {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace 
   simp [rankOneInnerOperator_apply, inner_smul_left, smul_smul, mul_comm]
 
 /- English proof (translation)
-Use `haveI : SigmaFinite (X.muN u) := (X.muN_haar u).1`. Use `haveI : IsFiniteMeasure (X.muH u) := ⟨hHf.lt_top⟩`. Establish `hW : ∀ x, X.Wu u (t.pt.1⁻¹ * x) = X.psiInfU u t.pt.1⁻¹ • X.Wu u x`. Introduce `x`. Rewrite using `[(X.Wu_spec u).1 _ (fun v => (hγ v).1) x]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : X.piU u t.pt.1⁻¹ = 1` using `(X.piU_rep u).2.2.2.1 _ hγ`. Rewrite using `[h1]`. Both sides reduce to the same expression. Establish `e1 : OOt t = starRingEnd ℂ (X.psiInfU u t.pt.1⁻¹) • ∫ x in FundOf t, (innerSL ℂ (X.Wu u x)).smulRight (X.Wu u x) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I)`. Unfold `OOt OO`.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← integral_smul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hW x, rk1_smul_right]`. Both sides reduce to the same expression.
-
-Rewrite using `[e1, oo_eq (Formalism.L2.SG.ProjRows.muInf X.B.I) (X.muN u) (X.muH u) (X.nuQ u) (X.SinfU u) (X.NinfU u) ((Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf) (ROinf t) (FundOf t) (X.piU u) (X.psiInfU u) (X.Wu u) (X.nuQ_weil u) (fun s hs v => (hs v).1) (fun s hs => hinf_le_sinf X u …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oot_eq {u : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (t : GTerm X u u F0 F0 what₂ what₂)
@@ -935,7 +917,7 @@ def Meets (cs : ColSys X u what₂) (cs' : ColSys X u' rows') (t : GTerm X u u' 
     kOf X u u' (cs.h ρ : X.B.I.Gf) (cs'.h ρ' : X.B.I.Gf) t.pt ∈ X.K2
 
 /- English proof (translation)
-Unfold `blk`. Conclude with `if_neg h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem blk_of_not (cs : ColSys X u what₂) (cs' : ColSys X u' rows') (FdN FdN' : Set X.B.I.Ginf)
     {t : GTerm X u u' F0 F0' what₂ rows'} {ρ : cs.Cl} {ρ' : cs'.Cl} (h : ¬ Meets cs cs' t ρ ρ') :
@@ -943,7 +925,7 @@ theorem blk_of_not (cs : ColSys X u what₂) (cs' : ColSys X u' rows') (FdN FdN'
   unfold blk; exact if_neg h
 
 /- English proof (translation)
-Unfold `blk`. Conclude with `if_pos h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem blk_of (cs : ColSys X u what₂) (cs' : ColSys X u' rows') (FdN FdN' : Set X.B.I.Ginf)
     {t : GTerm X u u' F0 F0' what₂ rows'} {ρ : cs.Cl} {ρ' : cs'.Cl} (h : Meets cs cs' t ρ ρ') :
@@ -980,25 +962,23 @@ def IdMeetVol (cs : ColSys X u what₂) (FdN : Set X.B.I.Ginf) : Prop :=
     X.muN u (FundOf t) = X.muN u FdN
 
 /- English proof (translation)
-Introduce `_ ρ ρ'`. Break down `subsingleton_or_nontrivial (X.Vpi u) with hs | hs` into its components or cases. Establish `hall : ∀ A B : X.Vpi u →L[ℂ] X.Vpi u, A = B` using `fun A B => by`. Use extensionality with `x`. Conclude with `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hall (if ρ = ρ' then _ else _) 0, show (fun t : {t : GTerm X u u F0 F0 what₂ what₂ // t.isId} => blk cs cs FdN FdN t.1 ρ ρ') = fun _ => 0 from`. Use function extensionality and compare the values at `fun _ => hall _ _]`. Conclude with `hasSum_zero`. Distinguish the cases in `hρ : ρ = ρ'`. Substitute `hρ` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos rfl]`. Take `⟨t0, ht0, hm0⟩` from `h1.2.2 ρ`. Establish `hval : blk cs cs FdN FdN t0 ρ ρ = ContinuousLinearMap.id ℂ (X.Vpi u)`. Take `⟨hγ, hph⟩` from `hP ρ t0 ht0 hm0`. Take `⟨hRc, hRm, hRi, hRN⟩` from `hR ρ t0 ht0 hm0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvol` using `hV ρ t0 ht0 hm0`. Establish `hΩ : IsSFund X.B.I (ROinf t0) (FundOf t0)`. Establish `h` using `hFE t0`. Unfold `FundOf`. Rewrite using `[dif_pos h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h.choose_spec`. Establish `hNf : X.muN u FdN ≠ ⊤` using `fun h => by rw [h] at hN0; simp at hN0`. Establish `hHf : X.muH u Set.univ ≠ ⊤` using `fun h => by rw [h] at hH0; simp at hH0`. Rewrite using `[blk_of cs cs FdN FdN hm0, oot_eq t0 hΩ hγ hRc hRm hRi hRN hirr hHf (hvol ▸ hNf), smul_smul, smul_smul]`. Establish `hd : (0 : ℝ) < Module.finrank ℂ (X.Vpi u)` using `by exact_mod_cast Module.finrank_pos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : 0 < X.volK2` using `ENNReal.toReal_pos hK2.2.2.1.ne' hK2.2.2.2.ne`. Establish `hc0 : 0 < c0X X u FdN` using `by unfold c0X; positivity`. Establish `hscl : scl FdN FdN (X` using `X) (u := u) (u' := u) = (c0X X u FdN)⁻¹ := by`. Unfold `scl`. Rewrite using `[Real.sqrt_mul_self hc0.le]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set k := X.chi2 (kOf X u u (cs.h ρ : X.B.I.Gf) (cs.h ρ : X.B.I.Gf) t0.pt)`. Use `set ps := starRingEnd ℂ (X.psiInfU u t0.pt.1⁻¹)`. Establish `hcoef : ((scl FdN FdN (X` using `X) (u := u) (u' := u) * X.volK2 : ℝ) : ℂ) * (k * (ps * (((X.muN u).real (FundOf t0) * (X.muH u).real Set.univ / Module.finrank ℂ (X.Vpi u) : ℝ) : ℂ))) = 1 := by`. Rewrite using `[show k * (ps * (((X.muN u).real (FundOf t0) * (X.muH u).real Set.univ / Module.finrank ℂ (X.Vpi u) : ℝ) : ℂ)) = (k * ps) * (((X.muN u).real (FundOf t0) * (X.muH u).real Set.univ / Module.finrank ℂ (X.Vpi u) : ℝ) : ℂ) by ring, hph, one_mul, ← Complex.ofReal_mul, Complex.ofReal_eq …`. Simplify using `only [Measure.real, hvol]`.
+Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `c0X`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_assoc, hcoef, one_smul]`. Establish `hz : ∀ t : {t : GTerm X u u F0 F0 what₂ what₂ // t.isId}, t ≠ ⟨t0, ht0⟩ → blk cs cs FdN FdN t.1 ρ ρ = 0`. Introduce `t ht`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `blk_of_not _ _ _ _ fun hm => ht (Subtype.ext (h1.2.1 ρ t.1 t0 t.2 ht0 hm hm0))`. Use `hasSum_single (f := fun t : {t : GTerm X u u F0 F0 what₂ what₂ // t.isId} => blk cs cs FdN FdN t.1 ρ ρ) ⟨t0, ht0⟩ hz` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[hval]`. Then use the resulting hypothesis. Rewrite using `[if_neg hρ]`.
-
-Establish `hz : (fun t : {t : GTerm X u u F0 F0 what₂ what₂ // t.isId} => blk cs cs FdN FdN t.1 ρ ρ') = fun _ => 0`. Use function extensionality and compare the values at `fun t => blk_of_not _ _ _ _ fun hm => hρ (h1.1 ρ ρ' t.1 t.2 hm)`. Rewrite using `[hz]`. Conclude with `hasSum_zero`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idDiagBlocks_of (cs : ColSys X u what₂) (FdN : Set X.B.I.Ginf) (hK2 : X.LevelSubgroupNormalized)
     (hFE : FundExists X u u F0 F0 what₂ what₂) (hirr : PiIrr X u)
@@ -1081,7 +1061,7 @@ def IdMeetC : Prop :=
       IdMeetVol (X.Fu u) (Y.cs u) (Y.FN u)
 
 /- English proof (translation)
-Establish `hK2` using `Formalism.L2.SG.Closed.level_subgroup_properties X`. Take `⟨hN, hH⟩` from `hV D X Y u hK2`. Take `⟨h1, h2, h3, h4⟩` from `hM D X Y u hC hFE`. Conclude with `idDiagBlocks_of (Y.cs u) (Y.FN u) hK2 hFE (hI D X u) hH (pos_of_mul_pos_right hN ENNReal.toReal_nonneg) h1 h2 h3 h4`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem idDiagBlocksC (hV : VolPosC) (hI : PiIrrC) (hM : IdMeetC) (D : D7) (X : HidaSetting D) (Y : Full X)
     (u : D.what₂.Word) (hC : NeatKu X u Y.hK)
@@ -1099,13 +1079,13 @@ def IdCellDiagNeatC : Prop :=
     Formalism.L2.SG.TermOp.IdCellDiag (X.Fu u) (Y.cs u) (Y.FN u)
 
 /- English proof (translation)
-Introduce `D X Y u hC hFE` and use `idCellDiag_of (Y.cs u) (Y.FN u) (idDiagBlocksC hV hI hM D X Y u hC hFE)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem idCellDiagNeatC_of (hV : VolPosC) (hI : PiIrrC) (hM : IdMeetC) : IdCellDiagNeatC :=
   fun D X Y u hC hFE => idCellDiag_of (Y.cs u) (Y.FN u) (idDiagBlocksC hV hI hM D X Y u hC hFE)
 
 /- English proof (translation)
-The claim follows from `idCellDiagC_of fun D X Y u _ hFE _ => idDiagBlocksC hV hI hM D X Y u (hN D X Y u) hFE`.
+A detailed English derivation is pending.
 -/
 theorem idCellDiagC_of_steps (hV : VolPosC) (hI : PiIrrC) (hM : IdMeetC) (hN : NeatC) : IdCellDiagC :=
   idCellDiagC_of fun D X Y u _ hFE _ => idDiagBlocksC hV hI hM D X Y u (hN D X Y u) hFE
@@ -1145,17 +1125,11 @@ def IdOffRO : Prop :=
       ROinf t ⊆ X.NinfU u
 
 /- English proof (translation)
-Use `haveI : SigmaFinite (X.muN u) := (X.muN_haar u).1`. Use `haveI : IsFiniteMeasure (X.muH u) := ⟨hHf.lt_top⟩`. Use `set γ := t.pt.1 with hγ`. Establish `hSH : ∀ h ∈ ((Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf), h ∈ X.SinfU u` using `fun h hh => hinf_le_sinf X u h hh`. Establish `hσs : ∀ x, AEStronglyMeasurable (fun g => X.piU u' (γ⁻¹ * g * γ) x) (X.muH u)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Establish `hc : ContinuousOn (fun g => X.piU u' (γ⁻¹ * g * γ) x) ((Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf)` using `((X.piU_rep u').2.2.2.2 x).comp ((continuous_const.mul continuous_id).mul continuous_const).continuousOn (fun g hg => (hS g (hSH g hg)).1)`. Establish `hm` using `hc.aestronglyMeasurable (μ := X.muH u) (isClosed_Hinf u).measurableSet`. Establish `hae : ∀ᵐ g ∂(X.muH u), g ∈ ((Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf)`. Rewrite using `[ae_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(X.muH_haar u).2.2.1`. Rewrite `hm` using `[Measure.restrict_eq_self_of_ae_mem hae]`. Then use the resulting hypothesis. Establish `hW' : ∀ s ∈ X.SinfU u, ∀ x, X.Wu u' (γ⁻¹ * (s * x)) = X.psiInfU u s • X.piU u' (γ⁻¹ * s * γ) (X.Wu u' (γ⁻¹ * x))`. Introduce `s hs x`. Rewrite using `[show γ⁻¹ * (s * x) = γ⁻¹ * s * γ * (γ⁻¹ * x) by group, (X.Wu_spec u').1 _ (hS s hs).1]`.
-
-Conclude with `congrArg (fun c : ℂ => c • X.piU u' (γ⁻¹ * s * γ) (X.Wu u' (γ⁻¹ * x))) (hS s hs).2`. Establish `e1 : OOt t = ∫ x in FundOf t, (innerSL ℂ (X.Wu u' (γ⁻¹ * x))).smulRight (X.Wu u x) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I)` using `rfl`. Rewrite using `[e1]`. Conclude with `cross_zero (Formalism.L2.SG.ProjRows.muInf X.B.I) (X.muN u) (X.muH u) (X.nuQ u) (X.SinfU u) (X.NinfU u) ((Hinf X u : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf) (ROinf t) (FundOf t) (X.piU u) (fun s => X.piU u' (γ⁻¹ * s * γ)) (X.psiInfU u) (X.Wu u) (fun x => X.Wu u' (γ⁻¹ * x)) (X.nuQ_ …`. Rewrite using `[show γ⁻¹ * (a * b) * γ = (γ⁻¹ * a * γ) * (γ⁻¹ * b * γ) by group]`.
-
-Conclude with `(X.piU_rep u').2.1 _ (hS a ha).1 _ (hS b hb).1)`. Use the proof step `(fun n hn => (X.piU_rep u').2.2.2.1 _ (hN n hn))`. Use the proof step `(fun g hg => (X.piU_rep u).2.2.1 g (hSH g hg))`. Use the proof step `(fun g hg => (X.piU_rep u').2.2.1 _ (hS g (hSH g hg)).1)`. Use the proof step `(fun s _ => norm_psiInfU u s) (X.Wu_spec u).1`.
-
-Use the proof step `(fun s hs x => hW' s hs x) (X.Wu_spec u).2.2.1`. Use the proof step `((X.Wu_spec u').2.2.1.comp (continuous_const.mul continuous_id))`. Use the proof step `(X.muN_haar u).2.2.1 (X.muH_haar u).2.2.1 (fun g hg => (X.muH_haar u).2.2.2 g hg)`. Use the proof step `(piU_aesm u) hσs hne hRc hRm hRi (fun a ha => (X.muN_haar u).2.2.2 a (hRN ha)) hΩ hOI`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oot_off_eq_zero (t : GTerm X u u' F0 F0' what₂ rows') (hΩ : IsSFund X.B.I (ROinf t) (FundOf t))
     (hOI : OOInt (Formalism.L2.SG.ProjRows.muInf X.B.I) (FundOf t) (X.Wu u) (X.Wu u') t.pt.1)
@@ -1209,13 +1183,11 @@ theorem oot_off_eq_zero (t : GTerm X u u' F0 F0' what₂ rows') (hΩ : IsSFund X
     (piU_aesm u) hσs hne hRc hRm hRi (fun a ha => (X.muN_haar u).2.2.2 a (hRN ha)) hΩ hOI
 
 /- English proof (translation)
-Introduce `hu ρ ρ'`. Establish `hz : (fun t : {t : GTerm X u u' F0 F0' what₂ rows' // t.isId} => blk cs cs' FdN FdN' t.1 ρ ρ') = fun _ => 0`. Use function extensionality and compare the values at `t`. Establish `hΩ : IsSFund X.B.I (ROinf t.1) (FundOf t.1)`. Establish `h` using `hFE t.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `FundOf`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`. Take `⟨hS, hN⟩` from `hC hu t.1 t.2`. Take `⟨hRc, hRm, hRi, hRN⟩` from `hR hu t.1 t.2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0` using `oot_off_eq_zero t.1 hΩ (hOI t.1) hHf hS hN (hI hu t.1 t.2) hRc hRm hRi hRN`. Unfold `blk`. Use `split_ifs`. Rewrite using `[h0, smul_zero, smul_zero]`. Both sides reduce to the same expression.
-
-Rewrite using `[hz]`. Conclude with `hasSum_zero`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idOffBlocks_of (cs : ColSys X u what₂) (cs' : ColSys X u' rows') (FdN FdN' : Set X.B.I.Ginf)
     (hFE : FundExists X u u' F0 F0' what₂ rows') (hOI : OOIntAll X u u' F0 F0' what₂ rows')
@@ -1257,7 +1229,7 @@ def IdOffC : Prop :=
       IdOffRO (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') (X := X)
 
 /- English proof (translation)
-The claim follows from `idCellOffC_of fun D X Y u u' hFE hOI => by obtain ⟨_, hH⟩ := hV D X Y u (Formalism.L2.SG.Closed.level_subgroup_properties X) obtain ⟨hC, hI, hR⟩ := hS D X Y u u' hFE exact idOffBlocks_of (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') hFE hOI (ENNReal.toReal_pos_iff.1 hH).2.ne hC hI hR`.
+A detailed English derivation is pending.
 -/
 theorem idCellOffC_of_steps (hV : VolPosC) (hS : IdOffC) : IdCellOffC :=
   idCellOffC_of fun D X Y u u' hFE hOI => by

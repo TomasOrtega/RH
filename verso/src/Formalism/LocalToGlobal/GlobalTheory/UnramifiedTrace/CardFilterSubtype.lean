@@ -3,9 +3,9 @@ import Mathlib
 namespace Formalism.L2.GlobalTheoryTheory.UnramifiedTrace
 
 /- English proof (translation)
-Establish `hkn : k ≤ n`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `h1 : q ^ n < q ^ k` using `Nat.pow_lt_pow_right hq hlt`. Establish `h2 : q ^ k ≤ c * q ^ k` using `Nat.le_mul_of_pos_left _ hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hpos : 0 < q ^ k` using `by positivity`. Apply `Nat.eq_of_mul_eq_mul_right hpos` to reduce the goal to its premises. Rewrite using `[h, ← pow_add, Nat.sub_add_cancel hkn]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_pow_sub_of_mul_pow_eq_pow {c q k n : ℕ} (hq : 1 < q) (hc : 1 ≤ c) (h : c * q ^ k = q ^ n) :
     c = q ^ (n - k) := by
@@ -20,15 +20,13 @@ private theorem eq_pow_sub_of_mul_pow_eq_pow {c q k n : ℕ} (hq : 1 < q) (hc : 
   rw [h, ← pow_add, Nat.sub_add_cancel hkn]
 
 /- English proof (translation)
-Establish `hall : ∀ w', (Finset.univ.filter (fun v => f v = w')).card = (Finset.univ.filter (fun v => f v = w)).card`. Introduce `w'`. Take `⟨a, ha⟩` from `hf w'`. Take `⟨b, hb⟩` from `hf w`. Use `Finset.card_bij' (fun x _ => x + (b - a)) (fun x _ => x - (b - a)) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`. Rewrite using `[map_add, map_sub, hx, ha, hb]`. Normalize the expressions using the abelian group laws. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`. Rewrite using `[map_sub, map_sub, hx, ha, hb]`. Normalize the expressions using the abelian group laws. Introduce `x _`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Normalize the expressions using the abelian group laws.
 
-Introduce `x _`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_congr rfl (fun w' _ => hall w'), Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_comm]`. Use `_ = Finset.univ.card := (Finset.card_eq_sum_card_fiberwise (fun _ _ => Finset.mem_univ _)).symm`.
-
-Use `_ = Fintype.card V := Finset.card_univ`.
+Fix the arbitrary inputs or assume the hypotheses. Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_fib_mul {V W : Type*} [AddCommGroup V] [AddCommGroup W] [Fintype V] [Fintype W] [DecidableEq W] (f : V →+ W)
     (hf : Function.Surjective f) (w : W) :
@@ -62,9 +60,7 @@ variable {K X : Type*} [Field K] [Fintype K] [DecidableEq K] [AddCommGroup X] [M
   [Fintype (Module.Dual K X)]
 
 /- English proof (translation)
-Establish `h1 : ∃ g : Module.Dual K Y, g y ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hy ((Module.forall_dual_apply_eq_zero_iff K y).1 h)`. Take `⟨g, hg⟩` from `h1`.
-
-Conclude with `⟨(g y)⁻¹ • g, by simp [hg]⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dual_one {Y : Type*} [AddCommGroup Y] [Module K Y] [FiniteDimensional K Y] (y : Y) (hy : y ≠ 0) :
     ∃ g : Module.Dual K Y, g y = 1 := by
@@ -76,15 +72,15 @@ theorem exists_dual_one {Y : Type*} [AddCommGroup Y] [Module K Y] [FiniteDimensi
   exact ⟨(g y)⁻¹ • g, by simp [hg]⟩
 
 /- English proof (translation)
-Rewrite using `[Module.card_eq_pow_finrank (K := K), Subspace.dual_finrank_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_dual : Fintype.card (Module.Dual K X) = Fintype.card K ^ Module.finrank K X := by
   rw [Module.card_eq_pow_finrank (K := K), Subspace.dual_finrank_eq]
 
 /- English proof (translation)
-Take `⟨g1, hg1⟩` from `exists_dual_one (K := K) x hx`. Set `f : Module.Dual K X →+ K` to `{ toFun := fun g => g x, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `hsurj : Function.Surjective f` using `fun c => ⟨c • g1, by simp [f, hg1]⟩`. Establish `h : (Finset.univ.filter (fun g : Module.Dual K X => g x = 1)).card * Fintype.card K ^ 1 = Fintype.card K ^ Module.finrank K X`. Rewrite using `[pow_one, ← card_dual]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `card_fib_mul f hsurj 1`. Establish `hc : 1 ≤ (Finset.univ.filter (fun g : Module.Dual K X => g x = 1)).card` using `Finset.card_pos.2 ⟨g1, by simp [hg1]⟩`. Conclude with `eq_pow_sub_of_mul_pow_eq_pow Fintype.one_lt_card hc h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_dual_one (x : X) (hx : x ≠ 0) :
     (Finset.univ.filter (fun g : Module.Dual K X => g x = 1)).card = Fintype.card K ^ (Module.finrank K X - 1) := by
@@ -101,21 +97,21 @@ theorem card_dual_one (x : X) (hx : x ≠ 0) :
   exact eq_pow_sub_of_mul_pow_eq_pow Fintype.one_lt_card hc h
 
 /- English proof (translation)
-Establish `hte' : te ∉ Submodule.span K {x}`. Introduce `h`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 h`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hte (by rw [← hc, zero_smul])`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← hc]`. Conclude with `Submodule.mem_span_singleton.2 ⟨c⁻¹, by rw [smul_smul, inv_mul_cancel₀ hc0, one_smul]⟩`. Establish `hq1 : Submodule.Quotient.mk (p` using `Submodule.span K {te}) x ≠ 0 := by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[Ne, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis. Establish `hq2 : Submodule.Quotient.mk (p` using `Submodule.span K {x}) te ≠ 0 := by`. Rewrite using `[Ne, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis. Take `⟨h2, hh2⟩` from `exists_dual_one (K := K) _ hq1`. Take `⟨h1, hh1⟩` from `exists_dual_one (K := K) _ hq2`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g2 : Module.Dual K X` to `h2.comp (Submodule.span K {te}).mkQ`. Set `g1 : Module.Dual K X` to `h1.comp (Submodule.span K {x}).mkQ`. Establish `g2te : g2 te = 0`. Simplify using `only [g2, LinearMap.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_span_singleton_self te), map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g2x : g2 x = 1` using `hh2`. Establish `g1x : g1 x = 0`. Simplify using `only [g1, LinearMap.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_span_singleton_self x), map_zero]`. Establish `g1te : g1 te = 1` using `hh1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : Module.Dual K X →+ K × K` to `{ toFun := fun g => (g te, g x), map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨a, b⟩`. Use `⟨a • g1 + b • g2, ?_⟩` and prove the remaining obligations. Simplify using `[f, g1te, g1x, g2te, g2x]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : (Finset.univ.filter (fun g : Module.Dual K X => g te = 1 ∧ g x = 1)).card * Fintype.card K ^ 2 = Fintype.card K ^ Module.finrank K X`. Rewrite using `[← card_dual, sq, ← Fintype.card_prod]`. Establish `h3` using `card_fib_mul f hsurj (1, 1)`. Establish `h4 : (Finset.univ.filter (fun g : Module.Dual K X => f g = (1, 1))) = Finset.univ.filter (fun g : Module.Dual K X => g te = 1 ∧ g x = 1)`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[f, Prod.ext_iff]`. Rewrite `h3` using `[h4]`. Conclude with `h3`. Establish `hc : 1 ≤ (Finset.univ.filter (fun g : Module.Dual K X => g te = 1 ∧ g x = 1)).card` using `Finset.card_pos.2 ⟨g1 + g2, by simp [g1te, g1x, g2te, g2x]⟩`. Conclude with `eq_pow_sub_of_mul_pow_eq_pow Fintype.one_lt_card hc h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_dual_two (te x : X) (hte : te ≠ 0) (hx : x ∉ Submodule.span K {te}) :
     (Finset.univ.filter (fun g : Module.Dual K X => g te = 1 ∧ g x = 1)).card =
@@ -166,9 +162,9 @@ theorem card_dual_two (te x : X) (hte : te ≠ 0) (hx : x ∉ Submodule.span K {
   exact eq_pow_sub_of_mul_pow_eq_pow Fintype.one_lt_card hc h
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce and unpack `g - ⟨h1, h2⟩`. Apply `hne` to reduce the goal to its premises. Rewrite `h2` using `[map_smul, h1, smul_eq_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h2, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_dual_line (te x : X) (hx : x ∈ Submodule.span K {te}) (hne : x ≠ te) :
     (Finset.univ.filter (fun g : Module.Dual K X => g te = 1 ∧ g x = 1)).card = 0 := by
@@ -180,13 +176,13 @@ theorem card_dual_line (te x : X) (hx : x ∈ Submodule.span K {te}) (hne : x �
   rw [h2, one_smul]
 
 /- English proof (translation)
-Use `Finset.card_bij (fun p _ => p.1) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢`. Rewrite using `[← hp]`. Conclude with `hι a b`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, b⟩ hp ⟨a', b'⟩ hp' h`. Simplify using `only at h`. Substitute `h` using the available equality. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp hp'`. Establish `hP : P a y` using `by rw [← hp]; exact hι a b`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbb` using `(hu a y hP).unique hp hp'`. Rewrite using `[hbb]`. Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha`. Take `⟨b, hb, -⟩` from `hu a y ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨a, b⟩, by simp [hb], rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem card_sig_fib {A : Type*} {B : A → Type*} [Fintype A] [∀ a, Fintype (B a)] {Y : Type*} [DecidableEq Y]
     (ι : ∀ a, B a → Y) (P : A → Y → Prop) [∀ a y, Decidable (P a y)] (hι : ∀ a b, P a (ι a b)) (hu : ∀ a y, P a y → ∃! b, ι a b = y) (y : Y) :
@@ -209,9 +205,9 @@ theorem card_sig_fib {A : Type*} {B : A → Type*} [Fintype A] [∀ a, Fintype (
     exact ⟨⟨a, b⟩, by simp [hb], rfl⟩
 
 /- English proof (translation)
-Use `Finset.card_bij (fun a _ => a.1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢`. Conclude with `⟨a.2, ha⟩`. Introduce `a _ b _ h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext h`. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Conclude with `⟨⟨b, hb.1⟩, by simp [hb.2], rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_filter_subtype {α : Type*} [Fintype α] (p q : α → Prop) [DecidablePred p] [DecidablePred q]
     [Fintype {a // p a}] :

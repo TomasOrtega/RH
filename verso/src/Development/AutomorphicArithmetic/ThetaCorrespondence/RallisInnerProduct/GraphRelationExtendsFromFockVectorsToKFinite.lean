@@ -53,67 +53,59 @@ open GlobalTheory
 open Filter Topology
 
 /- English proof (translation)
-Introduce `D ψ A B χ om hom θ hθ ν 𝓨 hν μ 𝓕 hμ a ha hIw sS sB hsS hsB hcomm L hLadd hLsmul hLeq hLbdd R hR hFock f hf hfK`. Use `haveI : CompactSpace (Khat A a) := isCompact_iff_compactSpace.mp (isCompact_Khat A a)`. Use `letI : MeasurableSpace (Khat A a) := borel _`. Use `haveI : BorelSpace (Khat A a) := ⟨rfl⟩`. Use `set νK : Measure (Khat A a) := Measure.haar with hνK`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hint : ∀ F : Khat A a → ℂ, Continuous F → Integrable F νK` using `fun F hF => integrableOn_univ.mp (hF.continuousOn.integrableOn_compact isCompact_univ)`. Establish `thSub : ∀ {u v : WO (dblSp A) B → ℂ}, IsThetaFunO ψ (dblSp A) B u → IsThetaFunO ψ (dblSp A) B v → IsThetaFunO ψ (dblSp A) B (u - v)` using `fun hu hv => by`. Simplify `GlobalTheory.OrientedHeis.theta_add hu (GlobalTheory.OrientedHeis.theta_smul (-1) hv)` using `[sub_eq_add_neg]`. Set `orb : (WO (dblSp A) B → ℂ) → Khat A a → WO (dblSp A) B → ℂ` to `fun h k => om ((k : GA D (dblSp A)), 1) h`. Establish `hfinIff : ∀ h, IsKFinVec om (Khat A a) h ↔ FiniteDimensional ℂ (Submodule.span ℂ (Set.range (orb h)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `h`. Establish `: {f' : WO (dblSp A) B → ℂ | ∃ k ∈ Khat A a, f' = om (k, 1) h} = Set.range (orb h)`. Use extensionality with `f'`. Conclude with `⟨fun ⟨k, hk, e⟩ => ⟨⟨k, hk⟩, e.symm⟩, fun ⟨k, e⟩ => ⟨k, k.2, e.symm⟩⟩`. Use `show FiniteDimensional ℂ (Submodule.span ℂ {f' | ∃ k ∈ Khat A a, f' = om (k, 1) h}) ↔ _`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[this]`. Establish `thSpan : ∀ h, IsThetaFunO ψ (dblSp A) B h → ∀ v ∈ Submodule.span ℂ (Set.range (orb h)), IsThetaFunO ψ (dblSp A) B v`. Introduce `h hh v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨k, rfl⟩ := hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `hom.om_pres _ _ hh`. Consider the case `zero => exact GlobalTheory.OrientedHeis.theta_zero`. Consider the case `add x y _ _ hx hy => exact GlobalTheory.OrientedHeis.theta_add hx hy`. Consider the case `smul c x _ hx => exact GlobalTheory.OrientedHeis.theta_smul c hx`. Establish `kfSub : ∀ {u v}, IsKFinVec om (Khat A a) u → IsKFinVec om (Khat A a) v → IsKFinVec om (Khat A a) (u - v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce `u v hu hv`. Rewrite `hu`, `hv`, the goal using `[hfinIff]`. Use `Submodule.finiteDimensional_of_le (Submodule.span_le.2 ?_ : _ ≤ Submodule.span ℂ (Set.range (orb u)) ⊔ Submodule.span ℂ (Set.range (orb v)))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `only [orb, map_sub, SetLike.mem_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `sub_mem (Submodule.mem_sup_left (Submodule.subset_span ⟨k, rfl⟩)) (Submodule.mem_sup_right (Submodule.subset_span ⟨k, rfl⟩))`. Establish `orbCont : ∀ h, IsThetaFunO ψ (dblSp A) B h → ∀ w, Continuous fun k => orb h k w` using `fun h hh w => (hom.om_cont h hh w).comp (continuous_subtype_val.prodMk continuous_const)`. Establish `swAdd : ∀ {u v}, IsThetaFunO ψ (dblSp A) B u → IsThetaFunO ψ (dblSp A) B v → swSec A B om ν 𝓨 (u + v) = swSec A B om ν 𝓨 u + swSec A B om ν 𝓨 v`. Introduce `u v hu hv`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [swSec, GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.evZero, map_add, Pi.add_apply]`. Conclude with `integral_add (GlobalTheory.Core.Rk.IP.swSec_integrable_continuous D ψ A B χ om hom ν 𝓨 hν _ (hom.om_pres _ _ hu)).1 (GlobalTheory.Core.Rk.IP.swSec_integrable_continuous D ψ A B χ om hom ν 𝓨 hν _ (hom.om_pres _ _ hv)).1`. Establish `swSmul : ∀ (c : ℂ) u, swSec A B om ν 𝓨 (c • u) = c • swSec A B om ν 𝓨 u`. Introduce `c u`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Simplify using `only [swSec, GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.evZero, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `integral_const_mul c _`. Establish `swTr : ∀ u (x y : GA D (dblSp A)), swSec A B om ν 𝓨 u (x * y) = swSec A B om ν 𝓨 (om (y, 1) u) x`. Introduce `u x y`. Simplify using `only [swSec]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show ((x * y : GA D (dblSp A)), (1 : GA D B)) = (x, 1) * (y, 1) by simp, map_mul, Module.End.mul_apply]`. Set `ρK : Khat A a →* Module.End ℂ (WO (dblSp A) B → ℂ)` to `om.comp ((MonoidHom.inl _ _).comp (Khat A a).subtype)`. Take `⟨e, n, α, β, he, hβ, hker, hrep⟩` from `UpperTheory.Lit.Rallis.T.exists_continuous_kernel_reproducing_finite_vector (Khat A a) νK (WO (dblSp A) B) ρK f ((hfinIff f).1 hfK) (orbCont f hf)`. Use `set P : (WO (dblSp A) B → ℂ) → WO (dblSp A) B → ℂ := fun h w => ∫ k, e k * orb h k w ∂νK with hPdef`. Establish `hPf : P f = f` using `funext fun w => (hrep w).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : ∀ h, IsThetaFunO ψ (dblSp A) B h → IsKFinVec om (Khat A a) h → P h ∈ Submodule.span ℂ (Set.range (orb h)) ∧ ∀ M : (WO (dblSp A) B → ℂ) → GA D (dblSp A) → ℂ, (∀ {u v}, IsThetaFunO ψ (dblSp A) B u → IsThetaFunO ψ (dblSp A) B v → M (u + v) = M u + M v) → (∀ (c : ℂ) u, IsThetaFu …`. Introduce `h hh hK`. Take `⟨h1, h2⟩` from `UpperTheory.Lit.Rallis.T.weighted_integral_mem_span_of_finiteDimensional_orbit (Khat A a) νK _ (orb h) e he ((hfinIff h).1 hK) (orbCont h hh)`. Use `⟨h1, fun M hMa hMs hMt x => ?_⟩` and prove the remaining obligations. Use `h2 (fun φ => M φ x) (fun u hu v hv => by simp only [hMa (thSpan h hh u hu) (thSpan h hh v hv), Pi.add_apply]) (fun c u hu => by simp only [hMs c u (thSpan h hh u hu), Pi.smul_apply, smul_eq_mul])` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.trans (integral_congr_ae (ae_of_all _ fun k => ?_))` and prove the remaining obligations. Simplify using `only [orb]`. Rewrite using `[hMt h hh x k]`. Establish `thP : ∀ h, IsThetaFunO ψ (dblSp A) B h → IsKFinVec om (Khat A a) h → IsThetaFunO ψ (dblSp A) B (P h)` using `fun h hh hK => thSpan h hh _ (hB h hh hK).1`. Establish `swSmul' : ∀ (c : ℂ) u, IsThetaFunO ψ (dblSp A) B u → swSec A B om ν 𝓨 (c • u) = c • swSec A B om ν 𝓨 u` using `fun c u _ => swSmul c u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `swTr' : ∀ u, IsThetaFunO ψ (dblSp A) B u → ∀ x y, swSec A B om ν 𝓨 u (x * y) = swSec A B om ν 𝓨 (om (y, 1) u) x` using `fun u _ x y => swTr u x y`. Establish `LTr : ∀ u, IsThetaFunO ψ (dblSp A) B u → ∀ x y, L u (x * y) = L (om (y, 1) u) x` using `fun u hu x y => (hLeq u hu y x).symm`. Establish `LAdd : ∀ {u v}, IsThetaFunO ψ (dblSp A) B u → IsThetaFunO ψ (dblSp A) B v → L (u + v) = L u + L v` using `fun hu hv => hLadd _ _ hu hv`. Establish `swCont : ∀ h, IsThetaFunO ψ (dblSp A) B h → Continuous (swSec A B om ν 𝓨 h)` using `fun h hh => (GlobalTheory.Core.Rk.IP.swSec_integrable_continuous D ψ A B χ om hom ν 𝓨 hν h hh).2`. Establish `hKer : ∀ h, IsThetaFunO ψ (dblSp A) B h → IsKFinVec om (Khat A a) h → ∀ k₀ : Khat A a, swSec A B om ν 𝓨 (P h) k₀ = ∑ i, (∫ k, β i k * swSec A B om ν 𝓨 h k ∂νK) * α i k₀`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h hh hK k₀`. Rewrite using `[(hB h hh hK).2 _ swAdd swSmul' swTr' k₀]`. Establish `e1 : ∀ k : Khat A a, e k * swSec A B om ν 𝓨 h ((k₀ : GA D (dblSp A)) * k) = (fun k' : Khat A a => e (k₀⁻¹ * k') * swSec A B om ν 𝓨 h k') (k₀ * k)`. Introduce `k`. Simplify using `only [inv_mul_cancel_left, Subgroup.coe_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[integral_congr_ae (ae_of_all _ e1), integral_mul_left_eq_self (μ := νK) (fun k' : Khat A a => e (k₀⁻¹ * k') * swSec A B om ν 𝓨 h k') k₀]`. Repeatedly rewrite using `[hker, Finset.sum_mul]`. Rewrite using `[integral_finset_sum _ fun i _ => hint _ (by`. Use `hβ i` as an intermediate fact. Use `swCont h hh` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `fun_prop)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[integral_const_mul, mul_comm]`. Take `⟨X₀, hX₀fin, hX₀⟩` from `UpperTheory.Lit.Rallis.T.exists_finiteDimensional_space_of_siegelWeilSections D ψ A B χ om hom ν 𝓨 hν a hIw n α`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `inX₀ : ∀ h, IsThetaFunO ψ (dblSp A) B h → IsKFinVec om (Khat A a) h → swSec A B om ν 𝓨 (P h) ∈ X₀` using `fun h hh hK => hX₀ _ (thP h hh hK) _ (hKer h hh hK)`. Take `⟨U, hUo, hfU, happ⟩` from `UpperTheory.Lit.Rallis.T.thetaFun_approx_by_fockVectors_of_cartanInvolutions D ψ hom.std θ hθ (dblSp A) B μ 𝓕 hμ sS sB hsS hsB f hf`. Use `choose g hgF hgU hgs using fun j : ℕ => happ j ((j : ℝ≥0∞)⁻¹) (ENNReal.inv_pos.2 (ENNReal.natCast_ne_top j))`. Establish `hgK : ∀ j, IsKFinVec om (Khat A a) (g j)` using `fun j => GlobalTheory.Core.Rk.IP.isKFinVec_of_isFockVec D ψ θ (dblSp A) B 1 χ om sS sB hom hθ hsS hsB (Khat A a) (isCompact_Khat A a) hcomm (g j) (hgF j)`. Establish `hgth : ∀ j, IsThetaFunO ψ (dblSp A) B (g j)` using `fun j => (hgF j).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsob : ∀ d, Tendsto (fun j => sobO ψ θ μ 𝓕 d (f - g j)) atTop (𝓝 0)`. Introduce `d`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds ENNReal.tendsto_inv_nat_nhds_zero (Eventually.of_forall fun _ => zero_le) ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop d] with j hj`. Use `le_trans ?_ (hgs j).le` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Simplify using `only [sobO, GlobalTheory.Size.wordSum]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.range_mono (by omega))`. Establish `inR : ∀ j, (swSec A B om ν 𝓨 (P (g j)), L (P (g j))) ∈ R`. Introduce `j`. Establish `hmem` using `(hB (g j) (hgth j) (hgK j)).1`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N, hN⟩` from `(hgF j).2`. Establish `key : ∀ v ∈ Submodule.span ℂ (Set.range (orb (g j))), IsThetaFunO ψ (dblSp A) B v ∧ (swSec A B om ν 𝓨 v, L v) ∈ R`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, rfl⟩` from `hx`. Establish `hth` using `hom.om_pres ((k : GA D (dblSp A)), 1) _ (hgth j)`. Conclude with `⟨hth, hFock _ ⟨hth, N, GlobalTheory.CartanFockDeg.om_keeps_fockDeg D ψ θ (dblSp A) B 1 χ om sS sB hom hθ k (hcomm k k.2) N (g j) (hgth j) hN⟩⟩`. Consider the case `zero`. Use `⟨GlobalTheory.OrientedHeis.theta_zero, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : swSec A B om ν 𝓨 0 = 0` using `by simpa using swSmul 0 0`. Establish `h1 : L 0 = 0` using `by simpa using hLsmul 0 0 GlobalTheory.OrientedHeis.theta_zero`. Rewrite using `[h0, h1]`. Conclude with `R.zero_mem`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨GlobalTheory.OrientedHeis.theta_add hx.1 hy.1, ?_⟩` and prove the remaining obligations. Rewrite using `[swAdd hx.1 hy.1, LAdd hx.1 hy.1, ← Prod.mk_add_mk]`. Conclude with `R.add_mem hx.2 hy.2`. Consider the case `smul c x _ hx`. Use `⟨GlobalTheory.OrientedHeis.theta_smul c hx.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[swSmul c x, hLsmul c x hx.1, ← Prod.smul_mk]`. Conclude with `R.smul_mem c hx.2`. Conclude with `(key _ hmem).2`. Take `⟨Ce, hCe⟩` from `isCompact_univ.exists_bound_of_continuousOn he.continuousOn`. Establish `hfK'` using `hfK`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `conv : ∀ M : (WO (dblSp A) B → ℂ) → GA D (dblSp A) → ℂ, (∀ {u v}, IsThetaFunO ψ (dblSp A) B u → IsThetaFunO ψ (dblSp A) B v → M (u + v) = M u + M v) → (∀ (c : ℂ) u, IsThetaFunO ψ (dblSp A) B u → M (c • u) = c • M u) → (∀ u, IsThetaFunO ψ (dblSp A) B u → ∀ x y, M u (x * y) = M (om …`. Introduce `M hMa hMs hMt hMb x`. Establish `hMsub : ∀ {u v}, IsThetaFunO ψ (dblSp A) B u → IsThetaFunO ψ (dblSp A) B v → M (u - v) = M u - M v`. Introduce `u v hu hv`. Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ v, hMa hu (GlobalTheory.OrientedHeis.theta_smul _ hv), hMs _ _ hv, neg_one_smul, ← sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, C, hC⟩` from `hMb U hUo (Set.range fun k : Khat A a => x * (k : GA D (dblSp A))) (isCompact_range (continuous_const.mul continuous_subtype_val))`. Establish `hdiff : ∀ j, M f x - M (P (g j)) x = ∫ k, e k * M (f - g j) (x * k) ∂νK`. Introduce `j`. Establish `hPsub : P f - P (g j) = P (f - g j)`. Use function extensionality and compare the values at `w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hPdef, orb, map_sub, Pi.sub_apply, mul_sub]`. Conclude with `(integral_sub (hint (fun k => e k * orb f k w) (he.mul (orbCont f hf w))) (hint (fun k => e k * orb (g j) k w) (he.mul (orbCont (g j) (hgth j) w)))).symm`. Use `(hB (f - g j) (thSub hf (hgth j)) (kfSub hfK (hgK j))).2 M hMa hMs hMt x` as an intermediate fact. Rewrite using `[← this, ← hPsub, hMsub (thP f hf hfK) (thP _ (hgth j) (hgK j)), hPf, Pi.sub_apply]`. Use `set K0 : ℝ≥0∞ := ENNReal.ofReal Ce * C * νK Set.univ with hK0`.
-
-Establish `hK0t : K0 ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.coe_ne_top) (measure_ne_top _ _)`. Establish `hbd : ∀ j, edist (M (P (g j)) x) (M f x) ≤ K0 * sobO ψ θ μ 𝓕 d (f - g j)`. Introduce `j`. Rewrite using `[edist_comm, edist_eq_enorm_sub, hdiff j]`. Use `(enorm_integral_le_lintegral_enorm _).trans ?_` and prove the remaining obligations.
-
-Establish `hpt : ∀ k : Khat A a, ‖e k * M (f - g j) (x * k)‖ₑ ≤ ENNReal.ofReal Ce * (C * sobO ψ θ μ 𝓕 d (f - g j))`. Introduce `k`. Rewrite using `[enorm_mul]`. Use `mul_le_mul' ?_ (hC _ (sub_mem hfU (hgU j)) _ ⟨k, rfl⟩)` and prove the remaining obligations. Rewrite using `[← ofReal_norm]`.
-
-Conclude with `ENNReal.ofReal_le_ofReal (hCe k (Set.mem_univ _))`. Use `(lintegral_mono hpt).trans ?_` and prove the remaining obligations. Rewrite using `[lintegral_const, hK0]`. Apply `le_of_eq` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[tendsto_iff_edist_tendsto_0]`. Establish `hl` using `ENNReal.Tendsto.const_mul (hsob d) (Or.inr hK0t)`. Rewrite `hl` using `[mul_zero]`. Conclude with `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hl (fun _ => zero_le) hbd`. Conclude with `UpperTheory.Lit.Rallis.T.pointwise_limit_mem_graphRelation_of_finiteDimensional (GA D (dblSp A)) R hR X₀ hX₀fin (fun j => swSec A B om ν 𝓨 (P (g j))) (fun j => L (P (g j))) (swSec A B om ν 𝓨 f) (L f) (fun j => ⟨inX₀ _ (hgth j) (hgK j), inR j⟩) (conv _ swAdd swSmul' swTr' (UpperTh …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_rel_of_isKFinVec : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χ : (AE D)ˣ →* Circle) (om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ (dblSp A) B 1 χ om → ∀ θ : InfFam D, IsInfFam θ → ∀ (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ (μ : Measure (WO (dblSp A) B)) (𝓕 : Set (WO (dblSp A) B)), IsCovolOne (ratL B (dblSp A)) μ 𝓕 → ∀ a : GL (Fin A.rank) (AE D), IsMaj A a → HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a) → ∀ (sS : RealMat (dblSp A)) (sB : RealMat B), (∀ τ, IsCartanInv (gramAt D (dblSp A) τ) (sS τ)) → (∀ τ, IsCartanInv (gramAt D B τ) (sB τ)) → (∀ k ∈ Khat A a, ∀ τ, compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k) * sS τ = sS τ * compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k)) → ∀ L : (WO (dblSp A) B → ℂ) → GA D (dblSp A) → ℂ, (∀ f f', IsThetaFunO ψ (dblSp A) B f → IsThetaFunO ψ (dblSp A) B f' → L (f + f') = L f + L f') → (∀ (c : ℂ) f, IsThetaFunO ψ (dblSp A) B f → L (c • f) = c • L f) → (∀ f, IsThetaFunO ψ (dblSp A) B f → ∀ x g, L (om (x, 1) f) g = L f (g * x)) → (SobBdd ψ θ μ 𝓕 fun f x => ‖L f x‖ₑ) → ∀ R : Submodule ℂ ((GA D (dblSp A) → ℂ) × (GA D (dblSp A) → ℂ)), (∀ E, (0, E) ∈ R → E = 0) → (∀ f, IsFockVec ψ θ (dblSp A) B sS sB f → (swSec A B om ν 𝓨 f, L f) ∈ R) → ∀ f, IsThetaFunO ψ (dblSp A) B f → IsKFinVec om (Khat A a) f → (swSec A B om ν 𝓨 f, L f) ∈ R := by
   intro D ψ A B χ om hom θ hθ ν 𝓨 hν μ 𝓕 hμ a ha hIw sS sB hsS hsB hcomm L hLadd hLsmul hLeq hLbdd R hR hFock f hf hfK
@@ -334,7 +326,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ThetaDens
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Lit.Rallis.FockFinite.mem_rel_of_isKFinVec | exact UpperTheory.Lit.Rallis.FockFinite.mem_rel_of_isKFinVec | (intros; apply UpperTheory.Lit.Rallis.FockFinite.mem_rel_of_isKFinVec <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.UpperTheory.Lit.Rallis.T.graphRelation_extends_from_fockVectors_to_kFinite : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χ : (AE D)ˣ →* Circle) (om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ (dblSp A) B 1 χ om → ∀ θ : InfFam D, IsInfFam θ → ∀ (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ (μ : Measure (WO (dblSp A) B)) (𝓕 : Set (WO (dblSp A) B)), IsCovolOne (ratL B (dblSp A)) μ 𝓕 → ∀ a : GL (Fin A.rank) (AE D), IsMaj A a → HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a) → ∀ (sS : RealMat (dblSp A)) (sB : RealMat B), (∀ τ, IsCartanInv (gramAt D (dblSp A) τ) (sS τ)) → (∀ τ, IsCartanInv (gramAt D B τ) (sB τ)) → (∀ k ∈ Khat A a, ∀ τ, compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k) * sS τ = sS τ * compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k)) → ∀ L : (WO (dblSp A) B → ℂ) → GA D (dblSp A) → ℂ, (∀ f f', IsThetaFunO ψ (dblSp A) B f → IsThetaFunO ψ (dblSp A) B f' → L (f + f') = L f + L f') → (∀ (c : ℂ) f, IsThetaFunO ψ (dblSp A) B f → L (c • f) = c • L f) → (∀ f, IsThetaFunO ψ (dblSp A) B f → ∀ x g, L (om (x, 1) f) g = L f (g * x)) → (SobBdd ψ θ μ 𝓕 fun f x => ‖L f x‖ₑ) → ∀ R : Submodule ℂ ((GA D (dblSp A) → ℂ) × (GA D (dblSp A) → ℂ)), (∀ E, (0, E) ∈ R → E = 0) → (∀ f, IsFockVec ψ θ (dblSp A) B sS sB f → (swSec A B om ν 𝓨 f, L f) ∈ R) → ∀ f, IsThetaFunO ψ (dblSp A) B f → IsKFinVec om (Khat A a) f → (swSec A B om ν 𝓨 f, L f) ∈ R := by
   first | exact @UpperTheory.Lit.Rallis.FockFinite.mem_rel_of_isKFinVec | exact UpperTheory.Lit.Rallis.FockFinite.mem_rel_of_isKFinVec | (intros; apply UpperTheory.Lit.Rallis.FockFinite.mem_rel_of_isKFinVec <;> assumption)
@@ -360,14 +352,14 @@ open GlobalTheory
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s g`. Simplify using `[flat, flatAd, flatH, flatOf, flatSec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem flat_zero {V : HSp D} (a : GL (Fin V.rank) (AE D)) (s₁ : ℂ) : flat V a 0 s₁ = 0 := by
   funext s g
   simp [flat, flatAd, flatH, flatOf, flatSec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s g`. Simplify using `[flat, flatAd, flatH, flatOf, flatSec, add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem flat_add {V : HSp D} (a : GL (Fin V.rank) (AE D)) (s₁ : ℂ) (Φ Ψ : GA D (dblSp V) → ℂ) :
     flat V a (Φ + Ψ) s₁ = flat V a Φ s₁ + flat V a Ψ s₁ := by
@@ -375,7 +367,7 @@ theorem flat_add {V : HSp D} (a : GL (Fin V.rank) (AE D)) (s₁ : ℂ) (Φ Ψ : 
   simp [flat, flatAd, flatH, flatOf, flatSec, add_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s g`. Simplify using `[flat, flatAd, flatH, flatOf, flatSec, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem flat_smul {V : HSp D} (a : GL (Fin V.rank) (AE D)) (s₁ c : ℂ) (Φ : GA D (dblSp V) → ℂ) :
     flat V a (c • Φ) s₁ = c • flat V a Φ s₁ := by
@@ -383,9 +375,9 @@ theorem flat_smul {V : HSp D} (a : GL (Fin V.rank) (AE D)) (s₁ c : ℂ) (Φ : 
   simp [flat, flatAd, flatH, flatOf, flatSec, mul_assoc]
 
 /- English proof (translation)
-Use `⟨fun s _ => ⟨fun γ _ g => rfl, fun g => by simp [EisConv, CosetConv, term]⟩, fun g => ?_⟩` and prove the remaining obligations. Establish `e : eisSer V 0 g = fun _ => 0`. Use function extensionality and compare the values at `s`. Simplify using `[eisSer, eis, cosetSum, term]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, isExtAt_const 0 s₀, analyticAt_const, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem eisValueAt_zero {V : HSp D} (s₀ : ℂ) : EisValueAt V 0 s₀ 0 := by
   refine ⟨fun s _ => ⟨fun γ _ g => rfl, fun g => by simp [EisConv, CosetConv, term]⟩, fun g => ?_⟩
@@ -408,14 +400,14 @@ def valuePairs (V : HSp D) (a : GL (Fin V.rank) (AE D)) (s₀ : ℂ) :
     rw [flat_smul]; exact hp.smul c
 
 /- English proof (translation)
-The claim follows from `EisValueAt.unique (Φ := flat V a 0 s₀) h (by rw [flat_zero]; exact eisValueAt_zero s₀)`.
+A detailed English derivation is pending.
 -/
 theorem valuePairs_graph {V : HSp D} (a : GL (Fin V.rank) (AE D)) (s₀ : ℂ) (E : GA D (dblSp V) → ℂ)
     (h : ((0 : GA D (dblSp V) → ℂ), E) ∈ valuePairs V a s₀) : E = 0 :=
   EisValueAt.unique (Φ := flat V a 0 s₀) h (by rw [flat_zero]; exact eisValueAt_zero s₀)
 
 /- English proof (translation)
-Take `⟨ε, hε⟩` from `(GlobalTheory.Doubling.isMaj_iff hθ).1 ha τ`. Establish `e : (compAt θ τ a.1)ᴴ * (gramAt D V τ * GlobalTheory.Doubling.frameInv θ V a τ) * compAt θ τ a.1 = ((compAt θ τ a.1)ᴴ * gramAt D V τ * compAt θ τ a.1) * ((compAt θ τ a.1)ᴴ * gramAt D V τ * compAt θ τ a.1)`. Simplify using `only [GlobalTheory.Doubling.frameInv, Matrix.mul_assoc]`. Rewrite using `[e, hε]`. Conclude with `GlobalTheory.Doubling.diagonal_sign_mul_self ε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_sq {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {a : GL (Fin V.rank) (AE D)} (ha : IsMaj V a)
     (τ : D.what₂.Tau) :
@@ -430,9 +422,9 @@ theorem frame_sq {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {a : GL (Fin V.
 variable {D : D7} {A B : HSp D}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `e : (AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h (f + f')) = (AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h f) + (AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h f')`. Use function extensionality and compare the values at `q`. Simplify using `[thetaKO, AutomorphicL2Unitary.descend]`. Simplify using `only [GlobalTheory.ThetaMean.thetaMean, Pi.add_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Rewrite using `[average_eq, average_eq, average_eq, integral_add' (hi f hf g) (hi f' hf' g), smul_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaMean_add {ψ : AddChar (AF D.host.F) ℂ}
     {om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)} (m : Measure (GA D B))
@@ -448,9 +440,9 @@ theorem thetaMean_add {ψ : AddChar (AF D.host.F) ℂ}
   rw [average_eq, average_eq, average_eq, integral_add' (hi f hf g) (hi f' hf' g), smul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `e : (AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h (c • f)) = c • (AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h f)`. Use function extensionality and compare the values at `q`. Simplify using `[thetaKO, AutomorphicL2Unitary.descend]`. Simplify using `only [GlobalTheory.ThetaMean.thetaMean, Pi.smul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Simplify using `only [Pi.smul_apply, average_eq, integral_smul]`. Rewrite using `[smul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaMean_smul {om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)} (m : Measure (GA D B))
     (c : ℂ) (f : WO (dblSp A) B → ℂ) :
@@ -464,7 +456,7 @@ theorem thetaMean_smul {om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (d
   rw [smul_comm]
 
 /- English proof (translation)
-Establish `e : ∀ h, thetaKO om g h (om (x, 1) f) = thetaKO om (g * x) h f` using `fun h => by`. Simplify using `only [thetaKO, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Simplify using `only [GlobalTheory.ThetaMean.thetaMean, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem thetaMean_om {om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)} (m : Measure (GA D B))
     (f : WO (dblSp A) B → ℂ) (x g : GA D (dblSp A)) :
@@ -474,13 +466,13 @@ theorem thetaMean_om {om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dbl
   simp only [GlobalTheory.ThetaMean.thetaMean, e]
 
 /- English proof (translation)
-Introduce `hSW hWc D ψ A B χ om hW hAB hBA hwitt a ha hI θ hθ ν 𝓨 hν m hm f hf hK`. Take `⟨μ, 𝓕, hμ⟩` from `GlobalTheory.Size.exists_isCovolOne (dblSp A) B`. Establish `h1 : 1 ≤ A.rank` using `by omega`. Take `⟨hsS, hcomm⟩` from `GlobalTheory.Core.Rk.IP.Cartan.cartan_dbl D θ A (GlobalTheory.Doubling.frameInv θ A a) a hθ (fun τ => ha.isCartanInv hθ τ) (fun τ => frame_sq hθ ha τ)`. Take `⟨b, hb⟩` from `GlobalTheory.Doubling.exists_isMaj B`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsB : ∀ τ, IsCartanInv (gramAt D B τ) (GlobalTheory.Doubling.frameInv θ B b τ)` using `fun τ => hb.isCartanInv hθ τ`. Establish `hi : ∀ f, IsThetaFunO ψ (dblSp A) B f → ∀ g, Integrable (AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO om g h f) (autMeasure B m)` using `fun f hf g => GlobalTheory.WeilThetaInt.integrable_thetaKO hWc D A B m hm h1 (Or.inr hwitt) ψ χ om hW f hf g`. Establish `hint` using `UpperTheory.Lit.Rallis.T.absThetaIntegral_le_sobolevSeminorm D ψ (dblSp A) B 1 χ om hW θ hθ μ 𝓕 hμ m hm id (fun _ _ _ _ => rfl) (fun _ _ _ => rfl) (sobCont_id ψ θ μ 𝓕) (fun _ _ _ => rfl) (fun f hf => hi f hf 1)`. Establish `hbdd : SobBdd ψ θ μ 𝓕 fun f x => ‖GlobalTheory.ThetaMean.thetaMean om m f x‖ₑ`. Introduce `U hU K hK'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨d, C, hC⟩` from `hint U hU K hK'`. Use `⟨d, ‖((autMeasure B m).real Set.univ)⁻¹‖₊ * C, fun f hf x hx => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.ThetaMean.thetaMean, average_eq, enorm_smul]`. Use `gcongr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `enorm_integral_le_lintegral_enorm _`. Use `_ ≤ ‖((autMeasure B m).real Set.univ)⁻¹‖ₑ * (C * sobO ψ θ μ 𝓕 d f) := by gcongr; exact hC f hf x hx`. Use `_ = _ := by rw [ENNReal.coe_mul, mul_assoc, enorm_eq_nnnorm]`. Establish `key` using `UpperTheory.Lit.Rallis.T.graphRelation_extends_from_fockVectors_to_kFinite D ψ A B χ om hW θ hθ ν 𝓨 hν μ 𝓕 hμ a ha hI _ (GlobalTheory.Doubling.frameInv θ B b) hsS hsB hcomm (GlobalTheory.ThetaMean.thetaMean om m) (fun f f' hf hf' => thetaMean_add m hi f f' hf hf') (fun c f _ => t …`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem siegelWeil_kFin : GlobalTheory.Published.SiegelWeilUnitaryConvergent → GlobalTheory.Published.WeilThetaConvergence → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χ : (AE D)ˣ →* Circle) (om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ (dblSp A) B 1 χ om → A.rank < B.rank → B.rank ≤ 2 * A.rank → A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx B < B.rank → ∀ a : GL (Fin A.rank) (AE D), IsMaj A a → HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a) → ∀ θ : InfFam D, IsInfFam θ → ∀ (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ m : Measure (GA D B), m.IsHaarMeasure → ∀ f, IsThetaFunO ψ (dblSp A) B f → IsKFinVec om (Khat A a) f → EisValueAt A (flat A a (swSec A B om ν 𝓨 f) (sZero A B)) (sZero A B) (GlobalTheory.ThetaMean.thetaMean om m f) := by
   intro hSW hWc D ψ A B χ om hW hAB hBA hwitt a ha hI θ hθ ν 𝓨 hν m hm f hf hK
@@ -537,7 +529,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ThetaDens
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Lit.Rallis.SiegelWeilFinite.siegelWeil_kFin | exact UpperTheory.Lit.Rallis.SiegelWeilFinite.siegelWeil_kFin | (intros; apply UpperTheory.Lit.Rallis.SiegelWeilFinite.siegelWeil_kFin <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.UpperTheory.Lit.Rallis.T.siegelWeil_convergent_range_kFinite_thetaFun : GlobalTheory.Published.SiegelWeilUnitaryConvergent → GlobalTheory.Published.WeilThetaConvergence → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χ : (AE D)ˣ →* Circle) (om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ (dblSp A) B 1 χ om → A.rank < B.rank → B.rank ≤ 2 * A.rank → A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx B < B.rank → ∀ a : GL (Fin A.rank) (AE D), IsMaj A a → HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a) → ∀ θ : InfFam D, IsInfFam θ → ∀ (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ m : Measure (GA D B), m.IsHaarMeasure → ∀ f, IsThetaFunO ψ (dblSp A) B f → IsKFinVec om (Khat A a) f → EisValueAt A (flat A a (swSec A B om ν 𝓨 f) (sZero A B)) (sZero A B) (GlobalTheory.ThetaMean.thetaMean om m f) := by
   first | exact @UpperTheory.Lit.Rallis.SiegelWeilFinite.siegelWeil_kFin | exact UpperTheory.Lit.Rallis.SiegelWeilFinite.siegelWeil_kFin | (intros; apply UpperTheory.Lit.Rallis.SiegelWeilFinite.siegelWeil_kFin <;> assumption)
@@ -567,9 +559,9 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
 /- English proof (translation)
-Establish `e1 : (Formalism.L2.Theta.mt S a⁻¹).map (finPart D) = 1` using `congrArg Units.val (show finHom S a⁻¹ = 1 from inv_mem ha)`. Establish `e2 : (Formalism.L2.Theta.mt T 1).map (finPart D) = 1` using `congrArg Units.val (show finHom T 1 = 1 from map_one _)`. Establish `e3 : (actO S T a 1 x).map (infPart D) = x.map (infPart D)`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hx, Matrix.mul_zero, Matrix.zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : (actO S T a 1 x).map (finPart D) = x.map (finPart D)`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, e1, e2, Matrix.mul_one, Matrix.one_mul]`. Conclude with `Matrix.ext fun i j => GlobalTheory.DetOnto.ext_parts D (congrFun (congrFun e3 i) j) (congrFun (congrFun e4 i) j)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actO_real {a : GA D S} (ha : a ∈ GinfC S) {x : WO S T} (hx : x.map (infPart D) = 0) :
     actO S T a 1 x = x := by
@@ -586,7 +578,7 @@ theorem actO_real {a : GA D S} (ha : a ∈ GinfC S) {x : WO S T} (hx : x.map (in
   exact Matrix.ext fun i j => GlobalTheory.DetOnto.ext_parts D (congrFun (congrFun e3 i) j) (congrFun (congrFun e4 i) j)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hW.om_pres _ f hf.1, fun u hu h0 => by have e := hW.om_heis a 1 u f hf.1 rw [hf.2 u hu h0, actO_real ha h0] at e exact e.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem om_real_mem_level (hW : IsWeilDatumO ψ S T χS χT om) {U : AddSubgroup (WO S T)} {f : WO S T → ℂ}
     (hf : f ∈ GlobalTheory.Size.thetaLevel ψ S T U) {a : GA D S} (ha : a ∈ GinfC S) : om (a, 1) f ∈ GlobalTheory.Size.thetaLevel ψ S T U :=
@@ -596,15 +588,15 @@ theorem om_real_mem_level (hW : IsWeilDatumO ψ S T χS χT om) {U : AddSubgroup
     exact e.symm⟩
 
 /- English proof (translation)
-Take `⟨σ, hc⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨L, hL, hL0⟩ : ∃ L : ℝ, (∀ a, ‖(letter a : GlobalTheory.FockCompare.RW T S)‖ ≤ L) ∧ 0 ≤ L` from `⟨∑ a, ‖(letter a : GlobalTheory.FockCompare.RW T S)‖, fun a => Finset.single_le_sum (f := fun a => ‖(letter a : GlobalTheory.FockCompare.RW T S)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ a), by positivity⟩`. Establish `hT` using `GlobalTheory.RatCount.normInf_nonneg θ T 1`. Take `⟨c0, hc0, hc0'⟩ : ∃ c0 : ℝ, c0 = normInf θ T 1 * L ∧ 0 ≤ c0` from `⟨_, rfl, by positivity⟩`. Take `⟨K, hK⟩ : ∃ K : ℝ≥0, K = (Fintype.card (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool) : ℝ≥0)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(1 + (K : ℝ) * K * c0) ^ d * (sobO ψ θ μ 𝓕 d f).toReal, by positivity, fun y => ?_⟩` and prove the remaining obligations. Establish `hH` using `GlobalTheory.RatCount.normInf_nonneg θ S y`. Take `⟨ρ, hρdef⟩ : ∃ ρ : ℝ≥0, (ρ : ℝ) = c0 * normInf θ S y` from `⟨⟨c0 * normInf θ S y, by positivity⟩, rfl⟩`. Establish `hρ : ∀ a, ‖mov θ y⁻¹ (1 : GA D T)⁻¹ (letter a)‖ ≤ ρ`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(norm_mov_le_normInf _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[inv_inv, inv_one, hρdef, hc0]`. Use `gcongr`. Conclude with `hL a`. Establish `key` using `GlobalTheory.WeilSobolev.sobO_om_le hW hc hμ.1 hμ.2.1 y 1 hρ d f hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs` using `GlobalTheory.Size.sobO_ne_top hW.std hθ hμ.1 hμ.2.1 hf d`. Use `(ENNReal.toReal_mono (ENNReal.mul_ne_top (ENNReal.pow_ne_top ENNReal.coe_ne_top) hs) key).trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_pow, ENNReal.coe_toReal, ← hK]`. Establish `hQ : ((1 + K * (K * ρ) : ℝ≥0) : ℝ) ≤ (1 + (K : ℝ) * K * c0) * (1 + normInf θ S y)`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hρdef]`. Establish `: (0 : ℝ) ≤ K` using `K.2`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg this this) hc0']`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sobO_om_fst_le (hW : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) {μ : Measure (WO S T)}
     {𝓕 : Set (WO S T)} (hμ : IsCovolOne (ratL T S) μ 𝓕) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (d : ℕ) :
@@ -640,17 +632,17 @@ theorem sobO_om_fst_le (hW : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ)
     _ = _ := by rw [mul_pow]; ring
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Take `⟨μ, 𝓕, hμ⟩` from `GlobalTheory.Size.exists_isCovolOne S T`. Establish `hB` using `UpperTheory.Lit.Rallis.T.absThetaIntegral_le_sobolevSeminorm D ψ S T χS χT om hW θ hθ μ 𝓕 hμ m hm id (fun _ _ _ _ => rfl) (fun _ _ _ => rfl) (sobCont_id ψ θ μ 𝓕) (fun _ _ _ => rfl) (fun f hf => hI f hf 1)`. Take `⟨U, hU, hl⟩` from `GlobalTheory.Size.isTheta_iff_level.1 hf`. Take `⟨V, V', hV, -, hfix⟩` from `GlobalTheory.Mem.ThetaLevel.exists_level D ψ hW.std S T om (GlobalTheory.Ker.isWeak_of_datum hW) hW.om_cont f hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `GlobalTheory.Mem.LiftGrow.reduction_unif hθ S`. Take `⟨X, A, hA, hX⟩` from `hM V hV`. Take `⟨d, C, hC⟩` from `hB U hU X X.finite_toSet.isCompact`. Take `⟨C₁, hC₁, hs⟩` from `sobO_om_fst_le hW hθ hμ hf d`. Take `⟨C₂, hC₂, hcmp⟩` from `GlobalTheory.Grow.height_comparison S hθ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨C * C₁ * (A * C₂ ^ M) ^ d, M * d, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, x, hx, a, ha, k, hk, hk', e, hb⟩` from `hX g`. Establish `hfa` using `om_real_mem_level hW hl ha`. Establish `e1 : (fun h => thetaKO om g h f) = fun h => thetaKO om x h (om (a, 1) f)`. Use function extensionality and compare the values at `h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← GlobalTheory.ChainOnto.ThetaFirstVar.thetaKO_left_fst hW hf h γ hγ g, e]`. Establish `e2 : ((x * a * k, h) : GA D S × GA D T) = (x, h) * (a, 1) * (k, 1)` using `by simp`. Unfold `thetaKO`. Rewrite using `[e2, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hfix k hk hk' 1 (one_mem _) (one_mem _)]`. Establish `hn` using `GlobalTheory.RatCount.normInf_nonneg θ S a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : 1 + normInf θ S a ≤ A * C₂ ^ M * GlobalTheory.Grow.height S g ^ M`. Use `hb.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (NNReal.coe_nonneg _) (hcmp g).1 M) hA`. Use `beta_reduce`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _), integral_norm_eq_lintegral_enorm (hI _ hfa.1 x).1]`. Use `(ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.coe_ne_top (GlobalTheory.Size.sobO_ne_top hW.std hθ hμ.1 hμ.2.1 hfa.1 d)) (hC _ hfa x hx)).trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_mul, ENNReal.coe_toReal, pow_mul, mul_assoc, mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left ((hs a).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) h1 d) hC₁)) C.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modGrowth_of_integrable (hW : IsWeilDatumO ψ S T χS χT om) {m : Measure (GA D T)} (hm : m.IsHaarMeasure)
     (hI : ∀ f, IsThetaFunO ψ S T f → ∀ g, Integrable (descend (GQ T) fun h => thetaKO om g h f) (autMeasure T m))
@@ -692,7 +684,7 @@ theorem modGrowth_of_integrable (hW : IsWeilDatumO ψ S T χS χT om) {m : Measu
     (pow_le_pow_left₀ (by positivity) h1 d) hC₁)) C.2
 
 /- English proof (translation)
-Introduce `hP D ψ A B χ om hW hA hw m hm _ hf` and use `modGrowth_of_integrable hW hm (GlobalTheory.WeilThetaInt.integrable_thetaKO hP D A B m hm hA hw ψ χ om hW) hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem absTheta_modGrowth : GlobalTheory.Published.WeilThetaConvergence → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χ : (AE D)ˣ →* Circle) (om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ (dblSp A) B 1 χ om → 1 ≤ A.rank → (Formalism.MainNotions.SchurIrreducible.wittIdx B = 0 ∨ A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx B < B.rank) → ∀ m : Measure (GA D B), m.IsHaarMeasure → ∀ f, IsThetaFunO ψ (dblSp A) B f → GlobalTheory.Grow.ModGrowth (dblSp A) fun g => ∫ q, ‖descend (GQ B) (fun h => thetaKO om g h f) q‖ ∂autMeasure B m :=
   fun hP D ψ A B χ om hW hA hw m hm _ hf => modGrowth_of_integrable hW hm
@@ -717,7 +709,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ThetaDens
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Lit.Rallis.ThetaAbsGrowth.absTheta_modGrowth | exact UpperTheory.Lit.Rallis.ThetaAbsGrowth.absTheta_modGrowth | (intros; apply UpperTheory.Lit.Rallis.ThetaAbsGrowth.absTheta_modGrowth <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.UpperTheory.Lit.Rallis.T.doubledPair_absThetaIntegral_moderateGrowth : GlobalTheory.Published.WeilThetaConvergence → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χ : (AE D)ˣ →* Circle) (om : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ (dblSp A) B 1 χ om → 1 ≤ A.rank → (Formalism.MainNotions.SchurIrreducible.wittIdx B = 0 ∨ A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx B < B.rank) → ∀ m : Measure (GA D B), m.IsHaarMeasure → ∀ f, IsThetaFunO ψ (dblSp A) B f → GlobalTheory.Grow.ModGrowth (dblSp A) fun g => ∫ q, ‖descend (GQ B) (fun h => thetaKO om g h f) q‖ ∂autMeasure B m := by
   first | exact @UpperTheory.Lit.Rallis.ThetaAbsGrowth.absTheta_modGrowth | exact UpperTheory.Lit.Rallis.ThetaAbsGrowth.absTheta_modGrowth | (intros; apply UpperTheory.Lit.Rallis.ThetaAbsGrowth.absTheta_modGrowth <;> assumption)
@@ -742,29 +734,27 @@ namespace UpperTheory.Lit.Rallis.ThetaSq
 open GlobalTheory
 
 /- English proof (translation)
-Introduce `hW D ψ A B χA χB om omh hom homh hTC hA hw mH hmH Φ hΦ`. Take `⟨hφ, hid⟩` from `hTC Φ Φ hΦ hΦ`. Establish `key : ∀ g h, thetaKO om g h Φ * conj (thetaKO om g h Φ) = ((χB (detA A g) : Circle) : ℂ) * thetaKO omh (io A (g, g)) h (delta A B Φ Φ)`. Introduce `g h`. Rewrite using `[(hid g g h).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((χB (detA A g) : Circle) : ℂ) * (((χB (detA A g))⁻¹ : Circle) : ℂ) = 1`. Rewrite using `[← Circle.coe_mul, mul_inv_cancel, Circle.coe_one]`. Take the linear combination `(-(thetaKO om g h Φ * conj (thetaKO om g h Φ))) * e`. Establish `knorm : ∀ g h, ‖thetaKO om g h Φ‖ ^ 2 = ‖thetaKO omh (io A (g, g)) h (delta A B Φ Φ)‖`. Introduce `g h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg norm (key g h)` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_mul, Circle.norm_coe, one_mul, Complex.norm_conj, ← sq]`. Rewrite using `[this]`. Establish `hleft : ∀ g, LeftInv (GQ B) fun h => thetaKO om g h Φ` using `fun g γ hγ h => by show thetaKO om g (γ * h) Φ = thetaKO om g h Φ`. Establish `e : ((g, γ * h) : GA D A × GA D B) = (1, γ) * (g, h)` using `by simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `thetaKO`. Rewrite using `[e, map_mul]`. Conclude with `hom.om_aut 1 (one_mem _) _ hγ _ (hom.om_pres _ _ hΦ)`. Establish `hcont : ∀ g, Continuous fun h => thetaKO om g h Φ` using `fun g => (hom.om_cont Φ hΦ 0).comp (Continuous.prodMk_right g)`. Establish `hint : ∀ x, Integrable (descend (GQ B) fun h => thetaKO omh x h (delta A B Φ Φ)) (autMeasure B mH)` using `fun x => GlobalTheory.WeilThetaInt.integrable_thetaKO hW D A B mH hmH hA hw ψ χB omh homh (delta A B Φ Φ) hφ x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL2 : ∀ g, MemL2Quotient (GQ B) mH fun h => thetaKO om g h Φ`. Introduce `g`. Use `⟨hleft g, ?_⟩` and prove the remaining obligations. Establish `hm : AEStronglyMeasurable (descend (GQ B) fun h => thetaKO om g h Φ) (GlobalTheory.AutomorphicL2Unitary.quotMeasure (GQ B) mH)`. Rewrite using `[aestronglyMeasurable_quotMeasure_iff_lift, (hleft g).lift_descend]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hcont g).aestronglyMeasurable`. Use `(memLp_two_iff_integrable_sq_norm hm).2 ?_` and prove the remaining obligations. Use `(hint (io A (g, g))).norm.congr (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend]`. Conclude with `(knorm g _).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hL2, ?_⟩` and prove the remaining obligations. Take `⟨C₁, N, hC₁⟩` from `UpperTheory.Lit.Rallis.T.doubledPair_absThetaIntegral_moderateGrowth hW D ψ A B χB omh homh hA hw mH hmH _ hφ`. Establish `hE : ∀ x, ∫ q, ‖descend (GQ B) (fun h => thetaKO omh x h (delta A B Φ Φ)) q‖ ∂autMeasure B mH ≤ C₁ * GlobalTheory.Grow.height (dblSp A) x ^ N`. Introduce `x`. Use `hC₁ x` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Then use the resulting hypothesis. Establish `hC₁0 : 0 ≤ C₁`. Establish `h1` using `(integral_nonneg (fun _ => norm_nonneg _)).trans (hE 1)`. Conclude with `nonneg_of_mul_nonneg_left h1 (pow_pos (GlobalTheory.Grow.height_pos _ _) _)`. Take `⟨C₂, c, hC₂⟩` from `GlobalTheory.Grow.IoHeight.main D A`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpet : ∀ g, ‖petersson B mH (fun h => thetaKO om g h Φ) (fun h => thetaKO om g h Φ)‖ ≤ ∫ q, ‖descend (GQ B) (fun h => thetaKO omh (io A (g, g)) h (delta A B Φ Φ)) q‖ ∂autMeasure B mH`. Introduce `g`. Establish `e1 : petersson B mH (fun h => thetaKO om g h Φ) (fun h => thetaKO om g h Φ) = ((χB (detA A g) : Circle) : ℂ) * ∫ q, GlobalTheory.AutomorphicL2Unitary.descend (GQ B) (fun h => thetaKO omh (io A (g, g)) h (delta A B Φ Φ)) q ∂autMeasure B mH`. Rewrite using `[← integral_const_mul]`. Simplify using `only [petersson, pet, GlobalTheory.AutomorphicL2Unitary.descend]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `q`. Conclude with `key g _`. Rewrite using `[e1, norm_mul, Circle.norm_coe, one_mul]`. Conclude with `norm_integral_le_integral_norm _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 
-Use `⟨C₁ * C₂ ^ N, 2 * c * N, fun g => ?_⟩` and prove the remaining obligations. Establish `h2 : GlobalTheory.Grow.height (dblSp A) (io A (g, g)) ^ N ≤ (C₂ * GlobalTheory.Grow.height A g ^ (2 * c)) ^ N`. Use `pow_le_pow_left₀ (GlobalTheory.Grow.height_pos _ _).le ?_ N` and prove the remaining obligations. Use `hC₂ g g` as an intermediate fact. Rewrite `this` using `[← sq, ← pow_mul]`. Then use the resulting hypothesis.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem normSq_thetaKO_modGrowth : GlobalTheory.Published.WeilThetaConvergence → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (om : GA D A × GA D B →* Module.End ℂ (WO A B → ℂ)) (omh : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ A B χA χB om → IsWeilDatumO ψ (dblSp A) B 1 χB omh → ThetaClause ψ A B χB om omh → 1 ≤ A.rank → (Formalism.MainNotions.SchurIrreducible.wittIdx B = 0 ∨ A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx B < B.rank) → ∀ mH : Measure (GA D B), mH.IsHaarMeasure → ∀ Φ, IsThetaFunO ψ A B Φ → (∀ g, MemL2Quotient (GQ B) mH fun h => thetaKO om g h Φ) ∧ GlobalTheory.Grow.ModGrowth A fun g => GlobalTheory.Cusp.petersson B mH (fun h => thetaKO om g h Φ) fun h => thetaKO om g h Φ := by
   intro hW D ψ A B χA χB om omh hom homh hTC hA hw mH hmH Φ hΦ
@@ -853,7 +843,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ThetaDens
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Lit.Rallis.ThetaSq.normSq_thetaKO_modGrowth | exact UpperTheory.Lit.Rallis.ThetaSq.normSq_thetaKO_modGrowth | (intros; apply UpperTheory.Lit.Rallis.ThetaSq.normSq_thetaKO_modGrowth <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.UpperTheory.Lit.Rallis.T.petersson_normSq_thetaKernel_moderateGrowth : GlobalTheory.Published.WeilThetaConvergence → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (om : GA D A × GA D B →* Module.End ℂ (WO A B → ℂ)) (omh : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ A B χA χB om → IsWeilDatumO ψ (dblSp A) B 1 χB omh → ThetaClause ψ A B χB om omh → 1 ≤ A.rank → (Formalism.MainNotions.SchurIrreducible.wittIdx B = 0 ∨ A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx B < B.rank) → ∀ mH : Measure (GA D B), mH.IsHaarMeasure → ∀ Φ, IsThetaFunO ψ A B Φ → (∀ g, MemL2Quotient (GQ B) mH fun h => thetaKO om g h Φ) ∧ GlobalTheory.Grow.ModGrowth A fun g => GlobalTheory.Cusp.petersson B mH (fun h => thetaKO om g h Φ) fun h => thetaKO om g h Φ := by
   first | exact @UpperTheory.Lit.Rallis.ThetaSq.normSq_thetaKO_modGrowth | exact UpperTheory.Lit.Rallis.ThetaSq.normSq_thetaKO_modGrowth | (intros; apply UpperTheory.Lit.Rallis.ThetaSq.normSq_thetaKO_modGrowth <;> assumption)
@@ -880,9 +870,9 @@ namespace UpperTheory.Lit.Rallis.RallisIPProof
 open GlobalTheory
 
 /- English proof (translation)
-Establish `hfd` using `isFundamentalDomain_stdDom (GQ B) mH`. Establish `h0 : mH (stdDom (GQ B)) ≠ 0` using `hfd.measure_ne_zero (NeZero.ne mH)`. Establish `hfin : IsFiniteMeasure (autMeasure B mH)` using `isFiniteMeasure_autMeasure`. Use `ENNReal.toReal_pos ?_ (measure_ne_top _ _)` and prove the remaining obligations. Apply the tactic sequence `have hmk : Measurable (AutomorphicL2Unitary.mk (GQ B)) := by first | fun_prop | exact measurable_quotient_mk'' | exact measurable_quotient_mk' | exact AutomorphicL2Unitary.measurable_mk _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show (Measure.map (AutomorphicL2Unitary.mk (GQ B)) (mH.restrict (stdDom (GQ B)))) Set.univ ≠ 0`. Rewrite using `[Measure.map_apply hmk MeasurableSet.univ, Set.preimage_univ, Measure.restrict_apply_univ]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volQuot_pos {D : D7} (B : HSp D) (mH : Measure (GA D B)) [mH.IsHaarMeasure] :
     0 < (autMeasure B mH).real Set.univ := by
@@ -896,31 +886,29 @@ theorem volQuot_pos {D : D7} (B : HSp D) (mH : Measure (GA D B)) [mH.IsHaarMeasu
   exact h0
 
 /- English proof (translation)
-Introduce `hDM hSWU hWC D A B hab hb2 hw ψ χA χB ω ωd hω hωd hTC a ha hI ν 𝓕 hcov θ C hθ hSig hCart m hm hmr mH hmH U hU hUc _hLow Φ₁ Φ₂ hΦ₁ hΦ₂ hK f₁ hf₁ f₂ hf₂`. Establish `hW` using `GlobalTheory.weilRepresentationUnitaryPair`. Establish `hC : GlobalTheory.Published.CuspRapidDecay` using `GlobalTheory.RapidDecay.cuspRapidDecay`. Establish `ha1 : 1 ≤ A.rank` using `by omega`. Apply the tactic sequence `have hw' : A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx B < B.rank := by rcases hw with h | h <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨hφ, hid⟩` from `hTC Φ₁ Φ₂ hΦ₁ hΦ₂`. Establish `hmem` using `GlobalTheory.SwSecMem.swSec_mem_degPS hW D ψ A B χB ωd hωd ν 𝓕 hcov (delta A B Φ₁ Φ₂) hφ a hK`. Establish `hHk : IsHeckeChar D χB⁻¹`. Establish `h` using `hωd.hecT`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (χB⁻¹ : (AE D)ˣ →* Circle) = fun x => (χB x)⁻¹` using `rfl`. Rewrite using `[this]`. Conclude with `h.1.inv`. Rewrite using `[MonoidHom.inv_apply, h.2 x, inv_one]`. Take `⟨hDM1, -, hDM3⟩` from `hDM D A (by omega) a ha hI χB⁻¹ B.rank hHk (resEta_inv hωd.resT) (sZero A B) (swSec A B ωd ν 𝓕 (delta A B Φ₁ Φ₂)) hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA₁ : f₁ ∈ A0 θ A C` using `hf₁.1`. Establish `hA₂ : f₂ ∈ A0 θ A C` using `hf₂.1`. Establish `rd : ∀ u ∈ A0 θ A C, GlobalTheory.Grow.RapidDec A u` using `fun u hu => GlobalTheory.Grow.rapidDec_of_cuspForm hC hθ (mem_cuspForms.1 hu).1.1 (mem_cuspForms.1 hu).1.2`. Establish `rdc : ∀ u ∈ A0 θ A C, GlobalTheory.Grow.RapidDec A (fun g => conj (u g))` using `fun u hu => rd _ (GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 D θ A C hθ u hu)`. Take `⟨hBI, -⟩` from `hDM3 θ hθ hSig C hCart m hm f₁ hA₁ f₂ hA₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEF` using `hDM1.1.1`. Establish `hZF : GlobalTheory.Eis.IsZetaFamily A χB⁻¹ m (flat A a (swSec A B ωd ν 𝓕 (delta A B Φ₁ Φ₂)) (sZero A B)) f₁ f₂` using `⟨hEF, fun s hs => (hBI s hs).1⟩`. Establish `hEV` using `UpperTheory.Lit.Rallis.T.siegelWeil_convergent_range_kFinite_thetaFun hSWU hWC D ψ A B χB ωd hωd hab hb2 hw' a ha hI θ hθ ν 𝓕 hcov mH hmH _ hφ hK`. Take `⟨-, hZV⟩` from `GlobalTheory.Eis.zetaHolValueAt_of_eisValueAt D A χB⁻¹ hHk m hm _ hDM1.1 (fun g => hEF.analyticOnNhd_flat g) hDM1.2 f₁ f₂ (rd _ hA₁) (rd _ hA₂) hZF (sZero A B) _ hEV`. Establish `hKer : ∀ Φ, IsThetaFunO ψ A B Φ → Continuous (Function.uncurry fun g h => thetaKO ω g h Φ) ∧ (∀ γ ∈ GQ A, ∀ g h, thetaKO ω (γ * g) h Φ = thetaKO ω g h Φ) ∧ (∀ g, MemL2Quotient (GQ B) mH fun h => thetaKO ω g h Φ) ∧ (GlobalTheory.Grow.ModGrowth A fun g => petersson B mH (fun h => t …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Φ hΦ`. Take `⟨hL2, hMG⟩` from `UpperTheory.Lit.Rallis.T.petersson_normSq_thetaKernel_moderateGrowth hWC D ψ A B χA χB ω ωd hω hωd hTC ha1 hw mH hmH Φ hΦ`. Use `⟨hω.om_cont Φ hΦ 0, fun γ hγ g h => ?_, hL2, hMG, fun h => ?_⟩` and prove the remaining obligations. Establish `e : ((γ * g, h) : GA D A × GA D B) = (γ, 1) * (g, h)` using `by simp`. Unfold `thetaKO`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_mul]`. Conclude with `hω.om_aut γ hγ 1 (one_mem _) _ (hω.om_pres _ _ hΦ)`. Take `⟨C, N, hCN⟩` from `GlobalTheory.Core.Rk.ThetaGrowthBoth.thetaKO_modGrowth₂ D ψ A B χA χB ω hω Φ hΦ`. Use `⟨C * GlobalTheory.Grow.height B h ^ N, N, fun g => (hCN g h).trans (le_of_eq ?_)⟩` and prove the remaining obligations. Rewrite using `[mul_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨i₁, i₂, l₁, l₂, hss⟩` from `GlobalTheory.Core.Rk.Seesaw.seesaw_fubini D A B m mH hm hmH (fun g h => thetaKO ω g h Φ₁) (fun g h => thetaKO ω g h Φ₂) (fun K hK => by`. Break down `hK with rfl | rfl` into its components or cases. Use `exacts [hKer Φ₁ hΦ₁, hKer Φ₂ hΦ₂]) (fun g => conj (f₁ g)) (fun g => conj (f₂ g)) (rdc f₁ hA₁) (rdc f₂ hA₂)`. Establish `key : ∀ g₁ g₂ h, thetaKO ω g₁ h Φ₁ * conj (thetaKO ω g₂ h Φ₂) = ((χB (detA A g₂) : Circle) : ℂ) * thetaKO ωd (io A (g₁, g₂)) h (delta A B Φ₁ Φ₂)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g₁ g₂ h`. Rewrite using `[(hid g₁ g₂ h).2]`. Establish `e : ((χB (detA A g₂) : Circle) : ℂ) * (((χB (detA A g₂))⁻¹ : Circle) : ℂ) = 1`. Rewrite using `[← Circle.coe_mul, mul_inv_cancel, Circle.coe_one]`. Take the linear combination `(-(thetaKO ω g₁ h Φ₁ * conj (thetaKO ω g₂ h Φ₂))) * e`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpet : ∀ g₁ g₂, petersson B mH (fun h => thetaKO ω g₁ h Φ₁) (fun h => thetaKO ω g₂ h Φ₂) = ((χB (detA A g₂) : Circle) : ℂ) * ((((autMeasure B mH).real Set.univ : ℝ) : ℂ) * ThetaMean.thetaMean ωd mH (delta A B Φ₁ Φ₂) (io A (g₁, g₂)))`. Introduce `g₁ g₂`. Establish `e1 : petersson B mH (fun h => thetaKO ω g₁ h Φ₁) (fun h => thetaKO ω g₂ h Φ₂) = ((χB (detA A g₂) : Circle) : ℂ) * ∫ q, GlobalTheory.AutomorphicL2Unitary.descend (GQ B) (fun h => thetaKO ωd (io A (g₁, g₂)) h (delta A B Φ₁ Φ₂)) q ∂autMeasure B mH`. Rewrite using `[← integral_const_mul]`. Simplify using `only [petersson, pet, GlobalTheory.AutomorphicL2Unitary.descend]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `q`. Conclude with `key g₁ g₂ _`. Rewrite using `[e1, ← measure_smul_average, ThetaMean.thetaMean, Complex.real_smul]`. Establish `hv : (((autMeasure B mH).real Set.univ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (volQuot_pos B mH).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hval : (((autMeasure B mH).real Set.univ : ℝ) : ℂ)⁻¹ * petersson B mH (RallisIP.thetaLift ω m Φ₁ f₁) (RallisIP.thetaLift ω m Φ₂ f₂) = GlobalTheory.Eis.dblInt A χB⁻¹ m (ThetaMean.thetaMean ωd mH (delta A B Φ₁ Φ₂)) f₁ f₂`. Establish `hss' : petersson B mH (RallisIP.thetaLift ω m Φ₁ f₁) (RallisIP.thetaLift ω m Φ₂ f₂) = _` using `hss`. Rewrite using `[hss', GlobalTheory.Eis.dblInt, ← integral_const_mul]`. Use `integral_congr_ae (.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only [GlobalTheory.Eis.dblIntegrandQ, GlobalTheory.Eis.dblIntegrand, hpet, MonoidHom.inv_apply, Circle.coe_inv, inv_inv, RCLike.conj_conj]`.
-
-Clear the denominators using the available nonvanishing facts. Use `⟨⟨i₁, l₁⟩, ⟨i₂, l₂⟩, hZF, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Conclude with `hZV.2.valueAt`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rallisInnerProductConvergent_of : GlobalTheory.Published.DoublingMethod → GlobalTheory.Published.SiegelWeilUnitaryConvergent →
     GlobalTheory.Published.WeilThetaConvergence → GlobalTheory.Published.RallisInnerProductConvergent := by
@@ -1016,7 +1004,7 @@ end
 end
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Lit.Rallis.RallisIPProof.rallisInnerProductConvergent_of h₁ h₂ h₃`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.rallisInnerProductConvergent (h₁ : GlobalTheory.Published.DoublingMethod) (h₂ : GlobalTheory.Published.SiegelWeilUnitaryConvergent)
     (h₃ : GlobalTheory.Published.WeilThetaConvergence) : GlobalTheory.Published.RallisInnerProductConvergent :=

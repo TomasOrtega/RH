@@ -5,11 +5,11 @@ namespace GlobalTheory.NatMulMem
 open NumberField
 
 /- English proof (translation)
-Take `⟨y, hy, hint⟩` from `IsAlgebraic.exists_integral_multiple (R := ℤ) (z := c) ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic c))`. Use `⟨y.natAbs, Int.natAbs_pos.mpr hy, ?_⟩` and prove the remaining obligations. Rewrite `hint` using `[zsmul_eq_mul]`. Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `: ((y.natAbs : ℕ) : E) = ((y : ℤ) : E)` using `by conv_rhs => rw [h]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hint`. Establish `: ((y.natAbs : ℕ) : E) = -((y : ℤ) : E)` using `by conv_rhs => rw [h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, neg_mul]`. Conclude with `hint.neg`.
+A detailed English derivation is pending.
 -/
 lemma exists_nat_mul_mem {E : Type} [Field E] [NumberField E] (c : E) :
     ∃ m : ℕ, 0 < m ∧ IsIntegral ℤ ((m : E) * c) := by
@@ -29,17 +29,15 @@ lemma exists_nat_mul_mem {E : Type} [Field E] [NumberField E] (c : E) :
     rw [this, neg_mul]; exact hint.neg
 
 /- English proof (translation)
-Introduce `hspan`. Set `S : Submodule E (Fin n → E)` to `{ carrier := {x | ∃ d : ℕ, 0 < d ∧ d • x ∈ L} add_mem' := by`. Introduce and unpack `x y ⟨a, ha, hx⟩ ⟨b, hb, hy⟩`. Use `⟨a * b, Nat.mul_pos ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.toAddSubmonoid.nsmul_mem hx b`. Rewrite using `[mul_smul]`. Conclude with `L.toAddSubmonoid.nsmul_mem hy a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use the proof step `zero_mem' := ⟨1, one_pos, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c x ⟨a, ha, hx⟩`. Take `⟨m, hm, hint⟩` from `exists_nat_mul_mem c`. Use `⟨m * a, Nat.mul_pos hm ha, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Set `r : RingOfIntegers E` to `⟨(m : E) * c, hint⟩`. Establish `key : (m * a) • (c • x) = r • (a • x)`. Use function extensionality and compare the values at `i`. Establish `hr : algebraMap (RingOfIntegers E) E r = (m : E) * c` using `rfl`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, Algebra.smul_def r, hr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [nsmul_eq_mul, smul_eq_mul, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `L.smul_mem r hx }`. Establish `hle : Submodule.span E (L : Set (Fin n → E)) ≤ S` using `Submodule.span_le.mpr (fun y hy => ⟨1, one_pos, by simpa using hy⟩)`.
-
-Introduce `x`. Establish `hx : x ∈ S` using `hle (hspan ▸ Submodule.mem_top)`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main {E : Type} [Field E] {n : ℕ} [NumberField E]
     (L : Submodule (RingOfIntegers E) (Fin n → E)) :

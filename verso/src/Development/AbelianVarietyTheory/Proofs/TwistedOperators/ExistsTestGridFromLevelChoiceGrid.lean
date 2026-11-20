@@ -35,7 +35,7 @@ def hermitianOrthogonalExtensionDataCast {A A' B B' : GlobalTheory.Grid.Node D} 
     GlobalTheory.Grid.HermitianOrthogonalExtensionData A' B' c := hA ▸ hB ▸ d
 
 /- English proof (translation)
-Substitute `hA hB` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem gridDecompositionCast_is_iff {A A' B B' : GlobalTheory.Grid.Node D} {c : ℕ} (hA : A = A') (hB : B = B') (d : GlobalTheory.Grid.HermitianOrthogonalExtensionData A B c)
     (g : Fin c → Fin c → D.host.E) (𝔟 : Fin c → GlobalTheory.Grid.FrId D) : (hermitianOrthogonalExtensionDataCast hA hB d).Is g 𝔟 ↔ d.Is g 𝔟 := by
@@ -44,7 +44,7 @@ theorem gridDecompositionCast_is_iff {A A' B B' : GlobalTheory.Grid.Node D} {c :
 def hermitianOrthogonalExtensionDataZero (A B : GlobalTheory.Grid.Node D) (c : ℕ) : GlobalTheory.Grid.HermitianOrthogonalExtensionData A B c := ⟨0, 0⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [GlobalTheory.ChiGrid.stairId, GlobalTheory.ChiGrid.Places.stA, GlobalTheory.ChiGrid.Places.stAbar, GlobalTheory.ChiGrid.Places.modulBar, GlobalTheory.Grid.staircaseExtensionIdeal, mul_pow, inv_pow, mul_inv, inv_inv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem joinStair {T : Type} {L : LevCh D T} (P : GlobalTheory.ChiGrid.Places L) (sc : GlobalTheory.ChiGrid.Consts) (c : ℕ) :
     GlobalTheory.ChiGrid.stairId (P.stA sc) (P.stAbar sc) c = GlobalTheory.Grid.staircaseExtensionIdeal (P.modul sc) c := by
@@ -53,7 +53,7 @@ theorem joinStair {T : Type} {L : LevCh D T} (P : GlobalTheory.ChiGrid.Places L)
     GlobalTheory.Grid.staircaseExtensionIdeal, mul_pow, inv_pow, mul_inv, inv_inv]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `[GlobalTheory.ChiGrid.stairId, GlobalTheory.Grid.staircaseExtensionIdeal, Ideal.pointwise_smul_def, Ideal.map_top, mul_pow, inv_pow]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem joinStair_top (c : ℕ) :
     GlobalTheory.ChiGrid.stairId D.host.AA D.host.AAbar c = GlobalTheory.Grid.staircaseExtensionIdeal (D := D) ⊤ c := by
@@ -61,14 +61,14 @@ theorem joinStair_top (c : ℕ) :
   simp [GlobalTheory.ChiGrid.stairId, GlobalTheory.Grid.staircaseExtensionIdeal, Ideal.pointwise_smul_def, Ideal.map_top, mul_pow, inv_pow]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p q`. Use `fin_cases p`. Use `fin_cases q`. Simplify using `[GlobalTheory.ChiGrid.antiDiagonalSignGramMatrix]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem joinGram_one : (fun p q : Fin 1 => GlobalTheory.ChiGrid.antiDiagonalSignGramMatrix 1 (1 : D.host.E) p q) = fun _ _ => 1 := by
   funext p q
   fin_cases p; fin_cases q; simp [GlobalTheory.ChiGrid.antiDiagonalSignGramMatrix]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p q`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem joinGram_neg (c : ℕ) : (fun p q : Fin c => GlobalTheory.ChiGrid.antiDiagonalSignGramMatrix c (-1 : D.host.E) p q) = GlobalTheory.Grid.antiDiagonalSignGramMatrix D.host.E c := by
   funext p q
@@ -77,49 +77,45 @@ theorem joinGram_neg (c : ℕ) : (fun p q : Fin c => GlobalTheory.ChiGrid.antiDi
 end Cast
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R sc hDS hH F hR hsc G' W hW hL hPg hsplit hg hT hOV hOP hOX hcT hoT e he`. Take `⟨Z, hZ, hq0, hw0, he0, hWZ, hlvl, hS0, hS1⟩` from `GlobalTheory.T.testGridPlaceData_of_levelChoiceGrid hR hPg hsplit hg hT e he`. Set `Sx : GlobalTheory.ChiGrid.Node → D.what₂.Tau → SPar` to `fun X => match X with`. Consider the case `.grid i j => GlobalTheory.Grid.parV D i j`. Consider the case `.core i => GlobalTheory.Grid.parP D i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Treat this case separately. Treat this case separately.
 
-Consider the case `.top j => GlobalTheory.Grid.parXp D j`. Set `good : GlobalTheory.ChiGrid.Node → Prop` to `fun X => match X with`. Consider the case `.grid i j => 1 ≤ i ∧ i ≤ D.R.m ∧ j ≤ D.R.m`. Consider the case `.core i => i ≤ D.R.m`. Consider the case `.top j => 1 ≤ j ∧ j ≤ D.R.m`.
+Treat this case separately. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hgood : ∀ X, good X → X.InRange D.R.m ∧ ∀ j, X ≠ .grid 0 j`. Introduce `X hX`. Break down `X with ⟨i, j⟩ | i | j` into its components or cases. Conclude with `⟨⟨hX.2.1, hX.2.2⟩, fun j' h => by cases h; exact absurd hX.1 (by omega)⟩`. Conclude with `⟨hX, fun j' h => GlobalTheory.ChiGrid.Node.noConfusion h⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨hX.2, fun j' h => GlobalTheory.ChiGrid.Node.noConfusion h⟩`. Establish `hMod : ∀ X, good X → ∃ M : DSModel (G'.V X) (Sx X), cart M = W.cart X ∧ onb M = W.onb X`. Introduce `X hX`. Establish `hv` using `G'.isV (hgood X hX).1 (hgood X hX).2`. Use `GlobalTheory.T.exists_discreteSeriesModel_of_orthonormalBasis_cartan D hDS (G'.V X) (Sx X) (W.onb X) (W.cart X) ?_ (W.onb_is X (hgood X hX).1)` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `τ`. Break down `X with ⟨i, j⟩ | i | j` into its components or cases. Take `⟨lam, ε, h1, h2⟩` from `hOV i j hX.1 hX.2.1 hX.2.2 τ`. Conclude with `⟨lam, ε, h1, GlobalTheory.T.isHarishChandraParam_gridVertexRealParameter D hH i j hX.1 hX.2.1 hX.2.2 τ _ lam ε hv.rank h1, h2⟩`. Take `⟨lam, ε, h1, h2⟩` from `hOP i hX τ`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨lam, ε, h1, GlobalTheory.T.isHarishChandraParam_gridColumnRealParameter D hH i hX τ _ lam ε hv.rank h1, h2⟩`. Take `⟨lam, ε, h1, h2⟩` from `hOX j hX.1 hX.2 τ`. Conclude with `⟨lam, ε, h1, GlobalTheory.T.isHarishChandraParam_gridRowRealParameter D hH j hX.1 hX.2 τ _ lam ε hv.rank h1, h2⟩`. Establish `hFr : ∀ X, good X → ∃ β, IsSDFrame (G'.V X) β (G'.Λ X) 1` using `fun X hX => GlobalTheory.T.exists_selfDual_frame_of_standard_selfDual_lattice D _ _ (hL X (hgood X hX).1 (hgood X hX).2) (G'.isV (hgood X hX).1 (hgood X hX).2).sd`. Use `choose M hM using hMod`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose β hβ using hFr`. Set `mk : ∀ X, good X → GlobalTheory.Grid.Node D` to `fun X h => ⟨G'.V X, Sx X, M X h, G'.Λ X, β X h⟩`. Set `node : GlobalTheory.ChiGrid.Node → GlobalTheory.Grid.Node D` to `fun X => if h : good X then mk X h else GlobalTheory.Grid.row0 R 0`. Establish `node_pos : ∀ X (h : good X), node X = mk X h` using `fun X h => dif_pos h`. Establish `mk_is : ∀ X (h : good X), (mk X h).Is (X.rank D) (X.neg D.R.m) (Sx X)` using `fun X h => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hv` using `G'.isV (hgood X h).1 (hgood X h).2`. Conclude with `⟨hv.rank, hv.sigOK, hv.sig, rfl, hβ X h⟩`. Establish `mk_agree : ∀ X (h : good X), NodeAgree (mk X h) W X` using `fun X h => ⟨rfl, HEq.rfl, heq_of_eq (hM X h).1, heq_of_eq (hM X h).2⟩`. Set `GS : GlobalTheory.Grid.GridSp D` to `{ toPlaceDat := Z, nV := fun i j => node (.grid (i + 1) j), P := fun i => node (.core i), nX := fun j => node (.top (j + 1)) }`. Establish `vert_eq : ∀ n x, 1 ≤ n → GS.vert R n x = node (.grid n x)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Introduce `n x hn`. Consider the cases of `n with`. Consider the case `zero => omega`. Consider the case `succ n => rfl`. Establish `Xp_eq : ∀ n, 1 ≤ n → GS.Xp n = node (.top n)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Introduce `n hn`. Consider the cases of `n with`. Consider the case `zero => omega`. Consider the case `succ n => rfl`. Establish `gP : ∀ i, i ≤ D.R.m → good (.core i)` using `fun i h => h`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gV : ∀ i j, 1 ≤ i → i ≤ D.R.m → j ≤ D.R.m → good (.grid i j)` using `fun i j h1 h2 h3 => ⟨h1, h2, h3⟩`. Establish `gX : ∀ j, 1 ≤ j → j ≤ D.R.m → good (.top j)` using `fun j h1 h2 => ⟨h1, h2⟩`. Establish `hm2` using `D.R.two_le_m`. Take `⟨dP, -, hdP⟩` from `GlobalTheory.T.exists_extensionData_antiDiagonalSignGram_of_lat_eq (GlobalTheory.Grid.row0 R 0) (mk (.core 0) (gP 0 (by omega))) G'.sp.dec0 (fun _ => 1) (Or.inl rfl) G'.sp.lat0`. Establish `exV : ∀ i (h : 1 ≤ i ∧ i ≤ D.R.m), ∃ d : GlobalTheory.Grid.HermitianOrthogonalExtensionData (mk (.core i) (gP i h.2)) (mk (.grid i 0) (gV i 0 h.1 h.2 (by omega))) (i - 1), d.Is (fun p q => GlobalTheory.ChiGrid.antiDiagonalSignGramMatrix (i - 1) (-1 : D.host.E) p q) (GlobalTheory. …` using `fun i h => (GlobalTheory.T.exists_extensionData_antiDiagonalSignGram_of_lat_eq _ _ (G'.sp.colDec i h.1 h.2) _ (Or.inr rfl) (G'.sp.colLat i h.1 h.2)).imp fun _ h => h.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose dV hdV using exV`. Establish `exX : ∀ j (h : j + 1 < D.R.m), ∃ d : GlobalTheory.Grid.HermitianOrthogonalExtensionData (mk (.top (j + 1)) (gX (j + 1) (by omega) h.le)) (mk (.grid D.R.m (j + 1)) (gV D.R.m (j + 1) (by omega) le_rfl h.le)) (D.R.m - 1 - (j + 1)), d.Is (fun p q => GlobalTheory.ChiGrid.antiDiagonalS …` using `fun j h => (GlobalTheory.T.exists_extensionData_antiDiagonalSignGram_of_lat_eq _ _ (G'.sp.rowDecS j h) _ (Or.inr rfl) (G'.sp.rowLat j h)).imp fun _ h => h.2`. Use `choose dX hdX using exX`. Take `⟨dZ, -, hdZ⟩` from `GlobalTheory.T.exists_extensionData_antiDiagonalSignGram_of_lat_eq (mk (.grid D.R.m D.R.m) (gV D.R.m D.R.m (by omega) le_rfl le_rfl)) (mk (.top D.R.m) (gX D.R.m (by omega) le_rfl)) G'.sp.topDec (fun _ => 1) (Or.inl rfl) G'.sp.topLat`. Set `G : GlobalTheory.Grid.GridPre R` to `{ toGridSp := GS idem := e chiH := G'.ch.chiH chi := G'.ch.chi decP := hermitianOrthogonalExtensionDataCast rfl (node_pos (.core 0) (gP 0 (by omega))).symm dP decV := fun i => if h : 1 ≤ i ∧ i ≤ D.R.m then hermitianOrthogonalExtensionDataCast (node_pos (.core i) (gP i h.2)).symm …`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨G, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hi hj show (node (.grid (i + 1) j)).Is _ _ _`. Rewrite using `[node_pos (.grid (i + 1) j) (gV (i + 1) j (by omega) hi hj)]`. Conclude with `mk_is _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Introduce `i hi show (node (.core i)).Is _ _ _`. Rewrite using `[node_pos (.core i) (gP i hi)]`. Conclude with `mk_is _ _`. Introduce `j hj show (node (.top (j + 1))).Is _ _ _`. Rewrite using `[node_pos (.top (j + 1)) (gX (j + 1) (by omega) hj)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mk_is _ _`. Simplify using `only [G]`. Rewrite using `[gridDecompositionCast_is_iff, ← joinGram_one]`. Conclude with `hdP`. Introduce `i hi1 hi2 dsimp only [G]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos ⟨hi1, hi2⟩, gridDecompositionCast_is_iff]`. Establish `hl' : Z.ideal R.Pg = G'.pl.modul sc` using `hlvl`. Use `hdV i ⟨hi1, hi2⟩` as an intermediate fact. Rewrite `this` using `[joinGram_neg, joinStair, ← hl']`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `j hj dsimp only [G]`. Rewrite using `[dif_pos hj, gridDecompositionCast_is_iff]`. Use `hdX j hj` as an intermediate fact. Rewrite `this` using `[joinGram_neg, joinStair_top]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Simplify using `only [G]`. Rewrite using `[gridDecompositionCast_is_iff, ← joinGram_one]`. Conclude with `hdZ`. Conclude with `⟨hZ, fun i h1 h2 => GlobalTheory.T.heckeCharacterGrid_isAuxiliaryCharacter_testGrid (GlobalTheory.T.gridMinimalGap_eq_chiGridGapGamma_one D) hsc Z hS0 hS1 hZ.Wd_over hw0 i h1 h2, fun i h1 h2 => G'.ch.chi_eq i h1 h2⟩`. Use `⟨?_, ?_, ?_, hq0, hw0, he0, hWZ, hlvl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Introduce `i j hi hj`. Consider the cases of `i with`. Consider the case `zero => exact GlobalTheory.T.testGridRowZero_vertices_agree_weilData W hW j hj`. Consider the case `succ i => show NodeAgree (node (.grid (i + 1) j)) W (.grid (i + 1) j)`. Rewrite using `[node_pos (.grid (i + 1) j) (gV (i + 1) j (by omega) hi hj)]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mk_agree _ _`. Introduce `i hi show NodeAgree (node (.core i)) W (.core i)`. Rewrite using `[node_pos (.core i) (gP i hi)]`. Conclude with `mk_agree _ _`. Introduce `j hj`.
-
-Consider the cases of `j with`. Consider the case `zero => show NodeAgree (node (.core D.R.m)) W (.top 0)`. Rewrite using `[node_pos (.core D.R.m) (gP D.R.m le_rfl)]`. Conclude with `⟨rfl, HEq.rfl, heq_of_eq ((hM _ _).1.trans hcT.symm), heq_of_eq ((hM _ _).2.trans hoT.symm)⟩`. Consider the case `succ j => show NodeAgree (node (.top (j + 1))) W (.top (j + 1))`.
-
-Rewrite using `[node_pos (.top (j + 1)) (gX (j + 1) (by omega) hj)]`. Conclude with `mk_agree _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_gridPre_spaces : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : GlobalTheory.ChiGrid.Consts}, GlobalTheory.Published.DiscreteSeriesUpqExists → HostHyp D → ∀ {F : Face D A}, GlobalTheory.Hk3.Core R F → sc.cGap = 1 → ∀ {G' : GlobalTheory.ChiGrid.GridData R.toLevCh sc} (W : G'.Weil), W.Over R → (∀ X : GlobalTheory.ChiGrid.Node, X.InRange D.R.m → (∀ j, X ≠ .grid 0 j) → (G'.Λ X : Set _) = L0c D (G'.V X)) → (∀ PP ∈ R.Pg, ∀ PP' ∈ R.Pg, PP.under (𝓞 D.host.F) = PP'.under (𝓞 D.host.F) → PP = PP') → Formalism.L2.Host.SplitsCompletely {G'.pl.w G'.pl.v0} → (∀ k, GlobalTheory.ChiGrid.q0 D ≠ D.host.g k) → (GlobalTheory.ChiGrid.q0 D ≠ D.sp.T ∧ ∀ u : D.what₂.Word, GlobalTheory.ChiGrid.q0 D ≠ (D.mem u).A.T) → (∀ i j, 1 ≤ i → i ≤ D.R.m → j ≤ D.R.m → ∀ τ, ∃ (lam : Fin (G'.V (.grid i j)).rank → ℝ) (ε : Fin (G'.V (.grid i j)).rank → Bool), IsEnum (GlobalTheory.Grid.parV D i j τ) lam ε ∧ (W.onb (.grid i j) τ)ᴴ * gramAt D (G'.V (.grid i j)) τ * W.onb (.grid i j) τ = Formalism.REAL.Jm ε) → (∀ i, i ≤ D.R.m → ∀ τ, ∃ (lam : Fin (G'.V (.core i)).rank → ℝ) (ε : Fin (G'.V (.core i)).rank → Bool), IsEnum (GlobalTheory.Grid.parP D i τ) lam ε ∧ (W.onb (.core i) τ)ᴴ * gramAt D (G'.V (.core i)) τ * W.onb (.core i) τ = Formalism.REAL.Jm ε) → (∀ j, 1 ≤ j → j ≤ D.R.m → ∀ τ, ∃ (lam : Fin (G'.V (.top j)).rank → ℝ) (ε : Fin (G'.V (.top j)).rank → Bool), IsEnum (GlobalTheory.Grid.parXp D j τ) lam ε ∧ (W.onb (.top j) τ)ᴴ * gramAt D (G'.V (.top j)) τ * W.onb (.top j) τ = Formalism.REAL.Jm ε) → W.cart (.top 0) = W.cart (.core D.R.m) → W.onb (.top 0) = W.onb (.core D.R.m) → ∀ e : AE D, IsIdemSum e G'.pl.W0 → ∃ G : GlobalTheory.Grid.GridPre R, G.idem = e ∧ G.IsSpaces ∧ G.IsChars ∧ SpAgree G W := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R sc hDS hH F hR hsc G' W hW hL hPg hsplit hg hT hOV hOP hOX hcT hoT e he

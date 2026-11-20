@@ -22,7 +22,7 @@ def secDer (d : Mat n) : Mat n →ₗ[ℂ] Mat n where
       mul_add]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : a = e <;> by_cases h2 : b = c <;> simp [h1, h2, ite_and, Finset.sum_ite_eq', eq_comm]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem trace_single_mul_single (a b c e : Fin n) :
     trace (Matrix.single a b (1 : ℂ) * Matrix.single c e 1) = if a = e ∧ b = c then 1 else 0 := by
@@ -30,16 +30,16 @@ theorem trace_single_mul_single (a b c e : Fin n) :
   by_cases h1 : a = e <;> by_cases h2 : b = c <;> simp [h1, h2, ite_and, Finset.sum_ite_eq', eq_comm]
 
 /- English proof (translation)
-Rewrite using `[← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem sqrt_two_inv_sq : ((Real.sqrt 2)⁻¹ : ℂ) * ((Real.sqrt 2)⁻¹ : ℂ) = 1 / 2 := by
   rw [← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]
   norm_num
 
 /- English proof (translation)
-Take `⟨a, b⟩` from `p`. Take `⟨c, e⟩` from `q`. Establish `hs` using `sqrt_two_inv_sq`. Simplify using `only [hb]`. Apply the tactic sequence `split_ifs with h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 <;>`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [Matrix.add_mul, Matrix.mul_add, Matrix.sub_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, trace_add, trace_sub, trace_smul, trace_single_mul_single, smul_eq_mul, Prod.mk.injEq] at * <;> (simp only [Fin.ext_iff, Fin.lt_iff_val_lt_val] at * ; split_ifs at * <;> ( …`. Use the proof step `(generalize ((Real.sqrt 2 : ℝ) : ℂ)⁻¹ = s at hs ⊢`. Establish `hs2 : s ^ 2 = 1 / 2` using `by rw [sq]; exact hs`. Apply the tactic sequence `first | ring1 | (ring_nf; simp only [Complex.I_sq, hs2]; ring_nf))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trace_hb_mul_hb (p q : Fin n × Fin n) : trace (hb p * hb q) = if p = q then 1 else 0 := by
   obtain ⟨a, b⟩ := p
@@ -54,7 +54,7 @@ theorem trace_hb_mul_hb (p q : Fin n × Fin n) : trace (hb p * hb q) = if p = q 
    first | ring1 | (ring_nf; simp only [Complex.I_sq, hs2]; ring_nf))
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg q`. Establish `h` using `congrArg (fun X => trace (X * hb q)) hg`. Simplify `h` using `[Finset.sum_mul, Matrix.trace_sum, Matrix.smul_mul, trace_smul, trace_hb_mul_hb]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hb_linInd : LinearIndependent ℂ (hb (n := n)) := by
   rw [Fintype.linearIndependent_iff]
@@ -66,20 +66,20 @@ def hbB (n : ℕ) : Module.Basis (Fin n × Fin n) ℂ (Mat n) :=
   basisOfLinearIndependentOfCardEqFinrank' hb hb_linInd (by simp [Module.finrank_matrix])
 
 /- English proof (translation)
-Simplify using `[hbB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hbB_apply (p : Fin n × Fin n) : hbB n p = hb p := by
   simp [hbB]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (hbB n).sum_repr X]`. Simplify using `[Finset.sum_mul, Matrix.trace_sum, Matrix.smul_mul, trace_smul, hbB_apply, trace_hb_mul_hb]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hbB_repr (X : Mat n) (q : Fin n × Fin n) : (hbB n).repr X q = trace (X * hb q) := by
   conv_rhs => rw [← (hbB n).sum_repr X]
   simp [Finset.sum_mul, Matrix.trace_sum, Matrix.smul_mul, trace_smul, hbB_apply, trace_hb_mul_hb]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.det_toMatrix (hbB n) L, ← Matrix.det_transpose (LinearMap.toMatrix (hbB n) (hbB n) L)]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `[LinearMap.toMatrix_apply, hbB_repr, hbB_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_of_trace (L : Mat n →ₗ[ℂ] Mat n) :
     (Matrix.of fun p q : Fin n × Fin n => trace (L (hb p) * hb q)).det = LinearMap.det L := by
@@ -115,13 +115,13 @@ def cjEquiv (U : Mat n) (hU : IsUnit U.det) : Mat n ≃ₗ[ℂ] Mat n where
     rw [Matrix.nonsing_inv_mul U hU, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul U hU, Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `(Matrix.isUnit_iff_isUnit_det _).mp k.isUnit`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_G (k : G n) : IsUnit (k.val).det :=
   (Matrix.isUnit_iff_isUnit_det _).mp k.isUnit
 
 /- English proof (translation)
-Establish `h : th k = k` using `hk`. Rewrite using `[tw, h, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, cjHom_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_val {k : G n} (hk : k ∈ KU n) (d : G n) : (tw k d).val = cjHom k.val (isUnit_det_G k) d.val := by
   have h : th k = k := hk

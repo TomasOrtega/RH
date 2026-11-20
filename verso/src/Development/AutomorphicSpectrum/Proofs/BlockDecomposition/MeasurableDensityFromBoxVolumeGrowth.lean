@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WhitFree.AvgInf
 
 /- English proof (translation)
-Use `set B : ℝ := ∑ a, ∑ i, ∑ w, ‖κ (X a i) w‖ with hB`. Take `⟨j, hj⟩` from `pow_unbounded_of_one_lt (B / R) (one_lt_two : (1 : ℝ) < 2)`. Use `⟨j, fun a i w => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖κ (X a i) w‖ ≤ ∑ w, ‖κ (X a i) w‖` using `Finset.single_le_sum (f := fun w => ‖κ (X a i) w‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ w)`. Establish `h2 : ∑ w, ‖κ (X a i) w‖ ≤ ∑ i, ∑ w, ‖κ (X a i) w‖` using `Finset.single_le_sum (f := fun i => ∑ w, ‖κ (X a i) w‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∑ i, ∑ w, ‖κ (X a i) w‖ ≤ B` using `Finset.single_le_sum (f := fun a => ∑ i, ∑ w, ‖κ (X a i) w‖) (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ a)`. Establish `h4 : B < (2 : ℝ) ^ j * R` using `(div_lt_iff₀ hR).1 hj`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_mem_boxK_two_pow {K W : Type} [CommRing K] [Fintype W] (κ : K ≃+* (W → ℂ)) {n M : ℕ}
     {R : ℝ} (hR : 0 < R) (X : Fin n → Fin M → K) :
@@ -35,13 +35,13 @@ theorem exists_mem_boxK_two_pow {K W : Type} [CommRing K] [Fintype W] (κ : K �
   linarith
 
 /- English proof (translation)
-Take `⟨δ, hδ0, hδ⟩` from `ENNReal.lt_iff_exists_nnreal_btwn.1 (pos_iff_ne_zero.2 hε)`. Establish `hδ0' : (0 : ℝ) < δ` using `by exact_mod_cast hδ0`. Establish `hDr : 0 ≤ D.toReal` using `ENNReal.toReal_nonneg`. Establish `hq : 0 ≤ A * D.toReal / δ` using `by positivity`. Use `⟨1 + A * D.toReal / δ, by linarith, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hRpos : 0 < 1 + A * D.toReal / δ` using `by linarith`. Establish `hkey : A / (1 + A * D.toReal / δ) * D.toReal ≤ δ`. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ hRpos]`. Establish `: (δ : ℝ) * (1 + A * D.toReal / δ) = δ + A * D.toReal`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[this]`. Establish `: (0 : ℝ) ≤ δ` using `hδ0'.le`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_toReal hD]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ENNReal.ofReal (A / (1 + A * D.toReal / δ) * D.toReal) := (ENNReal.ofReal_mul (by positivity)).symm`. Use `_ ≤ ENNReal.ofReal (δ : ℝ) := ENNReal.ofReal_le_ofReal hkey`. Use `_ = δ := ENNReal.ofReal_coe_nnreal`. Use `_ ≤ ε := hδ.le`.
+A detailed English derivation is pending.
 -/
 theorem exists_large_ofReal_div_mul_le {A : ℝ} (hA : 0 ≤ A) {D ε : ℝ≥0∞} (hD : D ≠ ⊤) (hε : ε ≠ 0) :
     ∃ R : ℝ, 1 ≤ R ∧ ENNReal.ofReal (A / R) * D ≤ ε := by
@@ -68,7 +68,7 @@ theorem exists_large_ofReal_div_mul_le {A : ℝ} (hA : 0 ≤ A) {D ε : ℝ≥0�
     _ ≤ ε := hδ.le
 
 /- English proof (translation)
-Rewrite using `[ENNReal.tsum_mul_right, ENNReal.tsum_mul_left, ENNReal.tsum_geometric, ENNReal.one_sub_inv_two, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tsum_geometric_half_mul (c d : ℝ≥0∞) :
     ∑' j : ℕ, c * (2⁻¹ : ℝ≥0∞) ^ j * d = c * 2 * d := by
@@ -76,9 +76,9 @@ theorem tsum_geometric_half_mul (c d : ℝ≥0∞) :
     ENNReal.one_sub_inv_two, inv_inv]
 
 /- English proof (translation)
-Establish `h2 : (2 : ℝ) ^ (j + 1) * R = 2 * ((2 : ℝ) ^ j * R)` using `by ring`. Establish `key : ∀ P : ℝ, P ≠ 0 → c / P ^ (e + 1) * (2 * P) ^ e = c * 2 ^ e / P`. Introduce `P hP`. Rewrite using `[mul_pow, pow_succ]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[h2, key _ (by positivity), one_div, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem shell_real_identity {c R : ℝ} (hR : 0 < R) (e j : ℕ) :
     c / ((2 : ℝ) ^ j * R) ^ (e + 1) * ((2 : ℝ) ^ (j + 1) * R) ^ e
@@ -92,25 +92,23 @@ theorem shell_real_identity {c R : ℝ} (hR : 0 < R) (e j : ℕ) :
   field_simp
 
 /- English proof (translation)
-Introduce `K W _ _ κ n M H _ _ μ ν q C₀ hC₀ hden hq hbox φ hφ ε hε`. Take `⟨e, he⟩ : ∃ e : ℕ, e = 2 * (M - n) * Fintype.card W * n` from `⟨_, rfl⟩`. Take `⟨C, hC⟩` from `hφ (e + 1)`. Establish `hA : 0 ≤ |C| * (2 : ℝ) ^ e` using `by positivity`. Take `⟨R, hR1, hRε⟩` from `exists_large_ofReal_div_mul_le hA (ENNReal.mul_ne_top (by simp) hC₀ : (2 : ℝ≥0∞) * C₀ ≠ ⊤) hε`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨R, hR1, fun Y hY => ?_⟩` and prove the remaining obligations. Establish `hR0 : 0 < R` using `by linarith`. Set `S : ℕ → Set (Fin n → Fin M → K)` to `fun j => (boxK κ (fun _ _ => (2 : ℝ) ^ (j + 1) * R) \ boxK κ (fun _ _ => (2 : ℝ) ^ j * R)) ∩ q ⁻¹' Y`. Establish `hcover : (boxK κ (fun _ _ => R))ᶜ ∩ q ⁻¹' Y ⊆ ⋃ j, S j`. Introduce and unpack `X ⟨hX, hXY⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hex` using `exists_mem_boxK_two_pow κ hR0 X`. Establish `hne : Nat.find hex ≠ 0`. Introduce `h0`. Use `Nat.find_spec hex` as an intermediate fact. Rewrite `this` using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [pow_zero, one_mul] at this`. Conclude with `hX this`. Take `⟨j, hj⟩` from `Nat.exists_eq_succ_of_ne_zero hne`. Use `Set.mem_iUnion.2 ⟨j, ⟨?_, ?_⟩, hXY⟩` and prove the remaining obligations. Use `Nat.find_spec hex` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hj]`. Conclude with `this`. Conclude with `Nat.find_min hex (by omega)`. Establish `hshell : ∀ j, ∫⁻ X in S j, ‖φ X‖ₑ ∂μ ≤ ENNReal.ofReal (|C| * 2 ^ e / R) * (2⁻¹ : ℝ≥0∞) ^ j * (C₀ * ν Y)`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hRj : 1 ≤ (2 : ℝ) ^ j * R`. Establish `: (1 : ℝ) ≤ 2 ^ j` using `one_le_pow₀ one_le_two`. Use the polynomial consequences of the given equalities and inequalities. Establish `hRj0 : 0 < (2 : ℝ) ^ j * R` using `by linarith`. Establish `hSm : MeasurableSet (S j)` using `((hbox _).diff (hbox _)).inter (hq hY)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ X ∈ S j, ‖φ X‖ₑ ≤ ENNReal.ofReal (|C| / ((2 : ℝ) ^ j * R) ^ (e + 1))`. Introduce and unpack `X ⟨⟨-, hX⟩, -⟩`. Rewrite using `[← ofReal_norm]`. Use `ENNReal.ofReal_le_ofReal ((hC _ hRj X hX).trans ?_)` and prove the remaining obligations. Conclude with `div_le_div_of_nonneg_right (le_abs_self C) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmu : μ (S j) ≤ C₀ * ENNReal.ofReal (((2 : ℝ) ^ (j + 1) * R) ^ e) * ν Y`. Establish `h1` using `hden (fun _ _ => (2 : ℝ) ^ (j + 1) * R) (fun _ _ => by positivity) Y hY`. Establish `h2 : μ (S j) ≤ μ (boxK κ (fun _ _ => (2 : ℝ) ^ (j + 1) * R) ∩ q ⁻¹' Y)` using `measure_mono fun X hX => ⟨hX.1.1, hX.2⟩`. Establish `h3 : (∏ a : Fin n, ∏ w : W, ENNReal.ofReal ((2 : ℝ) ^ (j + 1) * R) ^ (2 * (M - n))) = ENNReal.ofReal (((2 : ℝ) ^ (j + 1) * R) ^ e)`. Rewrite using `[ENNReal.ofReal_pow (by positivity), he]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul]`. Rewrite `h1` using `[h3]`. Conclude with `h2.trans h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_mul (by positivity), shell_real_identity hR0, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow (by norm_num)]`.
-
-Use `congr 3`. Rewrite using `[one_div, ENNReal.ofReal_inv_of_pos (by norm_num)]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tail_small_of_density :
     ∀ (K W : Type) [CommRing K] [Fintype W] (κ : K ≃+* (W → ℂ)) (n M : ℕ) (H : Type) [MeasurableSpace H] [MeasurableSpace (Fin n → Fin M → K)] (μ : Measure (Fin n → Fin M → K)) (ν : Measure H) (q : (Fin n → Fin M → K) → H) (C₀ : ℝ≥0∞), C₀ ≠ ⊤ → (∀ r : Fin n → W → ℝ, (∀ a w, 0 < r a w) → GlobalTheory.CompanionTheory.WhitFree.AvgInf.DenLE μ ν q (GlobalTheory.CompanionTheory.WhitFree.AvgInf.boxK κ r) (C₀ * ∏ a, ∏ w, ENNReal.ofReal (r a w) ^ (2 * (M - n)))) → Measurable q → (∀ r : Fin n → W → ℝ, MeasurableSet (GlobalTheory.CompanionTheory.WhitFree.AvgInf.boxK (M := M) κ r)) → ∀ φ : (Fin n → Fin M → K) → ℂ, (∀ k : ℕ, ∃ C : ℝ, ∀ R : ℝ, 1 ≤ R → ∀ X, X ∉ GlobalTheory.CompanionTheory.WhitFree.AvgInf.boxK κ (fun _ _ => R) → ‖φ X‖ ≤ C / R ^ k) → ∀ ε : ℝ≥0∞, ε ≠ 0 → ∃ R : ℝ, 1 ≤ R ∧ ∀ Y, MeasurableSet Y → ∫⁻ X in (GlobalTheory.CompanionTheory.WhitFree.AvgInf.boxK κ (fun _ _ => R))ᶜ ∩ q ⁻¹' Y, ‖φ X‖ₑ ∂μ ≤ ε * ν Y := by

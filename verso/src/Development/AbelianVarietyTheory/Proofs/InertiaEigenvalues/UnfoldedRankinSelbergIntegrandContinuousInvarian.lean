@@ -15,11 +15,9 @@ namespace GlobalTheory.RSCellB
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB (Ad E)).1 hu`. Use function extensionality and compare the values at `j`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single ℓ]`. Rewrite using `[h2 ℓ, one_mul]`. Introduce `k _ hk`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlt : k < ℓ`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd k.2 (by have : (ℓ : ℕ) < k := h; omega)`. Rewrite using `[h1 ℓ k hlt, zero_mul]`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ ℓ) h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem row_mul_of_mem_NA {ℓ : Fin a} (hℓ : (ℓ : ℕ) + 1 = a) {u : GA E a} (hu : u ∈ GlobalTheory.CellDec.NA E a)
     (g : GA E a) : (u * g).val ℓ = g.val ℓ := by
@@ -36,7 +34,7 @@ theorem row_mul_of_mem_NA {ℓ : Fin a} (hℓ : (ℓ : ℕ) + 1 = a) {u : GA E a
   · intro h; exact absurd (Finset.mem_univ ℓ) h
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB (Ad E)).1 hu`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GeneralLinearGroup.val_det_apply, Units.val_one, Matrix.det_of_upperTriangular (fun i j h => h1 i j h)]`. Simplify using `[h2]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_of_mem_NA {u : GA E a} (hu : u ∈ GlobalTheory.CellDec.NA E a) : GeneralLinearGroup.det u = 1 := by
   obtain ⟨h1, h2⟩ := (GlobalTheory.SmGL.mem_unipB (Ad E)).1 hu
@@ -51,7 +49,7 @@ namespace GlobalTheory.RSCellB
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.RSTheta.rsPsi, GlobalTheory.ThetaPoisson.thetaFn, GlobalTheory.RSTheta.rsInf, Complex.mul_conj, Complex.normSq_eq_norm_sq, mul_assoc u g, hW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rsPsi_self_mul (ℓ : Fin a) {W : GA E a → ℂ} {u : GA E a} (hW : ∀ g, ‖W (u * g)‖ = ‖W g‖)
     (Φ : (Fin a → Cinf E) → ℂ) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin a → Af E) (g : GA E a)
@@ -61,11 +59,11 @@ theorem rsPsi_self_mul (ℓ : Fin a) {W : GA E a → ℂ} {u : GA E a} (hW : ∀
     Complex.normSq_eq_norm_sq, mul_assoc u g, hW]
 
 /- English proof (translation)
-Introduce `E _ _ _ a ℓ hℓ F Φ J η hWc hWu hΦc hΦs`. Establish `hdet : Continuous fun g : GA E a => (ideleModule E (GeneralLinearGroup.det g) : ℝ)` using `continuous_subtype_val.comp (continuous_ideleModule.comp (GroundTheory.Automorphic.AdelicGLn.continuous_det E a))`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Continuous fun p : ℝ × GA E a => (p.2, p.2.val ℓ)` using `continuous_snd.prodMk ((continuous_apply ℓ).comp ((Units.continuous_val (M := Matrix (Fin a) (Fin a) (Ad E))).comp continuous_snd))`. Establish `h2` using `(GlobalTheory.RSTheta.continuous_rsPsi hWc hWc hΦc hΦs J η).comp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Continuous fun p : ℝ × GA E a => (ideleModule E (GeneralLinearGroup.det p.2) : ℝ) ^ p.1` using `(hdet.comp continuous_snd).rpow continuous_fst fun p => Or.inl (ideleModule E (GeneralLinearGroup.det p.2)).2.ne'`. Conclude with `h2.enorm.ennreal_mul (ENNReal.continuous_ofReal.comp h3) (fun _ => Or.inr ENNReal.ofReal_ne_top) (fun _ => Or.inr enorm_ne_top)`. Introduce `x u hu g`. Simplify using `only [GlobalTheory.RSCell.bInt, row_mul_of_mem_NA hℓ hu, map_mul, det_of_mem_NA hu, one_mul]`. Rewrite using `[rsPsi_self_mul ℓ (hWu u hu)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x g`. Conclude with `ENNReal.mul_ne_top enorm_ne_top ENNReal.ofReal_ne_top`.
+A detailed English derivation is pending.
 -/
 theorem bInt_continuous_invariant_finite : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ℓ : Fin a), (ℓ : ℕ) + 1 = a →
     ∀ (F : GA E a → ℂ) (Φ : (Fin a → Cinf E) → ℂ) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin a → Af E),

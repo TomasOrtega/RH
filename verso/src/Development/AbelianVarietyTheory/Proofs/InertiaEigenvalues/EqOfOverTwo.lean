@@ -9,9 +9,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.MuUnrTie
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hc : Nat.Coprime p q` using `(Nat.coprime_primes hp hq).2 hne`. Take `⟨a, b, h⟩` from `(Nat.isCoprime_iff_coprime.2 hc).map (Int.castRingHom (𝓞 E))`. Simplify using `only [eq_intCast, Int.cast_natCast] at h`. Apply `v.isPrime.ne_top` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.eq_top_iff_one, ← h]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_over_two {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (v : HeightOneSpectrum (𝓞 E)) (h1 : ((p : ℕ) : 𝓞 E) ∈ v.asIdeal) (h2 : ((q : ℕ) : 𝓞 E) ∈ v.asIdeal) : p = q := by
@@ -24,22 +24,22 @@ theorem eq_of_over_two {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p.
   exact add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [HChar.loc_inv, h x hx, inv_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrAt_inv {E : Type} [Field E] [NumberField E] {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)}
     (h : χ.UnrAt w) : (χ⁻¹).UnrAt w := fun x hx => by
   rw [HChar.loc_inv, h x hx, inv_one]
 
 /- English proof (translation)
-Introduce `_ hL D P i hl w hw`. Establish `hj` using `D.nd.j_range i`. Set `j : Fin D.R.m` to `⟨D.nd.j i - 1, by omega⟩`. Establish `hjj : j.1 + 1 = D.nd.j i` using `by simp only [j]; omega`. Establish `hlp : (D.nd.l i).Prime` using `(D.nd.lPrime i).out`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[P.chr.unr_iff, P.chr.tw, P.chr.muC i j hjj, P.chr.etaTinv]`. Use `GlobalTheory.MuTameQS.unrAt_mul ?_ (unrAt_inv (P.cf.isEta.unr w))` and prove the remaining obligations. Unfold `TupTied.tup`. Use `GlobalTheory.MuTameQS.unrAt_mul ?_ ?_` and prove the remaining obligations. Use `(P.cf.isMu0 j).unr w fun k hk => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `eq_of_over_two hlp (D.host.g_prime k) w hw hk`. Apply `hl` to reduce the goal to its premises. Rewrite using `[e]`. Apply the tactic sequence `fin_cases k <;> simp [TwistedPlaces.gset]`. Rewrite using `[D.nd.mu_w i, P.tp.xi_tw, D.nd.w_l i]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.MuTameQS.unrAt_mul ?_ ?_` and prove the remaining obligations. Unfold `CharFrame.delAt split_ifs with h`. Use `P.cf.isDel'.unr w fun ho => D.host.pde_ne ?_` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `eq_of_over_two hlp D.host.pde'_prime w hw ho`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `P.cf.isDel.unr w fun ho => h ?_` and prove the remaining obligations. Conclude with `eq_of_over_two hlp D.host.pde_prime w hw ho`. Establish `hpsi` using `P.tp.psi_is (D.nd.w i) (D.nd.w_tw i)`. Rewrite `hpsi` using `[D.nd.w_l i, ← P.Q_eq i]`. Conclude with `(hpsi.ram w).2 fun hq => D.nd.SQ_l i w (Or.inr hq) hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D),
     GlobalTheory.HubX.MuUnr D := by

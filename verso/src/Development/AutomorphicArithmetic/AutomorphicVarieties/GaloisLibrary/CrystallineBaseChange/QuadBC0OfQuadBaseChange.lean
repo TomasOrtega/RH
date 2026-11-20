@@ -15,13 +15,13 @@ def QuadBC0 : Prop :=
       (∃ η : HChar F, IsQuadCharOf E η ∧ IsoTwist π η) ∨ ∃ P : CuspSub E a, IsBC0 π P
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ h2 a _ ha π _` and use `(h F E h2 a ha π).imp_right fun ⟨P, hP⟩ => ⟨P, hP.inf, hP.unr⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem quadBC0_of_quadBaseChange (h : QuadBaseChange) : QuadBC0 := fun F E _ _ _ _ _ _ _ h2 a _ ha π _ =>
   (h F E h2 a ha π).imp_right fun ⟨P, hP⟩ => ⟨P, hP.inf, hP.unr⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ h2 a ha _ π hr`. Take `rfl` from `ha.out`. Conclude with `(h F E h2 π hr).imp_right fun ⟨P, hP⟩ => ⟨P, hP.inf, hP.unr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem quadBC0_of_two (h : Z.Bc.QuadBC2) : QuadBC0 := by
   intro F E _ _ _ _ _ _ _ h2 a ha _ π hr

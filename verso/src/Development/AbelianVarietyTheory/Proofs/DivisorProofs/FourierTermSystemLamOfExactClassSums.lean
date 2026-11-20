@@ -11,11 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc.SepLam
 
 /- English proof (translation)
-Use `haveI : Nontrivial (V ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr hI`. Use `haveI : IsLocalRing (V ⧸ I) := IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective`. Use `haveI : IsLocalHom (Ideal.Quotient.mk I) := Function.Surjective.isLocalHom _ Ideal.Quotient.mk_surjective`. Establish `hmax : (maximalIdeal V).map (Ideal.Quotient.mk I) ≤ maximalIdeal (V ⧸ I)` using `Ideal.map_le_iff_le_comap.mpr fun x hx hu => hx (isUnit_of_map_unit (Ideal.Quotient.mk I) x hu)`. Establish `hbot` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal (V ⧸ I)) (Ideal.IsMaximal.ne_top inferInstance)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hz : Ideal.Quotient.mk I z ∈ ⨅ j : ℕ, maximalIdeal (V ⧸ I) ^ j`. Use `Ideal.mem_iInf.mpr fun j => ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp (h j)`. Rewrite using `[map_add, Ideal.Quotient.eq_zero_iff_mem.mpr ha, zero_add]`. Use `pow_le_pow_left' hmax j ?_` and prove the remaining obligations.
-
-Rewrite using `[← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ hb`. Rewrite `hz` using `[hbot, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_mem_sup_pow {V : Type} [CommRing V] [IsNoetherianRing V] [IsLocalRing V] (I : Ideal V) (hI : I ≠ ⊤)
     (z : V) (h : ∀ j : ℕ, z ∈ I ⊔ maximalIdeal V ^ j) : z ∈ I := by
@@ -40,47 +38,43 @@ end GlobalTheory.Poinc.SepLam
 namespace GlobalTheory.Poinc.SepLam
 
 /- English proof (translation)
-Introduce `O _ bar q s W A _ _ Φ N₁ hs hN hE`. Use `⟨(W ⟨0, hs⟩ ⟨0, hs⟩).toNat, fun y hm i x hx => ?_⟩` and prove the remaining obligations. Use `haveI : Subsingleton (Fin (Φ.m y)) := by rw [hm]; infer_instance`. Establish `hsym : ∀ a b, Φ.δ y i a b = Φ.δ y i b a` using `(Φ.bal y i).1`. Establish `hδpos : ∀ z, z ≠ 0 → 0 < Φ.δ y i z z` using `fun z hz => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Φ.pos y z hz`. Rewrite `hk` using `[Subsingleton.elim k i]`. Then use the resulting hypothesis. Take `⟨c0, hc0, hge⟩` from `QWDom.qW_ge s W Φ.posW`. Establish `hqpos : ∀ mu : Fin s → Φ.X y, mu ≠ 0 → 0 < qW W (Φ.δ y i) mu`. Introduce `mu hmu`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `Function.ne_iff.mp hmu`. Establish `h1 : Φ.δ y i (mu v) (mu v) ≤ ∑ u, Φ.δ y i (mu u) (mu u)` using `Finset.single_le_sum (f := fun u => Φ.δ y i (mu u) (mu u)) (fun u _ => Φ.nonneg y i _) (Finset.mem_univ v)`. Establish `h2 : (0 : ℝ) < c0 * ((∑ u, Φ.δ y i (mu u) (mu u) : ℤ) : ℝ)` using `mul_pos hc0 (by exact_mod_cast (hδpos _ hv).trans_le h1)`. Establish `h3` using `hge (Φ.X y) (Φ.δ y i) hsym (Φ.nonneg y i) mu`. Conclude with `h2.trans_le h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqnn : ∀ mu : Fin s → Φ.X y, 0 ≤ qW W (Φ.δ y i) mu` using `fun mu => GlobalTheory.Poinc.qW_nonneg Φ.posW hsym (Φ.nonneg y i) mu`. Establish `hsne : (Pi.single ⟨0, hs⟩ x : Fin s → Φ.X y) ≠ 0` using `fun h0 => hx (by simpa using congrFun h0 ⟨0, hs⟩)`. Establish `hP : ∃ n : ℕ, ∃ mu : Fin s → Φ.X y, mu ≠ 0 ∧ (qW W (Φ.δ y i) mu).toNat = n` using `⟨_, Pi.single ⟨0, hs⟩ x, hsne, rfl⟩`. Take `⟨mu₀, hmu₀, hq₀⟩` from `Nat.find_spec hP`. Establish `hmin : ∀ mu : Fin s → Φ.X y, mu ≠ 0 → qW W (Φ.δ y i) mu₀ ≤ qW W (Φ.δ y i) mu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `mu hmu`. Establish `h1` using `Nat.find_min' hP ⟨mu, hmu, rfl⟩`. Rewrite `h1` using `[← hq₀]`. Use `hqnn mu₀` as an intermediate fact. Use `hqnn mu` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hlead : ∀ nu : Fin s → Φ.X y, nu ≠ 0 → qW W (Φ.δ y i) mu₀ < qW W (Φ.δ y i) (mu₀ + N₁ • nu)` using `fun nu hnu => GlobalTheory.T.least_vector_unique_in_class_mod s W Φ.posW (Φ.X y) (Φ.δ y i) hsym (Φ.nonneg y i) ⊤ (fun mu _ h => hqpos mu h) mu₀ trivial hmu₀ (fun mu _ h => hmin mu h) N₁ hN nu trivial hnu`. Use `set n₀ := (qW W (Φ.δ y i) mu₀).toNat with hn₀`. Establish `hn₀z : (n₀ : ℤ) = qW W (Φ.δ y i) mu₀` using `Int.toNat_of_nonneg (hqnn mu₀)`. Establish `hn₀pos : 1 ≤ n₀` using `by have := hqpos mu₀ hmu₀; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmono : ∀ mu : Fin s → Φ.X y, mono W (Φ.t y) (Φ.δ y) mu = Φ.t y i ^ (qW W (Φ.δ y i) mu).toNat`. Introduce `mu`. Rewrite using `[mono, Fintype.prod_subsingleton _ i]`. Establish `hsum : ∀ mu : Fin s → Φ.X y, ∑ k, qW W (Φ.δ y k) mu = qW W (Φ.δ y i) mu` using `fun mu => Fintype.sum_subsingleton _ i`. Take `⟨c, hc⟩` from `Φ.u_unit y mu₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h, hh⟩` from `hE y mu₀ c`. Establish `htm` using `(Φ.t_mem y i).1`. Establish `hI : Ideal.span {Φ.t y i ^ (n₀ + 1)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `fun hu => (IsLocalRing.mem_maximalIdeal _).mp (Ideal.pow_mem_of_mem _ htm _ (Nat.succ_pos _)) hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `key : Φ.ev y h - Φ.u y mu₀ c * Φ.t y i ^ n₀ ∈ Ideal.span {Φ.t y i ^ (n₀ + 1)}` using `by haveI : IsNoetherianRing (Φ.V y) := (Φ.cn y).1`. Use `mem_of_forall_mem_sup_pow _ hI _ fun j => ?_` and prove the remaining obligations. Take `⟨S, hS1, hS2, hS3⟩` from `hh (max j (n₀ + 1))`. Establish `hmem : mu₀ ∈ S`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `hS2 mu₀ (fun v => ⟨0, by simp⟩) hn` as an intermediate fact. Rewrite `this` using `[hsum]`. Use linear arithmetic over natural numbers and integers. Establish `hsplit : Φ.ev y h - Φ.u y mu₀ c * Φ.t y i ^ n₀ = ∑ mu ∈ S.erase mu₀, Φ.term y mu c + (Φ.ev y h - RingHom.id _ (∑ mu ∈ S, Φ.term y mu c))`. Rewrite using `[← Finset.add_sum_erase S _ hmem, VPre.term, hmono, RingHom.id_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Use `Submodule.add_mem_sup (Ideal.sum_mem _ fun mu hmu => ?_) (Ideal.pow_le_pow_right (le_max_left j (n₀ + 1)) hS3)` and prove the remaining obligations. Take `⟨hne, hmuS⟩` from `Finset.mem_erase.mp hmu`. Establish `hcong` using `hS1 mu hmuS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `set nu : Fin s → Φ.X y := fun v => (hcong v).choose`. Establish `hmu_eq : mu = mu₀ + N₁ • nu` using `funext fun v => (hcong v).choose_spec`. Establish `hnu : nu ≠ 0`. Introduce and unpack `h0`. Rewrite `hmu_eq` using `[h0, smul_zero, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hne hmu_eq`. Establish `hlt` using `hlead nu hnu`. Rewrite `hlt` using `[← hmu_eq]`. Rewrite using `[VPre.term, hmono, Ideal.mem_span_singleton]`. Use `Dvd.dvd.mul_left (pow_dvd_pow _ ?_) _` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hqnn mu` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp key`. Establish `hev : Φ.ev y h = Φ.t y i ^ n₀ * (Φ.u y mu₀ c + r * Φ.t y i)` using `by linear_combination -hr`. Establish `hunit : IsUnit (Φ.u y mu₀ c + r * Φ.t y i)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hu`. Establish `h1 : Φ.u y mu₀ c + r * Φ.t y i ∈ maximalIdeal (Φ.V y)` using `(IsLocalRing.mem_maximalIdeal _).mpr hu`. Establish `h2` using `(maximalIdeal (Φ.V y)).sub_mem h1 ((maximalIdeal (Φ.V y)).mul_mem_left r htm)`. Rewrite `h2` using `[add_sub_cancel_right]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp h2 hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hevm : Φ.ev y h ∈ maximalIdeal (Φ.V y)`. Rewrite using `[hev]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ htm _ hn₀pos)`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hu : IsUnit h`. Assume the negation of the conclusion as `hu'`. Conclude with `hA ((IsLocalRing.mem_maximalIdeal _).mpr hu')`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp hevm (hu.map (Φ.ev y))`. Establish `hd : Φ.ev y h ∣ Φ.t y i ^ n₀`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hev]`. Conclude with `(hunit.mul_right_dvd).mpr dvd_rfl`. Use `hd.trans (pow_dvd_pow _ ?_)` and prove the remaining obligations. Establish `hsingle : qW W (Φ.δ y i) (Pi.single ⟨0, hs⟩ x) = W ⟨0, hs⟩ ⟨0, hs⟩ * Φ.δ y i x x`. Simplify using `only [qW]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Finset.sum_eq_single ⟨0, hs⟩ (fun u _ hu => Finset.sum_eq_zero fun v _ => by`. Simplify using `[Pi.single_eq_of_ne hu]) (by simp),`. Use the proof step `Finset.sum_eq_single ⟨0, hs⟩ (fun v _ hv => by simp [Pi.single_eq_of_ne hv]) (by simp)]`. Simplify using the standard rewrite rules. Establish `hle` using `hmin _ hsne`.
-
-Rewrite `hle` using `[hsingle]`. Establish `hdx` using `hδpos x hx`. Establish `hW : 0 < W ⟨0, hs⟩ ⟨0, hs⟩`. Assume the negation of the conclusion as `hW`. Use `push_neg at hW`.
-
-Establish `: W ⟨0, hs⟩ ⟨0, hs⟩ * Φ.δ y i x x ≤ 0` using `Int.mul_nonpos_of_nonpos_of_nonneg hW hdx.le`. Use linear arithmetic over natural numbers and integers. Use `zify`. Rewrite using `[Int.toNat_of_nonneg hW.le, Int.toNat_of_nonneg hdx.le, hn₀z]`. Conclude with `hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_of_exact : ∀ (O : Type) [CommRing O] (bar : O → O) (q s : ℕ) (W : Matrix (Fin s) (Fin s) ℤ) (A : Type) [CommRing A] [IsLocalRing A] (Φ : VPre bar q W A) (N₁ : ℕ), 1 ≤ s → 3 ≤ N₁ → Φ.Exact N₁ → Φ.abelian₂ := by
   intro O _ bar q s W A _ _ Φ N₁ hs hN hE

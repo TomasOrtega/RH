@@ -17,7 +17,7 @@ open Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainN
 namespace GlobalTheory.FunObj.NormUniq
 
 /- English proof (translation)
-Establish `h : D.host.conj * D.host.conj = 1` using `AlgEquiv.ext fun x => GlobalTheory.NormSum.VacMove.conj_conj D x`. Rewrite using `[smul_smul, h, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_smul_conj_smul {D : D7} (I : Ideal (𝓞 D.host.E)) : D.host.conj • D.host.conj • I = I := by
   have h : D.host.conj * D.host.conj = 1 := AlgEquiv.ext fun x => GlobalTheory.NormSum.VacMove.conj_conj D x

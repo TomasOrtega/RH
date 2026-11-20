@@ -5,31 +5,27 @@ noncomputable section
 namespace PositivityTheory.Rg.Rsw.L.LMajor
 
 /- English proof (translation)
-Use `set S : ℕ → ℝ := fun j => ∑ i, (Finset.Iic (2 * j, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) (f i) with hS`. Use `set D : ℕ → ℝ := fun j => (1 + A) ^ j * (2 ^ (2 * j) * S j) with hDdef`. Establish `hS0 : ∀ j, 0 ≤ S j` using `fun j => Finset.sum_nonneg fun i _ => apply_nonneg _ _`. Establish `hD0 : ∀ j, 0 ≤ D j` using `fun j => mul_nonneg (pow_nonneg (by linarith) _) (mul_nonneg (by positivity) (hS0 j))`. Establish `hD : ∀ j i y, (1 + q y) ^ j * ‖f i y‖ ≤ D j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j i y`. Establish `h1 : 1 + q y ≤ (1 + A) * (1 + ‖y‖) ^ 2`. Use `hqA y` as an intermediate fact. Establish `hy` using `norm_nonneg y`. Use polynomial arithmetic with `[mul_nonneg hA hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (1 + ‖y‖) ^ (2 * j) * ‖f i y‖ ≤ 2 ^ (2 * j) * S j`. Use `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (2 * j, 0)) (k := 2 * j) (n := 0) le_rfl le_rfl (f i) y` as an intermediate fact. Rewrite `this` using `[norm_iteratedFDeriv_zero]`. Use `this.trans (mul_le_mul_of_nonneg_left ?_ (by positivity))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun i => (Finset.Iic (2 * j, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) (f i)) (fun i _ => apply_nonneg _ _) (Finset.mem_univ i)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `set m : ℕ → ℝ := fun n => ⨅ j : ℕ, D j / (1 + (n : ℝ)) ^ j with hm`. Establish `hbdd : ∀ n : ℕ, BddBelow (Set.range fun j : ℕ => D j / (1 + (n : ℝ)) ^ j)` using `fun n => ⟨0, by rintro _ ⟨j, rfl⟩; exact div_nonneg (hD0 j) (by positivity)⟩`. Establish `hm0 : ∀ n, 0 ≤ m n` using `fun n => le_ciInf fun j => div_nonneg (hD0 j) (by positivity)`. Establish `hmle : ∀ n j, m n ≤ D j / (1 + (n : ℝ)) ^ j` using `fun n j => ciInf_le (hbdd n) j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfm : ∀ i y, ‖f i y‖ ≤ m ⌊q y⌋₊`. Introduce `i y`. Use `le_ciInf fun j => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `hn : (⌊q y⌋₊ : ℝ) ≤ q y` using `Nat.floor_le (hq0 y)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by positivity) (by linarith) j) (norm_nonneg _)`. Use `_ ≤ D j := hD j i y`. Use `set b : ℕ → ℝ := fun n => Real.sqrt (m n) with hb`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbdec : ∀ j n, b n ≤ Real.sqrt (D (2 * j)) / (1 + (n : ℝ)) ^ j`. Introduce `j n`. Establish `hpos : 0 < (1 + (n : ℝ)) ^ j` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.sqrt_div (hD0 _), pow_mul', Real.sqrt_sq hpos.le]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum2 : Summable (fun n : ℕ => 1 / ((n : ℝ) + 1) ^ 2)`. Use `((summable_nat_add_iff 1).mpr (Real.summable_one_div_nat_pow.mpr one_lt_two)).congr fun n => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hbs : ∀ j : ℕ, Summable (fun n : ℕ => b n * ((n : ℝ) + 2) ^ j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `j`. Use `(hsum2.mul_left (Real.sqrt (D (2 * (j + 2))) * 2 ^ j)).of_nonneg_of_le (fun n => mul_nonneg (Real.sqrt_nonneg _) (by positivity)) (fun n => ?_)` and prove the remaining obligations. Establish `hpos : 0 < (1 + (n : ℝ))` using `by positivity`. Establish `h1` using `hbdec (j + 2) n`. Establish `h2 : ((n : ℝ) + 2) ^ j ≤ 2 ^ j * (1 + (n : ℝ)) ^ j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_pow]; exact pow_le_pow_left₀ (by positivity) (by linarith) j`. Combine the equalities or inequalities in the displayed calculation. Use `⟨b, fun n => Real.sqrt_nonneg _, hbs, fun ε hε => ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `exists_nat_gt (Real.sqrt (D (2 * 1)) / ε)`. Use `⟨N, fun i y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNn : N ≤ ⌊q y⌋₊` using `Nat.le_floor hy`. Establish `hbε : b ⌊q y⌋₊ ≤ ε`. Establish `h1` using `hbdec 1 ⌊q y⌋₊`. Rewrite `h1` using `[pow_one]`. Establish `hNr : (N : ℝ) ≤ (⌊q y⌋₊ : ℝ)` using `by exact_mod_cast hNn`.
-
-Establish `h3` using `(div_lt_iff₀ hε).mp hN`. Establish `h4 : Real.sqrt (D (2 * 1)) / (1 + (⌊q y⌋₊ : ℝ)) ≤ ε`. Rewrite using `[div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lmajASeq {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {k : ℕ}
     (f : Fin k → SchwartzMap V ℂ) (q : V → ℝ) (hq0 : ∀ y, 0 ≤ q y) (A : ℝ) (hA : 0 ≤ A)

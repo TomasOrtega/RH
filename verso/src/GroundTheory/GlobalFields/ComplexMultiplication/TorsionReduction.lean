@@ -18,7 +18,7 @@ def scaleCoeffs (W : WeierstrassCurve R) (a : R) : WeierstrassCurve R :=
   ⟨a * W.a₁, a ^ 2 * W.a₂, a ^ 3 * W.a₃, a ^ 4 * W.a₄, a ^ 6 * W.a₆⟩
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [scaleCoeffs]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_scaleCoeffs {S : Type*} [CommRing S] (f : R →+* S) (W : WeierstrassCurve R) (a : R) :
     (scaleCoeffs W a).map f = scaleCoeffs (W.map f) (f a) := by
@@ -29,7 +29,7 @@ def scaleVariableChange {F : Type*} [Field F] {c : F} (hc : c ≠ 0) :
   ⟨(Units.mk0 c hc)⁻¹, 0, 0, 0⟩
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [scaleVariableChange, scaleCoeffs, WeierstrassCurve.variableChange_a₁, WeierstrassCurve.variableChange_a₂, WeierstrassCurve.variableChange_a₃, WeierstrassCurve.variableChange_a₄, WeierstrassCurve.variableChange_a₆]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scaleVariableChange_smul {F : Type*} [Field F] (W : WeierstrassCurve F) {c : F}
     (hc : c ≠ 0) : scaleVariableChange hc • W = scaleCoeffs W c := by
@@ -49,29 +49,27 @@ local notation "ι" => algebraMap 𝒪 K
 local notation "ρ" => residue 𝒪
 
 /- English proof (translation)
-Introduce `hnP`. Establish `hι` using `IsFractionRing.injective 𝒪 K`. Take `⟨z, w, v, hzm, hz0, -, -, hwv, hvu, hρv, hXz, hYw⟩` from `exists_zw_of_notMem_range K W h.1 hX`. Establish `hzK : ι z ≠ 0` using `(map_ne_zero_iff _ hι).2 hz0`. Use `set W' := scaleCoeffs W z with hW'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : scaleVariableChange hzK • W.map ι = W'.map ι`. Rewrite using `[scaleVariableChange_smul, hW', map_scaleCoeffs]`. Establish `: (W'.map ι).IsElliptic` using `hC ▸ inferInstance`. Use `set v' : 𝒪 := ↑hvu.unit⁻¹ with hv'`. Establish `hvv : v * v' = 1` using `hvu.mul_val_inv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvK : ι v * ι v' = 1` using `by rw [← map_mul, hvv, map_one]`. Establish `hwK : ι w = ι z ^ 3 * ι v` using `by rw [hwv, map_mul, map_pow]`. Establish `hvK0 : ι v ≠ 0` using `left_ne_zero_of_mul_eq_one hvK`. Establish `hv'K : ι v' = (ι v)⁻¹` using `eq_inv_of_mul_eq_one_right hvK`. Establish `hx' : vcX (scaleVariableChange hzK) X = ι v'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [vcX, scaleVariableChange, inv_inv, Units.val_mk0, sub_zero]`. Rewrite using `[← hXz, hwK, hv'K]`. Clear the denominators using the available nonvanishing facts. Establish `hy' : vcY (scaleVariableChange hzK) X Y = ι (-v')`. Simplify using `only [vcY, scaleVariableChange, inv_inv, Units.val_mk0, sub_zero, zero_mul]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← hYw, hwK, map_neg, hv'K]`. Clear the denominators using the available nonvanishing facts. Establish `h' : (curveK K W').Nonsingular (ι v') (ι (-v'))`. Use `(nonsingular_vc (scaleVariableChange hzK) (W.map ι) X Y).2 h` as an intermediate fact. Rewrite `this` using `[hC, hx', hy']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `set φ := vcPointEquiv (scaleVariableChange hzK) hC`. Establish `hφ : φ (.some _ _ h) = .some _ _ h'`. Rewrite using `[vcPointEquiv_apply, vcPoint_some, WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `⟨hx', hy'⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρz : ρ z = 0` using `residue_eq_zero_of_mem hzm`. Establish `h1 : (W'.map ρ).a₁ = -2 * 0` using `by simp [hW', scaleCoeffs, hρz]`. Establish `h2 : (W'.map ρ).a₂ = -0 ^ 2` using `by simp [hW', scaleCoeffs, hρz]`. Establish `h3 : (W'.map ρ).a₃ = 0` using `by simp [hW', scaleCoeffs, hρz]`. Establish `h4 : (W'.map ρ).a₄ = 0` using `by simp [hW', scaleCoeffs, hρz]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h6 : (W'.map ρ).a₆ = 0` using `by simp [hW', scaleCoeffs, hρz]`. Establish `hρv' : ρ v' = 1`. Use `congrArg ρ hvv` as an intermediate fact. Rewrite `this` using `[map_mul, hρv, one_mul, map_one]`. Then use the resulting hypothesis. Establish `n' : (curveRed W').Nonsingular (ρ v') (ρ (-v'))` using `origin_nonsingular (W'.map ρ) h3 h4 h6 (equation_residue W' (equation_of_map K W' h'.1)) (by rw [hρv']; exact one_ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hE0 : φ (.some _ _ h) ∈ E0Subgroup K W'`. Rewrite using `[hφ]`. Conclude with `mem_E0Set_some_integral K W' h' n'`. Use `set Q : E0Subgroup K W' := ⟨_, hE0⟩`. Establish `hnQ : n • Q = 0`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubgroup.coe_nsmul, AddSubgroup.coe_zero]`. Express the relevant statement in the definitionally equal form `n • φ _ = 0`. Rewrite using `[← map_nsmul, hnP, map_zero]`. Establish `hred : reduceE0Hom K W' Q = .some _ _ n'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[reduceE0Hom_apply]`. Express the relevant statement in the definitionally equal form `reducePoint K W' (φ _) = _`. Rewrite using `[hφ, reducePoint_some_integral K W' h' n']`. Establish `key : n • cuspHom (W'.map ρ) h3 h4 h6 0 h1 h2 (reduceE0Hom K W' Q) = 0`. Rewrite using `[← map_nsmul, ← map_nsmul, hnQ, map_zero, map_zero]`.
-
-Rewrite `key` using `[hred]`. Express the relevant statement in the definitionally equal form `n • (ρ v' / (ρ (-v') - 0 * ρ v')) = 0 at key`. Rewrite `key` using `[map_neg, hρv']`. Apply `hn` to reduce the goal to its premises. Simplify using `using key`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem nsmul_ne_zero_of_notMem_range {n : ℕ} (hn : (n : ResidueField 𝒪) ≠ 0) {X Y : K}
     (h : (curveK K W).Nonsingular X Y) (hX : X ∉ Set.range ι) :
@@ -149,7 +147,7 @@ variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing
   [W.IsElliptic] [DecidableEq K] [DecidableEq (ResidueField 𝒪)]
 
 /- English proof (translation)
-Break down `point_cases K W P with rfl | ⟨X, Y, h, rfl, hX⟩ | ⟨x, y, h, rfl⟩` into its components or cases. Both sides reduce to the same expression. Conclude with `absurd hnP (nsmul_ne_zero_of_notMem_range K W hn h hX)`. Rewrite `hP` using `[reducePoint_some_integral K W h (nonsingular_residue_of_isElliptic K W h.1)]`. Conclude with `absurd hP (WeierstrassCurve.Affine.Point.some_ne_zero _)`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_nsmul_eq_zero_of_reducePoint_eq_zero {n : ℕ}
     (hn : (n : ResidueField 𝒪) ≠ 0) {P : (curveK K W).Point} (hnP : n • P = 0)
@@ -161,7 +159,7 @@ theorem eq_zero_of_nsmul_eq_zero_of_reducePoint_eq_zero {n : ℕ}
     exact absurd hP (WeierstrassCurve.Affine.Point.some_ne_zero _)
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.1 (eq_zero_of_nsmul_eq_zero_of_reducePoint_eq_zero K W hn (by rw [nsmul_sub, hP, hQ, sub_zero]) (by rw [← reductionHom_apply, map_sub, h, sub_self]))`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_reductionHom_eq_of_nsmul {n : ℕ} (hn : (n : ResidueField 𝒪) ≠ 0)
     {P Q : (curveK K W).Point} (hP : n • P = 0) (hQ : n • Q = 0)
@@ -171,7 +169,7 @@ theorem eq_of_reductionHom_eq_of_nsmul {n : ℕ} (hn : (n : ResidueField 𝒪) �
     (by rw [← reductionHom_apply, map_sub, h, sub_self]))
 
 /- English proof (translation)
-Introduce `P Q h` and use `Subtype.ext (eq_of_reductionHom_eq_of_nsmul K W hn (AddSubgroup.torsionBy.nsmul_iff.mp P.2) (AddSubgroup.torsionBy.nsmul_iff.mp Q.2) h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem reductionHom_torsionBy_injective {n : ℕ} (hn : (n : ResidueField 𝒪) ≠ 0) :
     Function.Injective
@@ -194,7 +192,7 @@ theorem coe_reductionTorsionHom_apply (n : ℕ) (P : AddSubgroup.torsionBy (curv
   rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `reductionHom_torsionBy_injective K W hn (congrArg Subtype.val h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem reductionTorsionHom_injective {n : ℕ} (hn : (n : ResidueField 𝒪) ≠ 0) :
     Function.Injective (reductionTorsionHom K W n) := fun _ _ h =>
@@ -214,7 +212,7 @@ instance isDiscreteValuationRing_valuationSubringAtPrime :
   IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R v.ne_bot _
 
 /- English proof (translation)
-Rewrite using `[ne_eq, residue_eq_zero_iff, IsLocalization.AtPrime.to_map_mem_maximal_iff _ v.asIdeal]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_algebraMap_ne_zero {a : R} (ha : a ∉ v.asIdeal) :
     residue (v.valuationSubringAtPrime F) (algebraMap R (v.valuationSubringAtPrime F) a) ≠ 0 := by
@@ -222,7 +220,7 @@ theorem residue_algebraMap_ne_zero {a : R} (ha : a ∉ v.asIdeal) :
   exact ha
 
 /- English proof (translation)
-Use `residue_algebraMap_ne_zero v (F := F) hn` as an intermediate fact. Rewrite `this` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem residue_natCast_ne_zero {n : ℕ} (hn : (n : R) ∉ v.asIdeal) :
     (n : ResidueField (v.valuationSubringAtPrime F)) ≠ 0 := by
@@ -230,7 +228,7 @@ theorem residue_natCast_ne_zero {n : ℕ} (hn : (n : R) ∉ v.asIdeal) :
   rwa [map_natCast, map_natCast] at this
 
 /- English proof (translation)
-Rewrite using `[WeierstrassCurve.isElliptic_iff, WeierstrassCurve.map_Δ]`. Assume the negation of the conclusion as `hu`. Apply `residue_algebraMap_ne_zero v (F := F) hΔ` to reduce the goal to its premises. Rewrite using `[residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hu`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isElliptic_map_valuationSubringAtPrime (W : WeierstrassCurve R) (hΔ : W.Δ ∉ v.asIdeal) :
     (W.map (algebraMap R (v.valuationSubringAtPrime F))).IsElliptic := by
@@ -251,7 +249,7 @@ variable {F : Type*} [Field F] [NumberField F] (𝔮 : HeightOneSpectrum (𝓞 F
   [DecidableEq (ResidueField (𝔮.valuationSubringAtPrime F))]
 
 /- English proof (translation)
-The claim follows from `reductionHom_torsionBy_injective F W (residue_natCast_ne_zero 𝔮 hn)`.
+A detailed English derivation is pending.
 -/
 theorem reductionHom_torsionBy_injective_of_notMem {n : ℕ} (hn : (n : 𝓞 F) ∉ 𝔮.asIdeal) :
     Function.Injective
@@ -259,7 +257,7 @@ theorem reductionHom_torsionBy_injective_of_notMem {n : ℕ} (hn : (n : 𝓞 F) 
   reductionHom_torsionBy_injective F W (residue_natCast_ne_zero 𝔮 hn)
 
 /- English proof (translation)
-The claim follows from `eq_of_reductionHom_eq_of_nsmul F W (residue_natCast_ne_zero 𝔮 hn) hP hQ h`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_reductionHom_eq_of_nsmul_of_notMem {n : ℕ} (hn : (n : 𝓞 F) ∉ 𝔮.asIdeal)
     {P Q : (curveK F W).Point} (hP : n • P = 0) (hQ : n • Q = 0)

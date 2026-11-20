@@ -13,11 +13,11 @@ variable {G₁ G₂ : Type} [Group G₁] [Group G₂]
 def psiK {W : Type} (φ : G₁ × G₂ → W) (g : G₁ × G₂) : G₁ → W := fun h => φ (g * (h, 1))
 
 /- English proof (translation)
-Introduce `γ h c`. Establish `hγ : (γ : G₁) = 1` using `Subgroup.mem_bot.1 γ.2`. Set `d : K₁.prod K₂` to `⟨((c : G₁), (1 : G₂)), Subgroup.mem_prod.2 ⟨c.2, K₂.one_mem⟩⟩`. Establish `e` using `hφ 1 (g * (h, 1)) d`. Establish `hd : ρK d⁻¹ = 1` using `hρ d⁻¹ (by simp [d])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[hd]`. Simplify using `only [OneMemClass.coe_one, one_mul, Module.End.one_apply] at e`. Establish `e' : g * (h * (c : G₁), (1 : G₂)) = g * (h, 1) * (d : G₁ × G₂)`. Apply the tactic sequence `ext <;> simp [d, mul_assoc]`. Unfold `psiK`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[hγ, one_mul, e', e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psiK_mem {k : Type} [CommRing k] {W : Type} [AddCommGroup W] [Module k W]
     {Γ : Subgroup (G₁ × G₂)} {K₁ : Subgroup G₁} {K₂ : Subgroup G₂}

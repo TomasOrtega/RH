@@ -14,9 +14,7 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 namespace GlobalTheory.FlagZ.TautUniq
 
 /- English proof (translation)
-Use `haveI := (isVB_freeModule (Sp ℤ) (Fin N)).isQuasicoherent`. Establish `h` using `((isFrame_freeFrame (Sp ℤ) (Fin N)).pullback y).res (V := ⊤) (by simp)`. Establish `e : (fun i : Fin N => QCoh.pullbackSections y (Taut.stdE N) (by simp) (freeFrame (Sp ℤ) (Fin N) i)) = fun i => Twist.resM _ (by simp : (⊤ : (Sp A).Opens) ≤ y ⁻¹ᵁ ⊤) (QCoh.pullbackSections y (QCoh.freeModule (Sp ℤ) (Fin N)) le_rfl (freeFrame (Sp ℤ) (Fin N) i))`. Use function extensionality and compare the values at `fun i => (QCoh.res_pullbackSections _ _ _ _ _).symm`. Rewrite using `[e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame_pullStd {N : ℕ} {A : Type} [CommRing A] (y : Sp A ⟶ Sp ℤ) :
     IsFrame (F := (Scheme.Modules.pullback y).obj (Taut.stdE N)) (U := ⊤) fun i : Fin N =>
@@ -31,9 +29,9 @@ theorem isFrame_pullStd {N : ℕ} {A : Type} [CommRing A] (y : Sp A ⟶ Sp ℤ) 
   exact h
 
 /- English proof (translation)
-Introduce `v w hvw`. Establish `hinj` using `(isFrame_pullStd (N := N) y ⊤ le_rfl).1`. Simplify using `only [Twist.resM_self] at hinj`. Use `hinj (a₁ := fun i => (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom (v i)) (a₂ := fun i => (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom (w i)) (by simpa only [Fintype.linearCombination_apply, vecSec] using hvw)` as an intermediate fact. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hi` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom (congrFun this i)`. Simplify using `using hi`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vecSec_injective {N : ℕ} {A : Type} [CommRing A] (y : Sp A ⟶ Sp ℤ) :
     Function.Injective (vecSec (N := N) y) := by
@@ -48,7 +46,7 @@ theorem vecSec_injective {N : ℕ} {A : Type} [CommRing A] (y : Sp A ⟶ Sp ℤ)
   simpa using hi
 
 /- English proof (translation)
-Simplify using `only [vecSec, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.sum_smul, mul_smul, Finset.smul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecSec_sum_smul {N : ℕ} {A : Type} [CommRing A] (y : Sp A ⟶ Sp ℤ) {κ : Type} [Fintype κ]
     (a : κ → A) (c : κ → Fin N → A) :
@@ -58,9 +56,9 @@ theorem vecSec_sum_smul {N : ℕ} {A : Type} [CommRing A] (y : Sp A ⟶ Sp ℤ) 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Take `⟨r, hr⟩` from `(hs ⊤ le_rfl).2 t`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fintype.linearCombination_apply, Twist.resM_self, ← QCoh.homAppLinear_apply, map_sum, map_smul]`. Introduce and unpack `⟨r, rfl⟩`. Conclude with `⟨∑ j, r j • s j, by simp only [← QCoh.homAppLinear_apply, map_sum, map_smul]⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_range_app_iff {X : Scheme.{0}} {F G : X.Modules} {κ : Type} [Fintype κ] {s : κ → Γ(F, ⊤)}
     (hs : IsFrame s) (ψ : F ⟶ G) (x : Γ(G, ⊤)) :
@@ -75,11 +73,11 @@ theorem mem_range_app_iff {X : Scheme.{0}} {F G : X.Modules} {κ : Type} [Fintyp
     exact ⟨∑ j, r j • s j, by simp only [← QCoh.homAppLinear_apply, map_sum, map_smul]⟩
 
 /- English proof (translation)
-Introduce `ι _ N fl hfl A _ h y hy a l v`. Substitute `hy` using the available equality. Take `⟨s, hs, hsj⟩` from `hfl A h a l`. Establish `hstep : stepMap ι N fl (flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd h) _ rfl a l = (Scheme.Modules.pullback (flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd h)).map ((fl a).ι l) ≫ (Scheme.Modules.pullbackComp (flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd h) (flStr ι N)) …`. Simplify using `[stepMap, Scheme.Modules.pullbackCongr]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hstep, mem_range_app_iff hs, Submodule.mem_span_range_iff_exists_fun]`. Simplify using `only [hsj, ← vecSec_col]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr⟩`. Use `⟨fun j => (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom (r j), vecSec_injective (flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd h ≫ flStr ι N) ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[vecSec_sum_smul, ← hr]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨fun j => (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom (c j), (vecSec_sum_smul _ _ _).symm⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem vecSec_mem_range_stepMap_iff : ∀ (ι : Type) [Fintype ι] (N : ℕ)
     (fl : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback (flStr ι N)).obj (Taut.stdE N)) N), Taut.IsTaut ι N fl →

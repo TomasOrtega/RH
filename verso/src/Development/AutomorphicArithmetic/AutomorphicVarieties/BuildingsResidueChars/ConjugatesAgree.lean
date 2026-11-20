@@ -2,11 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Af.Sol
 
 /- English proof (translation)
-Break down `hM with hM | hM` into its components or cases. Use `⟨id, fun c hc x => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hc`. Use `j.injective ?_` and prove the remaining obligations. Rewrite using `[hj]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ComplexEmbedding.IsReal (j.comp (algebraMap M Ω))` using `IsTotallyReal.complexEmbedding_isReal _`. Conclude with `RingHom.congr_fun (ComplexEmbedding.isReal_iff.1 h) x`. Use `⟨fun x => IsCMField.complexConj M x, fun c hc x => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hc`. Use `j.injective ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj]`. Conclude with `(IsCMField.complexEmbedding_complexConj M (j.comp (algebraMap M Ω)) x).symm`.
+A detailed English derivation is pending.
 -/
 private theorem conj_val {K M Ω : Type} [Field K] [Field M] [NumberField M] [Field Ω] [Algebra K Ω]
     [Algebra M Ω] (hM : RC M) :
@@ -25,11 +25,9 @@ private theorem conj_val {K M Ω : Type} [Field K] [Field M] [NumberField M] [Fi
     exact (IsCMField.complexEmbedding_complexConj M (j.comp (algebraMap M Ω)) x).symm
 
 /- English proof (translation)
-Introduce `K M Ω _ _ _ _ _ _ _ _ _ _ _ l _ hM δ hδ c c' hc hc'`. Take `⟨s, hs⟩` from `conj_val (K := K) (Ω := Ω) hM`. Set `g : G M Ω` to `AlgEquiv.ofRingEquiv (f := (c⁻¹ * c').toRingEquiv) (fun x => by`. Express the relevant statement in the definitionally equal form `c.symm (c' (algebraMap M Ω x)) = _`. Rewrite using `[hs c' hc', ← hs c hc, AlgEquiv.symm_apply_apply])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : resG K M Ω g = c⁻¹ * c'` using `AlgEquiv.ext fun _ => rfl`. Establish `h1 : δ (c⁻¹ * c') = 1`. Rewrite using `[← hg]`. Conclude with `DFunLike.congr_fun hδ g`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.conjugates_agree :
     UpperTheory.V.Af.Sol.ConjAgree := by

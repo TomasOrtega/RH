@@ -12,11 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S S' t G H _ _ pr hmon hlim`. Use `⟨fun a => by haveI := hmon a; infer_instance, ?_⟩` and prove the remaining obligations. Set `c : Fan (fun _ : Fin 8 => H)` to `Fan.mk G pr`. Establish `hc : IsLimit c`. Use `Fan.IsLimit.mk c (fun s => (hlim s.pt s.proj).choose) (fun s j => ?_) (fun s m hm => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hlim s.pt s.proj).choose_spec.1 j`. Conclude with `(hlim s.pt s.proj).choose_spec.2 m hm`. Introduce `T y`. Set `s : Fan (fun _ : Fin 8 => (Over.pullback t).obj H)` to `Fan.mk T y`. Establish `hs : IsLimit (Fan.mk ((Over.pullback t).obj G) (fun a => (Over.pullback t).map (pr a)))` using `isLimitFanMkObjOfIsLimit (Over.pullback t) (fun _ : Fin 8 => H) pr hc`.
-
-Use `⟨hs.lift s, fun a => hs.fac s ⟨a⟩, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `hs.uniq s x (by rintro ⟨a⟩; exact hx a)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem baseChange_eighthPower_product_monHom : ∀ (S S' : Scheme.{0}) (t : S' ⟶ S) (G H : Over S) [GrpObj G] [GrpObj H] (pr : Fin 8 → (G ⟶ H)), (∀ a, IsMonHom (pr a)) → (∀ (T : Over S) (y : Fin 8 → (T ⟶ H)), ∃! x : T ⟶ G, ∀ a, x ≫ pr a = y a) → (∀ a, IsMonHom ((Over.pullback t).map (pr a))) ∧ ∀ (T : Over S') (y : Fin 8 → (T ⟶ (Over.pullback t).obj H)), ∃! x : T ⟶ (Over.pullback t).obj G, ∀ a, x ≫ (Over.pullback t).map (pr a) = y a := by
   intro S S' t G H _ _ pr hmon hlim

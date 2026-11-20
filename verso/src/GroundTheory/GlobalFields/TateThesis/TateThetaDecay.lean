@@ -14,14 +14,14 @@ variable {K : Type*} [Field K] [NumberField K]
 open IdeleGroup
 
 /- English proof (translation)
-The claim follows from `coe_infiniteEmbedding w _`.
+A detailed English derivation is pending.
 -/
 theorem coe_moduleSection (w : InfinitePlace K) (t : {r : ℝ // 0 < r}) :
     ((moduleSection w t : IdeleGroup K) : 𝔸[K]) = (infiniteAdeleSingle w (posRealElem w t), 1) :=
   coe_infiniteEmbedding w _
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_one]`. Express the relevant statement in the definitionally equal form `((moduleSection w t : IdeleGroup K) : 𝔸[K]).2 = 1`. Rewrite using `[coe_moduleSection]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toFinite_moduleSection (w : InfinitePlace K) (t : {r : ℝ // 0 < r}) :
     toFinite K (moduleSection w t) = 1 := by
@@ -31,9 +31,9 @@ theorem toFinite_moduleSection (w : InfinitePlace K) (t : {r : ℝ // 0 < r}) :
   rw [coe_moduleSection]
 
 /- English proof (translation)
-Rewrite using `[coe_moduleSection]`. Express the relevant statement in the definitionally equal form `‖infiniteAdeleSingle w (posRealElem w t) v‖ = _`. Rewrite using `[infiniteAdeleSingle_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mulSingle_eq_same]`. Rewrite using `[Pi.mulSingle_eq_of_ne h, norm_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_moduleSection_apply (w : InfinitePlace K) (t : {r : ℝ // 0 < r}) (v : InfinitePlace K) :
     ‖((moduleSection w t : IdeleGroup K) : 𝔸[K]).1 v‖ = if v = w then ‖posRealElem w t‖ else 1 := by
@@ -46,7 +46,7 @@ theorem norm_moduleSection_apply (w : InfinitePlace K) (t : {r : ℝ // 0 < r}) 
   · rw [Pi.mulSingle_eq_of_ne h, norm_one]
 
 /- English proof (translation)
-Rewrite using `[infiniteModule, Finset.prod_eq_single w (fun v _ hv ↦ by`. Rewrite using `[norm_moduleSection_apply, if_neg hv, one_pow]) (fun h ↦ absurd (Finset.mem_univ w) h),`. Use the proof step `norm_moduleSection_apply, if_pos rfl]`. Conclude with `norm_posRealElem_pow w t.2.le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infiniteModule_moduleSection (w : InfinitePlace K) (t : {r : ℝ // 0 < r}) :
     infiniteModule (moduleSection w t) = t := by
@@ -56,9 +56,7 @@ theorem infiniteModule_moduleSection (w : InfinitePlace K) (t : {r : ℝ // 0 < 
   exact norm_posRealElem_pow w t.2.le
 
 /- English proof (translation)
-Rewrite using `[norm_moduleSection_apply]`. Use `split_ifs`. Establish `h` using `norm_posRealElem_pow w t.2.le`. Apply the tactic sequence `have hm : w.mult ≠ 0 := by unfold InfinitePlace.mult; split_ifs <;> norm_num`. Establish `h2 : ‖posRealElem w t‖ ^ w.mult ≤ 1` using `by rw [h]; exact ht`.
-
-Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) hm).1 h2`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_moduleSection_apply_le_one (w : InfinitePlace K) {t : {r : ℝ // 0 < r}}
     (ht : (t : ℝ) ≤ 1) (v : InfinitePlace K) :
@@ -72,14 +70,14 @@ theorem norm_moduleSection_apply_le_one (w : InfinitePlace K) {t : {r : ℝ // 0
   · exact le_rfl
 
 /- English proof (translation)
-Rewrite using `[norm_eq_sup'_normAtPlace]`. Conclude with `Finset.le_sup' (fun v ↦ normAtPlace v z) (Finset.mem_univ v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normAtPlace_le_norm' (v : InfinitePlace K) (z : mixedSpace K) : normAtPlace v z ≤ ‖z‖ := by
   rw [norm_eq_sup'_normAtPlace]
   exact Finset.le_sup' (fun v ↦ normAtPlace v z) (Finset.mem_univ v)
 
 /- English proof (translation)
-Rewrite using `[mixedEmbedding.norm_apply, ← InfinitePlace.sum_mult_eq, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Finset.prod_le_prod (fun v _ ↦ pow_nonneg (normAtPlace_nonneg _ _) _) fun v _ ↦ pow_le_pow_left₀ (normAtPlace_nonneg _ _) (normAtPlace_le_norm' v z) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixedEmbedding_norm_le_norm_pow (z : mixedSpace K) :
     mixedEmbedding.norm z ≤ ‖z‖ ^ Module.finrank ℚ K := by
@@ -88,7 +86,7 @@ theorem mixedEmbedding_norm_le_norm_pow (z : mixedSpace K) :
     fun v _ ↦ pow_le_pow_left₀ (normAtPlace_nonneg _ _) (normAtPlace_le_norm' v z) _
 
 /- English proof (translation)
-Rewrite using `[norm_eq_sup'_normAtPlace (e * z)]`. Use `Finset.sup'_le _ _ fun v _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left (normAtPlace_nonneg _ _) (he v)).trans (normAtPlace_le_norm' v z)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mul_le_of_normAtPlace_le_one {e : mixedSpace K} (he : ∀ v, normAtPlace v e ≤ 1)
     (z : mixedSpace K) : ‖e * z‖ ≤ ‖z‖ := by
@@ -98,7 +96,7 @@ theorem norm_mul_le_of_normAtPlace_le_one {e : mixedSpace K} (he : ∀ v, normAt
   exact (mul_le_of_le_one_left (normAtPlace_nonneg _ _) (he v)).trans (normAtPlace_le_norm' v z)
 
 /- English proof (translation)
-Rewrite using `[mixedEmbedding.norm_apply]`. Simplify using `only [normAtPlace_homeomorphMixedSpace]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mixedEmbedding_norm_toInfinite (x : IdeleGroup K) :
     mixedEmbedding.norm (homeomorphMixedSpace K
@@ -108,7 +106,7 @@ theorem mixedEmbedding_norm_toInfinite (x : IdeleGroup K) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Algebra.coe_norm_int]`. Establish `h : Algebra.norm ℤ r ≠ 0` using `Algebra.norm_ne_zero_iff.2 hr`. Establish `h1 : (1 : ℤ) ≤ |Algebra.norm ℤ r|` using `Int.one_le_abs h`. Conclude with `h1` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_abs_norm_of_ne_zero {r : 𝓞 K} (hr : r ≠ 0) :
     (1 : ℝ) ≤ |((Algebra.norm ℚ (r : K) : ℚ) : ℝ)| := by
@@ -118,51 +116,41 @@ theorem one_le_abs_norm_of_ne_zero {r : 𝓞 K} (hr : r ≠ 0) :
   exact_mod_cast h1
 
 /- English proof (translation)
-Use `set S : Set 𝔸ᶠ[K] := (fun p : IdeleGroup K × 𝔸ᶠ[K] ↦ ((IdeleGroup.toFinite K p.1⁻¹ : (𝔸ᶠ[K])ˣ) : 𝔸ᶠ[K]) * p.2) '' (C ×ˢ (b +ᵥ (idealFiniteAdeles I : Set 𝔸ᶠ[K])))`. Establish `hS : IsCompact S` using `(hC.prod ((isCompact_idealFiniteAdeles I).vadd b)).image ((Units.continuous_val.comp ((IdeleGroup.continuous_toFinite (K := K)).comp (continuous_inv.comp continuous_fst))).mul continuous_snd)`. Take `⟨d, hd0, hd⟩` from `exists_mul_mem_integralFiniteAdeles_of_isCompact hS`. Use `set dK := algebraMap (𝓞 K) K d`. Establish `hdK : dK ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hd0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set J : (FractionalIdeal (𝓞 K)⁰ K)ˣ := Units.mk0 (FractionalIdeal.spanSingleton (𝓞 K)⁰ dK⁻¹) ((FractionalIdeal.spanSingleton_ne_zero_iff).mpr (inv_ne_zero hdK))`. Establish `hJ : ∀ a ∈ C, ∀ ξ : K, ((IdeleGroup.toFinite K a : (𝔸ᶠ[K])ˣ) : 𝔸ᶠ[K]) * algebraMap K 𝔸ᶠ[K] ξ - b ∈ idealFiniteAdeles I → ξ ∈ (J : FractionalIdeal (𝓞 K)⁰ K)`. Introduce `a ha ξ hξ`. Establish `hmem : algebraMap K 𝔸ᶠ[K] ξ ∈ S`. Use `⟨(a, ((IdeleGroup.toFinite K a : (𝔸ᶠ[K])ˣ) : 𝔸ᶠ[K]) * algebraMap K 𝔸ᶠ[K] ξ), ⟨ha, mem_vadd_idealFiniteAdeles.mpr hξ⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_inv, Units.inv_mul_cancel_left]`. Establish `h1` using `hd _ hmem`. Rewrite `h1` using `[← map_mul]`. Establish `h2 : dK * ξ ∈ ((1 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K)`. Rewrite using `[← algebraMap_mem_idealFiniteAdeles_iff, ← SetLike.mem_coe, idealFiniteAdeles_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1`. Rewrite `h2` using `[Units.val_one]`. Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).mp h2`. Use `(FractionalIdeal.mem_spanSingleton _).mpr ⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hr, mul_comm dK, mul_assoc, mul_inv_cancel₀ hdK, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNd : ((Algebra.norm ℚ dK : ℚ) : ℝ) ≠ 0`. Rewrite using `[Rat.cast_ne_zero]`. Conclude with `(Algebra.norm_ne_zero_iff).2 hdK`. Use `set κ₀ : ℝ := |((Algebra.norm ℚ dK : ℚ) : ℝ)|⁻¹`. Establish `hκ₀ : 0 < κ₀` using `inv_pos.2 (abs_pos.2 hNd)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hNξ : ∀ ξ ∈ (J : FractionalIdeal (𝓞 K)⁰ K), ξ ≠ 0 → κ₀ ≤ mixedEmbedding.norm (mixedEmbedding K ξ)`. Introduce `ξ hξ hξ0`. Take `⟨r', hr'⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hξ`. Establish `hr'0 : r' ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `hr'` using `[zero_smul]`. Conclude with `hξ0 hr'.symm`. Establish `hmul : Algebra.norm ℚ dK * Algebra.norm ℚ ξ = Algebra.norm ℚ (r' : K)`. Rewrite using `[← map_mul, ← hr', Algebra.smul_def, mul_left_comm, mul_inv_cancel₀ hdK, mul_one]`. Establish `hξN : ((Algebra.norm ℚ ξ : ℚ) : ℝ) = ((Algebra.norm ℚ (r' : K) : ℚ) : ℝ) * ((Algebra.norm ℚ dK : ℚ) : ℝ)⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hmul, Rat.cast_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mixedEmbedding.norm_eq_norm, Rat.cast_abs, hξN, abs_mul, abs_inv]`. Conclude with `le_mul_of_one_le_left (by positivity) (one_le_abs_norm_of_ne_zero hr'0)`. Establish `hcm : Continuous fun a : IdeleGroup K ↦ (infiniteModule a)⁻¹` using `continuous_infiniteModule.inv₀ fun a ↦ (infiniteModule_pos a).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨B₂, hB₂⟩` from `hC.exists_bound_of_continuousOn hcm.continuousOn`. Use `set m : ℝ := (max B₂ 1)⁻¹`. Establish `hm0 : 0 < m` using `inv_pos.2 (zero_lt_one.trans_le (le_max_right _ _))`. Establish `hmC : ∀ a ∈ C, m ≤ infiniteModule a`. Introduce `a ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (infiniteModule a)⁻¹ ≤ max B₂ 1`. Use `hB₂ a ha` as an intermediate fact. Rewrite `this` using `[Real.norm_of_nonneg (inv_nonneg.2 (infiniteModule_pos a).le)]`. Conclude with `this.trans (le_max_left _ _)`. Conclude with `inv_le_of_inv_le₀ (infiniteModule_pos a) h1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set k := Module.finrank ℤ (idealLattice K J) + 1`. Use `set n := Module.finrank ℚ K`. Take `⟨A, hA, hφ⟩` from `exists_norm_le_inv_one_add_pow φ (k + n * r)`. Establish `hcont : Continuous fun a : IdeleGroup K ↦ ‖homeomorphMixedSpace K ((IdeleGroup.toInfinite K a⁻¹ : (InfiniteAdeleRing K)ˣ) : InfiniteAdeleRing K)‖` using `continuous_norm.comp ((homeomorphMixedSpace K).continuous.comp (Units.continuous_val.comp ((IdeleGroup.continuous_toInfinite (K := K)).comp continuous_inv)))`. Take `⟨B, hB⟩` from `hC.exists_bound_of_continuousOn hcont.continuousOn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `set B' := max B 1`. Establish `hB'1 : 1 ≤ B'` using `le_max_right _ _`. Establish `hB'0 : 0 < B'` using `zero_lt_one.trans_le hB'1`. Use `set κ := m * κ₀`. Establish `hκ : 0 < κ` using `mul_pos hm0 hκ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨fun ξ ↦ if ξ ∈ (J : FractionalIdeal (𝓞 K)⁰ K) then A * B' ^ k * (κ ^ r)⁻¹ * ((1 + ‖mixedEmbedding K ξ‖) ^ k)⁻¹ else 0, ?_, ?_⟩` and prove the remaining obligations. Conclude with `summable_ite_mem_of_summable_idealLattice J (h := fun x ↦ A * B' ^ k * (κ ^ r)⁻¹ * ((1 + ‖x‖) ^ k)⁻¹) ((summable_inv_one_add_norm_pow_idealLattice J).mul_left (A * B' ^ k * (κ ^ r)⁻¹))`. Introduce `a ha t ht ξ hξ0`. Use `set y := moduleSection w t * a`. Use `set c := homeomorphMixedSpace K ((IdeleGroup.toInfinite K y : (InfiniteAdeleRing K)ˣ) : InfiniteAdeleRing K)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set c' := homeomorphMixedSpace K ((IdeleGroup.toInfinite K a⁻¹ : (InfiniteAdeleRing K)ˣ) : InfiniteAdeleRing K)`. Use `set e' := homeomorphMixedSpace K ((IdeleGroup.toInfinite K (moduleSection w t⁻¹) : (InfiniteAdeleRing K)ˣ) : InfiniteAdeleRing K)`. Establish `hcc : c' * (e' * c) = 1`. Rewrite using `[← homeomorphMixedSpace_mul, ← homeomorphMixedSpace_mul, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul, map_inv, ← mul_assoc, ← mul_assoc, inv_mul_cancel_right, inv_mul_cancel, map_one, Units.val_one, homeomorphMixedSpace_apply, map_one]`. Establish `he' : ∀ v, normAtPlace v e' ≤ 1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[normAtPlace_homeomorphMixedSpace]`. Use `norm_moduleSection_apply_le_one w ?_ v` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(t : ℝ)⁻¹ ≤ 1`. Conclude with `inv_le_one_of_one_le₀ ht`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : schwartzBruhatTensor φ (cosetIndicator I b) (y • algebraMap K 𝔸[K] ξ) = φ (c * mixedEmbedding K ξ) * cosetIndicator I b (((IdeleGroup.toFinite K a : (𝔸ᶠ[K])ˣ) : 𝔸ᶠ[K]) * algebraMap K 𝔸ᶠ[K] ξ)`. Establish `h1 : (y • algebraMap K 𝔸[K] ξ).1 = ((IdeleGroup.toInfinite K y : (InfiniteAdeleRing K)ˣ) : InfiniteAdeleRing K) * algebraMap K (InfiniteAdeleRing K) ξ` using `rfl`. Establish `h2 : (y • algebraMap K 𝔸[K] ξ).2 = ((IdeleGroup.toFinite K y : (𝔸ᶠ[K])ˣ) : 𝔸ᶠ[K]) * algebraMap K 𝔸ᶠ[K] ξ` using `rfl`. Establish `h3 : IdeleGroup.toFinite K y = IdeleGroup.toFinite K a`. Rewrite using `[map_mul, toFinite_moduleSection, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [schwartzBruhatTensor]`. Rewrite using `[h1, h2, h3, homeomorphMixedSpace_mul, homeomorphMixedSpace_algebraMap]`. Rewrite using `[hval, cosetIndicator_apply]`. Use `beta_reduce`. Distinguish the cases in `hm : ((IdeleGroup.toFinite K a : (𝔸ᶠ[K])ˣ) : 𝔸ᶠ[K]) * algebraMap K 𝔸ᶠ[K] ξ - b ∈ idealFiniteAdeles I`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hξJ` using `hJ a ha ξ hm`. Rewrite using `[if_pos hm, if_pos hξJ, mul_one]`. Use `set x := mixedEmbedding K ξ`. Use `set z := c * x`. Establish `hx : ‖x‖ ≤ B' * ‖z‖`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hN : (t : ℝ) * κ ≤ mixedEmbedding.norm z`. Rewrite using `[map_mul, mixedEmbedding_norm_toInfinite, infiniteModule_mul, infiniteModule_moduleSection]`. Establish `h1` using `hmC a ha`. Establish `h2` using `hNξ ξ hξJ hξ0`.
-
-Establish `ht0 : (0 : ℝ) ≤ t` using `t.2.le`. Combine the equalities or inequalities in the displayed calculation. Establish `htκ : 0 < (t : ℝ) * κ` using `mul_pos t.2 hκ`. Establish `hz : (t : ℝ) * κ ≤ (1 + ‖z‖) ^ n` using `hN.trans ((mixedEmbedding_norm_le_norm_pow z).trans (pow_le_pow_left₀ (norm_nonneg _) (by linarith [norm_nonneg z]) n))`. Establish `hx' : (1 + ‖x‖) / B' ≤ 1 + ‖z‖`.
-
-Rewrite using `[div_le_iff₀ hB'0]`. Use polynomial arithmetic with `[norm_nonneg z]`. Establish `h1 : ((1 + ‖z‖) ^ k)⁻¹ ≤ (((1 + ‖x‖) / B') ^ k)⁻¹` using `inv_anti₀ (pow_pos (div_pos (by positivity) hB'0) k) (pow_le_pow_left₀ (div_pos (by positivity) hB'0).le hx' k)`. Establish `h2 : (((1 + ‖z‖) ^ n) ^ r)⁻¹ ≤ (((t : ℝ) * κ) ^ r)⁻¹` using `inv_anti₀ (pow_pos htκ r) (pow_le_pow_left₀ htκ.le hz r)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[pow_add, pow_mul, mul_inv]`. Use `_ ≤ A * ((((1 + ‖x‖) / B') ^ k)⁻¹ * (((t : ℝ) * κ) ^ r)⁻¹) := mul_le_mul_of_nonneg_left (mul_le_mul h1 h2 (inv_nonneg.2 (pow_nonneg (pow_nonneg (by positivity) n) r)) (inv_nonneg.2 (pow_nonneg (div_pos (by positivity) hB'0).le k))) hA`. Use `_ = ((t : ℝ) ^ r)⁻¹ * (A * B' ^ k * (κ ^ r)⁻¹ * ((1 + ‖x‖) ^ k)⁻¹) := by`. Rewrite using `[div_pow, inv_div, mul_pow, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[if_neg hm, mul_zero, norm_zero] split_ifs`. Conclude with `mul_nonneg (inv_nonneg.2 (pow_nonneg t.2.le r)) (mul_nonneg (mul_nonneg (mul_nonneg hA (pow_nonneg hB'0.le k)) (inv_nonneg.2 (pow_nonneg hκ.le r))) (inv_nonneg.2 (by positivity)))`. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_decay_bound_tensor_cosetIndicator (w : InfinitePlace K) (φ : 𝓢(mixedSpace K, ℂ))
     (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (b : 𝔸ᶠ[K]) {C : Set (IdeleGroup K)} (hC : IsCompact C)
@@ -334,13 +322,11 @@ theorem exists_decay_bound_tensor_cosetIndicator (w : InfinitePlace K) (φ : �
     · rw [mul_zero]
 
 /- English proof (translation)
-Establish `hF'` using `schwartzBruhat_le_span_cosetIndicator hF`. Use `clear hF`. Proceed by induction on `hF' using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, I, b, rfl⟩` from `hG`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `exists_decay_bound_tensor_cosetIndicator w φ I b hC r`. Consider the case `zero => exact ⟨0, summable_zero, fun _ _ _ _ _ _ ↦ by simp⟩`. Consider the case `add G H _ _ hG hH`. Take `⟨u, hu, hGu⟩` from `hG`. Take `⟨v, hv, hHv⟩` from `hH`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u + v, hu.add hv, fun a ha t ht ξ hξ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, Pi.add_apply, mul_add]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hGu a ha t ht ξ hξ) (hHv a ha t ht ξ hξ))`. Consider the case `smul c G _ hG`. Take `⟨u, hu, hGu⟩` from `hG`.
-
-Use `⟨fun ξ ↦ ‖c‖ * u ξ, hu.mul_left _, fun a ha t ht ξ hξ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hGu a ha t ht ξ hξ) (norm_nonneg c)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_decay_bound (w : InfinitePlace K) {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K)
     {C : Set (IdeleGroup K)} (hC : IsCompact C) (r : ℕ) :
@@ -366,9 +352,9 @@ theorem exists_decay_bound (w : InfinitePlace K) {F : 𝔸[K] → ℂ} (hF : F �
     exact mul_le_mul_of_nonneg_left (hGu a ha t ht ξ hξ) (norm_nonneg c)
 
 /- English proof (translation)
-Take `⟨u, hu, hFu⟩` from `exists_decay_bound w hF hC r`. Use `⟨∑' ξ, |u ξ|, fun a ha t ht ↦ ?_⟩` and prove the remaining obligations. Establish `hs : Summable fun ξ : K ↦ F ((moduleSection w t * a) • algebraMap K 𝔸[K] ξ)` using `(summable_norm_smul_algebraMap _ hF).of_norm`. Rewrite using `[adelicTheta, hs.tsum_eq_add_tsum_ite 0, smul_algebraMap_zero, add_sub_cancel_left, ← tsum_mul_left]`. Use `tsum_of_norm_bounded ((hu.abs.mul_left _).hasSum) fun ξ ↦ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht0 : 0 < ((t : ℝ) ^ r)⁻¹` using `inv_pos.2 (pow_pos t.2 r)`. Use `split_ifs with h`. Rewrite using `[norm_zero]`. Conclude with `mul_nonneg ht0.le (abs_nonneg _)`. Conclude with `(hFu a ha t ht ξ h).trans (mul_le_mul_of_nonneg_left (le_abs_self _) ht0.le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_adelicTheta_sub_le (w : InfinitePlace K) {F : 𝔸[K] → ℂ}
     (hF : F ∈ schwartzBruhat K) {C : Set (IdeleGroup K)} (hC : IsCompact C) (r : ℕ) :
@@ -391,7 +377,7 @@ def thetaConstant (F : 𝔸[K] → ℂ) (χ : HeckeCharacter K) : ℂ :=
   F 0 * ∫ u in normOneFundamentalDomain K, (χ.toIdele (u : IdeleGroup K) : ℂ) ∂normOneMeasure K
 
 /- English proof (translation)
-Rewrite using `[thetaIntegral, thetaConstant, ← integral_const_mul, ← integral_sub (integrableOn_thetaIntegrand w hF χ t) ((integrableOn_char χ).const_mul _)]`. Use `integral_congr_ae (Eventually.of_forall fun u ↦ ?_)` and prove the remaining obligations. Simplify using `only [thetaIntegrand]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thetaIntegral_sub_thetaConstant (w : InfinitePlace K) {F : 𝔸[K] → ℂ}
     (hF : F ∈ schwartzBruhat K) (χ : HeckeCharacter K) (t : {r : ℝ // 0 < r}) :
@@ -405,9 +391,9 @@ theorem thetaIntegral_sub_thetaConstant (w : InfinitePlace K) {F : 𝔸[K] → �
   ring
 
 /- English proof (translation)
-Establish `hC : IsCompact ((Subtype.val : normOneSubgroup K → IdeleGroup K) '' closure (normOneFundamentalDomain K))` using `(isCompact_closure_normOneFundamentalDomain K).image continuous_subtype_val`. Take `⟨M, hM⟩` from `exists_norm_adelicTheta_sub_le w hF hC r`. Use `⟨M * (normOneMeasure K).real (normOneFundamentalDomain K), fun t ht ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[thetaIntegral_sub_thetaConstant w hF χ t, ← mul_assoc]`. Use `norm_setIntegral_le_of_norm_le_const (normOneMeasure_normOneFundamentalDomain_lt_top K) fun u hu ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul, Circle.norm_coe, mul_one]`. Conclude with `hM _ ⟨u, subset_closure hu, rfl⟩ t ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_thetaIntegral_sub_le (w : InfinitePlace K) {F : 𝔸[K] → ℂ}
     (hF : F ∈ schwartzBruhat K) (χ : HeckeCharacter K) (r : ℕ) :
@@ -425,11 +411,9 @@ theorem exists_norm_thetaIntegral_sub_le (w : InfinitePlace K) {F : 𝔸[K] → 
   exact hM _ ⟨u, subset_closure hu, rfl⟩ t ht
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun t₀ ↦ ?_` and prove the remaining obligations. Take `⟨N, hN, ht₀N⟩` from `exists_compact_mem_nhds t₀`. Establish `hC : IsCompact ((fun p : {r : ℝ // 0 < r} × normOneSubgroup K ↦ moduleSection w p.1 * (p.2 : IdeleGroup K)) '' (N ×ˢ closure (normOneFundamentalDomain K)))` using `(hN.prod (isCompact_closure_normOneFundamentalDomain K)).image (((continuous_moduleSection w).comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd))`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn (continuous_adelicTheta hF).continuousOn`. Establish `hfin : IsFiniteMeasure ((normOneMeasure K).restrict (normOneFundamentalDomain K))` using `isFiniteMeasure_restrict.2 (normOneMeasure_normOneFundamentalDomain_lt_top K).ne`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show ContinuousAt (fun t ↦ ∫ u, thetaIntegrand w F χ t u ∂((normOneMeasure K).restrict (normOneFundamentalDomain K))) t₀`. Use `continuousAt_of_dominated (bound := fun _ ↦ M) ?_ ?_ (integrable_const M) ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun t ↦ (continuous_thetaIntegrand w hF χ t).aestronglyMeasurable`. Use `filter_upwards [ht₀N] with t ht filter_upwards [ae_restrict_mem (measurableSet_normOneFundamentalDomain K)] with u hu`. Rewrite using `[thetaIntegrand, norm_mul, Circle.norm_coe, mul_one]`.
-
-Conclude with `hM _ ⟨(t, u), ⟨ht, subset_closure hu⟩, rfl⟩`. Use `Eventually.of_forall fun u ↦ Continuous.continuousAt ?_` and prove the remaining obligations. Conclude with `((continuous_adelicTheta hF).comp ((continuous_moduleSection w).mul continuous_const)).mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_thetaIntegral (w : InfinitePlace K) {F : 𝔸[K] → ℂ}
     (hF : F ∈ schwartzBruhat K) (χ : HeckeCharacter K) : Continuous (thetaIntegral w F χ) := by

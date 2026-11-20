@@ -11,17 +11,15 @@ open GlobalTheory.Desc
 namespace GlobalTheory.SqDecIdBC
 
 /- English proof (translation)
-Introduce `F _ A _ L M hL hM hD`. Establish `hid : spMap (RingHom.id F) = 𝟙 (Sp F)`. Simplify using `[spMap]`. Establish `hw : 𝟙 A.left ≫ A.hom = A.hom ≫ spMap (RingHom.id F)` using `by rw [hid]; simp`. Set `π' : A.left ⟶ pullback A.hom (spMap (RingHom.id F))` to `pullback.lift (𝟙 _) A.hom hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e₁ : π' ≫ pullback.fst A.hom (spMap (RingHom.id F)) = 𝟙 _` using `pullback.lift_fst _ _ _`. Establish `e₂ : π' ≫ ((Over.pullback (spMap (RingHom.id F))).obj A).hom = A.hom ≫ 𝟙 _`. Rewrite using `[Category.comp_id]`. Conclude with `pullback.lift_snd _ _ _`. Establish `hP : IsGrpPullback A ((Over.pullback (spMap (RingHom.id F))).obj A) (𝟙 _) π'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n : IsGrpPullback A A (𝟙 _ ≫ spMap (RingHom.id F)) (π' ≫ pullback.fst A.hom (spMap (RingHom.id F)))`. Rewrite using `[e₁, Category.id_comp, hid]`. Conclude with `GlobalTheory.SiegLower.isGrpPullback_id A`. Conclude with `IsGrpPullback.cancel (isGrpPullback_pullback A _) n e₂`. Take `⟨N, a₀, r, e, β, hN, ha₀, hβ, hI⟩` from `hD`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ' : ∀ i, ∃ g : A ⟶ A, IsMonHom g ∧ g.left ≫ π' = π' ≫ (β i).left` using `fun i => by haveI := hβ i`. Conclude with `GlobalTheory.HomDescent.exists_isMonHom_pull hP hP (β i)`. Use `choose β' hβ'm hβ'c using hβ'`. Establish `iL : LBIso L ((L.pull (pullback.fst A.hom (spMap (RingHom.id F)))).pull π')` using `LBIso.trans hL (pull_isLB hL _) (pull_isLB (pull_isLB hL _) _) (GlobalTheory.SiegLower.lbIso_pull_id hL) (GlobalTheory.ShapePull.iso_linComb_pull (GlobalTheory.SiegLower.lbIso_pull_id hL) _ _ _ π' (fun _ => by rw [e₁]; simp))`. Establish `iM : LBIso M ((M.pull (pullback.fst A.hom (spMap (RingHom.id F)))).pull π')` using `LBIso.trans hM (pull_isLB hM _) (pull_isLB (pull_isLB hM _) _) (GlobalTheory.SiegLower.lbIso_pull_id hM) (GlobalTheory.ShapePull.iso_linComb_pull (GlobalTheory.SiegLower.lbIso_pull_id hM) _ _ _ π' (fun _ => by rw [e₁]; simp))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Use `⟨N, a₀, r, e, β', hN, ha₀, hβ'm, ?_⟩` and prove the remaining obligations. Establish `j₁ : LBIso (lbPow L N) ((lbPow (L.pull (pullback.fst A.hom (spMap (RingHom.id F)))) N).pull π')` using `GlobalTheory.ShapePull.iso_linComb_pull iL _ _ _ π' (fun _ => by simp)`. Establish `j₂` using `GlobalTheory.RigidBundleGlue.LBIso.pull hI π'`. Establish `j₃ : LBIso (LB.LinComb M (K` using `Option (Fin r)) (fun o => o.elim (𝟙 _) fun i => (β' i).left) fun o => o.elim (a₀ : ℤ) fun i => (e i : ℤ)) ((LB.LinComb (M.pull (pullback.fst A.hom (spMap (RingHom.id F)))) (K := Option (Fin r)) (fun o => o.elim (𝟙 _) fun i => (β i).left) fun o => o.elim (a₀ : ℤ) fun i => (e i : ℤ …`. Consider the cases of `o with`.
-
-Consider the case `none => simp`. Consider the case `some i => exact hβ'c i)`. Conclude with `LBIso.trans (isLB_lbPow hL N) (pull_isLB (isLB_lbPow (pull_isLB hL _) N) _) (ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB _ hM _ _) j₁ (LBIso.trans (pull_isLB (isLB_lbPow (pull_isLB hL _) N) _) (pull_isLB (ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB _ (pull_isL …`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sqDec_of_baseChange_id : ∀ (F : Type) [CommRing F] (A : Over (Sp F)) [GrpObj A] (L M : LB A.left), L.IsLB → M.IsLB → SqDec ((Over.pullback (spMap (RingHom.id F))).obj A) (L.pull (pullback.fst A.hom (spMap (RingHom.id F)))) (M.pull (pullback.fst A.hom (spMap (RingHom.id F)))) → SqDec A L M := by
   intro F _ A _ L M hL hM hD

@@ -15,11 +15,11 @@ namespace GlobalTheory.SmallNorm
 open Module
 
 /- English proof (translation)
-Establish `hex : ∃ r : ℕ, N ≤ r ^ f` using `⟨N, Nat.le_self_pow (by omega) N⟩`. Establish `hP : N ≤ (Nat.find hex) ^ f` using `Nat.find_spec hex`. Establish `hr0 : 1 ≤ Nat.find hex`. Break down `Nat.eq_zero_or_pos (Nat.find hex) with h | h` into its components or cases. Rewrite using `[h, zero_pow (by omega)] at hP; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Use `⟨Nat.find hex, hr0, hP, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_or_lt_of_le hr0 with h | h` into its components or cases. Rewrite using `[← h, one_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hlt : (Nat.find hex - 1) ^ f < N` using `not_le.mp (Nat.find_min hex (show Nat.find hex - 1 < Nat.find hex by omega))`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_pow_between (N f : ℕ) (hN : 1 ≤ N) (hf : 1 ≤ f) :
     ∃ r : ℕ, 1 ≤ r ∧ N ≤ r ^ f ∧ r ^ f ≤ 2 ^ f * N := by
@@ -42,9 +42,9 @@ theorem exists_pow_between (N f : ℕ) (hN : 1 ≤ N) (hf : 1 ≤ f) :
       _ ≤ 2 ^ f * N := Nat.mul_le_mul_left _ hlt.le
 
 /- English proof (translation)
-Establish `key : ((Algebra.norm ℤ b : ℤ) : ZMod q) = 1`. Rewrite using `[Algebra.norm_eq_matrix_det (RingOfIntegers.basis F), ← eq_intCast (Int.castRingHom (ZMod q)), RingHom.map_det, h, map_add, map_one, map_mul, map_natCast, map_add, map_one, map_mul, map_natCast]`. Simplify using the standard rewrite rules. Establish `hd : (q : ℤ) ∣ Algebra.norm ℤ b - 1`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[key, sub_self]`. Take `⟨m, hm⟩` from `hd`. Conclude with `⟨1, -m, by linarith⟩`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isCoprime_norm_of_eq {F : Type} [Field F] [NumberField F] (q : ℕ) (b y : 𝓞 F)
     (h : b = 1 + (q : 𝓞 F) * y) : IsCoprime (Algebra.norm ℤ b) (q : ℤ) := by
@@ -59,49 +59,41 @@ theorem isCoprime_norm_of_eq {F : Type} [Field F] [NumberField F] (q : ℕ) (b y
   exact ⟨1, -m, by linarith⟩
 
 /- English proof (translation)
-Introduce `F _ _ _ q hq`. Establish `hf : 0 < finrank ℚ F` using `finrank_pos`. Use `set D : ℝ := Real.sqrt |(discr F : ℝ)| with hD_def`. Establish `hD : 0 ≤ D` using `Real.sqrt_nonneg _`. Use `set c₀ : ℝ := 3 * D ^ ((finrank ℚ F : ℝ)⁻¹) with hc₀_def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc₀ : 0 ≤ c₀` using `by positivity`. Establish `habs : ∀ (τ : F →+* ℝ) (y : F), |τ y| = InfinitePlace.mk (Complex.ofRealHom.comp τ) y`. Introduce `τ y`. Rewrite using `[InfinitePlace.apply, RingHom.comp_apply, Complex.ofRealHom_eq_coe, Complex.norm_real, Real.norm_eq_abs]`. Use `set C₂ : ℝ := ∑ i, ∑ w : InfinitePlace F, w (integralBasis F i) with hC₂_def`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hC₂ : ∀ (τ : F →+* ℝ) i, |τ (integralBasis F i)| ≤ ∑ w : InfinitePlace F, w (integralBasis F i)`. Introduce `τ i`. Rewrite using `[habs]`. Conclude with `Finset.single_le_sum (f := fun w : InfinitePlace F => w (integralBasis F i)) (fun w _ => apply_nonneg w _) (Finset.mem_univ _)`. Establish `hC₂0 : 0 ≤ C₂` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun w _ => apply_nonneg w _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set K₀ : ℕ := ⌈(q : ℝ) * c₀ * (C₂ + 1)⌉₊ + 1 with hK₀_def`. Use `⟨K₀ ^ finrank ℚ F * 2 ^ finrank ℚ F, ?_⟩` and prove the remaining obligations. Introduce `I hI hcop`. Establish `hN : 1 ≤ Ideal.absNorm I` using `Nat.one_le_iff_ne_zero.2 (fun h => hI (Ideal.absNorm_eq_zero_iff.1 h))`. Take `⟨r, hr1, hNr, hr2⟩` from `exists_pow_between (Ideal.absNorm I) (finrank ℚ F) hN hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a₀, ha₀I, ha₀0, ha₀⟩` from `ReciprocityTheory.ChartRestriction.G.TB.Mink.exists_small_mem_ideal' F I hI`. Establish `hsmall : ∀ τ : F →+* ℝ, |τ (a₀ : F)| ≤ c₀ * r`. Introduce `τ`. Establish `h1` using `ha₀ (Complex.ofRealHom.comp τ)`. Rewrite `h1` using `[RingHom.comp_apply, Complex.ofRealHom_eq_coe, Complex.norm_real, Real.norm_eq_abs]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `h1.le.trans ?_` and prove the remaining obligations. Establish `hNr' : (Ideal.absNorm I : ℝ) ≤ (r : ℝ) ^ finrank ℚ F` using `by exact_mod_cast hNr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow (by positivity) hD, Real.pow_rpow_inv_natCast (by positivity) hf.ne', hc₀_def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hcop` using `[Ideal.isCoprime_iff_add, Ideal.one_eq_top, Ideal.eq_top_iff_one, Ideal.add_eq_sup, Submodule.mem_sup]`. Take `⟨x, hxI, z, hz, hxz⟩` from `hcop`. Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Establish `hq0 : (q : F) ≠ 0` using `by exact_mod_cast (show q ≠ 0 by omega)`. Use `set b₀ : 𝓞 F := (q : 𝓞 F) * a₀ with hb₀_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb₀F : (b₀ : F) = (q : F) * (a₀ : F)` using `by simp [hb₀_def]`. Establish `ha₀F : (a₀ : F) ≠ 0` using `by simpa using ha₀0`. Establish `hb₀ : (b₀ : F) ≠ 0` using `by rw [hb₀F]; exact mul_ne_zero hq0 ha₀F`. Establish `hb₀I : b₀ ∈ I` using `Ideal.mul_mem_left _ _ ha₀I`. Use `set zz : F := (x : F) / (b₀ : F) with hzz`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set c := (integralBasis F).repr zz with hc`. Use `set t : 𝓞 F := ∑ i, ⌊c i⌋ • RingOfIntegers.basis F i with ht_def`. Establish `hdec : zz - (t : F) = ∑ i, ((Int.fract (c i) : ℚ) : F) * integralBasis F i`. Establish `h1 : zz = ∑ i, ((c i : ℚ) : F) * integralBasis F i` using `by conv_lhs => rw [← (integralBasis F).sum_repr zz]`. Simplify using `[Rat.smul_def, hc]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : (t : F) = ∑ i, (((⌊c i⌋ : ℤ) : ℚ) : F) * integralBasis F i`. Simplify using `[ht_def, integralBasis_apply, zsmul_eq_mul]`. Rewrite using `[h1, h2, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Int.fract, ← sub_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hfr : ∀ τ : F →+* ℝ, |τ (zz - (t : F))| ≤ C₂`. Introduce `τ`. Rewrite using `[hdec, map_sum]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_ratCast, abs_mul]`. Establish `e1 : |((Int.fract (c i) : ℚ) : ℝ)| ≤ 1`. Rewrite using `[abs_of_nonneg (by exact_mod_cast Int.fract_nonneg _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(Int.fract_lt_one _).le` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Choose the witnesses or unpack the hypotheses as in `⟨s, hs0, hs⟩ : ∃ s : 𝓞 F, x - b₀ * s ≠ 0 ∧ ∀ τ : F →+* ℝ, |τ (zz - (s : F))| ≤ C₂ + 1 := by`. Distinguish the cases in `h0 : x - b₀ * t = 0`. Use `⟨t + 1, ?_, fun τ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `h`. Apply `ha₀0` to reduce the goal to its premises. Establish `: b₀ = 0` using `by linear_combination h0 - h`. Rewrite `this` using `[hb₀_def]`. Break down `mul_eq_zero.1 this with h' | h'` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (by exact_mod_cast h' : (q : F) = 0) hq0`. Conclude with `h'`. Establish `: τ (zz - ((t + 1 : 𝓞 F) : F)) = τ (zz - (t : F)) - 1` using `by push_cast; simp only [map_sub, map_add, map_one]; ring`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨t, h0, fun τ => (hfr τ).trans (by linarith)⟩`. Use `set b : 𝓞 F := x - b₀ * s with hb_def`. Establish `hbI : b ∈ I` using `I.sub_mem hxI (Ideal.mul_mem_right _ _ hb₀I)`. Establish `hbq : b = 1 + (q : 𝓞 F) * (-u - a₀ * s)`. Rewrite using `[hb_def, hb₀_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take the linear combination `hxz`. Establish `hbF : (b : F) = (b₀ : F) * (zz - (s : F))`. Rewrite using `[hzz, hb_def]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbnd : ∀ τ : F →+* ℝ, |τ (b : F)| < (K₀ * r : ℕ)`. Introduce `τ`. Rewrite using `[hbF, map_mul, abs_mul, hb₀F, map_mul, map_natCast, abs_mul, Nat.abs_cast]`. Establish `hr : (0 : ℝ) < r` using `by exact_mod_cast hr1`. Establish `hK : (q : ℝ) * c₀ * (C₂ + 1) < K₀`.
-
-Rewrite using `[hK₀_def]`. Use `push_cast`. Combine the linear relations using `[Nat.le_ceil ((q : ℝ) * c₀ * (C₂ + 1))]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hsmall τ`.
-
-Conclude with `hs τ`. Use `_ = ((q : ℝ) * c₀ * (C₂ + 1)) * r := by ring`. Use `_ < K₀ * r := by gcongr`. Use `_ = ((K₀ * r : ℕ) : ℝ) := by push_cast; ring`. Use `⟨b, hbI, hs0, isCoprime_norm_of_eq q b _ hbq, K₀ * r, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `τ`. Establish `h` using `abs_lt.1 (hbnd τ)`. Rewrite using `[map_sub, map_pow, map_pow, map_natCast]`. Use polynomial arithmetic with `[h.1, h.2]`. Rewrite using `[mul_pow, _root_.mul_assoc]`.
-
-Conclude with `Nat.mul_le_mul_left _ hr2`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_small_coprime_norm :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (q : ℕ), 1 ≤ q → ∃ C : ℕ,

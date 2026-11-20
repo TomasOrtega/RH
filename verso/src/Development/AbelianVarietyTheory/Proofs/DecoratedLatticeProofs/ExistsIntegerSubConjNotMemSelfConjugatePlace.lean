@@ -7,7 +7,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ConjMovesResidue
 
 /- English proof (translation)
-Introduce `D Q _`. Take `⟨θ, t, h1, h2⟩` from `Formalism.BasicNotions.Examples₂.unram_at D.host Q.asIdeal Q.isMaximal`. Use `⟨θ, t, ?_, h2⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.E) D.host.E t = _`. Rewrite using `[h1, Formalism.BasicNotions.Examples₂.star_eq_conj]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_sub_star_notMem : ∀ (D : D7) (Q : Pl D.host.E), IsConjPl (D := D) Q Q →
     ∃ δ δ' : 𝓞 D.host.E, (δ' : D.host.E) = star (δ : D.host.E) ∧ δ - δ' ∉ Q.asIdeal := by

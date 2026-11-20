@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.BaseChain
 
 /- English proof (translation)
-Unfold `levFn`. Establish `hq : ∀ PP ∈ (Lev.datY V.rank r t j hr Pg Q P χ ξ fr).Q, (Lev.datY V.rank r t j hr Pg Q P χ ξ fr).xq PP (dBlk (blk2 (Lev.datY V.rank r t j hr Pg Q P χ ξ fr).r) 1 (redFn β PP x)) = 1`. Introduce `PP _`. Use `show _ = 1`. Rewrite using `[show (Lev.datY V.rank r t j hr Pg Q P χ ξ fr).r = r from rfl, Formalism.IndefR.Eqv.Act.block_determinant_empty_eq_one hn, map_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_eq_one hq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem levFn_datY_noQ {D : D7} {V : HSp D} (β : GL (Fin V.rank) (Lev.EAf D)) {r : ℕ} (hn : V.rank ≤ r) (hr : r ≤ V.rank) (t j : ℕ)
     (Pg Q : Finset (Pl D.host.E)) (P : LevelP Pg r ℂ) (χ : ℕ → ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
@@ -41,9 +41,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 
 /- English proof (translation)
-Establish `e : Formalism.L2.DIV.lev D.sp.cm (Yc D 0).gram ((pk W).βY 0) ((pk W).datYt W.P.A3.A.μ0 0 (lvP W)) = Formalism.L2.DIV.lev D.sp.cm (Yc D 0).gram ((pk W).βY 0) ((pk W).dat0 (lvP W))`. Use `Subgroup.ext fun x => ?_` and prove the remaining obligations. Use `show (x ∈ parLev _ _ _ _ ∧ _) ↔ (x ∈ parLev _ _ _ _ ∧ _)`. Unfold `LevCh.datYt LevCh.dat0`. Rewrite using `[Formalism.IndefR.Eqv.Act.mem_parLev_datY_noQ Formalism.IndefR.Eqv.Act.rank_lowerChainSpace_zero_le (r_le_Y 0) D.R.t 0 (pk W).Pg ((pk W).Q W.P.A3.A.μ0) (lvP W) (pk W).chi ((pk W).xiR W.P.A3.A.μ0) (fun _ => 1) Lev.Frm.B x]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Unfold `levS Lev.levG`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levS_datYt_base (W : RealPack ex) :
     levS (Yc D 0) ((pk W).βY 0) ((pk W).datYt W.P.A3.A.μ0 0 (lvP W)) = levS (Yc D 0) ((pk W).βY 0) ((pk W).dat0 (lvP W)) := by
@@ -59,7 +59,7 @@ theorem levS_datYt_base (W : RealPack ex) :
   rw [e]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Unfold `Lev.levChi LevCh.datYt LevCh.dat0`. Rewrite using `[levFn_datY_noQ ((pk W).βY 0) Formalism.IndefR.Eqv.Act.rank_lowerChainSpace_zero_le (r_le_Y 0) D.R.t 0 (pk W).Pg ((pk W).Q W.P.A3.A.μ0) (lvP W) (pk W).chi ((pk W).xiR W.P.A3.A.μ0) (fun _ => 1) Lev.Frm.B]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem levChi_datYt_base (W : RealPack ex) :
     Lev.levChi (Yc D 0) ((pk W).βY 0) ((pk W).datYt W.P.A3.A.μ0 0 (lvP W)) =
@@ -70,7 +70,7 @@ theorem levChi_datYt_base (W : RealPack ex) :
       ((pk W).Q W.P.A3.A.μ0) (lvP W) (pk W).chi ((pk W).xiR W.P.A3.A.μ0) (fun _ => 1) Lev.Frm.B]
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W _ T hT0`. Use `show T ∈ MultT (pk W).θ ((pk W).MY 0) (levS (Yc D 0) ((pk W).βY 0) ((pk W).datYt W.P.A3.A.μ0 0 (lvP W))) (Lev.levChi (Yc D 0) ((pk W).βY 0) ((pk W).datYt W.P.A3.A.μ0 0 (lvP W)))`. Rewrite using `[levS_datYt_base W, levChi_datYt_base W]`. Conclude with `hT0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rows_mem_CC : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ T ∈ ThetaLiftSpaceZero W, T ∈ (GlobalTheory.BaseChain.stageY W 0).CC (GlobalTheory.BaseChain.com W) := by
   intro D L hT Gi Gl Kc Yd cX ex W _ T hT0

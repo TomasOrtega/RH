@@ -11,26 +11,26 @@ namespace GlobalTheory.CompanionTheory.SW.Core.Scale
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Introduce `v` and use `by show (1 : v.adicCompletion F) ∈ v.adicCompletionIntegers F exact one_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma one_mem_Oh : (1 : A F) ∈ Oh F := fun v => by
   show (1 : v.adicCompletion F) ∈ v.adicCompletionIntegers F
   exact one_mem _
 
 /- English proof (translation)
-Introduce `v` and use `add_mem (hx v) (hy v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma add_mem_Oh {x y : A F} (hx : x ∈ Oh F) (hy : y ∈ Oh F) : x + y ∈ Oh F := fun v =>
   add_mem (hx v) (hy v)
 
 /- English proof (translation)
-Introduce `v` and use `neg_mem (hx v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma neg_mem_Oh {x : A F} (hx : x ∈ Oh F) : -x ∈ Oh F := fun v =>
   neg_mem (hx v)
 
 /- English proof (translation)
-Introduce `v` and use `(v.adicCompletionIntegers F).zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma zero_mem_Oh : (0 : A F) ∈ Oh F := fun v =>
   (v.adicCompletionIntegers F).zero_mem
@@ -44,37 +44,35 @@ def OhSub (F : Type) [Field F] [NumberField F] : AddSubgroup (A F) where
 def ι (r : 𝓞 F) : A F := algebraMap F (A F) (r : F)
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.1 _).2 ⟨r, rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma ι_mem (r : 𝓞 F) : ι r ∈ Oh F :=
   ((GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.1 _).2 ⟨r, rfl⟩
 
 /- English proof (translation)
-Simplify using `[ι]`.
+Simplify using the standard rewrite rules.
 -/
 lemma ι_sub (r s : 𝓞 F) : ι r - ι s = ι (r - s) := by
   simp [ι]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hOo, hd, hint, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Use `haveI : IsTopologicalRing (A F) := inferInstance`. Establish `: Finite (𝓞 F ⧸ I)` using `Ideal.finiteQuotientOfFreeOfNeBot I hI0`. Use `haveI := Fintype.ofFinite (𝓞 F ⧸ I)`. Set `rep : (𝓞 F ⧸ I) → 𝓞 F` to `fun t => Quotient.out t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hrep : ∀ t, Ideal.Quotient.mk I (rep t) = t` using `fun t => Ideal.Quotient.mk_out t`. Set `C : (𝓞 F ⧸ I) → Set (A F)` to `fun t => (fun x => x - ι (rep t)) ⁻¹' (H : Set (A F))`. Establish `hCm : ∀ t, MeasurableSet (C t)` using `fun t => ((hHo.preimage (continuous_id.sub continuous_const))).measurableSet`. Establish `hCl : ∀ t, lf (C t) = lf (H : Set (A F))` using `fun t => by`. Simplify `measure_preimage_add_right lf (-ι (rep t)) (H : Set (A F))` using `[C, sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdisj : Pairwise (Function.onFun Disjoint C)`. Introduce `t t' htt`. Use `Set.disjoint_left.2 fun x hx hx' => htt ?_` and prove the remaining obligations. Establish `h : ι (rep t' - rep t) ∈ H`. Rewrite using `[← ι_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `H.sub_mem hx hx'` as an intermediate fact. Simplify using `using this`. Use `(hI _).2 h` as an intermediate fact. Rewrite using `[← hrep t, ← hrep t']`. Conclude with `((Ideal.Quotient.eq).2 this).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hU : Oh F = ⋃ t, C t`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hop : IsOpen ((fun y => y - x) ⁻¹' (H : Set (A F)))` using `hHo.preimage (continuous_id.sub continuous_const)`. Take `⟨f, hf⟩` from `hd.exists_mem_open hop ⟨x, by simpa using H.zero_mem⟩`. Establish `hfO : algebraMap F (A F) f ∈ Oh F`. Use `add_mem_Oh (hHs _ hf) hx` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨r, rfl⟩` from `(hint f).1 hfO`. Use `⟨Ideal.Quotient.mk I r, ?_⟩` and prove the remaining obligations. Establish `h2 : rep (Ideal.Quotient.mk I r) - r ∈ I` using `Ideal.Quotient.eq.1 (hrep _)`. Establish `h3` using `(hI _).1 h2`. Rewrite `h3` using `[← ι_sub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Establish `h4` using `H.neg_mem (H.add_mem hf h3)`. Use `show x - ι (rep (Ideal.Quotient.mk I r)) ∈ H`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [ι]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce and unpack `⟨t, ht⟩`. Use `add_mem_Oh (hHs _ ht) (ι_mem (rep t))` as an intermediate fact. Simplify using `using this`. Establish `hsum : (1 : ℝ≥0∞) = (Ideal.absNorm I : ℝ≥0∞) * lf (H : Set (A F))`. Rewrite using `[← h1, hU, measure_iUnion hdisj hCm, tsum_fintype]`.
-
-Simplify using `only [hCl, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `congr 2`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`. Conclude with `ENNReal.eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact hsum.symm)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_of_subgroup [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F))
     (hlf : lf.IsAddHaarMeasure) (h1 : lf (Oh F) = 1) (H : AddSubgroup (A F))
@@ -135,7 +133,7 @@ theorem mass_of_subgroup [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measur
   exact ENNReal.eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact hsum.symm)
 
 /- English proof (translation)
-Introduce `v` and use `mul_mem (hx v) (hy v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma mul_mem_Oh {x y : A F} (hx : x ∈ Oh F) (hy : y ∈ Oh F) : x * y ∈ Oh F := fun v =>
   mul_mem (hx v) (hy v)
@@ -156,21 +154,21 @@ def mulEquiv (a : (A F)ˣ) : A F ≃+ A F where
   map_add' x y := mul_add _ _ _
 
 /- English proof (translation)
-The claim follows from `continuous_const.mul continuous_id`.
+A detailed English derivation is pending.
 -/
 lemma continuous_mulEquiv (a : (A F)ˣ) : Continuous (mulEquiv a) :=
   continuous_const.mul continuous_id
 
 /- English proof (translation)
-The claim follows from `continuous_const.mul continuous_id`.
+A detailed English derivation is pending.
 -/
 lemma continuous_mulEquiv_symm (a : (A F)ˣ) : Continuous (mulEquiv a).symm :=
   continuous_const.mul continuous_id
 
 /- English proof (translation)
-Establish `h : (fun x => (a : A F) * x) '' s = (mulEquiv a).symm ⁻¹' s`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[mulEquiv]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hx`. Conclude with `⟨_, hx, (mulEquiv a).apply_symm_apply x⟩`. Rewrite using `[h]`. Conclude with `hs.preimage (continuous_mulEquiv_symm a)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isOpen_image_mul (a : (A F)ˣ) {s : Set (A F)} (hs : IsOpen s) :
     IsOpen ((fun x => (a : A F) * x) '' s) := by
@@ -185,13 +183,13 @@ lemma isOpen_image_mul (a : (A F)ˣ) {s : Set (A F)} (hs : IsOpen s) :
   exact hs.preimage (continuous_mulEquiv_symm a)
 
 /- English proof (translation)
-Take `⟨hlc, hsc, ht2, -, hOo, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Establish `hμ : (lf.map (mulEquiv a).symm).IsAddHaarMeasure` using `(mulEquiv a).symm.isAddHaarMeasure_map lf (continuous_mulEquiv_symm a) (continuous_mulEquiv a)`. Establish `hm : Measurable (mulEquiv a).symm` using `(continuous_mulEquiv_symm a).measurable`. Establish `himg : ∀ t : Set (A F), (fun x => (a : A F) * x) '' t = (mulEquiv a).symm ⁻¹' t`. Introduce `t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[mulEquiv]`. Introduce `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, hx, (mulEquiv a).apply_symm_apply x⟩`. Establish `hval : ∀ t : Set (A F), MeasurableSet t → lf ((fun x => (a : A F) * x) '' t) = (lf.map (mulEquiv a).symm) t`. Introduce `t ht`. Rewrite using `[Measure.map_apply hm ht, himg]`. Take `⟨k, hk⟩ : ∃ k : ℝ≥0, lf.map (mulEquiv a).symm = k • lf` from `⟨_, Measure.isAddLeftInvariant_eq_smul (lf.map (mulEquiv a).symm) lf⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc : ∀ t : Set (A F), MeasurableSet t → lf ((fun x => (a : A F) * x) '' t) = (k : ℝ≥0∞) * lf t`. Introduce `t ht`. Rewrite using `[hval t ht, hk, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[hc s hs, hc _ hOo.measurableSet, h1, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_unit [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F))
     (hlf : lf.IsAddHaarMeasure) (h1 : lf (Oh F) = 1) (a : (A F)ˣ) (s : Set (A F))
@@ -222,19 +220,19 @@ theorem scale_unit [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F
   rw [hc s hs, hc _ hOo.measurableSet, h1, mul_one]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hOo, -, hint, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Establish `hr0 : r ≠ 0` using `fun h => hr (by simp [h])`. Set `H : AddSubgroup (A F)` to `(OhSub F).map (AddMonoidHom.mulLeft (ι r))`. Establish `hH : (H : Set (A F)) = (fun x => algebraMap F (A F) (r : F) * x) '' Oh F` using `rfl`. Establish `hHo : IsOpen (H : Set (A F))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hH]`. Conclude with `isOpen_image_mul (uF (r : F) hr) hOo`. Establish `key` using `mass_of_subgroup lf hlf h1 H hHo ?_ (Ideal.span {r}) ?_ ?_`. Rewrite `key` using `[hH]`. Rewrite using `[key, Ideal.absNorm_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨y, hy, rfl⟩`. Conclude with `mul_mem_Oh (ι_mem r) hy`. Introduce `s`. Rewrite using `[Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨t, rfl⟩`. Use `⟨ι t, ι_mem t, ?_⟩` and prove the remaining obligations. Simplify using `[ι, mul_comm]`. Introduce and unpack `⟨y, hy, hys⟩`. Establish `hys' : algebraMap F (A F) (r : F) * y = algebraMap F (A F) (s : F)` using `hys`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : y = algebraMap F (A F) ((s : F) / r)`. Establish `hu : algebraMap F (A F) (r : F) * algebraMap F (A F) ((r : F)⁻¹) = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hr, map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu, one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `_ = algebraMap F (A F) ((r : F)⁻¹) * (algebraMap F (A F) (r : F) * y) := by ring`. Use `_ = _ := by rw [hys', ← map_mul, div_eq_mul_inv, mul_comm]`. Rewrite `hy` using `[hy']`. Take `⟨t, ht⟩` from `(hint _).1 hy`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `show (t : F) * (r : F) = (s : F)`. Rewrite using `[ht]`. Clear the denominators using the available nonvanishing facts. Simplify `hr0` using `[Ideal.span_singleton_eq_bot]`.
+A detailed English derivation is pending.
 -/
 theorem mass_mul_int [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F))
     (hlf : lf.IsAddHaarMeasure) (h1 : lf (Oh F) = 1) (r : 𝓞 F) (hr : (r : F) ≠ 0) :
@@ -285,9 +283,9 @@ def denSub (b : F) : AddSubgroup (A F) where
     rw [mul_neg]; exact neg_mem_Oh hx.2⟩
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hOo, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Establish `hc : Continuous (fun x : A F => algebraMap F (A F) b * x)` using `continuous_const.mul continuous_id`. Establish `h2 : IsOpen ((fun x : A F => algebraMap F (A F) b * x) ⁻¹' Oh F)` using `hOo.preimage hc`. Establish `h3` using `hOo.inter h2`. Establish `h4 : (denSub b : Set (A F)) = Oh F ∩ ((fun x : A F => algebraMap F (A F) b * x) ⁻¹' Oh F)` using `Set.ext fun x => Iff.rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h4]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isOpen_denSub (b : F) : IsOpen (denSub b : Set (A F)) := by
   obtain ⟨-, -, -, -, hOo, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
@@ -304,7 +302,7 @@ def denI (b : F) : Ideal (𝓞 F) :=
   Submodule.comap (LinearMap.toSpanSingleton (𝓞 F) F b) (1 : Submodule (𝓞 F) F)
 
 /- English proof (translation)
-Unfold `denI`. Rewrite using `[Submodule.mem_comap, Submodule.mem_one]`. Simplify using `[Algebra.smul_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma mem_denI (b : F) (r : 𝓞 F) : r ∈ denI b ↔ ∃ t : 𝓞 F, (t : F) = (r : F) * b := by
   unfold denI
@@ -312,11 +310,11 @@ lemma mem_denI (b : F) (r : 𝓞 F) : r ∈ denI b ↔ ∃ t : 𝓞 F, (t : F) =
   simp [Algebra.smul_def]
 
 /- English proof (translation)
-Take `⟨x, y, hy, hxy⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) b`. Introduce `hbot`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Establish `hyF : (y : F) ≠ 0` using `fun h => hy0 (RingOfIntegers.coe_injective (by simpa using h))`. Establish `hmem : y ∈ denI b`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_denI]`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hxy]`. Use `show (x : F) = (y : F) * ((x : F) / (y : F))`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[hbot]`. Conclude with `hy0 (by simpa using hmem)`.
+A detailed English derivation is pending.
 -/
 lemma denI_ne_bot (b : F) : denI b ≠ ⊥ := by
   obtain ⟨x, y, hy, hxy⟩ := IsFractionRing.div_surjective (A := 𝓞 F) b
@@ -333,11 +331,11 @@ lemma denI_ne_bot (b : F) : denI b ≠ ⊥ := by
   exact hy0 (by simpa using hmem)
 
 /- English proof (translation)
-Establish `hint` using `(GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.1`. Rewrite using `[mem_denI]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Use `⟨ι_mem r, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : algebraMap F (A F) b * ι r = ι t`. Simplify using `only [ι]`. Rewrite using `[ht, ← map_mul, mul_comm]`. Rewrite using `[h]`. Conclude with `ι_mem t`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨-, h⟩`. Establish `h' : algebraMap F (A F) ((r : F) * b) ∈ Oh F`. Rewrite using `[mul_comm, map_mul]`. Conclude with `h`. Conclude with `(hint _).1 h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_denI_iff_sub (b : F) (r : 𝓞 F) : r ∈ denI b ↔ ι r ∈ denSub b := by
   have hint := (GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.1
@@ -356,7 +354,7 @@ lemma mem_denI_iff_sub (b : F) (r : 𝓞 F) : r ∈ denI b ↔ ι r ∈ denSub b
     exact (hint _).1 h'
 
 /- English proof (translation)
-The claim follows from `mass_of_subgroup lf hlf h1 (denSub b) (isOpen_denSub b) (fun _ hx => hx.1) (denI b) (mem_denI_iff_sub b) (denI_ne_bot b)`.
+A detailed English derivation is pending.
 -/
 theorem mass_den [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F))
     (hlf : lf.IsAddHaarMeasure) (h1 : lf (Oh F) = 1) (b : F) :
@@ -365,27 +363,25 @@ theorem mass_den [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F))
     (mem_denI_iff_sub b) (denI_ne_bot b)
 
 /- English proof (translation)
-Establish `hOo` using `(GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.1`. Take `⟨x, y, hy, hxy⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) c`. Establish `hxy' : (x : F) / (y : F) = c` using `hxy`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Establish `hyF : (y : F) ≠ 0` using `fun h => hy0 (RingOfIntegers.coe_injective (by simpa using h))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxF : (x : F) ≠ 0`. Introduce `h`. Rewrite `hxy'` using `[h, zero_div]`. Conclude with `hc hxy'.symm`. Establish `hx0 : x ≠ 0` using `fun h => hxF (by simp [h])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnx : (Algebra.norm ℤ x).natAbs ≠ 0`. Simplify `hx0` using `[Algebra.norm_eq_zero_iff]`. Establish `hny : (Algebra.norm ℤ y).natAbs ≠ 0`. Simplify `hy0` using `[Algebra.norm_eq_zero_iff]`. Establish `hcy : (fun z => algebraMap F (A F) (x : F) * z) '' Oh F = (fun z => algebraMap F (A F) c * z) '' ((fun z => algebraMap F (A F) (y : F) * z) '' Oh F)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.image_image]`. Use `Set.image_congr fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul, ← hxy']`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hm : MeasurableSet ((fun z => algebraMap F (A F) (y : F) * z) '' Oh F)` using `(isOpen_image_mul (uF (y : F) hyF) hOo).measurableSet`. Establish `h2` using `scale_unit lf hlf h1 (uF c hc) _ hm`. Simplify using `only [uF_val] at h2`. Rewrite `h2` using `[← hcy, mass_mul_int lf hlf h1 x hxF, mass_mul_int lf hlf h1 y hyF]`. Establish `hφ : lf ((fun z => algebraMap F (A F) c * z) '' Oh F) = ENNReal.ofReal (|((Algebra.norm ℚ c : ℚ) : ℝ)|⁻¹)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : |((Algebra.norm ℚ c : ℚ) : ℝ)|⁻¹ = ((Algebra.norm ℤ y).natAbs : ℝ) / ((Algebra.norm ℤ x).natAbs : ℝ)`. Establish `hmul : Algebra.norm ℚ c * Algebra.norm ℚ (y : F) = Algebra.norm ℚ (x : F)`. Rewrite using `[← map_mul, ← hxy']`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmul` using `[← Algebra.coe_norm_int, ← Algebra.coe_norm_int]`. Establish `hmulR : ((Algebra.norm ℚ c : ℚ) : ℝ) * ((Algebra.norm ℤ y : ℤ) : ℝ) = ((Algebra.norm ℤ x : ℤ) : ℝ)`. Conclude with `congrArg (fun q : ℚ => (q : ℝ)) hmul` after adjusting the coercions. Establish `hYp : (0 : ℝ) < ((Algebra.norm ℤ y).natAbs : ℝ)`. Conclude with `Nat.pos_of_ne_zero hny` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXp : (0 : ℝ) < ((Algebra.norm ℤ x).natAbs : ℝ)`. Conclude with `Nat.pos_of_ne_zero hnx` after adjusting the coercions. Establish `habs : |((Algebra.norm ℚ c : ℚ) : ℝ)| * ((Algebra.norm ℤ y).natAbs : ℝ) = ((Algebra.norm ℤ x).natAbs : ℝ)`. Rewrite using `[Nat.cast_natAbs, Nat.cast_natAbs, Int.cast_abs, Int.cast_abs, ← abs_mul, hmulR]`. Rewrite using `[← habs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hC : |((Algebra.norm ℚ c : ℚ) : ℝ)| ≠ 0`. Introduce `h0`. Rewrite `habs` using `[h0, zero_mul]`. Conclude with `hXp.ne habs`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hnorm, ENNReal.ofReal_div_of_pos (by exact_mod_cast Nat.pos_of_ne_zero hnx), ENNReal.ofReal_natCast, ENNReal.ofReal_natCast, div_eq_mul_inv]`. Establish `hyne : (((Algebra.norm ℤ y).natAbs : ℝ≥0∞)) ≠ 0` using `by exact_mod_cast hny`. Establish `hyt : (((Algebra.norm ℤ y).natAbs : ℝ≥0∞)) ≠ ∞` using `ENNReal.natCast_ne_top _`. Rewrite using `[h2, mul_left_comm, ENNReal.mul_inv_cancel hyne hyt, mul_one]`. Establish `h3` using `scale_unit lf hlf h1 (uF c hc) s hs`.
-
-Simplify using `only [uF_val] at h3`. Rewrite using `[h3, hφ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_field [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F))
     (hlf : lf.IsAddHaarMeasure) (h1 : lf (Oh F) = 1) (c : F) (hc : c ≠ 0) (s : Set (A F))
@@ -454,7 +450,7 @@ theorem scale_field [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A 
   rw [h3, hφ]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ lf hlf h1`. Conclude with `⟨fun c hc s hs => scale_field lf hlf h1 c hc s hs, fun b => mass_den lf hlf h1 b, fun a s hs => scale_unit lf hlf h1 a s hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem lf_scale : ∀ (F : Type) [Field F] [NumberField F], ∀ [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F)), lf.IsAddHaarMeasure → lf (Oh F) = 1 → (∀ (c : F), c ≠ 0 → ∀ s : Set (A F), MeasurableSet s → lf ((fun x => algebraMap F (A F) c * x) '' s) = ENNReal.ofReal (|((Algebra.norm ℚ c : ℚ) : ℝ)|⁻¹) * lf s) ∧ (∀ b : F, lf {x | x ∈ Oh F ∧ algebraMap F (A F) b * x ∈ Oh F} = ((den b : ℝ≥0∞))⁻¹) ∧ ∀ (a : (A F)ˣ) (s : Set (A F)), MeasurableSet s → lf ((fun x => (a : A F) * x) '' s) = lf ((fun x => (a : A F) * x) '' Oh F) * lf s := by
   intro F _ _ _ _ lf hlf h1

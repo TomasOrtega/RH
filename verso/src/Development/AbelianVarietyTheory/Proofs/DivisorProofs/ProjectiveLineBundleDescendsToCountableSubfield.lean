@@ -13,15 +13,15 @@ namespace GlobalTheory.ProjCountableDescent
 open GlobalTheory.PolCountableDescent in
 
 /- English proof (translation)
-Introduce `K _ X p hp L hL`. Take `⟨s₀, H₀⟩` from `GlobalTheory.exists_finset_isProjOver_descends K ⊥ X p hp`. Set `K₀ : Subfield K` to `Subfield.closure (s₀ : Set K)`. Take `⟨X₀, p₀, φ, hp₀, sq⟩` from `H₀ K₀ bot_le Subfield.subset_closure`. Establish `: IsProper p₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, i, hi, rfl⟩` from `hp₀`. Use `isProper_str K₀ N` as an intermediate fact. Use `infer_instance`. Take `⟨s₂, H₂⟩` from `GlobalTheory.LBDescent.exists_lb_subfield K K₀ X₀ X p₀ p φ L hL sq`. Set `s : Finset K` to `s₀ ∪ s₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `K₁ : Subfield K` to `Subfield.closure (s : Set K)`. Establish `h : K₀ ≤ K₁` using `Subfield.closure_mono (Finset.coe_subset.2 (fun y hy => by simp [s, hy]))`. Set `inc` to `spMap (Subfield.inclusion h)`. Establish `sq₁ : IsPullback (pullback.fst p₀ inc) (pullback.snd p₀ inc) p₀ inc` using `IsPullback.of_hasPullback p₀ inc`. Set `ψ : X ⟶ pullback p₀ inc` to `sq₁.lift φ (p ≫ spMap K₁.subtype) (by rw [Category.assoc, spMap_subtype_comp h, sq.w])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ₁ : ψ ≫ pullback.fst p₀ inc = φ` using `sq₁.lift_fst _ _ _`. Establish `hψ₂ : ψ ≫ pullback.snd p₀ inc = p ≫ spMap K₁.subtype` using `sq₁.lift_snd _ _ _`. Take `⟨L₁, hL₁, hI⟩` from `H₂ K₁ h (subset_closure_of_subset (fun y hy => by simp [s, hy])) _ _ _ ψ sq₁ hψ₁ hψ₂`. Use `⟨K₁, _, pullback.snd p₀ inc, ψ, L₁, countable_closure s, ProjSpace.isProjOver_pullback_snd _ hp₀, ?_, hL₁, hI⟩` and prove the remaining obligations. Use `IsPullback.of_right (t := sq₁) ?_ hψ₂` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : spMap (algebraMap K₁ K) ≫ inc = spMap K₀.subtype` using `spMap_subtype_comp h`. Rewrite using `[hψ₁, e]`. Conclude with `sq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projLB_descends_to_countable_subfield : ∀ (K : Type) [Field K] (X : Scheme.{0}) (p : X ⟶ Sp K), IsProjOver p → ∀ (L : LB X), L.IsLB → ∃ (K₁ : Subfield K) (X₁ : Scheme.{0}) (p₁ : X₁ ⟶ Sp K₁) (ψ : X ⟶ X₁) (L₁ : LB X₁), Countable K₁ ∧ IsProjOver p₁ ∧ IsPullback ψ p p₁ (spMap (algebraMap K₁ K)) ∧ L₁.IsLB ∧ LBIso L (L₁.pull ψ) := by
   intro K _ X p hp L hL

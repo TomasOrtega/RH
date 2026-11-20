@@ -10,7 +10,7 @@ namespace GlobalTheory
 def latticeCurve (L : PeriodPair) : WeierstrassCurve ℂ := ⟨0, 0, 0, -L.g₂ / 4, -L.g₃ / 4⟩
 
 /- English proof (translation)
-Simplify using `only [latticeCurve, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma latticeCurve_Δ (L : PeriodPair) : (latticeCurve L).Δ = L.g₂ ^ 3 - 27 * L.g₃ ^ 2 := by
   simp only [latticeCurve, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄,
@@ -18,7 +18,7 @@ lemma latticeCurve_Δ (L : PeriodPair) : (latticeCurve L).Δ = L.g₂ ^ 3 - 27 *
   ring
 
 /- English proof (translation)
-Simplify using `only [latticeCurve, WeierstrassCurve.c₄, WeierstrassCurve.b₂, WeierstrassCurve.b₄]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma latticeCurve_c₄ (L : PeriodPair) : (latticeCurve L).c₄ = 12 * L.g₂ := by
   simp only [latticeCurve, WeierstrassCurve.c₄, WeierstrassCurve.b₂, WeierstrassCurve.b₄]
@@ -37,22 +37,22 @@ def periodPairOfTau (τ : ℍ) : PeriodPair where
     exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Simplify using `[PeriodPair.mem_lattice, periodPairOfTau]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_lattice_periodPairOfTau (τ : ℍ) (x : ℂ) :
     x ∈ (periodPairOfTau τ).lattice ↔ ∃ m n : ℤ, 1 * (m * (τ : ℂ) + n) = x := by
   simp [PeriodPair.mem_lattice, periodPairOfTau]
 
 /- English proof (translation)
-Establish `hi` using `LinearIndependent.pair_iff.mp L.indep`. Establish `h2 : L.ω₂ ≠ 0` using `fun h ↦ by simpa using (hi 0 1 (by simp [h])).2`. Establish `him : (L.ω₁ / L.ω₂).im ≠ 0` using `fun h ↦ by`. Establish `h3 : L.ω₁ / L.ω₂ = ((L.ω₁ / L.ω₂).re : ℂ)` using `Complex.ext (by simp) (by simpa using h)`. Use `(hi 1 (-(L.ω₁ / L.ω₂).re) (by` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Complex.real_smul, Complex.ofReal_neg, ← h3]`. Clear the denominators using the available nonvanishing facts. Use the proof step `simp)).1`. Simplify using `at this`. Break down `lt_or_gt_of_ne him with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L.ω₂, ⟨-(L.ω₁ / L.ω₂), by simpa using h⟩, h2, fun x ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[PeriodPair.mem_lattice]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨-m, n, by push_cast; field_simp⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨-m, n, by push_cast; field_simp⟩`. Use `⟨L.ω₂, ⟨L.ω₁ / L.ω₂, h⟩, h2, fun x ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[PeriodPair.mem_lattice]`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨m, n, by field_simp⟩`. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨m, n, by field_simp⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lattice_eq_mul_tau (L : PeriodPair) :
     ∃ (a : ℂ) (τ : ℍ), a ≠ 0 ∧ ∀ x, x ∈ L.lattice ↔ ∃ m n : ℤ, a * (m * (τ : ℂ) + n) = x := by
@@ -88,15 +88,15 @@ variable {L : PeriodPair} {a : ℂ} {τ : ℍ} (ha : a ≠ 0)
 include ha h
 
 /- English proof (translation)
-Set `e : (Fin 2 → ℤ) → L.lattice` to `fun v ↦ ⟨a * (v 0 * (τ : ℂ) + v 1), (h _).mpr ⟨_, _, rfl⟩⟩`. Establish `he : Function.Bijective e`. Prove the components needed by the constructor for the conclusion. Introduce `v w hvw`. Establish `h0 : (v 0 * (τ : ℂ) + v 1) = w 0 * (τ : ℂ) + w 1` using `mul_left_cancel₀ ha (congrArg Subtype.val hvw)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `congrArg Complex.im h0`. Simplify using `[τ.im_ne_zero] at h1`. Rewrite `h0` using `[h1, add_right_inj]`. Use extensionality with `i`. Use `fin_cases i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Assume the hypotheses and unpack their components.
 
-Conclude with `h1`. Conclude with `h0` after adjusting the coercions. Introduce and unpack `⟨x, hx⟩`. Take `⟨m, n, rfl⟩` from `(h x).mp hx`. Conclude with `⟨![m, n], rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `tsum_eisSummand_eq_riemannZeta_mul_eisensteinSeries hk τ`. Establish `h2 : E hk τ = (1 / 2 : ℂ) * eisensteinSeries (N` using `1) 0 k τ := rfl`. Rewrite using `[PeriodPair.G, ← (Equiv.ofBijective e he).tsum_eq, h2]`. Establish `h3 : ∀ v, (((Equiv.ofBijective e he v : L.lattice) : ℂ) ^ k)⁻¹ = (a ^ k)⁻¹ * eisSummand k v τ` using `fun v ↦ by`. Simplify using `[e, eisSummand, mul_pow, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Repeatedly rewrite using `[h3]`. Rewrite using `[tsum_mul_left, h1]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem latticeG_eq_E {k : ℕ} (hk : 3 ≤ k) :
     L.G k = 2 * riemannZeta k * E hk τ / a ^ k := by
@@ -127,7 +127,7 @@ theorem latticeG_eq_E {k : ℕ} (hk : 3 ≤ k) :
   field_simp
 
 /- English proof (translation)
-Use `latticeG_eq_E ha h (k := 4) (by norm_num)` as an intermediate fact. Rewrite using `[PeriodPair.g₂, this, Nat.cast_ofNat, riemannZeta_four]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem g₂_eq_E₄ : L.g₂ = 4 * π ^ 4 / 3 * E₄ τ / a ^ 4 := by
   have := latticeG_eq_E ha h (k := 4) (by norm_num)
@@ -135,9 +135,9 @@ theorem g₂_eq_E₄ : L.g₂ = 4 * π ^ 4 / 3 * E₄ τ / a ^ 4 := by
   ring
 
 /- English proof (translation)
-Use `latticeG_eq_E ha h (k := 6) (by norm_num)` as an intermediate fact. Establish `h6 : riemannZeta 6 = π ^ 6 / 945`. Use `riemannZeta_two_mul_nat (k := 3) (by norm_num)` as an intermediate fact. Rewrite `this` using `[show bernoulli (2 * 3) = 1 / 42 by decide +kernel]`. Evaluate the numerical expressions using `[Nat.factorial] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[PeriodPair.g₃, this, Nat.cast_ofNat, h6]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem g₃_eq_E₆ : L.g₃ = 8 * π ^ 6 / 27 * E₆ τ / a ^ 6 := by
   have := latticeG_eq_E ha h (k := 6) (by norm_num)
@@ -151,7 +151,7 @@ theorem g₃_eq_E₆ : L.g₃ = 8 * π ^ 6 / 27 * E₆ τ / a ^ 6 := by
   ring
 
 /- English proof (translation)
-Rewrite using `[latticeCurve_Δ, g₂_eq_E₄ ha h, g₃_eq_E₆ ha h, discriminant_eq_E₄_cube_sub_E₆_sq]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem latticeCurve_Δ_eq_discriminant :
     (latticeCurve L).Δ = (2 * π / a) ^ 12 * discriminant τ := by
@@ -162,7 +162,7 @@ theorem latticeCurve_Δ_eq_discriminant :
 end
 
 /- English proof (translation)
-Take `⟨a, τ, ha, h⟩` from `exists_lattice_eq_mul_tau L`. Rewrite using `[latticeCurve_Δ_eq_discriminant ha h]`. Use `discriminant_ne_zero τ` as an intermediate fact. Use `Real.pi_ne_zero` as an intermediate fact. Simplify using `[*]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem latticeCurve_Δ_ne_zero (L : PeriodPair) : (latticeCurve L).Δ ≠ 0 := by
   obtain ⟨a, τ, ha, h⟩ := exists_lattice_eq_mul_tau L
@@ -175,7 +175,7 @@ instance latticeCurve_isElliptic (L : PeriodPair) : (latticeCurve L).IsElliptic 
   ⟨(latticeCurve_Δ_ne_zero L).isUnit⟩
 
 /- English proof (translation)
-Rewrite using `[WeierstrassCurve.j, Units.val_inv_eq_inv_val, WeierstrassCurve.coe_Δ', latticeCurve_Δ_eq_discriminant ha h, latticeCurve_c₄, g₂_eq_E₄ ha h]`. Use `discriminant_ne_zero τ` as an intermediate fact. Establish `: (π : ℂ) ≠ 0` using `by simpa using Real.pi_ne_zero`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem latticeCurve_j {L : PeriodPair} {a : ℂ} {τ : ℍ} (ha : a ≠ 0)
     (h : ∀ x, x ∈ L.lattice ↔ ∃ m n : ℤ, a * (m * (τ : ℂ) + n) = x) :
@@ -188,9 +188,9 @@ theorem latticeCurve_j {L : PeriodPair} {a : ℂ} {τ : ℍ} (ha : a ≠ 0)
   ring
 
 /- English proof (translation)
-Establish `h0 : valueAtInfty E₄ = 1`. Rewrite using `[← qExpansion_coeff_zero one_pos (ModularFormClass.analyticAt_cuspFunction_zero E₄ one_pos one_mem_strictPeriods_SL) (SlashInvariantFormClass.periodic_comp_ofComplex E₄ one_mem_strictPeriods_SL)]`. Conclude with `E_qExpansion_coeff_zero _ ⟨2, rfl⟩`. Take `⟨c, hc, h⟩` from `ModularFormClass.exp_decay_sub_atImInfty' (E₄)`. Rewrite `h` using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Tendsto (fun τ : ℍ ↦ Real.exp (-c * τ.im)) atImInfty (𝓝 0)`. Use `Real.tendsto_exp_atBot.comp ?_` and prove the remaining obligations. Conclude with `Tendsto.const_mul_atTop_of_neg (by linarith) tendsto_comap`. Simplify using `using (h.trans_tendsto h2).add_const 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma tendsto_E₄_atImInfty : Tendsto (E₄ : ℍ → ℂ) atImInfty (𝓝 1) := by
   have h0 : valueAtInfty E₄ = 1 := by
@@ -206,15 +206,15 @@ lemma tendsto_E₄_atImInfty : Tendsto (E₄ : ℍ → ℂ) atImInfty (𝓝 1) :
   simpa using (h.trans_tendsto h2).add_const 1
 
 /- English proof (translation)
-Use `by_contra! hc`. Set `g : ModularForm 𝒮ℒ 12` to `ModularForm.mcast (by decide) (E₄.pow 3) - c • (CuspForm.discriminant : ModularForm 𝒮ℒ 12)`. Establish `hg : ∀ τ, g τ = E₄ τ ^ 3 - c * discriminant τ` using `fun τ ↦ by`. Simplify using `[g]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hg0 : ∀ τ, g τ ≠ 0` using `fun τ h ↦ hc τ (by`. Rewrite `h` using `[hg]`. Rewrite using `[div_eq_iff (discriminant_ne_zero τ)]`. Take the linear combination `h)`. Establish `hlim : Tendsto (g : ℍ → ℂ) atImInfty (𝓝 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(tendsto_E₄_atImInfty.pow 3).sub ((show Tendsto discriminant atImInfty (𝓝 0) from discriminant_isZeroAtImInfty).const_mul c)` as an intermediate fact. Simplify `this` using `[funext hg]`. Establish `hsl : ∀ γ : SL(2, ℤ), ((1 : ℍ → ℂ) / g) ∣[(0 : ℤ) - 12] γ = (1 : ℍ → ℂ) / g` using `fun γ ↦ by`. Establish `hγ : (γ : GL (Fin 2) ℝ) ∈ 𝒮ℒ` using `⟨γ, rfl⟩`. Rewrite using `[div_slash_SL2, is_invariant_one, SL_slash, SlashInvariantForm.slash_action_eqn _ _ hγ]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `f : ModularForm 𝒮ℒ ((0 : ℤ) - 12)` to `{ toFun := (1 : ℍ → ℂ) / g slash_action_eq' := fun _ ⟨γ, hγ⟩ ↦ hγ ▸ hsl γ holo' := mdifferentiable_const.div g.holo' hg0 bdd_at_cusps' := fun {c} hc ↦ by`. Rewrite `hc` using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z]`. Rewrite using `[OnePoint.isBoundedAt_iff_forall_SL2Z hc]`. Introduce `γ _`. Rewrite using `[hsl γ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((tendsto_const_nhds (x := (1 : ℂ))).div hlim one_ne_zero).isBigO_one ℝ }`. Use `congrFun (ModularFormClass.levelOne_neg_weight_eq_zero (by norm_num) f) UpperHalfPlane.I` as an intermediate fact. Establish `h3 : (1 : ℂ) / g UpperHalfPlane.I = 0` using `this`. Simplify using `[hg0] at h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_E₄_cube_div_discriminant_eq (c : ℂ) :
     ∃ τ : ℍ, E₄ τ ^ 3 / discriminant τ = c := by
@@ -251,7 +251,7 @@ theorem exists_E₄_cube_div_discriminant_eq (c : ℂ) :
   simp [hg0] at h3
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `exists_E₄_cube_div_discriminant_eq W.j`. Use `⟨periodPairOfTau τ, W.exists_variableChange_of_j_eq _ ?_⟩` and prove the remaining obligations. Rewrite using `[latticeCurve_j one_ne_zero (mem_lattice_periodPairOfTau τ), hτ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_variableChange_eq_latticeCurve (W : WeierstrassCurve ℂ) [W.IsElliptic] :
     ∃ (L : PeriodPair) (C : WeierstrassCurve.VariableChange ℂ), C • W = latticeCurve L := by

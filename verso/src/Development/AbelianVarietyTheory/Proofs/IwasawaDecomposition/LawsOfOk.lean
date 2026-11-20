@@ -15,9 +15,9 @@ namespace GlobalTheory.Mem.Col2.TC
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `B X I h`. Establish `hch` using `GlobalTheory.T.trueColumn_chains_satisfy_conditions I h`. Establish `hlev` using `GlobalTheory.T.levelPrimeData_ok_of_trueColumnChoices I h`. Establish `hper` using `GlobalTheory.T.trueColumns_periodMapDatum_ok_and_over_levelPrime I h`. Establish `hall` using `fun u a => laws_all (I.chIn u a) (I.atIn u a) B.fields.emb B.embLL (B.hcW u) (base_fOk B) (hch u a).1 (hlev u a) (I.perIn u a) (hper u a).1 B.places`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `{ pr := (base_fields_primes_ok B X).2.1 ch := fun u a => (hch u a).1 lev := hlev per := fun u a => (hper u a).1 ovr := fun u a => (hper u a).2 atL := fun u a => (hall u a).1 fmL := fun u a => (hall u a).2 xi0 := h.trueColumnChoices_heckeChar_reference_eq_one idx0 := fun a => (hch …`.
+A detailed English derivation is pending.
 -/
 theorem laws_of_ok : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → I.Laws := by
   intro B X I h

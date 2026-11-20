@@ -24,11 +24,11 @@ variable {B B' G G' T T' S S₀ : Scheme.{0}} {M : LB B} {M' : LB B'} {L : LB G}
   {pr : Fin j → (B' ⟶ B)} {prG : Fin j → (G' ⟶ G)} {p : T ⟶ B} {p' : T' ⟶ B'} {f : T ⟶ G} {f' : T' ⟶ G'}
 
 /- English proof (translation)
-Introduce and unpack `⟨qM, qL⟩ V a₁ a₂ a₃`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `key` using `rel_box hM hM' hL hwe Q hF hE (K := PUnit) (ε := fun _ => 1) y (fun _ => u') hrL rM rM' s (fun _ => s) (fun _ => s) (fun i _ => by rw [hu, hf]) (fun _ => hp') (fun i _ => by rw [hu, hp]) (fun J J' hJ hJ' => (congrArg₂ (· * ·) (Fintype.prod_unique _) rfl).trans ((mapsAt_val w eA' …`. Establish `e` using `H.stalk hf hp (𝟙 S) y (J (s ≫ eA)) (N (s ≫ eG)) ((pt_of_eq hp y).symm ▸ hJ (s ≫ eA)) ((pt_of_eq hf y).symm ▸ hN (s ≫ eG))`. Rewrite `e` using `[Category.id_comp, Category.id_comp]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Fintype.prod_unique, zpow_one, hu]`. Conclude with `e.symm)`. Use `qL qM (fun a b _ => congrArg qM (Subsingleton.elim a b)) (fun k => Set.mem_iInter.1 (a₃ hy) k)`. Use the proof step `(fun k i => (pt_of_eq (hG i k) (s y)) ▸ Set.mem_iInter.1 (Set.mem_iInter.1 (a₂ hy) k) i)`. Rewrite `key` using `[Fintype.prod_unique, zpow_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `gm_box_pull L prG (fun _ => 𝟙 S₀) hG (fun _ => rL) s y qL (a₂ hy)`. Rewrite `e` using `[Category.comp_id]`. Use `(map_mul _ _ _).trans ((congrArg₂ (· * ·) (gm_res_pull _ u' y a₁ hy _) (gm_res_pull _ s y a₂ hy _)).trans (Eq.trans ?_ (gm_res_pull _ s y a₃ hy _).symm))` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.id_comp]`. Conclude with `(congrArg₂ (· * ·) rfl e).trans key.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rig_box (hM : M.IsLB) (hM' : M'.IsLB) (hL : L.IsLB)
     {w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))} {we : LB.Iso (L.pull f) (M.pull p)}
@@ -80,11 +80,11 @@ def EvenAlong (we : LB.Iso (L.pull f) (M.pull p)) (iT : T ⟶ T) {iG : G ⟶ G} 
         res h₃ (pullU iT _ (we.s (fun _ => jT 0, fun _ => jS 0))) * res h₄ (pullU f _ (s.s jS))
 
 /- English proof (translation)
-Establish `S0 : f (iT (r z)) ∈ L.U (jS 0)` using `(pt_of_eq iF (r z)).symm ▸ hS 0`. Establish `T0 : p (iT (r z)) ∈ M.U (jT 0)` using `(pt_of_eq iP (r z)).symm ▸ hT 0`. Establish `S1 : f (r z) ∈ L.U (jS 1)` using `hS 1`. Establish `T1 : p (r z) ∈ M.U (jT 1)` using `hT 1`. Set `W : T.Opens` to `p ⁻¹ᵁ (LB.LinComb M (K := Fin 2) ![iB, 𝟙 B] ![1, -1]).U jT ⊓ ((M.pull p).U (fun _ => jT 1) ⊓ (L.pull f).U (fun _ => jS 1)) ⊓ iT ⁻¹ᵁ ((M.pull p).U (fun _ => jT 0) ⊓ (L.pull f).U (fun _ => jS 0)) ⊓ f ⁻¹ᵁ (LB.LinComb L (K := Fin 2) ![iG, 𝟙 G] ![1, -1]).U jS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hW : r z ∈ W` using `⟨⟨⟨Set.mem_iInter.2 hT, mem_pull.2 T1, mem_pull.2 S1⟩, mem_pull.2 T0, mem_pull.2 S0⟩, Set.mem_iInter.2 hS⟩`. Establish `l₁ : W ≤ _` using `inf_le_left.trans (inf_le_left.trans inf_le_left)`. Establish `l₂ : W ≤ _` using `inf_le_left.trans (inf_le_left.trans inf_le_right)`. Establish `l₃ : W ≤ _` using `inf_le_left.trans inf_le_right`. Establish `l₄ : W ≤ _` using `inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n₁, n₂⟩` from `GlobalTheory.EvenPull.even_stalk we s σ jS jT W l₁ l₂ l₃ l₄ r z hW`. Establish `E` using `n₁.symm.trans ((congrArg (gm r z W) (ev jS jT cS cT W l₁ l₂ l₃ l₄)).trans n₂)`. Rewrite using `[Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, zpow_one, zpow_neg]`. Rewrite using `[← mul_right_comm, ← E, mul_inv_cancel_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem EvenAlong.stalk {we : LB.Iso (L.pull f) (M.pull p)} {iT : T ⟶ T} {iG : G ⟶ G} {iB : B ⟶ B}
     {s : LB.Gen (LB.LinComb L (K := Fin 2) ![iG, 𝟙 G] ![1, -1])}
@@ -118,19 +118,17 @@ theorem EvenAlong.stalk {we : LB.Iso (L.pull f) (M.pull p)} {iT : T ⟶ T} {iG :
   rw [← mul_right_comm, ← E, mul_inv_cancel_right]
 
 /- English proof (translation)
-Introduce `jS' jT' _ cT V h₁ h₂ h₃ h₄`. Use `unit_ext fun z hz => ?_` and prove the remaining obligations. Take `⟨k₁, k₂⟩` from `GlobalTheory.EvenPull.even_stalk we' (GeneratorPullback.boxGen L prG _ _ (fun i => GeneratorPullback.pullAlong L (prG i) (prG i) _ _ _ (hG i) s)) σ' jS' jT' V h₁ h₂ h₃ h₄ (𝟙 T') z hz`. Use `k₁.trans (Eq.trans ?_ k₂.symm)` and prove the remaining obligations. Use `clear k₁ k₂`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `c₀ : ∀ i k, (![iT', 𝟙 T'] : Fin 2 → _) k ≫ h i = (![h i ≫ iT, h i] : Fin 2 → _) k` using `fun i => Fin.forall_fin_two.2 ⟨ih i, Category.id_comp _⟩`. Establish `c₁ : ∀ i k, ((![iT', 𝟙 T'] : Fin 2 → _) k ≫ h i) ≫ f = (h i ≫ f) ≫ (![iG, 𝟙 G] : Fin 2 → _) k` using `fun i => Fin.forall_fin_two.2 ⟨by show (iT' ≫ h i) ≫ f = (h i ≫ f) ≫ iG`. Rewrite using `[ih, Category.assoc, iF, Category.assoc], by`. Use `show (𝟙 T' ≫ h i) ≫ f = (h i ≫ f) ≫ 𝟙 G`. Rewrite using `[Category.id_comp, Category.comp_id]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c₃ : ∀ i k, ((![iT', 𝟙 T'] : Fin 2 → _) k ≫ h i) ≫ p = (h i ≫ p) ≫ (![iB, 𝟙 B] : Fin 2 → _) k` using `fun i => Fin.forall_fin_two.2 ⟨by show (iT' ≫ h i) ≫ p = (h i ≫ p) ≫ iB`. Rewrite using `[ih, Category.assoc, iP, Category.assoc], by`. Use `show (𝟙 T' ≫ h i) ≫ p = (h i ≫ p) ≫ 𝟙 B`. Rewrite using `[Category.id_comp, Category.comp_id]⟩`. Establish `mL : ∀ k i, (![iG, 𝟙 G] : Fin 2 → (G ⟶ G)) k ((h i ≫ f) z) ∈ L.U (jS' k i)` using `fun k i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `a : ((f' ≫ (![iG', 𝟙 G'] : Fin 2 → (G' ⟶ G')) k) ≫ prG i) z ∈ L.U (jS' k i)` using `Set.mem_iInter.1 (Set.mem_iInter.1 (h₄ hz) k) i`. Rewrite `a` using `[Category.assoc, hG, ← Category.assoc, ← hF]`. Conclude with `a`. Establish `HM : ∀ J J', Good M z J → Good M' z J' → (∏ k, om w z J J' (p' ≫ (![iB', 𝟙 B'] : Fin 2 → _) k) ^ (![1, -1] : Fin 2 → ℤ) k) * val σ' p' z J' = ∏ i, val σ (h i ≫ p) z J` using `fun J J' hJ hJ' => by`. Establish `e` using `hσ z J J' hJ hJ'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hE] at e`. Rewrite using `[Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, zpow_one, zpow_neg]`. Conclude with `e`. Establish `HU : ∀ i J N, Good M z J → Good L z N → val σ (h i ≫ p) z J = (∏ k, Geo.Tor.gw we ((![iT', 𝟙 T'] : Fin 2 → _) k ≫ h i) z (J ((h i ≫ p) ≫ (![iB, 𝟙 B] : Fin 2 → _) k)) (fun _ => N ((h i ≫ f) ≫ (![iG, 𝟙 G] : Fin 2 → _) k)) ^ (![1, -1] : Fin 2 → ℤ) k) * val s (h i ≫ f) z N` using `fun i J N hJ hN => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [c₀]`. Conclude with `ev.stalk iF iP (h i) z _ _ (fun a b e => congrArg N ((Category.assoc _ _ _).trans ((congrArg (h i ≫ ·) e).trans (Category.assoc _ _ _).symm))) (fun a b e => congrArg J ((Category.assoc _ _ _).trans ((congrArg (h i ≫ ·) e).trans (Category.assoc _ _ _).symm))) (fun k => hN ((h i ≫ …`. Establish `key` using `rel_box hM hM' hL hwe Q hF hE (K := Fin 2) (ε := ![1, -1]) z ![iT', 𝟙 T'] hs σ σ' p' (fun i => h i ≫ p) (fun i => h i ≫ f) c₁ (Fin.forall_fin_two.2 ⟨iP', (Category.id_comp _).trans (Category.comp_id _).symm⟩) c₃ HM HU jS' jT' cT (fun k => Set.mem_iInter.1 (h₁ hz) k) mL`. Establish `e` using `gm_box_pull L prG prG hG (fun _ => s) f' z jS' (h₄ hz)`. Rewrite `key` using `[Fin.prod_univ_two]`.
-
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, zpow_one, zpow_neg, hF] at key`. Rewrite using `[Category.id_comp, Category.id_comp, Category.id_comp]`. Use `Eq.trans ?_ (congrArg₂ (· * ·) rfl e).symm` and prove the remaining obligations. Rewrite using `[key, mul_right_comm, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem even_box (hM : M.IsLB) (hM' : M'.IsLB) (hL : L.IsLB)
     {w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))} {we : LB.Iso (L.pull f) (M.pull p)}

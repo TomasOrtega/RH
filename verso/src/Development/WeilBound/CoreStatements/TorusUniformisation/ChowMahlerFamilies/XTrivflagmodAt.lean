@@ -22,7 +22,7 @@ section Lin
 variable {F : Type*} [Field F] {N : ℕ}
 
 /- English proof (translation)
-Establish `hU : IsUnit G.det` using `hG.isUnit`. Use `⟨(Pi.basisFun F (Fin N)).map (G.toLinearEquiv' (G.invertibleOfIsUnitDet hU)), fun i j => ?_⟩` and prove the remaining obligations. Establish `: (G.toLinearEquiv' (G.invertibleOfIsUnitDet hU)) (Pi.single i 1) = G.mulVec (Pi.single i 1)` using `rfl`. Rewrite using `[Module.Basis.map_apply, Pi.basisFun_apply, this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_basis_cols (G : Matrix (Fin N) (Fin N) F) (hG : G.det ≠ 0) :
     ∃ u : Module.Basis (Fin N) F (Fin N → F), ∀ i j, u i j = G j i := by
@@ -34,7 +34,7 @@ theorem exists_basis_cols (G : Matrix (Fin N) (Fin N) F) (hG : G.det ≠ 0) :
   simp
 
 /- English proof (translation)
-Establish `e : v = ∑ q, a q • u q`. Rewrite using `[← h]`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, hu, Matrix.mulVec, dotProduct, mul_comm]`. Rewrite using `[e, u.repr_sum_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_eq (G : Matrix (Fin N) (Fin N) F) (u : Module.Basis (Fin N) F (Fin N → F))
     (hu : ∀ i j, u i j = G j i) (a v : Fin N → F) (h : G.mulVec a = v) (i : Fin N) :
@@ -46,7 +46,7 @@ theorem repr_eq (G : Matrix (Fin N) (Fin N) F) (u : Module.Basis (Fin N) F (Fin 
   rw [e, u.repr_sum_self]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← u.sum_repr v]`. Simplify using `[Finset.sum_apply, hu, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_repr (G : Matrix (Fin N) (Fin N) F) (u : Module.Basis (Fin N) F (Fin N → F))
     (hu : ∀ i j, u i j = G j i) (v : Fin N → F) (j : Fin N) :
@@ -55,13 +55,13 @@ theorem mulVec_repr (G : Matrix (Fin N) (Fin N) F) (u : Module.Basis (Fin N) F (
   simp [Finset.sum_apply, hu, mul_comm]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv i`. Set `G' : Matrix (Fin N) (Fin N) R` to `fun i j => ⟨G i j, hG i j⟩`. Establish `hGG : G = R.val.toRingHom.mapMatrix G'`. Use extensionality with `i j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `hadj : ∀ i j, G.adjugate i j ∈ R`. Introduce `i j`. Rewrite using `[hGG, ← RingHom.map_adjugate]`. Conclude with `(G'.adjugate i j).2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : G.mulVec (h • G.adjugate.mulVec v) = v`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mul_adjugate, Matrix.smul_mulVec, Matrix.one_mulVec, smul_smul, mul_comm, hdet, one_smul]`. Rewrite using `[repr_eq G u hu _ v e i]`. Express the relevant statement in the definitionally equal form `h * ∑ q, G.adjugate i q * v q ∈ R`. Conclude with `mul_mem hh (sum_mem fun q _ => mul_mem (hadj i q) (hv q))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hv j`. Rewrite using `[mulVec_repr G u hu v j]`. Conclude with `sum_mem fun q _ => mul_mem (hG j q) (hv q)`.
+A detailed English derivation is pending.
 -/
 theorem lat_iff {k : Type*} [CommRing k] [Algebra k F] (R : Subalgebra k F)
     (G : Matrix (Fin N) (Fin N) F) (hG : ∀ i j, G i j ∈ R) {h : F} (hh : h ∈ R)
@@ -90,9 +90,9 @@ theorem lat_iff {k : Type*} [CommRing k] [Algebra k F] (R : Subalgebra k F)
     exact sum_mem fun q _ => mul_mem (hG j q) (hv q)
 
 /- English proof (translation)
-Use `repr_eq _ w hw (fun j => c⁻¹ * U j i * d j) _ ?_ j` and prove the remaining obligations. Use function extensionality and compare the values at `l`. Rewrite using `[hu]`. Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Rewrite using `[hGU]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_diagonal, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `hd q` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem flag_coords (G G₀ U : Matrix (Fin N) (Fin N) F) (c : F) (hc : c ≠ 0) (d : Fin N → F)
     (hd : ∀ i, d i ≠ 0) (hGU : ∀ i j, c * G i j = ∑ q, G₀ i q * U q j)
@@ -122,9 +122,9 @@ variable {Ω : Type} [Field Ω] [Algebra O Ω]
 variable {x : (Σ k, ι k) → Ω} {Q : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.MRingOver (kap O) ι)} [Q.IsPrime]
 
 /- English proof (translation)
-Set `ρ : locAlg x Q →+* FractionRing (ReciprocityTheory.ChartRestriction.G.Geo.MRingOver (kap O) ι ⧸ Q)` to `{ toFun := fun a => rs x Q a map_one' := rs_one hPQ map_mul' := fun a b => rs_mul hPQ a.2 b.2 map_zero' := rs_zero hPQ map_add' := fun a b => rs_add hPQ a.2 b.2 }`. Set `g' : Matrix (Fin N) (Fin N) (locAlg x Q)` to `fun i j => ⟨g i j, hg i j⟩`. Establish `h1 : g.det = ((g'.det : locAlg x Q) : Ω)`. Use `(locAlg x Q).val.toRingHom.map_det g'` as an intermediate fact. Conclude with `this.symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1 ▸ g'.det.2, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `ρ.map_det g'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rs_det (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {N : ℕ} (g : Matrix (Fin N) (Fin N) Ω)
     (hg : ∀ i j, g i j ∈ locAlg x Q) :
@@ -144,7 +144,7 @@ theorem rs_det (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {N : ℕ} (g : Matrix (Fin
   exact ρ.map_det g'
 
 /- English proof (translation)
-Rewrite using `[rs_mul hPQ (Subalgebra.algebraMap_mem _ _) hr, rs_algebraMap hPQ, (IsLocalRing.residue_eq_zero_iff ϖ).2 hϖ.not_isUnit, map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rs_unif (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {ϖ : O} (hϖ : Irreducible ϖ) {r : Ω}
     (hr : r ∈ locAlg x Q) : rs x Q (algebraMap O Ω ϖ * r) = 0 := by
@@ -152,7 +152,7 @@ theorem rs_unif (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {ϖ : O} (hϖ : Irreducib
     (IsLocalRing.residue_eq_zero_iff ϖ).2 hϖ.not_isUnit, map_zero, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[← aeval_segForm (R := O)]`. Conclude with `aeval_ne_zero hPQ (isMultiHomog_segForm s) (red_segForm_notMem hs)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mseg_ne (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {s : ∀ k, ι k}
     (hs : mseg (genPt (kap O) Q) s ≠ 0) : mseg x s ≠ 0 := by
@@ -160,30 +160,28 @@ theorem mseg_ne (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {s : ∀ k, ι k}
   exact aeval_ne_zero hPQ (isMultiHomog_segForm s) (red_segForm_notMem hs)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun k hk => zpow_ne_zero _ (Finset.prod_ne_zero_iff.1 hs k hk)`.
+A detailed English derivation is pending.
 -/
 theorem mon_ne {F : Type*} [Field F] (y : (Σ k, ι k) → F) {s : ∀ k, ι k} (hs : mseg y s ≠ 0)
     (a : K → ℤ) : chartMon y s a ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun k hk => zpow_ne_zero _ (Finset.prod_ne_zero_iff.1 hs k hk)
 
 /- English proof (translation)
-Take `⟨g, hg, hov⟩` from `H`. Establish `hG : ∀ s, mseg (genPt (kap O) Q) s ≠ 0 → (∀ i j, (g s).map (rs x Q) i j ∈ chartRing (kap O) (mseg (genPt (kap O) Q)) s) ∧ ∃ h ∈ chartRing (kap O) (mseg (genPt (kap O) Q)) s, ((g s).map (rs x Q)).det * h = 1`. Introduce `s hs`. Take `⟨h1, h, hh, r, hr, hdet⟩` from `hg s (mseg_ne hPQ hs)`. Use `⟨fun i j => (chartRing_sub hPQ hs (h1 i j)).2, rs x Q h, (chartRing_sub hPQ hs hh).2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h2, h3⟩` from `rs_det hPQ (g s) fun i j => (chartRing_sub hPQ hs (h1 i j)).1`. Establish `hr'` using `(chartRing_sub hPQ hs hr).1`. Rewrite using `[← h3, ← rs_mul hPQ h2 (chartRing_sub hPQ hs hh).1, hdet, rs_add hPQ (one_mem _) (mul_mem (Subalgebra.algebraMap_mem _ _) hr'), rs_one hPQ, rs_unif hPQ hϖ hr', add_zero]`. Establish `hdet : ∀ s, mseg (genPt (kap O) Q) s ≠ 0 → ((g s).map (rs x Q)).det ≠ 0`. Introduce `s hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, h, -, hh⟩` from `hG s hs`. Conclude with `left_ne_zero_of_mul_eq_one hh`. Take `⟨w, hw⟩` from `exists_basis_cols ((g s₀).map (rs x Q) * Matrix.diagonal fun i => (chartMon (genPt (kap O) Q) s₀ (b i))⁻¹) (by`. Rewrite using `[Matrix.det_mul, Matrix.det_diagonal]`. Conclude with `mul_ne_zero (hdet s₀ hs₀) (Finset.prod_ne_zero_iff.2 fun i _ => inv_ne_zero (mon_ne _ hs₀ _)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨w, (PositivityTheory.Xgn.t_flagframe_basis (kap O) _ K ι (genPt (kap O) Q) N _ (scaledTrivBundle (kap O) (segreVec (genPt (kap O) Q)) N one_ne_zero) w b).2 fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `exists_basis_cols _ (hdet s hs)`. Take `⟨m, U, Z, hU, hZ, hUt, hUd, -, hE⟩` from `hov s s₀ (mseg_ne hPQ hs) (mseg_ne hPQ hs₀)`. Take `⟨hc1, hc2⟩` from `seg_ratio (x := x) hPQ hs₀ s`. Establish `hc0 : (mseg (genPt (kap O) Q) s / mseg (genPt (kap O) Q) s₀) ^ m ≠ 0` using `pow_ne_zero _ (div_ne_zero hs hs₀)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgs : ∀ i j, g s i j ∈ locAlg x Q` using `fun i j => (chartRing_sub hPQ hs ((hg s (mseg_ne hPQ hs)).1 i j)).1`. Establish `hg0 : ∀ i j, g s₀ i j ∈ locAlg x Q` using `fun i j => (chartRing_sub hPQ hs₀ ((hg s₀ (mseg_ne hPQ hs₀)).1 i j)).1`. Establish `hU' : ∀ i j, U i j ∈ locAlg x Q` using `fun i j => (chartRing_sub hPQ hs₀ (hU i j)).1`. Establish `hZ' : ∀ i j, Z i j ∈ locAlg x Q` using `fun i j => (chartRing_sub hPQ hs₀ (hZ i j)).1`. Establish `key` using `flag_coords ((g s).map (rs x Q)) ((g s₀).map (rs x Q)) (U.map (rs x Q)) _ hc0 (fun i => chartMon (genPt (kap O) Q) s₀ (b i)) (fun i => mon_ne _ hs₀ _) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j`. Establish `e : (mseg x s / mseg x s₀) ^ m * g s i j = ∑ q, g s₀ i q * U q j + algebraMap O Ω ϖ * Z i j` using `congrFun (congrFun hE i) j`. Establish `e'` using `congrArg (rs x Q) e`. Rewrite `e'` using `[rs_mul hPQ (pow_mem hc1 m) (hgs i j), rs_pow hPQ hc1, hc2, rs_add hPQ (sum_mem fun q _ => mul_mem (hg0 i q) (hU' q j)) (mul_mem (Subalgebra.algebraMap_mem _ _) (hZ' i j)), rs_unif hPQ hϖ (hZ' i j), add_zero, rs_sum hPQ _ _ fun q _ => mul_mem (hg0 i q) (hU' q j)]`. Simplify using `only [Matrix.map_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e']`. Conclude with `Finset.sum_congr rfl fun q _ => rs_mul hPQ (hg0 i q) (hU' q j)) u w hu hw`. Use `⟨u, fun i j hij => ?_, fun i => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[key, Matrix.map_apply, hUt j i hij, rs_zero hPQ, mul_zero, zero_mul]`. Take `⟨hm1, hm2⟩` from `chartMon_ratio (x := x) hPQ hs hs₀ (b i)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, Matrix.map_apply, hUd, rs_mul hPQ (pow_mem hc1 m) hm1, rs_pow hPQ hc1, hc2, hm2, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul, div_mul_cancel₀ _ (mon_ne _ hs₀ _)]`. Take `⟨h1, h, hh, hd⟩` from `hG s hs`. Rewrite using `[← lat_iff _ _ h1 hh hd u hu v]`. Use `(mem_scaledTrivLat (R := kap O)).trans (forall_congr' fun q => ⟨?_, fun hq => ⟨v q, hq, (one_mul _).symm⟩⟩)` and prove the remaining obligations. Introduce and unpack `⟨a, ha, e⟩`.
-
-Rewrite using `[e, one_mul]`. Conclude with `ha`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame [DecidableEq K] (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {ϖ : O}
     (hϖ : Irreducible ϖ) {N : ℕ} {b : Fin N → K → ℤ} (H : TrivFlagMod O ϖ x N b)
@@ -256,11 +254,9 @@ end PositivityTheory.Xgn.A_trivflagmod_at
 
 open PositivityTheory.Xgn.A_trivflagmod_at GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.FlagRestrict in
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x ϖ hϖ N b H W hW hPW hϖW`. Take `⟨hpr, -, hrel, -⟩` from `SpecialIdealCorresp.proof O ϖ hϖ K ι W W hW.isPrime hϖW`. Establish `hhom` using `(VocabMultiHomogIdeal.proof VocabMultiHomog.proof _ K ι _).2 (SpecialIdealMultiHomog.proof O K ι W hW.multiHomog)`. Use `choose s₀ hs₀ using hrel.1 hW.relevant`. Establish `hPQ : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.redIdeal O (mcIdeal O x) ≤ specialIdeal W` using `Ideal.map_mono hPW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : mseg (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.genPt (IsLocalRing.ResidueField O) (specialIdeal W)) s₀ ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun k _ h => hs₀ k ?_` and prove the remaining obligations. Rewrite using `[← aeval_genPt_eq_zero_iff (specialIdeal W), aeval_X]`. Conclude with `h`. Take `⟨w, hw⟩` from `exists_frame hPQ hϖ H hs`.
-
-Conclude with `⟨_, inferInstance, inferInstance, _, w, mcIdeal_genPt (specialIdeal W) hhom, hw⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_trivflagmod_at : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (ϖ : O), Irreducible ϖ → ∀ (N : ℕ) (b : Fin N → K → ℤ), TrivFlagMod O ϖ x N b → ∀ (W : Ideal (MRing ι O)), IsMultiProjPrime W → (pointIdeal O x) ≤ W → (C ϖ : MRing ι O) ∈ W → TrivFlagAt W b := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x ϖ hϖ N b H W hW hPW hϖW

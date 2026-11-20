@@ -18,7 +18,7 @@ namespace GlobalTheory.OneMapRef.FactsLat
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨c, -, -, -, h1, h2⟩` from `h`. Simplify using `only [one_pow, Nat.cast_one, one_smul] at h1 h2`. Conclude with `Set.ext fun x => ⟨h2 x, h1 x⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem selfDual_frame_level_one_lattice_eq_standard {V : HSp D} {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)}
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (h : IsSDFrame V β Λ 1) :
@@ -28,11 +28,11 @@ theorem selfDual_frame_level_one_lattice_eq_standard {V : HSp D} {β : GL (Fin V
   exact Set.ext fun x => ⟨h2 x, h1 x⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite using `[← Finset.univ_sum_single x]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `Submodule.mem_one.1 (hx a trivial)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: (Pi.single a (x a) : Fin n → E) = b • (Pi.single a 1 : Fin n → E)`. Rewrite using `[← Pi.single_smul, ← hb, Algebra.smul_def, mul_one]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨a, rfl⟩ j -`. Distinguish the cases in `h : j = a`. Substitute `h` using the available equality. Conclude with `Submodule.mem_one.2 ⟨1, by simp⟩`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pi_eq_stdL (E : Type) [Field E] [NumberField E] (n : ℕ) :
     (Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)) = stdL E n := by
@@ -53,9 +53,9 @@ theorem pi_eq_stdL (E : Type) [Field E] [NumberField E] (n : ℕ) :
     · simp [h]
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h'` using `congrArg Fin.val h`. Use `a.2` as an intermediate fact. Use `b.2` as an intermediate fact. Unfold `arr at h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply `Fin.ext` to reduce the goal to its premises. Apply the tactic sequence `split_ifs at h' <;> simp only at h' <;> omega`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem arr_injective {n : ℕ} {q : ℕ} (hq : q ≤ n) : Function.Injective (arr q : Fin n → Fin n) := by
   intro a b h
@@ -73,15 +73,15 @@ variable {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) {p q : ℕ} 
 include hpq hε
 
 /- English proof (translation)
-Rewrite using `[nNeg_shape (by omega) (hε τ)]; omega`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nNeg_eq (τ : D.what₂.Tau) : nNeg (M.ε τ) = q := by
   rw [nNeg_shape (by omega) (hε τ)]; omega
 
 /- English proof (translation)
-Unfold `negM`. Use `congr 1`. Use function extensionality and compare the values at `c`. Use `c.2` as an intermediate fact. Rewrite using `[nNeg_eq M hpq hε, hε, arr, sgn]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : (c : ℕ) < q`. Rewrite using `[dif_pos h, if_pos h, if_neg (by simp only [decide_eq_true_eq]; omega)]; simp`. Rewrite using `[dif_neg h, if_neg h, if_pos (by simp only [decide_eq_true_eq]; omega)]; simp`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem negM_eq (τ : D.what₂.Tau) :
     negM V q = diagonal fun c => (if M.ε τ (arr (nNeg (M.ε τ)) c) = true then (1 : ℂ) else -1) := by
@@ -95,11 +95,11 @@ theorem negM_eq (τ : D.what₂.Tau) :
   · rw [dif_neg h, if_neg h, if_pos (by simp only [decide_eq_true_eq]; omega)]; simp
 
 /- English proof (translation)
-Introduce `τ`. Establish `hu` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `h1 : M.fr τ * (M.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `h2 : (onb M τ)ᴴ * gramAt D V τ * onb M τ = Formalism.REAL.Jm (M.ε τ)`. Rewrite using `[← M.fr_gram τ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `onb`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h1]; simp`. Establish `h3 : (x0Mat M τ)ᴴ * gramAt D V τ * x0Mat M τ = ((onb M τ)ᴴ * gramAt D V τ * onb M τ).submatrix (arr (nNeg (M.ε τ))) (arr (nNeg (M.ε τ)))` using `rfl`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, h2, negM_eq M hpq hε τ, Formalism.REAL.Jm, Matrix.submatrix_diagonal _ _ (arr_injective (nNeg_le _))]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isONeg_x0Mat : IsONeg V q (x0Mat M) := by
   intro τ
@@ -116,9 +116,9 @@ theorem isONeg_x0Mat : IsONeg V q (x0Mat M) := by
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hn : negM V q * negM V q = 1`. Rewrite using `[negM_eq M hpq hε τ, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Apply the tactic sequence `congr 1; funext a; split_ifs <;> simp`. Establish `h1 : (negM V q * ((x0Mat M τ)ᴴ * gramAt D V τ)) * x0Mat M τ = 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, isONeg_x0Mat M hpq hε τ, hn]`. Establish `hu : IsUnit (x0Mat M τ).det` using `Matrix.isUnit_det_of_left_inverse h1`. Rewrite using `[cartZ, negM_eq M hpq hε τ, ← torus_x0Mat M τ fun a => if M.ε τ a = true then (1 : ℂ) else -1, Matrix.mul_nonsing_inv_cancel_right _ _ hu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cart_eq_cartZ : cart M = cartZ V q (x0Mat M) := by
   funext τ
@@ -135,14 +135,14 @@ theorem cart_eq_cartZ : cart M = cartZ V q (x0Mat M) := by
 end Model
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem muVal_cast {V W : HSp D} (hV : V = W) {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ} (h : MuVal V χ mu) :
     MuVal W χ (castDict hV mu) := by
   subst hV; exact h
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem latEmb_cast {V W : HSp D} (hV : V = W) {r : ℕ} (hr : V.rank = r) (hr' : W.rank = r) {La : Type} [AddCommGroup La]
     [Module (𝓞 D.host.E) La] (ι : La →ₗ[𝓞 D.host.E] (Fin r → D.host.E))
@@ -151,15 +151,13 @@ theorem latEmb_cast {V W : HSp D} (hV : V = W) {r : ℕ} (hr : V.rank = r) (hr' 
   subst hV; exact h
 
 /- English proof (translation)
-Introduce `v`. Rewrite using `[← Submodule.mem_toAddSubgroup]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Proceed by induction on `hv using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx => exact AddSubgroup.subset_closure hx`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul c x hx' hx => clear hx'`. Proceed by induction on `hx using AddSubgroup.closure_induction with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨a, ha, t, ht, rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, c • t, L.smul_mem c ht, smul_comm _ _ _⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`. Introduce `hv`.
-
-Conclude with `(AddSubgroup.closure_le _).2 (fun x hx => Submodule.subset_span hx) hv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isAA_span {k : ℕ} (L : Lt D.host.E k) : GlobalTheory.Ker.IsAA (Submodule.span (𝓞 D.host.E)
     {w | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ v ∈ L, w = a • v}) L := by
@@ -184,7 +182,7 @@ theorem isAA_span {k : ℕ} (L : Lt D.host.E k) : GlobalTheory.Ker.IsAA (Submodu
     exact (AddSubgroup.closure_le _).2 (fun x hx => Submodule.subset_span hx) hv
 
 /- English proof (translation)
-Introduce `u`. Rewrite using `[GlobalTheory.MovedLat.hLat_one]`. Use `Set.ext_iff.1 (GlobalTheory.MovedLat.hat_hLat W (FWT.fin W h)) u` as an intermediate fact. Conclude with `this.trans ⟨fun ⟨z, hz, e⟩ => ⟨z, hz, e.symm⟩, fun ⟨z, hz, e⟩ => ⟨z, hz, e.symm⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isMov_hLat (W : HSp D) (h : GA D W) :
     GlobalTheory.Ker.IsMov (GlobalTheory.Ker.fmt W h) (Bridge.hLat W 1) (Bridge.hLat W (FWT.fin W h)) := by

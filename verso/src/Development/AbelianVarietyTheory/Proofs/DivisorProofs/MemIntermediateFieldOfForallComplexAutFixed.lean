@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsRingEquiv
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-The claim follows from `fun F x hx ↦ by obtain ⟨y, rfl⟩ := GlobalTheory.GaloisDescent.complex_mem_range_of_forall_algEquiv (K := F) x fun σ ↦ hx σ.toRingEquiv fun y hy ↦ σ.commutes ⟨y, hy⟩ exact y.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_ringEquiv_fixed :
     ∀ (F : IntermediateField ℚ ℂ) (x : ℂ),

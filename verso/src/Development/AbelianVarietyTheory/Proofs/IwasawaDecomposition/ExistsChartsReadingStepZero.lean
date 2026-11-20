@@ -27,7 +27,7 @@ def yT (u : B.Word) (a : I.ι) (c : (I.stp u a 0).Cl) : GA B (B.R.N 0) :=
   Classical.epsilon fun g : GA B (B.R.N 0) => PtOf (g * kStd X u (B.R.N 0)) (extTo I.SQ ((I.stp u a 0).rep c).1.1)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `GlobalTheory.T.exists_adelicPoint_decoratedLattice_allTwists I hI u _ (extTo I.SQ ((I.stp u a 0).rep c).1.1)`. Conclude with `Classical.epsilon_spec (p := fun g : GA B (B.R.N 0) => PtOf (g * kStd X u (B.R.N 0)) (extTo I.SQ ((I.stp u a 0).rep c).1.1)) ⟨g * (kStd X u (B.R.N 0))⁻¹, by rwa [inv_mul_cancel_right]⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem yT_spec (hI : I.Ok) (u : B.Word) (a : I.ι) (c : (I.stp u a 0).Cl) :
     PtOf (yT I u a c * kStd X u (B.R.N 0)) (extTo I.SQ ((I.stp u a 0).rep c).1.1) := by
@@ -36,9 +36,9 @@ theorem yT_spec (hI : I.Ok) (u : B.Word) (a : I.ι) (c : (I.stp u a 0).Cl) :
     ⟨g * (kStd X u (B.R.N 0))⁻¹, by rwa [inv_mul_cancel_right]⟩
 
 /- English proof (translation)
-Establish `key : ∀ q : PtAt B.R I.sel (I.tup a) (I.cst a) u 0, cosetIn q = fun _ => ∅` using `fun q => by`. Establish `h1 : q.1.2 = ∅`. Use `q.2` as an intermediate fact. Rewrite `this` using `[ysAt_ys_of_ne _ _ _ (by have := B.R.two_le_m; omega)]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `cosetIn`. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Rewrite using `[key, key]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cos0 {u : B.Word} {a : I.ι} (q q' : PtAt B.R I.sel (I.tup a) (I.cst a) u 0) : cosetIn q = cosetIn q' := by
   have key : ∀ q : PtAt B.R I.sel (I.tup a) (I.cst a) u 0, cosetIn q = fun _ => ∅ := fun q => by
@@ -52,9 +52,9 @@ theorem cos0 {u : B.Word} {a : I.ι} (q q' : PtAt B.R I.sel (I.tup a) (I.cst a) 
   rw [key, key]
 
 /- English proof (translation)
-Use `letI := StepZero.idxUnique (hI.idx_ok a)`. Establish `h` using `StepZero.clMap_bijective (Λ₀ := colLev I.Ch 0) ((I.Tp a).pref u 0) (fun _ => ⟨fun _ => 0, fun _ _ _ => le_rfl⟩) (StepZero.ysAt_zero I.sel (I.tup a) (I.cst a) (R := B.R)) (StepZero.levGAt_zero (I.Tp a) (hI.idx_ok a)) (StepZero.levQAt_zero (I.Tp a) (hI.idx_ok a))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c`. Establish `e` using `StepZero.clMap_cl (y := ysAt B.R I.sel (I.tup a) (I.cst a) 0) (Θ := lvQ I a) (Λ₀ := colLev I.Ch 0) ((I.Tp a).pref u 0) (fun _ => ⟨fun _ => 0, fun _ _ _ => le_rfl⟩) (StepZero.levGAt_zero (I.Tp a) (hI.idx_ok a)) c.1 ((I.stp u a 0).rep c)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e2 : (I.stp u a 0).cl c.1 ((I.stp u a 0).rep c) = c`. Take `⟨b, q⟩` from `c`. Conclude with `congrArg (Sigma.mk b) ((I.stp u a 0).rp_spec b q)`. Rewrite `e` using `[e2]`. Conclude with `e.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepZero_classes_bijective_decoratedLattice (hI : I.Ok) (u : B.Word) (a : I.ι) :
     Function.Bijective fun c : (I.stp u a 0).Cl =>
@@ -73,9 +73,9 @@ theorem stepZero_classes_bijective_decoratedLattice (hI : I.Ok) (u : B.Word) (a 
   exact e.symm
 
 /- English proof (translation)
-Establish `hL` using `hI.idx_ok a`. Establish `hy` using `StepZero.ysAt_zero I.sel (I.tup a) (I.cst a) (R := B.R)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨g, hg⟩, rfl⟩`. Use `⟨StepZero.down (y := ysAt B.R I.sel (I.tup a) (I.cst a) 0) (Θ := lvQ I a) ((I.Tp a).pref u 0) (StepZero.levGAt_zero (I.Tp a) hL) c.1 g, rfl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(StepZero.deco_smul (y := ysAt B.R I.sel (I.tup a) (I.cst a) 0) (Θ := lvQ I a) _ (StepZero.levGAt_zero (I.Tp a) hL) c.1 g _).symm.trans (congrArg (fun q => q.1.1.deco) hg)`. Introduce and unpack `⟨g₀, rfl, hg⟩`. Take `⟨g, h1, h2⟩` from `StepZero.exists_lift ((I.Tp a).pref u 0) hy (StepZero.levGAt_zero (I.Tp a) hL) (StepZero.levQAt_zero (I.Tp a) hL) c.1 _ _ g₀ hg`. Conclude with `⟨⟨g, h2⟩, congrArg (fun g => ufGL B.fields.E (B.R.N 0) g.1) h1⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stab_range0 (hI : I.Ok) (u : B.Word) (a : I.ι) (c : (I.stp u a 0).Cl) (γ : GL (Fin (B.R.N 0)) B.host.E) :
     γ ∈ (stM (lvG I a) (lvQ I a) ((I.Tp a).pref u 0) (I.pref u a 0) c).range ↔
@@ -93,9 +93,9 @@ theorem stab_range0 (hI : I.Ok) (u : B.Word) (a : I.ι) (c : (I.stp u a 0).Cl) (
     exact ⟨⟨g, h2⟩, congrArg (fun g => ufGL B.fields.E (B.R.N 0) g.1) h1⟩
 
 /- English proof (translation)
-Establish `hg` using `dia_of_pt hPr u (yT_spec I hI u a c)`. Establish `hx` using `dia_of_pt hPr u h2`. Establish `e1 : κ.1 = 1` using `ufGL_inj B.sp.cm (B.R.N 0) (h1.trans (map_one _).symm)`. Conclude with `red_of_act B.sp.cm (B.R.N 0) (diaT (Pr := B.primes X) u) hg.1 hx.1 κ.2.1.1 (by`. Rewrite using `[hg.2, hx.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((κ.1, κ.2.1.1) : UF B.fields.E (B.R.N 0) × GLG B.fields.E (B.R.N 0) (B.primes X).vGs) • _ = _`. Rewrite using `[e1]`. Use the proof step `rfl)`.
+A detailed English derivation is pending.
 -/
 theorem red0 (hI : I.Ok) (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) (c : (I.stp u a 0).Cl) (x : GA B (B.R.N 0))
     (κ : (I.stp u a 0).G c.1) (h1 : (I.stp u a 0).gam c.1 κ = 1)
@@ -111,15 +111,15 @@ theorem red0 (hI : I.Ok) (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) (c : (I
     rfl)
 
 /- English proof (translation)
-Establish `hL` using `hI.idx_ok a`. Establish `hy` using `StepZero.ysAt_zero I.sel (I.tup a) (I.cst a) (R := B.R)`. Establish `hΛ` using `StepZero.levGAt_zero (I.Tp a) hL`. Establish `hΘ` using `StepZero.levQAt_zero (I.Tp a) hL`. Establish `hg` using `dia_of_pt hPr u (yT_spec I hI u a c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `dia_of_pt hPr u h`. Prove the components needed by the constructor for the conclusion. Introduce `hxU`. Establish `h1` using `act_of_mem B.sp.cm (B.R.N 0) _ (diaT (Pr := B.primes X) u) hg.1 ⟨x, hxU⟩`. Rewrite `h1` using `[hg.2, hx.2]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨p, hp⟩` from `exists_ptAt (R := B.R) I.sel (I.tup a) (I.cst a) q`. Take `⟨g, h2, h3⟩` from `StepZero.exists_lift ((I.Tp a).pref u 0) hy hΛ hΘ c.1 ((I.stp u a 0).rep c) p (1, (Formalism.L2.Col.levRed B.sp.cm (B.R.N 0) _ _ _ ⟨x, hxU⟩)⁻¹) (by rw [hp]; exact h1.symm)`. Use `⟨g, ?_, ?_, cos0 I _ _⟩` and prove the remaining obligations. Use `show ufGL B.fields.E (B.R.N 0) g.1 = 1`. Rewrite using `[show g.1 = 1 from congrArg Prod.fst h2, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(congrArg (fun p : PtAt B.R I.sel (I.tup a) (I.cst a) u 0 => p.1.1) h3).trans hp`. Introduce and unpack `⟨κ, h1, h2, -⟩`. Take `⟨hJ, hr⟩` from `red0 I hI hPr u a c x κ h1 (h2 ▸ h)`. Use `(mem_levU _ _ _ _ _).2 ⟨hJ, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (Λ' : LevFam B.fields.E B.fields.K (B.R.N 0) (B.primes X).vGs), Λ' = colLev I.Ch 0 → ∀ g : Λ'.grp, g.1 ∈ (colLev I.Ch 0).grp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ rfl g`. Conclude with `g.2`. Establish `hm : κ.2.1.1 ∈ (colLev I.Ch 0).grp` using `key _ (hΛ c.1) κ.2.1`. Rewrite using `[hr]`. Conclude with `inv_mem hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev0 (hI : I.Ok) (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) (c : (I.stp u a 0).Cl) (x : GA B (B.R.N 0))
     (q : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u 0) (h : PtOf (yT I u a c * x * kStd X u (B.R.N 0)) q) :
@@ -155,11 +155,11 @@ theorem lev0 (hI : I.Ok) (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) (c : (I
     exact inv_mem hm
 
 /- English proof (translation)
-Establish `hL` using `hI.idx_ok a`. Establish `hΛ` using `StepZero.levGAt_zero (I.Tp a) hL`. Establish `hΘ` using `StepZero.levQAt_zero (I.Tp a) hL`. Establish `hg` using `dia_of_pt hPr u (yT_spec I hI u a c)`. Establish `hx` using `dia_of_pt hPr u h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : κ.1 = 1` using `ufGL_inj B.sp.cm (B.R.N 0) (h1.trans (map_one _).symm)`. Take `⟨hJ, hr⟩` from `red_of_act B.sp.cm (B.R.N 0) (diaT (Pr := B.primes X) u) hg.1 hx.1 κ.2.1.1 (by`. Rewrite using `[hg.2, hx.2]`. Use `show ((κ.1, κ.2.1.1) : UF B.fields.E (B.R.N 0) × GLG B.fields.E (B.R.N 0) (B.primes X).vGs) • _ = _`. Rewrite using `[e1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `rfl)`. Establish `e2 : Formalism.L2.Col.levRed B.sp.cm (B.R.N 0) _ _ _ ⟨x, hxU⟩ = (⟨κ.2.1.1, hΛ c.1 ▸ κ.2.1.2⟩ : (colLev I.Ch 0).grp)⁻¹` using `Subtype.ext hr`. Use `show ((Units.map B.embLL.toMonoidHom ((colLev I.Ch 0).chr (Formalism.L2.Col.levRed B.sp.cm (B.R.N 0) _ _ _ ⟨x, hxU⟩)))⁻¹ : ℂˣ).1 = B.embLL (((lvG I a c.1).chr κ.2.1 * (lvQ I a c.1).chr κ.2.2 : B.LLˣ) : B.LL)`. Rewrite using `[e2, StepZero.chr_eq_one (hΘ c.1), mul_one, StepZero.chr_congr (hΛ c.1), map_inv, map_inv, inv_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chr0 (hI : I.Ok) (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) (c : (I.stp u a 0).Cl) (x : GA B (B.R.N 0))
     (hxU : x ∈ levU (F := B.host.F) B.sp.cm (B.R.N 0) ((B.primes X).vT u) (B.primes X).vGs (colLev I.Ch 0).grp)
@@ -188,15 +188,13 @@ theorem chr0 (hI : I.Ok) (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) (c : (I
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a`. Establish `hPr` using `l.pr`. Establish `hX` using `GlobalTheory.Mem.FieldsLaws.fields_ok B`. Establish `hi : 0 ≤ B.R.m` using `Nat.zero_le _`. Take `⟨hg, -, hl⟩` from `(GlobalTheory.T.trueColumn_spaces_standard_in_frameCoords I hI hP l Z).2.2.2 0 hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hf : B.fields.f = B.R.f` using `(hPr.vT_card u).symm.trans (l.lev u I.mu0).card_ST`. Establish `hL` using `hI.idx_ok a`. Set `chOf : (I.stp u a 0).Cl → Unit` to `fun _ => ()`. Take `⟨lev, Y, SI, h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `chart_exists (F := B.host.F) (E := B.host.E) B.sp.cm (B.R.N 0) (fun w => (colLev I.Ch 0 w).H) (f := B.R.f) (basePi_of_ok hX hPr u) (hPr.piT_norm u) (rls_vT_iff hX hPr u) (fun P hP => (hPr.vT_norm u P hP : Ideal.absNorm P.asIdeal = B.T u)) (rls_T_notUnder hPr u) (hf ▸ colBase_inde …`. Take `⟨k1, k2, k3⟩` from `kStd_spec hPr u (B.R.N 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `letI := StepZero.idxUnique hL`. Take `⟨q₀, -⟩` from `exists_ptAt (R := B.R) I.sel (I.tup a) (I.cst a) (u := u) (j := 0) (DecoF.base _ _ _ _ _)`. Use `⟨badG (I.rec7 l Z), Unit, chOf, fun _ => ⟨lev, Y, h1, h2, SI, h3, h4⟩, fun _ => kStd X u (B.R.N 0), ⟨fun c c' => ⟨fun _ => ⟨Subsingleton.elim _ _, cos0 I _ _⟩, fun _ => rfl⟩, fun _ => ⟨(I.stp u a 0).cl default q₀, rfl⟩, fun β x => ?_, fun _ => k1, fun _ v hv _ _ => k2 v hv, fun _ …` and prove the remaining obligations. Conclude with `(h5 ▸ Iff.rfl : x ∈ lev.Lb ↔ x ∈ baseLb B.fields.E (B.R.N 0) ((B.primes X).vT u)).trans (mem_baseLb hPr u _ x)`. Establish `e` using `h8 ⟨c, rfl⟩ show PtOf ((Y ⟨c, rfl⟩).1 * kStd X u (B.R.N 0)) _`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `yT_spec I hI u a c`. Establish `e` using `h8 ⟨c, rfl⟩ replace h : PtOf (yT I u a c * x * kStd X u (B.R.N 0)) q := e ▸ h`. Conclude with `(h6 ▸ Iff.rfl : x ∈ lev.U ↔ x ∈ levU (F := B.host.F) B.sp.cm (B.R.N 0) ((B.primes X).vT u) (B.primes X).vGs (colLev I.Ch 0).grp).trans (lev0 I hI hPr u a c x q h)`. Establish `e` using `h8 ⟨c, rfl⟩`.
-
-Establish `hx : (id x.1 : GA B (B.R.N 0)) ∈ levU (F` using `B.host.F) B.sp.cm (B.R.N 0) ((B.primes X).vT u) (B.primes X).vGs (colLev I.Ch 0).grp := h6 ▸ x.2`. Use `(congrArg Units.val (h7 x hx)).trans ?_` and prove the remaining obligations. Conclude with `chr0 I hI hPr u a c x.1 hx κ hκ (e ▸ h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem charts_zero : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι), ∃ (bad : Set (HeightOneSpectrum (𝓞 B.host.F))) (Ch : Type) (chOf : (I.stp u a 0).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) bad 0 (Nat.zero_le _) (fun c : {c // chOf c = β} => (I.chain l u a).stab 0 c.1) (fun c => latCrd (I.rec7 l Z) 0 (Nat.zero_le _) (I.latAt u a 0 c.1))), I.ReadsK l Z u a 0 (Nat.zero_le _) chOf K := by
   intro B X I hI hP l Z u a

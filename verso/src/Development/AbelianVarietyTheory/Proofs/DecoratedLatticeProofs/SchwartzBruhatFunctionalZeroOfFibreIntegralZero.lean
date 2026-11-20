@@ -15,27 +15,25 @@ noncomputable section
 namespace GlobalTheory.SplitWeil.FourierPi
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν hν I₀ I₁ I₂ _ _ _ M _ _ l hl Φ hΦ`. Use `haveI := secondCountable k`. Use `haveI := hν`. Establish `hU : {t : I₂ → k | ∀ g : (I₀ → k) × (I₁ → k) × (I₂ → k), Φ.1 (g + (0, 0, t)) = Φ.1 g} ∈ 𝓝 (0 : I₂ → k)`. Establish `ht : Filter.Tendsto (fun t : I₂ → k => ((0, 0, -t) : (I₀ → k) × (I₁ → k) × (I₂ → k))) (𝓝 0) (𝓝 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous (fun t : I₂ → k => ((0, 0, -t) : (I₀ → k) × (I₁ → k) × (I₂ → k)))` using `by fun_prop`. Establish `e : (((0 : I₀ → k), (0 : I₁ → k), -(0 : I₂ → k))) = 0` using `by rw [neg_zero]; rfl`. Establish `h` using `hc.tendsto 0`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Use `filter_upwards [ht.eventually (GlobalTheory.SBConv.eventually_translate Φ.2)] with t h g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `h g` as an intermediate fact. Simplify `this` using `[sub_eq_add_neg]`. Take `⟨r, hr⟩` from `exists_box_subset hU`. Establish `hK : IsCompact ((fun x : (I₀ → k) × (I₁ → k) × (I₂ → k) => x.2.2) '' tsupport Φ.1)` using `Φ.2.2.isCompact.image (by fun_prop)`. Take `⟨R, hrR, hKR⟩` from `GlobalTheory.T.exists_integralScaledBoxPi_superset_of_isCompact k I₂ _ hK r`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S, hSR, hS⟩` from `GlobalTheory.T.exists_finset_integralScaledBoxPi_coset_reps k I₂ r R hrR`. Establish `h0R : (0 : I₂ → k) ∈ box I₂ R` using `fun i _ => by simp [cball]`. Establish `h0r : (0 : I₂ → k) ∈ box I₂ r` using `fun i _ => by simp [cball]`. Establish `hSne : S.Nonempty`. Take `⟨b, ⟨hb, -⟩, -⟩` from `hS 0 h0R`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨b, hb⟩`. Set `T : (I₂ → k) → SB ((I₀ → k) × (I₁ → k) × (I₂ → k))` to `fun b => ⟨fun x => Φ.1 (x + (0, 0, b)), Φ.2.1.comp_continuous (continuous_add_right _), Φ.2.2.comp_homeomorph (Homeomorph.addRight _)⟩`. Establish `hT : ∀ b, l (T b) = l Φ` using `fun b => hl b Φ (T b) fun _ => rfl`. Establish `hvol : (Measure.pi fun _ : I₂ => ν).real (box I₂ r) ≠ 0`. Rewrite using `[measureReal_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(ENNReal.toReal_pos ((isOpen_box r).measure_ne_zero _ ⟨0, h0r⟩) (isCompact_box r).measure_lt_top.ne).ne'`. Establish `hsum : ∑ b ∈ S, T b = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Take `⟨x₀, x₁, a⟩` from `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hF1 : ∀ t ∈ box I₂ r, ∀ y, Φ.1 (x₀, x₁, y + t) = Φ.1 (x₀, x₁, y)` using `fun t ht y => by`. Use `hr ht (x₀, x₁, y)` as an intermediate fact. Simplify using `using this`. Establish `hF2 : ∀ y ∉ box I₂ R, Φ.1 (x₀, x₁, y) = 0` using `fun y hy => image_eq_zero_of_notMem_tsupport fun hm => hy (hKR ⟨_, hm, rfl⟩)`. Establish `hval : (∑ b ∈ S, T b).1 (x₀, x₁, a) = ∑ b ∈ S, Φ.1 (x₀, x₁, a + b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubmonoidClass.coe_finset_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[T]`. Rewrite using `[hval]`. Distinguish the cases in `ha : a ∈ box I₂ R`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.T.sum_integralScaledBoxPi_coset_reps_shift_invariant k I₂ r R S hSR hS (fun y => Φ.1 (x₀, x₁, y)) hF1 a ha]`. Establish `h` using `GlobalTheory.T.integral_box_invariant_eq_measureReal_mul_sum_reps k ν hν I₂ r R S hSR hS (fun y => Φ.1 (x₀, x₁, y)) hF1 hF2`. Rewrite `h` using `[hΦ x₀ x₁]`. Establish `h'` using `(mul_eq_zero.mp h.symm).resolve_left (by exact_mod_cast hvol)`. Simplify using `using h'`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun b hb => hF2 _ fun hab => ha fun i _ => ?_` and prove the remaining obligations. Use `add_mem_cball (hab i trivial) (neg_mem_cball (hSR b hb i trivial))` as an intermediate fact. Simplify using `using this`. Establish `hz : (S.card : ℂ) • l Φ = 0`. Establish `h1 : l (∑ b ∈ S, T b) = (S.card : ℂ) • l Φ`.
-
-Rewrite using `[map_sum, Finset.sum_congr rfl fun b _ => hT b, Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Rewrite using `[← h1, hsum, map_zero]`. Conclude with `(smul_eq_zero.mp hz).resolve_left (by exact_mod_cast hSne.card_ne_zero)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_zero_of_translation_invariant_of_fibre_integral_eq_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), ν.IsAddHaarMeasure → ∀ (I₀ I₁ I₂ : Type) [Fintype I₀] [Fintype I₁] [Fintype I₂] (M : Type) [AddCommGroup M] [Module ℂ M] (l : SB ((I₀ → k) × (I₁ → k) × (I₂ → k)) →ₗ[ℂ] M), (∀ (a : I₂ → k) (Φ Φ' : SB ((I₀ → k) × (I₁ → k) × (I₂ → k))), (∀ x, Φ'.1 x = Φ.1 (x + (0, 0, a))) → l Φ' = l Φ) → ∀ Φ : SB ((I₀ → k) × (I₁ → k) × (I₂ → k)), (∀ x₀ x₁, ∫ a, Φ.1 (x₀, x₁, a) ∂(Measure.pi fun _ => ν) = 0) → l Φ = 0 := by
   intro k _ _ _ _ _ _ ν hν I₀ I₁ I₂ _ _ _ M _ _ l hl Φ hΦ

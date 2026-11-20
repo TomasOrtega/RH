@@ -12,15 +12,15 @@ namespace GlobalTheory.CompanionTheory.SatakeBound.LargeLattice
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-The claim follows from `(Valuation.mem_integer_iff _ _).2 (valuation_uniformizer_lt_one F).le`.
+A detailed English derivation is pending.
 -/
 theorem uniformizer_mem : (uniformizer F : F) ∈ 𝒪[F] :=
   (Valuation.mem_integer_iff _ _).2 (valuation_uniformizer_lt_one F).le
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Conclude with `⟨0, by simp [ha]⟩`. Establish `hvx : ValuativeRel.valuation F a ≠ 0` using `(Valuation.ne_zero_iff _).mpr ha`. Take `⟨m, hm⟩` from `exists_pow_lt₀ (valuation_uniformizer_lt_one F) (Units.mk0 _ hvx)⁻¹`. Use `⟨m, (Valuation.mem_integer_iff _ _).2 ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ValuativeRel.valuation F (uniformizer F : F) ^ m * ValuativeRel.valuation F a < 1`. Use `mul_lt_mul_of_pos_right hm (zero_lt_iff.mpr hvx)` as an intermediate fact. Simplify `this` using `[hvx]`. Rewrite using `[map_mul, map_pow]`. Conclude with `h1.le`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem (a : F) : ∃ M : ℕ, (uniformizer F : F) ^ M * a ∈ 𝒪[F] := by
   by_cases ha : a = 0
@@ -35,7 +35,7 @@ theorem exists_pow_mul_mem (a : F) : ∃ M : ℕ, (uniformizer F : F) ^ M * a �
   exact h1.le
 
 /- English proof (translation)
-Introduce `x hx i`. Establish `: (uniformizer F : F) ^ M' * x i = (uniformizer F : F) ^ (M' - M) * ((uniformizer F : F) ^ M * x i)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel h]`. Rewrite using `[this]`. Conclude with `Subring.mul_mem _ (Subring.pow_mem _ uniformizer_mem _) (hx i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_mono {m M M' : ℕ} (h : M ≤ M') : lat F m M ⊆ lat F m M' := by
   intro x hx i
@@ -46,7 +46,7 @@ theorem lat_mono {m M M' : ℕ} (h : M ≤ M') : lat F m M ⊆ lat F m M' := by
   exact Subring.mul_mem _ (Subring.pow_mem _ uniformizer_mem _) (hx i)
 
 /- English proof (translation)
-Use `choose M hM using fun i => exists_pow_mul_mem (x i)`. Use `⟨Finset.univ.sup M, fun i => ?_⟩` and prove the remaining obligations. Conclude with `lat_mono (m := 1) (F := F) (Finset.le_sup (f := M) (Finset.mem_univ i)) (show (fun _ => x i) ∈ lat F 1 (M i) from fun _ => hM i) 0`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_mem_lat {m : ℕ} (x : Fin m → F) : ∃ M, x ∈ lat F m M := by
   choose M hM using fun i => exists_pow_mul_mem (x i)
@@ -55,7 +55,7 @@ theorem exists_mem_lat {m : ℕ} (x : Fin m → F) : ∃ M, x ∈ lat F m M := b
     (show (fun _ => x i) ∈ lat F 1 (M i) from fun _ => hM i) 0
 
 /- English proof (translation)
-Rewrite using `[Measures.mem_box]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_lat_iff_box {m M : ℕ} {x : Fin m → F} :
     x ∈ lat F m M ↔ ((uniformizer F : F) ^ M • x) ∈ Measures.box F (Fin m) := by
@@ -63,7 +63,7 @@ theorem mem_lat_iff_box {m M : ℕ} {x : Fin m → F} :
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_lat_iff_box, ← Matrix.mulVec_smul]`. Conclude with `Measures.mulVec_mem_box hA (mem_lat_iff_box.1 hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_lat {m M : ℕ} {A : Matrix (Fin m) (Fin m) F} (hA : ∀ i j, A i j ∈ 𝒪[F])
     {x : Fin m → F} (hx : x ∈ lat F m M) : A *ᵥ x ∈ lat F m M := by
@@ -74,7 +74,7 @@ def rowM {k : ℕ} (η : Fin (k + 1) → F) : Matrix (Fin (k + 1)) (Fin (k + 1))
   Matrix.of fun i j => if i = Fin.last k then η j else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hi : i = Fin.last k`. Simplify using `[rowM, hi]`. Simplify using `[rowM, hi]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rowM_mul {k : ℕ} (η : Fin (k + 1) → F) :
     rowM η * rowM η = η (Fin.last k) • rowM η := by
@@ -103,7 +103,7 @@ def hGL {k : ℕ} (η : Fin (k + 1) → F) (hu : 1 - η (Fin.last k) ≠ 0) : GL
     abel
 
 /- English proof (translation)
-Use `show ((1 - rowM η) *ᵥ x) (Fin.last k) = _`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Simplify using `[rowM, Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hGL_mulVec_last {k : ℕ} (η : Fin (k + 1) → F) (hu : 1 - η (Fin.last k) ≠ 0)
     (x : Fin (k + 1) → F) :
@@ -114,7 +114,7 @@ theorem hGL_mulVec_last {k : ℕ} (η : Fin (k + 1) → F) (hu : 1 - η (Fin.las
   simp [rowM, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Establish `h1 : ValuativeRel.valuation F t ≤ 1` using `(Valuation.mem_integer_iff _ _).1 ht`. Establish `h2 : ValuativeRel.valuation F (uniformizer F : F) ^ (c + 1) < 1` using `pow_lt_one₀ zero_le' (valuation_uniformizer_lt_one F) (Nat.succ_ne_zero c)`. Rewrite using `[he, map_mul, map_pow]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' h1) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_lt_one_of_div {c : ℕ} {e t : F} (ht : t ∈ 𝒪[F])
     (he : e = (uniformizer F : F) ^ (c + 1) * t) : ValuativeRel.valuation F e < 1 := by
@@ -125,14 +125,14 @@ theorem valuation_lt_one_of_div {c : ℕ} {e t : F} (ht : t ∈ 𝒪[F])
   exact lt_of_le_of_lt (mul_le_of_le_one_right' h1) h2
 
 /- English proof (translation)
-The claim follows from `Valuation.map_one_sub_of_lt _ he`.
+A detailed English derivation is pending.
 -/
 theorem one_sub_valuation {e : F} (he : ValuativeRel.valuation F e < 1) :
     ValuativeRel.valuation F (1 - e) = 1 :=
   Valuation.map_one_sub_of_lt _ he
 
 /- English proof (translation)
-Introduce `h`. Use `one_sub_valuation he` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_sub_ne_zero {e : F} (he : ValuativeRel.valuation F e < 1) : 1 - e ≠ 0 := by
   intro h
@@ -141,13 +141,13 @@ theorem one_sub_ne_zero {e : F} (he : ValuativeRel.valuation F e < 1) : 1 - e �
   exact zero_ne_one this
 
 /- English proof (translation)
-Rewrite using `[Valuation.mem_integer_iff, map_inv₀, one_sub_valuation he, inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_one_sub_mem {e : F} (he : ValuativeRel.valuation F e < 1) : (1 - e)⁻¹ ∈ 𝒪[F] := by
   rw [Valuation.mem_integer_iff, map_inv₀, one_sub_valuation he, inv_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_apply_mem {ι : Type} [DecidableEq ι] (i j : ι) :
     (1 : Matrix ι ι F) i j ∈ 𝒪[F] := by
@@ -157,7 +157,7 @@ theorem one_apply_mem {ι : Type} [DecidableEq ι] (i j : ι) :
   · exact Subring.zero_mem _
 
 /- English proof (translation)
-Take `⟨y, hy, e⟩` from `h i j`. Establish `: A i j = (uniformizer F : F) ^ c * y + (1 : Matrix ι ι F) i j`. Rewrite using `[← e, Matrix.sub_apply, sub_add_cancel]`. Rewrite using `[this]`. Conclude with `Subring.add_mem _ (Subring.mul_mem _ (Subring.pow_mem _ uniformizer_mem _) hy) (one_apply_mem i j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_div_sub_one {ι : Type} [DecidableEq ι] {c : ℕ} {A : Matrix ι ι F}
     (h : Div c (A - 1)) (i j : ι) : A i j ∈ 𝒪[F] := by
@@ -169,9 +169,9 @@ theorem mem_of_div_sub_one {ι : Type} [DecidableEq ι] {c : ℕ} {A : Matrix ι
     (one_apply_mem i j)
 
 /- English proof (translation)
-Introduce `i j`. Use `show ∃ y ∈ 𝒪[F], ((1 - rowM η) - 1 : Matrix (Fin (k + 1)) (Fin (k + 1)) F) i j = _`. Take `⟨t, ht, e⟩` from `hη j`. Distinguish the cases in `hi : i = Fin.last k`. Use `⟨-t, Subring.neg_mem _ ht, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[rowM, hi, e]`. Use `⟨0, Subring.zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using `[rowM, hi]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hGL_div {k c : ℕ} {η : Fin (k + 1) → F}
     (hη : ∀ j, ∃ t ∈ 𝒪[F], η j = (uniformizer F : F) ^ (c + 1) * t)
@@ -187,9 +187,9 @@ theorem hGL_div {k c : ℕ} {η : Fin (k + 1) → F}
     simp [rowM, hi]
 
 /- English proof (translation)
-Introduce `i j`. Use `show ∃ y ∈ 𝒪[F], ((1 + (1 - η (Fin.last k))⁻¹ • rowM η) - 1 : Matrix (Fin (k + 1)) (Fin (k + 1)) F) i j = _`. Take `⟨t, ht, e⟩` from `hη j`. Distinguish the cases in `hi : i = Fin.last k`. Use `⟨(1 - η (Fin.last k))⁻¹ * t, Subring.mul_mem _ (inv_one_sub_mem hv) ht, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[rowM, hi, e]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨0, Subring.zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using `[rowM, hi]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hGL_inv_div {k c : ℕ} {η : Fin (k + 1) → F}
     (hη : ∀ j, ∃ t ∈ 𝒪[F], η j = (uniformizer F : F) ^ (c + 1) * t)
@@ -208,7 +208,7 @@ theorem hGL_inv_div {k c : ℕ} {η : Fin (k + 1) → F}
     simp [rowM, hi]
 
 /- English proof (translation)
-Use `Measures.distribHaarChar_glEquiv_eq_one h₁ h₂` as an intermediate fact. Rewrite `this` using `[Measures.distribHaarChar_glEquiv]`. Rewrite using `[show (h : Matrix (Fin m) (Fin m) F).det = ((Matrix.GeneralLinearGroup.det h : Fˣ) : F) from rfl, Measures.modulus_units]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modulus_det_eq_one {m : ℕ} (h : GL (Fin m) F)
     (h₁ : ∀ a b, (h : Matrix (Fin m) (Fin m) F) a b ∈ 𝒪[F])
@@ -221,7 +221,7 @@ theorem modulus_det_eq_one {m : ℕ} (h : GL (Fin m) F)
   exact this
 
 /- English proof (translation)
-Use `Set.Subset.antisymm ?_ fun x hx => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `mulVec_mem_lat h₁ hx`. Use `⟨((h⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) *ᵥ x, mulVec_mem_lat h₂ hx, ?_⟩ show (h : Matrix (Fin m) (Fin m) F) *ᵥ (((h⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) *ᵥ x) = x` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_lat {m M : ℕ} (h : GL (Fin m) F)
     (h₁ : ∀ a b, (h : Matrix (Fin m) (Fin m) F) a b ∈ 𝒪[F])
@@ -245,7 +245,7 @@ def g0 (m c : ℕ) : GL (Fin m) F where
     rw [smul_mul_smul_comm, mul_inv_cancel₀ this, one_mul, one_smul]
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨(1 : Matrix (Fin m) (Fin m) F) i j, one_apply_mem i j, ?_⟩` and prove the remaining obligations. Use `show (((uniformizer F : F) ^ (c + 1)) • (1 : Matrix (Fin m) (Fin m) F)) i j = _`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g0_div (m c : ℕ) :
     Div (c + 1) (((g0 m c : GL (Fin m) F)⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) := by
@@ -255,13 +255,11 @@ theorem g0_div (m c : ℕ) :
   rw [Matrix.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hϖ : (uniformizer F : F) ^ (c + 1) ≠ 0` using `pow_ne_zero _ (uniformizer_ne_zero F)`. Establish `hg : ∀ x : Fin m → F, ((g0 m c : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) *ᵥ x = ((uniformizer F : F) ^ (c + 1))⁻¹ • x` using `fun x => by show (((uniformizer F : F) ^ (c + 1))⁻¹ • (1 : Matrix (Fin m) (Fin m) F)) *ᵥ x = _`. Rewrite using `[Matrix.smul_mulVec, Matrix.one_mulVec]`. Use extensionality with `x`. Simplify using `only [Set.mem_image, hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ i`. Use `hy i` as an intermediate fact. Rewrite `this` using `[pow_zero, one_mul]`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_inv_cancel_left₀ hϖ]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Introduce `hx`. Use `⟨((uniformizer F : F) ^ (c + 1)) • x, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul]`. Conclude with `hx i`.
-
-Rewrite using `[smul_smul, inv_mul_cancel₀ hϖ, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g0_image (m c : ℕ) :
     (fun x => ((g0 m c : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) *ᵥ x) '' lat F m 0 =
@@ -286,11 +284,9 @@ theorem g0_image (m c : ℕ) :
     · rw [smul_smul, inv_mul_cancel₀ hϖ, one_smul]
 
 /- English proof (translation)
-Establish `hϖ : (uniformizer F : F) ^ c' ≠ 0` using `pow_ne_zero _ (uniformizer_ne_zero F)`. Establish `hU : IsOpen ((fun y : Fin m → F => ((uniformizer F : F) ^ c')⁻¹ • y) ⁻¹' Measures.box F (Fin m))` using `Measures.isOpen_box.preimage (continuous_const_smul _)`. Use `(IsLocallyConstant.iff_eventually_eq f |>.2 fun x => ?_).continuous` and prove the remaining obligations. Establish `h0 : ((fun y : Fin m → F => ((uniformizer F : F) ^ c')⁻¹ • y) ⁻¹' Measures.box F (Fin m)) ∈ nhds (0 : Fin m → F)` using `hU.mem_nhds (by simpa using Measures.zero_mem_box)`. Establish `h1 : Filter.Tendsto (fun z : Fin m → F => z - x) (nhds x) (nhds 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Continuous fun z : Fin m → F => z - x` using `continuous_id.sub continuous_const`. Simplify using `using this.tendsto x`. Use `filter_upwards [h1 h0] with z hz`. Establish `hz'` using `hf x (z - x) fun i => ⟨((uniformizer F : F) ^ c')⁻¹ * (z - x) i, Measures.mem_box.1 hz i, by rw [mul_inv_cancel_left₀ hϖ]⟩`. Rewrite `hz'` using `[add_sub_cancel]`.
-
-Conclude with `hz'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_periodic {m c' : ℕ} {f : (Fin m → F) → ℂ}
     (hf : ∀ x y, (∀ i, ∃ t ∈ 𝒪[F], y i = (uniformizer F : F) ^ c' * t) → f (x + y) = f x) :
@@ -317,43 +313,35 @@ section Integrals
 variable [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Use `haveI := Measures.sigmaCompactSpace F`. Take `⟨hψc, hlat⟩` from `hL0 F μ ψ hψ`. Take `⟨hlat', hcv⟩` from `hlat (k + 1)`. Establish `hL1'` using `hL1 F μ ψ hψ (k + 1)`. Use `set ν : Measure (Fin (k + 1) → F) := Measure.pi fun _ => μ with hν`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set G : (Fin (k + 1) → F) → ℂ := fun x => ψ (-x (Fin.last k)) * f x with hG`. Use `set S := (fun x => (g : Matrix (Fin (k + 1)) (Fin (k + 1)) F) *ᵥ x) '' lat F (k + 1) 0 with hSdef`. Use `set gi : Matrix (Fin (k + 1)) (Fin (k + 1)) F := ((g⁻¹ : GL (Fin (k + 1)) F) : Matrix (Fin (k + 1)) (Fin (k + 1)) F) with hgi`. Establish `hGc : Continuous G` using `(hψc.comp (continuous_apply _).neg).mul hfc`. Use `set Φ : (Fin (k + 1) → F) → (Fin (k + 1) → F) → ℂ := fun x ξ => ψ (ξ ⬝ᵥ (gi *ᵥ x)) * G x with hΦ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hgg : (g : Matrix (Fin (k + 1)) (Fin (k + 1)) F) * gi = 1`. Rewrite using `[hgi, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hgg' : gi * (g : Matrix (Fin (k + 1)) (Fin (k + 1)) F) = 1`. Rewrite using `[hgi, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hmemS : ∀ x, x ∈ S ↔ ∀ i, (gi *ᵥ x) i ∈ 𝒪[F]` using `fun x => by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ i`. Use `hy i` as an intermediate fact. Rewrite `this` using `[pow_zero, one_mul]`. Use `show (gi *ᵥ ((g : Matrix (Fin (k + 1)) (Fin (k + 1)) F) *ᵥ y)) i ∈ 𝒪[F]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, hgg', Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `h`. Use `⟨gi *ᵥ x, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul]`. Conclude with `h i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (g : Matrix (Fin (k + 1)) (Fin (k + 1)) F) *ᵥ (gi *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, hgg, Matrix.one_mulVec]`. Establish `hgic : Continuous fun x : Fin (k + 1) → F => gi *ᵥ x` using `Continuous.matrix_mulVec continuous_const continuous_id`. Establish `hS : MeasurableSet S`. Establish `: S = (fun x => gi *ᵥ x) ⁻¹' lat F (k + 1) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Rewrite using `[hmemS]`. Simplify using `[lat]`. Rewrite using `[this]`. Conclude with `hgic.measurable (hlat' 0).2.2.1`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hA` using `(hlat' 0).2.2.1`. Establish `hB` using `(hlat' M).2.2.1`. Use `set vol : ℝ := ν.real (lat F (k + 1) 0) with hvol`. Establish `hvolpos : 0 < vol` using `(hlat' 0).2.2.2`. Establish `h1 : ∀ x, ∫ ξ in lat F (k + 1) 0, Φ x ξ ∂ν = S.indicator (fun x => (vol : ℂ) * G x) x`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Simplify using `only [hΦ]`. Rewrite using `[integral_mul_const, hL1' (gi *ᵥ x)]`. Distinguish the cases in `hx : x ∈ S`. Rewrite using `[if_pos ((hmemS x).1 hx), Set.indicator_of_mem hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (fun h => hx ((hmemS x).2 h)), Set.indicator_of_notMem hx, zero_mul]`. Establish `h2 : ∫ x in lat F (k + 1) M, ∫ ξ in lat F (k + 1) 0, Φ x ξ ∂ν ∂ν = (vol : ℂ) * ∫ x in S, G x ∂ν`. Repeatedly rewrite using `[h1]`. Rewrite using `[setIntegral_indicator hS, Set.inter_eq_right.2 hM, integral_const_mul]`. Establish `hΦc : Continuous (Function.uncurry Φ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(hψc.comp (Continuous.dotProduct continuous_snd (Continuous.matrix_mulVec continuous_const continuous_fst))).mul (hGc.comp continuous_fst)` and prove the remaining obligations. Establish `hint : Integrable (Function.uncurry Φ) ((ν.restrict (lat F (k + 1) M)).prod (ν.restrict (lat F (k + 1) 0)))`. Rewrite using `[Measure.prod_restrict]`. Conclude with `hΦc.continuousOn.integrableOn_compact ((hlat' M).1.prod (hlat' 0).1)`. Establish `h3` using `integral_integral_swap hint`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h4 : ∀ ξ ∈ lat F (k + 1) 0, ∫ x in lat F (k + 1) M, Φ x ξ ∂ν = ∫ x in lat F (k + 1) M, G x ∂ν`. Introduce `ξ hξ`. Use `set η : Fin (k + 1) → F := ξ ᵥ* gi with hηdef`. Establish `hη : ∀ j, ∃ t ∈ 𝒪[F], η j = (uniformizer F : F) ^ (c + 1) * t`. Introduce `j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose y hy e using hg`. Use `⟨∑ i, ξ i * y i j, Subring.sum_mem _ fun i _ => Subring.mul_mem _ ?_ (hy i j), ?_⟩` and prove the remaining obligations. Use `hξ i` as an intermediate fact. Rewrite `this` using `[pow_zero, one_mul]`. Then use the resulting hypothesis. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hηdef, Matrix.vecMul, dotProduct]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show gi i j = _ from e i j]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv : ValuativeRel.valuation F (η (Fin.last k)) < 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨t, ht, e⟩` from `hη (Fin.last k)`. Conclude with `valuation_lt_one_of_div ht e`. Establish `hu` using `one_sub_ne_zero hv`. Establish `hd` using `hGL_div hη hu`. Establish `hd'` using `hGL_inv_div hη hv hu`.
-
-Establish `h₁` using `mem_of_div_sub_one hd`. Establish `h₂` using `mem_of_div_sub_one hd'`. Establish `hc` using `hcv (hGL η hu) (lat F (k + 1) M) G hB`. Rewrite `hc` using `[image_lat _ h₁ h₂, modulus_det_eq_one _ h₁ h₂]`. Simplify using `only [NNReal.coe_one, Complex.ofReal_one, one_mul] at hc`.
-
-Rewrite using `[hc]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show Φ x ξ = G _`. Simplify using `only [hΦ, hG]`. Rewrite using `[hf _ hd, hGL_mulVec_last, ← mul_assoc, ← AddChar.map_add_eq_mul, Matrix.dotProduct_mulVec]`.
-
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : ∫ ξ in lat F (k + 1) 0, ∫ x in lat F (k + 1) M, Φ x ξ ∂ν ∂ν = (vol : ℂ) * ∫ x in lat F (k + 1) M, G x ∂ν`. Rewrite using `[setIntegral_congr_fun hA h4, setIntegral_const, Complex.real_smul]`. Establish `hne : (vol : ℂ) ≠ 0` using `by exact_mod_cast hvolpos.ne'`.
-
-Conclude with `mul_left_cancel₀ hne (h2.symm.trans (h3.trans h5))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_image_eq (hL0 : L0) (hL1 : L1) (μ : Measure F) [μ.IsAddHaarMeasure]
     (ψ : AddChar F ℂ) (hψ : PsiOK ψ) {k c : ℕ} {f : (Fin (k + 1) → F) → ℂ} (hfc : Continuous f)
@@ -470,9 +458,9 @@ theorem integral_image_eq (hL0 : L0) (hL1 : L1) (μ : Measure F) [μ.IsAddHaarMe
 end Integrals
 
 /- English proof (translation)
-Introduce `hL0 hL1 F _ _ _ _ _ _ μ _ ψ hψ k c c' f hf₁ hf₂ g hg`. Establish `hfc : Continuous f` using `continuous_of_periodic hf₁`. Establish `hcomp` using `((hL0 F μ ψ hψ).2 (k + 1)).1`. Establish `himg : IsCompact ((fun x => (g : Matrix (Fin (k + 1)) (Fin (k + 1)) F) *ᵥ x) '' lat F (k + 1) 0)` using `(hcomp 0).1.image (Continuous.matrix_mulVec continuous_const continuous_id)`. Choose the witnesses or unpack the hypotheses as in `⟨M₁, hM₁⟩ : ∃ M, (fun x => (g : Matrix (Fin (k + 1)) (Fin (k + 1)) F) *ᵥ x) '' lat F (k + 1) 0 ⊆ lat F (k + 1) M := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `himg.elim_directed_cover (fun M => lat F (k + 1) M) (fun M => (hcomp M).2.1) ?_ (directed_of_isDirected_le fun _ _ h => lat_mono h)` and prove the remaining obligations. Introduce `x _`. Conclude with `Set.mem_iUnion.2 (exists_mem_lat x)`. Rewrite using `[integral_image_eq hL0 hL1 μ ψ hψ hfc hf₂ g hg (hM₁.trans (lat_mono (le_max_left M₁ (c + 1)))), ← g0_image (k + 1) c, integral_image_eq hL0 hL1 μ ψ hψ hfc hf₂ (g0 (k + 1) c) (g0_div (k + 1) c) (M := max M₁ (c + 1)) ((g0_image (k + 1) c).subset.trans (lat_mono (le_max_right M₁ (c …`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stability : L0 → L1 → L2 := by
   intro hL0 hL1 F _ _ _ _ _ _ μ _ ψ hψ k c c' f hf₁ hf₂ g hg

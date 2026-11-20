@@ -22,19 +22,19 @@ def fT (φ : GA E (m + 1) → ℂ) (Φ : (Fin (m + 1) → Cinf E) → ℂ) (g : 
 def wt (N : ℕ) (x : ℝ) (g : GA E (m + 1)) : ℝ≥0 := Real.toNNReal ((indN N (yFin g)).re * detPow E (m + 1) x g)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `congrArg (fun r => pInf E (r i)) h`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem yInf_of_lastRow {g g' : GA E (m + 1)} (h : GlobalTheory.ZEul.lastRow g' = GlobalTheory.ZEul.lastRow g) : yInf g' = yInf g := by
   funext i; exact congrArg (fun r => pInf E (r i)) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `congrArg (fun r => GlobalTheory.RSJ.pFin E (r i)) h`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem yFin_of_lastRow {g g' : GA E (m + 1)} (h : GlobalTheory.ZEul.lastRow g' = GlobalTheory.ZEul.lastRow g) : yFin g' = yFin g := by
   funext i; exact congrArg (fun r => GlobalTheory.RSJ.pFin E (r i)) h
 
 /- English proof (translation)
-Rewrite using `[fT, yInf_of_lastRow h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fT_of_lastRow {φ : GA E (m + 1) → ℂ} {Φ : (Fin (m + 1) → Cinf E) → ℂ} {g g' : GA E (m + 1)}
     (h : GlobalTheory.ZEul.lastRow g' = GlobalTheory.ZEul.lastRow g) :
@@ -42,7 +42,7 @@ theorem fT_of_lastRow {φ : GA E (m + 1) → ℂ} {Φ : (Fin (m + 1) → Cinf E)
   rw [fT, yInf_of_lastRow h]
 
 /- English proof (translation)
-Rewrite using `[wt, wt, yFin_of_lastRow h, hd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_of_lastRow_of_detPow {N : ℕ} {x : ℝ} {g g' : GA E (m + 1)} (h : GlobalTheory.ZEul.lastRow g' = GlobalTheory.ZEul.lastRow g)
     (hd : detPow E (m + 1) x g' = detPow E (m + 1) x g) : wt N x g' = wt N x g := by

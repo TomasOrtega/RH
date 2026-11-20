@@ -9,15 +9,15 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `set q : ℝ := (1 + r * B) / 2 with hq_def`. Establish `hq1 : q < 1` using `by rw [hq_def]; linarith`. Establish `hd : 0 < q - r * B` using `by rw [hq_def]; linarith`. Establish `hq0 : 0 ≤ q` using `by rw [hq_def]; positivity`. Take `⟨N, hN⟩` from `exists_nat_ge (((A + B * k) * r) / (q - r * B))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hterm : ∀ i : ℕ, 0 ≤ A + B * ((k : ℝ) + i)` using `fun i => add_nonneg hA (mul_nonneg hB (by positivity))`. Establish `hf : ∀ m : ℕ, 0 ≤ (∏ l ∈ range m, (A + B * ((k : ℝ) + l))) * r ^ m / (m.factorial : ℝ)` using `fun m => div_nonneg (mul_nonneg (prod_nonneg fun i _ => hterm i) (pow_nonneg hr _)) (by positivity)`. Use `summable_of_ratio_norm_eventually_le hq1 ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop N] with m hm`. Rewrite using `[Real.norm_of_nonneg (hf _), Real.norm_of_nonneg (hf _)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : (A + B * ((k : ℝ) + m)) * r ≤ q * ((m : ℝ) + 1)`. Establish `h0` using `(div_le_iff₀ hd).1 hN`. Establish `hmN : (N : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `h1 : (A + B * k) * r ≤ (q - r * B) * m` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1 : (0 : ℝ) < (m : ℝ) + 1` using `by positivity`. Establish `hfac : (0 : ℝ) < (m.factorial : ℝ)` using `by positivity`. Rewrite using `[prod_range_succ, pow_succ, Nat.factorial_succ, Nat.cast_mul, Nat.cast_succ]`. Establish `key : (∏ l ∈ range m, (A + B * ((k : ℝ) + l))) * (A + B * ((k : ℝ) + m)) * (r ^ m * r) / (((m : ℝ) + 1) * (m.factorial : ℝ)) = ((∏ l ∈ range m, (A + B * ((k : ℝ) + l))) * r ^ m / (m.factorial : ℝ)) * ((A + B * ((k : ℝ) + m)) * r / ((m : ℝ) + 1))`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[key, mul_comm q]`. Apply `mul_le_mul_of_nonneg_left _ (hf m)` to reduce the goal to its premises. Rewrite using `[div_le_iff₀ hm1]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_prod_mul_pow_div_factorial {A B r : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B) (hr : 0 ≤ r)
     (hrB : r * B < 1) (k : ℕ) :

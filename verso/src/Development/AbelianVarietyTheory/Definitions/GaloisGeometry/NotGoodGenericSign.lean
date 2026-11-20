@@ -13,9 +13,9 @@ namespace GlobalTheory.Hk3.FamModel
 open Formalism.L2.Col
 
 /- English proof (translation)
-Use extensionality with `d'`. Simplify using `only [DecoSet.inertSet, Set.mem_ofPred_eq, IsInertNbr]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨e₁⟩, ⟨e₂⟩⟩, hf, hb⟩`. Conclude with `⟨⟨⟨e₁.trans f⟩, ⟨e₂.trans f⟩⟩, hf, hb⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨⟨e₁⟩, ⟨e₂⟩⟩, hf, hb⟩`. Conclude with `⟨⟨⟨e₁.trans f.symm⟩, ⟨e₂.trans f.symm⟩⟩, hf, hb⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem nb_congr {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
     {ST SG : Finset (HeightOneSpectrum (𝓞 E))} {P : Ideal (𝓞 E)} {s y : List ℕ}
@@ -29,13 +29,13 @@ theorem nb_congr {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
     exact ⟨⟨⟨e₁.trans f.symm⟩, ⟨e₂.trans f.symm⟩⟩, hf, hb⟩
 
 /- English proof (translation)
-Take `⟨y, hy₁, hy₂, ⟨f⟩⟩` from `GlobalTheory.InertTypeIso.inType_iso_sorted_pos P.asIdeal s`. Establish `hnb : ∀ d, c.nbI P.asIdeal s d = c.nbI P.asIdeal y d`. Introduce `d`. Rewrite using `[DecoPts.nbI, DecoPts.nbI, DecoSet.inertNb, DecoSet.inertNb, nb_congr f]`. Establish `hop : (Col.heckeI c P.asIdeal s).op = (Col.heckeI c P.asIdeal y).op`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `LinearMap.ext fun φ => Subtype.ext (funext fun d => ?_)` and prove the remaining obligations. Rewrite using `[heckeI_op_apply, heckeI_op_apply, hnb]`. Distinguish the cases in `hlen : 2 * y.length ≤ n`. Conclude with `Or.inr ⟨y, ⟨hy₁, hy₂, hlen⟩, hop⟩`. Use `left`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the second alternative. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hop]`. Use `LinearMap.ext fun φ => Subtype.ext (funext fun d => ?_)` and prove the remaining obligations. Rewrite using `[heckeI_op_apply]`. Establish `hempty : c.nbI P.asIdeal y d = ∅`. Use `Finset.eq_empty_of_forall_notMem fun e he => hlen ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[DecoPts.mem_nbI, DecoSet.inertNb]`. Use `split_ifs at he with hfin`. Conclude with `GlobalTheory.InertRank.two_mul_length_le P y (c.pts d) (c.pts e) hy₂ (hfin.mem_toFinset.mp he)`. Simplify using `at he`. Simplify using `[hempty]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem op_zero_or {K : Type} [Field K] [NumberField K] [StarRing K] {E : Type} [Field E] [NumberField E]
     [StarRing E] {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))} {S : Col.GSD K} (c : Col.DecoPts S E n ST SG)
@@ -63,9 +63,9 @@ theorem op_zero_or {K : Type} [Field K] [NumberField K] [StarRing K] {E : Type} 
     simp [hempty]
 
 /- English proof (translation)
-Break down `op_zero_or c (offSubI.lev Q).1 s with h0 | ⟨y, hy, hyeq⟩` into its components or cases. Use `left`. Simplify using `only [heckeCSDI, Col.heckeFamI]`. Rewrite using `[h0, map_zero]`. Use `right`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Simplify using `only [heckeCSDI, Col.heckeFamI]`. Rewrite using `[hyeq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem csd_zero_or {K : Type} [Field K] [NumberField K] [StarRing K] {E : Type} [Field E] [NumberField E]
     [StarRing E] {n : ℕ} {ST SG' : Finset (HeightOneSpectrum (𝓞 E))} (S : Col.GSD K) (h : S.Ok) (c : Col.DecoPts S E n ST SG')
@@ -81,7 +81,7 @@ theorem csd_zero_or {K : Type} [Field K] [NumberField K] [StarRing K] {E : Type}
     rw [hyeq]
 
 /- English proof (translation)
-Establish `hm` using `R.two_le_m`. Simplify using `only [Ranks.N, Ranks.r, Nat.mul_succ]`. Generalize the expression as in `R.m * R.t = x`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_rows (R : Ranks) : R.N R.m - 1 = R.r + R.m * R.t := by
   have hm := R.two_le_m
@@ -90,9 +90,9 @@ theorem rank_rows (R : Ranks) : R.N R.m - 1 = R.r + R.m * R.t := by
   omega
 
 /- English proof (translation)
-Break down `csd_zero_or (Col.mtildeKGSD W Ch sel t.1) (Col.mtildeKOk W Ch sel t.1 hX) (formPts _ _) Pr.vGs S0 Q s with h | ⟨y, hy, hyeq⟩` into its components or cases. Conclude with `Or.inl h`. Use `Or.inr ⟨y, ?_, hyeq⟩ show Col.InertTypeOk (R.r + R.m * R.t) y` and prove the remaining obligations. Rewrite using `[← rank_rows R]`. Conclude with `hy`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `L j t Q s := by`. Break down `csd_zero_or (Col.mtKGSD W Ch sel t.1 (j.1 + 1)) (Col.mtKOk W Ch sel t.1 hX (j.1 + 1)) (formPts _ _) Pr.vGs S0 Q s with h | ⟨y, hy, hyeq⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨y, hy, hyeq⟩`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem inertJunk_col {X : Col.Fields} {Pr : Col.Primes X} {R : Ranks} (W : Col.Wts X Pr.Word R) (Ch : Col.Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (hX : X.Ok)
@@ -116,11 +116,11 @@ theorem inertJunk_col {X : Col.Fields} {Pr : Col.Primes X} {R : Ranks} (W : Col.
     · exact Or.inr ⟨y, hy, hyeq⟩
 
 /- English proof (translation)
-Introduce `hJ`. Establish `h2 : (2 : K) ≠ 0` using `two_ne_zero`. Break down `hJ.R t ⟨(), Set.mem_univ _⟩ [0] with h | ⟨s', ⟨_, hpos, _⟩, heq⟩` into its components or cases. Simplify using `only at h`. Rewrite `h` using `[if_pos rfl, smul_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `h with h | h` into its components or cases. Conclude with `h2 h`. Conclude with `one_ne_zero h`. Establish `hs : s' ≠ [0]`. Introduce and unpack `rfl`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl 0 (hpos 0 (List.mem_singleton_self 0))`. Simplify using `only at heq`. Rewrite `heq` using `[if_pos rfl, if_neg hs, two_smul]`. Conclude with `one_ne_zero (add_eq_left.mp heq)`.
+A detailed English derivation is pending.
 -/
 theorem not_inertJunk {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
     (A : FamIn K G Pl0 T m) (t : T) [Nontrivial (A.MtildeCSD t).Forms] :
@@ -142,11 +142,11 @@ theorem not_inertJunk {K : Type} [Field K] [NumberField K] [StarRing K] {G : Typ
     exact one_ne_zero (add_eq_left.mp heq)
 
 /- English proof (translation)
-Introduce `χ hχ`. Rewrite `hχ` using `[Finset.mem_singleton]`. Substitute `hχ` using the available equality. Introduce `h0`. Establish `hG : (Fintype.card G : K) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hP : (Nat.card P : K) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `key` using `congrArg (MonoidAlgebra.lift K K G ((Units.coeHom K).comp ψ)) h0`. Rewrite `key` using `[map_mul, map_zero, chiIdem, lvlIdem, map_sum, map_sum]`. Simplify using `only [MonoidAlgebra.lift_single, MonoidHom.comp_apply, Units.coeHom_apply, Subgroup.coe_subtype, map_inv, map_one, Units.val_one, smul_eq_mul, mul_assoc, Units.inv_mul, mul_one, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at key`. Rewrite `key` using `[← Nat.card_eq_fintype_card (α := P), mul_inv_cancel₀ hP, mul_one, one_div, mul_inv_cancel₀ hG]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero key`.
+A detailed English derivation is pending.
 -/
 theorem goodGeneric_linear {K : Type} [Field K] [CharZero K] {G : Type} [Group G] [Fintype G] (ψ : G →* Kˣ) (P : Subgroup G) :
     GoodGeneric {fun g => (ψ g : K)} P (ψ.comp P.subtype) := by
@@ -166,9 +166,9 @@ theorem goodGeneric_linear {K : Type} [Field K] [CharZero K] {G : Type} [Group G
   exact one_ne_zero key
 
 /- English proof (translation)
-Establish `h1 : χ 1 * χ 1 = χ 1` using `by rw [← hχ, one_mul]`. Establish `hh : χ h * χ h⁻¹ = χ 1` using `by rw [← hχ, mul_inv_cancel]`. Simplify using `only [chiIdem, Finset.sum_mul, MonoidAlgebra.single_mul_single, Finset.smul_sum, MonoidAlgebra.smul_single, smul_eq_mul]`. Use `Fintype.sum_equiv (Equiv.mulRight h) _ _ fun u => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_mulRight, mul_inv_rev, hχ h⁻¹ u⁻¹]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Take the linear combination `(-(c * χ u⁻¹ / (Fintype.card G : K))) * h1 + (-(c * χ u⁻¹ * χ 1 / (Fintype.card G : K))) * hh`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma chiIdem_mul_single {K : Type} [Field K] {G : Type} [Group G] [Fintype G] (χ : G → K)
     (hχ : ∀ a b, χ (a * b) = χ a * χ b) (h : G) (c : K) :
@@ -183,7 +183,7 @@ private lemma chiIdem_mul_single {K : Type} [Field K] {G : Type} [Group G] [Fint
   linear_combination (-(c * χ u⁻¹ / (Fintype.card G : K))) * h1 + (-(c * χ u⁻¹ * χ 1 / (Fintype.card G : K))) * hh
 
 /- English proof (translation)
-Simplify using `only [lvlIdem, Finset.mul_sum, Finset.sum_smul, chiIdem_mul_single χ hχ]`. Use `congr 1`. Conclude with `congrArg (@Finset.univ (↥P)) (Subsingleton.elim _ _)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private lemma chiIdem_mul_lvlIdem {K : Type} [Field K] {G : Type} [Group G] [Fintype G] (χ : G → K)
     (hχ : ∀ a b, χ (a * b) = χ a * χ b) (P : Subgroup G) [Fintype P] (ψ : P →* Kˣ) :
@@ -193,7 +193,7 @@ private lemma chiIdem_mul_lvlIdem {K : Type} [Field K] {G : Type} [Group G] [Fin
   exact congrArg (@Finset.univ (↥P)) (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Establish `e` using `Fintype.sum_equiv (Equiv.mulLeft a) (fun h : P => χ ((a * h : P) : G)) (fun h : P => χ h) fun _ => rfl`. Simplify using `only [Subgroup.coe_mul, hχ, ha, neg_one_mul, Finset.sum_neg_distrib] at e`. Establish `h2 : (2 : K) * ∑ h : P, χ h = 0` using `by linear_combination -e`. Conclude with `(mul_eq_zero.mp h2).resolve_left two_ne_zero`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma sum_char_subgroup_eq_zero_of_eq_neg_one {K : Type} [Field K] [CharZero K] {G : Type} [Group G] [Fintype G] (χ : G → K)
     (hχ : ∀ a b, χ (a * b) = χ a * χ b) (P : Subgroup G) [Fintype P] (a : P) (ha : χ a = -1) :
@@ -204,9 +204,9 @@ private lemma sum_char_subgroup_eq_zero_of_eq_neg_one {K : Type} [Field K] [Char
   exact (mul_eq_zero.mp h2).resolve_left two_ne_zero
 
 /- English proof (translation)
-Introduce `hG`. Establish `hχ : ∀ a b : ℤˣ, (((a * b).val : ℤ) : ℚ) = ((a.val : ℤ) : ℚ) * ((b.val : ℤ) : ℚ)` using `fun a b => by simp`. Apply `hG _ (Finset.mem_singleton_self _)` to reduce the goal to its premises. Establish `hs` using `sum_char_subgroup_eq_zero_of_eq_neg_one (fun g : ℤˣ => ((g.val : ℤ) : ℚ)) hχ ⊤ ⟨-1, Subgroup.mem_top _⟩ (by simp)`. Rewrite using `[chiIdem_mul_lvlIdem _ hχ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MonoidHom.one_apply, Units.val_one, mul_one, ← Finset.mul_sum, hs, mul_zero, zero_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem not_goodGeneric_sign : ¬ GoodGeneric (K := ℚ) (G := ℤˣ) {fun g : ℤˣ => ((g.val : ℤ) : ℚ)} ⊤ 1 := by
   classical
@@ -232,14 +232,14 @@ theorem trISepWith_self : TrISepWith A3 A3.trI ↔ A3.fam3.TrISep := by
   rfl
 
 /- English proof (translation)
-Introduce `j p _ p' _ h`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem trISepWith_id : TrISepWith A3 fun _ e => e := by
   intro j p _ p' _ h
   exact h
 
 /- English proof (translation)
-Rewrite using `[labW, evC, Finsupp.sum_single_index (by simp)]`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem labW_single (j : Fin D.R.m) {I : Type} (pl : I → Pl D.host.E) (d : I → List ℤ) (c : Pl D.host.E → List ℤ → ℂ) (i : I)
     (h : IsLab (Wc D j) (pl i) (d i)) : labW j pl (fun i => Finsupp.single (d i) 1) c i = c (pl i) (d i) := by
@@ -249,7 +249,7 @@ theorem labW_single (j : Fin D.R.m) {I : Type} (pl : I → Pl D.host.E) (d : I �
 variable {A3} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Conclude with `(H.op h hh i x).symm.trans ((congrArg (R.jV j t) (hx i)).trans (map_smulₛₗ (R.jV j t) (s i) x))`.
+A detailed English derivation is pending.
 -/
 theorem liftDict_eigen {R : RealDat3 D A3 Ks} {j : Fin D.R.m} {t : T} {pl cV cW} (H : LiftDict R j t pl cV cW) (h)
     (hh : IsOpsV R.toRealDat j t h) (x) (s : (A3.liftI j t).OpIx → D.what₂.LL) (hx : ∀ i, (A3.liftI j t).opAll i x = s i • x) (i) :
@@ -257,7 +257,7 @@ theorem liftDict_eigen {R : RealDat3 D A3 Ks} {j : Fin D.R.m} {t : T} {pl cV cW}
   exact (H.op h hh i x).symm.trans ((congrArg (R.jV j t) (hx i)).trans (map_smulₛₗ (R.jV j t) (s i) x))
 
 /- English proof (translation)
-Conclude with `(H.op h hh i x).symm.trans ((congrArg (R.jX t) (hx i)).trans (map_smulₛₗ (R.jX t) (s i) x))`.
+A detailed English derivation is pending.
 -/
 theorem rowDict_eigen {R : RealDat3 D A3 Ks} {t : T} {pl cX c0} (H : RowDict R t pl cX c0) (h)
     (hh : IsOpsX R.toRealDat t h) (x) (s : (A3.rowI t).OpIx → D.what₂.LL) (hx : ∀ i, (A3.rowI t).opAll i x = s i • x) (i) :

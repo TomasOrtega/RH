@@ -23,13 +23,13 @@ def SplitOrInert (D : D7) : Prop :=
 open Classical in
 
 /- English proof (translation)
-Unfold `IsSBHalf halfInd`. Use `⟨?_, 1, one_pos, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Assume the negation of the conclusion as `hn`. Apply `ht` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[hn]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `u hu hh t`. Establish `hΛ : t + 1 • u ∈ Λ ↔ t ∈ Λ`. Rewrite using `[one_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => by simpa using Λ.sub_mem h hu, fun h => Λ.add_mem h hu⟩`. Establish `hH : IsHalf e (t + 1 • u) ↔ IsHalf e t`. Unfold `IsHalf at hh ⊢`. Simplify using `only [one_smul, Matrix.add_apply, Pi.add_apply, mul_add, hh, add_left_inj]`. Simplify using `only [hΛ, hH]`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `t ht`. Rewrite using `[one_smul]`. Assume the negation of the conclusion as `hn`. Apply `ht` to reduce the goal to its premises. Simplify using `[hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem sbHalf_halfInd {S T : HSp D} (e : AE D) (Λ : AddSubgroup (WO S T)) : IsSBHalf e Λ (halfInd e Λ) := by
   unfold IsSBHalf halfInd
@@ -54,17 +54,15 @@ theorem sbHalf_halfInd {S T : HSp D} (e : AE D) (Λ : AddSubgroup (WO S T)) : Is
       simp [hn]
 
 /- English proof (translation)
-Establish `hsp : IsSplitIdem D e'` using `he'.1`. Establish `hsum : IsIdemSum e' {PP}`. Use `⟨⟨fun _ => e', fun Q hQ => ?_, by simp⟩, hsp.2.1⟩` and prove the remaining obligations. Rewrite `hQ` using `[Finset.mem_singleton]`. Substitute `hQ` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `he'`. Establish `hvac : ∀ u ∈ latAll S T ΛS ΛT, (IsHalf e' u ∨ IsHalf (cA D e') u) → heisO ψ S T u f₀ = f₀`. Introduce `u hu hh`. Break down `hh with hh | hh` into its components or cases. Conclude with `hlat.2 e' hsp u hu hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hlat.2 (cA D e') (isSplitIdem_cA hsp) u hu hh`. Take `⟨Tm, hTm, -, -, -⟩` from `hPM ψ hW.std S T ΛS ΛT hsS hsT {PP} e' hsum f₀ hf₀ hvac e' (Or.inl rfl)`. Take `⟨r, -, hrep, hr1⟩` from `hSL ψ S T χS χT om hW ΛS ΛT hsS hsT {PP} e' hsum f₀ hf₀ hvac Tm hTm e' hsp hsp.1 g h hg hh x y hx hy`. Establish `hr : r = 1` using `hr1 hpres hn`. Establish `hΦ : IsSBHalf e' (latAll S T ΛS ΛT) ((1 : ℂ) • halfInd e' (latAll S T ΛS ΛT))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[one_smul]`. Conclude with `sbHalf_halfInd e' _`. Establish `hinv : (fun t => ((1 : ℂ) • halfInd e' (latAll S T ΛS ΛT)) (actO S T g⁻¹ h⁻¹ t)) = (1 : ℂ) • halfInd e' (latAll S T ΛS ΛT)`. Use function extensionality and compare the values at `t`. Simplify using `only [one_smul, halfInd]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `ht : IsHalf e' t`. Establish `h1 : IsHalf e' (actO S T g⁻¹ h⁻¹ t)` using `(isHalf_actO g⁻¹ h⁻¹ t).2 ht`. Simplify using `only [hpres' t ht, h1, ht, and_true]`. Establish `h1 : ¬ IsHalf e' (actO S T g⁻¹ h⁻¹ t)` using `fun h' => ht ((isHalf_actO g⁻¹ h⁻¹ t).1 h')`. Simplify using `only [h1, ht, and_false, if_false]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv, hTm.vac, hr, hfac]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fix_split (hSL : SplitLin D) (hPM : PlaceModelAt D) {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
     {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om)
@@ -116,9 +114,9 @@ theorem fix_split (hSL : SplitLin D) (hPM : PlaceModelAt D) {ψ : AddChar (AF D.
       simp
 
 /- English proof (translation)
-Unfold `latO`. Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨α, hα, h1, h2⟩`. Use `⟨α, hα, ?_, h2⟩` and prove the remaining obligations. Introduce `v`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `first`. Consider the case `exact fun h => absurd trivial h`. Consider the case `simp`. Consider the case `simp_all`. Consider the case `aesop`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem latO_le_all {S T : HSp D} (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E))
     (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) : latO S T ΛS ΛT P ≤ latO S T ΛS ΛT (fun _ => True) := by
@@ -134,7 +132,7 @@ theorem latO_le_all {S T : HSp D} (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : S
     | aesop
 
 /- English proof (translation)
-Establish `key : IsLatVac (heisO ψ S T) (latO S T ΛS ΛT fun w => w = v) f₀` using `by clear * - hlat`. Unfold `IsLatVac at *`. Conclude with `⟨fun u hu => hlat.1 u (latO_le_all (S := S) (T := T) ΛS ΛT _ hu), fun e he u hu hh => hlat.2 e he u (latO_le_all (S := S) (T := T) ΛS ΛT _ hu) hh⟩`. Conclude with `hI hrk hev ΛS ΛT hsS hsT βS βT hfS hfT v ε hε h2 hin huS huT g h hg hh hgS hhT f₀ hf₀ key`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fix_inert {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hI : WeilFull.SphInertAtO ψ S T χS χT om)

@@ -14,19 +14,17 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Introduce `D i hi T f bad lev x v l hl`. Establish `hmono : latS (F` using `D.host.F) (v.adicCompletion D.host.F) (intV D.host.E v) lev.Lb ≤ latS (F := D.host.F) (v.adicCompletion D.host.F) (intV D.host.E v) (Submodule.span (𝓞 D.host.E) (dualSet (sigD D : D.host.E →+* D.host.E) (gramN D i hi) lev.Lb)) := Submodule.span_mono (Set.image_mono fun y hy => Su …`. Apply `hmono` to reduce the goal to its premises. Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem y hy => exact Formalism.L2.Geo.Def.PN.prV_latS lev.Lb v hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Establish `: (fun k => prV (E` using `D.host.E) v (pullV (F := D.host.F) x.1 (0 : Fin (D.R.N i) → D.host.E) k)) = 0 := by`. Use extensionality with `k`. Establish `h0 : pullV (F` using `D.host.F) x.1 (0 : Fin (D.R.N i) → D.host.E) = 0 := by`. Use `pullV_add (F := D.host.F) x.1 (0 : Fin (D.R.N i) → D.host.E) 0` as an intermediate fact.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Establish `hj` using `this j`. Rewrite `hj` using `[add_zero]`. Simplify using `using hj`. Rewrite using `[h0, Pi.zero_apply, map_zero, Pi.zero_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `: (fun k => prV (E` using `D.host.E) v (pullV (F := D.host.F) x.1 (a + b) k)) = (fun k => prV (E := D.host.E) v (pullV (F := D.host.F) x.1 a k)) + (fun k => prV (E := D.host.E) v (pullV (F := D.host.F) x.1 b k)) := by`. Use extensionality with `k`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.add_apply, pullV_add, map_add]`. Rewrite using `[this]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`. Establish `hc : inclE (F` using `D.host.F) (v.adicCompletion D.host.F) (algebraMap (𝓞 D.host.E) D.host.E c) ∈ intV D.host.E v := Subring.subset_closure (Or.inl ⟨⟨algebraMap (𝓞 D.host.E) D.host.E c, ⟨c, rfl⟩⟩, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: (fun k => prV (E` using `D.host.E) v (pullV (F := D.host.F) x.1 (c • a) k)) = (⟨_, hc⟩ : intV D.host.E v) • (fun k => prV (E := D.host.E) v (pullV (F := D.host.F) x.1 a k)) := by`. Use extensionality with `k`. Rewrite using `[pullV_osmul, map_mul]`. Both sides reduce to the same expression. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ _ ha`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prV_pullV_mem_latS_dual : ∀ {D : D7} (i : ℕ) (hi : i ≤ D.R.m) {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
     (lev : StepLevel D.host.F D.host.E (sigD D) (gramN D i hi) T f bad) (x : UA D i hi) (v : HeightOneSpectrum (𝓞 D.host.F))

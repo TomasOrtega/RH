@@ -5,13 +5,13 @@ open Filter Topology
 namespace GlobalTheory.ConvexHolLog
 
 /- English proof (translation)
-Introduce `F _ _ _ S hs ho f hF h0`. Break down `S.eq_empty_or_nonempty with rfl | hne` into its components or cases. Conclude with `⟨0, differentiableOn_const _, by simp⟩`. Use `hs.contractibleSpace hne` as an intermediate fact. Establish `hsc : IsSimplyConnected S` using `(inferInstance : SimplyConnectedSpace S)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨L, hLc, hL⟩` from `Complex.exists_continuousOn_eqOn_exp_comp hsc ho hF.continuousOn (by rintro ⟨w, hw, h⟩; exact h0 w hw h)`. Use `⟨L, fun w hw => ?_, fun w hw => (hL hw).symm⟩` and prove the remaining obligations. Establish `hn` using `ho.mem_nhds hw`. Establish `hc : ContinuousAt (fun z => (L z - L w).im) w` using `Complex.continuous_im.continuousAt.comp ((hLc.continuousAt hn).sub continuousAt_const)`. Establish `h1 : ∀ᶠ z in 𝓝 w, (L z - L w).im ∈ Set.Ioo (-Real.pi) Real.pi` using `hc.eventually (isOpen_Ioo.mem_nhds (by simp [Real.pi_pos]))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : L =ᶠ[𝓝 w] fun z => L w + Complex.log (f z / f w)` using `by filter_upwards [h1, hn] with z hz hzS`. Rewrite using `[← hL hzS, ← hL hw, Function.comp, Function.comp, ← Complex.exp_sub, Complex.log_exp hz.1 hz.2.le]`. Expand and normalize the polynomial expressions, which then agree. Use `(DifferentiableAt.congr_of_eventuallyEq ?_ h2).differentiableWithinAt` and prove the remaining obligations. Establish `h3 : DifferentiableAt ℂ (fun z => f z / f w) w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [div_eq_mul_inv]`. Conclude with `(hF.differentiableAt hn).mul_const _`. Use `DifferentiableAt.const_add _ (DifferentiableAt.comp (g := Complex.log) w (Complex.differentiableAt_log ?_) h3)` and prove the remaining obligations. Simplify using `[div_self (h0 w hw)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_differentiableOn_log : ∀ {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] [FiniteDimensional ℂ F]
     {S : Set F}, Convex ℝ S → IsOpen S → ∀ f : F → ℂ, DifferentiableOn ℂ f S → (∀ x ∈ S, f x ≠ 0) →

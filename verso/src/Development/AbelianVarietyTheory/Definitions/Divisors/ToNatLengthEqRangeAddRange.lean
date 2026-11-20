@@ -17,7 +17,7 @@ section Length
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `Module.length_eq_add_of_exact (LinearMap.range f).subtype g.rangeRestrict (Submodule.subtype_injective _) g.surjective_rangeRestrict fun x => by rw [← LinearMap.mem_ker, LinearMap.ker_rangeRestrict, h.linearMap_ker_eq, Set.mem_range] exact ⟨fun hx => ⟨⟨x, hx⟩, rfl⟩, fun ⟨y, hy⟩ = …`.
+A detailed English derivation is pending.
 -/
 theorem length_eq_range_add_range {A B C : Type*} [AddCommGroup A] [AddCommGroup B]
     [AddCommGroup C] [Module R A] [Module R B] [Module R C] {f : A →ₗ[R] B} {g : B →ₗ[R] C}
@@ -29,7 +29,7 @@ theorem length_eq_range_add_range {A B C : Type*} [AddCommGroup A] [AddCommGroup
       exact ⟨fun hx => ⟨⟨x, hx⟩, rfl⟩, fun ⟨y, hy⟩ => hy ▸ y.2⟩
 
 /- English proof (translation)
-Rewrite `hB`, the goal using `[length_eq_range_add_range h]`. Rewrite using `[ENat.toNat_add (WithTop.add_ne_top.1 hB).1 (WithTop.add_ne_top.1 hB).2, Nat.cast_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem toNat_length_eq_range_add_range {A B C : Type*} [AddCommGroup A] [AddCommGroup B]
     [AddCommGroup C] [Module R A] [Module R B] [Module R C] {f : A →ₗ[R] B} {g : B →ₗ[R] C}
@@ -40,7 +40,7 @@ theorem toNat_length_eq_range_add_range {A B C : Type*} [AddCommGroup A] [AddCom
   rw [ENat.toNat_add (WithTop.add_ne_top.1 hB).1 (WithTop.add_ne_top.1 hB).2, Nat.cast_add]
 
 /- English proof (translation)
-Rewrite using `[length_eq_range_add_range h]`. Conclude with `WithTop.add_ne_top.2 ⟨ne_top_of_le_ne_top hA (Module.length_le_of_surjective _ f.surjective_rangeRestrict), ne_top_of_le_ne_top hC (Module.length_le_of_injective _ (Submodule.subtype_injective _))⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_ne_top_of_exact {A B C : Type*} [AddCommGroup A] [AddCommGroup B]
     [AddCommGroup C] [Module R A] [Module R B] [Module R C] {f : A →ₗ[R] B} {g : B →ₗ[R] C}
@@ -68,7 +68,7 @@ def chiLen (F : X.Modules) : ℤ := ∑ᶠ n, (-1 : ℤ) ^ n * (Module.length R 
 variable {F G : X.Modules} {S : ShortComplex X.Modules}
 
 /- English proof (translation)
-The claim follows from `finsum_eq_sum_of_support_subset _ fun n hn => by by_contra h have := hN n (by simpa using h) exact hn (by simp [Module.length_eq_zero])`.
+A detailed English derivation is pending.
 -/
 theorem chiLen_eq_sum_range (N : ℕ) (hN : ∀ n, N ≤ n → Subsingleton (coh F n)) :
     chiLen R F = ∑ n ∈ Finset.range N, (-1 : ℤ) ^ n * (Module.length R (coh F n)).toNat :=
@@ -78,26 +78,26 @@ theorem chiLen_eq_sum_range (N : ℕ) (hN : ∀ n, N ≤ n → Subsingleton (coh
     exact hn (by simp [Module.length_eq_zero])
 
 /- English proof (translation)
-The claim follows from `finsum_congr fun n => by rw [(e n).length_eq]`.
+A detailed English derivation is pending.
 -/
 theorem chiLen_eq_of_linearEquiv [Algebra R Γ(Y, ⊤)] {H : Y.Modules}
     (e : ∀ n, coh F n ≃ₗ[R] coh H n) : chiLen R F = chiLen R H :=
   finsum_congr fun n => by rw [(e n).length_eq]
 
 /- English proof (translation)
-The claim follows from `chiLen_eq_of_linearEquiv R fun n => cohOn.mapIso R ⊤ n e`.
+A detailed English derivation is pending.
 -/
 theorem chiLen_congr (e : F ≅ G) : chiLen R F = chiLen R G :=
   chiLen_eq_of_linearEquiv R fun n => cohOn.mapIso R ⊤ n e
 
 /- English proof (translation)
-Rewrite using `[chiLen_eq_sum_range R 0 fun n _ => cohOn.subsingleton_of_isZero h ⊤ n]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chiLen_eq_zero_of_isZero (h : IsZero F) : chiLen R F = 0 := by
   rw [chiLen_eq_sum_range R 0 fun n _ => cohOn.subsingleton_of_isZero h ⊤ n]; simp
 
 /- English proof (translation)
-The claim follows from `finsum_congr fun n => by rw [hdim_def, Module.length_eq_rank, Cardinal.toNat_toENat]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem chiLen_eq_chi (k : Type) [Field k] [Algebra k Γ(X, ⊤)] (F : X.Modules) :
     chiLen k F = chi k F :=
@@ -105,7 +105,7 @@ theorem chiLen_eq_chi (k : Type) [Field k] [Algebra k Γ(X, ⊤)] (F : X.Modules
     rw [hdim_def, Module.length_eq_rank, Cardinal.toNat_toENat]; rfl
 
 /- English proof (translation)
-The claim follows from `finsum_congr fun n => by rw [Module.length_eq_of_surjective (M := coh F n) h]`.
+A detailed English derivation is pending.
 -/
 theorem chiLen_eq_of_surjective (k : Type) [CommRing k] [Algebra R k] [Algebra k Γ(X, ⊤)]
     [IsScalarTower R k Γ(X, ⊤)] (h : Function.Surjective (algebraMap R k)) (F : X.Modules) :
@@ -117,7 +117,7 @@ variable {R}
 namespace FiniteLenCoh
 
 /- English proof (translation)
-The claim follows from `(cohOn.mapIso R ⊤ n e).length_eq ▸ h.ne_top n eventually_zero := have ⟨N, hN⟩ := h.eventually_zero ⟨N, fun n hn => have := hN n hn; (cohOn.mapIso R ⊤ n e).symm.injective.subsingleton⟩`.
+A detailed English derivation is pending.
 -/
 theorem of_iso (h : FiniteLenCoh R F) (e : F ≅ G) : FiniteLenCoh R G where
   ne_top n := (cohOn.mapIso R ⊤ n e).length_eq ▸ h.ne_top n
@@ -126,7 +126,7 @@ theorem of_iso (h : FiniteLenCoh R F) (e : F ≅ G) : FiniteLenCoh R G where
     ⟨N, fun n hn => have := hN n hn; (cohOn.mapIso R ⊤ n e).symm.injective.subsingleton⟩
 
 /- English proof (translation)
-The claim follows from `length_ne_top_of_exact (cohOn.exact₂ R hS ⊤ n) (h₁.ne_top n) (h₃.ne_top n) eventually_zero := have ⟨N₁, h₁⟩ := h₁.eventually_zero have ⟨N₃, h₃⟩ := h₃.eventually_zero ⟨max N₁ N₃, fun n hn => cohOn.subsingleton₂ hS ⊤ n (h₁ n (by omega)) (h₃ n (by omega))⟩`.
+A detailed English derivation is pending.
 -/
 theorem of_shortExact₂ (hS : S.ShortExact) (h₁ : FiniteLenCoh R S.X₁) (h₃ : FiniteLenCoh R S.X₃) :
     FiniteLenCoh R S.X₂ where
@@ -137,7 +137,7 @@ theorem of_shortExact₂ (hS : S.ShortExact) (h₁ : FiniteLenCoh R S.X₁) (h�
     ⟨max N₁ N₃, fun n hn => cohOn.subsingleton₂ hS ⊤ n (h₁ n (by omega)) (h₃ n (by omega))⟩
 
 /- English proof (translation)
-The claim follows from `length_ne_top_of_exact (cohOn.exact₃ R hS ⊤ n) (h₂.ne_top n) (h₁.ne_top (n + 1)) eventually_zero := have ⟨N₁, h₁⟩ := h₁.eventually_zero have ⟨N₂, h₂⟩ := h₂.eventually_zero ⟨max N₁ N₂, fun n hn => cohOn.subsingleton₃ hS ⊤ n (h₂ n (by omega)) (h₁ (n + 1) (by omega))⟩`.
+A detailed English derivation is pending.
 -/
 theorem of_shortExact₃ (hS : S.ShortExact) (h₁ : FiniteLenCoh R S.X₁) (h₂ : FiniteLenCoh R S.X₂) :
     FiniteLenCoh R S.X₃ where
@@ -150,17 +150,17 @@ theorem of_shortExact₃ (hS : S.ShortExact) (h₁ : FiniteLenCoh R S.X₁) (h�
 end FiniteLenCoh
 
 /- English proof (translation)
-Establish `h₂` using `h₁.of_shortExact₂ hS h₃`. Take `⟨N₁, hN₁⟩` from `h₁.eventually_zero`. Take `⟨N₂, hN₂⟩` from `h₂.eventually_zero`. Take `⟨N₃, hN₃⟩` from `h₃.eventually_zero`. Set `a : ℕ → ℤ` to `fun n => (Module.length R (LinearMap.ker (cohOn.map R S.f ⊤ n))).toNat`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `key (N : ℕ) : ∑ n ∈ Finset.range N, (-1 : ℤ) ^ n * (Module.length R (coh S.X₁ n)).toNat + ∑ n ∈ Finset.range N, (-1 : ℤ) ^ n * (Module.length R (coh S.X₃ n)).toNat = ∑ n ∈ Finset.range N, (-1 : ℤ) ^ n * (Module.length R (coh S.X₂ n)).toNat + (a 0 - (-1) ^ N * a N)`. Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Establish `e₁` using `toNat_length_eq_range_add_range (LinearMap.exact_subtype_ker_map (cohOn.map R S.f ⊤ N)) (h₁.ne_top N)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e₂` using `toNat_length_eq_range_add_range (cohOn.exact₂ R hS ⊤ N) (h₂.ne_top N)`. Establish `e₃` using `toNat_length_eq_range_add_range (cohOn.exact₃ R hS ⊤ N) (h₃.ne_top N)`. Rewrite `e₁` using `[Submodule.range_subtype]`. Rewrite `e₃` using `[← (cohOn.exact₁ R hS ⊤ N).linearMap_ker_eq]`. Simplify using `only [Finset.sum_range_succ, pow_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `_ = a N + _ at e₁`. Express the relevant statement in the definitionally equal form `_ = _ + a (N + 1) at e₃`. Use `erw [e₁, e₂, e₃]`. Take the linear combination `ih`. Establish `a0 : a 0 = 0`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [a]`. Rewrite using `[LinearMap.ker_eq_bot.2 (cohOn.injective_zero R hS ⊤)]`. Simplify using the standard rewrite rules. Set `N` to `max N₁ (max N₂ N₃)`. Establish `aN : a N = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hN₁ N (by omega)` as an intermediate fact. Simplify using `[a, Module.length_eq_zero]`. Rewrite using `[chiLen_eq_sum_range R N fun n hn => hN₁ n (by omega), chiLen_eq_sum_range R N fun n hn => hN₂ n (by omega), chiLen_eq_sum_range R N fun n hn => hN₃ n (by omega), key, a0, aN]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chiLen_shortExact (hS : S.ShortExact) (h₁ : FiniteLenCoh R S.X₁)
     (h₃ : FiniteLenCoh R S.X₃) : chiLen R S.X₂ = chiLen R S.X₁ + chiLen R S.X₃ := by
@@ -225,7 +225,7 @@ Both sides reduce to the same expression.
 @[simp] theorem chiLenPic_cls (hM : M.IsLB) : chiLenPic R F (cls M hM) = chiLen R (twist F M) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Take `⟨M, hM, rfl⟩` from `cls_surj c`. Conclude with `chiLen_congr R ((twistFunctor M).mapIso e)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chiLenPic_congr (e : F ≅ G) : chiLenPic R F = chiLenPic R G := by
   funext c
@@ -235,7 +235,7 @@ theorem chiLenPic_congr (e : F ≅ G) : chiLenPic R F = chiLenPic R G := by
 variable (F) in
 
 /- English proof (translation)
-Take `⟨N, hN, rfl⟩` from `cls_surj c`. Conclude with `(nonempty_twist_twist_iso_of_cls_eq F hM hN (isLB_tens hM hN) rfl).elim (chiLen_congr R)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chiLenPic_twist (hM : M.IsLB) (c : Pic X) :
     chiLenPic R (twist F M) c = chiLenPic R F (cls M hM + c) := by
@@ -243,7 +243,7 @@ theorem chiLenPic_twist (hM : M.IsLB) (c : Pic X) :
   exact (nonempty_twist_twist_iso_of_cls_eq F hM hN (isLB_tens hM hN) rfl).elim (chiLen_congr R)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Take `⟨M, hM, rfl⟩` from `cls_surj c`. Conclude with `chiLen_eq_zero_of_isZero R ((isZero_twist_iff hM).2 h)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chiLenPic_eq_zero_of_isZero (h : IsZero F) : chiLenPic R F = 0 := by
   funext c
@@ -253,7 +253,7 @@ theorem chiLenPic_eq_zero_of_isZero (h : IsZero F) : chiLenPic R F = 0 := by
 variable (F) in
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun S _ => by rw [zero_sub, ← cls_lbInvProd hL S (isLB_lbInvProd hL S), chiLenPic_cls, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem interLen_eq_multiDiff {ι : Type} [Fintype ι] {L : ι → LB X} (hL : ∀ i, (L i).IsLB) :
     interLen R F L = multiDiff (fun i => cls (L i) (hL i)) (chiLenPic R F) 0 :=
@@ -261,9 +261,9 @@ theorem interLen_eq_multiDiff {ι : Type} [Fintype ι] {L : ι → LB X} (hL : �
     rw [zero_sub, ← cls_lbInvProd hL S (isLB_lbInvProd hL S), chiLenPic_cls, smul_eq_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Take `⟨M, hM, rfl⟩` from `cls_surj c`. Use `letI : Algebra R Γ(Y, ⊤) := ((algebraMap k Γ(Y, ⊤)).comp (algebraMap R k)).toAlgebra`. Establish `: IsScalarTower R k Γ(Y, ⊤)` using `.of_algebraMap_eq fun _ => rfl`. Use `(chiLen_congr R (Twist.projIso M i H)).symm.trans ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[chiLen_eq_of_linearEquiv R fun n => LinearEquiv.ofBijective _ (cohPushMap_bijective_of_isClosedImmersion R i hi _ ⊤ n), chiLen_eq_of_surjective R k hk, chiLen_eq_chi]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chiLenPic_pushforward (k : Type) [Field k] [Algebra R k] [Algebra k Γ(Y, ⊤)]
     (hk : Function.Surjective (algebraMap R k)) (i : Y ⟶ X) [IsClosedImmersion i]
@@ -283,13 +283,13 @@ theorem chiLenPic_pushforward (k : Type) [Field k] [Algebra R k] [Algebra k Γ(Y
 variable {R}
 
 /- English proof (translation)
-Introduce `M hM` and use `(h M hM).of_iso ((twistFunctor M).mapIso e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FiniteLenTwists.of_iso (h : FiniteLenTwists R F) (e : F ≅ G) : FiniteLenTwists R G :=
   fun M hM => (h M hM).of_iso ((twistFunctor M).mapIso e)
 
 /- English proof (translation)
-Introduce `N hN` and use `(nonempty_twist_twist_iso_of_cls_eq F hM hN (isLB_tens hM hN) rfl).elim fun e => (h _ (isLB_tens hM hN)).of_iso e.symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FiniteLenTwists.twist (h : FiniteLenTwists R F) (hM : M.IsLB) :
     FiniteLenTwists R (twist F M) :=
@@ -297,14 +297,14 @@ theorem FiniteLenTwists.twist (h : FiniteLenTwists R F) (hM : M.IsLB) :
     fun e => (h _ (isLB_tens hM hN)).of_iso e.symm
 
 /- English proof (translation)
-Introduce `M hM` and use `FiniteLenCoh.of_shortExact₃ (Twist.shortExact_map hM hS) (h₁ M hM) (h₂ M hM)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FiniteLenTwists.of_shortExact₃ (hS : S.ShortExact) (h₁ : FiniteLenTwists R S.X₁)
     (h₂ : FiniteLenTwists R S.X₂) : FiniteLenTwists R S.X₃ :=
   fun M hM => FiniteLenCoh.of_shortExact₃ (Twist.shortExact_map hM hS) (h₁ M hM) (h₂ M hM)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Take `⟨M, hM, rfl⟩` from `cls_surj c`. Use `chiLen_shortExact (Twist.shortExact_map hM hS) (h₁ M hM) (h₃ M hM)` as an intermediate fact. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chiLenPic_shortExact (hS : S.ShortExact) (h₁ : FiniteLenTwists R S.X₁)
     (h₃ : FiniteLenTwists R S.X₃) :
@@ -315,9 +315,9 @@ theorem chiLenPic_shortExact (hS : S.ShortExact) (h₁ : FiniteLenTwists R S.X�
   exact this
 
 /- English proof (translation)
-Establish `h₁` using `h.twist (isLB_lbZPow hL (-1))`. Establish `h₃` using `h₁.of_shortExact₃ (shortExact_cutComplex F hL s) h`. Use `⟨h₃, funext fun c => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (chiLenPic_shortExact (shortExact_cutComplex F hL s) h₁ h₃) c`. Express the relevant statement in the definitionally equal form `chiLenPic R F c = chiLenPic R (twist F (lbZPow L (-1))) c + chiLenPic R (cut F hL s) c at e`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `e` using `[chiLenPic_twist R F (isLB_lbZPow hL (-1)), cls_lbZPow hL, neg_one_zsmul, neg_add_eq_sub]`. Rewrite using `[bwdDiff_apply, e, add_sub_cancel_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem bwdDiff_chiLenPic {L : LB X} (hL : L.IsLB) (s : L.Sec) [Mono (cutHom F hL s)]
     (h : FiniteLenTwists R F) : FiniteLenTwists R (cut F hL s) ∧
@@ -333,11 +333,11 @@ theorem bwdDiff_chiLenPic {L : LB X} (hL : L.IsLB) (s : L.Sec) [Mono (cutHom F h
   rw [bwdDiff_apply, e, add_sub_cancel_left]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing F with`. Consider the case `zero => exact diffVanish_zero_iff.2 (chiLenPic_eq_zero_of_isZero R (suppDim_lt_zero_iff.1 hn))`. Consider the case `succ n ih`. Use `diffVanish_of_generators (S := {c | ∃ (L : LB X) (hL : L.IsLB) (s : L.Sec), Mono (cutHom F hL s) ∧ c = cls L hL}) (eq_top_iff.2 fun c _ => ?_) fun g hg => ?_` and prove the remaining obligations. Take `⟨P, Q, hP, hQ, s, t, hs, ht, rfl⟩` from `hA.exists_sub_of_mono_cutHom F c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_mem (AddSubgroup.subset_closure ⟨P, hP, s, hs, rfl⟩) (AddSubgroup.subset_closure ⟨Q, hQ, t, ht, rfl⟩)`. Take `⟨L, hL, s, hs, e⟩` from `hg 0`. Rewrite using `[← Fin.cons_self_tail g, multiDiff_cons', e, (bwdDiff_chiLenPic hL s h).2]`. Use `ih (bwdDiff_chiLenPic hL s h).1 ?_ _` and prove the remaining obligations. Use `(suppDim_cut_add_one_le F hL s).trans_lt hn` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt]`. Use `this.not_ge ?_` and prove the remaining obligations. Use `push_cast`. Conclude with `add_le_add_left hc 1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem diffVanish_chiLenPic [IsLocallyNoetherian X] {A : LB X} (hA : IsAmpleLB A)
     [IsFiniteQC F] (h : FiniteLenTwists R F) {n : ℕ} (hn : suppDim F < n) :
@@ -362,11 +362,9 @@ theorem diffVanish_chiLenPic [IsLocallyNoetherian X] {A : LB X} (hA : IsAmpleLB 
       exact add_le_add_left hc 1
 
 /- English proof (translation)
-Set `i` to `(annihilatorSheaf F).subschemeι`. Establish `: CompactSpace (annihilatorSheaf F).subscheme` using `QuasiCompact.compactSpace_of_compactSpace i`. Establish `hb : (annihilatorSheaf F).subscheme.basicOpen (i.appTop a) = ⊥`. Use `(Scheme.preimage_basicOpen i a).symm.trans (eq_bot_iff.2 fun y hy => ?_)` and prove the remaining obligations. Conclude with `h _ (range_annihilatorSheaf_subschemeι F ▸ ⟨y, rfl⟩) hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `(Scheme.isNilpotent_iff_basicOpen_eq_bot _).2 hb`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `e` using `pushforward_map_smulHom i (onAnnihilator F) (a ^ m)`. Rewrite `e` using `[map_pow, hm, smulHom_zero, Functor.map_zero]`. Rewrite using `[← cancel_mono (isoPushforwardOnAnnihilator F).hom, smulHom_comp, zero_comp]`.
-
-Conclude with `(congrArg _ e.symm).trans comp_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smulHom_pow_eq_zero [CompactSpace X] [IsFiniteQC F] (a : Γ(X, ⊤))
     (h : ∀ x ∈ support F, x ∉ X.basicOpen a) : ∃ m : ℕ, smulHom F (a ^ m) = 0 := by
@@ -384,11 +382,11 @@ theorem exists_smulHom_pow_eq_zero [CompactSpace X] [IsFiniteQC F] (a : Γ(X, �
   exact (congrArg _ e.symm).trans comp_zero
 
 /- English proof (translation)
-Introduce `M hM`. Use `isNoetherian_of_isProjOver hp` as an intermediate fact. Use `isFiniteQC_twist (F := F) hM` as an intermediate fact. Use `⟨fun i => ?_, n, fun i hi => subsingleton_coh_of_isProjOver hp _ (((suppDim_twist hM).trans_lt hn).trans_le (by exact_mod_cast hi))⟩` and prove the remaining obligations. Use `finite_coh_of_isProjOver hf (twist F M) hp i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `exists_smulHom_pow_eq_zero (F := twist F M) _ (by rwa [support_twist hM])`. Establish `hk : a ^ m ∈ Module.annihilator R (coh (twist F M) i)` using `Module.mem_annihilator.2 fun x => (cohOn.toH' _ _ _).injective (by`. Rewrite using `[cohOn.toH'_smul, map_pow, hm, Functor.map_zero, map_zero, SiteCoh.map_zero_apply])`. Use `isFiniteLength_iff_isNoetherian_isArtinian.1 (isFiniteLength_quotient_span_singleton R (mem_nonZeroDivisors_of_ne_zero (pow_ne_zero m ha)))` as an intermediate fact. Establish `: IsArtinian R (R ⧸ Module.annihilator R (coh (twist F M) i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.2` as an intermediate fact. Use `isArtinian_of_surjective _ (Submodule.factor ((Ideal.span_singleton_le_iff_mem _).2 hk)) (Submodule.factor_surjective _)`. Establish `: IsArtinianRing (R ⧸ Module.annihilator R (coh (twist F M) i))` using `isArtinian_of_tower R this`. Conclude with `Module.length_ne_top_iff.2 isFiniteLength_of_isArtinianRing_annihilator`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteLenTwists_of_support [IsDomain R] [IsNoetherianRing R] [Ring.KrullDimLE 1 R]
     {f : X ⟶ Sp R} (hf : ∀ r, algebraMap R Γ(X, ⊤) r = f.appTop ((Scheme.ΓSpecIso (.of R)).inv r))
@@ -435,7 +433,7 @@ def symLift {A : Type*} [CommRing A] [Algebra ℚ A] (f : G →+ A) : SymQ G →
   SymmetricAlgebra.lift (LinearMap.liftBaseChange ℚ f.toIntLinearMap)
 
 /- English proof (translation)
-Simplify using `[symLift, symOf_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem symLift_symOf {A : Type*} [CommRing A] [Algebra ℚ A] (f : G →+ A) (g : G) :
     symLift f (symOf g) = f g := by
@@ -444,7 +442,7 @@ Simplify using `[symLift, symOf_apply]`.
 def symMap (f : G →+ H) : SymQ G →ₐ[ℚ] SymQ H := symLift (symOf.comp f)
 
 /- English proof (translation)
-The claim follows from `symLift_symOf _ g`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem symMap_symOf (f : G →+ H) (g : G) : symMap f (symOf g) = symOf (f g) :=
   symLift_symOf _ g
@@ -455,15 +453,13 @@ def symDeg (n : ℕ) : Submodule ℚ (SymQ G) :=
   Submodule.span ℚ (Set.range fun g : Fin n → G => ∏ i, symOf (g i))
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun x hx => ?_` and prove the remaining obligations. Use `clear hx`. Proceed by induction on `x using SymmetricAlgebra.induction with`. Consider the case `algebraMap r`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, by simp⟩)`. Consider the case `ι x`. Proceed by induction on `x with`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `tmul a g`. Rewrite using `[← mul_one a, ← smul_eq_mul, ← smul_tmul', map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨{g}, by simp [symOf_apply]⟩)`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Consider the case `mul a b ha hb`. Use `Submodule.mul_mem_mul ha hb` as an intermediate fact. Rewrite `this` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨s, rfl⟩, _, ⟨t, rfl⟩, rfl⟩`.
-
-Conclude with `⟨s + t, by simp⟩`. Consider the case `add a b ha hb => exact add_mem ha hb`.
+Supply the required witnesses or components. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_prod_symOf : Submodule.span ℚ
     (Set.range fun s : Multiset G => (s.map symOf).prod) = (⊤ : Submodule ℚ (SymQ G)) := by
@@ -489,7 +485,7 @@ theorem span_prod_symOf : Submodule.span ℚ
   | add a b ha hb => exact add_mem ha hb
 
 /- English proof (translation)
-Use `LinearMap.ext_on_range span_prod_symOf fun s => ?_` and prove the remaining obligations. Proceed by induction on `s using Quotient.inductionOn with`. Consider the case `h s`. Use `h s.length s.get` as an intermediate fact. Rewrite `this` using `[← List.prod_ofFn, ← Function.comp_def, ← List.map_ofFn, List.ofFn_get]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem symQ_linearMap_ext {N : Type*} [AddCommGroup N] [Module ℚ N] {l l' : SymQ G →ₗ[ℚ] N}
     (h : ∀ (n : ℕ) (g : Fin n → G), l (∏ i, symOf (g i)) = l' (∏ i, symOf (g i))) : l = l' := by
@@ -502,27 +498,25 @@ theorem symQ_linearMap_ext {N : Type*} [AddCommGroup N] [Module ℚ N] {l l' : S
 variable {φ ψ : G → ℤ} {d : ℕ}
 
 /- English proof (translation)
-Set `f : Multiset G → ℚ` to `fun s => if s.card = d then (shiftAct G ℤ (s.map diffElt).prod φ 0 : ℚ) else 0`. Establish `hf (a b : G) (s : Multiset G) : f (s + {a + b}) = f (s + {a}) + f (s + {b})`. Simplify using `only [f, Multiset.card_add, Multiset.card_singleton, Multiset.map_add, Multiset.map_singleton, Multiset.prod_add, Multiset.prod_singleton]`. Use `split_ifs with hs`. Establish `: (s.map diffElt).prod * (diffElt a * diffElt b) ∈ diffIdeal G ^ (d + 1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs, add_assoc, pow_add, pow_add, pow_one]`. Use `Ideal.mul_mem_mul ?_ (Ideal.mul_mem_mul (diffElt_mem a) (diffElt_mem b))` and prove the remaining obligations. Proceed by induction on `s using Quotient.inductionOn with`. Consider the case `h s`. Use `prod_diffElt_mem Finset.univ s.get` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← List.prod_ofFn, ← Function.comp_def, ← List.map_ofFn, List.ofFn_get]`. Simplify using `using this`. Rewrite using `[diffElt_add, mul_sub, mul_add, map_sub, map_add, LinearMap.sub_apply, h.shiftAct_eq_zero this]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `l : MvPolynomial G ℚ →ₗ[ℚ] ℚ` to `(MvPolynomial.basisMonomials G ℚ).constr ℚ fun m => f (Finsupp.toMultiset m)`. Establish `hl (m : G →₀ ℕ) : l (MvPolynomial.monomial m 1) = f (Finsupp.toMultiset m)` using `(MvPolynomial.basisMonomials G ℚ).constr_basis ℚ _ m`. Set `J : Ideal (MvPolynomial G ℚ)` to `Ideal.span (Set.range fun p : G × G => MvPolynomial.X (p.1 + p.2) - (MvPolynomial.X p.1 + MvPolynomial.X p.2))`. Establish `hJ : J.restrictScalars ℚ ≤ LinearMap.ker l`. Introduce `x hx`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion.
 
-It suffices to establish `∀ r, l (r * x) = 0 by simpa using this 1`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`. Introduce `r`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `r using MvPolynomial.induction_on' with`. Consider the case `monomial m c`. Rewrite using `[show MvPolynomial.monomial m c = c • MvPolynomial.monomial m (1 : ℚ) by`. Simplify using `[MvPolynomial.smul_monomial], smul_mul_assoc, map_smul]`. Simplify using `only [mul_sub, mul_add, map_sub, map_add, MvPolynomial.X, MvPolynomial.monomial_mul, mul_one, hl, Finsupp.toMultiset_single, one_nsmul, hf]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add p q hp hq => rw [add_mul, map_add, hp, hq, add_zero]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => intro r`. Rewrite using `[mul_add, map_add, hx, hy, add_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul a x _ hx => intro r`. Rewrite using `[smul_eq_mul, ← mul_assoc, hx]`. Set `c : G →+ MvPolynomial G ℚ ⧸ J` to `AddMonoidHom.mk' (fun g => Ideal.Quotient.mk J (.X g)) fun a b => by`. Rewrite using `[← map_add, Ideal.Quotient.eq]`. Conclude with `Ideal.subset_span ⟨(a, b), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(J.restrictScalars ℚ).liftQ l hJ ∘ₗ (Submodule.Quotient.restrictScalarsEquiv ℚ J).symm.toLinearMap ∘ₗ (symLift c).toLinearMap, fun ι _ g => ?_⟩` and prove the remaining obligations. Establish `e : symLift c (∏ i, symOf (g i)) = Ideal.Quotient.mk J (MvPolynomial.monomial (∑ i, Finsupp.single (g i) 1) 1)`. Rewrite using `[MvPolynomial.monomial_sum_one, map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => symLift_symOf c _`. Use `(congrArg (fun x => (J.restrictScalars ℚ).liftQ l hJ ((Submodule.Quotient.restrictScalarsEquiv ℚ J).symm x)) e).trans ((hl _).trans ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : Finsupp.toMultiset (∑ i, Finsupp.single (g i) 1) = Finset.univ.val.map g`. Simplify using `only [map_sum, Finsupp.toMultiset_single, one_nsmul]`. Rewrite using `[Finset.sum_eq_multiset_sum, ← Multiset.sum_map_singleton (Finset.univ.val.map g), Multiset.map_map]`. Both sides reduce to the same expression. Simplify using `only [f, e', Multiset.card_map, Multiset.map_map, multiDiff_eq_shiftAct]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_topForm (h : DiffVanish (d + 1) φ) : ∃ l : SymQ G →ₗ[ℚ] ℚ,
     ∀ (ι : Type) [Fintype ι] (g : ι → G),
@@ -594,14 +588,14 @@ theorem exists_topForm (h : DiffVanish (d + 1) φ) : ∃ l : SymQ G →ₗ[ℚ] 
 def topForm (h : DiffVanish (d + 1) φ) : SymQ G →ₗ[ℚ] ℚ := (exists_topForm h).choose
 
 /- English proof (translation)
-The claim follows from `(exists_topForm h).choose_spec ι g`.
+A detailed English derivation is pending.
 -/
 theorem topForm_prod (h : DiffVanish (d + 1) φ) {ι : Type} [Fintype ι] (g : ι → G) :
     topForm h (∏ i, symOf (g i)) = if Fintype.card ι = d then ((multiDiff g φ 0 : ℤ) : ℚ) else 0 :=
   (exists_topForm h).choose_spec ι g
 
 /- English proof (translation)
-Use `(Submodule.span_le (p := LinearMap.ker (topForm h))).2 ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `(topForm_prod h g).trans (if_neg (by simpa using hn))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem topForm_eq_zero (h : DiffVanish (d + 1) φ) {n : ℕ} (hn : n ≠ d) {x : SymQ G}
     (hx : x ∈ symDeg G n) : topForm h x = 0 := by
@@ -610,7 +604,7 @@ theorem topForm_eq_zero (h : DiffVanish (d + 1) φ) {n : ℕ} (hn : n ≠ d) {x 
   exact (topForm_prod h g).trans (if_neg (by simpa using hn))
 
 /- English proof (translation)
-Use `symQ_linearMap_ext fun n g => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, topForm_prod]`. Use `split_ifs with hn`. Rewrite using `[show χ = (fun x => φ (a + x)) + ψ from funext e, multiDiff_add, Pi.add_apply, multiDiff_translate, h₁.multiDiff_eq_of_le_card hn.ge g _ 0, Int.cast_add]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem topForm_eq_add {χ : G → ℤ} (h : DiffVanish (d + 1) χ) (h₁ : DiffVanish (d + 1) φ)
     (h₂ : DiffVanish (d + 1) ψ) (a : G) (e : ∀ x, χ x = φ (a + x) + ψ x) :
@@ -623,7 +617,7 @@ theorem topForm_eq_add {χ : G → ℤ} (h : DiffVanish (d + 1) χ) (h₁ : Diff
   · simp
 
 /- English proof (translation)
-Rewrite using `[topForm_prod, topForm_prod, multiDiff_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : topForm (diffVanish_pow_int 2).1 (∏ _i : Fin 2, symOf 1) = 2 ∧
     topForm (diffVanish_pow_int 2).1 (∏ _i : Fin 1, symOf 1) = 0 := by
@@ -658,20 +652,20 @@ def smallPicEquiv : SmallPic X ≃+ Pic X := Shrink.addEquiv
 def smallCls (L : LB X) (hL : L.IsLB) : SmallPic X := (smallPicEquiv X).symm (cls L hL)
 
 /- English proof (translation)
-The claim follows from `(smallPicEquiv X).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem smallPicEquiv_smallCls (L : LB X) (hL : L.IsLB) :
     smallPicEquiv X (smallCls L hL) = cls L hL := (smallPicEquiv X).apply_symm_apply _
 
 /- English proof (translation)
-The claim follows from `have ⟨L, hL, e⟩ := cls_surj (smallPicEquiv X c) ⟨L, hL, (smallPicEquiv X).symm_apply_eq.2 e⟩`.
+A detailed English derivation is pending.
 -/
 theorem smallCls_surj (c : SmallPic X) : ∃ L hL, smallCls L hL = c :=
   have ⟨L, hL, e⟩ := cls_surj (smallPicEquiv X c)
   ⟨L, hL, (smallPicEquiv X).symm_apply_eq.2 e⟩
 
 /- English proof (translation)
-The claim follows from `(smallPicEquiv X).symm.injective.eq_iff.trans (cls_eq_iff hL hM)`.
+A detailed English derivation is pending.
 -/
 theorem smallCls_eq_iff {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) :
     smallCls L hL = smallCls M hM ↔ LBIso L M :=
@@ -681,7 +675,7 @@ def smallPull (f : Y ⟶ X) : SmallPic X →+ SmallPic Y :=
   (smallPicEquiv Y).symm.toAddMonoidHom.comp ((pull f).comp (smallPicEquiv X).toAddMonoidHom)
 
 /- English proof (translation)
-Simplify using `[smallPull, smallCls, cls_pull hL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smallPull_smallCls (f : Y ⟶ X) {L : LB X} (hL : L.IsLB) (h : (L.pull f).IsLB) :
     smallPull f (smallCls L hL) = smallCls (L.pull f) h := by
@@ -701,18 +695,18 @@ Both sides reduce to the same expression.
 @[simp] theorem firstChernPic_class (L : LB X) (hL : L.IsLB) : firstChernPic (cls L hL) = c1 L hL := rfl
 
 /- English proof (translation)
-The claim follows from `map_add firstChernPic (cls L hL) (cls M hM)`.
+A detailed English derivation is pending.
 -/
 theorem firstChernTensor {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) (h : (tens L M).IsLB) :
     c1 (tens L M) h = c1 L hL + c1 M hM := map_add firstChernPic (cls L hL) (cls M hM)
 
 /- English proof (translation)
-The claim follows from `map_zero firstChernPic`.
+A detailed English derivation is pending.
 -/
 theorem firstChern_trivial (h : (LB.triv X).IsLB) : c1 (LB.triv X) h = 0 := map_zero firstChernPic
 
 /- English proof (translation)
-The claim follows from `congrArg symOf ((smallCls_eq_iff hL hM).2 h)`.
+A detailed English derivation is pending.
 -/
 theorem firstChernCongr {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) (h : LBIso L M) : c1 L hL = c1 M hM :=
   congrArg symOf ((smallCls_eq_iff hL hM).2 h)
@@ -720,14 +714,14 @@ theorem firstChernCongr {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) (h : LBIso L M)
 def picSymPull (f : Y ⟶ X) : PicSym X →ₐ[ℚ] PicSym Y := symMap (smallPull f)
 
 /- English proof (translation)
-The claim follows from `(symMap_symOf _ _).trans (congrArg symOf (smallPull_smallCls f hL h))`.
+A detailed English derivation is pending.
 -/
 theorem pullback_firstChern (f : Y ⟶ X) {L : LB X} (hL : L.IsLB) (h : (L.pull f).IsLB) :
     picSymPull f (c1 L hL) = c1 (L.pull f) h :=
   (symMap_symOf _ _).trans (congrArg symOf (smallPull_smallCls f hL h))
 
 /- English proof (translation)
-Take `⟨L, hL, rfl⟩` from `cls_surj c`. Conclude with `pullback_firstChern f hL _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem picSymPull_c1Pic (f : Y ⟶ X) (c : Pic X) :
     picSymPull f (firstChernPic c) = firstChernPic (pull f c) := by
@@ -740,7 +734,7 @@ def picForm (h : DiffVanish (d + 1) φ) : PicSym X →ₗ[ℚ] ℚ :=
   topForm (h.comap (smallPicEquiv X).toAddMonoidHom)
 
 /- English proof (translation)
-Use `(topForm_prod _ fun i => (smallPicEquiv X).symm (g i)).trans ?_` and prove the remaining obligations. Rewrite using `[multiDiff_comap]`. Simplify using `[Function.comp_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem picForm_prod (h : DiffVanish (d + 1) φ) {ι : Type} [Fintype ι] (g : ι → Pic X) :
     picForm h (∏ i, firstChernPic (g i)) = if Fintype.card ι = d then ((multiDiff g φ 0 : ℤ) : ℚ) else 0 := by
@@ -749,14 +743,14 @@ theorem picForm_prod (h : DiffVanish (d + 1) φ) {ι : Type} [Fintype ι] (g : �
   simp [Function.comp_def]
 
 /- English proof (translation)
-The claim follows from `symQ_linearMap_ext fun n g => by simpa [firstChernPic] using h n fun i => smallPicEquiv X (g i)`.
+A detailed English derivation is pending.
 -/
 theorem picSym_linearMap_ext {N : Type*} [AddCommGroup N] [Module ℚ N] {l l' : PicSym X →ₗ[ℚ] N}
     (h : ∀ (n : ℕ) (g : Fin n → Pic X), l (∏ i, firstChernPic (g i)) = l' (∏ i, firstChernPic (g i))) : l = l' :=
   symQ_linearMap_ext fun n g => by simpa [firstChernPic] using h n fun i => smallPicEquiv X (g i)
 
 /- English proof (translation)
-The claim follows from `topForm_eq_add _ _ _ ((smallPicEquiv X).symm a) fun x => by simpa using e _`.
+A detailed English derivation is pending.
 -/
 theorem picForm_eq_add {χ : Pic X → ℤ} (h : DiffVanish (d + 1) χ) (h₁ : DiffVanish (d + 1) φ)
     (h₂ : DiffVanish (d + 1) ψ) (a : Pic X) (e : ∀ x, χ x = φ (a + x) + ψ x) :
@@ -764,7 +758,7 @@ theorem picForm_eq_add {χ : Pic X → ℤ} (h : DiffVanish (d + 1) χ) (h₁ : 
   topForm_eq_add _ _ _ ((smallPicEquiv X).symm a) fun x => by simpa using e _
 
 /- English proof (translation)
-Use `LinearMap.congr_fun (picSym_linearMap_ext (l' := picForm h ∘ₗ (picSymPull f).toLinearMap) fun n g => ?_) x` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_prod, picSymPull_c1Pic, picForm_prod]`. Rewrite using `[multiDiff_comap, Function.comp_apply, map_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem picForm_comap (f : Y ⟶ X) {χ : Pic Y → ℤ} (h : DiffVanish (d + 1) χ) (x : PicSym X) :
     picForm (h.comap (pull f)) x = picForm h (picSymPull f x) := by
@@ -776,7 +770,7 @@ theorem picForm_comap (f : Y ⟶ X) {χ : Pic Y → ℤ} (h : DiffVanish (d + 1)
   rfl
 
 /- English proof (translation)
-The claim follows from `topForm_eq_zero _ hn hx`.
+A detailed English derivation is pending.
 -/
 theorem picForm_eq_zero (h : DiffVanish (d + 1) φ) {n : ℕ} (hn : n ≠ d) {x : PicSym X}
     (hx : x ∈ symDeg (SmallPic X) n) : picForm h x = 0 := topForm_eq_zero _ hn hx

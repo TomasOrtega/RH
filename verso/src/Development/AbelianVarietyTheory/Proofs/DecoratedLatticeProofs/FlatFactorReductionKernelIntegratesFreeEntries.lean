@@ -10,13 +10,13 @@ noncomputable section
 namespace GlobalTheory.FlatFactor.UpStage
 
 /- English proof (translation)
-Set `e` to `MeasurableEquiv.piEquivPiSubtypeProd (fun _ : ι => k) p`. Establish `he : MeasurePreserving e (Measure.pi fun _ : ι => ν) ((Measure.pi fun _ : {i // p i} => ν).prod (Measure.pi fun _ : {i // ¬p i} => ν))` using `measurePreserving_piEquivPiSubtypeProd (fun _ : ι => ν) p`. Set `w : ({i // p i} → k) → ({i // ¬p i} → k)` to `fun x j => v (e.symm (x, 0)) j.1`. Establish `hw : Measurable w`. Use `measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(measurable_pi_apply j.1).comp (hv.comp (e.symm.measurable.comp (measurable_id.prodMk measurable_const)))`. Establish `hF : MeasurePreserving (fun q : ({i // p i} → k) × ({i // ¬p i} → k) => (id q.1, q.2 + w q.1)) ((Measure.pi fun _ : {i // p i} => ν).prod (Measure.pi fun _ : {i // ¬p i} => ν)) ((Measure.pi fun _ : {i // p i} => ν).prod (Measure.pi fun _ : {i // ¬p i} => ν))` using `(MeasurePreserving.id _).skew_product (measurable_snd.add (hw.comp measurable_fst)) (Filter.Eventually.of_forall fun x => map_add_right_eq_self _ _)`. Establish `hc` using `(he.symm e).comp (hF.comp he)`. Use `hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `α`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hα : v (e.symm ((fun j : {i // p i} => α j.1), 0)) = v α`. Apply `hd` to reduce the goal to its premises. Introduce `i hi`. Simplify using `[e, MeasurableEquiv.piEquivPiSubtypeProd, hi]`. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : p i`. Simplify using `[e, w, MeasurableEquiv.piEquivPiSubtypeProd, hi, h0 α i hi]`. Simplify using `[e, w, MeasurableEquiv.piEquivPiSubtypeProd, hi]`. Conclude with `(congrFun hα i).symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurePreserving_shear {k ι : Type} [AddCommGroup k] [MeasurableSpace k] [MeasurableAdd₂ k] [Fintype ι]
     (ν : Measure k) [SigmaFinite ν] [ν.IsAddRightInvariant] (p : ι → Prop) [DecidablePred p]
@@ -59,25 +59,21 @@ def rowAdd (r₀ r₁ : m) (a : k) (x : Matrix m m' k) : Matrix m m' k :=
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Use `GlobalTheory.SplitWeil.secondCountable k` as an intermediate fact. Use `GlobalTheory.SplitWeil.t2Space k` as an intermediate fact. Set `v : ({e : m × m' // e ∈ it} → k) → {e : m × m' // e ∈ it} → k` to `fun α e => if e.1.1 = r₀ then a * fill ev it β t α r₁ e.1.2 else 0`. Establish `hfm : ∀ q, Measurable fun α : {e : m × m' // e ∈ it} → k => fill ev it β t α r₁ q`. Introduce `q`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [fill, Matrix.of_apply]`. Use `split_ifs with h1`. Conclude with `measurable_pi_apply _`. Conclude with `measurable_const`. Conclude with `measurable_const`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvm : Measurable v`. Use `measurable_pi_lambda _ fun e => ?_` and prove the remaining obligations. Use `show Measurable fun α => if e.1.1 = r₀ then a * fill ev it β t α r₁ e.1.2 else 0`. Use `split_ifs`. Conclude with `(hfm e.1.2).const_mul a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `measurable_const`. Establish `h0' : ∀ (α : {e : m × m' // e ∈ it} → k) (e : {e : m × m' // e ∈ it}), e.1.1 ≠ r₀ → v α e = 0`. Introduce `α e he`. Simplify using `[v, he]`. Establish `hdep : ∀ α α' : {e : m × m' // e ∈ it} → k, (∀ e : {e : m × m' // e ∈ it}, e.1.1 ≠ r₀ → α e = α' e) → v α = v α'`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `α α' hα`. Establish `hfe : ∀ q, fill ev it β t α r₁ q = fill ev it β t α' r₁ q`. Introduce `q`. Simplify using `only [fill, Matrix.of_apply]`. Use `split_ifs with h1`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hα ⟨(r₁, q), h1⟩ hr`. Both sides reduce to the same expression. Both sides reduce to the same expression. Use function extensionality and compare the values at `e`. Simplify using `only [v, hfe]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Establish `hv_add : ∀ α, v (α + v α) = v α` using `fun α => hdep _ _ fun e he => by simp [h0' α e he]`. Establish `hv_sub : ∀ α, v (α - v α) = v α` using `fun α => hdep _ _ fun e he => by simp [h0' α e he]`. Set `φ : ({e : m × m' // e ∈ it} → k) ≃ᵐ ({e : m × m' // e ∈ it} → k)` to `{ toFun := fun α => α + v α invFun := fun α => α - v α left_inv := fun α => by show (α + v α) - v (α + v α) = α`. Rewrite using `[hv_add, add_sub_cancel_right]`. Use `right_inv := fun α => by show (α - v α) + v (α - v α) = α`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[hv_sub, sub_add_cancel]`. Use `measurable_toFun := measurable_id.add hvm`. Use `measurable_invFun := measurable_id.sub hvm }`. Establish `hmp : MeasurePreserving φ (Measure.pi fun _ => ν) (Measure.pi fun _ => ν)` using `measurePreserving_shear ν (fun e : {e : m × m' // e ∈ it} => e.1.1 ≠ r₀) v hvm h0' hdep`. Establish `hfill : ∀ α, rowAdd r₀ r₁ a (fill ev it β t α) = fill ev it β t' (φ α)`.
-
-Introduce `α`. Use extensionality with `r q`. Distinguish the cases in `hq : (r, q) ∈ it`. Simplify using `[rowAdd, fill, hq, v, φ]`. Rewrite using `[h α r q hq]`.
-
-Simplify using `[fill, hq]`. Unfold `red`. Simplify using `only [hfill]`. Conclude with `hmp.integral_comp' (fun α => Θ (fill ev it β t' α))`.
+A detailed English derivation is pending.
 -/
 theorem red_rowAdd (ν : Measure k) [ν.IsAddHaarMeasure] (ev it : Finset (m × m')) (β t t' : Matrix m m' k)
     (r₀ r₁ : m) (hr : r₁ ≠ r₀) (a : k) (Θ : Matrix m m' k → ℂ) (hΘ : Continuous Θ)
@@ -145,11 +141,11 @@ theorem red_rowAdd (ν : Measure k) [ν.IsAddHaarMeasure] (ev it : Finset (m × 
   exact hmp.integral_comp' (fun α => Θ (fill ev it β t' α))
 
 /- English proof (translation)
-Use `GlobalTheory.SplitWeil.secondCountable k` as an intermediate fact. Use `GlobalTheory.SplitWeil.t2Space k` as an intermediate fact. Establish `hint : ∀ (Φ : SB (Matrix m m' k)) t, Integrable (fun x => Φ.1 (fill ev it β t x)) (Measure.pi fun _ => ν)`. Introduce `Φ t`. Establish `hΦ : IsLocallyConstant Φ.1 ∧ HasCompactSupport Φ.1` using `Φ.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hΦ.1.continuous.comp (continuous_fill ev it β t)).integrable_of_hasCompactSupport (hasCompactSupport_comp_fill ev it β t _ hΦ.2)`. Establish `h0 : l (Θ - Θ') = 0`. Apply `hK` to reduce the goal to its premises. Introduce `t`. Express the relevant statement in the definitionally equal form `∫ x, (Θ.1 - Θ'.1) (fill ev it β t x) ∂(Measure.pi fun _ => ν) = 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.sub_apply]`. Rewrite using `[integral_sub (hint Θ t) (hint Θ' t)]`. Conclude with `sub_eq_zero.2 (h t)`. Rewrite `h0` using `[map_sub]`. Conclude with `sub_eq_zero.1 h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerRed_eq {M : Type} [AddCommGroup M] [Module ℂ M] (ν : Measure k) [ν.IsAddHaarMeasure]
     (ev it : Finset (m × m')) (β : Matrix m m' k) (l : SB (Matrix m m' k) →ₗ[ℂ] M) (hK : KerRed ν ev it β l)
@@ -174,7 +170,7 @@ theorem kerRed_eq {M : Type} [AddCommGroup M] [Module ℂ M] (ν : Measure k) [�
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] in
 /- English proof (translation)
-Use extensionality with `r q`. Distinguish the cases in `hrq : r₀ = r ∧ q₀ = q`. Take `⟨rfl, rfl⟩` from `hrq`. Simplify using `[fill, Matrix.single_apply, h1, h2]`. Simplify using `[fill, Matrix.single_apply, hrq]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fill_add_single_of_notMem (ev it : Finset (m × m')) (β t : Matrix m m' k) (x : {e : m × m' // e ∈ it} → k)
     (r₀ : m) (q₀ : m') (h1 : (r₀, q₀) ∉ ev) (h2 : (r₀, q₀) ∉ it) (a : k) :
@@ -187,7 +183,7 @@ theorem fill_add_single_of_notMem (ev it : Finset (m × m')) (β t : Matrix m m'
 
 omit [MeasurableSpace k] [BorelSpace k] in
 /- English proof (translation)
-Establish `hc : Continuous fun t : Matrix m m' k => g.val * t` using `continuous_const.matrix_mul continuous_id`. Establish `hc' : Continuous fun t : Matrix m m' k => (g⁻¹).val * t` using `continuous_const.matrix_mul continuous_id`. Set `h : Matrix m m' k ≃ₜ Matrix m m' k` to `{ toFun := fun t => g.val * t invFun := fun t => (g⁻¹).val * t left_inv := fun t => by simp [← Matrix.mul_assoc] right_inv := fun t => by simp [← Matrix.mul_assoc] continuous_toFun := hc continuous_invFun := hc' }`. Establish `hΘ : IsLocallyConstant Θ.1 ∧ HasCompactSupport Θ.1` using `Θ.2`. Conclude with `⟨hΘ.1.comp_continuous hc, hΘ.2.comp_homeomorph h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem mem_SB_mul_left (g : GL m k) (Θ : SB (Matrix m m' k)) :
     (fun t => Θ.1 (g.val * t)) ∈ SB (Matrix m m' k) := by
@@ -214,14 +210,14 @@ def itUp (j : ℕ) : Finset ((n ⊕ Fin c) × (n' ⊕ Fin (c + 1))) :=
   Finset.univ.filter fun e => Free (ρ + 1) e ∧ ∀ i, e.2 = Sum.inr i → ρ ≤ i.val ∨ j ≤ i.val
 
 /- English proof (translation)
-Use extensionality with `e`. Simplify using `[itUp, itB]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem itUp_top : itUp n n' c ρ ρ = itB n n' c ρ := by
   ext e
   simp [itUp, itB]
 
 /- English proof (translation)
-Use extensionality with `e`. Simplify using `[itUp, itFree]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem itUp_zero : itUp n n' c ρ 0 = itFree n n' c ρ := by
   ext e
@@ -230,14 +226,14 @@ theorem itUp_zero : itUp n n' c ρ 0 = itFree n n' c ρ := by
 variable {n n' c ρ}
 
 /- English proof (translation)
-Simplify using `[itUp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_itUp {j : ℕ} {e : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1))} :
     e ∈ itUp n n' c ρ j ↔ Free (ρ + 1) e ∧ ∀ i, e.2 = Sum.inr i → ρ ≤ i.val ∨ j ≤ i.val := by
   simp [itUp]
 
 /- English proof (translation)
-Simplify using `[evAll]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_evAll {e : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1))} :
     e ∈ evAll n n' c ρ ↔ ¬ Free (ρ + 1) e ∧ ¬ IsRead n n' c ρ e := by
@@ -251,9 +247,9 @@ def tv (i j : Fin c) (h : i ≠ j) (a : k) : GL (Fin c) k :=
     by rw [transvection_mul_transvection_same i j h, neg_add_cancel, transvection_zero]⟩
 
 /- English proof (translation)
-Use extensionality with `r q`. Break down `r with r | r` into its components or cases. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, rowAdd, Matrix.one_apply]`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, rowAdd, transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, add_mul, Finset.sum_add_distrib, ite_mul]`. Distinguish the cases in `hri : i = r`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hri` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hri, Ne.symm hri]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fromBlocks_transvection_mul {m' : Type} (i j : Fin c) (a : k) (x : Matrix (n ⊕ Fin c) m' k) :
     (fromBlocks 1 0 0 (transvection i j a) : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) * x =
@@ -269,14 +265,14 @@ theorem fromBlocks_transvection_mul {m' : Type} (i j : Fin c) (a : k) (x : Matri
     · simp [hri, Ne.symm hri]
 
 /- English proof (translation)
-Conclude with `fromBlocks_transvection_mul i j a x`.
+A detailed English derivation is pending.
 -/
 theorem embA_tv_mul {m' : Type} (i j : Fin c) (h : i ≠ j) (a : k) (x : Matrix (n ⊕ Fin c) m' k) :
     (embA n (tv i j h a)).val * x = rowAdd (Sum.inr i) (Sum.inr j) a x := by
   exact fromBlocks_transvection_mul i j a x
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Conclude with `fromBlocks_transvection_mul i j (-a) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embA_tv_inv_mul {m' : Type} (i j : Fin c) (h : i ≠ j) (a : k) (x : Matrix (n ⊕ Fin c) m' k) :
     ((embA n (tv i j h a))⁻¹).val * x = rowAdd (Sum.inr i) (Sum.inr j) (-a) x := by
@@ -284,22 +280,22 @@ theorem embA_tv_inv_mul {m' : Type} (i j : Fin c) (h : i ≠ j) (a : k) (x : Mat
   exact fromBlocks_transvection_mul i j (-a) x
 
 /- English proof (translation)
-Simplify using `[ch, rowAdd, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ch_rowAdd (i j : Fin c) (a : k) (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) :
     ch (rowAdd (Sum.inr i) (Sum.inr j) a x) - ch x = a * x (Sum.inr j) (Sum.inr i.succ) := by
   simp [ch, rowAdd, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `key : ∀ i' j' : Fin c, (if j'.val = i'.val + 1 then ((1 : Matrix (Fin c) (Fin c) k) + Matrix.single i j a) i' j' else 0) = if i' = i then (if j' = j then (if j.val = i.val + 1 then a else 0) else 0) else 0`. Introduce `i' j'`. Distinguish the cases in `h1 : j'.val = i'.val + 1`. Establish `hne : i' ≠ j'` using `fun e => by rw [e] at h1; omega`. Distinguish the cases in `h2 : i' = i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h3 : j' = j`. Substitute `h2` using the available equality. Substitute `h3` using the available equality. Simplify using `[h1, Matrix.one_apply_ne hne]`. Substitute `h2` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[h1, h3, Matrix.one_apply_ne hne, Ne.symm h3]`. Simplify using `[h1, h2, Matrix.one_apply_ne hne, Ne.symm h2]`. Distinguish the cases in `h2 : i' = i`. Distinguish the cases in `h3 : j' = j`. Substitute `h2` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h3` using the available equality. Simplify using `[h1]`. Simplify using `[h1, h3]`. Simplify using `[h1, h2]`. Express the relevant statement in the definitionally equal form `(∑ i' : Fin c, ∑ j' : Fin c, if j'.val = i'.val + 1 then (fromBlocks 1 0 0 (transvection i j a) : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) (Sum.inr i') (Sum.inr j') else 0) = _`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [fromBlocks_apply₂₂, transvection, key]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem simpleSum_tv (i j : Fin c) (h : i ≠ j) (a : k) :
     simpleSum (embA n (tv i j h a)) = if j.val = i.val + 1 then a else 0 := by
@@ -325,11 +321,11 @@ theorem simpleSum_tv (i j : Fin c) (h : i ≠ j) (a : k) :
   simp
 
 /- English proof (translation)
-Use `Subgroup.subset_closure (fun r s hrs => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(fromBlocks 1 0 0 (transvection i j a) : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s = _`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Simplify using `[Matrix.one_apply]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [lev, Sum.elim_inr] at hrs`. Establish `hrs' : ¬ (i = r ∧ j = s)`. Introduce and unpack `⟨rfl, rfl⟩`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[transvection, hrs', Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embA_tv_mem (i j : Fin c) (h : i ≠ j) (hij : i.val < j.val) (a : k) (p : ℕ) :
     embA n (tv i j h a) ∈ N k n c p := by
@@ -346,21 +342,21 @@ theorem embA_tv_mem (i j : Fin c) (h : i ≠ j) (hij : i.val < j.val) (a : k) (p
     simp [transvection, hrs', Matrix.one_apply]
 
 /- English proof (translation)
-Establish `h'` using `h`. Rewrite `h` using `[mem_itUp]`. Simplify using `only [rowAdd, fill, Matrix.of_apply, Matrix.add_apply, Matrix.single_apply, dif_neg h']`. Distinguish the cases in `hr : r = Sum.inr l`. Substitute `hr` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Break down `q with q | i` into its components or cases. Conclude with `absurd ⟨by simp only [Free]; omega, by simp⟩ h`. Establish `hij : i.val ≤ j.val`. Assume the negation of the conclusion as `hc`. Conclude with `h ⟨by simp only [Free]; omega, fun i' hi' => by cases hi'; omega⟩`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hj' : (Sum.inr j, Sum.inr i) ∉ itUp n n' c ρ (j.val + 1)`. Rewrite using `[mem_itUp]`. Introduce and unpack `⟨hf, -⟩`. Simplify using `only [Free] at hf`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hjev : (Sum.inr j, Sum.inr i) ∈ evAll n n' c ρ`. Rewrite using `[mem_evAll]`. Simplify using `only [Free, IsRead, not_false_eq_true, and_true]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hj', if_pos hjev]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hli : l.val < i.val`. Establish `hlev : (Sum.inr l, Sum.inr i) ∉ evAll n n' c ρ`. Rewrite using `[mem_evAll]`. Simplify using `only [Free]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg hlev, if_neg hlev]`. Distinguish the cases in `hji : j.val = i.val`. Simplify using `[basePt, Fin.ext_iff, hji]`. Simplify using `[basePt, Fin.ext_iff, hji]`. Establish `hlev : (Sum.inr l, Sum.inr i) ∈ evAll n n' c ρ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_evAll]`. Simplify using `only [Free, IsRead, not_false_eq_true, and_true]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos hlev, if_pos hlev]`. Establish `hji : j.val ≠ i.val` using `by omega`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[basePt, hji]`. Simplify using `[hr, Ne.symm hr]`.
+A detailed English derivation is pending.
 -/
 theorem rowAdd_fill (l j : Fin c) (hl : l.val < j.val) (hj : j.val < ρ) (a : k)
     (t : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (α) (r) (q) (h : (r, q) ∉ itUp n n' c ρ (j.val + 1)) :
@@ -409,7 +405,7 @@ theorem rowAdd_fill (l j : Fin c) (hl : l.val < j.val) (hj : j.val < ρ) (a : k)
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Establish `hΘ : IsLocallyConstant Θ.1 ∧ HasCompactSupport Θ.1` using `Θ.2`. Conclude with `⟨(((GlobalTheory.RootEx.OpenKernel.characters_locallyConstant k).2 ψ hψ).comp_continuous hf).mul hΘ.1, hΘ.2.mul_left⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem addChar_comp_mul_mem_SB {X : Type} [TopologicalSpace X] (ψ : AddChar k Circle) (hψ : Continuous ψ)
     (f : X → k) (hf : Continuous f) (Θ : SB X) : (fun t => (ψ (f t) : ℂ) * Θ.1 t) ∈ SB X := by
@@ -417,31 +413,29 @@ private theorem addChar_comp_mul_mem_SB {X : Type} [TopologicalSpace X] (ψ : Ad
   exact ⟨(((GlobalTheory.RootEx.OpenKernel.characters_locallyConstant k).2 ψ hψ).comp_continuous hf).mul hΘ.1, hΘ.2.mul_left⟩
 
 /- English proof (translation)
-Use `GlobalTheory.SplitWeil.secondCountable k` as an intermediate fact. Use `GlobalTheory.SplitWeil.t2Space k` as an intermediate fact. Establish `hlj : l ≠ j` using `fun e => by rw [e] at hl; exact lt_irrefl _ hl`. Establish `hsb : ∀ Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k), IsLocallyConstant Φ.1 ∧ HasCompactSupport Φ.1` using `fun Φ => Φ.2`. Establish `hnev : (Sum.inr l, Sum.inr j.castSucc) ∉ evAll n n' c ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_evAll]`. Introduce `hc`. Conclude with `hc.1 (by simpa [Free] using hl)`. Establish `hnit : (Sum.inr l, Sum.inr j.castSucc) ∉ itUp n n' c ρ (j.val + 1)`. Rewrite using `[mem_itUp]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨-, h2⟩`. Apply the tactic sequence `rcases h2 _ rfl with h3 | h3 <;> simp at h3 <;> omega`. Establish `hnit2 : (Sum.inr j, Sum.inr l.succ) ∉ itUp n n' c ρ (j.val + 1)`. Rewrite using `[mem_itUp]`. Introduce and unpack `⟨hf, -⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Free, Fin.val_succ] at hf`. Use linear arithmetic over natural numbers and integers. Establish `hev2 : (Sum.inr j, Sum.inr l.succ) ∈ evAll n n' c ρ`. Rewrite using `[mem_evAll]`. Simplify using `only [Free, IsRead, Fin.val_succ, not_false_eq_true, and_true]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use `set u : GL (Fin c) k := tv l j hlj (-a) with hu`. Establish `hmem : embA n u ∈ N k n c (ρ + 1)` using `embA_tv_mem l j hlj hl (-a) (ρ + 1)`. Establish `hzero : ∀ i j' : Fin c, i.val < ρ → ρ ≤ j'.val → u.val i j' = 0`. Introduce `i j' hi hj'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : i ≠ j'` using `fun e => by rw [e] at hi; omega`. Establish `h2 : j ≠ j'` using `fun e => by rw [← e] at hj'; omega`. Use `show (transvection l j (-a) : Matrix (Fin c) (Fin c) k) i j' = 0`. Simplify using `[transvection, Matrix.one_apply_ne h1, h2]`. Set `Θ₁ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)` to `⟨fun t => Θ.1 (((embA n u)⁻¹).val * t), mem_SB_mul_left _ Θ⟩`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcoord : Continuous fun t : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k => -a * t (Sum.inr j) (Sum.inr l.succ)` using `continuous_const.mul (continuous_id.matrix_elem (Sum.inr j) (Sum.inr l.succ))`. Set `Θ₂ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)` to `⟨fun t => (ψ (-a * t (Sum.inr j) (Sum.inr l.succ)) : ℂ) * Θ.1 t, addChar_comp_mul_mem_SB ψ hψ _ hcoord Θ⟩`. Establish `hlaw : L Θ₁ = (ψ (-simpleSum (embA n u)) : ℂ) • L Θ₂`. Use `hT u hmem hzero Θ Θ₁ Θ₂ (fun t => rfl) (fun t => ?_)` and prove the remaining obligations. Use `show (ψ (-a * t (Sum.inr j) (Sum.inr l.succ)) : ℂ) * Θ.1 t = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hu, embA_tv_mul, ch_rowAdd]`. Establish `h1 : L Θ₁ = L Θ'`. Use `kerRed_eq ν _ _ _ L hK Θ₁ Θ' fun t => ?_` and prove the remaining obligations. Establish `e1 : Θ₁.1 = fun x => Θ.1 (rowAdd (Sum.inr l) (Sum.inr j) a x)`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `show Θ.1 (((embA n (tv l j hlj (-a)))⁻¹).val * x) = _`. Rewrite using `[embA_tv_inv_mul, neg_neg]`. Rewrite using `[e1, red_rowAdd ν _ _ _ t (t + Matrix.single (Sum.inr l) (Sum.inr j.castSucc) a) (Sum.inr l) (Sum.inr j) (Sum.inr_injective.ne (Ne.symm hlj)) a Θ.1 (hsb Θ).1.continuous (fun α r q hrq => rowAdd_fill l j hl hj a t α r q hrq)]`. Unfold `red`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `α`. Rewrite using `[h, fill_add_single_of_notMem _ _ _ _ _ _ _ hnev hnit]`. Establish `h2 : (ψ (-simpleSum (embA n u)) : ℂ) • L Θ₂ = L Θ`. Rewrite using `[← map_smul]`. Use `kerRed_eq ν _ _ _ L hK _ Θ fun t => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `red`. Use `congr 1`. Use function extensionality and compare the values at `α`. Establish `hfv : fill (evAll n n' c ρ) (itUp n n' c ρ (j.val + 1)) (basePt c (0 : Matrix n n' k)) t α (Sum.inr j) (Sum.inr l.succ) = if j.val = l.val + 1 then 1 else 0`. Simplify using `only [fill, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hnit2, if_pos hev2]`. Simplify using `[basePt]`. Use `show (ψ (-simpleSum (embA n u)) : ℂ) * ((ψ (-a * _) : ℂ) * Θ.1 _) = Θ.1 _`. Rewrite using `[← mul_assoc, hfv, hu, simpleSum_tv]`. Apply the tactic sequence `split_ifs <;> simp [← Circle.coe_mul, ← AddChar.map_add_eq_mul]`.
-
-Rewrite using `[← h1, hlaw, h2]`.
+A detailed English derivation is pending.
 -/
 theorem translate_law (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuous ψ) [ν.IsAddHaarMeasure]
     {M : Type} [AddCommGroup M] [Module ℂ M] (L : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] M)
@@ -521,25 +515,23 @@ theorem translate_law (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuous
 end Pos
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ψ ν hψ hψ1 hν n n' _ _ _ _ c ρ M _ _ l hc hT hB`. Establish `step : ∀ j : ℕ, j < ρ → KerRed ν (evAll n n' c ρ) (itUp n n' c ρ (j + 1)) (basePt c (0 : Matrix n n' k)) l → KerRed ν (evAll n n' c ρ) (itUp n n' c ρ j) (basePt c (0 : Matrix n n' k)) l`. Introduce `j hj hK`. Use `KerRedStep.kerRed_extend k ψ ν hψ hψ1 hν _ _ M l _ _ _ _ _ subset_rfl ?_ ?_ hK ?_ ?_` and prove the remaining obligations. Introduce `e he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `he`, the goal using `[mem_itUp]`. Conclude with `⟨he.1, fun i hi => (he.2 i hi).imp_right (by omega)⟩`. Rewrite using `[Finset.disjoint_left]`. Introduce `e he he'`. Rewrite `he` using `[mem_evAll]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he'` using `[mem_itUp]`. Conclude with `he.1 he'.1`. Introduce `e he he'`. Conclude with `absurd he he'`. Introduce and unpack `⟨r, q⟩ he he' b Θ Θ' hΘ`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `he`, `he'` using `[mem_itUp]`. Take `⟨hf, hcol⟩` from `he`. Break down `q with q | i` into its components or cases. Conclude with `absurd ⟨hf, fun i hi => by cases hi⟩ he'`. Establish `hi : i.val = j`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Apply `he'` to reduce the goal to its premises. Use `⟨hf, fun i' hi' => ?_⟩` and prove the remaining obligations. Consider the cases of `hi'`. Break down `hcol i rfl with h1 | h1` into its components or cases.
+Split into cases according to the possible forms of the given data. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl h1`. Conclude with `Or.inr (by omega)`. Break down `r with r | l'` into its components or cases. Simplify using `only [Free] at hf`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hjc : j < c` using `by omega`. Establish `hi' : i = (⟨j, hjc⟩ : Fin c).castSucc` using `Fin.ext (by simp [hi])`. Substitute `hi'` using the available equality. Simplify using `only [Free, Fin.val_castSucc] at hf`. Conclude with `translate_law ψ ν hψ l hT l' ⟨j, hjc⟩ hf hj hK b Θ Θ' hΘ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `main : ∀ d, d ≤ ρ → KerRed ν (evAll n n' c ρ) (itUp n n' c ρ (ρ - d)) (basePt c (0 : Matrix n n' k)) l`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `_`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Nat.sub_zero, itUp_top]`. Conclude with `hB`. Consider the case `succ d ih`. Introduce `hd`. Establish `h1 : ρ - d = (ρ - (d + 1)) + 1` using `by omega`.
-
-Use `step _ (by omega) ?_` and prove the remaining obligations. Rewrite using `[← h1]`. Conclude with `ih (by omega)`. Use `main ρ le_rfl` as an intermediate fact. Rewrite `this` using `[Nat.sub_self, itUp_zero]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem kerRed_itFree : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k), Continuous ψ → ψ ≠ 1 → ν.IsAddHaarMeasure → ∀ (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c ρ : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] (l : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] M), c = 2 * ρ → GlobalTheory.FlatFactor.TwLaw ρ ψ l → GlobalTheory.FlatFactor.KerRed ν (GlobalTheory.FlatFactor.evAll n n' c ρ) (GlobalTheory.FlatFactor.itB n n' c ρ) (basePt c (0 : Matrix n n' k)) l → GlobalTheory.FlatFactor.KerRed ν (GlobalTheory.FlatFactor.evAll n n' c ρ) (GlobalTheory.FlatFactor.itFree n n' c ρ) (basePt c (0 : Matrix n n' k)) l := by
   intro k _ _ _ _ _ _ ψ ν hψ hψ1 hν n n' _ _ _ _ c ρ M _ _ l hc hT hB

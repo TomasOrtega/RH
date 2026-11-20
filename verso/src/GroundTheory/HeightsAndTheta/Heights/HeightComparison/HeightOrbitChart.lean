@@ -34,7 +34,7 @@ def localQuotLength {O : Type*} [CommRing O] (m : Ideal O) [m.IsPrime] (f : O) :
     (Localization.AtPrime m ⧸ Ideal.span {algebraMap O (Localization.AtPrime m) f})).toNat
 
 /- English proof (translation)
-Simplify using `[chartEval, chartRatio, samplePoint]`.
+Simplify using the standard rewrite rules.
 -/
 example : ((chartEval samplePoint (fun _ ↦ 0) (X ⟨(), 1⟩) : ratioField samplePoint) :
     AlgebraicClosure ℚ) = 2 := by
@@ -43,9 +43,9 @@ example : ((chartEval samplePoint (fun _ ↦ 0) (X ⟨(), 1⟩) : ratioField sam
 open Classical in
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨fun u ↦ by dsimp only; split_ifs <;> norm_num, fun u ↦ ?_⟩`. Rewrite using `[Ideal.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce `h dsimp only at h split_ifs at h with h0`. Conclude with `Subtype.ext h0`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Conclude with `absurd h (lt_irrefl 1)`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example {L : Type*} [Field L] (O : Subalgebra ℤ L) :
     AbsCentredAt O ⊥ fun t ↦ if t = 0 then 0 else 1 := by

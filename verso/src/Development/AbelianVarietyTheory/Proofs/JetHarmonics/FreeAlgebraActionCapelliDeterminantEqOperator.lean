@@ -9,9 +9,9 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.CapelliFreeAction
 
 /- English proof (translation)
-Unfold `Formalism.REAL.qdet Formalism.REAL.qminor`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, map_list_prod, List.map_ofFn]`. Use `congr 3`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp, Formalism.REAL.Tm]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_qdet {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] {n : ℕ}
     (φ : A →ₐ[ℂ] B) (E : Fin n → Fin n → A) (u : ℂ) :
@@ -26,15 +26,15 @@ theorem map_qdet {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] 
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ S E hE u v`. Set `F : FreeMonoid (Fin n × Fin n) →* Module.End ℂ S` to `FreeMonoid.lift fun ab => E ab.1 ab.2`. Set `ψ : MonoidAlgebra ℂ (FreeMonoid (Fin n × Fin n)) →ₐ[ℂ] Module.End ℂ S` to `MonoidAlgebra.lift ℂ _ _ F`. Set `φ : FreeAlgebra ℂ (Fin n × Fin n) →ₐ[ℂ] Module.End ℂ S` to `ψ.comp (FreeAlgebra.equivMonoidAlgebraFreeMonoid : FreeAlgebra ℂ (Fin n × Fin n) ≃ₐ[ℂ] _).toAlgHom`. Establish `hw : ∀ l : List (Fin n × Fin n), PI.DSInfCharCap.dsigCW ε σ (l.map PI.DSInfCharCap.unitM) (v : H) = ((F (FreeMonoid.ofList l) v : S) : H)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp [PI.DSInfCharCap.dsigCW]`. Consider the case `cons a l ih`. Rewrite using `[List.map_cons, PI.DSInfCharCap.dsigCW, ih, FreeMonoid.ofList_cons, map_mul, Module.End.mul_apply, ← hE a.1 a.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[F]`. Establish `hφ : ∀ p, PI.DSInfCharCap.actU ε σ p v = ((φ p v : S) : H)`. Introduce `p`. Establish `: φ p = ψ (FreeAlgebra.equivMonoidAlgebraFreeMonoid p)` using `rfl`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ψ, MonoidAlgebra.lift_apply, PI.DSInfCharCap.actU, Finsupp.sum, LinearMap.sum_apply, Submodule.coe_sum, LinearMap.smul_apply, Submodule.coe_smul]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hw]`. Both sides reduce to the same expression. Establish `hE' : (fun a b => φ (PI.DSInfCharCap.Egl n a b)) = E`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a b`. Simplify using `[φ, ψ, F, PI.DSInfCharCap.Egl, FreeAlgebra.equivMonoidAlgebraFreeMonoid]`. Rewrite using `[hφ, map_qdet, hE']`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actU_qdet : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (S : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ S), (∀ a b (v : S), ((E a b v : S) : H) = PI.DSInfCharCap.dsigC ε σ (PI.DSInfCharCap.unitM (a, b)) v) → ∀ (u : ℂ) (v : S), PI.DSInfCharCap.actU ε σ (Formalism.REAL.qdet (PI.DSInfCharCap.Egl n) u) v = ((Formalism.REAL.qdet E u v : S) : H) := by
   intro n ε H _ _ σ S E hE u v

@@ -19,23 +19,21 @@ open GlobalTheory.Published GlobalTheory.Published.AutFin
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.ArchIwasawa
 
 /- English proof (translation)
-Establish `hJi : J⁻¹ * J = 1` using `Matrix.nonsing_inv_mul J hJu`. Establish `hJi' : J * J⁻¹ = 1` using `Matrix.mul_nonsing_inv J hJu`. Establish `hJH : (J⁻¹)ᴴ = J⁻¹` using `hJ.inv.eq`. Establish `hPH : Pᴴ = P` using `hP.isHermitian.eq`. Establish `hYX : Yᴴ * J * X = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg conjTranspose hXY` as an intermediate fact. Simplify `this` using `only [conjTranspose_mul, conjTranspose_conjTranspose, hJ.eq, conjTranspose_one, Matrix.mul_assoc]`. Establish `hXinj : Function.Injective X.mulVec` using `fun a b hab => by`. Use `congrArg (Matrix.mulVec (Yᴴ * J)) hab` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, hYX, Matrix.one_mulVec]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hG : (Xᴴ * P * X).PosDef` using `hP.conjTranspose_mul_mul_same hXinj`. Take `⟨R, hRt, hR⟩` from `GroundTheory.Automorphic.exists_isUpperTriangular_conjTranspose_mul_self hG`. Establish `hRu : IsUnit R.det`. Establish `hd : IsUnit (Rᴴ * R).det` using `by rw [hR]; exact (Matrix.isUnit_iff_isUnit_det _).1 hG.isUnit`. Rewrite `hd` using `[Matrix.det_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_of_mul_isUnit_right hd`. Use `letI := Matrix.invertibleOfIsUnitDet R hRu`. Establish `hBt : (R⁻¹).BlockTriangular id` using `blockTriangular_inv_of_blockTriangular hRt`. Establish `hRi : R⁻¹ * R = 1` using `Matrix.nonsing_inv_mul R hRu`. Establish `hRi' : R * R⁻¹ = 1` using `Matrix.mul_nonsing_inv R hRu`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRiH : (R⁻¹)ᴴ * Rᴴ = 1` using `by rw [← conjTranspose_mul, hRi', conjTranspose_one]`. Establish `hX'P : (X * R⁻¹)ᴴ * P * (X * R⁻¹) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((R⁻¹)ᴴ * Rᴴ) * (R * R⁻¹) := by rw [← hR]; simp only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `_ = 1 := by rw [hRiH, hRi', Matrix.one_mul]`. Establish `hX'J : (X * R⁻¹)ᴴ * J * (X * R⁻¹) = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hXX, Matrix.mul_zero, Matrix.zero_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set X' : Matrix (Fin n) (Fin r) ℂ := X * R⁻¹ with hX'`. Establish `hY'J : (J⁻¹ * (P * X'))ᴴ * J * (J⁻¹ * (P * X')) = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, hJH, hPH, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hJi', Matrix.mul_one, hPJ, hX'J]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hXY' : X'ᴴ * J * (J⁻¹ * (P * X')) = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hPX' : P * X' = J * (J⁻¹ * (P * X'))`. Rewrite using `[← Matrix.mul_assoc J, hJi', Matrix.one_mul]`. Take `⟨p, k, h1, h2, h3, h4, B, hB, hpB⟩` from `GlobalTheory.CompanionTheory.WittIwasawa.iwasawa_witt_flag n r J P X' _ hJ hJu hX'J hY'J hXY' hP hPJ hPX' g hg`.
-
-Use `⟨p, k, h1, h2, h3, h4, R⁻¹ * B * R, (hBt.mul hB).mul hRt, ?_⟩` and prove the remaining obligations. Establish `hXX' : X = X' * R` using `by rw [hX', Matrix.mul_assoc, hRi, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem iwasawa_majorant (n r : ℕ) (J P : Matrix (Fin n) (Fin n) ℂ) (X Y : Matrix (Fin n) (Fin r) ℂ)
     (hJ : J.IsHermitian) (hJu : IsUnit J.det) (hXX : Xᴴ * J * X = 0) (hXY : Xᴴ * J * Y = 1) (hP : P.PosDef)
@@ -91,13 +89,13 @@ theorem iwasawa_majorant (n r : ℕ) (J P : Matrix (Fin n) (Fin n) ℂ) (X Y : M
     _ = X * (R⁻¹ * B * R) := by simp only [hX', Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hd : IsUnit f.det` using `(Matrix.isUnit_iff_isUnit_det f).1 hf`. Establish `h1 : f⁻¹ * f = 1` using `Matrix.nonsing_inv_mul f hd`. Establish `h2 : f * f⁻¹ = 1` using `Matrix.mul_nonsing_inv f hd`. Establish `h3 : fᴴ * (f⁻¹)ᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Establish `h4 : (f⁻¹)ᴴ * fᴴ = 1` using `by rw [← conjTranspose_mul, h2, conjTranspose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ` using `Formalism.REAL.Jm_mul_self e`. Establish `hinv : (fᴴ * Formalism.REAL.Jm e * f)⁻¹ = f⁻¹ * Formalism.REAL.Jm e * (f⁻¹)ᴴ`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hJ, Matrix.mul_one, h3]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(Matrix.PosDef.one (n := Fin n) (R := ℂ)).conjTranspose_mul_mul_same (Matrix.mulVec_injective_iff_isUnit.2 hf)` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem frame_majorant {n : ℕ} {e : Fin n → Bool} {f : Matrix (Fin n) (Fin n) ℂ} (hf : IsUnit f) :
     (fᴴ * f).PosDef ∧ (fᴴ * f) * (fᴴ * Formalism.REAL.Jm e * f)⁻¹ * (fᴴ * f) = fᴴ * Formalism.REAL.Jm e * f := by
@@ -124,15 +122,15 @@ theorem frame_majorant {n : ℕ} {e : Fin n → Bool} {f : Matrix (Fin n) (Fin n
       _ = fᴴ * Formalism.REAL.Jm e * f := by rw [h2, h4, Matrix.mul_one, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hd : IsUnit f.det` using `(Matrix.isUnit_iff_isUnit_det f).1 hf`. Establish `h1 : f⁻¹ * f = 1` using `Matrix.nonsing_inv_mul f hd`. Establish `h2 : f * f⁻¹ = 1` using `Matrix.mul_nonsing_inv f hd`. Establish `h4 : (f⁻¹)ᴴ * fᴴ = 1` using `by rw [← conjTranspose_mul, h2, conjTranspose_one]`. Establish `key : ∀ M : Matrix (Fin n) (Fin n) ℂ, kᴴ * (fᴴ * M * f) * k = fᴴ * M * f → (f * k * f⁻¹)ᴴ * M * (f * k * f⁻¹) = M` using `fun M hM => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((f⁻¹)ᴴ * fᴴ) * M * (f * f⁻¹) := by rw [hM]; simp only [Matrix.mul_assoc]`. Use `_ = M := by rw [h4, h2, Matrix.one_mul, Matrix.mul_one]`. Establish `hm1 : (f * k * f⁻¹)ᴴ * (f * k * f⁻¹) = 1`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `key 1 (by simpa using hk2)` as an intermediate fact. Simplify using `using this`. Establish `hm2` using `key _ hk1`. Use `set m : Matrix (Fin n) (Fin n) ℂ := f * k * f⁻¹ with hm`. Establish `hm3 : m * mᴴ = 1` using `mul_eq_one_comm.1 hm1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hK : m ∈ Formalism.REAL.Kset e`. Use `⟨Matrix.mem_unitaryGroup_iff'.2 hm1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite `hK` using `[← Formalism.REAL.range_toMK]`. Take `⟨κ, hκ⟩` from `hK`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨κ, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.REAL.toMK κ = m at hκ`. Rewrite using `[hκ, hm]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_KG_of_stab {n : ℕ} {e : Fin n → Bool} {f k : Matrix (Fin n) (Fin n) ℂ} (hf : IsUnit f)
     (hk1 : kᴴ * (fᴴ * Formalism.REAL.Jm e * f) * k = fᴴ * Formalism.REAL.Jm e * f) (hk2 : kᴴ * (fᴴ * f) * k = fᴴ * f) :
@@ -172,15 +170,15 @@ variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E 
 open GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.KInf in
 
 /- English proof (translation)
-Establish `R` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V`. Establish `hat` using `fun τ => isAtTau_kAt θ V hθ τ (hfr τ).1 (hfr τ).2 (κ τ)`. Use `⟨list_prod_mem fun x hx => ?_, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨τ, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `(hat τ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ l : List D.what₂.Tau, l.Nodup → (τ ∈ l → infMat D.sp.cm.sig V.gram (θ τ) ((l.map fun τ => kAt θ V τ (ε τ) (fr τ) (κ τ)).prod) = (fr τ)⁻¹ * Formalism.REAL.toMK (κ τ) * fr τ) ∧ (τ ∉ l → infMat D.sp.cm.sig V.gram (θ τ) ((l.map fun τ => kAt θ V τ (ε τ) (fr τ) (κ τ)).prod) = 1 …`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => absurd h List.not_mem_nil, fun _ => R.2.2.2.2.1 1 (one_mem _) τ⟩`. Consider the case `cons a l ih`. Introduce `hn`. Take `⟨ha, hl⟩` from `List.nodup_cons.1 hn`. Take `⟨i1, i2⟩` from `ih hl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.map_cons, List.prod_cons, R.2.2.2.1]`. Distinguish the cases in `h : a = τ`. Substitute `h` using the available equality. Conclude with `⟨fun _ => by rw [(hat a).2.1, i2 ha, Matrix.mul_one], fun hh => absurd List.mem_cons_self hh⟩`. Rewrite using `[(hat a).2.2 τ (Ne.symm h), Matrix.one_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun hm => i1 (List.mem_of_ne_of_mem (Ne.symm h) hm), fun hm => i2 fun q => hm (List.mem_cons_of_mem _ q)⟩`. Conclude with `(key _ (Finset.nodup_toList _)).1 (Finset.mem_toList.2 (Finset.mem_univ τ))`.
+A detailed English derivation is pending.
 -/
 theorem kInf_spec (hθ : IsInfFam θ) (hfr : IsFrameFam V ε fr) (κ : ∀ τ, Formalism.REAL.KG (ε τ)) :
     kInf θ V ε fr κ ∈ GinfC V ∧ ∀ τ, infMat D.sp.cm.sig V.gram (θ τ) (kInf θ V ε fr κ) =
@@ -212,9 +210,9 @@ theorem kInf_spec (hθ : IsInfFam θ) (hfr : IsFrameFam V ε fr) (κ : ∀ τ, F
     exact (key _ (Finset.nodup_toList _)).1 (Finset.mem_toList.2 (Finset.mem_univ τ))
 
 /- English proof (translation)
-Establish `hs : ∀ w : NumberField.InfinitePlace D.host.F, ∃ (τ : GlobalTheory.AdelicU.EmbOver D.host.E w) (ρ : D.what₂.Tau), τ.1 = tauE D ρ`. Introduce `w`. Take `⟨ρ, rfl⟩` from `(GlobalTheory.AdelicU.placeOf_bijective D).2 w`. Conclude with `⟨GlobalTheory.AdelicU.embOverOf D ρ, ρ, rfl⟩`. Use `choose τ ρ hτ using hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.CompanionTheory.SiegelArch.mem_minPar_of V.gram (GlobalTheory.AdelicU.isCMExt_host D) τ hp hQ fun w => ?_` and prove the remaining obligations. Take `⟨B, hB, e⟩` from `h (ρ w)`. Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Rewrite using `[hτ w, GlobalTheory.Orb.archMat_eq_archEquiv _ (GlobalTheory.AdelicU.isCMExt_host D), ← GlobalTheory.AdelicU.infMat_infProj, ← GlobalTheory.AdelicU.eq_infProj hθ (τ w) (hτ w)]`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_minPar_real (hθ : IsInfFam θ) {r : ℕ} {X : Matrix (Fin V.rank) (Fin r) D.host.E}
     {Q : Matrix (Fin r) (Fin V.rank) D.host.E} (hQ : Q * X = 1) {p : GA D V} (hp : p ∈ GinfC V)
@@ -234,23 +232,21 @@ theorem mem_minPar_real (hθ : IsInfFam θ) {r : ℕ} {X : Matrix (Fin V.rank) (
   exact e
 
 /- English proof (translation)
-Introduce `D θ hθ V ε fr hfr m X Y hW g hg`. Establish `hcm` using `GlobalTheory.AdelicU.isCMExt_host D`. Establish `R` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V`. Establish `hher` using `fun τ => GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ`. Establish `hmap : ∀ (τ : D.what₂.Tau) {A B : Matrix (Fin V.rank) (Fin m) D.host.E}, (A.map (tauE D τ))ᴴ * gramAt D V τ * B.map (tauE D τ) = (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) A * V.gram * B).map (tauE D τ)` using `fun τ {A B} => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show gramAt D V τ = V.gram.map (tauE D τ) from rfl, Matrix.map_mul, Matrix.map_mul, GlobalTheory.CompanionTheory.SiegelArch.conjT_map hcm]`. Establish `hxx : ∀ τ, (X.map (tauE D τ))ᴴ * gramAt D V τ * X.map (tauE D τ) = 0` using `fun τ => by`. Rewrite using `[hmap, hW.xx]`. Simplify using the standard rewrite rules. Establish `hxy : ∀ τ, (X.map (tauE D τ))ᴴ * gramAt D V τ * Y.map (tauE D τ) = 1` using `fun τ => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hmap, hW.xy, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hyx : ∀ τ, (Y.map (tauE D τ))ᴴ * gramAt D V τ * X.map (tauE D τ) = 1` using `fun τ => by`. Establish `h` using `congrArg conjTranspose (hxy τ)`. Rewrite `h` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hher τ, conjTranspose_one]`. Rewrite using `[Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Take `⟨w₀⟩ : Nonempty (NumberField.InfinitePlace D.host.F)` from `inferInstance`. Take `⟨τ₀, -⟩` from `(GlobalTheory.AdelicU.placeOf_bijective D).2 w₀`. Establish `hQ : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * V.gram * X = 1`. Establish `h : (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * V.gram * X).map (tauE D τ₀) = (1 : Matrix (Fin m) (Fin m) D.host.E).map (tauE D τ₀)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmap, hyx, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Matrix.map_injective (tauE D τ₀).injective h`. Establish `place : ∀ τ, ∃ (q : Matrix (Fin V.rank) (Fin V.rank) ℂ) (κ : Formalism.REAL.KG (ε τ)), infMat D.sp.cm.sig V.gram (θ τ) g = q * ((fr τ)⁻¹ * Formalism.REAL.toMK κ * fr τ) ∧ ∃ B : Matrix (Fin m) (Fin m) ℂ, B.BlockTriangular id ∧ q * X.map (tauE D τ) = X.map (tauE D τ) * B`. Introduce `τ`. Establish `hG : (fr τ)ᴴ * Formalism.REAL.Jm (ε τ) * fr τ = gramAt D V τ` using `(hfr τ).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hPd, hPJ⟩` from `frame_majorant (e := ε τ) (hfr τ).1`. Rewrite `hPJ` using `[hG]`. Take `⟨p, k, -, h2, h3, h4, B, hB, hpB⟩` from `iwasawa_majorant V.rank m (gramAt D V τ) ((fr τ)ᴴ * fr τ) _ _ (hher τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ) (hxx τ) (hxy τ) hPd hPJ _ (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ)`. Take `⟨κ, hκ⟩` from `exists_KG_of_stab (e := ε τ) (hfr τ).1 (by rw [hG]; exact h2) h3`. Conclude with `⟨p, κ, hκ ▸ h4, B, hB, hpB⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose q κ hq2 hq3 using place`. Take `⟨hk, hkm⟩` from `kInf_spec hθ hfr κ`. Use `set k := GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.KInf.kInf θ V ε fr κ with hkdef`. Use `⟨g * k⁻¹, ?_, κ, (inv_mul_cancel_right g k).symm⟩` and prove the remaining obligations. Use `mem_minPar_real hθ hQ (mul_mem hg (inv_mem hk)) fun τ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : infMat D.sp.cm.sig V.gram (θ τ) (g * k⁻¹) = q τ`. Establish `h2 : infMat D.sp.cm.sig V.gram (θ τ) k * infMat D.sp.cm.sig V.gram (θ τ) k⁻¹ = 1`. Rewrite using `[← R.2.2.2.1, mul_inv_cancel]`. Conclude with `R.2.2.2.2.1 1 (one_mem _) τ`. Rewrite using `[R.2.2.2.1, hq2 τ, ← hkm τ, Matrix.mul_assoc, h2, Matrix.mul_one]`.
-
-Rewrite using `[e]`. Conclude with `hq3 τ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_archIwasawa : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), IsFrameFam V ε fr → ∀ (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ g ∈ GinfC V, ∃ p ∈ PositivityTheory.ThKR.minPar D.sp.cm.sig V.gram X, ∃ κ : (∀ τ, Formalism.REAL.KG (ε τ)), g = p * GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.KInf.kInf θ V ε fr κ := by
   intro D θ hθ V ε fr hfr m X Y hW g hg

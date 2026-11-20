@@ -30,7 +30,7 @@ def LocZero (π : Y ⟶ B) (c : Pic Y) : Prop :=
   ∀ p : B, ∃ V : B.Opens, p ∈ V ∧ pull (π ⁻¹ᵁ V).ι c = 0
 
 /- English proof (translation)
-Establish `hr : Set.range h ⊆ Set.range W.ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hW y`. Rewrite using `[← IsOpenImmersion.lift_fac W.ι h hr, pull_comp, H, map_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_eq_zero_of_range {W : Y.Opens} {c : Pic Y} (H : pull W.ι c = 0) (h : Y' ⟶ Y) (hW : ∀ y, h y ∈ W) :
     pull h c = 0 := by
@@ -41,7 +41,7 @@ theorem pull_eq_zero_of_range {W : Y.Opens} {c : Pic Y} (H : pull W.ι c = 0) (h
   rw [← IsOpenImmersion.lift_fac W.ι h hr, pull_comp, H, map_zero]
 
 /- English proof (translation)
-Introduce `p`. Take `⟨V, hV, t⟩` from `H p`. Take `⟨V', hV', t'⟩` from `H' p`. Use `⟨V ⊓ V', ⟨hV, hV'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, pull_eq_zero_of_range t (π ⁻¹ᵁ (V ⊓ V')).ι fun y => y.2.1, pull_eq_zero_of_range t' (π ⁻¹ᵁ (V ⊓ V')).ι fun y => y.2.2, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem LocZero.sub {π : Y ⟶ B} {c d : Pic Y} (H : LocZero π c) (H' : LocZero π d) : LocZero π (c - d) := by
   intro p
@@ -52,9 +52,9 @@ theorem LocZero.sub {π : Y ⟶ B} {c d : Pic Y} (H : LocZero π c) (H' : LocZer
     pull_eq_zero_of_range t' (π ⁻¹ᵁ (V ⊓ V')).ι fun y => y.2.2, sub_zero]
 
 /- English proof (translation)
-Substitute `sq` using the available equality. Introduce `p`. Take `⟨V, hV, t⟩` from `H p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp]`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pull_eq_zero_of_range t _ fun y => y.2`.
+A detailed English derivation is pending.
 -/
 theorem LocZero.pull_over {π : Y ⟶ B} {c : Pic Y} (H : LocZero π c) {π' : Y' ⟶ B} (h : Y' ⟶ Y) (sq : h ≫ π = π') :
     LocZero π' (pull h c) := by
@@ -66,9 +66,9 @@ theorem LocZero.pull_over {π : Y ⟶ B} {c : Pic Y} (H : LocZero π c) {π' : Y
   exact pull_eq_zero_of_range t _ fun y => y.2
 
 /- English proof (translation)
-Take `⟨L, hL, rfl⟩` from `cls_surj c`. Introduce `p`. Take `⟨i, hi⟩` from `exists_chart hL p`. Use `⟨L.U i, hi, ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(cls_eq_zero_iff (pull_isLB hL _)).2 (BoxKernel.gen_of_chart (pull_isLB hL _) (fun _ => i) fun y => mem_pull.2 y.2)`.
+A detailed English derivation is pending.
 -/
 theorem locZero_base (π : Y ⟶ B) (c : Pic B) : LocZero π (pull π c) := by
   obtain ⟨L, hL, rfl⟩ := cls_surj c
@@ -80,7 +80,7 @@ theorem locZero_base (π : Y ⟶ B) (c : Pic B) : LocZero π (pull π c) := by
     (BoxKernel.gen_of_chart (pull_isLB hL _) (fun _ => i) fun y => mem_pull.2 y.2)
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun _ => exists_congr fun _ => and_congr_right fun _ => (cls_eq_zero_iff (pull_isLB hN _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem locZero_iff (π : Y ⟶ B) {N : LB Y} (hN : N.IsLB) :
     (∀ p : B, ∃ V : B.Opens, p ∈ V ∧ ∃ c : LB.Gen (N.pull (π ⁻¹ᵁ V).ι), c.IsGen) ↔ LocZero π (cls N hN) :=
@@ -94,7 +94,7 @@ section Kernel
 variable {S : Scheme.{0}} {A G H : Over S} [GrpObj A] [GrpObj G] [GrpObj H]
 
 /- English proof (translation)
-Use `(cls_linComb hL _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two]`. Use `show (1 : ℤ) • pull ((fst T A ≫ x) * snd T A).left (cls L hL) + (-1 : ℤ) • pull (snd T A).left (cls L hL) = _`. Rewrite using `[one_zsmul, neg_one_zsmul, sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_translDiff {L : LB A.left} (hL : L.IsLB) {T : Over S} (x : T ⟶ A) :
     cls (Out.translDiff A L x) (LB.isLB_linComb hL _ _) =
@@ -105,11 +105,11 @@ theorem cls_translDiff {L : LB A.left} (hL : L.IsLB) {T : Over S} (x : T ⟶ A) 
   rw [one_zsmul, neg_one_zsmul, sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `H₁` using `hx.pull_over (π' := (fst T G).left) (T ◁ u).left (congrArg (fun q => q.left) (whiskerLeft_fst T u))`. Establish `H₂` using `(H₁.sub (locZero_base (fst T G).left (pull (x ≫ q).left b))).sub (locZero_base (fst T G).left (-pull (1 : T ⟶ H).left b))`. Establish `e₁ : T ◁ u ≫ ((fst T A ≫ x) * snd T A) ≫ p = (fst T G ≫ x ≫ p) * snd T G`. Rewrite using `[MonObj.mul_comp, MonObj.comp_mul, Category.assoc, whiskerLeft_fst_assoc, whiskerLeft_snd_assoc, hp, Category.comp_id]`. Establish `e₂ : T ◁ u ≫ ((fst T A ≫ x) * snd T A) ≫ q = fst T G ≫ x ≫ q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonObj.mul_comp, MonObj.comp_mul, Category.assoc, whiskerLeft_fst_assoc, whiskerLeft_snd_assoc, hq, MonObj.comp_one, _root_.mul_one]`. Establish `e₃ : T ◁ u ≫ snd T A ≫ p = snd T G` using `by rw [whiskerLeft_snd_assoc, hp, Category.comp_id]`. Establish `e₄ : T ◁ u ≫ snd T A ≫ q = fst T G ≫ (1 : T ⟶ H)`. Rewrite using `[whiskerLeft_snd_assoc, hq, MonObj.comp_one, MonObj.comp_one]`. Use `H₂ using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[cls_translDiff hL, cls_translDiff hN, e]`. Simplify using `only [map_sub, map_add, map_neg, ← pull_comp, ← Over.comp_left, e₁, e₂, e₃, e₄]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem locZero_translDiff_comp {N : LB A.left} {L : LB G.left} (hN : N.IsLB) (hL : L.IsLB) (b : Pic H.left)
     (p : A ⟶ G) (q : A ⟶ H) [IsMonHom p] [IsMonHom q] (u : G ⟶ A) (hp : u ≫ p = 𝟙 G) (hq : u ≫ q = 1)
@@ -134,9 +134,9 @@ theorem locZero_translDiff_comp {N : LB A.left} {L : LB G.left} (hN : N.IsLB) (h
   abel
 
 /- English proof (translation)
-Introduce `R _ t x hx`. Establish `hx'` using `(locZero_iff _ (LB.isLB_linComb hN _ _)).1 hx`. Establish `h₁ : x ≫ fst G H = 1` using `hK R t _ ((locZero_iff _ (LB.isLB_linComb hL _ _)).2 (locZero_translDiff_comp hN hL _ (fst G H) (snd G H) (lift (𝟙 G) 1) (lift_fst _ _) (lift_snd _ _) e x hx'))`. Establish `h₂ : x ≫ snd G H = 1` using `hK' R t _ ((locZero_iff _ (LB.isLB_linComb hL' _ _)).2 (locZero_translDiff_comp hN hL' _ (snd G H) (fst G H) (lift 1 (𝟙 H)) (lift_snd _ _) (lift_fst _ _) (e.trans (add_comm _ _)) x hx'))`. Use `show x = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[h₁, MonObj.one_comp]`. Rewrite using `[h₂, MonObj.one_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kTriv_prod {N : LB (G ⊗ H).left} {L : LB G.left} {L' : LB H.left} (hN : N.IsLB) (hL : L.IsLB)
     (hL' : L'.IsLB) (e : cls N hN = pull (fst G H).left (cls L hL) + pull (snd G H).left (cls L' hL'))
@@ -163,21 +163,21 @@ def cubeCls {T : Over S} (x : Fin n → (T ⟶ G)) (c : Pic G.left) : Pic T.left
   ∑ I : ULift.{0} (Finset (Fin n)), ((-1 : ℤ) ^ (n - I.down.card)) • pull (psum G x I.down).left c
 
 /- English proof (translation)
-The claim follows from `cls_linComb hL _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cls_cubeLB {T : Over S} (x : Fin n → (T ⟶ G)) {L : LB G.left} (hL : L.IsLB) :
     cls (cubeLB G x L) (LB.isLB_linComb hL _ _) = cubeCls x (cls L hL) :=
   cls_linComb hL _ _ _
 
 /- English proof (translation)
-Simplify using `only [cubeCls, map_add, smul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cubeCls_add {T : Over S} (x : Fin n → (T ⟶ G)) (c d : Pic G.left) :
     cubeCls x (c + d) = cubeCls x c + cubeCls x d := by
   simp only [cubeCls, map_add, smul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Rewrite using `[cubeCls, cubeCls, map_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← pull_comp, PrimNorm.psum_pre ρ x y h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_cubeCls {T T' : Over S} (ρ : T' ⟶ T) (x : Fin n → (T ⟶ G)) (c : Pic G.left)
     (y : Fin n → (T' ⟶ G)) (h : ∀ i, y i = ρ ≫ x i) : cubeCls y c = pull ρ.left (cubeCls x c) := by

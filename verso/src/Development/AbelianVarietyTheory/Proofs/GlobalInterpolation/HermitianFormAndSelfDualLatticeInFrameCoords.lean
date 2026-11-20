@@ -11,7 +11,7 @@ open scoped ENNReal TensorProduct
 namespace GlobalTheory.FrameDict
 
 /- English proof (translation)
-Establish `hs : ∀ a : E, (cm.sig : E →+* E) a = star a` using `fun _ => rfl`. Simplify using `only [hE, Formalism.UG.hform, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, map_smul, LinearMap.smul_apply, smul_eq_mul, Formalism.BasicNotions.HSpace.gram, hs, Finset.mul_sum, starRingEnd_apply, RingHom.id_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_coords {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (cm : CMData F E) (W : Formalism.BasicNotions.HSpace E) (x y : Fin W.rank → E) :
@@ -25,9 +25,9 @@ theorem form_coords {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   ring
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨z, h⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_one_iff {E : Type} [Field E] [NumberField E] (z : E) :
     z ∈ (1 : Submodule (𝓞 E) E) ↔ IsIntegral ℤ z := by
@@ -39,15 +39,13 @@ theorem mem_one_iff {E : Type} [Field E] [NumberField E] (z : E) :
     exact ⟨⟨z, h⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ cm W`. Use `⟨fun a b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[form_coords, W.frame.sum_repr, W.frame.sum_repr]`. Take `⟨L, hfg, hsp, hL⟩` from `exists_lattice W`. Use `⟨L, ⟨hfg, hsp, fun y => ?_⟩, hL⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ x : Fin W.rank → E, x ∈ L ↔ ∑ i, x i • W.frame i ∈ W.L0` using `fun x => by`. Rewrite using `[← SetLike.mem_coe, hL]`. Both sides reduce to the same expression. Establish `hu : ∀ v : W.V, (∀ u ∈ W.L0, W.hT u v ∈ (1 : Submodule (𝓞 E) E)) ↔ v ∈ W.L0` using `fun v => by`. Establish `h : Formalism.HermitianLatticesTheory.dual W.hT W.L0 = W.L0` using `W.baseLattice_isUnimodular`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_rhs => rw [← h]`. Simplify using `[Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf]`. Rewrite using `[hmem, ← hu]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[form_coords, ← mem_one_iff]`. Conclude with `h _ ((hmem x).1 hx)`. Introduce `h u hu'`. Use `h (fun i => W.frame.repr u i) (by rw [hmem, W.frame.sum_repr]; exact hu')` as an intermediate fact. Rewrite `this` using `[form_coords, W.frame.sum_repr, ← mem_one_iff]`.
-
-Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dict : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (W : HSpace E), (∀ a b : W.V, hE cm.sig W.gram (fun i => W.frame.repr a i) (fun i => W.frame.repr b i) = W.hT a b) ∧ ∃ L : Submodule (𝓞 E) (Fin W.rank → E), IsSelfDualLat cm.sig W.gram L ∧ (L : Set (Fin W.rank → E)) = latC W := by
   intro F E _ _ _ _ _ _ cm W

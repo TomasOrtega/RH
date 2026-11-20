@@ -7,21 +7,19 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.ArcBaseFactor
 
 /- English proof (translation)
-Set `M : Submonoid S` to `(IsUnit.submonoid O').comap b`. Establish `hM : M ≤ nonZeroDivisors S`. Introduce `s hs`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Introduce and unpack `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `: IsUnit (b 0)` using `hs`. Simplify using `at this`. Establish `hK : ∀ s : M, IsUnit (algebraMap S K s)` using `fun s => IsUnit.mk0 _ (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (hM s.2))`. Set `g : Localization M →+* O'` to `IsLocalization.lift (M := M) (g := b) (fun s => s.2)`. Set `φ : Localization M →+* K` to `IsLocalization.lift (M := M) (g := algebraMap S K) hK`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hφ : Function.Injective φ`. Use `(injective_iff_map_eq_zero φ).2 fun z hz => ?_` and prove the remaining obligations. Take `⟨a, s, rfl⟩` from `IsLocalization.exists_mk'_eq M z`. Establish `h1 : algebraMap S K a = 0`. Use `IsLocalization.lift_mk'_spec (S := Localization M) (M := M) (g := algebraMap S K) (hg := hK) a (0 : K) s` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : φ (IsLocalization.mk' (Localization M) a s) = 0` using `hz`. Conclude with `(this.1 h2).trans (by simp)`. Establish `h3 : a = 0` using `(IsFractionRing.injective S K) (by simpa using h1)`. Simplify using `[h3]`. Set `e : Localization M ≃+* φ.range` to `RingEquiv.ofBijective φ.rangeRestrict ⟨fun x y hxy => hφ (congrArg Subtype.val hxy), φ.rangeRestrict_surjective⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hV : ∀ v : V, (v : K) ∈ φ.range`. Introduce `v`. Take `⟨a, s, hs, hv⟩` from `h v v.2`. Establish `hs' : s ∈ M` using `hs`. Use `⟨IsLocalization.mk' (Localization M) a (⟨s, hs'⟩ : M), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsLocalization.lift_mk'_spec (S := Localization M) (M := M) (g := algebraMap S K) (hg := hK) a (v : K) ⟨s, hs'⟩` as an intermediate fact. Conclude with `this.2 (by simpa [mul_comm] using hv.symm)`. Set `ι : V →+* φ.range` to `RingHom.codRestrict V.subtype φ.range hV`. Use `⟨g.comp (e.symm.toRingHom.comp ι), fun x => ?_⟩` and prove the remaining obligations. Establish `h5 : e.symm (ι ⟨algebraMap S K x, hS x⟩) = algebraMap S (Localization M) x`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[RingEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap S K x = φ (algebraMap S (Localization M) x)`. Simplify using `[φ, IsLocalization.lift_eq]`. Express the relevant statement in the definitionally equal form `g (e.symm (ι ⟨algebraMap S K x, hS x⟩)) = b x`.
-
-Rewrite using `[h5]`. Conclude with `IsLocalization.lift_eq _ _`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extend {S K O' : Type} [CommRing S] [IsDomain S] [Field K] [Algebra S K] [IsFractionRing S K]
     [CommRing O'] [Nontrivial O'] (b : S →+* O') (V : ValuationSubring K) (hS : ∀ x : S, algebraMap S K x ∈ V)
@@ -68,27 +66,25 @@ theorem exists_extend {S K O' : Type} [CommRing S] [IsDomain S] [Field K] [Algeb
   exact IsLocalization.lift_eq _ _
 
 /- English proof (translation)
-Establish `hmax : P.IsMaximal` using `hp.isMaximal hP`. Establish `hle : ∀ x : S, V.valuation (algebraMap S K x) ≤ 1` using `fun x => (V.valuation_le_one_iff _).2 (hS x)`. Establish `hunit : ∀ s, s ∉ P → V.valuation (algebraMap S K s) = 1`. Introduce `s hs`. Take `⟨t, r, hr, htr⟩` from `hmax.exists_inv hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : V.valuation (algebraMap S K (t * s)) = 1`. Establish `h2 : t * s = 1 - r` using `by rw [← htr]; ring`. Rewrite using `[h2, map_sub, map_one]`. Conclude with `Valuation.map_one_sub_of_lt _ (hV r hr)`. Rewrite `h1` using `[map_mul, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (hle s) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Set `A` to `Localization.AtPrime P`. Use `haveI : IsDiscreteValuationRing A := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain S hP A`. Establish `hinj : Function.Injective (algebraMap S A)` using `IsLocalization.injective A P.primeCompl_le_nonZeroDivisors`.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := S) v`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Establish `hyK : algebraMap S K y ≠ 0`. Simplify using `using (IsFractionRing.injective S K).ne hy0`. Take `⟨c, hc⟩` from `PreValuationRing.cond (algebraMap S A x) (algebraMap S A y)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, s, rfl⟩` from `IsLocalization.exists_mk'_eq P.primeCompl c`. Establish `hsK : algebraMap S K s ≠ 0`. Establish `: (s : S) ≠ 0` using `fun h0 => s.2 (h0 ▸ P.zero_mem)`. Simplify using `using (IsFractionRing.injective S K).ne this`. Establish `hK1 : ∀ {a s : S}, x * a = y * s → algebraMap S K x / algebraMap S K y * algebraMap S K a = algebraMap S K s`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a s h`. Establish `h' : algebraMap S K x * algebraMap S K a = algebraMap S K y * algebraMap S K s`. Rewrite using `[← map_mul, ← map_mul, h]`. Clear the denominators using the available nonvanishing facts. Conclude with `h'`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hK2 : ∀ {a s : S}, y * a = x * s → algebraMap S K x / algebraMap S K y * algebraMap S K s = algebraMap S K a`. Introduce `a s h`. Establish `h' : algebraMap S K y * algebraMap S K a = algebraMap S K x * algebraMap S K s`. Rewrite using `[← map_mul, ← map_mul, h]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h'.symm`. Break down `hc with hc | hc` into its components or cases. Establish `h1 : x * a = y * s`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← hc, mul_assoc, IsLocalization.mk'_spec]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `ha : a ∈ P`. It suffices to derive a contradiction. Establish `h2 : algebraMap S K x / algebraMap S K y * algebraMap S K a = algebraMap S K s` using `hK1 h1`. Establish `h3` using `congrArg V.valuation h2`. Rewrite `h3` using `[map_mul, hunit _ s.2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h4 : V.valuation (algebraMap S K x / algebraMap S K y) ≤ 1` using `(V.valuation_le_one_iff _).2 hv`. Establish `h5` using `hV a ha`. Establish `h6 : V.valuation (algebraMap S K x / algebraMap S K y) * V.valuation (algebraMap S K a) < 1` using `lt_of_le_of_lt (mul_le_of_le_one_left' h4) h5`. Conclude with `h6.ne h3`. Conclude with `⟨s, a, ha, hK1 h1⟩`.
-
-Establish `h1 : y * a = x * s`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← hc, mul_assoc, IsLocalization.mk'_spec]`. Conclude with `⟨a, s, s.2, hK2 h1⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fraction {S K : Type} [CommRing S] [IsDedekindDomain S] [Field K] [Algebra S K] [IsFractionRing S K]
     (V : ValuationSubring K) (hS : ∀ x : S, algebraMap S K x ∈ V) (P : Ideal S) [hp : P.IsPrime] (hP : P ≠ ⊥)
@@ -154,11 +150,11 @@ theorem exists_fraction {S K : Type} [CommRing S] [IsDedekindDomain S] [Field K]
     exact ⟨a, s, s.2, hK2 h1⟩
 
 /- English proof (translation)
-Establish `hne : (Ideal.span {(p : (⊥ : Subring ℂ))}) ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Take `⟨n, hn⟩` from `Subring.mem_bot.1 v.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ((p : ℤ) * n : ℤ) = 1`. Use `congrArg Subtype.val hv` as an intermediate fact. Simplify using `only [Subring.coe_mul, Subring.coe_natCast, Subring.coe_one] at this`. Rewrite `this` using `[← hn]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Int.isUnit_iff_natAbs_eq.1 (IsUnit.of_mul_eq_one _ h1)` as an intermediate fact. Simplify using `at this`. Conclude with `hp.one_lt.ne' this`. Take `⟨W, -, hW⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hne`. Conclude with `⟨W, hW ⟨p, Ideal.mem_span_singleton_self _, by simp⟩⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_place (p : ℕ) (hp : p.Prime) : ∃ W : ValuationSubring ℂ, (p : ℂ) ∈ W.nonunits := by
   have hne : (Ideal.span {(p : (⊥ : Subring ℂ))}) ≠ ⊤ := by
@@ -178,11 +174,11 @@ theorem exists_place (p : ℕ) (hp : p.Prime) : ∃ W : ValuationSubring ℂ, (p
   exact ⟨W, hW ⟨p, Ideal.mem_span_singleton_self _, by simp⟩⟩
 
 /- English proof (translation)
-Distinguish the cases in `h0 : z = 0`. Simplify using `[h0]`. Assume the negation of the conclusion as `hn`. Establish `hn'` using `not_lt.1 hn`. Establish `h1 : (W.comap i).valuation z⁻¹ ≤ 1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ hn'`. Establish `h2 : z⁻¹ ∈ W.comap i` using `((W.comap i).valuation_le_one_iff _).1 h1`. Establish `h3 : (i z)⁻¹ ∈ W` using `by simpa using h2`. Establish `h4 : W.valuation (i z)⁻¹ ≤ 1` using `(W.valuation_le_one_iff _).2 h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : W.valuation (i z) < 1` using `W.mem_nonunits_iff.1 hz`. Rewrite `h4` using `[map_inv₀]`. Establish `h6 : W.valuation (i z) ≠ 0` using `by simpa using h0`. Conclude with `absurd h5 (not_lt.2 ((inv_le_one₀ (zero_lt_iff.2 h6)).1 h4))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valuation_comap_lt_one {K : Type} [Field K] (i : K →+* ℂ) (W : ValuationSubring ℂ) (z : K)
     (hz : i z ∈ W.nonunits) : (W.comap i).valuation z < 1 := by
@@ -201,9 +197,9 @@ theorem valuation_comap_lt_one {K : Type} [Field K] (i : K →+* ℂ) (W : Valua
   exact absurd h5 (not_lt.2 ((inv_le_one₀ (zero_lt_iff.2 h6)).1 h4))
 
 /- English proof (translation)
-Establish `h : IsIntegral ℤ (i (x : K))` using `(RingOfIntegers.isIntegral_coe x).map i.toIntAlgHom`. Establish `h' : IsIntegral W (i (x : K))` using `h.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h'`. Express the relevant statement in the definitionally equal form `i (x : K) ∈ W`. Establish `hy' : (y : ℂ) = i (x : K)` using `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[← hy']`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringOfIntegers_mem {K : Type} [Field K] (i : K →+* ℂ) (W : ValuationSubring ℂ) (x : 𝓞 K) :
     algebraMap (𝓞 K) K x ∈ W.comap i := by
@@ -215,11 +211,9 @@ theorem ringOfIntegers_mem {K : Type} [Field K] (i : K →+* ℂ) (W : Valuation
   rw [← hy']; exact y.2
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Establish `h1 : n ≠ 1`. Introduce and unpack `rfl`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using h))`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, m, rfl⟩` from `Nat.exists_prime_and_dvd h1`. Rewrite `h` using `[Nat.cast_mul]`. Break down `hP.mem_or_mem h with h | h` into its components or cases. Conclude with `⟨q, hq, h⟩`. Establish `hm : m ≠ 0` using `right_ne_zero_of_mul hn`.
-
-Conclude with `ih m (lt_mul_of_one_lt_left (Nat.pos_of_ne_zero hm) hq.one_lt) hm h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_prime_mem {R : Type} [CommRing R] (P : Ideal R) [hP : P.IsPrime] (n : ℕ) (hn : n ≠ 0)
     (h : (n : R) ∈ P) : ∃ q : ℕ, q.Prime ∧ (q : R) ∈ P := by
@@ -236,27 +230,25 @@ theorem exists_prime_mem {R : Type} [CommRing R] (P : Ideal R) [hP : P.IsPrime] 
       exact ih m (lt_mul_of_one_lt_left (Nat.pos_of_ne_zero hm) hq.one_lt) hm h
 
 /- English proof (translation)
-It suffices to establish `H : ∃ (p : ℕ) (W : ValuationSubring ℂ), p.Prime ∧ (p : ℂ) ∈ W.nonunits ∧ ∀ hS : (∀ x : 𝓞 K, algebraMap (𝓞 K) K x ∈ W.comap i), ∃ b' : W.comap i →+* O', ∀ x, b' ⟨algebraMap (𝓞 K) K x, hS x⟩ = b x by`. Take `⟨p, W, hp, hW, h⟩` from `H`. Establish `hS : ∀ x : 𝓞 K, algebraMap (𝓞 K) K x ∈ W.comap i` using `fun x => ringOfIntegers_mem i W x`. Take `⟨b', hb'⟩` from `h hS`. Conclude with `⟨p, W, hp, hW, RingHom.codRestrict (algebraMap (𝓞 K) K) (W.comap i) hS, b', fun x => rfl, RingHom.ext hb'⟩`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `hU : ∀ n : ℕ, n ≠ 0 → IsUnit (n : O')`. Take `⟨W, hW⟩` from `exists_place 2 Nat.prime_two`. Use `⟨2, W, Nat.prime_two, hW, fun hS => exists_extend b (W.comap i) hS fun v _ => ?_⟩` and prove the remaining obligations. Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) v`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyK : algebraMap (𝓞 K) K y ≠ 0`. Simplify using `using (IsFractionRing.injective (𝓞 K) K).ne hy0`. Use `⟨x, y, ?_, by field_simp⟩` and prove the remaining obligations. Establish `hN : ((Ideal.absNorm (Ideal.span {y}) : ℕ) : 𝓞 K) ∈ Ideal.span {y}` using `Ideal.absNorm_mem _`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 hN`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hN0 : Ideal.absNorm (Ideal.span {y}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hy0`. Establish `h1` using `hU _ hN0`. Rewrite `h1` using `[← map_natCast b, ← hz, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `isUnit_of_mul_isUnit_right h1`. Use `push_neg at hU`. Take `⟨n, hn, hnu⟩` from `hU`. Break down `hO with ⟨hf, -⟩ | ⟨hd, -, -⟩` into its components or cases. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hf.mul_inv_cancel (Nat.cast_ne_zero.2 hn : (n : O') ≠ 0)`. Conclude with `hnu (IsUnit.of_mul_eq_one _ hc)`. Use `haveI := hd`. Establish `hnm : (n : O') ∈ maximalIdeal O'` using `(mem_maximalIdeal _).2 hnu`. Take `⟨q, hq, hqm⟩` from `exists_prime_mem (maximalIdeal O') n hn hnm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Set `P : Ideal (𝓞 K)` to `(maximalIdeal O').comap b`. Use `haveI hPp : P.IsPrime := Ideal.comap_isPrime _ _`. Establish `hqP : (q : 𝓞 K) ∈ P`. Express the relevant statement in the definitionally equal form `b (q : 𝓞 K) ∈ maximalIdeal O'`. Simplify using `using hqm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : P ≠ ⊥`. Introduce `h0`. Rewrite `hqP` using `[h0, Ideal.mem_bot]`. Conclude with `hq.ne_zero (by exact_mod_cast hqP)`. Set `f : 𝓞 K →+* ℂ` to `i.comp (algebraMap (𝓞 K) K)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfi : Function.Injective f` using `i.injective.comp (IsFractionRing.injective (𝓞 K) K)`. Establish `hne : P.map f.rangeRestrict ≠ ⊤`. Introduce `ht`. Establish `h1 : (1 : f.range) ∈ P.map f.rangeRestrict` using `ht ▸ Submodule.mem_top`. Take `⟨x, hx, hx1⟩` from `(Ideal.mem_map_iff_of_surjective _ f.rangeRestrict_surjective).1 h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hx2 : x = 1` using `hfi (by simpa using congrArg Subtype.val hx1)`. Conclude with `hPp.ne_top ((Ideal.eq_top_iff_one _).2 (hx2 ▸ hx))`. Take `⟨W, -, hW⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hne`. Establish `hPW : ∀ x ∈ P, f x ∈ W.nonunits` using `fun x hx => hW ⟨f.rangeRestrict x, Ideal.mem_map_of_mem _ hx, rfl⟩`. Use `⟨q, W, hq, by simpa [f] using hPW _ hqP, fun hS => exists_extend b (W.comap i) hS fun v hv => ?_⟩` and prove the remaining obligations.
-
-Take `⟨a, s, hs, hvs⟩` from `exists_fraction (W.comap i) hS P hP (fun x hx => valuation_comap_lt_one i W _ (hPW x hx)) v hv`. Use `⟨a, s, ?_, hvs⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn'`. Conclude with `hs ((mem_maximalIdeal _).2 hn')`.
+A detailed English derivation is pending.
 -/
 theorem exists_factor (K : Type) [Field K] [NumberField K] (i : K →+* ℂ) {O' : Type} [CommRing O'] [IsDomain O']
     [CharZero O'] (b : 𝓞 K →+* O') (ϖ : O') (hO : IsArcBase O' ϖ) :
@@ -322,7 +314,7 @@ theorem exists_factor (K : Type) [Field K] [NumberField K] (i : K →+* ℂ) {O'
     exact hs ((mem_maximalIdeal _).2 hn')
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c O' _ _ _ b ϖ hO`. Use `haveI := c.fin`. Use `haveI : NumberField c.F := ⟨⟩`. Conclude with `exists_factor c.F c.F.val.toRingHom b ϖ hO`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem factor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (O' : Type)
     [CommRing O'] [IsDomain O'] [CharZero O'] (b : 𝓞 c.F →+* O') (ϖ : O'), IsArcBase O' ϖ →

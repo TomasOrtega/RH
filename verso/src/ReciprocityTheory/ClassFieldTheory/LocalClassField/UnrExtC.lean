@@ -7,9 +7,9 @@ open _root_.Neutral.B1 Polynomial
 variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 
 /- English proof (translation)
-Establish `hnd` using `UnramifiedExtensions.not_dvd_qK_pow_sub_one K hK hn`. Establish `hm0 : 0 < qK p K ^ n - 1` using `Nat.pos_of_ne_zero (by rintro h; exact hnd (h ▸ dvd_zero p))`. Establish `hfin : Finite {ζ : PadicAlgCl p | ζ ^ (qK p K ^ n - 1) = 1}`. Establish `: {ζ : PadicAlgCl p | ζ ^ (qK p K ^ n - 1) = 1} = (nthRootsFinset (qK p K ^ n - 1) (1 : PadicAlgCl p) : Set (PadicAlgCl p))`. Use extensionality with `ζ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[mem_nthRootsFinset hm0]`. Rewrite using `[this]`. Conclude with `Finset.finite_toSet _`. Establish `h2 : FiniteDimensional ℚ_[p] (IntermediateField.adjoin ℚ_[p] {ζ : PadicAlgCl p | ζ ^ (qK p K ^ n - 1) = 1})` using `IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`. Conclude with `IntermediateField.finiteDimensional_sup _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_Kn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) :
     FiniteDimensional ℚ_[p] (Kn p K n) := by
@@ -28,11 +28,9 @@ theorem finiteDimensional_Kn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 
   exact IntermediateField.finiteDimensional_sup _ _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Establish `h : Kn p K n ≤ (IntermediateField.adjoin K {ζ}).restrictScalars ℚ_[p]`. Apply `UnramifiedExtensions.Kn_le` to reduce the goal to its premises. Introduce `y hy`. Conclude with `(IntermediateField.adjoin K {ζ}).algebraMap_mem ⟨y, hy⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ξ hξ`. Establish `: NeZero (qK p K ^ n - 1)` using `⟨hm⟩`. Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hξ`. Conclude with `pow_mem (IntermediateField.mem_adjoin_simple_self K ζ) i`. Conclude with `h`.
-
-Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ rfl`. Conclude with `mem_Kn_of_pow p K hζ.pow_eq_one`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem extendScalars_Kn_eq_adjoin {n : ℕ} {ζ : PadicAlgCl p} (hζ : IsPrimitiveRoot ζ (qK p K ^ n - 1))
     (hm : qK p K ^ n - 1 ≠ 0) :
@@ -52,11 +50,9 @@ theorem extendScalars_Kn_eq_adjoin {n : ℕ} {ζ : PadicAlgCl p} (hζ : IsPrimit
     exact mem_Kn_of_pow p K hζ.pow_eq_one
 
 /- English proof (translation)
-Establish `hint : IsIntegral K ζ` using `Algebra.IsIntegral.isIntegral ζ`. Establish `hsep : (minpoly K ζ).Separable` using `(minpoly.irreducible hint).separable`. Establish `hcard` using `card_rootSet_eq_natDegree (K := PadicAlgCl p) hsep (IsAlgClosed.splits _)`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y hy`. Rewrite `hy` using `[Set.mem_toFinset]`. Take `⟨σ, hσ⟩` from `((isConjRoot_iff_mem_minpoly_rootSet hint).2 hy).symm.exists_algEquiv`. Take `⟨i, hi, h⟩` from `UnramifiedExtensions.exists_pow_of_GK hK hn σ hζ`. Conclude with `Finset.mem_image.2 ⟨i, Finset.mem_range.2 hi, by rw [← h, hσ]⟩`.
-
-Use `_ ≤ (Finset.range n).card := Finset.card_image_le`. Use `_ = n := Finset.card_range n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem natDegree_minpoly_le (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) {ζ : PadicAlgCl p}
     (hζ : ζ ^ (qK p K ^ n - 1) = 1) : (minpoly K ζ).natDegree ≤ n := by
@@ -77,25 +73,23 @@ theorem natDegree_minpoly_le (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 
     _ = n := Finset.card_range n
 
 /- English proof (translation)
-Establish `hq` using `one_lt_qK p K hK`. Establish `hnd` using `UnramifiedExtensions.not_dvd_qK_pow_sub_one K hK hn`. Establish `hm0 : qK p K ^ n - 1 ≠ 0` using `by rintro h; exact hnd (h ▸ dvd_zero p)`. Take `⟨ζ, hζ⟩` from `UnramifiedExtensions.exists_primitiveRoot (p := p) hm0`. Establish `hfd` using `finiteDimensional_Kn p K hK hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hint : IsIntegral K ζ` using `Algebra.IsIntegral.isIntegral ζ`. Establish `hup : Module.finrank K (IntermediateField.extendScalars (le_Kn p K n)) ≤ n`. Rewrite using `[extendScalars_Kn_eq_adjoin p K hζ hm0, IntermediateField.adjoin.finrank hint]`. Conclude with `natDegree_minpoly_le p K hK hn hζ.pow_eq_one`. Take `⟨f, hf, hqf, hle⟩` from `qK_le_pow_finrank p K hK hfd (le_Kn p K n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmul` using `IntermediateField.finrank_bot_mul_relfinrank (le_Kn p K n)`. Rewrite `hmul` using `[IntermediateField.relfinrank_eq_finrank_of_le (le_Kn p K n)]`. Establish `hd : 0 < Module.finrank ℚ_[p] K` using `Module.finrank_pos`. Establish `h1` using `UnramifiedExtensions.norm_eq_one_of_pow hm0 hζ.pow_eq_one`. Establish `hnf : n ≤ f`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : UnramifiedExtensions.red ζ ∈ resK p (Kn p K n)` using `(UnramifiedExtensions.mem_resK_iff _ _).2 ⟨⟨ζ, mem_Obar_iff.2 h1.le⟩, mem_Kn_of_pow p K hζ.pow_eq_one, (UnramifiedExtensions.red_of_le h1.le).symm⟩`. Establish `h2` using `UnramifiedExtensions.pow_qK_eq (Kn p K n) hfd hmem`. Rewrite `h2` using `[hqf, ← UnramifiedExtensions.red_pow h1.le]`. Establish `hζf : (ζ ^ (qK p K ^ f)) ^ (qK p K ^ n - 1) = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ζ ^ (qK p K ^ f) = ζ`. Assume the negation of the conclusion as `hne`. Establish `h4` using `UnramifiedExtensions.norm_sub_eq_one_of_pow_eq_one hnd hζf hζ.pow_eq_one hne`. Establish `h5` using `(UnramifiedExtensions.red_eq_iff (UnramifiedExtensions.norm_eq_one_of_pow hm0 hζf).le h1.le).1 h2`. Conclude with `absurd h4 (ne_of_lt h5)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `h1` using `[norm_zero]`. Conclude with `zero_ne_one h1`. Establish `hf1 : 1 ≤ qK p K ^ f` using `Nat.one_le_pow _ _ (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h6 : ζ ^ (qK p K ^ f - 1) = 1`. Establish `h7 : qK p K ^ f = (qK p K ^ f - 1) + 1` using `by omega`. Rewrite `h3` using `[h7, pow_succ]`. Conclude with `mul_right_cancel₀ hζ0 (by rw [h3, one_mul])`. Establish `h8` using `(hζ.pow_eq_one_iff_dvd _).1 h6`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h9 : 1 < qK p K ^ f` using `Nat.one_lt_pow hf.ne' hq`. Establish `h10` using `Nat.le_of_dvd (by omega) h8`. Establish `h11 : qK p K ^ n ≤ qK p K ^ f`. Establish `: 1 ≤ qK p K ^ n` using `Nat.one_le_pow _ _ (by omega)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Nat.pow_le_pow_iff_right hq).1 h11`. Establish `hkey : f * Module.finrank ℚ_[p] K ≤ Module.finrank ℚ_[p] K * Module.finrank K (IntermediateField.extendScalars (le_Kn p K n))`. Rewrite using `[hmul]`. Conclude with `hle`. Establish `hfle : f ≤ Module.finrank K (IntermediateField.extendScalars (le_Kn p K n))`.
-
-Rewrite `hkey` using `[mul_comm]`. Conclude with `Nat.le_of_mul_le_mul_left hkey hd`. Establish `hfn : f = n` using `by omega`. Conclude with `⟨by omega, by rw [hqf, hfn]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_unramified_extension (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) :
     Module.finrank K (IntermediateField.extendScalars (le_Kn p K n)) = n ∧ qK p (Kn p K n) = qK p K ^ n := by
@@ -151,14 +145,14 @@ theorem finrank_unramified_extension (hK : FiniteDimensional ℚ_[p] K) {n : ℕ
   exact ⟨by omega, by rw [hqf, hfn]⟩
 
 /- English proof (translation)
-The claim follows from `(finrank_unramified_extension p K hK hn).1`.
+A detailed English derivation is pending.
 -/
 theorem finrank_extendScalars_Kn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) :
     Module.finrank K (IntermediateField.extendScalars (le_Kn p K n)) = n :=
   (finrank_unramified_extension p K hK hn).1
 
 /- English proof (translation)
-Establish `hmul` using `IntermediateField.finrank_bot_mul_relfinrank (le_Kn p K n)`. Rewrite `hmul` using `[IntermediateField.relfinrank_eq_finrank_of_le (le_Kn p K n), finrank_extendScalars_Kn p K hK hn]`. Rewrite using `[← hmul, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_Kn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) :
     Module.finrank ℚ_[p] (Kn p K n) = n * Module.finrank ℚ_[p] K := by
@@ -167,21 +161,21 @@ theorem finrank_Kn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) :
   rw [← hmul, mul_comm]
 
 /- English proof (translation)
-The claim follows from `(finrank_unramified_extension p K hK hn).2`.
+A detailed English derivation is pending.
 -/
 theorem qK_Kn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) :
     qK p (Kn p K n) = qK p K ^ n :=
   (finrank_unramified_extension p K hK hn).2
 
 /- English proof (translation)
-The claim follows from `exists_norm_eq_of_qK p K hK (le_Kn p K n) hn (finrank_Kn p K hK hn) (qK_Kn p K hK hn) hx`.
+A detailed English derivation is pending.
 -/
 theorem norm_Kn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) {x : PadicAlgCl p}
     (hx : x ∈ Kn p K n) : ∃ y ∈ K, ‖x‖ = ‖y‖ :=
   exists_norm_eq_of_qK p K hK (le_Kn p K n) hn (finrank_Kn p K hK hn) (qK_Kn p K hK hn) hx
 
 /- English proof (translation)
-Establish `hnorm : Normal K (IntermediateField.extendScalars (le_Kn p K n))`. Rewrite using `[IntermediateField.normal_iff_forall_map_le']`. Introduce and unpack `σ _ ⟨x, hx, rfl⟩`. Conclude with `map_mem_Kn p K n σ hx`. Conclude with `⟨⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isGalois_Kn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) :
     IsGalois K (IntermediateField.extendScalars (le_Kn p K n)) := by

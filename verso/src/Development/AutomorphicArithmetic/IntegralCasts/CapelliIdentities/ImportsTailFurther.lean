@@ -3,13 +3,11 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.Yva3.Helpers
 
 /- English proof (translation)
-Establish `h1 : ∑ ξ ∈ u, ∏ i, f (ξ i) ≤ ∑ ξ ∈ Fintype.piFinset (fun i => u.image (fun η => η i)), ∏ i, f (ξ i)`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `ξ hξ`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_image_of_mem _ hξ`. Introduce `ξ _ _`. Conclude with `Finset.prod_nonneg fun i _ => h0 (ξ i)`. Establish `h2 : ∑ ξ ∈ Fintype.piFinset (fun i => u.image (fun η => η i)), ∏ i, f (ξ i) = ∏ i, ∑ x ∈ u.image (fun η => η i), f x` using `by rw [Finset.prod_univ_sum]`. Establish `h3 : ∏ i, ∑ x ∈ u.image (fun η => η i), f x ≤ ∏ _i : ι, ∑' x, f x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `i _`. Conclude with `Finset.sum_nonneg fun x _ => h0 x`. Introduce `i _`. Conclude with `hf.sum_le_tsum _ (fun x _ => h0 x)`.
-
-Conclude with `h1.trans (h2.le.trans h3)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma key {α ι : Type} [Fintype ι] [DecidableEq ι] [DecidableEq α] {f : α → ℝ}
     (hf : Summable f) (h0 : ∀ a, 0 ≤ f a) (u : Finset (ι → α)) :
@@ -35,7 +33,7 @@ private lemma key {α ι : Type} [Fintype ι] [DecidableEq ι] [DecidableEq α] 
   exact h1.trans (h2.le.trans h3)
 
 /- English proof (translation)
-Conclude with `summable_of_sum_le (fun ξ => Finset.prod_nonneg fun i _ => h0 (ξ i)) (key hf h0)`.
+A detailed English derivation is pending.
 -/
 private lemma summ {α ι : Type} [Fintype ι] {f : α → ℝ}
     (hf : Summable f) (h0 : ∀ a, 0 ≤ f a) : Summable fun (ξ : ι → α) ↦ ∏ i : ι, f (ξ i) := by
@@ -45,7 +43,7 @@ private lemma summ {α ι : Type} [Fintype ι] {f : α → ℝ}
 end UpperTheory.Reformulated.B.Yva3.Helpers
 
 /- English proof (translation)
-Introduce `k _ _ ι _ f hf h0`. Conclude with `UpperTheory.Reformulated.B.Yva3.Helpers.summ hf h0`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yva3.main :
     ∀ {k : Type} [inst : Field k] [NumberField k] {ι : Type} [inst : Fintype ι] {f : k → ℝ},

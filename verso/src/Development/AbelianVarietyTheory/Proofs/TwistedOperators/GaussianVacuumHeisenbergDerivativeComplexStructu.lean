@@ -31,21 +31,17 @@ namespace GlobalTheory.GaussCancel
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 /- English proof (translation)
-Distinguish the cases in `hκ : n = 0 ∨ d = 0`. Use `GlobalTheory.T.heisenbergDerivative_zero_or_empty_eq_zero M B.ψ g h v hD (Or.inr ?_)` and prove the remaining obligations. Break down `hκ with hκ | hκ` into its components or cases. Substitute `hκ` using the available equality. Conclude with `⟨fun p => p.1.elim0⟩`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `hκ` using the available equality. Conclude with `⟨fun p => p.2.elim0⟩`. Use `push_neg at hκ`. Take `⟨u, u', hu, hu', hrel, hneg⟩` from `GlobalTheory.T.exists_archimedean_pair_negative_symplectic_pairing B X W r s r' s' hB hX hW (Nat.pos_of_ne_zero hκ.1) (Nat.pos_of_ne_zero hκ.2) ε' w hw`. Take `⟨f, hf⟩` from `GlobalTheory.T.exists_heisenberg_derivative_archimedean_direction M B.ψ hB.std g u hu`.
+Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f', hf'⟩` from `GlobalTheory.T.exists_heisenberg_derivative_archimedean_direction M B.ψ hB.std g u' hu'`. Establish `hff` using `hε' u u' hu hu' hrel f f' hf hf'`. Set `ell : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → (Fin n × Fin d → mixedEmbedding.mixedSpace F) →ₗ[ℝ] ℝ` to `fun b => { toFun := fun y => Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (y ⬝ᵥ b) map_add' := fun x y => by simp only [add_dotProduct, map_add] map_smul' := fun c x => by simp only [smul_dotProduct, map_smul, smul_eq_mul, RingHom.id_apply] }`. Use `set a₁ : Fin n × Fin d → mixedEmbedding.mixedSpace F := fun i => evI F ((M.co.e u).1 i)`. Use `set a₂ : Fin n × Fin d → mixedEmbedding.mixedSpace F := fun i => evI F ((M.co.e u').1 i)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set b₁ : Fin n × Fin d → mixedEmbedding.mixedSpace F := fun i => evI F ((M.co.e u).2 i)`. Use `set b₂ : Fin n × Fin d → mixedEmbedding.mixedSpace F := fun i => evI F ((M.co.e u').2 i)`. Establish `hg0 : g = 0`. Use `GlobalTheory.T.schwartz_eq_zero_of_wrong_sign_gaussian_relation g a₁ a₂ (ell b₁) (ell b₂) (fun y => ?_) ?_` and prove the remaining obligations. Establish `e1` using `GlobalTheory.T.heisenbergLineDerivative_eq_directional_add_phase M B.ψ hB.std g f u hu hf y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `GlobalTheory.T.heisenbergLineDerivative_eq_directional_add_phase M B.ψ hB.std g f' u' hu' hf' y`. Establish `e3 : f' y = Complex.I * f y` using `by rw [hff]; rfl`. Rewrite `e3` using `[e1, e2]`. Conclude with `e3`. Establish `hform` using `M.co.form u u'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hev : evI F (GlobalTheory.WeilM.symp (cA σ) (-1) (incM F X.J) (incM F W.J) u u') = a₁ ⬝ᵥ b₂ - a₂ ⬝ᵥ b₁`. Set `evH : AF F →+* mixedEmbedding.mixedSpace F` to `(InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp (RingHom.fst (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))`. Establish `hevH : ∀ a : AF F, evI F a = evH a` using `fun a => rfl`. Rewrite using `[hform, hevH]`. Simplify using `only [dotProduct, map_sub, map_sum, map_mul, a₁, a₂, b₁, b₂, hevH]`.
-
-Rewrite `hneg` using `[hev, map_sub]`. Establish `c1 : (ell b₂) a₁ = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (a₁ ⬝ᵥ b₂)` using `rfl`. Establish `c2 : (ell b₁) a₂ = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (a₂ ⬝ᵥ b₁)` using `rfl`. Rewrite using `[c1, c2]`. Conclude with `hneg`.
-
-Conclude with `GlobalTheory.T.heisenbergDerivative_zero_or_empty_eq_zero M B.ψ g h v hD (Or.inl hg0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actsD_zero_of_neg {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (B : Base F E) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (r s r' s' : ℕ)
@@ -102,11 +98,11 @@ theorem actsD_zero_of_neg {F E : Type} [Field F] [NumberField F] [Field E] [Numb
 end GlobalTheory.GaussCancel
 
 /- English proof (translation)
-Introduce `D ψ θ hθ ε S X A B d e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hemb M hM cS hcS g φ hg hφ hvac τ z g₁ g₁' h₁ h₁'`. Take `⟨ε', hε'⟩` from `hg`. Take `⟨w, hoff, hon⟩` from `GlobalTheory.T.realPlaceLines_related_and_vanish_off_place D θ hθ ε S X A B e Bs hBs Vs Ws r s r' s' hJ hJW hV hW hemb cS hcS τ z`. Establish `hu` using `GlobalTheory.T.archimedean_preimage_realPlace_line D θ hθ ε S X e cS hcS τ z`. Establish `hu'` using `GlobalTheory.T.archimedean_preimage_realPlace_line D θ hθ ε S X e cS hcS τ (cplxO ((frSgn ε A).cart τ) (B.cart τ) z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Int.units_eq_one_or (ε' w) with h1 | h1` into its components or cases. Establish `key` using `hε' _ _ hu hu' (fun w' => by`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality. Rewrite using `[hon, h1]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[(hoff w' hw).1, (hoff w' hw).2]`. Use the proof step `simp) g₁ g₁' h₁ h₁'`. Rewrite using `[key, smul_smul, Complex.I_mul_I, neg_one_smul, add_neg_cancel]`. Rewrite using `[GlobalTheory.GaussCancel.actsD_zero_of_neg Bs r s r' s' hBs hV hW M g ε' hε' w h1 _ g₁ h₁, GlobalTheory.GaussCancel.actsD_zero_of_neg Bs r s r' s' hBs hV hW M g ε' hε' w h1 _ g₁' h₁', smul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GaussCancel.heis_cancel : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)

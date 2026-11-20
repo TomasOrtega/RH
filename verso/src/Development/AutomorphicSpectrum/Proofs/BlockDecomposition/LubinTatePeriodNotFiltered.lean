@@ -14,19 +14,15 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.LTPer
 
 /- English proof (translation)
-Introduce `l _ K χ hN t ht`. Use `haveI hfK : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Take `⟨L, hLdef⟩ : ∃ L : IntermediateField ℚ_[l] (Om l), L = IntermediateField.normalClosure ℚ_[l] ↥K.1 (Om l)` from `⟨_, rfl⟩`. Use `haveI : FiniteDimensional ℚ_[l] ↥L := by`. Substitute `hLdef` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Use `infer_instance`. Establish `hμL : ∀ (μ : ↥K.1 →ₐ[ℚ_[l]] Om l) (x : ↥K.1), μ x ∈ L` using `fun μ x => by`. Substitute `hLdef` using the available equality. Conclude with `μ.fieldRange_le_normalClosure ⟨x, rfl⟩`. Establish `hKL : ∀ x ∈ K.1, x ∈ L` using `fun x hx => hμL K.1.val ⟨x, hx⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `res : Gal(Om l/↥L) → GQ l` to `fun σ => σ.restrictScalars ℚ_[l]`. Establish `hresv : ∀ (σ : Gal(Om l/↥L)) (y : ↥L), res σ y = y` using `fun σ y => σ.commutes y`. Establish `hres : ∀ σ, res σ ∈ GK K` using `fun σ => (IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => hresv σ ⟨x, hKL x hx⟩`. Take `⟨s, hs⟩ : ∃ s : Finset (↥K.1 →ₐ[ℚ_[l]] Om l), ∀ μ, μ ∈ s` from `⟨(Set.toFinite (Set.univ : Set (↥K.1 →ₐ[ℚ_[l]] Om l))).toFinset, fun μ => by simp⟩`. Establish `hT0 : (∏ μ ∈ s, t μ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun μ _ => (ht μ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htirr : Irreducible (GroundTheory.PAdicHodge.tBdR l)` using `IsDiscreteValuationRing.irreducible_iff_uniformizer _ |>.2 (GroundTheory.PAdicHodge.maximalIdeal_eq_span_fontaineT GroundTheory.PAdicHodge.untilt_epsilon GroundTheory.PAdicHodge.untilt_frobeniusEquiv_symm_epsilon_ne_one)`. Take `⟨n, u, hTu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hT0 htirr`. Establish `hTu' : ∏ μ ∈ s, t μ = GroundTheory.PAdicHodge.tBdR l ^ n * (u : Formalism.Per6.BdRp l)`. Rewrite using `[hTu, mul_comm]`. Establish `hcyc : ∀ σ : Gal(Om l/↥L), (((GroundTheory.PAdicHodge.cycloChar ⊥ (Formalism.Per6.toBot (res σ)) : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) = (((GroundTheory.PAdicHodge.cycloChar L σ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])` using `fun σ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GroundTheory.PAdicHodge.gal_smul_fontaineT σ (GroundTheory.PAdicHodge.untilt_epsilon (p := l))`. Establish `h2` using `GroundTheory.PAdicHodge.gal_smul_fontaineT (Formalism.Per6.toBot (res σ)) (GroundTheory.PAdicHodge.untilt_epsilon (p := l))`. Establish `h3` using `h2.symm.trans h1`. Conclude with `(algebraMap ℚ_[l] (Formalism.Per6.BdRp l)).injective (mul_right_cancel₀ htirr.ne_zero h3)`. Establish `hn : n = 1` using `GlobalTheory.T.hodge_tate_character_weight L (GlobalTheory.T.sen_period_finite_extension GlobalTheory.T.sen_unramified_character_period L) u n (fun σ => Algebra.norm ℚ_[l] ((χ ⟨res σ, hres σ⟩ : (↥K.1)ˣ) : ↥K.1)) (fun σ => by`.
-
-Rewrite using `[← hTu']`. Conclude with `GlobalTheory.T.galois_action_period_product K χ t s hs ht (res σ) (hres σ) fun μ x => hresv σ ⟨μ x, hμL μ x⟩)`. Use the proof step `(fun σ hσ => (hN (res σ) (hres σ) hσ).trans (hcyc σ))`. Substitute `hn` using the available equality. Introduce `μ`.
-
-Conclude with `GlobalTheory.T.period_product_filtration_levels s t K.1.val (hs _) u (by rw [hTu', pow_one]) ((ht _).2.2 rfl) μ (hs μ)`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exact_degrees_of_product : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ),
     (∀ (g : GQ l) (hg : g ∈ GK K), (∀ u ∈ GroundTheory.PAdicHodge.unramifiedClosure l, g u = u) →

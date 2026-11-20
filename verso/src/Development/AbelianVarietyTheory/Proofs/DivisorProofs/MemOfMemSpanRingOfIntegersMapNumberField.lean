@@ -5,15 +5,15 @@ open scoped TensorProduct
 namespace GlobalTheory.FlatDescent
 
 /- English proof (translation)
-Set `g : B ⊗[A] N →ₗ[B] M'` to `hf.equiv.toLinearMap ∘ₗ N.subtype.baseChange B`. Establish `hspan : Submodule.span B (f '' (N : Set M)) ≤ LinearMap.range g`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `⟨(1 : B) ⊗ₜ[A] (⟨c, hc⟩ : N), by simp [g, IsBaseChange.equiv_tmul]⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨x, hx⟩` from `hspan hw`. Establish `h1 : (1 : B) ⊗ₜ[A] w = N.subtype.baseChange B x`. Apply `hf.equiv.injective` to reduce the goal to its premises. Establish `: hf.equiv (N.subtype.baseChange B x) = f w` using `hx`. Rewrite using `[this, IsBaseChange.equiv_tmul, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : N.mkQ ∘ₗ N.subtype = 0`. Use extensionality with `c`. Simplify using the standard rewrite rules. Establish `h2 : (1 : B) ⊗ₜ[A] (N.mkQ w) = 0`. Use `congrArg (N.mkQ.baseChange B) h1` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearMap.baseChange_tmul]`. Rewrite using `[this, ← LinearMap.comp_apply, ← LinearMap.baseChange_comp, hq, LinearMap.baseChange_zero, LinearMap.zero_apply]`. Establish `h3 : N.mkQ w = 0`. Apply `Module.FaithfullyFlat.tensorProduct_mk_injective (A := A) (B := B) (M ⧸ N)` to reduce the goal to its premises. Simplify using `using h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h3`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_of_mem_span_of_isBaseChange {A B M M' : Type} [CommRing A] [CommRing B] [Algebra A B]
     [Module.FaithfullyFlat A B] [AddCommGroup M] [Module A M] [AddCommGroup M'] [Module A M']
@@ -43,9 +43,7 @@ theorem mem_of_mem_span_of_isBaseChange {A B M M' : Type} [CommRing A] [CommRing
   simpa using h3
 
 /- English proof (translation)
-Introduce `K K' _ _ _ _ j n N w hw`. Use `letI := j.toAlgebra`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid (𝓞 K') (nonZeroDivisors (𝓞 K))) K' := IsIntegralClosure.isLocalization (𝓞 K) K K' (𝓞 K')`. Establish `hP : Algebra.IsPushout (𝓞 K) (𝓞 K') K K'` using `Algebra.isPushout_of_isLocalization (nonZeroDivisors (𝓞 K)) K (𝓞 K') K'`. Establish `hb : IsBaseChange (𝓞 K') ((IsScalarTower.toAlgHom (𝓞 K) K K').toLinearMap.compLeft (Fin n))` using `hP.out.finitePow (Fin n)`.
-
-Conclude with `mem_of_mem_span_of_isBaseChange hb N w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_span_map :
     ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K') (n : ℕ)

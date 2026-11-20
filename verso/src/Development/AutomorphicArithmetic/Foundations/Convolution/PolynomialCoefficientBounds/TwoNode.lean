@@ -3,11 +3,11 @@ import Mathlib
 open MvPolynomial Filter Topology
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = a'`. Establish `hb : b - b' ≠ 0`. Introduce `hb`. Conclude with `h (by rw [ha, sub_eq_zero.mp hb])`. Use `⟨C (b - b')⁻¹ * (X 1 - C b'), ?_, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[inv_mul_cancel₀ hb]`. Simplify using the standard rewrite rules. Establish `ha' : a - a' ≠ 0` using `sub_ne_zero.mpr ha`. Use `⟨C (a - a')⁻¹ * (X 0 - C a'), ?_, ?_⟩` and prove the remaining obligations. Simplify using `[inv_mul_cancel₀ ha']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.FX.two_node_sep (a b a' b' : ℂ) (h : (a, b) ≠ (a', b')) :
     ∃ Q : MvPolynomial (Fin 2) ℂ, eval ![a, b] Q = 1 ∧ eval ![a', b'] Q = 0 := by
@@ -24,11 +24,9 @@ private theorem UpperTheory.ConvolutionTheory.FX.two_node_sep (a b a' b' : ℂ) 
     · simp
 
 /- English proof (translation)
-Establish `: ∀ j, ∃ Q : MvPolynomial (Fin 2) ℂ, j ≠ i → eval ![x i, z i] Q = 1 ∧ eval ![x j, z j] Q = 0`. Introduce `j`. Distinguish the cases in `hj : j = i`. Conclude with `⟨0, fun h => absurd hj h⟩`. Take `⟨Q, hQ⟩` from `UpperTheory.ConvolutionTheory.FX.two_node_sep (x i) (z i) (x j) (z j) (fun e => hj (h e).symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Q, fun _ => hQ⟩`. Use `choose Q hQ using this`. Use `⟨∏ j ∈ Finset.univ.erase i, Q j, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `split_ifs with hj`.
-
-Substitute `hj` using the available equality. Conclude with `Finset.prod_eq_one fun k hk => (hQ k (Finset.ne_of_mem_erase hk)).1`. Conclude with `Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hj, Finset.mem_univ _⟩) (hQ j hj).2`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.FX.two_node_poly (J : Type) [Fintype J] [DecidableEq J] (x z : J → ℂ)
     (h : Function.Injective (fun i => (x i, z i))) (i : J) :
@@ -50,17 +48,15 @@ private theorem UpperTheory.ConvolutionTheory.FX.two_node_poly (J : Type) [Finty
   · exact Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hj, Finset.mem_univ _⟩) (hQ j hj).2
 
 /- English proof (translation)
-Introduce `J _ x z h`. Use `choose P hP using UpperTheory.ConvolutionTheory.FX.two_node_poly J x z h`. Use `⟨Finset.univ.sup fun i => (P i).totalDegree, ∑ i, ∑ m ∈ (P i).support, ‖(P i).coeff m‖, fun c ε hε i => ?_⟩` and prove the remaining obligations. Establish `hε0 : 0 ≤ ε` using `(norm_nonneg _).trans (hε 0 (Nat.zero_le _) 0 (Nat.zero_le _))`. Establish `h1 : c i = ∑ m ∈ (P i).support, (P i).coeff m * ∑ j, c j * x j ^ m 0 * z j ^ m 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: c i = ∑ j, c j * eval ![x j, z j] (P i)`. Simplify using `[hP]`. Rewrite using `[this]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hdeg : ∀ m ∈ (P i).support, ∀ k, m k ≤ Finset.univ.sup fun i => (P i).totalDegree`. Introduce `m hm k`. Conclude with `((monomial_le_degreeOf k hm).trans (degreeOf_le_totalDegree _ _)).trans (Finset.le_sup (f := fun i => (P i).totalDegree) (Finset.mem_univ i))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun m hm => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hε _ (hdeg m hm 0) _ (hdeg m hm 1)) (norm_nonneg _)`. Use `_ = (∑ m ∈ (P i).support, ‖(P i).coeff m‖) * ε := (Finset.sum_mul _ _ _).symm`. Use `_ ≤ _ := by`.
-
-Use `mul_le_mul_of_nonneg_right ?_ hε0` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun i => ∑ m ∈ (P i).support, ‖(P i).coeff m‖) (fun i _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.FX.two_node :
     ∀ (J : Type) [Fintype J] (x z : J → ℂ), Function.Injective (fun i => (x i, z i)) → ∃ (s₀ : ℕ) (K : ℝ), ∀ (c : J → ℂ) (ε : ℝ), (∀ s ≤ s₀, ∀ s' ≤ s₀, ‖∑ i, c i * x i ^ s * z i ^ s'‖ ≤ ε) → ∀ i, ‖c i‖ ≤ K * ε := by

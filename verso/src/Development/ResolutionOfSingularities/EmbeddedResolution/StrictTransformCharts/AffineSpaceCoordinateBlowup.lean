@@ -23,9 +23,7 @@ def uliftFinset (m : ℕ) (S : Finset (Fin m)) : Finset (ULift.{u} (Fin m)) :=
   S.map ⟨fun j => (ULift.up j : ULift.{u} (Fin m)), fun _ _ h => congrArg ULift.down h⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, ha, rfl⟩` from `Finset.mem_map.mp h`. Conclude with `ha`. Introduce `h`.
-
-Conclude with `Finset.mem_map.mpr ⟨x.down, h, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 @[simp] theorem mem_uliftFinset {m : ℕ} (S : Finset (Fin m)) (x : ULift.{u} (Fin m)) :
     x ∈ uliftFinset.{u} m S ↔ x.down ∈ S := by
@@ -37,14 +35,14 @@ Conclude with `Finset.mem_map.mpr ⟨x.down, h, rfl⟩`.
     exact Finset.mem_map.mpr ⟨x.down, h, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(mem_uliftFinset S _).mpr hj`.
+A detailed English derivation is pending.
 -/
 theorem up_mem_uliftFinset {m : ℕ} {S : Finset (Fin m)} {j : Fin m} (hj : j ∈ S) :
     (ULift.up j : ULift.{u} (Fin m)) ∈ uliftFinset.{u} m S :=
   (mem_uliftFinset S _).mpr hj
 
 /- English proof (translation)
-The claim follows from `(mem_uliftFinset S x).mp hx`.
+A detailed English derivation is pending.
 -/
 theorem down_mem_of_mem_uliftFinset {m : ℕ} {S : Finset (Fin m)} {x : ULift.{u} (Fin m)}
     (hx : x ∈ uliftFinset.{u} m S) : x.down ∈ S :=
@@ -65,7 +63,7 @@ private theorem appTop_comp_apply_eq_appTop_appTop {X Y Z : Scheme.{u}} (f : X �
     (x : Γ(Z, ⊤)) : (f ≫ g).appTop.hom x = f.appTop.hom (g.appTop.hom x) := rfl
 
 /- English proof (translation)
-Establish `h : (Scheme.ΓSpecIso R).inv ≫ (Spec.map f).appTop = f ≫ (Scheme.ΓSpecIso S).inv`. Rewrite using `[← cancel_mono (Scheme.ΓSpecIso S).hom]`. Simplify using `[Scheme.ΓSpecIso_naturality]`. Establish `h2 : ((Scheme.ΓSpecIso R).inv ≫ (Spec.map f).appTop).hom x = (f ≫ (Scheme.ΓSpecIso S).inv).hom x` using `by rw [h]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem appTop_specMap_ΓSpecIso_inv_apply {R S : CommRingCat.{u}} (f : R ⟶ S) (x : R) :
     (Spec.map f).appTop.hom ((Scheme.ΓSpecIso R).inv.hom x)
@@ -78,7 +76,7 @@ private theorem appTop_specMap_ΓSpecIso_inv_apply {R S : CommRingCat.{u}} (f : 
   exact h2
 
 /- English proof (translation)
-Apply `AlgebraicGeometry.AffineSpace.SpecIso_inv_appTop_coord` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result.
 -/
 private theorem affineSpaceSpecIso_inv_appTop_coord (k : Type u) [Field k] (m : ℕ)
     (j : ULift.{u} (Fin m)) :
@@ -88,7 +86,7 @@ private theorem affineSpaceSpecIso_inv_appTop_coord (k : Type u) [Field k] (m : 
   apply AlgebraicGeometry.AffineSpace.SpecIso_inv_appTop_coord
 
 /- English proof (translation)
-Rewrite using `[← affineSpaceSpecIso_inv_appTop_coord k m j, ← appTop_comp_apply_eq_appTop_appTop, Iso.hom_inv_id]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem affineSpaceSpecIso_hom_appTop_X (k : Type u) [Field k] (m : ℕ)
     (j : ULift.{u} (Fin m)) :
@@ -100,7 +98,7 @@ private theorem affineSpaceSpecIso_hom_appTop_X (k : Type u) [Field k] (m : ℕ)
   simp
 
 /- English proof (translation)
-Simplify using `[affineSpaceSpecIso, affineSpaceFinToSpec]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem affineSpaceSpecIso_inv_comp_affineSpaceFinToSpec (k : Type u) [Field k] (m : ℕ) :
     (affineSpaceSpecIso k m).inv ≫ affineSpaceFinToSpec k m
@@ -116,11 +114,11 @@ def affineSpaceCoordBlowupMap (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin 
   Blowup.AffineBlowup.toSpec (finCoordIdeal k m S) ≫ (affineSpaceSpecIso k m).inv
 
 /- English proof (translation)
-Establish `: IsAffine (affineSpaceFin k m)` using `inferInstance`. Establish `hset : ((affineSpaceSpecIso k m).hom.appTop.hom) '' (((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u} (Fin m)) k))).inv.hom) '' ((MvPolynomial.X : ULift.{u} (Fin m) → MvPolynomial (ULift.{u} (Fin m)) k) '' (↑(uliftFinset.{u} m S) : Set (ULift.{u} (Fin m))))) = (fun i => …`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨z, ⟨j, hj, rfl⟩, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨j.down, Finset.mem_coe.mpr (down_mem_of_mem_uliftFinset (Finset.mem_coe.mp hj)), (affineSpaceSpecIso_hom_appTop_X k m j).symm⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (ULift.{u} (Fin m)) k))).inv.hom (MvPolynomial.X (ULift.up i)), ⟨MvPolynomial.X (ULift.up i), ⟨ULift.up i, Finset.mem_coe.mpr (up_mem_uliftFinset (Finset.mem_coe.mp hi)), rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `affineSpaceSpecIso_hom_appTop_X k m (ULift.up i)`. Establish `hI : (finCoordIdeal k m S : Ideal (MvPolynomial (ULift.{u} (Fin m)) k)) = Ideal.span ((MvPolynomial.X : ULift.{u} (Fin m) → MvPolynomial (ULift.{u} (Fin m)) k) '' (↑(uliftFinset.{u} m S) : Set (ULift.{u} (Fin m))))` using `coordIdeal_eq_span k (uliftFinset.{u} m S)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Blowup.specIdealSheaf_eq_ofIdealTop, Scheme.IdealSheafData.comap_ofIdealTop, coordSubspaceIdeal_eq_ofIdealTop_span_coord, hI, Ideal.map_span, Ideal.map_span, hset]`.
+A detailed English derivation is pending.
 -/
 private theorem comap_specIdealSheaf_finCoordIdeal (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) :
     (Blowup.specIdealSheaf (finCoordIdeal k m S)).comap (affineSpaceSpecIso k m).hom
@@ -152,7 +150,7 @@ private theorem comap_specIdealSheaf_finCoordIdeal (k : Type u) [Field k] (m : �
     Ideal.map_span, Ideal.map_span, hset]
 
 /- English proof (translation)
-Rewrite using `[← comap_specIdealSheaf_finCoordIdeal k m S]`. Conclude with `(Blowup.isBlowupAlongIdealSheaf_affineBlowup_toSpec (finCoordIdeal k m S)).comp_iso_hom (affineSpaceSpecIso k m).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBlowupAlongIdealSheaf_affineSpaceCoordBlowupMap (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) :
     Blowup.IsBlowupAlongIdealSheaf (affineSpaceCoordBlowupMap k m S) (coordSubspaceIdeal k m S) := by
@@ -204,11 +202,11 @@ private def coordBlowupSubstUliftFin (k : Type u) [Field k] (m : ℕ) (S : Finse
   @coordBlowupSubst k _ (ULift.{u} (Fin m)) (Classical.decEq _) (uliftFinset.{u} m S) (ULift.up s)
 
 /- English proof (translation)
-Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Use `show (Spec.map (CommRingCat.ofHom (coordBlowupSubstUliftFin k m S s).toRingHom) ≫ (affineSpaceSpecIso k m).inv) ≫ affineSpaceFinToSpec k m = ((affineSpaceSpecIso k m).inv ≫ coordBlowupSubstMap k m S s) ≫ affineSpaceFinToSpec k m`. Rewrite using `[Category.assoc, Category.assoc, coordBlowupSubstMap_comp_affineSpaceFinToSpec, affineSpaceSpecIso_inv_comp_affineSpaceFinToSpec, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[coordBlowupSubstUliftFin]`. Introduce `i show (Spec.map (CommRingCat.ofHom (coordBlowupSubstUliftFin k m S s).toRingHom) ≫ (affineSpaceSpecIso k m).inv).appTop.hom (AffineSpace.coord (Spec (CommRingCat.of k)) i) = ((affineSpaceSpecIso k m).inv ≫ coordBlowupSubstMap k m S s).appTop.hom (AffineSpace.coord (Spec (CommRin …`. Rewrite using `[appTop_comp_apply_eq_appTop_appTop, appTop_comp_apply_eq_appTop_appTop, affineSpaceSpecIso_inv_appTop_coord, appTop_specMap_ΓSpecIso_inv_apply, coordBlowupSubstMap_appTop_coord]`. Distinguish the cases in `hc : i.down ∈ S ∧ i.down ≠ s`. Rewrite using `[if_pos hc, map_mul, affineSpaceSpecIso_inv_appTop_coord, affineSpaceSpecIso_inv_appTop_coord]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[coordBlowupSubstUliftFin, ULift.ext_iff, hc.1, hc.2]`. Rewrite using `[if_neg hc, affineSpaceSpecIso_inv_appTop_coord]`. Simplify using `[coordBlowupSubstUliftFin, ULift.ext_iff, hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem specMap_coordBlowupSubstUliftFin_comp_affineSpaceSpecIso_inv (k : Type u) [Field k] (m : ℕ)
     (S : Finset (Fin m)) (s : Fin m) :
@@ -239,9 +237,9 @@ private theorem specMap_coordBlowupSubstUliftFin_comp_affineSpaceSpecIso_inv (k 
       simp [coordBlowupSubstUliftFin, ULift.ext_iff, hc]
 
 /- English proof (translation)
-Establish `hcomp : (coordBlowupChartRingEquiv k m S s hs).symm.toRingHom.comp (coordBlowupSubstUliftFin k m S s).toRingHom = Blowup.chartRingHom (finCoordIdeal k m S) (finCoordIdealGen k m S s hs)` using `@awayCoordGenEquivMvPolynomial_symm_comp_coordBlowupSubst k _ (ULift.{u} (Fin m)) (Classical.decEq _) (uliftFinset.{u} m S) (ULift.up s) (up_mem_uliftFinset hs)`. Establish `hring : CommRingCat.ofHom (Blowup.chartRingHom (finCoordIdeal k m S) (finCoordIdealGen k m S s hs)) = CommRingCat.ofHom (coordBlowupSubstUliftFin k m S s).toRingHom ≫ CommRingCat.ofHom (coordBlowupChartRingEquiv k m S s hs).symm.toRingHom`. Rewrite using `[← hcomp]`. Both sides reduce to the same expression. Use `show Blowup.affineBlowupChart (finCoordIdeal k m S) (finCoordIdealGen k m S s hs) ≫ (Blowup.AffineBlowup.toSpec (finCoordIdeal k m S) ≫ (affineSpaceSpecIso k m).inv) = (specCoordBlowupChartRingIsoAffineSpace k m S s hs).hom ≫ coordBlowupSubstMap k m S s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, Blowup.affineBlowupChart_comp_toSpec, Blowup.algebraMap_chart_eq_chartRingHom, hring, Spec.map_comp, Category.assoc, specMap_coordBlowupSubstUliftFin_comp_affineSpaceSpecIso_inv k m S s, ← Category.assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem affineSpaceCoordBlowupChart_comp_affineSpaceCoordBlowupMap (k : Type u) [Field k] (m : ℕ)
     (S : Finset (Fin m)) (s : Fin m) (hs : s ∈ S) :
@@ -265,7 +263,7 @@ theorem affineSpaceCoordBlowupChart_comp_affineSpaceCoordBlowupMap (k : Type u) 
   rfl
 
 /- English proof (translation)
-Use `le_antisymm le_top ?_` and prove the remaining obligations. Rewrite using `[← iSup_opensRange_affineBlowupChart_coordIdealGen k (uliftFinset.{u} m S)]`. Use `iSup_le fun j => ?_` and prove the remaining obligations. Use `le_iSup_of_le ⟨j.1.down, down_mem_of_mem_uliftFinset j.2⟩ ?_` and prove the remaining obligations. Conclude with `le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem iSup_opensRange_affineSpaceCoordBlowupChart (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) :
     (⨆ i : ↥S, Scheme.Hom.opensRange (affineSpaceCoordBlowupChart k m S i.1 i.2))

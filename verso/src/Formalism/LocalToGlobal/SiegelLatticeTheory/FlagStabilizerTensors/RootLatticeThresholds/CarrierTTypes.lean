@@ -23,15 +23,15 @@ section Block
 variable {k r : ℕ}
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mvs {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) : (M *ᵥ Pi.single j (1 : ℂ)) i = M i j := by
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `Formalism.QuantumDeterminants.bvec`. Rewrite using `[mvs]`. Unfold `Formalism.MainNotions.S.blockW`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val < r + k`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos hi, dif_neg hj, Pi.single_apply, if_neg]`. Introduce `e`. Rewrite `hi` using `[e]`. Conclude with `hj hi`. Rewrite using `[dif_neg hi, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockW_fix (h : Matrix (Fin k) (Fin k) ℂ) (j : Fin (2 * r + k + 1)) (hj : ¬ (r ≤ j.val ∧ j.val < r + k)) :
     Formalism.MainNotions.S.blockW k r h *ᵥ Formalism.QuantumDeterminants.bvec j = Formalism.QuantumDeterminants.bvec j := by
@@ -45,9 +45,9 @@ theorem blockW_fix (h : Matrix (Fin k) (Fin k) ℂ) (j : Fin (2 * r + k + 1)) (h
   · rw [dif_neg hi, Pi.single_apply]
 
 /- English proof (translation)
-Use `show (Formalism.MainNotions.S.blockW k r h)ᴴ * Formalism.QuantumDeterminants.Hpk k r * Formalism.MainNotions.S.blockW k r h = Formalism.QuantumDeterminants.Hpk k r`. Establish `hs : hᴴ * h = 1` using `Matrix.mem_unitaryGroup_iff'.mp hh`. Establish `e1 : (Formalism.MainNotions.S.blockW k r h)ᴴ = Formalism.MainNotions.S.blockW k r hᴴ` using `PI.HwUniqW.blockW_conjTranspose h`. Establish `e2 : Formalism.QuantumDeterminants.Hpk k r * Formalism.MainNotions.S.blockW k r h = Formalism.MainNotions.S.blockW k r h * Formalism.QuantumDeterminants.Hpk k r` using `PI.HwUniqW.Hpk_blockW_comm h`. Establish `e3 : Formalism.MainNotions.S.blockW k r hᴴ * Formalism.MainNotions.S.blockW k r h = Formalism.MainNotions.S.blockW k r (hᴴ * h)` using `PI.HwUniqW.blockW_mul hᴴ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : Formalism.MainNotions.S.blockW k r (1 : Matrix (Fin k) (Fin k) ℂ) = 1` using `PI.HwUniqW.blockW_one`. Rewrite using `[e1, Matrix.mul_assoc, e2, ← Matrix.mul_assoc, e3, hs, e4, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockW_UH (h : Matrix (Fin k) (Fin k) ℂ) (hh : h ∈ Matrix.unitaryGroup (Fin k) ℂ) :
     Formalism.MainNotions.S.blockW k r h ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := by
@@ -62,9 +62,9 @@ theorem blockW_UH (h : Matrix (Fin k) (Fin k) ℂ) (hh : h ∈ Matrix.unitaryGro
   rw [e1, Matrix.mul_assoc, e2, ← Matrix.mul_assoc, e3, hs, e4, Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨hgU, hge, hgz⟩` from `hg`. Establish `hgg : g * g⁻¹ = 1` using `PI.HwUniqW.mul_inv_UH hgU`. Establish `hgg' : g⁻¹ * g = 1` using `PI.HwUniqW.inv_mul_UH' hgU`. Establish `hinv : ∀ x, g *ᵥ x = x → g⁻¹ *ᵥ x = x` using `fun x hx => by conv_lhs => rw [← hx]`. Rewrite using `[Matrix.mulVec_mulVec, hgg', Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : ∀ x, g *ᵥ x = x → Formalism.MainNotions.S.blockW k r h *ᵥ x = x → (g * Formalism.MainNotions.S.blockW k r h * g⁻¹) *ᵥ x = x` using `fun x h1 h2 => by rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hinv x h1, h2, h1]`. Use `⟨PI.HwUniqW.mul_mem_UH (PI.HwUniqW.mul_mem_UH hgU (blockW_UH h hh)) (PI.HwUniqW.inv_mem_UH hgU), fun a => ⟨hfix _ (hge a).1 (blockW_fix h _ (by simp only [Formalism.QuantumDeterminants.eI]; omega)), hfix _ (hge a).2 (blockW_fix h _ (by simp only [Formalism.QuantumDeterminants.esI …` and prove the remaining obligations. Establish `hx : ∀ x, g⁻¹ *ᵥ (g *ᵥ x) = x` using `fun x => by rw [Matrix.mulVec_mulVec, hgg', Matrix.one_mulVec]`. Rewrite using `[← hgz, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hx, Matrix.mulVec_smul, blockW_fix h _ (by simp only [Formalism.QuantumDeterminants.wI, Fin.val_last]; omega)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_blockW_mem {z : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : Formalism.MainNotions.S.IsFrameW k r z g) (h : Matrix (Fin k) (Fin k) ℂ) (hh : h ∈ Matrix.unitaryGroup (Fin k) ℂ) :
@@ -87,9 +87,9 @@ theorem conj_blockW_mem {z : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * 
 end Block
 
 /- English proof (translation)
-Take `⟨g, hg, hU⟩` from `hHC`. Use `⟨hU.1, hrep.1, hrep.2.2, hrep.2.1, fun S hS => ?_, ?_⟩` and prove the remaining obligations. Establish `hK` using `hU.2.2.2.2.2.1 S le_top (fun h hh v hv => hS _ (conj_blockW_mem hg h hh.1) v hv)`. Conclude with `hK`. Introduce `Bs hBs x v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcap Wp k r z u π hz hT hrep.1 hrep.2.2 ⟨g, hg, hU⟩ Bs hBs x v]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i hi => by rw [hw i hi]`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isType_of_hc (hcap : CapFromHC) {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] {k r : ℕ}
     {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ} {π : Formalism.FourierDecayAlt.Q.Mx k r → (Wp →L[ℂ] Wp)}

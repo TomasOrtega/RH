@@ -8,13 +8,13 @@ namespace GlobalTheory.CompanionTheory.Ar.Cmp.RegularTensor
 open Polynomial
 
 /- English proof (translation)
-Establish `hF : IsIntegral F θ` using `hθ.tower_top`. Establish `hd : minpoly F θ ∣ (minpoly k θ).map (algebraMap k F)` using `minpoly.dvd_map_of_isScalarTower k F θ`. Establish `h1` using `integralClosure.mem_lifts_of_monic_of_dvd_map F (minpoly.monic hθ) (minpoly.monic hF) hd`. Establish `h2 : minpoly F θ ∈ lifts (algebraMap k F)`. Rewrite `h1`, the goal using `[lifts_iff_coeff_lifts]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `n`. Take `⟨y, hy⟩` from `h1 n`. Rewrite using `[← hy]`. Conclude with `h _ (IsIntegral.isAlgebraic y.2)`. Take `⟨q, hq, hdeg, hm⟩` from `lifts_and_natDegree_eq_and_monic h2 (minpoly.monic hF)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `natDegree_le_of_dvd hd ((minpoly.monic hθ).map _).ne_zero` as an intermediate fact. Rewrite `this` using `[natDegree_map]`. Then use the resulting hypothesis. Rewrite using `[← hdeg]`. Use `natDegree_le_of_dvd (minpoly.dvd k θ ?_) hm.ne_zero` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← aeval_map_algebraMap F, hq, minpoly.aeval]`.
+A detailed English derivation is pending.
 -/
 theorem natDegree_minpoly_eq_of_closed {k F A : Type*} [Field k] [Field F] [Field A] [Algebra k F]
     [Algebra F A] [Algebra k A] [IsScalarTower k F A]
@@ -40,15 +40,13 @@ theorem natDegree_minpoly_eq_of_closed {k F A : Type*} [Field k] [Field F] [Fiel
     rw [← aeval_map_algebraMap F, hq, minpoly.aeval]
 
 /- English proof (translation)
-Introduce `k Ω L _ _ _ _ _ _ _ h`. Set `A` to `AlgebraicClosure Ω`. Set `ψ : L →ₐ[k] A` to `IsAlgClosed.lift`. Set `pb` to `Field.powerBasisOfFiniteOfSeparable k L`. Set `m : Ω ⊗[k] L →ₐ[Ω] A` to `Algebra.TensorProduct.lift (Algebra.ofId Ω A) ψ fun _ _ => Commute.all _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b` to `Algebra.TensorProduct.basis Ω pb.basis`. Establish `hd : (minpoly Ω (ψ pb.gen)).natDegree = pb.dim`. Rewrite using `[natDegree_minpoly_eq_of_closed h (pb.isIntegral_gen.map ψ), minpoly.algHom_eq ψ ψ.toRingHom.injective, pb.natDegree_minpoly]`. Establish `li : LinearIndependent Ω (m.toLinearMap ∘ b)`. Establish `h1` using `(linearIndependent_pow (K := Ω) (ψ pb.gen)).comp (Fin.cast hd.symm) (Fin.cast_injective _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[m, b]`. Establish `hinj : Function.Injective m`. Rewrite using `[injective_iff_map_eq_zero]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `h2 : Finsupp.linearCombination Ω (m.toLinearMap ∘ b) (b.repr x) = 0`. Rewrite using `[← Finsupp.apply_linearCombination, b.linearCombination_repr]`. Conclude with `hx`. Conclude with `b.repr.map_eq_zero_iff.1 (linearIndependent_iff.1 li _ h2)`.
-
-Establish `: IsDomain (Ω ⊗[k] L)` using `hinj.isDomain m.toRingHom`. Conclude with `Algebra.TensorProduct.isField_of_isAlgebraic k Ω L (Or.inr inferInstance)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (k Ω L : Type) [Field k] [CharZero k] [Field Ω] [Field L] [Algebra k Ω] [Algebra k L] [FiniteDimensional k L], (∀ x : Ω, IsAlgebraic k x → x ∈ Set.range (algebraMap k Ω)) → IsField (TensorProduct k Ω L) := by
   intro k Ω L _ _ _ _ _ _ _ h

@@ -38,7 +38,7 @@ abbrev subst (g : ι → Matrix (Fin a) (Fin a) K) (h : ι → Matrix (Fin b) (F
   ∑ i : Fin b, ∑ j : Fin a, C (h k.1 i k.2.1 * g k.1 k.2.2 j) * X (k.1, i, j)
 
 /- English proof (translation)
-Use `(basisMonomials ((ι × Fin b × Fin b) ⊕ DVar ι a b) K).constr_basis K (fun m => (monomial (m.comapDomain Sum.inl Sum.inl_injective.injOn) (J (m.comapDomain Sum.inr Sum.inr_injective.injOn)) : Pol K ι b)) m` as an intermediate fact. Rewrite `this` using `[coe_basisMonomials]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetLin_monomial (J : (DVar ι a b →₀ ℕ) → K) (m : (ι × Fin b × Fin b) ⊕ DVar ι a b →₀ ℕ) :
     jetLin J (monomial m 1) = monomial (m.comapDomain Sum.inl Sum.inl_injective.injOn)
@@ -49,16 +49,16 @@ theorem jetLin_monomial (J : (DVar ι a b →₀ ℕ) → K) (m : (ι × Fin b �
   exact this
 
 /- English proof (translation)
-Use `(basisMonomials (DVar ι a b) K).constr_basis K J m` as an intermediate fact. Rewrite `this` using `[coe_basisMonomials]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tabFn_monomial (J : (DVar ι a b →₀ ℕ) → K) (m : DVar ι a b →₀ ℕ) : tabFn J (monomial m 1) = J m := by
   have := (basisMonomials (DVar ι a b) K).constr_basis K J m
   rwa [coe_basisMonomials] at this
 
 /- English proof (translation)
-Rewrite using `[rename_monomial, rename_monomial, monomial_mul, one_mul]`. Use `congr 2`. Use extensionality with `(x | x)`. Rewrite using `[Finsupp.add_apply, Finsupp.mapDomain_apply Sum.inl_injective, Finsupp.mapDomain_notin_range _ _ (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finsupp.add_apply, Finsupp.mapDomain_apply Sum.inr_injective, Finsupp.mapDomain_notin_range _ _ (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem monomial_split {α β : Type} (m : α ⊕ β →₀ ℕ) :
     (monomial m 1 : MvPolynomial (α ⊕ β) K) = rename Sum.inl (monomial (m.comapDomain Sum.inl Sum.inl_injective.injOn) 1) *
@@ -72,13 +72,13 @@ theorem monomial_split {α β : Type} (m : α ⊕ β →₀ ℕ) :
     simp
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `add p p' h h' => rw [map_add, add_mul, map_add, h, h', smul_add]`. Consider the case `monomial m c`. Proceed by induction on `q using MvPolynomial.induction_on' with`. Consider the case `add q q' h h' => rw [map_add, mul_add, map_add, h, h', map_add, add_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `monomial m' c'`. Establish `e : ∀ {σ : Type} (m : σ →₀ ℕ) (c : K), (monomial m c : MvPolynomial σ K) = c • monomial m 1` using `fun m c => by`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Establish `e1 : (m.mapDomain Sum.inl + m'.mapDomain Sum.inr).comapDomain Sum.inl Sum.inl_injective.injOn = m`. Use extensionality with `x`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Finsupp.comapDomain_apply, Finsupp.add_apply, Finsupp.mapDomain_apply Sum.inl_injective, Finsupp.mapDomain_notin_range _ _ (by simp), add_zero]`. Establish `e2 : (m.mapDomain Sum.inl + m'.mapDomain Sum.inr).comapDomain Sum.inr Sum.inr_injective.injOn = m'`. Use extensionality with `x`. Rewrite using `[Finsupp.comapDomain_apply, Finsupp.add_apply, Finsupp.mapDomain_apply Sum.inr_injective, Finsupp.mapDomain_notin_range _ _ (by simp), zero_add]`. Rewrite using `[rename_monomial, rename_monomial, monomial_mul, e _ (c * c'), map_smul, jetLin_monomial, e1, e2, e m' c', map_smul, tabFn_monomial, smul_monomial, smul_monomial]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jetLin_mul (J : (DVar ι a b →₀ ℕ) → K) (p : Pol K ι b) (q : MvPolynomial (DVar ι a b) K) :
     jetLin J (rename Sum.inl p * rename Sum.inr q) = tabFn J q • p := by
@@ -105,9 +105,9 @@ theorem jetLin_mul (J : (DVar ι a b →₀ ℕ) → K) (p : Pol K ι b) (q : Mv
       ring
 
 /- English proof (translation)
-Use `LinearMap.congr_fun (g := jetLin J ∘ₗ (aeval (Sum.elim (fun v => X (Sum.inl v)) fun k => rename Sum.inr (φ k))).toLinearMap) ((basisMonomials _ K).ext fun m => ?_) Q` and prove the remaining obligations. Rewrite using `[coe_basisMonomials]`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[monomial_split, jetLin_mul, tabFn_monomial, hJ, map_mul, aeval_rename, aeval_rename, ← jetLin_mul]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `AlgHom.congr_fun (φ₁ := rename Sum.inl) (MvPolynomial.algHom_ext fun v => ?_) _` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `AlgHom.congr_fun (φ₁ := (rename Sum.inr).comp (aeval φ)) (MvPolynomial.algHom_ext fun v => ?_) _` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem jetLin_right {J J' : (DVar ι a b →₀ ℕ) → K} (φ : DVar ι a b → MvPolynomial (DVar ι a b) K)
     (hJ : ∀ m, J' m = tabFn J (aeval φ (monomial m (1 : K)))) (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K) :
@@ -124,9 +124,9 @@ theorem jetLin_right {J J' : (DVar ι a b →₀ ℕ) → K} (φ : DVar ι a b �
     simp
 
 /- English proof (translation)
-Use `LinearMap.congr_fun (f := jetLin J ∘ₗ (aeval (Sum.elim (fun v => rename Sum.inl (ψ (X v))) fun k => X (Sum.inr k))).toLinearMap) (g := ψ.toLinearMap ∘ₗ jetLin J) ((basisMonomials _ K).ext fun m => ?_) Q` and prove the remaining obligations. Rewrite using `[coe_basisMonomials]`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[monomial_split, jetLin_mul, map_smul, map_mul, aeval_rename, aeval_rename, ← jetLin_mul]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `AlgHom.congr_fun (φ₂ := (rename Sum.inl).comp ψ) (MvPolynomial.algHom_ext fun v => ?_) _` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `AlgHom.congr_fun (φ₂ := rename Sum.inr) (MvPolynomial.algHom_ext fun v => ?_) _` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem jetLin_left (J : (DVar ι a b →₀ ℕ) → K) (ψ : Pol K ι b →ₐ[K] Pol K ι b)
     (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K) :
@@ -143,9 +143,9 @@ theorem jetLin_left (J : (DVar ι a b →₀ ℕ) → K) (ψ : Pol K ι b →ₐ
     simp
 
 /- English proof (translation)
-Use `AlgHom.congr_fun (φ₁ := (aeval _).comp (subD K ι a b)) (φ₂ := (aeval _).comp ((subD K ι a b).comp (Formalism.GradedWeylDivisibility.blockAct K g))) (MvPolynomial.algHom_ext fun v => ?_) P` and prove the remaining obligations. Take `⟨τ, α, s⟩` from `v`. Distinguish the cases in `hs : s.1 < b`. Simplify using `only [AlgHom.comp_apply, Formalism.GradedWeylDivisibility.blockAct, subD, aeval_X, map_sum, map_mul, algHom_C, dif_pos hs, Sum.elim_inl, Sum.elim_inr, rename_X, algebraMap_eq, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun _ _ => Finset.sum_comm, Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Formalism.GradedWeylDivisibility.blockAct, subD, dif_neg hs]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem subD_subst (g : ι → Matrix (Fin a) (Fin a) K) (h : ι → Matrix (Fin b) (Fin b) K) (P : Pol K ι a) :
     aeval (Sum.elim (fun v => X (Sum.inl v)) fun k => rename Sum.inr (subst g h k)) (subD K ι a b P) =
@@ -163,7 +163,7 @@ theorem subD_subst (g : ι → Matrix (Fin a) (Fin a) K) (h : ι → Matrix (Fin
   · simp [Formalism.GradedWeylDivisibility.blockAct, subD, dif_neg hs]
 
 /- English proof (translation)
-Rewrite using `[frDet, AlgHom.map_det, RingHom.map_det, ← Matrix.det_mul]`. Use `congr 1`. Use `ext1 α s`. Simplify using `[Formalism.GradedWeylDivisibility.blockAct, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockAct_frDet (g : ι → Matrix (Fin a) (Fin a) K) (τ : ι) :
     Formalism.GradedWeylDivisibility.blockAct K g (frDet K a τ) = C (g τ).det * frDet K a τ := by
@@ -175,7 +175,7 @@ theorem blockAct_frDet (g : ι → Matrix (Fin a) (Fin a) K) (τ : ι) :
 variable [Fintype ι]
 
 /- English proof (translation)
-Simplify using `only [jetMap, LinearMap.comp_apply, AlgHom.toLinearMap_apply, LinearMap.mulRight_apply]`. Rewrite using `[jetLin_right _ hJ, subD_subst, jetLin_left, ← map_smul, ← map_smul, ← map_smul, map_mul, map_prod]`. Use `congr 3`. Simplify using `only [map_pow, blockAct_frDet, mul_pow, Finset.prod_mul_distrib, smul_eq_C_mul, map_prod]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jetMap_subst {J J' : (DVar ι a b →₀ ℕ) → K} (g : ι → Matrix (Fin a) (Fin a) K) (h : ι → Matrix (Fin b) (Fin b) K)
     (hJ : ∀ m, J' m = tabFn J (aeval (subst g h) (monomial m (1 : K)))) (n : ι → ℕ)
@@ -188,15 +188,15 @@ theorem jetMap_subst {J J' : (DVar ι a b →₀ ℕ) → K} (g : ι → Matrix 
   ring
 
 /- English proof (translation)
-Establish `h1 : ∀ Q, map σ (jetLin J Q) = jetLin (fun m => σ (J m)) (map σ Q)` using `fun Q => by`. Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `add p p' h h' => simp only [map_add, h, h']`. Consider the case `monomial m c`. Establish `e : ∀ {M : Type} [Field M] {σ : Type} (m : σ →₀ ℕ) (c : M), (monomial m c : MvPolynomial σ M) = c • monomial m 1` using `fun m c => by rw [smul_monomial, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[map_monomial, e m c, e m (σ c), LinearMap.map_smul, LinearMap.map_smul, jetLin_monomial, jetLin_monomial, smul_monomial, smul_monomial, map_monomial, smul_eq_mul, map_mul, smul_eq_mul]`. Establish `h2 : ∀ Q, map σ (subD K ι a b Q) = subD L ι a b (map σ Q)` using `fun Q => by`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C c => simp [subD]`. Consider the case `add p q h h' => simp only [map_add, h, h']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p v h`. Simplify using `only [map_mul, h, map_X]`. Use `congr 1`. Simplify using `only [subD, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h3 : ∀ τ : ι, map σ (frDet K a τ) = frDet L a τ` using `fun τ => by`. Rewrite using `[frDet, RingHom.map_det]`. Use `congr 1`. Use `ext1 α s`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [jetMap, LinearMap.comp_apply, AlgHom.toLinearMap_apply, LinearMap.mulRight_apply, h1, h2, map_mul, map_prod, map_pow, h3]`.
+A detailed English derivation is pending.
 -/
 theorem map_jetMap {L : Type} [Field L] (σ : K →+* L) (J : (DVar ι a b →₀ ℕ) → K) (n : ι → ℕ) (P : Pol K ι a) :
     map σ (jetMap J n P) = jetMap (fun m => σ (J m)) n (map σ P) := by
@@ -227,9 +227,9 @@ theorem map_jetMap {L : Type} [Field L] (σ : K →+* L) (J : (DVar ι a b →�
 
 omit [Fintype ι] in
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p q h h' => simp only [map_add, h, h']`. Consider the case `mul_X p v h`. Simplify using `only [map_mul, h, map_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.GradedWeylDivisibility.blockAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_blockAct {L : Type} [Field L] (σ : K →+* L) (g : ι → Matrix (Fin a) (Fin a) K) (P : Pol K ι a) :
     map σ (Formalism.GradedWeylDivisibility.blockAct K g P) = Formalism.GradedWeylDivisibility.blockAct L (fun τ => (g τ).map σ) (map σ P) := by
@@ -247,9 +247,9 @@ section Jet
 open MvPolynomial
 
 /- English proof (translation)
-Simplify using `only [jetMap, LinearMap.comp_apply]`. Use `GlobalTheory.JetIdentity.jetLin_congr J J' _ fun μ hμ => h _ fun τ => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.JetDeg.subD_hom (b := b) τ (GlobalTheory.JetDeg.sharp_hom n τ (hP τ)) (mem_support_iff.mp hμ)`. Rewrite `h1` using `[GlobalTheory.JetDeg.weight_derW]`. Simplify using `only [Finsupp.comapDomain_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Use `push_cast`. Simplify using `[GlobalTheory.JetDeg.natW_cast, Finset.sum_add_distrib, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 -/
 theorem jetMap_congr {K : Type} [Field K] {ι : Type} [Fintype ι] [DecidableEq ι] {a b : ℕ} (lam : ι → DomWeight a) (n : ι → ℕ)
     (J J' : (DVar ι a b →₀ ℕ) → K)
@@ -271,7 +271,7 @@ def matAt (f : Sp X.E a ≃ₗ[X.E] Sp X.E a) (τ : X.Tau) : Matrix (Fin a) (Fin
   (LinearMap.toMatrix' f.toLinearMap).map (X.emb τ)
 
 /- English proof (translation)
-Rewrite using `[matAt, LinearEquiv.coe_det, ← LinearMap.det_toMatrix', RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_matAt (f : Sp X.E a ≃ₗ[X.E] Sp X.E a) (τ : X.Tau) :
     (matAt f τ).det = X.emb τ ((LinearEquiv.det f : X.Eˣ) : X.E) := by
@@ -279,7 +279,7 @@ theorem det_matAt (f : Sp X.E a ≃ₗ[X.E] Sp X.E a) (τ : X.Tau) :
   rfl
 
 /- English proof (translation)
-Establish `e : ∀ τ, ((invTrK (embGL X.emb (ufGL X.E a γ)) τ : GL (Fin a) X.K) : Matrix (Fin a) (Fin a) X.K).transpose = matAt γ.1.symm τ` using `fun τ => rfl`. Express the relevant statement in the definitionally equal form `detTwK lam (invTrK (embGL X.emb (ufGL X.E a γ))) • trAct (invTrK (embGL X.emb (ufGL X.E a γ))) (P : Pol X.K X.Tau a) = _`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[detPow, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, ← Matrix.det_transpose, e, det_matAt, LinearEquiv.det_symm, map_inv, Units.val_inv_eq_inv_val, map_inv₀, inv_zpow']`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_rho (lam : X.Tau → DomWeight a) (γ : UF X.E a) (P : VV X.K lam) :
     ((rhoVr X.emb lam (ufGL X.E a γ) P : VV X.K lam) : Pol X.K X.Tau a) =
@@ -294,9 +294,9 @@ theorem coe_rho (lam : X.Tau → DomWeight a) (γ : UF X.E a) (P : VV X.K lam) :
     LinearEquiv.det_symm, map_inv, Units.val_inv_eq_inv_val, map_inv₀, inv_zpow']
 
 /- English proof (translation)
-Establish `ch` using `GlobalTheory.T.jetC_constr_aeval_monomial X.Tau a b A.cD G (fun τ => (matAt f τ).map A.σ₀) (fun τ => (matAt f'.symm τ).map A.σ₀) hG`. Establish `e0 : (fun z => G (A.pullV a b f f' z)) = fun z : VCx X.Tau a b => G fun τ i j => ∑ k : Fin b, ∑ l : Fin a, (matAt f'.symm τ).map A.σ₀ i k * z τ k l * (matAt f τ).map A.σ₀ l j`. Use function extensionality and compare the values at `z`. Use `congrArg G (funext fun τ => funext fun i => funext fun j => ?_)` and prove the remaining obligations. Simplify using `only [Amb.pullV, matAt, Matrix.map_apply, LinearMap.toMatrix'_apply, Fields.embC, RingHom.comp_apply, LinearEquiv.coe_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e1` using `jetMap_subst (J := jetC A.cD G) (fun τ => (matAt f τ).map A.σ₀) (fun τ => (matAt f'.symm τ).map A.σ₀) ch n (map A.σ₀ Q)`. Rewrite using `[e0, e1, map_blockAct, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← det_matAt, map_pow, RingHom.map_det]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -321,9 +321,9 @@ theorem jetMap_pull (A : Amb X) (n : X.Tau → ℕ) (f : Sp X.E a ≃ₗ[X.E] Sp
   rfl
 
 /- English proof (translation)
-Establish `d0 : ∀ (y : X.Eˣ) τ, X.emb τ (y : X.E) ≠ 0` using `fun f τ => by simp`. Establish `d2 : (∏ τ, X.emb τ (z' : X.E) ^ lam' τ) * ∏ τ, X.emb τ (z' : X.E) ^ (-lam' τ) = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun τ _ => by rw [← zpow_add₀ (d0 _ τ), add_neg_cancel, zpow_zero]`. Establish `d3 : (∏ τ, X.emb τ (z : X.E) ^ ((n τ : ℤ) - lam τ)) * ∏ τ, X.emb τ ((z⁻¹ : X.Eˣ) : X.E) ^ (-lam τ) = ∏ τ, X.emb τ (z : X.E) ^ n τ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, inv_zpow', ← zpow_add₀ (d0 _ τ), neg_neg, sub_add_cancel, zpow_natCast]`. Rewrite using `[mul_assoc (r * _), d2, mul_one, mul_assoc, d3]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_pull (lam : X.Tau → ℤ) (lam' : X.Tau → ℤ) (n : X.Tau → ℕ) (z z' : X.Eˣ) (r : X.K) :
     r * (∏ τ, X.emb τ (z : X.E) ^ ((n τ : ℤ) - lam τ)) * (∏ τ, X.emb τ (z' : X.E) ^ lam' τ) *
@@ -340,9 +340,9 @@ theorem scal_pull (lam : X.Tau → ℤ) (lam' : X.Tau → ℤ) (n : X.Tau → �
   rw [mul_assoc (r * _), d2, mul_one, mul_assoc, d3]
 
 /- English proof (translation)
-Use `LinearMap.ext fun P => Subtype.ext (map_injective A.σ₀ A.σ₀.injective ?_)` and prove the remaining obligations. Establish `hom : ∀ (Q : VV X.K lam) τ, IsWeightedHomogeneous (GlobalTheory.JetDeg.posW a τ) (map A.σ₀ (Q : Pol X.K X.Tau a)) (∑ i, (lam τ).natW i)` using `fun Q τ d hd => GlobalTheory.JetDeg.VV_hom lam τ Q.2 fun h0 => hd (by rw [coeff_map, h0, map_zero])`. Establish `sm : ∀ {c : ℕ} (k : X.K) (Q : Pol X.K X.Tau c), map A.σ₀ (k • Q) = A.σ₀ k • map A.σ₀ Q` using `fun k Q => by`. Rewrite using `[smul_eq_C_mul, smul_eq_C_mul, map_mul, map_C]`. Establish `js : ∀ (u : ℂ) (J : (DVar X.Tau a b →₀ ℕ) → ℂ), (∀ m : DVar X.Tau a b →₀ ℕ, (∀ τ, (GlobalTheory.IndefiniteRowSideFullHecke.IndexExponentDegree.degAt m τ : ℤ) = GlobalTheory.IndefiniteRowSideFullHecke.IndexExponentDegree.degNu lam n τ) → ∃ k : X.K, A.σ₀ k = u * J m) → ∀ Q : VV X.K …` using `fun u J h Q => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[jetOp_coe _ _ _ hV, map_jetMap, jetMap_congr lam n _ (fun m => u * J m) (fun m hm => GlobalTheory.JetIdentity.map_desc _ (h m hm)) (hom Q)]`. Conclude with `LinearMap.congr_fun (GlobalTheory.JetIdentity.jetLin_smul u J) _`. Establish `e2 : LinearEquiv.det (γ⁻¹).1 = (LinearEquiv.det γ.1)⁻¹` using `by rw [Subgroup.coe_inv, map_inv]`. Establish `e3 : (γ⁻¹).1.symm = γ.1` using `rfl`. Rewrite using `[LinearMap.smul_apply, Submodule.coe_smul, LinearMap.comp_apply, LinearMap.comp_apply, coe_rho, smul_smul, sm, map_blockAct, js _ _ h₁, js _ _ h₂, jetMap_pull A n _ _ G hG, coe_rho, sm, e2, e3, LinearMap.map_smul, map_smul, map_smul, smul_smul, smul_smul, smul_smul, hu, mul_right …`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetOp_pull (A : Amb X) (lam : X.Tau → DomWeight a) (lam' : X.Tau → DomWeight b) (n : X.Tau → ℕ)
     (hV : JetInVV X.K lam lam' n) (γ : UF X.E a) (γ' : UF X.E b) (G : VCx X.Tau a b → ℂ) (hG : ∀ k : ℕ, ContDiff ℂ k G)
@@ -382,7 +382,7 @@ open Formalism.L2.Host (HChar ordF)
 open GlobalTheory.CharVal (valuation_conjP)
 
 /- English proof (translation)
-Rewrite using `[HChar.val, ← map_zpow, ← div_eq_one, ← map_div]`. Use `GlobalTheory.NormOneUnit.locK_unr h ?_` and prove the remaining obligations. Establish `h0 : P.valuation E (z : E) ≠ 0` using `by simp`. Rewrite using `[Units.val_div_eq_div_val, Units.val_zpow_eq_zpow_val, map_div₀, map_zpow₀, GlobalTheory.CharVal.val_unif, ← WithZero.exp_zsmul, ordE, smul_neg, smul_eq_mul, mul_one, neg_neg, WithZero.exp_log h0, div_self h0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem locK_eq_zpow {E : Type} [Field E] [NumberField E] {χ : HChar E} {P : HeightOneSpectrum (𝓞 E)} (h : χ.UnrAt P) (z : Eˣ) :
     χ.locK P z = χ.val P ^ ordE P (z : E) := by
@@ -393,7 +393,7 @@ theorem locK_eq_zpow {E : Type} [Field E] [NumberField E] {χ : HChar E} {P : He
     smul_neg, smul_eq_mul, mul_one, neg_neg, WithZero.exp_log h0, div_self h0]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `GlobalTheory.CharValCompare.exists_isFr P hN.1`. Establish `h2 : GlobalTheory.CharValCompare.IsFr P (gmap f N) (f * g)` using `fun x => by`. Rewrite using `[mem_localization_gmap, ← hg x]`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.CharValCompare.ordDet_eq hg, GlobalTheory.CharValCompare.ordDet_eq h2, ordE, ordE, ordE, GlobalTheory.CharValCompare.dt, map_mul, Units.val_mul, map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 (Units.ne_zero _)) ((Valuation.ne_zero_iff _).2 (Units.ne_zero _)) …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ordDet_gmap {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E))
     (f : Sp E n ≃ₗ[E] Sp E n) {N : Submodule (𝓞 E) (Sp E n)} (hN : IsSdLat N) :
@@ -411,13 +411,13 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {cst : LocCst X (rowSG Pr sel mu)} {σ₀ : X.K →+* ℂ} {e : Fin R.m → X.Tau → ℚ} {m0 : Fin R.m → HChar X.E} {eta ξ : HChar X.E}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Mem.ReadTwist.tameAt hξ (fun v => Subgroup.mem_iInf.1 mu.2.1.2 v) P`.
+A detailed English derivation is pending.
 -/
 theorem xi_tame (hξ : GlobalTheory.Mem.Col2.Reads σ₀ (mu : Chr X.F X.E X.K) ξ) (P : HeightOneSpectrum (𝓞 X.E)) : ξ.TameAt P :=
   GlobalTheory.Mem.ReadTwist.tameAt hξ (fun v => Subgroup.mem_iInf.1 mu.2.1.2 v) P
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `hf` using `auxiliary_primes_finite X.F X.E X.K (mu : Chr X.F X.E X.K) mu.2.1.1.1.1.2`. Apply `h` to reduce the goal to its premises. Rewrite using `[QE, dif_pos hf]`. Conclude with `Finset.mem_image_of_mem _ (hf.mem_toFinset.2 ((GlobalTheory.Mem.ReadTwist.mem_qprime_iff hξ _).2 ⟨P, rfl, hn⟩))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_unr (hξ : GlobalTheory.Mem.Col2.Reads σ₀ (mu : Chr X.F X.E X.K) ξ) {P : HeightOneSpectrum (𝓞 X.E)}
     (h : sel (P.under (𝓞 X.F)) ∉ QE sel (mu : Chr X.F X.E X.K)) : ξ.UnrAt P := by
@@ -429,15 +429,15 @@ theorem xi_unr (hξ : GlobalTheory.Mem.Col2.Reads σ₀ (mu : Chr X.F X.E X.K) �
   exact Finset.mem_image_of_mem _ (hf.mem_toFinset.2 ((GlobalTheory.Mem.ReadTwist.mem_qprime_iff hξ _).2 ⟨P, rfl, hn⟩))
 
 /- English proof (translation)
-Establish `bad` using `GlobalTheory.ThetaMove.BadPrimes.bad_primes X Pr sel S mu u hX hPr hsel hT hg P.1 (Finset.mem_union_right _ P.2)`. Establish `tw` using `(GlobalTheory.T.tame_character_values_eq_heckeChar_local_values X.F X.E X.K σ₀ _ ξ hξ (xi_tame hξ) P.1).2 bad.2.2.1`. Establish `lk : ∀ y, ((((m0 j * ξ)⁻¹).locK P.1 y : ℂˣ) : ℂ) = (((m0 j).locK P.1 y : ℂˣ) : ℂ)⁻¹ * ((ξ.locK P.1 y : ℂˣ) : ℂ)⁻¹` using `fun y => by`. Rewrite using `[← mul_inv, ← Units.val_mul, ← Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `un : ∀ (x : X.Eˣ) (y : 𝓞 X.E) (c : (𝓞 X.E ⧸ P.1.asIdeal)ˣ), (x : X.E) = (y : X.E) → (c : 𝓞 X.E ⧸ P.1.asIdeal) = Ideal.Quotient.mk P.1.asIdeal y → P.1.valuation X.E (x : X.E) = 1` using `fun x y c h1 h2 => by`. Rewrite using `[h1]`. Conclude with `GlobalTheory.NormOneUnit.val_eq_one fun hm => c.ne_zero (h2.trans (Ideal.Quotient.eq_zero_iff_mem.2 hm))`. Use `GlobalTheory.T.localChar_eq_heckeChar_localComponent_of_values X.E X.K σ₀ P.1 (m0 j * ξ)⁻¹ _ _ bad.2.2.1 (fun q hq => ?_) (fun x y c h1 h2 => ?_) a` and prove the remaining obligations. Rewrite using `[lk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Rewrite using `[if_pos hP, hc j.1 j.2 P hP q hq, Units.val_inv_eq_inv_val, map_inv₀, tw q hq]`. Establish `hg'` using `GlobalTheory.MuConj.g_notMem hPr P.1 hP fun h => bad.1 (Finset.mem_union_right _ (Finset.mem_union_left _ h))`. Establish `hv : ordE P.1 (q : X.E) = 1`. Rewrite using `[hq, ordE, GlobalTheory.CharVal.val_natCast_of_notMem_sq (Ideal.absNorm_mem _) bad.2.2.1, WithZero.log_exp, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hP, muqT, dif_pos j.2, Units.val_mul, map_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, map_inv₀, tw q hq, ht.muVal j P.1 hg', locK_eq_zpow ((ht.mu0 j).unr _ hg'), hv, zpow_one]`. Rewrite using `[lk]`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Establish `h3 : ξ.UnrAt P.1` using `xi_unr (sel := sel) hξ fun h => by`. Break down `(GlobalTheory.NormOneUnit.under_eq_iff hX.star_F hX.rankE (GlobalTheory.NormOneUnit.exists_star_ne hX) P.1 _).1 (HeightOneSpectrum.ext (hsel (P.1.under (𝓞 X.F)))) with e | e` into its components or cases.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.disjoint_left.1 (GlobalTheory.NormOneUnit.disjoint_vGs_QE mu hPr hsel hg) hP (e ▸ h)`. Conclude with `bad.1 (Finset.mem_union_right _ (Finset.mem_union_right _ (e ▸ h)))`. Rewrite using `[if_pos hP, GlobalTheory.NormOneUnit.locK_unr h3 (un x y c h1 h2), (ht.mu0 j).atg ⟨P.1, hP⟩ x y c h1 h2, chiP, dif_pos hP, chiAt, extChi, dif_pos j.2, Units.val_inv_eq_inv_val, map_inv₀, inv_inv, Units.val_one, inv_one, mul_one]`. Establish `hg'` using `GlobalTheory.MuConj.g_notMem hPr P.1 hP fun h => bad.1 (Finset.mem_union_right _ (Finset.mem_union_left _ h))`. Rewrite using `[if_neg hP, GlobalTheory.NormOneUnit.locK_unr ((ht.mu0 j).unr _ hg') (un x y c h1 h2), MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀, GlobalTheory.NormOneUnit.resChar_eq hξ (xi_tame hξ) P.1 c y x h1 h2.symm, Units.val_one, inv_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muAtT_eq (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (u : Pr.Word) (hT : Pr.T u ∈ S) (hg : ∀ k, Pr.g k ∈ S)
     (ht : Ch.Tied σ₀ e m0 eta) (hc : MuqTieG (Pr := Pr) (R := R) sel mu cst σ₀ m0)
@@ -478,7 +478,7 @@ theorem muAtT_eq (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (u : Pr.Word) (h
         one_mul]
 
 /- English proof (translation)
-Use `⟨GlobalTheory.MuConj.g_notMem hPr P (fun a => h ⟨P, Finset.mem_union_left _ a, rfl⟩) fun a => h ⟨_, Finset.mem_union_left _ a, congrArg HeightOneSpectrum.asIdeal ((GlobalTheory.NormOneUnit.under_eq_iff hX.star_F hX.rankE (GlobalTheory.NormOneUnit.exists_star_ne hX) P _).2 (Or.inr …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem unr_off (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hξ : GlobalTheory.Mem.Col2.Reads σ₀ (mu : Chr X.F X.E X.K) ξ)
     {P : HeightOneSpectrum (𝓞 X.E)} (h : ¬ ∃ Q ∈ rowSG Pr sel mu, Q.asIdeal.under (𝓞 X.F) = (P.under (𝓞 X.F)).asIdeal) :
@@ -490,11 +490,11 @@ theorem unr_off (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hξ : GlobalTheo
     xi_unr (sel := sel) hξ fun a => h ⟨_, Finset.mem_union_right _ a, hsel _⟩⟩
 
 /- English proof (translation)
-Take `⟨n, hn, hinf⟩` from `h`. Rewrite using `[hinf x, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hn' : n τ = 2 * -(ez τ)`. Establish `h2 : (n τ : ℚ) = 2 * -(ez τ : ℚ)` using `hn τ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2` after adjusting the coercions. Establish `h1` using `congrArg (X.embC σ₀ τ) hx`. Rewrite `h1` using `[map_mul, hX.conjE]`. Rewrite using `[hn', zpow_mul, map_zpow₀]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_ofNat, div_pow, div_eq_iff (pow_ne_zero _ (by simp)), ← Complex.ofReal_pow, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj]`. Express the relevant statement in the definitionally equal form `_ = X.embC σ₀ τ z * _`. Take the linear combination `X.embC σ₀ τ (x : X.E) * h1`.
+Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem inf_eq (hX : X.Ok) {χ : HChar X.E} {ez : X.Tau → ℤ} (h : χ.HasInfQ (X.embC σ₀) fun τ => -(ez τ : ℚ)) {x : X.Eˣ} {z : X.E}
     (hx : (x : X.E) = z * star (x : X.E)) : ((χ.inf x : ℂˣ) : ℂ) = σ₀ (∏ τ, X.emb τ z ^ (-ez τ)) := by
@@ -514,41 +514,35 @@ theorem inf_eq (hX : X.Ok) {χ : HChar X.E} {ez : X.Tau → ℤ} (h : χ.HasInfQ
   linear_combination X.embC σ₀ τ (x : X.E) * h1
 
 /- English proof (translation)
-Introduce `γ N fr hN`. Establish `hX` using `hD.ok`. Establish `hs` using `GlobalTheory.NormOneUnit.exists_star_ne hX`. Establish `hu` using `GlobalTheory.NormOneUnit.under_eq_iff hX.star_F hX.rankE hs`. Establish `hμ` using `ht.mu0 j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ξ, hξ⟩` from `GlobalTheory.Mem.ReadEx.exists_reads σ₀ (mu : Chr X.F X.E X.K) mu.2.1.1.1.1.1 mu.2.1.1.1.1.2`. Use `set z : X.Eˣ := LinearEquiv.det γ.1 with hz`. Take `⟨x, hx⟩` from `GlobalTheory.NormOneUnit.exists_quot hs (z := (z : X.E)) (by rw [mul_comm]; exact GlobalTheory.Mem.Col2.ChiFacLaw.star_det_mul γ)`. Establish `nc : ∀ P ∈ rowSG Pr sel mu, conjPrime₂ P ∉ rowSG Pr sel mu` using `fun P hP h => (GlobalTheory.ThetaMove.BadPrimes.bad_primes X Pr sel S mu u hX hPr hsel hT hg P (Finset.mem_union_right _ hP)).1 (Finset.mem_union_right _ h)`. Establish `hsel' : ∀ v, (sel v).under (𝓞 X.F) = v` using `fun v => HeightOneSpectrum.ext (hsel v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `B : HeightOneSpectrum (𝓞 X.F) → Prop` to `fun v => ∃ P ∈ rowSG Pr sel mu, P.asIdeal.under (𝓞 X.F) = v.asIdeal`. Establish `unr : ∀ P : HeightOneSpectrum (𝓞 X.E), ¬ B (P.under (𝓞 X.F)) → (m0 j * ξ).UnrAt P` using `fun P h y hy => by`. Rewrite using `[HChar.loc_mul, hμ.unr P (unr_off hX hPr hsel hξ h).1 y hy, (unr_off hX hPr hsel hξ h).2 y hy, one_mul]`. Set `rep : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)` to `fun v => if h : B v then h.choose else sel v`. Establish `rep_mem : ∀ P ∈ rowSG Pr sel mu, rep (P.under (𝓞 X.F)) = P` using `fun P hP => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : B (P.under (𝓞 X.F))` using `⟨P, hP, rfl⟩`. Simplify using `only [rep, dif_pos h]`. Conclude with `((hu P _).1 (HeightOneSpectrum.ext h.choose_spec.2)).resolve_right fun e => nc P hP (e ▸ h.choose_spec.1)`. Establish `hfin : {P : HeightOneSpectrum (𝓞 X.E) | P.valuation X.E (x : X.E) ≠ 1}.Finite`. Use `((HeightOneSpectrum.Support.finite (𝓞 X.E) (x : X.E)).union (HeightOneSpectrum.Support.finite (𝓞 X.E) (x : X.E)⁻¹)).subset fun P hP => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition.
 
-Break down `lt_or_gt_of_ne hP with h | h` into its components or cases. Use `right`. Express the relevant statement in the definitionally equal form `1 < P.valuation X.E (x : X.E)⁻¹`. Rewrite using `[map_inv₀]`. Conclude with `(one_lt_inv₀ (zero_lt_iff.2 (by simp))).2 h`.
+Rewrite the conclusion using the stated equalities. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `Or.inl h`. Use `set V : Finset (HeightOneSpectrum (𝓞 X.F)) := (rowSG Pr sel mu ∪ hfin.toFinset).image fun P => P.under (𝓞 X.F) with hV`. Establish `vB : ∀ v, B v → v ∈ V` using `fun v ⟨P, hP, e⟩ => Finset.mem_image.2 ⟨P, Finset.mem_union_left _ hP, HeightOneSpectrum.ext e⟩`. Establish `vx : ∀ P : HeightOneSpectrum (𝓞 X.E), P.under (𝓞 X.F) ∉ V → P.valuation X.E (x : X.E) = 1` using `fun P hP =>`. Assume the negation of the conclusion as `fun hn => hP (Finset.mem_image_of_mem _ (Finset.mem_union_right _ (hfin.mem_toFinset.2 hn)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `ξtriv` using `GlobalTheory.Mem.ReadTwist.trivOn hξ mu.2.1.1.2`. Establish `key` using `GlobalTheory.T.heckeChar_productFormula_normOne X.F X.E (m0 j * ξ) rep V x z hX.star_F hX.rankE hs hD.unram ⟨fun v k => by rw [HChar.resFin_mul, hμ.triv.1, ξtriv.1, one_mul], fun v k => by`. Rewrite using `[HChar.resInf_mul, hμ.triv.2, ξtriv.2, one_mul]⟩`. Use the proof step `(fun P y h1 h2 => by rw [HChar.loc_mul, hμ.tame P y h1 h2, xi_tame hξ P y h1 h2, one_mul])`. Use the proof step `(fun P hP => unr P fun ⟨Q, hQ, e⟩ => by`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e' : Q = P` using `((hu P Q).1 (HeightOneSpectrum.ext e)).elim id fun e => e.trans hP`. Substitute `e'` using the available equality. Conclude with `nc Q hQ (hP.symm ▸ hQ))`. Use the proof step `(fun v => by`. Distinguish the cases in `h : B v`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [rep, dif_pos h]`. Conclude with `HeightOneSpectrum.ext h.choose_spec.2`. Simplify using `only [rep, dif_neg h, hsel'])`. Use `hx fun P hP => ⟨unr P fun h => hP (vB _ h), vx P hP⟩`. Rewrite `key` using `[HChar.inf_mul, GlobalTheory.NormOneUnit.inf_eq_one hξ, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinf` using `inf_eq hX (ez := ez) (by simpa only [hez] using hμ.inf) hx`. Establish `off : muOff sel (rowSG Pr sel mu) (mUof Ch mu j.1) (gmap γ.1 N) = (∏ v ∈ V, if B v then 1 else ((mUof Ch mu j.1 (sel v) ^ ordE (sel v) (z : X.E) : X.Kˣ) : X.K)) * muOff sel (rowSG Pr sel mu) (mUof Ch mu j.1) N`. Establish `s1 : (Function.mulSupport fun v => if B v then 1 else ((mUof Ch mu j.1 (sel v) ^ ordE (sel v) (z : X.E) : X.Kˣ) : X.K)) ⊆ V` using `fun v hv => by`. Assume the negation of the conclusion as `hn`. Apply `hv` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `congrArg ((sel v).valuation X.E) hx`. Rewrite `h1` using `[map_mul, ← valuation_conjP, vx _ (by rwa [hsel']), vx _ (by rwa [(hu _ _).2 (Or.inr rfl), hsel']), mul_one]`. Simplify using `[ordE, ← h1]`. Establish `s2 : (Function.mulSupport fun v => if B v then 1 else ((mUof Ch mu j.1 (sel v) ^ ordDet (sel v) N : X.Kˣ) : X.K)).Finite`. Use `((GlobalTheory.OrdDetConj.ordDet_conj_finite X.E n N hN).2.image fun P => P.under (𝓞 X.F)).subset fun v hv => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨sel v, fun h0 => hv ?_, hsel' v⟩` and prove the remaining obligations. Simplify using `[h0]`. Rewrite using `[← finprod_eq_prod_of_mulSupport_subset _ s1, muOff, muOff, ← finprod_mul_distrib (V.finite_toSet.subset s1) s2]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Distinguish the cases in `h : B v`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[if_pos h, if_pos h, if_pos h, one_mul]`. Rewrite using `[if_neg h, if_neg h, if_neg h, ordDet_gmap _ _ hN, zpow_add, Units.val_mul]`. Establish `at1 : ∀ P : rowSG Pr sel mu, muAtT Ch sel mu cst j.1 P ((LinearEquiv.det (γ.1 * fr P) : X.Eˣ) : X.E) = muAtT Ch sel mu cst j.1 P (z : X.E) * muAtT Ch sel mu cst j.1 P ((LinearEquiv.det (fr P) : X.Eˣ) : X.E)` using `fun P => by`. Apply `σ₀.injective` to reduce the goal to its premises. Rewrite using `[map_mul σ₀, muAtT_eq hX hPr hsel u hT hg ht hc hξ, muAtT_eq hX hPr hsel u hT hg ht hc hξ, muAtT_eq hX hPr hsel u hT hg ht hc hξ, map_mul, map_mul, mul_inv, Units.val_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `fin : (∏ v ∈ V, if B v then 1 else ((mUof Ch mu j.1 (sel v) ^ ordE (sel v) (z : X.E) : X.Kˣ) : X.K)) * ∏ P : rowSG Pr sel mu, muAtT Ch sel mu cst j.1 P (z : X.E) = ∏ τ, X.emb τ (z : X.E) ^ (-ez τ)`. Apply `σ₀.injective` to reduce the goal to its premises. Establish `a1 : σ₀ (∏ P : rowSG Pr sel mu, muAtT Ch sel mu cst j.1 P (z : X.E)) = ∏ v ∈ V, if B v then ((((m0 j * ξ).locK (rep v) z)⁻¹ : ℂˣ) : ℂ) else 1`. Rewrite using `[map_prod, Finset.prod_congr rfl fun P _ => muAtT_eq hX hPr hsel u hT hg ht hc hξ j P z, Finset.prod_coe_sort (rowSG Pr sel mu) fun P => ((((m0 j * ξ).locK P z)⁻¹ : ℂˣ) : ℂ), ← Finset.prod_filter]`. Use `Finset.prod_nbij' (fun P => P.under (𝓞 X.F)) rep (fun P hP => ?_) (fun v hv => ?_) rep_mem (fun v hv => ?_) fun P hP => by rw [rep_mem P hP]` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.mem_filter.2 ⟨vB _ ⟨P, hP, rfl⟩, P, hP, rfl⟩`. Establish `h` using `(Finset.mem_filter.1 hv).2`. Simplify using `only [rep, dif_pos h]`. Conclude with `h.choose_spec.1`. Establish `h` using `(Finset.mem_filter.1 hv).2`.
-
-Simplify using `only [rep, dif_pos h]`. Conclude with `HeightOneSpectrum.ext h.choose_spec.2`. Rewrite using `[map_mul, a1, map_prod, ← Finset.prod_mul_distrib, ← hinf, eq_inv_of_mul_eq_one_left key, ← Finset.prod_inv_distrib, Units.coe_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : B v`.
-
-Rewrite using `[if_pos h, if_pos h, map_one, one_mul]`. Establish `h' : ¬ B ((sel v).under (𝓞 X.F))` using `by rwa [hsel']`. Establish `o` using `unr_off hX hPr hsel hξ h'`. Simplify using `only [rep, dif_neg h, if_neg h]`. Rewrite using `[mul_one, locK_eq_zpow (unr _ h'), Units.val_zpow_eq_zpow_val, map_zpow₀, mUof, dif_pos j.2, Units.val_mul, map_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, map_inv₀, ht.muVal j _ o.1, (GlobalTheory.T.tame_character_values_eq_heckeChar_local_values X.F X.E X …`.
-
-Rewrite using `[muInvDet, muInvDet, off, Finset.prod_congr rfl fun P _ => at1 P, Finset.prod_mul_distrib, ← fin]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem muProdLaw (hD : X.AbelianUnramifiedExtensionConditions) (hPr : Pr.Ok) (hsel : IsSel X sel) (u : Pr.Word) (hT : Pr.T u ∈ S) (hg : ∀ k, Pr.g k ∈ S)
     (ht : Ch.Tied σ₀ e m0 eta) (hc : MuqTieG (Pr := Pr) (R := R) sel mu cst σ₀ m0) (j : Fin R.m) (ez : X.Tau → ℤ)
@@ -666,18 +660,18 @@ theorem muProdLaw (hD : X.AbelianUnramifiedExtensionConditions) (hPr : Pr.Ok) (h
 end Mu
 
 /- English proof (translation)
-The claim follows from `R.k_even.add ((R.t_odd.add_one).mul_left j)`.
+A detailed English derivation is pending.
 -/
 theorem even_rank (R : Ranks) (j : ℕ) : Even (R.N j) := R.k_even.add ((R.t_odd.add_one).mul_left j)
 
 /- English proof (translation)
-Establish `half : ∀ k, (((R.N k / 2 : ℕ) : ℤ) : ℚ) = (R.N k : ℚ) / 2` using `fun k => by`. Take `⟨c, hc⟩` from `even_rank R k`. Establish `: R.N k / 2 = c` using `by omega`. Rewrite using `[this, hc]`. Use `push_cast`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Establish `h1` using `GlobalTheory.GO.ChSrc.nuEnd_cast (W.hc u) hi τ`. Rewrite `h1` using `[GlobalTheory.GO.ChSrc.nuEnd_eq W u hi, GlobalTheory.GO.ChSrc.trueWt_eq, GlobalTheory.GO.ChSrc.sS, dif_pos hi]`. Establish `h2` using `GlobalTheory.GO.ChSrc.zOf_spec R _ ((W.hc u τ).e_int ⟨i, hi⟩) (i + 1)`.
+Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, add_sub_cancel_left]`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[Int.cast_sub, half, ← hz]`. Conclude with `h2`. Establish `hN : R.N i < R.N (i + 1)` using `by unfold Ranks.N; rw [add_mul]; omega`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `W.lamTrue_new u hi τ ⟨R.N (i + 1) - 1, by omega⟩ (by show ¬ R.N (i + 1) - 1 < R.N i; omega)`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[DomWeight.detShift, dif_pos (R.N_pos _), h1, Int.cast_sub, half, ← hz, sExp, Nat.add_sub_cancel, neg_sub]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weights {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (u : Pr.Word) {i : ℕ} (hi : i < R.m) (τ : X.Tau)
     {z : ℤ} (hz : (W.hc u τ).e ⟨i, hi⟩ = z) :
@@ -703,27 +697,23 @@ theorem weights {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (
     rw [DomWeight.detShift, dif_pos (R.N_pos _), h1, Int.cast_sub, half, ← hz, sExp, Nat.add_sub_cancel, neg_sub]
 
 /- English proof (translation)
-Introduce `Z H s cc δ B χ cD sel S mu cst u i hi h hE hv _ hJ γ γ' N fr N' fr' c x hR`. Take `⟨hs, hσ, hcc, hδ, hχ, -⟩` from `h.ana`. Take `⟨m0, eta, ht, hc⟩` from `h.tied`. Establish `hX` using `h.ok.fields`. Establish `hPr` using `h.ok.primes`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ea` using `even_rank Z.R i`. Establish `eb` using `even_rank Z.R (i + 1)`. Take `⟨hL, hsm⟩` from `GlobalTheory.T.normalisedFamily_latticeHyp_and_smooth H Z.X s cc δ B χ cD _ _ hX hs hcc hδ hv ea eb`. Establish `bad` using `GlobalTheory.ThetaMove.BadPrimes.bad_primes Z.X Z.Pr sel S mu u hX hPr h.isSel h.T_mem h.g_mem`. Establish `hL' : (ambOf s B χ cD).LaHyp (Z.R.N i) (Z.R.N (i + 1)) (Sall sel mu u)` using `⟨hL.1, hL.2.1, fun P hP => (bad P hP).1, fun P hP => GlobalTheory.PeriodIdealUnit.locP_AA_eq_one Z.X H s cc δ B χ cD P (bad P hP).2.1 (bad P hP).2.2.1 (h.cop P hP), hL.2.2.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hth` using `GlobalTheory.Mem.Col2.IndEq.thIndEq_of_vacEq Z.X _ _ _ _ _ hX hL' (GlobalTheory.ThetaMove.SeamMoves.aa_ne_bot s B χ cD hcc.1) (modulus_pos sel mu cst u (hPr.T_prime u).pos) (GlobalTheory.Mem.Col2.JetEx.VacEqPf.vacEq_ambOf H Z.X s cc δ B χ cD _ _ hs hE ea eb) γ γ' N N' c x hR`. Establish `hchi` using `GlobalTheory.Mem.Col2.ChiFacLaw.chiLaw_ambOf H Z.X s cc δ B χ cD (Z.R.N i) (Z.R.N (i + 1)) hs hχ γ γ' N N' hR.1 hR.2.1`. Establish `hG` using `indSmooth_of _ _ _ _ _ hsm N N' c x hR`. Use `set A := ambOf s B χ cD with hA`. Establish `hgN : IsSdLat (gmap γ.1 N)` using `⟨gmap_lattice _ _ hR.1.1, by rw [IsUnimodular, dual_gmap _ γ.2, hR.1.2]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgN' : IsSdLat (gmap γ'.1 N')` using `⟨gmap_lattice _ _ hR.2.1.1, by rw [IsUnimodular, dual_gmap _ γ'.2, hR.2.1.2]⟩`. Establish `hR' : InRange (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u) c (gmap γ.1 N) (gmap γ'.1 N') (γ'.1.toLinearMap ∘ₗ x ∘ₗ γ.1.symm.toLinearMap)` using `⟨hgN, hgN', hR.2.2.1, hR.2.2.2.1, (divLat_gmap_iff _ _ _ _ _ _ _).2 hR.2.2.2.2⟩`. Use `choose ez hez using fun τ => (Z.W.hc u τ).e_int ⟨i, hi⟩`. Establish `hez' : ∀ τ, (Z.W.row τ).e ⟨i, hi⟩ = ez τ` using `fun τ => by rw [← h.ok.wts.hc_row u τ]; exact hez τ`. Establish `hmu` using `fun n => muProdLaw h.ok.fieldsConditions hPr h.isSel u h.T_mem h.g_mem ht hc ⟨i, hi⟩ ez hez' n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : JetInVV Z.X.K (Z.W.lamTrue u i) (Z.W.lamTrue u (i + 1)) (nuLast Z.W u i)`. Use `GlobalTheory.GO.ChSrc.jetInVV_trueWt (Z.W.hc u) hi` as an intermediate fact. Rewrite `this` using `[GlobalTheory.GO.ChSrc.nuEnd_eq Z.W u hi, GlobalTheory.GO.ChSrc.trueWt_eq, GlobalTheory.GO.ChSrc.trueWt_eq]`. Then use the resulting hypothesis. Establish `h₁` using `hJ _ _ _ _ hR'`. Rewrite `h₁` using `[funext hth]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set d : Z.X.Tau → Z.X.K := fun τ => Z.X.emb τ ((LinearEquiv.det γ.1 : Z.X.Eˣ) : Z.X.E) with hd`. Use `set d' : Z.X.Tau → Z.X.K := fun τ => Z.X.emb τ ((LinearEquiv.det γ'.1 : Z.X.Eˣ) : Z.X.E) with hd'`. Establish `d0 : ∀ τ, d τ ≠ 0` using `fun τ => (map_ne_zero _).2 (Units.ne_zero _)`. Establish `d0' : ∀ τ, d' τ ≠ 0` using `fun τ => (map_ne_zero _).2 (Units.ne_zero _)`. Establish `key` using `jetOp_pull A _ _ _ hV γ γ' _ hG _ (A.chiF _ _ N N')⁻¹ ((∏ τ, d τ ^ ((Z.R.N (i + 1) / 2 : ℕ) : ℤ)) * ∏ τ, d' τ ^ (-((Z.R.N i / 2 : ℕ) : ℤ))) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hchi, mul_inv, mul_inv, ← zpow_neg, ← zpow_neg, neg_neg, Finset.prod_zpow, Finset.prod_zpow, map_mul, map_zpow₀, map_zpow₀, map_prod, map_prod]`. Use the proof step `rfl) h₁ (hJ _ _ _ _ hR)`. Unfold `stepT thDistC Amb.jetK`. Rewrite using `[if_pos hR'.2.2.2, if_pos hR.2.2.2, funext hth, key, hmu _ γ N fr hR.1, hmu _ γ' N' fr' hR.2.1, smul_smul, LinearMap.smul_comp, LinearMap.comp_smul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Establish `e1 : (∏ τ, d τ ^ (-ez τ)) * (∏ τ, d τ ^ ((Z.R.N (i + 1) / 2 : ℕ) : ℤ)) * ∏ τ, d τ ^ ((nuLast Z.W u i τ : ℤ) - (Z.W.lamTrue u i τ).detShift) = 1`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[(weights Z.W u hi τ (hez τ)).1, ← zpow_add₀ (d0 τ), ← zpow_add₀ (d0 τ)]`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Conclude with `zpow_zero _`. Establish `e2 : (∏ τ, d' τ ^ (-ez τ))⁻¹ * (∏ τ, d' τ ^ (-((Z.R.N i / 2 : ℕ) : ℤ))) * ∏ τ, d' τ ^ (Z.W.lamTrue u (i + 1) τ).detShift = 1`. Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[(weights Z.W u hi τ (hez τ)).2, ← zpow_neg, ← zpow_add₀ (d0' τ), ← zpow_add₀ (d0' τ)]`.
-
-Put the polynomial expressions in normal form. Conclude with `zpow_zero _`. Rewrite using `[mul_inv]`. Generalize the expression as in `muInvDet sel _ _ _ N fr = p`. Generalize the expression as in `(muInvDet sel _ _ _ N' fr')⁻¹ = p'`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ratStep : ∀ (Z : Dat) (H : D7) (s : Seam H Z.X) (cc : Ideal (𝓞 H.host.K)) (δ : ℂ) (B : Base H cc δ) (χ : TaylorLogMetric.IdE H → ℂ) (cD : H.what₂.Tau → ℂ) (sel : HeightOneSpectrum (𝓞 Z.X.F) → HeightOneSpectrum (𝓞 Z.X.E)) (S : Set ℕ) (mu : Tup Z.X.F Z.X.E Z.X.K S) (cst : LocCst Z.X (rowSG Z.Pr sel mu)) (u : Z.Pr.Word) (i : ℕ), i < Z.R.m → Hyp Z s cc δ χ cD sel S mu cst u → B.EqP χ → B.VecP χ → MuqTie Z.Ch sel mu cst → (∀ N N' c x, InRange (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u) c N N' x → ∀ m : DVar Z.X.Tau (Z.R.N i) (Z.R.N (i + 1)) →₀ ℕ, (∀ τ, (GlobalTheory.IndefiniteRowSideFullHecke.IndexExponentDegree.degAt m τ : ℤ) = GlobalTheory.IndefiniteRowSideFullHecke.IndexExponentDegree.degNu (Z.W.lamTrue u i) (nuLast Z.W u i) τ) → ∃ k : Z.X.K, (ambOf s B χ cD).σ₀ k = ((ambOf s B χ cD).chiF _ _ N N')⁻¹ * jetC (ambOf s B χ cD).cD ((ambOf s B χ cD).thInd (Sall sel mu u) N N' c x) m) → RatStep Z.W Z.Ch sel mu cst (ambOf s B χ cD) u i (i + 1) := by
   intro Z H s cc δ B χ cD sel S mu cst u i hi h hE hv _ hJ γ γ' N fr N' fr' c x hR

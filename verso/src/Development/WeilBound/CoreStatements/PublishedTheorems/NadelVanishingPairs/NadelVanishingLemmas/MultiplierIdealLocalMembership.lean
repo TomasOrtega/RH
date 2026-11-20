@@ -24,7 +24,7 @@ set_option autoImplicit false
 namespace GlobalTheory.MultLoc
 
 /- English proof (translation)
-Take `⟨N, i, hi, rfl⟩` from `h`. Use `isProper_str R N` as an intermediate fact. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProper_of_isProjOver_nadel_vanishing {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R}
     (h : IsProjOver f) : IsProper f := by
@@ -38,19 +38,19 @@ noncomputable def multHom (z : Y) : CartierDiv Y →+ ℤ :=
   AddMonoidHom.mk' (fun D => D.mult z) (fun D E => CartierDiv.mult_add D E z)
 
 /- English proof (translation)
-The claim follows from `map_neg (multHom z) D`.
+A detailed English derivation is pending.
 -/
 theorem mult_neg' (D : CartierDiv Y) (z : Y) : (-D).mult z = -D.mult z :=
   map_neg (multHom z) D
 
 /- English proof (translation)
-The claim follows from `map_sub (multHom z) D E`.
+A detailed English derivation is pending.
 -/
 theorem mult_sub' (D E : CartierDiv Y) (z : Y) : (D - E).mult z = D.mult z - E.mult z :=
   map_sub (multHom z) D E
 
 /- English proof (translation)
-Rewrite using `[← nsmul_eq_mul]`. Conclude with `map_nsmul (multHom z) r D`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mult_nsmul' (D : CartierDiv Y) (r : ℕ) (z : Y) : (r • D).mult z = r * D.mult z := by
   rw [← nsmul_eq_mul]; exact map_nsmul (multHom z) r D
@@ -60,37 +60,33 @@ end GlobalTheory.MultLoc
 open GlobalTheory.MultLoc in
 
 /- English proof (translation)
-Introduce `k _ _ X _ p n hp η m G Y _ _ s _ K B F hη hm hres hF x u`. Use `haveI : SmoothOfRelativeDimension n (s ≫ p) := hres.smooth`. Use `haveI : Smooth (s ≫ p) := SmoothOfRelativeDimension.smooth n (s ≫ p)`. Use `haveI : GlobalTheory.IsNormalScheme Y := GlobalTheory.isNormalScheme_of_smooth (s ≫ p)`. Use `haveI : IsProper s := by haveI := isProper_of_isProjOver_nadel_vanishing hp haveI := isProper_of_isProjOver_nadel_vanishing hres.proj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `IsProper.of_comp s p`. Use `set Γ := pullCart s G - m • K with hΓ`. Use `set η' := EtaleKlt.ratPull p s n η with hη'def`. Establish `hη' : η' ≠ 0` using `fun h => hη ((GlobalTheory.T.rationalTopFormPullback_bijective_birational k X Y p s hres.bir n).1 (h.trans (map_zero _).symm))`. Establish `hdisc : ∀ (E' : DivOver (s ≫ p)) (E : DivOver p), DivOver.Over s E' E → ∀ g : X.functionFieldˣ, discrep E' η' m (fnPull s g) = discrep E η m g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `E' E hO g`. Simplify using `only [discrep, hη'def, GlobalTheory.T.form_order_birational_pullback k X Y p s hres.bir E' E hO n η hη, GlobalTheory.T.ord_functionField_pullback_primeDivisor_over k X Y p s hres.bir E' E hO g]`. Establish `hmq : (0 : ℚ) < m` using `by exact_mod_cast hm`. Establish `hmz : (0 : ℤ) < m` using `by exact_mod_cast hm`. Establish `eu : functionFieldMap s (u : X.functionField) = ((fnPull s u : Y.functionFieldˣ) : Y.functionField)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hu y hy`. Rewrite using `[eu, GlobalTheory.T.regularAt_iff_forall_specializes_ord_add_mult_nonneg Y (-F) y (fnPull s u)]`. Introduce `z hz`. Rewrite using `[mult_neg', hF z]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hc : Order.coheight z = 1`. Take `⟨E', hE'⟩ : ∃ E' : DivOver (s ≫ p), E'.IsAt z` from `DivOver.exists_isAt_of_coheight_eq_one hc`. Take `⟨E, hO⟩` from `GlobalTheory.T.exists_primeDivisor_over_target_birational k X Y p s hres.bir E'`. Establish `hEx : E.Through x` using `hy ▸ GlobalTheory.T.primeDivisorCentre_through_image k X Y p s E' E hO y (hE'.through hz)`. Take `⟨g, hg⟩` from `G.exists_isEqn x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hu g hg E hEx`. Establish `h2 : E.ord u = Scheme.ord ((fnPull s u : Y.functionFieldˣ) : Y.functionField) z`. Rewrite using `[← GlobalTheory.T.ord_functionField_pullback_primeDivisor_over k X Y p s hres.bir E' E hO u, hE'.ord_eq]`. Establish `hgy : (pullCart s G).IsEqn y (fnPull s g)` using `isEqn_pullCart s (by rw [hy]; exact hg)`. Take `⟨V, hV, hgV⟩` from `hgy.exists_nhds`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3` using `GlobalTheory.T.discrepancy_formula_divisor k Y (s ≫ p) n η' hη' K (pullCart s G) m hm hres.div E' z (fnPull s g) hE' (hgV z (hz.mem_open V.isOpen hV))`. Rewrite `h3` using `[hdisc E' E hO g, ← hΓ]`. Rewrite `h1` using `[h2, h3]`. Use `set o := Scheme.ord ((fnPull s u : Y.functionFieldˣ) : Y.functionField) z`. Establish `h4 : ((Γ.mult z : ℤ) : ℚ) < ((((o + 1) * m : ℤ)) : ℚ)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Establish `h6 : ((Γ.mult z : ℤ) : ℚ) / m < o + 1` using `by rw [neg_div] at h1; linarith`. Rewrite `h6` using `[div_lt_iff₀ hmq]`. Then use the resulting hypothesis. Establish `h5` using `Int.ediv_lt_of_lt_mul hmz (by exact_mod_cast h4)`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h0 : Γ.mult z = 0`. Assume the negation of the conclusion as `h`. Conclude with `hc (CartierDiv.coheight_eq_one_of_mult_ne_zero h)`. Rewrite using `[Scheme.ord_eq_zero_of_coheight_neq_one hc, h0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `hR g hg E hE`. Take `⟨E', hO⟩` from `GlobalTheory.T.exists_primeDivisor_over_source_birational k X Y p s hres.bir E`. Take `⟨y, hy, hE'y⟩` from `GlobalTheory.T.divisor_center_proper_lift k X Y p s hres.bir inferInstance E' E hO x hE`. Take `⟨f, hf⟩` from `F.exists_isEqn y`. Establish `hreg` using `hf.neg.regularAt_iff.1 (hR y hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hord : E'.ord f ≤ E'.ord (fnPull s u)`. Establish `h0 : 0 ≤ E'.ord (fnPull s u * f⁻¹)` using `(E'.ord_nonneg_iff _).2 (hE'y _ hreg)`. Rewrite `h0` using `[E'.ord_mul, E'.ord_inv]`. Use linear arithmetic over natural numbers and integers. Use `set G' := pullCart s G - m • F with hG'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hg' : G'.IsEqn y (fnPull s g / f ^ m)` using `(isEqn_pullCart s (by rw [hy]; exact hg)).sub (hf.nsmul m)`. Establish `hmod : ∀ w, (G' - m • K).mult w = Γ.mult w % m`. Introduce `w`. Establish `e : G' - m • K = Γ - m • F` using `by rw [hG', hΓ]; abel`. Rewrite using `[e, mult_sub', mult_nsmul', hF w, Int.emod_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `hsupp : (G' - m • K).supp ≤ B`. Introduce `w hw`. Take `⟨z, hzw, hz0⟩` from `((GlobalTheory.T.cartier_divisor_mult_characterize Y (G' - m • K)).2.1 w).1 hw`. Use `hres.supp (((GlobalTheory.T.cartier_divisor_mult_characterize Y Γ).2.1 w).2 ⟨z, hzw, fun h0 => hz0 ?_⟩)` and prove the remaining obligations. Rewrite using `[hmod, h0, Int.zero_emod]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcrit` using `(GlobalTheory.T.klt_of_snc_coefficients k Y (s ≫ p) n η' hη' K G' m B hm hres.div hres.snc hsupp y _ hg' E' hE'y).1 fun w _ => by rw [hmod]; exact Int.emod_lt_of_pos _ hmz`. Establish `hd : discrep E' η' m (fnPull s g / f ^ m) = discrep E η m g + E'.ord f`. Rewrite using `[← hdisc E' E hO g]`. Simplify using `only [discrep, div_eq_mul_inv, E'.ord_mul, E'.ord_inv, E'.ord_pow]`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `hcrit` using `[hd]`. Establish `h6 : (E'.ord f : ℚ) ≤ E.ord u`. Rewrite using `[← GlobalTheory.T.ord_functionField_pullback_primeDivisor_over k X Y p s hres.bir E' E hO u]`.
-
-Conclude with `hord` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Discrepancy.inMultAt_iff_regularAt_logRes : ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → ∀ (η : RatForms p n) (m : ℕ) (G : CartierDiv X) (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (s : Y ⟶ X) [IsDominant s] (K : CartierDiv Y) (B : Closeds Y) (F : CartierDiv Y), η ≠ 0 → 0 < m → IsLogRes p n η m G s K B → (∀ z, F.mult z = (pullCart s G - m • K).mult z / (m : ℤ)) → ∀ (x : X) (u : X.functionFieldˣ), InMultAt p n η m G x u ↔ ∀ y : Y, s y = x → (-F).RegularAt y (functionFieldMap s (u : X.functionField)) := by
   intro k _ _ X _ p n hp η m G Y _ _ s _ K B F hη hm hres hF x u

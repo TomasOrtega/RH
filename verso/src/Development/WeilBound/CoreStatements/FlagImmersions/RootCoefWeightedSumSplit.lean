@@ -10,7 +10,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 namespace RootFieldNumerics
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none => simp only [RootModel.coef]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `some r => simp only [RootModel.coef, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Split into cases according to the possible forms of the given data. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem root_coef_add {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N) (lam mu : Wt Ψ N) (s s' : ℝ)
     (j : Option (Ψ × Fin N)) : M.coef (lam + mu) (s + s') j = M.coef lam s j + M.coef mu s' j := by
@@ -19,7 +19,7 @@ theorem root_coef_add {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N) (l
   | some r => simp only [RootModel.coef, Pi.add_apply]; ring
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none => simp only [RootModel.coef, mul_div_assoc]`. Consider the case `some r => simp only [RootModel.coef, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem root_coef_smul {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N) (lam : Wt Ψ N) (a s : ℝ)
     (j : Option (Ψ × Fin N)) : M.coef (a • lam) (a * s) j = a * M.coef lam s j := by
@@ -28,7 +28,7 @@ theorem root_coef_smul {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N) (
   | some r => simp only [RootModel.coef, Pi.smul_apply, smul_eq_mul]; ring
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none => simp only [RootModel.coef]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `some r => simp only [RootModel.coef, Pi.zero_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Split into cases according to the possible forms of the given data. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem root_coef_split {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N) (lam : Wt Ψ N) (s : ℝ)
     (j : Option (Ψ × Fin N)) : M.coef lam s j = M.coef lam 0 j + s * M.coef 0 1 j := by
@@ -37,7 +37,7 @@ theorem root_coef_split {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N) 
   | some r => simp only [RootModel.coef, Pi.zero_apply]; ring
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[root_coef_split M lam s j]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem root_coef_weighted_sum_split {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N) (lam : Wt Ψ N) (s : ℝ)
     (g : Option (Ψ × Fin N) → ℝ) :
@@ -50,11 +50,11 @@ theorem root_coef_weighted_sum_split {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : Roo
 end RootFieldNumerics
 
 /- English proof (translation)
-Introduce `Ψ _ N M lam mu s s' a`. Use `⟨fun W => ?_, fun W => ?_, fun p hs h1 h2 W hW => ?_, fun hs h1 h2 W hW hP => ?_⟩` and prove the remaining obligations. Simplify using `only [RootModel.curveDeg]`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [RootFieldNumerics.root_coef_add]; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [RootModel.curveDeg]`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [RootFieldNumerics.root_coef_smul]; ring`. Establish `e : M.curveDeg lam s W = M.curveDeg lam 0 W + s * M.curveDeg 0 1 W` using `RootFieldNumerics.root_coef_weighted_sum_split M lam s _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_nonneg (h1 W hW) (mul_nonneg hs (h2 W hW))`. Establish `e : ∑ j, M.coef lam s j * geomDeg W (M.line 1 j) 1 = ∑ j, M.coef lam 0 j * geomDeg W (M.line 1 j) 1 + s * ∑ j, M.coef 0 1 j * geomDeg W (M.line 1 j) 1` using `RootFieldNumerics.root_coef_weighted_sum_split M lam s _`. Rewrite using `[e]`. Conclude with `add_nonneg (h1 W hW hP) (mul_nonneg hs (h2 W hW hP))`.
+A detailed English derivation is pending.
 -/
 theorem RootFieldNumerics.curveDeg_linear_and_nef : ∀ (Ψ : Type) [Fintype Ψ] (N : ℕ) (M : RootModel Ψ N) (lam mu : Wt Ψ N) (s s' a : ℝ), (∀ W, M.curveDeg (lam + mu) (s + s') W = M.curveDeg lam s W + M.curveDeg mu s' W) ∧ (∀ W, M.curveDeg (a • lam) (a * s) W = a * M.curveDeg lam s W) ∧ (∀ p, 0 ≤ s → M.NefAt p lam 0 → M.NefAt p 0 1 → M.NefAt p lam s) ∧ (0 ≤ s → M.NefGen lam 0 → M.NefGen 0 1 → M.NefGen lam s) := by
   intro Ψ _ N M lam mu s s' a

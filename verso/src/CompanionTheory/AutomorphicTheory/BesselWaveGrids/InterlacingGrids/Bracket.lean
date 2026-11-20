@@ -8,19 +8,19 @@ namespace GroundTheory.BlockD.FourierDecayAlt.WaveGridLiftGrid
 open Finset
 
 /- English proof (translation)
-Establish `hsplit : Icc 1 (k + 2 * r + 1) = Icc 1 (k - 1) ∪ Icc k (k + 2 * r + 1)`. Use extensionality with `s`. Simplify using `only [mem_union, mem_Icc]`. Use linear arithmetic over natural numbers and integers. Establish `hdisj : Disjoint (Icc 1 (k - 1)) (Icc k (k + 2 * r + 1))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[disjoint_left]`. Introduce `s hs ht`. Rewrite `hs`, `ht` using `[mem_Icc]`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `have hε0 : |ε| ≤ 1 := by rcases hε with h0 | h0 <;> simp [h0]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hb : 0 ≤ b` using `le_trans (abs_nonneg Y) hY`. Establish `hnode : ∏ s ∈ Icc k (k + 2 * r + 1), (|Y + ε + lam s| + c) ≤ (3 * b) ^ (2 * r + 2)`. Establish `hcard : (Icc k (k + 2 * r + 1)).card = 2 * r + 2`. Rewrite using `[Nat.card_Icc]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← hcard, ← prod_const]`. Use `prod_le_prod (fun s _ => by positivity) fun s hs => ?_` and prove the remaining obligations. Rewrite `hs` using `[mem_Icc]`. Establish `h1` using `abs_add_le (Y + ε) (lam s)`. Establish `h2` using `abs_add_le Y ε`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hlam s (by omega) hs.2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpair` using `cloud_pair_le k lam v e c g b Y ε hk hc hg hε hcb hY (fun s hs1 hs2 => hlam s hs1 (by omega)) hgap hp hden`. Establish `hcloud` using `cloud_prod_le k lam c g Y (by omega) hc hg hgap`. Establish `hDn : 0 ≤ ∏ i ∈ Icc 1 k, |Y + 1 / 2 + v i|` using `prod_nonneg fun i _ => abs_nonneg _`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb3 : 0 ≤ 3 * b` using `by linarith`. Establish `hcl : ∏ s ∈ Icc 1 (k - 1), (|Y + ε + lam s| + c) ≤ 3 * b * ((2 + c) ^ 2 * (k : ℝ) ^ 2) * ∏ i ∈ Icc 1 k, |Y + 1 / 2 + v i|`. Use `le_trans hpair ?_` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_right _ hDn` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hcloud hb3`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hcl0 : 0 ≤ ∏ s ∈ Icc 1 (k - 1), (|Y + ε + lam s| + c)` using `prod_nonneg fun s _ => by positivity`. Establish `hnode0 : 0 ≤ (3 * b) ^ (2 * r + 2)` using `pow_nonneg hb3 _`. Rewrite using `[hsplit, prod_union hdisj]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bracket_le (k r : ℕ) (lam v : ℕ → ℝ) (e : ℕ) (c g b Y ε : ℝ) (hk : 2 ≤ k) (hc : 0 ≤ c) (hg : 1 + c ≤ g)
     (hε : ε = 0 ∨ ε = 1) (hcb : c + 1 ≤ b) (hY : |Y| ≤ b)

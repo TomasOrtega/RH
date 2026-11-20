@@ -3,19 +3,19 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : ∀ j : ℕ, j ≤ n → ∃ z : ℤ, (z : ℝ) = u (j + 1) - u 1`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _; exact ⟨0, by simp⟩`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `hk`. Take `⟨z, hz⟩` from `ih (by omega)`. Take `⟨N, hN⟩` from `h (k + 1) (Finset.mem_Icc.2 ⟨by omega, hk⟩)`. Use `⟨z - N - 1, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `choose z hz using key`. Use `⟨(u 1 : ℂ) - ((n + 1 : ℕ) : ℂ) / 2 + 1 / 2, fun j => z j (Nat.lt_succ_iff.1 j.2), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.strictAnti_iff_succ_lt]`. Introduce `i`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `h (i + 1) (Finset.mem_Icc.2 ⟨by omega, i.2⟩)`. Establish `h1` using `hz (i.succ : Fin (n + 1)) (Nat.lt_succ_iff.1 i.succ.2)`. Establish `h2` using `hz (i.castSucc : Fin (n + 1)) (Nat.lt_succ_iff.1 i.castSucc.2)`. Establish `hN0 : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Establish `: ((z (i.succ : Fin (n + 1)) (Nat.lt_succ_iff.1 i.succ.2) : ℤ) : ℝ) < (z (i.castSucc : Fin (n + 1)) (Nat.lt_succ_iff.1 i.castSucc.2) : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Simplify using `only [Fin.val_succ, Fin.val_castSucc]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions. Introduce `j`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `congrArg (fun x : ℝ => (x : ℂ)) (hz j (Nat.lt_succ_iff.1 j.2))`. Simplify using `only [Complex.ofReal_intCast, Complex.ofReal_sub] at h1`. Simplify using `only [h1]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i j`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hz]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_int_coords_of_regular_param (n : ℕ) (u : ℕ → ℝ)
     (h : ∀ i ∈ Finset.Icc 1 n, ∃ N : ℕ, u i - u (i + 1) = (N : ℝ) + 1) :

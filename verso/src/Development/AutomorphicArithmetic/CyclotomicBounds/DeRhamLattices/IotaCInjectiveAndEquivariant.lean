@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTwistedC
 open Formalism Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations TensorProduct GlobalTheory.UseLoc.Cases
 
 /- English proof (translation)
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul t x`. Take `⟨tv, ht⟩` from `t`. Establish `ht' : tv ∈ (Algebra.linearMap O LL).range` using `ht`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, rfl⟩` from `LinearMap.mem_range.mp ht'`. Use `⟨r • x, ?_⟩` and prove the remaining obligations. Rewrite using `[← TensorProduct.smul_tmul]`. Use `congr 1`. Use `ext`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[oneO, Algebra.smul_def]`. Consider the case `add u v hu hv`. Take `⟨x, rfl⟩` from `hu`. Take `⟨y, rfl⟩` from `hv`. Conclude with `⟨x + y, by rw [TensorProduct.tmul_add]⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem UpperTheory.KN.integral_tensor_pure {O LL : Type} [CommRing O] [Field LL] [Algebra O LL]
     (X : Type) [AddCommGroup X] [Module O X] (u : ↥(intO (O := O) LL) ⊗[O] X) :
@@ -30,7 +30,7 @@ private theorem UpperTheory.KN.integral_tensor_pure {O LL : Type} [CommRing O] [
     exact ⟨x + y, by rw [TensorProduct.tmul_add]⟩
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `x`. Take `⟨s, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Simplify using `only [iotaC, LinearMap.comp_apply, LinearMap.lTensor_tmul, Submodule.subtype_apply]`. Rewrite using `[iotaG_tmul, evOneQ_mk]`. Simplify using `[oneO, constOne]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.KN.evaluation_of_integral_inclusion {O LL : Type} [CommRing O] [Field LL] [Algebra O LL]
     (lam : O) (a : ℕ) (x : ↥(Xq LL lam a)) :
@@ -42,11 +42,11 @@ private theorem UpperTheory.KN.evaluation_of_integral_inclusion {O LL : Type} [C
   simp [oneO, constOne]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `q hq`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite `hq` using `[LinearMap.mem_ker, evOneQ_mk, Submodule.Quotient.mk_eq_zero]`. Establish `hq' : v 0 ∈ (Algebra.linearMap O LL).range` using `hq`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `LinearMap.mem_range.mp hq'`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `show v ∈ ((Algebra.linearMap O LL).compLeft (Fin 1)).range`. Use `LinearMap.mem_range.mpr ⟨fun _ => r, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Use `fin_cases i`. Simplify using `using hr`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.KN.evaluation_at_one_injective {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] :
     Function.Injective (evOneQ (O := O) LL) := by
@@ -64,11 +64,11 @@ private theorem UpperTheory.KN.evaluation_at_one_injective {O LL : Type} [CommRi
   simpa using hr
 
 /- English proof (translation)
-Introduce `O LL _ _ _ hinj G _ _ N χ ψ lam a hN`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `u v huv`. Take `⟨x, rfl⟩` from `UpperTheory.KN.integral_tensor_pure (O := O) (LL := LL) _ u`. Take `⟨y, rfl⟩` from `UpperTheory.KN.integral_tensor_pure (O := O) (LL := LL) _ v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h` using `congrArg (evOneQ LL) huv`. Rewrite `h` using `[UpperTheory.KN.evaluation_of_integral_inclusion, UpperTheory.KN.evaluation_of_integral_inclusion]`. Rewrite using `[Subtype.ext h]`. Introduce `g u`. Take `⟨x, rfl⟩` from `UpperTheory.KN.integral_tensor_pure (O := O) (LL := LL) _ u`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `UpperTheory.KN.evaluation_at_one_injective (O := O) (LL := LL)` to reduce the goal to its premises. Use `erw [actTw_oneO hinj]`. Rewrite using `[evOneQ_actD]`. Use `erw [UpperTheory.KN.evaluation_of_integral_inclusion, UpperTheory.KN.evaluation_of_integral_inclusion]`. Rewrite using `[Submodule.coe_smul, hN g]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.iotaC_injective_and_equivariant :
     ∀ {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] (hinj : Function.Injective (algebraMap O LL)) {G : Type} [Group G]

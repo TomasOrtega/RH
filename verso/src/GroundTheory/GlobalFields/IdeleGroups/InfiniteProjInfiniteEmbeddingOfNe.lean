@@ -14,7 +14,7 @@ abbrev IdeleGroup : Type _ := (𝔸[K])ˣ
 namespace IdeleGroup
 
 /- English proof (translation)
-The claim follows from `((Homeomorph.refl (𝔸[K])).prodCongr MulOpposite.opHomeomorph.symm).isEmbedding.comp (Units.isEmbedding_embedProduct (M := 𝔸[K]))`.
+A detailed English derivation is pending.
 -/
 theorem isEmbedding_val_inv :
     IsEmbedding (fun x : IdeleGroup K ↦ ((x : 𝔸[K]), ((x⁻¹ : IdeleGroup K) : 𝔸[K]))) :=
@@ -22,7 +22,7 @@ theorem isEmbedding_val_inv :
     (Units.isEmbedding_embedProduct (M := 𝔸[K]))
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsTopologicalGroup (IdeleGroup K) := inferInstance
 
@@ -36,7 +36,7 @@ def prodEquiv :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem prodEquiv_apply_fst (x : IdeleGroup K) :
     ((prodEquiv K x).1 : InfiniteAdeleRing K) = (x : 𝔸[K]).1 := rfl
@@ -55,13 +55,13 @@ def toFinite : IdeleGroup K →* (FiniteAdeleRing (𝓞 K) K)ˣ :=
   (MonoidHom.snd _ _).comp (prodEquiv K).toMulEquiv.toMonoidHom
 
 /- English proof (translation)
-The claim follows from `continuous_fst.comp (prodEquiv K).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toInfinite : Continuous (toInfinite K) :=
   continuous_fst.comp (prodEquiv K).continuous
 
 /- English proof (translation)
-The claim follows from `continuous_snd.comp (prodEquiv K).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toFinite : Continuous (toFinite K) :=
   continuous_snd.comp (prodEquiv K).continuous
@@ -77,7 +77,7 @@ theorem coe_diagonal (x : Kˣ) : ((diagonal K x : IdeleGroup K) : 𝔸[K]) = alg
   rfl
 
 /- English proof (translation)
-Introduce `x y h`. Use `ext`. Conclude with `AdeleRing.algebraMap_injective (𝓞 K) K (congrArg Units.val h)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem diagonal_injective : Function.Injective (diagonal K) := by
   intro x y h
@@ -91,40 +91,40 @@ abbrev IdeleClassGroup : Type _ := IdeleGroup K ⧸ (IdeleGroup.diagonal K).rang
 namespace IdeleClassGroup
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : CommGroup (IdeleClassGroup K) := inferInstance
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsTopologicalGroup (IdeleClassGroup K) := inferInstance
 
 def mk : IdeleGroup K →* IdeleClassGroup K := QuotientGroup.mk' _
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.continuous_mk`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mk : Continuous (mk K) := QuotientGroup.continuous_mk
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.isOpenMap_coe`.
+A detailed English derivation is pending.
 -/
 theorem isOpenMap_mk : IsOpenMap (mk K) := QuotientGroup.isOpenMap_coe
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.mk'_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem mk_surjective : Function.Surjective (mk K) := QuotientGroup.mk'_surjective _
 
 /- English proof (translation)
-The claim follows from `(QuotientGroup.eq_one_iff _).2 ⟨x, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mk_diagonal (x : Kˣ) : mk K (IdeleGroup.diagonal K x) = 1 :=
   (QuotientGroup.eq_one_iff _).2 ⟨x, rfl⟩
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.ker_mk' _`.
+A detailed English derivation is pending.
 -/
 theorem ker_mk : (mk K).ker = (IdeleGroup.diagonal K).range := QuotientGroup.ker_mk' _
 
@@ -148,7 +148,7 @@ def finiteAdeleSingle (v : HeightOneSpectrum (𝓞 K)) :
 
 open Classical in
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem finiteAdeleSingle_apply (v w : HeightOneSpectrum (𝓞 K)) (x : v.adicCompletion K) :
     finiteAdeleSingle v x w = Pi.mulSingle (M := fun u : HeightOneSpectrum (𝓞 K) ↦
@@ -156,7 +156,7 @@ theorem finiteAdeleSingle_apply (v w : HeightOneSpectrum (𝓞 K)) (x : v.adicCo
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[finiteAdeleSingle_apply]`. Conclude with `Pi.mulSingle_eq_same v x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteAdeleSingle_apply_self (v : HeightOneSpectrum (𝓞 K)) (x : v.adicCompletion K) :
     finiteAdeleSingle v x v = x := by
@@ -165,7 +165,7 @@ theorem finiteAdeleSingle_apply_self (v : HeightOneSpectrum (𝓞 K)) (x : v.adi
   exact Pi.mulSingle_eq_same v x
 
 /- English proof (translation)
-Rewrite using `[finiteAdeleSingle_apply]`. Conclude with `Pi.mulSingle_eq_of_ne h x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteAdeleSingle_apply_of_ne {v w : HeightOneSpectrum (𝓞 K)} (h : w ≠ v)
     (x : v.adicCompletion K) : finiteAdeleSingle v x w = 1 := by
@@ -174,9 +174,9 @@ theorem finiteAdeleSingle_apply_of_ne {v w : HeightOneSpectrum (𝓞 K)} (h : w 
   exact Pi.mulSingle_eq_of_ne h x
 
 /- English proof (translation)
-Establish `hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 K)))`. Simplify using the standard rewrite rules. Set `g : v.adicCompletion K → Πʳ w : HeightOneSpectrum (𝓞 K), [w.adicCompletion K, w.adicCompletionIntegers K]_[Filter.principal {v}ᶜ]` to `fun x ↦ ⟨Pi.mulSingle v x, Filter.eventually_principal.2 fun w hw ↦ by`. Rewrite using `[Pi.mulSingle_eq_of_ne hw x]`. Conclude with `one_mem _⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : Continuous g` using `RestrictedProduct.continuous_rng_of_principal.mpr (continuous_mulSingle v)`. Establish `hfg : (finiteAdeleSingle (K` using `K) v : v.adicCompletion K → FiniteAdeleRing (𝓞 K) K) = RestrictedProduct.inclusion _ _ hS ∘ g := by`. Both sides reduce to the same expression. Rewrite using `[hfg]`. Conclude with `(RestrictedProduct.continuous_inclusion hS).comp hg`.
+Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_finiteAdeleSingle (v : HeightOneSpectrum (𝓞 K)) :
     Continuous (finiteAdeleSingle (K := K) v) := by
@@ -208,7 +208,7 @@ def finiteProj (v : HeightOneSpectrum (𝓞 K)) : IdeleGroup K →* (v.adicCompl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem coe_finiteEmbedding (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCompletion K)ˣ) :
     ((finiteEmbedding v x : IdeleGroup K) : 𝔸[K]) =
@@ -224,14 +224,14 @@ theorem coe_finiteProj (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Units.continuous_map (continuous_const.prodMk (continuous_finiteAdeleSingle v))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finiteEmbedding (v : HeightOneSpectrum (𝓞 K)) :
     Continuous (finiteEmbedding (K := K) v) :=
   Units.continuous_map (continuous_const.prodMk (continuous_finiteAdeleSingle v))
 
 /- English proof (translation)
-The claim follows from `Units.continuous_map ((RestrictedProduct.continuous_eval v).comp continuous_snd) @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finiteProj (v : HeightOneSpectrum (𝓞 K)) :
     Continuous (finiteProj (K := K) v) :=
@@ -239,7 +239,7 @@ theorem continuous_finiteProj (v : HeightOneSpectrum (𝓞 K)) :
 
 @[simp]
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem finiteProj_finiteEmbedding (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCompletion K)ˣ) :
     finiteProj v (finiteEmbedding v x) = x := by
@@ -247,7 +247,7 @@ theorem finiteProj_finiteEmbedding (v : HeightOneSpectrum (𝓞 K)) (x : (v.adic
   simp
 
 /- English proof (translation)
-Use `ext`. Simplify using `[finiteAdeleSingle_apply_of_ne h]`. Use the proof step `@[simp]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finiteProj_finiteEmbedding_of_ne {v w : HeightOneSpectrum (𝓞 K)} (h : w ≠ v)
     (x : (v.adicCompletion K)ˣ) : finiteProj w (finiteEmbedding v x) = 1 := by
@@ -285,7 +285,7 @@ theorem infiniteAdeleSingle_apply (w u : InfinitePlace K) (x : w.Completion) :
 
 omit [NumberField K] in
 /- English proof (translation)
-Conclude with `continuous_mulSingle (A := fun u : InfinitePlace K ↦ u.Completion) w`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infiniteAdeleSingle (w : InfinitePlace K) :
     Continuous (infiniteAdeleSingle w) := by
@@ -303,7 +303,7 @@ def infiniteProj (w : InfinitePlace K) : IdeleGroup K →* (w.Completion)ˣ :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem coe_infiniteEmbedding (w : InfinitePlace K) (x : (w.Completion)ˣ) :
     ((infiniteEmbedding w x : IdeleGroup K) : 𝔸[K]) =
@@ -319,14 +319,14 @@ theorem coe_infiniteProj (w : InfinitePlace K) (x : IdeleGroup K) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Units.continuous_map ((continuous_infiniteAdeleSingle w).prodMk continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infiniteEmbedding (w : InfinitePlace K) :
     Continuous (infiniteEmbedding (K := K) w) :=
   Units.continuous_map ((continuous_infiniteAdeleSingle w).prodMk continuous_const)
 
 /- English proof (translation)
-The claim follows from `Units.continuous_map ((continuous_apply w).comp continuous_fst) @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infiniteProj (w : InfinitePlace K) :
     Continuous (infiniteProj (K := K) w) :=
@@ -334,7 +334,7 @@ theorem continuous_infiniteProj (w : InfinitePlace K) :
 
 @[simp]
 /- English proof (translation)
-Use `ext`. Simplify using `[infiniteAdeleSingle_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem infiniteProj_infiniteEmbedding (w : InfinitePlace K) (x : (w.Completion)ˣ) :
     infiniteProj w (infiniteEmbedding w x) = x := by
@@ -343,7 +343,7 @@ theorem infiniteProj_infiniteEmbedding (w : InfinitePlace K) (x : (w.Completion)
   simp [infiniteAdeleSingle_apply]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[infiniteAdeleSingle_apply, Pi.mulSingle_eq_of_ne h]`. Use the proof step `@[simp]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem infiniteProj_infiniteEmbedding_of_ne {w u : InfinitePlace K} (h : u ≠ w)
     (x : (w.Completion)ˣ) : infiniteProj u (infiniteEmbedding w x) = 1 := by
@@ -368,14 +368,14 @@ def integralAtFinite : Submonoid 𝔸[K] where
   mul_mem' ha hb v := mul_mem (ha v) (hb v)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_integralAtFinite {a : 𝔸[K]} :
     a ∈ integralAtFinite K ↔ ∀ v : HeightOneSpectrum (𝓞 K), a.2 v ∈ v.adicCompletionIntegers K :=
   Iff.rfl
 
 /- English proof (translation)
-The claim follows from `(RestrictedProduct.isOpen_forall_mem fun v : HeightOneSpectrum (𝓞 K) ↦ Valued.isOpen_valuationSubring (v.adicCompletion K)).preimage continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_integralAtFinite : IsOpen (integralAtFinite K : Set 𝔸[K]) :=
   (RestrictedProduct.isOpen_forall_mem fun v : HeightOneSpectrum (𝓞 K) ↦
@@ -384,7 +384,7 @@ theorem isOpen_integralAtFinite : IsOpen (integralAtFinite K : Set 𝔸[K]) :=
 def standardOpenSubgroup : Subgroup (IdeleGroup K) := (integralAtFinite K).units
 
 /- English proof (translation)
-Rewrite using `[standardOpenSubgroup, Submonoid.mem_units_iff, mem_integralAtFinite, mem_integralAtFinite, ← forall_and]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_standardOpenSubgroup {x : IdeleGroup K} :
     x ∈ standardOpenSubgroup K ↔ ∀ v : HeightOneSpectrum (𝓞 K),
@@ -394,7 +394,7 @@ theorem mem_standardOpenSubgroup {x : IdeleGroup K} :
     ← forall_and]
 
 /- English proof (translation)
-The claim follows from `Submonoid.isOpen_units (isOpen_integralAtFinite K)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_standardOpenSubgroup : IsOpen (standardOpenSubgroup K : Set (IdeleGroup K)) :=
   Submonoid.isOpen_units (isOpen_integralAtFinite K)

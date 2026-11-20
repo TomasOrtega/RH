@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights.FlatTheorem
 open NumberField
 
 /- English proof (translation)
-Rewrite using `[rootDiscr_def]`. Establish `h : (1 : ℝ) ≤ ((|discr K| : ℤ) : ℝ)`. Conclude with `Int.one_le_abs (discr_ne_zero K)` after adjusting the coercions. Conclude with `Real.one_le_rpow h (by positivity)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FlatDegreeBound.one_le_rootDiscr (K : Type) [Field K] [NumberField K] :
     1 ≤ rootDiscr K := by
@@ -17,17 +17,15 @@ theorem FlatDegreeBound.one_le_rootDiscr (K : Type) [Field K] [NumberField K] :
   exact Real.one_le_rpow h (by positivity)
 
 /- English proof (translation)
-Establish `key` using `natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow K (𝓞 K) E (𝓞 E)`. Establish `hE0 : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr (discr_ne_zero E)`. Establish `hN : Ideal.absNorm (differentIdeal (𝓞 K) (𝓞 E)) ≠ 0`. Introduce `h0`. Rewrite `key` using `[h0, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hE0 key`. Establish `hle : (discr K).natAbs ^ Module.finrank K E ≤ (discr E).natAbs`. Rewrite using `[key]`. Conclude with `Nat.le_mul_of_pos_left _ (Nat.pos_of_ne_zero hN)`. Use `set n := Module.finrank ℚ K with hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m := Module.finrank K E with hm`. Establish `hnE : Module.finrank ℚ E = n * m` using `(Module.finrank_mul_finrank ℚ K E).symm`. Establish `hnpos : 0 < n` using `Module.finrank_pos`. Establish `hmpos : 0 < m` using `Module.finrank_pos`. Establish `habsK : ((|discr K| : ℤ) : ℝ) = ((discr K).natAbs : ℝ)` using `(Nat.cast_natAbs _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `habsE : ((|discr E| : ℤ) : ℝ) = ((discr E).natAbs : ℝ)` using `(Nat.cast_natAbs _).symm`. Rewrite using `[rootDiscr_def, rootDiscr_def, habsK, habsE, hnE]`. Establish `hleR : (((discr K).natAbs : ℝ)) ^ (m : ℝ) ≤ ((discr E).natAbs : ℝ)`. Rewrite using `[Real.rpow_natCast]`. Conclude with `hle` after adjusting the coercions.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Establish `h0 : (0 : ℝ) ≤ ((discr K).natAbs : ℝ)` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul h0]`. Use `congr 1`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts. Use `_ ≤ ((discr E).natAbs : ℝ) ^ (((n * m : ℕ) : ℝ)⁻¹) := Real.rpow_le_rpow (Real.rpow_nonneg h0 _) hleR (by positivity)`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem FlatDegreeBound.rootDiscr_le_rootDiscr (K E : Type) [Field K] [NumberField K] [Field E]
     [NumberField E] [Algebra K E] : rootDiscr K ≤ rootDiscr E := by
@@ -62,11 +60,11 @@ theorem FlatDegreeBound.rootDiscr_le_rootDiscr (K E : Type) [Field K] [NumberFie
         Real.rpow_le_rpow (Real.rpow_nonneg h0 _) hleR (by positivity)
 
 /- English proof (translation)
-Introduce `K E _ _ _ _ _ p q logΩ c hc`. Substitute `hc` using the available equality. Establish `h1` using `FlatDegreeBound.one_le_rootDiscr K`. Establish `h2` using `FlatDegreeBound.rootDiscr_le_rootDiscr K E`. Establish `hlK : 0 ≤ Real.log (rootDiscr K)` using `Real.log_nonneg h1`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlKE : Real.log (rootDiscr K) ≤ Real.log (rootDiscr E)` using `Real.log_le_log (by linarith) h2`. Establish `hq : (0 : ℝ) ≤ q` using `Nat.cast_nonneg q`. Establish `ha` using `mul_nonneg hq hlK`. Establish `hb` using `mul_nonneg hq (sub_nonneg.mpr hlKE)`. Rewrite using `[abs_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `constructor <;> nlinarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem FlatDegreeBound.proof : FlatDegreeBound.Statement := by
   intro K E _ _ _ _ _ p q logΩ c hc

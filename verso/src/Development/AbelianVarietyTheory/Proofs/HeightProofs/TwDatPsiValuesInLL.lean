@@ -6,13 +6,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B T hC v w _`. Take `⟨z, hz⟩` from `hC.roots v`. Use `haveI : NeZero (B.places.resChar v ^ T.k v) := ⟨pow_ne_zero _ (B.places.resChar_prime v).ne_zero⟩`. Establish `hpow : ∀ (χ : Formalism.L2.Host.HChar B.host.E) (m : ℕ), (χ ^ m).val w = χ.val w ^ m`. Introduce `χ m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Both sides reduce to the same expression. Consider the case `succ m ih => rw [pow_succ, Formalism.L2.Host.HChar.val_mul, ih, pow_succ]`. Establish `h1 : (((T.psi v).val w : ℂˣ) : ℂ) ^ (B.places.resChar v ^ T.k v) = 1`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hord : T.psi v ^ (B.places.resChar v ^ T.k v) = 1` using `T.psi_ord v`. Establish `h0 : (T.psi v ^ (B.places.resChar v ^ T.k v)).val w = (1 : Formalism.L2.Host.HChar B.host.E).val w` using `by rw [hord]`. Rewrite `h0` using `[hpow]`. Rewrite using `[← Units.val_pow_eq_pow_val, h0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hz'` using `hz.map_of_injective B.embLL.injective`. Take `⟨i, -, hi⟩` from `hz'.eq_pow_of_pow_eq_one h1`. Use `⟨z ^ i, ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.L2.Host.HChar.valTw, Complex.ofReal_zero, neg_zero, Complex.cpow_zero, mul_one]`. Rewrite using `[map_pow, hi]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twDat_psi_valuesIn_LL : ∀ (B : Base) (T : TwDat B), Coh B T → ∀ v, (T.psi v).ValuesIn 0 B.embLL := by
   intro B T hC v w _

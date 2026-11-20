@@ -12,11 +12,11 @@ namespace GlobalTheory.CompanionTheory.SphTheta.SplitPiK
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hk`. Establish `d1 : (k.val).det ∈ 𝒪[F]`. Rewrite using `[Matrix.det_fin_two]`. Conclude with `sub_mem (mul_mem (h1 0 0) (h1 1 1)) (mul_mem (h1 0 1) (h1 1 0))`. Establish `d2 : ((k⁻¹).val).det ∈ 𝒪[F]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_fin_two]`. Conclude with `sub_mem (mul_mem (h2 0 0) (h2 1 1)) (mul_mem (h2 0 1) (h2 1 0))`. Establish `e : (k.val).det * ((k⁻¹).val).det = 1`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `e' : ((k.val).det)⁻¹ = ((k⁻¹).val).det` using `inv_eq_of_mul_eq_one_right e`. Conclude with `⟨d1, e' ▸ d2⟩`.
+A detailed English derivation is pending.
 -/
 theorem det_integral {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.integralGL F 2) :
     (k.val).det ∈ 𝒪[F] ∧ ((k.val).det)⁻¹ ∈ 𝒪[F] := by
@@ -34,7 +34,7 @@ theorem det_integral {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.integralGL F 2) :
   exact ⟨d1, e' ▸ d2⟩
 
 /- English proof (translation)
-Establish `h1` using `modulus_le_one_iff.2 hu`. Establish `h2` using `modulus_le_one_iff.2 hv`. Establish `h3 : modulus u * modulus u⁻¹ = 1` using `by rw [← modulus_mul, mul_inv_cancel₀ hu0, modulus_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem modulus_of_unit {u : F} (hu0 : u ≠ 0) (hu : u ∈ 𝒪[F]) (hv : u⁻¹ ∈ 𝒪[F]) : modulus u = 1 := by
   have h1 := modulus_le_one_iff.2 hu
@@ -46,15 +46,15 @@ theorem modulus_of_unit {u : F} (hu0 : u ≠ 0) (hu : u ∈ 𝒪[F]) (hv : u⁻�
     _ = modulus u := mul_one _
 
 /- English proof (translation)
-The claim follows from `(modulus_eq_one_iff.1 (modulus_of_unit hu0 hu hv)).2`.
+A detailed English derivation is pending.
 -/
 theorem ord_of_unit {u : F} (hu0 : u ≠ 0) (hu : u ∈ 𝒪[F]) (hv : u⁻¹ ∈ 𝒪[F]) : ord u = 0 :=
   (modulus_eq_one_iff.1 (modulus_of_unit hu0 hu hv)).2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `key : y * (u, 1) ∈ {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]} ↔ y ∈ {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]}`. Simplify using `only [Set.mem_setOf_eq, Prod.fst_mul, Prod.snd_mul, mul_one]`. Use `and_congr_left fun _ => ⟨fun h => ?_, fun h => mul_mem h hu⟩` and prove the remaining obligations. Use `mul_mem h hv` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_assoc, mul_inv_cancel₀ hu0, mul_one]`. Then use the resulting hypothesis. Distinguish the cases in `h : y ∈ {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]}`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (key.2 h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (key.1 h'))]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem indicator_mul_unit {u : F} (hu0 : u ≠ 0) (hu : u ∈ 𝒪[F]) (hv : u⁻¹ ∈ 𝒪[F]) :
     (fun y : F × F => Set.indicator {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]} (1 : F × F → ℂ) (y * (u, 1))) =
@@ -72,15 +72,15 @@ theorem indicator_mul_unit {u : F} (hu0 : u ≠ 0) (hu : u ∈ 𝒪[F]) (hv : u�
   · rw [Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (key.1 h'))]
 
 /- English proof (translation)
-Introduce `h F _ _ _ _ _ _ _ χ hχ hχ1 hcond c₁ hc k hk`. Take `⟨d1, d2⟩` from `det_integral hk`. Establish `d0 : (k.val).det ≠ 0` using `(GeneralLinearGroup.det k).ne_zero`. Establish `hdet : ((GeneralLinearGroup.det k : Fˣ) : F) = (k.val).det` using `Matrix.GeneralLinearGroup.val_det_apply k`. Establish `hc1 : c₁ (GeneralLinearGroup.det k) = 1` using `isUnramifiedChar_iff.1 hc _ (by rw [hdet]; exact ord_of_unit d0 d1 d2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : mp (GeneralLinearGroup.det k) (1 / 2) = 1`. Simplify using `[mp, hdet, modulus_of_unit d0 d1 d2]`. Establish `hM : (!![k.val 0 0 / (k.val).det, k.val 0 1; k.val 1 0 / (k.val).det, k.val 1 1] : Matrix (Fin 2) (Fin 2) F).det = 1`. Establish `e` using `Matrix.det_fin_two k.val`. Rewrite using `[Matrix.det_fin_two_of]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Conclude with `e.symm`. Establish `hI : ∀ i j, (!![k.val 0 0 / (k.val).det, k.val 0 1; k.val 1 0 / (k.val).det, k.val 1 1] : Matrix (Fin 2) (Fin 2) F) i j ∈ 𝒪[F]`. Establish `h1` using `((GLnLocal.mem_integralGL_iff F 2).1 hk).1`. Introduce `i j`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify `mul_mem (h1 0 0) d2` using `[div_eq_mul_inv]`. Simplify using `using h1 0 1`. Simplify `mul_mem (h1 1 0) d2` using `[div_eq_mul_inv]`. Simplify using `using h1 1 1`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hR` using `h F χ hχ hχ1 hcond _ hM hI`. Use function extensionality and compare the values at `x`. Establish `hx` using `congrFun hR x`. Simplify using `only [GL2LocalData.piS, hc1, hm, Units.val_one, one_mul, indicator_mul_unit d0 d1 d2]`. Simplify `hx` using `[GL2LocalData.rWm]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem piks : Ad3.K.QuadraticBaseChangeGL3.Th.RWKS → Ad3.K.QuadraticBaseChangeGL3.Th.PIKS := by
   intro h F _ _ _ _ _ _ _ χ hχ hχ1 hcond c₁ hc k hk

@@ -25,7 +25,7 @@ abbrev withDim {S : Scheme.{0}} (Q : Out.PolAV S) (n : ℕ) (hd : SmoothOfRelati
   { Q with g := n, smoothDim := hd }
 
 /- English proof (translation)
-Unfold `IsVecOver at *`. Rewrite using `[← Category.assoc, h', Category.assoc, h, ← Category.assoc, ← PolFibre.dualMapR_comp]`. Conclude with `congrArg (· ≫ v.left) (spMap_comp_spMap _ _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vec_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {f : R →+* R'} {g : R' →+* R''}
     {A : Over (Sp R)} {A' : Over (Sp R')} {A'' : Over (Sp R'')} {φ : A'.left ⟶ A.left} {ψ : A''.left ⟶ A'.left}
@@ -51,9 +51,9 @@ variable {P : Out.PolAV (Sp (𝓞 K))} {P' : Out.PolAV (Sp (𝓞 K'))} {ξ : P'.
 local notation "F₁" => (GenFib.mk (withDim Q (Out.PolAV.g (GenFib.P₀ F)) hd) φ' fib v' basis : GenFib P')
 
 /- English proof (translation)
-Take `⟨ht, x, hx, hc⟩` from `hc`. Take `⟨x', hx', -⟩` from `existsUnique_isVecOver fib.2.1.1 u'`. Establish `h₁ : IsVecOver (j.comp (algebraMap (𝓞 K) K)) (ψ ≫ F.φ) u x'`. Rewrite using `[w, ← algebraMap_comp_mapRingHom]`. Conclude with `vec_comp hu hx'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂ : IsVecOver j ψ x x'` using `(PolFibre.vec_iff F.fib.2.1.1 hψ.1.w hx).2 h₁`. Establish `h₃ : IsLieComb (fun i => j (c i)) v' x'` using `Chart.comb_baseChange j hψ hc hv h₂`. Conclude with `⟨hu.isTangent hξ ht, x', hx', h₃⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCoord_over (hξ : IsGrpPullback P'.A P.A (spMap (RingOfIntegers.mapRingHom j)) ξ)
     (hψ : IsGrpPullback Q.A F.P₀.A (spMap j) ψ) (w : ψ ≫ F.φ = φ' ≫ ξ) (hv : ∀ i, IsVecOver j ψ (F.v i) (v' i))
@@ -69,7 +69,7 @@ theorem isCoord_over (hξ : IsGrpPullback P'.A P.A (spMap (RingOfIntegers.mapRin
   exact ⟨hu.isTangent hξ ht, x', hx', h₃⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `((GlobalTheory.T.integral_tangent_vector_coordinates K P F).2.2.2.2.1 c).1 hc`. Take `⟨u', hu', -⟩` from `existsUnique_isVecOver hξ.1 u`. Conclude with `Submodule.subset_span ⟨u', isCoord_over hξ hψ w hv hu hu'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem image_subset_lieLat (hξ : IsGrpPullback P'.A P.A (spMap (RingOfIntegers.mapRingHom j)) ξ)
     (hψ : IsGrpPullback Q.A F.P₀.A (spMap j) ψ) (w : ψ ≫ F.φ = φ' ≫ ξ) (hv : ∀ i, IsVecOver j ψ (F.v i) (v' i))
@@ -79,13 +79,13 @@ theorem image_subset_lieLat (hξ : IsGrpPullback P'.A P.A (spMap (RingOfIntegers
   exact Submodule.subset_span ⟨u', isCoord_over hξ hψ w hv hu hu'⟩
 
 /- English proof (translation)
-Establish `key : ∀ i, ∃ l : ℕ, r ^ l • (algebraMap R k (a i) • M i) ∈ N` using `fun i => by`. Take `⟨l, hl⟩` from `hM i`. Take `⟨m, b, hb⟩` from `IsLocalization.Away.surj r (a i)`. Use `⟨m + l, ?_⟩` and prove the remaining obligations. Establish `e : r ^ (m + l) • (algebraMap R k (a i) • M i) = b • (r ^ l • M i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb'` using `congrArg (algebraMap R k) hb`. Simplify using `only [map_mul, map_pow, ← IsScalarTower.algebraMap_apply] at hb'`. Rewrite using `[← algebraMap_smul k (r ^ (m + l)), ← algebraMap_smul k b, ← algebraMap_smul k (r ^ l), smul_smul, smul_smul, ← hb', map_pow, map_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `N.smul_mem _ hl`. Use `choose l hl using key`. Use `⟨∑ i, l i, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `N.sum_mem fun i _ => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_le' (Finset.single_le_sum (f := l) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))`. Rewrite using `[hm, pow_add, mul_smul]`. Conclude with `N.smul_mem _ (hl i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem {O R k : Type} [CommRing O] [CommRing R] [Field k] [Algebra O R] [Algebra R k] [Algebra O k]
     [IsScalarTower O R k] (r : O) [IsLocalization.Away r R] {n : ℕ} (N : Submodule O (Fin n → k))
@@ -113,27 +113,23 @@ theorem exists_pow_smul_mem {O R k : Type} [CommRing O] [CommRing R] [Field k] [
   exact N.smul_mem _ (hl i)
 
 /- English proof (translation)
-Use `le_antisymm (fun c' hc' => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Use `swap`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `image_subset_lieLat hξ.2.1 hψ w hv hc`. Take `⟨n, r, M, hr, hM, -, hloc⟩` from `GlobalTheory.T.lie_lattice_local_basis_description K P F`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : Ideal.span (Set.range fun i => RingOfIntegers.mapRingHom j (r i)) = ⊤`. Use `congrArg (Ideal.map (RingOfIntegers.mapRingHom j)) hr` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Then use the resulting hypothesis. Use `Submodule.mem_of_span_eq_top_of_smul_pow_mem _ _ hr' c' ?_` and prove the remaining obligations. Introduce and unpack `⟨_, i, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : RingOfIntegers.mapRingHom j (r i) ≠ 0` using `fun h => (hM i).1 (by`. Use `congrArg (algebraMap (𝓞 K') K') h` as an intermediate fact. Conclude with `RingOfIntegers.coe_injective (j.injective (this.trans (by simp))))`. Set `R` to `Localization.subalgebra.ofField K (Submonoid.powers (r i)) (powers_le_nonZeroDivisors_of_noZeroDivisors (hM i).1)`. Set `R'` to `Localization.subalgebra.ofField K' (Submonoid.powers (RingOfIntegers.mapRingHom j (r i))) (powers_le_nonZeroDivisors_of_noZeroDivisors h0)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `θ : R →+* R'` to `IsLocalization.Away.map R R' (RingOfIntegers.mapRingHom j) (r i)`. Establish `hθ : θ.comp (algebraMap (𝓞 K) R) = (algebraMap (𝓞 K') R').comp (RingOfIntegers.mapRingHom j)` using `IsLocalization.map_comp _`. Establish `e₁ : (algebraMap R K).comp (algebraMap (𝓞 K) R) = algebraMap (𝓞 K) K` using `(IsScalarTower.algebraMap_eq _ _ _).symm`. Establish `e₂ : (algebraMap R' K').comp (algebraMap (𝓞 K') R') = algebraMap (𝓞 K') K'` using `(IsScalarTower.algebraMap_eq _ _ _).symm`. Establish `hθ' : (algebraMap R' K').comp θ = j.comp (algebraMap R K)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `IsLocalization.ringHom_ext (Submonoid.powers (r i)) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, hθ, ← RingHom.comp_assoc, e₂, RingHom.comp_assoc, e₁]`. Both sides reduce to the same expression. Take `⟨G, κ, hκ⟩` from `exists_isPolFibre hB (algebraMap (𝓞 K) R) P`. Take `⟨G', κ', hκ'⟩` from `exists_isPolFibre hB (algebraMap (𝓞 K') R') P'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, hζ, hζκ⟩` from `PolFibre.cancel (g := algebraMap R K) hκ (by rw [e₁]; exact F.fib)`. Take `⟨ζ', hζ', hζκ'⟩` from `PolFibre.cancel (g := algebraMap R' K') hκ' (by rw [e₂]; exact fib)`. Take `⟨χ, hχ, hχκ⟩` from `PolFibre.cancel (g := θ) hκ (by rw [hθ]; exact PolFibre.comp hξ hκ')`. Establish `hsq : ψ ≫ ζ = ζ' ≫ χ`. Use `hκ.2.1.1.hom_ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, Category.assoc, hζκ, hχκ, w, ← hζκ', Category.assoc]`. Rewrite using `[Category.assoc, Category.assoc, hζ.2.1.1.w, hχ.2.1.1.w, ← Category.assoc, ← Category.assoc, hψ.1.w, hζ'.2.1.1.w, Category.assoc, Category.assoc, spMap_comp_spMap, spMap_comp_spMap, hθ']`. Take `⟨e, he, hx⟩` from `hloc i R G.A κ ζ (IsLocalization.map_units R (⟨r i, Submonoid.mem_powers _⟩ : Submonoid.powers (r i))) hκ.2.1 hζ.2.1 hζκ`. Use `choose x hx hxM using hx`. Use `haveI := G.isAb.comm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := G'.isAb.comm`. Use `haveI := G.smoothDim`. Take `⟨e', he', hee'⟩` from `exists_isLieBasis_baseChange R R' θ G.A G'.A χ hχ.2.1 (SmoothOfRelativeDimension.smooth G.g _) _ e he`. Use `choose x' hx' using fun k => (existsUnique_isVecOver hζ'.2.1.1 (e' k)).exists`. Establish `hxM' : ∀ k, IsLieComb ((M i).map j k) v' (x' k)` using `fun k => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Chart.comb_baseChange j hψ (hxM k) hv ?_` and prove the remaining obligations. Use `(PolFibre.vec_iff hζ.2.1.1 hψ.1.w (hx k)).2 ?_` and prove the remaining obligations. Rewrite using `[hsq, ← hθ']`. Conclude with `vec_comp (hee' k) (hx' k)`. Take `⟨a, ha⟩` from `(GlobalTheory.T.lieLattice_localization_modelLieAlgebra K' P' F₁ R' (Submonoid.powers (RingOfIntegers.mapRingHom j (r i))) G'.A κ' ζ' e' x' ((M i).map j) hκ'.2.1 hζ'.2.1 hζκ' he' fun k => ⟨hx' k, hxM' k⟩).2 c' hc'`.
-
-Establish `hin` using `(GlobalTheory.T.lieLattice_localization_modelLieAlgebra K P F R (Submonoid.powers (r i)) G.A κ ζ e x (M i) hκ.2.1 hζ.2.1 hζκ he fun k => ⟨hx k, hxM k⟩).1`. Rewrite using `[ha]`. Use `exists_pow_smul_mem (RingOfIntegers.mapRingHom j (r i)) _ _ (fun k => ?_) a` and prove the remaining obligations. Take `⟨_, ⟨l, rfl⟩, hl⟩` from `hin k`. Use `⟨l, Submodule.subset_span ⟨_, hl, funext fun t => ?_⟩⟩` and prove the remaining obligations.
-
-Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul, map_pow, Matrix.map_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lieLat_eq_span (hB : Out.PolBaseChangeSt) (hξ : IsPolFibre (RingOfIntegers.mapRingHom j) P P' ξ)
     (hψ : IsGrpPullback Q.A F.P₀.A (spMap j) ψ) (w : ψ ≫ F.φ = φ' ≫ ξ) (hv : ∀ i, IsVecOver j ψ (F.v i) (v' i)) :
@@ -200,17 +196,17 @@ theorem lieLat_eq_span (hB : Out.PolBaseChangeSt) (hξ : IsPolFibre (RingOfInteg
   rfl
 
 /- English proof (translation)
-Take `⟨r, hr, he⟩` from `GlobalTheory.T.exists_lieRepresentation_eigenLattices K P F O act`. Take `⟨r', hr', he'⟩` from `GlobalTheory.T.exists_lieRepresentation_eigenLattices K' P' F₁ O act'`. Establish `hL` using `lieLat_eq_span (fib := fib) (basis := basis) hB hξ hψ w hv`. Establish `key : ∀ a, ∀ c' ∈ (F₁).lieLat, r' a c' = ((LinearMap.toMatrix' (r a)).map j).mulVec c'` using `fun a c' hc' => by`. Rewrite `hc'` using `[hL]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `hc' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, rfl⟩` from `hx`. Take `⟨u, hu⟩` from `((GlobalTheory.T.integral_tangent_vector_coordinates K P F).2.2.2.2.1 c).1 hc`. Take `⟨u', hu', -⟩` from `existsUnique_isVecOver hξ.2.1.1 u`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h₁` using `hr' a _ _ (isCoord_over (fib := fib) (basis := basis) hξ.2.1 hψ w hv hu hu')`. Establish `h₂` using `isCoord_over (fib := fib) (basis := basis) hξ.2.1 hψ w hv (hr a _ _ hu) (u' := u' ≫ act'.act a) (by`. Unfold `IsVecOver at hu' ⊢`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hact, ← Category.assoc, hu', Category.assoc])`. Use `(((GlobalTheory.T.integral_tangent_vector_coordinates K' P' F₁).1 _ h₁.1).unique h₁ h₂).trans (funext fun t => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← LinearMap.toMatrix'_mulVec (r a) c]`. Conclude with `RingHom.map_mulVec j _ c t`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, Matrix.mulVec_add, hx, hy]`. Consider the case `smul s x _ hx => rw [← algebraMap_smul K' s x, map_smul, Matrix.mulVec_smul, hx]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hs : (F.eigLat act τ : Set (Fin F.P₀.g → K)) = {c | c ∈ F.lieLat ∧ ∀ a, (LinearMap.toMatrix' (r a)).mulVec c = algebraMap (𝓞 K) K (τ a) • c}`. Use extensionality with `c`. Simplify using `only [SetLike.mem_coe, Set.mem_setOf_eq, (he τ c).1, LinearMap.toMatrix'_mulVec, algebraMap_smul]`. Use extensionality with `c'`. Rewrite using `[hs, GlobalTheory.T.eigenLattice_numberField_baseChange K K' O j F.P₀.g F.lieLat _ _ c' (GlobalTheory.T.lieLattice_fg_and_span_eq_top_ringOfIntegers K P F).1, ← hL, (he' _ c').1]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `and_congr_right fun hc' => forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[key a c' hc', ← algebraMap_smul K']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eigLat_eq_span (hB : Out.PolBaseChangeSt) (hξ : IsPolFibre (RingOfIntegers.mapRingHom j) P P' ξ)
     (hψ : IsGrpPullback Q.A F.P₀.A (spMap j) ψ) (w : ψ ≫ F.φ = φ' ≫ ξ) (hv : ∀ i, IsVecOver j ψ (F.v i) (v' i))
@@ -249,7 +245,7 @@ theorem eigLat_eq_span (hB : Out.PolBaseChangeSt) (hξ : IsPolFibre (RingOfInteg
   rfl
 
 /- English proof (translation)
-Take `⟨A, κ, x, u, Hm, χ, W, h₁, h₂, h₃, h₄⟩` from `H (s.comp j)`. Take `⟨A', κ', x', u', Hm', χ', W', h₁', h₂', h₃', h₄'⟩` from `H' s`. Rewrite using `[h₄, h₄', LieMetric.hermForm_eq hU h₁ (PolFibre.comp hψ h₁') h₂ h₂' F.basis.1 h₃ fun i => ⟨vec_comp (hv i) (h₃' i).1, (h₃' i).2⟩]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_single_eq (hU : ThetaUnifAV) (hψ : IsPolFibre j F.P₀ (withDim Q F.P₀.g hd) ψ)
     (hv : ∀ i, IsVecOver j ψ (F.v i) (v' i)) {h : HermFam K (Fin F.P₀.g → K)} {h' : HermFam K' (Fin F.P₀.g → K')}
@@ -261,13 +257,11 @@ theorem form_single_eq (hU : ThetaUnifAV) (hψ : IsPolFibre j F.P₀ (withDim Q 
     fun i => ⟨vec_comp (hv i) (h₃' i).1, (h₃' i).2⟩]
 
 /- English proof (translation)
-Establish `hg : F'.P₀.g = F.P₀.g` using `F'.fib.1.trans (hξ.1.trans F.fib.1.symm)`. Establish `hd : SmoothOfRelativeDimension F.P₀.g F'.P₀.A.hom` using `hg ▸ F'.P₀.smoothDim`. Establish `fib : IsPolFibre (algebraMap (𝓞 K') K') P' (withDim F'.P₀ F.P₀.g hd) F'.φ` using `⟨hg.symm.trans F'.fib.1, F'.fib.2⟩`. Take `⟨ψ, hψ, w⟩` from `PolFibre.cancel (g := j) F.fib (PolFibre.comp hξ fib)`. Use `haveI := F.P₀.isAb.comm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := F'.P₀.isAb.comm`. Use `haveI := F.P₀.smoothDim`. Take `⟨v', basis, hv⟩` from `exists_isLieBasis_baseChange K K' j F.P₀.A F'.P₀.A ψ hψ.2.1 (SmoothOfRelativeDimension.smooth F.P₀.g _) _ F.v F.basis`. Set `F₂ : GenFib P'` to `⟨withDim F'.P₀ F.P₀.g hd, F'.φ, fib, v', basis⟩`. Take `⟨h₂, H₂⟩` from `(LieMetric.exists_unique_isHerm hU hL K' P' F₂).1`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d₁, d₂⟩` from `GlobalTheory.T.degree_lie_lattice_hermitian_invariant hU hL K' P' F' F₂ h' h₂ H' H₂`. Establish `hf` using `form_single_eq hU hψ hv H H₂`. Establish `hfg` using `(GlobalTheory.T.lieLattice_fg_and_span_eq_top_ringOfIntegers K P F).1`. Use `⟨?_, fun O _ act act' hact τ => ?_⟩` and prove the remaining obligations. Rewrite using `[d₁, lieLat_eq_span hL.polBaseChange hξ hψ.2.1 w hv]`.
-
-Conclude with `GlobalTheory.T.deg_lattice_numberField_extension_eq K K' j _ h h₂ _ hfg hf`. Rewrite using `[d₂, eigLat_eq_span hL.polBaseChange hξ hψ.2.1 w hv act act' hact τ]`. Conclude with `GlobalTheory.T.deg_lattice_numberField_extension_eq K K' j _ h h₂ _ (hfg.of_le (Submodule.span_mono fun _ ⟨u, hu, _⟩ => ⟨u, hu⟩)) hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_eq_of_isPolFibre (hU : ThetaUnifAV) (hL : Out.Laws) (hξ : IsPolFibre (RingOfIntegers.mapRingHom j) P P' ξ)
     (F : GenFib P) (F' : GenFib P') (h : HermFam K (Fin F.P₀.g → K)) (h' : HermFam K' (Fin F'.P₀.g → K'))
@@ -297,7 +291,7 @@ theorem deg_eq_of_isPolFibre (hU : ThetaUnifAV) (hL : Out.Laws) (hξ : IsPolFibr
       (hfg.of_le (Submodule.span_mono fun _ ⟨u, hu, _⟩ => ⟨u, hu⟩)) hf
 
 /- English proof (translation)
-Introduce `hU hL E _ _ _ H K K' _ _ _ _ j T T' m F F' h h' hh hh'`. Establish `hd : SmoothOfRelativeDimension T.g T'.t.G.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback m.cart.1 T.dim`. Establish `hξ : IsPolFibre (RingOfIntegers.mapRingHom j) T.pol T'.pol m.φ` using `⟨H1.dim_unique _ T'.dim hd (eSec T'.t.G (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (𝓞 K'))), m.cart, (PAT.exists_of_sabMap E H _ _ _ T T'.t m).2⟩`. Take `⟨h₁, h₂⟩` from `deg_eq_of_isPolFibre hU hL hξ F F' h h' hh hh'`. Conclude with `⟨h₁, h₂ _ T.t.act T'.t.act m.act⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem deg_lieLat_eigLat_baseChange : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] (j : K →+* K') (T : PAT H (Sp (𝓞 K))) (T' : PAT H (Sp (𝓞 K'))) (_ : SABMap T'.t T.t (spMap (RingOfIntegers.mapRingHom j))) (F : GenFib T.pol) (F' : GenFib T'.pol) (h : HermFam K (Fin F.P₀.g → K)) (h' : HermFam K' (Fin F'.P₀.g → K')), F.IsHerm h → F'.IsHerm h' → deg h' F'.lieLat = deg h F.lieLat ∧ ∀ τ : 𝓞 E →+* 𝓞 K, deg h' (F'.eigLat T'.t.act ((RingOfIntegers.mapRingHom j).comp τ)) = deg h (F.eigLat T.t.act τ) := by
   intro hU hL E _ _ _ H K K' _ _ _ _ j T T' m F F' h h' hh hh'

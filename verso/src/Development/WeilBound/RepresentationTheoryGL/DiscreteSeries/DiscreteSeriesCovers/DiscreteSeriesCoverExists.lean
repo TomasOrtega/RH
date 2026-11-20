@@ -14,22 +14,22 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CoefSmoothOnG
 namespace PositivityTheory.RgDs.B
 
 /- English proof (translation)
-The claim follows from `dsExists_of PositivityTheory.RgFd.explicit_function_square_integrable K.key_identity_holds Hilb.hilbert_space_realisation_holds`.
+A detailed English derivation is pending.
 -/
 theorem dsExists : GlobalTheory.Dec.DSExists := dsExists_of PositivityTheory.RgFd.explicit_function_square_integrable K.key_identity_holds Hilb.hilbert_space_realisation_holds
 
 /- English proof (translation)
-The claim follows from `upqExists_of dsExists`.
+A detailed English derivation is pending.
 -/
 theorem discreteSeriesUpqExists : GlobalTheory.Published.DiscreteSeriesUpqExists := upqExists_of dsExists
 
 /- English proof (translation)
-The claim follows from `exists_of dsExists`.
+A detailed English derivation is pending.
 -/
 theorem discreteSeriesExists : GlobalTheory.Published.DiscreteSeriesExists := exists_of dsExists
 
 /- English proof (translation)
-The claim follows from `coverExists_of dsExists`.
+A detailed English derivation is pending.
 -/
 theorem discreteSeriesCoverExists : GlobalTheory.Published.DiscreteSeriesCoverExists := coverExists_of dsExists
 

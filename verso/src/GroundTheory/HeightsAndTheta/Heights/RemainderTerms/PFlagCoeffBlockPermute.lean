@@ -18,9 +18,9 @@ def blockPermuteEquiv (f N : ℕ) (w : Fin f → Equiv.Perm (Fin N)) :
   right_inv p := by simp
 
 /- English proof (translation)
-Introduce `f N w P α`. Use `set E := blockPermuteEquiv f N w with hE`. Use `set β : Fin f × Fin N →₀ ℕ := Finsupp.equivFunOnFinite.symm fun p : Fin f × Fin N => α (p.1, w p.1 p.2) with hβ`. Establish `hmap : Finsupp.mapDomain E β = α`. Use extensionality with `q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, rfl⟩` from `E.surjective q`. Rewrite using `[Finsupp.mapDomain_apply E.injective]`. Simplify using `[hβ, hE, blockPermuteEquiv]`. Establish `hren : blockPermute f N w P = rename E P` using `rfl`. Rewrite using `[hren, ← hmap, coeff_rename_mapDomain E E.injective]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlagCoeffBlockPermute.proof : FlagCoeffBlockPermute.Statement := by
   intro f N w P α

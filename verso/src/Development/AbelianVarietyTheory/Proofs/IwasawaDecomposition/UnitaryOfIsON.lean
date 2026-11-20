@@ -13,15 +13,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formal
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `h1 : Formalism.HermitianLatticesTheory.majAt C.basis (stdFrame C.H) v x x = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin C.dim)) (stdFrame C.H) v (C.basis.equivFun x) (C.basis.equivFun x)`. Establish `h2 : ∀ z : C.Forms, Formalism.HermitianLatticesTheory.vecAt C.basis v z = Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin C.dim)) v (C.basis.equivFun z)`. Introduce `z`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, h2]`. Establish `hm : metOf (stdFrame C.H v) = C.H.map v.embedding` using `(frameOfSpec _ _ hH).2`. Establish `hI : x.1 = ∑ i, C.basis.equivFun x i • (C.basis i : C.Cl → C.V)`. Rewrite using `[← C.I_eq_sum]`. Simplify using `[CSD.I_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc : ∀ i j, v.embedding (C.H i j) = ∑ c, ((C.wt c : ℂ))⁻¹ * B (ψ ((C.basis i : C.Cl → C.V) c)) (ψ ((C.basis j : C.Cl → C.V) c))`. Introduce `i j`. Simplify using `only [CSD.H, Matrix.of_apply, CSD.csum, map_sum, map_mul, map_inv₀, map_natCast]`. Conclude with `Finset.sum_congr rfl fun c _ => congrArg _ (hs _ _ (C.basis_rat hb i c))`. Rewrite using `[h1, Formalism.L2.DIV.majAt_eq, hm, hI]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `C.basis.equivFun x = a`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.map_apply, hc, map_sum, LinearMap.sum_apply, Finset.sum_apply, Pi.smul_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, Finset.mul_sum, Finset.sum_mul, Pi.star_apply, starRingEnd_apply, RingHom.id_apply]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem majAt_classSum {K : Type} [Field K] [NumberField K] [StarRing K] (C : CSD K) (hb : C.HasRatBasis) (v : InfinitePlace K)
     (hH : (C.H.map v.embedding).PosDef) {W : Type} [AddCommGroup W] [Module ℂ W] (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ)
@@ -59,7 +59,7 @@ section Pol
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[fockF_eq_sum _ _ f.support (MvPolynomial.support_map_subset _ _), Formalism.REAL.fockF, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map, MvPolynomial.coeff_map, map_mul, map_mul, map_natCast]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fockF_conj {τ : Type} (f g : MvPolynomial τ ℂ) :
     Formalism.REAL.fockF (MvPolynomial.map (starRingEnd ℂ) f) (MvPolynomial.map (starRingEnd ℂ) g) =
@@ -70,7 +70,7 @@ theorem fockF_conj {τ : Type} (f g : MvPolynomial τ ℂ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[nfAll, nfAll, map_div₀, fockF_conj, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← fockF_conj, Formalism.L2.Col.map_extremal]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem nfAll_conj (lam : ι → DomWeight n) (p q : MvPolynomial (ι × Fin n × Fin n) ℂ) :
     nfAll lam (MvPolynomial.map (starRingEnd ℂ) p) (MvPolynomial.map (starRingEnd ℂ) q) = starRingEnd ℂ (nfAll lam p q) := by
@@ -80,9 +80,9 @@ theorem nfAll_conj (lam : ι → DomWeight n) (p q : MvPolynomial (ι × Fin n �
   rw [← fockF_conj, Formalism.L2.Col.map_extremal]
 
 /- English proof (translation)
-Establish `e : ∀ τ, (lam' τ).natW = (lam τ).natW` using `fun τ => by`. Use function extensionality and compare the values at `i`. Establish `hn : 0 < n` using `i.pos`. Simplify using `only [DomWeight.natW, DomWeight.detShift, dif_pos hn, h]`. Use `congr 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `p q`. Simplify using `only [nfAll, extremal, e]`.
+Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem nfAll_shift (lam lam' : ι → DomWeight n) (c : ℤ) (h : ∀ τ i, (lam' τ).w i = (lam τ).w i + c) :
     nfAll lam' = nfAll lam := by
@@ -96,7 +96,7 @@ theorem nfAll_shift (lam lam' : ι → DomWeight n) (c : ℤ) (h : ∀ τ i, (la
   simp only [nfAll, extremal, e]
 
 /- English proof (translation)
-Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fnOf_congr {G G' : ι → Matrix (Fin n) (Fin n) ℂ} (sh : ι → ℤ) (M : ι → Matrix (Fin n) (Fin n) ℂ)
     (P : MvPolynomial (ι × Fin n × Fin n) ℂ) (y : Frames G) (y' : Frames G') (h : y'.1 = y.1) :
@@ -104,7 +104,7 @@ theorem fnOf_congr {G G' : ι → Matrix (Fin n) (Fin n) ℂ} (sh : ι → ℤ) 
   simp only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, h]
 
 /- English proof (translation)
-Establish `h` using `frame_pos o ho τ (by rw [hG]; exact PosSemidef.one)`. Rewrite `h` using `[hG, Matrix.mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unitary_of_isON {G : ι → Matrix (Fin n) (Fin n) ℂ} (hG : ∀ τ, G τ = 1) (o : Frames G) (ho : o.IsON) (τ : ι) :
     (o.1 τ)ᴴ * o.1 τ = 1 := by
@@ -121,11 +121,11 @@ variable {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [Numbe
 omit [NumberField E] [StarRing E] [NumberField K] in
 
 /- English proof (translation)
-Establish `hc : ∀ m, F.1.coeff m ∈ cmMax K` using `fun m => by`. Establish `h` using `congrArg Subtype.val ((bVV K lam).sum_repr F)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, bVV_coe] at h`. Rewrite using `[← h, MvPolynomial.coeff_sum]`. Use `Subfield.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P, hP⟩` from `bVVfun_int K lam i`. Rewrite using `[MvPolynomial.coeff_smul, hP, MvPolynomial.coeff_map, smul_eq_mul]`. Conclude with `mul_mem (hF i) (intCast_mem _ _)`. Establish `h` using `pairVr_nfAll emb (1 : Matrix (Fin n) (Fin n) E) lam s (stdFrC (embAt s emb)) (fun τ => by simp [stdFrC, gramC]) F F' (fun m => hc m s)`. Establish `e : Formalism.GradedWeylDivisibility.blockAct ℂ (n` using `n) (stdFrC (n := n) (embAt s emb)).1 = AlgHom.id ℂ _ := blockAct_one`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, e, nfL_apply]`. Simplify using `[stdFrC]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_pairVr_rat (s : K →+* ℂ) (F F' : VV K lam) (hF : ∀ i, (bVV K lam).repr F i ∈ cmMax K) :
     s (pairVr emb lam (1 : Matrix (Fin n) (Fin n) E) F F') = nfL lam (MvPolynomial.map s F.1) (MvPolynomial.map s F'.1) := by
@@ -144,11 +144,11 @@ theorem map_pairVr_rat (s : K →+* ℂ) (F F' : VV K lam) (hF : ∀ i, (bVV K l
   simp [stdFrC]
 
 /- English proof (translation)
-Establish `h1` using `majAt_classSum (S.csd emb lam h) (LatGood.hasRatBasis S emb σ lam hF hS h) (InfinitePlace.mk s) (LatGood.step_gram_posDef S emb σ lam hF hS h _) (nfL lam) ((mapS _).domRestrict (VV K lam)) (fun F F' hr => map_pairVr_rat emb lam _ F F' hr) x`. Use `(congrArg Complex.re h1).trans ?_` and prove the remaining obligations. Establish `hi : inst = (S.csd emb lam h).finCl` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality. Rewrite using `[Complex.re_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `h2 : (S.csd emb lam h).wt c = Nat.card (S.Stab c)` using `(@Nat.card_eq_fintype_card _ (_)).symm`. Rewrite using `[h2, ← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.re_ofReal_mul, Complex.ofReal_re]`. Use `congr 1`. Use `show (nfAll lam (MvPolynomial.map (InfinitePlace.mk s).embedding (x.1 c).1) (MvPolynomial.map (InfinitePlace.mk s).embedding (x.1 c).1)).re = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `InfinitePlace.embedding_mk_eq s with e | e` into its components or cases. Rewrite using `[e]`. Establish `e' : ComplexEmbedding.conjugate s = (starRingEnd ℂ).comp s` using `RingHom.ext fun _ => rfl`. Rewrite using `[e, e', ← MvPolynomial.map_map, nfAll_conj, Complex.conj_re]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem majAt_step (S : GStep E K n) (hF : FOk emb σ) (hS : S.Ok) (h : (S.fam emb lam).Ok) [inst : Fintype S.Cl] (s : K →+* ℂ)
     (x : (S.hlat emb lam h).V) :
@@ -174,11 +174,11 @@ theorem majAt_step (S : GStep E K n) (hF : FOk emb σ) (hS : S.Ok) (h : (S.fam e
     rw [e, e', ← MvPolynomial.map_map, nfAll_conj, Complex.conj_re]
 
 /- English proof (translation)
-Substitute `hsh` using the available equality. Rewrite using `[majAt_step emb σ lam S hF hS h s x]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `e : (x.1 c).1 = Pc c`. Use `evFr_injective (Gr emb σ n) (shiftOf lam) σ (fr0 emb σ n) (funext fun z => ?_)` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hP c z).trans (fnOf_congr _ _ _ z (eY z) (hY z))`. Establish `hd : ∏ τ, ‖(o.1 τ).det‖ ^ (2 * shiftOf lam τ) = 1` using `Finset.prod_eq_one fun τ _ => by`. Establish `h1 : ‖(o.1 τ).det‖ = 1` using `norm_deFr o ho τ (by rw [hG']; simp)`. Rewrite using `[h1, _root_.one_zpow]`. Establish `hu` using `nfAll_blockAct lam' o.1 (fun τ => mul_eq_one_comm.mp (unitary_of_isON hG' o ho τ)) (MvPolynomial.map s (Pc c)) (MvPolynomial.map s (Pc c))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, mul_one, e, hl, ← hu]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem norm_step (S : GStep E K n) (hF : FOk emb σ) (hS : S.Ok) (h : (S.fam emb lam).Ok) [Fintype S.Cl]
     {lam' : ι → DomWeight n} (hl : nfAll lam = nfAll lam') {sh : ι → ℤ} (hsh : sh = shiftOf lam)
@@ -206,7 +206,7 @@ theorem norm_step (S : GStep E K n) (hF : FOk emb σ) (hS : S.Ok) (h : (S.fam em
 omit [NumberField E] [StarRing E] [NumberField K] [StarRing K] in
 
 /- English proof (translation)
-Substitute `hsh` using the available equality. Establish `hG0 : ∀ τ, Gr emb σ n τ = 1` using `fun τ => by simp [gramC]`. Simplify using `only [fun P z => fnOf_congr (shiftOf lam) (fun τ => (o.1 τ)⁻¹) P z (eY z) (hY z)]`. Rewrite using `[← hl]`. Conclude with `ipFr_fnOf (Gr emb σ n) lam (fr0 emb σ n) ⟨o.1, o.2⟩ (fun τ => by simp [fr0, stdFrC, gramC]) (fun τ => by rw [hG0, Matrix.mul_one]; exact unitary_of_isON hG o ho τ) P Q`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipVal_step {lam' : ι → DomWeight n} (hl : nfAll lam = nfAll lam') {sh : ι → ℤ} (hsh : sh = shiftOf lam)
     {G : ι → Matrix (Fin n) (Fin n) ℂ} (hG : ∀ τ, G τ = 1) (eY : Fr emb σ n → Frames G) (hY : ∀ y, (eY y).1 = y.1)
@@ -223,9 +223,9 @@ theorem ipVal_step {lam' : ι → DomWeight n} (hl : nfAll lam = nfAll lam') {sh
 end Step
 
 /- English proof (translation)
-Use `congrArg shiftOf (funext fun τ => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `R.t_odd`. Establish `e1 : j * (R.t + 1) / 2 = j * (a + 1)`. Rewrite using `[ha, show j * (2 * a + 1 + 1) = 2 * (j * (a + 1)) by ring]; omega`. Establish `e2 : (R.t + 1) / 2 = a + 1` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Formalism.L2.Forms.shW, GlobalTheory.Mem.Col2.lamT, GlobalTheory.Mem.Col2.shW, e1, e2]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem shiftOf_lamT {R : Ranks} {ι : Type} [Fintype ι] (hc : ι → HCParam R) (j : ℕ) :
     shiftOf (fun τ => Formalism.L2.Forms.shW (Examples₂.lamOf (hc τ) j) ((j * (R.t + 1) / 2 : ℕ) : ℤ)) =
@@ -239,7 +239,7 @@ theorem shiftOf_lamT {R : Ranks} {ι : Type} [Fintype ι] (hc : ι → HCParam R
   congr 1
 
 /- English proof (translation)
-The claim follows from `nfAll_shift _ _ _ fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem nfAll_lamT {R : Ranks} {ι : Type} [Fintype ι] (hc : ι → HCParam R) (j : ℕ) :
     nfAll (GlobalTheory.Mem.Col2.lamT hc j) = nfAll fun τ => Examples₂.lamOf (hc τ) j :=
@@ -253,9 +253,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hp l Z u a i hi eY hY`. Establish `hg : gramN (I.rec7 l Z) i hi = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hp l Z).2.2.2 i hi).1`. Establish `hG : ∀ (e : (I.rec7 l Z).what₂.Tau → (I.rec7 l Z).host.E →+* ℂ) τ, gramC (gramN (I.rec7 l Z) i hi) e τ = 1` using `fun e τ => by`. Rewrite using `[hg, gramC_one]`. Use `⟨fun c o ho P _ Q _ => ?_, fun s x Pc hP o ho => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `MetricTie.ipVal_step B.fields.emb B.embLL (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) (MetricTie.nfAll_lamT _ _) (MetricTie.shiftOf_lamT (B.hcW u) i) (hG _) eY hY o ho P Q`. Conclude with `@MetricTie.norm_step _ _ _ _ _ _ _ _ _ _ _ B.fields.emb B.embLL (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) (I.stp u a i) (base_fOk B) ((l.ch u a).step i) ((l.fmL u a).fam i) ((I.chIn u a).clFin (l.ch u a) i) _ (MetricTie.nfAll_lamT _ _) _ (MetricTie.shiftOf_lamT (B.hcW u) i) _ _ (h …`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Col2.MetricTie.ipV_norm_tie : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (eY : (I.chain l u a).Y i ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) i hi), I.IdY l Z u a i hi eY → IpVTieG (D := (I.rec7 l Z)) (I.fm l u a) eY ∧ NormTieG (D := (I.rec7 l Z)) (I.fm l u a) eY := by
   intro B X I hI hp l Z u a i hi eY hY

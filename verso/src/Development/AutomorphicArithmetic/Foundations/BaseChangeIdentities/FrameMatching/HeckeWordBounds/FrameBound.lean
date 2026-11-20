@@ -28,9 +28,9 @@ namespace UpperTheory.BaseChangeIdentities.FrameWordIdentity
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.B3 PositivityTheory.Rg.BcB.F.BlockFiniteConvolution
 
 /- English proof (translation)
-Establish `l1` using `frameWord_length_eq_one_of_hyp hW`. Establish `po` using `prodok_pf tmul_pf locOk₀ l1`. Establish `pw` using `psiword_pf (psiGen_of_algebras fmAlg' rtAlg' blkLevel) (psilet_pf fmAlg' locOk₀ frfacts_pf) l1 locOk₀ MatchAll.matchLMId frfacts_pf`. Establish `tw` using `twok_pf blkWord₀`. Establish `aw` using `adelWord_of_parts adelRep' finConv' pw po locOk₀ frfacts_pf tw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sc` using `archsc_pf blkWord₀ tw (archlet_pf blkOp₀ FBL.hermInf_holds)`. Conclude with `wordId_of (testword_pf pTTest₀ hM pw po usph_pf tw frfacts_pf locOk₀) (traceword_pf U.unitary_words_holds hM (chainsc_pf FBL.ellHom_holds) FBL.ellHom_holds aw sc usph_pf (uok_pf U.unitary_adjoint_holds huhecke_pf) frfacts_pf)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wordId (hW : LocWord) (hM : LocMatch) : WordId := by
   have l1 := frameWord_length_eq_one_of_hyp hW
@@ -45,7 +45,7 @@ theorem wordId (hW : LocWord) (hM : LocMatch) : WordId := by
       (uok_pf U.unitary_adjoint_holds huhecke_pf) frfacts_pf)
 
 /- English proof (translation)
-The claim follows from `frameBound_of (wordId locWord (locMatch locWord MatchAll.matchLMB2₀ MatchAll.matchLMWordS₀ MatchAll.matchLMUnit₀))`.
+A detailed English derivation is pending.
 -/
 theorem frameBound : FrameBound :=
   frameBound_of (wordId locWord (locMatch locWord MatchAll.matchLMB2₀ MatchAll.matchLMWordS₀ MatchAll.matchLMUnit₀))

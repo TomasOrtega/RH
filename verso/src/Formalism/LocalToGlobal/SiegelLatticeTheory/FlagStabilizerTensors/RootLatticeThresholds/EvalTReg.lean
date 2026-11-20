@@ -19,9 +19,9 @@ variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [Measura
   {Γ : Subgroup G} [Countable Γ] {D : Set G}
 
 /- English proof (translation)
-Establish `hmap` using `rr_map h g`. Establish `h3 : ∀ᵐ x ∂(μ.restrict D), (hm.toLp f0 : G → ℂ) (rr_rep (Γ : Set G) D (x * g)) = f0 (rr_rep (Γ : Set G) D (x * g))`. Use `ae_of_ae_map (p := fun y => (hm.toLp f0 : G → ℂ) y = f0 y) hmap.1 ?_` and prove the remaining obligations. Rewrite using `[hmap.2]`. Conclude with `hm.coeFn_toLp`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hR g (hm.toLp f0), h3] with x a1 a2`. Rewrite using `[a1, a2]`. Take `⟨γ, hγ, e1, -⟩` from `rr_rep_spec h (x * g)`. Rewrite using `[e1, hinv γ hγ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reg_toLp (h : rr_FD μ Γ D) {R : G → (Lp ℂ 2 (μ.restrict D) →L[ℂ] Lp ℂ 2 (μ.restrict D))}
     (hR : rr_IsReg μ Γ D R) (f0 : G → ℂ) (hinv : ∀ γ ∈ Γ, ∀ y, f0 (γ * y) = f0 y)
@@ -47,9 +47,9 @@ open Formalism.BasicNotions Formalism.MainNotions.LeviCoordinates Formalism.L2.S
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Use `X.B.sf` as an intermediate fact. Use `X.B.haar` as an intermediate fact. Use `gf_secondCountable X.B.I` as an intermediate fact. Use `muf_right X` as an intermediate fact. Use `rr_muA_sigmaFinite X.B.I X.B.μf` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `rr_muA_left X.B.I X.B.μf` as an intermediate fact. Use `rr_muA_right X.B.I X.B.μf` as an intermediate fact. Conclude with `reg_toLp (rr_FD_of X.B.I X.B.μf X.B.fund X.B.fund_spec) (rr_IsReg_of X.B.I X.B.μf X.B.fund X.B.R X.B.R_spec) f0 hinv hm y`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem reg_toLp_X (f0 : X.B.I.GA → ℂ) (hinv : ∀ γ ∈ X.B.I.GFset, ∀ y, f0 (γ * y) = f0 y)
     (hm : MemLp f0 2 (muX X)) (y : X.B.I.GA) :

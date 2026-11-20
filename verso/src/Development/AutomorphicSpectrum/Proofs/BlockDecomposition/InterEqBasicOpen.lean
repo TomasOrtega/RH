@@ -22,7 +22,7 @@ section Forms
 variable {K : Type} [CommRing K] {A B : Type} [CommRing A] [CommRing B] [Algebra K A] [Algebra K B]
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.of_algHom (AlgHom.id K A) KaehlerDifferential.map K K A A v = v := by have hv : v ∈ Submodule.span A (Set.range (KaehlerDifferential.D K A)) := by rw [KaehlerDifferential.span_range_derivation] exact Submodule.mem_top induction hv using Submodule.span_induction with …`.
+A detailed English derivation is pending.
 -/
 theorem map_id_apply (v : Ω[A⁄K]) :
     letI : Algebra A A := (AlgHom.id K A).toRingHom.toAlgebra
@@ -42,11 +42,11 @@ theorem map_id_apply (v : Ω[A⁄K]) :
     exact ((KaehlerDifferential.map K K A A).map_smul c x).trans (congrArg (c • ·) hx)
 
 /- English proof (translation)
-Establish `hω : (ω : ⋀[A]^a Ω[A⁄K]) ∈ Submodule.span A (Set.range (exteriorPower.ιMulti A a))`. Rewrite using `[exteriorPower.ιMulti_span]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hω using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `hx`. Rewrite using `[GlobalTheory.CompanionTheory.SurjectionOntoH4.omMap_ιMulti]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `map_id_apply (g k)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul c x _ hx => rw [GlobalTheory.CompanionTheory.SurjectionOntoH4.omMap_smul, hx, AlgHom.id_apply]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem omMap_id (a : ℕ) (ω : Om K A a) : omMap (AlgHom.id K A) a ω = ω := by
   have hω : (ω : ⋀[A]^a Ω[A⁄K]) ∈ Submodule.span A (Set.range (exteriorPower.ιMulti A a)) := by
@@ -64,14 +64,14 @@ theorem omMap_id (a : ℕ) (ω : Om K A a) : omMap (AlgHom.id K A) a ω = ω := 
   | smul c x _ hx => rw [GlobalTheory.CompanionTheory.SurjectionOntoH4.omMap_smul, hx, AlgHom.id_apply]
 
 /- English proof (translation)
-Rewrite using `[← h]`. Conclude with `Ideal.mem_map_of_mem β hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_map_eq (β : A ≃ₐ[K] B) {I : Ideal A} {J : Ideal B} (h : I.map β = J) (x : A) (hx : x ∈ I) : β x ∈ J := by
   rw [← h]
   exact Ideal.mem_map_of_mem β hx
 
 /- English proof (translation)
-Rewrite `hx` using `[← h]`. Take `⟨z, hz, rfl⟩` from `(Ideal.mem_map_iff_of_surjective β β.surjective).1 hx`. Rewrite using `[AlgEquiv.symm_apply_apply]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem symm_mem_of_map_eq (β : A ≃ₐ[K] B) {I : Ideal A} {J : Ideal B} (h : I.map β = J) (x : B) (hx : x ∈ J) : β.symm x ∈ I := by
   rw [← h] at hx
@@ -98,9 +98,9 @@ theorem relEquiv_coe (β : A ≃ₐ[K] B) {I : Ideal A} {J : Ideal B} (h : I.map
 end Forms
 
 /- English proof (translation)
-Set `P : PM.{0} K (Fin d)` to `{ M := fun S => relOm K (C.I S) a res := fun {S T} h => GlobalTheory.CompanionTheory.SurjectionOntoH4.relMap (C.res h) (GlobalTheory.CompanionTheory.SurjectionOntoH4.res_mem_I C h) a res_id := fun S h y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `omMap (C.res h) a y.1 = y.1`. Rewrite using `[show C.res h = AlgHom.id K (C.R S) from AlgHom.ext fun z => C.res_id S h z, omMap_id]`. Use `res_comp := fun {S T U} h h' y => by`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `omMap (C.res h') a (omMap (C.res h) a y.1) = omMap (C.res _) a y.1`. Rewrite using `[GlobalTheory.CompanionTheory.SurjectionOntoH4.omMap_comp, show (C.res h').comp (C.res h) = C.res (h.trans h') from AlgHom.ext fun z => C.res_comp h h' z] }`. Establish `hc : ∀ (S T : Finset (Fin d)) (h : S ⊆ T) (y : P.M S), ((LinearEquiv.refl K (P.M T) (P.res h y) : relOm K (C.I T) a) : Om K (C.R T) a) = omMap (C.res h) a ((LinearEquiv.refl K (P.M S) y : relOm K (C.I S) a) : Om K (C.R S) a)` using `fun S T h y => rfl`. Conclude with `⟨P, fun S => LinearEquiv.refl K _, hc, hH K A n d hd C a P (fun S => LinearEquiv.refl K _) (fun h y => hc _ _ h y)⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rel_pm (hH : ChartFormsCechExact) (K : Type) [Field K] [CharZero K] (A : Type) [CommRing A] [Algebra K A] (n d : ℕ)
     (hd : 0 < d) (C : ChartRings K A n d) (a : ℕ) :
@@ -128,15 +128,15 @@ theorem rel_pm (hH : ChartFormsCechExact) (K : Type) [Field K] [CharZero K] (A :
     hH K A n d hd C a P (fun S => LinearEquiv.refl K _) (fun h y => hc _ _ h y)⟩
 
 /- English proof (translation)
-Take `⟨hsub, hall⟩` from `hR K W Z q i hQ V d d' c c' a`. Take `⟨hinj, hrange⟩` from `hall e he (incl (G q a) (inU q V) hQ) (fun n x => rfl)`. Use `⟨hsub, hinj, ?_⟩` and prove the remaining obligations. Set `eE : Om K (Sec q V) a ≃ₗ[K] HV q V a a` to `LinearEquiv.ofBijective e hb`. Set `ι` to `(incl (G q a) (inU q V) hQ).mapH a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hmem : ∀ x, eE.symm (ι x) ∈ relOm K (show Ideal (Sec q V) from RingHom.ker (i.app V).hom) a` using `fun x => (hrange (eE.symm (ι x))).1 ⟨x, (eE.apply_symm_apply (ι x)).symm⟩`. Set `F : (RC (G q a) (inU q V) hQ).H a →ₗ[K] relOm K (show Ideal (Sec q V) from RingHom.ker (i.app V).hom) a` to `LinearMap.codRestrict ((relOm K (show Ideal (Sec q V) from RingHom.ker (i.app V).hom) a).restrictScalars K) (eE.symm.toLinearMap ∘ₗ ι) hmem`. Establish `hF : ∀ x, ((F x : relOm K (show Ideal (Sec q V) from RingHom.ker (i.app V).hom) a) : Om K (Sec q V) a) = eE.symm (ι x)` using `fun x => rfl`. Establish `hFinj : Function.Injective F`. Introduce `x y hxy`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : eE.symm (ι x) = eE.symm (ι y)` using `by rw [← hF, ← hF, hxy]`. Conclude with `hinj (eE.symm.injective h1)`. Establish `hFsurj : Function.Surjective F`. Introduce `ω`. Take `⟨x, hx⟩` from `(hrange ω.1).2 ω.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hF, hx]`. Conclude with `eE.symm_apply_apply ω.1`. Use `⟨(LinearEquiv.ofBijective F ⟨hFinj, hFsurj⟩).symm, fun ω => ?_⟩` and prove the remaining obligations. Establish `h1` using `(LinearEquiv.ofBijective F ⟨hFinj, hFsurj⟩).apply_symm_apply ω`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : eE.symm (ι ((LinearEquiv.ofBijective F ⟨hFinj, hFsurj⟩).symm ω)) = ω`. Rewrite using `[← hF]`. Conclude with `congrArg Subtype.val h1`. Conclude with `(eE.apply_symm_apply _).symm.trans (congrArg eE h2)`.
+A detailed English derivation is pending.
 -/
 theorem rel_iso (hR : AffRel) (K : Type) [Field K] [CharZero K] (W Z : Scheme.{0}) (q : Z ⟶ Spec (CommRingCat.of K)) (i : W ⟶ Z)
     [IsClosedImmersion i] (hQ : Cosieve (On q i)) (V : Z.Opens) (d d' : ℕ) (c : Nonempty (Coord q V d))
@@ -183,7 +183,7 @@ def castH {U₀ U₁ : ObjectProperty C} (e : U₀ = U₁) (n : ℕ) : (RC F U�
   subst e; exact LinearEquiv.refl R _
 
 /- English proof (translation)
-Substitute `e` using the available equality. Substitute `e'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_res {U₀ U₁ U₀' U₁' : ObjectProperty C} (e : U₀ = U₁) (e' : U₀' = U₁') (h : U₀' ≤ U₀) (h' : U₁' ≤ U₁) (n : ℕ)
     (x : (RC F U₀ hQ).H n) :
@@ -193,7 +193,7 @@ theorem cast_res {U₀ U₁ U₀' U₁' : ObjectProperty C} (e : U₀ = U₁) (e
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_res' {U₀ U₁ U : ObjectProperty C} (e : U₀ = U₁) (h : U₀ ≤ U) (h' : U₁ ≤ U) (n : ℕ)
     (x : (RC F U hQ).H n) :
@@ -202,7 +202,7 @@ theorem cast_res' {U₀ U₁ U : ObjectProperty C} (e : U₀ = U₁) (h : U₀ �
   rfl
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `_ z => rfl`.
+Proceed by induction. Treat this case separately.
 -/
 theorem res_res {U₀ U₁ U₂ : ObjectProperty C} (h : U₁ ≤ U₀) (h' : U₂ ≤ U₁) (h'' : U₂ ≤ U₀) (n : ℕ) (x : (RC F U₀ hQ).H n) :
     (RC.res F hQ h').mapH n ((RC.res F hQ h).mapH n x) = (RC.res F hQ h'').mapH n x := by
@@ -210,7 +210,7 @@ theorem res_res {U₀ U₁ U₂ : ObjectProperty C} (h : U₁ ≤ U₀) (h' : U�
   | _ z => rfl
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `_ z => rfl`.
+Proceed by induction. Treat this case separately.
 -/
 theorem comp_mapH {X Y Z : Cx.{1} R} (f : Cx.Hom X Y (RingHom.id R)) (g : Cx.Hom Y Z (RingHom.id R)) (n : ℕ) (x : X.H n) :
     (f.comp g).mapH n x = g.mapH n (f.mapH n x) := by
@@ -218,7 +218,7 @@ theorem comp_mapH {X Y Z : Cx.{1} R} (f : Cx.Hom X Y (RingHom.id R)) (g : Cx.Hom
   | _ z => rfl
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `_ z => rfl`.
+Proceed by induction. Treat this case separately.
 -/
 theorem incl_res {U₀ U₁ : ObjectProperty C} (h : U₁ ≤ U₀) (n : ℕ) (x : (RC F U₀ hQ).H n) :
     (incl F U₁ hQ).mapH n ((RC.res F hQ h).mapH n x) = (resU F h).pull n ((incl F U₀ hQ).mapH n x) := by
@@ -231,20 +231,20 @@ section Geo
 variable {K : Type} [Field K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {d : ℕ} {V : Z.Opens}
 
 /- English proof (translation)
-Conclude with `Finset.inf_le hk`.
+A detailed English derivation is pending.
 -/
 theorem inf_le_C (c : BChart q i π d V) {S : Finset (Fin d)} {k : Fin d} (hk : k ∈ S) : S.inf c.C ≤ c.C k := by
   exact Finset.inf_le hk
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hS`. Conclude with `(Finset.inf_le hk).trans (c.C_le k)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inf_le_pre (c : BChart q i π d V) {S : Finset (Fin d)} (hS : S.Nonempty) : S.inf c.C ≤ π ⁻¹ᵁ V := by
   obtain ⟨k, hk⟩ := hS
   exact (Finset.inf_le hk).trans (c.C_le k)
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.inf_empty, inf_top_eq, Finset.prod_empty, Scheme.basicOpen_of_isUnit _ isUnit_one]`. Consider the case `insert j T hj ih`. Rewrite using `[Finset.inf_insert, Finset.prod_insert hj, Scheme.basicOpen_mul, ← ih, ← c.inter k j, inf_inf_distrib_left]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem inter_eq_basicOpen (c : BChart q i π d V) (k : Fin d) (T : Finset (Fin d)) :
     c.C k ⊓ T.inf c.C = Y.basicOpen (∏ j ∈ T, c.u k j) := by
@@ -257,14 +257,14 @@ theorem inter_eq_basicOpen (c : BChart q i π d V) (k : Fin d) (T : Finset (Fin 
       inf_inf_distrib_left]
 
 /- English proof (translation)
-Rewrite using `[← inter_eq_basicOpen c k S, inf_eq_right.2 (Finset.inf_le hk)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inf_eq_basicOpen (c : BChart q i π d V) {S : Finset (Fin d)} {k : Fin d} (hk : k ∈ S) :
     S.inf c.C = Y.basicOpen (∏ j ∈ S, c.u k j) := by
   rw [← inter_eq_basicOpen c k S, inf_eq_right.2 (Finset.inf_le hk)]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hS`. Rewrite using `[inf_eq_basicOpen c hk]`. Conclude with `(c.C_aff k).basicOpen _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_affine (c : BChart q i π d V) {S : Finset (Fin d)} (hS : S.Nonempty) : IsAffineOpen (S.inf c.C) := by
   obtain ⟨k, hk⟩ := hS
@@ -274,17 +274,15 @@ end Geo
 
 section Main
 /- English proof (translation)
-Use `⟨fun S hS => ?_, ?_⟩` and prove the remaining obligations. Establish `hS'` using `hS`. Take `⟨k, hk⟩` from `hS'`. Establish `hI : C.I S = Ideal.span {C.res (Finset.empty_subset S) (C.base.symm (C.t k))}`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `ChartRings.I`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, -, rfl⟩`. Rewrite using `[SetLike.mem_coe, C.t_eq S k hk j]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (Set.mem_singleton _))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Unfold `ChartRings.I`. Conclude with `Ideal.subset_span ⟨k, Or.inr hk, rfl⟩`. Rewrite using `[hI, Ideal.map_span, Set.image_singleton, hb S hS (C.t k), ht k]`. Conclude with `((hCL K W Z Y q i π d V c).2.2.2 k (S.inf c.C) (Finset.inf_le hk) (inf_affine c hS)).2.2.1.symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (C.I ∅).map C.base = Ideal.span (Set.range c.t)`. Unfold `ChartRings.I`. Rewrite using `[Ideal.map_span]`. Use `congr 1`. Use extensionality with `y`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨k, -, rfl⟩, rfl⟩`. Conclude with `⟨k, by rw [C.res_id, AlgEquiv.apply_symm_apply, ht]⟩`. Introduce and unpack `⟨k, rfl⟩`. Conclude with `⟨_, ⟨k, Or.inl rfl, rfl⟩, by rw [C.res_id, AlgEquiv.apply_symm_apply, ht]⟩`.
-
-Rewrite using `[h2]`. Conclude with `c.ker.symm`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_ideal (hCL : ChartLaws) (K : Type) [Field K] (W Z Y : Scheme.{0}) (q : Z ⟶ Spec (CommRingCat.of K)) (i : W ⟶ Z)
     [IsClosedImmersion i] (π : Y ⟶ Z) (d : ℕ) (V : Z.Opens) (c : BChart q i π d V) (C : ChartRings K (Sec q V) c.n d)
@@ -325,7 +323,7 @@ theorem chart_ideal (hCL : ChartLaws) (K : Type) [Field K] (W Z Y : Scheme.{0}) 
     exact c.ker.symm
 
 /- English proof (translation)
-Take `⟨-, e, he, hb⟩` from `hA K Z q V d c a`. Take `⟨hsub, hinj, E0, hE0⟩` from `rel_iso hR K W Z q i hQ V d d' c c' a e he hb`. Use `⟨e, he, hsub, hinj, eP.trans ((relEquiv β hI a).trans E0), fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, hE0, relEquiv_coe]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_iso (hA : AffOm) (hR : AffRel) (K : Type) [Field K] [CharZero K] (W Z : Scheme.{0}) (q : Z ⟶ Spec (CommRingCat.of K))
     (i : W ⟶ Z) [IsClosedImmersion i] (hQ : Cosieve (On q i)) (V : Z.Opens) (d d' : ℕ) (c : Nonempty (Coord q V d))
@@ -342,7 +340,7 @@ theorem loc_iso (hA : AffOm) (hR : AffRel) (K : Type) [Field K] [CharZero K] (W 
   rw [LinearEquiv.trans_apply, LinearEquiv.trans_apply, hE0, relEquiv_coe]
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `_ z => rfl`.
+Proceed by induction. Treat this case separately.
 -/
 theorem incl_pull {K : Type} [Field K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z}
     (a : ℕ) (hQ : Cosieve (On q i)) (hQ' : Cosieve (On (π ≫ q) (pullback.snd i π))) (V : Z.Opens)

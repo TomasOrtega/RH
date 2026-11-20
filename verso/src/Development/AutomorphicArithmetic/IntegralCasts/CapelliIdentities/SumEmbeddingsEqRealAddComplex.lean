@@ -5,9 +5,9 @@ namespace UpperTheory.Reformulated.B.DYhb7
 open NumberField NumberField.InfinitePlace Finset
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℝ A`. Set `B` to `Pi.basis (fun _ : ι => b)`. Rewrite using `[Algebra.trace_eq_matrix_trace B]`. Repeatedly rewrite using `[Algebra.trace_eq_matrix_trace b, Matrix.trace, Matrix.diag_apply, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Algebra.leftMulMatrix_eq_repr_mul]`. Simplify using `[B, Pi.basis_apply, Pi.basis_repr, Pi.mul_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma algebra_trace_pi_eq_sum_trace {ι A : Type*} [Fintype ι] [CommRing A] [Algebra ℝ A]
     [Module.Free ℝ A] [Module.Finite ℝ A] (x : ι → A) :
@@ -24,9 +24,9 @@ private lemma algebra_trace_pi_eq_sum_trace {ι A : Type*} [Fintype ι] [CommRin
 
 open scoped Classical in
 /- English proof (translation)
-Use extensionality with `φ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Use `conv_lhs => rw [← mk_embedding w, mk_eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Conclude with `Or.inl h`. Conclude with `Or.inr (by rw [← h]; simp [ComplexEmbedding.conjugate])`. Introduce and unpack `(h | h)`. Conclude with `Or.inl h`. Conclude with `Or.inr (by rw [h]; simp [ComplexEmbedding.conjugate])`.
+Prove the second alternative. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 private lemma fiber_embeddings_eq_pair {F : Type} [Field F] [NumberField F] (w : InfinitePlace F) :
     ({φ | mk φ = w} : Finset (F →+* ℂ)) = {w.embedding, ComplexEmbedding.conjugate w.embedding} := by
@@ -44,11 +44,11 @@ private lemma fiber_embeddings_eq_pair {F : Type} [Field F] [NumberField F] (w :
 
 open scoped Classical in
 /- English proof (translation)
-Rewrite using `[← Finset.univ.sum_fiberwise (fun φ : F →+* ℂ => mk φ), sum_eq_sum_add_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[fiber_embeddings_eq_pair, conjugate_embedding_eq_of_isReal w.2]`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[fiber_embeddings_eq_pair, Finset.sum_pair]`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Use `push_cast`. Rewrite using `[Complex.add_conj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Introduce `h`. Conclude with `(isComplex_iff.mp w.2) (ComplexEmbedding.isReal_iff.mpr h.symm)`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma sum_embeddings_eq_real_add_complex {F : Type} [Field F] [NumberField F] (y : F) :
     ∑ φ : F →+* ℂ, φ y =
@@ -73,9 +73,9 @@ private lemma sum_embeddings_eq_real_add_complex {F : Type} [Field F] [NumberFie
 end UpperTheory.Reformulated.B.DYhb7
 
 /- English proof (translation)
-Introduce `F _ _ y`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Establish `h1 : ((Algebra.trace ℚ F y : ℚ) : ℂ) = ∑ φ : F →+* ℂ, φ y`. Use `_root_.trace_eq_sum_embeddings (K := ℚ) (L := F) ℂ (x := y)` as an intermediate fact. Rewrite `this` using `[eq_ratCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(Fintype.sum_equiv (RingHom.equivRatAlgHom F ℂ) (fun f => f y) _ fun _ => by`. Simplify using `[RingHom.equivRatAlgHom_apply]).symm`. Rewrite using `[Complex.ofReal_ratCast, h1, UpperTheory.Reformulated.B.DYhb7.sum_embeddings_eq_real_add_complex, Algebra.trace_prod_apply, UpperTheory.Reformulated.B.DYhb7.algebra_trace_pi_eq_sum_trace, UpperTheory.Reformulated.B.DYhb7.algebra_trace_pi_eq_sum_trace]`. Simplify using `[Algebra.trace_complex_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DYhb7.main :
     ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F] (y : F),

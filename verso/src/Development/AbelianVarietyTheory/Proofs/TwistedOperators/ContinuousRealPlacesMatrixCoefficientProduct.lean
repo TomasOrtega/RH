@@ -11,17 +11,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SepPer.CoefCont
 
 /- English proof (translation)
-Introduce `D θ hθ V S M v a`. Use `haveI : IsTotallyReal D.host.F := D.sp.cm.totReal`. Unfold `coefR`. Use `continuous_finset_prod _ fun τ _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun g : GA D V => cmp θ τ g` using `GlobalTheory.Mem.VolExists.continuous_infMat V.gram (hθ τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ g : GA D V, (cmp θ τ g)ᴴ * gramAt D V τ * cmp θ τ g = gramAt D V τ`. Introduce `g`. Establish `h0` using `GlobalTheory.MarkUnit.infMat_unitary D.sp.cm.sig V.gram (tauE D τ) (fun x => IsCMField.complexEmbedding_complexConj D.host.E (tauE D τ) x) (θ τ) (hθ τ) g`. Establish `he : (cmp θ τ g)ᴴ = ((cmp θ τ g).map (starRingEnd ℂ)).transpose`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.conjTranspose_apply]`. Rewrite using `[he]`. Conclude with `h0`. Establish `hB : M.fr τ * (M.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ))`. Establish `hmem : ∀ g : GA D V, Formalism.REAL.inUJ (M.ε τ) (M.fr τ * cmp θ τ g * (M.fr τ)⁻¹)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `g`. Unfold `Formalism.REAL.inUJ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((M.fr τ)⁻¹)ᴴ * ((M.fr τ)ᴴ * Formalism.REAL.Jm (M.ε τ) * M.fr τ) * (M.fr τ)⁻¹ := by`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[M.fr_gram τ, hu g]`. Use `_ = (M.fr τ * (M.fr τ)⁻¹)ᴴ * Formalism.REAL.Jm (M.ε τ) * (M.fr τ * (M.fr τ)⁻¹) := by`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (M.ε τ) := by`. Rewrite using `[hB, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
-
-Establish `hconj : Continuous fun g : GA D V => M.fr τ * cmp θ τ g * (M.fr τ)⁻¹` using `(continuous_const.matrix_mul hc).matrix_mul continuous_const`. Establish `hσ` using `(M.ds τ).2.2.1.2.2 (a τ)`. Establish `hrep : Continuous fun g : GA D V => M.rep τ (cmp θ τ g) (a τ)` using `hσ.comp_continuous hconj hmem`. Conclude with `continuous_const.inner hrep`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_coefR : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (v a : ∀ τ, M.H τ), Continuous (coefR θ M v a) := by
   intro D θ hθ V S M v a

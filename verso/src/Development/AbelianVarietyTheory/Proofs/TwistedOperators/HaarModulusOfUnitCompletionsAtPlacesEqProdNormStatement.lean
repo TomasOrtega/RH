@@ -7,7 +7,7 @@ open MeasureTheory Topology Matrix NumberField IsDedekindDomain Formalism.MainNo
 open scoped NNReal ENNReal TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ModuPiLocal.modu_sPart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHaarModulusOfUnitCompletionsAtPlacesEqProdNorm.lean&line=43#L43)
 -/

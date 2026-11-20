@@ -7,23 +7,21 @@ noncomputable section
 namespace Formalism.FN.AdaptedBasisExistence
 
 /- English proof (translation)
-Use `haveI : ProperSpace E := FiniteDimensional.proper_real E`. Establish `hKL : span ℤ (Set.range B) ≤ L`. Rewrite using `[span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hB i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdisc : IsDiscrete (L : Set E)` using `IsDiscrete.mk (inferInstance : DiscreteTopology L)`. Use `haveI : DiscreteTopology L.toAddSubgroup := inferInstanceAs (DiscreteTopology L)`. Establish `hclosed : IsClosed (L : Set E)` using `AddSubgroup.isClosed_of_discrete (H := L.toAddSubgroup)`. Establish `hfin : (ZSpan.fundamentalDomain B ∩ (L : Set E)).Finite` using `Metric.finite_isBounded_inter_isClosed hdisc (ZSpan.fundamentalDomain_isBounded B) hclosed`. Take `⟨S, hS⟩ : ∃ S : Finset E, ∀ y, y ∈ S ↔ y ∈ ZSpan.fundamentalDomain B ∩ (L : Set E)` from `⟨hfin.toFinset, fun y => hfin.mem_toFinset⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨S.card.factorial, Nat.factorial_pos _, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ k : ℕ, ZSpan.fract B (k • x) ∈ S`. Introduce `k`. Rewrite using `[hS]`. Use `⟨ZSpan.fract_mem_fundamentalDomain B _, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ZSpan.fract_apply]`. Conclude with `L.sub_mem (nsmul_mem hx k) (hKL (ZSpan.floor B (k • x)).2)`. Take `⟨a, b, hab, heq⟩` from `Fintype.exists_ne_map_eq_of_card_lt (fun k : Fin (S.card + 1) => (⟨ZSpan.fract B ((k : ℕ) • x), hmem k⟩ : S)) (by simp)`. Establish `heq' : ZSpan.fract B ((a : ℕ) • x) = ZSpan.fract B ((b : ℕ) • x)` using `congrArg Subtype.val heq`. Rewrite `heq'` using `[ZSpan.fract_eq_fract]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab' : (a : ℕ) ≠ (b : ℕ)` using `fun h => hab (Fin.ext h)`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Establish `key : ∃ k : ℕ, 0 < k ∧ k ≤ S.card ∧ k • x ∈ span ℤ (Set.range B)`. Break down `lt_or_gt_of_ne hab' with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_lt h`. Use `⟨c + 1, Nat.succ_pos _, by omega, ?_⟩` and prove the remaining obligations. Establish `e : -((a : ℕ) • x) + (b : ℕ) • x = (c + 1) • x`. Rewrite using `[hc, add_assoc, add_nsmul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `heq'`. Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_lt h`. Use `⟨c + 1, Nat.succ_pos _, by omega, ?_⟩` and prove the remaining obligations. Establish `e : -(-((a : ℕ) • x) + (b : ℕ) • x) = (c + 1) • x`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hc, add_assoc, add_nsmul]`. Normalize the expressions using the abelian group laws. Rewrite using `[← e]`. Conclude with `neg_mem heq'`. Take `⟨k, hk0, hkS, hkx⟩` from `key`.
-
-Take `⟨d, hd⟩` from `Nat.dvd_factorial hk0 hkS`. Rewrite using `[hd, mul_comm, ← smul_smul]`. Conclude with `nsmul_mem hkx d`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem_span {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] (L : Submodule ℤ E) [DiscreteTopology L] {ι : Type} [Fintype ι]
@@ -85,55 +83,51 @@ namespace Formalism.FN.AdaptedBasisExistence
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `delta Formalism.FN.AdaptedBasis`. Introduce `E _ _ _ L _ _ v hv hvL`. Establish `hsp0 : ⊤ ≤ span ℝ (Set.range v)` using `(hv.span_eq_top_of_card_eq_finrank' (Fintype.card_fin _)).ge`. Set `B : Basis (Fin (finrank ℝ E)) ℝ E` to `Basis.mk hv hsp0`. Establish `hBv : ∀ i, B i = v i` using `fun i => congrFun (Basis.coe_mk hv hsp0) i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, hNL⟩` from `exists_nsmul_mem_span L B (fun i => by rw [hBv]; exact hvL i)`. Establish `hN' : (N : ℝ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hint : ∀ x ∈ L, ∀ k, ∃ z : ℤ, (N : ℝ) * B.repr x k = z`. Introduce `x hx k`. Take `⟨z, hz⟩` from `(Basis.mem_span_iff_repr_mem ℤ B (N • x)).mp (hNL x hx) k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz' : (z : ℝ) = (N : ℝ) * B.repr x k` using `by simpa using hz`. Conclude with `⟨z, hz'.symm⟩`. Establish `hP : ∀ j : Fin (finrank ℝ E), ∃ m : ℕ, 0 < m ∧ ∃ x, (x ∈ L ∧ ∀ k, j < k → B.repr x k = 0) ∧ (N : ℝ) * B.repr x j = m`. Introduce `j`. Use `⟨N, hN, v j, ⟨hvL j, fun k hk => ?_⟩, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hBv, B.repr_self, Finsupp.single_apply, if_neg (ne_of_lt hk)]`. Rewrite using `[← hBv, B.repr_self, Finsupp.single_apply, if_pos rfl, mul_one]`. Establish `hm` using `fun j => Nat.find_spec (hP j)`. Establish `hmin` using `fun j (r : ℕ) (hr : r < Nat.find (hP j)) => Nat.find_min (hP j) hr`. Use `choose b hbG hbj using fun j => (hm j).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdiv : ∀ j x, (x ∈ L ∧ ∀ k, j < k → B.repr x k = 0) → ∃ q : ℤ, B.repr x j = q * B.repr (b j) j`. Introduce `j x hx`. Take `⟨z, hz⟩` from `hint x hx.1 j`. Establish `hmpos : 0 < (Nat.find (hP j) : ℤ)` using `by exact_mod_cast (hm j).1`. Establish `hr0 : 0 ≤ z % (Nat.find (hP j) : ℤ)` using `Int.emod_nonneg _ hmpos.ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrlt : z % (Nat.find (hP j) : ℤ) < Nat.find (hP j)` using `Int.emod_lt_of_pos _ hmpos`. Establish `hcast : ((z % (Nat.find (hP j) : ℤ) : ℤ) : ℝ) = (z : ℝ) - ((z / (Nat.find (hP j) : ℤ) : ℤ) : ℝ) * (Nat.find (hP j) : ℝ)`. Establish `h` using `congrArg (fun t : ℤ => (t : ℝ)) (Int.ediv_mul_add_emod z (Nat.find (hP j) : ℤ))`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hr : z % (Nat.find (hP j) : ℤ) = 0`. Use `⟨z / (Nat.find (hP j) : ℤ), ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hN'` to reduce the goal to its premises. Rewrite using `[hz, mul_left_comm, hbj]`. Rewrite `hcast` using `[hr]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `at hcast`. Combine the linear equalities and inequalities to obtain the conclusion. It suffices to derive a contradiction. Establish `hrpos : 0 < z % (Nat.find (hP j) : ℤ)` using `lt_of_le_of_ne hr0 (Ne.symm hr)`. Establish `e : ∀ k, B.repr (x - (z / (Nat.find (hP j) : ℤ)) • b j) k = B.repr x k - ((z / (Nat.find (hP j) : ℤ) : ℤ) : ℝ) * B.repr (b j) k`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `k`. Simplify using the standard rewrite rules. Use `hmin j (z % (Nat.find (hP j) : ℤ)).toNat (by omega) ⟨by omega, x - (z / (Nat.find (hP j) : ℤ)) • b j, ⟨L.sub_mem hx.1 (L.smul_mem _ (hbG j).1), fun k hk => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e, hx.2 k hk, (hbG j).2 k hk, mul_zero, sub_zero]`. Rewrite using `[e, mul_sub, mul_left_comm, hbj, hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (((z % (Nat.find (hP j) : ℤ)).toNat : ℕ) : ℝ) = ((z % (Nat.find (hP j) : ℤ) : ℤ) : ℝ)`. Conclude with `Int.toNat_of_nonneg hr0` after adjusting the coercions. Rewrite using `[h2, hcast]`. Establish `hspan : ∀ r : ℕ, ∀ x ∈ L, (∀ k : Fin (finrank ℝ E), r ≤ k.val → B.repr x k = 0) → x ∈ span ℤ (b '' {k | k.val < r})`. Introduce `r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `r with`. Consider the case `zero`. Introduce `x _ h0`. Establish `hx0 : x = 0` using `B.repr.injective (by ext k; simp [h0 k (Nat.zero_le _)])`. Rewrite using `[hx0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `zero_mem _`. Consider the case `succ r ih`. Introduce `x hx h`. Distinguish the cases in `hr : r < finrank ℝ E`. Take `⟨q, hq⟩` from `hdiv ⟨r, hr⟩ x ⟨hx, fun k hk => h k (by rw [Fin.lt_def] at hk; exact hk)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : ∀ k, B.repr (x - q • b ⟨r, hr⟩) k = B.repr x k - (q : ℝ) * B.repr (b ⟨r, hr⟩) k`. Introduce `k`. Simplify using the standard rewrite rules. Establish `hy : x - q • b ⟨r, hr⟩ ∈ span ℤ (b '' {k | k.val < r})`. Use `ih _ (L.sub_mem hx (L.smul_mem q (hbG _).1)) fun k hk => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Break down `Nat.lt_or_ge r k.val with hk' | hk'` into its components or cases. Rewrite using `[h k hk', (hbG _).2 k (by rw [Fin.lt_def]; exact hk'), mul_zero, sub_zero]`. Establish `hkr : k = ⟨r, hr⟩` using `Fin.ext (show k.val = r by omega)`. Rewrite using `[hkr, hq, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hb_mem : b ⟨r, hr⟩ ∈ span ℤ (b '' {k | k.val < r + 1})` using `subset_span ⟨⟨r, hr⟩, by simp, rfl⟩`. Establish `hmono : span ℤ (b '' {k | k.val < r}) ≤ span ℤ (b '' {k | k.val < r + 1})` using `span_mono (Set.image_mono fun k (hk : k.val < r) => show k.val < r + 1 by omega)`. Establish `hsum` using `add_mem (hmono hy) (smul_mem _ q hb_mem)`. Rewrite `hsum` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hmono : span ℤ (b '' {k | k.val < r}) ≤ span ℤ (b '' {k | k.val < r + 1})` using `span_mono (Set.image_mono fun k (hk : k.val < r) => show k.val < r + 1 by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hmono (ih x hx fun k hk => absurd k.isLt (by omega))`. Establish `hbL : ∀ j, b j ∈ L` using `fun j => (hbG j).1`. Establish `hall : ∀ x ∈ L, x ∈ span ℤ (Set.range b)` using `fun x hx => span_mono (Set.image_subset_range _ _) (hspan (finrank ℝ E) x hx fun k hk => absurd k.isLt (by omega))`. Set `b' : Fin (finrank ℝ E) → L` to `fun j => ⟨b j, hbL j⟩`. Establish `hsp : ⊤ ≤ span ℤ (Set.range b')`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `x -`. Establish `h2` using `hall x x.2`. Establish `h3 : Set.range b = L.subtype '' Set.range b'`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[h3, ← Submodule.map_span, Submodule.mem_map]`. Take `⟨y, hy, hyx⟩` from `h2`. Rewrite using `[← Subtype.ext hyx]` and apply the resulting hypothesis. Establish `hliR : LinearIndependent ℝ b`. Use `linearIndependent_of_top_le_span_of_card_eq_finrank ?_ (Fintype.card_fin _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `le_trans hsp0 (span_le.mpr ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `span_le_restrictScalars ℤ ℝ _ (hall _ (hvL i))`. Establish `hliZ : LinearIndependent ℤ b'` using `LinearIndependent.of_comp L.subtype (hliR.restrict_scalars' ℤ)`. Use `⟨Basis.mk hliZ hsp, fun j => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Basis.coe_mk]`. Express the relevant statement in the definitionally equal form `span ℝ (b '' {k | k ≤ j}) = span ℝ (v '' {k | k ≤ j})`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[span_le]`. Introduce and unpack `_ ⟨k, hk, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hk` using `[Set.mem_setOf_eq]`. Establish `hvB : v '' {k | k ≤ j} = B '' {k | k ≤ j}` using `Set.image_congr fun i _ => (hBv i).symm`. Rewrite using `[SetLike.mem_coe, hvB, B.mem_span_image]`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_coe, Finsupp.mem_support_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hij`. Rewrite `hij` using `[Set.mem_setOf_eq, not_le]`. Conclude with `hi ((hbG k).2 i (lt_of_le_of_lt hk hij))`. Rewrite using `[span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `hi` using `[Set.mem_setOf_eq]`. Establish `hvi` using `hspan (j.val + 1) (v i) (hvL i) fun k hk => by`. Rewrite using `[← hBv, B.repr_self, Finsupp.single_apply, if_neg]`. Introduce `hik`. Rewrite `hi` using `[hik, Fin.le_def]`.
-
-Use linear arithmetic over natural numbers and integers. Establish `hsub : {k : Fin (finrank ℝ E) | k.val < j.val + 1} ⊆ {k | k ≤ j}`. Introduce `k hk`. Simplify using `only [Set.mem_setOf_eq] at hk ⊢`. Rewrite using `[Fin.le_def]`.
-
-Use linear arithmetic over natural numbers and integers. Conclude with `span_le_restrictScalars ℤ ℝ _ (span_mono (Set.image_mono hsub) hvi)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem adapted_basis_exists : AdaptedBasis := by
   delta Formalism.FN.AdaptedBasis
@@ -278,6 +272,6 @@ theorem adapted_basis_exists : AdaptedBasis := by
 end Formalism.FN.AdaptedBasisExistence
 
 /- English proof (translation)
-The claim follows from `Formalism.FN.AdaptedBasisExistence.adapted_basis_exists`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FN.existsAdaptedBasis : Formalism.FN.AdaptedBasis := Formalism.FN.AdaptedBasisExistence.adapted_basis_exists

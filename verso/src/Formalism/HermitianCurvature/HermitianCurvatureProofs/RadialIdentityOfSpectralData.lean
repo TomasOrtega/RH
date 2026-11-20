@@ -16,7 +16,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermMulVecMulVec
 namespace Formalism.FourierDecayAlt.P.CutSE
 
 /- English proof (translation)
-The claim follows from `rDRadIdOfSpec_of_grpId_theta (rDGrpIdOfSpec_of_radIdAlg (rDRadIdAlg_of_collapse_gauge_rearr radial_collapse radial_gauge_identity radial_rearrangement) radial_start_coordinates radial_wave_radial Formalism.FourierDecayAlt.P5.waveCExists radial_residue_formula radial_wave_function …`.
+A detailed English derivation is pending.
 -/
 theorem radial_identity_of_spectral_data : RDRadIdOfSpec :=
   rDRadIdOfSpec_of_grpId_theta
@@ -26,7 +26,7 @@ theorem radial_identity_of_spectral_data : RDRadIdOfSpec :=
     radial_orbital_niceness radial_wave_orbital radial_operator_locality
 
 /- English proof (translation)
-The claim follows from `radDecay_of_ABQ (rDIdentABQ_of_spec h radial_identity_of_spectral_data)`.
+A detailed English derivation is pending.
 -/
 theorem radDecay_of_spec (h : RDIdentSpec) : RadDecay :=
   radDecay_of_ABQ (rDIdentABQ_of_spec h radial_identity_of_spectral_data)

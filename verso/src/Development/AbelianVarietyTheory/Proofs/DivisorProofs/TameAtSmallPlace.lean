@@ -43,15 +43,15 @@ def conjInEquiv (H J : Subgroup G) (g : G) : {γ : H // g⁻¹ * (γ : G) * g �
   right_inv _ := rfl
 
 /- English proof (translation)
-Take `⟨c, ⟨γ₀, k, hg⟩, -⟩` from `hrep g`. Use `haveI := hfin c`. Set `f : Bridge.stab ι J (y c) → {γ : ι.range // g⁻¹ * (γ : G) * g ∈ J}` to `fun s => ⟨⟨ι (γ₀ * s * γ₀⁻¹), γ₀ * s * γ₀⁻¹, rfl⟩, by`. Establish `hs : (y c)⁻¹ * ι s * (y c) ∈ J`. Use `s.2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Bridge.stab, Subgroup.mem_comap, MulAut.conj_apply]`. Use `J.mul_mem (J.mul_mem (J.inv_mem k.2) hs) k.2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hg]`. Simplify using `only [map_mul, map_inv]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `group⟩`. Use `Finite.of_surjective f ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨_, a, rfl⟩, ha⟩`. Use `⟨⟨γ₀⁻¹ * a * γ₀, ?_⟩, ?_⟩` and prove the remaining obligations. Use `J.mul_mem (J.mul_mem k.2 ha) (J.inv_mem k.2)` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [Bridge.stab, Subgroup.mem_comap, MonoidHom.coe_comp, MulEquiv.coe_toMonoidHom, Function.comp_apply, MulAut.conj_apply, inv_inv]`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hg]`. Simplify using `only [map_mul, map_inv]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ι (γ₀ * (γ₀⁻¹ * a * γ₀) * γ₀⁻¹) = ι a`. Use `congr 1`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem finite_conj (ι : Γ →* G) (J : Subgroup G) {I : Type} (y : I → G) (hrep : Bridge.IsReps ι J y)
     (hfin : ∀ i, Finite (Bridge.stab ι J (y i))) (g : G) : Finite {γ : ι.range // g⁻¹ * (γ : G) * g ∈ J} := by
@@ -88,19 +88,17 @@ end Groups
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `hx`. Establish `hq` using `q.2`. Simplify using `only [Formalism.L2.Theta.GQ, GlobalTheoryTheory.GenusMassVolumes.HFinIn, Subgroup.mem_subgroupOf, GlobalTheoryTheory.GenusMassVolumes.HFin, Subgroup.mem_map] at hq`. Take `⟨u, -, hu⟩` from `hq`. Set `φ : D.host.E →+* GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E` to `(Algebra.TensorProduct.map (GlobalTheoryTheory.GenusMassVolumes.sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom.comp (GlobalTheoryTheory.GenusMassVolumes.inclR (GlobalTheoryTheory.GenusMassVolumes.AF D.host.F))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `key : ((Bridge.ratF V q : Bridge.Gf V) : GL (Fin V.rank) (GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)).val = u.val.map φ`. Establish `hu' : (q.1 : Formalism.L2.Theta.GA D V).1 = Formalism.UG.bc (GlobalTheoryTheory.GenusMassVolumes.inclR (GlobalTheoryTheory.GenusMassVolumes.AF D.host.F)) u` using `hu.symm`. Establish `h1 : ((Bridge.ratF V q : Bridge.Gf V) : GL (Fin V.rank) (GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) = Formalism.UG.bc (Algebra.TensorProduct.map (GlobalTheoryTheory.GenusMassVolumes.sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom (q.1 : Formali …` using `rfl`. Rewrite using `[h1, hu']`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Break down `subsingleton_or_nontrivial (GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) with hs | hs` into its components or cases. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `Subsingleton.elim _ _`. Establish `hφ : Function.Injective φ` using `φ.injective`. Establish `h2` using `congrArg (fun z : Bridge.Gf V => (z : GL (Fin V.rank) (GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)).val) hxl`. Simplify using `only [Subgroup.coe_pow, Units.val_pow_eq_pow_val, OneMemClass.coe_one, Units.val_one] at h2`. Rewrite `h2` using `[key]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : φ.mapMatrix (u.val ^ l) = φ.mapMatrix 1`. Rewrite using `[map_pow, map_one, RingHom.mapMatrix_apply]`. Conclude with `h2`. Establish `hu1 : u.val ^ l = 1` using `Matrix.map_injective hφ h3`. Establish `hu2 : u.val = 1` using `GlobalTheory.no_order_l_of_cyclotomic_irreducible D.host.E l V.rank _ hl hirr hN hu1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[key, hu2]`. Establish `h4 : (1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map φ = 1` using `Matrix.map_one (⇑φ) (map_zero φ) (map_one φ)`. Rewrite using `[h4]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rat_eq_one {D : D7} (V : TH.HSp D) (l : ℕ) (hl : l.Prime) (hN : V.rank + 1 < l)
     (hirr : Irreducible (Polynomial.cyclotomic l D.host.E)) (x : Bridge.Gf V) (hx : x ∈ (Bridge.ratF V).range)
@@ -144,13 +142,11 @@ theorem rat_eq_one {D : D7} (V : TH.HSp D) (l : ℕ) (hl : l.Prime) (hN : V.rank
     rfl
 
 /- English proof (translation)
-Take `⟨hl, hN, hd, -, -⟩` from `hS`. Introduce `g`. Establish `hfin : Finite {γ : (Bridge.ratF (Vc D j)).range // g⁻¹ * (γ : Bridge.Gf (Vc D j)) * g ∈ levJ p j (p.R.mu w)}` using `finite_conj (Bridge.ratF (Vc D j)) (levJ p j (p.R.mu w)) (p.R.B.L j (p.R.mu w)).pres.y (p.R.B.L j (p.R.mu w)).pres.reps (fun c => Finite.of_equiv _ ((p.R.B.L j (p.R.mu w)).pres.stabI c).toEquiv) g`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Introduce `hdvd`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Fact (Formalism.EigenvalueLevelCeiling.plc w).Prime := ⟨hl⟩`. Rewrite `hdvd` using `[Nat.card_congr (conjInEquiv _ _ g)]`. Use `haveI : Finite (conjIn (Bridge.ratF (Vc D j)).range (levJ p j (p.R.mu w)) g) := Finite.of_equiv _ (conjInEquiv _ _ g)`. Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card' (Formalism.EigenvalueLevelCeiling.plc w) hdvd`. Establish `hirr` using `GlobalTheory.cyclotomic_irreducible_of_not_dvd_discr D.host.E (Formalism.EigenvalueLevelCeiling.plc w) hl hd`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxl : (x : Bridge.Gf (Vc D j)) ^ (Formalism.EigenvalueLevelCeiling.plc w) = 1`. Rewrite using `[← Subgroup.coe_pow, ← hx, pow_orderOf_eq_one]`. Both sides reduce to the same expression. Establish `h1` using `rat_eq_one (Vc D j) (Formalism.EigenvalueLevelCeiling.plc w) hl (hNr ▸ hN) hirr x x.2.1 hxl`. Establish `hx1 : x = 1` using `Subtype.ext h1`.
-
-Rewrite `hx` using `[hx1, orderOf_one]`. Conclude with `hl.one_lt.ne hx`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tameAt_of_smallAt {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (j : Fin D.R.m)
@@ -177,7 +173,7 @@ theorem tameAt_of_smallAt {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Fo
   exact hl.one_lt.ne hx
 
 /- English proof (translation)
-Unfold `GlobalTheory.ExpTie.InRange GlobalTheory.BigOn.AtPts Formalism.MainNotions.Closed GlobalTheory.BigTop.EvPt`. Use `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p _ _ => ?_⟩⟩⟩` and prove the remaining obligations. Introduce `j P W hD _ w _ _ hS`. Conclude with `tameAt_of_smallAt p j P w hD.Nr hS`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tameSt : InRange fun _ _ _ _ p j P _ w => SmallAt p j P w → TameAt p j w := by
   unfold GlobalTheory.ExpTie.InRange GlobalTheory.BigOn.AtPts Formalism.MainNotions.Closed GlobalTheory.BigTop.EvPt

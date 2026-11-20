@@ -21,7 +21,7 @@ variable [FiniteDimensional Qp LL]
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Unfold `LocWach.γA letγ`. Express the relevant statement in the definitionally equal form `W.γ₀ g (W.γ₀ h (a k)) = W.γ₀ h (W.γ₀ g (a k))`. Rewrite using `[← AlgHom.mul_apply, ← map_mul, mul_comm, map_mul, AlgHom.mul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem γA_comm_GG (g h : W.Gam) (a : LetA O n) : W.γA g (W.γA h a) = W.γA h (W.γA g a) := by
   funext k
@@ -30,7 +30,7 @@ theorem γA_comm_GG (g h : W.Gam) (a : LetA O n) : W.γA g (W.γA h a) = W.γA h
   rw [← AlgHom.mul_apply, ← map_mul, mul_comm, map_mul, AlgHom.mul_apply]
 
 /- English proof (translation)
-Use `show ∀ δ ∈ W.DelF, W.γA δ (W.γA W.gam a) = W.γA W.gam a`. Introduce `δ hδ`. Rewrite using `[γA_comm_GG W, ha δ hδ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γA_memAΔ_GG {a : LetA O n} (ha : a ∈ W.AΔ) : W.γA W.gam a ∈ W.AΔ := by
   show ∀ δ ∈ W.DelF, W.γA δ (W.γA W.gam a) = W.γA W.gam a
@@ -38,21 +38,19 @@ theorem γA_memAΔ_GG {a : LetA O n} (ha : a ∈ W.AΔ) : W.γA W.gam a ∈ W.A�
   rw [γA_comm_GG W, ha δ hδ]
 
 /- English proof (translation)
-Take `⟨hπ, -, -⟩` from `lemG_units W hcase hP9 hc₁ hO hOv hinj`. Take `⟨h, hh, hcoef⟩` from `coef_step W hcase hP9 hc₁ hgpi0 hA3 hA4 hl0 hinj cc hcc bi s s' hs' hs j hj g hg`. Take `⟨y, hy, hyeq⟩` from `hH2`. Use `set f := qA W ^ j * g with hf`. Use `set c := cc ((bi : ℤ) - j) with hcdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfΔ : f ∈ W.AΔ` using `mul_mem (pow_mem (qA_mem_AΔ W hcase hP9 hc₁).2 j) hg`. Establish `hγf : W.γA W.gam f ∈ W.AΔ` using `γA_memAΔ_GG W hfΔ`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Use `set E := algebraMap (LetA O n) W.EE with hE`. Establish `hfx : f • (s • lam) = (E f * s) • lam`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← smul_assoc, Algebra.smul_def]`. Establish `hγE : W.γE W.gam (E f * s) = E (W.γA W.gam f) * W.γE W.gam s`. Rewrite using `[map_mul, hE, W.γE_ext]`. Both sides reduce to the same expression. Establish `key : W.γ T₂ (f • (s • lam)) - f • (s • lam) = W.π₀ • (c • (f • (s • lam)) + (qA W ^ (j + 1) * h) • (s • lam) + qA W ^ (Ai + ri) • (W.γA W.gam f • y))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : W.γ T₂ (f • (s • lam)) - f • (s • lam) = W.γE W.gam (E f * s) • (W.γ T₂ lam - lam) + (W.γE W.gam (E f * s) - E f * s) • lam`. Rewrite using `[hfx]`. Express the relevant statement in the definitionally equal form `W.γD T₂ W.gam ((E f * s) • lam) - _ = _`. Rewrite using `[W.γD_smul, smul_sub, sub_smul]`. Express the relevant statement in the definitionally equal form `_ = W.γE W.gam (E f * s) • W.γD T₂ W.gam lam - _ + _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[h1, hcoef, hγE, mul_smul, hyeq, mul_smul (E _) s lam, hE, algebraMap_smul, algebraMap_smul]`. Rewrite using `[← algebraMap_smul (LetA O n) c (f • (s • lam))]`. Establish `e1 : W.π₀ * qA W ^ j * (algebraMap O (LetA O n) c * g + qA W * h) = W.π₀ * (algebraMap O (LetA O n) c * f) + W.π₀ * (qA W ^ (j + 1) * h)`. Rewrite using `[hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : W.γA W.gam f * (W.π₀ * qA W ^ (Ai + ri)) = W.π₀ * (qA W ^ (Ai + ri) * W.γA W.gam f)`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [smul_add, smul_smul]`. Rewrite using `[e1, e2, add_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hd` using `dop_eq W hπ T₂ dop₂ hd₂ key`. Rewrite using `[hd]`. Establish `himg : InImg W F i (qA W ^ (Ai + ri) • (W.γA W.gam f • y))` using `q_pow_inImg W hcase hP9 hc₁ hO hOv hinj F i Ai ri hA hr (inNΔi_smulA W T₂ i hγf hy)`. Use `himg using 1` and compare the differences between its conclusion and the goal.
-
-Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem step_one_GG (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (i : ZMod n)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (hc₁ : IsCrys PD T₁.ρ)
@@ -114,17 +112,17 @@ theorem step_one_GG (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 :
   abel
 
 /- English proof (translation)
-Take `⟨hπ, -, -⟩` from `lemG_units W hcase hP9 hc₁ hO hOv hinj`. Establish `main : ∀ k ≤ Ai + ri, ∃ g ∈ W.AΔ, InImg W F i (aeval dop₂ (∏ j ∈ Finset.range k, (X - C (cc ((bi : ℤ) - j)))) (s • lam) - (qA W ^ k * g) • (s • lam))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Use `⟨1, one_mem _, ?_⟩` and prove the remaining obligations. Simplify using `using inImg_zero W F i`. Consider the case `succ k ih`. Introduce `hk`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg, himg⟩` from `ih (by omega)`. Take `⟨h, hh, hstep⟩` from `step_one_GG W hcase hP9 i F hc₁ hO hOv Ai ri hA hr bi hgpi0 hA3 hA4 hl0 hinj dop₂ hd₂ cc hcc s s' hs' hs lam hH2 k (by omega) g hg`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Establish `himg2` using `aeval_inImg W hπ F i dop₁ hd₁ dop₂ hd₂ hgN₁ (X - C (cc ((bi : ℤ) - k))) himg`. Rewrite using `[Finset.prod_range_succ, mul_comm, map_mul, Module.End.mul_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set z := aeval dop₂ (∏ j ∈ Finset.range k, (X - C (cc ((bi : ℤ) - j)))) (s • lam)`. Establish `hX : ∀ w : W.DD T₂, aeval dop₂ (X - C (cc ((bi : ℤ) - k))) w = dop₂ w - cc ((bi : ℤ) - k) • w`. Introduce `w`. Simplify using `[Module.algebraMap_end_apply]`. Rewrite `himg2`, the goal using `[hX]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `inImg_add W F i hstep himg2`. Use `e using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_sub, smul_sub]`. Normalize the expressions using the abelian group laws. Take `⟨g, hg, himg⟩` from `main (Ai + ri) le_rfl`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq` using `q_pow_inImg W hcase hP9 hc₁ hO hOv hinj F i Ai ri hA hr (inNΔi_smulA W T₂ i hg hH1)`. Establish `e` using `inImg_add W F i himg hq`. Use `e using 1` and compare the differences between its conclusion and the goal. Rewrite using `[mul_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem step_i (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (i : ZMod n)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (hc₁ : IsCrys PD T₁.ρ)

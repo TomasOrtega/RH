@@ -18,9 +18,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `S G _ hG L _ _ z`. Establish `h₀ : IsSemiAbelian ((Over.pullback z).obj G)` using `IsSemiAbelian.pullback _ G hG`. Use `haveI := h₀.smooth`. Take `⟨T⟩` from `h₀.fibres (AlgebraicClosure L) (spMap (algebraMap L (AlgebraicClosure L)))`. Take `⟨k', hk, ⟨T'⟩⟩` from `GlobalTheory.exists_finite_torusExtension L (AlgebraicClosure L) ((Over.pullback z).obj G) inferInstance h₀.quasiCompact h₀.separated ⟨T⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k', inferInstance, inferInstance, hk, ?_⟩` and prove the remaining obligations. Use `haveI : IsMonHom (pullCompIso (spMap (algebraMap L k')) z G).symm.hom := inferInstanceAs (IsMonHom (pullCompIso (spMap (algebraMap L k')) z G).inv)`. Conclude with `⟨torusExtOfIso (pullCompIso (spMap (algebraMap L k')) z G).symm T'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_torusExtension_fibre : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], IsSemiAbelian G → ∀ (L : Type) [Field L] [CharZero L] (z : Sp L ⟶ S), ∃ (L' : Type) (_ : Field L') (_ : Algebra L L'), FiniteDimensional L L' ∧ Nonempty (TorusExtension ((Over.pullback (spMap (algebraMap L L') ≫ z)).obj G)) := by
   intro S G _ hG L _ _ z

@@ -10,9 +10,9 @@ section Onto
 variable {p : ℕ} [Fact p.Prime] {K r : ℕ}
 
 /- English proof (translation)
-Unfold `XSp`. Rewrite using `[Submodule.mem_inf, Submodule.mem_inf, Submodule.mem_iInf, and_assoc]`. Use `and_congr_right fun _ => and_congr_right fun _ => forall_congr' fun k => ?_` and prove the remaining obligations. Use `split_ifs with hk`. Rewrite using `[Submodule.mem_inf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => ⟨fun _ => h, fun h' => absurd hk h'⟩, fun h => h.1 hk⟩`. Conclude with `⟨fun h => ⟨fun h' => absurd h' hk, fun _ => h⟩, fun h => h.2 hk⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_xsp [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ) (ρ : Fin r)
     (x : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :
@@ -28,7 +28,7 @@ theorem mem_xsp [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) 
   · exact ⟨fun h => ⟨fun h' => absurd h' hk, fun _ => h⟩, fun h => h.2 hk⟩
 
 /- English proof (translation)
-Unfold `Y`. Rewrite using `[Submodule.mem_inf, Submodule.mem_iInf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_y [NeZero r] {N : ℕ} (LL : Letters N) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ)
     (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
@@ -37,7 +37,7 @@ theorem mem_y [NeZero r] {N : ℕ} (LL : Letters N) {q : ℕ} (J : Fin q → ℕ
   rw [Submodule.mem_inf, Submodule.mem_iInf]
 
 /- English proof (translation)
-Use `Finset.mem_erase.mpr ⟨?_, Finset.mem_univ _⟩` and prove the remaining obligations. Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem zero_mem_erase (ρ : Fin r) [NeZero r] (hr : 2 ≤ r) (hρ : (ρ : ℕ) = r - 1) :
     (0 : Fin r) ∈ (univ : Finset (Fin r)).erase ρ := by
@@ -48,16 +48,16 @@ theorem zero_mem_erase (ρ : Fin r) [NeZero r] (hr : 2 ≤ r) (hρ : (ρ : ℕ) 
   omega
 
 /- English proof (translation)
-Consider the cases of `LL`. Simplify using `[setLast]`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 -/
 theorem setLast_self (LL : Letters (K + 1)) : setLast LL (LL.deg (Fin.last K)) = LL := by
   cases LL
   simp [setLast]
 
 /- English proof (translation)
-Establish `e : setLast (setLast LL (o + 1)) ((setLast LL (o + 1)).deg (Fin.last K) - 1) = setLast LL o`. Simplify using `[setLast]`. Rewrite `hx`, the goal using `[Pol, mem_restrictSupport_iff]`. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_coe, mem_support_iff, coeff_pderiv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : m + Finsupp.single (Fin.last K, a) 1 ∈ x.support` using `mem_support_iff.mpr (left_ne_zero_of_mul hm)`. Establish `h2 : MultiDeg (setLast LL (o + 1)) (m + Finsupp.single (Fin.last K, a) 1)` using `hx (Finset.mem_coe.mpr h1)`. Rewrite `h2` using `[add_comm m, multiDeg_pow (setLast LL (o + 1)) a 1 (by simp [setLast]) m, e]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_pol (LL : Letters (K + 1)) (a : Fin r) (o : ℕ) (x : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p])
     (hx : x ∈ Pol p r (setLast LL (o + 1))) : pderiv (Fin.last K, a) x ∈ Pol p r (setLast LL o) := by
@@ -73,9 +73,9 @@ theorem pderiv_pol (LL : Letters (K + 1)) (a : Fin r) (o : ℕ) (x : MvPolynomia
   exact h2
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[FreeOf, mem_restrictSupport_iff]`. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_coe, mem_support_iff, coeff_pderiv]`. Establish `h1 : m + Finsupp.single u 1 ∈ x.support` using `mem_support_iff.mpr (left_ne_zero_of_mul hm)`. Establish `h2 : (m + Finsupp.single u 1 : σ →₀ ℕ) v = 0` using `hx (Finset.mem_coe.mpr h1)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Finsupp.add_apply]`. Conclude with `(Nat.add_eq_zero_iff.mp h2).1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_freeOf {σ : Type} (u v : σ) (x : MvPolynomial σ ℚ_[p]) (hx : x ∈ FreeOf p v) :
     pderiv u x ∈ FreeOf p v := by
@@ -89,9 +89,9 @@ theorem pderiv_freeOf {σ : Type} (u v : σ) (x : MvPolynomial σ ℚ_[p]) (hx :
   exact (Nat.add_eq_zero_iff.mp h2).1
 
 /- English proof (translation)
-Rewrite `hx` using `[FreeOf, mem_restrictSupport_iff]`. Use extensionality with `m`. Rewrite using `[resL_apply, coeff_initPart]`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Conclude with `h (hx (Finset.mem_coe.mpr (mem_support_iff.mpr (Ne.symm hc))))`.
+A detailed English derivation is pending.
 -/
 theorem resL_of_free {σ : Type} (v : σ) (x : MvPolynomial σ ℚ_[p]) (hx : x ∈ FreeOf p v) : resL p v 0 x = x := by
   rw [FreeOf, mem_restrictSupport_iff] at hx
@@ -103,7 +103,7 @@ theorem resL_of_free {σ : Type} (v : σ) (x : MvPolynomial σ ℚ_[p]) (hx : x 
     exact h (hx (Finset.mem_coe.mpr (mem_support_iff.mpr (Ne.symm hc))))
 
 /- English proof (translation)
-The claim follows from `ops_ycond LL j Mt (pderiv (Fin.last K, c)).toLinearMap (FockB.pderiv_mem (by simp only [Set.mem_ofPred_eq, Fin.val_last]; exact hj))`.
+A detailed English derivation is pending.
 -/
 theorem pderiv_ycond_early [NeZero r] (LL : Letters (K + 1)) (j : ℕ) (hj : j ≤ K) (Mt : WithTop ℤ) (c : Fin r) :
     ∀ x ∈ YCond p LL j Mt, pderiv (Fin.last K, c) x ∈ YCond p LL j Mt :=
@@ -111,15 +111,13 @@ theorem pderiv_ycond_early [NeZero r] (LL : Letters (K + 1)) (j : ℕ) (hj : j �
     simp only [Set.mem_ofPred_eq, Fin.val_last]; exact hj))
 
 /- English proof (translation)
-Use `set B : Submodule ℚ_[p] (MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) := ⨆ (c : Fin r) (_ : c ∈ Cs), (YCondC p LL (K + 1) Cs Mt).map (pderiv (Fin.last K, c)).toLinearMap with hB`. Establish `hmem : ∀ c ∈ Cs, ∀ x ∈ YCondC p LL (K + 1) Cs Mt, pderiv (Fin.last K, c) x ∈ B` using `fun c hc x hx => Submodule.mem_iSup_of_mem c (Submodule.mem_iSup_of_mem hc (Submodule.mem_map_of_mem (f := (pderiv (Fin.last K, c)).toLinearMap) hx))`. Establish `hle : B ≤ YCondC p LL (K + 1) Cs Mt`. Use `le_ycondC LL (K + 1) Cs Mt _ ?_ ?_` and prove the remaining obligations. Use `iSup_le fun c => iSup_le fun _ => Submodule.map_le_iff_le_comap.mpr fun x hx => pderiv_keep_wt LL hv c Mt x (ycondC_le_supp LL (K + 1) Cs Mt hx)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb`. Establish `: B ≤ B.comap (glAct p LL (K + 1) a b)`. Use `iSup_le fun c => iSup_le fun hc => ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show glAct p LL (K + 1) a b (pderiv (Fin.last K, c) x) ∈ B`. Establish `e : glAct p LL (K + 1) a b (pderiv (Fin.last K, c) x) = pderiv (Fin.last K, c) (glAct p LL (K + 1) a b x) - (if a = c then pderiv (Fin.last K, b) x else 0)`. Rewrite using `[pderiv_glAct LL hv]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `Submodule.sub_mem _ (hmem c hc _ (ycondC_glStable LL (K + 1) Cs Mt a ha b hb x hx)) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hmem b hb x hx`. Conclude with `Submodule.zero_mem _`. Conclude with `fun y hy => this hy`.
-
-Introduce `x hx`. Conclude with `hle (hmem c hc x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ycondC_pderiv [NeZero r] (LL : Letters (K + 1)) (hv : LL.vec (Fin.last K) = true) (Cs : Finset (Fin r))
     (Mt : WithTop ℤ) (c : Fin r) (hc : c ∈ Cs) :
@@ -152,11 +150,9 @@ theorem ycondC_pderiv [NeZero r] (LL : Letters (K + 1)) (hv : LL.vec (Fin.last K
   exact hle (hmem c hc x hx)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[mem_xsp]`. Take `⟨hxP, hxF, hxk⟩` from `hx`. Establish `hdP` using `pderiv_pol LL a o x hxP`. Establish `h0` using `zero_mem_erase ρ hr hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hdP, pderiv_freeOf _ _ x hxF, fun k => ⟨fun hk => ⟨?_, ?_⟩, fun hk => ?_⟩⟩` and prove the remaining obligations. Conclude with `pderiv_ycond_early LL K le_rfl (M k) a x ((hxk k).1 hk).1`. Take `⟨P, hP⟩` from `hTP (M k)`. Use `mem_typesLE_of_ycondC (setLast LL o) (K + 1) _ h0 (M k) P hP _ (Submodule.mem_inf.mpr ⟨?_, hdP⟩)` and prove the remaining obligations. Conclude with `ycondC_pderiv LL hv _ (M k) a (Finset.mem_erase.mpr ⟨ha, Finset.mem_univ _⟩) x (typesLE_le_ycondC LL (K + 1) _ h0 (M k) ((hxk k).1 hk).2)`.
-
-Conclude with `pderiv_ycond_early LL (J k) (by omega) (M k) a x ((hxk k).2 hk)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pderiv_last_letter_mem [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ) (ρ a : Fin r)
     (o : ℕ) (hr : 2 ≤ r) (hρ : (ρ : ℕ) = r - 1) (hv : LL.vec (Fin.last K) = true)
@@ -177,13 +173,13 @@ theorem pderiv_last_letter_mem [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : 
   · exact pderiv_ycond_early LL (J k) (by omega) (M k) a x ((hxk k).2 hk)
 
 /- English proof (translation)
-Introduce `h hh`. Rewrite `hh` using `[mem_y]`. Take `⟨hhP, hhY⟩` from `hh`. Establish `hresP : resL p (Fin.last K, ρ) 0 h ∈ Pol p r LL` using `resL_keep_supp (Fin.last K, ρ) 0 _ h hhP`. Establish `key : ∀ j ≤ K, ∀ Mt : WithTop ℤ, ∀ x ∈ YCond p LL j Mt, resL p (Fin.last K, ρ) 0 x ∈ YCond p LL j Mt` using `fun j hj Mt => ycond_keep LL j Mt (resL p (Fin.last K, ρ) 0) (fun c d x => resL_glAct LL j c d (Fin.last K, ρ) 0 (fun i hi => ⟨fun h' => last_ne_of_lt i (by omega) (Prod.mk.inj h').1.symm, fun h' => last_ne_of_lt i (by omega) (Prod.mk.inj h').1.symm⟩) x) (resL_keep_supp (Fin.last …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `zero_mem_erase ρ hr hρ`. Rewrite using `[mem_xsp]`. Use `⟨hresP, resL_free (Fin.last K, ρ) h, fun k => ⟨fun hk => ?_, fun hk => key (J k) (by omega) _ _ (hhY k)⟩⟩` and prove the remaining obligations. Establish `h1 : h ∈ YCond p LL (K + 1) (M k)`. Use `hhY k` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[ycond_min, min_eq_right hk]`. Conclude with `this`. Use `⟨key K le_rfl _ _ (condition_drop_holds p K r LL (M k) hv h hhP h1), ?_⟩` and prove the remaining obligations. Take `⟨P, hP⟩` from `hTP (M k)`. Use `mem_typesLE_of_ycondC LL (K + 1) _ h0 (M k) P hP _ (Submodule.mem_inf.mpr ⟨?_, hresP⟩)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `ycondC_keep LL (K + 1) _ (M k) (resL p (Fin.last K, ρ) 0) (fun c hc d hd x => resL_glAct LL (K + 1) c d (Fin.last K, ρ) 0 (fun i _ => ⟨fun h' => (Finset.mem_erase.mp hc).1 (Prod.mk.inj h').2, fun h' => (Finset.mem_erase.mp hd).1 (Prod.mk.inj h').2⟩) x) (resL_keep_supp (Fin.last K …` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem restriction_mem_space [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ) (ρ : Fin r)
     (hr : 2 ≤ r) (hρ : (ρ : ℕ) = r - 1) (hv : LL.vec (Fin.last K) = true)
@@ -216,9 +212,9 @@ theorem restriction_mem_space [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : F
     (resL_keep_supp (Fin.last K, ρ) 0 _) h (ycond_le_ycondC LL (K + 1) _ (M k) h1)
 
 /- English proof (translation)
-Use `le_ycond LL j Mt' _ ?_ (fun c d x hx => ycond_glStable LL j Mt c d x hx)` and prove the remaining obligations. Introduce `x hx`. Establish `h1` using `ycond_le_supp LL j Mt hx`. Rewrite `h1`, the goal using `[mem_restrictSupport_iff]`. Introduce `m hm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_trans (h1 hm) h`.
+A detailed English derivation is pending.
 -/
 theorem ycond_mono [NeZero r] {N : ℕ} (LL : Letters N) (j : ℕ) (Mt Mt' : WithTop ℤ) (h : Mt ≤ Mt') :
     YCond p (r := r) LL j Mt ≤ YCond p LL j Mt' := by
@@ -230,22 +226,22 @@ theorem ycond_mono [NeZero r] {N : ℕ} (LL : Letters N) (j : ℕ) (Mt Mt' : Wit
   exact le_trans (h1 hm) h
 
 /- English proof (translation)
-Rewrite using `[ycond_min, min_eq_right hj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ycond_late [NeZero r] (LL : Letters (K + 1)) (j : ℕ) (hj : K + 1 ≤ j) (Mt : WithTop ℤ) :
     YCond p (r := r) LL j Mt = YCond p LL (K + 1) Mt := by
   rw [ycond_min, min_eq_right hj]
 
 /- English proof (translation)
-Use `le_ycond LL (K + 1) Mt _ ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Establish `h1` using `ycond_le_supp LL K Mt (Submodule.mem_inf.mp hx).1`. Establish `h2` using `(Submodule.mem_inf.mp hx).2`. Rewrite `h2` using `[FreeLast, mem_restrictSupport_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1`, the goal using `[mem_restrictSupport_iff]`. Introduce `m hm`. Establish `h3` using `h1 hm`. Establish `h4` using `h2 hm 0`. Simplify using `only [Set.mem_ofPred_eq] at h3 ⊢`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[wt_succ LL hv, h4]`. Simplify using `using h3`. Introduce `c d x hx`. Establish `h2` using `(Submodule.mem_inf.mp hx).2`. Establish `e : glAct p LL (K + 1) c d x = glAct p LL K c d x`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[glAct_succ LL hv, pderiv_freeLast x h2 d, mul_zero, add_zero]`. Rewrite using `[e]`. Use `Submodule.mem_inf.mpr ⟨ycond_glStable LL K Mt c d x (Submodule.mem_inf.mp hx).1, ?_⟩` and prove the remaining obligations. Use `ops_keep_supp {v : Fin (K + 1) × Fin r | (v.1 : ℕ) < K} {m : Fin (K + 1) × Fin r →₀ ℕ | ∀ c, m (Fin.last K, c) = 0} (fun m m' hmm hm c' => ?_) (glAct_mem LL K c d) x h2` and prove the remaining obligations. Rewrite using `[← hmm (Fin.last K, c') (by simp only [Set.mem_ofPred_eq, Fin.val_last, lt_irrefl, not_false_eq_true])]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm c'`.
+A detailed English derivation is pending.
 -/
 theorem free_ycond_succ [NeZero r] (LL : Letters (K + 1)) (hv : LL.vec (Fin.last K) = true) (Mt : WithTop ℤ) :
     YCond p LL K Mt ⊓ FreeLast p K r ≤ YCond p LL (K + 1) Mt := by
@@ -274,9 +270,9 @@ theorem free_ycond_succ [NeZero r] (LL : Letters (K + 1)) (hv : LL.vec (Fin.last
     exact hm c'
 
 /- English proof (translation)
-Rewrite `hx` using `[Pol, mem_restrictSupport_iff]`. Rewrite using `[FreeLast, mem_restrictSupport_iff]`. Introduce `m hm c`. Establish `h1 : ∑ c, m (Fin.last K, c) = (setLast LL 0).deg (Fin.last K)` using `hx hm (Fin.last K)`. Establish `h2 : (setLast LL 0).deg (Fin.last K) = 0` using `by simp [setLast]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Conclude with `Finset.sum_eq_zero_iff.mp h1 c (Finset.mem_univ c)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pol_zero_free (LL : Letters (K + 1)) (x : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p])
     (hx : x ∈ Pol p r (setLast LL 0)) : x ∈ FreeLast p K r := by
@@ -289,39 +285,33 @@ theorem pol_zero_free (LL : Letters (K + 1)) (x : MvPolynomial (Fin (K + 1) × F
   exact Finset.sum_eq_zero_iff.mp h1 c (Finset.mem_univ c)
 
 /- English proof (translation)
-Introduce `o`. Proceed by induction on `o with`. Consider the case `zero`. Introduce `x hx`. Rewrite `hx` using `[mem_xsp]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hxP, hxF, hxk⟩` from `hx`. Use `⟨x, (mem_y _ J M x).mpr ⟨hxP, fun k => ?_⟩, resL_of_free _ x hxF⟩` and prove the remaining obligations. Distinguish the cases in `hk : K + 1 ≤ J k`. Rewrite using `[ycond_late _ (J k) hk]`. Conclude with `free_ycond_succ LL hv (M k) (Submodule.mem_inf.mpr ⟨((hxk k).1 hk).1, pol_zero_free LL x hxP⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `(hxk k).2 hk`. Consider the case `succ o ih`. Distinguish the cases in `hfin : ∃ k, K + 1 ≤ J k ∧ M k ≠ ⊤`. Take `⟨k1, hk1, hM1⟩` from `hfin`. Establish `hne : (univ.filter fun k => K + 1 ≤ J k).Nonempty` using `⟨k1, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hk1⟩⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k0, hk0, hmin⟩` from `Finset.exists_min_image _ M hne`. Establish `hk0' : K + 1 ≤ J k0` using `(Finset.mem_filter.mp hk0).2`. Establish `hmin' : ∀ k, K + 1 ≤ J k → M k0 ≤ M k` using `fun k hk => hmin k (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hk⟩)`. Establish `hM0 : M k0 ≠ ⊤` using `fun h => hM1 (top_le_iff.mp (h ▸ hmin' k1 hk1))`. Take `⟨c, hc⟩` from `WithTop.ne_top_iff_exists.mp hM0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set X1 := XSp p (setLast LL (o + 1)) J M ρ with hX1`. Use `set R := (Y p (setLast LL (o + 1)) J M).map (resL p (Fin.last K, ρ) 0) with hR`. Establish `hRle : R ≤ X1` using `Submodule.map_le_iff_le_comap.mpr fun h hh => restriction_mem_space (setLast LL (o + 1)) J M ρ hr hρ hv hTP h hh`. Establish `hU : ∀ a : Fin r, ∀ h ∈ Y p (setLast LL o) J M, Uop p LL c univ a h ∈ Y p (setLast LL (o + 1)) J M`. Introduce `a h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `hh`, the goal using `[mem_y]`. Use `⟨raising_degree_holds p K r LL c univ a o h hh.1, fun k => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : K + 1 ≤ J k`. Establish `h1 : h ∈ YCond p LL (K + 1) ((c : ℤ) : WithTop ℤ)`. Use `hh.2 k0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[ycond_late _ (J k0) hk0', ← hc]`. Conclude with `this`. Rewrite using `[ycond_late _ (J k) hk]`. Conclude with `ycond_mono LL (K + 1) _ _ (hc ▸ hmin' k hk) (raising_keeps_last_letter p K r LL c a hv h h1)`. Conclude with `raising_keeps_early_letters p K r LL c univ a (J k) (M k) (by omega) h (hh.2 k)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hOm : ∀ x ∈ X1, Omega p LL c ρ x ∈ R`. Introduce `x hx`. Unfold `Omega`. Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun a ha => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `haρ : a ≠ ρ` using `(Finset.mem_erase.mp ha).1`. Take `⟨h, hh, hres⟩` from `ih _ (pderiv_last_letter_mem LL J M ρ a o hr hρ hv hTP haρ x hx)`. Rewrite using `[LinearMap.comp_apply]`. Establish `e : dW p K a x = pderiv (Fin.last K, a) x` using `rfl`. Rewrite using `[e, ← hres]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `restriction_raising_holds p K r LL c ρ a h haρ` as an intermediate fact. Rewrite using `[resL_apply, ← this]`. Conclude with `Submodule.mem_map_of_mem (f := resL p (Fin.last K, ρ) 0) (hU a h hh)`. Establish `hinj : ∀ x ∈ X1, Omega p LL c ρ x = 0 → x = 0`. Introduce `x hx h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx'` using `(mem_xsp _ J M ρ x).mp hx`. Use `hΩ p K r LL ρ c o hr hρ hv x (Submodule.mem_inf.mpr ⟨Submodule.mem_inf.mpr ⟨hx'.1, hx'.2.1⟩, ?_⟩) h0` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `((hx'.2.2 k0).1 hk0').2`. Establish `hXP : X1 ≤ Pol p r (setLast LL (o + 1))` using `fun x hx => ((mem_xsp _ J M ρ x).mp hx).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `pol_finiteDimensional (p := p) (r := r) (setLast LL (o + 1))` as an intermediate fact. Establish `: FiniteDimensional ℚ_[p] X1` using `Submodule.finiteDimensional_of_le hXP`. Set `f : X1 →ₗ[ℚ_[p]] X1` to `(Omega p LL c ρ).restrict (fun x hx => hRle (hOm x hx))`. Establish `hfi : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `y hy`. Establish `: Omega p LL c ρ (y : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) = 0` using `congrArg Subtype.val hy`. Conclude with `Subtype.ext (hinj y y.2 this)`. Establish `hfs : Function.Surjective f` using `LinearMap.injective_iff_surjective.mp hfi`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨y, hy⟩` from `hfs ⟨x, hx⟩`. Establish `hxy : Omega p LL c ρ (y : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) = x` using `congrArg Subtype.val hy`. Establish `hxR : x ∈ R` using `hxy ▸ hOm y y.2`. Take `⟨h, hh, hres⟩` from `Submodule.mem_map.mp hxR`. Conclude with `⟨h, hh, hres⟩`.
-
-Introduce `x hx`. Rewrite `hx` using `[mem_xsp]`. Take `⟨hxP, hxF, hxk⟩` from `hx`. Use `⟨x, (mem_y _ J M x).mpr ⟨hxP, fun k => ?_⟩, resL_of_free _ x hxF⟩` and prove the remaining obligations. Distinguish the cases in `hk : K + 1 ≤ J k`.
-
-Establish `: M k = ⊤`. Assume the negation of the conclusion as `hne`. Conclude with `hfin ⟨k, hk, hne⟩`. Rewrite using `[this, Formalism.CountingSumsFrames.ycond_top]`. Conclude with `Submodule.mem_top`.
-
-Conclude with `(hxk k).2 hk`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restriction_surjective [NeZero r] (hΩ : OmegaInj) (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ)
     (ρ : Fin r) (hr : 2 ≤ r) (hρ : (ρ : ℕ) = r - 1) (hv : LL.vec (Fin.last K) = true)
@@ -418,9 +408,9 @@ theorem restriction_surjective [NeZero r] (hΩ : OmegaInj) (LL : Letters (K + 1)
 end Onto
 
 /- English proof (translation)
-Introduce `p _ K r _ LL q J M ρ a e1 o hr hρ hv hHP ha x hx`. Establish `h0` using `zero_mem_erase ρ hr hρ`. Use `pderiv_last_letter_mem LL J M ρ a o hr hρ hv (fun Mt => ?_) ha x hx` and prove the remaining obligations. Take `⟨P, hP, -, -⟩` from `hHP.1 (K + 1) le_rfl (univ.erase ρ) (Or.inr rfl) {la | ((la 0 : ℤ) : WithTop ℤ) ≤ Mt} (fun la la' hl => by show (((la 0 : ℤ) : WithTop ℤ) ≤ Mt) ↔ (((la' 0 : ℤ) : WithTop ℤ) ≤ Mt)`. Rewrite using `[hl 0 h0])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨P, hP⟩`.
+Supply the required witnesses or components.
 -/
 theorem derivative_keeps_space_holds : DKeepsX := by
   intro p _ K r _ LL q J M ρ a e1 o hr hρ hv hHP ha x hx
@@ -433,9 +423,9 @@ theorem derivative_keeps_space_holds : DKeepsX := by
   exact ⟨P, hP⟩
 
 /- English proof (translation)
-Introduce `p _ K r _ LL q J M ρ e1 hr hρ hv hHP x hx`. Establish `h0` using `zero_mem_erase ρ hr hρ`. Establish `key` using `restriction_surjective hΩ LL J M ρ hr hρ hv (fun Mt => by`. Take `⟨P, hP, -, -⟩` from `hHP.1 (K + 1) le_rfl (univ.erase ρ) (Or.inr rfl) {la | ((la 0 : ℤ) : WithTop ℤ) ≤ Mt} (fun la la' hl => by show (((la 0 : ℤ) : WithTop ℤ) ≤ Mt) ↔ (((la' 0 : ℤ) : WithTop ℤ) ≤ Mt)`. Rewrite using `[hl 0 h0])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨P, hP⟩) (LL.deg (Fin.last K))`. Rewrite `key` using `[setLast_self]`. Conclude with `key x hx`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resOntoKThm_of (hΩ : OmegaInj) : ResOntoKThm := by
   intro p _ K r _ LL q J M ρ e1 hr hρ hv hHP x hx

@@ -9,13 +9,11 @@ open Finset
 namespace Formalism.InvariantFactorPaths.G7
 
 /- English proof (translation)
-Distinguish the cases in `hA : ∃ k ∈ S, 2 ≤ β k`. Conclude with `Or.inl hA`. Use `right`. Assume the negation of the conclusion as `hB`. Establish `hle : ∀ k ∈ S, β k ≤ 1` using `fun k hk => by`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h'`. Conclude with `hA ⟨k, hk, by omega⟩`. Establish `hcard : (S.filter (fun k => β k ≠ 0)).card ≤ 1`. Rewrite using `[Finset.card_le_one]`. Introduce `a ha b hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `ha`, `hb` using `[Finset.mem_filter]`. Assume the negation of the conclusion as `hab`. Conclude with `hB ⟨a, ha.1, b, hb.1, hab, Nat.one_le_iff_ne_zero.mpr ha.2, Nat.one_le_iff_ne_zero.mpr hb.2⟩`. Establish `hsum : ∑ k ∈ S, β k ≤ (S.filter (fun k => β k ≠ 0)).card`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.sum_filter_ne_zero]`. Use `_ ≤ ∑ k ∈ S.filter (fun k => β k ≠ 0), 1 := Finset.sum_le_sum (fun k hk => hle k (Finset.mem_filter.mp hk).1)`. Use `_ = (S.filter (fun k => β k ≠ 0)).card := by simp`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem exists_two_le_or_two_pos_of_one_lt_sum {κ : Type} (S : Finset κ) (β : κ →₀ ℕ)
     (h : 1 < ∑ k ∈ S, β k) :
@@ -43,13 +41,13 @@ private theorem exists_two_le_or_two_pos_of_one_lt_sum {κ : Type} (S : Finset �
   omega
 
 /- English proof (translation)
-Introduce `K σ κ _ _ _ r0 r1 C l sf T I pos ξ col S s₀ hpos hξ β hβ`. Use `h1 K (σ × Fin r0 × Fin r1) κ (fun k => colDir (pos k) (ξ k) (col k)) C (fun c => minorAt (sf c) (T c) (I c)) (fun c => if sf c = s₀ then 1 else 0) S ?hf β ?hsum` and prove the remaining obligations. Use `case hf =>`. Introduce `c β' hc`. Apply the tactic sequence `try dsimp only at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h2 K σ κ r0 r1 (l c) (sf c) (T c) (I c) pos ξ col β'` to reduce the goal to its premises. Distinguish the cases in `hs : sf c = s₀`. Rewrite `hc` using `[if_pos hs]`. Break down `exists_two_le_or_two_pos_of_one_lt_sum S β' hc with ⟨k, _, h2k⟩ | ⟨k, hk, k', hk', hne, h1k, h1k'⟩` into its components or cases. Conclude with `Or.inl ⟨k, h2k⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr (Or.inl ⟨k, k', hne, h1k, h1k', (hpos k hk).trans (hpos k' hk').symm, Or.inl (hξ k hk k' hk')⟩)`. Rewrite `hc` using `[if_neg hs]`. Take `⟨k, hk, hk0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hc.ne'`. Conclude with `Or.inr (Or.inr ⟨k, Nat.one_le_iff_ne_zero.mpr hk0, Or.inl (fun h => hs (h.symm.trans (hpos k hk)))⟩)`. Use `case hsum =>`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Prove the second alternative. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hβ` using `[Finset.card_filter]`. Conclude with `hβ`.
+A detailed English derivation is pending.
 -/
 theorem HitsCapPos_of (h1 : HasseDerivProdVanish) (h2 : MinorHits) : HitsCapPos := by
   intro K σ κ _ _ _ r0 r1 C l sf T I pos ξ col S s₀ hpos hξ β hβ
@@ -74,21 +72,19 @@ theorem HitsCapPos_of (h1 : HasseDerivProdVanish) (h2 : MinorHits) : HitsCapPos 
     exact hβ
 
 /- English proof (translation)
-Introduce `K σ κ _ _ _ r0 r1 C l sf T I pos ξ col S s₀ J hpos hJ β hβ`. Use `h1 K (σ × Fin r0 × Fin r1) κ (fun k => colDir (pos k) (ξ k) (col k)) C (fun c => minorAt (sf c) (T c) (I c)) (fun c => if sf c = s₀ then ((univ.image (I c)) ∩ J).card else 0) S ?hf β ?hsum` and prove the remaining obligations. Use `case hf =>`. Introduce `c β' hc`. Apply the tactic sequence `try dsimp only at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h2 K σ κ r0 r1 (l c) (sf c) (T c) (I c) pos ξ col β'` to reduce the goal to its premises. Distinguish the cases in `hs : sf c = s₀`. Rewrite `hc` using `[if_pos hs]`. Assume the negation of the conclusion as `hno`. Apply `absurd hc` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[not_lt]`. Establish `hle : ∀ k ∈ S, β' k ≤ 1` using `fun k _ => by`. Assume the negation of the conclusion as `h'`. Conclude with `hno (Or.inl ⟨k, by omega⟩)`. Establish `hinj : ∀ k ∈ S.filter (fun k => β' k ≠ 0), ∀ k' ∈ S.filter (fun k => β' k ≠ 0), col k = col k' → k = k'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k hk k' hk' hcol`. Rewrite `hk`, `hk'` using `[Finset.mem_filter]`. Assume the negation of the conclusion as `hne`. Conclude with `hno (Or.inr (Or.inl ⟨k, k', hne, Nat.one_le_iff_ne_zero.mpr hk.2, Nat.one_le_iff_ne_zero.mpr hk'.2, (hpos k hk.1).trans (hpos k' hk'.1).symm, Or.inr hcol⟩))`. Establish `hmaps : ∀ k ∈ S.filter (fun k => β' k ≠ 0), col k ∈ (univ.image (I c)) ∩ J`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `k hk`. Rewrite `hk` using `[Finset.mem_filter]`. Rewrite using `[Finset.mem_inter]`. Use `⟨?_, hJ k hk.1⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnot`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hno (Or.inr (Or.inr ⟨k, Nat.one_le_iff_ne_zero.mpr hk.2, Or.inr (fun hr => by`. Take `⟨i, hi⟩` from `Set.mem_range.mp hr`. Conclude with `hnot (Finset.mem_image.mpr ⟨i, Finset.mem_univ _, hi⟩))⟩))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_filter_ne_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Prove the second alternative. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `_ ≤ ∑ k ∈ S.filter (fun k => β' k ≠ 0), 1 := Finset.sum_le_sum (fun k hk => hle k (Finset.mem_filter.mp hk).1)`. Use `_ = (S.filter (fun k => β' k ≠ 0)).card := by simp`. Use `_ ≤ ((univ.image (I c)) ∩ J).card := Finset.card_le_card_of_injOn col (fun k hk => Finset.mem_coe.mpr (hmaps k (Finset.mem_coe.mp hk))) (fun k hk k' hk' h => hinj k (Finset.mem_coe.mp hk) k' (Finset.mem_coe.mp hk') h)`. Rewrite `hc` using `[if_neg hs]`. Take `⟨k, hk, hk0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hc.ne'`.
-
-Conclude with `Or.inr (Or.inr ⟨k, Nat.one_le_iff_ne_zero.mpr hk0, Or.inl (fun h => hs (h.symm.trans (hpos k hk)))⟩)`. Use `case hsum =>`. Rewrite `hβ` using `[Finset.sum_filter]`. Conclude with `hβ`.
+A detailed English derivation is pending.
 -/
 theorem HitsColumnsPos_of (h1 : HasseDerivProdVanish) (h2 : MinorHits) : HitsColumnsPos := by
   intro K σ κ _ _ _ r0 r1 C l sf T I pos ξ col S s₀ J hpos hJ β hβ
@@ -148,14 +144,14 @@ def BiLe (n0 : ι →₀ ℕ) (W : MvPolynomial κ (MvPolynomial ι K)) : Prop :
   ∀ β : κ →₀ ℕ, ∀ n ∈ (MvPolynomial.coeff β W).support, n ≤ n0 ∧ n.degree + β.degree = n0.degree
 
 /- English proof (translation)
-Introduce `β n hn`. Simplify using `at hn`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma biLe_zero (n0 : ι →₀ ℕ) : BiLe n0 (0 : MvPolynomial κ (MvPolynomial ι K)) := by
   intro β n hn
   simp at hn
 
 /- English proof (translation)
-Introduce `β n hn`. Rewrite `hn` using `[MvPolynomial.coeff_add]`. Break down `Finset.mem_union.mp (MvPolynomial.support_add hn) with hn1 | hn1` into its components or cases. Conclude with `h β n hn1`. Conclude with `h' β n hn1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma biLe_add {n0 : ι →₀ ℕ} {W W' : MvPolynomial κ (MvPolynomial ι K)} (h : BiLe n0 W)
     (h' : BiLe n0 W') : BiLe n0 (W + W') := by
@@ -167,9 +163,7 @@ lemma biLe_add {n0 : ι →₀ ℕ} {W W' : MvPolynomial κ (MvPolynomial ι K)}
   · exact h' β n hn1
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `biLe_zero n0`. Consider the case `@insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
-
-Conclude with `biLe_add (h a (Finset.mem_insert_self a s)) (ih (fun b hb => h b (Finset.mem_insert_of_mem hb)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma biLe_sum {α : Type*} {n0 : ι →₀ ℕ} (s : Finset α)
     (W : α → MvPolynomial κ (MvPolynomial ι K)) (h : ∀ a ∈ s, BiLe n0 (W a)) :
@@ -183,13 +177,13 @@ lemma biLe_sum {α : Type*} {n0 : ι →₀ ℕ} (s : Finset α)
       (ih (fun b hb => h b (Finset.mem_insert_of_mem hb)))
 
 /- English proof (translation)
-Introduce `β n hn`. Rewrite `hn` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_mul, MvPolynomial.coeff_sum]`. Take `⟨q, hq, hq0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hn`. Rewrite `hq0` using `[MvPolynomial.coeff_mul]`. Take `⟨r, hr, hr0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hq0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hq`, `hr` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hA : r.1 ∈ (MvPolynomial.coeff q.1 W).support` using `MvPolynomial.mem_support_iff.mpr (left_ne_zero_of_mul hr0)`. Establish `hB : r.2 ∈ (MvPolynomial.coeff q.2 W').support` using `MvPolynomial.mem_support_iff.mpr (right_ne_zero_of_mul hr0)`. Take `⟨hA1, hA2⟩` from `h q.1 r.1 hA`. Take `⟨hB1, hB2⟩` from `h' q.2 r.2 hB`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr]`. Conclude with `add_le_add hA1 hB1`. Rewrite using `[← hr, ← hq]`. Simplify using `only [map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 lemma biLe_mul {n0 n0' : ι →₀ ℕ} {W W' : MvPolynomial κ (MvPolynomial ι K)} (h : BiLe n0 W)
     (h' : BiLe n0' W') : BiLe (n0 + n0') (W * W') := by
@@ -214,7 +208,7 @@ lemma biLe_mul {n0 n0' : ι →₀ ℕ} {W W' : MvPolynomial κ (MvPolynomial ι
     omega
 
 /- English proof (translation)
-Rewrite `hn` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`. Assume the negation of the conclusion as `h`. Conclude with `hn (if_neg (Ne.symm h))`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_mem_support_one {R σ : Type*} [CommSemiring R] {n : σ →₀ ℕ}
     (hn : n ∈ (1 : MvPolynomial σ R).support) : n = 0 := by
@@ -224,9 +218,9 @@ private theorem eq_zero_of_mem_support_one {R σ : Type*} [CommSemiring R] {n : 
   exact hn (if_neg (Ne.symm h))
 
 /- English proof (translation)
-Rewrite `hn` using `[MvPolynomial.coeff_C]`. Distinguish the cases in `hβ : (0 : κ' →₀ ℕ) = β`. Rewrite `hn` using `[if_pos hβ]`. Conclude with `⟨hβ.symm, hn⟩`. Rewrite `hn` using `[if_neg hβ]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hn`.
+Simplify using the standard rewrite rules.
 -/
 private theorem eq_zero_and_mem_support_of_mem_support_coeff_C {R σ κ' : Type*} [CommSemiring R] {P : MvPolynomial σ R}
     {β : κ' →₀ ℕ} {n : σ →₀ ℕ}
@@ -241,7 +235,7 @@ private theorem eq_zero_and_mem_support_of_mem_support_coeff_C {R σ κ' : Type*
     simp at hn
 
 /- English proof (translation)
-Introduce `β n hn`. Take `⟨hβ, hn'⟩` from `eq_zero_and_mem_support_of_mem_support_coeff_C (P := (1 : MvPolynomial ι K)) (β := β) (n := n) (by rw [MvPolynomial.C_1]; exact hn)`. Take `rfl` from `eq_zero_of_mem_support_one hn'`. Substitute `hβ` using the available equality. Conclude with `⟨le_rfl, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components.
 -/
 lemma biLe_one : BiLe 0 (1 : MvPolynomial κ (MvPolynomial ι K)) := by
   intro β n hn
@@ -252,7 +246,7 @@ lemma biLe_one : BiLe 0 (1 : MvPolynomial κ (MvPolynomial ι K)) := by
   exact ⟨le_rfl, by simp⟩
 
 /- English proof (translation)
-Rewrite `hn` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_C]`. Assume the negation of the conclusion as `h`. Conclude with `hn (if_neg (Ne.symm h))`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_mem_support_C {R σ : Type*} [CommSemiring R] {a : R} {n : σ →₀ ℕ}
     (hn : n ∈ (MvPolynomial.C a : MvPolynomial σ R).support) : n = 0 := by
@@ -262,7 +256,7 @@ private theorem eq_zero_of_mem_support_C {R σ : Type*} [CommSemiring R] {a : R}
   exact hn (if_neg (Ne.symm h))
 
 /- English proof (translation)
-Introduce `β n hn`. Take `⟨hβ, hn'⟩` from `eq_zero_and_mem_support_of_mem_support_coeff_C hn`. Take `rfl` from `eq_zero_of_mem_support_C hn'`. Substitute `hβ` using the available equality. Conclude with `⟨le_rfl, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components.
 -/
 lemma biLe_CC (a : K) :
     BiLe 0 (MvPolynomial.C (MvPolynomial.C a) : MvPolynomial κ (MvPolynomial ι K)) := by
@@ -273,7 +267,7 @@ lemma biLe_CC (a : K) :
   exact ⟨le_rfl, by simp⟩
 
 /- English proof (translation)
-Rewrite `hn` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_X]`. Assume the negation of the conclusion as `h`. Conclude with `hn (if_neg (Ne.symm h))`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem eq_single_of_mem_support_X {R σ : Type*} [CommSemiring R] {x : σ} {n : σ →₀ ℕ}
     (hn : n ∈ (MvPolynomial.X x : MvPolynomial σ R).support) : n = Finsupp.single x 1 := by
@@ -283,7 +277,7 @@ private theorem eq_single_of_mem_support_X {R σ : Type*} [CommSemiring R] {x : 
   exact hn (if_neg (Ne.symm h))
 
 /- English proof (translation)
-Introduce `β n hn`. Take `⟨hβ, hn'⟩` from `eq_zero_and_mem_support_of_mem_support_coeff_C hn`. Take `rfl` from `eq_single_of_mem_support_X hn'`. Substitute `hβ` using the available equality. Conclude with `⟨le_rfl, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components.
 -/
 lemma biLe_CX (x : ι) : BiLe (Finsupp.single x 1)
     (MvPolynomial.C (MvPolynomial.X x) : MvPolynomial κ (MvPolynomial ι K)) := by
@@ -294,11 +288,11 @@ lemma biLe_CX (x : ι) : BiLe (Finsupp.single x 1)
   exact ⟨le_rfl, by simp⟩
 
 /- English proof (translation)
-Introduce `β n hn`. Rewrite `hn` using `[MvPolynomial.coeff_X]`. Distinguish the cases in `hβ : Finsupp.single k 1 = β`. Rewrite `hn` using `[if_pos hβ]`. Take `rfl` from `eq_zero_of_mem_support_one hn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Substitute `hβ` using the available equality. Use `⟨?_, by simp [Finsupp.degree_single]⟩` and prove the remaining obligations. Use `first`. Consider the case `exact zero_le _`. Consider the case `exact fun i => Nat.zero_le _`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp`. Rewrite `hn` using `[if_neg hβ]`. Simplify using `at hn`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem biLe_single_one_X (x : ι) (k : κ) :
     BiLe (Finsupp.single x 1) (MvPolynomial.X k : MvPolynomial κ (MvPolynomial ι K)) := by
@@ -318,7 +312,7 @@ private theorem biLe_single_one_X (x : ι) (k : κ) :
     simp at hn
 
 /- English proof (translation)
-Establish `h` using `biLe_mul (biLe_CC (ι := ι) (κ := κ) a) (biLe_single_one_X (K := K) x k)`. Rewrite `h` using `[zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma biLe_CC_mul_X (x : ι) (a : K) (k : κ) : BiLe (Finsupp.single x 1)
     (MvPolynomial.C (MvPolynomial.C a) * MvPolynomial.X k :
@@ -327,7 +321,7 @@ lemma biLe_CC_mul_X (x : ι) (a : K) (k : κ) : BiLe (Finsupp.single x 1)
   rwa [zero_add] at h
 
 /- English proof (translation)
-The claim follows from `biLe_add (biLe_CX x) (biLe_sum _ _ (fun k _ => biLe_CC_mul_X x (b k x) k))`.
+A detailed English derivation is pending.
 -/
 lemma biLe_gen [Fintype κ] (b : κ → ι → K) (x : ι) : BiLe (Finsupp.single x 1)
     (MvPolynomial.C (MvPolynomial.X x) +
@@ -336,7 +330,7 @@ lemma biLe_gen [Fintype κ] (b : κ → ι → K) (x : ι) : BiLe (Finsupp.singl
   biLe_add (biLe_CX x) (biLe_sum _ _ (fun k _ => biLe_CC_mul_X x (b k x) k))
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, Finsupp.single_zero]`. Conclude with `biLe_one`. Consider the case `succ m ih => rw [pow_succ, Finsupp.single_add]`. Conclude with `biLe_mul ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma biLe_pow_single {x : ι} {W : MvPolynomial κ (MvPolynomial ι K)}
     (h : BiLe (Finsupp.single x 1) W) (m : ℕ) : BiLe (Finsupp.single x m) (W ^ m) := by
@@ -345,9 +339,7 @@ lemma biLe_pow_single {x : ι} {W : MvPolynomial κ (MvPolynomial ι K)}
   | succ m ih => rw [pow_succ, Finsupp.single_add]; exact biLe_mul ih h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.prod_empty]`. Conclude with `biLe_one`. Consider the case `@insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`.
-
-Conclude with `biLe_mul (h a (Finset.mem_insert_self a s)) (ih (fun b hb => h b (Finset.mem_insert_of_mem hb)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma biLe_prod {α : Type*} (s : Finset α) (N : α → ι →₀ ℕ)
     (W : α → MvPolynomial κ (MvPolynomial ι K)) (h : ∀ a ∈ s, BiLe (N a) (W a)) :
@@ -361,7 +353,7 @@ lemma biLe_prod {α : Type*} (s : Finset α) (N : α → ι →₀ ℕ)
       (ih (fun b hb => h b (Finset.mem_insert_of_mem hb)))
 
 /- English proof (translation)
-Rewrite using `[shiftPoly, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq]`. Use `Finset.sum_congr rfl (fun n0 _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.algebraMap_apply, MvPolynomial.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma shiftPoly_eq_sum [Fintype κ] (b : κ → ι → K) (Q : MvPolynomial ι K) :
     shiftPoly b Q = ∑ n0 ∈ Q.support, MvPolynomial.C (MvPolynomial.C (MvPolynomial.coeff n0 Q)) *
@@ -375,9 +367,9 @@ lemma shiftPoly_eq_sum [Fintype κ] (b : κ → ι → K) (Q : MvPolynomial ι K
 end BiLe
 
 /- English proof (translation)
-Introduce `K ι κ _ _ b β Q n hn`. Express the relevant statement in the definitionally equal form `n ∈ (MvPolynomial.coeff β (shiftPoly b Q)).support at hn`. Rewrite `hn` using `[shiftPoly_eq_sum, MvPolynomial.coeff_sum, MvPolynomial.mem_support_iff, MvPolynomial.coeff_sum]`. Take `⟨n0, hn0, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hn`. Establish `hs : ∑ x ∈ n0.support, Finsupp.single x (n0 x) = n0` using `Finsupp.sum_single n0`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `biLe_mul (biLe_CC (ι := ι) (κ := κ) (MvPolynomial.coeff n0 Q)) (biLe_prod n0.support (fun x => Finsupp.single x (n0 x)) _ (fun x _ => biLe_pow_single (biLe_gen b x) (n0 x)))`. Simplify using `only [zero_add, hs] at h`. Take `⟨h1, h2⟩` from `h β n (MvPolynomial.mem_support_iff.mpr hne)`. Use `⟨n0, hn0, h1, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[Finsupp.degree_eq_sum β]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hasseDerivSupport : HasseDegree := by
   intro K ι κ _ _ b β Q n hn
@@ -402,15 +394,13 @@ variable {K σ : Type} [Field K] [DecidableEq σ] {r0 r1 : ℕ}
 def posWt (r0 r1 : ℕ) (s : σ) : σ × Fin r0 × Fin r1 → ℕ := fun x => if x.1 = s then 1 else 0
 
 /- English proof (translation)
-Establish `hinj : Set.InjOn (fun x : Fin r0 × Fin r1 => ((s, x) : σ × Fin r0 × Fin r1)) ((Finset.univ : Finset (Fin r0 × Fin r1)) : Set (Fin r0 × Fin r1))` using `fun x _ y _ h => by simpa using h`. Establish `hsub : n.support ⊆ n.support ∪ Finset.univ.image (fun x : Fin r0 × Fin r1 => ((s, x) : σ × Fin r0 × Fin r1))` using `fun i hi => Finset.mem_union_left _ hi`. Rewrite using `[Finsupp.weight_apply]`. Use `(Finsupp.sum_of_support_subset n hsub (fun i c => c • posWt r0 r1 s i) ?hz).trans ?hs` and prove the remaining obligations. Use `case hz =>`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Introduce `i _`. Use `first`. Consider the case `exact zero_smul ℕ _`. Consider the case `simp`. Use `case hs =>`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `(Finset.sum_subset (fun i hi => Finset.mem_union_right _ hi) ?_).symm` and prove the remaining obligations. Introduce `i _ hi`. Establish `hne : i.1 ≠ s`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hi` to reduce the goal to its premises. Rewrite using `[Finset.mem_image]`. Conclude with `⟨i.2, Finset.mem_univ _, by rw [← h]⟩`. Simplify using `[posWt, hne]`. Use `_ = ∑ x : Fin r0 × Fin r1, n (s, x) • posWt r0 r1 s (s, x) := Finset.sum_image hinj`.
-
-Use `_ = ∑ x : Fin r0 × Fin r1, n (s, x) := by simp [posWt]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma weight_posWt (s : σ) (n : σ × Fin r0 × Fin r1 →₀ ℕ) :
     Finsupp.weight (posWt r0 r1 s) n = ∑ x : Fin r0 × Fin r1, n (s, x) := by
@@ -445,11 +435,9 @@ lemma weight_posWt (s : σ) (n : σ × Fin r0 × Fin r1 →₀ ℕ) :
       _ = ∑ x : Fin r0 × Fin r1, n (s, x) := by simp [posWt]
 
 /- English proof (translation)
-Apply the tactic sequence `have hdeg : (if s' = s then l else 0) = 0 + ∑ _i : Fin l, (if s' = s then 1 else 0) := by split_ifs with h <;> simp [h]`. Rewrite using `[hdeg, minorAt, Matrix.det_apply']`. Use `MvPolynomial.IsWeightedHomogeneous.sum _ _ _ (fun e _ => ?_)` and prove the remaining obligations. Use `MvPolynomial.IsWeightedHomogeneous.mul ?hsign (MvPolynomial.IsWeightedHomogeneous.prod _ _ _ (fun i _ => ?hent))` and prove the remaining obligations. Use `case hsign =>`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Establish `hC` using `MvPolynomial.isWeightedHomogeneous_C (posWt r0 r1 s) ((Equiv.Perm.sign e : ℤ) : K)`. Rewrite `hC` using `[map_intCast]`. Conclude with `hC`. Use `case hent => show MvPolynomial.IsWeightedHomogeneous (posWt r0 r1 s) (∑ a, MvPolynomial.C (T (e i) a) * MvPolynomial.X (s', a, I i)) (if s' = s then 1 else 0)`. Use `MvPolynomial.IsWeightedHomogeneous.sum _ _ _ (fun a _ => ?_)` and prove the remaining obligations.
-
-Conclude with `(MvPolynomial.isWeightedHomogeneous_X K (posWt r0 r1 s) (s', a, I i)).C_mul (T (e i) a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma minorAt_posWt {l : ℕ} (s s' : σ) (T : Fin l → Fin r0 → K) (I : Fin l → Fin r1) :
     MvPolynomial.IsWeightedHomogeneous (posWt r0 r1 s) (minorAt s' T I)
@@ -474,7 +462,7 @@ lemma minorAt_posWt {l : ℕ} (s s' : σ) (T : Fin l → Fin r0 → K) (I : Fin 
 end PosDeg
 
 /- English proof (translation)
-Introduce `K σ _ _ r0 r1 C l sf T I n hn s`. Establish `hH` using `MvPolynomial.IsWeightedHomogeneous.prod Finset.univ (fun c => minorAt (sf c) (T c) (I c)) (fun c => if sf c = s then l c else 0) (w := posWt r0 r1 s) (fun c _ => minorAt_posWt s (sf c) (T c) (I c))`. Establish `h` using `hH (MvPolynomial.mem_support_iff.mp hn)`. Rewrite `h` using `[weight_posWt]`. Rewrite using `[h, Finset.sum_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem minorProdBlockDegree : MinorProdDegree := by
   intro K σ _ _ r0 r1 C l sf T I n hn s

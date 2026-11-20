@@ -18,21 +18,19 @@ namespace GlobalTheory.FiniteImage
 open GlobalTheory.DenseFibreIso
 
 /- English proof (translation)
-Take `⟨A, B, ψ, φ, j, j', _, ⟨y, rfl⟩, H, hj⟩` from `exists_chart s u x`. Set `: Algebra R A` to `ψ.hom.toAlgebra`. Set `: Algebra A B` to `φ.hom.toAlgebra`. Use `replace H : IsPullback (spMap (algebraMap A B)) j' j u := H`. Use `replace hj : j ≫ s = spMap (algebraMap R A) := hj`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `H₁` using `isPullback_tensor R A K`. Take `⟨m, hm, -⟩` from `Scheme.exists_preimage_of_isPullback H₁ y (⊥ : PrimeSpectrum K) (by`. Rewrite using `[← hj, Scheme.Hom.comp_apply]`. Conclude with `PrimeSpectrum.ext hx.symm)`. Establish `H₂` using `(isPullback_tensor A (A ⊗[R] K) B).paste_vert H`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `H₀` using `(IsPullback.of_hasPullback u (pullback.fst s (spMap (algebraMap R K)))).flip`. Establish `hw : (spMap (algebraMap A (A ⊗[R] K)) ≫ j) ≫ s = spMap (Algebra.TensorProduct.includeRight.toRingHom : K →+* A ⊗[R] K) ≫ spMap (algebraMap R K)`. Rewrite using `[Category.assoc, hj]`. Conclude with `H₁.w`. Establish `e : pullback.lift _ _ hw ≫ pullback.fst s _ = _` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H₃` using `IsPullback.of_bot' (v₁₂ := pullback.lift _ _ hw) (by rw [e]; exact H₂) H₀`. Establish `hi` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) H₃.flip hc`. Establish `hs : Function.Surjective (Algebra.TensorProduct.includeLeftRingHom : (A ⊗[R] K) →+* (A ⊗[R] K) ⊗[A] B)`. Establish `h2` using `(IsClosedImmersion.isAffine_surjective_of_isAffine (spMap (Algebra.TensorProduct.includeLeftRingHom : (A ⊗[R] K) →+* (A ⊗[R] K) ⊗[A] B))).2`. Establish `e` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom : (A ⊗[R] K) →+* (A ⊗[R] K) ⊗[A] B))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ((A ⊗[R] K) ⊗[A] B))).hom).2.comp h2`. Rewrite `h3` using `[← ConcreteCategory.coe_comp, e, ConcreteCategory.coe_comp]`. Conclude with `h3.of_comp`. Establish `h1 : IsFinite (spMap (algebraMap A B))` using `MorphismProperty.of_isPullback (P := @IsFinite) H.flip ‹_›`. Establish `: Module.Finite A B` using `RingHom.finite_algebraMap.1 ((IsFinite.SpecMap_iff _).1 h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, ha'⟩` from `exists_away_surjective (A ⊗[R] K) hs m`. Establish `hQ` using `IsClosedImmersion.spec_of_surjective (CommRingCat.ofHom _) ha'`. Establish `H₄` using `(isPullback_tensor A (Localization.Away a) B).paste_vert H`. Set `g` to `spMap (algebraMap A (Localization.Away a)) ≫ j`. Use `⟨g.opensRange, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hy : y ∈ Set.range (PrimeSpectrum.comap (algebraMap A (Localization.Away a)))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away a) a, ← hm]`. Conclude with `ha`. Take `⟨z, rfl⟩` from `hy`. Conclude with `⟨z, Scheme.Hom.comp_apply _ _ _⟩`.
-
-Establish `H'` using `H₄.of_iso (Iso.refl _) g.isoOpensRange (Iso.refl _) (Iso.refl _) (fst' := _ ≫ g.isoOpensRange.hom) (snd' := _) (f' := g.opensRange.ι) (g' := u) (Category.id_comp _).symm ((Category.comp_id _).trans (Category.id_comp _).symm) (by simp [g]) (by simp)`. Establish `H''` using `isPullback_morphismRestrict u g.opensRange`. Rewrite using `[← H''.isoIsPullback_hom_fst _ _ H', MorphismProperty.cancel_left_of_respectsIso @IsClosedImmersion, MorphismProperty.cancel_right_of_respectsIso @IsClosedImmersion]`. Conclude with `hQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isClosedImmersion_restrict {R : Type} [CommRing R] {U Z : Scheme.{0}}
     (s : Z ⟶ Sp R) (u : U ⟶ Z) [IsFinite u] (K : Type) [Field K] [Algebra R K]
@@ -91,9 +89,9 @@ theorem exists_isClosedImmersion_restrict {R : Type} [CommRing R] {U Z : Scheme.
     exact hQ
 
 /- English proof (translation)
-Use `IsZariskiLocalAtTarget.of_forall_exists_morphismRestrict fun x => ?_` and prove the remaining obligations. Take `⟨V, hV, hx⟩` from `TopologicalSpace.Opens.mem_sSup.1 x.2`. Use `⟨(sSup {V : Z.Opens | Q (u ∣_ V)}).ι ⁻¹ᵁ V, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Q.arrow_mk_iso_iff (morphismRestrictRestrict _ _ _)]`. Use `(Q.arrow_mk_iso_iff (morphismRestrictEq u ?_)).2 hV` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_eq_right.2 (le_sSup hV)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrict_sSup (Q : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget Q]
     {U Z : Scheme.{0}} (u : U ⟶ Z) :
@@ -107,7 +105,7 @@ theorem restrict_sSup (Q : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget 
   exact inf_eq_right.2 (le_sSup hV)
 
 /- English proof (translation)
-Introduce `x`. Establish `hsp : (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum O) ⤳ t x` using `(PrimeSpectrum.le_iff_specializes _ _).1 (show (⊥ : Ideal O) ≤ _ from bot_le)`. Take `⟨y, hy, hy'⟩` from `Flat.generalizingMap t hsp`. Conclude with `hy.mem_closed isClosed_closure (subset_closure (hW y (by rw [hy'])))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dense_of_flat {O : Type} [CommRing O] [IsDomain O] {T : Scheme.{0}} (t : T ⟶ Sp O)
     [Flat t] (W : Set T) (hW : ∀ x : T, (t x).asIdeal = ⊥ → x ∈ W) : Dense W := by
@@ -118,15 +116,13 @@ theorem dense_of_flat {O : Type} [CommRing O] [IsDomain O] {T : Scheme.{0}} (t :
   exact hy.mem_closed isClosed_closure (subset_closure (hW y (by rw [hy'])))
 
 /- English proof (translation)
-Introduce `O F _ _ _ _ _ U Z u s _ _ _ _ _ hc`. Set `W₀ : Z.Opens` to `sSup {V : Z.Opens | IsClosedImmersion (u ∣_ V)}`. Establish `hW₀ : IsClosedImmersion (u ∣_ W₀)` using `restrict_sSup @IsClosedImmersion u`. Establish `hmem : ∀ z : Z, (s z).asIdeal = ⊥ → z ∈ W₀` using `fun z hz => by`. Take `⟨V, hV, hV'⟩` from `exists_isClosedImmersion_restrict s u F hc z (by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hz]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective O F))`. Conclude with `TopologicalSpace.Opens.mem_sSup.2 ⟨V, hV', hV⟩`. Establish `hfl : Flat (u.imageι ≫ s)` using `flat_image_of_isDedekindDomain (O := CommRingCat.of O) u s`. Establish `: IsFinite (u.toImage ≫ u.imageι)` using `by rw [u.toImage_imageι]; infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : IsFinite u.toImage` using `IsFinite.of_comp _ u.imageι`. Use `⟨u.image, u.toImage, u.imageι, u.imageι ⁻¹ᵁ W₀, u.toImage_imageι, inferInstance, hfin, surjective_of_isDominant_of_isClosed_range _ u.toImage.isClosedMap.isClosed_range, dense_of_flat (u.imageι ≫ s) _ fun x hx => hmem _ (by rwa [← Scheme.Hom.comp_apply]), ?_, dense_of_flat (u ≫ s …` and prove the remaining obligations. Establish `h1 : IsClosedImmersion ((u.toImage ≫ u.imageι) ∣_ W₀)`. Establish `: ∀ v : U ⟶ Z, v = u → IsClosedImmersion (v ∣_ W₀)` using `by rintro _ rfl; exact hW₀`. Conclude with `this _ u.toImage_imageι`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[morphismRestrict_comp]`. Establish `h2 : IsClosedImmersion (u.toImage ∣_ u.imageι ⁻¹ᵁ W₀)` using `@IsClosedImmersion.of_comp _ _ _ _ (u.imageι ∣_ W₀) h1 _`. Establish `h3 : IsSchemeTheoreticallyDominant (u.toImage ∣_ u.imageι ⁻¹ᵁ W₀)` using `IsSchemeTheoreticallyDominant.of_isPullback (isPullback_morphismRestrict u.toImage (u.imageι ⁻¹ᵁ W₀)).flip`. Conclude with `isIso_of_isClosedImmersion_of_schemeDominant _`. Express the relevant statement in the definitionally equal form `u.imageι (u.toImage x) ∈ W₀`.
-
-Rewrite using `[← Scheme.Hom.comp_apply, u.toImage_imageι]`. Conclude with `hmem _ (by rwa [← Scheme.Hom.comp_apply])`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (O F : Type) [CommRing O] [IsDedekindDomain O] [Field F] [Algebra O F] [IsFractionRing O F] (U Z : Scheme.{0}) (u : U ⟶ Z) (s : Z ⟶ Sp O), IsFinite u → IsReduced U → Flat (u ≫ s) → LocallyOfFiniteType s → QuasiCompact s → IsClosedImmersion (pullback.snd u (pullback.fst s (spMap (algebraMap O F)))) → ∃ (XX : Scheme.{0}) (u' : U ⟶ XX) (i : XX ⟶ Z) (W : XX.Opens), u' ≫ i = u ∧ IsClosedImmersion i ∧ IsFinite u' ∧ Surjective u' ∧ Dense (W : Set XX) ∧ IsIso (u' ∣_ W) ∧ Dense ((u' ⁻¹ᵁ W : U.Opens) : Set U) ∧ IsReduced XX ∧ Flat (i ≫ s) := by
   intro O F _ _ _ _ _ U Z u s _ _ _ _ _ hc

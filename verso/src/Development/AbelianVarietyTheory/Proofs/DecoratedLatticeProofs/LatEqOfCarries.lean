@@ -19,9 +19,9 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ N : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E N → ∀ x : Fin n → E, (x ∈ N ↔ (fun j => Formalism.UG.inclE (F` using `F) (Formalism.L2.Herm.Af F) (x j)) ∈ Formalism.L2.Herm.hatL (F := F) N) := by`. Introduce `N hN x`. Establish `hone` using `Formalism.UG.P.global_lattice_one_holds F E (Fin n) N (Module.Finite.iff_fg.mpr hN.fg) hN.span_eq_top`. Use `conv_lhs => rw [← hone]`. Use `show (((1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ (fun i => Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (x i)) ∈ Formalism.L2.Herm.hatL (F := F) N ↔ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[inv_one, Units.val_one, Matrix.one_mulVec]`. Use extensionality with `x`. Rewrite using `[key N₁ h₁, key N₂ h₂, c₁, c₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_eq_of_carries {g : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {N₁ N₂ : Submodule (𝓞 E) (Fin n → E)}
     (h₁ : Submodule.IsLattice E N₁) (h₂ : Submodule.IsLattice E N₂)
@@ -47,7 +47,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)}
 
 /- English proof (translation)
-Establish `hfr` using `isFr_ptFr p P.1`. Rewrite `hfr` using `[← frsF_eq_ptFr sel mu p P]`. Conclude with `(hfr _).1 (by simpa using hw)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frsF_symm_mem {u : Pr.Word} {j : ℕ} (p : ChPt (R := R) sel mu u j) (P : rowSG Pr sel mu) {w : Sp X.E (R.N j)}
     (hw : w ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal p.deco.1.N) : (frsF sel mu p P).symm w ∈ stdAt X.E (R.N j) P.1 := by
@@ -56,7 +56,7 @@ theorem frsF_symm_mem {u : Pr.Word} {j : ℕ} (p : ChPt (R := R) sel mu u j) (P 
   exact (hfr _).1 (by simpa using hw)
 
 /- English proof (translation)
-Establish `hfr` using `isFr_ptFr p P.1`. Rewrite `hfr` using `[← frsF_eq_ptFr sel mu p P]`. Conclude with `(hfr _).2 hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frsF_mem {u : Pr.Word} {j : ℕ} (p : ChPt (R := R) sel mu u j) (P : rowSG Pr sel mu) {x : Sp X.E (R.N j)}
     (hx : x ∈ stdAt X.E (R.N j) P.1) : frsF sel mu p P x ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal p.deco.1.N := by
@@ -65,11 +65,11 @@ theorem frsF_mem {u : Pr.Word} {j : ℕ} (p : ChPt (R := R) sel mu u j) (P : row
   exact (hfr _).2 hx
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [cosetIn, if_pos hP, pow_zero, inv_one, one_smul, Set.mem_setOf_eq, hY]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y', hy', hz⟩`. Establish `h1 : y' - y ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal r.1.1.deco.1.N`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `(Submodule.mem_iInf _).1 hy' P` as an intermediate fact. Simplify `this` using `[Submodule.mem_comap, he]`. Use `add_mem hz (frsF_symm_mem r.1.1 P h1)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_add_sub_cancel]`. Then use the resulting hypothesis. Introduce `hz`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨y, by simp, hz⟩`.
+Supply the required witnesses or components.
 -/
 theorem cosetIn_eq_of {u : Pr.Word} {j : ℕ} (r : PtAt R sel mu cst u j) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs)
     (y : Sp X.E (R.N j)) (e : rowSG Pr sel mu → ℤ) (he : e P = 0)

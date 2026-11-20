@@ -10,9 +10,9 @@ namespace PI.UnitaryGroupMassFormula.UJClassFin
 open PI.UJClassFin
 
 /- English proof (translation)
-Unfold `PI.UJClassFin.Jpq`. Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Break down `j with j | j` into its components or cases. Simplify using `[Matrix.one_apply]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `j.elim0`. Conclude with `i.elim0`.
+A detailed English derivation is pending.
 -/
 theorem Jpq_zero (M : ℕ) : Jpq M 0 = 1 := by
   unfold PI.UJClassFin.Jpq
@@ -24,7 +24,7 @@ theorem Jpq_zero (M : ℕ) : Jpq M 0 = 1 := by
   · exact i.elim0
 
 /- English proof (translation)
-Unfold `PI.UJClassFin.cT`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem cT_conj {m : Type} (X : Matrix m m ℂ) : cT (starRingEnd ℂ) X = Xᴴ := by
   unfold PI.UJClassFin.cT
@@ -32,17 +32,17 @@ theorem cT_conj {m : Type} (X : Matrix m m ℂ) : cT (starRingEnd ℂ) X = Xᴴ 
   rfl
 
 /- English proof (translation)
-Introduce `M A h`. Unfold `HasSignature at h`. Take `⟨e, P, hP⟩` from `h`. Rewrite `hP` using `[cT_conj, Jpq_zero]`. Generalize the expression as in `hBdef : reindex e e A = B at hP`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨Q, hQ⟩ : ∃ Q : Matrix (Fin M ⊕ Fin 0) (Fin M ⊕ Fin 0) ℂ, Q = ((P⁻¹ : GL (Fin M ⊕ Fin 0) ℂ) : Matrix (Fin M ⊕ Fin 0) (Fin M ⊕ Fin 0) ℂ)` from `⟨_, rfl⟩`. Establish `hPQ : (P : Matrix (Fin M ⊕ Fin 0) (Fin M ⊕ Fin 0) ℂ) * Q = 1`. Rewrite using `[hQ]`. Conclude with `Units.mul_inv P`. Establish `hinj : Function.Injective Q.mulVec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Establish `h2` using `congrArg (fun v => (P : Matrix (Fin M ⊕ Fin 0) (Fin M ⊕ Fin 0) ℂ) *ᵥ v) hxy`. Simplify `h2` using `[Matrix.mulVec_mulVec, hPQ]`. Establish `hBeq : B = Qᴴ * 1 * Q`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPQ]`. Simplify using the standard rewrite rules. Use `_ = Qᴴ * ((P : Matrix (Fin M ⊕ Fin 0) (Fin M ⊕ Fin 0) ℂ)ᴴ * B * (P : Matrix (Fin M ⊕ Fin 0) (Fin M ⊕ Fin 0) ℂ)) * Q := by`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Qᴴ * 1 * Q := by rw [hP]`. Establish `hBpos : B.PosDef`. Rewrite using `[hBeq]`. Conclude with `Matrix.PosDef.one.conjTranspose_mul_mul_same hinj`. Establish `hA : A = B.submatrix e e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hBdef]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[hA]`. Conclude with `hBpos.submatrix e.injective`.
+A detailed English derivation is pending.
 -/
 theorem posDefOfDefiniteSignature_holds : SigPos := by
   intro M A h

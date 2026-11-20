@@ -18,9 +18,9 @@ private theorem pseudo_character_sum_cons_expand {M A : Type*} [Monoid M] [CommR
         ∑ i, _root_.GlobalTheory.PsChar.alt T n (Function.update r i (a * r i)) := rfl
 
 /- English proof (translation)
-Rewrite using `[pseudo_character_sum_cons_expand, pseudo_character_sum_cons_expand, ih]`. Use `congr 1`. Establish `: ∀ i, Function.update (w ∘ τ) i (a * (w ∘ τ) i) = Function.update w (τ i) (a * w (τ i)) ∘ τ` using `fun i => by`. Rewrite using `[Function.update_comp_equiv, Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [this, ih]`. Conclude with `Equiv.sum_comp τ (fun j => _root_.GlobalTheory.PsChar.alt T n (Function.update w j (a * w j)))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pseudo_character_sum_cons_comp_perm {M A : Type*} [Monoid M] [CommRing A] (T : M → A) (n : ℕ)
     (ih : ∀ (w : Fin n → M) (τ : Equiv.Perm (Fin n)),
@@ -37,11 +37,11 @@ private theorem pseudo_character_sum_cons_comp_perm {M A : Type*} [Monoid M] [Co
   exact Equiv.sum_comp τ (fun j => _root_.GlobalTheory.PsChar.alt T n (Function.update w j (a * w j)))
 
 /- English proof (translation)
-Rewrite using `[pseudo_character_sum_cons_expand, Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, Fin.update_cons_zero, Fin.cons_update, pseudo_character_sum_cons_expand]`. Establish `hin : ∀ i : Fin n, ∑ l, _root_.GlobalTheory.PsChar.alt T n (Function.update (Function.update r i (a * r i)) l (b * Function.update r i (a * r i) l)) = _root_.GlobalTheory.PsChar.alt T n (Function.update r i (b * a * r i)) + ∑ l, if l = i then 0 else _root_.GlobalTheory.PsChar.alt …`. Introduce `i`. Establish `hX : (∑ l : Fin n, if l = i then _root_.GlobalTheory.PsChar.alt T n (Function.update r i (b * a * r i)) else 0) = _root_.GlobalTheory.PsChar.alt T n (Function.update r i (b * a * r i))` using `by simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hX, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hl, if_neg hl, zero_add, Function.update_of_ne hl]`. Simplify using `only [← Fin.cons_update, pseudo_character_sum_cons_expand, Finset.sum_sub_distrib, Function.update_self]`. Simplify using `only [hin, Finset.sum_add_distrib, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem alt_cons_cons_lemma_5 {M A : Type*} [Monoid M] [CommRing A] (T : M → A) (n : ℕ)
     (a b : M) (r : Fin n → M) :
@@ -76,9 +76,9 @@ private theorem alt_cons_cons_lemma_5 {M A : Type*} [Monoid M] [CommRing A] (T :
   ring
 
 /- English proof (translation)
-Rewrite using `[alt_cons_cons_lemma_5, alt_cons_cons_lemma_5, hc a b]`. Establish `hoff : (∑ i, ∑ l, if l = i then (0 : A) else _root_.GlobalTheory.PsChar.alt T n (Function.update (Function.update r i (a * r i)) l (b * r l))) = ∑ i, ∑ l, if l = i then (0 : A) else _root_.GlobalTheory.PsChar.alt T n (Function.update (Function.update r i (b * r i)) l (a * r l))`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l = i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hl]`. Rewrite using `[if_neg (Ne.symm hl), if_neg hl, Function.update_comm (Ne.symm hl)]`. Rewrite using `[hoff]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem pseudo_character_sum_swap_head_pair {M A : Type*} [Monoid M] [CommRing A] (T : M → A)
     (hc : ∀ a b, T (a * b) = T (b * a)) (n : ℕ) (a b : M) (r : Fin n → M) :
@@ -98,29 +98,29 @@ private theorem pseudo_character_sum_swap_head_pair {M A : Type*} [Monoid M] [Co
   ring
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro v σ`. Both sides reduce to the same expression. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Establish `htail : ∀ (v : Fin (n + 1) → M) (i j : Fin n), _root_.GlobalTheory.PsChar.alt T (n + 1) (v ∘ Equiv.swap i.succ j.succ) = _root_.GlobalTheory.PsChar.alt T (n + 1) v`. Introduce `v i j`. Establish `hv : v ∘ Equiv.swap i.succ j.succ = Fin.cons (v 0) (Fin.tail v ∘ Equiv.swap i j)`. Use function extensionality and compare the values at `k`. Proceed by induction on `k using Fin.cases with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction.
 
-Consider the case `zero`. Simplify using `[Equiv.swap_apply_of_ne_of_ne (Fin.succ_ne_zero i).symm (Fin.succ_ne_zero j).symm]`. Consider the case `succ k`. Simplify using `only [Function.comp_apply, Fin.cons_succ, Fin.tail]`. Rewrite using `[(Fin.succ_injective n).swap_apply]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, pseudo_character_sum_cons_comp_perm T n ih, Fin.cons_self_tail]`. Establish `h0 : ∀ (v : Fin (n + 1) → M) (j : Fin n), _root_.GlobalTheory.PsChar.alt T (n + 1) (v ∘ Equiv.swap 0 j.succ) = _root_.GlobalTheory.PsChar.alt T (n + 1) v`. Introduce `v j`. Consider the cases of `n with`. Consider the case `zero => exact j.elim0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ m`. Establish `h01 : ∀ v : Fin (m + 2) → M, _root_.GlobalTheory.PsChar.alt T (m + 2) (v ∘ Equiv.swap 0 (Fin.succ 0)) = _root_.GlobalTheory.PsChar.alt T (m + 2) v`. Introduce `v`. Take `⟨a, b, r, rfl⟩ : ∃ a b r, v = Fin.cons a (Fin.cons b r)` from `⟨_, _, _, (Fin.cons_self_tail v).symm.trans (congrArg _ (Fin.cons_self_tail _).symm)⟩`. Establish `hv : (Fin.cons a (Fin.cons b r) : Fin (m + 2) → M) ∘ Equiv.swap 0 (Fin.succ 0) = Fin.cons b (Fin.cons a r)`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun k => Fin.cases ?_ (fun k => ?_) k) k` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `only [Function.comp_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Equiv.swap_apply_of_ne_of_ne (Fin.succ_ne_zero _) (fun h => Fin.succ_ne_zero k (Fin.succ_injective _ h))]`. Simplify using the standard rewrite rules. Rewrite using `[hv, pseudo_character_sum_swap_head_pair T hc]`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact h01 v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k`. Establish `hp : Equiv.swap (0 : Fin (m + 2)) k.succ.succ = Equiv.swap (Fin.succ 0) k.succ.succ * Equiv.swap 0 (Fin.succ 0) * Equiv.swap (Fin.succ 0) k.succ.succ`. Establish `h1 : Equiv.swap (Fin.succ 0) k.succ.succ (0 : Fin (m + 2)) = 0` using `Equiv.swap_apply_of_ne_of_ne (Fin.succ_ne_zero 0).symm (Fin.succ_ne_zero _).symm`. Establish `h2 : Equiv.swap (Fin.succ 0) k.succ.succ (Fin.succ 0 : Fin (m + 2)) = k.succ.succ` using `Equiv.swap_apply_left _ _`. Use `Equiv.swap_apply_apply (Equiv.swap (Fin.succ 0) k.succ.succ) 0 (Fin.succ 0)` as an intermediate fact.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h1, h2, Equiv.swap_inv]`. Conclude with `this`. Rewrite using `[hp, Equiv.Perm.coe_mul, Equiv.Perm.coe_mul, ← Function.comp_assoc, ← Function.comp_assoc, htail, h01, htail]`. Establish `hswap : ∀ (v : Fin (n + 1) → M) (x y : Fin (n + 1)), _root_.GlobalTheory.PsChar.alt T (n + 1) (v ∘ Equiv.swap x y) = _root_.GlobalTheory.PsChar.alt T (n + 1) v`. Introduce `v x y`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `x using Fin.cases with`. Consider the case `zero`. Proceed by induction on `y using Fin.cases with`. Consider the case `zero => simp`. Consider the case `succ j => exact h0 v j`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `succ i`. Proceed by induction on `y using Fin.cases with`. Consider the case `zero => rw [Equiv.swap_comm]`. Conclude with `h0 v i`. Consider the case `succ j => exact htail v i j`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v σ`. Use `revert v`. Use `Equiv.Perm.swap_induction_on (motive := fun σ => ∀ v : Fin (n + 1) → M, _root_.GlobalTheory.PsChar.alt T (n + 1) (v ∘ σ) = _root_.GlobalTheory.PsChar.alt T (n + 1) v) σ (fun v => rfl) ?_` and prove the remaining obligations. Introduce `f x y _ hf v`. Rewrite using `[Equiv.Perm.coe_mul, ← Function.comp_assoc, hf, hswap]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pseudo_character_sum_comp_perm {M A : Type*} [Monoid M] [CommRing A] (T : M → A)
     (hc : ∀ a b, T (a * b) = T (b * a)) :
@@ -207,27 +207,27 @@ private theorem pseudo_character_sum_comp_perm {M A : Type*} [Monoid M] [CommRin
 open Polynomial in
 
 /- English proof (translation)
-Establish `hc : ∀ a b : R, T (a * b) = T (b * a)` using `h.comm`. Establish `hupd : ∀ (m : ℕ) (i : Fin (m + 1)) (w : R), _root_.GlobalTheory.PsChar.alt (fun r : R => T r) (m + 1) (Function.update (fun _ => x) i w) = _root_.GlobalTheory.PsChar.alt (fun r : R => T r) (m + 1) (Fin.cons w fun _ => x)`. Introduce `m i w`. Rewrite using `[← pseudo_character_sum_comp_perm _ hc (m + 1) _ (Equiv.swap 0 i)]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Rewrite using `[Function.comp_apply, Equiv.swap_apply_left, Function.update_self, Fin.cons_zero]`. Rewrite using `[Function.comp_apply, Fin.cons_succ, Function.update_of_ne]`. Introduce `hj`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Fin.succ_ne_zero _ ((Equiv.swap 0 i).injective (hj.trans (Equiv.swap_apply_left 0 i).symm))`. Establish `hrec : ∀ (m : ℕ) (y : R), _root_.GlobalTheory.PsChar.alt (fun r : R => T r) (m + 2) (Fin.cons y fun _ => x) = T y * _root_.GlobalTheory.PsChar.alt (fun r : R => T r) (m + 1) (fun _ => x) - (m + 1) * _root_.GlobalTheory.PsChar.alt (fun r : R => T r) (m + 1) (Fin.cons (y * x) fun _ …`. Introduce `m y`. Rewrite using `[pseudo_character_sum_cons_expand]`. Simplify using `only [hupd, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hcoef : ∀ m : ℕ, ∃ c : ℕ → k, (∀ y, _root_.GlobalTheory.PsChar.alt (fun r : R => T r) (m + 1) (Fin.cons y fun _ => x) = ∑ j ∈ Finset.range (m + 1), c j * T (y * x ^ j)) ∧ c m = (-1) ^ m * (m.factorial : k)`. Introduce `m`. Proceed by induction on `m with`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Use `⟨fun _ => 1, fun y => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[pseudo_character_sum_cons_expand]`. Simplify using the standard rewrite rules. Conclude with `mul_one (T y)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `succ m ih`. Take `⟨c, hc1, hc2⟩` from `ih`. Use `⟨fun j => if j = 0 then _root_.GlobalTheory.PsChar.alt (fun r : R => T r) (m + 1) (fun _ => x) else -((m : k) + 1) * c (j - 1), fun y => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hrec, hc1, Finset.sum_range_succ' _ (m + 1)]`. Simplify using `only [Nat.add_one_ne_zero, if_false, if_true, Nat.add_sub_cancel, pow_zero, mul_one, pow_succ', ← mul_assoc, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[sub_eq_add_neg, add_comm, ← Finset.sum_neg_distrib]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Nat.add_one_ne_zero, if_false, Nat.add_sub_cancel, hc2, Nat.factorial_succ]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc1, hc2⟩` from `hcoef d`. Establish `hzero : ∀ y, ∑ j ∈ Finset.range (d + 1), c j * T (y * x ^ j) = 0` using `fun y => (hc1 y).symm.trans (h.alt_eq_zero _)`. Establish `hcd : c d ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc2]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) (by exact_mod_cast Nat.factorial_ne_zero d)`. Establish `hdeg : (∑ i : Fin d, C (c i / c d) * X ^ (i : ℕ)).degree < (d : WithBot ℕ)` using `Polynomial.degree_sum_fin_lt _`. Use `⟨X ^ d + ∑ i : Fin d, C (c i / c d) * X ^ (i : ℕ), Polynomial.monic_X_pow_add hdeg, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.natDegree_add_eq_left_of_degree_lt (by rwa [Polynomial.degree_X_pow]), Polynomial.natDegree_X_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e` using `hzero y`. Rewrite `e` using `[Finset.sum_range_succ]`. Simplify using `only [map_add, map_pow, Polynomial.aeval_X, map_sum, map_mul, Polynomial.aeval_C, add_mul, Finset.sum_mul, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, map_smul, smul_eq_mul]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => c i / c d * T (x ^ i * y)) d, hc]`. Establish `hs : ∑ i ∈ Finset.range d, c i / c d * T (x ^ i * y) = (∑ i ∈ Finset.range d, c i * T (y * x ^ i)) / c d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hc]; ring`. Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `e`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PsChar.cayleyHamilton (k R : Type) [Field k] [CharZero k] [Ring R] [Algebra k R]
     (d : ℕ) (T : R →ₗ[k] k) (h : _root_.GlobalTheory.PsChar.IsPsChar d (fun x => T x)) (x : R) :

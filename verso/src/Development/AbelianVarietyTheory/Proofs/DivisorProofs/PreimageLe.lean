@@ -14,7 +14,7 @@ variable {K : Type} [Field K]
 def tors (B : AbVar K) (n : ℕ) : Subgroup (𝟙_ (Over (Sp K)) ⟶ B.X) := (powMonoidHom n).ker
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_tors {B : AbVar K} {n : ℕ} {y : 𝟙_ (Over (Sp K)) ⟶ B.X} : y ∈ tors B n ↔ y ^ n = 1 := Iff.rfl
 
@@ -23,7 +23,7 @@ abbrev mulN (B : AbVar K) (n : ℕ) : B.X.left ⟶ B.X.left := (𝟙 B.X ^ (n : 
 def transl (B : AbVar K) (y : 𝟙_ (Over (Sp K)) ⟶ B.X) : B.X ⟶ B.X := (toUnit B.X ≫ y) * 𝟙 B.X
 
 /- English proof (translation)
-Rewrite using `[mulN, ← Over.comp_left]`. Use `congr 1`. Rewrite using `[zpow_natCast, transl, MonObj.comp_pow, Category.comp_id, mul_pow, ← MonObj.comp_pow, mem_tors.1 hy, MonObj.comp_one, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_mulN (B : AbVar K) (n : ℕ) (y : 𝟙_ (Over (Sp K)) ⟶ B.X) (hy : y ∈ tors B n) :
     (transl B y).left ≫ mulN B n = mulN B n := by
@@ -33,7 +33,7 @@ theorem transl_mulN (B : AbVar K) (n : ℕ) (y : 𝟙_ (Over (Sp K)) ⟶ B.X) (h
     mem_tors.1 hy, MonObj.comp_one, _root_.one_mul]
 
 /- English proof (translation)
-Introduce `x hx` and use `by change ((transl B y).left ≫ mulN B n) x ∈ V rw [transl_mulN B n y hy] exact hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem preimage_le (B : AbVar K) (n : ℕ) (y : 𝟙_ (Over (Sp K)) ⟶ B.X) (hy : y ∈ tors B n) (V : B.X.left.Opens) :
     mulN B n ⁻¹ᵁ V ≤ (transl B y).left ⁻¹ᵁ (mulN B n ⁻¹ᵁ V) := fun x hx => by

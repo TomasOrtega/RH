@@ -16,9 +16,9 @@ section maps
 variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro v`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `v`. Rewrite using `[pow_succ', Module.End.mul_apply, h, ih, pow_succ', Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem fsb_pow_map (f : V →ₗ[ℂ] W) (T : Module.End ℂ V) (T' : Module.End ℂ W)
     (h : ∀ v, f (T v) = T' (f v)) : ∀ (k : ℕ) (v : V), f ((T ^ k) v) = (T' ^ k) (f v) := by
@@ -30,9 +30,9 @@ theorem fsb_pow_map (f : V →ₗ[ℂ] W) (T : Module.End ℂ V) (T' : Module.En
     rw [pow_succ', Module.End.mul_apply, h, ih, pow_succ', Module.End.mul_apply]
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => intro g g' _ v`. Simplify using the standard rewrite rules. Consider the case `succ t ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `g g' hg v`. Rewrite using `[List.ofFn_succ, List.prod_cons, Module.End.mul_apply, hg, ih (fun i => g i.succ) (fun i => g' i.succ) (fun k w => hg k.succ w), List.ofFn_succ, List.prod_cons, Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem fsb_ofFn_map (f : V →ₗ[ℂ] W) : ∀ (t : ℕ) (g : Fin t → Module.End ℂ V) (g' : Fin t → Module.End ℂ W),
     (∀ k v, f (g k v) = g' k (f v)) → ∀ v, f ((List.ofFn g).prod v) = (List.ofFn g').prod (f v) := by
@@ -46,9 +46,9 @@ theorem fsb_ofFn_map (f : V →ₗ[ℂ] W) : ∀ (t : ℕ) (g : Fin t → Module
       Module.End.mul_apply]
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.qdet, Formalism.REAL.qminor, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, Module.End.intCast_apply, Module.End.intCast_apply, map_zsmul]`. Use `congr 1`. Use `fsb_ofFn_map f n _ _ (fun k w => ?_) v` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Formalism.REAL.Tm, LinearMap.add_apply, map_add, hf]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fsb_qdet_map {E : Fin n → Fin n → Module.End ℂ V} {E' : Fin n → Fin n → Module.End ℂ W}
     (f : V →ₗ[ℂ] W) (hf : ∀ a b v, f (E a b v) = E' a b (f v)) (x : ℂ) (v : V) :
@@ -63,9 +63,9 @@ theorem fsb_qdet_map {E : Fin n → Fin n → Module.End ℂ V} {E' : Fin n → 
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `key` using `hE a b c d`. Use extensionality with `w`. Take `⟨v, rfl⟩` from `hs w`. Establish `key'` using `congrArg (fun T => f (T v)) key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs at key' ⊢ <;> simpa [hf] using key'`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fsb_glRel_surj {E : Fin n → Fin n → Module.End ℂ V} {E' : Fin n → Fin n → Module.End ℂ W}
     (f : V →ₗ[ℂ] W) (hs : Function.Surjective f) (hf : ∀ a b v, f (E a b v) = E' a b (f v)) (hE : GlRel E) :
@@ -80,9 +80,9 @@ theorem fsb_glRel_surj {E : Fin n → Fin n → Module.End ℂ V} {E' : Fin n �
 end maps
 
 /- English proof (translation)
-Establish `hT : ∀ (u c : ℂ) (w : M1.V), f ((Formalism.REAL.qdet M1.E u - c • (1 : Module.End ℂ M1.V)) w) = (Formalism.REAL.qdet M2.E u - c • (1 : Module.End ℂ M2.V)) (f w)`. Introduce `u c w`. Rewrite using `[LinearMap.sub_apply, LinearMap.sub_apply, map_sub, fsb_qdet_map f hf, LinearMap.smul_apply, LinearMap.smul_apply, Module.End.one_apply, Module.End.one_apply, map_smul]`. Take `⟨k, hk⟩` from `h`. Use `⟨k, fun Y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `v`. Apply `hi` to reduce the goal to its premises. Rewrite using `[fsb_pow_map f _ _ (hT _ _) k v, hk Y]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fsb_hasChar_inj (M1 M2 : GMod n) (f : M1.V →ₗ[ℂ] M2.V) (hf : ∀ a b v, f (M1.E a b v) = M2.E a b (f v))
     (hi : Function.Injective f) (χ : Fin n → ℂ) (h : HasChar M2 χ) : HasChar M1 χ := by
@@ -99,9 +99,9 @@ theorem fsb_hasChar_inj (M1 M2 : GMod n) (f : M1.V →ₗ[ℂ] M2.V) (hf : ∀ a
   simp
 
 /- English proof (translation)
-Establish `hT : ∀ (u c : ℂ) (w : M1.V), f ((Formalism.REAL.qdet M1.E u - c • (1 : Module.End ℂ M1.V)) w) = (Formalism.REAL.qdet M2.E u - c • (1 : Module.End ℂ M2.V)) (f w)`. Introduce `u c w`. Rewrite using `[LinearMap.sub_apply, LinearMap.sub_apply, map_sub, fsb_qdet_map f hf, LinearMap.smul_apply, LinearMap.smul_apply, Module.End.one_apply, Module.End.one_apply, map_smul]`. Take `⟨k, hk⟩` from `h`. Use `⟨k, fun Y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `w`. Take `⟨v, rfl⟩` from `hs w`. Rewrite using `[← fsb_pow_map f _ _ (hT _ _) k v, hk Y]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fsb_hasChar_surj (M1 M2 : GMod n) (f : M1.V →ₗ[ℂ] M2.V) (hf : ∀ a b v, f (M1.E a b v) = M2.E a b (f v))
     (hs : Function.Surjective f) (χ : Fin n → ℂ) (h : HasChar M1 χ) : HasChar M2 χ := by
@@ -118,14 +118,14 @@ theorem fsb_hasChar_surj (M1 M2 : GMod n) (f : M1.V →ₗ[ℂ] M2.V) (hf : ∀ 
   simp
 
 /- English proof (translation)
-Simplify using `only [omD, eeVd, LinearMap.pi_apply, LinearMap.neg_apply, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fsb_omD_apply (M : GMod n) (g : Fin n → M.V) (a : Fin n) : omD M g a = -∑ c, M.E a c (g c) := by
   simp only [omD, eeVd, LinearMap.pi_apply, LinearMap.neg_apply, LinearMap.sum_apply,
     LinearMap.comp_apply, LinearMap.proj_apply]
 
 /- English proof (translation)
-Simplify using `only [tensVd, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fsb_tensVd_apply (M : GMod n) (a b : Fin n) (g : Fin n → M.V) (d : Fin n) :
     tensVd M.E a b g d = M.E a b (g d) - if d = b then g a else 0 := by
@@ -133,7 +133,7 @@ theorem fsb_tensVd_apply (M : GMod n) (a b : Fin n) (g : Fin n → M.V) (d : Fin
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [LinearMap.compLeft_apply, Function.comp_apply, fsb_omD_apply, map_neg, map_sum, hf]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fsb_omD_map (M1 M2 : GMod n) (f : M1.V →ₗ[ℂ] M2.V) (hf : ∀ a b v, f (M1.E a b v) = M2.E a b (f v))
     (g : Fin n → M1.V) : f.compLeft (Fin n) (omD M1 g) = omD M2 (f.compLeft (Fin n) g) := by
@@ -141,7 +141,7 @@ theorem fsb_omD_map (M1 M2 : GMod n) (f : M1.V →ₗ[ℂ] M2.V) (hf : ∀ a b v
   simp only [LinearMap.compLeft_apply, Function.comp_apply, fsb_omD_apply, map_neg, map_sum, hf]
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.add_apply, hp, hq]`. Consider the case `monomial k c`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.aeval_monomial, Module.End.mul_apply, Module.End.mul_apply, Module.algebraMap_end_apply, Module.algebraMap_end_apply, map_smul, fsb_pow_map (f.compLeft (Fin n)) (omD M1) (omD M2) (fun v => fsb_omD_map M1 M2 f hf v) k g]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem fsb_aeval_map (M1 M2 : GMod n) (f : M1.V →ₗ[ℂ] M2.V) (hf : ∀ a b v, f (M1.E a b v) = M2.E a b (f v))
     (p : Polynomial ℂ) (g : Fin n → M1.V) :
@@ -154,9 +154,9 @@ theorem fsb_aeval_map (M1 M2 : GMod n) (f : M1.V →ₗ[ℂ] M2.V) (hf : ∀ a b
       fsb_pow_map (f.compLeft (Fin n)) (omD M1) (omD M2) (fun v => fsb_omD_map M1 M2 f hf v) k g]
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[Module.End.mem_maxGenEigenspace]`. Take `⟨k, hk⟩` from `hg`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ v, f.compLeft (Fin n) ((omD M1 - μ • 1) v) = (omD M2 - μ • 1) (f.compLeft (Fin n) v)`. Introduce `v`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.sub_apply, LinearMap.sub_apply, map_sub, fsb_omD_map M1 M2 f hf, LinearMap.smul_apply, LinearMap.smul_apply, Module.End.one_apply, Module.End.one_apply, map_smul]`. Rewrite using `[← fsb_pow_map _ _ _ h1 k g, hk, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fsb_gen_map (M1 M2 : GMod n) (f : M1.V →ₗ[ℂ] M2.V) (hf : ∀ a b v, f (M1.E a b v) = M2.E a b (f v))
     (μ : ℂ) (g : Fin n → M1.V) (hg : g ∈ (omD M1).maxGenEigenspace μ) :
@@ -176,23 +176,21 @@ def fsbQuot (M : GMod n) (Z : Submodule ℂ M.V) (hZ : ∀ a b, ∀ x ∈ Z, M.E
   gl := fsb_glRel_surj Z.mkQ (Submodule.mkQ_surjective Z) (fun a b v => by simp) M.gl
 
 /- English proof (translation)
-Take `⟨K, hK⟩` from `(hD n S χ' hS).1`. Establish `hP : Polynomial.aeval (omD S) ((List.ofFn fun t => (Polynomial.X - Polynomial.C (-χ' t - cn n))).prod ^ K) = 0`. Rewrite using `[map_pow, map_list_prod, List.map_ofFn]`. Establish `hfun : (⇑(Polynomial.aeval (omD S)) ∘ fun t => Polynomial.X - Polynomial.C (-χ' t - cn n)) = fun t => omD S - (-χ' t - cn n) • 1`. Use function extensionality and compare the values at `t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Function.comp_apply, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[hfun]`. Conclude with `hK`. Rewrite `hP` using `[List.prod_ofFn, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ s), hz, mul_pow]`. Establish `hcop : IsCoprime (Polynomial.X - Polynomial.C (-z - cn n)) (∏ t ∈ Finset.univ.erase s, (Polynomial.X - Polynomial.C (-χ' t - cn n)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsCoprime.prod_right` to reduce the goal to its premises. Introduce `t ht`. Apply `Polynomial.isCoprime_X_sub_C_of_isUnit_sub` to reduce the goal to its premises. Apply `Ne.isUnit` to reduce the goal to its premises. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h1 t (Finset.ne_of_mem_erase ht)` to reduce the goal to its premises. Take the linear combination `h0`. Generalize the expression as in `(∏ t ∈ Finset.univ.erase s, (Polynomial.X - Polynomial.C (-χ' t - cn n))) = R at hP hcop`. Establish `hy'` using `hy`. Rewrite `hy'` using `[backSub, Module.End.mem_maxGenEigenspace]`.
+Take a linear combination of the given relations to obtain the conclusion. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `hy'`. Take `⟨A', B', hAB⟩` from `hcop.pow (m := k) (n := K)`. Use `choose x0 hx0 using fun d => hs (y d)`. Establish `hx0' : f.compLeft (Fin n) x0 = y`. Use function extensionality and compare the values at `d`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.compLeft_apply, Function.comp_apply, hx0]`. Use `⟨Polynomial.aeval (omD S) (B' * R ^ K) x0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[backSub, Module.End.mem_maxGenEigenspace]`. Use `⟨K, ?_⟩` and prove the remaining obligations. Establish `e1 : (omD S - (-z - cn n) • 1) ^ K = Polynomial.aeval (omD S) ((Polynomial.X - Polynomial.C (-z - cn n)) ^ K)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[e1, ← Module.End.mul_apply, ← map_mul, show (Polynomial.X - Polynomial.C (-z - cn n)) ^ K * (B' * R ^ K) = B' * ((Polynomial.X - Polynomial.C (-z - cn n)) ^ K * R ^ K) by ring, map_mul, hP, mul_zero, LinearMap.zero_apply]`. Rewrite using `[fsb_aeval_map S Q f hf, hx0']`. Establish `e3 : Polynomial.aeval (omD Q) ((Polynomial.X - Polynomial.C (-z - cn n)) ^ k) y = 0`. Establish `e4 : Polynomial.aeval (omD Q) ((Polynomial.X - Polynomial.C (-z - cn n)) ^ k) = (omD Q - (-z - cn n) • 1) ^ k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[e4]`. Conclude with `hk`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_add, LinearMap.add_apply, map_mul (Polynomial.aeval (omD Q)) A' ((Polynomial.X - Polynomial.C (-z - cn n)) ^ k), Module.End.mul_apply, e3, map_zero, zero_add]`.
-
-Use `_ = y := by rw [hAB, map_one, Module.End.one_apply]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_mem_backSub_compLeft_eq_of_surjective (hD : DualFacts) (S Q : GMod n) (χ' : Fin n → ℂ) (s : Fin n) (z : ℂ)
     (hz : χ' s = z) (h1 : ∀ t, t ≠ s → χ' t ≠ z) (hS : HasChar S χ') (f : S.V →ₗ[ℂ] Q.V)
@@ -252,25 +250,21 @@ private theorem exists_mem_backSub_compLeft_eq_of_surjective (hD : DualFacts) (S
       _ = y := by rw [hAB, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hI`. Establish `hZc : HasChar (S.sub Z hZ) χ'` using `fsb_hasChar_inj (S.sub Z hZ) S Z.subtype (fun a b v => rfl) Z.injective_subtype χ' hS`. Use `haveI : Nontrivial (S.sub Z hZ).V := Submodule.nontrivial_iff_ne_bot.mpr hZb`. Establish `hne` using `(hD n (S.sub Z hZ) χ' hZc).2.2 s inferInstance (fun r => by rw [hz]; exact h2 r)`. Rewrite `hne` using `[hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g0, hg0, hg0ne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hmem : Z.subtype.compLeft (Fin n) g0 ∈ backSub S z` using `fsb_gen_map (S.sub Z hZ) S Z.subtype (fun a b v => rfl) _ g0 hg0`. Set `W : Submodule ℂ ↥(backSub S z)` to `(Submodule.pi Set.univ fun _ => Z).comap (backSub S z).subtype`. Establish `hWmem : ∀ x : ↥(backSub S z), x ∈ W ↔ ∀ d, (x : Fin n → S.V) d ∈ Z`. Introduce `x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [W, Submodule.mem_comap, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.subtype_apply]`. Establish `hWinv : ∀ a b, ∀ x ∈ W, (back S z hB).E a b x ∈ W`. Introduce `a b x hx`. Establish `hx : ∀ d, (x : Fin n → S.V) d ∈ Z` using `(hWmem x).mp hx`. Use `(hWmem ((back S z hB).E a b x)).mpr fun d => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (tensVd S.E a b (x : Fin n → S.V)) d ∈ Z`. Rewrite using `[fsb_tensVd_apply S a b]`. Use `split_ifs`. Conclude with `Z.sub_mem (hZ a b _ (hx d)) (hx a)`. Simplify using `using hZ a b _ (hx d)`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `W' : Submodule ℂ X.V` to `W.comap (e.symm : X.V →ₗ[ℂ] (back S z hB).V)`. Establish `hW'mem : ∀ x : X.V, x ∈ W' ↔ e.symm x ∈ W` using `fun x => Iff.rfl`. Establish `key : ∀ a b (x : X.V), e.symm (X.E a b x) = (back S z hB).E a b (e.symm x)`. Introduce `a b x`. Apply `e.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `hW'inv : ∀ a b, ∀ x ∈ W', X.E a b x ∈ W'`. Introduce `a b x hx`. Rewrite using `[hW'mem, key]`. Conclude with `hWinv a b _ hx`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `hX.2 W' hW'inv with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hg0ne` to reduce the goal to its premises. Establish `hw : (⟨_, hmem⟩ : ↥(backSub S z)) ∈ W`. Rewrite using `[hWmem]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `d`. Conclude with `(g0 d).2`. Establish `hw' : e ⟨_, hmem⟩ ∈ W'` using `(hW'mem _).mpr (Eq.mpr (congrArg (fun x => x ∈ W) (e.symm_apply_apply _)) hw)`. Rewrite `hw'` using `[h, Submodule.mem_bot]`. Establish `hw0 : (⟨_, hmem⟩ : ↥(backSub S z)) = 0` using `e.injective (hw'.trans (map_zero e).symm)`.
-
-Use function extensionality and compare the values at `d`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrFun (congrArg Subtype.val hw0) d`. Introduce `g hg d`. Establish `hw' : e ⟨g, hg⟩ ∈ W'` using `by rw [h]; trivial`.
-
-Establish `hw2 : (⟨g, hg⟩ : ↥(backSub S z)) ∈ W` using `Eq.mp (congrArg (fun x => x ∈ W) (e.symm_apply_apply ⟨g, hg⟩)) ((hW'mem _).mp hw')`. Conclude with `(hWmem ⟨g, hg⟩).mp hw2 d`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem apply_mem_of_mem_backSub_of_iso_simple (hD : DualFacts) (X S : GMod n) (χ' : Fin n → ℂ) (s : Fin n) (z : ℂ)
     (hz : χ' s = z) (hX : IsSimple X) (hS : HasChar S χ') (h2 : ∀ r, χ' r ≠ z - 1)
@@ -330,17 +324,13 @@ private theorem apply_mem_of_mem_backSub_of_iso_simple (hD : DualFacts) (X S : G
     exact (hWmem ⟨g, hg⟩).mp hw2 d
 
 /- English proof (translation)
-Use `haveI hnt : Nontrivial ↥(backSub S z) := by`. Take `⟨e, -⟩` from `hI`. Use `haveI := hX.1`. Conclude with `e.symm.injective.nontrivial`. Use `⟨?_, fun Z hZ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨g, hg⟩, hne⟩` from `exists_ne (0 : ↥(backSub S z))`. Establish `hg0 : g ≠ 0` using `fun h0 => hne (Subtype.ext h0)`. Take `⟨d, hd⟩` from `Function.ne_iff.mp hg0`. Conclude with `⟨⟨g d, 0, hd⟩⟩`. Distinguish the cases in `hZb : Z = ⊥`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Prove the first alternative. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `Or.inl hZb`. Use `right`. Assume the negation of the conclusion as `hZt`. Establish `hA` using `apply_mem_of_mem_backSub_of_iso_simple hD X S χ' s z hz hX hS h2 hB hI Z hZ hZb`. Establish `hQc : HasChar (fsbQuot S Z hZ) χ'` using `fsb_hasChar_surj S (fsbQuot S Z hZ) Z.mkQ (fun a b v => rfl) (Submodule.mkQ_surjective Z) χ' hS`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, -, hv⟩` from `SetLike.exists_of_lt (lt_top_iff_ne_top.mpr hZt)`. Use `haveI : Nontrivial (fsbQuot S Z hZ).V := ⟨⟨Submodule.Quotient.mk v, 0, fun h0 => hv ((Submodule.Quotient.mk_eq_zero Z).mp h0)⟩⟩`. Establish `hne` using `(hD n (fsbQuot S Z hZ) χ' hQc).2.2 s inferInstance (fun r => by rw [hz]; exact h2 r)`. Rewrite `hne` using `[hz]`. Take `⟨y, hy, hyne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
-
-Take `⟨x, hx, hxy⟩` from `exists_mem_backSub_compLeft_eq_of_surjective hD S (fsbQuot S Z hZ) χ' s z hz h1 hS Z.mkQ (Submodule.mkQ_surjective Z) (fun a b v => rfl) y hy`. Apply `hyne` to reduce the goal to its premises. Rewrite using `[← hxy]`. Use function extensionality and compare the values at `d`. Use `show Z.mkQ (x d) = 0`.
-
-Conclude with `(Submodule.Quotient.mk_eq_zero Z).mpr (hA x hx d)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fsb_simple_of_back (hD : DualFacts) (X S : GMod n) (χ' : Fin n → ℂ) (s : Fin n) (z : ℂ) (hz : χ' s = z)
     (hX : IsSimple X) (hS : HasChar S χ') (h1 : ∀ t, t ≠ s → χ' t ≠ z) (h2 : ∀ r, χ' r ≠ z - 1)
@@ -377,9 +367,9 @@ theorem fsb_simple_of_back (hD : DualFacts) (X S : GMod n) (χ' : Fin n → ℂ)
       exact (Submodule.Quotient.mk_eq_zero Z).mpr (hA x hx d)
 
 /- English proof (translation)
-Introduce `hQ hB hD hU n X χ s hX hSc h1 h2 h3`. Establish `hXc : HasChar X χ` using `⟨1, fun Y => by rw [pow_one, hSc Y, sub_self]⟩`. Use `fsb_simple_of_back hD X (step X (χ s)) (χ + Pi.single s 1) s (χ s + 1) (by simp) hX (GlobalTheory.T.InfinitesimalCharacterStatement n X χ s hXc) ?_ ?_ (hB n _ _) (hU n X χ s hB hSc h1 h2 h3)` and prove the remaining obligations. Introduce `t ht`. Simplify `h1 t` using `[Pi.single_apply, ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `r`. Distinguish the cases in `hr : r = s`. Substitute `hr` using the available equality. Simplify using the standard rewrite rules. Simplify `h2 r hr` using `[Pi.single_apply, hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem forward_simple_of_tensor_facts : QdetTens → BackStable → DualFacts → Unit → FwdSimple := by
   intro hQ hB hD hU n X χ s hX hSc h1 h2 h3

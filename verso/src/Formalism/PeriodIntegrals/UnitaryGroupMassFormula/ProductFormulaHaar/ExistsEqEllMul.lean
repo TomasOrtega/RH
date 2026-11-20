@@ -7,13 +7,13 @@ open IsDedekindDomain NumberField
 namespace PI.ProdFormulaE.Tr
 
 /- English proof (translation)
-Establish `hℓ : (ℓ : F) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : ℓ.Prime).ne_zero`. Establish `hval : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), v.valuation F ((X : F) / ℓ) ≤ 1`. Introduce `v`. Rewrite using `[map_div₀]`. Establish `hℓv : v.valuation F (ℓ : F) = v.intValuation (ℓ : 𝓞 F)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap (K := F)]`. Simplify using the standard rewrite rules. Distinguish the cases in `hv : (ℓ : 𝓞 F) ∈ v.asIdeal`. Establish `hpos : v.valuation F (ℓ : F) ≠ 0` using `(Valuation.ne_zero_iff _).2 hℓ`. Conclude with `(div_le_one₀ (zero_lt_iff.2 hpos)).2 (h v hv)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hℓv, IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff.2 hv, div_one]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.valuation_le_one v X`. Take `⟨Z, hZ⟩` from `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) F ((X : F) / ℓ) hval`. Use `⟨Z, ?_⟩` and prove the remaining obligations. Apply `IsFractionRing.injective (𝓞 F) F` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ' : algebraMap (𝓞 F) F Z = (X : F) / ℓ` using `hZ`. Establish `hc : (ℓ : F) * ((X : F) / ℓ) = X` using `by field_simp`. Rewrite using `[map_mul, hZ', map_natCast, hc]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_ell_mul {F : Type} [Field F] [NumberField F] (ℓ : ℕ) [Fact ℓ.Prime] (X : 𝓞 F)
     (h : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), (ℓ : 𝓞 F) ∈ v.asIdeal →
@@ -41,11 +41,9 @@ theorem exists_eq_ell_mul {F : Type} [Field F] [NumberField F] (ℓ : ℕ) [Fact
   try rfl
 
 /- English proof (translation)
-Take `⟨n, -, hn⟩` from `PadicInt.exists_mem_range (⟨c, hc⟩ : ℤ_[ℓ])`. Rewrite `hn` using `[IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.norm_lt_one_iff_dvd]`. Take `⟨y, hy⟩` from `hn`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hy' : c - (n : ℚ_[ℓ]) = ℓ * (y : ℚ_[ℓ])`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (fun w : ℤ_[ℓ] => (w : ℚ_[ℓ])) hy` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hℓ : (ℓ : ℚ_[ℓ]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : ℓ.Prime).ne_zero`. Rewrite using `[show ((n : ℤ) : ℚ_[ℓ]) = (n : ℚ_[ℓ]) by push_cast; rfl, hy', mul_div_cancel_left₀ _ hℓ]`.
-
-Conclude with `y.norm_le_one`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_approx (ℓ : ℕ) [Fact ℓ.Prime] (c : ℚ_[ℓ]) (hc : ‖c‖ ≤ 1) :
     ∃ m : ℤ, ‖(c - m) / ℓ‖ ≤ 1 := by

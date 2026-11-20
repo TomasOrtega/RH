@@ -15,7 +15,7 @@ def ex (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : Ix Dw → �
   | some x => a (x.1, x.2)
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ex_add (Dw : Datum H) (a a' : (E →+* ℂ) × ℕ → ℕ) (n n' : ℕ) :
     ex Dw (a + a') (n + n') = ex Dw a n + ex Dw a' n' := by

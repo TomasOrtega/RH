@@ -26,7 +26,7 @@ def liftO {n : ℕ} (O : Subring F) (Z : Matrix (Fin n) (Fin n) F) (h : IsInt O 
     Matrix (Fin n) (Fin n) O := fun i j => ⟨Z i j, h i j⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[liftO, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem liftO_mul {n : ℕ} (O : Subring F) {x y : Matrix (Fin n) (Fin n) F} (hx : IsInt O x)
     (hy : IsInt O y) (hxy : IsInt O (x * y)) :
@@ -35,7 +35,7 @@ theorem liftO_mul {n : ℕ} (O : Subring F) {x y : Matrix (Fin n) (Fin n) F} (hx
   simp [liftO, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [liftO, hij, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem liftO_one {n : ℕ} (O : Subring F) (h : IsInt O (1 : Matrix (Fin n) (Fin n) F)) :
     liftO O 1 h = 1 := by
@@ -47,7 +47,7 @@ def red {n : ℕ} (O : Subring F) (ϖ : F) (Z : Matrix (Fin n) (Fin n) F) (h : I
   (liftO O Z h).map (Ideal.Quotient.mk (piIdeal O ϖ))
 
 /- English proof (translation)
-Rewrite using `[red, liftO_mul O hx hy hxy, Matrix.map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_mul {n : ℕ} (O : Subring F) (ϖ : F) {x y : Matrix (Fin n) (Fin n) F} (hx : IsInt O x)
     (hy : IsInt O y) (hxy : IsInt O (x * y)) :
@@ -56,7 +56,7 @@ theorem red_mul {n : ℕ} (O : Subring F) (ϖ : F) {x y : Matrix (Fin n) (Fin n)
   rfl
 
 /- English proof (translation)
-Rewrite using `[red, liftO_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_one {n : ℕ} (O : Subring F) (ϖ : F) (h : IsInt O (1 : Matrix (Fin n) (Fin n) F)) :
     red O ϖ 1 h = 1 := by
@@ -64,7 +64,7 @@ theorem red_one {n : ℕ} (O : Subring F) (ϖ : F) (h : IsInt O (1 : Matrix (Fin
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem red_congr {n : ℕ} (O : Subring F) (ϖ : F) {x y : Matrix (Fin n) (Fin n) F} (e : x = y)
     (hx : IsInt O x) (hy : IsInt O y) : red O ϖ x hx = red O ϖ y hy := by
@@ -74,11 +74,11 @@ theorem red_congr {n : ℕ} (O : Subring F) (ϖ : F) {x y : Matrix (Fin n) (Fin 
 def blk (r c : ℕ) (i : Fin (r + c)) : ℕ := if (i : ℕ) < r then 0 else 1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hZ i j hij`. Establish `hji : (j : ℕ) < r ∧ r ≤ (i : ℕ)`. Unfold `blk at hij`. Apply the tactic sequence `split_ifs at hij <;> omega`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨hj, hi'⟩` from `hji`. Take `⟨i', rfl⟩ : ∃ i' : Fin c, i = Fin.natAdd r i'` from `⟨⟨(i : ℕ) - r, by omega⟩, by ext; simp; omega⟩`. Take `⟨j', rfl⟩ : ∃ j' : Fin r, j = Fin.castAdd c j'` from `⟨⟨j, hj⟩, by ext; simp⟩`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (hZ i' j')`. Introduce `hZ i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hlt : blk r c (Fin.castAdd c j) < blk r c (Fin.natAdd r i)`. Simplify using `[blk]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp (hZ hlt)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bDA_iff {r c : ℕ} (O : Subring F) (ϖ : F) {Z : Matrix (Fin (r + c)) (Fin (r + c)) F}
     (h : IsInt O Z) : bDA Z ∈ IIset O ϖ ↔ (red O ϖ Z h).BlockTriangular (blk r c) := by
@@ -98,7 +98,7 @@ theorem bDA_iff {r c : ℕ} (O : Subring F) (ϖ : F) {Z : Matrix (Fin (r + c)) (
     exact Ideal.Quotient.eq_zero_iff_mem.mp (hZ hlt)
 
 /- English proof (translation)
-Establish `hm : k * k' ∈ GLint O (r + c)` using `mul_mem hk.1 hk'.1`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[bDA_iff O ϖ hm.1]`. Rewrite using `[red_congr O ϖ (Units.val_mul k k') hm.1 (isInt_mul' O hk.1.1 hk'.1.1), red_mul O ϖ hk.1.1 hk'.1.1]`. Conclude with `((bDA_iff O ϖ hk.1.1).mp hk.2).mul ((bDA_iff O ϖ hk'.1.1).mp hk'.2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parJ_mul {O : Subring F} {ϖ : F} {r c : ℕ} {k k' : GL (Fin (r + c)) F}
     (hk : k ∈ parJ O ϖ r c) (hk' : k' ∈ parJ O ϖ r c) : k * k' ∈ parJ O ϖ r c := by
@@ -110,11 +110,11 @@ theorem parJ_mul {O : Subring F} {ϖ : F} {r c : ℕ} {k k' : GL (Fin (r + c)) F
   exact ((bDA_iff O ϖ hk.1.1).mp hk.2).mul ((bDA_iff O ϖ hk'.1.1).mp hk'.2)
 
 /- English proof (translation)
-Establish `hm : k⁻¹ ∈ GLint O (r + c)` using `inv_mem hk.1`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[bDA_iff O ϖ hm.1]`. Establish `h1 : IsInt O ((k : Matrix (Fin (r + c)) (Fin (r + c)) F) * ((k⁻¹ : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F))` using `isInt_mul' O hk.1.1 hm.1`. Establish `e1 : (k : Matrix (Fin (r + c)) (Fin (r + c)) F) * ((k⁻¹ : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hN : red O ϖ (k : Matrix (Fin (r + c)) (Fin (r + c)) F) hk.1.1 * red O ϖ _ hm.1 = 1`. Rewrite using `[← red_mul O ϖ hk.1.1 hm.1 h1, red_congr O ϖ e1 h1 (e1 ▸ h1)]`. Conclude with `red_one O ϖ _`. Establish `hinv : (red O ϖ (k : Matrix (Fin (r + c)) (Fin (r + c)) F) hk.1.1)⁻¹ = red O ϖ _ hm.1` using `Matrix.inv_eq_right_inv hN`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : Invertible (red O ϖ (k : Matrix (Fin (r + c)) (Fin (r + c)) F) hk.1.1) := ⟨_, mul_eq_one_comm.mp hN, hN⟩`. Rewrite using `[← hinv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular ((bDA_iff O ϖ hk.1.1).mp hk.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parJ_inv {O : Subring F} {ϖ : F} {r c : ℕ} {k : GL (Fin (r + c)) F}
     (hk : k ∈ parJ O ϖ r c) : k⁻¹ ∈ parJ O ϖ r c := by
@@ -138,9 +138,9 @@ theorem parJ_inv {O : Subring F} {ϖ : F} {r c : ℕ} {k : GL (Fin (r + c)) F}
   exact Matrix.blockTriangular_inv_of_blockTriangular ((bDA_iff O ϖ hk.1.1).mp hk.2)
 
 /- English proof (translation)
-Use `⟨one_mem _, fun i j => ⟨0, O.zero_mem, ?_⟩⟩` and prove the remaining obligations. Establish `: Fin.natAdd r i ≠ Fin.castAdd c j`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[bDA, Matrix.one_apply, this]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem one_mem_parJ {O : Subring F} {ϖ : F} {r c : ℕ} : (1 : GL (Fin (r + c)) F) ∈ parJ O ϖ r c := by
   refine ⟨one_mem _, fun i j => ⟨0, O.zero_mem, ?_⟩⟩
@@ -165,23 +165,23 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}
 
 /- English proof (translation)
-Rewrite using `[h.O_eq]`. Conclude with `Valuation.isOpen_integer`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_O (h : LF O ϖ nrm q) : IsOpen (O : Set F) := by
   rw [h.O_eq]
   exact Valuation.isOpen_integer
 
 /- English proof (translation)
-Rewrite using `[h.O_eq]`. Conclude with `isCompact_iff_compactSpace.mpr (inferInstanceAs (CompactSpace 𝒪[F]))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_O (h : LF O ϖ nrm q) : IsCompact (O : Set F) := by
   rw [h.O_eq]
   exact isCompact_iff_compactSpace.mpr (inferInstanceAs (CompactSpace 𝒪[F]))
 
 /- English proof (translation)
-Establish `hv : ∀ a b : Fin n, Continuous fun g : GL (Fin n) F => (g : Matrix (Fin n) (Fin n) F) a b` using `fun a b => Units.continuous_val.matrix_elem a b`. Establish `hw : ∀ a b : Fin n, Continuous fun g : GL (Fin n) F => ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) a b` using `fun a b => (hv a b).comp continuous_inv`. Establish `e : (GLint O n : Set (GL (Fin n) F)) = (⋂ a, ⋂ b, (fun g : GL (Fin n) F => (g : Matrix (Fin n) (Fin n) F) a b) ⁻¹' (O : Set F)) ∩ (⋂ a, ⋂ b, (fun g : GL (Fin n) F => ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) a b) ⁻¹' (O : Set F))`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => (isOpen_O h).preimage (hv a b)).inter (isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => (isOpen_O h).preimage (hw a b))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_GLint (h : LF O ϖ nrm q) (n : ℕ) : IsOpen (GLint O n : Set (GL (Fin n) F)) := by
   have hv : ∀ a b : Fin n, Continuous fun g : GL (Fin n) F => (g : Matrix (Fin n) (Fin n) F) a b :=
@@ -203,7 +203,7 @@ theorem isOpen_GLint (h : LF O ϖ nrm q) (n : ℕ) : IsOpen (GLint O n : Set (GL
       (isOpen_O h).preimage (hw a b))
 
 /- English proof (translation)
-Establish `e : {m : Matrix (Fin n) (Fin n) F | IsInt O m} = Set.pi Set.univ (fun _ : Fin n => Set.pi Set.univ (fun _ : Fin n => (O : Set F)))`. Use extensionality with `m`. Conclude with `⟨fun hm a _ b _ => hm a b, fun hm a b => hm a trivial b trivial⟩`. Rewrite using `[e]`. Conclude with `isCompact_univ_pi (fun _ : Fin n => isCompact_univ_pi (fun _ : Fin n => isCompact_O h))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_int (h : LF O ϖ nrm q) (n : ℕ) :
     IsCompact {m : Matrix (Fin n) (Fin n) F | IsInt O m} := by
@@ -215,9 +215,9 @@ theorem isCompact_int (h : LF O ϖ nrm q) (n : ℕ) :
   exact isCompact_univ_pi (fun _ : Fin n => isCompact_univ_pi (fun _ : Fin n => isCompact_O h))
 
 /- English proof (translation)
-Use `haveI : T2Space F := by`. Use `letI := IsTopologicalAddGroup.rightUniformSpace F`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := F)`. Use `infer_instance`. Establish `hc` using `isCompact_int h n`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) F)).isCompact_preimage (hc.prod (hc.image MulOpposite.continuous_op))`. Use `h2.of_isClosed_subset ((GLint O n).isClosed_of_isOpen (isOpen_GLint h n)) ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨hx.1, _, hx.2, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCompact_GLint (h : LF O ϖ nrm q) (n : ℕ) : IsCompact (GLint O n : Set (GL (Fin n) F)) := by
   haveI : T2Space F := by
@@ -232,13 +232,11 @@ theorem isCompact_GLint (h : LF O ϖ nrm q) (n : ℕ) : IsCompact (GLint O n : S
   exact ⟨hx.1, _, hx.2, rfl⟩
 
 /- English proof (translation)
-Establish `hP : IsOpen {x : F | ∃ o ∈ O, x = ϖ * o}`. Establish `e : {x : F | ∃ o ∈ O, x = ϖ * o} = (fun x => ϖ⁻¹ * x) ⁻¹' (O : Set F)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, ho, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify `ho` using `[h.ne]`. Introduce `hx`. Conclude with `⟨_, hx, by simp [h.ne]⟩`. Rewrite using `[e]`. Conclude with `(isOpen_O h).preimage (continuous_const.mul continuous_id)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : parJ O ϖ r c = (GLint O (r + c) : Set (GL (Fin (r + c)) F)) ∩ ⋂ i : Fin c, ⋂ j : Fin r, (fun g : GL (Fin (r + c)) F => (g : Matrix (Fin (r + c)) (Fin (r + c)) F) (Fin.natAdd r i) (Fin.castAdd c j)) ⁻¹' {x : F | ∃ o ∈ O, x = ϖ * o}`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]`. Both sides reduce to the same expression. Rewrite using `[e]`.
-
-Conclude with `(isOpen_GLint h _).inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hP.preimage (Units.continuous_val.matrix_elem _ _))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_parJ (h : LF O ϖ nrm q) (r c : ℕ) : IsOpen (parJ O ϖ r c) := by
   have hP : IsOpen {x : F | ∃ o ∈ O, x = ϖ * o} := by
@@ -263,9 +261,9 @@ theorem isOpen_parJ (h : LF O ϖ nrm q) (r c : ℕ) : IsOpen (parJ O ϖ r c) := 
     hP.preimage (Units.continuous_val.matrix_elem _ _))
 
 /- English proof (translation)
-Introduce `F _ _ _ _ O ϖ nrm q h r c`. Establish `ho : IsOpen (parJ O ϖ r c)` using `isOpen_parJ h r c`. Establish `hc : IsCompact (parJ O ϖ r c)` using `(isCompact_GLint h (r + c)).of_isClosed_subset ((parSub O ϖ r c).isClosed_of_isOpen ho) fun k hk => hk.1`. Use `⟨parSub O ϖ r c, rfl, ho, hc, ?_⟩` and prove the remaining obligations. Set `K₀ : TopologicalSpace.PositiveCompacts (GL (Fin (r + c)) F)` to `⟨⟨parJ O ϖ r c, hc⟩, ⟨1, by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Rewrite using `[ho.interior_eq]`. Conclude with `one_mem_parJ⟩⟩`. Conclude with `⟨Measure.haarMeasure K₀, inferInstance, Measure.haarMeasure_self (K₀ := K₀)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem parJ_compact_open : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ},

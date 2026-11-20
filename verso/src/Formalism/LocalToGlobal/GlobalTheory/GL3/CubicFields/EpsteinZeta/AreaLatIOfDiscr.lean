@@ -14,7 +14,7 @@ open NumberField Classical
 open scoped Pointwise
 
 /- English proof (translation)
-Take `⟨a₀, b₀, h₀, hl₀, hc₀⟩` from `latI_top_basis K d hd4 x hx hK φ`. Take `⟨a, b, h, hl, hc⟩` from `latI_basis K hK φ a₀ b₀ h₀ hl₀ 𝔞 h𝔞`. Conclude with `⟨a, b, h, hl, by rw [hc, hc₀]; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_latI_basis (K : Type) [Field K] [NumberField K] (d : ℕ) [Fact d.Prime] (hd4 : d % 4 = 3)
     (x : K) (hx : x ^ 2 = -(d : K)) (hK : Module.finrank ℚ K = 2) (φ : K →+* ℂ) (𝔞 : Ideal (𝓞 K))
@@ -26,7 +26,7 @@ theorem exists_latI_basis (K : Type) [Field K] [NumberField K] (d : ℕ) [Fact d
   exact ⟨a, b, h, hl, by rw [hc, hc₀]; ring⟩
 
 /- English proof (translation)
-Take `⟨a, b, h, hl, -⟩` from `exists_latI_basis K d hd4 x hx hK φ 𝔞 h𝔞`. Rewrite using `[hl]`. Conclude with `discr_closure_pair_ne_zero a b h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discr_latI_ne_zero (K : Type) [Field K] [NumberField K] (d : ℕ) [Fact d.Prime] (hd4 : d % 4 = 3)
     (x : K) (hx : x ^ 2 = -(d : K)) (hK : Module.finrank ℚ K = 2) (φ : K →+* ℂ) (𝔞 : Ideal (𝓞 K)) (h𝔞 : 𝔞 ≠ ⊥) :

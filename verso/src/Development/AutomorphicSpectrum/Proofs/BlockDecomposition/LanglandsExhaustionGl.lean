@@ -10,7 +10,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.LanglandsMultiseg
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _`. Conclude with `⟨GlobalTheory.T.langlands_injective_of_socle hA (hSoc k) (hSeg k), fun 𝔪 𝔫 x y hd h₀ h₁ hy => GlobalTheory.T.langlands_sum_subquotient_product hA (hSoc k) (hSeg k) (hFree k) (hE k) 𝔪 𝔫 x y hd h₀ h₁ hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem langlandsMultisegments_of_clauses (hA : GlobalTheory.Published.IrreducibleAdmissibleGL)
     (hSoc : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], LSocleGL k)

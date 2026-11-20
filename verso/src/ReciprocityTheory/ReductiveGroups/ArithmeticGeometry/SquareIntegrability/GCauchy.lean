@@ -5,23 +5,21 @@ namespace ReciprocityTheory.ChartRestriction.G.I2
 
 open Classical in
 /- English proof (translation)
-Introduce `ι _ F hF S hS α`. Use `set N := Fintype.card ι`. Set `e : ι ≃ Fin N` to `Fintype.equivFin ι`. Set `T : (Fin N → ℂ) →L[ℂ] EuclideanSpace ℂ ι` to `(EuclideanSpace.equiv ι ℂ).symm.toContinuousLinearMap.comp (LinearMap.funLeft ℂ ℂ e).toContinuousLinearMap`. Establish `hT : ∀ z : Fin N → ℂ, ‖T z‖ ^ 2 = ∑ j, ‖z j‖ ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Rewrite using `[EuclideanSpace.norm_sq_eq]`. Simplify using `only [T, ContinuousLinearMap.coe_comp', ContinuousLinearEquiv.coe_coe, LinearMap.coe_toContinuousLinearMap', Function.comp_apply, LinearMap.funLeft_apply]`. Simplify using `only [EuclideanSpace.equiv, PiLp.continuousLinearEquiv_symm_apply]`. Conclude with `Fintype.sum_equiv e _ _ (fun i => by simp)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTs : ∀ i : ι, T (Pi.single (e i) 1) = EuclideanSpace.single i 1`. Introduce `i`. Use extensionality with `j`. Simplify using `only [T, ContinuousLinearMap.coe_comp', ContinuousLinearEquiv.coe_coe, LinearMap.coe_toContinuousLinearMap', Function.comp_apply, LinearMap.funLeft_apply, EuclideanSpace.equiv, PiLp.continuousLinearEquiv_symm_apply, EuclideanSpace.single_apply]`. Distinguish the cases in `h : j = i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Pi.single_apply, e.injective.ne h]`. Use `set G : (Fin N → ℂ) → ℂ := F ∘ T`. Establish `hG : Differentiable ℂ G` using `hF.comp T.differentiable`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hGS : ∀ z, ‖G z‖ ^ 2 * Real.exp (-Real.pi * ∑ i, ‖z i‖ ^ 2) ≤ S`. Introduce `z`. Use `hS (T z)` as an intermediate fact. Rewrite `this` using `[hT z]`. Then use the resulting hypothesis. Use `set k := Multiset.card (Finsupp.toMultiset α)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set l : Fin k → Fin N := fun j => e ((Finsupp.toMultiset α).toList.get (j.cast (Multiset.length_toList _).symm))`. Establish `hc` using `cauchy_gauss_le G hG S hGS l`. Establish `hF' : ContDiff ℂ k F` using `contDiff_of_differentiable_fd hF k`. Establish `hcomp : iteratedFDeriv ℂ k G 0 (fun j => Pi.single (l j) 1) = iteratedFDeriv ℂ k F 0 (fun j => EuclideanSpace.single ((Finsupp.toMultiset α).toList.get (j.cast (Multiset.length_toList _).symm)) 1)`. Rewrite using `[show G = F ∘ T from rfl, T.iteratedFDeriv_comp_right hF' 0 le_rfl]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousMultilinearMap.compContinuousLinearMap_apply, map_zero]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `hTs _`. Establish `hk : k = α.degree`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [k, Finsupp.card_toMultiset]`. Use `first`. Consider the case `rfl`. Consider the case `simp [Finsupp.sum, Finsupp.degree]`. Establish `hdeg : (k : ℝ) = (α.degree : ℝ)` using `by rw [hk]`.
-
-Unfold `polyDeriv`. Rewrite using `[MvPolynomial.support_monomial, if_neg one_ne_zero, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl, one_mul]`. Rewrite using `[← hdeg, ← hcomp]`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gCauchy : GCauchyStatement := by
   intro ι _ F hF S hS α

@@ -16,9 +16,9 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.QCoh
 namespace GlobalTheory.AmpleGeneric
 
 /- English proof (translation)
-Introduce `O E κ _ _ _ _ _ _ _ hs W C W₀ f q φ f₀ b hP hF H H₀ M hM hA₀`. Establish `hP₀ : IsProjOver f₀` using `GlobalTheory.ProjSpace.isProjOver_of_isPullback_spMap _ H₀ hP`. Establish `hB₀ : GlobalTheory.AbLaw.IsProjBy f₀` using `(GlobalTheory.ProjSpace.isProjBy_iff_isProjOver f₀).2 hP₀`. Establish `hB : GlobalTheory.AbLaw.IsProjBy f` using `(GlobalTheory.ProjSpace.isProjBy_iff_isProjOver f).2 hP`. Establish `: IsProper (Over.mk f₀).hom` using `GlobalTheory.AbLaw.isProper_of_isProjBy κ W₀ f₀ hB₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR₀ : ReciprocityTheory.ChartRestriction.G.Out.RelAmple (Over.mk f₀) (M.pull b)` using `(GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine (Over.mk f₀) (LB.isLB_pull hM b)).2 hA₀`. Establish `hR : ReciprocityTheory.ChartRestriction.G.Out.RelAmple (Over.mk f) M` using `GlobalTheory.AmpleLocalBase.relAmple_of_closed O (Over.mk f) M hF hB hM κ (algebraMap O κ) hs (Over.mk f₀) b H₀ (M.pull b) (LB.isLB_pull hM b) (GlobalTheory.lbIso_refl (LB.isLB_pull hM b)) hR₀`. Establish `hAmp : IsAmpleLB M` using `GlobalTheory.isAmpleLB_of_relAmple_of_isAffine (Over.mk f) hM hR`. Establish `: IsAffineHom φ` using `MorphismProperty.of_isPullback H.flip inferInstance`. Conclude with `hAmp.pull_of_isAffineHom φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAmpleLB_generic_of_special : ∀ (O E κ : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field E] [Algebra O E] [Field κ] [Algebra O κ], Function.Surjective (algebraMap O κ) → ∀ (W C W₀ : Scheme.{0}) (f : W ⟶ Sp O) (q : C ⟶ Sp E) (φ : C ⟶ W) (f₀ : W₀ ⟶ Sp κ) (b : W₀ ⟶ W), IsProjOver f → Flat f → IsPullback φ q f (spMap (algebraMap O E)) → IsPullback b f₀ f (spMap (algebraMap O κ)) → ∀ M : LB W, M.IsLB → IsAmpleLB (M.pull b) → IsAmpleLB (M.pull φ) := by
   intro O E κ _ _ _ _ _ _ _ hs W C W₀ f q φ f₀ b hP hF H H₀ M hM hA₀

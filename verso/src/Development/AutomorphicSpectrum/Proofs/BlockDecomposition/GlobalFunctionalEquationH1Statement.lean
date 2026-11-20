@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GlobalFunctiona
 import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.VerticalStrips.UnramifiedEulerProductIntegral
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.HeckePartial.partial_functional_equation | exact GlobalTheory.CompanionTheory.HeckePartial.partial_functional_equation | (intros; apply GlobalTheory.CompanionTheory.HeckePartial.partial_functional_equation <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.global_functional_equation_h1 : Ad3.R.B0 → Ad3.R.E2 → Ad3.R.H1 := by
   first | exact @GlobalTheory.CompanionTheory.HeckePartial.partial_functional_equation | exact GlobalTheory.CompanionTheory.HeckePartial.partial_functional_equation | (intros; apply GlobalTheory.CompanionTheory.HeckePartial.partial_functional_equation <;> assumption)

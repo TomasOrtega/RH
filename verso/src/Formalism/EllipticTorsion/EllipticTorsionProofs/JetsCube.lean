@@ -15,7 +15,7 @@ open MvPowerSeries Formalism.G Formalism.G.LogCR Formalism.G.LogP
 variable {K : Type u} [NormedField K] [IsUltrametricDist K] [CharZero K]
 
 /- English proof (translation)
-Introduce `d`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun p _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf _) (norm_nonneg _) (hg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_mul {σ : Type} {f g : MvPowerSeries σ K} (hf : IntegralMv f) (hg : IntegralMv g) :
     IntegralMv (f * g) := by
@@ -27,7 +27,7 @@ theorem integral_mul {σ : Type} {f g : MvPowerSeries σ K} (hf : IntegralMv f) 
   exact mul_le_one₀ (hf _) (norm_nonneg _) (hg _)
 
 /- English proof (translation)
-Introduce `d`. Rewrite using `[coeff_pderiv, norm_mul]`. Establish `h1 : ((d i : K) + 1) = ((d i + 1 : ℕ) : K)` using `by push_cast; rfl`. Rewrite using `[h1]`. Conclude with `mul_le_one₀ (hf _) (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one K _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_pderiv {σ : Type} (i : σ) {f : MvPowerSeries σ K} (hf : IntegralMv f) :
     IntegralMv (MvPowerSeries.pderiv K i f) := by
@@ -39,7 +39,7 @@ theorem integral_pderiv {σ : Type} (i : σ) {f : MvPowerSeries σ K} (hf : Inte
   exact mul_le_one₀ (hf _) (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one K _)
 
 /- English proof (translation)
-Introduce `d`. Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `(MvPowerSeries.coeff d g).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_map {σ : Type} (g : MvPowerSeries σ (unitBall K)) :
     IntegralMv (MvPowerSeries.map (unitBall K).subtype g) := by
@@ -48,7 +48,7 @@ theorem integral_map {σ : Type} (g : MvPowerSeries σ (unitBall K)) :
   exact (MvPowerSeries.coeff d g).2
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[coeff_pderiv, MvPowerSeries.coeff_map, MvPowerSeries.coeff_map, coeff_pderiv, map_mul, map_add, map_natCast, map_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_map {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) {σ : Type} (i : σ)
     (g : MvPowerSeries σ R) :
@@ -72,9 +72,9 @@ theorem FK_eq : (FK F).toPowerSeries = MvPowerSeries.map (unitBall K).subtype F.
   rfl
 
 /- English proof (translation)
-Establish `hb : MvPowerSeries.HasSubst ![(PowerSeries.X : PowerSeries (unitBall K)), 0]` using `hb0`. Rewrite using `[PowerSeries.map, MvPowerSeries.map_subst hb, ← pderiv_map, ← FK_eq, omegaF]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[PowerSeries.X]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem omega_map : omegaF F = PowerSeries.map (unitBall K).subtype
     (MvPowerSeries.subst ![(PowerSeries.X : PowerSeries (unitBall K)), 0]
@@ -88,7 +88,7 @@ theorem omega_map : omegaF F = PowerSeries.map (unitBall K).subtype
   · simp
 
 /- English proof (translation)
-Establish `hX : PowerSeries.HasSubst (MvPowerSeries.X j : MvPowerSeries (Fin 3) (unitBall K))` using `PowerSeries.HasSubst.of_constantCoeff_zero (by simp)`. Establish `: (omegaF F).subst (MvPowerSeries.X j : MvPowerSeries (Fin 3) K) = MvPowerSeries.map (unitBall K).subtype (PowerSeries.subst (MvPowerSeries.X j : MvPowerSeries (Fin 3) (unitBall K)) (MvPowerSeries.subst ![(PowerSeries.X : PowerSeries (unitBall K)), 0] (MvPowerSeries.pderiv (unitB …`. Rewrite using `[PowerSeries.map_subst hX, MvPowerSeries.map_X, ← omega_map]`. Rewrite using `[this]`. Conclude with `integral_map _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_omegaX (j : Fin 3) :
     IntegralMv ((omegaF F).subst (MvPowerSeries.X j : MvPowerSeries (Fin 3) K)) := by
@@ -107,32 +107,32 @@ def Dj (j : Fin 3) (g : MvPowerSeries (Fin 3) K) : MvPowerSeries (Fin 3) K :=
   (omegaF F).subst (MvPowerSeries.X j : MvPowerSeries (Fin 3) K) * MvPowerSeries.pderiv K j g
 
 /- English proof (translation)
-The claim follows from `integral_mul (integral_omegaX F j) (integral_pderiv j hg)`.
+A detailed English derivation is pending.
 -/
 theorem integral_Dj (j : Fin 3) {g : MvPowerSeries (Fin 3) K} (hg : IntegralMv g) :
     IntegralMv (Dj F j g) :=
   integral_mul (integral_omegaX F j) (integral_pderiv j hg)
 
 /- English proof (translation)
-Rewrite using `[Dj, Dj, Dj, map_sub, mul_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Dj_sub (j : Fin 3) (a b : MvPowerSeries (Fin 3) K) : Dj F j (a - b) = Dj F j a - Dj F j b := by
   rw [Dj, Dj, Dj, map_sub, mul_sub]
 
 /- English proof (translation)
-Rewrite using `[Dj, Dj, Dj, map_add, mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Dj_add (j : Fin 3) (a b : MvPowerSeries (Fin 3) K) : Dj F j (a + b) = Dj F j a + Dj F j b := by
   rw [Dj, Dj, Dj, map_add, mul_add]
 
 /- English proof (translation)
-Rewrite using `[Dj, MvPowerSeries.pderiv_C, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Dj_C (j : Fin 3) (c : K) : Dj F j (MvPowerSeries.C c) = 0 := by
   rw [Dj, MvPowerSeries.pderiv_C, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Dj, pderiv_psubst hA, hdA, mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Dj_const (j : Fin 3) (ψ : PowerSeries K) {A : MvPowerSeries (Fin 3) K}
     (hA : MvPowerSeries.constantCoeff A = 0) (hdA : MvPowerSeries.pderiv K j A = 0) :
@@ -140,7 +140,7 @@ theorem Dj_const (j : Fin 3) (ψ : PowerSeries K) {A : MvPowerSeries (Fin 3) K}
   rw [Dj, pderiv_psubst hA, hdA, mul_zero, mul_zero]
 
 /- English proof (translation)
-Establish `hX : MvPowerSeries.constantCoeff (MvPowerSeries.X j : MvPowerSeries (Fin 3) K) = 0` using `by simp`. Rewrite using `[Dj, pderiv_psubst hX, pderiv_X_self, mul_one, invD, PowerSeries.subst_mul (PowerSeries.HasSubst.of_constantCoeff_zero hX)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Dj_X (j : Fin 3) (ψ : PowerSeries K) :
     Dj F j (ψ.subst (MvPowerSeries.X j : MvPowerSeries (Fin 3) K)) =
@@ -150,11 +150,11 @@ theorem Dj_X (j : Fin 3) (ψ : PowerSeries K) :
     PowerSeries.subst_mul (PowerSeries.HasSubst.of_constantCoeff_zero hX)]
 
 /- English proof (translation)
-Establish `hXj : MvPowerSeries.constantCoeff (MvPowerSeries.X j : MvPowerSeries (Fin 3) K) = 0`. Simplify using the standard rewrite rules. Establish `hB : MvPowerSeries.constantCoeff ((FK F).toPowerSeries.subst ![A, MvPowerSeries.X j]) = 0`. Apply the tactic sequence `rw [constantCoeff_subst_of_zero _ (fun i => by fin_cases i <;> simp [hA]), (FK F).zero_constantCoeff]`. Establish `hs` using `hs2 hA hXj`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `dB : MvPowerSeries.pderiv K j ((FK F).toPowerSeries.subst ![A, MvPowerSeries.X j]) = (MvPowerSeries.pderiv K 1 (FK F).toPowerSeries).subst ![A, MvPowerSeries.X j]`. Apply the tactic sequence `rw [pderiv_subst (fun i => by fin_cases i <;> simp [hA])]`. Simplify using `[Fin.sum_univ_two, hdA]`. Establish `hω : (omegaF F).subst ((FK F).toPowerSeries.subst ![A, MvPowerSeries.X j]) = (MvPowerSeries.pderiv K 1 (FK F).toPowerSeries).subst ![A, MvPowerSeries.X j] * (omegaF F).subst (MvPowerSeries.X j : MvPowerSeries (Fin 3) K)`. Use `congrArg (MvPowerSeries.subst ![A, MvPowerSeries.X j]) (omega_key (FK F))` as an intermediate fact.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[MvPowerSeries.subst_mul hs, psubst_subst _ (FK F).zero_constantCoeff hs, atY, psubst_subst _ hX1 hs, MvPowerSeries.subst_X hs]`. Simplify `this` using `[omegaF_eq]`. Rewrite using `[Dj, pderiv_psubst hB, dB, invD, PowerSeries.subst_mul (PowerSeries.HasSubst.of_constantCoeff_zero hB), hω]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rti (ψ : PowerSeries K) {A : MvPowerSeries (Fin 3) K}
     (hA : MvPowerSeries.constantCoeff A = 0) (j : Fin 3) (hdA : MvPowerSeries.pderiv K j A = 0) :
@@ -188,27 +188,27 @@ theorem ccX (i : Fin 3) : MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPow
   simp
 
 /- English proof (translation)
-The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero (ccX i)`.
+A detailed English derivation is pending.
 -/
 theorem hsX (i : Fin 3) : PowerSeries.HasSubst (MvPowerSeries.X i : MvPowerSeries (Fin 3) K) :=
   PowerSeries.HasSubst.of_constantCoeff_zero (ccX i)
 
 /- English proof (translation)
-Apply the tactic sequence `rw [F2, constantCoeff_subst_of_zero _ (fun i => by fin_cases i <;> simp [Y3]), (FK F).zero_constantCoeff]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem constantCoeff_two_variable_law (a b : Fin 3) : MvPowerSeries.constantCoeff (F2 F a b) = 0 := by
   rw [F2, constantCoeff_subst_of_zero _ (fun i => by fin_cases i <;> simp [Y3]),
     (FK F).zero_constantCoeff]
 
 /- English proof (translation)
-Apply the tactic sequence `rw [F3, constantCoeff_subst_of_zero _ (fun i => by fin_cases i <;> simp [Y3, constantCoeff_two_variable_law]), (FK F).zero_constantCoeff]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem constantCoeff_three_variable_law : MvPowerSeries.constantCoeff (F3 F) = 0 := by
   rw [F3, constantCoeff_subst_of_zero _ (fun i => by fin_cases i <;> simp [Y3, constantCoeff_two_variable_law]),
     (FK F).zero_constantCoeff]
 
 /- English proof (translation)
-Apply the tactic sequence `rw [F2, pderiv_subst (fun i => by fin_cases i <;> simp [Y3])]`. Simplify using `[Fin.sum_univ_two, Y3, pderiv_X_of_ne ha, pderiv_X_of_ne hb]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_two_variable_law_other (a b k : Fin 3) (ha : a ≠ k) (hb : b ≠ k) :
     MvPowerSeries.pderiv K k (F2 F a b) = 0 := by
@@ -216,9 +216,9 @@ theorem pderiv_two_variable_law_other (a b k : Fin 3) (ha : a ≠ k) (hb : b ≠
   simp [Fin.sum_univ_two, Y3, pderiv_X_of_ne ha, pderiv_X_of_ne hb]
 
 /- English proof (translation)
-Establish `: (FK F).IsComm` using `Formalism.G.isCommOfRat K (FK F)`. Establish `e1` using `(FK F).assoc' (hsX (K := K) 0) (hsX 1) (hsX 2)`. Establish `e2` using `(FK F).assoc' (hsX (K := K) 0) (hsX 2) (hsX 1)`. Establish `c` using `(FK F).comm' (hsX (K := K) 1) (hsX 2)`. Rewrite using `[F3, F2, F2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Y3]`. Rewrite using `[e1, c, ← e2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem three_variable_law_eq_subst_second : F3 F = (FK F).toPowerSeries.subst ![F2 F 0 2, MvPowerSeries.X 1] := by
   have : (FK F).IsComm := Formalism.G.isCommOfRat K (FK F)
@@ -230,16 +230,16 @@ theorem three_variable_law_eq_subst_second : F3 F = (FK F).toPowerSeries.subst !
   rw [e1, c, ← e2]
 
 /- English proof (translation)
-Establish `: (FK F).IsComm` using `Formalism.G.isCommOfRat K (FK F)`. Conclude with `(FK F).comm' (hsX (K := K) 1) (hsX 2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem two_variable_law_one_two_eq : F2 F 1 2 = (FK F).toPowerSeries.subst ![MvPowerSeries.X 2, MvPowerSeries.X 1] := by
   have : (FK F).IsComm := Formalism.G.isCommOfRat K (FK F)
   exact (FK F).comm' (hsX (K := K) 1) (hsX 2)
 
 /- English proof (translation)
-Establish `: (FK F).IsComm` using `Formalism.G.isCommOfRat K (FK F)`. Establish `e1` using `(FK F).assoc' (hsX (K := K) 0) (hsX 1) (hsX 2)`. Establish `h12 : PowerSeries.HasSubst (F2 F 1 2)` using `PowerSeries.HasSubst.of_constantCoeff_zero (constantCoeff_two_variable_law F 1 2)`. Establish `c` using `(FK F).comm' (hsX (K := K) 0) h12`. Rewrite using `[F3, F2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Y3]`. Rewrite using `[e1]`. Conclude with `c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem three_variable_law_eq_subst_first : F3 F = (FK F).toPowerSeries.subst ![F2 F 1 2, MvPowerSeries.X 0] := by
   have : (FK F).IsComm := Formalism.G.isCommOfRat K (FK F)
@@ -252,16 +252,16 @@ theorem three_variable_law_eq_subst_first : F3 F = (FK F).toPowerSeries.subst ![
   exact c
 
 /- English proof (translation)
-Rewrite using `[three_variable_law_eq_subst_first]`. Conclude with `rti F ψ (constantCoeff_two_variable_law F 1 2) 0 (pderiv_two_variable_law_other F 1 2 0 (by decide) (by decide))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_zero_subst_three_variable_law (ψ : PowerSeries K) : Dj F 0 (ψ.subst (F3 F)) = (invD F ψ).subst (F3 F) := by
   rw [three_variable_law_eq_subst_first]
   exact rti F ψ (constantCoeff_two_variable_law F 1 2) 0 (pderiv_two_variable_law_other F 1 2 0 (by decide) (by decide))
 
 /- English proof (translation)
-Establish `h3 : Dj F 2 (φ.subst (F3 F)) = (invD F φ).subst (F3 F)` using `rti F φ (constantCoeff_two_variable_law F 0 1) 2 (pderiv_two_variable_law_other F 0 1 2 (by decide) (by decide))`. Establish `h01 : Dj F 2 (φ.subst (F2 F 0 1)) = 0` using `Dj_const F 2 φ (constantCoeff_two_variable_law F 0 1) (pderiv_two_variable_law_other F 0 1 2 (by decide) (by decide))`. Establish `h02 : Dj F 2 (φ.subst (F2 F 0 2)) = (invD F φ).subst (F2 F 0 2)` using `rti F φ (ccX 0) 2 (pderiv_X_of_ne (by decide))`. Establish `h12 : Dj F 2 (φ.subst (F2 F 1 2)) = (invD F φ).subst (F2 F 1 2)` using `rti F φ (ccX 1) 2 (pderiv_X_of_ne (by decide))`. Establish `hx0 : Dj F 2 (φ.subst (Y3 0 : MvPowerSeries (Fin 3) K)) = 0` using `Dj_const F 2 φ (ccX 0) (pderiv_X_of_ne (by decide))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : Dj F 2 (φ.subst (Y3 1 : MvPowerSeries (Fin 3) K)) = 0` using `Dj_const F 2 φ (ccX 1) (pderiv_X_of_ne (by decide))`. Establish `hx2 : Dj F 2 (φ.subst (Y3 2 : MvPowerSeries (Fin 3) K)) = (invD F φ).subst (Y3 2 : MvPowerSeries (Fin 3) K)` using `Dj_X F 2 φ`. Rewrite using `[triDiff]`. Simplify using `only [Dj_sub, Dj_add, Dj_C, h3, h01, h02, h12, hx0, hx1, hx2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem step2 (φ : PowerSeries K) : Dj F 2 (triDiff F φ) =
     (invD F φ).subst (F3 F) - (invD F φ).subst (F2 F 0 2) - (invD F φ).subst (F2 F 1 2)
@@ -285,9 +285,9 @@ theorem step2 (φ : PowerSeries K) : Dj F 2 (triDiff F φ) =
   ring
 
 /- English proof (translation)
-Establish `h3 : Dj F 1 ((invD F φ).subst (F3 F)) = (invD F (invD F φ)).subst (F3 F)`. Rewrite using `[three_variable_law_eq_subst_second]`. Conclude with `rti F _ (constantCoeff_two_variable_law F 0 2) 1 (pderiv_two_variable_law_other F 0 2 1 (by decide) (by decide))`. Establish `h02 : Dj F 1 ((invD F φ).subst (F2 F 0 2)) = 0` using `Dj_const F 1 _ (constantCoeff_two_variable_law F 0 2) (pderiv_two_variable_law_other F 0 2 1 (by decide) (by decide))`. Establish `h12 : Dj F 1 ((invD F φ).subst (F2 F 1 2)) = (invD F (invD F φ)).subst (F2 F 1 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[two_variable_law_one_two_eq]`. Conclude with `rti F _ (ccX 2) 1 (pderiv_X_of_ne (by decide))`. Establish `hx2 : Dj F 1 ((invD F φ).subst (Y3 2 : MvPowerSeries (Fin 3) K)) = 0` using `Dj_const F 1 _ (ccX 2) (pderiv_X_of_ne (by decide))`. Simplify using `only [Dj_sub, Dj_add, h3, h02, h12, hx2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem step1 (φ : PowerSeries K) : Dj F 1
     ((invD F φ).subst (F3 F) - (invD F φ).subst (F2 F 0 2) - (invD F φ).subst (F2 F 1 2)
@@ -307,7 +307,7 @@ theorem step1 (φ : PowerSeries K) : Dj F 1
   ring
 
 /- English proof (translation)
-Establish `h12 : Dj F 0 ((invD F (invD F φ)).subst (F2 F 1 2)) = 0` using `Dj_const F 0 _ (constantCoeff_two_variable_law F 1 2) (pderiv_two_variable_law_other F 1 2 0 (by decide) (by decide))`. Rewrite using `[Dj_sub, pderiv_zero_subst_three_variable_law, h12, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem step0 (φ : PowerSeries K) : Dj F 0
     ((invD F (invD F φ)).subst (F3 F) - (invD F (invD F φ)).subst (F2 F 1 2)) =
@@ -317,9 +317,9 @@ theorem step0 (φ : PowerSeries K) : Dj F 0
   rw [Dj_sub, pderiv_zero_subst_three_variable_law, h12, sub_zero]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[Function.iterate_zero_apply, step2, step1, step0]`. Both sides reduce to the same expression. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Rewrite using `[Function.iterate_succ_apply', ih, pderiv_zero_subst_three_variable_law]`. Rewrite using `[← Function.iterate_succ_apply' (invD F) (k + 3) φ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem chain (φ : PowerSeries K) (k : ℕ) :
     (Dj F 0)^[k] (Dj F 0 (Dj F 1 (Dj F 2 (triDiff F φ)))) = ((invD F)^[k + 3] φ).subst (F3 F) := by
@@ -332,9 +332,9 @@ theorem chain (φ : PowerSeries K) (k : ℕ) :
     rw [← Function.iterate_succ_apply' (invD F) (k + 3) φ]
 
 /- English proof (translation)
-Establish `h2 : IntegralMv (Dj F 2 (triDiff F φ))` using `integral_mul (integral_omegaX F 2) (hN K (Fin 3) _ h 2)`. Establish `h0` using `integral_Dj F 0 (integral_Dj F 1 h2)`. Proceed by induction on `k with`. Consider the case `zero => simpa using h0`. Consider the case `succ k ih`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Function.iterate_succ_apply']`. Conclude with `integral_Dj F 0 ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_chain (hN : NPderiv.{u}) (φ : PowerSeries K) (h : InN (triDiff F φ)) (k : ℕ) :
     IntegralMv ((Dj F 0)^[k] (Dj F 0 (Dj F 1 (Dj F 2 (triDiff F φ))))) := by
@@ -348,7 +348,7 @@ theorem integral_chain (hN : NPderiv.{u}) (φ : PowerSeries K) (h : InN (triDiff
     exact integral_Dj F 0 ih
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.subst_def, constantCoeff_subst_of_zero _ (fun _ => constantCoeff_three_variable_law F)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem constantCoeff_subst_three_variable_law (ψ : PowerSeries K) :
     MvPowerSeries.constantCoeff (ψ.subst (F3 F)) = PowerSeries.constantCoeff ψ := by
@@ -360,9 +360,9 @@ end Formalism.ELL.FormalGroupCubeJets
 namespace Formalism.ELL
 
 /- English proof (translation)
-Introduce `K _ _ _ F φ h i hi`. Take `⟨k, rfl⟩ : ∃ k, i = k + 3` from `⟨i - 3, by omega⟩`. Establish `hI` using `FormalGroupCubeJets.integral_chain F hN φ h k`. Rewrite `hI` using `[FormalGroupCubeJets.chain]`. Use `hI 0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, FormalGroupCubeJets.constantCoeff_subst_three_variable_law]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetsCube_of (hN : Formalism.ELL.NPderiv.{u}) : Formalism.ELL.JetsCube.{u} := by
   intro K _ _ _ F φ h i hi

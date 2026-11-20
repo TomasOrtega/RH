@@ -10,9 +10,9 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h : galAd σ = MulSemiringAction.toRingHom (E ≃ₐ[F] E) 𝔸[E] σ`. Use `adeleRingHom_ext (K := F) (fun l => ?_) (fun a => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `adeleTensorEquiv F E (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F 𝔸[F]) ((adeleTensorEquiv F E).symm (algebraMap E 𝔸[E] l))) = σ • algebraMap E 𝔸[E] l`. Rewrite using `[adeleTensorEquiv_symm_algebraMap, Algebra.TensorProduct.map_tmul, adeleTensorEquiv_tmul, AdeleBaseChange.smul_algebraMap, map_one, map_one, mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `adeleTensorEquiv F E (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F 𝔸[F]) ((adeleTensorEquiv F E).symm (adeleMap F E a))) = σ • adeleMap F E a`. Rewrite using `[adeleTensorEquiv_symm_adeleMap, Algebra.TensorProduct.map_tmul, adeleTensorEquiv_tmul, smul_adeleMap, map_one, map_one, one_mul]`. Both sides reduce to the same expression. Rewrite using `[h]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem galAd_apply (σ : E ≃ₐ[F] E) (y : 𝔸[E]) : galAd σ y = σ • y := by
   have h : galAd σ = MulSemiringAction.toRingHom (E ≃ₐ[F] E) 𝔸[E] σ := by
@@ -31,7 +31,7 @@ private theorem galAd_apply (σ : E ≃ₐ[F] E) (y : 𝔸[E]) : galAd σ y = σ
   rfl
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `galAd σ (algebraMap E 𝔸[E] (h.1 i j)) = algebraMap E 𝔸[E] (σ (h.1 i j))`. Rewrite using `[galAd_apply, AdeleBaseChange.smul_algebraMap]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gal_diag (σ : E ≃ₐ[F] E) (n : ℕ) (h : GL (Fin n) E) :
     mapGL n (galAd σ) (AdelicGLn.diagonal E n h) = AdelicGLn.diagonal E n (sigmaGL σ h) := by
@@ -43,7 +43,7 @@ private noncomputable def thetaE (σ : E ≃ₐ[F] E) (n : ℕ) : Monoid.End (Ad
   mapGL n (galAd σ)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ_apply', pow_succ', mul_smul, ← ih, ← galAd_apply]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem theta_pow_val (σ : E ≃ₐ[F] E) (n m : ℕ) (g : AdelicGLn.AdelicGL E n) (i j : Fin n) :
     ((((thetaE σ n ^ m) g :
@@ -56,7 +56,7 @@ private theorem theta_pow_val (σ : E ≃ₐ[F] E) (n m : ℕ) (g : AdelicGLn.Ad
     rfl
 
 /- English proof (translation)
-Establish `hσ : σ ^ Module.finrank F E = 1`. Rewrite using `[← IsGalois.card_aut_eq_finrank F E]`. Conclude with `pow_card_eq_one'`. Establish `key : ∀ g : AdelicGLn.AdelicGL E n, (thetaE σ n ^ Module.finrank F E) g = g` using `fun g => Units.ext (Matrix.ext fun i j => by rw [theta_pow_val, hσ, one_smul])`. Conclude with `MonoidHom.ext key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem theta_pow_eq_one [IsGalois F E] (σ : E ≃ₐ[F] E) (n : ℕ) :
     thetaE σ n ^ Module.finrank F E = 1 := by
@@ -68,7 +68,7 @@ private theorem theta_pow_eq_one [IsGalois F E] (σ : E ≃ₐ[F] E) (n : ℕ) :
   exact MonoidHom.ext key
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[pow_succ_apply', pow_succ_apply', ih]`. Conclude with `gal_diag σ n _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem theta_pow_diag (σ : E ≃ₐ[F] E) (n m : ℕ) (h : GL (Fin n) E) :
     (thetaE σ n ^ m) (AdelicGLn.diagonal E n h) =
@@ -80,7 +80,7 @@ private theorem theta_pow_diag (σ : E ≃ₐ[F] E) (n m : ℕ) (h : GL (Fin n) 
     exact gal_diag σ n _
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [twNorm_zero, twNorm_zero, map_one]`. Consider the case `succ m ih => rw [twNorm_succ, twNorm_succ, ih, theta_pow_diag, map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem twNorm_diag (σ : E ≃ₐ[F] E) (n m : ℕ) (h : GL (Fin n) E) :
     twNorm (thetaE σ n) m (AdelicGLn.diagonal E n h) =
@@ -92,7 +92,7 @@ private theorem twNorm_diag (σ : E ≃ₐ[F] E) (n m : ℕ) (h : GL (Fin n) E) 
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ n δ x`. Establish `h` using `twNorm_twConj_of_pow_eq_one (thetaE σ n) (theta_pow_eq_one σ n) x (AdelicGLn.diagonal E n δ)`. Rewrite `h` using `[twNorm_diag]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.twNorm_conj_diagonal_eq_conj_normGL :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E] (σ : E ≃ₐ[F] E) (n : ℕ) (δ : GL (Fin n) E) (x : AdelicGLn.AdelicGL E n),

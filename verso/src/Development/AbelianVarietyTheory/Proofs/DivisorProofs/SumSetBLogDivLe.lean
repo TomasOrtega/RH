@@ -10,15 +10,13 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.Basic
 namespace GlobalTheory.Mean4
 
 /- English proof (translation)
-Establish `hp : ∀ p ∈ setB Y B, p.Prime`. Introduce `p hp`. Simplify using `only [setB, Finset.mem_union, Finset.mem_filter] at hp`. Break down `hp with h | h | h` into its components or cases. Conclude with `h.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Nat.prime_of_mem_primeFactors h`. Conclude with `Y.lev_prime p h`. Use `⟨hp, ?_⟩` and prove the remaining obligations. Establish `hfl : 48 ≤ ⌊B⌋₊` using `Nat.le_floor (by exact_mod_cast hB)`. Establish `h` using `D.host.sum_log_div_le_of_bad ⌊B⌋₊ Y.lev (setB Y B) (by omega) (by unfold FewBad at hF; omega) hp fun p h1 h2 => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[setB, Finset.mem_union]`. Break down `h1 with h | h` into its components or cases. Rewrite `h` using `[Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `D.host.log_rdE_nonneg'`. Establish `h48 : 4 * Real.log D.host.rdE / (⌊B⌋₊ : ℝ) ≤ 4 * Real.log D.host.rdE / 48` using `div_le_div_of_nonneg_left (by linarith) (by norm_num) (by exact_mod_cast hfl)`. Establish `hl : Real.log (⌊B⌋₊ : ℝ) ≤ Real.log B` using `Real.log_le_log (by exact_mod_cast (by omega : 0 < ⌊B⌋₊)) (Nat.floor_le (by linarith))`. Establish `h1 : 1 ≤ Real.log B`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`.
-
-Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_setB_log_div_le {D : D7} (Y : ShimX D.what₂.Tau) (hF : FewBad Y) (B : ℝ) (hB : 48 ≤ B) :
     (∀ p ∈ setB Y B, p.Prime) ∧

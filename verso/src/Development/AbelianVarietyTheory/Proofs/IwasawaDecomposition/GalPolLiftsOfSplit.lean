@@ -27,11 +27,11 @@ namespace GlobalTheory.GalAllPlaces
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.CuspRep GlobalTheory.WeilDeligne Polynomial
 
 /- English proof (translation)
-Use `host_isCMField D.host` as an intermediate fact. Establish `hr' : (C.e a π).1.IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Use `(D.naut.ralg_def π).1 hr τ` as an intermediate fact. Rewrite `this` using `[C.inf]`. Then use the resulting hypothesis. Take `⟨r, h1, h2, h3⟩` from `exists_wdOf_eq_locPar hL hF hG D.nd.Om ι ha (C.e a π).1 ((C.csd a π).1 hc) hr'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `⟨r, h1, fun w hl hu B σ hB hσ => ?_⟩` and prove the remaining obligations. Establish `hu'` using `(D.naut.unr_tw _ ((1 - (a : ℝ)) / 2)).2 hu`. Establish `e : T.e w (D.naut.lpTw (D.naut.locG π w) ((1 - (a : ℝ)) / 2)) = wdOf (D.nd.plOm.2 w) hl ι r`. Rewrite using `[T.tw, C.loc, h3]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[galPol, T.frobEig w _ hu', e]`. Conclude with `frobEig_wdOf hl ι h1 (e ▸ (T.unr w _).1 hu') hB hσ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep_uniform (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (C : CGTrue hL D T)
@@ -68,25 +68,23 @@ namespace GlobalTheory.GalAllPlaces
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial
 
 /- English proof (translation)
-Introduce `hL hF hG hCh D T C K _ e π hc hr hsplit`. Establish `ha : 1 ≤ D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Simplify using `only [Formalism.BasicNotions.Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨ι⟩ : Nonempty (Qbar 2 ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex 2`. Use `set P : HeightOneSpectrum (𝓞 D.host.E) → ℂ[X] := fun w => galPol D.naut (D.naut.lpTw (D.naut.locG π w) ((1 - (D.R.r : ℝ)) / 2)) with hP`. Establish `hU : ∀ᶠ w in Filter.cofinite, ((2 : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal ∧ D.naut.unr (D.naut.locG π w)` using `(eventually_natCast_notMem D.host.E 2).and (D.naut.locG_unr_ae π)`. Take `⟨ρ, hρc, hρ⟩` from `exists_rep_uniform hL hF hG C 2 ι ha π hc hr`. Use `letI : Algebra K ℂ := e.toAlgebra`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `key : ∀ γ : ℂ ≃ₐ[K] ℂ, ∀ w, (((2 : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal ∧ D.naut.unr (D.naut.locG π w)) → (P w).map (γ : ℂ →+* ℂ) = P w`. Introduce `γ`. Take `⟨ρ', hρ'c, hρ'⟩` from `exists_rep_uniform hL hF hG C 2 (ι.trans γ.toRingEquiv) ha π hc hr`. Establish `hfix : ∀ᶠ w in Filter.cofinite, IsSplitPl D.host w → (P w).map (γ : ℂ →+* ℂ) = P w` using `hsplit.mono fun w hw hs => by`. Take `⟨q, hq⟩` from `(Polynomial.mem_lifts _).1 (hw hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [hP]`. Rewrite using `[← hq, Polynomial.map_map]`. Use `congr 1`. Use extensionality with `x`. Conclude with `γ.commutes x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hall` using `hU.and hfix`. Rewrite `hall` using `[Filter.eventually_cofinite]`. Use `set S := hall.toFinset with hS`. Establish `hmap : ∀ g, (((ρ' g : GL (Fin D.R.r) (Qbar 2)) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar 2)).charpoly.map (ι.trans γ.toRingEquiv).toRingHom) = ((((ρ' g : GL (Fin D.R.r) (Qbar 2)) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar 2)).charpoly.map ι.toRingHom).map (γ : ℂ →+* ℂ))`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.map_map]`. Both sides reduce to the same expression. Establish `heq` using `GlobalTheory.charpoly_eq_of_eqOn_dense (fun g => ((ρ g : GL (Fin D.R.r) (Qbar 2)) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar 2))) (fun g => ((ρ' g : GL (Fin D.R.r) (Qbar 2)) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar 2))) hρc hρ'c _ (GlobalTheory.ChebSplitDense.chebSplit_nd hCh D S) (by`. Introduce and unpack `g ⟨w, hwS, hsp, B, hB, hFr⟩`. Establish `hw : (((2 : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal ∧ D.naut.unr (D.naut.locG π w)) ∧ (IsSplitPl D.host w → (P w).map (γ : ℂ →+* ℂ) = P w)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hwS (by rw [hS, Set.Finite.mem_toFinset]; exact h)`. Apply `Polynomial.map_injective ι.toRingHom ι.injective` to reduce the goal to its premises. Rewrite using `[hρ w hw.1.1 hw.1.2 B g hB hFr]`. Apply `Polynomial.map_injective (γ : ℂ →+* ℂ) γ.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hmap, hρ' w hw.1.1 hw.1.2 B g hB hFr, hw.2 hsp])`. Introduce `w hw`. Take `⟨σ, hσ⟩` from `exists_isFrob (D.nd.plOm.2 w)`. Establish `h1` using `hρ w hw.1 hw.2 _ σ (D.nd.plOm.2 w) hσ`. Establish `h2` using `hρ' w hw.1 hw.2 _ σ (D.nd.plOm.2 w) hσ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h2` using `[hmap, ← heq σ, h1]`. Conclude with `h2`. Use `filter_upwards [hU] with w hw`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`.
-
-Conclude with `GlobalTheory.GaloisDescent.complex_mem_range_of_forall_algEquiv ((P w).coeff n) fun γ => by`. Use `congrArg (fun p : ℂ[X] => p.coeff n) (key γ w hw)` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem galPol_lifts_of_split : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.Published.AutomorphicFormsFiniteGL → GlobalTheory.Published.GaloisRepOfPolarizedCuspidal → GlobalTheory.Published.ChebotarevDegreeOne → ∀ (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut), GlobalTheory.HeightCounting.CGTrue hL D T → ∀ (K : Type) [Field K] (e : K →+* ℂ) (π : D.naut.CG D.R.r), D.naut.csd π → D.naut.ralg π → (∀ᶠ w in Filter.cofinite, IsSplitPl D.host w → galPol D.naut (D.naut.lpTw (D.naut.locG π w) ((1 - (D.R.r : ℝ)) / 2)) ∈ Polynomial.lifts e) → ∀ᶠ w in Filter.cofinite, galPol D.naut (D.naut.lpTw (D.naut.locG π w) ((1 - (D.R.r : ℝ)) / 2)) ∈ Polynomial.lifts e := by
   intro hL hF hG hCh D T C K _ e π hc hr hsplit

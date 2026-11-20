@@ -12,11 +12,11 @@ namespace GlobalTheory.CompanionTheory.CTFin.Central
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x₀`. Use `set f₀ := JointCont.finPart g x₀`. Establish `hc : Continuous (fun x : BlockIx a r → Ad E => f₀⁻¹ * JointCont.finPart g x)` using `continuous_const.mul (JointCont.continuous_finPart g)`. Establish `h1 : finRep E a (f₀⁻¹ * f₀) φ = φ` using `by rw [inv_mul_cancel]; simp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ x in 𝓝 x₀, chart φ.1 (finGL E a f₀) (toL (JointCont.infPart g x).val) = φ.1 (unip x * g)` using `by filter_upwards [hc.continuousAt.preimage_mem_nhds (hφ.mem_nhds h1)] with x hx`. Establish `hx' : finRep E a (f₀⁻¹ * JointCont.finPart g x) φ = φ` using `hx`. Establish `e : unip x * g = finGL E a f₀ * infGL E a (JointCont.infPart g x) * finGL E a (f₀⁻¹ * JointCont.finPart g x)`. Rewrite using `[JointCont.unip_mul_eq, mul_assoc, infGL_comm, ← mul_assoc, ← map_mul (finGL E a), mul_inv_cancel_left]`. Rewrite using `[chart_val, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg (fun ψ : Sm E a => ψ.1 (finGL E a f₀ * infGL E a (JointCont.infPart g x))) hx').symm`. Establish `hA : ContinuousAt (fun x : BlockIx a r → Ad E => chart φ.1 (finGL E a f₀) (toL (JointCont.infPart g x).val)) x₀` using `ContinuousAt.comp (g := chart φ.1 (finGL E a f₀)) ((φ.2 _).continuousOn.continuousAt (isOpen_invSet.mem_nhds (val_mem_invSet _))) (JointCont.continuous_infPart g).continuousAt`. Conclude with `hA.congr hev`.
+A detailed English derivation is pending.
 -/
 theorem continuous_unip_mul {r : ℕ} {φ : Sm E a} (hφ : IsOpen {k | finRep E a k φ = φ}) (g : GA E a) :
     Continuous fun x : BlockIx a r → Ad E => φ.1 (unip x * g) := by
@@ -40,11 +40,9 @@ theorem continuous_unip_mul {r : ℕ} {φ : Sm E a} (hφ : IsOpen {k | finRep E 
   exact hA.congr hev
 
 /- English proof (translation)
-Take `⟨K, hK, hcov⟩` from `Formalism.IndefR.Eqv.G5.adl_cocompact (F := E)`. Establish `hKc : IsCompact (Set.univ.pi fun _ : BlockIx a r => K)` using `isCompact_univ_pi fun _ => hK`. Take `⟨C, hC⟩` from `hKc.exists_bound_of_continuousOn (continuous_unip_mul (r := r) hφ g).continuousOn`. Use `⟨C, fun x => ?_⟩` and prove the remaining obligations. Use `choose q hq using fun p => hcov (x p)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx : x = (fun p => algebraMap E (Ad E) (q p)) + fun p => x p - algebraMap E (Ad E) (q p)`. Use function extensionality and compare the values at `p`. Use `show x p = algebraMap E (Ad E) (q p) + (x p - algebraMap E (Ad E) (q p))`. Conclude with `(add_sub_cancel _ _).symm`. Establish `hper : φ.1 (unip x * g) = φ.1 (unip (fun p => x p - algebraMap E (Ad E) (q p)) * g)` using `by conv_lhs => rw [hx]`.
-
-Rewrite using `[unip_add, unip_algebraMap, mul_assoc, hl]`. Rewrite using `[hper]`. Conclude with `hC _ fun p _ => hq p`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_unip_mul {r : ℕ} {φ : Sm E a} (hl : ∀ γ g, φ.1 (ratGL E a γ * g) = φ.1 g)
     (hφ : IsOpen {k | finRep E a k φ = φ}) (g : GA E a) :
@@ -65,7 +63,7 @@ theorem exists_bound_unip_mul {r : ℕ} {φ : Sm E a} (hl : ∀ γ g, φ.1 (ratG
   exact hC _ fun p _ => hq p
 
 /- English proof (translation)
-Establish `hfin` using `covol_lt_top μ 𝓕 h𝓕`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ]; exact hfin⟩`. Take `⟨C, hC⟩` from `exists_bound_unip_mul (r := r) hl hφ g`. Conclude with `Integrable.of_bound (continuous_unip_mul hφ g).aestronglyMeasurable C (Filter.Eventually.of_forall hC)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integrable_unip_mul {r : ℕ} [MeasurableSpace (BlockIx a r → Ad E)] [BorelSpace (BlockIx a r → Ad E)]
     (μ : Measure (BlockIx a r → Ad E)) [μ.IsAddHaarMeasure] (𝓕 : Set (BlockIx a r → Ad E))
@@ -78,21 +76,19 @@ theorem integrable_unip_mul {r : ℕ} [MeasurableSpace (BlockIx a r → Ad E)] [
   exact Integrable.of_bound (continuous_unip_mul hφ g).aestronglyMeasurable C (Filter.Eventually.of_forall hC)
 
 /- English proof (translation)
-Introduce `E _ _ _ a r _ _ μ 𝓕 hμ h𝓕 hlie`. Use `haveI := hμ`. Set `P : Sm E a → Prop` to `fun φ => (∀ (γ : GL (Fin a) E) (g : GA E a), φ.1 (ratGL E a γ * g) = φ.1 g) ∧ IsOpen {k | finRep E a k φ = φ}`. Establish `hadd : ∀ φ ψ : Sm E a, P φ → P ψ → P (φ + ψ)` using `fun φ ψ h1 h2 => ⟨fun γ g => by`. Express the relevant statement in the definitionally equal form `φ.1 _ + ψ.1 _ = φ.1 _ + ψ.1 _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1.1, h2.1],`. Use the proof step `(GlobalTheory.PRep.smoothPart (finRep E a)).add_mem (show φ ∈ GlobalTheory.PRep.smoothPart (finRep E a) from h1.2) (show ψ ∈ GlobalTheory.PRep.smoothPart (finRep E a) from h2.2)⟩`. Establish `hsmul : ∀ (c : ℂ) (φ : Sm E a), P φ → P (c • φ)` using `fun c φ h1 => ⟨fun γ g => by`. Express the relevant statement in the definitionally equal form `c • φ.1 _ = c • φ.1 _`. Rewrite using `[h1.1],`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use the proof step `(GlobalTheory.PRep.smoothPart (finRep E a)).smul_mem c (show φ ∈ GlobalTheory.PRep.smoothPart (finRep E a) from h1.2)⟩`. Establish `hint : ∀ ψ : Sm E a, P ψ → ∀ g, Integrable (fun x => ψ.1 (unip x * g)) (μ.restrict 𝓕)` using `fun ψ h g => integrable_unip_mul μ 𝓕 h𝓕 h.1 h.2 g`. Set `S : Subalgebra ℂ (Module.End ℂ (Sm E a))` to `{ carrier := {T | ∀ φ, P φ → P (T φ) ∧ ∀ F : Sm E a, (∀ g, F.1 g = ∫ x in 𝓕, φ.1 (unip x * g) ∂μ) → ∀ g, (T F).1 g = ∫ x in 𝓕, (T φ).1 (unip x * g) ∂μ} mul_mem' := fun {T₁ T₂} hT₁ hT₂ φ hφ => by`. Take `⟨h1, e1⟩` from `hT₂ φ hφ`. Take `⟨h2, e2⟩` from `hT₁ _ h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h2, fun F hF g => e2 (T₂ F) (e1 F hF) g⟩`. Use the proof step `add_mem' := fun {T₁ T₂} hT₁ hT₂ φ hφ => by`. Take `⟨h1, e1⟩` from `hT₁ φ hφ`. Take `⟨h2, e2⟩` from `hT₂ φ hφ`. Use `⟨hadd _ _ h1 h2, fun F hF g => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(T₁ F).1 g + (T₂ F).1 g = ∫ x in 𝓕, ((T₁ φ).1 (unip x * g) + (T₂ φ).1 (unip x * g)) ∂μ`. Rewrite using `[integral_add (hint _ h1 g) (hint _ h2 g), e1 F hF g, e2 F hF g]`. Use the proof step `algebraMap_mem' := fun c φ hφ => by`. Use `⟨by rw [Module.algebraMap_end_apply]; exact hsmul c φ hφ, fun F hF g => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.algebraMap_end_apply, Module.algebraMap_end_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `c • F.1 g = ∫ x in 𝓕, c • φ.1 (unip x * g) ∂μ`. Rewrite using `[integral_smul, hF g] }`. Establish `hL : ∀ X, lie E a X ∈ S` using `fun X φ hφ => ⟨⟨fun γ g => GlobalTheory.SpehInfChar.lie_leftInv (ratGL E a).range X (fun u hu g' => by obtain ⟨γ', rfl⟩ := MonoidHom.mem_range.1 hu; exact hφ.1 γ' g') _ ⟨γ, rfl⟩ g, GlobalTheory.SpehInfChar.lie_mem_smoothPart X (show φ ∈ GlobalTheory.PRep.smoothPart (finRep E a) f …`. Establish `hE : ∀ τ i j, Eop τ i j ∈ S` using `fun τ i j => S.smul_mem (S.sub_mem (hL _) (S.smul_mem (hL _) _)) _`. Introduce `φ F hl hlev hF z hz g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hzS : z ∈ S`. Use `(Algebra.adjoin_le (S := S) ?_) hz` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, u, rfl⟩`. Use `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`.
-
-Use `S.add_mem ?_ (hE _ _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `S.algebraMap_mem _`. Conclude with `S.zero_mem`. Conclude with `(hzS φ ⟨hl, hlev⟩).2 F hF g`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ct_Zalg : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ), ∀ [MeasurableSpace (BlockIx a r → Ad E)] [BorelSpace (BlockIx a r → Ad E)] (μ : Measure (BlockIx a r → Ad E)) (𝓕 : Set (BlockIx a r → Ad E)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratN E a r) 𝓕 μ → (∀ φ F : Sm E a, (∀ (γ : GL (Fin a) E) (g : GA E a), φ.1 (ratGL E a γ * g) = φ.1 g) → IsOpen {k | finRep E a k φ = φ} → (∀ g, F.1 g = ∫ x in 𝓕, φ.1 (unip x * g) ∂μ) → ∀ (X : Lie E a) (g : GA E a), (lie E a X F).1 g = ∫ x in 𝓕, (lie E a X φ).1 (unip x * g) ∂μ) → ∀ φ F : Sm E a, (∀ (γ : GL (Fin a) E) (g : GA E a), φ.1 (ratGL E a γ * g) = φ.1 g) → IsOpen {k | finRep E a k φ = φ} → (∀ g, F.1 g = ∫ x in 𝓕, φ.1 (unip x * g) ∂μ) → ∀ z ∈ Zalg E a, ∀ g, (z F).1 g = ∫ x in 𝓕, (z φ).1 (unip x * g) ∂μ := by
   intro E _ _ _ a r _ _ μ 𝓕 hμ h𝓕 hlie

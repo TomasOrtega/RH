@@ -21,7 +21,7 @@ section Germs
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[rsT, dif_pos h]`. Conclude with `gs_res r z h hz s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_rsT (r : Z ⟶ Y) (z : Z) {O₀ O : Y.Opens} (h : O ≤ O₀) (hz : r z ∈ O) (s : Γ(Y, O₀)) :
     gs r z O (rsT s O) = gs r z O₀ s := by
@@ -29,7 +29,7 @@ theorem gs_rsT (r : Z ⟶ Y) (z : Z) {O₀ O : Y.Opens} (h : O ≤ O₀) (hz : r
   exact gs_res r z h hz s
 
 /- English proof (translation)
-Rewrite using `[pbT, dif_pos h]`. Conclude with `(gs_res r z h hz ((f.app O₀).hom s)).trans (gs_pull r f z O₀ (h hz) s)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_pbT (r : Z ⟶ Y) (f : Y ⟶ X) (z : Z) {O₀ : X.Opens} {O : Y.Opens} (h : O ≤ f ⁻¹ᵁ O₀) (hz : r z ∈ O)
     (s : Γ(X, O₀)) : gs r z O (pbT f s O) = gs (r ≫ f) z O₀ s := by
@@ -37,27 +37,27 @@ theorem gs_pbT (r : Z ⟶ Y) (f : Y ⟶ X) (z : Z) {O₀ : X.Opens} {O : Y.Opens
   exact (gs_res r z h hz ((f.app O₀).hom s)).trans (gs_pull r f z O₀ (h hz) s)
 
 /- English proof (translation)
-Simplify using `only [gs_eq r z O hz, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_one (r : Z ⟶ Y) (z : Z) (O : Y.Opens) (hz : r z ∈ O) : gs r z O 1 = 1 := by
   simp only [gs_eq r z O hz, map_one]
 
 /- English proof (translation)
-Simplify using `only [gs_eq r z O hz, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_sub (r : Z ⟶ Y) (z : Z) (O : Y.Opens) (hz : r z ∈ O) (a b : Γ(Y, O)) :
     gs r z O (a - b) = gs r z O a - gs r z O b := by
   simp only [gs_eq r z O hz, map_sub]
 
 /- English proof (translation)
-The claim follows from `(gs_res r z (show O ≤ p ⁻¹ᵁ ⊤ from fun _ _ => trivial) hz ((p.app ⊤).hom _)).trans (gs_pull r p z ⊤ trivial _)`.
+A detailed English derivation is pending.
 -/
 theorem gs_constFn {R : Type} [CommRing R] (p : Y ⟶ Sp R) (r : Z ⟶ Y) (z : Z) (O : Y.Opens) (hz : r z ∈ O) (a : R) :
     gs r z O (constFn p O a) = gs (r ≫ p) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a) :=
   (gs_res r z (show O ≤ p ⁻¹ᵁ ⊤ from fun _ _ => trivial) hz ((p.app ⊤).hom _)).trans (gs_pull r p z ⊤ trivial _)
 
 /- English proof (translation)
-Unfold `constFn`. Rewrite using `[← map_mul, ← map_mul, DualNumber.eps_mul_eps, map_zero, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_sq {K : Type} [Field K] (p : X ⟶ Sp (DualNumber K)) (U : X.Opens) :
     constFn p U DualNumber.eps * constFn p U DualNumber.eps = 0 := by
@@ -67,19 +67,19 @@ theorem eps_sq {K : Type} [Field K] (p : X ⟶ Sp (DualNumber K)) (U : X.Opens) 
 end Germs
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `hc`. Set `φ : Fin 2 → (Y' ⟶ X)` to `fun n => ![τ, ρ] n ≫ m`. Establish `h₀ : ∀ (J : Fin 2 → L.ι) (y : Y'), y ∈ LB.wchart L φ J → m (τ y) ∈ L.U (J 0)` using `fun J y hy => Set.mem_iInter.1 hy 0`. Establish `h₀' : ∀ (J : Fin 2 → L.ι) (y : Y'), y ∈ LB.wchart L φ J → m (ρ y) ∈ L.U (J 0)` using `fun J y hy => hτ y (m ⁻¹ᵁ L.U (J 0)) (h₀ J y hy)`. Establish `h₁ : ∀ (J : Fin 2 → L.ι) (y : Y'), y ∈ LB.wchart L φ J → m (ρ y) ∈ L.U (J 1)` using `fun J y hy => Set.mem_iInter.1 hy 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `le : ∀ J : Fin 2 → L.ι, LB.wchart L φ J ≤ (ρ ≫ m) ⁻¹ᵁ (L.U (J 0) ⊓ L.U (J 1))` using `fun J y hy => ⟨h₀' J y hy, h₁ J y hy⟩`. Set `u : ∀ J : Fin 2 → L.ι, Γ(Y', LB.wchart L φ J)ˣ` to `fun J => ⟨1 - constFn π _ DualNumber.eps * pbT ρ (b (J 0)) _, 1 + constFn π _ DualNumber.eps * pbT ρ (b (J 0)) _, by linear_combination (-(pbT ρ (b (J 0)) (LB.wchart L φ J)) ^ 2) * eps_sq π (LB.wchart L φ J), by linear_combination (-(pbT ρ (b (J 0)) (LB.wchart L φ J)) ^ 2) * eps_ …`. Use `⟨⟨fun J => res (le J) (pullU (ρ ≫ m) _ (L.g (J 0) (J 1))) * u J⟩, isGen_of_gm _ fun y J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Use `set e := gs π y ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber K))).inv.hom DualNumber.eps) with he`. Establish `ee : e * e = 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, ← gs_mul π y ⊤ trivial, ← map_mul, DualNumber.eps_mul_eps, map_zero, gs_eq π y ⊤ trivial, map_zero, map_zero]`. Establish `val : ∀ J : Fin 2 → L.ι, y ∈ LB.wchart L φ J → (gm (𝟙 Y') y (LB.wchart L φ J) (res (le J) (pullU (ρ ≫ m) _ (L.g (J 0) (J 1))) * u J)).val = (gm (ρ ≫ m) y _ (L.g (J 0) (J 1))).val * (1 - e * gs ρ y _ (b (J 0)))` using `fun J hJ => by`. Rewrite using `[map_mul, Units.val_mul, gm_res (𝟙 Y') y (le J) hJ, gm_pull (𝟙 Y') (ρ ≫ m) y _ (le J hJ), Category.id_comp, ← gs_unit (𝟙 Y') y _ hJ]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `gs (𝟙 Y') y _ (1 - constFn π _ DualNumber.eps * pbT ρ (b (J 0)) _) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gs_sub _ _ _ hJ, gs_one _ _ _ hJ, gs_mul _ _ _ hJ, gs_constFn _ _ _ _ hJ, gs_pbT (𝟙 Y') ρ y (O₀ := m ⁻¹ᵁ L.U (J 0)) (fun y hy => h₀' J y hy) hJ, Category.id_comp, Category.id_comp]`. Establish `tr : trF φ ![1, -1] (𝟙 Y') y J J' = gm (τ ≫ m) y _ (L.g (J 0) (J' 0)) * (gm (ρ ≫ m) y _ (L.g (J 1) (J' 1)))⁻¹`. Rewrite using `[trF, Fin.prod_univ_two]`. Simplify using `only [Category.id_comp]`. Simplify using `[φ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `c₁` using `gm_cocycle hL (ρ ≫ m) y (h₀' J y hJ) (h₀' J' y hJ') (h₁ J' y hJ')`. Establish `c₂` using `gm_cocycle hL (ρ ≫ m) y (h₀' J y hJ) (h₁ J y hJ) (h₁ J' y hJ')`. Establish `k₁` using `hk _ _ y (h₀ J y hJ) (h₀ J' y hJ')`. Establish `m₀ : ρ y ∈ m ⁻¹ᵁ L.U (J 0) ⊓ m ⁻¹ᵁ L.U (J' 0)` using `⟨h₀' J y hJ, h₀' J' y hJ'⟩`. Rewrite `k₁` using `[hb, gs_sub _ _ _ m₀, gs_rsT _ _ inf_le_right m₀, gs_rsT _ _ inf_le_left m₀, gs_unit (τ ≫ m) y (L.U (J 0) ⊓ L.U (J' 0)) ⟨h₀ J y hJ, h₀ J' y hJ'⟩, gs_unit (ρ ≫ m) y (L.U (J 0) ⊓ L.U (J' 0)) m₀, ← he]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `gm (𝟙 Y') y (LB.wchart L φ J) _ = trF φ ![1, -1] (𝟙 Y') y J J' * gm (𝟙 Y') y (LB.wchart L φ J') _`. Rewrite using `[tr, _root_.mul_assoc, mul_left_comm, eq_inv_mul_iff_mul_eq]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, val J hJ, val J' hJ', k₁]`. Establish `d` using `congrArg Units.val (c₁.trans c₂.symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `d` using `[Units.val_mul, Units.val_mul]`. Take the linear combination `(-(1 - e * gs ρ y _ (b (J 0)))) * d + ((gm (ρ ≫ m) y _ (L.g (J 0) (J' 0))).val * (gm (ρ ≫ m) y _ (L.g (J' 0) (J' 1))).val * (gs ρ y _ (b (J' 0)) - gs ρ y _ (b (J 0))) * gs ρ y _ (b (J' 0))) * ee`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_gen {K : Type} [Field K] {X Y Y' : Scheme.{0}} (π : Y' ⟶ Sp (DualNumber K)) (τ ρ : Y' ⟶ Y)
     (hτ : ∀ (y : Y') (W : Y.Opens), τ y ∈ W → ρ y ∈ W) (m : Y ⟶ X) (L : LB X) (hL : L.IsLB)
@@ -139,7 +139,7 @@ theorem exists_gen {K : Type} [Field K] {X Y Y' : Scheme.{0}} (π : Y' ⟶ Sp (D
       (gs ρ y _ (b (J' 0)) - gs ρ y _ (b (J 0))) * gs ρ y _ (b (J' 0))) * ee
 
 /- English proof (translation)
-Rewrite using `[pbT, dif_pos (show m ⁻¹ᵁ L.U i ⊓ m ⁻¹ᵁ L.U j ≤ m ⁻¹ᵁ (L.U i ⊓ L.U j) from fun _ h => h)]`. Conclude with `(L.g i j).isUnit.map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_pbT {X Y : Scheme.{0}} (m : Y ⟶ X) (L : LB X) (i j : L.ι) :
     IsUnit (pbT m (L.g i j).val (m ⁻¹ᵁ L.U i ⊓ m ⁻¹ᵁ L.U j)) := by
@@ -147,15 +147,13 @@ theorem isUnit_pbT {X Y : Scheme.{0}} (m : Y ⟶ X) (L : LB X) (i j : L.ι) :
   exact (L.g i j).isUnit.map _
 
 /- English proof (translation)
-Introduce `i j k`. Use `set O : Y.Opens := m ⁻¹ᵁ L.U i ⊓ m ⁻¹ᵁ L.U j ⊓ m ⁻¹ᵁ L.U k with hO`. Set `G : L.ι → L.ι → Γ(Y, O)` to `fun a b => rsT (pbT m (L.g a b).val (m ⁻¹ᵁ L.U a ⊓ m ⁻¹ᵁ L.U b)) O`. Establish `hd : ∀ a b, O ≤ m ⁻¹ᵁ L.U a ⊓ m ⁻¹ᵁ L.U b → d O (G a b) = G a b * rsT (φ a b) O` using `fun a b h => by`. Rewrite using `[hres _ _ _ h, ← hφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [G, rsT, dif_pos h, map_mul]`. Establish `hg : ∀ a b, O ≤ m ⁻¹ᵁ L.U a ⊓ m ⁻¹ᵁ L.U b → ∀ y ∈ O, gs (𝟙 Y) y O (G a b) = (gm m y _ (L.g a b)).val` using `fun a b h y hy => by`. Rewrite using `[gs_rsT _ _ h hy, gs_pbT (𝟙 Y) m y (O₀ := L.U a ⊓ L.U b) (O := m ⁻¹ᵁ L.U a ⊓ m ⁻¹ᵁ L.U b) (fun _ h => h) (h hy), Category.id_comp, gs_unit m y (L.U a ⊓ L.U b) (h hy)]`. Establish `l₁ : O ≤ m ⁻¹ᵁ L.U i ⊓ m ⁻¹ᵁ L.U j` using `inf_le_left`. Establish `l₂ : O ≤ m ⁻¹ᵁ L.U j ⊓ m ⁻¹ᵁ L.U k` using `fun _ h => ⟨h.1.2, h.2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l₃ : O ≤ m ⁻¹ᵁ L.U i ⊓ m ⁻¹ᵁ L.U k` using `fun _ h => ⟨h.1.1, h.2⟩`. Establish `co : G i j * G j k = G i k` using `fn_ext fun y hy => by`. Rewrite using `[gs_mul _ _ _ hy, hg _ _ l₁ y hy, hg _ _ l₂ y hy, hg _ _ l₃ y hy, ← Units.val_mul, gm_cocycle hL m y hy.1.1 hy.1.2 hy.2]`. Establish `un : IsUnit (G i k)`. Simplify using `only [G, rsT, dif_pos l₃]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(isUnit_pbT m L i k).map _`. Establish `e` using `hmul O (G i j) (G j k)`. Rewrite `e` using `[co, hd _ _ l₁, hd _ _ l₂, hd _ _ l₃]`. Use `un.mul_left_cancel ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G i k * (rsT (φ i j) O + rsT (φ j k) O) = G i k * rsT (φ i k) O`.
-
-Take the linear combination `(-1 : Γ(Y, O)) * e - (rsT (φ i j) O + rsT (φ j k) O) * co`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isCoc_dlog {X Y : Scheme.{0}} (m : Y ⟶ X) (L : LB X) (hL : L.IsLB)
     (d : ∀ O : Y.Opens, Γ(Y, O) → Γ(Y, O)) (hmul : ∀ W f f', d W (f * f') = f * d W f' + f' * d W f)
@@ -189,13 +187,13 @@ theorem isCoc_dlog {X Y : Scheme.{0}} (m : Y ⟶ X) (L : LB X) (hL : L.IsLB)
   linear_combination (-1 : Γ(Y, O)) * e - (rsT (φ i j) O + rsT (φ j k) O) * co
 
 /- English proof (translation)
-Set `z : 𝟙_ (Over (Sp K)) ⟶ epsR K` to `Over.homMk (spMap (TrivSqZeroExt.fstHom K K K).toRingHom) (by`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1)`. Establish `hz : z ≫ w = η[A]` using `Over.OverMorphism.ext hw`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Set `j : A ⟶ epsR K ⊗ A` to `lift (toUnit A ≫ z) (𝟙 A)`. Establish `j₁ : j ≫ snd (epsR K) A = 𝟙 A` using `lift_snd _ _`. Establish `j₂ : j ≫ ((fst (epsR K) A ≫ w) * snd (epsR K) A) = 𝟙 A`. Rewrite using `[MonObj.comp_mul, j₁, lift_fst_assoc, Category.assoc, hz, ← Hom.one_def, _root_.one_mul]`. Establish `j₃ : j.left ≫ (fst (epsR K) A).left = A.hom ≫ spMap (TrivSqZeroExt.fstHom K K K).toRingHom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun q => q.left) (lift_fst (toUnit A ≫ z) (𝟙 A))` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(toUnit A).left ≫ _ = _`. Use `congr 1`. Establish `h` using `(GlobalTheory.ConstThickening.structure_dualNumber K A.left (epsR K ⊗ A).left A.hom (fst (epsR K) A).left (snd (epsR K) A).left j.left (IsPullback.of_hasPullback (epsR K).hom A.hom).flip (congrArg (fun q => q.left) j₁) j₃).1 (((fst (epsR K) A ≫ w) * snd (epsR K) A).left ⁻¹ᵁ W)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← h, ← Scheme.Hom.comp_preimage j.left, ← Over.comp_left, j₂]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem preimage_transl {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] (w : epsR K ⟶ A) (hw : IsTangent w)
     (W : A.left.Opens) :
@@ -221,17 +219,15 @@ theorem preimage_transl {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] (w : e
   rfl
 
 /- English proof (translation)
-Introduce `K _ P g v dd hv hdd X m L hL ⟨u, hu⟩`. Use `⟨⟨fun a i j => ((isUnit_pbT m L i j).unit⁻¹ : _ˣ).val * dd a _ (pbT m (L.g i j).val _), fun a i j => ?_⟩, fun φ hφ => ⟨fun a => ?_, fun c hc => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc, IsUnit.mul_val_inv, _root_.one_mul]`. Take `⟨-, h₁, h₂, -⟩` from `(GlobalTheory.KS.InvField.main K P.A (v a) (hv.1 a)).2 _ (hdd a)`. Conclude with `isCoc_dlog m L hL (dd a) h₁ h₂ (φ a) (hφ a)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `P.isAb.comm` as an intermediate fact. Take `⟨a₁, a₂, a₃, -⟩` from `GlobalTheory.LieComb.lieComb_algebra K P.A g v hv.1`. Take `⟨w, hw, -⟩` from `a₁ c`. Establish `tw` using `a₂ c w hw`. Take `⟨dw, hdw⟩` from `(GlobalTheory.KS.InvField.main K P.A w tw).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsum : ∀ (W : P.A.left.Opens) (h : Γ(P.A.left, W)), dw W h = ∑ a, constFn P.A.hom _ (c a) * dd a W h` using `GlobalTheory.KS.InvHom.invDer_along_hom K P.A P.A (𝟙 _) g v dd w dw c inferInstance hv.1 tw hdd hdw (by rwa [Category.comp_id])`. Establish `pre` using `preimage_transl w tw`. Use `set τ := ((fst (epsR K) P.A ≫ w) * snd (epsR K) P.A).left with hτ`. Use `set ρ := (snd (epsR K) P.A).left with hρ`. Take `⟨t, ht⟩` from `exists_gen (fst (epsR K) P.A).left τ ρ (fun y W hy => (pre W).le hy) m L hL _ (fun i j y hi hj => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : y ∈ ρ ⁻¹ᵁ (m ⁻¹ᵁ L.U i ⊓ m ⁻¹ᵁ L.U j)` using `(pre _).le ⟨hi, hj⟩`. Establish `e` using `congrArg (gs (𝟙 _) y _) (hdw (m ⁻¹ᵁ L.U i ⊓ m ⁻¹ᵁ L.U j) (pbT m (L.g i j).val _))`. Establish `e₂ : dw _ (pbT m (L.g i j).val (m ⁻¹ᵁ L.U i ⊓ m ⁻¹ᵁ L.U j)) = pbT m (L.g i j).val (m ⁻¹ᵁ L.U i ⊓ m ⁻¹ᵁ L.U j) * lc P.A.hom c φ i j`. Rewrite using `[hsum, lc, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [← hφ a i j, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[e₂, gs_add _ _ _ hy, gs_mul _ _ _ hy, gs_constFn _ _ _ _ hy, gs_pbT _ _ _ (pre _).ge hy, gs_pbT _ _ _ le_rfl hy, gs_pbT _ _ _ le_rfl hy, Category.id_comp, Category.id_comp, Category.id_comp, gs_mul _ _ _ hy, gs_pbT _ m y (O₀ := L.U i ⊓ L.U j) (O := m ⁻¹ᵁ L.U i ⊓ m ⁻¹ᵁ L.U j) (fu …`. Use `e.trans ?_` and prove the remaining obligations. Use the proof step `ring) hc`. Take `⟨s, hs⟩` from `exists_down ((isGen_iff u).1 hu) hL P.isLB t ht`. Establish `w1 : w = 1` using `P.ktriv (DualNumber K) _ w fun p => ⟨⊤, trivial, gen_chartPull (chartPullPull (Out.translDiff P.A P.L w) _ _ rfl) s hs⟩`.
-
-Establish `h0 : IsLieComb 0 v w`. Use `a₃ 0 Fin.elim0 Fin.elim0 Fin.elim0 w (fun i => i.elim0) ⟨Fin.elim0, fun i => i.elim0, by rw [w1]; rfl⟩` as an intermediate fact. Simplify using `using this`. Conclude with `(hv.2 w tw).unique hw h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dlog_independent : ∀ (K : Type) [Field K] (P₀ : Out.PolAV (Sp K)) (g : ℕ) (v : Fin g → (epsR K ⟶ P₀.A)) (dd : Fin g → ∀ O : P₀.A.left.Opens, Γ(P₀.A.left, O) → Γ(P₀.A.left, O)), IsLieBasis v → (∀ a, IsInvDer (v a) (dd a)) → ∀ (X : Scheme.{0}) (m : P₀.A.left ⟶ X) (L : LB X), L.IsLB → LBIso P₀.L (L.pull m) → (∃ φ, IsDlog m L dd φ) ∧ ∀ φ, IsDlog m L dd φ → (∀ a, IsCoc _ (φ a)) ∧ ∀ c, IsCob _ (lc P₀.A.hom c φ) → c = 0 := by
   intro K _ P g v dd hv hdd X m L hL ⟨u, hu⟩

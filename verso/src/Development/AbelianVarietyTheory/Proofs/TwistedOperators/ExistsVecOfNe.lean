@@ -43,7 +43,7 @@ def TopAdjAt (R : RealDat D A Ks) (F : Face D A) (b : Bool) (t : T) : Prop :=
       MultT R.θ R.MX (levS _ R.βX (datXP R t (R.levR F b))) (levChi _ R.βX (datXP R t (R.levR F b)))
 
 /- English proof (translation)
-Establish `hcard : 0 < Nat.card (F.lvl b).P` using `Nat.card_pos`. Unfold `RealDat.nP`. Conclude with `hcard` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nP_pos' (F : Face D A) (b : Bool) : 0 < RealDat.nP F b := by
   have hcard : 0 < Nat.card (F.lvl b).P := Nat.card_pos
@@ -57,9 +57,9 @@ section Schur
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Introduce `v v'`. Take `⟨hint, heq⟩` from `h v v'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `IntegrableOn`. Rewrite using `[Measure.restrict_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hint.smul_measure ENNReal.ofReal_ne_top`. Rewrite using `[Measure.restrict_smul, integral_smul_measure, heq, ENNReal.toReal_ofReal ha, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isMultiplicityInner_smul_measure {M : DSModel V S} {μ : Measure (GA D V)} {𝓕 : Set (GA D V)} {T T' : MMap M} {c : ℂ} {a : ℝ}
     (ha : 0 ≤ a) (h : IsMultIP M μ 𝓕 T T' c) : IsMultIP M (ENNReal.ofReal a • μ) 𝓕 T T' ((a : ℂ) * c) := by
@@ -73,7 +73,7 @@ theorem isMultiplicityInner_smul_measure {M : DSModel V S} {μ : Measure (GA D V
     ring
 
 /- English proof (translation)
-Establish `e` using `(h v v).2`. Rewrite `e` using `[(h' v v).2]`. Conclude with `(mul_right_cancel₀ hv e).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isMultIP_const_unique {M : DSModel V S} {μ : Measure (GA D V)} {𝓕 : Set (GA D V)} {T T' : MMap M} {c c' : ℂ}
     (v : M.Vec) (hv : ∏ τ, ⟪(v τ : M.H τ), (v τ : M.H τ)⟫_ℂ ≠ 0)
@@ -83,7 +83,7 @@ private theorem isMultIP_const_unique {M : DSModel V S} {μ : Measure (GA D V)} 
   exact (mul_right_cancel₀ hv e).symm
 
 /- English proof (translation)
-Establish `hex : ∃ c, IsMultIP M μ 𝓕 T T' c` using `⟨c, h⟩`. Unfold `ipM`. Rewrite using `[dif_pos hex]`. Conclude with `isMultIP_const_unique v hv hex.choose_spec h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ipM_eq_of_isMultIP {M : DSModel V S} {μ : Measure (GA D V)} {𝓕 : Set (GA D V)} {T T' : MMap M} {c : ℂ}
     (v : M.Vec) (hv : ∏ τ, ⟪(v τ : M.H τ), (v τ : M.H τ)⟫_ℂ ≠ 0) (h : IsMultIP M μ 𝓕 T T' c) :
@@ -94,9 +94,9 @@ private theorem ipM_eq_of_isMultIP {M : DSModel V S} {μ : Measure (GA D V)} {�
   exact isMultIP_const_unique v hv hex.choose_spec h
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ c, IsMultIP M μ 𝓕 T T' c`. Take `⟨c, hc⟩` from `hex`. Rewrite using `[ipM_eq_of_isMultIP v hv hc, ipM_eq_of_isMultIP v hv (isMultiplicityInner_smul_measure ha.le hc)]`. Establish `hex' : ¬ ∃ c, IsMultIP M (ENNReal.ofReal a • μ) 𝓕 T T' c`. Introduce and unpack `⟨c', hc'⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hb` using `isMultiplicityInner_smul_measure (inv_nonneg.mpr ha.le) hc'`. Rewrite `hb` using `[smul_smul, ← ENNReal.ofReal_mul (inv_nonneg.mpr ha.le), inv_mul_cancel₀ ha.ne', ENNReal.ofReal_one, one_smul]`. Conclude with `hex ⟨_, hb⟩`. Unfold `ipM`. Rewrite using `[dif_neg hex, dif_neg hex', mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipM_smul_of_vec (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M) {a : ℝ}
     (ha : 0 < a) (v : M.Vec) (hv : ∏ τ, ⟪(v τ : M.H τ), (v τ : M.H τ)⟫_ℂ ≠ 0) :
@@ -115,9 +115,9 @@ theorem ipM_smul_of_vec (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (G
     rw [dif_neg hex, dif_neg hex', mul_zero]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : M.Vec, T v ≠ 0 := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Conclude with `hT (MultilinearMap.ext fun x => by simp [hno x])`. Use `⟨v, Finset.prod_ne_zero_iff.mpr fun τ _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvt : v τ ≠ 0` using `fun h0 => hv (T.map_coord_zero τ h0)`. Rewrite using `[inner_self_ne_zero, ne_eq, Submodule.coe_eq_zero]`. Conclude with `hvt`.
+A detailed English derivation is pending.
 -/
 theorem exists_vec_of_ne {M : DSModel V S} {T : MMap M} (hT : T ≠ 0) :
     ∃ v : M.Vec, ∏ τ, ⟪(v τ : M.H τ), (v τ : M.H τ)⟫_ℂ ≠ 0 := by

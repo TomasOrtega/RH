@@ -13,17 +13,17 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Introduce `k L N hL hN`. Establish `hΓ : (1 : ℝ) ∈ (Gamma1 L : Subgroup (GL (Fin 2) ℝ)).strictPeriods`. Simplify using `[strictPeriods_Gamma1]`. Use `haveI : NeZero L := ⟨hL.ne'⟩`. Take `⟨m, hm⟩` from `exists_sturmBound_modularForm_arithmetic hΓ (k : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, fun a ha hz => ?_⟩` and prove the remaining obligations. Use `choose f hf using fun ε => modularForm_gammaOne_of_MF k L N ε (a ε) hL hN (ha ε)`. Establish `hc : ∀ ε n, (qExpansion 1 (f ε)).coeff n = a ε n`. Introduce `ε n`. Use `coef_qs (a ε) (ha ε).1 n` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `coef at this`. Rewrite using `[← this, hf]`. Establish `hsum : ∀ (s : Finset (DirichletCharacter ℂ N)) (n : ℕ), (qExpansion 1 ⇑(∑ ε ∈ s, f ε)).coeff n = ∑ ε ∈ s, a ε n`. Introduce `s n`. Proceed by induction on `s using Finset.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, ModularForm.coe_zero, qExpansion_zero, map_zero]`. Consider the case `insert e s he ih`. Rewrite using `[Finset.sum_insert he, ModularForm.coe_add, ModularForm.qExpansion_add one_pos hΓ, map_add, ih, hc, Finset.sum_insert he]`. Establish `h0 : ∑ ε, f ε = 0` using `hm _ fun n hn => by`. Rewrite using `[hsum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify `hz n hn` using `[Finset.sum_apply]`. Use function extensionality and compare the values at `n`. Use `hsum Finset.univ n` as an intermediate fact. Rewrite `this` using `[h0]`. Rewrite `this` using `[ModularForm.coe_zero, qExpansion_zero, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Finset.sum_apply, ← this]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sturm_sum_coef_zero : ∀ (k L N : ℕ), 0 < L → N ∣ L → ∃ B : ℕ, ∀ a : DirichletCharacter ℂ N → ℕ → ℂ,
     (∀ ε, MF k L (ch ε) (a ε)) → (∀ n < B, (∑ ε, a ε) n = 0) → ∑ ε, a ε = 0 := by
@@ -58,7 +58,7 @@ theorem sturm_sum_coef_zero : ∀ (k L N : ℕ), 0 < L → N ∣ L → ∃ B : �
   rfl
 
 /- English proof (translation)
-The claim follows from `sturm_sum_coef_zero`.
+A detailed English derivation is pending.
 -/
 example : ∀ (k L N : ℕ), 0 < L → N ∣ L → ∃ B : ℕ, ∀ a : DirichletCharacter ℂ N → ℕ → ℂ, (∀ ε, MF k L (ch ε) (a ε)) → (∀ n < B, (∑ ε, a ε) n = 0) → ∑ ε, a ε = 0 := sturm_sum_coef_zero
 

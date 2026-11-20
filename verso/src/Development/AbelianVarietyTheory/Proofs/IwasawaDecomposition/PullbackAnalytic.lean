@@ -11,13 +11,13 @@ set_option autoImplicit false
 namespace GlobalTheory.ShFam.Hor.LogCh
 
 /- English proof (translation)
-Introduce `m n g B B' K φ hK hB' hφ hmaps`. Take `⟨_, h2, h3, h4⟩` from `hK`. Set `Ψ : (Fin m → ℂ) × (Fin g → ℂ) → (Fin n → ℂ) × (Fin g → ℂ)` to `fun q => (φ q.1, q.2)`. Use `⟨hB', fun b hb => h2 (φ b) (hmaps hb), ?_, ?_⟩` and prove the remaining obligations. Establish `hcont : ContinuousOn Ψ (B' ×ˢ (Set.univ : Set (Fin g → ℂ)))` using `(hφ.continuousOn.comp continuousOn_fst (fun q hq => hq.1)).prodMk continuousOn_snd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hopen` using `hcont.isOpen_inter_preimage (hB'.prod isOpen_univ) h3`. Use `hopen using 1` and compare the differences between its conclusion and the goal. Use extensionality with `q`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_prod, Set.mem_univ, and_true, Set.mem_preimage, Ψ]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, hmaps h1, h2⟩`. Introduce and unpack `⟨h1, _, h2⟩`. Conclude with `⟨h1, h2⟩`. Introduce `b₀ hb₀ w₀ hw₀`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ζ, hζ0, hζa, hev⟩` from `h4 (φ b₀) (hmaps hb₀) w₀ hw₀`. Use `⟨fun b => ζ (φ b), hζ0, hζa.comp (hφ b₀ hb₀), ?_⟩` and prove the remaining obligations. Establish `hΨ : ContinuousAt Ψ (b₀, w₀)` using `((hφ b₀ hb₀).continuousAt.comp continuousAt_fst).prodMk continuousAt_snd`. Conclude with `hΨ.tendsto.eventually hev`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsLatFam.pullback_analytic : ∀ (m n g : ℕ) (B : Set (Fin n → ℂ)) (B' : Set (Fin m → ℂ))
     (K : (Fin n → ℂ) → Set (Fin g → ℂ)) (φ : (Fin m → ℂ) → Fin n → ℂ),

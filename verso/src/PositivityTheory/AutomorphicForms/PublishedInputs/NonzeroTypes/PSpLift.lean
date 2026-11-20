@@ -13,7 +13,7 @@ variable {Γ V W : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ
   [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.DYka2.main hρ f hL χ u hu hχ`.
+A detailed English derivation is pending.
 -/
 theorem exists_eigen_lift {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} (hρ : IsSmooth ρ)
     (f : ρ.IntertwiningMap σ) {L : Subgroup Γ} (hL : IsCompact (L : Set Γ)) (χ : Γ → ℂ)
@@ -28,13 +28,11 @@ namespace UpperTheory.TNZ.Grp
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `W X _ _ _ _ ρ σ hρ hsq hη`. Take `⟨S, f, hf⟩` from `hsq`. Take `⟨y, hy, hyη⟩` from `hη`. Take `⟨u, rfl⟩` from `hf y`. Establish `hS : IsSmooth S.toRepresentation` using `fun v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: {g | S.toRepresentation g v = v} = {g | ρ g (v : W) = v}`. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Subtype.ext_iff]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hρ v`. Establish `hL : IsCompact ((leviK k (fun a : Fin G.s => Fin (G.d a))) : Set (Levi k fun a : Fin G.s => Fin (G.d a)))`. Rewrite using `[leviK, Subgroup.coe_pi]`. Conclude with `isCompact_univ_pi fun a => GlobalTheory.SplitFlip.isCompact_KO`. Take `⟨v, hv, hvη⟩` from `P_spLift.exists_eigen_lift hS f hL G.eta u hy hyη`.
-
-Use `⟨(v : W), fun h => hv (Subtype.ext h), fun m hm => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (hvη m hm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem step_spLift {n : ℕ} (G : Grp k n) : G.SpecialLiftProp := by
   intro W X _ _ _ _ ρ σ hρ hsq hη

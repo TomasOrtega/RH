@@ -19,7 +19,7 @@ set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.LevVal
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.BigOn.Exp.TwistConditions.of_forall fun _ _ _ _ p hr hm _ _ j k => envV_chi_mem (R2 p) (F2 p) (_root_.GlobalTheory.BigOn.links2_of_rows_alt _ _ _ _ _ _ _ _ _ _ p hr hm.1).1 j _ k`.
+A detailed English derivation is pending.
 -/
 theorem chi_val_alt : _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x hx i p w j => ∀ k, ∃ a : (Fm.D x i).what₂.LL,
   (Fm.D x i).what₂.embLL a = (((GlobalTheory.TraceIncl.envV (R2 p) j ((R2 p).mu ((Fm.D x i).plEq w))).χ k : ℂˣ) : ℂ) :=

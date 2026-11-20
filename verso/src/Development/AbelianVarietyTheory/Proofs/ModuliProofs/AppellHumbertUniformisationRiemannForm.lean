@@ -14,7 +14,7 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.AnyAppellHumbert
 
 /- English proof (translation)
-Unfold `hermForm`. Rewrite using `[← Matrix.star_dotProduct_star, Matrix.star_mulVec, star_star, h.eq, Matrix.dotProduct_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermForm_swap {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h : Hm.IsHermitian) (z w : Fin g → ℂ) :
     hermForm Hm w z = star (hermForm Hm z w) := by
@@ -22,17 +22,17 @@ theorem hermForm_swap {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h : Hm.IsHerm
   rw [← Matrix.star_dotProduct_star, Matrix.star_mulVec, star_star, h.eq, Matrix.dotProduct_mulVec]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `PullHermitian.exists_chart (u.ex 0).left hL`. Establish `hi' : ⊤ ≤ (u.ex (0 + l)).left ⁻¹ᵁ L.U i` using `by rwa [SectionTheta.ex_add_lattice]`. Establish `hi'' : ⊤ ≤ (u.ex (0 + l + m)).left ⁻¹ᵁ L.U i` using `by rwa [SectionTheta.ex_add_lattice]`. Establish `h1` using `h.2.2.2 l i 0 hi`. Establish `h2` using `h.2.2.2 m i _ hi'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h.2.2.2 (l + m) i 0 hi`. Establish `hs` using `hermForm_swap h.1 (l : Fin g → ℂ) m`. Establish `hne` using `u.fr_ne i _ hi''`. Rewrite `h1` using `[h2, h3]`. Simplify using `only [zero_add, Submodule.coe_add, star_add, Matrix.mulVec_add, dotProduct_add, add_dotProduct, zero_dotProduct, mul_zero] at h1 hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `hermForm at hs hn`. Rewrite `h1` using `[hs]`. Generalize the expression as in `(l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ)) = a at h1`. Generalize the expression as in `(m : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin g → ℂ)) = b at h1`. Generalize the expression as in `(l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin g → ℂ)) = c at h1 hn`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hc : c = star c + 2 * n * Complex.I`. Use `Complex.sub_conj c` as an intermediate fact. Rewrite `this` using `[← hn]`. Move the coercions through the operations in `at this`. Rewrite using `[Complex.star_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `this`. Establish `he : Complex.exp (Real.pi / 2 * a) * Complex.exp (Real.pi * c + Real.pi / 2 * b) = (-1) ^ n * Complex.exp (Real.pi / 2 * (a + star c + (c + b)))`. Rewrite using `[← Complex.exp_pi_mul_I, ← Complex.exp_int_mul, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Take the linear combination `(Real.pi / 2 : ℂ) * hc`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `mul_right_cancel₀ (mul_ne_zero (Complex.exp_ne_zero (Real.pi / 2 * (a + star c + (c + b)))) hne) ?_` and prove the remaining obligations. Take the linear combination `h1 + χ l * χ m * u.fr i (l + m) * he`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem semicharacter_add {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (hL : L.IsLB) (u : HolUnif A L g)
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (h : u.IsAH Hm χ) (l m : u.Λ) (n : ℤ)
@@ -68,15 +68,15 @@ theorem semicharacter_add {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : �
   linear_combination h1 + χ l * χ m * u.fr i (l + m) * he
 
 /- English proof (translation)
-Introduce `hlaw _ _ hU P u Hm χ hA`. Take `⟨ht1, ht2, hE⟩` from `AnyUnif.tangent_and_unimodular hU P u`. Take `⟨Ef, hEf, hb⟩` from `hE Hm χ hA`. Establish `hval` using `@valAt'_rules`. Establish `hvalaff` using `@existsUnique_point_of_ringHom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvalext` using `@eq_of_valAt'_eq hval hvalaff`. Establish `hsmred` using `@isReduced_of_smooth_complex`. Establish `hholprod` using `@holFamily_lift hval`. Establish `hthg` using `@ThetaGroupFrame.thetaGrp_in_frame hval hholprod`. Establish `hweil` using `@WeilExp.weilIs_exp_riemannForm hlaw.weil hval hvalext hsmred hthg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsecfn` using `@sections_pow_theta_functions hval hvalext hsmred`. Establish `hfshift` using `@fourierCoeff_unitCube_translate_of_entire_periodic`. Establish `hfvan` using `@entire_periodic_eq_zero_of_fourierCoeff_eq_zero hfshift`. Establish `hdimcl` using `@ClassicalTheta.card_le_pow_of_linearIndependent hfshift hfvan`. Establish `hnormform` using `@SiegelNormalForm.exists_normal_form`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdim` using `@card_le_pow_of_linearIndependent_theta_principal hnormform hdimcl`. Establish `hindep` using `@PowSec.exists_indep_sections hlaw.globalSectionsRank`. Establish `hseconto` using `@ThetaOnto.theta_from_section hval hdim hindep hsecfn`. Establish `h7` using `hsecfn P u Hm χ Ef ⟨hA.1, hA.2.2.1, hEf, hA.2.2.2⟩`. Use `⟨Ef, hEf, hb, fun l => sq_eq_one_iff.1 (semicharacter_sq_eq_one_of_symmetric P u Hm χ hA l), fun l m => semicharacter_add P.isLB u hA l m _ (hEf l m), ht1, ht2, fun n => ⟨(h7 n).1, fun θ hθ => ?_⟩, hweil P u Hm χ Ef ⟨hA.1, hA.2.2.1, hEf, hA.2.2.2⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs⟩` from `hseconto P u Hm χ Ef hA ⟨hA.1, hA.2.2.1, hEf, hA.2.2.2⟩ hb n θ hθ`. Conclude with `⟨s, hs, fun s' hs' => (h7 n).2 θ s' s hs' hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isAH_properties :
     Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ), u.IsAH Hm χ → ∃ Ef : LinearMap.BilinForm ℤ u.Λ, (∀ a b : u.Λ, (Ef a b : ℝ) = (hermForm Hm a b).im) ∧ Function.Bijective Ef ∧ (∀ l, χ l = 1 ∨ χ l = -1) ∧ (∀ l m, χ (l + m) = χ l * χ m * (-1) ^ Ef l m) ∧ (∀ v, IsTangent v → ∃! w, u.IsDiff w v) ∧ (∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v) ∧ (∀ n : ℕ, (∀ s, ∃! θ, u.IsThetaFn Hm χ n θ ∧ u.IsFnPow n s θ) ∧ ∀ θ, u.IsThetaFn Hm χ n θ → ∃! s, u.IsFnPow n s θ) ∧ ∀ (k : ℕ) (a b : u.Λ) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (Ef a b : ℂ) / k) → Out.WeilIs P.A P.L k (u.ex ((k : ℂ)⁻¹ • (a : Fin P.g → ℂ))) (u.ex ((k : ℂ)⁻¹ • (b : Fin P.g → ℂ))) (unitOn c) := by

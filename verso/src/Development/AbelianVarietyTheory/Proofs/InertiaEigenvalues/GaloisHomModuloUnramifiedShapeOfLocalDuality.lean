@@ -22,21 +22,19 @@ namespace GlobalTheory.ShapeUnrTriv
 open ReciprocityTheory.Gal Formalism.NG Formalism.RepresentationBoundsCohomology.BR ReciprocityTheory.ChartRestriction.T2 GlobalTheory.ShapeNeg
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `htors b`. Establish `hfin : ∀ n : ℕ, Finite ↥((ϖ ^ n • LinearMap.id : B →ₗ[O] B).ker)` using `fun n => Nat.finite_of_card_ne_zero (by rw [hcount n]; exact (pow_pos hq n).ne')`. Establish `hmaps : ∀ x ∈ (ϖ ^ (m + 1) • LinearMap.id : B →ₗ[O] B).ker, (ϖ • LinearMap.id : B →ₗ[O] B) x ∈ (ϖ ^ m • LinearMap.id : B →ₗ[O] B).ker`. Introduce `x hx`. Simplify using `only [LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply] at hx ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_smul, ← pow_succ]`. Conclude with `hx`. Set `f` to `(ϖ • LinearMap.id : B →ₗ[O] B).restrict hmaps`. Establish `hker : Nat.card ↥(LinearMap.ker f) = q`. Establish `e : ↥(LinearMap.ker f) ≃ ↥((ϖ ^ 1 • LinearMap.id : B →ₗ[O] B).ker)` using `{ toFun := fun x => ⟨x.1.1, by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `x.2` as an intermediate fact. Simplify using `only [LinearMap.mem_ker, f, LinearMap.restrict_apply, Subtype.ext_iff, LinearMap.smul_apply, LinearMap.id_apply, Submodule.coe_zero] at this`. Simplify using `using this⟩`. Use `invFun := fun y => ⟨⟨y.1, by`. Use `y.2` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply, pow_one] at this ⊢`. Rewrite using `[pow_succ, mul_smul, this, smul_zero]⟩, by`. Use `y.2` as an intermediate fact. Simplify using `only [LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply, pow_one] at this`. Simplify using `only [LinearMap.mem_ker, f, LinearMap.restrict_apply, Subtype.ext_iff, LinearMap.smul_apply, LinearMap.id_apply, Submodule.coe_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this⟩`. Use `left_inv := fun x => rfl`. Use `right_inv := fun y => rfl }`. Rewrite using `[Nat.card_congr e, hcount 1, pow_one]`. Establish `hsplit` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker f)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsplit` using `[Nat.card_congr f.quotKerEquivRange.toEquiv, hker, hcount (m + 1), pow_succ]`. Establish `hrange : Nat.card ↥(LinearMap.range f) = Nat.card ↥((ϖ ^ m • LinearMap.id : B →ₗ[O] B).ker)`. Rewrite using `[hcount m]`. Conclude with `Nat.eq_of_mul_eq_mul_right hq ((mul_comm _ _).trans hsplit.symm)`. Establish `htop : (LinearMap.range f).toAddSubgroup = ⊤` using `AddSubgroup.eq_top_of_card_eq _ hrange`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : (⟨b, by simpa using hm⟩ : ↥((ϖ ^ m • LinearMap.id : B →ₗ[O] B).ker)) ∈ LinearMap.range f`. Express the relevant statement in the definitionally equal form `_ ∈ (LinearMap.range f).toAddSubgroup`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨x, hx⟩` from `hmem`.
-
-Use `⟨x.1, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hx` as an intermediate fact. Simplify `this` using `[f]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_smul_eq_of_card_ker_pow_eq_of_torsion {O : Type} [CommRing O] {B : Type} [AddCommGroup B]
     [Module O B] (ϖ : O) (q : ℕ) (hq : 0 < q)
@@ -89,21 +87,17 @@ private theorem exists_smul_eq_of_card_ker_pow_eq_of_torsion {O : Type} [CommRin
   simpa [f] using this
 
 /- English proof (translation)
-Establish `hmaps : ∀ x ∈ (c • LinearMap.id : A →ₗ[O] A).ker, S.mkQ x ∈ (c • LinearMap.id : (A ⧸ S) →ₗ[O] (A ⧸ S)).ker`. Introduce `x hx`. Simplify using `only [LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply] at hx ⊢`. Rewrite using `[← LinearMap.map_smul, hx, map_zero]`. Set `g` to `S.mkQ.restrict hmaps`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hsurj : Function.Surjective g`. Introduce and unpack `⟨y, hy⟩`. Take `⟨x, rfl⟩` from `S.mkQ_surjective y`. Simplify using `only [LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply, Submodule.mkQ_apply] at hy`. Rewrite `hy` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hzS, hz⟩` from `hdiv _ hy`. Use `⟨⟨x - z, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[smul_sub, hz]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [g, LinearMap.restrict_apply, Submodule.mkQ_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.Quotient.eq]`. Simplify using `using hzS`. Establish `eker : ↥(LinearMap.ker g) ≃ ↥((c • LinearMap.id : ↥S →ₗ[O] ↥S).ker)` using `{ toFun := fun x => ⟨⟨x.1.1, by`. Use `x.2` as an intermediate fact. Simplify using `only [LinearMap.mem_ker, g, LinearMap.restrict_apply, Subtype.ext_iff, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.coe_zero] at this`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this⟩, by`. Use `x.1.2` as an intermediate fact. Simplify using `only [LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply] at this ⊢`. Conclude with `Subtype.ext this⟩`. Use `invFun := fun y => ⟨⟨y.1.1, by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `y.2` as an intermediate fact. Simplify using `only [LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply, Subtype.ext_iff, Submodule.coe_smul, Submodule.coe_zero] at this ⊢`. Conclude with `this⟩, by`. Simplify using `only [LinearMap.mem_ker, g, LinearMap.restrict_apply, Subtype.ext_iff, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.coe_zero]`. Conclude with `y.1.2⟩`.
-
-Use `left_inv := fun x => rfl`. Use `right_inv := fun y => rfl }`. Establish `hsplit` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker g)`. Rewrite `hsplit` using `[Nat.card_congr g.quotKerEquivRange.toEquiv, LinearMap.range_eq_top.mpr hsurj, Nat.card_congr eker]`. Rewrite using `[hsplit]`.
-
-Use `congr 1`. Conclude with `Nat.card_congr Submodule.topEquiv.toEquiv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem card_ker_smul_eq_mul_card_ker_quotient_of_divisible {O : Type} [CommRing O] {A : Type} [AddCommGroup A]
     [Module O A] (S : Submodule O A) (c : O) (hdiv : ∀ b ∈ S, ∃ x ∈ S, c • x = b)
@@ -157,7 +151,7 @@ private theorem card_ker_smul_eq_mul_card_ker_quotient_of_divisible {O : Type} [
   exact Nat.card_congr Submodule.topEquiv.toEquiv
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr { toFun := fun x => ⟨e x.1, by have := x.2 simp only [LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply] at this ⊢ rw [← map_smul, this, map_zero]⟩ invFun := fun y => ⟨e.symm y.1, by have := y.2 simp only [LinearMap.mem_ker, LinearMap.smul_apply, LinearMa …`.
+A detailed English derivation is pending.
 -/
 private theorem card_ker_smul_id_eq_of_linearEquiv {O P Q : Type} [CommRing O] [AddCommGroup P] [Module O P]
     [AddCommGroup Q] [Module O Q] (e : P ≃ₗ[O] Q) (c : O) :
@@ -177,67 +171,57 @@ private theorem card_ker_smul_id_eq_of_linearEquiv {O P Q : Type} [CommRing O] [
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.T2.ShapeUnr`. Introduce `p _ K O _ _ _ _ _ _ _ G _ _ hK hO hFr i M _ _ u ρ htriv I hI`. Use `haveI : IsTopologicalRing O := hO.ring`. Use `haveI : CompactSpace O := hO.compact`. Use `haveI : Finite (IsLocalRing.ResidueField O) := _root_.GlobalTheory.ShapeNeg.finite_residueField_of_compact_isAdic hO.adic`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hpϖ : (p : O) ∈ Ideal.span {ϖ}`. Rewrite using `[← (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ]`. Conclude with `hO.p_mem`. Establish `hpow : ∀ n : ℕ, (p : O) ^ n ∈ Ideal.span {ϖ ^ n}` using `fun n => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.span_singleton_pow]`. Conclude with `Ideal.pow_mem_pow hpϖ n`. Set `ρ' : Representation O (_root_.Formalism.GaloisCohomology.GK p K) M` to `MonoidHom.comp ρ i.symm.toMonoidHom`. Establish `htriv' : ∀ g m, ρ' g m = m` using `fun g m => htriv _ m`. Establish `hdivM : ∀ m : M, ∃ m', ϖ • m' = m` using `fun m => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Take `⟨y, hy⟩` from `_root_.GlobalTheory.KO_divisible_by_uniformiser hϖ (u m)`. Conclude with `⟨u.symm y, u.injective (by simp [hy])⟩`. Establish `hdivMn : ∀ (n : ℕ) (m : M), ∃ m', ϖ ^ n • m' = m`. Introduce `n`. Proceed by induction on `n with`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => exact fun m => ⟨m, by simp⟩`. Consider the case `succ k ih`. Introduce `m`. Take `⟨m₁, hm₁⟩` from `ih m`. Take `⟨m₂, hm₂⟩` from `hdivM m₁`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `⟨m₂, by rw [pow_succ, mul_smul, hm₂, hm₁]⟩`. Establish `hlc : ∀ m : M, IsLocallyConstant fun g => ρ g m` using `fun m => by`. Simplify using `only [htriv]`. Conclude with `IsLocallyConstant.const m`. Take `⟨C, hC⟩` from `_root_.GlobalTheory.UnramifiedH2Bound.h2_bounded_of_trivial_action hT hK hϖ hpϖ hO.p_ne u ρ' htriv' (fun n h => _root_.GlobalTheory.ShapeNeg.contAction_levRepZ_of_isLocallyConstant ρ' p n (ϖ ^ n) h fun m _ => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [htriv']`. Conclude with `IsLocallyConstant.const m)`. Use `set q := Nat.card (IsLocalRing.ResidueField O) with hq`. Use `set d := Module.finrank ℚ_[p] K with hd`. Use `set A := _root_.ReciprocityTheory.ChartRestriction.T2.HcLC ρ with hA`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hkey : ∀ n : ℕ, 0 < n → Finite ↥((ϖ ^ n • LinearMap.id : A →ₗ[O] A).ker) ∧ q ^ n * (q ^ n) ^ d ≤ Nat.card ↥((ϖ ^ n • LinearMap.id : A →ₗ[O] A).ker) ∧ Nat.card ↥((ϖ ^ n • LinearMap.id : A →ₗ[O] A).ker) ≤ q ^ n * C * (q ^ n) ^ d ∧ (n = 1 → Nat.card ↥((ϖ ^ n • LinearMap.id : A →ₗ[O] …`. Introduce `n hn`. Use `letI := _root_.GlobalTheory.ShapeNeg.levZ (M := M) p n (hpow n)`. Use `haveI : Finite (_root_.GlobalTheory.ShapeNeg.Lev M (ϖ ^ n)) := (_root_.GlobalTheory.ShapeNeg.levKO_card hϖ u n).1`. Establish `hcardTL` using `(_root_.GlobalTheory.ShapeNeg.levKO_card hϖ u n).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcontn : _root_.ReciprocityTheory.Gal.ContAction (_root_.GlobalTheory.ShapeNeg.levRepZ p n (hpow n) ρ')` using `_root_.GlobalTheory.ShapeNeg.contAction_levRepZ_of_isLocallyConstant ρ' p n (ϖ ^ n) (hpow n) fun m _ => by`. Simplify using `only [htriv']`. Conclude with `IsLocallyConstant.const m`. Establish `htr` using `_root_.GlobalTheory.ShapeNeg.transfer_card_H0_H1 i ρ p n (ϖ ^ n) (hpow n)`. Take `⟨hfin1, hfin2⟩` from `_root_.GlobalTheory.finite_H1_H2_of_localTateDuality hT p K hK n _ (_root_.GlobalTheory.ShapeNeg.levRepZ p n (hpow n) ρ') hn hcontn`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components.
 
-Establish `heul` using `hE p K hK n _ (_root_.GlobalTheory.ShapeNeg.levRepZ p n (hpow n) ρ') hn hcontn`. Use `haveI hH1fin : Finite (_root_.ReciprocityTheory.Gal.H1 (_root_.GlobalTheory.ShapeNeg.levRep ρ (ϖ ^ n))) := Nat.finite_of_card_ne_zero (by rw [htr.2]; exact Nat.card_pos.ne')`. Take `⟨hfinA, hA1⟩` from `_root_.GlobalTheory.ShapeNeg.SeqCount.card_H1_level_rep_eq ρ ϖ n hdivM hlc hH1fin`. Establish `hinv : Nat.card (↥ρ.invariants ⧸ (ϖ ^ n • LinearMap.id : ↥ρ.invariants →ₗ[O] ↥ρ.invariants).range) = 1` using `by haveI : Subsingleton (↥ρ.invariants ⧸ (ϖ ^ n • LinearMap.id : ↥ρ.invariants →ₗ[O] ↥ρ.invariants).range) := by`. Rewrite using `[Submodule.Quotient.subsingleton_iff, eq_top_iff]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, hx⟩ -`. Take `⟨y, hy⟩` from `hdivMn n x`. Use `⟨⟨y, (Representation.mem_invariants ρ y).mpr fun g => htriv g y⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `using hy`. Conclude with `Nat.card_unique`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hH0 : Nat.card ↥(_root_.ReciprocityTheory.Gal.H0 (_root_.GlobalTheory.ShapeNeg.levRep ρ (ϖ ^ n))) = q ^ n`. Establish `htop : _root_.ReciprocityTheory.Gal.H0 (_root_.GlobalTheory.ShapeNeg.levRep ρ (ϖ ^ n)) = ⊤`. Unfold `_root_.ReciprocityTheory.Gal.H0`. Use extensionality with `x`. Simplify using `only [Submodule.mem_top, iff_true, Representation.mem_invariants]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `g`. Apply `_root_.GlobalTheory.ShapeNeg.Lev.ext` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.ShapeNeg.levRep_val, htriv]`. Rewrite using `[htop, Nat.card_congr Submodule.topEquiv.toEquiv, hcardTL]`. Establish `h2pos : 0 < Nat.card (_root_.ReciprocityTheory.Gal.H2 (_root_.GlobalTheory.ShapeNeg.levRepZ p n (hpow n) ρ'))` using `Nat.card_pos`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hA2 : Nat.card ↥((ϖ ^ n • LinearMap.id : A →ₗ[O] A).ker) = q ^ n * Nat.card (_root_.ReciprocityTheory.Gal.H2 (_root_.GlobalTheory.ShapeNeg.levRepZ p n (hpow n) ρ')) * (q ^ n) ^ d`. Rewrite using `[← mul_one (Nat.card ↥((ϖ ^ n • LinearMap.id : A →ₗ[O] A).ker)), ← hinv, ← hA1, htr.2, heul, ← htr.1, hH0, hcardTL]`. Use `⟨hfinA, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA2]`. Conclude with `Nat.mul_le_mul_right _ (Nat.le_mul_of_pos_right _ h2pos)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hA2]`. Conclude with `Nat.mul_le_mul_right _ (Nat.mul_le_mul_left _ (hC n hn (hpow n)))`. Introduce and unpack `rfl`. Rewrite using `[hA2]`. Conclude with `Nat.mul_le_mul_right _ (Nat.mul_le_mul_left _ (_root_.GlobalTheory.ShapeNeg.card_H2_level_rep_le hT hK hϖ u ρ' (hpow 1) hcontn))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : CompactSpace G := i.symm.toHomeomorph.compactSpace`. Establish `hMtors : ∀ m : M, ∃ n : ℕ, ϖ ^ n • m = 0` using `fun m => by`. Take `⟨n, hn⟩` from `_root_.GlobalTheory.ShapeNeg.ko_killed_by_pow_uniformizer hϖ (u m)`. Conclude with `⟨n, u.injective (by simp [hn])⟩`. Establish `htorsA : ∀ x : A, ∃ n : ℕ, ϖ ^ n • x = 0` using `fun x => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `_root_.GlobalTheory.hcLC_exists_pow_smul_eq_zero ρ ϖ hMtors x.1 x.2`. Conclude with `⟨n, Subtype.ext hn⟩`. Use `set S : Submodule O A := Submodule.comap A.subtype (_root_.Formalism.RepresentationBoundsCohomology.BR.unrH1 ρ I) with hSdef`. Establish `hS : ∀ n : ℕ, Nat.card ↥((ϖ ^ n • LinearMap.id : S →ₗ[O] S).ker) = q ^ n` using `_root_.GlobalTheory.ShapeNeg.card_unr_lev_of_triv hK hϖ hpϖ i u ρ htriv I hI`. Establish `hqpos : 0 < q` using `Nat.card_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdivS : ∀ b : S, ∃ c : S, ϖ • c = b` using `exists_smul_eq_of_card_ker_pow_eq_of_torsion ϖ q hqpos hS fun b => by`. Take `⟨n, hn⟩` from `htorsA b.1`. Conclude with `⟨n, Subtype.ext hn⟩`. Establish `hdivSn : ∀ n : ℕ, ∀ b ∈ S, ∃ x ∈ S, ϖ ^ n • x = b`. Introduce `n`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => exact fun b hb => ⟨b, hb, by simp⟩`. Consider the case `succ k ih`. Introduce `b hb`. Take `⟨x, hxS, hx⟩` from `ih b hb`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨y, hy⟩` from `hdivS ⟨x, hxS⟩`. Use `⟨y.1, y.2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, mul_smul, ← hx]`. Conclude with `congrArg (fun z : S => ϖ ^ k • z.1) hy`. Establish `hY : ∀ n : ℕ, 0 < n → Finite ↥((ϖ ^ n • LinearMap.id : (A ⧸ S) →ₗ[O] (A ⧸ S)).ker) ∧ Nat.card ↥((ϖ ^ n • LinearMap.id : A →ₗ[O] A).ker) = q ^ n * Nat.card ↥((ϖ ^ n • LinearMap.id : (A ⧸ S) →ₗ[O] (A ⧸ S)).ker)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `n hn`. Take `⟨hfin, hlow, -, -⟩` from `hkey n hn`. Establish `hsplit` using `card_ker_smul_eq_mul_card_ker_quotient_of_divisible S (ϖ ^ n) (hdivSn n)`. Rewrite `hsplit` using `[hS n]`. Use `⟨Nat.finite_of_card_ne_zero fun h0 => ?_, hsplit⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hsplit` using `[h0, mul_zero]`. Establish `: 0 < q ^ n * (q ^ n) ^ d` using `by positivity`. Use linear arithmetic over natural numbers and integers. Establish `hcountY : ∀ n : ℕ, 0 < n → Nat.card (IsLocalRing.ResidueField O) ^ (n * d) ≤ Nat.card ↥((ϖ ^ n • LinearMap.id : ↥(⊤ : Submodule O (A ⧸ S)) →ₗ[O] ↥(⊤ : Submodule O (A ⧸ S))).ker) ∧ Nat.card ↥((ϖ ^ n • LinearMap.id : ↥(⊤ : Submodule O (A ⧸ S)) →ₗ[O] ↥(⊤ : Submodule O (A ⧸ S))).ker) …`. Introduce `n hn`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[card_ker_smul_id_eq_of_linearEquiv Submodule.topEquiv, ← hq, pow_mul]`. Take `⟨-, hlow, hup, -⟩` from `hkey n hn`. Rewrite `hlow`, `hup` using `[(hY n hn).2]`. Establish `hqn : 0 < q ^ n` using `by positivity`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `Nat.le_of_mul_le_mul_left hlow hqn`. Conclude with `Nat.le_of_mul_le_mul_left (by rw [mul_assoc] at hup; exact hup) hqn`. Establish `hone : Nat.card ↥((ϖ ^ 1 • LinearMap.id : ↥(⊤ : Submodule O (A ⧸ S)) →ₗ[O] ↥(⊤ : Submodule O (A ⧸ S))).ker) ≤ Nat.card (IsLocalRing.ResidueField O) ^ (d + 1)`. Rewrite using `[card_ker_smul_id_eq_of_linearEquiv Submodule.topEquiv, ← hq]`. Take `⟨-, -, -, h1⟩` from `hkey 1 one_pos`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `h1` using `h1 rfl`. Rewrite `h1` using `[(hY 1 one_pos).2]`. Establish `h1' : Nat.card ↥((ϖ ^ 1 • LinearMap.id : (A ⧸ S) →ₗ[O] (A ⧸ S)).ker) ≤ q * q ^ d` using `Nat.le_of_mul_le_mul_left (by simpa only [pow_one, mul_assoc] using h1) (by simpa using hqpos)`. Rewrite using `[pow_succ q d, mul_comm (q ^ d) q]`. Conclude with `h1'`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htorsY : ∀ y : A ⧸ S, ∃ n : ℕ, ϖ ^ n • y = 0`. Introduce `y`. Take `⟨x, rfl⟩` from `S.mkQ_surjective y`. Take `⟨n, hn⟩` from `htorsA x`. Conclude with `⟨n, by rw [← map_smul, hn, map_zero]⟩`.
-
-Establish `hY1 : Finite ↥((ϖ • LinearMap.id : (A ⧸ S) →ₗ[O] (A ⧸ S)).ker)`. Use `(hY 1 one_pos).1` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Take `⟨a, F, _, _, hF, ⟨e⟩⟩` from `_root_.GlobalTheory.CofinGen.exists_equiv_pi_prod_finite hϖ htorsY hY1`. Use `haveI := hF`.
-
-Establish `hshape` using `_root_.GlobalTheory.ShapeNeg.Shape.quotShape_of_counts hϖ (⊤ : Submodule O (A ⧸ S)) d a (Submodule.topEquiv.trans e) ⟨C, hcountY⟩ hone`. Unfold `_root_.Formalism.RepresentationBoundsCohomology.JT.QuotShape at hshape ⊢`. Take `⟨Cy, i1, i2, ι, π, hι, hex, c0, hc0⟩` from `hshape`. Set `E : (↥(⊤ : Submodule O (A ⧸ S)) ⧸ Submodule.comap (⊤ : Submodule O (A ⧸ S)).subtype ⊥) ≃ₗ[O] (A ⧸ S)` to `(Submodule.quotEquivOfEqBot _ (by ext x; simp)).trans Submodule.topEquiv`. Use `⟨Cy, i1, i2, E.toLinearMap ∘ₗ ι, π ∘ₗ E.symm.toLinearMap, E.injective.comp hι, ?_, c0, hc0⟩` and prove the remaining obligations.
-
-Introduce `y`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, Set.mem_range]`. Rewrite using `[hex (E.symm y)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`.
-
-Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Conclude with `E.apply_symm_apply y`. Introduce and unpack `⟨x, hx⟩`. Use `⟨x, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hx]`. Conclude with `(E.symm_apply_apply (ι x)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ShapeUnrTriv.shapeUnr_of_localDuality (hT : _root_.Formalism.GaloisCohomology.LocalTateDualityK) (hE : _root_.Formalism.GaloisCohomology.LocalEulerCharK) :
     _root_.ReciprocityTheory.ChartRestriction.T2.ShapeUnr := by

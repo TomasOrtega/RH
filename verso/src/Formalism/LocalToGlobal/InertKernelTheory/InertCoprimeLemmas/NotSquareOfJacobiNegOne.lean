@@ -13,9 +13,9 @@ namespace Formalism.L2.KerInert
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker Classical
 
 /- English proof (translation)
-Introduce `D cc δ B hcc hδ p _ h5 hin lam ι hι`. Take `⟨c, hc, g2, g3, ε, s2, hLT, hg2, hg3, hD, hε, hth, hNR⟩` from `h1 D cc δ B hcc hδ p h5 hin ι`. Take `⟨g₁, e, σ, γ, B', σp, hg, hU, hF, hσp, hONB⟩` from `h2 D cc δ B hcc hδ p h5 hin lam ι hι`. Use `⟨c, hc, g2, g3, ε, s2, σp, Fintype.card D.what₂.Tau, fun i k => B' k.1 ((Fintype.equivFin D.what₂.Tau).symm i), Fintype.equivFin D.what₂.Tau, hLT, hg2, hg3, hD, hε, hth, hσp, hONB, ?_⟩` and prove the remaining obligations. Introduce `t N hN hpN ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `h3 D cc δ B hcc hδ p h5 hin ι c hc g2 g3 ε s2 hLT hg2 hg3 hD hε hth g₁ e hg σ hU (hNR σ hU) γ B' hF t N hN hpN ht`. Simplify using `using key`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem oneCopyTh1S_of (h1 : ScaleLTB) (h2 : IsomONB) (h3 : ScaleInt) : OneCopyTh1S := by
   intro D cc δ B hcc hδ p _ h5 hin lam ι hι
@@ -30,9 +30,9 @@ theorem oneCopyTh1S_of (h1 : ScaleLTB) (h2 : IsomONB) (h3 : ScaleInt) : OneCopyT
   simpa using key
 
 /- English proof (translation)
-Introduce `D cc δ B hcc hδ p _ hp hin lam`. Take `⟨ι, hι⟩` from `hLE p lam`. Take `⟨c, hc, g2, g3, ε, s2, σ, r, v, e, hLT, h2, h3, hΔ, hε, hS, hσ, hv, hInt⟩` from `hT D cc δ B hcc hδ p hp hin lam ι hι`. Use `⟨σ, r, v, hσ, hv, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨hpser, N, hN, hNp, hNt⟩` from `hC D cc δ B hcc hδ p hp hin lam ι hι s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `C wq hCm hwq`. Take `⟨hph0, h, Uu, h0, hhi, h1, hlog, hUu, hexp⟩` from `hM D cc δ B hcc hδ p hp hin lam ι hι c hc g2 g3 ε s2 hLT h2 h3 hΔ hε hS C wq hCm hwq`. Rewrite using `[hpser]`. Conclude with `hR D p hp lam B.tor.abelian₂ C wq _ h Uu ((ι c)⁻¹) hph0 h0 hhi h1 hlog hUu hexp r v e _ (hInt (fun τ => s τ 0 0) N hN hNp hNt)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneCopyLoc_ofS (hLE : LamExt) (hT : OneCopyTh1S) (hC : CoordTie) (hM : ModelTieS) (hR : ReadChangeS) :
     OneCopyLoc := by
@@ -50,9 +50,9 @@ theorem oneCopyLoc_ofS (hLE : LamExt) (hT : OneCopyTh1S) (hC : CoordTie) (hM : M
     (hInt (fun τ => s τ 0 0) N hN hNp hNt)
 
 /- English proof (translation)
-Introduce `h`. Establish `h0 : ((-(d : ℤ) : ℤ) : ZMod p) = 0`. Establish `: ((d : ℕ) : ZMod p) = 0` using `(ZMod.natCast_eq_zero_iff d p).2 h`. Use `push_cast`. Simplify using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Establish `hl : legendreSym p (-(d : ℤ)) = 0` using `(legendreSym.eq_zero_iff p _).2 h0`. Rewrite `hl` using `[jacobiSym.legendreSym.to_jacobiSym]`. Rewrite `hj` using `[hl]`. Evaluate the numerical expressions using `at hj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem not_dvd_of_jacobi_neg_one (p : ℕ) [Fact p.Prime] (d : ℕ) (hj : jacobiSym (-(d : ℤ)) p = -1) : ¬ p ∣ d := by
   intro h
@@ -64,11 +64,11 @@ theorem not_dvd_of_jacobi_neg_one (p : ℕ) [Fact p.Prime] (d : ℕ) (hj : jacob
   rw [hl] at hj; norm_num at hj
 
 /- English proof (translation)
-Introduce and unpack `⟨a, ha⟩`. Establish `hne : ((-(d : ℤ) : ℤ) : ZMod p) ≠ 0`. Introduce `h0`. Establish `hl : legendreSym p (-(d : ℤ)) = 0` using `(legendreSym.eq_zero_iff p _).2 h0`. Rewrite `hl` using `[jacobiSym.legendreSym.to_jacobiSym]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[hl]`. Evaluate the numerical expressions using `at hj`. Establish `hsq : IsSquare ((-(d : ℤ) : ℤ) : ZMod p)` using `⟨a, by push_cast; rw [← ha]; ring⟩`. Establish `hl : legendreSym p (-(d : ℤ)) = 1` using `(legendreSym.eq_one_iff p hne).2 hsq`. Rewrite `hl` using `[jacobiSym.legendreSym.to_jacobiSym]`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[hl]`. Evaluate the numerical expressions using `at hj`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem not_square_of_jacobi_neg_one (p : ℕ) [Fact p.Prime] (d : ℕ) (hj : jacobiSym (-(d : ℤ)) p = -1) :
     ¬ ∃ a : ZMod p, a ^ 2 = -(d : ZMod p) := by
@@ -85,15 +85,15 @@ theorem not_square_of_jacobi_neg_one (p : ℕ) [Fact p.Prime] (d : ℕ) (hj : ja
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 /- English proof (translation)
-Introduce `D cc δ B hcc hδ p _ h5 hj ι`. Take `⟨a₀, g, b₀, c₀, ha, hd, hl, B', hcm, -, hIs, hlat, -⟩` from `ReBase.theta_change_of_base D cc δ B hcc`. Establish `hnd` using `not_dvd_of_jacobi_neg_one p D.host.d hj`. Establish `hin` using `not_square_of_jacobi_neg_one p D.host.d hj`. Take `⟨hsq, hmod, hCM⟩` from `Formalism.L2.Th1.Top.HAux.data ha hd hcm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g2, g3, ε, hgood, hε, hth⟩` from `Formalism.L2.Th1.Top.modelInert _ _ hsq hmod hCM p h5 hnd hin ι`. Take `⟨s2, lam, hlam, -, hLT, hCur, -⟩` from `Formalism.L2.DIV.C.hostIntFree a₀ b₀ c₀ _ ha hd hcm p h5 hnd hin ι g2 g3 ε hgood hε hth`. Take `⟨σ0, F, -, -, -, -, hU0, hF, -⟩` from `Formalism.L2.Th1.Top.InhA.joint p h5 1 0 0`. Establish `hc : lam / ((g : ℂ) * δ) ≠ 0` using `div_ne_zero hlam hl`. Establish `hL : (Formalism.L2.Th1.F.scalePair B.L (lam / ((g : ℂ) * δ)) hc).lattice = (Formalism.L2.Th1.H.cmL a₀ b₀ D.host.d ha hd lam hlam).lattice`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB' : B'.L = Formalism.L2.Th1.H.cmL a₀ b₀ D.host.d ha hd ((g : ℂ) * δ) hl` using `hIs.1`. Use extensionality with `z`. Rewrite using `[Formalism.L2.Th1.F.Homog.mem_scale, ← hlat, hB', Formalism.L2.Th1.H.cmL, Formalism.L2.Th1.H.cmL, Formalism.L2.Th1.F.Homog.mem_scale, Formalism.L2.Th1.F.Homog.mem_scale]`. Establish `e : ((g : ℂ) * δ)⁻¹ * ((lam / ((g : ℂ) * δ))⁻¹ * z) = lam⁻¹ * z`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `mul_div_cancel_left₀ z hl`. Rewrite using `[e]`. Establish `hC0` using `hCur σ0 F hU0 hF`. Take `⟨-, hg2, hg3, -, -, -, -, -, hD⟩` from `hC0`. Use `⟨lam / ((g : ℂ) * δ), hc, g2, g3, ε, s2, (ReBase.isLTNorm_congr hL p ι g2 g3 s2 ε).2 hLT, hg2, hg3, hD, hε, hth, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ hU α hα hσα`. Conclude with `(hCur σ F hU hF).2.2.2.2.2.2.2.1 α hα hσα`.
+A detailed English derivation is pending.
 -/
 theorem scale_lattice_bound : ScaleLTB := by
   intro D cc δ B hcc hδ p _ h5 hj ι

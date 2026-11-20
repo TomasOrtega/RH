@@ -10,21 +10,19 @@ namespace Formalism.NormUnitaryCountingLemmas.H1OnPoints
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Establish `hW : IsWeightedHomogeneous (blockWt (N + 1) n) F ν` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.mem_inf.mp hF).1`. Use `set φ : Fin (N + 1) × Fin n → Polynomial B := fun p => Polynomial.C (x p.1 p.2) + Polynomial.X * Polynomial.C (c p.1 * u p.2) with hφ`. Set `y : Fin (N + 1) × Fin n → Polynomial B` to `fun p => if p.1 = 0 then Polynomial.C (x 0 p.2) + Polynomial.X * Polynomial.C (c 0 * u p.2) else Polynomial.C (c 0 * x p.1 p.2 - c p.1 * x 0 p.2)`. Set `lam : Fin (N + 1) → Polynomial B` to `fun j => if j = 0 then 1 else Polynomial.C (c 0)`. Set `ℓ : B` to `∏ j, (if j = 0 then 1 else c 0) ^ ν j`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsc` using `aeval_scale F hW lam φ`. Establish `hfun : (fun p : Fin (N + 1) × Fin n => lam p.1 * φ p) = fun p => y p + if p.1 ∈ Finset.univ.erase 0 then Polynomial.C (c p.1) * y (0, p.2) else 0`. Use function extensionality and compare the values at `p`. Take `⟨j, k⟩` from `p`. Distinguish the cases in `hj : j = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Simplify using `[lam, y, φ]`. Simplify using `only [lam, y, φ, hj, if_false, Finset.mem_erase, ne_eq, not_false_eq_true, Finset.mem_univ, and_true, if_true, map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsh` using `shear_multi hF y (fun j => Polynomial.C (c j)) (Finset.univ.erase 0) (by simp)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsc` using `[hfun, hsh]`. Establish `hdeg` using `natDegree_aeval_le F hW y (by`. Introduce `p`. Distinguish the cases in `h : p.1 = 0`. Simplify using `only [y, h, if_true]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: Polynomial.C (x 0 p.2) + Polynomial.X * Polynomial.C (c 0 * u p.2) = Polynomial.C (c 0 * u p.2) * Polynomial.X + Polynomial.C (x 0 p.2)` using `by ring`. Rewrite using `[this]`. Conclude with `Polynomial.natDegree_linear_le`. Simplify using `only [y, h, if_false]`. Conclude with `(Polynomial.natDegree_C _).le)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hprodC : (∏ j, lam j ^ ν j) = Polynomial.C ℓ`. Simplify using `only [lam, ℓ, map_prod, map_pow]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Establish `hℓ : IsLeftRegular ℓ`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.prod_induction _ (fun b : B => IsLeftRegular b) (fun a b ha hb => ha.mul hb) (isRegular_one : IsRegular (1 : B)).left fun j _ => IsLeftRegular.pow _ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `(isRegular_one : IsRegular (1 : B)).left`. Conclude with `hc`. Rewrite `hdeg`, the goal using `[Polynomial.natDegree_le_iff_coeff_eq_zero]`.
-
-Introduce `e he`. Establish `h0` using `hdeg e he`. Rewrite `h0` using `[hsc, hprodC, Polynomial.coeff_C_mul]`. Conclude with `hℓ (h0.trans (mul_zero ℓ).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma core {B : Type*} [CommRing B] [Algebra R B] {N n : ℕ} {ν : Fin (N + 1) → ℕ}
     {F : MvPolynomial (Fin (N + 1) × Fin n) R} (hF : F ∈ H R ν)
@@ -87,11 +85,11 @@ namespace Formalism.NormUnitaryCountingLemmas
 
 open Formalism.NormUnitaryCountingLemmas.H1OnPoints in
 /- English proof (translation)
-Introduce `R _ N n ν F hF A _ _ x u c`. Set `g : Polynomial A →ₐ[R] A` to `(Polynomial.aeval (0 : A)).restrictScalars R`. Establish `hreg : IsLeftRegular (Polynomial.C (c 0) + Polynomial.X : Polynomial A)`. Rewrite using `[add_comm]`. Conclude with `(Polynomial.monic_X_add_C _).isRegular.left`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `core (B := Polynomial A) hF (fun j k => Polynomial.C (x j k)) (fun k => Polynomial.C (u k)) (fun j => Polynomial.C (c j) + if j = 0 then Polynomial.X else 0) (by simpa using hreg)`. Use `le_trans (le_of_eq ?_) ((Polynomial.natDegree_map_le (f := (g : Polynomial A →+* A))).trans hc)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← Polynomial.coe_mapAlgHom, ← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `p`. Apply the tactic sequence `by_cases h : p.1 = 0 <;> simp [g, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem shear_hypothesis_one_holds : H1 := by
   intro R _ N n ν F hF A _ _ x u c

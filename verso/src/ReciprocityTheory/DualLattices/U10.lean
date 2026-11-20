@@ -4,7 +4,7 @@ import ReciprocityTheory.DualLattices.FrobeniusOfGroupDivisorsRank
 namespace ReciprocityTheory.PGsh.Up
 
 /- English proof (translation)
-The claim follows from `lengthDegree_of_frobenius u7`.
+A detailed English derivation is pending.
 -/
 theorem u10 : CokernelLowerBoundStatement := lengthDegree_of_frobenius u7
 

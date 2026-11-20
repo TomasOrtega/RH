@@ -22,7 +22,7 @@ namespace GlobalTheory.ThK.EvCompNe
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.sub_apply, Pi.sub_apply, sub_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_sub {κ : Type} [Fintype κ] (f f' : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f - f') φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ - GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f' φ := by
@@ -30,7 +30,7 @@ theorem pure_sub {κ : Type} [Fintype κ] (f f' : SInf F κ) (φ : ∀ v : Pl F,
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.sub_apply, Pi.sub_apply, sub_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Conclude with `GlobalTheory.ThK.EvNeZero.pure_ne_zero (f - f') (sub_ne_zero.2 hne) φ h0 hstd (by rw [pure_sub, h, sub_self])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem eq_of_pure_eq {κ : Type} [Fintype κ] {f f' : SInf F κ} {φ : ∀ v : Pl F, (κ → Fv F v) → ℂ}
     (h0 : ∀ v, φ v ≠ 0) (hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)
@@ -39,9 +39,9 @@ theorem eq_of_pure_eq {κ : Type} [Fintype κ] {f f' : SInf F κ} {φ : ∀ v : 
   exact GlobalTheory.ThK.EvNeZero.pure_ne_zero (f - f') (sub_ne_zero.2 hne) φ h0 hstd (by rw [pure_sub, h, sub_self])
 
 /- English proof (translation)
-Use `⟨GlobalTheory.HeisSchA.archS f w.2 w.1 (GlobalTheory.ArchUniq.trP F κ w.1 w.2 / 2), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Rewrite using `[GlobalTheory.HeisSchA.archS_apply, GlobalTheory.Published.Metaplectic.eChar_apply, GlobalTheory.ArchUniq.schrF, ContinuousLinearMap.neg_apply, GlobalTheory.HeisSchA.trL_apply]`. Use `congr 2`. Simplify using `only [GlobalTheory.ArchUniq.trP, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_schrF {κ : Type} [Fintype κ]
     (w : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) (f : SInf F κ) :
@@ -56,7 +56,7 @@ theorem exists_schrF {κ : Type} [Fintype κ]
   ring
 
 /- English proof (translation)
-Establish `h1 : GlobalTheory.ArchUniq.liftV y = realAd F 1 • GlobalTheory.ArchUniq.liftV y` using `by conv_lhs => rw [← GlobalTheory.ArchUniq.Coord.loc_lift y]`. Conclude with `GlobalTheory.ArchUniq.Coord.lift_loc _`. Rewrite using `[h1, smul_smul, GlobalTheory.ArchUniq.Coord.mul_realAd_eq_zero u hu, zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_at {κ : Type} (y : κ → mixedEmbedding.mixedSpace F) (u : AF F) (hu : evI F u = 0) :
     u • GlobalTheory.ArchUniq.liftV y = 0 := by
@@ -72,15 +72,15 @@ namespace GlobalTheory.ThK.EvCompNe
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `set z := M₁.co.e.symm (GlobalTheory.ArchUniq.liftV w.1, GlobalTheory.ArchUniq.liftV w.2) with hz`. Establish `hze : M₁.co.e z = (GlobalTheory.ArchUniq.liftV w.1, GlobalTheory.ArchUniq.liftV w.2)`. Rewrite using `[hz, LinearEquiv.apply_symm_apply]`. Establish `hzat : At (evI F) z`. Introduce `u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, ← LinearEquiv.map_smul, Prod.smul_mk, lift_at _ u hu, lift_at _ u hu]`. Conclude with `map_zero _`. Use `set z' := incM F ι * z * (incM F ι')ᵀ with hz'`. Establish `hz'at : At (evI F) z'`. Introduce `u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hz', ← Matrix.smul_mul, ← Matrix.mul_smul, hzat u hu, Matrix.mul_zero, Matrix.zero_mul]`. Take `⟨f₁, hf₁⟩` from `exists_schrF (GlobalTheory.ArchUniq.locV (M.co.e z').1, GlobalTheory.ArchUniq.locV (M.co.e z').2) f`. Use `⟨f₁, ?_⟩` and prove the remaining obligations. Establish `hA` using `GlobalTheory.ArchUniq.acts_rho_of_at_inf B.ψ hB.std M.co z' hz'at f f₁ hf₁`. Establish `hA₁` using `GlobalTheory.ArchUniq.acts_rho_of_at_inf B.ψ hB.std M₁.co z hzat (ei f) g₁ (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hg₁, hze, GlobalTheory.ArchUniq.Coord.loc_lift, GlobalTheory.ArchUniq.Coord.loc_lift])`. Establish `hR` using `GlobalTheory.ThK.EvUniqInf.rest_pure f M.vac (fun v => (hM.vac v).1) hM.std`. Establish `hR₁` using `GlobalTheory.ThK.EvUniqInf.rest_pure (ei f) M₁.vac (fun v => (hM₁.vac v).1) hM₁.std`. Establish `hvac : (fun v => ev v (M.vac v)) = M₁.vac` using `funext fun v => (hv v).1`. Establish `h1` using `he.Heisenberg₂ z (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f M.vac) hR.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : M.co.rho B.ψ z' (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f M.vac) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₁ M.vac` using `hA _ hR`. Establish `e2 : M₁.co.rho B.ψ z (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei f) M₁.vac) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g₁ M₁.vac` using `hA₁ _ hR₁`. Rewrite `h1` using `[← hz', e1, hl f₁ M.vac (fun v => (hM.vac v).1) (Eventually.of_forall fun _ => rfl), hl f M.vac (fun v => (hM.vac v).1) (Eventually.of_forall fun _ => rfl), hvac, e2]`. Conclude with `eq_of_pure_eq (fun v => (hM₁.vac v).2.1) hM₁.std h1`.
+A detailed English derivation is pending.
 -/
 theorem range_stable {B : Base F E} (hB : B.IsGood σ) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d}
     {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} {M : Model σ X W} {M₁ : Model σ X₁ W₁} (hM : M.IsGood B.ψ)
@@ -126,17 +126,15 @@ end GlobalTheory.ThK.EvCompNe
 open GlobalTheory.ThK.EvCompNe in
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a b G G₁ H H' _ X om om' om₁ om₁' hT hT₁ Mm hMm e₁ he₁ e₂ he₂`. Establish `hB` using `hT.base`. Establish `hG'` using `hT.geo.hM'`. Establish `hG₁'` using `hT₁.geo.hM'`. Take `⟨ei₁, ev₁, hne₁, hv₁, hl₁⟩` from `he₁.loc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ei₂, ev₂, hne₂, hv₂, hl₂⟩` from `he₂.loc`. Establish `key : ∃ f, ei₂ (ei₁ f) ≠ 0` using `by by_contra! hall`. Take `⟨f₀, hf₀⟩ : ∃ f, ei₁ f ≠ 0` from `by by_contra! h`. Conclude with `hne₁ (ContinuousLinearMap.ext h)`. Take `⟨h, hh⟩ : ∃ h, ei₂ h ≠ 0` from `by by_contra! h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hne₂ (ContinuousLinearMap.ext h')`. Take `⟨y, hy⟩ : ∃ y, ei₂ h y ≠ 0` from `by by_contra! h'`. Conclude with `hh (SchwartzMap.ext h')`. Set `T : SInf F (Fin b × Fin (a + (b + 2))) →L[ℂ] ℂ` to `(BoundedContinuousFunction.evalCLM ℂ y).comp ((SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ).comp ei₂)`. Establish `hTap : ∀ g, T g = ei₂ g y` using `fun g => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hT0 : T = 0` using `GlobalTheory.T.schrodinger_invariant_functional_zero (GlobalTheory.ArchUniq.trP F _) (GlobalTheory.ArchUniq.Coord.isPairing_trP _) T (ei₁ f₀) hf₀ (fun w g₁ hg₁ => by`. Take `⟨f₁, hf₁⟩` from `range_stable hB hG' hMm he₁ ei₁ ev₁ hv₁ hl₁ f₀ w g₁ hg₁`. Rewrite using `[hTap, ← hf₁, hall f₁]`. Use the proof step `rfl)`. Conclude with `hy (by rw [← hTap, hT0]; rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, hf⟩` from `key`. Establish `hR` using `GlobalTheory.ThK.EvUniqInf.rest_pure f G.M'.vac (fun v => (hG'.vac v).1) hG'.std`. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f G.M'.vac, hR.2, ?_⟩` and prove the remaining obligations. Establish `hvac₁ : (fun v => ev₁ v (G.M'.vac v)) = Mm.vac` using `funext fun v => (hv₁ v).1`. Establish `hvac₂ : (fun v => ev₂ v (Mm.vac v)) = G₁.M'.vac` using `funext fun v => (hv₂ v).1`.
-
-Rewrite using `[hl₁ f G.M'.vac (fun v => (hG'.vac v).1) (Eventually.of_forall fun _ => rfl), hvac₁, hl₂ (ei₁ f) Mm.vac (fun v => (hMm.vac v).1) (Eventually.of_forall fun _ => rfl), hvac₂]`. Conclude with `GlobalTheory.ThK.EvNeZero.pure_ne_zero _ hf G₁.M'.vac (fun v => (hG₁'.vac v).2.1) hG₁'.std`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.EvCompNe.comp_ne_zero : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b)
     (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

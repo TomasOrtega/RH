@@ -9,9 +9,9 @@ noncomputable section
 namespace ModelDimension
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Establish `hs : (Spec.map (CommRingCat.ofHom φ)) (IsLocalRing.closedPoint Ω) ⤳ IsLocalRing.closedPoint R` using `IsLocalRing.specializes_closedPoint _`. Establish `key : (Spec (CommRingCat.of R)).presheaf.stalkSpecializes hs ≫ Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom φ)) = (stalkClosedPointIso (CommRingCat.of R)).hom ≫ CommRingCat.ofHom φ`. Use `TopCat.Presheaf.stalk_hom_ext _ fun U hU ↦ ?_` and prove the remaining obligations. Take `rfl : U = ⊤` from `IsLocalRing.closed_point_mem_iff.mp hU`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `erw [TopCat.Presheaf.germ_stalkSpecializes_assoc, Scheme.germ_stalkClosedPointTo_Spec, germ_stalkClosedPointIso_hom_assoc]`. Express the relevant statement in the definitionally equal form `(X.presheaf.stalkSpecializes (z.base.hom.map_specializes hs) ≫ Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom φ) ≫ z)).hom = _`. Use `erw [Scheme.stalkClosedPointTo_comp, Scheme.Hom.stalkSpecializes_stalkMap_assoc, key, ← Category.assoc]`. Both sides reduce to the same expression. Conclude with `hs`.
+Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem genMap_eq_of_factor {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {R : Type} [CommRing R] [IsLocalRing R] (φ : R →+* Ω) (z : Spec (CommRingCat.of R) ⟶ X)
@@ -35,7 +35,7 @@ theorem genMap_eq_of_factor {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (
   · exact hs
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(X.presheaf.germ V p.1 hp ≫ X.presheaf.stalkSpecializes p.2 ≫ Scheme.stalkClosedPointTo ξ).hom f = _`. Use `erw [TopCat.Presheaf.germ_stalkSpecializes_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem genMap_germ' {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} (V : X.Opens)
     (hgV : genPt ξ ∈ V) (f : Γ(X, V)) (p : Cpt ξ) (hp : p.1 ∈ V) :

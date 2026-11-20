@@ -20,7 +20,7 @@ section Values
 variable {F : Type} [CommRing F] {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Establish `hx' : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U` using `le_trans hx (x.preimage_mono h)`. Rewrite using `[CrdCalc.valR_eq _ _ hx, CrdCalc.valR_eq _ _ hx', CrdCalc.valHom, CrdCalc.valHom, ← Scheme.Hom.appLE_comp_appLE x φ U V ⊤ h hx]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_appLE (x : Sp F ⟶ Y) (φ : Y ⟶ X) (U : X.Opens) (V : Y.Opens) (h : V ≤ φ ⁻¹ᵁ U)
     (f : Γ(X, U)) (hx : ⊤ ≤ x ⁻¹ᵁ V) : valR x V ((φ.appLE U V h).hom f) = valR (x ≫ φ) U f := by
@@ -30,9 +30,9 @@ theorem valR_appLE (x : Sp F ⟶ Y) (φ : Y ⟶ X) (U : X.Opens) (V : Y.Opens) (
   rfl
 
 /- English proof (translation)
-Establish `e : valR x V (resTop V (scal q c)) = valR (x ≫ q) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom c)` using `valR_appLE x q ⊤ V le_top _ hx`. Establish `e'` using `(CrdCalc.valR_spMap ψ (𝟙 (Sp K)) ⊤ le_rfl).2 ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom c)`. Rewrite `e'` using `[Category.comp_id]`. Rewrite using `[e, hq, e', CrdCalc.valR_eq _ _ le_top]`. Establish `h : (𝟙 (Sp K) : Sp K ⟶ Sp K).appLE ⊤ ⊤ le_top = 𝟙 _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Scheme.Hom.appLE]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (((𝟙 (Sp K) : Sp K ⟶ Sp K).appLE ⊤ ⊤ le_top).hom _) = c`. Rewrite using `[h]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of K)).inv_hom_id_apply c`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_scal {K : Type} [CommRing K] (ψ : K →+* F) (x : Sp F ⟶ Y) (q : Y ⟶ Sp K) (hq : x ≫ q = spMap ψ)
     (V : Y.Opens) (hx : ⊤ ≤ x ⁻¹ᵁ V) (c : K) : valR x V (resTop V (scal q c)) = ψ c := by
@@ -51,18 +51,18 @@ theorem valR_scal {K : Type} [CommRing K] (ψ : K →+* F) (x : Sp F ⟶ Y) (q :
   exact (Scheme.ΓSpecIso (CommRingCat.of K)).inv_hom_id_apply c
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wchart_le (L : LB X) (φ : Y ⟶ X) (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => φ) j ≤ φ ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => 𝟙 X) j :=
   fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k
 
 /- English proof (translation)
-Use `⟨⟨fun j => ∏ i, (φ.appLE _ _ (wchart_le L φ j)).hom ((σ i).f j) ^ α i, fun j j' => fn_ext fun y hy => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Establish `v : ∀ j : Fin 1 → L.ι, y ∈ LB.wchart L (fun _ : Fin 1 => φ) j → gs (𝟙 Y) y _ (∏ i, (φ.appLE _ _ (wchart_le L φ j)).hom ((σ i).f j) ^ α i) = ∏ i, gs (𝟙 Y ≫ φ) y (LB.wchart L (fun _ : Fin 1 => 𝟙 X) j) ((σ i).f j) ^ α i` using `fun j hj => by`. Rewrite using `[gs_eq (𝟙 Y) y _ hj, map_prod, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow, ← gs_eq (𝟙 Y) y _ hj]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· ^ α i) ((gs_res (𝟙 Y) y (wchart_le L φ j) hj _).trans (gs_pull (𝟙 Y) φ y _ (wchart_le L φ j hj) _))`. Use `((gs_res (𝟙 Y) y _ hy _).trans (v j hy.1)).trans (Eq.trans ?_ ((gs_mul (𝟙 Y) y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 Y) y _ hy _).trans (congrArg Units.val (gm_linComb L _ _ (𝟙 Y) y j j' hy.1 hy.2))) ((gs_res (𝟙 Y) y _ hy _).trans (v j' hy.2)))).symm)` and prove the remaining obligations. Simplify using `only [fun i => sec_trans (σ i) (𝟙 Y ≫ φ) y (wchart_le L φ j hy.1) (wchart_le L φ j' hy.2), mul_pow]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hα]`. Simplify using `only [trF]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.prod_univ_one, Fin.prod_univ_one, Category.comp_id, zpow_natCast, zpow_natCast, pow_mul]`. Simplify using `only [Units.val_pow_eq_pow_val]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_monomial (L : LB X) (φ : Y ⟶ X) (N d : ℕ) {J : Type} [Fintype J]
     (σ : J → (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => (N : ℤ))).Sec) (α : J → ℕ) (hα : ∑ i, α i = d) :
@@ -90,11 +90,11 @@ theorem exists_monomial (L : LB X) (φ : Y ⟶ X) (N d : ℕ) {J : Type} [Fintyp
 end Values
 
 /- English proof (translation)
-Establish `le : (MvPolynomial.homogeneousSubmodule J k d).map (LinearMap.pi fun v : C => (MvPolynomial.aeval (R` using `k) v.1).toLinearMap) ≤ Submodule.span k (Set.range β) := by`. Introduce and unpack `_ ⟨P, hP, rfl⟩`. Rewrite using `[P.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun α hα => ?_` and prove the remaining obligations. Establish `hd : ∑ i, α i = d`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `MvPolynomial.IsHomogeneous.degree_eq_sum_deg_support hP hα` as an intermediate fact. Rewrite using `[this]`. Conclude with `(Finset.sum_subset (Finset.subset_univ _) fun i _ hi => Finsupp.notMem_support_iff.1 hi).symm`. Take `⟨c, hc⟩` from `h α hd`. Use `(Submodule.mem_span_range_iff_exists_fun k).2 ⟨fun l => P.coeff α * c l, funext fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, LinearMap.pi_apply, AlgHom.toLinearMap_apply, MvPolynomial.aeval_monomial, Algebra.algebraMap_self, RingHom.id_apply]`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), hc v, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => _root_.mul_assoc _ _ _`. Use `Module.Finite.span_of_finite k (Set.finite_range β)` as an intermediate fact. Conclude with `(Submodule.finrank_mono le).trans ((finrank_range_le_card β).trans (Fintype.card_fin m).le)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hilb_le {k J : Type} [Field k] [Fintype J] (C : Set (J → k)) (d m : ℕ) (β : Fin m → C → k)
     (h : ∀ α : J → ℕ, ∑ i, α i = d → ∃ c : Fin m → k, ∀ v : C, ∏ i, v.1 i ^ α i = ∑ l, c l * β l v) :
@@ -121,7 +121,7 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω
   {y₀ : S.R →+* PadicAlgCl p}
 
 /- English proof (translation)
-The claim follows from `(ReciprocityTheory.ChartRestriction.G.H1.dim_unique u.A.A.hom u.A.smoothDim ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback u.cart.1 ρ.P.smoothDim) (eSec u.A.A (IsLocalRing.closedPoint _))).trans ρ.g_eq`.
+A detailed English derivation is pending.
 -/
 theorem dim_eq (u : ρ.UTest p y₀) : u.A.g = S.g :=
   (ReciprocityTheory.ChartRestriction.G.H1.dim_unique u.A.A.hom u.A.smoothDim
@@ -129,7 +129,7 @@ theorem dim_eq (u : ρ.UTest p y₀) : u.A.g = S.g :=
     (eSec u.A.A (IsLocalRing.closedPoint _))).trans ρ.g_eq
 
 /- English proof (translation)
-Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gPt_j (u : ρ.UTest p y₀) :
     gPt p ≫ spMap u.j = spMap (algebraMap (FractionRing u.V) (PadicAlgCl p)) ≫ jK u.V := by
@@ -138,17 +138,15 @@ theorem gPt_j (u : ρ.UTest p y₀) :
   rfl
 
 /- English proof (translation)
-Introduce `hL o Ω _ _ _ _ S ρ p _ y₀ u J _ σ d hd`. Establish `hN : 1 ≤ S.N * d`. Rewrite using `[ρ.N_eq]`. Conclude with `Nat.mul_pos (pow_pos (pow_pos ρ.n_prime.pos _) _) hd`. Take `⟨b, -, hb⟩` from `GlobalTheory.GenericSectionBasis.exists_secK_basis hL.1.secBaseChange u.V _ u.D u.A u.G u.U.toUnifPre (S.N * d) hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← dim_eq u]`. Set `C` to `{w : J → PadicAlgCl p | ∃ a : Sp (PadicAlgCl p) ⟶ u.G.left, a ≫ u.G.hom = gPt p ≫ spMap u.j ∧ Crd (u.H S.N) σ a w}`. Establish `hC : ∀ w : C, ∃ (x : Sp (PadicAlgCl p) ⟶ pullback u.G.hom (jK u.V)) (l : Fin 1 → u.U.LG.L.ι) (c : PadicAlgCl p), x ≫ pullback.snd _ _ = spMap (algebraMap (FractionRing u.V) (PadicAlgCl p)) ∧ ⊤ ≤ x ⁻¹ᵁ LB.wchart u.U.LG.L (fun _ : Fin 1 => pullback.fst u.G.hom (jK u.V)) l ∧ ∀ i, w. …`. Introduce and unpack `⟨w, a, ha, l, c, hl, hw⟩`. Take `⟨x, rfl, hx⟩ : ∃ x : Sp (PadicAlgCl p) ⟶ pullback u.G.hom (jK u.V), x ≫ pullback.fst _ _ = a ∧ x ≫ pullback.snd _ _ = spMap (algebraMap (FractionRing u.V) (PadicAlgCl p))` from `⟨pullback.lift a _ (ha.trans (gPt_j u)), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, l, c, hx, fun y hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (hl hy) k, hw⟩`. Use `choose x l c hx hl hw using hC`. Use `hilb_le C d _ (fun n w => c w ^ d * valR (x w) _ ((b n).f (l w))) fun α hα => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `exists_monomial u.U.LG.L (pullback.fst u.G.hom (jK u.V)) S.N d σ α hα`. Take `⟨e, he, -⟩` from `hb s`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun n => algebraMap _ _ (e n), fun w => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (CrdCalc.valHom (x w) _ (hl w)) ((hs (l w)).symm.trans (he (l w)))`. Use `replace h := (map_prod _ _ _).symm.trans (h.trans (map_sum _ _ _))`. Simplify using `only [hw w, mul_pow]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hα]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ ((congrArg (c w ^ d * ·) h).trans ?_)` and prove the remaining obligations. Use `congrArg (c w ^ d * ·) (Finset.prod_congr rfl fun i _ => Eq.symm ((map_pow _ _ _).trans ?_))` and prove the remaining obligations. Conclude with `congrArg (· ^ α i) ((CrdCalc.valR_eq _ _ (hl w) _).symm.trans (valR_appLE _ _ _ _ _ _ (hl w)))`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => Eq.trans (congrArg (c w ^ d * ·) ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ (CrdCalc.valR_eq _ _ (hl w) _).symm))) (mul_left_comm _ _ _)` and prove the remaining obligations.
-
-Conclude with `(CrdCalc.valR_eq _ _ (hl w) _).symm.trans (valR_scal _ (x w) _ (hx w) _ (hl w) (e n))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hilb_generic_le : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (J : Type) [Fintype J] (σ : J → (u.H S.N).Sec) (d : ℕ), 1 ≤ d → hilb {w : J → PadicAlgCl p | ∃ a : Sp (PadicAlgCl p) ⟶ u.G.left, a ≫ u.G.hom = gPt p ≫ spMap u.j ∧ Crd (u.H S.N) σ a w} d ≤ (S.N * d) ^ S.g := by
   intro hL o Ω _ _ _ _ S ρ p _ y₀ u J _ σ d hd

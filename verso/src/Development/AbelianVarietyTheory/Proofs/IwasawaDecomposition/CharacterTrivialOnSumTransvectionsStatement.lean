@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneAddSmulVe
 open ReciprocityTheory.ChartRestriction.G.FD NumberField GlobalTheory.UnipKill
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.UnipKill.exists_mem_sum_transv_killed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FCharacterTrivialOnSumTransvections.lean&line=7#L7)
 -/

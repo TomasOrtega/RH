@@ -115,9 +115,9 @@ def UnitarySchurProjectorSharp : Prop :=
 def SchurProjector : Prop := AbstractSchurProjector ∧ UnitarySchurProjector
 
 /- English proof (translation)
-Unfold `SchurOrthogonality Formalism.MainNotions.S.IsFdeg Formalism.MainNotions.S.coefOn`. Use `and_congr Iff.rfl (forall_congr' fun u => forall_congr' fun v => forall_congr' fun u' => forall_congr' fun v' => and_congr Iff.rfl ?_)` and prove the remaining obligations. Establish `: (d : ℂ)⁻¹ * ⟪u', u⟫_ℂ * star ⟪v', v⟫_ℂ = ⟪u', u⟫_ℂ * ⟪v, v'⟫_ℂ / (d : ℂ)`. Rewrite using `[← inner_conj_symm v v', div_eq_mul_inv]`. Simplify using `only [RCLike.star_def]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 example {n : ℕ} (ε : Fin n → Bool) {Hs : Type} [NormedAddCommGroup Hs] [InnerProductSpace ℂ Hs]
     (σ : Matrix (Fin n) (Fin n) ℂ → (Hs →L[ℂ] Hs)) (d : ℝ) (μ : Measure (Formalism.REAL.UJ ε)) :

@@ -21,9 +21,9 @@ namespace GlobalTheory.ExpTie.Lift
 open Formalism.IndefR.Bridge
 
 /- English proof (translation)
-Use `GlobalTheory.ExpTie.atPts_imp (GlobalTheory.ExpTie.atPts_and GlobalTheory.T.lambda_prime_all_points GlobalTheory.T.parameter_large_all_points_bound) ?_` and prove the remaining obligations. Introduce `eps Fm x hx i p hp j`. Take `⟨hF, hLg⟩` from `hp`. Establish `hv : ∀ τ, ValsAt (Fm.L x i) j τ` using `fun τ => GlobalTheory.T.liftWeightRho_entryValues (Fm.L x i) j τ (hF j τ)`. Use `⟨wts (Fm.L x i) j, ⟨anti _ j, what₂ _ j, fun τ => (GlobalTheory.T.liftWeightRho_block_constant_centred (Fm.L x i) j τ (hv τ)).1, fun τ => (GlobalTheory.T.liftWeightRho_block_constant_centred (Fm.L x i) j τ (hv τ)).2, fun τ => (GlobalTheory.T.liftWeightRho_window_contains_cloud (F …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lamT_of_lt j τ a a.2` as an intermediate fact. Use `show (lamT j τ a : ℤ) = _`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wts_ok : GlobalTheory.BigOn.AtPts fun Fm x _ i _ => ∀ j : Fin (Fm.D x i).R.m, ∃ W : Formalism.CohomologicalDescent.ShortWeightBounds.Wts (Fm.D x i).what₂.Tau, W.Ok (GlobalTheory.ExpTie.parOf (Fm.L x i) j) ∧
     (∀ τ, ∃ c : ℤ, ∀ a : Fin (Formalism.IndefR.Links.Vc (Fm.D x i) j).rank,

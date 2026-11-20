@@ -16,15 +16,15 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e]
   [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K]
 
 /- English proof (translation)
-The claim follows from `frob_mem_invL l (fun _ h => frob_mem_S l h) hf`.
+A detailed English derivation is pending.
 -/
 theorem frob_mem_invL_S {f : K⟦X⟧} (hf : f ∈ invL l (S O K e)) : frob K l f ∈ invL l (S O K e) :=
   frob_mem_invL l (fun _ h => frob_mem_S l h) hf
 
 /- English proof (translation)
-Set `F : invL l (S O K e) →+* invL l (S O K e)` to `(frob K l).toRingHom.restrict _ _ fun _ h => frob_mem_invL_S h`. Establish `key : (ϖ.iSl O K).toRingHom.comp F = (frobOB l O).toRingHom.comp (ϖ.iSl O K).toRingHom`. Establish `hS : ∀ (x : S O K e) (h : frob K l (x : K⟦X⟧) ∈ invL l (S O K e)) (h' : (x : K⟦X⟧) ∈ invL l (S O K e)), ϖ.iSl O K ⟨frob K l x, h⟩ = frobOB l O (ϖ.iSl O K ⟨x, h'⟩)` using `fun x h h' => by`. Rewrite using `[ϖ.iSl_of_mem O K (frob_mem_S l x.2) h, ϖ.iSl_of_mem O K x.2 h', ϖ.iS_frob O K x, frobOB_toOB]`. Use `IsLocalization.ringHom_ext (Submonoid.powers (l : S O K e)) ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Conclude with `hS x _ _`. Conclude with `RingHom.congr_fun key f`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem iSl_frob (ϖ : PiSys l e) (f : invL l (S O K e)) :
     ϖ.iSl O K ⟨frob K l f, frob_mem_invL_S f.2⟩ = frobOB l O (ϖ.iSl O K f) := by
@@ -40,7 +40,7 @@ theorem iSl_frob (ϖ : PiSys l e) (f : invL l (S O K e)) :
   exact RingHom.congr_fun key f
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `frobOB l O (toOB l O (toOCr l O (idem (constA t) τ))) = toOB l O (toOCr l O (idem (constA t) (τ + 1)))`. Rewrite using `[frobOB_toOB, frobOCr_toOCr, frobOA_idem]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem frobOB_idem (t : Wq l a →ₐ[ℤ_[l]] O) (τ : ZMod a) :
     frobOB l O (idem (constB t) τ) = idem (constB t) (τ + 1) := by
@@ -48,14 +48,14 @@ theorem frobOB_idem (t : Wq l a →ₐ[ℤ_[l]] O) (τ : ZMod a) :
   rw [frobOB_toOB, frobOCr_toOCr, frobOA_idem]
 
 /- English proof (translation)
-The claim follows from `(map_glue (frobOB l O).toRingHom 1 (frobOB_idem t) fun τ => (iSl_frob ϖ (g (τ - 1))).symm).symm`.
+A detailed English derivation is pending.
 -/
 theorem iB_frob (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (g : ZMod a → invL l (S O K e)) :
     ϖ.iB t K (fun τ => ⟨frob K l (g (τ - 1)), frob_mem_invL_S (g (τ - 1)).2⟩) = frobOB l O (ϖ.iB t K g) :=
   (map_glue (frobOB l O).toRingHom 1 (frobOB_idem t) fun τ => (iSl_frob ϖ (g (τ - 1))).symm).symm
 
 /- English proof (translation)
-The claim follows from `(ϖ.iB_of_mem t K fun τ => ⟨F τ, A_le_S l e (F τ).2⟩).trans (congrArg (toOB l O) (ϖ.iC_of_mem t K F))`.
+A detailed English derivation is pending.
 -/
 theorem iB_of_A (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (F : ZMod a → A O K)
     (h : ∀ τ, (F τ : K⟦X⟧) ∈ invL l (S O K e)) :
@@ -63,17 +63,17 @@ theorem iB_of_A (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (F : ZMod a → 
   (ϖ.iB_of_mem t K fun τ => ⟨F τ, A_le_S l e (F τ).2⟩).trans (congrArg (toOB l O) (ϖ.iC_of_mem t K F))
 
 /- English proof (translation)
-Introduce `hY m m' hm`. Use `choose f hf hYf using hY`. Use `set c := coordL P (invL l (S O K e)) m with hc`. Use `set c' := coordL P (invL l (S O K e)) m' with hc'`. Establish `step1 : ∀ i τ, frob K l (E K l e) ^ α * (c' i τ : K⟦X⟧) = ∑ j, (frobAc l (f i j) τ : K⟦X⟧) * frob K l (c j (τ - 1) : K⟦X⟧)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `i τ`. Establish `h1 : (c' i τ : K⟦X⟧) = frob K l (m.1 (τ - 1) i)`. Express the relevant statement in the definitionally equal form `(P.mxInv τ *ᵥ m'.1 τ) i = _`. Rewrite using `[hm, PhiMod.phi_apply, Matrix.mulVec_mulVec, P.mxInv_mul_mx, Matrix.one_mulVec, frobV_apply]`. Establish `h2 : m.1 (τ - 1) i = ∑ j, P.mx (τ - 1) i j * (c j (τ - 1) : K⟦X⟧)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mx_mulVec_coordL P _ m (τ - 1)]`. Simplify using `only [Matrix.mulVec, dotProduct, hc]`. Rewrite using `[h1, h2, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[coe_frobAc, frobTot_apply, hf i j (τ - 1), map_mul, map_mul, map_pow, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `liftA : (ZMod a → A O K) → ZMod a → invL l (S O K e)` to `fun F τ => ⟨F τ, le_away _ _ (A_le_S l e (F τ).2)⟩`. Set `cF : ι → ZMod a → invL l (S O K e)` to `fun j τ => ⟨frob K l (c j (τ - 1)), frob_mem_invL_S (c j (τ - 1)).2⟩`. Establish `step2 : ∀ i, liftA (frobAc l fun _ => EIn l e (A O K)) ^ α * c' i = ∑ j, liftA (frobAc l (f i j)) * cF j`. Introduce `i`. Use function extensionality and compare the values at `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [liftA, cF, Pi.mul_apply, Pi.pow_apply, Finset.sum_apply, Subalgebra.coe_mul, Subalgebra.coe_pow, AddSubmonoidClass.coe_finsetSum]`. Conclude with `step1 i τ`. Use extensionality with `i`. Establish `h3` using `congrArg (ϖ.iB t K) (step2 i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[map_mul, map_pow, map_sum]`. Simplify using `only [Finset.sum_congr rfl fun j _ => map_mul (ϖ.iB t K) (liftA (frobAc l (f i j))) (cF j)] at h3`. Simplify using `only [liftA, iB_of_A, cF, iB_frob, ϖ.iTot_frob t K, ϖ.iTot_E t K] at h3`. Rewrite using `[Pi.smul_apply, smul_eq_mul, toBcris_apply, ← hc', h3]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, hYf, toBcris_apply, ← hc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toBcris_phi (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O]
     [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K]

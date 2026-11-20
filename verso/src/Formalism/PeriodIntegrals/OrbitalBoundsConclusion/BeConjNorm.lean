@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ConjugateNormBound.BeCo
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ConjugateNormBound.MemIntegerRingIffNormLeOne
 
 /- English proof (translation)
-The claim follows from `PI.BeConjNormW.beConjNorm_of_intInv PI.BeConjNormW.inverse_integral_padic`.
+A detailed English derivation is pending.
 -/
 theorem conjugate_norm_bound : PI.BeConjNorm.BeConjNorm :=
   PI.BeConjNormW.beConjNorm_of_intInv PI.BeConjNormW.inverse_integral_padic

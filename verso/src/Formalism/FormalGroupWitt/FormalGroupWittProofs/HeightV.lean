@@ -15,15 +15,15 @@ section Rename
 variable {K : Type*} [Field K] {l m : ℕ} [NeZero m]
 
 /- English proof (translation)
-Use `set e : ZMod m ↪ ZMod m := (Equiv.subRight (1 : ZMod m)).toEmbedding with he`. Establish `hs : ∀ a : ZMod m, e a = a - 1` using `fun a => by simp [he]`. Establish `hX : (fun k : ZMod m => (X (k - 1) : MvPowerSeries (ZMod m) K)) = X ∘ ⇑e`. Use function extensionality and compare the values at `k`. Simplify using `[hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX, ← rename_eq_subst]`. Use extensionality with `n`. Take `⟨x, rfl⟩ : ∃ x, Finsupp.embDomain e x = n` from `⟨n.comapDomain e e.injective.injOn, Finsupp.embDomain_comapDomain (by`. Introduce `a _; exact ⟨a + 1, by simp [hs]⟩)⟩`. Rewrite using `[coeff_embDomain_rename]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hA : ∃ t : ℕ, x = Finsupp.single (j - (t : ZMod m)) ((l ^ 2) ^ t)`. Take `⟨t, rfl⟩` from `hA`. Rewrite using `[Finsupp.embDomain_single, hs, ShiftFEAux.coeff_shiftLog_single hl]`. Establish `: j - (t : ZMod m) - 1 = j - 1 - (t : ZMod m)` using `by ring`. Rewrite using `[this, ShiftFEAux.coeff_shiftLog_single hl]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at hA`. Rewrite using `[ShiftFEAux.coeff_shiftLog_zero j x hA, ShiftFEAux.coeff_shiftLog_zero]`. Introduce `t ht`. Apply `hA t` to reduce the goal to its premises. Establish `: Finsupp.single (j - 1 - (t : ZMod m)) ((l ^ 2) ^ t) = Finsupp.embDomain e (Finsupp.single (j - (t : ZMod m)) ((l ^ 2) ^ t))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finsupp.embDomain_single, hs]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `ht` using `[this]`. Conclude with `Finsupp.embDomain_inj.mp ht`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_shift_shiftLog (hl : 2 ≤ l) (j : ZMod m) :
     subst (fun k : ZMod m => (X (k - 1) : MvPowerSeries (ZMod m) K)) (shiftLog K l m j) =
@@ -61,40 +61,40 @@ section Subst
 variable {R : Type*} [CommRing R] {ι : Type*} [Finite ι] [DecidableEq ι] {τ : Type*}
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero ha`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst0 {σ : Type*} [Finite σ] (a : σ → MvPowerSeries τ R)
     (ha : ∀ i, constantCoeff (a i) = 0) : HasSubst a :=
   hasSubst_of_constantCoeff_zero ha
 
 /- English proof (translation)
-The claim follows from `hasSubst0 _ (fun _ => constantCoeff_X _)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_vX : HasSubst (fun i : ι => (vX i : MvPowerSeries (Fin 2 × ι) R)) :=
   hasSubst0 _ (fun _ => constantCoeff_X _)
 
 /- English proof (translation)
-The claim follows from `hasSubst0 _ (fun _ => constantCoeff_X _)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_vY : HasSubst (fun i : ι => (vY i : MvPowerSeries (Fin 2 × ι) R)) :=
   hasSubst0 _ (fun _ => constantCoeff_X _)
 
 /- English proof (translation)
-The claim follows from `constantCoeff_subst_eq_zero hasSubst_vX (fun _ => constantCoeff_X _) hg`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_atXv {g : MvPowerSeries ι R} (hg : constantCoeff g = 0) :
     constantCoeff (atXv g) = 0 :=
   constantCoeff_subst_eq_zero hasSubst_vX (fun _ => constantCoeff_X _) hg
 
 /- English proof (translation)
-The claim follows from `constantCoeff_subst_eq_zero hasSubst_vY (fun _ => constantCoeff_X _) hg`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_atYv {g : MvPowerSeries ι R} (hg : constantCoeff g = 0) :
     constantCoeff (atYv g) = 0 :=
   constantCoeff_subst_eq_zero hasSubst_vY (fun _ => constantCoeff_X _) hg
 
 /- English proof (translation)
-Unfold `atXv`. Rewrite using `[subst_comp_subst_apply hasSubst_vX hG]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `subst_X hG _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem subst_atXv (G : Fin 2 × ι → MvPowerSeries τ R) (hG : HasSubst G)
     (g : MvPowerSeries ι R) : subst G (atXv g) = subst (fun i => G (0, i)) g := by
@@ -105,7 +105,7 @@ theorem subst_atXv (G : Fin 2 × ι → MvPowerSeries τ R) (hG : HasSubst G)
   exact subst_X hG _
 
 /- English proof (translation)
-Unfold `atYv`. Rewrite using `[subst_comp_subst_apply hasSubst_vY hG]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `subst_X hG _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem subst_atYv (G : Fin 2 × ι → MvPowerSeries τ R) (hG : HasSubst G)
     (g : MvPowerSeries ι R) : subst G (atYv g) = subst (fun i => G (1, i)) g := by
@@ -116,7 +116,7 @@ theorem subst_atYv (G : Fin 2 × ι → MvPowerSeries τ R) (hG : HasSubst G)
   exact subst_X hG _
 
 /- English proof (translation)
-Unfold `atXv`. Rewrite using `[subst_comp_subst_apply (hasSubst0 h hh) hasSubst_vX]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem atXv_subst (h : ι → MvPowerSeries ι R) (hh : ∀ i, constantCoeff (h i) = 0)
     (g : MvPowerSeries ι R) : atXv (subst h g) = subst (fun i => atXv (h i)) g := by
@@ -124,7 +124,7 @@ theorem atXv_subst (h : ι → MvPowerSeries ι R) (hh : ∀ i, constantCoeff (h
   rw [subst_comp_subst_apply (hasSubst0 h hh) hasSubst_vX]
 
 /- English proof (translation)
-Unfold `atYv`. Rewrite using `[subst_comp_subst_apply (hasSubst0 h hh) hasSubst_vY]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem atYv_subst (h : ι → MvPowerSeries ι R) (hh : ∀ i, constantCoeff (h i) = 0)
     (g : MvPowerSeries ι R) : atYv (subst h g) = subst (fun i => atYv (h i)) g := by
@@ -132,7 +132,7 @@ theorem atYv_subst (h : ι → MvPowerSeries ι R) (hh : ∀ i, constantCoeff (h
   rw [subst_comp_subst_apply (hasSubst0 h hh) hasSubst_vY]
 
 /- English proof (translation)
-Unfold `atXv`. Rewrite using `[map_subst hasSubst_vX]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `map_X φ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem map_atXv {S : Type*} [CommRing S] (φ : R →+* S) (g : MvPowerSeries ι R) :
     map φ (atXv g) = atXv (map φ g) := by
@@ -143,7 +143,7 @@ theorem map_atXv {S : Type*} [CommRing S] (φ : R →+* S) (g : MvPowerSeries ι
   exact map_X φ _
 
 /- English proof (translation)
-Unfold `atYv`. Rewrite using `[map_subst hasSubst_vY]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `map_X φ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem map_atYv {S : Type*} [CommRing S] (φ : R →+* S) (g : MvPowerSeries ι R) :
     map φ (atYv g) = atYv (map φ g) := by
@@ -160,7 +160,7 @@ section Padic
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Introduce `a b hab`. Use extensionality with `n`. Use `congrArg (coeff n) hab` as an intermediate fact. Rewrite `this` using `[coeff_map, coeff_map]`. Conclude with `Subtype.ext this`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_map_injective {σ : Type*} :
     Function.Injective (map (PadicInt.Coe.ringHom : ℤ_[l] →+* ℚ_[l]) :
@@ -172,7 +172,7 @@ theorem coe_map_injective {σ : Type*} :
   exact Subtype.ext this
 
 /- English proof (translation)
-Rewrite `hx` using `[constantCoeff_map]`. Conclude with `Subtype.ext hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_of_map {σ : Type*} (x : MvPowerSeries σ ℤ_[l])
     (hx : constantCoeff (map (PadicInt.Coe.ringHom : ℤ_[l] →+* ℚ_[l]) x) = 0) :
@@ -184,7 +184,7 @@ def liftZ {σ : Type*} (g : MvPowerSeries σ ℚ_[l]) (hg : IntegralMv g) : MvPo
   fun n => ⟨coeff n g, hg n⟩
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_map]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_liftZ {σ : Type*} (g : MvPowerSeries σ ℚ_[l]) (hg : IntegralMv g) :
     map (PadicInt.Coe.ringHom : ℤ_[l] →+* ℚ_[l]) (liftZ g hg) = g := by
@@ -193,7 +193,7 @@ theorem map_liftZ {σ : Type*} (g : MvPowerSeries σ ℚ_[l]) (hg : IntegralMv g
   rfl
 
 /- English proof (translation)
-The claim follows from `(PadicInt.norm_lt_one_iff_dvd x).mp (lt_of_le_of_lt hx Padic.norm_p_lt_one)`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_norm_le {x : ℤ_[l]}
     (hx : ‖(PadicInt.Coe.ringHom : ℤ_[l] →+* ℚ_[l]) x‖ ≤ ‖((l : ℕ) : ℚ_[l])‖) :
@@ -201,7 +201,7 @@ theorem dvd_of_norm_le {x : ℤ_[l]}
   (PadicInt.norm_lt_one_iff_dvd x).mp (lt_of_le_of_lt hx Padic.norm_p_lt_one)
 
 /- English proof (translation)
-Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toZMod_eq_zero_iff (x : ℤ_[l]) : PadicInt.toZMod x = 0 ↔ (l : ℤ_[l]) ∣ x := by
   rw [← RingHom.mem_ker, PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p,
@@ -213,63 +213,57 @@ section Main
 
 open PadicInt in
 /- English proof (translation)
-Introduce `l _ m _ F hF`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hl2 : 2 ≤ l` using `hlp.two_le`. Establish `hq : l ^ 2 ≠ 0` using `pow_ne_zero 2 hlp.ne_zero`. Establish `hl0 : (l : ℚ_[l]) ≠ 0` using `by exact_mod_cast hlp.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hf, hfeq⟩` from `Formalism.FG.shift_functional_equation.{0} ℚ_[l] l hlp m (RingHom.id ℚ_[l])`. Establish `hS` using `Formalism.FG.frobenius_lift_padic_square l`. Establish `hM : IntegralMat (shiftMat ℚ_[l] m)`. Apply the tactic sequence `intro j k; unfold shiftMat; split_ifs <;> simp`. Establish `hXI : ∀ j : ZMod m, IntegralMv (X j : MvPowerSeries (ZMod m) ℚ_[l])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `intro j d; rw [coeff_X]; split_ifs <;> simp`. Establish `hfE : IsFunEqTypeV l (l ^ 2) hq (RingHom.id ℚ_[l]) (shiftMat ℚ_[l] m) (shiftLog ℚ_[l] l m)`. Introduce `j`. Rewrite using `[hfeq j]`. Conclude with `hXI j`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∀ j : ZMod m, ∑ k, shiftMat ℚ_[l] m j k • MvPowerSeries.expand (l ^ 2) hq (MvPowerSeries.map (RingHom.id ℚ_[l]) (shiftLog ℚ_[l] l m k)) = MvPowerSeries.expand (l ^ 2) hq (shiftLog ℚ_[l] l m (j - 1))`. Introduce `j`. Simplify using `[shiftMat]`. Establish `hexp : ∀ j : ZMod m, MvPowerSeries.expand (l ^ 2) hq (shiftLog ℚ_[l] l m (j - 1)) = (l : ℚ_[l]) • (shiftLog ℚ_[l] l m j - X j)`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hfeq j`. Rewrite `h1` using `[hsum j]`. Rewrite using `[← h1, sub_sub_cancel, smul_smul, mul_inv_cancel₀ hl0, one_smul]`. Establish `hgE : IsFunEqTypeV l (l ^ 2) hq (RingHom.id ℚ_[l]) (shiftMat ℚ_[l] m) (fun j => (l : ℚ_[l]) • shiftLog ℚ_[l] l m j)`. Introduce `j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (l : ℚ_[l]) • shiftLog ℚ_[l] l m j - ((l : ℕ) : ℚ_[l])⁻¹ • ∑ k, shiftMat ℚ_[l] m j k • MvPowerSeries.expand (l ^ 2) hq (MvPowerSeries.map (RingHom.id ℚ_[l]) ((l : ℚ_[l]) • shiftLog ℚ_[l] l m k)) = (l : ℚ_[l]) • (X j : MvPowerSeries (ZMod m) ℚ_[l])`. Establish `h2 : ∀ k, MvPowerSeries.map (RingHom.id ℚ_[l]) ((l : ℚ_[l]) • shiftLog ℚ_[l] l m k) = (l : ℚ_[l]) • MvPowerSeries.map (RingHom.id ℚ_[l]) (shiftLog ℚ_[l] l m k)`. Introduce `k`. Simplify using the standard rewrite rules. Establish `h3 : ∑ k, shiftMat ℚ_[l] m j k • (l : ℚ_[l]) • MvPowerSeries.expand (l ^ 2) hq (MvPowerSeries.map (RingHom.id ℚ_[l]) (shiftLog ℚ_[l] l m k)) = (l : ℚ_[l]) • ∑ k, shiftMat ℚ_[l] m j k • MvPowerSeries.expand (l ^ 2) hq (MvPowerSeries.map (RingHom.id ℚ_[l]) (shiftLog ℚ_[l] l m k))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => smul_comm _ _ _`. Simplify using `only [h2, map_smul]`. Rewrite using `[h3, hsum j, hexp j]`. Rewrite using `[smul_smul ((l : ℚ_[l])⁻¹), inv_mul_cancel₀ hl0, one_smul, ← smul_sub, sub_sub_cancel]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Introduce `d`. Rewrite using `[coeff_smul, norm_mul]`. Conclude with `mul_le_one₀ Padic.norm_p_lt_one.le (norm_nonneg _) (hXI j d)`. Establish `hg0 : ∀ j : ZMod m, constantCoeff ((l : ℚ_[l]) • shiftLog ℚ_[l] l m j) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Rewrite using `[smul_eq_C_mul, map_mul, hf.1 j, mul_zero]`. Take `⟨h, hh0, hhI, hh⟩` from `Formalism.FG.functional_equation_hom_vector.{0, 0, 0} ℚ_[l] l (l ^ 2) hq (RingHom.id ℚ_[l]) hS (ZMod m) (shiftMat ℚ_[l] m) hM (shiftLog ℚ_[l] l m) hf hfE (ZMod m) (fun j => (l : ℚ_[l]) • shiftLog ℚ_[l] l m j) hg0 hgE`. Use `set e : ZMod m → MvPowerSeries (ZMod m) ℤ_[l] := fun i => liftZ (h i) (hhI i) with he_def`. Establish `he : ∀ i, map (PadicInt.Coe.ringHom : ℤ_[l] →+* ℚ_[l]) (e i) = h i` using `fun i => map_liftZ (h i) (hhI i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he0 : ∀ i, constantCoeff (e i) = 0` using `fun i => constantCoeff_of_map _ (by rw [he i]; exact hh0 i)`. Establish `hF0 : ∀ i, constantCoeff (F i) = 0` using `fun i => constantCoeff_of_map _ (hF.1 i)`. Use `set FK : ZMod m → MvPowerSeries (Fin 2 × ZMod m) ℚ_[l] := fun i => map (PadicInt.Coe.ringHom : ℤ_[l] →+* ℚ_[l]) (F i) with hFK`. Use `set EK : Fin 2 × ZMod m → MvPowerSeries (Fin 2 × ZMod m) ℚ_[l] := fun x => if x.1 = 0 then atXv (h x.2) else atYv (h x.2) with hEK`. Establish `hFKs : HasSubst FK` using `hasSubst0 FK hF.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhs : HasSubst h` using `hasSubst0 h hh0`. Establish `hEK0 : ∀ x, constantCoeff (EK x) = 0`. Introduce `x`. Simplify using `only [hEK]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `constantCoeff_atXv (hh0 _)`. Conclude with `constantCoeff_atYv (hh0 _)`. Establish `hEKs : HasSubst EK` using `hasSubst0 EK hEK0`. Establish `hkey : (fun i => subst FK (h i)) = (fun i => subst EK (FK i))`. Use `Formalism.FG.subst_injective_vector.{0, 0, 0} ℚ_[l] (ZMod m) (Fin 2 × ZMod m) (shiftLog ℚ_[l] l m) _ _ hf (fun i => constantCoeff_subst_eq_zero hFKs hF.1 (hh0 i)) (fun i => constantCoeff_subst_eq_zero hEKs hEK0 (hF.1 i)) (fun j => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← subst_comp_subst_apply hhs hFKs, hh j, subst_smul hFKs, hF.2.2 j, ← subst_comp_subst_apply hFKs hEKs, hF.2.2 j, subst_add hEKs, subst_atXv EK hEKs, subst_atYv EK hEKs]`. Establish `hx : (fun i => EK (0, i)) = fun i => atXv (h i)`. Use function extensionality and compare the values at `i`. Simplify using `[hEK]`. Establish `hy : (fun i => EK (1, i)) = fun i => atYv (h i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `[hEK]`. Rewrite using `[hx, hy, ← atXv_subst h hh0, ← atYv_subst h hh0, hh j, smul_add]`. Unfold `atXv atYv`. Rewrite using `[subst_smul hasSubst_vX, subst_smul hasSubst_vY]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hFs : HasSubst F` using `hasSubst0 F hF0`. Establish `hE0 : ∀ x : Fin 2 × ZMod m, constantCoeff ((fun x : Fin 2 × ZMod m => if x.1 = 0 then atXv (e x.2) else atYv (e x.2)) x) = 0`. Introduce `x`. Simplify using `only`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `constantCoeff_atXv (he0 _)`. Conclude with `constantCoeff_atYv (he0 _)`. Establish `hHom : IsHomV F F e`. Use `⟨he0, fun i => ?_⟩` and prove the remaining obligations. Apply `coe_map_injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_subst hFs, map_subst (hasSubst0 _ hE0), he i]`. Use `congrFun hkey i` as an intermediate fact. Rewrite using `[this]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hEK]`. Use `split_ifs`. Rewrite using `[map_atXv, he]`. Rewrite using `[map_atYv, he]`. Establish `hfe : (fun k => map (PadicInt.Coe.ringHom : ℤ_[l] →+* ℚ_[l]) (e k)) = h` using `funext he`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set β : ZMod m → MvPowerSeries (ZMod m) ℚ_[l] := fun k => X (k - 1) ^ (l ^ 2) with hβ`. Establish `hβ0 : ∀ k, constantCoeff (β k) = 0`. Introduce `k`. Simplify using `[hβ, hlp.ne_zero]`. Establish `hβI : ∀ k, IntegralMv (β k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `intro k d; simp only [hβ]; rw [coeff_X_pow]; split_ifs <;> simp`. Establish `hρs : HasSubst (fun k : ZMod m => (X (k - 1) : MvPowerSeries (ZMod m) ℚ_[l]))` using `hasSubst0 _ (fun _ => constantCoeff_X _)`. Establish `hβf : ∀ j, subst β (shiftLog ℚ_[l] l m j) = MvPowerSeries.expand (l ^ 2) hq (shiftLog ℚ_[l] l m (j - 1))`. Introduce `j`. Establish `: β = fun k => MvPowerSeries.expand (l ^ 2) hq (X (k - 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Simplify using `[hβ]`. Rewrite using `[this, ← expand_subst _ _ hρs, subst_shift_shiftLog hl2]`. Establish `hdiv` using `(hC ℚ_[l] l (l ^ 2) hq (RingHom.id _) hS (ZMod m) (shiftMat ℚ_[l] m) hM (shiftLog ℚ_[l] l m) hf hfE (ZMod m) h β hh0 hβ0 hhI hβI 1 le_rfl).mpr (by`. Introduce `j d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hh j, hβf j, hexp j, ← smul_sub, sub_sub_cancel, pow_one, coeff_smul, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hXI j d))`. Establish `hcongr : ∀ j n, (l : ℤ_[l]) ∣ coeff n (e j - X (j - 1) ^ (l ^ 2))`. Introduce `j n`. Apply `dvd_of_norm_le` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmap : h j - β j = map (PadicInt.Coe.ringHom : ℤ_[l] →+* ℚ_[l]) (e j - X (j - 1) ^ (l ^ 2))`. Rewrite using `[map_sub, map_pow, map_X, he j]`. Use `hdiv j n` as an intermediate fact. Rewrite `this` using `[hmap, coeff_map, pow_one]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hred : ∀ j, map (PadicInt.toZMod : ℤ_[l] →+* ZMod l) (e j) = X (j - 1) ^ (l ^ 2)`. Introduce `j`. Establish `h0 : map (PadicInt.toZMod : ℤ_[l] →+* ZMod l) (e j - X (j - 1) ^ (l ^ 2)) = 0`. Use extensionality with `n`. Rewrite using `[coeff_map, map_zero, toZMod_eq_zero_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcongr j n`. Rewrite `h0` using `[map_sub, map_pow, map_X, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hit : ∀ n : ℕ, (∀ i, constantCoeff (iterV e n i) = 0) ∧ ∀ i, map (PadicInt.toZMod : ℤ_[l] →+* ZMod l) (iterV e n i) = X (i - (n : ZMod m)) ^ ((l ^ 2) ^ n)`. Introduce `n`. Proceed by induction on `n with`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `zero`. Use `⟨fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `[iterV]`. Simplify using `[iterV, map_X]`. Consider the case `succ n ih`.
-
-Establish `hsucc : ∀ i, iterV e (n + 1) i = subst (iterV e n) (e i)`. Introduce `i`. Simplify using `only [iterV]`. Rewrite using `[Function.iterate_succ_apply']`. Establish `hs1 : HasSubst (iterV e n)` using `hasSubst0 _ ih.1`.
-
-Use `⟨fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hsucc]`. Conclude with `constantCoeff_subst_eq_zero hs1 ih.1 (he0 i)`. Rewrite using `[hsucc, map_subst hs1, hred i, subst_pow (hs1.map _), subst_X (hs1.map _), ih.2, ← pow_mul, ← pow_succ]`. Use `congr 2`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨e, hHom, fun j => by rw [hfe]; exact hh j, hcongr, fun j n => ?_⟩` and prove the remaining obligations. Rewrite using `[← toZMod_eq_zero_iff, ← coeff_map, map_sub, (hit m).2 j, ZMod.natCast_self, sub_zero, ← pow_mul, map_pow, map_X, sub_self, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (hC : Formalism.FG.FunEqCongrV.{0, 0, 0}) : Formalism.FG.ShiftHeight := by
   intro l _ m _ F hF

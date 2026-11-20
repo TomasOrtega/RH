@@ -13,19 +13,17 @@ noncomputable section
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker
 
 /- English proof (translation)
-Introduce `D cc δ B χ _ _ hc hδ hχ _ N N' L L' hA`. Take `⟨h1, h2⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.vector_bound_link D cc hc δ hδ B χ hχ N N' L L' hA`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Take `⟨χ', e, -, hv, -⟩` from `GlobalTheory.TrueTheta.exists_family_of_curve D cc δ ⟨hc, hδ⟩`. Take `⟨e1, e2, M, hM, hC⟩` from `hv N N' L L' hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hcE⟩` from `(GlobalTheory.ThetaLine.theta_line D (GlobalTheory.InducedType.induced_type D).1 cc δ ⟨hc, hδ⟩ N N' _ (Or.inr ⟨_, _, hA.2.2.1, hA.2.2.2, rfl⟩)).1 _ h1 _ e1 e2`. Establish `hE : B.eNat χ N N' L L' = fun z => c * e N N' L L' z` using `hcE`. Establish `hQ : ∀ α, Formalism.MainNotions.TaylorLogMetric.taylor D (B.eNat χ N N' L L') α ∈ Qbar`. Introduce `α`. Use `GlobalTheory.ThLoc.algTAll D cc δ B χ hc hδ hχ N N' L L' hA 0 ⟨1, one_pos, by simpa using zero_mem _⟩ α` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hU : U D B.tor 0 (B.eNat χ N N' L L') = B.eNat χ N N' L L'`. Use function extensionality and compare the values at `z`. Simplify using `[U, Hf]`. Rewrite `this` using `[hU]`. Then use the resulting hypothesis. Establish `ht : ∀ α, Formalism.MainNotions.TaylorLogMetric.taylor D (B.eNat χ N N' L L') α = c * Formalism.MainNotions.TaylorLogMetric.taylor D (e N N' L L') α` using `fun α => by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[hE, GlobalTheory.ProdThetaConj.taylor_const_mul e1.1]`. Choose the witnesses or unpack the hypotheses as in `⟨α, hα⟩ : ∃ α, Formalism.MainNotions.TaylorLogMetric.taylor D (e N N' L L') α ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `e2` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[← GlobalTheory.ProdThetaConj.tsum_taylor_mono D e1.1 z]`. Simplify using `[h]`. Establish `hMQ : ∀ x ∈ M, x ∈ Qbar` using `fun x hx => mem_algebraicClosure_iff.2 (IntermediateField.isAlgebraic_iff.1 (Algebra.IsAlgebraic.isAlgebraic (⟨x, hx⟩ : M)))`. Establish `hcQ : c ∈ Qbar`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: c = Formalism.MainNotions.TaylorLogMetric.taylor D (B.eNat χ N N' L L') α / Formalism.MainNotions.TaylorLogMetric.taylor D (e N N' L L') α` using `by rw [ht, mul_div_cancel_right₀ _ hα]`. Rewrite using `[this]`. Conclude with `div_mem (hQ α) (hMQ _ (hC α))`. Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ {c}) := IntermediateField.adjoin.finiteDimensional (mem_algebraicClosure_iff.1 hcQ).isIntegral`. Use `⟨M ⊔ IntermediateField.adjoin ℚ {c}, IntermediateField.finiteDimensional_sup _ _, fun β => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[ht]`. Conclude with `mul_mem ((le_sup_right : IntermediateField.adjoin ℚ {c} ≤ _) (IntermediateField.subset_adjoin ℚ {c} (Set.mem_singleton _))) ((le_sup_left : M ≤ _) (hC β))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ColNorms.familyVectors : GlobalTheory.ColNorms.FamilyVectors := by
   intro D cc δ B χ _ _ hc hδ hχ _ N N' L L' hA

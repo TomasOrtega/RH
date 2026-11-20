@@ -7,17 +7,15 @@ open IsLocalRing GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Glo
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Use `set u : ι → X := fun i => c i • μ i with hu`. Establish `hcross : ∀ i j, 2 * β (u i) (u j) ≤ β (u i) (u i) + β (u j) (u j)` using `fun i j => by`. Establish `h` using `hp (u i - u j)`. Simplify using `only [map_sub, LinearMap.sub_apply] at h`. Rewrite `h` using `[hs (u j) (u i)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : β (∑ i, u i) (∑ i, u i) = ∑ i, ∑ j, β (u i) (u j)`. Simplify using `only [map_sum, LinearMap.sum_apply]`. Apply the tactic sequence `first | rfl | exact Finset.sum_comm`. Establish `h2 : 2 * ∑ i, ∑ j, β (u i) (u j) ≤ 2 * ((Fintype.card ι : ℤ) * ∑ i, β (u i) (u i))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_add_distrib`. Use `_ = _ := by`. Rewrite using `[Finset.sum_comm (f := fun _ j => β (u j) (u j))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ∀ i, β (u i) (u i) ≤ (∑ l, c l ^ 2) * β (μ i) (μ i)` using `fun i => by`. Establish `e : β (u i) (u i) = c i ^ 2 * β (μ i) (μ i)`. Simplify using `only [hu, LinearMap.map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right (Finset.single_le_sum (f := fun l => c l ^ 2) (fun l _ => sq_nonneg _) (Finset.mem_univ i)) (hp _)`. Establish `h4 : ∑ i, β (u i) (u i) ≤ (∑ l, c l ^ 2) * ∑ i, β (μ i) (μ i)`. Rewrite using `[Finset.mul_sum]`.
-
-Conclude with `Finset.sum_le_sum fun i _ => h3 i`. Establish `hn : (0 : ℤ) ≤ Fintype.card ι` using `by positivity`. Establish `h5` using `mul_le_mul_of_nonneg_left h4 hn`. Rewrite using `[hexp]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem dichQuadBound {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm ℤ X) (hs : ∀ x y, β x y = β y x)
     (hp : ∀ y, 0 ≤ β y y) {ι : Type} [Fintype ι] (c : ι → ℤ) (μ : ι → X) :
@@ -54,13 +52,13 @@ theorem dichQuadBound {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm ℤ 
   nlinarith
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℤ X₀`. Use `choose w hw using fun j => h (b j)`. Set `hh : X₀ →ₗ[ℤ] X` to `b.constr ℤ w`. Establish `hg : g = k + (N : ℤ) • hh` using `b.ext fun j => by`. Simplify using `[hh, hw j, Module.Basis.constr_basis, natCast_zsmul]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : ε.toLinearMap ∘ₗ g = ε.toLinearMap ∘ₗ k + (N : ℤ) • (ε.toLinearMap ∘ₗ hh)`. Rewrite using `[hg, LinearMap.comp_add, LinearMap.comp_smul]`. Rewrite using `[e, ← LinearMap.det_toMatrix b, ← LinearMap.det_toMatrix b, map_add, map_smul]`. Use `set A := LinearMap.toMatrix b b (ε.toLinearMap ∘ₗ k)`. Use `set B := LinearMap.toMatrix b b (ε.toLinearMap ∘ₗ hh)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (Int.castRingHom (ZMod N)).mapMatrix (A + (N : ℤ) • B) = (Int.castRingHom (ZMod N)).mapMatrix A`. Use extensionality with `i j`. Rewrite using `[RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul]`. Simplify using the standard rewrite rules. Establish `h1` using `RingHom.map_det (Int.castRingHom (ZMod N)) (A + (N : ℤ) • B)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `RingHom.map_det (Int.castRingHom (ZMod N)) A`. Rewrite `h1` using `[hm, ← h2]`. Simplify using `only [eq_intCast] at h1`. Conclude with `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).1 h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem dichDetCongr {X₀ X : Type} [AddCommGroup X₀] [Module.Free ℤ X₀] [Module.Finite ℤ X₀] [AddCommGroup X]
     [Module.Free ℤ X] [Module.Finite ℤ X] (N : ℕ) (ε : X ≃ₗ[ℤ] X₀) (g k : X₀ →ₗ[ℤ] X)
@@ -89,15 +87,13 @@ theorem dichDetCongr {X₀ X : Type} [AddCommGroup X₀] [Module.Free ℤ X₀] 
   exact (ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).1 h1.symm
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℤ X₀`. Establish `hmem : ∀ j, ∃ c : ι → ℤ, ∑ l, c l • a l = b j` using `fun j => (Submodule.mem_span_range_iff_exists_fun ℤ).1 (ha ▸ Submodule.mem_top)`. Use `choose C hC using hmem`. Set `d : ι → ι → ℤ` to `fun i l => (Pi.single i (1 : ℤ) : ι → ℤ) l - ∑ j, b.repr (a i) j * C j l`. Establish `hid : ∀ (Y : Type) [AddCommGroup Y] (ν : ι → Y) (i : ι), ∑ l, d i l • ν l = ν i - ∑ j, b.repr (a i) j • ∑ l, C j l • ν l`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y _ ν i`. Simplify using `only [d, sub_smul, Finset.sum_sub_distrib, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Use `congr 1`. Simplify using `[Pi.single_apply]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Finset.univ.image d, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hc`. Rewrite using `[hid]`. Simplify using `only [hC, b.sum_repr, sub_self]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `X _ μ hμ`. Use `⟨b.constr ℤ fun j => ∑ l, C j l • μ l, fun i => ?_⟩` and prove the remaining obligations. Establish `h0` using `hμ (d i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Rewrite `h0` using `[hid, sub_eq_zero]`. Use `conv_lhs => rw [← b.sum_repr (a i)]`.
-
-Rewrite using `[map_sum]`. Simplify using `only [map_zsmul, Module.Basis.constr_basis]`. Conclude with `h0.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dichRelLift {X₀ : Type} [AddCommGroup X₀] [Module.Free ℤ X₀] [Module.Finite ℤ X₀] {ι : Type} [Fintype ι]
     (a : ι → X₀) (ha : Submodule.span ℤ (Set.range a) = ⊤) :
@@ -134,38 +130,38 @@ section Help
 variable {X : Type} [AddCommGroup X] {N : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem cm_refl (x : X) : CongMod N x x := ⟨0, by simp⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h; exact ⟨-w, by rw [hw, smul_neg]; abel⟩`.
+Extract witnesses or component facts from the available result.
 -/
 private theorem cm_symm {x y : X} (h : CongMod N x y) : CongMod N y x := by
   obtain ⟨w, hw⟩ := h; exact ⟨-w, by rw [hw, smul_neg]; abel⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h; obtain ⟨w', hw'⟩ := h'; exact ⟨w + w', by rw [hw, hw', smul_add]; abel⟩`.
+Extract witnesses or component facts from the available result.
 -/
 private theorem cm_trans {x y z : X} (h : CongMod N x y) (h' : CongMod N y z) : CongMod N x z := by
   obtain ⟨w, hw⟩ := h; obtain ⟨w', hw'⟩ := h'; exact ⟨w + w', by rw [hw, hw', smul_add]; abel⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h; obtain ⟨w', hw'⟩ := h'; exact ⟨w - w', by rw [hw, hw', smul_sub]; abel⟩`.
+Extract witnesses or component facts from the available result.
 -/
 private theorem cm_sub {x y x' y' : X} (h : CongMod N x y) (h' : CongMod N x' y') :
     CongMod N (x - x') (y - y') := by
   obtain ⟨w, hw⟩ := h; obtain ⟨w', hw'⟩ := h'; exact ⟨w - w', by rw [hw, hw', smul_sub]; abel⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h; exact ⟨o • w, by rw [hw, smul_add, smul_comm]⟩`.
+Extract witnesses or component facts from the available result.
 -/
 private theorem cm_smul {O : Type} [CommRing O] [Module O X] (o : O) {x y : X} (h : CongMod N x y) :
     CongMod N (o • x) (o • y) := by
   obtain ⟨w, hw⟩ := h; exact ⟨o • w, by rw [hw, smul_add, smul_comm]⟩
 
 /- English proof (translation)
-Use `choose w hw using h`. Use `⟨∑ i, c i • w i, ?_⟩` and prove the remaining obligations. Simplify using `only [hw, smul_add, Finset.sum_add_distrib, Finset.smul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem cm_sum {ι : Type} [Fintype ι] (c : ι → ℤ) {x y : ι → X} (h : ∀ i, CongMod N (x i) (y i)) :
     CongMod N (∑ i, c i • x i) (∑ i, c i • y i) := by
@@ -176,7 +172,7 @@ private theorem cm_sum {ι : Type} [Fintype ι] (c : ι → ℤ) {x y : ι → X
   exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
 
 /- English proof (translation)
-Establish `h` using `hp (u + v)`. Simplify using `only [map_add, map_sub, LinearMap.add_apply, LinearMap.sub_apply] at h ⊢`. Rewrite `h`, the goal using `[hs v u]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem quad_sub_le (β : LinearMap.BilinForm ℤ X) (hs : ∀ x y, β x y = β y x) (hp : ∀ y, 0 ≤ β y y)
     (u v : X) : β (u - v) (u - v) ≤ 2 * β u u + 2 * β v v := by
@@ -185,7 +181,7 @@ private theorem quad_sub_le (β : LinearMap.BilinForm ℤ X) (hs : ∀ x y, β x
   rw [hs v u] at h ⊢; linarith
 
 /- English proof (translation)
-Simplify using `[map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem quad_nsmul (β : LinearMap.BilinForm ℤ X) (w : X) :
     β (N • w) (N • w) = (N : ℤ) * ((N : ℤ) * β w w) := by
@@ -196,79 +192,73 @@ end Help
 private def dD0 {ι : Type} [Fintype ι] (c : ι → ℤ) : ℤ := (Fintype.card ι : ℤ) * ∑ i, c i ^ 2
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (by positivity) (Finset.sum_nonneg fun i _ => sq_nonneg _)`.
+A detailed English derivation is pending.
 -/
 private theorem dD0_nonneg {ι : Type} [Fintype ι] (c : ι → ℤ) : 0 ≤ dD0 c :=
   mul_nonneg (by positivity) (Finset.sum_nonneg fun i _ => sq_nonneg _)
 
 /- English proof (translation)
-Introduce `O _ _ bar hB X₀ _ _ _ _ _ _ ι _ a ha K`. Take `⟨S, hSa, hSl⟩` from `dichRelLift a ha`. Take `⟨T, hT⟩` from `Module.Finite.fg_top (R := ℤ) (M := O)`. Establish `hmem : ∀ x : X₀, ∃ c : ι → ℤ, ∑ l, c l • a l = x` using `fun x => (Submodule.mem_span_range_iff_exists_fun ℤ).1 (ha ▸ Submodule.mem_top)`. Use `choose cf hcf using hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose C hC using hB`. Use `set r := Module.finrank ℤ X₀ with hr`. Set `b : Module.Basis (Fin r) ℤ X₀` to `Module.finBasis ℤ X₀`. Establish `hA0 : 0 ≤ ∑ c ∈ S, dD0 c` using `Finset.sum_nonneg fun c _ => dD0_nonneg c`. Establish `hBt : ∀ o, 0 ≤ ∑ i, (2 * dD0 (cf (o • a i)) + 2 * |C o|)` using `fun o => Finset.sum_nonneg fun i _ => by have := dD0_nonneg (cf (o • a i)); positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0 : 0 ≤ ∑ o ∈ T, ∑ i, (2 * dD0 (cf (o • a i)) + 2 * |C o|)` using `Finset.sum_nonneg fun o _ => hBt o`. Establish `hC0 : 0 ≤ ∑ j, dD0 (cf (b j))` using `Finset.sum_nonneg fun j _ => dD0_nonneg _`. Use `set D : ℤ := ∑ c ∈ S, dD0 c + ∑ o ∈ T, ∑ i, (2 * dD0 (cf (o • a i)) + 2 * |C o|) + ∑ j, dD0 (cf (b j)) with hDdef`. Establish `hD : 0 ≤ D` using `by positivity`. Establish `hDS : ∀ c ∈ S, dD0 c ≤ D` using `fun c hc => by`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.single_le_sum (fun c _ => dD0_nonneg c) hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDT : ∀ o ∈ T, ∀ i, 2 * dD0 (cf (o • a i)) + 2 * |C o| ≤ D` using `fun o ho i => by`. Establish `h1` using `Finset.single_le_sum (f := fun i => 2 * dD0 (cf (o • a i)) + 2 * |C o|) (fun i _ => by have := dD0_nonneg (cf (o • a i)); positivity) (Finset.mem_univ i)`. Establish `h2` using `Finset.single_le_sum (f := fun o => ∑ i, (2 * dD0 (cf (o • a i)) + 2 * |C o|)) (fun o _ => hBt o) ho`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDB : ∀ j, dD0 (cf (b j)) ≤ D` using `fun j => by`. Use `Finset.single_le_sum (f := fun j => dD0 (cf (b j))) (fun j _ => dD0_nonneg _) (Finset.mem_univ j)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `set M : ℝ := (D : ℝ) * max K 0 with hM`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⌈M⌉₊ + ⌈(r : ℝ) ^ r * M ^ r⌉₊ + 3, ?_⟩` and prove the remaining obligations. Introduce `N hN X _ _ _ _ _ _ β hβ hp lam hlam hlow k μ hk hμ`. Use `or_iff_not_imp_right.2 fun hlt => ?_` and prove the remaining obligations. Use `push_neg at hlt`. Use `set s0 : ℤ := ∑ i, β (μ i) (μ i) with hs0def`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs0 : 0 ≤ s0` using `Finset.sum_nonneg fun i _ => hp _`. Establish `hsym` using `hβ.1`. Establish `hKl : 0 < K * lam` using `lt_of_le_of_lt (by exact_mod_cast hs0) hlt`. Establish `hlam0 : 0 < lam`. Break down `hlam.lt_or_eq with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Rewrite `hKl` using `[← h, mul_zero]`. Conclude with `absurd hKl (lt_irrefl _)`. Establish `hK : 0 < K` using `pos_of_mul_pos_left hKl hlam`. Establish `hMK : M = D * K` using `by rw [hM, max_eq_left hK.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN' : ((⌈M⌉₊ + ⌈(r : ℝ) ^ r * M ^ r⌉₊ + 3 : ℕ) : ℝ) ≤ N` using `by exact_mod_cast hN`. Move the coercions through the operations in `at hN'`. Establish `hc1` using `Nat.le_ceil M`. Establish `hc2` using `Nat.le_ceil ((r : ℝ) ^ r * M ^ r)`. Establish `hNM : M < N` using `by linarith [(Nat.cast_nonneg _ : (0:ℝ) ≤ ⌈(r : ℝ) ^ r * M ^ r⌉₊)]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNR : (r : ℝ) ^ r * M ^ r < N - 1` using `by linarith [(Nat.cast_nonneg _ : (0:ℝ) ≤ ⌈M⌉₊)]`. Establish `hN3 : (3 : ℝ) ≤ N` using `by linarith [(Nat.cast_nonneg _ : (0:ℝ) ≤ ⌈M⌉₊), (Nat.cast_nonneg _ : (0:ℝ) ≤ ⌈(r : ℝ) ^ r * M ^ r⌉₊)]`. Establish `hvan : ∀ x : X, CongMod N x 0 → ∀ d : ℤ, d ≤ D → β x x ≤ d * s0 → x = 0`. Introduce `x hx d hd hxb`. Take `⟨w, hw⟩` from `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hw` using `[zero_add]`. Assume the negation of the conclusion as `hx0`. Establish `hw0 : w ≠ 0` using `by rintro rfl; rw [smul_zero] at hw; exact hx0 hw`. Establish `h1` using `hlow w hw0`. Establish `h2 : (β x x : ℝ) = N * (N * β w w)` using `by rw [hw, quad_nsmul]; push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h4 : (β x x : ℝ) ≤ (d : ℝ) * s0` using `by exact_mod_cast hxb`. Establish `h5 : (d : ℝ) * s0 ≤ D * s0` using `mul_le_mul_of_nonneg_right (by exact_mod_cast hd) (by exact_mod_cast hs0)`. Establish `h6 : (D : ℝ) * s0 ≤ D * (K * lam)` using `mul_le_mul_of_nonneg_left hlt.le (by exact_mod_cast hD)`. Establish `h7 : (N : ℝ) * N * lam ≤ N * (N * β w w)`. Rewrite using `[mul_assoc]; exact mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left h1 (by positivity)) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h8 : (D : ℝ) * K < N * N` using `by rw [← hMK]; nlinarith`. Establish `h9 : (D : ℝ) * K * lam < N * N * lam` using `mul_lt_mul_of_pos_right h8 hlam0`. Use the polynomial consequences of the given equalities and inequalities. Establish `hkc : ∀ c : ι → ℤ, ∑ i, c i • k (a i) = k (∑ i, c i • a i)` using `fun c => by`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_zsmul]`. Establish `hrel : ∀ c ∈ S, ∑ i, c i • μ i = 0`. Introduce `c hc`. Use `hvan _ ?_ (dD0 c) (hDS c hc) (dichQuadBound β hsym hp c μ)` and prove the remaining obligations. Establish `h` using `cm_sum (N := N) c hμ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hkc, hSa c hc, map_zero]`. Then use the resulting hypothesis. Take `⟨g, hg⟩` from `hSl X μ hrel`. Establish `hg' : ∀ c : ι → ℤ, g (∑ l, c l • a l) = ∑ l, c l • μ l` using `fun c => by`. Rewrite using `[map_sum]`. Simplify using `only [map_zsmul, hg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgk : ∀ x, CongMod N (g x) (k x)`. Introduce `x`. Rewrite using `[← hcf x, hg', ← hkc]`. Conclude with `cm_sum _ hμ`. Establish `hμle : ∀ i, β (μ i) (μ i) ≤ s0` using `fun i => Finset.single_le_sum (f := fun i => β (μ i) (μ i)) (fun i _ => hp _) (Finset.mem_univ i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hlinT : ∀ o ∈ T, ∀ i, g (o • a i) = o • g (a i)`. Introduce `o ho i`. Establish `hu : g (o • a i) = ∑ l, cf (o • a i) l • μ l` using `by rw [← hg', hcf]`. Establish `hx : g (o • a i) - o • g (a i) = 0`. Use `hvan _ ?_ _ (hDT o ho i) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1 : CongMod N (g (o • a i)) (o • g (a i))`. Use `cm_trans (hgk _) (cm_trans (hk.1 o (a i)) ?_)` and prove the remaining obligations. Rewrite using `[hg]`. Conclude with `cm_smul o (cm_symm (hμ i))`. Establish `h2` using `cm_sub h1 (cm_refl (N := N) (o • g (a i)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h2` using `[sub_self]`. Then use the resulting hypothesis. Establish `h1` using `quad_sub_le β hsym hp (g (o • a i)) (o • g (a i))`. Establish `h2 : β (g (o • a i)) (g (o • a i)) ≤ dD0 (cf (o • a i)) * s0`. Rewrite using `[hu]`. Conclude with `dichQuadBound β hsym hp _ μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : β (o • g (a i)) (o • g (a i)) ≤ C o * β (g (a i)) (g (a i))` using `hC o X β hβ hp (g (a i))`. Rewrite `h1`, `h3`, the goal using `[hg]`. Establish `h4` using `hμle i`. Establish `h5` using `hp (μ i)`. Establish `h6 : C o * β (μ i) (μ i) ≤ |C o| * s0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `sub_eq_zero.1 hx`. Establish `hlinT' : ∀ o ∈ T, ∀ x, g (o • x) = o • g x`. Introduce `o ho x`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[← hcf x, Finset.smul_sum, map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm o (cf x l) (a l), map_zsmul, map_zsmul, hlinT o ho l, smul_comm]`. Establish `hlin : ∀ (o : O) x, g (o • x) = o • g x`. Introduce `o`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: o ∈ Submodule.span ℤ (T : Set O)` using `hT ▸ Submodule.mem_top`. Proceed by induction on `this using Submodule.span_induction with`. Consider the case `mem o ho => exact hlinT' o ho`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `add o o' _ _ h h' => intro x`. Rewrite using `[add_smul, map_add, h, h', add_smul]`. Consider the case `smul n o _ h => intro x`. Rewrite using `[smul_assoc, map_zsmul, h, smul_assoc]`. Set `gO : X₀ →ₗ[O] X` to `{ toFun := g, map_add' := g.map_add, map_smul' := fun o x => hlin o x }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. It suffices to derive a contradiction.
 
-Take `⟨ε, hε⟩` from `hk.2`. Establish `hdg : (N : ℤ) ∣ LinearMap.det (ε.toLinearMap ∘ₗ g) - 1`. Establish `h2` using `dvd_add (dichDetCongr N ε g k hgk) hε`. Rewrite `h2` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Distinguish the cases in `hd1 : LinearMap.det (ε.toLinearMap ∘ₗ g) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (ε.toLinearMap ∘ₗ g)` using `(LinearMap.isUnit_iff_isUnit_det _).2 (hd1 ▸ isUnit_one)`. Establish `hbij : Function.Bijective (ε.toLinearMap ∘ₗ g)` using `(Module.End.isUnit_iff _).1 hu`. Establish `hinj : Function.Injective g` using `fun x y h => hbij.1 (by simp [h])`. Establish `hsurj : Function.Surjective g` using `fun y => by`. Take `⟨x, hx⟩` from `hbij.2 (ε y)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨x, ε.injective hx⟩`. Conclude with `⟨LinearEquiv.ofBijective gO ⟨hinj, hsurj⟩, fun i => hg i⟩`. It suffices to derive a contradiction. Take `⟨t, ht⟩` from `hdg`. Use `set d := LinearMap.det (ε.toLinearMap ∘ₗ g) with hd`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : t ≠ 0` using `by rintro rfl; apply hd1; linarith [ht]`. Establish `hN3' : (3 : ℤ) ≤ N` using `by exact_mod_cast (show (3 : ℝ) ≤ (N : ℤ) by exact_mod_cast hN3)`. Establish `hdsq : ((N : ℤ) - 1) ^ 2 ≤ d ^ 2`. Establish `hd' : d = 1 + N * t` using `by linarith`. Establish `hN0 : (0 : ℤ) ≤ N - 1` using `by linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `lt_or_gt_of_ne ht0 with h | h` into its components or cases. Establish `h1 : (N : ℤ) * (t + 1) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (by linarith) (by omega)`. Establish `h2 : (N : ℤ) - 1 ≤ -d` using `by rw [hd']; linarith`. Use `pow_le_pow_left₀ hN0 h2 2` as an intermediate fact. Rewrite `this` using `[neg_sq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 0 ≤ (N : ℤ) * (t - 1)` using `mul_nonneg (by linarith) (by omega)`. Establish `h2 : (N : ℤ) - 1 ≤ d` using `by rw [hd']; linarith`. Conclude with `pow_le_pow_left₀ hN0 h2 2`. Establish `hdsqR : ((N : ℝ) - 1) ^ 2 ≤ (d : ℝ) ^ 2` using `by exact_mod_cast hdsq`. Establish `hidx` using `GlobalTheory.T.det_sq_mul_pow_le_prod_bilinForm_lattice_basis r X₀ X b ε g β hsym hp lam hlam hlow`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbj : ∀ j, (β (g (b j)) (g (b j)) : ℝ) ≤ D * s0`. Introduce `j`. Establish `e1 : g (b j) = ∑ l, cf (b j) l • μ l` using `by rw [← hg', hcf]`. Rewrite using `[e1]`. Establish `h1` using `dichQuadBound β hsym hp (cf (b j)) μ`.
-
-Establish `h2 : dD0 (cf (b j)) * s0 ≤ D * s0` using `mul_le_mul_of_nonneg_right (hDB j) hs0`. Conclude with `h1.trans h2` after adjusting the coercions. Establish `hprod : ∏ j, (β (g (b j)) (g (b j)) : ℝ) ≤ ((D : ℝ) * s0) ^ r`. Combine the equalities or inequalities in the displayed calculation. Establish `hDs0 : (0 : ℝ) ≤ D * s0` using `mul_nonneg (by exact_mod_cast hD) (by exact_mod_cast hs0)`.
-
-Establish `hDs : (D : ℝ) * s0 ≤ M * lam`. Rewrite using `[hMK, mul_assoc]; exact mul_le_mul_of_nonneg_left hlt.le (by exact_mod_cast hD)`. Establish `hpow : ((D : ℝ) * s0) ^ r ≤ (M * lam) ^ r` using `pow_le_pow_left₀ hDs0 hDs r`. Establish `hlr : (0 : ℝ) < lam ^ r` using `pow_pos hlam0 r`. Establish `hrr : (0 : ℝ) ≤ (r : ℝ) ^ r` using `by positivity`.
-
-Establish `key : ((N : ℝ) - 1) ^ 2 * lam ^ r ≤ ((r : ℝ) ^ r * M ^ r) * lam ^ r`. Combine the equalities or inequalities in the displayed calculation. Establish `key2` using `le_of_mul_le_mul_right key hlr`. Establish `hN1 : (1 : ℝ) ≤ N - 1` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem dichotomy : ∀ (O : Type) [CommRing O] [Module.Finite ℤ O] (bar : O → O), BddAct bar → ∀ (X₀ : Type) [AddCommGroup X₀] [Module O X₀] [Module.Finite O X₀] [Module.Projective O X₀] [Module.Free ℤ X₀] [Module.Finite ℤ X₀] (ι : Type) [Fintype ι] (a : ι → X₀), Submodule.span ℤ (Set.range a) = ⊤ → ∀ K : ℝ, ∃ N₀ : ℕ, ∀ N, N₀ ≤ N → ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X] [Module.Free ℤ X] [Module.Finite ℤ X] (β : LinearMap.BilinForm ℤ X), β ∈ balForms bar X → (∀ y, 0 ≤ β y y) → ∀ lam : ℝ, 0 ≤ lam → (∀ x, x ≠ 0 → lam ≤ β x x) → ∀ (k : X₀ →ₗ[ℤ] X) (μ : ι → X), IsUnimodMod O N k → (∀ i, CongMod N (μ i) (k (a i))) → (∃ e : X₀ ≃ₗ[O] X, ∀ i, e (a i) = μ i) ∨ K * lam ≤ (∑ i, β (μ i) (μ i) : ℤ) := by
   intro O _ _ bar hB X₀ _ _ _ _ _ _ ι _ a ha K

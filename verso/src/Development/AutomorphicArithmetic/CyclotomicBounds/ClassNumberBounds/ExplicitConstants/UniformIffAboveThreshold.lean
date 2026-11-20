@@ -71,27 +71,27 @@ def UniformlyAboveThreshold (p : ℝ → ℝ → Prop) : Prop :=
   ∃ X₀ : ℝ, ∀ X, X₀ ≤ X → ∀ x, X ^ (1 / P.K) ≤ x → x ≤ X → p X x
 
 /- English proof (translation)
-Simplify using `only [Unif, UniformlyAboveThreshold, eventually_atTop, ge_iff_le, mem_Icc, and_imp, Y]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uniform_iff_above_threshold (p : ℝ → ℝ → Prop) : P.Unif p ↔ P.UniformlyAboveThreshold p := by
   simp only [Unif, UniformlyAboveThreshold, eventually_atTop, ge_iff_le, mem_Icc, and_imp, Y]
 
 /- English proof (translation)
-The claim follows from `Filter.Eventually.mono hp fun X hX x hx => h X x hx (hX x hx)`.
+A detailed English derivation is pending.
 -/
 theorem Unif.mono {P : Params} {p r : ℝ → ℝ → Prop} (hp : P.Unif p)
     (h : ∀ X x, x ∈ Icc (P.Y X) X → p X x → r X x) : P.Unif r :=
   Filter.Eventually.mono hp fun X hX x hx => h X x hx (hX x hx)
 
 /- English proof (translation)
-The claim follows from `(Filter.Eventually.and hp hr).mono fun _ hX x hx => ⟨hX.1 x hx, hX.2 x hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem Unif.and {P : Params} {p r : ℝ → ℝ → Prop} (hp : P.Unif p) (hr : P.Unif r) :
     P.Unif fun X x => p X x ∧ r X x :=
   (Filter.Eventually.and hp hr).mono fun _ hX x hx => ⟨hX.1 x hx, hX.2 x hx⟩
 
 /- English proof (translation)
-The claim follows from `hp.mono fun _ hX _ _ => hX`.
+A detailed English derivation is pending.
 -/
 theorem Unif.of_eventually_X {P : Params} {p : ℝ → Prop} (hp : ∀ᶠ X in atTop, p X) :
     P.Unif fun X _ => p X :=

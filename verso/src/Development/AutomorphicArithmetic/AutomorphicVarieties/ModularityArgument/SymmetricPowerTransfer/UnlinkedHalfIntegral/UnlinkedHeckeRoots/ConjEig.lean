@@ -5,13 +5,13 @@ open UpperTheory.V.Af UpperTheory.V.Sd
 namespace UpperTheory.V.Z.Sym.Unl
 
 /- English proof (translation)
-Introduce `k N χ g hg σ`. Take `⟨f', h1, h2⟩` from `hg σ`. Use `⟨⟨f', h1, ?_, ?_⟩, fun n hn => h2 n hn⟩` and prove the remaining obligations. Rewrite using `[h2 1 le_rfl, g.one, map_one]`. Introduce `p hp n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `congrArg σ (g.eig p hp n hn)`. Establish `hc : (cj σ χ) (p : ZMod N) = σ (χ p)` using `rfl`. Use `show coef f' (p * n) + (cj σ χ) p * (p : ℂ) ^ (k - 1) * (if p ∣ n then coef f' (n / p) else 0) = coef f' p * coef f' n`. Rewrite using `[h2 _ (Nat.mul_pos hp.pos hn), h2 _ hp.pos, h2 _ hn, hc]`. Distinguish the cases in `hd : p ∣ n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hm : 1 ≤ n / p` using `Nat.div_pos (Nat.le_of_dvd hn hd) hp.pos`. Simplify using `only [hd, if_true] at e ⊢`. Rewrite using `[h2 _ hm]`. Simplify `e` using `[map_add, map_mul, map_pow, map_natCast]`. Simplify using `only [hd, if_false] at e ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `e` using `[map_add, map_mul, map_pow, map_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem conjEig : ConjEig := by
   intro k N χ g hg σ

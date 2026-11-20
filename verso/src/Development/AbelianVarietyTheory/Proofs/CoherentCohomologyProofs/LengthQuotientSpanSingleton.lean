@@ -9,7 +9,7 @@ open Module IsDiscreteValuationRing
 variable {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.prod_insert hj, Finset.sum_insert hj, AddValuation.map_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem addVal_prod {ι : Type*} (s : Finset ι) (f : ι → R) :
     addVal R (∏ i ∈ s, f i) = ∑ i ∈ s, addVal R (f i) := by
@@ -19,7 +19,7 @@ theorem addVal_prod {ι : Type*} (s : Finset ι) (f : ι → R) :
   | insert j s hj ih => rw [Finset.prod_insert hj, Finset.sum_insert hj, AddValuation.map_mul, ih]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `exists_irreducible R`. Take `⟨n, u, rfl⟩` from `eq_unit_mul_pow_irreducible hx hϖ`. Rewrite using `[Ideal.span_singleton_mul_left_unit u.isUnit, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq, length_quotient_pow_maximalIdeal, addVal_def' u hϖ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem length_quotient_span_singleton {x : R} (hx : x ≠ 0) :
     Module.length R (R ⧸ Ideal.span ({x} : Set R)) = addVal R x := by
@@ -29,17 +29,15 @@ theorem length_quotient_span_singleton {x : R} (hx : x ≠ 0) :
     ← hϖ.maximalIdeal_eq, length_quotient_pow_maximalIdeal, addVal_def' u hϖ]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R M`. Establish `h : Module.finrank R N = Module.finrank R M` using `e.symm.finrank_eq`. Set `a` to `Submodule.smithNormalFormCoeffs b h`. Set `b'` to `Submodule.smithNormalFormTopBasis b h`. Set `ab` to `Submodule.smithNormalFormBotBasis b h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `ab_eq` using `Submodule.smithNormalFormBotBasis_def b h`. Set `e' : M ≃ₗ[R] N` to `b'.equiv ab (Equiv.refl _)`. Set `f : M →ₗ[R] M` to `N.subtype ∘ₗ (e' : M →ₗ[R] N)`. Establish `hassoc : Associated (LinearMap.det (N.subtype ∘ₗ (e : M →ₗ[R] N))) (LinearMap.det f)` using `LinearMap.associated_det_comp_equiv _ _ _`. Rewrite using `[(addVal_eq_iff_associated _ _).mpr hassoc]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : ∀ i, f (b' i) = a i • b' i`. Introduce `i`. Express the relevant statement in the definitionally equal form `((b'.equiv ab (Equiv.refl _)) (b' i) : M) = _`. Rewrite using `[b'.equiv_apply, Equiv.refl_apply]`. Conclude with `ab_eq i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdet : LinearMap.det f = ∏ i, a i`. Rewrite using `[← LinearMap.det_toMatrix b', ← Matrix.det_diagonal]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, ha, map_smul, Basis.repr_self, Finsupp.smul_single, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, Finsupp.single_eq_same]`. Rewrite using `[Matrix.diagonal_apply_ne _ hij, Finsupp.single_eq_of_ne hij]`. Rewrite using `[hdet, addVal_prod, (N.quotientEquivPiSpan b h).length_eq, Module.length_pi_of_fintype]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => length_quotient_span_singleton (Submodule.smithNormalFormCoeffs_ne_zero b h i)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quotient_eq_addVal_det {R : Type u_1} [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] {M : Type u_2} [AddCommGroup M] [Module R M]

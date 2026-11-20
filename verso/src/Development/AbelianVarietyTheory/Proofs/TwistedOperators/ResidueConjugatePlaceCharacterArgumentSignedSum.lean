@@ -24,21 +24,21 @@ noncomputable section
 namespace GlobalTheory.SeeConjChar.AtConj
 
 /- English proof (translation)
-Unfold `resT`. Rewrite using `[dif_pos hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem resT_of_mem {D : D7} (PP : Pl D.host.E) {x : EAf D} (hx : x ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) :
     resT PP x = Formalism.L2.DIV.resS D.host.F PP ⟨x, hx⟩ := by
   unfold resT; rw [dif_pos hx]
 
 /- English proof (translation)
-Rewrite using `[resT_of_mem PP (zero_mem _)]`. Conclude with `map_zero (Formalism.L2.DIV.resS D.host.F PP)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resT_zero {D : D7} (PP : Pl D.host.E) : resT PP (0 : EAf D) = 0 := by
   rw [resT_of_mem PP (zero_mem _)]
   exact map_zero (Formalism.L2.DIV.resS D.host.F PP)
 
 /- English proof (translation)
-Rewrite using `[resT_of_mem PP hx, resT_of_mem PP hy, resT_of_mem PP (add_mem hx hy), ← map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resT_add {D : D7} (PP : Pl D.host.E) {x y : EAf D} (hx : x ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
     (hy : y ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) : resT PP (x + y) = resT PP x + resT PP y := by
@@ -46,9 +46,9 @@ theorem resT_add {D : D7} (PP : Pl D.host.E) {x y : EAf D} (hx : x ∈ Formalism
   rfl
 
 /- English proof (translation)
-Establish `hs : (∑ i, f i) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `sum_mem fun i _ => hf i`. Rewrite using `[resT_of_mem PP hs]`. Establish `e : (⟨∑ i, f i, hs⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = ∑ i, (⟨f i, hf i⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (resT_of_mem PP (hf i)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resT_sum {D : D7} (PP : Pl D.host.E) {ι : Type} [Fintype ι] (f : ι → EAf D)
     (hf : ∀ i, f i ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) : resT PP (∑ i, f i) = ∑ i, resT PP (f i) := by
@@ -61,7 +61,7 @@ theorem resT_sum {D : D7} (PP : Pl D.host.E) {ι : Type} [Fintype ι] (f : ι �
   exact Finset.sum_congr rfl fun i _ => (resT_of_mem PP (hf i)).symm
 
 /- English proof (translation)
-Unfold `GlobalTheory.SeeConjRead.flagV`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_neg (by omega), dif_pos h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem flagV_f {M : Type} [Zero M] {ρ k n : ℕ} (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n)
     (h1 : ρ + k < i.1) (h2 : i.1 < 2 * ρ + k + 1) :
@@ -70,7 +70,7 @@ theorem flagV_f {M : Type} [Zero M] {ρ k n : ℕ} (e f : Fin ρ → M) (b : Fin
   rw [dif_neg (by omega), dif_neg (by omega), dif_neg (by omega), dif_pos h2]
 
 /- English proof (translation)
-Unfold `GlobalTheory.SeeConjRead.flagV`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_pos h1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symmetricFlagBasisVectors_apply_middle {M : Type} [Zero M] {ρ k n : ℕ} (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n)
     (h1 : i.1 = ρ + k) : GlobalTheory.SeeConjRead.flagV ρ k n e f b z i = z := by
@@ -78,7 +78,7 @@ theorem symmetricFlagBasisVectors_apply_middle {M : Type} [Zero M] {ρ k n : ℕ
   rw [dif_neg (by omega), dif_neg (by omega), dif_pos h1]
 
 /- English proof (translation)
-Unfold `GlobalTheory.SeeConjRead.flagV`. Rewrite using `[dif_neg (by omega), dif_pos h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem flagV_b {M : Type} [Zero M] {ρ k n : ℕ} (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n)
     (h1 : ρ ≤ i.1) (h2 : i.1 < ρ + k) : GlobalTheory.SeeConjRead.flagV ρ k n e f b z i = b ⟨i.1 - ρ, by omega⟩ := by
@@ -90,43 +90,43 @@ end GlobalTheory.SeeConjChar.AtConj
 open GlobalTheory.SeeConjChar GlobalTheory.SeeConjChar.AtConj
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F X h hL hGrp β hβ hred PP hP κ hS hK2`. Establish `hn : (Yc D 0).rank = 2 * D.R.rS + D.R.k + 1`. Establish `e` using `X.n_eq`. Rewrite `e` using `[h]`. Establish `e2` using `Formalism.L2.DIV.ranks_r_sym D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(Formalism.L2.SG.InstExistsPf.instOf D).n = _`. Use linear arithmetic over natural numbers and integers. Establish `hrn : D.R.r = (Yc D 0).rank`. Establish `e` using `X.n_eq`. Rewrite `e` using `[h]`.
+Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `D.R.r = (Formalism.L2.SG.InstExistsPf.instOf D).n`. Use linear arithmetic over natural numbers and integers. Establish `hK : ((iotaX X h).toMulEquiv κ).2 ∈ X.B.I.Kset` using `(Formalism.L2.SG.Closed.level_subgroup_properties X).2.1 _ hK2`. Establish `hU : upperLeftBlock (r_le_Y (D` using `D) 0) (redFn β PP (finE (Yc D 0) κ)) ∈ unip (kP PP) D.R.r := unipCol_le _ _ _ (((GlobalTheory.T.mem_K2_iff_upperLeftBlock_reductions R F X h hL hGrp β hβ hred κ hK hS).1 hK2) PP hP)`. Establish `hMinv : (finE (Yc D 0) κ)⁻¹ ∈ St β` using `inv_mem hS`.
+Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hredinv : redFn β PP (finE (Yc D 0) κ)⁻¹ = (redFn β PP (finE (Yc D 0) κ))⁻¹` using `extendOne_inv _ hS`. Establish `hC : ∀ a j, hT X h (flagAt X h PP j) (Matrix.mulVec (finE (Yc D 0) κ).val (pairAt X h PP a)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ∧ resT (GlobalTheory.IdemSupport.cP PP) (hT X h (flagAt X h PP j) (Matrix.mulVec (finE (Yc D 0) κ).val (pairAt X h PP a))) = conjRes PP ((sgnD …`. Introduce `a j`. Establish `c1` using `GlobalTheory.T.residue_conjugatePlace_hermitianForm_adjoint X h PP κ (flagAt X h PP j) (pairAt X h PP a)`. Establish `c2` using `GlobalTheory.T.residue_otherInstanceForm_frameStabilizer_mulVec X h β PP (flagAt X h PP) (hred PP hP) _ hMinv (pairAt X h PP a) (GlobalTheory.T.otherInstanceForm_flagPairing_integral_on_frameLattice X h β hβ PP a) j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨c1.1.2 c2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[c1.2, c2.2, hredinv]`. Use `congr 1`. Simplify using `only [GlobalTheory.T.residue_otherInstanceForm_flagPairing_eq_signedDelta R X h hL PP hP a, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Set `fF : Fin D.R.rS → Fin (Yc D 0).rank` to `fun a => ⟨2 * D.R.rS + D.R.k - a.1, by have := a.2; omega⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Apply the tactic sequence `let fN : Fin D.R.rS → Fin (Yc D 0).rank := fun a => ⟨if a.1 + 1 < D.R.rS then 2 * D.R.rS + D.R.k - (a.1 + 1) else D.R.rS + D.R.k, by have := a.2; split_ifs <;> omega⟩`. Set `gB : Fin D.R.k → Fin (Yc D 0).rank` to `fun i => ⟨D.R.rS + D.R.k - 1 - i.1, by have := i.2; omega⟩`. Establish `hF : ∀ a, f0T X h a = flagAt X h PP (fF a)`. Introduce `a`. Establish `ha` using `a.2`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (fF a).1 = 2 * D.R.rS + D.R.k - a.1` using `rfl`. Establish `h1 : D.R.rS + D.R.k < (fF a).1` using `by omega`. Establish `h2 : (fF a).1 < 2 * D.R.rS + D.R.k + 1` using `by omega`. Unfold `flagAt`. Apply the tactic sequence `split_ifs <;> rw [flagV_f _ _ _ _ _ h1 h2] <;> congr 1 <;> ext <;> simp only [e] <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hNx : ∀ a, Formalism.L2.SG.HidaSetting.nxt (e0T X h) (z0T X h) a = pairAt X h PP (fN a)`. Introduce `a`. Establish `ha` using `a.2`. Establish `e : (fN a).1 = if a.1 + 1 < D.R.rS then 2 * D.R.rS + D.R.k - (a.1 + 1) else D.R.rS + D.R.k` using `rfl`. Unfold `Formalism.L2.SG.HidaSetting.nxt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hlt : a.1 + 1 < D.R.rS`. Rewrite using `[dif_pos hlt]`. Rewrite `e` using `[if_pos hlt]`. Establish `h1 : D.R.rS + D.R.k < (fN a).1` using `by omega`. Establish `h2 : (fN a).1 < 2 * D.R.rS + D.R.k + 1` using `by omega`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `pairAt`. Apply the tactic sequence `split_ifs <;> rw [flagV_f _ _ _ _ _ h1 h2] <;> congr 1 <;> ext <;> simp only [e] <;> omega`. Rewrite using `[dif_neg hlt]`. Rewrite `e` using `[if_neg hlt]`. Unfold `pairAt`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> rw [symmetricFlagBasisVectors_apply_middle _ _ _ _ _ e]`. Establish `hBd : GlobalTheory.SeeConjChar.sideAt X h PP ≠ true → ∀ i, bwdT X h i = flagAt X h PP (gB i)`. Introduce `hs i`. Establish `hi` using `i.2`. Establish `e : (gB i).1 = D.R.rS + D.R.k - 1 - i.1` using `rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : ¬ GlobalTheory.StdFrames.cpt PP (ewT X h) = 1` using `by simpa [GlobalTheory.SeeConjChar.sideAt] using hs`. Unfold `flagAt`. Rewrite using `[if_neg hs', flagV_b _ _ _ _ _ (by omega) (by omega)]`. Use `congr 1`. Use `ext`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [e, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Establish `hBw : GlobalTheory.SeeConjChar.sideAt X h PP ≠ true → ∀ i : Fin D.R.k, bwT X h i = pairAt X h PP (gB i)`. Introduce `hs i`. Establish `hi` using `i.2`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (gB i).1 = D.R.rS + D.R.k - 1 - i.1` using `rfl`. Establish `hs' : ¬ GlobalTheory.StdFrames.cpt PP (ewT X h) = 1` using `by simpa [GlobalTheory.SeeConjChar.sideAt] using hs`. Unfold `pairAt`. Rewrite using `[if_neg hs', flagV_b _ _ _ _ _ (by omega) (by omega)]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using `only [e, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Establish `hfterm : ∀ a, hT X h (f0T X h a) (Matrix.mulVec (finE (Yc D 0) κ).val (Formalism.L2.SG.HidaSetting.nxt (e0T X h) (z0T X h) a)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ∧ resT (GlobalTheory.IdemSupport.cP PP) (hT X h (f0T X h a) (Matrix.mulVec (finE (Yc D 0) κ).val (Formalism.L …`. Introduce `a`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hF a, hNx a]`. Conclude with `hC _ _`. Establish `hbterm : ∀ i : Fin D.R.k, (if hi : i.1 + 1 < D.R.k then hT X h (bwdT X h i) (Matrix.mulVec (finE (Yc D 0) κ).val (bwT X h ⟨i.1 + 1, hi⟩)) else 0) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ∧ resT (GlobalTheory.IdemSupport.cP PP) (if hi : i.1 + 1 < D.R.k then hT X h (bwdT X h i) …`. Introduce `i`. Distinguish the cases in `hi : i.1 + 1 < D.R.k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hi, dif_pos hi]`. Distinguish the cases in `hs : GlobalTheory.SeeConjChar.sideAt X h PP = true`. Rewrite using `[if_pos hs]`. Take `⟨h1, h2⟩` from `GlobalTheory.T.residue_conjugatePlace_hermitian_dualBasis_stabiliser_eq_zero X h β hβ PP hs _ hS i ⟨i.1 + 1, hi⟩`. Conclude with `⟨h1, by rw [h2, map_zero]⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hs, hBd hs i, hBw hs ⟨i.1 + 1, hi⟩]`. Conclude with `hC _ _`. Rewrite using `[dif_neg hi, dif_neg hi]`. Conclude with `⟨zero_mem _, by rw [map_zero, resT_zero]⟩`. Unfold `argT`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[resT_add _ (sum_mem fun a _ => (hfterm a).1) (sum_mem fun i _ => (hbterm i).1), resT_sum _ _ (fun a => (hfterm a).1), resT_sum _ _ (fun i => (hbterm i).1), Finset.sum_congr rfl fun a _ => (hfterm a).2, Finset.sum_congr rfl fun i _ => (hbterm i).2, ← map_sum, ← map_sum, ← map_add …`. Use `congr 1`. Conclude with `GlobalTheory.T.conjugateResidue_flagTerms_reindex_symmetricEdge (r_le_Y (D := D) 0) D.R.rS D.R.k hn hrn _ hU (GlobalTheory.SeeConjChar.sideAt X h PP) fF fN gB (fun a => rfl) (fun a => rfl) (fun i => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SeeConjChar.resT_cP_argT : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → ∀ β : GL (Fin (Yc D 0).rank) (EAf D), IsFrame β (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) → (∀ PP ∈ R.Pg, RedIs β PP (flagAt X h PP)) → ∀ PP ∈ R.Pg, ∀ κ : GA D (Yc D 0), finE (Yc D 0) κ ∈ St β → ((iotaX X h).toMulEquiv κ).2 ∈ X.K2 → GlobalTheory.SeeConjChar.resT (GlobalTheory.IdemSupport.cP PP) (GlobalTheory.SeeConjChar.argT X h (finE (Yc D 0) κ)) = GlobalTheory.SeeConjChar.conjRes PP (∑ i, ∑ j, if symEdge D.R.rS D.R.k i j then ((GlobalTheory.SeeConjChar.wB D.R.rS D.R.k (GlobalTheory.SeeConjChar.sideAt X h PP) i j : ℤ) : kP PP) * ((upperLeftBlock (r_le_Y (D := D) 0) (redFn β PP (finE (Yc D 0) κ)) : GL (Fin D.R.r) (kP PP)).val i j) else 0) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F X h hL hGrp β hβ hred PP hP κ hS hK2

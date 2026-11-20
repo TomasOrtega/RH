@@ -13,14 +13,14 @@ variable {k : Type} [Field k] {n : ℕ}
 abbrev tT (k : Type) [Field k] (n : ℕ) : truncPoly k n := Ideal.Quotient.mk _ X
 
 /- English proof (translation)
-Rewrite using `[tT, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma tT_pow : (tT k n) ^ n = 0 := by
   rw [tT, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]
   exact Ideal.subset_span rfl
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, ← pow_succ', Nat.sub_add_cancel hn, tT_pow, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma tT_pow_pred_mul (hn : 1 ≤ n) (a : truncPoly k n) :
     tT k n * (tT k n ^ (n - 1) * a) = 0 := by
@@ -33,7 +33,7 @@ abbrev tK (k : Type) [Field k] (n : ℕ) : Submodule (truncPoly k n) (truncPoly 
   LinearMap.ker (tT k n • LinearMap.id : truncPoly k n →ₗ[truncPoly k n] truncPoly k n)
 
 /- English proof (translation)
-Simplify using `[tK]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_tK (z : truncPoly k n) : z ∈ tK k n ↔ tT k n * z = 0 := by
   simp [tK]
@@ -49,7 +49,7 @@ namespace KoszulProof
 variable {k : Type} [Field k] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[LinearMap.mem_ker, funext_iff]`. Simplify using `only [koszulSecondDifferential, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.fst_apply, LinearMap.snd_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma mem_ker_koszul_second_differential (r : ℕ) (x y : truncPoly k n) (v : (Fin r → truncPoly k n) × (Fin r → truncPoly k n)) :
     v ∈ LinearMap.ker (koszulSecondDifferential r x y) ↔ ∀ i, y * v.1 i - x * v.2 i = 0 := by
@@ -72,14 +72,14 @@ def gB : koszulSecondKernel r u w →ₗ[truncPoly k n] (Fin r → truncPoly k n
   (w • LinearMap.fst _ _ _ - (u : truncPoly k n) • LinearMap.snd _ _ _) ∘ₗ (koszulSecondKernel r u w).subtype
 
 /- English proof (translation)
-Simplify using `[gB]`.
+Simplify using the standard rewrite rules.
 -/
 lemma gB_apply (v : koszulSecondKernel r u w) (i : Fin r) :
     gB r u w v i = w * v.1.1 i - (u : truncPoly k n) * v.1.2 i := by
   simp [gB]
 
 /- English proof (translation)
-Rewrite using `[mem_tK, gB_apply]`. Establish `h` using `(mem_ker_koszul_second_differential r _ _ v.1).mp v.2 i`. Take the linear combination `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma gB_mem (v : koszulSecondKernel r u w) (i : Fin r) : gB r u w v i ∈ tK k n := by
   rw [mem_tK, gB_apply]

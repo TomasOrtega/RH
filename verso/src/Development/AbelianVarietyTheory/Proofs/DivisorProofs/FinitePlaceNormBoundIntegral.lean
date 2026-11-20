@@ -19,23 +19,21 @@ noncomputable section
 namespace GlobalTheory.CovHt.Link
 
 /- English proof (translation)
-Introduce `_ _ D A N j S κ s Φ k la f hf p _ a h ι y`. Take `⟨v, e, hv, hι⟩` from `GlobalTheory.T.p_adic_embedding_place_extension D.what₂.LL p ι`. Establish `hio : ∀ b, ‖ioOf p e b‖ ≤ 1 ↔ b ∈ e.O` using `ioOf_le_one_iff p hv e`. Establish `h1` using `log_w_eq p e ι hι`. Establish `h2` using `log_w_eq p e (ioOf p e) hio`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hlp : 0 < Real.log p` using `Real.log_pos hp1`. Establish `hwp : e.w (p : AlgebraicClosure D.what₂.LL) = NumberField.HeightOneSpectrum.adicAbv D.what₂.LL v (p : D.what₂.LL)`. Simplify using `using e.w_alg (p : D.what₂.LL)`. Establish `hwp1 : NumberField.HeightOneSpectrum.adicAbv D.what₂.LL v (p : D.what₂.LL) < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h4` using `(FinitePlace.norm_lt_one_iff_mem D.what₂.LL v (p : 𝓞 D.what₂.LL)).2 hv`. Rewrite using `[← FinitePlace.norm_embedding]`. Simplify using `using h4`. Establish `hwp0 : 0 < e.w (p : AlgebraicClosure D.what₂.LL)` using `e.w.pos (by exact_mod_cast (Fact.out : p.Prime).ne_zero)`. Use `set c := -Real.log (e.w p) / Real.log p with hcdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : 0 < c` using `div_pos (neg_pos.2 (Real.log_neg hwp0 (hwp ▸ hwp1))) hlp`. Establish `hnorm : ∀ b, ‖ι b‖ = ‖ioOf p e b‖`. Introduce `b`. Break down `eq_or_ne b 0 with rfl | hb` into its components or cases. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e3 : Real.log ‖ι b‖ = Real.log ‖ioOf p e b‖`. Use `(h1 b).symm.trans (h2 b)` as an intermediate fact. Conclude with `mul_left_cancel₀ hc.ne' this`. Conclude with `Real.log_injOn_pos (norm_pos_iff.2 ((map_ne_zero _).2 hb)) (norm_pos_iff.2 ((map_ne_zero _).2 hb)) e3`. Take `⟨σ, hσ, hσι⟩` from `GlobalTheory.T.p_adic_embeddings_same_norm_conjugate D.what₂.LL p ι (ioOf p e) hnorm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hι' : ι = σ.toRingHom.comp (ioOf p e)` using `RingHom.ext fun b => (hσι b).symm`. Establish `e1 : drAt Φ k la p (spMap ι ≫ y.1) f = drVia Φ k la p y.1 (ioOf p e) f`. Rewrite using `[hι']`. Establish `: spMap (σ.toRingHom.comp (ioOf p e)) = spMap σ.toRingHom ≫ spMap (ioOf p e)`. Simplify using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, Category.assoc, GlobalTheory.T.drAt_spMap_eq_drVia D A N j S κ s Φ k la p _ σ.toRingHom, GlobalTheory.T.drVia_isometry_invariant D A N j S κ s Φ k la p σ hσ, GlobalTheory.T.drAt_spMap_eq_drVia D A N j S κ s Φ k la p _ (ioOf p e) y.1 f]`. Establish `h3` using `h v hv e y`. Rewrite `h3` using `[GlobalTheory.T.finite_norm_eq_drVia_power D A N j S κ s Φ k la f hf p v hv e y]`. Establish `hwpc : NumberField.HeightOneSpectrum.adicAbv D.what₂.LL v (p : D.what₂.LL) = (p : ℝ) ^ (-c)`. Rewrite using `[← hwp, Real.rpow_def_of_pos (by linarith), hcdef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[Real.exp_log hwp0]`. Rewrite using `[e1]`. Establish `h0` using `drVia_nonneg Φ k la p y.1 (ioOf p e) f`. Use `(Real.rpow_le_rpow_iff h0 (Real.rpow_nonneg (by linarith) _) hc).1 (h3.trans_eq ?_)` and prove the remaining obligations.
-
-Rewrite using `[hwpc, ← Real.rpow_mul (by linarith), ← Real.rpow_mul (by linarith)]`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem drAt_le_of_finN_le : Hypotheses2 → HypothesesH → ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (la : AllWt.Weight S.Dw) (f : (Φ.C k).Y.Fn), f ∈ (Φ.C k).Y.H0 ((Φ.C k).Lw la) → ∀ (p : ℕ) [Fact p.Prime] (a : ℝ), (∀ v : HeightOneSpectrum (𝓞 D.what₂.LL), (p : 𝓞 D.what₂.LL) ∈ v.asIdeal → ∀ e y, finN Φ k la v e y f ≤ NumberField.HeightOneSpectrum.adicAbv D.what₂.LL v (p : D.what₂.LL) ^ a) → ∀ (ι : AlgebraicClosure D.what₂.LL →+* ℂ_[p]) (y : AlgPt (Φ.C k).Y), drAt Φ k la p (spMap ι ≫ y.1) f ≤ (p : ℝ) ^ (-a) := by
   intro _ _ D A N j S κ s Φ k la f hf p _ a h ι y

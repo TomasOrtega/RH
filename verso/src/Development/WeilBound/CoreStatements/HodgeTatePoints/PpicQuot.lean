@@ -18,13 +18,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace PositivityTheory.HtPt.Ppic
 
 /- English proof (translation)
-Use `haveI : IsProper B'.hom := hB'.proper`. Establish `hif : i ≫ f = toUnit _ ≫ η` using `GlobalTheory.splitTorus_hom_proper_trivial_field K X B' (i ≫ f) inferInstance`. Use `GlobalTheory.ExtensionRigidity.exists_factor q f ?_` and prove the remaining obligations. Introduce `W a b hab`. Establish `h1` using `map_div (IsMonHom.monoidHom q W) a b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [IsMonHom.monoidHom_apply] at h1`. Rewrite `h1` using `[hab, div_self']`. Establish `hc : (a / b) ≫ q = toUnit W ≫ η` using `by rw [h1, Hom.one_def]`. Establish `e2 : (a / b) ≫ f = 1`. Rewrite using `[← hk.lift_fst (a / b) (toUnit W) hc, Category.assoc, hif, ← Category.assoc, Hom.one_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `toUnit_unique _ _`. Establish `h3` using `map_div (IsMonHom.monoidHom f W) a b`. Simplify using `only [IsMonHom.monoidHom_apply] at h3`. Rewrite `h3` using `[e2]`.
-
-Conclude with `div_eq_one.1 h3.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor_torus {K : Type} [Field K] [IsAlgClosed K] {G B B' : Over (Sp K)} [GrpObj G] [GrpObj B] [GrpObj B']
     (hB' : IsAbelianScheme B') {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
@@ -50,17 +48,11 @@ theorem exists_factor_torus {K : Type} [Field K] [IsAlgClosed K] {G B B' : Over 
   exact div_eq_one.1 h3.symm
 
 /- English proof (translation)
-Introduce `G _ _ τ X _ _ _ T`. Use `letI := τ.grpB`. Use `letI := τ.addCommGroup`. Use `haveI := τ.free`. Use `haveI := τ.finite`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := τ.q_hom`. Use `haveI := τ.q_flat`. Use `haveI := τ.q_surjective`. Use `haveI := τ.q_quasiCompact`. Use `haveI := τ.i_hom`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := T.q_hom`. Use `haveI := T.q_flat`. Use `haveI := T.q_surj`. Use `haveI := T.q_affine`. Use `haveI := T.i_hom`.
-
-Take `⟨a, ha⟩` from `exists_factor_torus T.isAb τ.i τ.q τ.isKernel T.q`. Take `⟨b, hb⟩` from `exists_factor_torus τ.isAbelian T.i T.q T.isKernel τ.q`. Use `haveI : Epi τ.q := Over.epi_of_epi_left _`. Use `haveI : Epi T.q := Over.epi_of_epi_left _`. Use `haveI : MorphismProperty.IsStableUnderComposition @Surjective := { comp_mem := fun f g hf hg => by haveI := hf; haveI := hg; infer_instance }`.
-
-Use `haveI : Epi (τ.q ⊗ₘ τ.q) := by haveI : Flat (τ.q ⊗ₘ τ.q).left := MorphismProperty.pullbackMap (P := @Flat) τ.q_flat τ.q_flat (Over.w τ.q).symm (Over.w τ.q).symm haveI : Surjective (τ.q ⊗ₘ τ.q).left := MorphismProperty.pullbackMap (P := @Surjective) τ.q_surjective τ.q_surjective ( …`. Conclude with `Over.epi_of_epi_left _`. Establish `hma : IsMonHom a`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsMonHom.one_hom τ.q, Category.assoc, ha, IsMonHom.one_hom]`.
-
-Rewrite using `[← cancel_epi (τ.q ⊗ₘ τ.q), ← IsMonHom.mul_hom_assoc, ha, IsMonHom.mul_hom, tensorHom_comp_tensorHom_assoc, ha]`. Use `⟨⟨a, b, ?_, ?_⟩, hma, ha⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi τ.q, reassoc_of% ha, hb, Category.comp_id]`. Rewrite using `[← cancel_epi T.q, reassoc_of% hb, ha, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot : ∀ (G : Over (Sp ℂ)) [GrpObj G] [IsCommMonObj G] (τ : TorusExtension G) (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (T : GlobalTheory.UU.TQ G X), letI := τ.grpB; ∃ e : τ.B ≅ T.B, IsMonHom e.hom ∧ τ.q ≫ e.hom = T.q := by
   intro G _ _ τ X _ _ _ T

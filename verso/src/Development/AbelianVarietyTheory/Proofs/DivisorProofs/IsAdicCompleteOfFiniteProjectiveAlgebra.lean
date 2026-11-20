@@ -6,9 +6,9 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory.FinProjComplete
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, -, hz⟩`. Conclude with `⟨z, hz.symm⟩`. Introduce and unpack `⟨z, hz⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨z, Submodule.mem_top, hz.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem smodEq_span_singleton_pow_iff {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     (a : R) (n : ℕ) (x y : M) :
@@ -24,19 +24,19 @@ end GlobalTheory.FinProjComplete
 namespace GlobalTheory.FinProjComplete
 
 /- English proof (translation)
-Introduce `p O A _ _ _ _ _ hO`. Take `⟨n, f, g, -, -, hfg⟩` from `Module.Finite.exists_comp_eq_id_of_projective O A`. Establish `hfg' : ∀ x, f (g x) = x` using `fun x => LinearMap.congr_fun hfg x`. Establish `key : ∀ (k : ℕ) (z : A), (p : A) ^ k • z = ((p : O) ^ k) • z`. Introduce `k z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_eq_mul, Algebra.smul_def, map_pow, map_natCast]`. Use `{ toIsHausdorff := ⟨fun x hx => ?_⟩, toIsPrecomplete := ⟨fun s hs => ?_⟩ }` and prove the remaining obligations. Establish `hc : ∀ i, g x i = 0`. Introduce `i`. Use `IsHausdorff.haus' (I := Ideal.span {(p : O)}) _ (fun k => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `(smodEq_span_singleton_pow_iff _ k x 0).1 (hx k)`. Rewrite using `[smodEq_span_singleton_pow_iff]`. Use `⟨g z i, ?_⟩` and prove the remaining obligations. Use `congrArg (fun y => g y i) hz` as an intermediate fact. Simplify `this` using `only [sub_zero, key, map_smul, Pi.smul_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0 : g x = 0` using `funext hc`. Rewrite using `[← hfg' x, h0, map_zero]`. Establish `hL : ∀ i, ∃ L : O, ∀ k, g (s k) i ≡ L [SMOD ((Ideal.span {(p : O)}) ^ k • ⊤ : Submodule O O)]`. Introduce `i`. Use `IsPrecomplete.prec' (I := Ideal.span {(p : O)}) _ (fun {m k} hmk => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `(smodEq_span_singleton_pow_iff _ m _ _).1 (hs hmk)`. Rewrite using `[smodEq_span_singleton_pow_iff]`. Use `⟨g z i, ?_⟩` and prove the remaining obligations. Use `congrArg (fun y => g y i) hz` as an intermediate fact. Simplify `this` using `only [map_sub, key, map_smul, Pi.smul_apply, Pi.sub_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose L hL using hL`. Use `⟨f L, fun k => ?_⟩` and prove the remaining obligations. Establish `hz' : ∀ i, ∃ z : O, g (s k) i - L i = (p : O) ^ k • z` using `fun i => (smodEq_span_singleton_pow_iff _ k _ _).1 (hL i k)`. Use `choose z hz using hz'`. Establish `h2 : g (s k) - L = (p : O) ^ k • z` using `funext fun i => by simpa using hz i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smodEq_span_singleton_pow_iff]`. Use `⟨f z, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_of_finite_projective : ∀ (p : ℕ) (O A : Type) [CommRing O] [CommRing A]
     [Algebra O A] [Module.Finite O A] [Module.Projective O A]

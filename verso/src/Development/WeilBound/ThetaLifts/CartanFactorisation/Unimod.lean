@@ -14,13 +14,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or ε with rfl | rfl` into its components or cases. Conclude with `⟨1, one_ne_zero, by simp⟩`. Assume the negation of the conclusion as `hn push Not at hn`. Establish `hid : ∀ x, σ x = x` using `fun x => by`. Assume the negation of the conclusion as `hx`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hn (x - σ x) (sub_ne_zero.2 (Ne.symm hx)) ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.SiegelSet.sigma_sigma h]`. Use `haveI := h.2.1`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Establish `hc : w.IsComplex` using `IsTotallyComplex.isComplex w`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(InfinitePlace.not_isReal_iff_isComplex.2 hc) ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Use `h.2.2.2 w.embedding x` as an intermediate fact. Rewrite `this` using `[hid]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_scale (h : IsCMExt F E σ) (ε : ℤˣ) : ∃ c : E, c ≠ 0 ∧ σ c = ((ε : ℤ) : E) * c := by
   rcases Int.units_eq_one_or ε with rfl | rfl
@@ -42,9 +42,9 @@ theorem exists_scale (h : IsCMExt F E σ) (ε : ℤˣ) : ∃ c : E, c ≠ 0 ∧ 
     simpa using this.symm
 
 /- English proof (translation)
-Take `⟨c, hc, hσc⟩` from `exists_scale h ε`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma h`. Use `⟨c • J.map σ, ⟨fun i j => ?_, ?_⟩, GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := J) hσ hc⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hσ, hσc]`. Rewrite using `[hJ j i]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.det_smul, show J.map σ = (σ : E →+* E).mapMatrix J from rfl, ← RingHom.map_det]`. Conclude with `mul_ne_zero (pow_ne_zero _ hc) ((map_ne_zero _).2 hd)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hr (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : ℤˣ}
     (hJ : ∀ i j, σ (J j i) = ((ε : ℤ) : E) * J i j) (hd : J.det ≠ 0) :
@@ -58,7 +58,7 @@ theorem exists_hr (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} 
     exact mul_ne_zero (pow_ne_zero _ hc) ((map_ne_zero _).2 hd)
 
 /- English proof (translation)
-Take `⟨J', hJ', e⟩` from `exists_hr h hJ hd`. Establish `key : ∀ S : Subgroup (GL (Fin n) (AE F E)), S = HR (AF F) σ J' → @GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryHaarMeasure.IsUnimodularLC S _ _ (borel S)`. Introduce and unpack `S rfl`. Conclude with `(GlobalTheory.AdelicStabUnimod.unimodularOver_adele F E σ h n J' hJ').1`. Conclude with `key _ e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem unimodLC (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : ℤˣ}
     (hJ : ∀ i j, σ (J j i) = ((ε : ℤ) : E) * J i j) (hd : J.det ≠ 0) : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryHaarMeasure.IsUnimodularLC (UA σ J) := by
@@ -70,7 +70,7 @@ theorem unimodLC (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {
   exact key _ e
 
 /- English proof (translation)
-Use `haveI : Countable E := Function.Injective.countable (Module.finBasis ℚ E).equivFun.injective`. Use `haveI : Countable (GL (Fin n) E) := Function.Injective.countable (f := fun (g : GL (Fin n) E) (i j : Fin n) => (g : Matrix (Fin n) (Fin n) E) i j) fun _ _ h => Units.ext (Matrix.ext fun i j => congrFun (congrFun h i) j)`. Use `haveI := (Set.countable_range (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F)))).to_subtype`. Conclude with `Function.Injective.countable (f := fun γ : ratU σ J => (⟨γ.1.1, Subgroup.mem_subgroupOf.1 γ.2⟩ : Set.range (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F))))) fun γ γ' h => Subtype.val_injective (Subtype.val_injective (congrArg Subtype.val h :))`.
+A detailed English derivation is pending.
 -/
 theorem countable_ratU (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Countable (ratU σ J) := by
   haveI : Countable E := Function.Injective.countable (Module.finBasis ℚ E).equivFun.injective
@@ -84,7 +84,7 @@ theorem countable_ratU (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n
     fun γ γ' h => Subtype.val_injective (Subtype.val_injective (congrArg Subtype.val h :))
 
 /- English proof (translation)
-The claim follows from `haveI : Nontrivial (AF F ⊗[F] E) := by haveI : Nontrivial (AF F) := (AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial infer_instance (inclR (F := F) (E := E) (AF F)).injective`.
+A detailed English derivation is pending.
 -/
 theorem inclR_inj : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
   haveI : Nontrivial (AF F ⊗[F] E) := by
@@ -93,11 +93,11 @@ theorem inclR_inj : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
   (inclR (F := F) (E := E) (AF F)).injective
 
 /- English proof (translation)
-Take `⟨J', -, e⟩` from `exists_hr h hJ hd`. Use `haveI : DiscreteTopology (HFinIn (AF F) σ J') := GlobalTheory.RationalDiscrete.discreteTopology_HFinIn σ J'`. Establish `mem : ∀ γ : ratU σ J, γ.1.1 ∈ HFin (AF F) σ J'` using `fun γ => by`. Take `⟨u, hu⟩` from `Subgroup.mem_subgroupOf.1 γ.2`. Establish `h1 : γ.1.1 ∈ HR (AF F) σ J'` using `e ▸ γ.1.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.mem_map.2 ⟨u, ?_, hu⟩` and prove the remaining obligations. Rewrite `h1` using `[← show _ = γ.1.1 from hu]`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR (AF F) σ) (u.1.map (inclR (AF F))) * J'.map (inclR (AF F)) * u.1.map (inclR (AF F)) = J'.map (inclR (AF F)) at h1`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (σ : E →+* E) u.1 * J' * u.1 = J'`. Apply `Matrix.map_injective (inclR_inj (F := F))` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_mul]`. Conclude with `h1`. Set `f : ratU σ J → HFinIn (AF F) σ J'` to `fun γ => ⟨⟨γ.1.1, e ▸ γ.1.2⟩, Subgroup.mem_subgroupOf.2 (mem γ)⟩`. Establish `hc : Continuous f` using `((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _).subtype_mk _`. Conclude with `DiscreteTopology.of_continuous_injective hc fun a b hab => Subtype.ext (Subtype.ext (congrArg (fun z : HFinIn (AF F) σ J' => z.1.1) hab))`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem discrete_ratU (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : ℤˣ}
     (hJ : ∀ i j, σ (J j i) = ((ε : ℤ) : E) * J i j) (hd : J.det ≠ 0) : DiscreteTopology (ratU σ J) := by
@@ -120,7 +120,7 @@ theorem discrete_ratU (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n)
     Subtype.ext (Subtype.ext (congrArg (fun z : HFinIn (AF F) σ J' => z.1.1) hab))
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, -⟩` from `h`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sigmaFinite_of_lc {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
     (h : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryHaarMeasure.IsUnimodularLC G) (μ : Measure G) [μ.IsHaarMeasure] : SigmaFinite μ := by
@@ -128,7 +128,7 @@ theorem sigmaFinite_of_lc {G : Type} [Group G] [TopologicalSpace G] [MeasurableS
   infer_instance
 
 /- English proof (translation)
-The claim follows from `sigmaFinite_of_lc (unimodLC h hJ hd) μ`.
+A detailed English derivation is pending.
 -/
 theorem sFinite_haar (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : ℤˣ}
     (hJ : ∀ i j, σ (J j i) = ((ε : ℤ) : E) * J i j) (hd : J.det ≠ 0) (μ : Measure (UA σ J)) [μ.IsHaarMeasure] :
@@ -136,9 +136,7 @@ theorem sFinite_haar (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) 
   sigmaFinite_of_lc (unimodLC h hJ hd) μ
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J ε hJ hd`. Take `⟨h1, h2, h3, h4, h5, ⟨μ, hμ⟩, h7⟩` from `unimodLC h hJ hd`. Use `haveI := countable_ratU σ J`. Use `haveI := discrete_ratU h hJ hd`. Take `⟨𝓕, -, h𝓕⟩` from `(GlobalTheory.RationalUnitaryDomains.isDiscreteWithDomains_of_discrete (ratU σ J)).2.2 μ hμ`.
-
-Conclude with `⟨inferInstance, ⟨μ, 𝓕, hμ, h𝓕⟩, h7⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unimodularity_holds : Unimod := by
   intro F E _ _ _ _ _ σ h n J ε hJ hd

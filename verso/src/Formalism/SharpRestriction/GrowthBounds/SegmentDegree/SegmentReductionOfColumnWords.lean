@@ -19,7 +19,7 @@ def ColumnWordReductionLifts (C₀ : ℝ) : Prop :=
           (X.zSeg p K O j (segRen X.F j O (r + K) (PsiPl O q.1 I' * PsiTan O q.2 I'')) e)
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_map, coeff_suppProj, coeff_suppProj, coeff_map]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_suppProj {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {σ : Type} (s : Set (σ →₀ ℕ))
     (A : MvPolynomial σ R) : MvPolynomial.map f (suppProj R s A) = suppProj S s (MvPolynomial.map f A) := by
@@ -29,15 +29,15 @@ theorem map_suppProj {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {σ 
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hf : Function.Injective (fun v : ℤ × Fin r => (v.1, Fin.castAdd K v.2))`. Introduce `x y h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Fin.castAdd_injective _ _ h.2)`. Rewrite `hA`, the goal using `[mem_Pol_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm i`. Unfold `plEmb at hm`. Rewrite `hm` using `[support_rename_of_injective hf]`. Take `⟨u, hu, rfl⟩` from `Finset.mem_image.mp hm`. Rewrite using `[← hA u hu i]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `multideg`. Rewrite using `[Fin.sum_univ_add]`. Establish `z1 : ∀ c : Fin r, Finsupp.mapDomain (fun v : ℤ × Fin r => (v.1, Fin.castAdd K v.2)) u (i, Fin.castAdd K c) = u (i, c)` using `fun c => Finsupp.mapDomain_apply hf u (i, c)`. Establish `z2 : ∀ c : Fin K, Finsupp.mapDomain (fun v : ℤ × Fin r => (v.1, Fin.castAdd K v.2)) u (i, Fin.natAdd r c) = 0`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩`. Simplify using `only [Prod.mk.injEq] at hv`. Use `congrArg Fin.val hv.2` as an intermediate fact. Simplify using `at this`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [z1, z2, Finset.sum_const_zero, add_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem plEmb_Pol {R : Type} [CommRing R] (r K : ℕ) {d : ℤ → ℕ} {A : MvPolynomial (ℤ × Fin r) R}
     (hA : A ∈ Pol R r d) : plEmb R r K A ∈ Pol R (r + K) d := by
@@ -68,15 +68,15 @@ theorem plEmb_Pol {R : Type} [CommRing R] (r K : ℕ) {d : ℤ → ℕ} {A : MvP
   simp only [z1, z2, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Establish `hf : Function.Injective (fun v : ℤ × Fin K => (v.1, Fin.natAdd r v.2))`. Introduce `x y h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext h.1 (Fin.natAdd_injective _ _ h.2)`. Rewrite `hA`, the goal using `[mem_Pol_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm i`. Unfold `nmEmb at hm`. Rewrite `hm` using `[support_rename_of_injective hf]`. Take `⟨u, hu, rfl⟩` from `Finset.mem_image.mp hm`. Rewrite using `[← hA u hu i]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `multideg`. Rewrite using `[Fin.sum_univ_add]`. Establish `z1 : ∀ c : Fin K, Finsupp.mapDomain (fun v : ℤ × Fin K => (v.1, Fin.natAdd r v.2)) u (i, Fin.natAdd r c) = u (i, c)` using `fun c => Finsupp.mapDomain_apply hf u (i, c)`. Establish `z2 : ∀ c : Fin r, Finsupp.mapDomain (fun v : ℤ × Fin K => (v.1, Fin.natAdd r v.2)) u (i, Fin.castAdd K c) = 0`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩`. Simplify using `only [Prod.mk.injEq] at hv`. Use `congrArg Fin.val hv.2` as an intermediate fact. Simplify using `at this`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [z1, z2, Finset.sum_const_zero, zero_add]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nmEmb_Pol {R : Type} [CommRing R] (r K : ℕ) {d : ℤ → ℕ} {A : MvPolynomial (ℤ × Fin K) R}
     (hA : A ∈ Pol R K d) : nmEmb R r K A ∈ Pol R (r + K) d := by
@@ -107,9 +107,9 @@ theorem nmEmb_Pol {R : Type} [CommRing R] (r K : ℕ) {d : ℤ → ℕ} {A : MvP
   simp only [z1, z2, Finset.sum_const_zero, zero_add]
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite `hv` using `[hz]`. Proceed by induction on `v using WithTop.recTopCoe with`. Consider the case `top => simp at hv`. Consider the case `coe z0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1 : z0 ≤ z` using `WithTop.coe_le_coe.mp hv`. Conclude with `(h z0 rfl).trans (by exact_mod_cast h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geR_mono {v v' : WithTop ℤ} {t : ℝ} (h : geR v t) (hv : v ≤ v') : geR v' t := by
   intro z hz
@@ -121,19 +121,17 @@ theorem geR_mono {v v' : WithTop ℤ} {t : ℝ} (h : geR v t) (hv : v ≤ v') : 
     exact (h z0 rfl).trans (by exact_mod_cast h1)
 
 /- English proof (translation)
-Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.mp hx`. Establish `hx2'` using `hx2`. Use `Submodule.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Use `clear hx hx2 hx2'`. Proceed by induction on `hx1 using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy`. Take `⟨A, G, M, hA, hG, hc, rfl⟩` from `hy`. Take `⟨T', hT'⟩` from `exists_sum_polComp O r A`. Take `⟨T'', hT''⟩` from `exists_sum_polComp O K G`. Establish `hsum : plEmb O r K A * nmEmb O r K G = ∑ d' ∈ T', ∑ d'' ∈ T'', plEmb O r K (polComp O r d' A) * nmEmb O r K (polComp O K d'' G)` using `by conv_lhs => rw [hT', hT'']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, map_sum, Finset.sum_mul_sum]`. Rewrite using `[hsum, map_sum]`. Use `Submodule.sum_mem _ fun d' _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun d'' _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hP : plEmb O r K (polComp O r d' A) * nmEmb O r K (polComp O K d'' G) ∈ Pol O (r + K) (d' + d'')` using `hom_Pol_mul O (plEmb_Pol r K (polComp_mem_Pol O r d' A)) (nmEmb_Pol r K (polComp_mem_Pol O K d'' G))`. Distinguish the cases in `hd : β = d' + d''`. Rewrite using `[hd, polComp_of_mem O _ _ _ hP]`. Use `Submodule.subset_span ⟨_, _, M, polComp_mem_supported O r d' A _ hA, polComp_mem_supported O K d'' G _ hG, fun x hx hW => ?_, rfl⟩` and prove the remaining obligations. Take `⟨cE, cO, cR⟩` from `hc x hx hW`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨fun he => ⟨(lowest_degree_compose_le _ _ d'' G).trans (cE he).1, (cE he).2.trans (valS_le_polComp _ _ d' A)⟩, fun he => ⟨(lowest_degree_compose_le _ _ d'' G).trans (cO he).1, (cO he).2.trans (valS_le_polComp _ _ d' A)⟩, geR_mono cR (valS_le_polComp _ _ d' A)⟩`. Rewrite using `[polComp_of_ne O _ _ _ _ hP hd]`. Conclude with `Submodule.zero_mem _`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hy`. Rewrite `hx2`, the goal using `[mem_restrictSupport_iff]`.
-
-Introduce `mm hmm`. Conclude with `hx2 (Finset.mem_coe.mpr (suppProj_support_subset O _ x (Finset.mem_coe.mp hmm)))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem XX'_polComp (O : Type) [CommRing O] (r K : ℕ) [NeZero r] [NeZero K] {n' : ℕ} [NeZero n'] (F : Frames n' r)
     (j : ℤ) (m : ℤ → ℤ) (th o : ℤ → ℝ) (β : ℤ → ℕ) {x : SegRing O r K} (hx : x ∈ XX' O r K F j m th o) :
@@ -176,7 +174,7 @@ theorem XX'_polComp (O : Type) [CommRing O] (r K : ℕ) [NeZero r] [NeZero K] {n
     exact hx2 (Finset.mem_coe.mpr (suppProj_support_subset O _ x (Finset.mem_coe.mp hmm)))
 
 /- English proof (translation)
-Unfold `Dat.zSeg`. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zSeg_add {n' r : ℕ} [NeZero n'] (X : Dat n' r) (p K : ℕ) (O : Type) [CommRing O] (j : ℤ)
     (y1 y2 : SegRing O r K) (e : ℤ × Fin (r + K) →₀ ℕ) :
@@ -184,7 +182,7 @@ theorem zSeg_add {n' r : ℕ} [NeZero n'] (X : Dat n' r) (p K : ℕ) (O : Type) 
   unfold Dat.zSeg; rw [map_add]; ring
 
 /- English proof (translation)
-Unfold `Dat.zSeg`. Rewrite using `[map_smul, mul_smul_comm, smul_mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem zSeg_smul {n' r : ℕ} [NeZero n'] (X : Dat n' r) (p K : ℕ) (O : Type) [CommRing O] (j : ℤ) (c : O)
     (y : SegRing O r K) (e : ℤ × Fin (r + K) →₀ ℕ) :
@@ -192,17 +190,17 @@ theorem zSeg_smul {n' r : ℕ} [NeZero n'] (X : Dat n' r) (p K : ℕ) (O : Type)
   unfold Dat.zSeg; rw [map_smul, mul_smul_comm, smul_mul_assoc]
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X O _ _ _ S hX hLa hk j b y e hy he h2 β hβ`. Establish `: Fact p.Prime` using `⟨hX.prime⟩`. Establish `hseg : segN X.F j + r ≤ K` using `le_trans (Nat.add_le_add_right (hX.card j) r) hX.NsK`. Establish `h1` using `(hB12 p O S n' r K X.F X.L₁ X.N₁ j (fun _ => (X.m0 K : ℤ)) (X.thc p K j b) (X.oc p K j) hX.valid hseg (fun _ => Int.natCast_nonneg _)).1`. Establish `hy1 : y ∈ XX' O r K X.F j (fun _ => (X.m0 K : ℤ)) (X.thc p K j b) (X.oc p K j)` using `hy.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hy1` using `[h1]`. Unfold `Formalism.MainNotions.CovariantDegrees.XXZ at hy1`. Rewrite `hy1` using `[Submodule.map_span]`. Establish `key : ∃ x ∈ X.XXs p K O j, MvPolynomial.map (IsLocalRing.residue O) x = MvPolynomial.map (IsLocalRing.residue O) (X.zSeg p K O j y e)` using `by clear hβ hy`. Proceed by induction on `hy1 using Submodule.span_induction with`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨_, ⟨q, hq, I', I'', hI', hI'', rfl⟩, rfl⟩` from `hy`. Conclude with `hW p n' r K X O S hX hLa hk j b e he h2 q hq I' I'' hI' hI''`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by simp [Dat.zSeg]⟩`. Consider the case `add y z _ _ hy hz`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x1, hx1, e1⟩` from `hy`. Take `⟨x2, hx2, e2⟩` from `hz`. Conclude with `⟨x1 + x2, Submodule.add_mem _ hx1 hx2, by rw [zSeg_add, map_add, map_add, e1, e2]⟩`. Consider the case `smul c y _ hy`. Take `⟨x1, hx1, e1⟩` from `hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c • x1, Submodule.smul_mem _ c hx1, ?_⟩` and prove the remaining obligations. Rewrite using `[zSeg_smul, smul_eq_C_mul, smul_eq_C_mul, map_mul, map_mul, e1]`. Take `⟨x, hx, hxe⟩` from `key`. Use `⟨polComp O (r + K) β x, XX'_polComp O r K X.F j _ _ _ β hx, polComp_mem_Pol O _ β x, ?_⟩` and prove the remaining obligations. Unfold `polComp`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_suppProj, hxe, ← map_suppProj]`. Use `congr 1`. Conclude with `polComp_of_mem O _ β _ hβ`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem segment_reduction_of_column_words (D : Formalism.BasicNotions.D7) (hB12 : NestedTypeBound D) (C₀ : ℝ) (hW : ColumnWordReductionLifts C₀) : SegmentReductionLiftsMultihomogeneous C₀ := by
   intro p n' r K _ _ _ X O _ _ _ S hX hLa hk j b y e hy he h2 β hβ

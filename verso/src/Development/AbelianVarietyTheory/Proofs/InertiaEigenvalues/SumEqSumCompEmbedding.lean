@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.EmbeddingSum
 
 /- English proof (translation)
-Introduce `N j e f h`. Rewrite using `[← Finset.sum_map Finset.univ e f]`. Use `symm`. Use `Finset.sum_subset (Finset.subset_univ _) ?_` and prove the remaining obligations. Introduce `c _ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h c ?_` and prove the remaining obligations. Introduce and unpack `⟨a, rfl⟩`. Conclude with `hc (Finset.mem_map_of_mem e (Finset.mem_univ a))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem sum_eq_sum_comp_embedding :
     ∀ {N j : ℕ} (e : Fin j ↪ Fin N) (f : Fin N → ℂ),

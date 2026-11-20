@@ -8,15 +8,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hE hg h0 g x`. Unfold `RealDat.models_HE RealDat.models_gE RealDat.models_ν0 at *`. Take `⟨hinj, hrange, hip⟩` from `hE`. Take `⟨hm, hfd⟩` from `h0`. Take `⟨hHaar, -⟩` from `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `u : R.HE.H ≃ₗ[ℂ] R.HE.H` to `LinearEquiv.ofLinear (R.gE g) (R.gE g⁻¹) (by`. Use extensionality with `y`. Use `show R.gE g (R.gE g⁻¹ y) = y`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply])`. Use the proof step `(by`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `y`. Use `show R.gE g⁻¹ (R.gE g y) = y`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply])`. Establish `hmem : ∀ y, R.HE.e y ∈ Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv))`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : R.HE.e y ∈ LinearMap.range R.HE.e` using `⟨y, rfl⟩`. Rewrite `hy` using `[hrange]`. Conclude with `(Submodule.mem_inf.mp hy).1`. Establish `hact : ∀ y v, R.HE.e (u y) v = actG0 (Yc D 0) (R.βY 0) (R.dat0 R.triv) (R.eG g) (R.HE.e y v)`. Introduce `y v`.
-
-Use `show R.HE.e (R.gE g y) v = _`. Rewrite using `[hg]`. Both sides reduce to the same expression. Conclude with `GlobalTheory.T.norm_eq_of_actG0_intertwining_isometric_embedding R.θ (R.MY 0) (R.βY 0) (R.dat0 R.triv) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) R.HE.H R.HE.e 1 R.ν0 R.fd0 (fun y z => by rw [one_mul]; exact hip y z) hinj hmem hHaar hfd (R.eG g) u hact …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem norm_gE_rows : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.models_HE → R.models_gE → R.models_ν0 → ∀ g x, ‖R.gE g x‖ = ‖x‖ := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R hE hg h0 g x

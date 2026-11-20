@@ -33,11 +33,11 @@ def Rep (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (T : Module.End ℂ (Q.
         ∑ j ∈ Finset.range (n + 1), A j q.2 (Dj P Bs (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) j q)
 
 /- English proof (translation)
-Use `⟨fun j => ?_, fun Φ q hq => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j ≤ n`. Simplify using `only [hj, if_true]`. Conclude with `h.1 j`. Simplify using `only [hj, if_false]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `contDiffOn_const`. Rewrite using `[h.2 Φ q hq]`. Use `symm`. Rewrite using `[← Finset.sum_subset (Finset.range_mono (by omega : n + 1 ≤ m + 1))]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: j ≤ n` using `by simp at hj; omega`. Simplify using `only [this, if_true]`. Introduce `j _ hj`. Establish `: ¬ j ≤ n` using `by simp at hj; omega`. Simplify using `only [this, if_false, ContinuousLinearMap.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rep_ext {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
     {T : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')} {n m : ℕ} (hnm : n ≤ m) {A : Coef Wp Wq}
@@ -57,7 +57,7 @@ theorem rep_ext {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
       simp only [this, if_false, ContinuousLinearMap.zero_apply]
 
 /- English proof (translation)
-Unfold `NF.radR`. Apply the tactic sequence `by_cases hx : x ∈ NF.QR P.k P.r Bs.z Bs.z' <;> simp [hx]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem radR_smul' (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (c : ℂ) (F : Q.Fn P.k P.r (Wq →L[ℂ] Wp))
     (x : (Fin P.r → ℂ) × ℂ) :
@@ -66,7 +66,7 @@ theorem radR_smul' (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (c : ℂ) (F
   by_cases hx : x ∈ NF.QR P.k P.r Bs.z Bs.z' <;> simp [hx]
 
 /- English proof (translation)
-Unfold `NF.radR`. Apply the tactic sequence `by_cases hx : x ∈ NF.QR P.k P.r Bs.z Bs.z' <;> simp [hx]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem radR_zero'' (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (x : (Fin P.r → ℂ) × ℂ) :
     NF.radR P.k P.r Bs.z Bs.z' Bs.μsec (0 : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x = 0 := by
@@ -74,7 +74,7 @@ theorem radR_zero'' (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (x : (Fin P
   by_cases hx : x ∈ NF.QR P.k P.r Bs.z Bs.z' <;> simp [hx]
 
 /- English proof (translation)
-Use `⟨0, fun _ _ => 0, fun _ => contDiffOn_const, fun Φ q _ => ?_⟩` and prove the remaining obligations. Establish `: (((0 : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) = 0` using `rfl`. Rewrite using `[this, radR_zero'']`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem radDZ_zero (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) :
     RadDZ P Bs (0 : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) := by
@@ -85,7 +85,7 @@ theorem radDZ_zero (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) :
   simp
 
 /- English proof (translation)
-Use `⟨0, fun j _ => ContinuousMultilinearMap.apply ℝ (fun _ : Fin j => ℂ) (Wq →L[ℂ] Wp) (fun _ => 0), fun _ => contDiffOn_const, fun Φ q _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_range_one]`. Use `show _ = (iteratedFDeriv ℝ 0 (fun ζ => NF.radR P.k P.r Bs.z Bs.z' Bs.μsec (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (q.1, ζ)) q.2) (fun _ => 0)`. Rewrite using `[iteratedFDeriv_zero_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem radDZ_one (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) :
     RadDZ P Bs (1 : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) := by
@@ -98,9 +98,9 @@ theorem radDZ_one (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) :
   rfl
 
 /- English proof (translation)
-Take `⟨n1, A1, hr1⟩` from `h1`. Take `⟨n2, A2, hr2⟩` from `h2`. Establish `e1` using `rep_ext (by omega : n1 ≤ n1 + n2) hr1`. Establish `e2` using `rep_ext (by omega : n2 ≤ n1 + n2) hr2`. Use `⟨n1 + n2, fun j ζ => (if j ≤ n1 then A1 j ζ else 0) + (if j ≤ n2 then A2 j ζ else 0), fun j => (e1.1 j).add (e2.1 j), fun Φ q hq => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ((T1 + T2) Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) = (T1 Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) + (T2 Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp))` using `rfl`. Rewrite using `[hc, Formalism.FourierDecayAlt.P.NFRO.radR_add, e1.2 Φ q hq, e2.2 Φ q hq, ← Finset.sum_add_distrib]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem radDZ_add {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
     {T1 T2 : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')} (h1 : RadDZ P Bs T1) (h2 : RadDZ P Bs T2) :
@@ -116,7 +116,7 @@ theorem radDZ_add {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using radDZ_zero P Bs`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `radDZ_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radDZ_sum {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} {ι : Type*} (s : Finset ι)
     (T : ι → Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) (h : ∀ i ∈ s, RadDZ P Bs (T i)) :
@@ -129,7 +129,7 @@ theorem radDZ_sum {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} {ι : Type*} 
     exact radDZ_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Take `⟨n, A, hA, hTA⟩` from `hT`. Use `⟨n, fun j ζ => (Mf ζ).comp (A j ζ), fun j => hM.clm_comp (hA j), fun Φ q hq => ?_⟩` and prove the remaining obligations. Rewrite using `[h Φ q hq, hTA Φ q hq, map_sum]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem radDZ_comp_left {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
     {T T' : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')} (hT : RadDZ P Bs T)
@@ -145,7 +145,7 @@ theorem radDZ_comp_left {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
   rfl
 
 /- English proof (translation)
-The claim follows from `radDZ_comp_left hT (fun ζ => s ζ • ContinuousLinearMap.id ℝ (Wq →L[ℂ] Wp)) (hs.smul contDiffOn_const) fun Φ q hq => by rw [h Φ q hq]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem radDZ_fun_left {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
     {T T' : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')} (hT : RadDZ P Bs T) (s : ℂ → ℂ)
@@ -158,7 +158,7 @@ theorem radDZ_fun_left {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
     fun Φ q hq => by rw [h Φ q hq]; rfl
 
 /- English proof (translation)
-The claim follows from `radDZ_fun_left hT (fun _ => c) contDiffOn_const fun Φ q _ => by have : ((c • T) Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) = c • (T Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) := rfl rw [this, radR_smul']`.
+A detailed English derivation is pending.
 -/
 theorem radDZ_smul {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
     {T : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')} (hT : RadDZ P Bs T) (c : ℂ) :
@@ -168,7 +168,7 @@ theorem radDZ_smul {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
     rw [this, radR_smul']
 
 /- English proof (translation)
-Use `radDZ_smul hT (-1)` as an intermediate fact. Rewrite `this` using `[neg_one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem radDZ_neg {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
     {T : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')} (hT : RadDZ P Bs T) : RadDZ P Bs (-T) := by

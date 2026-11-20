@@ -10,12 +10,12 @@ variable {R : Type} [CommRing R] {G Γ : Type} [Group G] [TopologicalSpace G] [G
   [IsTopologicalAddGroup M] [ContinuousConstSMul R M]
 
 /- English proof (translation)
-The claim follows from `i.apply_symm_apply y`.
+A detailed English derivation is pending.
 -/
 theorem apply_symm' (i : G ≃ₜ* Γ) (y : Γ) : i (i.symm y) = y := i.apply_symm_apply y
 
 /- English proof (translation)
-The claim follows from `i.symm_apply_apply x`.
+A detailed English derivation is pending.
 -/
 theorem symm_apply' (i : G ≃ₜ* Γ) (x : G) : i.symm (i x) = x := i.symm_apply_apply x
 
@@ -43,15 +43,15 @@ noncomputable def cocycleEquiv (i : G ≃ₜ* Γ) (rho : Representation R Γ M) 
       rw [symm_apply', symm_apply'] }
 
 /- English proof (translation)
-Use extensionality with `f`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.coe_subtype]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f', hf', rfl⟩`. Take `⟨c, hc, hcf⟩` from `(separated_dvr_second_cohomology_mem rho _).1 hf'`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨c ∘ i, hc.comp i.continuous, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Establish `e` using `congrFun hcf (i p.1, i p.2)`. Express the relevant statement in the definitionally equal form `_ = f'.1 (i p.1, i p.2)`. Rewrite using `[← e]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[d1]`. Both sides reduce to the same expression. Introduce `hf`. Take `⟨c, hc, hcf⟩` from `(separated_dvr_second_cohomology_mem _ _).1 hf`. Use `⟨(cocycleEquiv i rho).symm f, (separated_dvr_second_cohomology_mem rho _).2 ⟨c ∘ i.symm, hc.comp i.symm.continuous, ?_⟩, (cocycleEquiv i rho).apply_symm_apply f⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `p`. Establish `e` using `congrFun hcf (i.symm p.1, i.symm p.2)`. Express the relevant statement in the definitionally equal form `_ = f.1 (i.symm p.1, i.symm p.2)`. Rewrite using `[← e]`. Simplify using `[d1, symm_apply']`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (fun g => rho g (c (i.symm p.2))) (apply_symm' i p.1).symm`.
+A detailed English derivation is pending.
 -/
 theorem map_cocycleEquiv (i : G ≃ₜ* Γ) (rho : Representation R Γ M) :
     ((B2 rho).comap (Z2 rho).subtype).map (cocycleEquiv i rho : Z2 rho →ₗ[R] _) =
@@ -81,7 +81,7 @@ theorem map_cocycleEquiv (i : G ≃ₜ* Γ) (rho : Representation R Γ M) :
     exact congrArg (fun g => rho g (c (i.symm p.2))) (apply_symm' i p.1).symm
 
 /- English proof (translation)
-The claim follows from `(Nat.card_congr (Submodule.Quotient.equiv _ _ (cocycleEquiv i rho) (map_cocycleEquiv i rho)).toEquiv).symm`.
+A detailed English derivation is pending.
 -/
 theorem natCard_H2_comp (i : G ≃ₜ* Γ) (rho : Representation R Γ M) :
     Nat.card (H2 (rho.comp i.toMulEquiv.toMonoidHom)) = Nat.card (H2 rho) :=

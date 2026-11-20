@@ -17,13 +17,13 @@ variable {O A : Type} [CommRing O] [CommRing A] [Bialgebra O A] [Module.Finite O
 abbrev fm (a : J) : CartierDual O A := toConv (x a).toLinearMap
 
 /- English proof (translation)
-Establish `hr : ∀ (φ ψ : CartierDual O A) (s : A ⊗[O] A), φ (TensorProduct.rid O A (LinearMap.lTensor A ψ.ofConv s)) = CartierDual.pair O A A (φ ⊗ₜ ψ) s`. Introduce `φ ψ s`. Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a b => simp [mul_comm]`. Establish `hl : ∀ (φ ψ : CartierDual O A) (s : A ⊗[O] A), ψ (TensorProduct.lid O A (LinearMap.rTensor A φ.ofConv s)) = CartierDual.pair O A A (φ ⊗ₜ ψ) s`. Introduce `φ ψ s`. Proceed by induction on `s with`. Consider the case `zero => simp`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => simp`. Use `CartierDual.tensor_eq_of_forall_pair fun φ ψ => ?_` and prove the remaining obligations. Rewrite using `[← hl, ← hl]`. Use `congrArg _ (sep _ _ fun b => ?_)` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hl φ (fm x b) s).trans (Eq.trans ?_ (hl φ (fm x b) t).symm)` and prove the remaining obligations. Rewrite using `[← hr, ← hr]`. Use `congrArg _ (sep _ _ fun a => ?_)` and prove the remaining obligations. Conclude with `(hr (fm x a) (fm x b) s).trans ((h a b).trans (hr (fm x a) (fm x b) t).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sep_two (sep : ∀ f g : A, (∀ a, x a f = x a g) → f = g) (s t : A ⊗[O] A)
     (h : ∀ a b, CartierDual.pair O A A (fm x a ⊗ₜ fm x b) s = CartierDual.pair O A A (fm x a ⊗ₜ fm x b) t) :
@@ -51,15 +51,15 @@ theorem sep_two (sep : ∀ f g : A, (∀ a, x a f = x a g) → f = g) (s t : A �
   exact (hr (fm x a) (fm x b) s).trans ((h a b).trans (hr (fm x a) (fm x b) t).symm)
 
 /- English proof (translation)
-Establish `hx0 : ∀ f, x 0 f = counit (R` using `O) f := fun f => congrArg (fun φ : CartierDual O A => φ f) h0`. Establish `hxa : ∀ a b f, x (a + b) f = CartierDual.pair O A A (fm x a ⊗ₜ fm x b) (comul f)` using `fun a b f => (congrArg (fun φ : CartierDual O A => φ f) (hadd a b)).trans (CartierDual.mul_apply _ _ _)`. Establish `hone : u 0 = 1` using `sep _ _ fun b => by rw [hu0, map_one]`. Establish `hmul : ∀ a a', u (a + a') = u a * u a'` using `fun a a' => sep _ _ fun b => by rw [hua, map_mul]`. Establish `hco : ∀ a, comul (R` using `O) (u a) = u a ⊗ₜ u a := fun a => sep_two x sep _ _ fun b b' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hxa, hub, CartierDual.pair_tmul_tmul]`. Both sides reduce to the same expression. Set `F : CartierDual O A →ₐ[O] A` to `AlgHom.ofLinearMap l (sep _ _ fun a => by rw [hl, map_one, CartierDual.one_apply, ← hx0, hu0']) (fun φ ψ => sep _ _ fun a => by`. Rewrite using `[map_mul (x a), hl, hl, hl, CartierDual.mul_apply, hco, CartierDual.pair_tmul_tmul])`. Establish `hF : ∀ φ, F φ = l φ` using `fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨BialgHom.ofAlgHom F (AlgHom.ext fun φ => ?_) (AlgHom.ext fun φ => ?_), fun φ => rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `counit (R := O) (l φ) = counit (R := O) φ`. Rewrite using `[← hx0, hl, hone, CartierDual.counit_apply]`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map F F (comul (R := O) φ) = comul (R := O) (l φ)`. Use `sep_two x sep _ _ fun a b => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hxa, hl, hmul, ← CartierDual.pair_comul_tmul]`. Generalize the expression as in `comul (R := O) φ = s`. Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul φ ψ`. Rewrite using `[Algebra.TensorProduct.map_tmul, CartierDual.pair_tmul_tmul, CartierDual.pair_tmul_tmul, ← hl, ← hl]`. Both sides reduce to the same expression.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_bialgHom [AddCommGroup J] (sep : ∀ f g : A, (∀ a, x a f = x a g) → f = g)
     (h0 : fm x 0 = 1) (hadd : ∀ a b, fm x (a + b) = fm x a * fm x b)
@@ -97,11 +97,11 @@ theorem exists_bialgHom [AddCommGroup J] (sep : ∀ f g : A, (∀ a, x a f = x a
 end Level
 
 /- English proof (translation)
-Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨f, hf, g, hg, rfl⟩` from `hg`. Use `⟨(CartierDual.evalAt O A (e.symm ⟨g, hg⟩)).smulRight (e.symm ⟨f, hf⟩), fun a => f (q a) • e.symm ⟨g, hg⟩, fun a φ => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smulRight_apply, map_smul, map_smul, hx, AlgEquiv.apply_symm_apply, smul_eq_mul, smul_eq_mul, mul_comm]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[map_smul, hx, AlgEquiv.apply_symm_apply, smul_eq_mul]`. Consider the case `zero => exact ⟨0, 0, by simp, by simp⟩`. Consider the case `add s t _ _ hs ht`. Take `⟨l, u, h1, h2⟩` from `hs`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨l', u', h1', h2'⟩` from `ht`. Conclude with `⟨l + l', u + u', by simp [h1, h1'], by simp [h2, h2']⟩`. Consider the case `smul c s _ hs`. Take `⟨l, u, h1, h2⟩` from `hs`. Conclude with `⟨c • l, c • u, by simp [h1], by simp [h2]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_linear {O A T J : Type} [CommRing O] [CommRing A] [Algebra O A] (S : Subalgebra O (T → O))
     (e : A ≃ₐ[O] S) (q : J → T) (x : J → A →ₐ[O] O) (hx : ∀ a f, x a f = (e f).1 (q a))
@@ -127,17 +127,15 @@ theorem exists_linear {O A T J : Type} [CommRing O] [CommRing A] [Algebra O A] (
     exact ⟨c • l, c • u, by simp [h1], by simp [h2]⟩
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ hv hp hO La _ _ _ L _ _ X G e τ hre B ζ _ hζ hB`. Establish `sep : ∀ n (f g : G.A n), (∀ a, (τ a).pt n f = (τ a).pt n g) → f = g` using `fun n f g h => (e n).injective (Subtype.ext (funext fun t => by`. Take `⟨a, rfl⟩ : ∃ a, lev p n a = t` from `Submodule.Quotient.mk_surjective _ (Multiplicative.toAdd t)`. Rewrite using `[← hre.pt, ← hre.pt, h]))`. Establish `key : ∀ n, ∃ (lam : CartierDual O (G.A n) →ₐc[O] G.A n) (u : La → G.A n), (∀ a φ, (τ a).pt n (lam φ) = φ (u a)) ∧ ∀ a b, (τ b).pt n (u a) = ((ζ n ^ B a b : Oˣ) : O)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `n`. Take `⟨s, hs, hsv⟩` from `hB n`. Take `⟨l, u, h1, h2⟩` from `exists_linear (X.A n) (e n) (lev p n) (fun a => (τ a).pt n) (fun a f => hre.pt a n f) s hs`. Establish `h3 : ∀ a b, (τ b).pt n (u a) = ((ζ n ^ B a b : Oˣ) : O)` using `fun a b => (h2 a b).trans (hsv a b)`. Take `⟨lam, hlam⟩` from `exists_bialgHom (fun a => (τ a).pt n) (sep n) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `toConv ((τ 0).pt n).toLinearMap = 1`. Rewrite using `[map_zero]`. Use the proof step `rfl)`. Use the proof step `(fun a b => by`. Express the relevant statement in the definitionally equal form `toConv ((τ (a + b)).pt n).toLinearMap = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[map_add]`. Use the proof step `rfl)`. Use `l u h1 (fun b => by simp [h3]) (fun a => by rw [h3]; simp)`. Use the proof step `(fun a a' b => by simp [h3, zpow_add]) (fun a b b' => by rw [h3, h3, h3]; simp [zpow_add])`. Conclude with `⟨lam, u, fun a φ => by rw [hlam, h1], h3⟩`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose lam u h1 h2 using key`. Use `⟨⟨lam, fun n => BialgHom.ext fun φ => sep n _ _ fun a => ?_⟩, fun a b n => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(τ a).pt n (G.res n (lam (n + 1) φ)) = (τ a).pt n (lam n (CartierDual.map (G.mulP n) φ))`. Rewrite using `[h1, hre.pt, hre.res, ← hre.pt, h1, CartierDual.map_apply]`. Use `congrArg _ (sep _ _ _ fun b => ?_)` and prove the remaining obligations.
-
-Rewrite using `[TateOver.pt_mulP, h2, h2, ← hζ n, ← zpow_natCast, ← zpow_mul, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Rewrite using `[← hre.pt, ← h2]`. Use `congrArg _ (CartierDual.eq_of_forall_apply (R := O) fun φ => ?_)` and prove the remaining obligations. Rewrite using `[apply_charElem, tateMap_pt]`. Conclude with `h1 n a φ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tower_pol : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [IsDomain O] [Algebra O C] (hv : v.Integers O) (hp : v (p : C) < 1) (hO : IsAdicComplete (Ideal.span {(p : O)}) O) (La : Type) [AddCommGroup La] [Module.Free ℤ La] [Module.Finite ℤ La] (L : Type) [AddCommGroup L] [Module O L] (X : OrdTower p O La L) (G : PDivGroup p O) (e : ∀ n, G.A n ≃ₐ[O] X.A n) (τ : La →+ G.Tate) (hre : X.Realises G e τ) (B : La →ₗ[ℤ] La →ₗ[ℤ] ℤ) (ζ : ℕ → Oˣ), (∀ n, IsPrimitiveRoot (ζ n) (p ^ n)) → (∀ n, ζ (n + 1) ^ p = ζ n) → X.PairingExtends B ζ → ∃ lam : G ⟶ G.dual, ∀ (a b : La) n, (e n (charElem (tateMap G G.dual O lam (τ a)) n)).1 (lev p n b) = ((ζ n ^ B a b : Oˣ) : O) := by
   intro p _ C _ _ _ v O _ _ _ hv hp hO La _ _ _ L _ _ X G e τ hre B ζ _ hζ hB

@@ -8,7 +8,7 @@ open NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar
 namespace GlobalTheory.CompanionTheory.Ar.Fl
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.Xgf.logIdeal_support_finite`.
+A detailed English derivation is pending.
 -/
 theorem finite_logIdeal_ne_zero : ∀ (E : Type) [Field E] [NumberField E] (I : Ideal (𝓞 E)), I ≠ ⊥ →
     {p : Nat.Primes | ∃ j : 𝓞 E →+* ℂ_[p], logIdeal j I ≠ 0}.Finite :=

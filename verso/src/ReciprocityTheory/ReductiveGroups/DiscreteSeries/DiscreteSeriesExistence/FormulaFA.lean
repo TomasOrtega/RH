@@ -22,9 +22,7 @@ section Smooth
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hg₀U, hF, hfF⟩` from `hf g₀ hg₀`. Establish `hFc : ContinuousAt F g₀` using `hF.continuousOn.continuousAt (hU.mem_nhds hg₀U)`. Establish `heq : f =ᶠ[nhdsWithin g₀ (UJset ε)] F` using `by filter_upwards [inter_mem_nhdsWithin (UJset ε) (hU.mem_nhds hg₀U)] with g hg`. Conclude with `hfF g hg.2 hg.1`.
-
-Conclude with `hFc.continuousWithinAt.congr_of_eventuallyEq heq (hfF g₀ hg₀U hg₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ffa_continuousOn {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : S7.SmoothOnGV ε f) : ContinuousOn f (UJset ε) := by
@@ -39,17 +37,17 @@ theorem ffa_continuousOn {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 end Smooth
 
 /- English proof (translation)
-Take `⟨hu, hc⟩` from `hk`. Establish `hs : star k * k = 1` using `by first`. Consider the case `exact unitary.star_mul_self_of_mem hu`. Consider the case `exact Unitary.star_mul_self_of_mem hu`. Consider the case `exact (Matrix.mem_unitaryGroup_iff'.1 hu)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hu' : kᴴ * k = 1` using `by simpa [Matrix.star_eq_conjTranspose] using hs`. Establish `hUJ : k ∈ UJset ε` using `by show kᴴ * Jm ε * k = Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, hu', Matrix.one_mul]`. Establish `hJ : (Jm ε).det ≠ 0`. Rewrite using `[Jm, Matrix.det_diagonal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_ne_zero_iff.2 fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hdet : IsUnit k.det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `congrArg Matrix.det (show kᴴ * Jm ε * k = Jm ε from hUJ)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Conclude with `hJ h.symm`. Take `⟨y, hy⟩ : ∃ y : Formalism.REAL.UJ ε, Formalism.MainNotions.S.umat y = k` from `⟨⟨Matrix.nonsingInvUnit k hdet, hUJ⟩, rfl⟩`. Use `⟨⟨y, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `first`. Consider the case `exact (show S7.toM y ∈ Kset ε from by rw [show S7.toM y = k from hy]; exact ⟨hu, hc⟩)`. Consider the case `exact (show Formalism.MainNotions.S.umat y ∈ Kset ε from by rw [hy]; exact ⟨hu, hc⟩)`. Consider the case `(unfold S7.KG; exact ⟨hu, hc⟩)`. Use `first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hy`. Consider the case `(unfold S7.toMK; exact hy)`. Consider the case `simpa [S7.toMK, S7.toM] using hy`.
+A detailed English derivation is pending.
 -/
 theorem ffa_Kset {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : ∃ k' : S7.KG ε, S7.toMK k' = k := by
   obtain ⟨hu, hc⟩ := hk
@@ -85,11 +83,11 @@ theorem ffa_Kset {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : ∃ k' 
     | simpa [S7.toMK, S7.toM] using hy
 
 /- English proof (translation)
-Establish `hg' : inUJ ε g` using `hg`. Establish `hJ : (Jm ε).det ≠ 0`. Rewrite using `[Jm, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hdet : IsUnit g.det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `h` using `congrArg Matrix.det hg'`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hJ h.symm`. Use `first`. Consider the case `exact ⟨⟨Matrix.nonsingInvUnit g hdet, hg'⟩, rfl⟩`. Consider the case `exact ⟨⟨((Matrix.isUnit_iff_isUnit_det g).2 hdet).unit, hg'⟩, rfl⟩`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ffa_UJ_lift {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     ∃ y : Formalism.REAL.UJ ε, Formalism.MainNotions.S.umat y = g := by
@@ -109,14 +107,14 @@ theorem ffa_UJ_lift {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
   | exact ⟨⟨((Matrix.isUnit_iff_isUnit_det g).2 hdet).unit, hg'⟩, rfl⟩
 
 /- English proof (translation)
-Unfold `S7.toMK`. Conclude with `k.1.2`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ffa_toMK_mem (k : S7.KG ε) : S7.toMK k ∈ UJset ε := by
   unfold S7.toMK
   exact k.1.2
 
 /- English proof (translation)
-Use `first`. Consider the case `fun_prop`. Consider the case `exact Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Consider the case `(unfold S7.toMK S7.toM; fun_prop)`. Consider the case `(unfold S7.toMK; exact Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ffa_cont_toMK : Continuous fun k : S7.KG ε => S7.toMK k := by
   first
@@ -126,9 +124,9 @@ theorem ffa_cont_toMK : Continuous fun k : S7.KG ε => S7.toMK k := by
   | (unfold S7.toMK; exact Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact rreg_isURepOn ε`. Consider the case `exact rreg_isURepOn`. Consider the case `exact isURepOn_rreg ε`. Consider the case `exact isURepOn_rreg`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact rreg_isURep ε`. Consider the case `exact rreg_urep ε`. Consider the case `exact rreg_rep ε`. Consider the case `exact rregRep ε`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem isURepOn_rreg' : IsURepOn (UJset ε) (rreg ε) := by
   first
@@ -142,7 +140,7 @@ private theorem isURepOn_rreg' : IsURepOn (UJset ε) (rreg ε) := by
   | exact rregRep ε
 
 /- English proof (translation)
-Establish `h` using `(isURepOn_rreg' (ε := ε)).1.2 _ (ffa_toMK_mem k₁) _ (ffa_toMK_mem k₂)`. Rewrite using `[show S7.toMK (k₁ * k₂) = S7.toMK k₁ * S7.toMK k₂ from rfl, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ffa_rreg_mul (k₁ k₂ : S7.KG ε) (x : L2 ε) :
     rreg ε (S7.toMK (k₁ * k₂)) x = rreg ε (S7.toMK k₁) (rreg ε (S7.toMK k₂) x) := by
@@ -151,7 +149,7 @@ theorem ffa_rreg_mul (k₁ k₂ : S7.KG ε) (x : L2 ε) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← ffa_rreg_mul, mul_inv_cancel, show S7.toMK (1 : S7.KG ε) = 1 from rfl, (isURepOn_rreg' (ε := ε)).1.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ffa_rreg_inv (k : S7.KG ε) (x : L2 ε) : rreg ε (S7.toMK k) (rreg ε (S7.toMK k⁻¹) x) = x := by
   rw [← ffa_rreg_mul, mul_inv_cancel, show S7.toMK (1 : S7.KG ε) = 1 from rfl,
@@ -159,7 +157,7 @@ theorem ffa_rreg_inv (k : S7.KG ε) (x : L2 ε) : rreg ε (S7.toMK k) (rreg ε (
   rfl
 
 /- English proof (translation)
-Set `L : L2 ε →ₗᵢ[ℂ] L2 ε` to `{ toLinearMap := (rreg ε (S7.toMK k)).toLinearMap norm_map' := fun v => (isURepOn_rreg' (ε := ε)).2.1 _ (ffa_toMK_mem k) v }`. Conclude with `L.inner_map_map x y`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem ffa_rreg_inner (k : S7.KG ε) (x y : L2 ε) :
     inner ℂ (rreg ε (S7.toMK k) x) (rreg ε (S7.toMK k) y) = inner ℂ x y := by
@@ -169,7 +167,7 @@ theorem ffa_rreg_inner (k : S7.KG ε) (x y : L2 ε) :
   exact L.inner_map_map x y
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ffa_rreg_inv]`. Use `_ = inner ℂ x (rreg ε (S7.toMK k⁻¹) y) := ffa_rreg_inner k x _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ffa_rreg_adj (k : S7.KG ε) (x y : L2 ε) :
     inner ℂ (rreg ε (S7.toMK k) x) y = inner ℂ x (rreg ε (S7.toMK k⁻¹) y) := by
@@ -179,13 +177,13 @@ theorem ffa_rreg_adj (k : S7.KG ε) (x y : L2 ε) :
     _ = inner ℂ x (rreg ε (S7.toMK k⁻¹) y) := ffa_rreg_inner k x _
 
 /- English proof (translation)
-Conclude with `((isURepOn_rreg' (ε := ε)).2.2 x).comp_continuous ffa_cont_toMK ffa_toMK_mem`.
+A detailed English derivation is pending.
 -/
 theorem ffa_cont_rreg (x : L2 ε) : Continuous fun k : S7.KG ε => rreg ε (S7.toMK k) x := by
   exact ((isURepOn_rreg' (ε := ε)).2.2 x).comp_continuous ffa_cont_toMK ffa_toMK_mem
 
 /- English proof (translation)
-Conclude with `hf.integrable_of_hasCompactSupport (isCompact_univ.of_isClosed_subset (isClosed_tsupport f) (Set.subset_univ _))`.
+A detailed English derivation is pending.
 -/
 theorem ffa_intK {E : Type*} [NormedAddCommGroup E] {f : S7.KG ε → E} (hf : Continuous f) :
     Integrable f (dk ε) := by
@@ -193,7 +191,7 @@ theorem ffa_intK {E : Type*} [NormedAddCommGroup E] {f : S7.KG ε → E} (hf : C
     (isCompact_univ.of_isClosed_subset (isClosed_tsupport f) (Set.subset_univ _))
 
 /- English proof (translation)
-Establish `hi : Integrable (fun k => c k • rreg ε (S7.toMK k) x) (dk ε)` using `ffa_intK (hc.smul (ffa_cont_rreg x))`. Rewrite using `[← integral_inner hi z]`. Simplify using `only [inner_smul_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ffa_inner_int (c : S7.KG ε → ℂ) (hc : Continuous c) (x z : L2 ε) :
     inner ℂ z (∫ k, c k • rreg ε (S7.toMK k) x ∂(dk ε)) =
@@ -204,25 +202,23 @@ theorem ffa_inner_int (c : S7.KG ε → ℂ) (hc : Continuous c) (x z : L2 ε) :
   simp only [inner_smul_right]
 
 /- English proof (translation)
-Establish `hmem : ∀ (g : Formalism.REAL.UJ ε) (k : S7.KG ε), Formalism.MainNotions.S.umat g * S7.toMK k ∈ UJset ε` using `fun g k => (g * (@id (Formalism.REAL.UJ ε) k.1)).2`. Establish `hcu : Continuous fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hjoint : Continuous fun p : Formalism.REAL.UJ ε × S7.KG ε => c p.2 * F (Formalism.MainNotions.S.umat p.1 * S7.toMK p.2)` using `(hc.comp continuous_snd).mul (hF.comp_continuous ((hcu.comp continuous_fst).matrix_mul (ffa_cont_toMK.comp continuous_snd)) fun p => hmem p.1 p.2)`. Set `Φ : Formalism.REAL.UJ ε → ℂ` to `fun g => ∫ k, c k * F (Formalism.MainNotions.S.umat g * S7.toMK k) ∂(dk ε)`. Establish `hΦc : Continuous Φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `continuous_parametric_integral_of_continuous (μ := dk ε) (f := fun (g : Formalism.REAL.UJ ε) (k : S7.KG ε) => c k * F (Formalism.MainNotions.S.umat g * S7.toMK k)) hjoint isCompact_univ`. Simplify `h` using `only [Measure.restrict_univ]`. Establish `hS : ∀ S : Set (Formalism.REAL.UJ ε), IsCompact S → ∫ g in S, Φ g ∂(Formalism.REAL.muG ε) = 0`. Introduce `S hSc`. Establish `hSm : MeasurableSet S` using `hSc.isClosed.measurableSet`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hSf : Formalism.REAL.muG ε S ≠ ⊤` using `hSc.measure_lt_top.ne`. Establish `h1 : inner ℂ (indicatorConstLp 2 hSm hSf (1 : ℂ) : L2 ε) (∫ k, c k • rreg ε (S7.toMK k) x ∂(dk ε)) = 0`. Rewrite using `[h0, inner_zero_right]`. Rewrite `h1` using `[ffa_inner_int c hc x]`. Establish `h2 : ∀ k : S7.KG ε, inner ℂ (indicatorConstLp 2 hSm hSf (1 : ℂ) : L2 ε) (rreg ε (S7.toMK k) x) = ∫ g in S, F (Formalism.MainNotions.S.umat g * S7.toMK k) ∂(Formalism.REAL.muG ε)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Take `⟨y, hy⟩ : ∃ y : Formalism.REAL.UJ ε, S7.toMK k = Formalism.MainNotions.S.umat y` from `⟨k.1, rfl⟩`. Rewrite using `[hy, L2.inner_indicatorConstLp_one]`. Use `setIntegral_congr_ae hSm ?_` and prove the remaining obligations. Establish `e1` using `rreg_umat_ae ε y x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `(quasiMeasurePreserving_mul_right (Formalism.REAL.muG ε) y).ae_eq hx`. Use `filter_upwards [e1, e2] with g hg1 hg2 _`. Rewrite using `[hg1]`. Simplify using `only [Function.comp_apply] at hg2`. Rewrite using `[hg2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h1' : ∫ k, c k * ∫ g in S, F (Formalism.MainNotions.S.umat g * S7.toMK k) ∂(Formalism.REAL.muG ε) ∂(dk ε) = 0`. Use `(integral_congr_ae (ae_of_all _ fun k => ?_)).trans h1` and prove the remaining obligations. Use `show c k * _ = c k * _`. Rewrite using `[h2 k]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : Integrable (Function.uncurry fun (g : Formalism.REAL.UJ ε) (k : S7.KG ε) => c k * F (Formalism.MainNotions.S.umat g * S7.toMK k)) (((Formalism.REAL.muG ε).restrict S).prod (dk ε))`. Establish `hc2 : IsCompact (S ×ˢ (Set.univ : Set (S7.KG ε)))` using `hSc.prod isCompact_univ`. Establish `h3` using `hjoint.continuousOn.integrableOn_compact (μ := (Formalism.REAL.muG ε).prod (dk ε)) hc2`. Rewrite `h3` using `[IntegrableOn, ← Measure.prod_restrict, Measure.restrict_univ]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Use `show ∫ g in S, (∫ k, c k * F (Formalism.MainNotions.S.umat g * S7.toMK k) ∂(dk ε)) ∂(Formalism.REAL.muG ε) = 0`. Rewrite using `[integral_integral_swap hint]`. Use `first`. Consider the case `(simp_rw [integral_const_mul]; exact h1')`. Consider the case `(simp_rw [integral_mul_left]; exact h1')`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : Φ =ᵐ[Formalism.REAL.muG ε] 0` using `by first`. Consider the case `exact ae_eq_zero_of_forall_setIntegral_isCompact_eq_zero hΦc.locallyIntegrable hS`. Consider the case `exact ae_eq_zero_of_forall_setIntegral_isCompact_eq_zero' hΦc.locallyIntegrable hS`. Establish `hzero : Φ = 0` using `(hΦc.ae_eq_iff_eq (μ := Formalism.REAL.muG ε) continuous_const).1 hae`. Establish `h1 : Φ 1 = 0` using `congrFun hzero 1`.
-
-Establish `h2 : ∀ k : S7.KG ε, Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε) * S7.toMK k = S7.toMK k` using `fun k => by show (1 : Matrix (Fin n) (Fin n) ℂ) * S7.toMK k = S7.toMK k`. Conclude with `Matrix.one_mul _`. Simplify `h1` using `only [Φ, h2]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ffa_eval {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : ContinuousOn F (UJset ε)) {x : L2 ε}
     (hx : (x : Formalism.REAL.UJ ε → ℂ) =ᵐ[Formalism.REAL.muG ε] fun y => F (Formalism.MainNotions.S.umat y))
@@ -297,21 +293,21 @@ section KMap
 variable {Λ : Fin n → ℝ}
 
 /- English proof (translation)
-Conclude with `congrArg Subtype.val (map_mul T.τ k₁ k₂)`.
+A detailed English derivation is pending.
 -/
 theorem ffa_op_mul (T : S7.KType ε Λ) (k₁ k₂ : S7.KG ε) : T.op (k₁ * k₂) = T.op k₁ * T.op k₂ := by
   exact congrArg Subtype.val (map_mul T.τ k₁ k₂)
 
 /- English proof (translation)
-Conclude with `congrArg Subtype.val (map_one T.τ)`.
+A detailed English derivation is pending.
 -/
 theorem ffa_op_one (T : S7.KType ε Λ) : T.op 1 = 1 := by
   exact congrArg Subtype.val (map_one T.τ)
 
 /- English proof (translation)
-Establish `h1 : ContinuousLinearMap.adjoint (T.op k) * T.op k = 1`. Rewrite using `[← ContinuousLinearMap.star_eq_adjoint]`. Use `first`. Consider the case `exact unitary.star_mul_self_of_mem (T.τ k).2`. Consider the case `exact Unitary.star_mul_self_of_mem (T.τ k).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (unitary.mem_iff.1 (T.τ k).2).1`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, ← ContinuousLinearMap.mul_apply, h1, ContinuousLinearMap.one_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ffa_op_inner (T : S7.KType ε Λ) (k : S7.KG ε) (x y : T.V) :
     inner ℂ (T.op k x) (T.op k y) = inner ℂ x y := by
@@ -325,21 +321,21 @@ theorem ffa_op_inner (T : S7.KType ε Λ) (k : S7.KG ε) (x y : T.V) :
     ContinuousLinearMap.one_apply]
 
 /- English proof (translation)
-Rewrite using `[← ContinuousLinearMap.mul_apply, ← ffa_op_mul]`. Simplify using `[ffa_op_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ffa_op_inv_apply (T : S7.KType ε Λ) (k : S7.KG ε) (y : T.V) : T.op k (T.op k⁻¹ y) = y := by
   rw [← ContinuousLinearMap.mul_apply, ← ffa_op_mul]
   simp [ffa_op_one]
 
 /- English proof (translation)
-Rewrite using `[← ffa_op_inner T k (T.op k⁻¹ x) y, ffa_op_inv_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ffa_op_adj' (T : S7.KType ε Λ) (k : S7.KG ε) (x y : T.V) :
     inner ℂ x (T.op k y) = inner ℂ (T.op k⁻¹ x) y := by
   rw [← ffa_op_inner T k (T.op k⁻¹ x) y, ffa_op_inv_apply]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun k : S7.KG ε => T.op k` using `continuous_subtype_val.comp T.cont`. Conclude with `(h1.clm_apply continuous_const).inner continuous_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ffa_cont_coef (T : S7.KType ε Λ) (a v : T.V) :
     Continuous fun k : S7.KG ε => inner ℂ (T.op k a) v := by
@@ -363,9 +359,9 @@ theorem ffaB_apply (T : S7.KType ε Λ) (a : T.V) (x : L2 ε) (v : T.V) :
     ffaB T a x v = ∫ k, inner ℂ (T.op k a) v • rreg ε (S7.toMK k) x ∂(dk ε) := rfl
 
 /- English proof (translation)
-Rewrite using `[ffaB_apply, ffaB_apply]`. Establish `h1 : ∀ k : S7.KG ε, inner ℂ (T.op k a) (T.op k₀ v) = inner ℂ (T.op (k₀⁻¹ * k) a) v` using `fun k => by`. Rewrite using `[ffa_op_adj', ffa_op_mul, ContinuousLinearMap.mul_apply]`. Repeatedly rewrite using `[h1]`. Establish `h2` using `integral_mul_left_eq_self (μ := dk ε) (fun k => inner ℂ (T.op (k₀⁻¹ * k) a) v • rreg ε (S7.toMK k) x) k₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h2]`. Simplify using `only [inv_mul_cancel_left, ffa_rreg_mul]`. Establish `hi : Integrable (fun k => inner ℂ (T.op k a) v • rreg ε (S7.toMK k) x) (dk ε)` using `ffa_intK ((ffa_cont_coef T a v).smul (ffa_cont_rreg x))`. Rewrite using `[← (rreg ε (S7.toMK k₀)).integral_comp_comm hi]`. Simplify using `only [map_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ffaB_equiv (T : S7.KType ε Λ) (a : T.V) (x : L2 ε) (k₀ : S7.KG ε) (v : T.V) :
     ffaB T a x (T.op k₀ v) = rreg ε (S7.toMK k₀) (ffaB T a x v) := by
@@ -383,7 +379,7 @@ theorem ffaB_equiv (T : S7.KType ε Λ) (a : T.V) (x : L2 ε) (k₀ : S7.KG ε) 
   simp only [map_smul]
 
 /- English proof (translation)
-Rewrite using `[ffaB_apply]`. Conclude with `ffa_inner_int (fun k => inner ℂ (T.op k a) v) (ffa_cont_coef T a v) x z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ffaB_inner (T : S7.KType ε Λ) (a : T.V) (x z : L2 ε) (v : T.V) :
     inner ℂ z (ffaB T a x v) = ∫ k, inner ℂ (T.op k a) v * inner ℂ z (rreg ε (S7.toMK k) x) ∂(dk ε) := by
@@ -391,7 +387,7 @@ theorem ffaB_inner (T : S7.KType ε Λ) (a : T.V) (x z : L2 ε) (v : T.V) :
   exact ffa_inner_int (fun k => inner ℂ (T.op k a) v) (ffa_cont_coef T a v) x z
 
 /- English proof (translation)
-Rewrite using `[← Submodule.orthogonal_orthogonal S, Submodule.mem_orthogonal]`. Introduce `z hz`. Rewrite using `[ffaB_inner]`. Establish `h0 : ∀ k : S7.KG ε, inner ℂ z (rreg ε (S7.toMK k) x) = 0` using `fun k => Submodule.inner_left_of_mem_orthogonal (hS k) hz`. Simplify using `only [h0, mul_zero, integral_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ffaB_mem (T : S7.KType ε Λ) (a : T.V) (x : L2 ε) (S : Submodule ℂ (L2 ε))
     [S.HasOrthogonalProjection] (hS : ∀ k : S7.KG ε, rreg ε (S7.toMK k) x ∈ S) (v : T.V) :
@@ -411,9 +407,9 @@ variable {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin
   {v₀ : T.V}
 
 /- English proof (translation)
-Establish `hH : (Formalism.REAL.muG ε).IsHaarMeasure`. Unfold `Formalism.REAL.muG`. Use `infer_instance`. Establish `h` using `hP.2.2.2.2 (Formalism.REAL.muG ε) hH`. Establish `h2` using `((innerSL ℂ u).comp (ContinuousLinearMap.apply ℂ T.V v)).comp_memLp' h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `MemLp.ae_eq (ae_of_all _ fun y => ?_) h2` and prove the remaining obligations. Simplify using `[jfun]`. Apply the tactic sequence `try rfl`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ffa_memLp (hP : IsPsiFor ε lam T Ψ) (u v : T.V) :
     MemLp (fun y : Formalism.REAL.UJ ε => jfun Ψ u v (Formalism.MainNotions.S.umat y)) 2 (Formalism.REAL.muG ε) := by
@@ -427,7 +423,7 @@ theorem ffa_memLp (hP : IsPsiFor ε lam T Ψ) (u v : T.V) :
   try rfl
 
 /- English proof (translation)
-Unfold `uniformisationL2 toL2`. Rewrite using `[dif_pos (ffa_memLp hP u v)]`. Conclude with `(ffa_memLp hP u v).coeFn_toLp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniformisationL2_ae_eq_jfun (hP : IsPsiFor ε lam T Ψ) (u v : T.V) :
     (uniformisationL2 ε Ψ u v : Formalism.REAL.UJ ε → ℂ) =ᵐ[Formalism.REAL.muG ε] fun y => jfun Ψ u v (Formalism.MainNotions.S.umat y) := by
@@ -436,7 +432,7 @@ theorem uniformisationL2_ae_eq_jfun (hP : IsPsiFor ε lam T Ψ) (u v : T.V) :
   exact (ffa_memLp hP u v).coeFn_toLp
 
 /- English proof (translation)
-Establish `hΨ : ContinuousOn Ψ (UJset ε)` using `ffa_continuousOn hP.2.2.1`. Unfold `jfun`. Conclude with `continuousOn_const.inner (hΨ.clm_apply continuousOn_const)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ffa_jfun_cont (hP : IsPsiFor ε lam T Ψ) (u v : T.V) : ContinuousOn (jfun Ψ u v) (UJset ε) := by
   have hΨ : ContinuousOn Ψ (UJset ε) := ffa_continuousOn hP.2.2.1
@@ -455,7 +451,7 @@ def ffaJinv (hP : IsPsiFor ε lam T Ψ) (x : datumV ε Ψ v₀) : T.V :=
   ((mem_datumV_iff hP v₀ (x : smD ε (rreg ε))).1 x.2).choose
 
 /- English proof (translation)
-The claim follows from `((mem_datumV_iff hP v₀ (x : smD ε (rreg ε))).1 x.2).choose_spec.symm`.
+A detailed English derivation is pending.
 -/
 theorem ffaJinv_spec (hP : IsPsiFor ε lam T Ψ) (x : datumV ε Ψ v₀) :
     uniformisationL2 ε Ψ v₀ (ffaJinv hP x) = ((x : smD ε (rreg ε)) : L2 ε) :=
@@ -469,15 +465,15 @@ def ffaJinvL (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) : datumV ε Ψ v�
     rw [datumEmbedding_smul hP, ffaJinv_spec, ffaJinv_spec]; try rfl)
 
 /- English proof (translation)
-Set `J : T.V →L[ℂ] L2 ε` to `LinearMap.toContinuousLinearMap (ffaJ hP v₀)`. Establish `hJ : ∀ v, J v = uniformisationL2 ε Ψ v₀ v` using `fun v => rfl`. Set `A : T.V →L[ℂ] T.V` to `(ContinuousLinearMap.adjoint J).comp J`. Establish `hA : ∀ a b : T.V, inner ℂ a (A b) = inner ℂ (uniformisationL2 ε Ψ v₀ a) (uniformisationL2 ε Ψ v₀ b)`. Introduce `a b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show inner ℂ a ((ContinuousLinearMap.adjoint J) (J b)) = _`. Rewrite using `[ContinuousLinearMap.adjoint_inner_right, hJ, hJ]`. Establish `hcomm : ∀ k, T.op k * A = A * T.op k`. Introduce `k`. Use `ContinuousLinearMap.ext fun b => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_inner_left ℂ fun a => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, ffa_op_adj' T k a (A b), hA, hA, ← rightRegular_datumEmbedding hP v₀ a k⁻¹, ← rightRegular_datumEmbedding hP v₀ b k, ffa_rreg_adj, inv_inv]`. Take `⟨c, hc⟩` from `CompactHaarProbability.schur T A hcomm`. Establish `hform : ∀ a b : T.V, inner ℂ (uniformisationL2 ε Ψ v₀ a) (uniformisationL2 ε Ψ v₀ b) = c * inner ℂ a b`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hA, hc, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, inner_smul_right]`. Establish `hc' : c = ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ)`. Establish `h1` using `hform T.w T.w`. Rewrite `h1` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, T.w_norm]`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(push_cast at h1 ⊢; linear_combination -h1)`. Consider the case `(simp only [one_pow, mul_one, map_one] at h1; push_cast; exact h1.symm.trans (by push_cast; ring))`. Consider the case `(simp at h1 ⊢; linear_combination -h1)`. Rewrite using `[hform, hc']`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inner_uniformisationL2_eq_norm_sq_mul_inner (hP : IsPsiFor ε lam T Ψ) (v' u : T.V) :
     inner ℂ (uniformisationL2 ε Ψ v₀ v') (uniformisationL2 ε Ψ v₀ u) = ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ) * inner ℂ v' u := by
@@ -508,45 +504,41 @@ private theorem inner_uniformisationL2_eq_norm_sq_mul_inner (hP : IsPsiFor ε la
   rw [hform, hc']
 
 /- English proof (translation)
-Set `J : T.V →L[ℂ] L2 ε` to `LinearMap.toContinuousLinearMap (ffaJ hP v₀)`. Set `Jd : L2 ε →L[ℂ] T.V` to `ContinuousLinearMap.adjoint J`. Establish `hJd : ∀ (y : L2 ε) (v : T.V), inner ℂ v (Jd y) = inner ℂ (uniformisationL2 ε Ψ v₀ v) y`. Introduce `y v`. Rewrite using `[ContinuousLinearMap.adjoint_inner_right]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hJdk : ∀ (k : S7.KG ε) (y : L2 ε), Jd (rreg ε (S7.toMK k) y) = T.op k (Jd y)`. Introduce `k y`. Use `ext_inner_left ℂ fun v => ?_` and prove the remaining obligations. Rewrite using `[hJd, ffa_op_adj' T k v (Jd y), hJd, ← rightRegular_datumEmbedding hP v₀ v k⁻¹, ffa_rreg_adj, inv_inv]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩ : ∃ c : ℂ, c = ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ)` from `⟨_, rfl⟩`. Establish `hJdJ : ∀ v, Jd (uniformisationL2 ε Ψ v₀ v) = c • v`. Introduce `v`. Use `ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Rewrite using `[hJd, inner_uniformisationL2_eq_norm_sq_mul_inner hP u v, inner_smul_right, hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hw0 : T.w ≠ 0`. Introduce `h`. Establish `h1` using `T.w_norm`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc0 : c ≠ 0`. Establish `hj : uniformisationL2 ε Ψ v₀ T.w ≠ 0`. Introduce `h`. Apply `hw0` to reduce the goal to its premises. Apply `uniformisationL2_injective hP hv₀` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `(map_zero (ffaJ hP v₀)).symm`. Rewrite using `[hc]`. Conclude with `Complex.ofReal_ne_zero.2 (pow_ne_zero 2 (norm_ne_zero_iff.2 hj))`. Set `φ : Hlam ε Ψ v₀ →ₗ[ℂ] Hlam ε Ψ v₀` to `LinearMap.id + (B.codRestrict (Hlam ε Ψ v₀) hrange).comp ((Jd : L2 ε →ₗ[ℂ] T.V).comp (Hlam ε Ψ v₀).subtype)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφ : ∀ x : Hlam ε Ψ v₀, ((φ x : Hlam ε Ψ v₀) : L2 ε) = (x : L2 ε) + B (Jd (x : L2 ε))` using `fun x => rfl`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `hx' : (x : L2 ε) + B (Jd (x : L2 ε)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← hφ, hx]`. Both sides reduce to the same expression. Establish `hxe : (x : L2 ε) = -B (Jd (x : L2 ε))` using `eq_neg_of_add_eq_zero_left hx'`. Establish `hJx : Jd (x : L2 ε) = 0`. Use `ext_inner_left ℂ fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hJd, inner_zero_right, hxe, inner_neg_right, ← inner_conj_symm, horth, map_zero, neg_zero]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite `hx'` using `[hJx, map_zero, add_zero]`. Conclude with `hx'`. Establish `hint : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, φ (sigLam ε Ψ v₀ g x) = sigLam ε Ψ v₀ g (φ x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `g hg x`. Establish `h1` using `subtype_sigLam hgap hP hv₀ g hg x`. Establish `h2` using `subtype_sigLam hgap hP hv₀ g hg (φ x)`. Take `⟨k, hk⟩ : ∃ k : S7.KG ε, S7.toMK k = g` from `by first`. Consider the case `exact ffa_Kset hg`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Consider the case `exact ffa_Kset (by rw [← mir_Kset_eq]; exact hg)`. Consider the case `exact ffa_Kset (by simpa [Kset, Formalism.REAL.Kset] using hg)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_subtype] at h1 h2`. Rewrite using `[h2, hφ, hφ, h1, ← hk, hJdk, hB, map_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK` using `sigLam_lowK hgap hP hv₀`. Establish `hmap : Formalism.MainNotions.S.IsKTypeOf ε (sigLam ε Ψ v₀) (Formalism.QuantumDeterminants.lowK ε lam) ((lowKSubLam ε Ψ v₀).map φ)` using `(isKTypeOf_map_iff φ hinj hint _ _).1 hK.1`. Establish `heq` using `hK.2 _ hmap`. Establish `hlow : ∀ y : Hlam ε Ψ v₀, y ∈ lowKSubLam ε Ψ v₀ → (y : L2 ε) ∈ Submodule.span ℂ (Set.range (uniformisationL2 ε Ψ v₀))`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : (Hlam ε Ψ v₀).subtype y ∈ (datumV ε Ψ v₀).map (smD ε (rreg ε)).subtype` using `hy`. Take `⟨z, hz, hzy⟩` from `hy'`. Establish `hz' : (z : L2 ε) ∈ Submodule.span ℂ (Set.range (uniformisationL2 ε Ψ v₀))` using `hz`. Establish `hzy' : (z : L2 ε) = (y : L2 ε)` using `hzy`. Rewrite using `[← hzy']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `hz'`. Establish `hJlow : ∀ v, (⟨uniformisationL2 ε Ψ v₀ v, datumEmbedding_mem_Hlam hP v⟩ : Hlam ε Ψ v₀) ∈ lowKSubLam ε Ψ v₀`. Introduce `v`. Use `show (Hlam ε Ψ v₀).subtype ⟨uniformisationL2 ε Ψ v₀ v, datumEmbedding_mem_Hlam hP v⟩ ∈ (datumV ε Ψ v₀).map (smD ε (rreg ε)).subtype`. Conclude with `⟨⟨uniformisationL2 ε Ψ v₀ v, datumEmbedding_mem_smooth hP v₀ v⟩, Submodule.subset_span ⟨v, rfl⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Treat this case separately. Treat this case separately.
 
-Establish `hspan : ∀ v, Submodule.span ℂ (Set.range (uniformisationL2 ε Ψ v₀)) ≤ LinearMap.ker ((innerSL ℂ (B v) : L2 ε →L[ℂ] ℂ) : L2 ε →ₗ[ℂ] ℂ)`. Introduce `v`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨u, rfl⟩`. Use `first`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact horth u v`. Consider the case `exact LinearMap.mem_ker.2 (by simpa using horth u v)`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hmem : φ ⟨uniformisationL2 ε Ψ v₀ v, datumEmbedding_mem_Hlam hP v⟩ ∈ lowKSubLam ε Ψ v₀`. Rewrite using `[← heq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem (hJlow v)`. Establish `h1` using `hlow _ hmem`. Establish `h2` using `hlow _ (hJlow v)`. Rewrite `h1` using `[hφ]`. Establish `h3 : c • B v ∈ Submodule.span ℂ (Set.range (uniformisationL2 ε Ψ v₀))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `Submodule.sub_mem _ h1 h2`. Establish `h5 : uniformisationL2 ε Ψ v₀ v + B (Jd (uniformisationL2 ε Ψ v₀ v)) - uniformisationL2 ε Ψ v₀ v = c • B v`. Rewrite using `[hJdJ, map_smul, add_sub_cancel_left]`. Rewrite using `[← h5]`. Conclude with `h4`.
-
-Establish `h6 : inner ℂ (B v) (c • B v) = 0` using `by first`. Consider the case `exact hspan v h3`. Consider the case `simpa using LinearMap.mem_ker.1 (hspan v h3)`. Rewrite `h6` using `[inner_smul_right]`. Establish `h7 : inner ℂ (B v) (B v) = 0` using `(mul_eq_zero.1 h6).resolve_left hc0`.
-
-Rewrite using `[LinearMap.zero_apply]`. Conclude with `inner_self_eq_zero.1 h7`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ffa_kmap_zero (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     (B : T.V →ₗ[ℂ] L2 ε) (hB : ∀ (k : S7.KG ε) (v : T.V), B (T.op k v) = rreg ε (S7.toMK k) (B v))
@@ -659,7 +651,7 @@ theorem ffa_kmap_zero (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ 
   exact inner_self_eq_zero.1 h7
 
 /- English proof (translation)
-Conclude with `inner_uniformisationL2_eq_norm_sq_mul_inner hP v' u`.
+A detailed English derivation is pending.
 -/
 theorem ffa_form (hP : IsPsiFor ε lam T Ψ) (v' u : T.V) :
     inner ℂ (uniformisationL2 ε Ψ v₀ v') (uniformisationL2 ε Ψ v₀ u) = ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ) * inner ℂ v' u := by

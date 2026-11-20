@@ -16,25 +16,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.TrivLoc
 
 /- English proof (translation)
-Introduce `S A Y _ hA N hN h0 T t hloc`. Set `T₀ : Over S` to `Over.mk (t ≫ Y.hom)`. Set `y : T₀ ⟶ Y` to `Over.homMk t rfl`. Set `M : LB (A ⊗ T₀).left` to `ev N (fst A T₀) (snd A T₀ ≫ y)`. Establish `hM : M.IsLB` using `pull_isLB hN _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ (Z : Over S) (u : Z ⟶ A ⊗ T₀), evc hN (u ≫ fst A T₀) (u ≫ snd A T₀ ≫ y) = 0 → Triv (M.pull u.left)`. Introduce `Z u h`. Use `(cls_eq_zero_iff (pull_isLB hM _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hM]`. Establish `e` using `pull_evc hN u (fst A T₀) (snd A T₀ ≫ y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[h]`. Conclude with `e`. Use `show Triv M`. Use `GlobalTheory.CompanionTheory.Ar.Approx.triv_of_section_of_locally_triv (A ⊗ T₀).left T (snd A T₀).left (lift (1 : T₀ ⟶ A) (𝟙 T₀)).left ?_ ?_ M hM ?_ ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_snd]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `U`. Conclude with `GlobalTheory.CompanionTheory.Ar.Approx.isIso_app_of_isAbelianScheme T ((Over.pullback T₀.hom).obj A) (CubeGen.isAb_baseChange hA T₀.hom) U`. Use `key T₀ _ ?_` and prove the remaining obligations. Rewrite using `[lift_fst, lift_snd_assoc, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `congrArg (CechPic.pull y.left) ((triv_ev_iff hN _ _).1 h0)`. Rewrite `e` using `[pull_evc, map_zero, Category.comp_id, MonObj.comp_one]`. Then use the resulting hypothesis. Introduce `x`. Take `⟨W, hx, hW⟩` from `hloc x`. Use `⟨W, hx, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `p` to `(snd A T₀).left`. Set `W₀ : Over S` to `Over.mk ((W.ι ≫ t) ≫ Y.hom)`. Set `y' : W₀ ⟶ Y` to `Over.homMk (W.ι ≫ t) rfl`. Set `Z : Over S` to `Over.mk ((p ⁻¹ᵁ W).ι ≫ (A ⊗ T₀).hom)`. Set `u : Z ⟶ A ⊗ T₀` to `Over.homMk (p ⁻¹ᵁ W).ι rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : Set.range ((p ⁻¹ᵁ W).ι ≫ p) ⊆ Set.range W.ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `z.2`. Set `l : Z.left ⟶ W₀.left` to `IsOpenImmersion.lift W.ι ((p ⁻¹ᵁ W).ι ≫ p) hr`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : l ≫ W.ι = (p ⁻¹ᵁ W).ι ≫ p` using `IsOpenImmersion.lift_fac _ _ _`. Establish `wz : l ≫ W₀.hom = Z.hom`. Establish `hs : p ≫ t ≫ Y.hom = (A ⊗ T₀).hom` using `Over.w (snd A T₀)`. Use `show l ≫ (W.ι ≫ t) ≫ Y.hom = (p ⁻¹ᵁ W).ι ≫ (A ⊗ T₀).hom`. Rewrite using `[← hs, ← Category.assoc (p ⁻¹ᵁ W).ι, ← hl]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Set `w : Z ⟶ W₀` to `Over.homMk l wz`. Establish `hwy : w ≫ y' = u ≫ snd A T₀ ≫ y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show l ≫ W.ι ≫ t = (p ⁻¹ᵁ W).ι ≫ p ≫ t`.
-
-Rewrite using `[← Category.assoc, hl, Category.assoc]`. Use `key Z u ?_` and prove the remaining obligations. Establish `e` using `pull_evc hN (lift (u ≫ fst A T₀) w) (fst A W₀) (snd A W₀ ≫ y')`. Rewrite `e` using `[(triv_ev_iff hN _ _).1 hW, map_zero, lift_fst, lift_snd_assoc, hwy]`. Conclude with `e.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locus_of_locally : ∀ (S : Scheme.{0}) (A Y : Over S) [GrpObj A], IsAbelianScheme A → ∀ N : LB (A ⊗ Y).left, N.IsLB →
     Triv (ev N (1 : Y ⟶ A) (𝟙 Y)) → ∀ (T : Scheme.{0}) (t : T ⟶ Y.left),

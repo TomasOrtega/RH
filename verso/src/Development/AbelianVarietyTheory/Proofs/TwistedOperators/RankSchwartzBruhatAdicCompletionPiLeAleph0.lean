@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.SBCount
 
 /- English proof (translation)
-Take `⟨b, hbc, -, hb⟩` from `TopologicalSpace.exists_countable_basis X`. Use `((Set.countable_setOf_finite_subset hbc).image Set.sUnion).mono ?_` and prove the remaining obligations. Introduce and unpack `U ⟨hUc, hUo⟩`. Take `⟨S, hSb, rfl⟩` from `hb.open_eq_sUnion hUo`. Take `⟨t, htS, htf, hcov⟩` from `hUc.elim_finite_subcover_image (b := S) (c := id) (fun s hs => hb.isOpen (hSb hs)) (by intro x hx; simpa using hx)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨t, ⟨htf, htS.trans hSb⟩, ?_⟩` and prove the remaining obligations. Use `le_antisymm (Set.sUnion_subset_sUnion htS) ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `using hcov hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem countable_compact_open (X : Type) [TopologicalSpace X] [SecondCountableTopology X] :
     {U : Set X | IsCompact U ∧ IsOpen U}.Countable := by
@@ -34,15 +34,13 @@ theorem countable_compact_open (X : Type) [TopologicalSpace X] [SecondCountableT
   simpa using hcov hx
 
 /- English proof (translation)
-Introduce `f hf`. Take `⟨hlc, hcs⟩` from `hf`. Take `⟨s, hs⟩` from `hcs.isCompact.elim_finite_subcover (fun a : ℂ => f ⁻¹' {a}) (fun a => hlc.isOpen_fiber a) (fun x _ => Set.mem_iUnion.2 ⟨f x, rfl⟩)`. Establish `hf_eq : f = ∑ a ∈ s, a • (f ⁻¹' {a}).indicator (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Set.indicator, Set.mem_preimage, Set.mem_singleton_iff, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with h`. Both sides reduce to the same expression. Distinguish the cases in `hx : x ∈ tsupport f`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (by simpa using hs hx) h`. Conclude with `image_eq_zero_of_notMem_tsupport hx`. Rewrite using `[hf_eq]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[ha]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨f ⁻¹' {a}, ⟨?_, hlc.isOpen_fiber a⟩, rfl⟩)` and prove the remaining obligations. Use `hcs.isCompact.of_isClosed_subset (hlc.isClosed_fiber a) ?_` and prove the remaining obligations. Introduce `x hx`. Use `subset_tsupport f ?_` and prove the remaining obligations.
-
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hx`. Simplify using `[Function.mem_support, hx, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SB_le_span (X : Type) [TopologicalSpace X] :
     GlobalTheory.WeilM.SB X ≤ Submodule.span ℂ
@@ -73,7 +71,7 @@ theorem SB_le_span (X : Type) [TopologicalSpace X] :
     simp [Function.mem_support, hx, ha]
 
 /- English proof (translation)
-Use `(Submodule.rank_mono (SB_le_span X)).trans ((rank_span_le _).trans ?_)` and prove the remaining obligations. Conclude with `Cardinal.mk_le_aleph0_iff.2 ((countable_compact_open X).image _).to_subtype`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rank_SB_le (X : Type) [TopologicalSpace X] [SecondCountableTopology X] :
     Module.rank ℂ (GlobalTheory.WeilM.SB X) ≤ Cardinal.aleph0 := by
@@ -85,7 +83,7 @@ end GlobalTheory.SBCount
 namespace GlobalTheory.TripleAssembly
 
 /- English proof (translation)
-Introduce `F _ _ κ _ v`. Establish `: Countable F` using `(Module.finBasis ℚ F).equivFun.injective.countable`. Establish `: TopologicalSpace.SeparableSpace (v.adicCompletion F)` using `⟨_, Set.countable_range _, v.denseRange_algebraMap F⟩`. Conclude with `GlobalTheory.SBCount.rank_SB_le _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rank_SB_adicCompletion_le : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (v : HeightOneSpectrum (𝓞 F)),
     Module.rank ℂ (GlobalTheory.WeilM.SB (κ → v.adicCompletion F)) ≤ Cardinal.aleph0 := by

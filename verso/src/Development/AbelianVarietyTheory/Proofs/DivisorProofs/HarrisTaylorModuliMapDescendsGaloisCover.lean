@@ -26,23 +26,21 @@ end GlobalTheory.UPel.HT.MapDesc
 open GlobalTheory.UPel.HT.MapDesc GlobalTheory.UPel.HT.MapComp in
 
 /- English proof (translation)
-Introduce `p _ D R _ b N S S₁ Y t sY π₁ Ga _ ρ₁ f o o' u hN hNp hG m₁ m₂`. Establish `uniq : ∀ {T T' : Scheme.{0}} {sT : T ⟶ Sp R} {sT' : T' ⟶ Sp R} {x : Obj b N sT} {y : Obj b N sT'} {g g' : T ⟶ T'} (_ : g = g') (n : ObjMap x y g) (n' : ObjMap x y g'), n.φ = n'.φ`. Introduce and unpack `T T' sT sT' x y g g' rfl n n'`. Conclude with `GlobalTheory.T.harrisTaylor_pullback_abelian_map_unique p D R b N hN hNp T' T sT' sT x y g n n'`. Establish `hw : ∀ a, m₁.φ ≫ o.A.hom = (o'.A.hom ≫ ρ₁ a) ≫ π₁` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hG.inv a]`. Conclude with `m₁.cart.1.w`. Set `σ : Ga → (o'.A.left ⟶ o'.A.left)` to `fun a => m₁.cart.1.lift m₁.φ (o'.A.hom ≫ ρ₁ a) (hw a)`. Establish `hσ₁ : ∀ a, σ a ≫ m₁.φ = m₁.φ` using `fun a => m₁.cart.1.lift_fst _ _ _`. Establish `hσ₂ : ∀ a, σ a ≫ o'.A.hom = o'.A.hom ≫ ρ₁ a` using `fun a => m₁.cart.1.lift_snd _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG' : GlobalTheory.ZM.IsGaloisCover Ga σ m₁.φ` using `hG.of_isPullback m₁.cart.1.flip hσ₂ hσ₁`. Establish `hinv : ∀ a, σ a ≫ m₂.φ = m₂.φ` using `fun a => by`. Take `⟨n⟩` from `MapComp.cancel (f := ρ₁ a) (g := π₁) (objMapCongr m₁ (hG.inv a).symm) m₁`. Establish `hn₁ : n.φ ≫ m₁.φ = m₁.φ` using `uniq (hG.inv a) (MapComp.comp n m₁) m₁`. Establish `hn₂ : n.φ ≫ o'.A.hom = o'.A.hom ≫ ρ₁ a` using `n.cart.1.w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnσ : n.φ = σ a` using `m₁.cart.1.hom_ext (by rw [hn₁, hσ₁]) (by rw [hn₂, hσ₂])`. Rewrite using `[← hnσ]`. Conclude with `uniq (by rw [← Category.assoc, hG.inv a]) (MapComp.comp n m₂) m₂`. Take `⟨φ, hφ, -⟩` from `hG'.existsUnique_desc m₂.φ hinv`. Establish `: Epi m₁.φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG'.etale` as an intermediate fact. Use `hG'.onto` as an intermediate fact. Conclude with `Flat.epi_of_flat_of_surjective _`. Establish `: Epi π₁`. Use `hG.etale` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hG.onto` as an intermediate fact. Conclude with `Flat.epi_of_flat_of_surjective _`. Establish `cart : IsGrpPullback o.A u.A f φ` using `GlobalTheory.T.isGrpPullback_descent_along_galoisCover S S₁ Y π₁ Ga ρ₁ f o'.A o.A u.A m₁.φ m₂.φ φ hG m₁.cart m₂.cart hφ`. Take `⟨φ₂, sq⟩` from `MapComp.exists_isSquare cart.1.w`. Establish `sq₂ : IsSquare m₂.φ (m₁.φ₂ ≫ φ₂)` using `by rw [← hφ]; exact MapComp.isSquare_comp m₁.sq sq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e₂ : m₂.φ₂ = m₁.φ₂ ≫ φ₂` using `MapComp.isSquare_unique m₂.sq sq₂`. Establish `hA₂ : IsAbelianScheme (G2 o.A)` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ o.ab o.ab`. Use `hA₂.comm` as an intermediate fact. Take `⟨r, hr⟩ : GlobalTheory.AbLaw.Triv (o.P.pull (eSec (G2 o.A)))` from `GlobalTheory.AbLaw.CubeOpen.triv_comp (eSec o.A) (GlobalTheory.SquareDescent.eSec_lift_one o.A) o.rig₁`. Take `⟨r', hr'⟩ : GlobalTheory.AbLaw.Triv (u.P.pull (eSec (G2 u.A)))` from `GlobalTheory.AbLaw.CubeOpen.triv_comp (eSec u.A) (GlobalTheory.SquareDescent.eSec_lift_one u.A) u.rig₁`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `PA : RigLB (G2 o.A)` to `⟨o.P, r, o.isLB, hr⟩`. Set `PB : RigLB (G2 u.A)` to `⟨u.P, r', u.isLB, hr'⟩`. Establish `c₁ : IsGrpPullback (G2 o'.A) (G2 o.A) π₁ m₁.φ₂` using `GlobalTheory.ShearLift.isGrpPullback_tensor m₁.cart m₁.cart m₁.sq.1 m₁.sq.2`. Establish `c₂ : IsGrpPullback (G2 o.A) (G2 u.A) f φ₂` using `GlobalTheory.ShearLift.isGrpPullback_tensor cart cart sq.1 sq.2`. Establish `pol₂ : LBIso o'.P (u.P.pull (m₁.φ₂ ≫ φ₂))` using `by rw [← e₂]; exact m₂.pol`.
-
-Establish `pol : LBIso o.P (u.P.pull φ₂)` using `GlobalTheory.T.rigidLineBundleIso_descent_along_galoisCover S S₁ Y π₁ Ga ρ₁ f (G2 o'.A) (G2 o.A) (G2 u.A) m₁.φ₂ φ₂ PA PB o'.P hA₂ hG c₁ c₂ o'.isLB m₁.pol pol₂`. Use `⟨{ φ := φ, φ₂ := φ₂, cart := cart, sq := sq, act := fun c => ?_, pol := pol, eta := fun y => ?_ }⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi m₁.φ, ← Category.assoc, ← m₁.act c, Category.assoc, hφ, m₂.act c, ← hφ, Category.assoc]`. Rewrite using `[← cancel_epi π₁, ← Category.assoc, ← m₁.eta y, Category.assoc, hφ, m₂.eta y, Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UPel.HT.MapDesc.nonempty_objMap_of_galoisCover : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ)
   (S S₁ Y : Scheme.{0}) (t : S ⟶ Sp R) (sY : Y ⟶ Sp R) (π₁ : S₁ ⟶ S) (Ga : Type) [Group Ga]

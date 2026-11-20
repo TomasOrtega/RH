@@ -8,7 +8,7 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.Dec
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hv`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hy.inner_right_fintype]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kerDiag_expand {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {D : ℕ}
     (y : Fin D → H) (hy : Orthonormal ℂ y) (v : H) (hv : v ∈ Submodule.span ℂ (Set.range y)) :
@@ -18,13 +18,13 @@ theorem kerDiag_expand {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ
   rw [hy.inner_right_fintype]
 
 /- English proof (translation)
-Use `set u : H := ∑ i, (starRingEnd ℂ) (a i) • y i with hu`. Establish `h1 : ∀ j, ‖b j‖ = ‖⟪y' j, u⟫_ℂ‖`. Introduce `j`. Rewrite using `[norm_inner_symm, hb, hu, sum_inner]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, Complex.conj_conj, mul_comm]`. Establish `h2 : ‖u‖ ^ 2 = ∑ i, ‖a i‖ ^ 2`. Establish `h3 : ⟪u, u⟫_ℂ = ∑ i, ((‖a i‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[hu, hy.inner_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.conj_conj, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite `h3` using `[inner_self_eq_norm_sq_to_K]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_sum, ← h3, Complex.ofReal_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [h1]`. Rewrite using `[← h2]`. Conclude with `hy'.sum_inner_products_le u`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerDiag_le {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {D : ℕ}
     (y y' : Fin D → H) (hy : Orthonormal ℂ y) (hy' : Orthonormal ℂ y') (a b : Fin D → ℂ)
@@ -51,7 +51,7 @@ theorem kerDiag_le {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] 
   exact hy'.sum_inner_products_le u
 
 /- English proof (translation)
-Use `⟨h.1.add (continuous_const.mul h'.1), fun γ hγ x => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [h.2.1 γ hγ x, h'.2.1 γ hγ x]`. Use `filter_upwards [Lp.coeFn_add F (c • F'), Lp.coeFn_smul c F', h.2.2, h'.2.2] with x h1 h2 h3 h4`. Rewrite using `[h1, Pi.add_apply, h2, Pi.smul_apply, h3, h4, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerDiag_add_rep (B : RowsAut) (F F' : B.I.L2 B.μf B.fund) (f f' : B.I.GA → ℂ) (c : ℂ)
     (h : IsContRep B F f) (h' : IsContRep B F' f') :
@@ -62,9 +62,9 @@ theorem kerDiag_add_rep (B : RowsAut) (F F' : B.I.L2 B.μf B.fund) (f f' : B.I.G
     rw [h1, Pi.add_apply, h2, Pi.smul_apply, h3, h4, smul_eq_mul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hg`. Consider the case `insert a s ha ih`. Use `kerDiag_add_rep B _ _ _ _ (c a) ih (h a)` as an intermediate fact. Simplify using `only [Finset.sum_insert ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kerDiag_sum_rep (B : RowsAut) {ι : Type} (s : Finset ι) (y : ι → B.I.L2 B.μf B.fund)
     (f : ι → B.I.GA → ℂ) (c : ι → ℂ) (F : B.I.L2 B.μf B.fund) (g : B.I.GA → ℂ)
@@ -81,9 +81,9 @@ theorem kerDiag_sum_rep (B : RowsAut) {ι : Type} (s : Finset ι) (y : ι → B.
     · funext x; ring
 
 /- English proof (translation)
-Establish `e` using `kerDiag_expand y hy (y' j) (hs (Submodule.subset_span ⟨j, rfl⟩))`. Establish `h1` using `kerDiag_sum_rep B Finset.univ y f (fun i => ⟪y i, y' j⟫_ℂ) _ _ (h' j) h`. Rewrite `h1` using `[← e]`. Establish `h2` using `kerDiag_add_rep B _ _ _ _ 1 (h' j) (h' j)`. Rewrite `h2` using `[one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrFun ((GlobalTheory.ExtContRep.ext_ae_eq_contRep B _ _ h2).2.1 _ h1) x`. Simplify using `only [one_mul, add_right_inj] at h3`. Conclude with `h3.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kerDiag_vals (B : RowsAut) (D : ℕ) (y y' : Fin D → B.I.L2 B.μf B.fund)
     (f f' : Fin D → B.I.GA → ℂ) (hy : Orthonormal ℂ y)
@@ -100,7 +100,7 @@ theorem kerDiag_vals (B : RowsAut) (D : ℕ) (y y' : Fin D → B.I.L2 B.μf B.fu
   exact h3.symm
 
 /- English proof (translation)
-Introduce `B D y y' f f' hy hy' hs h x`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `kerDiag_le y' y hy' hy _ _ fun j => kerDiag_vals B D y' y f' f hy' hs.le (fun i => (h i).2) (fun i => (h i).1) j x`. Conclude with `kerDiag_le y y' hy hy' _ _ fun j => kerDiag_vals B D y y' f f' hy hs.ge (fun i => (h i).1) (fun i => (h i).2) j x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem kerDiag_basis_indep : ∀ (B : RowsAut) (D : ℕ) (y y' : Fin D → B.I.L2 B.μf B.fund) (f f' : Fin D → B.I.GA → ℂ), Orthonormal ℂ y → Orthonormal ℂ y' → Submodule.span ℂ (Set.range y) = Submodule.span ℂ (Set.range y') → (∀ i, IsContRep B (y i) (f i) ∧ IsContRep B (y' i) (f' i)) → ∀ x, ∑ i, ‖f i x‖ ^ 2 = ∑ i, ‖f' i x‖ ^ 2 := by
   intro B D y y' f f' hy hy' hs h x

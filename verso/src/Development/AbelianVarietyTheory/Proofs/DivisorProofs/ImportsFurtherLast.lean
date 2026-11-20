@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory.ValuationExtensionExistence
 
 /- English proof (translation)
-Establish `: (RingHom.ker ev).IsPrime` using `RingHom.ker_isPrime ev`. Take `⟨Q, -, hQ, hQp⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := R) (RingHom.ker ev) ⊥ (by`. Rewrite using `[Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective V R)]`. Conclude with `bot_le)`. Use `hQ` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Q.LiesOver (RingHom.ker ev)` using `⟨hQp.symm⟩`. Set `: Algebra (V ⧸ RingHom.ker ev) K` to `(RingHom.kerLift ev).toAlgebra`. Establish `: Module.IsTorsionFree (V ⧸ RingHom.ker ev) K` using `Module.isTorsionFree_iff_algebraMap_injective.2 (RingHom.kerLift_injective ev)`. Establish `: Module.IsTorsionFree (V ⧸ RingHom.ker ev) (R ⧸ Q)` using `Module.isTorsionFree_iff_algebraMap_injective.2 (FaithfulSMul.algebraMap_injective _ _)`. Establish `: Algebra.IsIntegral (V ⧸ RingHom.ker ev) (R ⧸ Q)` using `Ideal.Quotient.algebra_isIntegral_of_liesOver Q (RingHom.ker ev)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.IsAlgebraic (V ⧸ RingHom.ker ev) (R ⧸ Q)` using `Algebra.IsIntegral.isAlgebraic`. Set `f : R ⧸ Q →ₐ[V ⧸ RingHom.ker ev] K` to `IsAlgClosed.lift`. Use `⟨(f : R ⧸ Q →+* K).comp (Ideal.Quotient.mk Q), ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Establish `h` using `f.commutes (Ideal.Quotient.mk (RingHom.ker ev) v)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Ideal.Quotient.algebraMap_mk_of_liesOver]`. Conclude with `h.trans (RingHom.kerLift_mk ev v)`.
+A detailed English derivation is pending.
 -/
 theorem exists_extension {V R K : Type} [CommRing V] [CommRing R] [IsDomain R] [Field K]
     [IsAlgClosed K] [Algebra V R] [Algebra.IsIntegral V R] [FaithfulSMul V R] (ev : V →+* K) :
@@ -39,9 +39,9 @@ theorem exists_extension {V R K : Type} [CommRing V] [CommRing R] [IsDomain R] [
   exact h.trans (RingHom.kerLift_mk ev v)
 
 /- English proof (translation)
-Introduce `V R K _ _ _ _ _ _ _ _ ρ hinj hfin`. Establish `hint : ρ.IsIntegral` using `hfin.to_isIntegral`. Use `⟨?_, fun ev => ?_⟩` and prove the remaining obligations. Use `((IsLocalRing.local_hom_TFAE ρ).out 4 0).mp ?_` and prove the remaining obligations. Conclude with `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' ρ hint _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `` to `ρ.toAlgebra`. Establish `: Algebra.IsIntegral V R` using `⟨hint⟩`. Establish `: FaithfulSMul V R` using `(faithfulSMul_iff_algebraMap_injective V R).2 hinj`. Conclude with `exists_extension ev`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (V R K : Type) [inst : CommRing V] [IsDomain V] [IsLocalRing V]
     [inst_3 : CommRing R] [IsDomain R] [IsLocalRing R] [inst_6 : Field K] [IsAlgClosed K]

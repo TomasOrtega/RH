@@ -54,11 +54,11 @@ def realImage (Ψ : Finset (E →+* ℂ)) {P Q : Ψ → ℕ}
       _ = _ := by rw [← ha, Matrix.mul_assoc, Matrix.mul_assoc, h2, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hJ : Formalism.UG.Jpq P Q * Formalism.UG.Jpq P Q = 1`. Simplify using `[Formalism.UG.Jpq, Matrix.fromBlocks_multiply]`. Establish `h1 : Bᴴ * ((G.map τ).map (starRingEnd ℂ) * B) = Formalism.UG.Jpq P Q`. Use extensionality with `a b`. Establish `h` using `congrArg (starRingEnd ℂ) (hB a b)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h' : starRingEnd ℂ (Formalism.UG.Jpq P Q a b) = Formalism.UG.Jpq P Q a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [Formalism.UG.Jpq, Matrix.one_apply, apply_ite]`. Rewrite `h` using `[h']`. Rewrite using `[← h]`. Simplify using `[hermC, Matrix.mul_apply, Finset.mul_sum, mul_assoc]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : (Formalism.UG.Jpq P Q * (Bᴴ * (G.map τ).map (starRingEnd ℂ))) * B = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h1, hJ]`. Use `⟨h1, _, h2, ?_⟩` and prove the remaining obligations. Conclude with `(Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by simp [hr])).1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsOrthFrame.exists_inv {τ : E →+* ℂ} {G : Matrix (Fin r) (Fin r) E} {P Q : ℕ}
     {B : Matrix (Fin r) (Fin P ⊕ Fin Q) ℂ} (hB : IsOrthFrame τ G B) (hr : P + Q = r) :

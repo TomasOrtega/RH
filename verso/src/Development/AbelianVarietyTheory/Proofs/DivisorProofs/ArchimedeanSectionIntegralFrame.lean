@@ -11,7 +11,7 @@ open NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj 
 namespace GlobalTheory.FlatCore.Bdry
 
 /- English proof (translation)
-Introduce `hP hQ2 hQ3 E _ _ _ H Dw l Xo c r U x hL Z τ s T io y₀ hv hZ`. Take `⟨s₀, hs₀⟩` from `GlobalTheory.T.exists_archimedean_section_flat hP hQ2 hQ3 E H Dw l Xo c r U x hL Z τ ⟨s⟩`. Take `⟨a, ha, hsa⟩` from `GlobalTheory.T.constLengthArchSection_eq_smul_of_same_weight E H Dw l Xo c r U x hL.unf hL.geo Z (flatWt Dw τ) s₀ s`. Establish `h0 : io a ≠ 0` using `(map_ne_zero io).2 ha`. Rewrite using `[hsa, evI_smul, nval_mul, hs₀ T io y₀ hv hZ, nval_of_ne h0, hv a ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

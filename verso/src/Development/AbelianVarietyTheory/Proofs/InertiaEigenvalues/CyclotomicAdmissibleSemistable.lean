@@ -13,11 +13,11 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l)
 
 include P in
 /- English proof (translation)
-Set `K` to `adjExt (c : Om l)`. Set `x : ↥(K0 K)` to `⟨c, mem_adjExt _, c.2⟩`. Establish `h1 : (P.PD K).φ (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c) = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c`. Rewrite using `[P.PD_φ, phiB_algebraMap, hc]`. Establish `h2 : (P.PD K).ι (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c) ∈ (P.PD K).Fil 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (P.PD K).ι (algebraMap ↥(K0 K) P.R.B x) = algebraMap ↥(K0 K) P.R.BdR x` using `(P.PD K).ι.commutes x`. Establish `e2 : algebraMap ↥(K0 K) P.R.BdR x = (algebraMap ↥(K0 K) ↥K.1 x) • (1 : P.R.BdR)`. Rewrite using `[IsScalarTower.algebraMap_apply ↥(K0 K) ↥K.1 P.R.BdR, Algebra.algebraMap_eq_smul_one]`. Establish `e3 : algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c = algebraMap ↥(K0 K) P.R.B x` using `rfl`. Rewrite using `[e3, e, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (P.PD K).one_mem`. Take `⟨q, hq⟩` from `(P.PD K).fund _ h1 h2`. Use `haveI := nontrivial_B P`. Use `⟨q, (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hq, ← IsScalarTower.algebraMap_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_frob (c : ↥(MaximalUnramifiedExtension l)) (hc : frobUr l c = c) : ∃ q : ℚ_[l], algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) q = c := by
   let K := adjExt (c : Om l)
@@ -41,13 +41,13 @@ def cyc (K : FinExt l) (a : ℤ) : ↥(GK K) →* GL (Fin 1) ↥(MaximalUnramifi
     ((zpowGroupHom a).comp (P.χQ.comp (GK K).subtype))
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kd_alg (q : ℚ_[l]) : kd P (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) q) = algebraMap ℚ_[l] P.R.BdR q := by
   rw [IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR]; rfl
 
 /- English proof (translation)
-Establish `h : Units.map (P.actQ g : P.R.B →* P.R.B) (isUnit_tB P).unit = Units.map (algebraMap ℚ_[l] P.R.B : ℚ_[l] →* P.R.B) (P.χQ g) * (isUnit_tB P).unit` using `by ext; simp [localPrime_galoisAction_periodT, Algebra.smul_def]`. Establish `h2` using `congrArg (fun u : P.R.Bˣ => ((u ^ a : P.R.Bˣ) : P.R.B)) h`. Simplify using `only [mul_zpow, ← map_zpow, Units.val_mul, Units.coe_map, MonoidHom.coe_coe] at h2`. Rewrite using `[← map_zpow P.χQ]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_zpow (g : GQ l) (a : ℤ) :
     P.actQ g (((isUnit_tB P).unit ^ a : P.R.Bˣ) : P.R.B) =

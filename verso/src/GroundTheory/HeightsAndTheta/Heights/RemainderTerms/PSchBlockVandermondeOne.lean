@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open MvPolynomial Finset
 
 /- English proof (translation)
-Introduce `N`. Simplify using `only [blockVandermonde, vandermondeOf, Fin.prod_univ_one, map_prod, map_sub, rename_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem SchBlockVandermondeOne.proof : SchBlockVandermondeOne.Statement := by
   intro N

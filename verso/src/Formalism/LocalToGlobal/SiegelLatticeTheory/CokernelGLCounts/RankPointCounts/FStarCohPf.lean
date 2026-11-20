@@ -62,11 +62,9 @@ def CohGood : Prop :=
 variable {u u' F0 what₂}
 
 /- English proof (translation)
-Use extensionality with `Λ₂`. Rewrite using `[Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h2`. Establish `hL : (locH Zd p).Lset (lattice₂ D Zd.M p γ.lam) (tLoc Zd p γ).f = (locH Zd p).Lset Λ₂ (tLoc Zd p γ).f`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `h2.2.1`. Conclude with `(Set.image_id _).symm.trans h`. Establish `hX` using `Formalism.MainNotions.S.Loc.HermSp.CohU.X_le_MMfam (H := locH Zd p) (t2 Zd p γ F'₂ ⊥)`. Conclude with `(Formalism.MainNotions.S.Loc.HermSp.CohU.lat_eq_of_Lset hN hX hmem.1.1.1 h2.1.1.1 hmem.1.2.1 h2.1.2.1 hL).symm`. Introduce `h`.
-
-Rewrite using `[h]`. Conclude with `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locSet_eq_single {p : PlF D} {γ : TermDef.Term D u u' F0 what₂}
     {F'₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)}
@@ -88,9 +86,9 @@ theorem locSet_eq_single {p : PlF D} {γ : TermDef.Term D u u' F0 what₂}
     exact hmem
 
 /- English proof (translation)
-Introduce `γ Z hC F'₂ hZ hc φ' hφ'`. Establish `hH : CohHyp Zd γ Z F'₂ φ'` using `⟨hC, hZ, hc, hφ'⟩`. Use `⟨γ.lam, (hP.2.1.1 γ.lam γ.mem).1.1, ?_⟩` and prove the remaining obligations. Use `(((hGen hP γ Z F'₂ φ' hH).union (hResp hP γ Z F'₂ φ' hH)).union (hGood hP γ Z F'₂ φ' hH)).subset ?_` and prove the remaining obligations. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at hn`. Take `⟨⟨hg, hr⟩, hN⟩` from `hn`. Conclude with `hp (locSet_eq_single Zd ⟨hg, hr⟩ hN)`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem starCoh_of (hP : CtxP u u' F0 what₂) (hGen : CohGen Zd u u' F0 what₂) (hResp : CohResp Zd u u' F0 what₂)
     (hGood : CohGood Zd u u' F0 what₂) : StarCoh Zd u u' F0 what₂ := by
@@ -105,7 +103,7 @@ theorem starCoh_of (hP : CtxP u u' F0 what₂) (hGen : CohGen Zd u u' F0 what₂
   exact hp (locSet_eq_single Zd ⟨hg, hr⟩ hN)
 
 /- English proof (translation)
-Introduce `hP` and use `starCoh_of Zd hP hGen hResp hGood`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem starCoh_of_P (hGen : CohGen Zd u u' F0 what₂) (hResp : CohResp Zd u u' F0 what₂)
     (hGood : CohGood Zd u u' F0 what₂) : CtxP u u' F0 what₂ → StarCoh Zd u u' F0 what₂ :=

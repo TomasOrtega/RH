@@ -15,7 +15,7 @@ noncomputable def secVal (ξ : Spec (CommRingCat.of Ω) ⟶ X) (U : X.Opens) (h 
   (X.presheaf.germ U (genPt ξ) h ≫ Scheme.stalkClosedPointTo ξ).hom
 
 /- English proof (translation)
-Establish `e : X.presheaf.germ U q.1 hq ≫ X.presheaf.stalkSpecializes q.2 = X.presheaf.germ U (genPt ξ) h` using `TopCat.Presheaf.germ_stalkSpecializes X.presheaf hq q.2`. Establish `e2 : X.presheaf.germ U q.1 hq ≫ (X.presheaf.stalkSpecializes q.2 ≫ Scheme.stalkClosedPointTo ξ) = X.presheaf.germ U (genPt ξ) h ≫ Scheme.stalkClosedPointTo ξ` using `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ Scheme.stalkClosedPointTo ξ) e)`. Conclude with `congrArg (fun f => f.hom t) e2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genMap_germ (U : X.Opens) (h : genPt ξ ∈ U) (q : Cpt ξ) (hq : q.1 ∈ U) (t : Γ(X, U)) :
     genMap ξ q (X.presheaf.germ U q.1 hq t) = secVal ξ U h t := by
@@ -27,11 +27,11 @@ theorem genMap_germ (U : X.Opens) (h : genPt ξ ∈ U) (q : Cpt ξ) (hq : q.1 �
   exact congrArg (fun f => f.hom t) e2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hs`. Establish `hu` using `hs.map (genMap ξ q)`. Use `⟨hu.ne_zero, ⟨s, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `hs`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨(u⁻¹ : (X.presheaf.stalk q.1)ˣ).1, ?_⟩` and prove the remaining obligations. Establish `: genMap ξ q u.1 * genMap ξ q (u⁻¹ : (X.presheaf.stalk q.1)ˣ).1 = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Conclude with `eq_inv_of_mul_eq_one_right this`. Introduce and unpack `⟨h0, -, ⟨s', hs'⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: s * s' = 1` using `hi (by rw [map_mul, hs', map_one, mul_inv_cancel₀ h0])`. Conclude with `IsUnit.of_mul_eq_one _ this`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_iff_unitAt {q : Cpt ξ} (hi : Function.Injective (genMap ξ q)) (s : X.presheaf.stalk q.1) :
     IsUnit s ↔ unitAt ξ q (genMap ξ q s) := by
@@ -49,18 +49,16 @@ theorem isUnit_iff_unitAt {q : Cpt ξ} (hi : Function.Injective (genMap ξ q)) (
     exact IsUnit.of_mul_eq_one _ this
 
 /- English proof (translation)
-Rewrite using `[Scheme.mem_basicOpen X t q.1 hq, isUnit_iff_unitAt (hg.inj q), genMap_germ U h q hq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_basicOpen_iff (hg : IsCptGen ξ) (U : X.Opens) (h : genPt ξ ∈ U) (q : Cpt ξ) (hq : q.1 ∈ U)
     (t : Γ(X, U)) : q.1 ∈ X.basicOpen t ↔ unitAt ξ q (secVal ξ U h t) := by
   rw [Scheme.mem_basicOpen X t q.1 hq, isUnit_iff_unitAt (hg.inj q), genMap_germ U h q hq]
 
 /- English proof (translation)
-Use `choose f' hf' using hf`. Use `choose c' hc' using hc`. Establish `hs : ∑ l, c' l * f' l = 1` using `(hg.inj p) (by simp [map_sum, hf', hc', h1])`. Assume the negation of the conclusion as `hno`. Establish `hmem : ∀ l, c' l * f' l ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk p.1)` using `fun l => by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 fun hu => hno ⟨l, ?_⟩)` and prove the remaining obligations. Use `(isUnit_iff_unitAt (hg.inj p) (f' l)).1 hu` as an intermediate fact. Rewrite `this` using `[hf']`. Then use the resulting hypothesis. Use `Ideal.sum_mem _ fun l (_ : l ∈ Finset.univ) => hmem l` as an intermediate fact. Rewrite `this` using `[hs]`.
-
-Conclude with `(Ideal.ne_top_iff_one _).1 (Ideal.IsPrime.ne_top inferInstance) this`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitAt_of_sum (hg : IsCptGen ξ) (p : Cpt ξ) {k : ℕ} (f c : Fin k → Ω)
     (hf : ∀ l, f l ∈ regAt ξ p) (hc : ∀ l, c l ∈ regAt ξ p) (h1 : ∑ l, c l * f l = 1) :
@@ -78,9 +76,9 @@ theorem exists_unitAt_of_sum (hg : IsCptGen ξ) (p : Cpt ξ) {k : ℕ} (f c : Fi
   exact (Ideal.ne_top_iff_one _).1 (Ideal.IsPrime.ne_top inferInstance) this
 
 /- English proof (translation)
-Take `⟨s', rfl⟩` from `hs`. Take `⟨t', rfl⟩` from `ht`. Rewrite `h` using `[← map_add, ← isUnit_iff_unitAt (hg.inj p)]`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h with h | h` into its components or cases. Conclude with `Or.inl ((isUnit_iff_unitAt (hg.inj p) _).1 h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr ((isUnit_iff_unitAt (hg.inj p) _).1 h)`.
+Prove the second alternative.
 -/
 theorem unitAt_or_of_add (hg : IsCptGen ξ) (p : Cpt ξ) {s t : Ω} (hs : s ∈ regAt ξ p) (ht : t ∈ regAt ξ p)
     (h : unitAt ξ p (s + t)) : unitAt ξ p s ∨ unitAt ξ p t := by
@@ -92,21 +90,21 @@ theorem unitAt_or_of_add (hg : IsCptGen ξ) (p : Cpt ξ) {s t : Ω} (hs : s ∈ 
   · exact Or.inr ((isUnit_iff_unitAt (hg.inj p) _).1 h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_ne_zero hs.1 ht.1, mul_mem hs.2.1 ht.2.1, by rw [mul_inv]; exact mul_mem hs.2.2 ht.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_mul {p : Cpt ξ} {s t : Ω} (hs : unitAt ξ p s) (ht : unitAt ξ p t) : unitAt ξ p (s * t) :=
   ⟨mul_ne_zero hs.1 ht.1, mul_mem hs.2.1 ht.2.1, by rw [mul_inv]; exact mul_mem hs.2.2 ht.2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pow_ne_zero _ hs.1, pow_mem hs.2.1 _, by rw [← inv_pow]; exact pow_mem hs.2.2 _⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_pow {p : Cpt ξ} {s : Ω} (hs : unitAt ξ p s) (n : ℕ) : unitAt ξ p (s ^ n) :=
   ⟨pow_ne_zero _ hs.1, pow_mem hs.2.1 _, by rw [← inv_pow]; exact pow_mem hs.2.2 _⟩
 
 /- English proof (translation)
-Use `⟨right_ne_zero_of_mul h.1, ht, ?_⟩` and prove the remaining obligations. Establish `: t⁻¹ = s * (s * t)⁻¹`. Establish `h0` using `left_ne_zero_of_mul h.1`. Establish `h1` using `right_ne_zero_of_mul h.1`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[this]`. Conclude with `mul_mem hs h.2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_of_mul {p : Cpt ξ} {s t : Ω} (hs : s ∈ regAt ξ p) (ht : t ∈ regAt ξ p) (h : unitAt ξ p (s * t)) :
     unitAt ξ p t := by
@@ -119,19 +117,19 @@ theorem unitAt_of_mul {p : Cpt ξ} {s t : Ω} (hs : s ∈ regAt ξ p) (ht : t �
   exact mul_mem hs h.2.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_ne_zero, one_mem _, by simp [one_mem]⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_one (p : Cpt ξ) : unitAt ξ p 1 := ⟨one_ne_zero, one_mem _, by simp [one_mem]⟩
 
 /- English proof (translation)
-Introduce `h` and use `h.1 rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_unitAt_zero (p : Cpt ξ) : ¬ unitAt ξ p 0 := fun h => h.1 rfl
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hg.bij.2 a`. Use `⟨s, ?_⟩` and prove the remaining obligations. Unfold `genMap`. Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl]`. Use `erw [Category.id_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem regAt_genPt (hg : IsCptGen ξ) (a : Ω) : a ∈ regAt ξ (⟨genPt ξ, specializes_rfl⟩ : Cpt ξ) := by
   obtain ⟨s, rfl⟩ := hg.bij.2 a
@@ -146,11 +144,9 @@ section Chart
 variable {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ → Ω}
 
 /- English proof (translation)
-Take `⟨U, hU, hmem⟩` from `hT.affine c hc`. Establish `h : genPt ξ ∈ U` using `(hmem _).2 ⟨specializes_rfl, hc, fun c' => regAt_genPt hT.gen _⟩`. Establish `hsp : ∀ q : X, q ∈ U → genPt ξ ⤳ q` using `fun q hq => by`. Take `⟨h2, _⟩` from `(hmem q).1 hq`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hUq : ∀ q : Cpt ξ, q.1 ∈ U ↔ InChart ξ x c q` using `fun q => ⟨fun hq => by obtain ⟨_, h2⟩ := (hmem q.1).1 hq; exact h2, fun hq => (hmem q.1).2 ⟨q.2, hq⟩⟩`. Take `⟨hinj, hran⟩` from `regAt_sections X Ω ξ hT.gen U h hsp`. Use `⟨U, h, hU, hUq, hsp, hinj, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hT.ring c hc a]`. Use `Iff.trans ?_ (hran a).symm` and prove the remaining obligations.
-
-Conclude with `forall_congr' fun q => (by rw [hUq q])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_chart (hT : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) :
     ∃ (U : X.Opens) (h : genPt ξ ∈ U), IsAffineOpen U ∧ (∀ q : Cpt ξ, q.1 ∈ U ↔ InChart ξ x c q) ∧
@@ -171,13 +167,13 @@ theorem exists_chart (hT : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) :
   exact forall_congr' fun q => (by rw [hUq q])
 
 /- English proof (translation)
-Take `⟨U, h, hU, hUq, hsp, -, hran⟩` from `exists_chart hT hc`. Set `φ : Γ(X, U) →+* chartRing o x c` to `(secVal ξ U h).codRestrict (chartRing o x c) fun t => (hran _).2 ⟨t, rfl⟩`. Set `y : PrimeSpectrum Γ(X, U)` to `⟨P.comap φ, inferInstance⟩`. Establish `hyU : hU.fromSpec y ∈ U`. Establish `: hU.fromSpec y ∈ Set.range hU.fromSpec` using `⟨y, rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Set `q : Cpt ξ` to `⟨_, hsp _ hyU⟩`. Use `⟨q, (hUq q).1 hyU, fun s => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `(hran s).1 s.2`. Establish `hst : s = φ t` using `Subtype.ext ht.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : q.1 ∈ X.basicOpen t ↔ t ∉ P.comap φ` using `by show y ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen t ↔ _`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression. Establish `h2` using `mem_basicOpen_iff hT.gen U h q hyU t`. Establish `h3 : (s : Ω) = secVal ξ U h t` using `ht.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3, ← h2, key, hst, Ideal.mem_comap, not_not]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_point (hT : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) (P : Ideal (chartRing o x c)) (hP : P.IsPrime) :
     ∃ p : Cpt ξ, InChart ξ x c p ∧ ∀ s : chartRing o x c, s ∈ P ↔ ¬ unitAt ξ p s := by
@@ -201,7 +197,7 @@ theorem exists_point (hT : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) (P : Ideal
   rw [h3, ← h2, key, hst, Ideal.mem_comap, not_not]
 
 /- English proof (translation)
-Take `⟨U, h, hU, hUq, hsp, -, hran⟩` from `exists_chart hT hc`. Take `⟨f, hle, hmem⟩` from `hU.exists_basicOpen_le (⟨q.1, hV⟩ : V) ((hUq q).2 hq)`. Use `⟨secVal ξ U h f, (hran _).2 ⟨f, rfl⟩, (mem_basicOpen_iff hT.gen U h q ((hUq q).2 hq) f).1 hmem, fun p hp hu => hle ((mem_basicOpen_iff hT.gen U h p ((hUq p).2 hp) f).2 hu)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_basic (hT : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) (V : X.Opens) {q : Cpt ξ}
     (hq : InChart ξ x c q) (hV : q.1 ∈ V) :
@@ -212,7 +208,7 @@ theorem exists_basic (hT : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) (V : X.Ope
     fun p hp hu => hle ((mem_basicOpen_iff hT.gen U h p ((hUq p).2 hp) f).2 hu)⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hI`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal I hI`. Take `⟨p, hp, hs⟩` from `exists_point hT hc M hM.isPrime`. Take `⟨s, hsI, hu⟩` from `h p hp`. Conclude with `(hs s).1 (hle hsI) hu`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ideal_eq_top (hT : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) (I : Ideal (chartRing o x c))
     (h : ∀ p : Cpt ξ, InChart ξ x c p → ∃ s ∈ I, unitAt ξ p s) : I = ⊤ := by
@@ -223,29 +219,27 @@ theorem ideal_eq_top (hT : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) (I : Ideal
   exact (hs s).1 (hle hsI) hu
 
 /- English proof (translation)
-The claim follows from `(hT.ring c hp.1 a).1 ha p hp`.
+A detailed English derivation is pending.
 -/
 theorem chart_le_regAt (hT : CoordTie o ξ x) {c : κ} {p : Cpt ξ} (hp : InChart ξ x c p) {a : Ω}
     (ha : a ∈ chartRing o x c) : a ∈ regAt ξ p :=
   (hT.ring c hp.1 a).1 ha p hp
 
 /- English proof (translation)
-The claim follows from `(regAt_iff_exists_chart_fraction X Ω ξ o κ x hT c p hp a).1 ha`.
+A detailed English derivation is pending.
 -/
 theorem exists_den (hT : CoordTie o ξ x) {c : κ} {p : Cpt ξ} (hp : InChart ξ x c p) {a : Ω}
     (ha : a ∈ regAt ξ p) : ∃ s ∈ chartRing o x c, unitAt ξ p s ∧ s * a ∈ chartRing o x c :=
   (regAt_iff_exists_chart_fraction X Ω ξ o κ x hT c p hp a).1 ha
 
 /- English proof (translation)
-Set `I : Ideal (chartRing o x c)` to `{ carrier := {s | (s : Ω) * a ∈ chartRing o x c} add_mem' := fun {u v} hu hv => by show ((u + v : chartRing o x c) : Ω) * a ∈ chartRing o x c`. Establish `: ((u + v : chartRing o x c) : Ω) * a = (u : Ω) * a + (v : Ω) * a` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `add_mem hu hv`. Use the proof step `zero_mem' := by show ((0 : chartRing o x c) : Ω) * a ∈ chartRing o x c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use the proof step `smul_mem' := fun t u hu => by show ((t • u : chartRing o x c) : Ω) * a ∈ chartRing o x c`. Establish `: ((t • u : chartRing o x c) : Ω) * a = (t : Ω) * ((u : Ω) * a)`. Simplify using `[_root_.mul_assoc]`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `mul_mem t.2 hu }`. Establish `hrad : (⟨f, hf⟩ : chartRing o x c) ∈ I.radical`. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `P ⟨hle, hP⟩`. Assume the negation of the conclusion as `hfP`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hs⟩` from `exists_point hT hc P hP`. Establish `hu : unitAt ξ p f`. Assume the negation of the conclusion as `hn`. Conclude with `hfP ((hs ⟨f, hf⟩).2 hn)`. Take `⟨s, hsA, hsu, hsa⟩` from `exists_den hT hp (h p hp hu)`.
-
-Conclude with `(hs ⟨s, hsA⟩).1 (hle hsa) hsu`. Take `⟨n, hn⟩` from `hrad`. Conclude with `⟨n, hn⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem (hT : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) {f a : Ω} (hf : f ∈ chartRing o x c)
     (h : ∀ p : Cpt ξ, InChart ξ x c p → unitAt ξ p f → a ∈ regAt ξ p) :
@@ -283,7 +277,7 @@ theorem exists_pow_mul_mem (hT : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) {f a
 variable {E : Type} [AddCommGroup E] [Module Ω E]
 
 /- English proof (translation)
-Use `N.smul_mem ⟨s⁻¹, hs.2.2⟩ h` as an intermediate fact. Rewrite `this` using `[Subring.smul_def, smul_smul, inv_mul_cancel₀ hs.1, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_smul_mem {p : Cpt ξ} (N : Submodule (regAt ξ p) E) {s : Ω} (hs : unitAt ξ p s) {e : E}
     (h : s • e ∈ N) : e ∈ N := by
@@ -291,22 +285,20 @@ theorem mem_of_smul_mem {p : Cpt ξ} (N : Submodule (regAt ξ p) E) {s : Ω} (hs
   rwa [Subring.smul_def, smul_smul, inv_mul_cancel₀ hs.1, one_smul] at this
 
 /- English proof (translation)
-The claim follows from `N.smul_mem ⟨a, ha⟩ h`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_reg {p : Cpt ξ} (N : Submodule (regAt ξ p) E) {a : Ω} (ha : a ∈ regAt ξ p) {e : E}
     (h : e ∈ N) : a • e ∈ N :=
   N.smul_mem ⟨a, ha⟩ h
 
 /- English proof (translation)
-Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem v hv => exact ⟨1, one_mem _, unitAt_one p, by simpa using hv⟩`. Consider the case `zero => exact ⟨1, one_mem _, unitAt_one p, by simp⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨s, hs, hsu, hsM⟩` from `hu`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, htu, htM⟩` from `hv`. Use `⟨s * t, mul_mem hs ht, unitAt_mul hsu htu, ?_⟩` and prove the remaining obligations. Establish `h1 : (s * t) • (u + v) = t • s • u + s • t • v`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_comm t s]`. Rewrite using `[h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (hM t ht _ hsM) (hM s hs _ htM)`. Consider the case `smul r u _ hu`. Take `⟨s, hs, hsu, hsM⟩` from `hu`. Take `⟨t, ht, htu, htr⟩` from `exists_den hT hp r.2`. Use `⟨t * s, mul_mem ht hs, unitAt_mul htu hsu, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (t * s) • r • u = (t * (r : Ω)) • s • u`. Rewrite using `[Subring.smul_def, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`.
-
-Conclude with `hM _ htr _ hsM`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_span (hT : CoordTie o ξ x) {c : κ} {p : Cpt ξ} (hp : InChart ξ x c p) (M : AddSubgroup E)
     (hM : ∀ a ∈ chartRing o x c, ∀ e ∈ M, a • e ∈ M) {e : E}
@@ -335,9 +327,9 @@ theorem exists_den_span (hT : CoordTie o ξ x) {c : κ} {p : Cpt ξ} (hp : InCha
     exact hM _ htr _ hsM
 
 /- English proof (translation)
-Take `⟨a', ha'⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 h`. Establish `h0 : ∑ i, ((a' i : Ω) - a i) • b i = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← ha']`. Simplify using `[Subring.smul_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `Fintype.linearIndependent_iff.1 hli _ h0 i`. Rewrite using `[← sub_eq_zero.1 h1]`. Conclude with `(a' i).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coords_mem {p : Cpt ξ} {r : ℕ} {b : Fin r → E} (hli : LinearIndependent Ω b) {a : Fin r → Ω}
     (h : ∑ i, a i • b i ∈ Submodule.span (regAt ξ p) (Set.range b)) (i : Fin r) : a i ∈ regAt ξ p := by
@@ -351,7 +343,7 @@ theorem coords_mem {p : Cpt ξ} {r : ℕ} {b : Fin r → E} (hli : LinearIndepen
   exact (a' i).2
 
 /- English proof (translation)
-Take `⟨V, hV, b, hb, hfr⟩` from `hVB p₀ (Set.mem_univ _)`. Take `⟨g, hg, hu, hgV⟩` from `exists_basic hT hp₀.1 V hp₀ hV`. Conclude with `⟨g, hg, b, hu, hb, fun p hp hup => hfr p (Set.mem_univ _) (hgV p hp hup)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_frame_basic (hT : CoordTie o ξ x) {L : Lat ξ E} {r : ℕ} (hVB : L.IsVB r ⊤) {c : κ}
     {p₀ : Cpt ξ} (hp₀ : InChart ξ x c p₀) :
@@ -362,25 +354,21 @@ theorem exists_frame_basic (hT : CoordTie o ξ x) {L : Lat ξ E} {r : ℕ} (hVB 
   exact ⟨g, hg, b, hu, hb, fun p hp hup => hfr p (Set.mem_univ _) (hgV p hp hup)⟩
 
 /- English proof (translation)
-Set `N : Ideal (chartRing o x c)` to `{ carrier := {s | ∃ n : ℕ, ∀ p : Cpt ξ, InChart ξ x c p → unitAt ξ p s → h ^ n • v ∈ L p} add_mem' := by`. Introduce and unpack `u w ⟨n, hn⟩ ⟨m, hm⟩`. Use `⟨n + m, fun p hp hu => ?_⟩` and prove the remaining obligations. Establish `hu' : unitAt ξ p ((u : Ω) + w)` using `hu`. Break down `unitAt_or_of_add hT.gen p (chart_le_regAt hT hp u.2) (chart_le_regAt hT hp w.2) hu' with h1 | h1` into its components or cases.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[add_comm, pow_add, mul_smul]`. Conclude with `smul_mem_reg (L p) (pow_mem (chart_le_regAt hT hp hh) _) (hn p hp h1)`. Rewrite using `[pow_add, mul_smul]`. Conclude with `smul_mem_reg (L p) (pow_mem (chart_le_regAt hT hp hh) _) (hm p hp h1)`. Use the proof step `zero_mem' := ⟨0, fun p _ hu => absurd hu (not_unitAt_zero p)⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `t u ⟨n, hn⟩`. Use `⟨n, fun p hp hu => hn p hp ?_⟩` and prove the remaining obligations. Establish `hu' : unitAt ξ p ((t : Ω) * u)` using `hu`. Conclude with `unitAt_of_mul (chart_le_regAt hT hp t.2) (chart_le_regAt hT hp u.2) hu' }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hN : N = ⊤` using `ideal_eq_top hT hc N fun p₀ hp₀ => by`. Take `⟨g, hg, b, hu, hspan, hfr⟩` from `exists_frame_basic hT hVB hp₀`. Use `⟨⟨g, hg⟩, ?_, hu⟩` and prove the remaining obligations. Establish `hmem : v ∈ Submodule.span Ω (Set.range b)` using `by rw [hspan]; trivial`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun Ω).1 hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hreg : ∀ i, ∃ n : ℕ, (h * g) ^ n * a i ∈ chartRing o x c` using `fun i => exists_pow_mul_mem hT hc (mul_mem hh hg) fun p hp hup => by`. Establish `uh : unitAt ξ p h` using `unitAt_of_mul (chart_le_regAt hT hp hg) (chart_le_regAt hT hp hh) (by rwa [mul_comm] at hup)`. Establish `ug : unitAt ξ p g` using `unitAt_of_mul (chart_le_regAt hT hp hh) (chart_le_regAt hT hp hg) hup`. Use `coords_mem (hfr p hp ug).1 ?_ i` and prove the remaining obligations. Rewrite using `[ha, ← (hfr p hp ug).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM p hp uh`. Use `choose n hn using hreg`. Establish `hm : ∀ i, (h * g) ^ (∑ i, n i) * a i ∈ chartRing o x c` using `fun i => by`. Establish `hle : n i ≤ ∑ i, n i` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `: (h * g) ^ (∑ i, n i) * a i = (h * g) ^ (∑ i, n i - n i) * ((h * g) ^ n i * a i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← _root_.mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`. Rewrite using `[this]`. Conclude with `mul_mem (pow_mem (mul_mem hh hg) _) (hn i)`. Use `⟨∑ i, n i, fun p hp hup => ?_⟩` and prove the remaining obligations. Establish `hup' : unitAt ξ p g` using `hup`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mem_of_smul_mem (L p) (unitAt_pow hup' (∑ i, n i)) ?_` and prove the remaining obligations. Establish `h1 : g ^ (∑ i, n i) • h ^ (∑ i, n i) • v = ∑ i, ((h * g) ^ (∑ i, n i) * a i) • b i`. Rewrite using `[← ha, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, mul_pow, mul_comm (g ^ _)]`.
-
-Rewrite using `[h1]`. Use `sum_mem fun i _ => smul_mem_reg (L p) (chart_le_regAt hT hp (hm i)) ?_` and prove the remaining obligations. Rewrite using `[(hfr p hp hup').2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Establish `h1 : (1 : chartRing o x c) ∈ N` using `by rw [hN]; trivial`.
-
-Take `⟨n, hn⟩` from `h1`. Conclude with `⟨n, fun p hp => hn p hp (unitAt_one p)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem (hT : CoordTie o ξ x) {L : Lat ξ E} {r : ℕ} (hVB : L.IsVB r ⊤) {c : κ}
     (hc : x c ≠ 0) {h : Ω} (hh : h ∈ chartRing o x c) {v : E}
@@ -441,11 +429,11 @@ theorem exists_pow_smul_mem (hT : CoordTie o ξ x) {L : Lat ξ E} {r : ℕ} (hVB
   exact ⟨n, fun p hp => hn p hp (unitAt_one p)⟩
 
 /- English proof (translation)
-Take `⟨h, hh, b₀, huq, -, hfr₀⟩` from `exists_frame_basic hT hVB hq`. Set `M : AddSubgroup E` to `{ carrier := {v | ∀ p : Cpt ξ, InChart ξ x c p → unitAt ξ p h → v ∈ L p} add_mem' := fun ha hb p hp hu => add_mem (ha p hp hu) (hb p hp hu) zero_mem' := fun p _ _ => zero_mem _ neg_mem' := fun ha p hp hu => neg_mem (ha p hp hu) }`. Establish `hMs : ∀ a ∈ chartRing o x c, ∀ v ∈ M, a • v ∈ M` using `fun a ha v hv p hp hu => smul_mem_reg (L p) (chart_le_regAt hT hp ha) (hv p hp hu)`. Establish `he' : e ∈ Submodule.span (regAt ξ q) (M : Set E)`. Rewrite `he` using `[(hfr₀ q hq huq).2]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.span_mono ?_ he` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩ p hp hu`. Rewrite using `[(hfr₀ p hp hu).2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Take `⟨s₀, hs₀, hu₀, hM⟩` from `exists_den_span hT hq M hMs he'`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_pow_smul_mem hT hVB hc hh hM`. Use `⟨h ^ n * s₀, mul_mem (pow_mem hh n) hs₀, unitAt_mul (unitAt_pow huq n) hu₀, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `hn p hp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uniform (hT : CoordTie o ξ x) {L : Lat ξ E} {r : ℕ} (hVB : L.IsVB r ⊤) {c : κ} (hc : x c ≠ 0)
     {q : Cpt ξ} (hq : InChart ξ x c q) {e : E} (he : e ∈ L q) :
@@ -477,27 +465,25 @@ end GlobalTheory.CompanionTheory.Ar.TieFrame
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y E _ _ r W L hT hVB hch c f b hc hf hf0`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, -, -, hli, hb⟩ p hp hu`. Use `⟨hli, le_antisymm (fun e he => ?_) (Submodule.span_le.2 ?_)⟩` and prove the remaining obligations. Take `⟨s, -, hsu, hse⟩` from `TieFrame.exists_uniform hT hVB hc hp he`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hsum⟩` from `(hb (s • e)).1 ⟨0, by simpa using (hch c hc _).2 hse⟩`. Use `TieFrame.mem_of_smul_mem _ hsu ?_` and prove the remaining obligations. Rewrite using `[hsum]`. Use `sum_mem fun q _ => TieFrame.smul_mem_reg _ ?_ (Submodule.subset_span ⟨q, rfl⟩)` and prove the remaining obligations. Take `⟨n, hn⟩` from `ha q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : a q = (f⁻¹) ^ n * (f ^ n * a q)`. Rewrite using `[← _root_.mul_assoc, ← mul_pow, inv_mul_cancel₀ hu.1, one_pow, _root_.one_mul]`. Rewrite using `[h1]`. Conclude with `mul_mem (pow_mem hu.2.2 n) (TieFrame.chart_le_regAt hT hp hn)`. Introduce and unpack `_ ⟨q, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `(hb (b q)).2 ⟨Pi.single q 1, fun q' => ⟨0, by`. Rewrite using `[pow_zero, _root_.one_mul]`. Distinguish the cases in `h : q' = q`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne h]; exact zero_mem _⟩, by simp [Pi.single_apply]⟩`. Conclude with `TieFrame.mem_of_smul_mem _ (TieFrame.unitAt_pow hu n) ((hch c hc _).1 hn p hp)`. Introduce `hfr`. Set `p₀ : Cpt ξ` to `⟨genPt ξ, specializes_rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreg : ∀ a : Ω, a ∈ regAt ξ p₀` using `TieFrame.regAt_genPt hT.gen`. Establish `hp₀ : InChart ξ (GroundTheory.Heights₂.Heights.LowerBoundFree.segreCoord y) c p₀` using `⟨hc, fun c' => hreg _⟩`. Establish `hu₀ : unitAt ξ p₀ f` using `⟨hf0, hreg _, hreg _⟩`. Establish `h₀` using `hfr p₀ hp₀ hu₀`. Use `⟨hc, hf, hf0, h₀.1, fun e => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨n, hn⟩`. Establish `heL : ∀ p : Cpt ξ, InChart ξ (GroundTheory.Heights₂.Heights.LowerBoundFree.segreCoord y) c p → unitAt ξ p f → e ∈ L p` using `fun p hp hu => TieFrame.mem_of_smul_mem (L p) (TieFrame.unitAt_pow hu n) ((hch c hc _).1 hn p hp)`. Establish `he0 : e ∈ Submodule.span (regAt ξ p₀) (Set.range b)`. Rewrite using `[← h₀.2]`. Conclude with `heL p₀ hp₀ hu₀`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a', ha'⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 he0`. Establish `hsum : ∑ i, (a' i : Ω) • b i = e` using `by simpa [Subring.smul_def] using ha'`. Use `⟨fun q => (a' q : Ω), fun q => TieFrame.exists_pow_mul_mem hT hc hf fun p hp hu => ?_, hsum.symm⟩` and prove the remaining obligations. Use `TieFrame.coords_mem (hfr p hp hu).1 (a := fun q => (a' q : Ω)) ?_ q` and prove the remaining obligations. Rewrite using `[hsum, ← (hfr p hp hu).2]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `heL p hp hu`. Introduce and unpack `⟨a, ha, rfl⟩`. Establish `hM : ∀ p : Cpt ξ, InChart ξ (GroundTheory.Heights₂.Heights.LowerBoundFree.segreCoord y) c p → unitAt ξ p f → ∑ q, a q • b q ∈ L p` using `fun p hp hu => by`. Rewrite using `[(hfr p hp hu).2]`. Use `sum_mem fun q _ => TieFrame.smul_mem_reg _ ?_ (Submodule.subset_span ⟨q, rfl⟩)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `ha q`. Establish `h1 : a q = (f⁻¹) ^ n * (f ^ n * a q)`. Rewrite using `[← _root_.mul_assoc, ← mul_pow, inv_mul_cancel₀ hu.1, one_pow, _root_.one_mul]`. Rewrite using `[h1]`. Conclude with `mul_mem (pow_mem hu.2.2 n) (TieFrame.chart_le_regAt hT hp hn)`.
-
-Take `⟨n, hn⟩` from `TieFrame.exists_pow_smul_mem hT hVB hc hf hM`. Conclude with `⟨n, (hch c hc _).2 hn⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFrameOver_iff_forall_isFrameAt : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (E : Type) [AddCommGroup E] [Module Ω E] (r : ℕ) (W : ChartBundle ℤ (GroundTheory.Heights₂.Heights.LowerBoundFree.segreCoord y) r E) (L : Lat ξ E), CoordTie ℤ ξ (GroundTheory.Heights₂.Heights.LowerBoundFree.segreCoord y) → L.IsVB r ⊤ → L.IsChartOf (GroundTheory.Heights₂.Heights.LowerBoundFree.segreCoord y) W.lat → ∀ (c : (k : K) → J k) (f : Ω) (b : Fin r → E), GroundTheory.Heights₂.Heights.LowerBoundFree.segreCoord y c ≠ 0 → f ∈ chartRing ℤ (GroundTheory.Heights₂.Heights.LowerBoundFree.segreCoord y) c → f ≠ 0 → (GroundTheory.Heights₂.Heights.LowerBoundFree.IsFrameOver y W c f b ↔ ∀ p : Cpt ξ, InChart ξ (GroundTheory.Heights₂.Heights.LowerBoundFree.segreCoord y) c p → unitAt ξ p f → L.IsFrameAt b p) := by
   intro X Ω _ ξ K _ J _ y E _ _ r W L hT hVB hch c f b hc hf hf0

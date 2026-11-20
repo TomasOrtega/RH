@@ -10,17 +10,15 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `E _ _ _ D φ _ hL x hx y X`. Establish `hfst : (AdeleBaseChange.adeleMap ℚ E x).1 = 0`. Take `⟨c1, c2⟩` from `x`. Take `rfl : c1 = 0` from `hx`. Conclude with `map_zero (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := ℚ) (L := E))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : pInf E (D.mkE 0 x) = 0`. Establish `h1 : (D.mkE 0 x).1 = 0`. Establish `e : D.mkE 0 x = AdeleBaseChange.adeleMap ℚ E x * rt D.θ`. Simplify using `only [Dat.mkE, map_zero, zero_add]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(AdeleBaseChange.adeleMap ℚ E x).1 * _ = 0`. Rewrite using `[hfst, zero_mul]`. Express the relevant statement in the definitionally equal form `(infEq E).symm (D.mkE 0 x).1 = 0`. Rewrite using `[h1]`. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk : GeneralLinearGroup.map (pInf E) (Xg.nu D x) = 1`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pInf E ((!![1, D.mkE 0 x; 0, 1] : Matrix (Fin 2) (Fin 2) (A E)) i j) = (1 : Matrix (Fin 2) (Fin 2) (Cinf E)) i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [h0]`. Establish `hc : infGL E 2 X * Xg.nu D x = Xg.nu D x * infGL E 2 X`.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `infGL_mul_finGL (Xg.nu D x)`. Rewrite `e` using `[hk, map_one, one_mul]`. Rewrite using `[← e]`. Conclude with `infGL_comm X _`. Rewrite using `[Nz.Wo_right, mul_assoc, hc, ← mul_assoc, Xg.nu, Nz.em_conj, mul_assoc, Nz.Wo_shift D hL]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.whittaker_unipotent_translate_of_infinite_component_zero :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (φ : GL (Fin 2) (A E) → ℂ), Continuous φ → (∀ γ g, φ (ratGL E 2 γ * g) = φ g) → ∀ x : A ℚ, x.1 = 0 → ∀ (y : (A ℚ)ˣ) (X : GL (Fin 2) (Cinf E)), Wo D (fun g => φ (g * nu D x)) (em E (aE y) * infGL E 2 X) = ψ (-((y : A ℚ) * x)) * Wo D φ (em E (aE y) * infGL E 2 X) := by

@@ -16,9 +16,9 @@ section
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `hinv : (d2 p q)⁻¹ = d2 p⁻¹ q⁻¹`. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Use `show ((d2 p q)⁻¹ : GL (Fin 2) F).val.transpose = (d2 p⁻¹ q⁻¹).val`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [d2]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem transpose_inv_diagonal_two (p q : Fˣ) : GL2LocalData.tinv (d2 p q) = d2 p⁻¹ q⁻¹ := by
   apply Units.ext
@@ -31,7 +31,7 @@ theorem transpose_inv_diagonal_two (p q : Fˣ) : GL2LocalData.tinv (d2 p q) = d2
   fin_cases i <;> fin_cases j <;> simp [d2]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[d2, GL2LocalData.w2, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem long_weyl2_mul_diagonal_two (p q : Fˣ) : (GL2LocalData.w2 : GL (Fin 2) F) * d2 p q = d2 q p * GL2LocalData.w2 := by
   apply Units.ext
@@ -40,7 +40,7 @@ theorem long_weyl2_mul_diagonal_two (p q : Fˣ) : (GL2LocalData.w2 : GL (Fin 2) 
     simp [d2, GL2LocalData.w2, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use `(GLnLocal.mem_integralGL_iff F 2).2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `show (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) F) i j ∈ 𝒪[F] fin_cases i <;> fin_cases j <;> simp [zero_mem, one_mem]`. Apply the tactic sequence `show (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) F) i j ∈ 𝒪[F] fin_cases i <;> fin_cases j <;> simp [zero_mem, one_mem]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weyl_mem_integral : (GL2LocalData.w2 : GL (Fin 2) F) ∈ GLnLocal.integralGL F 2 := by
   refine (GLnLocal.mem_integralGL_iff F 2).2 ⟨fun i j => ?_, fun i j => ?_⟩
@@ -50,9 +50,9 @@ theorem weyl_mem_integral : (GL2LocalData.w2 : GL (Fin 2) F) ∈ GLnLocal.integr
     fin_cases i <;> fin_cases j <;> simp [zero_mem, one_mem]
 
 /- English proof (translation)
-Establish `hw : ord ((Iwasawa.uniformizerUnit F : Fˣ) : F) = 1` using `ord_uniformizer (GLnLocal.irreducible_uniformizer F)`. Establish `hu : ord ((unifUnit F : Fˣ) : F) = 1` using `by simpa using ord_unifUnit_zpow (K := F) 1`. Establish `hmem : (Iwasawa.uniformizerUnit F)⁻¹ * unifUnit F ∈ (unitsIncl F).range`. Rewrite using `[mem_range_unitsIncl_iff, Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, normalizedValuation_eq_exp_ord (Units.ne_zero _), normalizedValuation_eq_exp_ord (Units.ne_zero _), hw, hu]`. Conclude with `inv_mul_cancel₀ (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `hmem`. Conclude with `⟨e, by rw [he]; group⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unif_eq : ∃ e : 𝒪[F]ˣ, unifUnit F = Iwasawa.uniformizerUnit F * unitsIncl F e := by
   have hw : ord ((Iwasawa.uniformizerUnit F : Fˣ) : F) = 1 :=
@@ -67,11 +67,11 @@ theorem exists_unif_eq : ∃ e : 𝒪[F]ˣ, unifUnit F = Iwasawa.uniformizerUnit
   exact ⟨e, by rw [he]; group⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_unif_eq (F := F)`. Use `⟨_, Iwasawa.diagGL_map_mem_integralGL F 2 ![e ^ c, e ^ d], ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Establish `hz : ∀ m : ℤ, ((unifUnit F ^ m : Fˣ) : F) = ((Iwasawa.uniformizerUnit F ^ m : Fˣ) : F) * ((unitsIncl F (e ^ m) : Fˣ) : F)`. Introduce `m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[he, mul_zpow, map_zpow, Units.val_mul]`. Establish `hc : ∀ m : ℤ, (((e ^ m : 𝒪[F]ˣ) : 𝒪[F]) : F) = ((e : 𝒪[F]) : F) ^ m`. Introduce `m`. Establish `h` using `congrArg Units.val (map_zpow (unitsIncl F) e m)`. Rewrite `h` using `[Units.val_zpow_eq_zpow_val, coe_unitsIncl, coe_unitsIncl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[d2, Iwasawa.torusPow, Iwasawa.diagGL, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two, hz, hc]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diag_uniformizer_zpow_torus_integral (c d : ℤ) : ∃ k ∈ GLnLocal.integralGL F 2,
     d2 (unifUnit F ^ c) (unifUnit F ^ d) = Iwasawa.torusPow F 2 ![c, d] * k := by
@@ -92,7 +92,7 @@ theorem diag_uniformizer_zpow_torus_integral (c d : ℤ) : ∃ k ∈ GLnLocal.in
     simp [d2, Iwasawa.torusPow, Iwasawa.diagGL, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two, hz, hc]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h (show (0 : Fin 2) ≤ 1 by decide)` as an intermediate fact. Simplify using `using this`. Apply the tactic sequence `intro h i j hij fin_cases i <;> fin_cases j <;> simp_all`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem antitone_iff (a b : ℤ) : Antitone (![-b, -a] : Fin 2 → ℤ) ↔ b ≤ a := by
   constructor
@@ -103,14 +103,14 @@ theorem antitone_iff (a b : ℤ) : Antitone (![-b, -a] : Fin 2 → ℤ) ↔ b �
     fin_cases i <;> fin_cases j <;> simp_all
 
 /- English proof (translation)
-Simplify using `[Spherical.rhoPair, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rhoPair_pair (a b : ℤ) : Spherical.rhoPair (![-b, -a] : Fin 2 → ℤ) = a - b := by
   simp [Spherical.rhoPair, Fin.sum_univ_two]
   ring
 
 /- English proof (translation)
-Take `⟨k, hk, hd⟩` from `diag_uniformizer_zpow_torus_integral (F := F) (-b) (-a)`. Rewrite using `[transpose_inv_diagonal_two, long_weyl2_mul_diagonal_two, ← _root_.zpow_neg, ← _root_.zpow_neg, hd, Spherical.sphericalWhittaker_mul_right hψ₀ y _ weyl_mem_integral, Spherical.sphericalWhittaker_mul_right hψ₀ y _ hk, Spherical.sphericalWhittaker_torusPow hψ₀, Spherical.halfModulu …`. Simplify using `only [antitone_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem spherical_whittaker_long_weyl2_transpose_inv (ψ₀ : AddChar F ℂ) (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (y : Fin 2 → ℂˣ) (a b : ℤ) :
@@ -127,7 +127,7 @@ theorem spherical_whittaker_long_weyl2_transpose_inv (ψ₀ : AddChar F ℂ) (h�
 end
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ ψ₀ hψ₀ y a b` and use `spherical_whittaker_long_weyl2_transpose_inv ψ₀ hψ₀ y a b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (ψ₀ : AddChar F ℂ), (∀ x ∈ 𝒪[F], ψ₀ x = 1) → ∀ (y : Fin 2 → ℂˣ) (a b : ℤ), Spherical.sphericalWhittaker ψ₀ y (GL2LocalData.w2 * GL2LocalData.tinv (d2 (unifUnit F ^ a) (unifUnit F ^ b))) = if b ≤ a then Spherical.sqrtQ F ^ (-(a - b)) * Spherical.evalAt y (Spherical.schur ![-b, -a]) else 0 :=
   fun _ _ _ _ _ ψ₀ hψ₀ y a b => spherical_whittaker_long_weyl2_transpose_inv ψ₀ hψ₀ y a b

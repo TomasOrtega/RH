@@ -17,53 +17,49 @@ noncomputable section
 namespace GlobalTheory.ThKNInv
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ Φ hΦ h n hn g`. Establish `hs` using `IsUWeilPair.isUSplitting hT.weil`. Establish `hstd : IsStd B.ψ` using `hT.base.std`. Establish `hσσ : ∀ x : E, σ (σ x) = x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `τ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hT.base.cm.2.2.2 τ, hT.base.cm.2.2.2 τ, star_star]`. Establish `hom : ∀ (x y : UA σ G.V.J) Ψ, om (x * y, 1) Ψ = om (x, 1) (om (y, 1) Ψ)`. Introduce `x y Ψ`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show ((x * y, 1) : UA σ G.V.J × UA σ G.W.J) = (x, 1) * (y, 1) by simp, map_mul]`. Both sides reduce to the same expression. Establish `hsc` using `GlobalTheory.T.config_a_evaluation_theta hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁`. Establish `hmulS : ∀ (x y : UA σ G.V.J) (c₁ c₂ : ℂ), (∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e (om (x, 1) Ψ) = c₁ • e Ψ) → (∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e (om (y, 1) Ψ) = c₂ • e Ψ) → ∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e (om (x * y, 1) Ψ) = (c₁ * c₂) • e …`. Introduce `x y c₁ c₂ hx hy Ψ hΨ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hom, hx _ (hs.pres _ _ hΨ), hy _ hΨ, smul_smul]`. Establish `key : ∀ k ∈ unip σ G.V H, mat k *ᵥ incV F H.x = incV F H.x ∧ ∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e (om (k, 1) Ψ) = e Ψ`. Establish `om11 : ∀ Ψ, om (1, 1) Ψ = Ψ`. Introduce `Ψ`. Rewrite using `[show ((1 : UA σ G.V.J), (1 : UA σ G.W.J)) = 1 from rfl, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hV` using `hT.geo.hV`. Establish `hV₁` using `hT₁.geo.hV`. Establish `gen : ∀ u : UA σ G.V.J, mat u *ᵥ incV F H.x = incV F H.x → (∀ z : Fin b → AE F E, ∃ a : AE F E, mat u *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z + a • incV F H.x) → ∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e (om (u, 1) Ψ) = e Ψ`. Introduce `u hu1 hu2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : ∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e Ψ = 0`. Introduce `Ψ hΨ`. Rewrite using `[h0 _ (hs.pres _ _ hΨ), h0 _ hΨ]`. Use `push_neg at h0`. Take `⟨Ψ₀, hΨ₀, hne⟩` from `h0`.
+Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `Function.ne_iff.mp hne`. Establish `ext : ∀ c c' : ℂ, c • e Ψ₀ = c' • e Ψ₀ → c = c'`. Introduce `c c' hcc`. Establish `h1` using `congrFun hcc y`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ hy h1`. Establish `hinvS : ∀ (x : UA σ G.V.J) (c : ℂ), (∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e (om (x, 1) Ψ) = c • e Ψ) → c ≠ 0 ∧ ∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e (om (x⁻¹, 1) Ψ) = c⁻¹ • e Ψ`. Introduce `x c hx`. Establish `hrec : ∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e Ψ = c • e (om (x⁻¹, 1) Ψ)`. Introduce `Ψ hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hx _ (hs.pres _ _ hΨ), ← hom, mul_inv_cancel, om11]`. Establish `hc : c ≠ 0`. Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hrec _ hΨ₀, zero_smul]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hc, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Rewrite using `[hrec _ hΨ, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Establish `hpowS : ∀ (x : UA σ G.V.J) (c : ℂ), (∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e (om (x, 1) Ψ) = c • e Ψ) → ∀ k : ℕ, ∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e (om (x ^ k, 1) Ψ) = (c ^ k) • e Ψ`. Introduce `x c hx k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => intro Ψ _`. Rewrite using `[pow_zero, pow_zero, om11, one_smul]`. Consider the case `succ k ih => intro Ψ hΨ`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `hmulS _ _ _ _ ih hx Ψ hΨ`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m2, hm2x, hm2y, hm2ι⟩` from `GlobalTheory.PlaneLevi.exists_levi_scale F E σ B (b + 2) b G.V G₁.V H 0 (b + 1) _ _ _ _ hC.hH hV hV₁ hσσ 2 two_ne_zero`. Take `⟨m3, hm3x, hm3y, hm3ι⟩` from `GlobalTheory.PlaneLevi.exists_levi_scale F E σ B (b + 2) b G.V G₁.V H 0 (b + 1) _ _ _ _ hC.hH hV hV₁ hσσ 3 (by norm_num)`. Take `⟨cu, hcu⟩` from `hsc u 1 (by rw [one_smul]; exact hu1) hu2`. Take `⟨c2, hc2⟩` from `hsc m2 _ hm2x (fun z => ⟨0, by rw [zero_smul, add_zero, hm2ι]⟩)`. Take `⟨c3, hc3⟩` from `hsc m3 _ hm3x (fun z => ⟨0, by rw [zero_smul, add_zero, hm3ι]⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hcu0, hcuI⟩` from `hinvS u cu hcu`. Take `⟨hc20, hc2I⟩` from `hinvS m2 c2 hc2`. Take `⟨hc30, hc3I⟩` from `hinvS m3 c3 hc3`. Establish `hvS : ∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e (om (u⁻¹ * u⁻¹ * (m2 * u * m2⁻¹), 1) Ψ) = cu⁻¹ • e Ψ`. Introduce `Ψ hΨ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1` using `hmulS _ _ _ _ (hmulS _ _ _ _ hcuI hcuI) (hmulS _ _ _ _ (hmulS _ _ _ _ hc2 hcu) hc2I) Ψ hΨ`. Rewrite `h1` using `[show cu⁻¹ * cu⁻¹ * (c2 * cu * c2⁻¹) = cu⁻¹ by field_simp]`. Then use the resulting hypothesis. Establish `hconj : ∀ (m : UA σ G.V.J) (c : ℂ), (∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e (om (m, 1) Ψ) = c • e Ψ) → (∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e (om (m⁻¹, 1) Ψ) = c⁻¹ • e Ψ) → c ≠ 0 → ∀ Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), e (om (m * (u⁻¹ * u⁻¹ * (m2 * u …`. Introduce `m c hm hmI hc Ψ hΨ`. Establish `h1` using `hmulS _ _ _ _ (hmulS _ _ _ _ hm hvS) hmI Ψ hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[show c * cu⁻¹ * c⁻¹ = cu⁻¹ by field_simp]`. Then use the resulting hypothesis. Establish `hm2x' : mat m2 *ᵥ incV F H.x = (2 : AE F E) • incV F H.x` using `by rw [hm2x, Nat.cast_ofNat]`. Establish `hm2y' : (2 : AE F E) • (mat m2 *ᵥ incV F H.y) = incV F H.y`. Establish `h1` using `hm2y`. Rewrite `h1` using `[Nat.cast_ofNat]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcen2` using `GlobalTheory.UnipLine.conj_commutator_eq_pow F E σ B (b + 2) b G.V G₁.V H 0 (b + 1) _ _ _ _ hC.hH hV hV₁ u hu1 hu2 m2 m2 2 hm2x' hm2y' hm2ι hm2x hm2y hm2ι`. Establish `hcen3` using `GlobalTheory.UnipLine.conj_commutator_eq_pow F E σ B (b + 2) b G.V G₁.V H 0 (b + 1) _ _ _ _ hC.hH hV hV₁ u hu1 hu2 m2 m3 3 hm2x' hm2y' hm2ι hm3x hm3y hm3ι`. Establish `e4 : cu⁻¹ = cu⁻¹ ^ (2 ^ 2)`. Use `ext _ _ ?_` and prove the remaining obligations. Rewrite using `[← hconj m2 c2 hc2 hc2I hc20 _ hΨ₀, hcen2, hpowS _ _ hvS _ _ hΨ₀]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e9 : cu⁻¹ = cu⁻¹ ^ (3 ^ 2)`. Use `ext _ _ ?_` and prove the remaining obligations. Rewrite using `[← hconj m3 c3 hc3 hc3I hc30 _ hΨ₀, hcen3, hpowS _ _ hvS _ _ hΨ₀]`. Establish `hw0 : cu⁻¹ ≠ 0` using `inv_ne_zero hcu0`. Establish `h3 : cu⁻¹ ^ 3 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h4 : cu⁻¹ * cu⁻¹ ^ 3 = cu⁻¹ * 1` using `by rw [mul_one, ← pow_succ']; norm_num at e4 ⊢; exact e4.symm`. Conclude with `mul_left_cancel₀ hw0 h4`. Establish `h1 : cu⁻¹ = 1`. Rewrite using `[e9, show (3 : ℕ) ^ 2 = 3 * 3 by norm_num, pow_mul, h3, one_pow]`. Establish `hcu1 : cu = 1` using `inv_eq_one.mp h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `Ψ hΨ`. Rewrite using `[hcu _ hΨ, hcu1, one_smul]`. Introduce `k hk`. Proceed by induction on `hk using Subgroup.closure_induction with`. Consider the case `mem u hu => exact ⟨hu.1, gen u hu.1 hu.2⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `one => exact ⟨by rw [GlobalTheory.UnipLine.mat_one, Matrix.one_mulVec], fun Ψ _ => by rw [om11]⟩`. Consider the case `mul x y _ _ hx hy`. Conclude with `⟨by rw [GlobalTheory.UnipLine.mulVec_mul, hy.1, hx.1], fun Ψ hΨ => by rw [hom, hx.2 _ (hs.pres _ _ hΨ), hy.2 _ hΨ]⟩`. Consider the case `inv x _ hx`. Use `⟨GlobalTheory.UnipLine.inv_mulVec_of_mulVec hx.1, fun Ψ hΨ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hx.2 _ (hs.pres (x⁻¹, 1) Ψ hΨ)`. Rewrite `h1` using `[← hom, mul_inv_cancel, om11]`. Conclude with `h1.symm`. Establish `hΦs : Φ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a'))`. Use `(Submodule.span_le.2 ?_) hΦ` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce and unpack `Φ ⟨f, -, φ, hSB, hev, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hT.geo.hM.std).mono fun v hv => hv.1.trans hv.2)`. Establish `hΨ` using `hs.pres (g, h) Φ hΦs`. Take `⟨hx, hinv⟩` from `key n hn`. Establish `hact : actAB (cA σ) ((n, 1) : UA σ G.V.J × UA σ G.W.J) (shiftA H H' 1) = shiftA H H' 1`.
-
-Unfold `actAB shiftA`. Rewrite using `[Units.val_one, one_smul, Matrix.mul_vecMulVec]`. Use `erw [hx]`. Simplify using the standard rewrite rules. Rewrite using `[show ((n * g, h) : UA σ G.V.J × UA σ G.W.J) = (n, 1) * (g, h) by simp, map_mul, Module.End.mul_apply]`.
-
-Rewrite using `[← hact, ← hs.impl (n, 1) _ _ hΨ, hact, hinv _ (GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hstd _ _ hΨ)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_inv : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

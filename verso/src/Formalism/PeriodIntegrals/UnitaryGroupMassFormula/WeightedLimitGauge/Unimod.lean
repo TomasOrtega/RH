@@ -30,7 +30,7 @@ def PolarDecW : Prop :=
     B₀ᴴ * Hb k * B₀ = Hb k ∧ B₀ᴴ = B₀ ∧ ∃ q ∈ UWb k r, qᴴ * q = 1 ∧ p = embWb k r B₀ * q
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `show Matrix.of x * a * b = Matrix.of x * (a * b)`. Rewrite using `[Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rmulM_comp {k r : ℕ} (a b : Mat k r) : rmulM b ∘ rmulM a = rmulM (a * b) := by
   funext x
@@ -38,13 +38,13 @@ theorem rmulM_comp {k r : ℕ} (a b : Mat k r) : rmulM b ∘ rmulM a = rmulM (a 
   rw [Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `(rmulM_cont p).measurable`.
+A detailed English derivation is pending.
 -/
 theorem rmulM_meas {k r : ℕ} (p : Mat k r) : Measurable (rmulM p : Mt k r → Mt k r) :=
   (rmulM_cont p).measurable
 
 /- English proof (translation)
-Introduce `k r ν hk hG p hp`. Take `⟨B₀, hB, hBh, q, hq, hqu, rfl⟩` from `hP k r p hp`. Rewrite using `[← rmulM_comp, ← Measure.map_map (rmulM_meas q) (rmulM_meas _), hH k r ν hk hG B₀ hB hBh, hU k r ν hk hG q hq hqu]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem unimodW_of (hU : UnitInv) (hH : HermInv) (hP : PolarDecW) : UnimodW := by
   intro k r ν hk hG p hp

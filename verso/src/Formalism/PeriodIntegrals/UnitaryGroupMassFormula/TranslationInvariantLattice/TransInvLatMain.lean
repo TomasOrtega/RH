@@ -6,15 +6,15 @@ open Classical Complex
 namespace PI.TransInvLatW
 
 /- English proof (translation)
-Introduce `w₁ w₂ hD x ω m _hm hx hω`. Take `⟨hA, hint⟩` from `area_lattice_formula w₁ w₂ hD`. Take `⟨n, hn⟩` from `hint _ hx ω hω`. Use `set D := ((starRingEnd ℂ) w₁ * w₂).im with hDdef`. Use `set a := (m : ℂ) * (x / 2) with ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hca : (m : ℂ) * ((starRingEnd ℂ) x / 2) = (starRingEnd ℂ) a`. Rewrite using `[ha, map_mul, map_div₀, Complex.conj_natCast, Complex.conj_ofNat]`. Establish `hkey : x * (starRingEnd ℂ) (2 * (m : ℂ) * ω) - 2 * (m : ℂ) * ω * (starRingEnd ℂ) x = 4 * (a * (starRingEnd ℂ) ω - ω * (starRingEnd ℂ) a)`. Rewrite using `[map_mul, map_mul, Complex.conj_natCast, Complex.conj_ofNat]`. Take the linear combination `(-4 * (starRingEnd ℂ) ω) * ha - (4 * ω) * hca`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `him : a * (starRingEnd ℂ) ω - ω * (starRingEnd ℂ) a = -2 * (((starRingEnd ℂ) a * ω).im : ℂ) * I`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Rewrite using `[hkey, him, hn, hA]`. Establish `hD' : (D : ℂ) ≠ 0` using `by exact_mod_cast hD`. Break down `abs_cases D with ⟨h, _⟩ | ⟨h, _⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h]`. Establish `: (Real.pi : ℂ) * (4 * (-2 * (((n : ℝ) * D : ℝ) : ℂ) * I)) / (2 * (D : ℂ)) = ((-2 * n : ℤ) : ℂ) * (2 * (Real.pi : ℂ) * I)` using `by push_cast; field_simp; ring`. Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I]`. Rewrite using `[h]`. Establish `hD'' : ((-D : ℝ) : ℂ) ≠ 0` using `by push_cast; exact neg_ne_zero.mpr hD'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `: (Real.pi : ℂ) * (4 * (-2 * (((n : ℝ) * D : ℝ) : ℂ) * I)) / (2 * ((-D : ℝ) : ℂ)) = ((2 * n : ℤ) : ℂ) * (2 * (Real.pi : ℂ) * I)`. Move the coercions through the operations in `at hD'' ⊢`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phaseOne : PhaseOne := by
   intro w₁ w₂ hD x ω m _hm hx hω
@@ -47,7 +47,7 @@ theorem phaseOne : PhaseOne := by
     rw [this, Complex.exp_int_mul_two_pi_mul_I]
 
 /- English proof (translation)
-The claim follows from `transInvLat_of_phase phaseOne`.
+A detailed English derivation is pending.
 -/
 theorem transInvLat_main : PI.TransInvLat := transInvLat_of_phase phaseOne
 

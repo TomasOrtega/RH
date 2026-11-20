@@ -26,7 +26,7 @@ def cuspRep : UnitaryRep (normOneGL K n) (cuspidalL2 μ) :=
   (rightRegularRep Γ₁ μ).restrict (cuspidalL2 μ) (isInvariant_cuspidalL2 μ)
 
 /- English proof (translation)
-The claim follows from `UnitaryRep.comp_integrated_of_mem_intertwiners (cuspRep μ) μ (UnitaryRep.subtypeL_mem_intertwiners _ _ _) f`.
+A detailed English derivation is pending.
 -/
 theorem subtypeL_comp_integrated (f : (normOneGL K n) →₁[μ] ℂ) :
     (cuspidalL2 μ).subtypeL ∘L (cuspRep μ).integrated μ f =
@@ -35,19 +35,17 @@ theorem subtypeL_comp_integrated (f : (normOneGL K n) →₁[μ] ℂ) :
     (UnitaryRep.subtypeL_mem_intertwiners _ _ _) f
 
 /- English proof (translation)
-Use `isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Set `T` to `(cuspRep μ).integrated μ (UnitaryRep.ccToL1 μ f)`. Set `T' : cuspidalL2 μ →L[ℂ] Lp ℂ 2 (quotientMeasure Γ₁ μ)` to `(cuspidalL2 μ).subtypeL ∘L T`. Establish `hT' : T' = (rightRegularRep Γ₁ μ).integrated μ (UnitaryRep.ccToL1 μ f) ∘L (cuspidalL2 μ).subtypeL` using `subtypeL_comp_integrated μ _`. Set `e : RightCosetSpace Γ₁ → StrongDual ℂ (cuspidalL2 μ)` to `fun q => (rconvCLM Γ₁ μ f (Quotient.out q)).comp (cuspidalL2 μ).subtypeL`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `he : ∀ q, ‖e q‖ ≤ max B 0`. Introduce `q`. Use `ContinuousLinearMap.opNorm_le_bound _ (le_max_right _ _) fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖rconv Γ₁ μ f (v : Lp ℂ 2 (quotientMeasure Γ₁ μ)) (Quotient.out q)‖ ≤ _`. Use `(hB v v.2 _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.coe_norm]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _)`. Establish `hout : ∀ (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) (q : RightCosetSpace Γ₁), rconvQ Γ₁ μ f φ q = rconv Γ₁ μ f φ (Quotient.out q)`. Introduce `φ q`. Take `⟨a, rfl⟩` from `mk_surjective Γ₁ q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ⟩` from `(mk_eq_mk_iff (Γ := Γ₁)).1 (Quotient.out_eq (mk Γ₁ a))`. Rewrite using `[rconvQ_mk, ← hγ]`. Conclude with `(rconv_mul_left Γ₁ μ f φ γ.2 a).symm`. Establish `hae : ∀ v, T' v =ᵐ[quotientMeasure Γ₁ μ] fun q => e q v`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : T' v = (rightRegularRep Γ₁ μ).integrated μ (UnitaryRep.ccToL1 μ f) (v : Lp ℂ 2 (quotientMeasure Γ₁ μ))`. Rewrite using `[hT']`. Both sides reduce to the same expression. Rewrite using `[h1]`. Use `filter_upwards [integrated_ae_eq_rconvQ Γ₁ μ f (v : Lp ℂ 2 (quotientMeasure Γ₁ μ))] with q hq`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hq.trans (hout _ q)`. Establish `hHS : IsHilbertSchmidt T'` using `isHilbertSchmidt_of_ae_eq_dual T' e (max B 0) he hae`. Establish `hc : IsCompactOperator T'` using `hHS.isCompactOperator`. Establish `hmem : ∀ v, (fun v => T' v) v ∈ cuspidalL2 μ` using `fun v => (T v).2`. Establish `hfun : (T : cuspidalL2 μ → cuspidalL2 μ) = Set.codRestrict (fun v => T' v) (cuspidalL2 μ) hmem`.
-
-Use function extensionality and compare the values at `fun v => Subtype.ext rfl`. Rewrite using `[show ((cuspRep μ).integrated μ (UnitaryRep.ccToL1 μ f) : cuspidalL2 μ → cuspidalL2 μ) = (T : cuspidalL2 μ → cuspidalL2 μ) from rfl, hfun]`. Conclude with `hc.codRestrict hmem (isClosed_cuspidalL2 μ)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompactOperator_of_forall_norm_rconv_le
     (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ) (B : ℝ)

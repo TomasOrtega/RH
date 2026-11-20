@@ -8,7 +8,7 @@ open MeasureTheory PositivityTheory.Rg.Tf.Loc
 namespace PositivityTheory.Rg.BcB.CV.QuotientProduct
 
 /- English proof (translation)
-Set `inst : CommGroup H` to `{ (inferInstance : Group H) with mul_comm := hc }`. Conclude with `⟨Measure.haar, inferInstance, @Measure.IsHaarMeasure.isInvInvariant_of_regular H inst _ _ _ _ Measure.haar _ _ _⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_haar_inv (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [LocallyCompactSpace H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]
@@ -32,7 +32,7 @@ def swapE (G₁ G₂ : Type) [Group G₁] [TopologicalSpace G₁] [Group G₂] [
   continuous_invFun := continuous_swap
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_prod]`. Conclude with `h₁.prod h₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_prod {G₁ G₂ : Type} [Group G₁] [TopologicalSpace G₁] [Group G₂] [TopologicalSpace G₂]
     {T₁ : Subgroup G₁} {T₂ : Subgroup G₂} (h₁ : IsClosed (T₁ : Set G₁)) (h₂ : IsClosed (T₂ : Set G₂)) :
@@ -40,17 +40,17 @@ theorem isClosed_prod {G₁ G₂ : Type} [Group G₁] [TopologicalSpace G₁] [G
   rw [Subgroup.coe_prod]; exact h₁.prod h₂
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace T₁` using `hT₁.locallyCompactSpace`. Establish `: LocallyCompactSpace T₂` using `hT₂.locallyCompactSpace`. Establish `: SecondCountableTopology T₁` using `inferInstanceAs (SecondCountableTopology (T₁ : Set G₁))`. Establish `: SecondCountableTopology T₂` using `inferInstanceAs (SecondCountableTopology (T₂ : Set G₂))`. Take `⟨ν₁, _, _⟩` from `exists_haar_inv T₁ (fun a b => Subtype.ext (hc₁ a a.2 b b.2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ν₂, _, _⟩` from `exists_haar_inv T₂ (fun a b => Subtype.ext (hc₂ a a.2 b b.2))`. Use `set E := prodE T₁ T₂`. Establish `hE : Measurable E` using `E.continuous.measurable`. Establish `hinvP : Measure.map Inv.inv (ν₁.prod ν₂) = ν₁.prod ν₂`. Establish `: (Inv.inv : T₁ × T₂ → T₁ × T₂) = Prod.map Inv.inv Inv.inv` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← Measure.map_prod_map _ _ continuous_inv.measurable continuous_inv.measurable, Measure.map_inv_eq_self, Measure.map_inv_eq_self]`. Establish `: (Measure.map E (ν₁.prod ν₂)).IsInvInvariant`. Prove the components needed by the constructor for the conclusion. Use `show Measure.map Inv.inv (Measure.map E (ν₁.prod ν₂)) = Measure.map E (ν₁.prod ν₂)`. Rewrite using `[Measure.map_map continuous_inv.measurable hE]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (Inv.inv ∘ ⇑E) = ⇑E ∘ Inv.inv` using `funext fun p => (map_inv E p).symm`. Rewrite using `[this, ← Measure.map_map hE continuous_inv.measurable, hinvP]`. Establish `hmap : (Measure.map E (ν₁.prod ν₂)).map (fun t : T₁.prod T₂ => ((⟨t.1.1, (Subgroup.mem_prod.1 t.2).1⟩, ⟨t.1.2, (Subgroup.mem_prod.1 t.2).2⟩) : T₁ × T₂)) = ν₁.prod ν₂`. Establish `: (fun t : T₁.prod T₂ => ((⟨t.1.1, (Subgroup.mem_prod.1 t.2).1⟩, ⟨t.1.2, (Subgroup.mem_prod.1 t.2).2⟩) : T₁ × T₂)) = ⇑E.symm` using `rfl`. Rewrite using `[this, Measure.map_map (show Measurable ⇑E.symm from E.symm.continuous.measurable) hE]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⇑E.symm ∘ ⇑E) = id` using `funext fun p => E.symm_apply_apply p`. Rewrite using `[this, Measure.map_id]`. Establish `h0` using `hQP G₁ G₂ μ₁ μ₂ T₁ T₂ ν₁ ν₂ (Measure.map E (ν₁.prod ν₂)) F hF hmap hFT (fun x₂ => h ν₁ x₂)`. Use `hQM (G₁ × G₂) (G₁ × G₂) (ContinuousMulEquiv.refl _) (μ₁.prod μ₂) (μ₁.prod μ₂) (T₁.prod T₂) (T₁.prod T₂) ν (Measure.map E (ν₁.prod ν₂)) F (isClosed_prod hT₁ hT₂) ?_ hF hFT h0` and prove the remaining obligations. Use extensionality with `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem left (hQP : PositivityTheory.Rg.BcB.D4.QuotProd) (hQM : QMap)
     (G₁ : Type) [Group G₁] [TopologicalSpace G₁] [IsTopologicalGroup G₁] [LocallyCompactSpace G₁] [T2Space G₁]
@@ -105,15 +105,15 @@ namespace PositivityTheory.Rg.BcB.CV
 
 open QuotientProduct in
 /- English proof (translation)
-Introduce `hQP hQM G₁ _ _ _ _ _ _ _ _ G₂ _ _ _ _ _ _ _ _ μ₁ _ μ₂ _ T₁ T₂ ν _ _ F hT₁ hT₂ hc₁ hc₂ hF hFT hcase`. Break down `hcase with h | h` into its components or cases. Conclude with `left hQP hQM G₁ G₂ μ₁ μ₂ T₁ T₂ ν F hT₁ hT₂ hc₁ hc₂ hF hFT h`. Establish `hcl` using `isClosed_prod hT₂ hT₁`. Establish `: LocallyCompactSpace (T₂.prod T₁)` using `hcl.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology (T₂.prod T₁)` using `inferInstanceAs (SecondCountableTopology ((T₂.prod T₁ : Subgroup (G₂ × G₁)) : Set (G₂ × G₁)))`. Take `⟨ν', _, _⟩` from `exists_haar_inv (T₂.prod T₁) (fun a b => Subtype.ext (Prod.ext (hc₂ _ (Subgroup.mem_prod.1 a.2).1 _ (Subgroup.mem_prod.1 b.2).1) (hc₁ _ (Subgroup.mem_prod.1 a.2).2 _ (Subgroup.mem_prod.1 b.2).2)))`. Use `set S := swapE G₁ G₂`. Establish `hFT' : ∀ t ∈ T₂.prod T₁, ∀ x, F (S.symm (t * x)) = F (S.symm x)`. Introduce `t ht x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Conclude with `hFT _ (Subgroup.mem_prod.2 ⟨(Subgroup.mem_prod.1 ht).2, (Subgroup.mem_prod.1 ht).1⟩) _`. Establish `h0` using `left hQP hQM G₂ G₁ μ₂ μ₁ T₂ T₁ ν' (fun y => F (S.symm y)) hT₂ hT₁ hc₂ hc₁ (hF.comp S.symm.continuous.measurable) hFT' (fun ν₂ _ _ x₁ => h ν₂ x₁)`. Use `hQM (G₁ × G₂) (G₂ × G₁) S (μ₁.prod μ₂) (μ₂.prod μ₁) (T₁.prod T₂) (T₂.prod T₁) ν ν' F (isClosed_prod hT₁ hT₂) ?_ hF hFT h0` and prove the remaining obligations. Use extensionality with `⟨a, b⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Subgroup.mem_map, Subgroup.mem_prod]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, y⟩, ⟨hx, hy⟩, hxy⟩`. Express the relevant statement in the definitionally equal form `(y, x) = (a, b) at hxy`. Simplify using `only [Prod.mk.injEq] at hxy`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨rfl, rfl⟩` from `hxy`. Conclude with `⟨hy, hx⟩`. Introduce and unpack `⟨ha, hb⟩`. Conclude with `⟨(b, a), ⟨hb, ha⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pf_QProd : PositivityTheory.Rg.BcB.D4.QuotProd → PositivityTheory.Rg.BcB.CV.QMap → PositivityTheory.Rg.BcB.CV.QProd := by
   intro hQP hQM G₁ _ _ _ _ _ _ _ _ G₂ _ _ _ _ _ _ _ _ μ₁ _ μ₂ _ T₁ T₂ ν _ _ F hT₁ hT₂ hc₁ hc₂ hF hFT hcase

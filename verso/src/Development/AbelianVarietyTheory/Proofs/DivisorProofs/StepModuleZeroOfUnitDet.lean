@@ -5,9 +5,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 namespace GlobalTheory.FlagChi
 
 /- English proof (translation)
-Rewrite using `[Limits.IsZero.iff_id_eq_zero]`. Use extensionality with `V s : 3`. Express the relevant statement in the definitionally equal form `s = 0`. Use `sec_ext (eq_zero_of_genVec fun h => ?_)` and prove the remaining obligations. Establish `hv : M *ᵥ genVec h (vec s) = 0` using `funext fun k => (vec_mem s h _ h : genVec h (vec s) ∈ stepSub M 0) k (Nat.zero_le _)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (fun w => M⁻¹ *ᵥ w) hv` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hM]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isZero_stepMod_zero (Z : Scheme.{0}) [IsIntegral Z] (N : ℕ)
     (M : Matrix (Fin N) (Fin N) Z.functionField) (hM : IsUnit M.det) :

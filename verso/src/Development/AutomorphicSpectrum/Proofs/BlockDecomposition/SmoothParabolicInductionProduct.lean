@@ -8,9 +8,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.BZRes
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.BZRes.sQ`. Use `GlobalTheory.SmGL.isSmooth_comp ?_ _ (GlobalTheory.SmGL.ProdIrr.continuous_leviProj _)` and prove the remaining obligations. Use `GlobalTheory.SmGL.isSmooth_twist ?_ (GlobalTheory.SmGL.isSmoothChar_deltaHalf k)` and prove the remaining obligations. Use `GlobalTheory.SmGL.isSmooth_piTensor ?_` and prove the remaining obligations. Introduce `x`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `x`. Conclude with `h₁`. Conclude with `h₂`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem isSmooth_sQ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] {r t N : ℕ} (h : r + t = N)

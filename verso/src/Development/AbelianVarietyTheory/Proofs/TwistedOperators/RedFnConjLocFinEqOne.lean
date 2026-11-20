@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.PlaceAwayRed
 
 /- English proof (translation)
-Introduce `D V β a v PP hPP k hS`. Use `GlobalTheory.FinZeta.LevelOff.redFn_eq_one_of_proj β {PP.under (𝓞 D.host.F)} hS (fun u hu => ?_) (Finset.mem_singleton_self _)` and prove the remaining obligations. Rewrite `hu` using `[Finset.mem_singleton]`. Substitute `hu` using the available equality. Establish `e : proj D.sp.cm.sig V.gram (PP.under (𝓞 D.host.F)) (embV V v k) = 1` using `proj_emb_ne _ _ hPP k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Use `show proj D.sp.cm.sig V.gram (PP.under (𝓞 D.host.F)) ((a : GA D V) * (locFin V v k : GA D V) * ((a⁻¹ : GfC V) : GA D V)) = 1`. Rewrite using `[coe_locFin, MonoidHom.map_mul, MonoidHom.map_mul, e, mul_one, ← MonoidHom.map_mul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, MonoidHom.map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redFn_conj_locFin_eq_one : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (a : GfC V) (v : HeightOneSpectrum (𝓞 D.host.F)) (PP : Pl D.host.E), PP.under (𝓞 D.host.F) ≠ v → ∀ k : Gv V v, finE V ((a * locFin V v k * a⁻¹ : GfC V) : GA D V) ∈ St β → redFn β PP (finE V ((a * locFin V v k * a⁻¹ : GfC V) : GA D V)) = 1 := by
   intro D V β a v PP hPP k hS

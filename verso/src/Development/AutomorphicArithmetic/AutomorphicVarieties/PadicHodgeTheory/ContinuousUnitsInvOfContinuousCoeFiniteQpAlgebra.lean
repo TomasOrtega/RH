@@ -3,17 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.T
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module Topology UpperTheory.V.Loc UpperTheory.V.U3
 
 /- English proof (translation)
-Introduce `l _ B _ _ _ _ _ _ X _ f hf`. Set `b` to `Module.finBasis ℚ_[l] B`. Set `M` to `Algebra.leftMulMatrix b`. Set `E : (Fin (Module.finrank ℚ_[l] B) → ℚ_[l]) →ₗ[ℚ_[l]] B` to `b.equivFun.symm.toLinearMap`. Establish `key : ∀ u : Bˣ, ((u⁻¹ : Bˣ) : B) = E (Matrix.mulVec (M (u : B))⁻¹ (b.repr 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `u`. Establish `hinv : (M (u : B))⁻¹ = M ((u⁻¹ : Bˣ) : B)`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Rewrite using `[hinv, Algebra.leftMulMatrix_mulVec_repr, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[E]`. Establish `hM : Continuous fun y : B => M y` using `IsModuleTopology.continuous_of_linearMap M.toLinearMap`. Establish `hE : Continuous E` using `LinearMap.continuous_on_pi E`. Establish `hcomp : Continuous fun x => E (Matrix.mulVec (M (f x : B))⁻¹ (b.repr 1))`. Use `hE.comp ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.matrix_mulVec ?_ continuous_const` and prove the remaining obligations. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Use `ContinuousAt.comp (f := fun x => M (f x : B)) (g := Inv.inv) ?_ (hM.comp hf).continuousAt` and prove the remaining obligations. Apply `continuousAt_matrix_inv` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hdet : IsUnit (M (f x : B)).det`. Establish `: IsUnit (M (f x : B))` using `(f x).isUnit.map M`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 this`. Take `⟨d, hd⟩` from `hdet`. Rewrite using `[← hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `NormedRing.inverse_continuousAt d`. Simplify `hcomp` using `only [← key]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.continuous_units_inv_of_continuous_coe_finite_Qp_algebra :
     ∀ {l : ℕ} [Fact l.Prime] {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [TopologicalSpace B] [IsModuleTopology ℚ_[l] B] [IsTopologicalRing B] {X : Type} [TopologicalSpace X] (f : X → Bˣ), Continuous (fun x => (f x : B)) → Continuous fun x => (((f x)⁻¹ : Bˣ) : B) := by

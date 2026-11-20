@@ -14,9 +14,9 @@ open PI.VolSemiDirect.W.Cj Measure
 open scoped NNReal Matrix
 
 /- English proof (translation)
-Introduce `a b x y h`. Distinguish the cases in `ha : a = 0`. Use `⟨1, ?_⟩` and prove the remaining obligations. Substitute `ha` using the available equality. Establish `hb : b ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `at h`. Simplify using `using isUnit_iff_ne_zero.2 hb`. Conclude with `⟨0, by simpa using isUnit_iff_ne_zero.2 ha⟩`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem stableRankOne_field (K : Type) [Field K] : HasStableRangeOne K := by
   intro a b x y h
@@ -30,15 +30,15 @@ theorem stableRankOne_field (K : Type) [Field K] : HasStableRangeOne K := by
   · exact ⟨0, by simpa using isUnit_iff_ne_zero.2 ha⟩
 
 /- English proof (translation)
-Establish `hd` using `congrArg Matrix.det hXG`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Establish `hdd : X.det * X.det = 1`. Establish `: (X.det * X.det) * G.det = 1 * G.det`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hG.mul_left_inj.1 this`. Establish `hX : IsUnit X.det` using `⟨⟨X.det, X.det, hdd, hdd⟩, rfl⟩`. Set `Xu : GL (Fin k) A` to `Matrix.nonsingInvUnit X hX`. Set `Gu : GL (Fin k) A` to `Matrix.nonsingInvUnit G hG`. Establish `hrel : trG Xu * Gu * Xu = Gu` using `by ext1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hXG`. Establish `hm` using `congrArg modM hrel`. Rewrite `hm` using `[modM_mul, modM_mul, modM_tr_of_mem transvection_preserves_haar Xu (gl_generated_transvections_diag A hA k Xu)]`. Establish `hpos : 0 < modM Gu` using `addEquivAddHaarChar_pos (phi Gu)`. Establish `hsq : modM Xu * modM Xu = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `: (modM Xu * modM Xu) * modM Gu = 1 * modM Gu`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_right_cancel₀ hpos.ne' this`. Establish `hmod` using `nnreal_eq_one_of_mul_self hsq`. Establish `e` using `map_phi_of_modM Xu hmod μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Establish `e2 : (phi Xu : (Fin k → A) → (Fin k → A)) = Matrix.mulVec X`. Use function extensionality and compare the values at `v`. Both sides reduce to the same expression. Rewrite `e` using `[e2]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mulVec_eq_of_preserves_form {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     [LocallyCompactSpace A] [SecondCountableTopology A] [T2Space A] [MeasurableSpace A]
@@ -75,29 +75,23 @@ theorem map_mulVec_eq_of_preserves_form {A : Type} [CommRing A] [TopologicalSpac
   exact e
 
 /- English proof (translation)
-Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_eq_succ hCM.2.2.1`. Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (R ⊗[F] E) := IsModuleTopology.isTopologicalRing R _`. Take `⟨eh⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) R`. Use `haveI : LocallyCompactSpace (R ⊗[F] E) := eh.isClosedEmbedding.locallyCompactSpace`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : SecondCountableTopology (R ⊗[F] E) := eh.secondCountableTopology`. Use `haveI : T2Space (R ⊗[F] E) := eh.isEmbedding.t2Space`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Use `set k := Fintype.card (Σ _ : Fin M, Fin (Module.finrank F E))`. Use `set b := bV F E M`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set bR := bVR F E M R`. Use `set e : (Fin M → R ⊗[F] E) ≃ₗ[R] (Fin k → R) := bR.equivFun`. Establish `c1 : Continuous e.toLinearMap` using `IsModuleTopology.continuous_of_linearMap (R := R) _`. Establish `c2 : Continuous e.symm.toLinearMap` using `IsModuleTopology.continuous_of_linearMap (R := R) _`. Set `ec : (Fin M → R ⊗[F] E) ≃ₜ+ (Fin k → R)` to `{ e.toAddEquiv with continuous_toFun := by simpa using c1 continuous_invFun := by simpa using c2 }`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hec : ∀ u, ec u = e u` using `fun _ => rfl`. Establish `hecs : ∀ x, ec.symm x = e.symm x` using `fun _ => rfl`. Use `set μ' := μ.map ec`. Establish `hμ' : μ'.IsAddHaarMeasure` using `ec.isAddHaarMeasure_map μ`. Set `L : (Fin k → R) →ₗ[R] (Fin k → R)` to `e.toLinearMap ∘ₗ ((lin R σ J g).restrictScalars R) ∘ₗ e.symm.toLinearMap`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `set X := LinearMap.toMatrix' L`. Establish `hX : ∀ x, X.mulVec x = e (lin R σ J g (e.symm x))` using `fun x => LinearMap.toMatrix'_mulVec L x`. Use `set G0 : Matrix (Fin k) (Fin k) F := Matrix.of fun i j => Algebra.trace F E (hE σ J (b i) (b j))`. Use `set G := G0.map (algebraMap F R)`. Establish `hGu : IsUnit G.det`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hd : G.det = algebraMap F R G0.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hd]`. Conclude with `(isUnit_iff_ne_zero.2 (trace_gram_nondegenerate F E σ hCM M J hJ k b)).map _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hBG : ∀ i j, Bf σ J (bR i) (bR j) = G i j`. Introduce `i j`. Rewrite using `[bVR_apply, bVR_apply, Bf, trace_basis_holds F E R σ M J]`. Both sides reduce to the same expression. Establish `key : ∀ x y : Fin k → R, Bf σ J (e.symm x) (e.symm y) = x ⬝ᵥ (G *ᵥ y)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x y`. Rewrite using `[Module.Basis.equivFun_symm_apply, Module.Basis.equivFun_symm_apply, Bf_expand]`. Simplify using `only [hBG, dotProduct, Matrix.mulVec, Finset.mul_sum]`. Both sides reduce to the same expression. Establish `e1 : ∀ u w : Fin k → R, u ⬝ᵥ ((X.transpose * G * X) *ᵥ w) = u ⬝ᵥ (G *ᵥ w)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `u w`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, ← key, hX, hX, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply, Bf_lin, key]`. Establish `hXG : X.transpose * G * X = G`. Use extensionality with `i j`. Simplify using `using e1 (Pi.single i 1) (Pi.single j 1)`.
-
-Establish `hinv` using `map_mulVec_eq_of_preserves_form hR1 k G X hGu hXG μ'`. Establish `hlin : (lin R σ J g : (Fin M → R ⊗[F] E) → (Fin M → R ⊗[F] E)) = ec.symm ∘ X.mulVec ∘ ec`. Use function extensionality and compare the values at `u`. Simplify using `only [Function.comp_apply, hec, hecs, hX, LinearEquiv.symm_apply_apply]`. Establish `mec : Measurable ec` using `ec.continuous.measurable`.
-
-Establish `mecs : Measurable ec.symm` using `ec.symm.continuous.measurable`. Establish `mX : Measurable X.mulVec` using `(continuous_const.matrix_mulVec continuous_id).measurable`. Rewrite using `[hlin, ← Measure.map_map mecs (mX.comp mec), ← Measure.map_map mX mec, hinv, Measure.map_map mecs mec]`. Establish `: (ec.symm ∘ ec : (Fin M → R ⊗[F] E) → _) = id`. Use function extensionality and compare the values at `u`.
-
-Simplify using the standard rewrite rules. Rewrite using `[this, Measure.map_id]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_lin_eq_of_stableRankOne (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E)
@@ -176,13 +170,11 @@ theorem map_lin_eq_of_stableRankOne (F E : Type) [Field F] [NumberField F] [Fiel
   rw [this, Measure.map_id]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J hJ v a μ hμ g`. Use `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v` as an intermediate fact. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_eq_succ hCM.2.2.1`. Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := IsModuleTopology.isTopologicalRing (Fv F v) _`. Take `⟨eh⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (Fv F v)`. Use `haveI : LocallyCompactSpace (Fv F v ⊗[F] E) := eh.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Fv F v ⊗[F] E) := eh.secondCountableTopology`. Use `haveI : T2Space (Fv F v ⊗[F] E) := eh.isEmbedding.t2Space`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Set `ν : Measure (Fin n → Fv F v ⊗[F] E)` to `addHaar`. Establish `hmeas : Measurable (lin (Fv F v) σ J g : (Fin n → Fv F v ⊗[F] E) → _)` using `(continuous_const.matrix_mulVec continuous_id).measurable`. Establish `hν : ∀ _ : Fin a, MeasurePreserving (lin (Fv F v) σ J g : (Fin n → Fv F v ⊗[F] E) → _) ν ν` using `fun _ => ⟨hmeas, map_lin_eq_of_stableRankOne F E σ hCM n J hJ (Fv F v) (stableRankOne_field _) g ν⟩`. Establish `hpi` using `measurePreserving_pi (fun _ : Fin a => ν) (fun _ => ν) hν`.
-
-Establish `e1 : (fun X : Fin a → Fin n → Fv F v ⊗[F] E => g • X) = fun X i => lin (Fv F v) σ J g (X i)` using `rfl`. Rewrite using `[isAddLeftInvariant_eq_smul μ (Measure.pi fun _ : Fin a => ν), Measure.map_smul, e1, hpi.map_eq]`.
+A detailed English derivation is pending.
 -/
 theorem haar_tuple_invariant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ (a : ℕ) (μ : Measure (Fin a → Fin n → Fv F v ⊗[F] E)), μ.IsAddHaarMeasure → ∀ g : HA (Fv F v) σ J, μ.map (fun X => g • X) = μ := by
   intro F E _ _ _ _ _ σ hCM n J hJ v a μ hμ g

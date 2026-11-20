@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.FibPt
 
 /- English proof (translation)
-The claim follows from `AnalyticAt.comp' (ReciprocityTheory.AnForm.Osgood.osgood d Set.univ _ isOpen_univ (hg p q).differentiableOn (T z₀) (Set.mem_univ _)) hT`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_entry {D d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ)
     (hg : ∀ p q, Differentiable ℂ fun y' => g y' p q) {T : (Fin D → ℂ) → (Fin d → ℂ)} {z₀ : Fin D → ℂ}
@@ -31,13 +31,13 @@ theorem analyticAt_entry {D d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fi
   AnalyticAt.comp' (ReciprocityTheory.AnForm.Osgood.osgood d Set.univ _ isOpen_univ (hg p q).differentiableOn (T z₀) (Set.mem_univ _)) hT
 
 /- English proof (translation)
-The claim follows from `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin D => ℂ) i).analyticAt z₀`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_coord {D : ℕ} (i : Fin D) (z₀ : Fin D → ℂ) : AnalyticAt ℂ (fun z : Fin D → ℂ => z i) z₀ :=
   (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin D => ℂ) i).analyticAt z₀
 
 /- English proof (translation)
-The claim follows from `(analyticAt_entry g hg hT 0 0).add ((analyticAt_entry g hg hT 0 1).mul (analyticAt_coord i z₀))`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_den {D d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ)
     (hg : ∀ p q, Differentiable ℂ fun y' => g y' p q) {T : (Fin D → ℂ) → (Fin d → ℂ)} {z₀ : Fin D → ℂ}
@@ -45,7 +45,7 @@ theorem analyticAt_den {D d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 
   (analyticAt_entry g hg hT 0 0).add ((analyticAt_entry g hg hT 0 1).mul (analyticAt_coord i z₀))
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_fin_two]`. Apply the tactic sequence `exact ((analyticAt_entry g hg hT 0 0).mul (analyticAt_entry g hg hT 1 1)).sub ((analyticAt_entry g hg hT 0 1).mul (analyticAt_entry g hg hT 1 0))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticAt_det {D d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ)
     (hg : ∀ p q, Differentiable ℂ fun y' => g y' p q) {T : (Fin D → ℂ) → (Fin d → ℂ)} {z₀ : Fin D → ℂ}
@@ -55,7 +55,7 @@ theorem analyticAt_det {D d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 
     ((analyticAt_entry g hg hT 0 1).mul (analyticAt_entry g hg hT 1 0))
 
 /- English proof (translation)
-The claim follows from `((analyticAt_entry g hg hT 1 0).add ((analyticAt_entry g hg hT 1 1).mul (analyticAt_coord i z₀))).div (analyticAt_den g hg hT i) hd`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_mob {D d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ)
     (hg : ∀ p q, Differentiable ℂ fun y' => g y' p q) {T : (Fin D → ℂ) → (Fin d → ℂ)} {z₀ : Fin D → ℂ}
@@ -65,7 +65,7 @@ theorem analyticAt_mob {D d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 
     (analyticAt_den g hg hT i) hd
 
 /- English proof (translation)
-The claim follows from `(analyticAt_det g hg hT).div ((analyticAt_den g hg hT i).pow 2) (pow_ne_zero 2 hd)`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_mobD {D d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ)
     (hg : ∀ p q, Differentiable ℂ fun y' => g y' p q) {T : (Fin D → ℂ) → (Fin d → ℂ)} {z₀ : Fin D → ℂ}
@@ -74,9 +74,9 @@ theorem analyticAt_mobD {D d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin
   (analyticAt_det g hg hT).div ((analyticAt_den g hg hT i).pow 2) (pow_ne_zero 2 hd)
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.T.log_sine_mobius_transform G g hG hg).2.1 a hd`. Establish `hn : ‖g.det‖ ≠ 0` using `norm_ne_zero_iff.2 hg.ne_zero`. Establish `hn2 : ‖den g a‖ ≠ 0` using `norm_ne_zero_iff.2 hd`. Establish `e : Real.log ‖mobD g a‖ = Real.log ‖g.det‖ - 2 * Real.log ‖den g a‖`. Rewrite using `[mobD, norm_div, norm_pow, Real.log_div hn (pow_ne_zero 2 hn2), Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[h, e]`. Simplify using `only [mob, den]`. Expand and normalize the polynomial expressions, which then agree.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem xiPot_frame (G g : Matrix (Fin 2) (Fin 2) ℂ) (hG : G.PosDef) (hg : IsUnit g.det) (a : ℂ) (hd : den g a ≠ 0) :
     xiPot (gᴴ * G * g) a = xiPot G (mob g a) + Real.log ‖mobD g a‖ := by
@@ -91,13 +91,13 @@ theorem xiPot_frame (G g : Matrix (Fin 2) (Fin 2) ℂ) (hG : G.PosDef) (hg : IsU
   ring
 
 /- English proof (translation)
-Establish `hT2 : ContDiffAt ℝ 2 T z₀` using `(hT.contDiffAt (n := 2)).restrict_scalars ℝ`. Establish `hco : ContDiffAt ℝ 2 (fun z : Fin D → ℂ => z i) z₀` using `((analyticAt_coord i z₀).contDiffAt (n := 2)).restrict_scalars ℝ`. Establish `hm2 : ContDiffAt ℝ 2 (fun z => mob (g (T z)) (z i)) z₀` using `((analyticAt_mob g hg hT i hd).contDiffAt (n := 2)).restrict_scalars ℝ`. Establish `hpd0 : (G (T z₀)).PosDef` using `hG.self_of_nhds`. Establish `hCT : ∀ p q, ContDiffAt ℝ 2 (fun z => G (T z) p q) z₀` using `fun p q => (hC p q).comp z₀ hT2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContDiffAt ℝ 2 (fun z => xiPot (G (T z)) (mob (g (T z)) (z i))) z₀` using `contDiffAt_xiPot (fun z => G (T z)) _ z₀ hpd0 hCT hm2`. Establish `h1 : ContDiffAt ℝ 2 (fun z => xiPot ((g (T z))ᴴ * G (T z) * g (T z)) (z i)) z₀`. Use `contDiffAt_xiPot (fun z => (g (T z))ᴴ * G (T z) * g (T z)) _ z₀ (GlobalTheory.T.log_sine_mobius_transform _ _ hpd0 hu).1 ?_ hco` and prove the remaining obligations. Introduce `p q`. Apply the tactic sequence `exact (contDiffAt_frame_entry G g (T z₀) hC hg p q).comp z₀ hT2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Establish `hmd : mobD (g (T z₀)) (z₀ i) ≠ 0` using `div_ne_zero hu.ne_zero (pow_ne_zero 2 hd)`. Rewrite using `[← ReciprocityTheory.AnForm.A.hessC_add_log_norm _ _ z₀ h2 (analyticAt_mobD g hg hT i hd) hmd]`. Apply `ReciprocityTheory.AnForm.A.hessC_congr'` to reduce the goal to its premises. Establish `e1 : ∀ᶠ z in 𝓝 z₀, (G (T z)).PosDef` using `hT.continuousAt.eventually hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∀ᶠ z in 𝓝 z₀, (g (T z)).det ≠ 0` using `(analyticAt_det g hg hT).continuousAt.eventually_ne hu.ne_zero`. Establish `e3 : ∀ᶠ z in 𝓝 z₀, den (g (T z)) (z i) ≠ 0` using `(analyticAt_den g hg hT i).continuousAt.eventually_ne hd`. Use `filter_upwards [e1, e2, e3] with z h1 h2 h3`. Conclude with `xiPot_frame _ _ h1 (isUnit_iff_ne_zero.2 h2) _ h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hess_xi {D d : ℕ} (G g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) {T : (Fin D → ℂ) → (Fin d → ℂ)}
     {z₀ : Fin D → ℂ} (hT : AnalyticAt ℂ T z₀) (i : Fin D) (hG : ∀ᶠ y' in 𝓝 (T z₀), (G y').PosDef)
@@ -130,21 +130,21 @@ theorem hess_xi {D d : ℕ} (G g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) �
   exact xiPot_frame _ _ h1 (isUnit_iff_ne_zero.2 h2) _ h3
 
 /- English proof (translation)
-Simplify using `only [maDens, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem maDens_congr_hess {D : ℕ} {φ ψ : Fin D → (Fin D → ℂ) → ℝ} {z : Fin D → ℂ}
     (h : ∀ r, hessC (φ r) z = hessC (ψ r) z) : maDens φ z = maDens ψ z := by
   simp only [maDens, h]
 
 /- English proof (translation)
-The claim follows from `(ContinuousLinearMap.pi (R := ℂ) fun i : Fin d => ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (d + 1) => ℂ) i.succ).analyticAt z₀`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_tail {d : ℕ} (z₀ : Fin (d + 1) → ℂ) : AnalyticAt ℂ (fun z : Fin (d + 1) → ℂ => Fin.tail z) z₀ :=
   (ContinuousLinearMap.pi (R := ℂ) fun i : Fin d =>
     ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (d + 1) => ℂ) i.succ).analyticAt z₀
 
 /- English proof (translation)
-The claim follows from `AnalyticAt.comp' (analyticAt_tail (Fin.tail z₀)) (analyticAt_tail z₀)`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_tail2 {d : ℕ} (z₀ : Fin (d + 2) → ℂ) :
     AnalyticAt ℂ (fun z : Fin (d + 2) → ℂ => Fin.tail (Fin.tail z)) z₀ :=
@@ -155,7 +155,7 @@ end GlobalTheory.CompanionTheory.Ar.PB.FibPt
 namespace GlobalTheory.CompanionTheory.Ar.PB.FibPt
 
 /- English proof (translation)
-Establish `hT2 : ContDiffAt ℝ 2 T z₀` using `(hT.contDiffAt (n := 2)).restrict_scalars ℝ`. Conclude with `contDiffAt_xiPot (fun z => G (T z)) _ z₀ hpd (fun p q => (hC p q).comp z₀ hT2) (((analyticAt_coord i z₀).contDiffAt (n := 2)).restrict_scalars ℝ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_xi_coord {D d : ℕ} (G : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) {T : (Fin D → ℂ) → (Fin d → ℂ)}
     {z₀ : Fin D → ℂ} (hT : AnalyticAt ℂ T z₀) (i : Fin D) (hpd : (G (T z₀)).PosDef)
@@ -166,7 +166,7 @@ theorem contDiffAt_xi_coord {D d : ℕ} (G : (Fin d → ℂ) → Matrix (Fin 2) 
     (((analyticAt_coord i z₀).contDiffAt (n := 2)).restrict_scalars ℝ)
 
 /- English proof (translation)
-The claim follows from `hα.comp z₀ ((hT.contDiffAt (n := 2)).restrict_scalars ℝ)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_base {D d : ℕ} (α : (Fin d → ℂ) → ℝ) {T : (Fin D → ℂ) → (Fin d → ℂ)}
     {z₀ : Fin D → ℂ} (hT : AnalyticAt ℂ T z₀) (hα : ContDiffAt ℝ 2 α (T z₀)) :
@@ -174,7 +174,7 @@ theorem contDiffAt_base {D d : ℕ} (α : (Fin d → ℂ) → ℝ) {T : (Fin D �
   hα.comp z₀ ((hT.contDiffAt (n := 2)).restrict_scalars ℝ)
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.AnForm.A.hessC_add _ _ z (contDiffAt_const.mul hf₀) (contDiffAt_const.mul hf₁), ReciprocityTheory.AnForm.A.hessC_add _ _ z (contDiffAt_const.mul hh₀) (contDiffAt_const.mul hh₁), ReciprocityTheory.AnForm.M.hessC_const_mul', ReciprocityTheory.AnForm.M.hessC_const …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hess_lin {D : ℕ} {f₀ f₁ h₀ h₁ : (Fin D → ℂ) → ℝ} {z : Fin D → ℂ} (c₀ c₁ : ℝ)
     (hf₀ : ContDiffAt ℝ 2 f₀ z) (hf₁ : ContDiffAt ℝ 2 f₁ z) (hh₀ : ContDiffAt ℝ 2 h₀ z) (hh₁ : ContDiffAt ℝ 2 h₁ z)
@@ -186,19 +186,17 @@ theorem hess_lin {D : ℕ} {f₀ f₁ h₀ h₁ : (Fin D → ℂ) → ℝ} {z : 
     ReciprocityTheory.AnForm.M.hessC_const_mul', ReciprocityTheory.AnForm.M.hessC_const_mul', e₀, e₁]
 
 /- English proof (translation)
-Introduce `d m G g α y hG hC hα hg hu a ha`. Take `⟨han, hjac⟩` from `GlobalTheory.T.analyticAt_mobius_det_jacobian_eq d g hg y a ha`. Establish `hτ : mob1 g (Fin.cons a y) = Fin.cons (mob (g y) a) y` using `by simp [mob1]`. Set `T : (Fin (d + 1) → ℂ) → (Fin d → ℂ)` to `fun z => Fin.tail z`. Establish `hTa : ∀ z₀, AnalyticAt ℂ T z₀` using `fun z₀ => analyticAt_tail z₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hTc : ∀ b : ℂ, T (Fin.cons b y) = y` using `fun b => by simp [T]`. Set `φ : Fin (d + 1) → (Fin (d + 1) → ℂ) → ℝ` to `fun r z => if (r : ℕ) < m then xiPot (G (Fin.tail z)) (z 0) else α (Fin.tail z)`. Establish `hφ : ∀ r, ContDiffAt ℝ 2 (φ r) (mob1 g (Fin.cons a y))`. Introduce `r`. Rewrite using `[hτ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : (r : ℕ) < m`. Simplify using `only [φ, h, if_true]`. Conclude with `contDiffAt_xi_coord G (hTa _) 0 (by rw [hTc]; exact hG.self_of_nhds) (by rw [hTc]; exact hC)`. Simplify using `only [φ, h, if_false]`. Conclude with `contDiffAt_base α (T := T) (hTa _) (by rw [hTc]; exact hα)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `step` using `ReciprocityTheory.AnForm.A.maDens_comp φ (mob1 g) _ han hφ`. Rewrite `step` using `[hjac, hτ]`. Rewrite using `[mul_comm, ← step]`. Apply `maDens_congr_hess` to reduce the goal to its premises. Introduce `r`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `h : (r : ℕ) < m`. Establish `e : φ r ∘ mob1 g = fun z => xiPot (G (T z)) (mob (g (T z)) (z 0))`. Use function extensionality and compare the values at `z`. Simplify using `[φ, h, mob1, T]`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [h, if_true]`. Conclude with `(hess_xi G g (hTa _) 0 (by rw [hTc]; exact hG) (by rw [hTc]; exact hC) hg (by rw [hTc]; exact hu) (by simpa [hTc] using ha)).2.2`. Establish `e : φ r ∘ mob1 g = fun z => α (Fin.tail z)`. Use function extensionality and compare the values at `z`. Simplify using `[φ, h, mob1]`.
-
-Rewrite using `[e]`. Simplify using `only [h, if_false]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dens1 : ∀ (d m : ℕ) (G g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) (α : (Fin d → ℂ) → ℝ) (y : Fin d → ℂ), (∀ᶠ y' in 𝓝 y, (G y').PosDef) → (∀ p q, ContDiffAt ℝ 2 (fun y' => G y' p q) y) → ContDiffAt ℝ 2 α y → (∀ p q, Differentiable ℂ fun y' => g y' p q) → IsUnit (g y).det → ∀ a : ℂ, GlobalTheory.CompanionTheory.Ar.PB.FibPt.den (g y) a ≠ 0 → maDens (fun (r : Fin (d + 1)) (z : Fin (d + 1) → ℂ) => if (r : ℕ) < m then xiPot ((g (Fin.tail z))ᴴ * G (Fin.tail z) * g (Fin.tail z)) (z 0) else α (Fin.tail z)) (Fin.cons a y) = Complex.normSq (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mobD (g y) a) * maDens (fun (r : Fin (d + 1)) (z : Fin (d + 1) → ℂ) => if (r : ℕ) < m then xiPot (G (Fin.tail z)) (z 0) else α (Fin.tail z)) (Fin.cons (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mob (g y) a) y) := by
   intro d m G g α y hG hC hα hg hu a ha
@@ -237,23 +235,21 @@ theorem dens1 : ∀ (d m : ℕ) (G g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2
     simp only [h, if_false]
 
 /- English proof (translation)
-Introduce `d m u G g α y hG hC hα hg hu a₀ a₁ h₀ h₁`. Take `⟨han, hjac⟩` from `GlobalTheory.T.mobius_pair_analytic_det_jacobian_eq d g hg y a₀ a₁ h₀ h₁`. Establish `c0 : ∀ b₀ b₁ : ℂ, (Fin.cons b₀ (Fin.cons b₁ y) : Fin (d + 2) → ℂ) 0 = b₀` using `fun _ _ => rfl`. Establish `c1 : ∀ b₀ b₁ : ℂ, (Fin.cons b₀ (Fin.cons b₁ y) : Fin (d + 2) → ℂ) 1 = b₁` using `fun _ _ => rfl`. Set `T : (Fin (d + 2) → ℂ) → (Fin d → ℂ)` to `fun z => Fin.tail (Fin.tail z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hTa : ∀ z₀, AnalyticAt ℂ T z₀` using `fun z₀ => analyticAt_tail2 z₀`. Establish `hTc : ∀ b₀ b₁ : ℂ, T (Fin.cons b₀ (Fin.cons b₁ y)) = y` using `fun b₀ b₁ => by simp [T]`. Establish `hτ : mob2 g (Fin.cons a₀ (Fin.cons a₁ y)) = Fin.cons (mob (g y) a₀) (Fin.cons (mob (g y) a₁) y)`. Establish `ht : Fin.tail (Fin.tail (Fin.cons a₀ (Fin.cons a₁ y) : Fin (d + 2) → ℂ)) = y` using `hTc a₀ a₁`. Simplify using `only [mob2, ht, c0, c1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `φ : Fin (d + 2) → (Fin (d + 2) → ℂ) → ℝ` to `fun r z => if (r : ℕ) < m then u r 0 * xiPot (G (Fin.tail (Fin.tail z))) (z 0) + u r 1 * xiPot (G (Fin.tail (Fin.tail z))) (z 1) else α (Fin.tail (Fin.tail z))`. Establish `hφ : ∀ r, ContDiffAt ℝ 2 (φ r) (mob2 g (Fin.cons a₀ (Fin.cons a₁ y)))`. Introduce `r`. Rewrite using `[hτ]`. Distinguish the cases in `h : (r : ℕ) < m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [φ, h, if_true]`. Conclude with `(contDiffAt_const.mul (contDiffAt_xi_coord G (hTa _) 0 (by rw [hTc]; exact hG.self_of_nhds) (by rw [hTc]; exact hC))).add (contDiffAt_const.mul (contDiffAt_xi_coord G (hTa _) 1 (by rw [hTc]; exact hG.self_of_nhds) (by rw [hTc]; exact hC)))`. Simplify using `only [φ, h, if_false]`. Conclude with `contDiffAt_base α (T := T) (hTa _) (by rw [hTc]; exact hα)`. Establish `step` using `ReciprocityTheory.AnForm.A.maDens_comp φ (mob2 g) _ han hφ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `step` using `[hjac, hτ, Complex.normSq_mul]`. Rewrite using `[mul_comm, ← step]`. Apply `maDens_congr_hess` to reduce the goal to its premises. Introduce `r`. Distinguish the cases in `h : (r : ℕ) < m`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : φ r ∘ mob2 g = fun z => u r 0 * xiPot (G (T z)) (mob (g (T z)) (z 0)) + u r 1 * xiPot (G (T z)) (mob (g (T z)) (z 1))`. Use function extensionality and compare the values at `z`. Establish `e0 : mob2 g z 0 = mob (g (T z)) (z 0)` using `rfl`. Establish `e1 : mob2 g z 1 = mob (g (T z)) (z 1)` using `rfl`. Establish `e2 : Fin.tail (Fin.tail (mob2 g z)) = T z` using `by simp [mob2, T]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp, φ, h, if_true, e0, e1, e2, T]`. Rewrite using `[e]`. Simplify using `only [h, if_true]`. Establish `x0` using `hess_xi G g (hTa (Fin.cons a₀ (Fin.cons a₁ y))) 0 (by rw [hTc]; exact hG) (by rw [hTc]; exact hC) hg (by rw [hTc]; exact hu) (by rw [hTc, c0]; exact h₀)`. Establish `x1` using `hess_xi G g (hTa (Fin.cons a₀ (Fin.cons a₁ y))) 1 (by rw [hTc]; exact hG) (by rw [hTc]; exact hC) hg (by rw [hTc]; exact hu) (by rw [hTc, c1]; exact h₁)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hess_lin _ _ x0.1 x1.1 x0.2.1 x1.2.1 x0.2.2 x1.2.2`. Establish `e : φ r ∘ mob2 g = fun z => α (Fin.tail (Fin.tail z))`. Use function extensionality and compare the values at `z`. Establish `e2 : Fin.tail (Fin.tail (mob2 g z)) = Fin.tail (Fin.tail z)` using `by simp [mob2]`. Simplify using `only [Function.comp, φ, h, if_false, e2]`.
-
-Rewrite using `[e]`. Simplify using `only [h, if_false]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dens2 : ∀ (d m : ℕ) (u : ℕ → Fin 2 → ℝ) (G g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) (α : (Fin d → ℂ) → ℝ) (y : Fin d → ℂ), (∀ᶠ y' in 𝓝 y, (G y').PosDef) → (∀ p q, ContDiffAt ℝ 2 (fun y' => G y' p q) y) → ContDiffAt ℝ 2 α y → (∀ p q, Differentiable ℂ fun y' => g y' p q) → IsUnit (g y).det → ∀ a₀ a₁ : ℂ, GlobalTheory.CompanionTheory.Ar.PB.FibPt.den (g y) a₀ ≠ 0 → GlobalTheory.CompanionTheory.Ar.PB.FibPt.den (g y) a₁ ≠ 0 → maDens (fun (r : Fin (d + 2)) (z : Fin (d + 2) → ℂ) => if (r : ℕ) < m then u r 0 * xiPot ((g (Fin.tail (Fin.tail z)))ᴴ * G (Fin.tail (Fin.tail z)) * g (Fin.tail (Fin.tail z))) (z 0) + u r 1 * xiPot ((g (Fin.tail (Fin.tail z)))ᴴ * G (Fin.tail (Fin.tail z)) * g (Fin.tail (Fin.tail z))) (z 1) else α (Fin.tail (Fin.tail z))) (Fin.cons a₀ (Fin.cons a₁ y)) = (Complex.normSq (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mobD (g y) a₀) * Complex.normSq (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mobD (g y) a₁)) * maDens (fun (r : Fin (d + 2)) (z : Fin (d + 2) → ℂ) => if (r : ℕ) < m then u r 0 * xiPot (G (Fin.tail (Fin.tail z))) (z 0) + u r 1 * xiPot (G (Fin.tail (Fin.tail z))) (z 1) else α (Fin.tail (Fin.tail z))) (Fin.cons (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mob (g y) a₀) (Fin.cons (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mob (g y) a₁) y)) := by
   intro d m u G g α y hG hC hα hg hu a₀ a₁ h₀ h₁
@@ -311,13 +307,13 @@ end GlobalTheory.CompanionTheory.Ar.PB.FibPt
 open GlobalTheory.CompanionTheory.Ar.PB.FibPt in
 
 /- English proof (translation)
-Establish `hdet : g 0 0 * g 1 1 - g 0 1 * g 1 0 ≠ 0`. Use `hg.ne_zero` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Distinguish the cases in `h : g 0 1 = 0`. Use `Eventually.of_forall fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : g 0 0 ≠ 0`. Introduce and unpack `h0`. Apply `hdet` to reduce the goal to its premises. Simplify using `[h, h0]`. Simplify `h0` using `[den, h]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsub : {a : ℂ | ¬ den g a ≠ 0} ⊆ {-(g 0 0) / g 0 1}`. Introduce `a ha`. Establish `ha' : den g a = 0` using `by simpa using ha`. Simplify using `only [Set.mem_singleton_iff]`. Unfold `den at ha'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `ha'`. Conclude with `measure_mono_null hsub (by simp)`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.PB.FibPt.ae_den_ne (g : Matrix (Fin 2) (Fin 2) ℂ) (hg : IsUnit g.det) : ∀ᵐ a : ℂ, den g a ≠ 0 := by
   have hdet : g 0 0 * g 1 1 - g 0 1 * g 1 0 ≠ 0 := by
@@ -342,15 +338,13 @@ theorem GlobalTheory.CompanionTheory.Ar.PB.FibPt.ae_den_ne (g : Matrix (Fin 2) (
 open GlobalTheory.CompanionTheory.Ar.PB.FibPt in
 
 /- English proof (translation)
-Introduce `hF d k hk hkd G α y hG hC hα`. Take `⟨g, hgd, hgu, hpd, hc2, h1, hf0⟩` from `GlobalTheory.T.local_unitary_normal_frame_2x2 d G y hG hC`. Establish `key` using `GlobalTheory.T.log_sine_monge_ampere_normalized hF d k hk hkd (fun y' => (g y')ᴴ * G y' * g y') α y hpd hc2 hα h1 hf0`. Establish `hae` using `ae_den_ne (g y) hgu`. Establish `hR : ∫ a : ℂ, maDens (fun (r : Fin (d + 1)) (z : Fin (d + 1) → ℂ) => if (r : ℕ) < 2 * k - 1 then xiPot ((g (Fin.tail z))ᴴ * G (Fin.tail z) * g (Fin.tail z)) (z 0) else α (Fin.tail z)) (Fin.cons a y) = ∫ a : ℂ, maDens (fun (r : Fin (d + 1)) (z : Fin (d + 1) → ℂ) => if (r : ℕ) < 2 …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Eq.trans (integral_congr_ae (hae.mono fun a ha => ?_)) (GlobalTheory.T.integral_normSq_mobD_mul_comp_mob' (g y) hgu (fun b : ℂ => maDens (fun (r : Fin (d + 1)) (z : Fin (d + 1) → ℂ) => if (r : ℕ) < 2 * k - 1 then xiPot (G (Fin.tail z)) (z 0) else α (Fin.tail z)) (Fin.cons b y)))` and prove the remaining obligations. Conclude with `dens1 d (2 * k - 1) G g α y hG hC hα hgd hgu a ha`. Establish `hL : ∀ u : ℕ → Fin 2 → ℝ, ∫ p : ℂ × ℂ, logSin ((g y)ᴴ * G y * g y) p.1 p.2 * maDens (fun (r : Fin (d + 2)) (z : Fin (d + 2) → ℂ) => if (r : ℕ) < 2 * k then u r 0 * xiPot ((g (Fin.tail (Fin.tail z)))ᴴ * G (Fin.tail (Fin.tail z)) * g (Fin.tail (Fin.tail z))) (z 0) + u r 1 * xiPot ( …`. Introduce `u`. Establish `hae2 : ∀ᵐ p : ℂ × ℂ, den (g y) p.1 ≠ 0 ∧ den (g y) p.2 ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1' : ∀ᵐ p : ℂ × ℂ, den (g y) p.1 ≠ 0` using `(Measure.quasiMeasurePreserving_fst (μ := (volume : Measure ℂ)) (ν := (volume : Measure ℂ))).ae hae`. Establish `h2' : ∀ᵐ p : ℂ × ℂ, den (g y) p.2 ≠ 0` using `(Measure.quasiMeasurePreserving_snd (μ := (volume : Measure ℂ)) (ν := (volume : Measure ℂ))).ae hae`. Conclude with `h1'.and h2'`. Use `Eq.trans (integral_congr_ae (hae2.mono fun p hp => ?_)) (GlobalTheory.T.mobius_change_of_variables_pair (g y) hgu (fun p : ℂ × ℂ => logSin (G y) p.1 p.2 * maDens (fun (r : Fin (d + 2)) (z : Fin (d + 2) → ℂ) => if (r : ℕ) < 2 * k then u r 0 * xiPot (G (Fin.tail (Fin.tail z))) (z 0 …` and prove the remaining obligations. Establish `hpdy : (G y).PosDef` using `hG.self_of_nhds`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs` using `(GlobalTheory.T.log_sine_mobius_transform (G y) (g y) hpdy hgu).2.2 p.1 p.2 hp.1 hp.2`. Simplify using `only []`. Rewrite using `[hs, dens2 d (2 * k) u G g α y hG hC hα hgd hgu p.1 p.2 hp.1 hp.2]`. Simplify using `only [mob, den]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) (key.trans ?_)` and prove the remaining obligations. Conclude with `(hL (fun (r : ℕ) (c : Fin 2) => if r = 0 then (![1, -1] : Fin 2 → ℝ) c else if r = 1 then (![0, 1] : Fin 2 → ℝ) c else if r < 2 + 2 * i then (![1, 0] : Fin 2 → ℝ) c else (![0, 1] : Fin 2 → ℝ) c)).symm`. Conclude with `congrArg _ hR`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.PB.FibPt.fibre_integral_any_frame : GroundTheory.Heights₂.Heights.Inter.FibreLocal.Statement → ∀ (d k : ℕ), 1 ≤ k → 2 * k ≤ d + 2 → ∀ (G : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) (α : (Fin d → ℂ) → ℝ) (y : Fin d → ℂ), (∀ᶠ y' in 𝓝 y, (G y').PosDef) → (∀ p q, ContDiffAt ℝ 2 (fun y' => G y' p q) y) → ContDiffAt ℝ 2 α y → (∑ i ∈ Finset.range k, ∫ p : ℂ × ℂ, logSin (G y) p.1 p.2 * maDens (let u : ℕ → Fin 2 → ℝ := (fun (i : ℕ) (r : ℕ) (c : Fin 2) => if r = 0 then (![1, -1] : Fin 2 → ℝ) c else if r = 1 then (![0, 1] : Fin 2 → ℝ) c else if r < 2 + 2 * i then (![1, 0] : Fin 2 → ℝ) c else (![0, 1] : Fin 2 → ℝ) c) i; (fun (r : Fin (d + 2)) (z : Fin (d + 2) → ℂ) => if (r : ℕ) < 2 * k then u r 0 * xiPot (G (Fin.tail (Fin.tail z))) (z 0) + u r 1 * xiPot (G (Fin.tail (Fin.tail z))) (z 1) else α (Fin.tail (Fin.tail z)))) (Fin.cons p.1 (Fin.cons p.2 y))) = 2 * ReciprocityTheory.ChartRestriction.G.AI.kappa k * ∫ a : ℂ, maDens (fun (r : Fin (d + 1)) (z : Fin (d + 1) → ℂ) => if (r : ℕ) < 2 * k - 1 then xiPot (G (Fin.tail z)) (z 0) else α (Fin.tail z)) (Fin.cons a y) := by
   intro hF d k hk hkd G α y hG hC hα

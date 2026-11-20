@@ -9,9 +9,9 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory.FiniteColength
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `MvPowerSeries.map (residue T) (MvPowerSeries.C r) = 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[MvPowerSeries.map_C, (residue_eq_zero_iff r).2 hr, map_zero]`. Introduce `g hg`. Use `GlobalTheory.FormalIsogeny.mem_map_C_of_coeff_mem (IsNoetherian.noetherian _) fun d => ?_` and prove the remaining obligations. Rewrite using `[← residue_eq_zero_iff, ← MvPowerSeries.coeff_map, RingHom.mem_ker.1 hg, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_maximalIdeal_eq_ker_map_residue (T : Type) [CommRing T] [IsLocalRing T]
     [IsNoetherianRing T] (σ : Type) :
@@ -28,19 +28,17 @@ theorem map_maximalIdeal_eq_ker_map_residue (T : Type) [CommRing T] [IsLocalRing
     rw [← residue_eq_zero_iff, ← MvPowerSeries.coeff_map, RingHom.mem_ker.1 hg, map_zero]
 
 /- English proof (translation)
-Introduce `T _ _ _ hc σ _ n e f h0 hM`. Establish `hfin : Module.Finite T (MvPowerSeries σ T ⧸ Ideal.span (Set.range f))` using `(GlobalTheory.FormalIsogeny.finiteReduction_iff.2 hM).finite_quotient`. Use `⟨?_, hfin⟩` and prove the remaining obligations. Use `haveI : Module.Flat T (MvPowerSeries σ T) := GlobalTheory.T.module_flat_mvPowerSeries_of_isNoetherianRing T σ`. Use `haveI : IsLocalHom (algebraMap T (MvPowerSeries σ T)) := ⟨fun r hr => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `MvPowerSeries.isUnit_iff_constantCoeff.1 hr` as an intermediate fact. Conclude with `this⟩`. Establish `hreg` using `GlobalTheory.T.isWeaklyRegular_mvPowerSeries_of_finite_colength (ResidueField T) σ n e (fun s => MvPowerSeries.map (residue T) (f (e.symm s))) (fun s => by rw [MvPowerSeries.constantCoeff_map, h0, map_zero]) (by`. Establish `: (Set.range fun s => MvPowerSeries.map (σ` using `σ) (residue T) (f (e.symm s))) = Set.range fun j => MvPowerSeries.map (σ := σ) (residue T) (f j) := e.symm.surjective.range_comp fun j => MvPowerSeries.map (σ := σ) (residue T) (f j)`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hM)`. Simplify using `only [Equiv.symm_apply_apply] at hreg`. Set `φ : (MvPowerSeries σ T ⧸ (maximalIdeal T).map (algebraMap T (MvPowerSeries σ T))) ≃+* MvPowerSeries σ (ResidueField T)` to `(Ideal.quotEquivOfEq (map_maximalIdeal_eq_ker_map_residue T σ)).trans (RingHom.quotientKerEquivOfSurjective (GlobalTheory.FormalIsogeny.map_surjective_of_surjective (σ := σ) (residue_surjective (R := T))))`. Establish `hφ : ∀ g, φ (Ideal.Quotient.mk _ g) = MvPowerSeries.map (residue T) g` using `fun g => rfl`. Establish `hreg' : RingTheory.Sequence.IsWeaklyRegular (MvPowerSeries σ T ⧸ (maximalIdeal T).map (algebraMap T (MvPowerSeries σ T))) (List.ofFn f)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `(AddEquiv.isWeaklyRegular_congr (e := φ.toAddEquiv) ?_).2 hreg` and prove the remaining obligations. Establish `: (List.ofFn fun i => MvPowerSeries.map (σ` using `σ) (residue T) (f i)) = (List.ofFn f).map (MvPowerSeries.map (σ := σ) (residue T)) := by`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[this, List.forall₂_map_right_iff, List.forall₂_same]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `r _ x`. Express the relevant statement in the definitionally equal form `φ (Ideal.Quotient.mk _ r * x) = _ * φ x`. Rewrite using `[map_mul, hφ]`. Establish `hflat` using `GlobalTheory.T.flat_quotient_weakly_regular T (MvPowerSeries σ T) (List.ofFn f) (fun r hr => by`. Take `⟨j, rfl⟩` from `(List.mem_ofFn' _ _).1 hr`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, h0]`. Conclude with `not_isUnit_zero) hreg'`. Establish `hI : Ideal.ofList (List.ofFn f) = Ideal.span (Set.range f)`. Unfold `Ideal.ofList`. Use `congr 1`.
-
-Use extensionality with `r`. Conclude with `List.mem_ofFn' _ _`. Rewrite `hflat` using `[hI]`. Conclude with `Module.free_of_flat_of_isLocalRing`.
+By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem free_finite_quotient : ∀ (T : Type) [CommRing T] [IsLocalRing T] [IsNoetherianRing T], IsAdicComplete (maximalIdeal T) T → ∀ (σ : Type) [Finite σ] (n : ℕ) (e : Fin n ≃ σ) (f : Fin n → MvPowerSeries σ T), (∀ j, MvPowerSeries.constantCoeff (f j) = 0) → (∃ M : ℕ, Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ (ResidueField T))) ^ M ≤ Ideal.span (Set.range fun j => MvPowerSeries.map (residue T) (f j))) → Module.Free T (MvPowerSeries σ T ⧸ Ideal.span (Set.range f)) ∧ Module.Finite T (MvPowerSeries σ T ⧸ Ideal.span (Set.range f)) := by
   intro T _ _ _ hc σ _ n e f h0 hM

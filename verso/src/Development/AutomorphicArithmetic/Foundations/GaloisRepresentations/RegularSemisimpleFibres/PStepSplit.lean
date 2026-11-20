@@ -6,15 +6,15 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hS hC hI P₀ K M Ω _ _ _ _ _ _ _ _ _ _ _ _ hp n hn π P hW A Θ hΘ v w hsplit hunr e e' he he' τ τ' hτ hτ' a hP ha`. Use `⟨a, Relation.ReflTransGen.refl, ?_⟩` and prove the remaining obligations. Take `⟨-, hSL⟩` from `hS K M hp n hn π P hW`. Take `⟨r, j, h1, h2, h3⟩` from `hC K M Ω A v w e e' he he'`. Establish `hs : UpperTheory.ConvolutionTheory.GM.Split M v` using `hsplit`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `i : v.adicCompletion K ≃+* w.1.adicCompletion M` to `RingEquiv.ofBijective (completionMap v w.1) ⟨(completionMap v w.1).injective, hs w⟩`. Establish `hi : ∀ x, i x = completionMap v w.1 x` using `fun _ => rfl`. Establish `hic : Continuous i` using `continuous_completionMap v w.1`. Establish `hal : ∀ x : K, i (algebraMap K _ x) = algebraMap M _ (algebraMap K M x)` using `fun x => by`. Rewrite using `[hi, completionMap_algebraMap, IsScalarTower.algebraMap_apply K M (w.1.adicCompletion M)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf⟩` from `hSL v w.1 i hic hal τ τ' hτ hτ'`. Establish `he0 : w.1.asIdeal.ramificationIdx (𝓞 K) ≠ 0` using `(Ideal.ramificationIdx_pos w.1.asIdeal (𝓞 K)).ne'`. Establish `hle : ∀ x y : w.1.adicCompletion M, valuation _ x ≤ valuation _ y ↔ Valued.v x ≤ Valued.v y` using `fun x y => ValuativeRel.isEquiv (valuation (w.1.adicCompletion M)) Valued.v x y`. Establish `hle' : ∀ x y : v.adicCompletion K, valuation _ x ≤ valuation _ y ↔ Valued.v x ≤ Valued.v y` using `fun x y => ValuativeRel.isEquiv (valuation (v.adicCompletion K)) Valued.v x y`. Establish `hv : ∀ x : v.adicCompletion K, valuation _ (i x) ≤ 1 ↔ valuation _ x ≤ 1` using `fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `hle (i x) (i 1)`. Establish `a2` using `hle' x 1`. Rewrite `a2` using `[map_one (valuation (v.adicCompletion K))]`. Rewrite `a1` using `[map_one i, map_one (valuation (w.1.adicCompletion M))]`. Rewrite using `[a1, a2, ← map_one i, hi, hi, valued_completionMap, valued_completionMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_pow_iff_left₀ zero_le zero_le he0`. Establish `hcond : ∀ (x : 𝒪[v.adicCompletion K]) (y : 𝒪[w.1.adicCompletion M]), (y : w.1.adicCompletion M) = i x → j (algebraMap _ _ (IsLocalRing.residue _ x)) = algebraMap _ _ (IsLocalRing.residue _ y)` using `fun x y hy => by rw [h2, h1 x y hy]`. Establish `hθ : (Θ.comp e'.toMonoidHom).comp j.toMonoidHom = Θ.comp e.toMonoidHom` using `MonoidHom.ext fun x => congrArg Θ (h3 x)`. Conclude with `hI _ _ i hv j hcond (Θ.comp e'.toMonoidHom) n τ.V τ'.V τ.ρ τ'.ρ f hf a (by rw [hθ]; exact ha)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.stepSplit :
     StableOf → ResEmbCompat → LblIso → ∀ P₀, StepAt P₀ id := by

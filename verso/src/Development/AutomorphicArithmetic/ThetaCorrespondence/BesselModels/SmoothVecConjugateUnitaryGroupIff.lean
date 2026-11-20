@@ -11,9 +11,9 @@ namespace UpperTheory.Lit.Bur.SmoothConj
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using h1`. Consider the case `cons a l ih`. Rewrite using `[List.map_cons, List.prod_cons, List.prod_cons, ← ih]`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = Q * a * Qi * (Q * l.prod * Qi) := by`. Rewrite using `[← h2]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_list_prod {Q Qi : Matrix (Fin n) (Fin n) ℂ} (h1 : Q * Qi = 1) (h2 : Qi * Q = 1)
     (l : List (Matrix (Fin n) (Fin n) ℂ)) :
@@ -28,7 +28,7 @@ theorem conj_list_prod {Q Qi : Matrix (Fin n) (Fin n) ℂ} (h1 : Q * Qi = 1) (h2
           rw [← h2]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hi : Qi = Q⁻¹` using `(Matrix.inv_eq_right_inv h1).symm`. Establish `hu : IsUnit Q` using `⟨⟨Q, Qi, h1, h2⟩, rfl⟩`. Substitute `hi` using the available equality. Rewrite using `[← Matrix.exp_conj _ _ hu, Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_conj_of_inverse {Q Qi : Matrix (Fin n) (Fin n) ℂ} (h1 : Q * Qi = 1) (h2 : Qi * Q = 1)
     (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
@@ -39,9 +39,9 @@ theorem exp_conj_of_inverse {Q Qi : Matrix (Fin n) (Fin n) ℂ} (h1 : Q * Qi = 1
   rw [← Matrix.exp_conj _ _ hu, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Establish `hX' : Xᴴ * G + G * X = 0` using `hX`. Establish `hc : Qiᴴ * Qᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Use `show (Q * X * Qi)ᴴ * J + J * (Q * X * Qi) = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_one, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `_ = Qiᴴ * Xᴴ * Qᴴ * J * (Q * Qi) + (Qiᴴ * Qᴴ) * J * Q * X * Qi := by rw [h1, hc]`. Use `_ = Qiᴴ * (Xᴴ * (Qᴴ * J * Q) + (Qᴴ * J * Q) * X) * Qi := by`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hg, hX']; simp`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_lieG_of_gram {J G Q Qi X : Matrix (Fin n) (Fin n) ℂ} (h1 : Q * Qi = 1)
     (hg : Qᴴ * J * Q = G) (hX : X ∈ lieG G) : Q * X * Qi ∈ lieG J := by
@@ -57,9 +57,9 @@ theorem conj_mem_lieG_of_gram {J G Q Qi X : Matrix (Fin n) (Fin n) ℂ} (h1 : Q 
     _ = 0 := by rw [hg, hX']; simp
 
 /- English proof (translation)
-Establish `hY' : Yᴴ * J + J * Y = 0` using `hY`. Establish `hc : Qiᴴ * Qᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Use `show (Qi * Y * Q)ᴴ * G + G * (Qi * Y * Q) = 0`. Substitute `hg` using the available equality. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Qᴴ * (Yᴴ * J + J * Y) * Q := by`. Rewrite using `[h1, hc]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_one, Matrix.one_mul]`. Use `_ = 0 := by rw [hY']; simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_inv_mem_lieG_of_gram {J G Q Qi Y : Matrix (Fin n) (Fin n) ℂ} (h1 : Q * Qi = 1)
     (hg : Qᴴ * J * Q = G) (hY : Y ∈ lieG J) : Qi * Y * Q ∈ lieG G := by
@@ -75,9 +75,9 @@ theorem conj_inv_mem_lieG_of_gram {J G Q Qi Y : Matrix (Fin n) (Fin n) ℂ} (h1 
     _ = 0 := by rw [hY']; simp
 
 /- English proof (translation)
-Introduce `k Xs hX`. Establish `h` using `hv k (fun i => Q * Xs i * Qi) fun i => hL _ (hX i)`. Establish `he : ∀ t : Fin k → ℝ, Q * (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod * Qi = (List.ofFn fun i => NormedSpace.exp (t i • (Q * Xs i * Qi))).prod`. Introduce `t`. Rewrite using `[conj_list_prod h1 h2, List.map_ofFn]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(exp_conj_of_inverse h1 h2 (Xs i) (t i)).symm`. Simplify `h` using `only [he]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem smoothVec_conj_of_subset {L L' : Set (Matrix (Fin n) (Fin n) ℂ)}
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) {Q Qi : Matrix (Fin n) (Fin n) ℂ}
@@ -96,9 +96,9 @@ theorem smoothVec_conj_of_subset {L L' : Set (Matrix (Fin n) (Fin n) ℂ)}
   simpa only [he] using h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `smoothVec_conj_of_subset (L := lieG G) (L' := lieG J) (fun g => σ (Q * g * Qi)) h2 h1 (fun Y hY => conj_inv_mem_lieG_of_gram h1 hg hY) h`. Establish `he : (fun g => σ (Q * (Qi * g * Q) * Qi)) = σ`. Use function extensionality and compare the values at `g`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: Q * (Qi * g * Q) * Qi = g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Rewrite `h'` using `[he]`. Then use the resulting hypothesis. Conclude with `smoothVec_conj_of_subset σ h1 h2 fun X hX => conj_mem_lieG_of_gram h1 hg hX`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem smoothVec_conj_iff (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
     {J G Q Qi : Matrix (Fin n) (Fin n) ℂ} (h1 : Q * Qi = 1) (h2 : Qi * Q = 1)
@@ -122,7 +122,7 @@ end UpperTheory.Lit.Bur.SmoothConj
 open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta GlobalTheory.SmVec
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Lit.Bur.SmoothConj.smoothVec_conj_iff | exact UpperTheory.Lit.Bur.SmoothConj.smoothVec_conj_iff | (intros; apply UpperTheory.Lit.Bur.SmoothConj.smoothVec_conj_iff <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.UpperTheory.Lit.Bur.smoothVec_conjugate_unitaryGroup_iff : ∀ {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) {J G Q Qi : Matrix (Fin n) (Fin n) ℂ} (h1 : Q * Qi = 1) (h2 : Qi * Q = 1) (hg : Qᴴ * J * Q = G) (v : H), SmoothVec (lieG G) (fun g => σ (Q * g * Qi)) v ↔ SmoothVec (lieG J) σ v := by
   first | exact @UpperTheory.Lit.Bur.SmoothConj.smoothVec_conj_iff | exact UpperTheory.Lit.Bur.SmoothConj.smoothVec_conj_iff | (intros; apply UpperTheory.Lit.Bur.SmoothConj.smoothVec_conj_iff <;> assumption)

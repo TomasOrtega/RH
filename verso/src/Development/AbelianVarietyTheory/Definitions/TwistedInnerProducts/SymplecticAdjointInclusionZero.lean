@@ -14,7 +14,7 @@ namespace GlobalTheory.MixPer.Check
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[symplOH_eq, symplOH_eq, hO_eq_trace, hO_eq_trace, adj_mul, Matrix.mul_assoc, cancel₃ (mt_unitary T g)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sympl_left (S T : HSp D) (g : GA D T) (x y : WO S T) :
     symplOH S T (mt T g ⬝ x) (mt T g ⬝ y) = symplOH S T x y := by
@@ -28,9 +28,9 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {S T T₀ : HSp D} {ρ : ℕ} (d : Hyp
 def xiT : Mx D ρ S.rank := d.pX ⬝ (mt T n⁻¹ ⬝ d.incAdj S y)
 
 /- English proof (translation)
-Establish `h : d.pY ⬝ (mt T n⁻¹ ⬝ d.incAdj S y) = incA D (-D.host.xi0⁻¹) • (adj y ⬝ gA S)`. Rewrite using `[cancel₂ h3, d.incAdj_apply, d.incY_apply, cancel₂ d.pY_jY, Matrix.one_mul]`. Establish `h' : d.incAdj S y = d.jY ⬝ (d.pY ⬝ (mt T n⁻¹ ⬝ d.incAdj S y))` using `by rw [h]; rfl`. Use `conv_rhs => rw [d.incX_apply, d.wittDecomp_inclAnisotropicHom_apply, xiT, ptT]`. Use `arg 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h']`. Rewrite using `[← Matrix.mul_assoc d.jX, ← Matrix.mul_assoc d.j0, ← Matrix.mul_assoc d.jY, ← Matrix.add_mul, ← Matrix.add_mul, d.sum_eq_one, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem splitT (h3 : d.pY ⬝ mt T n⁻¹ = d.pY) :
     mt T n⁻¹ ⬝ d.incAdj S y = d.incX S (xiT d n y) + d.inc0 S (ptT d S y n) + d.incAdj S y := by
@@ -42,12 +42,12 @@ theorem splitT (h3 : d.pY ⬝ mt T n⁻¹ = d.pY) :
     d.sum_eq_one, Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `d.wittDecomp_sympl_inclDual_inclAnisotropic S _ v`.
+A detailed English derivation is pending.
 -/
 theorem symplectic_adjoint_inclusion_zero (v : WO S T₀) : symplOH S T (d.incAdj S y) (d.inc0 S v) = 0 := d.wittDecomp_sympl_inclDual_inclAnisotropic S _ v
 
 /- English proof (translation)
-Rewrite using `[cenT, splitT d n y h3, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, symplectic_adjoint_inclusion_zero, GlobalTheory.OrientedHeis.symplOH_self, add_zero, add_zero, symplOH_skew]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cenT_eq (h3 : d.pY ⬝ mt T n⁻¹ = d.pY) :
     cenT d S y n = -symplOH S T (d.incX S (xiT d n y)) (d.incAdj S y) := by
@@ -55,16 +55,16 @@ theorem cenT_eq (h3 : d.pY ⬝ mt T n⁻¹ = d.pY) :
     GlobalTheory.OrientedHeis.symplOH_self, add_zero, add_zero, symplOH_skew]
 
 /- English proof (translation)
-Rewrite using `[d.wittDecomp_inclAnisotropicHom_apply, d.incX_apply, cancel₂ h2, Matrix.add_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem moveT (h2 : mt T n⁻¹ ⬝ d.j0 = d.j0 + d.jX ⬝ β) (w₀ : WO S T₀) :
     mt T n⁻¹ ⬝ d.inc0 S w₀ = d.inc0 S w₀ + d.incX S (β ⬝ w₀) := by
   rw [d.wittDecomp_inclAnisotropicHom_apply, d.incX_apply, cancel₂ h2, Matrix.add_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `sympl_left S T n⁻¹ (d.inc0 S w₀) (d.incAdj S y)`. Establish `z : symplOH S T (d.inc0 S w₀) (d.incAdj S y) = 0` using `by rw [symplOH_skew, symplectic_adjoint_inclusion_zero, neg_zero]`. Establish `z' : symplOH S T (d.inc0 S w₀) (d.incX S (xiT d n y)) = 0`. Rewrite using `[symplOH_skew, d.wittDecomp_sympl_inclIsotropic_inclAnisotropic, neg_zero]`. Rewrite `h` using `[splitT d n y h3, moveT d n β h2, z, GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, z, z', d.wittDecomp …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `eq_neg_of_add_eq_zero_left h`.
+A detailed English derivation is pending.
 -/
 theorem crossT (h2 : mt T n⁻¹ ⬝ d.j0 = d.j0 + d.jX ⬝ β) (h3 : d.pY ⬝ mt T n⁻¹ = d.pY) (w₀ : WO S T₀) :
     symplOH S T₀ w₀ (ptT d S y n) = -symplOH S T (d.incX S (β ⬝ w₀)) (d.incAdj S y) := by
@@ -78,11 +78,11 @@ theorem crossT (h2 : mt T n⁻¹ ⬝ d.j0 = d.j0 + d.jX ⬝ β) (h3 : d.pY ⬝ m
   exact eq_neg_of_add_eq_zero_left h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w₀`. Establish `e3 : ∀ ξ, mt T n⁻¹ ⬝ d.incX S ξ = d.incX S ξ` using `fun ξ => by rw [d.incX_apply, cancel₂ h1]`. Establish `k` using `covolOne_integral_add hμ (fun ξ => heisO ψ S T (d.incX S ξ) (heisO ψ S T (d.incAdj S y) (heisO ψ S T (d.inc0 S (w₀ + ptT d S y n)) f)) 0) (d.integrandT_periodic hf y (w₀ + ptT d S y n)) (xiT d n y + β ⬝ w₀)`. Express the relevant statement in the definitionally equal form `d.mixT S ψ μ 𝓕 (fun w => f (mt T n⁻¹ ⬝ w)) y w₀ = ψ (cenT d S y n) * (ψ (symplOH S T₀ w₀ (ptT d S y n)) * d.mixT S ψ μ 𝓕 f y (w₀ + ptT d S y n))`. Unfold `HypDec.mixT`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Rewrite using `[← k, ← integral_const_mul, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun ξ => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[d.integrandT_eq, d.integrandT_eq, Matrix.mul_add, Matrix.mul_add, splitT d n y h3, moveT d n β h2, e3, cenT_eq d n y h3, crossT d n β y h2 h3, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Simplify using `only [map_add, GlobalTheory.OrientedHeis.symplOH_add_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Normalize the expressions using the abelian group laws.
+Expand and normalize the polynomial expressions, which then agree. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem mixT_comp {μ : Measure (Mx D ρ S.rank)} {𝓕 : Set (Mx D ρ S.rank)} (hμ : IsCovolOne (ratMx D ρ S.rank) μ 𝓕)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
@@ -109,9 +109,9 @@ theorem mixT_comp {μ : Measure (Mx D ρ S.rank)} {𝓕 : Set (Mx D ρ S.rank)} 
 end Target
 
 /- English proof (translation)
-Establish `h : mt S g ⬝ (giA S ⬝ adj (mt S g)) = giA S`. Establish `h1` using `mt_mul_inv S g`. Rewrite `h1` using `[mt_inv]`. Establish `h2` using `congrArg (· ⬝ giA S) h1`. Simplify `h2` using `only [Matrix.mul_assoc, gA_mul_giA, Matrix.mul_one, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[symplOH_eq, symplOH_eq, hO_eq_trace, hO_eq_trace, adj_mul, ← Matrix.mul_assoc (gA T), ← Matrix.mul_assoc _ _ (mt S g), ← Matrix.mul_assoc _ _ (mt S g), trace_mul_comm, Matrix.mul_assoc (adj (mt S g)), cancel₃ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sympl_right (S T : HSp D) (g : GA D S) (x y : WO S T) :
     symplOH S T (x ⬝ mt S g) (y ⬝ mt S g) = symplOH S T x y := by
@@ -131,7 +131,7 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {S S₀ T : HSp D} {ρ : ℕ} (d : Hyp
 def etaS : Mx D T.rank ρ := d.extX T x ⬝ mt S n ⬝ d.jY
 
 /- English proof (translation)
-Use `d.mat_ext ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [Matrix.add_mul, d.extX_apply, d.extY_apply, d.matrixExtendByZero_apply, Matrix.mul_assoc, h1, d.pX_jX, d.pY_jX, d.p0_jX, Matrix.mul_zero, zero_add, add_zero]`. Simplify using `only [Matrix.add_mul, d.extX_apply, d.extY_apply, d.matrixExtendByZero_apply, Matrix.mul_assoc, d.pX_j0, d.pY_j0, d.p0_j0, Matrix.mul_zero, zero_add, add_zero, Matrix.mul_one, ptS]`. Simplify using `only [Matrix.add_mul, d.extX_apply, d.extY_apply, d.matrixExtendByZero_apply, Matrix.mul_assoc, d.pX_jY, d.pY_jY, d.p0_jY, Matrix.mul_zero, zero_add, add_zero, Matrix.mul_one, etaS]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem splitS (h1 : mt S n ⬝ d.jX = d.jX) :
     d.extX T x ⬝ mt S n = d.extY T (etaS d n x) + d.extX T x + d.ext0 T (ptS d T x n) := by
@@ -144,7 +144,7 @@ theorem splitS (h1 : mt S n ⬝ d.jX = d.jX) :
       Matrix.mul_zero, zero_add, add_zero, Matrix.mul_one, etaS]
 
 /- English proof (translation)
-Rewrite using `[cenS, splitS d n x h1, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, d.wittDecomp_sympl_extIsotropic_extAnisotropic, GlobalTheory.OrientedHeis.symplOH_self, add_zero, add_zero, symplOH_skew]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cenS_eq (h1 : mt S n ⬝ d.jX = d.jX) :
     cenS d T x n = -symplOH S T (d.extY T (etaS d n x)) (d.extX T x) := by
@@ -152,16 +152,16 @@ theorem cenS_eq (h1 : mt S n ⬝ d.jX = d.jX) :
     GlobalTheory.OrientedHeis.symplOH_self, add_zero, add_zero, symplOH_skew]
 
 /- English proof (translation)
-Rewrite using `[d.matrixExtendByZero_apply, d.extY_apply, Matrix.mul_assoc, h2, Matrix.mul_add, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem moveS (h2 : d.p0 ⬝ mt S n = d.p0 + β ⬝ d.pY) (w₀ : WO S₀ T) :
     d.ext0 T w₀ ⬝ mt S n = d.ext0 T w₀ + d.extY T (w₀ ⬝ β) := by
   rw [d.matrixExtendByZero_apply, d.extY_apply, Matrix.mul_assoc, h2, Matrix.mul_add, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `sympl_right S T n (d.ext0 T w₀) (d.extX T x)`. Establish `z : symplOH S T (d.ext0 T w₀) (d.extX T x) = 0` using `by rw [symplOH_skew, d.wittDecomp_sympl_extIsotropic_extAnisotropic, neg_zero]`. Establish `z' : symplOH S T (d.ext0 T w₀) (d.extY T (etaS d n x)) = 0`. Rewrite using `[symplOH_skew, d.wittDecomp_sympl_extDual_extAnisotropic, neg_zero]`. Rewrite `h` using `[splitS d n x h1, moveS d n β h2, z, GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, z, z', d.wittDecomp …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `eq_neg_of_add_eq_zero_left h`.
+A detailed English derivation is pending.
 -/
 theorem crossS (h1 : mt S n ⬝ d.jX = d.jX) (h2 : d.p0 ⬝ mt S n = d.p0 + β ⬝ d.pY) (w₀ : WO S₀ T) :
     symplOH S₀ T w₀ (ptS d T x n) = -symplOH S T (d.extY T (w₀ ⬝ β)) (d.extX T x) := by
@@ -175,11 +175,11 @@ theorem crossS (h1 : mt S n ⬝ d.jX = d.jX) (h2 : d.p0 ⬝ mt S n = d.p0 + β �
   exact eq_neg_of_add_eq_zero_left h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w₀`. Establish `e3 : ∀ a, d.extY T a ⬝ mt S n = d.extY T a` using `fun a => by rw [d.extY_apply, Matrix.mul_assoc, h3]`. Establish `k` using `covolOne_integral_add hμ (fun a => heisO ψ S T (d.extY T a) (heisO ψ S T (d.extX T x) (heisO ψ S T (d.ext0 T (w₀ + ptS d T x n)) f)) 0) (d.integrandS_periodic hf x (w₀ + ptS d T x n)) (etaS d n x + w₀ ⬝ β)`. Express the relevant statement in the definitionally equal form `d.mixS T ψ μ 𝓕 (fun w => f (w ⬝ mt S n)) x w₀ = ψ (cenS d T x n) * (ψ (symplOH S₀ T w₀ (ptS d T x n)) * d.mixS T ψ μ 𝓕 f x (w₀ + ptS d T x n))`. Unfold `HypDec.mixS`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Rewrite using `[← k, ← integral_const_mul, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[d.integrandS_eq, d.integrandS_eq, Matrix.add_mul, Matrix.add_mul, splitS d n x h1, moveS d n β h2, e3, cenS_eq d n x h1, crossS d n β x h1 h2, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Simplify using `only [map_add, GlobalTheory.OrientedHeis.symplOH_add_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Normalize the expressions using the abelian group laws.
+Expand and normalize the polynomial expressions, which then agree. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem mixS_comp {μ : Measure (Mx D T.rank ρ)} {𝓕 : Set (Mx D T.rank ρ)} (hμ : IsCovolOne (ratMx D T.rank ρ) μ 𝓕)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
@@ -206,7 +206,7 @@ theorem mixS_comp {μ : Measure (Mx D T.rank ρ)} {𝓕 : Set (Mx D T.rank ρ)} 
 end Source
 
 /- English proof (translation)
-Establish `h1` using `congrFun (hom.om_heis g h w f hf) 0`. Rewrite `h1` using `[hom.om_aut g hg h hh _ (hpres w)]`. Simplify `h1.symm` using `only [heisO, symplOH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem om_rat {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT} {om : Om S T} (hom : IsWeilDatumO ψ S T χS χT om)
     {g : GA D S} (hg : g ∈ GQ S) {h : GA D T} (hh : h ∈ GQ T) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
@@ -217,7 +217,7 @@ theorem om_rat {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT} {om : Om
   simpa only [heisO, symplOH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add] using h1.symm
 
 /- English proof (translation)
-Rewrite using `[psiE, map_smul, half, GlobalTheory.BesselChar.trace_incA]`. Establish `h2 : Module.finrank D.host.F D.host.E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `: (1 / 2 : D.host.E) = algebraMap D.host.F D.host.E (1 / 2)` using `by rw [map_div₀, map_one, map_ofNat]`. Rewrite using `[this, Algebra.trace_algebraMap, h2]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem psiE_half (ψ : AddChar (AF D.host.F) ℂ) (t : AF D.host.F) : psiE ψ (t • half D) = ψ t := by
   rw [psiE, map_smul, half, GlobalTheory.BesselChar.trace_incA]
@@ -227,7 +227,7 @@ theorem psiE_half (ψ : AddChar (AF D.host.F) ℂ) (t : AF D.host.F) : psiE ψ (
   norm_num
 
 /- English proof (translation)
-Use `⟨(hypDecThree D).nB (Matrix.of fun _ _ => t • half D), (hypDecThree D).nB_mem_NFlag _, ?_⟩` and prove the remaining obligations. Rewrite using `[psiBes_nB, map_one, one_mul, ← psiE_half]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `∑ i : Fin 1, ell D 1 i * ∑ j : Fin 1, t • half D * incA D 1 = _`. Rewrite using `[Fin.sum_univ_one, Fin.sum_univ_one, show ell D 1 0 = 1 from rfl, one_mul, map_one, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiBes_three (ψ : AddChar (AF D.host.F) ℂ) (t : AF D.host.F) :
     ∃ n ∈ flagN (hypDecThree D), psiBes ψ (hypDecThree D) 1 (fun _ => 1) n = ψ t := by
@@ -238,7 +238,7 @@ theorem psiBes_three (ψ : AddChar (AF D.host.F) ℂ) (t : AF D.host.F) :
   rw [Fin.sum_univ_one, Fin.sum_univ_one, show ell D 1 0 = 1 from rfl, one_mul, map_one, mul_one]
 
 /- English proof (translation)
-Use `⟨⟨!![1, s; 0, 1], !![1, -s; 0, 1], ?_, ?_⟩, ?_, rfl⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`. Apply the tactic sequence `intro i j; fin_cases i <;> fin_cases j <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unip_two {R : Type} [CommRing R] (s : R) : ∃ u : GL (Fin 2) R, u ∈ upperUni 2 R ∧ u.1 0 1 = s := by
   refine ⟨⟨!![1, s; 0, 1], !![1, -s; 0, 1], ?_, ?_⟩, ?_, rfl⟩
@@ -247,7 +247,7 @@ theorem unip_two {R : Type} [CommRing R] (s : R) : ∃ u : GL (Fin 2) R, u ∈ u
   · intro i j; fin_cases i <;> fin_cases j <;> simp
 
 /- English proof (translation)
-Take `⟨u, hu, h⟩` from `unip_two (t • half D)`. Establish `e : ∀ T : Mx D 2 2, upSum T = T 0 1` using `fun T => by simp [upSum, Fin.sum_univ_two]`. Conclude with `⟨u, mem_UX.2 hu, by rw [psiUni, e, h, psiE_half]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem psiUni_two (ψ : AddChar (AF D.host.F) ℂ) (t : AF D.host.F) : ∃ u ∈ UX D 2, psiUni ψ u = ψ t := by
   obtain ⟨u, hu, h⟩ := unip_two (t • half D)
@@ -255,7 +255,7 @@ theorem psiUni_two (ψ : AddChar (AF D.host.F) ℂ) (t : AF D.host.F) : ∃ u �
   exact ⟨u, mem_UX.2 hu, by rw [psiUni, e, h, psiE_half]⟩
 
 /- English proof (translation)
-Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Conclude with `((mem_UX.1 u.2) 0 0).2`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UX_one (u : UX D 1) : u = 1 := by
   refine Subtype.ext (Units.ext ?_)
@@ -264,9 +264,7 @@ theorem UX_one (u : UX D 1) : u = 1 := by
   exact ((mem_UX.1 u.2) 0 0).2
 
 /- English proof (translation)
-Use `haveI : Unique (UX D 1) := ⟨⟨1⟩, UX_one⟩`. Use `haveI : BorelSpace (UX D 1) := ⟨rfl⟩`. Use `⟨?_, Set.univ, ?_, measure_univ⟩` and prove the remaining obligations. Use `haveI : (Measure.dirac (1 : UX D 1)).IsMulLeftInvariant := ⟨fun g => by`. Rewrite using `[UX_one g]`.
-
-Simplify using `only [one_mul]`. Conclude with `Measure.map_id⟩`. Use `haveI : (Measure.dirac (1 : UX D 1)).IsOpenPosMeasure := ⟨fun U _ hU => by rw [Subsingleton.eq_univ_of_nonempty hU, measure_univ]; exact one_ne_zero⟩`. Conclude with `@Measure.IsHaarMeasure.mk _ _ _ _ _ ⟨fun K _ => measure_lt_top _ _⟩ inferInstance inferInstance`. Conclude with `⟨MeasurableSet.univ.nullMeasurableSet, Filter.Eventually.of_forall fun x => ⟨1, trivial⟩, fun a b hab => absurd (Subtype.ext (Subsingleton.elim _ _)) hab⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isUnitU_one : IsUnitU D 1 (Measure.dirac 1) := by
   haveI : Unique (UX D 1) := ⟨⟨1⟩, UX_one⟩
@@ -281,9 +279,7 @@ theorem isUnitU_one : IsUnitU D 1 (Measure.dirac 1) := by
       fun a b hab => absurd (Subtype.ext (Subsingleton.elim _ _)) hab⟩
 
 /- English proof (translation)
-Use `haveI : Unique (UX D 1) := ⟨⟨1⟩, UX_one⟩`. Use `haveI : MeasurableSingletonClass (UX D 1) := ⟨fun x => by`. Rewrite using `[Subsingleton.eq_univ_of_nonempty (Set.singleton_nonempty x)]`. Conclude with `MeasurableSet.univ⟩`. Use function extensionality and compare the values at `w`.
-
-Rewrite using `[flat, flatAt, integral_dirac, flatFun, psiUni, evalZero]`. Simplify using `[upSum_one, psiE_zero]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flat_one (ψ : AddChar (AF D.host.F) ℂ) {V V₀ W W₀ A L : HSp D} (dV : HypDec V V₀ 1) (o : OrthDec V₀ A L) (ζ)
     (dW : HypDec W W₀ 1) (μS 𝓕S μT 𝓕T) (Ψ : WO V W → ℂ) :
@@ -296,7 +292,7 @@ theorem flat_one (ψ : AddChar (AF D.host.F) ℂ) {V V₀ W W₀ A L : HSp D} (d
   simp [upSum_one, psiE_zero]
 
 /- English proof (translation)
-Rewrite using `[fjKer, opA, jacT_one, id, thetaKO, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fjKer_one (ψ : AddChar (AF D.host.F) ℂ) {W W₀ V₀ A L : HSp D} {ρ : ℕ} (dW : HypDec W W₀ ρ) (o : OrthDec V₀ A L) (ζ)
     (om : Om V₀ W₀) (Ξ) (h₀ : GA D A) (h : GA D W₀) :
@@ -304,7 +300,7 @@ theorem fjKer_one (ψ : AddChar (AF D.host.F) ℂ) {W W₀ V₀ A L : HSp D} {ρ
   rw [fjKer, opA, jacT_one, id, thetaKO, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]
 
 /- English proof (translation)
-Apply the tactic sequence `refine mixT_comp d _ (-b) y hμ hf ?_ ?_ ?_ <;> rw [_root_.mul_inv_rev, d.nB_inv, d.nC_inv, mt_mul]`. Rewrite using `[Matrix.mul_assoc, d.nB_jX, d.nC_jX]`. Rewrite using `[Matrix.mul_assoc, d.nB_j0, Matrix.mul_add, d.nC_j0, cancel₂ (d.nC_jX _)]`. Rewrite using `[← Matrix.mul_assoc, d.pY_nC, d.pY_nB]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mixT_nB_nC {ψ : AddChar (AF D.host.F) ℂ} {S T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ)
     {μ : Measure (Mx D ρ S.rank)} {𝓕 : Set (Mx D ρ S.rank)} (hμ : IsCovolOne (ratMx D ρ S.rank) μ 𝓕)

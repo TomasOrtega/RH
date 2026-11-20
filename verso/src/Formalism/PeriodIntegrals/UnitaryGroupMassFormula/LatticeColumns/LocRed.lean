@@ -33,9 +33,9 @@ def LocRedParts : Prop :=
       MassDataIdxSteps.StResZ X p ∧ HLatGL X u p ∧ HKerIn X hb u p ∧ HImU X hb u p
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hr`. Take `⟨y, hy⟩` from `hf (↑v⁻¹ : S)`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (r * y) with h | h` into its components or cases. Conclude with `isUnit_of_mul_isUnit_left h`. It suffices to derive a contradiction.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `h2` using `h.map f`. Rewrite `h2` using `[map_sub, map_one, map_mul, ← hv, hy, Units.mul_inv, sub_self]`. Conclude with `not_isUnit_zero h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_of_isUnit_map_of_surjective {R S : Type*} [CommRing R] [IsLocalRing R] [CommRing S] [Nontrivial S]
     (f : R →+* S) (hf : Function.Surjective f) (r : R) (hr : IsUnit (f r)) : IsUnit r := by
@@ -49,13 +49,11 @@ private theorem isUnit_of_isUnit_map_of_surjective {R S : Type*} [CommRing R] [I
     exact not_isUnit_zero h2
 
 /- English proof (translation)
-Introduce `A`. Break down `subsingleton_or_nontrivial S with hS | hS` into its components or cases. Conclude with `⟨1, Units.ext (Matrix.ext fun i j => Subsingleton.elim _ _)⟩`. Establish `hf'` using `hf choose g hg using hf'`. Set `M : Matrix m m R` to `fun i j => g ((A : Matrix m m S) i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hM : f.mapMatrix M = (A : Matrix m m S)`. Use extensionality with `i j`. Conclude with `hg _`. Establish `hdet : IsUnit M.det`. Apply `isUnit_of_isUnit_map_of_surjective f hf` to reduce the goal to its premises.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det, hM]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp A.isUnit`. Use `⟨((Matrix.isUnit_iff_isUnit_det M).mpr hdet).unit, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `f.mapMatrix (((Matrix.isUnit_iff_isUnit_det M).mpr hdet).unit : Matrix m m R) = _`.
-
-Rewrite using `[IsUnit.unit_spec, hM]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem generalLinearGroup_map_surjective_of_surjective {R S m : Type*} [CommRing R] [IsLocalRing R] [CommRing S] [Fintype m]
     [DecidableEq m] (f : R →+* S) (hf : Function.Surjective f) :
@@ -79,15 +77,15 @@ private theorem generalLinearGroup_map_surjective_of_surjective {R S m : Type*} 
     rw [IsUnit.unit_spec, hM]
 
 /- English proof (translation)
-Introduce `D X hb hK u hm hl p`. Take `⟨⟨π, hπs, hπk⟩, ⟨ψ, hψs, hψ⟩, hker, himu⟩` from `h X hb hK u hm hl p`. Set `ρ : KvH X u p.1 →* GL (Fin D.R.k) (ZMod (gOf p))` to `(Matrix.GeneralLinearGroup.map π).comp ψ`. Establish `hco : ∀ (x : KvH X u p.1) (i j : Fin D.R.k), ((ρ x : GL (Fin D.R.k) (ZMod (gOf p))) : Matrix (Fin D.R.k) (Fin D.R.k) (ZMod (gOf p))) i j = π (((ψ x : GL (Fin D.R.k) (MassDataIdxSteps.Op X p)) : Matrix (Fin D.R.k) (Fin D.R.k) (MassDataIdxSteps.Op X p)) i j)` using `fun _ _ _ => rfl`. Apply the tactic sequence `have hentry : ∀ (x : KvH X u p.1) (i j : Fin D.R.k), (((ψ x : GL (Fin D.R.k) (MassDataIdxSteps.Op X p)) : Matrix (Fin D.R.k) (Fin D.R.k) (MassDataIdxSteps.Op X p)) - 1) i j ∈ Ideal.span {((gOf p : ℕ) : MassDataIdxSteps.Op X p)} ↔ ((ρ x : GL (Fin D.R.k) (ZMod (gOf p))) : Matrix (F …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x i j`. Rewrite using `[← hπk, RingHom.mem_ker, hco, Matrix.sub_apply, map_sub, sub_eq_zero, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hρ1 : ∀ x, ρ x = 1 ↔ x ∈ KgH X u p`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hψ x]`. Prove the components needed by the constructor for the conclusion. Introduce `hx i j`. Apply the tactic sequence `exact (hentry x i j).2 (by rw [hx, Units.val_one])`. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.ext` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[Units.val_one]`. Apply the tactic sequence `exact (hentry x i j).1 (hx i j)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hρs : Function.Surjective ρ` using `(generalLinearGroup_map_surjective_of_surjective π hπs).comp hψs`. Conclude with `⟨ρ, hρs, fun x hx => hker x ((hρ1 x).1 (MonoidHom.mem_ker.mp hx)), himu ρ hρs hρ1⟩`.
+A detailed English derivation is pending.
 -/
 theorem locRedH_of (h : LocRedParts) : LocRedH := by
   intro D X hb hK u hm hl p

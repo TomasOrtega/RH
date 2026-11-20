@@ -3,23 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `O Γ _ _ _ Φ k _ a c hc`. Establish `hadj : ∀ g, adj (c.r g⁻¹) = a ↑(Φ.ν g⁻¹) • c.r g`. Introduce `g`. Establish `hm : adj (c.r g⁻¹) * c.r g⁻¹ = a ↑(Φ.ν g⁻¹) • 1` using `hc.pair.mult g⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← map_mul, inv_mul_cancel, map_one, mul_one]`. Use `_ = a ↑(Φ.ν g⁻¹) • c.r g := by rw [← mul_assoc, hm, smul_mul_assoc, one_mul]`. Establish `hν : ∀ g, a ↑(Φ.ν g) ≠ 0` using `fun g => ((Φ.ν g).isUnit.map a).ne_zero`. Establish `ent : ∀ {R : Type} [CommRing R] (X : M4 R), adj X 3 1 = - X 2 0 ∧ adj X 3 2 = X 1 0`. Introduce `R _ X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[adj_apply, sgn]`. Establish `e31 : ∀ g, c.r g 3 1 ≠ 0 → c.r g⁻¹ 2 0 ≠ 0`. Introduce `g hg h0`. Use `(ent (c.r g⁻¹)).1` as an intermediate fact. Rewrite `this` using `[hadj, h0, neg_zero, Matrix.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero (hν _) hg this`. Establish `e32 : ∀ g, c.r g 3 2 ≠ 0 → c.r g⁻¹ 1 0 ≠ 0`. Introduce `g hg h0`. Use `(ent (c.r g⁻¹)).2` as an intermediate fact. Rewrite `this` using `[hadj, h0, Matrix.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_ne_zero (hν _) hg this`. Establish `wP : ∀ i j : Fin 4, wt i j = -wPs → (i = 2 ∧ j = 0) ∨ (i = 3 ∧ j = 1)`. Introduce `i j h`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [wt, lamW, muW, wPs, Prod.ext_iff]`. Establish `wA : ∀ i j : Fin 4, wt i j = -wAl → (i = 1 ∧ j = 0) ∨ (i = 3 ∧ j = 2)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `i j h`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [wt, lamW, muW, wAl, Prod.ext_iff]`. Establish `w20 : wt 2 0 = -wPs` using `by simp [wt, lamW, muW, wPs]`. Establish `w10 : wt 1 0 = -wAl` using `by simp [wt, lamW, muW, wAl]`. Use `⟨fun _ => ⟨?_, ?_⟩, fun _ => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Introduce and unpack `⟨g, i, j, hw, hne⟩`. Break down `wP i j hw with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Conclude with `⟨g, hne⟩`. Conclude with `⟨g⁻¹, e31 g hne⟩`. Introduce and unpack `⟨g, hg⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨g, 2, 0, w20, hg⟩`. Introduce and unpack `⟨g, i, j, hw, hne⟩`. Break down `wA i j hw with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Conclude with `⟨g, hne⟩`. Conclude with `⟨g⁻¹, e32 g hne⟩`.
-
-Introduce and unpack `⟨g, hg⟩`. Conclude with `⟨g, 1, 0, w10, hg⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Chain.entIff :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] (Φ : Fr O Γ) {k : Type} [Field k] (a : O →+* k)

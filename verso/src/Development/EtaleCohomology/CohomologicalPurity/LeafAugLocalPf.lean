@@ -38,7 +38,7 @@ def LeafAugInj : Prop := ∀ (J : Type) [Preorder J] (D : J ⥤ Scheme.{0}) (X :
     InjC ((chainsP R).map (aug _ hc)) n
 
 /- English proof (translation)
-Introduce `J _ D X c ho hcov hdir hc R _ n`. Conclude with `h1 R _ _ _ n (hi J D X c ho hcov hdir hc R n) (hs J D X c ho hcov hc R n)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LeafAugLocal_of (h1 : LeafHomLoc) (hs : LeafAugSurj) (hi : LeafAugInj) : LeafAugLocal := by
   intro J _ D X c ho hcov hdir hc R _ n

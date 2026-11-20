@@ -19,7 +19,7 @@ namespace GlobalTheory.LatGlue
 variable {Y : Scheme.{0}} {h : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Simplify using `only [piMap_apply]`. Conclude with `GlobalTheory.LB.resG_resG h₁ h₂ (u l)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem piMap_resG_piMap_resG {U W W' : Y.Opens} (h₁ : W ≤ U) (h₂ : W' ≤ W) (u : Fin h → Γ(Y, U)) :
     piMap (resG Y h₂) (Fin h) (piMap (resG Y h₁) (Fin h) u) = piMap (resG Y (h₂.trans h₁)) (Fin h) u := by
@@ -28,9 +28,9 @@ theorem piMap_resG_piMap_resG {U W W' : Y.Opens} (h₁ : W ≤ U) (h₂ : W' ≤
   exact GlobalTheory.LB.resG_resG h₁ h₂ (u l)
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨u, hu, (piMap_resG_piMap_resG h₁ h₂ u).symm⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piMap_mem_span_image {U W W' : Y.Opens} (h₁ : W ≤ U) (h₂ : W' ≤ W) (S : Set (Fin h → Γ(Y, U)))
     {v : Fin h → Γ(Y, W)} (hv : v ∈ Submodule.span Γ(Y, W) (piMap (resG Y h₁) (Fin h) '' S)) :
@@ -46,17 +46,15 @@ theorem piMap_mem_span_image {U W W' : Y.Opens} (h₁ : W ≤ U) (h₂ : W' ≤ 
     exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, hj, u, hu, rfl⟩` from `hx`. Take `⟨k, hyk, hki, hkj⟩` from `hV i j y (hle hy) (hj hy)`. Use `⟨W ⊓ V k, inf_le_left, ⟨hy, hyk⟩, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `m : piMap (resG Y hkj) (Fin h) u ∈ P k`. Rewrite using `[hP j k hkj]`. Conclude with `Submodule.subset_span ⟨u, hu, rfl⟩`. Rewrite `m` using `[hP i k hki]`. Establish `m'` using `piMap_mem_span_image hki (inf_le_right : W ⊓ V k ≤ V k) _ m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `m'`, the goal using `[piMap_resG_piMap_resG]`. Conclude with `m'`. Consider the case `zero => exact ⟨W, le_rfl, hy, by simp⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨W₁, h₁, hy₁, m₁⟩` from `hx`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨W₂, h₂, hy₂, m₂⟩` from `hz`. Use `⟨W₁ ⊓ W₂, inf_le_left.trans h₁, ⟨hy₁, hy₂⟩, ?_⟩` and prove the remaining obligations. Establish `e₁` using `piMap_mem_span_image _ (inf_le_left : W₁ ⊓ W₂ ≤ W₁) _ m₁`. Establish `e₂` using `piMap_mem_span_image _ (inf_le_right : W₁ ⊓ W₂ ≤ W₂) _ m₂`. Rewrite `e₁`, `e₂` using `[piMap_resG_piMap_resG]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add]`. Conclude with `add_mem e₁ e₂`. Consider the case `smul a x _ hx`. Take `⟨W₁, h₁, hy₁, m₁⟩` from `hx`. Use `⟨W₁, h₁, hy₁, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ m₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_span_of_mem_localSpan {I : Type} {V : I → Y.Opens}
     {P : ∀ i, Submodule Γ(Y, V i) (Fin h → Γ(Y, V i))}
@@ -95,13 +93,13 @@ theorem exists_mem_span_of_mem_localSpan {I : Type} {V : I → Y.Opens}
     exact Submodule.smul_mem _ _ m₁
 
 /- English proof (translation)
-Rewrite using `[mem_glueSub_sec]`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Use `GlobalTheory.T.submodule_membership_local Y h W hW _ _ fun y hy => ?_` and prove the remaining obligations. Take `⟨W₁, h₁, hy₁, m₁⟩` from `hs y hy`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨W₂, h₂, hy₂, m₂⟩` from `exists_mem_span_of_mem_localSpan hV hP i (h₁.trans hle) hy₁ m₁`. Use `⟨W₂, h₂.trans h₁, hy₂, ?_⟩` and prove the remaining obligations. Rewrite `m₂` using `[coords_resM, piMap_resG_piMap_resG]`. Use `Submodule.span_mono ?_ m₂` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨piMap (resG Y hle) (Fin h) u, Submodule.subset_span ⟨u, hu, rfl⟩, piMap_resG_piMap_resG _ _ u⟩`. Introduce `hs y hy`. Use `⟨W, le_rfl, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[resM_self]`. Use `Submodule.span_mono ?_ hs` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `⟨i, hle, u, hu, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_glueSub_sec_iff_of_isAffineOpen (Y : Scheme.{0}) (h : ℕ) (I : Type) (V : I → Y.Opens)
     (P : ∀ i, Submodule Γ(Y, V i) (Fin h → Γ(Y, V i)))

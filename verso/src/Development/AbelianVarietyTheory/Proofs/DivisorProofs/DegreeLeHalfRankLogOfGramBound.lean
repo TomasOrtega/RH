@@ -16,7 +16,7 @@ namespace GlobalTheory.TorusSlope
 open scoped Matrix
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [HermFam.gram, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, h.ds_form_sum_left, h.ds_form_sum_right, h.ds_form_smul_left, h.smul_right, Finset.sum_mul, Complex.star_def]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_comb_rect {K : Type} [Field K] {V : Type*} [AddCommGroup V] [Module K V]
     (h : HermFam K V) (σ : K →+* ℂ) {r n : ℕ} (e : Fin r → V) (c : Matrix (Fin r) (Fin n) K) :
@@ -29,29 +29,29 @@ theorem gram_comb_rect {K : Type} [Field K] {V : Type*} [AddCommGroup V] [Module
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Introduce `K _ _ m r h ε C hC hε hG W hW`. Set `b` to `Module.Basis.span hε`. Take `⟨φ, hφ⟩` from `LinearMap.exists_extend (b.equivFun.toLinearMap)`. Establish `hφb : ∀ y : Submodule.span K (Set.range ε), φ y = b.equivFun y` using `fun y => LinearMap.congr_fun hφ y`. Establish `hb : ∀ i, (b i : Fin m → K) = ε i` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[b, Module.Basis.span_apply]`. Establish `hφε : ∀ i, φ (ε i) = Pi.single i 1`. Introduce `i`. Combine the equalities or inequalities in the displayed calculation. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[b.equivFun_self i j, Pi.single_apply]`. Simplify using `[eq_comm]`. Establish `hrec : ∀ x ∈ Submodule.span K (Set.range ε), x = ∑ k, φ x k • ε k`. Introduce `x hx`. Establish `h3` using `congrArg Subtype.val (b.sum_equivFun ⟨x, hx⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hb] at h3`. Establish `h2` using `hφb ⟨x, hx⟩`. Combine the equalities or inequalities in the displayed calculation. Establish `hWK : ∀ x ∈ W, x ∈ Submodule.span K (Set.range ε)` using `fun x hx => Submodule.span_le_restrictScalars (𝓞 K) K _ (hW hx)`. Establish `hWfg : W.FG`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : (Submodule.span (𝓞 K) (Set.range ε)).FG` using `Submodule.fg_span (Set.finite_range _)`. Use `haveI : IsNoetherian (𝓞 K) (Submodule.span (𝓞 K) (Set.range ε)) := isNoetherian_of_fg_of_noetherian _ hS`. Establish `h2` using `(IsNoetherian.noetherian (W.comap (Submodule.span (𝓞 K) (Set.range ε)).subtype)).map (Submodule.span (𝓞 K) (Set.range ε)).subtype`. Rewrite `h2` using `[Submodule.map_comap_eq_of_le (by simpa using hW)]`. Then use the resulting hypothesis. Establish `hpsd : ∀ (σ : K →+* ℂ) (n : ℕ) (v : Fin n → Fin m → K), (∀ i, v i ∈ W) → ((C : ℂ) • h.gram σ v - (stdHerm K r).gram σ (φ ∘ v)).PosSemidef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ n v hv`. Set `c : Matrix (Fin r) (Fin n) K` to `Matrix.of fun k j => φ (v j) k`. Establish `hv' : v = fun j => ∑ k, c k j • ε k`. Use function extensionality and compare the values at `j`. Conclude with `hrec (v j) (hWK _ (hv j))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : h.gram σ v = (c.map σ)ᴴ * h.gram σ ε * c.map σ` using `(congrArg (h.gram σ) hv').trans (gram_comb_rect h σ ε c)`. Establish `h2 : (stdHerm K r).gram σ (φ ∘ v) = (c.map σ)ᴴ * c.map σ`. Use extensionality with `i j`. Simplify using `[HermFam.gram, stdHerm, Matrix.mul_apply, Matrix.conjTranspose_apply, c]`. Rewrite using `[h1, h2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (C : ℂ) • ((c.map σ)ᴴ * h.gram σ ε * c.map σ) - (c.map σ)ᴴ * c.map σ = (c.map σ)ᴴ * ((C : ℂ) • h.gram σ ε - 1) * c.map σ`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one]`. Rewrite using `[h4]`. Conclude with `(hG σ).conjTranspose_mul_mul_same _`. Establish `hker : W ⊓ (LinearMap.ker φ).restrictScalars (𝓞 K) = ⊥`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨hxW, hxk⟩` from `Submodule.mem_inf.mp hx`. Establish `hx0 : φ x = 0` using `by simpa using hxk`. Rewrite using `[Submodule.mem_bot, hrec x (hWK _ hxW), hx0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `himg : W.map (φ.restrictScalars (𝓞 K)) ≤ stdLat K r`. Use `(Submodule.map_mono hW).trans ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (φ.restrictScalars (𝓞 K)) (ε i) ∈ Submodule.span (𝓞 K) (Set.range fun i : Fin r => (Pi.single i 1 : Fin r → K))`. Conclude with `Submodule.subset_span ⟨i, by simp [hφε]⟩`. Establish `hext` using `GlobalTheory.T.degree_le_kernel_add_image K m r h (stdHerm K r) φ C hC W hWfg hpsd`. Establish `hrk` using `GlobalTheory.T.lattice_rank_additive_exact K m r φ W`. Establish `hstd` using `GlobalTheory.T.degree_std_sublattice_nonpos K r _ himg`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hext` using `[hker, HadamardFrameExtension.deg_bot]`. Rewrite `hrk` using `[hker]`. Simplify using `only [HadamardFrameExtension.latRank_bot, zero_add] at hrk`. Rewrite using `[hrk]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem deg_le_half_log : ∀ (K : Type) [Field K] [NumberField K] (m r : ℕ) (h : HermFam K (Fin m → K)) (ε : Fin r → Fin m → K) (C : ℝ), 0 < C → LinearIndependent K ε → (∀ σ : K →+* ℂ, ((C : ℂ) • h.gram σ ε - 1).PosSemidef) → ∀ W : Submodule (𝓞 K) (Fin m → K), W ≤ Submodule.span (𝓞 K) (Set.range ε) → deg h W ≤ (latRank K W : ℝ) / 2 * Real.log C := by
   intro K _ _ m r h ε C hC hε hG W hW

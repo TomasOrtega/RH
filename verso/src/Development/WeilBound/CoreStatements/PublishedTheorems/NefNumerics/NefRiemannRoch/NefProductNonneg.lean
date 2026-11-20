@@ -17,7 +17,7 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ X _ d hp hd N hN`. Conclude with `GlobalTheory.T.nef_intersection_nonneg_all_dims k X hp d (structureModule X) (by rw [suppDim_structureModule, hd]) N hN`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nefProductNonneg : GlobalTheory.Published.NefProductNonneg := by
   intro k _ _ X _ d hp hd N hN

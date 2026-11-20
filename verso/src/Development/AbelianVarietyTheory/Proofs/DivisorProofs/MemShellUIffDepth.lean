@@ -24,9 +24,9 @@ def shellU {σ : L →+* L} {n : ℕ} (k : Fin (n / 2)) (y : GU σ n) (j : ℤ) 
   {u | Valued.v (cornerU k (u : GU σ n)) ≤ WithZero.exp j}
 
 /- English proof (translation)
-Unfold `shellU depthU`. Simplify using `only [Set.mem_setOf_eq]`. Distinguish the cases in `h0 : cornerU k (u : GU σ n) = 0`. Rewrite using `[h0]`. Simplify using `[ordL]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.BorelUMod.v_eq_exp h0, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mem_shellU_iff_depth {σ : L →+* L} {n : ℕ} (k : Fin (n / 2)) (y : GU σ n) (j : ℕ) (u : cellU y) :
     u ∈ shellU k y j ↔ depthU k (u : GU σ n) ≤ j := by
@@ -38,14 +38,14 @@ theorem mem_shellU_iff_depth {σ : L →+* L} {n : ℕ} (k : Fin (n / 2)) (y : G
     omega
 
 /- English proof (translation)
-The claim follows from `(mem_shellU_iff_depth k y _ u).2 le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem mem_shellU_depth {σ : L →+* L} {n : ℕ} (k : Fin (n / 2)) (y : GU σ n) (u : cellU y) :
     u ∈ shellU k y (depthU k (u : GU σ n)) :=
   (mem_shellU_iff_depth k y _ u).2 le_rfl
 
 /- English proof (translation)
-Introduce `_ hu` and use `le_trans hu (WithZero.exp_le_exp.2 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem shellU_mono {σ : L →+* L} {n : ℕ} (k : Fin (n / 2)) (y : GU σ n) {j j' : ℤ} (h : j ≤ j') :
     shellU k y j ⊆ shellU k y j' :=

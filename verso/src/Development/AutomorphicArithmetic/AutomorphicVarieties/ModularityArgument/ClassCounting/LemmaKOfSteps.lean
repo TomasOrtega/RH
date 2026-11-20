@@ -168,7 +168,7 @@ def SFinal : Prop :=
   GlobalTheory.Published.PoitouTateDuality → LocalFinitenessK → LocalTateDualityK → (∃ C, ShaK C) → ∃ CK, LemmaK CK
 
 /- English proof (translation)
-The claim follows from `h21 hP hF hT (h20 (h16 (h8 h1 h2 h3 h4 h6 h7) h9 (h12 h1 h2 h3 h4 h5 h10 h11) (h13 h1 hB) h14) h15 h17 h18 h19)`.
+A detailed English derivation is pending.
 -/
 theorem lemmaK_of_steps (hB : BOdd) (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK) (hT : LocalTateDualityK)
     (h1 : SChain) (h2 : SPrism) (h3 : SPrismMul) (h4 : SZc) (h5 : SRel) (h6 : STrans) (h7 : SCoc) (h8 : SThetaOf)

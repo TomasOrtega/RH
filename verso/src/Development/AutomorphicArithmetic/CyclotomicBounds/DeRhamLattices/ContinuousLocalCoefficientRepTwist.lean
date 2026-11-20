@@ -9,7 +9,7 @@ set_option maxHeartbeats 1000000
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pass GlobalTheory.Cut GlobalTheory.UseLoc Module TensorProduct GlobalTheory.UseLoc.Cases UpperTheory.KN
 
 /- English proof (translation)
-Introduce `D i r w hw C hr x`. Establish `h1` using `GlobalTheory.PotDual.continuous_loc D i w hw _ (GlobalTheory.Pass.FamCont.stepCont D i r hr x).1`. Establish `h2 : Continuous (fun y => C.inc y)` using `continuous_induced_rng.2 continuous_subtype_val`. Use `(h1.matrix_map h2).congr fun g => ?_` and prove the remaining obligations. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
 Both sides reduce to the same expression.
 -/

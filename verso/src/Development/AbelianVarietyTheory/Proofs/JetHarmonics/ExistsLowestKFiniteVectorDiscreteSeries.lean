@@ -19,25 +19,23 @@ open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 
 /- English proof (translation)
-Introduce `hKS k r ε mu R hDS Q E hQ hE`. Establish `hFV` using `(_root_.GlobalTheory.CayleyChoice.cayley_exists_and_any k r).2 ε mu R hDS Q hQ`. Unfold `_root_.PI.UpqRep.IsDS at hFV`. Take `⟨-, -, -, -, -, ⟨S, hS⟩, -⟩` from `hFV`. Unfold `_root_.PI.UpqRep.IsKTypeOf at hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take `⟨hSfd, hSK, -, ⟨v, hvS, hv0, hvw⟩, hhigh⟩` from `hS`. Establish `hlow : _root_.PI.UpqRep.lowK ε mu = _root_.Formalism.QuantumDeterminants.lowK ε mu` using `rfl`. Establish `hstab` using `_root_.GlobalTheory.CompactStable.kStable_smooth_and_stable hKS k r ε mu R hDS Q hQ S hSfd hSK`. Unfold `_root_.BranchingSupport.Rep.IsE at hE`. Use `set w0 : R.H := ((‖v‖⁻¹ : ℝ) : ℂ) • v with hw0def`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hw0S : w0 ∈ S` using `S.smul_mem _ hvS`. Establish `hw0wt : _root_.PI.UpqRep.IsWtOn (_root_.PI.UpqRep.Kset ε) (fun g ↦ R.σ (Q⁻¹ * g * Q)) (_root_.PI.UpqRep.lowK ε mu) w0`. Unfold `_root_.PI.UpqRep.IsWtOn at hvw ⊢`. Introduce `θ hθ`. Rewrite using `[hw0def, ContinuousLinearMap.map_smul, hvw θ hθ, smul_comm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnorm : ‖w0‖ = 1`. Rewrite using `[hw0def, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm, inv_mul_cancel₀ (norm_ne_zero_iff.mpr hv0)]`. Set `w : R.smSub` to `⟨w0, (hstab.1 w0 hw0S).2⟩`. Establish `htor` using `_root_.GlobalTheory.TorusWeight.torus_weight_action hKS k r ε mu R hDS Q E hQ hE (_root_.PI.UpqRep.lowK ε mu) w hw0wt`. Set `T : Submodule ℂ R.smSub` to `S.comap R.smSub.subtype`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : _root_.Formalism.REAL.KStable ε E T`. Unfold `_root_.Formalism.REAL.KStable`. Introduce `a b hab x hx`. Use `show ((E a b x : R.smSub) : R.H) ∈ S`. Rewrite using `[hE]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `hstab.2 a b hab x hx`. Establish `hTfd : FiniteDimensional ℂ T`. Set `f : T →ₗ[ℂ] S` to `LinearMap.codRestrict S (R.smSub.subtype.comp T.subtype) (fun x => x.2)`. Use `Module.Finite.of_injective f ?_` and prove the remaining obligations. Introduce `x y hxy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hval` using `congrArg Subtype.val hxy`. Conclude with `hval`. Establish `hle : _root_.Formalism.REAL.kSpan ε E w ≤ T`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `_root_.Formalism.REAL.kSpan`. Conclude with `sInf_le ⟨hw0S, hT⟩`. Use `⟨w, hnorm, (hstab.1 w0 hw0S).1, ?_, Submodule.finiteDimensional_of_le hle⟩` and prove the remaining obligations. Unfold `_root_.Formalism.REAL.KHighest`. Use `⟨htor.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b hab hεab`. Assume the negation of the conclusion as `hne`. Establish `hmem : ((E a b w : R.smSub) : R.H) ∈ S`. Rewrite using `[hE]`. Conclude with `hstab.2 a b hεab w0 hw0S`.
-
-Establish `hne' : ((E a b w : R.smSub) : R.H) ≠ 0` using `fun h => hne (Submodule.coe_eq_zero.mp h)`. Conclude with `_root_.GlobalTheory.DominantRootSums.not_cDom_add_root _ ε (_root_.PI.UpqRep.lowK ε mu) a b hab (hhigh _ _ hmem hne' (htor.2 a b))`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LowestVector.exists_lowest_vector : _root_.PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : _root_.BranchingSupport.Rep k r), R.IsDS ε mu → ∀ (Q : _root_.Formalism.FourierDecayAlt.ThreeDimData.Mx k r) (E : (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ R.smSub)), _root_.PI.UpqRep.IsCayleyU k r ε Q → R.IsE Q E → ∃ w : R.smSub, ‖w‖ = 1 ∧ R.KFin (w : R.H) ∧ _root_.Formalism.REAL.KHighest ε E (_root_.Formalism.QuantumDeterminants.lowK ε mu) w ∧ FiniteDimensional ℂ (_root_.Formalism.REAL.kSpan ε E w) := by
   intro hKS k r ε mu R hDS Q E hQ hE

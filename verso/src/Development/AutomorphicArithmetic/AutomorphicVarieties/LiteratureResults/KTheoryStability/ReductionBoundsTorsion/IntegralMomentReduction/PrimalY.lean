@@ -11,21 +11,19 @@ open MomentRationality MomentRationality.Ht
 variable {L : Type} [Field L] [NumberField L] {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[q_actL]`. Use `set v := gi g *ᵥ toL y with hv`. Establish `hv0 : v ≠ 0` using `gi_ne g hy`. Establish `hne : (Finset.univ.filter fun i => v i ≠ 0).Nonempty`. Assume the negation of the conclusion as `hcon`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Assume the negation of the conclusion as `hi`. Conclude with `hcon ⟨i, by simpa using hi⟩`. Establish `hi0mem : v ((Finset.univ.filter fun i => v i ≠ 0).max' hne) ≠ 0`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Finset.max'_mem _ hne` as an intermediate fact. Simplify using `using this`. Use `set i0 := (Finset.univ.filter fun i => v i ≠ 0).max' hne with hi0`. Establish `hzero : ∀ j, i0 < j → v j = 0`. Introduce `j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hjne`. Establish `: j ≤ i0` using `Finset.le_max' _ j (by simpa using hjne)`. Conclude with `absurd hj (not_lt.mpr this)`. Establish `hplace` using `fun w => primal_place hN hc hp hs hk y hzero w`. Use `set Z := ∑ w : InfinitePlace L, ‖z w‖ ^ 2 + 1 with hZdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hZ : 0 < Z` using `by positivity`. Establish `hsum` using `sum_sq_ge hL hd hi0mem (int_d hdi y i0)`. Establish `he : Real.exp (-s imax) ≤ Real.exp (-s i0)` using `Real.exp_le_exp.mpr (by linarith [himax i0])`. Establish `hterm : ∀ w, (M⁻¹) ^ 2 * Z⁻¹ * Real.exp (-s imax) ^ 2 * ‖w.embedding (v i0)‖ ^ 2 ≤ ∑ i, ‖(MomentRationality.mt (c * (p * dg L N s hs * k))⁻¹ w *ᵥ toR y w) i‖ ^ 2`. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `le_trans ?_ (hplace w)` and prove the remaining obligations. Establish `hzpos : 0 < ‖z w‖` using `norm_pos_iff.mpr (z_ne hN hc w)`. Establish `hzle : ‖z w‖ ^ 2 ≤ Z`. Use `Finset.single_le_sum (f := fun w => ‖z w‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ w)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hZinv : Z⁻¹ ≤ (‖z w‖⁻¹) ^ 2`. Rewrite using `[inv_pow]`. Conclude with `inv_anti₀ (by positivity) hzle`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : 0 ≤ (M⁻¹) ^ 2 * Z⁻¹ * Real.exp (-s imax) ^ 2` using `by positivity`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ _ := Finset.sum_le_sum fun w _ => hterm w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primal_y (hL : IsTotallyComplex L) (hN : 1 ≤ N) {g : GL (Fin N) L} {z : InfinitePlace L → ℂ} {c : Sp L N}
     (hc : ∀ w, MomentRationality.mt c w = z w • (g : Matrix (Fin N) (Fin N) L).map w.embedding) {d : ℤ} (hd : d ≠ 0)
@@ -84,21 +82,19 @@ theorem primal_y (hL : IsTotallyComplex L) (hN : 1 ≤ N) {g : GL (Fin N) L} {z 
     _ ≤ _ := Finset.sum_le_sum fun w _ => hterm w
 
 /- English proof (translation)
-Rewrite using `[q_dual]`. Use `set v := (g : Matrix (Fin N) (Fin N) L)ᵀ *ᵥ toL y with hv`. Establish `hv0 : v ≠ 0` using `gT_ne g hy`. Establish `hne : (Finset.univ.filter fun i => v i ≠ 0).Nonempty`. Assume the negation of the conclusion as `hcon`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Assume the negation of the conclusion as `hi`. Conclude with `hcon ⟨i, by simpa using hi⟩`. Establish `hi1mem : v ((Finset.univ.filter fun i => v i ≠ 0).min' hne) ≠ 0`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Finset.min'_mem _ hne` as an intermediate fact. Simplify using `using this`. Use `set i1 := (Finset.univ.filter fun i => v i ≠ 0).min' hne with hi1`. Establish `hzero : ∀ j, j < i1 → v j = 0`. Introduce `j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hjne`. Establish `: i1 ≤ j` using `Finset.min'_le _ j (by simpa using hjne)`. Conclude with `absurd hj (not_lt.mpr this)`. Establish `hplace` using `fun w => dual_place hc hp hs hk y hzero w`. Use `set Z := ∑ w : InfinitePlace L, ‖z w‖⁻¹ ^ 2 + 1 with hZdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hZ : 0 < Z` using `by positivity`. Establish `hsum` using `sum_sq_ge hL hd hi1mem (int_d hdg y i1)`. Establish `he : Real.exp (s imin) ≤ Real.exp (s i1)` using `Real.exp_le_exp.mpr (himin i1)`. Establish `hterm : ∀ w, (M⁻¹) ^ 2 * Z⁻¹ * Real.exp (s imin) ^ 2 * ‖w.embedding (v i1)‖ ^ 2 ≤ ∑ i, ‖((MomentRationality.mt (c * (p * dg L N s hs * k)) w)ᵀ *ᵥ toR y w) i‖ ^ 2`. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `le_trans ?_ (hplace w)` and prove the remaining obligations. Establish `hzpos : 0 < ‖z w‖` using `norm_pos_iff.mpr (z_ne hN hc w)`. Establish `hzle : ‖z w‖⁻¹ ^ 2 ≤ Z`. Use `Finset.single_le_sum (f := fun w => ‖z w‖⁻¹ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ w)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hZinv : Z⁻¹ ≤ ‖z w‖ ^ 2`. Use `inv_anti₀ (by positivity) hzle` as an intermediate fact. Rewrite `this` using `[inv_pow, inv_inv]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Establish `hA : 0 ≤ (M⁻¹) ^ 2 * Z⁻¹ * Real.exp (s imin) ^ 2` using `by positivity`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ _ := Finset.sum_le_sum fun w _ => hterm w`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_y (hL : IsTotallyComplex L) (hN : 1 ≤ N) {g : GL (Fin N) L} {z : InfinitePlace L → ℂ} {c : Sp L N}
     (hc : ∀ w, MomentRationality.mt c w = z w • (g : Matrix (Fin N) (Fin N) L).map w.embedding) {d : ℤ} (hd : d ≠ 0)
@@ -157,23 +153,19 @@ theorem dual_y (hL : IsTotallyComplex L) (hN : 1 ≤ N) {g : GL (Fin N) L} {z : 
     _ ≤ _ := Finset.sum_le_sum fun w _ => hterm w
 
 /- English proof (translation)
-Introduce `L _ _ hL N hN c hrat M`. Take `⟨g, z, hc⟩` from `hrat`. Take `⟨d, hd, hint⟩` from `exists_den ((Finset.univ.image fun ij : Fin N × Fin N => gi g ij.1 ij.2) ∪ (Finset.univ.image fun ij : Fin N × Fin N => ((g : Matrix (Fin N) (Fin N) L)ᵀ) ij.1 ij.2))`. Establish `hdi : ∀ i j, IsIntegral ℤ ((d : L) * gi g i j)` using `fun i j => hint _ (Finset.mem_union_left _ (Finset.mem_image.mpr ⟨(i, j), Finset.mem_univ _, rfl⟩))`. Establish `hdg : ∀ i j, IsIntegral ℤ ((d : L) * ((g : Matrix (Fin N) (Fin N) L)ᵀ) i j)` using `fun i j => hint _ (Finset.mem_union_right _ (Finset.mem_image.mpr ⟨(i, j), Finset.mem_univ _, rfl⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A1 := (M⁻¹) ^ 2 * (∑ w : InfinitePlace L, ‖z w‖ ^ 2 + 1)⁻¹ * ((d : ℝ) ^ 2)⁻¹ with hA1def`. Use `set A2 := (M⁻¹) ^ 2 * (∑ w : InfinitePlace L, ‖z w‖⁻¹ ^ 2 + 1)⁻¹ * ((d : ℝ) ^ 2)⁻¹ with hA2def`. Use `⟨(A1 * A2)⁻¹, ?_⟩` and prove the remaining obligations. Introduce `p hp s hs k hk`. Use `haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨imax, himax⟩` from `Finite.exists_max s`. Take `⟨imin, himin⟩` from `Finite.exists_min s`. Establish `hM : M ≠ 0`. Introduce and unpack `rfl`. Take `⟨w0⟩` from `(inferInstance : Nonempty (InfinitePlace L))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hp.2.2.2 ⟨0, hN⟩`. Rewrite `h1` using `[Finset.prod_eq_zero (Finset.mem_univ w0)]`. Conclude with `zero_ne_one h1`. Conclude with `le_antisymm (hp.2.1 w0 _ _) (norm_nonneg _)`. Establish `hdR : (d : ℝ) ≠ 0` using `by exact_mod_cast hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA1 : 0 < A1` using `by positivity`. Establish `hA2 : 0 < A2` using `by positivity`. Establish `h1` using `lam_ge hN (fun y hy => primal_y hL hN hc hd hdi hp hs hk himax y hy)`. Establish `h2` using `lam_ge hN (fun y hy => dual_y hL hN hc hd hdg hp hs hk himin y hy)`. Use `set e1 := Real.exp (-s imax) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set e2 := Real.exp (s imin) ^ 2`. Use `set X := Real.exp (2 * (s imax - s imin))`. Establish `he1 : 0 < e1` using `by positivity`. Establish `he2 : 0 < e2` using `by positivity`. Establish `hprod : e1 * e2 * X = 1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [e1, e2, X, sq, ← Real.exp_add]`. Use `Real.exp_zero using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hX : X = (e1 * e2)⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact hprod)`. Use `show (lam _ * lam _)⁻¹ ≤ _`.
-
-Combine the equalities or inequalities in the displayed calculation. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Conclude with `mul_le_mul h1 h2 (by positivity) (le_trans (by positivity) h1)`. Use `_ = (A1 * A2)⁻¹ * X := by rw [hX]; ring`. Use `_ ≤ (A1 * A2)⁻¹ * Real.exp (2 * W s) := by gcongr show Real.exp (2 * (s imax - s imin)) ≤ Real.exp (2 * W s)`.
-
-Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hW` using `sub_le_sum_abs_consecutive_diff s imax imin`. Unfold `W`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sHtB : SHtB := by
   intro L _ _ hL N hN c hrat M

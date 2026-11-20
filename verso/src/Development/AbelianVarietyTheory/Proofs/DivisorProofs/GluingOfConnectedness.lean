@@ -21,9 +21,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Introduce `F _ _ V p _ hp X s Xw hN hP hF hXw hG n K hK hCh`. Take `⟨X₁, s₁, Xw₁, K₁, hI₁, hN₁, hP₁, hF₁, hXw₁, hG₁, hK₁, hCh₁, hT₁⟩` from `GlobalTheory.T.restriction_statement_holds F V p hp X s Xw hN hP hF hXw hG n K hK hCh`. Take `⟨X₂, s₂, Xw₂, K₂, hI₂, hN₂, hP₂, hF₂, hXw₂, hG₂, hK₂, hCh₂, hT₂⟩` from `GlobalTheory.T.modularity_of_density GlobalTheory.T.density_statement_holds F V p hp X₁ s₁ Xw₁ hI₁ hN₁ hP₁ hF₁ hXw₁ hG₁ n K₁ hK₁ hCh₁`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.principal_of_connected_density hC hZ GlobalTheory.T.density_statement_holds F V p hp X₂ s₂ Xw₂ hI₂ hN₂ hP₂ hF₂ hXw₂ hG₂ K₂ hK₂ hCh₂`. Use `⟨ρ, fun yb hyb κ hκ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨yb₁, h1, hs1⟩` from `hT₁ yb hyb`. Take `⟨yb₂, h2, hs2⟩` from `hT₂ yb₁ h1`. Conclude with `hρ yb₂ h2 κ (hs2 (hs1 hκ))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem glueSt_of (hC : ConnSt) (hZ : GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.PropZ) : GlueSt := by
   intro F _ _ V p _ hp X s Xw hN hP hF hXw hG n K hK hCh

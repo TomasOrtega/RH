@@ -10,11 +10,11 @@ open Formalism.BasicNotions Formalism.MainNotions.product_first_zeroth_parts For
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Take `⟨P, hP, hPe⟩` from `(T.bw0 w hw hs v x).1 hx c (B c) (B' c) (hB c) (hB' c)`. Establish `hc : IsCrd T (B c) x c (MvPolynomial.C (∏ τ, (bwA_N D ((D.fm u).tauOf w v) (B c) (B' c) τ).det ^ shiftOf (lamT u 0) τ) * Formalism.L2.Forms.subP (bwA_N D ((D.fm u).tauOf w v) (B c) (B' c)) P)`. Introduce `z`. Rewrite using `[hPe z, ← bwA_N_mul, fnOf_mul]`. Rewrite using `[crd_eq T B hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ho : ∀ τ, τ ≠ (D.fm u).tauOf w v → bwA_N D ((D.fm u).tauOf w v) (B c) (B' c) τ = 1`. Introduce `τ h`. Unfold `bwA_N`. Rewrite using `[if_neg h]`. Establish `hprod : ∏ τ, (bwA_N D ((D.fm u).tauOf w v) (B c) (B' c) τ).det ^ shiftOf (lamT u 0) τ = (bwA_N D ((D.fm u).tauOf w v) (B c) (B' c) ((D.fm u).tauOf w v)).det ^ ((D.fm u).lam 0 ((D.fm u).tauOf w v)).detShift`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fintype.prod_eq_single ((D.fm u).tauOf w v) (fun τ h => by rw [ho τ h, Matrix.det_one, one_zpow]), lamT_zero]`. Both sides reduce to the same expression. Rewrite using `[hprod, MvPolynomial.C_mul']`. Conclude with `⟨_, ⟨P, Submodule.subset_span hP, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem crd_Bw (T : Forms0 D u) (w : D.what₂.places.Pl) (hw : OverT D u w) (hs : (D.fm u).seenP w = true)
     (v : (D.mem u).A.vT) (B B' : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)) D.host.E)
@@ -44,13 +44,11 @@ theorem crd_Bw (T : Forms0 D u) (w : D.what₂.places.Pl) (hw : OverT D u w) (hs
   exact ⟨_, ⟨P, Submodule.subset_span hP, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hB'' : IsLocBasis (D.what₂.places.resChar w) (dualSet (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)) (clsCrd D u 0 (Nat.zero_le _) c)) (B c)`. Rewrite using `[← bwG_Ld_coe D u 0 (Nat.zero_le _) c]`. Establish `hw' : D.what₂.places.resChar w = (D.mem u).A.T` using `hw`. Rewrite using `[hw']`. Conclude with `hB c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨P, hP, hPe⟩` from `(T.val0.lat y).1 hy w c (B c) hB''`. Rewrite using `[crd_eq T B (c := c) hPe]`. Conclude with `Submodule.subset_span hP`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Rewrite using `[show crd T B 0 c = 0 from congrFun (map_zero (crdL T B w)) c]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y y' _ _ hy hy'`. Rewrite using `[show crd T B (y + y') c = crd T B y c + crd T B y' c from congrFun (crd_add T B y y') c]`.
-
-Conclude with `Submodule.add_mem _ hy hy'`. Consider the case `smul r y _ hy`. Rewrite using `[show crd T B (r • y) c = crd T B ((r : D.what₂.LL) • y) c from rfl, crd_smul T B (r : D.what₂.LL) y c]`. Conclude with `Submodule.smul_mem _ (⟨D.what₂.embLL (r : D.what₂.LL), ⟨r, r.2, rfl⟩⟩ : bwA_Ow D w) hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_S (T : Forms0 D u) (w : D.what₂.places.Pl) (hw : OverT D u w)
     (B : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)) D.host.E)
@@ -79,9 +77,9 @@ theorem crd_S (T : Forms0 D u) (w : D.what₂.places.Pl) (hw : OverT D u w)
     exact Submodule.smul_mem _ (⟨D.what₂.embLL (r : D.what₂.LL), ⟨r, r.2, rfl⟩⟩ : bwA_Ow D w) hy
 
 /- English proof (translation)
-Take `⟨x, hx, hxy⟩` from `hy`. Establish `hc : IsCrd T (B c) y c ((((D.mem u).A.T : ℂ) ^ b) • crd T B x c)`. Introduce `z`. Rewrite using `[hxy, map_smul]`. Use `show (((D.mem u).A.T : ℂ) ^ b) * (D.fm u).emb 0 x c z = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[crd_spec T B x c z]`. Both sides reduce to the same expression. Rewrite using `[crd_eq T B hc]`. Conclude with `⟨_, crd_S T w hw B hB x hx c, rfl⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem crd_tL (T : Forms0 D u) (w : D.what₂.places.Pl) (hw : OverT D u w)
     (B : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)) D.host.E)
@@ -99,7 +97,7 @@ theorem crd_tL (T : Forms0 D u) (w : D.what₂.places.Pl) (hw : OverT D u w)
   exact ⟨_, crd_S T w hw B hB x hx c, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Submodule.mem_comap, Submodule.mem_pi]`. Introduce `c _`. Conclude with `crd_Bw T w hw hs v B B' hB hB' x hx c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem crdL_Bw_le (T : Forms0 D u) (w : D.what₂.places.Pl) (hw : OverT D u w) (hs : (D.fm u).seenP w = true)
     (v : (D.mem u).A.vT) (B B' : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)) D.host.E)
@@ -117,7 +115,7 @@ theorem crdL_Bw_le (T : Forms0 D u) (w : D.what₂.places.Pl) (hw : OverT D u w)
   exact crd_Bw T w hw hs v B B' hB hB' x hx c
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `y hy`. Rewrite using `[Submodule.mem_comap, Submodule.mem_pi]`. Introduce `c _`. Conclude with `crd_tL T w hw B hB b y hy c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem crdL_tL_le (T : Forms0 D u) (w : D.what₂.places.Pl) (hw : OverT D u w)
     (B : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)) D.host.E)

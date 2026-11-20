@@ -17,14 +17,14 @@ variable {E : Type} [Field E] [NumberField E] {w : Pl E} {K : GlobalTheory.UnitL
 def col (Z : Matrix (Fin m) (Fin m) (w.adicCompletion E)) (j : Fin m) : B.A := ∑ i, e.symm (Z i j) • b i
 
 /- English proof (translation)
-Rewrite using `[col, Module.Basis.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_col (Z : Matrix (Fin m) (Fin m) (w.adicCompletion E)) (j i : Fin m) :
     b.repr (col e b Z j) i = e.symm (Z i j) := by
   rw [col, Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, repr_col, smul_eq_mul, Matrix.mulVec, dotProduct, map_mul, RingEquiv.symm_apply_apply]`. Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_sum_smul_col (Z : Matrix (Fin m) (Fin m) (w.adicCompletion E)) (c : Fin m → K.E) (i : Fin m) :
     b.repr (∑ l, c l • col e b Z l) i = e.symm ((Z *ᵥ fun l => e (c l)) i) := by
@@ -33,9 +33,9 @@ theorem repr_sum_smul_col (Z : Matrix (Fin m) (Fin m) (w.adicCompletion E)) (c :
   exact Finset.sum_congr rfl fun l _ => mul_comm _ _
 
 /- English proof (translation)
-Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[repr_col]`. Establish `h2` using `congrFun (LinearMap.toMatrix_mulVec_repr b b (LinearMap.mulLeft K.E a) (col e b Z j)) i`. Simplify using `only [LinearMap.mulLeft_apply] at h2`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h2]`. Simplify using `only [Matrix.mulVec, dotProduct, GlobalTheory.TwLat.mulMat, Matrix.mul_apply, Matrix.map_apply, repr_col, map_sum, map_mul, RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_col (a : B.A) (Z : Matrix (Fin m) (Fin m) (w.adicCompletion E)) (j : Fin m) :
     a * col e b Z j = col e b (GlobalTheory.TwLat.mulMat e b a * Z) j := by
@@ -49,9 +49,9 @@ theorem mul_col (a : B.A) (Z : Matrix (Fin m) (Fin m) (w.adicCompletion E)) (j :
     map_mul, RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [GlobalTheory.TwLat.mulMat, Matrix.map_apply, LinearMap.toMatrix_apply, LinearMap.mulLeft_apply, add_mul, one_mul, mul_assoc, ← Algebra.smul_def, map_add, map_smul, Finsupp.add_apply, Finsupp.smul_apply, smul_eq_mul, map_mul, Matrix.add_apply, Matrix.smul_apply, Module.Basis …`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulMat_one_add (t : K.E) (x : B.A) :
     GlobalTheory.TwLat.mulMat e b (1 + algebraMap K.E B.A t * x) = 1 + e t • GlobalTheory.TwLat.mulMat e b x := by
@@ -64,9 +64,9 @@ theorem mulMat_one_add (t : K.E) (x : B.A) :
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Establish `h1 : g.val *ᵥ (fun l => e (c l)) = g.val *ᵥ (fun l => e (c' l))`. Use function extensionality and compare the values at `i`. Use `congrArg (fun x => b.repr x i) h` as an intermediate fact. Simplify using `only [repr_sum_smul_col] at this`. Conclude with `e.symm.injective this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun v => (g⁻¹).val *ᵥ v) h1`. Simplify using `only [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec] at h2`. Use function extensionality and compare the values at `l`. Conclude with `e.injective (congrFun h2 l)`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem sum_smul_col_inj (g : GLw m w) (c c' : Fin m → K.E)
     (h : ∑ l, c l • col e b g.val l = ∑ l, c' l • col e b g.val l) : c = c' := by
@@ -81,9 +81,9 @@ theorem sum_smul_col_inj (g : GLw m w) (c c' : Fin m → K.E)
   exact e.injective (congrFun h2 l)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: a⁻¹ * (a * b) ≤ a⁻¹ * a` using `by gcongr`. Rewrite `this` using `[← mul_assoc, inv_mul_cancel₀ ha, one_mul]`. Then use the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_le_of_le_one_right' h`.
+A detailed English derivation is pending.
 -/
 theorem mul_le_self_iff (a b : WithZero (Multiplicative ℤ)) (ha : a ≠ 0) : a * b ≤ a ↔ b ≤ 1 := by
   constructor
@@ -100,11 +100,11 @@ namespace GlobalTheory.TwLat.Lv
 open IsDedekindDomain.HeightOneSpectrum
 
 /- English proof (translation)
-Establish `hne : e (algebraMap K.O K.E t) ≠ 0`. Introduce `h`. Apply `ht` to reduce the goal to its premises. Establish `h1 : algebraMap K.O K.E t = 0` using `e.injective (h.trans (map_zero e).symm)`. Conclude with `IsFractionRing.injective K.O K.E (h1.trans (map_zero _).symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : Valued.v (e (algebraMap K.O K.E t)) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hne`. Rewrite `hk` using `[hval, ordL, dif_neg hv]`. Rewrite using `[← WithZero.coe_unzero hv, WithZero.exp]`. Use `congr 1`. Rewrite using `[← ofAdd_toAdd (WithZero.unzero hv)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem valued_uniformizerPower_completion_eq_exp_neg {E : Type} [Field E] [NumberField E] {w : Pl E} {K : GlobalTheory.UnitLemma.UQ}
     (e : K.E ≃+* w.adicCompletion E) (hval : ∀ x, GlobalTheory.UnitLemma.val K.O x = ordL (e x)) (t : K.O) (k : ℕ)
@@ -124,45 +124,39 @@ theorem valued_uniformizerPower_completion_eq_exp_neg {E : Type} [Field E] [Numb
   omega
 
 /- English proof (translation)
-Introduce `E _ _ _ _ w _ K e he hint hval B m b t k hs hk g N hN`. Establish `hv` using `valued_uniformizerPower_completion_eq_exp_neg e hval t k hs.1 hk`. Take `⟨c, hc⟩ : ∃ c, c = e (algebraMap K.O K.E t)` from `⟨_, rfl⟩`. Rewrite `hv` using `[← hc]`. Take `⟨Y, hY⟩ : ∃ Y : Matrix (Fin m) (Fin m) (w.adicCompletion E), Y = (g⁻¹).val * GlobalTheory.TwLat.mulMat e b B.g * g.val` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hA : (g⁻¹ * N * g).val = 1 + c • Y`. Rewrite using `[Units.val_mul, Units.val_mul, hN, IsScalarTower.algebraMap_apply K.O K.E B.A, mulMat_one_add, ← hc, hY, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_smul, Matrix.smul_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hent : ∀ i j, (g⁻¹ * N * g).val i j - (1 : Matrix (Fin m) (Fin m) (w.adicCompletion E)) i j = c * Y i j`. Introduce `i j`. Rewrite using `[hA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hexp : WithZero.exp (-(k : ℤ)) ≠ 0` using `WithZero.exp_ne_zero`. Establish `hcoef : (∀ i j, Valued.v ((g⁻¹ * N * g).val i j - (1 : Matrix (Fin m) (Fin m) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))) ↔ ∀ i j, Valued.v (Y i j) ≤ 1`. Simplify using `only [hent, map_mul, hv]`. Conclude with `forall_congr' fun i => forall_congr' fun j => mul_le_self_iff _ _ hexp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hgY : g.val * Y = GlobalTheory.TwLat.mulMat e b B.g * g.val`. Rewrite using `[hY, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Establish `hgcol : ∀ j, B.g * col e b g.val j = ∑ l, e.symm (Y l j) • col e b g.val l`. Introduce `j`. Rewrite using `[mul_col, ← hgY]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[repr_sum_smul_col, repr_col]`. Simplify using `only [RingEquiv.apply_symm_apply, Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Establish `hlat : (∀ y ∈ GlobalTheory.TwLat.lat e b g, B.g * y ∈ GlobalTheory.TwLat.lat e b g) ↔ ∀ i j, Valued.v (Y i j) ≤ 1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hst i j`. Establish `hmem : B.g * col e b g.val j ∈ GlobalTheory.TwLat.lat e b g` using `hst _ (Submodule.subset_span ⟨j, rfl⟩)`. Take `⟨o, ho⟩` from `(Submodule.mem_span_range_iff_exists_fun K.O).mp hmem`. Establish `ho' : ∑ l, algebraMap K.O K.E (o l) • col e b g.val l = ∑ l, e.symm (Y l j) • col e b g.val l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hgcol j, ← ho]`. Conclude with `Finset.sum_congr rfl fun l _ => algebraMap_smul K.E (o l) _`. Use `congrFun (sum_smul_col_inj e b g _ _ ho') i` as an intermediate fact. Establish `hi` using `(hint (algebraMap K.O K.E (o i))).mp ⟨o i, rfl⟩`. Rewrite `hi` using `[this, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hi`. Introduce `hYi y hy`. Establish `hle : GlobalTheory.TwLat.lat e b g ≤ (GlobalTheory.TwLat.lat e b g).comap (LinearMap.mulLeft K.O B.g)`. Rewrite using `[GlobalTheory.TwLat.lat, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `show B.g * col e b g.val j ∈ GlobalTheory.TwLat.lat e b g`. Rewrite using `[hgcol j]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `(hint (e.symm (Y l j))).mpr (by rw [RingEquiv.apply_symm_apply]; exact hYi l j)`. Rewrite using `[← ho, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`. Conclude with `hle hy`. Establish `hK : (∀ i j, Valued.v (Y i j) ≤ 1) → g⁻¹ * N * g ∈ GlobalTheory.LFun.KGL w m`. Introduce `hYi`. Use `haveI : IsLocalRing (Ov E w) := inferInstanceAs (IsLocalRing (w.adicCompletionIntegers E))`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcS : c ∈ Ov E w` using `by show c ∈ w.adicCompletionIntegers E`. Rewrite using `[mem_adicCompletionIntegers, hv]`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Set `c' : Ov E w` to `⟨c, hcS⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `Y' : Matrix (Fin m) (Fin m) (Ov E w)` to `fun i j => ⟨Y i j, by show Y i j ∈ w.adicCompletionIntegers E; rw [mem_adicCompletionIntegers]; exact hYi i j⟩`. Set `A' : Matrix (Fin m) (Fin m) (Ov E w)` to `1 + c' • Y'`. Establish `hmap : A'.map (Ov E w).subtype = (g⁻¹ * N * g).val`. Rewrite using `[hA]`. Use extensionality with `i j`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [A', Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, map_add, map_mul]`. Apply the tactic sequence `split_ifs <;> simp [c', Y']`. Establish `hc'nu : ¬ IsUnit c'`. Introduce and unpack `⟨u, hu⟩`. Establish `h1 : c * ((u⁻¹ : (Ov E w)ˣ) : Ov E w) = 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Subtype.val (Units.mul_inv u)` as an intermediate fact. Rewrite `this` using `[hu]`. Conclude with `this`. Take `⟨o, ho⟩` from `(hint (e.symm ((u⁻¹ : (Ov E w)ˣ) : Ov E w))).mpr (by`. Rewrite using `[RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_adicCompletionIntegers _ _ _).mp ((u⁻¹ : (Ov E w)ˣ) : Ov E w).2)`. Establish `h2 : algebraMap K.O K.E (t * o) = 1`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ho, RingEquiv.apply_symm_apply, ← hc, h1, map_one]`. Establish `h3 : t * o = 1` using `IsFractionRing.injective K.O K.E (h2.trans (map_one _).symm)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal t).mp hs.2.1 ⟨⟨t, o, h3, by rw [mul_comm]; exact h3⟩, rfl⟩`. Establish `hres0 : IsLocalRing.residue (Ov E w) c' = 0` using `(IsLocalRing.residue_eq_zero_iff c').mpr ((IsLocalRing.mem_maximalIdeal c').mpr hc'nu)`. Establish `hdet : IsUnit A'.det`. Apply `(isUnit_map_iff (IsLocalRing.residue (Ov E w)) _).mp` to reduce the goal to its premises. Rewrite using `[RingHom.map_det]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Establish `: (IsLocalRing.residue (Ov E w)).mapMatrix A' = 1`. Use extensionality with `i j`. Simplify using `[A', hres0, Matrix.one_apply]`. Rewrite using `[this, Matrix.det_one]`. Conclude with `isUnit_one`.
-
-Establish `hU : IsUnit A'` using `(Matrix.isUnit_iff_isUnit_det A').mpr hdet`. Use `⟨hU.unit, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← hmap]`. Both sides reduce to the same expression.
-
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Conclude with `hlat.2 (hcoef.1 h)`. Introduce `h`. Establish `h'` using `hlat.1 h`.
-
-Conclude with `⟨hK h', hcoef.2 h'⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem level_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → (∀ x, GlobalTheory.UnitLemma.val K.O x = ordL (e x)) → ∀ (B : GlobalTheory.UnitLemma.InvAlg K) (m : ℕ) (b : Module.Basis (Fin m) K.E B.A), ∀ (t : K.O) (k : ℕ), K.Small t → GlobalTheory.UnitLemma.val K.O (algebraMap K.O K.E t) = k → ∀ g N : GLw m w, N.val = GlobalTheory.TwLat.mulMat e b (1 + algebraMap K.O B.A t * B.g) → ((g⁻¹ * N * g ∈ GlobalTheory.LFun.KGL w m ∧ ∀ i j, Valued.v ((g⁻¹ * N * g).val i j - (1 : Matrix (Fin m) (Fin m) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))) ↔ ∀ y ∈ GlobalTheory.TwLat.lat e b g, B.g * y ∈ GlobalTheory.TwLat.lat e b g) := by
   intro E _ _ _ _ w _ K e he hint hval B m b t k hs hk g N hN

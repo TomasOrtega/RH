@@ -76,7 +76,7 @@ def FunEqSt : Prop :=
     V.MM (MvPowerSeries.coeff μ (cobd Y.B.G.F (Y.aOf u) - frobTw V.l (Y.chartLinearTerm u)))
 
 /- English proof (translation)
-Introduce `ν`. Use `show V.Ge 0 (∑ i, u i ^ V.l * MvPowerSeries.coeff (Finsupp.single ((0 : Fin 2), i) V.l + ν.mapDomain (fun q : Fin 1 × Fin dd => ((1 : Fin 2), q.2))) Y.u1)`. Conclude with `VF.Ge.sum fun i _ => by simpa using ((hu i).pow V.l).mul (h _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem intS_aOf {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
     (Y : FBChart C V O dd) (h : IntS V Y.u1) (u : Fin dd → C) (hu : ∀ i, V.Ge 0 (u i)) : IntS V (Y.aOf u) := by

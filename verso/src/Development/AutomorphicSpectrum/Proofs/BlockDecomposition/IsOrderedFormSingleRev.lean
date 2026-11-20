@@ -7,7 +7,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.SplitWe
 namespace GlobalTheory.CompanionTheory.OneTermOrder
 
 /- English proof (translation)
-Rewrite using `[nabs_uniformiser (Zls.irreducible_unif (k := k)) (x := Zls.unifU k) rfl]`. Establish `hq : 1 < resCard k` using `Finite.one_lt_card`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hq)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nabs_unifU_lt_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] : nabs k (Zls.unifU k) < 1 := by
@@ -16,7 +16,7 @@ theorem nabs_unifU_lt_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   exact inv_lt_one_of_one_lt₀ (by exact_mod_cast hq)
 
 /- English proof (translation)
-Rewrite using `[val_absPow, Complex.cpow_natCast, norm_pow, Complex.norm_real, Real.norm_of_nonneg (nabs_pos' k t).le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_absPow_natCast (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (t : kˣ) (j : ℕ) :
@@ -25,11 +25,11 @@ theorem norm_absPow_natCast (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
     Real.norm_of_nonneg (nabs_pos' k t).le]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n ξ hξ hanti`. Use `⟨?_, fun i j hij hp => ?_⟩` and prove the remaining obligations. Establish `h` using `Multiset.map_univ_val_equiv (Fin.revPerm (n := n))`. Rewrite using `[PositivityTheory.SphericalProduct.msOne]`. Use `conv_rhs => rw [← h, Multiset.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨-, m, hm, he⟩` from `hp`. Establish `he' : IrrGL.ofChar (ξ (Fin.rev j)) (isSmoothChar_of_isUnram (hξ (Fin.rev j))) = (IrrGL.ofChar (ξ (Fin.rev i)) (isSmoothChar_of_isUnram (hξ (Fin.rev i)))).nu (m : ℂ)` using `he`. Rewrite `he'` using `[IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]`. Establish `hle : ‖((ξ (Fin.rev i) (Zls.unifU k) : ℂˣ) : ℂ)‖ ≤ ‖((ξ (Fin.rev j) (Zls.unifU k) : ℂˣ) : ℂ)‖` using `hanti (Fin.rev_le_rev.2 hij.le)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[he', MonoidHom.mul_apply, Units.val_mul, norm_mul, norm_absPow_natCast]`. Establish `hpos : 0 < ‖((ξ (Fin.rev i) (Zls.unifU k) : ℂˣ) : ℂ)‖` using `norm_pos_iff.2 (Units.ne_zero _)`. Establish `hlt : nabs k (Zls.unifU k) ^ m < 1` using `pow_lt_one₀ (nabs_pos' k _).le (nabs_unifU_lt_one k) hm.ne'`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem isOrderedForm_single_rev : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (ξ : Fin n → kˣ →* ℂˣ) (hξ : ∀ i, IsUnram (ξ i)),

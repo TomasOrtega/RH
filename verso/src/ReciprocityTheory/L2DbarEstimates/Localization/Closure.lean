@@ -9,9 +9,9 @@ open scoped ENNReal InnerProductSpace ComplexConjugate ContDiff
 noncomputable section
 
 /- English proof (translation)
-Establish `hi : η * η⁻¹ = 1` using `mul_inv_cancel₀ hη.ne'`. Establish `key : η * ((1 + η) * a ^ 2 + (1 + η⁻¹) * b ^ 2) - η * (a + b) ^ 2 = (η * a - b) ^ 2`. Take the linear combination `b ^ 2 * hi`. Establish `h2 : η * (a + b) ^ 2 ≤ η * ((1 + η) * a ^ 2 + (1 + η⁻¹) * b ^ 2)`. Use polynomial arithmetic with `[key, sq_nonneg (η * a - b)]`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `le_of_mul_le_mul_left h2 hη`.
+A detailed English derivation is pending.
 -/
 theorem closIneq_sq_le (a b η : ℝ) (hη : 0 < η) :
     (a + b) ^ 2 ≤ (1 + η) * a ^ 2 + (1 + η⁻¹) * b ^ 2 := by
@@ -23,7 +23,7 @@ theorem closIneq_sq_le (a b η : ℝ) (hη : 0 < η) :
   exact le_of_mul_le_mul_left h2 hη
 
 /- English proof (translation)
-Establish `h` using `norm_add_le x y`. Establish `h2 : ‖x + y‖ ^ 2 ≤ (‖x‖ + ‖y‖) ^ 2`. Use polynomial arithmetic with `[norm_nonneg (x + y), norm_nonneg x, norm_nonneg y]`. Conclude with `h2.trans (closIneq_sq_le _ _ η hη)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem closIneq_norm_sq_le {E : Type*} [SeminormedAddCommGroup E] (x y : E) (η : ℝ) (hη : 0 < η) :
     ‖x + y‖ ^ 2 ≤ (1 + η) * ‖x‖ ^ 2 + (1 + η⁻¹) * ‖y‖ ^ 2 := by
@@ -33,13 +33,11 @@ theorem closIneq_norm_sq_le {E : Type*} [SeminormedAddCommGroup E] (x y : E) (η
   exact h2.trans (closIneq_sq_le _ _ η hη)
 
 /- English proof (translation)
-Use `ENNReal.le_of_forall_pos_le_add fun ε hε _ => ?_` and prove the remaining obligations. Take `⟨q, rfl⟩ : ∃ q : NNReal, Q = q` from `⟨Q.toNNReal, (ENNReal.coe_toNNReal hQ).symm⟩`. Establish `hε' : (0 : ℝ) < ε` using `NNReal.coe_pos.mpr hε`. Establish `hq1 : (0 : ℝ) < (q : ℝ) + 1` using `by positivity`. Use `set δ : ℝ := min 1 ((ε : ℝ) / ((q : ℝ) + 1)) with hδ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδpos : 0 < δ` using `lt_min one_pos (div_pos hε' hq1)`. Use `(h δ hδpos (min_le_left _ _)).trans (add_le_add le_rfl ?_)` and prove the remaining obligations. Establish `hle : δ * q ≤ ε`. Establish `h1 : δ ≤ (ε : ℝ) / ((q : ℝ) + 1)` using `min_le_right _ _`. Establish `h3 : (q : ℝ) / ((q : ℝ) + 1) ≤ 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_one hq1]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul hδpos.le, ENNReal.ofReal_coe_nnreal]`.
-
-Use `_ ≤ ENNReal.ofReal ε := ENNReal.ofReal_le_ofReal hle`. Use `_ = ε := ENNReal.ofReal_coe_nnreal`.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closIneq_key {X P Q : ℝ≥0∞} (hQ : Q ≠ ⊤)
     (h : ∀ δ : ℝ, 0 < δ → δ ≤ 1 → X ≤ P + ENNReal.ofReal δ * Q) : X ≤ P := by
@@ -65,23 +63,23 @@ theorem closIneq_key {X P Q : ℝ≥0∞} (hQ : Q ≠ ⊤)
     _ = ε := ENNReal.ofReal_coe_nnreal
 
 /- English proof (translation)
-Use `set F : M → ENNReal := fun x => ENNReal.ofReal (‖v x‖ * Real.exp (-φ x / 2)) with hFd`. Use `set G : M → ENNReal := fun x => ENNReal.ofReal (‖h x‖ * Real.exp (-φ x / 2)) with hGd`. Establish `hpt : ∀ x, ‖⟪v x, h x⟫_ℂ * (Real.exp (-φ x) : ℂ)‖ₑ ≤ F x * G x`. Introduce `x`. Rewrite using `[hFd, hGd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ofReal_norm_eq_enorm]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Establish `he : Real.exp (-φ x) = Real.exp (-φ x / 2) * Real.exp (-φ x / 2)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[he]`.
+Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsq2 : ∀ (a : ℝ) (x : M), (a * Real.exp (-φ x / 2)) ^ 2 = a ^ 2 * Real.exp (-φ x)`. Introduce `a x`. Rewrite using `[mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hF2 : ∀ x, F x ^ (2 : ℝ) = ENNReal.ofReal (‖v x‖ ^ 2 * Real.exp (-φ x))`. Introduce `x`. Rewrite using `[hFd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[ENNReal.ofReal_rpow_of_nonneg (by positivity) (by norm_num), Real.rpow_two, hsq2]`. Establish `hG2 : ∀ x, G x ^ (2 : ℝ) = ENNReal.ofReal (‖h x‖ ^ 2 * Real.exp (-φ x))`. Introduce `x`. Rewrite using `[hGd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[ENNReal.ofReal_rpow_of_nonneg (by positivity) (by norm_num), Real.rpow_two, hsq2]`. Establish `hsq : ∀ A : ENNReal, (A ^ (1 / (2 : ℝ))) ^ 2 = A`. Introduce `A`. Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Establish `hE : Measurable fun x => Real.exp (-φ x / 2)` using `(hφ.neg.div_const 2).exp`. Establish `hFm : AEMeasurable F μ` using `(hv.norm.aemeasurable.mul hE.aemeasurable).ennreal_ofReal`. Establish `hGm : AEMeasurable G μ` using `(hh.norm.aemeasurable.mul hE.aemeasurable).ennreal_ofReal`. Establish `hint : (∫⁻ x, ‖⟪v x, h x⟫_ℂ * (Real.exp (-φ x) : ℂ)‖ₑ ∂μ) ≤ ∫⁻ x, (F * G) x ∂μ` using `lintegral_mono fun x => hpt x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation.
 
-Apply the tactic sequence `have hH := ENNReal.lintegral_mul_le_Lp_mul_Lq μ (p := 2) (q := 2) (by constructor <;> norm_num) hFm hGm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, hsq, hsq]`. Use `_ = _ := by`. Simplify using `only [hF2, hG2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem closIneq_lint_ip_le {M : Type*} [MeasurableSpace M] {n : ℕ} (μ : Measure M) (φ : M → ℝ)
     (hφ : Measurable φ) (v h : M → V n) (hv : AEStronglyMeasurable v μ)
@@ -142,9 +140,9 @@ theorem closIneq_lint_ip_le {M : Type*} [MeasurableSpace M] {n : ℕ} (μ : Meas
         simp only [hF2, hG2]
 
 /- English proof (translation)
-Use `⟨(hv.inner hh).mul (Complex.measurable_ofReal.comp hφ.neg.exp).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `h1` using `closIneq_lint_ip_le μ φ hφ v h hv hh`. Establish `hlt` using `lt_of_le_of_lt h1 (ENNReal.mul_lt_top hv2 hh2)`. Use `show ∫⁻ x, ‖⟪v x, h x⟫_ℂ * (Real.exp (-φ x) : ℂ)‖ₑ ∂μ < ⊤`. Assume the negation of the conclusion as `hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[not_lt, top_le_iff]`. Rewrite `hlt` using `[hc]`. Simplify using `at hlt`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem closIneq_integrable {M : Type*} [MeasurableSpace M] {n : ℕ} (μ : Measure M) (φ : M → ℝ)
     (hφ : Measurable φ) (v h : M → V n) (hv : AEStronglyMeasurable v μ)
@@ -162,13 +160,11 @@ theorem closIneq_integrable {M : Type*} [MeasurableSpace M] {n : ℕ} (μ : Meas
   simp at hlt
 
 /- English proof (translation)
-Establish `hcoord : ∀ j, Continuous fun x => g x j`. Introduce `j`. Use `continuous_iff_continuousAt.mpr fun x => ?_` and prove the remaining obligations. Take `⟨e, hxe, hze⟩` from `hz x`. Establish `hch : IsChart n z e` using `fun y _ => congrFun hze y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC` using `((hg j).1 e hch).continuousOn`. Establish `h1 : ContinuousAt ((fun x => g x j) ∘ e.symm) (e x)` using `hC.continuousAt (e.open_target.mem_nhds (e.map_source hxe))`. Establish `h2 : ContinuousAt (((fun x => g x j) ∘ e.symm) ∘ e) x` using `h1.comp (e.continuousAt hxe)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [e.open_source.mem_nhds hxe] with y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[e.left_inv hy]`. Establish `h3 : Continuous fun x => EuclideanSpace.equiv (Fin n) ℂ (g x)` using `continuous_pi fun j => hcoord j`. Establish `h4` using `(EuclideanSpace.equiv (Fin n) ℂ).symm.continuous.comp h3`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
-
-Conclude with `((EuclideanSpace.equiv (Fin n) ℂ).symm_apply_apply (g x)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem closIneq_continuous_form {M : Type*} [TopologicalSpace M] {n : ℕ} (z : M → V n)
     (hz : IsLocalHomeomorph z) (g : M → V n) (hg : IsTestForm n z g) : Continuous g := by
@@ -193,11 +189,11 @@ theorem closIneq_continuous_form {M : Type*} [TopologicalSpace M] {n : ℕ} (z :
   exact ((EuclideanSpace.equiv (Fin n) ℂ).symm_apply_apply (g x)).symm
 
 /- English proof (translation)
-Establish `hc : Continuous fun x => (f x : ℂ)`. Use `continuous_iff_continuousAt.mpr fun x => ?_` and prove the remaining obligations. Take `⟨e, hxe, hze⟩` from `hz x`. Establish `hch : IsChart n z e` using `fun y _ => congrFun hze y`. Establish `hC` using `(hf e hch).continuousOn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ContinuousAt ((fun x => (f x : ℂ)) ∘ e.symm) (e x)` using `hC.continuousAt (e.open_target.mem_nhds (e.map_source hxe))`. Use `(h1.comp (e.continuousAt hxe)).congr ?_` and prove the remaining obligations. Use `filter_upwards [e.open_source.mem_nhds hxe] with y hy`. Simplify using `[e.left_inv hy]`. Establish `h` using `Complex.continuous_re.comp hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma continuous_of_smoothR' {M : Type*} [TopologicalSpace M] {n : ℕ} {z : M → V n}
     (hz : IsLocalHomeomorph z) {f : M → ℝ} (hf : SmoothR n z f) : Continuous f := by
@@ -217,7 +213,7 @@ private lemma continuous_of_smoothR' {M : Type*} [TopologicalSpace M] {n : ℕ} 
   simp
 
 /- English proof (translation)
-Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Unfold `ipV nV`. Conclude with `(pow_le_pow_left₀ zero_le (enorm_integral_le_lintegral_enorm _) 2).trans (closIneq_lint_ip_le (vol n z) φ hφ v h hv hh)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma ofReal_norm_ipV_sq_le_mul_nV {M : Type*} [MeasurableSpace M] {n : ℕ} (z : M → V n) (φ : M → ℝ)
     (hφ : Measurable φ) (v h : M → V n) (hv : AEStronglyMeasurable v (vol n z))
@@ -229,9 +225,9 @@ private lemma ofReal_norm_ipV_sq_le_mul_nV {M : Type*} [MeasurableSpace M] {n : 
     (closIneq_lint_ip_le (vol n z) φ hφ v h hv hh)
 
 /- English proof (translation)
-Establish `hm : AEMeasurable (fun x => ENNReal.ofReal (1 + η) * ENNReal.ofReal (‖u x‖ ^ 2 * Real.exp (-φ x))) μ` using `aemeasurable_const.mul ((hu.norm.aemeasurable.pow_const 2).mul hφ.neg.exp.aemeasurable).ennreal_ofReal`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← lintegral_add_left' hm]`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Establish `he` using `Real.exp_pos (-φ x)`. Establish `h1η : (0 : ℝ) ≤ 1 + η` using `by linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2η : (0 : ℝ) ≤ 1 + η⁻¹` using `by positivity`. Rewrite using `[← ENNReal.ofReal_mul h1η, ← ENNReal.ofReal_mul h2η, ← ENNReal.ofReal_add (mul_nonneg h1η (mul_nonneg (sq_nonneg ‖u x‖) he.le)) (mul_nonneg h2η (mul_nonneg (sq_nonneg ‖u' x‖) he.le))]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 private lemma lintegral_weighted_norm_add_sq_le {M : Type*} [MeasurableSpace M] {E : Type*} [NormedAddCommGroup E]
     (μ : Measure M) (φ : M → ℝ) (hφ : Measurable φ) (u u' : M → E)
@@ -259,39 +255,33 @@ private lemma lintegral_weighted_norm_add_sq_le {M : Type*} [MeasurableSpace M] 
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `z hz e ph ψ v B ε he hph hψ hcut hv hB hε hineq f w hf hw hadj hS`. Establish `hphm` using `(continuous_of_smoothR' hz hph).measurable`. Establish `hψm` using `(continuous_of_smoothR' hz hψ).measurable`. Establish `hw2m : Measurable (w2 ph ψ)` using `hphm.sub hψm`. Establish `hw1m : Measurable (w1 ph ψ)` using `hphm.sub (hψm.const_mul 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : MemWeightedL2TwoForm n z 0 ph` using `⟨aestronglyMeasurable_const, by unfold n2; simp [sq2]⟩`. Establish `hGA` using `hDens z hz e ph ψ he hph hψ hcut f w 0 hf hw h0 hadj hS`. Establish `hWt : wint n z w (w1 ph ψ) ≠ ⊤` using `hw.2.ne`. Establish `hNt : nV n z v (w2 ph ψ) ≠ ⊤` using `hv.2.ne`. Establish `hct : ENNReal.ofReal (1 + ε) ≠ ⊤` using `ENNReal.ofReal_ne_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPt : B * (ENNReal.ofReal (1 + ε) * wint n z w (w1 ph ψ)) ≠ ⊤` using `ENNReal.mul_ne_top hB (ENNReal.mul_ne_top hct hWt)`. Establish `hQt : 3 * (B * (ENNReal.ofReal (1 + ε) * wint n z w (w1 ph ψ))) + 2 * (2 * B * ENNReal.ofReal (1 + ε) + B) + 2 * nV n z v (w2 ph ψ) ≠ ⊤` using `ENNReal.add_ne_top.mpr ⟨ENNReal.add_ne_top.mpr ⟨ENNReal.mul_ne_top (by simp) hPt, ENNReal.mul_ne_top (by simp) (ENNReal.add_ne_top.mpr ⟨ENNReal.mul_ne_top (ENNReal.mul_ne_top (by simp) hB) hct, hB⟩)⟩, ENNReal.mul_ne_top (by simp) hNt⟩`. Use `closIneq_key hQt fun δ hδ hδ1 => ?_` and prove the remaining obligations. Take `⟨g, hgT, h1, h2, h3⟩` from `hGA (ENNReal.ofReal (δ ^ 2)) (ENNReal.ofReal_pos.mpr (by positivity))`. Establish `hgm : AEStronglyMeasurable g (vol n z)` using `(closIneq_continuous_form z hz g hgT).aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hδsq : δ ^ 2 ≤ δ` using `by nlinarith`. Establish `hofr1 : ENNReal.ofReal (1 + δ) = 1 + ENNReal.ofReal δ`. Rewrite using `[ENNReal.ofReal_add zero_le_one hδ.le, ENNReal.ofReal_one]`. Establish `hsmall : ENNReal.ofReal (1 + δ⁻¹) * ENNReal.ofReal (δ ^ 2) ≤ 2 * ENNReal.ofReal δ`. Establish `hinv : δ⁻¹ * δ = 1` using `inv_mul_cancel₀ hδ.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he1 : (1 + δ⁻¹) * δ ^ 2 = δ ^ 2 + δ` using `by linear_combination δ * hinv`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), he1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_ofNat]`. Establish `ha1 : ENNReal.ofReal δ ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ENNReal.ofReal_one]`. Conclude with `ENNReal.ofReal_le_ofReal hδ1`. Establish `hfg : nV n z (fun x => f x - g x) (w2 ph ψ) ≤ ENNReal.ofReal (δ ^ 2)`. Establish `hsw : nV n z (fun x => f x - g x) (w2 ph ψ) = nV n z (fun x => g x - f x) (w2 ph ψ)`. Unfold `nV`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[norm_sub_rev]`. Rewrite using `[hsw]`. Conclude with `h1.le`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgfin : nV n z g (w2 ph ψ) < ⊤`. Establish `hC` using `lintegral_weighted_norm_add_sq_le (vol n z) (w2 ph ψ) hw2m f (fun x => g x - f x) hf.1 1 one_pos`. Establish `hfg' : ∀ x, f x + (g x - f x) = g x` using `fun x => by abel`. Simplify using `only [hfg'] at hC`. Conclude with `lt_of_le_of_lt hC (ENNReal.add_lt_top.mpr ⟨ENNReal.mul_lt_top ENNReal.ofReal_lt_top hf.2, ENNReal.mul_lt_top ENNReal.ofReal_lt_top (h1.trans ENNReal.ofReal_lt_top)⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hig` using `closIneq_integrable (vol n z) (w2 ph ψ) hw2m v g hv.1 hgm hv.2 hgfin`. Establish `hifg` using `closIneq_integrable (vol n z) (w2 ph ψ) hw2m v (fun x => f x - g x) hv.1 (hf.1.sub hgm) hv.2 (hfg.trans_lt ENNReal.ofReal_lt_top)`. Establish `hsplit : ipV n z v f (w2 ph ψ) = ipV n z v g (w2 ph ψ) + ipV n z v (fun x => f x - g x) (w2 ph ψ)`. Unfold `ipV`. Rewrite using `[← integral_add hig hifg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [inner_sub_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwT : wint n z (tstar n z (w1 ph ψ) (w2 ph ψ) g) (w1 ph ψ) ≤ (1 + ENNReal.ofReal δ) * wint n z w (w1 ph ψ) + 2 * ENNReal.ofReal δ`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hC` using `lintegral_weighted_norm_add_sq_le (vol n z) (w1 ph ψ) hw1m w (fun x => tstar n z (w1 ph ψ) (w2 ph ψ) g x - w x) hw.1 δ hδ`. Establish `hTw : ∀ x, w x + (tstar n z (w1 ph ψ) (w2 ph ψ) g x - w x) = tstar n z (w1 ph ψ) (w2 ph ψ) g x` using `fun x => by ring`. Simplify using `only [hTw] at hC`. Rewrite `hC` using `[hofr1]`. Use `hC.trans (add_le_add le_rfl ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `h2.le`. Use `_ ≤ _ := hsmall`. Establish `hS2 : n2 n z (sbar n z g) ph ≤ ENNReal.ofReal δ`. Simplify using `only [Pi.zero_apply, sub_zero] at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `h3.le.trans (ENNReal.ofReal_le_ofReal hδsq)`. Establish `h1δ : (0 : ℝ) ≤ 1 + δ` using `by linarith`. Establish `h2δ : (0 : ℝ) ≤ 1 + δ⁻¹` using `by positivity`. Establish `hIg` using `(hineq g hgT).trans (by gcongr : B * (ENNReal.ofReal (1 + ε) * wint n z (tstar n z (w1 ph ψ) (w2 ph ψ) g) (w1 ph ψ) + n2 n z (sbar n z g) ph) ≤ B * (ENNReal.ofReal (1 + ε) * ((1 + ENNReal.ofReal δ) * wint n z w (w1 ph ψ) + 2 * ENNReal.ofReal δ) + ENNReal.ofReal δ))`. Establish `hIfg` using `(ofReal_norm_ipV_sq_le_mul_nV z (w2 ph ψ) hw2m v (fun x => f x - g x) hv.1 (hf.1.sub hgm)).trans (by gcongr : nV n z v (w2 ph ψ) * nV n z (fun x => f x - g x) (w2 ph ψ) ≤ nV n z v (w2 ph ψ) * ENNReal.ofReal (δ ^ 2))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsplit]`. Use `_ ≤ ENNReal.ofReal ((1 + δ) * ‖ipV n z v g (w2 ph ψ)‖ ^ 2 + (1 + δ⁻¹) * ‖ipV n z v (fun x => f x - g x) (w2 ph ψ)‖ ^ 2) := ENNReal.ofReal_le_ofReal (closIneq_norm_sq_le _ _ δ hδ)`. Use `_ = ENNReal.ofReal (1 + δ) * ENNReal.ofReal (‖ipV n z v g (w2 ph ψ)‖ ^ 2) + ENNReal.ofReal (1 + δ⁻¹) * ENNReal.ofReal (‖ipV n z v (fun x => f x - g x) (w2 ph ψ)‖ ^ 2) := by`. Rewrite using `[ENNReal.ofReal_add (mul_nonneg h1δ (sq_nonneg _)) (mul_nonneg h2δ (sq_nonneg _)), ENNReal.ofReal_mul h1δ, ENNReal.ofReal_mul h2δ]`.
-
-Use `_ ≤ (1 + ENNReal.ofReal δ) * (B * (ENNReal.ofReal (1 + ε) * ((1 + ENNReal.ofReal δ) * wint n z w (w1 ph ψ) + 2 * ENNReal.ofReal δ) + ENNReal.ofReal δ)) + ENNReal.ofReal (1 + δ⁻¹) * (nV n z v (w2 ph ψ) * ENNReal.ofReal (δ ^ 2)) := by`. Rewrite using `[hofr1]`. Use `gcongr`. Use `_ = (1 + ENNReal.ofReal δ) * (B * (ENNReal.ofReal (1 + ε) * ((1 + ENNReal.ofReal δ) * wint n z w (w1 ph ψ) + 2 * ENNReal.ofReal δ) + ENNReal.ofReal δ)) + nV n z v (w2 ph ψ) * (ENNReal.ofReal (1 + δ⁻¹) * ENNReal.ofReal (δ ^ 2)) := by ring`. Use `_ ≤ (1 + ENNReal.ofReal δ) * (B * (ENNReal.ofReal (1 + ε) * ((1 + ENNReal.ofReal δ) * wint n z w (w1 ph ψ) + 2 * ENNReal.ofReal δ) + ENNReal.ofReal δ)) + nV n z v (w2 ph ψ) * (2 * ENNReal.ofReal δ) := by gcongr`.
-
-Use `_ = B * (ENNReal.ofReal (1 + ε) * wint n z w (w1 ph ψ)) + ENNReal.ofReal δ * ((2 + ENNReal.ofReal δ) * (B * (ENNReal.ofReal (1 + ε) * wint n z w (w1 ph ψ))) + (1 + ENNReal.ofReal δ) * (2 * B * ENNReal.ofReal (1 + ε) + B) + 2 * nV n z v (w2 ph ψ)) := by ring`. Use `_ ≤ B * (ENNReal.ofReal (1 + ε) * wint n z w (w1 ph ψ)) + ENNReal.ofReal δ * (3 * (B * (ENNReal.ofReal (1 + ε) * wint n z w (w1 ph ψ))) + 2 * (2 * B * ENNReal.ofReal (1 + ε) + B) + 2 * nV n z v (w2 ph ψ)) := by`. Establish `h2a : 2 + ENNReal.ofReal δ ≤ 3`. Combine the equalities or inequalities in the displayed calculation. Establish `h1a : 1 + ENNReal.ofReal δ ≤ 2`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `gcongr`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem closureIneq (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (hDens : DensStatement n M) : ClosureIneqStatement n M := by

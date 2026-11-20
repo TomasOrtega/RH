@@ -9,11 +9,11 @@ variable {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {S : GStep E
   {ST : Finset (HeightOneSpectrum (𝓞 E))} (A : TDat S ST) {T : ℕ}
 
 /- English proof (translation)
-Set `g : A.N c.1 (S.rep c) →ₗ[𝓞 E] Res P.1` to `{ toFun := fun x => A.f c.1 (S.rep c) P x map_add' := fun x y => h.f_add _ _ _ _ x.2 _ y.2 map_smul' := fun a x => by`. Use `h.f_smul _ _ P a _ x.2` as an intermediate fact. Simplify using `only [RingHom.id_apply]`. Rewrite using `[Submodule.coe_smul, this]`. Use `rfl }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hk : P.1.asIdeal • (⊤ : Submodule (𝓞 E) (A.N c.1 (S.rep c))) ≤ LinearMap.ker g`. Use `Submodule.smul_le.2 fun a ha x _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_smul]`. Use `show Ideal.Quotient.mk P.1.asIdeal a * g x = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 ha, zero_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `g' : A.lv P c →ₗ[𝓞 E] Res P.1` to `Submodule.liftQ _ g hk`. Use `⟨{ toFun := g', map_add' := g'.map_add, map_smul' := ?_ }, fun x => rfl⟩` and prove the remaining obligations. Introduce `r x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Conclude with `g'.map_smul a x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_fv (h : A.Ok T) (P : ST) (c : S.Cl) :
     ∃ φ : Module.Dual (Res P.1) (A.lv P c), ∀ x : A.N c.1 (S.rep c),
@@ -38,7 +38,7 @@ theorem exists_fv (h : A.Ok T) (P : ST) (c : S.Cl) :
   exact g'.map_smul a x
 
 /- English proof (translation)
-Establish `hx` using `A.exists_fv h P c`. Unfold `fv`. Rewrite using `[dif_pos hx]`. Conclude with `hx.choose_spec x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fv_mk (h : A.Ok T) (P : ST) (c : S.Cl) (x : A.N c.1 (S.rep c)) :
     A.fv P c (Submodule.Quotient.mk x) = A.f c.1 (S.rep c) P x := by
@@ -48,7 +48,7 @@ theorem fv_mk (h : A.Ok T) (P : ST) (c : S.Cl) (x : A.N c.1 (S.rep c)) :
   exact hx.choose_spec x
 
 /- English proof (translation)
-Take `⟨x, hx, hne⟩` from `h.f_ne c.1 (S.rep c) P`. Introduce `h0`. Use `A.fv_mk h P c ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `hne this.symm`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fv_ne_zero (h : A.Ok T) (P : ST) (c : S.Cl) : A.fv P c ≠ 0 := by
   obtain ⟨x, hx, hne⟩ := h.f_ne c.1 (S.rep c) P
@@ -58,7 +58,7 @@ theorem fv_ne_zero (h : A.Ok T) (P : ST) (c : S.Cl) : A.fv P c ≠ 0 := by
   exact hne this.symm
 
 /- English proof (translation)
-Take `⟨x, hx, hne⟩` from `h.f_ne b d P`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (A.f b d P x)⁻¹`. Use `⟨a • x, (A.N b d).smul_mem a hx, ?_⟩` and prove the remaining obligations. Rewrite using `[h.f_smul b d P a x hx, ha]`. Conclude with `inv_mul_cancel₀ hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_f_eq_one (h : A.Ok T) (b : S.β) (d : S.D b) (P : ST) : ∃ e ∈ A.N b d, A.f b d P e = 1 := by
   obtain ⟨x, hx, hne⟩ := h.f_ne b d P
@@ -68,11 +68,11 @@ theorem exists_f_eq_one (h : A.Ok T) (b : S.β) (d : S.D b) (P : ST) : ∃ e ∈
   exact inv_mul_cancel₀ hne
 
 /- English proof (translation)
-Establish `hx : ∃ t : A.dnN c.1 (S.rep c) P, ∃ e ∈ A.N c.1 (S.rep c), A.f c.1 (S.rep c) P e = 1 ∧ (t : Fin n → E) = (T : 𝓞 E) • e`. Take `⟨e, he, h1⟩` from `A.exists_f_eq_one h c.1 (S.rep c) P`. Conclude with `⟨⟨_, (h.te_mem _ _ P e he h1).1⟩, e, he, h1, rfl⟩`. Unfold `te`. Rewrite using `[dif_pos hx]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, he, h1, ht⟩` from `hx.choose_spec`. Introduce `h0`. Rewrite `h0` using `[Submodule.Quotient.mk_eq_zero]`. Apply `(h.te_mem _ _ P e he h1).2` to reduce the goal to its premises. Rewrite using `[← ht]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.mem_map_of_mem (f := (A.dnN c.1 (S.rep c) P).subtype) h0` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_subtype]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem te_ne_zero (h : A.Ok T) (P : ST) (c : S.Cl) : A.te T P c ≠ 0 := by
   have hx : ∃ t : A.dnN c.1 (S.rep c) P, ∃ e ∈ A.N c.1 (S.rep c), A.f c.1 (S.rep c) P e = 1 ∧
@@ -95,7 +95,7 @@ end GlobalTheory.Mem.Col2.TDat
 namespace GlobalTheory.Mem.Col2
 
 /- English proof (translation)
-Introduce `A _ _ h` and use `⟨A.fv_mk h, A.fv_ne_zero h, A.te_ne_zero h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fv_te_laws : ∀ {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ} {S : GStep E K n}
     {ST : Finset (HeightOneSpectrum (𝓞 E))} (A : TDat S ST) (T : ℕ), S.Ok → A.Ok T →

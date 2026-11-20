@@ -8,11 +8,11 @@ variable {l : ℕ} [Fact l.Prime]
 variable {E : Type*} [Field E]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg ζ hζ`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ g).1 hg ζ (IntermediateField.subset_adjoin E _ hζ)`. Introduce `h`. Establish `hle : adjoinRoots E m ≤ IntermediateField.fixedField (Subgroup.zpowers g)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce `ζ hζ`. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixedField_iff]`. Establish `: Subgroup.zpowers g ≤ MulAction.stabilizer Gal(AlgebraicClosure E/E) ζ`. Rewrite using `[Subgroup.zpowers_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `h ζ hζ`. Conclude with `fun f hf => this hf`. Conclude with `(IntermediateField.le_iff_le _ _).1 hle (Subgroup.mem_zpowers g)`.
+A detailed English derivation is pending.
 -/
 private theorem mem_fixingSubgroup_adjoinRoots (m : ℕ) (g : Gal(AlgebraicClosure E/E)) :
     g ∈ (adjoinRoots E m).fixingSubgroup ↔ ∀ ζ : AlgebraicClosure E, ζ ^ m = 1 → g ζ = ζ := by
@@ -32,7 +32,7 @@ private theorem mem_fixingSubgroup_adjoinRoots (m : ℕ) (g : Gal(AlgebraicClosu
     exact (IntermediateField.le_iff_le _ _).1 hle (Subgroup.mem_zpowers g)
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[Subgroup.mem_comap, eps_mem_princ_iff, mem_fixingSubgroup_adjoinRoots]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comap_princ_eq [CharZero E] (n : ℕ) :
     (princ l n).comap (eps l E) = (adjoinRoots E (l ^ n)).fixingSubgroup := by
@@ -40,7 +40,7 @@ private theorem comap_princ_eq [CharZero E] (n : ℕ) :
   rw [Subgroup.mem_comap, eps_mem_princ_iff, mem_fixingSubgroup_adjoinRoots]
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.finrank_eq_fixingSubgroup_index, ← comap_princ_eq, princ, MonoidHom.comap_ker, Subgroup.index_ker, galImage, MonoidHom.map_range]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_map_redPow_galImage [CharZero E] (n : ℕ) :
     Nat.card ((galImage l E).map (redPow l n)) = Module.finrank E (adjoinRoots E (l ^ n)) := by
@@ -48,7 +48,7 @@ theorem card_map_redPow_galImage [CharZero E] (n : ℕ) :
     MonoidHom.comap_ker, Subgroup.index_ker, galImage, MonoidHom.map_range]
 
 /- English proof (translation)
-Establish `h` using `comap_princ_eq (l := l) (E := E) 1`. Rewrite `h` using `[pow_one]`. Rewrite using `[IntermediateField.finrank_eq_fixingSubgroup_index, ← h, princ_one_eq_ker, MonoidHom.comap_ker, Subgroup.index_ker, resOrder, galImage, MonoidHom.map_range]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem resOrder_galImage [CharZero E] :
     resOrder l (galImage l E) = Module.finrank E (adjoinRoots E l) := by
@@ -58,13 +58,13 @@ theorem resOrder_galImage [CharZero E] :
     MonoidHom.comap_ker, Subgroup.index_ker, resOrder, galImage, MonoidHom.map_range]
 
 /- English proof (translation)
-Establish `h` using `comap_princ_eq (l := l) (E := E) 1`. Rewrite `h` using `[pow_one]`. Rewrite using `[depth, le_nu_iff_pow_mem_princ]`. Prove the components needed by the constructor for the conclusion. Introduce `H ζ hζ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup (adjoinRoots E l), IntermediateField.mem_fixedField_iff]`. Introduce `g hg`. Rewrite `hg` using `[← h, Subgroup.mem_comap]`. Use `H (eps l E g) ⟨⟨g, rfl⟩, hg⟩` as an intermediate fact. Rewrite `this` using `[pow_one, eps_mem_princ_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this ζ hζ`. Introduce and unpack `H u ⟨⟨g, rfl⟩, hg⟩`. Rewrite using `[pow_one, eps_mem_princ_iff]`. Introduce `ζ hζ`. Establish `hg' : g ∈ (adjoinRoots E l).fixingSubgroup`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Conclude with `hg`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ g).1 hg' ζ (H ζ hζ)`.
+A detailed English derivation is pending.
 -/
 theorem le_depth_galImage_iff [CharZero E] (n : ℕ) :
     (n : ℕ∞) ≤ depth l (galImage l E) ↔

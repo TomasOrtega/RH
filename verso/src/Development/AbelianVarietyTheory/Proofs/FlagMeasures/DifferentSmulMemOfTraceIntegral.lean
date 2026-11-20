@@ -3,9 +3,9 @@ open NumberField
 namespace GlobalTheory.TraceDualHom
 
 /- English proof (translation)
-Establish `h : ∀ i : Fin a, ∃ t : E, ∀ c : E, Algebra.trace ℚ E (t * c) = φ (Pi.single i c)`. Introduce `i`. Use `⟨((Algebra.traceForm ℚ E).toDual (traceForm_nondegenerate ℚ E)).symm (φ ∘ₗ LinearMap.single ℚ (fun _ => E) i), fun c => ?_⟩` and prove the remaining obligations. Use `LinearMap.BilinForm.apply_toDual_symm_apply (hB := traceForm_nondegenerate ℚ E) (φ ∘ₗ LinearMap.single ℚ (fun _ => E) i) c` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose t ht using h`. Use `⟨∑ i, t i • LinearMap.proj i, fun x => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← Finset.univ_sum_single x]`. Simplify using `[ht, map_sum]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_linear_trace_eq (E : Type) [Field E] [NumberField E] (a : ℕ)
     (φ : (Fin a → E) →ₗ[ℚ] ℚ) :
@@ -24,9 +24,9 @@ theorem exists_linear_trace_eq (E : Type) [Field E] [NumberField E] (a : ℕ)
   simp [ht, map_sum]
 
 /- English proof (translation)
-Establish `h1 : (δ : E) ∈ IsLocalization.coeSubmodule E (differentIdeal ℤ (𝓞 E))` using `(IsLocalization.mem_coeSubmodule _ _).2 ⟨δ, hδ, rfl⟩`. Rewrite `h1` using `[coeSubmodule_differentIdeal ℤ ℚ, Submodule.mem_div_iff_forall_mul_mem]`. Establish `h2 : x ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 E) E)`. Rewrite using `[Submodule.mem_traceDual]`. Introduce `c hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨o, rfl⟩` from `Submodule.mem_one.1 hc`. Take `⟨m, hm⟩` from `hx o`. Conclude with `⟨m, by simpa using hm.symm⟩`. Conclude with `Submodule.mem_one.1 (h1 x h2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem different_mul_mem (E : Type) [Field E] [NumberField E] (x : E)
     (hx : ∀ c : 𝓞 E, ∃ m : ℤ, Algebra.trace ℚ E (x * c) = m)
@@ -43,15 +43,15 @@ theorem different_mul_mem (E : Type) [Field E] [NumberField E] (x : E)
   exact Submodule.mem_one.1 (h1 x h2)
 
 /- English proof (translation)
-Establish `key : ∀ (e : E), ∀ x ∈ Submodule.span ℚ (A : Set (Fin a → E)), e • x ∈ Submodule.span ℚ (A : Set (Fin a → E))`. Introduce `e x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Rewrite using `[← (integralBasis E).sum_repr e, Finset.sum_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Rewrite using `[integralBasis_apply, algebraMap_smul]`. Conclude with `A.smul_mem _ hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul q x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ Submodule.span E (A : Set (Fin a → E))` using `hA ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ (hx trivial) (hy trivial)`. Consider the case `smul e x _ hx => exact key e x (hx trivial)`.
+A detailed English derivation is pending.
 -/
 theorem rat_span_eq_top (E : Type) [Field E] [NumberField E] (a : ℕ)
     (A : Submodule (𝓞 E) (Fin a → E)) (hA : Submodule.span E (A : Set (Fin a → E)) = ⊤) :
@@ -80,17 +80,15 @@ theorem rat_span_eq_top (E : Type) [Field E] [NumberField E] (a : ℕ)
   | smul e x _ hx => exact key e x (hx trivial)
 
 /- English proof (translation)
-Use `haveI : Module.Finite (𝓞 E) A := Module.Finite.iff_fg.2 hfg`. Use `haveI : Module.Finite ℤ A := Module.Finite.trans (𝓞 E) A`. Use `haveI : Module.Free ℤ A := inferInstance`. Set `b` to `Module.Free.chooseBasis ℤ A`. Set `f : A →ₗ[ℤ] (Fin a → E)` to `A.subtype.restrictScalars ℤ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent ℤ (f ∘ b)` using `b.linearIndependent.map' f (LinearMap.ker_eq_bot.2 Subtype.val_injective)`. Establish `hliQ : LinearIndependent ℚ (f ∘ b)` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 hli`. Establish `hsp : ∀ x, x ∈ Submodule.span ℤ (Set.range (f ∘ b)) ↔ x ∈ A`. Introduce `x`. Rewrite using `[Set.range_comp, ← Submodule.map_span, b.span_eq, Submodule.map_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `htop : ⊤ ≤ Submodule.span ℚ (Set.range (f ∘ b))`. Rewrite using `[← rat_span_eq_top E a A hA, Submodule.span_le]`. Introduce `x hx`. Conclude with `Submodule.span_le_restrictScalars ℤ ℚ _ ((hsp x).2 hx)`. Set `B` to `Module.Basis.mk hliQ htop`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hB : Set.range B = Set.range (f ∘ b)` using `by simp [B]`. Rewrite using `[← hsp, ← hB, Module.Basis.mem_span_iff_repr_mem]`. Introduce `i`. Take `⟨m, hm⟩` from `hz (B.coord i) (fun x hx => by`. Rewrite `hx` using `[← hsp, ← hB, Module.Basis.mem_span_iff_repr_mem]`.
-
-Take `⟨m, hm⟩` from `hx i`. Conclude with `⟨m, by simpa using hm.symm⟩)`. Conclude with `⟨m, by simpa using hm.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_rat_functional (E : Type) [Field E] [NumberField E] (a : ℕ)
     (A : Submodule (𝓞 E) (Fin a → E)) (hfg : A.FG)
@@ -126,11 +124,11 @@ theorem mem_of_forall_rat_functional (E : Type) [Field E] [NumberField E] (a : �
   exact ⟨m, by simpa using hm.symm⟩
 
 /- English proof (translation)
-Introduce `E _ _ a b A Bm hA _ hAs _ ψ hψ δ hδ y hy`. Use `mem_of_forall_rat_functional E a A hA hAs _ fun φ hφ => ?_` and prove the remaining obligations. Take `⟨l, hl⟩` from `exists_linear_trace_eq E a φ`. Take `⟨m, hm⟩` from `hψ (((δ : E) • l).smulRight y) (fun x hx => by`. Take `⟨o, ho⟩` from `different_mul_mem E (l x) (fun c => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hφ (c • x) (A.smul_mem c hx)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm, ← hl, ← algebraMap_smul E c x, map_smul, smul_eq_mul, mul_comm]) δ hδ`. Rewrite using `[LinearMap.smulRight_apply, LinearMap.smul_apply, smul_eq_mul, ← ho]`. Conclude with `Bm.smul_mem o hy)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `e : (((δ : E) • l).smulRight y) ∘ₗ ψ = ((((δ : E) • l) ∘ₗ ψ).smulRight y)` using `rfl`. Rewrite `hm` using `[e, LinearMap.trace_smulRight]`. Rewrite using `[← hm, ← hl, ← algebraMap_smul E δ (ψ y), map_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem different_smul_mem_of_trace_integral : ∀ (E : Type) [Field E] [NumberField E] (a b : ℕ) (A : Submodule (𝓞 E) (Fin a → E)) (Bm : Submodule (𝓞 E) (Fin b → E)), A.FG → Bm.FG → Submodule.span E (A : Set (Fin a → E)) = ⊤ → Submodule.span E (Bm : Set (Fin b → E)) = ⊤ → ∀ ψ : (Fin b → E) →ₗ[E] (Fin a → E), (∀ T : (Fin a → E) →ₗ[E] (Fin b → E), (∀ x ∈ A, T x ∈ Bm) → ∃ m : ℤ, Algebra.trace ℚ E (LinearMap.trace E _ (T ∘ₗ ψ)) = m) → ∀ δ ∈ differentIdeal ℤ (𝓞 E), ∀ y ∈ Bm, δ • ψ y ∈ A := by
   intro E _ _ a b A Bm hA _ hAs _ ψ hψ δ hδ y hy

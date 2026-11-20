@@ -19,21 +19,19 @@ attribute [local instance] GlobalTheory.TorusExt.gtGroup
 namespace GlobalTheory.Mum.RatChar
 
 /- English proof (translation)
-Introduce `o W _ _ _ T R _ _ _ iw I _ s ε n hCN hn hnu ζ hζ Q e hDF hTR D' F σ p₀ p hy hact hb χ`. Set `f : AlgebraicClosure (FractionRing R) →+* AlgebraicClosure (FractionRing R)` to `σ.toAlgHom.toRingHom`. Establish `hf : f.comp (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))) = algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))` using `σ.toAlgHom.comp_algebraMap`. Establish `hB` using `D'.tau_bimult`. Take `⟨h, ⟨hhb, hhs⟩, ⟨z, hz, hzι⟩, hhe⟩` from `GlobalTheory.T.lattice_point_nth_multiple_galois_fixed_point T R iw s ε n hCN hn hnu ζ hζ Q e hDF hTR D' F σ (F.xp p₀.y)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hya : p.y = F.xi (F.xp p₀.y)` using `by rw [hy, F.xi_xp]`. Establish `hg : n • p.g = iota hB _ p.y`. Take `⟨z', hz', hz'ι⟩` from `p.eq`. Rewrite using `[← (isNsmul_iff_eq _ _ _).1 hz', ← (isIota_iff_eq hB _ _).1 hz'ι]`. Establish `hh : n • h = iota hB _ p.y`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hya, ← (isNsmul_iff_eq _ _ _).1 hz, ← (isIota_iff_eq hB _ _).1 hzι]`. Use `set t := p.g - h with ht`. Establish `htn : n • t = 0` using `by rw [ht, nsmul_sub, hg, hh, sub_self]`. Establish `hte : GtPtAct F.o F.e t t` using `GlobalTheory.T.isGtPointInvolutionAction_sub_of_idempotent F.o F.e F.idem p₀.g p.g h t hact hhe ((isAdd_iff_eq _ _ _).2 (sub_add_cancel p.g h).symm)`. Establish `hfixh : gtExt D'.toPre f hf h = h` using `((eq_gtExt_iff f hf h h).2 ⟨hhb.symm, hhs⟩).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgb : extMap f hf ≫ p.g.b = p.g.b`. Take `⟨b, hb⟩` from `hb`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, extMap_left, hb, ← Category.assoc]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hf]`. Establish `htb : extMap f hf ≫ t.b = t.b`. Establish `e1 : gtExt D'.toPre f hf t = gtExt D'.toPre f hf p.g - h` using `by rw [ht, map_sub, hfixh]`. Establish `e2` using `congrArg GtPtF.b e1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e2` using `[gtExt_b, sub_eq_add_neg, add_b, neg_b, gtExt_b, hgb]`. Rewrite using `[e2, ht, sub_eq_add_neg, add_b, neg_b]`. Establish `htb' : spMap f ≫ t.b.left = t.b.left`. Use `congrArg (fun q => q.left) htb` as an intermediate fact. Simplify `this` using `[Over.comp_left, extMap_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hts` using `GlobalTheory.T.characterValues_galoisFixed_of_idempotent_torsion T R iw s ε n hCN hn hnu ζ hζ Q e hDF hTR D' F σ t hte ⟨0, (isNsmul_iff_eq _ _ _).2 htn.symm, (isZero_iff_eq _).2 rfl⟩ htb'`. Establish `hfixt : gtExt D'.toPre f hf t = t` using `((eq_gtExt_iff f hf t t).2 ⟨htb'.symm, hts⟩).symm`. Establish `hfixg : gtExt D'.toPre f hf p.g = p.g`. Establish `: p.g = t + h` using `(sub_add_cancel p.g h).symm`. Rewrite using `[this, map_add, hfixt, hfixh]`.
-
-Conclude with `((eq_gtExt_iff f hf p.g p.g).1 hfixg.symm).2 χ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charFixed : ∀ {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (iw : W →+* R) {I : Type} [Fintype I] (s : I → R) (ε : I → LinearMap.BilinForm ℤ (Fin T.r → ℤ)) (n : ℕ), IsCN R → 1 ≤ n → IsUnit (n : R) → ∀ ζ : R, IsPrimitiveRoot ζ n → ∀ (Q : Data R) (e : Q.X ≃+ (Fin T.r → ℤ)), DataFrom T iw s ε n Q e → TorsRat Q.B n → ∀ (D' : DegData R (maximalIdeal R)) (F : PFactor Q D'.toPre) (σ : AlgebraicClosure (FractionRing R) ≃ₐ[FractionRing R] AlgebraicClosure (FractionRing R)) (p₀ p : QkPt D'.toPre (AlgebraicClosure (FractionRing R)) n), p.y = F.e • p₀.y → GtPtAct F.o F.e p₀.g p.g → (∃ b : TF (R := R) (FractionRing R) ⟶ D'.toPre.P.A, p.g.b.left = spMap (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))) ≫ b.left) → ∀ χ : D'.toPre.X, LB.Gen.Corr D'.toPre.P.L _ _ _ _ (p.g.s χ) (LB.pullGen D'.toPre.P.L _ _ (p.g.s χ) (spMap σ.toAlgHom.toRingHom)) := by
   intro o W _ _ _ T R _ _ _ iw I _ s ε n hCN hn hnu ζ hζ Q e hDF hTR D' F σ p₀ p hy hact hb χ

@@ -11,7 +11,7 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 namespace GlobalTheory.CompanionTheory.LatC
 
 /- English proof (translation)
-Establish `: (⟨algebraMap (BdRp l) (BdR l) b, hb⟩ : ↥(algebraMap (BdRp l) (BdR l)).range) = (algebraMap (BdRp l) (BdR l)).rangeRestrict b` using `rfl`. Rewrite using `[this]`. Conclude with `(RingEquiv.ofBijective (algebraMap (BdRp l) (BdR l)).rangeRestrict ⟨fun x y h => IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l) (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩).symm_apply_apply b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pInv_algebraMap (l : ℕ) [Fact l.Prime] (b : BdRp l) (hb : algebraMap (BdRp l) (BdR l) b ∈ (algebraMap (BdRp l) (BdR l)).range) :
     pInv l ⟨algebraMap (BdRp l) (BdR l) b, hb⟩ = b := by
@@ -21,9 +21,9 @@ theorem pInv_algebraMap (l : ℕ) [Fact l.Prime] (b : BdRp l) (hb : algebraMap (
     ⟨fun x y h => IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l) (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩).symm_apply_apply b
 
 /- English proof (translation)
-Introduce and unpack `g ⟨_, b, rfl⟩ ⟨y, hy⟩ hxy`. Establish `hy' : y = algebraMap (BdRp l) (BdR l) (gP l g b)`. Use `(Eq.trans hxy.symm ?_)` and prove the remaining obligations. Conclude with `galBdRField_algebraMap (toBot g.1) b`. Substitute `hy'` using the available equality.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `show gB h k g (pk l k (pInv l ⟨_, _⟩)) = pk l k (pInv l ⟨_, _⟩)`. Rewrite using `[pInv_algebraMap, pInv_algebraMap]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sigmaB_toB {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ} (h : LevHyp l K M) (k : ℕ) :
     ∀ (g : K.fixingSubgroup) (x y : (per l K).P), (per l K).σ g x = y →

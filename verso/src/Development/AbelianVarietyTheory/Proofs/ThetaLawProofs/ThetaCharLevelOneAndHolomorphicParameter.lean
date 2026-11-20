@@ -28,7 +28,7 @@ namespace GlobalTheory.SimilTheta
 open ReciprocityTheory.PTheta Matrix
 
 /- English proof (translation)
-Unfold `GlobalTheory.levelTheta`. Establish `e1 : ((fun i => ((0 : Fin g → ℤ) i : ℝ) / ((1 : ℕ) : ℝ)) + a) = a`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[e1]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -41,9 +41,9 @@ private theorem levelTheta_one_zero {g : ℕ} (a b : Fin g → ℝ) (τ : Matrix
   simp
 
 /- English proof (translation)
-Take `⟨ha, hb⟩` from `h`. Establish `hF` using `GlobalTheory.KeyKa.LevelBasis.holFam_levelTheta (fun i => (a i).re) (fun i => (b i).re) Nat.one_pos 0`. Unfold `GlobalTheory.KeyKa.HolFam at hF`. Simplify using `only [levelTheta_one_zero] at hF`. Establish `hm : Differentiable ℂ (fun p : Fin g → Fin g → ℂ => (p, w p))` using `by fun_prop`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(hF.comp hm.differentiableOn (fun p hp => ⟨hp, Set.mem_univ _⟩)).congr (fun p _ => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.TorusAlg.thetaChar_eq_theta _ ha hb]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem differentiableOn_thetaChar_comp {g : ℕ} {a b : Fin g → ℂ} (h : charHalf g a b)
     {w : (Fin g → Fin g → ℂ) → Fin g → ℂ} (hw : Differentiable ℂ w) :
@@ -58,7 +58,7 @@ theorem differentiableOn_thetaChar_comp {g : ℕ} {a b : Fin g → ℂ} (h : cha
   rfl
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.KeyKa.per, ReciprocityTheory.ChartRestriction.G.Key.phSym, Matrix.smul_apply, Matrix.add_apply, Matrix.transpose_apply, Matrix.of_apply, smul_eq_mul]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_per_apply {g : ℕ} (i j : Fin g) :
     Differentiable ℂ (fun p : Fin g → Fin g → ℂ => per p i j) := by
@@ -67,7 +67,7 @@ theorem differentiable_per_apply {g : ℕ} (i j : Fin g) :
   fun_prop
 
 /- English proof (translation)
-Rewrite using `[differentiable_pi]`. Introduce `i`. Establish `hp` using `differentiable_per_apply (g := g)`. Simplify using `only [lat, Pi.add_apply, Matrix.mulVec, dotProduct]`. Use `fun_prop`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_lat {g : ℕ} (k n : Fin g → ℤ) :
     Differentiable ℂ (fun p : Fin g → Fin g → ℂ => lat (per p) k n) := by
@@ -78,7 +78,7 @@ theorem differentiable_lat {g : ℕ} (k n : Fin g → ℤ) :
   fun_prop
 
 /- English proof (translation)
-Establish `hl : ∀ c, Differentiable ℂ (fun p : Fin g → Fin g → ℂ => lat (per p) (k c) (n c))` using `fun c => differentiable_lat (k c) (n c)`. Unfold `tors`. Conclude with `(Differentiable.fun_sum fun c _ => (hl c).const_smul (al r c)).const_smul ((m : ℂ)⁻¹)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_tors {g : ℕ} (al : Matrix (Fin 4) (Fin 4) ℤ) (m : ℕ) (k n : Fin 4 → Fin g → ℤ) (r : Fin 4) :
     Differentiable ℂ (fun p : Fin g → Fin g → ℂ => tors (per p) al m k n r) := by
@@ -88,13 +88,11 @@ theorem differentiable_tors {g : ℕ} (al : Matrix (Fin 4) (Fin 4) ℤ) (m : ℕ
   exact (Differentiable.fun_sum fun c _ => (hl c).const_smul (al r c)).const_smul ((m : ℂ)⁻¹)
 
 /- English proof (translation)
-Introduce `g a b h`. Use `⟨fun p hp => ?_, fun al m k n y => ?_, fun k n z => ?_⟩` and prove the remaining obligations. Establish `hτ : per p ∈ SiegelH (Fin g)` using `hp`. Take `⟨ha, hb⟩` from `h`. Establish `e` using `GlobalTheory.KeyKa.LevelBasis.isLevel_iff (per p) (fun i => (a i).re) (fun i => (b i).re) 1 (thetaChar (per p) a b)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[GlobalTheory.TorusAlg.ofRealVec_re ha, GlobalTheory.TorusAlg.ofRealVec_re hb]`. Rewrite using `[e, (GlobalTheory.TorusAlg.thetaChar_level hτ.1 hτ.2 ha hb).2.1]`. Conclude with `Submodule.mem_span_singleton_self _`. Unfold `simTheta`. Establish `hθ : ∀ r, DifferentiableOn ℂ (fun p => thetaChar (per p) a b (∑ c, al r c • y c + tors (per p) al m k n r)) (Key.phDom g)` using `fun r => differentiableOn_thetaChar_comp h ((differentiable_const _).add (differentiable_tors al m k n r))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : DifferentiableOn ℂ (∏ r, fun p => thetaChar (per p) a b (∑ c, al r c • y c + tors (per p) al m k n r)) (Key.phDom g)` using `Finset.prod_induction _ (fun F => DifferentiableOn ℂ F (Key.phDom g)) (fun _ _ h1 h2 => h1.mul h2) (differentiableOn_const 1) (fun r _ => hθ r)`. Rewrite `hprod` using `[Finset.prod_fn]`. Conclude with `hprod.mul (differentiableOn_const _)`. Establish `hp` using `differentiable_per_apply (g := g)`. Simplify using `only [aut, Matrix.mulVec, dotProduct]`.
-
-Use `fun_prop`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem level_one_and_holomorphic : ∀ (g : ℕ) (a b : Fin g → ℂ), charHalf g a b → (∀ p ∈ Key.phDom g, IsLevel (per p) a b 1 (thetaChar (per p) a b)) ∧ (∀ (al : Matrix (Fin 4) (Fin 4) ℤ) (m : ℕ) (k n : Fin 4 → Fin g → ℤ) (y : Fin 4 → Fin g → ℂ), DifferentiableOn ℂ (fun p => simTheta (per p) a b al m k n y) (Key.phDom g)) ∧ ∀ (k n : Fin g → ℤ) (z : Fin g → ℂ), Differentiable ℂ (fun p : Fin g → Fin g → ℂ => aut (per p) a b k n z) := by
   intro g a b h

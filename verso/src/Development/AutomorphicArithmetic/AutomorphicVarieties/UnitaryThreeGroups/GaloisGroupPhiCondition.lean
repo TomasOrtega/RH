@@ -6,19 +6,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
 /- English proof (translation)
-Use `haveI : TotallySeparatedSpace (G ⧸ N) := by`. Rewrite using `[totallySeparatedSpace_iff_exists_isClopen]`. Introduce `a b hab`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective a`. Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxy : x⁻¹ * y ∉ ((ClosedSubgroup.mk N hN : ClosedSubgroup G) : Subgroup G)` using `fun h => hab (QuotientGroup.eq.2 h)`. Rewrite `hxy` using `[ProfiniteGrp.closedSubgroup_eq_sInf_open (ClosedSubgroup.mk N hN), Subgroup.mem_sInf]`. Use `push_neg at hxy`. Take `⟨U, ⟨hUo, hNU⟩, hyU⟩` from `hxy`. Set `W : Set G` to `{g | x⁻¹ * g ∈ U}`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWo : IsOpen W` using `by show IsOpen ((fun g => x⁻¹ * g) ⁻¹' (U : Set G))`. Conclude with `hUo.preimage (continuous_const.mul continuous_id)`. Establish `hWc : IsClosed W` using `by show IsClosed ((fun g => x⁻¹ * g) ⁻¹' (U : Set G))`. Conclude with `(Subgroup.isClosed_of_isOpen U hUo).preimage (continuous_const.mul continuous_id)`. Establish `hsat : (QuotientGroup.mk : G → G ⧸ N) ⁻¹' (QuotientGroup.mk '' W) = W`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, he⟩`. Establish `hn` using `QuotientGroup.eq.1 he`. Use `show x⁻¹ * g ∈ U`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `U.mul_mem hh (hNU hn)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `hg`. Conclude with `⟨g, hg, rfl⟩`. Use `⟨QuotientGroup.mk '' W, ⟨?_, QuotientGroup.isOpenMap_coe W hWo⟩, ⟨x, by simp [W], rfl⟩, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← (QuotientGroup.isQuotientMap_mk N).isCoinducing.isClosed_preimage, hsat]`. Conclude with `hWc`. Introduce `hy`. Establish `hy' : y ∈ (QuotientGroup.mk : G → G ⧸ N) ⁻¹' (QuotientGroup.mk '' W)` using `hy`. Rewrite `hy'` using `[hsat]`.
-
-Conclude with `hyU hy'`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem totDisc_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] (N : Subgroup G) [N.Normal] (hN : IsClosed (N : Set G)) :
@@ -72,9 +68,9 @@ private theorem permR_apply (R : Type) [CommRing R] {Γ : Type} [Group Γ] (H : 
     (x : Γ ⧸ H) : permR R H g f x = f (g⁻¹ • x) := rfl
 
 /- English proof (translation)
-Establish `h1 : ((g⁻¹ * x.out : Γ) : Γ ⧸ H) = (((g⁻¹ • x).out : Γ) : Γ ⧸ H)`. Rewrite using `[QuotientGroup.out_eq']`. Use `conv_rhs => rw [← QuotientGroup.out_eq' x]`. Both sides reduce to the same expression. Establish `h2` using `QuotientGroup.eq.1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2` using `[mul_assoc]`.
+A detailed English derivation is pending.
 -/
 private theorem sec_mem {Γ : Type} [Group Γ] (H : Subgroup Γ) (g : Γ) (x : Γ ⧸ H) :
     (x.out)⁻¹ * g * (g⁻¹ • x).out ∈ H := by
@@ -86,57 +82,53 @@ private theorem sec_mem {Γ : Type} [Group Γ] (H : Subgroup Γ) (g : Γ) (x : �
   simpa [mul_assoc] using h2
 
 /- English proof (translation)
-Introduce `H hH`. Use `haveI : Finite (Γ ⧸ H) := Subgroup.quotient_finite_of_isOpen H hH`. Establish `getN : ∀ W : Set Γ, IsClopen W → (1 : Γ) ∈ W → ∃ N : Subgroup Γ, N.Normal ∧ IsOpen (N : Set Γ) ∧ (N : Set Γ) ⊆ W`. Introduce `W hW h1`. Take `⟨N, hN⟩` from `IsTopologicalGroup.exist_openNormalSubgroup_sub_clopen_nhds_of_one hW h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨N.toOpenSubgroup, N.isNormal', N.toOpenSubgroup.isOpen, hN⟩`. Establish `triv : ∀ N : Subgroup Γ, N.Normal → (N : Set Γ) ⊆ H → ∀ k ∈ N, ∀ y : Γ ⧸ H, k • y = y`. Introduce `N hN hNH k hk y`. Take `⟨z, rfl⟩` from `QuotientGroup.mk_surjective y`. Use `show ((k * z : Γ) : Γ ⧸ H) = z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `QuotientGroup.eq.2` to reduce the goal to its premises. Apply `hNH` to reduce the goal to its premises. Use `hN.conj_mem k⁻¹ (N.inv_mem hk) z⁻¹` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Establish `lc : ∀ {X : Type} [TopologicalSpace X] [DiscreteTopology X] (F : Γ → X) (N : Subgroup Γ), IsOpen (N : Set Γ) → (∀ g, ∀ k ∈ N, F (g * k) = F g) → Continuous F`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `X _ _ F N hN hF`. Rewrite using `[continuous_discrete_rng]`. Introduce `b`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(fun k => g⁻¹ * k) ⁻¹' (N : Set Γ), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hg ⊢`. Use `hF g _ hk` as an intermediate fact. Simplify `this` using `[hg]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `hN.preimage (continuous_const.mul continuous_id)`. Use `show g⁻¹ * g ∈ (N : Set Γ)`. Simplify using `[N.one_mem]`. Set `M` to `Γ ⧸ H → ZMod n`. Use `letI : TopologicalSpace M := ⊥`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : DiscreteTopology M := ⟨rfl⟩`. Set `ρ` to `permR (ZMod n) H`. Take `⟨N0, hN0n, hN0o, hN0H⟩` from `getN (H : Set Γ) ⟨Subgroup.isClosed_of_isOpen H hH, hH⟩ H.one_mem`. Establish `ρmul : ∀ g, ∀ k ∈ N0, ρ (g * k) = ρ g`. Introduce `g k hk`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Use function extensionality and compare the values at `x`. Use `show f ((g * k)⁻¹ • x) = f (g⁻¹ • x)`. Rewrite using `[_root_.mul_inv_rev, mul_smul, triv N0 hN0n hN0H k⁻¹ (N0.inv_mem hk)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcont : ContAction ρ` using `by show Continuous fun p : Γ × M => ρ p.1 p.2`. Rewrite using `[continuous_discrete_rng]`. Introduce `b`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `⟨g, f⟩ hg`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨((fun k => g⁻¹ * k) ⁻¹' (N0 : Set Γ)) ×ˢ {f}, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, f'⟩ ⟨hk, hf'⟩`. Simplify using `only [Set.mem_singleton_iff] at hf'`. Substitute `hf'` using the available equality. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hg ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hg]`. Establish `e : k = g * (g⁻¹ * k)` using `by group`. Rewrite using `[e, ρmul g _ hk]`. Conclude with `(hN0o.preimage (continuous_const.mul continuous_id)).prod (isOpen_discrete _)`. Conclude with `⟨by show g⁻¹ * g ∈ (N0 : Set Γ); simp [N0.one_mem], rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Set `c : (H →* Multiplicative (ZMod n)) → Γ → M` to `fun φ g x => Multiplicative.toAdd (φ ⟨(x.out)⁻¹ * g * (g⁻¹ • x).out, sec_mem H g x⟩)`. Establish `hcoc : ∀ φ : H →* Multiplicative (ZMod n), ∀ g h, c φ (g * h) = c φ g + ρ g (c φ h)`. Introduce `φ g h`. Use function extensionality and compare the values at `x`. Use `show Multiplicative.toAdd (φ ⟨_, sec_mem H (g * h) x⟩) = Multiplicative.toAdd (φ ⟨_, sec_mem H g x⟩) + Multiplicative.toAdd (φ ⟨_, sec_mem H h (g⁻¹ • x)⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Rewrite using `[← toAdd_mul, ← map_mul]`. Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, _root_.mul_inv_rev, mul_smul]`. Use `group`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hZ : ∀ φ : H →* Multiplicative (ZMod n), IsOpen (φ.ker : Set H) → c φ ∈ Z1 ρ`. Introduce `φ hφ`. Use `show Continuous (c φ) ∧ ∀ g h, c φ (g * h) = c φ g + ρ g (c φ h)`. Use `⟨?_, hcoc φ⟩` and prove the remaining obligations. Set `K : Subgroup Γ` to `φ.ker.map H.subtype`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hKo : IsOpen (K : Set Γ)`. Simplify using `only [K]`. Rewrite using `[Subgroup.coe_map, Subgroup.coe_subtype]`. Conclude with `hH.isOpenMap_subtype_val _ hφ`. Establish `hKH : (K : Set Γ) ⊆ H`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `k hk`. Take `⟨y, _, rfl⟩` from `Subgroup.mem_map.1 hk`. Conclude with `y.2`. Take `⟨N, hNn, hNo, hNK⟩` from `getN (K : Set Γ) ⟨Subgroup.isClosed_of_isOpen K hKo, hKo⟩ K.one_mem`. Establish `hk0 : ∀ k ∈ N, c φ k = 0`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `k hk`. Use function extensionality and compare the values at `x`. Establish `hfix : k⁻¹ • x = x` using `triv N hNn (hNK.trans hKH) k⁻¹ (N.inv_mem hk) x`. Establish `hmem : (x.out)⁻¹ * k * (k⁻¹ • x).out ∈ K`. Rewrite using `[hfix]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `hNK` to reduce the goal to its premises. Use `hNn.conj_mem k hk (x.out)⁻¹` as an intermediate fact. Simplify using `using this`. Take `⟨y, hy, hye⟩` from `Subgroup.mem_map.1 hmem`. Use `show Multiplicative.toAdd (φ ⟨_, sec_mem H k x⟩) = 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hyy : (⟨_, sec_mem H k x⟩ : H) = y` using `Subtype.ext hye.symm`. Rewrite using `[hyy, MonoidHom.mem_ker.1 hy]`. Both sides reduce to the same expression. Apply `lc (c φ) N hNo` to reduce the goal to its premises. Introduce `g k hk`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hcoc φ g k, hk0 k hk, map_zero, add_zero]`. Set `F : {φ : H →* Multiplicative (ZMod n) // IsOpen (φ.ker : Set H)} → H1 ρ` to `fun φ => Submodule.Quotient.mk ⟨c φ.1, hZ φ.1 φ.2⟩`. Establish `hfin : Finite (H1 ρ)` using `h M ρ hcont`. Use `Finite.of_injective F ?_` and prove the remaining obligations. Introduce and unpack `⟨φ, hφ⟩ ⟨ψ, hψ⟩ hEq`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `(Submodule.Quotient.eq _).1 hEq`. Rewrite `hq` using `[Submodule.mem_comap]`. Take `⟨m, hm⟩` from `LinearMap.mem_range.1 hq`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `MonoidHom.ext` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Set `x0 : Γ ⧸ H` to `((1 : Γ) : Γ ⧸ H)`. Establish `hfix : (h : Γ)⁻¹ • x0 = x0` using `by show (((h : Γ)⁻¹ * 1 : Γ) : Γ ⧸ H) = ((1 : Γ) : Γ ⧸ H)`. Apply `QuotientGroup.eq.2` to reduce the goal to its premises. Simplify using `using h.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht : x0.out ∈ H`. Establish `e : ((x0.out : Γ) : Γ ⧸ H) = ((1 : Γ) : Γ ⧸ H)` using `QuotientGroup.out_eq' x0`. Use `QuotientGroup.eq.1 e` as an intermediate fact. Simplify using `using this`. Establish `hval : ∀ χ : H →* Multiplicative (ZMod n), c χ h x0 = Multiplicative.toAdd (χ h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `χ`. Use `show Multiplicative.toAdd (χ ⟨_, sec_mem H h x0⟩) = _`. Establish `hel : (⟨_, sec_mem H h x0⟩ : H) = (⟨x0.out, ht⟩ : H)⁻¹ * h * ⟨x0.out, ht⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hfix]`.
-
-Rewrite using `[hel]`. Use `congr 1`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm (χ ⟨x0.out, ht⟩)⁻¹ (χ h), mul_assoc, inv_mul_cancel, mul_one]`. Establish `hx` using `congrFun (congrFun hm h) x0`. Establish `hL : (d0 ρ m) h x0 = 0` using `by show m ((h : Γ)⁻¹ • x0) - m x0 = 0`.
-
-Rewrite using `[hfix, sub_self]`. Establish `hR : (d0 ρ m) h x0 = c φ h x0 - c ψ h x0` using `hx`. Establish `hcc : c φ h x0 = c ψ h x0` using `sub_eq_zero.1 (hR.symm.trans hL)`. Rewrite `hcc` using `[hval φ, hval ψ]`. Conclude with `hcc`.
+A detailed English derivation is pending.
 -/
 private theorem phi_condition_of_finite_cohomology {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] (n : ℕ)
     [NeZero n]
@@ -283,9 +275,7 @@ private theorem phi_condition_of_finite_cohomology {Γ : Type} [Group Γ] [Topol
   exact hcc
 
 /- English proof (translation)
-Introduce `hGF Ω _ _ _ l _ S hS`. Use `haveI : IsClosed ((NS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) : Set (G ℚ Ω))) := isClosed_NS Ω _`. Use `⟨?_, inferInstance, inferInstance, totDisc_quot _ (isClosed_NS Ω _)⟩` and prove the remaining obligations. Use `haveI : NeZero (l ^ 1) := ⟨pow_ne_zero 1 (Fact.out : l.Prime).ne_zero⟩`. Establish `key` using `phi_condition_of_finite_cohomology (Γ := GS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ)))) (l ^ 1) (fun M _ _ _ _ _ ρ hc => (hGF ℚ Ω l 1 M S ρ one_pos hS hc).2.1)`.
-
-Rewrite `key` using `[pow_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.galois_group_phi_condition :
     GlobalFiniteness → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (S : Finset (HeightOneSpectrum (𝓞 ℚ))), ContainsAbove S l →

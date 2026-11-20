@@ -8,11 +8,9 @@ namespace GlobalTheory.UnfoldCplx
 variable {α ι : Type} [MeasurableSpace α] [Countable ι]
 
 /- English proof (translation)
-Use `⟨(hB.comp (hT i)).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `h1` using `hU (fun x => ‖B x‖ₑ) hB.enorm (fun h hh x => by simp [hH h hh x])`. Establish `hfin : ∫⁻ x in 𝓕, ‖B x‖ₑ ∂μ < ∞` using `hBi.2`. Establish `hle : ENNReal.ofReal (c i) * ∫⁻ x in A, ‖B (T i x)‖ₑ ∂μ ≤ ∫⁻ x in 𝓕, ‖B x‖ₑ ∂μ`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.le_tsum (f := fun i => ENNReal.ofReal (c i) * ∫⁻ x in A, ‖B (T i x)‖ₑ ∂μ) i`. Establish `hne : ENNReal.ofReal (c i) ≠ 0` using `by simpa using hc i`. Use `show ∫⁻ x in A, ‖B (T i x)‖ₑ ∂μ < ∞`. Assume the negation of the conclusion as `hh`. Rewrite `hh` using `[not_lt, top_le_iff]`.
-
-Rewrite `hle` using `[hh, ENNReal.mul_top hne]`. Conclude with `absurd (lt_of_le_of_lt hle hfin) (lt_irrefl _)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_comp {μ : Measure α} {𝓕 A : Set α} {c : ι → ℝ} (hc : ∀ i, 0 < c i)
     {T : ι → α → α} (hT : ∀ i, Measurable (T i)) {H : Set (α → α)}
@@ -34,11 +32,11 @@ theorem integrable_comp {μ : Measure α} {𝓕 A : Set α} {c : ι → ℝ} (hc
   exact absurd (lt_of_le_of_lt hle hfin) (lt_irrefl _)
 
 /- English proof (translation)
-Establish `h1` using `hU (fun x => ENNReal.ofReal (g x)) hg.ennreal_ofReal (fun h hh x => by simp [hH h hh x])`. Establish `hfin : ∫⁻ x in 𝓕, ENNReal.ofReal (g x) ∂μ ≠ ∞` using `(hgi.lintegral_lt_top).ne`. Use `set F : ι → ℝ≥0∞ := fun i => ENNReal.ofReal (c i) * ∫⁻ x in A, ENNReal.ofReal (g (T i x)) ∂μ with hF`. Establish `hsum : ∑' i, F i ≠ ∞` using `by rw [← h1]; exact hfin`. Establish `hFi : ∀ i, F i ≠ ∞` using `ENNReal.ne_top_of_tsum_ne_top hsum`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `ENNReal.hasSum_toReal hsum`. Rewrite `key` using `[← ENNReal.tsum_toReal_eq hFi, ← h1, ← integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall hg0) hg.aestronglyMeasurable]`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `only [hF, ENNReal.toReal_mul, ENNReal.toReal_ofReal (hc i).le]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall (fun x => hg0 _)) (hg.comp (hT i)).aestronglyMeasurable]`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_nonneg {μ : Measure α} {𝓕 A : Set α} {c : ι → ℝ} (hc : ∀ i, 0 < c i)
     {T : ι → α → α} (hT : ∀ i, Measurable (T i)) {H : Set (α → α)}
@@ -62,13 +60,13 @@ theorem hasSum_nonneg {μ : Measure α} {𝓕 A : Set α} {c : ι → ℝ} (hc :
     (hg.comp (hT i)).aestronglyMeasurable]
 
 /- English proof (translation)
-Establish `hp` using `hasSum_nonneg hc hT hU (g := fun x => max (g x) 0) (hg.max measurable_const) (fun x => le_max_right _ _) hgi.pos_part (fun h hh x => by simp only [hH h hh x])`. Establish `hn` using `hasSum_nonneg hc hT hU (g := fun x => max (-g x) 0) (hg.neg.max measurable_const) (fun x => le_max_right _ _) hgi.neg_part (fun h hh x => by simp only [hH h hh x])`. Establish `hsplit : ∀ y : ℝ, max y 0 - max (-y) 0 = y` using `fun y => by`. Break down `le_total y 0 with h | h` into its components or cases. Rewrite using `[max_eq_right h, max_eq_left (neg_nonneg.mpr h)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[max_eq_left h, max_eq_right (neg_nonpos.mpr h)]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ∫ x in 𝓕, g x ∂μ = (∫ x in 𝓕, max (g x) 0 ∂μ) - ∫ x in 𝓕, max (-g x) 0 ∂μ`. Rewrite using `[← integral_sub hgi.pos_part hgi.neg_part]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hsplit]`. Establish `hf : (fun i => c i * ∫ x in A, g (T i x) ∂μ) = fun i => c i * (∫ x in A, max (g (T i x)) 0 ∂μ) - c i * ∫ x in A, max (-g (T i x)) 0 ∂μ`. Use function extensionality and compare the values at `i`. Rewrite using `[← mul_sub, ← integral_sub (hgA i).pos_part (hgA i).neg_part]`. Simplify using `only [hsplit]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, hf]`. Conclude with `hp.sub hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_real {μ : Measure α} {𝓕 A : Set α} {c : ι → ℝ} (hc : ∀ i, 0 < c i)
     {T : ι → α → α} (hT : ∀ i, Measurable (T i)) {H : Set (α → α)}
@@ -96,15 +94,13 @@ theorem hasSum_real {μ : Measure α} {𝓕 A : Set α} {c : ι → ℝ} (hc : �
   exact hp.sub hn
 
 /- English proof (translation)
-Introduce `α ι _ _ μ 𝓕 A c hc T hT H hU B hB hBi hH`. Establish `hBA` using `integrable_comp hc hT hU hB hBi hH`. Use `⟨hBA, ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.hasSum_iff]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `hasSum_real hc hT hU (g := fun x => (B x).re) (Complex.measurable_re.comp hB) hBi.re (fun i => (hBA i).re) (fun h hh x => by simp only [hH h hh x])` as an intermediate fact. Establish `e2 : ∫ x in 𝓕, (B x).re ∂μ = (∫ x in 𝓕, B x ∂μ).re` using `integral_re hBi`. Establish `hf : (fun i => c i * ∫ x in A, (B (T i x)).re ∂μ) = fun i => ((c i : ℂ) * ∫ x in A, B (T i x) ∂μ).re`. Use function extensionality and compare the values at `i`. Rewrite using `[Complex.re_ofReal_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `integral_re (hBA i)`. Rewrite `this` using `[e2, hf]`. Conclude with `this`. Use `hasSum_real hc hT hU (g := fun x => (B x).im) (Complex.measurable_im.comp hB) hBi.im (fun i => (hBA i).im) (fun h hh x => by simp only [hH h hh x])` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∫ x in 𝓕, (B x).im ∂μ = (∫ x in 𝓕, B x ∂μ).im` using `integral_im hBi`. Establish `hf : (fun i => c i * ∫ x in A, (B (T i x)).im ∂μ) = fun i => ((c i : ℂ) * ∫ x in A, B (T i x) ∂μ).im`. Use function extensionality and compare the values at `i`. Rewrite using `[Complex.im_ofReal_mul]`. Use `congr 1`.
-
-Conclude with `integral_im (hBA i)`. Rewrite `this` using `[e2, hf]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_complex : ∀ {α ι : Type} [MeasurableSpace α] [Countable ι] (μ : Measure α) (𝓕 A : Set α) (c : ι → ℝ), (∀ i, 0 < c i) →
     ∀ (T : ι → α → α), (∀ i, Measurable (T i)) → ∀ (H : Set (α → α)),

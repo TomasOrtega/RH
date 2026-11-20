@@ -5,7 +5,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `hD hT q n P F I _ v hR`. Take `⟨A, hA, h0, hs⟩` from `hD q n P F I v hR`. Establish `key` using `hT q n P F (fun j => Multiset.map (v j) Finset.univ.val) A hA h0 hs`. Simplify using `only [Multiset.map_map] at key`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.ordCount_of :
     OrdDecomp → Telescope → OrdCount := by

@@ -12,19 +12,19 @@ variable {A : Type*} (A' : Type*) [CommRing A] [CommRing A'] [Algebra A A']
   [Module.FaithfullyFlat A A'] {M : Type*} [AddCommGroup M] [Module A M]
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_finite_tensorProduct_of_faithfullyFlat A'`.
+A detailed English derivation is pending.
 -/
 theorem finite [Module.Finite A' (A' ⊗[A] M)] : Module.Finite A M :=
   Module.Finite.of_finite_tensorProduct_of_faithfullyFlat A'
 
 /- English proof (translation)
-The claim follows from `Module.Flat.of_flat_tensorProduct A M A'`.
+A detailed English derivation is pending.
 -/
 theorem flat [Module.Flat A' (A' ⊗[A] M)] : Module.Flat A M :=
   Module.Flat.of_flat_tensorProduct A M A'
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (N.subtype.baseChange A')` using `Module.Flat.lTensor_preserves_injective_linearMap (M := A') N.subtype N.injective_subtype`. Establish `e : A' ⊗[A] N ≃ₗ[A'] N.baseChange A'` using `LinearEquiv.ofInjective _ hinj`. Establish `: Module.Finite A' (N.baseChange A')` using `Module.Finite.iff_fg.mpr h`. Establish `: Module.Finite A' (A' ⊗[A] N)` using `Module.Finite.equiv e.symm`. Conclude with `Module.Finite.iff_fg.mp (finite A')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fg_of_baseChange {N : Submodule A M} (h : (N.baseChange A').FG) : N.FG := by
   have hinj : Function.Injective (N.subtype.baseChange A') :=
@@ -35,9 +35,9 @@ theorem fg_of_baseChange {N : Submodule A M} (h : (N.baseChange A').FG) : N.FG :
   exact Module.Finite.iff_fg.mp (finite A')
 
 /- English proof (translation)
-Establish `: Module.Finite A M` using `finite A'`. Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' A M`. Use `Module.finitePresentation_of_free_of_surjective f hf (fg_of_baseChange A' ?_)` and prove the remaining obligations. Establish `hf' : Function.Surjective (f.baseChange A')` using `LinearMap.lTensor_surjective A' hf`. Establish `hker : (LinearMap.ker f).baseChange A' = LinearMap.ker (f.baseChange A')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : Function.Exact ((LinearMap.ker f).subtype.baseChange A') (f.baseChange A')` using `lTensor_exact A' (LinearMap.exact_subtype_ker_map f) hf`. Conclude with `(LinearMap.exact_iff.mp hex).symm`. Rewrite using `[hker]`. Conclude with `Module.FinitePresentation.fg_ker _ hf'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finitePresentation [Module.FinitePresentation A' (A' ⊗[A] M)] :
     Module.FinitePresentation A M := by
@@ -53,7 +53,7 @@ theorem finitePresentation [Module.FinitePresentation A' (A' ⊗[A] M)] :
   exact Module.FinitePresentation.fg_ker _ hf'
 
 /- English proof (translation)
-Establish `: Module.FinitePresentation A' (A' ⊗[A] M)` using `Module.finitePresentation_of_projective _ _`. Establish `: Module.FinitePresentation A M` using `finitePresentation A'`. Establish `: Module.Flat A M` using `flat A'`. Conclude with `Module.Flat.projective_of_finitePresentation`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem projective [Module.Finite A' (A' ⊗[A] M)] [Module.Projective A' (A' ⊗[A] M)] :
     Module.Projective A M := by
@@ -63,7 +63,7 @@ theorem projective [Module.Finite A' (A' ⊗[A] M)] [Module.Projective A' (A' �
   exact Module.Flat.projective_of_finitePresentation
 
 /- English proof (translation)
-Establish `: Module.Finite A M` using `finite A'`. Establish `: Module.Flat A M` using `flat A'`. Take `⟨q, rfl⟩` from `PrimeSpectrum.comap_surjective_of_faithfullyFlat (A := A) (B := A') p`. Rewrite using `[← Module.rankAtStalk_baseChange, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rankAtStalk_eq [Module.Finite A' (A' ⊗[A] M)] [Module.Flat A' (A' ⊗[A] M)] {r : ℕ}
     (h : ∀ q : PrimeSpectrum A', Module.rankAtStalk (A' ⊗[A] M) q = r) (p : PrimeSpectrum A) :
@@ -74,13 +74,13 @@ theorem rankAtStalk_eq [Module.Finite A' (A' ⊗[A] M)] [Module.Flat A' (A' ⊗[
   rw [← Module.rankAtStalk_baseChange, h]
 
 /- English proof (translation)
-The claim follows from `Module.FaithfullyFlat.tensorProduct_mk_injective (A := A) (B := A') M`.
+A detailed English derivation is pending.
 -/
 theorem one_tmul_injective : Function.Injective fun m : M ↦ (1 : A') ⊗ₜ[A] m :=
   Module.FaithfullyFlat.tensorProduct_mk_injective (A := A) (B := A') M
 
 /- English proof (translation)
-Use `⟨fun h ↦ Module.Flat.linearIndependent_one_tmul h, fun h ↦ ?_⟩` and prove the remaining obligations. Establish `h' : LinearIndependent A fun i ↦ (1 : A') ⊗ₜ[A] v i` using `h.restrict_scalars' A`. Conclude with `LinearIndependent.of_comp (TensorProduct.mk A A' M 1) h'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linearIndependent_iff {ι : Type*} (v : ι → M) :
     LinearIndependent A v ↔ LinearIndependent A' fun i ↦ (1 : A') ⊗ₜ[A] v i := by
@@ -90,7 +90,7 @@ theorem linearIndependent_iff {ι : Type*} (v : ι → M) :
   exact LinearIndependent.of_comp (TensorProduct.mk A A' M 1) h'
 
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.mem_span_singleton, ← Ideal.comap_map_eq_self_of_faithfullyFlat (B := A') (Ideal.span {a}), Ideal.mem_comap, Ideal.map_span, Set.image_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_dvd_iff (a b : A) : algebraMap A A' a ∣ algebraMap A A' b ↔ a ∣ b := by
   rw [← Ideal.mem_span_singleton, ← Ideal.mem_span_singleton,
@@ -108,14 +108,14 @@ variable {A A' : Type*} [CommRing A] [CommRing A'] [Algebra A A'] [Module.Faithf
 include hf
 
 /- English proof (translation)
-The claim follows from `have := Module.Finite.equiv hf.equiv.symm finite A'`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_isBaseChange [Module.Finite A' M'] : Module.Finite A M :=
   have := Module.Finite.equiv hf.equiv.symm
   finite A'
 
 /- English proof (translation)
-The claim follows from `have := Module.Finite.equiv hf.equiv.symm have := Module.Projective.of_equiv hf.equiv.symm projective A'`.
+A detailed English derivation is pending.
 -/
 theorem projective_of_isBaseChange [Module.Finite A' M'] [Module.Projective A' M'] :
     Module.Projective A M :=
@@ -139,7 +139,7 @@ noncomputable instance stalkModule (x : X) :
     (R := X.presheaf) F.val x
 
 /- English proof (translation)
-The claim follows from `PresheafOfModules.germ_smul (R := X.presheaf) F.val x U hx r m`.
+A detailed English derivation is pending.
 -/
 theorem germ_smul (U : X.Opens) (x : X) (hx : x ∈ U) (r : Γ(X, U)) (m : Γ(F, U)) :
     F.presheaf.germ U x hx (r • m) = X.presheaf.germ U x hx r • F.presheaf.germ U x hx m :=
@@ -148,9 +148,9 @@ theorem germ_smul (U : X.Opens) (x : X) (hx : x ∈ U) (r : Γ(X, U)) (m : Γ(F,
 variable {F} {U : X.Opens} {s : Γ(F, U)}
 
 /- English proof (translation)
-Introduce `a b hab`. Apply `TopCat.Presheaf.section_ext X.sheaf V a b` to reduce the goal to its premises. Introduce `x hx`. Apply `h x hx` to reduce the goal to its premises. Use `congrArg (F.presheaf.germ V x hx) hab` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [germ_smul, TopCat.Presheaf.germ_res_apply] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem injective_smul_of_stalk {V : X.Opens} (hV : V ≤ U)
     (h : ∀ (x : X) (hx : x ∈ V), Function.Injective
@@ -165,19 +165,17 @@ theorem injective_smul_of_stalk {V : X.Opens} (hV : V ≤ U)
   exact this
 
 /- English proof (translation)
-Use `⟨injective_smul_of_stalk hV fun x hx ↦ (h x (hV hx)).1, fun t ↦ ?_⟩` and prove the remaining obligations. Establish `hloc : ∀ x : V, ∃ (W : X.Opens) (_ : x.1 ∈ W) (hW : W ≤ V) (a : Γ(X, W)), a • F.presheaf.map (homOfLE (hW.trans hV)).op s = F.presheaf.map (homOfLE hW).op t`. Introduce and unpack `⟨x, hx⟩`. Take `⟨a, ha⟩` from `(h x (hV hx)).2 (F.presheaf.germ V x hx t)`. Take `⟨W, hWV, hxW, a, rfl⟩` from `X.presheaf.exists_le_germ_eq a hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h₁ : F.presheaf.germ W x hxW (a • F.presheaf.map (homOfLE (hWV.trans hV)).op s) = F.presheaf.germ V x hx t`. Rewrite using `[germ_smul, TopCat.Presheaf.germ_res_apply]`. Conclude with `ha`. Take `⟨W', hxW', i₁, i₂, e⟩` from `F.presheaf.germ_eq x hxW hx _ _ h₁`. Use `⟨W', hxW', i₂.le, X.presheaf.map i₁.op a, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[Scheme.Modules.map_smul, ← ConcreteCategory.comp_apply, ← F.presheaf.map_comp]`. Conclude with `e`. Use `choose W hxW hWV a ha using hloc`. Establish `hcover : V ≤ iSup W` using `fun x hx ↦ Opens.mem_iSup.mpr ⟨⟨x, hx⟩, hxW ⟨x, hx⟩⟩`. Establish `hcomp : TopCat.Presheaf.IsCompatible X.presheaf W a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i j`. Establish `hij : W i ⊓ W j ≤ U` using `inf_le_left.trans ((hWV i).trans hV)`. Apply `injective_smul_of_stalk (s := s) hij fun x hx ↦ (h x (hij hx)).1` to reduce the goal to its premises. Establish `e₁` using `congrArg (F.presheaf.map (Opens.infLELeft (W i) (W j)).op) (ha i)`. Establish `e₂` using `congrArg (F.presheaf.map (Opens.infLERight (W i) (W j)).op) (ha j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e₁`, `e₂` using `[Scheme.Modules.map_smul, ← ConcreteCategory.comp_apply, ← F.presheaf.map_comp, ← ConcreteCategory.comp_apply, ← F.presheaf.map_comp]`. Conclude with `e₁.trans e₂.symm`. Take `⟨b, hb, -⟩` from `X.sheaf.existsUnique_gluing' W V (fun i ↦ homOfLE (hWV i)) hcover a hcomp`. Use `⟨b, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Γ(X, V) at b`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `TopCat.Sheaf.eq_of_locally_eq' (⟨F.presheaf, F.isSheaf⟩ : TopCat.Sheaf Ab X) W V (fun i ↦ homOfLE (hWV i)) hcover` to reduce the goal to its premises. Introduce `i`. Establish `hb' : X.presheaf.map (homOfLE (hWV i)).op b = a i` using `hb i`. Express the relevant statement in the definitionally equal form `F.presheaf.map (homOfLE (hWV i)).op (b • F.presheaf.map (homOfLE hV).op s) = F.presheaf.map (homOfLE (hWV i)).op t`. Rewrite using `[Scheme.Modules.map_smul, ← ConcreteCategory.comp_apply, ← F.presheaf.map_comp, hb', ← ha i]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bijective_smul_of_stalk
     (h : ∀ (x : X) (hx : x ∈ U), Function.Bijective
@@ -222,11 +220,11 @@ theorem bijective_smul_of_stalk
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Take `⟨V, hVU, hxV, a, rfl⟩` from `X.presheaf.exists_le_germ_eq a hx`. Take `⟨W, hWV, hxW, b, rfl⟩` from `X.presheaf.exists_le_germ_eq b hxV`. Establish `h₁ : F.presheaf.germ V x hxV (a • F.presheaf.map (homOfLE hVU).op s) = F.presheaf.germ W x hxW (b • F.presheaf.map (homOfLE (hWV.trans hVU)).op s)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[germ_smul, germ_smul, TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply]`. Conclude with `hab`. Take `⟨W', hxW', i₁, i₂, e⟩` from `F.presheaf.germ_eq x hxV hxW _ _ h₁`. Rewrite `e` using `[Scheme.Modules.map_smul, ← ConcreteCategory.comp_apply, ← F.presheaf.map_comp, Scheme.Modules.map_smul, ← ConcreteCategory.comp_apply, ← F.presheaf.map_comp]`. Conclude with `X.presheaf.germ_ext W' hxW' i₁ i₂ ((h W' (i₁.le.trans hVU)).1 e)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `t`. Take `⟨V, hVU, hxV, t, rfl⟩` from `F.presheaf.exists_le_germ_eq t hx`. Take `⟨a, rfl⟩` from `(h V hVU).2 t`. Use `⟨X.presheaf.germ V x hxV a, ?_⟩` and prove the remaining obligations. Simplify using `only [germ_smul, TopCat.Presheaf.germ_res_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bijective_smul_stalk
     (h : ∀ (V : X.Opens) (hV : V ≤ U),
@@ -267,11 +265,11 @@ noncomputable def sectionHom :
 variable (s) in
 
 /- English proof (translation)
-Establish `h1 : (sectionHom s).app W (1 : Γ((U : Scheme.{u}), W)) = F.presheaf.map (homOfLE (U.ι_image_le W)).op s`. Use `SheafOfModules.unitHomEquiv_apply_coe (F.restrict U.ι) (sectionHom s) (op W)` as an intermediate fact. Rewrite `this` using `[sectionHom, Equiv.apply_symm_apply]`. Conclude with `this.symm`. Establish `h2` using `Scheme.Modules.Hom.app_smul (sectionHom s) (U := W) a (1 : Γ((U : Scheme.{u}), W))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : a = a * 1` using `(mul_one a).symm`. Use `(congrArg ((sectionHom s).app W) h3).trans (h2.trans ?_)` and prove the remaining obligations. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `((U.ι.appIso W).inv a) • F.presheaf.map (homOfLE (U.ι_image_le W)).op s = _`. Rewrite using `[Scheme.Opens.ι_appIso]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sectionHom_app (W : (U : Scheme.{u}).Opens) (a : Γ(X, U.ι ''ᵁ W)) :
     ((sectionHom s).app W a : Γ(F, U.ι ''ᵁ W)) =
@@ -290,9 +288,9 @@ theorem sectionHom_app (W : (U : Scheme.{u}).Opens) (a : Γ(X, U.ι ''ᵁ W)) :
   rfl
 
 /- English proof (translation)
-Use `Scheme.Modules.Hom.isIso_iff_isIso_app.trans ?_` and prove the remaining obligations. Establish `key (W : (U : Scheme.{u}).Opens) : IsIso ((sectionHom s).app W) ↔ Function.Bijective fun a : Γ(X, U.ι ''ᵁ W) ↦ a • F.presheaf.map (homOfLE (U.ι_image_le W)).op s`. Rewrite using `[ConcreteCategory.isIso_iff_bijective, ← funext (sectionHom_app s W)]`. Both sides reduce to the same expression. Repeatedly rewrite using `[key]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `⟨fun h ↦ bijective_smul_stalk fun V hV ↦ ?_, fun h W ↦ bijective_smul_of_stalk h _⟩` and prove the remaining obligations. Establish `e : U.ι ''ᵁ (U.ι ⁻¹ᵁ V) = V`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι, inf_eq_right.mpr hV]`. Take `⟨W, rfl⟩ : ∃ W, U.ι ''ᵁ W = V` from `⟨_, e⟩`. Conclude with `h W`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIso_sectionHom_iff :
     IsIso (sectionHom s) ↔ ∀ (x : X) (hx : x ∈ U), Function.Bijective

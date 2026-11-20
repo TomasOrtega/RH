@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.ArcBuildTate
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y T io b y z h₁ h₂ h₃ h₄ t m P hP hL F _ _ _ r hr`. Use `letI := H.starRing`. Take `⟨J, j₁, j₂, j₃⟩` from `GlobalTheory.T.dvr_arc_extension_tate E H D l Xo c O β Y T io b y z h₁ h₂ h₃ h₄ t m P hL F r hr`. Take `⟨I, i₁, i₂⟩` from `GlobalTheory.T.exists_rational_tate_isomorphism E H D T t P hP F J`. Use `⟨I, by rw [i₁]; exact j₁, fun a q hq => i₂ l.A l.A_pos a q (j₂ a q hq), fun a ha q hq => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `i₂ l.M (lt_of_lt_of_le (by decide) l.three_le) a q (j₃ a ha q hq)`.
+A detailed English derivation is pending.
 -/
 theorem untwisted : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : CDVR) (io : c.F →+* T.Fr) (b : O →+* T.V) (y : Sp T.V ⟶ Y.X) (z : Sp T.Fr ⟶ Xo.XF c), (algebraMap T.V T.Fr).comp b = io.comp β → y ≫ Y.s = spMap b → z ≫ pullback.snd _ _ = spMap io → z ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ y → ∀ (t : SAB H (Sp T.V)) (m : SABMap t Y.t y) (P : PELUnif (maximalIdeal T.V) t), P.TorsionIso → ∀ (hL : GlobalTheory.ArcExt.LevelReps Y y t m P) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing T.V) F] (r : O), ((β r : c.F) : ℂ) = zeta l.A → letI := H.starRing; ∃ I : TateIsoQ D P.D.toPre P.oD F, (I.ζ l.A : F) = (algebraMap (FractionRing T.V) F).comp (algebraMap T.V _) (b r) ∧ (∀ a q, QkExt (algebraMap _ F) (hL.1 a).choose q → Out.QkPt.Equiv P.D.toPre F q (I.ev l.A a)) ∧ ∀ a (ha : a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La)), ∀ q, QkExt (algebraMap _ F) (hL.2 a ha).choose q → Out.QkPt.Equiv P.D.toPre F q (I.ev l.M a) := by
   intro E _ _ _ H D l Xo c O _ β Y T io b y z h₁ h₂ h₃ h₄ t m P hP hL F _ _ _ r hr
@@ -26,21 +26,21 @@ theorem untwisted : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
   exact i₂ l.M (lt_of_lt_of_le (by decide) l.three_le) a q (j₃ a ha q hq)
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y T y t m P ϖ hϖ hdiv hL F _ _ _`. Use `letI := H.starRing`. Introduce `I e₂ e₃`. Establish `hw` using `GlobalTheory.ArcBuild.cmIdempotent_add_star_eq_one (H := H)`. Establish `ht` using `isScalarForm_tF P hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `psiRel0 P hϖ`. Establish `hR` using `isRootForm_rF P hϖ (dvd_of_dvd P hϖ (dvd_refl l.M') hdiv)`. Set `s : P.D.toPre.X → P.D.toPre.X → Fˣ` to `fun y x => Units.map (algebraMap (FractionRing T.V) F).toMonoidHom (rF P hϖ l.M' y x)`. Establish `hs : IsRootForm (𝓞 E) l.M' (tF P hϖ) s` using `⟨hR.1.map _, fun y x => by show (Units.map _ _) ^ _ = _`. Rewrite using `[← map_pow, hR.2 y x]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl⟩`. Take `⟨s', I', s₁, -, s₃, s₄, s₅⟩` from `exists_tateIsoQ_twist P.D.tau_bimult hw ht P.oD l.M' s hs I`. Establish `lev : ∀ {k : ℕ} (hk : 0 < k) (hd : k ∣ l.M') (p : QkPt P.D.toPre (FractionRing T.V) k) (v : D.La), (∀ q, QkExt (algebraMap _ F) p q → QkPt.Equiv P.D.toPre F q (I.ev k v)) → ∀ q', QkExt (algebraMap _ F) (qkScale hw ht hq (isRootForm_rF P hϖ (dvd_of_dvd P hϖ hd hdiv)) _ p) q' → QkP …`. Introduce `k hk hd p v he q' hq'`. Take `⟨q, rfl⟩` from `(qkScaleEquiv hw ht hq (s₁ k hk) _).surjective q'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `qkRel_qkScaleEquiv (D := P.D.toPre) (hψ := (D0 P hϖ).psi_gen) hw ht hq (s₁ k hk) q`. Use `e.equiv hw ht hq (s₁ k hk) (s₅ k hk v) (he q (QkRel.qkExt_of (fun y x => ?_) (qkRel_qkScale hw ht hq (isRootForm_rF P hϖ (dvd_of_dvd P hϖ hd hdiv)) p) e hq'))` and prove the remaining obligations. Rewrite using `[s₃ k hk hd]`. Use `show (Units.map _ _) ^ _ = _`. Rewrite using `[← map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Take `⟨j, hj⟩` from `dvd_of_dvd P hϖ (dvd_refl l.M') hdiv y x`. Take `⟨i, hi⟩` from `hd`. Establish `hk0 : (k : ℤ) ≠ 0` using `by exact_mod_cast hk.ne'`. Establish `hM' : 0 < l.M'` using `Nat.lcm_pos (lt_of_lt_of_le (by decide) l.three_le) l.A_pos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hi0 : (i : ℤ) ≠ 0`. Introduce and unpack `h`. Establish `: i = 0` using `by exact_mod_cast h`. Rewrite `hi` using `[this, mul_zero]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [rF, ← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Rewrite using `[hj, hi, Nat.mul_div_cancel_left _ hk]`. Use `push_cast`. Rewrite using `[Int.mul_ediv_cancel_left _ (mul_ne_zero hk0 hi0), mul_assoc, Int.mul_ediv_cancel_left _ hk0]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨I', s₄, fun v => lev l.A_pos (Nat.dvd_lcm_right l.M l.A) _ v (e₂ v), fun v hv q hq => ?_⟩` and prove the remaining obligations. Rewrite `hq` using `[GlobalTheory.ArcBuild.eta0, dif_pos hv]`. Conclude with `lev (lt_of_lt_of_le (by decide) l.three_le) (Nat.dvd_lcm_left l.M l.A) _ v (e₃ v hv) q hq`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twisted : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : CDVR) (y : Sp T.V ⟶ Y.X) (t : SAB H (Sp T.V)) (m : SABMap t Y.t y) (P : PELUnif (maximalIdeal T.V) t) (ϖ : T.V) (hϖ : Irreducible ϖ) (hdiv : ∀ a a', (2 * l.M' : ℤ) ∣ GlobalTheory.ArcBuild.beF P hϖ a a') (hL : GlobalTheory.ArcExt.LevelReps Y y t m P) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing T.V) F], letI := H.starRing; ∀ (I : TateIsoQ D P.D.toPre P.oD F), (∀ a q, QkExt (algebraMap _ F) (hL.1 a).choose q → Out.QkPt.Equiv P.D.toPre F q (I.ev l.A a)) → (∀ a (ha : a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La)), ∀ q, QkExt (algebraMap _ F) (hL.2 a ha).choose q → Out.QkPt.Equiv P.D.toPre F q (I.ev l.M a)) → ∃ I' : TateIsoQ D (GlobalTheory.ArcBuild.D0 P hϖ) (GlobalTheory.ArcBuild.oa0 P hϖ) F, I'.ζ = I.ζ ∧ (∀ a q, QkExt (algebraMap _ F) (GlobalTheory.ArcBuild.twistedLevelPointsOfLattice P hϖ Y y m hdiv hL a) q → Out.QkPt.Equiv (GlobalTheory.ArcBuild.D0 P hϖ) F q (I'.ev l.A a)) ∧ ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), ∀ q, QkExt (algebraMap _ F) (GlobalTheory.ArcBuild.eta0 P hϖ Y y m hdiv hL a) q → Out.QkPt.Equiv (GlobalTheory.ArcBuild.D0 P hϖ) F q (I'.ev l.M a) := by
   intro E _ _ _ H D l Xo c O _ β Y T y t m P ϖ hϖ hdiv hL F _ _ _
@@ -91,9 +91,9 @@ theorem twisted : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
   exact lev (lt_of_lt_of_le (by decide) l.three_le) (Nat.dvd_lcm_left l.M l.A) _ v (e₃ v hv) q hq
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y T io b y z h₁ h₂ h₃ h₄ t m P hP ϖ hϖ hdiv hL`. Use `letI := H.starRing`. Introduce `F _ _ _ r hr`. Take `⟨I, e₁, e₂, e₃⟩` from `untwisted E H D l Xo c O β Y T io b y z h₁ h₂ h₃ h₄ t m P hP hL F r hr`. Take `⟨I', f₁, f₂, f₃⟩` from `twisted E H D l Xo c O β Y T y t m P ϖ hϖ hdiv hL F I e₂ e₃`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨I', by rw [f₁]; exact e₁, f₂, f₃⟩`.
+Supply the required witnesses or components.
 -/
 theorem tateCl : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : CDVR) (io : c.F →+* T.Fr) (b : O →+* T.V) (y : Sp T.V ⟶ Y.X) (z : Sp T.Fr ⟶ Xo.XF c), (algebraMap T.V T.Fr).comp b = io.comp β → y ≫ Y.s = spMap b → z ≫ pullback.snd _ _ = spMap io → z ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ y → ∀ (t : SAB H (Sp T.V)) (m : SABMap t Y.t y) (P : PELUnif (maximalIdeal T.V) t), P.TorsionIso → ∀ (ϖ : T.V) (hϖ : Irreducible ϖ) (hdiv : ∀ a a', (2 * l.M' : ℤ) ∣ GlobalTheory.ArcBuild.beF P hϖ a a') (hL : GlobalTheory.ArcExt.LevelReps Y y t m P), GlobalTheory.ArcBuild.TateCl P hϖ Y b y m hdiv hL := by
   intro E _ _ _ H D l Xo c O _ β Y T io b y z h₁ h₂ h₃ h₄ t m P hP ϖ hϖ hdiv hL

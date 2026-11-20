@@ -28,17 +28,17 @@ noncomputable section
 namespace GlobalTheory.LeviShift
 
 /- English proof (translation)
-Introduce `D V Φ L a hg j q y hq`. Establish `hK` using `hg.isCompact`. Establish `hP0 : ∀ p : PA Φ.flag0, (p : GA D V) ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab D.sp.cm V (AF D.host.F) (Φ.sub (stdVec j))` using `fun p => by rw [Φ.sub_stdVec]; exact Φ.flag0.par_le_parab _ _ j.succ p.2`. Take `⟨p, k, hk, rfl⟩` from `GlobalTheory.T.iwasawa_decomposition_adelic D V Φ L a hg y`. Take `⟨p', k', hk', e⟩` from `GlobalTheory.T.iwasawa_decomposition_adelic D V Φ L a hg (q * p)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hqy : q * (p * k) = p' * (k' * k)` using `by rw [← mul_assoc, e, mul_assoc]`. Establish `hk'P : k' ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab D.sp.cm V (AF D.host.F) (Φ.sub (stdVec j))`. Establish `: k' = (p' : GA D V)⁻¹ * (q * p)` using `by rw [e]; group`. Rewrite using `[this]`. Conclude with `mul_mem (inv_mem (hP0 p')) (mul_mem hq (hP0 p))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : ∀ (r : PA Φ.flag0) (i : Fin (wittIndex V)), ((absChi Φ i r : NNReal) : ℝ) ≠ 0` using `fun r i => NNReal.coe_ne_zero.2 (GlobalTheory.Doubling.hom_pos _ r).ne'`. Simplify using `only [hqy, mul_mem_riemannRochSpace_add hK _ (mul_mem hk' hk), mul_mem_riemannRochSpace_add hK _ hk]`. Rewrite using `[← Real.log_prod (fun i _ => hpos p' i), ← Real.log_prod (fun i _ => hpos p i), ← NNReal.coe_prod, ← NNReal.coe_prod, GlobalTheory.T.modulus_character_product_eq_abs_det D V Φ j p', GlobalTheory.T.modulus_character_product_eq_abs_det D V Φ j p]`. Establish `m1` using `GlobalTheory.T.parabolic_determinant_multiplicative Φ D.sp.cm (AF D.host.F) (stdVec j) q p hq (hP0 p)`. Establish `m2` using `GlobalTheory.T.parabolic_determinant_multiplicative Φ D.sp.cm (AF D.host.F) (stdVec j) p' k' (hP0 p') hk'P`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `GlobalTheory.T.level_parabolic_determinant_abs_one D V Φ L a hg (stdVec j) k' hk' hk'P`. Rewrite `m2` using `[← e]`. Establish `key : absA D.host.F D.host.E (detU Φ D.sp.cm (AF D.host.F) (stdVec j) p') = absA D.host.F D.host.E (detU Φ D.sp.cm (AF D.host.F) (stdVec j) q) * absA D.host.F D.host.E (detU Φ D.sp.cm (AF D.host.F) (stdVec j) p)`. Use `congrArg (absA D.host.F D.host.E) (m1.symm.trans m2)` as an intermediate fact. Rewrite `this` using `[absA_mul, absA_mul, h3, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `n1 : absA D.host.F D.host.E (detU Φ D.sp.cm (AF D.host.F) (stdVec j) p') ≠ 0`. Rewrite using `[← GlobalTheory.T.modulus_character_product_eq_abs_det D V Φ j _]`. Conclude with `(Finset.prod_pos fun i _ => GlobalTheory.Doubling.hom_pos _ _).ne'`. Establish `n2 : absA D.host.F D.host.E (detU Φ D.sp.cm (AF D.host.F) (stdVec j) p) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← GlobalTheory.T.modulus_character_product_eq_abs_det D V Φ j _]`. Conclude with `(Finset.prod_pos fun i _ => GlobalTheory.Doubling.hom_pos _ _).ne'`. Rewrite `n1`, the goal using `[key]`. Unfold `logDelta`. Rewrite using `[NNReal.coe_mul, Real.log_mul (NNReal.coe_ne_zero.2 (left_ne_zero_of_mul n1)) (NNReal.coe_ne_zero.2 n2)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_H0_parabolic_mul : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a →
     ∀ (j : Fin (wittIndex V)) (q y : GA D V),
@@ -78,11 +78,11 @@ theorem sum_H0_parabolic_mul : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : 
   rw [NNReal.coe_mul, Real.log_mul (NNReal.coe_ne_zero.2 (left_ne_zero_of_mul n1)) (NNReal.coe_ne_zero.2 n2)]
 
 /- English proof (translation)
-Establish `sq : ∀ e : SignTypeˣ, ((e : SignType) : ℝ) * (e : SignType) = 1` using `fun e => by`. Distinguish the cases in `h : e = 1`. Simplify using `[h]`. Rewrite using `[sign_unit e h]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Simplify using `only [PiLp.inner_apply, vec, invSV, inverseChamberMap, RCLike.inner_apply, conj_trivial]`. Establish `e : ∀ x, ((ε x : SignType) : ℝ) * H.ofLp (π x) * (((ε x : SignType) * stdVec j (π x) : SignType) : ℝ) = H.ofLp (π x) * (stdVec j (π x) : ℝ)` using `fun x => by`. Rewrite using `[SignType.coe_mul]`. Take the linear combination `(H.ofLp (π x) * (stdVec j (π x) : ℝ)) * sq (ε x)`. Simplify using `only [e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[Equiv.sum_comp π (fun i => H.ofLp i * (stdVec j i : ℝ)), show Finset.Iic j = Finset.univ.filter (· ≤ j) by ext; simp, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i ≤ j <;> simp [stdVec, h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inner_vector_inverse_levi_shift {k : ℕ} (π : Equiv.Perm (Fin k)) (ε : Fin k → SignTypeˣ) (j : Fin k) (H : A0 k) :
     inner ℝ (vec (invSV π ε (stdVec j))) (inverseChamberMap π ε H) = ∑ i ∈ Finset.Iic j, H i := by
@@ -101,15 +101,15 @@ theorem inner_vector_inverse_levi_shift {k : ℕ} (π : Equiv.Perm (Fin k)) (ε 
   by_cases h : i ≤ j <;> simp [stdVec, h]
 
 /- English proof (translation)
-Introduce `D V Φ L a hg P hP m hm`. Take `⟨h, hh⟩` from `GlobalTheory.T.levi_log_modulus_vector D V Φ P hP m hm`. Use `⟨h, fun Q hQ x T => ?_⟩` and prove the remaining obligations. Take `⟨hQp, hQa, -⟩` from `mem_parP.1 hQ`. Take `⟨π, ε, w, hw, hsub, hY⟩` from `exists_Yfam_eq (Φ := Φ) (K := levelAll D.sp.cm.sig V.gram L a) hQp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hY, hY, ← sub_eq_iff_eq_add', ← map_sub, ← sub_eq_zero, ← map_sub, pr, Submodule.starProjection_apply_eq_zero_iff, Submodule.mem_orthogonal]`. Introduce `v hv`. Use `Submodule.span_induction (p := fun v _ => inner ℝ v _ = (0:ℝ)) ?_ (by simp) (fun x y _ _ hx hy => by rw [inner_add_left, hx, hy, add_zero]) (fun c x _ hx => by rw [inner_smul_left, hx, mul_zero]) hv` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.1 (hsub hu)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 hs`. Establish `hvu : vec (invSV π ε (stdVec j)) ∈ aP P` using `hQa ▸ Submodule.subset_span ⟨_, hu, rfl⟩`. Establish `hmu : m ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab D.sp.cm V (AF D.host.F) (Φ.sub (invSV π ε (stdVec j)))`. Use `GlobalTheory.T.levi_monotone_in_parabolic D V Φ (AF D.host.F) P hP _ hvu hm` as an intermediate fact. Establish `h2 : Φ.levi D.sp.cm (AF D.host.F) {invSV π ε (stdVec j)} ≤ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab D.sp.cm V (AF D.host.F) (Φ.sub (invSV π ε (stdVec j)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `WittFrame.levi`. Conclude with `(iInf₂_le (invSV π ε (stdVec j)) (Finset.mem_singleton_self _)).trans inf_le_left`. Conclude with `h2 this`. Take `⟨hg1, hg2⟩` from `GlobalTheory.T.weyl_conjugate_parabolic_log_modulus D V Φ π ε w hw j m hmu`. Establish `e1` using `sum_H0_parabolic_mul D V Φ L a hg j _ (rat V w * x) hg1`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : rat V w * (m * x) = rat V w * m * (rat V w)⁻¹ * (rat V w * x)` using `by group`. Simplify using `only [Ys, inner_sub_right, inner_vector_inverse_levi_shift, hh _ hvu, e2, PiLp.sub_apply, Finset.sum_sub_distrib] at e1 ⊢`. Rewrite using `[e1, hg2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem yfam_mul_levi : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a → ∀ P, IsPar P → ∀ m ∈ Φ.levi D.sp.cm (AF D.host.F) P, ∃ h : A0 (wittIndex V), ∀ Q ∈ parP (aP P) ∅, ∀ x Tr, Yfam Φ (levelAll D.sp.cm.sig V.gram L a) (m * x) Tr Q = Yfam Φ (levelAll D.sp.cm.sig V.gram L a) x Tr Q + pr Q h := by
   intro D V Φ L a hg P hP m hm

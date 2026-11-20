@@ -34,15 +34,15 @@ variable {V : Type} [CommRing V] [IsDomain V] {F : Type} [Field F] [Algebra (Fra
   {L : LB X}
 
 /- English proof (translation)
-Establish `hI : IsIso (Scheme.Hom.appTop (𝟙 (Spec (CommRingCat.of F))))` using `inferInstanceAs (IsIso (Scheme.Hom.app (𝟙 (Spec (CommRingCat.of F))) ⊤))`. Take `⟨a, ha⟩` from `H1.exists_const L hL (𝟙 _) (ConcreteCategory.bijective_of_isIso _).2 (LB.mulGen L _ _ _ _ t (LB.invGen L _ _ t')) (DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.invGen_isGen _ _ _ _ ht')) (fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[hf U h, mul_inv_cancel])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2 a`. Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of F)) (z : Z) (J), Good L z J → (val t r z J).val = gs r z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom c) * (val t' r z J).val`. Introduce `Z r z J hJ`. Establish `e` using `ha Z r z J hJ`. Rewrite `e` using `[val_mul hJ, val_inv, Category.comp_id, ← hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e, Units.val_mul, _root_.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, _root_.mul_one]`. Use `⟨c, ?_, key⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨z⟩ : Nonempty (Spec (CommRingCat.of F))` from `inferInstanceAs (Nonempty (PrimeSpectrum F))`. Use `choose I hI' using fun χ : Spec (CommRingCat.of F) ⟶ X => exists_chart hL (χ z)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `key _ (𝟙 _) z I hI'`. Establish `g0 : gs (𝟙 (Spec (CommRingCat.of F))) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom 0) = 0`. Rewrite using `[map_zero]`. Use `gs_add (𝟙 (Spec (CommRingCat.of F))) z ⊤ trivial (0 : Γ(Spec (CommRingCat.of F), ⊤)) 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_eq_add.1 this`. Rewrite `e` using `[g0, MulZeroClass.zero_mul]`. Conclude with `Units.ne_zero _ e`.
+A detailed English derivation is pending.
 -/
 theorem exists_ratio (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Spec (CommRingCat.of F) ⟶ X)}
     {ε : K → ℤ} {φ' : K' → (Spec (CommRingCat.of F) ⟶ X)} {ε' : K' → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen)
@@ -86,14 +86,14 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {v : AddValuation F (WithTop ℚ)} (hv : ValOver ϖ F v)
 
 /- English proof (translation)
-Unfold `trO`. Rewrite using `[MonObj.comp_one, padd, ← Hom.mul_def, _root_.mul_one, lift_fst_snd]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem trO_one : trO hϖ hv (D := D) 1 = 𝟙 _ := by
   unfold trO
   rw [MonObj.comp_one, padd, ← Hom.mul_def, _root_.mul_one, lift_fst_snd]
 
 /- English proof (translation)
-Unfold `trO`. Simplify using `only [padd, ← Hom.mul_def, comp_lift, lift_fst, lift_snd, MonObj.comp_mul, lift_fst_assoc]`. Rewrite using `[_root_.mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trO_mul (m m' : TO hϖ hv ⟶ D.toPre.P.A) : trO hϖ hv m ≫ trO hϖ hv m' = trO hϖ hv (m * m') := by
   unfold trO
@@ -101,7 +101,7 @@ theorem trO_mul (m m' : TO hϖ hv ⟶ D.toPre.P.A) : trO hϖ hv m ≫ trO hϖ hv
   rw [_root_.mul_assoc]
 
 /- English proof (translation)
-Establish `h : v x ≠ ⊤` using `fun h => hx ((AddValuation.top_iff v).mp h)`. Take `⟨q, hq⟩` from `WithTop.ne_top_iff_exists.mp h`. Conclude with `⟨q, hq.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem wt_coe_of_ne {x : F} (hx : x ≠ 0) : ∃ q : ℚ, v x = (q : WithTop ℚ) := by
   have h : v x ≠ ⊤ := fun h => hx ((AddValuation.top_iff v).mp h)
@@ -109,7 +109,7 @@ theorem wt_coe_of_ne {x : F} (hx : x ≠ 0) : ∃ q : ℚ, v x = (q : WithTop �
   exact ⟨q, hq.symm⟩
 
 /- English proof (translation)
-Rewrite using `[AddValuation.map_inv, hq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem v_inv_coe {x : F} (hx : x ≠ 0) {q : ℚ} (hq : v x = q) : v x⁻¹ = ((-q : ℚ) : WithTop ℚ) := by
   rw [AddValuation.map_inv, hq]

@@ -10,7 +10,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlace (str chi I
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SphTheta.bcParam_liftPar | exact GlobalTheory.SphTheta.bcParam_liftPar | (intros; apply GlobalTheory.SphTheta.bcParam_liftPar <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.baseChange_thetaLiftSatakeParameter_eq_add_segment : ∀ (q : ℂˣ) (n n' : ℕ), n ≤ n' → ∀ α : Fin (n / 2) → ℂˣ, (bcParam n' (liftPar q n n' α)).map (fun x => ((-1 : ℂˣ) ^ n)⁻¹ * x) = (bcParam n α).map (fun x => ((-1 : ℂˣ) ^ n')⁻¹ * x) + str q ((n' : ℤ) - n) := by
   first | exact @GlobalTheory.SphTheta.bcParam_liftPar | exact GlobalTheory.SphTheta.bcParam_liftPar | (intros; apply GlobalTheory.SphTheta.bcParam_liftPar <;> assumption)

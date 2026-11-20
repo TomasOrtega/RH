@@ -9,25 +9,23 @@ namespace PI.WSF
 open Formalism.BasicNotions MvPolynomial
 
 /- English proof (translation)
-Simplify using `[Formalism.GradedWeylDivisibility.rowAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cr_rowAct_X {N : ℕ} (g : Matrix (Fin N) (Fin N) ℂ) (w : Fin N × Fin N) :
     Formalism.GradedWeylDivisibility.rowAct ℂ g (X w : MvPolynomial (Fin N × Fin N) ℂ) = ∑ b : Fin N, C (g w.1 b) * X (b, w.2) := by
   simp [Formalism.GradedWeylDivisibility.rowAct]
 
 /- English proof (translation)
-The claim follows from `(Formalism.GradedWeylDivisibility.rowAct ℂ g).commutes a`.
+A detailed English derivation is pending.
 -/
 theorem cr_rowAct_C {N : ℕ} (g : Matrix (Fin N) (Fin N) ℂ) (a : ℂ) :
     Formalism.GradedWeylDivisibility.rowAct ℂ g (C a : MvPolynomial (Fin N × Fin N) ℂ) = C a :=
   (Formalism.GradedWeylDivisibility.rowAct ℂ g).commutes a
 
 /- English proof (translation)
-Proceed by induction on `s using MvPolynomial.induction_on`. Use `next a =>`. Rewrite using `[cr_rowAct_C]`. Simplify using `[evalM]`. Use `next p q hp hq =>`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, evalM] at hp hq ⊢`. Rewrite using `[hp, hq]`. Use `next p v hp =>`. Simplify using `only [evalM, map_mul] at hp ⊢`. Rewrite using `[hp, cr_rowAct_X]`.
-
-Use `congr 1`. Simplify using `[Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cr_evalM_rowAct {N : ℕ} (g x : Matrix (Fin N) (Fin N) ℂ) (s : MvPolynomial (Fin N × Fin N) ℂ) :
     evalM x (Formalism.GradedWeylDivisibility.rowAct ℂ g s) = evalM (g * x) s := by
@@ -45,9 +43,9 @@ theorem cr_evalM_rowAct {N : ℕ} (g x : Matrix (Fin N) (Fin N) ℂ) (s : MvPoly
     simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Establish `h : (Formalism.GradedWeylDivisibility.rowAct ℂ (1 : Matrix (Fin N) (Fin N) ℂ) : MvPolynomial (Fin N × Fin N) ℂ →ₐ[ℂ] MvPolynomial (Fin N × Fin N) ℂ) = AlgHom.id ℂ _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[cr_rowAct_X]`. Simplify using `[Matrix.one_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cr_rowAct_one {N : ℕ} (s : MvPolynomial (Fin N × Fin N) ℂ) :
     Formalism.GradedWeylDivisibility.rowAct ℂ (1 : Matrix (Fin N) (Fin N) ℂ) s = s := by
@@ -61,9 +59,9 @@ theorem cr_rowAct_one {N : ℕ} (s : MvPolynomial (Fin N × Fin N) ℂ) :
   rfl
 
 /- English proof (translation)
-Establish `hc : (Formalism.GradedWeylDivisibility.rowAct ℂ g).comp (Formalism.GradedWeylDivisibility.rowAct ℂ h) = (Formalism.GradedWeylDivisibility.rowAct ℂ (h * g) : MvPolynomial (Fin N × Fin N) ℂ →ₐ[ℂ] MvPolynomial (Fin N × Fin N) ℂ)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[AlgHom.comp_apply, cr_rowAct_X, map_sum, cr_rowAct_X]`. Simplify using `only [map_mul, cr_rowAct_C, cr_rowAct_X, Matrix.mul_apply, map_sum, Finset.mul_sum, Finset.sum_mul, mul_assoc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`. Rewrite using `[← hc, AlgHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cr_rowAct_rowAct {N : ℕ} (g h : Matrix (Fin N) (Fin N) ℂ) (s : MvPolynomial (Fin N × Fin N) ℂ) :
     Formalism.GradedWeylDivisibility.rowAct ℂ g (Formalism.GradedWeylDivisibility.rowAct ℂ h s) = Formalism.GradedWeylDivisibility.rowAct ℂ (h * g) s := by
@@ -78,15 +76,13 @@ theorem cr_rowAct_rowAct {N : ℕ} (g h : Matrix (Fin N) (Fin N) ℂ) (s : MvPol
   rw [← hc, AlgHom.comp_apply]
 
 /- English proof (translation)
-Introduce `L`. Set `Φ : MvPolynomial (Fin N × Fin N) ℂ →ₐ[ℂ] MvPolynomial (Fin N × Fin N) (MvPolynomial (Fin N × Fin N) ℂ)` to `aeval fun v => ∑ b : Fin N, C (X (v.1, b) : MvPolynomial (Fin N × Fin N) ℂ) * X (b, v.2)`. Establish `hmap : ∀ g : Matrix (Fin N) (Fin N) ℂ, MvPolynomial.map (MvPolynomial.eval fun v : Fin N × Fin N => g v.1 v.2) (Φ s) = Formalism.GradedWeylDivisibility.rowAct ℂ g s`. Introduce `g`. Proceed by induction on `s using MvPolynomial.induction_on`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `next a =>`. Rewrite using `[cr_rowAct_C]`. Simplify using `[Φ]`. Use `next p q hp hq =>`. Simplify using `only [map_add, hp, hq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `next p w hp =>`. Simplify using `only [map_mul, hp, cr_rowAct_X]`. Simplify using `only [Φ, MvPolynomial.aeval_X, map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X, MvPolynomial.eval_X]`. Establish `hmono : ∀ (m : Fin N × Fin N →₀ ℕ) (a : ℂ), L (monomial m a) = a * L (monomial m 1)`. Introduce `m a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨∑ m ∈ (Φ s).support, (Φ s).coeff m * C (L (monomial m 1)), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hmap g]`. Use `conv_lhs => rw [(Φ s).as_sum]`. Simplify using `only [map_sum, MvPolynomial.map_monomial, evalM, map_mul, MvPolynomial.eval_C]`.
-
-Conclude with `Finset.sum_congr rfl fun m _ => hmono m _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cr_polyFun {N : ℕ} (s : MvPolynomial (Fin N × Fin N) ℂ) :
     ∀ L : MvPolynomial (Fin N × Fin N) ℂ →ₗ[ℂ] ℂ, ∃ P : MvPolynomial (Fin N × Fin N) ℂ,

@@ -13,14 +13,14 @@ noncomputable def dbar (a : Fin g) (f : (Fin g → ℂ) → ℂ) (z : Fin g → 
   fderiv ℝ f z (Pi.single a 1 : Fin g → ℂ) + I * fderiv ℝ f z (I • (Pi.single a 1 : Fin g → ℂ))
 
 /- English proof (translation)
-Unfold `dbar`. Rewrite using `[h.fderiv_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dbar_congr {a : Fin g} {f f' : (Fin g → ℂ) → ℂ} {z : Fin g → ℂ} (h : f =ᶠ[𝓝 z] f') :
     dbar a f z = dbar a f' z := by
   unfold dbar; rw [h.fderiv_eq]
 
 /- English proof (translation)
-Unfold `dbar`. Rewrite using `[fderiv_fun_sub h h']`. Simplify using `only [ContinuousLinearMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dbar_sub {a : Fin g} {f f' : (Fin g → ℂ) → ℂ} {z : Fin g → ℂ}
     (h : DifferentiableAt ℝ f z) (h' : DifferentiableAt ℝ f' z) :
@@ -31,14 +31,14 @@ theorem dbar_sub {a : Fin g} {f f' : (Fin g → ℂ) → ℂ} {z : Fin g → ℂ
   ring
 
 /- English proof (translation)
-The claim follows from `h.fderiv_right (m := ∞) (by norm_cast)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_fderiv {f : (Fin g → ℂ) → ℂ} {z : Fin g → ℂ} (h : ContDiffAt ℝ ∞ f z) :
     ContDiffAt ℝ ∞ (fderiv ℝ f) z :=
   h.fderiv_right (m := ∞) (by norm_cast)
 
 /- English proof (translation)
-Establish `h1` using `contDiffAt_fderiv h`. Conclude with `(h1.clm_apply contDiffAt_const).add (contDiffAt_const.mul (h1.clm_apply contDiffAt_const))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_dbar {a : Fin g} {f : (Fin g → ℂ) → ℂ} {z : Fin g → ℂ}
     (h : ContDiffAt ℝ ∞ f z) : ContDiffAt ℝ ∞ (dbar a f) z := by
@@ -46,7 +46,7 @@ theorem contDiffAt_dbar {a : Fin g} {f : (Fin g → ℂ) → ℂ} {z : Fin g →
   exact (h1.clm_apply contDiffAt_const).add (contDiffAt_const.mul (h1.clm_apply contDiffAt_const))
 
 /- English proof (translation)
-Establish `h1 : HasFDerivAt (fderiv ℝ f) (fderiv ℝ (fderiv ℝ f) z) z` using `((contDiffAt_fderiv h).differentiableAt (by simp)).hasFDerivAt`. Establish `h2` using `fun u : Fin g → ℂ => (ContinuousLinearMap.apply ℝ ℂ u).hasFDerivAt.comp z h1`. Establish `h3` using `(h2 (Pi.single a 1)).add ((h2 (I • (Pi.single a 1 : Fin g → ℂ))).const_mul I)`. Establish `h4 : fderiv ℝ (dbar a f) z = _` using `h3.fderiv`. Rewrite using `[h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -64,9 +64,9 @@ theorem fderiv_dbar {a : Fin g} {f : (Fin g → ℂ) → ℂ} {z : Fin g → ℂ
   simp
 
 /- English proof (translation)
-Establish `hs : IsSymmSndFDerivAt ℝ f z` using `h.isSymmSndFDerivAt (by`. Simplify using `only [minSmoothness_of_isRCLikeNormedField]`. Conclude with `WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`. Establish `e : ∀ u v, fderiv ℝ (fderiv ℝ f) z u v = fderiv ℝ (fderiv ℝ f) z v u` using `hs`. Use `show fderiv ℝ (dbar b f) z _ + I * fderiv ℝ (dbar b f) z _ = fderiv ℝ (dbar a f) z _ + I * fderiv ℝ (dbar a f) z _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[fderiv_dbar h, fderiv_dbar h, fderiv_dbar h, fderiv_dbar h, e (Pi.single b 1) (Pi.single a 1), e (Pi.single b 1) (I • (Pi.single a 1 : Fin g → ℂ)), e (I • (Pi.single b 1 : Fin g → ℂ)) (Pi.single a 1), e (I • (Pi.single b 1 : Fin g → ℂ)) (I • (Pi.single a 1 : Fin g → ℂ))]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem dbar_comm {a b : Fin g} {f : (Fin g → ℂ) → ℂ} {z : Fin g → ℂ}
     (h : ContDiffAt ℝ ∞ f z) : dbar a (dbar b f) z = dbar b (dbar a f) z := by
@@ -85,17 +85,17 @@ noncomputable def antilin (t : Fin g → ℂ) : (Fin g → ℂ) →L[ℝ] ℂ :=
   ∑ a, t a • ((conjCLE : ℂ →L[ℝ] ℂ).comp (ContinuousLinearMap.proj a))
 
 /- English proof (translation)
-Simplify using `[antilin, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem antilin_apply (t z : Fin g → ℂ) : antilin t z = t ⬝ᵥ star z := by
   simp [antilin, dotProduct]
 
 /- English proof (translation)
-Unfold `dbar`. Rewrite using `[ContinuousLinearMap.fderiv, antilin_apply, antilin_apply]`. Establish `h1 : star (Pi.single a 1 : Fin g → ℂ) = Pi.single a 1`. Use extensionality with `j`. Distinguish the cases in `h : j = a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[star_smul, h1]`. Simplify using `only [dotProduct_smul, dotProduct_single, mul_one, smul_eq_mul, star_def, conj_I]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-t a) * I_mul_I`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dbar_antilin (t z : Fin g → ℂ) (a : Fin g) : dbar a (antilin t) z = 2 * t a := by
   unfold dbar
@@ -114,25 +114,23 @@ namespace GlobalTheory
 open PeriodicCousin
 
 /- English proof (translation)
-Introduce `g Λ hd hs ι U c hU hUΛ hcov hc hcΛ hcoc`. Establish `hcs : ∀ i j, ContDiffOn ℝ ∞ (c i j) (U i ∩ U j)` using `fun i j => ((GlobalTheory.T.cauchyRiemann_iff_differentiableOn g _ (c i j) ((hU i).inter (hU j))).2 (hc i j)).1`. Take `⟨b, hb, hcb⟩` from `GlobalTheory.T.exists_periodic_smooth_coboundary_of_cech_cocycle g Λ hd hs ι U c hU hUΛ hcov hcs hcΛ hcoc`. Use `choose k hk using hcov`. Establish `hbAt : ∀ i, ∀ z ∈ U i, ContDiffAt ℝ ∞ (b i) z` using `fun i z hz => (hb i).1.contDiffAt ((hU i).mem_nhds hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hind : ∀ a i j, ∀ z ∈ U i, z ∈ U j → dbar a (b j) z = dbar a (b i) z`. Introduce `a i j z hi hj`. Establish `ho` using `(hU i).inter (hU j)`. Establish `h0 : dbar a (c i j) z = 0` using `((GlobalTheory.T.cauchyRiemann_iff_differentiableOn g _ (c i j) ho).1 ((hcs i j).differentiableOn (by simp))).2 (hc i j) a z ⟨hi, hj⟩`. Establish `h1 : c i j =ᶠ[𝓝 z] fun x => b j x - b i x` using `by filter_upwards [ho.mem_nhds ⟨hi, hj⟩] with x hx using hcb i j x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[dbar_congr h1, dbar_sub ((hbAt j z hj).differentiableAt (by simp)) ((hbAt i z hi).differentiableAt (by simp))]`. Conclude with `sub_eq_zero.1 h0`. Set `w : Fin g → (Fin g → ℂ) → ℂ` to `fun a z => dbar a (b (k z)) z`. Establish `hw : ∀ a i, ∀ z ∈ U i, w a z = dbar a (b i) z` using `fun a i z hz => hind a i (k z) z hz (hk z)`. Establish `hw' : ∀ a i, ∀ z ∈ U i, w a =ᶠ[𝓝 z] dbar a (b i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a i z hz`. Use `filter_upwards [(hU i).mem_nhds hz] with x hx using hw a i x hx`. Take `⟨t, f, hf, hfΛ, hft⟩` from `GlobalTheory.T.exists_periodic_dbar_solution g Λ hd hs w (by`. Introduce `a`. Use `⟨contDiff_iff_contDiffAt.2 fun z => (contDiffAt_dbar (hbAt _ z (hk z))).congr_of_eventuallyEq (hw' a _ z (hk z)), fun l z => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw a (k z) _ (hUΛ _ l z (hk z)), hw a (k z) z (hk z)]`. Establish `h1 : (fun x => b (k z) (x + l)) =ᶠ[𝓝 z] b (k z)` using `by filter_upwards [(hU _).mem_nhds (hk z)] with x hx using (hb _).2 l x hx`. Rewrite using `[← dbar_congr h1]`. Unfold `dbar`. Rewrite using `[fderiv_comp_add_right]) (by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a a' z`. Use `show dbar a (w a') z = dbar a' (w a) z`. Rewrite using `[dbar_congr (hw' a' _ z (hk z)), dbar_congr (hw' a _ z (hk z))]`. Conclude with `dbar_comm (hbAt _ z (hk z)))`. Establish `hfd : ∀ z, DifferentiableAt ℝ f z` using `fun z => (hf.differentiable (by simp)) z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨-((1 / 2 : ℂ) • t), fun i z => b i z - f z - antilin ((1 / 2 : ℂ) • t) z, fun i => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hbd : ∀ z ∈ U i, DifferentiableAt ℝ (b i) z` using `fun z hz => (hbAt i z hz).differentiableAt (by simp)`. Use `((GlobalTheory.T.cauchyRiemann_iff_differentiableOn g _ _ (hU i)).1 ?_).1 ?_` and prove the remaining obligations. Introduce `z hz`. Conclude with `(((hbd z hz).sub (hfd z)).sub (antilin _).differentiableAt).differentiableWithinAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a z hz show dbar a (fun z => (b i z - f z) - antilin ((1 / 2 : ℂ) • t) z) z = 0`. Establish `h3 : dbar a f z = w a z - t a` using `hft a z`. Rewrite using `[dbar_sub ((hbd z hz).fun_sub (hfd z)) (antilin _).differentiableAt, dbar_sub (hbd z hz) (hfd z), dbar_antilin, h3, hw a i z hz]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `l z hz`. Simplify using `only [(hb i).2 l z hz, hfΛ l z, map_add, antilin_apply _ (l : Fin g → ℂ), neg_dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i j z hz`. Rewrite using `[hcb i j z hz]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem holomorphic_periodic_cocycle_coboundary : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → ∀ (ι : Type) (U : ι → Set (Fin g → ℂ)) (c : ι → ι → (Fin g → ℂ) → ℂ), (∀ i, IsOpen (U i)) → (∀ i (l : Λ) z, z ∈ U i → z + l ∈ U i) → (∀ z, ∃ i, z ∈ U i) → (∀ i j, DifferentiableOn ℂ (c i j) (U i ∩ U j)) → (∀ i j (l : Λ), ∀ z ∈ U i ∩ U j, c i j (z + l) = c i j z) → (∀ i j k, ∀ z ∈ U i ∩ U j ∩ U k, c i j z + c j k z = c i k z) → ∃ (t : (Fin g → ℂ)) (h : ι → (Fin g → ℂ) → ℂ), (∀ i, DifferentiableOn ℂ (h i) (U i) ∧ ∀ (l : Λ), ∀ z ∈ U i, h i (z + l) = h i z + t ⬝ᵥ star (l : (Fin g → ℂ))) ∧ ∀ i j, ∀ z ∈ U i ∩ U j, c i j z = h j z - h i z := by
   intro g Λ hd hs ι U c hU hUΛ hcov hc hcΛ hcoc

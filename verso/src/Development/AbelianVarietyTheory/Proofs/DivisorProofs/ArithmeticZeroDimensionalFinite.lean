@@ -5,9 +5,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory ReciprocityTheory.ChartRestri
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ k' _ _ _ hX`. Take `⟨N, j, _, hj⟩` from `hX.isProjOver`. Use `isProper_str k N` as an intermediate fact. Establish `: IsProper (spMap (algebraMap k k'))` using `hj ▸ inferInstance`. Establish `: IsFinite (spMap (Int.castRingHom k))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 hX.finite)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : IsFinite (spMap (algebraMap k k') ≫ spMap (Int.castRingHom k))` using `IsFinite.iff_isProper_and_isAffineHom.2 ⟨inferInstance, inferInstance⟩`. Rewrite `hf` using `[← Spec.map_preimage (spMap (algebraMap k k') ≫ _), IsFinite.SpecMap_iff, RingHom.ext_int (Spec.preimage (spMap (algebraMap k k') ≫ spMap (Int.castRingHom k))).hom (algebraMap ℤ k'), RingHom.finite_algebraMap]`. Conclude with `hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsArithVar.moduleFinite_int_of_spec : ∀ (k : Type) [CommRing k] (k' : Type) [CommRing k'] [IsDomain k'] [Algebra k k'],
     IsArithVar (spMap (algebraMap k k')) 0 → Module.Finite ℤ k' := by

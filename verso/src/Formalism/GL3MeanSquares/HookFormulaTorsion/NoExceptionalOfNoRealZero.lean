@@ -10,13 +10,13 @@ section A
 open Complex
 
 /- English proof (translation)
-Establish `hder : ∀ t ∈ Set.Icc x y, HasDerivWithinAt (fun u : ℝ => ((u : ℝ) : ℂ) ^ (-s)) ((-s) * ((t : ℝ) : ℂ) ^ (-s - 1)) (Set.Icc x y) t`. Introduce `t ht`. Establish `ht0 : 0 < t` using `lt_of_lt_of_le hx ht.1`. Establish `h1 : HasDerivAt (fun z : ℂ => z ^ (-s)) ((-s) * ((t : ℝ) : ℂ) ^ (-s - 1)) ((t : ℝ) : ℂ)`. Use `(hasDerivAt_id ((t : ℝ) : ℂ)).cpow_const (c := -s) (Complex.ofReal_mem_slitPlane.2 ht0)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `h1.comp_ofReal.hasDerivWithinAt`. Establish `hb : ∀ t ∈ Set.Icc x y, ‖(-s) * ((t : ℝ) : ℂ) ^ (-s - 1)‖ ≤ ‖s‖ * x ^ (-s.re - 1)`. Introduce `t ht`. Establish `ht0 : 0 < t` using `lt_of_lt_of_le hx ht.1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_neg, Complex.norm_cpow_eq_rpow_re_of_pos ht0]`. Apply `mul_le_mul_of_nonneg_left _ (norm_nonneg _)` to reduce the goal to its premises. Establish `: (-s - 1).re = -s.re - 1` using `by simp`. Rewrite using `[this]`. Conclude with `Real.antitoneOn_rpow_Ioi_of_exponent_nonpos (by linarith) (Set.mem_Ioi.2 hx) (Set.mem_Ioi.2 ht0) ht.1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Convex.norm_image_sub_le_of_norm_hasDerivWithin_le hder hb (convex_Icc x y) (Set.left_mem_Icc.2 hxy) (Set.right_mem_Icc.2 hxy)` as an intermediate fact. Rewrite `this` using `[Real.norm_of_nonneg (by linarith)]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem cpow_diff_bound (s : ℂ) (hs : 0 ≤ s.re) (x y : ℝ) (hx : 0 < x) (hxy : x ≤ y) :
     ‖((y : ℝ) : ℂ) ^ (-s) - ((x : ℝ) : ℂ) ^ (-s)‖ ≤ ‖s‖ * x ^ (-s.re - 1) * (y - x) := by
@@ -49,13 +49,13 @@ noncomputable def tr (k : ℕ) (σ : ℝ) : ℝ :=
     (8 * (k : ℝ) + 7) ^ (-σ)
 
 /- English proof (translation)
-Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `aux : ∀ c : ℝ, 1 ≤ c → (8 * (k : ℝ) + c) ^ (-s.re - 1) ≤ ((k : ℝ) + 1) ^ (-1 - δ)`. Introduce `c hc`. Combine the equalities or inequalities in the displayed calculation. Establish `b1` using `cpow_diff_bound s (by linarith) (8 * (k : ℝ) + 1) (8 * (k : ℝ) + 3) (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `b2` using `cpow_diff_bound s (by linarith) (8 * (k : ℝ) + 5) (8 * (k : ℝ) + 7) (by linarith) (by linarith)`. Establish `hP : 0 ≤ ((k : ℝ) + 1) ^ (-1 - δ)` using `Real.rpow_nonneg (by linarith) _`. Establish `hR : 0 ≤ R` using `le_trans (norm_nonneg _) h2`. Establish `c1 : ‖s‖ * (8 * (k : ℝ) + 1) ^ (-s.re - 1) ≤ R * ((k : ℝ) + 1) ^ (-1 - δ)` using `mul_le_mul h2 (aux 1 le_rfl) (Real.rpow_nonneg (by linarith) _) hR`. Establish `c2 : ‖s‖ * (8 * (k : ℝ) + 5) ^ (-s.re - 1) ≤ R * ((k : ℝ) + 1) ^ (-1 - δ)` using `mul_le_mul h2 (aux 5 (by norm_num)) (Real.rpow_nonneg (by linarith) _) hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : tt k s = -(((8 * (k : ℝ) + 3 : ℝ) : ℂ) ^ (-s) - ((8 * (k : ℝ) + 1 : ℝ) : ℂ) ^ (-s)) + (((8 * (k : ℝ) + 7 : ℝ) : ℂ) ^ (-s) - ((8 * (k : ℝ) + 5 : ℝ) : ℂ) ^ (-s))`. Unfold `tt`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_neg]`. Establish `d1 : (8 * (k : ℝ) + 3) - (8 * (k : ℝ) + 1) = 2` using `by ring`. Establish `d2 : (8 * (k : ℝ) + 7) - (8 * (k : ℝ) + 5) = 2` using `by ring`. Rewrite `b1` using `[d1]`. Rewrite `b2` using `[d2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -90,7 +90,7 @@ theorem tt_bound (k : ℕ) (s : ℂ) (δ R : ℝ) (hδ : 0 < δ) (h1 : δ ≤ s.
   linarith
 
 /- English proof (translation)
-Apply `Summable.mul_left` to reduce the goal to its premises. Establish `h` using `(summable_nat_add_iff 1).2 (Real.summable_nat_rpow.2 (show -1 - δ < -1 by linarith))`. Simplify using `using h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem summable_u (δ R : ℝ) (hδ : 0 < δ) :
     Summable (fun k : ℕ => 4 * R * ((k : ℝ) + 1) ^ (-1 - δ)) := by
@@ -99,9 +99,9 @@ theorem summable_u (δ R : ℝ) (hδ : 0 < δ) :
   simpa using h
 
 /- English proof (translation)
-Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `aux : ∀ c : ℝ, 1 ≤ c → Differentiable ℂ (fun s : ℂ => ((8 * (k : ℝ) + c : ℝ) : ℂ) ^ (-s))`. Introduce `c hc`. Apply `Differentiable.const_cpow differentiable_id.neg` to reduce the goal to its premises. Use `left`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: (8 * (k : ℝ) + c) ≠ 0` using `by positivity`. Conclude with `this` after adjusting the coercions. Unfold `tt`. Conclude with `(((aux 1 le_rfl).sub (aux 3 (by norm_num))).sub (aux 5 (by norm_num))).add (aux 7 (by norm_num))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tt_differentiable (k : ℕ) : Differentiable ℂ (tt k) := by
   have hk : (0 : ℝ) ≤ k := Nat.cast_nonneg k
@@ -115,9 +115,9 @@ theorem tt_differentiable (k : ℕ) : Differentiable ℂ (tt k) := by
   exact (((aux 1 le_rfl).sub (aux 3 (by norm_num))).sub (aux 5 (by norm_num))).add (aux 7 (by norm_num))
 
 /- English proof (translation)
-Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `aux : ∀ c : ℝ, 1 ≤ c → ((8 * (k : ℝ) + c : ℝ) : ℂ) ^ (-(σ : ℂ)) = (((8 * (k : ℝ) + c) ^ (-σ) : ℝ) : ℂ)`. Introduce `c hc`. Rewrite using `[ofReal_cpow (by positivity), ofReal_neg]`. Unfold `tt tr`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[aux 1 le_rfl, aux 3 (by norm_num), aux 5 (by norm_num), aux 7 (by norm_num)]`. Simplify using `only [ofReal_add, ofReal_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tt_ofReal (k : ℕ) (σ : ℝ) : tt k (σ : ℂ) = ((tr k σ : ℝ) : ℂ) := by
   have hk : (0 : ℝ) ≤ k := Nat.cast_nonneg k
@@ -129,11 +129,11 @@ theorem tt_ofReal (k : ℕ) (σ : ℝ) : tt k (σ : ℂ) = ((tr k σ : ℝ) : �
   simp only [ofReal_add, ofReal_sub]
 
 /- English proof (translation)
-Establish `hx' : 0 < x'` using `hx.trans hxx`. Establish `f : ∀ y : ℝ, 0 < y → (y + 2) ^ (-σ) = y ^ (-σ) * (1 + 2 / y) ^ (-σ)`. Introduce `y hy`. Rewrite using `[← Real.mul_rpow hy.le (by positivity)]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[f x hx, f x' hx']`. Establish `hA : x' ^ (-σ) < x ^ (-σ)` using `Real.rpow_lt_rpow_of_neg hx hxx (by linarith)`. Establish `hA' : 0 < x' ^ (-σ)` using `Real.rpow_pos_of_pos hx' _`. Establish `h2 : 2 / x' < 2 / x` using `div_lt_div_of_pos_left (by norm_num) hx hxx`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : (1 + 2 / x) ^ (-σ) < (1 + 2 / x') ^ (-σ)` using `Real.rpow_lt_rpow_of_neg (by positivity) (by linarith) (by linarith)`. Establish `hB' : (1 + 2 / x') ^ (-σ) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by have : 0 < 2 / x' := by positivity linarith) (by linarith)`. Use polynomial arithmetic with `[mul_pos hA' (sub_pos.2 hB'), mul_pos (sub_pos.2 hA) (sub_pos.2 (hB.trans hB')), mul_pos hA' (sub_pos.2 hB)]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem hdecr (σ x x' : ℝ) (hσ : 0 < σ) (hx : 0 < x) (hxx : x < x') :
     x' ^ (-σ) - (x' + 2) ^ (-σ) < x ^ (-σ) - (x + 2) ^ (-σ) := by
@@ -156,9 +156,9 @@ theorem hdecr (σ x x' : ℝ) (hσ : 0 < σ) (hx : 0 < x) (hxx : x < x') :
     mul_pos hA' (sub_pos.2 hB)]
 
 /- English proof (translation)
-Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Use `hdecr σ (8 * (k : ℝ) + 1) (8 * (k : ℝ) + 5) hσ (by linarith) (by linarith)` as an intermediate fact. Establish `e1 : 8 * (k : ℝ) + 1 + 2 = 8 * (k : ℝ) + 3` using `by ring`. Establish `e2 : 8 * (k : ℝ) + 5 + 2 = 8 * (k : ℝ) + 7` using `by ring`. Rewrite `this` using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `tr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem tr_pos (k : ℕ) (σ : ℝ) (hσ : 0 < σ) : 0 < tr k σ := by
   have hk : (0 : ℝ) ≤ k := Nat.cast_nonneg k
@@ -170,9 +170,9 @@ theorem tr_pos (k : ℕ) (σ : ℝ) (hσ : 0 < σ) : 0 < tr k σ := by
   linarith
 
 /- English proof (translation)
-Establish `: ((k * 8 + j : ℕ) : ZMod 8) = (j : ZMod 8)`. Use `push_cast`. Establish `h8 : (8 : ZMod 8) = 0` using `by decide`. Rewrite using `[h8]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chi8_value_shift (k j : ℕ) : ZeroFreeRegionGL2.chi8 ((k * 8 + j : ℕ) : ZMod 8) = ((ZMod.χ₈ (j : ZMod 8) : ℤ) : ℂ) := by
   have : ((k * 8 + j : ℕ) : ZMod 8) = (j : ZMod 8) := by
@@ -183,21 +183,21 @@ theorem chi8_value_shift (k j : ℕ) : ZeroFreeRegionGL2.chi8 ((k * 8 + j : ℕ)
   rfl
 
 /- English proof (translation)
-Rewrite using `[DirichletCharacter.LFunction_eq_LSeries _ hs]`. Establish `hsum` using `DirichletCharacter.LSeriesSummable_of_one_lt_re ZeroFreeRegionGL2.chi8 hs`. Unfold `LSeriesSummable at hsum`. Unfold `LSeries`. Rewrite using `[← (Nat.divModEquiv 8).symm.tsum_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum'` using `(Nat.divModEquiv 8).symm.summable_iff.2 hsum`. Establish `h3 : ∑' c : ℕ × Fin 8, LSeries.term (fun n : ℕ => ZeroFreeRegionGL2.chi8 (n : ZMod 8)) s ((Nat.divModEquiv 8).symm c) = ∑' k : ℕ, ∑' j : Fin 8, LSeries.term (fun n : ℕ => ZeroFreeRegionGL2.chi8 (n : ZMod 8)) s ((Nat.divModEquiv 8).symm (k, j))` using `hsum'.tsum_prod`. Rewrite using `[h3]`. Use `congr 1`. Use extensionality with `k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[tsum_fintype, Fin.sum_univ_eight]`. Establish `hf0 : (fun n : ℕ => ZeroFreeRegionGL2.chi8 (n : ZMod 8)) 0 = 0`. Use `chi8_value_shift 0 0` as an intermediate fact. Simplify using `only [zero_mul, add_zero] at this`. Use `show ZeroFreeRegionGL2.chi8 ((0 : ℕ) : ZMod 8) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Establish `: ZMod.χ₈ ((0 : ℕ) : ZMod 8) = 0` using `by decide`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hterm : ∀ j : ℕ, LSeries.term (fun n : ℕ => ZeroFreeRegionGL2.chi8 (n : ZMod 8)) s (k * 8 + j) = ((ZMod.χ₈ (j : ZMod 8) : ℤ) : ℂ) * ((8 * (k : ℝ) + (j : ℝ) : ℝ) : ℂ) ^ (-s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[LSeries.term_def₀ hf0, chi8_value_shift]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `show LSeries.term (fun n : ℕ => ZeroFreeRegionGL2.chi8 (n : ZMod 8)) s (k * 8 + 0) + LSeries.term (fun n : ℕ => ZeroFreeRegionGL2.chi8 (n : ZMod 8)) s (k * 8 + 1) + LSeries.term (fun n : ℕ => ZeroFreeRegionGL2.chi8 (n : ZMod 8)) s (k * 8 + 2) + LSeries.term (fun n : ℕ => ZeroFree …`. Rewrite using `[hterm 0, hterm 1, hterm 2, hterm 3, hterm 4, hterm 5, hterm 6, hterm 7]`. Establish `v0 : ZMod.χ₈ ((0 : ℕ) : ZMod 8) = 0` using `by decide`. Establish `v1 : ZMod.χ₈ ((1 : ℕ) : ZMod 8) = 1` using `by decide`. Establish `v2 : ZMod.χ₈ ((2 : ℕ) : ZMod 8) = 0` using `by decide`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v3 : ZMod.χ₈ ((3 : ℕ) : ZMod 8) = -1` using `by decide`. Establish `v4 : ZMod.χ₈ ((4 : ℕ) : ZMod 8) = 0` using `by decide`. Establish `v5 : ZMod.χ₈ ((5 : ℕ) : ZMod 8) = -1` using `by decide`. Establish `v6 : ZMod.χ₈ ((6 : ℕ) : ZMod 8) = 0` using `by decide`. Establish `v7 : ZMod.χ₈ ((7 : ℕ) : ZMod 8) = 1` using `by decide`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[v0, v1, v2, v3, v4, v5, v6, v7]`. Unfold `tt`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem series_eq (s : ℂ) (hs : 1 < s.re) :
     DirichletCharacter.LFunction ZeroFreeRegionGL2.chi8 s = ∑' k, tt k s := by
@@ -251,11 +251,11 @@ theorem series_eq (s : ℂ) (hs : 1 < s.re) :
   ring
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg (fun χ : DirichletCharacter ℂ 8 => χ (3 : ZMod 8)) h`. Establish `h3 : IsUnit (3 : ZMod 8)` using `by decide`. Simplify using `only [MulChar.one_apply h3] at h1`. Establish `h2 : ZeroFreeRegionGL2.chi8 (3 : ZMod 8) = -1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `ZeroFreeRegionGL2.chi8`. Simplify using `only [MulChar.ringHomComp_apply]`. Establish `: ZMod.χ₈ 3 = -1` using `by decide`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h2]`. Evaluate the numerical expressions using `at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem chi_eight_ne_one : ZeroFreeRegionGL2.chi8 ≠ 1 := by
   intro h
@@ -271,11 +271,11 @@ theorem chi_eight_ne_one : ZeroFreeRegionGL2.chi8 ≠ 1 := by
   norm_num at h1
 
 /- English proof (translation)
-Set `U : Set ℂ` to `{s | σ / 2 < s.re} ∩ Metric.ball 0 3`. Establish `hUo : IsOpen U` using `(isOpen_lt continuous_const Complex.continuous_re).inter Metric.isOpen_ball`. Establish `hUc : Convex ℝ U` using `(convex_halfSpace_re_gt _).inter (convex_ball _ _)`. Establish `hG : DifferentiableOn ℂ (fun s => ∑' k, tt k s) U`. Apply `differentiableOn_tsum_of_summable_norm (summable_u (σ / 2) 3 (by linarith)) (fun k => (tt_differentiable k).differentiableOn) hUo` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k w hw`. Conclude with `tt_bound k w (σ / 2) 3 (by linarith) hw.1.le (mem_ball_zero_iff.1 hw.2).le`. Establish `hL : DifferentiableOn ℂ (DirichletCharacter.LFunction ZeroFreeRegionGL2.chi8) U` using `(DirichletCharacter.differentiable_LFunction chi_eight_ne_one).differentiableOn`. Establish `h2U : (2 : ℂ) ∈ U` using `⟨by simp; linarith, by simp; norm_num⟩`. Establish `hσU : (σ : ℂ) ∈ U` using `⟨by simp; linarith, by simp [abs_of_pos h0]; linarith⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : DirichletCharacter.LFunction ZeroFreeRegionGL2.chi8 =ᶠ[nhds (2 : ℂ)] (fun s => ∑' k, tt k s)`. Establish `: {s : ℂ | 1 < s.re} ∈ nhds (2 : ℂ)` using `(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (by simp)`. Use `filter_upwards [this] with s hs using series_eq s hs`. Conclude with `(hL.analyticOnNhd hUo).eqOn_of_preconnected_of_eventuallyEq (hG.analyticOnNhd hUo) hUc.isPreconnected h2U hev hσU`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem L_eq (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) :
     DirichletCharacter.LFunction ZeroFreeRegionGL2.chi8 (σ : ℂ) = ∑' k, tt k (σ : ℂ) := by
@@ -299,11 +299,11 @@ theorem L_eq (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) :
     hUc.isPreconnected h2U hev hσU
 
 /- English proof (translation)
-Use `⟨Formalism.zetaRealNonvanish, ?_⟩` and prove the remaining obligations. Introduce `σ h0 h1`. Rewrite using `[L_eq σ h0 h1]`. Repeatedly rewrite using `[tt_ofReal]`. Rewrite using `[← Complex.ofReal_tsum]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : Summable (fun k => tr k σ)`. Apply `Summable.of_norm_bounded (summable_u σ 1 h0)` to reduce the goal to its premises. Introduce `k`. Use `tt_bound k (σ : ℂ) σ 1 h0 (by simp) (by simp [abs_of_pos h0]; linarith)` as an intermediate fact. Rewrite `this` using `[tt_ofReal, Complex.norm_real]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hs.tsum_pos (fun k => (tr_pos k σ h0).le) 0 (tr_pos 0 σ h0)` as an intermediate fact. Conclude with `this.ne'` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem noRealZeroSmall : NoRealZeroSmall := by
   refine ⟨Formalism.zetaRealNonvanish, ?_⟩
@@ -329,7 +329,7 @@ end B
 end PfN
 
 /- English proof (translation)
-The claim follows from `PfN.noRealZeroSmall`.
+A detailed English derivation is pending.
 -/
 theorem no_real_zero_small_modulus : NoRealZeroSmall := PfN.noRealZeroSmall
 

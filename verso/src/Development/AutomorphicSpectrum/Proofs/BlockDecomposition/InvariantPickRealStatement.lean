@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.RealD
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.InvPickKP.invPick | exact GlobalTheory.CompanionTheory.InvPickKP.invPick | (intros; apply GlobalTheory.CompanionTheory.InvPickKP.invPick <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.invariant_pick_real : PositivityTheory.RgBcC.RealD.InvPick := by
   first | exact @GlobalTheory.CompanionTheory.InvPickKP.invPick | exact GlobalTheory.CompanionTheory.InvPickKP.invPick | (intros; apply GlobalTheory.CompanionTheory.InvPickKP.invPick <;> assumption)

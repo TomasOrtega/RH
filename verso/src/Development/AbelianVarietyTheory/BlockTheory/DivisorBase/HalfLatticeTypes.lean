@@ -24,7 +24,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 abbrev Rs (l : Level H) : Type := 𝓞 E ⧸ l.Mb
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 := l.prod rw [h, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero] at h1 have := l.three_le omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem half_ne_bot (l : Level H) : l.Mb ≠ ⊥ := fun h => by
   have h1 := l.prod
@@ -97,7 +97,7 @@ def goodLat (ψ₀ : AddChar (Rs l) K) (X : Finset (Gz l r → K)) (χ : (Rs l)�
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `eq_bot_iff.2 fun f hf => ?_` and prove the remaining obligations. Take `⟨g, -, hg⟩` from `hf.2`. Establish `h0 : idemOp Xo' c' ι e (∅ : Finset (Gz l r → K)) χ = 0` using `by simp [idemOp, idemCoeff, Formalism.L2.DIV.idemOf]`. Rewrite `hg` using `[h0]`. Conclude with `Subtype.ext hg.symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example (ψ₀ : AddChar (Rs l) K) (χ : (Rs l)ˣ →* Kˣ) (G : WTZ E) : goodLat ι e U' ψ₀ ∅ χ G = ⊥ := by
   refine eq_bot_iff.2 fun f hf => ?_
@@ -107,7 +107,7 @@ example (ψ₀ : AddChar (Rs l) K) (χ : (Rs l)ˣ →* Kˣ) (G : WTZ E) : goodLa
   exact Subtype.ext hg.symm
 
 /- English proof (translation)
-Establish `: q = 0`. Use `Submodule.smul_induction_on (p := fun q => q = 0) hq (fun a ha x _ => ?_) (fun x y hx hy => by rw [hx, hy, add_zero])` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.smul_mem_smul ha Submodule.mem_top)`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (γ : LaMod Dw l ≃ₗ[𝓞 E] LaMod Dw l) (q : LaMod Dw l) (hq : q ∈ l.Mb • (⊤ : Submodule (𝓞 E) (LaMod Dw l))) :
     γ q = q := by
@@ -118,7 +118,7 @@ example (γ : LaMod Dw l ≃ₗ[𝓞 E] LaMod Dw l) (q : LaMod Dw l) (hq : q ∈
   rw [this, map_zero]
 
 /- English proof (translation)
-Simplify using `[superSum, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 example (a b c d : ℤ) : superSum !![a, b; c, d] = b := by simp [superSum, Fin.sum_univ_two]
 

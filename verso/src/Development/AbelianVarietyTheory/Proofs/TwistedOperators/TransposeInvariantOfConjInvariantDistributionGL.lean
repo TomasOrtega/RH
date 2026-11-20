@@ -22,7 +22,7 @@ def pull (t : G ≃ₜ G) : SB G →ₗ[ℂ] SB G where
 
 omit [TopologicalSpace G] in
 /- English proof (translation)
-Use `hm 1 1` as an intermediate fact. Rewrite `this` using `[one_mul]`. Conclude with `left_eq_mul.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem anti_one {t : G → G} (hm : ∀ x y, t (x * y) = t y * t x) : t 1 = 1 := by
   have := hm 1 1
@@ -31,7 +31,7 @@ theorem anti_one {t : G → G} (hm : ∀ x y, t (x * y) = t y * t x) : t 1 = 1 :
 
 omit [TopologicalSpace G] in
 /- English proof (translation)
-Use `hm x x⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, anti_one hm]`. Conclude with `eq_inv_of_mul_eq_one_left this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem anti_inv {t : G → G} (hm : ∀ x y, t (x * y) = t y * t x) (x : G) : t x⁻¹ = (t x)⁻¹ := by
   have := hm x x⁻¹
@@ -39,9 +39,9 @@ theorem anti_inv {t : G → G} (hm : ∀ x y, t (x * y) = t y * t x) (x : G) : t
   exact eq_inv_of_mul_eq_one_left this.symm
 
 /- English proof (translation)
-Introduce `U hU`. Take `⟨J, ho, hJU, hJK, hn⟩` from `hb U hU`. Use `⟨{ carrier := {y | y ∈ J ∧ t y ∈ J} mul_mem' := fun ha hb => ⟨mul_mem ha.1 hb.1, by rw [hm]; exact mul_mem hb.2 ha.2⟩ one_mem' := ⟨one_mem _, by rw [anti_one hm]; exact one_mem _⟩ inv_mem' := fun ha => ⟨inv_mem ha.1, by rw [anti_inv hm]; exact inv_mem ha.2⟩ }, ho.inter (ho.preima …` and prove the remaining obligations. Use `hn _ (inv_mem (hK x hx)) _ hj.2` as an intermediate fact. Rewrite using `[hm, hm, anti_inv hm, ← mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_stable (t : G ≃ₜ G) (hm : ∀ x y, t (x * y) = t y * t x) (ht : ∀ x, t (t x) = x)
     (K₀ : Subgroup G) (hK : ∀ x ∈ K₀, t x ∈ K₀)
@@ -62,25 +62,23 @@ theorem exists_stable (t : G ≃ₜ G) (hm : ∀ x y, t (x * y) = t y * t x) (ht
   rwa [inv_inv] at this
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `(𝓝 (1 : G)).exists_antitone_basis`. Use `choose J hJo hJU hJK hJn hJt using fun m => exists_stable t hm ht K₀ hK hb (U m) (hU.1.mem_of_mem trivial)`. Take `⟨S, hSc, hSd⟩` from `TopologicalSpace.exists_countable_dense G`. Establish `: Countable S` using `hSc.to_subtype`. Set `K : S → ℕ → Subgroup G` to `fun c m => J m ⊓ (J m).comap (MulAut.conj (c : G)).toMonoidHom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hKm : ∀ c m y, y ∈ K c m ↔ y ∈ J m ∧ (c : G) * y * (c : G)⁻¹ ∈ J m` using `fun c m y => Iff.rfl`. Establish `hD : T - T.comp (pull t) = 0`. Use `GlobalTheory.T.schwartzBruhat_distribution_eq_zero_baire G S K (fun c m => ?_) (fun c V hV => ?_) _ fun x => ?_` and prove the remaining obligations. Establish `ho : IsOpen (K c m : Set G)` using `(hJo m).inter ((hJo m).preimage (f := fun y => (c : G) * y * (c : G)⁻¹) (by fun_prop))`. Conclude with `⟨ho, hKc.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) fun y hy => hJK m hy.1⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨m, -, hm⟩` from `hU.1.mem_iff.1 hV`. Conclude with `⟨m, fun y hy => hm (hJU m hy.1)⟩`. Take `⟨s, hts, hsx⟩` from `hs x`. Take `⟨c, hc, hcS⟩` from `hSd.inter_open_nonempty _ (hKo.preimage (f := fun y => y * s⁻¹) (by fun_prop)) ⟨s, by simp⟩`. Establish `hc' : c * s⁻¹ ∈ K₀` using `hc`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨c, hcS⟩, fun m ψ hψ => ?_⟩` and prove the remaining obligations. Establish `hK' : ∀ y, y ∈ K ⟨c, hcS⟩ m ↔ y ∈ J m ∧ s * y * s⁻¹ ∈ J m` using `fun y => by`. Rewrite using `[hKm]`. Use `and_congr_right fun _ => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `hJn m _ (inv_mem hc') _ h` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only []`. Use `group`. Use `hJn m _ hc' _ h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only []`. Use `group`. Establish `hτ : ∀ y, t (s * y * s⁻¹) = s⁻¹ * t y * s` using `fun y => by`. Rewrite using `[hm, hm, anti_inv hm, hts, mul_assoc]`. Establish `hτK : ∀ y ∈ K ⟨c, hcS⟩ m, s⁻¹ * t y * s ∈ K ⟨c, hcS⟩ m` using `fun y hy => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite `hy`, the goal using `[hK']`. Use `⟨hτ y ▸ hJt m _ hy.2, ?_⟩` and prove the remaining obligations. Use `hJt m _ hy.1 using 1` and compare the differences between its conclusion and the goal. Use `group`. Establish `h1 : ∀ y, y ∈ {g : G | ∃ a ∈ K ⟨c, hcS⟩ m, ∃ b ∈ K ⟨c, hcS⟩ m, g = a * x * b} → s⁻¹ * t y * s ∈ {g : G | ∃ a ∈ K ⟨c, hcS⟩ m, ∃ b ∈ K ⟨c, hcS⟩ m, g = a * x * b}`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Use `⟨_, hτK b hb, _, hτK a ha, ?_⟩` and prove the remaining obligations. Establish `: t x = s * x * s⁻¹` using `by rw [hsx]; group`. Rewrite using `[hm, hm, this]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : ∀ y, s⁻¹ * t (s⁻¹ * t y * s) * s = y` using `fun y => by`. Rewrite using `[hm, hm, anti_inv hm, hts, ht]`. Use `group`. Establish `h3 : T ψ = T (pull t ψ)` using `hT s _ _ fun y => by show ψ.1 y = ψ.1 (t (s * y * s⁻¹))`. Rewrite using `[hτ, hψ]`.
-
-Distinguish the cases in `hy : y ∈ {g : G | ∃ a ∈ K ⟨c, hcS⟩ m, ∃ b ∈ K ⟨c, hcS⟩ m, g = a * x * b}`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem (h1 y hy)]`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem fun h => hy (h2 y ▸ h1 _ h)]`. Conclude with `sub_eq_zero.2 h3`. Conclude with `(sub_eq_zero.1 (LinearMap.congr_fun hD φ)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_of_anti [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G]
     [SecondCountableTopology G] (t : G ≃ₜ G) (hm : ∀ x y, t (x * y) = t y * t x)
@@ -163,13 +161,13 @@ Both sides reduce to the same expression.
 theorem trGL_trGL (g : GL n R) : trGL (trGL g) = g := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.transpose_mul _ _)`.
+A detailed English derivation is pending.
 -/
 theorem trGL_mul (g h : GL n R) : trGL (g * h) = trGL h * trGL g :=
   Units.ext (Matrix.transpose_mul _ _)
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨Units.continuous_val.matrix_transpose, Units.continuous_coe_inv.matrix_transpose⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_trGL [TopologicalSpace R] : Continuous (trGL : GL n R → GL n R) :=
   Units.continuous_iff.2 ⟨Units.continuous_val.matrix_transpose,
@@ -186,9 +184,9 @@ def trHomeo [TopologicalSpace R] : GL n R ≃ₜ GL n R where
 end Transpose
 
 /- English proof (translation)
-Establish `e : ψ = pull trHomeo φ` using `Subtype.ext (funext fun x => h x (trGL x) rfl)`. Rewrite using `[e]`. Use `invariant_of_anti trHomeo trGL_mul trGL_trGL (KO k n) SplitFlip.isOpen_KO SplitFlip.isCompact_KO (fun x hx => ?_) (exists_open_normalised_subgroup_subset k n) (fun x => ?_) T hT φ` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(SplitFlip.mem_KO_iff _).1 hx`. Conclude with `(SplitFlip.mem_KO_iff _).2 ⟨fun i j => h1 j i, fun i j => h2 j i⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, ⟨s, rfl⟩, h1, h2⟩` from `GlobalTheory.T.matrix_conj_transpose_by_symmetric_taussky_zassenhaus k n x.val`. Conclude with `⟨s, Units.ext h1, Units.ext h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem transpose_invariant (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (T : SB (GL n k) →ₗ[ℂ] ℂ)

@@ -12,9 +12,9 @@ namespace GlobalTheory.Published.AutFin.Model
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Set `T : Module.Dual ℂ (Module.End ℂ W) →ₗ[ℂ] (K → ℂ)` to `LinearMap.pi fun k => LinearMap.applyₗ (ρ k)`. Establish `: coeffSpan ρ ≤ LinearMap.range T`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f ⟨ℓ, w, rfl⟩`. Conclude with `⟨ℓ.comp (LinearMap.applyₗ w), rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `Submodule.finiteDimensional_of_le this`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_coeffSpan {K W : Type} [Group K] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (ρ : Representation ℂ K W) : FiniteDimensional ℂ (coeffSpan ρ) := by
@@ -29,7 +29,7 @@ theorem finiteDimensional_coeffSpan {K W : Type} [Group K] [AddCommGroup W] [Mod
 variable {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
 
 /- English proof (translation)
-Use `((GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V).2.2.1 x hx.1 y hy.1 fun τ' => ?_` and prove the remaining obligations. Distinguish the cases in `c : τ' = τ`. Substitute `c` using the available equality. Rewrite using `[hx.2.1, hy.2.1]`. Rewrite using `[hx.2.2 _ c, hy.2.2 _ c]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isAtTau_unique (hθ : IsInfFam θ) {τ : D.what₂.Tau} {g : Matrix (Fin V.rank) (Fin V.rank) ℂ} {x y : GA D V}
     (hx : IsAtTau θ V τ g x) (hy : IsAtTau θ V τ g y) : x = y := by
@@ -39,9 +39,9 @@ theorem isAtTau_unique (hθ : IsInfFam θ) {τ : D.what₂.Tau} {g : Matrix (Fin
   · rw [hx.2.2 _ c, hy.2.2 _ c]
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `hk` using `isAtTau_kAt θ V hθ τ hP h k`. Establish `hl` using `isAtTau_kAt θ V hθ τ hP h l`. Establish `hm` using `((GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V).2.2.2.1`. Use `isAtTau_unique θ V hθ (isAtTau_kAt θ V hθ τ hP h (k * l)) ⟨mul_mem hk.1 hl.1, ?_, fun τ' c => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hm, hk.2.1, hl.2.1]`. Establish `: Formalism.REAL.toMK (k * l) = Formalism.REAL.toMK k * Formalism.REAL.toMK l` using `rfl`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hm, hk.2.2 _ c, hl.2.2 _ c, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem kAt_mul (hθ : IsInfFam θ) (τ : D.what₂.Tau) {e : Fin V.rank → Bool}
     {P : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm e * P = gramAt D V τ)
@@ -60,9 +60,9 @@ theorem kAt_mul (hθ : IsInfFam θ) (τ : D.what₂.Tau) {e : Fin V.rank → Boo
   · rw [hm, hk.2.2 _ c, hl.2.2 _ c, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `k l hkl`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `hk` using `(isAtTau_kAt θ V hθ τ hP h k).2.1`. Establish `hl` using `(isAtTau_kAt θ V hθ τ hP h l).2.1`. Rewrite `hk` using `[hkl, hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : Formalism.REAL.toMK l = Formalism.REAL.toMK k`. Establish `hPi : IsUnit P⁻¹` using `isUnit_nonsing_inv_iff.2 hP`. Conclude with `hPi.mul_left_cancel (hP.mul_right_cancel hk)`. Conclude with `Subtype.ext (Subtype.ext (Units.ext h2.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kAt_injective (hθ : IsInfFam θ) (τ : D.what₂.Tau) {e : Fin V.rank → Bool}
     {P : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm e * P = gramAt D V τ) :
@@ -78,13 +78,13 @@ theorem kAt_injective (hθ : IsInfFam θ) (τ : D.what₂.Tau) {e : Fin V.rank �
   exact Subtype.ext (Subtype.ext (Units.ext h2.symm))
 
 /- English proof (translation)
-Establish `h1 : kAt θ V τ e P 1 = 1`. Use `kAt_mul θ V hθ τ hP h 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(mul_eq_left.1 this.symm)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H x k`. Establish `key : ∀ f ∈ coeffSpan (Representation.trivial ℂ (Formalism.REAL.KG e) ℂ), f k = f 1`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf => obtain ⟨ℓ, w, rfl⟩ := hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Consider the case `zero => rfl`. Consider the case `add f g _ _ a b => simp [a, b]`. Consider the case `smul c f _ a => simp [a]`. Use `key _ (H x)` as an intermediate fact.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[h1]`. Introduce `H x`. Conclude with `Submodule.subset_span ⟨LinearMap.id, φ x, funext fun k => H x k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasTypeAt_trivial_iff (hθ : IsInfFam θ) (τ : D.what₂.Tau) {e : Fin V.rank → Bool}
     {P : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm e * P = gramAt D V τ)
@@ -109,9 +109,9 @@ theorem hasTypeAt_trivial_iff (hθ : IsInfFam θ) (τ : D.what₂.Tau) {e : Fin 
     exact Submodule.subset_span ⟨LinearMap.id, φ x, funext fun k => H x k⟩
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `GlobalTheory.DualPairCompare.exists_infFam D`. Take `⟨ε, fr, h⟩` from `exists_isFrameFam (D := D) (D.sp.Y 0) (D.sp.Y_sig 0)`. Use `⟨θ, hθ, ε, fr, h, isOpen_univ, fun _ => isContRep_trivial, fun hb => ?_⟩` and prove the remaining obligations. Use `Submodule.subset_span (R := ℂ) (const_mem_forms θ (D.sp.Y 0) ⊤ ε fr 1)` as an intermediate fact. Rewrite `this` using `[hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero (congrFun ((Submodule.mem_bot ℂ).1 this) 1)`.
+A detailed English derivation is pending.
 -/
 theorem hypotheses_met (D : D7) : ∃ (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (_ : IsInfFam θ)
     (ε : D.what₂.Tau → Fin (D.sp.Y 0).rank → Bool)
@@ -128,7 +128,7 @@ theorem hypotheses_met (D : D7) : ∃ (θ : D.what₂.Tau → (Ainf D.host.F ⊗
   exact one_ne_zero (congrFun ((Submodule.mem_bot ℂ).1 this) 1)
 
 /- English proof (translation)
-Establish `: IsEmpty (Fin V.rank)` using `by rw [hV]; infer_instance`. Establish `: Subsingleton (GA D V)` using `⟨fun a b => Subtype.ext (Units.ext (Subsingleton.elim _ _))⟩`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_of_rank_zero (hV : V.rank = 0) (S : Set (GA D V → ℂ)) :
     FiniteDimensional ℂ (Submodule.span ℂ S) := by

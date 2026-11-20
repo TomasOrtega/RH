@@ -14,7 +14,7 @@ abbrev restrictIdeal {X : Scheme.{u}} (I : X.IdealSheafData) (U : X.Opens) :
   I.comap U.ι
 
 /- English proof (authored)
-The restriction of I to U is defined by pulling back I along the open immersion U → X. This is exactly I.comap U.ι.
+The restriction of I to U is defined by pulling back I along the open immersion U → X. This is exactly the ideal on the right.
 -/
 theorem restrictIdeal_eq_comap_ι {X : Scheme.{u}} (I : X.IdealSheafData) (U : X.Opens) :
     restrictIdeal I U = I.comap U.ι := rfl
@@ -92,7 +92,7 @@ theorem zeroLocus_eq_support {X : Scheme.{u}} (I : X.IdealSheafData) :
 def VanishesAlong {X : Scheme.{u}} (I J : X.IdealSheafData) : Prop := I ≤ J
 
 /- English proof (authored)
-VanishesAlong I J is defined to mean that I is contained in J. Both directions are the identity on this condition.
+Vanishing of I along J is defined to mean that I is contained in J. Both directions are the identity on this condition.
 -/
 theorem vanishesAlong_iff_le {X : Scheme.{u}} (I J : X.IdealSheafData) :
     VanishesAlong I J ↔ I ≤ J := Iff.rfl
@@ -141,7 +141,7 @@ def coordSubspaceIdeal (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) :
         (S : Set (Fin m))))
 
 /- English proof (authored)
-Take the coordinate functions indexed by S in the coordinate ring of the affine space. The coordinate subspace ideal sheaf is defined by applying ofIdealTop to the ring ideal they generate, giving the displayed formula.
+Take the coordinate functions indexed by S in the coordinate ring of the affine space. The coordinate subspace ideal sheaf is defined by taking the sheaf associated to the ring ideal they generate, giving the displayed formula.
 -/
 theorem coordSubspaceIdeal_eq_ofIdealTop_span_coord (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) :
     coordSubspaceIdeal k m S =
@@ -156,7 +156,7 @@ def EtaleChart.coordIdeal {X : Scheme.{u}} {k : Type u} [Field k]
   (coordSubspaceIdeal k m S).comap c.map
 
 /- English proof (authored)
-The chart ideal for S is defined by pulling back the coordinate subspace ideal for S along the étale chart map c.map.
+The chart ideal for S is defined by pulling back the coordinate subspace ideal for S along the chart's étale map.
 -/
 theorem EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ}
@@ -229,7 +229,7 @@ theorem HasStrictNormalCrossingsWith.exists_etaleChart {X : Scheme.{u}} {k : Typ
   h x hx
 
 /- English proof (authored)
-For each x in the support of Z, the hypothesis supplies a chart with distinct coordinate indices for the assigned entries of E and the required coordinate ideal for Z. These pointwise data are the definition of HasStrictNormalCrossingsWith.
+For each x in the support of Z, the hypothesis supplies a chart with distinct coordinate indices for the assigned entries of E and the required coordinate ideal for Z. These pointwise data give the defining condition for strict normal crossings along Z.
 -/
 theorem hasStrictNormalCrossingsWith_of_forall_exists_etaleChart {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {Z : X.IdealSheafData}

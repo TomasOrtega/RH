@@ -40,7 +40,7 @@ def unitaryGroup (h : HermL F E A) : Subgroup (A ≃ₗ[E] A) where
     rw [ha]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unitaryGroup {h : HermL F E A} {g : A ≃ₗ[E] A} :
     g ∈ h.unitaryGroup ↔ ∀ x y, h.form (g x) (g y) = h.form x y := Iff.rfl
@@ -88,7 +88,7 @@ def tensHerm (hA : HermL F E A) (hB : HermL F E B) :
       ring))
 
 /- English proof (translation)
-Simplify using `only [tensHerm, TensorProduct.lift.tmul, LinearMap.mk₂_apply, tensorHermitianPartial, LinearMap.mk₂'ₛₗ_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem tensHerm_tmul (hA : HermL F E A) (hB : HermL F E B) (a a' : A) (b b' : B) :
     tensHerm hA hB (a ⊗ₜ b) (a' ⊗ₜ b') = hA.form a a' * hB.form b b' := by
@@ -166,7 +166,7 @@ def Sp (ω : LinearMap.BilinForm R W) : Subgroup (W ≃ₗ[R] W) where
     rw [ha]
 
 /- English proof (translation)
-The claim follows from `Iff.rfl @[ext]`.
+A detailed English derivation is pending.
 -/
 theorem mem_Sp {ω : LinearMap.BilinForm R W} {g : W ≃ₗ[R] W} :
     g ∈ Sp ω ↔ ∀ w w', ω (g w) (g w') = ω w w' := Iff.rfl
@@ -475,7 +475,7 @@ def adelicPolEquiv (P : Polarization ω X Y) :
   (TensorProduct.prodRight K 𝔸[K] 𝔸[K] X Y).symm ≪≫ₗ P.e.baseChange K 𝔸[K] (X × Y) W
 
 /- English proof (translation)
-Rewrite using `[show ((a ⊗ₜ[K] x : AdelicPoints K X), (0 : AdelicPoints K Y)) = (a ⊗ₜ x, a ⊗ₜ (0 : Y)) by`. Rewrite using `[TensorProduct.tmul_zero]]`. Rewrite using `[adelicPolEquiv, LinearEquiv.trans_apply, TensorProduct.prodRight_symm_tmul, LinearEquiv.baseChange_tmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem adelicPolEquiv_tmul_fst (P : Polarization ω X Y) (a : 𝔸[K]) (x : X) :
     adelicPolEquiv P (a ⊗ₜ x, 0) = a ⊗ₜ P.e (x, 0) := by
@@ -485,7 +485,7 @@ theorem adelicPolEquiv_tmul_fst (P : Polarization ω X Y) (a : 𝔸[K]) (x : X) 
     LinearEquiv.baseChange_tmul]
 
 /- English proof (translation)
-Rewrite using `[show ((0 : AdelicPoints K X), (a ⊗ₜ[K] y : AdelicPoints K Y)) = (a ⊗ₜ (0 : X), a ⊗ₜ y) by`. Rewrite using `[TensorProduct.tmul_zero]]`. Rewrite using `[adelicPolEquiv, LinearEquiv.trans_apply, TensorProduct.prodRight_symm_tmul, LinearEquiv.baseChange_tmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem adelicPolEquiv_tmul_snd (P : Polarization ω X Y) (a : 𝔸[K]) (y : Y) :
     adelicPolEquiv P (0, a ⊗ₜ y) = a ⊗ₜ P.e (0, y) := by
@@ -579,7 +579,7 @@ def gaussHermL : HermL ℚ GaussQ GaussQ where
       rfl
 
 /- English proof (translation)
-Use `show (1 : GaussQ) * conj ℚ GaussQ 1 = 1`. Rewrite using `[map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussHermL_one_one : gaussHermL.form 1 1 = 1 := by
   show (1 : GaussQ) * conj ℚ GaussQ 1 = 1
@@ -588,7 +588,7 @@ theorem gaussHermL_one_one : gaussHermL.form 1 1 = 1 := by
 def gaussI : GaussQ := ⟨0, 1⟩
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[conj_gaussQ_re]`. Simplify using `[gaussI]`. Rewrite using `[conj_gaussQ_im]`. Simplify using `[gaussI]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_gaussI : conj ℚ GaussQ gaussI = -gaussI := by
   ext
@@ -596,7 +596,7 @@ theorem conj_gaussI : conj ℚ GaussQ gaussI = -gaussI := by
   · rw [conj_gaussQ_im]; simp [gaussI]
 
 /- English proof (translation)
-Use `isUnit_iff_ne_zero.mpr fun h => ?_` and prove the remaining obligations. Use `congrArg QuadraticAlgebra.im h` as an intermediate fact. Simplify using `[gaussI] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_gaussI : IsUnit gaussI := by
   refine isUnit_iff_ne_zero.mpr fun h => ?_
@@ -604,7 +604,7 @@ theorem isUnit_gaussI : IsUnit gaussI := by
   simp [gaussI] at this
 
 /- English proof (translation)
-Rewrite using `[weilForm_apply, tensHerm_tmul]`. Use `show Algebra.trace ℚ GaussQ (gaussI * ((1 * conj ℚ GaussQ gaussI) * (1 * conj ℚ GaussQ 1))) = 2`. Rewrite using `[conj_gaussI, map_one, trace_gaussQ]`. Simplify using `[gaussI]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weilForm_gauss : weilForm gaussI gaussHermL gaussHermL (1 ⊗ₜ 1) (gaussI ⊗ₜ 1) = 2 := by
   rw [weilForm_apply, tensHerm_tmul]
@@ -614,7 +614,7 @@ theorem weilForm_gauss : weilForm gaussI gaussHermL gaussHermL (1 ⊗ₜ 1) (gau
   simp [gaussI]
 
 /- English proof (translation)
-Introduce `h`. Use `weilForm_gauss` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weilForm_gauss_ne_zero : weilForm gaussI gaussHermL gaussHermL ≠ 0 := by
   intro h
@@ -636,17 +636,15 @@ theorem stdSymp_apply (R : Type*) [CommRing R] (u v : R × R) :
     stdSymp R u v = u.1 * v.2 - u.2 * v.1 := rfl
 
 /- English proof (translation)
-Introduce `u` and use `by rw [stdSymp_apply]; ring`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stdSymp_isAlt (R : Type*) [CommRing R] : (stdSymp R).IsAlt := fun u => by
   rw [stdSymp_apply]; ring
 
 /- English proof (translation)
-Use `⟨fun u hu => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `hu (0, 1)`. Establish `h2` using `hu (1, 0)`. Rewrite `h1`, `h2` using `[stdSymp_apply]`. Simplify using `only [mul_one, mul_zero, sub_zero, zero_sub, neg_eq_zero] at h1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Prod.ext h1 h2`. Establish `h1` using `hv (0, 1)`. Establish `h2` using `hv (1, 0)`. Rewrite `h1`, `h2` using `[stdSymp_apply]`. Simplify using `only [one_mul, zero_mul, sub_zero, zero_sub, neg_eq_zero] at h1 h2`.
-
-Conclude with `Prod.ext h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdSymp_nondegenerate (K : Type*) [Field K] : (stdSymp K).Nondegenerate := by
   refine ⟨fun u hu => ?_, fun v hv => ?_⟩
@@ -667,7 +665,7 @@ def stdPol (R : Type*) [CommRing R] : Polarization (stdSymp R) R R where
   isotropic_Y y y' := by simp [stdSymp_apply]
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Heis.t h` as an intermediate fact. Simplify using `only [Heis.product_torus_component, stdSymp_apply] at this`. Evaluate the numerical expressions using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem heis_std_noncomm :
     (⟨(1, 0), 0⟩ * ⟨(0, 1), 0⟩ : Heis (stdSymp ℝ)) ≠ ⟨(0, 1), 0⟩ * ⟨(1, 0), 0⟩ := by
@@ -677,18 +675,18 @@ theorem heis_std_noncomm :
   norm_num at this
 
 /- English proof (translation)
-Simplify using `[schr, Polarization.pair, Polarization.xPart, Polarization.yPart, stdPol, stdSymp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem schr_stdPol (ψ : AddChar ℝ Circle) (a b t : ℝ) (φ : ℝ → ℂ) (x : ℝ) :
     schr ψ (stdPol ℝ) ⟨(a, b), t⟩ φ x = (ψ (t + x * b + ⅟2 * (a * b)) : ℂ) * φ (x + a) := by
   simp [schr, Polarization.pair, Polarization.xPart, Polarization.yPart, stdPol, stdSymp_apply]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, stdSymp_isAlt ℝ, stdSymp_nondegenerate ℝ, Real.continuous_fourierChar, fun h => ?_⟩` and prove the remaining obligations. Take `⟨ε, hε, hb⟩` from `Metric.isOpen_iff.mp (isOpen_discrete ({0} : Set ℝ)) 0 rfl`. Establish `: ε / 2 ∈ Metric.ball (0 : ℝ) ε`. Rewrite using `[Metric.mem_ball, Real.dist_eq, sub_zero, abs_of_pos (half_pos hε)]`. Conclude with `half_lt_self hε`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ε / 2 = 0` using `hb this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `congrArg (fun χ : AddChar ℝ Circle => ((χ (1 / 2) : Circle) : ℂ)) h`. Simplify using `only [Real.fourierChar_apply, AddChar.one_apply, Circle.coe_one] at h1`. Rewrite `h1` using `[show ((2 * Real.pi * (1 / 2) : ℝ) : ℂ) * Complex.I = Real.pi * Complex.I by push_cast; ring, Complex.exp_pi_mul_I]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions using `at h1`.
+A detailed English derivation is pending.
 -/
 theorem real_hypotheses :
     ¬ DiscreteTopology ℝ ∧ (stdSymp ℝ).IsAlt ∧ (stdSymp ℝ).Nondegenerate ∧
@@ -708,7 +706,7 @@ theorem real_hypotheses :
     norm_num at h1
 
 /- English proof (translation)
-The claim follows from `Or.inr ⟨1, ContinuousAddEquiv.refl _, GroundTheory.Global.gaussianSchwartz _, fun _ => rfl⟩`.
+Prove the second alternative.
 -/
 theorem isSchwartzBruhat_gaussian :
     IsSchwartzBruhat (GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ (Fin 1)) :
@@ -716,7 +714,7 @@ theorem isSchwartzBruhat_gaussian :
   Or.inr ⟨1, ContinuousAddEquiv.refl _, GroundTheory.Global.gaussianSchwartz _, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `[GroundTheory.Global.gaussianSchwartz_apply] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem gaussianSchwartz_ne_zero :
     (GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ (Fin 1)) : EuclideanSpace ℝ (Fin 1) → ℂ) ≠ 0 := by
@@ -728,7 +726,7 @@ def adelicStdPol : Polarization ((stdSymp ℚ).baseChange 𝔸[ℚ]) (AdelicPoin
   (stdPol ℚ).baseChange
 
 /- English proof (translation)
-Establish `he : adelicStdPol.e ((1 : 𝔸[ℚ]) ⊗ₜ q, 0) = (1 : 𝔸[ℚ]) ⊗ₜ ((q, 0) : ℚ × ℚ)` using `adelicPolEquiv_tmul_fst (stdPol ℚ) 1 q`. Establish `hs : adelicStdPol.e.symm ((1 : 𝔸[ℚ]) ⊗ₜ ((q, 0) : ℚ × ℚ)) = ((1 : 𝔸[ℚ]) ⊗ₜ q, 0)`. Rewrite using `[← he, LinearEquiv.symm_apply_apply]`. Simplify using `only [schr, Polarization.xPart, Polarization.yPart, Polarization.pair, hs, Prod.mk_zero_zero, map_zero, mul_zero, add_zero, AddChar.map_zero_eq_one, Circle.coe_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem schr_adelicStdPol_translate (ψ : AddChar 𝔸[ℚ] Circle) (q : ℚ)
     (φ : AdelicPoints ℚ ℚ → ℂ) (x : AdelicPoints ℚ ℚ) :

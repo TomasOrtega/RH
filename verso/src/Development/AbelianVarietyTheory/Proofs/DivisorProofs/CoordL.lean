@@ -30,7 +30,7 @@ def intPts (G : HTGroup p) (w : AwayP p) : Set (UPts G.star (w.1.adicCompletion 
         w.1.adicCompletion ℚ) ∈ w.1.adicCompletionIntegers ℚ}
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 example (G : HTGroup p) (w : AwayP p) : compL G w 1 = 1 := map_one _
 

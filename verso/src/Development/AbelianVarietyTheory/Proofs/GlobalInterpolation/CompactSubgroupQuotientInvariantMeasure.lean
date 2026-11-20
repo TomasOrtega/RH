@@ -9,9 +9,9 @@ open scoped ENNReal
 namespace GlobalTheory.QuotientMeasureCompact
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ H _ _ hH`. Establish `: CompactSpace H` using `isCompact_iff_compactSpace.mp hH`. Establish `: SecondCountableTopology H` using `TopologicalSpace.Subtype.secondCountableTopology (H : Set G)`. Use `borelize G`. Use `GlobalTheory.T.weil_criterion_invariant_measure_homogeneous_space G H hH.isClosed fun h => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.AdelicPointsUnimod.modular_of_mem_compact H hH h.2, GlobalTheory.AdelicPointsUnimod.modular_of_mem_compact (⊤ : Subgroup H) (by simpa using isCompact_univ) (Subgroup.mem_top h)]`.
+A detailed English derivation is pending.
 -/
 theorem compactClause : CompactClause := by
   intro G _ _ _ _ _ _ H _ _ hH

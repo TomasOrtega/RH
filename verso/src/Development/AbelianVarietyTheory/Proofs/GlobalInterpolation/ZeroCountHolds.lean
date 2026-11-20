@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FinsumMemLeOf
 namespace GlobalTheory.Mem.An
 
 /- English proof (translation)
-Take `⟨C, -, H⟩` from `GlobalTheory.ZeroWindow.count_zeros_window`. Use `⟨C, fun q _ χ hχ t => ?_⟩` and prove the remaining obligations. Establish `h` using `(H q χ hχ t).2`. Simplify `h` using `only [zsumR, zerosIn, zmult, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zeroCount_holds : GlobalTheory.Mem.An.ZeroCount := by
   obtain ⟨C, -, H⟩ := GlobalTheory.ZeroWindow.count_zeros_window

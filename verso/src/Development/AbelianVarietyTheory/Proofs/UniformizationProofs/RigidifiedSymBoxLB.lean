@@ -21,9 +21,9 @@ open ReciprocityTheory.ChartRestriction.G.Out.LBxP
 variable {X X' Y : Scheme.{0}} (L : LB X) {J K : Type} [Fintype J] [Fintype K]
 
 /- English proof (translation)
-Use `(gU_pullU a _ y hy _).trans ?_` and prove the remaining obligations. Establish `e` using `gU_lcg L F (fun _ => 1) i j (a.base y) hy`. Use `(congrArg (Units.map (RingHom.toMonoidHom (a.stalkMap y).hom)) e).trans ?_` and prove the remaining obligations. Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun m _ => ?_)` and prove the remaining obligations. Use `(congrArg (Units.map (RingHom.toMonoidHom (a.stalkMap y).hom)) (zpow_one _)).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gU_pullU a _ y _ _).symm.trans ?_` and prove the remaining obligations. Conclude with `gU_pullU_comp a (F m) _ _ y _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma gU_pull_box_g (F : J → (X' ⟶ X)) (a : Y ⟶ X') (i j : J → L.ι) (y : Y)
     (hy : y ∈ a ⁻¹ᵁ ((LB.LinComb L F (fun _ => 1)).U i ⊓ (LB.LinComb L F (fun _ => 1)).U j))
@@ -39,15 +39,15 @@ lemma gU_pull_box_g (F : J → (X' ⟶ X)) (a : Y ⟶ X') (i j : J → L.ι) (y 
   exact gU_pullU_comp a (F m) _ _ y _ _
 
 /- English proof (translation)
-Introduce `i j`. Apply `unit_ext` to reduce the goal to its premises. Introduce `y hy`. Establish `hm : ∀ m, y ∈ (LB.LinComb (L.pull (F m)) φ ε).U (fun k _ => i k m) ⊓ (LB.LinComb (L.pull (F m)) φ ε).U (fun k _ => j k m)` using `fun m => ⟨GeneratorPullback.box_le L F φ i m hy.1, GeneratorPullback.box_le L F φ j m hy.2⟩`. Establish `hk : ∀ k m, y ∈ (φ k ≫ F m) ⁻¹ᵁ (L.U (i k m) ⊓ L.U (j k m))` using `fun k m => ⟨Set.mem_iInter.1 (Set.mem_iInter.1 hy.1 k) m, Set.mem_iInter.1 (Set.mem_iInter.1 hy.2 k) m⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ (c : K → J → L.ι) (hc : y ∈ LB.wchart (LB.LinComb L F (fun _ => 1)) φ c), gU y hc ((GeneratorPullback.boxGen L F φ ε t).s c) = ∏ m, gU y (GeneratorPullback.box_le L F φ c m hc) ((t m).s (fun k _ => c k m))` using `fun c hc => (map_prod (gU y hc) _ _).trans (Finset.prod_congr rfl fun m _ => gU_res _ _ _ _)`. Establish `Ht : ∀ m, gU y (GeneratorPullback.box_le L F φ i m hy.1) ((t m).s (fun k _ => i k m)) = (∏ k, gU y (hk k m) (pullU (φ k ≫ F m) _ (L.g (i k m) (j k m))) ^ ε k) * gU y (GeneratorPullback.box_le L F φ j m hy.2) ((t m).s (fun k _ => j k m))`. Introduce `m`. Use `(gU_res (inf_le_left : (LB.LinComb (L.pull (F m)) φ ε).U (fun k _ => i k m) ⊓ (LB.LinComb (L.pull (F m)) φ ε).U (fun k _ => j k m) ≤ _) y (hm m) _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (gU y (hm m)) (ht m (fun k _ => i k m) (fun k _ => j k m))).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ (gU_res _ _ _ _))` and prove the remaining obligations. Use `(gU_lcg (L.pull (F m)) φ ε _ _ y (hm m)).trans ?_` and prove the remaining obligations. Use `Finset.prod_congr rfl fun k _ => congrArg (· ^ ε k) ?_` and prove the remaining obligations. Conclude with `gU_pull_g L (F m) (φ k) _ _ y _ (hk k m)`. Establish `hg : gU y hy ((LB.LinComb (LB.LinComb L F (fun _ => 1)) φ ε).g i j) = ∏ m, ∏ k, gU y (hk k m) (pullU (φ k ≫ F m) _ (L.g (i k m) (j k m))) ^ ε k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gU_lcg (LB.LinComb L F (fun _ => 1)) φ ε i j y hy).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ Finset.prod_comm` and prove the remaining obligations. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Finset.prod_zpow _ _ _).symm` and prove the remaining obligations. Conclude with `congrArg (· ^ ε k) (gU_pull_box_g L F (φ k) (i k) (j k) y _ (hk k))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((gU_res _ y hy _).trans (hb i hy.1)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) hg ((gU_res _ y hy _).trans (hb j hy.2)))).symm` and prove the remaining obligations. Conclude with `(Finset.prod_congr rfl fun m _ => Ht m).trans Finset.prod_mul_distrib`.
+A detailed English derivation is pending.
 -/
 lemma isGen_boxGen (F : J → (X' ⟶ X)) (φ : K → (Y ⟶ X')) (ε : K → ℤ)
     (t : ∀ i, LB.Gen (LB.LinComb (L.pull (F i)) φ ε)) (ht : ∀ i, (t i).IsGen) :
@@ -88,7 +88,7 @@ lemma isGen_boxGen (F : J → (X' ⟶ X)) (φ : K → (Y ⟶ X')) (ε : K → �
   exact (Finset.prod_congr rfl fun m _ => Ht m).trans Finset.prod_mul_distrib
 
 /- English proof (translation)
-Use `⟨f.left.resLE _ _ ?_, Scheme.Hom.resLE_comp_ι _ _⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_preimage, Over.w]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma exists_restrict {S : Scheme.{0}} {A B : Over S} (f : A ⟶ B) (U : S.Opens) :
     ∃ ρ : (A.hom ⁻¹ᵁ U).toScheme ⟶ (B.hom ⁻¹ᵁ U).toScheme,
@@ -103,13 +103,13 @@ namespace GlobalTheory
 open BoxSymLoc ReciprocityTheory.ChartRestriction.G.Out.LBxP
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Establish `he : ∀ i : Fin j, ∀ _k : PUnit, eSec G' ≫ (p.pr i).left = 𝟙 _ ≫ eSec G`. Introduce `i _`. Use `p.hom i` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Category.id_comp, eSec, eSec, ← Over.comp_left, IsMonHom.one_hom]`. Conclude with `⟨GeneratorPullback.boxGen L (fun i => (p.pr i).left) (fun _ => eSec G') (fun _ => 1) (fun i => GeneratorPullback.pullAlong L (p.pr i).left (𝟙 _) (fun _ => eSec G) _ _ (he i) t), isGen_boxGen L _ _ _ _ fun i => isGen_pullAlong L _ _ _ _ _ (he i) t ht⟩`. Introduce `h s`. Take `⟨U, hs, t, ht⟩` from `h s`. Use `⟨U, hs, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose ρ hρ using fun i => exists_restrict (p.pr i) U`. Establish `he : ∀ i : Fin j, ∀ k : Fin 2, (![(G'.hom ⁻¹ᵁ U).ι ≫ (GrpObj.inv : G' ⟶ G').left, (G'.hom ⁻¹ᵁ U).ι] : Fin 2 → ((G'.hom ⁻¹ᵁ U).toScheme ⟶ G'.left)) k ≫ (p.pr i).left = ρ i ≫ (![(G.hom ⁻¹ᵁ U).ι ≫ (GrpObj.inv : G ⟶ G).left, (G.hom ⁻¹ᵁ U).ι] : Fin 2 → ((G.hom ⁻¹ᵁ U).toScheme ⟶ G.left …`. Introduce `i k`. Use `p.hom i` as an intermediate fact. Use `fin_cases k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (GrpObj.inv : G' ⟶ G').left ≫ (p.pr i).left = (p.pr i).left ≫ (GrpObj.inv : G ⟶ G).left` using `inv_pr p i 0 show ((G'.hom ⁻¹ᵁ U).ι ≫ (GrpObj.inv : G' ⟶ G').left) ≫ (p.pr i).left = ρ i ≫ (G.hom ⁻¹ᵁ U).ι ≫ (GrpObj.inv : G ⟶ G).left`. Rewrite using `[Category.assoc, h0, ← Category.assoc, ← hρ i, Category.assoc]`. Conclude with `(hρ i).symm`. Conclude with `⟨GeneratorPullback.boxGen L (fun i => (p.pr i).left) _ _ (fun i => GeneratorPullback.pullAlong L (p.pr i).left (ρ i) _ _ _ (he i) t), isGen_boxGen L _ _ _ _ fun i => isGen_pullAlong L _ _ _ _ _ (he i) t ht⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rigidified_sym_boxLB (S : Scheme.{0}) (G' G : Over S) [GrpObj G'] [IsCommMonObj G']
     [GrpObj G] [IsCommMonObj G] (j : ℕ) (p : IsPowGrp G' G j) (L : LB G.left) (_hL : L.IsLB) :

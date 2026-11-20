@@ -20,9 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.ParabIndex
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite κ`. Rewrite using `[GlobalTheory.Mem.card_GL_eq_pow_mul_qE κ m, Nat.card_eq_fintype_card, Formalism.MainNotions.ZetaProductPairs.qE]`. Use `congr 1`. Establish `h : Finset.Icc 1 m = Finset.Ioc 0 m`. Use extensionality with `i`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_Icc, Finset.mem_Ioc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.zpow_neg, zpow_natCast]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_GL_real (κ : Type) [Field κ] [Finite κ] (m : ℕ) :
     (Nat.card (GL (Fin m) κ) : ℝ)
@@ -48,20 +48,20 @@ def toSum {r s : ℕ} (g : GL (Fin (r + s)) κ) : Matrix (Fin r ⊕ Fin s) (Fin 
   Matrix.reindex finSumFinEquiv.symm finSumFinEquiv.symm (g : Matrix (Fin (r + s)) (Fin (r + s)) κ)
 
 /- English proof (translation)
-Rewrite using `[toSum, Matrix.det_reindex_self]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_toSum {r s : ℕ} (g : GL (Fin (r + s)) κ) : IsUnit (toSum g).det := by
   rw [toSum, Matrix.det_reindex_self]
   exact (Matrix.isUnit_iff_isUnit_det _).1 g.isUnit
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.DIV.mem_blockTri]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Simplify using `only [toSum, Matrix.toBlocks₂₁, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, Matrix.of_apply, Matrix.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `h` to reduce the goal to its premises. Simplify using `[Formalism.L2.DIV.blk2]`. Introduce `h i j hij`. Take `⟨x, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨y, rfl⟩` from `finSumFinEquiv.surjective j`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y`. Simplify using `[Formalism.L2.DIV.blk2] at hij`. Simplify using `[Formalism.L2.DIV.blk2] at hij`. Use `congrFun (congrFun h x) y` as an intermediate fact. Simplify `this` using `[toSum, Matrix.toBlocks₂₁]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[Formalism.L2.DIV.blk2] at hij`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_blockUpperTriangularTwo_iff_lowerLeft_zero {r s : ℕ} (g : GL (Fin (r + s)) κ) :
     g ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r) ↔ (toSum g).toBlocks₂₁ = 0 := by
@@ -84,14 +84,14 @@ theorem mem_blockUpperTriangularTwo_iff_lowerLeft_zero {r s : ℕ} (g : GL (Fin 
     · simp [Formalism.L2.DIV.blk2] at hij
 
 /- English proof (translation)
-Rewrite using `[← (mem_blockUpperTriangularTwo_iff_lowerLeft_zero g).1 hg]`. Conclude with `(Matrix.fromBlocks_toBlocks _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toSum_eq_fromBlocks {r s : ℕ} {g : GL (Fin (r + s)) κ} (hg : g ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r)) :
     toSum g = Matrix.fromBlocks (toSum g).toBlocks₁₁ (toSum g).toBlocks₁₂ 0 (toSum g).toBlocks₂₂ := by
   rw [← (mem_blockUpperTriangularTwo_iff_lowerLeft_zero g).1 hg]; exact (Matrix.fromBlocks_toBlocks _).symm
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_fromBlocks_zero₂₁ _ (toSum g).toBlocks₁₂, ← toSum_eq_fromBlocks hg]`. Conclude with `isUnit_det_toSum g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_blocks {r s : ℕ} {g : GL (Fin (r + s)) κ} (hg : g ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r)) :
     IsUnit ((toSum g).toBlocks₁₁.det * (toSum g).toBlocks₂₂.det) := by
@@ -99,7 +99,7 @@ theorem isUnit_blocks {r s : ℕ} {g : GL (Fin (r + s)) κ} (hg : g ∈ Formalis
   exact isUnit_det_toSum g
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 A.isUnit).mul ((Matrix.isUnit_iff_isUnit_det _).1 D.isUnit)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_fromBlocks {r s : ℕ} (A : GL (Fin r) κ) (D : GL (Fin s) κ) (B : Matrix (Fin r) (Fin s) κ) :
     IsUnit (Matrix.reindex finSumFinEquiv finSumFinEquiv
@@ -138,7 +138,7 @@ noncomputable def blockTriangularEquiv (r s : ℕ) :
       ext i j; simp [toSum, Matrix.toBlocks₁₂, val_mk']
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (blockTriangularEquiv r s), Nat.card_prod, Nat.card_prod, mul_assoc]`. Use `congr 2`. Use `show Nat.card (Fin r → Fin s → κ) = _`. Rewrite using `[Nat.card_fun, Nat.card_fun, Nat.card_fin, Nat.card_fin, ← pow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_blockUpperTriangularTwo_finiteField (κ : Type) [Field κ] [Finite κ] (r s : ℕ) :
     Nat.card (Formalism.L2.DIV.blockTri (κ := κ) (Formalism.L2.DIV.blk2 (n := r + s) r)) =
@@ -153,15 +153,15 @@ end GlobalTheory.ParabIndex
 namespace GlobalTheory.ParabIndex
 
 /- English proof (translation)
-Introduce `κ _ _ n r s hn`. Substitute `hn` using the available equality. Establish `hmul` using `(Formalism.L2.DIV.blockTri (κ := κ) (Formalism.L2.DIV.blk2 (n := r + s) r)).card_mul_index`. Rewrite `hmul` using `[natCard_blockUpperTriangularTwo_finiteField]`. Establish `hR : (((Formalism.L2.DIV.blockTri (κ` using `κ) (Formalism.L2.DIV.blk2 (n := r + s) r)).index : ℕ) : ℝ) * ((Nat.card (GL (Fin r) κ) : ℝ) * (Nat.card (GL (Fin s) κ) : ℝ) * (Nat.card κ : ℝ) ^ (r * s)) = (Nat.card (GL (Fin (r + s)) κ) : ℝ) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_comm]`. Conclude with `hmul` after adjusting the coercions. Establish `hGr : (Nat.card (GL (Fin r) κ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `hGs : (Nat.card (GL (Fin s) κ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Rewrite `hGr`, `hGs` using `[card_GL_real]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hR` using `[card_GL_real, card_GL_real, card_GL_real]`. Establish `hq : (Nat.card κ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `hPr` using `right_ne_zero_of_mul hGr`. Establish `hPs` using `right_ne_zero_of_mul hGs`. Rewrite using `[eq_div_iff (mul_ne_zero hPr hPs)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : (r + s) * (r + s) = r * r + s * s + r * s + r * s` using `by ring`. Rewrite `hR` using `[key, pow_add, pow_add, pow_add]`. Establish `hX : (Nat.card κ : ℝ) ^ (r * r) * (Nat.card κ : ℝ) ^ (s * s) * (Nat.card κ : ℝ) ^ (r * s) ≠ 0`. Use `pow_ne_zero (r * r) hq` as an intermediate fact. Use `pow_ne_zero (s * s) hq` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pow_ne_zero (r * s) hq` as an intermediate fact. Check the signs of the components of the expression. Apply `mul_right_cancel₀ hX` to reduce the goal to its premises. Take the linear combination `hR`.
+Check the signs of the components of the expression. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem index_maxParabolic_GL_finiteField : ∀ (κ : Type) [Field κ] [Finite κ] (n r s : ℕ), n = r + s → (((Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r) : Subgroup (GL (Fin n) κ)).index : ℕ) : ℝ) = (Nat.card κ : ℝ) ^ (r * s) * (∏ i ∈ Finset.Ioc 0 n, (1 - ((Nat.card κ : ℝ) ^ i)⁻¹)) / ((∏ i ∈ Finset.Ioc 0 r, (1 - ((Nat.card κ : ℝ) ^ i)⁻¹)) * ∏ i ∈ Finset.Ioc 0 s, (1 - ((Nat.card κ : ℝ) ^ i)⁻¹)) := by
   intro κ _ _ n r s hn

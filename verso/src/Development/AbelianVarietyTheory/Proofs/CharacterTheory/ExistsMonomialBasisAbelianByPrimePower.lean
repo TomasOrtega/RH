@@ -9,13 +9,13 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Take `⟨n, b, hb⟩` from `hU`. Take `⟨n', b', hb'⟩` from `hU'`. Set `B` to `(b.prod b').map (Submodule.prodEquivOfIsCompl U U' h)`. Establish `h1 : ∀ i, B (Sum.inl i) = (b i : V)`. Introduce `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[B, Module.Basis.prod_apply]`. Establish `h2 : ∀ i, B (Sum.inr i) = (b' i : V)`. Introduce `i`. Simplify using `[B, Module.Basis.prod_apply]`. Use `⟨n + n', B.reindex finSumFinEquiv, fun g i => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Break down `i with i | i` into its components or cases. Take `⟨j, c, hj⟩` from `hb g i`. Use `⟨finSumFinEquiv (Sum.inl j), c, ?_⟩` and prove the remaining obligations. Simplify using `only [Module.Basis.reindex_apply, Equiv.symm_apply_apply, h1, hj]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨j, c, hj⟩` from `hb' g i`. Use `⟨finSumFinEquiv (Sum.inr j), c, ?_⟩` and prove the remaining obligations. Simplify using `only [Module.Basis.reindex_apply, Equiv.symm_apply_apply, h2, hj]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_monomial_basis_of_isCompl {k : Type} [Field k] {G : Type} [Group G]
     {V : Type} [AddCommGroup V] [Module k V] (ρ : Representation k G V)
@@ -46,27 +46,25 @@ theorem exists_monomial_basis_of_isCompl {k : Type} [Field k] {G : Type} [Group 
     simp only [Module.Basis.reindex_apply, Equiv.symm_apply_apply, h2, hj]
 
 /- English proof (translation)
-Introduce `k _`. Establish `key : ∀ (m : ℕ) (G : Type) [Group G] [Finite G] (V : Type) [AddCommGroup V] [Module k V] [FiniteDimensional k V] (ρ : Representation k G V) [IsAlgClosed k], Nat.card G + Module.finrank k V = m → AbByP G → (Nat.card G : k) ≠ 0 → ∃ (n : ℕ) (b : Module.Basis (Fin n) k V), ∀ (g : G) …`. Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `G _ _ V _ _ _ ρ _ hm hG hcard`. Distinguish the cases in `h0 : Module.finrank k V = 0`. Conclude with `⟨0, Module.finBasisOfFinrankEq k V h0, fun g i => i.elim0⟩`. Distinguish the cases in `hirr : ρ.IsIrreducible`. Break down `finrank_eq_one_or_imprimitive k G V ρ hG hirr with h1 | ⟨T, W, hT, hW, hind, hsup⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis.
 
-Set `b` to `Module.finBasisOfFinrankEq k V h1`. Use `⟨1, b, fun g i => ⟨0, b.repr (ρ g (b i)) 0, ?_⟩⟩` and prove the remaining obligations. Use `b.sum_repr (ρ g (b i))` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_one]`. Conclude with `this.symm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_monomial_basis_of_imprimitive k G V ρ T W hind hsup ?_` and prove the remaining obligations. Set `σ : Subrepresentation (ρ.comp T.subtype : Representation k T V)` to `⟨W, fun t w hw => hW t t.2 w hw⟩`. Establish `hlt : Nat.card T < Nat.card G`. Use `T.card_le_card_group` as an intermediate fact. Establish `h2 : Nat.card T ≠ Nat.card G` using `fun H => hT (Subgroup.eq_top_of_card_eq T H)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hle : Module.finrank k W ≤ Module.finrank k V` using `Submodule.finrank_le W`. Establish `hc : (Nat.card T : k) ≠ 0`. Introduce `H`. Take `⟨d, hd⟩` from `T.card_subgroup_dvd_card`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hcard` to reduce the goal to its premises. Rewrite using `[hd, Nat.cast_mul, H, zero_mul]`. Take `⟨n, b, hb⟩` from `ih _ (by omega) T W σ.toRepresentation rfl (AbByP.subgroup G T hG) hc`. Use `⟨n, b, fun t ht i => ?_⟩` and prove the remaining obligations. Take `⟨j, c, hj⟩` from `hb ⟨t, ht⟩ i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨j, c, congrArg Subtype.val hj⟩`. Use `haveI : NeZero (Nat.card G : k) := ⟨hcard⟩ haveI : Nontrivial V := Module.nontrivial_of_finrank_pos (Nat.pos_of_ne_zero h0) haveI : Nontrivial (Subrepresentation ρ) := ⟨⊥, ⊤, fun H => (bot_ne_top : (⊥ : Submodule k V) ≠ ⊤) (congrArg Subrepresentation.toSubmodule H)⟩`. Establish `hex : ∃ U : Subrepresentation ρ, U ≠ ⊥ ∧ U ≠ ⊤`. Assume the negation of the conclusion as `H`. Use `push Not at H`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Conclude with `hirr ⟨fun U => by`. Distinguish the cases in `hU : U = ⊥`. Conclude with `Or.inl hU`. Conclude with `Or.inr (H U hU)⟩`. Take `⟨U, hU0, hU1⟩` from `hex`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U', hUU'⟩` from `exists_isCompl U`. Establish `hcompl : IsCompl U.toSubmodule U'.toSubmodule` using `⟨disjoint_iff.2 (congrArg Subrepresentation.toSubmodule hUU'.inf_eq_bot), codisjoint_iff.2 (congrArg Subrepresentation.toSubmodule hUU'.sup_eq_top)⟩`. Establish `hsub : ∀ S : Subrepresentation ρ, S ≠ ⊤ → ∃ (n : ℕ) (b : Module.Basis (Fin n) k S.toSubmodule), ∀ (g : G) (i : Fin n), ∃ (j : Fin n) (c : k), ρ g (b i : V) = c • (b j : V)`. Introduce `S hS`. Establish `hlt : Module.finrank k S.toSubmodule < Module.finrank k V` using `Submodule.finrank_lt (fun H => hS (Subrepresentation.ext H))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨n, b, hb⟩` from `ih _ (by omega) G S.toSubmodule S.toRepresentation rfl hG hcard`. Use `⟨n, b, fun g i => ?_⟩` and prove the remaining obligations. Take `⟨j, c, hj⟩` from `hb g i`. Conclude with `⟨j, c, congrArg Subtype.val hj⟩`. Use `exists_monomial_basis_of_isCompl ρ _ _ hcompl (hsub U hU1) (hsub U' ?_)` and prove the remaining obligations.
-
-Introduce and unpack `rfl`. Conclude with `hU0 (by simpa using hUU'.inf_eq_bot)`. Introduce `G _ _ V _ _ _ ρ _ hG hc`. Conclude with `key _ G V ρ rfl hG hc`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_monomial_basis_of_abByP : ∀ (k : Type) [Field k] (G : Type) [Group G] [Finite G] (V : Type) [AddCommGroup V] [Module k V] [FiniteDimensional k V] (ρ : Representation k G V) [IsAlgClosed k], AbByP G → (Nat.card G : k) ≠ 0 → ∃ (n : ℕ) (b : Module.Basis (Fin n) k V), ∀ (g : G) (i : Fin n), ∃ (j : Fin n) (c : k), ρ g (b i) = c • b j := by
   intro k _

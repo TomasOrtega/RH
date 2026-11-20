@@ -41,9 +41,9 @@ def DifferentExtNorm.Statement : Prop :=
       Real.log (Ideal.absNorm (extDifferent ι) : ℝ) = Module.finrank ℚ L * logRd E
 
 /- English proof (translation)
-Introduce `hq'`. Take `⟨u, v, huv⟩ : IsCoprime (p : ℤ) (q : ℤ)` from `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes hp hq).mpr hpq)`. Apply `𝔓.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : ((u * p + v * q : ℤ) : 𝓞 L) = 1` using `by rw [huv]; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Use `push_cast`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h) (Ideal.mul_mem_left _ _ hq')`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem natCast_notMem_of_ne {L : Type} [Field L] [NumberField L] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (hpq : p ≠ q) (𝔓 : HeightOneSpectrum (𝓞 L)) (h : (p : 𝓞 L) ∈ 𝔓.asIdeal) : (q : 𝓞 L) ∉ 𝔓.asIdeal := by
@@ -58,7 +58,7 @@ theorem natCast_notMem_of_ne {L : Type} [Field L] [NumberField L] {p q : ℕ} (h
   exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ h) (Ideal.mul_mem_left _ _ hq')
 
 /- English proof (translation)
-Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hq.ne_zero` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeSpan_ne_bot {L : Type} [Field L] [NumberField L] {q : ℕ} (hq : q.Prime) :
     (Ideal.span {(q : 𝓞 L)} : Ideal (𝓞 L)) ≠ ⊥ := by
@@ -66,7 +66,7 @@ theorem primeSpan_ne_bot {L : Type} [Field L] [NumberField L] {q : ℕ} (hq : q.
   exact_mod_cast hq.ne_zero
 
 /- English proof (translation)
-Establish `hJ` using `primeSpan_ne_bot (L := L) hq`. Rewrite using `[primeFrac, FractionalIdeal.count_coe L 𝔓 hJ, Nat.cast_eq_zero]`. Assume the negation of the conclusion as `hc`. Establish `hd` using `(Associates.count_ne_zero_iff_dvd hJ 𝔓.irreducible).mp hc`. Conclude with `natCast_notMem_of_ne hp hq hpq 𝔓 h ((Ideal.dvd_iff_le.mp hd) (Ideal.subset_span (Set.mem_singleton _)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem count_primeFrac_of_ne {L : Type} [Field L] [NumberField L] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (hpq : p ≠ q) (𝔓 : HeightOneSpectrum (𝓞 L)) (h : (p : 𝓞 L) ∈ 𝔓.asIdeal) :
@@ -80,7 +80,7 @@ theorem count_primeFrac_of_ne {L : Type} [Field L] [NumberField L] {p q : ℕ} (
     ((Ideal.dvd_iff_le.mp hd) (Ideal.subset_span (Set.mem_singleton _)))
 
 /- English proof (translation)
-Rewrite using `[primeFrac, Ne, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `primeSpan_ne_bot hq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeFrac_ne_zero (L : Type) [Field L] [NumberField L] {q : ℕ} (hq : q.Prime) : primeFrac L q ≠ 0 := by
   rw [primeFrac, Ne, FractionalIdeal.coeIdeal_eq_zero]

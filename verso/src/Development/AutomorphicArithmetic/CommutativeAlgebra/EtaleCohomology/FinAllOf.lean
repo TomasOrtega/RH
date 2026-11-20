@@ -9,13 +9,11 @@ set_option backward.isDefEq.respectTransparency false
 open CrystallineSemistableComparison UpperTheory.Ru.crystallineComparison
 
 /- English proof (translation)
-Introduce `h l _ K _ _ _ f hf hc ϖ hϖ M hM n j T hr hPt A hA B₀`. Take `⟨r⟩` from `UpperTheory.Gal.CD.resEx l K`. Establish `hx : ∀ x : r.k, x ^ l ^ f = x`. Establish `hker : RingHom.ker r.ρ = IsLocalRing.maximalIdeal (OK l K)`. Establish `hm : (RingHom.ker r.ρ).IsMaximal` using `RingHom.ker_isMaximal_of_surjective r.ρ r.surj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsLocalRing.eq_maximalIdeal hm`. Establish `e : IsLocalRing.ResidueField (OK l K) ≃+* r.k` using `(Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective r.surj)`. Establish `hcard : Nat.card r.k = l ^ f`. Rewrite using `[← Nat.card_congr e.toEquiv]`. Conclude with `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : Finite r.k` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ (Fact.out : l.Prime).ne_zero)`. Use `Fintype.ofFinite r.k` as an intermediate fact. Introduce `x`. Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Conclude with `FiniteField.pow_card x`.
-
-Conclude with `UpperTheory.Ru.crystallineComparison.final l K r f hf hx (h l K r f hf) ϖ hϖ M hM n j T hr hPt A hA B₀`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ru.crystallineComparison.finAll_of :
     (∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] (r : Res l K) (f : ℕ), 0 < f → CIn l K r f) → UpperTheory.Gal.crystallineComparison.Br.FinAll := by

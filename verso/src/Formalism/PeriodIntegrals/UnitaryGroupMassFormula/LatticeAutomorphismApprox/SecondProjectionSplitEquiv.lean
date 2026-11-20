@@ -11,9 +11,9 @@ def piHom {K R : Type} [Field K] [CommRing R] (σ : R →+* R) (p1 : R →+* K) 
   RingHom.prod p1 (p1.comp σ)
 
 /- English proof (translation)
-Set `L : R →ₗ[K] K × K` to `{ toFun := piHom σ p1 map_add' := fun a b => map_add _ a b map_smul' := fun c r => by`. Rewrite using `[Algebra.smul_def, map_mul]`. Apply the tactic sequence `ext <;> simp [piHom, hp1K, hσK] }`. Establish `hsurj : Function.Surjective L`. Introduce and unpack `⟨a, b⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨algebraMap K R a * ε + algebraMap K R b * σ ε, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [L, piHom, hp1K, hσK, hσσ, h1, h0]`. Establish `hfr : Module.finrank K R = Module.finrank K (K × K)`. Rewrite using `[hdim, Module.finrank_prod, Module.finrank_self]`. Conclude with `⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfr).2 hsurj, hsurj⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem piHom_bijective {K R : Type} [Field K] [CommRing R] [Algebra K R] [FiniteDimensional K R]
     (hdim : Module.finrank K R = 2) (σ : R →+* R) (p1 : R →+* K)
@@ -39,7 +39,7 @@ def piEquiv {K R : Type} [Field K] [CommRing R] (σ : R →+* R) (p1 : R →+* K
   RingEquiv.ofBijective (piHom σ p1) hb
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [piEquiv, piHom, hσσ]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem piEquiv_sig {K R : Type} [Field K] [CommRing R] (σ : R →+* R) (p1 : R →+* K)
     (hσσ : ∀ r, σ (σ r) = r) (hb : Function.Bijective (piHom σ p1)) (r : R) :
@@ -66,7 +66,7 @@ theorem proj_coe {R k : Type} [CommRing R] [Field k] {n : Type} [Fintype n] [Dec
     ((SplitGL.proj σ π J y : GL n k) : Matrix n n k) = ((y : GL n R) : Matrix n n R).map (SplitGL.p1 π) := rfl
 
 /- English proof (translation)
-Use `show IsUnit ((SplitGL.p1 π).mapMatrix J).det`. Rewrite using `[← RingHom.map_det]`. Conclude with `hdet.map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_first_projection {R k : Type} [CommRing R] [Field k] {n : Type} [Fintype n] [DecidableEq n]
     (π : R ≃+* k × k) (J : Matrix n n R) (hdet : IsUnit J.det) : IsUnit (J.map (SplitGL.p1 π)).det := by
@@ -75,13 +75,11 @@ theorem isUnit_det_first_projection {R k : Type} [CommRing R] [Field k] {n : Typ
   exact hdet.map _
 
 /- English proof (translation)
-Use `set P := J.map (SplitGL.p1 π) with hP`. Use `set M2 := ((y : GL n R) : Matrix n n R).map (SplitGL.p2 π) with hM2`. Use `set T := SplitGL.proj σ π J y with hT`. Establish `hu : M2ᵀ * P * (T : Matrix n n k) = P`. Rewrite using `[hT, proj_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((SplitGL.unitary_iff σ π hπ J _).1 y.2).1`. Establish `hTT : (T : Matrix n n k) * ((T⁻¹ : GL n k) : Matrix n n k) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `key : M2ᵀ * P = P * ((T⁻¹ : GL n k) : Matrix n n k)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[hTT, Matrix.mul_one]`. Use `_ = P * ((T⁻¹ : GL n k) : Matrix n n k) := by rw [← Matrix.mul_assoc, hu]`. Establish `h2 : (M2 *ᵥ β) ᵥ* P = β' ᵥ* P`. Combine the equalities or inequalities in the displayed calculation. Establish `hPu : IsUnit P.det` using `isUnit_det_first_projection π J hdet`.
-
-Establish `h3` using `congrArg (fun w => w ᵥ* P⁻¹) h2`. Simplify using `only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hPu, Matrix.vecMul_one] at h3`. Conclude with `h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem second_projection_mulVec_eq {R k : Type} [CommRing R] [Field k] {n : Type} [Fintype n] [DecidableEq n]
     (σ : R →+* R) (π : R ≃+* k × k) (hπ : ∀ r, π (σ r) = (π r).swap) (J : Matrix n n R)

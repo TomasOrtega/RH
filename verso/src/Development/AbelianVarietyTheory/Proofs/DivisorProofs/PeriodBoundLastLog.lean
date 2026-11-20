@@ -16,7 +16,7 @@ namespace GlobalTheory.LastPeriod
 open GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum GlobalTheory.ColNorms GlobalTheory.PeriodClassSum
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `ha` using `a.2`. Establish `hb` using `b.2`. Simplify using `only [gramSum, Matrix.of_apply, Matrix.one_apply, Fin.ext_iff, Br.iL]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramSum_one {K : Type} [Field K] {N n : ℕ} (hN : N = n + 1) :
     gramSum hN (1 : Matrix (Fin n) (Fin n) K) 1 = 1 := by
@@ -27,9 +27,9 @@ theorem gramSum_one {K : Type} [Field K] {N n : ℕ} (hN : N = n + 1) :
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Introduce `x`. Establish `h` using `(hL ℂ (RingHom.id ℂ) (fun _ => rfl) ι N n hN lam sg hI hS (fun _ => 1) (fun _ => by simpa using Matrix.PosDef.one) T hT (fun _ => 1) (fun τ => σ (t τ)) (fun τ => by simpa using ht τ)).2.2.1 ⟨MvPolynomial.map σ (x : Pol K ι N), GlobalTheory.Proof.TensorMapDescent.map_mem_VV σ lam …`. Simplify using `only [gramSum_one] at h`. Rewrite using `[GlobalTheory.JetBase.sqAt_eq σ lam x ⟨_, GlobalTheory.Proof.TensorMapDescent.map_mem_VV σ lam _ x.2⟩ rfl]`. Use `le_of_eq_of_le (GlobalTheory.JetBase.sqAt_eq σ sg _ _ ?_) h` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Br.brAt, Br.brStd, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.subtype_apply, Submodule.coe_smul, GlobalTheory.Proof.TensorMapDescent.branchingProjection_map]`. Rewrite using `[MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, map_prod σ]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun τ _ => (map_zpow₀ σ _ _).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem coefOpLe_brAt (hL : LastMapNorm) {K : Type} [Field K] [CharZero K] [StarRing K] (σ : K →+* ℂ) {ι : Type} [Fintype ι]
     {N n : ℕ} (hN : N = n + 1) (lam : ι → DomWeight N) (sg : ι → DomWeight n)
@@ -51,7 +51,7 @@ theorem coefOpLe_brAt (hL : LastMapNorm) {K : Type} [Field K] [CharZero K] [Star
   exact Finset.prod_congr rfl fun τ _ => (map_zpow₀ σ _ _).symm
 
 /- English proof (translation)
-Simplify using `only [sqAt, pairK_one_basis, dotProduct, Matrix.mulVec, Finset.mul_sum, Matrix.map_apply, Pi.star_apply, starRingEnd_apply, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sqAt_eq_dot {K : Type} [Field K] [StarRing K] (σ : K →+* ℂ) {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     (x : Formalism.L2.DIV.VV K lam) :
@@ -61,15 +61,15 @@ theorem sqAt_eq_dot {K : Type} [Field K] [StarRing K] (σ : K →+* ℂ) {ι : T
     starRingEnd_apply, mul_assoc]
 
 /- English proof (translation)
-Establish `hG` using `(gramB_posDef sg σ).posSemidef`. Establish `hre : ∀ z : C → Formalism.L2.DIV.VV K sg, (wForm w ((GlobalTheory.TestLat.Compare.gramB K sg).map σ) (fun c i => σ ((bVV K sg).repr (z c) i)) (fun c i => σ ((bVV K sg).repr (z c) i))).re = ∑ c, ((w c : ℕ) : ℝ)⁻¹ * sqAt σ sg (z c)` using `fun z => by`. Rewrite using `[wForm, Complex.re_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[sqAt_eq_dot, ← Complex.re_ofReal_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `e3 : σ (∑ c, ((w c : ℕ) : K)⁻¹ * pairBK sg (B (x c)) (y c)) = wForm w ((GlobalTheory.TestLat.Compare.gramB K sg).map σ) (fun c => star fun i => σ ((bVV K sg).repr (B (x c)) i)) (fun c i => σ ((bVV K sg).repr (y c) i))`. Rewrite using `[map_sum, wForm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_inv₀, map_natCast, star_star, map_pairBK]`. Establish `h` using `wForm_le w hG (fun c => star fun i => σ ((bVV K sg).repr (B (x c)) i)) (fun c i => σ ((bVV K sg).repr (y c) i))`. Rewrite `h` using `[wForm_star w (by rw [← Matrix.transpose_map, GlobalTheory.TestLat.Compare.gramB_transpose]), ← e3]`. Establish `h0` using `(Complex.nonneg_iff.1 (wForm_nonneg w hG (fun c i => σ ((bVV K sg).repr (y c) i)))).1`. Rewrite `h0` using `[hre]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hre fun c => B (x c), hre]`. Use `h.trans (mul_le_mul_of_nonneg_right ?_ h0)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hB _) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem sum_pair_le {K : Type} [Field K] [CharZero K] [StarRing K] (σ : K →+* ℂ) {ι : Type} [Fintype ι] {N n : ℕ}
     (lam : ι → DomWeight N) (sg : ι → DomWeight n) (B : Formalism.L2.DIV.VV K lam →ₗ[K] Formalism.L2.DIV.VV K sg) (t : ℝ)
@@ -103,7 +103,7 @@ theorem sum_pair_le {K : Type} [Field K] [CharZero K] [StarRing K] (σ : K →+*
   exact mul_le_mul_of_nonneg_left (hB _) (by positivity)
 
 /- English proof (translation)
-Rewrite using `[sqAt_eq_dot]`. Conclude with `(Complex.nonneg_iff.1 ((gramB_posDef lam σ).posSemidef.dotProduct_mulVec_nonneg _)).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqAt_nonneg {K : Type} [Field K] [CharZero K] [StarRing K] (σ : K →+* ℂ) {ι : Type} [Fintype ι] {n : ℕ}
     (lam : ι → DomWeight n) (x : Formalism.L2.DIV.VV K lam) : 0 ≤ sqAt σ lam x := by
@@ -111,7 +111,7 @@ theorem sqAt_nonneg {K : Type} [Field K] [CharZero K] [StarRing K] (σ : K →+*
   exact (Complex.nonneg_iff.1 ((gramB_posDef lam σ).posSemidef.dotProduct_mulVec_nonneg _)).1
 
 /- English proof (translation)
-Rewrite using `[← Complex.re_ofReal_mul]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem re_inv_mul (w : ℕ) (z : ℂ) : ((w : ℂ)⁻¹ * z).re = (w : ℝ)⁻¹ * z.re := by
   rw [← Complex.re_ofReal_mul]

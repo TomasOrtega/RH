@@ -31,27 +31,27 @@ def entryLiftKappa (k : ℤ) (F : ℂ → ℂ) (m : Fin 2 → Fin 2 → ℝ) : �
     ((m 1 0 : ℂ) * Complex.I + m 1 1) ^ (-k)
 
 /- English proof (translation)
-Establish `hc : ∀ i j, HasDerivAt (fun t => m t i j) (m 0 i 0 * A 0 j + m 0 i 1 * A 1 j) 0` using `fun i j => by`. Simplify `hasDerivAt_pi.1 (hasDerivAt_pi.1 hm i) j` using `[Fin.sum_univ_two]`. Establish `hcC : ∀ i j, HasDerivAt (fun t => ((m t i j : ℝ) : ℂ)) (((m 0 i 0 * A 0 j + m 0 i 1 * A 1 j : ℝ) : ℂ)) 0` using `fun i j => (hc i j).ofReal_comp`. Establish `hD : HasDerivAt (fun t => m t 0 0 * m t 1 1 - m t 0 1 * m t 1 0) _ 0` using `((hc 0 0).mul (hc 1 1)).sub ((hc 0 1).mul (hc 1 0))`. Establish `hS` using `(hD.sqrt hpos.ne').ofReal_comp`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : (Real.sqrt (m 0 0 0 * m 0 1 1 - m 0 0 1 * m 0 1 0) : ℂ) ≠ 0`. Conclude with `(Real.sqrt_pos.2 hpos).ne'` after adjusting the coercions. Establish `hSk` using `HasDerivAt.comp (h := fun t => ((Real.sqrt (m t 0 0 * m t 1 1 - m t 0 1 * m t 1 0) : ℝ) : ℂ)) 0 (hasDerivAt_zpow k _ (Or.inl hS0)) hS`. Establish `hden : HasDerivAt (fun t => (m t 1 0 : ℂ) * Complex.I + m t 1 1) _ 0` using `((hcC 1 0).mul_const Complex.I).add (hcC 1 1)`. Establish `hnum : HasDerivAt (fun t => (m t 0 0 : ℂ) * Complex.I + m t 0 1) _ 0` using `((hcC 0 0).mul_const Complex.I).add (hcC 0 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hden0 : ((m 0 1 0 : ℂ) * Complex.I + m 0 1 1) ≠ 0`. Introduce `h`. Establish `h1` using `congrArg Complex.re h`. Establish `h2` using `congrArg Complex.im h`. Simplify using `at h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpos` using `[h1, h2]`. Simplify using `at hpos`. Establish `hinv` using `HasDerivAt.comp (h := fun t => (m t 1 0 : ℂ) * Complex.I + m t 1 1) 0 (hasDerivAt_inv hden0) hden`. Establish `hz : HasDerivAt (fun t => ((m t 0 0 : ℂ) * Complex.I + m t 0 1) * ((m t 1 0 : ℂ) * Complex.I + m t 1 1)⁻¹) _ 0` using `hnum.mul hinv`. Establish `hq : 0 < (((m 0 0 0 : ℂ) * Complex.I + m 0 0 1) * ((m 0 1 0 : ℂ) * Complex.I + m 0 1 1)⁻¹).im`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← div_eq_mul_inv, Complex.div_im]`. Establish `hns : 0 < Complex.normSq ((m 0 1 0 : ℂ) * Complex.I + m 0 1 1)` using `Complex.normSq_pos.2 hden0`. Simplify using `only [Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im]`. Rewrite using `[← sub_div]`. Apply `div_pos _ hns` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hFd : HasDerivAt F (deriv F (((m 0 0 0 : ℂ) * Complex.I + m 0 0 1) * ((m 0 1 0 : ℂ) * Complex.I + m 0 1 1)⁻¹)) (((m 0 0 0 : ℂ) * Complex.I + m 0 0 1) * ((m 0 1 0 : ℂ) * Complex.I + m 0 1 1)⁻¹)` using `(hF.differentiableAt ((isOpen_lt continuous_const Complex.continuous_im).mem_nhds hq)).hasDerivAt`. Establish `hFz` using `HasDerivAt.comp (h := fun t => ((m t 0 0 : ℂ) * Complex.I + m t 0 1) * ((m t 1 0 : ℂ) * Complex.I + m t 1 1)⁻¹) 0 hFd hz`. Establish `hdk` using `HasDerivAt.comp (h := fun t => (m t 1 0 : ℂ) * Complex.I + m t 1 1) 0 (hasDerivAt_zpow (-k) _ (Or.inl hden0)) hden`. Establish `htot` using `(hSk.mul hFz).mul hdk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `htot.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Pi.mul_apply, gl2WeightChar, gl2HolCoeff, entryLift, entryLiftKappa, Matrix.map_apply]`. Rewrite using `[zpow_sub_one₀ hS0, zpow_sub_one₀ hden0]`. Establish `hs2 : (Real.sqrt (m 0 0 0 * m 0 1 1 - m 0 0 1 * m 0 1 0) : ℂ) * (Real.sqrt (m 0 0 0 * m 0 1 1 - m 0 0 1 * m 0 1 0) : ℂ) = (m 0 0 0 : ℂ) * m 0 1 1 - m 0 0 1 * m 0 1 0`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hpos.le]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `push_cast`. Generalize the expression as in `(Real.sqrt (m 0 0 0 * m 0 1 1 - m 0 0 1 * m 0 1 0) : ℂ) = s at hs2 hS0 ⊢`. Generalize the expression as in `F (((m 0 0 0 : ℂ) * Complex.I + m 0 0 1) * ((m 0 1 0 : ℂ) * Complex.I + m 0 1 1)⁻¹) = X`.
+Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `deriv F (((m 0 0 0 : ℂ) * Complex.I + m 0 0 1) * ((m 0 1 0 : ℂ) * Complex.I + m 0 1 1)⁻¹) = Y`. Generalize the expression as in `((m 0 1 0 : ℂ) * Complex.I + m 0 1 1) ^ (-k) = Q`. Generalize the expression as in `s ^ k = P`. Generalize the expression as in `(m 0 0 0 : ℂ) = p at hs2 hden0 ⊢`. Generalize the expression as in `(m 0 0 1 : ℂ) = q at hs2 hden0 ⊢`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(m 0 1 0 : ℂ) = r at hs2 hden0 ⊢`. Generalize the expression as in `(m 0 1 1 : ℂ) = u at hs2 hden0 ⊢`. Establish `hs2' : s ^ 2 = p * u - q * r` using `by rw [sq, hs2]`. Establish `hI3 : Complex.I ^ 3 = -Complex.I` using `by rw [pow_succ, Complex.I_sq, neg_one_mul]`. Clear the denominators using the available nonvanishing facts.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Simplify using `only [Complex.I_sq, hI3, hs2']`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 theorem hasDerivAt_entryLift_comp {k : ℤ} {F : ℂ → ℂ} (hF : DifferentiableOn ℂ F {z | 0 < z.im})
     {m : ℝ → Fin 2 → Fin 2 → ℝ} {A : Matrix (Fin 2) (Fin 2) ℝ}
@@ -136,11 +136,9 @@ theorem hasDerivAt_entryLift_comp {k : ℤ} {F : ℂ → ℂ} (hF : Differentiab
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
 /- English proof (translation)
-Take `⟨hpos, γ, u, hu, hg⟩` from `decompGL_spec N g`. Use `set h := decompGL N g`. Establish `hPval : (fun i j => ∑ a, (h : Matrix (Fin 2) (Fin 2) ℝ) i a * archLin (NormedSpace.exp ((Y : ArchMatrix ℚ 2))) a j) = ((h * archToReal ((isExpLieAlgebra ℚ 2).expG Y) : GL (Fin 2) ℝ) : Matrix (Fin 2) (Fin 2) ℝ)`. Use function extensionality and compare the values at `i j`. Rewrite using `[Units.val_mul, Matrix.mul_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hdet : 0 < (h * archToReal ((isExpLieAlgebra ℚ 2).expG Y)).det.val`. Rewrite using `[map_mul, Units.val_mul]`. Conclude with `mul_pos hpos (det_archToReal_expG_pos Y)`. Rewrite using `[archSlice_apply, one_mul]`.
-
-Use `conv_lhs => rw [hg]`. Rewrite using `[infEmb_eq_realEmb, mul_assoc _ _ (realEmb _), ← realEmb_mul_finEmb_comm, ← mul_assoc, mul_assoc (diagonal ℚ 2 γ), ← map_mul, adelicLift_apply hf γ hdet hu, archLift_eq_entryLift k f hdet, hPval]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archSlice_adelicLift_expG {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) (g : AdelicGL ℚ 2) (Y : archLie ℚ 2) :
@@ -164,23 +162,21 @@ theorem archSlice_adelicLift_expG {f : ℍ → ℂ}
     mul_assoc (diagonal ℚ 2 γ), ← map_mul, adelicLift_apply hf γ hdet hu, archLift_eq_entryLift k f hdet, hPval]
 
 /- English proof (translation)
-Rewrite using `[uAction_ι_apply]`. Establish `hF : DifferentiableOn ℂ (f ∘ ofComplex) {z | 0 < z.im}` using `mdifferentiable_iff.1 hhol`. Establish `h1` using `(isExpLieAlgebra ℚ 2).hasDerivAt_rightDeriv (isArchSmooth_adelicLift hf hhol g) ((isExpLieAlgebra ℚ 2).ofLie X) 1`. Take `⟨hpos, -⟩` from `decompGL_spec N g`. Use `set h := decompGL N g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set m : ℝ → Fin 2 → Fin 2 → ℝ := fun t i j => ∑ a, (h : Matrix (Fin 2) (Fin 2) ℝ) i a * archLin (NormedSpace.exp (t • (X : ArchMatrix ℚ 2))) a j with hmdef`. Establish `hlin1 : ∀ a j : Fin 2, archLin (1 : ArchMatrix ℚ 2) a j = (1 : Matrix (Fin 2) (Fin 2) ℝ) a j`. Introduce `a j`. Rewrite using `[← archRealEquiv_apply, map_one]`. Establish `hm0 : m 0 = fun i j => (h : Matrix (Fin 2) (Fin 2) ℝ) i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i j`. Simplify using `only [hmdef, zero_smul, NormedSpace.exp_zero, hlin1]`. Rewrite using `[← Matrix.mul_apply, Matrix.mul_one]`. Establish `hexp : HasDerivAt (fun t : ℝ => archLin (NormedSpace.exp (t • (X : ArchMatrix ℚ 2)))) (archLin (X : ArchMatrix ℚ 2)) 0`. Use `hasDerivAt_exp_smul_const' (𝕂 := ℝ) (X : ArchMatrix ℚ 2) (0 : ℝ)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_smul, NormedSpace.exp_zero, mul_one]`. Conclude with `archLin.hasFDerivAt.comp_hasDerivAt (0 : ℝ) this`. Establish `hm : HasDerivAt m (fun i j => ∑ a, m 0 i a * lieRealMat X a j) 0`. Rewrite using `[hm0]`. Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `HasDerivAt.fun_sum fun a _ => ?_` and prove the remaining obligations. Conclude with `(hasDerivAt_pi.1 (hasDerivAt_pi.1 hexp a) j).const_mul _`. Establish `hpos' : 0 < m 0 0 0 * m 0 1 1 - m 0 0 1 * m 0 1 0`. Rewrite using `[hm0]`. Rewrite `hpos` using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpos`. Establish `h2` using `hasDerivAt_entryLift_comp (k := k) hF hm hpos'`. Establish `hfun : (fun t : ℝ => archSlice (adelicLift N k f) g (1 * (isExpLieAlgebra ℚ 2).expG (t • (isExpLieAlgebra ℚ 2).ofLie X))) = fun t => entryLift k (f ∘ ofComplex) (m t)`. Use function extensionality and compare the values at `t`. Rewrite using `[archSlice_adelicLift_expG hf g]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h1` using `[hfun]`. Establish `hE : entryLift k (f ∘ ofComplex) (m 0) = adelicLift N k f g`. Use `archSlice_adelicLift_expG (N := N) hf g 0` as an intermediate fact. Rewrite `this` using `[(isExpLieAlgebra ℚ 2).expG_zero, one_mul, archSlice_apply, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Use `congr 1`. Rewrite using `[hm0]`. Use function extensionality and compare the values at `i j`. Simplify using `only [ZeroMemClass.coe_zero, NormedSpace.exp_zero, hlin1]`.
-
-Rewrite using `[← Matrix.mul_apply, Matrix.mul_one]`. Rewrite using `[h1.unique h2, hE, hm0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uAction_ι_adelicLift {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) (hhol : MDiff f)
@@ -238,7 +234,7 @@ theorem uAction_ι_adelicLift {f : ℍ → ℂ}
   rw [h1.unique h2, hE, hm0]
 
 /- English proof (translation)
-Rewrite using `[gl2ArchRep_ι, complexOpGL2, LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul, realOpGL2, realOpGL2, uAction_ι_adelicLift hf hhol, uAction_ι_adelicLift hf hhol, lieRealMat_lieOfRealMat, lieRealMat_lieOfReal …`. Use `conv_rhs => rw [← map_ofReal_reMat_add_imMat B]`. Simplify using `only [gl2WeightChar, gl2HolCoeff, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gl2ArchRep_ι_adelicLift {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) (hhol : MDiff f)
@@ -256,7 +252,7 @@ theorem gl2ArchRep_ι_adelicLift {f : ℍ → ℂ}
   ring
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[gl2ArchRep_ι_adelicLift hf hhol, hB, zero_mul, add_zero]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gl2ArchRep_ι_adelicLift_of_holCoeff {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) (hhol : MDiff f)
@@ -282,7 +278,7 @@ theorem cayleyGL2_conj (a : Fin 2 × Fin 2) :
       !![1, 0; -Complex.I, 1] * Matrix.single a.1 a.2 1 * !![1, 0; Complex.I, 1] := rfl
 
 /- English proof (translation)
-Rewrite using `[cayleyGL2_conj, show Matrix.single (0 : Fin 2) (0 : Fin 2) (1 : ℂ) = !![1, 0; 0, 0] by`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp, Matrix.mul_fin_two, Matrix.mul_fin_two]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem cayleyGL2_conj_zero_zero :
     (cayleyGL2 : HarishChandra.gl 2) * HarishChandra.E (0, 0) *
@@ -292,7 +288,7 @@ theorem cayleyGL2_conj_zero_zero :
   simp
 
 /- English proof (translation)
-Rewrite using `[cayleyGL2_conj, show Matrix.single (0 : Fin 2) (1 : Fin 2) (1 : ℂ) = !![0, 1; 0, 0] by`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp, Matrix.mul_fin_two, Matrix.mul_fin_two]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem cayleyGL2_conj_zero_one :
     (cayleyGL2 : HarishChandra.gl 2) * HarishChandra.E (0, 1) *
@@ -302,7 +298,7 @@ theorem cayleyGL2_conj_zero_one :
   simp
 
 /- English proof (translation)
-Rewrite using `[cayleyGL2_conj, show Matrix.single (1 : Fin 2) (1 : Fin 2) (1 : ℂ) = !![0, 0; 0, 1] by`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp, Matrix.mul_fin_two, Matrix.mul_fin_two]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem cayleyGL2_conj_one_one :
     (cayleyGL2 : HarishChandra.gl 2) * HarishChandra.E (1, 1) *
@@ -312,11 +308,11 @@ theorem cayleyGL2_conj_one_one :
   simp
 
 /- English proof (translation)
-Simplify using `only [Prod.forall, Fin.forall_fin_two]`. Use `⟨⟨fun _ => ?_, fun _ => ?_⟩, fun h => absurd h (by decide), fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[cayleyGL2_conj_zero_zero]`. Simplify using `[gl2HolCoeff]`. Rewrite using `[cayleyGL2_conj_zero_one]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[gl2HolCoeff]`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[cayleyGL2_conj_one_one]`.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[gl2HolCoeff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gl2HolCoeff_cayleyGL2_conj : ∀ a : Fin 2 × Fin 2, a.1 ≤ a.2 →
     gl2HolCoeff ((cayleyGL2 : HarishChandra.gl 2) * HarishChandra.E a *
@@ -334,7 +330,7 @@ theorem gl2HolCoeff_cayleyGL2_conj : ∀ a : Fin 2 × Fin 2, a.1 ≤ a.2 →
     simp [gl2HolCoeff]
 
 /- English proof (translation)
-Rewrite using `[cayleyGL2_conj_zero_one]`. Simplify using `[gl2WeightChar]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gl2WeightChar_cayleyGL2_conj_zero_one :
     gl2WeightChar k ((cayleyGL2 : HarishChandra.gl 2) * HarishChandra.E (0, 1) *
@@ -343,9 +339,9 @@ theorem gl2WeightChar_cayleyGL2_conj_zero_one :
   simp [gl2WeightChar]
 
 /- English proof (translation)
-Simplify using `only [Fin.forall_fin_two]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cayleyGL2_conj_zero_zero]`. Simplify using `[gl2WeightChar]`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 
-Rewrite using `[cayleyGL2_conj_one_one]`. Simplify using `[gl2WeightChar]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gl2WeightChar_cayleyGL2_conj_diag : ∀ i : Fin 2,
     gl2WeightChar k ((cayleyGL2 : HarishChandra.gl 2) * HarishChandra.E (i, i) *
@@ -359,9 +355,9 @@ theorem gl2WeightChar_cayleyGL2_conj_diag : ∀ i : Fin 2,
     simp [gl2WeightChar]
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_, fun i => ?_⟩` and prove the remaining obligations. Take `⟨i, j⟩` from `a`. Establish `hij : (i, j) = ((0 : Fin 2), (1 : Fin 2))`. Simplify using `only [HarishChandra.IsUpper] at ha`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hij, HarishChandra.e, HarishChandra.conjU_ι, gl2ArchRep_ι_adelicLift_of_holCoeff hf hhol (gl2HolCoeff_cayleyGL2_conj _ (by decide)), gl2WeightChar_cayleyGL2_conj_zero_one, zero_smul]`. Rewrite using `[HarishChandra.e, HarishChandra.conjU_ι, gl2ArchRep_ι_adelicLift_of_holCoeff hf hhol (gl2HolCoeff_cayleyGL2_conj _ le_rfl), gl2WeightChar_cayleyGL2_conj_diag]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gl2ArchRep_conj_adelicLift {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) (hhol : MDiff f) :
@@ -383,7 +379,7 @@ theorem gl2ArchRep_conj_adelicLift {f : ℍ → ℂ}
       gl2WeightChar_cayleyGL2_conj_diag]
 
 /- English proof (translation)
-Rewrite using `[gl2ArchRep_ι_adelicLift_of_holCoeff hf hhol (by simp [gl2HolCoeff])]`. Establish `: gl2WeightChar k (1 : HarishChandra.gl 2) = 0`. Simplify using `[gl2WeightChar]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem gl2ArchRep_ι_one_adelicLift {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) (hhol : MDiff f) :
@@ -396,7 +392,7 @@ theorem gl2ArchRep_ι_one_adelicLift {f : ℍ → ℂ}
   rw [this, zero_smul]
 
 /- English proof (translation)
-The claim follows from `isZFinite_of_gl2ArchRep_conj cayleyGL2 _ (gl2ArchRep_conj_adelicLift hf hhol).1 (gl2ArchRep_conj_adelicLift hf hhol).2`.
+A detailed English derivation is pending.
 -/
 theorem isZFinite_adelicLift {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) (hhol : MDiff f) :
@@ -405,7 +401,7 @@ theorem isZFinite_adelicLift {f : ℍ → ℂ}
     (gl2ArchRep_conj_adelicLift hf hhol).2
 
 /- English proof (translation)
-Establish `hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), (f : ℍ → ℂ) ∣[k] γ = f` using `fun γ hγ => SlashInvariantForm.slash_action_eqn f γ hγ`. Establish `e : (⟨(liftEquiv N k f : AdelicGL ℚ 2 → ℂ), (liftEquiv_spec_of_mdifferentiable f hhol).2.1.1⟩ : archSmooth ℚ 2) = ⟨adelicLift N k f, isArchSmooth_adelicLift hf hhol⟩` using `Subtype.ext (liftEquiv_apply f)`. Rewrite using `[e]`. Conclude with `isZFinite_adelicLift hf hhol`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZFinite_liftEquiv_of_mdifferentiable (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (hhol : MDiff (f : ℍ → ℂ)) :
@@ -420,7 +416,7 @@ theorem isZFinite_liftEquiv_of_mdifferentiable (f : SlashInvariantForm (Gamma0 N
   exact isZFinite_adelicLift hf hhol
 
 /- English proof (translation)
-The claim follows from `mem_cuspForms_of_isZFinite f (isZFinite_liftEquiv_of_mdifferentiable f.toSlashInvariantForm f.holo')`.
+A detailed English derivation is pending.
 -/
 theorem liftEquiv_mem_cuspForms (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ) ∈ cuspForms ℚ 2 :=

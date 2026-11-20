@@ -13,11 +13,11 @@ namespace GlobalTheory.PsCo.PcEF
 namespace GapNumber
 
 /- English proof (translation)
-It suffices to establish `h : ∀ (k : ℕ) (i j : Fin r), (j : ℕ) = i + k + 1 → H ≤ lam i - lam j by`. Introduce `i j hij`. Establish `: (i : ℕ) < j` using `hij`. Conclude with `h ((j : ℕ) - i - 1) i j (by omega)`. Introduce `k`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => intro i j h; exact hg i j (by omega)`. Consider the case `succ k ih`. Introduce `i j h`. Establish `hm : (i : ℕ) + k + 1 < r` using `by have := j.isLt; omega`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `ih i ⟨(i : ℕ) + k + 1, hm⟩ rfl`. Establish `h2` using `hg ⟨(i : ℕ) + k + 1, hm⟩ j (by show (j : ℕ) = (i : ℕ) + k + 1 + 1; omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem chain {r : ℕ} {lam : Fin r → ℤ} {H : ℤ} (hH : 0 ≤ H)
     (hg : ∀ i j : Fin r, (j : ℕ) = i + 1 → H ≤ lam i - lam j) :
@@ -39,25 +39,23 @@ theorem chain {r : ℕ} {lam : Fin r → ℤ} {H : ℤ} (hH : 0 ≤ H)
 end GapNumber
 
 /- English proof (translation)
-Introduce `r hr ε lam hg`. Take `⟨k, hk⟩` from `hr`. Establish `hr1 : 1 ≤ r` using `by omega`. Establish `hH : (0 : ℤ) ≤ 100 * (r : ℤ) ^ 4` using `by positivity`. Establish `hc` using `GapNumber.chain hH hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcR : ∀ i j : Fin r, i < j → 100 * (r : ℝ) ^ 4 ≤ (lam i : ℝ) - lam j` using `fun i j h => by`. Conclude with `hc i j h` after adjusting the coercions. Establish `hrR : (1 : ℝ) ≤ r` using `by exact_mod_cast hr1`. Establish `hpos : (0 : ℝ) < 100 * (r : ℝ) ^ 4` using `by positivity`. Establish `hanti : StrictAnti (fun a => (lam a : ℝ))` using `fun i j h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hcR i j h` as an intermediate fact. Use `show (lam j : ℝ) < lam i`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgap : GapAtLeast ε (fun a => (lam a : ℝ)) (100 * (r : ℝ) ^ 4)`. Introduce `a b hab`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hne : a ≠ b` using `fun h => hab (h ▸ rfl)`. Use `show 100 * (r : ℝ) ^ 4 ≤ |(lam a : ℝ) - lam b|`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `(hcR a b h).trans (le_abs_self _)`. Rewrite using `[abs_sub_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hcR b a h).trans (le_abs_self _)`. Establish `hp : pOf ε ≤ r` using `(Finset.card_filter_le _ _).trans_eq (by simp)`. Establish `hq : qOf ε ≤ r` using `(Finset.card_filter_le _ _).trans_eq (by simp)`. Establish `hq0 : S7.q0 ε ≤ r` using `(min_le_left _ _).trans hp`. Establish `hpR : (pOf ε : ℝ) ≤ r` using `by exact_mod_cast hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqR : (qOf ε : ℝ) ≤ r` using `by exact_mod_cast hq`. Establish `hq0R : (S7.q0 ε : ℝ) ≤ r` using `by exact_mod_cast hq0`. Establish `h1 : (1 : ℝ) ≤ (r : ℝ) ^ 4` using `one_le_pow₀ hrR`. Establish `h4 : (r : ℝ) ≤ (r : ℝ) ^ 4` using `le_self_pow₀ hrR (by norm_num)`. Establish `h2 : (r : ℝ) ^ 2 ≤ (r : ℝ) ^ 4` using `pow_le_pow_right₀ hrR (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : (r : ℝ) ^ 3 ≤ (r : ℝ) ^ 4` using `pow_le_pow_right₀ hrR (by norm_num)`. Establish `hbig : (r : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < 100 * (r : ℝ) ^ 4`. Establish `: (r : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) ≤ r * r * r` using `by gcongr`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨⟨hanti, fun a => ⟨lam a - k, ?_⟩⟩, ⟨hanti, _, hgap, hbig⟩, ⟨hanti, _, hgap, by linarith⟩, _, hgap, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Establish `hkR : (r : ℝ) = 2 * k + 1` using `by exact_mod_cast hk show (lam a : ℝ) - ((r : ℝ) - 1) / 2 = ((lam a - k : ℤ) : ℝ)`. Rewrite using `[hkR]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `thrStar`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `max_lt hbig ?_` and prove the remaining obligations. Establish `hs : Real.sqrt (2 * (S7.q0 ε : ℝ)) ≤ 2 * r`. Rewrite using `[show (2 : ℝ) * r = Real.sqrt ((2 * r) ^ 2) from (Real.sqrt_sq (by positivity)).symm]`. Conclude with `Real.sqrt_le_sqrt (by nlinarith)`. Establish `hm : (r : ℝ) * (S7.q0 ε : ℝ) ≤ r * r` using `mul_le_mul_of_nonneg_left hq0R (by positivity)`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem gapConditions_of_largeGaps : GapNum := by
   intro r hr ε lam hg

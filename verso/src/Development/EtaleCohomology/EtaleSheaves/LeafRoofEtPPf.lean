@@ -6,9 +6,9 @@ open LateralTheory.E.t_E6Cut TensorProduct
 namespace LateralTheory.E.LeafRoofEtPPf
 
 /- English proof (translation)
-Take `⟨e, he, hsp⟩` from `(Ideal.isIdempotentElem_iff_of_fg _ (KaehlerDifferential.ideal_fg C D)).mp <| (Ideal.cotangent_subsingleton_iff _).mp <| inferInstanceAs <| Subsingleton Ω[D⁄C]`. Use `⟨e, he, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: e ∈ KaehlerDifferential.ideal C D` using `hsp ▸ Submodule.mem_span_singleton_self e`. Simplify `this` using `[RingHom.mem_ker]`. Establish `: x ∈ KaehlerDifferential.ideal C D` using `by simpa [RingHom.mem_ker] using hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[hsp]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag {C D : Type} [CommRing C] [CommRing D] [Algebra C D] [Algebra.Etale C D] :
     ∃ e : D ⊗[C] D, IsIdempotentElem e ∧ Algebra.TensorProduct.lmul' C e = 0 ∧
@@ -32,25 +32,23 @@ def LeafPolyEt : Prop := ∀ (d : ℕ) {C B D : Type} [CommRing C] [CommRing B] 
      (fun j => φ (MvPolynomial.X j) ⊗ₜ[C] (1:D))).Etale
 
 /- English proof (translation)
-Introduce `d C B _ _ φ hφ`. Use `letI : Algebra C B := (φ.comp MvPolynomial.C).toAlgebra`. Use `haveI hD : Algebra.Etale C (B ⧸ varIdeal φ) := by`. Rewrite using `[← RingHom.etale_algebraMap]`. Conclude with `h1 d φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `q : B ⊗[C] (B ⧸ varIdeal φ) →ₐ[C] (B ⧸ varIdeal φ) ⊗[C] (B ⧸ varIdeal φ)` to `Algebra.TensorProduct.map (Ideal.Quotient.mkₐ C (varIdeal φ)) (AlgHom.id C _)`. Set `m : B ⊗[C] (B ⧸ varIdeal φ) →+* B ⧸ varIdeal φ` to `((Algebra.TensorProduct.lmul' C).comp q).toRingHom`. Set `b : MvPolynomial (Fin d) (B ⧸ varIdeal φ) →+* B ⊗[C] (B ⧸ varIdeal φ)` to `MvPolynomial.eval₂Hom (Algebra.TensorProduct.includeRight : (B ⧸ varIdeal φ) →ₐ[C] B ⊗[C] _).toRingHom (fun j => φ (MvPolynomial.X j) ⊗ₜ[C] (1 : B ⧸ varIdeal φ))`. Take `⟨e0, hi, he0, hk0⟩` from `diag (C := C) (D := B ⧸ varIdeal φ)`. Establish `hq : Function.Surjective q` using `Algebra.TensorProduct.map_surjective _ _ (Ideal.Quotient.mkₐ_surjective C _) (fun x => ⟨x, rfl⟩)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, rfl⟩` from `hq e0`. Establish `hbX : ∀ j, b (MvPolynomial.X j) = φ (MvPolynomial.X j) ⊗ₜ[C] (1 : B ⧸ varIdeal φ)` using `fun j => by`. Simplify using `[b]`. Establish `hker : RingHom.ker q = Ideal.span (Set.range fun j => b (MvPolynomial.X j))`. Establish `hk : RingHom.ker (Ideal.Quotient.mkₐ C (varIdeal φ)) = Ideal.span (Set.range fun j => φ (MvPolynomial.X j))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Conclude with `Ideal.Quotient.eq_zero_iff_mem`. Rewrite using `[Algebra.TensorProduct.rTensor_ker _ (Ideal.Quotient.mkₐ_surjective C _), hk, Ideal.map_span, ← Set.range_comp]`. Use `congr 1`. Use extensionality with `x`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hbX]`. Establish `hmem : ∀ x, x ∈ Ideal.span (Set.range fun j => b (MvPolynomial.X j)) ↔ q x = 0` using `fun x => by`. Rewrite using `[← hker, RingHom.mem_ker]`. Use `⟨B ⊗[C] (B ⧸ varIdeal φ), inferInstance, algebraMap B _, b, m, e, RingHom.etale_algebraMap.mpr inferInstance, h2 d φ hφ, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components.
 
-Rewrite using `[hbX]`. Both sides reduce to the same expression. Use extensionality with `x`. Simplify using `[m, q]`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Simplify using `[m, q, b]`. Introduce `j`. Simplify using `only [RingHom.comp_apply, hbX, MvPolynomial.constantCoeff_X]`. Simplify using `only [m, q, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.comp_apply, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.lmul'_apply_tmul, map_one, mul_one, Ideal.Quotient.mkₐ_eq_mk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.subset_span ⟨j, rfl⟩)`. Conclude with `he0`. Rewrite using `[hmem, map_sub, map_mul, hi.eq, sub_self]`. Introduce `x hx`. Take `⟨r0, hr0⟩` from `Ideal.mem_span_singleton'.mp (hk0 (q x) hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, rfl⟩` from `hq r0`. Establish `: x - r * e ∈ Ideal.span (Set.range fun j => b (MvPolynomial.X j))`. Rewrite using `[hmem, map_sub, map_mul, hr0, sub_self]`. Establish `h3 : x = (x - r * e) + r * e` using `by ring`. Rewrite using `[h3]`.
-
-Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left this) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.subset_span rfl)))`.
+A detailed English derivation is pending.
 -/
 theorem roofEtale_of_quotientEtale_polynomialEtale (h1 : LeafQuotEt) (h2 : LeafPolyEt) : LateralTheory.E.LeafRoofEtPf.LeafRoofEtP := by
   intro d C B _ _ φ hφ

@@ -13,19 +13,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UMin
 
 /- English proof (translation)
-Introduce `k Ω _ _ _ M N c hn hd z`. Take `⟨j, he, hdiv⟩` from `hd z`. Use `haveI := RatModel.isIntegrallyClosed_O hn z`. Use `set D := N.factorial with hD`. Use `set e := symTup c j with he'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hD1 : 1 ≤ D` using `Nat.factorial_pos N`. Use `haveI : IsFractionRing (M.O z).toSubring Ω := inferInstanceAs (IsFractionRing (M.O z) Ω)`. Use `haveI : IsIntegrallyClosed (M.O z).toSubring := inferInstanceAs (IsIntegrallyClosed (M.O z))`. Use `haveI hcl : IsIntegrallyClosedIn (M.O z).toSubring Ω := (isIntegrallyClosed_iff_isIntegrallyClosedIn Ω).1 inferInstance`. Establish `h1 : ∀ a, c a ^ D / e ∈ M.O z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Establish `hmem : c a ^ D / e ∈ ⨅ V : {V : ValuationSubring Ω // (M.O z).toSubring ≤ V.toSubring}, V.1.toSubring`. Use `Subring.mem_iInf.2 fun V => ?_` and prove the remaining obligations. Use `pow_div_mem_of_esymm_pow_div_mem Ω V.1 (Fin N) c D e he (fun i hi1 hi2 => ?_) a` and prove the remaining obligations. Simplify using `only [Fintype.card_fin] at hi2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Nat.dvd_factorial hi1 hi2, V.2 ?_⟩` and prove the remaining obligations. Use `hdiv ⟨i - 1, by omega⟩` as an intermediate fact. Simplify using `only [symTup, Nat.sub_add_cancel hi1] at this`. Conclude with `this`. Rewrite `hmem` using `[← Subring.eq_iInf_of_isIntegrallyClosedIn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmem`. Use `haveI : IsLocalRing (M.O z).toSubring := inferInstanceAs (IsLocalRing (M.O z))`. Take `⟨a, ha, hea⟩` from `exists_esymm_pow_div_mem_of_isLocalRing Ω (M.O z).toSubring (Fin N) c D ((j : ℕ) + 1) e hD1 (by omega) (Nat.dvd_factorial (by omega) (by omega)) he rfl h1`. Use `⟨a, ha, fun b => ?_⟩` and prove the remaining obligations. Establish `hpow : (c b / c a) ^ D ∈ M.O z`.
-
-Establish `: (c b / c a) ^ D = (c b ^ D / e) * (e / c a ^ D)`. Rewrite using `[div_pow, div_mul_div_cancel₀ he]`. Rewrite using `[this]`. Conclude with `mul_mem (h1 b) hea`. Establish `hint : IsIntegral (M.O z) (c b / c a)` using `IsIntegral.of_pow (by omega) (isIntegral_algebraMap (R := M.O z) (x := ⟨_, hpow⟩))`.
-
-Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Conclude with `hy ▸ y.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasDiv_of_hasDiv_symTup : ∀ (k Ω : Type) [CommRing k] [Field Ω] [Algebra k Ω] (M : RatModel k Ω) (N : ℕ)
     (c : Fin N → Ω), Geo.Tor.IsNormalScheme M.Z → M.HasDiv (symTup c) → M.HasDiv c := by

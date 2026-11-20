@@ -15,11 +15,11 @@ section G1SpanProof
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Introduce `c hc`. Establish `key : s * t * ∏ k, y ⟨k, c k⟩ ^ (-(((n + m : ℕ) : ℤ) * a k)) = (s * ∏ k, y ⟨k, c k⟩ ^ (-((n : ℤ) * a k))) * (t * ∏ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * a k)))`. Establish `hp : ∏ k, y ⟨k, c k⟩ ^ (-(((n + m : ℕ) : ℤ) * a k)) = (∏ k, y ⟨k, c k⟩ ^ (-((n : ℤ) * a k))) * ∏ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * a k))`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← zpow_add₀ (hc k)]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `mul_mem (hs c hc) (ht c hc)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartLat_mul {y : (Σ k, ι k) → Ω} {a : K → ℤ} {n m : ℕ} {s t : Ω} (hs : s ∈ chartLat y a n)
     (ht : t ∈ chartLat y a m) : s * t ∈ chartLat y a (n + m) := by
@@ -40,7 +40,7 @@ theorem chartLat_mul {y : (Σ k, ι k) → Ω} {a : K → ℤ} {n m : ℕ} {s t 
   exact mul_mem (hs c hc) (ht c hc)
 
 /- English proof (translation)
-Introduce `dg dh g h' z hg hh hdeg he hz`. Use `(h dg dh g h' z hg hh hdeg he hz).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right hC (mul_nonneg (norm_nonneg _) (pow_nonneg (le_of_lt (A.pos z hz.1)) _))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBoundedH_mono {P : Ideal (MRing ι)} {y : (Σ k, ι k) → Ω} {A : HermLine ι} {τ : ℕ} {C C' : ℝ} {s : Ω}
     (h : IsBoundedH P y A τ C s) (hC : C ≤ C') : IsBoundedH P y A τ C' s := by
@@ -50,17 +50,17 @@ theorem isBoundedH_mono {P : Ideal (MRing ι)} {y : (Σ k, ι k) → Ω} {A : He
   exact mul_le_mul_of_nonneg_right hC (mul_nonneg (norm_nonneg _) (pow_nonneg (le_of_lt (A.pos z hz.1)) _))
 
 /- English proof (translation)
-Establish `step : ∀ {x' : Ω} {n' : ℕ} (j : Fin q), x' ∈ chartLat y A.a n' → IsBoundedH (mCoordIdeal y) y A n' C x' → x' * w j ∈ chartLat y A.a (n' + 1) ∧ IsBoundedH (mCoordIdeal y) y A (n' + 1) C (x' * w j)`. Introduce `x' n' j hx' hb'`. Use `⟨chartLat_mul hx' (hw j), ?_⟩` and prove the remaining obligations. Use `hMul K ι Ω y A n' 1 C 1 x' (w j) hx' (hw j) hb' (isBoundedH_one_of_isSmallH (hsmall j))` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hpow : ∀ (j : Fin q) (k : ℕ) {x' : Ω} {n' : ℕ}, x' ∈ chartLat y A.a n' → IsBoundedH (mCoordIdeal y) y A n' C x' → x' * w j ^ k ∈ chartLat y A.a (n' + k) ∧ IsBoundedH (mCoordIdeal y) y A (n' + k) C (x' * w j ^ k)`. Introduce `j k`. Proceed by induction on `k with`. Consider the case `zero => intro x' n' hx' hb'`. Simplify using `using ⟨hx', hb'⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ k ih`. Introduce `x' n' hx' hb'`. Take `⟨h1, h2⟩` from `ih hx' hb'`. Use `step j h1 h2` as an intermediate fact. Rewrite using `[pow_succ, ← mul_assoc, ← add_assoc]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hS : ∀ S : Finset (Fin q), x * ∏ j ∈ S, w j ^ μ j ∈ chartLat y A.a (n + ∑ j ∈ S, μ j) ∧ IsBoundedH (mCoordIdeal y) y A (n + ∑ j ∈ S, μ j) C (x * ∏ j ∈ S, w j ^ μ j)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using ⟨hx, hb⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert a S ha ih`. Take `⟨h1, h2⟩` from `hpow a (μ a) ih.1 ih.2`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Establish `e1 : x * (w a ^ μ a * ∏ j ∈ S, w j ^ μ j) = (x * ∏ j ∈ S, w j ^ μ j) * w a ^ μ a` using `by ring`. Establish `e2 : n + (μ a + ∑ j ∈ S, μ j) = n + ∑ j ∈ S, μ j + μ a` using `by ring`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Conclude with `⟨h1, h2⟩`. Conclude with `hS Finset.univ`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mul_monomial_bounded (hMul : SectionBoundedMul.Statement) {y : (Σ k, ι k) → Ω} {A : HermLine ι} {q : ℕ}
     {w : Fin q → Ω} (hw : ∀ j, w j ∈ chartLat y A.a 1)
@@ -103,7 +103,7 @@ theorem mul_monomial_bounded (hMul : SectionBoundedMul.Statement) {y : (Σ k, ι
   exact hS Finset.univ
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hV.2.1.2.2 k`. Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations. Use `show (X ⟨k, i⟩ : MRing ι) ∈ RingHom.ker (mConeMap y)`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[mConeMap, h0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coord_ne_zero {y : (Σ k, ι k) → Ω} {d : ℕ} (hV : IsArithVar (mCoordIdeal y) d) (k : K) :
     ∃ i, y ⟨k, i⟩ ≠ 0 := by
@@ -116,11 +116,11 @@ theorem exists_coord_ne_zero {y : (Σ k, ι k) → Ω} {d : ℕ} (hV : IsArithVa
 end G1SpanProof
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D A P0 _ hV _ hA`. Take `⟨q, w, hw, hgen, hsmall⟩` from `hA.gen`. Take `⟨r, d, e, he, hspan⟩` from `hFin K ι Ω y A.a q w (exists_coord_ne_zero hV) hw hgen`. Establish `hCe : ∀ i, ∃ C : ℝ, IsBoundedH (mCoordIdeal y) y A (d i) C (e i)` using `fun i => hBd K ι Ω y A q w hw hgen hsmall (d i) (e i) (he i)`. Use `choose Ce hCe using hCe`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ i, |Ce i|, fun n => le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.closure_le]`. Conclude with `fun s hs => hs.1`. Use `(hspan n).trans (AddSubgroup.closure_mono ?_)` and prove the remaining obligations. Introduce and unpack `s ⟨i, μ, hn, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `mul_monomial_bounded hMul hw hsmall (he i) (hCe i) μ`. Rewrite `h1`, `h2` using `[hn]`. Use `⟨h1, isBoundedH_mono h2 ?_⟩` and prove the remaining obligations. Conclude with `(le_abs_self _).trans (Finset.single_le_sum (f := fun i => |Ce i|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem SuccessiveMinimaSpan.proof (hFin : SectionRingFinite.Statement) (hBd : SectionBounded.Statement)
     (hMul : SectionBoundedMul.Statement) : SuccessiveMinimaSpan.Statement := by

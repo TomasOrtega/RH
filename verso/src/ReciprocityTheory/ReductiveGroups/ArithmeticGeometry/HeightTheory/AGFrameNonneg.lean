@@ -18,25 +18,23 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Establish `hespec` using `hd.a4.choose_spec`. Unfold `aG`. Use `Finset.sum_nonneg fun c _ => ?_` and prove the remaining obligations. Establish `hec : hd.a4.choose c ∈ 𝒜 c d.wF ∧ hd.a4.choose c ≠ 0` using `hespec.1 c`. Establish `hk : ∃ k, d.thp (hd.sel k) c ≠ 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Take `⟨q, hq, p, hp⟩` from `hespec.2.2 (fun _ => 1)`. Establish `e1` using `hp c`. Simplify using `only [mul_one] at e1`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hq c` to reduce the goal to its premises. Rewrite using `[e1]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hno k, ratio_eq_of_eq_smul hec.2 (zero_smul (Ω c) (hd.a4.choose c)).symm, map_zero, mul_zero]`. Take `⟨k, hk⟩` from `hk`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htm : d.thp (hd.sel k) c ∈ 𝒜 c d.wF` using `hd.thp_mem _ c`. Establish `hr` using `eq_ratio_smul_on_line d (hd := hd) htm hec.1 hec.2`. Establish `hr0 : ratio (Ω` using `Ω c) (d.thp (hd.sel k) c) (hd.a4.choose c) ≠ 0 := by`. Introduce `h0`. Apply `hk` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, h0, zero_smul]`. Establish `hthpmem : d.thp (hd.sel k) ∈ d.Thp`. Rewrite using `[hd.Thp_span]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Establish `hord : ∀ v, d.admitted c v → 0 ≤ d.ord c v d.wF (d.thp (hd.sel k) c)` using `fun v hv => hd.ord_nonneg_Thp c v hv _ hthpmem hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `x2` using `d.good_primes_properties hd h c`. Establish `hsplit : ∀ p ∈ d.HtOne, d.nP h c d.wF (d.thp (hd.sel k) c) p = d.nP h c d.wF (hd.a4.choose c) p + ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.GoodP c p), (d.fze h c w : ℤ) * WithTop.untopD 0 (d.Wres c w (ratio (Ω` using `Ω c) (d.thp (hd.sel k) c) (hd.a4.choose c))) := by`. Introduce `p hp`. Establish `e2` using `d.nP_smul hd h c hec.1 hec.2 hr0 hp`. Rewrite `e2` using `[← hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e2`. Establish `hkey` using `d.key_degree hd h c _ hr0`. Establish `hfe` using `x2.2.2.1 _ _ hec.1 hec.2`. Establish `hfm` using `d.use₈ hd h c _ hr0`. Establish `eq1 : (∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), d.nP h c d.wF (d.thp (hd.sel k) c) p * (d.dg (d.gen p) : ℤ)) = (∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), d.nP h c d.wF (hd.a4.choose c) p * (d.dg (d.gen p) : ℤ)) + ∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), …` using `Ω c) (d.thp (hd.sel k) c) (hd.a4.choose c)))) * (d.dg (d.gen p) : ℤ) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← finsum_mem_add_distrib' ?_ ?_]`. Conclude with `finsum_mem_congr rfl fun p hp => by rw [hsplit p hp, add_mul]`. Use `hfe.subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hne⟩`. Conclude with `⟨hp, fun h0 => hne (by simp [h0])⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `hfm.subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hne⟩`. Conclude with `⟨hp, fun h0 => hne (by simp [h0])⟩`. Establish `hnn : 0 ≤ ∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), d.nP h c d.wF (d.thp (hd.sel k) c) p * (d.dg (d.gen p) : ℤ)` using `finsum_nonneg fun p => finsum_nonneg fun hp => mul_nonneg (d.nP_nonneg hd h c hp _ _ hord) (Nat.cast_nonneg _)`. Rewrite `hnn` using `[eq1, hkey, add_zero]`.
-
-Conclude with `hnn`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aG_frame_nonneg (hd : d.AxH 𝒜) (h : d.S1) : 0 ≤ d.aG h d.wF hd.a4.choose := by
   classical

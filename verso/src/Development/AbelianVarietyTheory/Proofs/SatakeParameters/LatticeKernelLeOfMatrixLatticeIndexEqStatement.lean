@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DvdPowZeroIff
 open Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Hk3.HoweDuality.ker_le_of_latIdx_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FLatticeKernelLeOfMatrixLatticeIndexEq.lean&line=12#L12)
 -/

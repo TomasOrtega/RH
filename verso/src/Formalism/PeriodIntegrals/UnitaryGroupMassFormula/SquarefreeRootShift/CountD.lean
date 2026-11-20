@@ -9,21 +9,19 @@ namespace PI.SqfRootShift.W
 open PI.SqfLab
 
 /- English proof (translation)
-Take `⟨hlab, -, hneg⟩` from `hf`. Use `push Not at hneg`. Take `⟨ℓ, hℓ, -, x, hx, hxc⟩` from `hneg`. Establish `hf0 : f ≠ 0` using `hlab.1.ne_zero`. Establish `hxroot : aeval x f = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `rootsBar at hx`. Rewrite `hx` using `[mem_roots_map hf0]`. Rewrite using `[aeval_def]`. Conclude with `hx`. Establish `hint : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPd : 1 ≤ (minpoly (ZMod g) x).natDegree` using `minpoly.natDegree_pos hint`. Establish `hx0 : x ≠ 0`. Introduce `h0`. Rewrite `hxroot` using `[h0, aeval_def, eval₂_at_zero]`. Conclude with `hlab.2.2 ((_root_.map_eq_zero_iff _ (algebraMap (ZMod g) (Fbar g)).injective).1 hxroot)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix` using `frob_fix x`. Establish `hg2` using `(Fact.out : g.Prime).two_le`. Establish `hpos : 1 ≤ g ^ (minpoly (ZMod g) x).natDegree` using `Nat.one_le_pow _ _ (by omega)`. Establish `hgk : g ≤ g ^ (minpoly (ZMod g) x).natDegree` using `Nat.le_self_pow (by omega) g`. Establish `hxo : 0 < orderOf x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[orderOf_pos_iff, isOfFinOrder_iff_pow_eq_one]`. Use `⟨g ^ (minpoly (ZMod g) x).natDegree - 1, by omega, ?_⟩` and prove the remaining obligations. Establish `h2 : x ^ (g ^ (minpoly (ZMod g) x).natDegree - 1) * x = 1 * x`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hpos, hfix, one_mul]`. Conclude with `mul_right_cancel₀ hx0 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hco : 0 < orderOf (algebraMap (ZMod g) (Fbar g) (c : ZMod g))`. Rewrite using `[orderOf_pos_iff, isOfFinOrder_iff_pow_eq_one]`. Use `⟨g - 1, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, ZMod.pow_card_sub_one_eq_one c.ne_zero, map_one]`. Take `⟨j, hj⟩` from `ptp_eq_imp ℓ hℓ x _ hxo hco hxc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨minpoly (ZMod g) x, ⟨minpoly.monic hint, minpoly.irreducible hint, ℓ, hℓ, j, minpoly.dvd _ _ ?_⟩, minpoly.dvd _ _ hxroot, hPd, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, map_pow, aeval_X, aeval_C]`. Rewrite using `[hj, sub_self]`. Use `natDegree_le_of_dvd (minpoly.dvd _ _ hxroot) hf0` as an intermediate fact. Rewrite `this` using `[hlab.2.1]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eiii_factor {g : ℕ} [Fact g.Prime] {r : ℕ} (c : (ZMod g)ˣ) {f : (ZMod g)[X]}
     (hf : Eiii g r c f) :
@@ -66,21 +64,19 @@ theorem eiii_factor {g : ℕ} [Fact g.Prime] {r : ℕ} (c : (ZMod g)ˣ) {f : (ZM
     exact this
 
 /- English proof (translation)
-Introduce `g r _ hg hr c T hT`. Establish `hex : ∀ f ∈ T, ∃ P, Good c P ∧ P ∣ f ∧ 1 ≤ P.natDegree ∧ P.natDegree ≤ r` using `fun f hf => eiii_factor c (hT f hf)`. Use `choose! Pf hPf using hex`. Establish `hlab : ∀ f ∈ T, IsLab g r f` using `fun f hf => (hT f hf).1`. Establish `h1 : T.card ≤ ∑ P ∈ T.image Pf, g ^ (r - P.natDegree)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.card_eq_sum_card_image Pf T]`. Use `Finset.sum_le_sum (fun P hP => ?_)` and prove the remaining obligations. Take `⟨f0, hf0, rfl⟩` from `Finset.mem_image.1 hP`. Use `le_trans (Finset.card_le_card ?_) (count_mult r T hlab (Pf f0) (hPf f0 hf0).1.1)` and prove the remaining obligations. Introduce `f hf`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hf`, the goal using `[Finset.mem_filter]`. Conclude with `⟨hf.1, hf.2 ▸ (hPf f hf.1).2.1⟩`. Establish `hmaps : ∀ P ∈ T.image Pf, P.natDegree ∈ Finset.Icc 1 r`. Introduce `P hP`. Take `⟨f0, hf0, rfl⟩` from `Finset.mem_image.1 hP`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Finset.mem_Icc.2 ⟨(hPf f0 hf0).2.2.1, (hPf f0 hf0).2.2.2⟩`. Establish `h2 : ∑ P ∈ T.image Pf, g ^ (r - P.natDegree) = ∑ k ∈ Finset.Icc 1 r, ((T.image Pf).filter (fun P => P.natDegree = k)).card * g ^ (r - k)`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (fun P hP => by rw [(Finset.mem_filter.1 hP).2]), Finset.sum_const, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : ∀ k ∈ Finset.Icc 1 r, k * ((T.image Pf).filter (fun P => P.natDegree = k)).card ≤ ppSum (g ^ k - 1)`. Introduce `k hk`. Use `count_good c hg k (Finset.mem_Icc.1 hk).1 _ (fun P hP => ?_)` and prove the remaining obligations. Rewrite `hP` using `[Finset.mem_filter]`. Take `⟨f0, hf0, rfl⟩` from `Finset.mem_image.1 hP.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨(hPf f0 hf0).1, hP.2⟩`. Establish `h12 : (T.card : ℝ) ≤ ∑ k ∈ Finset.Icc 1 r, (((T.image Pf).filter (fun P => P.natDegree = k)).card : ℝ) * (g : ℝ) ^ (r - k)`. Use `h1.trans h2.le` as an intermediate fact. Conclude with `this` after adjusting the coercions. Use `h12.trans (Finset.sum_le_sum (fun k hk => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hk1 : (1 : ℝ) ≤ k` using `by exact_mod_cast (Finset.mem_Icc.1 hk).1`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (by linarith)]`. Use `h3 k hk` as an intermediate fact. Rewrite using `[mul_comm]`.
-
-Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countP : CountP := by
   intro g r _ hg hr c T hT

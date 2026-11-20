@@ -3,15 +3,15 @@ import Mathlib
 open Polynomial
 
 /- English proof (translation)
-Establish `h0 : (p : PowerSeries O).map (IsLocalRing.residue O) ≠ 0`. Take `⟨i, hi⟩` from `hp`. Introduce `h`. Apply `hi` to reduce the goal to its premises. Use `congrArg (PowerSeries.coeff i) h` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[PowerSeries.coeff_map, Polynomial.coeff_coe, map_zero, IsLocalRing.residue_eq_zero_iff]`. Then use the resulting hypothesis. Take `⟨g, h, hg, hh, e⟩` from `PowerSeries.exists_isWeierstrassFactorization h0`. Establish `hI : IsLocalRing.maximalIdeal O ≠ ⊤` using `(IsLocalRing.maximalIdeal.isMaximal O).ne_top`. Establish `hd` using `hg.isWeierstrassDivisorAt hI`. Establish `hn : (((g : PowerSeries O).map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O))).order.toNat) = g.natDegree`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hg.coe_natDegree_eq_order_map (g : PowerSeries O) 1 (by rwa [PowerSeries.constantCoeff_one, ← Ideal.ne_top_iff_one]) (by simp)]`. Simplify using the standard rewrite rules. Establish `hdeg : g.degree = g.natDegree` using `Polynomial.degree_eq_natDegree hg.monic.ne_zero`. Establish `e2` using `Polynomial.modByMonic_add_div p g`. Establish `key` using `hd.eq_of_mul_add_eq_mul_add (q := h) (q' := ((p /ₘ g : O[X]) : PowerSeries O)) (r := 0) (r' := p %ₘ g) (by rw [hn, Polynomial.degree_zero]; exact WithBot.bot_lt_coe _) (by rw [hn, ← hdeg]; exact Polynomial.degree_modByMonic_lt p hg.monic) (by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e, Polynomial.coe_zero, add_zero, ← Polynomial.coe_mul, ← Polynomial.coe_add, add_comm, e2])`. Use `⟨g, p /ₘ g, hg.monic, ?_, ?_⟩` and prove the remaining obligations. Use `PowerSeries.isUnit_iff_constantCoeff.1 hh` as an intermediate fact. Rewrite `this` using `[key.1]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `e2` using `[← key.2, zero_add]`. Conclude with `e2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.AlgebraicPointIntegral.factor {O : Type} [CommRing O] [IsLocalRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (p : O[X])
@@ -49,17 +49,15 @@ private theorem UpperTheory.Reformulated.B.AlgebraicPointIntegral.factor {O : Ty
     exact e2.symm
 
 /- English proof (translation)
-Introduce `O _ _ _ _ R _ _ _ K _ _ _ _ f a ha`. Take `⟨p, hp0, hp⟩` from `Algebra.IsAlgebraic.isAlgebraic (R := O) (f a)`. Take `⟨inst⟩ : Nonempty (NormalizedGCDMonoid O)` from `inferInstance`. Establish `h1 : aeval (f a) p.primPart = 0` using `aeval_primPart_eq_zero hp0 hp`. Establish `h2 : ∃ i, p.primPart.coeff i ∉ IsLocalRing.maximalIdeal O`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Apply `hϖ.not_isUnit` to reduce the goal to its premises. Apply `isPrimitive_iff_isUnit_of_C_dvd.1 p.isPrimitive_primPart` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[C_dvd_iff_dvd_coeff]`. Introduce `i`. Use `hc i` as an intermediate fact. Rewrite `this` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Then use the resulting hypothesis. Take `⟨g, q, hg, hq, e⟩` from `UpperTheory.Reformulated.B.AlgebraicPointIntegral.factor _ h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : IsUnit (aeval a q)`. Assume the negation of the conclusion as `hu`. Establish `hm : aeval a q ∈ IsLocalRing.maximalIdeal R` using `hu`. Establish `e3 : aeval a q = aeval a q.divX * a + algebraMap O R (q.coeff 0)` using `by conv_lhs => rw [← divX_mul_X_add q]`. Simplify using the standard rewrite rules.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[e3, Ideal.add_mem_iff_right _ (Ideal.mul_mem_left _ _ ha)]`. Conclude with `hm (hq.map _)`. Establish `h4 : aeval (f a) q ≠ 0`. Rewrite using `[aeval_algHom_apply]`. Conclude with `(h3.map f).ne_zero`.
-
-Rewrite `h1` using `[e, map_mul]`. Conclude with `⟨g, hg, (mul_eq_zero.1 h1).resolve_right h4⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.AlgebraicPointIntegral.algpt_int :
     ∀ {O : Type} [inst : CommRing O] [inst_1 : IsDomain O]

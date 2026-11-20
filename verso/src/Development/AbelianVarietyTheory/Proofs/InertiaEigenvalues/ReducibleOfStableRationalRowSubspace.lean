@@ -7,9 +7,9 @@ noncomputable section
 namespace GlobalTheory.PMon
 
 /- English proof (translation)
-Use extensionality with `j`. Use `conv_rhs => rw [← Finset.univ_sum_single v]`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, map_sum, Finsupp.coe_finset_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[show (Pi.single k (v k) : n → E) = v k • Pi.single k 1 by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext i; by_cases h : i = k <;> simp [h]]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecMul_repr_rows {E : Type} [Field E] {n : Type} [Fintype n] [DecidableEq n]
     (b : Module.Basis n E (n → E)) (v : n → E) :
@@ -23,7 +23,7 @@ theorem vecMul_repr_rows {E : Type} [Field E] {n : Type} [Fintype n] [DecidableE
   simp
 
 /- English proof (translation)
-Use extensionality with `j`. Use `conv_rhs => rw [← b.sum_repr v]`. Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecMul_rows_repr {E : Type} [Field E] {n : Type} [Fintype n] [DecidableEq n]
     (b : Module.Basis n E (n → E)) (v : n → E) :
@@ -36,47 +36,41 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `l _ n _ _ K r ρ hρ W hWE hWsm hWst hW0 hWtop`. Set `E : Subfield ↥(MaximalUnramifiedExtension l)` to `RingHom.eqLocusField (fr l r) (RingHom.id _)`. Set `ι : E →+* ↥(MaximalUnramifiedExtension l)` to `E.subtype`. Establish `hE : ∀ x : E, fr l r (x : ↥(MaximalUnramifiedExtension l)) = x` using `fun x => x.2`. Set `cv : (n → E) → (n → ↥(MaximalUnramifiedExtension l))` to `fun c i => (c i : ↥(MaximalUnramifiedExtension l))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `W' : Submodule E (n → E)` to `{ carrier := {c | cv c ∈ W} add_mem' := fun {c d} hc hd => by show cv (c + d) ∈ W`. Rewrite using `[show cv (c + d) = cv c + cv d from funext fun i => by simp [cv]]`. Conclude with `W.add_mem hc hd`. Use the proof step `zero_mem' := by show cv 0 ∈ W`. Rewrite using `[show cv 0 = 0 from funext fun i => by simp [cv]]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `W.zero_mem`. Use the proof step `smul_mem' := fun e c hc => by show cv (e • c) ∈ W`. Rewrite using `[show cv (e • c) = (e : ↥(MaximalUnramifiedExtension l)) • cv c from funext fun i => by simp [cv, smul_eq_mul]]`. Conclude with `hWsm (e : ↥(MaximalUnramifiedExtension l)) (hE e) _ hc }`. Establish `memW' : ∀ c, c ∈ W' ↔ cv c ∈ W` using `fun c => Iff.rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `lift : ∀ c : n → ↥(MaximalUnramifiedExtension l), (∀ i, fr l r (c i) = c i) → ∃ c' : n → E, cv c' = c` using `fun c hc => ⟨fun i => ⟨c i, hc i⟩, rfl⟩`. Establish `hW'0 : W' ≠ ⊥`. Choose the witnesses or unpack the hypotheses as in `⟨c, hcW, hc0⟩ : ∃ c ∈ W, c ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hW0 ((AddSubgroup.eq_bot_iff_forall W).2 h)`. Take `⟨c', rfl⟩` from `lift c (hWE c hcW)`. Introduce `h`. Establish `: c' ∈ W'` using `hcW`. Rewrite `this` using `[h, Submodule.mem_bot]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `hc0 (by subst this; rfl)`. Establish `hW'top : W' ≠ ⊤`. Take `⟨c, hcE, hcW⟩` from `hWtop`. Take `⟨c', rfl⟩` from `lift c hcE`. Introduce `h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hcW ((memW' c').1 (h ▸ Submodule.mem_top))`. Take `⟨S, hSW, hSspan, hSli⟩` from `exists_linearIndependent E (W' : Set (n → E))`. Establish `hSli' : LinearIndepOn E id S` using `hSli`. Set `B` to `Module.Basis.extend hSli'`. Set `e` to `B.indexEquiv (Pi.basisFun E n)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `b : Module.Basis n E (n → E)` to `B.reindex e`. Establish `hb : ∀ i, b i = ((e.symm i : _) : n → E)` using `fun i => by`. Rewrite using `[Module.Basis.reindex_apply]`. Conclude with `Module.Basis.extend_apply_self hSli' _`. Establish `hbS : ∀ x ∈ S, ∃ i, b i = x` using `fun x hx => ⟨e ⟨x, Module.Basis.subset_extend hSli' hx⟩, by simp [hb]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `s : Finset n` to `Finset.univ.filter fun i => b i ∉ S`. Establish `hs : ∀ i, i ∉ s ↔ b i ∈ S` using `fun i => by simp [s]`. Establish `hWspan : W' ≤ Submodule.span E (b '' ((s : Set n)ᶜ))` using `by conv_lhs => rw [← Submodule.span_eq W', ← hSspan]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, rfl⟩` from `hbS x hx`. Conclude with `⟨i, by simpa [hs] using hx, rfl⟩`. Establish `hsne : s.Nonempty`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Finset.not_nonempty_iff_eq_empty]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hW'top` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← b.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hSW ((hs i).1 (by simp [h]))`. Establish `hsuniv : s ≠ Finset.univ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `h`. Apply `hW'0` to reduce the goal to its premises. Establish `hS0 : S = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `hx`. Take `⟨i, rfl⟩` from `hbS x hx`. Conclude with `(hs i).2 hx (by simp [h])`. Rewrite using `[← Submodule.span_eq W', ← hSspan, hS0, Submodule.span_empty]`. Set `M : Matrix n n E` to `Matrix.of fun i j => b i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Set `N : Matrix n n E` to `Matrix.of fun k j => b.repr (Pi.single k 1) j`. Establish `hNM : N * M = 1`. Use `Matrix.ext fun k j => ?_` and prove the remaining obligations. Use `show Matrix.vecMul (b.repr (Pi.single k 1)) M j = _`. Rewrite using `[vecMul_rows_repr]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Establish `hMN : M * N = 1` using `mul_eq_one_comm.2 hNM`. Set `qE : GL n E` to `⟨M, N, hMN, hNM⟩`. Set `p : GL n ↥(MaximalUnramifiedExtension l)` to `(Matrix.GeneralLinearGroup.map ι qE)⁻¹`. Establish `hp : (p : Matrix n n ↥(MaximalUnramifiedExtension l)) = N.map ι` using `by show ((Matrix.GeneralLinearGroup.map ι qE)⁻¹ : GL n ↥(MaximalUnramifiedExtension l)).val = _`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion.
 
-Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Establish `hpinv : ((p⁻¹ : GL n ↥(MaximalUnramifiedExtension l)) : Matrix n n ↥(MaximalUnramifiedExtension l)) = M.map ι` using `by show ((Matrix.GeneralLinearGroup.map ι qE)⁻¹⁻¹ : GL n ↥(MaximalUnramifiedExtension l)).val = _`. Rewrite using `[inv_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `R : ↥(GK K) → Matrix n n E` to `fun g => Matrix.of fun i j => (⟨(ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)) i j, hρ.rat g i j⟩ : E)`. Establish `hR : ∀ g, ((ρ g : GL n ↥(MaximalUnramifiedExtension l)) : Matrix n n ↥(MaximalUnramifiedExtension l)) = (R g).map ι` using `fun g => by`. Use extensionality with `i j`. Both sides reduce to the same expression. Use `⟨s, p, hsne, hsuniv, fun i j => ?_, fun g i j hi hj => ?_⟩` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hp]`. Conclude with `hE (N i j)`. Rewrite using `[Units.val_mul, Units.val_mul, hpinv, hR, hp, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.map_apply]`. It suffices to establish `h : (M * R g * N) i j = 0 by rw [h, map_zero]`. Use `show Matrix.vecMul (Matrix.vecMul (b i) (R g)) N j = 0`.
-
-Rewrite using `[vecMul_repr_rows]`. Establish `hw : Matrix.vecMul (b i) (R g) ∈ W'`. Rewrite using `[memW']`. Establish `h1 : cv (b i) ∈ W` using `hSW ((hs i).1 hi)`. Establish `h2` using `hWst g _ h1`.
-
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Use `show ι (Matrix.vecMul (b i) (R g) k) = Matrix.vecMul (cv (b i)) (ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)) k`. Simplify using `only [Matrix.vecMul, dotProduct, map_sum, map_mul]`. Both sides reduce to the same expression.
-
-Use `(Module.Basis.mem_span_image b).1 (hWspan hw)` as an intermediate fact. Assume the negation of the conclusion as `hne`. Conclude with `this ((Finsupp.mem_support_iff).2 hne) (by simpa using hj)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem splits_of_stable_rat_subspace : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (r : ℕ) (ρ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)), IsRat r ρ → ∀ W : AddSubgroup (n → ↥(MaximalUnramifiedExtension l)), (∀ c ∈ W, ∀ i, fr l r (c i) = c i) → (∀ e : ↥(MaximalUnramifiedExtension l), fr l r e = e → ∀ c ∈ W, e • c ∈ W) → (∀ g, ∀ c ∈ W, Matrix.vecMul c (ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)) ∈ W) → W ≠ ⊥ → (∃ c : n → ↥(MaximalUnramifiedExtension l), (∀ i, fr l r (c i) = c i) ∧ c ∉ W) → Splits r ρ := by
   classical

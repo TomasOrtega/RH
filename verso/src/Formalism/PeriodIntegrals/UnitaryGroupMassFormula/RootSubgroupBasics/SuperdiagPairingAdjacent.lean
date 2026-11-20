@@ -9,21 +9,21 @@ namespace PI.AmpRootCommon
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isUpperTriangular hu]`. Simplify using `[hud]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_unitri {u : Matrix (Fin n) (Fin n) ℂ} (hu : u.BlockTriangular id) (hud : ∀ i, u i i = 1) :
     u.det = 1 := by
   rw [Matrix.det_of_isUpperTriangular hu]; simp [hud]
 
 /- English proof (translation)
-Rewrite using `[det_unitri hu hud]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_unitri {u : Matrix (Fin n) (Fin n) ℂ} (hu : u.BlockTriangular id) (hud : ∀ i, u i i = 1) :
     IsUnit u.det := by
   rw [det_unitri hu hud]; exact isUnit_one
 
 /- English proof (translation)
-Establish `: Invertible u` using `Matrix.invertibleOfIsUnitDet u (isUnit_unitri hu hud)`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hu`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inv_upper {u : Matrix (Fin n) (Fin n) ℂ} (hu : u.BlockTriangular id) (hud : ∀ i, u i i = 1) :
     u⁻¹.BlockTriangular id := by
@@ -31,19 +31,19 @@ theorem inv_upper {u : Matrix (Fin n) (Fin n) ℂ} (hu : u.BlockTriangular id) (
   exact Matrix.blockTriangular_inv_of_blockTriangular hu
 
 /- English proof (translation)
-Establish `hdet` using `isUnit_unitri hu hud`. Establish `hw` using `inv_upper hu hud`. Establish `hne : m1 ≠ m` using `fun e => by rw [e] at hm; omega`. Establish `h1 : (u⁻¹ * u) m1 m = 0`. Rewrite using `[Matrix.nonsing_inv_mul _ hdet, Matrix.one_apply, if_neg hne]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (u⁻¹ * u) m1 m1 = 1`. Rewrite using `[Matrix.nonsing_inv_mul _ hdet, Matrix.one_apply, if_pos rfl]`. Rewrite `h2` using `[Matrix.mul_apply, Finset.sum_eq_single m1]`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_add m1 m hne]`. Rewrite `h2`, `h1` using `[hud]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[mul_one]`. Rewrite `h1` using `[h2, one_mul]`. Take the linear combination `h1`. Introduce `c _ hc`. Distinguish the cases in `hlt : c.val < m1.val`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hw (show id c < id m1 from hlt), zero_mul]`. Establish `: m.val < c.val`. Establish `h3 : c.val ≠ m1.val` using `fun e => hc.1 (Fin.ext e)`. Establish `h4 : c.val ≠ m.val` using `fun e => hc.2 (Fin.ext e)`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hu (show id m < id c from this), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `b _ hb`. Distinguish the cases in `hlt : b.val < m1.val`. Rewrite using `[hw (show id b < id m1 from hlt), zero_mul]`. Establish `: m1.val < b.val`. Establish `h3 : b.val ≠ m1.val` using `fun e => hb (Fin.ext e)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hu (show id m1 < id b from this), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_superdiag {u : Matrix (Fin n) (Fin n) ℂ} (hu : u.BlockTriangular id) (hud : ∀ i, u i i = 1)
     (m1 m : Fin n) (hm : m1.val + 1 = m.val) : u⁻¹ m1 m = - u m1 m := by
@@ -84,39 +84,37 @@ section Rel
 variable {Z u u' : Matrix (Fin n) (Fin n) ℂ} {σ : Fin n → Fin n} {ζ : Fin n → ℂ}
 
 /- English proof (translation)
-Rewrite using `[hZ, if_neg hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Z_row (hZ : ∀ i j, Z i j = if j = σ i then ζ i else 0) (i b : Fin n) (hb : b ≠ σ i) : Z i b = 0 := by
   rw [hZ, if_neg hb]
 
 /- English proof (translation)
-Rewrite using `[hZ, if_neg]`. Introduce `e`. Apply `ha` to reduce the goal to its premises. Rewrite using `[e, hσ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Z_col (hσ : ∀ i, σ (σ i) = i) (hZ : ∀ i j, Z i j = if j = σ i then ζ i else 0) (a j : Fin n)
     (ha : a ≠ σ j) : Z a j = 0 := by
   rw [hZ, if_neg]; intro e; apply ha; rw [e, hσ]
 
 /- English proof (translation)
-Rewrite using `[hZ, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Z_at (hZ : ∀ i j, Z i j = if j = σ i then ζ i else 0) (i : Fin n) : Z i (σ i) = ζ i := by
   rw [hZ, if_pos rfl]
 
 /- English proof (translation)
-Rewrite using `[hZ, if_pos (hσ j).symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Z_at' (hσ : ∀ i, σ (σ i) = i) (hZ : ∀ i j, Z i j = if j = σ i then ζ i else 0) (j : Fin n) :
     Z (σ j) j = ζ (σ j) := by
   rw [hZ, if_pos (hσ j).symm]
 
 /- English proof (translation)
-Establish `hdet` using `isUnit_unitri hu hud`. Establish `hZu : Z * u' = (u⁻¹)ᴴ * Z`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hdet, Matrix.conjTranspose_one, Matrix.one_mul]`. Use `_ = (u⁻¹)ᴴ * (uᴴ * Z * u') := by simp only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = (u⁻¹)ᴴ * Z := by rw [hrel]`. Establish `h` using `congrFun (congrFun hZu i) j`. Rewrite `h` using `[Matrix.mul_apply, Matrix.mul_apply, Finset.sum_eq_single (σ i), Finset.sum_eq_single (σ j)]`. Rewrite `h` using `[Z_at hZ, Z_at' hσ hZ, Matrix.conjTranspose_apply]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _ ha`. Rewrite using `[Z_col hσ hZ a j ha, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `b _ hb`.
-
-Rewrite using `[Z_row hZ i b hb, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem relA (hσ : ∀ i, σ (σ i) = i) (hZ : ∀ i j, Z i j = if j = σ i then ζ i else 0)
     (hu : u.BlockTriangular id) (hud : ∀ i, u i i = 1) (hrel : uᴴ * Z * u' = Z) (i j : Fin n) :
@@ -137,11 +135,11 @@ theorem relA (hσ : ∀ i, σ (σ i) = i) (hZ : ∀ i j, Z i j = if j = σ i the
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hdet` using `isUnit_unitri hu' hud'`. Establish `hZu : uᴴ * Z = Z * u'⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `congrFun (congrFun hZu i) j`. Rewrite `h` using `[Matrix.mul_apply, Matrix.mul_apply, Finset.sum_eq_single (σ j), Finset.sum_eq_single (σ i)]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Z_at hZ, Z_at' hσ hZ, Matrix.conjTranspose_apply]`. Conclude with `h`. Introduce `b _ hb`. Rewrite using `[Z_row hZ i b hb, zero_mul]`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Introduce `a _ ha`. Rewrite using `[Z_col hσ hZ a j ha, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem relB (hσ : ∀ i, σ (σ i) = i) (hZ : ∀ i j, Z i j = if j = σ i then ζ i else 0)
     (hu' : u'.BlockTriangular id) (hud' : ∀ i, u' i i = 1) (hrel : uᴴ * Z * u' = Z) (i j : Fin n) :
@@ -161,7 +159,7 @@ theorem relB (hσ : ∀ i, σ (σ i) = i) (hZ : ∀ i j, Z i j = if j = σ i the
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `h` using `relA hσ hZ hu hud hrel (σ i) i1`. Rewrite `h` using `[hσ, inv_superdiag hu hud (σ i1) (σ i) h1, h2, star_neg]`. Apply `mul_left_cancel₀ (hζ (σ i))` to reduce the goal to its premises. Take the linear combination `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem super_same (hσ : ∀ i, σ (σ i) = i) (hZ : ∀ i j, Z i j = if j = σ i then ζ i else 0)
     (hζ : ∀ i, ζ i ≠ 0) (hu : u.BlockTriangular id) (hud : ∀ i, u i i = 1) (hrel : uᴴ * Z * u' = Z)
@@ -173,9 +171,9 @@ theorem super_same (hσ : ∀ i, σ (σ i) = i) (hZ : ∀ i j, Z i j = if j = σ
   linear_combination h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h` using `relA hσ hZ hu hud hrel (σ i) i1`. Rewrite `h` using `[hσ, inv_upper hu hud (show id (σ i) < id (σ i1) from hlt), star_zero, zero_mul]`. Conclude with `(mul_eq_zero.mp h).resolve_left (hζ _)`. Establish `h` using `relB hσ hZ hu' hud' hrel i1 (σ i)`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hσ, inv_upper hu' hud' (show id (σ i) < id (σ i1) from hlt), mul_zero]`. Use `(mul_eq_zero.mp h).resolve_right (hζ _)` as an intermediate fact. Conclude with `star_eq_zero.mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem super_diff (hσ : ∀ i, σ (σ i) = i) (hZ : ∀ i j, Z i j = if j = σ i then ζ i else 0)
     (hζ : ∀ i, ζ i ≠ 0) (hu : u.BlockTriangular id) (hud : ∀ i, u i i = 1)
@@ -201,35 +199,35 @@ def tau (σ : Fin (m + 1) → Fin (m + 1)) (i : Fin m) : Fin m :=
   else i
 
 /- English proof (translation)
-Simplify using `[tau, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tau_val {σ : Fin (m + 1) → Fin (m + 1)} {i : Fin m} (h : (σ i.succ).val + 1 = (σ i.castSucc).val) :
     (tau σ i).val = (σ i.succ).val := by
   simp [tau, h]
 
 /- English proof (translation)
-Simplify using `[tau, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tau_neg {σ : Fin (m + 1) → Fin (m + 1)} {i : Fin m} (h : ¬ (σ i.succ).val + 1 = (σ i.castSucc).val) :
     tau σ i = i := by
   simp [tau, h]
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[Fin.val_castSucc, tau_val h]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_cs {σ : Fin (m + 1) → Fin (m + 1)} {i : Fin m} (h : (σ i.succ).val + 1 = (σ i.castSucc).val) :
     (tau σ i).castSucc = σ i.succ := by
   apply Fin.ext; rw [Fin.val_castSucc, tau_val h]
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[Fin.val_succ, tau_val h, h]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_succ {σ : Fin (m + 1) → Fin (m + 1)} {i : Fin m} (h : (σ i.succ).val + 1 = (σ i.castSucc).val) :
     (tau σ i).succ = σ i.castSucc := by
   apply Fin.ext; rw [Fin.val_succ, tau_val h, h]
 
 /- English proof (translation)
-Rewrite using `[tau_succ h, tau_cs h, hσ, hσ, Fin.val_castSucc, Fin.val_succ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem superdiagPairing_adjacent {σ : Fin (m + 1) → Fin (m + 1)} (hσ : ∀ i, σ (σ i) = i) {i : Fin m}
     (h : (σ i.succ).val + 1 = (σ i.castSucc).val) :
@@ -237,7 +235,7 @@ theorem superdiagPairing_adjacent {σ : Fin (m + 1) → Fin (m + 1)} (hσ : ∀ 
   rw [tau_succ h, tau_cs h, hσ, hσ, Fin.val_castSucc, Fin.val_succ]
 
 /- English proof (translation)
-Introduce `i`. Distinguish the cases in `h : (σ i.succ).val + 1 = (σ i.castSucc).val`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[tau_val (superdiagPairing_adjacent hσ h), tau_succ h, hσ, Fin.val_castSucc]`. Rewrite using `[tau_neg h, tau_neg h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_invol {σ : Fin (m + 1) → Fin (m + 1)} (hσ : ∀ i, σ (σ i) = i) : Function.Involutive (tau σ) := by
   intro i
@@ -247,11 +245,11 @@ theorem tau_invol {σ : Fin (m + 1) → Fin (m + 1)} (hσ : ∀ i, σ (σ i) = i
   · rw [tau_neg h, tau_neg h]
 
 /- English proof (translation)
-Rewrite using `[star_sum]`. Establish `hterm : ∀ i : Fin m, u' i.castSucc i.succ = star (u (tau σ i).castSucc (tau σ i).succ)`. Introduce `i`. Break down `hadj i.castSucc i.succ (by simp) with ⟨h1, h2⟩ | hlt` into its components or cases. Rewrite using `[tau_cs h1, tau_succ h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `super_same hσ hZ hζ hu hud hrel _ _ h1 h2`. Establish `hn : ¬ (σ i.succ).val + 1 = (σ i.castSucc).val` using `by omega`. Rewrite using `[tau_neg hn]`. Take `⟨e1, e2⟩` from `super_diff hσ hZ hζ hu hud hu' hud' hrel _ _ hlt`. Rewrite using `[e1, e2, star_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun i _ => hterm i)]`. Conclude with `Equiv.sum_comp (Function.Involutive.toPerm (tau σ) (tau_invol hσ)) (fun i => star (u i.castSucc i.succ))`.
+A detailed English derivation is pending.
 -/
 theorem sum_super {Z u u' : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ} {σ : Fin (m + 1) → Fin (m + 1)}
     {ζ : Fin (m + 1) → ℂ} (hσ : ∀ i, σ (σ i) = i) (hZ : ∀ i j, Z i j = if j = σ i then ζ i else 0)

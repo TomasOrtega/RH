@@ -13,9 +13,9 @@ open GlobalTheory.ArchMetricCompare GlobalTheory.ConjUnif GlobalTheory.ConjTrans
 namespace GlobalTheory.ConjFlat
 
 /- English proof (translation)
-Use `h.1.hom_ext ?_ ?_` and prove the remaining obligations. Use `((Category.assoc _ _ _).trans ht).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (PolBaseChange.eSec_comm h).symm` and prove the remaining obligations. Rewrite using `[Hom.one_def]`. Simplify using `[eSec]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `z` using `congrArg (· ≫ A.hom) (isTangent_zero A)`. Rewrite using `[← z, Category.assoc, Category.assoc, Over.w, Over.w]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTangent_of_fibre {S : Scheme.{0}} {G : Over S} [GrpObj G] {y : Sp ℂ ⟶ S} {A : Over (Sp ℂ)} [GrpObj A]
     {ψ : A.left ⟶ G.left} (h : IsGrpPullback A G y ψ) {t : epsR ℂ ⟶ A}
@@ -29,13 +29,11 @@ theorem isTangent_of_fibre {S : Scheme.{0}} {G : Over S} [GrpObj G] {y : Sp ℂ 
     rw [← z, Category.assoc, Category.assoc, Over.w, Over.w]
 
 /- English proof (translation)
-Introduce `i`. Take `⟨t, ht, hd⟩` from `hV i`. Establish `tg : IsTangent t` using `isTangent_of_fibre h (by rw [ht]; exact hv i)`. Establish `w : (spMap (Chart.dualMapR (starRingEnd ℂ)) ≫ (show Sp (DualNumber ℂ) ⟶ _ from t.left)) ≫ A.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ cj`. Rewrite using `[Category.assoc, show (show Sp (DualNumber ℂ) ⟶ _ from t.left) ≫ A.hom = spMap (algebraMap ℂ (DualNumber ℂ)) from Over.w t, ← DetExtendZero.spMap_comp, ← DetExtendZero.spMap_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg spMap (RingHom.ext fun a => ?_)` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Set `t₁ : epsR ℂ ⟶ A₁` to `Over.homMk (hρ.1.lift _ _ w) (hρ.1.lift_snd _ _ _)`. Establish `e : t₁.left ≫ ρ = spMap (Chart.dualMapR (starRingEnd ℂ)) ≫ (show Sp (DualNumber ℂ) ⟶ _ from t.left)` using `hρ.1.lift_fst _ _ _`. Use `⟨t₁, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hψ, ← Category.assoc, e, h₁, ← ht]`. Conclude with `Category.assoc _ _ _`. Use `cj_isDiff hρ (pullId u) tg e hd` as an intermediate fact. Introduce `U hU f`. Simplify using `only [hx]`.
-
-Conclude with `this U hU f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isVecs_conj {S : Scheme.{0}} {G : Over S} [GrpObj G] {y y₁ : Sp ℂ ⟶ S} {A A₁ : Over (Sp ℂ)} [GrpObj A]
     [GrpObj A₁] {L : LB A.left} {L₁ : LB A₁.left} {ψ : A.left ⟶ G.left} (h : IsGrpPullback A G y ψ)
@@ -66,16 +64,16 @@ theorem isVecs_conj {S : Scheme.{0}} {G : Over S} [GrpObj G] {y y₁ : Sp ℂ �
     exact this U hU f
 
 /- English proof (translation)
-Rewrite using `[herm, herm, ← star_form, star_star, star_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_conj {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     herm (Hm.map star) (star z) (star w) = star (herm Hm z w) := by
   rw [herm, herm, ← star_form, star_star, star_star]
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `h`. Use `⟨fun k i => star (a k i), fun k i => ?_, ?_⟩` and prove the remaining obligations. Establish `e : star (x k) - ∑ m, star (a k m) • star (V m) = star (x k - ∑ m, a k m • V m)`. Simplify using `[star_sum]`. Rewrite using `[e, herm_conj, ha, star_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `((starRingEnd ℂ).map_det _).trans (congrArg Matrix.det ?_)` and prove the remaining obligations. Use extensionality with `k (j | i)`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Sum.elim_inl, herm_conj]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isWedgeCoord_conj {g p q : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} {V : Fin p → Fin g → ℂ} {W : Fin q → Fin g → ℂ}
     {x : Fin q ⊕ Fin p → Fin g → ℂ} {Δ : ℂ} (h : IsWedgeCoord Hm V W x Δ) :
@@ -94,11 +92,11 @@ theorem isWedgeCoord_conj {g p q : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} {V : F
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `h`. Establish `e : ∀ z, ((conjEquiv g).trans (φ.trans (conjEquiv g'))) z = star (φ (star z))` using `fun _ => rfl`. Use `⟨fun z => ?_, fun a z w hw => ?_, fun z w => ?_, fun a z hz => ?_, fun a z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[e, hΛ', star_star, h1, hΛ]`. Rewrite `hw` using `[hx, hx, ← cjPt_act]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, e, hx', hx', star_star, star_star, ← cjPt_act, h2 a _ _ (cjPt_injective m.cart hw)]`. Rewrite using `[e, e, herm_map_star, herm_map_star, star_star, star_star, h3]`. Rewrite `hz` using `[hx, ← cjPt_eta m]`. Rewrite using `[e, hx', star_star, h4 a _ (cjPt_injective m.cart hz), cjPt_eta]`. Rewrite `hz` using `[hx, ← cjPt_etaA m]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, hx', star_star, h5 a _ (cjPt_injective m.cart hz), cjPt_etaA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isTransport_to_conj {B : Type} [CommRing B] {b : Base l B} {s s₁ s' s₁' : Sp ℂ ⟶ Sp B} {o : Obj D l b s}
     {o₁ : Obj D l b s₁} {o' : Obj D l b s'} {o₁' : Obj D l b s₁'}
@@ -123,9 +121,7 @@ theorem isTransport_to_conj {B : Type} [CommRing B] {b : Base l B} {s s₁ s' s�
     rw [e, hx', star_star, h5 a _ (cjPt_injective m.cart hz), cjPt_etaA]
 
 /- English proof (translation)
-Take `⟨o₁, ⟨m⟩, -⟩` from `exists_conj_obj Xo c y o n`. Use `⟨o₁, m, ?_⟩` and prove the remaining obligations. Establish `a : ∀ f : Sp ℂ ⟶ Xo.X, f = cj ≫ y ≫ toX Xo c → ∃ k : ObjMap o₁ Xo.univ f, k.toSABMap.φ = m.toSABMap.φ ≫ n.toSABMap.φ`. Introduce and unpack `_ rfl`. Conclude with `ObjComp.objMap_comp n m`.
-
-Conclude with `a _ (Category.assoc _ _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_conj_fibre (Xo : Moduli D l) (c : Coeff l) (y : Sp ℂ ⟶ Xo.XF c)
     (o : Obj D l (baseKA l) (y ≫ toX Xo c ≫ Xo.s)) (n : ObjMap o Xo.univ (y ≫ toX Xo c)) :
@@ -146,13 +142,13 @@ namespace GlobalTheory
 open ConjFlat
 
 /- English proof (translation)
-Introduce `y y' v w v' w' hf hf' o o' n n' g g' u u' Hm Hm' κ κ' φ V W V' W' x Δ Δ' hA hA' hφ hV hW hV' hW' hΔ hΔ'`. Take `⟨o₁, m, k, hk⟩` from `exists_conj_fibre Xo c y o n`. Take `⟨o₁', m', k', hk'⟩` from `exists_conj_fibre Xo c y' o' n'`. Take `⟨u₁, κ₁, hA₁, hΛ, hx⟩` from `exists_unif m u hA`. Take `⟨u₁', κ₁', hA₁', hΛ', hx'⟩` from `exists_unif m' u' hA'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v₁, w₁, hf₁, a, b⟩` from `exists_pull (starRingEnd ℂ) hf (x' := cj ≫ y) rfl`. Take `⟨v₁', w₁', hf₁', a', b'⟩` from `exists_pull (starRingEnd ℂ) hf' (x' := cj ≫ y') rfl`. Apply the tactic sequence `have i1 : ∀ z : ℂ, Chart.dualMapR (starRingEnd ℂ) (algebraMap ℂ _ z) = algebraMap ℂ _ (starRingEnd ℂ z) := fun z => by ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `have i2 : Chart.dualMapR (starRingEnd ℂ) DualNumber.eps = DualNumber.eps := by ext <;> simp [Chart.dualMapR]`. Establish `s` using `hσ.1 ℂ ℂ _ _ _ _ _ _ v w v₁ w₁ i1 i2 hf hf₁ rfl a b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `s'` using `hσ.1 ℂ ℂ _ _ _ _ _ _ v' w' v₁' w₁' i1 i2 hf' hf₁' rfl a' b'`. Establish `q` using `h (cj ≫ y) (cj ≫ y') v₁ w₁ v₁' w₁' hf₁ hf₁' o₁ o₁' k k' g g' u₁ u₁' _ _ κ₁ κ₁' _ _ _ _ _ (fun i => star (x i)) (star Δ) (star Δ') hA₁ hA₁' (isTransport_to_conj m m' hΛ hx hΛ' hx' hφ) (isVecs_conj n.cart m.cart hk hx (fun i => (hf.2.2.1.1 i).1) a hV) (isVecs_conj n.cart m.cart hk …`. Use `isWedgeCoord_conj hΔ'` as an intermediate fact. Simplify `this)` using `only [LinearEquiv.trans_apply, conjEquiv_apply, star_star]`. Rewrite `q` using `[s, s']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(starRingEnd ℂ).injective ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `q`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFlatAt_of_conj (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (σ : RuleU Xo c)

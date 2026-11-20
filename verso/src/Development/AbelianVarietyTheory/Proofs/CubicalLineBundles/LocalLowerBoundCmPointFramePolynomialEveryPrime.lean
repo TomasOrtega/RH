@@ -35,7 +35,7 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 namespace GlobalTheory.LamT.LocClause
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `p.valuation_exists_uniformizer K`. Use `⟨π ^ FractionalIdeal.count K p I, (GlobalTheory.LamF.isLocGen_iff_valuation_eq p _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow₀, hπ, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_isLocGen {K : Type} [Field K] [NumberField K] (p : HeightOneSpectrum (𝓞 K))
     (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : ∃ c : K, IsLocGen p c I := by
@@ -45,7 +45,7 @@ theorem exists_isLocGen {K : Type} [Field K] [NumberField K] (p : HeightOneSpect
   simp
 
 /- English proof (translation)
-Unfold `evalFr`. Apply the tactic sequence `induction P using MvPolynomial.induction_on <;> simp_all`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_evalFr {B : Type} {m : B → ℕ} {R S : Type} [CommRing R] [CommRing S] (κ : R →+* S)
     (P : MvPolynomial (FrVar m) R) (Y : ∀ b, Matrix (Fin (m b)) (Fin (m b)) R) :
@@ -57,7 +57,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨-, -, pm, h₁, h₂, h₃⟩` from `h`. Use `⟨pm, h₁, h₂, fun i hi => Eq.trans (congrArg _ ?_) (h₃ i hi)⟩` and prove the remaining obligations. Establish `h1` using `((GlobalTheory.Frames.SecCalc.sec_calc E H Dw l Xo S S S (RingHom.id S) (RingHom.id S) y.x y.x y.x (by simp [spMap]) (by simp [spMap])).2.2.2 1 1 i).2.2`. Rewrite using `[h1, _root_.one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem secBC_one_of_frMap {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] {φ : S →ₐ[c.F] T}
     {y : FrPt Xo c S} {y' : FrPt Xo c T} (h : FrMap φ y y') : SecBC φ.toRingHom 1 y.x y'.x y.s y'.s := by
@@ -68,7 +68,7 @@ theorem secBC_one_of_frMap {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T
   rw [h1, _root_.one_mul]
 
 /- English proof (translation)
-Set `t : Ix Dw → Sˣ` to `fun i => i.elim s (fun _ => 1)`. Establish `hb : FrBor t y y'` using `((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c S y y' y').1 t).2 ⟨fun _ => 1, fun τ i j hij => Matrix.one_apply_ne hij.ne, fun τ i => by simp [t], h⟩`. Rewrite using `[(GlobalTheory.Frames.algebraic_laws GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c).2.2.2.2.2.2 S inferInstance a n F hF t y y' hb]`. Use `congr 1`. Simplify using `[wchar, Fintype.prod_option, t, ex]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem evR_scale {S : Type} [Field S] [Algebra c.F S] {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {F : Rul Xo c}
     (hF : F ∈ sec Xo c a n) (s : Sˣ) {y y' : FrPt Xo c S} (h : FrChg (fun _ => 1) (s : S) y y') :
@@ -81,7 +81,7 @@ theorem evR_scale {S : Type} [Field S] [Algebra c.F S] {a : (E →+* ℂ) × ℕ
   simp [wchar, Fintype.prod_option, t, ex]
 
 /- English proof (translation)
-Introduce `h`. Substitute `h` using the available equality. Conclude with `integral_of T io y`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem integral_of_eq (T : CDVR) (io : c.F →+* T.Fr) (y : letI := io.toAlgebra; FrPt Xo c T.Fr)
     {G : SAB H (Sp T.V)} {t' : SAB H (Sp T.Fr)} {x : Sp T.Fr ⟶ Xo.X} :
@@ -93,7 +93,7 @@ theorem integral_of_eq (T : CDVR) (io : c.F →+* T.Fr) (y : letI := io.toAlgebr
   exact integral_of T io y
 
 /- English proof (translation)
-Substitute `e e'` using the available equality. Conclude with `GlobalTheory.T.integral_generator_baseChange_valuationRing E H Dw l Xo T T' ψ i hψ _ _ G G' t t' m1 m2 m1' m2' n n' hx h1 h2 s s' hs h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem secInt_baseChange (T T' : CDVR) (ψ : T.V →+* T'.V) (i : T.Fr →+* T'.Fr)
     (hψ : (algebraMap T'.V T'.Fr).comp ψ = i.comp (algebraMap T.V T.Fr))
@@ -108,15 +108,15 @@ theorem secInt_baseChange (T T' : CDVR) (ψ : T.V →+* T'.V) (i : T.Fr →+* T'
   exact GlobalTheory.T.integral_generator_baseChange_valuationRing E H Dw l Xo T T' ψ i hψ _ _ G G' t t' m1 m2 m1' m2' n n' hx h1 h2 s s' hs h
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Use `letI := (i.comp io).toAlgebra`. Introduce `iA y y' w X hi hy hL hS hm hX hw`. Take `⟨M', n, n', h1, h2⟩` from `(GlobalTheory.T.exists_cmPoint_localModel_over_dvr E H Dw l Xo c z T iK).2 M T' ψ i hψ`. Establish `hx : spMap (i.comp iK) ≫ z.x = spMap i ≫ spMap iK ≫ z.x`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp, Category.assoc]`. Establish `hy' : y'.x = spMap (i.comp iK) ≫ z.x` using `by rw [hm.1, hi, hy, hx]`. Establish `hL' : LieInt T' (i.comp io) M'.m1 M'.m2 y'.u`. Use `GlobalTheory.T.integral_eigenbasis_baseChange_dvr E H Dw l Xo c T T' ψ i hψ _ _ M.G M'.G M.t'.t M'.t'.t M.m1 M.m2 M'.m1 M'.m2 n n' hx h1 h2 io y.u hL` as an intermediate fact. Establish `hu : y'.u = fun τ k => spMap (Formalism.L2.Pj.dualMap i) ≫ y.u τ k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ k`. Rewrite using `[hm.2.1 τ k, hi]`. Rewrite using `[hu]`. Conclude with `this`. Establish `hLw : LieInt T' (i.comp io) M'.m1 M'.m2 w.u` using `(GlobalTheory.T.exists_integralEigenbasis_of_frame_at_localModel E H Dw l Xo c T' (i.comp io) M'.G.t M'.t'.t _ M'.m1 M'.m2 y' hy').2 hL' X 1 w hX hw`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1 : SecBC i 1 y.x y'.x y.s y'.s`. Use `secBC_one_of_frMap hm` as an intermediate fact. Rewrite `this` using `[hi]`. Then use the resulting hypothesis. Establish `hs2 : SecBC i 1 y.x w.x y.s w.s`. Use `((GlobalTheory.Frames.SecCalc.sec_calc E H Dw l Xo _ _ _ i (RingHom.id _) y.x y'.x w.x (by rw [hm.1, hi]) (by rw [hw.1]; simp [spMap])).1 1 _ _ _ hs1).1 hw.2.2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[RingHom.id_comp]`. Then use the resulting hypothesis. Establish `hwx : w.x = spMap (i.comp iK) ≫ z.x` using `hw.1.trans hy'`. Conclude with `integral_of_eq T' (i.comp io) w hwx M'.m1 M'.m2 hLw (secInt_baseChange T T' ψ i hψ M.m1 M.m2 M'.m1 M'.m2 n n' hx h1 h2 hy hwx _ _ hs2 hS)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_baseChange_chg [StarRing (𝓞 E)] (z : CMPt Xo c) (T T' : CDVR) (iK : z.K →+* T.Fr)
     (M : LocMod z T iK) (ψ : T.V →+* T'.V) (i : T.Fr →+* T'.Fr)
@@ -157,9 +157,9 @@ theorem integral_baseChange_chg [StarRing (𝓞 E)] (z : CMPt Xo c) (T T' : CDVR
     (secInt_baseChange T T' ψ i hψ M.m1 M.m2 M'.m1 M'.m2 n n' hx h1 h2 hy hwx _ _ hs2 hS)
 
 /- English proof (translation)
-Establish `hYt : ∀ b, IsUnit ((Y b).transpose).det` using `fun b => by rw [Matrix.det_transpose]; exact hY b`. Take `⟨w₀, hw₀, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c S y (fun b => (Y b).transpose) 1 hYt`. Take `⟨w₁, hw₁, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c S w₀ (fun _ => 1) (Units.mk0 s hs) (fun _ => by simp)`. Establish `c1` using `(GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c S y w₀ w₁).2 _ _ _ _ hw₀ hw₁`. Establish `c2` using `(GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c S y y' w).2 _ _ _ _ h hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : w₁ = w`. Use `(GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c S y (fun b => (Y b).transpose) (Units.mk0 s hs) hYt).unique ?_ ?_` and prove the remaining obligations. Simplify using `using c1`. Simplify `c2` using `[hXY]`. Rewrite using `[← e, evR_scale hF _ hw₁, hG S φ y w₀ Y hY hy hw₀]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -185,35 +185,33 @@ theorem evR_chg {K S : Type} [Field K] [Algebra c.F K] [Field S] [Algebra c.F S]
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ z f La hz a n F hF hv G hG p`. Take `⟨ca, hca⟩` from `exists_isLocGen p z.Tl.I`. Take `⟨cd, hcd⟩` from `exists_isLocGen p z.LamL.I`. Use `choose cl hcl using fun j => exists_isLocGen p (z.ℓ j).I`. Use `⟨ca⁻¹, cd, cl, isLocGen_inv hca, hcd, hcl, GlobalTheory.LamF.letters_det_valuation_le E H l c _ _ f z.obj La hz.1 z.letters hz.2.1 p cd cl hcd hcl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨T, iK, hT, hiK⟩` from `GlobalTheory.T.exists_completeDVR_completion_integral_iff z.K p`. Take `⟨M⟩` from `(GlobalTheory.T.exists_cmPoint_localModel_over_dvr E H Dw l Xo c z T iK).1 fun a => (hiK _).2 (p.valuation_le_one a)`. Set `io : c.F →+* T.Fr` to `iK.comp (algebraMap c.F z.K)`. Use `letI := io.toAlgebra`. Set `φ : z.K →ₐ[c.F] T.Fr` to `{ iK with commutes' := fun _ => rfl }`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨yT, hyT⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c _ _ φ z.y`. Establish `hyx : yT.x = spMap iK ≫ z.x` using `by rw [hyT.1, hz.2.2.2.1]`. Take `⟨g, hg, hgL⟩` from `(GlobalTheory.T.exists_integralEigenbasis_of_frame_at_localModel E H Dw l Xo c T io M.G.t M.t'.t _ M.m1 M.m2 yT hyx).1`. Take `⟨s, hsS⟩` from `GlobalTheory.T.exists_unit_integral_generator_principal_local_model E H Dw l Xo c T io M.G M.t'.t _ M.m1 M.m2 yT hyx`. Take `⟨y', hy', -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c T.Fr yT g s hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL` using `hgL _ _ hy'`. Establish `hS` using `hsS _ _ hy'`. Take `⟨u, hu⟩` from `GlobalTheory.T.integralGenerator_associated_localGenerator_CM_line E H Dw l Xo c z f La hz p T iK M hiK φ yT y' g s rfl hyT hy' hS ca hca`. Use `⟨T.V, T.Fr, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, iK, fun b => (g b)⁻¹, inferInstance, hT, hiK, fun b => (Matrix.isUnit_nonsing_inv_det _ (hg b)).ne_zero, fun b j k => GlobalTheory.T.lieLetter_integral_in_integral_eigenbasis E H …` and prove the remaining obligations. Introduce `W KW _ _ _ _ _ _ _ fW hW hWf _ hfW Y X hX hXY`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (algebraMap T.V W)`. Introduce `x y h`. Apply `IsFractionRing.injective T.V T.Fr` to reduce the goal to its premises. Apply `fW.injective` to reduce the goal to its premises. Rewrite using `[hfW, hfW, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI : CharZero W := charZero_of_injective_ringHom hinj`. Set `T' : CDVR` to `⟨W⟩`. Set `κ : KW →+* T'.Fr` to `((FractionRing.algEquiv W KW).symm : KW ≃ₐ[W] FractionRing W).toRingEquiv.toRingHom`. Establish `hκ : ∀ w : W, κ (algebraMap W KW w) = algebraMap T'.V T'.Fr w` using `fun w => (FractionRing.algEquiv W KW).symm.commutes w`. Set `i : T.Fr →+* T'.Fr` to `κ.comp fW`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hψ : (algebraMap T'.V T'.Fr).comp (algebraMap T.V W) = i.comp (algebraMap T.V T.Fr)`. Use extensionality with `x`. Use `show _ = κ (fW _)`. Rewrite using `[hfW, hκ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `letI := (i.comp io).toAlgebra`. Set `iA : T.Fr →ₐ[c.F] T'.Fr` to `{ i with commutes' := fun _ => rfl }`. Take `⟨yW, hyW⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c _ _ iA yT`. Take `⟨y'', hy''⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c _ _ iA y'`. Establish `hc` using `(GlobalTheory.Frames.ChgBC.frChg_baseChange E H Dw l Xo c _ _ iA yT y' yW y'' g s hy' hyW).1 hy''`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hXt : ∀ b, IsUnit ((X b).transpose : Matrix _ _ T'.V).det` using `fun b => by`. Rewrite using `[Matrix.det_transpose]`. Conclude with `hX b`. Establish `hXu : ∀ b, IsUnit (((X b).transpose : Matrix _ _ T'.V).map (algebraMap T'.V T'.Fr)).det` using `fun b => by`. Use `(hXt b).map (algebraMap T'.V T'.Fr)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Take `⟨w, hw, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c T'.Fr y'' _ 1 hXu`. Establish `hint` using `integral_baseChange_chg z T T' iK M (algebraMap T.V W) i hψ io iA y' y'' w (fun b => (X b).transpose) rfl (hy'.1.trans hyx) hL hS hy'' hXt hw`. Take `⟨w₀, hw₀⟩` from `GlobalTheory.T.ruleValue_integral_of_supLattice_values_nonneg E H Dw l Xo c F hv T' (i.comp io) hWf w hint`. Establish `hYX : ∀ b, (Y b).transpose = ((X b).map (algebraMap W KW)).transpose * (g b).map fW` using `fun b => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hXY b, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ (hg b)]`. Simplify using the standard rewrite rules. Establish `hYX' : ∀ b, ((Y b).map κ).transpose = ((X b).transpose : Matrix _ _ T'.V).map (algebraMap T'.V T'.Fr) * (g b).map iA` using `fun b => by`. Rewrite using `[← Matrix.transpose_map, hYX b, Matrix.map_mul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `j k`. Conclude with `hκ _`. Establish `hYu : ∀ b, IsUnit ((Y b).map κ).det` using `fun b => by`. Rewrite using `[← Matrix.det_transpose, hYX' b, Matrix.det_mul]`. Use `(hXu b).mul ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hg b).map i` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Establish `hval` using `evR_chg hF hG (iA.comp φ) (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans φ iA hyT hyW) ((map_ne_zero iA).2 s.ne_zero) hYu hYX' hc hw`. Use `⟨algebraMap T.V W ↑u⁻¹ ^ n * w₀, κ.injective ?_⟩` and prove the remaining obligations. Establish `hP : MvPolynomial.map κ (MvPolynomial.map fW (MvPolynomial.map iK G)) = MvPolynomial.map (iA.comp φ).toRingHom G`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.map_map, MvPolynomial.map_map]`. Both sides reduce to the same expression. Establish `hsn : (iA s : T'.Fr) ≠ 0` using `(map_ne_zero iA).2 s.ne_zero`. Establish `hu' : κ (fW (iK ca⁻¹)) * κ (algebraMap W KW (algebraMap T.V W ↑u⁻¹)) * iA s = 1`. Rewrite using `[← hfW]`.
-
-Use `show i _ * i _ * i _ = 1`. Rewrite using `[← map_mul, ← map_mul, hu, map_inv₀, _root_.mul_mul_mul_comm, inv_mul_cancel₀ ((map_ne_zero iK).2 hca.1), ← map_mul, Units.inv_mul, map_one, _root_.one_mul, map_one]`. Rewrite using `[map_evalFr, hP]`. Simplify using `only [map_mul, map_pow]`. Rewrite using `[hκ w₀, hw₀, hval, ← _root_.mul_assoc, ← _root_.mul_assoc, ← mul_pow, ← mul_pow, hu', one_pow, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step5Loc_cmPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ F ∈ sec Xo c a n, (∀ la, ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v F) → ∀ G : MvPolynomial (FrVar Dw.mult) z.K, IsFrPoly F z.y G → ∀ p, Step5Loc z.e z.Tl.dual z.LamL z.ℓ z.U G n p := by
   intro E _ _ _ H Dw l Xo c _ z f La hz a n F hF hv G hG p

@@ -8,11 +8,11 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL
 
 /- English proof (translation)
-Establish `hd : ∀ p ∈ Z, ((Z.filter (r p)).card : ℂ) ≠ 0`. Introduce `p hp`. Take `⟨q, hq, hpq⟩` from `hne p hp`. Conclude with `(Finset.card_pos.2 ⟨q, Finset.mem_filter.2 ⟨hq, hpq⟩⟩).ne'` after adjusting the coercions. Establish `key : ∀ F : ι → ℂ, ∑ p ∈ Z, F p = ∑ p ∈ Z, ∑ q ∈ Z, if r p q then F p / ((Z.filter (r p)).card : ℂ) else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, mul_div_cancel₀ _ (hd p hp)]`. Rewrite using `[key F, key H, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q hq => Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : r p q`. Rewrite using `[if_pos h, if_pos (hr _ _ h), div_eq_div_iff (hd p hp) (hd q hq), hFH p hp q hq h]`. Rewrite using `[if_neg h, if_neg (fun h' => h (hr _ _ h'))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_eq_sum_of_symm_rel {ι : Type*} (Z : Finset ι) (r : ι → ι → Prop)
     (hr : ∀ p q, r p q → r q p) (hne : ∀ p ∈ Z, ∃ q ∈ Z, r p q) (F H : ι → ℂ)
@@ -38,11 +38,11 @@ section
 variable {G X : Type} [Group G] [MulAction G X] (St : Subgroup G)
 
 /- English proof (translation)
-Establish `h1 : {w' | ∃ h ∈ St, h • y = y ∧ h • w = w'} = MulAction.orbit (St ⊓ MulAction.stabilizer G y : Subgroup G) w`. Use extensionality with `w'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h1, h2, h3⟩`. Conclude with `⟨⟨h, h1, h2⟩, h3⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨h, h1, h2⟩, h3⟩`. Conclude with `⟨h, h1, h2, h3⟩`. Rewrite using `[h1, ← MulAction.index_stabilizer, Subgroup.relIndex]`. Use `congr 1`. Use extensionality with `⟨h, h1, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [MulAction.mem_stabilizer_iff, Subgroup.mem_subgroupOf, Subgroup.mem_inf]`. Conclude with `⟨fun h3 => ⟨h1, h3⟩, fun h3 => h3.2⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem ncard_stabilizer_orbit (y w : X) :
     {w' | ∃ h ∈ St, h • y = y ∧ h • w = w'}.ncard =
@@ -62,11 +62,11 @@ theorem ncard_stabilizer_orbit (y w : X) :
   exact ⟨fun h3 => ⟨h1, h3⟩, fun h3 => h3.2⟩
 
 /- English proof (translation)
-Rewrite using `[← ncard_stabilizer_orbit, ← ncard_stabilizer_orbit, ← Set.ncard_image_of_injective {w' | ∃ h ∈ St, h • y = y ∧ h • w = w'} (MulAction.injective g)]`. Use `congr 1`. Use extensionality with `w'`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h, hh, h1, h2⟩`. Use `⟨_, ⟨g⁻¹ * h * g, St.mul_mem (St.mul_mem (St.inv_mem hg) hh) hg, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, mul_smul, h1, inv_smul_smul]`. Rewrite using `[mul_smul, mul_smul, h2, smul_inv_smul]`. Introduce and unpack `⟨_, ⟨h, hh, h1, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨g * h * g⁻¹, St.mul_mem (St.mul_mem hg hh) (St.inv_mem hg), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, mul_smul, inv_smul_smul, h1]`. Rewrite using `[mul_smul, mul_smul, inv_smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_stabilizer_smul {g : G} (hg : g ∈ St) (y w : X) :
     (St ⊓ MulAction.stabilizer G (g • w)).relIndex (St ⊓ MulAction.stabilizer G (g • y)) =
@@ -87,9 +87,9 @@ theorem relIndex_stabilizer_smul {g : G} (hg : g ∈ St) (y w : X) :
     · rw [mul_smul, mul_smul, inv_smul_smul]
 
 /- English proof (translation)
-Establish `h1 : K0.relIndex (A ⊓ B) ≠ 0` using `fun h => hA (Subgroup.relIndex_eq_zero_of_le_right inf_le_left h)`. Establish `h2 : (A ⊓ B).relIndex K0 ≠ 0` using `Subgroup.relIndex_inf_ne_zero hA' hB'`. Establish `e1` using `(invVol_mul_pos_le_conj K0 A (A ⊓ B) hA hA' h1 h2).2.2.1 inf_le_left`. Establish `e2` using `(invVol_mul_pos_le_conj K0 B (A ⊓ B) hB hB' h1 h2).2.2.1 inf_le_right`. Rewrite `e1` using `[Subgroup.inf_relIndex_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[Subgroup.inf_relIndex_right]`. Rewrite using `[← e1, ← e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem invVol_mul_relIndex_comm {G : Type} [Group G] (K0 A B : Subgroup G)
     (hA : K0.relIndex A ≠ 0) (hA' : A.relIndex K0 ≠ 0)
@@ -107,53 +107,51 @@ theorem invVol_mul_relIndex_comm {G : Type} [Group G] (K0 A B : Subgroup G)
 end
 
 /- English proof (translation)
-Introduce `G X _ _ St K0 P om m e _ hinv hP hfin`. Use `set mu : X → ℝ := fun x => invVol K0 (St ⊓ MulAction.stabilizer G x) with hmu`. Establish `hN : ∀ x, ∃ s : Finset X, P x → ∀ y, y ∈ s ↔ P y ∧ m x y ≠ 0`. Introduce `x`. Distinguish the cases in `hx : P x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨(hP x hx).2.2.2.1.toFinset, fun _ y => by simp⟩`. Conclude with `⟨∅, fun h => absurd h hx⟩`. Use `choose N hN using hN`. Establish `hO : ∀ o, o ∈ hfin.toFinset ↔ P o.out` using `fun o => by simp`. Generalize the expression as in `hfin.toFinset = O at hO`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR : ∀ x, P x → |(∑ y ∈ N x, m x y) - 1| ≤ e`. Introduce `x hx`. Use `(hP x hx).2.2.2.2.2.1` as an intermediate fact. Rewrite `this` using `[finsum_subtype_eq_finsum_cond (f := fun y => m x y), finsum_cond_eq_sum_of_cond_iff (f := fun y => m x y) (t := N x)]`. Then use the resulting hypothesis. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hN x hx]`. Conclude with `⟨fun h => ⟨h, hy⟩, fun h => h.1⟩`. Establish `hS : ∀ x, P x → ‖∑ y ∈ N x, (m x y : ℂ) * om y‖ ≤ e`. Introduce `x hx`. Use `(hP x hx).2.2.2.2.2.2` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[finsum_subtype_eq_finsum_cond (f := fun y => (m x y : ℂ) * om y), finsum_cond_eq_sum_of_cond_iff (f := fun y => (m x y : ℂ) * om y) (t := N x)]`. Then use the resulting hypothesis. Introduce `y hy`. Rewrite using `[hN x hx]`. Use `⟨fun h => ⟨h, fun h0 => hy ?_⟩, fun h => h.1⟩` and prove the remaining obligations. Simplify using `[h0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : ∀ x, P x → 0 < mu x` using `fun x hx => (invVol_mul_pos_le_conj K0 _ _ (hP x hx).1 (hP x hx).2.1 (hP x hx).1 (hP x hx).2.1).2.1`. Establish `t1 : (∑' o : MulAction.orbitRel.Quotient St X, if P o.out then ((mu o.out : ℝ) : ℂ) * om o.out else 0) = ∑ o ∈ O, ((mu o.out : ℝ) : ℂ) * om o.out`. Rewrite using `[tsum_eq_sum (s := O) (fun o ho => if_neg (fun h => ho ((hO o).2 h)))]`. Conclude with `Finset.sum_congr rfl fun o ho => if_pos ((hO o).1 ho)`. Establish `t2 : (∑' o : MulAction.orbitRel.Quotient St X, if P o.out then mu o.out else 0) = ∑ o ∈ O, mu o.out`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[tsum_eq_sum (s := O) (fun o ho => if_neg (fun h => ho ((hO o).2 h)))]`. Conclude with `Finset.sum_congr rfl fun o ho => if_pos ((hO o).1 ho)`. Use `(congrArg norm t1).trans_le (le_of_le_of_eq ?_ (congrArg (2 * e * ·) t2.symm))` and prove the remaining obligations. Establish `huniq : ∀ (o o' : MulAction.orbitRel.Quotient St X) (g : G), g ∈ St → g • o.out = o'.out → o = o'`. Introduce `o o' g hg h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Quotient.out_eq o, ← Quotient.out_eq o']`. Conclude with `(Quotient.sound (show MulAction.orbitRel St X o'.out o.out from ⟨⟨g, hg⟩, h⟩)).symm`. Establish `hrep : ∀ z : X, ∃ o : MulAction.orbitRel.Quotient St X, ∃ g ∈ St, g • z = o.out`. Introduce `z`. Take `⟨⟨g, hg⟩, h⟩ : MulAction.orbitRel St X (Quotient.mk _ z).out z` from `Quotient.mk_out z`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, g, hg, h⟩`. Establish `unf : ∑ o ∈ O, ∑ z ∈ N o.out, ((mu o.out : ℝ) : ℂ) * ((m o.out z : ℂ) * om z) = ∑ o ∈ O, ∑ z ∈ N o.out, ((mu o.out : ℝ) : ℂ) * ((m o.out z : ℂ) * om o.out)`. Rewrite using `[Finset.sum_sigma', Finset.sum_sigma']`. Use `set Z := O.sigma fun o => N o.out with hZ`. Establish `mZ : ∀ p, p ∈ Z ↔ P p.1.out ∧ P p.2 ∧ m p.1.out p.2 ≠ 0`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `p`. Rewrite using `[hZ, Finset.mem_sigma, hO]`. Conclude with `and_congr_right fun h => hN _ h _`. Set `r : (Σ _ : MulAction.orbitRel.Quotient St X, X) → (Σ _ : MulAction.orbitRel.Quotient St X, X) → Prop` to `fun p q => ∃ g ∈ St, g • p.2 = q.1.out ∧ g • p.1.out = q.2`. Establish `hr : ∀ p q, r p q → r q p`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `p q ⟨g, hg, h1, h2⟩`. Conclude with `⟨g⁻¹, St.inv_mem hg, by rw [← h2, inv_smul_smul], by rw [← h1, inv_smul_smul]⟩`. Establish `hm : ∀ p ∈ Z, ∀ q, r p q → m q.1.out q.2 = m p.1.out p.2`. Introduce and unpack `p hp q ⟨g, hg, h1, h2⟩`. Take `⟨a, b, -⟩` from `(mZ p).1 hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, ← h2, (hinv g hg _ b).2.2.2 _ a, ((hP _ b).2.2.2.2.1 _ a).2]`. Establish `hmem : ∀ p ∈ Z, ∀ q, r p q → q ∈ Z`. Introduce `p hp q hpq`. Use `hm p hp q hpq` as an intermediate fact. Take `⟨g, hg, h1, h2⟩` from `hpq`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, c⟩` from `(mZ p).1 hp`. Rewrite using `[mZ, this, ← h1, ← h2]`. Conclude with `⟨(hinv g hg _ b).1, (hinv g hg _ a).1, c⟩`. Establish `hdeg : ∀ p ∈ Z, ∀ q, r p q → (Z.filter (r p)).card = (St ⊓ MulAction.stabilizer G q.2).relIndex (St ⊓ MulAction.stabilizer G q.1.out)`. Introduce and unpack `p hp ⟨o, w⟩ ⟨g, hg, h1, h2⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only at h1 h2 ⊢`. Rewrite using `[← ncard_stabilizer_orbit, ← Set.ncard_coe_finset, ← Set.ncard_image_of_injective _ (sigma_mk_injective (β := fun _ => X) (i := o))]`. Use `congr 1`. Use extensionality with `⟨o', w'⟩`. Simplify using `only [Finset.coe_filter, Set.mem_ofPred_eq, Set.mem_image]`.
+Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, g', hg', h1', h2'⟩ dsimp only at h1' h2'`. Establish `e1 : (g' * g⁻¹) • o.out = o'.out`. Rewrite using `[← h1, mul_smul, inv_smul_smul, h1']`. Establish `hgg` using `St.mul_mem hg' (St.inv_mem hg)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `rfl` from `huniq _ _ _ hgg e1`. Use `⟨w', ⟨_, hgg, e1, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← h2, mul_smul, inv_smul_smul, h2']`. Introduce and unpack `⟨w'', ⟨h, hh, e1, e2⟩, e3⟩`. Rewrite using `[← e3]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: r p ⟨o, w''⟩` using `⟨h * g, St.mul_mem hh hg, by rw [mul_smul, h1, e1], by rw [mul_smul, h2, e2]⟩`. Conclude with `⟨hmem p hp _ this, this⟩`. Use `sum_eq_sum_of_symm_rel Z r hr ?_ _ _ ?_` and prove the remaining obligations. Introduce `p hp`. Take `⟨o, g, hg, h⟩` from `hrep p.2`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: r p ⟨o, g • p.1.out⟩` using `⟨g, hg, h, rfl⟩`. Conclude with `⟨_, hmem p hp _ this, this⟩`. Introduce `p hp q hq hpq`. Rewrite using `[hdeg p hp q hpq, hdeg q hq p (hr _ _ hpq), hm p hp q hpq]`. Take `⟨g, hg, h1, h2⟩` from `hpq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, c⟩` from `(mZ p).1 hp`. Establish `e1` using `invVol_mul_relIndex_comm K0 _ _ (hP _ a).1 (hP _ a).2.1 (hP _ b).1 (hP _ b).2.1`. Establish `e2` using `congrArg (fun t : ℝ => (t : ℂ)) e1`. Rewrite using `[← h1, ← h2, relIndex_stabilizer_smul St hg, (hinv g hg _ b).2.1]`. Simplify using `only [hmu]`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hinv g hg _ b).2.2.1]`. Move the coercions through the operations in `at e2`. Take the linear combination `(m p.1.out p.2 : ℂ) * om p.2 * e2`. Establish `dec : ∑ o ∈ O, ((mu o.out : ℝ) : ℂ) * om o.out = ∑ o ∈ O, ((mu o.out : ℝ) : ℂ) * (∑ z ∈ N o.out, (m o.out z : ℂ) * om z) - ∑ o ∈ O, ((mu o.out : ℝ) : ℂ) * om o.out * (((∑ z ∈ N o.out, m o.out z) - 1 : ℝ) : ℂ)`. Simplify using `only [Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[unf, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun o _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, ← Finset.sum_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dec]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Establish `b1 : ‖∑ o ∈ O, ((mu o.out : ℝ) : ℂ) * (∑ z ∈ N o.out, (m o.out z : ℂ) * om z)‖ ≤ ∑ o ∈ O, e * mu o.out`. Use `norm_sum_le_of_le _ fun o ho => ?_` and prove the remaining obligations. Establish `h` using `(hO o).1 ho`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (hpos _ h), mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hS _ h) (hpos _ h).le`. Establish `b2 : ‖∑ o ∈ O, ((mu o.out : ℝ) : ℂ) * om o.out * (((∑ z ∈ N o.out, m o.out z) - 1 : ℝ) : ℂ)‖ ≤ ∑ o ∈ O, e * mu o.out`. Use `norm_sum_le_of_le _ fun o ho => ?_` and prove the remaining obligations. Establish `h` using `(hO o).1 ho`.
-
-Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos (hpos _ h), (hP _ h).2.2.1, mul_one, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hR _ h) (hpos _ h).le`. Rewrite `b1`, `b2` using `[← Finset.mul_sum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_orbit_sum_le_of_symm_kernel : ∀ {G X : Type} [Group G] [MulAction G X] (St K0 : Subgroup G) (P : X → Prop) (om : X → ℂ) (m : X → X → ℝ) (e : ℝ), K0 ≤ St → (∀ h ∈ St, ∀ x, P x → P (h • x) ∧ om (h • x) = om x ∧ invVol K0 (St ⊓ MulAction.stabilizer G (h • x)) = invVol K0 (St ⊓ MulAction.stabilizer G x) ∧ ∀ y, P y → m (h • x) (h • y) = m x y) → (∀ x, P x → K0.relIndex (St ⊓ MulAction.stabilizer G x) ≠ 0 ∧ (St ⊓ MulAction.stabilizer G x).relIndex K0 ≠ 0 ∧ ‖om x‖ = 1 ∧ {y | P y ∧ m x y ≠ 0}.Finite ∧ (∀ y, P y → 0 ≤ m x y ∧ m x y = m y x) ∧ |(∑ᶠ y : {y // P y}, m x y) - 1| ≤ e ∧ ‖∑ᶠ y : {y // P y}, (m x y : ℂ) * om y‖ ≤ e) → {o : MulAction.orbitRel.Quotient St X | P o.out}.Finite → ‖∑' o : MulAction.orbitRel.Quotient St X, if P o.out then ((invVol K0 (St ⊓ MulAction.stabilizer G o.out) : ℝ) : ℂ) * om o.out else 0‖ ≤ 2 * e * ∑' o : MulAction.orbitRel.Quotient St X, if P o.out then invVol K0 (St ⊓ MulAction.stabilizer G o.out) else 0 := by
   intro G X _ _ St K0 P om m e _ hinv hP hfin

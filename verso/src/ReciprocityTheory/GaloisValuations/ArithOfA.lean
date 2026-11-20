@@ -16,7 +16,7 @@ def locDegree (v : HeightOneSpectrum (𝓞 F)) : ℕ :=
   v.asIdeal.ramificationIdx ℤ * v.asIdeal.inertiaDeg ℤ
 
 /- English proof (translation)
-Use `first`. Consider the case `exact PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hl.out).irreducible`. Consider the case `exact Ideal.IsPrime.isMaximal ((Ideal.span_singleton_prime (by exact_mod_cast hl.out.ne_zero)).2 (Nat.prime_iff_prime_int.mp hl.out)) (by simp [hl.out.ne_zero])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isMaximal_span_prime (l : ℕ) [hl : Fact l.Prime] : (Ideal.span {(l : ℤ)}).IsMaximal := by
   first
@@ -27,11 +27,11 @@ theorem isMaximal_span_prime (l : ℕ) [hl : Fact l.Prime] : (Ideal.span {(l : �
         (by simp [hl.out.ne_zero])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hmem : ((l : ℤ)) ∈ P.under ℤ`. Rewrite using `[← h.over]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : algebraMap ℤ (𝓞 F) (l : ℤ) ∈ P` using `hmem`. Simplify using `using h2`. Introduce `h`. Use `⟨?_⟩` and prove the remaining obligations. Use `(isMaximal_span_prime l).eq_of_le (Ideal.IsPrime.ne_top inferInstance) ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show algebraMap ℤ (𝓞 F) (l : ℤ) ∈ P`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem liesOver_span_iff (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 F)) [P.IsPrime] :
     P.LiesOver (Ideal.span {(l : ℤ)}) ↔ ((l : ℕ) : 𝓞 F) ∈ P := by
@@ -50,17 +50,15 @@ theorem liesOver_span_iff (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 F)) [P.IsPri
     simpa using h
 
 /- English proof (translation)
-Use `haveI := isMaximal_span_prime l`. Establish `hl0 : (l : ℤ) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hp0 : Ideal.span {(l : ℤ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hl0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `Ideal.sum_ramification_inertia (𝓞 F) ℚ F hp0`. Rewrite using `[← h]`. Use `Finset.sum_nbij (fun v => v.asIdeal) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[IsDedekindDomain.mem_primesOverFinset_iff hp0 (𝓞 F)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : v.asIdeal.LiesOver (Ideal.span {(l : ℤ)}) := (liesOver_span_iff l v.asIdeal).2 ((hT v).1 hv)`. Conclude with `⟨v.isPrime, inferInstance⟩`. Introduce `v _ w _ hvw`. Conclude with `HeightOneSpectrum.ext hvw`. Introduce `P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hP` using `[Finset.mem_coe, IsDedekindDomain.mem_primesOverFinset_iff hp0 (𝓞 F)]`. Take `⟨hPp, hPl⟩` from `hP`. Establish `hPne : P ≠ ⊥`. Introduce `hb`. Establish `hm` using `(liesOver_span_iff l P).1 hPl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hm` using `[hb, Ideal.mem_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast hm)`. Use `⟨⟨P, hPp, hPne⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_coe, hT]`. Conclude with `(liesOver_span_iff l P).1 hPl`.
-
-Introduce `v hv haveI : v.asIdeal.LiesOver (Ideal.span {(l : ℤ)}) := (liesOver_span_iff l v.asIdeal).2 ((hT v).1 hv) haveI := v.isMaximal`. Unfold `locDegree`. Rewrite using `[Ideal.ramificationIdx'_eq_ramificationIdx (Ideal.span {(l : ℤ)}) v.asIdeal hp0, Ideal.inertiaDeg'_eq_inertiaDeg (Ideal.span {(l : ℤ)}) v.asIdeal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_locDegree (l : ℕ) [Fact l.Prime] (T : Finset (HeightOneSpectrum (𝓞 F)))
     (hT : ∀ v, v ∈ T ↔ ((l : ℕ) : 𝓞 F) ∈ v.asIdeal) :
@@ -106,9 +104,9 @@ section conj
 variable {F Ω : Type*} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
 
 /- English proof (translation)
-Rewrite using `[ValuationSubring.valuation_le_one_iff, ValuationSubring.valuation_le_one_iff, ValuationSubring.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, rfl⟩ show γ⁻¹ • γ • s ∈ A`. Rewrite using `[inv_smul_smul]` and apply the resulting hypothesis. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨γ⁻¹ • y, h, smul_inv_smul γ y⟩`.
+Supply the required witnesses or components.
 -/
 theorem smul_valuation_le_one_iff (γ : G F Ω) (A : ValuationSubring Ω) (y : Ω) :
     (γ • A).valuation y ≤ 1 ↔ A.valuation ((γ⁻¹ : G F Ω) y) ≤ 1 := by
@@ -122,7 +120,7 @@ theorem smul_valuation_le_one_iff (γ : G F Ω) (A : ValuationSubring Ω) (y : �
     exact ⟨γ⁻¹ • y, h, smul_inv_smul γ y⟩
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Establish `hy' : (γ⁻¹ : G F Ω) y ≠ 0` using `(map_ne_zero (γ⁻¹ : G F Ω)).2 hy`. Rewrite using `[Valuation.val_lt_one_iff _ hy, Valuation.val_lt_one_iff _ hy', ← not_le, ← not_le, smul_valuation_le_one_iff, map_inv₀]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem smul_valuationSubring_valuation_lt_one_iff (γ : G F Ω) (A : ValuationSubring Ω) (y : Ω) :
     (γ • A).valuation y < 1 ↔ A.valuation ((γ⁻¹ : G F Ω) y) < 1 := by
@@ -133,11 +131,11 @@ private theorem smul_valuationSubring_valuation_lt_one_iff (γ : G F Ω) (A : Va
       smul_valuation_le_one_iff, map_inv₀]
 
 /- English proof (translation)
-Take `⟨hσ1, hσ2⟩` from `hσ`. Use `show γ * σ * γ⁻¹ ∈ Inertia (F := F) (γ • A)`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : σ • A = A` using `hσ1 show (γ * σ * γ⁻¹) • (γ • A) = γ • A`. Rewrite using `[mul_smul, mul_smul, inv_smul_smul, h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[smul_valuation_le_one_iff]`. Rewrite using `[smul_valuationSubring_valuation_lt_one_iff]`. Establish `e : (γ⁻¹ : G F Ω) ((γ * σ * γ⁻¹) x - x) = σ ((γ⁻¹ : G F Ω) x) - (γ⁻¹ : G F Ω) x`. Rewrite using `[map_sub]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `show (γ⁻¹ : G F Ω) (γ (σ ((γ⁻¹ : G F Ω) x))) = σ ((γ⁻¹ : G F Ω) x)`. Apply the tactic sequence `first | exact γ.symm_apply_apply _ | simp`. Rewrite using `[e]`. Conclude with `hσ2 _ hx`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_Ine_smul {A : ValuationSubring Ω} {γ σ : G F Ω} (hσ : σ ∈ Ine (F := F) A) :
     γ * σ * γ⁻¹ ∈ Ine (F := F) (γ • A) := by

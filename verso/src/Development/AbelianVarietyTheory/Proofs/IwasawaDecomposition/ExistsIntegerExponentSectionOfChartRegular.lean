@@ -18,20 +18,20 @@ open GlobalTheory.Reg.SecGlue (chart_comp eq_of_fields)
 def zchar {J S : Type} [Fintype J] [CommRing S] (e : J → ℤ) (t : J → Sˣ) : S := ((∏ i, t i ^ e i : Sˣ) : S)
 
 /- English proof (translation)
-Simplify using `only [zchar, Pi.mul_apply, mul_zpow, Finset.prod_mul_distrib, Units.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zchar_mul {J S : Type} [Fintype J] [CommRing S] (e : J → ℤ) (t t' : J → Sˣ) :
     zchar e (t * t') = zchar e t * zchar e t' := by
   simp only [zchar, Pi.mul_apply, mul_zpow, Finset.prod_mul_distrib, Units.val_mul]
 
 /- English proof (translation)
-Simplify using `[zchar]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zchar_one {J S : Type} [Fintype J] [CommRing S] (e : J → ℤ) : zchar e (1 : J → Sˣ) = 1 := by
   simp [zchar]
 
 /- English proof (translation)
-Establish `: (∏ i, Units.map (φ : S →* T) (t i) ^ e i) = Units.map (φ : S →* T) (∏ i, t i ^ e i)`. Simplify using `only [map_prod, map_zpow]`. Unfold `zchar`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zchar_map {J K S T : Type} [Fintype J] [Field K] [CommRing S] [CommRing T] [Algebra K S] [Algebra K T]
     (φ : S →ₐ[K] T) (e : J → ℤ) (t : J → Sˣ) :
@@ -45,27 +45,27 @@ theorem zchar_map {J K S T : Type} [Fintype J] [Field K] [CommRing S] [CommRing 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hev h C C' L _ _ ψ ψ' z z' t hz hz' hbor`. Establish `G` using `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c`. Establish `U` using `GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c`. Take `⟨g, hg, hopn⟩` from `C'.opn C.R L ψ C.y z hz ⟨ψ', z', t⁻¹, hz', (G L).2.2.1 t z z' hbor⟩`. Establish `hg0 : g ≠ 0` using `fun e => hg (by rw [e, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg1 : C.R.val g ≠ 0` using `fun e => hg0 (Subtype.ext e)`. Establish `hZ : C.Z = C'.Z`. Take `⟨ψ0, z0, t0, h1, h2⟩` from `hopn (Om C.Z) C.R.val (Ne.isUnit hg1) C.yg C.gen`. Conclude with `comp_eq C C' ψ0 z0 t0 h1 h2`. Use `⟨hZ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨Z, R, sm, frac, y, yg, tC, gen, bor, mono, opn⟩` from `C`. Take `⟨Z', R', sm', frac', y', yg', tC', gen', bor', mono', opn'⟩` from `C'`. Simplify using `only at *`. Substitute `hZ` using the available equality. Introduce `e b hb hb'`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `S` to `Localization.Away g`. Set `lam : R →ₐ[c.F] S` to `IsScalarTower.toAlgHom c.F R S`. Establish `hlam : IsUnit (lam g)` using `IsLocalization.Away.algebraMap_isUnit g`. Take `⟨mu, hmu⟩ : ∃ m : S →ₐ[c.F] Om Z, m.comp lam = R.val` from `away_lift g R.val hg1`. Take `⟨nu, hnu⟩ : ∃ m : S →ₐ[c.F] L, m.comp lam = ψ` from `away_lift g ψ hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective mu` using `away_inj g mu (by rw [hmu]; exact Subtype.val_injective)`. Take `⟨w, hw⟩` from `hev.bc R S lam y`. Take `⟨φ, v, s, hv, hs⟩` from `hopn S lam hlam w hw`. Take `⟨vmu, hvmu⟩` from `hev.bc S (Om Z) mu v`. Establish `m1 : FrMap mu w yg` using `frMap_cancel _ _ _ lam mu y w yg hw (by rw [hmu]; exact gen)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1` using `frBorBC _ _ mu s v w vmu yg hs hvmu m1`. Establish `m2 : FrMap (mu.comp φ) y' vmu` using `frMap_trans _ _ _ φ mu y' v vmu hv hvmu`. Establish `b2` using `(G _).2.1 _ _ _ _ _ b1 ((G _).2.1 _ _ _ _ _ ((G _).2.2.1 _ _ _ bor) bor')`. Establish `e1 : mu.comp φ = R'.val` using `mono' _ _ _ _ _ _ m2 gen' b2`. Establish `e2 : vmu = yg'` using `(U _ _ R'.val y').1 _ _ (e1 ▸ m2) gen'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `e2` using the available equality. Establish `e3 : tC = tC' * fun i => Units.map (mu : S →* Om Z) (s i)` using `(G _).2.2.2 _ _ _ _ bor ((G _).2.1 _ _ _ _ _ bor' b1)`. Take `⟨vnu, hvnu⟩` from `hev.bc S L nu v`. Establish `m3 : FrMap nu w z` using `frMap_cancel _ _ _ lam nu y w z hw (by rw [hnu]; exact hz)`. Establish `b3` using `frBorBC _ _ nu s v w vnu z hs hvnu m3`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m4 : FrMap (nu.comp φ) y' vnu` using `frMap_trans _ _ _ φ nu y' v vnu hv hvnu`. Establish `b4` using `(G _).2.1 _ _ _ _ _ b3 hbor`. Establish `e4 : nu.comp φ = ψ'` using `mono' _ _ _ _ _ _ m4 hz' b4`. Establish `e5 : vnu = z'` using `(U _ _ ψ' y').1 _ _ (e4 ▸ m4) hz'`. Substitute `e5` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `e6 : (fun i => Units.map (nu : S →* L) (s i)) * t = 1` using `(G _).2.2.2 _ _ _ _ b4 ((G _).1 _)`. Establish `e7 : lam ⟨_, hb⟩ = zchar e s * φ ⟨_, hb'⟩`. Apply `hinj` to reduce the goal to its premises. Establish `a1 : mu (lam ⟨_, hb⟩) = zchar e tC * b Z` using `DFunLike.congr_fun hmu ⟨_, hb⟩`. Establish `a2 : mu (φ ⟨_, hb'⟩) = zchar e tC' * b Z` using `DFunLike.congr_fun e1 ⟨_, hb'⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a0 : zchar e tC = zchar e tC' * mu (zchar e s)` using `(congrArg (zchar e) e3).trans ((zchar_mul _ _ _).trans (congrArg _ (zchar_map mu e s)))`. Rewrite using `[map_mul, a1, a2]`. Take the linear combination `(b Z) * a0`. Establish `a3 : ψ ⟨_, hb⟩ = nu (zchar e s) * ψ' ⟨_, hb'⟩`. Rewrite using `[← hnu, ← e4, AlgHom.comp_apply, AlgHom.comp_apply, e7, map_mul]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a4 : nu (zchar e s) * zchar e t = 1`. Rewrite using `[← zchar_map, ← zchar_mul, e6, zchar_one]`. Take the linear combination `(-(zchar e t)) * a3 - (ψ' ⟨_, hb'⟩) * a4`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem chart_compat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), EvLaws Xo c → ∀ h : GenFrEx Xo c, ∀ (C C' : FChart h) (L : Type) [Field L] [Algebra c.F L] (ψ : C.R →ₐ[c.F] L) (ψ' : C'.R →ₐ[c.F] L) (z z' : FrPt Xo c L) (t : Ix Dw → Lˣ), FrMap ψ C.y z → FrMap ψ' C'.y z' → FrBor t z z' → C.Z = C'.Z ∧ ∀ (e : Ix Dw → ℤ) (b : ∀ Z : Comp Xo c, Om Z) (hb : zchar e C.t * b C.Z ∈ C.R) (hb' : zchar e C'.t * b C'.Z ∈ C'.R), ψ' ⟨_, hb'⟩ = zchar e t * ψ ⟨_, hb⟩ := by
   intro E _ _ _ H Dw l Xo c hev h C C' L _ _ ψ ψ' z z' t hz hz' hbor
@@ -140,7 +140,7 @@ def Val {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (v : S) : Prop
     FrMap ψ C.y z ∧ FrBor t z y ∧ v = zchar e t * ψ ⟨_, hb C⟩
 
 /- English proof (translation)
-Take `⟨C, ψ, z, t, hz, ht, rfl⟩` from `h1`. Take `⟨C', ψ', z', t', hz', ht', rfl⟩` from `h2`. Take `⟨-, hmul, hinv, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c L`. Use `(chart_compat E H Dw l Xo c hl h C C' L ψ ψ' z z' _ hz hz' (hmul _ _ _ _ _ ht (hinv _ _ _ ht'))).2 e b (hb C) (hb C')` as an intermediate fact. Rewrite using `[this, ← mul_assoc, ← zchar_mul, mul_comm t, mul_inv_cancel_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_unique (hl : EvLaws Xo c) {L : Type} [Field L] [Algebra c.F L] {y : FrPt Xo c L} {v v' : L}
     (h1 : Val hb y v) (h2 : Val hb y v') : v = v' := by
@@ -152,7 +152,7 @@ theorem val_unique (hl : EvLaws Xo c) {L : Type} [Field L] [Algebra c.F L] {y : 
   rw [this, ← mul_assoc, ← zchar_mul, mul_comm t, mul_inv_cancel_left]
 
 /- English proof (translation)
-Take `⟨C, ψ, z, t, hz, ht, rfl⟩` from `h1`. Take `⟨z', hz'⟩` from `hl.bc S T φ z`. Use `⟨C, φ.comp ψ, z', _, frMap_trans _ _ _ ψ φ _ _ _ hz hz', frBorBC _ _ φ t z y z' y' ht hz' hy, ?_⟩` and prove the remaining obligations. Rewrite using `[zchar_map, map_mul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_map (hl : EvLaws Xo c) {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     (φ : S →ₐ[c.F] T) {y : FrPt Xo c S} {y' : FrPt Xo c T} (hy : FrMap φ y y') {v : S} (h1 : Val hb y v) :
@@ -163,7 +163,7 @@ theorem val_map (hl : EvLaws Xo c) {S T : Type} [CommRing S] [Algebra c.F S] [Co
   rw [zchar_map, map_mul]; rfl
 
 /- English proof (translation)
-Take `⟨C, ψ, z, t₀, hz, ht, rfl⟩` from `h1`. Use `⟨C, ψ, z, t₀ * t, hz, (GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c S).2.1 _ _ _ _ _ ht hy, ?_⟩` and prove the remaining obligations. Rewrite using `[zchar_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_bor {S : Type} [CommRing S] [Algebra c.F S] {t : Ix Dw → Sˣ} {y y' : FrPt Xo c S}
     (hy : FrBor t y y') {v : S} (h1 : Val hb y v) : Val hb y' (zchar e t * v) := by
@@ -172,14 +172,14 @@ theorem val_bor {S : Type} [CommRing S] [Algebra c.F S] {t : Ix Dw → Sˣ} {y y
   rw [zchar_mul]; ring
 
 /- English proof (translation)
-Take `⟨C, ψ, z, t, h1, h2⟩` from `hA L y`. Conclude with `⟨_, C, ψ, z, t, h1, h2, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem val_ex (hA : Atlas h) {L : Type} [Field L] [Algebra c.F L] (y : FrPt Xo c L) : ∃ v, Val hb y v := by
   obtain ⟨C, ψ, z, t, h1, h2⟩ := hA L y
   exact ⟨_, C, ψ, z, t, h1, h2, rfl⟩
 
 /- English proof (translation)
-Take `⟨C, ψ, z, t, h1, h2⟩` from `hA _ (genFr h Z)`. Take `rfl` from `chart_comp Z C ψ z t h1 h2`. Use `⟨C, C.R.val, C.yg, C.t⁻¹, C.gen, (GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c _).2.2.1 _ _ _ C.bor, ?_⟩` and prove the remaining obligations. Use `show b C.Z = zchar e C.t⁻¹ * (zchar e C.t * b C.Z)`. Rewrite using `[← mul_assoc, ← zchar_mul, inv_mul_cancel, zchar_one, one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_gen (hA : Atlas h) (Z : Comp Xo c) : Val hb (genFr h Z) (b Z) := by
   obtain ⟨C, ψ, z, t, h1, h2⟩ := hA _ (genFr h Z)
@@ -193,23 +193,23 @@ def Rep {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (g s : S) : Pr
     FrMap χ y w → Val hb w v → χ g * v = χ s
 
 /- English proof (translation)
-Set `I : Ideal S` to `{ carrier := {g | ∃ s, Rep hb y g s} zero_mem' := ⟨0, fun L _ _ χ w v _ _ => by simp⟩ add_mem' := by`. Introduce and unpack `g g' ⟨s, hs⟩ ⟨s', hs'⟩`. Conclude with `⟨s + s', fun L _ _ χ w v h1 h2 => by`. Rewrite using `[map_add, map_add, add_mul, hs L χ w v h1 h2, hs' L χ w v h1 h2]⟩`. Use the proof step `smul_mem' := by`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `r g ⟨s, hs⟩`. Conclude with `⟨r * s, fun L _ _ χ w v h1 h2 => by`. Rewrite using `[smul_eq_mul, map_mul, map_mul, mul_assoc, hs L χ w v h1 h2]⟩ }`. Assume the negation of the conclusion as `hne`. Establish `hI : I ≠ ⊤` using `fun hI => hne ((Ideal.eq_top_iff_one I).1 hI)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hIP⟩` from `Ideal.exists_le_maximal I hI`. Use `hP.isPrime` as an intermediate fact. Set `χ₀ : S →ₐ[c.F] FractionRing (S ⧸ P)` to `(IsScalarTower.toAlgHom c.F (S ⧸ P) (FractionRing (S ⧸ P))).comp (Ideal.Quotient.mkₐ c.F P)`. Take `⟨w₀, hw₀⟩` from `hl.bc _ _ χ₀ y`. Take `⟨C, ψ₀, z₀, t₀, h1, h2⟩` from `hA _ w₀`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hloc⟩` from `C.opn S _ χ₀ y w₀ hw₀ ⟨ψ₀, z₀, t₀, h1, h2⟩`. Set `lam : S →ₐ[c.F] Localization.Away g` to `IsScalarTower.toAlgHom c.F S _`. Establish `hu : IsUnit (lam g)` using `IsLocalization.Away.algebraMap_isUnit g`. Take `⟨w', hw'⟩` from `hl.bc _ _ lam y`. Take `⟨ψ, z, t, h3, h4⟩` from `hloc _ lam hu w' hw'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv : Val hb w' (zchar e t * ψ ⟨_, hb C⟩)` using `⟨C, ψ, z, t, h3, h4, rfl⟩`. Generalize the expression as in `zchar e t * ψ ⟨_, hb C⟩ = u at hv`. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj g u`. Establish `hmem : g ^ (n + 1) ∈ I`. Use `⟨g * a, fun L _ _ χ w v h5 h6 => ?_⟩` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hχ : χ g = 0`. Simplify using `[hχ]`. Set `mu : Localization.Away g →ₐ[c.F] L` to `IsLocalization.liftAlgHom (M := Submonoid.powers g) (f := χ) (by`. Introduce and unpack `⟨_, k, rfl⟩`. Simplify using `using (IsUnit.mk0 _ hχ).pow k)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hmu' : ∀ x, mu (algebraMap S _ x) = χ x` using `fun x => by`. Simplify using `[mu]`. Establish `hmu : mu.comp lam = χ` using `AlgHom.ext hmu'`. Establish `h7 : FrMap mu w' w` using `frMap_cancel _ _ _ lam mu y w' w hw' (by rw [hmu]; exact h5)`. Establish `h8` using `val_unique hb hl h6 (val_map hb hl mu h7 hv)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h9` using `congrArg mu ha`. Rewrite `h9` using `[map_mul, map_pow, hmu', hmu']`. Rewrite using `[h8, map_mul, map_pow, ← h9]`. Expand and normalize the polynomial expressions, which then agree. Establish `hgP : g ∈ P` using `this.mem_of_pow_mem _ (hIP hmem)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hg` to reduce the goal to its premises. Use `show algebraMap (S ⧸ P) (FractionRing (S ⧸ P)) (Ideal.Quotient.mk P g) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hgP, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep (hl : EvLaws Xo c) (hA : Atlas h) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :
     ∃ s, Rep hb y 1 s := by
@@ -265,15 +265,15 @@ theorem exists_rep (hl : EvLaws Xo c) (hA : Atlas h) {S : Type} [CommRing S] [Al
 end Val
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hl h hA a b hb`. Establish `hred : ∀ p : TRing c.F, IsReduced p.R` using `fun p => (Ideal.isRadical_iff_quotient_reduced p.I).1 p.rad`. Use `choose g hg using fun (p : TRing c.F) (y : FrPt Xo c p.R) => exists_rep hb hl hA y`. Establish `hg' : ∀ (p : TRing c.F) (y : FrPt Xo c p.R) (L : Type) [Field L] [Algebra c.F L] (χ : p.R →ₐ[c.F] L) (w : FrPt Xo c L) (v : L), FrMap χ y w → Val hb w v → χ (g p y) = v`. Introduce `p y L _ _ χ w v h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg p y L χ w v h1 h2, map_one, one_mul]`. Use `⟨g, GlobalTheory.AllWt.mem_secZ.2 ⟨fun p q φ y z hz => ?_, fun p t y y' hy => ?_⟩, fun Z => ?_⟩` and prove the remaining obligations. Use `hred q` as an intermediate fact. Use `eq_of_fields (K := c.F) _ _ fun L _ _ χ => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `hl.bc _ _ χ z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `val_ex hb hA w`. Rewrite using `[hg' q z L χ w v hw hv]`. Conclude with `(hg' p y L (χ.comp φ) w v (frMap_trans _ _ _ φ χ y z w hz hw) hv).symm`. Use `hred p show g p y' = zchar a t * g p y` as an intermediate fact. Use `eq_of_fields (K := c.F) _ _ fun L _ _ χ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hl.bc _ _ χ y`. Take `⟨w', hw'⟩` from `hl.bc _ _ χ y'`. Take `⟨v, hv⟩` from `val_ex hb hA w`. Establish `hv'` using `val_bor hb (frBorBC _ _ χ t y y' w w' hy hw hw') hv`. Rewrite using `[hg' p y' L χ w' _ hw' hv', map_mul, hg' p y L χ w v hw hv, zchar_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hh` using `hl.test _ (genFr h Z)`. Unfold `evC evR evalAt`. Rewrite using `[dif_pos hh]`. Conclude with `hg' _ _ _ _ _ _ hh.choose_spec.choose_spec.choose_spec (val_gen hb hA Z)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_regular : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), EvLaws Xo c → ∀ h : GenFrEx Xo c, Atlas h → ∀ (a : Ix Dw → ℤ) (b : ∀ Z : Comp Xo c, Om Z), (∀ C : FChart h, zchar a C.t * b C.Z ∈ C.R) → ∃ g ∈ GlobalTheory.AllWt.secZ Xo c a, ∀ Z, evC h Z g = b Z := by
   intro E _ _ _ H Dw l Xo c hl h hA a b hb
@@ -304,7 +304,7 @@ theorem exists_sec_of_regular : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     exact hg' _ _ _ _ _ _ hh.choose_spec.choose_spec.choose_spec (val_gen hb hA Z)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c h w b hb`. Take `⟨hL, -, -, hA⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Conclude with `exists_sec_of_regular E H Dw l Xo c hL h (hA h) w b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_secZ_of_regular : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (h : GenFrEx Xo c) (w : Ix Dw → ℤ) (b : ∀ Z : Comp Xo c, Om Z), (∀ C : FChart h, ((∏ i, C.t i ^ w i : (Om C.Z)ˣ) : Om C.Z) * b C.Z ∈ C.R) → ∃ f ∈ GlobalTheory.AllWt.secZ Xo c w, ∀ Z, evC h Z f = b Z := by
   intro E _ _ _ H Dw l Xo c h w b hb

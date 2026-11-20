@@ -16,13 +16,13 @@ def flag (K : Type) [CommRing K] [Module K W] (f : Fin m → W) (j : ℕ) : Subm
   Submodule.span K (f '' {a | a.val < j})
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono fun _ ha => lt_of_lt_of_le ha h)`.
+A detailed English derivation is pending.
 -/
 lemma flag_mono (f : Fin m → W) {i j : ℕ} (h : i ≤ j) : flag K f i ≤ flag K f j :=
   Submodule.span_mono (Set.image_mono fun _ ha => lt_of_lt_of_le ha h)
 
 /- English proof (translation)
-Simplify using `[flag]`.
+Simplify using the standard rewrite rules.
 -/
 lemma flag_zero (f : Fin m → W) : flag K f 0 = ⊥ := by
   simp [flag]
@@ -31,11 +31,11 @@ def Lowers (f : Fin m → W) (n : W ≃ₗ[K] W) : Prop :=
   ∀ j, ∀ v ∈ flag K f (j + 1), n v - v ∈ flag K f j
 
 /- English proof (translation)
-Introduce `j v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Conclude with `flag_mono f (Nat.lt_succ_iff.mp hb) (h b)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Establish `: n (x + y) - (x + y) = (n x - x) + (n y - y)` using `by rw [map_add]; abel`. Rewrite using `[this]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul c x _ hx`. Establish `: n (c • x) - c • x = c • (n x - x)` using `by rw [map_smul, smul_sub]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lowers_of_gen (f : Fin m → W) (n : W ≃ₗ[K] W)
     (h : ∀ b : Fin m, n (f b) - f b ∈ flag K f b.val) : Lowers f n := by
@@ -53,11 +53,9 @@ lemma lowers_of_gen (f : Fin m → W) (n : W ≃ₗ[K] W)
     rw [this]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Introduce `j v hv`. Establish `h1` using `h' j v hv`. Establish `h2 : n' v ∈ flag K f (j + 1)`. Establish `: n' v = (n' v - v) + v` using `by abel`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (flag_mono f (Nat.le_succ j) h1) hv`. Establish `: (n * n') v - v = (n (n' v) - n' v) + (n' v - v)`. Rewrite using `[LinearEquiv.mul_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
-
-Conclude with `add_mem (h j _ h2) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Lowers.mul {f : Fin m → W} {n n' : W ≃ₗ[K] W} (h : Lowers f n) (h' : Lowers f n') :
     Lowers f (n * n') := by
@@ -71,11 +69,11 @@ lemma Lowers.mul {f : Fin m → W} {n n' : W ≃ₗ[K] W} (h : Lowers f n) (h' :
   rw [this]; exact add_mem (h j _ h2) h1
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `v hv`. Rewrite `hv` using `[flag_zero, Submodule.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨0, zero_mem _, by simp [hv]⟩`. Consider the case `succ j ih`. Introduce `v hv`. Take `⟨w, hw, e⟩` from `ih _ (h j v hv)`. Use `⟨v - w, sub_mem hv (flag_mono f (Nat.le_succ j) hw), ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, e]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma Lowers.surj {f : Fin m → W} {n : W ≃ₗ[K] W} (h : Lowers f n) :
     ∀ j, ∀ v ∈ flag K f j, ∃ w ∈ flag K f j, n w = v := by
@@ -92,9 +90,9 @@ lemma Lowers.surj {f : Fin m → W} {n : W ≃ₗ[K] W} (h : Lowers f n) :
     rw [map_sub, e]; abel
 
 /- English proof (translation)
-Introduce `j v hv`. Take `⟨w, hw, rfl⟩` from `h.surj _ v hv`. Establish `e : n⁻¹ (n w) = w` using `n.symm_apply_apply w`. Establish `: n⁻¹ (n w) - n w = -(n w - w)` using `by rw [e]; abel`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_mem (h j w hw)`.
+A detailed English derivation is pending.
 -/
 lemma Lowers.inv {f : Fin m → W} {n : W ≃ₗ[K] W} (h : Lowers f n) : Lowers f n⁻¹ := by
   intro j v hv
@@ -104,11 +102,11 @@ lemma Lowers.inv {f : Fin m → W} {n : W ≃ₗ[K] W} (h : Lowers f n) : Lowers
   rw [this]; exact neg_mem (h j w hw)
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Use `⟨Pi.single b 1, fun a ha => Pi.single_eq_of_ne ?_ _, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `absurd hb (not_lt.mpr ha)`. Simplify using `[Pi.single_apply]`. Consider the case `zero => exact ⟨0, fun _ _ => rfl, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, hc, rfl⟩` from `hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, rfl⟩` from `hy`. Conclude with `⟨c + d, fun a ha => by simp [hc a ha, hd a ha], by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `smul s x _ hx`. Take `⟨c, hc, rfl⟩` from `hx`. Conclude with `⟨s • c, fun a ha => by simp [hc a ha], by simp [Finset.smul_sum, smul_smul]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma exists_coef (f : Fin m → W) (j : ℕ) (v : W) (hv : v ∈ flag K f j) :
     ∃ c : Fin m → K, (∀ a, j ≤ a.val → c a = 0) ∧ v = ∑ a, c a • f a := by
@@ -129,9 +127,9 @@ lemma exists_coef (f : Fin m → W) (j : ℕ) (v : W) (hv : v ∈ flag K f j) :
     exact ⟨s • c, fun a ha => by simp [hc a ha], by simp [Finset.smul_sum, smul_smul]⟩
 
 /- English proof (translation)
-Establish `: ∀ b : Fin m, ∃ c : Fin m → K, (∀ a, b.val ≤ a.val → c a = 0) ∧ n (f b) - f b = ∑ a, c a • f a` using `fun b => exists_coef f _ _ (h b.val (f b) (Submodule.subset_span ⟨b, Nat.lt_succ_self _, rfl⟩))`. Use `choose c hc e using this`. Use `⟨Matrix.of fun a b => c b a + if a = b then 1 else 0, ⟨fun a b hab => ?_, fun a => ?_⟩, fun b => ?_⟩` and prove the remaining obligations. Simplify using `[hc b a hab.le, hab.ne']`. Simplify using `[hc a a le_rfl]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply, add_smul, Finset.sum_add_distrib, ← e]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Lowers.tri {f : Fin m → W} {n : W ≃ₗ[K] W} (h : Lowers f n) : Tri K f (fun b => n (f b)) := by
   have : ∀ b : Fin m, ∃ c : Fin m → K, (∀ a, b.val ≤ a.val → c a = 0) ∧ n (f b) - f b = ∑ a, c a • f a :=
@@ -149,7 +147,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [
   [TopologicalSpace E] [MeasurableSpace E] {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
 /- English proof (translation)
-Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `⟨a.castSucc, ha, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma Fj_le_flag {H : HermSp M V} {r : ℕ} (Fr : FrameD H r) (j : ℕ) : Fr.Fj j ≤ flag E Fr.f j := by
   apply Submodule.span_mono
@@ -157,9 +155,9 @@ lemma Fj_le_flag {H : HermSp M V} {r : ℕ} (Fr : FrameD H r) (j : ℕ) : Fr.Fj 
   exact ⟨a.castSucc, ha, rfl⟩
 
 /- English proof (translation)
-Introduce `x hx`. Establish `: H.h x (Fr.f (Fin.last r)) = 0`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne)`. Consider the case `zero => exact H.h_zero_left _`. Consider the case `add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]`. Rewrite using `[H.h_herm, this, map_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma last_mem_perp {H : HermSp M V} {r : ℕ} (Fr : FrameD H r) :
     Fr.f (Fin.last r) ∈ H.perp (H.X Fr.f) := by
@@ -175,9 +173,9 @@ lemma last_mem_perp {H : HermSp M V} {r : ℕ} (Fr : FrameD H r) :
   rw [H.h_herm, this, map_zero]
 
 /- English proof (translation)
-Take `⟨-, h1, h2⟩` from `hn`. Apply `lowers_of_gen` to reduce the goal to its premises. Introduce `b`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `Submodule.span_mono ?_ (h2 _ (last_mem_perp Fr))` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨a.castSucc, a.isLt, rfl⟩`. Consider the case `cast a`. Conclude with `Fj_le_flag Fr _ (h1 (a.val + 1) a.isLt (Fr.e a) (Submodule.subset_span ⟨a, Nat.lt_succ_self _, rfl⟩))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma lowers_of_mem_NSet {H : HermSp M V} {r : ℕ} (Fr : FrameD H r) {n : V ≃ₗ[E] V} (hn : n ∈ Fr.NSet) :
     Lowers Fr.f n := by
@@ -194,9 +192,9 @@ lemma lowers_of_mem_NSet {H : HermSp M V} {r : ℕ} (Fr : FrameD H r) {n : V ≃
       (Submodule.subset_span ⟨a, Nat.lt_succ_self _, rfl⟩))
 
 /- English proof (translation)
-Introduce `n hn`. Apply `Lowers.tri` to reduce the goal to its premises. Proceed by induction on `hn using Subgroup.closure_induction with`. Consider the case `mem x hx => exact lowers_of_mem_NSet Fr hx`. Consider the case `one => intro j v _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `mul x y _ _ hx hy => exact hx.mul hy`. Consider the case `inv x _ hx => exact hx.inv`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 -/
 theorem tri_of_mem_N (H : HermSp M V) {r : ℕ} (Fr : FrameD H r) :
     ∀ n ∈ Fr.N, Tri E Fr.f (fun b => n (Fr.f b)) := by

@@ -13,19 +13,15 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ComplexSets
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `n d J I u φ f hJ hdim hu hφ _ hIdim hf hfc δ hδ`. Use `set S := (J ⊔ Ideal.span {linForm u}).minimalPrimes with hS`. Establish `hSfin : S.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing _ _`. Use `set M : ℝ := ∑ W ∈ hSfin.toFinset, (localMult (J ⊔ Ideal.span {linForm u}) W : ℝ) with hM`. Establish `hM0 : 0 ≤ M` using `Finset.sum_nonneg fun W _ => Nat.cast_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hδ' : 0 < δ / (M + 1)` using `by positivity`. Take `⟨U₀, hU₀, hIU₀, hT⟩` from `hReg n d J I u φ f hJ hdim hu hφ hIdim hf.continuous hfc δ hδ`. Establish `hW : ∀ W ∈ S, ∃ U : Set (Fin n → ℂ), IsOpen U ∧ zeroSet I ⊆ U ∧ ∀ χ : (Fin n → ℂ) → ℝ, Continuous χ → (∀ x, |χ x| ≤ 1) → tsupport χ ⊆ U → |varInt W d (fun x => χ x * f x) φ| ≤ δ / (M + 1)`. Introduce `W hWm`. Take `⟨hWp, hWJ, -⟩` from `mem_minimalPrimes_sup_linForm hWm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `hVar n d W I φ f hWp (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.dim_component_linForm hJ hdim hu hWm) (fun i => ?_) hIdim hf.continuous hfc _ hδ'` and prove the remaining obligations. Take `⟨U, hU, hSU, hC⟩` from `hφ i`. Conclude with `⟨U, hU, hWJ.trans hSU, hC⟩`. Use `choose! UW hUW hIUW hLW using hW`. Establish `hU : IsOpen (U₀ ∩ ⋂ W ∈ S, UW W)` using `hU₀.inter (hSfin.isOpen_biInter fun W hW => hUW W hW)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hIU : zeroSet I ⊆ U₀ ∩ ⋂ W ∈ S, UW W` using `Set.subset_inter hIU₀ (Set.subset_iInter₂ fun W hW => hIUW W hW)`. Take `⟨χ, hχ, hχ01, hχU, V, hV, hIV, hχ1⟩` from `exists_cutoff_near_zeroSet I hU hIU`. Establish `hχb : ∀ x, |χ x| ≤ 1` using `fun x => abs_le.2 ⟨by linarith [(hχ01 x).1], (hχ01 x).2⟩`. Use `⟨χ, hχ, ⟨V, hV, hIV, hχ1⟩, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT (zero_lt_one' ℝ)] with ε hε`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hT χ hχ.continuous hχb (hχU.trans Set.inter_subset_left) ε ⟨hε.1, hε.2.le⟩`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hSfin]`. Combine the equalities or inequalities in the displayed calculation. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun W hW => ?_)` and prove the remaining obligations. Establish `hWS : W ∈ S` using `hSfin.mem_toFinset.1 hW`.
-
-Rewrite using `[abs_mul, abs_of_nonneg (Nat.cast_nonneg _)]`. Conclude with `mul_le_mul_of_nonneg_left (hLW W hWS χ hχ.continuous hχb (hχU.trans (Set.inter_subset_right.trans (Set.biInter_subset_of_mem hWS)))) (Nat.cast_nonneg _)`. Use `_ = M * (δ / (M + 1)) := by rw [← Finset.sum_mul]`. Use `_ ≤ δ := by`. Rewrite using `[← mul_div_assoc, div_le_iff₀ (by positivity)]`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem LelongMassNearSmall.proof (hReg : RegMassNearSmall.Statement)
     (hVar : VarMassNearSmall.Statement) : LelongMassNearSmall.Statement := by

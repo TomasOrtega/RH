@@ -11,27 +11,25 @@ open PI PI.QuotSetU
 variable {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
 
 /- English proof (translation)
-Rewrite `hn`, the goal using `[mem_Nset_iff]`. Take `⟨hnU, hnc⟩` from `hn`. Establish `hU : h ∈ UH (Hpk k r)` using `hh.1`. Establish `hhi` using `inv_mem_UW hh`. Use `⟨mul_mem_UH (mul_mem_UH hU hnU) (inv_mem_UH hU), fun i j hj hi => ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hjW : r ≤ j.val`. Establish `hir : r ≤ i.val`. Use `min_eq_right hjW` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hA : ∀ b, inW k r b → (h * n) i b = h i b`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `b hb`. Take `⟨hb1, hb2⟩` from `hb`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single b]`. Rewrite using `[hnc b b hb2 (by rw [min_eq_right hb1]; exact hb1), if_pos rfl, mul_one]`. Introduce `a _ hab`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `har : r ≤ a.val`. Rewrite using `[hnc a b hb2 (by rw [min_eq_right hb1]; exact har), if_neg hab, mul_zero]`. Rewrite using `[uw_block hh i a (fun h' => har h'.2.1), if_neg (fun e => har (by rw [← e]; exact hir)), zero_mul]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ b) h'`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hone : (h * h⁻¹) i j = if i = j then 1 else 0`. Rewrite using `[mul_inv_UH hU, Matrix.one_apply]`. Rewrite using `[← hone, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : inW k r b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA b hb]`. Rewrite using `[uw_block hhi b j (fun h' => hb h'.1), if_neg (fun e => hb (by rw [e]; exact ⟨hjW, hj⟩)), mul_zero, mul_zero]`. Use `push Not at hjW`. Establish `hmin : min j.val r = j.val` using `min_eq_left hjW.le`. Establish `hij : j.val ≤ i.val` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjn : ¬ inW k r j` using `fun h' => absurd h'.1 (by omega)`. Establish `hcol : (h * n * h⁻¹) i j = (h * n) i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite using `[uw_col_out hhi j hjn j, if_pos rfl, mul_one]`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[uw_col_out hhi j hjn b, if_neg hb, mul_zero]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ j) h'`. Rewrite using `[hcol, Matrix.mul_apply]`. Distinguish the cases in `hiW : inW k r i`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi1` using `hiW.1`. Rewrite using `[if_neg (fun e => by rw [e] at hi1; omega)]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `haW : inW k r a`. Establish `ha1` using `haW.1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnc a j (by omega) (by rw [hmin]; omega), if_neg (fun e => by rw [e] at ha1; omega), mul_zero]`. Rewrite using `[uw_block hh i a (fun h' => haW h'.2), if_neg (fun e => haW (by rw [← e]; exact hiW)), zero_mul]`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[uw_block hh i i (fun h' => hiW h'.1), if_pos rfl, one_mul, hnc i j (by omega) (by rw [hmin]; exact hij)]`. Introduce `a _ hai`.
-
-Rewrite using `[uw_block hh i a (fun h' => hiW h'.1), if_neg (Ne.symm hai), zero_mul]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ i) h'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma uw_conj_N {h n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z)
     (hn : n ∈ Nset k r) : h * n * h⁻¹ ∈ Nset k r := by
@@ -98,7 +96,7 @@ def fexp (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℤ :=
   if i.val < r then (r : ℤ) - i.val else if i.val ≤ r + k then 0 else (r : ℤ) + k - i.val
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hv` using `piI_val (k := k) (r := r) i`. Simplify using `only [fexp]`. Apply the tactic sequence `split_ifs at hv ⊢ <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma fexp_piI (i : Fin (2 * r + k + 1)) : fexp k r (piI k r i) = - fexp k r i := by
   have hi := i.isLt
@@ -107,7 +105,7 @@ lemma fexp_piI (i : Fin (2 * r + k + 1)) : fexp k r (piI k r i) = - fexp k r i :
   split_ifs at hv ⊢ <;> omega
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hi`. Simplify using `only [fexp]`. Apply the tactic sequence `split_ifs <;> omega`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma fexp_inW {i : Fin (2 * r + k + 1)} (hi : inW k r i) : fexp k r i = 0 := by
   obtain ⟨h1, h2⟩ := hi
@@ -115,7 +113,7 @@ lemma fexp_inW {i : Fin (2 * r + k + 1)} (hi : inW k r i) : fexp k r i = 0 := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Simplify using `only [inW] at hW`. Simplify using `only [fexp]`. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma fexp_gap {i j : Fin (2 * r + k + 1)} (hij : i.val < j.val) (hW : ¬ (inW k r i ∧ inW k r j)) :
     1 ≤ fexp k r i - fexp k r j := by
@@ -127,7 +125,7 @@ def dS (k r : ℕ) (s : ℝ) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)
   diagonal fun i => ((s : ℂ)) ^ (fexp k r i)
 
 /- English proof (translation)
-Rewrite using `[dS, dS, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← mul_zpow, Complex.ofReal_inv, mul_inv_cancel₀ (Complex.ofReal_ne_zero.mpr hs), _root_.one_zpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 lemma dS_mul_dS_inv {s : ℝ} (hs : s ≠ 0) : dS k r s * dS k r s⁻¹ = 1 := by
   rw [dS, dS, diagonal_mul_diagonal, ← diagonal_one]
@@ -136,16 +134,16 @@ lemma dS_mul_dS_inv {s : ℝ} (hs : s ≠ 0) : dS k r s * dS k r s⁻¹ = 1 := b
   rw [← mul_zpow, Complex.ofReal_inv, mul_inv_cancel₀ (Complex.ofReal_ne_zero.mpr hs), _root_.one_zpow]
 
 /- English proof (translation)
-Rewrite using `[dS, dS, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma dS_conj_apply (s : ℝ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j) :
     (dS k r s * g * dS k r s⁻¹) i j = (s : ℂ) ^ (fexp k r i) * g i j * ((s⁻¹ : ℝ) : ℂ) ^ (fexp k r j) := by
   rw [dS, dS, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Use `show (dS k r s)ᴴ * Hpk k r * dS k r s = Hpk k r`. Use extensionality with `i j`. Rewrite using `[dS, diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul, Hpk_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : (s : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hs`. Rewrite using `[fexp_piI, Pi.star_apply, star_zpow₀, Complex.star_def, Complex.conj_ofReal, _root_.zpow_neg]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma dS_mem_UH {s : ℝ} (hs : s ≠ 0) : dS k r s ∈ UH (Hpk k r) := by
   show (dS k r s)ᴴ * Hpk k r * dS k r s = Hpk k r
@@ -159,7 +157,7 @@ lemma dS_mem_UH {s : ℝ} (hs : s ≠ 0) : dS k r s ∈ UH (Hpk k r) := by
   · simp
 
 /- English proof (translation)
-Rewrite using `[dS_conj_apply, hg]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_one, ← mul_zpow, Complex.ofReal_inv, mul_inv_cancel₀ (Complex.ofReal_ne_zero.mpr hs), _root_.one_zpow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma dS_conj_fix {s : ℝ} (hs : s ≠ 0) {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (i j : Fin (2 * r + k + 1)) (hg : g i j = if i = j then 1 else 0) :
@@ -172,7 +170,7 @@ lemma dS_conj_fix {s : ℝ} (hs : s ≠ 0) {g : Matrix (Fin (2 * r + k + 1)) (Fi
   · simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hij : inW k r i ∧ inW k r j`. Rewrite using `[dS_conj_apply, fexp_inW hij.1, fexp_inW hij.2, zpow_zero, zpow_zero, one_mul, mul_one]`. Rewrite using `[dS_conj_fix hs i j (uw_block hh i j hij), uw_block hh i j hij]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma dS_conj_UW {s : ℝ} (hs : s ≠ 0) {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) : dS k r s * h * dS k r s⁻¹ = h := by
@@ -182,7 +180,7 @@ lemma dS_conj_UW {s : ℝ} (hs : s ≠ 0) {h : Matrix (Fin (2 * r + k + 1)) (Fin
   · rw [dS_conj_fix hs i j (uw_block hh i j hij), uw_block hh i j hij]
 
 /- English proof (translation)
-Rewrite `hn`, the goal using `[mem_Nset_iff]`. Conclude with `⟨mul_mem_UH (mul_mem_UH (dS_mem_UH hs) hn.1) (dS_mem_UH (inv_ne_zero hs)), fun i j hj hi => dS_conj_fix hs i j (hn.2 i j hj hi)⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma dS_conj_N {s : ℝ} (hs : s ≠ 0) {n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hn : n ∈ Nset k r) : dS k r s * n * dS k r s⁻¹ ∈ Nset k r := by
@@ -191,9 +189,9 @@ lemma dS_conj_N {s : ℝ} (hs : s ≠ 0) {n : Matrix (Fin (2 * r + k + 1)) (Fin 
     fun i j hj hi => dS_conj_fix hs i j (hn.2 i j hj hi)⟩
 
 /- English proof (translation)
-Take `⟨h, hh, m, hm, rfl⟩` from `hg`. Establish `h1 : dS k r s⁻¹ * dS k r s = 1`. Use `dS_mul_dS_inv (k := k) (r := r) (inv_ne_zero hs)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `e : dS k r s * (h * m) * dS k r s⁻¹ = (dS k r s * h * dS k r s⁻¹) * (dS k r s * m * dS k r s⁻¹)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (dS k r s⁻¹) (dS k r s), h1, Matrix.one_mul]`. Conclude with `⟨h, hh, _, dS_conj_N hs hm, by rw [e, dS_conj_UW hs hh]⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma dS_conj_S {s : ℝ} (hs : s ≠ 0) {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ Sset k r z) : dS k r s * g * dS k r s⁻¹ ∈ Sset k r z := by
@@ -208,17 +206,17 @@ lemma dS_conj_S {s : ℝ} (hs : s ≠ 0) {g : Matrix (Fin (2 * r + k + 1)) (Fin 
   exact ⟨h, hh, _, dS_conj_N hs hm, by rw [e, dS_conj_UW hs hh]⟩
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv (dS_mul_dS_inv hs)`.
+A detailed English derivation is pending.
 -/
 lemma dS_inv_eq {s : ℝ} (hs : s ≠ 0) : (dS k r s)⁻¹ = dS k r s⁻¹ :=
   Matrix.inv_eq_right_inv (dS_mul_dS_inv hs)
 
 /- English proof (translation)
-Rewrite using `[dS_inv_eq hs]`. Establish `h1 : dS k r s⁻¹ * dS k r s = 1`. Use `dS_mul_dS_inv (k := k) (r := r) (inv_ne_zero hs)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hg`. Establish `h2` using `dS_conj_S (inv_ne_zero hs) hg`. Rewrite `h2` using `[inv_inv]`. Establish `e : dS k r s⁻¹ * (dS k r s * g * dS k r s⁻¹) * dS k r s = g`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Conclude with `dS_conj_S hs`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma dS_conj_S_iff {s : ℝ} (hs : s ≠ 0) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     dS k r s * g * (dS k r s)⁻¹ ∈ Sset k r z ↔ g ∈ Sset k r z := by
@@ -237,15 +235,13 @@ lemma dS_conj_S_iff {s : ℝ} (hs : s ≠ 0) (g : Matrix (Fin (2 * r + k + 1)) (
   · exact dS_conj_S hs
 
 /- English proof (translation)
-Establish `hs` using `hs0.ne'`. Rewrite using `[dS_inv_eq hs, Matrix.sub_apply]`. Distinguish the cases in `hfix : n i j = if i = j then 1 else 0`. Rewrite using `[dS_conj_fix hs i j hfix, Matrix.one_apply, sub_self, norm_zero]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Establish `hlt : i.val < j.val`. Assume the negation of the conclusion as `hle`. Conclude with `hfix (n_ut hn i j (by omega))`. Establish `hne : i ≠ j` using `fun e => by rw [e] at hlt; omega`. Establish `hW : ¬ (inW k r i ∧ inW k r j)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨hi1, -⟩, -, hj2⟩`. Conclude with `hfix (((mem_Nset_iff n).mp hn).2 i j hj2 (by omega))`. Establish `hd` using `fexp_gap hlt hW`. Rewrite using `[dS_conj_apply, Matrix.one_apply_ne hne, sub_zero, norm_mul, norm_mul, norm_zpow, norm_zpow, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg hs0.le, Real.norm_of_nonneg (inv_nonneg.mpr hs0.le)]`. Establish `key : s ^ fexp k r i * s⁻¹ ^ fexp k r j = s ^ (fexp k r i - fexp k r j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[_root_.inv_zpow, ← _root_.zpow_neg, ← zpow_add₀ hs, sub_eq_add_neg]`. Establish `hle : s ^ (fexp k r i - fexp k r j) ≤ s`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← key]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ s * ‖n i j‖ := mul_le_mul_of_nonneg_right hle (norm_nonneg _)`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma norm_dS_conj_le {s : ℝ} (hs0 : 0 < s) (hs1 : s ≤ 1)
     {n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hn : n ∈ Nset k r) (i j) :
@@ -276,9 +272,9 @@ lemma norm_dS_conj_le {s : ℝ} (hs0 : 0 < s) (hs1 : s ≤ 1)
       _ ≤ s * ‖n i j‖ := mul_le_mul_of_nonneg_right hle (norm_nonneg _)
 
 /- English proof (translation)
-Introduce `k r z _ n hn ε hε`. Establish `hM : 0 ≤ ∑ i, ∑ j, ‖n i j‖` using `by positivity`. Establish `hs0 : 0 < min 1 (ε / (∑ i, ∑ j, ‖n i j‖ + 1))` using `lt_min one_pos (div_pos hε (by linarith))`. Establish `hs1 : min 1 (ε / (∑ i, ∑ j, ‖n i j‖ + 1)) ≤ 1` using `min_le_left _ _`. Use `⟨dS k r (min 1 (ε / (∑ i, ∑ j, ‖n i j‖ + 1))), (Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_right_inverse (dS_mul_dS_inv hs0.ne')), fun g => dS_conj_S_iff hs0.ne' g, fun i j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `have hentry : ‖n i j‖ ≤ ∑ i, ∑ j, ‖n i j‖ := (Finset.single_le_sum (fun j _ => norm_nonneg (n i j)) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖n i j‖) (fun i _ => Finset.sum_nonneg fun j _ => norm_nonneg _) (Finset.mem_univ i))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem unipotent_radical_contracting : NContract := by
   intro k r z _ n hn ε hε

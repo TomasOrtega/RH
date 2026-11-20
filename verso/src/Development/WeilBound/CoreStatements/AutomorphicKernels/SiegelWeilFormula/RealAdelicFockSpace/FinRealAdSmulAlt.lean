@@ -19,14 +19,14 @@ variable {d : SD σ}
 def jnp (R : RD d) (p : Vw d × Yf d) : Mx F E d.m d.n := jn R p.1 p.2
 
 /- English proof (translation)
-Conclude with `KFPB.exists_nuf' R`.
+A detailed English derivation is pending.
 -/
 theorem exists_nuf (R : RD d) : ∃ νf : Measure (Yf d), νf.IsAddHaarMeasure ∧
     (Measure.map (jnp R) ((volume : Measure (Vw d)).prod νf)).IsAddHaarMeasure := by
   exact KFPB.exists_nuf' R
 
 /- English proof (translation)
-Conclude with `KFPB.integral_jnp' R hνf hf hg' hb hb1`.
+A detailed English derivation is pending.
 -/
 theorem integral_jnp (R : RD d) {νf : Measure (Yf d)} (hνf : νf.IsAddHaarMeasure) {f : Mx F E d.m d.n → ℂ}
     (hf : f ∈ d.schM) {g : Yf d → ℂ} (hg' : g ∈ SB (Yf d)) {b : Vw d → ℂ} (hb : Continuous b) (hb1 : ∀ u, ‖b u‖ ≤ 1) :
@@ -35,38 +35,38 @@ theorem integral_jnp (R : RD d) {νf : Measure (Yf d)} (hνf : νf.IsAddHaarMeas
   exact KFPB.integral_jnp' R hνf hf hg' hb hb1
 
 /- English proof (translation)
-Conclude with `arc_add' R X Y`.
+A detailed English derivation is pending.
 -/
 theorem arc_add (R : RD d) (X Y : Mx F E d.m d.n) : arc R (X + Y) = arc R X + arc R Y := by
   exact arc_add' R X Y
 
 /- English proof (translation)
-Conclude with `arc_realAd' R t X`.
+A detailed English derivation is pending.
 -/
 theorem arc_realAd (R : RD d) (t : ℝ) (X : Mx F E d.m d.n) : arc R (realAd F t • X) = t • arc R X := by
   exact arc_realAd' R t X
 
 /- English proof (translation)
-Conclude with `fin_add_of' R hZ X`.
+A detailed English derivation is pending.
 -/
 theorem fin_add_of (R : RD d) {Z : Mx F E d.m d.n} (hZ : finOne F • Z = 0) (X : Mx F E d.m d.n) :
     fin d (X + Z) = fin d X := by
   exact fin_add_of' R hZ X
 
 /- English proof (translation)
-Conclude with `fin_realAd_smul' hZ t`.
+A detailed English derivation is pending.
 -/
 theorem fin_realAd_smul {Z : Mx F E d.m d.n} (hZ : finOne F • Z = 0) (t : ℝ) : finOne F • (realAd F t • Z) = 0 := by
   exact fin_realAd_smul' hZ t
 
 /- English proof (translation)
-Conclude with `gau_eq' R X`.
+A detailed English derivation is pending.
 -/
 theorem gau_eq (R : RD d) (X : Mx F E d.m d.n) : gau R X = (Real.exp (-(2 * Real.pi * ‖arc R X‖ ^ 2)) : ℂ) := by
   exact gau_eq' R X
 
 /- English proof (translation)
-Conclude with `psi_tw' R hW t X`.
+A detailed English derivation is pending.
 -/
 theorem psi_tw (R : RD d) {W : Mx F E d.m d.n} (hW : finOne F • W = 0) (t : ℝ) (X : Mx F E d.m d.n) :
     d.B.ψ (d.tt (d.gram (realAd F t • tw R W) X)) =
@@ -74,7 +74,7 @@ theorem psi_tw (R : RD d) {W : Mx F E d.m d.n} (hW : finOne F • W = 0) (t : �
   exact psi_tw' R hW t X
 
 /- English proof (translation)
-Conclude with `psi_sp' R hW s t`.
+A detailed English derivation is pending.
 -/
 theorem psi_sp (R : RD d) {W : Mx F E d.m d.n} (hW : finOne F • W = 0) (s t : ℝ) :
     d.B.ψ (-(⅟(2 : AF F) * spf d ((realAd F s • W) * (incM F d.b.1.toCols₂)ᵀ)

@@ -22,7 +22,7 @@ private abbrev mW {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} (g : S' ⟶ 
     (by subst h; simp [pullback.lift_snd_assoc]) (by simp)
 
 /- English proof (translation)
-Unfold `mY pullback.map`. Use `erw [pullback.lift_fst]`. Conclude with `Category.comp_id _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem mY_comp_pullback_fst {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s') :
     mY p g h ≫ pullback.fst p s = pullback.fst p s' := by
@@ -31,7 +31,7 @@ private theorem mY_comp_pullback_fst {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' 
   exact Category.comp_id _
 
 /- English proof (translation)
-Unfold `mY pullback.map`. Use `erw [pullback.lift_snd]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem mY_comp_pullback_snd {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s') :
     mY p g h ≫ pullback.snd p s = pullback.snd p s' ≫ g := by
@@ -39,7 +39,7 @@ private theorem mY_comp_pullback_snd {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' 
   erw [pullback.lift_snd]
 
 /- English proof (translation)
-Unfold `mW pullback.map`. Use `erw [pullback.lift_fst]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem mW_comp_fst_eq_fst_comp_mY {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s') :
     mW p ι g h ≫ pullback.fst _ ι = pullback.fst _ ι ≫ mY p g h := by
@@ -47,7 +47,7 @@ private theorem mW_comp_fst_eq_fst_comp_mY {S S' : Scheme.{0}} {s : S ⟶ B} {s'
   erw [pullback.lift_fst]
 
 /- English proof (translation)
-Unfold `mW pullback.map`. Use `erw [pullback.lift_snd]`. Conclude with `Category.comp_id _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem mW_comp_pullback_snd {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s') :
     mW p ι g h ≫ pullback.snd _ ι = pullback.snd _ ι := by
@@ -56,7 +56,7 @@ private theorem mW_comp_pullback_snd {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' 
   exact Category.comp_id _
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, mY_comp_pullback_fst, mY_comp_pullback_fst, mY_comp_pullback_fst]`. Rewrite using `[Category.assoc, mY_comp_pullback_snd, reassoc_of% (mY_comp_pullback_snd p g' h'), mY_comp_pullback_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mY_comp {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {s'' : S'' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s')
     (g' : S'' ⟶ S') (h' : g' ≫ s' = s'') :
@@ -66,7 +66,7 @@ private theorem mY_comp {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {s
   · rw [Category.assoc, mY_comp_pullback_snd, reassoc_of% (mY_comp_pullback_snd p g' h'), mY_comp_pullback_snd]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, mW_comp_fst_eq_fst_comp_mY, reassoc_of% (mW_comp_fst_eq_fst_comp_mY p ι g' h'), mW_comp_fst_eq_fst_comp_mY, mY_comp p g h g' h']`. Rewrite using `[Category.assoc, mW_comp_pullback_snd, mW_comp_pullback_snd, mW_comp_pullback_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mW_comp {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {s'' : S'' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s')
     (g' : S'' ⟶ S') (h' : g' ≫ s' = s'') :
@@ -76,7 +76,7 @@ private theorem mW_comp {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {s
   · rw [Category.assoc, mW_comp_pullback_snd, mW_comp_pullback_snd, mW_comp_pullback_snd]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `mY_comp p g h g' h'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem mY_comp' {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {s'' : S'' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s')
     (g' : S'' ⟶ S') (h' : g' ≫ s' = s'') (g'' : S'' ⟶ S) (h'' : g'' ≫ s = s'') (e : g' ≫ g = g'') :
@@ -84,7 +84,7 @@ private theorem mY_comp' {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {
   subst e; exact mY_comp p g h g' h'
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `mW_comp p ι g h g' h'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem mW_comp' {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {s'' : S'' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s')
     (g' : S'' ⟶ S') (h' : g' ≫ s' = s'') (g'' : S'' ⟶ S) (h'' : g'' ≫ s = s'') (e : g' ≫ g = g'') :
@@ -92,7 +92,7 @@ private theorem mW_comp' {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {
   subst e; exact mW_comp p ι g h g' h'
 
 /- English proof (translation)
-Rewrite using `[mW_comp_fst_eq_fst_comp_mY]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mW_fst {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s') :
     pullback.fst _ _ ≫ mY p g h = mW p ι g h ≫ pullback.fst _ _ := by
@@ -109,18 +109,18 @@ private def ContP (q : ℕ) (i n : ℤ) {J : Type} [Category J] (E : J → Spc) 
     ∃ (k : J) (f : j ⟶ k), pull (ZMod q) (tr f) (tw q i) n y = 0
 
 /- English proof (translation)
-Rewrite using `[← pull_comp, e.inv_hom_id, pull_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pull_cancel {q : ℕ} {i n : ℤ} {E E' : Spc} (e : E ≅ E') (x : Ht q E' n i) :
     pull (ZMod q) e.inv (tw q i) n (pull (ZMod q) e.hom (tw q i) n x) = x := by
   rw [← pull_comp, e.inv_hom_id, pull_id]
 
 /- English proof (translation)
-Take `⟨hs, hi⟩` from `h`. Use `⟨fun x' => ?_, fun j y' hy' => ?_⟩` and prove the remaining obligations. Take `⟨j, y, hy⟩` from `hs (pull (ZMod q) φL.hom (tw q i) n x')`. Use `⟨j, pull (ZMod q) (φ j).inv (tw q i) n y, ?_⟩` and prove the remaining obligations. Establish `hc` using `pull_cancel (φ j).symm y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Iso.symm_inv, Iso.symm_hom] at hc`. Establish `key : pull (ZMod q) φL.hom (tw q i) n (pull (ZMod q) (b' j) (tw q i) n (pull (ZMod q) (φ j).inv (tw q i) n y)) = pull (ZMod q) φL.hom (tw q i) n x'`. Rewrite using `[← pull_comp, hb, pull_comp, hc, hy]`. Establish `key2` using `congrArg (pull (ZMod q) φL.inv (tw q i) n) key`. Rewrite `key2` using `[pull_cancel, pull_cancel]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨k, f, hf⟩` from `hi j (pull (ZMod q) (φ j).hom (tw q i) n y') (by rw [← pull_comp, ← hb, pull_comp, hy', map_zero])`. Use `⟨k, f, ?_⟩` and prove the remaining obligations. Establish `key : pull (ZMod q) (φ k).hom (tw q i) n (pull (ZMod q) (tr' f) (tw q i) n y') = 0`. Rewrite using `[← pull_comp, htr, pull_comp, hf]`. Rewrite using `[← pull_cancel (φ k) (pull (ZMod q) (tr' f) (tw q i) n y'), key, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem transfer {q : ℕ} {i n : ℤ} {J : Type} [Category J] {E E' : J → Spc} {L L' : Spc}
     {b : ∀ j, L ⟶ E j} {b' : ∀ j, L' ⟶ E' j}
@@ -158,14 +158,14 @@ private def eY {S : Scheme.{0}} (g : S ⟶ C) (s : S ⟶ B) (h : g ≫ π = s) :
   pullbackLeftPullbackSndIso p π g ≪≫ pullback.congrHom rfl h
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `[eY]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 @[reassoc (attr := simp)] private theorem eY_hom_fst {S : Scheme.{0}} (g : S ⟶ C) (s : S ⟶ B) (h : g ≫ π = s) :
     (eY p π g s h).hom ≫ pullback.fst _ _ = pullback.fst _ _ ≫ pullback.fst _ _ := by
   subst h; simp [eY]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `[eY]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 @[reassoc (attr := simp)] private theorem eY_hom_snd {S : Scheme.{0}} (g : S ⟶ C) (s : S ⟶ B) (h : g ≫ π = s) :
     (eY p π g s h).hom ≫ pullback.snd _ _ = pullback.snd _ _ := by
@@ -177,7 +177,7 @@ section IsosW
 variable {Y B W C : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) (π : C ⟶ B)
 
 /- English proof (translation)
-Rewrite using `[Iso.inv_comp_eq, eY_hom_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem eY_inv_snd {S : Scheme.{0}} (g : S ⟶ C) (s : S ⟶ B) (h : g ≫ π = s) :
     (eY p π g s h).inv ≫ pullback.snd _ _ = pullback.snd _ _ := by
@@ -190,7 +190,7 @@ private abbrev aW {S : Scheme.{0}} (g : S ⟶ C) : pullback (p2 p ι π) g ⟶ p
     (by rw [Category.assoc, pullback.condition])
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Category.assoc, Category.assoc, eY_hom_snd_assoc]`. Use `erw [pullback.lift_snd_assoc]`. Rewrite using `[← pullback.condition (f := pullback.snd p π ≫ π) (g := ι), ← pullback.condition_assoc (f := p2 p ι π) (g := g)]`. Simplify using `only [Category.assoc]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem equiv_hom_comp_projection {S : Scheme.{0}} (g : S ⟶ C) (s : S ⟶ B) (h : g ≫ π = s) :
     (aW p ι π g ≫ (eY p π g s h).hom) ≫ pullback.snd p s ≫ s =
@@ -203,7 +203,7 @@ private theorem equiv_hom_comp_projection {S : Scheme.{0}} (g : S ⟶ C) (s : S 
   simp only [Category.assoc]
 
 /- English proof (translation)
-Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition_assoc, reassoc_of% (eY_inv_snd p π g s h), h]`. Conclude with `pullback.condition`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem equiv_inv_comp_projection {S : Scheme.{0}} (g : S ⟶ C) (s : S ⟶ B) (h : g ≫ π = s) :
     ((pullback.fst (pullback.snd p s ≫ s) ι ≫ (eY p π g s h).inv) ≫ pullback.fst _ _) ≫ pullback.snd p π ≫ π =
@@ -243,7 +243,7 @@ private abbrev bc {X : Scheme.{0}} (P : X ⟶ C) (k : S' ⟶ S) (hg : k ≫ g = 
   pullback.map _ _ _ _ (𝟙 _) k (𝟙 _) (by simp) (by simp [hg])
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, mY_comp_pullback_fst, eY_hom_fst, Category.assoc, eY_hom_fst] erw [pullback.lift_fst_assoc]`. Rewrite using `[Category.comp_id]`. Rewrite using `[Category.assoc, mY_comp_pullback_snd, eY_hom_snd_assoc, Category.assoc, eY_hom_snd] erw [pullback.lift_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eY_nat (h : g ≫ π = s) (h' : g' ≫ π = s') (k : S' ⟶ S) (hk : k ≫ s = s') (hg : k ≫ g = g') :
     (eY p π g' s' h').hom ≫ mY p k hk = bc (pullback.snd p π) k hg ≫ (eY p π g s h).hom := by
@@ -255,7 +255,7 @@ private theorem eY_nat (h : g ≫ π = s) (h' : g' ≫ π = s') (k : S' ⟶ S) (
     erw [pullback.lift_snd]
 
 /- English proof (translation)
-Unfold `bc pullback.map`. Use `erw [pullback.lift_fst]`. Conclude with `Category.comp_id _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem bc_comp_pullback_fst {X : Scheme.{0}} (P : X ⟶ C) (k : S' ⟶ S) (hg : k ≫ g = g') :
     bc P k hg ≫ pullback.fst P g = pullback.fst P g' := by
@@ -264,7 +264,7 @@ private theorem bc_comp_pullback_fst {X : Scheme.{0}} (P : X ⟶ C) (k : S' ⟶ 
   exact Category.comp_id _
 
 /- English proof (translation)
-Unfold `bc pullback.map`. Use `erw [pullback.lift_snd]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem bc_comp_pullback_snd {X : Scheme.{0}} (P : X ⟶ C) (k : S' ⟶ S) (hg : k ≫ g = g') :
     bc P k hg ≫ pullback.snd P g = pullback.snd P g' ≫ k := by
@@ -272,7 +272,7 @@ private theorem bc_comp_pullback_snd {X : Scheme.{0}} (P : X ⟶ C) (k : S' ⟶ 
   erw [pullback.lift_snd]
 
 /- English proof (translation)
-Unfold `aW`. Use `erw [pullback.lift_fst]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem aW_comp_pullback_fst (g : S ⟶ C) :
     aW p ι π g ≫ pullback.fst _ _ = pullback.fst _ _ ≫ pullback.fst _ _ := by
@@ -280,7 +280,7 @@ private theorem aW_comp_pullback_fst (g : S ⟶ C) :
   erw [pullback.lift_fst]
 
 /- English proof (translation)
-Unfold `aW`. Use `erw [pullback.lift_snd]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem aW_comp_pullback_snd (g : S ⟶ C) :
     aW p ι π g ≫ pullback.snd _ _ = pullback.snd _ _ := by
@@ -288,7 +288,7 @@ private theorem aW_comp_pullback_snd (g : S ⟶ C) :
   erw [pullback.lift_snd]
 
 /- English proof (translation)
-Unfold `eW`. Use `erw [pullback.lift_fst]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem eW_hom_comp_fst_eq_aW_comp_eY (g : S ⟶ C) (h : g ≫ π = s) :
     (eW p ι π g s h).hom ≫ pullback.fst _ _ = aW p ι π g ≫ (eY p π g s h).hom := by
@@ -296,7 +296,7 @@ private theorem eW_hom_comp_fst_eq_aW_comp_eY (g : S ⟶ C) (h : g ≫ π = s) :
   erw [pullback.lift_fst]
 
 /- English proof (translation)
-Unfold `eW`. Use `erw [pullback.lift_snd]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem eW_hom_comp_snd (g : S ⟶ C) (h : g ≫ π = s) :
     (eW p ι π g s h).hom ≫ pullback.snd _ _ = pullback.fst _ _ ≫ pullback.snd _ _ := by
@@ -304,9 +304,9 @@ private theorem eW_hom_comp_snd (g : S ⟶ C) (h : g ≫ π = s) :
   erw [pullback.lift_snd]
 
 /- English proof (translation)
-Establish `hA : aW p ι π g' ≫ bc (pullback.snd p π) k hg = bc (p2 p ι π) k hg ≫ aW p ι π g`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, bc_comp_pullback_fst, aW_comp_pullback_fst, Category.assoc, aW_comp_pullback_fst, reassoc_of% (bc_comp_pullback_fst (p2 p ι π) k hg)]`. Rewrite using `[Category.assoc, bc_comp_pullback_snd, reassoc_of% (aW_comp_pullback_snd p ι π g'), Category.assoc, aW_comp_pullback_snd, bc_comp_pullback_snd]`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, mW_comp_fst_eq_fst_comp_mY, reassoc_of% (eW_hom_comp_fst_eq_aW_comp_eY p ι π g' h'), eY_nat p π h h' k hk hg, reassoc_of% hA, Category.assoc, eW_hom_comp_fst_eq_aW_comp_eY]`. Rewrite using `[Category.assoc, mW_comp_pullback_snd, eW_hom_comp_snd, Category.assoc, eW_hom_comp_snd, reassoc_of% (bc_comp_pullback_fst (p2 p ι π) k hg)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eW_nat (h : g ≫ π = s) (h' : g' ≫ π = s') (k : S' ⟶ S) (hk : k ≫ s = s') (hg : k ≫ g = g') :
     (eW p ι π g' s' h').hom ≫ mW p ι k hk = bc (p2 p ι π) k hg ≫ (eW p ι π g s h).hom := by
@@ -328,7 +328,7 @@ variable {q : ℕ} [NeZero q] {R : CommRingCat.{0}} {J : Type} [SmallCategory J]
 
 include hc in
 /- English proof (translation)
-The claim follows from `LateralTheory.Fin.Cont.intersectionNumber_baseChange hA hB q P hq D c hc u hu v hv n i`.
+A detailed English derivation is pending.
 -/
 private theorem contOf (hA : A2) (hB : B1) {X : Scheme.{0}} (P : X ⟶ Spec R) [QuasiCompact P] [IsSeparated P]
     (hq : IsUnit (q : R)) (i n : ℤ) :
@@ -351,9 +351,9 @@ variable {q : ℕ} [NeZero q] {R : CommRingCat.{0}} {J : Type} [SmallCategory J]
 
 include hc hu hv hs hsL in
 /- English proof (translation)
-Use `transfer (fun j => sch.mapIso (eY p π (Spec.map (u j)) (s j) (hs j))) (sch.mapIso (eY p π (Spec.map v) sL hsL)) (fun j => ?_) (fun {j k} f => ?_) (contOf hc hu hv hA hB (pullback.snd p π) hq i n)` and prove the remaining obligations. Simplify using `only [CategoryTheory.Functor.mapIso_hom]`. Rewrite using `[← CategoryTheory.Functor.map_comp, ← CategoryTheory.Functor.map_comp]`. Use `congr 1`. Conclude with `eY_nat p π (hs j) hsL (Spec.map (c.ι.app j)) (h1 j) (by rw [← Spec.map_comp, hv j])`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [CategoryTheory.Functor.mapIso_hom]`. Rewrite using `[← CategoryTheory.Functor.map_comp, ← CategoryTheory.Functor.map_comp]`. Use `congr 1`. Conclude with `eY_nat p π (hs j) (hs k) (Spec.map (D.map f)) (h2 f) (by rw [← Spec.map_comp, hu f])`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem contY (hA : A2) (hB : B1) [QuasiCompact (pullback.snd p π)] [IsSeparated (pullback.snd p π)]
     (hq : IsUnit (q : R)) (i n : ℤ) :
@@ -374,9 +374,9 @@ private theorem contY (hA : A2) (hB : B1) [QuasiCompact (pullback.snd p π)] [Is
 
 include hc hu hv hs hsL in
 /- English proof (translation)
-Use `transfer (fun j => sch.mapIso (eW p ι π (Spec.map (u j)) (s j) (hs j))) (sch.mapIso (eW p ι π (Spec.map v) sL hsL)) (fun j => ?_) (fun {j k} f => ?_) (contOf hc hu hv hA hB (p2 p ι π) hq i n)` and prove the remaining obligations. Simplify using `only [CategoryTheory.Functor.mapIso_hom]`. Rewrite using `[← CategoryTheory.Functor.map_comp, ← CategoryTheory.Functor.map_comp]`. Use `congr 1`. Conclude with `eW_nat p ι π (hs j) hsL (Spec.map (c.ι.app j)) (h1 j) (by rw [← Spec.map_comp, hv j])`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [CategoryTheory.Functor.mapIso_hom]`. Rewrite using `[← CategoryTheory.Functor.map_comp, ← CategoryTheory.Functor.map_comp]`. Use `congr 1`. Conclude with `eW_nat p ι π (hs j) (hs k) (Spec.map (D.map f)) (h2 f) (by rw [← Spec.map_comp, hu f])`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem contW (hA : A2) (hB : B1) [QuasiCompact (p2 p ι π)] [IsSeparated (p2 p ι π)]
     (hq : IsUnit (q : R)) (i n : ℤ) :
@@ -401,39 +401,31 @@ end Cont2
 section Main
 
 /- English proof (translation)
-Use `haveI := hp`. Take `⟨J, _, _, D, c, hc, uu, hSH, hE⟩` from `LateralTheory.Fin.StrictHenselization.intersectionNumber_baseChange R (e.hom u)`. Take `⟨uj, huj⟩ : ∃ uj : ∀ j, R ⟶ D.obj j, ∀ j, uj j = uu.app j` from `⟨fun j => uu.app j, fun _ => rfl⟩`. Establish `hu : ∀ {j k : J} (f : j ⟶ k), uj j ≫ D.map f = uj k`. Introduce `j k f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[huj, huj]`. Simplify using `using (uu.naturality f).symm`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : R ⟶ c.pt, ∀ j, uj j ≫ c.ι.app j = v := by`. Take `⟨j0⟩` from `IsFiltered.nonempty (C := J)`. Use `⟨uj j0 ≫ c.ι.app j0, fun j => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, f, g, -⟩` from `IsFilteredOrEmpty.cocone_objs j j0`. Establish `a1 : uj j ≫ c.ι.app j = uj k ≫ c.ι.app k` using `by rw [← c.w f, ← Category.assoc, hu f]`. Establish `a2 : uj j0 ≫ c.ι.app j0 = uj k ≫ c.ι.app k` using `by rw [← c.w g, ← Category.assoc, hu g]`. Conclude with `a1.trans a2.symm`. Establish `hEt : ∀ j, Etale (((Spec.map (uj j) ≫ e.inv) ≫ U.hom : Spec (D.obj j) ⟶ B))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `j`. Use `haveI : Etale (Spec.map (uj j)) := HasRingHomProperty.Spec_iff.mpr (by rw [huj]; exact (hE j).1)`. Use `haveI : Etale U.hom := U.prop`. Use `infer_instance`. Set `π : Spec R ⟶ B` to `e.inv ≫ U.hom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `s : ∀ j, Spec (D.obj j) ⟶ B` to `fun j => (Spec.map (uj j) ≫ e.inv) ≫ U.hom`. Set `sL : Spec c.pt ⟶ B` to `(Spec.map v ≫ e.inv) ≫ U.hom`. Establish `hs : ∀ j, Spec.map (uj j) ≫ π = s j` using `fun j => (Category.assoc _ _ _).symm`. Establish `hsL : Spec.map v ≫ π = sL` using `(Category.assoc _ _ _).symm`. Establish `h1 : ∀ j, Spec.map (c.ι.app j) ≫ s j = sL`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `j`. Simplify using `only [s, sL, ← Category.assoc, ← Spec.map_comp, hv j]`. Establish `h2 : ∀ {j k : J} (f : j ⟶ k), Spec.map (D.map f) ≫ s j = s k`. Introduce `j k f`. Simplify using `only [s, ← Category.assoc, ← Spec.map_comp, hu f]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `V : J → B.Etale` to `fun j => MorphismProperty.Over.mk ⊤ (s j) (hEt j)`. Set `a : ∀ j, V j ⟶ U` to `fun j => MorphismProperty.Over.homMk (Spec.map (uj j) ≫ e.inv) rfl trivial`. Set `tr : ∀ {j k : J}, (j ⟶ k) → (V k ⟶ V j)` to `fun {j k} f => MorphismProperty.Over.homMk (Spec.map (D.map f)) (h2 f) trivial`. Establish `cY` using `fun n => contY (hc := hc) (hu := hu) (hv := hv) (p := p) (π := π) (hs := hs) (hsL := hsL) (h1 := h1) (h2 := h2) hA hB hq i n`. Establish `cW` using `fun n => contW (hc := hc) (hu := hu) (hv := hv) (p := p) (ι := ι) (π := π) (hs := hs) (hsL := hsL) (h1 := h1) (h2 := h2) hA hB hq i n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ea : ∀ j, Spec.map (c.ι.app j) ≫ (a j).left = Spec.map v ≫ e.inv`. Introduce `j`. Use `show Spec.map (c.ι.app j) ≫ Spec.map (uj j) ≫ e.inv = Spec.map v ≫ e.inv`. Rewrite using `[← Category.assoc, ← Spec.map_comp, hv j]`. Establish `etr : ∀ {j k : J} (f : j ⟶ k), Spec.map (c.ι.app k) ≫ (tr f).left = Spec.map (c.ι.app j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j k f`. Use `show Spec.map (c.ι.app k) ≫ Spec.map (D.map f) = Spec.map (c.ι.app j)`. Rewrite using `[← Spec.map_comp, c.w f]`. Use `⟨Sys.mk J V a ?_ tr ?_ ?_ ?_ c.pt hSH (Spec.map v ≫ e.inv) (fun j => mY p (Spec.map (c.ι.app j)) (h1 j)) (fun j => mW p ι (Spec.map (c.ι.app j)) (h1 j)) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_⟩` and prove the remaining obligations. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨𝔮, h𝔮⟩` from `(hE j).2`. Use `⟨𝔮, ?_⟩` and prove the remaining obligations. Establish `hp𝔮 : Spec.map (uj j) 𝔮 = e.hom u`. Rewrite using `[huj]`. Conclude with `PrimeSpectrum.ext h𝔮`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show e.inv (Spec.map (uj j) 𝔮) = u`. Rewrite using `[hp𝔮]`. Simplify using the standard rewrite rules. Introduce `j`. Apply `MorphismProperty.Over.Hom.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show Spec.map (D.map (𝟙 j)) = 𝟙 _`. Rewrite using `[CategoryTheory.Functor.map_id, Spec.map_id]`. Introduce `j k l f g`. Apply `MorphismProperty.Over.Hom.ext` to reduce the goal to its premises. Use `show Spec.map (D.map (f ≫ g)) = Spec.map (D.map g) ≫ Spec.map (D.map f)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[CategoryTheory.Functor.map_comp, Spec.map_comp]`. Introduce `j k f`. Apply `MorphismProperty.Over.Hom.ext` to reduce the goal to its premises. Use `show Spec.map (D.map f) ≫ Spec.map (uj j) ≫ e.inv = Spec.map (uj k) ≫ e.inv`. Rewrite using `[← Category.assoc, ← Spec.map_comp, hu f]`.
-
-Introduce `j`. Conclude with `mW_fst p ι _ _`. Introduce `j`. Conclude with `mY_comp' p (a j).left rfl (Spec.map (c.ι.app j)) (h1 j) (Spec.map v ≫ e.inv) rfl (ea j)`. Introduce `j`.
-
-Conclude with `mW_comp' p ι (a j).left rfl (Spec.map (c.ι.app j)) (h1 j) (Spec.map v ≫ e.inv) rfl (ea j)`. Introduce `j k f`. Conclude with `mY_comp' p (tr f).left (h2 f) (Spec.map (c.ι.app k)) (h1 k) (Spec.map (c.ι.app j)) (h1 j) (etr f)`. Introduce `j k f`. Conclude with `mW_comp' p ι (tr f).left (h2 f) (Spec.map (c.ι.app k)) (h1 k) (Spec.map (c.ι.app j)) (h1 j) (etr f)`.
-
-Introduce `j y hy`. Conclude with `(cY m).2 j y hy`. Introduce `y`. Conclude with `(cY (m - 1)).1 y`. Introduce `j w hw`.
-
-Conclude with `(cW (m - 1)).2 j w hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem sys_of {q : ℕ} [NeZero q] (i : ℤ) {B W Y : Scheme.{0}} (ι : W ⟶ B) [IsClosedImmersion ι] (p : Y ⟶ B)
     (hp : IsProper p) (U : B.Etale) (R : CommRingCat.{0}) (e : U.left ≅ Spec R) (m : ℤ) (u : U.left)
@@ -530,7 +522,7 @@ end Main
 end UpperTheory.Cb.MorphismCompositionLaws
 
 /- English proof (translation)
-Introduce `_ _ hyps q _ k _ hqk i B W Y x ι _ p hp U R e m u`. Establish `hq : IsUnit (q : R)`. Establish `h` using `hqk.map (Spec.preimage (e.inv ≫ U.hom ≫ x)).hom`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis. Conclude with `UpperTheory.Cb.MorphismCompositionLaws.sys_of i ι p hp U R e m u hq hyps.2.1 hyps.2.2.2.2.2.2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.affineGeometricCase_of_obstructionExact_natural :
     LateralTheory.E.NeighbourhoodKilling.ObsExact → LateralTheory.E.NeighbourhoodKilling.ObsNat → LateralTheory.E.GeoProof.AffGeo := by

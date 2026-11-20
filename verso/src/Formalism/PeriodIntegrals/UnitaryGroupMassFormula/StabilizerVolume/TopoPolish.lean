@@ -7,19 +7,15 @@ namespace PI.VolStabS.TopoPolish
 open Topology TopologicalSpace Set
 
 /- English proof (translation)
-Set `K` to `CompactExhaustion.choice Y`. Set `b : Set (Set (OnePoint Y))` to `((fun s : Set Y => ((↑) : Y → OnePoint Y) '' s) '' countableBasis Y) ∪ Set.range (fun m : ℕ => (((↑) : Y → OnePoint Y) '' K m)ᶜ)`. Establish `hopen : ∀ m, IsOpen ((((↑) : Y → OnePoint Y) '' K m)ᶜ)` using `fun m => OnePoint.isOpen_compl_image_coe.mpr ⟨(K.isCompact m).isClosed, K.isCompact m⟩`. Establish `hb : IsTopologicalBasis b`. Use `isTopologicalBasis_of_isOpen_of_nhds ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `u (⟨s, hs, rfl⟩ | ⟨m, rfl⟩)`. Conclude with `OnePoint.isOpenEmbedding_coe.isOpenMap _ (isOpen_of_mem_countableBasis hs)`. Conclude with `hopen m`. Introduce `a u ha hu`. Proceed by induction on `a using OnePoint.rec with`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `infty`. Establish `hc` using `(OnePoint.isOpen_iff_of_mem ha).mp hu`. Take `⟨m, hm⟩` from `K.exists_superset_of_isCompact hc.2`. Use `⟨_, Or.inr ⟨m, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, -, hy⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `OnePoint.coe_ne_infty y hy`. Introduce `x hx`. Proceed by induction on `x using OnePoint.rec with`. Consider the case `infty => exact ha`. Consider the case `coe y`.
+Treat this case separately. Treat this case separately. Assume the negation of the conclusion and derive a contradiction. Treat this case separately. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hyu`. Conclude with `hx ⟨y, hm hyu, rfl⟩`. Consider the case `coe y`. Establish `hu' : IsOpen (((↑) : Y → OnePoint Y) ⁻¹' u)` using `hu.preimage OnePoint.continuous_coe`. Take `⟨v, hv, hyv, hvu⟩` from `(isBasis_countableBasis Y).exists_subset_of_mem_open (show y ∈ _ from ha) hu'`.
-
-Use `⟨_, Or.inl ⟨v, hv, rfl⟩, ⟨y, hyv, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `hvu hz`. Use `haveI : SecondCountableTopology (OnePoint Y) := hb.secondCountableTopology (((countable_countableBasis Y).image _).union (Set.countable_range _))`. Use `haveI : PolishSpace (OnePoint Y) := by haveI : MetrizableSpace (OnePoint Y) := metrizableSpace_of_t3_secondCountable _`.
-
-Use `letI := metrizableSpaceMetric (OnePoint Y)`. Use `haveI : CompleteSpace (OnePoint Y) := complete_of_compact`. Use `infer_instance`. Use `haveI : PolishSpace (Set.range ((↑) : Y → OnePoint Y)) := OnePoint.isOpen_range_coe.polishSpace`. Conclude with `(OnePoint.isOpenEmbedding_coe.isEmbedding.toHomeomorph).isClosedEmbedding.polishSpace`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem polish_of_lcsc (Y : Type) [TopologicalSpace Y] [LocallyCompactSpace Y] [T2Space Y]
     [SecondCountableTopology Y] : PolishSpace Y := by

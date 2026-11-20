@@ -8,9 +8,9 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.L3
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gram, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Basis.toMatrix_apply]`. Use `conv_lhs => rw [← b'.sum_repr (b i), ← b'.sum_repr (b j)]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem gram_eq_conjTranspose_mul {K V : Type*} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     {n : ℕ} (h : V →ₗ⋆[K] V →ₗ[K] K) (b b' : Basis (Fin n) K V) :
@@ -25,7 +25,7 @@ theorem gram_eq_conjTranspose_mul {K V : Type*} [Field K] [StarRing K] [AddCommG
   ring
 
 /- English proof (translation)
-Rewrite using `[gram_eq_conjTranspose_mul h b b', Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Basis.det_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_det_change {K V : Type*} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {n : ℕ}
     (h : V →ₗ⋆[K] V →ₗ[K] K) (b b' : Basis (Fin n) K V) :

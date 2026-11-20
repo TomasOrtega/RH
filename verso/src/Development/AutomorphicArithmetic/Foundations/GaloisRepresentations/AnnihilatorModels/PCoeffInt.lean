@@ -5,11 +5,11 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `R T _ _ _ ι I _ _ c hc a m`. Set `c' : I → ι → integralClosure R T` to `fun i k => ⟨c i k, hc i k⟩`. Set `f : MvPolynomial ι (integralClosure R T) →+* MvPolynomial ι T` to `MvPolynomial.map (algebraMap (integralClosure R T) T)`. Establish `hform : ∀ i, form (c i) = (form (c' i)).map f`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[form, f, Polynomial.map_sub, MvPolynomial.map_C, c']`. Rewrite using `[Polynomial.map_sum]`. Simplify using `[Polynomial.map_mul, Polynomial.map_C, MvPolynomial.map_C, MvPolynomial.map_X]`. Establish `hP : (∏ i, form (c i)) = (∏ i, form (c' i)).map f`. Rewrite using `[Polynomial.map_prod]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun i _ => hform i`. Rewrite using `[hP, Polynomial.coeff_map]`. Simplify using `only [f, MvPolynomial.coeff_map]`. Conclude with `(((∏ i, form (c' i)).coeff a).coeff m).2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.coeffInt_of :
     CoeffInt := by

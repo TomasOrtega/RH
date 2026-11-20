@@ -13,11 +13,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V : Type} [AddCommGroup V] [Module ℂ V] {N : ℕ} {π : Representation ℂ (GL (Fin N) k) V}
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `schur_GL hs hi ⟨π z, fun g => by`. Rewrite using `[← Module.End.mul_eq_comp, ← Module.End.mul_eq_comp, ← map_mul, ← map_mul, Subgroup.mem_center_iff.1 hz g]⟩`. Establish `hc' : ∀ v, π z v = c • v` using `hc`. Use `⟨c, ?_, hc'⟩` and prove the remaining obligations. Take `⟨B, -, hp, hB⟩` from `hu`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Model.nontrivial_of_isIrreducible hi` as an intermediate fact. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `h0 : B v v ≠ 0` using `fun e => by simpa [e] using hp v hv`. Establish `h1` using `congrArg norm (hB z v v)`. Rewrite `h1` using `[hc']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, norm_mul, RingHom.id_apply, RCLike.norm_conj] at h1`. Establish `h2 : 0 < ‖B v v‖` using `norm_pos_iff.2 h0`. Establish `h3 : ‖c‖ * ‖c‖ = 1` using `mul_right_cancel₀ h2.ne' (by rw [mul_assoc, h1, one_mul])`. Use polynomial arithmetic with `[norm_nonneg c]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exists_central_scalar (hs : IsSmooth π) (hi : π.IsIrreducible) (hu : IsUnitarisable π) {z : GL (Fin N) k}
     (hz : z ∈ Subgroup.center (GL (Fin N) k)) : ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ v, π z v = c • v := by
@@ -37,7 +37,7 @@ theorem exists_central_scalar (hs : IsSmooth π) (hi : π.IsIrreducible) (hu : I
   nlinarith [norm_nonneg c]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `QuotientGroup.mk_out_eq_mul (Subgroup.center (GL (Fin N) k)) g`. Take `⟨c, h1, hc⟩` from `exists_central_scalar hs hi hu z.2`. Rewrite using `[hz, map_mul, Module.End.mul_apply, hc, map_smul, map_smul, norm_smul, h1, one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_coeff_out (hs : IsSmooth π) (hi : π.IsIrreducible) (hu : IsUnitarisable π) (v : V) (l : Module.Dual ℂ V)
     (g : GL (Fin N) k) : ‖l (π (QuotientGroup.mk g : AdGL k N).out v)‖ = ‖l (π g v)‖ := by
@@ -48,7 +48,7 @@ theorem norm_coeff_out (hs : IsSmooth π) (hi : π.IsIrreducible) (hu : IsUnitar
 omit [ValuativeRel k] in
 
 /- English proof (translation)
-Use `(IsLocallyConstant.iff_eventually_eq _).2 fun g => ?_` and prove the remaining obligations. Use `Filter.mem_of_superset (((hs v).preimage (continuous_const_mul g⁻¹)).mem_nhds (by simp)) fun x hx => ?_` and prove the remaining obligations. Establish `hx' : π (g⁻¹ * x) v = v` using `hx`. Use `show π x v = π g v`. Use `conv_rhs => rw [← hx', ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_orbit [IsTopologicalRing k] (hs : IsSmooth π) (v : V) :
     IsLocallyConstant fun g : GL (Fin N) k => π g v := by
@@ -59,13 +59,11 @@ theorem isLocallyConstant_orbit [IsTopologicalRing k] (hs : IsSmooth π) (v : V)
   conv_rhs => rw [← hx', ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]
 
 /- English proof (translation)
-Take `⟨-, hu, ν, hν, H⟩` from `h`. Introduce `m hm μ hμ v l hl`. Take `rfl : m = _root_.borel _` from `hm.measurable_eq`. Use `letI : MeasurableSpace (AdGL k δ.1) := _root_.borel _`. Use `secondCountableTopology_GL k (Fin δ.1)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hs` using `δ.2.rep.smooth`. Establish `hF` using `norm_coeff_out hs δ.2.rep.irr hu v l`. Establish `hl' : l ∈ smoothPart δ.rep.dual` using `hl.preimage continuous_inv`. Use `⟨fun q => ‖l (δ.rep q.out v)‖, hF, ?_, ?_⟩` and prove the remaining obligations. Use `Continuous.aestronglyMeasurable ((QuotientGroup.isQuotientMap_mk _).continuous_iff.2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (fun q : AdGL k δ.1 => ‖l (δ.rep q.out v)‖) ∘ QuotientGroup.mk = fun g => ‖l (δ.rep g v)‖ from funext hF]`. Conclude with `((isLocallyConstant_orbit hs v).comp fun w => ‖l w‖).continuous`. Rewrite using `[show ENNReal.ofReal 2 = 2 by simp, eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top, Measure.isMulLeftInvariant_eq_smul μ ν, lintegral_smul_measure]`. Establish `h1` using `H v l hl'`. Simplify using `only [enorm_norm, ENNReal.toReal_ofNat, ENNReal.rpow_two]`.
-
-Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSqIntCoeff_of_isSquareIntegrable {δ : IrrGL k} (h : UnitaryDual.IsSquareIntegrable δ) :
     IsSqIntCoeff δ.rep := by
@@ -92,7 +90,7 @@ end GlobalTheory.LocGL.SqIntBridge
 namespace GlobalTheory.Published
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ δ hδ`. Use `(h k δ hδ.1).1 ⟨1, isSmoothChar_one, ?_⟩` and prove the remaining obligations. Rewrite using `[IrrGL.tw_one]`. Conclude with `SqIntBridge.isSqIntCoeff_of_isSquareIntegrable hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem squareIntegrableSegment_of_ess (h : EssSquareIntegrableSegments) : SquareIntegrableSegment := by
   intro k _ _ _ _ _ δ hδ

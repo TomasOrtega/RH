@@ -7,17 +7,15 @@ namespace OrbitFibre
 open MulAction Function
 
 /- English proof (translation)
-Use `set s := hf.toFinset with hs`. Set `t : Finset ι` to `s.image Sigma.fst`. Set `u : ∀ i, Finset (κ i)` to `fun i => s.preimage (Sigma.mk i) sigma_mk_injective.injOn`. Establish `hsub : s ⊆ t.sigma u`. Introduce `p hp`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_sigma]`. Conclude with `⟨Finset.mem_image_of_mem _ hp, by simpa [u] using hp⟩`. Rewrite using `[finsum_eq_sum f hf, ← hs, Finset.sum_subset hsub ?_, Finset.sum_sigma]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := t) ?_]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := u i)]`. Introduce `k hk`. Simplify `hk` using `[u, hs]`. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[Function.mem_support]`. Assume the negation of the conclusion as `hit`. Apply `hi` to reduce the goal to its premises. Establish `: ∀ k, f ⟨i, k⟩ = 0`. Introduce `k`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hk`. Apply `hit` to reduce the goal to its premises. Conclude with `Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨⟨i, k⟩, by simpa [hs] using hk, rfl⟩)`. Simplify using `[this]`. Introduce `p _ hp`.
-
-Simplify `hp` using `[hs]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finsum_sigma_iter {ι : Type} {κ : ι → Type} (f : (Σ i, κ i) → ℂ)
     (hf : (support f).Finite) : ∑ᶠ p, f p = ∑ᶠ i, ∑ᶠ k, f ⟨i, k⟩ := by

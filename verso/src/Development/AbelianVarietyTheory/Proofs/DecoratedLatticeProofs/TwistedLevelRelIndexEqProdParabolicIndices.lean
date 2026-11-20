@@ -26,7 +26,7 @@ namespace GlobalTheory.TwistIndex
 open Classical
 
 /- English proof (translation)
-Repeatedly rewrite using `[Subgroup.index, ← Nat.card_pi]`. Use `Nat.card_congr ((Quotient.congrRight (fun x y ↦ ?_)).trans (Setoid.piQuotientEquiv _).symm)` and prove the remaining obligations. Rewrite using `[QuotientGroup.leftRel_pi]`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem index_pi_univ {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] (H : ∀ i, Subgroup (G i)) :
     (Subgroup.pi Set.univ H).index = ∏ i, (H i).index := by
@@ -35,9 +35,9 @@ theorem index_pi_univ {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (
   rw [QuotientGroup.leftRel_pi]
 
 /- English proof (translation)
-Establish `hg : g ∈ (Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 n) : Subgroup (GL (Fin n) κ))` using `by show (g : Matrix (Fin n) (Fin n) κ).BlockTriangular _`. Introduce `i j hij`. Simplify using `[Formalism.L2.DIV.blk2] at hij`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Formalism.L2.DIV.upper_block_val_submatrix _ hg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[Fin.castLE]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem restrictedBlock_self_apply {κ : Type} [CommRing κ] {n : ℕ} (g : GL (Fin n) κ) : Formalism.L2.DIV.upperLeftBlock (le_refl n) g = g := by
   have hg : g ∈ (Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 n) : Subgroup (GL (Fin n) κ)) := by
@@ -52,9 +52,9 @@ theorem restrictedBlock_self_apply {κ : Type} [CommRing κ] {n : ℕ} (g : GL (
 variable {D : D7}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩`. Use `⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, ?_⟩, h5⟩, fun PP hP => ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => absurd hP (Finset.notMem_empty _)`. Conclude with `(Formalism.L2.DIV.mem_parah.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h4 PP) hP)).2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, -⟩, h5⟩, h6⟩`. Use `⟨⟨⟨⟨h1, h2⟩, h3⟩, ?_⟩, h5⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => Formalism.L2.DIV.mem_parah.2 ⟨h2, h6 PP hP⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_datY_iff (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) {r t j : ℕ} (hr hr' : r ≤ V.rank) (Pg Q : Finset (Pl D.host.E))
     (χ χ' : ℕ → ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (ξ ξ' : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (x : GL (Fin V.rank) (Lev.EAf D)) :
@@ -71,35 +71,29 @@ theorem mem_datY_iff (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) {r t j : ℕ
     exact Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => Formalism.L2.DIV.mem_parah.2 ⟨h2, h6 PP hP⟩
 
 /- English proof (translation)
-Introduce `D c w j s hw _ hs hr' χ ξ`. Take `⟨hr, hL, hflat⟩` from `hs`. Rewrite using `[hL]`. Establish `hmem` using `fun x => mem_datY_iff s.V s.β hr hr' w.Pg w.Q w.chi χ w.ξ ξ (r := D.R.r) (t := D.R.t) (j := j) x`. Use `⟨fun x hx => ((hmem x).1 hx).1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hSt : Formalism.L2.DIV.lev D.sp.cm s.V.gram s.β (Lev.datY s.V.rank D.R.r D.R.t j hr' w.Pg ∅ (LevelP.triv _ _ _) χ ξ Lev.Frm.B) ≤ Formalism.L2.DIV.St s.β` using `fun x hx => Formalism.L2.DIV.parLev_St hx.1`. Set `φ : Formalism.L2.DIV.lev D.sp.cm s.V.gram s.β (Lev.datY s.V.rank D.R.r D.R.t j hr' w.Pg ∅ (LevelP.triv _ _ _) χ ξ Lev.Frm.B) →* (∀ PP : w.Q, GL (Fin s.V.rank) (kP PP.1))` to `MonoidHom.pi fun PP => (Formalism.L2.DIV.redAt s.β PP.1).comp (Subgroup.inclusion hSt)`. Establish `hφ : ∀ x PP, φ x PP = Formalism.L2.DIV.redFn s.β PP.1 x.1`. Introduce `x PP`. Unfold `Formalism.L2.DIV.redFn`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[Formalism.L2.DIV.extendOne_of_mem _ (hSt x.2)]`. Both sides reduce to the same expression. Establish `hcomap : (Formalism.L2.DIV.lev D.sp.cm s.V.gram s.β (Lev.datY s.V.rank D.R.r D.R.t j hr w.Pg w.Q (LevelP.triv _ _ _) w.chi w.ξ Lev.Frm.B)).subgroupOf (Formalism.L2.DIV.lev D.sp.cm s.V.gram s.β (Lev.datY s.V.rank D.R.r D.R.t j hr' w.Pg ∅ (LevelP.triv _ _ _) χ ξ Lev.Frm.B)) = (Subg …`. Use extensionality with `x`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_comap, Subgroup.mem_pi, hmem]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hφ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ PP -`. Conclude with `h PP.1 PP.2`. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨x.2, fun PP hP => h ⟨PP, hP⟩ (Set.mem_univ _)⟩`. Establish `hsurj : Function.Surjective φ`. Introduce `g`. Take `⟨N, hN, -⟩` from `hflat.base`. Take `⟨e, he⟩` from `hw.com.split`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnc` using `GlobalTheory.ChainOnto.FlagAct.not_isConjPl_of_idemSum he`. Set `L' : LevDat D.host.E ℂ s.V.rank` to `Lev.datW s.V.rank c.Pg (LevelP.triv c.Pg s.V.rank ℂ) Lev.Frm.B`. Establish `hlift : Lev.LiftsExist s.V s.β L'` using `GlobalTheory.ParahoricLift.liftsExist s.V s.β L' s.Λ N hN (fun PP hP PP' hP' => by`. Break down `hP' with h | h` into its components or cases. Conclude with `hnc PP hP PP' h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `absurd h (Finset.notMem_empty _)) (Finset.disjoint_empty_right _)`. Set `g0 : Formalism.L2.DIV.G0 L'.Pg L'.r` to `fun PP => if h : PP.1 ∈ w.Q then g ⟨PP.1, h⟩ else 1`. Establish `h0` using `hlift g0`. Establish `hκ` using `h0.choose_spec`. Establish `hκ1 : Lev.finE s.V h0.choose ∈ Formalism.L2.DIV.parLev D.sp.cm s.V.gram s.β L'` using `hκ.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hκ2 : Formalism.L2.DIV.rTup s.β L' (Lev.finE s.V h0.choose) = g0` using `hκ.2.2`. Establish `hred : ∀ PP (h : PP ∈ c.Pg), Formalism.L2.DIV.redFn s.β PP (Lev.finE s.V h0.choose) = g0 ⟨PP, h⟩`. Introduce `PP h`. Conclude with `(restrictedBlock_self_apply _).symm.trans (congrFun hκ2 ⟨PP, h⟩)`. Establish `hPg : ∀ PP ∈ w.Pg, Formalism.L2.DIV.redFn s.β PP (Lev.finE s.V h0.choose) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `PP hP`. Establish `hc : PP ∈ c.Pg` using `by rw [hw.union]; exact Finset.mem_union_left _ hP`. Rewrite using `[hred PP hc]`. Establish `hq : PP ∉ w.Q` using `Finset.disjoint_left.1 hw.disj hP`. Use `show (if h : PP ∈ w.Q then g ⟨PP, h⟩ else (1 : GL (Fin s.V.rank) (kP PP))) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dif_neg hq`. Establish `hSt'` using `Formalism.L2.DIV.parLev_St hκ1`. Establish `hxbig : Lev.finE s.V h0.choose ∈ Formalism.L2.DIV.lev D.sp.cm s.V.gram s.β (Lev.datY s.V.rank D.R.r D.R.t j hr' w.Pg ∅ (LevelP.triv _ _ _) χ ξ Lev.Frm.B)`. Use `⟨⟨⟨⟨Formalism.L2.DIV.parLev_UA hκ1, hSt'⟩, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => Formalism.L2.DIV.mem_parah.2 ⟨hSt', by rw [hPg PP hP]; exact Subgroup.one_mem _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => absurd hP (Finset.notMem_empty _)`. Use `show Formalism.L2.DIV.rTup s.β (Lev.datY s.V.rank D.R.r D.R.t j hr' w.Pg ∅ (LevelP.triv _ _ _) χ ξ Lev.Frm.B) (Lev.finE s.V h0.choose) ∈ (⊥ : Subgroup (Formalism.L2.DIV.G0 w.Pg D.R.r))`. Use `Subgroup.mem_bot.2 (funext fun PP => ?_)` and prove the remaining obligations. Use `show Formalism.L2.DIV.upperLeftBlock hr' (Formalism.L2.DIV.redFn s.β PP.1 (Lev.finE s.V h0.choose)) = 1`. Rewrite using `[hPg PP.1 PP.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one _ _`. Use `⟨⟨_, hxbig⟩, funext fun PP => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Establish `hc : PP.1 ∈ c.Pg` using `by rw [hw.union]; exact Finset.mem_union_right _ PP.2`. Rewrite using `[hred PP.1 hc]`.
-
-Use `show (if h : PP.1 ∈ w.Q then g ⟨PP.1, h⟩ else 1) = g PP`. Rewrite using `[dif_pos PP.2]`. Establish `hn : s.V.rank = D.R.r + j * D.R.t` using `hflat.rank`. Rewrite using `[Subgroup.relIndex, hcomap, Subgroup.index_comap_of_surjective _ hsurj, index_pi_univ, Nat.cast_prod]`. Use `Eq.trans ?_ (Finset.prod_coe_sort w.Q (fun PP => idxQ PP j))` and prove the remaining obligations.
-
-Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Use `(GlobalTheory.ParabIndex.index_maxParabolic_GL_finiteField (kP PP.1) s.V.rank D.R.r (j * D.R.t) hn).trans ?_` and prove the remaining obligations. Establish `hq : Nat.card (kP PP.1) = Ideal.absNorm PP.1.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[hq, hn]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem relIndex_twist : ∀ (D : D7) (c : Com D) (w : Twist D) (j : ℕ) (s : PiLocalization₂ D), w.Is c → j ≤ D.R.m → IsStage c w j s → ∀ hr χ ξ, Formalism.L2.DIV.lev D.sp.cm s.V.gram s.β s.L ≤ Formalism.L2.DIV.lev D.sp.cm s.V.gram s.β (Lev.datY s.V.rank D.R.r D.R.t j hr w.Pg ∅ (LevelP.triv _ _ _) χ ξ Lev.Frm.B) ∧ (((Formalism.L2.DIV.lev D.sp.cm s.V.gram s.β s.L).relIndex (Formalism.L2.DIV.lev D.sp.cm s.V.gram s.β (Lev.datY s.V.rank D.R.r D.R.t j hr w.Pg ∅ (LevelP.triv _ _ _) χ ξ Lev.Frm.B)) : ℕ) : ℝ) = ∏ PP ∈ w.Q, idxQ PP j := by
   intro D c w j s hw _ hs hr' χ ξ

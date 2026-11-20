@@ -12,13 +12,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use `haveI : T2Space k := GlobalTheory.SplitWeil.t2Space k`. Establish `hK : IsCompact (Q.lat : Set (n → k))` using `GlobalTheory.FinPl.Comm.isCompact_lat Q.lat`. Use `⟨?_, HasCompactSupport.intro hK fun y hy => ?_⟩` and prove the remaining obligations. Use `(IsLocallyConstant.iff_exists_open _).2 fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ Q.lat`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(fun z => z - y) ⁻¹' (Q.ker : Set (n → k)), (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.isOpen_lat Q.ker).preimage (by fun_prop), by simp [Q.ker.zero_mem], fun z hz => ?_⟩` and prove the remaining obligations. Establish `hw : Q.HasVal (z - y) 0` using `Pair.mem_ker.1 hz`. Establish `hz' : Q.HasVal z (Q.ev y)`. Simplify using `using hw.add (Pair.hasVal_ev hy)`. Establish `hzl : z ∈ Q.lat` using `hz'.mem`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [charInd, vecInd, if_pos hzl, if_pos hy, hz'.ev_eq]`. Use `⟨(Q.lat : Set (n → k))ᶜ, hK.isClosed.isOpen_compl, hy, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz' : z ∉ Q.lat` using `hz`. Simplify using `only [charInd, vecInd, if_neg hz', if_neg hy, mul_zero]`. Establish `hy' : y ∉ Q.lat` using `hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [charInd, vecInd, if_neg hy', mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem charInd_mem (χ : AddChar 𝓀[k] ℂ) (Q : Pair k n) : charInd χ Q ∈ SB (n → k) := by
   haveI : T2Space k := GlobalTheory.SplitWeil.t2Space k
@@ -42,7 +42,7 @@ theorem charInd_mem (χ : AddChar 𝓀[k] ℂ) (Q : Pair k n) : charInd χ Q ∈
 end GlobalTheory.FinPl.SBFacts
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n n' _ _ _ _`. Use `⟨fun Ψ a hΨ ha => GlobalTheory.FinPl.Comm.tensCol_mem hΨ ha, fun Λ hΛ => ?_, fun χ Q => GlobalTheory.FinPl.SBFacts.charInd_mem χ Q⟩` and prove the remaining obligations. Use `haveI := hΛ`. Conclude with `GlobalTheory.FinPl.Comm.vecInd_mem Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinPl.sb_facts : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'],

@@ -11,7 +11,7 @@ namespace Formalism.MainNotions.N.FrobeniusPowerSeries.DFD
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup
 
 /- English proof (translation)
-Substitute `hL0 hG hC1 hC2 hz h1 h7` using the available equality. Establish `h4v` using `congrArg (fun t : R => t • ((P2 * FΛ * Lk' * Lk) • e1)) h4`. Establish `h5v` using `congrArg (fun t : R => t • ((FΛ * Lk' * Lk * Ec * Q * U') • e1)) h5`. Take the linear combination `(norm := module) (P1 * P2 * FΛ * X) • h2 + (P1 * P2 * FΛ * Lk' * Lk * X + FΛ * Lk' * Lk * Q * U' * P1 * S) • h6 + h4v - h5v`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem smul_sub_eq_smul_add {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     (Lk' Lk L0 Lκ0 Ls G X Ec Q U' P1 P2 FΛ S Φ Rr C1 C2 f₂ : R) (e1 e2 e3 n2v z : M)
@@ -41,21 +41,21 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Unfold `ps`. Rewrite using `[pow_succ', AlgHom.mul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dfd_ps_succ (k : ℕ) : ps W (k + 1) = W.φA (ps W k) := by
   unfold ps
   rw [pow_succ', AlgHom.mul_apply]
 
 /- English proof (translation)
-Unfold `ps`. Rewrite using `[pow_zero, AlgHom.one_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dfd_ps_zero : ps W 0 = qA W := by
   unfold ps
   rw [pow_zero, AlgHom.one_apply]
 
 /- English proof (translation)
-Unfold `abelian₂`. Rewrite using `[map_prod]`. Use `Submonoid.prod_mem _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, ← dfd_ps_succ]`. Conclude with `Submonoid.pow_mem _ (Submonoid.subset_closure (show ps W (s + 1) ∈ {x : LetA O n | ∃ k ≥ 1, x = ps W k} from ⟨s + 1, by omega, rfl⟩)) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dfd_φLam_mem (A : ArcP n) (a : ZMod n) (e : ℕ) :
     W.φA (abelian₂ W A a e) ∈ Submonoid.closure {x : LetA O n | ∃ k ≥ 1, x = ps W k} := by
@@ -67,7 +67,7 @@ theorem dfd_φLam_mem (A : ArcP n) (a : ZMod n) (e : ℕ) :
     (show ps W (s + 1) ∈ {x : LetA O n | ∃ k ≥ 1, x = ps W k} from ⟨s + 1, by omega, rfl⟩)) _
 
 /- English proof (translation)
-Rewrite using `[pow_succ']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dfd_φD_three (T : LocLat G Qp LL O) (x : W.DD T) :
     ((W.φD T) ^ 3) x = W.φD T (((W.φD T) ^ 2) x) := by
@@ -75,19 +75,19 @@ theorem dfd_φD_three (T : LocLat G Qp LL O) (x : W.DD T) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [lA, map_pow, map_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dfd_φA_lA (k : ℕ) : W.φA (lA W ^ k) = lA W ^ k := by
   simp only [lA, map_pow, map_natCast]
 
 /- English proof (translation)
-Simplify using `only [lA, lE, map_pow, map_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dfd_alg_lA (k : ℕ) : algebraMap (LetA O n) W.EE (lA W ^ k) = lE W k := by
   simp only [lA, lE, map_pow, map_natCast]
 
 /- English proof (translation)
-Establish `key : Submonoid.closure {x : LetA O n | ∃ k ≥ 1, x = ps W k} ≤ W.AΔ.toSubmonoid`. Rewrite using `[Submonoid.closure_le]`. Introduce and unpack `_ ⟨k, -, rfl⟩`. Conclude with `TypesA.ps_mem W k`. Conclude with `key hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem dfd_closure_AΔ {x : LetA O n}
     (hx : x ∈ Submonoid.closure {x : LetA O n | ∃ k ≥ 1, x = ps W k}) : x ∈ W.AΔ := by

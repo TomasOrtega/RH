@@ -9,33 +9,33 @@ variable {F F' : Type} [Field F] [Field F'] (f : F →+* F') {N : ℕ} {O : Type
   (ρ : O →+* Module.End F (Fin N → F)) (ρ' : O →+* Module.End F' (Fin N → F')) (τ : O →+* F)
 
 /- English proof (translation)
-Simplify using `[eigSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eigSp {K : Type} [Field K] {ρ : O →+* Module.End K (Fin N → K)} {σ : O →+* K} (w : Fin N → K) :
     w ∈ eigSp ρ σ ↔ ∀ a, ρ a w = σ a • w := by
   simp [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comp_smul (c : F) (w : Fin N → F) : f ∘ (c • w) = f c • (f ∘ w) := by
   funext i; simp
 
 /- English proof (translation)
-Introduce `w w' h` and use `funext fun i => f.injective (congrFun h i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem comp_inj : Function.Injective fun w : Fin N → F => f ∘ w := fun w w' h =>
   funext fun i => f.injective (congrFun h i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comp_add (w w' : Fin N → F) : f ∘ (w + w') = f ∘ w + f ∘ w' := by funext i; simp
 
 variable {f ρ ρ' τ}
 
 /- English proof (translation)
-Rewrite using `[mem_eigSp, mem_eigSp]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[hρ, RingHom.comp_apply, ← comp_smul]`. Conclude with `(comp_inj f).eq_iff`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_eigSp_comp (hρ : ∀ a u, ρ' a (f ∘ u) = f ∘ ρ a u) (w : Fin N → F) :
     f ∘ w ∈ eigSp ρ' (f.comp τ) ↔ w ∈ eigSp ρ τ := by
@@ -45,7 +45,7 @@ theorem mem_eigSp_comp (hρ : ∀ a u, ρ' a (f ∘ u) = f ∘ ρ a u) (w : Fin 
   exact (comp_inj f).eq_iff
 
 /- English proof (translation)
-Use `letI : Algebra F F' := f.toAlgebra`. Conclude with `linearIndependent_algebraMap_comp_iff`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem linIndep_comp {ι ι' : Type} [Finite ι'] (u : ι → ι' → F) :
     LinearIndependent F' (fun k => f ∘ u k) ↔ LinearIndependent F u := by
@@ -53,11 +53,9 @@ theorem linIndep_comp {ι ι' : Type} [Finite ι'] (u : ι → ι' → F) :
   exact linearIndependent_algebraMap_comp_iff
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨s, rfl⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact.
 
-Establish `: f ∘ (0 : Fin N → F) = 0` using `by funext i; simp`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [comp_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul c x _ hx => rw [comp_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem comp_mem_span {ι : Type} (g : ι → Fin N → F) (w : Fin N → F) (hw : w ∈ Submodule.span F (Set.range g)) :
     f ∘ w ∈ Submodule.span F' (Set.range fun s => f ∘ g s) := by
@@ -72,41 +70,39 @@ theorem comp_mem_span {ι : Type} (g : ι → Fin N → F) (w : Fin N → F) (hw
   | smul c x _ hx => rw [comp_smul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Establish `hbW : ∀ k, b k ∈ eigSp ρ τ` using `fun k => hsp ▸ Submodule.subset_span ⟨k, rfl⟩`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `(mem_eigSp_comp hρ (b k)).2 (hbW k)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w' hw'`. Establish `hbρ : ∀ a k, ρ a (b k) = τ a • b k` using `fun a k => (mem_eigSp (b k)).1 (hbW k) a`. Choose the witnesses or unpack the hypotheses as in `⟨A0, hA0⟩ : ∃ A0 : Finset O, ∀ w, (∀ a ∈ A0, ρ a w = τ a • w) → w ∈ eigSp ρ τ := by`. Set `T : Set (Submodule F (Fin N → F))` to `{K | ∃ A : Finset O, K = ⨅ a ∈ A, LinearMap.ker (ρ a - τ a • LinearMap.id)}`. Take `⟨K, ⟨A, rfl⟩, hmin⟩` from `IsArtinian.set_has_minimal T ⟨_, ⟨∅, rfl⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A, fun w hw => (mem_eigSp w).2 fun a => ?_⟩` and prove the remaining obligations. Establish `hle : (⨅ a' ∈ insert a A, LinearMap.ker (ρ a' - τ a' • LinearMap.id)) ≤ ⨅ a' ∈ A, LinearMap.ker (ρ a' - τ a' • LinearMap.id)` using `iInf_mono fun a' => iInf_mono' fun h => ⟨Finset.mem_insert_of_mem h, le_rfl⟩`. Establish `heq` using `(eq_of_le_of_not_lt hle (hmin _ ⟨insert a A, rfl⟩))`. Establish `hwK : w ∈ ⨅ a' ∈ A, LinearMap.ker (ρ a' - τ a' • LinearMap.id)`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hw`. Rewrite `hwK` using `[← heq]`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hwK`. Conclude with `hwK a (Finset.mem_insert_self a A)`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl (eigSp ρ τ)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `bc` to `Module.finBasis F C`. Set `c : Fin (Module.finrank F C) → Fin N → F` to `fun j => (bc j : Fin N → F)`. Set `g : Fin n ⊕ Fin (Module.finrank F C) → Fin N → F` to `Sum.elim b c`. Establish `gspan : Submodule.span F (Set.range g) = ⊤`. Rewrite using `[eq_top_iff, ← hC.sup_eq_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[← hsp]`. Conclude with `Submodule.span_mono fun _ ⟨k, hk⟩ => ⟨Sum.inl k, hk⟩`. Introduce `v hv`. Establish `hr` using `bc.sum_repr ⟨v, hv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv2 : v = ((∑ j, bc.repr ⟨v, hv⟩ j • bc j : C) : Fin N → F)` using `by rw [hr]`. Rewrite using `[hv2, Submodule.coe_sum]`. Conclude with `Submodule.sum_mem _ fun j _ => by`. Rewrite using `[Submodule.coe_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `g'span : Submodule.span F' (Set.range fun s => f ∘ g s) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Rewrite using `[pi_eq_sum_univ v]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : (fun j => if i = j then (1 : F') else 0) = f ∘ (fun j => if i = j then (1 : F) else 0)`. Apply the tactic sequence `funext j; by_cases h : i = j <;> simp [h]`. Rewrite using `[e]`. Conclude with `comp_mem_span g _ (gspan ▸ Submodule.mem_top)`. Take `⟨z, hz⟩` from `(Submodule.mem_span_range_iff_exists_fun F').1 (g'span ▸ (Submodule.mem_top : w' ∈ ⊤))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hz` using `[Fintype.sum_sum_type]`. Simplify using `only [g, Sum.elim_inl, Sum.elim_inr] at hz`. Set `V : Fin (Module.finrank F C) → A0 × Fin N → F` to `fun j p => (ρ p.1 (c j) - τ p.1 • c j) p.2`. Establish `hV : LinearIndependent F V`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `y hy j`. Establish `hmem : ∑ j, y j • c j ∈ eigSp ρ τ`. Use `hA0 _ fun a ha => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congrFun hy (⟨a, ha⟩, i)` as an intermediate fact. Simplify using `only [V, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Simplify using `only [map_sum, map_smul, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Rewrite using `[← this, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hCm : ∑ j, y j • c j ∈ C` using `C.sum_mem fun j _ => C.smul_mem _ (bc j).2`. Establish `h0 : ∑ j, y j • c j = 0` using `(Submodule.disjoint_def.1 hC.disjoint) _ hmem hCm`. Establish `h1 : ∑ j, y j • bc j = 0` using `Subtype.ext (by simpa [c] using h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Fintype.linearIndependent_iff.1 bc.linearIndependent y h1 j`. Establish `hV'` using `(linIndep_comp (f := f) V).2 hV`. Establish `hL : ∀ a, ∑ j, z (Sum.inr j) • (f ∘ (ρ a (c j) - τ a • c j)) = 0`. Introduce `a`. Establish `e1 : ρ' a w' - f (τ a) • w' = 0` using `sub_eq_zero.2 ((mem_eigSp w').1 hw' a)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[← hz]`. Simplify using `only [map_add, map_sum, map_smul, hρ, hbρ, comp_smul] at e1`. Establish `hs : ∀ x y : Fin N → F, f ∘ (x - y) = f ∘ x - f ∘ y` using `fun x y => by funext i; simp`. Simplify using `only [hs, comp_smul]`. Rewrite using `[← e1]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [smul_add, Finset.smul_sum, smul_sub, Finset.sum_sub_distrib]`. Establish `hc1 : ∀ x, f (τ a) • z (Sum.inl x) • (f ∘ b x) = z (Sum.inl x) • f (τ a) • (f ∘ b x)` using `fun x => smul_comm _ _ _`. Establish `hc2 : ∀ x, f (τ a) • z (Sum.inr x) • (f ∘ c x) = z (Sum.inr x) • f (τ a) • (f ∘ c x)` using `fun x => smul_comm _ _ _`. Simplify using `only [hc1, hc2]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hy : ∀ j, z (Sum.inr j) = 0`. Establish `hsum : ∑ j, z (Sum.inr j) • (f ∘ V j) = 0`. Use function extensionality and compare the values at `p`. Use `congrFun (hL p.1.1) p.2` as an intermediate fact. Simplify `this` using `[V, Finset.sum_apply]`.
-
-Introduce `j`. Conclude with `Fintype.linearIndependent_iff.1 hV' _ hsum j`. Rewrite using `[← hz]`. Simplify using `only [hy, zero_smul, Finset.sum_const_zero, add_zero]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem span_comp_eq (hρ : ∀ a u, ρ' a (f ∘ u) = f ∘ ρ a u) {n : ℕ} (b : Fin n → Fin N → F)
     (hli : LinearIndependent F b) (hsp : Submodule.span F (Set.range b) = eigSp ρ τ) :
@@ -212,15 +208,15 @@ theorem span_comp_eq (hρ : ∀ a u, ρ' a (f ∘ u) = f ∘ ρ a u) {n : ℕ} (
   exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hli, hsp⟩`. Conclude with `⟨(linIndep_comp (ι' := Fin N) u).2 hli, span_comp_eq hρ u hli hsp⟩`. Introduce and unpack `⟨hli', hsp'⟩`. Establish `hli` using `(linIndep_comp (ι' := Fin N) u).1 hli'`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨hli, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ k, u k ∈ eigSp ρ τ` using `fun k => (mem_eigSp_comp hρ (u k)).1 (hsp' ▸ Submodule.subset_span ⟨k, rfl⟩)`. Establish `hle : Submodule.span F (Set.range u) ≤ eigSp ρ τ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hmem k`. Set `W` to `eigSp ρ τ`. Set `bW` to `Module.finBasis F W`. Set `b : Fin (Module.finrank F W) → Fin N → F` to `fun j => (bW j : Fin N → F)`. Establish `hbli : LinearIndependent F b` using `bW.linearIndependent.map' W.subtype (Submodule.ker_subtype W)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbsp : Submodule.span F (Set.range b) = W`. Establish `: Set.range b = W.subtype '' Set.range bW` using `by rw [← Set.range_comp]; rfl`. Rewrite using `[this, Submodule.span_image, bW.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hW'` using `span_comp_eq hρ b hbli hbsp`. Establish `e1 : Module.finrank F' (eigSp ρ' (f.comp τ)) = n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsp', finrank_span_eq_card hli', Fintype.card_fin]`. Establish `e2 : Module.finrank F' (eigSp ρ' (f.comp τ)) = Module.finrank F W`. Rewrite using `[← hW', finrank_span_eq_card ((linIndep_comp (ι' := Fin N) b).2 hbli), Fintype.card_fin]`. Apply `Submodule.eq_of_le_of_finrank_eq hle` to reduce the goal to its premises. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin, ← e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (hρ : ∀ a u, ρ' a (f ∘ u) = f ∘ ρ a u) {n : ℕ} (u : Fin n → Fin N → F) :
     (LinearIndependent F u ∧ Submodule.span F (Set.range u) = eigSp ρ τ) ↔

@@ -11,25 +11,23 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Set `φ : Localization.AtPrime W →+* Localization.AtPrime Q` to `Localization.localRingHom W Q π hW`. Establish `hmem : ∀ s : S, s ∈ W.primeCompl ↔ π s ∈ Q.primeCompl` using `fun s => by`. Substitute `hW` using the available equality. Both sides reduce to the same expression. Establish `hφ : ∀ s : S, φ (algebraMap S _ s) = algebraMap T _ (π s)` using `Localization.localRingHom_to_map W Q π hW`.
+Introduce a local definition for the expression. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective φ`. Introduce `b`. Take `⟨⟨t, u⟩, rfl⟩` from `IsLocalization.mk'_surjective Q.primeCompl b`. Take `⟨s, rfl⟩` from `hπ t`. Take `⟨v, hv⟩` from `hπ u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨IsLocalization.mk' _ s (⟨v, (hmem v).2 (hv ▸ u.2)⟩ : W.primeCompl), ?_⟩` and prove the remaining obligations. Rewrite using `[Localization.localRingHom_mk']`. Use `congr 1`. Conclude with `Subtype.ext hv`. Set `_ : Algebra (Localization.AtPrime W) (Localization.AtPrime Q)` to `φ.toAlgebra`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_ : Module (Localization.AtPrime W) (LocalizedModule Q.primeCompl N)` to `Module.compHom _ φ`. Establish `_ : IsScalarTower (Localization.AtPrime W) (Localization.AtPrime Q) (LocalizedModule Q.primeCompl N)` using `⟨fun a b n => mul_smul (φ a) b n⟩`. Set `_ : Module S (LocalizedModule Q.primeCompl N)` to `Module.compHom _ (φ.comp (algebraMap S _))`. Establish `_ : IsScalarTower S (Localization.AtPrime W) (LocalizedModule Q.primeCompl N)` using `⟨fun s a n => by show φ (s • a) • n = φ (algebraMap S _ s) • (φ a • n)`. Rewrite using `[Algebra.smul_def, map_mul, mul_smul]⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsmul : ∀ (s : S) (y : LocalizedModule Q.primeCompl N), s • y = π s • y` using `fun s y => by show φ (algebraMap S _ s) • y = _`. Rewrite using `[hφ, algebraMap_smul]`. Set `g : M →ₗ[S] LocalizedModule Q.primeCompl N` to `{ toFun := fun x => LocalizedModule.mkLinearMap Q.primeCompl N (e x) map_add' := fun x y => by simp only [map_add] map_smul' := fun s x => by`. Rewrite using `[RingHom.id_apply, hsmul, he, LinearMap.map_smul] }`. Establish `hg : IsLocalizedModule W.primeCompl g`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun s => ?_, fun y => ?_, fun {x₁ x₂} h => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (φ (algebraMap S _ (s : S)))` using `(IsLocalization.map_units (Localization.AtPrime W) s).map φ`. Rewrite using `[Module.End.isUnit_iff]`. Use `⟨fun y z h => ?_, fun y => ⟨((hu.unit⁻¹ : (Localization.AtPrime Q)ˣ) : Localization.AtPrime Q) • y, ?_⟩⟩` and prove the remaining obligations. Rewrite `h` using `[Module.algebraMap_end_apply, Module.algebraMap_end_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu.smul_left_cancel.mp h`. Rewrite using `[Module.algebraMap_end_apply] show φ (algebraMap S _ (s : S)) • _ = y`. Rewrite using `[← mul_smul, hu.mul_val_inv, one_smul]`. Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h n t`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs⟩` from `hπ t`. Use `⟨(e.symm n, ⟨s, (hmem s).2 (hs ▸ t.2)⟩), ?_⟩` and prove the remaining obligations. Use `show s • LocalizedModule.mk n t = LocalizedModule.mk (e (e.symm n)) 1`. Rewrite using `[hsmul, hs, AddEquiv.apply_symm_apply, LocalizedModule.smul'_mk]`. Conclude with `LocalizedModule.mk_cancel t n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h' : LocalizedModule.mk (e x₁) (1 : Q.primeCompl) = LocalizedModule.mk (e x₂) 1` using `h`. Take `⟨c, hc⟩` from `LocalizedModule.mk_eq.mp h'`. Take `⟨s, hs⟩` from `hπ c`. Use `⟨⟨s, (hmem s).2 (hs ▸ c.2)⟩, e.injective ?_⟩` and prove the remaining obligations. Use `show e (s • x₁) = e (s • x₂)`.
-
-Rewrite using `[he, he, hs]`. Simplify `hc` using `[Submonoid.smul_def]`. Set `eA` to `(IsLocalizedModule.iso W.primeCompl g).extendScalarsOfIsLocalization W.primeCompl (Localization.AtPrime W)`. Rewrite using `[eA.length_eq]`. Conclude with `Module.length_eq_of_surjective hsurj`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_localizedModule_eq_of_surjective {S T : Type*} [CommRing S] [CommRing T]
     (π : S →+* T) (hπ : Function.Surjective π) (Q : Ideal T) [Q.IsPrime] (W : Ideal S) [W.IsPrime]
@@ -101,17 +99,17 @@ theorem length_localizedModule_eq_of_surjective {S T : Type*} [CommRing S] [Comm
   exact Module.length_eq_of_surjective hsurj
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P W _ hW _`. Set `π : MRing ι O →+* MRing ι (IsLocalRing.ResidueField O)` to `MvPolynomial.map (IsLocalRing.residue O)`. Establish `hspec : ∀ I : Ideal (MRing ι O), specialIdeal I = I.map π` using `fun _ => rfl`. Establish `hπ : Function.Surjective π` using `MvPolynomial.map_surjective _ IsLocalRing.residue_surjective`. Establish `hker : RingHom.ker π = Ideal.span {C ϖ}`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.ker_map, IsLocalRing.ker_residue, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.map_span, Set.image_singleton]`. Establish `hcm : ∀ I : Ideal (MRing ι O), (specialIdeal I).comap π = I ⊔ Ideal.span {C ϖ}`. Introduce `I`. Rewrite using `[hspec, Ideal.comap_map_of_surjective π hπ, ← RingHom.ker_eq_comap_bot, hker]`. Establish `hWc : W = (specialIdeal W).comap π`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcm]`. Conclude with `(sup_eq_left.mpr (Ideal.span_le.mpr (Set.singleton_subset_iff.mpr hW))).symm`. Set `f : MRing ι O →+* MRing ι (IsLocalRing.ResidueField O) ⧸ specialIdeal P` to `(Ideal.Quotient.mk _).comp π`. Establish `hf : Function.Surjective f` using `Ideal.Quotient.mk_surjective.comp hπ`. Establish `hkerf : RingHom.ker f = P ⊔ Ideal.span {C ϖ}`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcm]`. Use extensionality with `x`. Simplify using `[f, RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`. Set `e` to `((Ideal.quotEquivOfEq hkerf.symm).trans (RingHom.quotientKerEquivOfSurjective hf))`. Establish `hemk : ∀ z, e (Ideal.Quotient.mk _ z) = f z` using `fun z => rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∀ (s : MRing ι O) (x : MRing ι O ⧸ (P ⊔ Ideal.span {C ϖ})), e.toAddEquiv (s • x) = π s • e.toAddEquiv x`. Introduce `s x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Simplify using `only [RingEquiv.toAddEquiv_eq_coe, RingEquiv.coe_toAddEquiv, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, hemk]`. Simplify using `[f]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul]`. Both sides reduce to the same expression. Conclude with `length_localizedModule_eq_of_surjective π hπ (specialIdeal W) W hWc _ _ e.toAddEquiv he`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem SpecialMultAt.proof : SpecialMultAt.Statement.{u} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P W _ hW _

@@ -26,14 +26,14 @@ theorem toAdd_degreeMod (r : ℕ+) (σ : Gal(ℚ̄/ℚ)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.mem_ker, ← toAdd_degreeMod, toAdd_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_ker_degreeMod (r : ℕ+) (σ : Gal(ℚ̄/ℚ)) :
     σ ∈ (degreeMod r).ker ↔ ProfiniteInteger.proj r (Multiplicative.toAdd (degree σ)) = 0 := by
   rw [MonoidHom.mem_ker, ← toAdd_degreeMod, toAdd_eq_zero]
 
 /- English proof (translation)
-Establish `h : ((degreeMod r).ker : Set Gal(ℚ̄/ℚ)) = (fun σ => ProfiniteInteger.proj r (Multiplicative.toAdd (degree σ))) ⁻¹' {0}`. Use extensionality with `σ`. Conclude with `mem_ker_degreeMod r σ`. Rewrite using `[h]`. Conclude with `(isOpen_discrete _).preimage ((ProfiniteInteger.continuous_proj r).comp (continuous_toAdd.comp continuous_degree))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_degreeMod (r : ℕ+) : IsOpen ((degreeMod r).ker : Set Gal(ℚ̄/ℚ)) := by
   have h : ((degreeMod r).ker : Set Gal(ℚ̄/ℚ)) =
@@ -45,7 +45,7 @@ theorem isOpen_ker_degreeMod (r : ℕ+) : IsOpen ((degreeMod r).ker : Set Gal(�
     ((ProfiniteInteger.continuous_proj r).comp (continuous_toAdd.comp continuous_degree))
 
 /- English proof (translation)
-The claim follows from `Subgroup.isClosed_of_isOpen _ (isOpen_ker_degreeMod r)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_ker_degreeMod (r : ℕ+) : IsClosed ((degreeMod r).ker : Set Gal(ℚ̄/ℚ)) :=
   Subgroup.isClosed_of_isOpen _ (isOpen_ker_degreeMod r)
@@ -54,14 +54,14 @@ def zhatLayerField (r : ℕ+) : IntermediateField ℚ ℚ̄ :=
   fixedField (degreeMod r).ker
 
 /- English proof (translation)
-The claim follows from `InfiniteGalois.fixingSubgroup_fixedField ⟨(degreeMod r).ker, isClosed_ker_degreeMod r⟩`.
+A detailed English derivation is pending.
 -/
 theorem fixingSubgroup_zhatLayerField (r : ℕ+) :
     (zhatLayerField r).fixingSubgroup = (degreeMod r).ker :=
   InfiniteGalois.fixingSubgroup_fixedField ⟨(degreeMod r).ker, isClosed_ker_degreeMod r⟩
 
 /- English proof (translation)
-Establish `: IsGalois ℚ ℚ̄` using `IsAlgClosure.isGalois ℚ ℚ̄`. Use `(InfiniteGalois.isOpen_iff_finite _).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsOpen ((zhatLayerField r).fixingSubgroup : Set Gal(ℚ̄/ℚ))`. Rewrite using `[fixingSubgroup_zhatLayerField]`. Conclude with `isOpen_ker_degreeMod r`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_zhatLayerField (r : ℕ+) : FiniteDimensional ℚ (zhatLayerField r) := by
   have : IsGalois ℚ ℚ̄ := IsAlgClosure.isGalois ℚ ℚ̄
@@ -87,9 +87,9 @@ instance isGalois_zhatLayer (r : ℕ+) : IsGalois ℚ (zhatLayer r).1 := by
   infer_instance
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[zhatLayerField, mem_fixedField_iff]`. Rewrite using `[zhatField, mem_fixedField_iff]`. Introduce `f hf`. Use `hx f ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_ker_degreeMod, MonoidHom.mem_ker.1 hf, toAdd_one, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zhatLayerField_le_zhatField (r : ℕ+) : zhatLayerField r ≤ zhatField := by
   intro x hx
@@ -108,13 +108,13 @@ instance isGalois_cyclotomicLayer : IsGalois K.1 (cyclotomicLayer K r).1 :=
   CyclotomicSymbol.isGalois_compositum K (zhatLayer r)
 
 /- English proof (translation)
-The claim follows from `sup_le_sup_left (zhatLayerField_le_zhatField r) K.1`.
+A detailed English derivation is pending.
 -/
 theorem cyclotomicLayer_le : (cyclotomicLayer K r).1 ≤ K.1 ⊔ zhatField :=
   sup_le_sup_left (zhatLayerField_le_zhatField r) K.1
 
 /- English proof (translation)
-Rewrite using `[CyclotomicSymbol.fixingSubgroup_compositum, Subgroup.mem_inf, zhatLayer_coe, fixingSubgroup_zhatLayerField, MonoidHom.mem_ker]`. Conclude with `⟨fun h => h.2, fun h => ⟨g.2, h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_fixingSubgroup_cyclotomicLayer_iff (g : K.1.fixingSubgroup) :
     (g : Gal(ℚ̄/ℚ)) ∈ (cyclotomicLayer K r).1.fixingSubgroup ↔ degreeMod r g = 1 := by
@@ -126,7 +126,7 @@ def degreeModK : K.1.fixingSubgroup →* Multiplicative (ZMod r) :=
   (degreeMod r).comp K.1.fixingSubgroup.subtype
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[ker_restrictHom, Subgroup.mem_subgroupOf, MonoidHom.mem_ker]`. Conclude with `mem_fixingSubgroup_cyclotomicLayer_iff K r g`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_restrictHom_cyclotomicLayer :
     (restrictHom (F := K) (E := cyclotomicLayer K r)).ker = (degreeModK K r).ker := by
@@ -140,7 +140,7 @@ def layerDegree : Gal((cyclotomicLayer K r).1/K.1) →* Multiplicative (ZMod r) 
       (restrictHom_surjective (F := K) (E := cyclotomicLayer K r))).symm.toMonoidHom
 
 /- English proof (translation)
-Establish `h : (QuotientGroup.quotientKerEquivOfSurjective _ (restrictHom_surjective (F` using `K) (E := cyclotomicLayer K r))).symm (restrictHom (E := cyclotomicLayer K r) g) = (g : _ ⧸ _) := by`. Rewrite using `[MulEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Rewrite using `[layerDegree, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, h, QuotientGroup.lift_mk]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem layerDegree_restrictHom (g : K.1.fixingSubgroup) :
     layerDegree K r (restrictHom (E := cyclotomicLayer K r) g) = degreeMod r g := by
@@ -153,9 +153,9 @@ theorem layerDegree_restrictHom (g : K.1.fixingSubgroup) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_one]`. Introduce `σ hσ`. Take `⟨g, rfl⟩` from `restrictHom_surjective (F := K) (E := cyclotomicLayer K r) σ`. Rewrite `hσ` using `[layerDegree_restrictHom]`. Rewrite using `[← MonoidHom.mem_ker, ker_restrictHom_cyclotomicLayer, MonoidHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hσ`.
+A detailed English derivation is pending.
 -/
 theorem layerDegree_injective : Function.Injective (layerDegree K r) := by
   rw [injective_iff_map_eq_one]

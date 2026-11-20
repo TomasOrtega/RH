@@ -15,14 +15,14 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} {F : Type*} [F
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Simplify using `only [chartMonomial, Pi.add_apply, pow_add, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartMonomial_add (u : ∀ k, ι k) (a c : K → ℕ) :
     (chartMonomial u (a + c) : MRing ι F) = chartMonomial u a * chartMonomial u c := by
   simp only [chartMonomial, Pi.add_apply, pow_add, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use `show IsWeightedHomogeneous (blockWeight ι) (∏ k, (X ⟨k, u k⟩ : MRing ι F) ^ c k) c`. Establish `h` using `IsWeightedHomogeneous.prod (R := F) Finset.univ (fun k => (X ⟨k, u k⟩ : MRing ι F) ^ c k) (fun k => c k • blockWeight ι ⟨k, u k⟩) (w := blockWeight ι) (fun k _ => (isWeightedHomogeneous_X F (blockWeight ι) ⟨k, u k⟩).pow (c k))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chartMonomial_isMultiHomog (u : ∀ k, ι k) (c : K → ℕ) :
     IsMultiHomog (chartMonomial u c : MRing ι F) c := by
@@ -35,11 +35,11 @@ theorem chartMonomial_isMultiHomog (u : ∀ k, ι k) (c : K → ℕ) :
   simp [blockWeight, Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Proceed by induction on `e using Finsupp.induction_linear with`. Consider the case `zero => simp [chartMonomial]`. Consider the case `add f g hf hg`. Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), hf, hg, map_add, chartMonomial_add]`. Consider the case `single v n`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Finsupp.prod_single_index (by simp), Finsupp.weight_single]`. Simplify using `only [chartMonomial]`. Rewrite using `[Finset.prod_eq_single v.1]`. Simplify using `[blockWeight]`. Introduce `k _ hk`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[blockWeight, hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem finsuppProd_chartVar (u : ∀ k, ι k) (e : (Σ k, ι k) →₀ ℕ) :
     (e.prod fun v n => (X ⟨v.1, u v.1⟩ : MRing ι F) ^ n) =
@@ -59,9 +59,9 @@ theorem finsuppProd_chartVar (u : ∀ k, ι k) (e : (Σ k, ι k) →₀ ℕ) :
     · simp
 
 /- English proof (translation)
-Establish `hy : ∀ k, algebraMap (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P)) (Ideal.Quotient.mk P (X ⟨k, u k⟩)) ≠ 0` using `fun k => by`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hu k`. Rewrite using `[← finsuppProd_chartVar, chartMap, aeval_monomial, monomial_eq]`. Simplify using `only [map_mul, map_finsuppProd, map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, ← Finsupp.prod_mul]`. Use `congr 1`. Use `Finsupp.prod_congr fun v _ => ?_` and prove the remaining obligations. Rewrite using `[div_pow, div_mul_cancel₀ _ (pow_ne_zero _ (hy v.1))]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartMap_monomial_mul (P : Ideal (MRing ι F)) [P.IsPrime] (u : ∀ k, ι k)
     (hu : ∀ k, (X ⟨k, u k⟩ : MRing ι F) ∉ P) (e : (Σ k, ι k) →₀ ℕ) (c : F) :
@@ -81,13 +81,13 @@ theorem chartMap_monomial_mul (P : Ideal (MRing ι F)) [P.IsPrime] (u : ∀ k, �
   rw [div_pow, div_mul_cancel₀ _ (pow_ne_zero _ (hy v.1))]
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι u p`. Take `⟨b, hle⟩ : ∃ b : K → ℕ, ∀ e ∈ p.support, Finsupp.weight (blockWeight ι) e ≤ b` from `⟨fun k => p.support.sup fun e => Finsupp.weight (blockWeight ι) e k, fun e he k => Finset.le_sup (f := fun e => Finsupp.weight (blockWeight ι) e k) he⟩`. Use `⟨b, ∑ e ∈ p.support, monomial e (coeff e p) * chartMonomial u (b - Finsupp.weight (blockWeight ι) e), ?_, ?_⟩` and prove the remaining obligations. Use `IsWeightedHomogeneous.sum _ _ _ fun e he => ?_` and prove the remaining obligations. Use `(isWeightedHomogeneous_monomial (blockWeight ι) e (coeff e p) rfl).mul (chartMonomial_isMultiHomog (F := F) u (b - Finsupp.weight (blockWeight ι) e))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[add_tsub_cancel_of_le (hle e he)]`. Then use the resulting hypothesis. Introduce `P _ hu`. Establish `hY : ∀ c, algebraMap (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P)) (Ideal.Quotient.mk P (chartMonomial u c)) ≠ 0` using `fun c => by`. Simplify using `only [chartMonomial, map_prod, map_pow]`. Use `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hu k`. Rewrite using `[eq_div_iff (hY b)]`. Use `conv_lhs => rw [p.as_sum]`. Rewrite using `[map_sum, Finset.sum_mul, map_sum, map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Establish `key : (chartMonomial u b : MRing ι F) = chartMonomial u (Finsupp.weight (blockWeight ι) e) * chartMonomial u (b - Finsupp.weight (blockWeight ι) e)`. Rewrite using `[← chartMonomial_add, add_tsub_cancel_of_le (hle e he)]`. Rewrite using `[key, map_mul, map_mul, map_mul, map_mul, ← mul_assoc, chartMap_monomial_mul P u hu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MChartHomog.proof : MChartHomog.Statement.{u} := by
   intro F _ K _ _ ι u p

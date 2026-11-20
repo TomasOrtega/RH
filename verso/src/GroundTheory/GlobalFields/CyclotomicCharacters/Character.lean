@@ -25,7 +25,7 @@ section FixingSubgroup
 variable {F E : Type*} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Use `⟨fun h x hx => h x (subset_adjoin F S hx), fun h x hx => ?_⟩` and prove the remaining obligations. Use `adjoin_algHom_ext F (φ₁ := (σ : E →ₐ[F] E).comp (adjoin F S).val) (φ₂ := (adjoin F S).val) (fun y hy => h y hy)` as an intermediate fact. Conclude with `congrArg (fun φ : adjoin F S →ₐ[F] E => φ ⟨x, hx⟩) this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_fixingSubgroup_adjoin_iff (S : Set E) (σ : Gal(E/F)) :
     σ ∈ (adjoin F S).fixingSubgroup ↔ ∀ x ∈ S, σ x = x := by
@@ -46,7 +46,7 @@ noncomputable def maxCyclotomic : IntermediateField ℚ ℚ̄ :=
   adjoin ℚ {x : ℚ̄ | ∃ n : ℕ, 0 < n ∧ x ^ n = 1}
 
 /- English proof (translation)
-Use `le_antisymm (adjoin_le_iff.mpr ?_) (iSup_le fun n => adjoin_le_iff.mpr ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨n, hn, hx⟩`. Conclude with `le_iSup (fun n : ℕ+ => rootsOfUnityField n) ⟨n, hn⟩ (subset_adjoin ℚ _ hx)`. Introduce `x hx`. Conclude with `subset_adjoin ℚ _ ⟨n, n.pos, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem maxCyclotomic_eq_iSup : maxCyclotomic = ⨆ n : ℕ+, rootsOfUnityField n := by
   refine le_antisymm (adjoin_le_iff.mpr ?_) (iSup_le fun n => adjoin_le_iff.mpr ?_)
@@ -56,7 +56,7 @@ theorem maxCyclotomic_eq_iSup : maxCyclotomic = ⨆ n : ℕ+, rootsOfUnityField 
     exact subset_adjoin ℚ _ ⟨n, n.pos, hx⟩
 
 /- English proof (translation)
-Use `le_antisymm (adjoin_le_iff.mpr fun x hx => ?_) (adjoin_le_iff.mpr ?_)` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hx`. Conclude with `pow_mem (mem_adjoin_simple_self ℚ ζ) i`. Rewrite using `[Set.singleton_subset_iff]`. Conclude with `subset_adjoin ℚ _ hζ.pow_eq_one`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootsOfUnityField_eq_adjoin {n : ℕ} [NeZero n] {ζ : ℚ̄} (hζ : IsPrimitiveRoot ζ n) :
     rootsOfUnityField n = ℚ⟮ζ⟯ := by
@@ -82,7 +82,7 @@ end Fields
 section Modular
 
 /- English proof (translation)
-Rewrite using `[ZMod.val_natCast]`. Use `conv_rhs => rw [← Nat.mod_add_div k n, pow_add, pow_mul, ht, one_pow, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_val_natCast {M : Type*} [Monoid M] {n : ℕ} {t : M} (ht : t ^ n = 1) (k : ℕ) :
     t ^ (k : ZMod n).val = t ^ k := by
@@ -90,7 +90,7 @@ theorem pow_val_natCast {M : Type*} [Monoid M] {n : ℕ} {t : M} (ht : t ^ n = 1
   conv_rhs => rw [← Nat.mod_add_div k n, pow_add, pow_mul, ht, one_pow, mul_one]
 
 /- English proof (translation)
-Use `pow_val_natCast ht 1` as an intermediate fact. Rewrite `this` using `[Nat.cast_one, pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pow_val_one {M : Type*} [Monoid M] {n : ℕ} {t : M} (ht : t ^ n = 1) :
     t ^ (1 : ZMod n).val = t := by
@@ -98,7 +98,7 @@ theorem pow_val_one {M : Type*} [Monoid M] {n : ℕ} {t : M} (ht : t ^ n = 1) :
   rwa [Nat.cast_one, pow_one] at this
 
 /- English proof (translation)
-The claim follows from `HasEnoughRootsOfUnity.natCard_rootsOfUnity ℚ̄ n`.
+A detailed English derivation is pending.
 -/
 theorem natCard_rootsOfUnity (n : ℕ) [NeZero n] : Nat.card (rootsOfUnity n ℚ̄) = n :=
   HasEnoughRootsOfUnity.natCard_rootsOfUnity ℚ̄ n
@@ -110,9 +110,9 @@ noncomputable def modCharacter (n : ℕ) [NeZero n] : Gal(ℚ̄/ℚ) →* (ZMod 
 variable {n : ℕ} [NeZero n]
 
 /- English proof (translation)
-Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Simplify using `[NeZero.ne n] at ht`. Establish `hmem : Units.mk0 t ht0 ∈ rootsOfUnity n ℚ̄`. Rewrite using `[mem_rootsOfUnity]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using `using ht`. Conclude with `modularCyclotomicCharacter.spec ℚ̄ (natCard_rootsOfUnity n) (MulSemiringAction.toRingAut Gal(ℚ̄/ℚ) ℚ̄ σ) hmem`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem modCharacter_spec (σ : Gal(ℚ̄/ℚ)) {t : ℚ̄} (ht : t ^ n = 1) :
     σ t = t ^ (modCharacter n σ : ZMod n).val := by
@@ -125,7 +125,7 @@ theorem modCharacter_spec (σ : Gal(ℚ̄/ℚ)) {t : ℚ̄} (ht : t ^ n = 1) :
     (MulSemiringAction.toRingAut Gal(ℚ̄/ℚ) ℚ̄ σ) hmem
 
 /- English proof (translation)
-Use `(modularCyclotomicCharacter.unique ℚ̄ (natCard_rootsOfUnity n) (MulSemiringAction.toRingAut Gal(ℚ̄/ℚ) ℚ̄ σ) fun t ht => ?_).symm` and prove the remaining obligations. Establish `ht' : (t : ℚ̄) ^ n = 1`. Rewrite `ht` using `[mem_rootsOfUnity]`. Simplify using `using congrArg Units.val ht`. Simplify using `using hc t ht'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem modCharacter_unique (σ : Gal(ℚ̄/ℚ)) {c : ZMod n}
     (hc : ∀ t : ℚ̄, t ^ n = 1 → σ t = t ^ c.val) : (modCharacter n σ : ZMod n) = c := by
@@ -137,7 +137,7 @@ theorem modCharacter_unique (σ : Gal(ℚ̄/ℚ)) {c : ZMod n}
   simpa using hc t ht'
 
 /- English proof (translation)
-Use `modCharacter_unique σ fun t ht => ?_` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one ht`. Rewrite using `[map_pow, h, ← pow_mul, ← pow_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem modCharacter_eq_of_apply {ζ : ℚ̄} (hζ : IsPrimitiveRoot ζ n) {σ : Gal(ℚ̄/ℚ)}
     {c : ZMod n} (h : σ ζ = ζ ^ c.val) : (modCharacter n σ : ZMod n) = c := by
@@ -146,9 +146,9 @@ theorem modCharacter_eq_of_apply {ζ : ℚ̄} (hζ : IsPrimitiveRoot ζ n) {σ :
   rw [map_pow, h, ← pow_mul, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Use `(modCharacter_unique σ fun t ht => ?_).symm` and prove the remaining obligations. Establish `ht' : t ^ n = 1`. Take `⟨k, rfl⟩` from `h`. Rewrite using `[pow_mul, ht, one_pow]`. Rewrite using `[modCharacter_spec σ ht', ZMod.castHom_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← ZMod.natCast_zmod_val (modCharacter n σ : ZMod n), ZMod.cast_natCast h, pow_val_natCast ht]`.
+A detailed English derivation is pending.
 -/
 theorem castHom_modCharacter {m : ℕ} [NeZero m] (h : m ∣ n) (σ : Gal(ℚ̄/ℚ)) :
     ZMod.castHom h (ZMod m) (modCharacter n σ : ZMod n) = modCharacter m σ := by
@@ -161,7 +161,7 @@ theorem castHom_modCharacter {m : ℕ} [NeZero m] (h : m ∣ n) (σ : Gal(ℚ̄/
     pow_val_natCast ht]
 
 /- English proof (translation)
-Use `Units.ext (modCharacter_eq_of_apply hζ ?_)` and prove the remaining obligations. Rewrite using `[Units.val_one, pow_val_one hζ.pow_eq_one, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem modCharacter_eq_one {ζ : ℚ̄} (hζ : IsPrimitiveRoot ζ n) {σ : Gal(ℚ̄/ℚ)} (h : σ ζ = ζ) :
     modCharacter n σ = 1 := by
@@ -169,11 +169,11 @@ theorem modCharacter_eq_one {ζ : ℚ̄} (hζ : IsPrimitiveRoot ζ n) {σ : Gal(
   rw [Units.val_one, pow_val_one hζ.pow_eq_one, h]
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot ℚ̄ n`. Establish `: FiniteDimensional ℚ ℚ⟮ζ⟯` using `adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral ζ)`. Establish `hU` using `(ℚ⟮ζ⟯).fixingSubgroup_isOpen`. Rewrite using `[continuous_discrete_rng]`. Introduce `b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `σ hσ`. Use `⟨σ • ((ℚ⟮ζ⟯).fixingSubgroup : Set Gal(ℚ̄/ℚ)), ?_, hU.smul σ, ⟨1, one_mem _, mul_one σ⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, hτ, rfl⟩`. Establish `hτζ : τ ζ = ζ` using `(mem_fixingSubgroup_iff _ τ).mp hτ ζ (mem_adjoin_simple_self ℚ ζ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, smul_eq_mul, map_mul, modCharacter_eq_one hζ hτζ, mul_one] at hσ ⊢`. Conclude with `hσ`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_modCharacter (n : ℕ) [NeZero n] :
     Continuous fun σ : Gal(ℚ̄/ℚ) => (modCharacter n σ : ZMod n) := by
@@ -193,11 +193,11 @@ theorem continuous_modCharacter (n : ℕ) [NeZero n] :
   exact hσ
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot ℚ̄ n`. Establish `: IsCyclotomicExtension {n} ℚ ℚ⟮ζ⟯` using `hζ.intermediateField_adjoin_isCyclotomicExtension ℚ`. Establish `: NumberField ℚ⟮ζ⟯` using `IsCyclotomicExtension.numberField {n} ℚ _`. Set `τ` to `(IsCyclotomicExtension.Rat.galEquivZMod n ℚ⟮ζ⟯).symm a`. Set `ζ' : ℚ⟮ζ⟯` to `⟨ζ, mem_adjoin_simple_self ℚ ζ⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hζ' : ζ' ^ n = 1` using `Subtype.ext hζ.pow_eq_one`. Establish `hτ` using `IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq n ℚ⟮ζ⟯ τ hζ'`. Rewrite `hτ` using `[MulEquiv.apply_symm_apply]`. Use `⟨τ.liftNormal ℚ̄, Units.ext (modCharacter_eq_of_apply hζ ?_)⟩` and prove the remaining obligations. Use `AlgEquiv.liftNormal_commutes τ ℚ̄ ζ'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hτ, map_pow]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_modCharacter_eq (n : ℕ) [NeZero n] (a : (ZMod n)ˣ) :
     ∃ σ : Gal(ℚ̄/ℚ), modCharacter n σ = a := by
@@ -239,7 +239,7 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-Rewrite using `[proj_character]`. Conclude with `modCharacter_spec σ ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem character_spec (σ : Gal(ℚ̄/ℚ)) (n : ℕ+) {t : ℚ̄} (ht : t ^ (n : ℕ) = 1) :
     σ t = t ^ (ProfiniteInteger.proj n (character σ : ℤ̂)).val := by
@@ -247,7 +247,7 @@ theorem character_spec (σ : Gal(ℚ̄/ℚ)) (n : ℕ+) {t : ℚ̄} (ht : t ^ (n
   exact modCharacter_spec σ ht
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[proj_character, modCharacter_unique σ (hu n)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_character (σ : Gal(ℚ̄/ℚ)) (u : ℤ̂)
     (hu : ∀ (n : ℕ+) (t : ℚ̄), t ^ (n : ℕ) = 1 → σ t = t ^ (ProfiniteInteger.proj n u).val) :
@@ -256,16 +256,16 @@ theorem eq_character (σ : Gal(ℚ̄/ℚ)) (u : ℤ̂)
   rw [proj_character, modCharacter_unique σ (hu n)]
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 (continuous_pi fun n => ?_)` and prove the remaining obligations. Conclude with `continuous_modCharacter n`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_character_val : Continuous fun σ : Gal(ℚ̄/ℚ) => (character σ : ℤ̂) := by
   refine continuous_induced_rng.2 (continuous_pi fun n => ?_)
   exact continuous_modCharacter n
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Use `⟨continuous_character_val, ?_⟩` and prove the remaining obligations. Establish `: (fun σ : Gal(ℚ̄/ℚ) => (((character σ)⁻¹ : ℤ̂ˣ) : ℤ̂)) = fun σ => (character σ⁻¹ : ℤ̂)`. Use function extensionality and compare the values at `σ`. Rewrite using `[map_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `continuous_character_val.comp continuous_inv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_character : Continuous character := by
   rw [Units.continuous_iff]
@@ -276,13 +276,13 @@ theorem continuous_character : Continuous character := by
   exact continuous_character_val.comp continuous_inv
 
 /- English proof (translation)
-Introduce `u`. Establish `: IsGalois ℚ ℚ̄` using `IsAlgClosure.isGalois ℚ ℚ̄`. Set `N : ℕ → ℕ+` to `fun k => ⟨(k + 1).factorial, Nat.factorial_pos _⟩`. Establish `hdvd : ∀ {k l : ℕ}, k ≤ l → (N k : ℕ) ∣ N l` using `fun h => Nat.factorial_dvd_factorial (Nat.succ_le_succ h)`. Establish `hcont : ∀ n : ℕ+, Continuous fun σ : Gal(ℚ̄/ℚ) => ProfiniteInteger.proj n (character σ : ℤ̂)` using `fun n => (ProfiniteInteger.continuous_proj n).comp continuous_character_val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `S : ℕ → Set Gal(ℚ̄/ℚ)` to `fun k => {σ | ProfiniteInteger.proj (N k) (character σ : ℤ̂) = ProfiniteInteger.proj (N k) (u : ℤ̂)}`. Establish `hmono : ∀ k, S (k + 1) ⊆ S k` using `fun k σ hσ => by`. Simplify using `only [S, Set.mem_ofPred_eq] at hσ ⊢`. Rewrite using `[← ProfiniteInteger.castHom_proj (hdvd k.le_succ) (character σ : ℤ̂), hσ, ProfiniteInteger.castHom_proj]`. Establish `hne : ∀ k, (S k).Nonempty` using `fun k => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩` from `exists_modCharacter_eq (N k) (Units.map (ProfiniteInteger.proj (N k)).toMonoidHom u)`. Use `⟨σ, ?_⟩` and prove the remaining obligations. Simplify using `only [S, Set.mem_ofPred_eq, proj_character, hσ]`. Both sides reduce to the same expression. Establish `hclosed : ∀ k, IsClosed (S k)` using `fun k => isClosed_eq (hcont (N k)) continuous_const`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed S hmono hne (hclosed 0).isCompact hclosed`. Rewrite `hσ` using `[Set.mem_iInter]`. Use `⟨σ, Units.ext (ProfiniteInteger.ext fun n => ?_)⟩` and prove the remaining obligations. Establish `hn : (n : ℕ) ∣ N n` using `Nat.dvd_factorial n.pos (Nat.le_succ n)`. Rewrite using `[← ProfiniteInteger.castHom_proj hn (character σ : ℤ̂), ← ProfiniteInteger.castHom_proj hn, show ProfiniteInteger.proj (N n) (character σ : ℤ̂) = _ from hσ n]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem character_surjective : Function.Surjective character := by
   intro u
@@ -314,9 +314,9 @@ theorem character_surjective : Function.Surjective character := by
     show ProfiniteInteger.proj (N n) (character σ : ℤ̂) = _ from hσ n]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h x ⟨n, hn, hx⟩`. Take `⟨N, rfl⟩ : ∃ N : ℕ+, (N : ℕ) = n` from `⟨⟨n, hn⟩, rfl⟩`. Use `character_spec σ N hx` as an intermediate fact. Rewrite `this` using `[h, Units.val_one, map_one, pow_val_one hx]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `h`. Use `Units.ext (eq_character σ 1 fun n t ht => ?_).symm` and prove the remaining obligations. Rewrite using `[map_one, pow_val_one ht]`. Conclude with `h t ⟨n, n.pos, ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem character_eq_one_iff (σ : Gal(ℚ̄/ℚ)) :
     character σ = 1 ↔ ∀ x : ℚ̄, (∃ n : ℕ, 0 < n ∧ x ^ n = 1) → σ x = x := by
@@ -332,7 +332,7 @@ theorem character_eq_one_iff (σ : Gal(ℚ̄/ℚ)) :
     exact h t ⟨n, n.pos, ht⟩
 
 /- English proof (translation)
-Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker, character_eq_one_iff, maxCyclotomic, mem_fixingSubgroup_adjoin_iff]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ker_character : character.ker = maxCyclotomic.fixingSubgroup := by
   ext σ
@@ -340,7 +340,7 @@ theorem ker_character : character.ker = maxCyclotomic.fixingSubgroup := by
   rfl
 
 /- English proof (translation)
-Establish `: IsGalois ℚ ℚ̄` using `IsAlgClosure.isGalois ℚ ℚ̄`. Rewrite using `[ker_character, InfiniteGalois.fixedField_fixingSubgroup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fixedField_ker_character : fixedField character.ker = maxCyclotomic := by
   have : IsGalois ℚ ℚ̄ := IsAlgClosure.isGalois ℚ ℚ̄
@@ -354,13 +354,13 @@ variable (m : ℕ) [NeZero m] (p : ℕ) [Fact p.Prime] (P : Ideal (𝓞 (rootsOf
   [P.IsPrime] [P.LiesOver (Ideal.span {(p : ℤ)})]
 
 /- English proof (translation)
-Rewrite using `[isArithFrobAt_iff p _ P hm]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot ℚ̄ m`. Set `ζ' : rootsOfUnityField m` to `⟨ζ, subset_adjoin ℚ _ hζ.pow_eq_one⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hζ' : ζ' ^ m = 1` using `Subtype.ext hζ.pow_eq_one`. Use `congrArg (algebraMap (rootsOfUnityField m) ℚ̄) (h ζ' hζ')` as an intermediate fact. Rewrite `this` using `[AlgEquiv.restrictNormal_commutes, map_pow]`. Use `modCharacter_eq_of_apply hζ ?_` and prove the remaining obligations. Rewrite using `[pow_val_natCast hζ.pow_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Introduce `h x hx`. Establish `hx' : (algebraMap (rootsOfUnityField m) ℚ̄ x) ^ m = 1`. Rewrite using `[← map_pow, hx, map_one]`. Apply `(algebraMap (rootsOfUnityField m) ℚ̄).injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgEquiv.restrictNormal_commutes, map_pow, modCharacter_spec σ hx', h, pow_val_natCast hx']`.
+A detailed English derivation is pending.
 -/
 theorem isArithFrobAt_restrictNormal_iff (hm : ¬ p ∣ m) (σ : Gal(ℚ̄/ℚ)) :
     IsArithFrobAt ℤ (σ.restrictNormal (rootsOfUnityField m)) P ↔
@@ -404,7 +404,7 @@ noncomputable def toPadicInt : ℤ̂ →+* ℤ_[ℓ] :=
         (pow_dvd_pow ℓ hk) x
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (PadicInt.lift_spec _ k) x`.
+A detailed English derivation is pending.
 -/
 theorem toZModPow_toPadicInt (k : ℕ) (x : ℤ̂) :
     PadicInt.toZModPow k (toPadicInt ℓ x) =
@@ -412,7 +412,7 @@ theorem toZModPow_toPadicInt (k : ℕ) (x : ℤ̂) :
   RingHom.congr_fun (PadicInt.lift_spec _ k) x
 
 /- English proof (translation)
-Use `PadicInt.ext_of_toZModPow.mp fun k => ?_` and prove the remaining obligations. Rewrite using `[toZModPow_toPadicInt, cyclotomicCharacter.toZModPow, proj_character]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toPadicInt_character (σ : Gal(ℚ̄/ℚ)) :
     toPadicInt ℓ (character σ : ℤ̂) =

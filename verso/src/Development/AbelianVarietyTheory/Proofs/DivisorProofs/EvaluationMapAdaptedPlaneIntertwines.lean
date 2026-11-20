@@ -21,23 +21,21 @@ namespace GlobalTheory.ThKExpandNz
 open GlobalTheory.ThetaQuasiRat
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he hB hM hXW`. Establish `hstd : IsStd B.ψ` using `hB.std`. Establish `hρ : ∀ w, ∀ Φ ∈ schA F (Fin n × Fin d), M.co.rho B.ψ w Φ ∈ schA F (Fin n × Fin d)` using `fun w Φ hΦ => GlobalTheory.SchrKeepsSchA.schr_mem_schA F B.ψ hstd _ _ Φ hΦ`. Establish `hth : ∀ (c : ℂ) (φ : Fn F n d₁), thetaSum F (c • φ) = c * thetaSum F φ` using `fun c φ => by`. Simplify using `only [thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hswap : ∀ (a b : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)) (φ : Fn F n d), schr B.ψ a (schr B.ψ b φ) = B.ψ (a.1 ⬝ᵥ b.2 - b.1 ⬝ᵥ a.2) • schr B.ψ b (schr B.ψ a φ)`. Introduce `a b φ`. Rewrite using `[schr_schr, schr_schr, add_comm b a, smul_smul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Establish `h2 : ⅟(2 : AF F) * 2 = 1` using `invOf_mul_self 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Take the linear combination `(a.1 ⬝ᵥ b.2 - b.1 ⬝ᵥ a.2) * h2`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hA : ∀ Ψ ∈ schA F (Fin n × Fin d), ∀ ξ : Fin n → E, thetaSum F (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) Ψ)) = 0`. Introduce `Ψ hΨ`.
+Take a linear combination of the given relations to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨N, emb, lam, hinj, hexp⟩` from `GlobalTheory.T.adapted_plane_theta_embedding_exists F E σ B n d d₁ X W W₁ M H' i₀ i₁ hH' hB hM hXW`. Use `GlobalTheory.T.exp_sum_coeff_eq_zero_of_vanishing N (Fin n → E) lam _ hinj (GlobalTheory.T.evaluation_map_adapted_plane_equivariant hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he hB hM hXW Ψ hΨ) ?_` and prove the remaining obligations. Introduce `t`. Establish `h0` using `hcon _ (hρ (Matrix.vecMulVec (emb t) (incV F H'.x)) Ψ hΨ)`. Rewrite using `[← h0]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Establish `hinv` using `he.inv (Matrix.vecMulVec (emb t) (incV F H'.x)) ⟨emb t, rfl⟩ _ (hρ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) Ψ hΨ)`. Simplify using `only [Darboux.rho] at hinv ⊢`. Rewrite using `[hswap, LinearMap.map_smul, hinv, hth, hexp, mul_comm]`. Establish `hB0 : ∀ Ψ ∈ schA F (Fin n × Fin d), thetaSum F (e₀ Ψ) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Ψ hΨ`. Establish `h` using `hA Ψ hΨ 0`. Establish `h1 : Matrix.vecMulVec (incV F (0 : Fin n → E)) (incV F H'.y) = 0`. Use extensionality with `i j`. Simplify using `[incV, Matrix.vecMulVec_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : M.co.rho B.ψ 0 Ψ = Ψ`. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`. Rewrite `h` using `[h1, h2]`. Then use the resulting hypothesis. Establish `hC : ∀ Ψ ∈ schA F (Fin n × Fin d), ∀ x y : Fin n × Fin d₁ → AF F, thetaSum F (schr B.ψ (x, y) (e₀ Ψ)) = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Ψ hΨ x y`. Establish `h` using `he.Heisenberg₂ (M₁.co.e.symm (x, y)) Ψ hΨ`. Simplify using `only [Darboux.rho, LinearEquiv.apply_symm_apply] at h`. Rewrite using `[← h]`. Conclude with `hB0 _ (hρ _ Ψ hΨ)`.
-
-Take `⟨Ψ, hΨ, hne⟩` from `GlobalTheory.EvNonzero.exists_mem_schA_ev_ne_zero F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e₀ hM hM₁ he`. Conclude with `hne (GlobalTheory.T.eq_zero_of_theta_sums_translates_vanish F B.ψ hstd _ (e₀ Ψ) (he.maps Ψ hΨ) (hC Ψ hΨ))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

@@ -8,7 +8,7 @@ open GlobalTheory.CompanionTheory.Ar.BT ReciprocityTheory.ChartRestriction.G.Sem
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.HtPt.Twhopf.mul_flat`.
+A detailed English derivation is pending.
 -/
 theorem flat_mul_semiAbelian : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (G : Over S) [GrpObj G],
     IsSemiAbelian G → ∀ N : ℕ, 1 ≤ N → Flat ((𝟙 G) ^ N).left :=

@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.LatStep
 
 /- English proof (translation)
-Introduce `i` and use `by rw [map_add, Finsupp.add_apply]; exact add_mem (hx i) (hy i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntB_add' (v : HeightOneSpectrum ℤ) {M : Type} [AddCommGroup M] [Module ℚ M] {κ : Type}
     (b : Module.Basis κ ℚ M) {x y : v.adicCompletion ℚ ⊗[ℚ] M} (hx : IsIntB v b x) (hy : IsIntB v b y) :
@@ -28,7 +28,7 @@ theorem isIntB_add' (v : HeightOneSpectrum ℤ) {M : Type} [AddCommGroup M] [Mod
   rw [map_add, Finsupp.add_apply]; exact add_mem (hx i) (hy i)
 
 /- English proof (translation)
-Introduce `i` and use `by rw [map_neg, Finsupp.neg_apply]; exact neg_mem (hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntB_neg' (v : HeightOneSpectrum ℤ) {M : Type} [AddCommGroup M] [Module ℚ M] {κ : Type}
     (b : Module.Basis κ ℚ M) {x : v.adicCompletion ℚ ⊗[ℚ] M} (hx : IsIntB v b x) :
@@ -36,21 +36,19 @@ theorem isIntB_neg' (v : HeightOneSpectrum ℤ) {M : Type} [AddCommGroup M] [Mod
   rw [map_neg, Finsupp.neg_apply]; exact neg_mem (hx i)
 
 /- English proof (translation)
-Introduce `p _ G γ hdeg _hsep L _ _ ι hι hcent κ b`. Set `ℓ` to `Module.finBasis ℚ L`. Take `⟨r, e, he⟩` from `GlobalTheory.T.exists_basis_over_subfield_embedding L G.C ι`. Establish `hE` using `fun i i' => GlobalTheory.T.exists_sum_two_sided_mul_eq_matrixUnit_unitaryDatum p G γ hdeg L ι hι hcent r e he i i'`. Use `choose N l c hlc using hE`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `fun (i i' : Fin r) (k : Fin (N i i')) => GlobalTheory.T.eventually_one_tmul_adic_integral_coords L _ ℓ (l i i' k)`. Establish `hc` using `fun (i i' : Fin r) (k : Fin (N i i')) => GlobalTheory.T.eventually_one_tmul_adic_integral_coords G.C κ b (c i i' k)`. Use `choose Sl hSl using hl`. Use `choose Sc hSc using hc`. Take `⟨S1, hS1⟩` from `GlobalTheory.T.adicIntegralTensorBasis_ring_eventually G.C κ b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S2, hS2⟩` from `GlobalTheory.T.adicIntegralTensorBasis_ring_eventually L _ ℓ`. Take `⟨S3, hS3⟩` from `GlobalTheory.T.almost_all_places_basis_integral L G.C ι r e he _ ℓ κ b`. Take `⟨S4, hS4⟩` from `GlobalTheory.T.eventually_integral_conj_of_integral_conj_generator p G γ hdeg L ι hι hcent κ b _ ℓ`. Take `⟨S5, hS5⟩` from `GlobalTheory.T.fractional_ideal_integral_lattice L _ ℓ`. Set `SE : Finset (HeightOneSpectrum ℤ)` to `Finset.univ.biUnion (fun ii : Fin r × Fin r => Finset.univ.biUnion (fun k : Fin (N ii.1 ii.2) => Sl ii.1 ii.2 k ∪ Sc ii.1 ii.2 k))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨S1 ∪ S2 ∪ S3 ∪ S4 ∪ S5 ∪ SE, ?_⟩` and prove the remaining obligations. Introduce `v hv X X' hX hX'`. Simplify using `only [Finset.mem_union, not_or] at hv`. Take `⟨⟨⟨⟨⟨hv1, hv2⟩, hv3⟩, hv4⟩, hv5⟩, hvE⟩` from `hv`. Establish `hvE' : ∀ i i' k, v ∉ Sl i i' k ∧ v ∉ Sc i i' k` using `fun i i' k => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `: v ∉ Sl i i' k ∪ Sc i i' k` using `fun h => hvE (Finset.mem_biUnion.2 ⟨(i, i'), Finset.mem_univ _, Finset.mem_biUnion.2 ⟨k, Finset.mem_univ _, h⟩⟩)`. Simplify `this` using `[Finset.mem_union, not_or]`. Set `jv` to `Algebra.TensorProduct.map (AlgHom.id ℚ (v.adicCompletion ℚ)) ι`. Establish `key` using `GlobalTheory.T.order_lattice_basis_integrality (jv : v.adicCompletion ℚ ⊗[ℚ] L →+* v.adicCompletion ℚ ⊗[ℚ] G.C) {y | IsIntB v b y} {x | IsIntB v ℓ x} r (fun i => (1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] e i) (isIntB_zero v b) (hS1 v hv1).1 (fun x hx y hy => isIntB_add' v b hx hy) (fun x hx …`. Take `⟨D, hD, h⟩` from `GlobalTheory.T.exists_int_smul_isAdicIntegralInTensorBasis G.C κ b v a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨D, hD, by simpa [zsmul_eq_mul] using h⟩)`. Use the proof step `(fun I h0 hadd hmul hD => hS5 v hv5 I h0 hadd hmul hD)`. Take `⟨m, hm1, hm2⟩` from `key X (fun ρ hρ => hS4 v hv4 X hX ρ hρ)`. Take `⟨m', hm1', hm2'⟩` from `key X' (fun ρ hρ => hS4 v hv4 X' hX' ρ hρ)`. Use `⟨m * m'⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(hS1 v hv1).2 _ _ hm1 hm2'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [RingHom.coe_coe, Units.val_mul, map_mul, mul_assoc, jv]`. Use `(hS1 v hv1).2 _ _ hm1' hm2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Simplify using `only [RingHom.coe_coe, _root_.mul_inv_rev, inv_inv, Units.val_mul, map_mul, mul_assoc, jv]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lattice_step : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (γ : G.Cˣ), (minpoly G.F (γ : G.C)).natDegree = G.n →
     (minpoly G.F (γ : G.C)).Separable → ∀ (L : Type) [Field L] [NumberField L] (ι : L →ₐ[ℚ] G.C),

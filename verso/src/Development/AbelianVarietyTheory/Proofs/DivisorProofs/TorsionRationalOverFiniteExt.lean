@@ -20,19 +20,17 @@ namespace GlobalTheory.TorsRational
 open Polynomial
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K R`. Set `f : K[X]` to `∏ i, minpoly K (b i)`. Establish `hf0 : f ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => minpoly.ne_zero (Algebra.IsIntegral.isIntegral (b i))`. Establish `hroot : ∀ r ∈ Set.range b, aeval r f = 0`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [f, map_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (minpoly.aeval K _)`. Use `⟨f.SplittingField, inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Introduce `K'' Ω _ _ _ _ _ σ φ hφ`. Establish `hs : (f.map (algebraMap K K'')).Splits`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_eq K f.SplittingField K'', ← Polynomial.map_map]`. Conclude with `(SplittingField.splits f).map _`. Establish `hmem : ∀ r, φ r ∈ σ.range`. Introduce `r`. Establish `hr : r ∈ Submodule.span K (Set.range b)` using `b.span_eq ▸ Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem x hx`. Use `hs.mem_range_of_isRoot (Polynomial.map_ne_zero hf0) ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_map, ← hφ, Polynomial.IsRoot, Polynomial.eval_map, ← Polynomial.hom_eval₂, ← Polynomial.aeval_def, hroot x hx, map_zero]`. Consider the case `zero => rw [map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[Algebra.smul_def, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_mem ⟨algebraMap K K'' c, ?_⟩ hx` and prove the remaining obligations. Rewrite using `[← RingHom.comp_apply, ← hφ, RingHom.comp_apply]`. Set `e` to `RingEquiv.ofBijective σ.rangeRestrict ⟨fun a b h => σ.injective (congrArg Subtype.val h), σ.rangeRestrict_surjective⟩`. Use `⟨e.symm.toRingHom.comp (φ.codRestrict σ.range hmem), ?_⟩` and prove the remaining obligations. Use extensionality with `r`.
-
-Conclude with `congrArg Subtype.val (e.apply_symm_apply (φ.codRestrict σ.range hmem r))`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_ext_factor (K R : Type) [Field K] [CommRing R] [Algebra K R] [Module.Finite K R] :
     ∃ (K' : Type) (_ : Field K') (_ : Algebra K K'), Module.Finite K K' ∧
@@ -74,13 +72,11 @@ theorem exists_ext_factor (K R : Type) [Field K] [CommRing R] [Algebra K R] [Mod
   exact congrArg Subtype.val (e.apply_symm_apply (φ.codRestrict σ.range hmem r))
 
 /- English proof (translation)
-Use `haveI : IsAffine T.left := isAffine_of_isAffineHom T.hom`. Take `⟨ρ, hρ⟩` from `Spec.map_surjective (T.left.isoSpec.inv ≫ T.hom)`. Use `letI : Algebra K Γ(T.left, ⊤) := ρ.hom.toAlgebra`. Use `haveI : Module.Finite K Γ(T.left, ⊤) := by`. Establish `: IsFinite (Spec.map ρ)` using `by rw [hρ]; infer_instance`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(IsFinite.SpecMap_iff ρ).1 this`. Take `⟨K', _, _, hfin, H⟩` from `exists_ext_factor K Γ(T.left, ⊤)`. Use `⟨K', _, _, hfin, fun K'' Ω _ _ _ _ _ σ t ht => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `Spec.map_surjective (t ≫ T.left.isoSpec.hom)`. Establish `h1 : φ.hom.comp (algebraMap K Γ(T.left, ⊤)) = σ.comp (algebraMap K K'')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: Spec.map (ρ ≫ φ) = Spec.map (CommRingCat.ofHom (σ.comp (algebraMap K K'')))`. Rewrite using `[Spec.map_comp, hφ, hρ, Category.assoc, Iso.hom_inv_id_assoc, ht]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective this)`. Take `⟨φ'', hφ''⟩` from `H K'' Ω σ φ.hom h1`. Use `⟨Spec.map (CommRingCat.ofHom φ'') ≫ T.left.isoSpec.inv, ?_⟩` and prove the remaining obligations.
-
-Establish `e : CommRingCat.ofHom φ'' ≫ CommRingCat.ofHom σ = φ`. Use extensionality with `r`. Conclude with `congrArg (fun g => g r) hφ''`. Rewrite using `[← Category.assoc, spMap, ← Spec.map_comp, e, hφ, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext_points (K : Type) [Field K] (T : Over (Sp K)) (hT : IsFinite T.hom) :
     ∃ (K' : Type) (_ : Field K') (_ : Algebra K K'), Module.Finite K K' ∧

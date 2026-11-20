@@ -7,7 +7,7 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `p _ D G L v hv B a y hfix hreg`. Conclude with `GlobalTheory.LKCx.minpoly_of_regAf_of_fixL p G v hv B.β B.sym B.trivR _ _ B.trivAf.choose_spec.choose_spec y a.1.1 a.2 hfix hreg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.regSep_of :
     UpperTheory.Gal.W2.RegSep := by

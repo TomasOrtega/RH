@@ -10,27 +10,27 @@ open GlobalTheory.UPel.HT.Gen
 namespace UpperTheory.Gal.FiniteEtaleModels.O
 
 /- English proof (translation)
-Introduce `G k _ Q _ act e I g hg`. Establish `hn : ∀ n : ℕ, 0 < n → ∀ z : G.La, I.ev n (n • z) = 1` using `fun n h0 z => (I.ker n h0 _).2 ⟨z, rfl⟩`. Establish `hadd : ∀ n : ℕ, 0 < n → ∀ (x z : G.La), I.ev n (x + n • z) = I.ev n x`. Introduce `n h0 x z`. Rewrite using `[I.add, hn n h0, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨{ ζ := I.ζ ζ_prim := I.ζ_prim ζ_pow := I.ζ_pow ev := fun n x => if 0 < n then I.ev n (g n x) else I.ev n x add := ?_ lin := ?_ ker := ?_ onto := ?_ tower := ?_ isom := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `n x y`. Distinguish the cases in `h0 : 0 < n`. Simplify using `only [if_pos h0, map_add, I.add]`. Simplify using `only [if_neg h0, I.add]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `n b x`. Distinguish the cases in `h0 : 0 < n`. Simplify using `only [if_pos h0]`. Take `⟨z, hz⟩` from `hg.lin n h0 b x`. Rewrite using `[hz, hadd n h0, I.lin]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [if_neg h0, I.lin]`. Introduce `n h0 x`. Simplify using `only [if_pos h0]`. Rewrite using `[I.ker n h0]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy⟩`. Conclude with `hg.inj n h0 x y hy`. Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨g n v, map_nsmul (g n) n v⟩`. Introduce `n h0 q`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos h0]`. Rewrite using `[I.onto n h0]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Take `⟨y, z, hy⟩` from `hg.onto n h0 x`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, by rw [hy, hadd n h0]⟩`. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨g n x, hx⟩`. Introduce `n m hn0 hm0 x`. Establish `h0 : 0 < n * m` using `Nat.mul_pos hn0 hm0`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos h0, if_pos hn0]`. Rewrite using `[I.tower n m hn0 hm0]`. Take `⟨z, hz⟩` from `hg.tow n m hn0 hm0 x`. Rewrite using `[hz, hadd n hn0]`. Introduce `n h0 x y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos h0]`. Establish `h` using `I.isom n h0 (g n x) (g n y)`. Take `⟨c, hc⟩` from `hg.iso n h0 x y`. Establish `hz : I.ζ n ^ (n : ℤ) = 1`. Rewrite using `[zpow_natCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(I.ζ_prim n h0).pow_eq_one`. Establish `hE : I.ζ n ^ (2 * G.EF (g n x) (g n y)) = I.ζ n ^ (2 * G.EF x y)`. Establish `: 2 * G.EF (g n x) (g n y) = 2 * G.EF x y + (n : ℤ) * (2 * c)`. Combine the linear relations using `[hc]`. Rewrite using `[this, zpow_add, zpow_mul (I.ζ n) (n : ℤ), hz, one_zpow, mul_one]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hE]`. Conclude with `h`. Introduce `n h0 x`. Simplify using `only [if_pos h0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tResim : TResim := by
   intro G k _ Q _ act e I g hg

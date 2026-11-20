@@ -7,13 +7,13 @@ namespace Formalism.MainNotions.V.Pf.V2.Calc
 variable {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
 
 /- English proof (translation)
-Proceed by induction on `ts with`. Consider the case `nil`. Introduce `F hF m`. Establish `: Subsingleton (F.gr m)` using `⟨fun a b => Subtype.ext (Subsingleton.elim _ _)⟩`. Simplify using `only [chi]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Module.length_eq_zero]`. Both sides reduce to the same expression. Consider the case `cons p ts ih`. Take `⟨d, s⟩` from `p`. Introduce `F hF m`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [chi]`. Establish `h1 : Subsingleton (F.quot s).M` using `⟨fun a b => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Rewrite using `[Subsingleton.elim x y]⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Subsingleton (F.ann s d).M` using `⟨fun a b => Subtype.ext (Subsingleton.elim (α := F.M) _ _)⟩`. Rewrite using `[ih _ h1, ih _ h2, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_of_subsingleton (ts : List (Deg k × R)) : ∀ (F : GMod B R k), Subsingleton F.M →
     ∀ m, chi ts F m = 0 := by
@@ -38,7 +38,7 @@ theorem chi_of_subsingleton (ts : List (Deg k × R)) : ∀ (F : GMod B R k), Sub
     rw [ih _ h1, ih _ h2, sub_zero]
 
 /- English proof (translation)
-Establish `h2 : Subsingleton (F.ann s d).M` using `⟨fun a b => Subtype.ext ((h a.1 a.2).trans (h b.1 b.2).symm)⟩`. Simplify using `only [chi]`. Rewrite using `[chi_of_subsingleton ts _ h2, sub_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_nzd (ts : List (Deg k × R)) (F : GMod B R k) (d : Deg k) (s : R)
     (h : ∀ x : F.M, s • x = 0 → x = 0) (m : Deg k) :
@@ -49,7 +49,7 @@ theorem chi_nzd (ts : List (Deg k × R)) (F : GMod B R k) (d : Deg k) (s : R)
   rw [chi_of_subsingleton ts _ h2, sub_zero]
 
 /- English proof (translation)
-Introduce `_ _ ts F d s h m` and use `chi_nzd ts F d s h m`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ruleNzd : RuleNzd := fun _ _ ts F d s h m => chi_nzd ts F d s h m
 

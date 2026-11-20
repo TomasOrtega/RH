@@ -22,7 +22,7 @@ theorem act_apply (M : Matrix (Fin 8) (Fin 8) ℤ) {X : Type} [AddCommGroup X] (
     act M X c v = ∑ u, M v u • c u := rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [act_apply, Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_act (M N : Matrix (Fin 8) (Fin 8) ℤ) {X : Type} [AddCommGroup X] (c : Fin 8 → X) :
     act M X (act N X c) = act (M * N) X c := by
@@ -31,14 +31,14 @@ theorem act_act (M N : Matrix (Fin 8) (Fin 8) ℤ) {X : Type} [AddCommGroup X] (
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[act_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem act_one {X : Type} [AddCommGroup X] (c : Fin 8 → X) : act 1 X c = c := by
   ext v
   simp [act_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[act_apply, map_sum, map_zsmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem act_comp {X₀ X₁ : Type} [AddCommGroup X₀] [AddCommGroup X₁] (M : Matrix (Fin 8) (Fin 8) ℤ)
     (π : X₀ →+ X₁) (c : Fin 8 → X₀) : act M X₁ (fun u => π (c u)) = fun u => π (act M X₀ c u) := by
@@ -46,9 +46,9 @@ theorem act_comp {X₀ X₁ : Type} [AddCommGroup X₀] [AddCommGroup X₁] (M :
   simp [act_apply, map_sum, map_zsmul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `v`. Rewrite using `[act_apply, h v, Pi.single_apply]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `h v`. Use `congrFun h v` as an intermediate fact. Rewrite `this` using `[act_apply]`. Rewrite using `[this, Pi.single_apply]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem matRel_iff (W : Matrix (Fin 8) (Fin 8) ℤ) {X : Type} [AddCommGroup X] (a b : Fin 8) (y y' : Fin 8 → X) :
     MatRel W a b y y' ↔ act (W + W.transpose) X y' = Pi.single b (act (W + W.transpose) X y a) := by
@@ -61,21 +61,21 @@ end GlobalTheory.Poinc.Eq8.DiagMat
 open GlobalTheory.Poinc.Eq8.DiagMat in
 
 /- English proof (translation)
-Introduce `W hW Y X₀ X₁ _ _ _ m e₀ ρ hρ h₀ h₁`. Use `set Q := W + W.transpose with hQ`. Establish `hdet : IsUnit Q.det` using `by rw [hW.2]; exact isUnit_one`. Establish `hQP : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv Q hdet`. Establish `hPQ : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul Q hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Ψ : (Fin 8 → X₀) →+ (Fin 8 → X₁)` to `(act Q X₁).comp (ρ.comp ((e₀.symm : (Fin 8 → X₀) →+ Y).comp (act Q⁻¹ X₀)))`. Establish `hΨ : ∀ z, Ψ (act Q X₀ (e₀ z)) = act Q X₁ (ρ z)`. Introduce `z`. Simplify using `only [Ψ, AddMonoidHom.comp_apply, act_act, hPQ, act_one]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hE : ∀ a b c, Ψ (Pi.single b (c a)) = Pi.single b (Ψ c a)`. Introduce `a b c`. Use `set z := e₀.symm (act Q⁻¹ X₀ c) with hz`. Establish `hc : act Q X₀ (e₀ z) = c` using `by simp [hz, act_act, hQP, act_one]`. Establish `r0` using `(matRel_iff W a b _ _).1 (h₀ a b z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `r1` using `(matRel_iff W a b _ _).1 (h₁ a b z)`. Rewrite `r0` using `[← hQ, hc]`. Rewrite `r1` using `[← hQ]`. Rewrite using `[← r0, hΨ, r1, ← hΨ, hc]`. Set `π : X₀ →+ X₁` to `(Pi.evalAddMonoidHom (fun _ => X₁) 0).comp (Ψ.comp (AddMonoidHom.single (fun _ => X₀) 0))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hπ : ∀ b x, Ψ (Pi.single b x) = Pi.single b (π x)`. Introduce `b x`. Use `hE 0 b (Pi.single 0 x)` as an intermediate fact. Simplify `this` using `[π]`. Establish `hdiag : ∀ c, Ψ c = fun u => π (c u)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Use `conv_lhs => rw [← Finset.univ_sum_single c]`. Rewrite using `[map_sum]`. Simplify using `only [hπ]`. Rewrite using `[← Finset.univ_sum_single (fun u => π (c u))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ y u, ρ y u = π (e₀ y u)`. Introduce `y u`. Establish `h1 : act Q X₁ (ρ y) = fun u => π (act Q X₀ (e₀ y) u)` using `by rw [← hΨ, hdiag]`. Establish `h2` using `congrArg (act Q⁻¹ X₁) h1`. Rewrite `h2` using `[act_act, hPQ, act_one, act_comp, act_act, hPQ, act_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `congrFun h2 u`. Use `⟨π, ?_, key⟩` and prove the remaining obligations. Introduce `x`. Take `⟨y, hy⟩` from `hρ (fun _ => x)`. Conclude with `⟨e₀ y 0, by rw [← key, hy]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.Eq8.exists_diag_of_matRel : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (Y X₀ X₁ : Type) [AddCommGroup Y] [AddCommGroup X₀] [AddCommGroup X₁] (m : Fin 8 → Fin 8 → (Y →+ Y)) (e₀ : Y ≃+ (Fin 8 → X₀)) (ρ : Y →+ (Fin 8 → X₁)), Function.Surjective ρ → (∀ a b y, MatRel W a b (e₀ y) (e₀ (m a b y))) → (∀ a b y, MatRel W a b (ρ y) (ρ (m a b y))) → ∃ π : X₀ →+ X₁, Function.Surjective π ∧ ∀ y u, ρ y u = π (e₀ y u) := by
   intro W hW Y X₀ X₁ _ _ _ m e₀ ρ hρ h₀ h₁

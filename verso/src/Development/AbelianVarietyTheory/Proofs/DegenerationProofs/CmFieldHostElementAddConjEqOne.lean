@@ -12,15 +12,15 @@ noncomputable section
 namespace GlobalTheory.Ex.Arch.AbVal
 
 /- English proof (translation)
-Establish `h1 : H.bar H.rt ^ 2 = H.rt ^ 2`. Rewrite using `[← map_pow, H.rt_sq, map_neg, map_natCast]`. Establish `h2 : 2 * H.bar H.w0 = 1 + H.bar H.rt`. Use `congrArg H.bar H.two_weight_eq_one_add_root` as an intermediate fact. Simplify `this` using `[map_ofNat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3 : H.bar H.rt = -H.rt`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with e | e` into its components or cases. It suffices to derive a contradiction. Establish `e' : IsCMField.complexConj E (H.rt : E) = H.rt` using `by rw [← H.bar_eq, e]`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `c` using `IsCMField.complexEmbedding_complexConj E φ (H.rt : E)`. Rewrite `c` using `[e']`. Establish `r : φ (H.rt : E) ^ 2 = -(H.d : ℂ)`. Use `congrArg (fun z : 𝓞 E => φ (z : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨x, hx⟩` from `Complex.conj_eq_iff_real.1 c.symm`. Rewrite `r` using `[hx]`. Establish `r' : x ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast r`. Establish `: (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg x]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `e`. Establish `: (2 : 𝓞 E) * (H.w0 + H.bar H.w0) = 2 * 1`. Rewrite using `[mul_add, h2, H.two_weight_eq_one_add_root, h3]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_left_cancel₀ two_ne_zero this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cmField_host_element_add_conj_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) : H.w0 + H.bar H.w0 = 1 := by
   have h1 : H.bar H.rt ^ 2 = H.rt ^ 2 := by
@@ -49,7 +49,7 @@ theorem cmField_host_element_add_conj_eq_one {E : Type} [Field E] [NumberField E
   exact mul_left_cancel₀ two_ne_zero this
 
 /- English proof (translation)
-Introduce `h` and use `(((Units.isUnit _).map _).map _).ne_zero ((dif_pos (fun z _ => Good.mem (L := D.P.L) (z := z) (J := ν.J) (fun ψ => ν.good ψ trivial) (fun _ : PUnit => eSec D.P.A) (TF (R := R) F).hom)).symm.trans h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rg_ne_zero {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
     {N : NumD F} (ν : NumOf D F N) : ν.rg ≠ 0 := fun h =>
@@ -58,9 +58,9 @@ theorem rg_ne_zero {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type
       (TF (R := R) F).hom)).symm.trans h)
 
 /- English proof (translation)
-Use `choose F hF hU using fun a => hlift (act.act a) (act.hom a)`. Establish `add : ∀ a b, F (a + b) = F a + F b` using `fun a b => (hU _ _ fun z => by`. Rewrite using `[LinearMap.add_apply, hadd, hF, hF, act.map_add]`. Conclude with `(MonObj.comp_mul _ _ _).symm).symm`. Use `⟨RingHom.mk' ⟨⟨F, (hU _ _ fun z => ?_).symm⟩, fun a b => (hU _ _ fun z => ?_).symm⟩ add, hF⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[act.map_one, Category.comp_id]`. Both sides reduce to the same expression. Rewrite using `[act.map_mul, Module.End.mul_apply, hF, hF, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_lift {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {T : Over S} {O : Type} [CommRing O]
     (act : RingAct A O) {V : Type} [AddCommGroup V] [Module ℂ V] (ex : V → (T ⟶ A))
@@ -76,35 +76,35 @@ theorem exists_ringHom_lift {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonO
   · rw [act.map_mul, Module.End.mul_apply, hF, hF, Category.assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D R _ _ _ A`. Use `letI := H.starRing`. Take `⟨g, Λ, Hm, χ, Ef, ex, fr, hf, hEf, hbij⟩` from `hEx R A.D₀.P A.ν.J A.ν.good`. Take `⟨hdisc, hfull, hherm, hpos, hnorm, hχ, hadd, hsurj, hker, hfr, hlift⟩` from `hGrp R A.D₀ _ g Λ Hm χ ex fr hf`. Establish `hcube` using `hCube R A.D₀ _ g Λ Hm χ ex fr hf`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hsym, hneg⟩` from `hSym R A.D₀ _ g Λ Hm χ ex fr hf`. Establish `hros` using `hRos R A.D₀ _ g Λ Hm χ ex fr hf`. Establish `hprim` using `hPrim R A.D₀ _ g Λ Hm χ ex fr hf`. Take `⟨θ, hθ, hθv⟩` from `hSec R A.D₀ _ g Λ Hm χ ex fr hf A.ν.th`. Establish `hlie` using `hLie R A.D₀ _ g Λ Hm χ ex fr hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨F, hF⟩` from `exists_ringHom_lift A.oa.onB.toRingAct ex hadd hlift`. Establish `hmem : ∀ a, ∀ l ∈ Λ, F a l ∈ Λ` using `fun a l hl => by haveI := A.oa.onB.hom a`. Rewrite using `[← hker, hF, (hker l).2 hl, MonObj.one_comp]`. Establish `hadj : ∀ a z w, hermForm Hm (F a z) w = hermForm Hm z (F (star a) w)` using `fun a => by haveI := A.oa.onB.hom a haveI := A.oa.onB.hom (star a)`. Take `⟨r, hr⟩` from `exists_ros hL.globalFns A.D₀.P.isAb A.D₀.P.isLB _ _ (A.oa.onB.rosati a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(hros _ _ (A.oa.onB.hom a) (A.oa.onB.hom (star a)) _ _ (hF a) (hF (star a)) r hr).1`. Set `B : An H` to `{ gB := g, abelian₂ := Λ, discrete := hdisc, full := hfull, Hm := Hm, Hm_herm := hherm, Hm_pos := hpos, Ef := Ef, Ef_eq := hEf, Ef_bij := hbij, chi := χ, chi_norm := hnorm, chi_add := hχ, chi_neg := hneg, F := F, F_mem := hmem, F_adj := hadj, X := PUnit, ct := 0, ct_smul := fun a …`. Establish `hrg` using `rg_ne_zero A.ν`. Establish `h0` using `(fr 0).ne_zero`. Establish `hw : ∀ z w, hermForm Hm z w = hermForm Hm z (F H.w0 w) + hermForm Hm (F H.w0 z) w` using `fun z w => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hadj]`. Use `Eq.trans ?_ (B.H_add_right z (F H.w0 w) (F (star H.w0) w))` and prove the remaining obligations. Rewrite using `[← LinearMap.add_apply, ← map_add, show H.w0 + star H.w0 = 1 from cmField_host_element_add_conj_eq_one H, map_one]`. Both sides reduce to the same expression. Establish `hp` using `hprim _ (A.oa.onB.hom H.w0) (F H.w0) (hmem H.w0) (hF H.w0) hw Ef hEf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hth : ∀ z, A.N.th (A.ν.eA.symm (ex z)) = θ z * fr 0 / A.ν.rg * ((fr z / fr 0 : ℂˣ) : ℂ)` using `fun z => by`. Establish `e` using `A.ν.th_eq (A.ν.eA.symm (ex z))`. Rewrite `e` using `[MulEquiv.apply_symm_apply, hθv]`. Express the relevant statement in the definitionally equal form `_ * A.ν.rg = _ at e`. Rewrite using `[Units.val_div_eq_div_val, eq_div_of_mul_eq hrg e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Use `⟨B, fun z => A.ν.eA.symm (ex z), fun z => fr z / fr 0, fun z => θ z * fr 0 / A.ν.rg, ⟨fun z w => (congrArg A.ν.eA.symm (hadd z w)).trans (map_mul _ _ _), A.ν.eA.symm.surjective.comp hsurj, fun z => (map_eq_one_iff _ A.ν.eA.symm.injective).trans (hker z), div_self' _, fun l z => ? …` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Units.val_div_eq_div_val, Units.val_div_eq_div_val, hfr l z, mul_div_assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Units.ext ?_` and prove the remaining obligations. Establish `e` using `hcube x y z`. Simplify using `only [Units.val_mul, Units.val_div_eq_div_val, A.ν.θ_eq, MulEquiv.apply_symm_apply]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `e`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Units.ext ?_` and prove the remaining obligations. Establish `e` using `hsym x`. Simplify using `only [Units.val_mul, Units.val_div_eq_div_val, A.ν.σ_eq, MulEquiv.apply_symm_apply]`. Rewrite using `[← e, mul_div_assoc]`. Establish `e₁` using `hθv (z + l)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e₁` using `[hadd, (hker l).2 l.2, _root_.mul_one, hθv, hfr l z, ← _root_.mul_assoc]`. Establish `e₂` using `mul_right_cancel₀ (fr (z + l)).ne_zero e₁`. Express the relevant statement in the definitionally equal form `θ (z + l) * fr 0 / A.ν.rg = (χ l * Complex.exp (Real.pi * hermForm Hm z l + Real.pi / 2 * hermForm Hm l l)) ^ 1 * Complex.exp (Real.pi * B.H 0 l) * (θ z * fr 0 / A.ν.rg)`. Rewrite using `[← e₂, B.H_zero_left, mul_zero, Complex.exp_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hz haveI := A.closed`. Take `⟨-, -, -, ⟨s, f, hs, hf0⟩, hv, -⟩` from `hFam R A.D₀ A.even A.bimult ℂ A.N A.ν 1 le_rfl`. Take `⟨c, rfl⟩` from `hv s f hs`. Use `hf0 (funext fun α => funext fun x => ?_)` and prove the remaining obligations. Take `⟨z, hz'⟩` from `hsurj (A.ν.eA (x * A.N.c α))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hth z`. Rewrite `e` using `[hz', MulEquiv.symm_apply_apply, congrFun hz z]`. Simplify using `[NumD.vth, e]`. Take `⟨t, h₁, h₂, -⟩` from `A.w0`. Conclude with `(hp t ⟨h₁, h₂⟩).1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨n, h₁, h₂⟩` from `A.det τ`. Rewrite using `[← h₂]`. Conclude with `congrArg (· + _) (hlie _ (ofRingAct A.oa.onB.toRingAct) (fun a => F a) hF τ n h₁)`. Simplify using `only [MulEquiv.apply_symm_apply]`. Conclude with `hF a z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e` using `(hros _ _ (A.oa.onB.hom a) (A.oa.onB.hom b) _ _ (hF a) (hF b) r hr).2 x z`. Simplify using `only [Units.val_div_eq_div_val, MulEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `_ * ((fr (F a x) : ℂ) / _) * _ * ((fr (x + F b z) : ℂ) / _) = (fr (F a x + z) : ℂ) / _ * _ * ((fr (F b z) : ℂ) / _)`. Clear the denominators using the available nonvanishing facts. Take the linear combination `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e` using `(hp t ht).2 z`. Simplify using `only [Units.val_div_eq_div_val, MulEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `_ * _ * ((fr (F H.w0 z) : ℂ) / _) = (fr (z + F H.w0 z) : ℂ) / _`. Clear the denominators using the available nonvanishing facts. Take the linear combination `e`.
+A detailed English derivation is pending.
 -/
 theorem valSt (hL : Laws) (hFam : BrFamSt) (hEx : FibExSt) (hGrp : FibGrpSt) (hCube : FibCubeSt) (hSym : FibSymSt)
     (hRos : FibRosSt) (hPrim : FibPrimSt) (hSec : FibSecSt) (hLie : FibLieSt) : ValSt := by

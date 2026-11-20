@@ -26,7 +26,7 @@ open Pointwise
 variable {R M N : Type*} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
 
 /- English proof (translation)
-Use extensionality with `t`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists, LinearMap.mem_ker, hk]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smul_top_eq_ker (π : M →ₗ[R] N) (a : R) (hk : ∀ t, π t = 0 ↔ ∃ u, a • u = t) :
     a • (⊤ : Submodule R M) = LinearMap.ker π := by
@@ -35,7 +35,7 @@ theorem smul_top_eq_ker (π : M →ₗ[R] N) (a : R) (hk : ∀ t, π t = 0 ↔ �
   simp
 
 /- English proof (translation)
-The claim follows from `(((Submodule.quotEquivOfEq _ _ (smul_top_eq_ker π a hk)).trans (π.quotKerEquivOfSurjective hπ)).isWeaklyRegular_congr l).1 h`.
+A detailed English derivation is pending.
 -/
 theorem isWeaklyRegular_of_quotSMulTop (π : M →ₗ[R] N) (hπ : Function.Surjective π) (a : R)
     (hk : ∀ t, π t = 0 ↔ ∃ u, a • u = t) (l : List R)
@@ -45,9 +45,9 @@ theorem isWeaklyRegular_of_quotSMulTop (π : M →ₗ[R] N) (hπ : Function.Surj
     (π.quotKerEquivOfSurjective hπ)).isWeaklyRegular_congr l).1 h
 
 /- English proof (translation)
-Establish `hf : Function.Surjective ((J • ⊤ : Submodule R N).mkQ ∘ₗ π)` using `(Submodule.mkQ_surjective _).comp hπ`. Establish `hker : (Ideal.span {a} ⊔ J) • (⊤ : Submodule R M) = LinearMap.ker ((J • ⊤ : Submodule R N).mkQ ∘ₗ π)`. Establish `hmap : (J • ⊤ : Submodule R N) = (J • ⊤ : Submodule R M).map π`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, LinearMap.range_eq_top.2 hπ]`. Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ, hmap, Submodule.comap_map_eq, Submodule.sup_smul, Submodule.ideal_span_singleton_smul, smul_top_eq_ker π a hk, sup_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(((Submodule.quotEquivOfEq _ _ hker).trans (((J • ⊤ : Submodule R N).mkQ ∘ₗ π).quotKerEquivOfSurjective hf)).length_eq).symm`.
+A detailed English derivation is pending.
 -/
 theorem length_quot_eq_of_cut (π : M →ₗ[R] N) (hπ : Function.Surjective π) (a : R)
     (hk : ∀ t, π t = 0 ↔ ∃ u, a • u = t) (J : Ideal R) :
@@ -71,7 +71,7 @@ section Cut
 variable {X : Scheme.{0}} {L : LB X}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) j <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem germSec_cons {d : ℕ} (s : L.Sec) (t : Fin d → L.Sec) {i : L.ι} {x : X} (hx : x ∈ L.U i) :
     (fun j => germSec ((Fin.cons s t : Fin (d + 1) → L.Sec) j) hx) =
@@ -81,9 +81,9 @@ theorem germSec_cons {d : ℕ} (s : L.Sec) (t : Fin d → L.Sec) {i : L.ι} {x :
   refine Fin.cases ?_ (fun j => ?_) j <;> simp
 
 /- English proof (translation)
-Use `(mono_cutHom_iff F hL s).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `GlobalTheory.ThickeningDetermines.exists_mem_chart hL x`. Take `⟨u, hu⟩` from `mem_assPoints_iff_exists.1 hx`. Use `(Cartier.mem_nonzeroLocus_iff s i hi).2 ((X.mem_basicOpen _ x hi).2 ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hm : germSec s hi ∈ maximalIdeal (X.presheaf.stalk x)` using `hn`. Establish `h0 : u = 0` using `(h x i hi).right_eq_zero_of_smul ((hu _).2 hm)`. Conclude with `(maximalIdeal.isMaximal _).ne_top ((Ideal.eq_top_iff_one _).2 ((hu 1).1 (by simp [h0])))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_cutHom_of_isSMulRegular [IsLocallyNoetherian X] (hL : L.IsLB) (F : X.Modules)
     [F.IsQuasicoherent] (s : L.Sec)
@@ -101,11 +101,11 @@ theorem mono_cutHom_of_isSMulRegular [IsLocallyNoetherian X] (hL : L.IsLB) (F : 
 end Cut
 
 /- English proof (translation)
-Establish `key : ∀ (x : X) (i : L.ι) (hx : x ∈ L.U i), IsSMulRegular (F.presheaf.stalk x :) (germSec s hx) ∧ RingTheory.Sequence.IsWeaklyRegular (QuotSMulTop (germSec s hx) (F.presheaf.stalk x :)) (List.ofFn fun j => germSec (t j) hx)` using `fun x i hx => by`. Establish `h₁` using `(h x i hx).1`. Rewrite `h₁` using `[germSec_cons, List.ofFn_succ, RingTheory.Sequence.isWeaklyRegular_cons_iff]`. Conclude with `h₁`. Use `⟨mono_cutHom_of_isSMulRegular hL F s fun x i hx => (key x i hx).1, fun x i hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hπ` using `stalkLinear_surjective (cutπ F hL s) x`. Establish `hk` using `(isMulBy_cutHom F hL s).stalkLinear_π_eq_zero_iff i hx`. Use `⟨isWeaklyRegular_of_quotSMulTop (stalkLinear (cutπ F hL s) x) hπ (germSec s hx) hk _ (key x i hx).2, ?_⟩` and prove the remaining obligations. Establish `h₂` using `(h x i hx).2`. Rewrite `h₂` using `[germSec_cons, Fin.range_cons, Ideal.span_insert]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[length_quot_eq_of_cut (stalkLinear (cutπ F hL s) x) hπ (germSec s hx) hk]`. Conclude with `h₂`.
+A detailed English derivation is pending.
 -/
 theorem mono_cutHom_and_goodStalks_cut {X : Scheme.{0}} [IsLocallyNoetherian X] {L : LB X} (hL : L.IsLB)
     (F : X.Modules) [IsFiniteQC F] {d : ℕ} (s : L.Sec) (t : Fin d → L.Sec)

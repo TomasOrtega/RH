@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.LocalEmbeddings.ConeBDefs
 open MeasureTheory FreeSingleHomotopyEquivDiscreteChains.UpperTheory.Dv.ConeB
 
 /- English proof (translation)
-Use `⟨fun w => (l (Pi.single w 1) : ℂ) - (l (Pi.single w Complex.I) : ℂ) * Complex.I, fun s => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← Finset.univ_sum_single s]`. Rewrite using `[map_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `h : (Pi.single w (s w) : ι → ℂ) = (s w).re • (Pi.single w 1 : ι → ℂ) + (s w).im • (Pi.single w Complex.I : ι → ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Pi.single_smul, ← Pi.single_smul, ← Pi.single_add]`. Use `congr 1`. Simplify using the standard rewrite rules. Rewrite using `[h, map_add, map_smul, map_smul]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_rep {ι : Type} [Fintype ι] (l : (ι → ℂ) →ₗ[ℝ] ℝ) :
     ∃ y : ι → ℂ, ∀ s : ι → ℂ, l s = (∑ w, (s * y) w).re := by
@@ -23,7 +23,7 @@ private theorem exists_rep {ι : Type} [Fintype ι] (l : (ι → ℂ) →ₗ[ℝ
   simp
 
 /- English proof (translation)
-Unfold `FT`. Use `continuous_of_dominated (bound := fun s => ‖φ s‖) (fun y => ?_) (fun y => ?_) hi.norm ?_` and prove the remaining obligations. Conclude with `(hc.mul (continuous_ec.comp (continuous_id.mul continuous_const))).aestronglyMeasurable`. Conclude with `Filter.Eventually.of_forall fun s => by rw [norm_mul, norm_ec, mul_one]`. Conclude with `Filter.Eventually.of_forall fun s => continuous_const.mul (continuous_ec.comp (continuous_const.mul continuous_id))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_FT {ι : Type} [Fintype ι] (φ : (ι → ℂ) → ℂ) (hc : Continuous φ)
     (hi : Integrable φ) : Continuous (FT φ) := by
@@ -36,21 +36,19 @@ private theorem continuous_FT {ι : Type} [Fintype ι] (φ : (ι → ℂ) → �
 
 open FourierTransform in
 /- English proof (translation)
-Introduce `ι _ φ hc hi hne`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `h0 : FT φ = fun _ => 0` using `Continuous.ext_on dense_ne_zero (continuous_FT φ hc hi) continuous_const fun y hy => hcon y hy`. Set `T : EuclideanSpace ℝ (Fin (Module.finrank ℝ (ι → ℂ))) ≃L[ℝ] (ι → ℂ)` to `toEuclidean.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : (Measure.map T volume).IsAddHaarMeasure := T.isAddHaarMeasure_map _`. Establish `hm` using `Measure.isAddLeftInvariant_eq_smul (Measure.map T volume) (volume : Measure (ι → ℂ))`. Use `set c := Measure.addHaarScalarFactor (Measure.map T volume) (volume : Measure (ι → ℂ))`. Establish `hme : MeasurableEmbedding T` using `T.toHomeomorph.measurableEmbedding`. Establish `hfi : Integrable (φ ∘ T)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← hme.integrable_map_iff, hm]`. Conclude with `hi.smul_measure_nnreal`. Establish `hF : 𝓕 (φ ∘ T) = fun _ => 0`. Use function extensionality and compare the values at `w`. Take `⟨y, hy⟩` from `exists_rep (((innerₗ _).flip w) ∘ₗ (T.symm : (ι → ℂ) →ₗ[ℝ] _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h1 : ∫ s, φ s * ec (s * y) ∂(Measure.map T volume) = 0`. Rewrite using `[hm, integral_smul_nnreal_measure]`. Use `congrFun h0 y` as an intermediate fact. Unfold `FT at this`. Rewrite using `[this, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[hme.integral_map]`. Rewrite using `[Real.fourier_eq', ← h1]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Establish `h2` using `hy (T v)`. Simplify using `only [ec, ← h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[mul_comm]`. Use `left`. Rewrite using `[real_inner_comm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hinv` using `(hc.comp T.continuous).fourierInv_fourier_eq hfi (by rw [hF]; exact integrable_zero _ _ _)`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Use `congrFun hinv (T.symm s)` as an intermediate fact. Rewrite `this` using `[hF, Real.fourierInv_eq]`.
-
-Simplify using `using this.symm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.fourier_nonvanishing_unit_point :
     ∀ {ι : Type} [Fintype ι] (φ : (ι → ℂ) → ℂ), Continuous φ → Integrable φ → φ ≠ 0 →

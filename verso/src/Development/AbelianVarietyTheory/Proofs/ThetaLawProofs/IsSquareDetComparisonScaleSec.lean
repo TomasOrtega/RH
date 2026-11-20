@@ -29,7 +29,7 @@ section Lin
 variable {K : Type} [Field K] {A : Over (Spec (CommRingCat.of K))}
 
 /- English proof (translation)
-Unfold `valT`. Distinguish the cases in `h : ⊤ ≤ w ⁻¹ᵁ (φ ⁻¹ᵁ U)`. Rewrite using `[dif_pos h, dif_pos (show ⊤ ≤ (w ≫ φ) ⁻¹ᵁ U from h)]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h, dif_neg (show ¬ ⊤ ≤ (w ≫ φ) ⁻¹ᵁ U from h)]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem valT_comp {T : Type} [CommRing T] {X Y : Scheme.{0}} (w : Sp T ⟶ X) (φ : X ⟶ Y) (U : Y.Opens)
     (f : Γ(Y, U)) : valT (w ≫ φ) U f = valT w (φ ⁻¹ᵁ U) ((φ.app U).hom f) := by
@@ -43,21 +43,21 @@ def der (v : sp (R₀ := K) (DualNumber K) ⟶ A) (U : A.left.Opens) (f : Γ(A.l
   TrivSqZeroExt.snd (valT (T := DualNumber K) v.left U f)
 
 /- English proof (translation)
-The claim follows from `congrArg _ (dif_pos h)`.
+A detailed English derivation is pending.
 -/
 theorem der_pos (v : sp (R₀ := K) (DualNumber K) ⟶ A) (U : A.left.Opens) (f : Γ(A.left, U))
     (h : ⊤ ≤ v.left ⁻¹ᵁ U) : der v U f = (pullFn v U h f).snd := congrArg _ (dif_pos h)
 
 /- English proof (translation)
-The claim follows from `congrArg _ (dif_neg h)`.
+A detailed English derivation is pending.
 -/
 theorem der_neg (v : sp (R₀ := K) (DualNumber K) ⟶ A) (U : A.left.Opens) (f : Γ(A.left, U))
     (h : ¬ ⊤ ≤ v.left ⁻¹ᵁ U) : der v U f = 0 := congrArg _ (dif_neg h)
 
 /- English proof (translation)
-Establish `: Subsingleton (PrimeSpectrum (DualNumber K))` using `subsingleton_primeSpectrum K K`. Distinguish the cases in `h : ⊤ ≤ v.left ⁻¹ᵁ U`. Establish `h'` using `le_preimage_comp (scaleD c) v _ rfl U h`. Rewrite using `[der_pos _ _ _ h, der_pos _ _ _ h', pullFn_comp (scaleD c) v _ rfl U h h' f, scaleD_eq]`. Simplify using `[epsTo, dualTo_apply, Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl, mul_comm]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[der_neg _ _ _ h, der_neg _ _ _ (fun h' => h (le_preimage_of_comp (scaleD c) v _ rfl U h')), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem der_scale (v : sp (R₀ := K) (DualNumber K) ⟶ A) (c : K) (U : A.left.Opens) (f : Γ(A.left, U)) :
     der (Chart.spMap (scaleD c) ≫ v) U f = c * der v U f := by
@@ -71,7 +71,7 @@ theorem der_scale (v : sp (R₀ := K) (DualNumber K) ⟶ A) (c : K) (U : A.left.
 variable [GrpObj A]
 
 /- English proof (translation)
-Establish `: Subsingleton (PrimeSpectrum (DualNumber K))` using `subsingleton_primeSpectrum K K`. Conclude with `le_preimage_of_comp (fstD K) v' 1 hv'.symm U (le_preimage_comp (fstD K) v 1 hv.symm U h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_of_isTan {v v' : sp (R₀ := K) (DualNumber K) ⟶ A} (hv : Chart.IsTan v) (hv' : Chart.IsTan v')
     (U : A.left.Opens) (h : ⊤ ≤ v.left ⁻¹ᵁ U) : ⊤ ≤ v'.left ⁻¹ᵁ U := by
@@ -79,7 +79,7 @@ theorem le_of_isTan {v v' : sp (R₀ := K) (DualNumber K) ⟶ A} (hv : Chart.IsT
   exact le_preimage_of_comp (fstD K) v' 1 hv'.symm U (le_preimage_comp (fstD K) v 1 hv.symm U h)
 
 /- English proof (translation)
-Distinguish the cases in `h : ⊤ ≤ (v * v').left ⁻¹ᵁ U`. Take `⟨h₁, h₂, e⟩` from `snd_pullFn_mul hv hv' U h`. Rewrite using `[der_pos _ _ _ h, der_pos _ _ _ h₁, der_pos _ _ _ h₂, e]`. Rewrite using `[der_neg _ _ _ h, der_neg _ _ _ (fun h' => h (le_of_isTan hv (isTan_mul hv hv') U h')), der_neg _ _ _ (fun h' => h (le_of_isTan hv' (isTan_mul hv hv') U h')), add_zero]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem der_mul {v v' : sp (R₀ := K) (DualNumber K) ⟶ A} (hv : Chart.IsTan v) (hv' : Chart.IsTan v')
     (U : A.left.Opens) (f : Γ(A.left, U)) : der (v * v') U f = der v U f + der v' U f := by
@@ -90,14 +90,14 @@ theorem der_mul {v v' : sp (R₀ := K) (DualNumber K) ⟶ A} (hv : Chart.IsTan v
       der_neg _ _ _ (fun h' => h (le_of_isTan hv' (isTan_mul hv hv') U h')), add_zero]
 
 /- English proof (translation)
-Rewrite using `[← comp_one' (Chart.spMap (scaleD (0 : K))), der_scale, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem der_one (U : A.left.Opens) (f : Γ(A.left, U)) :
     der (1 : sp (R₀ := K) (DualNumber K) ⟶ A) U f = 0 := by
   rw [← comp_one' (Chart.spMap (scaleD (0 : K))), der_scale, zero_mul]
 
 /- English proof (translation)
-The claim follows from `| 0, v, _ => by rw [List.ofFn_zero, List.prod_nil, Finset.univ_eq_empty, Finset.sum_empty] exact ⟨isTan_one, der_one U f⟩ | n + 1, v, hv => by obtain ⟨h₁, h₂⟩ := der_prod U f (fun i => v i.succ) (fun i => hv _) rw [List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ, der_mul (hv 0) …`.
+A detailed English derivation is pending.
 -/
 theorem der_prod (U : A.left.Opens) (f : Γ(A.left, U)) :
     ∀ {n : ℕ} (v : Fin n → (sp (R₀ := K) (DualNumber K) ⟶ A)), (∀ i, Chart.IsTan (v i)) →
@@ -111,7 +111,7 @@ theorem der_prod (U : A.left.Opens) (f : Γ(A.left, U)) :
     exact ⟨isTan_mul (hv 0) h₁, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[(isLieComb_iff c v w).1 hw]`. Use `(der_prod U f _ (fun i => isTan_scale (c i) ((isTan_iff _).2 (hv i)))).2.trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i _ => der_scale _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem der_comb {n : ℕ} {c : Fin n → K} {v : Fin n → (epsR K ⟶ A)} {w : epsR K ⟶ A}
     (hv : ∀ i, IsTangent (v i)) (hw : IsLieComb c v w) (U : A.left.Opens) (f : Γ(A.left, U)) :
@@ -121,14 +121,14 @@ theorem der_comb {n : ℕ} {c : Fin n → K} {v : Fin n → (epsR K ⟶ A)} {w :
   exact Finset.sum_congr rfl fun i _ => der_scale _ _ _ _
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem translate_left (z : 𝟙_ (Over (Sp K)) ⟶ A) (v : epsR K ⟶ A) :
     ((toUnit (epsR K) ≫ z) * v).left = v.left ≫ ((toUnit A ≫ z) * 𝟙 A).left := by
   rw [← Over.comp_left, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]
 
 /- English proof (translation)
-Simplify using `only [translate_left]`. Conclude with `(congrArg _ (valT_comp _ _ _ _)).trans ((der_comb hv hw _ _).trans (Finset.sum_congr rfl fun i _ => congrArg (fun t => c i * TrivSqZeroExt.snd t) (valT_comp _ _ _ _).symm))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem snd_valT_comb {n : ℕ} {c : Fin n → K} {v : Fin n → (epsR K ⟶ A)} {w : epsR K ⟶ A}
     (hv : ∀ i, IsTangent (v i)) (hw : IsLieComb c v w) (z : 𝟙_ (Over (Sp K)) ⟶ A)
@@ -146,7 +146,7 @@ def cS {K : Type} [CommRing K] {Y : Scheme.{0}} (p : Y ⟶ Sp K) (y : Y) : K →
     ((p.app ⊤).hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom)
 
 /- English proof (translation)
-The claim follows from `((gs_res r y (fun _ _ => trivial : W ≤ p ⁻¹ᵁ ⊤) hy _).trans (gs_pull r p y ⊤ trivial _)).trans (gs_eq (r ≫ p) y ⊤ trivial _)`.
+A detailed English derivation is pending.
 -/
 theorem gs_constFn' {K : Type} [CommRing K] {X Y : Scheme.{0}} (p : X ⟶ Sp K) (W : X.Opens) (r : Y ⟶ X)
     (y : Y) (hy : r y ∈ W) (a : K) : gs r y W (constFn p W a) = cS (r ≫ p) y a :=
@@ -154,7 +154,7 @@ theorem gs_constFn' {K : Type} [CommRing K] {X Y : Scheme.{0}} (p : X ⟶ Sp K) 
     (gs_eq (r ≫ p) y ⊤ trivial _)
 
 /- English proof (translation)
-The claim follows from `(gs_constFn' p ⊤ (𝟙 Y) y trivial a).trans (by rw [Category.id_comp])`.
+A detailed English derivation is pending.
 -/
 theorem gs_cst' {K : Type} [CommRing K] {Y : Scheme.{0}} (p : Y ⟶ Sp K) (y : Y) (a : K) :
     gs (𝟙 Y) y ⊤ (AbLaw.cst p ⊤ a) = cS p y a :=
@@ -163,11 +163,11 @@ theorem gs_cst' {K : Type} [CommRing K] {Y : Scheme.{0}} (p : Y ⟶ Sp K) (y : Y
 variable {K : Type} [Field K] {P : Out.PolAV (Sp K)} {hg rig hr th hth v hv th' hth' v' hv'}
 
 /- English proof (translation)
-Take `⟨ξ, mu, w, Q, rho, h₁, h₂, h₃, h₄, h₅, h₆, h₇⟩` from `h`. Use `⟨ξ, mu, w, (a : K) ^ 4 • Q, rho, h₁, h₂, h₃, h₄, h₅, fun I y J hJ => ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `h₆ I y J hJ`. Simplify using `only [gs_cst'] at e ⊢`. Establish `e₂ : ∀ r : Fin 4, gs (alMap ⟨P, hg, rig, hr, th', hth', v', hv'⟩ al r (ξ I r)).left y _ (LB.Sec.f th' (J (alMap ⟨P, hg, rig, hr, th', hth', v', hv'⟩ al r (ξ I r)).left)) = cS (Out.powObj P.A 4).hom y a * gs (alMap ⟨P, hg, rig, hr, th, hth, v, hv⟩ al r (ξ I r)).left y _ (LB.Sec.f …` using `fun r => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hth₀, gs_mul _ _ _ (hJ _), gs_constFn' _ _ _ _ (hJ _), Over.w]`. Both sides reduce to the same expression. Use `(Finset.prod_congr rfl fun r _ => e₂ r).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `(congrArg _ e).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_left_comm, Finset.mul_sum]`. Use `congrArg _ (Finset.sum_congr rfl fun I' _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, map_pow, _root_.mul_assoc]`. Rewrite using `[Units.val_mul, h₇, Matrix.det_smul, Units.val_pow_eq_pow_val]`. Simplify using `only [Fintype.card_fun, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -196,9 +196,9 @@ theorem isSquareDetComparison_scale_sec (a : Kˣ) (hth₀ : ∀ i, LB.Sec.f th' 
     ring
 
 /- English proof (translation)
-Unfold `jac`. Rewrite using `[← Matrix.det_transpose M, ← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `i k`. Rewrite using `[Matrix.mul_apply, Matrix.of_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `(snd_valT_comb hv.1 (hM k) z _ _).trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Conclude with `mul_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jac_scale (M : Matrix (Fin P.g) (Fin P.g) K) (hM : ∀ i, IsLieComb (M i) v (v' i)) {n : ℕ}
     (s : Fin P.g → LB.Sec (pw P.L (n : ℤ))) (z) (c) :
@@ -212,19 +212,17 @@ theorem jac_scale (M : Matrix (Fin P.g) (Fin P.g) K) (hM : ∀ i, IsLieComb (M i
   exact mul_comm _ _
 
 /- English proof (translation)
-Introduce `K _ P hg rig hr th hth v hv th' hth' v' hv' a M n l l' al s κ hadm hth₀ hM hκ`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Take `⟨y, -, hy⟩` from `hth' (IsLocalRing.closedPoint K)`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hi` using `[hth₀, constFn, map_zero, map_zero, zero_mul, Scheme.basicOpen_zero]`. Conclude with `hi`. Establish `: IsCommMonObj P.A` using `P.isAb.comm`. Establish `hdet : IsUnit M.det` using `((LieComb.lieComb_algebra K P.A P.g v hv.1).2.2.2.2 M v' hv hM).1 hv'`. Use `lift a to Kˣ using ha.isUnit`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hD⟩` from `hdet`. Take `⟨z, ch, b, b', t, t', J, lam, lam', ⟨e₁, e₂, e₃, e₄, e₅⟩, hJ, hb, hb', ht, ht', rfl⟩` from `hκ`. Use `⟨_, ⟨z, ch, b, b', t, t', J * D ^ (P.g.factorial * n ^ P.g), fun j => lam j * a ^ (8 * (l - j * n) ^ (4 * P.g + 2)), fun j => lam' j * a ^ (8 * (l' - j * n) ^ (4 * P.g + 2)), ⟨e₁, e₂, fun k => ?_, e₄, e₅⟩, ?_, fun j hj => ⟨(hb j hj).1, isSquareDetComparison_scale_sec a hth₀ _ _ _ …` and prove the remaining obligations. Rewrite using `[jac_scale (th := th) (hth := hth) (hv := hv) M hM, ← hD]`. Conclude with `(e₃ k).mul D.isUnit`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, hJ, Units.val_pow_eq_pow_val, hD]`. Simplify using `only [jac_scale (th := th) (hth := hth) (hv := hv) (th' := th') (hth' := hth') (hv' := hv') M hM]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `key` using `kaForm_homogeneous K P.g n l l' t t' J 1 a 1 lam lam' (fun _ => 1) (fun _ => 1) hadm.2.1 hadm.2.2.1`. Simplify using `only [one_zpow, one_pow, _root_.mul_one, Finset.prod_const_one] at key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hD]`. Use `norm_cast`. Rewrite using `[← key]`. Unfold `kaForm kaExp`. Generalize the expression as in `tComb P.g n l _ t _ = X`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `tComb P.g n l' _ t' _ = X'`. Generalize the expression as in `degProd P.g n l l' ^ (3 * P.g + 2) = N`. Generalize the expression as in `P.g.factorial * n ^ P.g = F`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_pow, ← natCast_zsmul]`.
-
-Move the coercions through the operations in `[Nat.cast_sub hadm.2.2.1.le]`. Use `module`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem kaVal_scale : ∀ (K : Type) [Field K] (P : Out.PolAV (Sp K)) (hg rig hr th hth v hv th' hth' v' hv') (a : K) (M : Matrix (Fin P.g) (Fin P.g) K) (n l l' : ℕ) (al : ℕ → Matrix (Fin 4) (Fin 4) ℤ) (s : Fin P.g → LB.Sec (pw P.L (n : ℤ))) (κ : Kˣ), admitted P.g n l l' al → (∀ i, LB.Sec.f th' i = constFn P.A.hom _ a * LB.Sec.f th i) → (∀ i, IsLieComb (M i) v (v' i)) → KaVal ⟨P, hg, rig, hr, th, hth, v, hv⟩ n l l' al s κ → ∃ κ' : Kˣ, KaVal ⟨P, hg, rig, hr, th', hth', v', hv'⟩ n l l' al s κ' ∧ a ^ (8 * kaExp P.g n l l') * (κ' : K) = M.det ^ (4 * kaExp P.g n l l') * κ := by
   intro K _ P hg rig hr th hth v hv th' hth' v' hv' a M n l l' al s κ hadm hth₀ hM hκ

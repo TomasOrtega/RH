@@ -7,7 +7,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.CtReg
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Rewrite using `[avg, finsum_eq_zero_of_forall_eq_zero (fun q => hc _), mul_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_of_avg_ne {H : Type} [Group H] {u : H → ℂ} (h : avg u ≠ 0) : ∃ x, u x ≠ 0 := by
   by_contra hc
@@ -16,7 +16,7 @@ theorem exists_ne_of_avg_ne {H : Type} [Group H] {u : H → ℂ} (h : avg u ≠ 
   rw [avg, finsum_eq_zero_of_forall_eq_zero (fun q => hc _), mul_zero]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Rewrite using `[hint, finsum_eq_zero_of_forall_eq_zero (fun q => hc _), mul_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_of_hint_ne {H : Type} [Group H] {K : Subgroup H} {u : H → ℂ} (h : hint K u ≠ 0) :
     ∃ x, u x ≠ 0 := by
@@ -26,20 +26,20 @@ theorem exists_ne_of_hint_ne {H : Type} [Group H] {K : Subgroup H} {u : H → �
   rw [hint, finsum_eq_zero_of_forall_eq_zero (fun q => hc _), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← mul_assoc, Units.mul_inv, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_conj_GL {ι R : Type} [Fintype ι] [DecidableEq ι] [CommRing R] (k g : GL ι R) :
     ((k⁻¹ * g * k : GL ι R) : Matrix ι ι R).charpoly = (g : Matrix ι ι R).charpoly := by
   rw [Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← mul_assoc, Units.mul_inv, one_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ a b n h w μ f hw hf m hm`. Establish `hct : ct h w (fun y => f (toSub _ y)) m ≠ 0`. Introduce `h0`. Apply `hm` to reduce the goal to its premises. Rewrite using `[ctMu, h0, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hct` using `[ct]`. Take `⟨X, hX⟩` from `exists_ne_of_hint_ne (right_ne_zero_of_mul hct)`. Take `⟨k, hk⟩` from `exists_ne_of_avg_ne hX`. Establish `hsep` using `hf _ hk`. Establish `hmem : ((k : GLw n w)⁻¹ * blk h w m (Multiplicative.toAdd X) * k) ∈ UL n w`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[UL, if_pos hw]`. Conclude with `Subgroup.mem_top _`. Establish `e0 : (toSub (UL n w) ((k : GLw n w)⁻¹ * blk h w m (Multiplicative.toAdd X) * k)).1 = (k : GLw n w)⁻¹ * blk h w m (Multiplicative.toAdd X) * k`. Rewrite using `[toSub, dif_pos hmem]`. Rewrite `hsep` using `[e0, charpoly_conj_GL, blk_val, Matrix.charpoly_reindex, Matrix.charpoly_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : nrmL a w m.1 = m.1` using `by rw [nrmL, if_pos hw]`. Establish `e2 : nrmL b w m.2 = m.2` using `by rw [nrmL, if_pos hw]`. Rewrite using `[e1, e2]`. Conclude with `hsep`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ctMu_regAt2 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b n : ℕ) (h : a + b = n) (w : Pl E)
     (μ : (w.adicCompletion E)ˣ →* ℂˣ) (f : UL n w → ℂ), IsSplitAt w →

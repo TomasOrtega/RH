@@ -10,7 +10,7 @@ namespace Formalism.FourierDecayAlt.P.ProductIntervalFrames
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Conclude with `⟨h.1.comp hΦ.1, by rw [hΦ.2.iSup_comp S]; exact h.2⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isInternal_comp {ι κ W : Type*} [DecidableEq ι] [DecidableEq κ] [AddCommGroup W] [Module ℂ W]
     (Φ : ι → κ) (hΦ : Function.Bijective Φ) (S : κ → Submodule ℂ W) (h : DirectSum.IsInternal S) :
@@ -19,7 +19,7 @@ theorem isInternal_comp {ι κ W : Type*} [DecidableEq ι] [DecidableEq κ] [Add
   exact ⟨h.1.comp hΦ.1, by rw [hΦ.2.iSup_comp S]; exact h.2⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.prod_Icc_succ_top (by omega), ih, Fin.prod_univ_castSucc (n := n)]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_Icc_one (n : ℕ) (f : ℕ → ℂ) : ∏ i ∈ Icc 1 n, f i = ∏ j : Fin n, f ((j : ℕ) + 1) := by
   induction n with
@@ -31,7 +31,7 @@ theorem prod_Icc_one (n : ℕ) (f : ℕ → ℂ) : ∏ i ∈ Icc 1 n, f i = ∏ 
 abbrev par (n r : ℕ) (T T' : ℝ) (u : ℕ → ℝ) : M.Par := ⟨n + 1, r, T, T', u, u⟩
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Simplify using `only [M.rho, M.Par.lo, par, max_self]`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rho_eq (n r : ℕ) (T T' : ℝ) (u : ℕ → ℝ) (ρ : M.Ty (par n r T T' u)) (j : Fin n) :
     M.rho (par n r T T' u) ρ ((j : ℕ) + 1) = u ((j : ℕ) + 2) + 1 / 2 + (((ρ j : Fin _) : ℕ) : ℝ) := by
@@ -41,9 +41,9 @@ theorem rho_eq (n r : ℕ) (T T' : ℝ) (u : ℕ → ℝ) (ρ : M.Ty (par n r T 
   rfl
 
 /- English proof (translation)
-Establish `h1` using `hL j.castSucc`. Establish `h2` using `hL j.succ`. Simplify using `only [Fin.coe_castSucc, Fin.val_succ] at h1 h2`. Establish `hd : (par n r T T' u).hi ((j : ℕ) + 1) - (par n r T T' u).lo ((j : ℕ) + 1) = ((L j.castSucc - L j.succ - 1 : ℤ) : ℝ)`. Simplify using `only [M.Par.hi, M.Par.lo, par, min_self, max_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnn : 0 ≤ L j.castSucc - L j.succ - 1` using `by linarith [hg j]`. Simplify using `only [M.Par.wid]`. Rewrite using `[hd, ← Int.floor_toNat, Int.floor_intCast, Int.toNat_of_nonneg hnn]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wid_eq (n r : ℕ) (T T' : ℝ) (u : ℕ → ℝ) (L : Fin (n + 1) → ℤ)
     (hL : ∀ j : Fin (n + 1), u ((j : ℕ) + 1) - u 1 = (L j : ℝ))
@@ -62,35 +62,31 @@ theorem wid_eq (n r : ℕ) (T T' : ℝ) (u : ℕ → ℝ) (L : Fin (n + 1) → �
   rw [hd, ← Int.floor_toNat, Int.floor_intCast, Int.toNat_of_nonneg hnn]
 
 /- English proof (translation)
-Establish `hint : ∀ j : Fin (n + 1), ∃ N : ℤ, u ((j : ℕ) + 1) - u 1 = (N : ℝ)` using `fun j => hOK.int_u ((j : ℕ) + 1) (by`. Use `j.2` as an intermediate fact. Rewrite using `[mem_Icc]`. Prove the components needed by the constructor for the conclusion. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Use linear arithmetic over natural numbers and integers.
 
-Use `show (j : ℕ) + 1 ≤ n + 1 omega)`. Use `choose L hL using hint`. Establish `hgap : ∀ j : Fin n, u ((j : ℕ) + 2) + 1 ≤ u ((j : ℕ) + 1)` using `fun j => by`. Establish `h` using `hOK.gap ((j : ℕ) + 1) (by`. Use `j.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[mem_Icc]`. Prove the components needed by the constructor for the conclusion. Use linear arithmetic over natural numbers and integers. Use `show (j : ℕ) + 1 ≤ n + 1 - 1 omega)`. Simplify using `only [M.Par.lo, M.Par.hi, max_self, min_self] at h`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hg : ∀ j : Fin n, L j.succ + 1 ≤ L j.castSucc` using `fun j => by`. Establish `h1` using `hL j.castSucc`. Establish `h2` using `hL j.succ`. Simplify using `only [Fin.val_castSucc, Fin.val_succ] at h1 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hgap j`. Establish `: (L j.succ : ℝ) + 1 ≤ (L j.castSucc : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `hanti : StrictAnti L` using `Fin.strictAnti_iff_succ_lt.2 fun j => by have := hg j; omega`. Establish `hw` using `wid_eq n r T T' u L hL hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set β : ℂ := (u 1 : ℂ) - ((n + 1 : ℕ) : ℂ) / 2 + 1 / 2 with hβ`. Establish `hrel : ∀ j : Fin (n + 1), (u ((j : ℕ) + 1) : ℂ) - ((n + 1 : ℕ) : ℂ) / 2 + 1 / 2 = β + (L j : ℂ)` using `fun j => by`. Establish `h : (u ((j : ℕ) + 1) : ℂ) - (u 1 : ℂ) = (L j : ℂ)` using `by exact_mod_cast congrArg (fun x : ℝ => (x : ℂ)) (hL j)`. Rewrite using `[hβ, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨S₀, hint₀, hirr, heig⟩` from `hK Wp n r z e π u β L hz hT hπ hanti hrel he hez hee`. Set `Φ : M.Ty (par n r T T' u) → {M : Fin n → ℤ // Box L M}` to `fun ρ => ⟨fun j => L j.succ + 1 + (((ρ j : Fin _) : ℕ) : ℤ), fun j => by`. Establish `h1` using `(ρ j).2`. Establish `h2` using `hw j`. Prove the components needed by the constructor for the conclusion.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show L j.succ < L j.succ + 1 + (((ρ j : Fin _) : ℕ) : ℤ)`. Use linear arithmetic over natural numbers and integers. Use `show L j.succ + 1 + (((ρ j : Fin _) : ℕ) : ℤ) ≤ L j.castSucc omega⟩`. Establish `hΦ : Function.Bijective Φ`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ρ ρ' h`. Use function extensionality and compare the values at `j`. Establish `h1` using `congrFun (congrArg Subtype.val h) j`. Simplify using `only [Φ] at h1`. Apply `Fin.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result.
 
-Use linear arithmetic over natural numbers and integers. Introduce `M`. Use `⟨fun j => ⟨(M.1 j - L j.succ - 1).toNat, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `M.2 j`. Establish `h2` using `hw j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Establish `h1` using `M.2 j`. Simplify using `only [Φ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨fun ρ => S₀ (Φ ρ), isInternal_comp Φ hΦ S₀ hint₀, fun ρ => hirr (Φ ρ), ?_⟩` and prove the remaining obligations. Introduce `Bs hBs ρ w v hv`. Rewrite using `[heig Bs hBs (Φ ρ) w v hv]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `M.xC cpol`. Rewrite using `[show (par n r T T' u).k - 1 = n from rfl, prod_Icc_one]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[rho_eq]`. Establish `h : (u ((j : ℕ) + 2) : ℂ) - (u 1 : ℂ) = (L j.succ : ℂ)`.
-
-Use `hL j.succ` as an intermediate fact. Simplify using `only [Fin.val_succ] at this`. Conclude with `congrArg (fun x : ℝ => (x : ℂ)) this` after adjusting the coercions. Simplify using `only [shf, Φ, hβ]`. Use `push_cast`.
-
-Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main (hK : BranchingK) (Wp : Type) [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     (n r : ℕ) (T T' : ℝ) (u : ℕ → ℝ) (hOK : (par n r T T' u).OK)
@@ -188,9 +184,9 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr
 
 /- English proof (translation)
-Introduce `hK Wp _ _ _ P hOK hu'`. Take `⟨k, r, T, T', u, u'⟩` from `P`. Simplify using `only at hu'`. Substitute `hu'` using the available equality. Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by have := hOK.k_pos; dsimp only at this; omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Introduce `z e π hz hT hπ he hez hee`. Conclude with `ProductIntervalFrames.main hK Wp n r T T' _ hOK z e π hz hT hπ he hez hee`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem qr_branching_of : Qr.BranchingK → Formalism.FourierDecayAlt.Q.Branching := by
   intro hK Wp _ _ _ P hOK hu'

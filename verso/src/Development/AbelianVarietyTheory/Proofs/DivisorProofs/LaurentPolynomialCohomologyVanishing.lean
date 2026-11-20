@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `q _ A _ hA hq n i` and use `GlobalTheory.T.multiplicativeGroup_cohomology_strictlyHenselian q A hA hq n i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem laurentPolynomial_cohomology_strictlyHenselian_vanishing : GlobalTheory.EtC.C5 := fun q _ A _ hA hq n i => GlobalTheory.T.multiplicativeGroup_cohomology_strictlyHenselian q A hA hq n i
 

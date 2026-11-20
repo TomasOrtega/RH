@@ -6,16 +6,16 @@ open CategoryTheory Limits
 namespace LateralTheory.CohomologicalPurity.Hz
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (c.w e)`.
+A detailed English derivation is pending.
 -/
 theorem Diag.leg_w {A : Type} [CommRing A] {I : Ideal A} (Δ : Diag A I) (c : Cocone Δ.D) {j k : Δ.J} (e : j ⟶ k) :
     (Δ.leg c k).comp (Δ.D.map e).hom = Δ.leg c j :=
   congrArg CommRingCat.Hom.hom (c.w e)
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h : I.map φ ≤ RingHom.ker ψ`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Express the relevant statement in the definitionally equal form `ψ (φ a) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← RingHom.comp_apply, hψ]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ha`. Conclude with `h hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Good.kill {A S : Type} [CommRing A] [CommRing S] {φ : A →+* S} {I : Ideal A}
     (ψ : S →+* A ⧸ I) (hψ : ψ.comp φ = Ideal.Quotient.mk I) : ∀ y ∈ I.map φ, ψ y = 0 := by
@@ -29,9 +29,9 @@ theorem Good.kill {A S : Type} [CommRing A] [CommRing S] {φ : A →+* S} {I : I
   exact h hy
 
 /- English proof (translation)
-Use `RingHom.ext fun s => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `h.surj s`. Establish `e1` using `Good.kill χ hχ _ ha`. Establish `e2` using `Good.kill χ' hχ' _ ha`. Rewrite `e1`, `e2` using `[map_sub, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1, e2, ← RingHom.comp_apply, hχ, ← RingHom.comp_apply, hχ']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Good.retr_unique {A S : Type} [CommRing A] [CommRing S] {φ : A →+* S} {I : Ideal A} (h : Good φ I)
     (χ χ' : S →+* A ⧸ I) (hχ : χ.comp φ = Ideal.Quotient.mk I) (hχ' : χ'.comp φ = Ideal.Quotient.mk I) : χ = χ' := by
@@ -43,11 +43,11 @@ theorem Good.retr_unique {A S : Type} [CommRing A] [CommRing S] {φ : A →+* S}
   rw [e1, e2, ← RingHom.comp_apply, hχ, ← RingHom.comp_apply, hχ']
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨(IsFiltered.nonempty : Nonempty Δ.J).some, by simp⟩`. Consider the case `insert x T hx ih`. Take `⟨j, hj⟩` from `ih`. Take `⟨k, y, hy⟩` from `Concrete.isColimit_exists_rep Δ.D hc x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨IsFiltered.max j k, fun t ht => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Use `⟨(Δ.D.map (IsFiltered.rightToMax j k)).hom y, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.comp_apply, Δ.leg_w]`. Conclude with `hy`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hj t ht`. Conclude with `⟨(Δ.D.map (IsFiltered.leftToMax j k)).hom z, by rw [← RingHom.comp_apply, Δ.leg_w]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stage_fin {A : Type} [CommRing A] {I : Ideal A} (Δ : Diag A I) (c : Cocone Δ.D) (hc : IsColimit c)
     (T : Finset c.pt) : ∃ j, ∀ t ∈ T, t ∈ (Δ.leg c j).range := by
@@ -66,15 +66,15 @@ theorem stage_fin {A : Type} [CommRing A] {I : Ideal A} (Δ : Diag A I) (c : Coc
       exact ⟨(Δ.D.map (IsFiltered.leftToMax j k)).hom z, by rw [← RingHom.comp_apply, Δ.leg_w]⟩
 
 /- English proof (translation)
-Set `r : ∀ j, Δ.D.obj j →+* A ⧸ I` to `fun j => (Δ.good j).retr.choose`. Establish `hr : ∀ j, (r j).comp (Δ.s j) = Ideal.Quotient.mk I` using `fun j => (Δ.good j).retr.choose_spec`. Set `cc : Cocone Δ.D` to `{ pt := CommRingCat.of (A ⧸ I) ι := { app := fun j => CommRingCat.ofHom (r j) naturality := fun j k e => by`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Simplify using `only [Functor.const_obj_obj, Functor.const_obj_map, Category.comp_id, CommRingCat.hom_comp, CommRingCat.hom_ofHom]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `(Δ.good j).retr_unique _ _ (by rw [RingHom.comp_assoc, Δ.nat e, hr]) (hr j) } }`. Set `R : c.pt →+* A ⧸ I` to `(hc.desc cc).hom`. Establish `hR : ∀ j, R.comp (Δ.leg c j) = r j` using `fun j => congrArg CommRingCat.Hom.hom (hc.fac cc j)`. Establish `hRη : R.comp η = Ideal.Quotient.mk I` using `by rw [← hη j, ← RingHom.comp_assoc, hR, hr]`. Take `⟨a, ha⟩` from `(Δ.good j).surj x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : Δ.leg c j (x - Δ.s j a) ∈ I.map η`. Use `Ideal.mem_map_of_mem (Δ.leg c j) ha` as an intermediate fact. Rewrite `this` using `[Ideal.map_map, hη]`. Then use the resulting hypothesis. Establish `h2 : η a ∈ I.map η`. Establish `e : η a = Δ.leg c j x - Δ.leg c j (x - Δ.s j a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, sub_sub_cancel, ← RingHom.comp_apply, hη]`. Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ hx h1`. Establish `h3 : Ideal.Quotient.mk I a = 0`. Rewrite using `[← Good.kill R hRη _ h2, ← RingHom.comp_apply, hRη]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haI : a ∈ I` using `Ideal.Quotient.eq_zero_iff_mem.1 h3`. Establish `e : x = (x - Δ.s j a) + Δ.s j a` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ ha (Ideal.mem_map_of_mem _ haI)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stage_ideal {A : Type} [CommRing A] {I : Ideal A} (Δ : Diag A I) (c : Cocone Δ.D) (hc : IsColimit c)
     (η : A →+* c.pt) (hη : ∀ j, (Δ.leg c j).comp (Δ.s j) = η) (j : Δ.J) (x : Δ.D.obj j)
@@ -109,7 +109,7 @@ theorem stage_ideal {A : Type} [CommRing A] {I : Ideal A} (Δ : Diag A I) (c : C
   exact Ideal.add_mem _ ha (Ideal.mem_map_of_mem _ haI)
 
 /- English proof (translation)
-Introduce `_ _ _ Δ c hc η hη` and use `⟨stage_fin Δ c hc, stage_ideal Δ c hc η hη⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem LeafStage_of : LeafStage := fun _ _ _ Δ c hc η hη =>
   ⟨stage_fin Δ c hc, stage_ideal Δ c hc η hη⟩

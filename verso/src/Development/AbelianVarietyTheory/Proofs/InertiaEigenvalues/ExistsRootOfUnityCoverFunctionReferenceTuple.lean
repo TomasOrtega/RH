@@ -32,17 +32,15 @@ open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Take `⟨hU, hW, g₀, e₀, F, ik, φ, th, hth, hD, hval⟩` from `hv`. Establish `hσ : GoodEmb d.c₂ (c.F.val.toRingHom.comp (d.eF.symm : d.c₂.F →+* c.F))`. Establish `e : c.F.val.toRingHom.comp (d.eF.symm : d.c₂.F →+* c.F) = d.c₂.F.val.toRingHom` using `RingHom.ext fun _ => rfl`. Rewrite using `[e]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `val₀ : ∀ h : GA D V, ∃ hx : (dict₂ h).2 ∈ (U₂.X (dict₂ h).1).dom, toC (evR d.Xo₂ d.c₂ d.cδ (U₂.un _ ⟨_, hx⟩)) = c0`. Introduce `h`. Take `⟨γ, hγ, hΛ, hm, -⟩` from `hD.2 h`. Establish `hv` using `hval h γ ⟨hγ, hΛ, hm⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hv` using `[hxi (γ * h), Units.val_one, mul_one]`. Distinguish the cases in `hx : (dict₂ h).2 ∈ (U₂.X (dict₂ h).1).dom`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← hv]`. Use `show _ = (if h' : (dict₂ h).2 ∈ (U₂.X (dict₂ h).1).dom then toC (evR d.Xo₂ d.c₂ d.cδ (U₂.un _ ⟨_, h'⟩)) else 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hx]`. It suffices to derive a contradiction. Apply `hc0` to reduce the goal to its premises. Rewrite using `[← hv]`. Use `show (if h' : (dict₂ h).2 ∈ (U₂.X (dict₂ h).1).dom then toC (evR d.Xo₂ d.c₂ d.cδ (U₂.un _ ⟨_, h'⟩)) else 0) = 0`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dif_neg hx]`. Use `choose hdom val₀ using val₀`. Use `⟨fun y => ?_, ⟨U₂.un _ ⟨_, hdom 1⟩⟩⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `GlobalTheory.TwistTie.exists_dict_over V U₂ dict₂ ι e₀ F ik φ th x₀ hσ hA hpq hU hW hD hι hth (fun k τ hτ => by`. Rewrite using `[(hW k).1, (hU.2.1 k).1]`.
-
-Conclude with `hx₀ τ (((hU.2.1 k).2 τ).1 hτ)) hdom y`. Rewrite using `[GlobalTheory.WeightZeroValue.evR_eq_of_same_point hs hh]`. Conclude with `val₀ h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_of_cXiAt {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {n r : ℕ} (V : HSp D) (hr : V.rank = r) (d : DeltaDat Xo c n)
@@ -100,17 +98,15 @@ open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.firstFiveLaws.1.secBaseChange`. Set `σ₂ : d.c₂.F →+* ℂ` to `c.F.val.toRingHom.comp (d.eF.symm : d.c₂.F →+* c.F)`. Establish `hσ₂ : ∀ a : d.c₂.F, σ₂ a ∈ c.F` using `fun a => (d.eF.symm a).2`. Establish `hfix : ∀ τ : ℂ ≃+* ℂ, (∀ x ∈ c.F, τ x = x) → τ c0 = c0`. Introduce `τ hτ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `φ : CAt σ₂ →ₐ[d.c₂.F] CAt σ₂` to `{ toRingHom := (τ : ℂ →+* ℂ) commutes' := fun a => hτ _ (hσ₂ a) }`. Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hS E H Dw d.l₂ d.Xo₂ d.c₂ _ _ φ y₀`. Establish `hx : z.x = spMap (τ : ℂ →+* ℂ) ≫ y₀.x` using `hz.1`. Establish `e` using `GlobalTheory.GalTw.CharSec.conj_value σ₂ σ₂ τ (RingHom.ext fun a => (hτ _ (hσ₂ a)).symm) hs y₀ z hx`. Rewrite `e` using `[hval, hval]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e.symm`. Set `K` to `c.F`. Set `L` to `IntermediateField.adjoin K {c0}`. Establish `hint : IsIntegral K c0`. Use `IsIntegral.of_pow hm ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc0]`. Conclude with `isIntegral_one`. Use `haveI : FiniteDimensional K L := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI : FiniteDimensional ℚ K := c.fin`. Use `haveI : FiniteDimensional ℚ L := Module.Finite.trans K L`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : Countable L := (Module.finBasis ℚ L).equivFun.toEquiv.countable_iff.2 inferInstance`. Establish `hr : IsIntegral K (⟨c0, IntermediateField.mem_adjoin_simple_self K c0⟩ : L)`. Use `IsIntegral.of_pow hm ?_` and prove the remaining obligations. Establish `: (⟨c0, IntermediateField.mem_adjoin_simple_self K c0⟩ : L) ^ m = 1` using `Subtype.ext (by simpa using hc0)`. Rewrite using `[this]`.
-
-Conclude with `isIntegral_one`. Take `⟨a, ha⟩` from `GlobalTheory.CompRat.FixedConst.mem_range_of_fixed (K := K) (L := L) L.val hr fun τ hτ => hfix τ fun x hx => hτ ⟨x, hx⟩`. Establish `: ((algebraMap K L a : L) : ℂ) = c0` using `congrArg Subtype.val ha`. Rewrite using `[← this]`. Conclude with `a.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_val {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) (hs : d.cδ ∈ sec d.Xo₂ d.c₂ 0 0) (c0 : ℂ) (m : ℕ)
@@ -158,9 +154,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `h1 : (1 : Rul d.Xo₂ d.c₂) ∈ sec d.Xo₂ d.c₂ 0 0` using `GlobalTheory.LevelCover.one_mem_sec_zero _ _`. Establish `hz : d.cδ + (-a) • (1 : Rul d.Xo₂ d.c₂) = 0`. Use `GlobalTheory.GalTw.CharSec.sec_eq_zero_of_complex (c.F.val.toRingHom.comp (d.eF.symm : d.c₂.F →+* c.F)) (add_mem hs (Submodule.smul_mem _ _ h1)) fun y => ?_` and prove the remaining obligations. Establish `e1 : evR d.Xo₂ d.c₂ (1 : Rul d.Xo₂ d.c₂) y = 1` using `evalAt_one _ _ y (GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.firstFiveLaws.1.secBaseChange E H Dw d.l₂ d.Xo₂ d.c₂ _ y)`. Establish `e2 : evR d.Xo₂ d.c₂ d.cδ y = algebraMap d.c₂.F _ a` using `hval y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `evR at e1 e2 ⊢`. Rewrite using `[evalAt_add, evalAt_smul, e1, e2, mul_one, map_neg, add_neg_cancel]`. Rewrite `hz` using `[neg_smul, ← sub_eq_add_neg, sub_eq_zero]`. Conclude with `hz`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_const_of_val {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) (hs : d.cδ ∈ sec d.Xo₂ d.c₂ 0 0) (a : d.c₂.F)
@@ -194,29 +190,27 @@ namespace GlobalTheory.GalRef
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hC D G _ _ Pl0 T0 A T _ R F κ v₀ O ph hnV hcore hfin hfw hioE hQG i hpins htie M hM hlev hext hnorm hcurve hxiF hsame`. Take `⟨fw⟩` from `hfw`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `hσ : GoodEmb T.Q.c M.s0` using `rfl`. Take `⟨hι, hx₀⟩` from `GlobalTheory.TupleCover.iotaOK_and_frame T fw.laws _ hj _ hσ (Wc D i) M.hV (rank_Wc i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpq : 1 ≤ (T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q`. Take `⟨h1, -, h3⟩` from `(GlobalTheory.Member.exists_iotaOK D T.Q fw.laws.pins _ hj).2`. Use linear arithmetic over natural numbers and integers. Establish `hRxi : R.xi A.μ0 = 1` using `MonoidHom.ext (GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one (hcore.lev.xi_base ▸ hcore.lev.xi A.μ0))`. Establish `hxi1 : ∀ h : GA D (Wc D i), M.xi A.μ0 (Matrix.GeneralLinearGroup.det (finHom (Wc D i) h)) = 1` using `fun h => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `(GlobalTheory.Member.isDetRoot_laws D (Wc D i)).1 h`. Establish `e : _ = ((R.xi A.μ0 x : Circle) : ℂ)` using `(hM.tuple A.μ0).xi h x hx`. Rewrite `e` using `[hRxi, MonoidHom.one_apply, Circle.coe_one]`. Conclude with `Units.ext e`. Take `⟨c0, ⟨m, hm, hc0⟩, hv⟩` from `hM.cxi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hd, hA, hN⟩` from `hM.cov A.μ0`. Establish `hs` using `hd.2.2.2.2.2.2.2.1`. Establish `hc0ne : c0 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc0` using `[zero_pow hm.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_ne_one hc0`. Take `⟨hval, ⟨y₀⟩⟩` from `GlobalTheory.GalRef.val_of_cXiAt (Wc D i) (rank_Wc i) (M.dδ A.μ0) (iotaW T i) hι hpq _ hx₀ hA hs (M.xi A.μ0) hxi1 (M.U₂ A.μ0) (M.dict₂ A.μ0) c0 hc0ne (hv A.μ0)`. Establish `hmem` using `GlobalTheory.GalRef.mem_of_val (M.dδ A.μ0) hs c0 m hm hc0 hval y₀`. Set `c₀ : M.c'.F` to `⟨c0, hmem⟩`. Establish `hc₀ne : c₀ ≠ 0` using `fun h => hc0ne (congrArg Subtype.val h)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcδ : (M.dδ A.μ0).cδ = (M.dδ A.μ0).eF c₀ • (1 : Rul (M.dδ A.μ0).Xo₂ (M.dδ A.μ0).c₂)` using `GlobalTheory.GalRef.eq_const_of_val _ hs _ fun y => by`. Rewrite using `[hval y, AlgEquiv.symm_apply_apply]`. Use `⟨c₀, ⟨m, hm, hc0⟩, ?_⟩` and prove the remaining obligations. Introduce `τ ta hta hfb hf x x' hx f hfs hsum`. Establish `h₂ : Fixes (M.dδ A.μ0).c₂ (covAut (M.dδ A.μ0) ta)` using `GlobalTheory.GalTw.fixes_covAut (M.dδ A.μ0) hA hf`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hka : ta c₀ * c₀⁻¹ ≠ 0` using `mul_ne_zero ((map_ne_zero ta).2 hc₀ne) (inv_ne_zero hc₀ne)`. Establish `hgal : galRul h₂ (M.dδ A.μ0).cδ = (M.dδ A.μ0).eF (ta c₀ * c₀⁻¹) • (M.dδ A.μ0).cδ`. Rewrite using `[hcδ, GlobalTheory.GalTw.Test.galRul_const, covAut_apply_eF, smul_smul, ← map_mul, mul_assoc, inv_mul_cancel₀ hc₀ne, mul_one]`. Establish `hcx : ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra (M.dδ A.μ0).c₂.F k] (y₂ : FrPt (M.dδ A.μ0).Xo₂ (M.dδ A.μ0).c₂ k), evR (M.dδ A.μ0).Xo₂ (M.dδ A.μ0).c₂ (galRul h₂ (M.dδ A.μ0).cδ) y₂ = algebraMap (M.dδ A.μ0).c₂.F k ((M.dδ A.μ0).eF (ta c₀ * c₀⁻¹)) * evR (M.dδ A.μ0).Xo₂ (M.dδ A.μ …`. Introduce `k _ _ _ y₂`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hgal]`. Conclude with `evalAt_smul _ _ _ _ y₂`. Establish `hsame0 : SameCover M A.μ0 A.μ0 (Equiv.refl _)` using `⟨⟨_, rfl⟩, HEq.rfl, HEq.rfl, rfl, rfl, fun _ => ⟨rfl, rfl, rfl, rfl⟩⟩`. Establish `hconj : ConjTup R τ (id A.μ0) (id A.μ0)` using `⟨rfl, fun x => by simp [hRxi]⟩`. Take `⟨u, s, w', hu, hw'e, hw⟩` from `GlobalTheory.T.conj_fourierCoefficients_conjugate_tuples D G Pl0 T0 A T R F κ v₀ hcore ⟨fw⟩ i T0 id M hM τ ta hta hfb A.μ0 A.μ0 (Equiv.refl _) hsame0 hconj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨hvol, hep⟩` from `GlobalTheory.T.galoisConj_classScalars_and_volume D G Pl0 T0 A T R F κ v₀ hcore ⟨fw⟩ i T0 id M hM τ ta hta hfb A.μ0 A.μ0 (Equiv.refl _) hsame0 hconj`. Establish `hu1 : u = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hu]`. Simplify using `[hRxi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hw'1 : w' = M.w A.μ0` using `funext fun k => eq_of_heq (hw'e k)`. Substitute `hu1 hw'1` using the available equality. Establish `hio : ∀ v, M.io v ∈ HHa (T.Q.Dw ((i : ℕ) + 1)).mult (Vc D i).rank M.c'.F ComplexEmbedding.conjugate (InPsi T.Q.H) (fun τ k => wtA (κ i) (τ, k))` using `fun v => by`. Take `⟨-, cga, -, -, hr, -⟩` from `hM.io`. Establish `hv` using `hr.le (LinearMap.mem_range_self M.io v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Submodule.span_le (p := GlobalTheory.FrameRead.CoefMap.harmSub _ _ _ _ _ _)).2 (fun _ hP => hP) hv`. Establish `key` using `GlobalTheory.GalTw.isThClsD_galRul hC _ _ _ _ _ M.c' ta hf _ (M.dδ A.μ0) h₂ hN hs (M.dδ A.μ0).cδ (ta c₀ * c₀⁻¹) 1 hka one_ne_zero hcx (M.Cl' A.μ0) (M.w A.μ0) (M.w A.μ0) (M.La A.μ0) (M.Nc A.μ0) (M.gam A.μ0) (M.vol A.μ0) (M.ep A.μ0) _ M.io (wtA (κ i)) hio hw x x' hx _ f hfs hsum`. Rewrite `key` using `[mul_one]`. Use `⟨key.1, ?_⟩` and prove the remaining obligations. Establish `e1 : ta (M.vol A.μ0) = M.vol A.μ0` using `hvol`.
-
-Establish `e2 : (fun k => ta (M.ep A.μ0 k)) = M.ep A.μ0` using `funext hep`. Establish `k2` using `key.2`. Rewrite `k2` using `[e1, e2]`. Conclude with `k2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root_galRul_isSum : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : Fin D.R.m → ℂ), 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → GlobalTheory.Hk3.Core R F → Finite T0 → Nonempty (FWTie T R κ v₀) → IoExt R → QGuard R → ∀ i : Fin D.R.m, OMPins T R κ v₀ O i → PhaseTie T R κ v₀ O ph i → ∀ M : OMDat T.toCore R i T0 id, M.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) M.s0) → M.lev = (O i).lev → (∀ c, ExtC R i (inC (O i).c') (O i).c0' c ↔ ExtC R i (inC M.c') M.c0' c) → Normal ℚ M.c'.F → GlobalTheory.CompRat.CurveOver T.Q.H M.c'.F 1 → (∀ t x, ((R.xi t x : Circle) : ℂ) ∈ M.c'.F) → (∀ t t' : T0, R.Q t' = R.Q t → ∃ e, SameCover M t t' e) → ∃ c₀ : M.c'.F, IsRoot1 ((c₀ : M.c'.F) : ℂ) ∧ ∀ (τ : ℂ ≃+* ℂ) (ta : M.c'.F ≃+* M.c'.F), (∀ a : M.c'.F, ((ta a : M.c'.F) : ℂ) = τ (a : ℂ)) → FixBase T R i τ → ∀ (hf : Fixes M.c' ta) (x x' : M.Cl' A.μ0 → VsV D i M.c'.F), (∀ k, M.io (x' k) = MvPolynomial.map (ta : M.c'.F →+* M.c'.F) (M.io (x k))) → ∀ f ∈ sec (T.Q.Xo ((i : ℕ) + 1)) M.c' (wtA (κ i)) (Vc D i).rank, GlobalTheory.OneMapAll.IsSum M A.μ0 x f → (ta c₀ * c₀⁻¹)⁻¹ • galRul hf f ∈ sec (T.Q.Xo ((i : ℕ) + 1)) M.c' (wtA (κ i)) (Vc D i).rank ∧ GlobalTheory.OneMapAll.IsSum M A.μ0 x' ((ta c₀ * c₀⁻¹)⁻¹ • galRul hf f) := by
   intro hC D G _ _ Pl0 T0 A T _ R F κ v₀ O ph hnV hcore hfin hfw hioE hQG i hpins htie M hM hlev hext hnorm hcurve hxiF

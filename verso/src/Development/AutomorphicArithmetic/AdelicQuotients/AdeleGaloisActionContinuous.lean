@@ -7,9 +7,9 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h : ∀ y, galOf e σ y = ∑ i, e (σ (b i) ⊗ₜ 1) * e (1 ⊗ₜ c i y)`. Introduce `y`. Express the relevant statement in the definitionally equal form `e (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F A) (e.symm y)) = _`. Rewrite using `[hs, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Both sides reduce to the same expression. Establish `h' : (galOf e σ : B → B) = fun y => ∑ i, e (σ (b i) ⊗ₜ 1) * e (1 ⊗ₜ c i y)` using `funext h`. Rewrite using `[h']`. Conclude with `continuous_finset_sum _ fun i _ => continuous_const.mul (hm.comp (hc i))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem galOf_cont {A B : Type*} [CommRing A] [Algebra F A] [CommRing B] [Algebra E B]
     [TopologicalSpace A] [TopologicalSpace B] [IsTopologicalRing B] (e : E ⊗[F] A ≃ₐ[E] B)
@@ -29,9 +29,9 @@ private theorem galOf_cont {A B : Type*} [CommRing A] [Algebra F A] [CommRing B]
   exact continuous_finset_sum _ fun i _ => continuous_const.mul (hm.comp (hc i))
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `galOf_cont (adeleTensorEquiv F E) σ (Module.finBasis F E) (coord (Module.finBasis F E)) (continuous_coord _) (adeleTensorEquiv_symm_apply _) ?_` and prove the remaining obligations. Establish `h : (fun a : 𝔸[F] => adeleTensorEquiv F E ((1 : E) ⊗ₜ a)) = adeleMap F E`. Use function extensionality and compare the values at `a`. Rewrite using `[adeleTensorEquiv_tmul, map_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `continuous_adeleMap`.
+A detailed English derivation is pending.
 -/
 private theorem galAd_cont (σ : E ≃ₐ[F] E) : Continuous (galAd σ) := by
   haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -44,9 +44,9 @@ private theorem galAd_cont (σ : E ≃ₐ[F] E) : Continuous (galAd σ) := by
   exact continuous_adeleMap
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `galOf_cont (GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv (K := F) (L := E)) σ (Module.finBasis F E) (GroundTheory.Global.InfinitePlace.adeleCoord (Module.finBasis F E)) (GroundTheory.Global.InfinitePlace.continuous_adeleCoord _) (fun y => ?_) ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.symm_apply_eq]`. Conclude with `(GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv_sum_adeleCoord _ y).symm`. Establish `h : (fun a : InfiniteAdeleRing F => GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv (K` using `F) (L := E) ((1 : E) ⊗ₜ a)) = GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := F) (L := E) := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv_tmul', map_one, one_mul]`. Rewrite using `[h]`. Conclude with `GroundTheory.Global.InfinitePlace.continuous_infiniteAdeleRingMap`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem galInf_cont (σ : E ≃ₐ[F] E) : Continuous (galInf σ) := by
   haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -64,7 +64,7 @@ private theorem galInf_cont (σ : E ≃ₐ[F] E) : Continuous (galInf σ) := by
     exact GroundTheory.Global.InfinitePlace.continuous_infiniteAdeleRingMap
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `(tensorEquiv' E v).surjective y`. Rewrite using `[← tensorEquiv'_tmul_mul]`. Express the relevant statement in the definitionally equal form `tensorEquiv' E v (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F _) ((tensorEquiv' E v).symm (tensorEquiv' E v ((1 ⊗ₜ a) * t)))) = _ * tensorEquiv' E v (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F _) ((tensorEquiv' E v).symm (tensorEquiv' E v t)))`. Rewrite using `[AlgEquiv.symm_apply_apply, AlgEquiv.symm_apply_apply, ← tensorEquiv'_tmul_mul, map_mul, Algebra.TensorProduct.map_tmul]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem galFin_mul (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (a : v.adicCompletion F)
     (y : CompletionsOver E v) :
@@ -81,7 +81,7 @@ private theorem galFin_mul (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F))
   simp
 
 /- English proof (translation)
-Set `L : CompletionsOver E v →ₗ[v.adicCompletion F] CompletionsOver E v` to `{ toFun := galFin σ v map_add' := map_add _ map_smul' := fun a y => by`. Simplify using `only [Algebra.smul_def, RingHom.id_apply]`. Conclude with `galFin_mul σ v a y }`. Conclude with `IsModuleTopology.continuous_of_linearMap L`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem galFin_cont (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (galFin σ v) := by
@@ -94,7 +94,7 @@ private theorem galFin_cont (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)
   exact IsModuleTopology.continuous_of_linearMap L
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map hf)`.
+A detailed English derivation is pending.
 -/
 private theorem mapGL_cont {R S : Type*} [CommRing R] [CommRing S] [TopologicalSpace R]
     [TopologicalSpace S] (n : ℕ) (f : R →+* S) (hf : Continuous f) :
@@ -104,7 +104,7 @@ private theorem mapGL_cont {R S : Type*} [CommRing R] [CommRing S] [TopologicalS
 end
 
 /- English proof (translation)
-Introduce `_ _ F E _ _ _ _ _ σ n`. Conclude with `⟨mapGL_cont n _ (galAd_cont σ), mapGL_cont n _ (galInf_cont σ), fun v => mapGL_cont n _ (galFin_cont σ v)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.adele_galois_action_continuous :
     Compat → RPE → GalCont := by

@@ -4,23 +4,21 @@ open MvPolynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F K _ _ φ r e w τ h`. Set `L` to `FractionRing (Polynomial K)`. Set `j : Polynomial K →+* L` to `algebraMap (Polynomial K) L`. Set `g : MvPolynomial (Fin r) F →+* Polynomial K` to `MvPolynomial.eval₂Hom (Polynomial.C.comp φ) (fun i => Polynomial.C (w i) * Polynomial.X)`. Set `y : Polynomial K` to `Polynomial.C τ * Polynomial.X ^ e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hjinj : Function.Injective j` using `IsFractionRing.injective _ _`. Establish `hx : j y ∈ (integralClosure (Subring.closure (Set.range (j.comp g))) L).toSubring`. Rewrite using `[← iInf_valuationSubring_superset, Subring.mem_iInf]`. Introduce `V`. Take `⟨W, hW⟩` from `V`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `j y ∈ W`. Set `U : ValuationSubring K` to `W.comap (j.comp Polynomial.C)`. Establish `hU : ∀ c, φ c ∈ U`. Introduce `c`. Establish `: j (g (MvPolynomial.C c)) ∈ W` using `hW ⟨_, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[g, U]`. Take `⟨i, hi, hτ⟩` from `h U hU`. Establish `h1 : j (Polynomial.C (w i) * Polynomial.X) ∈ W`. Establish `: j (g (MvPolynomial.X i)) ∈ W` using `hW ⟨_, rfl⟩`. Simplify `this` using `[g]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : j (Polynomial.C (τ / w i ^ e)) ∈ W` using `hτ`. Establish `hy : y = Polynomial.C (τ / w i ^ e) * (Polynomial.C (w i) * Polynomial.X) ^ e`. Rewrite using `[mul_pow, ← mul_assoc, ← Polynomial.C_pow, ← Polynomial.C_mul, div_mul_cancel₀ _ (pow_ne_zero _ hi)]`. Rewrite using `[hy, map_mul, map_pow]`. Conclude with `mul_mem h2 (pow_mem h1 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcl : Subring.closure (Set.range (j.comp g)) = (j.comp g).range`. Rewrite using `[← RingHom.coe_range]`. Conclude with `Subring.closure_eq _`. Rewrite `hx` using `[hcl]`. Establish `hint : IsIntegral (j.comp g).range (j y)` using `hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp, hpx⟩` from `hint`. Establish `hb : ∀ k : Fin p.natDegree, ∃ b : MvPolynomial (Fin r) F, j (g b) = (p.coeff k : L)` using `fun k => (p.coeff k).2`. Use `choose b hb using hb`. Use `⟨p.natDegree, b, hjinj ?_⟩` and prove the remaining obligations. Establish `e1` using `hpx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[hp.as_sum]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_finset_sum, Polynomial.eval₂_X_pow, Polynomial.eval₂_mul, Polynomial.eval₂_C] at e1`. Rewrite `e1` using `[Finset.sum_range (fun k => algebraMap (j.comp g).range L (p.coeff k) * j y ^ k)]`. Rewrite using `[map_zero, ← e1, map_add, map_sum, map_pow]`. Use `congr 1`.
-
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Conclude with `congrArg (· * j y ^ (k : ℕ)) (hb k)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_coneRing_of_forall_valuationSubring :
     ∀ (F K : Type) [Field F] [Field K] (φ : F →+* K) (r e : ℕ) (w : Fin r → K) (τ : K), (∀ V : ValuationSubring K, (∀ c, φ c ∈ V) → ∃ i, w i ≠ 0 ∧ τ / w i ^ e ∈ V) → ∃ (m : ℕ) (b : Fin m → MvPolynomial (Fin r) F), (Polynomial.C τ * Polynomial.X ^ e) ^ m + ∑ k, MvPolynomial.eval₂ (Polynomial.C.comp φ) (fun i => Polynomial.C (w i) * Polynomial.X) (b k) * (Polynomial.C τ * Polynomial.X ^ e) ^ (k : ℕ) = 0 := by

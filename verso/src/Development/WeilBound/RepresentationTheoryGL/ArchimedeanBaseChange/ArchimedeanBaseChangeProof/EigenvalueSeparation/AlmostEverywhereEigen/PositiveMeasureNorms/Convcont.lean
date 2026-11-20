@@ -9,7 +9,7 @@ namespace PositivityTheory.Rg.BcB.E2.P
 namespace Convcont
 
 /- English proof (translation)
-Use `integral_mul_left_eq_self (μ := X.μ) (fun z => φ (x⁻¹ * z) * u z) x` as an intermediate fact. Simplify using `only [inv_mul_cancel_left] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shift (X : Ctx) (φ u : X.G → ℂ) (x : X.G) :
     ∫ y, φ y * u (x * y) ∂X.μ = ∫ z, φ (x⁻¹ * z) * u z ∂X.μ := by
@@ -21,17 +21,15 @@ end Convcont
 
 open Convcont in
 /- English proof (translation)
-Introduce `X φ u hφ hu`. Establish `hfun : (fun x => ∫ y, φ y * u (x * y) ∂X.μ) = fun x => ∫ z, φ (x⁻¹ * z) * u z ∂X.μ`. Use function extensionality and compare the values at `fun x => shift X φ u x`. Rewrite using `[hfun]`. Take `⟨B, hB⟩` from `hφ.1.bounded_above_of_compact_support hφ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `continuous_iff_continuousAt.2 fun x₀ => ?_` and prove the remaining obligations. Take `⟨N, hNc, hN⟩` from `exists_compact_mem_nhds x₀`. Establish `hK : IsCompact (N * tsupport φ)` using `hNc.mul hφ.2`. Establish `hcx : ∀ z : X.G, Continuous fun x : X.G => φ (x⁻¹ * z)` using `fun z => hφ.1.comp (continuous_inv.mul continuous_const)`. Use `continuousAt_of_dominated (bound := (N * tsupport φ).indicator fun z => B * ‖u z‖) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Filter.Eventually.of_forall fun x => ((hφ.1.comp (continuous_const.mul continuous_id)).aestronglyMeasurable).mul hu.aestronglyMeasurable`. Use `filter_upwards [hN] with x hx`. Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ N * tsupport φ`. Rewrite using `[Set.indicator_of_mem hz, norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right (hB _) (norm_nonneg _)`. Rewrite using `[Set.indicator_of_notMem hz]`. Establish `h0 : φ (x⁻¹ * z) = 0`. Assume the negation of the conclusion as `h`. Apply `hz` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨x, hx, x⁻¹ * z, subset_tsupport _ h, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[h0]`. Rewrite using `[integrable_indicator_iff hK.measurableSet]`. Conclude with `((hu.integrableOn_isCompact hK).norm.const_mul B)`.
-
-Conclude with `Filter.Eventually.of_forall fun z => ((hcx z).mul continuous_const).continuousAt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convcont : ConvCont := by
   intro X φ u hφ hu

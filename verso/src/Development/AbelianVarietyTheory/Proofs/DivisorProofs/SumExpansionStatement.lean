@@ -14,17 +14,15 @@ noncomputable section
 namespace GlobalTheory.SumExpAt
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_locP {R : Type} [CommRing R] {W : Type} [AddCommGroup W] [Module R W] (p : Ideal R) [p.IsPrime]
     (L : Submodule R W) (x : W) : x ∈ Formalism.HermitianLatticesTheory.localization₂ p L ↔ ∃ s ∈ p.primeCompl, s • x ∈ L := Iff.rfl
 
 /- English proof (translation)
-Introduce `v hv`. Use `set f : V →ₗ[𝓞 K] V' := (e : V →ₗ[K] V').restrictScalars (𝓞 K) with hf`. Establish `hx : f v ∈ N'` using `hN ▸ Submodule.mem_map_of_mem hv`. Take `⟨s, hs, hsD⟩` from `(mem_locP p D' _).1 (h _ hx)`. Use `(mem_locP p D _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsD` using `[← hD]`. Take `⟨y, hy, hye⟩` from `hsD`. Establish `hinj : Function.Injective f` using `e.injective`. Establish `: y = s • a • v` using `hinj (by rw [hye, map_smul, map_smul])`. Rewrite using `[← this]`.
-
-Conclude with `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locIncl_of_equiv {K : Type} [Field K] [NumberField K] {V V' : Type} [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup V'] [Module K V'] [Module (𝓞 K) V']
@@ -46,11 +44,11 @@ theorem locIncl_of_equiv {K : Type} [Field K] [NumberField K] {V V' : Type} [Add
   exact hy
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hz' : ∀ c, S.I (E.mulVec z) c ∈ S.Nab c` using `fun c => hz c (Set.mem_univ c)`. Establish `hlin : ∀ (r : 𝓞 K) (y : Fin d → K), S.I (E.mulVec (r • y)) = r • S.I (E.mulVec y)` using `fun r y => by`. Establish `h1` using `((Matrix.mulVecLin E).restrictScalars (𝓞 K)).map_smul r y`. Establish `h2` using `(S.I.restrictScalars (𝓞 K)).map_smul r (E.mulVec y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply] at h1 h2`. Rewrite using `[h1, h2]`. Use `choose s hs hsD using fun c => (mem_locP p (S.Del c) _).1 (h c _ (hz' c))`. Use `(mem_locP p _ _).2 ⟨∏ c, s c, prod_mem fun c _ => hs c, ?_⟩` and prove the remaining obligations. Introduce `c _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show S.I (E.mulVec ((∏ c, s c) • a • z)) c ∈ S.Del c`. Rewrite using `[hlin, hlin, ← Finset.mul_prod_erase Finset.univ s (Finset.mem_univ c), Pi.smul_apply, Pi.smul_apply, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hsD c)`.
+A detailed English derivation is pending.
 -/
 theorem cutLat_locIncl {K : Type} [Field K] [NumberField K] [StarRing K] (S : Formalism.L2.DIV.CSD K) {d : ℕ}
     (E : Matrix (Fin S.dim) (Fin d) K) (p : Ideal (𝓞 K)) [p.IsPrime] (a : 𝓞 K)
@@ -79,15 +77,13 @@ namespace GlobalTheory.SumExpAt
 open Formalism.CohomologicalDescent.LD in
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `a.elim0`. Set `m : Fin n` to `⟨n - 1, by omega⟩`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hds : lam.detShift = lam.w m`. Simplify using `only [Formalism.BasicNotions.DomWeight.detShift, dif_pos hn]`. Both sides reduce to the same expression. Establish `hres : res n f = fun a => lam.natW a + f m`. Use function extensionality and compare the values at `a`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1` using `hc a`. Establish `h2` using `hc m`. Establish `h3 : lam.w m ≤ lam.w a` using `lam.anti (Fin.le_def.2 (by simp only [m]; omega))`. Establish `h4 : ((lam.w a - lam.w m).toNat : ℤ) = lam.w a - lam.w m` using `Int.toNat_of_nonneg (by omega)`. Express the relevant statement in the definitionally equal form `f a.val = (lam.w a - lam.detShift).toNat + f m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hds]`. Use linear arithmetic over natural numbers and integers. Establish `hanti : Antitone lam.natW` using `fun i j hij => by`. Use `lam.anti hij` as an intermediate fact. Conclude with `Int.toNat_le_toNat (by omega)`.
-
-Rewrite using `[hres]`. Conclude with `Formalism.CohomologicalDescent.LA.exact_z_twist_by_det n lam.natW (f m) l hanti hl`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exZ_res_eq_natW (n : ℕ) (lam : Formalism.BasicNotions.DomWeight n) (f : ℕ → ℕ) (c : ℤ)
     (hc : ∀ a : Fin n, (f a : ℤ) = lam.w a + c) (l : ℕ) (hl : l.Prime) :
@@ -116,7 +112,7 @@ theorem exZ_res_eq_natW (n : ℕ) (lam : Formalism.BasicNotions.DomWeight n) (f 
     exact Formalism.CohomologicalDescent.LA.exact_z_twist_by_det n lam.natW (f m) l hanti hl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem exZ_res_congr {N n : ℕ} (h : N = n) (f : ℕ → ℕ) (l : ℕ) :
     Formalism.CohomologicalDescent.LA.exZ N N le_rfl (Formalism.CohomologicalDescent.LD.res N f) l = Formalism.CohomologicalDescent.LA.exZ n n le_rfl (Formalism.CohomologicalDescent.LD.res n f) l := by
@@ -136,11 +132,11 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
 /- English proof (translation)
-Take `⟨gramR, c0R, c0L, hT⟩` from `p.charW.base.fam.tie`. Take `⟨e, -, -, -, hNab, hDel⟩` from `hT.coefL j t`. Establish `hJ : W.JA P (Formalism.EigenvalueLevelCeiling.plc w) = ∑ τ, Formalism.CohomologicalDescent.LA.exZ (Vc D j).rank (Vc D j).rank le_rfl (Formalism.IndefR.Bridge.lamLdef (D` using `D) (Vc D j).rank ((j : ℕ) + 1) τ).natW (Formalism.EigenvalueLevelCeiling.plc w) := by`. Unfold `Wts.JA Wts.ex`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[exZ_res_congr hD.Nr]`. Take `⟨c, hc⟩` from `hD.lam τ`. Conclude with `exZ_res_eq_natW _ _ _ c hc _ (Formalism.EigenvalueLevelCeiling.plc_prime w)`. Introduce `z hz`. Rewrite using `[hJ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `cutLat_locIncl (blk p j t).S _ w.asIdeal _ (fun c => ?_) z hz` and prove the remaining obligations. Use `locIncl_of_equiv e w.asIdeal _ _ _ _ _ (hNab c) (hDel c) ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.sum_exactExponents_smul_mem_localizedCoeffLattice _ _ _ _ _ _ _ (GlobalTheory.RepsCompare.isLattice_hLat _ _) w`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lIncl_sumExp (p : PtAt ex Csz) (j : Fin D.R.m) (P : Par) (W : Wts D.what₂.Tau) (hD : Dict L j P W) (t : p.P.T)
     (w : HeightOneSpectrum (𝓞 D.what₂.LL)) :
@@ -163,7 +159,7 @@ theorem lIncl_sumExp (p : PtAt ex Csz) (j : Fin D.R.m) (P : Par) (W : Wts D.what
 end Point
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => EvPt.of_forall fun _ _ _ p _ _ j P W hD _ t w => lIncl_sumExp p j P W hD t w⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem sumExpSt : SumExpSt :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => EvPt.of_forall fun _ _ _ p _ _ j P W hD _ t w => lIncl_sumExp p j P W hD t w⟩⟩

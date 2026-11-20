@@ -5,9 +5,9 @@ open scoped BigOperators
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h : σ x * starRingEnd ℂ (σ x) = (g : ℂ)`. Rewrite using `[← hy, ← map_mul, hxy, map_natCast]`. Establish `h2 : ((‖σ x‖ : ℝ) : ℂ) ^ 2 = (g : ℂ)`. Rewrite using `[← Complex.mul_conj', h]`. Establish `h3 : ‖σ x‖ ^ 2 = (g : ℝ)` using `by exact_mod_cast h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.sqrt_eq_rpow, ← h3, Real.sqrt_sq (norm_nonneg _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_map_eq_sqrt_of_mul_conj {K : Type*} [Semiring K] (σ : K →+* ℂ) (x y : K) (g : ℕ)
     (hxy : x * y = g) (hy : σ y = starRingEnd ℂ (σ x)) : ‖σ x‖ = (g : ℝ) ^ (1 / 2 : ℝ) := by
@@ -19,7 +19,7 @@ theorem norm_map_eq_sqrt_of_mul_conj {K : Type*} [Semiring K] (σ : K →+* ℂ)
   rw [← Real.sqrt_eq_rpow, ← h3, Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Establish `h1` using `norm_map_eq_sqrt_of_mul_conj σ x y g hxy hy`. Establish `hyn : ‖σ y‖ = ‖σ x‖` using `by rw [hy]; simp`. Rewrite using `[map_mul, map_pow, map_pow, norm_mul, norm_pow, norm_pow, hyn, ← pow_add, h1, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg g)]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

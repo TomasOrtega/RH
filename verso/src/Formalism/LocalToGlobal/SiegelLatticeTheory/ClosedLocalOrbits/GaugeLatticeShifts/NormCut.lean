@@ -19,28 +19,28 @@ def opOf (x : Formalism.L2.SG.PackageTie.HS Wq Wp) : Wq →L[ℂ] Wp :=
   ∑ i, (innerSL ℂ (stdOrthonormalBasis ℂ Wq i)).smulRight (x i)
 
 /- English proof (translation)
-Simplify using `[opOf, ContinuousLinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem opOf_apply (x : Formalism.L2.SG.PackageTie.HS Wq Wp) (e : Wq) :
     opOf x e = ∑ i, inner ℂ (stdOrthonormalBasis ℂ Wq i) e • x i := by
   simp [opOf, ContinuousLinearMap.sum_apply]
 
 /- English proof (translation)
-Use extensionality with `e`. Simplify using `[opOf_apply, Finset.sum_add_distrib, smul_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem opOf_add (x y : Formalism.L2.SG.PackageTie.HS Wq Wp) : opOf (x + y) = opOf x + opOf y := by
   ext e
   simp [opOf_apply, Finset.sum_add_distrib, smul_add]
 
 /- English proof (translation)
-Use extensionality with `e`. Simplify using `[opOf_apply, Finset.smul_sum, smul_smul, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem opOf_smul (c : ℂ) (x : Formalism.L2.SG.PackageTie.HS Wq Wp) : opOf (c • x) = c • opOf x := by
   ext e
   simp [opOf_apply, Finset.smul_sum, smul_smul, mul_comm]
 
 /- English proof (translation)
-Establish `h : ∀ i, (Formalism.L2.SG.PackageTie.hsEmb (opOf x)) i = opOf x (stdOrthonormalBasis ℂ Wq i)` using `fun i => rfl`. Apply `PiLp.ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[h, opOf_apply]`. Simplify using `[orthonormal_iff_ite.mp (stdOrthonormalBasis ℂ Wq).orthonormal]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hsEmb_opOf (x : Formalism.L2.SG.PackageTie.HS Wq Wp) : Formalism.L2.SG.PackageTie.hsEmb (opOf x) = x := by
   have h : ∀ i, (Formalism.L2.SG.PackageTie.hsEmb (opOf x)) i = opOf x (stdOrthonormalBasis ℂ Wq i) := fun i => rfl
@@ -50,9 +50,9 @@ theorem hsEmb_opOf (x : Formalism.L2.SG.PackageTie.HS Wq Wp) : Formalism.L2.SG.P
   simp [orthonormal_iff_ite.mp (stdOrthonormalBasis ℂ Wq).orthonormal]
 
 /- English proof (translation)
-Establish `h : ∀ i, (Formalism.L2.SG.PackageTie.hsEmb A) i = A (stdOrthonormalBasis ℂ Wq i)` using `fun i => rfl`. Use extensionality with `e`. Rewrite using `[opOf_apply]`. Use `conv_rhs => rw [← (stdOrthonormalBasis ℂ Wq).sum_repr' e]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, h]`.
+A detailed English derivation is pending.
 -/
 theorem opOf_hsEmb (A : Wq →L[ℂ] Wp) : opOf (Formalism.L2.SG.PackageTie.hsEmb A) = A := by
   have h : ∀ i, (Formalism.L2.SG.PackageTie.hsEmb A) i = A (stdOrthonormalBasis ℂ Wq i) := fun i => rfl
@@ -75,7 +75,7 @@ variable {C C' V V' : Type} [Fintype C] [Fintype C'] [NormedAddCommGroup V] [Inn
   [FiniteDimensional ℂ V] [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] [FiniteDimensional ℂ V']
 
 /- English proof (translation)
-Use extensionality with `v`. Use `first`. Consider the case `rfl`. Consider the case `simp [blockOf]`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem blockOf_add (A B : PiLp 2 (fun _ : C' => V') →L[ℂ] PiLp 2 (fun _ : C => V)) (ρ : C) (ρ' : C') :
     blockOf (A + B) ρ ρ' = blockOf A ρ ρ' + blockOf B ρ ρ' := by
@@ -85,7 +85,7 @@ theorem blockOf_add (A B : PiLp 2 (fun _ : C' => V') →L[ℂ] PiLp 2 (fun _ : C
   | simp [blockOf]
 
 /- English proof (translation)
-Use extensionality with `v`. Use `first`. Consider the case `rfl`. Consider the case `simp [blockOf]`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem blockOf_smul (c : ℂ) (A : PiLp 2 (fun _ : C' => V') →L[ℂ] PiLp 2 (fun _ : C => V)) (ρ : C) (ρ' : C') :
     blockOf (c • A) ρ ρ' = c • blockOf A ρ ρ' := by
@@ -107,7 +107,7 @@ def Bl (ρ : C) (ρ' : C') :
   LinearMap.toContinuousLinearMap (BlL ρ ρ')
 
 /- English proof (translation)
-Establish `h : Bl ρ ρ' (Formalism.L2.SG.PackageTie.hsEmb A) = Formalism.L2.SG.PackageTie.hsEmb (blockOf (opOf (Formalism.L2.SG.PackageTie.hsEmb A)) ρ ρ')` using `rfl`. Rewrite using `[h, opOf_hsEmb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bl_hsEmb (A : PiLp 2 (fun _ : C' => V') →L[ℂ] PiLp 2 (fun _ : C => V)) (ρ : C) (ρ' : C') :
     Bl ρ ρ' (Formalism.L2.SG.PackageTie.hsEmb A) = Formalism.L2.SG.PackageTie.hsEmb (blockOf A ρ ρ') := by
@@ -116,7 +116,7 @@ theorem Bl_hsEmb (A : PiLp 2 (fun _ : C' => V') →L[ℂ] PiLp 2 (fun _ : C => V
   rw [h, opOf_hsEmb]
 
 /- English proof (translation)
-Establish `key` using `hHS C C' V V' (opOf x) (opOf y)`. Simplify using `only [← hsEmb_eq_hsV, hsEmb_opOf] at key`. Conclude with `key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inner_Bl (hHS : HSBlocks)
     (x y : Formalism.L2.SG.PackageTie.HS (PiLp 2 (fun _ : C' => V')) (PiLp 2 (fun _ : C => V))) :
@@ -185,9 +185,9 @@ def SatGram (S : Set (GTerm X u u' F0 F0' what₂ rows')) (A : {Λ // Λ ∈ wha
           (Zs S positionT (iotaOf TR cs cs') (aT cs cs' FdN FdN') q j))
 
 /- English proof (translation)
-Establish `key : ∀ x, (blockOf (Formalism.L2.SG.TermOp.aTerm cs cs' FdN FdN' t) ρ ρ') x = ∑ ρ'', blk cs cs' FdN FdN' t ρ ρ'' ((Pi.single ρ' x : cs'.Cl → X.Vpi u') ρ'')` using `fun x => rfl`. Use extensionality with `x`. Rewrite using `[key x, Finset.sum_eq_single ρ']`. Rewrite using `[Pi.single_eq_same]`. Introduce `b _ hb`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_eq_of_ne hb, map_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem blockOf_aTerm (t : GTerm X u u' F0 F0' what₂ rows') (ρ : cs.Cl) (ρ' : cs'.Cl) :
     blockOf (aTerm cs cs' FdN FdN' t) ρ ρ' = blk cs cs' FdN FdN' t ρ ρ' := by
@@ -204,15 +204,15 @@ theorem blockOf_aTerm (t : GTerm X u u' F0 F0' what₂ rows') (ρ : cs.Cl) (ρ' 
 variable {TR cs cs' FdN FdN'} in
 
 /- English proof (translation)
-Distinguish the cases in `hs : cs.lamOf ρ = t.lam ∧ cs'.lamOf ρ' = t.lam'`. Take `⟨h1, h2⟩` from `hs`. Establish `hposition : positionT t = (lamQ cs ρ, lamQ cs' ρ')` using `Prod.ext (Subtype.ext h1.symm) (Subtype.ext h2.symm)`. Establish `hP` using `hPh t ρ ρ' h1 h2`. Rewrite using `[if_pos hposition]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hk : kOf X u u' (cs.h ρ : X.B.I.Gf) (cs'.h ρ' : X.B.I.Gf) t.pt ∈ X.K2`. Rewrite `hP` using `[if_pos hk]`. Establish `hb : blk cs cs' FdN FdN' t ρ ρ' = chiL X (kOf X u u' (cs.h ρ : X.B.I.Gf) (cs'.h ρ' : X.B.I.Gf) t.pt) • ampN cs cs' FdN FdN' t`. Rewrite using `[blk, if_pos ⟨h1, h2, hk⟩, ampN, level_char_eq_mul, hChi t ρ ρ' h1 h2 hk, smul_smul, smul_smul, smul_smul]`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hb, map_smul, ← hP]`. Both sides reduce to the same expression. Rewrite `hP` using `[if_neg hk]`. Establish `hb : blk cs cs' FdN FdN' t ρ ρ' = 0`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[blk, if_neg (fun h => hk h.2.2)]`. Rewrite using `[hb, map_zero, ← hP, zero_smul]`. Establish `hb : blk cs cs' FdN FdN' t ρ ρ' = 0`. Rewrite using `[blk, if_neg (fun h => hs ⟨h.1, h.2.1⟩)]`. Establish `hposition : ¬ positionT t = (lamQ cs ρ, lamQ cs' ρ')`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `he`. Simplify using `only [positionT, lamQ, Prod.mk.injEq, Subtype.mk.injEq] at he`. Conclude with `hs ⟨he.1.symm, he.2.symm⟩`. Rewrite using `[hb, map_zero, if_neg hposition]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hsEmb_blk {sc : cs.Cl → Iof TR} {sc' : cs'.Cl → Iof TR} (hChi : ChiNIndep F0 F0' cs cs')
     (hPh : ColPhase F0 F0' TR cs cs' sc sc') (t : GTerm X u u' F0 F0' what₂ rows') (ρ : cs.Cl) (ρ' : cs'.Cl) :
@@ -248,25 +248,15 @@ theorem hsEmb_blk {sc : cs.Cl → Iof TR} {sc' : cs'.Cl → Iof TR} (hChi : ChiN
 variable (F0 F0') in
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ (X.Vpi u)`. Use `haveI := FiniteDimensional.complete ℂ (X.Vpi u')`. Establish `hpos : ∀ {P Q : Type} (B : Set (Iof TR)) (f : B × P × Q → Iof TR), Function.Bijective f → 0 < Nat.card B`. Introduce `P Q B f hf`. Take `⟨x, -⟩` from `hf.2 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.card_pos_iff.mpr ⟨⟨x.1⟩, inferInstance⟩`. Establish `hU : ∀ y : Iof TR, y ∈ UG TR → ∀ v, Formalism.L2.SG.GGMirabolic.IsUni D.R.k (y v)` using `fun y hy => hy`. Conclude with `normExp_abs (X := tOf F0 F0' TR cs cs' FdN FdN') (S := S) (lamR := lamQ cs) (lamR' := lamQ cs') (Bl := fun ρ ρ' => Bl ρ ρ') (hBl := inner_Bl hHS) (intersection_update_fsHerm_neg_one := positionT) (a := aT cs cs' FdN FdN') (ιt := iotaOf TR cs cs') (p := psiG TR) (sR := sc) (sR' := …`. Rewrite using `[Bl_hsEmb, blockOf_aTerm, hsEmb_blk hChi hPh]`. Apply the tactic sequence `split_ifs <;> rfl)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use the proof step `(w := fun q => Real.sqrt (wRow D F0 q.1.1 * wRow D F0' q.2.1))`. Apply the tactic sequence `(hw0 := fun q => by try dsimp only`. Rewrite using `[(hF q.1).2, (hF' q.2).2]`. Apply `Real.sqrt_pos.mpr` to reduce the goal to its premises. Apply `mul_pos` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `inv_pos.mpr (by exact_mod_cast hpos _ _ (hF q.1).1)`. Conclude with `inv_pos.mpr (by exact_mod_cast hpos _ _ (hF' q.2).1))`. Use the proof step `(hvec := fun t => by show Formalism.L2.SG.TermOp.vec cs cs' FdN FdN' t = _`. Simplify using `only [Formalism.L2.SG.TermOp.vec, positionT]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `q`. Distinguish the cases in `h : q = (⟨t.lam, t.mem⟩, ⟨t.lam', t.mem'⟩)`. Substitute `h` using the available equality. Conclude with `Eq.trans (if_pos rfl) (if_pos rfl).symm`. Conclude with `Eq.trans (if_neg h) (if_neg h).symm)`.
-
-Use the proof step `(hio := fun t => rfl) (U := UG TR)`. Use the proof step `(h0 := fun x hx => by`. Simplify using `only [UG, Set.mem_setOf_eq, not_forall] at hx`. Take `⟨v, hv⟩` from `hx`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (by rw [Formalism.L2.SG.GGMirabolic.psiNat, if_neg hv]))`.
-
-Use the proof step `(hr := fun x y hy => by`. Simplify using `only [psiG, Pi.mul_apply, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun v _ => (hPsi _ _ (TR.psi0 v) (x v) (y v) (hU y hy v)).1)`. Use the proof step `(hl := fun x y hy => by`. Simplify using `only [psiG, Pi.mul_apply, ← Finset.prod_mul_distrib]`.
-
-Conclude with `Finset.prod_congr rfl fun v _ => (hPsi _ _ (TR.psi0 v) (x v) (y v) (hU y hy v)).2.1)`. Use the proof step `(hn := fun y hy => by`. Simplify using `only [psiG, map_prod, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun v _ => (hPsi _ _ (TR.psi0 v) 1 (y v) (hU y hy v)).2.2)`. Use the proof step `(hGG := fun i j => by show conj (Formalism.L2.SG.GGMirabolic.gamProd TR.psi0 (j⁻¹ * i)) = _`.
-
-Use `congr 1`. Take `⟨h1, h2⟩` from `hGam TR.Pl TR.Fq D.R.k TR.psi0 (j⁻¹ * i)`. Establish `hc : Nat.card (UG TR) = ∏ v, Formalism.L2.SG.GGMirabolic.cardU (TR.Fq v) D.R.k` using `h2`. Rewrite using `[h1, gamOf, hc, Nat.cast_prod]`. Use the proof step `rfl)`.
-
-Use the proof step `(A := A) (A' := A') (hA := fun q => (hF q).1) (hA' := fun q => (hF' q).1)`. Apply the tactic sequence `(hwA := fun q => by try dsimp only`. Rewrite using `[Real.sq_sqrt (by rw [(hF q.1).2, (hF' q.2).2]; positivity), (hF q.1).2, (hF' q.2).2, mul_inv])`. Use the proof step `(hsatL := fun q => (hSat q).1) (hsatR := fun q => (hSat q).2) (hsum := hAbs.1) (hsumv := hAbs.2.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normExpansionOn_tOf (hHS : HSBlocks) (hGam : GamProdSum) (hPsi : PsiNatEquiv)
     (S : Set (GTerm X u u' F0 F0' what₂ rows')) (hAbs : (tOf F0 F0' TR cs cs' FdN FdN').AbsConv)
@@ -337,7 +327,7 @@ theorem normExpansionOn_tOf (hHS : HSBlocks) (hGam : GamProdSum) (hPsi : PsiNatE
 variable (F0 F0') in
 
 /- English proof (translation)
-Unfold `NormExpSat`. Conclude with `⟨normExpansionOn_tOf (hHS := hHS) (hGam := hGam) (hPsi := hPsi) (hAbs := hAbs) (hChi := hChi) (hPh := hPh) (hF := hF) (hF' := hF') (hSat := hSg), normExpansionOn_tOf (hHS := hHS) (hGam := hGam) (hPsi := hPsi) (hAbs := hAbs) (hChi := hChi) (hPh := hPh) (hF := hF) (hF' := hF') (hSa …`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem normExpSat_of (hHS : HSBlocks) (hGam : GamProdSum) (hPsi : PsiNatEquiv)
     (hAbs : (tOf F0 F0' TR cs cs' FdN FdN').AbsConv)

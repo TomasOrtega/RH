@@ -18,15 +18,15 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B hB P P' g hg hK hF k`. Take `⟨B', f, hB', hf0, hfl⟩` from `GlobalTheory.T.normal_model_trivializing_blowup O p B hB 1 (fun _ => P.r) (fun _ => P.E) (fun _ => P.E') (fun _ => haveI := P.iso; Vert.Model.GenIso.ofHom P.ψ) (fun _ => ⟨P.vb, P.vb'⟩)`. Establish `hfl' : (haveI` using `(P.pull f).iso; Nonempty (Vert.Model.FlagPair (Vert.Model.GenIso.ofHom (P.pull f).ψ) (P.pull f).r)) := by`. Rewrite using `[Pres.ofHom_pull]`. Conclude with `hfl 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg' : IsRootOfP p (f.f.appTop g) p`. Take `⟨u, hu⟩` from `hg`. Conclude with `⟨Units.map f.f.appTop.hom.toMonoidHom u, by`. Rewrite using `[← map_pow]`. Simplify using `[hu, map_mul, map_natCast]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e4` using `GlobalTheory.T.chern_class_frobenius_scaling O p B' hB' (P.pull f) (P'.pull f) (f.f.appTop g) hg' (GlobalTheory.T.killing_element_pullback O B B' f P g hK) (GlobalTheory.T.frobenius_lift_pullback O p B B' f P P' hF) hfl' k`. Establish `hpos` using `(GlobalTheory.T.cap_degree_finite_pullback O p B hB B' f hf0).1`. Use `LinearMap.ext fun Q => ?_` and prove the remaining obligations. Establish `a` using `GlobalTheory.T.chern_class_pullback_fibre_degree O p B B' hB hB' f hf0 P k Q`. Establish `b` using `GlobalTheory.T.chern_class_pullback_fibre_degree O p B B' hB hB' f hf0 P' k Q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b` using `[e4, LinearMap.smul_apply, a]`. Establish `hne : f.fibreDeg 1 ≠ 0` using `hpos.ne'`. Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`. Rewrite `b` using `[smul_eq_mul]`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-b`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MixedLocalChains.ck_frob : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (P P' : Pres B) (g : Γ(B.X, ⊤)), IsRootOfP p g p → Kills g P.mod → IsFrob p P.mod P'.mod → ∀ k : ℕ, P'.ck p k = ((p : ℚ) ^ k) • P.ck p k := by
   intro O _ _ _ p _ _ _ B hB P P' g hg hK hF k

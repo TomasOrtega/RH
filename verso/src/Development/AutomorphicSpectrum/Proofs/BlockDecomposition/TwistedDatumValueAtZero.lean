@@ -21,9 +21,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Establish `he1 : MeasurableEmbedding (fun x : F => s * x)` using `(Homeomorph.mulLeft₀ s hs).measurableEmbedding`. Establish `hid : MeasurableEmbedding (id : F → F)` using `MeasurableEmbedding.id`. Establish `he` using `hid.prodMap he1`. Establish `hmap : Measure.map (Prod.map (id : F → F) (fun x : F => s * x)) (muS χ) = (modulus s)⁻¹ • muS χ`. Rewrite using `[← Measure.map_prod_map _ _ measurable_id he1.measurable, map_mul_left_eq_smul _ hs, Measure.map_id, Measure.prod_smul_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `he.integral_map (μ := muS χ) G`. Rewrite `h` using `[hmap, integral_smul_nnreal_measure]`. Simplify using `only [Prod.map, id] at h`. Rewrite using `[← h, NNReal.smul_def, Complex.real_smul]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Put the polynomial expressions in normal form.
 -/
@@ -44,9 +44,9 @@ theorem integral_scale_snd (χ : AddChar F Circle) {s : F} (hs : s ≠ 0) (G : F
   ring_nf
 
 /- English proof (translation)
-Establish `h1` using `integral_scale_fst χ hs (fun y : F × F => G (y.1, s⁻¹ * y.2))`. Establish `h2` using `integral_scale_snd χ (inv_ne_zero hs) G`. Establish `e : ∀ y : F × F, y * ((s, s⁻¹) : F × F) = (s * y.1, s⁻¹ * y.2)` using `fun y => by`. Apply the tactic sequence `ext <;> simp [mul_comm]`. Simplify using `only [e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2, ← mul_assoc]`. Establish `hM : ((modulus s : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast modulus_ne_zero hs`. Rewrite using `[modulus_inv]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem integral_norm_one (χ : AddChar F Circle) {s : F} (hs : s ≠ 0) (G : F × F → ℂ) :
     ∫ y, G (y * (s, s⁻¹)) ∂muS χ = ∫ y, G y ∂muS χ := by
@@ -62,11 +62,11 @@ theorem integral_norm_one (χ : AddChar F Circle) {s : F} (hs : s ≠ 0) (G : F 
   field_simp
 
 /- English proof (translation)
-Distinguish the cases in `hc : m 1 0 = 0`. Rewrite using `[rWS_zero χ hm hc, rWS_zero χ hm hc]`. Simplify using the standard rewrite rules. Rewrite using `[rWS_ne χ hc, rWS_ne χ hc]`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h` using `integral_norm_one χ hs (fun u : F × F => (χ ((m 0 0 * ((0 : F × F).1 * (0 : F × F).2) + m 1 1 * (u.1 * u.2) - (u.1 * (0 : F × F).2 + u.2 * (0 : F × F).1)) / m 1 0) : ℂ) * Ψ u)`. Rewrite using `[← h]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e : (u * ((s, s⁻¹) : F × F)).1 * (u * ((s, s⁻¹) : F × F)).2 = u.1 * u.2`. Simplify using `only [Prod.fst_mul, Prod.snd_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Simplify using `only [e, Prod.fst_zero, Prod.snd_zero, mul_zero, zero_mul, add_zero]`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 -/
 theorem rWS_zero_point (χ : AddChar F Circle) {m : Matrix (Fin 2) (Fin 2) F} (hm : m.det = 1) {s : F}
     (hs : s ≠ 0) (Ψ : F × F → ℂ) :
@@ -87,9 +87,7 @@ theorem rWS_zero_point (χ : AddChar F Circle) {m : Matrix (Fin 2) (Fin 2) F} (h
     simp only [e, Prod.fst_zero, Prod.snd_zero, mul_zero, zero_mul, add_zero]
 
 /- English proof (translation)
-Establish `hd : (g.val).det ≠ 0`. Use `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit` as an intermediate fact. Conclude with `this.ne_zero`. Rewrite using `[Matrix.det_fin_two_of]`. Rewrite using `[show g.val 0 0 / (g.val).det * g.val 1 1 - g.val 0 1 * (g.val 1 0 / (g.val).det) = (g.val 0 0 * g.val 1 1 - g.val 0 1 * g.val 1 0) / (g.val).det by ring, ← Matrix.det_fin_two]`.
-
-Conclude with `div_self hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_normal (g : GL (Fin 2) F) :
     (!![g.val 0 0 / (g.val).det, g.val 0 1; g.val 1 0 / (g.val).det, g.val 1 1] :
@@ -103,9 +101,9 @@ theorem det_normal (g : GL (Fin 2) F) :
   exact div_self hd
 
 /- English proof (translation)
-Unfold `piS`. Use `congr 1`. Establish `h` using `rWS_zero_point χ (det_normal g) u.ne_zero (fun y => Φ (y * ((g.val).det, 1)))`. Simplify using `only [rWS, rWm, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one] at h`. Rewrite using `[Units.val_inv_eq_inv_val]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[mul_right_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem piS_zero (χ : AddChar F Circle) (c₁ : Fˣ →* ℂˣ) (g : GL (Fin 2) F) (u : Fˣ) (Φ : F × F → ℂ) :
     piS χ c₁ g (fun x => Φ (x * ((u : F), ((u⁻¹ : Fˣ) : F)))) 0 = piS χ c₁ g Φ 0 := by
@@ -124,7 +122,7 @@ end Local
 
 open GroundTheory.Global.AdicLiesOver in
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap (Qv v) (Kv K w))` using `(algebraMap (Qv v) (Kv K w)).injective`. Establish `h` using `Function.leftInverse_invFun hinj 0`. Simplify `h` using `[dg1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem degreeOneEmbedding_zero {K : Type} [Field K] [NumberField K] (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal] : dg1 v w (0 : K) = 0 := by
   have hinj : Function.Injective (algebraMap (Qv v) (Kv K w)) := (algebraMap (Qv v) (Kv K w)).injective
@@ -136,9 +134,9 @@ end GlobalTheory.CompanionTheory.TwistZero
 namespace GlobalTheory.CompanionTheory.TwistZero
 
 /- English proof (translation)
-Introduce `K _ _ c v D u g`. Consider the cases of `D with`. Consider the case `sp w₁ w₂ Φ`. Simplify using `only [LM.tw, LM.val, degreeOneEmbedding_zero]`. Conclude with `piS_zero _ _ g u Φ`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `ns w σ η Φ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem val_tw_zero : ∀ (K : Type) [Field K] [NumberField K] (c : HeckeCharacter K) (v : Pl) (D : LM c v)
     (u : (Qv v)ˣ) (g : GL (Fin 2) (Qv v)), (D.tw u).val g 0 = D.val g 0 := by

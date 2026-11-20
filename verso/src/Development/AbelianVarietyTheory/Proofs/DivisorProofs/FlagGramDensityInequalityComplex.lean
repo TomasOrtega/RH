@@ -6,20 +6,20 @@ open scoped ENNReal Matrix
 namespace GlobalTheory.FlagGram
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul ht]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem cube_cbrt (t : ℝ) (ht : 0 ≤ t) : (t ^ (1/3:ℝ)) ^ 3 = t := by
   rw [← Real.rpow_natCast, ← Real.rpow_mul ht]; norm_num
 
 /- English proof (translation)
-Rewrite using `[Real.rpow_neg ht, ← Real.rpow_natCast, ← Real.rpow_mul ht]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem rpow_neg_four_thirds (t : ℝ) (ht : 0 ≤ t) :
     t ^ (-(4/3:ℝ)) = ((t ^ (1/3:ℝ)) ^ 4)⁻¹ := by
   rw [Real.rpow_neg ht, ← Real.rpow_natCast, ← Real.rpow_mul ht]; norm_num
 
 /- English proof (translation)
-Establish `ha3 : 1 ≤ a ^ 3` using `one_le_pow₀ ha`. Establish `hw3 : 1 ≤ w ^ 3` using `one_le_pow₀ hw`. Break down `le_total a w with h | h` into its components or cases. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg (by linarith : (0:ℝ) ≤ w) (sub_nonneg.2 h)) (by linarith : (0:ℝ) ≤ w + a)]`. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg a) (sub_nonneg.2 h)]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sq_mul_le_cubes (a w : ℝ) (ha : 1 ≤ a) (hw : 1 ≤ w) :
     a ^ 2 * w ≤ a ^ 3 + w ^ 3 - 1 := by
@@ -30,15 +30,15 @@ theorem sq_mul_le_cubes (a w : ℝ) (ha : 1 ≤ a) (hw : 1 ≤ w) :
   · nlinarith [mul_nonneg (sq_nonneg a) (sub_nonneg.2 h)]
 
 /- English proof (translation)
-Rewrite using `[rpow_neg_four_thirds _ (by linarith), rpow_neg_four_thirds _ (by linarith), rpow_neg_four_thirds _ (by linarith), rpow_neg_four_thirds _ (by linarith)]`. Establish `eA` using `cube_cbrt (1 + A) (by linarith)`. Establish `eB` using `cube_cbrt (1 + B) (by linarith)`. Establish `eC` using `cube_cbrt (1 + C) (by linarith)`. Establish `hα : 1 ≤ (1 + A) ^ (1/3:ℝ)` using `Real.one_le_rpow (by linarith) (by norm_num)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ : 1 ≤ (1 + B) ^ (1/3:ℝ)` using `Real.one_le_rpow (by linarith) (by norm_num)`. Establish `hγ : 1 ≤ (1 + C) ^ (1/3:ℝ)` using `Real.one_le_rpow (by linarith) (by norm_num)`. Establish `hδ : 0 < (1 + D) ^ (1/3:ℝ)` using `Real.rpow_pos_of_pos (by linarith) _`. Generalize the expression as in `(1 + A) ^ (1/3:ℝ) = α at *`. Generalize the expression as in `(1 + B) ^ (1/3:ℝ) = β at *`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(1 + C) ^ (1/3:ℝ) = γ at *`. Generalize the expression as in `(1 + D) ^ (1/3:ℝ) = δ at *`. Establish `hx : α ^ 2 * β ≤ 1 + A + B` using `by have := sq_mul_le_cubes α β hα hβ; linarith`. Establish `hy : γ ^ 2 * β ≤ 1 + C + D` using `by have := sq_mul_le_cubes γ β hγ hβ; linarith`. Establish `hp1 : 0 < α ^ 2 * β` using `by positivity`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp2 : 0 < γ ^ 2 * β` using `by positivity`. Establish `hprod : (α ^ 2 * β) ^ 2 * (γ ^ 2 * β) ^ 2 ≤ (1 + A + B) ^ 2 * (1 + C + D) ^ 2` using `by gcongr`. Establish `hδ4 : 0 < (δ ^ 4)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_inv, ← mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (α ^ 4)⁻¹ * (γ ^ 4)⁻¹ * ((β ^ 4)⁻¹ + (δ ^ 4)⁻¹) := by`. Apply `mul_le_mul_of_nonneg_left _ (by positivity); linarith` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem key (A B C D : ℝ) (hA : 0 ≤ A) (hB : 0 ≤ B) (hC : 0 ≤ C) (hD : 0 ≤ D) (hBD : B ≤ D) :
     ((1 + A + B) ^ 2 * (1 + C + D) ^ 2)⁻¹ ≤
@@ -76,9 +76,9 @@ end GlobalTheory.FlagGram
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `a b c`. Break down `le_total (‖b‖ ^ 2) (‖a * c - b‖ ^ 2) with h | h` into its components or cases. Conclude with `FlagGram.key _ _ _ _ (by positivity) (by positivity) (by positivity) (by positivity) h`. Use `FlagGram.key (‖c‖ ^ 2) (‖a * c - b‖ ^ 2) (‖a‖ ^ 2) (‖b‖ ^ 2) (by positivity) (by positivity) (by positivity) (by positivity) h` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm]`. Use `_ ≤ _ := this`. Use `_ = _ := by ring`.
+A detailed English derivation is pending.
 -/
 theorem flagGram_density_ineq : ∀ a b c : ℂ, ((1 + ‖a‖ ^ 2 + ‖b‖ ^ 2) ^ 2 * (1 + ‖c‖ ^ 2 + ‖a * c - b‖ ^ 2) ^ 2)⁻¹ ≤ (1 + ‖a‖ ^ 2) ^ (-(4 / 3 : ℝ)) * (1 + ‖c‖ ^ 2) ^ (-(4 / 3 : ℝ)) * ((1 + ‖b‖ ^ 2) ^ (-(4 / 3 : ℝ)) + (1 + ‖a * c - b‖ ^ 2) ^ (-(4 / 3 : ℝ))) := by
   intro a b c

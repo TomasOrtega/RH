@@ -8,7 +8,7 @@ open Matrix MeasureTheory Set Filter Topology GlobalTheory.IndefiniteRowSideFull
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.Leibniz.superconn_fsmul | exact GlobalTheory.TorsionForm.Leibniz.superconn_fsmul | (intros; apply GlobalTheory.TorsionForm.Leibniz.superconn_fsmul <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.superconnection_base_function_leibniz : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ} (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ) (ψ : E → ℂ) (r : Pt E g → Ext (n + n + g)) (P : Pt E g), DifferentiableAt ℝ ψ P.1 → DifferentiableAt ℝ r P → superconn τ h β u (fun Q => ψ Q.1 • r Q) P = ψ P.1 • superconn τ h β u r P + dBase β ψ P.1 (r P) := by
   first | exact @GlobalTheory.TorsionForm.Leibniz.superconn_fsmul | exact GlobalTheory.TorsionForm.Leibniz.superconn_fsmul | (intros; apply GlobalTheory.TorsionForm.Leibniz.superconn_fsmul <;> assumption)

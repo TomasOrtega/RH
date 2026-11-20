@@ -17,9 +17,9 @@ open Formalism.BasicNotions.TH
 namespace GlobalTheory.HeightCounting.Up.StandardFrameAgreement
 
 /- English proof (translation)
-Establish `key : ∀ {E : Type} [Field E] [NumberField E] {F1 F2 : Subfield E} (h : F1 = F2), R3.swapCast h = principalLevelFrame.tensCastR h`. Introduce `E _ _ F1 F2 h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Unfold `R3.StdFrame GlobalTheory.NJoin.StdFrame principalLevelFrame.StdPsi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[key hF]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stdFrame_iff {D : D7} {V : HSp D} {n : ℕ} (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V n) :
     R3.StdFrame hF P ↔ GlobalTheory.NJoin.StdFrame hF P := by
@@ -34,15 +34,15 @@ theorem stdFrame_iff {D : D7} {V : HSp D} {n : ℕ} (hF : D.host.F = maximalReal
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `_ hL`. Use `⟨1, one_pos, fun eps C8 C5 c6 Cb _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C _ _ _ => ⟨0, fun cD _ => ⟨0, fun ch _ => ⟨0, fun K _ _ _ _ _ _ => ?_⟩⟩⟩⟩⟩` and prove the remaining obligations. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun B f T _ _ _ _ => ?_⟩` and prove the remaining obligations. Introduce `_ w Z Wt p0 t nch n xd c hNE _ _ hC Xd E labPi hb htup hg hf`. Take `⟨m⟩` from `hNE`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `ad` using `m.ad`. Use `⟨⟨t.r.Y.hF, ad.PV, fun j => (stdFrame_iff _ _).1 (ad.std j), fun j => (stdFrame_iff _ _).1 (t.r.Y.stdPsi.2 j), fun _ => 1, ?_, fun μ hμ j => (ad.eW μ hμ j).symm, ?_, ?_, fun σ => ?_⟩⟩` and prove the remaining obligations. Introduce `j h`. Simplify using `only [inv_one, one_mul, mul_one]`. Conclude with `ad.rat j h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μ hμ j h γ hγ he v`. Establish `he'` using `he`. Simplify using `only [inv_one, one_mul, mul_one] at he'`. Establish `key` using `ad.wt μ hμ j h γ hγ he' ((ad.eW μ hμ j).symm v)`. Use `(LinearEquiv.symm_apply_eq _).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ key.symm` and prove the remaining obligations. Conclude with `congrArg _ (LinearEquiv.apply_symm_apply _ v).symm`. Introduce `μ hμ j x h`. Use `(LinearEquiv.eq_symm_apply _).2 ?_` and prove the remaining obligations. Use `(ad.read μ hμ j x h).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [inv_one, one_mul]`. Both sides reduce to the same expression. Conclude with `Formalism.L2.NG.IsoRep.refl _`.
+A detailed English derivation is pending.
 -/
 theorem agree_of_layer : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ T w Z Wt _ t nch n c => ∀ (hC : t.r.z.R.C = TC.cf w.I w.l Z) (Xd : DivX (w.D Z)) (E : EigIdx (w.D Z) Xd) (labPi : E.Pi → (famR (w.st Z) w.I t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr).A.fam.base.Ix) hb htup hg hf, Nonempty (GlobalTheory.NJoin.Agree (realOfRead t.r.z.R.toRealDat t.r.z.F.lv2 t.r.Y n.tp hC Xd E labPi hb htup hg hf) c.a.all.gal.mt (realOfRead t.r.z.R.toRealDat t.r.z.F.lv2 t.r.Y n.tp hC Xd E labPi hb htup hg hf).rep) := by
   intro _ hL

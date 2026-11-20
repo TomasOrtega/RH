@@ -10,23 +10,21 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors Pointwise
 
 /- English proof (translation)
-Introduce `M _ K _ _ _ b 𝔞 hb h𝔞`. Establish `h𝔞0 : 𝔞 ∈ (Ideal (𝓞 K))⁰` using `mem_nonZeroDivisors_of_ne_zero h𝔞`. Use `set S : Set (HeightOneSpectrum (𝓞 K)) := {v | v.asIdeal ∣ Ideal.span {((M : ℕ) : 𝓞 K)}}`. Establish `hM0 : Ideal.span {((M : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `NeZero.ne M` after adjusting the coercions. Establish `hS : S.Finite` using `Ideal.finite_factors hM0`. Take `⟨v, hvS, hprime, hvc⟩` from `degOne K S hS (ClassGroup.mk0 ⟨𝔞, h𝔞0⟩)⁻¹`. Use `haveI : Fact (Ideal.absNorm v.asIdeal).Prime := ⟨hprime⟩`. Take `⟨π, hπ⟩` from `(red K (Ideal.absNorm v.asIdeal) v.asIdeal).1 rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpv` using `((red K (Ideal.absNorm v.asIdeal) v.asIdeal).2 π hπ).2.2.2`. Establish `hcop : (Ideal.absNorm v.asIdeal).Coprime M`. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hprime]`. Introduce and unpack `⟨k, hk⟩`. Apply `hvS` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `show v.asIdeal ∣ _`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem, hk, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hpv`. Establish `hζ` using `(IsCyclotomicExtension.zeta_spec M ℚ K).toInteger_isPrimitiveRoot`. Take `⟨hπζ, hdvd⟩` from `redRoot (𝓞 K) _ π M _ hcop hζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨χ, hχ, -⟩` from `teich (𝓞 K) _ π M ((Ideal.absNorm v.asIdeal - 1) / M) _ hζ hπζ (Nat.mul_div_cancel' hdvd)`. Establish `hXv` using `xJac M K b _ π χ hcop hb hχ`. Rewrite `hXv` using `[hπ]`. Establish `hv0 : v.asIdeal ∈ (Ideal (𝓞 K))⁰` using `mem_nonZeroDivisors_of_ne_zero v.ne_bot`. Establish `hprin : (𝔞 * v.asIdeal).IsPrincipal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ClassGroup.mk0_eq_one_iff (mul_mem h𝔞0 hv0)]`. Establish `hm : ClassGroup.mk0 ⟨𝔞 * v.asIdeal, mul_mem h𝔞0 hv0⟩ = ClassGroup.mk0 ⟨𝔞, h𝔞0⟩ * ClassGroup.mk0 ⟨v.asIdeal, hv0⟩`. Rewrite using `[← map_mul]`. Both sides reduce to the same expression. Rewrite using `[hm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ * UpperTheory.V.Kum.primeCl v = 1`. Rewrite using `[hvc, mul_inv_cancel]`. Take `⟨y, hy⟩` from `hprin`. Establish `hy' : Ideal.span {y} = 𝔞 * v.asIdeal` using `hy.symm`. Establish `hy0 : y ≠ 0`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `rfl`. Rewrite `hy'` using `[Ideal.span_singleton_eq_bot.2 rfl]`. Conclude with `(mul_ne_zero h𝔞 v.ne_bot) hy'.symm`. Establish `hXy` using `(xMul M K b).2.2.2.2 y hy0`. Rewrite `hXy` using `[hy']`.
-
-Conclude with `⟨_, (xMul M K b).2.1 𝔞 v.asIdeal _ _ h𝔞 v.ne_bot hXy hXv⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.xEx :
     ∀ (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (b : ℕ) (𝔞 : Ideal (𝓞 K)), b < M → 𝔞 ≠ ⊥ → ∃ X : K, IsX M K b 𝔞 X := by

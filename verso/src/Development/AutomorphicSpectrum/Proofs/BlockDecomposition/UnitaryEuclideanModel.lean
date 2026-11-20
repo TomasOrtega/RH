@@ -32,9 +32,9 @@ def dualCoord (E : KMod n) :
     simp [orthonormal_iff_ite.mp ho]
 
 /- English proof (translation)
-Use `set r := (InnerProductSpace.toDual ℂ E.V).symm ξ with hr`. Establish `h1 : ‖r‖ = ‖ξ‖` using `(InnerProductSpace.toDual ℂ E.V).symm.norm_map ξ`. Establish `h2 : ‖(stdOrthonormalBasis ℂ E.V).repr r‖ = ‖r‖` using `(stdOrthonormalBasis ℂ E.V).repr.norm_map r`. Rewrite using `[← h1, ← h2, EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h3 : (dualCoord E ξ) i = ξ (stdOrthonormalBasis ℂ E.V i)` using `rfl`. Rewrite using `[h3, OrthonormalBasis.repr_apply_apply, ← InnerProductSpace.toDual_symm_apply (𝕜 := ℂ), ← hr, norm_inner_symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_dualCoord (E : KMod n) (ξ : E.V →L[ℂ] ℂ) : ‖dualCoord E ξ‖ = ‖ξ‖ := by
   set r := (InnerProductSpace.toDual ℂ E.V).symm ξ with hr
@@ -63,14 +63,14 @@ def dualAct (E : KMod n) : (E.V →L[ℂ] E.V) →ₗ[ℂ]
     simp
 
 /- English proof (translation)
-Simplify using `[dualAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualAct_apply (E : KMod n) (T : E.V →L[ℂ] E.V) (v) :
     dualAct E T v = dualCoord E ((dualCoord E).symm v ∘L T) := by
   simp [dualAct]
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (p := (· ∈ Matrix.unitaryGroup (Fin n) ℂ)) ?_ _` and prove the remaining obligations. Simplify using `using (continuous_subtype_val.star : Continuous fun k : Matrix.unitaryGroup (Fin n) ℂ => star k.1)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_unitary_inv :
     Continuous fun k : Matrix.unitaryGroup (Fin n) ℂ => k⁻¹ := by
@@ -79,19 +79,19 @@ theorem continuous_unitary_inv :
     Continuous fun k : Matrix.unitaryGroup (Fin n) ℂ => star k.1)
 
 /- English proof (translation)
-Establish `hact : ∀ k ξ, dualAct E (E.ρ k⁻¹) (dualCoord E ξ) = dualCoord E (ξ ∘L E.ρ k⁻¹)`. Introduce `k ξ`. Rewrite using `[dualAct_apply, LinearEquiv.symm_apply_apply]`. Set `ρ' : Matrix.unitaryGroup (Fin n) ℂ →* (EuclideanSpace ℂ (Fin (Module.finrank ℂ E.V)) →L[ℂ] EuclideanSpace ℂ (Fin (Module.finrank ℂ E.V)))` to `{ toFun := fun k => dualAct E (E.ρ k⁻¹) map_one' := by ext1 v`. Rewrite using `[dualAct_apply, inv_one, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `dualCoord E ((dualCoord E).symm v ∘L ContinuousLinearMap.id ℂ E.V) = v`. Rewrite using `[ContinuousLinearMap.comp_id, LinearEquiv.apply_symm_apply]`. Use the proof step `map_mul' := by`. Introduce `k l`. Use `ext1 v`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨ξ, rfl⟩` from `(dualCoord E).surjective v`. Rewrite using `[ContinuousLinearMap.mul_apply, hact l, hact k, hact (k * l), _root_.mul_inv_rev, map_mul]`. Use `rfl }`. Use `⟨dualCoord E, ρ', ?_, ?_, fun k ξ => (hact k ξ).symm⟩` and prove the remaining obligations. Establish `h1 : Continuous (dualAct E)` using `LinearMap.continuous_of_finiteDimensional _`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h1.comp (E.cont.comp continuous_unitary_inv)`. Introduce `k v`. Take `⟨ξ, rfl⟩` from `(dualCoord E).surjective v`. Establish `hle : ∀ (l : Matrix.unitaryGroup (Fin n) ℂ) (η : E.V →L[ℂ] ℂ), ‖η ∘L E.ρ l‖ ≤ ‖η‖`. Introduce `l η`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun x => ?_` and prove the remaining obligations. Simplify `η.le_opNorm (E.ρ l x)` using `[E.iso]`. Establish `hback : (ξ ∘L E.ρ k⁻¹) ∘L E.ρ k = ξ`. Use extensionality with `x`. Establish `: E.ρ k⁻¹ (E.ρ k x) = x`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `h` using `congrArg (fun T : E.V →L[ℂ] E.V => T x) (E.ρ.map_mul k⁻¹ k)`. Simplify using `using h.symm`. Simplify using `[this]`. Establish `h2 : ‖ξ ∘L E.ρ k⁻¹‖ = ‖ξ‖`. Use `le_antisymm (hle _ _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `‖dualAct E (E.ρ k⁻¹) (dualCoord E ξ)‖ = _`. Rewrite using `[hact, norm_dualCoord, norm_dualCoord, h2]`.
+A detailed English derivation is pending.
 -/
 theorem dualRep_exists {n : ℕ} (E : KMod n) :
     ∃ (e : (E.V →L[ℂ] ℂ) ≃ₗ[ℂ] EuclideanSpace ℂ (Fin (Module.finrank ℂ E.V)))

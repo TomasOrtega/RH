@@ -11,13 +11,13 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H D g ⟨e⟩`. Take `⟨g', ty, h, -, P, -, hinj, hdisc, hspan, -⟩` from `GlobalTheory.PeriodExists.exists_typeFn_period H D`. Set `L : Submodule ℤ (Fin g' → ℂ)` to `LinearMap.range P.toIntLinearMap`. Establish `: DiscreteTopology L` using `hdisc`. Establish `: IsZLattice ℝ L` using `⟨by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (L : Set (Fin g' → ℂ)) = Set.range P` using `by ext; simp [L]`. Rewrite using `[this]`. Conclude with `hspan⟩`. Establish `h1` using `ZLattice.rank ℝ L`. Establish `h2 : Module.finrank ℤ L = 2 * g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (e.trans (LinearEquiv.ofInjective P.toIntLinearMap hinj)).finrank_eq]`. Simplify using the standard rewrite rules. Establish `h3 : Module.finrank ℝ (Fin g' → ℂ) = 2 * g'`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `rfl : g' = g` from `by omega`. Conclude with `⟨ty, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isTypeFn_of_rank : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ), Nonempty ((Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La) → ∃ ty : Fin g → (E →+* ℂ), IsTypeFn H D.p D.q ty := by
   intro E _ _ _ H D g ⟨e⟩

@@ -6,46 +6,44 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qe54.exists_of_li f h v`.
+A detailed English derivation is pending.
 -/
 private theorem exists_of_li {Q ι : Type} [AddCommGroup Q] [Module ℂ Q] [Finite ι] (f : ι → Q →ₗ[ℂ] ℂ)
     (h : LinearIndependent ℂ f) (v : ι → ℂ) : ∃ q, ∀ i, f i q = v i :=
   _root_.UpperTheory.Reformulated.B.Qe54.exists_of_li f h v
 
 /- English proof (translation)
-Set `I : Ideal (rB ℂ K x {0})` to `Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ K x j⟩ : rB ℂ K x {0}))`. Set `mk : rB ℂ K x {0} →ₐ[ℂ] (rB ℂ K x {0} ⧸ I)` to `Ideal.Quotient.mkₐ ℂ I`. Establish `hfin` using `(GlobalTheory.T.finite_cover_chart_smooth_normal ℂ F K d x hc {0} (Finset.singleton_nonempty 0)).1`. Establish `hmem : ∀ y (hy : y ∈ rA ℂ x {0}), algebraMap F K y ∈ rB ℂ K x {0}` using `fun y hy => (integralClosure (rA ℂ x {0}) K).algebraMap_mem ⟨y, hy⟩`. Establish `hA : ∀ y (hy : y ∈ rA ℂ x {0}), ∃ c : ℂ, mk ⟨algebraMap F K y, hmem y hy⟩ = algebraMap ℂ _ c`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Use `Algebra.adjoin_induction (p := fun y hy => ∃ c : ℂ, mk ⟨algebraMap F K y, hmem y hy⟩ = algebraMap ℂ _ c) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, j, rfl⟩`. Take `rfl : i = 0` from `Finset.mem_singleton.1 hi`. Proceed by induction on `j using Fin.cases with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `zero`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, ← map_one mk]`. Use `congr 1`. Use `ext`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[div_self (hc.pd.ne 0)]`. Consider the case `succ j`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨j, rfl⟩)`.
+Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[← mk.commutes r]`. Use `congr 1`. Use `ext`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[← IsScalarTower.algebraMap_apply]`. Introduce and unpack `a b ha hb ⟨c, hc1⟩ ⟨c', hc2⟩`. Use `⟨c + c', ?_⟩` and prove the remaining obligations. Establish `e : (⟨algebraMap F K (a + b), hmem _ (add_mem ha hb)⟩ : rB ℂ K x {0}) = ⟨_, hmem a ha⟩ + ⟨_, hmem b hb⟩` using `Subtype.ext (map_add _ _ _)`. Conclude with `(congrArg mk e).trans (by rw [map_add, hc1, hc2, map_add])`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `a b ha hb ⟨c, hc1⟩ ⟨c', hc2⟩`. Use `⟨c * c', ?_⟩` and prove the remaining obligations. Establish `e : (⟨algebraMap F K (a * b), hmem _ (mul_mem ha hb)⟩ : rB ℂ K x {0}) = ⟨_, hmem a ha⟩ * ⟨_, hmem b hb⟩` using `Subtype.ext (map_mul _ _ _)`. Conclude with `(congrArg mk e).trans (by rw [map_mul, hc1, hc2, map_mul])`. Establish `hQ : Module.Finite ℂ (rB ℂ K x {0} ⧸ I)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `hfin.fg_top`. Set `g : integralClosure (rA ℂ x {0}) K → (rB ℂ K x {0} ⧸ I)` to `fun y => mk ⟨y.1, y.2⟩`. Establish `key : ∀ y, y ∈ Submodule.span (rA ℂ x {0}) (s : Set (integralClosure (rA ℂ x {0}) K)) → g y ∈ Submodule.span ℂ (g '' (s : Set (integralClosure (rA ℂ x {0}) K)))`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero`. Establish `h0 : g 0 = 0` using `map_zero mk`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Consider the case `add a b _ _ ha hb`. Establish `: g (a + b) = g a + g b`. Simplify using `only [g, ← map_add]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul a y _ hy`. Take `⟨c, hc1⟩` from `hA a.1 a.2`. Establish `e : (⟨(a • y).1, (a • y).2⟩ : rB ℂ K x {0}) = ⟨_, hmem a.1 a.2⟩ * ⟨y.1, y.2⟩` using `Subtype.ext (Algebra.smul_def a y.1)`. Establish `: g (a • y) = c • g y` using `(congrArg mk e).trans (by rw [map_mul, hc1, Algebra.smul_def])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hy`. Use `⟨⟨(s.image g), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `q -`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Use `key ⟨b.1, b.2⟩ (hs ▸ Submodule.mem_top)` as an intermediate fact. Rewrite using `[Finset.coe_image]`. Conclude with `this`. Establish `hker : ∀ e : fib ℂ K x, ∀ a ∈ I, e.1 a = 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `e a ha`. Establish `: I ≤ RingHom.ker (e.1 : rB ℂ K x {0} →+* ℂ)`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `e.2 j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this ha`. Set `L : fib ℂ K x → ((rB ℂ K x {0} ⧸ I) →ₐ[ℂ] ℂ)` to `fun e => Ideal.Quotient.liftₐ I e.1 (hker e)`. Apply the tactic sequence `have hL : ∀ e b, L e (mk b) = e.1 b := fun e b => by first | rfl | exact Ideal.Quotient.lift_mk _ _ _`. Establish `hinj : Function.Injective L`. Introduce `e e' h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subtype.ext (AlgHom.ext fun b => ?_)` and prove the remaining obligations. Rewrite using `[← hL, ← hL, h]`. Establish `li : LinearIndependent ℂ (fun e => (L e).toLinearMap)` using `(linearIndependent_algHom_toLinearMap' ℂ (rB ℂ K x {0} ⧸ I) ℂ).comp L hinj`. Establish `hF : Finite (fib ℂ K x)` using `li.finite`. Use `⟨hF, fun v => ?_⟩` and prove the remaining obligations.
-
-Take `⟨q, hq⟩` from `exists_of_li _ li v`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Use `⟨b, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[← hq e, ← hL]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem chineseRemainder_finiteCover {F K : Type} [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ K] [Algebra F K]
     [IsScalarTower ℂ F K] {d : ℕ} (x : Fin (d + 1) → F) (hc : IsFinCover ℂ K x) :
@@ -149,7 +147,7 @@ private theorem chineseRemainder_finiteCover {F K : Type} [Field F] [Field K] [A
   rfl
 
 /- English proof (translation)
-Introduce `F K _ _ _ _ _ _ d x hc`. Conclude with `chineseRemainder_finiteCover (xv x) hc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.cRT_of :
     CRT := by

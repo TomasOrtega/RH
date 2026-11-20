@@ -11,9 +11,9 @@ open Formalism.QuantumDeterminants
 variable {k i r' : ℕ}
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Establish `h1 : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i` using `by omega`. Establish `h2 : i ≤ q.val ∧ q.val < 2 * r' + k + 1 + i` using `by omega`. Simplify using `only [ιLev]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos h1, dif_pos h2]`. Apply the tactic sequence `congr 1 <;> apply Fin.ext <;> simp only [Fin.val_mk] <;> omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ιLev_apply_in (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ)
     (p q : Fin (2 * (i + r') + k + 1)) (a b : Fin (2 * r' + k + 1))
@@ -27,7 +27,7 @@ theorem ιLev_apply_in (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1))
   congr 1 <;> apply Fin.ext <;> simp only [Fin.val_mk] <;> omega
 
 /- English proof (translation)
-Simplify using `only [ιLev]`. Rewrite using `[dif_neg hp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ιLev_apply_out (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ)
     (p q : Fin (2 * (i + r') + k + 1)) (hp : ¬ (i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i)) :
@@ -36,7 +36,7 @@ theorem ιLev_apply_out (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)
   rw [dif_neg hp]
 
 /- English proof (translation)
-Simplify using `only [ιLev]`. Rewrite using `[dif_pos hp, dif_neg hq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ιLev_apply_in_out (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ)
     (p q : Fin (2 * (i + r') + k + 1)) (hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i)
@@ -45,9 +45,9 @@ theorem ιLev_apply_in_out (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k +
   rw [dif_pos hp, dif_neg hq]
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `h1 : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i` using `by omega`. Simplify using `only [liftVec]`. Rewrite using `[dif_pos h1]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Fin.val_mk]`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem liftVec_apply_in (v : Fin (2 * r' + k + 1) → ℂ) (p : Fin (2 * (i + r') + k + 1))
     (a : Fin (2 * r' + k + 1)) (hp : p.val = a.val + i) : liftVec k i r' v p = v a := by
@@ -61,7 +61,7 @@ theorem liftVec_apply_in (v : Fin (2 * r' + k + 1) → ℂ) (p : Fin (2 * (i + r
   omega
 
 /- English proof (translation)
-Simplify using `only [liftVec]`. Rewrite using `[dif_neg hp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftVec_apply_out (v : Fin (2 * r' + k + 1) → ℂ) (p : Fin (2 * (i + r') + k + 1))
     (hp : ¬ (i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i)) : liftVec k i r' v p = 0 := by
@@ -69,9 +69,9 @@ theorem liftVec_apply_out (v : Fin (2 * r' + k + 1) → ℂ) (p : Fin (2 * (i + 
   rw [dif_neg hp]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `ha` using `a.isLt`. Distinguish the cases in `hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i`. Rewrite using `[liftVec_apply_in (bvec a) p ⟨p.val - i, by omega⟩ (by simp only [Fin.val_mk]; omega)]`. Simplify using `only [bvec, Pi.single_apply, Fin.ext_iff, Fin.val_mk]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[liftVec_apply_out _ p hp]`. Simplify using `only [bvec, Pi.single_apply, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bvec_lift (a : Fin (2 * r' + k + 1)) (q : Fin (2 * (i + r') + k + 1)) (hq : q.val = a.val + i) :
     liftVec k i r' (bvec a) = bvec q := by
@@ -86,17 +86,17 @@ theorem bvec_lift (a : Fin (2 * r' + k + 1)) (q : Fin (2 * (i + r') + k + 1)) (h
     split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_bvec {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (q p : Fin m) : (M *ᵥ bvec q) p = M p q := by
   simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Distinguish the cases in `hq : i ≤ q.val ∧ q.val < 2 * r' + k + 1 + i`. Establish `hqa : q.val - i < 2 * r' + k + 1` using `by omega`. Establish `e : q.val = (⟨q.val - i, hqa⟩ : Fin (2 * r' + k + 1)).val + i` using `by simp only [Fin.val_mk]; omega`. Rewrite using `[← bvec_lift ⟨q.val - i, hqa⟩ q e, mulVec_lift, h _ e]`. Use function extensionality and compare the values at `p`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[mulVec_bvec]`. Distinguish the cases in `hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i`. Rewrite using `[ιLev_apply_in_out g p q hp hq]`. Simplify using `only [bvec, Pi.single_apply]`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Rewrite `hp` using `[e]`. Conclude with `hq hp`. Rewrite using `[ιLev_apply_out g p q hp]`. Simplify using `[bvec, Pi.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem col_fix (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (q : Fin (2 * (i + r') + k + 1))
     (h : ∀ a : Fin (2 * r' + k + 1), q.val = a.val + i → g *ᵥ bvec a = bvec a) :
@@ -118,7 +118,7 @@ theorem col_fix (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (
       simp [bvec, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `k i r'`. Use `⟨?_, fun g h => ?_⟩` and prove the remaining obligations. Rewrite using `[ιLev_eq, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`. Rewrite using `[ιLev_eq, ιLev_eq, ιLev_eq, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem level_group_homomorphism : LevHom := by
   intro k i r'
@@ -128,7 +128,7 @@ theorem level_group_homomorphism : LevHom := by
     simp
 
 /- English proof (translation)
-Introduce `k i r' g hg`. Establish `hU : gᴴ * Hpk k r' * g = Hpk k r'` using `hg`. Use `show (ιLev k i r' g)ᴴ * Hpk k (i + r') * ιLev k i r' g = Hpk k (i + r')`. Rewrite using `[ιLev_eq, Hpk_eq, Matrix.conjTranspose_submatrix, Matrix.fromBlocks_conjTranspose, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hU]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem level_group_unitary_hermitian : LevUH := by
   intro k i r' g hg
@@ -139,19 +139,19 @@ theorem level_group_unitary_hermitian : LevUH := by
   simp [hU]
 
 /- English proof (translation)
-Introduce `k i r' g hg`. Simplify using `only [Nset, Set.mem_setOf_eq] at hg ⊢`. Take `⟨hU, h2, h3⟩` from `hg`. Use `⟨level_group_unitary_hermitian k i r' g hU, ?_, ?_⟩` and prove the remaining obligations. Introduce `a p hap`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha` using `a.isLt`. Distinguish the cases in `hai : i ≤ a.val`. Establish `hbr : a.val - i < r'` using `by omega`. Distinguish the cases in `hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i`. Establish `hpl : p.val - i < 2 * r' + k + 1` using `by omega`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[ιLev_apply_in g p (eI k (i + r') a) ⟨p.val - i, hpl⟩ (eI k r' ⟨a.val - i, hbr⟩) (by simp only [Fin.val_mk]; omega) (by simp only [eI, Fin.val_mk]; omega)]`. Rewrite using `[h2 ⟨a.val - i, hbr⟩ ⟨p.val - i, hpl⟩ (by simp only [Fin.val_mk]; omega)]`. Simplify using `only [Fin.ext_iff, eI, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[ιLev_apply_out g p _ hp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : ¬ (i ≤ (eI k (i + r') a).val ∧ (eI k (i + r') a).val < 2 * r' + k + 1 + i)`. Simplify using `only [eI, Fin.val_mk]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i`. Rewrite using `[ιLev_apply_in_out g p _ hp hq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.ext_iff, eI, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[ιLev_apply_out g p _ hp]`. Introduce `p q hq1 hq2 hp1`. Establish `hql : q.val - i < 2 * r' + k + 1` using `by omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i`. Establish `hpl : p.val - i < 2 * r' + k + 1` using `by omega`. Rewrite using `[ιLev_apply_in g p q ⟨p.val - i, hpl⟩ ⟨q.val - i, hql⟩ (by simp only [Fin.val_mk]; omega) (by simp only [Fin.val_mk]; omega)]`. Rewrite using `[h3 ⟨p.val - i, hpl⟩ ⟨q.val - i, hql⟩ (by simp only [Fin.val_mk]; omega) (by simp only [Fin.val_mk]; omega) (by simp only [Fin.val_mk]; omega)]`. Simplify using `only [Fin.ext_iff, Fin.val_mk]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[ιLev_apply_out g p q hp]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem level_group_nilpotent : LevN := by
   intro k i r' g hg
@@ -190,15 +190,15 @@ theorem level_group_nilpotent : LevN := by
     · rw [ιLev_apply_out g p q hp]
 
 /- English proof (translation)
-Introduce `k i r' z g hg`. Simplify using `only [UWset, Set.mem_setOf_eq] at hg ⊢`. Take `⟨hU, hfix, hz⟩` from `hg`. Use `⟨level_group_unitary_hermitian k i r' g hU, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `col_fix` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b hb`. Establish `ha` using `a.isLt`. Establish `hbr : b.val < r'` using `by simp only [eI, Fin.val_mk] at hb; omega`. Establish `e : b = eI k r' ⟨b.val, hbr⟩` using `Fin.ext rfl`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hfix ⟨b.val, hbr⟩).1`. Apply `col_fix` to reduce the goal to its premises. Introduce `b hb`. Establish `ha` using `a.isLt`. Establish `hb'` using `b.isLt`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hai : i ≤ a.val` using `by simp only [esI, Fin.val_mk] at hb; omega`. Establish `hcr : a.val - i < r'` using `by omega`. Establish `e : b = esI k r' ⟨a.val - i, hcr⟩`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [esI, Fin.val_mk] at hb ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Conclude with `(hfix ⟨a.val - i, hcr⟩).2`. Rewrite using `[mulVec_lift, hz]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_group_unitary_weyl : LevUW := by
   intro k i r' z g hg
@@ -227,11 +227,9 @@ theorem level_group_unitary_weyl : LevUW := by
   · rw [mulVec_lift, hz]
 
 /- English proof (translation)
-Introduce `k i r' z hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `inWb at hz ⊢`. Introduce `p hp`. Distinguish the cases in `hb : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `ha : p.val - i < 2 * r' + k + 1` using `by omega`. Rewrite using `[liftVec_apply_in z p ⟨p.val - i, ha⟩ (by simp only [Fin.val_mk]; omega)]`. Conclude with `hz _ (by simp only [Fin.val_mk]; omega)`. Conclude with `liftVec_apply_out z p hb`. Unfold `Tz`.
-
-Rewrite using `[herm_lift]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_group_isotropic_vector : LevWb := by
   intro k i r' z hz
@@ -247,19 +245,19 @@ theorem level_group_isotropic_vector : LevWb := by
     rw [herm_lift]
 
 /- English proof (translation)
-Introduce `k i r' z g`. Unfold `ell`. Rewrite using `[Fin.sum_univ_add]`. Use `Eq.trans (congrArg (· + _) (Finset.sum_eq_zero ?_)) ?_` and prove the remaining obligations. Introduce `a _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha` using `a.isLt`. Establish `hp : ¬ (i ≤ (eI k (i + r') (Fin.castAdd r' a)).val ∧ (eI k (i + r') (Fin.castAdd r' a)).val < 2 * r' + k + 1 + i)`. Simplify using `only [eI, Fin.val_mk, Fin.coe_castAdd]`. Use linear arithmetic over natural numbers and integers. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ιLev_apply_out g _ _ hp, if_neg]`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only [eI, Fin.val_mk, Fin.coe_castAdd] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_lift, liftVec_apply_out _ _ hp]`. Rewrite using `[zero_add]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Establish `hb` using `b.isLt`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `split_ifs with h1 h2 h3`. Apply the tactic sequence `apply ιLev_apply_in <;> simp only [eI, Fin.val_mk, Fin.coe_natAdd] <;> omega`. It suffices to derive a contradiction. Simplify using `only [Fin.coe_natAdd] at h1`. Use linear arithmetic over natural numbers and integers.
+It suffices to derive a contradiction. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Simplify using the standard rewrite rules.
 
-It suffices to derive a contradiction. Simplify using `only [Fin.coe_natAdd] at h1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[mulVec_lift]`. Apply `liftVec_apply_in` to reduce the goal to its premises.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [eI, Fin.val_mk, Fin.coe_natAdd]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem level_group_ellipticity : LevEll := by
   intro k i r' z g
@@ -296,7 +294,7 @@ theorem level_group_ellipticity : LevEll := by
       omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨level_group_homomorphism, level_group_unitary_hermitian, level_group_nilpotent, level_group_unitary_weyl, level_group_isotropic_vector, level_group_ellipticity⟩`.
+Supply the required witnesses or components.
 -/
 theorem qnLevBasics_main :
     LevHom ∧ LevUH ∧ LevN ∧ LevUW ∧ LevWb ∧ LevEll :=

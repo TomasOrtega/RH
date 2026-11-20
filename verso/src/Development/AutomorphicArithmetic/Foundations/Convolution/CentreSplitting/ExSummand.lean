@@ -10,9 +10,9 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `E _ _ _ n μ _ π V`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨h.carrier_eq ▸ inf_le_left, ?_⟩` and prove the remaining obligations. Rewrite using `[h.carrier_eq, (formsIrr E n μ V h.summand).2.2.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨hc, rfl⟩`. Take `⟨hne, hirr⟩` from `(Cm.stab_carrier π).isIrreducible_iff.1 (Cm.isIrreducible_toModule π)`. Conclude with `⟨closureSummand E n μ _ hc (Cm.stab_carrier π) hne hirr, (formsClosure E n μ _ hc (Cm.stab_carrier π)).symm⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.exSummand :
     UpperTheory.ConvolutionTheory.Dp.ExSummand := by

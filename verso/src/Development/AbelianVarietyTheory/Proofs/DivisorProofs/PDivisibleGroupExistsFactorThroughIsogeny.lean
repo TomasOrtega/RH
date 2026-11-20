@@ -9,9 +9,9 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.Dieu
 
 /- English proof (translation)
-Proceed by induction on `m generalizing f with`. Consider the case `zero => simpa using e`. Consider the case `succ m ih`. Use `ih ?_` and prove the remaining obligations. Use `eq_zero_of_prime_smul_eq_zero ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_smul, ← pow_succ']`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_eq_zero_of_pow_smul_eq_zero {p : ℕ} [Fact p.Prime] {k : Type} [CommRing k]
     {G H : PDivGroup p k} (m : ℕ) {f : G ⟶ H} (e : (p : ℤ_[p]) ^ m • f = 0) : f = 0 := by
@@ -24,13 +24,13 @@ theorem hom_eq_zero_of_pow_smul_eq_zero {p : ℕ} [Fact p.Prime] {k : Type} [Com
     exact e
 
 /- English proof (translation)
-Introduce `p _ k _ _ G Q H m q q' f h1 h2 hk`. Establish `hq : kerIdeal (q.app m) ≤ RingHom.ker (q'.app m : G.A m →ₐ[k] Q.A m)`. Use `(kerIdeal_le_ker_iff (q.app m) _).2 fun c => ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun x => Hom.conv x m) h2`. Simplify using `only [pow_smul_conv] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2` using `DFunLike.congr_fun (congrArg ofConv (congrArg toPts e)) c`. Rewrite `e2` using `[map_one]`. Use `e2.trans ?_` and prove the remaining obligations. Both sides reduce to the same expression. Establish `hf` using `(kerIdeal_le_ker_iff (f.app m) _).1 (hk.trans hq)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hc : Hom.conv (q' ≫ f) m = 1`. Use `toPts_injective (ofConv_injective (AlgHom.ext fun c => ?_))` and prove the remaining obligations. Rewrite using `[map_one]`. Use `(hf c).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Take `⟨g, hg⟩` from `GlobalTheory.T.pDivHom_divisible_by_pow_of_kills_pow_torsion p k Q H m (q' ≫ f) hc`. Use `⟨g, sub_eq_zero.1 (hom_eq_zero_of_pow_smul_eq_zero m ?_)⟩` and prove the remaining obligations. Rewrite using `[smul_sub, ← Linear.comp_smul, ← hg, ← Category.assoc, h1, Linear.smul_comp, Category.id_comp, sub_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_comp_eq_of_kerIdeal_le : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     (G Q H : PDivGroup p k) (m : ℕ) (q : G ⟶ Q) (q' : Q ⟶ G) (f : G ⟶ H),

@@ -8,19 +8,19 @@ namespace GlobalTheory.Nef.PathJet
 open PowerSeries
 
 /- English proof (translation)
-Introduce `A B R _ _ _ π ε m β δ hεπ hmπ hεm hm2 hδ hδπ`. Establish `hεπ' : ∀ b, ε (π b) = b` using `fun b => by rw [← RingHom.comp_apply, hεπ, RingHom.id_apply]`. Establish `hεm' : ∀ f, ε (m f) = ε f` using `fun f => by rw [← RingHom.comp_apply, hεm]`. Establish `hδ1 : δ 1 = 0`. Establish `h` using `hδ 1 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mul_one, map_one, one_mul] at h`. Establish `: δ 1 + δ 1 = δ 1 + 0` using `by rw [add_zero]; exact h.symm`. Conclude with `add_left_cancel this`. Establish `hdm : ∀ f, δ (m f) = 2 * δ f` using `deriv_comp_m π ε m β δ hεπ hmπ hm2 hδ hδπ`. Use `⟨⟨?_, ?_, ?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f g`. Use `⟨C (-(δ f * δ g)), ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hδ, map_mul, map_mul]`. Simplify using `only [map_add, map_mul, map_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `f g`. Simplify using `[map_add]`. Conclude with `⟨0, by ring⟩`. Simplify using `[hδ1]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `b`. Simplify using `[hεπ', hδπ]`. Introduce `f`. Use `⟨0, ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hεm', hdm]`. Establish `hrC : ∀ x : R, rescale (2 : R) (C x) = C x`. Apply the tactic sequence `intro x; ext n; rw [coeff_rescale, coeff_C]; split_ifs with h <;> simp [h]`. Simplify using `only [map_add, map_mul, rescale_X, hrC]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f`. Simplify using the standard rewrite rules. Introduce `f`. Simplify using `[coeff_C, coeff_C_mul, coeff_X]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem firstOrder_isJet : ∀ (A B R : Type) [CommRing A] [CommRing B] [CommRing R] (π : B →+* A) (ε : A →+* B) (m : A →+* A) (β : B →+* R) (δ : A →+ R), ε.comp π = RingHom.id B → m.comp π = π → ε.comp m = ε → (∀ f ∈ RingHom.ker ε, m f - 2 * f ∈ RingHom.ker ε ^ 2) → (∀ f g, δ (f * g) = β (ε f) * δ g + β (ε g) * δ f) → (∀ a, δ (π a) = 0) → GlobalTheory.Nef.PathJet.IsJet π ε m β δ 2 (fun f => PowerSeries.C (β (ε f)) + PowerSeries.C (δ f) * PowerSeries.X) := by
   intro A B R _ _ _ π ε m β δ hεπ hmπ hεm hm2 hδ hδπ

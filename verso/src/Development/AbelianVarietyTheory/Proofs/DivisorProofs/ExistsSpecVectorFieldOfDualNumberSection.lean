@@ -12,14 +12,14 @@ open AlgebraicGeometry
 variable {A : Type} [CommRing A]
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Pj.dualMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualMap_fst {B : Type} [CommRing B] (f : A →+* B) (x : DualNumber A) :
     (Formalism.L2.Pj.dualMap f x).fst = f x.fst := by
   simp [Formalism.L2.Pj.dualMap]
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Pj.dualMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualMap_snd {B : Type} [CommRing B] (f : A →+* B) (x : DualNumber A) :
     (Formalism.L2.Pj.dualMap f x).snd = f x.snd := by
@@ -34,14 +34,14 @@ def liftLoc : LocalizedModule S A →+* DualNumber (LocalizedModule S A) :=
       exact IsLocalization.map_units _ y)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftLoc_algebraMap (a : A) :
     liftLoc σ hσ S (algebraMap A _ a) = Formalism.L2.Pj.dualMap (algebraMap A (LocalizedModule S A)) (σ a) :=
   IsLocalization.lift_eq _ _
 
 /- English proof (translation)
-Establish `h : ((TrivSqZeroExt.fstHom (LocalizedModule S A) (LocalizedModule S A) (LocalizedModule S A)).toRingHom.comp (liftLoc σ hσ S)) = RingHom.id _` using `IsLocalization.ringHom_ext S (RingHom.ext fun a => by`. Simplify using `[liftLoc_algebraMap, dualMap_fst, hσ])`. Conclude with `congrArg (fun φ => φ b) h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftLoc_fst (b : LocalizedModule S A) : (liftLoc σ hσ S b).fst = b := by
   have h : ((TrivSqZeroExt.fstHom (LocalizedModule S A) (LocalizedModule S A) (LocalizedModule S A)).toRingHom.comp
@@ -53,13 +53,13 @@ theorem liftLoc_fst (b : LocalizedModule S A) : (liftLoc σ hσ S b).fst = b := 
 def dloc (b : LocalizedModule S A) : LocalizedModule S A := (liftLoc σ hσ S b).snd
 
 /- English proof (translation)
-Simplify using `[dloc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dloc_add (b b' : LocalizedModule S A) : dloc σ hσ S (b + b') = dloc σ hσ S b + dloc σ hσ S b' := by
   simp [dloc]
 
 /- English proof (translation)
-Simplify using `only [dloc, map_mul, TrivSqZeroExt.snd_mul, liftLoc_fst, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dloc_mul (b b' : LocalizedModule S A) :
     dloc σ hσ S (b * b') = b * dloc σ hσ S b' + b' * dloc σ hσ S b := by
@@ -68,13 +68,13 @@ theorem dloc_mul (b b' : LocalizedModule S A) :
   ring
 
 /- English proof (translation)
-Simplify using `[dloc, liftLoc_algebraMap, dualMap_snd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dloc_algebraMap (a : A) : dloc σ hσ S (algebraMap A _ a) = algebraMap A _ (σ a).snd := by
   simp [dloc, liftLoc_algebraMap, dualMap_snd]
 
 /- English proof (translation)
-Rewrite using `[show algebraMap A (LocalizedModule S A) u = LocalizedModule.mk (u : A) 1 from rfl]`. Use `erw [LocalizedModule.mk_mul_mk]`. Rewrite using `[show algebraMap A (LocalizedModule S A) m = LocalizedModule.mk m 1 from rfl, LocalizedModule.mk_eq]`. Conclude with `⟨1, by simp [Submonoid.smul_def, smul_eq_mul]; ring⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mk_mul_algebraMap (m : A) (u : S) :
     LocalizedModule.mk m u * algebraMap A (LocalizedModule S A) u = algebraMap A _ m := by
@@ -84,9 +84,9 @@ theorem mk_mul_algebraMap (m : A) (u : S) :
   exact ⟨1, by simp [Submonoid.smul_def, smul_eq_mul]; ring⟩
 
 /- English proof (translation)
-Establish `h1` using `mk_mul_algebraMap S r t`. Establish `h2` using `congrArg (dloc σ hσ S) h1`. Rewrite `h2` using `[dloc_mul, dloc_algebraMap, dloc_algebraMap]`. Establish `hu : IsUnit (algebraMap A (LocalizedModule S A) ((t * t : S) : A))` using `IsLocalization.map_units _ (t * t)`. Use `(hu.mul_left_inj).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mk_mul_algebraMap]`. Simplify using `only [Submonoid.coe_mul, map_mul, map_sub]`. Take the linear combination `(algebraMap A (LocalizedModule S A) t) * h2 - (algebraMap A (LocalizedModule S A) (σ t).snd) * h1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dloc_mk (r : A) (t : S) :
     dloc σ hσ S (LocalizedModule.mk r t) =
@@ -110,7 +110,7 @@ def dsec (O : (Sp A).Opens) (s : Γ(Sp A, O)) : Γ(Sp A, O) :=
     exact (congrArg (dloc σ hσ _) hs).trans (dloc_mk σ hσ _ r ⟨t, ht⟩)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ f f' => Subtype.ext (funext fun x => dloc_add σ hσ _ (f.1 x) (f'.1 x)), fun _ _ f f' => Subtype.ext (funext fun x => dloc_mul σ hσ _ (f.1 x) (f'.1 x)), fun _ _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isField_dsec : IsField ⊤ (dsec σ hσ) :=
   ⟨fun _ _ f f' => Subtype.ext (funext fun x => dloc_add σ hσ _ (f.1 x) (f'.1 x)),
@@ -118,7 +118,7 @@ theorem isField_dsec : IsField ⊤ (dsec σ hσ) :=
     fun _ _ _ _ _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun x => dloc_algebraMap σ hσ _ a)`.
+A detailed English derivation is pending.
 -/
 theorem dsec_top (a : A) :
     dsec σ hσ ⊤ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a) =
@@ -128,7 +128,7 @@ theorem dsec_top (a : A) :
 end GlobalTheory.SpecField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.SpecField.dsec σ hσ, GlobalTheory.SpecField.isField_dsec σ hσ, GlobalTheory.SpecField.dsec_top σ hσ⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.SpecField.exists_isField (A : Type) [CommRing A] (σ : A →+* DualNumber A) (hσ : ∀ a, (σ a).fst = a) :
     ∃ d : ∀ O : (Sp A).Opens, Γ(Sp A, O) → Γ(Sp A, O), IsField ⊤ d ∧

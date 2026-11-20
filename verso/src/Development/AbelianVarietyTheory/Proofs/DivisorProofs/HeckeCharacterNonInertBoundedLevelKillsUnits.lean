@@ -14,11 +14,11 @@ namespace GlobalTheory.FunObj.SqNum.UnrKill
 open GlobalTheory.Mem.Col2.SplitChar
 
 /- English proof (translation)
-Use `le_antisymm (vl_le (natCast_mem _ _) v) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hm`. Establish `hab'` using `congrArg (Int.cast : ℤ → AE D) hab`. Move the coercions through the operations in `at hab'`. Establish `h2 : vl D v ((a : AE D) * m) < 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' (vl_le (intCast_mem _ _) v)).trans_lt hlt`. Establish `h3 : vl D v ((b : AE D) * q) < 1`. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' (vl_le (intCast_mem _ _) v)).trans_lt (val_nat_lt hv)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `Valuation.map_add_lt _ h2 h3`. Rewrite `h4` using `[hab', map_one]`. Conclude with `lt_irrefl _ h4`.
+A detailed English derivation is pending.
 -/
 theorem vl_nat_coprime {D : D7} {q m : ℕ} (hm : Nat.Coprime m q) {v : HeightOneSpectrum (𝓞 D.host.E)}
     (hv : Formalism.L2.Host.OverP D.host q v) : vl D v (m : AE D) = 1 := by
@@ -37,9 +37,9 @@ theorem vl_nat_coprime {D : D7} {q m : ℕ} (hm : Nat.Coprime m q) {v : HeightOn
   exact lt_irrefl _ h4
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | h0` into its components or cases. Conclude with `zero_le'`. Rewrite `h`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem le_exp_neg_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1 : ℤ) := by
   rcases eq_or_ne x 0 with rfl | h0
@@ -50,9 +50,9 @@ theorem le_exp_neg_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ W
     omega
 
 /- English proof (translation)
-Take `⟨m, -, hm, s, hs, e⟩` from `h k`. Establish `h1` using `vl_nat_coprime hm hv`. Establish `h2 : vl D v x = vl D v (q : AE D) ^ k * vl D v s`. Rewrite using `[← one_mul (vl D v x), ← h1, ← map_mul, e, map_mul, map_pow]`. Rewrite using `[h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(mul_le_of_le_one_right' (vl_le hs v)).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem vl_le_of_zeroAt {D : D7} {q : ℕ} {x : AE D} (h : ZeroAt D q x) {v : HeightOneSpectrum (𝓞 D.host.E)}
     (hv : Formalism.L2.Host.OverP D.host q v) (k : ℕ) : vl D v x ≤ WithZero.exp (-(k : ℤ)) := by
@@ -70,11 +70,9 @@ end GlobalTheory.FunObj.SqNum.UnrKill
 open GlobalTheory.FunObj.SqNum.UnrKill GlobalTheory.Mem.Col2.SplitChar in
 
 /- English proof (translation)
-Introduce `D χ S k hS hχ u hu hz`. Establish `hU` using `finIdl_unit hu`. Use `GlobalTheory.Mem.LocTriv.eq_one_of_local D.host.E χ.1 χ.2.1 (finIdl D u) hU (fun w => by rw [finIdl_fst]; rfl) (fun v x hx => ?_)` and prove the remaining obligations. Establish `hxu : Formalism.L2.Host.IsUnitAt v x` using `by show Valued.v (x : v.adicCompletion D.host.E) = 1`. Rewrite using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU v`. Break down `hχ v with h | ⟨q, hq, hov, hl⟩` into its components or cases. Conclude with `h x hxu`. Use `hl x hxu ?_` and prove the remaining obligations. Rewrite using `[hx, vl_sub_one]`.
-
-Conclude with `vl_le_of_zeroAt (hz q (hS q hq).1 (hS q hq).2) hov k`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FunObj.SqNum.hchar_finIdl_eq_one_of_zeroAt : ∀ (D : D7) (χ : HChar D.host.E) (S : Finset ℕ) (k : ℕ), (∀ q ∈ S, q.Prime ∧ ¬ InertQ D q) → (∀ v, χ.UnrAt v ∨ ∃ q ∈ S, Formalism.L2.Host.OverP D.host q v ∧ χ.LevelLe v k) → ∀ u, IntU D u → (∀ q : ℕ, q.Prime → ¬ InertQ D q → ZeroAt D q ((u : AE D) - 1)) → χ.1 (finIdl D u) = 1 := by
   intro D χ S k hS hχ u hu hz

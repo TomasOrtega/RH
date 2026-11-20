@@ -27,7 +27,7 @@ def push (x : Sp V ⟶ Y.X) {G : SAB H (Sp V)} (ψ : SABMap G Y.t x) (q : epsOve
     rfl)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(ψ.cart.2 (epsOver V V) p q (push x ψ p) (push x ψ q) rfl rfl).symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem push_mul (x : Sp V ⟶ Y.X) {G : SAB H (Sp V)} (ψ : SABMap G Y.t x) (p q : epsOver V V ⟶ G.G) :
     push x ψ (p * q) = push x ψ p * push x ψ q := by
@@ -35,7 +35,7 @@ theorem push_mul (x : Sp V ⟶ Y.X) {G : SAB H (Sp V)} (ψ : SABMap G Y.t x) (p 
   exact (ψ.cart.2 (epsOver V V) p q (push x ψ p) (push x ψ q) rfl rfl).symm
 
 /- English proof (translation)
-Establish `h : push x ψ 1 * push x ψ 1 = push x ψ 1`. Rewrite using `[← push_mul, _root_.mul_one]`. Conclude with `mul_eq_left.1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_one (x : Sp V ⟶ Y.X) {G : SAB H (Sp V)} (ψ : SABMap G Y.t x) :
     push x ψ 1 = 1 := by
@@ -54,11 +54,11 @@ end GlobalTheory.TanComb
 open GlobalTheory.TanComb in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y V _ x G ψ m ub ub' a w v hub hv hw`. Take `⟨u, hu, rfl⟩` from `hw`. Apply `GlobalTheory.FlagMod.tan_ext_left` to reduce the goal to its premises. Rewrite using `[hv, GlobalTheory.FlagMod.tv_sum']`. Establish `key : ∏ i, ReciprocityTheory.ChartRestriction.G.PullbackSections.tv (a i • ub' i) = pushHom x ψ (List.ofFn u).prod`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_list_prod, List.map_ofFn, List.prod_ofFn]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv (a i • ub' i)).left = (u i).left ≫ ψ.φ`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_smul, smT_left, hub i, hu i, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TanComb.tanComb : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {V : Type} [CommRing V] (x : Sp V ⟶ Y.X) (G : SAB H (Sp V)) (ψ : SABMap G Y.t x) {m : ℕ} (ub : Fin m → (epsOver V V ⟶ G.G)) (ub' : Fin m → ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM x Y.t.G) (a : Fin m → V) (w : epsOver V V ⟶ G.G) (v : ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM x Y.t.G), (∀ i, (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv (ub' i)).left = (ub i).left ≫ ψ.φ) → (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv v).left = w.left ≫ ψ.φ → IsComb ub a w → ∑ i, a i • ub' i = v := by
   intro E _ _ _ H Dw l Xo c O _ β Y V _ x G ψ m ub ub' a w v hub hv hw

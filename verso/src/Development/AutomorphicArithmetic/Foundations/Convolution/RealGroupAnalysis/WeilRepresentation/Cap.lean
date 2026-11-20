@@ -7,7 +7,7 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π` and use `Fo.capOf F E D W M π (fun O => Ff.lieLift F E D O W M π) fun O => Ff.moveE F E D O W M π`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.cap :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), St.Cap W M π :=

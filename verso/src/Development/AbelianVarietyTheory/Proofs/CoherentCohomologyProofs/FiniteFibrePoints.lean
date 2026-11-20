@@ -13,9 +13,9 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory.AbTorsionFinite
 
 /- English proof (translation)
-Establish `hfin : (f.left ⁻¹' {y.left (IsLocalRing.closedPoint K)}).Finite` using `f.left.finite_preimage_singleton _`. Use `hfin.to_subtype` as an intermediate fact. Use `Finite.of_injective (fun x => (⟨x.1.left (IsLocalRing.closedPoint K), by` and prove the remaining obligations. Establish `h` using `congrArg (fun u => u.left (IsLocalRing.closedPoint K)) x.2`. Conclude with `h⟩ : (f.left ⁻¹' {y.left (IsLocalRing.closedPoint K)}))) ?_`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Use `Subtype.ext (Over.OverMorphism.ext ?_)` and prove the remaining obligations. Conclude with `ext_of_apply_closedPoint_eq (K := K) X.hom (Over.w a.1) (Over.w b.1) (congrArg Subtype.val hab)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_fibre_points {K : Type} [Field K] [IsAlgClosed K]
     {X Y : Over (Spec (CommRingCat.of K))} [LocallyOfFiniteType X.hom] (f : X ⟶ Y)
@@ -34,9 +34,9 @@ theorem finite_fibre_points {K : Type} [Field K] [IsAlgClosed K]
     (congrArg Subtype.val hab)
 
 /- English proof (translation)
-Introduce `K _ _ B _ hB n hn`. Use `GlobalTheory.T.isFinite_mulByNat_abelianVariety_algClosed K B hB n hn` as an intermediate fact. Establish `: IsProper B.hom` using `hB.proper`. Use `finite_fibre_points (mulA B n) 1` as an intermediate fact. Use `Finite.of_equiv _ (Equiv.subtypeEquivRight (p := fun x => x ≫ mulA B n = 1) fun x => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: x ≫ mulA B n = x ^ n`. Rewrite using `[mulA, MonObj.comp_pow, Category.comp_id]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finite_torsion : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B], IsAbelianScheme B → ∀ n : ℕ, 1 ≤ n → Finite {x : 𝟙_ (Over (Spec (CommRingCat.of K))) ⟶ B // x ^ n = 1} := by
   intro K _ _ B _ hB n hn

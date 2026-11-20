@@ -13,11 +13,11 @@ namespace GlobalTheory.FrobFilt.Exact
 open TensorProduct
 
 /- English proof (translation)
-Set `f' : M →ₗ[Q] N` to `f.extendScalarsOfSurjective hQ`. Use `haveI : CompatibleSMul R Q S M := CompatibleSMul.of_algebraMap_surjective S M hQ`. Use `haveI : CompatibleSMul R Q S N := CompatibleSMul.of_algebraMap_surjective S N hQ`. Establish `h : ∀ x, (equivOfCompatibleSMul R Q R S N).symm (f.lTensor S x) = f'.lTensor S ((equivOfCompatibleSMul R Q R S M).symm x)`. Introduce `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp [ha, hb]`. Consider the case `tmul s m => rfl`. Introduce `x y hxy`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(equivOfCompatibleSMul R Q R S M).symm.injective` to reduce the goal to its premises. Apply `Module.Flat.lTensor_preserves_injective_linearMap (M := S) f' hf` to reduce the goal to its premises. Rewrite using `[← h, ← h, hxy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lTensor_injective_of_flat_quot {R Q S M N : Type} [CommRing R] [CommRing Q] [Algebra R Q]
     (hQ : Function.Surjective (algebraMap R Q))
@@ -41,37 +41,33 @@ private theorem lTensor_injective_of_flat_quot {R Q S M N : Type} [CommRing R] [
   rw [← h, ← h, hxy]
 
 /- English proof (translation)
-Establish `hgS : algebraMap R S g = 0`. Rewrite using `[hφ, ← map_pow, hker, hg]`. Conclude with `dvd_mul_left _ _`. Establish `hS : ∀ s : S, g • s = 0` using `fun s => by rw [Algebra.smul_def, hgS, zero_mul]`. Establish `tM : Module.IsTorsionBy R M g` using `fun m => hM m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tN : Module.IsTorsionBy R N g` using `fun m => hN m`. Establish `tS : Module.IsTorsionBy R S g` using `fun m => hS m`. Use `letI := tM.module`. Use `letI := tN.module`. Use `letI := tS.module`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `key : ∀ a b : R, a * b = g → ∀ s : S, a • s = 0 → ∃ t : S, s = b • t`. Introduce `a b hab s hs`. Take `⟨r, rfl⟩` from `hπ s`. Rewrite `hs` using `[Algebra.smul_def, hφ, ← map_pow, ← map_mul, hker]`. Establish `ha : a ^ p ≠ 0` using `fun h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hp0` to reduce the goal to its premises. Establish `: u * p = 0` using `by rw [← hg, ← hab, mul_pow, h, zero_mul]`. Conclude with `(hu.mul_right_eq_zero).1 this`. Establish `h1 : a ^ p * b ^ p ∣ a ^ p * r`. Rewrite using `[← mul_pow, hab, hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(hu.mul_left_dvd).2 hs`. Take `⟨c, rfl⟩` from `(mul_dvd_mul_iff_left ha).1 h1`. Conclude with `⟨π c, by rw [Algebra.smul_def, hφ, map_mul, map_pow]⟩`. Use `haveI : Module.Flat (R ⧸ Ideal.span {g}) S := by`. Rewrite using `[Module.Flat.iff_rTensor_injective]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `I hI`. Choose the witnesses or unpack the hypotheses as in `⟨J, hJ⟩ : ∃ a : R, a ∣ g ∧ I = Ideal.span {Ideal.Quotient.mk (Ideal.span {g}) a} := by`. Establish `hfg : (I.comap (Ideal.Quotient.mk (Ideal.span {g}))).FG`. Use `Ideal.fg_of_fg_map_of_fg_inf_ker_of_surjective (f := Ideal.Quotient.mk (Ideal.span {g})) ?_ ?_ Ideal.Quotient.mk_surjective` and prove the remaining obligations. Rewrite using `[Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inf_eq_right.2 (Ideal.ker_le_comap _), Ideal.mk_ker]`. Conclude with `⟨{g}, by simp⟩`. Take `⟨a, ha⟩` from `(IsBezout.isPrincipal_of_FG _ hfg).principal`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `g ∈ Submodule.span R {a}`. Rewrite using `[← ha]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ g ∈ I`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self g)]`. Conclude with `I.zero_mem`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[← Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective I, ha]`. Express the relevant statement in the definitionally equal form `Ideal.map _ (Ideal.span {a}) = _`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Take `⟨⟨b, hb⟩, rfl⟩` from `hJ`. Use `set a' := Ideal.Quotient.mk (Ideal.span {g}) J with ha'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Set `e : Ideal.span {a'}` to `⟨a', Ideal.mem_span_singleton_self _⟩`. Establish `hsurj : ∀ x : Ideal.span {a'} ⊗[R ⧸ Ideal.span {g}] S, ∃ s : S, x = e ⊗ₜ s`. Introduce `x`. Proceed by induction on `x with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y hx hy`. Take `⟨s, rfl⟩` from `hx`. Take `⟨t, rfl⟩` from `hy`. Conclude with `⟨s + t, by rw [tmul_add]⟩`. Consider the case `tmul i s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 i.2`. Use `⟨c • s, ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_tmul]`. Use `congr 1`. Conclude with `Subtype.ext hc.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨s, rfl⟩` from `hsurj x`. Establish `h1 : J • s = 0`. Use `congrArg (TensorProduct.lid _ S) hx` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h0 : a' • s = 0` using `by simpa using this`. Conclude with `h0`. Take `⟨t, rfl⟩` from `key J b hb.symm s h1`. Establish `h2 : b • t = Ideal.Quotient.mk (Ideal.span {g}) b • t` using `rfl`. Rewrite using `[h2, ← smul_tmul]`.
-
-Establish `h3 : Ideal.Quotient.mk (Ideal.span {g}) b • e = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (Ideal.span {g}) b * a' = 0`. Rewrite using `[ha', ← map_mul, mul_comm, ← hb]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self g)`.
-
-Rewrite using `[h3, zero_tmul]`. Conclude with `lTensor_injective_of_flat_quot (Q := R ⧸ Ideal.span {g}) Ideal.Quotient.mk_surjective f hf`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lTensor_injective_val {R S M N : Type} [CommRing R] [IsDomain R] [ValuationRing R]
     [CommRing S] [Algebra R S] (p : ℕ) (g : R) (u : R) (hu : IsUnit u) (hp0 : (p : R) ≠ 0) (hg : g ^ p = u * p)
@@ -157,37 +153,35 @@ private theorem lTensor_injective_val {R S M N : Type} [CommRing R] [IsDomain R]
   exact lTensor_injective_of_flat_quot (Q := R ⧸ Ideal.span {g}) Ideal.Quotient.mk_surjective f hf
 
 /- English proof (translation)
-Set `T : Submonoid C` to `P.primeCompl.map π`. Set `S` to `Localization T`. Set `πR : R →+* S` to `IsLocalization.map S π (P.primeCompl.le_comap_map)`. Establish `hπR : ∀ a, πR (algebraMap A R a) = algebraMap C S (π a)` using `fun a => IsLocalization.map_eq _ _`. Establish `hunit : ∀ t : P.primeCompl, IsUnit (algebraMap C S (π t))` using `fun t => IsLocalization.map_units S (⟨π t, t, t.2, rfl⟩ : T)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit' : ∀ t : P.primeCompl, IsUnit (algebraMap A S t)` using `fun t => by`. Rewrite using `[IsScalarTower.algebraMap_apply A C S, hφ, map_pow]`. Conclude with `(hunit t).pow _`. Use `letI : Algebra R S := (IsLocalization.lift (M := P.primeCompl) (S := R) hunit').toAlgebra`. Use `haveI : IsScalarTower A R S := .of_algebraMap_eq fun a => (IsLocalization.lift_eq hunit' a).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφR : ∀ r, algebraMap R S r = πR r ^ p`. Introduce `r`. Take `⟨⟨a, t⟩, h⟩` from `IsLocalization.surj P.primeCompl r`. Simplify using `only at h`. Use `(hunit' t).mul_right_cancel ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (algebraMap R S) h`. Establish `h2` using `congrArg (fun x => πR x ^ p) h`. Rewrite `h1` using `[map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Simplify using `only [map_mul, mul_pow, hπR] at h2`. Rewrite using `[h1, IsScalarTower.algebraMap_apply A C S, IsScalarTower.algebraMap_apply A C S, hφ, hφ, map_pow, map_pow, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective πR` using `IsLocalization.map_surjective_of_surjective P.primeCompl R S hπ`. Establish `hkerR : ∀ r, πR r = 0 ↔ (p : R) ∣ r`. Introduce `r`. Rewrite using `[← RingHom.mem_ker, IsLocalization.ker_map (S := R) S π (M := P.primeCompl) (T := T) rfl, hker, Ideal.map_span, Set.image_singleton, map_natCast, Ideal.mem_span_singleton]`. Use `haveI : Module.Flat A R := IsLocalization.flat R P.primeCompl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `kill : ∀ (K : Type) [AddCommGroup K] [Module A K], (∀ m : K, g • m = 0) → ∀ x : R ⊗[A] K, algebraMap A R g • x = 0`. Introduce `K _ _ hK x`. Rewrite using `[algebraMap_smul]`. Proceed by induction on `x with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add x y hx hy => rw [smul_add, hx, hy, add_zero]`. Consider the case `tmul r m => rw [← tmul_smul, hK, tmul_zero]`. Establish `inj` using `lTensor_injective_val p (algebraMap A R g) (algebraMap A R u) (hu.map _) hp0 (by rw [← map_pow, hg, map_mul, map_natCast]) πR hsurj hkerR hφR (kill M hM) (kill N hN) (f.baseChange R) (Module.Flat.lTensor_preserves_injective_linearMap f hf)`. Establish `inj2 : Function.Injective (f.lTensor S)`. Establish `h : ∀ x, AlgebraTensorModule.cancelBaseChange A R R S N ((f.baseChange R).lTensor S x) = f.lTensor S (AlgebraTensorModule.cancelBaseChange A R R S M x)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `x`. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul s m`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [tmul_add, map_add, ha, hb]`. Consider the case `tmul r m => simp`. Introduce `x y hxy`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, rfl⟩` from `(AlgebraTensorModule.cancelBaseChange A R R S M).surjective x`. Take `⟨y, rfl⟩` from `(AlgebraTensorModule.cancelBaseChange A R R S M).surjective y`. Rewrite `hxy` using `[← h, ← h]`. Rewrite using `[inj ((AlgebraTensorModule.cancelBaseChange A R R S N).injective hxy)]`. Take `⟨x, rfl⟩` from `hl.equiv.surjective s`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : f.lTensor C x = 0`. Apply `hl'.equiv.injective` to reduce the goal to its premises. Rewrite using `[map_zero, ← hs]`. Use `clear hs`. Proceed by induction on `x with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul c m => simp [hab]`. Establish `h2 : ∀ y : C ⊗[A] M, f.lTensor S ((Algebra.linearMap C S).restrictScalars A |>.rTensor M y) = ((Algebra.linearMap C S).restrictScalars A).rTensor N (f.lTensor C y)`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul c m => simp`. Establish `h3 : ((Algebra.linearMap C S).restrictScalars A).rTensor M x = 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `inj2` to reduce the goal to its premises. Rewrite using `[h2, h1, map_zero, map_zero]`. Establish `h4 : (1 : S) ⊗ₜ[C] x = 0`. Apply `(AlgebraTensorModule.cancelBaseChange A C C S M).injective` to reduce the goal to its premises. Rewrite using `[map_zero, ← h3]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `clear h1 h3 hs`. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [tmul_add, map_add, ha, hb]`. Consider the case `tmul c m => simp [Algebra.algebraMap_eq_smul_one]`.
-
-Use `haveI : IsLocalizedModule T (TensorProduct.mk C S (C ⊗[A] M) 1) := IsLocalization.tensorProduct_isLocalizedModule T S`. Take `⟨⟨_, t, ht, rfl⟩, h5⟩` from `(IsLocalizedModule.eq_zero_iff T (TensorProduct.mk C S (C ⊗[A] M) 1)).1 h4`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul]`. Conclude with `(congrArg hl.equiv h5).trans (map_zero _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_smul_eq_zero {A C R M N M' N' : Type} [CommRing A] [CommRing C] [Algebra A C]
     (P : Ideal A) [P.IsPrime] [CommRing R] [Algebra A R] [IsLocalization.AtPrime R P]
@@ -295,25 +289,23 @@ private theorem exists_smul_eq_zero {A C R M N M' N' : Type} [CommRing A] [CommR
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Establish `hp0 : (p : O) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `hpm : (p : O) ∈ maximalIdeal O`. Rewrite using `[← residue_eq_zero_iff, map_natCast, CharP.cast_eq_zero]`. Establish `hgen : B.gen = B.X.basicOpen (p : Γ(B.X, ⊤))`. Rewrite using `[B.gen_eq_basicOpen hp0 hpm, Vert.Model.const, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpT : (p : Γ(B.X, ⊤)) ≠ 0`. Introduce `h`. Use `B.genericPoint_mem_gen` as an intermediate fact. Rewrite `this` using `[hgen, h, Scheme.basicOpen_zero]`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpx : (p : B.X.presheaf.stalk x) ≠ 0`. Introduce `h`. Apply `hpT` to reduce the goal to its premises. Apply `germ_injective_of_isIntegral B.X x (U := ⊤) trivial` to reduce the goal to its premises. Rewrite using `[map_natCast, map_zero, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hpx⟩` and prove the remaining obligations. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `B.X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Use `haveI : IsNoetherianRing Γ(B.X, U) := IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Establish `hbo : ∀ y : U, (p : Γ(B.X, U)) ∈ (hU.primeIdealOf y).asIdeal ↔ y.1 ∉ B.gen`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Establish `h1` using `GlobalTheory.QCoh.mem_primeCompl_primeIdealOf_iff hU y (p : Γ(B.X, U))`. Establish `h2 : B.X.basicOpen (p : Γ(B.X, U)) = U ⊓ B.X.basicOpen (p : Γ(B.X, ⊤))`. Rewrite using `[← B.X.basicOpen_res (p : Γ(B.X, ⊤)) (homOfLE (le_top : U ≤ ⊤)).op, map_natCast]`. Rewrite `h1` using `[h2, ← hgen]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun h h' => h1.2 ⟨y.2, h'⟩ h, fun h => by_contra fun h' => h (h1.1 h').2⟩` and prove the remaining obligations. Establish `hmin : (hU.primeIdealOf ⟨x, hxU⟩).asIdeal ∈ (Ideal.span {(p : Γ(B.X, U))}).minimalPrimes`. Use `⟨⟨inferInstance, (Ideal.span_singleton_le_iff_mem _).2 ((hbo _).2 hx.1)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Q ⟨hQ, hpQ⟩ hle`. Set `y : U` to `⟨hU.fromSpec ⟨Q, hQ⟩, hU.range_fromSpec.le ⟨_, rfl⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : hU.primeIdealOf y = ⟨Q, hQ⟩` using `hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf _)`. Establish `hyx : y.1 ⤳ x`. Establish `: (⟨Q, hQ⟩ : PrimeSpectrum Γ(B.X, U)) ⤳ hU.primeIdealOf ⟨x, hxU⟩` using `(PrimeSpectrum.le_iff_specializes _ _).1 hle`. Use `this.map hU.fromSpec.continuous` as an intermediate fact. Rewrite `this` using `[hU.fromSpec_primeIdealOf]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : y = ⟨x, hxU⟩` using `Subtype.ext (hx.2 y ((hbo y).1 (by`. Rewrite using `[hy]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).1 hpQ)) hyx)`. Rewrite using `[← h3, hy]`. Establish `hht` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ hmin`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := TopCat.Presheaf.algebra_section_stalk B.X.presheaf (⟨x, hxU⟩ : U)`. Use `haveI := hU.isLocalization_stalk ⟨x, hxU⟩`. Establish `hdim` using `IsLocalization.AtPrime.ringKrullDim_eq_height (hU.primeIdealOf ⟨x, hxU⟩).asIdeal (B.X.presheaf.stalk x)`. Establish `h1 : Ring.KrullDimLE 1 (B.X.presheaf.stalk x)`. Rewrite using `[Ring.krullDimLE_iff, hdim]`.
-
-Conclude with `hht` after adjusting the coercions. Use `haveI : Ring.DimensionLEOne (B.X.presheaf.stalk x) := ⟨fun h0 hP => (Ring.krullDimLE_one_iff_of_noZeroDivisors.1 h1 _ h0 hP)⟩`. Use `haveI : IsDedekindDomain (B.X.presheaf.stalk x) := {}`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valuationRing_stalk (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p]
     (B : GlobalTheory.Vert.Model O) [GlobalTheory.IsNormalScheme B.X] (x : B.X) (hx : IsGenSpecial B x) :
@@ -373,25 +365,19 @@ private theorem valuationRing_stalk (p : ℕ) [Fact p.Prime] [CharZero O] [CharP
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `s hs`. Set `I` to `fibI p B`. Set `f` to `GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out (FrobQuot.natCast_eq_zero_fibI p B) ≫ I.subschemeι`. Establish `hW : IsAffineOpen (I.subschemeι ⁻¹ᵁ U)` using `hU.preimage _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : I.subschemeι ⁻¹ᵁ U ≤ f ⁻¹ᵁ U` using `le_rfl`. Take `⟨u, hu⟩` from `hg`. Establish `loc : ∀ x ∈ U, IsGenSpecial B x → ∃ t : Γ(B.X, U), x ∈ B.X.basicOpen t ∧ t • s = 0`. Introduce `x hxU hx`. Take `⟨hv, hp0⟩` from `valuationRing_stalk p B x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `letI := TopCat.Presheaf.algebra_section_stalk B.X.presheaf (⟨x, hxU⟩ : U)`. Use `haveI := hU.isLocalization_stalk ⟨x, hxU⟩`. Use `letI := QCoh.appLEAlgebra f e`. Use `letI := QCoh.appLEModule f ((Scheme.Modules.pullback f).obj F) e`. Use `haveI := QCoh.appLE_isScalarTower f ((Scheme.Modules.pullback f).obj F) e`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI := QCoh.appLEModule f ((Scheme.Modules.pullback f).obj G) e`. Use `haveI := QCoh.appLE_isScalarTower f ((Scheme.Modules.pullback f).obj G) e`. Establish `hk : ∀ K : B.X.Modules, Kills g K → ∀ m : Γ(K, U), restrictGlobal B.X U g • m = 0`. Introduce `K hK m`. Use `congrArg (fun φ => φ.app U m) hK` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Take `⟨t, ht, hts⟩` from `exists_smul_eq_zero (R := B.X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hxU⟩).asIdeal p (restrictGlobal B.X U g) (restrictGlobal B.X U u) (u.isUnit.map _) hp0 (by rw [← map_pow, hu, map_mul, map_natCast]) (I.subschemeι.app U).hom (I.subschemeι.app_surjective U hU) (by`. Rewrite using `[I.ker_subschemeι_app ⟨U, hU⟩]`. Simplify using `only [I, fibI, Scheme.IdealSheafData.ofIdealTop_ideal, Ideal.map_span, Set.image_singleton, map_natCast])`. Use the proof step `(fun r => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `GlobalTheory.SS.FrobField.absFrob_appLE _ p 1 Fact.out (FrobQuot.natCast_eq_zero_fibI p B) (I.subschemeι ⁻¹ᵁ U) le_rfl ((I.subschemeι.app U).hom r)`. Rewrite `h1` using `[pow_one]`. Rewrite using `[← h1]`. Express the relevant statement in the definitionally equal form `(f.appLE U _ e).hom r = _`. Rewrite using `[Scheme.Hom.app_eq_appLE]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(congrArg (fun ψ => ψ.hom r) (Scheme.Hom.appLE_comp_appLE (GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out (FrobQuot.natCast_eq_zero_fibI p B)) (fibI p B).subschemeι U (I.subschemeι ⁻¹ᵁ U) (I.subschemeι ⁻¹ᵁ U) le_rfl le_rfl)).symm)`. Use the proof step `(hk F hF) (hk G hG) (QCoh.isBaseChange_pullbackSections f F hW hU e)`. Use the proof step `(QCoh.isBaseChange_pullbackSections f G hW hU e) (QCoh.homAppLinear φ U)`. Use the proof step `(QCoh.app_injective_of_mono φ U) (QCoh.homAppLinear ((Scheme.Modules.pullback f).map φ) _)`. Use the proof step `(QCoh.pullback_map_app_pullbackSections f φ e) s hs`.
-
-Conclude with `⟨t, (GlobalTheory.QCoh.mem_primeCompl_primeIdealOf_iff hU ⟨x, hxU⟩ t).1 ht, hts⟩`. Set `ι` to `{t : Γ(B.X, U) // t • s = 0}`. Establish `hle : (⨆ t : ι, B.X.basicOpen t.1) ≤ U` using `iSup_le fun t => B.X.basicOpen_le _`. Use `hE U _ hle (fun x hxU hx => ?_) ?_` and prove the remaining obligations. Take `⟨t, ht, hts⟩` from `loc x hxU hx`.
-
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨t, hts⟩, ht⟩`. Use `QCoh.section_eq_of_cover _ (fun t : ι => B.X.basicOpen t.1) (fun t => le_iSup (fun t : ι => B.X.basicOpen t.1) t) le_rfl _ _ fun t => ?_` and prove the remaining obligations. Rewrite using `[QCoh.res_res, QCoh.res_res, map_zero]`. Establish `h1` using `(QCoh.resLinear ((frob p B).obj F) (B.X.basicOpen_le t.1)).map_smul t.1 s`. Rewrite `h1` using `[t.2, map_zero]`.
-
-Conclude with `((QCoh.isUnit_res_of_le_basicOpen t.1 (B.X.basicOpen_le t.1) le_rfl).smul_eq_zero).1 h1.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem injective_app (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p]
     (B : GlobalTheory.Vert.Model O) [GlobalTheory.IsNormalScheme B.X] (g : Γ(B.X, ⊤)) (hg : IsRootOfP p g p)
@@ -457,19 +443,13 @@ private theorem injective_app (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (Resi
 end GlobalTheory.FrobFilt.Exact
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B hN g hg S hS h₁ h₂ h₃ k₁ k₂ k₃ hE`. Establish `qc : ∀ F : B.X.Modules, (∃ P : Pres B, Nonempty (F ≅ P.mod)) → F.IsQuasicoherent`. Introduce and unpack `F ⟨P, ⟨e⟩⟩`. Use `haveI : P.E.IsQuasicoherent := P.vb.isQuasicoherent`. Use `haveI : P.E'.IsQuasicoherent := P.vb'.isQuasicoherent`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : P.mod.IsQuasicoherent := by unfold Pres.mod; infer_instance`. Conclude with `GlobalTheory.QCoh.isQuasicoherent_of_iso e.symm`. Use `haveI := hS.epi_g`. Use `haveI := hS.mono_f`. Use `haveI := qc _ h₁`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI := qc _ h₂`. Use `haveI := qc _ h₃`. Set `I` to `fibI p B`. Set `f` to `GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out (FrobQuot.natCast_eq_zero_fibI p B) ≫ I.subschemeι`. Establish `hmono : Mono ((Scheme.Modules.pullback f).map S.f)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `QCoh.mono_of_locally_app_injective _ fun W z hz => ?_` and prove the remaining obligations. Take `⟨W', hW', hWW⟩` from `I.subschemeι.isClosedEmbedding.isInducing.isOpen_iff.1 W.2`. Establish `hz' : I.subschemeι z ∈ W'`. Express the relevant statement in the definitionally equal form `z ∈ I.subschemeι ⁻¹' W'`. Rewrite using `[hWW]`.
-
-Conclude with `hz`. Take `⟨_, ⟨U, hU, rfl⟩, hzU, hle⟩` from `B.X.isBasis_affineOpens.exists_subset_of_mem_open hz' hW'`. Use `⟨I.subschemeι ⁻¹ᵁ U, hzU, fun y hy => ?_, GlobalTheory.FrobFilt.Exact.injective_app p B g hg S.f k₁ k₂ hE U hU⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y ∈ W.carrier`. Rewrite using `[← hWW]`.
-
-Conclude with `hle hy`. Take `⟨hx, hepi⟩` from `QCoh.exact_map_pullback f hS.exact`. Establish `hP : (S.map (Scheme.Modules.pullback f)).ShortExact` using `ShortComplex.ShortExact.mk' hx hmono hepi`. Use `haveI : (S.map (Scheme.Modules.pullback f)).X₂.IsQuasicoherent := QCoh.isQuasicoherent_pullback f S.X₂`. Use `haveI : (S.map (Scheme.Modules.pullback f)).X₃.IsQuasicoherent := QCoh.isQuasicoherent_pullback f S.X₃`.
-
-Conclude with `QCoh.shortExact_map_pushforward I.subschemeι hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.killed_presentation_extension_frobenius : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (g : Γ(B.X, ⊤)), IsRootOfP p g p → ∀ S : ShortComplex B.X.Modules, S.ShortExact → (∃ P : Pres B, Nonempty (S.X₁ ≅ P.mod)) → (∃ P : Pres B, Nonempty (S.X₂ ≅ P.mod)) → (∃ P : Pres B, Nonempty (S.X₃ ≅ P.mod)) → Kills g S.X₁ → Kills g S.X₂ → Kills g S.X₃ → NoEmb B ((frob p B).obj S.X₁) → (S.map (frob p B)).ShortExact := by
   intro O _ _ _ p _ _ _ B hN g hg S hS h₁ h₂ h₃ k₁ k₂ k₃ hE

@@ -276,7 +276,7 @@ end Ids
 namespace DatApi
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem sepWith_trI : SepWith A3 A3.trI ↔ A3.fam3.TrISep := Iff.rfl
 
@@ -287,7 +287,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df 
 end Err
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem swapCast_one_tmul {E : Type} [Field E] [NumberField E] {F1 F2 : Subfield E} (h : F1 = F2) (x : E) :
     swapCast h (1 ⊗ₜ[F1] x) = x ⊗ₜ[F2] 1 := by
@@ -299,7 +299,7 @@ Both sides reduce to the same expression.
 theorem toCx3_reFace (R : RealDat3 D A3 Ks) (F : Face3 D A3) (Dc Sp Zsc) : R.toCx3 (reFace F Dc Sp Zsc) = R.toCx3 F := rfl
 
 /- English proof (translation)
-Unfold `rowForm`. Conclude with `(congrArg _ (Matrix.mulVec_add _ x y)).trans (map_add _ _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rowForm_add (A : FamIn D.what₂.LL G Pl0 T D.R.m) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (t : T) (x y) :
     rowForm A P ψ t (x + y) = rowForm A P ψ t x + rowForm A P ψ t y := by
@@ -307,7 +307,7 @@ theorem rowForm_add (A : FamIn D.what₂.LL G Pl0 T D.R.m) (P : Subgroup G) (ψ 
   exact (congrArg _ (Matrix.mulVec_add _ x y)).trans (map_add _ _ _)
 
 /- English proof (translation)
-Unfold `rowForm`. Conclude with `(congrArg _ (Matrix.mulVec_smul _ c x)).trans (map_smul _ _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rowForm_smul (A : FamIn D.what₂.LL G Pl0 T D.R.m) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (t : T) (c : D.what₂.LL) (x) :
     rowForm A P ψ t (c • x) = c • rowForm A P ψ t x := by
@@ -315,7 +315,7 @@ theorem rowForm_smul (A : FamIn D.what₂.LL G Pl0 T D.R.m) (P : Subgroup G) (ψ
   exact (congrArg _ (Matrix.mulVec_smul _ c x)).trans (map_smul _ _ _)
 
 /- English proof (translation)
-Unfold `liftForm`. Conclude with `(congrArg _ (Matrix.mulVec_add _ x y)).trans (map_add _ _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem liftForm_add (A : FamIn D.what₂.LL G Pl0 T D.R.m) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (i : Fin D.R.m) (t : T) (x y) :
     liftForm A P ψ i t (x + y) = liftForm A P ψ i t x + liftForm A P ψ i t y := by
@@ -323,7 +323,7 @@ theorem liftForm_add (A : FamIn D.what₂.LL G Pl0 T D.R.m) (P : Subgroup G) (ψ
   exact (congrArg _ (Matrix.mulVec_add _ x y)).trans (map_add _ _ _)
 
 /- English proof (translation)
-Unfold `liftForm`. Conclude with `(congrArg _ (Matrix.mulVec_smul _ c x)).trans (map_smul _ _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem liftForm_smul (A : FamIn D.what₂.LL G Pl0 T D.R.m) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (i : Fin D.R.m) (t : T)
     (c : D.what₂.LL) (x) : liftForm A P ψ i t (c • x) = c • liftForm A P ψ i t x := by
@@ -336,7 +336,7 @@ variable {K : Type} [Field K] [NumberField K] {O : Type} [CommRing O] {φ : O �
   {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ}
 
 /- English proof (translation)
-Use `Finset.sum_induction f (· ∈ M.carrier) ?_ ⟨0, by simp⟩ h` and prove the remaining obligations. Introduce and unpack `x y ⟨c, rfl⟩ ⟨c', rfl⟩`. Conclude with `⟨c + c', by rw [← Finset.sum_add_distrib]; simp [add_smul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem sum_mem (M : Rows.OLat O φ W) {ι : Type} (s : Finset ι) (f : ι → W) (h : ∀ i ∈ s, f i ∈ M.carrier) :
     ∑ i ∈ s, f i ∈ M.carrier := by

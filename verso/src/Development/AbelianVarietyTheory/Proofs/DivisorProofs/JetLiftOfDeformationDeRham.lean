@@ -19,9 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LatJet
 
 /- English proof (translation)
-Establish `e : J.π.comp (algebraMap R J.B) = RingHom.id R`. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, RingHom.id_apply, J.π_eq, Algebra.algebraMap_eq_smul_one, ← J.one, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul]`. Conclude with `mul_one r`. Use `GrpMor.of_hom (isDPMorphism_of_eq_bot _ rfl _ _) ?_ (𝟙 X.A)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Cris.spMap_comp, e, Cris.spMap_id]`.
+A detailed English derivation is pending.
 -/
 theorem jetConstMor {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : Type} [CommRing R] {I : Type}
     [Fintype I] {n : ℕ} (J : JetRing R I n) (X : Obj F 𝔠 (Sp R)) :
@@ -35,7 +35,7 @@ theorem jetConstMor {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : 
   rw [← Cris.spMap_comp, e, Cris.spMap_id]
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔠 R _ _ _ _ I _ n J X δ N hN`. Establish `m` using `jetConstMor J X`. Take `⟨X', i, pull, hF⟩` from `GlobalTheory.T.jet_morphism_admissible_connection hGD hDR hDC F 𝔠 R I n J X N hN m`. Take `⟨δ', hδ⟩` from `GlobalTheory.T.jet_morphism_determinant_generator hGD hDR hDC F 𝔠 R I n J X δ N hN m (GlobalTheory.T.jet_group_morphism_base_change hGD hDR hDC F 𝔠 R I n J X m) X' i pull hF`. Conclude with `⟨⟨X', i, pull, m, δ', fun x hx d hd ↦ hF ▸ Submodule.subset_span ⟨x, hx, hd⟩, hδ⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jetLift_of_deformation_of_deRham (hGD : GlobalTheory.Published.GrothendieckDeformation) (hDR : GlobalTheory.Published.AbelianDeRham)
     (hDC : GlobalTheory.Published.AbelianDualCrystal) : JetLift := by

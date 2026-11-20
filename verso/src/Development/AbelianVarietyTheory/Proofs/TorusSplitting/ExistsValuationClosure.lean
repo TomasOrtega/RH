@@ -14,11 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ValClosure
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `h`. Establish `h1 : valV V (algebraMap V (FractionRing V) ϖ) = WithZero.exp (-1 : ℤ)`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_singleton _ hϖ.ne_zero hϖ.maximalIdeal_eq`. Establish `hle : ∀ w : V, valV V (algebraMap V (FractionRing V) w) ≤ 1` using `fun w => HeightOneSpectrum.valuation_le_one _ w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : valV V (algebraMap V (FractionRing V) (u : V)) = 1`. Use `le_antisymm (hle _) ?_` and prove the remaining obligations. Establish `h3 : valV V (algebraMap V (FractionRing V) (u : V)) * valV V (algebraMap V (FractionRing V) ((u⁻¹ : Vˣ) : V)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[vV, map_mul, h2, _root_.mul_one, map_zpow₀, h1, WithZero.log_zpow, WithZero.log_exp]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vV_eq_of_hasVal {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
     (hϖ : Irreducible ϖ) {x : FractionRing V} {n : ℤ} (h : ReciprocityTheory.ChartRestriction.G.DVR.HasVal ϖ x n) : vV V x = n := by
@@ -40,9 +40,9 @@ theorem vV_eq_of_hasVal {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuatio
   simp
 
 /- English proof (translation)
-Introduce `V _ _ _ ϖ hϖ`. Take `⟨v, hv⟩` from `GlobalTheory.exists_valOver_of_isAlgebraic hϖ (AlgebraicClosure (FractionRing V))`. Use `⟨v, hv, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hasVal_of_ne_zero hϖ hx`. Rewrite using `[vV_eq_of_hasVal hϖ hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv x n hn`.
+A detailed English derivation is pending.
 -/
 theorem exists_valuation_closure : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∃ v : AddValuation (AlgebraicClosure (FractionRing V)) (WithTop ℚ), ValOver ϖ (AlgebraicClosure (FractionRing V)) v ∧ ∀ x : FractionRing V, x ≠ 0 → v (algebraMap _ _ x) = (((vV V x : ℤ) : ℚ) : WithTop ℚ) := by
   intro V _ _ _ ϖ hϖ

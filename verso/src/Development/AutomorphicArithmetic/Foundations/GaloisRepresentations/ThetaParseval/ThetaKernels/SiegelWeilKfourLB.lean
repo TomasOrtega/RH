@@ -15,23 +15,21 @@ namespace PositivityTheory.SiegelWeilFormula.kfour
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 variable {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d L hL`. Take `⟨nb, lam, 𝓖, T, x, ⟨hnb, hlam, hfd, hvol⟩, -, rfl⟩` from `hL`. Establish `hB` using `d.ok.good`. Establish `hσ : ∀ a, σ (σ a) = a` using `_root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k hB`. Establish `hb` using `d.ok.frame`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨iLC, iSC, iT2, iBo⟩` from `nA_top hσ hb`. Establish `hcont` using `nb_continuous hσ hb hnb`. Establish `hψ` using `GlobalTheory.StdCharWeilDatum.isCharAF hB.std`. Take `⟨K, hK, hKc⟩` from `nF_cocompact hσ hb`. Use `set χ : nA σ d.Y d.b → ℂ := fun β => d.B.ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T.1.1 * β.1)))) with hχ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hχc : Continuous χ` using `continuous_chr hψ.1 T.1.1`. Establish `hχn : ∀ β, ‖χ β‖ = 1` using `fun β => hψ.2.1 _`. Establish `hfin : lam 𝓖 < ⊤` using `by rw [hvol]; exact ENNReal.one_lt_top`. Establish `hcm : Continuous fun β : nA σ d.Y d.b => nb β * x` using `hcont.mul continuous_const`. Establish `hper : ∀ f : d.G → ℂ, (∀ γ ∈ rat2 σ d.Y, ∀ g, f (γ * g) = f g) → ∀ β, ∃ k ∈ K, f (nb β * x) = f (nb k * x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf β`. Take `⟨γ, hγ, hk⟩` from `hKc β`. Use `⟨γ + β, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[nb_add hnb, mul_assoc, hf _ (nb_rat hnb γ hγ)]`. Establish `hbd : ∀ (f : d.G → ℂ) (M : ℝ), (∀ γ ∈ rat2 σ d.Y, ∀ g, f (γ * g) = f g) → (∀ y ∈ (fun β => nb β * x) '' K, ‖f y‖ ≤ M) → ∀ β, ‖f (nb β * x) * χ β‖ ≤ M`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f M hf hM β`. Take `⟨k, hk, e⟩` from `hper f hf β`. Rewrite using `[norm_mul, hχn β, mul_one, e]`. Conclude with `hM _ ⟨k, hk, rfl⟩`. Establish `hint : ∀ f : d.G → ℂ, Continuous f → (∀ γ ∈ rat2 σ d.Y, ∀ g, f (γ * g) = f g) → IntegrableOn (fun β => f (nb β * x) * χ β) 𝓖 lam`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `f hfc hf`. Take `⟨M, hM⟩` from `(hK.image hcm).exists_bound_of_continuousOn hfc.continuousOn`. Use `Measure.integrableOn_of_bounded (M := M) hfin.ne ?_ ?_` and prove the remaining obligations. Conclude with `((hfc.comp hcm).mul hχc).aestronglyMeasurable`. Conclude with `Filter.Eventually.of_forall fun β => hbd f M hf hM β`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨fun a f f' hfc hf'c hf hf' => ?_, ⟨(fun β => nb β * x) '' K, hK.image hcm, fun f M hfc hf hM => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [fc]`. Establish `e : (fun β : nA σ d.Y d.b => (a • f + f') (nb β * x) * d.B.ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T.1.1 * β.1))))) = fun β => a * (f (nb β * x) * χ β) + f' (nb β * x) * χ β`. Use function extensionality and compare the values at `β`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hχ]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_add ((hint f hfc hf).const_mul a) (hint f' hf'c hf'), integral_const_mul]`. Use `show ‖∫ β in 𝓖, f (nb β * x) * χ β ∂lam‖ ≤ M`. Establish `h1` using `norm_setIntegral_le_of_norm_le_const hfin (fun β _ => hbd f M hf hM β)`. Establish `hr : lam.real 𝓖 = 1` using `by simp [Measure.real, hvol]`.
-
-Rewrite `h1` using `[hr, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lamBd_k : _root_.PositivityTheory.SiegelWeilFormula.LamBd_k := by
   intro F E _ _ _ _ _ σ d L hL

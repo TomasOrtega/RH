@@ -15,7 +15,7 @@ open GlobalTheory.Cartier ReciprocityTheory.AnForm.R TopologicalSpace Opposite
 variable {X Y P : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.germ_stalkMap_apply, Scheme.Hom.appIso_inv_app_apply]`. Conclude with `Y.presheaf.germ_res_apply _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkMap_germ_appIso_inv (u : Y ⟶ X) [IsOpenImmersion u] {V : Y.Opens} (a : Γ(Y, V))
     (y : Y) (hy : y ∈ V) (hx : u y ∈ u ''ᵁ V) :
@@ -25,7 +25,7 @@ theorem stalkMap_germ_appIso_inv (u : Y ⟶ X) [IsOpenImmersion u] {V : Y.Opens}
   exact Y.presheaf.germ_res_apply _ _ _ _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Scheme.Hom.stalkMap_comp]`. Conclude with `congrArg (g.stalkMap p).hom (stalkMap_germ_appIso_inv u a (g p) hp hx)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkMap_germ_of_comp (g : P ⟶ Y) (u : Y ⟶ X) [IsOpenImmersion u] (ψ : P ⟶ X)
     (h : g ≫ u = ψ) {V : Y.Opens} (a : Γ(Y, V)) (p : P) (hp : g p ∈ V) (hx : ψ p ∈ u ''ᵁ V) :
@@ -36,9 +36,9 @@ theorem stalkMap_germ_of_comp (g : P ⟶ Y) (u : Y ⟶ X) [IsOpenImmersion u] (�
   exact congrArg (g.stalkMap p).hom (stalkMap_germ_appIso_inv u a (g p) hp hx)
 
 /- English proof (translation)
-Use `isRegularFn_iff_germ.2 fun x hx => ?_` and prove the remaining obligations. Establish `hx'` using `hx`. Take `⟨y, hy, rfl⟩` from `hx'`. Establish `h1` using `isRegularFn_iff_germ.1 ha y hy`. Rewrite `h1` using `[← stalkMap_germ_appIso_inv u a y hy hx]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `e` to `(asIso (u.stalkMap y)).commRingCatIsoToRingEquiv`. Conclude with `comap_nonZeroDivisors_le_of_injective e.injective h1`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isRegularFn_appIso_inv (u : Y ⟶ X) [IsOpenImmersion u] {V : Y.Opens} {a : Γ(Y, V)}
     (ha : IsRegularFn a) : IsRegularFn ((u.appIso V).inv.hom a) := by
@@ -51,7 +51,7 @@ theorem isRegularFn_appIso_inv (u : Y ⟶ X) [IsOpenImmersion u] {V : Y.Opens} {
   exact comap_nonZeroDivisors_le_of_injective e.injective h1
 
 /- English proof (translation)
-Use `congrArg (Ideal.map e.symm) h` as an intermediate fact. Simplify `this` using `[Ideal.map_span]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem span_eq_of_ringEquiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S) {a b : R}
     (h : Ideal.span {e a} = Ideal.span {e b}) : Ideal.span {a} = Ideal.span {b} := by
@@ -59,7 +59,7 @@ theorem span_eq_of_ringEquiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+*
   simpa [Ideal.map_span] using this
 
 /- English proof (translation)
-Take `⟨W, hpW, hW⟩` from `EffCartierData.exists_affine_le (V := φ ⁻¹ᵁ J.U k) (x := p) hp`. Rewrite using `[ds_stalkId_eq_map _ W p hpW, J.ideal_comap_idealSheaf φ W k hW, Ideal.map_span, Set.image_singleton, germ_resG]`. Conclude with `congrArg (fun t => Ideal.span {t}) (EffCartierData.germ_app φ (J.f k) p hp)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkId_comap (J : EffCartierData Y) (φ : P ⟶ Y) (p : P) (k : J.ι) (hp : φ p ∈ J.U k) :
     FinalTheorems.stalkId (J.idealSheaf.comap φ) p =
@@ -81,11 +81,11 @@ def gf (c : Σ i, (J i).ι) : Γ(X, gV u J c) := ((u c.1).appIso ((J c.1).U c.2)
 include hu in
 
 /- English proof (translation)
-Take `⟨i, k⟩` from `c`. Take `⟨j, l⟩` from `c'`. Establish `hx0` using `hx`. Take `⟨y, hy, rfl⟩` from `hx0`. Establish `hx1` using `hx'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y', hy', e⟩` from `hx1`. Take `⟨p, rfl, rfl⟩` from `Scheme.Pullback.exists_preimage_pullback (f := u i) (g := u j) y y' e.symm`. Set `ψ` to `pullback.fst (u i) (u j) ≫ u i`. Establish `h1` using `stalkMap_germ_of_comp (pullback.fst (u i) (u j)) (u i) ψ rfl ((J i).f k) p hy hx`. Establish `h2` using `stalkMap_germ_of_comp (pullback.snd (u i) (u j)) (u j) ψ pullback.condition.symm ((J j).f l) p hy' hx'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun I => FinalTheorems.stalkId I p) (hJ i j)`. Simplify using `only [stalkId_comap _ _ p k hy, stalkId_comap _ _ p l hy'] at h3`. Rewrite `h3` using `[← h1, ← h2]`. Conclude with `span_eq_of_ringEquiv (asIso (ψ.stalkMap p)).commRingCatIsoToRingEquiv h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_germ_gf
     (hJ : ∀ i j, (J i).idealSheaf.comap (pullback.fst (u i) (u j)) =
@@ -119,7 +119,7 @@ variable {I : Type} {Y : I → Scheme.{0}} (u : ∀ i, Y i ⟶ X) (J : ∀ i, Ef
 include hu in
 
 /- English proof (translation)
-The claim follows from `isRegularFn_appIso_inv (u c.1) ((J c.1).regular c.2)`.
+A detailed English derivation is pending.
 -/
 theorem regular_gf (c : Σ i, (J i).ι) : IsRegularFn (gf u J c) :=
   isRegularFn_appIso_inv (u c.1) ((J c.1).regular c.2)
@@ -127,7 +127,7 @@ theorem regular_gf (c : Σ i, (J i).ι) : IsRegularFn (gf u J c) :=
 include hu in
 
 /- English proof (translation)
-Use `((regular_gf u J c).resG _).associated_of_germ ((regular_gf u J c').resG _) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[germ_resG, germ_resG]`. Conclude with `span_germ_gf u J hJ c c' x hx.1 hx.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assoc_gf
     (hJ : ∀ i j, (J i).idealSheaf.comap (pullback.fst (u i) (u j)) =
@@ -158,11 +158,11 @@ def glueData (hcov : ∀ x : X, ∃ i, x ∈ Set.range (u i))
 include hu in
 
 /- English proof (translation)
-Use `(J i).eq_idealSheaf fun y => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `(J i).exists_mem y`. Take `⟨W, hyW, hW⟩` from `EffCartierData.exists_affine_le hk`. Use `⟨W, k, hW, hyW, ?_⟩` and prove the remaining obligations. Establish `hW' : W.1 ≤ u i ⁻¹ᵁ (u i ''ᵁ (J i).U k)` using `hW.trans ((u i).preimage_image_eq _).ge`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[(glueData u J hcov hJ).ideal_comap_idealSheaf (u i) W (⟨i, k⟩ : Σ i, (J i).ι) hW']`. Use `congr 2`. Use `show resG (Y i) hW' (((u i).app (u i ''ᵁ (J i).U k)).hom (((u i).appIso ((J i).U k)).inv.hom ((J i).f k))) = _`. Establish `e : ((u i).app (u i ''ᵁ (J i).U k)).hom (((u i).appIso ((J i).U k)).inv.hom ((J i).f k)) = ((Y i).presheaf.map (eqToHom ((u i).preimage_image_eq ((J i).U k))).op).hom ((J i).f k)` using `congrArg (fun q => q.hom ((J i).f k)) ((u i).appIso_inv_app ((J i).U k))`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((Y i).presheaf.map _ ≫ (Y i).presheaf.map _).hom _ = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comap_glueData (hcov : ∀ x : X, ∃ i, x ∈ Set.range (u i))
     (hJ : ∀ i j, (J i).idealSheaf.comap (pullback.fst (u i) (u j)) =
@@ -189,7 +189,7 @@ theorem comap_glueData (hcov : ∀ x : X, ∃ i, x ∈ Set.range (u i))
 end Main
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨glueData u J hcov hJ, comap_glueData u J hcov hJ⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_glue {X : Scheme.{0}} {I : Type} {Y : I → Scheme.{0}} (u : ∀ i, Y i ⟶ X)
     (J : ∀ i, EffCartierData (Y i)) (hu : ∀ i, IsOpenImmersion (u i))

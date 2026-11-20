@@ -3,17 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg
 
 /- English proof (translation)
-Establish `hB : h.toBlocks₁₂ = 0`. Use extensionality with `i j`. Conclude with `h2 (Sum.inl i) (Sum.inr j) (by simp [form6])`. Establish `hC : h.toBlocks₂₁ = 0`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2 (Sum.inr i) (Sum.inl j) (by simp [form6])`. Rewrite `h1` using `[blockPairingForm_JR, ← fromBlocks_toBlocks h, hB, hC, fromBlocks_transpose, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [transpose_zero, zero_mul, mul_zero, add_zero, zero_add, Matrix.fromBlocks_inj] at h1`. Take `⟨-, hk, -, -⟩` from `h1`. Establish `hJJ : Jmat R 3 * Jmat R 3 = 1` using `Jmat_mul_Jmat 3`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hr : h.toBlocks₁₁ᵀ * (Jmat R 3 * h.toBlocks₂₂ * Jmat R 3) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hk, hJJ]`. Establish `hl : (Jmat R 3 * h.toBlocks₂₂ * Jmat R 3)ᵀ * h.toBlocks₁₁ = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `ht` using `congrArg transpose hr`. Rewrite `ht` using `[transpose_mul, transpose_transpose, transpose_one]`. Then use the resulting hypothesis. Establish `hr' : h.toBlocks₁₁ * (Jmat R 3 * h.toBlocks₂₂ * Jmat R 3)ᵀ = 1` using `mul_eq_one_comm.mp hl`. Set `u : GL (Fin 3) R` to `⟨h.toBlocks₁₁, (Jmat R 3 * h.toBlocks₂₂ * Jmat R 3)ᵀ, hr', hl⟩`. Use `⟨⟨u, 1⟩, rfl, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[emb_apply, if_pos rfl]`. Use `conv_rhs => rw [← fromBlocks_toBlocks h, hB, hC]`. Use `Matrix.fromBlocks_inj.mpr ⟨rfl, rfl, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[theta_val]`. Establish `hu : ((u⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) = (Jmat R 3 * h.toBlocks₂₂ * Jmat R 3)ᵀ` using `rfl`.
-
-Rewrite using `[hu, transpose_transpose]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = h.toBlocks₂₂ := by rw [hJJ, Matrix.one_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hh_emb {O R : Type} [CommRing O] [CommRing R] [Algebra O R]
     (h : Matrix (Fin 3 ⊕ Fin 3) (Fin 3 ⊕ Fin 3) R)
@@ -55,27 +53,25 @@ private theorem hh_emb {O R : Type} [CommRing O] [CommRing R] [Algebra O R]
     _ = h.toBlocks₂₂ := by rw [hJJ, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `O _ _ Γ _ _ η Ψ hη R _ _ _`. Establish `hra : (res O R : R →+* ResidueField O).comp (algebraMap O R) = residue O`. Use extensionality with `a`. Simplify using `[IsLocalRing.ResidueField.algebraMap_eq]`. Use `⟨fun r s => ?_, fun r' hr => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrt : ∀ g, (r.hom g).right = η g` using `r.hasMult show (form6 O).HH (emb (r.hom s) * (emb (r0 η Ψ s⁻¹)).map (algebraMap O R))`. Rewrite using `[← emb_map', ← map_mul emb]`. Use `set x := r.hom s * GG.map (algebraMap O R) (r0 η Ψ s⁻¹) with hxdef`. Establish `hx : x.right = 1`. Rewrite using `[hxdef, SemidirectProduct.mul_right, GG.map_right, unitaryThreeReflection_right, hrt, ← map_mul, mul_inv_cancel, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨emb_form O x, fun a b hab => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hb` using `emb_blk x a b hne`. Rewrite `hb` using `[if_pos hx]`. Conclude with `hab hb`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (emb x).map ⇑(res O R) = emb (GG.map (res O R : R →+* ResidueField O) x) from (emb_map' _ x).symm]`. Rewrite using `[hxdef, map_mul, r.red, GG.map_map, hra, baseLift_map_residue, ← map_mul, mul_inv_cancel, map_one, map_one]`. Establish `hr2 : ∀ s, (form6 O).HH (r'.hom s * (emb (r0 η Ψ s⁻¹)).map (algebraMap O R))` using `fun s => hr s choose x hx1 hx2 using fun s => hh_emb (O := O) _ (hr2 s).1 (hr2 s).2.1`. Establish `hF : ∀ s, emb (x s * GG.map (algebraMap O R) (r0 η Ψ s)) = r'.hom s`. Introduce `s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul emb, hx2 s, ← emb_map', Matrix.mul_assoc, ← map_mul emb, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, map_one, Matrix.mul_one]`. Establish `hR : ∀ s, (x s * GG.map (algebraMap O R) (r0 η Ψ s)).right = η s`. Introduce `s`. Rewrite using `[SemidirectProduct.mul_right, hx1, GG.map_right, unitaryThreeReflection_right, one_mul]`. Set `hom : Γ →* GG 3 R` to `{ toFun := fun s => x s * GG.map (algebraMap O R) (r0 η Ψ s) map_one' := by beta_reduce`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eq_of_emb ?_ ?_` and prove the remaining obligations. Rewrite using `[hR, map_one, SemidirectProduct.one_right]`. Rewrite using `[hF, map_one, map_one]`. Use the proof step `map_mul' := fun s t => by beta_reduce`. Use `eq_of_emb ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hR, SemidirectProduct.mul_right, hR, hR, map_mul]`. Rewrite using `[hF, map_mul emb, hF, hF, map_mul] }`. Use `⟨⟨hom, fun a b => ?_, fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `he : (fun g => (hom g).mat a b) = fun g => r'.hom g (Sum.inl a) (Sum.inl b) + r'.hom g (Sum.inl a) (Sum.inr b)`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mat_eq_emb']`. Use `show emb (x g * _) _ _ + emb (x g * _) _ _ = _`. Rewrite using `[hF]`. Rewrite using `[he]`. Introduce `N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `r'.cont (Sum.inl a) (Sum.inl b) N`. Establish `h2` using `r'.cont (Sum.inl a) (Sum.inr b) N`. Use `h1.add h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.add_apply, map_add]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `eq_of_emb ?_ ?_` and prove the remaining obligations. Rewrite using `[GG.map_right, ← baseLift_map_residue, GG.map_right, unitaryThreeReflection_right]`. Conclude with `hR g`. Rewrite using `[emb_map']`. Use extensionality with `a b`.
-
-Rewrite using `[Matrix.map_apply]`. Use `show (res O R) (emb (x g * _) a b) = _`. Rewrite using `[hF]`. Conclude with `r'.red g a b`. Conclude with `Lift.ext (MonoidHom.ext fun g => hF g)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.gLift_toLift_inH_and_surjective :
     ∀ {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ] [TopologicalSpace Γ] {η : Γ →* ℤˣ} {Ψ : Γ →* Oˣ} (hη : IsLocallyConstant η)

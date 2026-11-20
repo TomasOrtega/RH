@@ -46,11 +46,11 @@ structure ModelBase (M : ModelsOf F r) : Prop where
   dom_gam : ∀ k, ∀ x ∈ (M.X k).dom, ∀ γ ∈ (M.X k).Γ, lact γ x ∈ (M.X k).dom
 
 /- English proof (translation)
-Establish `he : ∀ ρ : E →+* ℂ, Data.emb ρ (v + w) = Data.emb ρ v + Data.emb ρ w` using `fun ρ => by`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb]`. Unfold `perFr`. Use `split_ifs`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, Matrix.mulVec_add]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite using `[he]`. Simplify using `[hermC, mul_add, Finset.sum_add_distrib]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perFr_add (X : Data E r) (x : Frame X.Ψ r) (v w : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
     perFr X x (v + w) τ i = perFr X x v τ i + perFr X x w τ i := by
@@ -79,7 +79,7 @@ theorem pmOf_apply (M : ModelsOf F r) (k : Fin F.n) (x : Frame (M.X k).Ψ r) (a 
 def XiSign (M : ModelsOf F r) : Prop := ∀ k, ∀ τ ∈ (M.X k).Ψ, (τ (M.X k).ξ0).im < 0
 
 /- English proof (translation)
-Introduce `k τ hτ`. Establish `h1` using `(M.X k).κ0_sign ⟨τ, hτ⟩`. Rewrite `h1` using `[h k]`. Establish `h2 : τ 2 = 2` using `map_ofNat τ 2`. Simplify using `[h2] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

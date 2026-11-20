@@ -22,13 +22,13 @@ section Alg
 variable {A : Type*} [Ring A] [Algebra ℂ A]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b c d`. Establish `hcb : (c = b) ↔ (b = c)` using `eq_comm`. Simplify using `only [pow_zero, one_apply, hcb]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases h1 : c = d <;> by_cases h2 : b = c <;> by_cases h3 : a = d <;> simp_all`. Consider the case `succ m ih`. Introduce `a b c d`. Establish `hp : ∀ i j, (e ^ (m + 1)) i j = ∑ x, e i x * (e ^ m) x j` using `fun i j => by rw [pow_succ', mul_apply]`. Establish `key : ∀ x, e a b * (e c x * (e ^ m) x d) - (e c x * (e ^ m) x d) * e a b = (if b = c then e a x * (e ^ m) x d else 0) - (if a = x then e c b * (e ^ m) x d else 0) + (if b = x then e c x * (e ^ m) a d else 0) - (if a = d then e c x * (e ^ m) x b else 0)`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Establish `e1 : e a b * (e c x * (e ^ m) x d) - (e c x * (e ^ m) x d) * e a b = (e a b * e c x - e c x * e a b) * (e ^ m) x d + e c x * (e a b * (e ^ m) x d - (e ^ m) x d * e a b)` using `by noncomm_ring`. Rewrite using `[e1, he a b c x, ih a b x d, sub_mul, mul_sub, ite_mul, ite_mul, mul_ite, mul_ite, zero_mul, mul_zero]`. Normalize the expressions using the abelian group laws. Rewrite using `[hp c d, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, Finset.sum_congr rfl fun x _ => key x]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Apply the tactic sequence `by_cases h2 : b = c <;> by_cases h3 : a = d <;> simp [h2, h3, hp]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pow_bracket (e : Matrix (Fin n) (Fin n) A)
     (he : ∀ a b c d, e a b * e c d - e c d * e a b = (if b = c then e a d else 0) - (if a = d then e c b else 0)) (m : ℕ) :
@@ -57,7 +57,7 @@ theorem pow_bracket (e : Matrix (Fin n) (Fin n) A)
     by_cases h2 : b = c <;> by_cases h3 : a = d <;> simp [h2, h3, hp]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Simplify using `only [Matrix.trace, Matrix.diag, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[← Finset.sum_sub_distrib, Finset.sum_congr rfl fun c _ => pow_bracket e he m a b c c]`. Simplify using `[Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pow_central (e : Matrix (Fin n) (Fin n) A)
     (he : ∀ a b c d, e a b * e c d - e c d * e a b = (if b = c then e a d else 0) - (if a = d then e c b else 0))
@@ -68,7 +68,7 @@ theorem pow_central (e : Matrix (Fin n) (Fin n) A)
   simp [Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, mul_apply, map_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => Algebra.commutes _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_cent (N : Matrix (Fin n) (Fin n) ℂ) (Y : Matrix (Fin n) (Fin n) A) :
     (N.map (algebraMap ℂ A) * Y).trace = (Y * N.map (algebraMap ℂ A)).trace := by
@@ -77,21 +77,21 @@ theorem trace_cent (N : Matrix (Fin n) (Fin n) ℂ) (Y : Matrix (Fin n) (Fin n) 
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => Algebra.commutes _ _
 
 /- English proof (translation)
-Use `set φ : Matrix (Fin n) (Fin n) ℂ →+* Matrix (Fin n) (Fin n) A := (algebraMap ℂ A).mapMatrix with hφ`. Establish `hφa : ∀ X, φ X = X.map (algebraMap ℂ A)` using `fun X => rfl`. Use `set Rm : Matrix (Fin n) (Fin n) A := Matrix.diagonal fun _ => r with hRm`. Establish `hNm : φ N * φ M = 1` using `by rw [← map_mul, hNM, map_one]`. Establish `hMn : φ M * φ N = 1` using `by rw [← map_mul, hMN, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomm : ∀ X, Rm * φ X = φ X * Rm`. Introduce `X`. Use extensionality with `i j`. Simplify using `[hRm, hφa, Matrix.diagonal_mul, Matrix.mul_diagonal, Algebra.commutes]`. Establish `hrel : φ N * e * Rm = Rm * e * φ N`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `p b`. Establish `h0` using `h p b`. Simplify using `only [Algebra.smul_def] at h0`. Rewrite using `[hRm, Matrix.mul_diagonal, Matrix.mul_apply, Matrix.mul_apply, Finset.sum_mul]`. Simplify using `only [Matrix.diagonal_mul, hφa, map_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl fun x _ => mul_assoc _ _ _, h0]`. Conclude with `Finset.sum_congr rfl fun d _ => Algebra.commutes _ _`. Establish `h1 : Rm * e = φ N * e * φ M * Rm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc _ Rm, hcomm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Establish `hS : Commute (φ M * Rm) e` using `by show φ M * Rm * e = e * (φ M * Rm)`. Rewrite using `[mul_assoc, h1]`. Simplify using `only [← mul_assoc]`. Rewrite using `[hMn, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hSm : φ M * Rm * e ^ m = e ^ m * (φ M * Rm)` using `hS.pow_right m`. Establish `h2 : Rm * e ^ m = φ N * e ^ m * φ M * Rm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← mul_assoc]`. Rewrite using `[hNm, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ = φ N * (e ^ m * (φ M * Rm)) := by rw [hSm]`. Use `_ = _ := by simp only [mul_assoc]`. Establish `t1 : (Rm * e ^ m).trace = r * (e ^ m).trace`. Simplify using `[Matrix.trace, hRm, Matrix.diagonal_mul, Finset.mul_sum]`. Establish `t2 : ∀ X : Matrix (Fin n) (Fin n) A, (X * Rm).trace = X.trace * r`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `X`. Simplify using `[Matrix.trace, hRm, Matrix.mul_diagonal, Finset.sum_mul]`. Establish `t3 : (φ N * e ^ m * φ M).trace = (e ^ m).trace`. Rewrite using `[mul_assoc, hφa N, trace_cent, ← hφa, mul_assoc, hMn, mul_one]`. Rewrite using `[← t1, h2, t2, t3]`.
+A detailed English derivation is pending.
 -/
 theorem trace_conj (e : Matrix (Fin n) (Fin n) A) (r : A) (N M : Matrix (Fin n) (Fin n) ℂ) (hNM : N * M = 1) (hMN : M * N = 1)
     (h : ∀ p b, ∑ a, N p a • (e a b * r) = ∑ d, N d b • (r * e p d)) (m : ℕ) :
@@ -142,7 +142,7 @@ theorem trace_conj (e : Matrix (Fin n) (Fin n) A) (r : A) (N M : Matrix (Fin n) 
   rw [← t1, h2, t2, t3]
 
 /- English proof (translation)
-Establish `e : ((1 / 2 : ℂ) • (p + ε • q)) * ((1 / 2 : ℂ) • (u + ε' • v)) - ((1 / 2 : ℂ) • (u + ε' • v)) * ((1 / 2 : ℂ) • (p + ε • q)) = (1 / 4 : ℂ) • ((p * u - u * p) + ε' • (p * v - v * p) + ε • (q * u - u * q) + (ε * ε') • (q * v - v * q))`. Simplify using `only [smul_mul_assoc, mul_smul_comm, add_mul, mul_add, smul_add, smul_sub, smul_smul]`. Use `module`. Rewrite using `[e, h1, h2, h3, h4]`. Use `module`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_alg (p q u v t w : A) (ε ε' : ℂ) (h1 : p * u - u * p = t) (h2 : p * v - v * p = w)
     (h3 : q * u - u * q = w) (h4 : q * v - v * q = -t) :
@@ -163,9 +163,9 @@ section End
 variable {M M' : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup M'] [Module ℂ M']
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b x`. Simplify using `only [pow_zero, one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `succ m ih`. Introduce `a b x`. Simplify using `only [pow_succ', mul_apply, LinearMap.sum_apply, map_sum, Module.End.mul_apply]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [h, ih]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pow_intertw (e : Matrix (Fin n) (Fin n) (Module.End ℂ M)) (e' : Matrix (Fin n) (Fin n) (Module.End ℂ M'))
     (α : M →ₗ[ℂ] M') (h : ∀ a b x, α (e a b x) = e' a b (α x)) (m : ℕ) :
@@ -181,7 +181,7 @@ theorem pow_intertw (e : Matrix (Fin n) (Fin n) (Module.End ℂ M)) (e' : Matrix
     exact Finset.sum_congr rfl fun c _ => by rw [h, ih]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, LinearMap.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => pow_intertw e e' α h m a a x`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_intertw (e : Matrix (Fin n) (Fin n) (Module.End ℂ M)) (e' : Matrix (Fin n) (Fin n) (Module.End ℂ M'))
     (α : M →ₗ[ℂ] M') (h : ∀ a b x, α (e a b x) = e' a b (α x)) (m : ℕ) (x : M) :
@@ -204,12 +204,12 @@ def Sm : Submodule ℂ (Mat n → V) where
   smul_mem' := fun c f hf => ⟨hf.1.const_smul c, fun g hg => by simp [hf.2 g hg]⟩
 
 /- English proof (translation)
-The claim follows from `x.2.1`.
+A detailed English derivation is pending.
 -/
 theorem Sm.sm (x : Sm n V) : ContDiffOn ℝ ∞ x.1 (GLs n) := x.2.1
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ GLs n`. Conclude with `h g hg`. Rewrite using `[x.2.2 g hg, y.2.2 g hg]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Sm.ext' {x y : Sm n V} (h : ∀ g ∈ GLs n, x.1 g = y.1 g) : x = y := by
   apply Subtype.ext
@@ -222,7 +222,7 @@ def cut (F : Mat n → V) (hF : ContDiffOn ℝ ∞ F (GLs n)) : Sm n V :=
   ⟨(GLs n).indicator F, hF.congr (fun g hg => Set.indicator_of_mem hg F), fun g hg => Set.indicator_of_notMem hg F⟩
 
 /- English proof (translation)
-The claim follows from `Set.indicator_of_mem hg F`.
+A detailed English derivation is pending.
 -/
 theorem cut_apply {F : Mat n → V} (hF : ContDiffOn ℝ ∞ F (GLs n)) {g : Mat n} (hg : g ∈ GLs n) : (cut F hF).1 g = F g :=
   Set.indicator_of_mem hg F
@@ -243,7 +243,7 @@ def lift (D : (Mat n → V) → (Mat n → V')) (hs : ∀ f, ContDiffOn ℝ ∞ 
     exact hc c _ (Sm.sm x) hg
 
 /- English proof (translation)
-The claim follows from `cut_apply (hs _ (Sm.sm x)) hg`.
+A detailed English derivation is pending.
 -/
 theorem lift_val (D : (Mat n → V) → (Mat n → V')) (hs ha hc) (x : Sm n V) {g : Mat n} (hg : g ∈ GLs n) :
     (lift D hs ha hc x).1 g = D x.1 g := cut_apply (hs _ (Sm.sm x)) hg
@@ -252,26 +252,26 @@ def rd (X : Mat n) : Module.End ℂ (Sm n V) :=
   lift (Rd X) (fun _ hf => Rd_contDiffOn X hf) (fun _ _ hf hf' => Rd_add X hf hf') (fun c _ hf => Rd_smul c X hf)
 
 /- English proof (translation)
-The claim follows from `lift_val _ _ _ _ x hg`.
+A detailed English derivation is pending.
 -/
 theorem rd_val (X : Mat n) (x : Sm n V) {g : Mat n} (hg : g ∈ GLs n) : (rd X x).1 g = Rd X x.1 g := lift_val _ _ _ _ x hg
 
 /- English proof (translation)
-Rewrite using `[rd_val X _ hg]`. Conclude with `Rd_congr X (fun g' hg' => rd_val Y x hg') hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rd_rd (X Y : Mat n) (x : Sm n V) {g : Mat n} (hg : g ∈ GLs n) : (rd X (rd Y x)).1 g = Rd X (Rd Y x.1) g := by
   rw [rd_val X _ hg]
   exact Rd_congr X (fun g' hg' => rd_val Y x hg') hg
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => Sm.ext' fun g hg => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, rd_val _ _ hg, Rd_add_left]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem rd_add (X Y : Mat n) : (rd (X + Y) : Module.End ℂ (Sm n V)) = rd X + rd Y := by
   refine LinearMap.ext fun x => Sm.ext' fun g hg => ?_
   simp only [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, rd_val _ _ hg, Rd_add_left]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => Sm.ext' fun g hg => ?_` and prove the remaining obligations. Use `show (rd (r • X) x).1 g = (r : ℂ) • (rd X x).1 g`. Rewrite using `[rd_val _ _ hg, rd_val _ _ hg, Rd_smul_left, Pi.smul_apply, Complex.coe_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rd_rsmul (r : ℝ) (X : Mat n) : (rd (r • X) : Module.End ℂ (Sm n V)) = (r : ℂ) • rd X := by
   refine LinearMap.ext fun x => Sm.ext' fun g hg => ?_
@@ -279,14 +279,14 @@ theorem rd_rsmul (r : ℝ) (X : Mat n) : (rd (r • X) : Module.End ℂ (Sm n V)
   rw [rd_val _ _ hg, rd_val _ _ hg, Rd_smul_left, Pi.smul_apply, Complex.coe_smul]
 
 /- English proof (translation)
-Use `rd_rsmul (V := V) (-1) X` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rd_neg (X : Mat n) : (rd (-X) : Module.End ℂ (Sm n V)) = -rd X := by
   have := rd_rsmul (V := V) (-1) X
   simpa using this
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => Sm.ext' fun g hg => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, Pi.sub_apply, rd_rd _ _ _ hg, rd_val _ _ hg]`. Conclude with `Rd_bracket X Y (Sm.sm x) hg`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rd_bracket (X Y : Mat n) :
     (rd X * rd Y - rd Y * rd X : Module.End ℂ (Sm n V)) = rd (X * Y - Y * X) := by
@@ -297,7 +297,7 @@ theorem rd_bracket (X Y : Mat n) :
 def eps (s : Bool) : ℂ := if s then -Complex.I else Complex.I
 
 /- English proof (translation)
-Apply the tactic sequence `cases s <;> simp [eps]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eps_sq (s : Bool) : eps s * eps s = -1 := by cases s <;> simp [eps]
 
@@ -308,7 +308,7 @@ def kap : Bool → ℂ →+* ℂ
   | false => starRingEnd ℂ
 
 /- English proof (translation)
-Consider the cases of `s`. Simplify using `only [kap, eps]`. Apply the tactic sequence `apply Complex.ext <;> simp`. Simplify using `only [kap, eps]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kap_eq (s : Bool) (c : ℂ) : kap s c = (c.re : ℂ) + (c.im : ℂ) * (-eps s) := by
   cases s
@@ -318,14 +318,14 @@ theorem kap_eq (s : Bool) (c : ℂ) : kap s c = (c.re : ℂ) + (c.im : ℂ) * (-
     apply Complex.ext <;> simp
 
 /- English proof (translation)
-Simplify using `only [T, smul_add, rd_add]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem T_add (s : Bool) (Z W : Mat n) : (T s (Z + W) : Module.End ℂ (Sm n V)) = T s Z + T s W := by
   simp only [T, smul_add, rd_add]
   module
 
 /- English proof (translation)
-Simplify using `only [T]`. Rewrite using `[smul_comm Complex.I r Z, rd_rsmul, rd_rsmul]`. Use `module`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_rsmul (s : Bool) (r : ℝ) (Z : Mat n) : (T s (r • Z) : Module.End ℂ (Sm n V)) = (r : ℂ) • T s Z := by
   simp only [T]
@@ -333,7 +333,7 @@ theorem T_rsmul (s : Bool) (r : ℝ) (Z : Mat n) : (T s (r • Z) : Module.End �
   module
 
 /- English proof (translation)
-Establish `h : Complex.I • Complex.I • Z = -Z` using `by simp [smul_smul]`. Simplify using `only [T, h, rd_neg]`. Establish `e : (-eps s) • ((1 / 2 : ℂ) • ((rd Z : Module.End ℂ (Sm n V)) + eps s • rd (Complex.I • Z))) = (1 / 2 : ℂ) • ((-eps s) • rd Z + (-(eps s * eps s)) • rd (Complex.I • Z))` using `by module`. Rewrite using `[e, eps_sq]`. Use `module`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_I (s : Bool) (Z : Mat n) : (T s (Complex.I • Z) : Module.End ℂ (Sm n V)) = (-eps s) • T s Z := by
   have h : Complex.I • Complex.I • Z = -Z := by simp [smul_smul]
@@ -344,7 +344,7 @@ theorem T_I (s : Bool) (Z : Mat n) : (T s (Complex.I • Z) : Module.End ℂ (Sm
   module
 
 /- English proof (translation)
-Establish `hZ : c • Z = c.re • Z + c.im • (Complex.I • Z)` using `by conv_lhs => rw [← Complex.re_add_im c]`. Rewrite using `[add_smul, mul_smul, Complex.coe_smul, Complex.coe_smul]`. Rewrite using `[hZ, T_add, T_rsmul, T_rsmul, T_I, kap_eq]`. Use `module`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_smul (s : Bool) (c : ℂ) (Z : Mat n) : (T s (c • Z) : Module.End ℂ (Sm n V)) = kap s c • T s Z := by
   have hZ : c • Z = c.re • Z + c.im • (Complex.I • Z) := by
@@ -354,7 +354,7 @@ theorem T_smul (s : Bool) (c : ℂ) (Z : Mat n) : (T s (c • Z) : Module.End �
   module
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Use `T_smul (V := V) (n := n) s 0 0` as an intermediate fact. Simplify using `using this`. Consider the case `insert i t hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, T_add, T_smul, ih]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 -/
 theorem T_sum (s : Bool) {ι : Type*} (t : Finset ι) (c : ι → ℂ) (Z : ι → Mat n) :
     (T s (∑ i ∈ t, c i • Z i) : Module.End ℂ (Sm n V)) = ∑ i ∈ t, kap s (c i) • T s (Z i) := by
@@ -366,7 +366,7 @@ theorem T_sum (s : Bool) {ι : Type*} (t : Finset ι) (c : ι → ℂ) (Z : ι �
   | insert i t hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, T_add, T_smul, ih]
 
 /- English proof (translation)
-Use `T_smul (V := V) s (-1) W` as an intermediate fact. Rewrite using `[sub_eq_add_neg, T_add, sub_eq_add_neg]`. Simplify using `using congrArg (T s Z + ·) this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem T_sub (s : Bool) (Z W : Mat n) : (T s (Z - W) : Module.End ℂ (Sm n V)) = T s Z - T s W := by
   have := T_smul (V := V) s (-1) W
@@ -374,9 +374,9 @@ theorem T_sub (s : Bool) (Z W : Mat n) : (T s (Z - W) : Module.End ℂ (Sm n V))
   simpa using congrArg (T s Z + ·) this
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[rd_bracket]`. Simplify using `only [mul_smul_comm, smul_mul_assoc, smul_sub]`. Rewrite using `[rd_bracket]`. Simplify using `only [mul_smul_comm, smul_mul_assoc, smul_sub]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[rd_bracket, ← rd_neg]`. Use `congr 1`. Simplify using `only [mul_smul_comm, smul_mul_assoc, smul_smul, Complex.I_mul_I]`. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem right_derivative_commutator (Z W : Mat n) :
     (rd Z * rd (Complex.I • W) - rd (Complex.I • W) * rd Z : Module.End ℂ (Sm n V)) = rd (Complex.I • (Z * W - W * Z)) ∧
@@ -395,7 +395,7 @@ theorem right_derivative_commutator (Z W : Mat n) :
     abel
 
 /- English proof (translation)
-Take `⟨h2, h3, h4⟩` from `right_derivative_commutator (V := V) Z W`. Simplify using `only [T]`. Rewrite using `[T_alg _ _ _ _ _ _ _ _ (rd_bracket Z W) h2 h3 h4, eps_sq]`. Use `module`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_bracket (s : Bool) (Z W : Mat n) :
     (T s Z * T s W - T s W * T s Z : Module.End ℂ (Sm n V)) = T s (Z * W - W * Z) := by
@@ -405,9 +405,9 @@ theorem T_bracket (s : Bool) (Z W : Mat n) :
   module
 
 /- English proof (translation)
-Take `⟨h2, h3, h4⟩` from `right_derivative_commutator (V := V) Z W`. Rewrite using `[← sub_eq_zero]`. Simplify using `only [T]`. Rewrite using `[T_alg _ _ _ _ _ _ _ _ (rd_bracket Z W) h2 h3 h4]`. Apply the tactic sequence `have e1 : eps s + eps (!s) = 0 := by cases s <;> simp [eps]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have e2 : eps s * eps (!s) = 1 := by cases s <;> simp [eps]`. Rewrite using `[e1, e2]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem T_cross (s : Bool) (Z W : Mat n) :
     (T s Z * T (!s) W : Module.End ℂ (Sm n V)) = T (!s) W * T s Z := by
@@ -421,7 +421,7 @@ theorem T_cross (s : Bool) (Z W : Mat n) :
   simp
 
 /- English proof (translation)
-Apply the tactic sequence `have e1 : eps (!s) = -eps s := by cases s <;> simp [eps]`. Simplify using `only [T, e1]`. Use `module`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rd_split (s : Bool) (X : Mat n) : (rd X : Module.End ℂ (Sm n V)) = T s X + T (!s) X := by
   have e1 : eps (!s) = -eps s := by cases s <;> simp [eps]
@@ -437,13 +437,13 @@ Both sides reduce to the same expression.
 theorem eM_apply (s : Bool) (a b : Fin n) : eM V n s a b = T s (Matrix.single a b 1) := rfl
 
 /- English proof (translation)
-Establish `T0 : (T s (0 : Mat n) : Module.End ℂ (Sm n V)) = 0`. Use `T_smul (V := V) (n := n) s 0 0` as an intermediate fact. Simplify using `using this`. Simplify using `only [eM_apply, T_bracket]`. Rewrite using `[T_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Distinguish the cases in `h : b = c`. Substitute `h` using the available equality. Simplify using `[Matrix.single_mul_single_same]`. Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ h]`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h, T0]`. Distinguish the cases in `h : a = d`. Substitute `h` using the available equality. Simplify using `[Matrix.single_mul_single_same]`. Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ (Ne.symm h)]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h, T0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eM_rel (s : Bool) (a b c d : Fin n) :
     eM V n s a b * eM V n s c d - eM V n s c d * eM V n s a b =
@@ -466,7 +466,7 @@ theorem eM_rel (s : Bool) (a b c d : Fin n) :
       simp [h, T0]
 
 /- English proof (translation)
-Establish `h : Complex.I • (Matrix.single a b 1 : Mat n) = Matrix.single a b Complex.I`. Rewrite using `[Matrix.smul_single]`. Simplify using the standard rewrite rules. Simplify using `only [eM_apply, T, h, LinearMap.smul_apply, LinearMap.add_apply, Submodule.coe_smul, Submodule.coe_add, Pi.smul_apply, Pi.add_apply, rd_val _ _ hg, Eu, eps]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Eu_val (s : Bool) (a b : Fin n) (x : Sm n V) {g : Mat n} (hg : g ∈ GLs n) :
     (eM V n s a b x).1 g = Eu s a b x.1 g := by
@@ -476,7 +476,7 @@ theorem Eu_val (s : Bool) (a b : Fin n) (x : Sm n V) {g : Mat n} (hg : g ∈ GLs
     Pi.smul_apply, Pi.add_apply, rd_val _ _ hg, Eu, eps]
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, Rd_congr _ h hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem Eu_congr' (s : Bool) (a b : Fin n) {f f' : Mat n → V} (h : Set.EqOn f f' (GLs n)) :
     Set.EqOn (Eu s a b f) (Eu s a b f') (GLs n) := by
@@ -484,11 +484,11 @@ theorem Eu_congr' (s : Bool) (a b : Fin n) {f f' : Mat n → V} (h : Set.EqOn f 
   simp only [Eu, Pi.smul_apply, Pi.add_apply, Rd_congr _ h hx]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b g hg`. Simplify using `only [pow_zero, one_apply, Epow]`. Distinguish the cases in `h : a = b`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify `hx hg` using `[h]`. Simplify using `[h]`. Consider the case `succ m ih`. Introduce `a b g hg`. Simplify using `only [Epow, pow_succ', mul_apply, LinearMap.sum_apply, Module.End.mul_apply, Finset.sum_apply, AddSubmonoidClass.coe_finset_sum]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Eu_congr' s a c (ih c b) hg, Eu_val s a c _ hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Epow_val (s : Bool) {F : Mat n → V} (x : Sm n V) (hx : Set.EqOn F x.1 (GLs n)) (m : ℕ) :
     ∀ a b, Set.EqOn (Epow s m a b F) (((eM V n s) ^ m) a b x).1 (GLs n) := by
@@ -510,7 +510,7 @@ def tr (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (n : ℕ) (s : Bool
   ((eM V n s) ^ m).trace
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [gel, tr, Matrix.trace, Matrix.diag, LinearMap.sum_apply, Finset.sum_apply, AddSubmonoidClass.coe_finset_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Epow_val s x hx m a a hg`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gel_val (s : Bool) {F : Mat n → V} (x : Sm n V) (hx : Set.EqOn F x.1 (GLs n)) (m : ℕ) :
     Set.EqOn (gel s m F) (tr V n s m x).1 (GLs n) := by
@@ -525,21 +525,21 @@ section Main
 variable {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup V'] [NormedSpace ℂ V']
 
 /- English proof (translation)
-Simplify using `only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *`. Conclude with `mul_ne_zero hx hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_mem {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n := by
   simp only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *
   exact mul_ne_zero hx hy
 
 /- English proof (translation)
-The claim follows from `hf.comp (mulR h).contDiff.contDiffOn fun _ hy => mul_mem hy hh`.
+A detailed English derivation is pending.
 -/
 theorem rtr_smooth (h : Mat n) (hh : h ∈ GLs n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     ContDiffOn ℝ ∞ (fun y => f (y * h)) (GLs n) :=
   hf.comp (mulR h).contDiff.contDiffOn fun _ hy => mul_mem hy hh
 
 /- English proof (translation)
-The claim follows from `hf.comp (mulL h).contDiff.contDiffOn fun _ hy => mul_mem hh hy`.
+A detailed English derivation is pending.
 -/
 theorem ltr_smooth (h : Mat n) (hh : h ∈ GLs n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     ContDiffOn ℝ ∞ (fun y => f (h * y)) (GLs n) :=
@@ -557,9 +557,9 @@ def cmap (A : V →L[ℂ] V') : Sm n V →ₗ[ℂ] Sm n V' :=
     (fun _ _ _ _ _ _ => by simp) (fun _ _ _ _ _ => by simp)
 
 /- English proof (translation)
-Establish `h1` using `((differentiableAt_of_smooth hf (mul_mem hg hh)).hasFDerivAt.comp g (mulR h).hasFDerivAt).fderiv`. Establish `hu : IsUnit h.det` using `isUnit_iff_ne_zero.2 hh`. Establish `e : g * h * (h⁻¹ * X * h) = g * X * h`. Simplify using `only [← mul_assoc]`. Rewrite using `[mul_assoc g h, Matrix.mul_nonsing_inv _ hu, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show fderiv ℝ (fun y => f (y * h)) g (g * X) = fderiv ℝ f (g * h) (g * h * (h⁻¹ * X * h))`. Rewrite using `[e]`. Establish `h2 : fderiv ℝ (fun y => f (y * h)) g = (fderiv ℝ f (g * h)).comp (mulR h)` using `h1`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Rd_right (X h : Mat n) (hh : h ∈ GLs n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n}
     (hg : g ∈ GLs n) : Rd X (fun y => f (y * h)) g = Rd (h⁻¹ * X * h) f (g * h) := by
@@ -575,7 +575,7 @@ theorem Rd_right (X h : Mat n) (hh : h ∈ GLs n) {f : Mat n → V} (hf : ContDi
   rfl
 
 /- English proof (translation)
-Establish `h1` using `((differentiableAt_of_smooth hf (mul_mem hh hg)).hasFDerivAt.comp g (mulL h).hasFDerivAt).fderiv`. Establish `h2 : fderiv ℝ (fun y => f (h * y)) g = (fderiv ℝ f (h * g)).comp (mulL h)` using `h1`. Use `show fderiv ℝ (fun y => f (h * y)) g (g * X) = fderiv ℝ f (h * g) (h * g * X)`. Rewrite using `[h2, mul_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Rd_left (X h : Mat n) (hh : h ∈ GLs n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n}
     (hg : g ∈ GLs n) : Rd X (fun y => f (h * y)) g = Rd X f (h * g) := by
@@ -586,7 +586,7 @@ theorem Rd_left (X h : Mat n) (hh : h ∈ GLs n) {f : Mat n → V} (hf : ContDif
   rfl
 
 /- English proof (translation)
-Establish `h1` using `((A.restrictScalars ℝ).hasFDerivAt.comp g (differentiableAt_of_smooth hf hg).hasFDerivAt).fderiv`. Establish `h2 : fderiv ℝ (fun y => A (f y)) g = (A.restrictScalars ℝ).comp (fderiv ℝ f g)` using `h1`. Use `show fderiv ℝ (fun y => A (f y)) g (g * X) = A (fderiv ℝ f g (g * X))`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Rd_clm (X : Mat n) (A : V →L[ℂ] V') {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n}
     (hg : g ∈ GLs n) : Rd X (fun y => A (f y)) g = A (Rd X f g) := by
@@ -597,25 +597,25 @@ theorem Rd_clm (X : Mat n) (A : V →L[ℂ] V') {f : Mat n → V} (hf : ContDiff
   rfl
 
 /- English proof (translation)
-The claim follows from `lift_val _ _ _ _ x hg`.
+A detailed English derivation is pending.
 -/
 theorem rtr_val (h : Mat n) (hh) (x : Sm n V) {g : Mat n} (hg : g ∈ GLs n) : (rtr h hh x).1 g = x.1 (g * h) :=
   lift_val _ _ _ _ x hg
 
 /- English proof (translation)
-The claim follows from `lift_val _ _ _ _ x hg`.
+A detailed English derivation is pending.
 -/
 theorem ltr_val (h : Mat n) (hh) (x : Sm n V) {g : Mat n} (hg : g ∈ GLs n) : (ltr h hh x).1 g = x.1 (h * g) :=
   lift_val _ _ _ _ x hg
 
 /- English proof (translation)
-The claim follows from `lift_val _ _ _ _ x hg`.
+A detailed English derivation is pending.
 -/
 theorem cmap_val (A : V →L[ℂ] V') (x : Sm n V) {g : Mat n} (hg : g ∈ GLs n) : (cmap A x).1 g = A (x.1 g) :=
   lift_val _ _ _ _ x hg
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => Sm.ext' fun g hg => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[rd_val _ _ hg, rtr_val _ _ _ hg, rd_val _ _ (mul_mem hg hh), ← Rd_right X h hh (Sm.sm x) hg]`. Conclude with `Rd_congr X (fun g' hg' => rtr_val h hh x hg') hg`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rd_rtr (X h : Mat n) (hh : h ∈ GLs n) :
     (rd X * rtr h hh : Module.End ℂ (Sm n V)) = rtr h hh * rd (h⁻¹ * X * h) := by
@@ -625,7 +625,7 @@ theorem rd_rtr (X h : Mat n) (hh : h ∈ GLs n) :
   exact Rd_congr X (fun g' hg' => rtr_val h hh x hg') hg
 
 /- English proof (translation)
-Establish `e : h⁻¹ * (Complex.I • Z) * h = Complex.I • (h⁻¹ * Z * h)`. Simplify using `only [mul_smul_comm, smul_mul_assoc]`. Simplify using `only [T, smul_mul_assoc, mul_smul_comm, add_mul, mul_add, rd_rtr, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem T_rtr (s : Bool) (Z h : Mat n) (hh : h ∈ GLs n) :
     (T s Z * rtr h hh : Module.End ℂ (Sm n V)) = rtr h hh * T s (h⁻¹ * Z * h) := by
@@ -634,7 +634,7 @@ theorem T_rtr (s : Bool) (Z h : Mat n) (hh : h ∈ GLs n) :
   simp only [T, smul_mul_assoc, mul_smul_comm, add_mul, mul_add, rd_rtr, e]
 
 /- English proof (translation)
-Use `Sm.ext' fun g hg => ?_` and prove the remaining obligations. Rewrite using `[ltr_val _ _ _ hg, rd_val _ _ (mul_mem hh hg), rd_val _ _ hg, ← Rd_left X h hh (Sm.sm x) hg]`. Conclude with `(Rd_congr X (fun g' hg' => ltr_val h hh x hg') hg).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rd_ltr (X h : Mat n) (hh : h ∈ GLs n) (x : Sm n V) : ltr h hh (rd X x) = rd X (ltr h hh x) := by
   refine Sm.ext' fun g hg => ?_
@@ -642,7 +642,7 @@ theorem rd_ltr (X h : Mat n) (hh : h ∈ GLs n) (x : Sm n V) : ltr h hh (rd X x)
   exact (Rd_congr X (fun g' hg' => ltr_val h hh x hg') hg).symm
 
 /- English proof (translation)
-Use `Sm.ext' fun g hg => ?_` and prove the remaining obligations. Rewrite using `[cmap_val _ _ hg, rd_val _ _ hg, rd_val _ _ hg, ← Rd_clm X A (Sm.sm x) hg]`. Conclude with `(Rd_congr X (fun g' hg' => cmap_val A x hg') hg).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rd_cmap (X : Mat n) (A : V →L[ℂ] V') (x : Sm n V) : cmap A (rd X x) = rd X (cmap A x) := by
   refine Sm.ext' fun g hg => ?_
@@ -650,16 +650,16 @@ theorem rd_cmap (X : Mat n) (A : V →L[ℂ] V') (x : Sm n V) : cmap A (rd X x) 
   exact (Rd_congr X (fun g' hg' => cmap_val A x hg') hg).symm
 
 /- English proof (translation)
-Simplify using `only [T, LinearMap.smul_apply, LinearMap.add_apply, map_smul, map_add, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem T_intertw (α : Sm n V →ₗ[ℂ] Sm n V') (h : ∀ X x, α (rd X x) = rd X (α x)) (s : Bool) (Z : Mat n) (x : Sm n V) :
     α (T s Z x) = T s Z (α x) := by
   simp only [T, LinearMap.smul_apply, LinearMap.add_apply, map_smul, map_add, h]
 
 /- English proof (translation)
-Establish `h : Z = ∑ p : Fin n × Fin n, Z p.1 p.2 • (Matrix.single p.1 p.2 1 : Mat n)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single Z]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_single]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [h]`. Rewrite using `[T_sum, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem T_expand (s : Bool) (Z : Mat n) : (T s Z : Module.End ℂ (Sm n V)) =
     ∑ a, ∑ b, kap s (Z a b) • eM V n s a b := by
@@ -674,7 +674,7 @@ theorem T_expand (s : Bool) (Z : Mat n) : (T s Z : Module.End ℂ (Sm n V)) =
   rfl
 
 /- English proof (translation)
-Rewrite using `[T_expand]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, tr]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by`. Rewrite using `[pow_central _ (eM_rel s) m a b]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_T_same (s : Bool) (m : ℕ) (Z : Mat n) :
     (T s Z * tr V n s m : Module.End ℂ (Sm n V)) = tr V n s m * T s Z := by
@@ -684,7 +684,7 @@ theorem tr_T_same (s : Bool) (m : ℕ) (Z : Mat n) :
     rw [pow_central _ (eM_rel s) m a b]
 
 /- English proof (translation)
-Use `(trace_intertw (eM V n s) (eM V n s) (T (!s) Z) (fun a b y => ?_) m x)` and prove the remaining obligations. Use `T_cross (V := V) s (Matrix.single a b 1) Z` as an intermediate fact. Conclude with `(LinearMap.congr_fun this y).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tr_T_other (s : Bool) (m : ℕ) (Z : Mat n) (x : Sm n V) :
     T (!s) Z (tr V n s m x) = tr V n s m (T (!s) Z x) := by
@@ -693,7 +693,7 @@ theorem tr_T_other (s : Bool) (m : ℕ) (Z : Mat n) (x : Sm n V) :
   exact (LinearMap.congr_fun this y).symm
 
 /- English proof (translation)
-Rewrite using `[rd_split s X, LinearMap.add_apply, LinearMap.add_apply, map_add, tr_T_other]`. Use `congr 1`. Conclude with `LinearMap.congr_fun (tr_T_same s m X) x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tr_rd (s : Bool) (m : ℕ) (X : Mat n) (x : Sm n V) : rd X (tr V n s m x) = tr V n s m (rd X x) := by
   rw [rd_split s X, LinearMap.add_apply, LinearMap.add_apply, map_add, tr_T_other]
@@ -701,19 +701,19 @@ theorem tr_rd (s : Bool) (m : ℕ) (X : Mat n) (x : Sm n V) : rd X (tr V n s m x
   exact LinearMap.congr_fun (tr_T_same s m X) x
 
 /- English proof (translation)
-Establish `hu : IsUnit h.det` using `isUnit_iff_ne_zero.2 hh`. Establish `hrel : ∀ p b, ∑ a, ((h.map (kap s))ᵀ) p a • (eM V n s a b * rtr h hh) = ∑ d, ((h.map (kap s))ᵀ) d b • (rtr h hh * eM V n s p d)`. Introduce `p b`. Establish `h1 : h * Matrix.single p b 1 = ∑ a, h a p • (Matrix.single a b 1 : Mat n)`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.single_apply, Matrix.mul_apply]`. Distinguish the cases in `hj : b = j`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hj]`. Establish `h2 : Matrix.single p b 1 * h = ∑ d, h b d • (Matrix.single p d 1 : Mat n)`. Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.single_apply, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : p = i`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi]`. Establish `h3 : h⁻¹ * (h * Matrix.single p b 1) * h = Matrix.single p b 1 * h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, Matrix.nonsing_inv_mul _ hu, one_mul]`. Establish `h4` using `T_rtr (V := V) s (h * Matrix.single p b 1) h hh`. Rewrite `h4` using `[h3, h2, T_sum, h1, T_sum, Finset.sum_mul, Finset.mul_sum]`. Simplify `h4` using `only [transpose_apply, map_apply, smul_mul_assoc, mul_smul_comm, eM_apply]`. Establish `hNM : (h.map (kap s))ᵀ * (h⁻¹.map (kap s))ᵀ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.transpose_mul]`. Establish `: h⁻¹.map (kap s) * h.map (kap s) = 1`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← map_mul, Matrix.nonsing_inv_mul _ hu, map_one]`. Rewrite using `[this, Matrix.transpose_one]`. Establish `hMN : (h⁻¹.map (kap s))ᵀ * (h.map (kap s))ᵀ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.transpose_mul]`. Establish `: h.map (kap s) * h⁻¹.map (kap s) = 1`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← map_mul, Matrix.mul_nonsing_inv _ hu, map_one]`. Rewrite using `[this, Matrix.transpose_one]`. Conclude with `LinearMap.congr_fun (trace_conj (eM V n s) (rtr h hh) _ _ hNM hMN hrel m) x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tr_rtr (s : Bool) (m : ℕ) (h : Mat n) (hh : h ∈ GLs n) (x : Sm n V) :
     rtr h hh (tr V n s m x) = tr V n s m (rtr h hh x) := by
@@ -757,17 +757,15 @@ theorem tr_rtr (s : Bool) (m : ℕ) (h : Mat n) (hh : h ∈ GLs n) (x : Sm n V) 
 end Main
 
 /- English proof (translation)
-Introduce `n V V' _ _ _ _ s m f hf`. Use `set x : Sm n V := cut f hf with hx`. Establish `hxf : Set.EqOn f x.1 (GLs n)` using `fun g hg => (cut_apply hf hg).symm`. Establish `hgel` using `gel_val s x hxf m`. Use `⟨(Sm.sm (tr V n s m x)).congr hgel, fun g hg => ⟨fun X => ?_, fun h hh => ⟨?_, ?_⟩, fun A => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Set.EqOn (Rd X f) (rd X x).1 (GLs n)` using `fun g' hg' => by`. Rewrite using `[rd_val _ _ hg']`. Conclude with `Rd_congr X hxf hg'`. Rewrite using `[gel_val s (rd X x) h1 m hg, ← tr_rd, rd_val _ _ hg]`. Conclude with `(Rd_congr X hgel hg).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Set.EqOn (fun y => f (h * y)) (ltr h hh x).1 (GLs n)` using `fun g' hg' => by`. Rewrite using `[ltr_val _ _ _ hg']`. Conclude with `hxf (mul_mem hh hg')`. Establish `h2 : ∀ a b (y : Sm n V), ltr h hh (eM V n s a b y) = eM V n s a b (ltr h hh y)` using `fun a b y => T_intertw (ltr h hh) (fun X z => rd_ltr X h hh z) s _ y`. Rewrite using `[gel_val s _ h1 m hg, hgel (mul_mem hh hg)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `trace_intertw (eM V n s) (eM V n s) (ltr h hh) h2 m x`. Use `show (tr V n s m (ltr h hh x)).1 g = _`. Rewrite using `[show tr V n s m (ltr h hh x) = ltr h hh (tr V n s m x) from h3.symm, ltr_val _ _ _ hg]`. Establish `h1 : Set.EqOn (fun y => f (y * h)) (rtr h hh x).1 (GLs n)` using `fun g' hg' => by`. Rewrite using `[rtr_val _ _ _ hg']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxf (mul_mem hg' hh)`. Rewrite using `[gel_val s _ h1 m hg, hgel (mul_mem hg hh), ← tr_rtr, rtr_val _ _ _ hg]`. Establish `h1 : Set.EqOn (fun y => A (f y)) (cmap A x).1 (GLs n)` using `fun g' hg' => by`. Rewrite using `[cmap_val _ _ hg']`. Conclude with `congrArg A (hxf hg')`.
-
-Establish `h2 : ∀ a b (y : Sm n V), cmap A (eM V n s a b y) = eM V' n s a b (cmap A y)` using `fun a b y => T_intertw (cmap A) (fun X z => rd_cmap X A z) s _ y`. Rewrite using `[gel_val s _ h1 m hg, hgel hg]`. Establish `h3` using `trace_intertw (eM V n s) (eM V' n s) (cmap A) h2 m x`. Use `show (tr V' n s m (cmap A x)).1 g = _`. Rewrite using `[show tr V' n s m (cmap A x) = cmap A (tr V n s m x) from h3.symm, cmap_val _ _ hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gelComm : PositivityTheory.RgBcC.GelComm := by
   intro n V V' _ _ _ _ s m f hf

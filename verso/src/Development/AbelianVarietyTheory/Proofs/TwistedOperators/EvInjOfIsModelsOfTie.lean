@@ -9,7 +9,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.EvalAtUnitVectorFinal
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hM ht`. Establish `hHW : R.models_HW`. Consider the cases of `hM`. Use the matching hypothesis. Conclude with `GlobalTheory.EvalAtUnitVector.evInj T R v₀ hHW ht.hv₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Use the matching hypothesis. A detailed English derivation is pending.
 -/
 theorem evInj_of_isModels_of_tie : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.IsModels → FWTie T R κ v₀ → EvInj T R v₀ := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hM ht

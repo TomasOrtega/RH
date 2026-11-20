@@ -20,7 +20,7 @@ open GlobalTheory.BiTransfer
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilVacMove.dLine, join_apply]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [heisO, AddMonoidHom.comp_apply, symplOH_split (sumDec A (GlobalTheory.ChiGrid.negSp A')), map_add, fst_inl, snd_inl, GlobalTheory.WeilVacMove.symplOH_zero_right, add_zero, join_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dLine_inl (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (G : WO A S → WO S A' → ℂ) (M : ℝ →+ WO A S) :
     GlobalTheory.WeilVacMove.dLine ψ _ S ((inlH (sumDec A (GlobalTheory.ChiGrid.negSp A')) S).comp M) (join (sumDec A (GlobalTheory.ChiGrid.negSp A')) S G) =
@@ -33,7 +33,7 @@ theorem dLine_inl (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (G : WO A S 
     GlobalTheory.WeilVacMove.symplOH_zero_right, add_zero, join_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilVacMove.dLine, join_apply]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [heisO, AddMonoidHom.comp_apply, symplOH_split (sumDec A (GlobalTheory.ChiGrid.negSp A')), map_add, fst_inr, snd_inr, GlobalTheory.WeilVacMove.symplOH_zero_right, zero_add, add_zero, join_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dLine_inr (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (G : WO A S → WO S A' → ℂ) (M : ℝ →+ WO S A') :
     GlobalTheory.WeilVacMove.dLine ψ _ S ((inrH (sumDec A (GlobalTheory.ChiGrid.negSp A')) S).comp M) (join (sumDec A (GlobalTheory.ChiGrid.negSp A')) S G) =
@@ -46,9 +46,9 @@ theorem dLine_inr (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (G : WO A S 
     GlobalTheory.WeilVacMove.symplOH_zero_right, zero_add, add_zero, join_apply]
 
 /- English proof (translation)
-Introduce `D ψ hψ A S A' G hG`. Establish `hj` using `isThetaFunO_join (sumDec A (GlobalTheory.ChiGrid.negSp A')) hG`. Use `⟨fun M hM hM0 => ?_, fun M hM hM0 => ?_⟩` and prove the remaining obligations. Establish `h` using `(GlobalTheory.WeilVacMove.hasDerivAt_zero_and_isTheta hψ (L := (inlH (sumDec A (GlobalTheory.ChiGrid.negSp A')) S).comp M) ((continuous_inlH _ S).comp hM) (fun t => map_inlH _ S _ (hM0 t)) hj).2`. Rewrite `h` using `[dLine_inl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isBiTheta_of_join _ h`. Establish `h` using `(GlobalTheory.WeilVacMove.hasDerivAt_zero_and_isTheta hψ (L := (inrH (sumDec A (GlobalTheory.ChiGrid.negSp A')) S).comp M) ((continuous_inrH _ S).comp hM) (fun t => fin_inrH _ S (hM0 t)) hj).2`. Rewrite `h` using `[dLine_inr]`. Conclude with `isBiTheta_of_join _ h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBiTheta_dLine : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A S A' : HSp D) (G : WO A S → WO S A' → ℂ), IsBiTheta ψ A S A' G → (∀ M : ℝ →+ WO A S, Continuous M → (∀ s, (M s).map (finPart D) = 0) → IsBiTheta ψ A S A' fun u v => GlobalTheory.WeilVacMove.dLine ψ A S M (fun u' => G u' v) u) ∧ ∀ M' : ℝ →+ WO S A', Continuous M' → (∀ s, (M' s).map (finPart D) = 0) → IsBiTheta ψ A S A' fun u v => GlobalTheory.WeilVacMove.dLine ψ S A' M' (G u) v := by
   intro D ψ hψ A S A' G hG

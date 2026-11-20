@@ -11,9 +11,9 @@ namespace PI.UnitaryApproxFinWork
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Set `B` to `(NumberField.integralBasis E).reindex (Fintype.equivFin _)`. Use `⟨_, fun k => B k, fun k => ?_, fun e => ?_⟩` and prove the remaining obligations. Use `show B k ∈ (algebraMap (𝓞 E) E).range`. Use `⟨RingOfIntegers.basis E ((Fintype.equivFin _).symm k), ?_⟩` and prove the remaining obligations. Simplify using `only [B, Module.Basis.reindex_apply, NumberField.integralBasis_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k => ((B.repr e k : ℚ) : F), ?_⟩ conv_lhs => rw [← B.sum_repr e]` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_ratCast, eq_ratCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_span_int : ∃ (d : ℕ) (b : Fin d → E), (∀ k, b k ∈ PI.UnitaryApproxDefs.intOE E) ∧
     ∀ e : E, ∃ f : Fin d → F, e = ∑ k, f k • b k := by
@@ -28,11 +28,11 @@ theorem exists_span_int : ∃ (d : ℕ) (b : Fin d → E), (∀ k, b k ∈ PI.Un
     rw [Algebra.smul_def, Algebra.smul_def, map_ratCast, eq_ratCast]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul e r`. Take `⟨f, hf⟩` from `hb e`. Use `⟨fun k => f k • r, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hf, TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul]`. Consider the case `add x y hx hy`. Take `⟨c1, h1⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c2, h2⟩` from `hy`. Use `⟨c1 + c2, ?_⟩` and prove the remaining obligations. Simplify using `[h1, h2, TensorProduct.tmul_add, Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tensor_decomp {d : ℕ} (b : Fin d → E) (hb : ∀ e : E, ∃ f : Fin d → F, e = ∑ k, f k • b k)
     {R : Type} [CommRing R] [Algebra F R] (x : E ⊗[F] R) :
@@ -52,13 +52,11 @@ theorem tensor_decomp {d : ℕ} (b : Fin d → E) (hb : ∀ e : E, ∃ f : Fin d
     simp [h1, h2, TensorProduct.tmul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Introduce `hW`. Unfold `ApproxE`. Introduce `F E _ _ _ _ _ T x D hD`. Take `⟨d, b, hbint, hb⟩` from `exists_span_int (F := F) (E := E)`. Establish `hc : ∀ v : HeightOneSpectrum (𝓞 F), ∃ c : Fin d → v.adicCompletion F, x v = ∑ k, b k ⊗ₜ[F] c k` using `fun v => tensor_decomp b hb (x v)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose c hc using hc`. Establish `ha : ∀ k, ∃ a : F, ∀ v ∈ T, ∃ t ∈ v.adicCompletionIntegers F, c v k - algebraMap F (v.adicCompletion F) a = algebraMap F (v.adicCompletion F) (D : F) * t` using `fun k => hW F T (fun v => c v k) D hD`. Use `choose a ht using ha`. Use `⟨∑ k, a k • b k, fun v hv => ?_⟩` and prove the remaining obligations. Use `choose t htO hteq using fun k => ht k v hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ k, (1 : E) ⊗ₜ[F] t k * PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F) (b k), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (one_tmul_mem_Sv v (htO k)) (inclE_mem_Sv v (hbint k))`. Rewrite using `[hc v, map_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [PI.UnitaryApproxDefs.inclE, dv, Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`.
-
-Rewrite using `[TensorProduct.smul_tmul, ← TensorProduct.tmul_sub, Algebra.smul_def (a k), mul_one, hteq k, ← Algebra.smul_def, ← TensorProduct.smul_tmul, Algebra.smul_def]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approxEStep : ApproxEStep := by
   intro hW

@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.RgEisSide
 variable {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Unfold `MG.vec`. Rewrite using `[Matrix.mulVec_smul, _root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mulVec_smul_vec (m γ : GL ι 𝔸[k]) (x : 𝔸[k]) (i : ι) :
     ((m⁻¹ : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ (x • MG.vec γ i) = x • MG.vec (γ * m) i := by
@@ -23,9 +23,9 @@ theorem inv_mulVec_smul_vec (m γ : GL ι 𝔸[k]) (x : 𝔸[k]) (i : ι) :
 omit [Fintype ι] [DecidableEq ι] in
 
 /- English proof (translation)
-Unfold `lineZeta globalZeta`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `hpos : (0 : ℝ) < (IdeleGroup.ideleModule k t : ℝ)` using `(IdeleGroup.ideleModule k t).2`. Simplify using `only [norm_mul, Circle.norm_coe, mul_one]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hpos]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_lineZeta_le (Ψ : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) (s : ℂ) (v : ι → 𝔸[k]) :
     ‖lineZeta Ψ ω s v‖ ≤ ∫ t : IdeleGroup k, ‖Ψ ((t : 𝔸[k]) • v)‖ *
@@ -42,7 +42,7 @@ section Eis
 variable {G : Type} [Group G] {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
 
 /- English proof (translation)
-Unfold `avg`. Rewrite using `[← integral_smul]`. Simplify using `only [smul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem avg_const_mul {K : Subgroup G} [MeasurableSpace K] (μ : Measure K) (ρ : K →* (W →L[ℂ] W)) (a : ℂ) (φ : K → ℂ) :
     avg μ ρ (fun κ => a * φ κ) = a • avg μ ρ φ := by
@@ -51,7 +51,7 @@ theorem avg_const_mul {K : Subgroup G} [MeasurableSpace K] (μ : Measure K) (ρ 
   simp only [smul_smul]
 
 /- English proof (translation)
-Unfold `eis`. Rewrite using `[← tsum_const_smul'']`. Conclude with `tsum_congr fun q => by rw [map_smul, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eis_smul (Γ K P : Subgroup G) (c : G → ℂ) (ρ : K →* (W →L[ℂ] W)) (Λ : G → ℂ) (g : G) (a : ℂ) (w : W) :
     eis Γ K P c ρ Λ g (a • w) = a • eis Γ K P c ρ Λ g w := by
@@ -62,25 +62,23 @@ theorem eis_smul (Γ K P : Subgroup G) (c : G → ℂ) (ρ : K →* (W →L[ℂ]
 end Eis
 
 /- English proof (translation)
-Introduce `hE hU hL hT hZ G _ _ _ _ _ W _ _ _ K ρ hK hρ _ _ μ hμ hP k _ _ ι _ _ π Γ P i ω d c η hS Ψ hΨ s hs g w`. Establish `hcard : (1 : ℝ) < (Fintype.card ι : ℝ)`. Use `hS.two` as an intermediate fact. Conclude with `(by omega : 1 < Fintype.card ι)` after adjusting the coercions. Establish `hs1 : 1 < s.re` using `hcard.trans hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `hL G K hK k ι π Γ P i ω d c η hS`. Take `⟨hT1, hT2⟩` from `hT G K hK k ι π Γ P i ω d c η hS`. Take `⟨hTp, hTl, hTx⟩` from `hT2 Ψ s`. Take `⟨-, hZc, -⟩` from `hZ G K hK k ι π Γ P i ω d c η hS Ψ hΨ`. Use `set a : ℂ := (ω.toIdele (d i) : ℂ) * modPow (d i) s with ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T : G → ℂ` to `fun y => lineZeta Ψ ω s (MG.vec (π y * dgl d) i)`. Set `φ : K → ℂ` to `fun κ => a * zt π d i Ψ ω s κ`. Set `Λ : G → ℂ` to `fun x => s * η x`. Establish `key : ∀ (y : G) (q : Cos P Γ), lineZeta Ψ ω s (((π y * dgl d)⁻¹ : GL ι 𝔸[k]).1 *ᵥ ratV (e q).rep) = T (rep q * y)`. Introduce `y q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `he q`. Rewrite using `[hx, inv_mulVec_smul_vec, hTx]`. Simplify using `only [T, map_mul, mul_assoc]`. Establish `hφc : Continuous φ`. Establish `h1 : Continuous fun κ : K => zt π d i Ψ ω s κ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContinuousOn (fun y : ℂ × K => zt π d i Ψ ω y.1 y.2) (Set.univ.image fun κ : K => (s, κ))` using `hZc.mono (by rintro _ ⟨κ, -, rfl⟩; exact ⟨hs1, Set.mem_univ _⟩)`. Establish `h3` using `h2.comp_continuous (f := fun κ : K => (s, κ)) (by fun_prop) (fun κ => ⟨κ, Set.mem_univ _, rfl⟩)`. Conclude with `h3`. Conclude with `continuous_const.mul h1`. Establish `hφl : Law K P c φ` using `fun r κ hr => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h : zt π d i Ψ ω s ((r * κ : K) : G) = c r * zt π d i Ψ ω s κ` using `hTl r κ hr`. Simplify using `only [φ]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hΛ : ∀ x, ∀ κ ∈ K, Λ (x * κ) = Λ x` using `fun x κ hκ => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Λ, hS.ht.right x κ hκ]`. Establish `hTP : ∀ p ∈ P, ∀ κ : K, T (p * κ) = c p * Complex.exp (Λ p) * φ κ` using `fun p hp κ => hTp p hp κ κ.2`. Establish `: CompactSpace K` using `isCompact_iff_compactSpace.mp hK`. Establish `hCc : IsCompact (Set.range fun κ : K => ((π (g * κ) * dgl d)⁻¹ : GL ι 𝔸[k]))`. Use `isCompact_range ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hπ` using `hS.cont`. Conclude with `((hπ.comp (continuous_const.mul continuous_subtype_val)).mul continuous_const).inv`. Take `⟨u, hu, hub⟩` from `(hE k ι Ψ hΨ).2 s.re _ (max_lt hs1 hs |>.trans_le le_rfl) hCc`. Establish `hbound : ∀ (q : Cos P Γ) (κ : K), ‖T (rep q * (g * κ))‖ ≤ (u ∘ e) q` using `fun q κ => by`. Rewrite using `[← key]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(norm_lineZeta_le Ψ ω s _).trans (hub _ ⟨κ, rfl⟩ (e q))`. Establish `hfun : (fun κ : K => epstein Ψ ω s (π (g * κ) * dgl d)) = fun κ : K => ∑' q : Cos P Γ, T (rep q * (g * κ))`. Use function extensionality and compare the values at `κ`. Unfold `epstein`. Rewrite using `[← e.tsum_eq]`.
-
-Conclude with `tsum_congr fun q => key _ q`. Establish `hmain` using `hU G W K ρ hK hρ μ hμ hP Γ P c hS.par φ Λ T hφc hφl hΛ hTP g (u ∘ e) (e.summable_iff.2 hu) hbound w`. Rewrite using `[hfun, hmain]`. Simplify using `only [φ]`. Rewrite using `[avg_const_mul, _root_.smul_apply, eis_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sideUnfold : EpConv → Unfold → Lines → Term → ZetaK → SideUnfold := by
   intro hE hU hL hT hZ G _ _ _ _ _ W _ _ _ K ρ hK hρ _ _ μ hμ hP k _ _ ι _ _ π Γ P i ω d c η hS Ψ hΨ s hs g w

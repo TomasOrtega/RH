@@ -14,7 +14,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Introduce `y hy` and use `by have e : f =ᶠ[nhds y] f' := Filter.eventually_of_mem (isOpen_invSet.mem_nhds hy) h simp only [vecF, e.fderiv_eq]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vecF_eqOn_invSet (X : Lie E a) {f f' : Lie E a → ℂ} (h : Set.EqOn f f' (invSet E a)) :
     Set.EqOn (vecF E a X f) (vecF E a X f') (invSet E a) := fun y hy => by
@@ -22,7 +22,7 @@ theorem vecF_eqOn_invSet (X : Lie E a) {f f' : Lie E a → ℂ} (h : Set.EqOn f 
   simp only [vecF, e.fderiv_eq]
 
 /- English proof (translation)
-Introduce `y hy` and use `by simp only [lapF, Finset.sum_apply, Pi.add_apply] refine Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_ rw [vecF_eqOn_invSet _ (vecF_eqOn_invSet _ h) hy, vecF_eqOn_invSet _ (vecF_eqOn_invSet _ h) hy]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lapF_eqOn_invSet {f f' : Lie E a → ℂ} (h : Set.EqOn f f' (invSet E a)) :
     Set.EqOn (lapF E a f) (lapF E a f') (invSet E a) := fun y hy => by
@@ -31,14 +31,14 @@ theorem lapF_eqOn_invSet {f f' : Lie E a → ℂ} (h : Set.EqOn f f' (invSet E a
   rw [vecF_eqOn_invSet _ (vecF_eqOn_invSet _ h) hy, vecF_eqOn_invSet _ (vecF_eqOn_invSet _ h) hy]
 
 /- English proof (translation)
-Introduce `_ hy` and use `chart_lieD φ.2 X g hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_lie_eqOn_invSet (X : Lie E a) (φ : Sm E a) (g : GA E a) :
     Set.EqOn (chart (lie E a X φ).1 g) (vecF E a X (chart φ.1 g)) (invSet E a) := fun _ hy =>
   chart_lieD φ.2 X g hy
 
 /- English proof (translation)
-Rewrite using `[sq]`. Conclude with `(chart_lie_eqOn_invSet X (lie E a X φ) g).trans (vecF_eqOn_invSet X (chart_lie_eqOn_invSet X φ g))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_lie_sq_eqOn_invSet (X : Lie E a) (φ : Sm E a) (g : GA E a) :
     Set.EqOn (chart ((lie E a X ^ 2) φ).1 g) (vecF E a X (vecF E a X (chart φ.1 g))) (invSet E a) := by
@@ -46,7 +46,7 @@ theorem chart_lie_sq_eqOn_invSet (X : Lie E a) (φ : Sm E a) (g : GA E a) :
   exact (chart_lie_eqOn_invSet X (lie E a X φ) g).trans (vecF_eqOn_invSet X (chart_lie_eqOn_invSet X φ g))
 
 /- English proof (translation)
-Introduce `y hy` and use `by have hy' : IsUnit (Matrix.of y) := hy have key : ∀ X : Lie E a, ((lie E a X ^ 2) φ).1 (g * infGL E a hy'.unit) = vecF E a X (vecF E a X (chart φ.1 g)) y := fun X => by rw [← chart_lie_sq_eqOn_invSet X φ g hy, chart, dif_pos hy'] rw [chart, dif_pos hy'] simp only [lapOp, lapF, …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_lapOp_eqOn_invSet (φ : Sm E a) (g : GA E a) :
     Set.EqOn (chart (lapOp E a φ).1 g) (lapF E a (chart φ.1 g)) (invSet E a) := fun y hy => by
@@ -62,9 +62,9 @@ theorem chart_lapOp_eqOn_invSet (φ : Sm E a) (g : GA E a) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro y _`. Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `y hy`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ', Function.iterate_succ_apply', Module.End.mul_apply, chart_lapOp_eqOn_invSet _ g hy]`. Conclude with `lapF_eqOn_invSet ih hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_lapOp_pow (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a)
     (g : GA E a) (n : ℕ) :

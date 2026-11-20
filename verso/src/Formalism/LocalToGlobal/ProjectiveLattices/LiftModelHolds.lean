@@ -17,7 +17,7 @@ abbrev g0L (g0 : B.Cusp j wF) : LamL (hsW hw) :=
   ιW (hsW hw) (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) (emb (xplus X E hM) la G.N (X.inc wF g0)))
 
 /- English proof (translation)
-Rewrite using `[CurveModel.coe_smul_base_cusp_form (g0 := g0) b, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inclusion_smul_cusp_eq_mul (g0 : B.Cusp j wF) (b : ↥(Frac0 (xplus X E hM) la G.w)) :
     ιW (hsW hw) ((b • g0H g0 : ↥(HK (xplus X E hM) la G.w wF)) : Lw (xplus X E hM) la G.w) =
@@ -25,9 +25,9 @@ theorem inclusion_smul_cusp_eq_mul (g0 : B.Cusp j wF) (b : ↥(Frac0 (xplus X E 
   rw [CurveModel.coe_smul_base_cusp_form (g0 := g0) b, map_mul]
 
 /- English proof (translation)
-Take `⟨f, hf, hfr⟩` from `(appSub _ _ _).mul_mem hr.2 hs n`. Use `⟨(⟨f, hf⟩ : ↥(Frac0 (xplus X E hM) la G.w)) • g0H g0, ?_⟩` and prove the remaining obligations. Rewrite using `[inclusion_smul_cusp_eq_mul]`. Establish `e : ιW (hsW hw) f * g0L hw g0 - r * (s * g0L hw g0) = -((r * s - ιW (hsW hw) f) * g0L hw g0)` using `by ring`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.neg_mem _ (Ideal.mul_mem_right _ _ hfr)`.
+A detailed English derivation is pending.
 -/
 theorem approx_of' (g0 : B.Cusp j wF) {s : LamL (hsW hw)}
     (hs : s ∈ appSub (ιW (hsW hw)) (Frac0 (xplus X E hM) la G.w).toSubring (IW hw)) (n : ℕ) {r : LamL (hsW hw)}
@@ -41,7 +41,7 @@ theorem approx_of' (g0 : B.Cusp j wF) {s : LamL (hsW hw)}
   exact Submodule.neg_mem _ (Ideal.mul_mem_right _ _ hfr)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons β l ih => rw [iterHd_cons, hdList_cons, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iterHd_eq_hdList (l : List (Idx D j G.N →₀ ℕ)) (x : LamL (hsW hw)) :
     iterHd (hdL (hsW hw)) l x = hdList (hsW hw) l x := by
@@ -50,7 +50,7 @@ theorem iterHd_eq_hdList (l : List (Idx D j G.N →₀ ℕ)) (x : LamL (hsW hw))
   | cons β l ih => rw [iterHd_cons, hdList_cons, ih]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun l ζ => by show 0 ≤ nval (hsW hw ζ).T.V 1 (evL (hsW hw) ζ (iterHd (hdL (hsW hw)) l _)) rw [iterHd_eq_hdList] exact hint l ζ, (appSub _ _ _).mul_mem (app_of_mem hw f) (inv_app hw C d hd)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_RG_of' {g0 : B.Cusp j wF} (C : CurveModel G la g0) (f d : ↥(Frac0 (xplus X E hM) la G.w))
     (hd : ∀ ζ, (hsW hw ζ).lift (d : Lw (xplus X E hM) la G.w) ≠ 0)
@@ -63,41 +63,37 @@ theorem mem_RG_of' {g0 : B.Cusp j wF} (C : CurveModel G la g0) (f d : ↥(Frac0 
     exact hint l ζ, (appSub _ _ _).mul_mem (app_of_mem hw f) (inv_app hw C d hd)⟩
 
 /- English proof (translation)
-Use `set e' := (ιW (hsW hw) (FP : Lw (xplus X E hM) la G.w) * v) * g0L hw g0 with he'`. Establish `hball : a ∈ ball (unifO (xplus X E hM) la G.N) (secQ y (hsW hw) g0).e (secQ y (hsW hw) g0).c` using `ha`. Use `clear ha`. Proceed by induction on `hball using Submodule.span_induction with`. Consider the case `zero => exact ⟨0, (RGW hw).zero_mem, 0, map_zero _, by simp⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add a b _ _ iha ihb`. Take `⟨r1, hr1, x1, hx1, h1⟩` from `iha`. Take `⟨r2, hr2, x2, hx2, h2⟩` from `ihb`. Use `⟨r1 + r2, (RGW hw).add_mem hr1 hr2, x1 + x2, by rw [map_add, hx1, hx2], ?_⟩` and prove the remaining obligations. Establish `e : ιW (hsW hw) ((x1 + x2 : ↥(HK (xplus X E hM) la G.w wF)) : Lw (xplus X E hM) la G.w) - (r1 + r2) * e' = (ιW (hsW hw) (x1 : Lw (xplus X E hM) la G.w) - r1 * e') + (ιW (hsW hw) (x2 : Lw (xplus X E hM) la G.w) - r2 * e')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Submodule.coe_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ h1 h2`. Consider the case `smul b a _ iha`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, x, hx, hxr⟩` from `iha`. Take `⟨fb, hfb⟩` from `toOsK_surjective (xplus X E hM) la G.w (b : OsK (xplus X E hM) la G.w)`. Establish `hint : ∀ ζ, 0 ≤ nval (hw ζ).T.V 1 ((hw ζ).toSecPt.lift (fb : Lw (xplus X E hM) la G.w))` using `fun ζ => by`. Rewrite using `[show (hw ζ).toSecPt.lift (fb : Lw (xplus X E hM) la G.w) = _ from (hw ζ).evW fb b hfb]`. Conclude with `nval_alg_nonneg _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, d, hd, hfd, hint'⟩` from `hlift fb hint`. Use `set u : LamL (hsW hw) := ↑(isUnit_of_lift_ne (hsW hw) hd).unit⁻¹ with hu`. Establish `hdu : ιW (hsW hw) (d : Lw (xplus X E hM) la G.w) * u = 1` using `IsUnit.mul_val_inv _`. Establish `hrb : ιW (hsW hw) (f : Lw (xplus X E hM) la G.w) * u ∈ RGW hw` using `mem_RG_of' hw C f d hd hint'`. Establish `hz : fb * d - f ∈ Jid (xplus X E hM) la G.w`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← toOsK_eq_zero_iff, map_sub, map_mul, hfd, hfb]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzI` using `ιW_Jid hw hz`. Move the coercions through the operations in `at hzI`. Use `⟨ιW (hsW hw) (f : Lw (xplus X E hM) la G.w) * u * r, (RGW hw).mul_mem hrb hr, fb • x, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CurveModel.fractionToIntegralSection_smul_eq, hfb, hx]`. Both sides reduce to the same expression. Rewrite using `[CurveModel.coe_smul', map_mul]`. Establish `e : ιW (hsW hw) (fb : Lw (xplus X E hM) la G.w) * ιW (hsW hw) (x : Lw (xplus X E hM) la G.w) - ιW (hsW hw) (f : Lw (xplus X E hM) la G.w) * u * r * e' = ιW (hsW hw) (fb : Lw (xplus X E hM) la G.w) * (ιW (hsW hw) (x : Lw (xplus X E hM) la G.w) - r * e') + (u * (r * e')) * ιW (hsW …`. Rewrite using `[map_sub, map_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take the linear combination `(-(ιW (hsW hw) (fb : Lw (xplus X E hM) la G.w) * r * e')) * hdu`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hxr) (Ideal.mul_mem_left _ _ hzI)`. Consider the case `mem a ha`. Establish `hgen : IsGen (OsK (xplus X E hM) la G.w) (secQ y (hsW hw) g0).e` using `C.isGen`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set c : OsK (xplus X E hM) la G.w := coord (secQ y (hsW hw) g0).e a with hc`. Take `⟨fc, hfc⟩` from `toOsK_surjective (xplus X E hM) la G.w c`. Take `⟨bp, hbp⟩` from `(isUnit_toOsK_of_lift hw C FP (fun ζ => (hval ζ).1)).exists_right_inv`. Take `⟨vp, rfl⟩` from `toOsK_surjective (xplus X E hM) la G.w bp`. Establish `hvp : ∀ ζ, (hsW hw ζ).lift (vp : Lw (xplus X E hM) la G.w) = ((hsW hw ζ).lift (FP : Lw (xplus X E hM) la G.w))⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ζ`. Establish `hz : FP * vp - 1 ∈ Jid (xplus X E hM) la G.w`. Rewrite using `[← toOsK_eq_zero_iff, map_sub, map_one, map_mul, hbp, sub_self]`. Establish `h0` using `(hsW hw ζ).lift_Jid hz`. Rewrite `h0` using `[Subalgebra.coe_sub, Subalgebra.coe_mul, Subalgebra.coe_one, map_sub, map_mul, map_one, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `eq_inv_of_mul_eq_one_right h0`. Use `set g := fc * FQ * vp with hg`. Establish `hgint : ∀ ζ, 0 ≤ nval (hw ζ).T.V 1 ((hw ζ).toSecPt.lift (g : Lw (xplus X E hM) la G.w))`. Introduce `ζ`. Take `⟨hP0, hQ0, hPQ⟩` from `hval ζ`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (hw ζ).toSecPt.lift (g : Lw (xplus X E hM) la G.w) = (hsW hw ζ).lift (fc : Lw (xplus X E hM) la G.w) * ((hsW hw ζ).lift (FQ : Lw (xplus X E hM) la G.w) * ((hsW hw ζ).lift (FP : Lw (xplus X E hM) la G.w))⁻¹)`. Rewrite using `[hg, Subalgebra.coe_mul, Subalgebra.coe_mul, map_mul, map_mul, hvp ζ, mul_assoc]`. Establish `hne : (hsW hw ζ).lift (FQ : Lw (xplus X E hM) la G.w) * ((hsW hw ζ).lift (FP : Lw (xplus X E hM) la G.w))⁻¹ ≠ 0` using `mul_ne_zero hQ0 (inv_ne_zero hP0)`. Establish `hvq : vV (hsW hw ζ).T.V ((hsW hw ζ).lift (FQ : Lw (xplus X E hM) la G.w) * ((hsW hw ζ).lift (FP : Lw (xplus X E hM) la G.w))⁻¹) = vV (hsW hw ζ).T.V ((hsW hw ζ).ev (emb (xplus X E hM) la G.N (X.inc wF g0)))`. Rewrite using `[vV_mul hQ0 (inv_ne_zero hP0), vV_inv' hP0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hord` using `(hsW hw ζ).ord fc`. Rewrite `hord` using `[hfc]`. Establish `hm` using `ha ζ`. Simplify using `only [ordV] at hm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `toE_nonneg' hm`. Rewrite `h2` using `[toE_add_coe]`. Establish `h3 : ((secQ y (hsW hw) g0).c ζ : ℤ) = vV (hsW hw ζ).T.V ((hsW hw ζ).ev (emb (xplus X E hM) la G.N (X.inc wF g0)))` using `rfl`. Rewrite `h2` using `[h3]`. Express the relevant statement in the definitionally equal form `0 ≤ nval (hsW hw ζ).T.V 1 ((hsW hw ζ).lift (g : Lw (xplus X E hM) la G.w))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[h1, nval_mul, nval_of_ne hne, hvq, ← hord]`. Simplify using `using h2`. Take `⟨f, d, hd, hfd, hint'⟩` from `hlift g hgint`. Use `set u : LamL (hsW hw) := ↑(isUnit_of_lift_ne (hsW hw) hd).unit⁻¹ with hu`. Establish `hdu : ιW (hsW hw) (d : Lw (xplus X E hM) la G.w) * u = 1` using `IsUnit.mul_val_inv _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : fc * d * FQ - f * FP ∈ Jid (xplus X E hM) la G.w`. Rewrite using `[← toOsK_eq_zero_iff, map_sub, map_mul, map_mul, map_mul, hfd, hg, map_mul, map_mul, hfc]`. Take the linear combination `(-(c * toOsK (xplus X E hM) la G.w d * toOsK (xplus X E hM) la G.w FQ)) * hbp`. Establish `hzI` using `ιW_Jid hw hz`. Move the coercions through the operations in `at hzI`.
-
-Use `⟨ιW (hsW hw) (f : Lw (xplus X E hM) la G.w) * u, mem_RG_of' hw C f d hd hint', fc • g0H g0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CurveModel.fractionToIntegralSection_smul_eq, hfc]`. Conclude with `coord_smul_self hgen a`. Rewrite using `[inclusion_smul_cusp_eq_mul, he']`. Establish `e : ιW (hsW hw) (fc : Lw (xplus X E hM) la G.w) * g0L hw g0 - ιW (hsW hw) (f : Lw (xplus X E hM) la G.w) * u * (ιW (hsW hw) (FP : Lw (xplus X E hM) la G.w) * v * g0L hw g0) = (g0L hw g0 * u * v) * ιW (hsW hw) ((fc : Lw (xplus X E hM) la G.w) * (d : Lw (xplus X E hM) la G.w) * (FQ …`.
-
-Rewrite using `[map_sub, map_mul, map_mul, map_mul]`. Take the linear combination `(-(g0L hw g0 * ιW (hsW hw) (fc : Lw (xplus X E hM) la G.w))) * hdu + (-(g0L hw g0 * ιW (hsW hw) (fc : Lw (xplus X E hM) la G.w) * ιW (hsW hw) (d : Lw (xplus X E hM) la G.w) * u)) * hv`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ hzI`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ball_of {g0 : B.Cusp j wF} (C : CurveModel G la g0) (FP FQ : ↥(Frac0 (xplus X E hM) la G.w))
     (hval : ∀ ζ, (hsW hw ζ).lift (FP : Lw (xplus X E hM) la G.w) ≠ 0 ∧
@@ -222,29 +218,25 @@ theorem ball_of {g0 : B.Cusp j wF} (C : CurveModel G la g0) (FP FQ : ↥(Frac0 (
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `y hw g0 T hCM hg0`. Take `⟨C⟩` from `hCM`. Take `⟨⟨k, p, q, hp, hq, hpc, hqc, hpq⟩, hlift⟩` from `hL y hw g0 ⟨C⟩ hg0`. Establish `hfd : FiniteDimensional (Kp (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w)`. Establish `: FiniteDimensional (Kp (xplus X E hM) la G.N) (↥C.A' ⧸ C.JA)` using `C.fin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `LinearEquiv.finiteDimensional C.quotEquiv.toLinearEquiv`. Establish `hred : IsReduced (OsK (xplus X E hM) la G.w)`. Establish `: IsReduced (↥C.A' ⧸ C.JA)` using `C.red`. Conclude with `isReduced_of_injective C.quotEquiv.symm.toRingHom C.quotEquiv.symm.injective`. Establish `hQl : ∀ ζ, (hsW hw ζ).lift (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) q) ≠ 0` using `fun ζ => by rw [SecPt.lift_alg]; exact (hpq ζ).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `FP : ↥(Frac0 (xplus X E hM) la G.w)` to `⟨frac (xplus X E hM) la G.w k p, (mem_Frac0 _ _ _).2 (frac_mem_Hfr _ _ _ hp)⟩`. Set `FQ : ↥(Frac0 (xplus X E hM) la G.w)` to `⟨frac (xplus X E hM) la G.w k q, (mem_Frac0 _ _ _).2 (frac_mem_Hfr _ _ _ hq)⟩`. Establish `hw0 : ∀ ζ, ((hsW hw ζ).ev (sec (xplus X E hM) la G.w 0))⁻¹ ^ k ≠ 0` using `fun ζ => pow_ne_zero _ (inv_ne_zero (hsW hw ζ).s0.ne_zero)`. Establish `hFP0 : ∀ ζ, (hsW hw ζ).lift (FP : Lw (xplus X E hM) la G.w) ≠ 0` using `fun ζ => by show (hsW hw ζ).lift (frac (xplus X E hM) la G.w k p) ≠ 0`. Rewrite using `[SecPt.lift_frac]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (hpq ζ).1 (hw0 ζ)`. Establish `hFQ0 : ∀ ζ, (hsW hw ζ).lift (FQ : Lw (xplus X E hM) la G.w) ≠ 0` using `fun ζ => by show (hsW hw ζ).lift (frac (xplus X E hM) la G.w k q) ≠ 0`. Rewrite using `[SecPt.lift_frac]`. Conclude with `mul_ne_zero (hpq ζ).2.1 (hw0 ζ)`. Establish `hvalF : ∀ ζ, vV (hsW hw ζ).T.V ((hsW hw ζ).lift (FP : Lw (xplus X E hM) la G.w)) + vV (hsW hw ζ).T.V ((hsW hw ζ).ev (emb (xplus X E hM) la G.N (X.inc wF g0))) = vV (hsW hw ζ).T.V ((hsW hw ζ).lift (FQ : Lw (xplus X E hM) la G.w))` using `fun ζ => by show vV (hsW hw ζ).T.V ((hsW hw ζ).lift (frac (xplus X E hM) la G.w k p)) + _ = vV (hsW hw ζ).T.V ((hsW hw ζ).lift (frac (xplus X E hM) la G.w k q))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[SecPt.lift_frac, SecPt.lift_frac, vV_mul (hpq ζ).1 (hw0 ζ), vV_mul (hpq ζ).2.1 (hw0 ζ)]`. Establish `h` using `(hpq ζ).2.2`. Simplify using `only [hsW] at h ⊢`. Use linear arithmetic over natural numbers and integers. Establish `uQ` using `isUnit_of_lift_ne (hsW hw) hQl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `uFQ` using `isUnit_of_lift_ne (hsW hw) hFQ0`. Establish `hv : ιW (hsW hw) (FQ : Lw (xplus X E hM) la G.w) * ↑uFQ.unit⁻¹ = 1` using `uFQ.mul_val_inv`. Establish `key : ιW (hsW hw) (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) p) * ιW (hsW hw) (FQ : Lw (xplus X E hM) la G.w) = ιW (hsW hw) (FP : Lw (xplus X E hM) la G.w) * ιW (hsW hw) (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) q)`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `show _ * frac (xplus X E hM) la G.w k q = frac (xplus X E hM) la G.w k p * _`. Rewrite using `[frac_apply, frac_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs_eq : ιW (hsW hw) (FP : Lw (xplus X E hM) la G.w) * ↑uFQ.unit⁻¹ = ιW (hsW hw) (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) p) * ↑uQ.unit⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[uQ.mul_val_inv, mul_one]`. Use `_ = (ιW (hsW hw) (FP : Lw (xplus X E hM) la G.w) * ιW (hsW hw) (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) q)) * ↑uFQ.unit⁻¹ * ↑uQ.unit⁻¹ := by ring`. Use `_ = (ιW (hsW hw) (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) p) * ιW (hsW hw) (FQ : Lw (xplus X E hM) la G.w)) * ↑uFQ.unit⁻¹ * ↑uQ.unit⁻¹ := by rw [key]`. Use `_ = ιW (hsW hw) (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) p) * ↑uQ.unit⁻¹ * (ιW (hsW hw) (FQ : Lw (xplus X E hM) la G.w) * ↑uFQ.unit⁻¹) := by ring`. Use `_ = _ := by rw [hv, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsApp : ιW (hsW hw) (FP : Lw (xplus X E hM) la G.w) * ↑uFQ.unit⁻¹ ∈ appSub (ιW (hsW hw)) (Frac0 (xplus X E hM) la G.w).toSubring (IW hw)` using `(appSub _ _ _).mul_mem (app_of_mem hw FP) (inv_app hw C FQ hFQ0)`. Establish `hconst : ∀ r : Rp (xplus X E hM) la G.N, (∀ β, β ≠ 0 → hasseRp (xplus X E hM) la G.N β r = 0) → ∀ β, β ≠ 0 → hdL (hsW hw) β (ιW (hsW hw) (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) r)) = 0`. Introduce `r hr β hβ`. Rewrite using `[hdW_ι, show hasse (xplus X E hM) la G.w β (algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) r) = algebraMap (Rp (xplus X E hM) la G.N) (Lw (xplus X E hM) la G.w) (hasseRp (xplus X E hM) la G.N β r) from hasse_algebraMap _ _ _ β r, hr β hβ, map_zero, map_zero]`. Use `⟨{ Λ := LamL (hsW hw) ι := ιW (hsW hw) hd := hdL (hsW hw) hd_zero := hdL_zero (hsW hw) hd_ι := hdW_ι (hsW hw) hd_mul := hdW_mul (hsW hw) ev := evL (hsW hw) ev_ι := evW_ι (hsW hw) RG := RGW hw RG_hd := RGW_hd hw RG_int := fun ζ r hr => RGW_int hw ζ r hr e' := (ιW (hsW hw) (FP : Lw …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs_eq]`. Conclude with `hd_mul_const (hdW_mul _) (hd_mul_const (hdW_mul _) (hconst p hpc) (hd_inv_const (hdL_zero _) (hdW_mul _) uQ (hconst q hqc))) (hconst _ fun β hβ => hasseRp_emb _ _ hβ _) β hβ`. Use the proof step `e'_int := fun ζ => by`. Rewrite using `[hs_eq, map_mul, map_mul, evL_inv, evW_ι, evW_ι, evW_ι, SecPt.lift_alg, SecPt.lift_alg, SecPt.lift_alg]`. Take `⟨h1, h2, h3⟩` from `hpq ζ`.
-
-Establish `hne : (hsW hw ζ).ev p * ((hsW hw ζ).ev q)⁻¹ * (hsW hw ζ).ev (emb (xplus X E hM) la G.N (X.inc wF g0)) ≠ 0` using `mul_ne_zero (mul_ne_zero h1 (inv_ne_zero h2)) (hg0 ζ)`. Rewrite using `[nval_of_ne hne, vV_mul (mul_ne_zero h1 (inv_ne_zero h2)) (hg0 ζ), vV_mul h1 (inv_ne_zero h2), vV_inv' h2]`. Establish `h4 : vV (hsW hw ζ).T.V ((hsW hw ζ).ev p) + -vV (hsW hw ζ).T.V ((hsW hw ζ).ev q) + vV (hsW hw ζ).T.V ((hsW hw ζ).ev (emb (xplus X E hM) la G.N (X.inc wF g0))) = 0` using `by dsimp only [hsW] at h3 ⊢; omega`. Rewrite using `[h4]`. Simplify using the standard rewrite rules.
-
-Use `res_ker := res_ker_of (hsW hw) hfd hred C hg0`. Use `ball := fun a ha => ball_of hw C FP FQ (fun ζ => ⟨hFP0 ζ, hFQ0 ζ, hvalF ζ⟩) hv hlift a ha`. Use `approx := fun r hr => approx_of' hw g0 hsApp (a0 D j T) hr }⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftModelSt_of (G : GlobalFamilyData (xplus X E hM) ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (hL : LocRingSt G la) :
     LiftModelSt G la := by

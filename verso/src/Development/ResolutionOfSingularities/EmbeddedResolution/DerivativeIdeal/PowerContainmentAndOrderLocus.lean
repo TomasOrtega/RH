@@ -22,9 +22,9 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[mem_orderAtLeastLocus_iff_stalkIdeal_le_maximalIdeal_pow]`. Establish `h1 : stalkIdeal I x ≤ stalkIdeal (Z ^ m) x` using `stalkIdeal_mono h x`. Rewrite `h1` using `[stalkIdeal_pow]`. Use `h1.trans (Ideal.pow_right_mono ?_ m)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mem_support_iff_stalkIdeal_le_maximalIdeal Z x).mp hx`.
+A detailed English derivation is pending.
 -/
 theorem support_subset_orderAtLeastLocus_of_le_pow {X : Scheme.{u}} (Z I : X.IdealSheafData) (m : ℕ)
     (h : I ≤ Z ^ m) : (Z.support : Set X) ⊆ orderAtLeastLocus I m := by
@@ -36,9 +36,9 @@ theorem support_subset_orderAtLeastLocus_of_le_pow {X : Scheme.{u}} (Z I : X.Ide
   exact (mem_support_iff_stalkIdeal_le_maximalIdeal Z x).mp hx
 
 /- English proof (translation)
-Use `hU.isLocalization_stalk x` as an intermediate fact. Rewrite using `[mem_support_iff_stalkIdeal_le_maximalIdeal, stalkIdeal_eq_map_germ I (x : X) ⟨U, hU⟩ x.2]`. Prove the components needed by the constructor for the conclusion. Introduce `hle y hy`. Establish `h2 : (X.presheaf.germ U (x : X) x.2).hom y ∈ IsLocalRing.maximalIdeal ↑(X.presheaf.stalk (x : X))` using `hle (Ideal.mem_map_of_mem _ hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff (X.presheaf.stalk (x : X)) (hU.primeIdealOf x).asIdeal y).mp h2`. Introduce `hle`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `y hy`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff (X.presheaf.stalk (x : X)) (hU.primeIdealOf x).asIdeal y).mpr (hle hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem mem_support_iff_ideal_le_primeIdealOf_of_isAffineOpen {X : Scheme.{u}} (I : X.IdealSheafData) {U : X.Opens}
     (hU : IsAffineOpen U) (x : U) :
@@ -58,9 +58,9 @@ private theorem mem_support_iff_ideal_le_primeIdealOf_of_isAffineOpen {X : Schem
       (X.presheaf.stalk (x : X)) (hU.primeIdealOf x).asIdeal y).mpr (hle hy)
 
 /- English proof (translation)
-Establish `hmem : hU.fromSpec.base q ∈ U`. Establish `h1 : hU.fromSpec.base q ∈ Set.range hU.fromSpec.base` using `⟨q, rfl⟩`. Rewrite `h1` using `[hU.range_fromSpec]`. Conclude with `h1`. Use `⟨⟨hU.fromSpec.base q, hmem⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective hU.fromSpec.base` using `hU.fromSpec.isOpenEmbedding.injective`. Apply `hinj` to reduce the goal to its premises. Conclude with `hU.fromSpec_primeIdealOf ⟨hU.fromSpec.base q, hmem⟩`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem exists_point_primeIdealOf_eq {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineOpen U)
     (q : PrimeSpectrum Γ(X, U)) : ∃ x : U, hU.primeIdealOf x = q := by
@@ -74,7 +74,7 @@ private theorem exists_point_primeIdealOf_eq {X : Scheme.{u}} {U : X.Opens} (hU 
   exact hU.fromSpec_primeIdealOf ⟨hU.fromSpec.base q, hmem⟩
 
 /- English proof (translation)
-Use `hU.isLocalization_stalk x` as an intermediate fact. Establish `hunit : IsUnit ((X.presheaf.germ U (x : X) x.2).hom g)` using `(X.mem_basicOpen g (x : X) x.2).mp hxg`. Introduce `hmem`. Establish `h2` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff (X.presheaf.stalk (x : X)) (hU.primeIdealOf x).asIdeal g).mpr hmem`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp h2 hunit`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem notMem_primeIdealOf_of_mem_basicOpen {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) (g : Γ(X, U)) (x : U) (hxg : (x : X) ∈ X.basicOpen g) :
@@ -88,11 +88,11 @@ private theorem notMem_primeIdealOf_of_mem_basicOpen {X : Scheme.{u}} {U : X.Ope
   exact (IsLocalRing.mem_maximalIdeal _).mp h2 hunit
 
 /- English proof (translation)
-Establish `hrad' : (Z.ideal ⟨U, hU⟩).radical = Z.ideal ⟨U, hU⟩` using `hrad.radical`. Rewrite using `[← hrad', Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `q ⟨hq1, hq2⟩`. Take `⟨x, hxq⟩` from `exists_point_primeIdealOf_eq hU ⟨q, hq2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hxq' : (hU.primeIdealOf x).asIdeal = q` using `congrArg PrimeSpectrum.asIdeal hxq`. Establish `hxZ : (x : X) ∈ Z.support`. Use `(mem_support_iff_ideal_le_primeIdealOf_of_isAffineOpen Z hU x).mpr ?_` and prove the remaining obligations. Rewrite using `[hxq']`. Conclude with `hq1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxJ` using `hsupp (x : X) hxZ x.2`. Establish `hfin` using `(mem_support_iff_ideal_le_primeIdealOf_of_isAffineOpen J hU x).mp hxJ`. Rewrite `hfin` using `[hxq']`. Conclude with `hfin`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ideal_le_of_support_subset {X : Scheme.{u}} {U : X.Opens} (hU : IsAffineOpen U)
     (Z J : X.IdealSheafData) (hrad : (Z.ideal ⟨U, hU⟩).IsRadical)
@@ -114,9 +114,9 @@ private theorem ideal_le_of_support_subset {X : Scheme.{u}} {U : X.Opens} (hU : 
   exact hfin
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `: P.IsPrime` using `hP.isPrime`. Take `⟨x, hxq⟩` from `exists_point_primeIdealOf_eq W.2 ⟨P, hP.isPrime⟩`. Establish `hxq' : (W.2.primeIdealOf x).asIdeal = P` using `congrArg PrimeSpectrum.asIdeal hxq`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hW (x : X) x.2 ?_` and prove the remaining obligations. Use `(mem_support_iff_ideal_le_primeIdealOf_of_isAffineOpen Z W.2 x).mpr ?_` and prove the remaining obligations. Rewrite using `[hxq']`. Conclude with `hle`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ideal_eq_top_of_disjoint_support {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : X.affineOpens) (hW : ∀ y : X, y ∈ W.1 → y ∉ Z.support) : Z.ideal W = ⊤ := by
@@ -131,27 +131,25 @@ private theorem ideal_eq_top_of_disjoint_support {X : Scheme.{u}} (Z : X.IdealSh
   exact hle
 
 /- English proof (translation)
-Establish `key : ∀ V : X.affineOpens, I.ideal V ≤ (Z ^ m).ideal V`. Introduce `V`. Rewrite using `[Scheme.IdealSheafData.ideal_pow, Pi.pow_apply]`. Introduce `a ha`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hcol : ((Z.ideal V) ^ m).colon (Ideal.span {a}) ≠ ⊤`. Introduce `htop`. Establish `h1 : (1 : Γ(X, V.1)) ∈ ((Z.ideal V) ^ m).colon (Ideal.span {a})`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Submodule.mem_colon.mp h1 a (Ideal.mem_span_singleton_self a)`. Rewrite `h2` using `[smul_eq_mul, one_mul]`. Conclude with `hcon h2`. Take `⟨P, hP, hPle⟩` from `Ideal.exists_le_maximal _ hcol`. Establish `: P.IsPrime` using `hP.isPrime`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hxq⟩` from `exists_point_primeIdealOf_eq V.2 ⟨P, hP.isPrime⟩`. Establish `hxq' : (V.2.primeIdealOf x).asIdeal = P` using `congrArg PrimeSpectrum.asIdeal hxq`. Take `⟨g, hxg, hgle⟩` from `hloc V (x : X) x.2`. Establish `hgP : g ∉ P`. Establish `hg` using `notMem_primeIdealOf_of_mem_basicOpen V.2 g x hxg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `hg` using `[hxq']`. Conclude with `hg`. Set `_ : Algebra Γ(X, V.1) Γ(X, X.basicOpen g)` to `(X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom.toAlgebra`. Establish `: IsLocalization.Away g Γ(X, X.basicOpen g)` using `V.2.isLocalization_basicOpen g`. Establish `hI : Ideal.map (algebraMap Γ(X, V.1) Γ(X, X.basicOpen g)) (I.ideal V) = I.ideal (X.affineBasicOpen g)` using `I.map_ideal_basicOpen V g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ : Ideal.map (algebraMap Γ(X, V.1) Γ(X, X.basicOpen g)) (Z.ideal V) = Z.ideal (X.affineBasicOpen g)` using `Z.map_ideal_basicOpen V g`. Establish `hmem : (algebraMap Γ(X, V.1) Γ(X, X.basicOpen g)) a ∈ Ideal.map (algebraMap Γ(X, V.1) Γ(X, X.basicOpen g)) ((Z.ideal V) ^ m)`. Rewrite using `[Ideal.map_pow, hZ]`. Conclude with `hgle (hI ▸ Ideal.mem_map_of_mem _ ha)`. Rewrite `hmem` using `[IsLocalization.mem_map_algebraMap_iff (Submonoid.powers g)]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨bb, sm⟩, heq⟩` from `hmem`. Rewrite `heq` using `[← map_mul]`. Take `⟨tm, hct⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers g) Γ(X, X.basicOpen g)).mp heq`. Establish `hmemB : ((tm : Γ(X, V.1)) * (sm : Γ(X, V.1))) * a ∈ (Z.ideal V) ^ m`. Establish `h3 : ((tm : Γ(X, V.1)) * (sm : Γ(X, V.1))) * a = (tm : Γ(X, V.1)) * (a * (sm : Γ(X, V.1)))` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h3, hct]`. Conclude with `Ideal.mul_mem_left _ _ bb.2`. Establish `hcolmem : ((tm : Γ(X, V.1)) * (sm : Γ(X, V.1))) ∈ ((Z.ideal V) ^ m).colon (Ideal.span {a})`. Use `Submodule.mem_colon.mpr ?_` and prove the remaining obligations. Introduce `q hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take `⟨cc, rfl⟩` from `Ideal.mem_span_singleton'.mp hq`. Establish `h4 : ((tm : Γ(X, V.1)) * (sm : Γ(X, V.1))) • (cc * a) = cc * (((tm : Γ(X, V.1)) * (sm : Γ(X, V.1))) * a)`. Rewrite using `[smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_left _ _ hmemB`. Take `⟨i, hi⟩` from `tm.2`. Take `⟨j, hj⟩` from `sm.2`. Establish `hts : (tm : Γ(X, V.1)) * (sm : Γ(X, V.1)) = g ^ (i + j)`. Rewrite using `[← hi, ← hj, pow_add]`.
-
-Establish `hmemP : g ^ (i + j) ∈ P` using `hts ▸ hPle hcolmem`. Conclude with `hgP (hP.isPrime.mem_of_pow_mem _ hmemP)`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 private theorem le_pow_of_forall_le_pow_basicOpen {X : Scheme.{u}} (Z I : X.IdealSheafData) (m : ℕ)
     (hloc : ∀ (V : X.affineOpens) (x : X), x ∈ V.1 →
@@ -219,7 +217,7 @@ private theorem le_pow_of_forall_le_pow_basicOpen {X : Scheme.{u}} (Z I : X.Idea
   exact key
 
 /- English proof (translation)
-Establish `h0 : ((r : ℕ) : k) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Establish `h1 : ((r : ℕ) : R) = algebraMap k R ((r : ℕ) : k)` using `(map_natCast (algebraMap k R) r).symm`. Rewrite using `[h1]`. Conclude with `IsUnit.map (algebraMap k R) (IsUnit.mk0 ((r : ℕ) : k) h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_natCast_of_algebra_of_charZero (k : Type*) [Field k] [CharZero k]
     (R : Type*) [CommRing R] [Algebra k R] {r : ℕ} (hr : 1 ≤ r) : IsUnit ((r : ℕ) : R) := by
@@ -229,11 +227,11 @@ private theorem isUnit_natCast_of_algebra_of_charZero (k : Type*) [Field k] [Cha
   exact IsUnit.map (algebraMap k R) (IsUnit.mk0 ((r : ℕ) : k) h0)
 
 /- English proof (translation)
-Establish `hmap : Ideal.map c.coordRingHom (mvPolynomialCoordIdeal k n S) = Z.ideal ⟨U, hU⟩` using `c.map_mvPolynomialCoordIdeal_eq_ideal hU Z S h`. Establish `hg` using `etale_quotientMk_comp_renameCompl k n S c.coordRingHom (c.coordRingHom_etale hU) (Z.ideal ⟨U, hU⟩) hmap.symm`. Set `_ : Algebra (CoordPolynomialRing k (n - S.card)) (Γ(X, U) ⧸ Z.ideal ⟨U, hU⟩)` to `RingHom.toAlgebra (((Ideal.Quotient.mk (Z.ideal ⟨U, hU⟩)).comp c.coordRingHom).comp (renameCompl k n S).toRingHom)`. Establish `: Algebra.Etale (CoordPolynomialRing k (n - S.card)) (Γ(X, U) ⧸ Z.ideal ⟨U, hU⟩)` using `hg`. Establish `hred : IsReduced (Γ(X, U) ⧸ Z.ideal ⟨U, hU⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isReduced_ofLocalizationMaximal _ ?_` and prove the remaining obligations. Introduce `q hq`. Establish `: q.IsPrime` using `hq.isPrime`. Use `isRegularLocalRing_localization_atPrime_etale k (n - S.card) (Γ(X, U) ⧸ Z.ideal ⟨U, hU⟩) q` as an intermediate fact. Establish `: IsDomain (Localization.AtPrime q)` using `inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨fun x hx => hx.eq_zero⟩`. Conclude with `(Ideal.isRadical_iff_quotient_reduced _).mpr hred`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isRadical_ideal_of_restrictIdeal_eq_coordIdeal {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) {U : X.Opens} (hU : IsAffineOpen U) {n : ℕ}
@@ -260,35 +258,31 @@ theorem isRadical_ideal_of_restrictIdeal_eq_coordIdeal {X : Scheme.{u}} {k : Typ
   exact (Ideal.isRadical_iff_quotient_reduced _).mpr hred
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos m with hm0 | hm` into its components or cases. Substitute `hm0` using the available equality. Rewrite using `[pow_zero, Ideal.one_eq_top]`. Conclude with `le_top`. Set `algR : Algebra k Γ(X, U)` to `sectionsAlgebra k p U`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `algP : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, U)` to `c.algebra`. Establish `htower : IsScalarTower k (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, U)` using `c.isScalarTower`. Establish `hfet : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, U)` using `c.algebra_formallyEtale hU`. Set `xs : {i : Fin n // i ∈ S} → Γ(X, U)` to `fun i => c.coord i.1`. Set `Ds : {i : Fin n // i ∈ S} → Derivation k Γ(X, U) Γ(X, U)` to `fun i => EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, U) (ULift.up i.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hD : ∀ i j : {i : Fin n // i ∈ S}, Ds i (xs j) = if i = j then 1 else 0`. Introduce `i j`. Use `show (EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, U) (ULift.up i.1)) (c.coord j.1) = if i = j then 1 else 0`. Rewrite using `[← c.etaleCoordinates_coord j.1, EtaleCoordinates.partialDeriv_coord]`. Establish `hiff : (ULift.up.{u} i.1 = ULift.up.{u} j.1) ↔ i = j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hh`. Conclude with `Subtype.ext (congrArg ULift.down hh)`. Introduce `hh`. Rewrite using `[hh]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : i = j`. Rewrite using `[if_pos (hiff.mpr hij), if_pos hij]`. Rewrite using `[if_neg (fun hh => hij (hiff.mp hh)), if_neg hij]`. Establish `hrange : Set.range xs = c.coord '' (S : Set (Fin n))`. Use extensionality with `y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨i.1, i.2, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨⟨a, ha⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hspan : Ideal.span (Set.range xs) = Z.ideal ⟨U, hU⟩`. Rewrite using `[hrange, c.ideal_eq_span_coord hU Z S h]`. Establish `hunit : ∀ r : ℕ, 1 ≤ r → IsUnit ((r : ℕ) : Γ(X, U))`. Introduce `r hr`. Conclude with `isUnit_natCast_of_algebra_of_charZero k Γ(X, U) hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbase : derivIdealIterate k (m - 1) (I.ideal ⟨U, hU⟩) ≤ Z.ideal ⟨U, hU⟩`. Establish `h1 : (derivIdealSheafIterate k p (m - 1) I).ideal ⟨U, hU⟩ ≤ Z.ideal ⟨U, hU⟩`. Use `ideal_le_of_support_subset hU Z (derivIdealSheafIterate k p (m - 1) I) (isRadical_ideal_of_restrictIdeal_eq_coordIdeal p hU c Z S h) ?_` and prove the remaining obligations. Introduce `y hy hyU`. Establish `h2 : ((derivIdealSheafIterate k p (m - 1) I).support : Set X) = orderAtLeastLocus I m` using `support_derivIdealSheafIterate_eq_orderAtLeastLocus k p I hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : y ∈ orderAtLeastLocus I m` using `hord y hy hyU`. Rewrite `h3` using `[← h2]`. Conclude with `h3`. Combine the equalities or inequalities in the displayed calculation. Establish `key : ∀ j : ℕ, 1 ≤ j → j ≤ m → derivIdealIterate k (m - j) (I.ideal ⟨U, hU⟩) ≤ Z.ideal ⟨U, hU⟩ ^ j`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro hj; exact absurd hj (by omega)`. Consider the case `succ j ih`. Introduce `_ hjm`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos j with hj0 | hj0` into its components or cases. Substitute `hj0` using the available equality. Simplify using `using hbase`. Introduce `f hf`. Establish `hmem1 : f ∈ derivIdealIterate k (m - j) (I.ideal ⟨U, hU⟩)` using `derivIdealIterate_le_of_le k (show m - (j + 1) ≤ m - j by omega) _ hf`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfW : f ∈ Z.ideal ⟨U, hU⟩ ^ j` using `ih hj0 (by omega) hmem1`. Establish `hdf : ∀ i : {i : Fin n // i ∈ S}, (Ds i) f ∈ Z.ideal ⟨U, hU⟩ ^ j`. Introduce `i`. Use `ih hj0 (by omega) ?_` and prove the remaining obligations. Establish `h4 : (Ds i) f ∈ derivIdeal k (derivIdealIterate k (m - (j + 1)) (I.ideal ⟨U, hU⟩))` using `derivation_apply_mem_derivIdeal k _ (Ds i) hf`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h4` using `[← derivIdealIterate_succ]`. Conclude with `derivIdealIterate_le_of_le k (show m - (j + 1) + 1 ≤ m - j by omega) _ h4`. Establish `hf' : f ∈ Ideal.span (Set.range xs) ^ j` using `by rw [hspan]; exact hfW`. Establish `hdf' : ∀ i : {i : Fin n // i ∈ S}, (Ds i) f ∈ Ideal.span (Set.range xs) ^ j`. Introduce `i`.
-
-Rewrite using `[hspan]`. Conclude with `hdf i`. Establish `hres` using `mem_pow_succ_of_deriv_mem_pow k xs Ds hD (hunit j hj0) hf' hdf'`. Rewrite `hres` using `[hspan]`. Conclude with `hres`.
-
-Establish `hfin` using `key m hm le_rfl`. Rewrite `hfin` using `[Nat.sub_self, derivIdealIterate_zero]`. Conclude with `hfin`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_le_pow_of_restrictIdeal_eq_coordIdeal {X : Scheme.{u}} {k : Type u} [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] {U : X.Opens}
@@ -384,13 +378,13 @@ theorem ideal_le_pow_of_restrictIdeal_eq_coordIdeal {X : Scheme.{u}} {k : Type u
   exact hfin
 
 /- English proof (translation)
-Use `le_pow_of_forall_le_pow_basicOpen Z I m ?_` and prove the remaining obligations. Introduce `V x hx`. Distinguish the cases in `hxZ : x ∈ Z.support`. Take `⟨U, hxU, n, c, S, hS⟩` from `hchart x hxZ`. Take `⟨g, hgU, hxg⟩` from `V.2.exists_basicOpen_le (⟨x, hxU⟩ : U) hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨g, hxg, ?_⟩` and prove the remaining obligations. Establish `hWaff : IsAffineOpen (X.basicOpen g)` using `V.2.basicOpen g`. Establish `hchart' : restrictIdeal Z (X.basicOpen g) = (c.restrict hgU).coordIdeal S` using `restrictIdeal_eq_restrict_coordIdeal_of_le hgU c Z S hS`. Conclude with `ideal_le_pow_of_restrictIdeal_eq_coordIdeal p hWaff (c.restrict hgU) Z S hchart' m I (fun y hy _ => hord hy)`. Establish `hΩopen : IsOpen ((Z.support : Set X)ᶜ)` using `Z.support.2.isOpen_compl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxΩ : x ∈ (⟨(Z.support : Set X)ᶜ, hΩopen⟩ : X.Opens)` using `hxZ`. Take `⟨g, hgΩ, hxg⟩` from `V.2.exists_basicOpen_le (⟨x, hxΩ⟩ : (⟨(Z.support : Set X)ᶜ, hΩopen⟩ : X.Opens)) hx`. Use `⟨g, hxg, ?_⟩` and prove the remaining obligations. Establish `htop : Z.ideal (X.affineBasicOpen g) = ⊤`. Use `ideal_eq_top_of_disjoint_support Z (X.affineBasicOpen g) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `hy' : y ∈ X.basicOpen g` using `hy`. Conclude with `hgΩ hy'`. Rewrite using `[htop, ← Ideal.one_eq_top, one_pow, Ideal.one_eq_top]`. Conclude with `le_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_pow_of_support_subset_orderAtLeastLocus_of_coordIdeal {X : Scheme.{u}} {k : Type u} [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (Z I : X.IdealSheafData)
@@ -425,7 +419,7 @@ theorem le_pow_of_support_subset_orderAtLeastLocus_of_coordIdeal {X : Scheme.{u}
     exact le_top
 
 /- English proof (translation)
-Use `le_pow_of_support_subset_orderAtLeastLocus_of_coordIdeal p Z I m ?_ hord` and prove the remaining obligations. Unfold `HasStrictNormalCrossingsWith at hE`. Introduce `x hx`. Take `⟨U, hxU, n, c, _, S, _, _, _, hZ⟩` from `hE x hx`. Conclude with `⟨U, hxU, n, c, S, hZ⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem le_pow_of_hasStrictNormalCrossingsWith {X : Scheme.{u}} {k : Type u} [Field k] [CharZero k]
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (Z I : X.IdealSheafData)

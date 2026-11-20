@@ -27,7 +27,7 @@ def act (a : Matrix (Fin r) (Fin r) ℤ) : A ⟶ A :=
   hl.lift (Fan.mk A fun i => ∏ j, pr j ^ a i j)
 
 /- English proof (translation)
-The claim follows from `hl.fac _ ⟨i⟩`.
+A detailed English derivation is pending.
 -/
 theorem act_pr (a : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) : act pr hl a ≫ pr i = ∏ j, pr j ^ a i j :=
   hl.fac _ ⟨i⟩
@@ -36,20 +36,20 @@ def inc (i₀ : Fin r) : B ⟶ A :=
   hl.lift (Fan.mk B fun i => if i = i₀ then 𝟙 _ else 1)
 
 /- English proof (translation)
-The claim follows from `hl.fac _ ⟨i⟩`.
+A detailed English derivation is pending.
 -/
 theorem inc_pr (i₀ i : Fin r) : inc pr hl i₀ ≫ pr i = if i = i₀ then 𝟙 _ else 1 :=
   hl.fac _ ⟨i⟩
 
 include hl in
 /- English proof (translation)
-The claim follows from `hl.hom_ext fun ⟨i⟩ => h i`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext {X : Over S} {f g : X ⟶ A} (h : ∀ i, f ≫ pr i = g ≫ pr i) : f = g :=
   hl.hom_ext fun ⟨i⟩ => h i
 
 /- English proof (translation)
-Rewrite using `[act_pr, GlobalTheory.Mum.TensAct.comp_prod_zpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_act_pr {X : Over S} (f : X ⟶ A) (a : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) :
     f ≫ act pr hl a ≫ pr i = ∏ j, (f ≫ pr j) ^ a i j := by
@@ -65,7 +65,7 @@ def smulF (s : SymUnit r) (a : TensO s) (z : X') : X' :=
   xe.symm (fun i => ∑ j, TensO.mat s a i j • xe z j)
 
 /- English proof (translation)
-Simplify using `[smulF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xe_smulF (s : SymUnit r) (a : TensO s) (z : X') (i : Fin r) :
     xe (smulF xe s a z) i = ∑ j, TensO.mat s a i j • xe z j := by
@@ -110,7 +110,7 @@ def mod (s : SymUnit r) : Module (TensO s) X' where
       simp
 
 /- English proof (translation)
-The claim follows from `xe_smulF xe s a z i`.
+A detailed English derivation is pending.
 -/
 theorem xe_smul (s : SymUnit r) (a : TensO s) (z : X') (i : Fin r) :
     letI := mod xe s
@@ -124,7 +124,7 @@ def xp (i₀ : Fin r) : X' →+ X :=
   (Pi.evalAddMonoidHom (fun _ => X) i₀).comp xe.toAddMonoidHom
 
 /- English proof (translation)
-Simplify using `[xi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xe_xi (i₀ : Fin r) (y : X) : xe (xi xe i₀ y) = Pi.single i₀ y := by
   simp [xi]
@@ -141,13 +141,13 @@ variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] 
   (pr : Fin r → (A ⟶ B)) (hl : IsLimit (Fan.mk A pr))
 
 /- English proof (translation)
-Establish `h1 : ∀ {X : Over S}, (1 : X ⟶ A) ≫ act pr hl a = 1`. Introduce `X`. Use `hom_ext pr hl fun i => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, comp_act_pr]`. Use `haveI := hpr i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[MonObj.one_comp]`. Establish `h2 : ∀ {X : Over S} (f g : X ⟶ A), (f * g) ≫ act pr hl a = (f ≫ act pr hl a) * (g ≫ act pr hl a)`. Introduce `X f g`. Use `hom_ext pr hl fun i => ?_` and prove the remaining obligations. Use `haveI := hpr i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, comp_act_pr, MonObj.mul_comp, Category.assoc, Category.assoc, comp_act_pr, comp_act_pr, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, mul_zpow]`. Prove the components needed by the constructor for the conclusion. Use `h1 (X := 𝟙_ _)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[Hom.one_def]`. Use `h2 (fst _ _) (snd _ _)` as an intermediate fact. Rewrite `this` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[this]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem act_isMonHom (hpr : ∀ i, IsMonHom (pr i)) (a : Matrix (Fin r) (Fin r) ℤ) : IsMonHom (act pr hl a) := by
   have h1 : ∀ {X : Over S}, (1 : X ⟶ A) ≫ act pr hl a = 1 := by
@@ -173,7 +173,7 @@ theorem act_isMonHom (hpr : ∀ i, IsMonHom (pr i)) (a : Matrix (Fin r) (Fin r) 
     congr 1
 
 /- English proof (translation)
-Use `hom_ext pr hl fun i => ?_` and prove the remaining obligations. Rewrite using `[act_pr, Category.id_comp, Finset.prod_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[Matrix.one_apply_ne hj.symm, zpow_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -186,11 +186,11 @@ theorem act_one : act pr hl 1 = 𝟙 _ := by
   · simp
 
 /- English proof (translation)
-Use `hom_ext pr hl fun i => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, comp_act_pr, act_pr]`. Simplify using `only [act_pr, ← Finset.prod_zpow, ← zpow_mul, Matrix.mul_apply]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ∀ (s : Finset (Fin r)) (n : Fin r → ℤ), pr k ^ (∑ j ∈ s, n j) = ∏ j ∈ s, pr k ^ n j`. Introduce `s n`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert x s hx ih => rw [Finset.sum_insert hx, Finset.prod_insert hx, zpow_add, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[this]`. Simplify using `only [mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_mul (a b : Matrix (Fin r) (Fin r) ℤ) : act pr hl (a * b) = act pr hl b ≫ act pr hl a := by
   refine hom_ext pr hl fun i => ?_
@@ -207,7 +207,7 @@ theorem act_mul (a b : Matrix (Fin r) (Fin r) ℤ) : act pr hl (a * b) = act pr 
   simp only [mul_comm]
 
 /- English proof (translation)
-Use `show _ = act pr hl a * act pr hl b`. Use `hom_ext pr hl fun i => ?_` and prove the remaining obligations. Use `haveI := hpr i`. Rewrite using `[MonObj.mul_comp]`. Simplify using `only [act_pr, Matrix.add_apply, zpow_add, Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_add (hpr : ∀ i, IsMonHom (pr i)) (a b : Matrix (Fin r) (Fin r) ℤ) :
     act pr hl (a + b) = padd A (act pr hl a) (act pr hl b) := by
@@ -218,13 +218,13 @@ theorem act_add (hpr : ∀ i, IsMonHom (pr i)) (a b : Matrix (Fin r) (Fin r) ℤ
   simp only [act_pr, Matrix.add_apply, zpow_add, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `Fan.IsLimit.hom_ext hl` to reduce the goal to its premises. Introduce `i`. Establish `hp : ∀ k, (Fan.mk A pr).proj k = pr k` using `fun _ => rfl`. Simplify using `only [hp, Category.assoc, inc_pr]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[(hpr i).one_hom]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[comp_one, Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Apply `Fan.IsLimit.hom_ext hl` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `hp : ∀ k, (Fan.mk A pr).proj k = pr k` using `fun _ => rfl`. Simplify using `only [hp, Category.assoc, inc_pr]`. Rewrite using `[(hpr i).mul_hom, ← Category.assoc, tensorHom_comp_tensorHom, inc_pr]`. Use `split_ifs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[comp_one]`. Establish `: ((1 : B ⟶ B) ⊗ₘ (1 : B ⟶ B)) = lift (fst _ _ ≫ 1) (snd _ _ ≫ 1)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[this, ← Hom.mul_def, comp_one, comp_one, _root_.mul_one]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inc_isMonHom (hpr : ∀ i, IsMonHom (pr i)) (i₀ : Fin r) : IsMonHom (inc pr hl i₀) := by
   refine ⟨?_, ?_⟩
@@ -249,19 +249,19 @@ theorem inc_isMonHom (hpr : ∀ i, IsMonHom (pr i)) (i₀ : Fin r) : IsMonHom (i
       rw [this, ← Hom.mul_def, comp_one, comp_one, _root_.mul_one]
 
 /- English proof (translation)
-Simplify using `using inc_pr pr hl i₀ i₀`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inc_pr_self (i₀ : Fin r) : inc pr hl i₀ ≫ pr i₀ = 𝟙 _ := by
   simpa using inc_pr pr hl i₀ i₀
 
 /- English proof (translation)
-Apply `Fan.IsLimit.hom_ext hl` to reduce the goal to its premises. Introduce `i`. Establish `hp : ∀ k, (Fan.mk A pr).proj k = pr k` using `fun _ => rfl`. Simplify using `only [hp, Category.assoc, inc_pr, act_pr]`. Distinguish the cases in `h : i = i₀`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[if_pos rfl, Category.comp_id, Finset.prod_eq_single i]`. Simplify using `[Matrix.single_apply]`. Introduce `j _ hj`. Simplify using `[Matrix.single_apply, Ne.symm hj]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg h, comp_one]`. Use `symm`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `j _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.single_apply, Ne.symm h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pr_inc (i₀ : Fin r) : pr i₀ ≫ inc pr hl i₀ = act pr hl (Matrix.single i₀ i₀ 1) := by
   apply Fan.IsLimit.hom_ext hl
@@ -297,14 +297,14 @@ def cHom (Q : GlobalTheory.PolDeg.Data R) : Q.X →+ Additive (𝟙_ (Over (Sp R
   map_add' x y := by rw [Q.c_add]; rfl
 
 /- English proof (translation)
-Establish `h` using `congrArg Additive.toMul (map_zero (cHom Q))`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem c_zero (Q : GlobalTheory.PolDeg.Data R) : Q.c 0 = 1 := by
   have h := congrArg Additive.toMul (map_zero (cHom Q))
   exact h
 
 /- English proof (translation)
-Establish `h` using `congrArg Additive.toMul (map_sum (cHom Q) (fun j => n j • x j) Finset.univ)`. Rewrite `h` using `[toMul_sum]`. Use `h.trans ?_` and prove the remaining obligations. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, toMul_zsmul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -321,11 +321,9 @@ variable (Q : GlobalTheory.PolDeg.Data R) (D' : DegPre R) {r : ℕ} (pr : Fin r 
   (hl : IsLimit (Fan.mk D'.P.A pr)) (xe : D'.X ≃+ (Fin r → Q.X))
 
 /- English proof (translation)
-Use `letI := mod xe s`. Introduce `a y`. Use `Fan.IsLimit.hom_ext hl _ _ fun i => ?_` and prove the remaining obligations. Use `show D'.c (a • y) ≫ pr i = (D'.c y ≫ act pr hl (TensO.mat s a)) ≫ pr i`. Rewrite using `[hc, Category.assoc, act_pr, xe_smul, c_sum_zsmul Q]`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `map_prod (precompHom (M := Q.B) (D'.c y)) (fun j => pr j ^ TensO.mat s a i j) Finset.univ`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow]`. Use `show _ = (D'.c y ≫ pr j) ^ _`.
-
-Rewrite using `[hc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_smul (hc : ∀ z i, D'.c z ≫ pr i = Q.c (xe z i)) (s : SymUnit r) :
     letI := mod xe s
@@ -343,9 +341,9 @@ theorem c_smul (hc : ∀ z i, D'.c z ≫ pr i = Q.c (xe z i)) (s : SymUnit r) :
   rw [hc]
 
 /- English proof (translation)
-Apply `Fan.IsLimit.hom_ext hl` to reduce the goal to its premises. Introduce `i`. Establish `hp : ∀ k, (Fan.mk D'.P.A pr).proj k = pr k` using `fun _ => rfl`. Simplify using `only [hp, Category.assoc, inc_pr, hc]`. Distinguish the cases in `h : i = i₀`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[xe_xi]`. Rewrite using `[if_neg h, comp_one]`. Simplify using `[xe_xi, Pi.single_apply, h, c_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem c_xi (hc : ∀ z i, D'.c z ≫ pr i = Q.c (xe z i)) (i₀ : Fin r) (y : Q.X) :
     D'.c (xi xe i₀ y) = Q.c y ≫ inc pr hl i₀ := by
@@ -366,9 +364,9 @@ section Lat
 variable {X X' : Type} [AddCommGroup X] [Module.Free ℤ X] [AddCommGroup X'] {r : ℕ} (xe : X' ≃+ (Fin r → X))
 
 /- English proof (translation)
-Use `letI := mod xe s`. Rewrite using `[xe_smul]`. Simplify using `only [xe_xi]`. Rewrite using `[Finset.sum_eq_single i₀]`. Simplify using the standard rewrite rules.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem xe_smul_xi (s : SymUnit r) (a : TensO s) (i₀ : Fin r) (y : X) (i : Fin r) :
     letI := mod xe s
@@ -382,19 +380,17 @@ theorem xe_smul_xi (s : SymUnit r) (a : TensO s) (i₀ : Fin r) (y : X) (i : Fin
   · simp
 
 /- English proof (translation)
-Use `letI := mod xe s`. Establish `key : ∀ y i, xe (star (TensO.idem s i₀) • TensO.binv s • xi xe i₀ y) i = ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) i i₀ • y`. Introduce `y i`. Rewrite using `[← mul_smul, xe_smul_xi, TensO.mat_star_idem_mul_binv, mul_single_apply']`. Simplify using the standard rewrite rules.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y show xe (xi xe i₀ y) i₀ = y`. Rewrite using `[xe_xi]`. Simplify using the standard rewrite rules. Introduce `z`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `xe.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[xe_xi, xe_smul]`. Use `show Pi.single (M := fun _ => X) i₀ (xe z i₀) i = _`. Simplify using `only [TensO.idem, TensO.ofMat, TensO.mat, Matrix.single_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi, Ne.symm hi]`. Introduce `y y' h`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `SymUnit.inv_col_ne s i₀`. Establish `h'` using `congrArg (fun z => xe z i) h`. Simplify using `only [key] at h'`. Conclude with `smul_right_injective X hi h'`. Introduce `z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨∑ j, (s.1 : Matrix (Fin r) (Fin r) ℤ) i₀ j • xe z j, ?_⟩` and prove the remaining obligations. Apply `xe.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[key, xe_smul, TensO.mat_star_idem, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_single_mul_apply, mul_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_latt (s : SymUnit r) (i₀ : Fin r) :
     letI := mod xe s
@@ -440,13 +436,13 @@ end GlobalTheory.Mum.PowLim
 namespace GlobalTheory.Mum.PowLim
 
 /- English proof (translation)
-Establish `hf : Star.star (TensO.binv s) = TensO.binv s` using `by show ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ).transpose * (s.1 : Matrix (Fin r) (Fin r) ℤ) = ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ)`. Rewrite using `[TensO.inv_transpose, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Establish `hEE : (Matrix.single i₀ i₀ (1 : ℤ) : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ 1 = Matrix.single i₀ i₀ 1` using `by simp`. Establish `hET : (Matrix.single i₀ i₀ (1 : ℤ) : Matrix (Fin r) (Fin r) ℤ).transpose = Matrix.single i₀ i₀ 1` using `by simp`. Establish `hmain : ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * (Matrix.single i₀ i₀ (1 : ℤ) : Matrix (Fin r) (Fin r) ℤ).transpose * (s.1 : Matrix (Fin r) (Fin r) ℤ) * ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ (1 : ℤ) = …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hET, Matrix.mul_assoc _ (s.1 : Matrix (Fin r) (Fin r) ℤ), Units.mul_inv, Matrix.mul_one, Matrix.mul_assoc, hEE]`. Establish `hefe : Star.star (TensO.idem s i₀) * TensO.binv s * TensO.idem s i₀ = TensO.binv s * TensO.idem s i₀` using `hmain`. Use `⟨⟨((s.1 : Matrix (Fin r) (Fin r) ℤ) i₀ i₀).toNat, by omega, ?_⟩, by rw [hf], TensO.ofMat s s.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hefe]`. Establish `h : ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * (Matrix.single i₀ i₀ (1 : ℤ) : Matrix (Fin r) (Fin r) ℤ).transpose * (s.1 : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ (1 : ℤ) = ((s.1 : Matrix (Fin r) (Fin r) ℤ) i₀ i₀).toNat • (((s.1⁻¹ : (Matrix (Fin …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hET, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.single i₀ i₀ (1 : ℤ)), Matrix.single_mul_mul_single, ← Matrix.mul_smul]`. Use `congr 1`. Rewrite using `[Matrix.smul_single, nsmul_eq_mul, Int.toNat_of_nonneg hp.le]`. Simplify using the standard rewrite rules. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hefe]`. Establish `h : (s.1 : Matrix (Fin r) (Fin r) ℤ) * (((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ (1 : ℤ)) = Matrix.single i₀ i₀ (1 : ℤ)`. Rewrite using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg_idem_binv {r : ℕ} (s : SymUnit r) (i₀ : Fin r)
     (hp : 0 < (s.1 : Matrix (Fin r) (Fin r) ℤ) i₀ i₀) :

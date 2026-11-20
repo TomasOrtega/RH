@@ -15,43 +15,37 @@ namespace PositivityTheory.ThKW.AdelicSchwartzProperties
 open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.ModulusDerivativeNormalisation GlobalTheory.ThetaTransform
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS nT`. Use `haveI := i1`. Use `haveI := i2`. Use `haveI := i3`. Use `haveI := i4`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `haveI := i5`. Use `haveI hBor : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`. Use `haveI : Countable E := GlobalTheory.ThetaParsevalInner.countable_numberField E`. Use `haveI : Countable F := GlobalTheory.ThetaParsevalInner.countable_numberField F`. Use `haveI : Countable (ratLF F E nS nT) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Function.Surjective.countable (f := fun m : Fin nT → Fin nS → E => (⟨(incAF F E).toAddMonoidHom.mapMatrix (Matrix.of m), AddMonoidHom.mem_range.2 ⟨_, rfl⟩⟩ : ratLF F E nS nT)) ?_` and prove the remaining obligations. Introduce and unpack `⟨r, m, rfl⟩`. Conclude with `⟨m, rfl⟩`. Take `⟨Nn, hNn⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WOF F E nS nT) (ratLF F E nS nT) K hK hKc).2 (fun _ => (1 : ℂ)) continuous_const (fun _ _ _ => rfl)`. Take `⟨h0, htop, -, -⟩` from `hNn ν 𝓕 hν h𝓕`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Use `haveI : IsFiniteMeasure (ν.restrict 𝓕) := isFiniteMeasure_restrict.mpr htop`. Use `haveI := hν`. Establish `hstd` using `_root_.GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood_k F E σ B hB`. Take `⟨hcont, hnorm, htriv, s0, hs0⟩` from `hstd.1`. Use `⟨((ν 𝓕).toReal : ℂ), ?_, fun Φ hΦ v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(ENNReal.toReal_pos h0 htop).ne'` after adjusting the coercions. Use `set x : Fin N → AF F := α v with hx`. Take `⟨emb, hemb⟩ : ∃ emb : (Fin N → F) → (Fin N → AF F), emb = fun ξ i => algebraMap F (AF F) (ξ i)` from `⟨_, rfl⟩`. Take `⟨a, ha⟩ : ∃ a : (Fin N → F) → ℂ, a = fun ξ => Φ (emb ξ + x)` from `⟨_, rfl⟩`. Take `⟨ch, hch⟩ : ∃ ch : (Fin N → F) → WOF F E nS nT → ℂ, ch = fun ξ u => B.ψ (emb ξ ⬝ᵥ β u)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : Summable fun ξ => ‖a ξ‖`. Establish `h0` using `GlobalTheory.WeilM.summable_norm_of_mem_schA F (GlobalTheory.SchwartzTranslate.schA_translate F x hΦ)`. Substitute `ha hemb` using the available equality. Conclude with `h0`. Establish `hch_norm : ∀ ξ u, ‖ch ξ u‖ = 1` using `fun ξ u => by rw [hch]; exact hnorm _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hch_cont : ∀ ξ, Continuous (ch ξ)` using `fun ξ => by`. Rewrite using `[hch]`. Conclude with `hcont.comp (continuous_const.dotProduct hβc)`. Establish `hint : ∀ u : WOF F E nS nT, heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (dCd F JT * v) (thV B.ψ Φ ∘ e) (dC (AF F ⊗[F] E) nT * u) = ∑' ξ, a ξ * ch ξ u`. Introduce `u`.
+Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : e (dC (AF F ⊗[F] E) nT * u) = (0, β u)`. Use `hCe u 0` as an intermediate fact. Rewrite `this` using `[Matrix.mul_zero, add_zero, map_zero]`. Then use the resulting hypothesis. Establish `h2 : e (dCd F JT * v) = (α v, 0)`. Use `hCe 0 v` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mul_zero, zero_add, map_zero]`. Then use the resulting hypothesis. Simplify using `only [heisOF, symplOHF, Function.comp_apply, he, h1, h2, hCe, GlobalTheory.ThetaOntoF.algebraMap_half]`. Unfold `thV GlobalTheory.WeilM.thetaSum GlobalTheory.WeilM.schr`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `ξ`. Substitute `ha hch hemb` using the available equality. Simplify using `only [symV, dotProduct_zero, zero_dotProduct, zero_sub]`. Conclude with `psi_cancel B.ψ _ _ _`. Establish `hFint : ∀ ξ, Integrable (fun u => a ξ * ch ξ u) (ν.restrict 𝓕)` using `fun ξ => (Integrable.of_bound (hch_cont _).aestronglyMeasurable 1 (ae_of_all _ fun u => (hch_norm _ _).le)).const_mul _`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hnormint : ∀ ξ, ∫ u in 𝓕, ‖a ξ * ch ξ u‖ ∂ν = ‖a ξ‖ * ν.real 𝓕`. Introduce `ξ`. Simplify using `only [norm_mul, hch_norm, mul_one]`. Rewrite using `[setIntegral_const, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsumint : Summable fun ξ => ∫ u in 𝓕, ‖a ξ * ch ξ u‖ ∂ν`. Repeatedly rewrite using `[hnormint]`. Conclude with `hsum.mul_right _`. Establish `horth : ∀ ζ : Fin N → F, ∫ u in 𝓕, ch ζ u ∂ν = if ζ = 0 then (ν.real 𝓕 : ℂ) else 0`. Introduce `ζ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with hζ`. Substitute `hζ` using the available equality. Establish `: ∀ u, ch 0 u = 1` using `fun u => by simp [hch, hemb]`. Repeatedly rewrite using `[this]`. Rewrite using `[setIntegral_const]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ζ i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hζ (funext h)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.ThetaParsevalInner.setIntegral_eq_zero_of_twist ν (ratLF F E nS nT) h𝓕 (h := ch ζ) ?_ (c := β.symm (Pi.single i (algebraMap F (AF F) (ζ i)⁻¹ * s0))) (a := B.ψ s0) ?_ hs0` and prove the remaining obligations. Introduce `r hr u`. Take `⟨x₀, rfl⟩` from `hr`. Take `⟨η, hη⟩` from `hr1 x₀`. Establish `hr' : β ((incAF F E).toAddMonoidHom.mapMatrix x₀) = GlobalTheory.SWQ.rat η` using `hη`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hch, map_add, hr', dotProduct_add, AddChar.map_add_eq_mul]`. Rewrite using `[show emb ζ ⬝ᵥ GlobalTheory.SWQ.rat η = algebraMap F (AF F) (ζ ⬝ᵥ η) by`. Substitute `hemb` using the available equality. Simplify using `[dotProduct, map_sum, map_mul, GlobalTheory.SWQ.rat], htriv, one_mul]`. Introduce `u`.
-
-Simplify using `only [hch, map_add, LinearEquiv.apply_symm_apply, dotProduct_add, AddChar.map_add_eq_mul]`. Use `congr 2`. Rewrite using `[dotProduct_single, hemb]`. Simplify using `only`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hi, map_one, one_mul]`.
-
-Unfold `GlobalTheory.LagrTheta.lagrInt`. Repeatedly rewrite using `[hint]`. Rewrite using `[← integral_tsum_of_summable_integral_norm hFint hsumint]`. Repeatedly rewrite using `[integral_const_mul, horth]`. Rewrite using `[tsum_eq_single 0 (fun ξ hξ => by rw [if_neg hξ, mul_zero])]`.
-
-Rewrite using `[if_pos rfl, ha, hemb]`. Establish `hz : (fun i : Fin N => (0 : AF F)) + x = x` using `by funext i; simp`. Simplify using `only [Pi.zero_apply, map_zero]`. Rewrite using `[hz, Measure.real]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lam_formula_k {σ : E →ₐ[F] E} {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E)
     (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E) (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT))

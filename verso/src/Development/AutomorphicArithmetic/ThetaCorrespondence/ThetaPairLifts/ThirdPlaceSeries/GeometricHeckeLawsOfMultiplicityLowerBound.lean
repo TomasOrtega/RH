@@ -16,13 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000
 set_option synthInstance.maxHeartbeats 400000
 /- English proof (translation)
-Introduce `hP hS hL`. Establish `hH` using `_root_.GlobalTheory.T.heckeGeo_at_levelB1_states hP hS hL`. Use `hH.trans (StepW.of_all fun K B f T w _ _ hw P x l i => ?_)` and prove the remaining obligations. Establish `hint` using `(Dof x).nth.iC_int i`. Use `⟨?_, ?_, ?_, hw P x l i, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `b j`. Conclude with `GlobalTheory.PointsDetectAlg.detects _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hint b j`. Introduce `b j`. Conclude with `GlobalTheory.GeoTie.supDescent_side _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hint b j`. Introduce `b j f`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `l.b.ser.sup i _ b _ _ f`. Introduce `b j`. Conclude with `GlobalTheory.T.heckeQuotient_integral_framed_point_complete_field hS.hkInt _ _ _ _ _ _ _ _ _ _ _ x.m.z.geo.κ x.m.z.geo.v₀ x.m.z.geo.fw _ _ hint b j`. Introduce `j k Pl hk`. Take `⟨hHP, -⟩` from `GlobalTheory.T.isSplitHeckePrimeOffLevel_of_heckeIndexPlace _ _ x.m.z.geo.fw.laws i k Pl hk`.
-
-Take `⟨n, hn⟩` from `GlobalTheory.HeckeCount.card_hkKer_const _ _ _ _ (x.m.z.core.Q.Xo ((j : ℕ) + 1)) x.m.z.core.Q.c Pl.asIdeal (GlobalTheory.GeoTie.charAt Pl) k (GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.isHeckePrime_iff.2 hHP)`. Conclude with `⟨n, fun b z => hn _ z.1⟩`. Introduce `j hj b`. Conclude with `l.b.ser.off i j b (fun h => hj (Finset.mem_Icc.2 h))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeightCounting.Up.geoLaws_at_levelB1_states : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ _ _ P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.SecondIntermediateLevel hL x) (i : (Dof x).ntw.Tw), GlobalTheory.GeoTie.GeoLaws l.b.YS x.m.z.geo.fw ((Dof x).nth.iC i) := by
   intro hP hS hL
@@ -51,7 +49,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.geoLaws_at_levelB1_states | exact _root_.GlobalTheory.HeightCounting.Up.geoLaws_at_levelB1_states | (intros; apply _root_.GlobalTheory.HeightCounting.Up.geoLaws_at_levelB1_states <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.geoLaws_iC_at_levelB1_of_serN : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ _ _ P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.SecondIntermediateLevel hL x) (i : (Dof x).ntw.Tw), GlobalTheory.GeoTie.GeoLaws l.b.YS x.m.z.geo.fw ((Dof x).nth.iC i) := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.geoLaws_at_levelB1_states | exact _root_.GlobalTheory.HeightCounting.Up.geoLaws_at_levelB1_states | (intros; apply _root_.GlobalTheory.HeightCounting.Up.geoLaws_at_levelB1_states <;> assumption)

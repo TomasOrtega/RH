@@ -11,21 +11,21 @@ noncomputable section
 namespace RestCutTransportLast
 
 /- English proof (translation)
-Simplify using `[restTransport, restRename]`.
+Simplify using the standard rewrite rules.
 -/
 theorem transport_X (f j k N : ℕ) (e : Fin N ≃ Fin j ⊕ Fin k) (p : Fin f × Fin N) :
     restTransport f j k N e (X p) = X (p.1, e p.2) := by
   simp [restTransport, restRename]
 
 /- English proof (translation)
-Simplify using `[restTransport, restRename]`.
+Simplify using the standard rewrite rules.
 -/
 theorem transport_C (f j k N : ℕ) (e : Fin N ≃ Fin j ⊕ Fin k) (c : ℚ) :
     restTransport f j k N e (C c) = C (c : ℝ) := by
   simp [restTransport, restRename]
 
 /- English proof (translation)
-Establish `: (finCongr (Nat.add_comm k j)) ⟨i, h⟩ = Fin.castAdd k i` using `Fin.ext rfl`. Simplify using `only [restLastEquiv, Equiv.trans_apply, this, finSumFinEquiv_symm_apply_castAdd]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lastEquiv_top (j k : ℕ) (i : Fin j) (h : (i : ℕ) < k + j) :
     restLastEquiv j k ⟨i, h⟩ = Sum.inl i := by
@@ -33,7 +33,7 @@ theorem lastEquiv_top (j k : ℕ) (i : Fin j) (h : (i : ℕ) < k + j) :
   simp only [restLastEquiv, Equiv.trans_apply, this, finSumFinEquiv_symm_apply_castAdd]
 
 /- English proof (translation)
-Establish `: (finCongr (Nat.add_comm k j)) ⟨j + i, h⟩ = Fin.natAdd j i` using `Fin.ext rfl`. Simplify using `only [restLastEquiv, Equiv.trans_apply, this, finSumFinEquiv_symm_apply_natAdd]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lastEquiv_bottom (j k : ℕ) (i : Fin k) (h : j + (i : ℕ) < k + j) :
     restLastEquiv j k ⟨j + i, h⟩ = Sum.inr i := by
@@ -41,7 +41,7 @@ theorem lastEquiv_bottom (j k : ℕ) (i : Fin k) (h : j + (i : ℕ) < k + j) :
   simp only [restLastEquiv, Equiv.trans_apply, this, finSumFinEquiv_symm_apply_natAdd]
 
 /- English proof (translation)
-Simplify using `only [RestTerms.yRoot, RestTerms.yIndex, RestTerms.SmallBlock.sign, map_mul, transport_C, transport_X, lastEquiv_bottom]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem transport_yRoot (f j k : ℕ) (τ : Fin f) (i : Fin k) :
     restTransport f j k (k + j) (restLastEquiv j k) (RestTerms.yRoot f k j .last τ i) =
@@ -51,7 +51,7 @@ theorem transport_yRoot (f j k : ℕ) (τ : Fin f) (i : Fin k) :
   simp
 
 /- English proof (translation)
-Simplify using `only [RestTerms.zRoot, RestTerms.zIndex, transport_X, lastEquiv_top]`.
+Simplify using the standard rewrite rules.
 -/
 theorem transport_zRoot (f j k : ℕ) (τ : Fin f) (i : Fin j) :
     restTransport f j k (k + j) (restLastEquiv j k) (RestTerms.zRoot f k j .last τ i) =
@@ -59,14 +59,14 @@ theorem transport_zRoot (f j k : ℕ) (τ : Fin f) (i : Fin j) :
   simp only [RestTerms.zRoot, RestTerms.zIndex, transport_X, lastEquiv_top]
 
 /- English proof (translation)
-Simplify using `only [RestTerms.vandermondeOf, map_prod, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_vandermondeOf {R S : Type*} [CommRing R] [CommRing S] (g : R →+* S) {m : ℕ}
     (v : Fin m → R) : g (RestTerms.vandermondeOf v) = RestTerms.vandermondeOf fun i => g (v i) := by
   simp only [RestTerms.vandermondeOf, map_prod, map_sub]
 
 /- English proof (translation)
-Simplify using `only [RestTerms.smallBlockMu, map_sum, transport_yRoot, smallMu, if_pos hk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem transport_mu (f j k : ℕ) (hk : k ≤ j) :
     restTransport f j k (k + j) (restLastEquiv j k) (RestTerms.smallBlockMu f k j .last) =
@@ -74,7 +74,7 @@ theorem transport_mu (f j k : ℕ) (hk : k ≤ j) :
   simp only [RestTerms.smallBlockMu, map_sum, transport_yRoot, smallMu, if_pos hk]
 
 /- English proof (translation)
-Simplify using `only [RestTerms.fibreClass, fibre, if_pos hk, map_prod, map_mul, map_vandermondeOf, transport_yRoot, transport_zRoot, vandermonde, KRest.det_rev_pow_eq_vandermondeOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem transport_fib (f j k : ℕ) (hk : k ≤ j) :
     restTransport f j k (k + j) (restLastEquiv j k) (RestTerms.fibreClass f k j .last) =
@@ -87,9 +87,9 @@ end RestCutTransportLast
 open RestCutTransportLast in
 
 /- English proof (translation)
-Introduce `f j k hk`. Establish `hn : f * (k * j) = f * j * k` using `by ring`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RestTerms.restPolynomial, map_mul, map_pow, transport_mu f j k hk, transport_fib f j k hk, hn]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_mul, map_pow, transport_mu f j k hk, transport_fib f j k hk, hn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem RestCutTransportLast.proof : RestCutTransportLast.Statement := by
   intro f j k hk

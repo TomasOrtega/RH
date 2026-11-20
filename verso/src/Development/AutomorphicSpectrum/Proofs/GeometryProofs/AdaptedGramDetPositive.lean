@@ -12,7 +12,7 @@ section Field
 variable {k V O : Type} [Field k] [AddCommGroup V] [Module k V] [CommRing O]
 
 /- English proof (translation)
-Establish `h` using `(Submodule.mem_iInf _).1 hx a`. Rewrite `h` using `[LinearMap.mem_ker]`. Simplify `h` using `[sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eigSp_apply {ρ : O →+* Module.End k V} {σ : O →+* k} {x : V} (hx : x ∈ eigSp ρ σ) (a : O) :
     ρ a x = σ a • x := by
@@ -21,7 +21,7 @@ theorem eigSp_apply {ρ : O →+* Module.End k V} {σ : O →+* k} {x : V} (hx :
   simpa [sub_eq_zero] using h
 
 /- English proof (translation)
-Establish `hle : (⨆ τ ∈ T, eigSp ρ τ) ≤ (⨆ τ ∈ T, eigSp ρ τ).comap (ρ a)`. Use `iSup₂_le fun τ hτ y hy => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, eigSp_apply hy a]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_iSup_of_mem τ (Submodule.mem_iSup_of_mem hτ hy))`. Conclude with `hle hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_eigSp_stable (ρ : O →+* Module.End k V) (T : Set (O →+* k)) (a : O) {x : V}
     (hx : x ∈ ⨆ τ ∈ T, eigSp ρ τ) : ρ a x ∈ ⨆ τ ∈ T, eigSp ρ τ := by
@@ -32,19 +32,17 @@ theorem iSup_eigSp_stable (ρ : O →+* Module.End k V) (T : Set (O →+* k)) (a
   exact hle hx
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Introduce `x _ h`. Simplify using `using h`. Consider the case `insert τ t _ ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `x hx hxs`. Rewrite `hxs` using `[Finset.iSup_insert, Submodule.mem_sup]`. Take `⟨y, hy, z, hz, hyz⟩` from `hxs`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, σ a ≠ τ.1 a := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Conclude with `τ.2 (RingHom.ext fun a => (h a).symm)`. Establish `hzs : ∀ b : O, ρ b z ∈ ⨆ i ∈ t, eigSp ρ i.1`. Introduce `b`. Establish `hle : (⨆ i ∈ t, eigSp ρ i.1) ≤ (⨆ i ∈ t, eigSp ρ i.1).comap (ρ b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `iSup₂_le fun i hi u hu => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, eigSp_apply hu b]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_iSup_of_mem i (Submodule.mem_iSup_of_mem hi hu))`. Conclude with `hle hz`. Establish `hkey : (σ a - τ.1 a) • x = ρ a z - τ.1 a • z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `eigSp_apply hx a`. Establish `e2` using `eigSp_apply hy a`. Rewrite `e1` using `[← hyz, map_add, e2]`. Establish `e3 : ρ a z = σ a • (y + z) - τ.1 a • y` using `by rw [← e1]; abel`. Rewrite using `[e3, ← hyz, sub_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_add]`. Normalize the expressions using the abelian group laws. Establish `hmem : (σ a - τ.1 a) • x ∈ ⨆ i ∈ t, eigSp ρ i.1`. Rewrite using `[hkey]`. Conclude with `Submodule.sub_mem _ (hzs a) (Submodule.smul_mem _ _ hz)`.
-
-Establish `h0` using `ih _ (Submodule.smul_mem _ _ hx) hmem`. Conclude with `(smul_eq_zero.1 h0).resolve_left (sub_ne_zero.2 ha)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_finset (ρ : O →+* Module.End k V) (σ : O →+* k)
     (t : Finset {τ : O →+* k // τ ≠ σ}) :
@@ -84,9 +82,9 @@ theorem eq_zero_of_mem_finset (ρ : O →+* Module.End k V) (σ : O →+* k)
     exact (smul_eq_zero.1 h0).resolve_left (sub_ne_zero.2 ha)
 
 /- English proof (translation)
-Establish `h : (⨆ τ ∈ {τ : O →+* k | τ ≠ σ}, eigSp ρ τ) = ⨆ i : {τ : O →+* k // τ ≠ σ}, eigSp ρ i.1`. Rewrite using `[iSup_subtype']`. Both sides reduce to the same expression. Rewrite `hS` using `[h, Submodule.mem_iSup_iff_exists_finset]`. Take `⟨t, ht⟩` from `hS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `eq_zero_of_mem_finset ρ σ t x hx ht`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_iSup (ρ : O →+* Module.End k V) (σ : O →+* k) {x : V} (hx : x ∈ eigSp ρ σ)
     (hS : x ∈ ⨆ τ ∈ {τ : O →+* k | τ ≠ σ}, eigSp ρ τ) : x = 0 := by
@@ -98,9 +96,9 @@ theorem eq_zero_of_mem_iSup (ρ : O →+* Module.End k V) (σ : O →+* k) {x : 
   exact eq_zero_of_mem_finset ρ σ t x hx ht
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ p ∈ eigSp ρ σ, x - p ∈ ⨆ σ' ∈ {σ' : O →+* k | σ' ≠ σ}, eigSp ρ σ'`. Establish `e : eigComp ρ σ x = h.choose`. Unfold `eigComp`. Rewrite using `[dif_pos h]`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.choose_spec`. Conclude with `absurd (by unfold eigComp; rw [dif_neg h]) h0`.
+A detailed English derivation is pending.
 -/
 theorem eigComp_spec {ρ : O →+* Module.End k V} {σ : O →+* k} {x : V} (h0 : eigComp ρ σ x ≠ 0) :
     eigComp ρ σ x ∈ eigSp ρ σ ∧ x - eigComp ρ σ x ∈ ⨆ τ ∈ {τ : O →+* k | τ ≠ σ}, eigSp ρ τ := by
@@ -120,35 +118,29 @@ variable {E L Ψ : Type} [Field E] [NumberField E] [Field L] [NumberField L] {V 
   [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg c`. Use `set S : Submodule L V := ⨆ τ ∈ {τ : 𝓞 E →+* L | τ ≠ A.σ s}, eigSp A.ρ τ with hSdef`. Use `set p : Fin r → V := fun i => eigComp A.ρ (A.σ s) (v i) with hpdef`. Establish `hfam_l : ∀ i : Fin r, A.fam s v q (Fin.castAdd k i) = p i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i`. Simplify using `[LinPt.fam, hpdef]`. Establish `hfam_r : ∀ c : Fin k, A.fam s v q (Fin.natAdd r c) = (q c : V)`. Introduce `c`. Simplify using `[LinPt.fam]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : ∀ i, p i ∈ eigSp A.ρ (A.σ s) ∧ v i - p i ∈ S`. Introduce `i`. Use `eigComp_spec ?_` and prove the remaining obligations. Use `hA.1.ne_zero (Fin.castAdd k i)` as an intermediate fact. Rewrite `this` using `[hfam_l]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set M : Submodule L V := Submodule.span L (Set.range p) ⊔ S with hMdef`. Establish `hT : ∀ (a : 𝓞 E) (i : Fin r), A.ρ a (v i) ∈ M`. Introduce `a i`. Establish `e : A.ρ a (v i) = A.σ s a • p i + A.ρ a (v i - p i)`. Rewrite using `[map_sub, eigSp_apply (hp i).1 a]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`. Conclude with `Submodule.mem_sup_right (iSup_eigSp_stable A.ρ _ a (hp i).2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hoS : oSpan A.ρ v ≤ M.toAddSubgroup`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨a, i, rfl⟩`. Conclude with `hT a i`. Establish `hI : ∀ x ∈ A.I, x ∈ M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨n, hn, -, hnx⟩` from `AddSubgroup.exists_nsmul_mem_of_relIndex_ne_zero hO.2.2 hx`. Establish `h1 : n • x ∈ M` using `hoS hnx.1`. Establish `hn0 : (n : L) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `h2 : x = (n : L)⁻¹ • (n • x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul L, smul_smul, inv_mul_cancel₀ hn0, one_smul]`. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ h1`. Use `set w : A.Λ := ∑ c, g c • q c with hw`. Establish `hwV : (w : V) = ∑ c, g c • (q c : V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hw]`. Establish `hfw : A.f w = 0`. Simplify `hg` using `[hw, map_sum]`. Establish `hwI : (w : V) ∈ Submodule.span (𝓞 L) (A.I : Set V)` using `(A.ker w).1 hfw`. Establish `hwe : (w : V) ∈ eigSp A.ρ (A.σ s)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `: (w : V) ∈ (eigSp A.ρ (A.σ s)).restrictScalars (𝓞 L)`. Rewrite using `[hwV]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (hq c).2`. Conclude with `this`. Establish `hwM : (w : V) ∈ M`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hle : Submodule.span (𝓞 L) (A.I : Set V) ≤ M.restrictScalars (𝓞 L)` using `Submodule.span_le.2 fun x hx => hI x hx`. Conclude with `hle hwI`. Take `⟨u, hu, t, ht, hut⟩` from `Submodule.mem_sup.1 hwM`. Establish `hue : u ∈ eigSp A.ρ (A.σ s)`. Use `(Submodule.span_le.2 ?_) hu` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(hp i).1`. Establish `ht0 : t = 0`. Use `eq_zero_of_mem_iSup A.ρ (A.σ s) ?_ ht` and prove the remaining obligations. Establish `: t = (w : V) - u` using `by rw [← hut]; abel`.
-
-Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ hwe hue`. Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun L).1 hu`. Establish `hzero : ∑ j, (Fin.append (fun i => - b i) (fun c => algebraMap (𝓞 L) L (g c)) j) • A.fam s v q j = 0`. Rewrite using `[Fin.sum_univ_add]`.
-
-Simplify using `only [Fin.append_left, Fin.append_right, hfam_l, hfam_r, neg_smul, algebraMap_smul, Finset.sum_neg_distrib]`. Rewrite using `[hb, ← hwV, ← hut, ht0]`. Simplify using the standard rewrite rules. Use `Fintype.linearIndependent_iff.1 hA.1 _ hzero (Fin.natAdd r c)` as an intermediate fact. Rewrite `this` using `[Fin.append_right]`.
-
-Conclude with `RingOfIntegers.coe_injective (by simpa using this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_f (A : LinPt E L Ψ V) (s : Ψ ⊕ Ψ) {r k : ℕ} (v : Fin r → V) (q : Fin k → A.Λ)
     (hO : IsOFamily A.ρ A.I v) (hA : A.IsAdapted s v q) (hq : ∀ i, (q i : V) ∈ A.eig s) :
@@ -238,9 +230,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Introduce `E L Ψ _ _ _ _ V _ _ _ _ A s r k v q hO hA hq e`. Establish `hli` using `Adapted.linearIndependent_f A s v q hO hA hq`. Establish `hG : (Matrix.gram ℂ fun i ↦ fibreVec A.Bq.metric e (A.f (q i))) = Matrix.of fun i j ↦ (A.Bq.metric.form e).inner ((1 : ComplexAt e) ⊗ₜ[𝓞 L] A.f (q i)) ((1 : ComplexAt e) ⊗ₜ[𝓞 L] A.f (q j))`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `hp` using `(Matrix.posDef_gram_of_linearIndependent (linearIndependent_fibreVec A.Bq.metric e hli)).det_pos`. Rewrite `hp` using `[hG]`. Conclude with `(Complex.lt_def.1 hp).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramDet_pos_of_adapted : ∀ (E L Ψ : Type) [Field E] [NumberField E] [Field L] [NumberField L] (V : Type)
     [AddCommGroup V] [Module L V] [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] (A : LinPt E L Ψ V) (s : Ψ ⊕ Ψ) (r k : ℕ)

@@ -35,25 +35,25 @@ def hkLift₂ {x' : Sp T ⟶ Xo.X} (hx' : x' = h ≫ Z.π₂) : Gx x' ⟶ Z.o₂
 variable {h} {x x' : Sp T ⟶ Xo.X} (hx : x = h ≫ Z.π₁) (hx' : x' = h ≫ Z.π₂)
 
 /- English proof (translation)
-The claim follows from `Z.m₁.cart.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem hkLift_φ : hkLift Z h hx ≫ Z.m₁.cm.F = (snd (Over.mk x) Xo.univ.t.G).left :=
   Z.m₁.cart.1.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `Z.m₁.cart.1.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem hkLift_hom : hkLift Z h hx ≫ Z.o₁.t.G.hom = (fst (Over.mk x) Xo.univ.t.G).left ≫ h :=
   Z.m₁.cart.1.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `Z.m₂.cart.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem hkLift₂_φ : hkLift₂ Z h hx' ≫ Z.m₂.cm.F = (snd (Over.mk x') Xo.univ.t.G).left :=
   Z.m₂.cart.1.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `Z.m₂.cart.1.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem hkLift₂_hom : hkLift₂ Z h hx' ≫ Z.o₂.t.G.hom = (fst (Over.mk x') Xo.univ.t.G).left ≫ h :=
   Z.m₂.cart.1.lift_snd _ _ _
@@ -65,21 +65,21 @@ def hkMap : Gx x ⟶ Gx x' :=
       rw [Z.m₂.cart.1.w, Over.w_assoc Z.ψ, hkLift_hom_assoc, ← hx']; rfl)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem hkMap_fst :
     hkMap Z hx hx' ≫ (fst (Over.mk x') Xo.univ.t.G).left = (fst (Over.mk x) Xo.univ.t.G).left :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem hkMap_snd :
     hkMap Z hx hx' ≫ (snd (Over.mk x') Xo.univ.t.G).left = hkLift Z h hx ≫ Z.ψ.left ≫ Z.m₂.cm.F :=
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `Z.m₂.cart.1.hom_ext (by rw [Category.assoc, hkLift₂_φ, hkMap_snd, Category.assoc]) (by rw [Category.assoc, hkLift₂_hom, hkMap_fst_assoc, Category.assoc, Over.w Z.ψ, hkLift_hom])`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem hkMap_hkLift₂ : hkMap Z hx hx' ≫ hkLift₂ Z h hx' = hkLift Z h hx ≫ Z.ψ.left :=
   Z.m₂.cart.1.hom_ext (by rw [Category.assoc, hkLift₂_φ, hkMap_snd, Category.assoc])
@@ -92,7 +92,7 @@ section Square
 variable (Z : Corr Xo P p i) {T : Type} [CommRing T] {h : Sp T ⟶ Z.Hk} {x x' : Sp T ⟶ Xo.X}
 
 /- English proof (translation)
-Use `IsPullback.of_right (h₁₂ := Z.m₁.cm.F) (v₁₃ := Xo.univ.t.G.hom) (h₂₂ := Z.π₁) ?_ (hkLift_hom Z hx) Z.m₁.cart.1` and prove the remaining obligations. Rewrite using `[hkLift_φ, ← hx]`. Conclude with `(IsPullback.of_hasPullback (Over.mk x).hom Xo.univ.t.G.hom).flip`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkLift_isPullback (hx : x = h ≫ Z.π₁) :
     IsPullback (hkLift Z h hx) (fst (Over.mk x) Xo.univ.t.G).left Z.o₁.t.G.hom h := by
@@ -102,7 +102,7 @@ theorem hkLift_isPullback (hx : x = h ≫ Z.π₁) :
   exact (IsPullback.of_hasPullback (Over.mk x).hom Xo.univ.t.G.hom).flip
 
 /- English proof (translation)
-Use `IsPullback.of_right (h₁₂ := Z.m₂.cm.F) (v₁₃ := Xo.univ.t.G.hom) (h₂₂ := Z.π₂) ?_ (hkLift₂_hom Z hx') Z.m₂.cart.1` and prove the remaining obligations. Rewrite using `[hkLift₂_φ, ← hx']`. Conclude with `(IsPullback.of_hasPullback (Over.mk x').hom Xo.univ.t.G.hom).flip`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkLift₂_isPullback (hx' : x' = h ≫ Z.π₂) :
     IsPullback (hkLift₂ Z h hx') (fst (Over.mk x') Xo.univ.t.G).left Z.o₂.t.G.hom h := by
@@ -112,7 +112,7 @@ theorem hkLift₂_isPullback (hx' : x' = h ≫ Z.π₂) :
   exact (IsPullback.of_hasPullback (Over.mk x').hom Xo.univ.t.G.hom).flip
 
 /- English proof (translation)
-Use `IsPullback.of_bot ?_ (hkMap_hkLift₂ Z hx hx').symm (hkLift₂_isPullback Z hx')` and prove the remaining obligations. Rewrite using `[hkMap_fst, Over.w Z.ψ]`. Conclude with `hkLift_isPullback Z hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkMap_isPullback (hx : x = h ≫ Z.π₁) (hx' : x' = h ≫ Z.π₂) :
     IsPullback (hkLift Z h hx) (hkMap Z hx hx') Z.ψ.left (hkLift₂ Z h hx') := by
@@ -121,13 +121,13 @@ theorem hkMap_isPullback (hx : x = h ≫ Z.π₁) (hx' : x' = h ≫ Z.π₂) :
   exact hkLift_isPullback Z hx
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @Etale) (hkMap_isPullback Z hx hx') Z.isog.1.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem hkMap_etale (hx : x = h ≫ Z.π₁) (hx' : x' = h ≫ Z.π₂) : Etale (hkMap Z hx hx') :=
   MorphismProperty.of_isPullback (P := @Etale) (hkMap_isPullback Z hx hx') Z.isog.1.2.2.1
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @Surjective) (hkMap_isPullback Z hx hx') Z.isog.1.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem hkMap_surjective (hx : x = h ≫ Z.π₁) (hx' : x' = h ≫ Z.π₂) : Surjective (hkMap Z hx hx') :=
   MorphismProperty.of_isPullback (P := @Surjective) (hkMap_isPullback Z hx hx') Z.isog.1.2.2.2.1
@@ -139,7 +139,7 @@ section Fibre
 variable (Z : Corr Xo P p i) {T : Type} [CommRing T] {h : Sp T ⟶ Z.Hk} {x x' : Sp T ⟶ Xo.X}
 
 /- English proof (translation)
-The claim follows from `Z.m₁.cart.1.hom_ext (by rw [Category.assoc, hkLift_φ, hkLift_φ, hp.2.1]) (by rw [Category.assoc, hkLift_hom, hkLift_hom, reassoc_of% hp.2.2])`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem isCan_hkLift {Ω : Type} [CommRing Ω] {χ : T →+* Ω} {x₁ : Sp Ω ⟶ Xo.X} {pm : Gx x₁ ⟶ Gx x}
     (hx : x = h ≫ Z.π₁) (hp : IsCan χ pm) (h₁ : x₁ = (spMap χ ≫ h) ≫ Z.π₁) :
@@ -148,7 +148,7 @@ The claim follows from `Z.m₁.cart.1.hom_ext (by rw [Category.assoc, hkLift_φ,
     (by rw [Category.assoc, hkLift_hom, hkLift_hom, reassoc_of% hp.2.2])
 
 /- English proof (translation)
-Take `⟨pm, pm', hp, hp', e, f⟩` from `hΨ`. Establish `h₁ : x₁ = (spMap χ ≫ h) ≫ Z.π₁` using `by rw [hp.1, hx, Category.assoc]`. Establish `h₂ : x₁' = (spMap χ ≫ h) ≫ Z.π₂` using `by rw [hp'.1, hx', Category.assoc]`. Use `⟨h₁, h₂, GlobalTheory.HeckeFrCompare.gx_ext (f.trans (hkMap_fst Z h₁ h₂).symm) ?_⟩` and prove the remaining obligations. Rewrite using `[hkMap_snd Z h₁ h₂, ← isCan_hkLift_assoc Z hx hp h₁, ← hkMap_snd Z hx hx', ← reassoc_of% e, hp'.2.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFib_hkMap {Ω : Type} [CommRing Ω] (χ : T →+* Ω) (hx : x = h ≫ Z.π₁) (hx' : x' = h ≫ Z.π₂)
     {x₁ x₁' : Sp Ω ⟶ Xo.X} {Ψ₁ : Gx x₁ ⟶ Gx x₁'} (hΨ : IsFib χ (hkMap Z hx hx') Ψ₁) :

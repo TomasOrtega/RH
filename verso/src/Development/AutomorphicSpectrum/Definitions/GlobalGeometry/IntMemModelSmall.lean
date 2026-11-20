@@ -20,26 +20,26 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Or : RootOrigin Y S RM Fx} {Fr : Small.GenFrame Or} {h : GenFrEx Xo c} {Z : Comp Xo c}
 
 /- English proof (translation)
-Simplify using `[degOf, Top.combLine, Fintype.sum_option, nOf, Top.RootModel.line, RM.x_deg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem degOf_eq (u : GlobalTheory.AllWt.Weight Dw) : degOf RM u = ∑ r : RootIx Dw, (-u r.1 r.2) • RM.xdeg r := by
   simp [degOf, Top.combLine, Fintype.sum_option, nOf, Top.RootModel.line, RM.x_deg]
 
 /- English proof (translation)
-Rewrite using `[degOf_eq]`. Simplify using `[Top.combLine, Or.sing_deg, nOf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem degOf_eq_sing (Or : RootOrigin Y S RM Fx) (u : GlobalTheory.AllWt.Weight Dw) :
     degOf RM u = (Top.combLine Or.sing fun r => nOf u (some r)).a := by
   rw [degOf_eq]; simp [Top.combLine, Or.sing_deg, nOf]
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (Units.ne_zero _) (Finset.prod_ne_zero_iff.2 fun r _ => zpow_ne_zero _ (Or.lines r).1)`.
+A detailed English derivation is pending.
 -/
 theorem gauge_ne_zero (Rd : Reading Fr h Z) (u : GlobalTheory.AllWt.Weight Dw) : gauge Rd u ≠ 0 :=
   mul_ne_zero (Units.ne_zero _) (Finset.prod_ne_zero_iff.2 fun r _ => zpow_ne_zero _ (Or.lines r).1)
 
 /- English proof (translation)
-Use `RM.δ_pos` as an intermediate fact. Rewrite `this` using `[Or.δ_eq]`. Conclude with `Nat.pos_of_mul_pos_left this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_pos (Or : RootOrigin Y S RM Fx) : 0 < Or.Fl.deg := by
   have := RM.δ_pos
@@ -47,7 +47,7 @@ theorem deg_pos (Or : RootOrigin Y S RM Fx) : 0 < Or.Fl.deg := by
   exact Nat.pos_of_mul_pos_left this
 
 /- English proof (translation)
-Establish `e : GlobalTheory.AllWt.exOf Dw u 0 = Rec.exZ Dw (GlobalTheory.AllWt.wtOf Dw u 0).1`. Apply the tactic sequence `funext i; cases i <;> simp [GlobalTheory.AllWt.exOf, Rec.exZ, Formalism.L2.Pj.exZ, GlobalTheory.AllWt.wtOf]`. Use extensionality with `f`. Rewrite using `[GlobalTheory.AllWt.mem_secZ, e]`. Simplify using `only [Units.coe_prod]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -61,7 +61,7 @@ theorem secZ_eq (u : GlobalTheory.AllWt.Weight Dw) :
   rfl
 
 /- English proof (translation)
-Rewrite `hf` using `[secZ_eq]`. Rewrite using `[Rd.rd_eq _ f hf, gauge]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gauge_mul (Rd : Reading Fr h Z) (u : GlobalTheory.AllWt.Weight Dw) {f : Rul Xo c}
     (hf : f ∈ GlobalTheory.AllWt.secZ Xo c (GlobalTheory.AllWt.exOf Dw u 0)) :
@@ -70,7 +70,7 @@ theorem gauge_mul (Rd : Reading Fr h Z) (u : GlobalTheory.AllWt.Weight Dw) {f : 
   rw [Rd.rd_eq _ f hf, gauge]; ring
 
 /- English proof (translation)
-Use `letI := Rd.φ.toAlgebra`. Unfold `trOf`. Rewrite using `[mul_div_cancel_left₀ _ (gauge_ne_zero Rd u), ← Rd.deg]`. Conclude with `Algebra.trace_algebraMap a`.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trOf_gauge_mul (Rd : Reading Fr h Z) (u : GlobalTheory.AllWt.Weight Dw) (a : Om Z) :
     trOf Rd u (gauge Rd u * Rd.φ a) = Or.Fl.deg • a := by
@@ -80,7 +80,7 @@ theorem trOf_gauge_mul (Rd : Reading Fr h Z) (u : GlobalTheory.AllWt.Weight Dw) 
   exact Algebra.trace_algebraMap a
 
 /- English proof (translation)
-Use `⟨⟨0, ?_⟩, fun h1 => RM.arith.2.1.1.ne_top ((Ideal.eq_top_iff_one _).2 h1)⟩` and prove the remaining obligations. Introduce `m hm k`. Establish `: m = 0` using `by simpa [MvPolynomial.support_one] using hm`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isFormOff_one : Small.IsFormOff (mCoordIdeal RM.y) (1 : MRing RM.ι) := by
   refine ⟨⟨0, ?_⟩, fun h1 => RM.arith.2.1.1.ne_top ((Ideal.eq_top_iff_one _).2 h1)⟩
@@ -89,7 +89,7 @@ theorem isFormOff_one : Small.IsFormOff (mCoordIdeal RM.y) (1 : MRing RM.ι) := 
   simp [this]
 
 /- English proof (translation)
-Introduce and unpack `R R' hR s ⟨h1, w, hw, h2⟩`. Use `⟨h1, w, hw, fun z hz hz' v hv => (h2 z hz hz' v hv).trans ?_⟩` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right hR (Finset.prod_pos fun r _ => zpow_pos ((Or.sing r).pos z hz.1) _).le`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem modelSmall_mono (u : GlobalTheory.AllWt.Weight Dw) : Monotone (modelSmall Or u) := by
   rintro R R' hR s ⟨h1, w, hw, h2⟩
@@ -97,7 +97,7 @@ theorem modelSmall_mono (u : GlobalTheory.AllWt.Weight Dw) : Monotone (modelSmal
   exact mul_le_mul_of_nonneg_right hR (Finset.prod_pos fun r _ => zpow_pos ((Or.sing r).pos z hz.1) _).le
 
 /- English proof (translation)
-Use `⟨?_, fun p hp => by simp [exTwo, hp]⟩` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ 40 * ((padicValNat 2 (discr E).natAbs : ℝ) / (Module.finrank ℚ E : ℝ))` using `by positivity`. Simplify using `only [exTwo, GlobalTheory.CovHt.htEx, if_true]`. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exTwo_vals : 2 ≤ exTwo E 2 ∧ ∀ p, p ≠ 2 → exTwo E p = GlobalTheory.CovHt.htEx E p := by
   refine ⟨?_, fun p hp => by simp [exTwo, hp]⟩
@@ -107,7 +107,7 @@ theorem exTwo_vals : 2 ≤ exTwo E 2 ∧ ∀ p, p ≠ 2 → exTwo E p = GlobalTh
   linarith
 
 /- English proof (translation)
-Establish `hf` using `GlobalTheory.CompHt.htPrimes_finite (l := l) B`. Establish `h2 : 2 ∈ hf.toFinset` using `hf.mem_toFinset.2 ⟨Nat.prime_two, .inr (Dvd.dvd.mul_right (dvd_mul_right _ _) _)⟩`. Rewrite using `[costTwo, GlobalTheory.CovHt.htCost, finsum_mem_eq_finite_toFinset_sum _ hf, finsum_mem_eq_finite_toFinset_sum _ hf]`. Simplify using `[exTwo, add_mul, Finset.sum_add_distrib, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem costTwo_eq (B : ℝ) : costTwo l B = GlobalTheory.CovHt.htCost l B + Real.log 2 := by
   classical
@@ -117,7 +117,7 @@ theorem costTwo_eq (B : ℝ) : costTwo l B = GlobalTheory.CovHt.htCost l B + Rea
   simp [exTwo, add_mul, Finset.sum_add_distrib, h2]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨Formalism.HC.cyclicFrame 0, 6, 2, 13, by decide, by decide, by decide, by decide, by decide, by decide, by decide, by decide, by decide, by decide⟩, by decide, by decide⟩`.
+Supply the required witnesses or components.
 -/
 theorem guard_sat : ∃ R : Ranks, R.m ^ 2 ≤ R.k ∧ 1 < R.m :=
   ⟨⟨Formalism.HC.cyclicFrame 0, 6, 2, 13, by decide, by decide, by decide, by decide, by decide, by decide, by decide, by decide, by decide,
@@ -130,9 +130,9 @@ open MvPolynomial
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `e` using `aeval_blockScale hg (fun k => (X k : MvPolynomial K Ω)) (fun p => C (y p))`. Establish `e2 : aeval (fun p => (C (y p) : MvPolynomial K Ω)) g = C (aeval y g)`. Use `DFunLike.congr_fun (comp_aeval y (C : Ω →+* MvPolynomial K Ω).toIntAlgHom) g` as an intermediate fact. Conclude with `this.symm`. Use `Eq.trans ?_ (e.trans (congrArg _ e2))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mConeMap]`. Simplify using `only [mul_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cone_form (y : (Σ k, ι k) → Ω) {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) :
     mConeMap y g = (∏ k, X k ^ d k) * C (aeval y g) := by
@@ -146,9 +146,9 @@ theorem cone_form (y : (Σ k, ι k) → Ω) {g : MRing ι} {d : K → ℕ} (hg :
   rfl
 
 /- English proof (translation)
-Establish `h0 : mConeMap y g = 0` using `hg`. Use `DFunLike.congr_fun (comp_aeval (fun p => (C (y p) * X p.1 : MvPolynomial K Ω)) (eval fun _ : K => (1 : Ω)).toIntAlgHom) g` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this`. Establish `h1` using `((congrArg (eval fun _ : K => (1 : Ω)).toIntAlgHom h0).symm.trans this).symm`. Simplify using `only [RingHom.toIntAlgHom_apply, map_mul, eval_C, eval_X, mul_one, map_zero] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem aeval_of_mem (y : (Σ k, ι k) → Ω) {g : MRing ι} (hg : g ∈ mCoordIdeal y) : aeval y g = 0 := by
   have h0 : mConeMap y g = 0 := hg
@@ -162,11 +162,11 @@ theorem aeval_of_mem (y : (Σ k, ι k) → Ω) {g : MRing ι} (hg : g ∈ mCoord
 open Cardinal in
 
 /- English proof (translation)
-Set `F` to `FractionRing (MvPolynomial ℝ L₀)`. Set `L` to `AlgebraicClosure F`. Establish `hF : #F = 𝔠`. Rewrite using `[Cardinal.mk_fractionRing, MvPolynomial.cardinalMk_eq_max, Cardinal.mk_real, max_eq_right hK, max_eq_left Cardinal.aleph0_le_continuum]`. Establish `hL : #L = 𝔠`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `le_antisymm ?_ (hF ▸ Cardinal.mk_le_of_injective (algebraMap F L).injective)` and prove the remaining obligations. Use `Algebra.IsAlgebraic.cardinalMk_le_max F L` as an intermediate fact. Rewrite `this` using `[hF, max_eq_left Cardinal.aleph0_le_continuum]`. Then use the resulting hypothesis. Set `j : L₀ →+* L` to `(algebraMap F L).comp ((algebraMap (MvPolynomial ℝ L₀) F).comp MvPolynomial.C)`. Establish `: CharZero L` using `(RingHom.charZero_iff j.injective).1 inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨e⟩` from `IsAlgClosed.ringEquiv_of_equiv_of_charZero (K := L) (L := ℂ) (hL ▸ Cardinal.aleph0_lt_continuum) (Cardinal.eq.1 (hL.trans Cardinal.mk_complex.symm))`. Conclude with `⟨e.toRingHom.comp j⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_emb (L₀ : Type) [Field L₀] [CharZero L₀] (hK : #L₀ ≤ 𝔠) : Nonempty (L₀ →+* ℂ) := by
   let F := FractionRing (MvPolynomial ℝ L₀)
@@ -185,15 +185,13 @@ theorem exists_emb (L₀ : Type) [Field L₀] [CharZero L₀] (hK : #L₀ ≤ �
   exact ⟨e.toRingHom.comp j⟩
 
 /- English proof (translation)
-Establish `hs : Function.Surjective fun q : MRing ι × MRing ι => aeval y q.1 / aeval y q.2` using `fun s => by`. Take `⟨_, g, h, -, -, h1, h2⟩` from `hb s`. Conclude with `⟨(g, h), by simp [h2, h1]⟩`. Establish `hc : Cardinal.mk (MRing ι) ≤ Cardinal.aleph0` using `MvPolynomial.cardinalMk_le_max_lift.trans (by simp [-Cardinal.mk_fintype, -Cardinal.mk_sigma])`. Use `haveI : Countable (MRing ι) := Cardinal.mk_le_aleph0_iff.1 hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Countable Ω := hs.countable`. Take `⟨j⟩` from `exists_emb Ω (Cardinal.mk_le_aleph0.trans Cardinal.aleph0_le_continuum)`. Establish `ev : ∀ g : MRing ι, aeval (fun p => j (y p)) g = j (aeval y g)` using `fun g => (DFunLike.congr_fun (comp_aeval y j.toIntAlgHom) g).symm`. Use `⟨fun p => j (y p), ⟨fun k => ?_, fun f hf => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hr k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations. Establish `: y ⟨k, i⟩ = 0` using `(map_eq_zero j).1 h0`. Simplify using `[mCoordIdeal, RingHom.mem_ker, mConeMap, this]`. Rewrite using `[eval_map]`. Conclude with `(ev f).trans (by rw [aeval_of_mem y hf, map_zero])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨⟨d, hd⟩, hP⟩` from `hw`. Rewrite using `[ev]`. Introduce `h0`. Use `hP ?_` and prove the remaining obligations. Use `show mConeMap y w = 0`.
-
-Rewrite using `[cone_form y hd, (map_eq_zero j).1 h0, map_zero, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pt [CharZero Ω] (y : (Σ k, ι k) → Ω) (hb : Birational y) (hr : IsRelevant (mCoordIdeal y))
     {w : MRing ι} (hw : Small.IsFormOff (mCoordIdeal y) w) : ∃ z ∈ mcPts (mCoordIdeal y), aeval z w ≠ 0 := by
@@ -222,13 +220,13 @@ theorem exists_pt [CharZero Ω] (y : (Σ k, ι k) → Ω) (hb : Birational y) (h
     rw [cone_form y hd, (map_eq_zero j).1 h0, map_zero, mul_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨dg, dh, g, h, hg, hh, hd, h1, h2, h3⟩`. Take `rfl : dg = dh` from `funext fun k => by simpa using hd k`. Establish `hm : g - (n : MRing ι) * h ∈ mCoordIdeal y` using `by show mConeMap y _ = 0`. Rewrite using `[map_sub, map_mul, cone_form y hg, cone_form y hh, h1, map_intCast, map_mul, map_intCast]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `hz.2 _ hm` as an intermediate fact. Rewrite `this` using `[eval_map]`. Establish `h4 : aeval z (g - (n : MRing ι) * h) = 0` using `this`. Rewrite `h4` using `[map_sub, map_mul, map_intCast, h3, ← sub_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h4).resolve_right h2)`. Introduce and unpack `rfl`. Establish `hC : ∀ a : ℤ, IsMultiHomog (C a : MRing ι) 0` using `fun a m hm k => by classical`. Establish `: m = 0` using `by simpa using support_monomial_subset hm`. Simplify using `[this]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨0, 0, C n, C 1, hC n, hC 1, by simp, by simp, by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem val_int (y : (Σ k, ι k) → Ω) (n : ℤ) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) (v : ℂ) :
     Small.HasVal y 0 (n : Ω) z v ↔ v = n := by
@@ -253,11 +251,11 @@ theorem val_int (y : (Σ k, ι k) → Ω) (n : ℤ) {z : (Σ k, ι k) → ℂ} (
 end Cone
 
 /- English proof (translation)
-Establish `hd : degOf RM (0 : GlobalTheory.AllWt.Weight Dw) = 0` using `by rw [degOf_eq]; simp`. Use `haveI : CharZero RM.Ω := (RingHom.charZero_iff Or.𝔐.cst.injective).1 inferInstance`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, w, hw, h2⟩`. Take `⟨z, hz, hz'⟩` from `exists_pt RM.y RM.birational RM.arith.2.1.2.2 hw`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `h2 z hz hz' n (by rw [hd]; exact (val_int _ n hz _).2 rfl)` as an intermediate fact. Simplify `this` using `[nOf]`. Introduce `hR`. Use `⟨fun cc _ => ?_, 1, isFormOff_one, fun z hz _ v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `hv` using `[hd, val_int _ n hz]`. Simplify `hR` using `[nOf, hv]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem int_mem_modelSmall (Or : RootOrigin Y S RM Fx) (n : ℤ) (R : ℝ) :
     (n : RM.Ω) ∈ modelSmall Or 0 R ↔ |(n : ℝ)| ≤ R := by

@@ -18,11 +18,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorsConst
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `Spec.map_surjective τ`. Establish `hφ : Function.Injective φ.hom`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `h1 : PrimeSpectrum.comap φ.hom w = ⊥` using `hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : a ∈ (PrimeSpectrum.comap φ.hom w).asIdeal` using `by show φ.hom a ∈ (w : PrimeSpectrum k).asIdeal`. Rewrite using `[ha]`. Conclude with `Ideal.zero_mem _`. Rewrite `h2` using `[h1]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨IsFractionRing.lift hφ, ?_⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_factor_generic {R : Type} [CommRing R] [IsDomain R] {k : Type} [Field k] (τ : Sp k ⟶ Sp R)
     (w : Sp k) (hw : τ w = (⊥ : PrimeSpectrum R)) : ∃ κ : FractionRing R →+* k, τ = spMap κ ≫ jK R := by
@@ -43,21 +43,19 @@ theorem exists_factor_generic {R : Type} [CommRing R] [IsDomain R] {k : Type} [F
   simp
 
 /- English proof (translation)
-Take `⟨x₀, h₀⟩` from `h K κ x hx`. Set `ρ : Over.mk (spMap κ ≫ jK R) ⟶ Over.mk (jK R)` to `Over.homMk (spMap κ) rfl`. Establish `e₀ : x = ρ ≫ x₀` using `Over.OverMorphism.ext h₀`. Establish `hfl : Flat (spMap κ)`. Use `letI := κ.toAlgebra`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `(HasRingHomProperty.Spec_iff (P := @Flat)).2 (RingHom.flat_algebraMap_iff.2 inferInstance)`. Establish `hsu : Surjective (spMap κ)` using `⟨fun p => ⟨Classical.arbitrary _, Subsingleton.elim (α := Sp (FractionRing R)) _ _⟩⟩`. Establish `hepi : Epi ρ.left` using `Flat.epi_of_flat_of_surjective (spMap κ)`. Establish `hx₀ : x₀ ^ n = 1`. Establish `: ρ ≫ x₀ ^ n = ρ ≫ 1` using `by rw [MonObj.comp_pow, ← e₀, hx, MonObj.comp_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Over.OverMorphism.ext ((cancel_epi ρ.left).1 congr(($this).left))`. Establish `hT : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Sp R)` using `fun p => by`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Establish `: (PrimeSpectrum.asIdeal p).IsPrime` using `PrimeSpectrum.isPrime p`. Establish `h` using `StructureSheaf.IsLocalization.to_stalk R p`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `@isIntegrallyClosed_of_isLocalization R ((Spec.structureSheaf R).presheaf.stalk p) _ _ (_) _ _ (PrimeSpectrum.asIdeal p).primeCompl (Ideal.primeCompl_le_nonZeroDivisors _) h`. Establish `j₁ : IsPreimmersion (jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Establish `j₂ : Flat (jK R)` using `(HasRingHomProperty.Spec_iff (P := @Flat)).2 (RingHom.flat_algebraMap_iff.2 inferInstance)`. Establish `j₃ : IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`. Introduce `a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: a = 0` using `IsFractionRing.injective R (FractionRing R) (ha.trans (map_zero _).symm)`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _)⟩`. Establish `hp : IsProper A.hom` using `hA.proper`. Take `⟨s, hs₁, hs₂⟩` from `exists_section_of_pow_eq_one hT (jK R) A n hn _ x₀ hx₀ (𝟙 _) (Category.id_comp _)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `σ : 𝟙_ (Over (Sp R)) ⟶ A` to `Over.homMk s hs₁`. Establish `e₁ : toUnit (Over.mk (jK R)) ≫ σ = x₀`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, GlobalTheory.ObjPull.toUnit_left']`. Conclude with `hs₂.trans (Category.id_comp _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `⟨σ, ?_, ?_⟩` and prove the remaining obligations. Establish `: toUnit (Over.mk (jK R)) ≫ σ ^ n = toUnit (Over.mk (jK R)) ≫ 1`. Rewrite using `[MonObj.comp_pow, e₁, hx₀, MonObj.comp_one]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h2` using `congr(($this).left)`.
-
-Rewrite `h2` using `[Over.comp_left, Over.comp_left, GlobalTheory.ObjPull.toUnit_left']`. Establish `: AlgebraicGeometry.IsReduced (𝟙_ (Over (Sp R))).left` using `inferInstanceAs (AlgebraicGeometry.IsReduced (Sp R))`. Conclude with `ext_of_isDominant_of_isSeparated A.hom (by rw [Over.w, Over.w]) (jK R) h2`. Rewrite using `[e₀, ← e₁, ← Category.assoc, comp_toUnit]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section_generic {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R]
     (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] {n : ℕ} (hA : IsAbelianScheme A) (hn : IsUnit (n : Γ(Sp R, ⊤)))
@@ -106,17 +104,17 @@ theorem exists_section_generic {R : Type} [CommRing R] [IsDomain R] [IsNoetheria
   · rw [e₀, ← e₁, ← Category.assoc, comp_toUnit]
 
 /- English proof (translation)
-Introduce `R _ _ _ _ A _ _ n hA hn h K _ _ t x hx`. Establish `hn' : IsUnit (n : Γ(Sp R, ⊤))`. Use `hn.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨-, hfin, het⟩` from `GrpTangent.finiteEtale_mulN_torsion A hn'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, -⟩` from `LatticeTorsion.existsUnique_torsion A n x hx`. Take `⟨w⟩ : Nonempty (Sp K)` from `inferInstance`. Establish `hs : (⊥ : PrimeSpectrum R) ⤳ (torsion A n).hom (y.left w)` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`. Take `⟨z, hz, ez⟩` from `Flat.generalizingMap (torsion A n).hom hs`. Set `k` to `AlgebraicClosure ((torsion A n).left.residueField z)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `u : Sp k ⟶ (torsion A n).left` to `spMap (algebraMap ((torsion A n).left.residueField z) k) ≫ (torsion A n).left.fromSpecResidueField z`. Take `⟨v⟩ : Nonempty (Sp k)` from `inferInstance`. Establish `hu : u v = z`. Establish `: u v ∈ Set.range ((torsion A n).left.fromSpecResidueField z)` using `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Rewrite `this` using `[Scheme.range_fromSpecResidueField]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨κ, hκ⟩` from `exists_factor_generic (u ≫ (torsion A n).hom) v ((Scheme.Hom.comp_apply _ _ _).trans (by rw [hu]; exact ez))`. Set `u' : Over.mk (spMap κ ≫ jK R) ⟶ torsion A n` to `Over.homMk u hκ`. Take `⟨σ, hσ, eσ⟩` from `exists_section_generic A hA hn' h κ (u' ≫ torsion.ι A n) (by`. Rewrite using `[← MonObj.comp_pow, LatticeTorsion.torsionι_pow_eq_one, MonObj.comp_one])`. Take `⟨C, hC, hCz⟩` from `TorsionCover.exists_clopen_eq_one A hA hn' (torsion.ι A n * (toUnit _ ≫ σ)⁻¹) (by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_pow, inv_pow, ← MonObj.comp_pow, hσ, MonObj.comp_one, LatticeTorsion.torsionι_pow_eq_one, inv_one, _root_.mul_one])`. Establish `key : ∀ (T : Over (Sp R)) (a : T ⟶ torsion A n), a ≫ (torsion.ι A n * (toUnit _ ≫ σ)⁻¹) = 1 ↔ toUnit T ≫ σ = a ≫ torsion.ι A n` using `fun T a => by`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc, comp_toUnit, mul_inv_eq_one, eq_comm]`. Establish `hzC : z ∈ C` using `(hCz _ u').1 ((key _ _).2 eσ) ⟨v, hu⟩`. Establish `hyC : y.left w ∈ C` using `hz.mem_closed hC.isClosed hzC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Use `(key _ _).1 ((hCz _ y).2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨w', rfl⟩`. Rewrite using `[Subsingleton.elim (α := Sp K) w' w]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_section_of_torsRat : ∀ (R₀ : Type) [CommRing R₀] [IsDomain R₀] [IsNoetherianRing R₀] [IsIntegrallyClosed R₀] (A : Over (Sp R₀)) [GrpObj A] [IsCommMonObj A] (n : ℕ), IsAbelianScheme A → IsUnit (n : R₀) → TorsRat A n → ∀ (K : Type) [Field K] [IsAlgClosed K] (t : Sp K ⟶ Sp R₀) (x : Over.mk t ⟶ A), x ^ n = 1 → ∃ σ : 𝟙_ (Over (Sp R₀)) ⟶ A, σ ^ n = 1 ∧ toUnit (Over.mk t) ≫ σ = x := by
   intro R _ _ _ _ A _ _ n hA hn h K _ _ t x hx

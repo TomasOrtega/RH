@@ -5,7 +5,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `W _`. Set `𝒰` to `W.affineCover.finiteSubcover`. Use `⟨∐ 𝒰.X, Sigma.desc 𝒰.f, inferInstance, ?_, inferInstance⟩` and prove the remaining obligations. Establish `: IsZariskiLocalAtSource @Etale` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Conclude with `IsZariskiLocalAtSource.sigmaDesc (P := @Etale) fun _ ↦ inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_affine_etale_surjective :
     ∀ (W : Scheme.{0}) [CompactSpace W], ∃ (V : Scheme.{0}) (f : V ⟶ W), IsAffine V ∧ Etale f ∧ Surjective f := by

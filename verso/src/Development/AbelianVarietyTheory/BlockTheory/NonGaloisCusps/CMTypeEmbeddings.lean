@@ -30,7 +30,7 @@ def GoodRowCuspParam (D : D7) (S : GlobalTheory.HeightCounting.RowSide D) : Prop
     ∃ π : D.naut.CG D.R.r, IsCuspParam D S σ π
 
 /- English proof (translation)
-Use `R.m_add_three_le_k` as an intermediate fact. Simplify using `only [hcSigma, Multiset.card_add, Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_hcSigma {R : Ranks} (P : HCParam R) : Multiset.card (hcSigma P) = R.r := by
   have := R.m_add_three_le_k
@@ -39,9 +39,9 @@ theorem card_hcSigma {R : Ranks} (P : HCParam R) : Multiset.card (hcSigma P) = R
   omega
 
 /- English proof (translation)
-Introduce `z hz`. Simplify using `only [hcSigma, Multiset.mem_add, Multiset.mem_map] at hz`. Break down `hz with ⟨i, -, rfl⟩ | ⟨j, -, rfl⟩` into its components or cases. Take `⟨n, hn⟩` from `P.v_int i`. Conclude with `⟨n, by rw [hn]; simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨n, hn⟩` from `P.b_int j`. Conclude with `⟨-n, by rw [hn]; simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hcSigma_int {R : Ranks} (P : HCParam R) : ∀ z ∈ hcSigma P, ∃ n : ℤ, z = (n : ℂ) := by
   intro z hz
@@ -53,7 +53,7 @@ theorem hcSigma_int {R : Ranks} (P : HCParam R) : ∀ z ∈ hcSigma P, ∃ n : �
     exact ⟨-n, by rw [hn]; simp⟩
 
 /- English proof (translation)
-Distinguish the cases in `hs : IsSplitPl D.host w`. Conclude with `h.2.2.2.2.1 w hs hw`. Conclude with `h.2.2.2.1 w hs`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem IsCuspParam.unr {D : D7} {S : GlobalTheory.HeightCounting.RowSide D} {σ : D.what₂.FT} {π : D.naut.CG D.R.r}
     (h : IsCuspParam D S σ π) (w : PlE D.host) (hw : ∀ k : Fin 2, w ∉ placesOver D.host.E (D.host.g k)) :

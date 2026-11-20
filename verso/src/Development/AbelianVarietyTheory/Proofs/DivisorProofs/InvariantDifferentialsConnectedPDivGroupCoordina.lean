@@ -16,11 +16,11 @@ namespace GlobalTheory.OmegaCoord
 variable {k : Type} [CommRing k] {d : ℕ}
 
 /- English proof (translation)
-Rewrite `hg` using `[pow_two]`. Use `Submodule.mul_induction_on hg (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[coeff_mul]`. Use `Finset.sum_eq_zero fun q hq => ?_` and prove the remaining obligations. Rewrite `hq` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdeg : q.1.degree + q.2.degree < 2` using `by rw [← map_add, hq]; exact hα`. Rewrite `ha`, `hb` using `[RingHom.mem_ker]`. Break down `Nat.lt_or_ge q.1.degree 1 with h | h` into its components or cases. Establish `: q.1 = 0` using `(Finsupp.degree_eq_zero_iff _).1 (by omega)`. Rewrite using `[this, coeff_zero_eq_constantCoeff_apply, ha, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: q.2 = 0` using `(Finsupp.degree_eq_zero_iff _).1 (by omega)`. Rewrite using `[this, coeff_zero_eq_constantCoeff_apply, hb, mul_zero]`. Rewrite using `[map_add, ha, hb, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_eq_zero_of_mem_sq {g : MvPowerSeries (Fin d) k}
     (hg : g ∈ RingHom.ker (constantCoeff (R := k) (σ := Fin d)) ^ 2) (α : Fin d →₀ ℕ)
@@ -45,7 +45,7 @@ variable {A : Type} [CommRing A] [Bialgebra k A] (x : Fin d → A) (hx : ∀ i, 
 include haug in
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `AugCot.d_surjective _ u`. Take `⟨f, rfl⟩` from `hsurj a`. Conclude with `⟨lin f, (GlobalTheory.T.counit_cotangentClass_powerSeriesEvalAtNilpotent k d A x hx haug f).2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_sum (hsurj : Function.Surjective (evA k x hx)) (u : Cot k A) :
     ∃ w : Fin d → k, u = ∑ i, w i • dUnit k (x i) := by
@@ -56,19 +56,17 @@ theorem exists_eq_sum (hsurj : Function.Surjective (evA k x hx)) (u : Cot k A) :
 include haug in
 
 /- English proof (translation)
-Use `set f : MvPowerSeries (Fin d) k := ∑ i, w i • X i with hf`. Establish `hlin : lin f = w`. Use function extensionality and compare the values at `i`. Simplify using `[f, lin, coeff_X, Finsupp.single_eq_single_iff]`. Establish `hcc : constantCoeff f = 0` using `by simp [f]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.T.counit_cotangentClass_powerSeriesEvalAtNilpotent k d A x hx haug f`. Establish `hd : dUnit k (evA k x hx f) = 0` using `by rw [h2, hlin, hw]`. Establish `hε : ∀ g, Bialgebra.counitAlgHom k A (evA k x hx g) = constantCoeff g` using `fun g => (GlobalTheory.T.counit_cotangentClass_powerSeriesEvalAtNilpotent k d A x hx haug g).1`. Rewrite `hd` using `[dUnit, AugCot.d_eq_zero_iff, hε, hcc, map_zero, sub_zero]`. Establish `hK : RingHom.ker (Bialgebra.counitAlgHom k A) = Ideal.map (evA k x hx) (RingHom.ker (constantCoeff (R` using `k) (σ := Fin d))) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Rewrite using `[Ideal.mem_map_iff_of_surjective _ hsurj]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Take `⟨g, rfl⟩` from `hsurj a`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, ?_, rfl⟩` and prove the remaining obligations. Rewrite `ha`, the goal using `[RingHom.mem_ker]`. Rewrite using `[← hε]`. Conclude with `ha`. Introduce and unpack `⟨g, hg, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hg`, the goal using `[RingHom.mem_ker]`. Rewrite using `[hε]`. Conclude with `hg`. Rewrite `hd` using `[hK, ← Ideal.map_pow, Ideal.mem_map_iff_of_surjective _ hsurj]`. Take `⟨g, hg, hgf⟩` from `hd`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hfg : evA k x hx (f - g) = 0` using `by rw [map_sub, hgf, sub_self]`. Use function extensionality and compare the values at `i`. Establish `hdeg : (Finsupp.single i 1 : Fin d →₀ ℕ).degree < 2` using `by simp`. Establish `e1` using `hker _ hfg (Finsupp.single i 1) hdeg`. Rewrite `e1` using `[map_sub, coeff_eq_zero_of_mem_sq hg _ hdeg, sub_zero]`.
-
-Rewrite using `[← hlin]`. Conclude with `e1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sum (hsurj : Function.Surjective (evA k x hx))
     (hker : ∀ f, evA k x hx f = 0 → ∀ α : Fin d →₀ ℕ, α.degree < 2 → coeff α f = 0)
@@ -110,23 +108,21 @@ end GlobalTheory.OmegaCoord
 namespace GlobalTheory.OmegaCoord
 
 /- English proof (translation)
-Introduce `p k _ d G c`. Establish `hres : ∀ n (w : Fin d → k), cotMap (G.res n) (∑ i, w i • dUnit k (c.x (n + 1) i)) = ∑ i, w i • dUnit k (c.x n i)`. Introduce `n w`. Simplify using `only [map_sum, map_smul, cotMap_d, c.res]`. Use `⟨fun w n => hres n w, fun u => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : ∀ n, cotMap (G.res n) (u.1 (n + 1)) = u.1 n` using `u.2`. Take `⟨n0, hn0⟩` from `c.presents.2 2`. Establish `hone` using `(GlobalTheory.T.functions_eq_series_in_chart p k d G c).1`. Establish `hker : ∀ j f, c.ev (n0 + j) f = 0 → ∀ α : Fin d →₀ ℕ, α.degree < 2 → coeff α f = 0`. Introduce `j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `j with`. Consider the case `zero => exact hn0`. Consider the case `succ j ih`. Introduce `f hf`. Use `ih f ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hone (n0 + j) f]`. Conclude with `(congrArg (G.res (n0 + j)) hf).trans (map_zero _)`. Establish `hind : ∀ j (v w : Fin d → k), ∑ i, v i • dUnit k (c.x (n0 + j) i) = ∑ i, w i • dUnit k (c.x (n0 + j) i) → v = w`. Introduce `j v w h`. Use `eq_zero_of_sum (c.x (n0 + j)) (c.nil _) (c.aug _) (c.presents.1 _) (hker j) (v - w) (by simp only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h, sub_self])` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 this`. Establish `hspan : ∀ n, ∃ w : Fin d → k, u.1 n = ∑ i, w i • dUnit k (c.x n i)` using `fun n => exists_eq_sum (c.x n) (c.nil n) (c.aug n) (c.presents.1 n) (u.1 n)`. Take `⟨w, hw⟩` from `hspan n0`. Establish `hup : ∀ j, u.1 (n0 + j) = ∑ i, w i • dUnit k (c.x (n0 + j) i)`. Introduce `j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `j with`. Consider the case `zero => exact hw`. Consider the case `succ j ih`. Take `⟨v, hv⟩` from `hspan (n0 + j + 1)`. Establish `h1 : ∑ i, v i • dUnit k (c.x (n0 + j) i) = ∑ i, w i • dUnit k (c.x (n0 + j) i)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hres, ← hv, hu, ih]`. Rewrite using `[← hind j v w h1]`. Conclude with `hv`. Establish `hdown : ∀ n j, u.1 (n + j) = ∑ i, w i • dUnit k (c.x (n + j) i) → u.1 n = ∑ i, w i • dUnit k (c.x n i)`. Introduce `n j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `j with`. Consider the case `zero => exact id`. Consider the case `succ j ih`. Introduce `h`. Use `ih ?_` and prove the remaining obligations.
-
-Rewrite using `[← hu, ← hres]`. Conclude with `congrArg (cotMap (G.res (n + j))) h`. Use `⟨w, fun n => hdown n n0 (by rw [Nat.add_comm]; exact hup n), fun w' hw' => ?_⟩` and prove the remaining obligations. Conclude with `hind 0 w' w ((hw' n0).symm.trans (hup 0))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem omega_coord : ∀ (p : ℕ) (k : Type) [CommRing k] (d : ℕ) (G : PDivGroup p k)
     (c : Chart G d), (∀ w : Fin d → k, (fun n => ∑ i, w i • dUnit k (c.x n i)) ∈ G.omegaSub) ∧

@@ -20,17 +20,17 @@ open MeasureTheory Filter Topology
 namespace GlobalTheory.TypeSum
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ T _ _ _ φ hφ hφU`. Conclude with `(h0.comp_continuous hφ hφU).measurable`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `cons X l ih`. Introduce `hl T _ _ _ φ hφ hφU`. Establish `hX : X ∈ lieSet ε` using `hl X (List.mem_cons_self ..)`. Establish `hl' : ∀ Y ∈ l, Y ∈ lieSet ε` using `fun Y hY => hl Y (List.mem_cons_of_mem _ hY)`. Set `q : ℕ → T → ℂ` to `fun m t => (((m : ℝ) + 1)⁻¹)⁻¹ • (F l (φ t * NormedSpace.exp ((((m : ℝ) + 1)⁻¹) • X)) - F l (φ t))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq : ∀ m, Measurable (q m)`. Introduce `m`. Establish `h1 : Measurable (fun t => F l (φ t * NormedSpace.exp ((((m : ℝ) + 1)⁻¹) • X)))` using `ih hl' T (fun t => φ t * NormedSpace.exp ((((m : ℝ) + 1)⁻¹) • X)) (hφ.mul continuous_const) (fun t => mul_mem_UJ (hφU t) (exp_mem_UJ hX _))`. Establish `h2 : Measurable (fun t => F l (φ t))` using `ih hl' T φ hφ hφU`. Conclude with `(h1.sub h2).const_smul ((((m : ℝ) + 1)⁻¹)⁻¹ : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlim : ∀ t, Tendsto (fun m => q m t) atTop (𝓝 (F (X :: l) (φ t)))`. Introduce `t`. Establish `hd` using `hF l hl' X hX (φ t) (hφU t)`. Establish `hs` using `hd.tendsto_slope_zero`. Establish `hseq : Tendsto (fun m : ℕ => ((m : ℝ) + 1)⁻¹) atTop (𝓝[≠] (0 : ℝ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `tendsto_nhdsWithin_iff.2 ⟨?_, Eventually.of_forall fun m => ?_⟩` and prove the remaining obligations. Simplify `(tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ))` using `only [one_div]`. Simplify using `only [Set.mem_compl_iff, Set.mem_singleton_iff]`. Check the signs of the components of the expression. Use `hs.comp hseq` as an intermediate fact.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `this.congr fun m => ?_` and prove the remaining obligations. Simplify using `[q, Function.comp, zero_add]`. Conclude with `measurable_of_tendsto_metrizable hq (tendsto_pi_nhds.2 hlim)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_derFam_comp (n : ℕ) (ε : Fin n → Bool) (F : List (GlobalTheory.TypeSum.Mx n) → GlobalTheory.TypeSum.Mx n → ℂ)
     (hF : GlobalTheory.TypeSum.IsDerFam ε F) (h0 : ContinuousOn (F []) (UJset ε)) :

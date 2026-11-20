@@ -25,7 +25,7 @@ section lin
 variable (F : Fin d → PS k 2 d) {ι : Type} [Fintype ι] (u : ι → Fin d → k)
 
 /- English proof (translation)
-Proceed by induction on `n generalizing f g with`. Consider the case `zero => rfl`. Consider the case `succ n ih => simp only [Function.iterate_succ_apply, hD, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iter_add (D : PS k 1 d → PS k 1 d) (hD : ∀ f g, D (f + g) = D f + D g) (n : ℕ) (f g : PS k 1 d) :
     D^[n] (f + g) = D^[n] f + D^[n] g := by
@@ -34,7 +34,7 @@ theorem iter_add (D : PS k 1 d → PS k 1 d) (hD : ∀ f g, D (f + g) = D f + D 
   | succ n ih => simp only [Function.iterate_succ_apply, hD, ih]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing f with`. Consider the case `zero => rfl`. Consider the case `succ n ih => simp only [Function.iterate_succ_apply, hD, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iter_Cmul (D : PS k 1 d → PS k 1 d) (hD : ∀ (r : k) f, D (C r * f) = C r * D f) (n : ℕ) (r : k)
     (f : PS k 1 d) : D^[n] (C r * f) = C r * D^[n] f := by
@@ -43,7 +43,7 @@ theorem iter_Cmul (D : PS k 1 d → PS k 1 d) (hD : ∀ (r : k) f, D (C r * f) =
   | succ n ih => simp only [Function.iterate_succ_apply, hD, ih]
 
 /- English proof (translation)
-Use `first`. Consider the case `simp only [Dof, map_add, mul_add, Finset.sum_add_distrib]`. Consider the case `simp [Dof, mul_add, Finset.sum_add_distrib]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem Dof_add' (v : Fin d → k) (f g : PS k 1 d) :
     Dof F v (f + g) = Dof F v f + Dof F v g := by
@@ -52,7 +52,7 @@ private theorem Dof_add' (v : Fin d → k) (f g : PS k 1 d) :
   | simp [Dof, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons l L ih`. Simplify using `only [List.foldr_cons, ih]`. Conclude with `iter_add _ (fun f g => Dof_add' F (u l) f g) _ _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem foldr_add (L : List ι) (m : ι →₀ ℕ) (f g : PS k 1 d) :
     L.foldr (fun l h => (Dof F (u l))^[m l] h) (f + g) =
@@ -64,7 +64,7 @@ theorem foldr_add (L : List ι) (m : ι →₀ ℕ) (f g : PS k 1 d) :
     exact iter_add _ (fun f g => Dof_add' F (u l) f g) _ _ _
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [Dof, ← MvPowerSeries.smul_eq_C_mul, map_smul, mul_smul_comm, Finset.smul_sum]; done)`. Consider the case `(simp only [Dof, ← MvPowerSeries.smul_eq_C_mul, Derivation.map_smul, mul_smul_comm, Finset.smul_sum]; done)`. Consider the case `(simp only [Dof, Finset.mul_sum, Derivation.leibniz, smul_eq_mul, mul_add, Finset.sum_add_distrib]; done)`. Consider the case `(have hp := (pderiv : Unit))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem Dof_C_mul (v : Fin d → k) (r : k) (f : PS k 1 d) :
     Dof F v (C r * f) = C r * Dof F v f := by
@@ -75,7 +75,7 @@ private theorem Dof_C_mul (v : Fin d → k) (r : k) (f : PS k 1 d) :
   | (have hp := (pderiv : Unit))
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons l L ih`. Simplify using `only [List.foldr_cons, ih]`. Conclude with `iter_Cmul _ (fun r f => Dof_C_mul F (u l) r f) _ _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem foldr_Cmul (L : List ι) (m : ι →₀ ℕ) (r : k) (f : PS k 1 d) :
     L.foldr (fun l h => (Dof F (u l))^[m l] h) (C r * f) =
@@ -87,27 +87,27 @@ theorem foldr_Cmul (L : List ι) (m : ι →₀ ℕ) (r : k) (f : PS k 1 d) :
     exact iter_Cmul _ (fun r f => Dof_C_mul F (u l) r f) _ _ _
 
 /- English proof (translation)
-The claim follows from `foldr_add F u (Finset.univ : Finset ι).toList m f g`.
+A detailed English derivation is pending.
 -/
 theorem dmonOf_add (m : ι →₀ ℕ) (f g : PS k 1 d) :
     DmonOf F u m (f + g) = DmonOf F u m f + DmonOf F u m g :=
   foldr_add F u (Finset.univ : Finset ι).toList m f g
 
 /- English proof (translation)
-The claim follows from `foldr_Cmul F u (Finset.univ : Finset ι).toList m r f`.
+A detailed English derivation is pending.
 -/
 theorem dmonOf_Cmul (m : ι →₀ ℕ) (r : k) (f : PS k 1 d) :
     DmonOf F u m (C r * f) = C r * DmonOf F u m f :=
   foldr_Cmul F u (Finset.univ : Finset ι).toList m r f
 
 /- English proof (translation)
-Simplify using `using dmonOf_Cmul F u m (0 : k) (0 : PS k 1 d)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dmonOf_zero (m : ι →₀ ℕ) : DmonOf F u m (0 : PS k 1 d) = 0 := by
   simpa using dmonOf_Cmul F u m (0 : k) (0 : PS k 1 d)
 
 /- English proof (translation)
-Unfold `DpolyOf`. Use `Finset.sum_subset hS ?_` and prove the remaining obligations. Introduce `m _ hm`. Establish `h0 : MvPolynomial.coeff m P = 0` using `by simpa [MvPolynomial.mem_support_iff] using hm`. Simplify using `[h0]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dpolyOf_eq_sum_of_subset (P : MvPolynomial ι k) (S : Finset (ι →₀ ℕ)) (hS : P.support ⊆ S)
     (f : PS k 1 d) :
@@ -119,7 +119,7 @@ theorem dpolyOf_eq_sum_of_subset (P : MvPolynomial ι k) (S : Finset (ι →₀ 
   simp [h0]
 
 /- English proof (translation)
-Rewrite using `[dpolyOf_eq_sum_of_subset F u (P + Q) (P.support ∪ Q.support) MvPolynomial.support_add f, dpolyOf_eq_sum_of_subset F u P (P.support ∪ Q.support) (fun x hx => Finset.mem_union_left _ hx) f, dpolyOf_eq_sum_of_subset F u Q (P.support ∪ Q.support) (fun x hx => Finset.mem_union_right …`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add, map_add, add_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dpolyOf_add_P (P Q : MvPolynomial ι k) (f : PS k 1 d) :
     DpolyOf F u (P + Q) f = DpolyOf F u P f + DpolyOf F u Q f := by
@@ -132,7 +132,7 @@ theorem dpolyOf_add_P (P Q : MvPolynomial ι k) (f : PS k 1 d) :
   rw [MvPolynomial.coeff_add, map_add, add_mul]
 
 /- English proof (translation)
-Rewrite using `[dpolyOf_eq_sum_of_subset F u (a • P) P.support MvPolynomial.support_smul f]`. Unfold `DpolyOf`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, map_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dpolyOf_smul_P (a : k) (P : MvPolynomial ι k) (f : PS k 1 d) :
     DpolyOf F u (a • P) f = C a * DpolyOf F u P f := by
@@ -143,14 +143,14 @@ theorem dpolyOf_smul_P (a : k) (P : MvPolynomial ι k) (f : PS k 1 d) :
   rw [MvPolynomial.coeff_smul, smul_eq_mul, map_mul, mul_assoc]
 
 /- English proof (translation)
-Unfold `DpolyOf`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem dpolyOf_zero_P (f : PS k 1 d) : DpolyOf F u (0 : MvPolynomial ι k) f = 0 := by
   unfold DpolyOf
   simp
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`. Conclude with `dpolyOf_zero_P F u f`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, dpolyOf_add_P, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dpolyOf_sum_P {α : Type} (s : Finset α) (P : α → MvPolynomial ι k) (f : PS k 1 d) :
     DpolyOf F u (∑ a ∈ s, P a) f = ∑ a ∈ s, DpolyOf F u (P a) f := by
@@ -162,7 +162,7 @@ theorem dpolyOf_sum_P {α : Type} (s : Finset α) (P : α → MvPolynomial ι k)
     rw [Finset.sum_insert ha, Finset.sum_insert ha, dpolyOf_add_P, ih]
 
 /- English proof (translation)
-Unfold `DpolyOf`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[dmonOf_add, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dpolyOf_add_f (P : MvPolynomial ι k) (f g : PS k 1 d) :
     DpolyOf F u P (f + g) = DpolyOf F u P f + DpolyOf F u P g := by
@@ -172,7 +172,7 @@ theorem dpolyOf_add_f (P : MvPolynomial ι k) (f g : PS k 1 d) :
   rw [dmonOf_add, mul_add]
 
 /- English proof (translation)
-Unfold `DpolyOf`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[dmonOf_Cmul, mul_left_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dpolyOf_Cmul_f (P : MvPolynomial ι k) (r : k) (f : PS k 1 d) :
     DpolyOf F u P (C r * f) = C r * DpolyOf F u P f := by
@@ -182,9 +182,9 @@ theorem dpolyOf_Cmul_f (P : MvPolynomial ι k) (r : k) (f : PS k 1 d) :
   rw [dmonOf_Cmul, mul_left_comm]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`. Unfold `DpolyOf`. Simplify using `[dmonOf_zero]`. Introduce `a s ha ih`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, dpolyOf_add_f, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dpolyOf_sum_f {α : Type} (s : Finset α) (P : MvPolynomial ι k) (f : α → PS k 1 d) :
     DpolyOf F u P (∑ a ∈ s, f a) = ∑ a ∈ s, DpolyOf F u P (f a) := by
@@ -205,21 +205,21 @@ variable {ι : Type} [Fintype ι]
 def DegLt (n : ℕ) (P : MvPolynomial ι k) : Prop := ∀ m : ι →₀ ℕ, n ≤ m.degree → MvPolynomial.coeff m P = 0
 
 /- English proof (translation)
-Introduce `m hm` and use `h m (le_trans hab hm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem degLt_mono {a b : ℕ} (hab : a ≤ b) {P : MvPolynomial ι k} (h : DegLt a P) : DegLt b P :=
   fun m hm => h m (le_trans hab hm)
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite using `[MvPolynomial.as_sum P, map_sum, MvPolynomial.coeff_sum]`. Use `Finset.sum_eq_zero fun s hs => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.pderiv_monomial, MvPolynomial.coeff_monomial]`. Distinguish the cases in `hsm : s - Finsupp.single l 1 = m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hsm]`. Establish `hc : MvPolynomial.coeff s P ≠ 0` using `MvPolynomial.mem_support_iff.mp hs`. Break down `Nat.eq_zero_or_pos (s l) with h0 | hpos` into its components or cases. Simplify using `[h0]`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. It suffices to derive a contradiction.
 
-Establish `hle : Finsupp.single l 1 ≤ s` using `by first`. Consider the case `(rw [Finsupp.single_le_iff]; exact hpos)`. Consider the case `exact Finsupp.single_le_iff.mpr hpos`. Establish `hs' : m + Finsupp.single l 1 = s`. Rewrite using `[← hsm]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `tsub_add_cancel_of_le hle`. Establish `hdeg : s.degree = m.degree + 1` using `by first`. Consider the case `rw [← hs', Finsupp.degree_add, Finsupp.degree_single]`. Consider the case `rw [← hs', map_add, Finsupp.degree_single]`. Consider the case `(rw [← hs']; simp [Finsupp.degree_add])`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [← hs']; simp)`. Conclude with `hc (h s (by omega))`. Rewrite using `[if_neg hsm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degLt_pderiv {n : ℕ} {P : MvPolynomial ι k} (h : DegLt (n + 1) P) (l : ι) :
     DegLt n (MvPolynomial.pderiv l P) := by
@@ -251,9 +251,9 @@ theorem degLt_pderiv {n : ℕ} {P : MvPolynomial ι k} (h : DegLt (n + 1) P) (l 
   · rw [if_neg hsm]
 
 /- English proof (translation)
-Introduce `m hm`. Unfold `secondOrder`. Rewrite using `[MvPolynomial.coeff_sum]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_C_mul, degLt_pderiv (degLt_mono (Nat.le_succ n) (degLt_pderiv h l')) l m hm, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem degLt_secondOrder (c : ι → ι → k) {n : ℕ} {P : MvPolynomial ι k} (h : DegLt (n + 1) P) :
     DegLt n (secondOrder k c P) := by
@@ -267,7 +267,7 @@ theorem degLt_secondOrder (c : ι → ι → k) {n : ℕ} {P : MvPolynomial ι k
     degLt_pderiv (degLt_mono (Nat.le_succ n) (degLt_pderiv h l')) l m hm, mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `j generalizing P with`. Consider the case `zero => first | exact h | simpa using h`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply]`. Apply the tactic sequence `exact ih (degLt_secondOrder c (n := n + j) (by first | exact h | simpa [Nat.add_assoc] using h))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degLt_iterate (c : ι → ι → k) (n j : ℕ) {P : MvPolynomial ι k} (h : DegLt (n + j) P) :
     DegLt n ((secondOrder k c)^[j] P) := by
@@ -278,7 +278,7 @@ theorem degLt_iterate (c : ι → ι → k) (n j : ℕ) {P : MvPolynomial ι k} 
     exact ih (degLt_secondOrder c (n := n + j) (by first | exact h | simpa [Nat.add_assoc] using h))
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[MvPolynomial.coeff_zero]`. Conclude with `h m (Nat.zero_le _)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_degLt_zero {P : MvPolynomial ι k} (h : DegLt 0 P) : P = 0 := by
   ext m
@@ -286,9 +286,9 @@ theorem eq_zero_of_degLt_zero {P : MvPolynomial ι k} (h : DegLt 0 P) : P = 0 :=
   exact h m (Nat.zero_le _)
 
 /- English proof (translation)
-Introduce `m hm`. Assume the negation of the conclusion as `hne`. Establish `hmem : m ∈ P.support` using `MvPolynomial.mem_support_iff.mpr hne`. Establish `h1 : m.degree ≤ P.totalDegree` using `by first`. Consider the case `exact MvPolynomial.le_totalDegree hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `simpa [Finsupp.degree, Finsupp.sum] using MvPolynomial.le_totalDegree hmem`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Use linear arithmetic over natural numbers and integers.
 -/
 theorem degLt_totalDegree (P : MvPolynomial ι k) : DegLt (P.totalDegree + 1) P := by
   intro m hm
@@ -301,7 +301,7 @@ theorem degLt_totalDegree (P : MvPolynomial ι k) : DegLt (P.totalDegree + 1) P 
   omega
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_degLt_zero (degLt_iterate c 0 _ (by rw [Nat.zero_add]; exact degLt_totalDegree P))`.
+A detailed English derivation is pending.
 -/
 theorem iterate_eq_zero (c : ι → ι → k) (P : MvPolynomial ι k) :
     (secondOrder k c)^[P.totalDegree + 1] P = 0 :=
@@ -314,9 +314,9 @@ section wick
 variable [Algebra ℚ k]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro P A`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `P A`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : A * q ^ (n + 1) = (A * q) * q ^ n` using `by ring`. Rewrite using `[e, ih P (A * q), hH k d F ι u c q hc hq0 hq1 hq2 ((secondOrder k c)^[n] P) A, Function.iterate_succ_apply', pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem half_pow (hH : HalfSt) (F : Fin d → PS k 2 d) {ι : Type} [Fintype ι] (u : ι → Fin d → k)
     (c : ι → ι → k) (q : PS k 1 d) (hc : ∀ l l', c l l' = c l' l) (hq0 : constantCoeff q = 0)
@@ -335,19 +335,19 @@ theorem half_pow (hH : HalfSt) (F : Fin d → PS k 2 d) {ι : Type} [Fintype ι]
     ring
 
 /- English proof (translation)
-Establish `hdvd : (PowerSeries.X : PowerSeries k) ^ (N + 1) ∣ PowerSeries.exp k - ∑ n ∈ Finset.range (N + 1), algebraMap ℚ k (1 / (n.factorial : ℚ)) • (PowerSeries.X : PowerSeries k) ^ n`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`. Establish `hm' : m ∈ Finset.range (N + 1)` using `Finset.mem_range.mpr hm`. Use `first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(simp only [map_sub, map_sum, map_smul, PowerSeries.coeff_exp, PowerSeries.coeff_X_pow, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, hm', if_true, sub_self]; done)`. Consider the case `(simp [PowerSeries.coeff_exp, PowerSeries.coeff_X_pow, hm']; done)`. Take `⟨R, hR⟩` from `hdvd`. Establish `hexp : PowerSeries.exp k = (∑ n ∈ Finset.range (N + 1), algebraMap ℚ k (1 / (n.factorial : ℚ)) • (PowerSeries.X : PowerSeries k) ^ n) + PowerSeries.X ^ (N + 1) * R`. Rewrite using `[← hR]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc : constantCoeff (t • q) = 0`. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, hq0, mul_zero]`. Establish `hs : PowerSeries.HasSubst (t • q)` using `by first`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero' hc`. Consider the case `(show IsNilpotent _; rw [hc]; exact IsNilpotent.zero)`. Establish `key : ∀ f : PowerSeries k, PowerSeries.subst (t • q) f = PowerSeries.substAlgHom hs f`. Introduce `f`. Use `first`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [PowerSeries.coe_substAlgHom]`. Consider the case `rfl`. Establish `hX : PowerSeries.substAlgHom hs (PowerSeries.X : PowerSeries k) = t • q` using `by first`. Consider the case `exact PowerSeries.substAlgHom_X hs`. Consider the case `(rw [← key]; exact PowerSeries.subst_X hs)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨C (t ^ (N + 1)) * PowerSeries.subst (t • q) R, ?_⟩` and prove the remaining obligations. Unfold `FB.expS`. Rewrite using `[hexp]`. Simplify using `only [key, map_add, map_sum, map_mul, map_pow, map_smul, hX]`. Simplify using `only [smul_pow, smul_smul, MvPowerSeries.smul_eq_C_mul, map_mul, map_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Use `congr 1`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `ring1`. Consider the case `(refine Finset.sum_congr rfl fun n _ => ?_; ring1)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exp_cut (t : k) (q : PS k 1 d) (hq0 : constantCoeff q = 0) (N : ℕ) :
     ∃ Y : PS k 1 d, FB.expS k (t • q) =
@@ -398,9 +398,9 @@ theorem exp_cut (t : k) (q : PS k 1 d) (hq0 : constantCoeff q = 0) (N : ℕ) :
     | (refine Finset.sum_congr rfl fun n _ => ?_; ring1)
 
 /- English proof (translation)
-Introduce `k _ _ d F ι _ u c P q hc hq0 hq1 hq2 t G`. Take `⟨Y, hY⟩` from `exp_cut t q hq0 P.totalDegree`. Establish `hrem : constantCoeff (DpolyOf F u P (G * (q ^ (P.totalDegree + 1) * Y))) = 0`. Rewrite using `[show G * (q ^ (P.totalDegree + 1) * Y) = (G * Y) * q ^ (P.totalDegree + 1) by ring, half_pow hH F u c q hc hq0 hq1 hq2 (P.totalDegree + 1) P (G * Y), iterate_eq_zero, dpolyOf_zero_P, map_zero, mul_zero]`. Rewrite using `[hY, mul_add, dpolyOf_add_f, map_add, hrem, add_zero, Finset.mul_sum, dpolyOf_sum_f, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `expSecond`. Rewrite using `[dpolyOf_sum_P, map_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm G, dpolyOf_Cmul_f, map_mul, MvPowerSeries.constantCoeff_C, half_pow hH F u c q hc hq0 hq1 hq2 n P G, dpolyOf_smul_P, map_mul, MvPowerSeries.constantCoeff_C]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wickExp_of (hH : HalfSt) : WickExpSt := by
   intro k _ _ d F ι _ u c P q hc hq0 hq1 hq2 t G
@@ -420,29 +420,25 @@ theorem wickExp_of (hH : HalfSt) : WickExpSt := by
 open G2 in
 
 /- English proof (translation)
-Establish `hW` using `wickExp_of hH`. Introduce `R _ d O _ _ k _ _ _ B h h' hh hh' w0 m ι _ u Q f`. Establish `hpt : ∀ (j : Fin 1) (i : Fin d), constantCoeff ((![pt k d 0] : Fin 1 → Pt k 1 d) j i) = 0`. Introduce `j i`. Use `fin_cases j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Use `first`. Consider the case `exact MvPowerSeries.constantCoeff_X _`. Consider the case `simp [pt]`. Establish `hpz : ∀ (j : Fin 2) (i : Fin d), constantCoeff ((![pt k d 0, 0] : Fin 2 → Pt k 1 d) j i) = 0`. Introduce `j i`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Use `fin_cases j`. Use `first`. Consider the case `exact MvPowerSeries.constantCoeff_X _`. Consider the case `simp [pt]`. Use `show constantCoeff (0 : PS k 1 d) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero _`. Establish `ha : ∀ (j : Fin 2) (i : Fin d), constantCoeff ((![pt k d 0, comp1 (B.actK k w0) (pt k d 0)] : Fin 2 → Pt k 1 d) j i) = 0`. Introduce `j i`. Use `fin_cases j`. Use `first`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Consider the case `exact MvPowerSeries.constantCoeff_X _`. Consider the case `simp [pt]`. Use `show constantCoeff (ev ![pt k d 0] (B.actK k w0 i)) = 0`. Rewrite using `[hE k d 1 1 ![pt k d 0] (B.actK k w0 i) hpt]`. Use `show constantCoeff (MvPowerSeries.map (algebraMap R k) (B.A.act w0 i)) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `rw [MvPowerSeries.constantCoeff_map, B.A.const w0 i, map_zero]`. Consider the case `simp [B.A.const w0 i]`. Establish `hh0 : constantCoeff h = 0`. Rewrite using `[← hE k d 2 1 ![pt k d 0, 0] h hpz, hh.ax1, map_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Take `⟨hq0, hq1, hq2⟩` from `hQ R d O k B (h' - h) (hG R d O k B h h' hh hh') w0`. Establish `evAdd : ∀ (a : Fin 2 → Pt k 1 d), (∀ j i, constantCoeff (a j i) = 0) → ∀ f g : PS k 2 d, ev a (f + g) = ev a f + ev a g`. Introduce `a hz f g`. Establish `hs : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin d => a p.1 p.2)` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => hz p.1 p.2)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun p => by rw [hz p.1 p.2]; exact IsNilpotent.zero)`. Consider the case `exact ⟨fun p => by rw [hz p.1 p.2]; exact IsNilpotent.zero, fun e => Set.toFinite _⟩`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero (fun p => hz p.1 p.2)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun p => hz p.1 p.2)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun p => by rw [hz p.1 p.2]; exact IsNilpotent.zero)`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `ev`. Use `first`. Consider the case `exact MvPowerSeries.subst_add hs f g`. Consider the case `(rw [← MvPowerSeries.coe_substAlgHom hs]; exact map_add _ f g)`. Establish `hsplit : B.hL k h' w0 = B.hL k h w0 + ev (n` using `1) ![pt k d 0, comp1 (B.actK k w0) (pt k d 0)] (h' - h) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `FB.hL`. Rewrite using `[← evAdd _ ha]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hc1 : constantCoeff ((m : k) • B.hL k h w0) = 0`.
-
-Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul]`. Unfold `FB.hL`. Rewrite using `[hE k d 2 1 _ h ha, hh0, mul_zero]`. Establish `hc2 : constantCoeff ((m : k) • ev (n` using `1) ![pt k d 0, comp1 (B.actK k w0) (pt k d 0)] (h' - h)) = 0 := by`. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, hq0, mul_zero]`.
-
-Unfold `FB.nabVal`. Rewrite using `[hsplit, smul_add, hA k 1 d _ _ hc1 hc2, ← mul_assoc]`. Conclude with `hW k d (B.FK k) ι u (fun l l' => dotProduct (u l) ((bilinPart k (h' - h)).mulVec ((dAct k B w0).mulVec (u l'))) + dotProduct (u l') ((bilinPart k (h' - h)).mulVec ((dAct k B w0).mulVec (u l)))) Q _ (fun l l' => add_comm _ _) hq0 (fun l => hq1 (u l)) (fun l l' => hq2 (u l) (u l')) …`.
+A detailed English derivation is pending.
 -/
 theorem gauge_exp_identity (hA : ExpAddZeroConstant) (hE : ConstantCoeffSubstitution) (hG : CanonicalGaugeDiffBiadditive) (hQ : QuadraticFormDerivatives)
     (hH : HalfSt) : GaugeExpSt := by

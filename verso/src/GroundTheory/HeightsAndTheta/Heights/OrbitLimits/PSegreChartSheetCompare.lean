@@ -14,7 +14,7 @@ open ComplexSets Matrix Filter Topology
 namespace SegreChartSheetComparison
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.AnForm.hessC`. Rewrite using `[(h.fderiv (𝕜 := ℝ)).fderiv_eq (𝕜 := ℝ)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hessC_congr_germ {D : ℕ} {f g : (Fin D → ℂ) → ℝ} {y : Fin D → ℂ} (h : f =ᶠ[𝓝 y] g) :
     ReciprocityTheory.AnForm.hessC f y = ReciprocityTheory.AnForm.hessC g y := by
@@ -24,11 +24,11 @@ theorem hessC_congr_germ {D : ℕ} {f g : (Fin D → ℂ) → ℝ} {y : Fin D �
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `hle : segreChartIdeal P σ i ≤ J` using `(mem_segreChartComponents.1 hJ).1.2`. Use function extensionality and compare the values at `a`. Use `set q : MvPolynomial (Fin m) ℂ := MvPolynomial.X a - ∏ k, MvPolynomial.X (σ.symm (Function.update i k (σ a k))) with hq`. Establish `heval : ∀ w : Fin m → ℂ, MvPolynomial.eval w q = w a - segre (chartLift σ i w) (σ a)` using `fun w => by`. Simplify using `[hq, segre, chartLift, map_prod]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmem : q ∈ segreChartIdeal P σ i`. Rewrite using `[segreChartIdeal, MvPolynomial.mem_vanishingIdeal_iff]`. Introduce and unpack `_ ⟨z, -, hzi, rfl⟩`. Use `show MvPolynomial.eval _ q = 0`. Rewrite using `[heval, segre_chartLift σ i z hzi, sub_self]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hx q (hle hmem)`. Rewrite `h` using `[heval]`. Conclude with `sub_eq_zero.1 h`.
+A detailed English derivation is pending.
 -/
 theorem eq_segre_chartLift {P : Ideal (MRing ι)} {m : ℕ} {σ : Fin m ≃ ((k : K) → ι k)}
     {i : (k : K) → ι k} {J : Ideal (MvPolynomial (Fin m) ℂ)} (hJ : J ∈ segreChartComponents P σ i)
@@ -53,17 +53,15 @@ end SegreChartSheetComparison
 open SegreChartSheetComparison in
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P e m σ i L hL`. Take `⟨C, hC⟩` from `hF K ι e L hL`. Use `⟨|C|, fun J hJ A x s hx hs => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hyU, hsd, hsx, hsU, -⟩` from `hs`. Use `set z : (Fin e → ℂ) → (Σ k, ι k) → ℂ := chartLift σ i ∘ s with hzdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : DifferentiableOn ℂ z U` using `differentiableOn_pi.2 fun p => (differentiableOn_pi.1 hsd) (σ.symm (Function.update i p.1 p.2))`. Establish `hblk : ∀ k, ∃ j, z (A *ᵥ x) ⟨k, j⟩ ≠ 0`. Establish `h1 : s (A *ᵥ x) (σ.symm i) = 1` using `by rw [hsx]; exact chart_coord_eq_one hJ hx`. Conclude with `chartLift_blockNonzero σ i h1`. Establish `h1` using `hC z U (A *ᵥ x) hU hyU hz hblk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfs : (fun w => Real.log ((HermNorm.std m).dualNorm w)) ∘ s =ᶠ[𝓝 (A *ᵥ x)] (fun w => Real.log (Real.sqrt (∑ i', ‖segre w i'‖ ^ 2))) ∘ z` using `by filter_upwards [hU.mem_nhds hyU] with y' hy'`. Establish `he` using `eq_segre_chartLift hJ (hsU y' hy').2`. Simplify using `only [Function.comp_apply, hzdef]`. Use `congr 1`. Establish `hd : (HermNorm.std m).dualNorm (s y') = √(∑ a, ‖s y' a‖ ^ 2)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[HermNorm.dualNorm, HermNorm.std]`. Rewrite using `[hd]`. Use `congr 1`. Use `conv_lhs => rw [he]`. Conclude with `Equiv.sum_comp σ (fun i' => ‖segre (chartLift σ i (s y')) i'‖ ^ 2)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hden : ReciprocityTheory.AnForm.maDens (fun _ => (fun w => Real.log ((HermNorm.std m).dualNorm w)) ∘ s) (A *ᵥ x) = ReciprocityTheory.AnForm.maDens (fun _ => (fun w => Real.log (Real.sqrt (∑ i', ‖segre w i'‖ ^ 2))) ∘ z) (A *ᵥ x)`. Unfold `ReciprocityTheory.AnForm.maDens`. Simplify using `only`. Rewrite using `[hessC_congr_germ hfs]`. Establish `hpot : (fun k => chartPot σ i L k ∘ s) = fun j => pot L j ∘ z` using `rfl`.
-
-Rewrite using `[hpot, hden]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem SegreChartSheetCompare.of_segreSheetFormCompare (hF : SegreSheetFormCompare.Statement) :
     SegreChartSheetCompare.Statement := by
@@ -105,7 +103,7 @@ theorem SegreChartSheetCompare.of_segreSheetFormCompare (hF : SegreSheetFormComp
     _ = _ := abs_mul _ _
 
 /- English proof (translation)
-The claim follows from `SegreChartSheetCompare.of_segreSheetFormCompare SegreSheetFormCompare.proof`.
+A detailed English derivation is pending.
 -/
 theorem SegreChartSheetCompare.proof : SegreChartSheetCompare.Statement :=
   SegreChartSheetCompare.of_segreSheetFormCompare SegreSheetFormCompare.proof

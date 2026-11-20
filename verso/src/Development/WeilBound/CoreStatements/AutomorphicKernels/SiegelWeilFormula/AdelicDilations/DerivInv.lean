@@ -13,7 +13,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.AStep
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.continuous_iteratedDeriv_holomorphic_family U Ê hU hd hc`.
+A detailed English derivation is pending.
 -/
 theorem famCont {G : Type} [TopologicalSpace G] (U : Set ℂ) (Ê : ℂ → G → ℂ) (hU : IsOpen U)
     (hd : ∀ g, DifferentiableOn ℂ (Ê · g) U) (hc : ContinuousOn (fun y : ℂ × G => Ê y.1 y.2) (U ×ˢ Set.univ)) :
@@ -21,7 +21,7 @@ theorem famCont {G : Type} [TopologicalSpace G] (U : Set ℂ) (Ê : ℂ → G �
   GlobalTheory.T.continuous_iteratedDeriv_holomorphic_family U Ê hU hd hc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.automorphic_functional_holomorphic_derivative Γ Lf hadd hbd U Ê hU hd hc hinv`.
+A detailed English derivation is pending.
 -/
 theorem lamDeriv {G : Type} [Group G] [TopologicalSpace G] (Γ : Subgroup G) (Lf : (G → ℂ) → ℂ)
     (hadd : ∀ (a : ℂ) (f f' : G → ℂ), Continuous f → Continuous f' → (∀ γ ∈ Γ, ∀ g, f (γ * g) = f g) →
@@ -35,7 +35,7 @@ theorem lamDeriv {G : Type} [Group G] [TopologicalSpace G] (Γ : Subgroup G) (Lf
   GlobalTheory.T.automorphic_functional_holomorphic_derivative Γ Lf hadd hbd U Ê hU hd hc hinv
 
 /- English proof (translation)
-Establish `: (Ê · (γ * g)) =ᶠ[𝓝 z] (Ê · g)` using `Filter.eventually_of_mem (hU.mem_nhds hz) fun w hw => h w hw`. Conclude with `this.iteratedDeriv_eq j`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem derivInv {G : Type} [Mul G] (U : Set ℂ) (Ê : ℂ → G → ℂ) (hU : IsOpen U) (z : ℂ) (hz : z ∈ U) (γ g : G)
     (h : ∀ z ∈ U, Ê z (γ * g) = Ê z g) (j : ℕ) : iteratedDeriv j (Ê · (γ * g)) z = iteratedDeriv j (Ê · g) z := by
@@ -45,7 +45,7 @@ theorem derivInv {G : Type} [Mul G] (U : Set ℂ) (Ê : ℂ → G → ℂ) (hU :
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `β hβ` and use `kfour.nb_rat hc.1 β hβ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nbRat (d : SD σ) {nb lam 𝓖} (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) :
     ∀ β ∈ nF σ d.Y d.b, nb β ∈ rat2 σ d.Y :=

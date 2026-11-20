@@ -10,11 +10,9 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `n m P Q hP`. Use `set φ : MvPolynomial (Fin m) ℂ →ₐ[ℂ] MvPolynomial (Fin n) ℂ ⧸ P := (Ideal.Quotient.mkₐ ℂ P).comp (aeval Q) with hφ`. Establish `: P.IsPrime` using `hP`. Establish `: (RingHom.ker φ).IsPrime` using `RingHom.ker_isPrime φ`. Take `⟨s, hs1, hs2⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ℂ) (A := MvPolynomial (Fin m) ℂ ⧸ RingHom.ker φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht1, ht2⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ℂ) (A := MvPolynomial (Fin n) ℂ ⧸ P)`. Establish `hle : Algebra.trdeg ℂ (MvPolynomial (Fin m) ℂ ⧸ RingHom.ker φ) ≤ Algebra.trdeg ℂ (MvPolynomial (Fin n) ℂ ⧸ P)` using `trdeg_le_of_injective (Ideal.kerLiftAlg φ) (Ideal.kerLiftAlg_injective φ)`. Rewrite `hle` using `[hs2, ht2]`. Establish `hst : s ≤ t` using `by exact_mod_cast hle`. Rewrite using `[hs1, ht1]`.
-
-Conclude with `hst` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ImageDimLe.proof : ImageDimLe.Statement := by
   intro n m P Q hP

@@ -12,11 +12,11 @@ private noncomputable def subquotEquiv {R R' X : Type*} [CommRing R] [CommRing R
     exact hB _
 
 /- English proof (translation)
-Use `haveI : Fintype ((v.asIdeal.under ℤ).primesOver (NumberField.RingOfIntegers ℚ)) := Fintype.ofFinite _`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank (v.asIdeal.under ℤ) (NumberField.RingOfIntegers ℚ)`. Rewrite `hsum` using `[NumberField.RingOfIntegers.rank, Module.finrank_self]`. Establish `hmem : v.asIdeal ∈ (v.asIdeal.under ℤ).primesOver (NumberField.RingOfIntegers ℚ)` using `⟨inferInstance, ⟨rfl⟩⟩`. Establish `hle` using `Finset.single_le_sum (f := fun q : (v.asIdeal.under ℤ).primesOver (NumberField.RingOfIntegers ℚ) => q.1.ramificationIdx ℤ * q.1.inertiaDeg ℤ) (fun _ _ => Nat.zero_le _) (Finset.mem_univ (⟨v.asIdeal, hmem⟩ : (v.asIdeal.under ℤ).primesOver _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `Ideal.ramificationIdx_pos v.asIdeal ℤ`. Establish `hf` using `Ideal.inertiaDeg_pos v.asIdeal ℤ`. Simplify using `only at hle`. Rewrite `hle` using `[hsum]`. Use `Nat.mul_pos he hf` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem ef_eq_one (v : Pl) : v.asIdeal.ramificationIdx ℤ * v.asIdeal.inertiaDeg ℤ = 1 := by
   classical
@@ -37,21 +37,17 @@ private theorem ef_eq_one (v : Pl) : v.asIdeal.ramificationIdx ℤ * v.asIdeal.i
   omega
 
 /- English proof (translation)
-Introduce `hFin hEC Ω _ _ _ l _ k M _ _ _ _ _ _ _ _ A v ρ hv hc`. Use `haveI : CharP k (l ^ 1) := by rw [pow_one]; infer_instance`. Set `φ : ZMod (l ^ 1) →+* k` to `ZMod.castHom (dvd_refl _) k`. Use `letI : Module (ZMod (l ^ 1)) M := Module.compHom M φ`. Use `haveI : LinearMap.CompatibleSMul M M (ZMod (l ^ 1)) k := ⟨fun f c x => f.map_smul (φ c) x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ρ' : Representation (ZMod (l ^ 1)) (Dec (F` to `ℚ) A) M := { toFun := fun g => (ρ g).restrictScalars (ZMod (l ^ 1)) map_one' := by ext x; simp map_mul' := fun g h => by ext x; simp }`. Establish `hc' : ContAction ρ'` using `hc`. Establish `hF` using `hFin ℚ Ω l 1 M A ρ' v one_pos hv hc'`. Establish `hE` using `hEC ℚ Ω l 1 M A ρ' v one_pos hv hc'`. Establish `e1 : H1 ρ' ≃ H1 ρ` using `subquotEquiv _ _ _ _ (fun _ => Iff.rfl) (fun _ => Iff.rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : H2 ρ' ≃ H2 ρ` using `subquotEquiv _ _ _ _ (fun _ => Iff.rfl) (fun _ => Iff.rfl)`. Establish `e0 : ↥(H0 ρ') ≃ ↥(H0 ρ)` using `Equiv.subtypeEquivRight (fun _ => Iff.rfl)`. Use `haveI := hF.2.1`. Use `haveI := hF.2.2.1`. Use `haveI : Finite (H1 ρ) := Finite.of_equiv _ e1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Finite (H2 ρ) := Finite.of_equiv _ e2`. Use `haveI : Module.Finite k (H1 ρ) := Module.Finite.of_finite`. Use `haveI : Module.Finite k (H2 ρ) := Module.Finite.of_finite`. Use `haveI : Module.Finite k M := Module.Finite.of_finite`. Use `haveI : Module.Finite k ↥(H0 ρ) := Module.Finite.of_finite`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : 1 < Nat.card k` using `Finite.one_lt_card`. Establish `inj` using `Nat.pow_right_injective (show 2 ≤ Nat.card k by omega)`. Establish `c1 : Nat.card (H1 ρ') = Nat.card k ^ finrank k (H1 ρ)`. Rewrite using `[Nat.card_congr e1]`. Conclude with `Module.natCard_eq_pow_finrank`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `c2 : Nat.card (H2 ρ') = Nat.card k ^ finrank k (H2 ρ)`. Rewrite using `[Nat.card_congr e2]`. Conclude with `Module.natCard_eq_pow_finrank`. Establish `c0 : Nat.card ↥(H0 ρ') = Nat.card k ^ finrank k ↥(H0 ρ)`. Rewrite using `[Nat.card_congr e0]`.
-
-Conclude with `Module.natCard_eq_pow_finrank`. Establish `cM : Nat.card M = Nat.card k ^ finrank k M` using `Module.natCard_eq_pow_finrank`. Establish `hd : locDeg v = 1` using `ef_eq_one v`. Use `⟨inferInstance, inferInstance, fun hl => ?_, fun hl => ?_⟩` and prove the remaining obligations. Establish `h` using `hE.1 hl`.
-
-Rewrite `h` using `[c1, c0, c2, cM, hd, pow_one, ← pow_add, ← pow_add]`. Conclude with `inj h`. Establish `h` using `hE.2 hl`. Rewrite `h` using `[c1, c0, c2, ← pow_add]`. Conclude with `inj h`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.local_euler_characteristic_rationals :
     LocalFiniteness → LocalEulerChar → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (k M : Type) [Field k] [Finite k] [CharP k l] [AddCommGroup M] [Module k M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (A : ValuationSubring Ω) (v : Pl) (ρ : Representation k (Dec (F := ℚ) A) M),

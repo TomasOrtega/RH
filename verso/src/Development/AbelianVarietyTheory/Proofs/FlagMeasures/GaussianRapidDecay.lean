@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.GaussDecay
 
 /- English proof (translation)
-Take `⟨hF, hE, h2, -⟩` from `h`. Unfold `GlobalTheory.Mem.Vol.IsCMFam`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Prove the components needed by the constructor for the conclusion. Establish `key : ∀ v, (InfinitePlace.mk (φ v)).comap (algebraMap F E) = v`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[InfinitePlace.comap_mk, show (φ v).comp (algebraMap F E) = v.embedding from RingHom.ext (hφ v), InfinitePlace.mk_embedding]`. Introduce `v w hvw`. Rewrite using `[← key v, ← key w]`. Conclude with `congrArg (fun x : InfinitePlace E => x.comap (algebraMap F E)) hvw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1` using `IsTotallyComplex.finrank E`. Establish `a2` using `IsTotallyReal.finrank F`. Establish `a3` using `Module.finrank_mul_finrank ℚ F E`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, IsTotallyComplex.nrRealPlaces_eq_zero E]`. Rewrite `a3` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem isCMFam_of_over {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (φ : InfinitePlace F → (E →+* ℂ))

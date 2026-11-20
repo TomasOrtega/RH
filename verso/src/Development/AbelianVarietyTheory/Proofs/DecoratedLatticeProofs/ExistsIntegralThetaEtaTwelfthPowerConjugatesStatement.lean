@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.PeriodLattic
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric GlobalTheory.Glob.IntegralWittCoefficients GlobalTheory.IndefiniteRowSideFullHecke
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.IntegralXCore.exists_integral_theta_ratio` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FExistsIntegralThetaEtaTwelfthPowerConjugates.lean&line=19#L19)
 -/

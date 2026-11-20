@@ -10,13 +10,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : Algebra.FinitePresentation K A := Algebra.FinitePresentation.of_finiteType.mp ‹_›`. Set `P` to `Algebra.Presentation.ofFinitePresentation K A`. Use `⟨P.finite_coeffs.toFinset, fun k _ β hs => ?_⟩` and prove the remaining obligations. Use `letI : Algebra k K := β.toAlgebra`. Use `letI : Algebra k A := ((algebraMap K A).comp β).toAlgebra`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : IsScalarTower k K A := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : P.HasCoeffs k := ⟨fun x hx => hs (by simpa using hx)⟩`. Set `e` to `P.tensorModelOfHasCoeffsEquiv k`. Establish `h` using `(CommRingCat.isPushout_tensorProduct k K (P.ModelOfHasCoeffs k)).flip`. Use `⟨CommRingCat.of (P.ModelOfHasCoeffs k), CommRingCat.ofHom (algebraMap k _), CommRingCat.ofHom (Algebra.TensorProduct.includeRight.toRingHom) ≫ e.toRingEquiv.toCommRingCatIso.hom, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `h.of_iso (Iso.refl _) (Iso.refl _) (Iso.refl _) e.toRingEquiv.toCommRingCatIso ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use extensionality with `x`.
-
-Conclude with `e.commutes x`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_finset_isPushout_model (K A : Type) [Field K] [CommRing A] [Algebra K A]
     [Algebra.FiniteType K A] :
@@ -44,13 +42,13 @@ theorem exists_finset_isPushout_model (K A : Type) [Field K] [CommRing A] [Algeb
     exact e.commutes x
 
 /- English proof (translation)
-Introduce `K _ X hX hft`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (R := CommRingCat.of K) (S := Γ(X.left, ⊤)) (X.left.isoSpec.inv ≫ X.hom)`. Establish `h1 : LocallyOfFiniteType (Spec.map ψ)` using `by rw [hψ]; infer_instance`. Rewrite `h1` using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Use `letI : Algebra K Γ(X.left, ⊤) := ψ.hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.FiniteType K Γ(X.left, ⊤) := h1`. Take `⟨s, hs⟩` from `exists_finset_isPushout_model K Γ(X.left, ⊤)`. Use `⟨s, fun k _ β hβ => ?_⟩` and prove the remaining obligations. Take `⟨A₀, f, g, h⟩` from `hs k β hβ`. Establish `h2 : IsPullback (Spec.map g) (Spec.map ψ) (Spec.map f) (spMap β)` using `isPullback_SpecMap_of_isPushout _ _ _ _ h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Over.mk (Spec.map f), X.left.isoSpec.hom ≫ Spec.map g, ?_⟩` and prove the remaining obligations. Use `h2.of_iso X.left.isoSpec.symm (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[hψ]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_model_of_isAffine :
     ∀ (K : Type) [Field K] (X : Over (Sp K)), IsAffine X.left → LocallyOfFiniteType X.hom →

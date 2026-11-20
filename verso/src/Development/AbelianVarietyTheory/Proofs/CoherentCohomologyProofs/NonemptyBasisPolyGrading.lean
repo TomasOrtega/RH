@@ -24,7 +24,7 @@ def topCech (A : Cube.{0} ι R) {N : ℕ} (hN : Fintype.card ι = N + 1) :
     (Cube.subsingleton_term A (p := N + 1 + 1) (by omega)).elim _ _
 
 /- English proof (translation)
-Introduce `y` and use `by obtain ⟨x, rfl⟩ := cechClass_surjective A N y obtain ⟨z, hz⟩ := CubeTop.topTerm_surjective A hN x.1 exact ⟨z, congrArg (cechClass A N) (Subtype.ext hz)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem topCech_surjective (A : Cube.{0} ι R) {N : ℕ} (hN : Fintype.card ι = N + 1) :
     Function.Surjective (topCech A hN) := fun y => by
@@ -33,7 +33,7 @@ theorem topCech_surjective (A : Cube.{0} ι R) {N : ℕ} (hN : Fintype.card ι =
   exact ⟨z, congrArg (cechClass A N) (Subtype.ext hz)⟩
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, topCech_surjective A hN⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrArg Subtype.val ((cechClass_zero_eq_zero_iff A _).1 hx)) ⟨Finset.univ, hN⟩`. Conclude with `(Cube.res_self A _ x).symm.trans h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem topCech_zero_bijective (A : Cube.{0} ι R) (hN : Fintype.card ι = 0 + 1) :
     Function.Bijective (topCech A hN) := by
@@ -43,7 +43,7 @@ theorem topCech_zero_bijective (A : Cube.{0} ι R) (hN : Fintype.card ι = 0 + 1
   exact (Cube.res_self A _ x).symm.trans h
 
 /- English proof (translation)
-The claim follows from `cechClass_succ_eq_zero_iff A N _`.
+A detailed English derivation is pending.
 -/
 theorem topCech_eq_zero_iff (A : Cube.{0} ι R) {N : ℕ} (hN : Fintype.card ι = N + 1 + 1)
     (x : A.obj Finset.univ) :
@@ -51,21 +51,19 @@ theorem topCech_eq_zero_iff (A : Cube.{0} ι R) {N : ℕ} (hN : Fintype.card ι 
   cechClass_succ_eq_zero_iff A N _
 
 /- English proof (translation)
-Set `j : {a : κ // T a = Finset.univ} → {a : κ // T a ⊆ Finset.univ}` to `fun a => ⟨a.1, Finset.subset_univ _⟩`. Establish `hj : Function.Injective j` using `fun a a' h => Subtype.ext (congrArg (·.1) h)`. Establish `h0 : ∀ (a) (i : ι) (x : A.obj (Finset.univ.erase i)), (b Finset.univ).coord (j a) (Cube.res A (Finset.erase_subset i _) x) = 0` using `fun a i x => by`. Establish `: (b Finset.univ).coord (j a) ∘ₗ Cube.res A (Finset.erase_subset i _) = 0` using `(b _).ext fun a' => by`. Rewrite using `[LinearMap.comp_apply, hb, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_eq_of_ne, LinearMap.zero_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Establish `h1` using `a'.2`. Rewrite `h1` using `[← show a.1 = a'.1 from congrArg (·.1) e, a.2]`. Simplify using `using h1 (Finset.mem_univ i)`. Conclude with `congr($this x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent R (topCech A hN ∘ (b Finset.univ ∘ j))`. Use `((b Finset.univ).linearIndependent.comp j hj).map (Submodule.disjoint_def.2 ?_)` and prove the remaining obligations. Introduce `z hz hz'`. Take `⟨y, hy⟩` from `(topCech_eq_zero_iff A hN z).1 hz'`. Establish `e` using `congrFun hy ⟨Finset.univ, hN⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[Cube.d_apply]`. Use `replace e := e.trans (Cube.res_self A _ z)`. Rewrite `hz` using `[Set.range_comp, Module.Basis.mem_span_image]`. Use `(b _).ext_elem fun a => ?_` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.zero_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `ha`. Take `⟨a, rfl⟩` from `hz (Finsupp.mem_support_iff.2 ha)`. Use `ha ?_` and prove the remaining obligations. Rewrite using `[← Module.Basis.coord_apply, ← e, map_sum]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [map_zsmul, h0, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨Module.Basis.mk hli ?_, fun a => Module.Basis.mk_apply _ _ a⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.range_eq_top.2 (topCech_surjective A hN), LinearMap.range_eq_map, ← (b Finset.univ).span_eq, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨a, rfl⟩, rfl⟩`. Distinguish the cases in `h : T a.1 = Finset.univ`. Conclude with `Submodule.subset_span ⟨⟨a.1, h⟩, rfl⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, i ∉ T a.1 := by`. Simplify `h` using `[Finset.eq_univ_iff_forall]`. Use `(topCech_eq_zero_iff A hN _).2 (CubeTop.topTerm_res_mem A hN i (b _ ⟨a.1, Finset.subset_erase.2 ⟨Finset.subset_univ _, hi⟩⟩))` as an intermediate fact. Rewrite `this` using `[hb]`. Rewrite using `[this]`.
-
-Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_top {κ : Type} (T : κ → Finset ι) (A : Cube.{0} ι R)
     (b : ∀ s : Finset ι, Module.Basis {a : κ // T a ⊆ s} R (A.obj s))
@@ -122,7 +120,7 @@ end Top
 section Count
 
 /- English proof (translation)
-Break down `lt_or_ge m 0 with h | h` into its components or cases. Establish `: IsEmpty {a : Fin (N + 1) → ℕ // ∑ i, (a i : ℤ) = m}` using `⟨fun a => absurd (a.2 ▸ Finset.sum_nonneg fun i _ => Int.natCast_nonneg (a.1 i)) h.not_ge⟩`. Rewrite using `[Nat.card_of_isEmpty, Nat.choose_eq_zero_of_lt (by omega)]`. Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le h`. Rewrite using `[Nat.card_congr (Equiv.subtypeEquivRight (q := fun a => ∑ i, a i = m) fun a => by norm_cast), ← Nat.card_congr (Sym.equivNatSumOfFintype _ m), Nat.card_eq_fintype_card, Sym.card_sym_eq_choose, Fintype.card_fin, show ((m : ℤ) + N).toNat = m + N by omega, show N + 1 + m - 1 = m + N …`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_natVec (N : ℕ) (hN : 1 ≤ N) (m : ℤ) :
     Nat.card {a : Fin (N + 1) → ℕ // ∑ i, (a i : ℤ) = m} = (m + N).toNat.choose N := by
@@ -150,7 +148,7 @@ def negExpEquiv (N : ℕ) (n : ℤ) :
   right_inv a := Subtype.ext (funext fun i => by simp)
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (negExpEquiv N n), card_natVec N hN]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_negExp (N : ℕ) (hN : 1 ≤ N) (n : ℤ) :
     Nat.card (NegExp N n) = (-n - 1).toNat.choose N := by
@@ -166,7 +164,7 @@ instance finite_negExp (N : ℕ) (n : ℤ) : Finite (NegExp N n) := by
   exact Subtype.ext (congrArg (·.1.1) h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => by have h := (negExpEquiv N n a).2 have : 0 ≤ ∑ i, ((negExpEquiv N n a).1 i : ℤ) := Finset.sum_nonneg fun i _ => Int.natCast_nonneg _ omega⟩`.
+Supply the required witnesses or components.
 -/
 theorem isEmpty_negExp (N : ℕ) {n : ℤ} (hn : -(N : ℤ) ≤ n) : IsEmpty (NegExp N n) :=
   ⟨fun a => by
@@ -176,9 +174,9 @@ theorem isEmpty_negExp (N : ℕ) {n : ℤ} (hn : -(N : ℤ) ≤ n) : IsEmpty (Ne
     omega⟩
 
 /- English proof (translation)
-Break down `lt_or_ge (n + N) 0 with h | h` into its components or cases. Establish `e` using `Ring.choose_neg (-(n + N)) N`. Rewrite `e` using `[neg_neg, show -(n + N) + N - 1 = ((-n - 1).toNat : ℤ) by omega, Ring.choose_natCast]`. Rewrite using `[e, Nat.choose_eq_zero_of_lt (n := (n + N).toNat) (by omega), Units.smul_def, Int.coe_negOnePow_natCast]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Nat.choose_eq_zero_of_lt (n := (-n - 1).toNat) (by omega), ← Ring.choose_natCast, Int.toNat_of_nonneg h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem choose_eq_add (N : ℕ) (hN : 1 ≤ N) (n : ℤ) :
     Ring.choose (n + N) N = ((n + N).toNat.choose N : ℤ) + (-1) ^ N * (-n - 1).toNat.choose N := by
@@ -199,9 +197,7 @@ section Poly
 variable (R : Type) [CommRing R] (N : ℕ) (n : ℤ)
 
 /- English proof (translation)
-Take `⟨b, -⟩` from `exists_basis_grCube_polyGrading (Fin (N + 1)) R n`. Establish `h : ∀ a : Fin (N + 1) → ℤ, Finset.univ.filter (fun i => a i < 0) ⊆ ∅ ↔ ∀ i, 0 ≤ a i` using `fun a => by simp [Finset.filter_eq_empty_iff]`. Conclude with `⟨((b ∅).map (homLocEmptyEquiv (Fin (N + 1)) _ n).symm).reindex { toFun := fun a => ⟨fun i => (a.1.1 i).toNat, by`. Rewrite using `[Finset.sum_congr rfl fun i _ => Int.toNat_of_nonneg ((h _).1 a.2 i), a.1.2]⟩`. Use `invFun := fun a => ⟨⟨fun i => a.1 i, a.2⟩, (h _).2 fun i => Int.natCast_nonneg _⟩`.
-
-Use `left_inv := fun a => Subtype.ext (Subtype.ext (funext fun i => Int.toNat_of_nonneg ((h _).1 a.2 i)))`. Use `right_inv := fun a => rfl }⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_basis_polyGrading :
     Nonempty (Module.Basis {a : Fin (N + 1) → ℕ // ∑ i, (a i : ℤ) = n} R
@@ -222,7 +218,7 @@ instance finite_natVec : Finite {a : Fin (N + 1) → ℕ // ∑ i, (a i : ℤ) =
     (Equiv.subtypeEquivRight fun a => by rw [show -(-n - (N + 1)) - ((N : ℤ) + 1) = n by ring]))
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_basis_grCube_polyGrading (Fin (N + 1)) R n`. Conclude with `cubeComplex_exactAt_of_monomialBasis _ R _ _ _ b hb p (by simpa using hp)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cube_exactAt {p : ℕ} (hp : p ≠ N + 1) :
     (cubeComplex (grCube (Fin (N + 1)) (polyGrading (Fin (N + 1)) R) n)).ExactAt p := by
@@ -230,14 +226,14 @@ theorem cube_exactAt {p : ℕ} (hp : p ≠ N + 1) :
   exact cubeComplex_exactAt_of_monomialBasis _ R _ _ _ b hb p (by simpa using hp)
 
 /- English proof (translation)
-The claim follows from `(grAug_bijective_iff _ n).2 ⟨cube_exactAt R N n (by omega), cube_exactAt R N n (by omega)⟩`.
+A detailed English derivation is pending.
 -/
 theorem grAug_bijective (hN : 1 ≤ N) :
     Function.Bijective (grAug (Fin (N + 1)) (polyGrading (Fin (N + 1)) R) n) :=
   (grAug_bijective_iff _ n).2 ⟨cube_exactAt R N n (by omega), cube_exactAt R N n (by omega)⟩
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero h0`. Conclude with `(HomologicalComplex.exactAt_iff_isZero_homology _ _).1 ((cechComplex_exactAt_succ_iff_cube _ q).2 (cube_exactAt R N n (by omega)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isZero_grH_poly {p : ℕ} (h0 : p ≠ 0) (hp : p ≠ N) :
     IsZero (grH (Fin (N + 1)) (polyGrading (Fin (N + 1)) R) n p) := by
@@ -246,7 +242,7 @@ theorem isZero_grH_poly {p : ℕ} (h0 : p ≠ 0) (hp : p ≠ N) :
     ((cechComplex_exactAt_succ_iff_cube _ q).2 (cube_exactAt R N n (by omega)))
 
 /- English proof (translation)
-Take `⟨N, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero (n := N) (by omega)`. Take `⟨b, hb⟩` from `exists_basis_grCube_polyGrading (Fin (N + 1 + 1)) R n`. Take `⟨c, -⟩` from `exists_basis_top _ _ b hb (N := N) (Fintype.card_fin _)`. Conclude with `⟨c.reindex { toFun := fun a => ⟨a.1.1, a.1.2, fun i => Finset.filter_eq_self.1 a.2 i (Finset.mem_univ i)⟩ invFun := fun a => ⟨⟨a.1, a.2.1⟩, Finset.filter_eq_self.2 fun i _ => a.2.2 i⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_basis_grH_top (hN : 1 ≤ N) :
     Nonempty (Module.Basis (NegExp N n) R (grH (Fin (N + 1)) (polyGrading (Fin (N + 1)) R) n N)) := by
@@ -260,7 +256,7 @@ theorem nonempty_basis_grH_top (hN : 1 ≤ N) :
       right_inv := fun _ => rfl }⟩
 
 /- English proof (translation)
-Take `⟨b, -⟩` from `exists_basis_grCube_polyGrading (Fin (0 + 1)) R n`. Set `u : Unique {a : {a : Fin (0 + 1) → ℤ // ∑ i, a i = n} // Finset.univ.filter (fun i => a.1 i < 0) ⊆ Finset.univ}` to `{ default := ⟨⟨fun _ => n, by simp⟩, Finset.subset_univ _⟩ uniq := fun a => Subtype.ext (Subtype.ext (funext fun i => by`. Take `rfl : i = 0` from `Subsingleton.elim (α := Fin 1) _ _`. Simplify using `using a.1.2)) }`. Conclude with `⟨(LinearEquiv.ofBijective _ (topCech_zero_bijective _ (Fintype.card_fin _))).symm.trans ((b Finset.univ).repr.trans (Finsupp.uniqueLinearEquiv R R default))⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem nonempty_grH_zero_equiv :
     Nonempty (grH (Fin (0 + 1)) (polyGrading (Fin (0 + 1)) R) n 0 ≃ₗ[R] R) := by

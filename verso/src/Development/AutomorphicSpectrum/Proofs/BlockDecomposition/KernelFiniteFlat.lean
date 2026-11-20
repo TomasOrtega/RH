@@ -20,11 +20,9 @@ namespace GlobalTheory.CompanionTheory.Ar.KerFF
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `haveI : IsAffine X.left := isAffine_of_isAffineHom X.hom`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (X.left.isoSpec.inv ≫ X.hom)`. Establish `f₁ : IsFinite (Spec.map φ)` using `by rw [hφ]; infer_instance`. Establish `f₂ : Flat (Spec.map φ)` using `by rw [hφ]; infer_instance`. Establish `f₃ : LocallyOfFinitePresentation (Spec.map φ)` using `by rw [hφ]; infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `f₁` using `[IsFinite.SpecMap_iff]`. Rewrite `f₂` using `[Flat.SpecMap_iff]`. Rewrite `f₃` using `[LocallyOfFinitePresentation.SpecMap_iff]`. Use `letI : Algebra R Γ(X.left, ⊤) := φ.hom.toAlgebra`. Use `haveI : Module.Finite R Γ(X.left, ⊤) := RingHom.finite_algebraMap.1 f₁`.
-
-Use `haveI : Module.Flat R Γ(X.left, ⊤) := RingHom.flat_algebraMap_iff.1 f₂`. Use `haveI : Algebra.FinitePresentation R Γ(X.left, ⊤) := RingHom.finitePresentation_algebraMap.1 f₃`. Use `haveI : Module.FinitePresentation R Γ(X.left, ⊤) := Module.FinitePresentation.of_finite_of_finitePresentation _ _`. Use `⟨Γ(X.left, ⊤), inferInstance, inferInstance, ⟨Over.isoMk X.left.isoSpec.symm ?_⟩, inferInstance, Module.Flat.projective_of_finitePresentation⟩` and prove the remaining obligations. Conclude with `hφ.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_sp_iso (X : Over (Sp R)) [IsFinite X.hom] [Flat X.hom] [LocallyOfFinitePresentation X.hom] :
     ∃ (F : Type) (_ : CommRing F) (_ : Algebra R F) (_ : Nonempty (sp (R₀ := R) F ≅ X)),
@@ -47,47 +45,41 @@ theorem exists_sp_iso (X : Over (Sp R)) [IsFinite X.hom] [Flat X.hom] [LocallyOf
   exact hφ.symm
 
 /- English proof (translation)
-Rewrite using `[Hom.mul_def, Hom.mul_def, Category.assoc, IsMonHom.mul_hom, ← Category.assoc, lift_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_comp_hom {A B T : Over (Sp R)} [GrpObj A] [GrpObj B] (u v : T ⟶ A) (l : A ⟶ B) [IsMonHom l] :
     (u * v) ≫ l = (u ≫ l) * (v ≫ l) := by
   rw [Hom.mul_def, Hom.mul_def, Category.assoc, IsMonHom.mul_hom, ← Category.assoc, lift_map]
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Hom.one_def, Category.assoc, IsMonHom.one_hom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_comp_hom {A B T : Over (Sp R)} [GrpObj A] [GrpObj B] (l : A ⟶ B) [IsMonHom l] :
     (1 : T ⟶ A) ≫ l = 1 := by
   rw [Hom.one_def, Hom.one_def, Category.assoc, IsMonHom.one_hom]
 
 /- English proof (translation)
-Introduce `R _ A B _ _ l hA hB hl hfin hflat`. Use `haveI := hA.smooth`. Use `haveI := hB.smooth`. Use `haveI : IsFinite l.left := hfin`. Use `haveI : Flat l.left := hflat`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : IsMonHom l := hl`. Establish `hw : l.left ≫ B.hom = A.hom` using `Over.w l`. Use `haveI : LocallyOfFinitePresentation (l.left ≫ B.hom) := by rw [hw]; infer_instance`. Use `haveI : LocallyOfFinitePresentation l.left := GlobalTheory.TangentCrit.locallyOfFinitePresentation_of_comp l.left B.hom`. Set `e : Sp R ⟶ B.left` to `(η[B] : 𝟙_ (Over (Sp R)) ⟶ B).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : e ≫ B.hom = 𝟙 _` using `Over.w (η[B] : 𝟙_ (Over (Sp R)) ⟶ B)`. Use `haveI : Mono e := mono_of_mono_fac he`. Set `X : Over (Sp R)` to `Over.mk (pullback.snd l.left e)`. Use `haveI : IsFinite X.hom := inferInstanceAs (IsFinite (pullback.snd l.left e))`. Use `haveI : Flat X.hom := inferInstanceAs (Flat (pullback.snd l.left e))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : LocallyOfFinitePresentation X.hom := inferInstanceAs (LocallyOfFinitePresentation (pullback.snd l.left e))`. Establish `hf : pullback.fst l.left e ≫ A.hom = X.hom`. Rewrite using `[← hw, pullback.condition_assoc, he, Category.comp_id]`. Both sides reduce to the same expression. Set `f : X ⟶ A` to `Over.homMk (pullback.fst l.left e) hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `key : ∀ (T : Over (Sp R)) (z : T ⟶ A), z ≫ l = 1 ↔ ∃ t : T ⟶ X, t ≫ f = z`. Introduce `T z`. Establish `one_left : (1 : T ⟶ B).left = T.hom ≫ e`. Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h' : z.left ≫ l.left = T.hom ≫ e`. Rewrite using `[← one_left, ← h, Over.comp_left]`. Use `⟨Over.homMk (pullback.lift z.left T.hom h') (pullback.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Conclude with `Over.OverMorphism.ext (pullback.lift_fst _ _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨t, rfl⟩`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[one_left, ← Over.w t]`. Express the relevant statement in the definitionally equal form `(t.left ≫ pullback.fst l.left e) ≫ l.left = (t.left ≫ pullback.snd l.left e) ≫ e`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `fmono : ∀ {T : Over (Sp R)} (t t' : T ⟶ X), t ≫ f = t' ≫ f → t = t'`. Introduce `T t t' h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← cancel_mono (pullback.fst l.left e)]`. Conclude with `congrArg (fun u => u.left) h`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨F, iF, aF, ⟨ee⟩, hfinF, hproj⟩` from `exists_sp_iso X`. Establish `ker : ∀ (S : Type) [CommRing S] [Algebra R S] (z : sp (R₀` using `R) S ⟶ A), z ≫ l = 1 ↔ ∃ φ : F →ₐ[R] S, spMap φ ≫ (ee.hom ≫ f) = z := by`. Introduce `S _ _ z`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨t, rfl⟩`. Take `⟨φ, hφ⟩` from `GlobalTheory.NatFun.spMap_surjective (k := R) (A := F) (B := S) (t ≫ ee.inv)`. Conclude with `⟨φ, by rw [hφ]; simp⟩`. Introduce and unpack `⟨φ, rfl⟩`. Conclude with `⟨spMap φ ≫ ee.hom, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨F, iF, aF, ee.hom ≫ f, ⟨hproj, hfinF, ?_, ?_, ?_, ?_⟩, ker⟩` and prove the remaining obligations. Introduce `S _ _ φ φ' h`. Apply `GlobalTheory.NatFun.spMap_injective (k := R) (A := F) (B := S)` to reduce the goal to its premises. Establish `h₁ : (spMap φ ≫ ee.hom) ≫ f = (spMap φ' ≫ ee.hom) ≫ f` using `by simpa using h`. Conclude with `(cancel_mono ee.hom).1 (fmono _ _ h₁)`.
-
-Introduce `S _ _`. Conclude with `(ker S 1).1 (one_comp_hom l)`. Introduce `S _ _ φ φ'`. Conclude with `(ker S _).1 (by`. Rewrite using `[mul_comp_hom, (ker S _).2 ⟨φ, rfl⟩, (ker S _).2 ⟨φ', rfl⟩, _root_.mul_one])`.
-
-Introduce `S _ _ φ`. Establish `hz` using `(ker S _).2 ⟨φ, rfl⟩`. Establish `h₂ : (spMap φ ≫ ee.hom ≫ f)⁻¹ ≫ l = 1`. Establish `h₃` using `mul_comp_hom (spMap φ ≫ ee.hom ≫ f)⁻¹ (spMap φ ≫ ee.hom ≫ f) l`. Rewrite `h₃` using `[inv_mul_cancel, one_comp_hom, hz, _root_.mul_one]`.
-
-Conclude with `h₃.symm`. Take `⟨χ, hχ⟩` from `(ker S _).1 h₂`. Conclude with `⟨χ, by rw [hχ, inv_mul_cancel]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kernelFinFlat : PositivityTheory.Tls2.Zar3.Ch1.KernelFinFlat := by
   intro R _ A B _ _ l hA hB hl hfin hflat

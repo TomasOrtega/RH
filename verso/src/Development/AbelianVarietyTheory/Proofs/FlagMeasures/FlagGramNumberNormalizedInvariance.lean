@@ -12,11 +12,11 @@ namespace GlobalTheory.Amp.YjInv
 variable {k r j : ℕ}
 
 /- English proof (translation)
-Rewrite using `[N_e hn]`. Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE hj) ((Fin.castLE_injective hj).injOn) (by simp) ?_ (by simp)` and prove the remaining obligations. Introduce `b _ hb`. Establish `hb' : j ≤ b.val`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hb ⟨⟨b.val, by omega⟩, by simp, rfl⟩`. Establish `ha` using `a.isLt`. Rewrite using `[hn.2.1 (Fin.castLE hj a) _ (by simp [eI]; omega), if_neg, zero_smul]`. Introduce `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[eI] at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem N_ej (hj : j ≤ r) {n : Mat k r} (hn : n ∈ Nset k r) (a : Fin j) :
     n *ᵥ bvec (eI k r (Fin.castLE hj a)) =
@@ -36,11 +36,11 @@ theorem N_ej (hj : j ≤ r) {n : Mat k r} (hn : n ∈ Nset k r) (a : Fin j) :
   omega
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Rewrite using `[hn.2.1 (Fin.castLE hj a) _ le_rfl, if_pos rfl]`. Introduce `b a hab`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hab' : a.val < b.val` using `hab`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[hn.2.1 (Fin.castLE hj a) (eI k r (Fin.castLE hj b)) hab'.le, if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[eI] at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem N_detj (hj : j ≤ r) {n : Mat k r} (hn : n ∈ Nset k r) :
     (Matrix.of fun b a : Fin j => n (eI k r (Fin.castLE hj b)) (eI k r (Fin.castLE hj a))).det = 1 := by
@@ -58,9 +58,9 @@ theorem N_detj (hj : j ≤ r) {n : Mat k r} (hn : n ∈ Nset k r) :
     omega
 
 /- English proof (translation)
-Establish `h₁'` using `(nSubgroup k r).2.2 _ h₁`. Unfold `Yj Dj`. Rewrite using `[dInv k r z z' hz hz' n₁ (N_sub_S z h₁) n₂ (N_sub_S z' h₂), Ppos_N hz hz' h₁ h₂, ← gramProj_comb _ (fun a : Fin j => (n₂ * x)⁻¹ *ᵥ (γ⁻¹ *ᵥ bvec (eI k r (Fin.castLE hj a)))) _ (N_detj hj h₁')]`. Use `congr 2`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, N_ej hj h₁']`. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_smul, Matrix.of_apply, ← Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Yj_N (hj : j ≤ r) {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z') (γ : Mat k r)
     {n₁ n₂ : Mat k r} (h₁ : n₁ ∈ Nset k r) (h₂ : n₂ ∈ Nset k r) (x : Mat k r) :
@@ -76,13 +76,13 @@ theorem Yj_N (hj : j ≤ r) {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r 
   simp only [Matrix.mulVec_sum, Matrix.mulVec_smul, Matrix.of_apply, ← Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Establish `h1 : star κ * κ = 1` using `Matrix.mem_unitaryGroup_iff'.1 hκ`. Establish `h2 : κ * star κ = 1` using `Matrix.mem_unitaryGroup_iff.1 hκ`. Establish `hG' : star κ * Hpk k r * κ = Hpk k r` using `hG`. Establish `hc : (Hpk k r - 1) * κ = κ * (Hpk k r - 1)`. Establish `: κ * Hpk k r = Hpk k r * κ` using `by conv_lhs => rw [← hG', ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, this, Matrix.one_mul, Matrix.mul_one]`. Unfold `Yj`. Rewrite using `[gramProj_unitary (Ppos k r z z' γ x) (Ppos k r z z' γ (x * κ)) _ κ hκ]`. Use `congr 2`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec _ κ, Matrix.mul_nonsing_inv _ (det_unit hG), Matrix.one_mulVec]`. Introduce `p`. Rewrite using `[mem_Ppos, mem_Ppos]`. Simplify using `only [Matrix.mulVec_mulVec, hc]`. Use `and_congr ⟨fun h => ?_, fun h => ?_⟩ Iff.rfl` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.mulVec_mulVec, h, Matrix.mulVec_zero]`. Use `congrArg (star κ *ᵥ ·) h` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mulVec_zero] at this`. Rewrite `this` using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Yj_K (hj : j ≤ r) (z z' : Fin (2 * r + k + 1) → ℂ) (γ x : Mat k r) {κ : Mat k r} (hG : κ ∈ GG k r)
     (hκ : κ ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ) :
@@ -110,9 +110,9 @@ theorem Yj_K (hj : j ≤ r) (z z' : Fin (2 * r + k + 1) → ℂ) (γ x : Mat k r
       rwa [← Matrix.mul_assoc, h1, Matrix.one_mul] at this
 
 /- English proof (translation)
-Introduce `k r j hj z z' γ hz hz' hγ x _`. Use `⟨fun κ hκ => Yj_K hj z z' γ x hκ.1 hκ.2, fun n₁ h₁ n₂ h₂ => Yj_N hj hz hz' γ h₁ h₂ x, fun ρ hρ => ?_⟩` and prove the remaining obligations. Rewrite using `[← Yj_N hj hz hz' γ ((nSubgroup k r).2.2 _ hρ.2) hρ.1 x]`. Use `congr 1`. Establish `hm : IsUnit (γ * ρ * γ⁻¹).det` using `det_unit hρ.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e : γ * ρ = γ * ρ * γ⁻¹ * γ`. Rewrite using `[Matrix.mul_assoc (γ * ρ), Matrix.nonsing_inv_mul _ (det_unit hγ), Matrix.mul_one]`. Rewrite using `[Matrix.mul_assoc]`. Use `conv_lhs => rw [show (γ * ρ * γ⁻¹)⁻¹ * (γ * ρ) = (γ * ρ * γ⁻¹)⁻¹ * (γ * ρ * γ⁻¹ * γ) from by rw [← e]]`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hm, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yj_invariant : ∀ (k r j : ℕ) (hj : j ≤ r) (z z' : (Fin (2 * r + k + 1) → ℂ)), ∀ γ : Mat k r, inWb k r z → inWb k r z' → γ ∈ GG k r → ∀ x ∈ GG k r, (∀ κ ∈ (GG k r ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set (Mat k r))), Yj k r hj z z' γ (x * κ) = Yj k r hj z z' γ x) ∧ (∀ n₁ ∈ Nset k r, ∀ n₂ ∈ Nset k r, Yj k r hj z z' (n₁ * γ * n₂) x = Yj k r hj z z' γ (n₂ * x)) ∧ ∀ ρ ∈ Rset k r γ, Yj k r hj z z' γ (ρ * x) = Yj k r hj z z' γ x := by
   intro k r j hj z z' γ hz hz' hγ x _

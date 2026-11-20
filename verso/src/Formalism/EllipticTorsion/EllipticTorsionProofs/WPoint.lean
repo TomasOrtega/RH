@@ -14,7 +14,7 @@ def wTail {R : Type u} [CommRing R] (W : WeierstrassCurve R) (w : PowerSeries R)
   C W.a₁ * X * w + C W.a₂ * X ^ 2 * w + C W.a₃ * w ^ 2 + C W.a₄ * X * w ^ 2 + C W.a₆ * w ^ 3
 
 /- English proof (translation)
-Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Take `⟨u, rfl⟩` from `h`. Use `⟨C W.a₁ * u + C W.a₂ * X * u + C W.a₃ * X ^ j * u ^ 2 + C W.a₄ * X ^ (j + 1) * u ^ 2 + C W.a₆ * X ^ (2 * j + 1) * u ^ 3, ?_⟩` and prove the remaining obligations. Unfold `wTail`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wTail_dvd {R : Type u} [CommRing R] (W : WeierstrassCurve R) (w : PowerSeries R)
     (k : ℕ) (hk : 1 ≤ k) (h : (X : PowerSeries R) ^ k ∣ w) :
@@ -27,11 +27,11 @@ theorem wTail_dvd {R : Type u} [CommRing R] (W : WeierstrassCurve R) (w : PowerS
   ring
 
 /- English proof (translation)
-Establish `hsplit : w = X ^ 3 + wTail W w`. Unfold `wTail`. Use `conv_lhs => rw [hw.2]`. Expand and normalize the polynomial expressions, which then agree. Establish `d1 : (X : PowerSeries R) ^ 1 ∣ w`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_one, PowerSeries.X_dvd_iff]`. Conclude with `hw.1`. Establish `d2 : (X : PowerSeries R) ^ 2 ∣ w`. Rewrite using `[hsplit]`. Conclude with `dvd_add (pow_dvd_pow X (by norm_num)) (wTail_dvd W w 1 le_rfl d1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `d3 : (X : PowerSeries R) ^ 3 ∣ w`. Rewrite using `[hsplit]`. Conclude with `dvd_add dvd_rfl (wTail_dvd W w 2 (by norm_num) d2)`. Take `⟨e, he⟩` from `wTail_dvd W w 3 (by norm_num) d3`. Conclude with `⟨e, by rw [hsplit, he]; ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem factor {R : Type u} [CommRing R] (W : WeierstrassCurve R) (w : PowerSeries R)
     (hw : WFixed W w) : ∃ e : PowerSeries R, w = X ^ 3 * (1 + X * e) := by
@@ -55,27 +55,23 @@ end WeierstrassPointSeriesTail
 
 open WeierstrassPointSeriesTail in
 /- English proof (translation)
-Introduce `K _ W w hw σ _ s hs0 hs`. Establish `: IsDomain (MvPowerSeries σ K)` using `NoZeroDivisors.to_isDomain _`. Establish `hsub : PowerSeries.HasSubst s` using `PowerSeries.HasSubst.of_constantCoeff_zero hs0`. Establish `hE : w.subst s = s ^ 3 + MvPowerSeries.C W.a₁ * s * w.subst s + MvPowerSeries.C W.a₂ * s ^ 2 * w.subst s + MvPowerSeries.C W.a₃ * (w.subst s) ^ 2 + MvPowerSeries.C W.a₄ * s * (w.subst s) ^ 2 + MvPowerSeries.C W.a₆ * (w.subst s) ^ 3` using `by conv_lhs => rw [hw.2]`. Simplify using `only [PowerSeries.subst_add hsub, PowerSeries.subst_mul hsub, PowerSeries.subst_pow hsub, PowerSeries.subst_X hsub, PowerSeries.subst_C]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨e, he⟩` from `factor W w hw`. Establish `hfac : w.subst s = s ^ 3 * (1 + s * e.subst s)`. Rewrite using `[← PowerSeries.coe_substAlgHom hsub, he]`. Simplify using `[PowerSeries.substAlgHom_X]`. Establish `hwc : MvPowerSeries.constantCoeff (w.subst s) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hfac]`. Simplify using `[hs0]`. Establish `hws0 : w.subst s ≠ 0`. Rewrite using `[hfac]`. Use `mul_ne_zero (pow_ne_zero 3 hs) (fun h0 => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg MvPowerSeries.constantCoeff h0` as an intermediate fact. Simplify using `[hs0] at this`. Establish `hinj` using `IsFractionRing.injective (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K))`. Establish `hV : algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) (w.subst s) ≠ 0` using `(map_ne_zero_iff _ hinj).mpr hws0`. Establish `hC : ∀ a : K, algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) (MvPowerSeries.C a) = algebraMap K (FractionRing (MvPowerSeries σ K)) a` using `fun a => (IsScalarTower.algebraMap_apply K (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) a).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE'` using `congrArg (algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K))) hE`. Simplify using `only [map_add, map_mul, map_pow, hC] at hE'`. Establish `hx : xOf w s * algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) (w.subst s) = algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) s`. Simplify using `only [xOf]`. Conclude with `div_mul_cancel₀ _ hV`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hy : yOf w s * algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) (w.subst s) = -1`. Simplify using `only [yOf]`. Rewrite using `[div_mul_cancel₀ _ hV]`. Use `set Z := algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) s`. Use `set V := algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) (w.subst s)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `set x := xOf w s`. Use `set y := yOf w s`. Use `set A₁ := algebraMap K (FractionRing (MvPowerSeries σ K)) W.a₁`. Use `set A₂ := algebraMap K (FractionRing (MvPowerSeries σ K)) W.a₂`. Use `set A₃ := algebraMap K (FractionRing (MvPowerSeries σ K)) W.a₃`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set A₄ := algebraMap K (FractionRing (MvPowerSeries σ K)) W.a₄`. Use `set A₆ := algebraMap K (FractionRing (MvPowerSeries σ K)) W.a₆`. Rewrite using `[WeierstrassCurve.Affine.nonsingular_iff', WeierstrassCurve.Affine.equation_iff]`. Simplify using `only [WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_left_cancel₀ (pow_ne_zero 3 hV)` to reduce the goal to its premises. Take the linear combination `hE' + (V * (y * V - 1) + A₁ * V * Z + A₃ * V ^ 2) * hy + (A₁ * V * (y * V) - ((x * V) ^ 2 + (x * V) * Z + Z ^ 2) - A₂ * V * (x * V + Z) - A₄ * V ^ 2) * hx`. Assume the negation of the conclusion as `hcon push Not at hcon`. Take `⟨hP, hQ⟩` from `hcon`. Establish `hD0 : (1 - MvPowerSeries.C W.a₁ * s - 2 * MvPowerSeries.C W.a₃ * w.subst s - MvPowerSeries.C W.a₂ * s ^ 2 - 2 * MvPowerSeries.C W.a₄ * s * w.subst s - 3 * MvPowerSeries.C W.a₆ * (w.subst s) ^ 2 : MvPowerSeries σ K) ≠ 0`.
-
-Introduce `h0`. Use `congrArg MvPowerSeries.constantCoeff h0` as an intermediate fact. Simplify using `[hs0, hwc] at this`. Apply `hD0` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises.
-
-Rewrite using `[map_zero]`. Apply `(mul_eq_zero.mp _).resolve_right hV` to reduce the goal to its premises. Simplify using `only [map_sub, map_mul, map_pow, map_one, map_ofNat, hC]`. Take the linear combination `V ^ 2 * hQ - Z * V ^ 2 * hP + 3 * hE' + (-2 * V + Z * A₁ * V) * hy + (-A₁ * V - 3 * Z * (x * V + Z) - 2 * A₂ * Z * V) * hx`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem wSeriesNonsingularPoint_holds : WPoint := by
   intro K _ W w hw σ _ s hs0 hs

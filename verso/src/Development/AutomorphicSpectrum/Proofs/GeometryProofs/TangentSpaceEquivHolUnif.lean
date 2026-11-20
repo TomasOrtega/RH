@@ -18,9 +18,9 @@ abbrev tanEquiv (hp : IsGrpPullback A G z φ) : (epsR ℂ ⟶ A) ≃* (epsAt z �
   LiePull.pts hp (T := epsR ℂ) (g := (epsAt z).hom) rfl
 
 /- English proof (translation)
-Establish `e` using `map_one (LiePull.pts hp (T := 𝟙_ (Over (Sp ℂ))) (g := z) (Category.id_comp z))`. Establish `e'` using `congrArg (fun q => q.left) e`. Establish `h1 : (1 : 𝟙_ (Over (Sp ℂ)) ⟶ A) = η[A]`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Rewrite `e'` using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e'`.
+A detailed English derivation is pending.
 -/
 theorem unit_left (hp : IsGrpPullback A G z φ) : η[A].left ≫ φ = (1 : Over.mk z ⟶ G).left := by
   have e := map_one (LiePull.pts hp (T := 𝟙_ (Over (Sp ℂ))) (g := z) (Category.id_comp z))
@@ -31,13 +31,13 @@ theorem unit_left (hp : IsGrpPullback A G z φ) : η[A].left ≫ φ = (1 : Over.
   exact e'
 
 /- English proof (translation)
-Unfold `IsTangent IsTanAt`. Prove the components needed by the constructor for the conclusion. Introduce `t`. Rewrite using `[← unit_left hp, ← t, Category.assoc]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `t`. Apply `hp.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, unit_left hp, ← t]`. Both sides reduce to the same expression. Establish `e : (CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ))) ≫ CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom = 𝟙 _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `r`. Simplify using the standard rewrite rules. Establish `e'` using `congrArg Spec.map e`. Simplify using `only [Spec.map_comp, Spec.map_id] at e'`. Establish `hx : x.left ≫ A.hom = spMap (algebraMap ℂ (DualNumber ℂ))` using `Over.w x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : η[A].left ≫ A.hom = 𝟙 _` using `Over.w η[A]`. Rewrite using `[Category.assoc, hx, h0]`. Conclude with `e'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTangent_iff (hp : IsGrpPullback A G z φ) (x : epsR ℂ ⟶ A) :
     IsTangent x ↔ IsTanAt G z (tanEquiv hp x) := by
@@ -62,21 +62,19 @@ theorem isTangent_iff (hp : IsGrpPullback A G z φ) (x : epsR ℂ ⟶ A) :
       exact e'
 
 /- English proof (translation)
-Introduce `X G _ z V _ _ M A _ φ L g u hp h1 h2`. Set `Φ` to `tanEquiv hp`. Set `x : V → (epsR ℂ ⟶ A)` to `fun v => Φ.symm (M.pt v)`. Establish `hΦx : ∀ v, Φ (x v) = M.pt v` using `fun v => Φ.apply_symm_apply _`. Establish `hleft : ∀ v, (x v).left ≫ φ = (M.pt v).left` using `fun v => congrArg (fun q => q.left) (hΦx v)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tx : ∀ v, IsTangent (x v)` using `fun v => (isTangent_iff hp _).2 (by`. Express the relevant statement in the definitionally equal form `IsTanAt G z (Φ (x v))`. Rewrite using `[hΦx]`. Conclude with `M.tan v)`. Establish `xadd : ∀ v v', x (v + v') = x v * x v'` using `fun v v' => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [x]`. Rewrite using `[M.add, map_mul]`. Establish `xsmul : ∀ (c : ℂ) v, x (c • v) = Chart.spMap (Chart.scaleD c) ≫ x v` using `fun c v => by`. Apply `Φ.injective` to reduce the goal to its premises. Rewrite using `[hΦx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[M.smul c v, ← hleft v]`. Conclude with `(Category.assoc _ _ _).symm`. Establish `tan' : ∀ {y : epsR ℂ ⟶ A}, IsTangent y → Chart.IsTan y` using `fun h => (Chart.isTan_iff _).2 h`. Use `choose d hd hu using fun v => h1 (x v) (tx v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Set `Dl : V →ₗ[ℂ] (Fin g → ℂ)` to `{ toFun := d map_add' := fun v v' => by`. Use `symm`. Apply `hu` to reduce the goal to its premises. Rewrite using `[xadd]`. Conclude with `UnifDifferential.isDiff_mul u (tan' (tx v)) (tan' (tx v')) (hd v) (hd v')`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `map_smul' := fun c v => by`. Use `symm`. Apply `hu` to reduce the goal to its premises. Rewrite using `[xsmul]`. Conclude with `UnifDifferential.isDiff_scale u (hd v) c }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `inj : Function.Injective Dl` using `fun v v' e => by`. Establish `e' : d v = d v'` using `e`. Establish `h : x v = x v'` using `(h2 (d v')).unique ⟨tx v, e' ▸ hd v⟩ ⟨tx v', hd v'⟩`. Conclude with `M.inj (by rw [← hΦx, ← hΦx, h])`. Establish `surj : Function.Surjective Dl` using `fun w => by`.
-
-Take `⟨y, ⟨ty, dy⟩, -⟩` from `h2 w`. Take `⟨v, hv⟩` from `M.onto _ ((isTangent_iff hp y).1 ty)`. Establish `hy : x v = y` using `Φ.injective (by rw [hΦx]; exact hv)`. Conclude with `⟨v, (hu v w (hy ▸ dy)).symm⟩`. Conclude with `⟨LinearEquiv.ofBijective Dl ⟨inj, surj⟩, fun v => ⟨x v, tx v, hleft v, hd v⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_linearEquiv : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] (z : Spec (CommRingCat.of ℂ) ⟶ X) (V : Type)
     [AddCommGroup V] [Module ℂ V] (M : LieModel G z V) (A : Over (Sp ℂ)) [GrpObj A] (φ : A.left ⟶ G.left) (L : LB A.left)

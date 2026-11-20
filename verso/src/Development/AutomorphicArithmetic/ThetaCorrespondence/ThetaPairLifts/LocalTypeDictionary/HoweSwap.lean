@@ -14,19 +14,17 @@ noncomputable section
 namespace UpperTheory.Lit.HoweDuality
 open GlobalTheory.HoweGlobalPair
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM hreal N hN T hT`. Take `⟨L, hL, hrange⟩` from `GlobalTheory.T.exists_linear_tensor_polyVacuum_pureTensors G.M Bs.ψ Bs.emb hM.triple.geo.hM.std T`. Establish `hloc` using `_root_.GlobalTheory.T.global_howe_transfer_real_place hP F E σ Bs a a' G Xc om om' R Rf hM hreal`. Establish `hfl` using `fun v => locV hM v`. Take `⟨h1, h2, h3, h4⟩` from `_root_.GlobalTheory.T.global_howe_tensor_product_transfer hP F E σ Bs a a' G Xc om om' R Rf hM N hN T L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key` using `tens (ι := T) (M₀ := ↥(G.M.Pol Bs.ψ Bs.emb)) (M := fun v : T => ↥(SB (Fin a × Fin (a + a') → Fv F v.1))) (GlobalTheory.HoweGlobal.opInf Bs G om) (fun v => GlobalTheory.HoweGlobal.opFin G om v.1) (GlobalTheory.HoweGlobal.relInf Bs G om) (fun v => GlobalTheory.HoweGlobal.relFin G o …`. Break down `key with htop | hker` into its components or cases. Use `left`. Introduce `Φ hΦ`. Take `⟨t, rfl⟩` from `hrange hΦ`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht : t ∈ N.comap L` using `by rw [htop]; exact Submodule.mem_top`. Conclude with `ht`. Use `right`. Introduce `Φ hΦN hΦT`. Take `⟨t, rfl⟩` from `hrange hΦT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht0` using `hker (show t ∈ N.comap L from hΦN)`. Take `⟨m, f, φ, rfl⟩` from `GlobalTheory.HoweGlobal.decomp t`. Use `⟨T, hT, m, 0, fun j => ((f j : ↥(G.M.Pol Bs.ψ Bs.emb)) : SInf F (Fin a × Fin (a + a'))), fun j v => if h : v ∈ T then ((φ j ⟨v, h⟩ : ↥(SB _)) : (Fin a × Fin (a + a') → Fv F v) → ℂ) else G.M.vac v, Fin.elim0, Fin.elim0, fun j => ⟨(f j).2, fun v => ?_, fun v hv => by simp only [dif …` and prove the remaining obligations. Distinguish the cases in `h : v ∈ T`. Simplify using `only [dif_pos h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(φ j ⟨v, h⟩).2`. Simplify using `only [dif_neg h]`. Conclude with `(hM.triple.geo.hM.vac v).1`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => hL _ _ _ (fun v h => by simp only [dif_pos h]) (fun v h => by simp only [dif_neg h])`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `ht0` using `[LinearMap.mem_ker, map_sum]`. Rewrite using `[Fin.sum_univ_zero, ← ht0]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.map_tmul, PiTensorProduct.map_tprod]`.
-
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem stageV_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
@@ -81,9 +79,9 @@ theorem stageV_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : T
       rw [TensorProduct.map_tmul, PiTensorProduct.map_tprod]
       simp
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM hreal N hN hne ΦD hΦ`. Assume the negation of the conclusion as `hc`. Take `⟨T, hT, hΦT⟩` from `GlobalTheory.HoweGlobal.exists_algAt G.M Bs.ψ Bs.emb (hN.1.1 hΦ) Xc.T`. Apply `hne` to reduce the goal to its premises. Use `le_antisymm hN.1.1 fun Ψ hΨ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T', hT', hΨT'⟩` from `GlobalTheory.HoweGlobal.exists_algAt G.M Bs.ψ Bs.emb hΨ T`. Break down `_root_.UpperTheory.Lit.HoweDuality.stageV_alt hP F E σ Bs a a' G Xc om om' R Rf hM hreal N hN T' (hT.trans hT') with h | h` into its components or cases. Conclude with `h hΨT'`. Conclude with `absurd (h ΦD hΦ (GlobalTheory.HoweGlobal.algAt_mono G.M Bs.ψ Bs.emb hT' hΦT)) hc`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem allV_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
@@ -107,12 +105,12 @@ theorem allV_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Typ
   · exact h hΨT'
   · exact absurd (h ΦD hΦ (GlobalTheory.HoweGlobal.algAt_mono G.M Bs.ψ Bs.emb hT' hΦT)) hc
 /- English proof (translation)
-Introduce `hR hP F E _ _ _ _ _ σ Bs a a' G Xc om om' _ R Rf hM N hN hne` and use `_root_.UpperTheory.Lit.HoweDuality.allV_alt hP F E σ Bs a a' G Xc om om' R Rf hM (GlobalTheory.T.howeDuality_realPlaces_trivialChar_fockLift hR F E σ Bs a a' G Xc om om' R Rf hM) N hN hne`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twisted_theta_kernel_condition : _root_.GlobalTheory.T.TwistedThetaKernelCondition := fun hR hP F E _ _ _ _ _ σ Bs a a' G Xc om om' _ R Rf hM N hN hne =>
   _root_.UpperTheory.Lit.HoweDuality.allV_alt hP F E σ Bs a a' G Xc om om' R Rf hM (GlobalTheory.T.howeDuality_realPlaces_trivialChar_fockLift hR F E σ Bs a a' G Xc om om' R Rf hM) N hN hne
 /- English proof (translation)
-Introduce `hR _ F E _ _ _ _ _ σ a a' Bs G Xc om om' R Rf hM N hN hne` and use `allVp F E σ Bs a a' G Xc om om' R Rf hM (GlobalTheory.T.howeDuality_realPlaces_trivialChar_fockLift_smallPair hR F E σ Bs a a' G Xc om om' R Rf hM) N hN hne`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twisted_theta_jet_condition : _root_.GlobalTheory.T.TwistedThetaJetCondition := fun hR _ F E _ _ _ _ _ σ a a' Bs G Xc om om' R Rf hM N hN hne =>
   allVp F E σ Bs a a' G Xc om om' R Rf hM (GlobalTheory.T.howeDuality_realPlaces_trivialChar_fockLift_smallPair hR F E σ Bs a a' G Xc om om' R Rf hM) N hN hne

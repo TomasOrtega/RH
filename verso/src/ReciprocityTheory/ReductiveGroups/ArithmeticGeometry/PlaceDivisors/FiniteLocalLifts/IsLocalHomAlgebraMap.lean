@@ -9,11 +9,11 @@ namespace ReciprocityTheory.ChartRestriction.G.Pdiv.FiniteLocalHoms
 variable {O : Type} [CommRing O] [IsLocalRing O] {R : Type} [CommRing R] [IsLocalRing R] [Algebra O R]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `r hr`. Assume the negation of the conclusion as `hnr`. Take `⟨u, hu⟩` from `hr`. Establish `hu' : χ r = ↑u` using `hu.symm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : χ (r * algebraMap O R (↑u⁻¹ : O)) = 1`. Rewrite using `[map_mul, AlgHom.commutes, hu', Algebra.algebraMap_self, RingHom.id_apply, Units.mul_inv]`. Establish `h2 : IsUnit (1 - r * algebraMap O R (↑u⁻¹ : O))`. Apply `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits` to reduce the goal to its premises. Conclude with `mul_mem_nonunits_left hnr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h3 : χ (1 - r * algebraMap O R (↑u⁻¹ : O)) = 0` using `by rw [map_sub, map_one, h1, sub_self]`. Establish `h4` using `h2.map χ`. Rewrite `h4` using `[h3]`. Conclude with `not_isUnit_zero h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_of_section (χ : R →ₐ[O] O) : IsLocalHom (χ : R →+* O) := by
   constructor
@@ -32,9 +32,9 @@ theorem isLocalHom_of_section (χ : R →ₐ[O] O) : IsLocalHom (χ : R →+* O)
   exact not_isUnit_zero h4
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Assume the negation of the conclusion as `hna`. Establish `hmax : (Ideal.comap (algebraMap O R) (maximalIdeal R)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal R)`. Establish `heq : Ideal.comap (algebraMap O R) (maximalIdeal R) = maximalIdeal O` using `IsLocalRing.eq_maximalIdeal hmax`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : a ∈ Ideal.comap (algebraMap O R) (maximalIdeal R)`. Rewrite using `[heq]`. Conclude with `hna`. Conclude with `((IsLocalRing.mem_maximalIdeal _).mp (Ideal.mem_comap.mp h1)) ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_algebraMap [Module.Finite O R] : IsLocalHom (algebraMap O R) := by
   constructor
@@ -50,11 +50,11 @@ theorem isLocalHom_algebraMap [Module.Finite O R] : IsLocalHom (algebraMap O R) 
   exact ((IsLocalRing.mem_maximalIdeal _).mp (Ideal.mem_comap.mp h1)) ha
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `r hr`. Assume the negation of the conclusion as `hnr`. Establish `hcomap : Ideal.comap (algebraMap O R) (Ideal.comap (χ : R →+* S) (maximalIdeal S)) = maximalIdeal O`. Rewrite using `[Ideal.comap_comap, AlgHom.comp_algebraMap]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff]`. Conclude with `⟨fun h ha => h (ha.map _), fun h ha => h (hS.map_nonunit a ha)⟩`. Establish `hmax : (Ideal.comap (χ : R →+* S) (maximalIdeal S)).IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap _ (by rw [hcomap]; infer_instance)`. Establish `hPeq : Ideal.comap (χ : R →+* S) (maximalIdeal S) = maximalIdeal R` using `IsLocalRing.eq_maximalIdeal hmax`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrP : r ∈ Ideal.comap (χ : R →+* S) (maximalIdeal S)`. Rewrite using `[hPeq]`. Conclude with `hnr`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp (Ideal.mem_comap.mp hrP) hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_of_finite [Module.Finite O R] {S : Type} [CommRing S] [IsLocalRing S] [Algebra O S]
     (hS : IsLocalHom (algebraMap O S)) (χ : R →ₐ[O] S) : IsLocalHom (χ : R →+* S) := by

@@ -14,7 +14,7 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter Asymptotics
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 /- English proof (citation)
-Apply `GlobalTheory.NefBound.hdim_twist_le_of_isIntegral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FPublishedTheorems%2FNefNumerics%2FNefRiemannRoch%2FHigherCohomologyGrowthCoherent.lean&line=37#L37)
 -/

@@ -13,9 +13,7 @@ open GlobalTheory.SeeSaw GlobalTheory.Unf
 namespace GlobalTheory.AdForm.StabMoveTup
 
 /- English proof (translation)
-Use `GlobalTheory.UnramOver.unramAt_of_unrAt D c _ hc v ε hv.1 fun P hP => Formalism.L2.Host.HChar.UnrAt.mul (hu P fun k hk => ?_) ?_` and prove the remaining obligations. Take `⟨e, he⟩` from `GlobalTheory.ChoiceAdm.exists_idem (GlobalTheory.Mem.Chr.splitsC_main D.R D.host _ (D.host.g_prime k) (D.nd.g_split k) P hk).2.2.1`. Conclude with `GlobalTheory.AdTh.RecPair.under_ne he hv hP`. Assume the negation of the conclusion as `hn`. Take `⟨e, he⟩` from `GlobalTheory.ChoiceAdm.exists_idem (hξ P hn)`.
-
-Conclude with `GlobalTheory.AdTh.RecPair.under_ne he hv hP`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unramAt_of_chrEq_mul {D : D7} {c : (AE D)ˣ →* Circle} {χ ξ : Formalism.L2.Host.HChar D.host.E} (hc : ChrEq c (χ * ξ))
     (hu : ∀ P : HeightOneSpectrum (𝓞 D.host.E), (∀ k : Fin 2, ¬ Formalism.L2.Host.OverP D.host (D.host.g k) P) → χ.UnrAt P)
@@ -30,13 +28,13 @@ theorem unramAt_of_chrEq_mul {D : D7} {c : (AE D)ˣ →* Circle} {χ ξ : Formal
     exact GlobalTheory.AdTh.RecPair.under_ne he hv hP
 
 /- English proof (translation)
-Introduce `B X I hI hPins l Z ψ θ hψ hθ i hi vac hvac a μ om hchr hW c₀ g h hg hh hM k hk k' hk' mk mk' N N' hN hN' x y hx hy`. Establish `hP` using `(GlobalTheory.AdForm.StdStepsT.stdPair_steps_all I hI hPins l Z ψ θ hψ hθ).1 i hi`. Establish `b` using `StabMove.intG_of_moves _ mk`. Establish `b'` using `StabMove.intG_of_moves _ mk'`. Establish `a₁` using `b.inv hP.gS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₁'` using `b'.inv hP.gT`. Rewrite `a₁`, `a₁'` using `[inv_inv]`. Establish `hξ : ∀ P, ¬ (I.xi a).UnrAt P → IsSplitPl B.host P` using `fun P hn => ((GlobalTheory.Mem.ReadTwist.isTwist_of_reads B.R B.host B.fields.K B.embLL I.S (I.tup a) (I.xi a) (hI.xi_reads a)).1.2.2.2 P hn).1`. Take `⟨x₁, y₁, rx, ry, e⟩` from `StabMove.om_vac hP hW (fun v ε hv => unramAt_of_chrEq_mul hchr (I.C.isMu0 ⟨i, hi⟩).unr hξ hv) hvac hk hk' a₁ a₁'`. Take `⟨x₀, sx⟩` from `(GlobalTheory.Member.isDetRoot_laws _ _).1 g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y₀, sy⟩` from `(GlobalTheory.Member.isDetRoot_laws _ _).1 h`. Establish `e0` using `hM N N' (StabMove.moves_of_mul _ a₁ b hN) (StabMove.moves_of_mul _ a₁' b' hN') x₀ y₀ sx sy`. Establish `ex` using `StabMove.root_eq hW.resS hP.rk.2.2.1 ((GlobalTheory.Member.isDetRoot_laws _ _).2.2.2 _ _ _ _ sx rx) hx`. Establish `ey` using `StabMove.root_eq hW.resS hP.rk.2.2.1 ((GlobalTheory.Member.isDetRoot_laws _ _).2.2.2 _ _ _ _ sy ry) hy`. Rewrite using `[← Prod.mk_mul_mk, map_mul, Module.End.mul_apply, e, map_smul, ex, ey]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.AdForm.VacAll.xiS_smul _ _ _ _ _).trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Establish `e1` using `congrFun e0 z`. Rewrite using `[e1]`. Simplify using `only [map_mul, Circle.coe_mul, Circle.coe_inv, mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

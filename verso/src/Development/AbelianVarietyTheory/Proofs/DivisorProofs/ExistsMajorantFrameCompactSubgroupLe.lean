@@ -21,23 +21,21 @@ noncomputable section
 namespace GlobalTheory.CptMajorant
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ K hKinf hK`. Establish `key : ∀ w : InfinitePlace F, ∃ c : GL (Fin n) (w.Completion ⊗[F] E), (∃ ε : Fin n → Bool, Formalism.UG.cT (sigR _ σ) c.1 * JR w.Completion J * c.1 = Matrix.diagonal fun i => if ε i then 1 else -1) ∧ ∀ k ∈ K, projArch σ J w k ∈ stabArch σ J w c`. Introduce `w`. Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Set `e` to `RingEquiv.ofBijective _ (infEmb_bijective h τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `: IsTopologicalRing (w.Completion ⊗[F] E)` using `GlobalTheory.Doubling.isTopologicalRing_tens`. Set `φ : GAd σ J →* GL (Fin n) ℂ` to `(Units.map (infEmb τ).mapMatrix.toMonoidHom).comp ((matHom _ σ J).comp (projArch σ J w))`. Establish `hφv : ∀ x, (φ x).1 = (matHom _ σ J (projArch σ J w x)).1.map (infEmb τ)` using `fun x => rfl`. Establish `hcv : Continuous fun x : GAd σ J => (φ x).1`. Simplify using `only [hφv]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(Units.continuous_val.comp ((isEmbedding_matHom _ σ J).continuous.comp (continuous_projArch σ J w))).matrix_map (GlobalTheory.Orb.continuous_infEmb τ)`. Establish `hφ : Continuous φ` using `Units.continuous_iff.2 ⟨hcv, by`. Simplify using `only [← map_inv]`. Conclude with `hcv.comp continuous_inv⟩`. Take `⟨P, hPh, hPpos, hPinv⟩` from `GlobalTheory.T.exists_posDef_hermitian_invariant_of_isCompact (K.map φ) (by rw [Subgroup.coe_map]; exact hK.image hφ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hG : (J.map τ.1).IsHermitian`. Use extensionality with `i j`. Conclude with `(h.2.2.2 τ.1 _).symm.trans (congrArg _ (hJ.1 i j))`. Establish `hd : (J.map τ.1).det ≠ 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(map_ne_zero _).2 hJ.2`. Take `⟨ε, Q, hQ, hQu⟩` from `GlobalTheory.T.hermitian_posDef_simultaneous_normal_form hG hd hPh hPpos`. Establish `h1 : (Formalism.UG.bc e.symm.toRingHom Q).1.map (infEmb τ) = Q.1` using `Matrix.ext fun i j => e.apply_symm_apply _`. Establish `h1' : ((Formalism.UG.bc e.symm.toRingHom Q)⁻¹).1.map (infEmb τ) = (Q⁻¹).1` using `Matrix.ext fun i j => e.apply_symm_apply _`. Establish `h2 : (JR w.Completion J).map (infEmb τ) = J.map τ.1` using `by ext r s; simp [JR, inclR]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨Formalism.UG.bc e.symm.toRingHom Q, ⟨ε, Matrix.map_injective e.injective ?_⟩, fun k hk => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.map _ (infEmb τ) = Matrix.map _ (infEmb τ)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Frames.map_cT_sigR h, h1, h2, hQ, Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[mem_stabArch]`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ _ * 1 * _ = 1`. Use `Matrix.map_injective e.injective ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.map _ (infEmb τ) = Matrix.map _ (infEmb τ)`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hu` using `hQu (φ k).1 (hPinv _ ⟨k, hk, rfl⟩) (by`. Establish `: Formalism.UG.cT (sigR _ σ) (matHom _ σ J (projArch σ J w k)).1 * JR w.Completion J * (matHom _ σ J (projArch σ J w k)).1 = JR w.Completion J` using `(projArch σ J w k).2`. Use `congrArg (fun A => A.map (infEmb τ)) this` as an intermediate fact. Simplify `this)` using `only [Matrix.map_mul, Frames.map_cT_sigR h, h2, hφv]`. Simplify `hu` using `only [Matrix.mul_one, Matrix.map_mul, Frames.map_cT_sigR h, Units.val_mul, h1, h1', hφv, Matrix.map_one _ (map_zero _) (map_one _)]`.
-
-Use `choose c hc hKc using key`. Conclude with `⟨c, hc, fun k hk => mem_majCpt.2 ⟨hKinf hk, fun w => hKc w k hk⟩⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frame_le_majCpt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

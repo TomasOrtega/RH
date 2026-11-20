@@ -13,7 +13,7 @@ namespace GlobalTheory.KFinStab
 open GlobalTheory.ThK.ConeEuler GlobalTheory.ThK.UnifLevel GlobalTheory.DefiniteLevel
 
 /- English proof (translation)
-Rewrite using `[mat_compArch]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, map_add]`. Rewrite using `[eInf, GlobalTheory.RealScalar.piInf_realAd_smul, sub_smul, one_smul, map_sub, GlobalTheory.RealScalar.piInf_realAd_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_piInf_compArch {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (g : UA σ J) {w : InfinitePlace F} (τ : EmbOver E w) :
@@ -25,19 +25,17 @@ theorem map_piInf_compArch {F E : Type} [Field F] [NumberField F] [Field E] [Num
   simp
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B hB n r s X hX K hKst V _ _ ρ x S hS hK U hU hfix`. Use `haveI : IsTopologicalGroup (UA σ X.J) := inferInstance`. Take `⟨K', μK, μ, hK'st, hK'c, -, -⟩` from `GlobalTheory.StabHaar.stabEx hKP.base F E σ B n X r s hB hX`. Establish `hKK : K = K'`. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hKst g, hK'st g]`. Establish `hKc : IsCompact (K : Set (UA σ X.J))` using `hKK ▸ hK'c`. Establish `hU' : IsOpen ((U.comap (finPart (σ` using `σ) X.J) : Subgroup (UA σ X.J)) : Set (UA σ X.J)) := hU.preimage (continuous_idemU _ _ _)`. Take `⟨t, ht⟩` from `hKc.elim_finite_subcover (fun k : K => (fun g => (k.1)⁻¹ * g) ⁻¹' ((U.comap (finPart (σ := σ) X.J) : Subgroup (UA σ X.J)) : Set (UA σ X.J))) (fun k => hU'.preimage (continuous_const.mul continuous_id)) (fun g hg => Set.mem_iUnion.2 ⟨⟨g, hg⟩, by show (g⁻¹ * g) ∈ U.comap (finPart ( …`. Rewrite using `[inv_mul_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subgroup.one_mem _⟩)`. Establish `key : ∀ u ∈ K, u ∈ U.comap (finPart (σ` using `σ) X.J) → ρ u x ∈ S := by`. Introduce `u huK huU`. Establish `h1 : ρ (finPart X.J u) x = x` using `hfix _ huU (finPart_inf _ _)`. Establish `h2 : compArch σ X.J u ∈ KInf σ X B.emb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨compArch_mem u, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[map_piInf_compArch]`. Conclude with `((hKst u).1 huK).1 w`. Establish `h3 : ρ u x = ρ (compArch σ X.J u) x` using `by conv_lhs => rw [← compArch_mul_finPart X.J u]`. Rewrite using `[map_mul, Module.End.mul_apply, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `hK _ h2`. Establish `hle : Submodule.span ℂ {y | ∃ k ∈ K, y = ρ k x} ≤ t.sup (fun k : K => S.map (ρ k.1))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hkt, hk⟩` from `Set.mem_iUnion₂.1 (ht hg)`. Establish `hu : (k.1)⁻¹ * g ∈ K` using `K.mul_mem (K.inv_mem k.2) hg`. Establish `hm` using `key _ hu hk`. Establish `e : ρ g x = ρ k.1 (ρ ((k.1)⁻¹ * g) x)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
-
-Rewrite using `[SetLike.mem_coe, e]`. Conclude with `Finset.le_sup (f := fun k : K => S.map (ρ k.1)) hkt (Submodule.mem_map_of_mem hm)`. Use `haveI : ∀ k : K, FiniteDimensional ℂ (S.map (ρ k.1)) := fun k => inferInstance`. Use `haveI : FiniteDimensional ℂ ↥(t.sup (fun k : K => S.map (ρ k.1)) : Submodule ℂ V) := inferInstance`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_finiteDimensional : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ → ∀ (n r s : ℕ) (X : Spc F E n), X.IsHerm σ B r s →
     ∀ K : Subgroup (UA σ X.J), IsStab B K →

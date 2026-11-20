@@ -4,21 +4,19 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsBa
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `C _ _ _ _ D _ _ 𝔪 h c hc`. Set `J : ℕ → Ideal C` to `fun n => (𝔪 ^ n).comap (algebraMap C D)`. Establish `hJ : Antitone J` using `fun _ _ hab => Ideal.comap_mono (Ideal.pow_le_pow_right hab)`. Establish `h0 : ⨅ n, J n = ⊥`. Simplify using `only [J]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Ideal.comap_iInf, h.sep, ← RingHom.ker_eq_comap_bot, ← RingHom.injective_iff_ker_eq_bot]`. Conclude with `h.inj`. Use `choose s hs using GlobalTheory.exists_le_maximalIdeal_pow_of_iInf_eq_bot J hJ h0`. Establish `hd : ∀ N d, c (N + d) - c N ∈ J (N + 1)` using `fun N d => by`. Proceed by induction on `d with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ d ih`. Establish `h1 : c (N + d + 1) - c (N + d) ∈ J (N + 1)` using `hJ (show N + 1 ≤ N + d + 1 by omega) (hc (N + d))`. Use `(J (N + 1)).add_mem h1 ih` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle : ∀ {a b}, a ≤ b → c b - c a ∈ J (a + 1)` using `fun {a b} hab => by`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Conclude with `hd a d`. Set `t : ℕ → ℕ` to `fun k => k + ∑ i ∈ Finset.range (k + 1), s i`. Establish `ht : ∀ k, s k ≤ t k` using `fun k => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [t, Finset.sum_range_succ]`. Use linear arithmetic over natural numbers and integers. Establish `ht' : ∀ k, k ≤ t k` using `fun k => Nat.le_add_right _ _`. Establish `htm : Monotone t` using `fun a b hab => Nat.add_le_add hab (Finset.sum_le_sum_of_subset (Finset.range_mono (by omega)))`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := maximalIdeal C) (fun k => c (t k)) fun {m n} hmn => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← neg_mem_iff, neg_sub]`. Conclude with `hs m (hJ (by have := ht m; omega) (hle (htm hmn)))`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at hL`. Use `⟨L, fun N => ?_⟩` and prove the remaining obligations. Establish `h1 : c (t (N + 1)) - L ∈ J (N + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hL (N + 1)` as an intermediate fact. Rewrite `this` using `[← h.comap]`. Conclude with `Ideal.le_comap_pow _ (N + 1) this`. Establish `h2 : c (t (N + 1)) - c N ∈ J (N + 1)` using `hle (by have := ht' (N + 1); omega)`. Establish `h3` using `(J (N + 1)).sub_mem h2 h1`.
-
-Rewrite `h3` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.alg_closed :
     ∀ (C : Type) [CommRing C] [IsLocalRing C] [IsNoetherianRing C] [IsAdicComplete (maximalIdeal C) C] {D : Type} [CommRing D] [Algebra C D] (𝔪 : Ideal D), IsVertexRing C 𝔪 → ∀ c : ℕ → C, (∀ N, algebraMap C D (c (N + 1) - c N) ∈ 𝔪 ^ (N + 1)) → ∃ x : C, ∀ N, algebraMap C D (x - c N) ∈ 𝔪 ^ (N + 1) := by

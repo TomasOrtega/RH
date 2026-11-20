@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.ThetaLiftTypeTh
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `succ i => exact (hG.spaces.vert i j hi hj).sigOK`. Consider the case `zero => show (GlobalTheory.Grid.row0 R j).V.SigOK`. Consider the cases of `j with`. Consider the case `zero => exact D.sp.Y_sig 0`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ j`. Simplify using `only [GlobalTheory.Grid.row0]`. Use `split_ifs`. Conclude with `D.sp.Y_sig _`. Conclude with `D.sp.X'_sig`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sigOK_vert {D : D7} {G₀ : Type} [Group G₀] [Fintype G₀] {Pl0 T : Type} {A : FamIn D.what₂.LL G₀ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (G : GlobalTheory.Grid.GridPre R)
@@ -36,13 +36,11 @@ theorem sigOK_vert {D : D7} {G₀ : Type} [Group G₀] [Fintype G₀] {Pl0 T : T
       · exact D.sp.X'_sig
 
 /- English proof (translation)
-Introduce `hL hP D hSz G₀ _ _ Pl0 T A Ks _ _ _ R G hR hG t i j hi hj Φ hΦ φ hφ hint τ`. Establish `hV : (G.V i j).V.SigOK` using `sigOK_vert G hG hi (by omega)`. Introduce `C hC δ hδ`. Take `⟨n, f, p, F, v, hf, hF, happ⟩` from `GlobalTheory.T.theta_lift_horizontal_of_cusp_type hL hP D hSz G₀ Pl0 T A Ks R G hR hG t i j hi hj Φ hΦ φ hφ hint C hC (δ / 2) (by linarith)`. Establish `hCA` using `hL D hSz G₀ Pl0 T A Ks R G hR hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose F' hF' hE using fun l => hCA.th t i j hi hj (f l) (hf l) (F l) (hF l)`. Establish `hψ0 : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.HasTypeAt R.θ (G.V i j).V τ ((G.V i j).S τ) (∑ l, F' l ((G.th t i j).It (p l) (v l)))` using `(GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.typeSub R.θ _ τ _).sum_mem fun l _ => GlobalTheory.T.cuspidal_grid_node_type hP R.θ hR.inf _ hV _ (hF' l) _ τ`. Take `⟨ψ, hψ, hψC⟩` from `hψ0 C hC (δ / 2) (by linarith)`. Use `⟨ψ, hψ, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `happ x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hψC x hx`. Establish `e : (∑ l, ∫ g in (G.meas t i (j + 1)).fd, thetaKO (G.th t i j).ω x g (GlobalTheory.Grid.fock R.ψ R.θ false (G.V i j) (G.V i (j + 1)) (f l) (p l)) * F l (v l) g ∂(G.meas t i (j + 1)).ν) = (∑ l, F' l ((G.th t i j).It (p l) (v l))) x`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun l _ => (hE l (p l) (v l) x).2`. Rewrite `h1` using `[e]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lift_hasTypeAt : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ t i j, i ≤ D.R.m → j < D.R.m → ∀ Φ, IsThetaFunO R.ψ (G.V i j).V (G.V i (j + 1)).V Φ → ∀ φ, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType R.θ (G.V i (j + 1)) φ → (∀ h, IntegrableOn (fun g => thetaKO (G.th t i j).ω h g Φ * φ g) (G.meas t i (j + 1)).fd (G.meas t i (j + 1)).ν) → ∀ τ, GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.HasTypeAt R.θ (G.V i j).V τ ((G.V i j).S τ) (fun h => ∫ g in (G.meas t i (j + 1)).fd, thetaKO (G.th t i j).ω h g Φ * φ g ∂(G.meas t i (j + 1)).ν) := by
   intro hL hP D hSz G₀ _ _ Pl0 T A Ks _ _ _ R G hR hG t i j hi hj Φ hΦ φ hφ hint τ

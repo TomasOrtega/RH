@@ -7,7 +7,7 @@ open NumberField MeasureTheory Matrix GlobalTheory.SUVol ReciprocityTheory.Chart
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SUHaarOver.exists_haar_lying_over` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsHaarSpecialUnitaryLyingOverFlagDomain.lean&line=48#L48)
 -/

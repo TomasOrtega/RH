@@ -30,7 +30,7 @@ def actPair (L : ∀ (U : Scheme.{0}) (t : ℤ), Sec (tw q 0) U →ₗ[ULift.{1}
   else 0
 
 /- English proof (translation)
-Simplify using `[actPair, HomologicalComplex.XIsoOfEq_rfl]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem actPair_pos (L : ∀ (U : Scheme.{0}) (t : ℤ), Sec (tw q 0) U →ₗ[ULift.{1} (ZMod q)]
     Sec ((res _ (tw q i)).X t) U →ₗ[ULift.{1} (ZMod q)] Sec ((res _ (tw q i)).X t) U) (U : Scheme.{0}) (t : ℤ)
@@ -41,7 +41,7 @@ theorem actPair_pos (L : ∀ (U : Scheme.{0}) (t : ℤ), Sec (tw q 0) U →ₗ[U
   rfl
 
 /- English proof (translation)
-Simplify using `[actPair, hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actPair_neg (L : ∀ (U : Scheme.{0}) (t : ℤ), Sec (tw q 0) U →ₗ[ULift.{1} (ZMod q)]
     Sec ((res _ (tw q i)).X t) U →ₗ[ULift.{1} (ZMod q)] Sec ((res _ (tw q i)).X t) U) (U : Scheme.{0}) (s t w : ℤ)
@@ -51,9 +51,9 @@ theorem actPair_neg (L : ∀ (U : Scheme.{0}) (t : ℤ), Sec (tw q 0) U →ₗ[U
 end Act
 
 /- English proof (translation)
-Introduce `q _ i L hL`. Take `⟨lam, hlam⟩` from `h1 q i L hL`. Take `⟨ν, hν⟩` from `h2 q i lam`. Use `⟨ν, fun U t a b => ?_⟩` and prove the remaining obligations. Establish `e : Sec.map (resι _ (tw q 0)) a = Sec.map ((resAug (tw q 0)).f 0) (Sec.map (sglι (tw q 0)) a)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, hν, hlam]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem LeafPairExt_of (h1 : LeafActSgl) (h2 : LeafExtAlongAug) : LeafPairExt := by
   intro q _ i L hL
@@ -64,17 +64,17 @@ theorem LeafPairExt_of (h1 : LeafActSgl) (h2 : LeafExtAlongAug) : LeafPairExt :=
   rw [e, hν, hlam]
 
 /- English proof (translation)
-Introduce `q _ i L hL`. Use `⟨⟨actPair L, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `V U g s t w h a b`. Distinguish the cases in `hs : s = 0`. Substitute `hs` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `rfl : w = t` from `by omega`. Rewrite using `[actPair_pos, actPair_pos, hL.1]`. Use `congr 2`. Rewrite using `[actPair_neg L U s t w h hs, actPair_neg L V s t w h hs]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `U s t w h a b`. Establish `hd : (sgl (tw q 0)).d s (s + 1) = 0` using `by simp`. Rewrite using `[hd]`. Establish `h0 : Sec.map (0 : (sgl (tw q 0)).X s ⟶ (sgl (tw q 0)).X (s + 1)) a = 0` using `rfl`. Rewrite using `[h0, map_zero, LinearMap.zero_apply, zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hs : s = 0`. Substitute `hs` using the available equality. Take `rfl : w = t` from `by omega`. Rewrite using `[actPair_pos, actPair_pos, Int.negOnePow_zero, one_smul]`. Conclude with `hL.2 U _ _ b`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[actPair_neg L U s t w h hs, actPair_neg L U s (t + 1) (w + 1) (by omega) hs]`. Simplify using the standard rewrite rules. Introduce `U t a b`. Express the relevant statement in the definitionally equal form `actPair L U 0 t t (zero_add t) _ b = _`. Rewrite using `[actPair_pos]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`.
+A detailed English derivation is pending.
 -/
 theorem etale_twist_action_induces_single_complex_pairing_holds : LeafActSgl := by
   intro q _ i L hL
@@ -105,7 +105,7 @@ theorem etale_twist_action_induces_single_complex_pairing_holds : LeafActSgl := 
     congr 1
 
 /- English proof (translation)
-The claim follows from `LeafPairExt_of etale_twist_action_induces_single_complex_pairing_holds h2`.
+A detailed English derivation is pending.
 -/
 theorem LeafPairExt_of' (h2 : LeafExtAlongAug) : LeafPairExt := LeafPairExt_of etale_twist_action_induces_single_complex_pairing_holds h2
 

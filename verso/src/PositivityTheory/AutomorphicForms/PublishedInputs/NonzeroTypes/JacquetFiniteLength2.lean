@@ -17,7 +17,7 @@ namespace JacquetFiniteLength₂
 variable {n : ℕ} (G : Grp k n)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.JacquetBlocks.hasFiniteLength_twist_iff (jacU G.e π) (deltaHalf k _)⁻¹).1 ((hBZ k).2.1 _ _ _ G.e V π hπ hfl)`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_jacU (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) {V : Type} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (hπ : IsSmooth π) (hfl : HasFiniteLength π) :
@@ -28,7 +28,7 @@ theorem hasFiniteLength_jacU (hBZ : GlobalTheory.Published.BernsteinZelevinskyFi
 end JacquetFiniteLength₂
 
 /- English proof (translation)
-Introduce `L V _ _ π hπ hirr`. Conclude with `⟨isSmooth_jacU G.e hπ, JacquetFiniteLength₂.hasFiniteLength_jacU G L.loc.bz π hπ (hasFiniteLength_of_isIrreducible hirr)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem step_jacFin {n : ℕ} (G : Grp k n) : G.JacquetModuleFiniteProp := by
   intro L V _ _ π hπ hirr

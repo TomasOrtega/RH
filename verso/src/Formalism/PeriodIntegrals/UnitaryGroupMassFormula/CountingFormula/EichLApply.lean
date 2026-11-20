@@ -15,9 +15,9 @@ def InW (D : Formalism.BasicNotions.D7) (y : (VS D).V) : Prop :=
   (∀ a, (VS D).hT (D.sp.hypE a) y = 0) ∧ (∀ a, (VS D).hT (D.sp.hypF a) y = 0) ∧ (VS D).hT D.sp.zm y = 0
 
 /- English proof (translation)
-Establish `h` using `(VS D).herm`. Use `first`. Consider the case `exact h x y`. Consider the case `exact h.eq x y`. Consider the case `simpa using h x y`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa using h.eq x y`.
+A detailed English derivation is pending.
 -/
 theorem hT_star (D : Formalism.BasicNotions.D7) (x y : (VS D).V) : star ((VS D).hT x y) = (VS D).hT y x := by
   have h := (VS D).herm
@@ -28,27 +28,27 @@ theorem hT_star (D : Formalism.BasicNotions.D7) (x y : (VS D).V) : star ((VS D).
   | simpa using h.eq x y
 
 /- English proof (translation)
-Establish `h` using `D.sp.T_prime.ne_zero`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem T_ne (D : Formalism.BasicNotions.D7) : (D.sp.T : D.host.E) ≠ 0 := by
   have h := D.sp.T_prime.ne_zero
   exact_mod_cast h
 
 /- English proof (translation)
-Conclude with `(D.sp.hyp_orthz i).1`.
+A detailed English derivation is pending.
 -/
 theorem hZE (D : Formalism.BasicNotions.D7) (i : Fin D.R.rS) : (VS D).hT D.sp.zm (D.sp.hypE i) = 0 := by exact (D.sp.hyp_orthz i).1
 /- English proof (translation)
-Conclude with `(D.sp.hyp_orthz i).2`.
+A detailed English derivation is pending.
 -/
 theorem hZF (D : Formalism.BasicNotions.D7) (i : Fin D.R.rS) : (VS D).hT D.sp.zm (D.sp.hypF i) = 0 := by exact (D.sp.hyp_orthz i).2
 /- English proof (translation)
-Rewrite using `[← hT_star D D.sp.zm (D.sp.hypE i), hZE, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hEZ (D : Formalism.BasicNotions.D7) (i : Fin D.R.rS) : (VS D).hT (D.sp.hypE i) D.sp.zm = 0 := by
   rw [← hT_star D D.sp.zm (D.sp.hypE i), hZE, star_zero]
 /- English proof (translation)
-Rewrite using `[← hT_star D D.sp.zm (D.sp.hypF i), hZF, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hFZ (D : Formalism.BasicNotions.D7) (i : Fin D.R.rS) : (VS D).hT (D.sp.hypF i) D.sp.zm = 0 := by
   rw [← hT_star D D.sp.zm (D.sp.hypF i), hZF, star_zero]
@@ -59,32 +59,32 @@ def pWL (D : Formalism.BasicNotions.D7) : (VS D).V →ₗ[D.host.E] (VS D).V :=
     + ((D.sp.T : D.host.E)⁻¹) • ((VS D).hT D.sp.zm).smulRight D.sp.zm
 
 /- English proof (translation)
-Simplify using `only [pW, pWL, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.smul_apply, smul_smul, div_eq_inv_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pW_eq (D : Formalism.BasicNotions.D7) (v : (VS D).V) : pW D v = pWL D v := by
   simp only [pW, pWL, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply,
     LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.smul_apply, smul_smul, div_eq_inv_mul]
 
 /- English proof (translation)
-Simplify using `only [pW_eq, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pW_add (D : Formalism.BasicNotions.D7) (u v : (VS D).V) : pW D (u + v) = pW D u + pW D v := by simp only [pW_eq, map_add]
 /- English proof (translation)
-Simplify using `only [pW_eq, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pW_sub (D : Formalism.BasicNotions.D7) (u v : (VS D).V) : pW D (u - v) = pW D u - pW D v := by simp only [pW_eq, map_sub]
 /- English proof (translation)
-Simplify using `only [pW_eq, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pW_smul (D : Formalism.BasicNotions.D7) (k : D.host.E) (v : (VS D).V) : pW D (k • v) = k • pW D v := by simp only [pW_eq, map_smul]
 /- English proof (translation)
-Simplify using `only [pW_eq, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pW_sum (D : Formalism.BasicNotions.D7) {ι : Type} (s : Finset ι) (v : ι → (VS D).V) :
     pW D (∑ i ∈ s, v i) = ∑ i ∈ s, pW D (v i) := by simp only [pW_eq, map_sum]
 
 /- English proof (translation)
-Rewrite using `[← hT_star D (D.sp.hypE i) (D.sp.hypF a), D.sp.hyp_ef i a]`. Distinguish the cases in `h : a = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem hT_hypF_hypE (D : Formalism.BasicNotions.D7) (a i : Fin D.R.rS) :
     (VS D).hT (D.sp.hypF a) (D.sp.hypE i) = if a = i then 1 else 0 := by
@@ -95,13 +95,13 @@ private theorem hT_hypF_hypE (D : Formalism.BasicNotions.D7) (a i : Fin D.R.rS) 
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Simplify using `[pW, hT_hypF_hypE, D.sp.hyp_ee, hZE, ite_smul, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules.
 -/
 theorem pW_e (D : Formalism.BasicNotions.D7) (i : Fin D.R.rS) : pW D (D.sp.hypE i) = 0 := by
   simp [pW, hT_hypF_hypE, D.sp.hyp_ee, hZE, ite_smul, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Unfold `InW at hy`. Take `⟨h1, h2, h3⟩` from `hy`. Simplify using `[pW, h1, h2, h3]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem pW_inW (D : Formalism.BasicNotions.D7) {y : (VS D).V} (hy : InW D y) : pW D y = y := by
   unfold InW at hy
@@ -109,9 +109,9 @@ theorem pW_inW (D : Formalism.BasicNotions.D7) {y : (VS D).V} (hy : InW D y) : p
   simp [pW, h1, h2, h3]
 
 /- English proof (translation)
-Establish `hT0` using `T_ne D`. Unfold `InW`. Use `⟨fun b => ?_, fun b => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[pW, map_sum, D.sp.hyp_ee, D.sp.hyp_ef, hEZ, mul_ite, Finset.sum_ite_eq]`. Simplify using `[pW, map_sum, hT_hypF_hypE, D.sp.hyp_ff, hFZ, mul_ite, Finset.sum_ite_eq']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[pW, map_sum, hZE, hZF, D.sp.zm_norm, div_mul_cancel₀, hT0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inW_pW (D : Formalism.BasicNotions.D7) (v : (VS D).V) : InW D (pW D v) := by
   have hT0 := T_ne D
@@ -125,7 +125,7 @@ def eichL (D : Formalism.BasicNotions.D7) (e y : (VS D).V) (c : D.host.E) : (VS 
   LinearMap.id + ((VS D).hT e).smulRight y - ((VS D).hT y).smulRight e + c • ((VS D).hT e).smulRight e
 
 /- English proof (translation)
-Simplify using `only [eichL, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smulRight_apply, LinearMap.smul_apply, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eichL_apply (D : Formalism.BasicNotions.D7) (e y : (VS D).V) (c : D.host.E) (v : (VS D).V) :
     eichL D e y c v = v + (VS D).hT e v • y - (VS D).hT y v • e + (c * (VS D).hT e v) • e := by
@@ -133,9 +133,9 @@ theorem eichL_apply (D : Formalism.BasicNotions.D7) (e y : (VS D).V) (c : D.host
     LinearMap.smulRight_apply, LinearMap.smul_apply, smul_smul]
 
 /- English proof (translation)
-Establish `h1 : (VS D).hT e (eichL D e y c v) = (VS D).hT e v`. Simplify using `[eichL_apply, he, hey]`. Establish `h2 : (VS D).hT y (eichL D e y c v) = (VS D).hT y v + (VS D).hT e v * (VS D).hT y y`. Apply the tactic sequence `simp [eichL_apply, hye] <;> ring`. Establish `hc' : (VS D).hT e v * (c + c + (VS D).hT y y) = 0` using `by rw [hc, mul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[eichL_apply D e (-y) c (eichL D e y c v), h1]`. Simplify using `only [map_neg, LinearMap.neg_apply, h2]`. Rewrite using `[eichL_apply D e y c v]`. Take the linear combination `(norm := module) hc' • e`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eich_inv (D : Formalism.BasicNotions.D7) {e y : (VS D).V} {c : D.host.E} (he : (VS D).hT e e = 0)
     (hey : (VS D).hT e y = 0) (hye : (VS D).hT y e = 0) (hc : c + c + (VS D).hT y y = 0) (v : (VS D).V) :
@@ -151,9 +151,9 @@ theorem eich_inv (D : Formalism.BasicNotions.D7) {e y : (VS D).V} {c : D.host.E}
   linear_combination (norm := module) hc' • e
 
 /- English proof (translation)
-Establish `hE : ∀ w, (VS D).hT e (eichL D e y c w) = (VS D).hT e w` using `fun w => by`. Simplify using `[eichL_apply, he, hey]`. Establish `hY : ∀ w, (VS D).hT y (eichL D e y c w) = (VS D).hT y w + (VS D).hT e w * (VS D).hT y y` using `fun w => by`. Apply the tactic sequence `simp [eichL_apply, hye] <;> ring`. Establish `hU : ∀ w, (VS D).hT u (eichL D e y c w) = (VS D).hT u w + (VS D).hT e w * star ((VS D).hT y u) - (VS D).hT y w * star ((VS D).hT e u) + c * (VS D).hT e w * star ((VS D).hT e u)` using `fun w => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[hT_star D y u, hT_star D e u]`. Apply the tactic sequence `simp [eichL_apply] <;> ring`. Rewrite using `[eichL_apply D e y c u]`. Simplify using `only [map_add, map_sub, map_smulₛₗ, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, hE, hY, hU, starRingEnd_apply, star_mul']`. Take the linear combination `(star ((VS D).hT e u) * (VS D).hT e v) * hc`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eich_isom (D : Formalism.BasicNotions.D7) {e y : (VS D).V} {c : D.host.E} (he : (VS D).hT e e = 0)
     (hey : (VS D).hT e y = 0) (hye : (VS D).hT y e = 0) (hc : c + star c + (VS D).hT y y = 0)

@@ -16,11 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UCanon.FamFrom
 
 /- English proof (translation)
-Use `show GlobalTheory.UU.scaleGen _ (GlobalTheory.UU.scaleGen _ _) = _`. Unfold `GlobalTheory.UU.scaleGen`. Generalize the expression as in `D.psi χ = b`. Consider the cases of `b`. Use `congr 1`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Establish `h1 : unitOn ((g χ)⁻¹) * unitOn (g χ) = 1`. Establish `hu : unitOn ((g χ)⁻¹ * g χ) = unitOn ((g χ)⁻¹) * unitOn (g χ)` using `map_mul _ _ _`. Rewrite using `[← hu, inv_mul_cancel]`. Conclude with `Units.ext (map_one _)`.
-
-Rewrite using `[← _root_.mul_assoc, ← map_mul, h1, map_one, _root_.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rescale_inv_psi {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (g : D.X → (FractionRing R)ˣ) (χ : D.X) :
     (GlobalTheory.PolDeg.rescale (GlobalTheory.PolDeg.rescale D g) (fun y => (g y)⁻¹)).psi χ = D.psi χ := by
@@ -37,7 +35,7 @@ theorem rescale_inv_psi {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (g :
   rw [← _root_.mul_assoc, ← map_mul, h1, map_one, _root_.one_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ hD with psi_pr := fun x => (rescale_inv_psi D g x).symm ▸ hD.psi_pr x }, fun _ => rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPullDeg_rescale_inv {W R : Type} [CommRing W] [IsDomain W] [CommRing R] [IsDomain R] (φ : W →+* R)
     (D₀ : DegPre W) (D : DegPre R) (g : D.X → (FractionRing R)ˣ) (hD : IsPullDeg φ D₀ D) :
@@ -50,25 +48,23 @@ end GlobalTheory.UCanon.FamFrom
 namespace GlobalTheory.UCanon.FamFrom
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dl l c L R _ _ _ hB iw hiw m N s ε hε hs hu hpos hdef hnt`. Use `letI := H.starRing`. Establish `hw : H.w0 + star H.w0 = 1` using `GlobalTheory.TauTwist.halfUnit_add_star H`. Establish `hM : 0 < l.M'` using `Nat.lcm_pos (by have := l.three_le; omega) l.A_pos`. Use `letI iD : Module (𝓞 E) (mulDeg L.D l.M').X := L.mod`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Take `⟨he0, hb0, hU0, oa0, hoa0, hW0⟩` from `GlobalTheory.T.degenerationDataNsmulRescale_keeps_laws L.W L.D (𝓞 E) L.oa H.w0 l.M' L.even L.bimult L.w0 L.gen`. Establish `hne : ∃ i, ε (.inl i) ≠ 0`. Take `⟨y, hy⟩` from `exists_ne (0 : L.D.X)`. Establish `h` using `hdef y hy`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h.ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i, fun h0 => hi (by rw [h0]; rfl)⟩`. Take `⟨D'', hD, iM, e, hxe, hPE, hTB, hPI, hfin, ⟨oa1, hoa1, hPW⟩, hmono, -, -, -⟩` from `GlobalTheory.UTautData.main L.W R (maximalIdeal R) iw hiw (mulDeg L.D l.M') (𝓞 E) oa0 H.w0 hw he0 hb0 hW0 hU0 (fun i => s (.inl i)) (fun i => (hs i).2) (fun i => (hs i).1) (fun j => (hu j).unit) l.M' hM (fun i => ε (.inl i)) (fun j => ε (.inr j)) (fun i => hε _) hpos (fun j => hε …`. Use `set T := GlobalTheory.UTautData.taut D'' e H.w0 (fun i => s (.inl i)) (fun i => (hs i).2) (fun j => (hu j).unit) l.M' (fun i => ε (.inl i)) (fun j => ε (.inr j)) with hT`. Set `D1 : DegData R (maximalIdeal R)` to `⟨T, hPE, hTB, hPI, hfin⟩`. Take `⟨t, P, hPD, hmod, hoD⟩` from `GlobalTheory.T.exists_semiAbelian_pelUniformisation_of_norm H R hB D1 (inst := iM) oa1 hPW`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (Dd : DegData R (maximalIdeal R)) [im : Module (𝓞 E) Dd.toPre.X] (od : Dd.toPre.OAct (𝓞 E)), Dd = D1 → HEq im iM → HEq od oa1 → ∃ e' : Dd.toPre.X ≃ₗ[𝓞 E] L.D.X, DivFrom L Dd.toPre od iw s ε e' ∧ IsMonomial Dd.toPre (fun i => s (.inl i)) (fun i => (l.M' : ℤ) • pull e'.toLi …`. Introduce and unpack `Dd im od rfl h1 h2`. Establish `h1'` using `eq_of_heq h1`. Substitute `im` using the available equality. Establish `h2'` using `eq_of_heq h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `od` using the available equality. Use `letI : Module (𝓞 E) D1.toPre.X := iM`. Set `e₁ : D1.toPre.X ≃ₗ[𝓞 E] L.D.X` to `e`. Use `⟨e₁, ?_, hmono⟩` and prove the remaining obligations. Take `⟨h2p, hx2, he2⟩` from `isPullDeg_rescale_inv iw (mulDeg L.D l.M') D'' (GlobalTheory.UTautData.scaleFn (GlobalTheory.UTautData.coordsK (fun i => s (.inl i)) (fun i => (hs i).2) (fun j => (hu j).unit)) H.w0 (GlobalTheory.UTautData.forms l.M' (fun i => pull e.toLinearMap (ε (.inl i))) (fun j => pull e.toL …`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, h2p, fun y => ?_, fun y => (hx2 y).trans (hxe y).symm, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[inv_inv]`. Use `(GlobalTheory.UTautData.scaleFn_coe _ _ _ _ _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h3 : e₁ (H.w0 • y) = H.w0 • e₁ y` using `e₁.map_smul H.w0 y`. Use `show _ = algebraMap R (FractionRing R) (s (.inl i)) ^ ((l.M' : ℤ) * ε (.inl i) (e₁ y) (H.w0 • e₁ y))`. Rewrite using `[← h3]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h3 : e₁ (H.w0 • y) = H.w0 • e₁ y` using `e₁.map_smul H.w0 y`. Use `show _ = algebraMap R (FractionRing R) (s (.inr j)) ^ ((l.M' : ℤ) * ε (.inr j) (e₁ y) (H.w0 • e₁ y))`. Rewrite using `[← h3, (hu j).unit_spec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[he2]`. Establish `h` using `hoa1 x`. Rewrite `h` using `[hoa0]`. Conclude with `h`. Take `⟨e', h1, h2⟩` from `key P.D P.oD hPD hmod hoD`.
-
-Conclude with `⟨t, P, e', h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowBase D' c) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (iw : L.W →+* R), Function.Injective iw → ∀ (m N : ℕ) (s : Fin m ⊕ Fin N → R) (ε : Fin m ⊕ Fin N → LinearMap.BilinForm ℤ L.D.X), (∀ k, ε k ∈ balForms H.bar L.D.X) → (∀ i, s (.inl i) ∈ maximalIdeal R ∧ s (.inl i) ≠ 0) → (∀ j, IsUnit (s (.inr j))) → (∀ i y, 0 ≤ ε (.inl i) y y) → (∀ y, y ≠ 0 → 0 < ∑ i, ε (.inl i) y y) → Nontrivial L.D.X → ∃ (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (e : P.D.toPre.X ≃ₗ[𝓞 E] L.D.X), DivFrom L P.D.toPre P.oD iw s ε e ∧ IsMonomial P.D.toPre (fun i => s (.inl i)) (fun i => (l.M' : ℤ) • pull e.toLinearMap (ε (.inl i))) := by
   intro E _ _ _ H Dl l c L R _ _ _ hB iw hiw m N s ε hε hs hu hpos hdef hnt

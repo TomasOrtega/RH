@@ -7,9 +7,9 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.LimV
 
 /- English proof (translation)
-Introduce `E _ _ _ N x w hw`. Establish `hL : ∀ t : ℂ, absFn N t x = Complex.exp (t * (GlobalTheory.Mem.Chr.CharModel.logNorm E (GeneralLinearGroup.det x) : ℝ))`. Introduce `t`. Conclude with `GlobalTheory.Mem.Chr.CharModel.absHom_val E t (GeneralLinearGroup.det x)`. Establish `h0 : Tendsto (fun k => Complex.exp (w k * (GlobalTheory.Mem.Chr.CharModel.logNorm E (GeneralLinearGroup.det x) : ℝ))) atTop (𝓝 (Complex.exp (0 * (GlobalTheory.Mem.Chr.CharModel.logNorm E (GeneralLinearGroup.det x) : ℝ))))` using `(Complex.continuous_exp.tendsto _).comp (hw.mul_const _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h0` using `[hL]`.
+A detailed English derivation is pending.
 -/
 theorem absFn_tendsto_one : ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ) (x : GA E N) (w : ℕ → ℂ), Tendsto w atTop (𝓝 0) → Tendsto (fun k => absFn N (w k) x) atTop (𝓝 1) := by
   intro E _ _ _ N x w hw

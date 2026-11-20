@@ -12,14 +12,14 @@ open scoped ENNReal
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `(linProjₗ π).map_smul c y`.
+A detailed English derivation is pending.
 -/
 theorem linProj_smul_left {m n : ℕ} (π : Fin m → Fin n → ℂ) (c : ℂ) (y : EuclideanSpace ℂ (Fin n)) :
     linProj π (c • y) = c • linProj π y :=
   (linProjₗ π).map_smul c y
 
 /- English proof (translation)
-Simplify using `only [Set.indicator, Metric.mem_ball, dist_zero_right, linProj_smul_left, norm_smul, Complex.norm_real, Real.norm_eq_abs, Pi.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tangentGauss_indicator_eq {m n : ℕ} (π : Fin m → Fin n → ℂ) (r : ℝ) :
     (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1 (linProj π ((r : ℂ) • firstCoordVec n)) =
@@ -28,7 +28,7 @@ theorem tangentGauss_indicator_eq {m n : ℕ} (π : Fin m → Fin n → ℂ) (r 
     Complex.norm_real, Real.norm_eq_abs, Pi.one_apply]
 
 /- English proof (translation)
-Unfold `tangentGaussProfile`. Simplify using `only [tangentGauss_indicator_eq, abs_abs]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem tangentGaussProfile_abs (n m : ℕ) (r : ℝ) :
     tangentGaussProfile n m |r| = tangentGaussProfile n m r := by
@@ -36,11 +36,9 @@ theorem tangentGaussProfile_abs (n m : ℕ) (r : ℝ) :
   simp only [tangentGauss_indicator_eq, abs_abs]
 
 /- English proof (translation)
-Introduce `r hr s hs hrs`. Unfold `tangentGaussProfile`. Use `lintegral_mono fun π => ?_` and prove the remaining obligations. Simplify using `only [tangentGauss_indicator_eq, abs_of_nonneg (Set.mem_Ici.1 hr), abs_of_nonneg (Set.mem_Ici.1 hs)]`. Establish `key : s * ‖linProj π (firstCoordVec n)‖ < 1 → r * ‖linProj π (firstCoordVec n)‖ < 1` using `fun h => lt_of_le_of_lt (mul_le_mul_of_nonneg_right hrs (norm_nonneg _)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `gcongr`. Use `split_ifs with h1 h2`. Conclude with `le_rfl`. Conclude with `absurd (key h1) h2`. Conclude with `zero_le_one`.
-
-Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem tangentGaussProfile_antitoneOn (n m : ℕ) :
     AntitoneOn (tangentGaussProfile n m) (Set.Ici 0) := by
@@ -59,9 +57,9 @@ theorem tangentGaussProfile_antitoneOn (n m : ℕ) :
   · exact le_rfl
 
 /- English proof (translation)
-Establish `hψ : Antitone fun t : ℝ => tangentGaussProfile n m (max t 0)` using `fun a b hab => tangentGaussProfile_antitoneOn n m (Set.mem_Ici.2 (le_max_right a 0)) (Set.mem_Ici.2 (le_max_right b 0)) (max_le_max hab le_rfl)`. Establish `h : tangentGaussProfile n m = fun r => tangentGaussProfile n m (max |r| 0)`. Use function extensionality and compare the values at `r`. Rewrite using `[max_eq_left (abs_nonneg r), tangentGaussProfile_abs]`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hψ.measurable.comp measurable_abs`.
+A detailed English derivation is pending.
 -/
 theorem measurable_tangentGaussProfile (n m : ℕ) : Measurable (tangentGaussProfile n m) := by
   have hψ : Antitone fun t : ℝ => tangentGaussProfile n m (max t 0) := fun a b hab =>
@@ -74,7 +72,7 @@ theorem measurable_tangentGaussProfile (n m : ℕ) : Measurable (tangentGaussPro
   exact hψ.measurable.comp measurable_abs
 
 /- English proof (translation)
-Break down `le_total r 1 with h | h` into its components or cases. Conclude with `(pow_le_one₀ hr h).trans (one_le_pow₀ (by nlinarith))`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pow_two_mul_sub_one_le {r : ℝ} (hr : 0 ≤ r) (m : ℕ) : r ^ (2 * m - 1) ≤ (1 + r ^ 2) ^ m := by
   rcases le_total r 1 with h | h
@@ -84,33 +82,25 @@ theorem pow_two_mul_sub_one_le {r : ℝ} (hr : 0 ≤ r) (m : ℕ) : r ^ (2 * m -
       _ ≤ (1 + r ^ 2) ^ m := pow_le_pow_left₀ (sq_nonneg r) (by linarith) m
 
 /- English proof (translation)
-Introduce `n m hm hmn`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Establish `hk : ∀ r : ℝ, tangentGaussProfile (m + k) m r = ∫⁻ π : Fin m → Fin (m + k) → ℂ, matGauss π * (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1 (linProj π ((r : ℂ) • firstCoordVec (m + k))) * ENNReal.ofReal (‖(coordPlaneBlock π).det‖ ^ 2)`. Introduce `r`. Unfold `tangentGaussProfile`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using `only [hA m k]`. Establish `hpos : ∀ r : ℝ, 0 < tangentGaussProfile (m + k) m r`. Introduce `r`. Rewrite using `[hk r]`. Establish `hcont : Continuous fun π : Fin m → Fin (m + k) → ℂ => linProj π ((r : ℂ) • firstCoordVec (m + k))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `linProj`. Conclude with `(PiLp.continuous_toLp 2 _).comp (by fun_prop)`. Establish `hdet : Continuous fun π : Fin m → Fin (m + k) → ℂ => (coordPlaneBlock π).det` using `Continuous.matrix_det (by unfold coordPlaneBlock; fun_prop)`. Establish `hmeas : Measurable fun π : Fin m → Fin (m + k) → ℂ => matGauss π * (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1 (linProj π ((r : ℂ) • firstCoordVec (m + k))) * ENNReal.ofReal (‖(coordPlaneBlock π).det‖ ^ 2)`. Use `Measurable.mul (Measurable.mul ?_ ?_) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `matGauss`. Conclude with `ENNReal.measurable_ofReal.comp (by fun_prop)`. Conclude with `(measurable_one.indicator Metric.isOpen_ball.measurableSet).comp hcont.measurable`. Conclude with `ENNReal.measurable_ofReal.comp ((continuous_norm.comp hdet).pow 2).measurable`. Rewrite using `[lintegral_pos_iff_support hmeas]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set U := {π : Fin m → Fin (m + k) → ℂ | linProj π ((r : ℂ) • firstCoordVec (m + k)) ∈ Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1}`. Establish `hU : IsOpen U` using `Metric.isOpen_ball.preimage hcont`. Establish `hU0 : (0 : Fin m → Fin (m + k) → ℂ) ∈ U`. Establish `h0 : linProj (0 : Fin m → Fin (m + k) → ℂ) ((r : ℂ) • firstCoordVec (m + k)) = 0`. Use extensionality with `i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[linProj]`. Simplify using `only [U, Set.mem_ofPred_eq, h0, Metric.mem_ball, dist_self, zero_lt_one]`. Establish `: (volume : Measure (Fin m → Fin (m + k) → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Use `(hU.measure_pos volume ⟨0, hU0⟩).trans_le (measure_mono_ae ?_)` and prove the remaining obligations. Use `filter_upwards [ae_coordPlaneBlock_det_ne_zero m k] with π hπdet hπU`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show matGauss π * _ * _ ≠ 0`. Use `mul_ne_zero (mul_ne_zero ?_ ?_) ?_` and prove the remaining obligations. Conclude with `(ENNReal.ofReal_pos.2 (Real.exp_pos _)).ne'`. Rewrite using `[Set.indicator_of_mem hπU]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(ENNReal.ofReal_pos.2 (by positivity)).ne'`. Take `⟨C, hC⟩` from `hB m k hm`. Establish `hmeasM : Measurable fun r : ℝ => tangentGaussProfile (m + k) m r * ENNReal.ofReal (2 * m * r ^ (2 * m - 1))` using `(measurable_tangentGaussProfile _ _).mul (ENNReal.measurable_ofReal.comp (by fun_prop))`. Use `⟨measurable_tangentGaussProfile _ _, tangentGaussProfile_antitoneOn _ _, hpos, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[setLIntegral_pos_iff hmeasM]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : Set.Ioi (0 : ℝ) ⊆ Function.support (fun r : ℝ => tangentGaussProfile (m + k) m r * ENNReal.ofReal (2 * m * r ^ (2 * m - 1))) ∩ Set.Ioi 0`. Introduce `r hr`. Use `⟨?_, hr⟩` and prove the remaining obligations. Establish `hm' : (0 : ℝ) < m` using `by exact_mod_cast hm`. Conclude with `mul_ne_zero (hpos r).ne' (ENNReal.ofReal_pos.2 (by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `Set.mem_Ioi.1 hr` as an intermediate fact. Use the proof step `positivity)).ne'`. Conclude with `lt_of_lt_of_le (by simp) (measure_mono hsub)`. Establish `hle : ∀ r ∈ Set.Ioi (0 : ℝ), tangentGaussProfile (m + k) m r * ENNReal.ofReal (2 * m * r ^ (2 * m - 1)) ≤ ENNReal.ofReal (2 * m * max C 0 * (1 + r ^ 2)⁻¹)`. Introduce `r hr`.
-
-Establish `hr0 : 0 ≤ r` using `le_of_lt hr`. Establish `h1` using `pow_two_mul_sub_one_le hr0 m`. Establish `hx : 0 < 1 + r ^ 2` using `by positivity`. Establish `hC0 : 0 ≤ max C 0` using `le_max_right _ _`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hk r]`. Use `gcongr`. Conclude with `hC r`. Use `_ = ENNReal.ofReal (C / (1 + r ^ 2) ^ (m + 1) * (2 * m * r ^ (2 * m - 1))) := (ENNReal.ofReal_mul' (by positivity)).symm`. Use `_ ≤ ENNReal.ofReal (2 * m * max C 0 * (1 + r ^ 2)⁻¹) := by`.
-
-Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_max_left _ _`. Use `_ = 2 * m * max C 0 * (1 + r ^ 2)⁻¹ := by`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem TangentGaussMoment.proof (hA : LeadPlaneJac.Statement) (hB : LeadBlockGaussTail.Statement) :
     TangentGaussMoment.Statement := by

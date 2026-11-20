@@ -8,7 +8,7 @@ open scoped Matrix MatrixGroups
 namespace UpperTheory.V.Af.Nf
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, Matrix.GeneralLinearGroup.map]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_aff {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (x : R) :
     Matrix.GeneralLinearGroup.map p (aff 1 x) = aff 1 (p x) := by
@@ -16,21 +16,21 @@ private theorem map_aff {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (
   fin_cases i <;> fin_cases j <;> simp [aff, Matrix.GeneralLinearGroup.map]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem aff_comm {R : Type} [CommRing R] (x y : R) : aff 1 x * aff 1 y = aff 1 y * aff (1 : Rˣ) x := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ, add_comm]
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem aff_zero {R : Type} [CommRing R] : aff (1 : Rˣ) (0 : R) = 1 := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   fin_cases i <;> fin_cases j <;> simp [aff]
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [aff] <;> fun_prop`. Express the relevant statement in the definitionally equal form `Continuous fun x : R => (!![(((1 : Rˣ)⁻¹ : Rˣ) : R), -((((1 : Rˣ)⁻¹ : Rˣ) : R) * x); 0, 1] : Matrix (Fin 2) (Fin 2) R)`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem continuous_aff {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] :
     Continuous fun x : R => aff (1 : Rˣ) x := by
@@ -42,7 +42,7 @@ private theorem continuous_aff {R : Type} [CommRing R] [TopologicalSpace R] [IsT
     fin_cases i <;> fin_cases j <;> simp <;> fun_prop
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 + nilM x : Matrix (Fin 2) (Fin 2) R) i j = _`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, nilM]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem unip_eq {R : Type} [CommRing R] (x : BlockIx 2 1 → R) : unip x = aff 1 (x ⟨(0, 1), by decide⟩) := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -53,11 +53,11 @@ end UpperTheory.V.Af.Nf
 
 open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Nf in
 /- English proof (translation)
-Introduce `φ hl ho g`. Use `set t : GL (Fin 2) (Af ℚ) := Matrix.GeneralLinearGroup.map (pFin ℚ) g with ht`. Establish `hc : Continuous fun x : Af ℚ => t⁻¹ * aff 1 x * t` using `(continuous_const.mul continuous_aff).mul continuous_const`. Establish `h0 : t⁻¹ * aff 1 (0 : Af ℚ) * t ∈ {u | TR.finRep ℚ 2 u φ = φ}`. Simplify using `[aff_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `(((hc.tendsto 0).comp (GlobalTheory.AdelicFactorial.tendsto_factorial_finiteAdele ℚ)).eventually (ho.mem_nhds h0)).exists`. Use `⟨n.factorial, n.factorial_pos, fun x => ?_⟩` and prove the remaining obligations. Use `set N : ℕ := n.factorial with hN`. Establish `hn' : ∀ g, φ.1 (g * finGL ℚ 2 (t⁻¹ * aff 1 (N : Af ℚ) * t)) = φ.1 g` using `fun g => congrFun (congrArg Subtype.val hn) g`. Establish `e1 : g * finGL ℚ 2 (t⁻¹ * aff 1 (N : Af ℚ) * t) = finGL ℚ 2 (aff 1 (N : Af ℚ)) * g` using `TR.ga_ext (by simp) (by simp [← ht, mul_assoc])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : unip x * finGL ℚ 2 (aff 1 (N : Af ℚ)) = finGL ℚ 2 (aff 1 (N : Af ℚ)) * unip x` using `TR.ga_ext (by simp) (by simp [unip_eq, map_aff, aff_comm])`. Establish `e3 : ratGL ℚ 2 (aff 1 (N : ℚ)) = upR (aff 1 (N : ℝ)) * finGL ℚ 2 (aff 1 (N : Af ℚ))`. Rewrite using `[ratGL_eq, toR, toF, map_aff, map_aff, map_natCast, map_natCast]`. Rewrite using `[← hn', ← hl (aff 1 (N : ℚ)) (unip x * g), e3, mul_assoc, mul_assoc, e1, mul_assoc, ← mul_assoc (unip x), e2, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Nf.autPer :
     UpperTheory.V.Af.Nf.AutPer := by

@@ -14,9 +14,9 @@ def HighestWeightExistsBody : Prop :=
 open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7
 
 /- English proof (translation)
-Establish `hJ : Formalism.REAL.Jm (Formalism.MainNotions.S.allPos k) = 1`. Unfold `Formalism.REAL.Jm Formalism.MainNotions.S.allPos`. Use `first`. Consider the case `simp`. Consider the case `(ext i j; simp [Matrix.diagonal, Matrix.one_apply])`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Use `first`. Consider the case `simp only [Formalism.MainNotions.S.UJset, Formalism.REAL.Kset, Set.mem_setOf_eq, Formalism.REAL.inUJ, hJ, mul_one, one_mul, and_true, Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Consider the case `simp [Formalism.MainNotions.S.UJset, Formalism.REAL.Kset, Formalism.REAL.inUJ, hJ, Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UJset_allPos_eq_Kset (k : ℕ) :
     Formalism.MainNotions.S.UJset (Formalism.MainNotions.S.allPos k) = Formalism.REAL.Kset (Formalism.MainNotions.S.allPos k) := by
@@ -33,11 +33,9 @@ theorem UJset_allPos_eq_Kset (k : ℕ) :
       Matrix.star_eq_conjTranspose]
 
 /- English proof (translation)
-Introduce `k u hu`. Take `⟨T⟩` from `kType_exists (Formalism.MainNotions.S.allPos k) u hu`. Take `⟨σ, -, hU, hK⟩` from `KType.exists_rep T`. Use `⟨T.V, inferInstance, inferInstance, σ, ?_, inferInstance, ?_, hK⟩` and prove the remaining obligations. Use `⟨⟨T.w, 0, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Use `T.w_norm` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Rewrite using `[UJset_allPos_eq_Kset]`.
-
-Conclude with `hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem highest_weight_exists : HighestWeightExistsBody := by
   intro k u hu

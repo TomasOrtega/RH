@@ -12,7 +12,7 @@ def SpTri {ι A C : Type} [CommRing A] [CommRing C] (M : ι → M4 A) (P : ι �
 def Dist {A : Type} [CommRing A] (I : Ideal A) (p : A[X]) : Prop := p.Monic ∧ ∀ n < p.natDegree, p.coeff n ∈ I
 
 /- English proof (translation)
-Use `⟨?_, fun _ => ⟨fun i j _ => by simp, fun i => by simp⟩⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example {A : Type} [CommRing A] : SpTri (fun _ : Unit => (0 : M4 A)) (fun _ _ => X) (RingHom.id A) 1 := by
   refine ⟨?_, fun _ => ⟨fun i j _ => by simp, fun i => by simp⟩⟩
@@ -20,16 +20,16 @@ example {A : Type} [CommRing A] : SpTri (fun _ : Unit => (0 : M4 A)) (fun _ _ =>
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.one_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨monic_one, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example {A : Type} [CommRing A] (I : Ideal A) : Dist I 1 := ⟨monic_one, by simp⟩
 
 /- English proof (translation)
-Establish `a : ∀ Y : M4 C, adj (Y.map ψ) = (adj Y).map ψ` using `fun Y => by`. Use extensionality with `i j`. Simplify using `only [adj_apply, Matrix.map_apply, map_zsmul]`. Establish `e : ∀ g, adj (u.map ψ) * (M g).map (ψ.comp φ) * u.map ψ = (adj u * (M g).map φ * u).map ψ` using `fun g => by`. Rewrite using `[a, Matrix.map_mul, Matrix.map_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨?_, fun g => ⟨fun i j hij => ?_, fun i => ?_⟩⟩` and prove the remaining obligations. Use `h.1` as an intermediate fact. Unfold `IsGSp at this ⊢`. Rewrite using `[a, ← Matrix.map_mul, this, one_smul, one_smul, Matrix.map_one _ (map_zero ψ) (map_one ψ)]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.map_apply, (h.2 g).1 i j hij, map_zero]`. Rewrite using `[e, Matrix.map_apply, ← hom_eval₂, (h.2 g).2 i, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem SpTri.map {ι A C C' : Type} [CommRing A] [CommRing C] [CommRing C'] {M : ι → M4 A} {P : ι → Fin 4 → A[X]}
     {φ : A →+* C} {u : M4 C} (h : SpTri M P φ u) (ψ : C →+* C') : SpTri M P (ψ.comp φ) (u.map ψ) := by
@@ -47,13 +47,13 @@ theorem SpTri.map {ι A C C' : Type} [CommRing A] [CommRing C] [CommRing C'] {M 
   · rw [e, Matrix.map_apply, ← hom_eval₂, (h.2 g).2 i, map_zero]
 
 /- English proof (translation)
-Establish `a : ∀ Y : M4 C, adj (Y.map ψ) = (adj Y).map ψ` using `fun Y => by`. Use extensionality with `i j`. Simplify using `only [adj_apply, Matrix.map_apply, map_zsmul]`. Establish `e : ∀ g, adj (u.map ψ) * (M g).map (ψ.comp φ) * u.map ψ = (adj u * (M g).map φ * u).map ψ` using `fun g => by`. Rewrite using `[a, Matrix.map_mul, Matrix.map_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨?_, fun g => ⟨fun i j hij => hψ ?_, fun i => hψ ?_⟩⟩` and prove the remaining obligations. Use `h.1` as an intermediate fact. Unfold `IsGSp at this ⊢`. Rewrite `this` using `[a, ← Matrix.map_mul, one_smul, ← Matrix.map_one ψ (map_zero ψ) (map_one ψ)]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[one_smul]`. Conclude with `Matrix.map_injective hψ this`. Use `(h.2 g).1 i j hij` as an intermediate fact. Rewrite `this` using `[e, Matrix.map_apply, ← map_zero ψ]`. Then use the resulting hypothesis. Use `(h.2 g).2 i` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[e, Matrix.map_apply, ← hom_eval₂, ← map_zero ψ]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem SpTri.of_map {ι A C C' : Type} [CommRing A] [CommRing C] [CommRing C'] {M : ι → M4 A} {P : ι → Fin 4 → A[X]}
     {φ : A →+* C} {u : M4 C} (ψ : C →+* C') (hψ : Function.Injective ψ) (h : SpTri M P (ψ.comp φ) (u.map ψ)) :

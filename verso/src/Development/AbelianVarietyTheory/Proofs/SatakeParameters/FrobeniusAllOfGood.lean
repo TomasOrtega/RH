@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.RoadU.PhiDescent
 
 /- English proof (translation)
-Use `⟨a, WDRep.diag h fun _ : Fin a => 1, WDRep.diag h' fun _ : Fin a => 1, rfl, rfl, ?_, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Introduce `σ σ' _`. Use extensionality with `v i`. Simplify using `[WDRep.diag, WDRep.ofChars, GlobalTheory.WeilDeligne.unrChar]`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem wdRel_trivWD {E Ω E' Ω' : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω']
@@ -37,7 +37,7 @@ theorem wdRel_trivWD {E Ω E' Ω' : Type} [Field E] [NumberField E] [Field Ω] [
     simp [WDRep.diag, WDRep.ofChars, GlobalTheory.WeilDeligne.unrChar]
 
 /- English proof (translation)
-Take `⟨n, b, b', rfl, rfl, -, hb⟩` from `hy`. Rewrite using `[WD.charPol_mk, WD.charPol_mk, hb σ σ' hs]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem charPol_eq {E Ω E' Ω' : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω']
@@ -53,21 +53,19 @@ end GlobalTheory.RoadU.PhiDescent
 open GlobalTheory.RoadU.PhiDescent in
 
 /- English proof (translation)
-Introduce `hIn _ hgood E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc r hr w _ B hB Pr AI hT A h O _ _ _ Bw hj g`. Establish `hF` using `GlobalTheory.automorphicFormsFiniteGL`. Establish `hQ` using `GlobalTheory.QuadLiftBridge.quadLift hIn.ac hIn.js`. Take `⟨Q, hQdec, hQsplit, hQram, hQgood⟩` from `(GlobalTheory.T.infinite_quadraticCM_goodBaseChange_split hF E Ω l a π w).nonempty`. Take `⟨P, hP⟩` from `hQ E Q.K Q.two a ha π hQram`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨χ', hsc'⟩, -⟩` from `GlobalTheory.T.polarizedPair_baseChange_polarized_same_weight hF hIn.js hIn.gk E Q.K l a ha π χ P hP hsc.all`. Establish `hsc'' : InScope .good l P χ'` using `⟨hsc'.1, hsc'.2.1, hQgood P hP⟩`. Establish `hr'` using `GlobalTheory.T.weaklyAttachedGaloisRepresentation_baseChange_restrict E Q.K Ω l ι a π P hP r hr`. Establish `hdec` using `hQdec A h`. Establish `hjK` using `GlobalTheory.RealGal.bridge_j_mem_Kw_of_dec_le E Ω Q.K l A O Bw hdec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Bw', e1, e2, e3⟩` from `UpperTheory.V.Af.Cq.exBridge E Q.K Ω l A O Bw hjK`. Establish `hj' : Induces Bw'` using `fun x => by rw [e2]; exact hj x`. Take `⟨w', h', i, hi⟩` from `GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range E Ω Q.K w A h hdec`. Establish `hunder : w'.under (𝓞 E) = w`. Use `GlobalTheory.PlaceIsoDec.liesOver_of_isPlaceOver h h'` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext1`. Conclude with `this.over.symm`. Take `⟨c, hc, hdegc, hq, -⟩` from `GlobalTheory.T.place_over_transport_ring_iso E Ω A w h Q.K Ω A w' h' (RingEquiv.refl Ω) (algebraMap E Q.K) i hi`. Take `⟨S, hS, -, -, -, -, hTw, -⟩` from `GlobalTheory.T.place_over_transport_ring_iso_symm E Ω A w h Q.K Ω A w' h' (RingEquiv.refl Ω) (algebraMap E Q.K) i hi`. Establish `hB' : (CG.mk P).HasSat w' B`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hP.sat w' 1 B (by rw [pow_one, hunder, hq]) (by rw [hunder]; exact hB)` as an intermediate fact. Simplify using `using this`. Establish `D` using `GlobalTheory.RealGal.dRSstCrysPstJumps_descend E Ω Q.K l Pr A O Bw Bw' e1 e2 e3 a r`. Establish `hrel : WDRel (RingEquiv.refl Ω) (wdAt Pr ι Bw h hj (r.comp (Dec (F` using `E) A).subtype)) (wdAt Pr ι Bw' h' hj' ((r.comp (UpperTheory.V.Af.Bc.res E Ω Q.K)).comp (Dec (F := Q.K) A).subtype)) := by`. Distinguish the cases in `hp : IsPstAt Pr Bw (r.comp (Dec (F := E) A).subtype)`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.RealGal.wdRelRes_gen E Ω Q.K l Pr A O Bw Bw' e1 e2 e3 a r hp ι w w' h h' hj hj' i hi`. Establish `hp' : ¬ IsPstAt Pr Bw' ((r.comp (UpperTheory.V.Af.Bc.res E Ω Q.K)).comp (Dec (F` using `Q.K) A).subtype) := fun H => hp (D.2.2.2.1 H)`. Rewrite using `[wdAt_of_not_isPstAt _ _ _ _ hp, wdAt_of_not_isPstAt _ _ _ _ hp']`. Conclude with `wdRel_trivWD h h' _ a`. Establish `hsat : WDRel (RingEquiv.refl Ω) (satWD h a B) (satWD h' a B)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `GlobalTheory.RSGam.Transport.wdRel_lpUnr c hc hdegc (B.map fun b => ((b⁻¹ : ℂˣ) : ℂ))`. Unfold `satWD`. Rewrite using `[hS, hTw, (hS _ _).mp h0]`. Establish `hgc : WeilRel (RingEquiv.refl Ω) g (c g)` using `(hc g (c g)).2 rfl`. Establish `hcl` using `hgood Q.K Ω l ι a ha P χ' hsc'' _ hr' w' (hQsplit w' hunder) B hB' Pr AI hT A h' O Bw' hj' (c g)`.
-
-Rewrite using `[charPol_eq hrel hgc, charPol_eq hsat hgc]`. Conclude with `hcl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RoadU.holdsS_all_phi : Inputs → SphericalLevelCondition .good .crys → SphericalLevelCondition .good .phi → SphericalLevelCondition .all .phi := by
   intro hIn _ hgood E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc r hr w _ B hB Pr AI hT A h O _ _ _ Bw hj g

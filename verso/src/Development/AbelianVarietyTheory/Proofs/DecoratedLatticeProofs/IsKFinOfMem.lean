@@ -25,11 +25,11 @@ namespace GlobalTheory.Fam.CommIs
 open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.Chain.RealIt GlobalTheory.Core.Mi
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => exact h`. Consider the case `zero => exact ⟨⊥, inferInstance, Submodule.zero_mem _, fun g _ v hv => by`. Rewrite using `[(Submodule.mem_bot _).1 hv, map_zero]`. Conclude with `Submodule.zero_mem _⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨S₁, h1, h2, h3⟩` from `hx`. Take `⟨S₂, k1, k2, k3⟩` from `hy`. Use `⟨S₁ ⊔ S₂, inferInstance, Submodule.add_mem_sup h2 k2, fun g hg v hv => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (h3 g hg a ha) (k3 g hg b hb)`. Consider the case `smul c x _ hx`. Take `⟨S₁, h1, h2, h3⟩` from `hx`. Conclude with `⟨S₁, h1, S₁.smul_mem c h2, h3⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isKFin_of_mem {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) {x : M.H τ}
     (hx : x ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M τ) : Formalism.MainNotions.S.IsKFin (M.ε τ) (M.σ τ) x := by
@@ -49,9 +49,9 @@ theorem isKFin_of_mem {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSM
     exact ⟨S₁, h1, S₁.smul_mem c h2, h3⟩
 
 /- English proof (translation)
-Establish `hle` using `GlobalTheory.ItOnto.kfinSpan_le_span_it hDS hHC D V W S S' M M' θ ψ aS aT ω f It hθ hw hv hi`. Introduce `v hv`. Establish `hv'` using `hle (Submodule.subset_span ⟨v, fun τ => Submodule.subset_span (hv τ), rfl⟩)`. Use `(Submodule.span_le.2 ?_) hv'` and prove the remaining obligations. Introduce and unpack `w ⟨P, u, hu, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hu' : u ∈ Submodule.comap (It P) (Submodule.span ℂ {x | ∃ (P : PolF D W.rank V.rank) (y : M'.Vec), GlobalTheory.Core.Mi.KVecP M' y ∧ x = It P (PiTensorProduct.tprod ℂ y)})`. Use `(Submodule.span_le.2 ?_) hu` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Submodule.subset_span ⟨P, y, fun τ => isKFin_of_mem _ _ (hy τ), rfl⟩`. Conclude with `hu'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem itSpans_of (hDS : GlobalTheory.Published.DiscreteSeriesCover) (hHC : GlobalTheory.Published.HarishChandraModules) {D : D7} {V W : HSp D}
     {S S' : D.what₂.Tau → SPar} (M : DSModel V S) (M' : DSModel W S') (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ)
@@ -75,13 +75,13 @@ end GlobalTheory.Fam.CommIs
 open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.Chain.RealIt in
 
 /- English proof (translation)
-Introduce `hDS hHC D L hT Gi Gl Kc Yd cX ex W u hp g hm hx`. Establish `hC : W.Q.Rl.Char3 W.Q.F` using `hp.bot.hyp.2.2.2.1`. Establish `hS : StepsOK (pk W)` using `GlobalTheory.Chain.StepVac.stepsOK _ _ _ _ _ _ (pk W) hC.lev hC.models.inf hC.chain.ωY hC.chain.ωX hC.chain.vY hC.chain.vX`. Establish `hθ : IsInfFam (pk W).θ` using `hC.models.inf`. Establish `hm1 : D.R.m - 1 < D.R.m` using `Nat.sub_lt (lt_of_lt_of_le two_pos D.R.two_le_m) one_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : ∀ j, j + 1 < D.R.m → GlobalTheory.Core.Mi.ItSpans ((pk W).MY j) ((pk W).MY (j + 1)) ((pk W).ItY j)`. Introduce `j hj`. Establish `h` using `hS.1 W.P.A3.A.μ0 ⟨j, by omega⟩ hj`. Take `⟨χS, χT, hω, he⟩` from `h.1`. Conclude with `GlobalTheory.Fam.CommIs.itSpans_of hDS hHC _ _ _ _ _ _ _ _ _ hθ ⟨χS, χT, hω, he⟩ h.2 (hC.chain.ItY W.P.A3.A.μ0 j hj)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hX : GlobalTheory.Core.Mi.ItSpans ((pk W).MY (D.R.m - 1)) (pk W).MX (pk W).ItX`. Establish `h` using `hS.2 W.P.A3.A.μ0 ⟨D.R.m - 1, hm1⟩ rfl`. Take `⟨χS, χT, hω, he⟩` from `h.1`. Conclude with `GlobalTheory.Fam.CommIs.itSpans_of hDS hHC _ _ _ _ _ _ _ _ _ hθ ⟨χS, χT, hω, he⟩ h.2 (hC.chain.ItX W.P.A3.A.μ0)`. Establish `hXc : ∀ n (e : D.R.m - 1 = n), GlobalTheory.Core.Mi.ItSpans ((pk W).MY n) (pk W).MX (Eq.rec (motive` using `fun n _ => PolF D D.sp.X'.rank (Yc D n).rank →ₗ[ℂ] SmT (pk W).MX →ₗ[ℂ] SmT ((pk W).MY n)) (pk W).ItX e) := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Introduce `n e`. Substitute `e` using the available equality. Conclude with `hX`. Use `⟨W.Q.stdChar, hθ, hx, GlobalTheory.SeeSaw.Inh.coCpt_of_isDefinite D.sp.X'_sig fun τ => Or.inl (D.X'_posDef τ), hm.μf, hm.ρJ, hm.ρB, fun j hj => hY j hj, fun j h => hXc (j + 1) (idx_top h)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Fam.commOf_is : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word), PkHyp W → ∀ g : GlobalTheory.Fam.Geo D, GeoMeas (pk W) g → (∀ j, j ≤ D.R.m → (g.x j).Is) → (commOf (pk W) u g).Is := by
   intro hDS hHC D L hT Gi Gl Kc Yd cX ex W u hp g hm hx

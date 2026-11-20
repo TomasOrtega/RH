@@ -71,12 +71,12 @@ def TorsDefined : Prop :=
 def Statement : Prop := UnifExists ∧ TripleUnifExists ∧ UnifLinear ∧ TorsDefined
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 example (p : ℕ) [Fact p.Prime] : GlobalTheory.UU.CDVR ℤ_[p] := ⟨inferInstance, inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Introduce `k hk p` and use `by obtain ⟨f, hf, -⟩ := hP F k hk exact ⟨f p, (hf p _).2 rfl, fun x hx => (hf p x).1 hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Type} [CommRing R] [IsDomain R]
     {I : Ideal R} {t : SAB H (Sp R)} (P : PELUnif I t) (hP : P.TorsionIso) (F : Type) [Field F] [IsAlgClosed F]
@@ -85,7 +85,7 @@ example {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Typ
   exact ⟨f p, (hf p _).2 rfl, fun x hx => (hf p x).1 hx⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, hT⟩` from `hU`. Conclude with `⟨_, rfl, rfl, HEq.rfl, hT⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Type} [CommRing R] [IsDomain R]
     {I : Ideal R} (t : SAB H (Sp R)) {D : DegData R I} {A : PolAV (Sp (FractionRing R))} (U : Unif I D A t.G)

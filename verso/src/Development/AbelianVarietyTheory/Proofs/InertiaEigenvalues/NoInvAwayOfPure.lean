@@ -10,11 +10,11 @@ open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNoti
 namespace GlobalTheory.PurityInvariants
 
 /- English proof (translation)
-Establish `hdet : (Matrix.scalar (Fin n) c - M.map f).det = 0`. Rewrite using `[← Matrix.exists_mulVec_eq_zero_iff]`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, h]`. Use extensionality with `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.scalar_apply]`. Establish `hroot : ((M.map f).charpoly).eval c = 0`. Rewrite using `[Matrix.eval_charpoly]`. Conclude with `hdet`. Unfold `Polynomial.IsRoot`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Polynomial.map_map, ← Matrix.charpoly_map, Polynomial.eval_map, Polynomial.eval₂_hom, hroot, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem isRoot_of_eigen {R K : Type} [CommRing R] [Field K] (f : R →+* K) (ι : K →+* ℂ) {n : ℕ}
     (M : Matrix (Fin n) (Fin n) R) (c : K) (x : Fin n → K) (hx : x ≠ 0)
@@ -34,9 +34,9 @@ theorem isRoot_of_eigen {R K : Type} [CommRing R] [Field K] (f : R →+* K) (ι 
     hroot, map_zero]
 
 /- English proof (translation)
-Establish `key : M.transpose * (c • M⁻¹.transpose) = c • (1 : Matrix (Fin n) (Fin n) R)`. Rewrite using `[Matrix.mul_smul, ← Matrix.transpose_mul, Matrix.nonsing_inv_mul _ hM, Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_mulVec, Matrix.map_mul]`. Use `_ = f c • x := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply, apply_ite f, ite_mul, Finset.sum_ite_eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eigen_of_dual {R K : Type} [CommRing R] [Field K] (f : R →+* K) {n : ℕ}
     (M : Matrix (Fin n) (Fin n) R) (hM : IsUnit M.det) (c : R) (x : Fin n → K)
@@ -53,11 +53,9 @@ theorem eigen_of_dual {R K : Type} [CommRing R] [Field K] (f : R →+* K) {n : �
         simp [Matrix.mulVec, dotProduct, Matrix.one_apply, apply_ite f, ite_mul, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Establish `h1 : normV v = Ideal.absNorm v.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Establish `hne1 : Ideal.absNorm v.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `v.isPrime.ne_top`. Establish `hne0 : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Establish `: 1 < normV v` using `by omega`.
-
-Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_lt_norm {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E)) :
     (1 : ℝ) < ((normV v : ℕ) : ℝ) := by
@@ -74,23 +72,21 @@ theorem one_lt_norm {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum 
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `D i s ι hP v hv hs`. Establish `hq : (1 : ℝ) < ((normV v : ℕ) : ℝ)` using `one_lt_norm v`. Establish `ht : (5 : ℝ) ≤ (D.R.t : ℝ)`. Use `D.R.rank_add_five_le` as an intermediate fact. Conclude with `(by omega : 5 ≤ D.R.t)` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : ((normV v : ℕ) : ℝ) ^ ((1 - (D.R.t : ℝ)) / 2) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg hq (by linarith)`. Establish `hl : ((D.ntw.l i : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal`. Introduce `h`. Apply `hv` to reduce the goal to its premises. Unfold `placesOver`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `h`. Prove the components needed by the constructor for the conclusion. Introduce `A hA x hx`. Assume the negation of the conclusion as `hx0`. Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_isFrob (F := D.host.E) hA`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hdec : σ ∈ Dec (F` using `D.host.E) A := by`. Unfold `Formalism.ConjugateSelfDual.IsFrob at hσ`. Conclude with `hσ.1`. Establish `e` using `hx σ hdec`. Establish `hr` using `isRoot_of_eigen (algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))) ι (Tmat i s σ) 1 x hx0 (by rw [one_smul]; exact e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hn` using `hP v hv hs A hA σ hσ _ hr`. Rewrite `hn` using `[map_one, norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `A hA x hx`. Assume the negation of the conclusion as `hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_isFrob (F := D.host.E) hA`. Establish `hdec : σ ∈ Dec (F` using `D.host.E) A := by`. Unfold `Formalism.ConjugateSelfDual.IsFrob at hσ`. Conclude with `hσ.1`. Establish `e` using `hx σ hdec`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit (Tmat i s σ).det`. Unfold `Tmat`. Rewrite using `[Matrix.det_smul]`. Conclude with `((Units.isUnit _).pow _).mul ((Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _))`. Establish `e2` using `eigen_of_dual (algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))) (Tmat i s σ) hu ((eps0 D.ntw i σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) x (by unfold Tdual at e; exact e)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hr` using `isRoot_of_eigen (algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))) ι (Tmat i s σ).transpose _ x hx0 e2`. Rewrite `hr` using `[Matrix.charpoly_transpose]`. Establish `hn` using `hP v hv hs A hA σ hσ _ hr`. Establish `hc : ((eps0 D.ntw i σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) = (normV v : ℕ)`. Unfold `eps0`.
-
-Rewrite using `[MonoidHom.comp_apply, Units.coe_map]`. Conclude with `(congrArg (algebraMap _ (D.ntw.O0 i)) (ReciprocityTheory.Gal.cycZ_of_isFrob hl hA hσ)).trans (map_natCast _ _)`. Rewrite `hn` using `[hc, map_natCast, map_natCast, Complex.norm_natCast]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem noInv_of_pure : ∀ (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (ι : FractionRing (D.ntw.O0 i) →+* ℂ), Pure i s ι → ∀ v, v ∉ placesOver D.host.E (D.ntw.l i) → v ∉ Spl (X := D.ntw) i → NoInv i (Tmat i s) v ∧ NoInv i (Tdual i s) v := by
   intro D i s ι hP v hv hs

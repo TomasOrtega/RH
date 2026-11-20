@@ -26,7 +26,7 @@ open GlobalTheory.MemLoc
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `| 0 => by simpa using (isLogJ_zero : IsLogJ (l := l) 0 0) | m + 1 => by have h := GlobalTheory.T.isAcrisLogOneAdd_add_of_mul l _ _ _ _ (inJ_pow hJ m) hJ (isLogJ_pow hJ hy m) hy have e1 : Per.tm (e ^ (m + 1)) - 1 = (Per.tm (e ^ m) - 1) + (Per.tm e - 1) + (Per.tm (e ^ m) - 1) * (Pe …`.
+A detailed English derivation is pending.
 -/
 theorem isLogJ_pow {e : Per.Fl l} (hJ : InJ (Per.tm e - 1)) {y : Per.Acris l} (hy : IsLogJ (Per.tm e - 1) y) :
     ∀ m : ℕ, IsLogJ (Per.tm (e ^ m) - 1) ((m : Per.Acris l) * y)
@@ -44,7 +44,7 @@ theorem isLogJ_pow {e : Per.Fl l} (hJ : InJ (Per.tm e - 1)) {y : Per.Acris l} (h
     ring
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', Function.iterate_succ_apply', ih, map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem iter_mul (a b : Per.Fl l) (m : ℕ) : ((frobeniusEquiv (Per.Fl l) l).symm)^[m] (a * b) =
     ((frobeniusEquiv (Per.Fl l) l).symm)^[m] a * ((frobeniusEquiv (Per.Fl l) l).symm)^[m] b := by
@@ -54,7 +54,7 @@ theorem iter_mul (a b : Per.Fl l) (m : ℕ) : ((frobeniusEquiv (Per.Fl l) l).sym
     rw [Function.iterate_succ_apply', Function.iterate_succ_apply', Function.iterate_succ_apply', ih, map_mul]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply', ih, map_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iter_one (m : ℕ) : ((frobeniusEquiv (Per.Fl l) l).symm)^[m] 1 = 1 := by
   induction m with
@@ -62,25 +62,25 @@ theorem iter_one (m : ℕ) : ((frobeniusEquiv (Per.Fl l) l).symm)^[m] 1 = 1 := b
   | succ m ih => rw [Function.iterate_succ_apply', ih, map_one]
 
 /- English proof (translation)
-Simplify using `only [rootT, iter_mul, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rootT_mul (a b : Per.Fl l) (m : ℕ) : rootT (a * b) m = rootT a m * rootT b m := by
   simp only [rootT, iter_mul, map_mul]
 
 /- English proof (translation)
-Simplify using `only [rootT, iter_one, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rootT_one (m : ℕ) : rootT (1 : Per.Fl l) m = 1 := by
   simp only [rootT, iter_one, map_one]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hx.exists_left_inv`. Establish `hxe : Per.σF g x = x * (v * Per.σF g x)` using `by rw [← mul_assoc, mul_comm x v, hv, one_mul]`. Establish `hre : ∀ m, rootT (v * Per.σF g x) m = rootT C.ε m ^ (PadicInt.toZModPow m c).val`. Introduce `m`. Establish `hu : IsUnit (rootT x m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun z => rootT z m) hv`. Simplify using `only [rootT_mul, rootT_one] at h1`. Conclude with `⟨⟨rootT x m, rootT v m, by rw [mul_comm]; exact h1, h1⟩, rfl⟩`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← rootT_mul, ← hxe, H m, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `he1 : (v * Per.σF g x).untilt = 1`. Use `hre 0` as an intermediate fact. Simplify using `only [rootT, Function.iterate_zero, id] at this`. Rewrite using `[this, TAct.eps_untilt C, one_pow]`. Establish `hr : ∀ m, (rootT (v * Per.σF g x) m : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (C.ζ m ^ (PadicInt.toZModPow m c).val)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m`. Rewrite using `[hre m, SubmonoidClass.coe_pow, C.ε_root m, map_pow]`. Take `⟨y, hy⟩` from `Model.exists_isLogA he1`. Conclude with `⟨_, he1, hxe, GlobalTheory.Pst.NoLog.log_eq C _ c y hr hy ▸ hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_gal_log (C : Core l) (x : Per.Fl l) (hx : IsUnit x) (g : GQ l) (c : ℤ_[l])
     (H : ∀ m, rootT (Per.σF g x) m = rootT C.ε m ^ (PadicInt.toZModPow m c).val * rootT x m) :
@@ -108,7 +108,7 @@ theorem exists_gal_log (C : Core l) (x : Per.Fl l) (hx : IsUnit x) (g : GQ l) (c
   exact ⟨_, he1, hxe, GlobalTheory.Pst.NoLog.log_eq C _ c y hr hy ▸ hy⟩
 
 /- English proof (translation)
-Establish `h1` using `congrArg f (Units.inv_mul u)`. Rewrite `h1` using `[map_mul, h, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem map_inv_units {R : Type} [CommRing R] (f : R →+* R) (u : Rˣ) (h : f u = u) :
     f (↑u⁻¹ : R) = ↑u⁻¹ := by
@@ -118,21 +118,21 @@ theorem map_inv_units {R : Type} [CommRing R] (f : R →+* R) (u : Rˣ) (h : f u
     _ = ↑u⁻¹ := by rw [← mul_assoc, h1, one_mul]
 
 /- English proof (translation)
-Introduce `l _ C x hx`. Take `⟨ω, x₁, N, hxω, hJ, hω⟩` from `GlobalTheory.T.tilt_unit_teichmuller_principal_unit_split l x hx`. Take `⟨y, hy⟩` from `GlobalTheory.T.exists_acris_log_one_add l _ hJ`. Establish `hpow` using `isLogJ_pow hJ hy`. Take `⟨u, hu⟩` from `(isUnit_l_Bcris l).pow N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hωu : IsUnit ω` using `isUnit_of_mul_isUnit_left (hxω ▸ hx)`. Use `⟨↑u⁻¹ * algebraMap (Per.Acris l) (Per.Bcris l) y, ?_, fun g c H => ?_⟩` and prove the remaining obligations. Establish `h2` using `isLogJ_extends (GlobalTheory.CrisMaps.phiA_extends l) hy`. Establish `h3 : Per.φA l (Per.tm (x₁ ^ l ^ N) - 1) = Per.tm ((x₁ ^ l ^ N) ^ l) - 1`. Rewrite using `[map_sub, map_one, show Per.φA l (Per.tm (x₁ ^ l ^ N)) = Per.tm ((x₁ ^ l ^ N) ^ l) from GlobalTheory.RingIface.phiA_teich l _]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[h3]`. Establish `h1 : GlobalTheory.MemLoc.phiA l y = (l : Per.Acris l) * y` using `isLogJ_unique h2 (hpow l)`. Establish `hφY : Per.φB l (algebraMap (Per.Acris l) (Per.Bcris l) y) = (l : Per.Bcris l) * algebraMap (Per.Acris l) (Per.Bcris l) y`. Establish `: Per.φB l (algebraMap (Per.Acris l) (Per.Bcris l) y) = algebraMap _ _ (GlobalTheory.MemLoc.phiA l y)` using `GlobalTheory.CrisMaps.φB_phiA l y`. Rewrite using `[this, h1, map_mul, map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφu : Per.φB l (↑u⁻¹ : Per.Bcris l) = ↑u⁻¹` using `map_inv_units _ u (by rw [hu, map_pow, map_natCast])`. Rewrite using `[map_mul, hφu, hφY]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e, he1, hgx, hle⟩` from `exists_gal_log C x hx g c H`. Establish `hgω : Per.σF g ω = ω` using `hω g e he1 hgx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgx₁ : Per.σF g x₁ = x₁ * e`. Apply `hωu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← mul_assoc, ← hxω, ← hgx, hxω, map_mul, hgω]`. Establish `hge₁ : Per.σF g (x₁ ^ l ^ N) = x₁ ^ l ^ N * e ^ l ^ N` using `by rw [map_pow, hgx₁, mul_pow]`. Establish `hle'` using `TAct.logA_pow C.j_cris he1 hle (l ^ N)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `GlobalTheory.T.isAcrisLogOneAdd_add_of_mul l _ _ _ _ hJ (inJ_mu (e := e ^ l ^ N) (by rw [map_pow, he1, one_pow])) hy hle'`. Establish `hσ` using `isLogJ_extends (GlobalTheory.CrisMaps.sigA_extends g) hy`. Establish `hw : Per.σA g (Per.tm (x₁ ^ l ^ N) - 1) = (Per.tm (x₁ ^ l ^ N) - 1) + mu (e ^ l ^ N) + (Per.tm (x₁ ^ l ^ N) - 1) * mu (e ^ l ^ N)`. Rewrite using `[map_sub, map_one, show Per.σA g (Per.tm (x₁ ^ l ^ N)) = Per.tm (Per.σF g (x₁ ^ l ^ N)) from GlobalTheory.RingIface.sigA_teich l g _, hge₁, mu, show Per.tm (x₁ ^ l ^ N * e ^ l ^ N) = Per.tm (x₁ ^ l ^ N) * Per.tm (e ^ l ^ N) from map_mul (WittVector.teichmuller l) _ _]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hσ` using `[hw]`. Establish `hy'` using `isLogJ_unique hσ hsum`. Establish `hσY : Per.σB g (algebraMap (Per.Acris l) (Per.Bcris l) y) = algebraMap _ _ (GlobalTheory.MemLoc.sigA g y)` using `GlobalTheory.CrisMaps.σB_sigA g y`. Establish `hσu : Per.σB g (↑u⁻¹ : Per.Bcris l) = ↑u⁻¹` using `map_inv_units _ u (by rw [hu, map_pow, map_natCast])`. Establish `hul : (↑u⁻¹ : Per.Bcris l) * ((l ^ N : ℕ) : Per.Bcris l) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_pow, ← hu, Units.inv_mul]`. Rewrite using `[map_mul, hσu, hσY, hy', map_add, map_mul, map_mul, map_natCast]`. Rewrite using `[GlobalTheory.RingIface.zB_eq_aB_zA l c, GlobalTheory.RingIface.aB_eq_alg l (Per.zA l c)]`. Simplify using `only [Core.tB]`. Take the linear combination `(algebraMap (Per.Acris l) (Per.Bcris l) (algebraMap (Per.Ainf l) (Per.Acris l) (Per.zA l c)) * algebraMap (Per.Acris l) (Per.Bcris l) C.t) * hul`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_log_unit : ∀ (l : ℕ) [Fact l.Prime] (C : Core l) (x : OCb l), IsUnit x → ∃ b : Per.Bcris l, Per.φB l b = (l : Per.Bcris l) * b ∧ ∀ (g : GQ l) (c : ℤ_[l]), (∀ m, rootT (Per.σF g x) m = rootT C.ε m ^ (PadicInt.toZModPow m c).val * rootT x m) → Per.σB g b = b + Per.zB l c * C.tB := by
   intro l _ C x hx

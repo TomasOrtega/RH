@@ -12,7 +12,7 @@ namespace GlobalTheory.Mean4O.CoverInt
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} {e : ℕ} {M : Man e}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `[tChart]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tChart_trans_eq (I : ManIs M Y) {a : Fin (M.n + 1)} (c c' : AlgChart Y.str (I.ε a) e) :
     tChart I c' ∘ (tChart I c).symm = c'.e ∘ c.e.symm := by
@@ -20,7 +20,7 @@ theorem tChart_trans_eq (I : ManIs M Y) {a : Fin (M.n + 1)} (c c' : AlgChart Y.s
   simp [tChart]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[ReciprocityTheory.L2DbarEstimates.Y.ovl, tChart]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ovl_tChart (I : ManIs M Y) {a : Fin (M.n + 1)} (c c' : AlgChart Y.str (I.ε a) e) :
     ReciprocityTheory.L2DbarEstimates.Y.ovl (fun c : AlgChart Y.str (I.ε a) e => tChart I c) c c' =
@@ -29,7 +29,7 @@ theorem ovl_tChart (I : ManIs M Y) {a : Fin (M.n + 1)} (c c' : AlgChart Y.str (I
   simp [ReciprocityTheory.L2DbarEstimates.Y.ovl, tChart]
 
 /- English proof (translation)
-Rewrite using `[tChart_trans_eq, ovl_tChart]`. Conclude with `c.holo_trans c'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tChart_holo_trans (I : ManIs M Y) {a : Fin (M.n + 1)} (c c' : AlgChart Y.str (I.ε a) e) :
     DifferentiableOn ℂ (tChart I c' ∘ (tChart I c).symm)
@@ -38,20 +38,20 @@ theorem tChart_holo_trans (I : ManIs M Y) {a : Fin (M.n + 1)} (c c' : AlgChart Y
   exact c.holo_trans c'
 
 /- English proof (translation)
-Rewrite using `[transDet, transDet, tChart_trans_eq, tChart_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transDet_tChart (I : ManIs M Y) {a : Fin (M.n + 1)} (c c' : AlgChart Y.str (I.ε a) e)
     (x : M.X a) : transDet (tChart I c) (tChart I c') x = transDet c.e c'.e (I.pt a x) := by
   rw [transDet, transDet, tChart_trans_eq, tChart_apply]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `(M.A a).cover x`. Take `⟨c₀, hc₀⟩` from `I.alg a j`. Set `f : Pts Y (I.ε a) → ℝ` to `P.φ x ∘ (I.pt a).symm`. Set `S : Set (Pts Y (I.ε a))` to `(I.pt a).symm ⁻¹' P.U x ∩ c₀.e.source`. Establish `hS : IsOpen S` using `((P.isOpen_U x).preimage (I.pt a).symm.continuous).inter c₀.e.open_source`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hj₀ : I.pt a x ∈ c₀.e.source`. Rewrite `hj` using `[hc₀]`. Simplify using `using hj`. Establish `h₁ : ContDiffOn ℝ ∞ (f ∘ c₀.finChart.symm) (c₀.finChart.target ∩ c₀.finChart.symm ⁻¹' ((I.pt a).symm ⁻¹' P.U x))`. Use `hP.1 x j` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hc₀]`. Conclude with `this`. Establish `h₀ : ContDiffOn ℝ ∞ (f ∘ c₀.e.symm) (c₀.e.target ∩ c₀.e.symm ⁻¹' S)` using `((c₀.contDiffOn_finChart_iff ∞ _ f).1 h₁).mono fun v hv => ⟨hv.1, hv.2.1⟩`. Establish `hC : ∀ y ∈ S, CInfAt f y` using `fun y hy => cInfAt_of_chart hS c₀ h₀ hy.2 hy`. Establish `h₂` using `contDiffOn_chart hC c'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : c'.e (I.pt a x) ∈ c'.e.target ∩ c'.e.symm ⁻¹' S` using `mem_over c'.e hx ⟨by simpa using P.mem_U x, hj₀⟩`. Establish `h₃ : ContDiffAt ℝ 2 (f ∘ c'.e.symm) (c'.e (I.pt a x))` using `(h₂.contDiffAt ((isOpen_over c'.e hS).mem_nhds hm)).of_le (by norm_cast)`. Conclude with `h₃`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_pot (I : ManIs M Y) {a : Fin (M.n + 1)} {P : LocPot (M.X a)}
     (hP : IsPotential (M.A a) P) (c' : AlgChart Y.str (I.ε a) e) {x : M.X a}
@@ -81,11 +81,11 @@ theorem contDiffAt_pot (I : ManIs M Y) {a : Fin (M.n + 1)} {P : LocPot (M.X a)}
   exact h₃
 
 /- English proof (translation)
-Rewrite `hx`, `hx'` using `[mem_tChart_source]`. Establish `ho` using `isOpen_over c.e c'.e.open_source`. Establish `hm` using `mem_over c.e hx hx'`. Establish `ev : (fun v => ((2 * P.φ x ((I.pt a).symm (c.e.symm v)) : ℝ) : ℂ)) =ᶠ[𝓝 (c.e (I.pt a x))] (fun v => ((2 * P.φ x ((I.pt a).symm (c'.e.symm v)) : ℝ) : ℂ)) ∘ c'.e ∘ c.e.symm` using `eventually_of_mem (ho.mem_nhds hm) fun v hv => by`. Simplify using `only [Function.comp_apply, c'.e.left_inv hv.2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e₂ : (c'.e ∘ c.e.symm) (c.e (I.pt a x)) = c'.e (I.pt a x)` using `congrArg c'.e (c.e.left_inv hx)`. Establish `hd : ContDiffAt ℝ 2 (fun v => ((2 * P.φ x ((I.pt a).symm (c'.e.symm v)) : ℝ) : ℂ)) ((c'.e ∘ c.e.symm) (c.e (I.pt a x)))`. Rewrite using `[e₂]`. Conclude with `Complex.ofRealCLM.contDiff.contDiffAt.comp _ (contDiffAt_const.mul (contDiffAt_pot I hP c' hx'))`. Rewrite using `[potDens, potDens, ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ev, ReciprocityTheory.L2DbarEstimates.Y.cmpa_det_comp ho hm (c.holo_trans c') hd, e₂, Complex.re_ofReal_mul, transDet_tChart, transDet]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem potDens_trans (I : ManIs M Y) {a : Fin (M.n + 1)} {P : LocPot (M.X a)}
     (hP : IsPotential (M.A a) P) (c c' : AlgChart Y.str (I.ε a) e) {x : M.X a}
@@ -111,7 +111,7 @@ theorem potDens_trans (I : ManIs M Y) {a : Fin (M.n + 1)} {P : LocPot (M.X a)}
   ring
 
 /- English proof (translation)
-Introduce `F _ _ Y e M I a P hP`. Conclude with `⟨fun c c' => tChart_holo_trans I c c', fun c c' x hx hx' => potDens_trans I hP c c' hx hx'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem potDens_chartRule : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ) (M : Man e) (I : ManIs M Y) (a : Fin (M.n + 1)) (P : LocPot (M.X a)), IsPotential (M.A a) P → (∀ c c' : AlgChart Y.str (I.ε a) e, DifferentiableOn ℂ (tChart I c' ∘ (tChart I c).symm) (ReciprocityTheory.L2DbarEstimates.Y.ovl (fun c : AlgChart Y.str (I.ε a) e => tChart I c) c c')) ∧ ∀ (c c' : AlgChart Y.str (I.ε a) e) (x : M.X a), x ∈ (tChart I c).source → x ∈ (tChart I c').source → potDens I P c x = ‖GlobalTheory.ChartGlue.transDet (tChart I c) (tChart I c') x‖ ^ 2 * potDens I P c' x := by
   intro F _ _ Y e M I a P hP

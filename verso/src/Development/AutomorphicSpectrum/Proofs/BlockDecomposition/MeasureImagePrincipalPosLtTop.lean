@@ -7,11 +7,11 @@ open GlobalTheory.LocGL
 namespace GlobalTheory.CompanionTheory.PrincipalCongruence
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N ϖ m h0 h1 _ hm _ _ μ hμ`. Establish `ht0 : ϖ ^ m ≠ 0` using `pow_ne_zero m h0`. Establish `ht1 : ValuativeRel.valuation k (ϖ ^ m) < 1`. Rewrite using `[map_pow]`. Conclude with `pow_lt_one' h1 (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hopen, hcomp⟩` from `isOpen_isCompact_principal k N (ϖ ^ m) ht0 ht1`. Establish `hone : (1 : GL (Fin N) k) ∈ {g : GL (Fin N) k | ∀ i j, ValuativeRel.valuation k ((g : Matrix (Fin N) (Fin N) k) i j - (1 : Matrix (Fin N) (Fin N) k) i j) ≤ ValuativeRel.valuation k (ϖ ^ m)}`. Introduce `i j`. Simplify using the standard rewrite rules. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `himg : IsOpenMap (QuotientGroup.mk : GL (Fin N) k → AdGL k N)` using `QuotientGroup.isOpenMap_coe`. Conclude with `(himg _ hopen).measure_pos μ ⟨_, Set.mem_image_of_mem _ hone⟩`. Conclude with `(hcomp.image QuotientGroup.continuous_mk).measure_lt_top`.
+A detailed English derivation is pending.
 -/
 theorem measure_image_principal_pos_lt_top :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

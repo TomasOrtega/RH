@@ -18,7 +18,7 @@ section Good
 variable {X : Fields} (Pr : Primes X)
 
 /- English proof (translation)
-Unfold `Primes.vGs`. Rewrite using `[Finset.mem_union]`. Use `match i, h with`. Consider the case `0, h => exact Or.inl h`. Consider the case `1, h => exact Or.inr h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gxMemGs (i : Fin 2) {w : HeightOneSpectrum (𝓞 X.E)} (h : w ∈ Pr.vG i) : w ∈ Pr.vGs := by
   classical
@@ -61,7 +61,7 @@ def XgSet : Set (G0 X.E Pr.vGs r → X.K) :=
   {χ | IsAbsIrrChar χ ∧ gxGood Pr Ch r σ teich ζ (fun x => σ (χ x))}
 
 /- English proof (translation)
-The claim follows from `(absIrrChar_finite (G := G0 X.E Pr.vGs r) (K := X.K)).subset fun _ h => h.1`.
+A detailed English derivation is pending.
 -/
 theorem XgSet_finite : (XgSet Pr Ch r σ teich ζ).Finite :=
   (absIrrChar_finite (G := G0 X.E Pr.vGs r) (K := X.K)).subset fun _ h => h.1

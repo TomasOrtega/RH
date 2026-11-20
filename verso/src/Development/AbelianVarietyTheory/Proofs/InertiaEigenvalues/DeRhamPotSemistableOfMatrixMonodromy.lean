@@ -24,14 +24,14 @@ def matRep (b : Module.Basis n ℚ_[l] V) (ρ : Representation ℚ_[l] ↥(GK K)
         (V →ₗ[ℚ_[l]] V) →* Matrix n n ℚ_[l]).comp ρ))
 
 /- English proof (translation)
-Simplify using `[matRep, LinearMap.toMatrixAlgEquiv_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matRep_apply (b : Module.Basis n ℚ_[l] V) (ρ : Representation ℚ_[l] ↥(GK K) V) (g : ↥(GK K)) (i j : n) :
     (matRep b ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)) i j = algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (b.repr (ρ g (b j)) i) := by
   simp [matRep, LinearMap.toMatrixAlgEquiv_apply]
 
 /- English proof (translation)
-Simplify using `[LinearMap.toMatrix_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toMatrix_map_apply (b : Module.Basis n ℚ_[l] V) (f : V →ₗ[ℚ_[l]] V) {A : Type} [Semiring A] [Algebra ℚ_[l] A]
     (i j : n) : (LinearMap.toMatrix b b f).map (algebraMap ℚ_[l] A) i j = algebraMap ℚ_[l] A (b.repr (f (b j)) i) := by
@@ -44,17 +44,15 @@ namespace GlobalTheory.PMon.FromMat
 open GlobalTheory.PMon.Inhab
 
 /- English proof (translation)
-Introduce `hM l _ P AI hT K V _ _ _ _ _ ρ hc hDR`. Take `⟨T⟩` from `hT`. Set `b` to `Module.finBasis ℚ_[l] V`. Establish `hR : IsRat 1 (matRep b ρ)`. Use `⟨one_pos, fun c hc' => ?_, fun g i j => ?_, fun i j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, rfl⟩` from `fixed_frob P c (by rwa [fr_one] at hc')`. Conclude with `K.1.algebraMap_mem q`. Rewrite using `[matRep_apply, fr_q]`. Simplify using `only [matRep_apply]`. Establish `h1 : Continuous fun g : ↥(GK K) => b.coord i (ρ g (b j))` using `(IsModuleTopology.continuous_of_linearMap (R := ℚ_[l]) (b.coord i)).comp (hc (b j))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(continuous_algebraMap ℚ_[l] (Om l)).comp h1`. Establish `hD : AdmDR P (matRep b ρ)`. Introduce `m`. Take `⟨Q, hQ⟩` from `GlobalTheory.T.exists_invertible_deRhamPeriodMatrix_of_isDR l P AI T _ K V b ρ hDR`. Use `⟨Q, fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `hQ g using 2` and compare the differences between its conclusion and the goal. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[matD, Matrix.map_apply, matRep_apply, fr_q, kd_alg, toMatrix_map_apply]`. Take `⟨K', hK, Q, hQ⟩` from `hM l P AI T _ K 1 (matRep b ρ) hR hD`. Establish `hS : IsSst P (resTo ρ hK)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `GlobalTheory.T.isSemistable_of_invertible_periodMatrix_semistableRing l P AI T _ K' V b (resTo ρ hK) Q fun g => ?_` and prove the remaining obligations. Use `hQ g using 2` and compare the differences between its conclusion and the goal. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Rewrite using `[matRep_apply, LinearMap.toMatrix_apply, ks, RingHom.comp_apply, ← IsScalarTower.algebraMap_apply, Polynomial.algebraMap_apply]`.
-
-Both sides reduce to the same expression. Conclude with `GlobalTheory.T.isPotentiallySemistable_of_semistable_restrict l P AI T K K' hK V ρ hS`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem deRhamPotSemistable_of_matThm : MatThm → GlobalTheory.Published.DeRhamPotSemistable := by
   intro hM l _ P AI hT K V _ _ _ _ _ ρ hc hDR

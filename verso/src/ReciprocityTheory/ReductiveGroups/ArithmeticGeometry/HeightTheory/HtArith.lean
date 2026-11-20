@@ -5,39 +5,39 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Simplify using `only`. Take `⟨hP1, hP2, hP3, hP4, hP5, hP6, hP7, hP8⟩` from `hP`. Establish `hD0 : 0 ≤ D` using `by linarith`. Establish `hD4 : 0 ≤ D + 4` using `by linarith`. Establish `hL0 : 0 ≤ L` using `by linarith`.
+Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : 0 ≤ δ * L` using `mul_nonneg hδ hL0`. Establish `hcg0 : 0 ≤ c * g0` using `mul_nonneg hc0 hg0`. Establish `haL' : ade ≤ 4 / 3 * δ` using `hade.trans haL`. Establish `hPL : 0 ≤ Prw * L` using `mul_nonneg (by linarith) hL0`. Establish `hδPL : 0 ≤ 4 / 3 * δ * (Prw * L)` using `mul_nonneg (by linarith) hPL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmax : max 0 laW ≤ G * L` using `max_le (mul_nonneg (by linarith) hL0) hlaW`. Establish `hin : PP0' * L + max 0 laW + lw1 ≤ (PP0' + G + Prw) * L` using `by linarith`. Establish `hsF : sF ≤ (D + 2) * δ * ((PP0' + G + Prw) * L)` using `hUP.trans (mul_le_mul_of_nonneg_left hin (mul_nonneg (by linarith) hδ))`. Establish `hN2 : δ * hN / 2 ≤ δ * (Prw * L)`. Use `mul_le_mul_of_nonneg_left hhN hδ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnu2 : δ * (nuS + tableLineDegreeFive * DF + c * tableLineDegreeTwo) ≤ δ * ((PN + tableLineDegreeFive + tableLineDegreeTwo) * L)`. Apply `mul_le_mul_of_nonneg_left _ hδ` to reduce the goal to its premises. Establish `h1 : tableLineDegreeFive * DF ≤ tableLineDegreeFive * L` using `mul_le_mul_of_nonneg_left hDF (by linarith)`. Establish `h2 : c * tableLineDegreeTwo ≤ 1 * tableLineDegreeTwo` using `mul_le_mul_of_nonneg_right hc1 (by linarith)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : tableLineDegreeTwo * 1 ≤ tableLineDegreeTwo * L` using `mul_le_mul_of_nonneg_left hL (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcross : D * c * g0 * ade * lr ≤ D * (1 / 2 * (4 / 3 * δ * (Prw * L)))`. Establish `h1 : ade * lr ≤ 4 / 3 * δ * (Prw * L)` using `mul_le_mul haL' hlr hlr0 (by linarith)`. Establish `h2 : c * g0 * (ade * lr) ≤ 1 / 2 * (4 / 3 * δ * (Prw * L))` using `mul_le_mul hcg h1 (mul_nonneg hade0 hlr0) (by norm_num)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `mul_le_mul_of_nonneg_left h2 hD0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hadl : D * ade * lr ≤ D * (4 / 3 * δ * (Prw * L))`. Establish `h1 : ade * lr ≤ 4 / 3 * δ * (Prw * L)` using `mul_le_mul haL' hlr hlr0 (by linarith)`. Use `mul_le_mul_of_nonneg_left h1 hD0` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hY1 : D * aG1 * lr ≤ D * (4 / 3 * δ * (Prw * L))`. Establish `h1 : aG1 * lr ≤ 4 / 3 * δ * (Prw * L)` using `mul_le_mul (haG1.trans haL) hlr hlr0 (by linarith)`. Use `mul_le_mul_of_nonneg_left h1 hD0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hA4 : (D + 4) * aL ≤ (D + 4) * (4 / 3 * δ)` using `mul_le_mul_of_nonneg_left haL hD4`. Establish `hY2 : D * aG2 * lr ≤ D * ((D + 4) * (4 / 3 * δ) * (Prw * L))`. Establish `h1 : aG2 * lr ≤ (D + 4) * (4 / 3 * δ) * (Prw * L)` using `mul_le_mul (haG2.trans hA4) hlr hlr0 (mul_nonneg hD4 (by linarith))`. Use `mul_le_mul_of_nonneg_left h1 hD0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hYF : D * aF * lr ≤ D * ((D + 4) * (4 / 3 * δ) * (Prw * L))`. Establish `h1 : aF * lr ≤ (D + 4) * (4 / 3 * δ) * (Prw * L)` using `mul_le_mul (haF.trans hA4) hlr hlr0 (mul_nonneg hD4 (by linarith))`. Use `mul_le_mul_of_nonneg_left h1 hD0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPI : 0 ≤ δ * PI4 * D * L` using `mul_nonneg (mul_nonneg (mul_nonneg hδ (by linarith)) hD0) hL0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hXb0 : 0 ≤ (D + 2) * δ * ((PP0' + G + Prw) * L) + δ * (Prw * L) + δ * ((PN + tableLineDegreeFive + tableLineDegreeTwo) * L) + D * (1 / 2 * (4 / 3 * δ * (Prw * L)))`. Establish `e1 : 0 ≤ (D + 2) * δ * ((PP0' + G + Prw) * L)` using `mul_nonneg (mul_nonneg (by linarith) hδ) (mul_nonneg (by linarith) hL0)`. Establish `e2 : 0 ≤ δ * (Prw * L)` using `mul_nonneg hδ hPL`. Establish `e3 : 0 ≤ δ * ((PN + tableLineDegreeFive + tableLineDegreeTwo) * L)` using `mul_nonneg hδ (mul_nonneg (by linarith) hL0)`. Establish `e4 : 0 ≤ D * (1 / 2 * (4 / 3 * δ * (Prw * L)))` using `mul_nonneg hD0 (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hYb0 : 0 ≤ δ * PI4 * D * L + D * (4 / 3 * δ * (Prw * L))`. Use `mul_nonneg hD0 hδPL` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hHde : Hde ≤ HL + (δ * PI4 * D * L + D * (4 / 3 * δ * (Prw * L)))` using `by linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hHL1 : HL ≤ ((D + 2) * δ * ((PP0' + G + Prw) * L) + δ * (Prw * L) + δ * ((PN + tableLineDegreeFive + tableLineDegreeTwo) * L) + D * (1 / 2 * (4 / 3 * δ * (Prw * L)))) + c * g0 * (HL + (δ * PI4 * D * L + D * (4 / 3 * δ * (Prw * L))))`. Use `mul_le_mul_of_nonneg_left hHde hcg0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hHL : HL ≤ 2 * ((D + 2) * δ * ((PP0' + G + Prw) * L) + δ * (Prw * L) + δ * ((PN + tableLineDegreeFive + tableLineDegreeTwo) * L) + D * (1 / 2 * (4 / 3 * δ * (Prw * L)))) + (δ * PI4 * D * L + D * (4 / 3 * δ * (Prw * L)))`. Distinguish the cases in `hHL0 : 0 ≤ HL`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `a1` using `mul_le_mul_of_nonneg_right hcg hHL0`. Establish `a2` using `mul_le_mul_of_nonneg_right hcg hYb0`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at hHL0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hHF` using `mul_le_mul_of_nonneg_left hHL hD4`. Establish `e1 : 0 ≤ (D + 4) * (6 * D + 4) * G` using `mul_nonneg (mul_nonneg hD4 (by linarith)) (by linarith)`. Establish `e2 : 0 ≤ (D + 4) * (10 * D + 8) * PP0'` using `mul_nonneg (mul_nonneg hD4 (by linarith)) (by linarith)`. Establish `e3 : 0 ≤ (D + 4) * (6 * D + 6) * Prw` using `mul_nonneg (mul_nonneg hD4 (by linarith)) (by linarith)`. Establish `e4 : 0 ≤ (D + 4) * (12 * D + 10) * (PN + tableLineDegreeFive + tableLineDegreeTwo)` using `mul_nonneg (mul_nonneg hD4 (by linarith)) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5 : 0 ≤ (11 * D * D + 55 * D + 48) * PI4` using `mul_nonneg (by nlinarith) (by linarith)`. Establish `hE` using `mul_nonneg hT (add_nonneg (add_nonneg (add_nonneg (add_nonneg e1 e2) e3) e4) e5)`. Establish `f1 : 0 ≤ (6 * D + 4) * G` using `mul_nonneg (by linarith) (by linarith)`. Establish `f2 : 0 ≤ (10 * D + 8) * PP0'` using `mul_nonneg (by linarith) (by linarith)`. Establish `f3 : 0 ≤ (12 * D + 10) * (PN + tableLineDegreeFive + tableLineDegreeTwo)` using `mul_nonneg (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f4 : 0 ≤ (10 * D + 12) * PI4` using `mul_nonneg (by linarith) (by linarith)`. Establish `f5 : 0 ≤ (6 * D + 6) * Prw` using `mul_nonneg (by linarith) (by linarith)`. Establish `hE2` using `mul_nonneg hT (add_nonneg (add_nonneg (add_nonneg (add_nonneg f1 f2) f3) f4) f5)`. Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hb : Hde + D * ade * lr ≤ (D + 1) * δ * (2 * G + 6 * (2 * (PP0' + PN + tableLineDegreeFive + tableLineDegreeTwo + PI4 + Prw) + G)) * L + 4 / 3 * D * δ * Prw * L` using `by linarith`. Use `mul_le_mul_of_nonneg_left hb hg0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem heights_arith
     (D δ L lr lw1 hN sF laW nuS c g0 i DF PP0' PN tableLineDegreeFive tableLineDegreeTwo PI4 Prw G Pet

@@ -12,24 +12,24 @@ namespace GlobalTheory
 open Formalism.HermitianLattices.GL2PrimeSums Formalism.HermitianLattices.GL2a2
 
 /- English proof (translation)
-The claim follows from `mul_nonneg vonMangoldt_nonneg (le_min zero_le_one (div_nonneg hx (Nat.cast_nonneg n)))`.
+A detailed English derivation is pending.
 -/
 theorem meanSq_cn_nonneg {x : ℝ} (hx : 0 ≤ x) (n : ℕ) : 0 ≤ cn x n :=
   mul_nonneg vonMangoldt_nonneg (le_min zero_le_one (div_nonneg hx (Nat.cast_nonneg n)))
 
 /- English proof (translation)
-Unfold `cn`. Rewrite using `[vonMangoldt_eq_zero_iff.2 hn, zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem meanSq_cn_eq_zero (x : ℝ) {n : ℕ} (hn : ¬ IsPrimePow n) : cn x n = 0 := by
   unfold cn
   rw [vonMangoldt_eq_zero_iff.2 hn, zero_mul]
 
 /- English proof (translation)
-Unfold `sP`. Use `set N := ⌊x ^ (400 : ℝ)⌋₊`. Rewrite using `[← Finset.sum_image (s := (Icc 1 N).filter (fun i => p ^ i ≤ N)) (g := fun i => p ^ i) (f := fun n => cn x n) (fun a _ b _ h => Nat.pow_right_injective hp.two_le h)]`. Rewrite using `[← Finset.sum_filter]`. Rewrite using `[← Finset.sum_filter_of_ne (p := fun n => IsPrimePow n) (fun n _ h => by by_contra h'; exact h (meanSq_cn_eq_zero x h'))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ (fun n _ _ => meanSq_cn_nonneg hx n)` and prove the remaining obligations. Introduce `n hn`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at hn`. Take `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩` from `hn`. Take `⟨p', i, hp', hi, rfl⟩` from `(isPrimePow_nat_iff _).1 h4`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hp'.pow_minFac hi.ne']`. Substitute `h3` using the available equality. Use `Finset.mem_image.2 ⟨i, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨hi, (Nat.lt_pow_self hp.one_lt).le.trans h2⟩, h2⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem meanSq_fiber_le {x : ℝ} (hx : 0 ≤ x) {p : ℕ} (hp : p.Prime) :
     ∑ n ∈ Icc 1 ⌊x ^ (400 : ℝ)⌋₊, (if n.minFac = p then cn x n else 0) ≤ sP x p := by
@@ -53,7 +53,7 @@ theorem meanSq_fiber_le {x : ℝ} (hx : 0 ≤ x) {p : ℕ} (hp : p.Prime) :
   exact ⟨⟨hi, (Nat.lt_pow_self hp.one_lt).le.trans h2⟩, h2⟩
 
 /- English proof (translation)
-The claim follows from `|(∑ q ∈ PPs, (jacobiSym ((n * n' : ℕ) : ℤ) q : ℝ)) / PPs.card| := by have h1 : ((∑ q ∈ PPs, ‖∑ n ∈ I, (c n : ℂ) * κ n * (jacobiSym (n : ℤ) q : ℂ)‖ ^ 2 : ℝ) : ℂ) = ∑ n ∈ I, ∑ n' ∈ I, ((c n * c n' : ℝ) : ℂ) * (κ n * (starRingEnd ℂ) (κ n')) * ((∑ q ∈ PPs, (jacobiSym ((n * n' : ℕ) : …`.
+A detailed English derivation is pending.
 -/
 theorem meanSq_expand (I PPs : Finset ℕ) (c : ℕ → ℝ) (hc : ∀ n, 0 ≤ c n) (κ : ℕ → ℂ) (hκ : ∀ n, ‖κ n‖ ≤ 1) :
     (∑ q ∈ PPs, ‖∑ n ∈ I, (c n : ℂ) * κ n * (jacobiSym (n : ℤ) q : ℂ)‖ ^ 2) / PPs.card ≤
@@ -92,7 +92,7 @@ theorem meanSq_expand (I PPs : Finset ℕ) (c : ℕ → ℝ) (hc : ∀ n, 0 ≤ 
   rw [abs_div, Nat.abs_cast, mul_div_assoc]
 
 /- English proof (translation)
-The claim follows from `|(∑ q ∈ PPs, (jacobiSym a q : ℝ)) / PPs.card| ≤ 1 := by rw [abs_div, Nat.abs_cast] refine div_le_one_of_le₀ ?_ (Nat.cast_nonneg _) refine (Finset.abs_sum_le_sum_abs _ _).trans ?_ have : ∀ q ∈ PPs, |(jacobiSym a q : ℝ)| ≤ 1 := by intro q _ rcases jacobiSym.trichotomy a q with h | …`.
+A detailed English derivation is pending.
 -/
 theorem meanSq_abs_mean_le_one (PPs : Finset ℕ) (a : ℤ) :
     |(∑ q ∈ PPs, (jacobiSym a q : ℝ)) / PPs.card| ≤ 1 := by
@@ -105,7 +105,7 @@ theorem meanSq_abs_mean_le_one (PPs : Finset ℕ) (a : ℤ) :
   simpa using Finset.sum_le_card_nsmul _ _ _ this
 
 /- English proof (translation)
-Unfold `outPart`. Conclude with `Nat.primeFactors_prod fun p hp => Nat.prime_of_mem_primeFactors (Finset.mem_filter.1 hp).1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem meanSq_primeFactors_outPart (m₀ m : ℕ) :
     (outPart m₀ m).primeFactors = m.primeFactors.filter (fun p => ¬ p ∣ m₀ ∧ Odd (m.factorization p)) := by
@@ -113,7 +113,7 @@ theorem meanSq_primeFactors_outPart (m₀ m : ℕ) :
   exact Nat.primeFactors_prod fun p hp => Nat.prime_of_mem_primeFactors (Finset.mem_filter.1 hp).1
 
 /- English proof (translation)
-Rewrite using `[meanSq_primeFactors_outPart]`. Use `(Finset.card_filter_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Nat.primeFactors_mul hn.ne_zero hn'.ne_zero]`. Use `(Finset.card_union_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[isPrimePow_iff_card_primeFactors_eq_one.1 hn, isPrimePow_iff_card_primeFactors_eq_one.1 hn']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem meanSq_card_primeFactors_outPart (m₀ : ℕ) {n n' : ℕ} (hn : IsPrimePow n) (hn' : IsPrimePow n') :
     (outPart m₀ (n * n')).primeFactors.card ≤ 2 := by
@@ -124,9 +124,9 @@ theorem meanSq_card_primeFactors_outPart (m₀ : ℕ) {n n' : ℕ} (hn : IsPrime
   rw [isPrimePow_iff_card_primeFactors_eq_one.1 hn, isPrimePow_iff_card_primeFactors_eq_one.1 hn']
 
 /- English proof (translation)
-Take `⟨p, i, hp, hi, rfl⟩` from `(isPrimePow_nat_iff _).1 hn`. Take `⟨p', j, hp', hj, rfl⟩` from `(isPrimePow_nat_iff _).1 hn'`. Rewrite `hne`, `hm`, the goal using `[hp.pow_minFac hi.ne']`. Rewrite `hne` using `[hp'.pow_minFac hj.ne']`. Rewrite using `[meanSq_primeFactors_outPart, Finset.mem_filter]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Nat.mem_primeFactors.2 ⟨hp, Dvd.dvd.mul_right (dvd_pow_self p hi.ne') _, mul_ne_zero hn.ne_zero hn'.ne_zero⟩, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.factorization_mul hn.ne_zero hn'.ne_zero, hp.factorization_pow, hp'.factorization_pow]`. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same, Finsupp.single_eq_of_ne hne, add_zero]`. Rewrite using `[← Nat.not_even_iff_odd]`. Conclude with `fun h => hsq (h.isSquare_pow p)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem meanSq_mem_outPart (m₀ : ℕ) {n n' : ℕ} (hn : IsPrimePow n) (hn' : IsPrimePow n')
     (hne : n.minFac ≠ n'.minFac) (hsq : ¬ IsSquare n) (hm : ¬ n.minFac ∣ m₀) :
@@ -144,47 +144,41 @@ theorem meanSq_mem_outPart (m₀ : ℕ) {n n' : ℕ} (hn : IsPrimePow n) (hn' : 
   exact fun h => hsq (h.isSquare_pow p)
 
 /- English proof (translation)
-Establish `hfib` using `fun p hp => meanSq_fiber_le (p := p) hx hp`. Establish `hc` using `meanSq_cn_nonneg hx`. Unfold `Rsum`. Use `set N := ⌊x ^ (400 : ℝ)⌋₊ with hN`. Use `set f : ℕ → ℕ → ℝ := fun p n => if n.minFac = p then cn x n else 0 with hf`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hf0 : ∀ p n, 0 ≤ f p n` using `fun p n => by`. Simplify using `only [hf]`. Use `split_ifs`. Use `exacts [hc n, le_rfl]`. Use `set P := (Icc 1 N).filter (fun p => p.Prime) with hP`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `set M := m₀.primeFactors.filter (fun p => p ≤ N) with hM`. Use `set T : Finset ℕ := if nStar.primeFactors.card ≤ 2 then nStar.primeFactors else ∅ with hT`. Establish `hTcard : T.card ≤ 2`. Simplify using `only [hT]`. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `exacts [h, by simp]`. Establish `hTprime : ∀ p ∈ T, p.Prime`. Introduce `p hp`. Simplify using `only [hT] at hp`. Use `split_ifs at hp with h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `exacts [Nat.prime_of_mem_primeFactors hp, absurd hp (Finset.notMem_empty p)]`. Use `set U : ℕ → ℝ := fun n => (if IsSquare n then cn x n else 0) + ∑ p ∈ M, f p n + ∑ p ∈ T, f p n with hU`. Establish `hU1 : ∀ n, 0 ≤ (if IsSquare n then cn x n else 0)` using `fun n => by split_ifs exacts [hc n, le_rfl]`. Establish `hU2 : ∀ (B : Finset ℕ) n, 0 ≤ ∑ p ∈ B, f p n` using `fun B n => Finset.sum_nonneg fun p _ => hf0 p n`. Establish `hU0 : ∀ n, 0 ≤ U n` using `fun n => add_nonneg (add_nonneg (hU1 n) (hU2 M n)) (hU2 T n)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hsingle : ∀ (B : Finset ℕ) (n : ℕ), n.minFac ∈ B → cn x n ≤ ∑ p ∈ B, f p n`. Introduce `B n h`. Use `Finset.single_le_sum (f := fun p => f p n) (fun p _ => hf0 p n) h` as an intermediate fact. Simplify `this` using `[hf]`. Establish `hUc : ∀ n n' : ℕ, n ∈ Icc 1 N → IsPrimePow n → IsPrimePow n' → n.minFac ≠ n'.minFac → (outPart m₀ (n * n') = 1 ∨ outPart m₀ (n * n') = nStar) → cn x n ≤ U n`.
+Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `n n' hn hpn hpn' hne ho`. Establish `a1` using `hU1 n`. Establish `a2` using `hU2 M n`. Establish `a3` using `hU2 T n`. Simplify using `only [hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hsq : IsSquare n`. Rewrite using `[if_pos hsq]`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hm : n.minFac ∣ m₀`. Establish `: n.minFac ∈ M` using `Finset.mem_filter.2 ⟨Nat.mem_primeFactors.2 ⟨Nat.minFac_prime hpn.ne_one, hm, hm₀.ne'⟩, (Nat.minFac_le hpn.pos).trans (Finset.mem_Icc.1 hn).2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `hsingle M n this` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `meanSq_mem_outPart m₀ hpn hpn' hne hsq hm`. Establish `h2` using `meanSq_card_primeFactors_outPart m₀ hpn hpn'`. Break down `ho with ho | ho` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[ho]`. Simplify using `at h1`. Rewrite `h1`, `h2` using `[ho]`. Establish `: n.minFac ∈ T` using `by simp only [hT]; rw [if_pos h2]; exact h1`. Use `hsingle T n this` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpt : ∀ n ∈ Icc 1 N, ∀ n' ∈ Icc 1 N, cn x n * cn x n' * A n n' ≤ η * (cn x n * cn x n') + ∑ p ∈ P, f p n * f p n' + U n * U n'`. Introduce `n hn n' hn'`. Establish `b1 : 0 ≤ η * (cn x n * cn x n')` using `mul_nonneg hη (mul_nonneg (hc n) (hc n'))`. Establish `b2 : 0 ≤ ∑ p ∈ P, f p n * f p n'` using `Finset.sum_nonneg fun p _ => mul_nonneg (hf0 p n) (hf0 p n')`.
+Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b3 : 0 ≤ U n * U n'` using `mul_nonneg (hU0 n) (hU0 n')`. Establish `b4 : cn x n * cn x n' * A n n' ≤ cn x n * cn x n'` using `mul_le_of_le_one_right (mul_nonneg (hc n) (hc n')) (hA1 n n')`. Distinguish the cases in `hpn : IsPrimePow n`. Use `swap`. Establish `: cn x n * cn x n' * A n n' = 0` using `by rw [meanSq_cn_eq_zero x hpn]; ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hpn' : IsPrimePow n'`. Use `swap`. Establish `: cn x n * cn x n' * A n n' = 0` using `by rw [meanSq_cn_eq_zero x hpn']; ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hne : n.minFac = n'.minFac`. Establish `hmem : n.minFac ∈ P` using `Finset.mem_filter.2 ⟨Finset.mem_Icc.2 ⟨Nat.minFac_pos n, (Nat.minFac_le hpn.pos).trans (Finset.mem_Icc.1 hn).2⟩, Nat.minFac_prime hpn.ne_one⟩`. Use `Finset.single_le_sum (f := fun p => f p n * f p n') (fun p _ => mul_nonneg (hf0 p n) (hf0 p n')) hmem` as an intermediate fact. Establish `e : f n.minFac n * f n.minFac n' = cn x n * cn x n'`. Simplify using `only [hf]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_pos trivial, if_pos hne.symm]`. Simplify using `only [e] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `ho : outPart m₀ (n * n') = 1 ∨ outPart m₀ (n * n') = nStar`. Establish `c1` using `hUc n n' hn hpn hpn' hne ho`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `c2` using `hUc n' n hn' hpn' hpn (Ne.symm hne) (by rwa [mul_comm n' n])`. Use `mul_le_mul c1 c2 (hc n') (hU0 n)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `ho` using `[not_or]`. Use `mul_le_mul_of_nonneg_left (hA n n' hn hn' hpn hpn' ho.1 ho.2) (mul_nonneg (hc n) (hc n'))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `(Finset.sum_le_sum fun n hn => Finset.sum_le_sum fun n' hn' => hpt n hn n' hn').trans ?_` and prove the remaining obligations. Repeatedly rewrite using `[Finset.sum_add_distrib]`. Use `add_le_add (add_le_add (le_of_eq ?_) ?_) ?_` and prove the remaining obligations. Rewrite using `[sq, Finset.sum_mul_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[Finset.mul_sum]`. Establish `: ∑ n ∈ Icc 1 N, ∑ n' ∈ Icc 1 N, ∑ p ∈ P, f p n * f p n' = ∑ p ∈ P, (∑ n ∈ Icc 1 N, f p n) ^ 2`. Repeatedly rewrite using `[sq, Finset.sum_mul_sum]`. Rewrite using `[Finset.sum_comm (s := P)]`. Conclude with `Finset.sum_congr rfl fun n _ => Finset.sum_comm`.
-
-Rewrite using `[this]`. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (Finset.sum_nonneg fun n _ => hf0 p n) (hfib p (Finset.mem_filter.1 hp).2) 2`. Rewrite using `[← Finset.sum_mul_sum, ← sq]`. Use `pow_le_pow_left₀ (Finset.sum_nonneg fun n _ => hU0 n) ?_ 2` and prove the remaining obligations.
-
-Simplify using `only [hU]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_filter, Finset.sum_comm (t := M), Finset.sum_comm (t := T)]`. Use `add_le_add (add_le_add le_rfl (Finset.sum_le_sum fun p hp => hfib p (Nat.prime_of_mem_primeFactors (Finset.mem_filter.1 hp).1))) ?_` and prove the remaining obligations. Establish `h1 : ∑ p ∈ T, ∑ n ∈ Icc 1 N, f p n ≤ T.card • S` using `Finset.sum_le_card_nsmul _ _ _ fun p hp => (hfib p (hTprime p hp)).trans (hS p (hTprime p hp))`. Rewrite `h1` using `[nsmul_eq_mul]`.
-
-Use `h1.trans (mul_le_mul_of_nonneg_right ?_ hS0)` and prove the remaining obligations. Conclude with `hTcard` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem meanSq_pairs {x : ℝ} (hx : 0 ≤ x) (m₀ : ℕ) (hm₀ : 0 < m₀) (nStar : ℕ) (A : ℕ → ℕ → ℝ) (η S : ℝ)
     (hη : 0 ≤ η) (hS0 : 0 ≤ S) (hS : ∀ p : ℕ, p.Prime → sP x p ≤ S) (hA1 : ∀ n n', A n n' ≤ 1)
@@ -307,27 +301,27 @@ theorem meanSq_pairs {x : ℝ} (hx : 0 ≤ x) (m₀ : ℕ) (hm₀ : 0 < m₀) (n
     exact_mod_cast hTcard
 
 /- English proof (translation)
-Introduce `hψ ε hε hε1 C' c' hC' hc'`. Take `⟨C₁, hC₁⟩` from `GlobalTheory.chebyshev_coefficient_sum_bound hψ`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.prime_sum_square_bound hψ`. Take `⟨C₃, hC₃⟩` from `GlobalTheory.remainder_smooth_rough_bound hψ`. Take `⟨C₄, hC₄⟩` from `GlobalTheory.prime_power_von_mangoldt_sum_bound`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max (Real.exp 1) (Real.exp (2 / c')), C' * C₁ ^ 2 + C₂ + (5 * |C₃| + 4 * |C₄|) ^ 2, ?_⟩` and prove the remaining obligations. Introduce `x hx m₀ PPs κ nStar _ hm₀ hpr _ _ _ _ hκ hμ`. Establish `hxe : Real.exp 1 ≤ x` using `(le_max_left _ _).trans hx`. Establish `hx2 : 2 ≤ x` using `by have := Real.add_one_le_exp (1 : ℝ); linarith`. Establish `hx0 : 0 < x` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : 1 ≤ x` using `by linarith`. Establish `hL1 : 1 ≤ Real.log x` using `(Real.le_log_iff_exp_le hx0).2 hxe`. Establish `hL2 : 2 / c' ≤ Real.log x` using `(Real.le_log_iff_exp_le hx0).2 ((le_max_right _ _).trans hx)`. Establish `hL0 : 0 ≤ Real.log x` using `by linarith`. Establish `h1` using `meanSq_expand (Icc 1 ⌊x ^ (400 : ℝ)⌋₊) PPs (cn x) (meanSq_cn_nonneg hx0.le) κ hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `meanSq_pairs hx0.le m₀ hm₀ nStar (fun n n' => |(∑ q ∈ PPs, (jacobiSym ((n * n' : ℕ) : ℤ) q : ℝ)) / PPs.card|) (C' * Real.exp (-c' * Real.log x ^ 2)) (|C₄| * Real.log x) (by positivity) (by positivity) (fun p hp => (hC₄ x hx2 p hp).trans (mul_le_mul_of_nonneg_right (le_abs_self _) …`. Unfold `sqSum`. Use `(h1.trans h2).trans ?_` and prove the remaining obligations. Establish `e1 : C' * Real.exp (-c' * Real.log x ^ 2) * (∑ n ∈ Icc 1 ⌊x ^ (400 : ℝ)⌋₊, cn x n) ^ 2 ≤ C' * C₁ ^ 2 * x * Real.log x`. Establish `s1 : (∑ n ∈ Icc 1 ⌊x ^ (400 : ℝ)⌋₊, cn x n) ^ 2 ≤ (C₁ * x * Real.log x) ^ 2` using `pow_le_pow_left₀ (Finset.sum_nonneg fun n _ => meanSq_cn_nonneg hx0.le n) (hC₁ x hx2) 2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2 : Real.exp (-c' * Real.log x ^ 2) * (x * Real.log x) ≤ 1`. Establish `t1 : Real.log x ≤ x` using `(Real.log_le_sub_one_of_pos hx0).trans (by linarith)`. Establish `t2 : 2 ≤ c' * Real.log x` using `by rw [div_le_iff₀ hc'] at hL2; linarith`. Establish `t3 : x * x = Real.exp (2 * Real.log x)`. Rewrite using `[two_mul, Real.exp_add, Real.exp_log hx0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_le_one_iff]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right t2 hL0]`. Combine the equalities or inequalities in the displayed calculation. Establish `e2` using `hC₂ x hx2`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e3 : (Rsum x m₀ + 2 * (|C₄| * Real.log x)) ^ 2 ≤ (5 * |C₃| + 4 * |C₄|) ^ 2 * x * Real.log x`. Establish `r0 : 0 ≤ Rsum x m₀`. Unfold `Rsum sP`. Conclude with `add_nonneg (Finset.sum_nonneg fun n _ => meanSq_cn_nonneg hx0.le n) (Finset.sum_nonneg fun p _ => Finset.sum_nonneg fun i _ => meanSq_cn_nonneg hx0.le _)`. Establish `r1` using `hC₃ ε hε hε1 x hx2 m₀ hm₀ hpr`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r2 : Real.log x ≤ x ^ ((1 : ℝ) / 2) / (1 / 2)` using `Real.log_le_rpow_div hx0.le (by norm_num)`. Establish `r3 : Real.log x ≤ x ^ ((1 : ℝ) / 4) / (1 / 4)` using `Real.log_le_rpow_div hx0.le (by norm_num)`. Establish `r4 : x ^ (ε / 5) ≤ x ^ ((1 : ℝ) / 4)` using `Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)`. Establish `r5 : x ^ ((1 : ℝ) / 4) * x ^ ((1 : ℝ) / 4) = x ^ ((1 : ℝ) / 2)`. Rewrite using `[← Real.rpow_add hx0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Establish `r6 : (x ^ ((1 : ℝ) / 2)) ^ 2 = x`. Rewrite using `[sq, ← Real.rpow_add hx0]`. Evaluate the numerical expressions. Establish `r7 : x ^ (ε / 5) * Real.log x ≤ 4 * x ^ ((1 : ℝ) / 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul r4 r3 hL0 (by positivity)` as an intermediate fact. Rewrite using `[← r5]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `r8 : Rsum x m₀ ≤ |C₃| * (5 * x ^ ((1 : ℝ) / 2))`. Use `r1.trans ((mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity)).trans ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (by linarith) (abs_nonneg _)`. Establish `r9 : |C₄| * Real.log x ≤ |C₄| * (2 * x ^ ((1 : ℝ) / 2))` using `mul_le_mul_of_nonneg_left (by linarith) (abs_nonneg _)`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem meanSq_core : Formalism.HermitianLattices.GL2PrimeSums.JacobiTwistedMeanSquareBound := by
   intro hψ ε hε hε1 C' c' hC' hc'

@@ -21,29 +21,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hDict hPair hPos hLaw j hj ι hι`. Use `letI := wittFractionAlgebraCp (D.what₂.places.resChar w)`. Use `letI := algKfC S.E.toCEmb`. Establish `hj1 : j + 1 ≤ D.R.m` using `hj`. Distinguish the cases in `hne : Nonempty (Lv.comp j) ∧ Nonempty (Lv.comp (j + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `swap`. Use `⟨1, norm_one, ?_⟩` and prove the remaining obligations. Introduce `La _ x c' L' _`. Conclude with `absurd ⟨⟨La.1⟩, ⟨c'⟩⟩ hne`. Take `⟨⟨a⟩, ⟨a'⟩⟩` from `hne`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hn1, -, hsame⟩` from `GlobalTheory.T.stepDeterminantConstant_unit_independent S hPos ι hι j hj1 a a'`. Use `set cK := cKs S ι j hj1 a a' with hcK`. Use `⟨cK, hn1, ?_⟩` and prove the remaining obligations. Take `⟨-, -, hrk, hRT⟩` from `GlobalTheory.TwV.DelB.sysS_ranks S`. Establish `hN` using `hRT j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ((sysS H X std).Pj (j + 1)).m + 1 = D.R.N (j + 1)` using `hrk (j + 1)`. Take `⟨d0⟩` from `GlobalTheory.T.exists_adelic_latticeTuple_decomposition S hDict`. Introduce `La hLa x c' L' hL'`. Establish `hQ : K2.SharpQ t ex.tw u μ j x (K2.qOf t ex.tw u μ j x)`. Establish `hex` using `J.sharp j hj x`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `K2.qOf`. Rewrite using `[dif_pos hex]`. Conclude with `Classical.choose_spec hex`. Use `set cc := clsAt X H j La.1 La.2 with hcc`. Use `set κ := clsAt X H (j + 1) c' L' with hκ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Q := K2.qOf t ex.tw u μ j x with hQdef`. Use `set P : MvPolynomial (GL3Theta.FrV D (D.R.N (j + 1))) ℂ := ((((GL3Theta.rhoOf D (t.O u μ).mt j ((t.O u μ).dt j cc) : ℂˣ) : ℂ) * ((GL3Theta.rhoOf' D (t.O u μ).mt j ((t.O u μ).dt (j + 1) κ) : ℂˣ) : ℂ)) • framePol D (t.O u μ).dgen (Q cc) ((t.rd u μ).Th t.seam t.amb j cc κ)) with hP`. Establish `hPw : P ∈ WtPol ℂ (extNu (D.R.N (j + 1)) (Formalism.L2.Ker.nuT D u j))` using `Submodule.smul_mem _ _ ((wt_polDY_framePol D (rk_le _ D hN) (t.O u μ).dgen _ (Q cc) (hQ.1 cc)).2 _)`. Use `set φ := K2.entRec t ex.tw u μ j cc x with hφ`. Establish `hφκ : ∀ y, φ κ y = (∏ τ, (D.chTw u μ).de (j + 1) y τ ^ (D.chTw u μ).sDiv j τ)⁻¹ * frPoly (t.O u μ) (j + 1) P y`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Establish `e` using `(GlobalTheory.T.operatorOnFrame_and_classSummand_polynomial).2 D L hT Gi Gl Kc Dx cX ex t u μ j cc (Q cc) κ y`. Establish `e2 : φ κ y = entQ t u μ j cc (Q cc) κ y` using `rfl`. Rewrite using `[e2, e, hP, map_smul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR : ∀ d : Dec J std, ∃ V : XR ((sysS H X std).Pj (j + 1)) ℂ, RealAt d (j + 1) hj1 h1 (c', L') φ V ∧ MvPolynomial.map ι V = cK • S.Y.DelF j ((kaAt X H hT).cmp j x La.1 La.2) (srOf S.Y j La (c', L'))`. Introduce `d`. Take `⟨V, hV, hmap⟩` from `GlobalTheory.T.transportedFramePolynomial_complex_values_at_point S hPos ι hι d j hj1 h1 (c', L') φ P hPw hφκ`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Rewrite using `[hmap]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hMove, hOp, hDeg⟩` from `GlobalTheory.T.movedForms_operator_degrees_at_kernelSource S hDict hPos ι hι d j hj ⟨a'⟩ hN`. Establish `hEq` using `GlobalTheory.FrameB.equiv_frame_b S.Y d.fd2 (ltC S.g S.hLT) (GlobalTheory.FrameB.ltC_ne S.hLT) ((GlobalTheory.TwV.DelB.frames_invertible S).2 d) j`. Establish `hsc : ∀ (La : (sysS H X std).Lt j) (La' : (sysS H X std).Lt (j + 1)), ((sysS H X std).Pj j).IsLatTup La.2 → ((sysS H X std).Pj (j + 1)).IsLatTup La'.2 → cK * (Formalism.L2.G.Pend.cA (sysS H X std) ℂ_[D.what₂.places.resChar w] j (BOf d.fd2 j La) * sO d ι j La) * ι (d.uS S j La) * …`. Introduce `La La' _ _`. Establish `e` using `GlobalTheory.T.unit_mul_sourceScalar_eq_nextLevelScalar S hPos ι hι d j hj1 La La'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[hsame]`. Conclude with `e`. Establish `hDel` using `GlobalTheory.T.kernelSite_contractionIdentity_operatorHalf S hDict hPair hPos hLaw d ι hι (fun j => phi0 (sysS H X std) D (hT.gat_pos u w hg) ι j) (fun j c' L' => GlobalTheory.FrameB.tauV ℂ_[D.what₂.places.resChar w] d.fd2 (ltC S.g S.hLT) j (c', L')) (fun j c' L' => scT d S ι j c …`. Use `hDel La hLa x Q hQ c' L' hL'` as an intermediate fact. Conclude with `this`.
-
-Take `⟨V0, hV0, hm0⟩` from `hR d0`. Establish `hall : ∀ d : Dec J std, RealAt d (j + 1) hj1 h1 (c', L') φ V0`. Introduce `d`. Take `⟨V, hV, hm⟩` from `hR d`. Establish `: V = V0` using `MvPolynomial.map_injective ι ι.injective (hm.trans hm0.symm)`.
-
-Conclude with `this ▸ hV`. Establish `hrd` using `GlobalTheory.T.latticeTupleReading_eq_of_realising_polynomial S hDict ι j hj1 h1 (c', L') hL' φ V0 hall`. Conclude with `hrd.trans hm0`.
+A detailed English derivation is pending.
 -/
 theorem tieDel_all_steps : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => J.Dict std → S.Pair → S.Pos → S.Law → ∀ j < D.R.m, S.Del j) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hDict hPair hPos hLaw j hj ι hι

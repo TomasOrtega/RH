@@ -5,11 +5,11 @@ open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BasicNotions Global
 namespace GlobalTheory.Alc
 
 /- English proof (translation)
-Rewrite using `[pow_succ']`. Simplify using `only [Matrix.mul_apply]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.mul_sum]`. Establish `hpt : ∀ j : Fin N, hcMat R μ i j * ∑ l, (hcMat R μ ^ k) j l = (if j = i then shift R μ i * ∑ l, (hcMat R μ ^ k) j l else 0) + (if i < j then -∑ l, (hcMat R μ ^ k) j l else 0)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Simplify using `only [hcMat, Matrix.of_apply]`. Distinguish the cases in `h1 : j = i`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : i < j`. Simplify using `[h1, h2]`. Simplify using `[h1, h2]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => hpt j), Finset.sum_add_distrib, Finset.sum_ite_eq' , ← Finset.sum_filter, Finset.sum_neg_distrib]`. Simplify using `[sub_eq_add_neg]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hcRow_succ (R : Type) [CommRing R] (N : ℕ) (μ : Fin N → R) (i : Fin N) (k : ℕ) :
     ∑ l, (hcMat R μ ^ (k+1)) i l =
@@ -40,7 +40,7 @@ def hcRowSeries (R : Type) [CommRing R] {N : ℕ} (μ : Fin N → R) (i : Fin N)
   PowerSeries.mk fun k => ∑ l, (hcMat R μ ^ k) i l
 
 /- English proof (translation)
-Use extensionality with `n`. Consider the cases of `n with`. Consider the case `zero => simp [hcRowSeries, sub_mul, mul_assoc, Matrix.one_apply]`. Consider the case `succ k`. Simplify using `[hcRowSeries, sub_mul, mul_assoc, PowerSeries.coeff_succ_X_mul, map_sum, hcRow_succ]`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem hcRowSeries_eq (R : Type) [CommRing R] (N : ℕ) (μ : Fin N → R) (i : Fin N) :
     (1 - PowerSeries.C (shift R μ i) * PowerSeries.X) * hcRowSeries R μ i =
@@ -56,17 +56,17 @@ end GlobalTheory.Alc
 namespace GlobalTheory.Alc
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `_`. Establish `: Finset.univ.filter (fun j : Fin N => N - 0 ≤ j.val) = ∅`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `j`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using the standard rewrite rules. Consider the case `succ d ih`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hd`. Use `set i : Fin N := ⟨N - d - 1, by omega⟩ with hi`. Establish `hS : Finset.univ.filter (fun j : Fin N => N - (d+1) ≤ j.val) = insert i (Finset.univ.filter (fun j : Fin N => N - d ≤ j.val))`. Use extensionality with `j`. Simplify using `[hi, Fin.ext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hnot : i ∉ Finset.univ.filter (fun j : Fin N => N - d ≤ j.val)`. Simplify using `[hi]`. Use linear arithmetic over natural numbers and integers. Establish `hgt : Finset.univ.filter (fun j : Fin N => i < j) = Finset.univ.filter (fun j : Fin N => N - d ≤ j.val)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `j`. Simplify using `[hi, Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `hcRowSeries_eq R N μ i`. Rewrite `h` using `[hgt]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `IH` using `ih (by omega)`. Rewrite using `[hS, Finset.sum_insert hnot, Finset.prod_insert hnot, Finset.prod_insert hnot]`. Rewrite using `[map_add, map_one]`. Take the linear combination `(1 - PowerSeries.C (shift R μ i) * PowerSeries.X - PowerSeries.X) * IH - PowerSeries.X * (∏ j ∈ Finset.univ.filter (fun j : Fin N => N - d ≤ j.val), (1 - PowerSeries.C (shift R μ j) * PowerSeries.X)) * h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hcTelescope (R : Type) [CommRing R] (N : ℕ) (μ : Fin N → R) :
     ∀ d, d ≤ N →
@@ -99,9 +99,9 @@ theorem hcTelescope (R : Type) [CommRing R] (N : ℕ) (μ : Fin N → R) :
       - PowerSeries.X * (∏ j ∈ Finset.univ.filter (fun j : Fin N => N - d ≤ j.val), (1 - PowerSeries.C (shift R μ j) * PowerSeries.X)) * h
 
 /- English proof (translation)
-Establish `h` using `hcTelescope R N μ N le_rfl`. Establish `hU : Finset.univ.filter (fun j : Fin N => N - N ≤ j.val) = Finset.univ`. Use extensionality with `j`. Simplify using the standard rewrite rules. Establish `hmk : PowerSeries.mk (hcVal R μ) = ∑ j, hcRowSeries R μ j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `n`. Simplify using `[hcVal, hcRowSeries, map_sum]`. Rewrite `h` using `[hU]`. Rewrite using `[hmk]`. Conclude with `h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hcVal_generating (R : Type) [CommRing R] (N : ℕ) (μ : Fin N → R) :
     (1 - PowerSeries.X * PowerSeries.mk (hcVal R μ)) * ∏ i, (1 - PowerSeries.C (shift R μ i) * PowerSeries.X) =

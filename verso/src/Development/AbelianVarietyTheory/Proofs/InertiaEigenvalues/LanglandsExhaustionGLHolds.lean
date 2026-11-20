@@ -4,7 +4,7 @@ import CompanionTheory.AutomorphicTheory.ProductFormulaTheory.GrothendieckRingPo
 import CompanionTheory.RealGroups.GeneralUnitaryRepresentations.ArchimedeanJacquetSegments.SegmentSubquotients.SegmentRepresentation
 
 /- English proof (translation)
-The claim follows from `CompanionTheory.Exh.langlandsExhaustionGL_of_seg CompanionTheory.RgGu.segmentRepresentation`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.langlandsExhaustionGL_holds : GlobalTheory.Published.LanglandsExhaustionGL :=
   CompanionTheory.Exh.langlandsExhaustionGL_of_seg CompanionTheory.RgGu.segmentRepresentation

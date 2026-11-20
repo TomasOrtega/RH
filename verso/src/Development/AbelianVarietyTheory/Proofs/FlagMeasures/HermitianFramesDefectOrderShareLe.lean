@@ -16,7 +16,7 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.DefectShare
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `le_trans ?_ hN` and prove the remaining obligations. Conclude with `Set.encard_le_encard (fun a ha => hs a ha)` after adjusting the coercions.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma tsum_subtype_le {α : Type} (P : α → Prop) (s : Set α) (hs : ∀ a, P a → a ∈ s) (f : α → ℝ≥0∞)
     (c N : ℝ≥0∞) (hf : ∀ a, P a → f a ≤ c) (hN : (s.encard : ℝ≥0∞) ≤ N) :
@@ -30,23 +30,21 @@ lemma tsum_subtype_le {α : Type} (P : α → Prop) (s : Set α) (hs : ∀ a, P 
         exact_mod_cast Set.encard_le_encard (fun a ha => hs a ha)
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ d Λ, S.IsTerm d Λ ∧ S.Fr d Λ = C`. Use `swap`. Establish `h0 : (S.sumData fun d => S.nT d C fun Λ => S.be d Λ = β) = 0`. Unfold `Frames.sumData`. Use `ENNReal.tsum_eq_zero.2 fun o => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ({Λ | S.IsTerm o.out Λ ∧ S.be o.out Λ = β ∧ S.Fr o.out Λ = C} : Set (Submodule L.O S.V)) = ∅`. Use extensionality with `Λ`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨h1, -, h3⟩`. Conclude with `h ⟨_, _, h1, h3⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Frames.nT, this]`. Rewrite using `[h0]`. Conclude with `zero_le`. Take `⟨d, Λ, hT, hFr⟩` from `h`. Take `⟨hSD, -, hM, -⟩` from `GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : 0 ≤ S.a` using `(GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ hT).1`. Establish `hp : (S.fr d Λ, S.fr' d Λ) ∈ C`. Rewrite using `[← hFr]`. Conclude with `(GlobalTheory.HL.FrameClass.frame_classes L r k S (S.fr d Λ) (S.fr' d Λ)).1`. Take `⟨κ, hκ, hU⟩` from `GlobalTheory.T.selfDualHermitianLattice_mass_of_trace L r k S (by omega) ⟨Λ, hSD⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.T.hermitianFrameClass_terms_le_overlattice_masses L r k S C hC _ hp`. Establish `h3` using `GlobalTheory.FrameOver.encard_overlattices_le L r k S C hC _ hp ha`. Establish `hlow : ENNReal.ofReal (κ / 2) ≤ S.massSig (S.Mof (S.fr d Λ) (S.fr' d Λ))`. Use `(hU C hC _ hp _ le_rfl (fun x hx => (hM hx).2) (fun x hx y hy => (hSD.2 y).2 (hM hy).1 x (hM hx).1)).1` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Rewrite using `[h2]`. Use `(h1 fun n => n = β).trans ?_` and prove the remaining obligations. Use `(tsum_subtype_le _ _ (fun Mh hMh => ?_) S.massSig (ENNReal.ofReal (2 * κ * ((β : ℝ) ^ (k - 1))⁻¹)) _ (fun Mh hMh => ?_) h3).trans ?_` and prove the remaining obligations. Conclude with `⟨hMh.1, hMh.2.1, hMh.2.2.1⟩`. Use `(hU C hC _ hp Mh hMh.1 hMh.2.1 hMh.2.2.1).2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hMh.2.2.2]`. Conclude with `this`. Use `le_trans (le_of_eq ?_) (mul_le_mul_right hlow _)` and prove the remaining obligations. Establish `hz : (S.q : ℝ) ^ (2 * S.a * (2 * r + 2)) = (S.q : ℝ) ^ (2 * S.a.toNat * (2 * r + 2))`. Rewrite using `[← zpow_natCast]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Rewrite using `[Int.toNat_of_nonneg ha]`. Establish `hq : (S.q : ℝ≥0∞) ^ (2 * S.a.toNat * (2 * r + 2)) = ENNReal.ofReal ((S.q : ℝ) ^ (2 * S.a.toNat * (2 * r + 2)))`. Rewrite using `[ENNReal.ofReal_pow (by positivity), ENNReal.ofReal_natCast]`.
-
-Rewrite using `[hz, hq, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem share_le {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E]

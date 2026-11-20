@@ -9,14 +9,14 @@ open PowerSeries
 namespace ContPA
 
 /- English proof (translation)
-Conclude with `(Ideal.span_le.mpr (by simp [Set.insert_subset_iff, ha, hb])) hz`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_mem_span_pair {R : Type*} [CommRing R] {a b z : R} {J : Ideal R}
     (hz : z ∈ Ideal.span {a, b}) (ha : a ∈ J) (hb : b ∈ J) : z ∈ J := by
   exact (Ideal.span_le.mpr (by simp [Set.insert_subset_iff, ha, hb])) hz
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Conclude with `Ideal.mul_mem_right c _ (Ideal.subset_span (Set.mem_insert a {b}))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_pair_left_of_dvd {R : Type*} [CommRing R] {a b z : R} (h : a ∣ z) :
     z ∈ Ideal.span {a, b} := by
@@ -24,7 +24,7 @@ theorem mem_pair_left_of_dvd {R : Type*} [CommRing R] {a b z : R} (h : a ∣ z) 
   exact Ideal.mul_mem_right c _ (Ideal.subset_span (Set.mem_insert a {b}))
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Conclude with `I.mul_mem_right c ha`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private lemma mem_of_dvd_lemma {R : Type*} [CommRing R] {I : Ideal R} {a b : R} (h : a ∣ b)
     (ha : a ∈ I) : b ∈ I := by
@@ -32,11 +32,11 @@ private lemma mem_of_dvd_lemma {R : Type*} [CommRing R] {I : Ideal R} {a b : R} 
   exact I.mul_mem_right c ha
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.mp h`. Establish `hx : x = x' + s * t` using `by rw [hs]; ring`. Rewrite using `[hx, add_pow]`. Use `Ideal.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hmn : m < n + 1` using `Finset.mem_range.mp hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `ham : a ≤ m`. Apply `mem_of_dvd_lemma (a := x' ^ a)` to reduce the goal to its premises. Establish `h1 : x' ^ a ∣ x' ^ m` using `pow_dvd_pow x' ham`. Conclude with `Dvd.dvd.mul_right (Dvd.dvd.mul_right h1 _) _`. Conclude with `Ideal.subset_span (by simp)`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `mem_of_dvd_lemma (a := t ^ (n + 1 - a))` to reduce the goal to its premises. Establish `h1 : t ^ (n + 1 - a) ∣ t ^ (n - m)` using `pow_dvd_pow t (by omega)`. Establish `h2 : t ^ (n - m) ∣ (s * t) ^ (n - m)` using `by rw [mul_pow]; exact dvd_mul_left _ _`. Conclude with `Dvd.dvd.mul_right (Dvd.dvd.mul_left (h1.trans h2) _) _`. Conclude with `Ideal.subset_span (by simp)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pow_mem_span_of_sub {R : Type*} [CommRing R] {x x' t : R}
     (h : x - x' ∈ Ideal.span {t}) (n a : ℕ) :
@@ -61,9 +61,9 @@ variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.mpr hc`. Assume the negation of the conclusion as `hm`. Establish `hm' : (m : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr hm)`. Establish `hne : (1 : O) ∉ IsLocalRing.maximalIdeal O` using `(Ideal.ne_top_iff_one _).mp (inferInstance : (IsLocalRing.maximalIdeal O).IsMaximal).ne_top`. Apply `hne` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (a : O) * (l : O) + (b : O) * (m : O) = 1`. Conclude with `congrArg (Int.cast : ℤ → O) hab` after adjusting the coercions. Rewrite using `[← h1]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hl) (Ideal.mul_mem_left _ _ hm')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isUnit_natCast_sp_complex_sections {l m : ℕ} (hl : (l : O) ∈ IsLocalRing.maximalIdeal O)
     (hc : Nat.Coprime l m) : IsUnit (m : O) := by
@@ -80,9 +80,9 @@ private lemma isUnit_natCast_sp_complex_sections {l m : ℕ} (hl : (l : O) ∈ I
   exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ hl) (Ideal.mul_mem_left _ _ hm')
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `pow_padicValNat_dvd (p := l) (n := n)`. Establish `hnd : ¬ l ∣ m`. Introduce and unpack `⟨c, rfl⟩`. Apply `pow_succ_padicValNat_not_dvd (p := l) hn` to reduce the goal to its premises. Conclude with `⟨c, by rw [pow_succ, mul_assoc]; exact hm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Establish `hu` using `isUnit_natCast_sp_complex_sections hl ((Nat.Prime.coprime_iff_not_dvd hp.out).mpr hnd)`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Establish `hc : (n : O) = (l : O) ^ padicValNat l n * (m : O)`. Conclude with `congrArg (Nat.cast : ℕ → O) hm` after adjusting the coercions. Rewrite using `[hc, IsUnit.unit_spec, mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_unit_mul {l : ℕ} [hp : Fact l.Prime] (hl : (l : O) ∈ IsLocalRing.maximalIdeal O)
     {n : ℕ} (hn : n ≠ 0) : ∃ v : Oˣ, (n : O) = v * (l : O) ^ padicValNat l n := by
@@ -98,7 +98,7 @@ theorem natCast_unit_mul {l : ℕ} [hp : Fact l.Prime] (hl : (l : O) ∈ IsLocal
   rw [hc, IsUnit.unit_spec, mul_comm]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `natCast_unit_mul hl hn`. Rewrite using `[hv]`. Conclude with `mul_ne_zero v.ne_zero (pow_ne_zero _ hl0)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero' {l : ℕ} [Fact l.Prime] (hl : (l : O) ∈ IsLocalRing.maximalIdeal O)
     (hl0 : (l : O) ≠ 0) {n : ℕ} (hn : n ≠ 0) : (n : O) ≠ 0 := by
@@ -107,14 +107,14 @@ theorem natCast_ne_zero' {l : ℕ} [Fact l.Prime] (hl : (l : O) ∈ IsLocalRing.
   exact mul_ne_zero v.ne_zero (pow_ne_zero _ hl0)
 
 /- English proof (translation)
-Conclude with `(ENat.coe_toNat ((IsDiscreteValuationRing.addVal_eq_top_iff).not.mpr hl0)).symm`.
+A detailed English derivation is pending.
 -/
 theorem addVal_l {l : ℕ} (hl0 : (l : O) ≠ 0) :
     IsDiscreteValuationRing.addVal O (l : O) = ((IsDiscreteValuationRing.addVal O (l : O)).toNat : ℕ∞) := by
   exact (ENat.coe_toNat ((IsDiscreteValuationRing.addVal_eq_top_iff).not.mpr hl0)).symm
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `natCast_unit_mul hl hn`. Rewrite using `[hv, AddValuation.map_mul, AddValuation.map_pow, IsDiscreteValuationRing.addVal_eq_zero_of_unit, zero_add]`. Take `⟨k, hk⟩ : ∃ k : ℕ, IsDiscreteValuationRing.addVal O (l : O) = k` from `⟨_, addVal_l hl0⟩`. Rewrite using `[hk, ENat.toNat_coe, nsmul_eq_mul]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -130,7 +130,7 @@ theorem addVal_natCast {l : ℕ} [Fact l.Prime] (hl : (l : O) ∈ IsLocalRing.ma
   ring
 
 /- English proof (translation)
-Take `⟨n, v, hv⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl0 hϖ`. Use `⟨v, ?_⟩` and prove the remaining obligations. Rewrite using `[IsDiscreteValuationRing.addVal_def _ v hϖ n hv, ENat.toNat_coe]`. Conclude with `hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_unit_mul {ϖ : O} (hϖ : Irreducible ϖ) {l : ℕ} (hl0 : (l : O) ≠ 0) :
     ∃ v : Oˣ, (l : O) = v * ϖ ^ (IsDiscreteValuationRing.addVal O (l : O)).toNat := by
@@ -140,9 +140,9 @@ theorem l_unit_mul {ϖ : O} (hϖ : Irreducible ϖ) {l : ℕ} (hl0 : (l : O) ≠ 
   exact hv
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `l_unit_mul hϖ hl0`. Establish `h : ϖ ^ k ∣ (l : O) ^ n`. Rewrite using `[hv, mul_pow, ← pow_mul]`. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow ϖ hk) _`. Establish `h2` using `map_dvd (C : O →+* O⟦X⟧) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_pow, map_pow]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem C_l_pow_dvd {ϖ : O} (hϖ : Irreducible ϖ) {l : ℕ} (hl0 : (l : O) ≠ 0) {n k : ℕ}
     (hk : k ≤ (IsDiscreteValuationRing.addVal O (l : O)).toNat * n) :
@@ -156,9 +156,9 @@ theorem C_l_pow_dvd {ϖ : O} (hϖ : Irreducible ϖ) {l : ℕ} (hl0 : (l : O) ≠
   exact h2
 
 /- English proof (translation)
-Establish `hw0 : w.order = 0`. Take `⟨u, rfl⟩` from `hw`. Establish `h` using `congrArg PowerSeries.order u.mul_inv`. Rewrite `h` using `[PowerSeries.order_mul, PowerSeries.order_one]`. Establish `h2 : PowerSeries.order (u : K⟦X⟧) ≤ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h]`. Conclude with `le_self_add`. Conclude with `le_antisymm h2 (by simp)`. Rewrite using `[PowerSeries.order_mul, hw0, PowerSeries.order_X_pow, zero_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma order_unit_mul_X_pow_lemma_3 {K : Type*} [Field K] {w : K⟦X⟧} (hw : IsUnit w) (n : ℕ) :
     (w * X ^ n).order = (n : ℕ∞) := by
@@ -172,11 +172,9 @@ private lemma order_unit_mul_X_pow_lemma_3 {K : Type*} [Field K] {w : K⟦X⟧} 
   rw [PowerSeries.order_mul, hw0, PowerSeries.order_X_pow, zero_add]
 
 /- English proof (translation)
-Establish `hord : (f.map (IsLocalRing.residue O)).order = n`. Rewrite using `[h]`. Conclude with `order_unit_mul_X_pow_lemma_3 hw n`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `IsDist`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `hord` using `[h0, PowerSeries.order_zero]`. Conclude with `ENat.top_ne_coe n hord`. Unfold `wdeg`. Rewrite using `[hord]`.
-
-Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dist_of_map_eq {f : O⟦X⟧} {w : (IsLocalRing.ResidueField O)⟦X⟧} (hw : IsUnit w) (n : ℕ)
     (h : f.map (IsLocalRing.residue O) = w * X ^ n) : IsDist f ∧ wdeg f = n := by
@@ -192,7 +190,7 @@ theorem dist_of_map_eq {f : O⟦X⟧} {w : (IsLocalRing.ResidueField O)⟦X⟧} 
     rfl
 
 /- English proof (translation)
-The claim follows from `dist_of_map_eq isUnit_one n (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem dist_X_pow (n : ℕ) : IsDist ((X : O⟦X⟧) ^ n) ∧ wdeg ((X : O⟦X⟧) ^ n) = n := dist_of_map_eq isUnit_one n (by simp)
 
@@ -200,9 +198,9 @@ section P1
 variable {l : ℕ} [hlp : Fact l.Prime] {p1 e u : O⟦X⟧}
 
 /- English proof (translation)
-Establish `h0 : IsLocalRing.residue O (l : O) = 0` using `(IsLocalRing.residue_eq_zero_iff _).mpr hl`. Establish `h0' : (l : IsLocalRing.ResidueField O) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue O)]`. Conclude with `h0`. Establish `h0'' : ((l : ℕ) : (IsLocalRing.ResidueField O)⟦X⟧) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (C : IsLocalRing.ResidueField O →+* (IsLocalRing.ResidueField O)⟦X⟧) l, h0', map_zero]`. Rewrite using `[hp]`. Simplify using `[h0, h0', h0'']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem residue_map_p1_eq (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hp : p1 = C (l : O) * e + u * X ^ l) :
     p1.map (IsLocalRing.residue O) = u.map (IsLocalRing.residue O) * X ^ l := by
@@ -215,7 +213,7 @@ theorem residue_map_p1_eq (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hp : p1
   simp [h0, h0', h0'']
 
 /- English proof (translation)
-The claim follows from `dist_of_map_eq ((hu.map (PowerSeries.map (IsLocalRing.residue O))).pow y) (l * y) (by rw [map_pow, residue_map_p1_eq hl hp, mul_pow, ← pow_mul])`.
+A detailed English derivation is pending.
 -/
 theorem isDist_p1_pow_wdeg (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hu : IsUnit u)
     (hp : p1 = C (l : O) * e + u * X ^ l) (y : ℕ) :
@@ -223,16 +221,16 @@ theorem isDist_p1_pow_wdeg (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hu : I
     (by rw [map_pow, residue_map_p1_eq hl hp, mul_pow, ← pow_mul])
 
 /- English proof (translation)
-Conclude with `dist_of_map_eq (hu.map (PowerSeries.map (IsLocalRing.residue O))) l (residue_map_p1_eq hl hp)`.
+A detailed English derivation is pending.
 -/
 theorem isDist_p1_wdeg (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hu : IsUnit u)
     (hp : p1 = C (l : O) * e + u * X ^ l) : IsDist p1 ∧ wdeg p1 = l := by
   exact dist_of_map_eq (hu.map (PowerSeries.map (IsLocalRing.residue O))) l (residue_map_p1_eq hl hp)
 
 /- English proof (translation)
-Establish `hinv : (↑(hu.unit⁻¹) : O⟦X⟧) * u = 1` using `hu.unit.inv_mul`. Establish `hX : (X : O⟦X⟧) ^ l = ↑(hu.unit⁻¹) * (p1 + -(C (l : O) * e))`. Rewrite using `[hp]`. Take the linear combination `(-(X ^ l : O⟦X⟧)) * hinv`. Rewrite using `[pow_mul, hX, mul_pow, add_pow, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem X_pow_expand (hu : IsUnit u) (hp : p1 = C (l : O) * e + u * X ^ l) (a : ℕ) :
     (X : O⟦X⟧) ^ (l * a) = ∑ i ∈ Finset.range (a + 1),
@@ -247,7 +245,7 @@ theorem X_pow_expand (hu : IsUnit u) (hp : p1 = C (l : O) * e + u * X ^ l) (a : 
   ring
 
 /- English proof (translation)
-Rewrite using `[hp, add_comm (C (l : O) * e), add_pow]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem p1_pow_eq_sum_choose_mul_X_pow_l_pow (hp : p1 = C (l : O) * e + u * X ^ l) (y : ℕ) :
     p1 ^ y = ∑ i ∈ Finset.range (y + 1),
@@ -258,7 +256,7 @@ theorem p1_pow_eq_sum_choose_mul_X_pow_l_pow (hp : p1 = C (l : O) * e + u * X ^ 
   ring
 
 /- English proof (translation)
-Establish `hc : a.choose i ≠ 0` using `(Nat.choose_pos hi).ne'`. Rewrite using `[AddValuation.map_mul, addVal_natCast hl hl0 hc, AddValuation.map_pow]`. Take `⟨k, hk⟩ : ∃ k : ℕ, IsDiscreteValuationRing.addVal O (l : O) = k` from `⟨_, addVal_l hl0⟩`. Rewrite using `[hk, ENat.toNat_coe, nsmul_eq_mul]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -273,7 +271,7 @@ theorem addVal_coef (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hl0 : (l : O)
   ring
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (natCast_ne_zero' hl hl0 (Nat.choose_pos hi).ne') (pow_ne_zero _ hl0)`.
+A detailed English derivation is pending.
 -/
 theorem coef_ne_zero (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hl0 : (l : O) ≠ 0) {a i : ℕ} (hi : i ≤ a) :
     (a.choose i : O) * (l : O) ^ (a - i) ≠ 0 := mul_ne_zero (natCast_ne_zero' hl hl0 (Nat.choose_pos hi).ne') (pow_ne_zero _ hl0)
@@ -282,11 +280,11 @@ variable {ϖ : O} (hϖ : Irreducible ϖ)
 include hϖ
 
 /- English proof (translation)
-Take `⟨hX, hD⟩` from `isDist_p1_wdeg hl hu hp`. Establish `hD' : 1 ≤ wdeg p1` using `by rw [hD]; exact hlp.out.one_lt.le`. Establish `key` using `Mprime_cont hϖ hX hD' (Finset.range (a + 1)) (fun i => (↑(hu.unit⁻¹) : O⟦X⟧) ^ a * (-e) ^ (a - i)) (fun i _ => ((hu.unit⁻¹).isUnit.pow _).mul (he.neg.pow _)) (fun i => (a.choose i : O) * (l : O) ^ (a - i)) (fun i hi => coef_ne_zero hl hl0 (Nat.lt_succ_iff.mp (Finset.mem_range.mp …`. Rewrite using `[X_pow_expand hu hp a, key]`. Establish `hset : (Finset.range (a + 1)).filter (· < y) = Finset.range (min a (y - 1) + 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hset]`. Use `iInf_congr (fun i => iInf_congr (fun hi => ?_))` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi' : i ≤ a` using `by simp only [Finset.mem_range] at hi; omega`. Conclude with `addVal_coef hl hl0 hi'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem content_p1_pow_X_pow_eq_iInf (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hl0 : (l : O) ≠ 0) (he : IsUnit e)
     (hu : IsUnit u) (hp : p1 = C (l : O) * e + u * X ^ l) (a y : ℕ) (hy : 1 ≤ y) :
@@ -309,11 +307,11 @@ theorem content_p1_pow_X_pow_eq_iInf (hl : (l : O) ∈ IsLocalRing.maximalIdeal 
   exact addVal_coef hl hl0 hi'
 
 /- English proof (translation)
-Take `⟨hX, hD⟩` from `dist_X_pow (O := O) l`. Establish `hD' : 1 ≤ wdeg ((X : O⟦X⟧) ^ l)` using `by rw [hD]; exact hlp.out.one_lt.le`. Establish `key` using `Mprime_cont hϖ hX hD' (Finset.range (y + 1)) (fun i => u ^ i * e ^ (y - i)) (fun i _ => (hu.pow _).mul (he.pow _)) (fun i => (y.choose i : O) * (l : O) ^ (y - i)) (fun i hi => coef_ne_zero hl hl0 (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi))) be`. Rewrite using `[pow_mul, p1_pow_eq_sum_choose_mul_X_pow_l_pow hp y, key]`. Establish `hset : (Finset.range (y + 1)).filter (· < be) = Finset.range (min y (be - 1) + 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hset]`. Use `iInf_congr (fun i => iInf_congr (fun hi => ?_))` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi' : i ≤ y` using `by simp only [Finset.mem_range] at hi; omega`. Conclude with `addVal_coef hl hl0 hi'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formalSeriesValueAtTwoPoints_genericPoints (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hl0 : (l : O) ≠ 0) (he : IsUnit e)
     (hu : IsUnit u) (hp : p1 = C (l : O) * e + u * X ^ l) (y be : ℕ) (hbe : 1 ≤ be) :
@@ -336,13 +334,13 @@ theorem formalSeriesValueAtTwoPoints_genericPoints (hl : (l : O) ∈ IsLocalRing
   exact addVal_coef hl hl0 hi'
 
 /- English proof (translation)
-Use `le_antisymm ?_ (by simp)` and prove the remaining obligations. Unfold `cont`. Use `iSup₂_le fun k hk => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-It suffices to derive a contradiction. Take `⟨a', c', hac⟩` from `Ideal.mem_span_pair.mp hk`. Establish `hϖ0 : IsLocalRing.residue O ϖ = 0` using `(IsLocalRing.residue_eq_zero_iff ϖ).mpr ((IsLocalRing.mem_maximalIdeal ϖ).mpr (mem_nonunits_iff.mpr hϖ.not_isUnit))`. Establish `hm` using `congrArg (PowerSeries.map (IsLocalRing.residue O)) hac`. Simplify using `only [map_add, map_mul, map_pow, PowerSeries.map_C, PowerSeries.map_X, hϖ0, map_zero, zero_pow hk0.ne', mul_zero, zero_add, residue_map_p1_eq hl hp] at hm`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : (PowerSeries.map (IsLocalRing.residue O) u * X ^ l) ^ y = PowerSeries.map (IsLocalRing.residue O) u ^ y * X ^ (l * y)` using `by ring`. Rewrite `hm` using `[e1]`. Establish `ho` using `congrArg PowerSeries.order hm`. Rewrite `ho` using `[PowerSeries.order_mul, order_unit_mul_X_pow_lemma_3 ((hu.map _).pow y), PowerSeries.order_X_pow]`. Establish `h2 : ((l * y : ℕ) : ℕ∞) ≤ PowerSeries.order (PowerSeries.map (IsLocalRing.residue O) c') + ((l * y : ℕ) : ℕ∞)` using `le_add_self`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[ho]`. Establish `h3 : l * y ≤ b` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem content_p1_pow_X_pow_eq_zero (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hu : IsUnit u)
     (hp : p1 = C (l : O) * e + u * X ^ l) (y b : ℕ) (hlt : b < l * y) :
@@ -371,13 +369,13 @@ theorem content_p1_pow_X_pow_eq_zero (hl : (l : O) ∈ IsLocalRing.maximalIdeal 
     omega
 
 /- English proof (translation)
-Use `le_antisymm ?_ (by simp)` and prove the remaining obligations. Unfold `cont`. Use `iSup₂_le fun k hk => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-It suffices to derive a contradiction. Take `⟨a', c', hac⟩` from `Ideal.mem_span_pair.mp hk`. Establish `hϖ0 : IsLocalRing.residue O ϖ = 0` using `(IsLocalRing.residue_eq_zero_iff ϖ).mpr ((IsLocalRing.mem_maximalIdeal ϖ).mpr (mem_nonunits_iff.mpr hϖ.not_isUnit))`. Establish `hm` using `congrArg (PowerSeries.map (IsLocalRing.residue O)) hac`. Simplify using `only [map_add, map_mul, map_pow, PowerSeries.map_C, PowerSeries.map_X, hϖ0, map_zero, zero_pow hk0.ne', mul_zero, zero_add, residue_map_p1_eq hl hp] at hm`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : (PowerSeries.map (IsLocalRing.residue O) u * X ^ l) ^ y = PowerSeries.map (IsLocalRing.residue O) u ^ y * X ^ (l * y)` using `by ring`. Rewrite `hm` using `[e1]`. Establish `ho` using `congrArg PowerSeries.order hm`. Rewrite `ho` using `[PowerSeries.order_mul, order_unit_mul_X_pow_lemma_3 ((hu.map _).pow y), PowerSeries.order_X_pow]`. Establish `h2 : (B : ℕ∞) ≤ PowerSeries.order (PowerSeries.map (IsLocalRing.residue O) c') + (B : ℕ∞)` using `le_add_self`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[ho]`. Establish `h3 : B ≤ l * y` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem content_X_pow_p1_pow_eq_zero (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hu : IsUnit u)
     (hp : p1 = C (l : O) * e + u * X ^ l) (B y : ℕ) (hlt : l * y < B) :
@@ -407,7 +405,7 @@ theorem content_X_pow_p1_pow_eq_zero (hl : (l : O) ∈ IsLocalRing.maximalIdeal 
 
 omit hϖ in
 /- English proof (translation)
-Establish `h1 : padicValNat l (n.choose i) ≤ Nat.log l n`. Rewrite using `[← Nat.factorization_def _ hlp.out]`. Conclude with `Nat.factorization_choose_le_log`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem padicValNat_choose_le_logb (n i : ℕ) : (padicValNat l (n.choose i) : ℝ) ≤ Real.logb l n := by
   have h1 : padicValNat l (n.choose i) ≤ Nat.log l n := by
@@ -417,25 +415,23 @@ theorem padicValNat_choose_le_logb (n i : ℕ) : (padicValNat l (n.choose i) : �
     _ ≤ Real.logb l n := Real.natLog_le_logb n l
 
 /- English proof (translation)
-Use `set E := (IsDiscreteValuationRing.addVal O (l : O)).toNat`. Establish `hl2 : 2 ≤ l` using `hlp.out.two_le`. Establish `hab : l * (b / l) ≤ b` using `Nat.mul_div_le b l`. Establish `hab2 : b < l * (b / l + 1)`. Establish `h1` using `Nat.div_add_mod b l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Nat.mod_lt b (by omega : 0 < l)`. Rewrite using `[mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers. Generalize the expression as in `b / l = a at hab hab2`. Take `⟨hg, -⟩` from `isDist_p1_pow_wdeg hl hu hp y`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm2` using `m2 hϖ hg ((X : O⟦X⟧) ^ (l * (a + 1) - b)) ((X : O⟦X⟧) ^ b)`. Rewrite `hm2` using `[← pow_add, Nat.sub_add_cancel hab2.le, content_p1_pow_X_pow_eq_iInf hϖ hl hl0 he hu hp (a + 1) y hy]`. Use `set i0 := min (a + 1) (y - 1) with hi0`. Establish `hmem : i0 ∈ Finset.range (min (a + 1) (y - 1) + 1)` using `Finset.mem_range.mpr (by omega)`. Establish `hle` using `hm2.trans (iInf₂_le i0 hmem)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨ne_top_of_le_ne_top (ENat.natCast_ne_top _) hle, ?_⟩` and prove the remaining obligations. Establish `hnat` using `ENat.toNat_le_of_le_natCast hle`. Use `(Nat.cast_le.mpr hnat).trans ?_` and prove the remaining obligations. Use `push_cast`. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hcase : a + 1 ≤ y - 1`. Establish `: i0 = a + 1` using `by omega`. Rewrite using `[this, Nat.sub_self, Nat.choose_self, padicValNat_one_right]`. Simplify using the standard rewrite rules. Establish `hi : i0 = y - 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Establish `hv` using `padicValNat_choose_le_logb (l := l) (a + 1) i0`. Establish `hlog : Real.logb l ((a + 1 : ℕ) : ℝ) ≤ Real.logb l b`. Apply `Real.logb_le_logb_of_le (by exact_mod_cast hlp.out.one_lt) (by positivity)` to reduce the goal to its premises. Establish `: a + 1 ≤ b`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: 2 * a ≤ l * a` using `Nat.mul_le_mul_right a hl2`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `hsub : ((a + 1 - i0 : ℕ) : ℝ) = (a : ℝ) + 2 - y`. Rewrite using `[Nat.cast_sub (by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: (i0 : ℝ) + 1 = y` using `by exact_mod_cast (show i0 + 1 = y by omega)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hal : (a : ℝ) ≤ b / l`. Rewrite using `[le_div_iff₀ (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: ((l * a : ℕ) : ℝ) ≤ b` using `by exact_mod_cast hab`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hsub]`. Move the coercions through the operations in `at hv hlog`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem content_p1_pow_X_pow_le_general (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hl0 : (l : O) ≠ 0) (he : IsUnit e)
     (hu : IsUnit u) (hp : p1 = C (l : O) * e + u * X ^ l) (y b : ℕ) (hy : 1 ≤ y) (hb : 1 ≤ b) :
@@ -488,7 +484,7 @@ theorem content_p1_pow_X_pow_le_general (hl : (l : O) ∈ IsLocalRing.maximalIde
 
 omit hϖ in
 /- English proof (translation)
-Rewrite using `[Finset.sum_image (fun x _ y _ h => Nat.eq_of_mul_eq_mul_left hlp.out.pos h), p1_pow_eq_sum_choose_mul_X_pow_l_pow hp]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Nat.mul_div_cancel_left _ hlp.out.pos, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem p1_pow_eq_sum_image_choose_mul_X_pow (hp : p1 = C (l : O) * e + u * X ^ l) (y : ℕ) :
     p1 ^ y = ∑ j ∈ (Finset.range (y + 1)).image (l * ·),
@@ -498,25 +494,23 @@ theorem p1_pow_eq_sum_image_choose_mul_X_pow (hp : p1 = C (l : O) * e + u * X ^ 
   simp only [Nat.mul_div_cancel_left _ hlp.out.pos, ← pow_mul]
 
 /- English proof (translation)
-Use `set E := (IsDiscreteValuationRing.addVal O (l : O)).toNat`. Establish `hlpos : 0 < l` using `hlp.out.pos`. Take `⟨hX, hD⟩` from `dist_X_pow (O := O) 1`. Rewrite `hX`, `hD` using `[pow_one]`. Establish `key` using `Mprime_cont hϖ hX (by rw [hD]) ((Finset.range (y + 1)).image (l * ·)) (fun j => u ^ (j / l) * e ^ (y - j / l)) (fun j _ => (hu.pow _).mul (he.pow _)) (fun j => (y.choose (j / l) : O) * (l : O) ^ (y - j / l)) (fun j hj => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, rfl⟩` from `Finset.mem_image.mp hj`. Rewrite using `[Nat.mul_div_cancel_left i hlpos]`. Conclude with `coef_ne_zero hl hl0 (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi))) B`. Rewrite using `[p1_pow_eq_sum_image_choose_mul_X_pow hp y, key]`. Use `set i0 := min y ((B - 1) / l) with hi0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : l * ((B - 1) / l) ≤ B - 1` using `Nat.mul_div_le (B - 1) l`. Establish `hq2 : B ≤ l * ((B - 1) / l + 1)`. Establish `h1` using `Nat.div_add_mod (B - 1) l`. Establish `h2` using `Nat.mod_lt (B - 1) hlpos`. Rewrite using `[mul_add, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hmem : l * i0 ∈ ((Finset.range (y + 1)).image (l * ·)).filter (· < B)`. Rewrite using `[Finset.mem_filter, Finset.mem_image]`. Use `⟨⟨i0, Finset.mem_range.mpr (by omega), rfl⟩, ?_⟩` and prove the remaining obligations. Establish `: l * i0 ≤ l * ((B - 1) / l)` using `Nat.mul_le_mul_left l (min_le_right _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hle` using `iInf₂_le (f := fun j (_ : j ∈ ((Finset.range (y + 1)).image (l * ·)).filter (· < B)) => IsDiscreteValuationRing.addVal O ((y.choose (j / l) : O) * (l : O) ^ (y - j / l))) (l * i0) hmem`. Simplify using `only [Nat.mul_div_cancel_left i0 hlpos] at hle`. Establish `hi0y : i0 ≤ y` using `by omega`. Rewrite `hle` using `[addVal_coef hl hl0 hi0y]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ne_top_of_le_ne_top (ENat.natCast_ne_top _) hle, ?_⟩` and prove the remaining obligations. Establish `hnat` using `ENat.toNat_le_of_le_natCast hle`. Use `(Nat.cast_le.mpr hnat).trans ?_` and prove the remaining obligations. Use `push_cast`. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hcase : y ≤ (B - 1) / l`. Establish `: i0 = y` using `by omega`. Rewrite using `[this, Nat.sub_self, Nat.choose_self, padicValNat_one_right]`. Simplify using the standard rewrite rules. Establish `hi : i0 = (B - 1) / l` using `by omega`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Establish `hv` using `padicValNat_choose_le_logb (l := l) y i0`. Establish `hsub : ((y - i0 : ℕ) : ℝ) = (y : ℝ) - i0` using `by rw [Nat.cast_sub (by omega)]`. Establish `hBl : (B : ℝ) / l ≤ i0 + 1`. Rewrite using `[div_le_iff₀ (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `: (B : ℝ) ≤ ((l * ((B - 1) / l + 1) : ℕ) : ℝ)` using `by exact_mod_cast hq2`. Rewrite `this` using `[← hi]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Move the coercions through the operations in `[hsub]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem content_X_pow_p1_pow_le (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hl0 : (l : O) ≠ 0) (he : IsUnit e)
     (hu : IsUnit u) (hp : p1 = C (l : O) * e + u * X ^ l) (B y : ℕ) (hB : 1 ≤ B) :

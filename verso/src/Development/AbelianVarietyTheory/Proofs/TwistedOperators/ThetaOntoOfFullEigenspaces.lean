@@ -13,9 +13,9 @@ variable {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDi
   [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] (θ : V →ₗ[ℂ] W) {X : Submodule ℂ V} {M : Submodule ℂ W}
 
 /- English proof (translation)
-Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `_ ⟨m, -, rfl⟩ h`. Establish `h0 : θ (LinearMap.adjoint θ m) = 0` using `h`. Establish `: inner ℂ (LinearMap.adjoint θ m) (LinearMap.adjoint θ m) = 0`. Rewrite using `[LinearMap.adjoint_inner_left, h0, inner_zero_right]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inner_self_eq_zero.1 this`.
+A detailed English derivation is pending.
 -/
 theorem disjoint_map_adjoint_ker (M : Submodule ℂ W) : Disjoint (M.map (LinearMap.adjoint θ)) (LinearMap.ker θ) := by
   rw [Submodule.disjoint_def]
@@ -45,9 +45,9 @@ def GoodMatchAt : Prop :=
 end Readings
 
 /- English proof (translation)
-Use `⟨(EuclideanSpace.projₗ (0 : Fin 2)), ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `z _`. Conclude with `⟨EuclideanSpace.single 0 z, trivial, by simp⟩`. Use `disjoint_map_adjoint_ker (EuclideanSpace.projₗ (0 : Fin 2) : EuclideanSpace ℂ (Fin 2) →ₗ[ℂ] ℂ) ⊤` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `this` using `[h, Submodule.disjoint_def]`. Establish `h1` using `this (EuclideanSpace.single 1 1) trivial (by simp)`. Establish `h2` using `congrArg (fun v : EuclideanSpace ℂ (Fin 2) => v 1) h1`. Simplify using `at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example : ∃ θ : EuclideanSpace ℂ (Fin 2) →ₗ[ℂ] ℂ, (⊤ : Submodule ℂ _).map θ = ⊤ ∧
     (⊤ : Submodule ℂ ℂ).map (LinearMap.adjoint θ) ≠ ⊤ := by

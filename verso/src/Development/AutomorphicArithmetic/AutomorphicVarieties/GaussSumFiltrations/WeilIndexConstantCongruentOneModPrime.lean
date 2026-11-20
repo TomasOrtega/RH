@@ -9,17 +9,15 @@ namespace GlobalTheory.HilbertThetaSeries.DConst
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `⟨w0, hw0⟩` from `DenP.exists_place (F := F) hp`. Establish `hJ0 : J ≠ ⊥` using `by rintro rfl; exact hJ w0 hw0 bot_le`. Establish `hsup : J ⊔ Ideal.span {((p : ℕ) : 𝓞 F)} = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hpM : ((p : ℕ) : 𝓞 F) ∈ M` using `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hM0 : M ≠ ⊥` using `by rintro rfl; exact hp.ne_zero (by simpa using hpM)`. Conclude with `hJ ⟨M, hM.isPrime, hM0⟩ hpM (le_sup_left.trans hle)`. Take `⟨a, ha, z, hz, haz⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 hsup)`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hn0 : Ideal.absNorm J ≠ 0` using `fun h => hJ0 (Ideal.absNorm_eq_zero_iff.1 h)`. Rewrite `hn0` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 F ⧸ J) := Nat.finite_of_card_ne_zero hn0`. Use `letI : Fintype (𝓞 F ⧸ J) := Fintype.ofFinite _`.
+Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `hdvd`. Rewrite `hdvd` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card p hdvd`. Establish `h1 : (p : 𝓞 F ⧸ J) * x = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← nsmul_eq_mul, ← hx, addOrderOf_nsmul_eq_zero]`. Establish `h2 : (Ideal.Quotient.mk J b) * (p : 𝓞 F ⧸ J) = 1`. Use `congrArg (Ideal.Quotient.mk J) haz` as an intermediate fact. Rewrite `this` using `[map_add, Ideal.Quotient.eq_zero_iff_mem.2 ha, zero_add, map_mul, map_natCast, map_one]`. Conclude with `this`.
-
-Establish `h3 : x = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hx` using `[h3, addOrderOf_zero]`. Conclude with `hp.one_lt.ne hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_coprime_of_away {p : ℕ} (hp : p.Prime) (J : Ideal (𝓞 F))
     (hJ : ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ w.asIdeal → ¬ J ≤ w.asIdeal) :
@@ -57,13 +55,13 @@ theorem absNorm_coprime_of_away {p : ℕ} (hp : p.Prime) (J : Ideal (𝓞 F))
   exact hp.one_lt.ne hx
 
 /- English proof (translation)
-Establish `hle : Ideal.span {d} ≤ differentIdeal ℤ (𝓞 F)` using `(Ideal.span_singleton_le_iff_mem _).2 hd`. Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.2 hle`. Use `⟨J, hJ, fun w hw hJw => ?_⟩` and prove the remaining obligations. Establish `hv` using `hu w hw`. Rewrite `hv` using `[map_div₀, hδ w hw, div_eq_one_iff_eq WithZero.exp_ne_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv' : w.intValuation d = WithZero.exp (-(ordI w (differentIdeal ℤ (𝓞 F)) : ℤ))`. Rewrite using `[← hv]`. Conclude with `(HeightOneSpectrum.valuation_of_algebraMap (K := F) w d).symm`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv'` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hv'.symm`. Establish `hJ0 : J ≠ 0`. Introduce and unpack `rfl`. Rewrite `hJ` using `[mul_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hd0 (Ideal.span_singleton_eq_bot.1 hJ)`. Rewrite `hv'` using `[w.intValuation_if_neg hd0, WithZero.exp_inj, neg_inj, Nat.cast_inj, hJ, ← Associates.mk_mul_mk, Associates.count_mul (Associates.mk_ne_zero.2 DenP.diff_ne) (Associates.mk_ne_zero.2 hJ0) w.associates_irreducible]`. Establish `hc` using `(Associates.count_ne_zero_iff_dvd hJ0 w.irreducible).2 (Ideal.dvd_iff_le.2 hJw)`. Unfold `ordI at hv'`. Conclude with `hc (by omega)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem diff_cofactor {p : ℕ} (δ : F) (hδ : IsDel p δ) (d : 𝓞 F)
     (hd : d ∈ differentIdeal ℤ (𝓞 F)) (hu : PUnit p ((d : F) / δ)) :
@@ -93,9 +91,9 @@ theorem diff_cofactor {p : ℕ} (δ : F) (hδ : IsDel p δ) (d : 𝓞 F)
   exact hc (by omega)
 
 /- English proof (translation)
-Break down `Int.natAbs_eq z with h | h` into its components or cases. Establish `e : ((z : ℚ) : ℚ_[p]) = ((z.natAbs : ℚ) : ℚ_[p])` using `by conv_lhs => rw [h]`. Simplify using `only [Int.cast_natCast]`. Rewrite using `[e]`. Establish `e : ((z : ℚ) : ℚ_[p]) = -((z.natAbs : ℚ) : ℚ_[p])` using `by conv_lhs => rw [h]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Int.cast_neg, Int.cast_natCast, Rat.cast_neg]`. Rewrite using `[e, norm_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_intCast_eq_natAbs {p : ℕ} [Fact p.Prime] (z : ℤ) :
     ‖((z : ℚ) : ℚ_[p])‖ = ‖((z.natAbs : ℚ) : ℚ_[p])‖ := by
@@ -110,15 +108,15 @@ theorem norm_intCast_eq_natAbs {p : ℕ} [Fact p.Prime] (z : ℤ) :
     rw [e, norm_neg]
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨N, hN0, hNc, hN⟩` from `DenP.exists_away hp x`. Establish `hint : IsIntegral ℤ ((N : F) * x)` using `(DenP.isIntegral_iff_val _).2 fun w => by`. Distinguish the cases in `hw : ((p : ℕ) : 𝓞 F) ∈ w.asIdeal`. Rewrite using `[map_mul, DenP.val_coprime hNc hw, hx w hw, one_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hN w hw`. Set `a : 𝓞 F` to `⟨_, hint⟩`. Establish `haF : (a : F) = (N : F) * x` using `rfl`. Establish `ha : ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ w.asIdeal → ¬ Ideal.span {a} ≤ w.asIdeal`. Introduce `w hw hle`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : a ∈ w.asIdeal` using `hle (Ideal.mem_span_singleton_self a)`. Establish `h2 : w.valuation F (algebraMap (𝓞 F) F a) = 1` using `by show w.valuation F ((N : F) * x) = 1`. Rewrite using `[map_mul, DenP.val_coprime hNc hw, hx w hw, one_mul]`. Rewrite `h2` using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `h2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `absNorm_coprime_of_away hp _ ha`. Rewrite `hc` using `[Ideal.absNorm_span_singleton]`. Establish `h1 : ‖(((Algebra.norm ℤ a : ℤ) : ℚ) : ℚ_[p])‖ = 1`. Rewrite using `[norm_intCast_eq_natAbs, Rat.cast_natCast, Padic.norm_natCast_eq_one_iff]`. Conclude with `hc.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hNn : Algebra.norm ℚ (N : F) = (N : ℚ) ^ Module.finrank ℚ F`. Rewrite using `[← map_natCast (algebraMap ℚ F), Algebra.norm_algebraMap]`. Rewrite `h1` using `[Algebra.coe_norm_int, haF, map_mul, hNn, Rat.cast_mul, norm_mul, Rat.cast_pow, norm_pow, Rat.cast_natCast, Padic.norm_natCast_eq_one_iff.2 hNc.symm, one_pow, one_mul]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem norm_norm_eq_one {p : ℕ} [Fact p.Prime] (x : F) (hx : PUnit p x) :
     ‖((Algebra.norm ℚ x : ℚ) : ℚ_[p])‖ = 1 := by
@@ -151,13 +149,13 @@ theorem norm_norm_eq_one {p : ℕ} [Fact p.Prime] (x : F) (hx : PUnit p x) :
   exact h1
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨hδ0, -, -, d, -, hd, -, -, hdu⟩` from `denominators_prime_to F p hp δ hδ`. Take `⟨J, hJ, hJw⟩` from `diff_cofactor δ hδ d hd hdu`. Establish `hd0 : (d : F) ≠ 0`. Take `⟨w, hw⟩` from `DenP.exists_place (F := F) hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Use `hdu w hw` as an intermediate fact. Rewrite `this` using `[h, zero_div, map_zero]`. Conclude with `zero_ne_one this`. Establish `hcd : PUnit p (c / d)` using `fun w hw => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : c / (d : F) = (c / δ) / ((d : F) / δ)` using `by field_simp`. Rewrite using `[e, map_div₀, hc w hw, hdu w hw, div_one]`. Establish `h1` using `norm_norm_eq_one (p := p) _ hcd`. Establish `e2 : c = c / d * d` using `by field_simp`. Establish `hJc` using `absNorm_coprime_of_away hp J hJw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnd : (Algebra.norm ℤ d).natAbs = (discr F).natAbs * Ideal.absNorm J`. Rewrite using `[← Ideal.absNorm_span_singleton, hJ, map_mul, NumberField.absNorm_differentIdeal (K := F)]`. Establish `h2 : ‖((Algebra.norm ℚ (d : F) : ℚ) : ℚ_[p])‖ = ‖(((discr F).natAbs : ℚ) : ℚ_[p])‖`. Rewrite using `[← Algebra.coe_norm_int, norm_intCast_eq_natAbs, hnd, Nat.cast_mul, Rat.cast_mul, norm_mul, Rat.cast_natCast (Ideal.absNorm J : ℕ), Padic.norm_natCast_eq_one_iff.2 hJc.symm, mul_one]`. Rewrite using `[e2, map_mul, Rat.cast_mul, norm_mul, h1, one_mul, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_norm_eq_disc {p : ℕ} [Fact p.Prime] (δ c : F) (hδ : IsDel p δ) (hc : PUnit p (c / δ)) :
     ‖((Algebra.norm ℚ c : ℚ) : ℚ_[p])‖ = ‖(((discr F).natAbs : ℚ) : ℚ_[p])‖ := by
@@ -184,7 +182,7 @@ theorem norm_norm_eq_disc {p : ℕ} [Fact p.Prime] (δ c : F) (hδ : IsDel p δ)
   rw [e2, map_mul, Rat.cast_mul, norm_mul, h1, one_mul, h2]
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hp1 : (p : ℝ)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by exact_mod_cast hp.one_le)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_le_one_of_near {p : ℕ} [Fact p.Prime] {x : ℚ_[p]} (hx : ‖x - 1‖ ≤ (p : ℝ)⁻¹) : ‖x‖ ≤ 1 := by
   have hp : p.Prime := Fact.out
@@ -194,7 +192,7 @@ theorem norm_le_one_of_near {p : ℕ} [Fact p.Prime] {x : ℚ_[p]} (hx : ‖x - 
     _ ≤ 1 := max_le (hx.trans hp1) (by simp)
 
 /- English proof (translation)
-Establish `h1` using `norm_le_one_of_near hx`. Combine the equalities or inequalities in the displayed calculation. Use `max_le ?_ hx` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem near_mul {p : ℕ} [Fact p.Prime] {x y : ℚ_[p]} (hx : ‖x - 1‖ ≤ (p : ℝ)⁻¹)
     (hy : ‖y - 1‖ ≤ (p : ℝ)⁻¹) : ‖x * y - 1‖ ≤ (p : ℝ)⁻¹ := by
@@ -208,7 +206,7 @@ theorem near_mul {p : ℕ} [Fact p.Prime] {x y : ℚ_[p]} (hx : ‖x - 1‖ ≤ 
         _ = (p : ℝ)⁻¹ := one_mul _
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `near_mul ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem near_pow {p : ℕ} [Fact p.Prime] {x : ℚ_[p]} (hx : ‖x - 1‖ ≤ (p : ℝ)⁻¹) (n : ℕ) :
     ‖x ^ n - 1‖ ≤ (p : ℝ)⁻¹ := by
@@ -217,9 +215,9 @@ theorem near_pow {p : ℕ} [Fact p.Prime] {x : ℚ_[p]} (hx : ‖x - 1‖ ≤ (p
   | succ n ih => rw [pow_succ]; exact near_mul ih hx
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `hlt : ‖x - 1‖ < ‖(1 : ℚ_[p])‖`. Rewrite using `[norm_one]; exact hx.trans_lt (inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt))`. Establish `hn : ‖x‖ = 1` using `by rw [Padic.norm_eq_of_norm_sub_lt_right hlt, norm_one]`. Establish `hx0 : x ≠ 0` using `by intro h; rw [h, norm_zero] at hn; exact zero_ne_one hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : x⁻¹ - 1 = -(x - 1) * x⁻¹` using `by field_simp; ring`. Rewrite using `[e, norm_mul, norm_neg, norm_inv, hn, inv_one, mul_one]`. Conclude with `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem near_inv {p : ℕ} [Fact p.Prime] {x : ℚ_[p]} (hx : ‖x - 1‖ ≤ (p : ℝ)⁻¹) :
     ‖x⁻¹ - 1‖ ≤ (p : ℝ)⁻¹ := by
@@ -233,13 +231,13 @@ theorem near_inv {p : ℕ} [Fact p.Prime] {x : ℚ_[p]} (hx : ‖x - 1‖ ≤ (p
   exact hx
 
 /- English proof (translation)
-Set `v : ℤ_[p]` to `⟨u, hu.le⟩`. Establish `hv : ‖v‖ = 1` using `hu`. Establish `hz : PadicInt.toZMod v ≠ 0`. Introduce `h`. Establish `h1 : v ∈ IsLocalRing.maximalIdeal ℤ_[p]` using `by rw [← PadicInt.ker_toZMod]; exact h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `PadicInt.mem_nonunits.1 (IsLocalRing.mem_maximalIdeal _ |>.1 h1)`. Rewrite `h2` using `[hv]`. Conclude with `lt_irrefl _ h2`. Establish `h1 : PadicInt.toZMod (v ^ (p - 1) - 1) = 0`. Rewrite using `[map_sub, map_pow, ZMod.pow_card_sub_one_eq_one hz, map_one, sub_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ‖v ^ (p - 1) - 1‖ < 1`. Establish `h3 : v ^ (p - 1) - 1 ∈ IsLocalRing.maximalIdeal ℤ_[p]` using `by rw [← PadicInt.ker_toZMod]; exact h1`. Conclude with `PadicInt.mem_nonunits.1 (IsLocalRing.mem_maximalIdeal _ |>.1 h3)`. Take `⟨y, hy⟩` from `(PadicInt.norm_lt_one_iff_dvd _).1 h2`. Establish `h4 : ‖v ^ (p - 1) - 1‖ ≤ (p : ℝ)⁻¹`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hy, norm_mul, PadicInt.norm_p]`. Combine the equalities or inequalities in the displayed calculation. Establish `e : ((v ^ (p - 1) - 1 : ℤ_[p]) : ℚ_[p]) = u ^ (p - 1) - 1` using `by push_cast; rfl`. Rewrite using `[← e]`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fermat {p : ℕ} [Fact p.Prime] (u : ℚ_[p]) (hu : ‖u‖ = 1) : ‖u ^ (p - 1) - 1‖ ≤ (p : ℝ)⁻¹ := by
   let v : ℤ_[p] := ⟨u, hu.le⟩
@@ -268,29 +266,25 @@ end GlobalTheory.HilbertThetaSeries.DConst
 open GlobalTheory.HilbertThetaSeries.DConst in
 
 /- English proof (translation)
-Introduce `F _ _ p _ ι hp2 δ c hδ hc t N hN ht`. Establish `hp : p.Prime` using `Fact.out`. Use `set n := Module.finrank ℚ F with hn`. Use `set m := (p - 1) / 2 with hmdef`. Establish `hm : p - 1 = 2 * m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨k, hk⟩` from `hp.odd_of_ne_two hp2`. Use linear arithmetic over natural numbers and integers. Use `set q : ℚ := Algebra.norm ℚ c / ((N : ℚ) ^ n) ^ 2 / ((discr F).natAbs : ℚ) with hq`. Use `set R : ℚ := (-1) ^ (m * n) * (Algebra.norm ℚ c) ^ (p - 1) / (((N : ℚ) ^ n) ^ (2 * (p - 1)) * ((discr F).natAbs : ℚ) ^ (p - 1) * (t : ℚ) ^ n) with hR`. Establish `hw : wC (p - 1) t (N : F) c = (R : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNn : Algebra.norm ℚ (N : F) = (N : ℚ) ^ n`. Rewrite using `[← map_natCast (algebraMap ℚ F), Algebra.norm_algebraMap]`. Establish `hI : (-Complex.I) ^ ((p - 1) * n) = (-1) ^ (m * n)`. Rewrite using `[hm, mul_assoc, pow_mul, neg_sq, Complex.I_sq]`. Unfold `wC`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hNn, hI, hR]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hQ : ι.symm (R : ℂ) - 1 = algebraMap ℚ_[p] (Qbar p) ((R : ℚ_[p]) - 1)`. Rewrite using `[map_ratCast, map_sub, map_ratCast, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hw, hQ]`. Use `show ‖algebraMap ℚ_[p] (PadicAlgCl p) ((R : ℚ_[p]) - 1)‖ ≤ (p : ℝ)⁻¹`. Rewrite using `[PadicAlgCl.norm_extends]`. Establish `ht0 : (t : ℚ) ≠ 0`. Introduce and unpack `h`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h' : t = 0` using `by exact_mod_cast h`. Substitute `h'` using the available equality. Use `(Int.ModEq.dvd ht)` as an intermediate fact. Simplify using `at this`. Conclude with `hp.one_lt.ne' (by exact_mod_cast Int.eq_one_of_dvd_one (by positivity) this)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : (N : ℚ) ≠ 0`. Introduce and unpack `h`. Establish `h' : N = 0` using `by exact_mod_cast h`. Substitute `h'` using the available equality. Conclude with `hp.one_lt.ne' (by simpa using hN)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD0 : ((discr F).natAbs : ℚ) ≠ 0`. Conclude with `Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero F)` after adjusting the coercions. Establish `hε : ((-1 : ℚ) ^ m)⁻¹ = (-1) ^ m` using `by rw [← inv_pow, inv_neg, inv_one]`. Establish `hRe : R = (((-1 : ℚ) ^ m * t)⁻¹) ^ n * q ^ (p - 1)`. Rewrite using `[hR, hq, mul_inv, hε]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hr : ‖((((-1 : ℚ) ^ m * t : ℚ) : ℚ_[p])) - 1‖ ≤ (p : ℝ)⁻¹`. Establish `hd` using `Int.ModEq.dvd ht`. Establish `h1` using `(Padic.norm_int_le_pow_iff_dvd (p := p) (1 - (-1) ^ m * (t : ℤ)) 1).2 (by simpa using hd)`. Establish `e : ((((-1 : ℚ) ^ m * t : ℚ) : ℚ_[p])) - 1 = -(((1 - (-1) ^ m * (t : ℤ) : ℤ) : ℚ_[p]))` using `by push_cast; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, norm_neg]`. Simplify using `using h1`. Establish `hqn : ‖((q : ℚ) : ℚ_[p])‖ = 1`. Establish `hDn : ‖((discr F).natAbs : ℚ_[p])‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff, Nat.cast_ne_zero]`.
-
-Conclude with `Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero F)`. Rewrite using `[hq, Rat.cast_div, Rat.cast_div, norm_div, norm_div, norm_norm_eq_disc δ c hδ hc]`. Simplify using `only [Rat.cast_pow, Rat.cast_natCast, norm_pow, Padic.norm_natCast_eq_one_iff.2 hN.symm, one_pow, div_one]`. Conclude with `div_self hDn`. Rewrite using `[hRe, Rat.cast_mul, Rat.cast_pow, Rat.cast_pow, Rat.cast_inv]`.
-
-Conclude with `near_mul (near_pow (near_inv hr) n) (fermat _ hqn)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HilbertThetaSeries.wC_near_one : ∀ (F : Type) [Field F] [NumberField F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ), p ≠ 2 → ∀ δ c : F, IsDel p δ → PUnit p (c / δ) → ∀ t N : ℕ, N.Coprime p → (-1) ^ ((p - 1) / 2) * (t : ℤ) ≡ 1 [ZMOD p] → ‖ι.symm (wC (p - 1) t (N : F) c) - 1‖ ≤ (p : ℝ)⁻¹ := by
   intro F _ _ p _ ι hp2 δ c hδ hc t N hN ht
@@ -356,7 +350,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.wC_near_one | exact GlobalTheory.HilbertThetaSeries.wC_near_one | (intros; apply GlobalTheory.HilbertThetaSeries.wC_near_one <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.weil_index_constant_congruent_one_mod_prime : ∀ (F : Type) [Field F] [NumberField F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ), p ≠ 2 → ∀ δ c : F, IsDel p δ → PUnit p (c / δ) → ∀ t N : ℕ, N.Coprime p → (-1) ^ ((p - 1) / 2) * (t : ℤ) ≡ 1 [ZMOD p] → ‖ι.symm (wC (p - 1) t (N : F) c) - 1‖ ≤ (p : ℝ)⁻¹ := by
   first | exact @GlobalTheory.HilbertThetaSeries.wC_near_one | exact GlobalTheory.HilbertThetaSeries.wC_near_one | (intros; apply GlobalTheory.HilbertThetaSeries.wC_near_one <;> assumption)

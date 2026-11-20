@@ -13,23 +13,19 @@ variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Use `set Km := Tf.cls D.R.m le_rfl (Or.inr rfl) with hKm`. Rewrite `hγ` using `[Km.stabI_range]`. Take `⟨κ, hκ, hκe⟩` from `Subgroup.mem_map.mp hγ`. Rewrite using `[Tf.clsP.stabI_range]`. Establish `hdet : IsUnit ((Tf.clsP.y c).1.1).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (Tf.clsP.y c).1.isUnit`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hu⟩` from `til_ext Tf (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (Tf.clsP.y c).1.1`. Use `set Gc : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) := ((Matrix.isUnit_iff_isUnit_det g).mpr (hu hdet)).unit with hGcdef`. Establish `hGcv : Gc.1 = g` using `IsUnit.unit_spec _`. Establish `hGc : IsExt D Tf.til.z0 (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (Tf.clsP.y c).1.1 Gc.1 := by rw [hGcv]; exact hg`. Establish `e1` using `Tf.tilAd.til_ad c Gc hGc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGc1 : Gc = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (Tf.til.ga c).1 * (Km.y ((D.fm u).til c)).1 * ((Tf.tilAd.ka c).1)⁻¹ := eq_mul_inv_of_mul_eq e1.symm`. Establish `hbc : bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ.1 = (Km.y ((D.fm u).til c)).1 * κ * ((Km.y ((D.fm u).til c)).1)⁻¹ := by`. Rewrite using `[← hκe]`. Both sides reduce to the same expression. Use `set Γ : GL (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) := bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((Tf.til.ga c).1 * γ.1 * ((Tf.til.ga c)⁻¹).1) with hΓ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGK : Gc⁻¹ * Γ * Gc ∈ Km.lev.U`. Establish `e : Gc⁻¹ * Γ * Gc = (Tf.tilAd.ka c).1 * κ * ((Tf.tilAd.ka c).1)⁻¹`. Rewrite using `[hΓ, map_mul, map_mul, hbc, hGc1]`. Establish `hi : bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((Tf.til.ga c)⁻¹).1 = (bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (Tf.til.ga c).1)⁻¹ := by`. Rewrite using `[← map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hi]`. Use `group`. Rewrite using `[e]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ (Tf.tilAd.ka c).2 hκ) (Subgroup.inv_mem _ (Tf.tilAd.ka c).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hinv : IsExt D Tf.til.z0 (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((Tf.clsP.y c).1.1)⁻¹ (Gc⁻¹).1 := isExt_inv hGc (Units.inv_mul Gc) (Matrix.mul_nonsing_inv _ hdet)`. Establish `hΓ1 : (Γ.1 : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) (D.host.E ⊗[D.host.F] (FiniteAdeleRing (𝓞 D.host.F) D.host.F))) = ((Tf.til.ga c).1.1 * γ.1.1 * ((Tf.til.ga c)⁻¹).1.1).map (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) := by`. Rewrite using `[hΓ]`. Both sides reduce to the same expression. Establish `hΓE : IsExt D Tf.til.z0 (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (δ.1.1.map (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))) Γ.1 := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hΓ1]`. Conclude with `isExt_map hδ`. Use `set K : GL (Fin (D.R.N D.R.m - 1)) (D.host.E ⊗[D.host.F] (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) := ((Tf.clsP.y c).1)⁻¹ * bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) δ.1 * (Tf.clsP.y c).1 with hK`. Establish `hKE : IsExt D Tf.til.z0 (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) K.1 (Gc⁻¹ * Γ * Gc).1 := by`. Establish `e : K.1 = ((Tf.clsP.y c).1.1)⁻¹ * δ.1.1.map (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) * (Tf.clsP.y c).1.1 := by`.
-
-Rewrite using `[hK, Units.val_mul, Units.val_mul, Matrix.coe_units_inv]`. Both sides reduce to the same expression. Rewrite using `[e, Units.val_mul, Units.val_mul]`. Conclude with `isExt_mul (isExt_mul hinv hΓE) hGc`. Establish `hKU` using `lev_mem Tf K _ hKE hGK`.
-
-Use `Subgroup.mem_map.mpr ⟨K, hKU, ?_⟩` and prove the remaining obligations. Use `show (Tf.clsP.y c).1 * K * ((Tf.clsP.y c).1)⁻¹ = _`. Rewrite using `[hK]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_restrict (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP)
     (γ : UJ (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl))

@@ -12,19 +12,19 @@ open scoped nonZeroDivisors
 universe u
 
 /- English proof (translation)
-Establish `key : ∀ (u : Valuation L ℤᵐ⁰) (f : L), f ≠ 0 → (u f < 1 ↔ ¬ u f⁻¹ ≤ 1)` using `fun u f hf => by rw [not_le, Valuation.one_lt_val_iff u (inv_ne_zero hf), inv_inv]`. Establish `hlt : ∀ f : L, f ≠ 0 → (w f < 1 ↔ v f < 1)` using `fun f hf => by`. Rewrite using `[key w f hf, key v f hf, h f⁻¹]`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hπ` using `[map_zero]`. Conclude with `exp_ne_zero hπ.symm`. Establish `hwπ : w π < 1` using `(hlt π hπ0).mpr (by rw [hπ, ← exp_zero, exp_lt_exp]; norm_num)`. Establish `hwπ0 : w π ≠ 0` using `(Valuation.ne_zero_iff _).mpr hπ0`. Take `⟨c, hwπc⟩ : ∃ c : ℤ, w π = exp c` from `⟨_, (exp_log hwπ0).symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc0 : c < 0`. Use `hwπ` as an intermediate fact. Rewrite `this` using `[hwπc, ← exp_zero, exp_lt_exp]`. Then use the resulting hypothesis. Use `⟨c.natAbs, by omega, fun f => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne f 0 with rfl | hf` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, map_zero, zero_pow (by omega)]`. Establish `hvf0 : v f ≠ 0` using `(Valuation.ne_zero_iff _).mpr hf`. Take `⟨l, hvf⟩ : ∃ l : ℤ, v f = exp l` from `⟨_, (exp_log hvf0).symm⟩`. Establish `hg : v (f * π ^ l) = 1`. Rewrite using `[map_mul, map_zpow₀, hπ, hvf, ← exp_zsmul, ← exp_add, ← exp_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Establish `hwg : w (f * π ^ l) = 1`. Establish `hg0 : f * π ^ l ≠ 0` using `mul_ne_zero hf (zpow_ne_zero _ hπ0)`. Use `le_antisymm ((h _).mpr hg.le) (not_lt.mp fun hl => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hlt _ hg0).mp hl` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `lt_irrefl _ this`. Rewrite `hwg` using `[map_mul, map_zpow₀, hwπc, ← exp_zsmul]`. Rewrite using `[eq_inv_of_mul_eq_one_left hwg, hvf, ← exp_nsmul, ← exp_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [smul_eq_mul, nsmul_eq_mul]`. Rewrite using `[Int.ofNat_natAbs_of_nonpos hc0.le]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_eq_pow_of_le_one_iff {L : Type*} [Field L] (w v : Valuation L ℤᵐ⁰)
     (h : ∀ f, w f ≤ 1 ↔ v f ≤ 1) {π : L} (hπ : v π = exp (-1)) :
@@ -70,14 +70,14 @@ variable {F : Type u} [Field F] (W : WeierstrassCurve F)
 section Poly
 
 /- English proof (translation)
-The claim follows from `(IsScalarTower.algebraMap_apply F F[X] W.toAffine.FunctionField c).symm`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_C_functionField (c : F) :
     algebraMap F[X] W.toAffine.FunctionField (C c) = algebraMap F W.toAffine.FunctionField c :=
   (IsScalarTower.algebraMap_apply F F[X] W.toAffine.FunctionField c).symm
 
 /- English proof (translation)
-Establish `e` using `(equation_iff _ _).mp (equation_gen W)`. Simplify `e` using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem genY_sq_add : genY W ^ 2 + algebraMap F W.toAffine.FunctionField W.a₁ * genX W * genY W +
     algebraMap F W.toAffine.FunctionField W.a₃ * genY W = genX W ^ 3 +
@@ -89,7 +89,7 @@ theorem genY_sq_add : genY W ^ 2 + algebraMap F W.toAffine.FunctionField W.a₁ 
     WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] using e
 
 /- English proof (translation)
-Rewrite using `[map_add, Algebra.smul_def, Algebra.smul_def, mul_one, map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_smul_basis (p q : F[X]) :
     algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField
@@ -103,11 +103,9 @@ theorem algebraMap_smul_basis (p q : F[X]) :
 variable {W}
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C c`. Rewrite using `[algebraMap_C_functionField]`. Break down `eq_or_ne c 0 with rfl | hc` into its components or cases. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `(hF c hc).le`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `w.map_add_le hp hq`. Consider the case `monomial n c ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, map_mul, ← genX_eq]`.
-
-Conclude with `mul_le_one' ih hx`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_poly_le_one (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1)
@@ -124,11 +122,11 @@ theorem valuation_poly_le_one (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     exact mul_le_one' ih hx
 
 /- English proof (translation)
-Proceed by induction on `h : p.natDegree using Nat.strong_induction_on generalizing p with`. Consider the case `_ d ih`. Establish `hlead : w (algebraMap F[X] W.toAffine.FunctionField (C p.leadingCoeff * X ^ p.natDegree)) = exp (d * k)`. Rewrite using `[map_mul, map_pow, algebraMap_C_functionField, Valuation.map_mul, Valuation.map_pow, hF _ (leadingCoeff_ne_zero.mpr hp), ← genX_eq, hk, one_mul, ← exp_nsmul, h, nsmul_eq_mul]`. Rewrite using `[← eraseLead_add_C_mul_X_pow p, map_add]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `(eraseLead_natDegree_lt_or_eraseLead_eq_zero p) with hlt | he` into its components or cases. Distinguish the cases in `he : p.eraseLead = 0`. Rewrite using `[he, map_zero, zero_add, hlead]`. Establish `hd : (p.eraseLead.natDegree : ℤ) < d` using `by exact_mod_cast h ▸ hlt`. Rewrite using `[Valuation.map_add_eq_of_lt_right _ ?_, hlead]`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlead, ih _ (h ▸ hlt) he rfl, exp_lt_exp]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[he, map_zero, zero_add, hlead]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_poly_of_one_lt (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1) {k : ℤ} (hk0 : 0 < k)
@@ -151,7 +149,7 @@ theorem valuation_poly_of_one_lt (w : Valuation W.toAffine.FunctionField ℤᵐ�
     · rw [he, map_zero, zero_add, hlead]
 
 /- English proof (translation)
-Break down `eq_or_ne p 0 with rfl | hp` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[valuation_poly_of_one_lt w hF hk0 hk hp, exp_le_exp]`. Establish `: (p.natDegree : ℤ) ≤ n` using `by exact_mod_cast hn`. Use the polynomial consequences of the given equalities and inequalities.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem valuation_poly_le_of_one_lt (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1) {k : ℤ} (hk0 : 0 < k)
@@ -172,7 +170,7 @@ noncomputable def weierstrassB : F[X] := C W.a₁ * X + C W.a₃
 noncomputable def weierstrassRHS : F[X] := X ^ 3 + C W.a₂ * X ^ 2 + C W.a₄ * X + C W.a₆
 
 /- English proof (translation)
-Simplify using `only [weierstrassB, weierstrassRHS, map_add, map_mul, map_pow, algebraMap_C_functionField, ← genX_eq]`. Take the linear combination `genY_sq_add W`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem genY_sq_add_weierstrassB :
     genY W ^ 2 + algebraMap F[X] W.toAffine.FunctionField (weierstrassB W) * genY W =
@@ -182,19 +180,19 @@ theorem genY_sq_add_weierstrassB :
   linear_combination genY_sq_add W
 
 /- English proof (translation)
-Unfold `weierstrassRHS`. Use `compute_degree!`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem natDegree_weierstrassRHS : (weierstrassRHS W).natDegree = 3 := by
   unfold weierstrassRHS; compute_degree!
 
 /- English proof (translation)
-Unfold `weierstrassB`. Use `compute_degree`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem natDegree_weierstrassB_le : (weierstrassB W).natDegree ≤ 1 := by
   unfold weierstrassB; compute_degree
 
 /- English proof (translation)
-Introduce `h`. Use `natDegree_weierstrassRHS W` as an intermediate fact. Rewrite `this` using `[h, natDegree_zero]`. Conclude with `absurd this (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weierstrassRHS_ne_zero : weierstrassRHS W ≠ 0 := by
   intro h
@@ -205,15 +203,15 @@ theorem weierstrassRHS_ne_zero : weierstrassRHS W ≠ 0 := by
 variable {W}
 
 /- English proof (translation)
-Establish `hy0 : w (genY W) ≠ 0` using `(Valuation.ne_zero_iff _).mpr (genY_ne_zero W)`. Take `⟨m, hm⟩ : ∃ m : ℤ, w (genY W) = exp m` from `⟨_, (exp_log hy0).symm⟩`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `hwQ : w (algebraMap F[X] W.toAffine.FunctionField (weierstrassRHS W)) = exp (3 * k)`. Rewrite using `[valuation_poly_of_one_lt w hF hk0 hk (weierstrassRHS_ne_zero W), natDegree_weierstrassRHS]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Establish `hwB : w (algebraMap F[X] W.toAffine.FunctionField (weierstrassB W)) ≤ exp (1 * k)` using `valuation_poly_le_of_one_lt w hF hk0 hk _ (natDegree_weierstrassB_le W)`. Establish `hwy2 : w (genY W ^ 2) = exp (2 * m)`. Rewrite using `[Valuation.map_pow, hm, ← exp_nsmul, nsmul_eq_mul]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hwBy : w (algebraMap F[X] W.toAffine.FunctionField (weierstrassB W) * genY W) ≤ exp (k + m)`. Rewrite using `[Valuation.map_mul, hm]`. Combine the equalities or inequalities in the displayed calculation. Establish `heq` using `congrArg w (genY_sq_add_weierstrassB W)`. Break down `lt_or_ge k m with hkm | hmk` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hlt : w (algebraMap F[X] W.toAffine.FunctionField (weierstrassB W) * genY W) < w (genY W ^ 2)`. Rewrite using `[hwy2]`. Conclude with `lt_of_le_of_lt hwBy (exp_lt_exp.mpr (by linarith))`. Rewrite `heq` using `[Valuation.map_add_eq_of_lt_left _ hlt, hwy2, hwQ]`. Conclude with `exp_inj.mp heq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `hle : w (genY W ^ 2 + algebraMap F[X] W.toAffine.FunctionField (weierstrassB W) * genY W) ≤ exp (2 * k)` using `w.map_add_le (by rw [hwy2, exp_le_exp]; linarith) (hwBy.trans (by rw [exp_le_exp]; linarith))`. Rewrite `hle` using `[heq, hwQ, exp_le_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem valuation_genY_of_one_lt (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1) {k : ℤ} (hk0 : 0 < k)
@@ -250,11 +248,11 @@ theorem valuation_genY_of_one_lt (w : Valuation W.toAffine.FunctionField ℤᵐ�
     linarith
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hy`. Establish `hy0 : w (genY W) ≠ 0` using `(Valuation.ne_zero_iff _).mpr (genY_ne_zero W)`. Take `⟨m, hm⟩ : ∃ m : ℤ, w (genY W) = exp m` from `⟨_, (exp_log hy0).symm⟩`. Rewrite `hy` using `[not_le, hm, ← exp_zero, exp_lt_exp]`. Establish `hwB` using `valuation_poly_le_one w hF hx (weierstrassB W)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hwQ` using `valuation_poly_le_one w hF hx (weierstrassRHS W)`. Establish `hwy2 : w (genY W ^ 2) = exp (2 * m)`. Rewrite using `[Valuation.map_pow, hm, ← exp_nsmul, nsmul_eq_mul]`. Evaluate the numerical expressions. Establish `hlt : w (algebraMap F[X] W.toAffine.FunctionField (weierstrassB W) * genY W) < w (genY W ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite using `[Valuation.map_mul, hm, hwy2]`. Combine the equalities or inequalities in the displayed calculation. Establish `heq` using `congrArg w (genY_sq_add_weierstrassB W)`. Rewrite `heq` using `[Valuation.map_add_eq_of_lt_left _ hlt, hwy2]`. Rewrite `hwQ` using `[← heq, ← exp_zero, exp_le_exp]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -281,7 +279,7 @@ theorem valuation_genY_le_one (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
   linarith
 
 /- English proof (translation)
-Rewrite using `[zero_smul, add_zero, Algebra.smul_def, mul_one, Algebra.norm_algebraMap, finrank_coordinateRing, natDegree_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natDegree_norm_smul_basis_of_q_eq_zero {p : F[X]} :
     (Algebra.norm F[X] (p • (1 : W.toAffine.CoordinateRing) + (0 : F[X]) •
@@ -290,7 +288,7 @@ theorem natDegree_norm_smul_basis_of_q_eq_zero {p : F[X]} :
     finrank_coordinateRing, natDegree_pow]
 
 /- English proof (translation)
-Establish `h` using `degree_norm_smul_basis (W' := W.toAffine) 0 q`. Rewrite `h` using `[degree_eq_natDegree hq, degree_zero]`. Apply `natDegree_eq_of_degree_eq_some` to reduce the goal to its premises. Rewrite using `[h, max_eq_right (by rw [two_nsmul, WithBot.bot_add]; exact bot_le)]`. Use `norm_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem natDegree_norm_smul_basis_of_p_eq_zero {q : F[X]} (hq : q ≠ 0) :
     (Algebra.norm F[X] ((0 : F[X]) • (1 : W.toAffine.CoordinateRing) +
@@ -302,7 +300,7 @@ theorem natDegree_norm_smul_basis_of_p_eq_zero {q : F[X]} (hq : q ≠ 0) :
   norm_cast
 
 /- English proof (translation)
-Establish `h` using `degree_norm_smul_basis (W' := W.toAffine) p q`. Rewrite `h` using `[degree_eq_natDegree hq, degree_eq_natDegree hp]`. Apply `natDegree_eq_of_degree_eq_some` to reduce the goal to its premises. Rewrite using `[h]`. Use `norm_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem natDegree_norm_smul_basis_of_ne_zero {p q : F[X]} (hp : p ≠ 0) (hq : q ≠ 0) :
     (Algebra.norm F[X] (p • (1 : W.toAffine.CoordinateRing) +
@@ -315,21 +313,21 @@ theorem natDegree_norm_smul_basis_of_ne_zero {p q : F[X]} (hp : p ≠ 0) (hq : q
   norm_cast
 
 /- English proof (translation)
-Take `⟨m, hm, hm3⟩` from `valuation_genY_of_one_lt w hF two_pos hx`. Establish `hm' : m = 3` using `by linarith`. Substitute `hm'` using the available equality. Establish `hA : ∀ a : W.toAffine.CoordinateRing, w (algebraMap _ W.toAffine.FunctionField a) = valuationInfty W (algebraMap _ W.toAffine.FunctionField a)`. Introduce `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[valuationInfty_algebraMap, valuationInftyCoord_apply W ha]`. Take `⟨p, q, rfl⟩` from `exists_smul_basis_eq a`. Rewrite using `[algebraMap_smul_basis]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_ne q 0 with rfl | hq` into its components or cases. Establish `hp : p ≠ 0` using `by rintro rfl; simp at ha`. Rewrite using `[natDegree_norm_smul_basis_of_q_eq_zero, map_zero, zero_mul, add_zero, valuation_poly_of_one_lt w hF two_pos hx hp]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Establish `hwQy : w (algebraMap F[X] W.toAffine.FunctionField q * genY W) = exp (2 * (q.natDegree : ℤ) + 3)`. Rewrite using `[Valuation.map_mul, valuation_poly_of_one_lt w hF two_pos hx hq, hm, ← exp_add]`. Put the polynomial expressions in normal form. Break down `eq_or_ne p 0 with rfl | hp` into its components or cases. Rewrite using `[natDegree_norm_smul_basis_of_p_eq_zero hq, map_zero, zero_add, hwQy] push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Rewrite using `[natDegree_norm_smul_basis_of_ne_zero hp hq]`. Establish `hwP` using `valuation_poly_of_one_lt w hF two_pos hx hp`. Break down `lt_or_gt_of_ne (show (2 * p.natDegree : ℤ) ≠ 2 * q.natDegree + 3 by omega) with hlt | hlt` into its components or cases. Rewrite using `[Valuation.map_add_eq_of_lt_right _ (by rw [hwP, hwQy, exp_lt_exp]; linarith), hwQy, max_eq_right (by omega)] push_cast; ring_nf`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.map_add_eq_of_lt_left _ (by rw [hwP, hwQy, exp_lt_exp]; linarith), hwP, max_eq_left (by omega)] push_cast; ring_nf`. Use `Valuation.ext fun f => ?_` and prove the remaining obligations. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective W.toAffine.CoordinateRing⁰ f`. Simplify using `only`. Establish `hs : (s : W.toAffine.CoordinateRing) ≠ 0` using `nonZeroDivisors.ne_zero s.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Establish `hspec` using `IsLocalization.mk'_spec W.toAffine.FunctionField a s`. Establish `h1` using `congrArg w hspec`. Establish `h2` using `congrArg (valuationInfty W) hspec`. Rewrite `h1` using `[Valuation.map_mul, hA, hA]`. Rewrite `h2` using `[Valuation.map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hvs : valuationInfty W (algebraMap _ W.toAffine.FunctionField (s : W.toAffine.CoordinateRing)) ≠ 0` using `(Valuation.ne_zero_iff _).mpr ((map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr hs)`. Conclude with `mul_right_cancel₀ hvs (h1.trans h2.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_valuationInfty_of_genX (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1)
@@ -383,7 +381,7 @@ theorem eq_valuationInfty_of_genX (w : Valuation W.toAffine.FunctionField ℤᵐ
   exact mul_right_cancel₀ hvs (h1.trans h2.symm)
 
 /- English proof (translation)
-Take `⟨p, q, rfl⟩` from `exists_smul_basis_eq a`. Rewrite using `[algebraMap_smul_basis]`. Use `w.map_add_le (valuation_poly_le_one w hF hx p) ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Conclude with `mul_le_one' (valuation_poly_le_one w hF hx q) (valuation_genY_le_one w hF hx)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_coordinateRing_le_one (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1)
@@ -402,31 +400,27 @@ section CaseA
 variable {W} [IsAlgClosed F] [W.IsElliptic]
 
 /- English proof (translation)
-Establish `hA` using `valuation_coordinateRing_le_one w hF hx`. Set `P : Ideal W.toAffine.CoordinateRing` to `{ carrier := {a | w (algebraMap _ W.toAffine.FunctionField a) < 1} zero_mem' := by simp add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_ofPred_eq, map_add] at ha hb ⊢`. Conclude with `lt_of_le_of_lt (w.map_add _ _) (max_lt ha hb)`. Use the proof step `smul_mem' := fun c a ha => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Set.mem_ofPred_eq, smul_eq_mul, map_mul] at ha ⊢`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : ∀ a, a ∈ P ↔ w (algebraMap _ W.toAffine.FunctionField a) < 1` using `fun a => Iff.rfl`. Establish `hone : ∀ a, a ∉ P → w (algebraMap _ W.toAffine.FunctionField a) = 1` using `fun a ha => le_antisymm (hA a) (not_lt.mp ha)`. Establish `hPprime : P.IsPrime`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun htop => ?_, fun {a b} hab => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : W.toAffine.CoordinateRing) ∈ P` using `htop ▸ Submodule.mem_top`. Rewrite `h1` using `[hmem, map_one, map_one]`. Conclude with `lt_irrefl _ h1`. Assume the negation of the conclusion as `hn push Not at hn`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hab` using `[hmem, map_mul, Valuation.map_mul, hone a hn.1, hone b hn.2, one_mul]`. Conclude with `lt_irrefl _ hab`. Establish `hP0 : P ≠ ⊥`. Introduce `hbot`. Take `⟨f, hf, hwf⟩` from `hnt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective W.toAffine.CoordinateRing⁰ f`. Apply `hwf` to reduce the goal to its premises. Simplify using `only at hf ⊢`. Establish `hs : (s : W.toAffine.CoordinateRing) ≠ 0` using `nonZeroDivisors.ne_zero s.2`. Establish `ha : a ≠ 0` using `by rintro rfl; exact hf (IsLocalization.mk'_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hnot : ∀ b : W.toAffine.CoordinateRing, b ≠ 0 → b ∉ P` using `fun b hb hbP => hb ((Submodule.mem_bot _).mp (hbot ▸ hbP))`. Establish `h1` using `congrArg w (IsLocalization.mk'_spec W.toAffine.FunctionField a s)`. Rewrite `h1` using `[Valuation.map_mul, hone _ (hnot _ hs), hone _ (hnot _ ha), mul_one]`. Conclude with `h1`. Set `v : HeightOneSpectrum W.toAffine.CoordinateRing` to `⟨P, hPprime, hP0⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨v, hmem, ?_⟩` and prove the remaining obligations. Establish `hval_one : ∀ d : W.toAffine.CoordinateRing, d ∉ v.asIdeal → v.valuation W.toAffine.FunctionField (algebraMap _ _ d) = 1` using `fun d hd => by`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl]`. Conclude with `hd`. Establish `hle : ∀ f, w f ≤ 1 ↔ v.valuation W.toAffine.FunctionField f ≤ 1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `f`. Prove the components needed by the constructor for the conclusion. Introduce `hwf`. Assume the negation of the conclusion as `hvf`. Rewrite `hvf` using `[not_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : f ≠ 0` using `by rintro rfl; simp at hvf`. Establish `hvf' : v.valuation W.toAffine.FunctionField f⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`. Conclude with `(inv_lt_one_of_one_lt₀ hvf).le`. Take `⟨n, d, hnd⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer (K := W.toAffine.FunctionField) v f⁻¹ hvf'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : (d : W.toAffine.CoordinateRing) ∉ v.asIdeal` using `d.2`. Establish `hvn : v.valuation W.toAffine.FunctionField (algebraMap _ _ n) < 1`. Rewrite using `[← hnd, Valuation.map_mul, hval_one _ hd, mul_one, map_inv₀]`. Conclude with `inv_lt_one_of_one_lt₀ hvf`. Rewrite `hvn` using `[HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hwn` using `(hmem n).mp hvn`. Rewrite `hwn` using `[← hnd, Valuation.map_mul, hone _ hd, mul_one, map_inv₀]`. Establish `: 1 < w f`. Rewrite `hwn` using `[inv_lt_one₀ ((Valuation.pos_iff _).mpr hf)]`. Then use the resulting hypothesis. Conclude with `absurd hwf (not_le.mpr this)`.
-
-Introduce `hvf`. Take `⟨n, d, hnd⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer (K := W.toAffine.FunctionField) v f hvf`. Establish `h1` using `congrArg w hnd`. Rewrite `h1` using `[Valuation.map_mul, hone _ d.2, mul_one]`. Conclude with `h1 ▸ hA n`.
-
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer W.toAffine.FunctionField`. Conclude with `exists_eq_pow_of_le_one_iff w _ hle hπ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_eq_pow_valuation_of_le_one (w : Valuation W.toAffine.FunctionField ℤᵐ⁰)
     (hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1)

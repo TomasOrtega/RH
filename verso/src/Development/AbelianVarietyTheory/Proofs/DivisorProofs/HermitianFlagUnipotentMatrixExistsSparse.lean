@@ -4,37 +4,33 @@ open scoped ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n r J X hX l d h u A X₁ Xb X₂ h1 hb hperp`. Establish `hext : ∀ (m : ℕ) (hm : m ≤ r) (a : Fin m → ℂ), Matrix.mulVec X (fun i : Fin r => if hi : i.val < m then a ⟨i.val, hi⟩ else 0) = Matrix.mulVec (X.submatrix id fun j : Fin m => (⟨j.val, by omega⟩ : Fin r)) a`. Introduce `m hm a`. Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.submatrix_apply, id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `symm`. Use `Fintype.sum_of_injective (fun j : Fin m => (⟨j.val, by omega⟩ : Fin r)) ?_ _ _ ?_ ?_` and prove the remaining obligations. Introduce `x y hxy`. Conclude with `Fin.ext (by simpa using congrArg Fin.val hxy)`. Introduce `i hi`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ¬ i.val < m`. Introduce `hlt`. Conclude with `hi ⟨⟨i.val, hlt⟩, rfl⟩`. Simplify using `[this]`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `he1 : ∀ a : Fin l → ℂ, Matrix.mulVec X (fun i : Fin r => if hi : i.val < l then a ⟨i.val, hi⟩ else 0) = Matrix.mulVec X₁ a` using `fun a => hext l (by omega) a`. Establish `he2 : ∀ a : Fin (l + d) → ℂ, Matrix.mulVec X (fun i : Fin r => if hi : i.val < l + d then a ⟨i.val, hi⟩ else 0) = Matrix.mulVec X₂ a` using `fun a => hext (l + d) h a`. Establish `hcol : ∀ (v : Fin n → ℂ) (i : Fin (l + d)), Matrix.mulVec (X₂.conjTranspose * J) v i = Matrix.mulVec (X.conjTranspose * J) v ⟨i.val, by omega⟩`. Introduce `v i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hXc : ∀ (i j : Fin r), Matrix.mulVec (X.conjTranspose * J) (fun k => X k j) i = 0`. Introduce `i j`. Conclude with `congrFun (congrFun hX i) j`. Establish `key : ∀ j : Fin r, ∃ c : Fin r → ℂ, (∀ i, c i ≠ 0 → (i.val < l ∧ l ≤ j.val) ∨ (i.val < l + d ∧ l + d ≤ j.val)) ∧ Matrix.mulVec u (fun k => X k j) = (fun k => X k j) + Matrix.mulVec X c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j`. Distinguish the cases in `hj1 : j.val < l`. Use `⟨0, fun i hi => absurd rfl hi, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Use `congrFun (congrFun h1 k) ⟨j.val, hj1⟩` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, X₁]`. Distinguish the cases in `hj2 : j.val < l + d`. Use `⟨fun i => if hi : i.val < l then A ⟨i.val, hi⟩ ⟨j.val - l, by omega⟩ else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi left`. Distinguish the cases in `hil : i.val < l`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hil, by omega⟩`. Conclude with `absurd (by simp [hil]) hi`. Establish `he1'` using `he1 (fun i => A i ⟨j.val - l, by omega⟩) beta_reduce at he1'`. Rewrite using `[he1']`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun (congrFun hb k) ⟨j.val - l, by omega⟩` as an intermediate fact. Establish `hjj : (⟨l + (j.val - l), by omega⟩ : Fin r) = j` using `Fin.ext (by simp; omega)`. Simplify using `only [Matrix.mul_apply, Matrix.add_apply, Xb, X₁, Matrix.submatrix_apply, id, hjj] at this`. Simplify `this` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply, X₁]`. Establish `hz : Matrix.mulVec (X₂.conjTranspose * J) (fun k => X k j) = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hcol]`. Conclude with `hXc _ _`. Take `⟨w, a, hwa⟩` from `hperp _ hz`. Use `⟨(fun i : Fin r => if hi : i.val < l + d then w ⟨i.val, hi⟩ else 0) + (fun i : Fin r => if hi : i.val < l then a ⟨i.val, hi⟩ else 0), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi right`. Use `⟨?_, by omega⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Establish `hc' : ¬ i.val < l` using `by omega`. Conclude with `hi (by simp [hc, hc'])`.
+Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Matrix.mulVec_add, he1, he2, ← hwa]`. Normalize the expressions using the abelian group laws. Use `choose c hc hc' using key`. Use `⟨Matrix.of fun i j => c j i, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `k j`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun (hc' j) k` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Introduce `i j hij`. Conclude with `hc j i (by simpa using hij)`. Introduce `v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hz : Matrix.mulVec (X₂.conjTranspose * J) v = 0`. Use function extensionality and compare the values at `i`. Rewrite using `[hcol]`. Conclude with `hv _ (by simp)`. Take `⟨w, a, hwa⟩` from `hperp v hz`.
-
-Use `⟨(fun i : Fin r => if hi : i.val < l + d then w ⟨i.val, hi⟩ else 0) + (fun i : Fin r => if hi : i.val < l then a ⟨i.val, hi⟩ else 0), ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Assume the negation of the conclusion as `hc`. Establish `hc' : ¬ i.val < l` using `by omega`. Conclude with `hi (by simp [hc, hc'])`.
-
-Rewrite using `[hwa, Matrix.mulVec_add, he1, he2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isotropic_unipotent_column_relations : ∀ (n r : ℕ) (J : Matrix (Fin n) (Fin n) ℂ) (X : Matrix (Fin n) (Fin r) ℂ), X.conjTranspose * J * X = 0 →
     ∀ (l d : ℕ) (h : l + d ≤ r) (u : Matrix (Fin n) (Fin n) ℂ) (A : Matrix (Fin l) (Fin d) ℂ),

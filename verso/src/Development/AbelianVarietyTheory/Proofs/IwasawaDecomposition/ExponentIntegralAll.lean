@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.HeightCounting.Up
 
 /- English proof (translation)
-Introduce `_ _`. Use `StepW.of_all fun K B f T w _ _ _ P x _ j g => ?_` and prove the remaining obligations. Conclude with `((Dof x).hc ((Dof x).eTau.symm g)).e_int j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eExp_int_of_third : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ _ _ _ x => ∀ _ : LC hL x, ∀ j g, ∃ z : ℤ, eExp (Dof x) j g = z := by
   intro _ _

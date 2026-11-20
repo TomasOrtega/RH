@@ -21,7 +21,7 @@ open GlobalTheory.WeilM GlobalTheory.LFun Filter Topology
 open scoped Classical
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Finset.sum_apply, Finset.mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (u : Matrix (Fin n) (Fin d) (AE F E))
@@ -31,7 +31,7 @@ theorem rho_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   simp only [Darboux.rho, schr, Finset.sum_apply, Finset.mul_sum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Pi.zero_apply, mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (u : Matrix (Fin n) (Fin d) (AE F E)) :
@@ -40,9 +40,9 @@ theorem rho_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   simp only [Darboux.rho, schr, Pi.zero_apply, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Establish `hT` using `((T.restrictScalars ℝ).continuous.tendsto c').comp hl`. Use `hT.congr fun t => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, slope_def_module, sub_zero, hc0]`. Rewrite using `[← map_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(T.restrictScalars ℝ).map_smul t⁻¹ (c t - f)`.
+A detailed English derivation is pending.
 -/
 private theorem hasDerivAt_clm_comp_of_tendsto_slope {κ : Type} [Fintype κ] {F : Type} [Field F] [NumberField F] (c : ℝ → SInf F κ)
     (f c' : SInf F κ) (hc0 : c 0 = f) (hl : Tendsto (fun t : ℝ => t⁻¹ • (c t - f)) (𝓝[≠] 0) (𝓝 c'))
@@ -55,7 +55,7 @@ private theorem hasDerivAt_clm_comp_of_tendsto_slope {κ : Type} [Fintype κ] {F
   exact (T.restrictScalars ℝ).map_smul t⁻¹ (c t - f)
 
 /- English proof (translation)
-Establish `h` using `hasDerivAt_clm_comp_of_tendsto_slope c f c' hc0 hl ((BoundedContinuousFunction.evalCLM ℂ y).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ))`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasDerivAt_eval {κ : Type} [Fintype κ] {F : Type} [Field F] [NumberField F] (c : ℝ → SInf F κ) (f c' : SInf F κ)
     (hc0 : c 0 = f) (hl : Tendsto (fun t : ℝ => t⁻¹ • (c t - f)) (𝓝[≠] 0) (𝓝 c')) (y : κ → mixedEmbedding.mixedSpace F) :
@@ -65,7 +65,7 @@ theorem hasDerivAt_eval {κ : Type} [Fintype κ] {F : Type} [Field F] [NumberFie
   simpa using h
 
 /- English proof (translation)
-The claim follows from `hasDerivAt_clm_comp_of_tendsto_slope c f c' hc0 hl T`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_clm {κ : Type} [Fintype κ] {F : Type} [Field F] [NumberField F] (c : ℝ → SInf F κ) (f c' : SInf F κ)
     (hc0 : c 0 = f) (hl : Tendsto (fun t : ℝ => t⁻¹ • (c t - f)) (𝓝[≠] 0) (𝓝 c')) (T : SInf F κ →L[ℂ] ℂ) :
@@ -73,23 +73,19 @@ theorem hasDerivAt_clm {κ : Type} [Fintype κ] {F : Type} [Field F] [NumberFiel
   hasDerivAt_clm_comp_of_tendsto_slope c f c' hc0 hl T
 
 /- English proof (translation)
-Take `⟨c, c', hc0, hl, hc⟩` from `horb`. Establish `hcr : ∀ t : ℝ, om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) (⇑f) r) = tens (evI F) (⇑(c t)) r` using `fun t => hc t r hR`. Establish `hder : ∀ x, HasDerivAt (fun t : ℝ => tens (evI F) (⇑(c t)) r x) (tens (evI F) (⇑c') r x) 0` using `fun x => (hasDerivAt_eval c f c' hc0 hl (fun j => evI F (x j))).mul_const (r x)`. Establish `hf₁ : tens (evI F) (⇑f₁) r = tens (evI F) (⇑c') r`. Use function extensionality and compare the values at `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `hD r hR x`. Simplify using `only [hcr] at h1`. Conclude with `h1.unique (hder x)`. Distinguish the cases in `hf : f = 0`. Establish `hz : tens (evI F) (⇑f) r = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[tens, hf]`. Establish `h0 : ∀ t : ℝ, tens (evI F) (⇑(c t)) r = 0`. Introduce `t`. Rewrite using `[← hcr t, hz, map_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc'0 : tens (evI F) (⇑c') r = 0`. Use function extensionality and compare the values at `x`. Establish `h3 : HasDerivAt (fun t : ℝ => tens (evI F) (⇑(c t)) r x) 0 0`. Simplify using `only [h0, Pi.zero_apply]`. Conclude with `hasDerivAt_const _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(hder x).unique h3`. Use `⟨fun t => ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hcr, h0, rho_zero, Pi.zero_apply]`. Conclude with `summable_zero`. Simplify using `only [hf₁, hc'0, rho_zero, Pi.zero_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `summable_zero`. Simplify using `only [hcr, h0, hf₁, hc'0, rho_zero, thetaSum, Pi.zero_apply, tsum_zero]`. Conclude with `hasDerivAt_const _ _`. Take `⟨T, hT⟩` from `hclm hf`. Use `⟨fun t => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcr t]`. Conclude with `(hT (c t)).summable`. Rewrite using `[hf₁]`. Conclude with `(hT c').summable`. Establish `e1 : (fun t : ℝ => thetaSum F (M.co.rho ψ u (om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) (⇑f) r)))) = fun t => T (c t)`.
-
-Use function extensionality and compare the values at `t`. Rewrite using `[hcr t]`. Conclude with `(hT (c t)).tsum_eq`. Establish `e2 : thetaSum F (M.co.rho ψ u (tens (evI F) (⇑c') r)) = T c'` using `(hT c').tsum_eq`. Rewrite using `[e1, hf₁, e2]`.
-
-Conclude with `hasDerivAt_clm c f c' hc0 hl T`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_ne_zero_smul_mem_of_mem_span' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ)
@@ -158,11 +154,11 @@ open GlobalTheory.WeilM GlobalTheory.LFun Filter Topology
 open scoped Classical
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ a a' B G X om om' hT γ hγ m f f₁ r hR hD u`. Establish `hone` using `fun i => exists_ne_zero_smul_mem_of_mem_span' G.M B.ψ om γ u (f i) (f₁ i) (r i) (hR i) (hD i) (GlobalTheory.WeilArchSmooth.exists_orbit hP G.M B.ψ X.β (X.β / X.α) om hT.base.cm hT.base.std hT.weil γ hγ (f i)) (fun hf => GlobalTheory.ThetaSchrCont.exists_clm_hasSum G.M B.ψ hT.base …`. Establish `e1 : ∀ t : ℝ, thetaSum F (G.M.co.rho B.ψ u (om (1, γ (Multiplicative.ofAdd t)) (∑ i, tens (evI F) (⇑(f i)) (r i)))) = ∑ i, thetaSum F (G.M.co.rho B.ψ u (om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) (⇑(f i)) (r i))))`. Introduce `t`. Rewrite using `[map_sum, rho_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `thetaSum`. Simplify using `only [Finset.sum_apply]`. Conclude with `(hasSum_sum fun i _ => ((hone i).1 t).hasSum).tsum_eq`. Establish `e2 : thetaSum F (G.M.co.rho B.ψ u (∑ i, tens (evI F) (⇑(f₁ i)) (r i))) = ∑ i, thetaSum F (G.M.co.rho B.ψ u (tens (evI F) (⇑(f₁ i)) (r i)))`. Rewrite using `[rho_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `thetaSum`. Simplify using `only [Finset.sum_apply]`. Conclude with `(hasSum_sum fun i _ => (hone i).2.1.hasSum).tsum_eq`. Simplify using `only [e1, e2]`. Conclude with `HasDerivAt.fun_sum fun i _ => (hone i).2.2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

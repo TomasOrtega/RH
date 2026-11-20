@@ -8,7 +8,7 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G MvPolynomial
 
 /- English proof (translation)
-Introduce `d hd`. Apply `h` to reduce the goal to its premises. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[MvPolynomial.coeff_smul, h0, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem wh_smulO {O : Type} [CommRing O] [IsDomain O] {σ : Type} {ω : σ → ℕ} {x : MvPolynomial σ (KK O)} {n : ℕ} (c : O)
     (h : IsWeightedHomogeneous ω x n) : IsWeightedHomogeneous ω (c • x) n := by
@@ -19,20 +19,20 @@ theorem wh_smulO {O : Type} [CommRing O] [IsDomain O] {σ : Type} {ω : σ → �
   rw [MvPolynomial.coeff_smul, h0, smul_zero]
 
 /- English proof (translation)
-Conclude with `e ▸ h`.
+A detailed English derivation is pending.
 -/
 theorem wh_congr {K : Type} [CommRing K] {σ : Type} {ω : σ → ℕ} {x : MvPolynomial σ K} {n n' : ℕ}
     (h : IsWeightedHomogeneous ω x n) (e : n = n') : IsWeightedHomogeneous ω x n' := by
   exact e ▸ h
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (chainEmb N r t)`. Introduce `x y h`. Simplify using `only [chainEmb, Sum.inl.injEq, Prod.mk.injEq, Fin.castSucc_inj] at h`. Conclude with `Prod.ext h.1 h.2`. Introduce `d hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd' : d ∈ (rename (chainEmb N r t) y).support` using `MvPolynomial.mem_support_iff.mpr hd`. Rewrite `hd'` using `[MvPolynomial.support_rename_of_injective hinj]`. Take `⟨m1, hm1, rfl⟩` from `Finset.mem_image.mp hd'`. Unfold `Pol at hy`. Rewrite `hy` using `[MvPolynomial.mem_restrictSupport_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdeg` using `hy hm1`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_mapDomain_index (h := fun i (c : ℕ) => c • ω i) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _), Finsupp.sum_fintype m1 (fun a (m : ℕ) => m • ω (chainEmb N r t a)) (fun _ => zero_smul _ _), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← hdeg a]`. Unfold `multideg`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Use `congr 1`. Conclude with `h1 _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem wh_chain {K : Type} [CommRing K] {N r t : ℕ} (ω : BVar N r t → ℕ) (ωL : Fin (N + 1) → ℕ)
     (h1 : ∀ a c, ω (Sum.inl (a, c)) = ωL a) (deg : Fin N → ℕ) (y : MvPolynomial (Fin N × Fin r) K)
@@ -63,13 +63,11 @@ theorem wh_chain {K : Type} [CommRing K] {N r t : ℕ} (ω : BVar N r t → ℕ)
   exact h1 _ _
 
 /- English proof (translation)
-Introduce `d hd`. Establish `hg1` using `(Submodule.mem_inf.mp hg).1`. Rewrite `hg1` using `[Submodule.restrictScalars_mem, MvPolynomial.mem_restrictSupport_iff]`. Take `⟨hsupp, hsum⟩` from `hg1 (MvPolynomial.mem_support_iff.mpr hd)`. Establish `hinj : Function.Injective (xiVar N r t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a b h`. Simplify using `only [xiVar, Sum.inl.injEq, Prod.mk.injEq] at h`. Conclude with `h.2`. Establish `hsub : d.support ⊆ Finset.univ.image (xiVar N r t)`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `hsupp v hv`. Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ c)`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_of_support_subset d hsub (fun i (c : ℕ) => c • ω i) (fun _ _ => zero_smul _ _), Finset.sum_image (fun a _ b _ h => hinj h), ← hsum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`.
-
-Use `congr 1`. Conclude with `h1 _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem wh_xi {O : Type} [CommRing O] [IsDomain O] {N r t b' : ℕ} (ω : BVar N r t → ℕ) (ωL : Fin (N + 1) → ℕ)
     (h1 : ∀ a c, ω (Sum.inl (a, c)) = ωL a) (g : MvPolynomial (BVar N r t) (KK O)) (hg : g ∈ XiPolZ O N r t b') :
@@ -103,13 +101,13 @@ def OmB (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (b : SegB
     (∑ a : Fin (2 * s + 1), (segChain p S aTop b).deg a * ωL (Fin.castSucc a)) + S.bPlus * ωL (Fin.last _)
 
 /- English proof (translation)
-Establish `hb` using `level_bounds p S aTop aPlus m b jl jp h`. Rewrite using `[lev_deg]`. Establish `ha` using `a.2`. Distinguish the cases in `h2 : a.val = 2 * s`. Establish `q : a.val / 2 = s` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos h2, q, jE_top, chain_deg_U p S aTop b a h2]`. Use `hb.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h2]`. Establish `hi : a.val / 2 < s` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hs : a.val / 2 < S.sigma`. Rewrite using `[jE_S S jl hs]`. Use linear arithmetic over natural numbers and integers. Establish `hb1 : jE S jl (a.val / 2) ≤ b.o ⟨a.val / 2, hi⟩ ∧ jE S jl (a.val / 2) ≤ coarseC p S aTop b ⟨a.val / 2, hi⟩` using `hb.1 ⟨a.val / 2, hi⟩ (by show S.sigma ≤ a.val / 2; omega)`. Distinguish the cases in `hpar : a.val % 2 = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[segment_chain_degree_even p S aTop b a ⟨a.val / 2, hi⟩ (by show a.val = 2 * (a.val / 2); omega), if_neg hs]`. Use `hb1.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[chain_deg_E p S aTop b a ⟨a.val / 2, hi⟩ (by show a.val = 2 * (a.val / 2) + 1; omega), if_neg hs]`. Use `hb1.2` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -141,23 +139,21 @@ theorem deg_split (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ)
         omega
 
 /- English proof (translation)
-Set `e : Fin S.t × Fin 2 → Fin (2 * s + 1)` to `fun p => ⟨2 * (S.sigma + p.1.val) + p.2.val, by`. Establish `h1` using `p.1.2`. Establish `h2` using `p.2.2`. Simplify using `only [SegData.t] at h1`. Use the proof step `omega⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `he : Function.Injective e`. Introduce and unpack `⟨l, b⟩ ⟨l', b'⟩ h`. Establish `hv : 2 * (S.sigma + l.val) + b.val = 2 * (S.sigma + l'.val) + b'.val` using `congrArg Fin.val h`. Use `b.2` as an intermediate fact. Use `b'.2` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Prod.ext (Fin.ext (show l.val = l'.val by omega)) (Fin.ext (show b.val = b'.val by omega))`. Rewrite using `[← Fintype.sum_of_injective e he (fun p => jl p.1 * ωL (finPos (2 * s + 1) (2 * (uTop S p.1 : ℕ) + p.2.val))) _ ?_ ?_]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two, mul_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `a ha`. Unfold `jE`. Rewrite using `[dif_neg]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨h1, h2⟩`. Apply `ha` to reduce the goal to its premises. Use `⟨(⟨a.val / 2 - S.sigma, by simp only [SegData.t]; omega⟩, ⟨a.val % 2, by omega⟩), ?_⟩` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises. Use `show 2 * (S.sigma + (a.val / 2 - S.sigma)) + a.val % 2 = a.val`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨l, b⟩`. Establish `hb` using `b.2`. Establish `hl` using `l.2`. Simplify using `only [SegData.t] at hl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Establish `hdiv : (2 * (S.sigma + l.val) + b.val) / 2 = S.sigma + l.val` using `by omega`. Simplify using `only [e, hdiv]`. Unfold `jE`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises.
-
-Simplify using `[finPos, uTop]`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem tie_sum (S : SegData s) (jl : Fin S.t → ℕ) (ωL : Fin (2 * s + 1 + 1) → ℕ) :
     ∑ a : Fin (2 * s + 1), jE S jl (a.val / 2) * ωL (Fin.castSucc a) =
@@ -210,29 +206,25 @@ theorem tie_sum (S : SegData s) (jl : Fin S.t → ℕ) (ωL : Fin (2 * s + 1 + 1
       omega
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun x _ => IsWeightedHomogeneous ω x (OmB p S aTop aPlus b ω ωL)) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce `x hx`. Take `⟨jl, hx⟩` from `Set.mem_iUnion.1 hx`. Take `⟨jp, hx⟩` from `Set.mem_iUnion.1 hx`. Take `⟨hlev, hx⟩` from `Set.mem_iUnion.1 hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, g, hg, rfl⟩` from `hx`. Establish `hE : ∀ l : Fin S.t, IsWeightedHomogeneous ω ((blockData p S aTop aPlus mm b).Ehat O (r` using `r) l) (ωL (finPos (2 * s + 1) (2 * (uTop S l : ℕ))) + ωL (finPos (2 * s + 1) (2 * (uTop S l : ℕ) + 1))) := by`. Introduce `l`. Use `IsWeightedHomogeneous.add ?_ (IsWeightedHomogeneous.sum _ _ _ fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[← h2 l]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isWeightedHomogeneous_X _ ω _).mul (isWeightedHomogeneous_X _ ω _)`. Use `(isWeightedHomogeneous_X (KK O) ω (Sum.inl (finPos (2 * s + 1) (2 * (uTop S l : ℕ)), c))).mul (isWeightedHomogeneous_X (KK O) ω (Sum.inl (finPos (2 * s + 1) (2 * (uTop S l : ℕ) + 1), c)))` as an intermediate fact. Rewrite `this` using `[h1, h1]`. Conclude with `this`. Establish `hEp : IsWeightedHomogeneous ω ((blockData p S aTop aPlus mm b).Eplus O (r` using `r)) (ωL (Fin.castSucc ⟨2 * s, by omega⟩) + ωL (Fin.last _)) := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsWeightedHomogeneous.add ?_ (IsWeightedHomogeneous.sum _ _ _ fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[← h3]`. Conclude with `(isWeightedHomogeneous_X _ ω _).mul (isWeightedHomogeneous_X _ ω _)`. Use `(isWeightedHomogeneous_X (KK O) ω (Sum.inl (Fin.castSucc (⟨2 * s, by omega⟩ : Fin (2 * s + 1)), c))).mul (isWeightedHomogeneous_X (KK O) ω (Sum.inl (Fin.last (2 * s + 1), c)))` as an intermediate fact. Rewrite `this` using `[h1, h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hA` using `IsWeightedHomogeneous.prod Finset.univ (fun l : Fin S.t => (blockData p S aTop aPlus mm b).Ehat O (r := r) l ^ jl l) _ (fun l _ => (hE l).pow (jl l))`. Establish `hB` using `hEp.pow jp`. Establish `hC` using `IsWeightedHomogeneous.prod Finset.univ (fun l : Fin S.t => (X (scalZ (2 * s + 1) r S.t (Fin.castSucc l)) : MvPolynomial (BVar (2 * s + 1) r S.t) (KK O)) ^ (coarseA p S b (uTop S l) - b.o (uTop S l))) _ (fun l _ => (isWeightedHomogeneous_X (KK O) ω _).pow _)`. Establish `hD` using `(isWeightedHomogeneous_X (KK O) ω (scalZ (2 * s + 1) r S.t (Fin.last S.t))).pow (aPlus - b.oPlus)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hY` using `wh_chain ω ωL h1 _ y hy.1.1`. Establish `hG` using `wh_xi ω ωL h1 g hg`. Establish `hall` using `((((hA.mul hB).mul hC).mul hD).mul hY).mul hG`. Use `wh_congr hall (Eq.symm ?_)` and prove the remaining obligations. Establish `hjpB : jp ≤ S.bPlus` using `le_trans hlev.2 (min_le_right _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hsplit : ∑ a : Fin (2 * s + 1), (segChain p S aTop b).deg a * ωL (Fin.castSucc a) = ∑ a : Fin (2 * s + 1), ((blockData p S aTop aPlus mm b).lettersAt jl jp).deg a * ωL (Fin.castSucc a) + ∑ l : Fin S.t, jl l * (ωL (finPos (2 * s + 1) (2 * (uTop S l : ℕ))) + ωL (finPos (2 * s + 1) …`. Rewrite using `[← tie_sum S jl ωL]`. Establish `e3 : jp * ωL (Fin.castSucc ⟨2 * s, by omega⟩) = ∑ a : Fin (2 * s + 1), (if a.val = 2 * s then jp else 0) * ωL (Fin.castSucc a)`. Rewrite using `[Finset.sum_eq_single (⟨2 * s, by omega⟩ : Fin (2 * s + 1))]`. Rewrite using `[if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c _ hc`. Rewrite using `[if_neg (fun h => hc (Fin.ext h)), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[e3, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[deg_split p S aTop aPlus mm b jl jp hlev a]`. Expand and normalize the polynomial expressions, which then agree. Unfold `OmB`. Rewrite using `[hsplit]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hBj : S.bPlus * ωL (Fin.last _) = (S.bPlus - jp) * ωL (Fin.last _) + jp * ωL (Fin.last _)`. Rewrite using `[← add_mul, Nat.sub_add_cancel hjpB]`. Rewrite using `[hBj]`. Simplify using `only [smul_eq_mul]`. Use `show _ = (∑ l : Fin S.t, jl l * (ωL (finPos (2 * s + 1) (2 * (uTop S l : ℕ))) + ωL (finPos (2 * s + 1) (2 * (uTop S l : ℕ) + 1)))) + jp * (ωL (Fin.castSucc ⟨2 * s, by omega⟩) + ωL (Fin.last _)) + (∑ l : Fin S.t, (coarseA p S b (uTop S l) - b.o (uTop S l)) * ω (Sum.inr (Fin.castSu …`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `isWeightedHomogeneous_zero _ _ _`. Introduce `x y _ _ hx hy`. Conclude with `hx.add hy`. Introduce `c x _ hx`.
-
-Conclude with `wh_smulO c hx`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ssz_wh (O : Type) [CommRing O] [IsDomain O] [NeZero r] (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ)
     (mm : ℝ) (b : SegBlock s r) (ω : BVar (2 * s + 1) r S.t → ℕ) (ωL : Fin (2 * s + 1 + 1) → ℕ)

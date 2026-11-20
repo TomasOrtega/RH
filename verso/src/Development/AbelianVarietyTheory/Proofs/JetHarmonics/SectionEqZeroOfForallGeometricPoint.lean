@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.FlatPoints
 
 /- English proof (translation)
-Use `(IsPullback.of_right (h₁₁ := (q ▷ Y).left) (v₁₁ := pullback.fst T.hom Y.hom) (h₂₁ := q.left) (v₁₂ := pullback.fst H.hom Y.hom) ?_ (Over.whiskerRight_left_fst q) (IsPullback.of_hasPullback H.hom Y.hom).flip).flip` and prove the remaining obligations. Rewrite using `[Over.whiskerRight_left_snd, Over.w]`. Conclude with `(IsPullback.of_hasPullback T.hom Y.hom).flip`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_whiskerRight_left {S : Scheme.{0}} {T H : Over S} (q : T ⟶ H) (Y : Over S) :
     IsPullback (pullback.fst T.hom Y.hom) (q ▷ Y).left q.left (pullback.fst H.hom Y.hom) := by
@@ -23,9 +23,9 @@ theorem isPullback_whiskerRight_left {S : Scheme.{0}} {T H : Over S} (q : T ⟶ 
   exact (IsPullback.of_hasPullback T.hom Y.hom).flip
 
 /- English proof (translation)
-Use `TopCat.Presheaf.section_ext X.sheaf W f 0 fun x hx => ?_` and prove the remaining obligations. Take `⟨i, z, rfl⟩` from `hu x`. Establish `hinj : Function.Injective ((u i).stalkMap z).hom` using `(asIso ((u i).stalkMap z)).commRingCatIsoToRingEquiv.injective`. Express the relevant statement in the definitionally equal form `(X.presheaf.germ W _ hx).hom f = (X.presheaf.germ W _ hx).hom 0`. Apply `hinj` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Scheme.Hom.germ_stalkMap_apply, h i]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem section_eq_zero_of_cover {X : Scheme.{0}} {I : Type} {Z : I → Scheme.{0}}
     (u : ∀ i, Z i ⟶ X) [∀ i, IsOpenImmersion (u i)] (hu : ∀ x : X, ∃ i z, u i z = x)
@@ -40,7 +40,7 @@ theorem section_eq_zero_of_cover {X : Scheme.{0}} {I : Type} {Z : I → Scheme.{
   simp
 
 /- English proof (translation)
-Use `tensor_eq_zero_of_forall_geometric_point O F hinj A O (a ⊗ₜ 1) (fun φ => by simp [ha φ])` as an intermediate fact. Simplify using `using congrArg (TensorProduct.rid O A) this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_forall_point (O F : Type) [CommRing O] [Field F] [IsAlgClosed F] [Algebra O F]
     (hinj : Function.Injective (algebraMap O F)) (A : Type) [CommRing A] [Algebra O A]
@@ -50,7 +50,7 @@ theorem eq_zero_of_forall_point (O F : Type) [CommRing O] [Field F] [IsAlgClosed
   simpa using congrArg (TensorProduct.rid O A) this
 
 /- English proof (translation)
-Establish `: Finite (TensorProduct O F A →ₐ[F] F)` using `inferInstance`. Conclude with `Finite.of_equiv _ (Algebra.TensorProduct.liftEquivRight O F A F).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_algHom (O F : Type) [CommRing O] [Field F] [Algebra O F] (A : Type) [CommRing A]
     [Algebra O A] [Module.Finite O A] : Finite (A →ₐ[O] F) := by
@@ -58,19 +58,17 @@ theorem finite_algHom (O F : Type) [CommRing O] [Field F] [Algebra O F] (A : Typ
   exact Finite.of_equiv _ (Algebra.TensorProduct.liftEquivRight O F A F).symm
 
 /- English proof (translation)
-Use `finite_algHom O F A` as an intermediate fact. Set `Φ : A →ₐ[O] ((A →ₐ[O] F) → F)` to `Pi.algHom O (fun _ => F) (fun φ => φ)`. Establish `hΦ : Function.Injective Φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `eq_zero_of_forall_point O F hinj A a fun φ => congrFun ha φ`. Set `q : specO O ((A →ₐ[O] F) → F) ⟶ H` to `ptMap Φ ≫ e.hom`. Establish `h1 : IsSchemeTheoreticallyDominant (ptMap Φ).left` using `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective _ hΦ`. Establish `h2 : QuasiCompact (ptMap Φ).left` using `inferInstanceAs (QuasiCompact (Spec.map (CommRingCat.ofHom Φ.toRingHom)))`. Establish `h0 : IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.hom))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : IsSchemeTheoreticallyDominant q.left`. Express the relevant statement in the definitionally equal form `IsSchemeTheoreticallyDominant ((ptMap Φ).left ≫ e.hom.left)`. Use `infer_instance`. Establish `h4 : QuasiCompact q.left`. Express the relevant statement in the definitionally equal form `QuasiCompact ((ptMap Φ).left ≫ e.hom.left)`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `hp` using `isPullback_whiskerRight_left q Y`. Establish `h5 : IsSchemeTheoreticallyDominant (q ▷ Y).left` using `.of_isPullback hp`. Establish `h6 : QuasiCompact (q ▷ Y).left` using `MorphismProperty.of_isPullback hp h4`. Apply `(q ▷ Y).left.app_injective W` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[map_zero]`. Set `u : (A →ₐ[O] F) → (specO O F ⟶ specO O ((A →ₐ[O] F) → F))` to `fun φ => ptMap (Pi.evalAlgHom O (fun _ => F) φ)`. Establish `hu : ∀ φ, IsOpenImmersion (u φ).left` using `fun φ => inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom (Pi.evalRingHom (fun _ : A →ₐ[O] F => CommRingCat.of F) φ))))`. Establish `hu' : ∀ φ, IsOpenImmersion (u φ ▷ Y).left` using `fun φ => MorphismProperty.of_isPullback (isPullback_whiskerRight_left (u φ) Y) (hu φ)`. Use `section_eq_zero_of_cover (fun φ => (u φ ▷ Y).left) (fun x => ?_) _ _ (fun φ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨φ, p, hp⟩` from `PrimeSpectrum.exists_comap_evalRingHom_eq (R := fun _ : A →ₐ[O] F => F) (pullback.fst (specO O ((A →ₐ[O] F) → F)).hom Y.hom x)`. Take `⟨z, -, hz⟩` from `Scheme.exists_preimage_of_isPullback (isPullback_whiskerRight_left (u φ) Y) p x hp`. Conclude with `⟨φ, z, hz⟩`. Use `h (u φ ≫ q)` as an intermediate fact. Rewrite `this` using `[MonoidalCategory.comp_whiskerRight]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem affine_case (O F : Type) [CommRing O] [Field F] [IsAlgClosed F] [Algebra O F]
     (hinj : Function.Injective (algebraMap O F)) (A : Type) [CommRing A] [Algebra O A]
@@ -123,11 +121,11 @@ end GlobalTheory.FlatPoints
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O F _ _ _ _ hinj H Y hfin hflat hred hY W f h`. Establish `: IsAffine H.left` using `isAffine_of_isAffineHom H.hom`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (H.left.isoSpec.inv ≫ H.hom)`. Use `letI : Algebra O Γ(H.left, ⊤) := ψ.hom.toAlgebra`. Set `e : specO O Γ(H.left, ⊤) ≅ H` to `Over.isoMk H.left.isoSpec.symm hψ.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `h1 : IsFinite (Spec.map ψ)` using `by rw [hψ]; infer_instance`. Establish `h2 : Flat (Spec.map ψ)` using `by rw [hψ]; infer_instance`. Establish `: Module.Finite O Γ(H.left, ⊤)` using `(IsFinite.SpecMap_iff ψ).mp h1`. Establish `: Module.Flat O Γ(H.left, ⊤)` using `(Flat.SpecMap_iff (f := ψ)).mp h2`. Establish `h0 : IsIso (specO O F ◁ e.hom).left` using `inferInstanceAs (IsIso ((Over.forget _).map (specO O F ◁ e.hom)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : IsReduced (specO O F ⊗ specO O Γ(H.left, ⊤)).left` using `isReduced_of_isOpenImmersion (specO O F ◁ e.hom).left`. Establish `h4 : IsReduced (Spec (CommRingCat.of (TensorProduct O F Γ(H.left, ⊤))))` using `@isReduced_of_isOpenImmersion _ _ (pullbackSpecIso O F Γ(H.left, ⊤)).inv _ h3`. Establish `: _root_.IsReduced (TensorProduct O F Γ(H.left, ⊤))` using `(affine_isReduced_iff _).mp h4`. Conclude with `FlatPoints.affine_case O F hinj Γ(H.left, ⊤) H Y e W f h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem section_eq_zero_of_forall_geometric_point :
     ∀ (O F : Type) [CommRing O] [Field F] [IsAlgClosed F] [Algebra O F], Function.Injective (algebraMap O F) → ∀ (H Y : Over (Spec (CommRingCat.of O))), IsFinite H.hom → Flat H.hom → IsReduced (specO O F ⊗ H).left → Flat Y.hom → ∀ (W : (H ⊗ Y).left.Opens) (f : Γ((H ⊗ Y).left, W)), (∀ c : specO O F ⟶ H, ((c ▷ Y).left.app W).hom f = 0) → f = 0 := by

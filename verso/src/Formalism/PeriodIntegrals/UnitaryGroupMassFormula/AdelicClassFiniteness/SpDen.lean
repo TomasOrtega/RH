@@ -8,15 +8,13 @@ namespace PIW.AdelClassFin
 open NumberField
 
 /- English proof (translation)
-Introduce `E _ _ k X`. Establish `h : ∀ p : Fin k × Fin k, ∃ D : ℕ, 1 ≤ D ∧ (D : E) * X p.1 p.2 ∈ (algebraMap (𝓞 E) E).range`. Introduce `p`. Take `⟨y, hy, hint⟩` from `IsAlgebraic.exists_integral_multiple (IsFractionRing.isAlgebraic_iff ℤ ℚ E |>.mpr (.of_finite ℚ (X p.1 p.2)))`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : (y : E) * X p.1 p.2 ∈ (algebraMap (𝓞 E) E).range` using `⟨⟨(y : E) * X p.1 p.2, by rw [mem_integralClosure_iff]; simpa [zsmul_eq_mul] using hint⟩, rfl⟩`. Establish `h2 : (y.natAbs : ℤ) = y ∨ (y.natAbs : ℤ) = -y`. Break down `Int.natAbs_eq y with h | h` into its components or cases. Conclude with `Or.inl h.symm`. Use `right`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← Int.cast_natCast]`. Apply the tactic sequence `rcases h2 with h2 | h2 <;> rw [h2]`. Conclude with `hmem`. Rewrite using `[Int.cast_neg, neg_mul]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `neg_mem hmem`. Use `choose Dp hDp1 hDp using h`. Use `⟨∏ p, Dp p, Finset.one_le_prod' fun p _ => hDp1 p, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem Dp (Finset.mem_univ (i, j))`. Rewrite using `[hc, Nat.cast_mul, mul_comm (Dp (i, j) : E), mul_assoc]`.
-
-Conclude with `Subring.mul_mem _ ⟨c, by simp⟩ (hDp (i, j))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spDen : SpDen := by
   intro E _ _ k X

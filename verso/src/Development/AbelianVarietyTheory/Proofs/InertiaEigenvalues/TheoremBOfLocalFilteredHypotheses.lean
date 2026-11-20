@@ -10,7 +10,7 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D HW F Cm C CR CA CB CK Ckap hC a22 a23 c4` and use `Formalism.MainNotions.N.Ln17.frobenius_statement_of_fontaine D HW F Cm C CR CA CB CK Ckap hC a22 a23 c4`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem theoremB_of_admitted_inputs :
     ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F),

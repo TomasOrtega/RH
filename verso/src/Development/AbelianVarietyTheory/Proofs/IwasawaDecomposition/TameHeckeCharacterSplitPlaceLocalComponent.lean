@@ -13,9 +13,9 @@ namespace GlobalTheory.HeckeSplitComp
 open ReciprocityTheory.Aut
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Rewrite using `[hx]`. Conclude with `zero_le'`. Rewrite `h`, the goal using `[← WithZero.exp_log hx]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WithZero.exp_le_exp]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-(1 : ℕ) : ℤ) := by
   by_cases hx : x = 0
@@ -25,21 +25,21 @@ theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1)
   rw [WithZero.exp_le_exp]; push_cast; omega
 
 /- English proof (translation)
-Introduce `L _ _ _ s χ hχ`. Take `⟨c, hc, -, hci⟩` from `GlobalTheory.SplitCompl.exists_ringEquiv L s`. Establish `hlt : ∀ y, Valued.v (c y) < 1 ↔ Valued.v y < 1` using `GlobalTheory.TypeBlockFix.v_map_lt_one_iff s.v s.w c hc`. Establish `hle : ∀ y, Valued.v (c y) ≤ 1 ↔ Valued.v y ≤ 1` using `GlobalTheory.TypeBlockFix.v_map_le_one_iff s.v s.w c hc`. Establish `heq1 : ∀ y, Valued.v y = 1 → Valued.v (c y) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Use `le_antisymm ((hle y).2 hy.le) (not_lt.1 fun h => ?_)` and prove the remaining obligations. Use `(hlt y).1 h` as an intermediate fact. Rewrite `this` using `[hy]`. Conclude with `lt_irrefl _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(χ.loc s.w).comp (Units.map c.toRingHom.toMonoidHom), ⟨⟨1, fun u hu => ?_⟩, fun k => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hu1 : Valued.v ((u : s.v.adicCompletion (maximalRealSubfield L)) - 1) < 1` using `lt_of_le_of_lt hu (by rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; omega)`. Establish `hv : Valued.v (u : s.v.adicCompletion (maximalRealSubfield L)) = 1`. Use `Valuation.map_eq_of_sub_lt Valued.v (x := 1) (y := (u : s.v.adicCompletion (maximalRealSubfield L))) (by rw [map_one]; exact hu1)` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `show χ.loc s.w (Units.map c.toRingHom.toMonoidHom u) = 1`. Use `hχ _ (heq1 _ hv) ?_` and prove the remaining obligations. Establish `e : ((Units.map c.toRingHom.toMonoidHom u : (s.w.adicCompletion L)ˣ) : s.w.adicCompletion L) - 1 = c ((u : s.v.adicCompletion (maximalRealSubfield L)) - 1)`. Rewrite using `[map_sub, map_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e]`. Conclude with `le_exp_neg_one_of_lt_one ((hlt _).2 hu1)`. Use `show χ.loc s.w (Units.map c.toRingHom.toMonoidHom (Units.map (s.i : L →* s.v.adicCompletion (maximalRealSubfield L)) k)) = χ.loc s.w (Formalism.L2.Host.atFin s.w k)`. Use `congr 1`. Use `ext`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Formalism.L2.Host.atFin, hci]`. Introduce `u a k hka hu hua show χ.loc s.w (Units.map c.toRingHom.toMonoidHom u) = χ.locK s.w k`. Establish `hia : Valued.v (s.i (a : L)) = 1`. Use `Valuation.map_eq_of_sub_lt Valued.v (x := (u : s.v.adicCompletion (maximalRealSubfield L))) (y := s.i (a : L)) (by rw [Valuation.map_sub_swap, hu]; exact hua)` as an intermediate fact. Rewrite using `[this, hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hk : s.w.valuation L (k : L) = 1`. Establish `h1` using `heq1 _ hia`. Rewrite `h1` using `[hci, ← hka]`. Rewrite `h1` using `[Formalism.UG.P.levelaf_valued_algebraMap]`. Then use the resulting hypothesis. Use `GlobalTheory.LevMuDet.loc_eq_locK hχ hk ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((Units.map c.toRingHom.toMonoidHom u : (s.w.adicCompletion L)ˣ) : s.w.adicCompletion L) - algebraMap L _ (k : L) = c ((u : s.v.adicCompletion (maximalRealSubfield L)) - s.i (a : L))`. Rewrite using `[map_sub, hci, hka]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(hlt _).2 hua`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s : ReciprocityTheory.Aut.SplitPlace L) (χ : Formalism.L2.Host.HChar L), χ.TameAt s.w → ∃ ξ : (s.v.adicCompletion (maximalRealSubfield L))ˣ →* ℂˣ, NG.IsCompAt χ s ξ ∧ ∀ (u : (s.v.adicCompletion (maximalRealSubfield L))ˣ) (a : 𝓞 L) (k : Lˣ), (k : L) = (a : L) → Valued.v (u : s.v.adicCompletion (maximalRealSubfield L)) = 1 → Valued.v ((u : s.v.adicCompletion (maximalRealSubfield L)) - s.i (a : L)) < 1 → ξ u = χ.locK s.w k := by
   intro L _ _ _ s χ hχ

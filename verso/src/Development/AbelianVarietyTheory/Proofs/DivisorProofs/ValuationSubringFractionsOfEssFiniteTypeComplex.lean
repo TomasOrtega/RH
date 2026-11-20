@@ -9,23 +9,21 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `L _ ψ V hψ h`. Use `letI : Algebra ℂ V := (ψ.codRestrict V hψ).toAlgebra`. Establish `h' : Algebra.EssFiniteType ℂ V` using `h`. Take `⟨s, hs⟩` from `h'.cond`. Use `⟨s.image (fun x : V => (x : L)), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Rewrite `hx` using `[Finset.mem_image]`. Take `⟨y, -, rfl⟩` from `hx`. Conclude with `y.2`. Establish `key : ∀ x ∈ Algebra.adjoin ℂ (s : Set V), ((x : V) : L) ∈ Subring.closure (Set.range ψ ∪ ↑(s.image (fun x : V => (x : L))))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Apply `Subring.subset_closure` to reduce the goal to its premises. Use `right`.
+Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Finset.coe_image]`. Conclude with `⟨x, hx, rfl⟩`. Consider the case `algebraMap r`. Apply `Subring.subset_closure` to reduce the goal to its premises. Use `left`.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨r, rfl⟩`. Consider the case `add x y _ _ hx hy`. Simplify using `using Subring.add_mem _ hx hy`. Consider the case `mul x y _ _ hx hy`. Simplify using `using Subring.mul_mem _ hx hy`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `v hv`. Take `⟨⟨a, m⟩, hm⟩` from `IsLocalization.surj (Submonoid.comap (algebraMap (↥(Algebra.adjoin ℂ (s : Set V))) V) (IsUnit.submonoid V)) (⟨v, hv⟩ : V)`. Establish `hu : IsUnit ((m : Algebra.adjoin ℂ (s : Set V)) : V)` using `m.2`. Take `⟨u, hu'⟩` from `hu`. Establish `hinv : (((m : Algebra.adjoin ℂ (s : Set V)) : V) : L) * (((u⁻¹ : Vˣ) : V) : L) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu']`. Express the relevant statement in the definitionally equal form `(((u : V) * ((u⁻¹ : Vˣ) : V) : V) : L) = ((1 : V) : L)`. Rewrite using `[u.mul_inv]`. Establish `hd0 : (((m : Algebra.adjoin ℂ (s : Set V)) : V) : L) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hinv` using `[h0, zero_mul]`. Conclude with `zero_ne_one hinv`. Establish `hmL` using `congrArg (fun z : V => (z : L)) hm`. Simplify using `only at hmL`. Use `⟨((a : V) : L), key _ a.2, (((m : Algebra.adjoin ℂ (s : Set V)) : V) : L), key _ (m : Algebra.adjoin ℂ (s : Set V)).2, hd0, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[inv_eq_of_mul_eq_one_right hinv]`. Conclude with `((u⁻¹ : Vˣ) : V).2`. Rewrite using `[eq_div_iff hd0]`. Simplify using `using hmL`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem valuationSubring_fractions_of_essFiniteType : ∀ (L : Type) [Field L] (ψ : ℂ →+* L) (V : ValuationSubring L) (hψ : ∀ a, ψ a ∈ V), (ψ.codRestrict V hψ).EssFiniteType → ∃ s₀ : Finset L, (∀ x ∈ s₀, x ∈ V) ∧ ∀ s ∈ V, ∃ b ∈ Subring.closure (Set.range ψ ∪ ↑s₀), ∃ d ∈ Subring.closure (Set.range ψ ∪ ↑s₀), d ≠ 0 ∧ d⁻¹ ∈ V ∧ s = b / d := by
   classical

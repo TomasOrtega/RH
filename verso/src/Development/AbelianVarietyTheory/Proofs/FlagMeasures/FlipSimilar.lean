@@ -19,35 +19,35 @@ Both sides reduce to the same expression.
 theorem flip_apply {n : ℕ} (M : Mt g n) (i j : Fin n) : flip M i j = M j.rev i.rev := rfl
 
 /- English proof (translation)
-Unfold `flip`. Rewrite using `[← Matrix.submatrix_mul_equiv M N Fin.revPerm Fin.revPerm Fin.revPerm, Matrix.transpose_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem flip_mul {n : ℕ} (M N : Mt g n) : flip (M * N) = flip N * flip M := by
   unfold flip
   rw [← Matrix.submatrix_mul_equiv M N Fin.revPerm Fin.revPerm Fin.revPerm, Matrix.transpose_mul]
 
 /- English proof (translation)
-Unfold `flip`. Rewrite using `[Matrix.submatrix_one_equiv, Matrix.transpose_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem flip_one {n : ℕ} : flip (1 : Mt g n) = 1 := by
   unfold flip
   rw [Matrix.submatrix_one_equiv, Matrix.transpose_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [flip_apply, Fin.rev_rev]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem flip_flip {n : ℕ} (M : Mt g n) : flip (flip M) = M := by
   ext i j
   simp only [flip_apply, Fin.rev_rev]
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma one_submatrix_rev_mul_apply {n : ℕ} (A : Mt g n) (i j : Fin n) :
     ((1 : Mt g n).submatrix Fin.rev id * A) i j = A i.rev j := by
   simp [Matrix.mul_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, ← Equiv.sum_comp Fin.revPerm]`. Simplify using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma mul_one_submatrix_rev_apply {n : ℕ} (A : Mt g n) (i j : Fin n) :
     (A * (1 : Mt g n).submatrix Fin.rev id) i j = A i j.rev := by
@@ -55,11 +55,11 @@ private lemma mul_one_submatrix_rev_apply {n : ℕ} (A : Mt g n) (i j : Fin n) :
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Take `⟨Q, hQ, hQM⟩` from `GlobalTheory.SimilarTranspose.main (ZMod g) (Fin n) M`. Establish `hJJ : (1 : Mt g n).submatrix Fin.rev id * (1 : Mt g n).submatrix Fin.rev id = 1`. Use extensionality with `i j`. Rewrite using `[one_submatrix_rev_mul_apply]`. Simplify using `[Matrix.one_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hflip : flip M = (1 : Mt g n).submatrix Fin.rev id * M.transpose * (1 : Mt g n).submatrix Fin.rev id`. Use extensionality with `i j`. Rewrite using `[mul_one_submatrix_rev_apply, one_submatrix_rev_mul_apply, flip_apply, Matrix.transpose_apply]`. Generalize the expression as in `(1 : Mt g n).submatrix Fin.rev id = J at hJJ hflip`. Use `⟨J * Q, IsUnit.mul ⟨⟨J, J, hJJ, hJJ⟩, rfl⟩ hQ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hJJQ : J * (J * Q) = Q` using `by rw [← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Rewrite using `[hflip]`. Simplify using `only [Matrix.mul_assoc, hJJQ, hQM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem flip_similar {n : ℕ} (M : Mt g n) : ∃ P : Mt g n, IsUnit P ∧ P * M = flip M * P := by
 
@@ -90,21 +90,21 @@ Both sides reduce to the same expression.
 theorem flipG_coe {n : ℕ} (x : Gn g n) : ((flipG x : Gn g n) : Mt g n) = flip (x : Mt g n) := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [flipG_coe, Units.val_mul, flip_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem flipG_mul {n : ℕ} (x y : Gn g n) : flipG (x * y) = flipG y * flipG x := by
   apply Units.ext
   simp only [flipG_coe, Units.val_mul, flip_mul]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 theorem flipG_inv {n : ℕ} (x : Gn g n) : flipG x⁻¹ = (flipG x)⁻¹ := by
   apply Units.ext
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [flipG_coe, flip_flip]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem flipG_flipG {n : ℕ} (x : Gn g n) : flipG (flipG x) = x := by
   apply Units.ext
@@ -113,9 +113,9 @@ theorem flipG_flipG {n : ℕ} (x : Gn g n) : flipG (flipG x) = x := by
 def flipE (n : ℕ) : Gn g n ≃ Gn g n := ⟨flipG, flipG, flipG_flipG, flipG_flipG⟩
 
 /- English proof (translation)
-Take `⟨P, hP, hPx⟩` from `flip_similar (x : Mt g n)`. Use `⟨hP.unit, Units.ext ?_⟩` and prove the remaining obligations. Establish `h1 : ((hP.unit : Gn g n) : Mt g n) = P` using `hP.unit_spec`. Establish `h2 : ((hP.unit : Gn g n) : Mt g n) * ((hP.unit⁻¹ : Gn g n) : Mt g n) = 1` using `hP.unit.mul_inv`. Rewrite `h2` using `[h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[flipG_coe, Units.val_mul, Units.val_mul, h1, hPx, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flipG_conj {n : ℕ} (x : Gn g n) : ∃ p : Gn g n, flipG x = p * x * p⁻¹ := by
   obtain ⟨P, hP, hPx⟩ := flip_similar (x : Mt g n)
@@ -126,7 +126,7 @@ theorem flipG_conj {n : ℕ} (x : Gn g n) : ∃ p : Gn g n, flipG x = p * x * p�
   rw [flipG_coe, Units.val_mul, Units.val_mul, h1, hPx, Matrix.mul_assoc, h2, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `toG`. Rewrite using `[dif_pos (Units.isUnit x)]`. Conclude with `Units.ext rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toG_coe {n : ℕ} (x : Gn g n) : toG (x : Mt g n) = x := by
   unfold toG
@@ -134,13 +134,13 @@ theorem toG_coe {n : ℕ} (x : Gn g n) : toG (x : Mt g n) = x := by
   exact Units.ext rfl
 
 /- English proof (translation)
-Distinguish the cases in `hM : IsUnit M`. Establish `e1 : toG M = hM.unit`. Unfold `toG`. Rewrite using `[dif_pos hM]`. Establish `e2 : toG (flip M) = flipG hM.unit`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← toG_coe (flipG hM.unit), flipG_coe, IsUnit.unit_spec]`. Take `⟨p, hp⟩` from `flipG_conj hM.unit`. Rewrite using `[e1, e2, hp]`. Conclude with `hα _ _`. Establish `hF : ¬ IsUnit (flip M)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hM` to reduce the goal to its premises. Establish `e : flip (flip M) = ((flipG h.unit : Gn g n) : Mt g n)`. Rewrite using `[flipG_coe, IsUnit.unit_spec]`. Rewrite `e` using `[flip_flip]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Units.isUnit _`. Unfold `toG`. Rewrite using `[dif_neg hM, dif_neg hF]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem class_flip {n : ℕ} {α : Gn g n → ℂ} (hα : IsClass α) (M : Mt g n) :
     α (toG (flip M)) = α (toG M) := by
@@ -165,11 +165,11 @@ theorem class_flip {n : ℕ} {α : Gn g n → ℂ} (hα : IsClass α) (M : Mt g 
     rw [dif_neg hM, dif_neg hF]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j hj hi`. Establish `hi'` using `i.isLt`. Establish `hj'` using `j.isLt`. Use `h j.rev i.rev (by simp only [Fin.val_rev]; omega) (by simp only [Fin.val_rev]; omega)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[flip_apply, Fin.rev_rev, Fin.rev_rev]`. Then use the resulting hypothesis. Introduce `h i j hj hi`. Establish `hi'` using `i.isLt`. Establish `hj'` using `j.isLt`. Rewrite using `[flip_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h j.rev i.rev (by simp only [Fin.val_rev]; omega) (by simp only [Fin.val_rev]; omega)`.
+A detailed English derivation is pending.
 -/
 theorem inPar_flip {a b : ℕ} (M : Mt g (a + b)) : InPar b (flip M) ↔ InPar a M := by
   constructor
@@ -185,7 +185,7 @@ theorem inPar_flip {a b : ℕ} (M : Mt g (a + b)) : InPar b (flip M) ↔ InPar a
     exact h j.rev i.rev (by simp only [Fin.val_rev]; omega) (by simp only [Fin.val_rev]; omega)
 
 /- English proof (translation)
-Unfold `entN`. Rewrite using `[dif_pos ⟨hx, hy⟩]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma entN_of_lt {n : ℕ} (M : Mt g n) (x y : ℕ) (hx : x < n) (hy : y < n) :
     entN M x y = M ⟨x, hx⟩ ⟨y, hy⟩ := by
@@ -193,9 +193,9 @@ private lemma entN_of_lt {n : ℕ} (M : Mt g n) (x y : ℕ) (hx : x < n) (hy : y
   rw [dif_pos ⟨hx, hy⟩]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Rewrite using `[flip_apply]`. Simplify using `only [tl, br]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[entN_of_lt (flip M) i j (by omega) (by omega), entN_of_lt M (a + j.rev) (a + i.rev) (by simp only [Fin.val_rev]; omega) (by simp only [Fin.val_rev]; omega), flip_apply]`. Apply the tactic sequence `congr 1 <;> ext <;> simp only [Fin.val_rev] <;> omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tl_flip {a b : ℕ} (M : Mt g (a + b)) : tl b (flip M) = flip (br a b M) := by
   ext i j
@@ -209,7 +209,7 @@ theorem tl_flip {a b : ℕ} (M : Mt g (a + b)) : tl b (flip M) = flip (br a b M)
   congr 1 <;> ext <;> simp only [Fin.val_rev] <;> omega
 
 /- English proof (translation)
-Unfold `entN`. Rewrite using `[dif_pos ⟨hx, hy⟩]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma entN_eq_apply_of_lt_of_lt {n : ℕ} (M : Mt g n) (x y : ℕ) (hx : x < n) (hy : y < n) :
     entN M x y = M ⟨x, hx⟩ ⟨y, hy⟩ := by
@@ -217,9 +217,9 @@ private lemma entN_eq_apply_of_lt_of_lt {n : ℕ} (M : Mt g n) (x y : ℕ) (hx :
   rw [dif_pos ⟨hx, hy⟩]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Rewrite using `[flip_apply]`. Simplify using `only [tl, br]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[entN_eq_apply_of_lt_of_lt (flip M) (b + i) (b + j) (by omega) (by omega), entN_eq_apply_of_lt_of_lt M j.rev i.rev (by simp only [Fin.val_rev]; omega) (by simp only [Fin.val_rev]; omega), flip_apply]`. Apply the tactic sequence `congr 1 <;> ext <;> simp only [Fin.val_rev] <;> omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem br_flip {a b : ℕ} (M : Mt g (a + b)) : br b a (flip M) = flip (tl a M) := by
   ext i j
@@ -233,9 +233,9 @@ theorem br_flip {a b : ℕ} (M : Mt g (a + b)) : br b a (flip M) = flip (tl a M)
   congr 1 <;> ext <;> simp only [Fin.val_rev] <;> omega
 
 /- English proof (translation)
-Use `Fintype.sum_bijective (fun y => (flipG y)⁻¹) ?_ _ _ ?_` and prove the remaining obligations. Use `Function.bijective_iff_has_inverse.mpr ⟨fun v => flipG v⁻¹, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Simplify using `only [inv_inv, flipG_flipG]`. Introduce `v`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [flipG_flipG, inv_inv]`. Introduce `y`. Simplify using `only [flipG_mul, flipG_inv, inv_inv, mul_assoc]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private lemma sum_flipG_conj_eq_sum_conj_flipG {n : ℕ} (F : Gn g n → ℂ) (w : Gn g n) :
     ∑ y : Gn g n, F (flipG (y⁻¹ * w * y)) = ∑ y : Gn g n, F (y⁻¹ * flipG w * y) := by
@@ -249,7 +249,7 @@ private lemma sum_flipG_conj_eq_sum_conj_flipG {n : ℕ} (F : Gn g n → ℂ) (w
     simp only [flipG_mul, flipG_inv, inv_inv, mul_assoc]
 
 /- English proof (translation)
-Use `Fintype.sum_bijective (fun y => p⁻¹ * y) (Group.mulLeft_bijective p⁻¹) _ _ ?_` and prove the remaining obligations. Introduce `y`. Simplify using `only [mul_inv_rev, inv_inv, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private lemma sum_conj_conj_eq_sum_conj {n : ℕ} (F : Gn g n → ℂ) (w p : Gn g n) :
     ∑ y : Gn g n, F (y⁻¹ * (p * w * p⁻¹) * y) = ∑ y : Gn g n, F (y⁻¹ * w * y) := by
@@ -258,19 +258,17 @@ private lemma sum_conj_conj_eq_sum_conj {n : ℕ} (F : Gn g n → ℂ) (w p : Gn
   simp only [mul_inv_rev, inv_inv, mul_assoc]
 
 /- English proof (translation)
-Introduce `g _ a b n α β hα hβ hn`. Substitute `hn` using the available equality. Use function extensionality and compare the values at `x`. Establish `key : ∀ z : Gn g (a + b), (if InPar b ((flipG z : Gn g (a + b)) : Mt g (a + b)) then β (toG (tl b ((flipG z : Gn g (a + b)) : Mt g (a + b)))) * α (toG (br b a ((flipG z : Gn g (a + b)) : Mt g (a + b)))) else 0) = (if InPar a (z : Mt g (a + b)) then α (toG (tl a (z : Mt g (a + b)) …`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [flipG_coe, inPar_flip, tl_flip, br_flip, class_flip hβ, class_flip hα]`. Rewrite using `[mul_comm]`. Establish `hcard : (Finset.univ.filter fun p : Gn g (a + b) => InPar a (p : Mt g (a + b))).card = (Finset.univ.filter fun p : Gn g (a + b) => InPar b (p : Mt g (a + b))).card`. Use `Finset.card_nbij' flipG flipG ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `q hq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hq ⊢`. Rewrite using `[flipG_coe, inPar_flip]`. Conclude with `hq`. Introduce `q hq`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hq ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[flipG_coe]`. Apply `(inPar_flip (a := a) (b := b) (flip (q : Mt g (a + b)))).mp` to reduce the goal to its premises. Rewrite using `[flip_flip]` and apply the resulting hypothesis. Introduce `q _`. Conclude with `flipG_flipG q`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `q _`. Conclude with `flipG_flipG q`. Take `⟨p, hp⟩` from `flipG_conj x`. Set `Fba : Gn g (a + b) → ℂ` to `fun z => if InPar b (z : Mt g (a + b)) then β (toG (tl b (z : Mt g (a + b)))) * α (toG (br b a (z : Mt g (a + b)))) else 0`. Establish `e1 : (∑ y : Gn g (a + b), if InPar a ((y⁻¹ * x * y : Gn g (a + b)) : Mt g (a + b)) then α (toG (tl a ((y⁻¹ * x * y : Gn g (a + b)) : Mt g (a + b)))) * β (toG (br a b ((y⁻¹ * x * y : Gn g (a + b)) : Mt g (a + b)))) else 0) = ∑ y : Gn g (a + b), Fba (y⁻¹ * x * y)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hp]`. Conclude with `sum_conj_conj_eq_sum_conj Fba x p`. Simplify using `only [hc, hcT]`. Rewrite using `[hcard]`.
-
-Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem main : ∀ (g : ℕ) [Fact g.Prime] (a b n : ℕ) (α : Gn g a → ℂ) (β : Gn g b → ℂ),
     IsClass α → IsClass β → n = a + b → hc a b α β n = hc b a β α n := by

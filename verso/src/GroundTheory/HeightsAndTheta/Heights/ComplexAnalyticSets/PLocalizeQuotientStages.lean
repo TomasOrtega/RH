@@ -9,7 +9,7 @@ universe u
 noncomputable section
 
 /- English proof (translation)
-Establish `: RingHomSurjective (e : A →+* C)` using `⟨e.surjective⟩`. Set `f : A →ₛₗ[(e : A →+* C)] C` to `{ toFun := e, map_add' := e.map_add, map_smul' := fun a b => by simp }`. Rewrite using `[Module.length, Module.length, WithBot.unbot_inj, Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComapOfBijective f e.bijective)]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem length_self_eq_of_ringEquiv {A C : Type*} [CommRing A] [CommRing C] (e : A ≃+* C) :
     Module.length A A = Module.length C C := by
@@ -20,17 +20,17 @@ theorem length_self_eq_of_ringEquiv {A C : Type*} [CommRing A] [CommRing C] (e :
     Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComapOfBijective f e.bijective)]
 
 /- English proof (translation)
-Introduce `R _ m W I _ _ hWm hIW P _ hP`. Set `Q` to `R ⧸ I`. Set `B` to `Localization.AtPrime m ⧸ I.map (algebraMap R (Localization.AtPrime m))`. Set `T` to `Localization.AtPrime W ⧸ I.map (algebraMap R (Localization.AtPrime W))`. Establish `hdisj : Disjoint (m.primeCompl : Set R) (W : Set R)` using `Set.disjoint_left.2 fun a ha hW => ha (hWm hW)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hPR : P.comap (algebraMap R B) = W`. Rewrite using `[IsScalarTower.algebraMap_eq R (Localization.AtPrime m) B, ← Ideal.comap_comap, Ideal.Quotient.algebraMap_eq, ← hP, ← Ideal.map_map, Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.2 (Ideal.map_mono hIW)]`. Conclude with `IsLocalization.under_map_of_isPrime_disjoint m.primeCompl _ ‹W.IsPrime› hdisj`. Establish `hsub : (P.comap (algebraMap Q B)).primeCompl = Algebra.algebraMapSubmonoid Q W.primeCompl`. Use extensionality with `q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Establish `h1 : Ideal.Quotient.mk I r ∈ (P.comap (algebraMap Q B)).primeCompl ↔ r ∉ W`. Rewrite using `[← hPR]`. Conclude with `Iff.rfl`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hr`. Conclude with `⟨r, hr, rfl⟩`. Introduce and unpack `⟨r', hr', he⟩ hr`. Apply `hr'` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: r' - r ∈ I` using `Ideal.Quotient.eq.1 he`. Simplify using `using W.add_mem (hIW this) hr`. Establish `hBP : IsLocalization (Algebra.algebraMapSubmonoid Q W.primeCompl) (Localization.AtPrime P)`. Use `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (Algebra.algebraMapSubmonoid Q m.primeCompl) (Localization.AtPrime P) P` as an intermediate fact. Rewrite `this` using `[IsLocalization.AtPrime, hsub]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `this`. Set `e` to `IsLocalization.algEquiv (Algebra.algebraMapSubmonoid Q W.primeCompl) (Localization.AtPrime P) T`. Conclude with `(length_self_eq_of_ringEquiv (A := Localization.AtPrime P) (C := T) e.toRingEquiv).trans (Module.length_eq_of_surjective (R := T) (S := Localization.AtPrime W) (M := T) Ideal.Quotient.mk_surjective).symm`.
+A detailed English derivation is pending.
 -/
 theorem LocalizeQuotientStages.proof : LocalizeQuotientStages.Statement.{u} := by
   intro R _ m W I _ _ hWm hIW P _ hP

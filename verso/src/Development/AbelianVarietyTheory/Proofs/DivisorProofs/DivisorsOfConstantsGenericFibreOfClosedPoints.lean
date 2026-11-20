@@ -12,25 +12,23 @@ noncomputable section
 namespace GlobalTheory.VertUnits
 
 /- English proof (translation)
-Introduce `T E _ _ _ _ _ Q _ hQ`. Use `set I : Ideal (Polynomial T) := (maximalIdeal T).map (Polynomial.C : T →+* Polynomial T) with hI`. Establish `hIQ : I ≤ Q.comap (algebraMap (Polynomial T) E)` using `hQ.ge`. Set `f : Polynomial T ⧸ I →+* E ⧸ Q` to `Ideal.quotientMap Q (algebraMap (Polynomial T) E) hIQ`. Set `K` to `T ⧸ maximalIdeal T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_ : Field K` to `Ideal.Quotient.field _`. Set `e : Polynomial K ≃+* Polynomial T ⧸ I` to `Ideal.polynomialQuotientEquivQuotientPolynomial (maximalIdeal T)`. Establish `: IsJacobsonRing (Polynomial T ⧸ I)` using `isJacobsonRing_of_surjective ⟨e.toRingHom, e.surjective⟩`. Establish `hnf : ¬ IsField (Polynomial T ⧸ I)` using `fun h => Polynomial.not_isField K (MulEquiv.isField h e.toMulEquiv)`. Establish `hft : f.FiniteType`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((Ideal.Quotient.mk Q).comp (algebraMap (Polynomial T) E)).FiniteType` using `(RingHom.FiniteType.of_surjective _ Ideal.Quotient.mk_surjective).comp (RingHom.finiteType_algebraMap.mpr inferInstance)`. Rewrite `h1` using `[← Ideal.quotientMap_comp_mk hIQ]`. Conclude with `RingHom.FiniteType.of_comp_finiteType h1`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (E ⧸ Q)`. Establish `hcm : (m.comap f).IsMaximal`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_` to `Ideal.Quotient.field m`. Set `g : Polynomial T ⧸ I →+* (E ⧸ Q) ⧸ m` to `(Ideal.Quotient.mk m).comp f`. Establish `hgft : g.FiniteType` using `(RingHom.FiniteType.of_surjective _ Ideal.Quotient.mk_surjective).comp hft`. Establish `hgint : g.IsIntegral` using `(RingHom.finite_iff_finiteType_of_isJacobsonRing.mpr hgft).to_isIntegral`. Use `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' g hgint ⊥` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `heq : m.comap f = (⊥ : Ideal ((E ⧸ Q) ⧸ m)).comap g`. Use extensionality with `a`. Simplify using `[g, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[heq]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcm0 : m.comap f ≠ ⊥`. Introduce `h`. Rewrite `hcm` using `[h]`. Conclude with `hnf (Ring.isField_iff_maximal_bot.mpr hcm)`. Use `⟨m.comap (Ideal.Quotient.mk Q), Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective, fun x hx => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Ideal.Quotient.eq_zero_iff_mem.mpr hx]`. Introduce `hy`. Apply `hcm0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `hp : p ∈ (m.comap (Ideal.Quotient.mk Q)).comap (algebraMap (Polynomial T) E)`. Simplify `ha` using `[f, Ideal.quotientMap_mk]`. Rewrite `hp` using `[hy]`. Simplify `hp` using `[Ideal.Quotient.eq_zero_iff_mem]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hle : maximalIdeal T ≤ ((m.comap (Ideal.Quotient.mk Q)).comap (algebraMap (Polynomial T) E)).comap (Polynomial.C : T →+* Polynomial T)`. Introduce `t ht`. Simplify using `only [Ideal.mem_comap]`. Establish `h1 : Polynomial.C t ∈ I` using `Ideal.mem_map_of_mem _ ht`. Establish `h2 : algebraMap (Polynomial T) E (Polynomial.C t) ∈ Q` using `hIQ h1`.
-
-Simplify using `[Ideal.Quotient.eq_zero_iff_mem.mpr h2]`. Establish `hp : (((m.comap (Ideal.Quotient.mk Q)).comap (algebraMap (Polynomial T) E)).comap (Polynomial.C : T →+* Polynomial T)).IsPrime`. Establish `: (m.comap (Ideal.Quotient.mk Q)).IsPrime` using `Ideal.comap_isPrime _ _`. Conclude with `Ideal.comap_isPrime _ _`. Conclude with `((maximalIdeal.isMaximal T).eq_of_le hp.ne_top hle).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_maximal_over_closedPt : ∀ (T E : Type) [CommRing T] [IsLocalRing T] [CommRing E] [Algebra (Polynomial T) E]
     [Algebra.FiniteType (Polynomial T) E] (Q : Ideal E) [Q.IsPrime],
@@ -105,11 +103,11 @@ private theorem exists_maximal_over_closedPt : ∀ (T E : Type) [CommRing T] [Is
     exact ((maximalIdeal.isMaximal T).eq_of_le hp.ne_top hle).symm
 
 /- English proof (translation)
-Set `H : TensorProduct R K A →ₐ[K] L` to `Algebra.TensorProduct.lift (Algebra.ofId K L) h (fun _ _ => Commute.all _ _)`. Set `f` to `Ideal.kerLiftAlg H`. Establish `hf : Function.Injective f` using `Ideal.kerLiftAlg_injective H`. Establish `: (RingHom.ker H).IsPrime` using `RingHom.ker_isPrime (H : TensorProduct R K A →+* L)`. Establish `: Algebra.Etale K (TensorProduct R K A)` using `inferInstance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.EssFiniteType K (TensorProduct R K A)` using `inferInstance`. Establish `hx : f (Ideal.Quotient.mk _ (Algebra.TensorProduct.includeRight a)) = h a`. Simplify using `[f, H]`. Rewrite using `[← hx]`. Use `show (minpoly K (f _)).Separable`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[minpoly.algHom_eq f hf]`. Conclude with `Algebra.IsSeparable.isSeparable K _`.
+A detailed English derivation is pending.
 -/
 private theorem isSeparable_apply_of_etale (R A K L : Type) [CommRing R] [CommRing A] [Field K]
     [Field L] [Algebra R A] [Algebra.Etale R A] [Algebra R K] [Algebra K L] [Algebra R L]
@@ -129,27 +127,27 @@ private theorem isSeparable_apply_of_etale (R A K L : Type) [CommRing R] [CommRi
   exact Algebra.IsSeparable.isSeparable K _
 
 /- English proof (translation)
-Introduce `R S O _ _ _ _ _ _ _ _ Q y _ _ hQy hSy hOQ hflat hpieces`. Establish `: (IsLocalRing.maximalIdeal S).LiesOver y` using `⟨hSy.symm⟩`. Take `⟨𝔭, -, _, h𝔭⟩` from `Ideal.exists_ideal_le_liesOver_of_le (p := Q) (q := y) (IsLocalRing.maximalIdeal S) hQy`. Establish `h𝔭Q : Q = 𝔭.comap (algebraMap R S)` using `h𝔭.over`. Set `F` to `IsLocalRing.ResidueField O`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hF : Q ≤ RingHom.ker (algebraMap R F)` using `fun x hx => by`. Rewrite using `[RingHom.mem_ker, IsScalarTower.algebraMap_apply R O F, IsLocalRing.ResidueField.algebraMap_eq, IsLocalRing.residue_eq_zero_iff]`. Rewrite `hx` using `[← hOQ]`. Conclude with `hx`. Establish `hF' : Q.primeCompl ≤ (IsUnit.submonoid F).comap (algebraMap R F)` using `fun x hx => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submonoid.mem_comap, IsUnit.mem_submonoid_iff]`. Rewrite using `[isUnit_iff_ne_zero, IsScalarTower.algebraMap_apply R O F, ne_eq, IsLocalRing.ResidueField.algebraMap_eq, IsLocalRing.residue_eq_zero_iff]`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← hOQ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `h`. Set `κQ` to `Q.ResidueField`. Set `κ𝔭` to `𝔭.ResidueField`. Set `_ : Algebra κQ F` to `(Ideal.ResidueField.lift Q (algebraMap R F) hF hF').toAlgebra`. Establish `hRQF : IsScalarTower R κQ F` using `IsScalarTower.of_algebraMap_eq (fun r => (Ideal.ResidueField.lift_algebraMap Q (algebraMap R F) hF hF' r).symm)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `_ : Algebra κQ κ𝔭` to `(Ideal.ResidueField.map Q 𝔭 (algebraMap R S) h𝔭Q).toAlgebra`. Establish `hRQP : IsScalarTower R κQ κ𝔭` using `IsScalarTower.of_algebraMap_eq (fun r => by`. Express the relevant statement in the definitionally equal form `_ = Ideal.ResidueField.map Q 𝔭 (algebraMap R S) h𝔭Q (algebraMap R κQ r)`. Rewrite using `[Ideal.ResidueField.map_algebraMap, ← IsScalarTower.algebraMap_apply])`. Establish `hsepS : ∀ s : S, algebraMap S κ𝔭 s ∈ separableClosure κQ κ𝔭`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `s`. Take `⟨ι, _, _, _, Si, -, hcov, hpc⟩` from `hpieces`. Take `⟨i, hi⟩` from `hcov s`. Take `⟨A, _, _, _, q, _, ⟨e⟩⟩` from `hpc i`. Set `g : Localization.AtPrime q →ₐ[R] κ𝔭` to `(IsScalarTower.toAlgHom R S κ𝔭).comp ((Si i).val.comp e.toAlgHom)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `h : A →ₐ[R] κ𝔭` to `g.comp (IsScalarTower.toAlgHom R A (Localization.AtPrime q))`. Take `⟨z, hz⟩` from `e.surjective ⟨s, hi⟩`. Establish `hgz : g z = algebraMap S κ𝔭 s` using `by simp [g, hz]`. Take `⟨⟨a, t⟩, hat⟩` from `IsLocalization.mk'_surjective (M := q.primeCompl) (S := Localization.AtPrime q) z`. Establish `hat' : IsLocalization.mk' (Localization.AtPrime q) a t = z` using `hat`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hgz` using `[← hat']`. Establish `hu : IsUnit (h t)` using `(IsLocalization.map_units (Localization.AtPrime q) t).map g`. Establish `hgz' : g (IsLocalization.mk' (Localization.AtPrime q) a t) = h a * (h t)⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ hu.ne_zero]`. Express the relevant statement in the definitionally equal form `_ = g (algebraMap A _ a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← IsLocalization.mk'_spec (Localization.AtPrime q) a t, map_mul]`. Both sides reduce to the same expression. Rewrite using `[← hgz, hgz']`. Conclude with `(separableClosure κQ κ𝔭).mul_mem (mem_separableClosure_iff.mpr (isSeparable_apply_of_etale R A κQ κ𝔭 h a)) ((separableClosure κQ κ𝔭).inv_mem (mem_separableClosure_iff.mpr (isSeparable_apply_of_etale R A κQ κ𝔭 h t)))`. Establish `hsep : Algebra.IsSeparable κQ κ𝔭` using `⟨fun x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, v, -, rfl⟩` from `IsFractionRing.div_surjective (S ⧸ 𝔭) x`. Take `⟨u, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Take `⟨v, rfl⟩` from `Ideal.Quotient.mk_surjective v`. Rewrite using `[Ideal.algebraMap_quotient_residueField_mk, Ideal.algebraMap_quotient_residueField_mk]`. Conclude with `mem_separableClosure_iff.mp ((separableClosure κQ κ𝔭).div_mem (hsepS u) (hsepS v))⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `ι : κ𝔭 →ₐ[κQ] F` to `IsSepClosed.lift (K := κQ) (L := κ𝔭) (M := F)`. Set `χ : S →ₐ[R] F` to `{ toRingHom := (ι : κ𝔭 →+* F).comp (algebraMap S κ𝔭) commutes' := fun r => by show ι (algebraMap S κ𝔭 (algebraMap R S r)) = algebraMap R F r`. Rewrite using `[← IsScalarTower.algebraMap_apply R S κ𝔭, IsScalarTower.algebraMap_apply R κQ κ𝔭, ι.commutes, ← IsScalarTower.algebraMap_apply R κQ F] }`. Take `⟨φ, -⟩` from `(GlobalTheory.IndEtaleHensel.bijective_residue_comp R S O hpieces).2 χ`. Conclude with `⟨φ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem specialisation_map : ∀ (R S O : Type) [CommRing R] [CommRing S] [IsLocalRing S] [CommRing O]
     [HenselianLocalRing O] [IsSepClosed (IsLocalRing.ResidueField O)] [Algebra R S] [Algebra R O]
@@ -227,17 +225,17 @@ private theorem specialisation_map : ∀ (R S O : Type) [CommRing R] [CommRing S
   exact ⟨φ⟩
 
 /- English proof (translation)
-Set `L` to `Localization.AtPrime y`. Set `Ω` to `SeparableClosure (IsLocalRing.ResidueField L)`. Take `⟨S, _, _, _, hloc, hsep, hflat, -, -, hpieces⟩` from `GlobalTheory.exists_strictHenselisation L Ω`. Establish `: IsSepClosed (IsLocalRing.ResidueField S)` using `hsep`. Set `_ : Algebra E S` to `((algebraMap L S).comp (algebraMap E L)).toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hELS : IsScalarTower E L S` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Set `_ : Algebra (Polynomial T) S` to `((algebraMap E S).comp (algebraMap (Polynomial T) E)).toAlgebra`. Set `_ : Algebra T S` to `((algebraMap E S).comp (algebraMap T E)).toAlgebra`. Establish `hTES : IsScalarTower T E S` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hPES : IsScalarTower (Polynomial T) E S` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTPS : IsScalarTower T (Polynomial T) S` using `IsScalarTower.of_algebraMap_eq (fun x => by`. Express the relevant statement in the definitionally equal form `algebraMap E S (algebraMap T E x) = algebraMap E S (algebraMap (Polynomial T) E (algebraMap T (Polynomial T) x))`. Rewrite using `[IsScalarTower.algebraMap_apply T (Polynomial T) E x])`. Establish `hPLS : IsScalarTower (Polynomial T) L S` using `IsScalarTower.of_algebraMap_eq (fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply (Polynomial T) E L x]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Establish `hmax : (IsLocalRing.maximalIdeal S).comap (algebraMap E S) = y`. Rewrite using `[IsScalarTower.algebraMap_eq E L S, ← Ideal.comap_comap, IsLocalRing.maximalIdeal_comap (algebraMap L S)]`. Conclude with `IsLocalization.AtPrime.under_maximalIdeal L y`. Establish `hflatE : Module.Flat E S` using `Module.Flat.trans E L S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLE : ∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra E L), Monotone Si ∧ (∀ s : L, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra E A) (_ : Algebra.Etale E A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.A …` using `⟨Unit, inferInstance, inferInstance, inferInstance, fun _ => ⊤, monotone_const, fun _ => ⟨(), Algebra.mem_top⟩, fun _ => ⟨E, inferInstance, inferInstance, inferInstance, y, inferInstance, ⟨Subalgebra.topEquiv.symm⟩⟩⟩`. Establish `hLP : ∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra (Polynomial T) L), Monotone Si ∧ (∀ s : L, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra (Polynomial T) A) (_ : Algebra.Etale (Polynomial T) A) (q : Ideal A) (_ …` using `⟨Unit, inferInstance, inferInstance, inferInstance, fun _ => ⊤, monotone_const, fun _ => ⟨(), Algebra.mem_top⟩, fun _ => ⟨E, inferInstance, inferInstance, inferInstance, y, inferInstance, ⟨Subalgebra.topEquiv.symm⟩⟩⟩`. Establish `hpE : GlobalTheory.LocAcyc.LocPiecesEtale E S` using `GlobalTheory.indEtale_localPieces_trans E L S hLE hpieces`. Take `⟨P, _, φ, hφ, hsh⟩` from `GlobalTheory.StrictHensUnion.isStrictHenselisation_of_directed_union T S (GlobalTheory.indEtale_localPieces_trans (Polynomial T) L S hLP hpieces)`. Establish `hP : P = y.comap (algebraMap (Polynomial T) E)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsLocalHom φ` using `hsh.2.2.1`. Rewrite using `[← hmax, Ideal.comap_comap, ← IsScalarTower.algebraMap_eq, ← hφ, ← Ideal.comap_comap, IsLocalRing.maximalIdeal_comap φ]`. Conclude with `(IsLocalization.AtPrime.under_maximalIdeal (Localization.AtPrime P) P).symm`. Substitute `hP` using the available equality. Conclude with `⟨S, inferInstance, inferInstance, inferInstance, inferInstance, hTES, inferInstance, hTPS, hPES, hmax, hflatE, hpE, φ, hφ, hsh⟩`.
+Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem sh_at {T E : Type} [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing E]
     [Algebra (Polynomial T) E] [Algebra T E] [IsScalarTower T (Polynomial T) E]
@@ -303,17 +301,17 @@ private theorem sh_at {T E : Type} [CommRing T] [IsDomain T] [IsLocalRing T] [Co
     hPES, hmax, hflatE, hpE, φ, hφ, hsh⟩
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ P _ φ hφ hind b c s hbc`. Set `r : MvPolynomial (Fin 2) (Polynomial T)` to `MvPolynomial.X 0 * MvPolynomial.X 1 - MvPolynomial.C (Polynomial.C s)`. Set `Z` to `MvPolynomial (Fin 2) (Polynomial T) ⧸ Ideal.span {r}`. Establish `: Algebra.FinitePresentation (Polynomial T) Z` using `Algebra.FinitePresentation.quotient (Submodule.fg_span_singleton r)`. Set `g0 : MvPolynomial (Fin 2) (Polynomial T) →ₐ[Polynomial T] O` to `MvPolynomial.aeval ![b, c]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg0 : ∀ a ∈ Ideal.span {r}, g0 a = 0`. Introduce `a ha`. Take `⟨q, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Simplify using `only [g0, r, map_mul, map_sub, MvPolynomial.aeval_X, MvPolynomial.aeval_C, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, hbc, IsScalarTower.algebraMap_apply T (Polynomial T) O s, Polynomial.algebraMap_eq, sub_self, mul_zero]`. Set `gZ : Z →ₐ[Polynomial T] O` to `Ideal.Quotient.liftₐ _ g0 hg0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Take `⟨W, _, _, _, u, v, huv⟩` from `GlobalTheory.T.exists_etale_factorization_of_isIndEtale (Polynomial T) O P φ hφ hind Z gZ`. Set `_ : Algebra T W` to `((algebraMap (Polynomial T) W).comp (algebraMap T (Polynomial T))).toAlgebra`. Establish `hW : IsScalarTower T (Polynomial T) W` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Set `x₀ : Z` to `Ideal.Quotient.mk _ (MvPolynomial.X 0)`. Set `x₁ : Z` to `Ideal.Quotient.mk _ (MvPolynomial.X 1)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hv : ∀ z : Z, v (u z) = gZ z` using `fun z => by rw [← AlgHom.comp_apply, huv]`. Use `⟨W, inferInstance, inferInstance, inferInstance, hW, inferInstance, v, u x₀, u x₁, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`. Express the relevant statement in the definitionally equal form `g0 (MvPolynomial.X 0) = b`. Simplify using `[g0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[hv]`. Express the relevant statement in the definitionally equal form `g0 (MvPolynomial.X 1) = c`. Simplify using `[g0]`. Establish `hx : x₀ * x₁ = algebraMap (Polynomial T) Z (Polynomial.C s)`. Rewrite using `[← Ideal.Quotient.mk_algebraMap, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.Quotient.eq.mpr (Ideal.subset_span ?_)` and prove the remaining obligations. Rewrite using `[Set.mem_singleton_iff, MvPolynomial.algebraMap_eq]`. Rewrite using `[← map_mul, hx, u.commutes]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem stage : ∀ (T O : Type) [CommRing T] [CommRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O]
@@ -362,17 +360,17 @@ private theorem stage : ∀ (T O : Type) [CommRing T] [CommRing O] [Algebra T O]
     rfl
 
 /- English proof (translation)
-Introduce `hcl T O _ _ _ _ _ _ _ _ hT P _ φ hφ hsh hPm hPgen b c s hs hbc`. Take `⟨hHen, hSep, hloc, hind⟩` from `hsh`. Take `⟨E, _, _, _, _, _, ψ, g, g', hg, hg', hgg⟩` from `stage T O P φ hφ hind b c s hbc`. Set `_ : Algebra E O` to `ψ.toRingHom.toAlgebra`. Establish `hEO : ∀ e : E, algebraMap E O e = ψ e` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Q : Ideal E` to `(maximalIdeal O).comap (algebraMap E O)`. Establish `: Q.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hQP : Q.comap (algebraMap (Polynomial T) E) = (maximalIdeal T).map (Polynomial.C : T →+* Polynomial T)`. Rewrite using `[← hPgen]`. Use extensionality with `p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `h1 : algebraMap E O (algebraMap (Polynomial T) E p) = φ (algebraMap (Polynomial T) (Localization.AtPrime P) p)`. Rewrite using `[hEO, ψ.commutes, ← hφ, RingHom.comp_apply]`. Simplify using `only [Q, Ideal.mem_comap, h1, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_map_iff φ]`. Rewrite using `[← mem_nonunits_iff, ← IsLocalRing.mem_maximalIdeal]`. Conclude with `IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime P) P p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hymax, hQy, hyne, hyT⟩` from `exists_maximal_over_closedPt T E Q hQP`. Establish `: y.IsPrime` using `hymax.isPrime`. Take `⟨S, _, _, _, _, _, _, _, _, hSy, hflat, hpieces, φ', hφ', hsh'⟩` from `sh_at (T := T) (E := E) y`. Establish `hdiv : DivConst T S` using `hcl T S hT _ φ' hφ' hsh' hyT hyne`. Take `⟨a, w, ha⟩` from `hdiv (algebraMap E S g) (algebraMap E S g') s hs (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, hgg, ← IsScalarTower.algebraMap_apply])`. Establish `: HenselianLocalRing O` using `hHen`. Establish `: IsSepClosed (IsLocalRing.ResidueField O)` using `hSep`. Take `⟨χ⟩` from `specialisation_map E S O Q y hQy hSy rfl hflat hpieces`. Use `⟨a, Units.map χ.toRingHom.toMonoidHom w, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hχT : χ (algebraMap T S a) = algebraMap T O a`. Rewrite using `[IsScalarTower.algebraMap_apply T E S, χ.commutes, hEO, IsScalarTower.algebraMap_apply T (Polynomial T) E, ψ.commutes, ← IsScalarTower.algebraMap_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem divConstGeneric_of_divConstClosedPts : DivConstClosedPts → DivConstGeneric := by
   intro hcl T O _ _ _ _ _ _ _ _ hT P _ φ hφ hsh hPm hPgen b c s hs hbc

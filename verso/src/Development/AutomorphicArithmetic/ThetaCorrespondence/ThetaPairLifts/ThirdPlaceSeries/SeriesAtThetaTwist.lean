@@ -59,7 +59,7 @@ private def base_pz {S T : HSp a.D} (x : ExportSeries.Base S T) : @ExportSeries.
   mu0 := (by with_unfolding_all exact (x.mu0 :))
   eta := (by with_unfolding_all exact (x.eta :))
 /- English proof (translation)
-The claim follows from `{ isOpen := (by with_unfolding_all exact (h.isOpen :)) rat := (by with_unfolding_all exact (h.rat :)) real := (by with_unfolding_all exact (h.real :)) split := (by with_unfolding_all exact (h.split :)) unram := (by with_unfolding_all exact (h.unram :)) res := (by with_unfolding_a …`.
+A detailed English derivation is pending.
 -/
 private theorem twist_good_pz {A : Type} [CommGroup A] {x : Twist a.D A} (h : x.Good) : (twist_pz b x).Good :=
   { isOpen := (by with_unfolding_all exact (h.isOpen :))
@@ -69,20 +69,20 @@ private theorem twist_good_pz {A : Type} [CommGroup A] {x : Twist a.D A} (h : x.
     unram := (by with_unfolding_all exact (h.unram :))
     res := (by with_unfolding_all exact (h.res :)) }
 /- English proof (translation)
-The claim follows from `{ le := (by with_unfolding_all exact (h.le :)) lam_eq := (by with_unfolding_all exact (h.lam_eq :)) }`.
+A detailed English derivation is pending.
 -/
 private theorem weight_good_pz {n : ℕ} {x : ExportSeries.Weight a.D n} (h : x.Good) : (weight_pz b x).Good :=
   { le := (by with_unfolding_all exact (h.le :))
     lam_eq := (by with_unfolding_all exact (h.lam_eq :)) }
 /- English proof (translation)
-The claim follows from `{ split := (by with_unfolding_all exact (h.split :)) disj := (by with_unfolding_all exact (h.disj :)) prime := (by with_unfolding_all exact (h.prime :)) }`.
+A detailed English derivation is pending.
 -/
 private theorem places_imp_pz {P Q} (h : @PlacesOK a.D P Q) : @PlacesOK b.D ((P)) ((Q)) :=
   { split := (by with_unfolding_all exact (h.split :))
     disj := (by with_unfolding_all exact (h.disj :))
     prime := (by with_unfolding_all exact (h.prime :)) }
 /- English proof (translation)
-The claim follows from `{ rank_le := (by with_unfolding_all exact (h.rank_le :)) onbS := (by with_unfolding_all exact (h.onbS :)) cartT := (by with_unfolding_all exact (h.cartT :)) onbT := (by with_unfolding_all exact (h.onbT :)) sdS := (by with_unfolding_all exact (h.sdS :)) sdT := (by with_unfolding_a …`.
+A detailed English derivation is pending.
 -/
 private theorem frame_good_pz {S T : HSp a.D} {x : Frame S T} (h : x.Good) : (frame_pz b x).Good :=
   { rank_le := (by with_unfolding_all exact (h.rank_le :))
@@ -98,7 +98,7 @@ private theorem frame_good_pz {S T : HSp a.D} {x : Frame S T} (h : x.Good) : (fr
       rewrite [thetaFun_eq a b, vacuum_eq a b]
       exact (by with_unfolding_all exact (h.vac :)) }
 /- English proof (translation)
-The claim follows from `{ even := (by with_unfolding_all exact (h.even :)) odd := (by with_unfolding_all exact (h.odd :)) frame := (by with_unfolding_all exact ((frame_good_pz b h.frame) :)) de := (by with_unfolding_all exact ((twist_good_pz b h.de) :)) places := (by with_unfolding_all exact ((places_im …`.
+A detailed English derivation is pending.
 -/
 private theorem base_good_pz {S T : HSp a.D} {x : ExportSeries.Base S T} (h : x.Good) : (base_pz b x).Good :=
   { even := (by with_unfolding_all exact (h.even :))
@@ -116,7 +116,7 @@ private theorem base_good_pz {S T : HSp a.D} {x : ExportSeries.Base S T} (h : x.
     tame := (by with_unfolding_all exact (h.tame :))
     inf := (by with_unfolding_all exact (h.inf :)) }
 /- English proof (translation)
-The claim follows from `{ fin := (by with_unfolding_all exact (h.fin :)) reps := (by with_unfolding_all exact (h.reps :)) stab := (by with_unfolding_all exact (h.stab :)) }`.
+A detailed English derivation is pending.
 -/
 private theorem classes_imp_pz {V : HSp a.D} {J} {I : Type} {r : I → GA a.D V} (h : IsClassSystem V J r) :
     @IsClassSystem b.D ((V)) ((J)) I ((r)) :=
@@ -127,7 +127,7 @@ variable (a) in
 private def placeMapB_pz : type_of% (@Frame.placeMap b.D) := @fun S T F => (by with_unfolding_all exact ((@Frame.placeMap a.D ((S)) ((T)) (((frame_pz a F)))) : _))
 variable (a) in
 /- English proof (translation)
-Use function extensionality and compare the values at `S T F e`. Use `delta Frame.placeMap`. Use `rewrite [placeModel_eq a b]`. Conclude with `(by with_unfolding_all exact ((Eq.refl (@placeMapB_pz B C a b S T F e)) :))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem placeMap_eq_pz : @Frame.placeMap b.D = @placeMapB_pz B C a b := by
   funext S T F e
@@ -138,7 +138,7 @@ variable (a) in
 private def vecAtB_pz : type_of% (@ExportSeries.Base.vecAt b.D) := @fun S T F => (by with_unfolding_all exact ((@ExportSeries.Base.vecAt a.D ((S)) ((T)) (((base_pz a F)))) : _))
 variable (a) in
 /- English proof (translation)
-Use function extensionality and compare the values at `S T F Q φ`. Use `delta ExportSeries.Base.vecAt Frame.vec`. Use `rewrite [placeMap_eq_pz a b]`. Conclude with `(by with_unfolding_all exact ((Eq.refl (@vecAtB_pz B C a b S T F Q φ)) :))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem vecAt_eq_pz : @ExportSeries.Base.vecAt b.D = @vecAtB_pz B C a b := by
   funext S T F Q φ
@@ -149,7 +149,7 @@ variable (a) in
 private def thetaB_pz : type_of% (@ExportSeries.Base.theta b.D) := @fun S T F => (by with_unfolding_all exact ((@ExportSeries.Base.theta a.D ((S)) ((T)) (((base_pz a F)))) : _))
 variable (a) in
 /- English proof (translation)
-Use function extensionality and compare the values at `S T F ω h`. Use `delta ExportSeries.Base.theta ExportSeries.Base.vecBase`. Use `rewrite [vecAt_eq_pz a b]`. Conclude with `(by with_unfolding_all exact ((Eq.refl (@thetaB_pz B C a b S T F ω h)) :))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem theta_eq_pz : @ExportSeries.Base.theta b.D = @thetaB_pz B C a b := by
   funext S T F ω h
@@ -160,7 +160,7 @@ variable (a) in
 private def genSetB_pz : type_of% (@ExportSeries.Base.genSet b.D) := @fun S T F ω ψ => (by with_unfolding_all exact ((@ExportSeries.Base.genSet a.D ((S)) ((T)) (((base_pz a F))) ((ω)) (twist_pz a ψ)) : _))
 variable (a) in
 /- English proof (translation)
-Use function extensionality and compare the values at `S T F ω ψ h P`. Use `delta ExportSeries.Base.genSet ExportSeries.Base.gen ExportSeries.Base.vecFlat`. Use `rewrite [vecAt_eq_pz a b]`. Conclude with `(by with_unfolding_all exact ((Eq.refl (@genSetB_pz B C a b S T F ω ψ h P)) :))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem genSet_eq_pz : @ExportSeries.Base.genSet b.D = @genSetB_pz B C a b := by
   funext S T F ω ψ h P
@@ -171,7 +171,7 @@ variable (a) in
 private def classSumB_pz : type_of% (@ExportSeries.Base.classSum b.D) := @fun S T F ω ψ => (by with_unfolding_all exact ((@ExportSeries.Base.classSum a.D ((S)) ((T)) (((base_pz a F))) ((ω)) (twist_pz a ψ)) : _))
 variable (a) in
 /- English proof (translation)
-Use function extensionality and compare the values at `S T F ω ψ I i h`. Use `delta ExportSeries.Base.classSum ExportSeries.Base.vecFlat`. Use `rewrite [vecAt_eq_pz a b]`. Conclude with `(by with_unfolding_all exact ((Eq.refl (@classSumB_pz B C a b S T F ω ψ I i h)) :))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem classSum_eq_pz : @ExportSeries.Base.classSum b.D = @classSumB_pz B C a b := by
   funext S T F ω ψ I i h
@@ -182,7 +182,7 @@ variable (a) in
 private def xiCoefB_pz : type_of% (@ExportSeries.Base.xiCoef b.D) := @fun S T F A i1 i2 ω u => (by with_unfolding_all exact ((@ExportSeries.Base.xiCoef a.D ((S)) ((T)) (((base_pz a F))) A i1 i2 ((ω)) (univTw_pz a u)) : _))
 variable (a) in
 /- English proof (translation)
-Use function extensionality and compare the values at `S T F A i1 i2 ω u Q Φ h P c`. Use `delta ExportSeries.Base.xiCoef ExportSeries.Base.xi ExportSeries.Base.vecFam`. Use `rewrite [vecAt_eq_pz a b]`. Conclude with `(by with_unfolding_all exact ((Eq.refl (@xiCoefB_pz B C a b S T F A i1 i2 ω u Q Φ h P c)) :))`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem xiCoef_eq_pz : @ExportSeries.Base.xiCoef b.D = @xiCoefB_pz B C a b := by
   funext S T F A i1 i2 ω u Q Φ h P c
@@ -196,13 +196,13 @@ variable {B : Base} {C : Cols B} {a : Late B C} (b : Late B C)
 private def recip_pz {Ω : Type} [i1 : Field Ω] [i2 : Algebra a.D.host.E Ω] (x : Recip a.D Ω) : @Recip b.D Ω i1 ((i2)) :=
   @Recip.mk b.D Ω i1 ((by with_unfolding_all exact (i2 :))) ((by with_unfolding_all exact (x.κ :))) ((by with_unfolding_all exact (x.art :)))
 /- English proof (translation)
-The claim follows from `@Recip.Good.mk b.D Ω i1 ((by with_unfolding_all exact (i2 :))) (@recip_pz B C a b Ω i1 i2 x) ((by with_unfolding_all exact (h.cont :))) ((by with_unfolding_all exact (h.rat :))) ((by with_unfolding_all exact (h.loc :))) ((by with_unfolding_all exact (h.artin :)))`.
+A detailed English derivation is pending.
 -/
 private theorem recip_good_pz {Ω : Type} [i1 : Field Ω] [i2 : Algebra a.D.host.E Ω] {x : Recip a.D Ω} (h : x.Good) :
     @Recip.Good b.D Ω i1 ((i2)) (@recip_pz B C a b Ω i1 i2 x) :=
   @Recip.Good.mk b.D Ω i1 ((by with_unfolding_all exact (i2 :))) (@recip_pz B C a b Ω i1 i2 x) ((by with_unfolding_all exact (h.cont :))) ((by with_unfolding_all exact (h.rat :))) ((by with_unfolding_all exact (h.loc :))) ((by with_unfolding_all exact (h.artin :)))
 /- English proof (translation)
-The claim follows from `{ pair := (by with_unfolding_all exact (h.pair :)) one := (by with_unfolding_all exact (h.one :)) }`.
+A detailed English derivation is pending.
 -/
 private theorem choice_imp_pz {ch} (h : @IsChoice a.D ch) : @IsChoice b.D ((ch)) :=
   { pair := (by with_unfolding_all exact (h.pair :))
@@ -229,7 +229,7 @@ private def setup_pz (x : Setup X) : @Setup (lt_pz c b).D ((N)) ((X)) :=
     (β := (by with_unfolding_all exact (x.β :)))
     (eG := (by with_unfolding_all exact (x.eG :)))
 /- English proof (translation)
-The claim follows from `{ rc := (by with_unfolding_all exact ((recip_good_pz (lt_pz c b) h.rc) :)) ch := fun i => (by with_unfolding_all exact ((choice_imp_pz (lt_pz c b) (h.ch ((i)))) : _)) bad_ne := (by with_unfolding_all exact (h.bad_ne :)) goodSetup_bad_mem_badPlaces := (by with_unfolding_all exact …`.
+A detailed English derivation is pending.
 -/
 private theorem setup_good_pz {x : Setup X} (h : x.Good) : (setup_pz (c := c) (a := a) b x).Good :=
   { rc := (by with_unfolding_all exact ((recip_good_pz (lt_pz c b) h.rc) :))
@@ -250,7 +250,7 @@ private theorem setup_good_pz {x : Setup X} (h : x.Good) : (setup_pz (c := c) (a
     classes := fun i j s t ht hA => (by with_unfolding_all exact ((classes_imp_pz (lt_pz c b) (h.classes ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (j :))) s (twist_pz (lt_pz c a) t) (twist_good_pz (lt_pz c a) ht)
       ⟨(by with_unfolding_all exact ((places_imp_pz (lt_pz c a) hA.1) :)), (by with_unfolding_all exact (hA.2 :))⟩)) :)) }
 /- English proof (translation)
-The claim follows from `{ split := (by with_unfolding_all exact (h.split :)) off := (by with_unfolding_all exact (h.off :)) fin := (by with_unfolding_all exact (h.fin :)) supp := (by with_unfolding_all exact (h.supp :)) mem := (by with_unfolding_all exact (h.mem :)) }`.
+A detailed English derivation is pending.
 -/
 private theorem isDatum_imp_pz {x : Setup X} {i j s Q g P} (h : x.IsDatum i j s Q g P) :
     (setup_pz (c := c) (a := a) b x).IsDatum ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (j :))) s ((by with_unfolding_all exact (Q :))) ((by with_unfolding_all exact (g :))) ((by with_unfolding_all exact (P :))) :=
@@ -260,7 +260,7 @@ private theorem isDatum_imp_pz {x : Setup X} {i j s Q g P} (h : x.IsDatum i j s 
     supp := (by with_unfolding_all exact (h.supp :))
     mem := (by with_unfolding_all exact (h.mem :)) }
 /- English proof (translation)
-The claim follows from `{ elt := (by with_unfolding_all exact (h.elt :)) reps := (by with_unfolding_all exact (h.reps :)) det := (by with_unfolding_all exact (h.det :)) }`.
+A detailed English derivation is pending.
 -/
 private theorem isHecke_imp_pz {x : Setup X} {i j s k P α R z} (h : x.IsHeckeDatum i j s k P α R z) :
     (setup_pz (c := c) (a := a) b x).IsHeckeDatum ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (j :))) s k ((by with_unfolding_all exact (P :))) ((by with_unfolding_all exact (α :))) ((by with_unfolding_all exact (R :))) ((by with_unfolding_all exact (z :))) :=
@@ -272,7 +272,7 @@ variable (a) in
 private def isDatumB_pz : type_of% (@Setup.IsDatum (lt_pz c b).D) := @fun N X ρ => (by with_unfolding_all exact ((@Setup.IsDatum (lt_pz c a).D ((N)) ((X)) (((setup_pz (c := c) (a := b) a ρ)))) : _))
 variable (a) in
 /- English proof (translation)
-Use function extensionality and compare the values at `N X ρ i j s Q g P`. Conclude with `propext ⟨fun h => (by with_unfolding_all exact ((isDatum_imp_pz (c := c) (a := b) a h) :)), fun h => (by with_unfolding_all exact ((isDatum_imp_pz (c := c) (a := a) b (x := setup_pz (c := c) (a := b) a ρ) (i := (i)) (j := (j)) (s := s) (Q := (Q)) (g := (g)) (P := (P)) ((h))) : _) …`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem isDatum_eq_pz : @Setup.IsDatum (lt_pz c b).D = @isDatumB_pz B C c a b := by
   funext N X ρ i j s Q g P
@@ -281,7 +281,7 @@ variable (a) in
 private def isHeckeB_pz : type_of% (@Setup.IsHeckeDatum (lt_pz c b).D) := @fun N X ρ => (by with_unfolding_all exact ((@Setup.IsHeckeDatum (lt_pz c a).D ((N)) ((X)) (((setup_pz (c := c) (a := b) a ρ)))) : _))
 variable (a) in
 /- English proof (translation)
-Use function extensionality and compare the values at `N X ρ i j s k P α R z`. Conclude with `propext ⟨fun h => (by with_unfolding_all exact ((isHecke_imp_pz (c := c) (a := b) a h) :)), fun h => (by with_unfolding_all exact ((isHecke_imp_pz (c := c) (a := a) b (x := setup_pz (c := c) (a := b) a ρ) (i := (i)) (j := (j)) (s := s) (k := k) (P := (P)) (α := (α)) (R := (R)) (z …`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem isHecke_eq_pz : @Setup.IsHeckeDatum (lt_pz c b).D = @isHeckeB_pz B C c a b := by
   funext N X ρ i j s k P α R z
@@ -309,7 +309,7 @@ private def cell_pz {hρ : ρ.Good} (x : CellTie hρ Y rd) :
     (mtLat_iff := (by with_unfolding_all exact (x.mtLat_iff :)))
     (thP_eq := by delta Setup.sum; rewrite [classSum_eq_pz (lt_pz c a) (lt_pz c b)]; exact (by with_unfolding_all exact (x.thP_eq :)))
 /- English proof (translation)
-Use `delta HeckeTie HeckeAt`. Use `rewrite [isHecke_eq_pz (c := c) a b]`. Conclude with `(by with_unfolding_all exact (h :))`.
+A detailed English derivation is pending.
 -/
 private theorem hecke_imp_pz (h : HeckeTie rd) :
     @HeckeTie (lt_pz c b).D ((N)) ((X)) (setup_pz (c := c) (a := a) b ρ) ((Y)) ((i)) ((j)) s ((rd)) := by
@@ -317,7 +317,7 @@ private theorem hecke_imp_pz (h : HeckeTie rd) :
   rewrite [isHecke_eq_pz (c := c) a b]
   exact (by with_unfolding_all exact (h :))
 /- English proof (translation)
-Use `delta SeriesTie.Rat RatBase RatTwist RatUniv Setup.theta Setup.gens Setup.xi`. Use `rewrite [isDatum_eq_pz (c := c) a b, theta_eq_pz (lt_pz c a) (lt_pz c b), genSet_eq_pz (lt_pz c a) (lt_pz c b), xiCoef_eq_pz (lt_pz c a) (lt_pz c b)]`. Conclude with `(by with_unfolding_all exact (h :))`.
+A detailed English derivation is pending.
 -/
 private theorem rat_imp_pz {hρ : ρ.Good} (h : SeriesTie.Rat hρ rd) :
     @SeriesTie.Rat (lt_pz c b).D ((N)) ((X)) (setup_pz (c := c) (a := a) b ρ) (setup_good_pz (c := c) (a := a) b hρ) ((Y)) ((i)) ((j)) s ((rd)) := by
@@ -335,7 +335,7 @@ variable {B : Base} {C : Cols B} {c : Late B C} {a : NStage B C c.W} (b : NStage
   {v₀ : ∀ (j : Fin (lt_pz c a).D.R.m) (σ : (lt_pz c a).D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec} {j : Fin (lt_pz c a).D.R.m}
   {X : ExportSeries.Base (Vc (lt_pz c a).D j) (Wc (lt_pz c a).D j)} {ν : ℂ}
 /- English proof (translation)
-Use `delta IsNorm IsScale`. Use `rewrite [famTie_eq (lt_pz c a) (lt_pz c b)]`. Use `kexactB h`.
+A detailed English derivation is pending.
 -/
 private theorem norm_to_pz (h : IsNorm Rl v₀ X ν) :
     @IsNorm (lt_pz c b).D Γ i1 i2 Pl0 I0 T (famInThreeCoefficientChange (a := lt_pz c a) (lt_pz c b) A3) Ks i3 i4 (alg (a := lt_pz c a) (lt_pz c b) iK)
@@ -344,7 +344,7 @@ private theorem norm_to_pz (h : IsNorm Rl v₀ X ν) :
   rewrite [famTie_eq (lt_pz c a) (lt_pz c b)]
   kexactB h
 /- English proof (translation)
-Use `delta IsNorm IsScale at h`. Use `rewrite [famTie_eq (lt_pz c a) (lt_pz c b)] at h`. Use `kexactB h`.
+A detailed English derivation is pending.
 -/
 private theorem norm_from_pz
     (h : @IsNorm (lt_pz c b).D Γ i1 i2 Pl0 I0 T (famInThreeCoefficientChange (a := lt_pz c a) (lt_pz c b) A3) Ks i3 i4 (alg (a := lt_pz c a) (lt_pz c b) iK)
@@ -361,12 +361,12 @@ private def nTh_pz : NStage B w.C x.o.Z.W := (by with_unfolding_all exact ((nTw 
 def thetaTwistSetup : Setup (w.st (oTw x (thTw (Dof x) th)).Z).toD7.ntw :=
   (by with_unfolding_all exact ((setup_pz (c := x.o.Z) (a := x.o.Z.N) (nTh_pz x th) l.b.ser.ex.ρ) :))
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((setup_good_pz (c := x.o.Z) (a := x.o.Z.N) (nTh_pz x th) l.b.ser.ex.good) :))`.
+A detailed English derivation is pending.
 -/
 theorem theta_twist_rho_good : (_root_.GlobalTheory.HeightCounting.Up.SerCp.thetaTwistSetup x l th).Good :=
   (by with_unfolding_all exact ((setup_good_pz (c := x.o.Z) (a := x.o.Z.N) (nTh_pz x th) l.b.ser.ex.good) :))
 /- English proof (translation)
-The claim follows from `have h := l.b.ser.ex.pin { psi := (by with_unfolding_all exact (h.psi :)) inf := (by with_unfolding_all exact (h.inf :)) cartT := (by with_unfolding_all exact (h.cartT :)) onbS := (by with_unfolding_all exact (h.onbS :)) onbT := (by with_unfolding_all exact (h.onbT :)) latS := (b …`.
+A detailed English derivation is pending.
 -/
 theorem real_pin_theta_twist_rho : RealPin (datTw x (thTw (Dof x) th)).R (datTw x (thTw (Dof x) th)).cG (_root_.GlobalTheory.HeightCounting.Up.SerCp.thetaTwistSetup x l th) :=
   have h := l.b.ser.ex.pin
@@ -389,7 +389,7 @@ theorem real_pin_theta_twist_rho : RealPin (datTw x (thTw (Dof x) th)).R (datTw 
     ap := (by with_unfolding_all exact (h.ap :))
     am := (by with_unfolding_all exact (h.am :)) }
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => (by with_unfolding_all exact ((norm_from_pz (c := x.o.Z) (a := x.o.Z.N) (nTh_pz x th) (iK := x.m.z.alg) (Rl := x.m.z.R) (v₀ := x.m.z.geo.v₀) (X := l.b.ser.ex.ρ.B ((i)) ((j)) s) (ν := ν) ((h))) : _)), fun h => (by with_unfolding_all exact ((norm_to_pz (c := x.o.Z) (a := …`.
+Supply the required witnesses or components.
 -/
 theorem is_norm_theta_twist_iff (i j s ν) : IsNorm (datTw x (thTw (Dof x) th)).R (datTw x (thTw (Dof x) th)).geo.v₀ ((_root_.GlobalTheory.HeightCounting.Up.SerCp.thetaTwistSetup x l th).B i j s) ν ↔
     IsNorm x.m.z.R x.m.z.geo.v₀ (l.b.ser.ex.ρ.B ((i)) ((j)) s) ν :=
@@ -397,7 +397,7 @@ theorem is_norm_theta_twist_iff (i j s ν) : IsNorm (datTw x (thTw (Dof x) th)).
       (X := l.b.ser.ex.ρ.B ((i)) ((j)) s) (ν := ν) ((h))) : _)),
     fun h => (by with_unfolding_all exact ((norm_to_pz (c := x.o.Z) (a := x.o.Z.N) (nTh_pz x th) (iK := x.m.z.alg) h) :))⟩
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => (by with_unfolding_all exact ((rat_imp_pz (c := x.o.Z) (a := nTh_pz x th) x.o.Z.N h) :)), fun h => (by with_unfolding_all exact ((rat_imp_pz (c := x.o.Z) (a := x.o.Z.N) (nTh_pz x th) h) :))⟩`.
+Supply the required witnesses or components.
 -/
 theorem series_rat_theta_twist_iff (i j s ν) :
     SeriesTie.Rat (_root_.GlobalTheory.HeightCounting.Up.SerCp.theta_twist_rho_good x l th) (realRd (_root_.GlobalTheory.HeightCounting.Up.ysTh_alt x l th) (datTw x (thTw (Dof x) th)).geo.v₀ (_root_.GlobalTheory.HeightCounting.Up.SerCp.theta_twist_rho_good x l th) i j s ν) ↔
@@ -405,7 +405,7 @@ theorem series_rat_theta_twist_iff (i j s ν) :
   ⟨fun h => (by with_unfolding_all exact ((rat_imp_pz (c := x.o.Z) (a := nTh_pz x th) x.o.Z.N h) :)),
     fun h => (by with_unfolding_all exact ((rat_imp_pz (c := x.o.Z) (a := x.o.Z.N) (nTh_pz x th) h) :))⟩
 /- English proof (translation)
-The claim follows from `have h := l.b.ser.ex.scalar ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (j :))) s ⟨h.ne, fun h' => (_root_.GlobalTheory.HeightCounting.Up.SerCp.is_norm_theta_twist_iff x l th i j s _).2 (h.norm (h'.imp fun ν => (_root_.GlobalTheory.HeightCounting.Up.SerCp. …`.
+A detailed English derivation is pending.
 -/
 theorem is_scalar_theta_twist_ys (i j s) : IsScalar (_root_.GlobalTheory.HeightCounting.Up.ysTh_alt x l th) (datTw x (thTw (Dof x) th)).geo.v₀ (_root_.GlobalTheory.HeightCounting.Up.SerCp.theta_twist_rho_good x l th) i j s
     (l.b.ser.ex.ν ((i)) ((j)) s) :=
@@ -423,7 +423,7 @@ def thetaTwistExportTie : ExportTie (_root_.GlobalTheory.HeightCounting.Up.ysTh_
   hecke := fun i j s => (by with_unfolding_all exact ((hecke_imp_pz (c := x.o.Z) (a := x.o.Z.N) (nTh_pz x th) (l.b.ser.ex.hecke ((i)) ((j)) s)) : _))
   univ := (by with_unfolding_all exact (l.b.ser.ex.univ :))
 /- English proof (translation)
-Take `⟨Z, h1, h2, h3, h4, h5⟩` from `lam_thTw th ⟨l.b.ser.lam, l.b.ser.lam_ok, l.b.ser.lam_teich, l.b.ser.lam_C, l.b.ser.lam_q, l.b.ser.lam_tie⟩`. Conclude with `⟨⟨_root_.GlobalTheory.HeightCounting.Up.SerCp.thetaTwistExportTie x l th, (by with_unfolding_all exact (l.b.ser.bad :)), (by with_unfolding_all exact (l.b.ser.ch :)), (by with_unfolding_all exact (l.b.ser.join :)), (by with_unfolding_all exact (l.b.ser.sup :)), (by with_unfolding …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem series_theta_twist_exists : Nonempty (SerAt (_root_.GlobalTheory.HeightCounting.Up.ysTh_alt x l th) (datTw x (thTw (Dof x) th)).geo.v₀ (_root_.GlobalTheory.HeightCounting.Up.exponentOfTheta x l th) (_root_.GlobalTheory.HeightCounting.Up.rowPsiOfTheta x l.toLI th)
     (TC.cf w.I w.l (oTw x (thTw (Dof x) th)).Z) l.Pq) := by
@@ -435,7 +435,7 @@ end L4
 end GlobalTheory.HeightCounting.Up.SerCp
 end
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ x l th` and use `_root_.GlobalTheory.HeightCounting.Up.SerCp.series_theta_twist_exists x l th`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.series_at_theta_twist_ys_exp : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} (x : St P) (l : _root_.GlobalTheory.HeightCounting.Up.SecondIntermediateLevel hL x) (th : NTh (Dof x).R (Dof x).host (Dof x).what₂ (Dof x).LL0 (Dof x).nd (Dof x).ntw (Dof x).nexp), Nonempty (SerAt (_root_.GlobalTheory.HeightCounting.Up.ysTh_alt x l th) (datTw x (thTw (Dof x) th)).geo.v₀ (_root_.GlobalTheory.HeightCounting.Up.exponentOfTheta x l th) (_root_.GlobalTheory.HeightCounting.Up.rowPsiOfTheta x l.toLI th) (TC.cf w.I w.l (oTw x (thTw (Dof x) th)).Z) l.Pq) :=
   fun _ _ _ _ _ _ _ x l th => _root_.GlobalTheory.HeightCounting.Up.SerCp.series_theta_twist_exists x l th

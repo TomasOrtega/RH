@@ -11,17 +11,15 @@ namespace GlobalTheory.CompanionTheory.HaarSplit
 open GroundTheory.Automorphic.Reduction in
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.CompanionTheory.SplitHomeo.exists_homeomorph E a ha`. Establish `hfun : (fun p : normOneGL E a × ℝ => splitCentre E a p.2 * (p.1 : GA E a)) = e`. Use function extensionality and compare the values at `p`. Conclude with `(he p.1 p.2).symm`. Rewrite using `[hfun]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set m : Measure (GA E a) := Measure.map e (ν.prod volume) with hm`. Establish `hemeas : Measurable e` using `e.continuous.measurable`. Establish `hinv : m.IsMulLeftInvariant`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Take `⟨⟨y, s⟩, rfl⟩` from `e.surjective g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcomp : (fun x => e (y, s) * x) ∘ e = e ∘ Prod.map (fun x => y * x) (fun t => s + t)`. Use function extensionality and compare the values at `p`. Take `⟨x, t⟩` from `p`. Simplify using `only [Function.comp, Prod.map, he]`. Rewrite using `[splitCentre_add, Subgroup.coe_mul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc (y : GA E a), ← splitCentre_comm, mul_assoc]`. Establish `hpres : MeasurePreserving (Prod.map (fun x : normOneGL E a => y * x) (fun t : ℝ => s + t)) (ν.prod volume) (ν.prod volume)` using `(measurePreserving_mul_left ν y).prod (measurePreserving_add_left volume s)`. Rewrite using `[hm, Measure.map_map (by fun_prop) hemeas, hcomp, ← Measure.map_map hemeas hpres.measurable, hpres.map_eq]`. Establish `hfin : IsFiniteMeasureOnCompacts m`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Measure.map e.toMeasurableEquiv (ν.prod volume) K < ⊤`. Rewrite using `[e.toMeasurableEquiv.map_apply]`. Conclude with `(e.isClosedEmbedding.isCompact_preimage hK).measure_lt_top`. Establish `hopen : m.IsOpenPosMeasure` using `e.continuous.isOpenPosMeasure_map e.surjective`. Establish `hhaar : m.IsHaarMeasure` using `{ }`.
-
-Establish `hc` using `Measure.haarScalarFactor_pos_of_isHaarMeasure m μ`. Use `⟨(Measure.haarScalarFactor m μ : NNReal), ENNReal.coe_ne_zero.2 hc.ne', ENNReal.coe_ne_top, ?_⟩` and prove the remaining obligations. Conclude with `Measure.isMulLeftInvariant_eq_smul m μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_prod_eq_smul (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ha : 0 < a)
     (μ : Measure (GA E a)) [μ.IsHaarMeasure] (ν : Measure (normOneGL E a)) [ν.IsHaarMeasure] :

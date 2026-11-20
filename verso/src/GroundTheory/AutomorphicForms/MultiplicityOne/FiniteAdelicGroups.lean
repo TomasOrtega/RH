@@ -24,9 +24,7 @@ def localChar (v : HeightOneSpectrum (𝓞 K)) : AddChar (v.adicCompletion K) �
   map_add_eq_mul' x y := by simp [AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[GLnLocal.mem_integralGL_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[sigma_apply]`. Conclude with `hg.1 _ _`. Rewrite using `[← sigma_inv, sigma_apply]`.
-
-Conclude with `hg.2 _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigma_mem_integralGL {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {n : ℕ} {g : GL (Fin n) F} (hg : g ∈ GLnLocal.integralGL F n) :
@@ -42,7 +40,7 @@ abbrev FinRes : Type _ := Πʳ v : HeightOneSpectrum (𝓞 K),
   [GL (Fin n) (v.adicCompletion K), GLnLocal.integralGL (v.adicCompletion K) n]
 
 /- English proof (translation)
-The claim follows from `Eventually.of_forall fun _ _ hg => sigma_mem_integralGL hg`.
+A detailed English derivation is pending.
 -/
 theorem sigma_mapsTo_integralGL : ∀ᶠ v in cofinite, MapsTo
     (sigma : GL (Fin n) ((id v : HeightOneSpectrum (𝓞 K)).adicCompletion K) → _)
@@ -57,7 +55,7 @@ def sigmaResFun : FinRes K n → FinRes K n :=
     (sigma_mapsTo_integralGL K n)
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.mapAlong_continuous _ _ id tendsto_id _ (sigma_mapsTo_integralGL K n) fun _ => continuous_sigma`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sigmaResFun : Continuous (sigmaResFun K n) :=
   RestrictedProduct.mapAlong_continuous _ _ id tendsto_id _ (sigma_mapsTo_integralGL K n)

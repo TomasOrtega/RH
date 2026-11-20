@@ -20,11 +20,11 @@ namespace PositivityTheory.Rg.Rsw.L.LLatBound
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨U, hUo, hU⟩` from `exists_intOpen V`. Take `⟨S, -, hS⟩` from `GlobalTheory.Size.exists_finset_doubleCosets V U hUo`. Use `choose C hC hb using fun x₀ : GA D V => gen_bound_col hθ V n x₀⁻¹ f g hg`. Use `⟨∑ x₀ ∈ S, C x₀, ENNReal.sum_lt_top.2 fun x _ => hC x, fun h => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, x₀, hx₀, a, ha, k, hk, hkf, rfl⟩` from `hS h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (γ * x₀ * a * k)⁻¹ = (k⁻¹ * a⁻¹ * x₀⁻¹) * γ⁻¹` using `by group`. Establish `e2 : ∀ X : Mx D V.rank n, mm (mt V (γ * x₀ * a * k)⁻¹) X = mm (mt V (k⁻¹ * a⁻¹ * x₀⁻¹)) (mm (mt V γ⁻¹) X)`. Introduce `X`. Rewrite using `[e, mtL_mul]`. Conclude with `Matrix.mul_assoc _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[e2]`. Rewrite using `[tsum_GQ V n γ⁻¹ (inv_mem hγ) (fun X => ‖f (fun τ i j => compAt θ τ (mm (mt V (k⁻¹ * a⁻¹ * x₀⁻¹)) X) i j) * g (fun i j => finPart D ((mm (mt V (k⁻¹ * a⁻¹ * x₀⁻¹)) X) i j))‖ₑ)]`. Use `(hb x₀ a⁻¹ (inv_mem ha) k⁻¹ (inv_mem hkf) ?_).trans (Finset.single_le_sum (f := C) (fun _ _ => zero_le) hx₀)` and prove the remaining obligations. Simplify using `using hU k hk`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gen_all {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (n : ℕ)
     (f : SchwartzMap (D.what₂.Tau → Fin V.rank → Fin n → ℂ) ℂ)
@@ -56,13 +56,13 @@ end PositivityTheory.Rg.Rsw.L.LLatBound
 namespace PositivityTheory.Rg.Rsw.L
 
 /- English proof (translation)
-Introduce `D θ hθ V n M hM`. It suffices to establish `h : ∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ h : GA D V, ∑' x : {x : Matrix (Fin V.rank) (Fin n) D.host.E // x.rank = V.rank}, ‖M (mm (mt V h⁻¹) (rat x.1))‖ₑ ≤ C by`. Take `⟨C, hC, h⟩` from `h`. Conclude with `⟨C.toNNReal, fun g => (h g).trans (by rw [ENNReal.coe_toNNReal hC.ne])⟩`. Proceed by induction on `hM using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Proceed by induction.
 
-Consider the case `mem Φ hΦ`. Take `⟨f, g, hg, rfl⟩` from `hΦ`. Conclude with `LLatBound.gen_all hθ V n f g hg`. Consider the case `zero => exact ⟨0, by simp, fun _ => by simp⟩`. Consider the case `add f g _ _ hf hg`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨C₁, h₁, hf⟩` from `hf`. Take `⟨C₂, h₂, hg⟩` from `hg`. Use `⟨C₁ + C₂, ENNReal.add_lt_top.2 ⟨h₁, h₂⟩, fun h => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Consider the case `smul c f _ hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨C₁, h₁, hf⟩` from `hf`. Use `⟨‖c‖ₑ * C₁, ENNReal.mul_lt_top enorm_lt_top h₁, fun h => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem latBound : LatBound := by
   intro D θ hθ V n M hM

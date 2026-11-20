@@ -31,17 +31,17 @@ Both sides reduce to the same expression.
 theorem coordsL_apply (A : Mat n) : coordsL n A = coords A := rfl
 
 /- English proof (translation)
-The claim follows from `isOpen_compl_singleton.preimage (continuous_id.matrix_det)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_GLs : IsOpen (GLs n) :=
   isOpen_compl_singleton.preimage (continuous_id.matrix_det)
 
 /- English proof (translation)
-Establish `hb0 : b.det ≠ 0` using `hb'`. Establish `hd : IsUnit b.det` using `Ne.isUnit hb0`. Establish `hkk : (b⁻¹ * a) * (b⁻¹ * a)ᴴ = 1`. Establish `e1 : b⁻¹ * a * (b⁻¹ * a)ᴴ = b⁻¹ * (a * aᴴ) * b⁻¹ᴴ`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : b⁻¹ * (b * bᴴ) * b⁻¹ᴴ = (b⁻¹ * b) * (b⁻¹ * b)ᴴ`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[e1, h, e2, Matrix.nonsing_inv_mul b hd, conjTranspose_one, Matrix.one_mul]`. Establish `hmem : b⁻¹ * a ∈ Matrix.unitaryGroup (Fin n) ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hkk`. Establish `key` using `hFk b hb' ⟨_, hmem⟩`. Simplify using `only at key`. Rewrite `key` using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv b hd, Matrix.one_mul]`. Conclude with `key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_mul_conj {Z : Type} {F : Mat n → Z}
     (hFk : ∀ x ∈ GLs n, ∀ k : Matrix.unitaryGroup (Fin n) ℂ, F (x * k.1) = F x)
@@ -63,9 +63,9 @@ theorem eq_of_mul_conj {Z : Type} {F : Mat n → Z}
   exact key
 
 /- English proof (translation)
-Simplify using `only [GLs, Set.mem_setOf_eq]`. Introduce `hdet`. Establish `hp : PosDef (hOf v)` using `hv`. Establish `hu` using `(Matrix.isUnit_iff_isUnit_det _).mp hp.isUnit`. Rewrite `hu` using `[← hσ2 v hv, det_mul, hdet, zero_mul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `not_isUnit_zero hu`.
+A detailed English derivation is pending.
 -/
 theorem cone_mem_GLs {σ : (Fin n × Fin n → ℝ) → Mat n} (hσ2 : ∀ v ∈ cone n, σ v * (σ v)ᴴ = hOf v) {v}
     (hv : v ∈ cone n) : σ v ∈ GLs n := by
@@ -77,17 +77,15 @@ theorem cone_mem_GLs {σ : (Fin n × Fin n → ℝ) → Mat n} (hσ2 : ∀ v ∈
   exact not_isUnit_zero hu
 
 /- English proof (translation)
-Introduce `n Z _ _ σ F hσ hσ2 hF hFk v hv x hx hxv X hX`. Rewrite using `[show ((2 : ℂ) • (x * X * xᴴ)) = (2 : ℕ) • (x * X * xᴴ) by rw [two_smul, two_nsmul]]`. Take `⟨-, -, hcoords, hcoords', -, -, -, -⟩` from `hHb n`. Establish `hopen : IsOpen (cone n)` using `(GlobalTheory.T.positive_cone_structure n).1`. Establish `hexp : ∀ t : ℝ, (x + t • (x * X)) * (x + t • (x * X))ᴴ = x * xᴴ + t • ((2 : ℕ) • (x * X * xᴴ)) + t ^ 2 • ((x * X) * (x * X)ᴴ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t`. Simplify using `only [conjTranspose_add, conjTranspose_smul, star_trivial, conjTranspose_mul, hX.eq, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`. Use `module`. Establish `hw : ∀ t : ℝ, coords ((x + t • (x * X)) * (x + t • (x * X))ᴴ) = v + t • coords ((2 : ℕ) • (x * X * xᴴ)) + t ^ 2 • coords ((x * X) * (x * X)ᴴ)`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hexp t, ← coordsL_apply, map_add, map_add, map_smul (coordsL n) t, map_smul (coordsL n) (t ^ 2), coordsL_apply, coordsL_apply, coordsL_apply, hxv, hcoords']`. Establish `hhOf : ∀ t : ℝ, hOf (v + t • coords ((2 : ℕ) • (x * X * xᴴ)) + t ^ 2 • coords ((x * X) * (x * X)ᴴ)) = (x + t • (x * X)) * (x + t • (x * X))ᴴ`. Introduce `t`. Rewrite using `[← hw t]`. Conclude with `hcoords _ (isHermitian_mul_conjTranspose_self _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwd : HasDerivAt (fun t : ℝ => v + t • coords ((2 : ℕ) • (x * X * xᴴ)) + t ^ 2 • coords ((x * X) * (x * X)ᴴ)) (coords ((2 : ℕ) • (x * X * xᴴ))) 0`. Establish `h1` using `((hasDerivAt_id (0:ℝ)).smul_const (coords ((2 : ℕ) • (x * X * xᴴ)))).const_add v`. Establish `h2` using `(hasDerivAt_pow 2 (0:ℝ)).smul_const (coords ((x * X) * (x * X)ᴴ))`. Conclude with `(h1.add h2).congr_deriv (by simp)`. Establish `hγd : HasDerivAt (fun t : ℝ => x + t • (x * X)) (x * X) 0` using `(((hasDerivAt_id (0:ℝ)).smul_const (x * X)).const_add x).congr_deriv (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFx : HasFDerivAt F (fderiv ℝ F x) x` using `((hF.differentiableOn (by simp)).differentiableAt (isOpen_GLs.mem_nhds hx)).hasFDerivAt`. Establish `hmaps : Set.MapsTo σ (cone n) (GLs n)` using `fun w hw' => cone_mem_GLs hσ2 hw'`. Establish `hFσ : HasFDerivAt (fun w => F (σ w)) (fderiv ℝ (fun w => F (σ w)) v) v` using `(((hF.comp hσ hmaps).differentiableOn (by simp)).differentiableAt (hopen.mem_nhds hv)).hasFDerivAt`. Establish `d1 : HasDerivAt (fun t : ℝ => F (x + t • (x * X))) (fderiv ℝ F x (x * X)) 0` using `hFx.comp_hasDerivAt_of_eq 0 hγd (by simp)`. Establish `d2 : HasDerivAt (fun t : ℝ => F (σ (v + t • coords ((2 : ℕ) • (x * X * xᴴ)) + t ^ 2 • coords ((x * X) * (x * X)ᴴ)))) (fderiv ℝ (fun w => F (σ w)) v (coords ((2 : ℕ) • (x * X * xᴴ)))) 0` using `hFσ.comp_hasDerivAt_of_eq 0 hwd (by simp)`.
-
-Establish `hev : (fun t : ℝ => F (x + t • (x * X))) =ᶠ[nhds 0] (fun t : ℝ => F (σ (v + t • coords ((2 : ℕ) • (x * X * xᴴ)) + t ^ 2 • coords ((x * X) * (x * X)ᴴ))))`. Establish `hin : ∀ᶠ t in nhds (0:ℝ), v + t • coords ((2 : ℕ) • (x * X * xᴴ)) + t ^ 2 • coords ((x * X) * (x * X)ᴴ) ∈ cone n` using `hwd.continuousAt.preimage_mem_nhds (by simpa using hopen.mem_nhds hv)`. Use `filter_upwards [hin] with t ht`. Conclude with `eq_of_mul_conj hFk (cone_mem_GLs hσ2 ht) (by rw [hσ2 _ ht, hhOf t])`. Conclude with `(d2.congr_of_eventuallyEq hev).unique d1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frameDer_of (hHb : HbFacts) : FrameDer := by
   intro n Z _ _ σ F hσ hσ2 hF hFk v hv x hx hxv X hX

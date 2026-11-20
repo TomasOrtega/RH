@@ -30,19 +30,19 @@ def lineHerm (n : (L →+* ℂ) → ℝ) (hn : ∀ s, 0 < n s) : HermFam L L whe
     simp
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha, ha0⟩ : ∃ a ∈ 𝔠, a ≠ 0 := by`. Simplify `h𝔠` using `[FractionalIdeal.eq_zero_iff]`. Establish `hf : IsFrame L (𝔠 : Submodule (𝓞 L) L) (fun _ : Fin 1 => a)` using `⟨fun _ => ha, linearIndependent_unique_iff.mpr ha0, fun x _ => by`. Rewrite using `[Set.range_const, SetLike.mem_coe, Submodule.mem_span_singleton]`. Conclude with `⟨x / a, div_mul_cancel₀ x ha0⟩⟩`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `𝔟` to `FractionalIdeal.spanSingleton (𝓞 L)⁰ a⁻¹ * 𝔠`. Establish `hm : ∀ x, x ∈ 𝔟 ↔ a * x ∈ 𝔠` using `fun x => by`. Rewrite using `[FractionalIdeal.mem_singleton_mul]`. Conclude with `⟨fun ⟨y, hy, e⟩ => by rwa [e, mul_inv_cancel_left₀ ha0], fun h => ⟨_, h, by field_simp⟩⟩`. Establish `h1` using `ReciprocityTheory.MultiplicativeHeights.SemiDegIdx.absNorm_mul_relIndex_one (𝔟 : Submodule (𝓞 L) L) (FractionalIdeal.fg_of_isNoetherianRing le_rfl 𝔟) (Submodule.one_le.2 ((hm 1).2 (by simpa using ha)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e1 : (1 : Submodule (𝓞 L) L).toAddSubgroup.map (AddMonoidHom.mulLeft a) = (Submodule.span (𝓞 L) (Set.range fun _ : Fin 1 => a)).toAddSubgroup`. Use extensionality with `x`. Simplify using `[Submodule.mem_span_singleton, Algebra.smul_def, mul_comm]`. Establish `e2 : (𝔟 : Submodule (𝓞 L) L).toAddSubgroup.map (AddMonoidHom.mulLeft a) = (𝔠 : Submodule (𝓞 L) L).toAddSubgroup`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `⟨?_, fun h => ⟨a⁻¹ * x, (hm _).2 (by rwa [mul_inv_cancel_left₀ ha0]), mul_inv_cancel_left₀ ha0 x⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(hm y).1 hy`. Rewrite `h1` using `[← AddSubgroup.relIndex_map_map_of_injective (f := AddMonoidHom.mulLeft a) _ _ (mul_right_injective₀ ha0), e1, e2]`. Express the relevant statement in the definitionally equal form `FractionalIdeal.absNorm 𝔟 * _ = 1 at h1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_mul, FractionalIdeal.absNorm_span_singleton, Algebra.norm_inv, abs_inv]`. Establish `hN : Algebra.norm ℚ a ≠ 0` using `Algebra.norm_ne_zero_iff.2 ha0`. Establish `hc : FractionalIdeal.absNorm 𝔠 ≠ 0` using `(map_ne_zero _).2 h𝔠`. Establish `h2` using `(eq_inv_of_mul_eq_one_right h1)`. Establish `h3` using `congrArg (fun q : ℚ => Real.log (q : ℝ)) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Rat.cast_natCast, mul_inv, inv_inv, Rat.cast_mul, Rat.cast_inv, Rat.cast_abs] at h3`. Rewrite `h3` using `[Real.log_mul (by simpa using hN) (by simpa using hc), Real.log_inv]`. Establish `h4 : ∀ s, Real.log ((lineHerm n hn).gram s fun _ : Fin 1 => a).det.re = Real.log (n s) + Real.log (Complex.normSq (s a))` using `fun s => by`. Rewrite using `[← Real.log_mul (hn s).ne' (by simpa using ha0), Matrix.det_fin_one]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[HermFam.gram, lineHerm, Complex.normSq_apply]`. Rewrite using `[arakelovDegree_eq_degreeOfFamily _ (FractionalIdeal.fg_of_isNoetherianRing le_rfl 𝔠) hf, degreeOfFamily, h3, meanLog]`. Simplify using `only [h4, Finset.sum_add_distrib, ds_sum_log_normSq_embeddings a ha0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deg_lineHerm (n : (L →+* ℂ) → ℝ) (hn : ∀ s, 0 < n s) {𝔠 : FractionalIdeal (𝓞 L)⁰ L} (h𝔠 : 𝔠 ≠ 0) :
     deg (lineHerm n hn) (𝔠 : Submodule (𝓞 L) L) =
@@ -95,9 +95,9 @@ section Norm
 variable {E L : Type} [Field E] [NumberField E] [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `key : ∀ I : Ideal (𝓞 E), FractionalIdeal.absNorm (FractionalIdeal.extendedHom L (𝓞 L) (I : FractionalIdeal (𝓞 E)⁰ E)) = FractionalIdeal.absNorm (I : FractionalIdeal (𝓞 E)⁰ E) ^ finrank E L` using `fun I => by`. Rewrite using `[FractionalIdeal.extendedHom_coeIdeal_eq_map, FractionalIdeal.coeIdeal_absNorm, FractionalIdeal.coeIdeal_absNorm, Ideal.absNorm_algebraMap, ← IsFractionRing.finrank_eq (𝓞 E) E (𝓞 L) L, Nat.cast_pow]`. Establish `h` using `𝔞.den_mul_self_eq_num'`. Rewrite `h` using `[← FractionalIdeal.coeIdeal_span_singleton]`. Establish `h0 : FractionalIdeal.absNorm ((Ideal.span {(𝔞.den : 𝓞 E)} : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h1` using `key 𝔞.num`. Rewrite `h1` using `[← h, map_mul, map_mul, map_mul, key, mul_pow]`. Conclude with `mul_left_cancel₀ (pow_ne_zero _ h0) h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_extendedHom [Algebra E L] (𝔞 : FractionalIdeal (𝓞 E)⁰ E) :
     FractionalIdeal.absNorm (FractionalIdeal.extendedHom L (𝓞 L) 𝔞) = FractionalIdeal.absNorm 𝔞 ^ finrank E L := by
@@ -116,7 +116,7 @@ theorem absNorm_extendedHom [Algebra E L] (𝔞 : FractionalIdeal (𝓞 E)⁰ E)
   exact mul_left_cancel₀ (pow_ne_zero _ h0) h1
 
 /- English proof (translation)
-Set `_` to `τ.toAlgebra`. Use `⟨FractionalIdeal.extendedHom L (𝓞 L) 𝔞, by rwa [Ne, FractionalIdeal.extendedHom_eq_zero_iff], FractionalIdeal.coe_extendedHom_eq_span L (𝓞 L) 𝔞, ?_⟩` and prove the remaining obligations. Establish `h1 : (0 : ℝ) < finrank E L` using `by exact_mod_cast finrank_pos`. Establish `h2 : (0 : ℝ) < finrank ℚ E` using `by exact_mod_cast finrank_pos`. Rewrite using `[absNorm_extendedHom, Rat.cast_pow, Real.log_pow, ← finrank_mul_finrank ℚ E L, Nat.cast_mul]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -132,9 +132,9 @@ theorem exists_fractionalIdeal_eq_span_image (τ : E →+* L) {𝔞 : Fractional
   field_simp
 
 /- English proof (translation)
-Set `_` to `j.toAlgebra`. Establish `h1 : (0 : ℝ) < finrank E L` using `by exact_mod_cast finrank_pos`. Establish `h2 : (0 : ℝ) < finrank ℚ E` using `by exact_mod_cast finrank_pos`. Establish `h` using `ReciprocityTheory.ChartRestriction.G.FreeQuotientRank.sum_embeddings_restrict (K₁ := L) fun s => Real.log (n s)`. Rewrite using `[meanLog, meanLog, ← finrank_mul_finrank ℚ E L, Nat.cast_mul, div_eq_iff (by positivity)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h.trans ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem meanLog_comp (j : E →+* L) (n : (E →+* ℂ) → ℝ) : meanLog L (fun s => n (s.comp j)) = meanLog E n := by
   let _ := j.toAlgebra
@@ -146,9 +146,9 @@ theorem meanLog_comp (j : E →+* L) (n : (E →+* ℂ) → ℝ) : meanLog L (fu
   field_simp
 
 /- English proof (translation)
-Take `⟨𝔠, -, h1, h2⟩` from `exists_fractionalIdeal_eq_span_image ((IsCMField.complexConj E : E ≃ₐ[maximalRealSubfield E] E) : E →+* E) h𝔞`. Establish `h3 : (0 : ℝ) < finrank ℚ E` using `by exact_mod_cast finrank_pos`. Establish `e : ((IsCMField.complexConj E : E ≃ₐ[maximalRealSubfield E] E) : E →+* E) '' 𝔞 = ((conjFrac 𝔞 : Submodule (𝓞 E) E) : Set E)`. Use extensionality with `x`. Use `⟨?_, fun h => ⟨_, mem_conjFrac.1 h, IsCMField.complexConj_apply_apply E x⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `cc_mem_conjFrac.2 hy`. Rewrite `h1` using `[e, Submodule.span_eq, FractionalIdeal.coeToSubmodule_inj]`. Rewrite `h2` using `[h1, div_left_inj' h3.ne']`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem log_absNorm_conjFrac [IsCMField E] {𝔞 : FractionalIdeal (𝓞 E)⁰ E} (h𝔞 : 𝔞 ≠ 0) :
     Real.log (FractionalIdeal.absNorm (conjFrac 𝔞)) = Real.log (FractionalIdeal.absNorm 𝔞) := by
@@ -165,9 +165,9 @@ theorem log_absNorm_conjFrac [IsCMField E] {𝔞 : FractionalIdeal (𝓞 E)⁰ E
   rwa [h1, div_left_inj' h3.ne'] at h2
 
 /- English proof (translation)
-Establish `h1 : (0 : ℝ) < finrank E L` using `by exact_mod_cast finrank_pos`. Establish `h2 : (0 : ℝ) < finrank ℚ E` using `by exact_mod_cast finrank_pos`. Establish `h` using `natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow E (𝓞 E) L (𝓞 L)`. Establish `h3 : Ideal.absNorm (differentIdeal (𝓞 E) (𝓞 L)) ≠ 0` using `fun h0 => by`. Simplify using `[h0, discr_ne_zero] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4` using `congrArg (fun m : ℕ => Real.log (m : ℝ)) h`. Establish `p : ∀ m : ℤ, m ≠ 0 → (0 : ℝ) < (|m| : ℤ)` using `fun m hm => by exact_mod_cast abs_pos.2 hm`. Simplify using `only [Nat.cast_mul, Nat.cast_pow, Nat.cast_natAbs] at h4`. Rewrite `h4` using `[Real.log_mul (by exact_mod_cast h3) (pow_ne_zero _ (p _ (discr_ne_zero E)).ne'), Real.log_pow]`. Rewrite using `[rootDiscr_def, rootDiscr_def, Real.log_rpow (p _ (discr_ne_zero L)), Real.log_rpow (p _ (discr_ne_zero E)), h4, ← finrank_mul_finrank ℚ E L, Nat.cast_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -194,11 +194,11 @@ variable {K E M L : Type} [Field K] [NumberField K] [Field E] [NumberField E] [I
   [Field M] [NumberField M] [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `h0 : (differentIdeal (𝓞 K) (𝓞 E) : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 differentIdeal_ne_bot`. Establish `h1 : 𝔄 ≠ 0` using `left_ne_zero_of_mul (h𝔄 ▸ inv_ne_zero h0)`. Establish `nz : ∀ {𝔞 : FractionalIdeal (𝓞 E)⁰ E}, 𝔞 ≠ 0 → (FractionalIdeal.absNorm 𝔞 : ℝ) ≠ 0` using `fun h => by`. Simplify using `using h`. Take `⟨𝔠, h𝔠, e, h2⟩` from `exists_fractionalIdeal_eq_span_image τ (mul_ne_zero h1 h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `congrArg (fun 𝔞 => Real.log (FractionalIdeal.absNorm 𝔞 : ℚ)) h𝔄`. Simplify using `only [map_mul, map_inv₀, Rat.cast_mul, Rat.cast_inv, Real.log_inv] at h3`. Rewrite `h3` using `[Real.log_mul (nz h1) (nz (conjFrac_ne_zero h1)), log_absNorm_conjFrac h1]`. Rewrite `h2` using `[map_mul, Rat.cast_mul, Real.log_mul (nz h1) (nz h0)]`. Rewrite using `[← e, deg_lineHerm _ _ h𝔠, meanLog_comp, neg_div, h2, log_rootDiscr_tower (E := K) (L := E)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3`, the goal using `[FractionalIdeal.coeIdeal_absNorm, Rat.cast_natCast]`. Take the linear combination `-h3 / (finrank ℚ E : ℝ)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem two_mul_deg_lineHerm_different {𝔄 : FractionalIdeal (𝓞 E)⁰ E}
     (h𝔄 : 𝔄 * conjFrac 𝔄 = (differentIdeal (𝓞 K) (𝓞 E) : FractionalIdeal (𝓞 E)⁰ E)⁻¹)
@@ -232,18 +232,18 @@ variable {d : ℕ} [NeZero d] {K : Type} [Field K] [NumberField K]
 
 omit [NeZero d] in
 /- English proof (translation)
-Rewrite using `[rootDiscr_def, h2, hD, Real.sqrt_eq_rpow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rootDiscr_eq_sqrt (h2 : finrank ℚ K = 2) (hD : discr K = -d) : rootDiscr K = √d := by
   rw [rootDiscr_def, h2, hD, Real.sqrt_eq_rpow]
   simp
 
 /- English proof (translation)
-Take `⟨σ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Use `choose τ hτ using exists_isIdealClassPoint h2 hD σ`. Establish `h1` using `chowla_selberg_eta h2 hD hd hχ σ hτ`. Establish `h3` using `h σ τ hτ`. Rewrite `h3` using `[Finset.sum_neg_distrib, neg_div, ← neg_eq_iff_eq_neg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← h3]`. Use `⟨h1, fun E _ _ _ _ 𝔄 h𝔄 L _ _ j τ => ?_⟩` and prove the remaining obligations. Establish `h4 : (0 : ℝ) < √d` using `Real.sqrt_pos.2 (by exact_mod_cast (by omega : 0 < d))`. Establish `h5 : 0 < rootDiscr E` using `Real.rpow_pos_of_pos (by exact_mod_cast abs_pos.2 (discr_ne_zero E)) _`. Rewrite using `[two_mul_deg_lineHerm_different h𝔄 n hn, Complex.ofReal_sub, Complex.ofReal_add, meanLog, h1, rootDiscr_eq_sqrt h2 hD, Real.log_div (by positivity) h4.ne', Real.log_div (by positivity) h5.ne']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chowla_selberg_of_mean_log (h2 : finrank ℚ K = 2) (hD : discr K = -d) (hd : 4 < d)
     {χ : DirichletCharacter ℂ d} (hχ : IsKroneckerChar χ) {M : Type} [Field M] [NumberField M]
@@ -275,7 +275,7 @@ theorem chowla_selberg_of_mean_log (h2 : finrank ℚ K = 2) (hD : discr K = -d) 
   ring
 
 /- English proof (translation)
-Take `⟨M, _, w, P, v, hw, hg, hv, hW, hΛ, hn, hm⟩` from `hC d h7 hs h4 K h2 hr`. Take `⟨r, hr⟩` from `hr`. Use `choose n hn0 hn using hn`. Conclude with `⟨M, inferInstance, w, P, v, hw, hg, hv, hW, hΛ, n, hn0, hn, chowla_selberg_of_mean_log h2 (discr_eq_neg_of_sq_eq h2 hs h4 hr) (by omega) hχ n hn0 (hm n fun s => (hn s _).2 rfl)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chowla_selberg_lie_lines (hC : CMCurve) (h7 : 7 ≤ d) (hs : Squarefree d) (h4 : d % 4 = 3)
     (h2 : finrank ℚ K = 2) (hr : ∃ r : K, r ^ 2 = -(d : K)) {χ : DirichletCharacter ℂ d} (hχ : IsKroneckerChar χ) :

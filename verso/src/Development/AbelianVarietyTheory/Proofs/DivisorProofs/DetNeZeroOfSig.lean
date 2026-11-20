@@ -24,11 +24,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E 
 open Classical in
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (InfinitePlace F), ∃ q : GAd σ J, (∀ v, proj σ J v q = 1) ∧ ∀ w, projArch σ J w q = if w ∈ s then x w else 1`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, fun v => map_one _, fun w => by simp⟩`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨q, h1, h2⟩` from `ih`. Use `⟨embArch σ J a (x a) * q, fun v => by simp [h1 v], fun u => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : u = a`. Substitute `e` using the available equality. Simplify using `[h2 u, ha]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, projArch_embArch_ne σ J e, one_mul, h2 u]`. Simplify using `[Finset.mem_insert, e]`. Take `⟨q, h1, h2⟩` from `key Finset.univ`. Conclude with `⟨q, h1, fun w => by rw [h2 w, if_pos (Finset.mem_univ w)]⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_arch_comp (x : ∀ w : InfinitePlace F, GArch σ J w) :
     ∃ q : GAd σ J, (∀ v, proj σ J v q = 1) ∧ ∀ w, projArch σ J w q = x w := by
@@ -49,9 +49,9 @@ theorem exists_arch_comp (x : ∀ w : InfinitePlace F, GArch σ J w) :
 open Classical in
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, fun w => map_one _, fun v => by simp⟩`. Consider the case `insert a s ha ih`. Take `⟨q, h1, h2⟩` from `ih`. Use `⟨emb σ J a (x a) * q, fun w => by simp [h1 w], fun u => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `e : u = a`. Substitute `e` using the available equality. Simplify using `[h2 u, ha]`. Rewrite using `[map_mul, proj_emb_ne σ J e, one_mul, h2 u]`. Simplify using `[Finset.mem_insert, e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_fin_comp (x : ∀ v : HeightOneSpectrum (𝓞 F), GLoc σ J v) (S : Finset (HeightOneSpectrum (𝓞 F))) :
     ∃ q : GAd σ J, (∀ w, projArch σ J w q = 1) ∧ ∀ v, proj σ J v q = if v ∈ S then x v else 1 := by
@@ -69,7 +69,7 @@ end Glue
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [cT, form, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, dotProduct, Matrix.mulVec, AlgHom.coe_toRingHom, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cT_col_eq_form {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b : Fin n → E) :
     cT (σ : E →+* E) (Matrix.of fun i (_ : Fin 1) => a i) * Jᵀ * (Matrix.of fun i (_ : Fin 1) => b i) =
@@ -81,11 +81,11 @@ theorem cT_col_eq_form {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b : Fin n →
   ring
 
 /- English proof (translation)
-Take `⟨rfl, A, hA⟩` from `h`. Introduce `h0`. Set `A' : Matrix (Fin (r + s)) (Fin (r + s)) ℂ` to `A.submatrix id finSumFinEquiv.symm`. Establish `h1 : A'ᵀ * M * A'.map star = (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Rewrite using `[← hA]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[A', Matrix.mul_apply]`. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul, h0, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_neg, Matrix.det_one]`. Simplify using `at h2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `absurd h2.symm (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_sig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨rfl, A, hA⟩ := h
@@ -101,9 +101,9 @@ theorem det_ne_zero_of_sig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : H
   exact absurd h2.symm (by simp)
 
 /- English proof (translation)
-Use `⟨fun i j => by simpa [Matrix.transpose_apply] using hX.herm j i, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_transpose]`. Introduce `h0`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Apply `det_ne_zero_of_sig (hX.sig w)` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e` using `RingHom.map_det ((B.emb w).1) X.J`. Rewrite `e` using `[h0, map_zero]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHermND_transpose {B : Base F E} {n r s : ℕ} {X : Spc F E n} (hX : X.IsHerm σ B r s) :
     IsHermND σ X.Jᵀ := by
@@ -126,35 +126,29 @@ open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.EisLine
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `haveI : X.L.IsLattice E := hX.lat`. Establish `hσ : IsCMExt F E σ` using `hB.cm`. Establish `hs : ∀ z : E, σ (σ z) = z` using `fun z => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [hσ.2.2.2, hσ.2.2.2, star_star])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hND : IsHermND σ X.Jᵀ` using `isHermND_transpose hX`. Use `set xc : Matrix (Fin n) (Fin 1) E := Matrix.of fun i _ => H.x i with hxc`. Use `set yc : Matrix (Fin n) (Fin 1) E := Matrix.of fun i _ => H.y i with hyc`. Establish `hfyx : form σ X.J H.y H.x = 1`. Establish `e : form σ X.J H.y H.x = σ (form σ X.J H.x H.y)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hs, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← hX.herm k l, hs]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[e, hH.xy, map_one]`. Establish `hxx : cT (σ : E →+* E) xc * X.Jᵀ * xc = 0`. Rewrite using `[cT_col_eq_form]`. Use extensionality with `i j`. Simplify using `[hH.xx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hyy : cT (σ : E →+* E) yc * X.Jᵀ * yc = 0`. Rewrite using `[cT_col_eq_form]`. Use extensionality with `i j`. Simplify using `[hH.yy]`. Establish `hxy : cT (σ : E →+* E) xc * X.Jᵀ * yc = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[cT_col_eq_form]`. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i j]`. Simplify using `[hfyx]`. Establish `hyx : cT (σ : E →+* E) yc * X.Jᵀ * xc = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[cT_col_eq_form]`. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i j]`. Simplify using `[hH.xy]`. Establish `hSD` using `GlobalTheory.T.hermitian_lattice_self_dual_everywhere F E σ B n X r s hB hX`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `loc : ∀ v (y : GLoc σ X.Jᵀ v), ∃ q k : GLoc σ X.Jᵀ v, k ∈ stabLoc σ X.Jᵀ X.L v ∧ y = q * k ∧ ∃ β : GL (Fin 1) (Fv F v ⊗[F] E), (matHom _ σ X.Jᵀ q).1 * xc.map (inclR (F` using `F) (Fv F v)) = xc.map (inclR (F := F) (Fv F v)) * β.1 := fun v y => if hv : Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v then GlobalTheory.T.hyperbolic_pair_lattice_local_split F E σ hσ n X.Jᵀ hND xc yc hxx hyy hxy hyx X.L hX.lat v hv (hSD v) y else GlobalTheory.T.is …`. Take `⟨a, ha, haK⟩` from `GlobalTheory.T.majorant_frame_commutes_cartan F E σ B n X r s hB hX`. Use `set g' := (ofGAd σ X.J).symm g with hg'`. Use `choose qa ka hka hga βa hβa using fun w => GlobalTheory.T.archimedean_iwasawa_majorant_frame F E σ hσ n X.Jᵀ hND xc yc hxx hyx a ha w (projArch σ X.Jᵀ w g')`. Use `choose qf kf hkf hgf βf hβf using fun v => loc v (proj σ X.Jᵀ v g')`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `set S := (Filter.eventually_cofinite.1 (eventually_proj_mem_stabLoc σ X.Jᵀ X.L g')).toFinset with hS`. Take `⟨pa, hpa1, hpa2⟩` from `exists_arch_comp σ X.Jᵀ qa`. Take `⟨pf, hpf1, hpf2⟩` from `exists_fin_comp σ X.Jᵀ qf S`. Use `set p := pa * pf with hp`. Establish `pA : ∀ w, projArch σ X.Jᵀ w p = qa w` using `fun w => by rw [hp, map_mul, hpa2 w, hpf1 w, mul_one]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `pF : ∀ v, proj σ X.Jᵀ v p = if v ∈ S then qf v else 1` using `fun v => by rw [hp, map_mul, hpa1 v, hpf2 v, one_mul]`. Take `⟨l, hl⟩` from `GlobalTheory.T.parabolic_archimedean_eigenvector F E σ n X.Jᵀ xc (cT (σ : E →+* E) yc * X.Jᵀ) hyx p (fun w => ⟨βa w, by rw [pA w]; exact hβa w⟩) (fun v => by`. Rewrite using `[pF v]`. Use `split_ifs`. Conclude with `⟨βf v, hβf v⟩`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨1, by simp⟩)`. Use `⟨ofGAd σ X.J p, ⟨l, ?_⟩, ofGAd σ X.J (p⁻¹ * g'), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mat_ofGAd]`. Use function extensionality and compare the values at `i`. Use `congrFun (congrFun hl i) 0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[adMat, xc, incV, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Use `GlobalTheory.T.majorant_stabilizer_iwasawa_line F E σ B n X hX.lat _ (fun w => ?_) (fun v => ?_)` and prove the remaining obligations. Establish `e : projArch σ X.Jᵀ w (p⁻¹ * g') = ka w`. Rewrite using `[map_mul, map_inv, pA w, hga w, inv_mul_cancel_left]`. Rewrite using `[e]`.
-
-Conclude with `haK w (ka w) (hka w)`. Establish `e1 : proj σ X.Jᵀ v (p⁻¹ * g') = (if v ∈ S then qf v else 1)⁻¹ * proj σ X.Jᵀ v g'`. Rewrite using `[map_mul, map_inv, pF v]`. Rewrite using `[e1]`. Use `split_ifs with hv`.
-
-Rewrite using `[hgf v, inv_mul_cancel_left]`. Conclude with `hkf v`. Rewrite using `[inv_one, one_mul]`. Assume the negation of the conclusion as `hc`. Conclude with `hv ((Set.Finite.mem_toFinset _).2 hc)`.
-
-Rewrite using `[← map_mul, mul_inv_cancel_left, hg', MulEquiv.apply_symm_apply]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawa (B : Base F E) {n n₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {r s : ℕ} {H : Plane E n n₁} {i₀ i₁ : ℕ}
     (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hH : H.IsAdapted σ B X X₁ i₀ i₁) (g : UA σ X.J) :

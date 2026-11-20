@@ -9,7 +9,7 @@ open scoped Pointwise
 namespace GlobalTheory.CompanionTheory.EigTorus
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Ygb8.main`.
+A detailed English derivation is pending.
 -/
 theorem exists_common_eigenvector : ∀ (d : ℕ) (E : Type) [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E]
     {I : Type} (T : I → Module.End ℂ E), (∀ a b, Commute (T a) (T b)) → Module.finrank ℂ E = d → 0 < d →
@@ -17,11 +17,11 @@ theorem exists_common_eigenvector : ∀ (d : ℕ) (E : Type) [AddCommGroup E] [M
   _root_.UpperTheory.Reformulated.B.Ygb8.main
 
 /- English proof (translation)
-Establish `key : ∀ a : GL (Fin n) L, IsDiagM a → (a : Matrix (Fin n) (Fin n) L) = Matrix.diagonal (fun i => (a : Matrix (Fin n) (Fin n) L) i i)`. Introduce `a ha`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply_ne _ hij, ha i j hij]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul]`. Rewrite using `[key g hg, key h hh, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i`. Conclude with `mul_comm _ _`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem diag_commute {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} {g h : GL (Fin n) L}
     (hg : IsDiagM g) (hh : IsDiagM h) : g * h = h * g := by
@@ -40,11 +40,11 @@ theorem diag_commute {L : Type} [Field L] [Valued L (WithZero (Multiplicative �
   exact mul_comm _ _
 
 /- English proof (translation)
-Establish `hc : ∀ i, (a : Matrix (Fin n) (Fin n) L).mulVec x i = (a : Matrix (Fin n) (Fin n) L) i i * x i`. Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single i]`. Introduce `j _ hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ha i j (Ne.symm hj), zero_mul]`. Simplify using the standard rewrite rules. Establish `hvv : ∀ i, Valued.v ((a : Matrix (Fin n) (Fin n) L).mulVec x i) = Valued.v (x i)`. Introduce `i`. Rewrite using `[hc, map_mul, hv, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [latK, Set.mem_setOf_eq, hvv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_latK_iff {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} (a : GL (Fin n) L)
     (ha : IsDiagM a) (hv : ∀ i, Valued.v ((a : Matrix (Fin n) (Fin n) L) i i) = 1) (k : ℕ) (x : Fin n → L) :
@@ -62,13 +62,11 @@ theorem mem_latK_iff {L : Type} [Field L] [Valued L (WithZero (Multiplicative �
   simp only [latK, Set.mem_setOf_eq, hvv]
 
 /- English proof (translation)
-Unfold `IwGL`. Rewrite using `[Subgroup.mem_iInf]`. Introduce `k`. Rewrite using `[Subgroup.mem_comap, MulAction.mem_stabilizer_iff]`. Use extensionality with `x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Set.mem_smul_set]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(mem_latK_iff a ha hv k y).2 hy`. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).mulVec x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mem_latK_iff a ha hv k, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel]`. Simplify using `using hx`. Use `show (a : Matrix (Fin n) (Fin n) L).mulVec (((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).mulVec x) = x`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_iwGL_of_diag {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} (a : GL (Fin n) L)
     (ha : IsDiagM a) (hv : ∀ i, Valued.v ((a : Matrix (Fin n) (Fin n) L) i i) = 1) : a ∈ IwGL L n := by
@@ -90,15 +88,15 @@ theorem mem_iwGL_of_diag {L : Type} [Field L] [Valued L (WithZero (Multiplicativ
       simp
 
 /- English proof (translation)
-Use `Subgroup.mem_subgroupOf.2 (mem_iwGL_of_diag _ hd fun i => ?_)` and prove the remaining obligations. Take `⟨-, r, hr⟩` from `Subgroup.mem_subgroupOf.1 hk`. Establish `hint : ∀ (s : GL (Fin n) (intL L)) (i j : Fin n), Valued.v (((Formalism.UG.bc (n` using `Fin n) (intL L).subtype s : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j) ≤ 1 := by`. Introduce `s i j`. Conclude with `((s : Matrix (Fin n) (Fin n) (intL L)) i j).2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hint r i i`. Establish `h2` using `hint r⁻¹ i i`. Rewrite `h2` using `[map_inv, hr]`. Rewrite `h1` using `[hr]`. Establish `hmul : ((k : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i * ((((k : GL (Fin n) L))⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun M : Matrix (Fin n) (Fin n) L => M i i) (Units.mul_inv (k : GL (Fin n) L))`. Simplify using `only [Matrix.mul_apply, Matrix.one_apply_eq] at h`. Rewrite `h` using `[Finset.sum_eq_single i]`. Simplify using `using h`. Introduce `j _ hj`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd i j (Ne.symm hj), zero_mul]`. Simplify using the standard rewrite rules. Establish `hm` using `congrArg Valued.v hmul`. Rewrite `hm` using `[map_mul, map_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `: Valued.v (((k : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i) * Valued.v (((((k : GL (Fin n) L))⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i) < 1` using `mul_lt_one_of_lt_of_le hlt h2`. Conclude with `absurd hm (ne_of_lt this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_iwU_of_diag {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {n : ℕ}
     (k : GU σ n) (hk : k ∈ KU σ n) (hd : IsDiagM (k : GL (Fin n) L)) : k ∈ IwU σ n := by
@@ -132,35 +130,31 @@ theorem mem_iwU_of_diag {L : Type} [Field L] [Valued L (WithZero (Multiplicative
   exact absurd hm (ne_of_lt this)
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n V _ _ ρ hu hadm y hy hfix`. Take `⟨D, hJ, hN, hNm, hT⟩` from `hIw L ϖ σ q hu n`. Take `⟨-, -, hIK, t₀, ht₀d, ht₀s⟩` from `hKU L ϖ σ q n hu`. Establish `hstr : D.IsStrDom ⟨t₀, (hT _).2 ht₀d⟩` using `(hDom L ϖ σ q hu n D hJ hN hNm hT ⟨t₀, (hT _).2 ht₀d⟩).2 ht₀s`. Take `⟨-, honto⟩` from `hA4 (GU σ n) D V ρ hadm ⟨_, hstr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hker : twKer ρ D.N 1 = jacU ρ` using `twKer_eq_jacSub D _ hN ρ`. Establish `hpi : ∀ (t : D.T) (v : V), D.piN ρ t (D.proj ρ v) = D.proj ρ (ρ (t : GU σ n) v)` using `fun _ _ => rfl`. Establish `hproj0 : ∀ v : V, D.proj ρ v = 0 ↔ v ∈ jacU ρ`. Introduce `v`. Rewrite using `[← hker]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.Quotient.mk_eq_zero _`. Establish `hprojeq : ∀ v v' : V, D.proj ρ v = D.proj ρ v' ↔ v - v' ∈ jacU ρ`. Introduce `v v'`. Rewrite using `[← hker]`. Conclude with `Submodule.Quotient.eq _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hfd : FiniteDimensional ℂ (fixed ρ D.J)` using `hadm.2 D.J D.isOpen_J D.isCompact_J`. Set `S : Submodule ℂ (Jacquet ρ D.N)` to `fixed (D.piN ρ) D.JT`. Set `p : fixed ρ D.J →ₗ[ℂ] Jacquet ρ D.N` to `(twKer ρ D.N 1).mkQ ∘ₗ (fixed ρ D.J).subtype`. Establish `hSle : S ≤ LinearMap.range p`. Introduce `w hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨v, hv⟩` from `honto w hw`. Conclude with `⟨v, hv⟩`. Establish `hSfd : FiniteDimensional ℂ S` using `Submodule.finiteDimensional_of_le hSle`. Establish `hmemS : ∀ w : Jacquet ρ D.N, w ∈ S ↔ ∀ s : D.JT, D.piN ρ (s : D.T) w = w`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun h s => by simpa using h s, fun h s => by simpa using h s⟩` and prove the remaining obligations. Establish `hw₀ : D.proj ρ y ∈ S`. Use `(hmemS _).2 fun s => ?_` and prove the remaining obligations. Rewrite using `[hpi, hprojeq]`. Establish `hsJ : ((s : D.T) : GU σ n) ∈ D.J` using `s.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hfix _ (hIK (hJ ▸ hsJ)) ((hT _).1 (s : D.T).2)`. Establish `hw₀0 : D.proj ρ y ≠ 0` using `fun h => hy ((hproj0 y).1 h)`. Establish `hcomm : ∀ a b : D.T, a * b = b * a`. Introduce `a b`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `diag_commute ((hT _).1 a.2) ((hT _).1 b.2)`. Establish `hst : ∀ t : D.T, ∀ w ∈ S, D.piN ρ t w ∈ S`. Introduce `t w hw`. Use `(hmemS _).2 fun s => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, hcomm, map_mul, Module.End.mul_apply, (hmemS w).1 hw s]`. Establish `hpos : 0 < Module.finrank ℂ S`. Establish `: Nontrivial S` using `⟨⟨⟨_, hw₀⟩, 0, fun h => hw₀0 (congrArg Subtype.val h)⟩⟩`. Conclude with `Module.finrank_pos`. Take `⟨w, hw0, c, hc⟩` from `exists_common_eigenvector _ S (fun t : D.T => (D.piN ρ t).restrict (hst t)) (fun a b => by`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use extensionality with `x`. Establish `h : D.piN ρ a (D.piN ρ b x) = D.piN ρ b (D.piN ρ a x)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hcomm, map_mul, Module.End.mul_apply]`. Simplify `h) rfl hpos` using `[Module.End.mul_apply, LinearMap.restrict_apply]`. Establish `hc' : ∀ t : D.T, D.piN ρ t (w : Jacquet ρ D.N) = c t • (w : Jacquet ρ D.N)` using `fun t => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `congrArg Subtype.val (hc t)` using `[LinearMap.restrict_apply]`. Establish `hwne : (w : Jacquet ρ D.N) ≠ 0` using `fun h => hw0 (Subtype.ext h)`. Take `⟨y', hy'⟩ : ∃ y' : V, D.proj ρ y' = (w : Jacquet ρ D.N)` from `Submodule.Quotient.mk_surjective _ _`. Use `⟨y', fun g => if h : g ∈ D.T then c ⟨g, h⟩ else 1, fun h => hwne (hy' ▸ (hproj0 y').2 h), ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `htT : t ∈ D.T` using `(hT t).2 ht`. Use `beta_reduce`. Rewrite using `[dif_pos htT, ← hproj0]`. Establish `h1` using `hc' ⟨t, htT⟩`. Rewrite `h1` using `[← hy', hpi]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show D.proj ρ (ρ t y' - c ⟨t, htT⟩ • y') = 0`. Establish `hsub : D.proj ρ (ρ t y' - c ⟨t, htT⟩ • y') = D.proj ρ (ρ t y') - c ⟨t, htT⟩ • D.proj ρ y'` using `rfl`. Rewrite using `[hsub, h1, sub_self]`. Introduce `k hk hkd`. Establish `hkT : k ∈ D.T` using `(hT k).2 hkd`.
-
-Use `beta_reduce`. Rewrite using `[dif_pos hkT]`. Establish `hkJ : k ∈ D.J` using `hJ ▸ mem_iwU_of_diag k hk hkd`. Establish `h1` using `hc' ⟨k, hkT⟩`. Establish `h2` using `(hmemS _).1 w.2 ⟨⟨k, hkT⟩, hkJ⟩`.
-
-Establish `h3 : c ⟨k, hkT⟩ • (w : Jacquet ρ D.N) = (1 : ℂ) • (w : Jacquet ρ D.N)`. Rewrite using `[← h1, one_smul]`. Conclude with `h2`. Conclude with `smul_left_injective ℂ hwne h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigU_of (hIw : IwahoriU) (hDom : DomU) (hKU : KUFacts)
     (hA4 : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G], A4 G) :

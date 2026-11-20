@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 namespace GlobalTheory.CompanionTheory.WedgeOf.Shuffle
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite I`. Use `haveI := Fintype.ofFinite J`. Set `e : (∀ j, ∀ i, A i ⊗[R] B j) ≃ₗ[R] ∀ x : I × J, A x.1 ⊗[R] B x.2` to `{ toFun := fun g x ↦ g x.2 x.1 invFun := fun h j i ↦ h (i, j) map_add' := fun _ _ ↦ rfl map_smul' := fun _ _ ↦ rfl left_inv := fun _ ↦ rfl right_inv := fun _ ↦ rfl }`. Use `⟨(TensorProduct.piRight R R (∀ i, A i) B) ≪≫ₗ (LinearEquiv.piCongrRight fun j ↦ (TensorProduct.comm R _ _) ≪≫ₗ (TensorProduct.piRight R R (B j) A) ≪≫ₗ (LinearEquiv.piCongrRight fun i ↦ TensorProduct.comm R _ _)) ≪≫ₗ e, fun f g x ↦ ?_⟩` and prove the remaining obligations. Simplify using `[e]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_tensorPi (R : Type) [CommRing R] (I J : Type) [Finite I] [Finite J] (A : I → Type) (B : J → Type)
     [∀ i, AddCommGroup (A i)] [∀ i, Module R (A i)] [∀ j, AddCommGroup (B j)] [∀ j, Module R (B j)] :
@@ -37,7 +37,7 @@ variable {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgC
 abbrev Ar (C : Type) [Category.{0} C] : Type := Σ T : C, Σ T' : C, (T ⟶ T')
 
 /- English proof (translation)
-Use `haveI : ∀ T T' : C, Finite (T ⟶ T') := fun _ _ ↦ Finite.of_subsingleton`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem finite_ar [Finite C] [Quiver.IsThin C] : Finite (Ar C) := by
   haveI : ∀ T T' : C, Finite (T ⟶ T') := fun _ _ ↦ Finite.of_subsingleton
@@ -65,7 +65,7 @@ def shuffle : C2 (box F) →ₗ[R] E F where
     simp only [Pi.smul_apply, RingHom.id_apply, smul_sub]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => rfl`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mp_box {a a' b b' : C} (φ : a ⟶ a') (ψ : b ⟶ b') (t : F.obj a ⊗[R] F.obj b) :
     (mp (box F) (T := (a, b)) (T' := (a', b')) (φ, ψ)) t =
@@ -76,7 +76,7 @@ theorem mp_box {a a' b b' : C} (φ : a ⟶ a') (ψ : b ⟶ b') (t : F.obj a ⊗[
   | add u v hu hv => simp only [map_add, hu, hv]
 
 /- English proof (translation)
-Take `⟨⟨a, a', φ⟩, ⟨b, b', ψ⟩⟩` from `x`. Express the relevant statement in the definitionally equal form `(mp (box F) (T := (a', b)) (T' := (a', b')) (𝟙 a', ψ)) (f.1 a a' φ ⊗ₜ 1) * (1 ⊗ₜ h.1 b b' ψ) - (mp (box F) (T := (a, b')) (T' := (a', b')) (φ, 𝟙 b')) (f.1 a a (𝟙 a) ⊗ₜ 1) * (1 ⊗ₜ h.1 b' b' (𝟙 b')) = _`. Rewrite using `[Z1.id f a, mp_box]`. Simplify using `[mp_id]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem shuffle_cup (f h : Z1 F) (x : Ar C × Ar C) :
     shuffle F (cupZ (box F) ((boxL F).pullbackOneCocycle f) ((boxR F).pullbackOneCocycle h)).1 x =
@@ -95,7 +95,7 @@ theorem shuffle_mk (z : C2 (box F)) {a a' b b' : C} (φ : a ⟶ a') (ψ : b ⟶ 
       z (a, b) (a', b) (a', b') (φ, 𝟙 b) (𝟙 a', ψ) - z (a, b) (a, b') (a', b') (𝟙 a, ψ) (φ, 𝟙 b') := rfl
 
 /- English proof (translation)
-Establish `e : CategoryStruct.comp (X` using `((a, b) : C × C)) (Y := (a', b)) (Z := (a', b')) (φ, 𝟙 b) (𝟙 a', ψ) = CategoryStruct.comp (X := ((a, b) : C × C)) (Y := (a, b')) (Z := (a', b')) (𝟙 a, ψ) (φ, 𝟙 b') := by`. Simplify using the standard rewrite rules. Establish `i1 : (mp F (𝟙 a')).toLinearMap = LinearMap.id` using `by ext u; exact mp_id F a' u`. Establish `i2 : (mp F (𝟙 b')).toLinearMap = LinearMap.id` using `by ext u; exact mp_id F b' u`. Rewrite using `[shuffle_mk, d1_apply, d1_apply, e, mp_box, mp_box, i1, i2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -113,7 +113,7 @@ theorem shuffle_coboundary_one (w : C1 (box F)) {a a' b b' : C} (φ : a ⟶ a') 
   abel
 
 /- English proof (translation)
-Use `haveI := finite_ar (C := C)`. Take `⟨Φ, h⟩` from `exists_tensorPi R (Ar C) (Ar C) (fun x ↦ F.obj x.2.1) (fun x ↦ F.obj x.2.1)`. Conclude with `⟨TensorProduct.congr (oneCochainsPiArrowsEquiv F) (oneCochainsPiArrowsEquiv F) ≪≫ₗ Φ, fun f g x ↦ h _ _ x⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_one_one_cochain_tensor_equiv [Finite C] [Quiver.IsThin C] :
     ∃ Φ : C1 F ⊗[R] C1 F ≃ₗ[R] E F, ∀ f g x, Φ (f ⊗ₜ g) x = f _ _ x.1.2.2 ⊗ₜ g _ _ x.2.2.2 := by
@@ -122,7 +122,7 @@ theorem exists_one_one_cochain_tensor_equiv [Finite C] [Quiver.IsThin C] :
   exact ⟨TensorProduct.congr (oneCochainsPiArrowsEquiv F) (oneCochainsPiArrowsEquiv F) ≪≫ₗ Φ, fun f g x ↦ h _ _ x⟩
 
 /- English proof (translation)
-Use `haveI := finite_ar (C := C)`. Take `⟨Φ, h⟩` from `exists_tensorPi R (Ar C) C (fun x ↦ F.obj x.2.1) (fun x ↦ F.obj x)`. Conclude with `⟨TensorProduct.congr (oneCochainsPiArrowsEquiv F) (LinearEquiv.refl R _) ≪≫ₗ Φ, fun f g x ↦ h _ _ x⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_one_zero_cochain_tensor_equiv [Finite C] [Quiver.IsThin C] :
     ∃ Φ : C1 F ⊗[R] C0 F ≃ₗ[R] ∀ x : Ar C × C, F.obj x.1.2.1 ⊗[R] F.obj x.2,
@@ -132,7 +132,7 @@ theorem exists_one_zero_cochain_tensor_equiv [Finite C] [Quiver.IsThin C] :
   exact ⟨TensorProduct.congr (oneCochainsPiArrowsEquiv F) (LinearEquiv.refl R _) ≪≫ₗ Φ, fun f g x ↦ h _ _ x⟩
 
 /- English proof (translation)
-Use `haveI := finite_ar (C := C)`. Take `⟨Φ, h⟩` from `exists_tensorPi R C (Ar C) (fun x ↦ F.obj x) (fun x ↦ F.obj x.2.1)`. Conclude with `⟨TensorProduct.congr (LinearEquiv.refl R _) (oneCochainsPiArrowsEquiv F) ≪≫ₗ Φ, fun f g x ↦ h _ _ x⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_zero_one_cochain_tensor_equiv [Finite C] [Quiver.IsThin C] :
     ∃ Φ : C0 F ⊗[R] C1 F ≃ₗ[R] ∀ x : C × Ar C, F.obj x.1 ⊗[R] F.obj x.2.2.1,
@@ -144,9 +144,9 @@ theorem exists_zero_one_cochain_tensor_equiv [Finite C] [Quiver.IsThin C] :
 variable {F}
 
 /- English proof (translation)
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f g`. Simplify using `only [TensorProduct.map_tmul, LinearMap.id_apply, hΦ, hΦ₁, amitsur_d0_apply, TensorProduct.tmul_sub]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Consider the case `add u v hu hv`. Simplify using `only [map_add, Pi.add_apply, hu, hv]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem phi_right (Φ : C1 F ⊗[R] C1 F ≃ₗ[R] E F)
     (hΦ : ∀ f g x, Φ (f ⊗ₜ g) x = f _ _ x.1.2.2 ⊗ₜ g _ _ x.2.2.2)
@@ -164,9 +164,9 @@ theorem phi_right (Φ : C1 F ⊗[R] C1 F ≃ₗ[R] E F)
     abel
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f g`. Simplify using `only [TensorProduct.map_tmul, LinearMap.id_apply, hΦ, hΦ₂, amitsur_d0_apply, TensorProduct.sub_tmul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Consider the case `add u v hu hv`. Simplify using `only [map_add, Pi.add_apply, hu, hv]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem phi_left (Φ : C1 F ⊗[R] C1 F ≃ₗ[R] E F)
     (hΦ : ∀ f g x, Φ (f ⊗ₜ g) x = f _ _ x.1.2.2 ⊗ₜ g _ _ x.2.2.2)
@@ -195,7 +195,7 @@ theorem crossZ_tmul (f h : Z1 F) :
     crossZ F (f ⊗ₜ h) = cupZ (box F) ((boxL F).pullbackOneCocycle f) ((boxR F).pullbackOneCocycle h) := rfl
 
 /- English proof (translation)
-Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f h => rfl`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mk_crossZ (s : Z1 F ⊗[R] Z1 F) :
     H2.mk (box F) (crossZ F s) = TensorProduct.lift (crossB F) (TensorProduct.map (H1.mk F) (H1.mk F) s) := by
@@ -205,9 +205,9 @@ theorem mk_crossZ (s : Z1 F ⊗[R] Z1 F) :
   | add u v hu hv => simp only [map_add, hu, hv]
 
 /- English proof (translation)
-Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f h`. Use function extensionality and compare the values at `x`. Rewrite using `[crossZ_tmul, shuffle_cup, TensorProduct.map_tmul, hΦ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `add u v hu hv`. Simplify using `only [map_add, Submodule.coe_add, hu, hv]`.
+Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem shuffle_crossZ (Φ : C1 F ⊗[R] C1 F ≃ₗ[R] E F)
     (hΦ : ∀ f g x, Φ (f ⊗ₜ g) x = f _ _ x.1.2.2 ⊗ₜ g _ _ x.2.2.2) (s : Z1 F ⊗[R] Z1 F) :
@@ -222,9 +222,9 @@ theorem shuffle_crossZ (Φ : C1 F ⊗[R] C1 F ≃ₗ[R] E F)
     simp only [map_add, Submodule.coe_add, hu, hv]
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `exists_one_one_cochain_tensor_equiv F`. Take `⟨Φ₁, hΦ₁⟩` from `exists_one_zero_cochain_tensor_equiv F`. Take `⟨Φ₂, hΦ₂⟩` from `exists_zero_one_cochain_tensor_equiv F`. Use `⟨Φ₁.symm fun x ↦ w (x.1.1, x.2) (x.1.2.1, x.2) (x.1.2.2, 𝟙 _), Φ₂.symm fun x ↦ w (x.1, x.2.1) (x.1, x.2.2.1) (𝟙 _, x.2.2.2), Φ.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← shuffle_crossZ F Φ hΦ, ← hw]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `⟨⟨a, a', φ⟩, ⟨b, b', ψ⟩⟩`. Rewrite using `[shuffle_coboundary_one, map_sub, Pi.sub_apply, phi_right Φ hΦ Φ₁ hΦ₁, phi_left Φ hΦ Φ₂ hΦ₂]`. Simplify using `only [LinearEquiv.apply_symm_apply]`. Normalize the expressions using the abelian group laws.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem exists_boundary [Finite C] [Quiver.IsThin C] (s : Z1 F ⊗[R] Z1 F) (w : C1 (box F))
     (hw : d1 (box F) w = (crossZ F s).1) :
@@ -242,15 +242,15 @@ theorem exists_boundary [Finite C] [Quiver.IsThin C] (s : Z1 F ⊗[R] Z1 F) (w :
   abel
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `TensorProduct.map_surjective (H1.mk_surjective F) (H1.mk_surjective F) t`. Rewrite `ht` using `[← mk_crossZ]`. Take `⟨w, hw⟩` from `H2.mk_eq_zero.1 ht`. Take `⟨u, v, huv⟩` from `exists_boundary F s w hw`. Set `q` to `(LinearMap.range (d0 F)).mkQ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hq : ∀ g, q (d0 F g) = 0` using `fun g ↦ (Submodule.Quotient.mk_eq_zero _).2 ⟨g, rfl⟩`. Establish `h1 : ∀ s : Z1 F ⊗[R] Z1 F, TensorProduct.map (iotaQ F) (iotaQ F) (TensorProduct.map (H1.mk F) (H1.mk F) s) = TensorProduct.map q q (TensorProduct.map (Z1 F).subtype (Z1 F).subtype s)` using `fun s ↦ by`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f h => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `h2 : ∀ v : C0 F ⊗[R] C1 F, TensorProduct.map q q (TensorProduct.map (d0 F) LinearMap.id v) = 0` using `fun v ↦ by`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f h => simp [hq]`.
+Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_zero]`. Establish `h3 : ∀ u : C1 F ⊗[R] C0 F, TensorProduct.map q q (TensorProduct.map LinearMap.id (d0 F) u) = 0` using `fun u ↦ by`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f h => simp [hq]`.
+Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_zero]`. Rewrite using `[h1, huv, map_sub, h2, h3, sub_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_iotaQ_eq_zero (R : Type) [CommRing R] (C : Type) [Category.{0} C] [Finite C] [Quiver.IsThin C]
     (F : C ⥤ CommAlgCat.{0} R) (t : H1 F ⊗[R] H1 F) (ht : TensorProduct.lift (crossB F) t = 0) :

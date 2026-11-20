@@ -9,11 +9,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LocSplitFinite
 
 /- English proof (translation)
-Establish `hx : ((l : 𝓞 F)) ≠ 0` using `Nat.cast_ne_zero.2 hl`. Establish `hI : Ideal.span {((l : 𝓞 F))} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hx`. Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Simplify using `only [Set.mem_setOf_eq] at hp ⊢`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Unfold `Formalism.MainNotions.S.Loc.resChar at hp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp]`. Conclude with `ringChar.Nat.cast_ringChar`.
+A detailed English derivation is pending.
 -/
 theorem finite_resChar_eq (F : Type) [Field F] [NumberField F] (l : ℕ) (hl : l ≠ 0) :
     {p : IsDedekindDomain.HeightOneSpectrum (𝓞 F) | Formalism.MainNotions.S.Loc.resChar p = l}.Finite := by
@@ -30,15 +30,15 @@ theorem finite_resChar_eq (F : Type) [Field F] [NumberField F] (l : ℕ) (hl : l
   exact ringChar.Nat.cast_ringChar
 
 /- English proof (translation)
-Introduce `D Z`. Establish `h0` using `finite_resChar_eq D.host.F (D.host.g 0) (D.host.g_prime 0).ne_zero`. Establish `h1` using `finite_resChar_eq D.host.F (D.host.g 1) (D.host.g_prime 1).ne_zero`. Use `(h0.union h1).subset ?_` and prove the remaining obligations. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_setOf_eq] at hp`. Establish `hs : (D.s.atP p).split.isSome`. Establish `ha` using `(Z.agree p).2.2.2.2.2`. Use `revert ha`. Consider the cases of `h : (Z.M p).split with`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `none => exact absurd h hp`. Consider the case `some g`. Consider the cases of `h' : (D.s.atP p).split with`. Consider the case `none => intro ha`. Conclude with `ha.elim`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `some sg => intro _`. Both sides reduce to the same expression. Establish `hm` using `(D.s_split p).1 hs`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hm`. Break down `hm with hm | hm` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inl hm`. Conclude with `Or.inr hm`.
+A detailed English derivation is pending.
 -/
 theorem split_finite : ∀ (D : D7) (Z : LocDat D), {p : PlF D | (Z.M p).split ≠ none}.Finite := by
   intro D Z

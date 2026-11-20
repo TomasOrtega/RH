@@ -11,13 +11,13 @@ namespace GlobalTheory.CompanionTheory.HalfModCompact
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hopen : ∀ y : kˣ, IsOpen {x : k | valuation k x ≤ valuation k (y : k)}`. Introduce `y`. Establish `hy : valuation k (y : k) ≠ 0` using `by simp`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IsValuativeTopology.mem_nhds_iff]`. Use `⟨Units.mk0 (valuation k (y : k)) hy, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Simplify using `only [Set.mem_ofPred_eq] at hz hx ⊢`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Take `⟨t, ht⟩` from `hC.elim_finite_subcover (fun y : kˣ => {x : k | valuation k x ≤ valuation k (y : k)}) hopen (by`. Introduce `x _`. Rewrite using `[Set.mem_iUnion]`. Distinguish the cases in `hx : x = 0`. Conclude with `⟨1, by simp [hx]⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mk0 x hx, by simp⟩)`. Take `⟨y, -, hy⟩` from `Finset.exists_max_image (insert 1 t) (fun y : kˣ => valuation k (y : k)) (Finset.insert_nonempty _ _)`. Use `⟨nabs k y, fun u hu => nabs_le_of_valuation_le ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hzu⟩` from `Set.mem_iUnion₂.1 (ht hu)`. Conclude with `le_trans hzu (hy z (Finset.mem_insert_of_mem hz))`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_nabs_le_of_isCompact {C : Set k} (hC : IsCompact C) :
     ∃ B : ℝ, ∀ u : kˣ, (u : k) ∈ C → nabs k u ≤ B := by
@@ -47,25 +47,25 @@ theorem exists_nabs_le_of_isCompact {C : Set k} (hC : IsCompact C) :
   exact le_trans hzu (hy z (Finset.mem_insert_of_mem hz))
 
 /- English proof (translation)
-Unfold `nabs`. Rewrite using `[map_pow, NNReal.coe_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nabs_pow_eq (y : kˣ) (n : ℕ) : nabs k (y ^ n) = nabs k y ^ n := by
   unfold nabs
   rw [map_pow, NNReal.coe_pow]
 
 /- English proof (translation)
-Unfold `nabs`. Rewrite using `[map_inv, NNReal.coe_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nabs_inv_eq (y : kˣ) : nabs k y⁻¹ = (nabs k y)⁻¹ := by
   unfold nabs
   rw [map_inv, NNReal.coe_inv]
 
 /- English proof (translation)
-Establish `hpos : 0 < nabs k y` using `(nabs_properties k).2.1 y`. Break down `lt_trichotomy (nabs k y) 1 with hlt | heq | hgt` into its components or cases. It suffices to derive a contradiction. Establish `hinv : 1 < (nabs k y)⁻¹` using `(one_lt_inv₀ hpos).2 hlt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt B hinv`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `h₂ n`. Rewrite `h3` using `[nabs_pow_eq, nabs_inv_eq]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `heq`. It suffices to derive a contradiction.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt B hgt`. Establish `h3` using `h₁ n`. Rewrite `h3` using `[nabs_pow_eq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nabs_eq_one_of_pow_le (y : kˣ) (B : ℝ) (h₁ : ∀ n : ℕ, nabs k (y ^ n) ≤ B)
     (h₂ : ∀ n : ℕ, nabs k (y⁻¹ ^ n) ≤ B) : nabs k y = 1 := by
@@ -89,7 +89,7 @@ def blockDet {N h : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (a : Fin h) (
     (g : Matrix (Fin N) (Fin N) k) (stdBlocks d hd ⟨a, i⟩) (stdBlocks d hd ⟨a, j⟩))
 
 /- English proof (translation)
-Unfold `blockDet`. Use `first`. Consider the case `fun_prop`. Consider the case `exact Continuous.matrix_det (continuous_pi fun i => continuous_pi fun j => (Units.continuous_val.matrix_elem _ _))`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_blockDet {N h : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (a : Fin h) :
     Continuous (blockDet (k := k) d hd a) := by
@@ -100,7 +100,7 @@ theorem continuous_blockDet {N h : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N
         (Units.continuous_val.matrix_elem _ _))
 
 /- English proof (translation)
-Unfold `blockDet`. Establish `hm : (Matrix.of fun i j : Fin (d a) => ((leviEmb k (stdBlocks d hd) x : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) (stdBlocks d hd ⟨a, i⟩) (stdBlocks d hd ⟨a, j⟩)) = ((x a : GL (Bl d a) k) : Matrix (Bl d a) (Bl d a) k)`. Use extensionality with `i j`. Simplify using `[leviEmb, Matrix.blockDiagonal'_apply_eq]`. Rewrite using `[hm, Matrix.GeneralLinearGroup.val_det_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockDet_leviEmb {N h : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (a : Fin h)
     (x : Levi k (Bl d)) :
@@ -116,11 +116,11 @@ theorem blockDet_leviEmb {N h : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (
   rw [hm, Matrix.GeneralLinearGroup.val_det_apply]
 
 /- English proof (translation)
-Establish `hmem : ∀ z ∈ KM k N J d hd, blockDet d hd a (leviEmb k (stdBlocks d hd) z) ∈ blockDet (k` using `k) d hd a '' (J : Set (GL (Fin N) k)) := fun z hz => ⟨_, hz, rfl⟩`. Take `⟨B, hB⟩` from `exists_nabs_le_of_isCompact (hJ.image (continuous_blockDet d hd a))`. Apply `nabs_eq_one_of_pow_le _ B` to reduce the goal to its premises. Introduce `n`. Apply `hB` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1` using `hmem _ ((KM k N J d hd).pow_mem hx n)`. Establish `e : (x ^ n) a = x a ^ n` using `rfl`. Rewrite `h1` using `[blockDet_leviEmb, e, map_pow]`. Conclude with `h1`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hB` to reduce the goal to its premises. Establish `h1` using `hmem _ ((KM k N J d hd).pow_mem ((KM k N J d hd).inv_mem hx) n)`. Establish `e : (x⁻¹ ^ n) a = (x a)⁻¹ ^ n` using `rfl`. Rewrite `h1` using `[blockDet_leviEmb, e, map_pow, map_inv]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabs_det_eq_one_of_mem_KM {N h : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N)
     {J : Subgroup (GL (Fin N) k)} (hJ : IsCompact (J : Set (GL (Fin N) k)))
@@ -145,9 +145,9 @@ theorem nabs_det_eq_one_of_mem_KM {N h : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d
     exact h1
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N h d hd J hJ x hx`. Unfold `deltaHalf`. Rewrite using `[MonoidHom.finsetProd_apply]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `a _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MonoidHom.comp_apply, Pi.evalMonoidHom_apply]`. Unfold `detChar`. Rewrite using `[MonoidHom.comp_apply]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[absPow, nabs_det_eq_one_of_mem_KM d hd hJ hx a]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem deltaHalf_eq_one_of_mem_KM :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

@@ -13,13 +13,11 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped ENNReal
 
 /- English proof (translation)
-Introduce `D X hb hK FdN FdN' u u' X0 L A hX p`. Take `⟨i, hi, hi0, hμi⟩` from `hA X hb hK FdN FdN' u u' hX p`. Take `⟨j, hj, hj0, hμj, hB0, hBt⟩` from `hB X hb hK FdN FdN' u u' hX p`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (X.measG.μGv p.1 (KvX X p)).toReal = (ggC D.R.rS D.R.k (gOf p) : ℝ) / ((nnC D.R.rS D.R.k (gOf p) : ℝ) * (ukC D.R.k (gOf p) : ℝ)) * (X.measG.μGv p.1 (KppX X hb p)).toReal`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (muP X p (KvX X p)).toReal = (i : ℝ) * (muP X p (KppX X hb p)).toReal`. Rewrite using `[hμi, ENNReal.toReal_mul, ENNReal.toReal_natCast]`. Rewrite using `[← hi, mul_div_assoc, div_self hi0, mul_one]`. Conclude with `h1`. Use `show (X.measG.μGv p.1 (KnatX X u p)).toReal / (X.measG.μGv p.1 (KvX X p)).toReal = (glkC D.R.k (gOf p) : ℝ) * (nnC D.R.rS D.R.k (gOf p) : ℝ) / (ggC D.R.rS D.R.k (gOf p) : ℝ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (muP X p (KvX X p)).toReal = (j : ℝ) * (muP X p (KnatX X u p)).toReal`. Rewrite using `[hμj, ENNReal.toReal_mul, ENNReal.toReal_natCast]`. Establish `hpos : (muP X p (KnatX X u p)).toReal ≠ 0` using `ENNReal.toReal_ne_zero.mpr ⟨hB0, hBt⟩`. Use `show (muP X p (KnatX X u p)).toReal / (muP X p (KvX X p)).toReal = _`. Rewrite using `[h1, ← hj]`.
-
-Break down `eq_or_ne (j : ℝ) 0 with h0 | h0` into its components or cases. Simplify using `[h0]`. Rewrite using `[mul_comm (j : ℝ) (muP X p (KnatX X u p)).toReal, mul_comm (j : ℝ), div_mul_eq_div_div, div_self hpos, div_mul_eq_div_div, div_self hj0]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem massDataIndices_of (hA : MeasAAll) (hB : MeasBAll) :
     ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)
@@ -55,7 +53,7 @@ def LocAll : Prop :=
       StTop X p ∧ StK X p ∧ StRed X p ∧ StImA X hb p ∧ StImB X u p
 
 /- English proof (translation)
-The claim follows from `massDataIndices_of (fun X hb hK FdN FdN' u u' hX p => let h := hL X hb hK FdN FdN' u u' hX p measA_of X hb hH hR p h.1 h.2.1 h.2.2.1 h.2.2.2.1) (fun X hb hK FdN FdN' u u' hX p => let h := hL X hb hK FdN FdN' u u' hX p measB_of X hH hR u p h.1 h.2.1 h.2.2.1 h.2.2.2.2)`.
+A detailed English derivation is pending.
 -/
 theorem massDataIndices_of_haarIdx_redIdx_locAll (hH : HaarIdx) (hR : RedIdx) (hL : LocAll) :
     ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)
@@ -71,9 +69,7 @@ theorem massDataIndices_of_haarIdx_redIdx_locAll (hH : HaarIdx) (hR : RedIdx) (h
       measB_of X hH hR u p h.1 h.2.1 h.2.2.1 h.2.2.2.2)
 
 /- English proof (translation)
-Establish `hH : HaarIdx`. Conclude with `haarIdx`. Establish `hR : RedIdx`. Conclude with `redIdx`. Introduce `D X`.
-
-Conclude with `massDataIndices_of_haarIdx_redIdx_locAll hH hR hL X`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem massDataIndices_of_locAll (hL : LocAll) :
     ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)
@@ -93,7 +89,7 @@ def LocOpen : Prop :=
       StK X p ∧ StRed X p ∧ StImA X hb p ∧ StImB X u p
 
 /- English proof (translation)
-Conclude with `massDataIndices_of_locAll (fun X hb hK FdN FdN' u u' hX p => ⟨stTop X p, hL X hb hK FdN FdN' u u' hX p⟩)`.
+A detailed English derivation is pending.
 -/
 theorem massDataIndices_of_locOpen (hL : LocOpen) :
     ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)

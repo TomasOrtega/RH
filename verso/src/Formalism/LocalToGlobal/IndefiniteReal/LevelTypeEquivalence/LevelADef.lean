@@ -13,11 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-Unfold `Lev.finE`. Rewrite using `[MonoidHom.comp_apply]`. Use `⟨fun h1 => by rw [h1, map_one], fun h1 => ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (Formalism.IndefR.Lev.swapAE D)`. Introduce `a b hab`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Formalism.IndefR.Lev.swapAE at hab`. Simplify using `using hab`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `h2` using `congrArg (fun g => (Units.val g) i j) h1`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Formalism.UG.bc, Units.coe_map, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply, Units.val_one] at h2`. Apply `hinj` to reduce the goal to its premises. Use `Eq.trans h2 ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem finHom_eq_one_iff (h : GA D V) : finHom V h = 1 ↔ Lev.finE V h = 1 := by
   unfold Lev.finE
@@ -37,13 +37,13 @@ theorem finHom_eq_one_iff (h : GA D V) : finHom V h = 1 ↔ Lev.finE V h = 1 := 
   by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
 
 /- English proof (translation)
-Unfold `GinfC`. Rewrite using `[MonoidHom.mem_ker, finHom_eq_one_iff, ← Units.val_eq_one]`. Establish `hb` using `(UI.brg_isBridge fr x).2`. Establish `hz : ∀ z, Formalism.IndefR.Lev.swapAE D (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA D.host.F) (AlgHom.id D.host.F D.host.E) z) = (Algebra.TensorProduct.lift ((Algebra.TensorProduct.includeRight : Formalism.MainNotions.S.Af D.host.F → …`. Introduce `z`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact (map_zero _).symm`. Consider the case `tmul a e => simp [Formalism.IndefR.Lev.swapAE, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add y w hy hw => erw [map_add, map_add, hy, hw, map_add]`. Establish `key : Units.val (Lev.finE V (UI.brg fr x)) = Formalism.L2.SG.AdBridge.ofHAFin (UI.instV fr) (UI.brg fr x)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use extensionality with `i j`. Conclude with `hz _`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `h1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (UI.instV fr).fmat x.2 = 1` using `hb.trans h1`. Simplify `h2` using `[Units.val_eq_one]`. Introduce `h1`. Establish `h2 : (UI.instV fr).fmat x.2 = 1` using `by simp [h1]`. Conclude with `hb.symm.trans h2`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem brg_mem_GinfC (fr : UI.Frames D V) (x : (UI.instV fr).GA) : UI.brg fr x ∈ GinfC V ↔ x.2 = 1 := by
   unfold GinfC
@@ -70,9 +70,9 @@ theorem brg_mem_GinfC (fr : UI.Frames D V) (x : (UI.instV fr).GA) : UI.brg fr x 
     exact hb.symm.trans h2
 
 /- English proof (translation)
-Establish `hc : ∀ v : InfinitePlace D.host.F, CompactSpace (Formalism.REAL.UJ ((MF.toFrames F).ε v))`. Introduce `v`. Use `haveI : CompactSpace (UpqT (V.sig (tauE D ((Formalism.L2.Host.tauPl D).symm v))).1 (V.sig (tauE D ((Formalism.L2.Host.tauPl D).symm v))).2) := by`. Break down `hD (tauE D ((Formalism.L2.Host.tauPl D).symm v)) with h | h` into its components or cases. Rewrite using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Rewrite using `[h]`. Use `infer_instance`. Conclude with `(MF.phiR F v).toHomeomorph.compactSpace`. Conclude with `@Pi.compactSpace _ _ (fun _ => inferInstance) hc`.
+A detailed English derivation is pending.
 -/
 theorem ginf_compact (F : MF.FrA V) (hD : V.IsDefinite) : CompactSpace (UI.instV (MF.toFrames F)).Ginf := by
   have hc : ∀ v : InfinitePlace D.host.F, CompactSpace (Formalism.REAL.UJ ((MF.toFrames F).ε v)) := by
@@ -86,11 +86,11 @@ theorem ginf_compact (F : MF.FrA V) (hD : V.IsDefinite) : CompactSpace (UI.instV
   exact @Pi.compactSpace _ _ (fun _ => inferInstance) hc
 
 /- English proof (translation)
-Take `⟨F⟩` from `MF.frA_nonempty hS`. Use `haveI := ginf_compact F hD`. Establish `e : (GinfC V : Set (GA D V)) = UI.brg (MF.toFrames F) '' (Set.univ ×ˢ {1})`. Use extensionality with `h`. Take `⟨x, rfl⟩` from `(UI.brg (MF.toFrames F)).surjective h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, brg_mem_GinfC]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨x, ⟨trivial, hx⟩, rfl⟩`. Introduce and unpack `⟨x', ⟨-, hx'⟩, e'⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `(UI.brg (MF.toFrames F)).injective e'` as an intermediate fact. Substitute `this` using the available equality. Conclude with `hx'`. Rewrite using `[e]`. Conclude with `(isCompact_univ.prod isCompact_singleton).image (UI.brg (MF.toFrames F)).continuous`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_GinfC (hS : V.SigOK) (hD : V.IsDefinite) : IsCompact (GinfC V : Set (GA D V)) := by
   obtain ⟨F⟩ := MF.frA_nonempty hS
@@ -110,11 +110,9 @@ theorem isCompact_GinfC (hS : V.SigOK) (hD : V.IsDefinite) : IsCompact (GinfC V 
   exact (isCompact_univ.prod isCompact_singleton).image (UI.brg (MF.toFrames F)).continuous
 
 /- English proof (translation)
-Take `⟨F⟩` from `MF.frA_nonempty hS`. Use `haveI := ginf_compact F hD`. Set `fr` to `MF.toFrames F`. Set `H : Subgroup (UI.instV fr).Gf` to `{ carrier := (UI.instV fr).Kset one_mem' := (Formalism.UG.stabGL (UI.instV fr).Lf).one_mem mul_mem' := fun ha hb => (Formalism.UG.stabGL (UI.instV fr).Lf).mul_mem ha hb inv_mem' := fun ha => (Formalism.UG.stabGL (UI.instV fr).Lf).inv_mem ha }`. Establish `ho : IsOpen (H : Set (UI.instV fr).Gf)` using `by show IsOpen (UI.instV fr).Kset`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[stabilizer_eq_level_subgroup]`. Conclude with `(UI.instV fr).topf_open 1 le_rfl`. Establish `hc : IsCompact (H : Set (UI.instV fr).Gf)` using `Formalism.L2.SG.Closed.AutKCompact_holds (UI.instV fr)`. Use `⟨(Subgroup.prod ⊤ H).map ((UI.brg fr : (UI.instV fr).GA →* GA D V)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_map, Subgroup.coe_prod, Subgroup.coe_top]`.
-
-Conclude with `(UI.brg fr).toHomeomorph.isOpenMap _ (isOpen_univ.prod ho)`. Rewrite using `[Subgroup.coe_map, Subgroup.coe_prod, Subgroup.coe_top]`. Conclude with `(isCompact_univ.prod hc).image (UI.brg fr).continuous`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open_compact (hS : V.SigOK) (hD : V.IsDefinite) :
     ∃ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) ∧ IsCompact (U : Set (GA D V)) := by

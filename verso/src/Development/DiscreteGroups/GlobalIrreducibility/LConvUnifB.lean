@@ -18,7 +18,7 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ}
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, coe_diagPow, coe_diagPow, coe_diagPow, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, zpow_add₀ (GroundTheory.Automorphic.Cartan.uniformizer_ne_zero F)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagPow_add (μ ν : Fin n → ℤ) : diagPow F n (μ + ν) = diagPow F n μ * diagPow F n ν := by
   refine Units.ext ?_
@@ -28,7 +28,7 @@ theorem diagPow_add (μ ν : Fin n → ℤ) : diagPow F n (μ + ν) = diagPow F 
   rw [Pi.add_apply, zpow_add₀ (GroundTheory.Automorphic.Cartan.uniformizer_ne_zero F)]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[coe_diagPow, Units.val_one]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem diagPow_zero : diagPow F n 0 = 1 := by
   refine Units.ext ?_
@@ -36,13 +36,13 @@ theorem diagPow_zero : diagPow F n 0 = 1 := by
   simp
 
 /- English proof (translation)
-Rewrite using `[eq_inv_iff_mul_eq_one, ← diagPow_add, neg_add_cancel, diagPow_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem diagPow_neg (μ : Fin n → ℤ) : diagPow F n (-μ) = (diagPow F n μ)⁻¹ := by
   rw [eq_inv_iff_mul_eq_one, ← diagPow_add, neg_add_cancel, diagPow_zero]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, coe_diagPow]`. Express the relevant statement in the definitionally equal form `(diagonal (fun i => (GLnLocal.uniformizer F : F) ^ c i) * (x : Matrix (Fin n) (Fin n) F) * diagonal fun i => (GLnLocal.uniformizer F : F) ^ (-c i)) i j = _`. Rewrite using `[mul_diagonal, diagonal_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagPow_conj_apply (c : Fin n → ℤ) (x : GL (Fin n) F) (i j : Fin n) :
     ((diagPow F n c * x * (diagPow F n c)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j =
@@ -53,17 +53,13 @@ theorem diagPow_conj_apply (c : Fin n → ℤ) (x : GL (Fin n) F) (i j : Fin n) 
   rw [mul_diagonal, diagonal_mul]
 
 /- English proof (translation)
-Establish `hb : ∀ y ∈ H, ∀ i j, valuation F (((diagPow F n c * y * (diagPow F n c)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j - (1 : Matrix (Fin n) (Fin n) F) i j) ≤ valuation F (GLnLocal.uniformizer F : F) ^ r`. Introduce `y hy i j`. Establish `hyK` using `((GLnLocal.mem_congruenceSubgroup_iff F n).1 (hH hy)).2 i j`. Rewrite using `[diagPow_conj_apply]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Rewrite using `[mul_comm ((GLnLocal.uniformizer F : F) ^ c i), mul_assoc, ← zpow_add₀ (GroundTheory.Automorphic.Cartan.uniformizer_ne_zero F), add_neg_cancel, zpow_zero, mul_one]`. Conclude with `hyK`. Rewrite `hyK`, the goal using `[one_apply_ne hij, sub_zero]`. Distinguish the cases in `hlt : c i < c j`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz y hy i j hlt, mul_zero, zero_mul, map_zero]`. Conclude with `zero_le`. Rewrite `hlt` using `[not_lt]`. Take `⟨d, hd⟩` from `Int.eq_ofNat_of_zero_le (sub_nonneg.2 hlt)`. Establish `he : (GLnLocal.uniformizer F : F) ^ c i * y i j * (GLnLocal.uniformizer F : F) ^ (-c j) = (GLnLocal.uniformizer F : F) ^ d * y i j`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm _ (y i j), mul_assoc, ← zpow_add₀ (GroundTheory.Automorphic.Cartan.uniformizer_ne_zero F), ← sub_eq_add_neg, hd, zpow_natCast, mul_comm]`. Rewrite using `[he, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `pow_le_one' (GLnLocal.valuation_uniformizer_lt_one F).le d`. Use `_ = valuation F (y i j) := one_mul _`.
-
-Use `_ ≤ _ := hyK`. Apply `mem_congruenceSubgroup_of_le` to reduce the goal to its premises. Conclude with `hb x hx`. Establish `he : (diagPow F n c * x * (diagPow F n c)⁻¹)⁻¹ = diagPow F n c * x⁻¹ * (diagPow F n c)⁻¹` using `by group`. Rewrite using `[he]`.
-
-Conclude with `hb x⁻¹ (H.inv_mem hx)`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_congruenceSubgroup_of_zero {r : ℕ} (c : Fin n → ℤ) (H : Subgroup (GL (Fin n) F))
     (hH : H ≤ GLnLocal.congruenceSubgroup F n r) (hz : ∀ x ∈ H, ∀ i j, c i < c j → x i j = 0)
@@ -107,9 +103,9 @@ theorem conj_mem_congruenceSubgroup_of_zero {r : ℕ} (c : Fin n → ℤ) (H : S
     exact hb x⁻¹ (H.inv_mem hx)
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, coe_diagPow]`. Use extensionality with `i j`. Rewrite using `[diagonal_mul, mul_diagonal]`. Distinguish the cases in `hij : i = j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Rewrite using `[mul_comm]`. Establish `h0` using `mem_levi.1 hy i j hij`. Simplify using `only [h0, mul_zero, zero_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem diagPow_comm_of_mem_levi (c : Fin n → ℤ) {y : GL (Fin n) F}
     (hy : y ∈ levi F n (id : Fin n → Fin n)) : diagPow F n c * y = y * diagPow F n c := by
@@ -124,17 +120,15 @@ theorem diagPow_comm_of_mem_levi (c : Fin n → ℤ) {y : GL (Fin n) F}
     simp only [h0, mul_zero, zero_mul]
 
 /- English proof (translation)
-Take `⟨z, hz, y, hy, x, hx, hk⟩` from `congruenceSubgroup_iwahoriFactorization (F := F) (id : Fin n → Fin n) hr κ⁻¹ (inv_mem hκ)`. Establish `hκ' : κ = x⁻¹ * y⁻¹ * z⁻¹`. Rewrite using `[← _root_.mul_inv_rev, ← _root_.mul_inv_rev, ← mul_assoc, ← hk, inv_inv]`. Use `⟨diagPow F n μ * x⁻¹ * (diagPow F n μ)⁻¹, ?_, y⁻¹, inv_mem hy.1, diagPow F n (-ν) * z⁻¹ * (diagPow F n (-ν))⁻¹, ?_, ?_⟩` and prove the remaining obligations. Use `conj_mem_congruenceSubgroup_of_zero μ (GLnLocal.congruenceSubgroup F n r ⊓ unipotentRadical F n (id : Fin n → Fin n)) inf_le_left ?_ (inv_mem hx)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw i j hij`. Establish `hji : j < i`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_lt]`. Conclude with `absurd hij (not_lt.2 (hμ h))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Iwasawa.mem_blockUpper F n).1 (mem_unipotentRadical.1 hw.2).1 hji`. Use `conj_mem_congruenceSubgroup_of_zero (-ν) (GLnLocal.congruenceSubgroup F n r ⊓ oppositeUnipotentRadical F n (id : Fin n → Fin n)) inf_le_left ?_ (inv_mem hz)` and prove the remaining obligations. Introduce `w hw i j hij`. Establish `hij' : i < j`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[not_lt]`. Use `hν h` as an intermediate fact. Simplify using `only [Pi.neg_apply] at hij`. Use linear arithmetic over natural numbers and integers. Conclude with `(mem_oppositeUnipotentRadical.1 hw.2).1 i j hij'`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : diagPow F n ν * y⁻¹ = y⁻¹ * diagPow F n ν` using `diagPow_comm_of_mem_levi ν (inv_mem hy.2)`. Establish `hb : y⁻¹ = diagPow F n ν * y⁻¹ * (diagPow F n ν)⁻¹`. Rewrite using `[hc, mul_inv_cancel_right]`. Rewrite using `[diagPow_neg, hκ']`. Use `conv_lhs => rw [hb]`.
-
-Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dominant_conj {r : ℕ} (hr : 1 ≤ r) {μ ν : Fin n → ℤ} (hμ : IsDominant μ)
     (hν : IsDominant ν) {κ : GL (Fin n) F} (hκ : κ ∈ GLnLocal.congruenceSubgroup F n r) :
@@ -181,7 +175,7 @@ def gen (n : ℕ) (i : Fin (n + 1)) (j : Fin n) : ℤ :=
   if (i : ℕ) = n then -1 else if (j : ℕ) ≤ i then 1 else 0
 
 /- English proof (translation)
-Introduce `j j' hjj'`. Establish `h : (j : ℕ) ≤ j'` using `hjj'`. Simplify using `only [gen]`. Apply the tactic sequence `split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gen_dominant (n : ℕ) (i : Fin (n + 1)) : IsDominant (gen n i) := by
   intro j j' hjj'
@@ -190,33 +184,33 @@ theorem gen_dominant (n : ℕ) (i : Fin (n + 1)) : IsDominant (gen n i) := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `μ _ hμ0 hs`. Establish `hs0 : ∑ j, μ j = 0` using `le_antisymm (by exact_mod_cast hs) (Finset.sum_nonneg fun j _ => hμ0 j)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: μ = 0` using `funext fun j => (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => hμ0 j)).1 hs0 j (Finset.mem_univ j)`. Rewrite using `[this]`. Conclude with `h0`. Consider the case `succ N ih`. Introduce `μ hμ hμ0 hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hall : ∀ j, μ j = 0`. Establish `: μ = 0` using `funext hall`. Rewrite using `[this]`. Conclude with `h0`. Take `⟨j0, hj0⟩` from `not_forall.1 hall`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi_pos, hi_max⟩ : ∃ i : Fin n, 0 < μ i ∧ ∀ j, 0 < μ j → j ≤ i := by`. Establish `hSne : (Finset.univ.filter fun j => 0 < μ j).Nonempty` using `⟨j0, Finset.mem_filter.2 ⟨Finset.mem_univ _, lt_of_le_of_ne (hμ0 j0) (Ne.symm hj0)⟩⟩`. Conclude with `⟨_, (Finset.mem_filter.1 (Finset.max'_mem _ hSne)).2, fun j hj => Finset.le_max' _ j (Finset.mem_filter.2 ⟨Finset.mem_univ _, hj⟩)⟩`. Establish `hle : ∀ j : Fin n, (j : ℕ) ≤ i → 1 ≤ μ j` using `fun j hj => by`. Use `hμ (show j ≤ i from hj)` as an intermediate fact.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hgt : ∀ j : Fin n, ¬ (j : ℕ) ≤ i → μ j = 0` using `fun j hj => by`. Establish `h1` using `hμ0 j`. Assume the negation of the conclusion as `hne`. Conclude with `hj (hi_max j (lt_of_le_of_ne h1 (Ne.symm hne)))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hin : ¬ ((i : ℕ) = n)` using `by have := i.2; omega`. Establish `hν1 : ∀ j : Fin n, (j : ℕ) ≤ i → gen n (Fin.castSucc i) j = 1` using `fun j hj => by`. Simplify using `only [gen, Fin.val_castSucc, if_neg hin, if_pos hj]`. Establish `hν0 : ∀ j : Fin n, ¬ (j : ℕ) ≤ i → gen n (Fin.castSucc i) j = 0` using `fun j hj => by`. Simplify using `only [gen, Fin.val_castSucc, if_neg hin, if_neg hj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdom' : IsDominant (μ - gen n (Fin.castSucc i))`. Introduce `j j' hjj'`. Establish `h` using `hμ hjj'`. Establish `hj : (j : ℕ) ≤ j'` using `hjj'`. Simplify using `only [Pi.sub_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Distinguish the cases in `h1 : (j' : ℕ) ≤ i`. Rewrite using `[hν1 j' h1, hν1 j (le_trans hj h1)]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hν0 j' h1, hgt j' h1]`. Distinguish the cases in `h2 : (j : ℕ) ≤ i`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hν1 j h2]`. Use `hle j h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hν0 j h2]`. Use `hμ0 j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hdec : μ = gen n (Fin.castSucc i) + (μ - gen n (Fin.castSucc i))` using `by abel`. Rewrite using `[hdec]`. Use `hadd _ _ (gen_dominant n _) hdom' (hgen _) (ih _ hdom' ?_ ?_)` and prove the remaining obligations. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.sub_apply]`. Distinguish the cases in `h2 : (j : ℕ) ≤ i`. Rewrite using `[hν1 j h2]`. Use `hle j h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hν0 j h2]`. Use `hμ0 j` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hνsum : 1 ≤ ∑ j, gen n (Fin.castSucc i) j`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Distinguish the cases in `h2 : (j : ℕ) ≤ i`. Rewrite using `[hν1 j h2]`. Evaluate the numerical expressions. Rewrite using `[hν0 j h2]) (Finset.mem_univ i)`. Establish `hsub : ∑ j, (μ - gen n (Fin.castSucc i)) j = ∑ j, μ j - ∑ j, gen n (Fin.castSucc i) j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [Pi.sub_apply, Finset.sum_sub_distrib]`. Rewrite using `[hsub]`. Move the coercions through the operations in `at hs ⊢`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dom_nonneg {n : ℕ} (P : (Fin n → ℤ) → Prop) (h0 : P 0) (hgen : ∀ i, P (gen n i))
     (hadd : ∀ μ ν, IsDominant μ → IsDominant ν → P μ → P ν → P (μ + ν)) :
@@ -286,25 +280,25 @@ theorem dom_nonneg {n : ℕ} (P : (Fin n → ℤ) → Prop) (h0 : P 0) (hgen : �
       omega
 
 /- English proof (translation)
-Establish `hnn` using `dom_nonneg P h0 hgen hadd`. Establish `hneg : ∀ k : ℕ, P (fun _ => -(k : ℤ))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `: (fun _ : Fin n => -((0 : ℕ) : ℤ)) = 0` using `by funext; simp`. Rewrite using `[this]`. Conclude with `h0`. Consider the case `succ k ih`. Establish `hl : gen n (Fin.last n) = fun _ => -1` using `by funext j; simp [gen]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (fun _ : Fin n => -((k + 1 : ℕ) : ℤ)) = (fun _ => -(k : ℤ)) + gen n (Fin.last n)`. Rewrite using `[hl]`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hadd _ _ (fun _ _ _ => le_rfl) (gen_dominant n _) ih (hgen _)`. Introduce `μ hμ`. Take `⟨d, hd⟩ : ∃ d : ℕ, d = ∑ j, (μ j).natAbs` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbound : ∀ j, -(d : ℤ) ≤ μ j`. Introduce `j`. Establish `h1 : (μ j).natAbs ≤ d`. Rewrite using `[hd]`. Conclude with `Finset.single_le_sum (f := fun j => (μ j).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1' : ((μ j).natAbs : ℤ) ≤ d` using `by exact_mod_cast h1`. Establish `h2` using `neg_abs_le (μ j)`. Rewrite `h2` using `[← Int.natCast_natAbs]`. Use linear arithmetic over natural numbers and integers. Establish `hdec : μ = (μ + fun _ => (d : ℤ)) + fun _ => -(d : ℤ)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdec]`. Use `hadd _ _ ?_ (fun _ _ _ => le_rfl) ?_ (hneg d)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j j' hjj'`. Simplify using `only [Pi.add_apply]`. Use `hμ hjj'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hnn (∑ j, (μ j + d)).toNat _ ?_ ?_ ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j j' hjj'`. Simplify using `only [Pi.add_apply]`. Use `hμ hjj'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `j`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Pi.add_apply]`. Use `hbound j` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [Pi.add_apply]`. Conclude with `Int.self_le_toNat _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dom_induct {n : ℕ} (P : (Fin n → ℤ) → Prop) (h0 : P 0) (hgen : ∀ i, P (gen n i))
     (hadd : ∀ μ ν, IsDominant μ → IsDominant ν → P μ → P ν → P (μ + ν)) :

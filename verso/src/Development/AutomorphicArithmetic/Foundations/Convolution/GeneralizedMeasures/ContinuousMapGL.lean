@@ -16,11 +16,11 @@ namespace UpperTheory.ConvolutionTheory.GM.CompactClopenAverage
 section Gen
 
 /- English proof (translation)
-Establish `hle : (Filter.cofinite : Filter ι) ≤ Filter.principal Tᶜ`. Rewrite using `[Filter.le_principal_iff, Filter.mem_cofinite, compl_compl]`. Conclude with `hT`. Establish `Y : IsCompact ((↑) ⁻¹' (Set.univ.pi D) : Set (Πʳ i, [R i, A i]_[Filter.principal Tᶜ]))`. Use `RestrictedProduct.isEmbedding_coe_of_principal.isCompact_preimage_iff ?_ |>.mpr (isCompact_univ_pi hD)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RestrictedProduct.range_coe_principal]`. Introduce `f hf i hi`. Conclude with `hDA i hi (hf i trivial)`. Use `Y.image (RestrictedProduct.continuous_inclusion hle) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨⟨x, Filter.eventually_principal.2 fun i hi => hDA i hi (hx i)⟩, fun i _ => hx i, rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, rfl⟩ i`. Conclude with `hy i trivial`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem rp_compact {ι : Type*} {R : ι → Type*} [∀ i, TopologicalSpace (R i)] {A : ∀ i, Set (R i)}
     (D : ∀ i, Set (R i)) (hD : ∀ i, IsCompact (D i)) (T : Set ι) (hT : T.Finite)
@@ -43,14 +43,14 @@ private theorem rp_compact {ι : Type*} {R : ι → Type*} [∀ i, TopologicalSp
     exact hy i trivial
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qf48.isLC_prod T f h`.
+A detailed English derivation is pending.
 -/
 private theorem isLC_prod {X ι : Type*} [TopologicalSpace X] (T : Finset ι) (f : ι → X → ℂ)
     (h : ∀ i ∈ T, IsLocallyConstant (f i)) : IsLocallyConstant fun x => ∏ i ∈ T, f i x :=
   _root_.UpperTheory.Reformulated.B.Qf48.isLC_prod T f h
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (Continuous.matrix_map continuous_id hf)`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_mapGL' {m : ℕ} {R S : Type*} [CommRing R] [CommRing S] [TopologicalSpace R]
     [TopologicalSpace S] (f : R →+* S) (hf : Continuous f) : Continuous (mapGL m f) :=
@@ -63,18 +63,18 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem liesOver_under (w : Pl E) : w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext w.2.over.symm`.
+A detailed English derivation is pending.
 -/
 private theorem under_eq {v : Pl F} (w : PlacesOver E v) : w.1.under (𝓞 F) = v :=
   HeightOneSpectrum.ext w.2.over.symm
 
 /- English proof (translation)
-Use `(hS.biUnion fun v _ => Set.finite_range (Subtype.val : PlacesOver E v → Pl E)).subset ?_` and prove the remaining obligations. Introduce `w hw`. Conclude with `Set.mem_biUnion hw ⟨⟨w, liesOver_under w⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem finite_under (S : Set (Pl F)) (hS : S.Finite) :
     {w : Pl E | w.under (𝓞 F) ∈ S}.Finite := by
@@ -86,7 +86,7 @@ private noncomputable def pv (v : Pl F) (x : AdelicGLn.FiniteAdelicGL E n) : GL 
   mapGL n (atFin v) (finEmb E n x)
 
 /- English proof (translation)
-Establish `h` using `AdelicGLn.prodEquiv_apply_snd E n (finEmb E n x) a b`. Rewrite `h` using `[prodEquiv_finEmb]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finEmb_entry (x : AdelicGLn.FiniteAdelicGL E n) (a b : Fin n) :
     ((finEmb E n x : AdelicGLn.AdelicGL E n) a b).2 = x a b := by
@@ -95,7 +95,7 @@ private theorem finEmb_entry (x : AdelicGLn.FiniteAdelicGL E n) (a b : Fin n) :
   exact h.symm
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((finEmb E n x : AdelicGLn.AdelicGL E n) a b).2 w.1 = _`. Rewrite using `[finEmb_entry]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cmp_pv {v : Pl F} (w : PlacesOver E v) (x : AdelicGLn.FiniteAdelicGL E n) :
     cmp w (pv v x) = AdelicGLn.finiteRestrictedEquiv E n x w.1 := by
@@ -105,19 +105,19 @@ private theorem cmp_pv {v : Pl F} (w : PlacesOver E v) (x : AdelicGLn.FiniteAdel
   rfl
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun w => (RestrictedProduct.continuous_eval w.1).comp continuous_snd`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_atFin (v : Pl F) : Continuous (atFin (E := E) v) :=
   continuous_pi fun w => (RestrictedProduct.continuous_eval w.1).comp continuous_snd
 
 /- English proof (translation)
-The claim follows from `(continuous_mapGL' _ (continuous_atFin v)).comp continuous_finEmb`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_pv (v : Pl F) : Continuous (pv (E := E) (n := n) v) :=
   (continuous_mapGL' _ (continuous_atFin v)).comp continuous_finEmb
 
 /- English proof (translation)
-The claim follows from `continuous_mapGL' _ (continuous_apply w)`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_cmp {v : Pl F} (w : PlacesOver E v) : Continuous (cmp (n := n) w) :=
   continuous_mapGL' _ (continuous_apply w)
@@ -127,9 +127,7 @@ private def U (S : Finset (Pl F)) : Set (AdelicGLn.FiniteAdelicGL E n) :=
     AdelicGLn.finiteRestrictedEquiv E n x w ∈ GLnLocal.integralGL (w.adicCompletion E) n}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Simplify using `only [U, Set.setOf_forall]`. Use `isClosed_iInter fun w => isClosed_iInter fun _ => ?_` and prove the remaining obligations. Conclude with `(GLnLocal.isCompact_integralGL (w.adicCompletion E) n).isClosed.preimage ((RestrictedProduct.continuous_eval w).comp (AdelicGLn.finiteRestrictedEquiv E n).continuous)`. Establish `h` using `RestrictedProduct.isOpen_forall_imp_mem (R := fun w : Pl E => GL (Fin n) (w.adicCompletion E)) (A := fun w => (GLnLocal.integralGL (w.adicCompletion E) n : Set _)) (fun w => GLnLocal.isOpen_integralGL (w.adicCompletion E) n) (p := fun w => w.under (𝓞 F) ∉ S)`.
-
-Conclude with `h.preimage (AdelicGLn.finiteRestrictedEquiv E n).continuous`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isClopen_U (S : Finset (Pl F)) : IsClopen (U (E := E) (n := n) S) := by
   constructor
@@ -144,23 +142,21 @@ private theorem isClopen_U (S : Finset (Pl F)) : IsClopen (U (E := E) (n := n) S
     exact h.preimage (AdelicGLn.finiteRestrictedEquiv E n).continuous
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ U (E := E) (n := n) S`. Rewrite using `[Set.indicator_of_mem hx, Pi.one_apply, mul_one]`. Use `finprod_eq_prod_of_mulSupport_subset _ fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hvS`. Use `hv ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvS' : v ∉ S` using `hvS`. Express the relevant statement in the definitionally equal form `φ v (pv v x) = 1`. Rewrite using `[hφ v hvS', Set.indicator_of_mem, Pi.one_apply]`. Introduce `w`. Use `hx w.1 (by rw [under_eq]; exact hvS')` as an intermediate fact.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← cmp_pv]`. Conclude with `this`. Rewrite using `[Set.indicator_of_notMem hx, mul_zero]`. Simplify using `only [U, Set.mem_setOf_eq, not_forall] at hx`. Take `⟨w, hwS, hw⟩` from `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB : {w : Pl E | AdelicGLn.finiteRestrictedEquiv E n x w ∉ GLnLocal.integralGL (w.adicCompletion E) n}.Finite` using `Filter.eventually_cofinite.1 (AdelicGLn.finiteRestrictedEquiv E n x).2`. Use `finprod_eq_zero _ (w.under (𝓞 F)) ?_ ?_` and prove the remaining obligations. Rewrite using `[hφ _ hwS, Set.indicator_of_notMem]`. Introduce `h`. Use `hw ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : cmp (⟨w, liesOver_under w⟩ : PlacesOver E (w.under (𝓞 F))) (pv _ x) ∈ GLnLocal.integralGL (w.adicCompletion E) n` using `h ⟨w, liesOver_under w⟩`. Rewrite `h1` using `[cmp_pv]`. Conclude with `h1`. Use `(S.finite_toSet.union (hB.image fun w : Pl E => w.under (𝓞 F))).subset fun v hv => ?_` and prove the remaining obligations. Distinguish the cases in `hvS : v ∈ S`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact.
 
-Conclude with `Or.inl hvS`. Use `right`. Establish `hnot : pv v x ∉ unitSet E n v`. Introduce `h`. Use `hv ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `φ v (pv v x) = 1`. Rewrite using `[hφ v hvS, Set.indicator_of_mem h, Pi.one_apply]`. Simplify using `only [unitSet, Set.mem_setOf_eq, not_forall] at hnot`. Take `⟨w', hw'⟩` from `hnot`. Use `⟨w'.1, ?_, under_eq w'⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h`. Use `hw' ?_` and prove the remaining obligations. Establish `: cmp w' (pv v x) ∈ GLnLocal.integralGL (w'.1.adicCompletion E) n`. Rewrite using `[cmp_pv]`. Conclude with `h`.
-
-Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem e_formula (S : Finset (Pl F)) (φ : ∀ v : Pl F, GL (Fin n) (CompletionsOver E v) → ℂ)
     (hφ : ∀ v ∉ S, φ v = (unitSet E n v).indicator 1) (x : AdelicGLn.FiniteAdelicGL E n) :
@@ -212,13 +208,13 @@ private theorem e_formula (S : Finset (Pl F)) (φ : ∀ v : Pl F, GL (Fin n) (Co
         exact this
 
 /- English proof (translation)
-Set `D : ∀ w : Pl E, Set (GL (Fin n) (w.adicCompletion E))` to `fun w => if w.under (𝓞 F) ∈ S then cmp (⟨w, liesOver_under w⟩ : PlacesOver E (w.under (𝓞 F))) '' tsupport (φ (w.under (𝓞 F))) else (GLnLocal.integralGL (w.adicCompletion E) n : Set _)`. Establish `hD : ∀ w, IsCompact (D w)` using `fun w => by`. Distinguish the cases in `h : w.under (𝓞 F) ∈ S`. Simplify using `only [D, if_pos h]`. Conclude with `(hS _ h).isCompact.image (continuous_cmp _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [D, if_neg h]`. Conclude with `GLnLocal.isCompact_integralGL _ n`. Establish `hK` using `rp_compact (A := fun w : Pl E => (GLnLocal.integralGL (w.adicCompletion E) n : Set _)) D hD {w : Pl E | w.under (𝓞 F) ∈ S} (finite_under _ S.finite_toSet) (fun w hw => by`. Establish `h : w.under (𝓞 F) ∉ S` using `hw`. Simplify using `only [D, if_neg h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `subset_rfl)`. Use `⟨_, (AdelicGLn.finiteRestrictedEquiv E n).toHomeomorph.isCompact_preimage.2 hK, ?_⟩` and prove the remaining obligations. Introduce `x hx hne w`. Distinguish the cases in `h : w.under (𝓞 F) ∈ S`. Express the relevant statement in the definitionally equal form `_ ∈ D w`.
+Consider separately whether the proposition holds or fails. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [D, if_pos h]`. Conclude with `⟨pv _ x, subset_tsupport _ (hne _ h), cmp_pv _ x⟩`. Express the relevant statement in the definitionally equal form `_ ∈ D w`. Simplify using `only [D, if_neg h]`. Conclude with `hx w h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem e_compact (S : Finset (Pl F)) (φ : ∀ v : Pl F, GL (Fin n) (CompletionsOver E v) → ℂ)
     (hS : ∀ v ∈ S, HasCompactSupport (φ v)) :
@@ -251,7 +247,7 @@ private theorem e_compact (S : Finset (Pl F)) (φ : ∀ v : Pl F, GL (Fin n) (Co
     exact hx w h
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `((finEmb E n (CuspidalSpectrum.finPart E n g) : AdelicGLn.AdelicGL E n) a b).2 w.1 = (g a b).2 w.1`. Rewrite using `[finEmb_entry]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem pv_finPart (v : Pl F) (g : AdelicGLn.AdelicGL E n) :
     pv v (CuspidalSpectrum.finPart E n g) = mapGL n (atFin v) g := by
@@ -267,19 +263,17 @@ end UpperTheory.ConvolutionTheory.GM.CompactClopenAverage
 
 open UpperTheory.ConvolutionTheory.GM.CompactClopenAverage in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n hn S β φ hS hoff`. Set `e₀ : AdelicGLn.FiniteAdelicGL E n → ℂ` to `fun x => ∏ᶠ v, φ v (pv v x)`. Establish `hform : ∀ x, e₀ x = (∏ v ∈ S, φ v (pv v x)) * (U S).indicator 1 x` using `fun x => e_formula S φ hoff x`. Establish `hlc : IsLocallyConstant e₀`. Establish `h1 : IsLocallyConstant fun x : AdelicGLn.FiniteAdelicGL E n => ∏ v ∈ S, φ v (pv v x)` using `isLC_prod S (fun v x => φ v (pv v x)) fun v hv => (hS v hv).1.comp_continuous (continuous_pv v)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsLocallyConstant ((U (E` using `E) (n := n) S).indicator (1 : AdelicGLn.FiniteAdelicGL E n → ℂ)) := by`. Rewrite using `[← LocallyConstant.coe_charFn ℂ (isClopen_U S)]`. Conclude with `LocallyConstant.isLocallyConstant _`. Establish `h3` using `h1.mul h2`. Establish `: e₀ = _` using `funext hform`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `h3`. Establish `hcs : HasCompactSupport e₀`. Take `⟨C, hC, hsub⟩` from `e_compact S φ fun v hv => (hS v hv).2`. Use `HasCompactSupport.of_support_subset_isCompact hC fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx' : e₀ x ≠ 0` using `hx`. Rewrite `hx'` using `[hform]`. Establish `hU : x ∈ U (E` using `E) (n := n) S := by`. Assume the negation of the conclusion as `h`. Conclude with `hx' (by rw [Set.indicator_of_notMem h, mul_zero])`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `hsub x hU fun v hv h0 => hx' ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_zero hv h0, zero_mul]`. Set `e : TF E n` to `⟨⟨e₀, hlc.continuous⟩, hcs⟩`. Use `⟨e, hlc, fun x => rfl, fun x => ?_⟩` and prove the remaining obligations. Establish `hinf` using `(UpperTheory.ConvolutionTheory.Tf.avgTens E n hn β e _ fun _ => rfl).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hΦ : ∀ g, tensE (onInf β) φ g = β (infPart E n g) * e (CuspidalSpectrum.finPart E n g)`. Introduce `g`. Express the relevant statement in the definitionally equal form `onInf β _ * _ = β _ * ∏ᶠ v, φ v (pv v _)`. Simplify using `only [pv_finPart]`. Use `congr 1`.
-
-Conclude with `((UpperTheory.ConvolutionTheory.Tf.avgTens E n hn β e _ hΦ).1 x).symm`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.GM.avgE :
     AvgE := by

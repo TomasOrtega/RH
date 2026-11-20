@@ -34,9 +34,9 @@ def SpOne : Prop :=
     ∀ d : ℕ, 1 ≤ d → ∀ Γ : Matrix (Fin k) (Fin k) E, Γ.det ≠ 0 → FinCl (SplitSet E m k d {Γ})
 
 /- English proof (translation)
-Unfold `PartSplit`. Unfold `SpOne at h`. Introduce `F E _ _ _ _ _ _ _ m k hk hHL d hd G hG hdet`. Establish `h1 : ∀ Γ ∈ G, FinCl (SplitSet E m k d {Γ})` using `fun Γ hΓ => h E m k hk hHL d hd Γ (hdet Γ hΓ)`. Use `choose T hTfin hT using h1`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⋃ (Γ) (hΓ : Γ ∈ G), T Γ hΓ, hG.biUnion' hTfin, ?_⟩` and prove the remaining obligations. Introduce and unpack `p ⟨hpL, v, hv, hvG⟩`. Take `⟨q, hq, hiso⟩` from `hT _ hvG p ⟨hpL, v, hv, Set.mem_singleton _⟩`. Conclude with `⟨q, Set.mem_iUnion₂.mpr ⟨_, hvG, hq⟩, hiso⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem partSplit_of_one (h : SpOne) : PartSplit := by
   unfold PartSplit

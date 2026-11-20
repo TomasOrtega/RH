@@ -30,7 +30,7 @@ namespace GlobalTheory.KZ
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `zetaUr_of_halves Pin3 hG hL`.
+A detailed English derivation is pending.
 -/
 example (hG : GlobU Pin3) (hL : LocU Pin3) : ZetaUr := zetaUr_of_halves Pin3 hG hL
 

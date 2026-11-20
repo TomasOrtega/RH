@@ -18,7 +18,7 @@ namespace GlobalTheory.TransvAdelic
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h : (fun i => cA D ((N *ᵥ y) i)) = (N.map (cA D)) *ᵥ fun i => cA D (y i)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (cA D) N y i`. Rewrite using `[form, h, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, dotProduct_mulVec _ (adj N), adj, Matrix.vecMul_transpose]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_mulVec (S : HSp D) {k l : ℕ} (M : Mx D S.rank k) (N : Mx D S.rank l) (x : Fin k → AE D)
     (y : Fin l → AE D) :
@@ -30,15 +30,15 @@ theorem form_mulVec (S : HSp D) {k l : ℕ} (M : Mx D S.rank k) (N : Mx D S.rank
     Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Rewrite using `[act, act, form_mulVec, mt_unitary, form]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_act (S : HSp D) (g : GA D S) (x y : VA S) : form S (act S g x) (act S g y) = form S x y := by
   rw [act, act, form_mulVec, mt_unitary, form]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `h (Pi.single j 1) (Pi.single i 1)` as an intermediate fact. Establish `e : (fun k => cA D ((Pi.single i 1 : VA S) k)) = Pi.single i 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`. Rewrite `this` using `[form_mulVec, form, e]`. Simplify using `using this`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unitary_of_form (S : HSp D) (M : Mx D S.rank S.rank)
     (h : ∀ x y, form S (M *ᵥ x) (M *ᵥ y) = form S x y) : adj M * (gA S * M) = gA S := by
@@ -53,7 +53,7 @@ theorem unitary_of_form (S : HSp D) (M : Mx D S.rank S.rank)
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[vecX, form_mulVec, d.gram_XX, Matrix.zero_mulVec, dotProduct_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_vecX {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (a : Fin ρ → AE D) :
     form S (vecX d a) (vecX d a) = 0 := by
@@ -71,7 +71,7 @@ theorem form_vecX {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (a : Fin ρ
   mul_invOf_self := by rw [two_mul, half_add_half]
 
 /- English proof (translation)
-Use `letI := starRingA D`. Use `letI := invTwo D`. Conclude with `(GlobalTheory.eichlerTransvection_unitary_inverse_conj (AE D) (Fin S.rank) (gA S) (adj_gA S) (form S) (fun _ _ => rfl) (transv S) (fun _ _ _ => rfl)).1 w v hw hv x y`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem form_transv (S : HSp D) (w v : VA S) (hw : form S w w = 0) (hv : form S w v = 0) (x y : VA S) :
     form S (transv S w v x) (transv S w v y) = form S x y := by
@@ -93,7 +93,7 @@ def transvLin (S : HSp D) (w v : VA S) : VA S →ₗ[AE D] VA S where
     ring
 
 /- English proof (translation)
-Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toMatrix_transvLin (S : HSp D) (w v y : VA S) :
     LinearMap.toMatrix' (transvLin S w v) *ᵥ y = transv S w v y := by
@@ -101,7 +101,7 @@ theorem toMatrix_transvLin (S : HSp D) (w v y : VA S) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[transv, transv, form_act, form_act, form_act]`. Simplify using `only [act, Matrix.mulVec_add, Matrix.mulVec_sub, Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_transv (S : HSp D) (g : GA D S) (w v y : VA S) :
     act S g (transv S w v y) = transv S (act S g w) (act S g v) (act S g y) := by
@@ -109,15 +109,15 @@ theorem act_transv (S : HSp D) (g : GA D S) (w v y : VA S) :
   simp only [act, Matrix.mulVec_add, Matrix.mulVec_sub, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Rewrite using `[act, act, act, mt_mul, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_mul (S : HSp D) (g h : GA D S) (y : VA S) : act S (g * h) y = act S g (act S h y) := by
   rw [act, act, act, mt_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Introduce `D`. Use `⟨fun S S₀ ρ d a v hv => ?_, fun S S₀ ρ d a v _ u g hu y => ?_⟩` and prove the remaining obligations. Use `⟨ofMat S (LinearMap.toMatrix' (transvLin S (vecX d a) v)) (unitary_of_form S _ fun x y => ?_), fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[toMatrix_transvLin, toMatrix_transvLin, form_transv S _ _ (form_vecX d a) hv]`. Rewrite using `[act, mt_ofMat, toMatrix_transvLin]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[act_mul, act_mul, hu, act_transv, ← act_mul S g g⁻¹, mul_inv_cancel]`. Use `congr 1`. Rewrite using `[act, mt_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem transv_unitary_conj :
     ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.TransvUnitary D ∧ GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.TransvConj D := by

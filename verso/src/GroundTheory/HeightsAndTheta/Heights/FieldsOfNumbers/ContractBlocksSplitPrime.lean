@@ -15,9 +15,9 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `F _ K _ _ L _ _ ι _ ι₂ _ P' hP' n hc hP bs`. Establish `: ∀ s, Fintype (Sum.elim ι ι₂ s)` using `fun s => match s with`. Consider the case `.inl k => (inferInstance : Fintype (ι k))`. Consider the case `.inr l => (inferInstance : Fintype (ι₂ l))`. Take `⟨-, h⟩` from `hA F K (K ⊕ L) Function.Embedding.inl (Sum.elim ι ι₂) P' hP' n ((relDim_eq_iff_hasRelDim P' n).mpr hP) ((relDim_eq_iff_hasRelDim (IndefiniteRowSideFullHecke.FieldNumbers.contractBlocks ι₂ P') n).mpr hc) bs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `hP'.isPrime` as an intermediate fact. Simplify using `only [AddBlockFunctionField.pullDeg_inl, AddBlockFunctionField.relDeg_inl] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PFDegree.toIndefiniteRowSideFullHecke (hA : ProjectionFormulaDegree.Statement.{u}) :
     IndefiniteRowSideFullHecke.FieldNumbers.PFDegree.Statement.{u, 0, 0, 0} := by
@@ -69,16 +69,16 @@ def splitVarEquiv : (Σ s, splitCoord j ι' s) ≃ (Σ k', ι' k') :=
       · exact ⟨⟨Sum.inr ⟨k', h⟩, i⟩, rfl⟩)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases v with ⟨k | l, i⟩ <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem splitVarEquiv_fst (v : Σ s, splitCoord j ι' s) :
     (splitVarEquiv j ι' v).1 = splitBlockEquiv j v.1 := by
   rcases v with ⟨k | l, i⟩ <;> rfl
 
 /- English proof (translation)
-Use extensionality with `p`. Unfold `IndefiniteRowSideFullHecke.FieldNumbers.contractBlocks splitPrime contractPrime IndefiniteRowSideFullHecke.FieldNumbers.blockIncl`. Simplify using `only [Ideal.mem_comap]`. Establish `e : rename (splitVar j ι') (rename (fun x : Σ k, ι' (j k) => (⟨Sum.inl x.1, x.2⟩ : Σ s, splitCoord j ι' s)) p) = rename (blockIncl j ι') p`. Rewrite using `[rename_rename]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `iff_of_eq (congrArg (· ∈ P') e)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem contractBlocks_splitPrime {F : Type u} [Field F] (P' : Ideal (MRing ι' F)) :
     IndefiniteRowSideFullHecke.FieldNumbers.contractBlocks (fun l : blockCompl j => ι' l.1) (splitPrime j P') =
@@ -93,9 +93,9 @@ theorem contractBlocks_splitPrime {F : Type u} [Field F] (P' : Ideal (MRing ι' 
   exact iff_of_eq (congrArg (· ∈ P') e)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k'`. Take `⟨s, rfl⟩` from `(splitBlockEquiv j).surjective k'`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply]`. Break down `s with k | l` into its components or cases. Conclude with `(j.injective.extend_apply b 0 k).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `show (0 : ℤ) = Function.extend j b 0 l.1`. Rewrite using `[Function.extend_apply' _ _ _ (fun h => l.2 h)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pullDeg_split (b : K → ℤ) :
     IndefiniteRowSideFullHecke.FieldNumbers.pullDeg (L := blockCompl j) b ∘ (splitBlockEquiv j).symm = pullDeg j b := by
@@ -109,7 +109,7 @@ theorem pullDeg_split (b : K → ℤ) :
     rfl
 
 /- English proof (translation)
-Establish `e : MRing (splitCoord j ι') F ⧸ splitPrime j P' ≃+* MRing ι' F ⧸ P'` using `Ideal.quotientEquiv _ _ (renameEquiv F (splitVarEquiv j ι')).toRingEquiv (Ideal.map_comap_of_surjective _ (renameEquiv F (splitVarEquiv j ι')).surjective P').symm`. Unfold `relDim`. Rewrite using `[ringKrullDim_eq_of_ringEquiv e, Fintype.card_congr (splitBlockEquiv j)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem relDim_splitPrime {F : Type u} [Field F] [Fintype K] [Fintype K'] [Fintype (blockCompl j)]
     (P' : Ideal (MRing ι' F)) : relDim (splitPrime j P') = relDim P' := by
@@ -122,7 +122,7 @@ theorem relDim_splitPrime {F : Type u} [Field F] [Fintype K] [Fintype K'] [Finty
 end Split
 
 /- English proof (translation)
-Unfold `homFracDegZero`. Rewrite using `[IntermediateField.adjoin_map, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨_, ⟨d, f, g, hf, hg, hgP, rfl⟩, rfl⟩`. Use `IntermediateField.subset_adjoin _ _ ⟨Function.extend j d 0, rename (blockIncl j ι') f, rename (blockIncl j ι') g, h₁ F K K' j _ ι' _ (fun _ => rfl) f d hf, h₁ F K K' j _ ι' _ (fun _ => rfl) g d hg, hgP, ?_⟩` and prove the remaining obligations. Simplify using `[contractFracMap, contractQuot, map_div₀]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -140,13 +140,11 @@ theorem contract_funField_le (h₁ : RenameMultiHomog.Statement.{u}) {F : Type u
   rfl
 
 /- English proof (translation)
-Introduce `F _ K K' _ _ _ _ j ι' _ P' hP' n hP hc bs`. Use `hP'.isPrime` as an intermediate fact. Use `⟨contract_funField_le h₁ j P', ?_⟩` and prove the remaining obligations. Establish `hQ : IsMultiProjPrime (splitPrime j P')` using `h₃ F _ K' _ ι' (splitBlockEquiv j) (splitVarEquiv j ι') (splitVarEquiv_fst j ι') P' hP'`. Establish `h` using `hB F K (blockCompl j) (fun k => ι' (j k)) (fun l => ι' l.1) (splitPrime j P') hQ n (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[contractBlocks_splitPrime]`. Conclude with `(relDim_eq_iff_hasRelDim _ n).mp hc)`. Use the proof step `(by`. Use `(relDim_eq_iff_hasRelDim _ n).mp ?_` and prove the remaining obligations. Rewrite using `[relDim_splitPrime]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP) bs`. Rewrite `h` using `[← AddBlockFunctionField.relDeg_inl, ← h₄, contractBlocks_splitPrime]`. Rewrite using `[← h]`. Establish `h2` using `h₂ F _ K' _ ι' (splitBlockEquiv j) (splitVarEquiv j ι') (splitVarEquiv_fst j ι') P' n (fun i => IndefiniteRowSideFullHecke.FieldNumbers.pullDeg (L := blockCompl j) (bs i))`. Simplify using `only [pullDeg_split] at h2`.
-
-Conclude with `h2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PFDegree.split_model_to_place_model (h₁ : RenameMultiHomog.Statement.{u})
     (h₂ : RenameIntNum.Statement.{u}) (h₃ : RenameMultiProjPrime.Statement.{u})
@@ -174,7 +172,7 @@ theorem PFDegree.split_model_to_place_model (h₁ : RenameMultiHomog.Statement.{
   exact h2.symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PFDegree.toIndefiniteRowSideFullHecke, PFDegree.split_model_to_place_model h₁ h₂ h₃ h₄⟩`.
+Supply the required witnesses or components.
 -/
 theorem PFDegree.equiv (h₁ : RenameMultiHomog.Statement.{u})
     (h₂ : RenameIntNum.Statement.{u}) (h₃ : RenameMultiProjPrime.Statement.{u})

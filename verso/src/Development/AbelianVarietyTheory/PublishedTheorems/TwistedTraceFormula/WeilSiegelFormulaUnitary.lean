@@ -75,9 +75,9 @@ namespace GlobalTheory.SiegelFormula
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `γ hγ h`. Take `⟨δ, -, hδ⟩ : ∃ δ : GL (Fin B.rank) D.host.E, _ ∧ Formalism.UG.bc (incA D) δ = Formalism.L2.Theta.matHom B γ⁻¹` from `inv_mem hγ`. Set `e : Matrix (Fin B.rank) (Fin a) D.host.E ≃ Matrix (Fin B.rank) (Fin a) D.host.E` to `⟨fun ξ => δ.1 * ξ, fun ξ => δ⁻¹.1 * ξ, fun ξ => by simp, fun ξ => by simp⟩`. Establish `h1 : Formalism.L2.Theta.mt B γ⁻¹ = δ.1.map (incA D)` using `(congrArg Units.val hδ).symm`. Establish `h2 : Formalism.L2.Theta.mt B (γ * h)⁻¹ = Formalism.L2.Theta.mt B h⁻¹ * Formalism.L2.Theta.mt B γ⁻¹` using `by rw [mul_inv_rev]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(tsum_congr fun ξ => ?_).trans (e.tsum_eq fun ξ => ‖φ (invPt B h ξ)‖ₑ)` and prove the remaining obligations. Simplify using `only [invPt, e, Equiv.coe_fn_mk, h2, h1, Matrix.mul_assoc, Matrix.map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem leftInv_absTheta (B : HSp D) {a : ℕ} (φ : Mx D B.rank a → ℂ) : LeftInv (GQ B) (absTheta B φ) := by
   intro γ hγ h
@@ -90,7 +90,7 @@ theorem leftInv_absTheta (B : HSp D) {a : ℕ} (φ : Mx D B.rank a → ℂ) : Le
   simp only [invPt, e, Equiv.coe_fn_mk, h2, h1, Matrix.mul_assoc, Matrix.map_mul]
 
 /- English proof (translation)
-Introduce `γ hγ h` and use `by have e : ω (g, γ * h) = ω (1, γ) * ω (g, h) := by rw [← map_mul, Prod.mk_mul_mk, one_mul] simp only [thetaKO, e, Module.End.mul_apply] exact hω.om_aut 1 (one_mem _) γ hγ _ (hω.om_pres _ f hf)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leftInv_thetaKO {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hω : IsWeilDatumO ψ S T χS χT ω) {f : WO S T → ℂ}
@@ -100,11 +100,11 @@ theorem leftInv_thetaKO {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT 
   exact hω.om_aut 1 (one_mem _) γ hγ _ (hω.om_pres _ f hf)
 
 /- English proof (translation)
-Establish `key : ∀ (r : Fin (A.rank + A.rank) → AE D) (v : Fin A.rank → AE D), r ⬝ᵥ pairVec finSumFinEquiv v v = ∑ j, (r (finSumFinEquiv (.inl j)) + r (finSumFinEquiv (.inr j))) * v j` using `fun r v => by`. Rewrite using `[dotProduct, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, ← Finset.sum_add_distrib]`. Simplify using `only [pairVec_inl, pairVec_inr, add_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use function extensionality and compare the values at `i`. Use `(key _ v).trans ?_` and prove the remaining obligations. Simplify using `[lagr, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]`. Introduce `h`. Use `⟨fun i j => x i (finSumFinEquiv (.inl j)), Matrix.ext fun i k => ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← pairVec_eta finSumFinEquiv (x i)]`. Use `congrFun (congrArg (pairVec finSumFinEquiv _) (funext fun j => ?_)) k` and prove the remaining obligations. Use `(key (x i) (Pi.single j 1)).symm.trans (congrFun (h (Pi.single j 1)) i)` as an intermediate fact. Simplify using `only [Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Conclude with `neg_eq_of_add_eq_zero_right this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_range_lagr (A B : HSp D) (x : WO (dblSp A) B) : x ∈ Set.range (lagr A B) ↔
     ∀ v, (x : Matrix _ _ (AE D)) *ᵥ pairVec finSumFinEquiv v v = 0 := by
@@ -126,9 +126,9 @@ theorem mem_range_lagr (A B : HSp D) (x : WO (dblSp A) B) : x ∈ Set.range (lag
     exact neg_eq_of_add_eq_zero_right this
 
 /- English proof (translation)
-Use `(mem_range_lagr A B _).2 fun v => ?_` and prove the remaining obligations. Establish `h1` using `(mem_siegelOf.1 (inv_mem hp)).mulVec_diag v`. Establish `h2` using `(mem_range_lagr A B _).1 ⟨y, rfl⟩`. Unfold `actO`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `erw [h1, h2, Matrix.mulVec_zero]`.
+A detailed English derivation is pending.
 -/
 theorem actO_lagr_mem (A B : HSp D) {p : GA D (dblSp A)} (hp : p ∈ siegel A) (h : GA D B) (y : Mx D B.rank A.rank) :
     actO (dblSp A) B p h (lagr A B y) ∈ Set.range (lagr A B) := by
@@ -140,9 +140,9 @@ theorem actO_lagr_mem (A B : HSp D) {p : GA D (dblSp A)} (hp : p ∈ siegel A) (
   erw [h1, h2, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Establish `hu : IsUnit A.gram.det` using `(isHermND_gram A).2.isUnit`. Establish `h1 : (dblSp A).gram⁻¹ = blkMat finSumFinEquiv A.gram⁻¹ (-A.gram⁻¹)` using `Matrix.inv_eq_right_inv (by`. Rewrite using `[gram_hdbl, dblGram, blkMat_mul, neg_mul_neg, Matrix.mul_nonsing_inv _ hu, blkMat_one])`. Establish `h2 : hO (dblSp A) B (lagr A B y) (lagr A B y') = 0`. Unfold `hO`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `[lagr, blkMat, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]`. Rewrite using `[symplO, h2, mul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_lagr (A B : HSp D) (y y' : Mx D B.rank A.rank) : symplO (dblSp A) B (lagr A B y) (lagr A B y') = 0 := by
   have hu : IsUnit A.gram.det := (isHermND_gram A).2.isUnit
@@ -156,7 +156,7 @@ theorem symplO_lagr (A B : HSp D) (y y' : Mx D B.rank A.rank) : symplO (dblSp A)
   rw [symplO, h2, mul_zero, map_zero]
 
 /- English proof (translation)
-Establish `h1` using `hω.om_aut γ hγ δ hδ _ hw`. Rewrite `h1` using `[hω.om_heis _ _ _ _ hf]`. Simplify `h1` using `[heisO, symplOH, symplO, hO]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem om_rat_apply {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hω : IsWeilDatumO ψ S T χS χT ω) {f : WO S T → ℂ}

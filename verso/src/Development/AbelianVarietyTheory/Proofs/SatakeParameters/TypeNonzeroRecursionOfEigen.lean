@@ -16,19 +16,17 @@ open Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.RecTie
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hC` using `X.given.core`. Establish `hfm` using `(X.IL.jMt _ hμ j f).2`. Take `⟨y, hy⟩ : ∃ y, (LinearEquiv.ofInjective _ (X.hinj j (X.tupT (D.nd.mu i)))).symm ⟨((X.IL.jMt _ hμ j f).1 : Formalism.L2.Theta.GA D (Vc D j) → (X.R.cV j).W), hfm.1⟩ = y` from `⟨_, rfl⟩`. Establish `hyf : X.R.extV j (X.tupT (D.nd.mu i)) y = X.fn hμ j f`. Rewrite using `[← hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val ((LinearEquiv.ofInjective _ (X.hinj j (X.tupT (D.nd.mu i)))).apply_symm_apply _)`. Establish `hthG : X.R.thG j (X.tupT (D.nd.mu i)) y = 0`. Establish `hM` using `GlobalTheory.ThetaLevelP.thF_mem_level X.R X.F hC.lev hC.models hC.thP X.R.hv0 false j (X.tupT (D.nd.mu i)) y (by rw [hyf]; exact hfm.2)`. Take `⟨w, hw1, hw2, hw3⟩` from `X.fire.2.1 (D.nd.mu i) hμ j f`. Establish `hw' : PiTensorProduct.lift (X.R.thF j (X.tupT (D.nd.mu i)) y) ∘ₗ (toLiftReal X.R X.F X.tupT X.hm X.hTop X.hinj).embK j = (toLiftReal X.R X.F X.tupT X.hm X.hTop X.hinj).thC _ j (X.IL.jMt _ hμ j f)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Both sides reduce to the same expression. Establish `hwe : w = PiTensorProduct.lift (X.R.thF j (X.tupT (D.nd.mu i)) y)`. Use `sub_eq_zero.1 (X.fire.2.2 j _ (sub_mem hw1 (Submodule.mem_map_of_mem hM)) ?_)` and prove the remaining obligations. Conclude with `(LinearMap.sub_comp _ _ _).trans (by rw [hw2]; exact sub_eq_zero.2 hw'.symm)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hth` using `X.recR.tied.lift.theta (D.nd.mu i) hμ j f w (X.fire.1 _ hμ j) hw1 hw2 hw3`. Rewrite `hth` using `[h0, map_zero, ZeroMemClass.coe_zero, hwe]`. Establish `h2 : PiTensorProduct.lift (postOn _ (X.R.eWf j (sg0 D X.A)) (X.R.thF j (X.tupT (D.nd.mu i)) y)) = 0`. Rewrite using `[GlobalTheory.ThetaFireLift.lift_postOn]`. Conclude with `hth.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (X.R.HW j (sg0 D X.A)).e (X.R.thG j (X.tupT (D.nd.mu i)) y) = 0`. Rewrite using `[hC.thP.thG]`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 h2`. Conclude with `(hC.models.HW j _).1 (h3.trans (map_zero _).symm)`. Establish `hy0 : y = 0`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hne`. Take `⟨h, hh⟩` from `GlobalTheory.LiftOntoCompare.exists_opsV hC.lev hC.models j (X.tupT (D.nd.mu i))`. Take `⟨s, hs1, hs2⟩` from `hS hμ j hj x hx f hf y hyf hne h hh`. Conclude with `hne (hT j _ h hh s hs1 y hs2 (hG hμ j hj x hx f hf y hyf) hthG)`. Establish `h4 : X.IL.jMt _ hμ j f = 0`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show X.fn hμ j f = 0`. Rewrite using `[← hyf, hy0, map_zero]`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj_at {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch} (X : GlobalTheory.NJoin.RealAt D cf nch tp)
     (hT : ∀ j t, GlobalTheory.DownLift.TypeNZ X.R j t) (i : D.nd.Loc) (hS : GlobalTheory.NJoin.EigString X i)
@@ -73,7 +71,7 @@ theorem inj_at {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf 
   exact (LinearEquiv.map_eq_zero_iff _).1 h4
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `H`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem of_cast {D : D7} {μ : D.what₂.Tup} {a b : ℕ} (h : a = b) (S : Submodule ℂ (D.what₂.Mt μ b))
     (H : ∀ f : D.what₂.Mt μ a, (h ▸ f : D.what₂.Mt μ b) ∈ S → D.what₂.thetaP μ a f = 0 → f = 0) :
@@ -82,7 +80,7 @@ theorem of_cast {D : D7} {μ : D.what₂.Tup} {a b : ℕ} (h : a = b) (S : Submo
   exact H
 
 /- English proof (translation)
-Introduce `hL D P X _ hT i hS hG x hx`. Establish `hμ : Used0 D (D.nd.mu i)` using `Or.inr ⟨D.nd.w i, (D.nd.mu_w i).trans ((D.what₂.muAt_or _).resolve_left (D.nd.w_tw i)).symm⟩`. Establish `hr` using `D.nd.j_range i`. Take `⟨j, hj⟩ : ∃ j : Fin D.R.m, j.1 + 1 = D.nd.j i` from `⟨⟨D.nd.j i - 1, by omega⟩, by simp only; omega⟩`. Conclude with `of_cast hj _ fun f hf h0 => inj_at X hT i hS hG hμ j hj x hx f hf h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem typeNZRec_of_join : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D),
     ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), (∀ j t, GlobalTheory.DownLift.TypeNZ X.R j t) →

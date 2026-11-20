@@ -6,23 +6,19 @@ open GlobalTheory.LKInvGood
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ ℓ _`. Set `f : NumberField.RingOfIntegers F → ℚ_[ℓ] ⊗[ℚ] F` to `fun a => (1 : ℚ_[ℓ]) ⊗ₜ[ℚ] (a : F)`. Take `⟨s, hs⟩` from `(inferInstance : Module.Finite ℤ (NumberField.RingOfIntegers F)).fg_top`. Establish `hint : ∀ x ∈ (f '' (s : Set (NumberField.RingOfIntegers F))), IsIntegral ℤ_[ℓ] x`. Introduce and unpack `_ ⟨a, -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h1 : IsIntegral ℤ ((a : F))` using `NumberField.RingOfIntegers.isIntegral_coe a`. Establish `h2 : IsIntegral ℤ (f a)`. Use `h1.map ((Algebra.TensorProduct.includeRight : F →ₐ[ℚ] ℚ_[ℓ] ⊗[ℚ] F).restrictScalars ℤ)` as an intermediate fact. Simplify `this` using `[f]`. Conclude with `h2.tower_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hfin : Module.Finite ℤ_[ℓ] (Algebra.adjoin ℤ_[ℓ] (f '' (s : Set (NumberField.RingOfIntegers F))))` using `Algebra.finite_adjoin_of_finite_of_isIntegral ((s.finite_toSet).image f) hint`. Establish `heq : cenOrder ℓ F = Algebra.adjoin ℤ_[ℓ] (f '' (s : Set (NumberField.RingOfIntegers F)))`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `A` to `Algebra.adjoin ℤ_[ℓ] (f '' (s : Set (NumberField.RingOfIntegers F)))`. Set `N : Submodule ℤ (NumberField.RingOfIntegers F)` to `{ carrier := {x | f x ∈ A} add_mem' := by`. Introduce `x y hx hy`. Simplify using `only [Set.mem_setOf_eq, f, map_add, TensorProduct.tmul_add] at hx hy ⊢`. Conclude with `A.add_mem hx hy`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq, f, map_zero, TensorProduct.tmul_zero]`. Conclude with `A.zero_mem`. Use the proof step `smul_mem' := by`. Introduce `c x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_setOf_eq, f, zsmul_eq_mul, map_mul, map_intCast] at hx ⊢`. Establish `: (1 : ℚ_[ℓ]) ⊗ₜ[ℚ] ((c : F) * (x : F)) = c • ((1 : ℚ_[ℓ]) ⊗ₜ[ℚ] (x : F))`. Rewrite using `[← zsmul_eq_mul, TensorProduct.tmul_smul]`. Rewrite using `[this]`. Conclude with `A.toSubring.zsmul_mem hx c }`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Establish `hsN : (s : Set _) ⊆ N` using `fun x hx => show f x ∈ A from Algebra.subset_adjoin ⟨x, hx, rfl⟩`. Establish `: a ∈ N`. Use `Submodule.span_le.mpr hsN` as an intermediate fact. Rewrite `this` using `[hs]`. Conclude with `this Submodule.mem_top`.
-
-Conclude with `this`. Apply `Algebra.adjoin_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, -, rfl⟩`. Conclude with `⟨a, rfl⟩`. Rewrite using `[heq]`.
-
-Conclude with `hfin`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cenOrder_finite : ∀ (F : Type) [Field F] [NumberField F] (ℓ : ℕ) [Fact ℓ.Prime],
     Module.Finite ℤ_[ℓ] (cenOrder ℓ F) := by

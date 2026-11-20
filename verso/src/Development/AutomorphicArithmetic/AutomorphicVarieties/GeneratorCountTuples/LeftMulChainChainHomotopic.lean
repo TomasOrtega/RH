@@ -5,14 +5,14 @@ section
 variable (A : Type) [CommRing A] {G : Type} [Group G]
 
 /- English proof (translation)
-Simplify using `[lmul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem lmul_single (h : G) (m : ℕ) (x : Fin m → G) (a : A) :
     lmul A h m (Finsupp.single x a) = Finsupp.single (fun i => h * x i) a := by
   simp [lmul]
 
 /- English proof (translation)
-Simplify using `only [lmul, cone, Finsupp.lmapDomain_apply, ← Finsupp.mapDomain_comp]`. Use `congr 1`. Use function extensionality and compare the values at `x i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lmul_cone (h a : G) (m : ℕ) (y : Ch A G m) :
     lmul A h (m + 1) (cone A a m y) = cone A (h * a) m (lmul A h m y) := by
@@ -22,7 +22,7 @@ private theorem lmul_cone (h a : G) (m : ℕ) (y : Ch A G m) :
   refine Fin.cases ?_ (fun j => ?_) i <;> simp
 
 /- English proof (translation)
-Simplify using `only [lmul, rmul, Finsupp.lmapDomain_apply, ← Finsupp.mapDomain_comp]`. Use `congr 1`. Use function extensionality and compare the values at `x i`. Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem lmul_rmul (h k : G) (m : ℕ) (y : Ch A G m) :
     lmul A h m (rmul A k m y) = rmul A k m (lmul A h m y) := by
@@ -32,7 +32,7 @@ private theorem lmul_rmul (h k : G) (m : ℕ) (y : Ch A G m) :
   simp [mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [lmul, pr, Finsupp.lmapDomain_apply, ← Finsupp.mapDomain_comp]`. Use `congr 1`. Use function extensionality and compare the values at `x i`. Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem pr_lmul (h : G) (m : ℕ) (y : Ch A G (m + 1)) :
     pr A G m (lmul A h (m + 1) y) = pr A G m y := by
@@ -42,7 +42,7 @@ private theorem pr_lmul (h : G) (m : ℕ) (y : Ch A G (m + 1)) :
   simp [mul_assoc]
 
 /- English proof (translation)
-The claim follows from `| 0, y => by simp [hp] | m + 1, y => by induction y using Finsupp.induction_linear with | zero => simp | add f g hf hg => simp only [map_add, hf, hg] | single x a => rw [lmul_single] simp only [hp, Finsupp.linearCombination_single, map_smul] rw [lmul_cone, map_sub, lmul_rmul, lmu …`.
+A detailed English derivation is pending.
 -/
 private theorem lmul_hp (h k : G) : ∀ (m : ℕ) (y : Ch A G m),
     lmul A h (m + 1) (hp A k m y) = hp A k m (lmul A h m y)
@@ -58,7 +58,7 @@ private theorem lmul_hp (h k : G) : ∀ (m : ℕ) (y : Ch A G m),
       rfl
 
 /- English proof (translation)
-The claim follows from `| 0, y => by simp [hd] | m + 1, y => by induction y using Finsupp.induction_linear with | zero => simp | add f g hf hg => simp only [map_add, hf, hg] | single x a => rw [lmul_single] simp only [hd, Finsupp.linearCombination_single, map_smul] rw [lmul_cone, map_add, lmul_hp, lmul_ …`.
+A detailed English derivation is pending.
 -/
 private theorem lmul_hd (h k k' : G) : ∀ (m : ℕ) (y : Ch A G m),
     lmul A h (m + 2) (hd A k k' m y) = hd A k k' m (lmul A h m y)
@@ -76,7 +76,7 @@ private theorem lmul_hd (h k k' : G) : ∀ (m : ℕ) (y : Ch A G m),
 end
 
 /- English proof (translation)
-Introduce `A _ G _ k k' h m z`. Rewrite using `[← lmul_hd]`. Conclude with `pr_lmul A h (m + 2) _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.leftMulChain_chainHomotopic :
     ∀ (A : Type) [CommRing A] (G : Type) [Group G] (k k' h : G) (m : ℕ) (z : Ch A G (m + 1)), pr A G (m + 2) (hd A k k' (m + 1) (lmul A h (m + 1) z)) = pr A G (m + 2) (hd A k k' (m + 1) z) := by

@@ -18,9 +18,9 @@ open GlobalTheory.UU
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Introduce `h1 h2 V _ _ _ hV D A G _ _ U hτ hFE`. Establish `hsupp : ∀ N : ℕ, 1 ≤ N → ∃ β, U.Supp (Kbar V) N β` using `fun N hN => by`. Take `⟨mu, hmu⟩` from `(GlobalTheory.T.lineBundleSections_torusTorsion_weightSpaces h1 h2 V hV D A G U N hN).2.1 0`. Conclude with `⟨_, hmu⟩`. Introduce `N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `N, hN using Nat.le_induction with`. Consider the case `base => exact hFE`. Consider the case `succ k hk ih`. Conclude with `GlobalTheory.UU.SchurConst.main h1 h2 V hV D A G U (k + 1) (by omega) (GlobalTheory.T.exists_functionalEquation_section_nonzero_class h1 h2 V hV D A G U hτ k hk hFE ih (hsupp 1 le_rfl) (hsupp k hk))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fe_all_degrees : Laws → Laws2 → AllPre fun {V} _ _ _ {D} {_} {_} _ _ U =>
     D.TauBimult → U.FE (Kbar V) 1 → ∀ N : ℕ, 1 ≤ N → U.FE (Kbar V) N := by

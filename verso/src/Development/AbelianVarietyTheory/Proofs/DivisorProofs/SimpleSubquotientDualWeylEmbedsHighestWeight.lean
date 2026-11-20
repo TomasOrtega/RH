@@ -16,17 +16,17 @@ noncomputable section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Pj GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.ExpTie GlobalTheory.ExpFrame Formalism.CohomologicalDescent.DepthNonnegative Formalism.CohomologicalDescent.LogSmallConstantBounds Formalism.CohomologicalDescent.ShortWeightBounds Formalism.CohomologicalDescent.LD Formalism.RankGapBounds.FormsTensorLocalization
 
 /- English proof (translation)
-Introduce `O _ _ _ _ N ι _ _ lam ϖ hϖ hlam Gm _ _ hs hsub`. Use `haveI : Nontrivial Gm := IsSimpleModule.nontrivial (alg O N lam) Gm`. Take `⟨w0, hw0⟩` from `GlobalTheory.T.exists_jointRowWeight_dualWeylModule O N ι lam Gm inferInstance`. Establish `hB` using `GlobalTheory.T.jointRowWeight_bounds_dualWeylModule O N ι lam hlam Gm`. Set `S : Set (ι → Fin N → ℕ)` to `{w | GlobalTheory.HighWt.JointWt O N lam Gm w}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfin : S.Finite`. Use `Set.Finite.subset (Set.Finite.pi (t := fun τ => Set.pi Set.univ fun _ : Fin N => Set.Iic (lam τ 0)) fun τ => Set.Finite.pi fun _ => Set.finite_Iic _) ?_` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Set.mem_pi, Set.mem_univ, Set.mem_Iic, true_implies]`. Introduce `τ a`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `((hB w hw τ).2 a).2`. Take `⟨w, hwS, hmax⟩` from `hfin.toFinset.exists_max_image (GlobalTheory.HighWt.pot N) ⟨w0, hfin.mem_toFinset.2 hw0⟩`. Rewrite `hwS` using `[Set.Finite.mem_toFinset]`. Establish `hmax' : ∀ w', GlobalTheory.HighWt.JointWt O N lam Gm w' → GlobalTheory.HighWt.pot N w' ≤ GlobalTheory.HighWt.pot N w` using `fun w' h' => hmax w' (hfin.mem_toFinset.2 h')`. Establish `hanti` using `GlobalTheory.T.jointRowWeight_antitone_of_maxPotential O N ι lam Gm w hwS hmax'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨GlobalTheory.HighWt.extW N w, fun τ => ?_, GlobalTheory.T.simple_subquotient_embeds_dualWeyl_reduction_maxWeight O N ι lam ϖ hϖ hlam GlobalTheory.T.highest_weight_base_change (GlobalTheory.T.genericRowCoef_mem_coefAlgebra_of_domain O N ι lam) Gm hs hsub w hanti hwS hmax'⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.HighWt.res_extW]`. Use `⟨hanti τ, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(hB w hwS τ).1` as an intermediate fact. Simplify `this` using `[GlobalTheory.HighWt.extW, Fin.is_lt]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `a`. Simplify `(hB w hwS τ).2 a` using `[GlobalTheory.HighWt.extW, Fin.is_lt]`. Take `⟨a, ha, -⟩` from `GlobalTheory.T.existsUnique_dualWeylWeightProjector O N ι lam τ (w τ)`. Take `⟨z, hz, hfix⟩` from `hwS`. Set `e : alg O N lam` to `⟨a, Algebra.subset_adjoin (Or.inr ⟨τ, w τ, ha⟩)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e, z, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[hfix τ e ha]`. Conclude with `hz`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HighWt.simpleSubquot_embeds : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (lam : ι → ℕ → ℕ) (ϖ : O), Irreducible ϖ → (∀ τ, Antitone (res N (lam τ))) → ∀ (Gm : Type) [AddCommGroup Gm] [Module (alg O N lam) Gm], IsSimpleModule (alg O N lam) Gm → SubQ O N lam ϖ Gm → ∃ mu : ι → ℕ → ℕ, (∀ τ, Antitone (res N (mu τ)) ∧ ∑ a : Fin N, mu τ a = ∑ a : Fin N, lam τ a ∧ (∀ a : Fin N, lam τ (N - 1) ≤ mu τ a ∧ mu τ a ≤ lam τ 0) ∧ ∃ (e : alg O N lam) (z : Gm), IsProj O N lam τ (res N (mu τ)) e ∧ e • z ≠ 0) ∧ Embeds O N lam mu ϖ Gm := by
   intro O _ _ _ _ N ι _ _ lam ϖ hϖ hlam Gm _ _ hs hsub

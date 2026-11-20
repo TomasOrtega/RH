@@ -6,21 +6,21 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open Matrix
 
 /- English proof (translation)
-Set `e : R ≃ Fin n` to `Fintype.equivFinOfCardEq hR`. Set `A : Matrix (Fin n) (Fin n) ℂ` to `Matrix.of fun i k => M (e.symm i) k`. Set `N : Matrix (Fin n) (Fin n) ℂ` to `Matrix.of fun i k => (ν (e.symm i) : ℂ) * M (e.symm i) k`. Establish `hG : (Matrix.of fun k l : Fin n => ∑ r, M r k * M r l) = Aᵀ * A`. Use extensionality with `k l`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, A]`. Conclude with `(Equiv.sum_comp e.symm (fun r => M r k * M r l)).symm`. Establish `hNd : N = Matrix.diagonal (fun i => (ν (e.symm i) : ℂ)) * A`. Use extensionality with `i k`. Simplify using `[N, A, Matrix.diagonal_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hprod : ∏ i, ν (e.symm i) = ∏ r, ν r` using `Equiv.prod_comp e.symm ν`. Establish `hνpos : 0 ≤ ∏ r, ν r` using `Finset.prod_nonneg fun r _ => (hν r).le`. Establish `hdetN : ‖N.det‖ = (∏ r, ν r) * ‖A.det‖`. Rewrite using `[hNd, Matrix.det_mul, Matrix.det_diagonal, norm_mul, norm_prod, ← hprod]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (hν _)]`. Establish `hleft : ‖(Matrix.of fun k l : Fin n => ∑ r, M r k * M r l).det‖ * ∏ r, ν r ^ 2 = ‖N.det‖ ^ 2`. Rewrite using `[hG, Matrix.det_mul, Matrix.det_transpose, norm_mul, hdetN, Finset.prod_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hleft]`. Establish `hH : ‖N.det‖ ≤ ∏ k, Real.sqrt (∑ i, ‖N i k‖ ^ 2)`. Use `hadamard_det_le Nᵀ` as an intermediate fact. Simplify `this` using `[Matrix.det_transpose, Matrix.transpose_apply]`. Establish `hcol : ∀ k, ∑ i, ‖N i k‖ ^ 2 ≤ (n : ℝ) * s k ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Establish `: ∀ i, ‖N i k‖ ^ 2 ≤ s k ^ 2`. Introduce `i`. Establish `h1 : ‖N i k‖ = ‖M (e.symm i) k‖ * ν (e.symm i)`. Simplify using `only [N, Matrix.of_apply, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (hν _)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Conclude with `pow_le_pow_left₀ (mul_nonneg (norm_nonneg _) (hν _).le) (hM _ _) 2`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun k _ => Real.sq_sqrt (Finset.sum_nonneg fun i _ => by positivity)`. Use `_ ≤ ∏ k, ((n : ℝ) * s k ^ 2) := Finset.prod_le_prod (fun k _ => Finset.sum_nonneg fun i _ => by positivity) fun k _ => hcol k`. Use `_ = (n : ℝ) ^ n * ∏ k, s k ^ 2 := by`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+A detailed English derivation is pending.
 -/
 theorem hadamard_gram {R : Type*} [Fintype R] [DecidableEq R] {n : ℕ} (hR : Fintype.card R = n)
     (M : R → Fin n → ℂ) (ν : R → ℝ) (s : Fin n → ℝ) (hν : ∀ r, 0 < ν r)

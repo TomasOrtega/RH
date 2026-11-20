@@ -18,9 +18,9 @@ namespace GlobalTheory.SquareAgree
 variable {D : D7}
 
 /- English proof (translation)
-Establish `k : (Formalism.L2.Theta.mt X g)ᵀ * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gramᵀ * (Formalism.L2.Theta.mt X g).map (cA D) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gramᵀ`. Use `congrArg transpose (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.mt_gram X g)` as an intermediate fact. Rewrite `this` using `[transpose_mul, transpose_mul, transpose_transpose, ← Matrix.mul_assoc]`. Conclude with `this`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (reindex e e X.gramᵀ) = reindex e e (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gramᵀ)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM_smul, Matrix.mul_smul, Matrix.smul_mul, e1]`. Simplify using `only [reindex_apply, transpose_submatrix, submatrix_mul_equiv, ← Matrix.submatrix_map]`. Rewrite using `[k]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapX_mem (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) (g : GA D X) :
@@ -70,7 +70,7 @@ def algD (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ 
     Φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_zero (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (Φ : (Fin n × Fin d → AF F) → ℂ) :
     M.co.rho ψ 0 Φ = Φ := by
@@ -138,7 +138,7 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {W W₁ X : HSp D} {A 
   {cB : Matrix (Fin W₁.rank) (Fin (W.rank + W₁.rank)) (AE D) ≃+ WO W₁ X}
 
 /- English proof (translation)
-Use `(hO.weilA Φ f hD g h).2 0` as an intermediate fact. Rewrite `this` using `[rho_zero, map_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsOver.theta_eq_A (hO : IsOver ψ θ A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB) {Φ : _} {f : WO W X → ℂ}
     (hD : IsDatum Γ.M ψ cA Φ f) (g : GA D W) (h : GA D X) :
@@ -148,7 +148,7 @@ theorem IsOver.theta_eq_A (hO : IsOver ψ θ A A₁ B α β ν 𝓕 ν₁ 𝓕�
   exact this
 
 /- English proof (translation)
-Use `(hO.weilB Φ f hD g h).2 0` as an intermediate fact. Rewrite `this` using `[rho_zero, map_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsOver.theta_eq_B (hO : IsOver ψ θ A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB) {Φ : _} {f : WO W₁ X → ℂ}
     (hD : IsDatum Γ.M' ψ cB Φ f) (g : GA D W₁) (h : GA D X) :

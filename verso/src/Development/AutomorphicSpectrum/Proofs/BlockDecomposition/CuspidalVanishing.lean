@@ -12,7 +12,7 @@ variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `blk_mul b c p.2.1 q.2.1`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem levi_mul {s : ℕ} (b : ι → Fin s) (c : Fin s) (p q : parab K b) :
     levi K b c (p * q) = levi K b c p * levi K b c q := by
@@ -20,11 +20,9 @@ theorem levi_mul {s : ℕ} (b : ι → Fin s) (c : Fin s) (p q : parab K b) :
   exact blk_mul b c p.2.1 q.2.1
 
 /- English proof (translation)
-Use `⟨mul_mem hx.1 hy.1, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hx.2 i i rfl, if_pos rfl, one_mul]`. Conclude with `hy.2 i j hij`. Introduce `k _ hk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy (b k) (b i) with h | h | h` into its components or cases. Rewrite using `[hx.1.1 i k h, zero_mul]`. Rewrite using `[hx.2 i k h.symm, if_neg (Ne.symm hk), zero_mul]`. Rewrite using `[hy.1.1 k j (hij ▸ h), mul_zero]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unip_mul {s : ℕ} (b : ι → Fin s) {x y : GL ι K} (hx : x ∈ unip K b) (hy : y ∈ unip K b) :
     x * y ∈ unip K b := by
@@ -41,7 +39,7 @@ theorem unip_mul {s : ℕ} (b : ι → Fin s) {x y : GL ι K} (hx : x ∈ unip K
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Use `⟨one_mem _, fun i j _ => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem one_mem_unip {s : ℕ} (b : ι → Fin s) : (1 : GL ι K) ∈ unip K b := by
   refine ⟨one_mem _, fun i j _ => ?_⟩
@@ -50,13 +48,13 @@ theorem one_mem_unip {s : ℕ} (b : ι → Fin s) : (1 : GL ι K) ∈ unip K b :
 open Classical in
 
 /- English proof (translation)
-Use `set Y := Finset.univ.filter (fun v : GL ι K => v ∈ unip K bb) with hY`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`. Apply `hτ t bb hs ht` to reduce the goal to its premises. Introduce `y hy`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `himg : Y.image (fun v => y * v) = Y`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `z hz`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.mp hz`. Simplify using `only [hY, Finset.mem_filter, Finset.mem_univ, true_and] at hv ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `unip_mul bb hy hv`. Rewrite using `[Finset.card_image_of_injective _ (mul_right_injective y)]`. Establish `h1 : ∑ v ∈ Y, τ.ρ (y * v) = ∑ v ∈ Y, τ.ρ v` using `by conv_rhs => rw [← himg]`. Rewrite using `[Finset.sum_image (fun a _ b _ h => mul_right_injective y h)]`. Rewrite using `[LinearMap.sum_apply, map_sum, ← LinearMap.sum_apply, ← h1, LinearMap.sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_unip_rho {t : ℕ} (bb : ι → Fin t) (hs : Function.Surjective bb) (ht : 2 ≤ t)
     (τ : FDRep ℂ (GL ι K)) (hτ : IsCuspidal K τ) :
@@ -84,7 +82,7 @@ theorem sum_unip_rho {t : ℕ} (bb : ι → Fin t) (hs : Function.Surjective bb)
 open Classical in
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun P => LinearMap.trace ℂ τ (τ.ρ g * P)) (sum_unip_rho bb hs ht τ hτ)`. Simplify using `only [mul_zero, map_zero, Finset.mul_sum, map_sum] at h`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[FDRep.character, map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_char {t : ℕ} (bb : ι → Fin t) (hs : Function.Surjective bb) (ht : 2 ≤ t)
     (τ : FDRep ℂ (GL ι K)) (hτ : IsCuspidal K τ) (g : GL ι K) :
@@ -100,7 +98,7 @@ def rankMap {κ : Type} [Fintype κ] {s : ℕ} (β : κ → Fin s) :
   ((Finset.univ.image β).orderIsoOfFin rfl).symm ⟨β i, Finset.mem_image_of_mem _ (Finset.mem_univ _)⟩
 
 /- English proof (translation)
-Simplify using `only [rankMap]`. Rewrite using `[OrderIso.lt_iff_lt]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem rankMap_lt {κ : Type} [Fintype κ] {s : ℕ} (β : κ → Fin s) (i j : κ) :
     rankMap β i < rankMap β j ↔ β i < β j := by
@@ -109,7 +107,7 @@ theorem rankMap_lt {κ : Type} [Fintype κ] {s : ℕ} (β : κ → Fin s) (i j :
   exact Iff.rfl
 
 /- English proof (translation)
-Simplify using `only [rankMap]`. Rewrite using `[EmbeddingLike.apply_eq_iff_eq, Subtype.mk.injEq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rankMap_eq {κ : Type} [Fintype κ] {s : ℕ} (β : κ → Fin s) (i j : κ) :
     rankMap β i = rankMap β j ↔ β i = β j := by
@@ -117,9 +115,9 @@ theorem rankMap_eq {κ : Type} [Fintype κ] {s : ℕ} (β : κ → Fin s) (i j :
   rw [EmbeddingLike.apply_eq_iff_eq, Subtype.mk.injEq]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨i, -, hi⟩` from `Finset.mem_image.mp (((Finset.univ.image β).orderIsoOfFin rfl) x).2`. Use `⟨i, ?_⟩` and prove the remaining obligations. Simplify using `only [rankMap]`. Rewrite using `[OrderIso.symm_apply_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext hi`.
+A detailed English derivation is pending.
 -/
 theorem rankMap_surj {κ : Type} [Fintype κ] {s : ℕ} (β : κ → Fin s) :
     Function.Surjective (rankMap β) := by
@@ -134,9 +132,9 @@ def extHom {s : ℕ} (b : ι → Fin s) (c : Fin s) : GL {i // b i = c} K →* G
   (leviEmb K (fun i => b i = c)).comp (MonoidHom.inl _ _)
 
 /- English proof (translation)
-Establish `h0 : (extHom b c v : Matrix ι ι K) = (Matrix.fromBlocks (v : Matrix {i // b i = c} {i // b i = c} K) 0 0 1).submatrix (Equiv.sumCompl (fun i => b i = c)).symm (Equiv.sumCompl (fun i => b i = c)).symm` using `rfl`. Rewrite using `[h0, Matrix.submatrix_apply]`. Apply the tactic sequence `by_cases hi : b i = c <;> by_cases hj : b j = c`. Simplify using `[hi, hj, Equiv.sumCompl_symm_apply_of_pos]`. Establish `: i ≠ j` using `fun h => hj (h ▸ hi)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hi, hj, Equiv.sumCompl_symm_apply_of_pos, Equiv.sumCompl_symm_apply_of_neg, this]`. Establish `: i ≠ j` using `fun h => hi (h ▸ hj)`. Simplify using `[hi, hj, Equiv.sumCompl_symm_apply_of_pos, Equiv.sumCompl_symm_apply_of_neg, this]`. Simplify using `[hi, hj, Equiv.sumCompl_symm_apply_of_neg, Matrix.one_apply, Subtype.ext_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem extHom_apply {s : ℕ} (b : ι → Fin s) (c : Fin s) (v : GL {i // b i = c} K) (i j : ι) :
     (extHom b c v : Matrix ι ι K) i j =
@@ -154,9 +152,7 @@ theorem extHom_apply {s : ℕ} (b : ι → Fin s) (c : Fin s) (v : GL {i // b i 
   · simp [hi, hj, Equiv.sumCompl_symm_apply_of_neg, Matrix.one_apply, Subtype.ext_iff]
 
 /- English proof (translation)
-Introduce `i j h`. Rewrite using `[extHom_apply]`. Use `split_ifs with h1 h2`. Conclude with `hw _ _ ((rankMap_lt _ _ _).mpr h)`. Conclude with `absurd (h2 ▸ h) (lt_irrefl _)`.
-
-Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem extHom_blockUT {s s' : ℕ} (b : ι → Fin s) (c : Fin s) (β : ι → Fin s')
     {w : GL {i // b i = c} K}
@@ -171,9 +167,9 @@ theorem extHom_blockUT {s s' : ℕ} (b : ι → Fin s) (c : Fin s) (β : ι → 
   · rfl
 
 /- English proof (translation)
-Use `⟨⟨extHom_blockUT b c β hv.1.1, ?_⟩, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `extHom_blockUT b c β hv.1.2`. Rewrite using `[extHom_apply]`. Distinguish the cases in `h : b i = c ∧ b j = c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos h, hv.2 _ _ ((rankMap_eq _ _ _).mpr hij)]`. Simplify using `[Subtype.ext_iff]`. Rewrite using `[dif_neg h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extHom_mem_unip {s s' : ℕ} (b : ι → Fin s) (c : Fin s) (β : ι → Fin s')
     {v : GL {i // b i = c} K} (hv : v ∈ unip K (rankMap fun i : {i // b i = c} => β i.1)) :
@@ -188,7 +184,7 @@ theorem extHom_mem_unip {s s' : ℕ} (b : ι → Fin s) (c : Fin s) (β : ι →
     · rw [dif_neg h]
 
 /- English proof (translation)
-Rewrite using `[extHom_apply, dif_neg (fun h => hij (h.1.trans h.2.symm)), if_neg (fun e => hij (congrArg b e))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extHom_off {s : ℕ} (b : ι → Fin s) (c : Fin s) (v : GL {i // b i = c} K) (i j : ι)
     (hij : b i ≠ b j) : (extHom b c v : Matrix ι ι K) i j = 0 := by
@@ -196,7 +192,7 @@ theorem extHom_off {s : ℕ} (b : ι → Fin s) (c : Fin s) (v : GL {i // b i = 
     if_neg (fun e => hij (congrArg b e))]
 
 /- English proof (translation)
-Simplify using `only [blkGL]`. Rewrite using `[dif_pos hg, dif_pos he, dif_pos (mul_mem hg he)]`. Conclude with `levi_mul b c ⟨g, hg⟩ ⟨e, he⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blkGL_mul {s : ℕ} (b : ι → Fin s) (c : Fin s) {g e : GL ι K} (hg : g ∈ parab K b)
     (he : e ∈ parab K b) : blkGL b c (g * e) = blkGL b c g * blkGL b c e := by
@@ -205,9 +201,9 @@ theorem blkGL_mul {s : ℕ} (b : ι → Fin s) (c : Fin s) {g e : GL ι K} (hg :
   exact levi_mul b c ⟨g, hg⟩ ⟨e, he⟩
 
 /- English proof (translation)
-Simplify using `only [blkGL]`. Rewrite using `[dif_pos hp]`. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext ?_` and prove the remaining obligations. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `(extHom b c v : Matrix ι ι K) i j = _`. Rewrite using `[extHom_apply, dif_pos ⟨hi, hj⟩]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem blkGL_extHom_self {s : ℕ} (b : ι → Fin s) (c : Fin s) (v : GL {i // b i = c} K)
     (hp : extHom b c v ∈ parab K b) : blkGL b c (extHom b c v) = v := by
@@ -220,9 +216,9 @@ theorem blkGL_extHom_self {s : ℕ} (b : ι → Fin s) (c : Fin s) (v : GL {i //
   rw [extHom_apply, dif_pos ⟨hi, hj⟩]
 
 /- English proof (translation)
-Simplify using `only [blkGL]`. Rewrite using `[dif_pos hp]`. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext ?_` and prove the remaining obligations. Introduce and unpack `⟨i, hi⟩ ⟨j, hj⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `(extHom b c v : Matrix ι ι K) i j = (1 : Matrix {i // b i = c'} {i // b i = c'} K) ⟨i, hi⟩ ⟨j, hj⟩`. Rewrite using `[extHom_apply, dif_neg (fun h => hc (hi.symm.trans h.1)), Matrix.one_apply]`. Simplify using `[Subtype.ext_iff]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blkGL_extHom_ne {s : ℕ} (b : ι → Fin s) {c c' : Fin s} (hc : c' ≠ c)
     (v : GL {i // b i = c} K) (hp : extHom b c v ∈ parab K b) :
@@ -237,19 +233,17 @@ theorem blkGL_extHom_ne {s : ℕ} (b : ι → Fin s) {c c' : Fin s} (hc : c' ≠
   simp [Subtype.ext_iff]
 
 /- English proof (translation)
-Use `set βc : {i // b i = c} → Fin s' := fun i => β i.1 with hβc`. Establish `ht : 2 ≤ (Finset.univ.image βc).card` using `Finset.one_lt_card.mpr ⟨βc ⟨i₀, hi⟩, Finset.mem_image_of_mem _ (Finset.mem_univ _), βc ⟨j₀, hj⟩, Finset.mem_image_of_mem _ (Finset.mem_univ _), hβ⟩`. Establish `key : ∀ Y : Finset (GL {i // b i = c} K), (∀ v ∈ Y, v ∈ unip K (rankMap βc)) → 1 ∈ Y → (∀ g, ∑ v ∈ Y, (lam c).character (g * v) = 0) → ∑ h, (if h ∈ H then F h * hcFun b (fun c => (lam c).character) h else 0) = 0`. Introduce `Y hY h1 hY0`. Use `set A : GL ι K → ℂ := fun h => ∏ c' ∈ Finset.univ.erase c, (lam c').character (blkGL b c' h) with hA`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set G : GL ι K → GL {i // b i = c} K → ℂ := fun h v => if h ∈ H then F h * ((lam c).character (blkGL b c h * v) * A h) else 0 with hG`. Use `set T : GL ι K → ℂ := fun h => if h ∈ H then F h * hcFun b (fun c => (lam c).character) h else 0 with hT`. Establish `step : ∀ v ∈ Y, ∑ h, T h = ∑ h, G h v`. Introduce `v hv`. Take `⟨heH, hFe⟩` from `hF (extHom b c v) (extHom_mem_unip b c β (hY v hv)) (extHom_off b c v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hep : extHom b c v ∈ parab K b` using `hH heH`. Use `(Equiv.sum_comp (Equiv.mulRight (extHom b c v)) T).symm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, hT, hG]`. Distinguish the cases in `hh : h ∈ H`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (mul_mem hh heH), if_pos hh, hFe h hh, hcFun, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ c), blkGL_mul b c (hH hh) hep, blkGL_extHom_self b c v hep]`. Use `congr 2`. Use `Finset.prod_congr rfl fun c' hc' => ?_` and prove the remaining obligations. Rewrite using `[blkGL_mul b c' (hH hh) hep, blkGL_extHom_ne b (Finset.ne_of_mem_erase hc') v hep, mul_one]`. Rewrite using `[if_neg hh, if_neg (fun h' => hh (by simpa using mul_mem h' (inv_mem heH)))]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcard : (Y.card : ℂ) * ∑ h, T h = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ = ∑ v ∈ Y, ∑ h, G h v := Finset.sum_congr rfl step`. Use `_ = ∑ h, ∑ v ∈ Y, G h v := Finset.sum_comm`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ = 0 := by`. Use `Finset.sum_eq_zero fun h _ => ?_` and prove the remaining obligations. Distinguish the cases in `hh : h ∈ H`. Simplify using `only [hG, if_pos hh]`. Rewrite using `[← Finset.mul_sum, ← Finset.sum_mul, hY0, zero_mul, mul_zero]`.
-
-Simplify using `only [hG, if_neg hh, Finset.sum_const_zero]`. Establish `hne : (Y.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (Finset.card_ne_zero_of_mem h1)`. Conclude with `(mul_eq_zero.mp hcard).resolve_left hne`. Conclude with `key _ (fun v hv => (Finset.mem_filter.mp hv).2) (Finset.mem_filter.mpr ⟨Finset.mem_univ _, one_mem_unip _⟩) (sum_char (rankMap βc) (rankMap_surj βc) ht (lam c) (hcusp c))`.
+A detailed English derivation is pending.
 -/
 theorem vanish {s s' : ℕ} (b : ι → Fin s) (β : ι → Fin s')
     (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)) (hcusp : ∀ c, IsCuspidal K (lam c))
@@ -306,7 +300,7 @@ theorem vanish {s s' : ℕ} (b : ι → Fin s) (β : ι → Fin s')
     (sum_char (rankMap βc) (rankMap_surj βc) ht (lam c) (hcusp c))
 
 /- English proof (translation)
-Introduce `K _ _ _ ι _ _ s s' b β lam hcusp ⟨i₀, j₀, hb, hβ⟩ H F hH hF`. Conclude with `vanish b β lam hcusp (b i₀) i₀ j₀ rfl hb.symm hβ H F hH hF`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspVanish : ReciprocityTheory.Ty.Fin.St.CuspVanish := by
   intro K _ _ _ ι _ _ s s' b β lam hcusp ⟨i₀, j₀, hb, hβ⟩ H F hH hF

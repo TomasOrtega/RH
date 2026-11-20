@@ -10,9 +10,9 @@ namespace GlobalTheory.EtaCompare
 open WithZero
 
 /- English proof (translation)
-Use `set v := (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E`. Establish `hint : ∀ y : K.E, v y ≤ 1 ↔ y ∈ (algebraMap K.O K.E).range`. Introduce `y`. Use `⟨fun h => IsDiscreteValuationRing.exists_lift_of_le_one h, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(IsDiscreteValuationRing.maximalIdeal K.O).valuation_le_one a`. Establish `hφb : φ b ≠ 0` using `by simpa using hb`. Establish `hvb : v b ≠ 0` using `(Valuation.ne_zero_iff v).2 hb`. Rewrite using `[← div_le_one₀ (norm_pos_iff.2 hφb), ← norm_div, ← map_div₀, hball, ← hint, map_div₀, div_le_one₀ (zero_lt_iff.2 hvb)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_iff_valuation_le (K : UQ) {E : Type} [NormedField E] (φ : K.E ≃+* E)
     (hball : ∀ y : K.E, ‖φ y‖ ≤ 1 ↔ y ∈ (algebraMap K.O K.E).range) (a b : K.E) (hb : b ≠ 0) :
@@ -30,11 +30,11 @@ theorem norm_le_iff_valuation_le (K : UQ) {E : Type} [NormedField E] (φ : K.E �
     div_le_one₀ (zero_lt_iff.2 hvb)]
 
 /- English proof (translation)
-Use `set v := (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Simplify using `[v]`. Distinguish the cases in `ha : a = 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `ha` using the available equality. Simplify using `only [map_zero, norm_zero, v]`. Prove the components needed by the constructor for the conclusion. Introduce `h; exact absurd (norm_eq_zero.1 h.symm) (by simpa using hb)`. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd ((Valuation.zero_iff _).1 h.symm) hb`. Rewrite using `[le_antisymm_iff, le_antisymm_iff, norm_le_iff_valuation_le K φ hball a b hb, norm_le_iff_valuation_le K φ hball b a ha]`.
+A detailed English derivation is pending.
 -/
 theorem norm_eq_iff_valuation_eq (K : UQ) {E : Type} [NormedField E] (φ : K.E ≃+* E)
     (hball : ∀ y : K.E, ‖φ y‖ ≤ 1 ↔ y ∈ (algebraMap K.O K.E).range) (a b : K.E) :
@@ -59,23 +59,21 @@ namespace GlobalTheory.EtaCompare
 open WithZero
 
 /- English proof (translation)
-Introduce `K F E _ _ _ _ hU φ hball x`. Use `set v := (IsDiscreteValuationRing.maximalIdeal K.O).valuation K.E with hv`. Establish `hn : ∀ t : F, ‖φ (φ.symm (algebraMap F E t))‖ = ‖t‖` using `fun t => by`. Rewrite using `[RingEquiv.apply_symm_apply, norm_algebraMap']`. Establish `key : (∃ y : F, ‖x‖ = ‖y‖ ^ 2) ↔ ∃ y : F, v (φ.symm (algebraMap F E x)) = v (φ.symm (algebraMap F E y)) ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[← hn x, ← hn y, ← norm_pow, ← map_pow φ, norm_eq_iff_valuation_eq K φ hball, map_pow]`. Take `⟨π, hπ⟩` from `(IsDiscreteValuationRing.maximalIdeal K.O).valuation_exists_uniformizer K.E`. Take `⟨p, hp⟩` from `hU.unram (φ π)`. Establish `hvp : v (φ.symm (algebraMap F E p)) = exp (-1)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hπ]`. Use `((norm_eq_iff_valuation_eq K φ hball _ _).1 ?_)` and prove the remaining obligations. Rewrite using `[hn, hp]`. Unfold `GlobalTheory.JR.eta UQ.eta val`. Rewrite using `[key]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv]`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `only [map_zero, WithZero.log_zero, neg_zero, zpow_zero, Rat.cast_one]`. Rewrite using `[if_pos ⟨0, by simp⟩]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set z := φ.symm (algebraMap F E x) with hz`. Establish `hz0 : z ≠ 0` using `by simpa [z] using hx`. Establish `hvz : v z ≠ 0` using `(Valuation.ne_zero_iff v).2 hz0`. Use `set m := log (v z) with hm`. Establish `hiff : (∃ y : F, v z = v (φ.symm (algebraMap F E y)) ^ 2) ↔ Even m`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Use `⟨log (v (φ.symm (algebraMap F E y))), ?_⟩` and prove the remaining obligations. Rewrite using `[hm, hy, log_pow, two_nsmul]`. Introduce and unpack `⟨l, hl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨p ^ (-l), ?_⟩` and prove the remaining obligations. Establish `hl' : log (v z) = l + l` using `hl`. Rewrite using `[map_zpow₀, map_zpow₀, map_zpow₀, hvp, ← WithZero.exp_zsmul, ← WithZero.exp_nsmul, ← WithZero.exp_log hvz, hl']`. Use `congr 1`. Simplify using `only [smul_eq_mul, nsmul_eq_mul]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `split_ifs with h`. Rewrite using `[Even.neg_one_zpow ((hiff.1 h).neg)]`. Simplify using the standard rewrite rules.
-
-Establish `ho : Odd (-m)` using `(Int.not_even_iff_odd.1 (fun he => h (hiff.2 (by simpa using he.neg))))`. Rewrite using `[Odd.neg_one_zpow ho]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eta_eq_uq_eta : ∀ (K : UQ) (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [GlobalTheory.JR.Unram F E] (φ : K.E ≃+* E),

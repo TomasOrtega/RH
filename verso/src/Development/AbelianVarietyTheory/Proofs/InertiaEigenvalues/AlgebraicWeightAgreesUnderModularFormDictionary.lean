@@ -24,19 +24,17 @@ noncomputable section
 namespace GlobalTheory.WeightDict
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Set `K : Subrepresentation ρ` to `{ toSubmodule := { carrier := {w | ∀ γ, B (ρ γ w) y = 0} add_mem' := fun {a b} ha hb γ => by rw [map_add, map_add, LinearMap.add_apply, ha γ, hb γ, add_zero] zero_mem' := fun γ => by simp smul_mem' := fun c a ha γ => by rw [map_smul, map_smul, LinearMap.smul_apply, ha γ, smul_zer …`. Use `hw (γ * g)` as an intermediate fact. Rewrite using `[map_mul] at this }` and apply the resulting hypothesis.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `K' : Subrepresentation σ` to `{ toSubmodule := LinearMap.ker B.flip apply_mem_toSubmodule := fun g z hz => by`. Rewrite `hz`, the goal using `[LinearMap.mem_ker]`. Use extensionality with `w`. Establish `h1` using `hB g (ρ g⁻¹ w) z`. Rewrite `h1` using `[Representation.self_inv_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h1.trans (LinearMap.congr_fun hz _) }`. Break down `hρ.eq_bot_or_eq_top K with h | h` into its components or cases. Establish `h1 : K.toSubmodule = ⊥` using `congrArg Subrepresentation.toSubmodule h`. Establish `h2 : x ∈ K.toSubmodule` using `hc`. Rewrite `h2` using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hx h2`. Establish `h1 : K.toSubmodule = ⊤` using `congrArg Subrepresentation.toSubmodule h`. Establish `hyK : y ∈ K'.toSubmodule`. Express the relevant statement in the definitionally equal form `B.flip y = 0`. Use extensionality with `w`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : w ∈ K.toSubmodule` using `by rw [h1]; exact Submodule.mem_top`. Establish `h3 : B (ρ 1 w) y = 0` using `h2 1`. Rewrite `h3` using `[map_one]`. Conclude with `h3`. Break down `hσ.eq_bot_or_eq_top K' with h' | h'` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : K'.toSubmodule = ⊥` using `congrArg Subrepresentation.toSubmodule h'`. Rewrite `hyK` using `[h3]`. Conclude with `hy hyK`. Establish `h3 : LinearMap.ker B.flip = ⊤` using `congrArg Subrepresentation.toSubmodule h'`. Use `hB0 (LinearMap.ext fun w => LinearMap.ext fun z => ?_)` and prove the remaining obligations.
-
-Establish `h4 : z ∈ LinearMap.ker B.flip` using `by rw [h3]; exact Submodule.mem_top`. Conclude with `LinearMap.congr_fun (LinearMap.mem_ker.1 h4) w`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_pair_ne_zero {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (hρ : ρ.IsIrreducible) (hσ : σ.IsIrreducible)
@@ -86,9 +84,9 @@ theorem exists_pair_ne_zero {G V W : Type} [Group G] [AddCommGroup V] [Module �
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 /- English proof (translation)
-Establish `hm : InfinitePlace.mk (ComplexEmbedding.conjugate τ) = InfinitePlace.mk τ` using `InfinitePlace.mk_conjugate_eq τ`. Establish `hne : ComplexEmbedding.conjugate τ ≠ τ` using `fun h => IsTotallyComplex.complexEmbedding_not_isReal τ (ComplexEmbedding.isReal_iff.2 h)`. Rewrite using `[GlobalTheory.EmbUnitary.coord_eq, GlobalTheory.EmbUnitary.coord_eq, hm]`. Unfold `GlobalTheory.EmbUnitary.twist`. Rewrite using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Break down `InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases. Rewrite using `[if_pos h, if_neg (by rw [h]; exact hne.symm)]`. Both sides reduce to the same expression. Rewrite using `[if_pos h, if_neg (by rw [h]; exact hne)]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coord_conjugate (τ : L →+* ℂ) (z : Cinf L) :
     coord (ComplexEmbedding.conjugate τ) z = starRingEnd ℂ (coord τ z) := by
@@ -105,15 +103,13 @@ theorem coord_conjugate (τ : L →+* ℂ) (z : Cinf L) :
     simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `MvPolynomial.eval _ _ = MvPolynomial.eval _ _`. Use `congr 2`. Use function extensionality and compare the values at `p`. Take `⟨σ, s, t⟩` from `p`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `(cEmb σ (x : UA L n)).val s t = _`. Unfold `NG.evPt`. Simplify using `only`. Use `split_ifs with h1 h2 h3`. Rewrite using `[h1]`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Establish `hu` using `Matrix.mem_unitaryGroup_iff.1 (GlobalTheory.EmbUnitary.cEmb_mem τ (x : UA L n))`. Rewrite using `[Units.inv_eq_of_mul_eq_one_right hu]`. Conclude with `coord_conjugate τ _`. Use `all_goals`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hk : InfinitePlace.mk σ ≠ InfinitePlace.mk τ` using `fun h => by`. Break down `InfinitePlace.mk_eq_iff.1 h with h | h` into its components or cases. Conclude with `h1 h`. Conclude with `h2 (by rw [← h]; ext z; simp)`. Establish `h4` using `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 x.2).2 σ) hk)`.
-
-Rewrite using `[h4]`. Simplify using `[Matrix.one_apply, h3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polyMat_embU {ι : Type} (P : ι → ι → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ) (τ : L →+* ℂ)
     (x : embU n τ) : GlobalTheory.WeightRealExt.polyMat P (x : UA L n) = GlobalTheory.AlgWtHW.evM P (NG.evPt τ (cEmb τ (x : UA L n))) := by
@@ -141,13 +137,13 @@ theorem polyMat_embU {ι : Type} (P : ι → ι → MvPolynomial ((L →+* ℂ) 
     simp [Matrix.one_apply, h3]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g : UA L n => B (R g⁻¹ w) (b.equivFun.symm c)` using `(hcont w (B.flip (b.equivFun.symm c))).comp continuous_inv`. Establish `h2 : Continuous fun g : UA L n => B w (b.equivFun.symm (GlobalTheory.WeightRealExt.polyMat P g *ᵥ c))` using `(LinearMap.continuous_of_finiteDimensional (B w ∘ₗ b.equivFun.symm.toLinearMap)).comp ((GlobalTheory.WeightRealExt.continuous_polyMat P).matrix_mulVec continuous_const)`. Use `congrFun (Continuous.ext_on GlobalTheory.WeightRealExt.dense_rat_fin h1 h2 fun z hz => ?_) g` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, rfl⟩` from `Set.mem_mul.1 hz`. Take `⟨γ₀, hγ₀⟩` from `GlobalTheory.WeightRealExt.exists_unitaryRationalMatrix_of_mem_definiteUnitaryRational hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hR : R γ = ρ (GlobalTheory.WeightRealExt.ratPt γ₀)` using `hrat γ _ γ₀.1 hγ₀ rfl`. Establish `hM : GlobalTheory.WeightRealExt.polyMat P (γ * k) = LinearMap.toMatrix b b (a.ρ (GlobalTheory.WeightRealExt.ratPt γ₀))`. Establish `hk' : cInf k = 1` using `hk`. Rewrite using `[GlobalTheory.WeightRealExt.polyMat_congr P (g := γ * k) (h := γ) (by rw [map_mul, hk', mul_one]), GlobalTheory.WeightRealExt.polyMat_rat P γ γ₀.1 hγ₀]`. Conclude with `(hP _ γ₀.1 rfl).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : b.equivFun.symm (GlobalTheory.WeightRealExt.polyMat P (γ * k) *ᵥ c) = a.ρ (GlobalTheory.WeightRealExt.ratPt γ₀) (b.equivFun.symm c)`. Rewrite using `[hM, LinearEquiv.symm_apply_eq]`. Use `LinearMap.toMatrix_mulVec_repr b b (a.ρ (GlobalTheory.WeightRealExt.ratPt γ₀)) (b.equivFun.symm c)` as an intermediate fact. Rewrite `this` using `[← b.equivFun_apply, ← b.equivFun_apply, LinearEquiv.apply_symm_apply]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ρ (GlobalTheory.WeightRealExt.ratPt γ₀) (R (γ * k)⁻¹ w) = w`. Rewrite using `[_root_.mul_inv_rev, map_mul, hfin _ ((finU L n).inv_mem hk), one_mul, ← hR, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Express the relevant statement in the definitionally equal form `B (R (γ * k)⁻¹ w) _ = B w _`. Rewrite using `[e1, ← hB (GlobalTheory.WeightRealExt.ratPt γ₀), e2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_ext {W : Type} [AddCommGroup W] [Module ℂ W] {ρ : Representation ℂ (GQ L n) W} (a : NG.AlgWt L n)
     (R : UA L n →* Module.End ℂ W) (hfin : ∀ k ∈ finU L n, R k = 1)
@@ -187,11 +183,9 @@ theorem pair_ext {W : Type} [AddCommGroup W] [Module ℂ W] {ρ : Representation
   rw [e1, ← hB (GlobalTheory.WeightRealExt.ratPt γ₀), e2]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ π.W := π.alg.1`. Establish `hmem : (fun x => μ (f x)) ∈ U.map (LinearMap.funLeft ℂ ℂ F.j)`. Rewrite using `[hU.2]`. Conclude with `Submodule.subset_span ⟨f, hf, μ, rfl⟩`. Take `⟨u, hu, hue⟩` from `hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : GlobalTheory.FormDictEx.phi F R f μ ∈ GlobalTheory.DefU.autU L n` using `GlobalTheory.FormDictEx.isAutFormU_phi F π.ρ R hfin hrat hcont (π.irrS.1.le hf) μ`. Establish `hu' : u ∈ GlobalTheory.DefU.autU L n` using `hU.1.aut u hu`. Establish `h0` using `GlobalTheory.DefiniteDense.eq_zero_of_finU L n _ ((GlobalTheory.DefU.autU L n).sub_mem ha hu') fun y hy => by`. Take `⟨x, rfl⟩` from `F.onto y hy`. Rewrite using `[Pi.sub_apply, GlobalTheory.FormDictEx.phi_j F R hfin, sub_eq_zero]`.
-
-Conclude with `(congrFun hue x).symm`. Rewrite using `[sub_eq_zero.1 h0]`. Conclude with `hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_mem {F : FinIso L n} {π : NG.AutRep L n} {U : Submodule ℂ (UA L n → ℂ)} (hU : Dict F π U)
     (R : UA L n →* Module.End ℂ π.W) (hfin : ∀ k ∈ finU L n, R k = 1)
@@ -216,31 +210,25 @@ theorem phi_mem {F : FinIso L n} {π : NG.AutRep L n} {U : Submodule ℂ (UA L n
   exact hu
 
 /- English proof (translation)
-Introduce `L _ _ _ n F π U hU a hdual τ`. Take `⟨B, hB0, hB⟩` from `hdual`. Take `⟨R, hfin, hrat, hcont⟩` from `GlobalTheory.WeightRealExt.exists_extension L n π.toAlgWt`. Take `⟨_, ι, _, _, b, P, hP⟩` from `a.alg`. Take `⟨e, he⟩` from `GlobalTheory.EmbUnitary.exists_equiv_unitaryGroup L n τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hΦ` using `GlobalTheory.T.isPolynomialRepGLComplex_algebraicWeight_evalPoint L n a ι b P hP τ`. Use `set Φ : GL (Fin n) ℂ → Matrix ι ι ℂ := fun A => GlobalTheory.AlgWtHW.evM P (NG.evPt τ A) with hΦd`. Establish `hΦx : ∀ x : embU n τ, Φ (cEmb τ (x : UA L n)) = GlobalTheory.WeightRealExt.polyMat P (x : UA L n)` using `fun x => (polyMat_embU P τ x).symm`. Set `σ : Representation ℂ (Matrix.unitaryGroup (Fin n) ℂ) (ι → ℂ)` to `{ toFun := fun u => Matrix.mulVecLin (Φ (GlobalTheory.Branching.unitaryIncl n u)) map_one' := by`. Rewrite using `[map_one, hΦ.one, Matrix.mulVecLin_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use the proof step `map_mul' := fun u u' => by`. Rewrite using `[map_mul, hΦ.mul, Matrix.mulVecLin_mul]`. Use `rfl }`. Establish `hσc : ∀ (l : Module.Dual ℂ (ι → ℂ)) (v : ι → ℂ), Continuous fun u => l (σ u v)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `l v`. Establish `h1 : ∀ u, σ u v = GlobalTheory.WeightRealExt.polyMat P (e.symm u : UA L n) *ᵥ v` using `fun u => by`. Rewrite using `[← hΦx, ← he, e.apply_symm_apply]`. Both sides reduce to the same expression. Simplify using `only [h1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(LinearMap.continuous_of_finiteDimensional l).comp (((GlobalTheory.WeightRealExt.continuous_polyMat P).comp (continuous_subtype_val.comp e.symm.continuous)).matrix_mulVec continuous_const)`. Use `haveI : Nontrivial a.W := by`. Assume the negation of the conclusion as `hs`. Rewrite `hs` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hB0 (LinearMap.ext fun w => LinearMap.ext fun z => by rw [Subsingleton.elim z 0, map_zero, map_zero])`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Nontrivial (ι → ℂ) := b.equivFun.symm.toEquiv.nontrivial`. Take `⟨lam, M₀, hM₀⟩` from `GlobalTheory.UnitaryContainsType.exists_smallRep_intertwining n (ι → ℂ) σ hσc`. Set `M : nablaSq ℂ n lam →ₗ[ℂ] (ι → ℂ)` to `M₀.toLinearMap`. Establish `hM` using `GlobalTheory.T.dualWeylModule_intertwines_GL_of_unitaryGroup n lam ι Φ hΦ M fun u v => Representation.IntertwiningMap.isIntertwining _ _ M₀ u v`. Establish `hirr` using `GlobalTheory.DefU.isIrreducible_sqRep n lam`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hinj : ∀ v, v ≠ 0 → M v ≠ 0`. Introduce `v hv hMv`. Set `K : Subrepresentation (GlobalTheory.Branching.sqRep ℂ n lam)` to `{ toSubmodule := LinearMap.ker M apply_mem_toSubmodule := fun g z hz => by`. Rewrite `hz`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hM, hz, Matrix.mulVec_zero] }`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Break down `hirr.eq_bot_or_eq_top K with h | h` into its components or cases. Establish `h1 : LinearMap.ker M = ⊥` using `congrArg Subrepresentation.toSubmodule h`. Conclude with `hv (by rw [← Submodule.mem_bot ℂ, ← h1]; exact hMv)`. Establish `h1 : LinearMap.ker M = ⊤` using `congrArg Subrepresentation.toSubmodule h`. Conclude with `hM₀ (Representation.IntertwiningMap.ext (LinearMap.ker_eq_top.1 h1))`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨v₀, hv₀, hw⟩` from `GlobalTheory.T.exists_highest_weight_vector_dualWeylModule_upper n lam`. Use `⟨lam, ?_, ι, inferInstance, inferInstance, b, P, hP, M v₀, hinj v₀ hv₀, fun A hA => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hf0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot π.irrS.2.1`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x, f x ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `push Not at h`. Conclude with `hf0 (funext h)`. Use `⟨hirr, GlobalTheory.FormDictEx.phiR F R f ∘ₗ B.flip ∘ₗ b.equivFun.symm.toLinearMap ∘ₗ M, fun h0 => ?_, fun v => phi_mem hU R hfin hrat hcont hf (B.flip (b.equivFun.symm (M v))), fun x v => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `exists_pair_ne_zero π.irr a.irr B hB0 hB hx₀ ((LinearEquiv.map_ne_zero_iff b.equivFun.symm).2 (hinj v₀ hv₀))`. Apply `hγ` to reduce the goal to its premises.
-
-Establish `h1` using `congrFun (LinearMap.congr_fun h0 v₀) (F.j ((γ : GAf L n) * x₀))`. Express the relevant statement in the definitionally equal form `GlobalTheory.FormDictEx.phi F R f (B.flip (b.equivFun.symm (M v₀))) _ = 0 at h1`. Rewrite `h1` using `[GlobalTheory.FormDictEx.phi_j F R hfin, (π.irrS.1.le hf).1]`. Conclude with `h1`. Express the relevant statement in the definitionally equal form `GlobalTheory.FormDictEx.phi F R f (B.flip (b.equivFun.symm (M (GlobalTheory.Branching.sqRep ℂ n lam (cEmb τ (x : UA L n)) v)))) = RU L n (x : UA L n) (GlobalTheory.FormDictEx.phi F R f (B.flip (b.equivFun.symm (M v))))`.
-
-Rewrite using `[GlobalTheory.FormDictEx.RU_phi, GlobalTheory.FormDictEx.fy_inf F (Subgroup.mem_inf.1 x.2).1, GlobalTheory.FormDictEx.rt_one, hM, hΦx]`. Use `congr 1`. Conclude with `LinearMap.ext fun w => (pair_ext a R hfin hrat hcont B hB b P hP w (M v) x).symm`. Establish `h1` using `hM A v₀`. Rewrite `h1` using `[hw A hA, map_smul]`.
-
-Conclude with `h1.symm`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_agree : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (F : FinIso L n) (π : NG.AutRep L n)
     (U : Submodule ℂ (UA L n → ℂ)), Dict F π U → ∀ (a : NG.AlgWt L n), π.toAlgWt.IsDual a → ∀ τ : L →+* ℂ,

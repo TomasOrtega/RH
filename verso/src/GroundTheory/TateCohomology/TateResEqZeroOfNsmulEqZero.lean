@@ -11,7 +11,7 @@ universe u
 variable {k G : Type u} [CommRing k] [Group G] [Fintype G]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => f.hom x) (tateRes_app_comp_tateCores_app S A n)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tateCores_app_tateRes_app_apply (S : Subgroup G) [Fintype S] (A : Rep.{u} k G) (n : ℤ)
     (x : tateCohomology A n) :

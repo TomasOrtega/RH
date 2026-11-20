@@ -6,7 +6,7 @@ open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.KTypeExists.exists_kType | exact GlobalTheory.KTypeExists.exists_kType | (intros; apply GlobalTheory.KTypeExists.exists_kType <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_compactType_in_compactStable_submodule : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Mt n → (H →L[ℂ] H)), IsURepOn (UJset ε) σ → ∀ S : Submodule ℂ H, FiniteDimensional ℂ S → IsKStableOn ε σ S → S ≠ ⊥ → ∃ (μ : Fin n → ℝ) (S' : Submodule ℂ H), S' ≤ S ∧ IsKTypeOf ε σ μ S' := by
   first | exact @GlobalTheory.KTypeExists.exists_kType | exact GlobalTheory.KTypeExists.exists_kType | (intros; apply GlobalTheory.KTypeExists.exists_kType <;> assumption)

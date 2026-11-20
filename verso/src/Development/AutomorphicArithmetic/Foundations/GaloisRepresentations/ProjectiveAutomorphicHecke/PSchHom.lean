@@ -5,9 +5,9 @@ open NumberField IsDedekindDomain Matrix Polynomial GlobalTheory.CuspRep GlobalT
 open scoped Classical
 
 /- English proof (translation)
-Introduce `n t _`. Use `⟨fun lam c _ => UpperTheory.Gal.Schur.SchurHomog_holds ℂ n lam t c, fun m => ?_⟩` and prove the remaining obligations. Take `⟨h0, h1⟩` from `UpperTheory.Gal.Schur.SchurDet_holds ℂ n t`. Establish `h` using `h1 (fun _ => 0) m`. Simplify using `only [zero_add] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, h0, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pSchHom_of :
     UpperTheory.Gal.CertificateRingHomMap.SchHom := by

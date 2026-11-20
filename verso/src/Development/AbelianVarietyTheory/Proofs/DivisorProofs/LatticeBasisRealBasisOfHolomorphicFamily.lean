@@ -9,23 +9,21 @@ open Topology
 namespace GlobalTheory.LatReal
 
 /- English proof (translation)
-Introduce `n g r B K b₀ lam hF hb hspan hli hK`. Establish `hmemL : ∀ w, w ∈ Submodule.span ℤ (Set.range lam) ↔ w ∈ K b₀`. Introduce `w`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun, hK]`. Apply the tactic sequence `constructor <;> rintro ⟨k, hk⟩ <;> exact ⟨k, hk.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hsub : K b₀ ⊆ Submodule.span ℝ (Set.range lam)`. Introduce `w hw`. Take `⟨k, rfl⟩` from `(hK w).1 hw`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul ℝ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `htop : Submodule.span ℝ (Set.range lam) = ⊤`. Rewrite using `[eq_top_iff, ← hspan]`. Conclude with `Submodule.span_le.2 hsub`. Use `⟨?_, htop⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : (0 : Fin g → ℂ) ∈ K b₀` using `(hK 0).2 ⟨0, by simp⟩`. Take `⟨ζ, hζ0, -, hev⟩` from `hF.2.2.2 b₀ hb 0 h0`. Establish `ht : Filter.Tendsto (fun w : Fin g → ℂ => (b₀, w)) (𝓝 0) (𝓝 (b₀, 0))` using `(continuous_const.prodMk continuous_id).tendsto' 0 (b₀, 0) rfl`. Establish `hev' : ∀ᶠ w in 𝓝 (0 : Fin g → ℂ), (w ∈ K b₀ ↔ w = 0)` using `by filter_upwards [ht.eventually hev] with w hw`. Simplify `hw` using `[hζ0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨U, hU, hUo, hU0⟩` from `mem_nhds_iff.1 hev'`. Use `set L := Submodule.span ℤ (Set.range lam) with hLdef`. Use `haveI : DiscreteTopology L := by`. Apply `discreteTopology_of_isOpen_singleton_zero` to reduce the goal to its premises. Rewrite using `[isOpen_induced_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `⟨U, hUo, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `Subtype.ext ((hU hx).1 ((hmemL x).1 x.2))`. Introduce and unpack `rfl`. Conclude with `hU0`. Establish `hLset : (L : Set (Fin g → ℂ)) = K b₀`. Use extensionality with `w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmemL w`. Use `haveI : IsZLattice ℝ L := ⟨by rw [hLset, hspan]⟩`. Establish `hrank` using `ZLattice.rank ℝ L`. Establish `hcard : Module.finrank ℤ L = r`. Rewrite using `[Module.finrank_eq_card_basis (Module.Basis.span hli)]`.
-
-Simplify using the standard rewrite rules. Apply `linearIndependent_of_top_le_span_of_card_eq_finrank htop.ge` to reduce the goal to its premises. Rewrite using `[Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isRealBasis_of_isLatFam : ∀ (n g r : ℕ) (B : Set (Fin n → ℂ)) (K : (Fin n → ℂ) → Set (Fin g → ℂ))
     (b₀ : Fin n → ℂ) (lam : Fin r → Fin g → ℂ), IsLatFam B K → b₀ ∈ B → Submodule.span ℝ (K b₀) = ⊤ →

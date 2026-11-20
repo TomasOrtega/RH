@@ -3,11 +3,9 @@ open NumberField Matrix GlobalTheory.CuspRep GroundTheory.Automorphic GroundTheo
 
 open MeasureTheory in
 /- English proof (translation)
-Introduce `E _ _ a φ _ _ h r h0 h1 g`. Establish `hμ : (unipMeasure E a r).IsAddHaarMeasure` using `inferInstance`. Establish `hB : BorelSpace (UPos a r → AdeleRing (𝓞 E) E)` using `inferInstance`. Establish `hL : ratN E a r = unipLattice E a r` using `AddSubgroup.ext fun x => ⟨fun ⟨y, hy⟩ => ⟨y, hy⟩, fun ⟨y, hy⟩ => ⟨y, hy⟩⟩`. Establish `hu : ∀ x : UPos a r → AdeleRing (𝓞 E) E, unip x = unipGL x` using `fun x => Units.ext rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : IsAddFundamentalDomain (ratN E a r) (unipFundamentalDomain E a r) (unipMeasure E a r)`. Rewrite using `[hL]`. Conclude with `isAddFundamentalDomain_unipFundamentalDomain`. Establish `key` using `h r h0 h1 (unipMeasure E a r) (unipFundamentalDomain E a r) hμ hF g`. Simplify using `only [hu] at key`.
-
-Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.constantTerm_eq_zero_of_isCuspidal :
     UpperTheory.V.Fb.CuspTo := by

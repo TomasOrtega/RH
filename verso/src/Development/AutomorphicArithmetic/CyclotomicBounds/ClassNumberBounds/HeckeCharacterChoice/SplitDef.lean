@@ -9,13 +9,13 @@ def SplitsCompletely (E : Type*) [Field E] [NumberField E] (p : ℕ) : Prop :=
     P.ramificationIdx ℤ = 1 ∧ P.inertiaDeg ℤ = 1
 
 /- English proof (translation)
-The claim follows from `(Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).2 (Nat.prime_iff_prime_int.1 hp)`.
+A detailed English derivation is pending.
 -/
 private theorem span_isPrime {p : ℕ} (hp : p.Prime) : (Ideal.span {(p : ℤ)}).IsPrime :=
   (Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).2 (Nat.prime_iff_prime_int.1 hp)
 
 /- English proof (translation)
-Use `span_isPrime hp` as an intermediate fact. Establish `: (Ideal.span {(p : ℤ)}).IsMaximal` using `Ideal.IsPrime.isMaximal this (by simpa using hp.ne_zero)`. Conclude with `IsDedekindDomain.primesOver_finite _ _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem primesOver_finite (E : Type*) [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) :
     ((Ideal.span {(p : ℤ)}).primesOver (𝓞 E)).Finite := by
@@ -25,7 +25,7 @@ private theorem primesOver_finite (E : Type*) [Field E] [NumberField E] {p : ℕ
   exact IsDedekindDomain.primesOver_finite _ _
 
 /- English proof (translation)
-Use `span_isPrime hp` as an intermediate fact. Rewrite using `[Ideal.sum_ramification_inertia_eq_finrank, RingOfIntegers.rank]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_ef (E : Type*) [Field E] [NumberField E] {p : ℕ} (hp : p.Prime)
     [Fintype ((Ideal.span {(p : ℤ)}).primesOver (𝓞 E))] :
@@ -35,7 +35,7 @@ private theorem sum_ef (E : Type*) [Field E] [NumberField E] {p : ℕ} (hp : p.P
   rw [Ideal.sum_ramification_inertia_eq_finrank, RingOfIntegers.rank]
 
 /- English proof (translation)
-Use `q.2.1` as an intermediate fact. Conclude with `Nat.mul_pos (Ideal.ramificationIdx_pos _ _) (Ideal.inertiaDeg_pos _ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem one_le_ef (E : Type*) [Field E] [NumberField E] {p : ℕ}
     (q : (Ideal.span {(p : ℤ)}).primesOver (𝓞 E)) :
@@ -44,7 +44,7 @@ private theorem one_le_ef (E : Type*) [Field E] [NumberField E] {p : ℕ}
   exact Nat.mul_pos (Ideal.ramificationIdx_pos _ _) (Ideal.inertiaDeg_pos _ _)
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem ncard_eq_sum (E : Type*) [Field E] [NumberField E] {p : ℕ}
     [Fintype ((Ideal.span {(p : ℤ)}).primesOver (𝓞 E))] :
@@ -54,7 +54,7 @@ private theorem ncard_eq_sum (E : Type*) [Field E] [NumberField E] {p : ℕ}
   simp
 
 /- English proof (translation)
-Use `(primesOver_finite E hp).fintype` as an intermediate fact. Rewrite using `[ncard_eq_sum, ← sum_ef E hp]`. Conclude with `Finset.sum_le_sum fun q _ => one_le_ef E q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ncard_le (E : Type*) [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) :
     ((Ideal.span {(p : ℤ)}).primesOver (𝓞 E)).ncard ≤ Module.finrank ℚ E := by
@@ -63,17 +63,15 @@ private theorem ncard_le (E : Type*) [Field E] [NumberField E] {p : ℕ} (hp : p
   exact Finset.sum_le_sum fun q _ => one_le_ef E q
 
 /- English proof (translation)
-Use `Fact.mk hp` as an intermediate fact. Establish `hinj : Function.Injective (fun φ : 𝓞 E →+* ZMod p => RingHom.ker φ)` using `fun φ ψ h => ZMod.ringHom_eq_of_ker_eq φ ψ h`. Rewrite using `[← Set.ncard_range_of_injective hinj]`. Use `congr 1`. Use extensionality with `P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, rfl⟩`. Establish `h1 : (RingHom.ker φ).IsPrime` using `RingHom.ker_isPrime φ`. Establish `h2 : (RingHom.ker φ).LiesOver (Ideal.span {(p : ℤ)})`. Use `⟨?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ZMod.ker_intCastRingHom, Ideal.under_def, RingHom.comap_ker]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`. Use `⟨⟨h1, h2⟩, ?_⟩` and prove the remaining obligations. Establish `h3` using `Ideal.pow_inertiaDeg p (RingHom.ker φ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_congr (RingHom.quotientKerEquivOfSurjective (ZMod.ringHom_surjective φ)).toEquiv, Nat.card_zmod]`. Conclude with `Nat.pow_right_injective hp.two_le (by simpa using h3)`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Establish `h4` using `Ideal.pow_inertiaDeg p P`. Rewrite `h4` using `[h3, pow_one, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (𝓞 E ⧸ P)` using `Nat.finite_of_card_ne_zero (h4 ▸ hp.ne_zero)`. Use `Fintype.ofFinite (𝓞 E ⧸ P)` as an intermediate fact. Establish `e : ZMod p ≃+* (𝓞 E ⧸ P)` using `ZMod.ringEquivOfPrime (𝓞 E ⧸ P) hp (by rw [← Nat.card_eq_fintype_card, ← h4])`. Use `⟨e.symm.toRingHom.comp (Ideal.Quotient.mk P), ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
-
-Simplify using `[RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem card_hom_eq (E : Type*) [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) :
     Nat.card (𝓞 E →+* ZMod p) =
@@ -110,9 +108,9 @@ private theorem card_hom_eq (E : Type*) [Field E] [NumberField E] {p : ℕ} (hp 
     simp [RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-Use `(primesOver_finite E hp).fintype` as an intermediate fact. Rewrite using `[ncard_eq_sum, ← sum_ef E hp, Finset.sum_eq_sum_iff_of_le fun q _ => one_le_ef E q]`. Prove the components needed by the constructor for the conclusion. Introduce `h q _`. Take `⟨h1, h2⟩` from `h q.1 q.2.1 q.2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1, h2]`. Introduce `h P h1 h2`. Use `h ⟨P, h1, h2⟩ (Finset.mem_univ _)` as an intermediate fact. Conclude with `⟨Nat.eq_one_of_mul_eq_one_right this.symm, Nat.eq_one_of_mul_eq_one_left this.symm⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem splitsCompletely_iff_ncard (E : Type*) [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) :
     SplitsCompletely E p ↔
@@ -128,11 +126,11 @@ theorem splitsCompletely_iff_ncard (E : Type*) [Field E] [NumberField E] {p : �
     exact ⟨Nat.eq_one_of_mul_eq_one_right this.symm, Nat.eq_one_of_mul_eq_one_left this.symm⟩
 
 /- English proof (translation)
-Rewrite using `[card_hom_eq E hp]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← (splitsCompletely_iff_ncard E hp).1 h]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `P`. Conclude with `⟨fun h' => h'.1, fun h' => ⟨h', (h P h'.1 h'.2).2⟩⟩`. Introduce `h`. Use `(splitsCompletely_iff_ncard E hp).2 (le_antisymm (ncard_le E hp) ?_)` and prove the remaining obligations. Rewrite using `[← h]`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.ncard_le_ncard (fun P hP => hP.1) (primesOver_finite E hp)`.
+A detailed English derivation is pending.
 -/
 theorem splitsCompletely_iff_card_hom (E : Type*) [Field E] [NumberField E] {p : ℕ}
     (hp : p.Prime) :
@@ -150,9 +148,9 @@ theorem splitsCompletely_iff_card_hom (E : Type*) [Field E] [NumberField E] {p :
     exact Set.ncard_le_ncard (fun P hP => hP.1) (primesOver_finite E hp)
 
 /- English proof (translation)
-Introduce `P h1 h2`. Establish `_` using `hp`. Take `⟨⟨Q, hQ1, hQ2⟩⟩` from `Ideal.nonempty_primesOver (S := 𝓞 L) P`. Establish `hQ3 : Q.LiesOver (Ideal.span {(p : ℤ)})` using `Ideal.LiesOver.trans Q P _`. Take `⟨h3, h4⟩` from `h Q hQ1 hQ3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Nat.dvd_one.1 (h3 ▸ Ideal.ramificationIdx_below_dvd (R := ℤ) P Q), Nat.dvd_one.1 (h4 ▸ Ideal.inertiaDeg_below_dvd (R := ℤ) P Q)⟩`.
+Supply the required witnesses or components.
 -/
 theorem SplitsCompletely.of_tower {E L : Type*} [Field E] [NumberField E] [Field L]
     [NumberField L] [Algebra E L] {p : ℕ} (hp : p.Prime) (h : SplitsCompletely L p) :

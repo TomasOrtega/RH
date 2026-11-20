@@ -12,7 +12,7 @@ namespace Formalism.MainNotions.PlaneGram
 open Formalism.MainNotions.G
 
 /- English proof (translation)
-Introduce `p O _ _ _ _ hSet hAdm`. Take `⟨⟨S⟩, n', hG⟩` from `hSet`. Take `⟨-, h2, h3, h4, h5, h6⟩` from `hAdm`. Conclude with `Br.plane_gram_of_theorem_at S hG (plane_gram_theorem_of_five_lemmas le_rfl (second_valuation_of_admitted h2) (brSPAN S h3) (brPROJ S h4) (brDIG D S hG h5) (brDER S h6)) hCH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stmt (D : Formalism.BasicNotions.D7) {CH : ℝ} (hCH : 26 ≤ CH) : Formalism.MainNotions.PlaneGramData.Stmt D CH 2 24 60 := by
   intro p O _ _ _ _ hSet hAdm
@@ -23,19 +23,19 @@ theorem stmt (D : Formalism.BasicNotions.D7) {CH : ℝ} (hCH : 26 ≤ CH) : Form
       (brDER S h6)) hCH
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨26, 2, 24, 60, by norm_num, by norm_num, by norm_num, by norm_num, fun _ hCH => stmt D hCH⟩`.
+Supply the required witnesses or components.
 -/
 theorem stmtE (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.PlaneGramData.ClosedFormOfAdmitted D :=
   ⟨26, 2, 24, 60, by norm_num, by norm_num, by norm_num, by norm_num, fun _ hCH => stmt D hCH⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨26, 2, 24, 60, by norm_num, by norm_num, by norm_num, by norm_num, 0, fun _ hCH _ _ _ => stmt _ hCH⟩`.
+Supply the required witnesses or components.
 -/
 theorem stmtEF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Formalism.MainNotions.PlaneGramData.FamilyClosedForm Fm :=
   ⟨26, 2, 24, 60, by norm_num, by norm_num, by norm_num, by norm_num, 0, fun _ hCH _ _ _ => stmt _ hCH⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨26, 2, 24, 60, by norm_num, by norm_num, by norm_num, by norm_num, fun _ _ _ => ⟨0, fun _ hCH _ _ _ => stmt _ hCH⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem stmtEDF (Fm : Formalism.MainNotions.DFamP) : Formalism.MainNotions.PlaneGramData.DerivativeStatementClosedDesign Fm :=
   ⟨26, 2, 24, 60, by norm_num, by norm_num, by norm_num, by norm_num,

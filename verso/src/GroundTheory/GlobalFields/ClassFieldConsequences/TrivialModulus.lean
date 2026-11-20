@@ -23,9 +23,7 @@ def IsUnramifiedEverywhere : Prop :=
 variable [NumberField L]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Conclude with `Ideal.ramificationIdx_eq_one_iff.2 (h w.asIdeal w.isPrime hw)`. Introduce `h P hP hPv`. Establish `hne : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P`.
-
-Conclude with `Ideal.ramificationIdx_eq_one_iff.1 (h ⟨P, hP, hne⟩ hPv)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnramifiedIn_iff_ramificationIdx (v : HeightOneSpectrum (𝓞 K)) :
     Algebra.IsUnramifiedIn (𝓞 L) v.asIdeal ↔
@@ -41,15 +39,15 @@ theorem isUnramifiedIn_iff_ramificationIdx (v : HeightOneSpectrum (𝓞 K)) :
 variable [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)]
 
 /- English proof (translation)
-Distinguish the cases in `hv : v.IsReal`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Establish `: w.LiesOver v`. Substitute `hw` using the available equality.
+Consider separately whether the proposition holds or fails. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨rfl⟩`. Assume the negation of the conclusion as `hram`. Establish `hneg : InfinitePlace.Completion.extensionEmbeddingOfIsReal hv ((-1 : (v.Completion)ˣ) : v.Completion) < 0`. Simplify using the standard rewrite rules. Establish `h1` using `infiniteLocalSymbol_apply L v hv ⟨w, this⟩ (-1)`.
+Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[h, if_pos hneg, MonoidHom.one_apply]`. Conclude with `conjAt_ne_one hram h1.symm`. Introduce `h ext1 x`. Take `⟨w⟩` from `IdeleNorm.nonempty_infinitePlacesOver L v`. Use `w.2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `NumberField.InfinitePlace.LiesOver.comap_eq (w : InfinitePlace L) v`. Establish `hw : (w : InfinitePlace L).IsReal` using `(NumberField.InfinitePlace.isUnramified_iff.1 (h _ hc)).resolve_right (by rw [hc]; exact NumberField.InfinitePlace.not_isComplex_iff_isReal.2 hv)`. Rewrite using `[infiniteLocalSymbol_apply L v hv w, MonoidHom.one_apply, conjAt_of_isReal hw, ite_self]`. Rewrite using `[infiniteLocalSymbol_of_not_isReal L v hv]`. Simplify using `only [true_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Conclude with `NumberField.InfinitePlace.isUnramified_iff.2 (Or.inr (hw ▸ NumberField.InfinitePlace.not_isReal_iff_isComplex.1 hv))`.
+A detailed English derivation is pending.
 -/
 theorem infiniteLocalSymbol_eq_one_iff (v : InfinitePlace K) :
     infiniteLocalSymbol L v = 1 ↔ v.IsUnramifiedIn L := by
@@ -82,7 +80,7 @@ theorem infiniteLocalSymbol_eq_one_iff (v : InfinitePlace K) :
       (Or.inr (hw ▸ NumberField.InfinitePlace.not_isReal_iff_isComplex.1 hv))
 
 /- English proof (translation)
-Take `⟨w⟩` from `nonempty_placesOver L v`. Conclude with `units_le_ker_localSymbol L v w ((isUnramifiedIn_iff_ramificationIdx K L v).1 h w.1 w.2)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem units_le_ker_localSymbol_of_isUnramifiedIn (v : HeightOneSpectrum (𝓞 K))
     (h : Algebra.IsUnramifiedIn (𝓞 L) v.asIdeal) :
@@ -91,9 +89,9 @@ theorem units_le_ker_localSymbol_of_isUnramifiedIn (v : HeightOneSpectrum (𝓞 
   exact units_le_ker_localSymbol L v w ((isUnramifiedIn_iff_ramificationIdx K L v).1 h w.1 w.2)
 
 /- English proof (translation)
-Establish `hN : ∀ v, (Submonoid.ofClass (v.adicCompletionIntegers K)).units ≤ (localSymbol L v).ker` using `fun v ↦ units_le_ker_localSymbol_of_isUnramifiedIn K L v (h.1 v)`. Establish `hNinf : ∀ w : InfinitePlace K, (⊤ : Subgroup (w.Completion)ˣ) ≤ (infiniteLocalSymbol L w).ker`. Introduce `w`. Rewrite using `[(infiniteLocalSymbol_eq_one_iff K L w).2 (h.2 w), MonoidHom.ker_one]`. Establish `h1 : ∀ v, localSymbol L v (finiteProj v x) = 1` using `fun v ↦ hN v (hx v)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ w, infiniteLocalSymbol L w (infiniteProj w x) = 1` using `fun w ↦ hNinf w (Subgroup.mem_top _)`. Rewrite using `[ideleSymbol_apply]`. Simplify using `only [h1, h2, finprod_one, Finset.prod_const_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ideleSymbol_eq_one_of_isUnramifiedEverywhere (h : IsUnramifiedEverywhere K L)
     {x : IdeleGroup K} (hx : ∀ v, finiteProj v x ∈ (Submonoid.ofClass (v.adicCompletionIntegers K)).units) :
@@ -115,13 +113,11 @@ section Descent
 variable {K : Type*} [Field K] [NumberField K] {Ω : Type*} [Field Ω] [Algebra K Ω]
 
 /- English proof (translation)
-Use `⟨fun v ↦ GroundTheory.ProfCoh.isUnramifiedIn_of_le hEM v (hM.1 v), fun v w hw ↦ ?_⟩` and prove the remaining obligations. Establish `: FiniteDimensional K E` using `GroundTheory.ProfCoh.finiteDimensional_of_le hEM`. Set `_ : Algebra E M` to `(IntermediateField.inclusion hEM).toAlgebra`. Establish `: IsScalarTower K E M` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Establish `: Module.Finite E M` using `Module.Finite.of_restrictScalars_finite K E M`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w', rfl⟩` from `NumberField.InfinitePlace.comap_surjective (K := M) w`. Rewrite using `[NumberField.InfinitePlace.isUnramified_iff]`. Distinguish the cases in `hv : v.IsReal`. Use `left`. Establish `hc : w'.comap (algebraMap K M) = v`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_eq K E M, NumberField.InfinitePlace.comap_comp, hw]`. Establish `hw'r : w'.IsReal` using `(NumberField.InfinitePlace.isUnramified_iff.1 (hM.2 v w' hc)).resolve_right (by rw [hc]; exact NumberField.InfinitePlace.not_isComplex_iff_isReal.2 hv)`. Conclude with `hw'r.comap _`. Use `right`. Rewrite using `[hw]`.
-
-Conclude with `NumberField.InfinitePlace.not_isReal_iff_isComplex.1 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsUnramifiedEverywhere.of_le {E M : IntermediateField K Ω} (hEM : E ≤ M) [FiniteDimensional K M]
     (hM : IsUnramifiedEverywhere K M) : IsUnramifiedEverywhere K E := by
@@ -153,7 +149,7 @@ def one : Modulus K :=
   ⟨⊤, top_ne_bot, ∅⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `¬ v.asIdeal ∣ ⊤`. Rewrite using `[Ideal.dvd_iff_le]`. Conclude with `fun h ↦ v.isPrime.ne_top (top_le_iff.1 h)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_dvd_one_ideal (v : HeightOneSpectrum (𝓞 K)) : ¬ v.asIdeal ∣ (one : Modulus K).ideal := by
   change ¬ v.asIdeal ∣ ⊤
@@ -161,32 +157,32 @@ theorem not_dvd_one_ideal (v : HeightOneSpectrum (𝓞 K)) : ¬ v.asIdeal ∣ (o
   exact fun h ↦ v.isPrime.ne_top (top_le_iff.1 h)
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun _ _ ↦ one.mem_idelesOneMod.2 ⟨fun v hv ↦ (not_dvd_one_ideal v hv).elim, fun _ hw ↦ hw.elim⟩`.
+A detailed English derivation is pending.
 -/
 theorem idelesOneMod_one : (one : Modulus K).idelesOneMod = ⊤ :=
   eq_top_iff.2 fun _ _ ↦ one.mem_idelesOneMod.2
     ⟨fun v hv ↦ (not_dvd_one_ideal v hv).elim, fun _ hw ↦ hw.elim⟩
 
 /- English proof (translation)
-Rewrite using `[congruenceSubgroup_eq_inf, idelesOneMod_one, top_inf_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem congruenceSubgroup_one : (one : Modulus K).congruenceSubgroup = standardOpenSubgroup K := by
   rw [congruenceSubgroup_eq_inf, idelesOneMod_one, top_inf_eq]
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun _ _ v hv ↦ (not_dvd_one_ideal v hv).elim`.
+A detailed English derivation is pending.
 -/
 theorem coprimeIdeals_one : (one : Modulus K).coprimeIdeals = ⊤ :=
   eq_top_iff.2 fun _ _ v hv ↦ (not_dvd_one_ideal v hv).elim
 
 /- English proof (translation)
-Rewrite using `[rayUnits, idelesOneMod_one, Subgroup.comap_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rayUnits_one : (one : Modulus K).rayUnits = ⊤ := by
   rw [rayUnits, idelesOneMod_one, Subgroup.comap_top]
 
 /- English proof (translation)
-Rewrite using `[← (ClassGroup.equiv K).injective.eq_iff, ClassGroup.equiv_mk, map_one, FractionalIdeal.canonicalEquiv_self, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem classGroup_mk_eq_one_iff {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} :
     ClassGroup.mk K I = 1 ↔ I ∈ (toPrincipalIdeal (𝓞 K) K).range := by
@@ -198,7 +194,7 @@ def toClassGroup : (one : Modulus K).coprimeIdeals →* ClassGroup (𝓞 K) :=
   (ClassGroup.mk K).comp (one : Modulus K).coprimeIdeals.subtype
 
 /- English proof (translation)
-Introduce `c`. Take `⟨I, rfl⟩` from `ClassGroup.mk0_surjective c`. Use `⟨⟨FractionalIdeal.mk0 K I, by rw [coprimeIdeals_one]; trivial⟩, ?_⟩` and prove the remaining obligations. Conclude with `ClassGroup.mk_mk0 (K := K) I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem toClassGroup_surjective : Function.Surjective (toClassGroup (K := K)) := by
   intro c
@@ -207,7 +203,7 @@ theorem toClassGroup_surjective : Function.Surjective (toClassGroup (K := K)) :=
   exact ClassGroup.mk_mk0 (K := K) I
 
 /- English proof (translation)
-Use extensionality with `I`. Rewrite using `[MonoidHom.mem_ker, toClassGroup, MonoidHom.comp_apply, Subgroup.coe_subtype, classGroup_mk_eq_one_iff, mem_principalRay, rayUnits_one, MonoidHom.mem_range]`. Simplify using `only [Subgroup.mem_top, true_and]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ker_toClassGroup : (toClassGroup (K := K)).ker = (one : Modulus K).principalRay := by
   ext I
@@ -227,7 +223,7 @@ theorem classGroupEquiv_mk (I : (one : Modulus K).coprimeIdeals) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[primeClass, classGroupEquiv_mk, ← ClassGroup.mk_mk0 (K := K)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem classGroupEquiv_primeClass (v : HeightOneSpectrum (𝓞 K)) :
     classGroupEquiv (one.primeClass (not_dvd_one_ideal v)) =

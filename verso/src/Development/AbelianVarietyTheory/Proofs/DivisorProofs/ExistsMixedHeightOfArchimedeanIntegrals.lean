@@ -9,9 +9,9 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 namespace GlobalTheory.MixHt
 
 /- English proof (translation)
-Introduce `hI hR`. Establish `key : ∀ m : ℕ, ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (q : Y ⟶ Sp k), IsAmb q → ∃ T, IsMix q m T`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro k _ Y q _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `⟨_, isMix_zero q⟩`. Consider the case `succ m ih => exact GlobalTheory.T.isMixedHeightByInduction_succ hI hR m ih`. Introduce `k _ Y q h m`. Conclude with `key m k Y q h`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isMix_of_arch : ArchInteg → ArchRecip →
     (∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (q : Y ⟶ Sp k), IsAmb q → ∀ m : ℕ, ∃ T, IsMix q m T) := by
@@ -27,7 +27,7 @@ theorem exists_isMix_of_arch : ArchInteg → ArchRecip →
 end GlobalTheory.MixHt
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.MixHt.exists_isMix_of_arch`.
+A detailed English derivation is pending.
 -/
 example : ArchInteg → ArchRecip → (∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (q : Y ⟶ Sp k), IsAmb q → ∀ m : ℕ, ∃ T, IsMix q m T) :=
   GlobalTheory.MixHt.exists_isMix_of_arch

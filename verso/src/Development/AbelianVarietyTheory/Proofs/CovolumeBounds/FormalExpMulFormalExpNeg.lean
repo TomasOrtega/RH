@@ -15,14 +15,14 @@ noncomputable def formalLog (g : MvPowerSeries σ A) : MvPowerSeries σ A :=
 
 omit [Algebra ℚ A] in
 /- English proof (translation)
-The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero (by simp [hg])`.
+A detailed English derivation is pending.
 -/
 private theorem hasSubst_sub_one {g : MvPowerSeries σ A} (hg : constantCoeff g = 1) :
     PowerSeries.HasSubst (g - 1) :=
   PowerSeries.HasSubst.of_constantCoeff_zero (by simp [hg])
 
 /- English proof (translation)
-Establish `h` using `constantCoeff_subst_of_zero (σ := Unit) (a := fun _ => f) (PowerSeries.HasSubst.of_constantCoeff_zero hf).const (fun _ => hf) (PowerSeries.exp A)`. Rewrite using `[formalExp, PowerSeries.subst, h, ← PowerSeries.constantCoeff_eq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_formalExp {f : MvPowerSeries σ A} (hf : constantCoeff f = 0) :
     constantCoeff (formalExp f) = 1 := by
@@ -32,21 +32,21 @@ theorem constantCoeff_formalExp {f : MvPowerSeries σ A} (hf : constantCoeff f =
   simp
 
 /- English proof (translation)
-The claim follows from `PowerSeries.constantCoeff_subst_eq_zero (by simp [hg]) _ PowerSeries.constantCoeff_log`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_formalLog {g : MvPowerSeries σ A} (hg : constantCoeff g = 1) :
     constantCoeff (formalLog g) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero (by simp [hg]) _ PowerSeries.constantCoeff_log
 
 /- English proof (translation)
-The claim follows from `isUnit_iff_constantCoeff.mpr (by rw [constantCoeff_formalExp hf]; exact isUnit_one)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_formalExp {f : MvPowerSeries σ A} (hf : constantCoeff f = 0) :
     IsUnit (formalExp f) :=
   isUnit_iff_constantCoeff.mpr (by rw [constantCoeff_formalExp hf]; exact isUnit_one)
 
 /- English proof (translation)
-Rewrite using `[formalExp, pderiv_powerSeries_subst (PowerSeries.HasSubst.of_constantCoeff_zero hf), PowerSeries.derivative_exp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_formalExp {f : MvPowerSeries σ A} (hf : constantCoeff f = 0) (i : σ) :
     pderiv A i (formalExp f) = formalExp f * pderiv A i f := by
@@ -54,9 +54,9 @@ theorem pderiv_formalExp {f : MvPowerSeries σ A} (hf : constantCoeff f = 0) (i 
     PowerSeries.derivative_exp]
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.deriv_log]`. Use extensionality with `n`. Rewrite using `[add_mul, one_mul, map_add]`. Consider the cases of `n with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ n => simp [PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_one, pow_succ]`.
+Treat this case separately.
 -/
 private theorem one_add_X_mul_deriv_log :
     (1 + PowerSeries.X) * PowerSeries.derivative A (PowerSeries.log A) = 1 := by
@@ -68,7 +68,7 @@ private theorem one_add_X_mul_deriv_log :
   | succ n => simp [PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_one, pow_succ]
 
 /- English proof (translation)
-Establish `hs` using `hasSubst_sub_one hg`. Establish `h` using `congrArg (PowerSeries.substAlgHom (R := A) hs) (one_add_X_mul_deriv_log (A := A))`. Rewrite `h` using `[map_mul, map_add, map_one, PowerSeries.substAlgHom_X, add_sub_cancel, PowerSeries.coe_substAlgHom]`. Rewrite using `[formalLog, pderiv_powerSeries_subst hs, ← mul_assoc, h, map_sub, pderiv_one, sub_zero, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_pderiv_formalLog {g : MvPowerSeries σ A} (hg : constantCoeff g = 1) (i : σ) :
     g * pderiv A i (formalLog g) = pderiv A i g := by
@@ -80,9 +80,9 @@ theorem mul_pderiv_formalLog {g : MvPowerSeries σ A} (hg : constantCoeff g = 1)
     one_mul]
 
 /- English proof (translation)
-Use `haveI : IsAddTorsionFree A := .of_module_rat A`. Establish `hn : constantCoeff (-f) = 0` using `by simp [hf]`. Establish `key : ∀ v : MvPowerSeries σ A, constantCoeff v = 1 → (∀ i, pderiv A i v = v * pderiv A i f) → v * formalExp (-f) = 1`. Introduce `v hv hd`. Use `pderiv.ext (fun i => ?_) (by simp [hv, constantCoeff_formalExp hn])` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Derivation.leibniz, pderiv_formalExp hn, hd, map_neg, pderiv_one, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(isUnit_formalExp hn).mul_right_cancel ((key u hu h).trans (key _ (constantCoeff_formalExp hf) (pderiv_formalExp hf)).symm)`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eq_formalExp_of_pderiv {f u : MvPowerSeries σ A} (hf : constantCoeff f = 0)
     (hu : constantCoeff u = 1) (h : ∀ i, pderiv A i u = u * pderiv A i f) :
@@ -100,7 +100,7 @@ theorem eq_formalExp_of_pderiv {f u : MvPowerSeries σ A} (hf : constantCoeff f 
     ((key u hu h).trans (key _ (constantCoeff_formalExp hf) (pderiv_formalExp hf)).symm)
 
 /- English proof (translation)
-Use `haveI : IsAddTorsionFree A := .of_module_rat A`. Establish `hunit : IsUnit g` using `isUnit_iff_constantCoeff.mpr (hg ▸ isUnit_one)`. Use `pderiv.ext (fun i => hunit.mul_left_cancel ?_) (by rw [hu, constantCoeff_formalLog hg])` and prove the remaining obligations. Rewrite using `[h, mul_pderiv_formalLog hg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_formalLog_of_pderiv {g u : MvPowerSeries σ A} (hg : constantCoeff g = 1)
     (hu : constantCoeff u = 0) (h : ∀ i, g * pderiv A i u = pderiv A i g) :
@@ -111,19 +111,19 @@ theorem eq_formalLog_of_pderiv {g u : MvPowerSeries σ A} (hg : constantCoeff g 
   rw [h, mul_pderiv_formalLog hg]
 
 /- English proof (translation)
-The claim follows from `(eq_formalExp_of_pderiv (by simp) (by simp) fun i => by simp).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem formalExp_zero : formalExp (0 : MvPowerSeries σ A) = 1 :=
   (eq_formalExp_of_pderiv (by simp) (by simp) fun i => by simp).symm
 
 /- English proof (translation)
-The claim follows from `(eq_formalLog_of_pderiv (by simp) (by simp) fun i => by simp).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem formalLog_one : formalLog (1 : MvPowerSeries σ A) = 0 :=
   (eq_formalLog_of_pderiv (by simp) (by simp) fun i => by simp).symm
 
 /- English proof (translation)
-Use `(eq_formalExp_of_pderiv (by simp [hf, hg]) (by simp [constantCoeff_formalExp hf, constantCoeff_formalExp hg]) fun i => ?_).symm` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, pderiv_formalExp hf, pderiv_formalExp hg, map_add, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem formalExp_add {f g : MvPowerSeries σ A} (hf : constantCoeff f = 0)
     (hg : constantCoeff g = 0) : formalExp (f + g) = formalExp f * formalExp g := by
@@ -134,14 +134,14 @@ theorem formalExp_add {f g : MvPowerSeries σ A} (hf : constantCoeff f = 0)
   ring
 
 /- English proof (translation)
-Rewrite using `[← formalExp_add hf (by simp [hf]), add_neg_cancel, formalExp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem formalExp_mul_formalExp_neg {f : MvPowerSeries σ A} (hf : constantCoeff f = 0) :
     formalExp f * formalExp (-f) = 1 := by
   rw [← formalExp_add hf (by simp [hf]), add_neg_cancel, formalExp_zero]
 
 /- English proof (translation)
-Use `(eq_formalLog_of_pderiv (by simp [hf, hg]) (by simp [constantCoeff_formalLog hf, constantCoeff_formalLog hg]) fun i => ?_).symm` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, ← mul_pderiv_formalLog hf, ← mul_pderiv_formalLog hg, map_add, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem formalLog_mul {f g : MvPowerSeries σ A} (hf : constantCoeff f = 1)
     (hg : constantCoeff g = 1) : formalLog (f * g) = formalLog f + formalLog g := by
@@ -152,7 +152,7 @@ theorem formalLog_mul {f g : MvPowerSeries σ A} (hf : constantCoeff f = 1)
   ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert k s hk ih`. Establish `h' : ∀ j ∈ s, constantCoeff (g j) = 1` using `fun j hj => hg j (Finset.mem_insert_of_mem hj)`. Rewrite using `[Finset.sum_insert hk, Finset.prod_insert hk, formalLog_mul (hg k (Finset.mem_insert_self _ _)) (by rw [map_prod]; exact Finset.prod_eq_one h'), ih h']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem formalLog_prod {κ : Type*} (s : Finset κ) {g : κ → MvPowerSeries σ A}
     (hg : ∀ k ∈ s, constantCoeff (g k) = 1) :
@@ -166,14 +166,14 @@ theorem formalLog_prod {κ : Type*} (s : Finset κ) {g : κ → MvPowerSeries σ
       (hg k (Finset.mem_insert_self _ _)) (by rw [map_prod]; exact Finset.prod_eq_one h'), ih h']
 
 /- English proof (translation)
-Simplify using `using formalLog_prod (Finset.range n) (g := fun _ => g) fun _ _ => hg`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem formalLog_pow (n : ℕ) {g : MvPowerSeries σ A} (hg : constantCoeff g = 1) :
     formalLog (g ^ n) = n • formalLog g := by
   simpa using formalLog_prod (Finset.range n) (g := fun _ => g) fun _ _ => hg
 
 /- English proof (translation)
-Rewrite using `[formalExp, formalExp, PowerSeries.subst, PowerSeries.subst, subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hf).const ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_formalExp {a : σ → MvPowerSeries τ A} (ha : HasSubst a)
     {f : MvPowerSeries σ A} (hf : constantCoeff f = 0) :
@@ -182,7 +182,7 @@ theorem subst_formalExp {a : σ → MvPowerSeries τ A} (ha : HasSubst a)
     subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hf).const ha]
 
 /- English proof (translation)
-Rewrite using `[formalLog, formalLog, PowerSeries.subst, PowerSeries.subst, subst_comp_subst_apply (hasSubst_sub_one hg).const ha, subst_sub ha, subst_one' ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_formalLog {a : σ → MvPowerSeries τ A} (ha : HasSubst a)
     {g : MvPowerSeries σ A} (hg : constantCoeff g = 1) :
@@ -191,7 +191,7 @@ theorem subst_formalLog {a : σ → MvPowerSeries τ A} (ha : HasSubst a)
     subst_comp_subst_apply (hasSubst_sub_one hg).const ha, subst_sub ha, subst_one' ha]
 
 /- English proof (translation)
-Use `eq_formalLog_of_pderiv (by simp [hg]) (by simp [constantCoeff_formalLog hg]) fun i => ?_` and prove the remaining obligations. Rewrite using `[pderiv_map, pderiv_map, ← map_mul, mul_pderiv_formalLog hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_formalLog (φ : A →+* B) {g : MvPowerSeries σ A} (hg : constantCoeff g = 1) :
     map φ (formalLog g) = formalLog (map φ g) := by

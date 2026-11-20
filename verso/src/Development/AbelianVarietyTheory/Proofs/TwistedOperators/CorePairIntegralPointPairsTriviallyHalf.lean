@@ -27,7 +27,7 @@ noncomputable section
 namespace GlobalTheory.CoreOnto.IntDatum
 
 /- English proof (translation)
-Establish `hV : ∀ k, k ≤ D.R.m → IsSelfDualC (G.V (.core k)) (G.Λ (.core k))` using `fun k hk => (G.isV (X := .core k) hk (fun j h => Node.noConfusion h)).sd`. Conclude with `⟨isSelfDualC_neg (hV (i + 1) hi), hV i hi.le⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem selfDual_core {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (i : ℕ) (hi : i < D.R.m) :
     IsSelfDualC (G.pS (.core i)) (G.latS (.core i)) ∧ IsSelfDualC (G.pT (.core i)) (G.latT (.core i)) := by
@@ -36,7 +36,7 @@ theorem selfDual_core {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : Gri
   exact ⟨isSelfDualC_neg (hV (i + 1) hi), hV i hi.le⟩
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Rewrite using `[Finset.sum_mul, map_sum]`. Use `sum_mem fun PP hPP => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hs PP hPP (((hes PP hPP).2 s hs0).2 h)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem finPart_mul_inv_mem {D : D7} {e : AE D} {S : Finset (Pl D.host.E)} (he : IsIdemSum e S) (s : 𝓞 D.host.E)
     (hs : ∀ P ∈ S, s ∉ P.asIdeal) (hs0 : s ≠ 0) : finPart D (e * incA D ((s : D.host.E))⁻¹) ∈ intAE D := by
@@ -50,19 +50,17 @@ end GlobalTheory.CoreOnto.IntDatum
 
 open GlobalTheory.CoreOnto.IntDatum in
 /- English proof (translation)
-Introduce `D hQ T L μ₀ hL sc G W M hM i hi e he x₀ hx₀ a ha _`. Take `⟨hS, hT⟩` from `selfDual_core G i hi`. Use `set N : ℕ := Ideal.absNorm D.host.ccK with hNdef`. Establish `hN : ∀ P ∈ G.pl.W0, ((N : 𝓞 D.host.E)) ∉ P.asIdeal`. Introduce `P hP h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv, rfl⟩ : ∃ v ∈ G.pl.S0, G.pl.w v = P := by`. Unfold `Places.W0 at hP`. Simplify using `using hP`. Use `GlobalTheory.AAUnit.absNorm_cmIdeal_not_mem_gridPlaces G.pl hv ?_` and prove the remaining obligations. Rewrite using `[← G.pl.under_w hv]`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.F) (𝓞 D.host.E) _ ∈ (G.pl.w v).asIdeal`. Rewrite using `[map_natCast]` and apply the resulting hypothesis. Establish `hNn : N ≠ 0`. Rewrite using `[hNdef]`. Conclude with `fun h => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hs0 : (N : 𝓞 D.host.E) ≠ 0` using `by exact_mod_cast hNn`. Establish `hN0 : ((N : 𝓞 D.host.E) : D.host.E) ≠ 0` using `by exact_mod_cast hNn`. Establish `hα : ((N : 𝓞 D.host.E) : D.host.E) ∈ D.host.AA`. Use `GlobalTheory.HostClear.absNorm_mem_AA D` as an intermediate fact. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h1` using `GlobalTheory.AscFinWit.rat_mem_latO (P := fun _ => True) hS hT x₀ (fun y hy => hx₀ y hy) hα`. Establish `h2` using `finPart_mul_inv_mem he (N : 𝓞 D.host.E) hN hs0`. Establish `h3` using `GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ _ h2 _ h1`. Use `GlobalTheory.AscFinWit.psi_eq_one (P := fun _ => True) W.ψ_std hS hT ?_ ha` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Establish `hu : incA D ((N : 𝓞 D.host.E) : D.host.E)⁻¹ * incA D ((N : 𝓞 D.host.E) : D.host.E) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hN0, map_one]`. Use extensionality with `j k`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, GlobalTheory.MixModel.rat, Matrix.map_apply, map_mul]`.
-
-Take the linear combination `(GlobalTheory.FinPlLoc.idem D fun _ => True) * e * incA D (x₀ j k) * hu.symm`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CoreOnto.IntDatum.psi_int : All fun {D} _ _ _ {G} W _ => ∀ i, i < D.R.m → ∀ e : AE D, IsIdemSum e G.pl.W0 → ∀ x₀ ∈ homLat (G.Λ (.core (i + 1))) (G.Λ (.core i)), ∀ a ∈ latO (G.pS (.core i)) (G.pT (.core i)) (G.latS (.core i) : Set _) (G.latT (.core i) : Set _) (fun _ => True), IsHalf (cA D e) a → W.ψ (symplO (G.pS (.core i)) (G.pT (.core i)) (e • x₀.map (incA D)) a) = 1 := by
   intro D hQ T L μ₀ hL sc G W M hM i hi e he x₀ hx₀ a ha _

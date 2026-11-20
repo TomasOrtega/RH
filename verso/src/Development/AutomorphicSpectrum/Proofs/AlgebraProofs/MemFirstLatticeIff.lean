@@ -13,22 +13,22 @@ variable {o C : Type} [CommRing o] [Field C] [Algebra o C] (RC : Subalgebra o C)
   {F : Type} [Field F] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qi34.mem_flagSub_iff i x`.
+A detailed English derivation is pending.
 -/
 theorem mem_flagSub_iff (i : ℕ) (x : Fin n → F) :
     x ∈ flagSub (Pi.basisFun F (Fin n)) i ↔ ∀ j : Fin n, i ≤ (j : ℕ) → x j = 0 :=
   _root_.UpperTheory.Reformulated.B.Qi34.mem_flagSub_iff i x
 
 /- English proof (translation)
-Simplify using `[stdLat, AddSubgroup.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stdLat {ι : Type} (f : ι → C) : f ∈ stdLat RC ι ↔ ∀ x, f x ∈ RC := by
   simp [stdLat, AddSubgroup.mem_pi]
 
 /- English proof (translation)
-Unfold `pInt`. Rewrite using `[Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, rfl⟩`. Conclude with `⟨r, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨r, rfl⟩`. Conclude with `⟨r, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_pInt (p : ℕ) (y : C) :
     y ∈ pInt (C := C) RC p ↔ ∃ r : RC, y = (r : C) * (p : C) := by
@@ -41,21 +41,21 @@ theorem mem_pInt (p : ℕ) (y : C) :
     exact ⟨r, rfl⟩
 
 /- English proof (translation)
-Simplify using `[vanSub, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_vanSub (i : ℕ) (f : (Fin n → F) → C) :
     f ∈ vanSub C F n i ↔ ∀ x : Fin n → F, (∀ j : Fin n, i ≤ (j : ℕ) → x j = 0) → f x = 0 := by
   simp [vanSub, Submodule.mem_pi]
 
 /- English proof (translation)
-Simplify using `[annSub, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_annSub (i : ℕ) (l : Fin n → C) :
     l ∈ annSub C n i ↔ ∀ j : Fin n, (j : ℕ) < i → l j = 0 := by
   simp [annSub, Submodule.mem_pi]
 
 /- English proof (translation)
-Simplify using `[linMap, Fintype.linearCombination_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linMap_apply (χ : F → C) (l : Fin n → C) (x : Fin n → F) :
     linMap n χ l x = ∑ j, l j * χ (x j) := by
@@ -64,11 +64,11 @@ theorem linMap_apply (χ : F → C) (l : Fin n → C) (x : Fin n → F) :
 variable {Sg : Type} {r s : Sg → ℕ}
 
 /- English proof (translation)
-Unfold `LieLatticeData.l1`. Rewrite using `[AddSubgroup.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, z, hz, rfl⟩`. Take `⟨h, hh, rfl⟩` from `hz`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨m, hm, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_pInt]`. Use `⟨⟨h x, (mem_stdLat RC h).1 hh x⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mul_comm]`. Introduce and unpack `⟨m, hm, h⟩ choose t ht using fun x => (mem_pInt RC p _).1 (h x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `⟨m, hm, _, ⟨fun x => (t x : C), (mem_stdLat RC _).2 fun x => (t x).2, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Use `ht x` as an intermediate fact. Simplify using `only [Pi.add_apply, DistribMulAction.toAddMonoidHom_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_comm, ← this]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -92,11 +92,11 @@ theorem mem_first_lattice_iff (D : LieLatticeData C F n Sg r s) (p : ℕ) (f : (
     rw [mul_comm, ← this]; ring
 
 /- English proof (translation)
-Unfold `LieLatticeData.xId`. Rewrite using `[AddSubgroup.mem_comap]`. Simplify using `only [LinearMap.toAddMonoidHom_coe, LinearMap.toSpanSingleton_apply]`. Rewrite using `[AddSubgroup.mem_sup]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨g, hg, z, hz, e⟩`. Use `⟨g, hg, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h0` using `(mem_vanSub _ z).1 hz x hx`. Use `congrFun e x` as an intermediate fact. Simplify `this` using `[h0]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨g, hg, h⟩`. Use `⟨g, hg, (c • fun x => χ (x i)) - g, ?_, by abel⟩` and prove the remaining obligations. Use `(mem_vanSub _ _).2 fun x hx => ?_` and prove the remaining obligations. Simplify using `[h x hx]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mem_xId (D : LieLatticeData C F n Sg r s) (χ : F → C) (i : Fin n) (c : C) :
     c ∈ D.xId χ i ↔ ∃ g ∈ D.M, ∀ x : Fin n → F, (∀ j : Fin n, (i : ℕ) + 1 ≤ (j : ℕ) → x j = 0) →
@@ -117,9 +117,9 @@ theorem mem_xId (D : LieLatticeData C F n Sg r s) (χ : F → C) (i : Fin n) (c 
     simp [h x hx]
 
 /- English proof (translation)
-Unfold `LieLatticeData.dId LieLatticeData.af`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, ⟨h1, h2⟩, rfl⟩`. Use `⟨l, ?_, (mem_annSub _ _).1 h2, rfl⟩` and prove the remaining obligations. Take `⟨m, hm, h⟩` from `(mem_first_lattice_iff RC D p _).1 h1`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, hm, fun x => by simpa [linMap_apply] using h x⟩`. Introduce and unpack `⟨l, ⟨m, hm, h⟩, h2, rfl⟩`. Use `⟨l, ⟨?_, (mem_annSub _ _).2 h2⟩, rfl⟩` and prove the remaining obligations. Conclude with `(mem_first_lattice_iff RC D p _).2 ⟨m, hm, fun x => by simpa [linMap_apply] using h x⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_dId (D : LieLatticeData C F n Sg r s) (p : ℕ) (χ : F → C) (i : Fin n) (c : C) :
     c ∈ D.dId RC p χ i ↔ ∃ l : Fin n → C,
@@ -136,11 +136,11 @@ theorem mem_dId (D : LieLatticeData C F n Sg r s) (p : ℕ) (χ : F → C) (i : 
     exact (mem_first_lattice_iff RC D p _).2 ⟨m, hm, fun x => by simpa [linMap_apply] using h x⟩
 
 /- English proof (translation)
-Introduce `a b`. Establish `hq : p ^ k ≠ 0` using `pow_ne_zero _ hp.out.ne_zero`. Rewrite using `[MulChar.pow_apply' _ hq, MulChar.pow_apply' _ hq, MulChar.pow_apply' _ hq]`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 (hσ a b)`. Establish `e : σ (a + b) = (σ a + σ b) + (p : RC) * t` using `by rw [mul_comm, ht]; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r1, h1⟩` from `exists_add_pow_prime_pow_eq hp.out (σ a + σ b) ((p : RC) * t) k`. Take `⟨r2, h2⟩` from `exists_add_pow_prime_pow_eq hp.out (σ a) (σ b) k`. Take `⟨m, hm⟩` from `Nat.exists_eq_succ_of_ne_zero hq`. Rewrite using `[e, h1, h2]`. Use `Ideal.mem_span_singleton'.2 ⟨((p : RC) * t) ^ m * t + (σ a + σ b) * ((p : RC) * t) * r1 + σ a * σ b * r2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hm, pow_succ ((p : RC) * t) m]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fund_pow (p : ℕ) [hp : Fact p.Prime] (σ : MulChar F RC) (hσ : IsFund p σ) (k : ℕ) :
     IsFund p (σ ^ p ^ k) := by
@@ -159,9 +159,9 @@ theorem fund_pow (p : ℕ) [hp : Fact p.Prime] (σ : MulChar F RC) (hσ : IsFund
   ring
 
 /- English proof (translation)
-Establish `hk'` using `(mem_flagSub_iff i k).1 hk`. Prove the components needed by the constructor for the conclusion. Introduce `j hj`. Establish `hne : j ≠ i` using `by rintro rfl; omega`. Simplify using `[Pi.single_apply, hne, hk' j (by omega)]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hk' i le_rfl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem step_coord (i : Fin n) (a : F) (k : Fin n → F)
     (hk : k ∈ flagSub (Pi.basisFun F (Fin n)) (i : ℕ)) :
@@ -175,11 +175,11 @@ theorem step_coord (i : Fin n) (a : F) (k : Fin n → F)
   · simp [hk' i le_rfl]
 
 /- English proof (translation)
-Use `⟨Function.update x i 0, (mem_flagSub_iff _ _).2 fun j hj => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `h' : (i : ℕ) ≠ j` using `fun e => h (Fin.ext e.symm)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne h]`. Conclude with `hx j (by omega)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem step_decomp (i : Fin n) (x : Fin n → F)
     (hx : ∀ j : Fin n, (i : ℕ) + 1 ≤ (j : ℕ) → x j = 0) :
@@ -196,22 +196,22 @@ theorem step_decomp (i : Fin n) (x : Fin n → F)
     · simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `(mem_pInt RC p y).1 hy`. Conclude with `RC.mul_mem r.2 (natCast_mem RC p)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pInt_le_RC (p : ℕ) {y : C} (hy : y ∈ pInt (C := C) RC p) : y ∈ RC := by
   obtain ⟨r, rfl⟩ := (mem_pInt RC p y).1 hy
   exact RC.mul_mem r.2 (natCast_mem RC p)
 
 /- English proof (translation)
-Establish `hχ1 : χ 1 = 1` using `by simp [hχ]`. Rewrite using `[mem_xId]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, h⟩`. Establish `hgM : g ∈ M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: g ∈ M.toAddSubgroup` using `hM ▸ hg`. Conclude with `this`. Establish `hc` using `step_coord i (1 : F) 0 (Submodule.zero_mem _)`. Establish `hgi` using `h _ hc.1`. Rewrite `hgi` using `[hc.2, hχ1, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcR : c ∈ RC` using `hgi ▸ (mem_stdLat RC g).1 (hint hg) _`. Use `⟨⟨c, hcR⟩, ?_, rfl⟩` and prove the remaining obligations. Use `⟨g, hgM, fun a k hk => ?_⟩` and prove the remaining obligations. Establish `hc'` using `step_coord i a k hk`. Rewrite using `[h _ hc'.1, hc'.2, hχ a]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Algebra.smul_def]`. Introduce and unpack `⟨c', ⟨g, hgM, h⟩, rfl⟩`. Use `⟨g, (hM ▸ hgM : g ∈ D.M), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, e⟩` from `step_decomp i x hx`. Use `conv_lhs => rw [e]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h _ k hk, hχ]`. Simplify using `[Algebra.smul_def]`.
+A detailed English derivation is pending.
 -/
 theorem xId_iff (D : LieLatticeData C F n Sg r s) (M : Submodule RC ((Fin n → F) → C))
     (hM : M.toAddSubgroup = D.M) (hint : D.M ≤ stdLat RC _) (ψ : MulChar F RC) (χ : F → C)
@@ -246,33 +246,31 @@ section dId
 variable [DecidableEq F]
 
 /- English proof (translation)
-Take `⟨l, ⟨m, hm, hd⟩, h0, rfl⟩` from `(mem_dId RC D p χ i c).1 hc`. Establish `hχ0 : χ 0 = 0` using `by simp [hχ, MulChar.map_zero]`. Establish `hχ1 : χ 1 = 1` using `by simp [hχ]`. Establish `hχm : ∀ a b, χ (a * b) = χ a * χ b` using `fun a b => by simp [hχ]`. Establish `hχadd : ∀ a b, χ (a + b) - χ a - χ b ∈ pInt (C` using `C) RC p := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 (hψ a b)`. Use `(mem_pInt RC p _).2 ⟨t, ?_⟩` and prove the remaining obligations. Use `congrArg (fun y : RC => (y : C)) ht` as an intermediate fact. Simplify using `only [hχ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using this.symm`. Establish `hmM : m ∈ M`. Establish `: m ∈ M.toAddSubgroup` using `hM ▸ hm`. Conclude with `this`. Use `set S : (Fin n → F) → C := fun x => ∑ j, l j * χ (x j) with hS`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSe : ∀ j, S (Pi.basisFun F (Fin n) j) = l j`. Introduce `j`. Simplify using `only [hS, Pi.basisFun_apply]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[hχ1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb, hχ0]`. Simplify using the standard rewrite rules. Establish `hl : ∀ j, l j ∈ RC`. Introduce `j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `pInt_le_RC RC p (hd (Pi.basisFun F (Fin n) j))`. Establish `h2` using `(mem_stdLat RC m).1 (hint hm) (Pi.basisFun F (Fin n) j)`. Establish `h3` using `RC.add_mem h1 h2`. Rewrite `h3` using `[sub_add_cancel]`. Establish `h4 : S (Pi.basisFun F (Fin n) j) ∈ RC` using `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h4` using `[hSe]`. Then use the resulting hypothesis. Establish `hSadd : ∀ x y, S (x + y) - S x - S y ∈ pInt (C` using `C) RC p := by`. Introduce `x y`. Establish `e : S (x + y) - S x - S y = ∑ j, (⟨l j, hl j⟩ : RC) • (χ (x j + y j) - χ (x j) - χ (y j))`. Simplify using `only [hS, Pi.add_apply, ← Finset.sum_sub_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `_ = l j * _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hχadd _ _)`. Establish `hSsmul : ∀ (a : F) x, S (a • x) = χ a * S x`. Introduce `a x`. Simplify using `only [hS, Pi.smul_apply, smul_eq_mul, hχm, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hSK : ∀ k ∈ flagSub (Pi.basisFun F (Fin n)) (i : ℕ), S k = 0`. Introduce `k hk`. Establish `hk'` using `(mem_flagSub_iff _ k).1 hk`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : (j : ℕ) < (i : ℕ)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h0 j hj]`. Simplify using `[hk' j (not_lt.mp hj), hχ0]`. Establish `hneg : ∀ x, m x - S x ∈ pInt (C` using `C) RC p := fun x => by`. Use `Submodule.neg_mem _ (hd x)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨⟨l i, hl i⟩, ⟨m, ⟨hmM, fun x y => ?_⟩, fun a x => ?_, fun k hk => ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `h` using `Submodule.add_mem _ (Submodule.sub_mem _ (hneg (x + y)) (Submodule.add_mem _ (hneg x) (hneg y))) (hSadd x y) show m (x + y) - m x - m y ∈ pInt (C := C) RC p`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `Submodule.sub_mem _ (hneg (a • x)) (Submodule.smul_mem _ (ψ a) (hneg x))`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Establish `e : algebraMap RC C (ψ a) = χ a` using `(hχ a).symm`. Rewrite using `[hSsmul, Algebra.smul_def (ψ a) (m x - S x), e]`. Expand and normalize the polynomial expressions, which then agree. Use `hneg k` as an intermediate fact.
-
-Rewrite `this` using `[hSK k hk, sub_zero]`. Then use the resulting hypothesis. Use `hneg (Pi.basisFun F (Fin n) i)` as an intermediate fact. Rewrite `this` using `[hSe]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem dId_forward (D : LieLatticeData C F n Sg r s) (M : Submodule RC ((Fin n → F) → C))
     (hM : M.toAddSubgroup = D.M) (hint : D.M ≤ stdLat RC _) (p : ℕ) (ψ : MulChar F RC)
@@ -353,25 +351,25 @@ theorem dId_forward (D : LieLatticeData C F n Sg r s) (M : Submodule RC ((Fin n 
     rwa [hSe] at this
 
 /- English proof (translation)
-Take `⟨g, ⟨hgM, hadd⟩, h1, h2, h3⟩` from `hc`. Establish `hadd' : ∀ x y, g (x + y) - g x - g y ∈ pInt (C` using `C) RC p := hadd`. Establish `hg0 : g 0 ∈ pInt (C` using `C) RC p := by`. Use `Submodule.neg_mem _ (hadd' 0 0)` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsum : ∀ (t : Finset (Fin n)) (y : Fin n → Fin n → F), (∑ j ∈ t, g (y j)) - g (∑ j ∈ t, y j) ∈ pInt (C` using `C) RC p := by`. Introduce `t y`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Use `Submodule.neg_mem _ hg0` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `using this`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Use `Submodule.sub_mem _ ih (hadd' (y a) (∑ j ∈ t, y j))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Set `l : Fin n → C` to `fun j => if j < i then 0 else if j = i then (c' : C) else g (Pi.basisFun F (Fin n) j)`. Establish `hle : ∀ j, l j - g (Pi.basisFun F (Fin n) j) ∈ pInt (C` using `C) RC p := by`. Introduce `j`. Distinguish the cases in `hj : j < i`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hK : Pi.basisFun F (Fin n) j ∈ flagSub (Pi.basisFun F (Fin n)) (i : ℕ)` using `Submodule.subset_span ⟨j, hj, rfl⟩`. Use `Submodule.neg_mem _ (h2 _ hK)` as an intermediate fact. Simplify `this` using `[l, hj]`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `Submodule.neg_mem _ h3` as an intermediate fact. Simplify `this` using `[l]`. Simplify using `[l, hj, hji]`. Establish `hterm : ∀ (x : Fin n → F) j, l j * χ (x j) - g (x j • Pi.basisFun F (Fin n) j) ∈ pInt (C` using `C) RC p := by`. Introduce `x j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `Submodule.sub_mem _ (Submodule.smul_mem _ (ψ (x j)) (hle j)) (h1 (x j) (Pi.basisFun F (Fin n) j))`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Algebra.smul_def, hχ]`. Establish `: algebraMap RC C (ψ (x j)) = (ψ (x j) : C)` using `rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `(mem_dId RC D p χ i _).2 ⟨l, ⟨g, (hM ▸ hgM : g ∈ D.M), fun x => ?_⟩, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Establish `hx : ∑ j, x j • Pi.basisFun F (Fin n) j = x`. Simplify using `using (Pi.basisFun F (Fin n)).sum_repr x`. Establish `h` using `Submodule.add_mem _ (Submodule.sum_mem _ fun j (_ : j ∈ Finset.univ) => hterm x j) (hsum Finset.univ fun j => x j • Pi.basisFun F (Fin n) j)`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hx, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hj' : j < i` using `hj`. Simplify using `[l, hj']`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[l]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dId_backward (D : LieLatticeData C F n Sg r s) (M : Submodule RC ((Fin n → F) → C))
     (hM : M.toAddSubgroup = D.M) (p : ℕ) (ψ : MulChar F RC) (χ : F → C)
@@ -437,11 +435,11 @@ end GlobalTheory.CompanionTheory.Ar.Num.PtDx
 open GlobalTheory.CompanionTheory.Ar.Num GlobalTheory.CompanionTheory.Ar.GR ReciprocityTheory.PGsh.L2 ReciprocityTheory.PGsh.Up in
 
 /- English proof (translation)
-Introduce `o C _ _ _ _ _ RC v _ p _ _ F _ _ _ _ n Sg r s D w χ φ hB AA hM _ σ hσ hF e hχ _ _ τ i`. Take `⟨c, δ, h, -, -⟩` from `hF`. Take `⟨-, -, hX, hD, -, -⟩` from `h i (e τ)`. Establish `hint` using `hB.M_le`. Use extensionality with `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨c', hc', rfl⟩` from `PtDx.dId_forward RC D AA.carrier hM hint p _ (PtDx.fund_pow RC p σ hσ (e τ)) (χ τ) (hχ τ) i y hy`. Rewrite `hc'` using `[hD, ← hX]`. Conclude with `(PtDx.xId_iff RC D AA.carrier hM hint _ (χ τ) (hχ τ) i _).2 ⟨c', hc', rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Take `⟨c', hc', rfl⟩` from `(PtDx.xId_iff RC D AA.carrier hM hint _ (χ τ) (hχ τ) i y).1 hy`. Rewrite `hc'` using `[hX, ← hD]`. Conclude with `PtDx.dId_backward RC D AA.carrier hM p _ (χ τ) (hχ τ) i c' hc'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Num.PtDx.main : ∀ {o C : Type} [CommRing o] [Field C] [Algebra o C] [IsAlgClosed C] [CharZero C] (RC : Subalgebra o C) (v : Valuation C NNReal), (∀ c, c ∈ RC ↔ v c ≤ 1) → ∀ (p : ℕ) [Fact p.Prime], v (p : C) < 1 → ∀ {F : Type} [Field F] [Fintype F] [DecidableEq F] [CharP F p] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData C F n Sg r s) (w : C) (χ : Sg → F → C) (φ : Equiv.Perm Sg), D.Base RC p w → ∀ AA : HopfOrder (C := C) RC (Fin n → F), AA.carrier.toAddSubgroup = D.M → FStable F AA.carrier → ∀ (σ : MulChar F RC), IsFund p σ → FlagConcl v p AA.carrier (Pi.basisFun F (Fin n)) σ → ∀ e : Sg → ℕ, (∀ τ a, χ τ a = ((σ ^ p ^ e τ) a : RC)) → (∀ τ, σ ^ p ^ e (φ τ) = σ ^ p ^ (e τ + 1)) → (∀ τ, (∀ g ∈ sqIdeal (augIdeal AA.carrier), (g, 0) ∈ D.Th τ) ∧ (∀ (a : F) g m, (g, m) ∈ D.Th τ → ((fun x => g (a • x)), χ τ a • m) ∈ D.Th τ) ∧ ∀ g ∈ eig AA.carrier (σ ^ p ^ e τ), (g, 0) ∈ D.Th τ → g ∈ sqIdeal (augIdeal AA.carrier)) → ∀ τ i, D.dId RC p (χ τ) i = D.xId (χ τ) i := by
   intro o C _ _ _ _ _ RC v _ p _ _ F _ _ _ _ n Sg r s D w χ φ hB AA hM _ σ hσ hF e hχ _ _ τ i

@@ -15,17 +15,17 @@ open GlobalTheory.HorComp
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ _ S hS`. Take `⟨F, hF, hc, hi, hU⟩` from `NoetherianSpace.exists_finite_set_isClosed_irreducible hS`. Establish `key : ∀ W : Set X, _root_.IsIrreducible W → W ⊆ S → ∃ t ∈ F, W ⊆ t`. Introduce `W hW hWS`. Take `⟨t, ht, hWt⟩` from `isIrreducible_iff_sUnion_isClosed.1 hW hF.toFinset (fun z hz => hc z (hF.mem_toFinset.1 hz)) (by rw [hF.coe_toFinset, ← hU]; exact hWS)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, hF.mem_toFinset.1 ht, hWt⟩`. Establish `hsub : ∀ t ∈ F, t ⊆ S` using `fun t ht => by`. Rewrite using `[hU]`. Conclude with `Set.subset_sUnion_of_mem ht`. Use `⟨hF.subset ?_, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W hW`. Rewrite `hW` using `[Set.mem_setOf_eq]`. Take `⟨t, ht, hWt⟩` from `key W hW.prop.1 hW.prop.2`. Establish `h : t ⊆ W` using `hW.le_of_ge ⟨hi t ht, hsub t ht⟩ hWt`. Establish `: W = t` using `Set.Subset.antisymm hWt h`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `ht`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Conclude with `Set.sUnion_subset fun W hW => hW.1.2`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx' : x ∈ ⋃₀ F` using `hU ▸ hx`. Take `⟨t, ht, hxt⟩` from `hx'`. Take `⟨m, htm, hm⟩` from `hF.exists_le_maximal ht`. Use `⟨m, ⟨⟨hi m hm.prop, hsub m hm.prop⟩, ?_⟩, htm hxt⟩` and prove the remaining obligations. Introduce `W hW hmW`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨t', ht', hWt'⟩` from `key W hW.1 hW.2`. Conclude with `le_trans hWt' (hm.le_of_ge ht' (le_trans hmW hWt'))`. Introduce `W hW`. Establish `h : closure W ⊆ W` using `hW.le_of_ge ⟨hW.prop.1.closure, closure_minimal hW.prop.2 hS⟩ subset_closure`. Conclude with `closure_subset_iff_isClosed.1 h`.
+A detailed English derivation is pending.
 -/
 theorem closed_eq_sUnion_maximal_irreducible :
     ∀ (X : Type) [TopologicalSpace X] [NoetherianSpace X] (S : Set X), IsClosed S → {W : Set X | Maximal (fun W : Set X => _root_.IsIrreducible W ∧ W ⊆ S) W}.Finite ∧ ⋃₀ {W : Set X | Maximal (fun W : Set X => _root_.IsIrreducible W ∧ W ⊆ S) W} = S ∧ ∀ W : Set X, Maximal (fun W : Set X => _root_.IsIrreducible W ∧ W ⊆ S) W → IsClosed W := by

@@ -12,11 +12,11 @@ section Circle
 variable {X : Type*} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun p : ℝ × X => f (circleMap c R p.1) p.2` using `hf.comp_continuous (((continuous_circleMap c R).comp continuous_fst).prodMk continuous_snd) fun p => ⟨circleMap_mem_sphere c hR p.1, Set.mem_univ _⟩`. Establish `hG : Continuous fun p : ℝ × X => deriv (circleMap c R) p.1 • f (circleMap c R p.1) p.2`. Simplify using `only [deriv_circleMap]`. Conclude with `(((continuous_circleMap 0 R).comp continuous_fst).mul continuous_const).smul h1`. Establish `hint : Integrable (Function.uncurry fun θ x => deriv (circleMap c R) θ • f (circleMap c R θ) x) ((volume.restrict (Set.Ioc 0 (2 * π))).prod ν)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Integrable.of_bound hG.aestronglyMeasurable (R * M) (ae_of_all _ fun p => ?_)` and prove the remaining obligations. Simplify using `only [Function.uncurry, deriv_circleMap, smul_eq_mul, norm_mul, norm_circleMap_zero, Complex.norm_I, mul_one, abs_of_nonneg hR]`. Conclude with `mul_le_mul_of_nonneg_left (hM _ (circleMap_mem_sphere c hR p.1) p.2) hR`. Simplify using `only [circleIntegral, intervalIntegral.integral_of_le Real.two_pi_pos.le]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `θ`. Conclude with `(integral_smul _ _).symm`. Use `_ = _ := integral_integral_swap hint`.
+A detailed English derivation is pending.
 -/
 theorem circle_swap (ν : Measure X) [IsFiniteMeasure ν] (f : ℂ → X → ℂ) (c : ℂ) {R : ℝ} (hR : 0 ≤ R)
     (hf : ContinuousOn (fun p : ℂ × X => f p.1 p.2) (sphere c R ×ˢ Set.univ)) {M : ℝ}
@@ -41,7 +41,7 @@ theorem circle_swap (ν : Measure X) [IsFiniteMeasure ν] (f : ℂ → X → ℂ
     _ = _ := integral_integral_swap hint
 
 /- English proof (translation)
-Use `continuousOn_of_dominated (bound := fun _ => M) (fun z hz => ?_) (fun z hz => ae_of_all _ (hM z hz)) (integrable_const M) (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Conclude with `(hF.comp_continuous (continuous_const.prodMk continuous_id) fun x => ⟨hz, Set.mem_univ _⟩).aestronglyMeasurable`. Conclude with `hF.comp (continuous_id.prodMk continuous_const).continuousOn fun z hz => ⟨hz, Set.mem_univ _⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contOn_integral (ν : Measure X) [IsFiniteMeasure ν] (F : ℂ → X → ℂ) {s : Set ℂ}
     (hF : ContinuousOn (fun p : ℂ × X => F p.1 p.2) (s ×ˢ Set.univ)) {M : ℝ} (hM : ∀ z ∈ s, ∀ x, ‖F z x‖ ≤ M) :
@@ -52,17 +52,15 @@ theorem contOn_integral (ν : Measure X) [IsFiniteMeasure ν] (F : ℂ → X →
   · exact hF.comp (continuous_id.prodMk continuous_const).continuousOn fun z hz => ⟨hz, Set.mem_univ _⟩
 
 /- English proof (translation)
-Introduce `z₀ hz₀`. Take `⟨r, hr, hrU⟩` from `Metric.isOpen_iff.1 hU z₀ hz₀`. Set `R : ℝ≥0` to `⟨r / 2, by positivity⟩`. Establish `hR : (0 : ℝ) < R` using `by show 0 < r / 2; positivity`. Establish `hsub : closedBall z₀ R ⊆ U` using `(closedBall_subset_ball (show (R : ℝ) < r by show r / 2 < r; linarith)).trans hrU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M, hM⟩` from `hb _ hsub (isCompact_closedBall z₀ R)`. Establish `hsph : sphere z₀ (R : ℝ) ⊆ closedBall z₀ R` using `sphere_subset_closedBall`. Establish `hcont : ContinuousOn (fun z => ∫ x, F z x ∂ν) (sphere z₀ R)` using `contOn_integral ν F (hc.mono (Set.prod_mono (hsph.trans hsub) le_rfl)) fun z hz => hM z (hsph hz)`. Establish `hps` using `hasFPowerSeriesOn_cauchy_integral (hcont.circleIntegrable hR.le) (by exact_mod_cast hR)`. Establish `key : ∀ w ∈ ball z₀ (R : ℝ), (∫ x, F w x ∂ν) = (2 * π * I : ℂ)⁻¹ • ∮ z in C(z₀, R), (z - w)⁻¹ • ∫ x, F z x ∂ν`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hinv : ContinuousOn (fun z : ℂ => (z - w)⁻¹) (sphere z₀ R)` using `ContinuousOn.inv₀ (continuousOn_id.sub continuousOn_const) fun z hz => sub_ne_zero.2 fun h => by`. Rewrite `hz` using `[mem_sphere]`. Rewrite `hw` using `[mem_ball, ← h, hz]`. Conclude with `lt_irrefl _ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `(isCompact_sphere z₀ (R : ℝ)).exists_bound_of_continuousOn hinv`. Establish `hsw` using `circle_swap ν (fun z x => (z - w)⁻¹ • F z x) z₀ hR.le ((hinv.comp continuousOn_fst fun p hp => hp.1).smul (hc.mono (Set.prod_mono (hsph.trans hsub) le_rfl))) (M := B * M) fun z hz x => by`. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul (hB z hz) (hM z (hsph hz) x) (norm_nonneg _) ((norm_nonneg _).trans (hB z hz))`. Establish `e1 : (∮ z in C(z₀, R), (z - w)⁻¹ • ∫ x, F z x ∂ν) = ∮ z in C(z₀, R), ∫ x, (z - w)⁻¹ • F z x ∂ν` using `circleIntegral.integral_congr hR.le fun z _ => (integral_smul _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, hsw]`. Establish `e2 : ∀ x, (∮ z in C(z₀, R), (z - w)⁻¹ • F z x) = (2 * π * I : ℂ) • F w x` using `fun x => ((hd x).mono hsub).circleIntegral_sub_inv_smul hw`. Simplify using `only [e2, integral_smul, smul_smul]`. Rewrite using `[inv_mul_cancel₀ two_pi_I_ne_zero, one_smul]`. Establish `hev : (fun z => ∫ x, F z x ∂ν) =ᶠ[𝓝 z₀] (fun w => (2 * π * I : ℂ)⁻¹ • ∮ z in C(z₀, R), (z - w)⁻¹ • ∫ x, F z x ∂ν)` using `Filter.eventually_of_mem (ball_mem_nhds z₀ hR) key`.
-
-Conclude with `(hps.analyticAt.differentiableAt.congr_of_eventuallyEq hev).differentiableWithinAt`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem diffOn_integral (ν : Measure X) [IsFiniteMeasure ν] (F : ℂ → X → ℂ) {U : Set ℂ} (hU : IsOpen U)
     (hc : ContinuousOn (fun p : ℂ × X => F p.1 p.2) (U ×ˢ Set.univ)) (hd : ∀ x, DifferentiableOn ℂ (F · x) U)
@@ -105,9 +103,7 @@ theorem diffOn_integral (ν : Measure X) [IsFiniteMeasure ν] (F : ℂ → X →
 end Circle
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `hU`. Establish `hx : max τ σ < (((max τ σ + 1 : ℝ)) : ℂ).re` using `by simp`. Establish `hxU : (((max τ σ + 1 : ℝ)) : ℂ) ∈ U` using `hτ (lt_of_le_of_lt (le_max_left _ _) hx)`. Establish `ev : h =ᶠ[𝓝 (((max τ σ + 1 : ℝ)) : ℂ)] g` using `by filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds hx] with w hw`. Conclude with `e w (lt_of_le_of_lt (le_max_right _ _) hw)`.
-
-Conclude with `(hh.analyticOnNhd hUo).eqOn_of_preconnected_of_eventuallyEq (hg.analyticOnNhd hUo) hpc hxU ev`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eqOn_right {U : Set ℂ} (hUo : IsOpen U) (hU : ∃ τ : ℝ, {z : ℂ | τ < z.re} ⊆ U) (hpc : IsPreconnected U)
     {h g : ℂ → ℂ} (hh : DifferentiableOn ℂ h U) (hg : DifferentiableOn ℂ g U) (σ : ℝ)
@@ -121,11 +117,11 @@ theorem eqOn_right {U : Set ℂ} (hUo : IsOpen U) (hU : ∃ τ : ℝ, {z : ℂ |
   exact (hh.analyticOnNhd hUo).eqOn_of_preconnected_of_eventuallyEq (hg.analyticOnNhd hUo) hpc hxU ev
 
 /- English proof (translation)
-Establish `hs` using `hu.countable_support`. Establish `: Countable (Function.support u)` using `hs.to_subtype`. Establish `h0 : ∀ i, i ∉ Function.support u → ∀ a, F i a = 0` using `fun i hi a => by`. Establish `: u i = 0` using `Function.notMem_support.1 hi`. Conclude with `norm_le_zero_iff.1 (this ▸ hF i a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∀ a, ∑' i, F i a = ∑' i : Function.support u, F i a` using `fun a => (tsum_subtype_eq_of_support_subset fun i hi => by_contra fun h => hi (h0 i h a)).symm`. Establish `e2 : ∑' i, ∫ a, F i a ∂μ = ∑' i : Function.support u, ∫ a, F i a ∂μ` using `(tsum_subtype_eq_of_support_subset fun i hi => by_contra fun h => hi (by simp [h0 i h])).symm`. Repeatedly rewrite using `[e1, e2]`. Establish `hI : ∀ i, Integrable (F i) μ` using `fun i => Integrable.of_bound (hm i) (u i) (ae_of_all _ (hF i))`. Use `(integral_tsum_of_summable_integral_norm (ι := Function.support u) (F := fun i a => F i a) (fun i => hI i) ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((hu.subtype _).mul_right (μ.real Set.univ)).of_nonneg_of_le (fun i => integral_nonneg fun _ => norm_nonneg _) fun i => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integral_tsum_dom {ι α : Type*} [MeasurableSpace α] (μ : Measure α) [IsFiniteMeasure μ]
     (F : ι → α → ℂ) (u : ι → ℝ) (hu : Summable u) (hF : ∀ i a, ‖F i a‖ ≤ u i)
@@ -149,11 +145,11 @@ theorem integral_tsum_dom {ι α : Type*} [MeasurableSpace α] (μ : Measure α)
     _ = u i * μ.real Set.univ := by simp [mul_comm]
 
 /- English proof (translation)
-Establish `hc : ∀ i ∈ s, Continuous fun θ => deriv (circleMap c R) θ • (a i * g i (circleMap c R θ))` using `fun i hi => by`. Simplify using `only [deriv_circleMap]`. Conclude with `((continuous_circleMap 0 R).mul continuous_const).smul (continuous_const.mul ((hg i hi).comp_continuous (continuous_circleMap c R) fun θ => circleMap_mem_sphere c hR θ))`. Simplify using `only [circleIntegral, Finset.smul_sum]`. Rewrite using `[intervalIntegral.integral_finsetSum fun i hi => (hc i hi).intervalIntegrable _ _]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← intervalIntegral.integral_const_mul]`. Use `congr 1`. Use extensionality with `θ`. Simplify using `only [smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem circle_sum {ι : Type*} (s : Finset ι) (a : ι → ℂ) (g : ι → ℂ → ℂ) (c : ℂ) {R : ℝ} (hR : 0 ≤ R)
     (hg : ∀ i ∈ s, ContinuousOn (g i) (sphere c R)) :

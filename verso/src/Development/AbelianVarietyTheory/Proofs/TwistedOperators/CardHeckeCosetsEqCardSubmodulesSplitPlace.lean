@@ -15,15 +15,13 @@ open NumberField
 namespace GlobalTheory.HeckeCosetCount
 
 /- English proof (translation)
-Introduce `D hHP hSL hVF G _ _ Pl0 T0 A T _ R F κ v₀ hL hG hF hM hTh hTie i σ hσ hV hFP P p k α Rc hs`. Take `⟨hso, hp, hpP, -, hk, hα, hdc⟩` from `hs`. Rewrite using `[GlobalTheory.T.splitPlace_hecke_doubleCoset_card_gaussBinom D R hL hF i P k α Rc hso hk hα hdc]`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `hr` using `(hTie.laws.unf _ hj T.σ₀ T.good_σ₀).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrk : Module.finrank (𝓞 D.host.E) (T.Q.Dw ((i : ℕ) + 1)).La = D.R.r`. Rewrite using `[(T.Q.Dw ((i : ℕ) + 1)).rank]`. Use linear arithmetic over natural numbers and integers. Use `set J := GlobalTheory.IndefiniteRowSideFullHecke.HeckeIsogenyKernels.conjIdeal T.Q.H P.asIdeal with hJdef`. Establish `hJm : J.IsMaximal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJdef, GlobalTheory.IndefiniteRowSideFullHecke.HeckeIsogenyKernels.conjIdeal]`. Use `haveI : P.asIdeal.IsMaximal := P.isMaximal`. Conclude with `Ideal.map_isMaximal_of_equiv T.Q.H.bar`. Establish `hpJ : ((p : ℕ) : 𝓞 D.host.E) ∈ J`. Rewrite using `[hJdef, GlobalTheory.IndefiniteRowSideFullHecke.HeckeIsogenyKernels.conjIdeal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `Ideal.mem_map_of_mem (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) hpP` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hN : Ideal.absNorm J = Ideal.absNorm P.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `Nat.card_congr (Ideal.quotientEquiv P.asIdeal J T.Q.H.bar (by rw [hJdef, GlobalTheory.IndefiniteRowSideFullHecke.HeckeIsogenyKernels.conjIdeal])).toEquiv.symm`.
-
-Rewrite using `[← hN, GlobalTheory.T.card_stableLatticeSubgroups_eq_gaussianBinomial _ p J hp.pos hJm hpJ k, hrk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_eq_latCount : ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.HeckePointLaws → GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.SplitLinearModel D → GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.VacFixed D →
     ∀ (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)

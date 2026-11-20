@@ -10,17 +10,15 @@ namespace Formalism.HC.Der
 open Formalism.FrobeniusOrbits Formalism.TwoAdicCyclotomicDecomposition
 
 /- English proof (translation)
-Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm (by simp)`. Establish `hgeom` using `geom_sum₂_mul x y m`. Rewrite `hgeom` using `[hx, hy, sub_self]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.1 hgeom with hG | hG` into its components or cases. It suffices to derive a contradiction. Establish `hq : Ideal.Quotient.mk P x = Ideal.Quotient.mk P y` using `Ideal.Quotient.eq.2 hxy`. Establish `h1` using `congrArg (Ideal.Quotient.mk P) hG`. Rewrite `h1` using `[map_sum, map_zero]`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_pow, hq] at h1`. Establish `h2 : ∀ i ∈ Finset.range m, (Ideal.Quotient.mk P y) ^ i * (Ideal.Quotient.mk P y) ^ (m - 1 - i) = (Ideal.Quotient.mk P y) ^ (m - 1)`. Introduce `i hi`. Rewrite using `[← pow_add]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[Finset.sum_congr rfl h2, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Break down `mul_eq_zero.1 h1 with h3 | h3` into its components or cases. Apply `hm` to reduce the goal to its premises.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `h3`. Establish `h4 : (Ideal.Quotient.mk P y) ^ m = 1` using `by rw [← map_pow, hy, map_one]`. Establish `h5 : (Ideal.Quotient.mk P y) ^ m = 0`. Rewrite using `[show m = m - 1 + 1 by omega, pow_succ, h3, zero_mul]`.
-
-Rewrite `h5` using `[h4]`. Conclude with `one_ne_zero h5`. Conclude with `sub_eq_zero.1 hG`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_eq_of_sub_mem {S : Type*} [CommRing S] [IsDomain S] (P : Ideal S) [hP : P.IsPrime] {m : ℕ}
     (hm : (m : S) ∉ P) {x y : S} (hx : x ^ m = 1) (hy : y ^ m = 1) (hxy : x - y ∈ P) : x = y := by
@@ -55,7 +53,7 @@ theorem root_eq_of_sub_mem {S : Type*} [CommRing S] [IsDomain S] (P : Ideal S) [
   · exact sub_eq_zero.1 hG
 
 /- English proof (translation)
-Rewrite using `[show ((ZMod.unitsMap h u : (ZMod M)ˣ) : ZMod M) = ((u : ZMod N).val : ZMod M) from ZMod.cast_eq_val _, ZMod.natCast_eq_natCast_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_modEq_iff {M N : ℕ} [NeZero N] (h : M ∣ N) (u : (ZMod N)ˣ) (x : ℕ) :
     (u : ZMod N).val ≡ x [MOD M] ↔ ((ZMod.unitsMap h u : (ZMod M)ˣ) : ZMod M) = (x : ZMod M) := by
@@ -63,14 +61,14 @@ theorem val_modEq_iff {M N : ℕ} [NeZero N] (h : M ∣ N) (u : (ZMod N)ˣ) (x :
     ZMod.cast_eq_val _, ZMod.natCast_eq_natCast_iff]
 
 /- English proof (translation)
-Rewrite using `[val_modEq_iff h u 1, Nat.cast_one, Units.val_eq_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_modEq_one_iff {M N : ℕ} [NeZero N] (h : M ∣ N) (u : (ZMod N)ˣ) :
     (u : ZMod N).val ≡ 1 [MOD M] ↔ ZMod.unitsMap h u = 1 := by
   rw [val_modEq_iff h u 1, Nat.cast_one, Units.val_eq_one]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `ZMod.unitsMap_surjective h (ZMod.unitOfCoprime x hx)`. Conclude with `⟨u, (val_modEq_iff h u x).2 (by rw [hu, ZMod.coe_unitOfCoprime])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unit_modEq {M N : ℕ} [NeZero N] (h : M ∣ N) (x : ℕ) (hx : x.Coprime M) :
     ∃ u : (ZMod N)ˣ, (u : ZMod N).val ≡ x [MOD M] := by
@@ -84,13 +82,13 @@ variable (N : ℕ) [NeZero N]
 def zO : 𝓞 (Cond.Cyc N) := (Cond.z_spec N).toInteger
 
 /- English proof (translation)
-Conclude with `(Cond.z_spec N).toInteger_isPrimitiveRoot`.
+A detailed English derivation is pending.
 -/
 theorem zO_prim : IsPrimitiveRoot (zO N) N := by
   exact (Cond.z_spec N).toInteger_isPrimitiveRoot
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show (tauN N u) ((zO N : 𝓞 (Cond.Cyc N)) : Cond.Cyc N) = (((zO N) ^ (u : ZMod N).val : 𝓞 (Cond.Cyc N)) : Cond.Cyc N)`. Use `push_cast`. Conclude with `tauN_root N u _ (Cond.z_spec N).pow_eq_one`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem tauN_zO (u : (ZMod N)ˣ) : tauN N u • zO N = zO N ^ (u : ZMod N).val := by
   apply RingOfIntegers.ext
@@ -100,9 +98,9 @@ theorem tauN_zO (u : (ZMod N)ˣ) : tauN N u • zO N = zO N ^ (u : ZMod N).val :
   exact tauN_root N u _ (Cond.z_spec N).pow_eq_one
 
 /- English proof (translation)
-Establish `hx : x ∈ Algebra.adjoin ℤ {zO N}`. Rewrite using `[show Algebra.adjoin ℤ {zO N} = ⊤ from IsCyclotomicExtension.Rat.adjoin_singleton_eq_top (Cond.z_spec N)]`. Conclude with `Algebra.mem_top`. Use `Algebra.adjoin_induction (p := fun x _ => f x = g x) (fun y hy => ?_) (fun r => ?_) (fun y z _ _ h1 h2 => ?_) (fun y z _ _ h1 h2 => ?_) hx` and prove the remaining obligations. Rewrite using `[Set.mem_singleton_iff.1 hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Simplify using `only [algebraMap_int_eq, eq_intCast, map_intCast]`. Rewrite using `[map_add, map_add, h1, h2]`. Rewrite using `[map_mul, map_mul, h1, h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringHom_ext_zO {R : Type*} [CommRing R] (f g : 𝓞 (Cond.Cyc N) →+* R) (h : f (zO N) = g (zO N))
     (x : 𝓞 (Cond.Cyc N)) : f x = g x := by
@@ -120,9 +118,9 @@ theorem ringHom_ext_zO {R : Type*} [CommRing R] (f g : 𝓞 (Cond.Cyc N) →+* R
 variable (l : ℕ) [Fact l.Prime] (Q : Ideal (𝓞 (Cond.Cyc N))) [Q.IsPrime] [Q.LiesOver (span {(l : ℤ)})]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x`. Establish `hu : Q.under ℤ = span {(l : ℤ)}` using `(Ideal.LiesOver.over (P := Q) (p := span {(l : ℤ)})).symm`. Rewrite using `[← map_natCast (Ideal.Quotient.mk Q), Ideal.Quotient.eq_zero_iff_mem, show ((x : ℕ) : 𝓞 (Cond.Cyc N)) = algebraMap ℤ (𝓞 (Cond.Cyc N)) (x : ℤ) by simp, ← Ideal.mem_comap]`. Express the relevant statement in the definitionally equal form `(x : ℤ) ∈ Q.under ℤ ↔ _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hu, Ideal.mem_span_singleton, Int.natCast_dvd_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charP_quot : CharP (𝓞 (Cond.Cyc N) ⧸ Q) l := by
   constructor
@@ -134,25 +132,23 @@ theorem charP_quot : CharP (𝓞 (Cond.Cyc N) ⧸ Q) l := by
   rw [hu, Ideal.mem_span_singleton, Int.natCast_dvd_natCast]
 
 /- English proof (translation)
-Use `haveI := charP_quot N l Q`. Establish `hl : l.Prime` using `Fact.out`. Establish `hN0 : N ≠ 0` using `NeZero.ne N`. Establish `hnN : ordProj[l] N * ordCompl[l] N = N` using `Nat.ordProj_mul_ordCompl_eq_self N l`. Establish `hN'0 : 0 < ordCompl[l] N` using `Nat.ordCompl_pos l hN0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ` using `zO_prim N`. Establish `key1 : ∀ c, Ideal.Quotient.mk Q (zO N ^ (ordCompl[l] N * c)) = 1`. Introduce `c`. Establish `h1 : (Ideal.Quotient.mk Q (zO N ^ (ordCompl[l] N * c)) - 1) ^ (ordProj[l] N) = 0`. Rewrite using `[sub_pow_char_pow, ← map_pow, ← pow_mul, one_pow, show ordCompl[l] N * c * l ^ N.factorization l = N * c by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_right_comm, mul_comm (ordCompl[l] N), hnN],`. Use the proof step `pow_mul, hζ.pow_eq_one, one_pow, map_one, sub_self]`. Conclude with `sub_eq_zero.1 ((pow_eq_zero_iff (pow_ne_zero _ hl.ne_zero)).1 h1)`. Rewrite using `[← Ideal.Quotient.eq]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Establish `h1 : (zO N ^ (ordProj[l] N)) ^ a = (zO N ^ (ordProj[l] N)) ^ b`. Apply `root_eq_of_sub_mem Q (m := ordCompl[l] N)` to reduce the goal to its premises. Introduce `hmem`. Establish `h2 : ((ordCompl[l] N : ℕ) : 𝓞 (Cond.Cyc N) ⧸ Q) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (Ideal.Quotient.mk Q), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hmem`. Rewrite `h2` using `[CharP.cast_eq_zero_iff _ l]`. Conclude with `Nat.not_dvd_ordCompl hl hN0 h2`. Establish `ex : ordProj[l] N * (a * ordCompl[l] N) = N * a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_left_comm, hnN, mul_comm]`. Rewrite using `[← pow_mul, ← pow_mul, ex, pow_mul, hζ.pow_eq_one, one_pow]`. Establish `ex : ordProj[l] N * (b * ordCompl[l] N) = N * b`. Rewrite using `[mul_left_comm, hnN, mul_comm]`. Rewrite using `[← pow_mul, ← pow_mul, ex, pow_mul, hζ.pow_eq_one, one_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq]`. Establish `e1 : (zO N ^ (ordProj[l] N)) ^ a = (zO N ^ a) ^ (ordProj[l] N)`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`. Establish `e2 : (zO N ^ (ordProj[l] N)) ^ b = (zO N ^ b) ^ (ordProj[l] N)`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1, e2, map_pow (Ideal.Quotient.mk Q) (zO N ^ a), map_pow (Ideal.Quotient.mk Q) (zO N ^ b), h]`. Establish `hprim : IsPrimitiveRoot (zO N ^ (ordProj[l] N)) (ordCompl[l] N)` using `hζ.pow_of_dvd (pow_ne_zero _ hl.ne_zero) (Nat.ordProj_dvd N l)`. Establish `e : ∀ c, (zO N ^ (ordProj[l] N)) ^ c = (zO N ^ (ordProj[l] N)) ^ (c % ordCompl[l] N)` using `fun c => by conv_lhs => rw [← Nat.mod_add_div c (ordCompl[l] N), pow_add, pow_mul, hprim.pow_eq_one, one_pow, mul_one]`. Rewrite `h1` using `[e a, e b]`. Conclude with `hprim.pow_inj (Nat.mod_lt _ hN'0) (Nat.mod_lt _ hN'0) h1`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Break down `le_total b a with hab | hab` into its components or cases. Take `⟨c, hc⟩ : ordCompl[l] N ∣ a - b` from `(Nat.modEq_iff_dvd' hab).1 h.symm`. Establish `hac : a = b + ordCompl[l] N * c` using `by omega`. Rewrite using `[hac, pow_add, map_mul, key1, mul_one]`.
-
-Take `⟨c, hc⟩ : ordCompl[l] N ∣ b - a` from `(Nat.modEq_iff_dvd' hab).1 h`. Establish `hbc : b = a + ordCompl[l] N * c` using `by omega`. Rewrite using `[hbc, pow_add, map_mul, key1, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zO_sub_mem_iff (a b : ℕ) : zO N ^ a - zO N ^ b ∈ Q ↔ a ≡ b [MOD ordCompl[l] N] := by
   haveI := charP_quot N l Q
@@ -208,11 +204,11 @@ theorem zO_sub_mem_iff (a b : ℕ) : zO N ^ a - zO N ^ b ∈ Q ↔ a ≡ b [MOD 
       rw [hbc, pow_add, map_mul, key1, mul_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : zO N ^ (u : ZMod N).val - zO N ^ 1 ∈ Q`. Rewrite using `[pow_one, ← tauN_zO]`. Conclude with `h _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(zO_sub_mem_iff N l Q _ 1).1 h1`. Introduce `hu y`. Establish `hfg` using `ringHom_ext_zO N ((Ideal.Quotient.mk Q).comp (MulSemiringAction.toRingHom _ _ (tauN N u))) (Ideal.Quotient.mk Q) ?_ y`. Simplify using `only [RingHom.comp_apply, MulSemiringAction.toRingHom_apply] at hfg`. Conclude with `Ideal.Quotient.eq.1 hfg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [RingHom.comp_apply, MulSemiringAction.toRingHom_apply]`. Rewrite using `[tauN_zO]`. Establish `h1` using `(zO_sub_mem_iff N l Q _ 1).2 hu`. Rewrite `h1` using `[pow_one]`. Conclude with `Ideal.Quotient.eq.2 h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauN_inertia_iff (u : (ZMod N)ˣ) :
     (∀ y : 𝓞 (Cond.Cyc N), tauN N u • y - y ∈ Q) ↔ (u : ZMod N).val ≡ 1 [MOD ordCompl[l] N] := by
@@ -234,11 +230,11 @@ theorem tauN_inertia_iff (u : (ZMod N)ˣ) :
       exact Ideal.Quotient.eq.2 h1
 
 /- English proof (translation)
-Use `haveI := charP_quot N l Q`. Establish `hcard : Nat.card (ℤ ⧸ Q.under ℤ) = l`. Rewrite using `[← Ideal.LiesOver.over (P := Q) (p := span {(l : ℤ)}), Nat.card_congr (Int.quotientSpanNatEquivZMod l).toEquiv, Nat.card_zmod]`. Unfold `IsArithFrobAt`. Introduce `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcard]`. Simplify using `only [MulSemiringAction.toAlgHom_apply]`. Establish `hfg` using `ringHom_ext_zO N ((Ideal.Quotient.mk Q).comp (MulSemiringAction.toRingHom _ _ (tauN N u))) ((frobenius (𝓞 (Cond.Cyc N) ⧸ Q) l).comp (Ideal.Quotient.mk Q)) ?_ y`. Simplify using `only [RingHom.comp_apply, MulSemiringAction.toRingHom_apply, frobenius_def, ← map_pow] at hfg`. Conclude with `Ideal.Quotient.eq.1 hfg`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.comp_apply, MulSemiringAction.toRingHom_apply, frobenius_def, ← map_pow]`. Rewrite using `[tauN_zO]`. Conclude with `Ideal.Quotient.eq.2 ((zO_sub_mem_iff N l Q _ l).2 hu)`.
+A detailed English derivation is pending.
 -/
 theorem tauN_frob (u : (ZMod N)ˣ) (hu : (u : ZMod N).val ≡ l [MOD ordCompl[l] N]) : IsArithFrobAt ℤ (tauN N u) Q := by
   haveI := charP_quot N l Q
@@ -262,9 +258,9 @@ end Cyc
 variable {φ : Frame} (H : HostRaw φ)
 
 /- English proof (translation)
-Introduce `l _ P _ _ σ`. Use `cyc_isGalois H.condN` as an intermediate fact. Take `⟨Q, _, _, h1, -⟩` from `exists_over (emb H) l P`. Rewrite using `[h1]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨τ, h2, h3⟩`. Take `⟨u, rfl⟩` from `(tauN H.condN).surjective τ`. Conclude with `⟨u, (tauN_inertia_iff _ l Q u).mp h3, (gal_eq_art_iff H σ u).mpr h2⟩`. Introduce and unpack `⟨u, h2, h3⟩`. Conclude with `⟨_, (gal_eq_art_iff H σ u).mp h3, (tauN_inertia_iff _ l Q u).mpr h2⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem inertia : ∀ (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(l : ℤ)})]
     (σ : H.E ≃ₐ[ℚ] H.E), (∀ x : 𝓞 H.E, σ • x - x ∈ P) ↔
@@ -281,13 +277,13 @@ theorem inertia : ∀ (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 H.E)) [P.IsPrime
     exact ⟨_, (gal_eq_art_iff H σ u).mp h3, (tauN_inertia_iff _ l Q u).mpr h2⟩
 
 /- English proof (translation)
-Use `letI : Algebra (𝓞 H.E) (𝓞 (Cond.Cyc H.condN)) := (RingOfIntegers.mapRingHom (emb H).toRingHom).toAlgebra`. Use `haveI : Algebra.IsIntegral (𝓞 H.E) (𝓞 (Cond.Cyc H.condN)) := ⟨fun y => (RingOfIntegers.isIntegral y).tower_top⟩`. Establish `hinj : Function.Injective (RingOfIntegers.mapRingHom (emb H).toRingHom)`. Introduce `x y hxy`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun z : 𝓞 (Cond.Cyc H.condN) => (z : Cond.Cyc H.condN)) hxy`. Conclude with `(emb H).toRingHom.injective h1`. Take `⟨Q, -, hQp, hQ⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral P (⊥ : Ideal (𝓞 (Cond.Cyc H.condN))) (by`. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_bot]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : x = 0` using `hinj (hx.trans (map_zero _).symm)`. Rewrite using `[hx0]`. Conclude with `P.zero_mem)`. Use `⟨Q, hQp, ⟨?_⟩, hQ⟩` and prove the remaining obligations. Establish `hP : span {(l : ℤ)} = P.under ℤ` using `Ideal.LiesOver.over`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hP, ← hQ]`. Use `show Ideal.comap (algebraMap ℤ (𝓞 H.E)) (Ideal.comap (algebraMap (𝓞 H.E) (𝓞 (Cond.Cyc H.condN))) Q) = Ideal.comap (algebraMap ℤ (𝓞 (Cond.Cyc H.condN))) Q`. Rewrite using `[Ideal.comap_comap]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+A detailed English derivation is pending.
 -/
 private lemma lift_lemma' (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(l : ℤ)})] :
     ∃ Q : Ideal (𝓞 (Cond.Cyc H.condN)), Q.IsPrime ∧ Q.LiesOver (span {(l : ℤ)}) ∧
@@ -317,13 +313,11 @@ private lemma lift_lemma' (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 H.E)) [P.IsP
   exact RingHom.ext_int _ _
 
 /- English proof (translation)
-Take `⟨Q, hQp, hQl, hQ⟩` from `lift_lemma' H l P`. Use `haveI := hQp`. Use `haveI := hQl`. Establish `hτ` using `tauN_frob H.condN l Q u hu`. Establish `hact : ∀ x : 𝓞 H.E, RingOfIntegers.mapRingHom (emb H).toRingHom (σ • x) = tauN H.condN u • RingOfIntegers.mapRingHom (emb H).toRingHom x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `(gal_eq_art_iff H σ u).1 h x`. Establish `hcard : Nat.card (ℤ ⧸ P.under ℤ) = Nat.card (ℤ ⧸ Q.under ℤ)`. Rewrite using `[← Ideal.LiesOver.over (P := P) (p := span {(l : ℤ)}), ← Ideal.LiesOver.over (P := Q) (p := span {(l : ℤ)})]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsArithFrobAt at hτ ⊢`. Introduce `x`. Rewrite using `[hcard, ← hQ, Ideal.mem_comap]`. Simplify using `only [MulSemiringAction.toAlgHom_apply] at hτ ⊢`. Rewrite using `[map_sub, map_pow, hact]`.
-
-Conclude with `hτ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_of_modEq (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(l : ℤ)})]
     (σ : H.E ≃ₐ[ℚ] H.E) (u : (ZMod H.condN)ˣ) (hu : (u : ZMod H.condN).val ≡ l [MOD ordCompl[l] H.condN])
@@ -347,7 +341,7 @@ theorem frob_of_modEq (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 H.E)) [P.IsPrime
   exact hτ _
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `hcop : l.Coprime (ordCompl[l] H.condN)` using `Nat.coprime_ordCompl hl (NeZero.ne _)`. Take `⟨w, hw⟩` from `exists_unit_modEq (Nat.ordCompl_dvd H.condN l) l hcop`. Conclude with `⟨H.gal.symm (H.art w), w, frob_of_modEq H l P _ w hw (by simp), hw, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_frob (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(l : ℤ)})] :
     ∃ (F : H.E ≃ₐ[ℚ] H.E) (w : (ZMod H.condN)ˣ), IsArithFrobAt ℤ F P ∧
@@ -358,9 +352,9 @@ theorem exists_frob (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 H.E)) [P.IsPrime] 
   exact ⟨H.gal.symm (H.art w), w, frob_of_modEq H l P _ w hw (by simp), hw, by simp⟩
 
 /- English proof (translation)
-Introduce `l _ P _ _ σ`. Use `⟨fun hσ => ?_, fun ⟨u, h1, h2⟩ => frob_of_modEq H l P σ u h1 h2⟩` and prove the remaining obligations. Take `⟨F, w, hF, hw, hFw⟩` from `exists_frob H l P`. Establish `hM` using `Nat.ordCompl_dvd H.condN l`. Rewrite `hσ` using `[frob_iff_inertia P F σ hF, inertia H l P, map_mul, map_inv, hFw]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu, h1⟩` from `hσ`. Use `⟨u * w, ?_, by rw [map_mul, ← h1, inv_mul_cancel_right]⟩` and prove the remaining obligations. Rewrite `hu` using `[val_modEq_one_iff hM]`. Rewrite `hw`, the goal using `[val_modEq_iff hM]`. Rewrite using `[map_mul, hu, one_mul, hw]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_any : ∀ (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(l : ℤ)})]
     (σ : H.E ≃ₐ[ℚ] H.E), IsArithFrobAt ℤ σ P ↔
@@ -377,13 +371,13 @@ theorem frob_any : ∀ (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 H.E)) [P.IsPrim
   rw [map_mul, hu, one_mul, hw]
 
 /- English proof (translation)
-Introduce `l _ P _ _ σ`. Take `⟨F, w, hF, hw, hFw⟩` from `exists_frob H l P`. Establish `hM` using `Nat.ordCompl_dvd H.condN l`. Rewrite `hw` using `[val_modEq_iff hM]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hσ`. Take `⟨k, ρ, hρ, rfl⟩` from `Decomp.stab_eq_inertia_mul l P F σ hF hσ`. Take `⟨u, hu, h1⟩` from `(inertia H l P ρ).mp hρ`. Use `⟨u * w ^ k, k, ?_, by rw [map_mul, map_mul, map_pow, map_pow, h1, hFw]⟩` and prove the remaining obligations. Rewrite `hu` using `[val_modEq_one_iff hM]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[val_modEq_iff hM, map_mul, hu, one_mul, map_pow, Units.val_pow_eq_pow_val, hw, Nat.cast_pow]`. Introduce and unpack `⟨u, k, hu, h1⟩`. Establish `h2 : ∀ x : 𝓞 H.E, (σ * (F ^ k)⁻¹) • x - x ∈ P`. Rewrite using `[inertia H l P]`. Use `⟨u * (w ^ k)⁻¹, ?_, by rw [map_mul, map_mul, map_inv, map_inv, map_pow, map_pow, h1, hFw]⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hu` using `[val_modEq_iff hM]`. Establish `h3 : ZMod.unitsMap hM u = ZMod.unitsMap hM (w ^ k)` using `Units.ext (by rw [hu, map_pow, Units.val_pow_eq_pow_val, hw, Nat.cast_pow])`. Rewrite using `[val_modEq_one_iff hM, map_mul, map_inv, h3, mul_inv_cancel]`. Establish `h4` using `Subgroup.mul_mem _ (Decomp.mem_stab_of _ P (smul_mem_of_inertia _ P h2)) (Subgroup.pow_mem _ hF.mem_stabilizer k)`. Rewrite `h4` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem decomp : ∀ (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(l : ℤ)})]
     (σ : H.E ≃ₐ[ℚ] H.E), σ ∈ MulAction.stabilizer _ P ↔

@@ -17,15 +17,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Take `⟨U, hU, V, hV, hx, e, h⟩` from `hn.exists_isStandardSmoothOfRelativeDimension x`. Take `⟨s, hs, hQ⟩` from `HasRingHomProperty.appLE (@SmoothOfRelativeDimension m) f hm ⟨U, hU⟩ ⟨V, hV⟩ e`. Establish `hp` using `(hV.primeIdealOf ⟨x, hx⟩).isPrime`. Take `⟨t, ht, htp⟩ : ∃ t ∈ s, t ∉ (hV.primeIdealOf ⟨x, hx⟩).asIdeal` from `by by_contra! H`. Conclude with `hp.ne_top (eq_top_iff.2 (hs ▸ Ideal.span_le.2 H))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Nontrivial (Localization.Away t)`. Rewrite using `[← not_subsingleton_iff_nontrivial]`. Introduce `hsub`. Establish `h0 : algebraMap Γ(X, V) (Localization.Away t) 1 = 0` using `Subsingleton.elim _ _`. Rewrite `h0` using `[IsLocalization.map_eq_zero_iff (Submonoid.powers t)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨c, k, rfl⟩, hc⟩` from `h0`. Establish `hc' : t ^ k = 0` using `by simpa using hc`. Conclude with `htp (hp.mem_of_pow_mem k (by rw [hc']; exact Ideal.zero_mem _))`. Establish `hn'` using `(RingHom.isStandardSmoothOfRelativeDimension_stableUnderCompositionWithLocalizationAway n).2 (Localization.Away t) t _ h`. Establish `hm'` using `hQ t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `` to `((algebraMap Γ(X, V) (Localization.Away t)).comp (f.appLE U V e).hom).toAlgebra`. Establish `: Algebra.IsStandardSmoothOfRelativeDimension n Γ(Y, U) (Localization.Away t)` using `hn'`. Establish `a1` using `Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential (R := Γ(Y, U)) (S := Localization.Away t) n`. Establish `: Algebra.IsStandardSmoothOfRelativeDimension m Γ(Y, U) (Localization.Away t)` using `hm'`. Establish `a2` using `Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential (R := Γ(Y, U)) (S := Localization.Away t) m`.
-
-Conclude with `a1.symm.trans a2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem relDim_eq_of_smoothOfRelativeDimension_grp {X Y : Scheme.{0}} (f : X ⟶ Y) (n m : ℕ) (x : X)
     (hn : SmoothOfRelativeDimension n f) (hm : SmoothOfRelativeDimension m f) : n = m := by
@@ -57,11 +55,11 @@ private theorem relDim_eq_of_smoothOfRelativeDimension_grp {X Y : Scheme.{0}} (f
   exact_mod_cast a1.symm.trans a2
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Use `⟨Fan.mk (𝟙_ (Over S)) (fun i => Fin.elim0 i), ⟨Fan.IsLimit.mk _ (fun s => CartesianMonoidalCategory.toUnit s.pt) (fun _ i => Fin.elim0 i) (fun _ _ _ => CartesianMonoidalCategory.toUnit_unique _ _)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show SmoothOfRelativeDimension 0 (𝟙 S)`. Use `infer_instance`. Consider the case `succ k ih`. Take `⟨c, ⟨hc⟩, hsm⟩` from `ih`. Use `⟨extendFan (f := fun _ : Fin (k + 1) => A) c (BinaryFan.mk (CartesianMonoidalCategory.fst A c.pt) (CartesianMonoidalCategory.snd A c.pt)), ⟨extendFanIsLimit (fun _ : Fin (k + 1) => A) hc (CartesianMonoidalCategory.tensorProductIsBinaryProduct A c.pt)⟩, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: MorphismProperty.IsStableUnderBaseChange (@SmoothOfRelativeDimension (k * g))` using `smoothOfRelativeDimension_isStableUnderBaseChange (k * g)`. Establish `h1 : SmoothOfRelativeDimension (k * g) (pullback.fst A.hom c.pt.hom)` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback A.hom c.pt.hom).flip hsm`. Establish `h2` using `smoothOfRelativeDimension_comp (n := k * g) (m := g) (pullback.fst A.hom c.pt.hom) A.hom`. Rewrite using `[Nat.succ_mul]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_limit_fan_smooth_relDim_mul {S : Scheme.{0}} (A : Over S) (g : ℕ) (hA : SmoothOfRelativeDimension g A.hom) :
     ∀ k : ℕ, ∃ c : Fan (fun _ : Fin k => A), Nonempty (IsLimit c) ∧
@@ -91,13 +89,13 @@ private theorem exists_limit_fan_smooth_relDim_mul {S : Scheme.{0}} (A : Over S)
     exact h2
 
 /- English proof (translation)
-Introduce `R _ _ j D D' pD`. Break down `pD with ⟨pw, w, wg, wr, xe, cpr, wpsi⟩` into its components or cases. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : D'.X ≃ₗ[ℤ] (Fin j → D.X)` using `xe.toIntLinearEquiv`. Unfold `DegPre.rank`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[e.finrank_eq, Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Break down `pw with ⟨pr, hom, lim⟩` into its components or cases. Take `⟨c, ⟨hc⟩, hsm⟩` from `exists_limit_fan_smooth_relDim_mul D.P.A D.P.g D.P.5 j`. Set `e` to `IsLimit.conePointUniqueUpToIso lim hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hw : e.hom.left ≫ c.pt.hom = D'.P.A.hom` using `Over.w e.hom`. Establish `: IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.hom))`. Establish `h3` using `smoothOfRelativeDimension_comp (n := 0) (m := j * D.P.g) e.hom.left c.pt.hom`. Rewrite `h3` using `[hw, zero_add]`. Set `` to `D'.P.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `p : (𝟙_ (Over (Spec (CommRingCat.of R)))).left` using `(inferInstance : Nonempty (PrimeSpectrum R)).some`. Conclude with `relDim_eq_of_smoothOfRelativeDimension_grp D'.P.A.hom _ _ ((η[D'.P.A]).left p) D'.P.5 h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rank_and_g_of_isPowDeg : ∀ (R : Type) [CommRing R] [IsDomain R] (j : ℕ) (D D' : DegPre R)
     (pD : IsPowDeg D' D j), D'.rank = j * D.rank ∧ D'.P.g = j * D.P.g := by

@@ -17,20 +17,20 @@ namespace PositivityTheory.Rg.BcB.N3.Pus
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `isSmoothChar_of_isUnram (isUnram_unrChar k α)`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothChar_unr (α : ℂˣ) : IsSmoothChar (unrChar k α) := isSmoothChar_of_isUnram (isUnram_unrChar k α)
 
 abbrev cls (α : ℂˣ) : IrrGL k := IrrGL.ofChar (unrChar k α) (isSmoothChar_unr α)
 
 /- English proof (translation)
-Rewrite `h` using `[IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]`. Take `⟨ϖ, hϖ⟩` from `GlobalTheory.PrinTwo.NoFix.exists_unif k`. Establish `e` using `congrArg (fun χ : kˣ →* ℂˣ => ((χ ϖ : ℂˣ) : ℂ)) h`. Simplify using `only [MonoidHom.mul_apply, Units.val_mul] at e`. Rewrite `e` using `[unrChar_uniformizer k β hϖ, unrChar_uniformizer k α hϖ, val_absPow]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn : nabs k ϖ = (resCard k : ℝ)⁻¹`. Rewrite using `[GlobalTheory.LGrp.nabs_eq_zpow, ord_eq_one hϖ]`. Simplify using the standard rewrite rules. Establish `hq : (1 : ℝ) < resCard k` using `by exact_mod_cast one_lt_resCard (k := k)`. Establish `hn1 : nabs k ϖ < 1` using `by rw [hn]; exact inv_lt_one_of_one_lt₀ hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : 0 < nabs k ϖ` using `nabs_pos' k ϖ`. Establish `hp : ‖((nabs k ϖ : ℝ) : ℂ) ^ ((m : ℕ) : ℂ)‖ = nabs k ϖ ^ m`. Rewrite using `[Complex.cpow_natCast, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hn0]`. Rewrite using `[e, norm_mul, hp]`. Establish `ha : 0 < ‖(α : ℂ)‖` using `norm_pos_iff.2 α.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_lt_of_nu {α β : ℂˣ} {m : ℕ} (hm : 0 < m) (h : (cls (k := k) β) = (cls (k := k) α).nu (m : ℂ)) :
     ‖(β : ℂ)‖ < ‖(α : ℂ)‖ := by
@@ -53,29 +53,29 @@ theorem norm_lt_of_nu {α β : ℂˣ} {m : ℕ} (hm : 0 < m) (h : (cls (k := k) 
     _ = ‖(α : ℂ)‖ := mul_one _
 
 /- English proof (translation)
-Introduce `h0 n ξ hm V W _ _ _ _ π σ hπ hσ f g hf hg`. Set `c : Fin n → IrrGL k` to `fun i => cls (ξ i)`. Set `x : Fin n → IrrGL k` to `fun a => c (Fin.rev a)`. Establish `hc : ∀ a, (x a).IsCusp` using `fun a => IrrGL.isCusp_ofChar _ _`. Set `Δ : Fin n → Segment k` to `fun a => Segment.single (x a) (hc a)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hord : IsOrderedForm Δ (Finset.univ.val.map Δ)`. Use `⟨rfl, fun i j hij hp => ?_⟩` and prove the remaining obligations. Take `⟨-, m, hm0, he⟩` from `hp`. Simplify using `only [Δ, Segment.single, Segment.first_ofFirst] at he`. Establish `hlt` using `norm_lt_of_nu (k := k) hm0 he`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hle` using `hm (Fin.rev j) (Fin.rev i) (Fin.rev_le_rev.2 hij.le)`. Conclude with `absurd hle (not_le.2 hlt)`. Establish `hseg : ∀ a, IsLSeg (Δ a) (x a).rep`. Introduce `a`. Establish `ht : (Δ a).term = fun _ : Fin 1 => x a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b`. Establish `hb : (b : ℕ) = 0`. Use `b.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `(b : ℕ) < 1 at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Simplify using `[Δ, Segment.single, Segment.term, hb]`. Establish `hd : ∑ b, ((Δ a).term b).1 = (x a).1`. Rewrite using `[ht]`. Express the relevant statement in the definitionally equal form `∑ _b : Fin 1, (x a).1 = (x a).1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hd, ?_⟩` and prove the remaining obligations. Take `⟨E⟩` from `nonempty_equiv_prodIrr_one (x a) (by simp)`. Establish `key : ∀ (y : Fin 1 → IrrGL k) (hy : ∑ b, (y b).1 = (x a).1), y = (fun _ : Fin 1 => x a) → IsCosocle (x a).rep (prodIrr y hy)`. Introduce and unpack `y hy rfl`. Conclude with `(isCosocle_self (x a).2.rep.irr).of_equiv (Representation.Equiv.refl _) E`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key _ hd ht`. Establish `hLF : LFactors (Finset.univ.val.map Δ) x` using `⟨Δ, hord, hseg⟩`. Establish `hdn : ∑ a, (x a).1 = n`. Express the relevant statement in the definitionally equal form `∑ _a : Fin n, (1 : ℕ) = n`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `h0` as an intermediate fact. Take `⟨P0, hP0⟩` from `PositivityTheory.Exh.standardCosocleGL_holds k _ n n x hdn hLF`. Establish `hL : IsL (Finset.univ.val.map Δ) P0.ρ` using `⟨n, x, hdn, hLF, hP0⟩`. Establish `hdr : ∑ a, (x (Fin.rev a)).1 = n`. Express the relevant statement in the definitionally equal form `∑ _a : Fin n, (1 : ℕ) = n`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hsoc` using `PositivityTheory.Exh.lSocleGL_of (fun k _ _ _ _ => PositivityTheory.Exh.lUnlinkedIrr_of_seg PositivityTheory.RgGu.segmentRepresentation k) k _ n n x hdr hLF P0.ρ hL`. Establish `h1 : ∑ _ : Fin n, 1 = n` using `by simp`. Take `⟨Ψ, hΨ⟩ : ∃ Ψ : (iP (k` from `k) ξ).IntertwiningMap (multiProd (stdBlocks (fun _ : Fin n => 1) h1) fun i => detRep (Fin 1) (unrChar k (ξ i))), Function.Injective Ψ := sigmaUnique_eq_stdBlocks n h1 ▸ exists_emb k n fun i => unrChar k (ξ i)`. Set `E1` to `prodIrrEquiv h1 (fun i => detRep (Fin 1) (unrChar k (ξ i))) (fun i => (IrrRep.det (Fin 1) _ (isSmoothChar_unr (ξ i))).smooth) (fun i => (IrrRep.det (Fin 1) _ (isSmoothChar_unr (ξ i))).irr)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `key2 : ∀ (y : Fin n → IrrGL k) (hy : ∑ a, (y a).1 = n), y = c → Nonempty ((prodIrr (fun a => IrrGL.of (detRep (Fin 1) (unrChar k (ξ a))) (IrrRep.det (Fin 1) _ (isSmoothChar_unr (ξ a))).smooth (IrrRep.det (Fin 1) _ (isSmoothChar_unr (ξ a))).irr) h1).Equiv (prodIrr y hy))`. Introduce and unpack `y hy rfl`. Conclude with `⟨Representation.Equiv.refl _⟩`. Take `⟨E2⟩` from `key2 (x ∘ Fin.rev) hdr (funext fun a => by simp [x])`. Set `Φ` to `E2.toIntertwiningMap.comp (E1.toIntertwiningMap.comp Ψ)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ : Function.Injective Φ` using `E2.toLinearEquiv.injective.comp (E1.toLinearEquiv.injective.comp hΨ)`. Establish `hfi : Function.Injective f`. Use `hπ` as an intermediate fact. Conclude with `(Representation.IsIrreducible.injective_or_eq_zero f).resolve_right hf`. Establish `hgi : Function.Injective g`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `hσ` as an intermediate fact. Conclude with `(Representation.IsIrreducible.injective_or_eq_zero g).resolve_right hg`. Take `⟨a⟩` from `hsoc.equiv_of_embeds hπ ⟨Φ.comp f, hΦ.comp hfi⟩`. Take `⟨b⟩` from `hsoc.equiv_of_embeds hσ ⟨Φ.comp g, hΦ.comp hgi⟩`. Conclude with `⟨a.trans b.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem uniqSub' : UniqSub k := by
   intro h0 n ξ hm V W _ _ _ _ π σ hπ hσ f g hf hg

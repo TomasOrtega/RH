@@ -372,27 +372,27 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.PBCFinal
 namespace Formalism.FourierDecayAlt.Final
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.sharp_recursion`.
+A detailed English derivation is pending.
 -/
 theorem recursionSharp : Formalism.FourierDecayAlt.RecursionSharp := Formalism.FourierDecayAlt.P.sharp_recursion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.coarseBound`.
+A detailed English derivation is pending.
 -/
 theorem recursionText : Formalism.FourierDecayAlt.RecursionText := Formalism.FourierDecayAlt.P.coarseBound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.box_weights_sum_to_one`.
+A detailed English derivation is pending.
 -/
 theorem boxSumOne : Formalism.FourierDecayAlt.BoxSumOne := Formalism.FourierDecayAlt.P.box_weights_sum_to_one
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.leading_minors_count`.
+A detailed English derivation is pending.
 -/
 theorem leadingMinorsCount : Formalism.FourierDecayAlt.LeadingMinorsCount := Formalism.FourierDecayAlt.P.leading_minors_count
 /- English proof (translation)
-Introduce `ι _ c g rd r i hg hrd`. Establish `hk : ((2 * r : ℤ) + 3 - 2 * i) = -((2 * i : ℤ) - 3 - 2 * r)` using `by ring`. Establish `he : ((2 * r + 2 : ℤ) - 2 * ((i : ℤ) - 1)) = 1 - ((2 * i : ℤ) - 3 - 2 * r)` using `by ring`. Rewrite using `[hk, he]`. Generalize the expression as in `((2 * i : ℤ) - 3 - 2 * r) = k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Generalize the expression as in `Fintype.card ι = N`. Establish `hg0 : g ≠ 0` using `hg.ne'`. Establish `hr0 : rd ≠ 0` using `hrd.ne'`. Rewrite using `[← zpow_natCast ((2 * Real.pi / g) ^ k), ← zpow_mul, mul_zpow, ← zpow_mul, show (-k) * (-(N : ℤ)) = k * N by ring, show (1 - k) * (N : ℤ) = N - k * N by ring, zpow_sub₀ hg0, zpow_neg, div_zpow, div_zpow]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1 : (2 * Real.pi) ^ (k * (N : ℤ)) ≠ 0` using `zpow_ne_zero _ (by positivity)`. Establish `h2 : g ^ (k * (N : ℤ)) ≠ 0` using `zpow_ne_zero _ hg0`. Establish `h3 : rd ^ (k * (N : ℤ)) ≠ 0` using `zpow_ne_zero _ hr0`. Establish `h4 : g ^ (N : ℤ) ≠ 0` using `zpow_ne_zero _ hg0`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem dualSizeIdentity : Formalism.FourierDecayAlt.DualSizeIdentity := by
   intro ι _ c g rd r i hg hrd
@@ -413,11 +413,11 @@ theorem dualSizeIdentity : Formalism.FourierDecayAlt.DualSizeIdentity := by
   have h4 : g ^ (N : ℤ) ≠ 0 := zpow_ne_zero _ hg0
   field_simp
 /- English proof (translation)
-Introduce `P _ glk uk nn gg ρ₀ ρ₀' dimπ dimπ' V₀ deg hglk huk hnn hgg hV hdeg`. Establish `key : ∏ p, (glk p / uk p) * (glk p * nn p) / gg p = (∏ p, glk p / uk p) * (∏ p, glk p / uk p) / ∏ p, gg p / (nn p * uk p)`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Establish `h1` using `(huk p).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `(hnn p).ne'`. Establish `h3` using `(hgg p).ne'`. Clear the denominators using the available nonvanishing facts. Establish `hG : 0 < ∏ p, gg p / (nn p * uk p)` using `Finset.prod_pos (fun p _ => div_pos (hgg p) (mul_pos (hnn p) (huk p)))`. Rewrite using `[key]`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `hG.ne'`. Establish `h5` using `hV.ne'`. Establish `h6` using `hdeg.ne'`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem mainConstant : Formalism.FourierDecayAlt.MainConstant := by
   intro P _ glk uk nn gg ρ₀ ρ₀' dimπ dimπ' V₀ deg hglk huk hnn hgg hV hdeg
@@ -437,13 +437,13 @@ theorem mainConstant : Formalism.FourierDecayAlt.MainConstant := by
   have h6 := hdeg.ne'
   field_simp
 /- English proof (translation)
-Introduce `V _ _ ip hadd hsmul hconj z x T T' Dr hT hz hx`. Establish `hT0 : (T : ℂ) ≠ 0` using `by exact_mod_cast hT.ne'`. Establish `huz : ip (x + (ip x z / (T : ℂ)) • z) z = 0`. Rewrite using `[hadd, hsmul, hz, div_mul_eq_mul_div, mul_neg, neg_div, mul_div_assoc, div_self hT0, mul_one, add_neg_cancel]`. Establish `hzu : ip z (x + (ip x z / (T : ℂ)) • z) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hconj (x + (ip x z / (T : ℂ)) • z) z, huz, map_zero]`. Establish `hxu : ip x (x + (ip x z / (T : ℂ)) • z) = starRingEnd ℂ (-(T' : ℂ) + ip x z / (T : ℂ) * starRingEnd ℂ (ip x z))`. Rewrite using `[hconj (x + (ip x z / (T : ℂ)) • z) x, hadd, hsmul, hx, hconj x z]`. Establish `huu : ip (x + (ip x z / (T : ℂ)) • z) (x + (ip x z / (T : ℂ)) • z) = starRingEnd ℂ (-(T' : ℂ) + ip x z / (T : ℂ) * starRingEnd ℂ (ip x z))`. Rewrite using `[hadd x, hsmul, hxu, hzu, mul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨by rw [hsmul, huz, mul_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[hsmul, hconj (Dr • (x + (ip x z / (T : ℂ)) • z)) (x + (ip x z / (T : ℂ)) • z), hsmul, huu, map_mul, Complex.conj_conj]`. Use `push_cast`. Rewrite using `[Complex.normSq_mul]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← Complex.mul_conj, ← Complex.mul_conj]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem omNorm : Formalism.FourierDecayAlt.OmNorm := by
   intro V _ _ ip hadd hsmul hconj z x T T' Dr hT hz hx
@@ -469,29 +469,29 @@ theorem omNorm : Formalism.FourierDecayAlt.OmNorm := by
   field_simp
   ring
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.interlacing_sign`.
+A detailed English derivation is pending.
 -/
 theorem interlaceSign : Formalism.FourierDecayAlt.I.InterlaceSign := Formalism.FourierDecayAlt.P.interlacing_sign
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.q_positive_interlacing`.
+A detailed English derivation is pending.
 -/
 theorem qPositive : Formalism.FourierDecayAlt.I.QPositive := Formalism.FourierDecayAlt.P.q_positive_interlacing
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.interlacing_ratio`.
+A detailed English derivation is pending.
 -/
 theorem interlaceRatio : Formalism.FourierDecayAlt.I.InterlaceRatio := Formalism.FourierDecayAlt.P.interlacing_ratio
 /- English proof (translation)
-Introduce `F _ o q hq hq0 a`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `h (q, 0) (by`. Simplify using `only [Formalism.FourierDecayAlt.I.orderR, Set.mem_setOf_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hq, o.zero_mem, 1, o.one_mem, by ring⟩)`. Establish `h2` using `h (0, -q) (by`. Simplify using `only [Formalism.FourierDecayAlt.I.orderR, Set.mem_setOf_eq]`. Conclude with `⟨o.zero_mem, o.neg_mem hq, 1, o.one_mem, by ring⟩)`. Establish `h3` using `h (1, 1) (by`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `only [Formalism.FourierDecayAlt.I.orderR, Set.mem_setOf_eq]`. Conclude with `⟨o.one_mem, o.one_mem, 0, o.zero_mem, by ring⟩)`. Simplify using `only at h1 h2 h3`. Rewrite `h1` using `[mul_zero, sub_zero, mul_div_assoc, div_self hq0, mul_one]`. Rewrite `h2` using `[mul_zero, zero_sub, mul_neg, neg_neg, mul_div_assoc, div_self hq0, mul_one]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[mul_one, mul_one]`. Simplify using `only [Formalism.FourierDecayAlt.I.orderR, Set.mem_setOf_eq]`. Apply the tactic sequence `exact ⟨h1, h2, (a.1 - a.2) / q, h3, by field_simp <;> ring⟩`. Introduce `ha b hb`. Simplify using `only [Formalism.FourierDecayAlt.I.orderR, Set.mem_setOf_eq] at ha hb`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨ha1, ha2, t, ht, hat⟩` from `ha`. Take `⟨hb1, hb2, s, hs, hbs⟩` from `hb`. Establish `key : (a.1 * b.1 - a.2 * b.2) / q = a.1 * s + t * b.2`. Rewrite using `[div_eq_iff hq0]`. Take the linear combination `a.1 * hbs + b.2 * hat`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[key]`. Conclude with `o.add_mem (o.mul_mem ha1 hs) (o.mul_mem ht hb2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDualG : Formalism.FourierDecayAlt.I.SelfDualG := by
   intro F _ o q hq hq0 a
@@ -522,131 +522,131 @@ theorem selfDualG : Formalism.FourierDecayAlt.I.SelfDualG := by
     rw [key]
     exact o.add_mem (o.mul_mem ha1 hs) (o.mul_mem ht hb2)
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transfer_product_monic`.
+A detailed English derivation is pending.
 -/
 theorem tProdMonic : Formalism.FourierDecayAlt.I.TProdMonic := Formalism.FourierDecayAlt.P.transfer_product_monic
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.inverseCommutators`.
+A detailed English derivation is pending.
 -/
 theorem ruleInv : Formalism.FourierDecayAlt.R.RuleInv := Formalism.FourierDecayAlt.P.inverseCommutators
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.minor_scaling_law`.
+A detailed English derivation is pending.
 -/
 theorem minorScale : Formalism.FourierDecayAlt.X.MinorScale := Formalism.FourierDecayAlt.P.minor_scaling_law
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.scaling_exponent_identities`.
+A detailed English derivation is pending.
 -/
 theorem scaleExponents : Formalism.FourierDecayAlt.X.ScaleExponents := Formalism.FourierDecayAlt.P.scaling_exponent_identities
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_power_identity`.
+A detailed English derivation is pending.
 -/
 theorem germPowers : Formalism.FourierDecayAlt.X.GermPowers := Formalism.FourierDecayAlt.P.germ_power_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.slice_power_identity`.
+A detailed English derivation is pending.
 -/
 theorem slicePowers : Formalism.FourierDecayAlt.X.SlicePowers := Formalism.FourierDecayAlt.P.slice_power_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weight_exponent_identity`.
+A detailed English derivation is pending.
 -/
 theorem weightExponent : Formalism.FourierDecayAlt.X.WeightExponent := Formalism.FourierDecayAlt.P.weight_exponent_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.intertwinerConjugation`.
+A detailed English derivation is pending.
 -/
 theorem ruleSS : Formalism.FourierDecayAlt.R.RuleSS := Formalism.FourierDecayAlt.P.intertwinerConjugation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.second_kernel_property_one`.
+A detailed English derivation is pending.
 -/
 theorem levelOneKernelPoint_true : Formalism.FourierDecayAlt.A.LevelOneKernelPoint := Formalism.FourierDecayAlt.P.second_kernel_property_one
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.second_kernel_property_kernel`.
+A detailed English derivation is pending.
 -/
 theorem levelOneKernelPair_true : Formalism.FourierDecayAlt.A.LevelOneKernelPair := Formalism.FourierDecayAlt.P.second_kernel_property_kernel
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gaugeConjugation`.
+A detailed English derivation is pending.
 -/
 theorem ruleG : Formalism.FourierDecayAlt.R.RuleG := Formalism.FourierDecayAlt.P.gaugeConjugation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.shiftConjugation`.
+A detailed English derivation is pending.
 -/
 theorem ruleD : Formalism.FourierDecayAlt.R.RuleD := Formalism.FourierDecayAlt.P.shiftConjugation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.big_cell_free`.
+A detailed English derivation is pending.
 -/
 theorem bigCellFree : Formalism.FourierDecayAlt.K.BigCellFree := Formalism.FourierDecayAlt.P.big_cell_free
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.joint_theorem_A'`.
+A detailed English derivation is pending.
 -/
 theorem jointTheoremA : Formalism.FourierDecayAlt.K.JointTheoremA := Formalism.FourierDecayAlt.P.joint_theorem_A'
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.word_fusion`.
+A detailed English derivation is pending.
 -/
 theorem wordFusion : Formalism.FourierDecayAlt.W.WordFusion := Formalism.FourierDecayAlt.P.word_fusion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_lower_bound`.
+A detailed English derivation is pending.
 -/
 theorem normLower : Formalism.FourierDecayAlt.W.NormLower := Formalism.FourierDecayAlt.P.norm_lower_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.herglotz_Zd`.
+A detailed English derivation is pending.
 -/
 theorem herglotzZd : Formalism.FourierDecayAlt.H.HerglotzZd := Formalism.FourierDecayAlt.P.herglotz_Zd
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dual_third_group_holds`.
+A detailed English derivation is pending.
 -/
 theorem dual_g3 : Formalism.FourierDecayAlt.L.DualLatticeInclusion := Formalism.FourierDecayAlt.P.dual_third_group_holds
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dual_third_group_ideal`.
+A detailed English derivation is pending.
 -/
 theorem dual_ideal_inclusion : Formalism.FourierDecayAlt.L.DualIdealInclusion := Formalism.FourierDecayAlt.P.dual_third_group_ideal
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.minor_scaling_law_general`.
+A detailed English derivation is pending.
 -/
 theorem minorScaleGen : Formalism.FourierDecayAlt.X.MinorScaleGen := Formalism.FourierDecayAlt.P.minor_scaling_law_general
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.herglotz_fejer_Zd`.
+A detailed English derivation is pending.
 -/
 theorem herglotzFejerZd : Formalism.FourierDecayAlt.H.HerglotzFejerZd := Formalism.FourierDecayAlt.P.herglotz_fejer_Zd
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.markov_inequality`.
+A detailed English derivation is pending.
 -/
 theorem aMarkov : Formalism.FourierDecayAlt.E.AMarkov := Formalism.FourierDecayAlt.P.markov_inequality
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.markov_inequality_vector`.
+A detailed English derivation is pending.
 -/
 theorem markovVector : Formalism.FourierDecayAlt.E.MarkovVector := Formalism.FourierDecayAlt.P.markov_inequality_vector
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.middle_third_estimate`.
+A detailed English derivation is pending.
 -/
 theorem middleThird : Formalism.FourierDecayAlt.E.MiddleThird := Formalism.FourierDecayAlt.P.middle_third_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.mean_matrix_posDef`.
+A detailed English derivation is pending.
 -/
 theorem meanPosDef : Formalism.FourierDecayAlt.E.MeanPosDef := Formalism.FourierDecayAlt.P.mean_matrix_posDef
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cauchy_theta_identity`.
+A detailed English derivation is pending.
 -/
 theorem cauchyTheta : Formalism.FourierDecayAlt.E.CauchyTheta := Formalism.FourierDecayAlt.P.cauchy_theta_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.herglotz_lower_semicontinuous`.
+A detailed English derivation is pending.
 -/
 theorem herglotzLSC : Formalism.FourierDecayAlt.E.HerglotzLSC := Formalism.FourierDecayAlt.P.herglotz_lower_semicontinuous
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phase_function_deriv`.
+A detailed English derivation is pending.
 -/
 theorem g_g0Deriv : Formalism.FourierDecayAlt.G.PhaseFunctionDeriv := Formalism.FourierDecayAlt.P.phase_function_deriv
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phase_function_critical_points`.
+A detailed English derivation is pending.
 -/
 theorem g_g0Crit : Formalism.FourierDecayAlt.G.PhaseFunctionCritical := Formalism.FourierDecayAlt.P.phase_function_critical_points
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hessian_at_critical`.
+A detailed English derivation is pending.
 -/
 theorem g_hessCrit : Formalism.FourierDecayAlt.G.HessCrit := Formalism.FourierDecayAlt.P.hessian_at_critical
 /- English proof (translation)
-Introduce `m z`. Rewrite using `[Matrix.det_smul, Fintype.card_fin]`. Establish `hJ : (1 + Matrix.of fun _ _ => (1 : ℂ) : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ).det = (m : ℂ) + 2`. Establish `e : (Matrix.of fun _ _ => (1 : ℂ) : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) = Matrix.replicateCol (Fin 1) (fun _ : Fin (m + 1) => (1 : ℂ)) * Matrix.replicateRow (Fin 1) (fun _ : Fin (m + 1) => (1 : ℂ))`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mul_apply]`. Rewrite using `[e]`. Establish `h` using `Matrix.det_one_add_replicateCol_mul_replicateRow (ι := Fin 1) (fun _ : Fin (m + 1) => (1 : ℂ)) (fun _ : Fin (m + 1) => (1 : ℂ))`. Apply the tactic sequence `first | rw [h] | erw [h] | simp only [h]`. Apply the tactic sequence `simp [dotProduct] <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem g_hessDet : Formalism.FourierDecayAlt.G.HessDet := by
   intro m z
@@ -666,43 +666,41 @@ theorem g_hessDet : Formalism.FourierDecayAlt.G.HessDet := by
   rw [hJ]
   ring
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gradient_small_near_critical`.
+A detailed English derivation is pending.
 -/
 theorem g_gradSmall : Formalism.FourierDecayAlt.G.GradSmall := Formalism.FourierDecayAlt.P.gradient_small_near_critical
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gradient_lower_bound`.
+A detailed English derivation is pending.
 -/
 theorem g_gradLower : Formalism.FourierDecayAlt.G.GradLower := Formalism.FourierDecayAlt.P.gradient_lower_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.root_set_characterization`.
+A detailed English derivation is pending.
 -/
 theorem g_rootSetSpec : Formalism.FourierDecayAlt.G.RootSetSpec := Formalism.FourierDecayAlt.P.root_set_characterization
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stationary_leading_constant`.
+A detailed English derivation is pending.
 -/
 theorem g_leadingConstant : Formalism.FourierDecayAlt.G.LeadingConstant := Formalism.FourierDecayAlt.P.stationary_leading_constant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dimension_count`.
+A detailed English derivation is pending.
 -/
 theorem g_dimCount : Formalism.FourierDecayAlt.G.DimCount := Formalism.FourierDecayAlt.P.dimension_count
 /- English proof (translation)
-Introduce `n p q`. Use `⟨fun hp hq => ?_, fun hp hq => ?_⟩` and prove the remaining obligations. Take `⟨hp1, hp0⟩` from `hp`. Take `⟨hq1, hq0⟩` from `hq`. Simplify using `only [Formalism.FourierDecayAlt.G.superSum, ← Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_add i.castSucc i.succ]`. Rewrite using `[hp1, hq1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `ne_of_lt Fin.castSucc_lt_succ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Break down `lt_or_gt_of_ne hk.1 with h | h` into its components or cases. Rewrite using `[hp0 _ _ h, zero_mul]`. Establish `h1 : (i.castSucc : ℕ) < (k : ℕ)` using `h`. Rewrite `h1` using `[Fin.coe_castSucc]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (k : ℕ) ≠ (i.succ : ℕ)` using `fun e => hk.2 (Fin.ext e)`. Rewrite `h2` using `[Fin.val_succ]`. Establish `h3 : i.succ < k` using `by show ((i.succ : Fin (n + 1)) : ℕ) < (k : ℕ)`. Rewrite using `[Fin.val_succ]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq0 _ _ h3, mul_zero]`. Take `⟨hp1, hp0⟩` from `hp`. Take `⟨hq1, hq0⟩` from `hq`. Simplify using `only [Matrix.transpose_apply] at hp1 hp0 hq1 hq0`. Simplify using `only [Formalism.FourierDecayAlt.G.subSum, ← Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_add i.castSucc i.succ]`. Rewrite using `[hp1, hq1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `ne_of_lt Fin.castSucc_lt_succ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `k hk`. Break down `lt_or_gt_of_ne hk.1 with h | h` into its components or cases. Rewrite using `[hq0 _ _ h, mul_zero]`. Establish `h1 : (i.castSucc : ℕ) < (k : ℕ)` using `h`. Rewrite `h1` using `[Fin.coe_castSucc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (k : ℕ) ≠ (i.succ : ℕ)` using `fun e => hk.2 (Fin.ext e)`. Rewrite `h2` using `[Fin.val_succ]`. Establish `h3 : i.succ < k` using `by show ((i.succ : Fin (n + 1)) : ℕ) < (k : ℕ)`. Rewrite using `[Fin.val_succ]`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[hp0 _ _ h3, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g_charAdditive : Formalism.FourierDecayAlt.G.CharAdditive := by
   intro n p q
@@ -749,29 +747,29 @@ theorem g_charAdditive : Formalism.FourierDecayAlt.G.CharAdditive := by
           omega
         rw [hp0 _ _ h3, zero_mul]
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.det_orbit`.
+A detailed English derivation is pending.
 -/
 theorem g_detOrbit : Formalism.FourierDecayAlt.G.DetOrbit := Formalism.FourierDecayAlt.P.det_orbit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.det_weyl_matrix`.
+A detailed English derivation is pending.
 -/
 theorem g_detMatch : Formalism.FourierDecayAlt.G.DetMatch := Formalism.FourierDecayAlt.P.det_weyl_matrix
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.matrix_entries`.
+A detailed English derivation is pending.
 -/
 theorem g_entriesM : Formalism.FourierDecayAlt.G.EntriesM := Formalism.FourierDecayAlt.P.matrix_entries
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.shape_of_matrix`.
+A detailed English derivation is pending.
 -/
 theorem g_shapeM : Formalism.FourierDecayAlt.G.ShapeM := Formalism.FourierDecayAlt.P.shape_of_matrix
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phase_formula`.
+A detailed English derivation is pending.
 -/
 theorem g_phaseFormula : Formalism.FourierDecayAlt.G.PhaseFormula := Formalism.FourierDecayAlt.P.phase_formula
 /- English proof (translation)
-Introduce `β x y`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.FourierDecayAlt.G.psi, mul_add, Complex.add_re, Complex.ofReal_add, Complex.exp_add]`. Simplify using `only [Formalism.FourierDecayAlt.G.psi]`. Rewrite using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `exact Complex.norm_exp_ofReal_mul_I _`. Consider the case `simp [Complex.norm_exp_ofReal_mul_I]`. Simplify using `[Formalism.FourierDecayAlt.G.psi]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem g_psiChar : Formalism.FourierDecayAlt.G.PsiChar := by
   intro β x y
@@ -784,11 +782,11 @@ theorem g_psiChar : Formalism.FourierDecayAlt.G.PsiChar := by
     | simp [Complex.norm_exp_ofReal_mul_I]
   · simp [Formalism.FourierDecayAlt.G.psi]
 /- English proof (translation)
-Introduce `w`. Establish `h1 : ((4 * (Real.pi : ℂ) * w).re) = 4 * Real.pi * w.re`. Apply the tactic sequence `simp [Complex.mul_re] <;> ring`. Establish `h2 : ((-2 * Complex.I * w).re) = 2 * w.im`. Apply the tactic sequence `simp [Complex.mul_re] <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.FourierDecayAlt.G.psi, h1, Complex.add_conj]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Formalism.FourierDecayAlt.G.psi, h2, Complex.sub_conj]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem g_psiNormalisations : Formalism.FourierDecayAlt.G.PsiNormalisations := by
   intro w
@@ -806,33 +804,33 @@ theorem g_psiNormalisations : Formalism.FourierDecayAlt.G.PsiNormalisations := b
     push_cast
     ring
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_recursion_lower_sum`.
+A detailed English derivation is pending.
 -/
 theorem level_recursion_ls : Formalism.FourierDecayAlt.F7.LevelRecursionLS := Formalism.FourierDecayAlt.P.level_recursion_lower_sum
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.levelRecursion_statement`.
+A detailed English derivation is pending.
 -/
 theorem level_recursion : Formalism.FourierDecayAlt.F7.LevelRecursion := Formalism.FourierDecayAlt.P.levelRecursion_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.levelRecursionCondNeeded_statement`.
+A detailed English derivation is pending.
 -/
 theorem level_recursion_condition_needed : Formalism.FourierDecayAlt.F7.LevelRecursionCondNeeded := Formalism.FourierDecayAlt.P.levelRecursionCondNeeded_statement
 /- English proof (translation)
-Introduce `C₁ CE C' C Θ Kx f r hC₁ hCE hf hKx h8 h12 hC'Θ hΘ hr`. Establish `hΘpos : 0 < Θ` using `by linarith`. Establish `hf0 : f ≠ 0` using `by omega`. Establish `hC₁Θ : C₁ / Θ ≤ 1 / 8` using `by rw [div_le_iff₀ hΘpos]; linarith`. Establish `hsumΘ : (C₁ + CE) / Θ ≤ 1 / 8` using `by rw [div_le_iff₀ hΘpos]; linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCEΘ : CE / Θ ≤ 1 / 8` using `by rw [div_le_iff₀ hΘpos]; linarith`. Establish `p1 : 0 ≤ C₁ / Θ` using `by positivity`. Establish `p2 : 0 ≤ CE / Θ` using `by positivity`. Establish `hadd : C₁ / Θ + CE / Θ = (C₁ + CE) / Θ` using `by rw [add_div]`. Establish `hE : CE * Θ ^ (-(Kx - 5 / 2)) ≤ CE / Θ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Real.rpow_le_rpow_of_exponent_le hΘ (show -(Kx - 5 / 2) ≤ (-1 : ℝ) by linarith)`. Rewrite `h` using `[Real.rpow_neg_one]`. Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_le_mul_of_nonneg_left h hCE.le`. Establish `hE0 : 0 ≤ CE * Θ ^ (-(Kx - 5 / 2))` using `by positivity`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : (C₁ / Θ) ^ f ≤ (1 / 8) ^ f` using `by gcongr`. Establish `hb : (C₁ / Θ) ^ f ≤ 1 / 8` using `le_trans ha (pow_le_of_le_one (by norm_num) (by norm_num) hf0)`. Apply the tactic sequence `have hc : (CE * Θ ^ (-(Kx - 5 / 2))) ^ f ≤ (CE / Θ) ^ f := by gcongr <;> first | exact hE | positivity`. Apply the tactic sequence `have s1 : (CE / Θ) ^ f ≤ ((C₁ + CE) / Θ) ^ f := by gcongr <;> linarith`. Apply the tactic sequence `have s2 : (C₁ / Θ) ^ f ≤ ((C₁ + CE) / Θ) ^ f := by gcongr <;> linarith`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hd : (CE * Θ ^ (-(Kx - 5 / 2))) ^ f + 2 * (C₁ / Θ) ^ f ≤ 3 * ((C₁ + CE) / Θ) ^ f`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `t1 : (CE / Θ) ^ f ≤ CE / Θ` using `pow_le_of_le_one p2 (by linarith) hf0`. Establish `t2 : (C₁ / Θ) ^ f ≤ C₁ / Θ` using `pow_le_of_le_one p1 (by linarith) hf0`. Establish `hsmall : (CE * Θ ^ (-(Kx - 5 / 2))) ^ f + 2 * (C₁ / Θ) ^ f ≤ 1 / 4` using `by linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : 0 ≤ ((C₁ + CE) / Θ) ^ f` using `by positivity`. Establish `hdiv : 12 * ((C₁ + CE) / Θ) ≤ C / Θ`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Apply the tactic sequence `have hpow : (12 * ((C₁ + CE) / Θ)) ^ f ≤ (C / Θ) ^ f := by gcongr <;> first | exact hdiv | positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hpow` using `[mul_pow]`. Apply the tactic sequence `have h12f : (12 : ℝ) ^ 1 ≤ 12 ^ f := by gcongr <;> first | norm_num | omega`. Rewrite `h12f` using `[pow_one]`. Establish `hrS : (r : ℝ) * (12 * ((C₁ + CE) / Θ) ^ f) ≤ 1` using `le_trans (mul_le_mul_of_nonneg_left (le_trans (mul_le_mul_of_nonneg_right h12f hS0) hpow) (Nat.cast_nonneg r)) hr`. Establish `hr0 : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `⟨ha, hb, hc, hd, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem choice_of_constants_consistent : Formalism.FourierDecayAlt.F7.ChoiceOfConstants := by
   intro C₁ CE C' C Θ Kx f r hC₁ hCE hf hKx h8 h12 hC'Θ hΘ hr
@@ -883,35 +881,35 @@ theorem choice_of_constants_consistent : Formalism.FourierDecayAlt.F7.ChoiceOfCo
         add_le_add (mul_le_mul_of_nonneg_left hd hr0) hsmall
     _ ≤ 1 / 2 := by nlinarith [hrS]
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.constants_of_theorem_A`.
+A detailed English derivation is pending.
 -/
 theorem theorem_a_constants : Formalism.FourierDecayAlt.F7.TheoremAConstants := Formalism.FourierDecayAlt.P.constants_of_theorem_A
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.schur_two_factor_bound`.
+A detailed English derivation is pending.
 -/
 theorem schurTwo_true : Formalism.FourierDecayAlt.F7.SchurTwo := Formalism.FourierDecayAlt.P.schur_two_factor_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.schur_lattice_bound`.
+A detailed English derivation is pending.
 -/
 theorem schur_test_on_lattice : Formalism.FourierDecayAlt.F7.SchurLattice := Formalism.FourierDecayAlt.P.schur_lattice_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.schur_word_bound`.
+A detailed English derivation is pending.
 -/
 theorem schur_words : Formalism.FourierDecayAlt.F7.SchurWords := Formalism.FourierDecayAlt.P.schur_word_bound
 /- English proof (translation)
-Introduce `K _ q x w Y hw`. Proceed by induction on `w with`. Consider the case `nil => simp [Formalism.FourierDecayAlt.F7.qW, Formalism.FourierDecayAlt.F7.xW]`. Consider the case `cons l w ih`. Establish `hl` using `hw l (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `ih'` using `ih (fun l' hl' => hw l' (List.mem_cons_of_mem _ hl'))`. Simplify using `only [Formalism.FourierDecayAlt.F7.qW, Formalism.FourierDecayAlt.F7.xW, List.map_cons, List.prod_cons]`. Rewrite using `[mul_div_mul_comm, ih']`. Unfold `Formalism.FourierDecayAlt.F7.OffPoles at hl`. Unfold `Formalism.FourierDecayAlt.F7.wFactor`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Break down `l with ⟨pl, pt, fi⟩` into its components or cases. Consider the cases of `pl`. Consider the cases of `fi`. Simplify using `only [Bool.false_eq_true, ↓reduceIte] at hl ⊢`. Rewrite using `[div_one]`.
+Separate the alternatives or extract the components of the hypothesis. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Bool.false_eq_true, ↓reduceIte] at hl ⊢`. Establish `b1 : pt - Y - 1 ≠ 0` using `fun h => hl.1 (by linear_combination h)`. Establish `b2 : pt - (Y + 1) - 1 ≠ 0` using `fun h => hl.2 (by linear_combination h)`. Establish `b3 : pt - (Y + 1) ≠ 0` using `fun h => hl.1 (by linear_combination h)`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `field_simp <;> ring`. Consider the cases of `fi`. Simplify using `only [Bool.false_eq_true, ↓reduceIte] at hl ⊢`. Rewrite using `[div_one]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Bool.false_eq_true, ↓reduceIte] at hl ⊢`. Establish `a1 : Y - pt ≠ 0` using `hl.1`. Establish `a2 : Y - pt + 1 ≠ 0` using `fun h => hl.2 (by linear_combination h)`. Establish `e1 : Y + 1 - pt - 1 = Y - pt` using `by ring`. Establish `e2 : Y + 1 - pt = Y - pt + 1` using `by ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, div_self (div_ne_zero a2 a1)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wordWeight_true : Formalism.FourierDecayAlt.F7.WordWeight := by
   intro K _ q x w Y hw
@@ -947,9 +945,9 @@ theorem wordWeight_true : Formalism.FourierDecayAlt.F7.WordWeight := by
         rw [e1, e2, div_self (div_ne_zero a2 a1)]
         ring
 /- English proof (translation)
-Introduce `K _ q x w Y hw hpf`. Rewrite using `[wordWeight_true K q x w Y hw]`. Establish `h1 : (w.map fun l => Formalism.FourierDecayAlt.F7.wFactor l Y).prod = 1`. Apply `List.prod_eq_one` to reduce the goal to its premises. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨l, hl, rfl⟩` from `List.mem_map.mp ha`. Simplify using `[Formalism.FourierDecayAlt.F7.wFactor, (hpf l hl).1, (hpf l hl).2]`. Rewrite using `[h1, mul_one]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem plus_unchanged : Formalism.FourierDecayAlt.F7.PlusUnchanged := by
   intro K _ q x w Y hw hpf
@@ -961,209 +959,209 @@ theorem plus_unchanged : Formalism.FourierDecayAlt.F7.PlusUnchanged := by
     simp [Formalism.FourierDecayAlt.F7.wFactor, (hpf l hl).1, (hpf l hl).2]
   rw [h1, mul_one]
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.all_first_level_weight`.
+A detailed English derivation is pending.
 -/
 theorem all_first_weight : Formalism.FourierDecayAlt.F7.AllFirstWeight := Formalism.FourierDecayAlt.P.all_first_level_weight
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.word_weight_bounds`.
+A detailed English derivation is pending.
 -/
 theorem weight_bounds_first_order : Formalism.FourierDecayAlt.F7.WeightBounds := Formalism.FourierDecayAlt.P.word_weight_bounds
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.all_first_level_bounds`.
+A detailed English derivation is pending.
 -/
 theorem first_order_weight_bounds_all : Formalism.FourierDecayAlt.F7.AllFirstBounds := Formalism.FourierDecayAlt.P.all_first_level_bounds
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.self_dual_measure`.
+A detailed English derivation is pending.
 -/
 theorem g_selfDual : Formalism.FourierDecayAlt.G.SelfDual := Formalism.FourierDecayAlt.P.self_dual_measure
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.self_dual_measure_unique`.
+A detailed English derivation is pending.
 -/
 theorem g_selfDualUnique : Formalism.FourierDecayAlt.G.SelfDualUnique := Formalism.FourierDecayAlt.P.self_dual_measure_unique
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.affine_change_of_variables`.
+A detailed English derivation is pending.
 -/
 theorem g_affineChange : Formalism.FourierDecayAlt.G.AffineChange := Formalism.FourierDecayAlt.P.affine_change_of_variables
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.scale_product_measure`.
+A detailed English derivation is pending.
 -/
 theorem g_scalePi : Formalism.FourierDecayAlt.G.ScalePi := Formalism.FourierDecayAlt.P.scale_product_measure
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_of_rate`.
+A detailed English derivation is pending.
 -/
 theorem g_germOfRate : Formalism.FourierDecayAlt.G.GermOfRate := Formalism.FourierDecayAlt.P.germ_of_rate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.matchingIsoSetEq`.
+A detailed English derivation is pending.
 -/
 theorem iso_zz_is_iso : Formalism.FourierDecayAlt.A5.IsoZZIsIso := Formalism.FourierDecayAlt.P.matchingIsoSetEq
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.invRowFunctionalLast`.
+A detailed English derivation is pending.
 -/
 theorem lambda_last : Formalism.FourierDecayAlt.A5.LamLast := Formalism.FourierDecayAlt.P.invRowFunctionalLast
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.matchingIsoCount`.
+A detailed English derivation is pending.
 -/
 theorem isomorphism_class_count : Formalism.FourierDecayAlt.A5.IsoCount := Formalism.FourierDecayAlt.P.matchingIsoCount
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.tripleForm`.
+A detailed English derivation is pending.
 -/
 theorem triple_form_identity : Formalism.FourierDecayAlt.A5.TripleForm := Formalism.FourierDecayAlt.P.tripleForm
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corner_relation`.
+A detailed English derivation is pending.
 -/
 theorem g_cornerRelation : Formalism.FourierDecayAlt.G.CornerRelation := Formalism.FourierDecayAlt.P.corner_relation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corner_split`.
+A detailed English derivation is pending.
 -/
 theorem g_cornerSplit : Formalism.FourierDecayAlt.G.CornerSplit := Formalism.FourierDecayAlt.P.corner_split
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.leading_cofactor`.
+A detailed English derivation is pending.
 -/
 theorem g_cofLead : Formalism.FourierDecayAlt.G.CofLead := Formalism.FourierDecayAlt.P.leading_cofactor
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_coordinate_limit`.
+A detailed English derivation is pending.
 -/
 theorem g_rho1Limit : Formalism.FourierDecayAlt.G.Rho1Limit := Formalism.FourierDecayAlt.P.first_coordinate_limit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cofactor_lower_bound`.
+A detailed English derivation is pending.
 -/
 theorem g_cofLower : Formalism.FourierDecayAlt.G.CofLower := Formalism.FourierDecayAlt.P.cofactor_lower_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_long_point`.
+A detailed English derivation is pending.
 -/
 theorem g_stabLong : Formalism.FourierDecayAlt.G.StabLong := Formalism.FourierDecayAlt.P.stabilizer_long_point
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.section_at_long_point`.
+A detailed English derivation is pending.
 -/
 theorem g_sectionLong : Formalism.FourierDecayAlt.G.SectionLong := Formalism.FourierDecayAlt.P.section_at_long_point
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_block_point`.
+A detailed English derivation is pending.
 -/
 theorem g_stabBlock : Formalism.FourierDecayAlt.G.StabBlock := Formalism.FourierDecayAlt.P.stabilizer_block_point
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.section_at_block_point`.
+A detailed English derivation is pending.
 -/
 theorem g_sectionBlock : Formalism.FourierDecayAlt.G.SectionBlock := Formalism.FourierDecayAlt.P.section_at_block_point
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.reduced_phase_critical_points`.
+A detailed English derivation is pending.
 -/
 theorem g_g1Crit : Formalism.FourierDecayAlt.G.CornerEntryCritical := Formalism.FourierDecayAlt.P.reduced_phase_critical_points
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.limit_shape`.
+A detailed English derivation is pending.
 -/
 theorem g_limitShape : Formalism.FourierDecayAlt.G.LimitShape := Formalism.FourierDecayAlt.P.limit_shape
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.limit_matrix`.
+A detailed English derivation is pending.
 -/
 theorem g_limitMatrix : Formalism.FourierDecayAlt.G.LimitMatrix := Formalism.FourierDecayAlt.P.limit_matrix
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.limit_integral`.
+A detailed English derivation is pending.
 -/
 theorem g_limitIntegral : Formalism.FourierDecayAlt.G.LimitIntegral := Formalism.FourierDecayAlt.P.limit_integral
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.bessel_lemma_from_reductions`.
+A detailed English derivation is pending.
 -/
 theorem b_lemmaBFromSteps : Formalism.FourierDecayAlt.B.LemmaBFromSteps := Formalism.FourierDecayAlt.P.bessel_lemma_from_reductions
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.adjointness_of_bessel_transform`.
+A detailed English derivation is pending.
 -/
 theorem b_assembleAdj : Formalism.FourierDecayAlt.B.AssembleAdj := Formalism.FourierDecayAlt.P.adjointness_of_bessel_transform
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.adjointness_polynomially_bounded`.
+A detailed English derivation is pending.
 -/
 theorem b_assemblePoly : Formalism.FourierDecayAlt.B.AssemblePoly := Formalism.FourierDecayAlt.P.adjointness_polynomially_bounded
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.bessel_function_trivial_index`.
+A detailed English derivation is pending.
 -/
 theorem b_jtauOne : Formalism.FourierDecayAlt.B.JtauOne := Formalism.FourierDecayAlt.P.bessel_function_trivial_index
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dilation_big_cell_formula`.
+A detailed English derivation is pending.
 -/
 theorem b_dilBigCell : Formalism.FourierDecayAlt.B.DilBigCell := Formalism.FourierDecayAlt.P.dilation_big_cell_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dilation_mem_group`.
+A detailed English derivation is pending.
 -/
 theorem b_dilMem : Formalism.FourierDecayAlt.B.DilMem := Formalism.FourierDecayAlt.P.dilation_mem_group
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.bessel_lemma_closed_form`.
+A detailed English derivation is pending.
 -/
 theorem b_lemmaBClosedFromParts : Formalism.FourierDecayAlt.B.LemmaBClosedFromParts := Formalism.FourierDecayAlt.P.bessel_lemma_closed_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chebyshev_bound_sharp`.
+A detailed English derivation is pending.
 -/
 theorem chebyshev_sharp : Formalism.FourierDecayAlt.F7.ChebSharp := Formalism.FourierDecayAlt.P.chebyshev_bound_sharp
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chebyshev_coeff_value`.
+A detailed English derivation is pending.
 -/
 theorem chebyshev_coefficient_value : Formalism.FourierDecayAlt.F7.ChebCoValue := Formalism.FourierDecayAlt.P.chebyshev_coeff_value
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chebyshev_bound_attained`.
+A detailed English derivation is pending.
 -/
 theorem chebyshev_attained : Formalism.FourierDecayAlt.F7.ChebAttained := Formalism.FourierDecayAlt.P.chebyshev_bound_attained
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chebyshev_leading_coeff_bound`.
+A detailed English derivation is pending.
 -/
 theorem chebyshev_leading_coefficient_bound : Formalism.FourierDecayAlt.F7.ChebLeadBound := Formalism.FourierDecayAlt.P.chebyshev_leading_coeff_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chebyshevNodeSpacing_true`.
+A detailed English derivation is pending.
 -/
 theorem chebyshev_node_spacing : Formalism.FourierDecayAlt.F7.ChebSpacing := Formalism.FourierDecayAlt.P.chebyshevNodeSpacing_true
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.equioscillation_coeff`.
+A detailed English derivation is pending.
 -/
 theorem equicontinuity : Formalism.FourierDecayAlt.F7.EquiCo := Formalism.FourierDecayAlt.P.equioscillation_coeff
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.equioscillation_coeff_bound`.
+A detailed English derivation is pending.
 -/
 theorem equicontinuity_bound : Formalism.FourierDecayAlt.F7.EquiCoBound := Formalism.FourierDecayAlt.P.equioscillation_coeff_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gaussian_one_damped`.
+A detailed English derivation is pending.
 -/
 theorem g_gaussOneDamped : Formalism.FourierDecayAlt.G.GaussOneDamped := Formalism.FourierDecayAlt.P.gaussian_one_damped
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gaussian_one_dim`.
+A detailed English derivation is pending.
 -/
 theorem g_gaussOne : Formalism.FourierDecayAlt.G.GaussOne := Formalism.FourierDecayAlt.P.gaussian_one_dim
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gaussian_multi_of_one`.
+A detailed English derivation is pending.
 -/
 theorem g_gaussMultiOfOne : Formalism.FourierDecayAlt.G.GaussMultiOfOne := Formalism.FourierDecayAlt.P.gaussian_multi_of_one
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gaussian_hessian_of_multi`.
+A detailed English derivation is pending.
 -/
 theorem g_gaussHessOfMulti : Formalism.FourierDecayAlt.G.GaussHessOfMulti := Formalism.FourierDecayAlt.P.gaussian_hessian_of_multi
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unitary_invariant_gaussian`.
+A detailed English derivation is pending.
 -/
 theorem g_unitaryInvariant : Formalism.FourierDecayAlt.G.UnitaryInvariant := Formalism.FourierDecayAlt.P.unitary_invariant_gaussian
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.takagi_factorization`.
+A detailed English derivation is pending.
 -/
 theorem g_takagi : Formalism.FourierDecayAlt.G.Takagi := Formalism.FourierDecayAlt.P.takagi_factorization
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gaussian_multi_integral`.
+A detailed English derivation is pending.
 -/
 theorem g_gaussMulti : Formalism.FourierDecayAlt.G.GaussMulti := Formalism.FourierDecayAlt.P.gaussian_multi_integral
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gaussian_hessian_integral`.
+A detailed English derivation is pending.
 -/
 theorem g_gaussHess : Formalism.FourierDecayAlt.G.GaussHess := Formalism.FourierDecayAlt.P.gaussian_hessian_integral
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.quotient_measure`.
+A detailed English derivation is pending.
 -/
 theorem g_quotientMeasure : Formalism.FourierDecayAlt.G.QuotientMeasure := Formalism.FourierDecayAlt.P.quotient_measure
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.jacobian_formula`.
+A detailed English derivation is pending.
 -/
 theorem g_jacobian : Formalism.FourierDecayAlt.G.Jacobian := Formalism.FourierDecayAlt.P.jacobian_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.seminorm_inequality`.
+A detailed English derivation is pending.
 -/
 theorem b_seminormIneq : Formalism.FourierDecayAlt.B.SeminormIneq := Formalism.FourierDecayAlt.P.seminorm_inequality
 /- English proof (translation)
-Introduce `V _ _ W β γ hβ hγ hd x hx y hy`. Establish `pol : ∀ δ : V → V → ℂ, Formalism.FourierDecayAlt.B.IsSesq δ → ∀ u v : V, 4 * δ u v = δ (u + v) (u + v) - δ (u + (-1 : ℂ) • v) (u + (-1 : ℂ) • v) + Complex.I * δ (u + Complex.I • v) (u + Complex.I • v) - Complex.I * δ (u + (-Complex.I) • v) (u + (-Complex.I) • v)`. Introduce `δ hδ u v`. Take `⟨h1, h2, h3, h4⟩` from `hδ`. Simplify using `only [h1, h2, h3, h4, map_neg, map_one, Complex.conj_I]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take the linear combination `(2 * (δ u v - δ v u)) * Complex.I_sq`. Establish `m1 : ∀ c : ℂ, x + c • y ∈ W` using `fun c => W.add_mem hx (W.smul_mem c hy)`. Establish `key : 4 * β x y = 4 * γ x y`. Rewrite using `[pol β hβ x y, pol γ hγ x y, hd _ (W.add_mem hx hy), hd _ (m1 (-1)), hd _ (m1 Complex.I), hd _ (m1 (-Complex.I))]`. Conclude with `mul_left_cancel₀ (by norm_num) key`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem b_polarisation : Formalism.FourierDecayAlt.B.Polarisation := by
   intro V _ _ W β γ hβ hγ hd x hx y hy
@@ -1181,221 +1179,221 @@ theorem b_polarisation : Formalism.FourierDecayAlt.B.Polarisation := by
       hd _ (m1 (-Complex.I))]
   exact mul_left_cancel₀ (by norm_num) key
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.bilinear_form_continuity`.
+A detailed English derivation is pending.
 -/
 theorem b_formCoreC : Formalism.FourierDecayAlt.B.FormCoreC := Formalism.FourierDecayAlt.P.bilinear_form_continuity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.bilinear_form_at_zero`.
+A detailed English derivation is pending.
 -/
 theorem b_formCore : Formalism.FourierDecayAlt.B.FormCore := Formalism.FourierDecayAlt.P.bilinear_form_at_zero
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fatou_lemma_in_parameter`.
+A detailed English derivation is pending.
 -/
 theorem b_fatouParam : Formalism.FourierDecayAlt.B.FatouParam := Formalism.FourierDecayAlt.P.fatou_lemma_in_parameter
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.integration_by_parts_regularised`.
+A detailed English derivation is pending.
 -/
 theorem b_regIBP : Formalism.FourierDecayAlt.B.RegIBP := Formalism.FourierDecayAlt.P.integration_by_parts_regularised
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.test_function_decay`.
+A detailed English derivation is pending.
 -/
 theorem b_testDecay : Formalism.FourierDecayAlt.B.TestDecay := Formalism.FourierDecayAlt.P.test_function_decay
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.integral_zero_frequency_invariant`.
+A detailed English derivation is pending.
 -/
 theorem b_intRdZeroInv : Formalism.FourierDecayAlt.B.IntRdZeroInv := Formalism.FourierDecayAlt.P.integral_zero_frequency_invariant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dualSpan_true_hc`.
+A detailed English derivation is pending.
 -/
 theorem dualSpan_true : Formalism.FourierDecayAlt.A5.DualSpan := Formalism.FourierDecayAlt.P.dualSpan_true_hc
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.quotientEndScalar`.
+A detailed English derivation is pending.
 -/
 theorem endomorphism_kr : Formalism.FourierDecayAlt.A5.EndKR := Formalism.FourierDecayAlt.P.quotientEndScalar
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.characterOrthogonalityDual`.
+A detailed English derivation is pending.
 -/
 theorem character_orthogonality_dual : Formalism.FourierDecayAlt.A5.CharOrthDual := Formalism.FourierDecayAlt.P.characterOrthogonalityDual
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.characterOrthogonality`.
+A detailed English derivation is pending.
 -/
 theorem character_orthogonality : Formalism.FourierDecayAlt.A5.CharOrth := Formalism.FourierDecayAlt.P.characterOrthogonality
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unramRelative`.
+A detailed English derivation is pending.
 -/
 theorem unramified_relative : Formalism.FourierDecayAlt.S6.UnramRelative := Formalism.FourierDecayAlt.P.unramRelative
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.degreeFacts_statement`.
+A detailed English derivation is pending.
 -/
 theorem field_extension_degree_facts : Formalism.FourierDecayAlt.S6.DegreeFacts := Formalism.FourierDecayAlt.P.degreeFacts_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.localAwayFromLevel`.
+A detailed English derivation is pending.
 -/
 theorem local_ordinary : Formalism.FourierDecayAlt.S6.LocOrdinary := Formalism.FourierDecayAlt.P.localAwayFromLevel
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.localTwistedLattice`.
+A detailed English derivation is pending.
 -/
 theorem local_twisted_lattice : Formalism.FourierDecayAlt.S6.LocTw := Formalism.FourierDecayAlt.P.localTwistedLattice
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.scaledIdealNorm`.
+A detailed English derivation is pending.
 -/
 theorem ideal_norm_formula : Formalism.FourierDecayAlt.S6.NormIdl := Formalism.FourierDecayAlt.P.scaledIdealNorm
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.discrSquare`.
+A detailed English derivation is pending.
 -/
 theorem discriminant_square : Formalism.FourierDecayAlt.S6.DiscrSquare := Formalism.FourierDecayAlt.P.discrSquare
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.twistedLatticeBetween`.
+A detailed English derivation is pending.
 -/
 theorem between_lattices : Formalism.FourierDecayAlt.S6.Between := Formalism.FourierDecayAlt.P.twistedLatticeBetween
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dualIdealEqLiftIdeal`.
+A detailed English derivation is pending.
 -/
 theorem ideals_match : Formalism.FourierDecayAlt.S6.IdealsMatch := Formalism.FourierDecayAlt.P.dualIdealEqLiftIdeal
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.periodLatticeFactsSplitOfGeneral`.
+A detailed English derivation is pending.
 -/
 theorem text_from_general : Formalism.FourierDecayAlt.S6.TextFromGeneral := Formalism.FourierDecayAlt.P.periodLatticeFactsSplitOfGeneral
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.inverse_last_column_formula`.
+A detailed English derivation is pending.
 -/
 theorem inverse_last_column : Formalism.FourierDecayAlt.A5.InvLastCol := Formalism.FourierDecayAlt.P.inverse_last_column_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.triple_form_end_identity`.
+A detailed English derivation is pending.
 -/
 theorem tt_end : Formalism.FourierDecayAlt.A5.TTEnd := Formalism.FourierDecayAlt.P.triple_form_end_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.column_operation_identity`.
+A detailed English derivation is pending.
 -/
 theorem column_operation : Formalism.FourierDecayAlt.A5.ColOp := Formalism.FourierDecayAlt.P.column_operation_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.column_operation_row_form`.
+A detailed English derivation is pending.
 -/
 theorem column_operation_on_rows : Formalism.FourierDecayAlt.A5.ColOpRow := Formalism.FourierDecayAlt.P.column_operation_row_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.column_operation_triple_form`.
+A detailed English derivation is pending.
 -/
 theorem column_operation_triple : Formalism.FourierDecayAlt.A5.ColOpTriple := Formalism.FourierDecayAlt.P.column_operation_triple_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.triple_form_recursion`.
+A detailed English derivation is pending.
 -/
 theorem tt_recursion : Formalism.FourierDecayAlt.A5.TTStep := Formalism.FourierDecayAlt.P.triple_form_recursion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.integral_points_finite`.
+A detailed English derivation is pending.
 -/
 theorem integral_quotient_finite : Formalism.FourierDecayAlt.A5.IntFinite := Formalism.FourierDecayAlt.P.integral_points_finite
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.kernel_quotient_finite`.
+A detailed English derivation is pending.
 -/
 theorem parahoric_quotient_finite : Formalism.FourierDecayAlt.A5.KpFinite := Formalism.FourierDecayAlt.P.kernel_quotient_finite
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_kernel_identity`.
+A detailed English derivation is pending.
 -/
 theorem gramIdentity_true : Formalism.FourierDecayAlt.A5.GramIdentity := Formalism.FourierDecayAlt.P.gram_kernel_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.kernel_gram_property`.
+A detailed English derivation is pending.
 -/
 theorem parahoric_gram_matrix : Formalism.FourierDecayAlt.A5.KpGram := Formalism.FourierDecayAlt.P.kernel_gram_property
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.added_block_kernel_support`.
+A detailed English derivation is pending.
 -/
 theorem ns_support : Formalism.FourierDecayAlt.A5.NsSupport := Formalism.FourierDecayAlt.P.added_block_kernel_support
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.zero_kernel_all_ones`.
+A detailed English derivation is pending.
 -/
 theorem zero_level_ones_vector : Formalism.FourierDecayAlt.A5.BaseKernelOne := Formalism.FourierDecayAlt.P.zero_kernel_all_ones
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.padic_local_datum_facts`.
+A detailed English derivation is pending.
 -/
 theorem padic_datum_properties : Formalism.FourierDecayAlt.A5.DatumPadic := Formalism.FourierDecayAlt.P.padic_local_datum_facts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.second_gram_vanishing_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem blockKernelProperties_of_components : Formalism.FourierDecayAlt.A5.BlockKernelPropertiesOfSteps := Formalism.FourierDecayAlt.P.second_gram_vanishing_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lattice_average_lemma_from_parts`.
+A detailed English derivation is pending.
 -/
 theorem latticeAverage_of_gram : Formalism.FourierDecayAlt.A5.LemmaAAssemble := Formalism.FourierDecayAlt.P.lattice_average_lemma_from_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_kernel_properties_of_hypotheses`.
+A detailed English derivation is pending.
 -/
 theorem singleBlock_of_components : Formalism.FourierDecayAlt.A5.SingleBlockOfSteps := Formalism.FourierDecayAlt.P.first_kernel_properties_of_hypotheses
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_theta_properties_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem singleBlockTheta_of_components : Formalism.FourierDecayAlt.A5.SingleBlockThetaOfSteps := Formalism.FourierDecayAlt.P.first_theta_properties_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.poisson_summation_level`.
+A detailed English derivation is pending.
 -/
 theorem poisson_summation_move : Formalism.FourierDecayAlt.F7.PoissonStep := Formalism.FourierDecayAlt.P.poisson_summation_level
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.poisson_level_decay`.
+A detailed English derivation is pending.
 -/
 theorem poisson_summation_decay : Formalism.FourierDecayAlt.F7.PoissonStepDecay := Formalism.FourierDecayAlt.P.poisson_level_decay
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.poisson_series_summable`.
+A detailed English derivation is pending.
 -/
 theorem poisson_summable : Formalism.FourierDecayAlt.F7.PoissonSummable := Formalism.FourierDecayAlt.P.poisson_series_summable
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.product_decay_summable`.
+A detailed English derivation is pending.
 -/
 theorem product_of_decays_summable : Formalism.FourierDecayAlt.F7.ProductDecaySummable := Formalism.FourierDecayAlt.P.product_decay_summable
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.poisson_summation_level_statement`.
+A detailed English derivation is pending.
 -/
 theorem poisson_summation_text : Formalism.FourierDecayAlt.F7.PoissonStepText := Formalism.FourierDecayAlt.P.poisson_summation_level_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ae_equality_from_test_functions`.
+A detailed English derivation is pending.
 -/
 theorem b_aeFromTests : Formalism.FourierDecayAlt.B.AeFromTests := Formalism.FourierDecayAlt.P.ae_equality_from_test_functions
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pairing_top_degree`.
+A detailed English derivation is pending.
 -/
 theorem pairHighest_true : Formalism.FourierDecayAlt.F7.PairTop := Formalism.FourierDecayAlt.P.pairing_top_degree
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.j_pairing_formula`.
+A detailed English derivation is pending.
 -/
 theorem j_pairing : Formalism.FourierDecayAlt.F7.JPairing := Formalism.FourierDecayAlt.P.j_pairing_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.plane_wave_top_degree`.
+A detailed English derivation is pending.
 -/
 theorem plane_wave_top : Formalism.FourierDecayAlt.F7.PlaneWaveTop := Formalism.FourierDecayAlt.P.plane_wave_top_degree
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lift_top_degree`.
+A detailed English derivation is pending.
 -/
 theorem liftHighest_true : Formalism.FourierDecayAlt.F7.LiftTop := Formalism.FourierDecayAlt.P.lift_top_degree
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.traceDualGe`.
+A detailed English derivation is pending.
 -/
 theorem dual_lattice_supset : Formalism.FourierDecayAlt.S6.DualSupset := Formalism.FourierDecayAlt.P.traceDualGe
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.splitPrimeToDifferent`.
+A detailed English derivation is pending.
 -/
 theorem split_coprime : Formalism.FourierDecayAlt.S6.SplitCoprime := Formalism.FourierDecayAlt.P.splitPrimeToDifferent
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lagrange_leading_coeff`.
+A detailed English derivation is pending.
 -/
 theorem lagrange_leading_term : Formalism.FourierDecayAlt.F7.LagrangeLead := Formalism.FourierDecayAlt.P.lagrange_leading_coeff
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.extract_K_bound`.
+A detailed English derivation is pending.
 -/
 theorem extraction_k : Formalism.FourierDecayAlt.F7.ExtractK := Formalism.FourierDecayAlt.P.extract_K_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.extractBound_statement`.
+A detailed English derivation is pending.
 -/
 theorem extraction_bound : Formalism.FourierDecayAlt.F7.ExtractBound := Formalism.FourierDecayAlt.P.extractBound_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.extract_probability_bound`.
+A detailed English derivation is pending.
 -/
 theorem extraction_probability : Formalism.FourierDecayAlt.F7.ExtractProb := Formalism.FourierDecayAlt.P.extract_probability_bound
 /- English proof (translation)
-Introduce `Ls _ ω N N' hω hN hN' hS`. Establish `hS0 : (∑ L', ω L') ≠ 0` using `hS.ne'`. Prove the components needed by the constructor for the conclusion. Establish `h : ∀ L, ω L / (2 * ∑ L', ω L') + ω L / (2 * ∑ L', ω L') = ω L / ∑ L', ω L'`. Introduce `L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `field_simp <;> ring`. Rewrite using `[Finset.sum_congr rfl (fun L _ => h L), ← Finset.sum_div, div_self hS0]`. Establish `key : ∀ L, ω L * √(N L * N' L) ≤ (∑ L', ω L') * (ω L / (2 * ∑ L', ω L') * N L + ω L / (2 * ∑ L', ω L') * N' L)`. Introduce `L`. Establish `e : (∑ L', ω L') * (ω L / (2 * ∑ L', ω L') * N L + ω L / (2 * ∑ L', ω L') * N' L) = ω L * ((N L + N' L) / 2)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `field_simp <;> ring`. Rewrite using `[e]`. Apply `mul_le_mul_of_nonneg_left _ (hω L)` to reduce the goal to its premises. Establish `h1 : N L * N' L ≤ ((N L + N' L) / 2) ^ 2` using `by nlinarith [sq_nonneg (N L - N' L)]`. Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum (fun L _ => key L)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_weights : Formalism.FourierDecayAlt.F7.DualWeights := by
   intro Ls _ ω N N' hω hN hN' hS
@@ -1419,5399 +1417,5399 @@ theorem dual_weights : Formalism.FourierDecayAlt.F7.DualWeights := by
     rw [Finset.mul_sum]
     exact Finset.sum_le_sum (fun L _ => key L)
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.extract_chebyshev_bound`.
+A detailed English derivation is pending.
 -/
 theorem extraction_chebyshev : Formalism.FourierDecayAlt.F7.ExtractCheb := Formalism.FourierDecayAlt.P.extract_chebyshev_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.localisation_typed_condition`.
+A detailed English derivation is pending.
 -/
 theorem local_lattice_typed_model : Formalism.FourierDecayAlt.S6.LocTyped := Formalism.FourierDecayAlt.P.localisation_typed_condition
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.local_global_principle`.
+A detailed English derivation is pending.
 -/
 theorem local_global_lattices : Formalism.FourierDecayAlt.S6.LocalGlobal := Formalism.FourierDecayAlt.P.local_global_principle
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.covolumeIndex`.
+A detailed English derivation is pending.
 -/
 theorem covolumeIndex_true : Formalism.FourierDecayAlt.S6.CovolumeIndex := Formalism.FourierDecayAlt.P.covolumeIndex
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.twistedIsRealOrderLattice`.
+A detailed English derivation is pending.
 -/
 theorem twist_is_f_lattice : Formalism.FourierDecayAlt.S6.TwIsFLattice := Formalism.FourierDecayAlt.P.twistedIsRealOrderLattice
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.plane_wave_word_chebyshev_alt`.
+A detailed English derivation is pending.
 -/
 theorem plane_wave_word_chebyshev : Formalism.FourierDecayAlt.F7.PlaneWaveWordCheb := Formalism.FourierDecayAlt.P.plane_wave_word_chebyshev_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lift_word_chebyshev`.
+A detailed English derivation is pending.
 -/
 theorem lift_of_chebyshev_word : Formalism.FourierDecayAlt.F7.LiftWordCheb := Formalism.FourierDecayAlt.P.lift_word_chebyshev
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.different_power_conj_stable`.
+A detailed English derivation is pending.
 -/
 theorem power_conjugation_stable : Formalism.FourierDecayAlt.S6.PowConjStable := Formalism.FourierDecayAlt.P.different_power_conj_stable
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dual_lattice_subset`.
+A detailed English derivation is pending.
 -/
 theorem dual_lattice_containment : Formalism.FourierDecayAlt.S6.DualSubset := Formalism.FourierDecayAlt.P.dual_lattice_subset
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.least_norm_in_ideal`.
+A detailed English derivation is pending.
 -/
 theorem least_norm_vector_in_ideal_class : Formalism.FourierDecayAlt.S6.LeastNorm := Formalism.FourierDecayAlt.P.least_norm_in_ideal
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.size_quotient_identity`.
+A detailed English derivation is pending.
 -/
 theorem size_quotient : Formalism.FourierDecayAlt.S6.SizeQuotient := Formalism.FourierDecayAlt.P.size_quotient_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.assemble_least_norm_and_sizes`.
+A detailed English derivation is pending.
 -/
 theorem assemble_least_norm : Formalism.FourierDecayAlt.S6.AssembleLeast := Formalism.FourierDecayAlt.P.assemble_least_norm_and_sizes
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.assemble_local_conditions`.
+A detailed English derivation is pending.
 -/
 theorem local_lattices_combine : Formalism.FourierDecayAlt.S6.AssembleLocal := Formalism.FourierDecayAlt.P.assemble_local_conditions
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.assemble_lattice_facts`.
+A detailed English derivation is pending.
 -/
 theorem assemble_lattices : Formalism.FourierDecayAlt.S6.AssembleLattices := Formalism.FourierDecayAlt.P.assemble_lattice_facts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.typed_local_model`.
+A detailed English derivation is pending.
 -/
 theorem typed_lattice_model : Formalism.FourierDecayAlt.S6.TypedModel := Formalism.FourierDecayAlt.P.typed_local_model
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.plane_wave_word_formula`.
+A detailed English derivation is pending.
 -/
 theorem plane_wave_word : Formalism.FourierDecayAlt.F7.PlaneWaveWord := Formalism.FourierDecayAlt.P.plane_wave_word_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lift_word_formula`.
+A detailed English derivation is pending.
 -/
 theorem lift_word : Formalism.FourierDecayAlt.F7.LiftWord := Formalism.FourierDecayAlt.P.lift_word_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lift_vector_word`.
+A detailed English derivation is pending.
 -/
 theorem lift_vector_of_word : Formalism.FourierDecayAlt.F7.LiftVectorWord := Formalism.FourierDecayAlt.P.lift_vector_word
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.modulus_positive_multiplicative`.
+A detailed English derivation is pending.
 -/
 theorem modular_multiplication : Formalism.FourierDecayAlt.A5.ModMul := Formalism.FourierDecayAlt.P.modulus_positive_multiplicative
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cokernel_card_inverse_modulus`.
+A detailed English derivation is pending.
 -/
 theorem cokernel_cardinality_formula : Formalism.FourierDecayAlt.A5.CokerCard := Formalism.FourierDecayAlt.P.cokernel_card_inverse_modulus
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.kernel_block_diagonal_by_modulus`.
+A detailed English derivation is pending.
 -/
 theorem kp_block_diagonal : Formalism.FourierDecayAlt.A5.KpBlockDiag := Formalism.FourierDecayAlt.P.kernel_block_diagonal_by_modulus
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.added_block_kernel_block_diagonal`.
+A detailed English derivation is pending.
 -/
 theorem ns_block_diagonal : Formalism.FourierDecayAlt.A5.NsBlockDiag := Formalism.FourierDecayAlt.P.added_block_kernel_block_diagonal
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.twistedLatticeIndex`.
+A detailed English derivation is pending.
 -/
 theorem index_of_lattices : Formalism.FourierDecayAlt.S6.IndexCore := Formalism.FourierDecayAlt.P.twistedLatticeIndex
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.orbital_integral_reduced`.
+A detailed English derivation is pending.
 -/
 theorem g_omReduced : Formalism.FourierDecayAlt.G.OmReduced := Formalism.FourierDecayAlt.P.orbital_integral_reduced
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.orbital_integral_converges_abs`.
+A detailed English derivation is pending.
 -/
 theorem g_omConverges : Formalism.FourierDecayAlt.G.OmConverges := Formalism.FourierDecayAlt.P.orbital_integral_converges_abs
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lattice_facts_general`.
+A detailed English derivation is pending.
 -/
 theorem lattices_general_position_bound : Formalism.FourierDecayAlt.S6.LatticesGeneral := Formalism.FourierDecayAlt.P.lattice_facts_general
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lattice_facts_two_split_primes`.
+A detailed English derivation is pending.
 -/
 theorem text_lattices : Formalism.FourierDecayAlt.S6.TextLattices := Formalism.FourierDecayAlt.P.lattice_facts_two_split_primes
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.least_norm_and_size_quotient`.
+A detailed English derivation is pending.
 -/
 theorem least_norm_text : Formalism.FourierDecayAlt.S6.TextLeast := Formalism.FourierDecayAlt.P.least_norm_and_size_quotient
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.local_conditions_and_quotient_splitting`.
+A detailed English derivation is pending.
 -/
 theorem text_local : Formalism.FourierDecayAlt.S6.TextLocal := Formalism.FourierDecayAlt.P.local_conditions_and_quotient_splitting
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phase_function_bound`.
+A detailed English derivation is pending.
 -/
 theorem b_stepPhBound : Formalism.FourierDecayAlt.B.StepPhBound := Formalism.FourierDecayAlt.P.phase_function_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.regularised_pairing_via_phase`.
+A detailed English derivation is pending.
 -/
 theorem b_stepRegPh : Formalism.FourierDecayAlt.B.StepRegPh := Formalism.FourierDecayAlt.P.regularised_pairing_via_phase
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phase_function_adjoint`.
+A detailed English derivation is pending.
 -/
 theorem b_stepPhAdj : Formalism.FourierDecayAlt.B.StepPhAdj := Formalism.FourierDecayAlt.P.phase_function_adjoint
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cornerMinorsCount_true`.
+A detailed English derivation is pending.
 -/
 theorem corner_minors_count : Formalism.FourierDecayAlt.S3.CornerMinorsCount := Formalism.FourierDecayAlt.P.cornerMinorsCount_true
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unit_stratum_coset`.
+A detailed English derivation is pending.
 -/
 theorem unit_stratum_coset_structure : Formalism.FourierDecayAlt.S3.UnitStratumCoset := Formalism.FourierDecayAlt.P.unit_stratum_coset
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unit_stratum_share`.
+A detailed English derivation is pending.
 -/
 theorem unit_stratum_proportion : Formalism.FourierDecayAlt.S3.UnitStratumShare := Formalism.FourierDecayAlt.P.unit_stratum_share
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unit_stratum_mass`.
+A detailed English derivation is pending.
 -/
 theorem unit_stratum_mass_formula : Formalism.FourierDecayAlt.S3.UnitStratumMass := Formalism.FourierDecayAlt.P.unit_stratum_mass
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.levels_exist'`.
+A detailed English derivation is pending.
 -/
 theorem levelsExist_true : Formalism.FourierDecayAlt.S3.LevelsExist := Formalism.FourierDecayAlt.P.levels_exist'
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.reductionOnto_statement`.
+A detailed English derivation is pending.
 -/
 theorem reduction_map_surjective_mod_p : Formalism.FourierDecayAlt.S3.ReductionOnto := Formalism.FourierDecayAlt.P.reductionOnto_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corner_level_index`.
+A detailed English derivation is pending.
 -/
 theorem index_kpp : Formalism.FourierDecayAlt.S3.IndexKpp := Formalism.FourierDecayAlt.P.corner_level_index
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.jordan_holder_index`.
+A detailed English derivation is pending.
 -/
 theorem iwahori_index_formula : Formalism.FourierDecayAlt.S3.IndexJH := Formalism.FourierDecayAlt.P.jordan_holder_index
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.natural_level_index`.
+A detailed English derivation is pending.
 -/
 theorem natural_parahoric_index : Formalism.FourierDecayAlt.S3.IndexKnat := Formalism.FourierDecayAlt.P.natural_level_index
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.natural_level_product`.
+A detailed English derivation is pending.
 -/
 theorem knat_product : Formalism.FourierDecayAlt.S3.KnatProduct := Formalism.FourierDecayAlt.P.natural_level_product
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corner_level_product`.
+A detailed English derivation is pending.
 -/
 theorem parahoric_index_product_formula : Formalism.FourierDecayAlt.S3.KppProduct := Formalism.FourierDecayAlt.P.corner_level_product
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.column_identity`.
+A detailed English derivation is pending.
 -/
 theorem columns_true : Formalism.FourierDecayAlt.S3.Columns := Formalism.FourierDecayAlt.P.column_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.middle_level_volume_index`.
+A detailed English derivation is pending.
 -/
 theorem knat_gamma : Formalism.FourierDecayAlt.S3.KnatGamma := Formalism.FourierDecayAlt.P.middle_level_volume_index
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.local_ratio_product`.
+A detailed English derivation is pending.
 -/
 theorem localProduct_true : Formalism.FourierDecayAlt.S3.LocalProduct := Formalism.FourierDecayAlt.P.local_ratio_product
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.jacobian_natural_measure_constant`.
+A detailed English derivation is pending.
 -/
 theorem jacobian_of_change_of_variables_constant : Formalism.FourierDecayAlt.S3.JacobianConstant := Formalism.FourierDecayAlt.P.jacobian_natural_measure_constant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.form_signature_bound`.
+A detailed English derivation is pending.
 -/
 theorem signature_bound : Formalism.FourierDecayAlt.S3.SigBound := Formalism.FourierDecayAlt.P.form_signature_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.mass_formula_constant_one`.
+A detailed English derivation is pending.
 -/
 theorem counting_theorem : Formalism.FourierDecayAlt.S3.MainTheorem := Formalism.FourierDecayAlt.P.mass_formula_constant_one
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dual_density_explicit_form`.
+A detailed English derivation is pending.
 -/
 theorem displayed_d_star : Formalism.FourierDecayAlt.S3.DstarProductFormula := Formalism.FourierDecayAlt.P.dual_density_explicit_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.density_explicit_form`.
+A detailed English derivation is pending.
 -/
 theorem displayed_n_n0 : Formalism.FourierDecayAlt.S3.NN0Formula := Formalism.FourierDecayAlt.P.density_explicit_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.density_final_sum`.
+A detailed English derivation is pending.
 -/
 theorem displayed_sum : Formalism.FourierDecayAlt.S3.VolumeMassSum := Formalism.FourierDecayAlt.P.density_final_sum
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.typedArithmetic_statement`.
+A detailed English derivation is pending.
 -/
 theorem typed_arithmetic : Formalism.FourierDecayAlt.S3.TypedArithmetic := Formalism.FourierDecayAlt.P.typedArithmetic_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.integralProduct_statement`.
+A detailed English derivation is pending.
 -/
 theorem integral_product : Formalism.FourierDecayAlt.S3.IntegralProduct := Formalism.FourierDecayAlt.P.integralProduct_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.order_unit_group`.
+A detailed English derivation is pending.
 -/
 theorem order_units : Formalism.FourierDecayAlt.S3.ROrderUnits := Formalism.FourierDecayAlt.P.order_unit_group
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rOrderSelfDual_statement`.
+A detailed English derivation is pending.
 -/
 theorem order_self_dual : Formalism.FourierDecayAlt.S3.ROrderSelfDual := Formalism.FourierDecayAlt.P.rOrderSelfDual_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chain_weight_identity`.
+A detailed English derivation is pending.
 -/
 theorem chain_identity : Formalism.FourierDecayAlt.S3.ChainIdentity := Formalism.FourierDecayAlt.P.chain_weight_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unitHeadsMass_statement`.
+A detailed English derivation is pending.
 -/
 theorem unit_heads_mass : Formalism.FourierDecayAlt.S3.UnitHeadsMass := Formalism.FourierDecayAlt.P.unitHeadsMass_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dilation_unipotent_measure`.
+A detailed English derivation is pending.
 -/
 theorem b_dilN : Formalism.FourierDecayAlt.B.DilN := Formalism.FourierDecayAlt.P.dilation_unipotent_measure
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dilation_unipotent_weyl_measure`.
+A detailed English derivation is pending.
 -/
 theorem b_dilUW : Formalism.FourierDecayAlt.B.DilUW := Formalism.FourierDecayAlt.P.dilation_unipotent_weyl_measure
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.matrix_coefficient_linear`.
+A detailed English derivation is pending.
 -/
 theorem b_cCLin : Formalism.FourierDecayAlt.B.CCLin := Formalism.FourierDecayAlt.P.matrix_coefficient_linear
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dilation_matrix_coefficient`.
+A detailed English derivation is pending.
 -/
 theorem b_dilCC : Formalism.FourierDecayAlt.B.DilCC := Formalism.FourierDecayAlt.P.dilation_matrix_coefficient
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.one_level_inequality_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ta_oneLevelOfSteps : Formalism.FourierDecayAlt.TA.OneLevelOfSteps := Formalism.FourierDecayAlt.P.one_level_inequality_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.reduction_bound_of_one_level`.
+A detailed English derivation is pending.
 -/
 theorem ta_reductionOfSteps : Formalism.FourierDecayAlt.TA.ReductionOfSteps := Formalism.FourierDecayAlt.P.reduction_bound_of_one_level
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.clause_of_regularized_limit`.
+A detailed English derivation is pending.
 -/
 theorem b_stepClause : Formalism.FourierDecayAlt.B.StepClause := Formalism.FourierDecayAlt.P.clause_of_regularized_limit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.assemble_equality_identity`.
+A detailed English derivation is pending.
 -/
 theorem b_assembleEq : Formalism.FourierDecayAlt.B.AssembleEq := Formalism.FourierDecayAlt.P.assemble_equality_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.assemble_diagonal_identity`.
+A detailed English derivation is pending.
 -/
 theorem b_assembleDiag : Formalism.FourierDecayAlt.B.AssembleDiag := Formalism.FourierDecayAlt.P.assemble_diagonal_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ldu_decomposition_exists`.
+A detailed English derivation is pending.
 -/
 theorem lduExists_true : Formalism.FourierDecayAlt.S3.LDUExists := Formalism.FourierDecayAlt.P.ldu_decomposition_exists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ldu_decomposition_unique`.
+A detailed English derivation is pending.
 -/
 theorem lower_diagonal_upper_decomposition_unique : Formalism.FourierDecayAlt.S3.LDUUnique := Formalism.FourierDecayAlt.P.ldu_decomposition_unique
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lead_invariant_bis`.
+A detailed English derivation is pending.
 -/
 theorem leadInvariant_true : Formalism.FourierDecayAlt.S3.LeadInvariant := Formalism.FourierDecayAlt.P.lead_invariant_bis
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corner_invariant_bis`.
+A detailed English derivation is pending.
 -/
 theorem cornerInvariant_true : Formalism.FourierDecayAlt.S3.CornerInvariant := Formalism.FourierDecayAlt.P.corner_invariant_bis
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.inverse_corner_identity`.
+A detailed English derivation is pending.
 -/
 theorem inverseCorner_true : Formalism.FourierDecayAlt.S3.InverseCorner := Formalism.FourierDecayAlt.P.inverse_corner_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_groups_are_subgroups`.
+A detailed English derivation is pending.
 -/
 theorem groups_are_groups : Formalism.FourierDecayAlt.S3.GroupsAreGroups := Formalism.FourierDecayAlt.P.level_groups_are_subgroups
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_stabiliser_explicit`.
+A detailed English derivation is pending.
 -/
 theorem s_explicit : Formalism.FourierDecayAlt.S3.SExplicit := Formalism.FourierDecayAlt.P.frame_stabiliser_explicit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_levi_explicit`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_normalizer_explicit : Formalism.FourierDecayAlt.S3.NUExplicit := Formalism.FourierDecayAlt.P.unipotent_levi_explicit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.card_unipotent_radical`.
+A detailed English derivation is pending.
 -/
 theorem finite_group_cardinality_formula : Formalism.FourierDecayAlt.S3.CardN := Formalism.FourierDecayAlt.P.card_unipotent_radical
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.card_frame_stabiliser`.
+A detailed English derivation is pending.
 -/
 theorem cardS_true : Formalism.FourierDecayAlt.S3.CardS := Formalism.FourierDecayAlt.P.card_frame_stabiliser
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.card_unipotent_levi_product`.
+A detailed English derivation is pending.
 -/
 theorem card_n_unipotent : Formalism.FourierDecayAlt.S3.CardNU := Formalism.FourierDecayAlt.P.card_unipotent_levi_product
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.card_unitary_levi`.
+A detailed English derivation is pending.
 -/
 theorem card_unipotent_k : Formalism.FourierDecayAlt.S3.CardUk := Formalism.FourierDecayAlt.P.card_unitary_levi
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gamma_factor_product`.
+A detailed English derivation is pending.
 -/
 theorem gamma_product : Formalism.FourierDecayAlt.S3.GammaProduct := Formalism.FourierDecayAlt.P.gamma_factor_product
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.card_pointwise_stabiliser`.
+A detailed English derivation is pending.
 -/
 theorem stabiliserIndexFinite_true : Formalism.FourierDecayAlt.S3.StabiliserIndexFinite := Formalism.FourierDecayAlt.P.card_pointwise_stabiliser
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.off_diagonal_schur_complement`.
+A detailed English derivation is pending.
 -/
 theorem ta_offDiagSchur : Formalism.FourierDecayAlt.TA.OffDiagSchur := Formalism.FourierDecayAlt.P.off_diagonal_schur_complement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cosets_last_block_size_one`.
+A detailed English derivation is pending.
 -/
 theorem ta_cosetsOne : Formalism.FourierDecayAlt.TA.CosetsOne := Formalism.FourierDecayAlt.P.cosets_last_block_size_one
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cosets_last_block_size_ge_two`.
+A detailed English derivation is pending.
 -/
 theorem ta_cosetsS : Formalism.FourierDecayAlt.TA.CosetsS := Formalism.FourierDecayAlt.P.cosets_last_block_size_ge_two
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.s3_split_frame_count`.
+A detailed English derivation is pending.
 -/
 theorem split_frame_count : Formalism.FourierDecayAlt.S3.SplitFrameCount := Formalism.FourierDecayAlt.P.s3_split_frame_count
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.split_frame_density`.
+A detailed English derivation is pending.
 -/
 theorem split_frame_density_formula : Formalism.FourierDecayAlt.S3.SplitFrameDensity := Formalism.FourierDecayAlt.P.split_frame_density
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.s3_split_frame_transitive`.
+A detailed English derivation is pending.
 -/
 theorem split_frame_transitive : Formalism.FourierDecayAlt.S3.SplitFrameTransitive := Formalism.FourierDecayAlt.P.s3_split_frame_transitive
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.domination_limit`.
+A detailed English derivation is pending.
 -/
 theorem ta_a4Limit : Formalism.FourierDecayAlt.TA.TopDominationLimit := Formalism.FourierDecayAlt.P.domination_limit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.split_last_block`.
+A detailed English derivation is pending.
 -/
 theorem ta_splitLast : Formalism.FourierDecayAlt.TA.SplitLast := Formalism.FourierDecayAlt.P.split_last_block
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.diagonal_top_block`.
+A detailed English derivation is pending.
 -/
 theorem ta_diagTop : Formalism.FourierDecayAlt.TA.DiagTop := Formalism.FourierDecayAlt.P.diagonal_top_block
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.diagonal_cosets`.
+A detailed English derivation is pending.
 -/
 theorem ta_diagCosets : Formalism.FourierDecayAlt.TA.DiagCosets := Formalism.FourierDecayAlt.P.diagonal_cosets
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.epsilon_limit`.
+A detailed English derivation is pending.
 -/
 theorem ta_epsLimit : Formalism.FourierDecayAlt.TA.EpsLimit := Formalism.FourierDecayAlt.P.epsilon_limit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_kernel_explicit_formula`.
+A detailed English derivation is pending.
 -/
 theorem singleBlockFormula_true : Formalism.FourierDecayAlt.A5.SingleBlockFormula := Formalism.FourierDecayAlt.P.first_kernel_explicit_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_stabiliser_characterisation`.
+A detailed English derivation is pending.
 -/
 theorem s_is_frame_stabiliser : Formalism.FourierDecayAlt.S3.SIsFrameStabiliser := Formalism.FourierDecayAlt.P.frame_stabiliser_characterisation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pointwise_stabiliser_characterisation`.
+A detailed English derivation is pending.
 -/
 theorem frameStabiliserPointwise_true : Formalism.FourierDecayAlt.S3.FrameStabiliserPointwise := Formalism.FourierDecayAlt.P.pointwise_stabiliser_characterisation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_level_exists_alt`.
+A detailed English derivation is pending.
 -/
 theorem frame_level_exists : Formalism.FourierDecayAlt.S3.FrameLevelExists := Formalism.FourierDecayAlt.P.frame_level_exists_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corner_group_index_explicit`.
+A detailed English derivation is pending.
 -/
 theorem parahoric_corner_index : Formalism.FourierDecayAlt.S3.KppCorner := Formalism.FourierDecayAlt.P.corner_group_index_explicit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.order_index_alt`.
+A detailed English derivation is pending.
 -/
 theorem order_index : Formalism.FourierDecayAlt.S3.ROrderIndex := Formalism.FourierDecayAlt.P.order_index_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unit_stratum_total_alt`.
+A detailed English derivation is pending.
 -/
 theorem unit_stratum_total : Formalism.FourierDecayAlt.S3.UnitStratumTotal := Formalism.FourierDecayAlt.P.unit_stratum_total_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.density_from_mass`.
+A detailed English derivation is pending.
 -/
 theorem zero_level_count_from_mass : Formalism.FourierDecayAlt.S3.DensityFromMassFormula := Formalism.FourierDecayAlt.P.density_from_mass
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.mass_formula_sharp`.
+A detailed English derivation is pending.
 -/
 theorem sharp_count : Formalism.FourierDecayAlt.S3.MainSharp := Formalism.FourierDecayAlt.P.mass_formula_sharp
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.splitByLastSize`.
+A detailed English derivation is pending.
 -/
 theorem tb_splitBySize : Formalism.FourierDecayAlt.TB.SplitBySize := Formalism.FourierDecayAlt.P.splitByLastSize
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.diagStep`.
+A detailed English derivation is pending.
 -/
 theorem tb_diagStep : Formalism.FourierDecayAlt.TB.DiagStep := Formalism.FourierDecayAlt.P.diagStep
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.one_level_inequality`.
+A detailed English derivation is pending.
 -/
 theorem ta_oneLevel : Formalism.FourierDecayAlt.TA.OneLevel := Formalism.FourierDecayAlt.P.one_level_inequality
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_a_reduction`.
+A detailed English derivation is pending.
 -/
 theorem ta_theoremAReduction : Formalism.FourierDecayAlt.TA.TheoremAReduction := Formalism.FourierDecayAlt.P.theorem_a_reduction
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_congruence_index`.
+A detailed English derivation is pending.
 -/
 theorem index_of_first_congruence_subgroup : Formalism.FourierDecayAlt.S3.CongruenceLevelIndex := Formalism.FourierDecayAlt.P.first_congruence_index
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frameIndex_statement`.
+A detailed English derivation is pending.
 -/
 theorem frame_index : Formalism.FourierDecayAlt.S3.FrameIndex := Formalism.FourierDecayAlt.P.frameIndex_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.omStable_statement`.
+A detailed English derivation is pending.
 -/
 theorem omega_stable : Formalism.FourierDecayAlt.S3.OmStable := Formalism.FourierDecayAlt.P.omStable_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.second_gram_property`.
+A detailed English derivation is pending.
 -/
 theorem blockKernelPosSemidef_true : Formalism.FourierDecayAlt.A5.BlockKernelPosSemidef := Formalism.FourierDecayAlt.P.second_gram_property
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_kernel_periodic`.
+A detailed English derivation is pending.
 -/
 theorem singleBlockPeriodic_true : Formalism.FourierDecayAlt.A5.SingleBlockPeriodic := Formalism.FourierDecayAlt.P.first_kernel_periodic
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_kernel_gram_property`.
+A detailed English derivation is pending.
 -/
 theorem singleBlockPosSemidef_true : Formalism.FourierDecayAlt.A5.SingleBlockPosSemidef := Formalism.FourierDecayAlt.P.first_kernel_gram_property
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_kernel_parseval`.
+A detailed English derivation is pending.
 -/
 theorem singleBlockParseval_true : Formalism.FourierDecayAlt.A5.SingleBlockParseval := Formalism.FourierDecayAlt.P.first_kernel_parseval
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_theta_kernel_equality`.
+A detailed English derivation is pending.
 -/
 theorem theta_equality_first : Formalism.FourierDecayAlt.A5.Th1Eq := Formalism.FourierDecayAlt.P.first_theta_kernel_equality
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_theta_equals_first_kernel`.
+A detailed English derivation is pending.
 -/
 theorem singleBlockThetaProps_true : Formalism.FourierDecayAlt.A5.SingleBlockThetaProps := Formalism.FourierDecayAlt.P.first_theta_equals_first_kernel
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.singleBlockStep`.
+A detailed English derivation is pending.
 -/
 theorem tb_oneStep : Formalism.FourierDecayAlt.TB.OneStep := Formalism.FourierDecayAlt.P.singleBlockStep
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.longBlockStep`.
+A detailed English derivation is pending.
 -/
 theorem tb_multiStep : Formalism.FourierDecayAlt.TB.MultiStep := Formalism.FourierDecayAlt.P.longBlockStep
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unitary_group_order`.
+A detailed English derivation is pending.
 -/
 theorem unitary_group_order_formula : Formalism.FourierDecayAlt.S3.UnitaryOrder := Formalism.FourierDecayAlt.P.unitary_group_order
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.witt_hermitian_frames`.
+A detailed English derivation is pending.
 -/
 theorem witt_hermitian : Formalism.FourierDecayAlt.S3.WittHerm := Formalism.FourierDecayAlt.P.witt_hermitian_frames
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.limitStep`.
+A detailed English derivation is pending.
 -/
 theorem tb_limitStep : Formalism.FourierDecayAlt.TB.LimitStep := Formalism.FourierDecayAlt.P.limitStep
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.levelInequalityOfSteps`.
+A detailed English derivation is pending.
 -/
 theorem tb_oneLevelOfSteps : Formalism.FourierDecayAlt.TB.OneLevelOfSteps := Formalism.FourierDecayAlt.P.levelInequalityOfSteps
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.towerBoundOfSteps`.
+A detailed English derivation is pending.
 -/
 theorem tb_theoremAOfSteps : Formalism.FourierDecayAlt.TB.TheoremAOfSteps := Formalism.FourierDecayAlt.P.towerBoundOfSteps
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.sumRanks`.
+A detailed English derivation is pending.
 -/
 theorem sz_sumRanks : Formalism.FourierDecayAlt.Sz.SumRanks := Formalism.FourierDecayAlt.P.sumRanks
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.levelExponent`.
+A detailed English derivation is pending.
 -/
 theorem sz_levelExponent : Formalism.FourierDecayAlt.Sz.LevelExponent := Formalism.FourierDecayAlt.P.levelExponent
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.indexRatio`.
+A detailed English derivation is pending.
 -/
 theorem sz_indexRatio : Formalism.FourierDecayAlt.Sz.IndexRatio := Formalism.FourierDecayAlt.P.indexRatio
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.factorialCancel`.
+A detailed English derivation is pending.
 -/
 theorem sz_factorialCancel : Formalism.FourierDecayAlt.Sz.FactorialCancel := Formalism.FourierDecayAlt.P.factorialCancel
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.volumeChain`.
+A detailed English derivation is pending.
 -/
 theorem sz_volumeChain : Formalism.FourierDecayAlt.Sz.VolumeChain := Formalism.FourierDecayAlt.P.volumeChain
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.massRatioFormula`.
+A detailed English derivation is pending.
 -/
 theorem sz_propA : Formalism.FourierDecayAlt.Sz.PropA := Formalism.FourierDecayAlt.P.massRatioFormula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.position_insertion_mul_compat`.
+A detailed English derivation is pending.
 -/
 theorem wd_insMul : Formalism.FourierDecayAlt.Wd.InsMul := Formalism.FourierDecayAlt.P.position_insertion_mul_compat
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.position_insertion_star_compat`.
+A detailed English derivation is pending.
 -/
 theorem wd_insStar : Formalism.FourierDecayAlt.Wd.InsStar := Formalism.FourierDecayAlt.P.position_insertion_star_compat
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.position_insertion_diagonal_compat`.
+A detailed English derivation is pending.
 -/
 theorem wd_insDiag : Formalism.FourierDecayAlt.Wd.InsDiag := Formalism.FourierDecayAlt.P.position_insertion_diagonal_compat
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.position_insertion_free_compat`.
+A detailed English derivation is pending.
 -/
 theorem wd_insFree : Formalism.FourierDecayAlt.Wd.InsFree := Formalism.FourierDecayAlt.P.position_insertion_free_compat
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.schurRecursion_true`.
+A detailed English derivation is pending.
 -/
 theorem tb_schurStep : Formalism.FourierDecayAlt.TB.SchurStep := Formalism.FourierDecayAlt.P.schurRecursion_true
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.one_level_inequality_split_by_size`.
+A detailed English derivation is pending.
 -/
 theorem tb_oneLevel : Formalism.FourierDecayAlt.TB.OneLevel := Formalism.FourierDecayAlt.P.one_level_inequality_split_by_size
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.sharp_recursion_theorem_a`.
+A detailed English derivation is pending.
 -/
 theorem tb_theoremA : Formalism.FourierDecayAlt.TB.TheoremA := Formalism.FourierDecayAlt.P.sharp_recursion_theorem_a
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exchange_relation_plus`.
+A detailed English derivation is pending.
 -/
 theorem wd_exchPlus : Formalism.FourierDecayAlt.Wd.ExchPlus := Formalism.FourierDecayAlt.P.exchange_relation_plus
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exchange_relation_minus`.
+A detailed English derivation is pending.
 -/
 theorem wd_exchMinus : Formalism.FourierDecayAlt.Wd.ExchMinus := Formalism.FourierDecayAlt.P.exchange_relation_minus
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dual_lattice_bound`.
+A detailed English derivation is pending.
 -/
 theorem sz_dualLattice : Formalism.FourierDecayAlt.Sz.DualLattice := Formalism.FourierDecayAlt.P.dual_lattice_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.g_power_bounds`.
+A detailed English derivation is pending.
 -/
 theorem sz_gPowers : Formalism.FourierDecayAlt.Sz.GPowers := Formalism.FourierDecayAlt.P.g_power_bounds
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.normalised_forms`.
+A detailed English derivation is pending.
 -/
 theorem sz_normalisedForms : Formalism.FourierDecayAlt.Sz.NormalisedForms := Formalism.FourierDecayAlt.P.normalised_forms
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lattice_placement`.
+A detailed English derivation is pending.
 -/
 theorem sz_placement : Formalism.FourierDecayAlt.Sz.Placement := Formalism.FourierDecayAlt.P.lattice_placement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.threshold_products`.
+A detailed English derivation is pending.
 -/
 theorem sz_thresholdProducts : Formalism.FourierDecayAlt.Sz.ThresholdProducts := Formalism.FourierDecayAlt.P.threshold_products
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theta_lower_bound`.
+A detailed English derivation is pending.
 -/
 theorem sz_thetaLower : Formalism.FourierDecayAlt.Sz.ThetaLower := Formalism.FourierDecayAlt.P.theta_lower_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theta_power_bound`.
+A detailed English derivation is pending.
 -/
 theorem sz_thetaPower : Formalism.FourierDecayAlt.Sz.ThetaPower := Formalism.FourierDecayAlt.P.theta_power_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.final_smallness`.
+A detailed English derivation is pending.
 -/
 theorem final_term_small_bound : Formalism.FourierDecayAlt.Sz.FinalSmall := Formalism.FourierDecayAlt.P.final_smallness
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.betaFactorisation`.
+A detailed English derivation is pending.
 -/
 theorem sz_factorisation : Formalism.FourierDecayAlt.Sz.Factorisation := Formalism.FourierDecayAlt.P.betaFactorisation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.nodeBound`.
+A detailed English derivation is pending.
 -/
 theorem sz_nodeBound : Formalism.FourierDecayAlt.Sz.NodeBound := Formalism.FourierDecayAlt.P.nodeBound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.edgeFactorBound`.
+A detailed English derivation is pending.
 -/
 theorem sz_firstBound : Formalism.FourierDecayAlt.Sz.FirstBound := Formalism.FourierDecayAlt.P.edgeFactorBound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.positionBefore`.
+A detailed English derivation is pending.
 -/
 theorem sz_positionBefore : Formalism.FourierDecayAlt.Sz.PositionBefore := Formalism.FourierDecayAlt.P.positionBefore
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.positionAfter`.
+A detailed English derivation is pending.
 -/
 theorem sz_positionAfter : Formalism.FourierDecayAlt.Sz.PositionAfter := Formalism.FourierDecayAlt.P.positionAfter
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.slotAt_true`.
+A detailed English derivation is pending.
 -/
 theorem sz_positionAt : Formalism.FourierDecayAlt.Sz.PositionAt := Formalism.FourierDecayAlt.P.slotAt_true
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.positionTop`.
+A detailed English derivation is pending.
 -/
 theorem sz_positionTop : Formalism.FourierDecayAlt.Sz.PositionTop := Formalism.FourierDecayAlt.P.positionTop
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.positionProduct`.
+A detailed English derivation is pending.
 -/
 theorem sz_positionProduct : Formalism.FourierDecayAlt.Sz.ProdOneAddTwoDivLeSqrt := Formalism.FourierDecayAlt.P.positionProduct
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.positionsBefore`.
+A detailed English derivation is pending.
 -/
 theorem sz_positionsBefore : Formalism.FourierDecayAlt.Sz.PositionsBefore := Formalism.FourierDecayAlt.P.positionsBefore
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.block_forcing`.
+A detailed English derivation is pending.
 -/
 theorem forcing_true : Formalism.FourierDecayAlt.S3.Forcing := Formalism.FourierDecayAlt.P.block_forcing
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.centre_block_structure`.
+A detailed English derivation is pending.
 -/
 theorem centre_blocks : Formalism.FourierDecayAlt.S3.CentreBlocks := Formalism.FourierDecayAlt.P.centre_block_structure
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.centreForcing_true`.
+A detailed English derivation is pending.
 -/
 theorem centre_forcing : Formalism.FourierDecayAlt.S3.CentreForcing := Formalism.FourierDecayAlt.P.centreForcing_true
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabiliserTrivial_true`.
+A detailed English derivation is pending.
 -/
 theorem stabiliser_trivial : Formalism.FourierDecayAlt.S3.StabiliserTrivial := Formalism.FourierDecayAlt.P.stabiliserTrivial_true
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lattice_average_identity`.
+A detailed English derivation is pending.
 -/
 theorem lattice_average_bound_identity : Formalism.FourierDecayAlt.A5.AvgClaim := Formalism.FourierDecayAlt.P.lattice_average_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.interlacing`.
+A detailed English derivation is pending.
 -/
 theorem sz_interlacing : Formalism.FourierDecayAlt.Sz.Interlacing := Formalism.FourierDecayAlt.P.interlacing
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lamStrictAnti`.
+A detailed English derivation is pending.
 -/
 theorem sz_lamAnti : Formalism.FourierDecayAlt.Sz.LamAnti := Formalism.FourierDecayAlt.P.lamStrictAnti
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.vandermondeRatioHarmonic`.
+A detailed English derivation is pending.
 -/
 theorem sz_harmonicVand : Formalism.FourierDecayAlt.Sz.HarmonicVand := Formalism.FourierDecayAlt.P.vandermondeRatioHarmonic
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.positionDiff`.
+A detailed English derivation is pending.
 -/
 theorem sz_positionDiff : Formalism.FourierDecayAlt.Sz.PositionDiff := Formalism.FourierDecayAlt.P.positionDiff
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.position_RTT_relation_plus`.
+A detailed English derivation is pending.
 -/
 theorem wd_positionRTTPlus : Formalism.FourierDecayAlt.Wd.PositionRTTPlus := Formalism.FourierDecayAlt.P.position_RTT_relation_plus
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.position_RTT_relation_minus`.
+A detailed English derivation is pending.
 -/
 theorem wd_positionRTTMinus : Formalism.FourierDecayAlt.Wd.PositionRTTMinus := Formalism.FourierDecayAlt.P.position_RTT_relation_minus
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.initial_module_structure`.
+A detailed English derivation is pending.
 -/
 theorem wd_startModule : Formalism.FourierDecayAlt.Wd.StartModule := Formalism.FourierDecayAlt.P.initial_module_structure
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hermFrameCount_statement`.
+A detailed English derivation is pending.
 -/
 theorem hermitian_frame_count : Formalism.FourierDecayAlt.S3.HermFrameCount := Formalism.FourierDecayAlt.P.hermFrameCount_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.density_case_split`.
+A detailed English derivation is pending.
 -/
 theorem density_case_analysis : Formalism.FourierDecayAlt.S3.DensCases := Formalism.FourierDecayAlt.P.density_case_split
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.density_ordinary_bound`.
+A detailed English derivation is pending.
 -/
 theorem ordinary_density_bound : Formalism.FourierDecayAlt.S3.DensOrdinaryBound := Formalism.FourierDecayAlt.P.density_ordinary_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.densTyped_statement`.
+A detailed English derivation is pending.
 -/
 theorem density_typed : Formalism.FourierDecayAlt.S3.DensTyped := Formalism.FourierDecayAlt.P.densTyped_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.typed_unit_verification`.
+A detailed English derivation is pending.
 -/
 theorem typed_unit_check : Formalism.FourierDecayAlt.S3.TypedUnitCheck := Formalism.FourierDecayAlt.P.typed_unit_verification
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.prime_tail_bound`.
+A detailed English derivation is pending.
 -/
 theorem prime_tail : Formalism.FourierDecayAlt.S3.PrimeTail := Formalism.FourierDecayAlt.P.prime_tail_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.zeta_tail_bound`.
+A detailed English derivation is pending.
 -/
 theorem sz_zetaTail : Formalism.FourierDecayAlt.Sz.ZetaTail := Formalism.FourierDecayAlt.P.zeta_tail_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exponent_sizes`.
+A detailed English derivation is pending.
 -/
 theorem sz_eaSize : Formalism.FourierDecayAlt.Sz.EaSize := Formalism.FourierDecayAlt.P.exponent_sizes
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corollary_a_of_proposition_a`.
+A detailed English derivation is pending.
 -/
 theorem sz_corA : Formalism.FourierDecayAlt.Sz.CorA := Formalism.FourierDecayAlt.P.corollary_a_of_proposition_a
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.bracket_bound_alt`.
+A detailed English derivation is pending.
 -/
 theorem sz_bracketBound : Formalism.FourierDecayAlt.Sz.BracketBound := Formalism.FourierDecayAlt.P.bracket_bound_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unfolding_identity_of_integration_formula`.
+A detailed English derivation is pending.
 -/
 theorem b_stepUnfold : Formalism.FourierDecayAlt.B.StepUnfold := Formalism.FourierDecayAlt.P.unfolding_identity_of_integration_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.orbital_integral_ae_convergence_continuity`.
+A detailed English derivation is pending.
 -/
 theorem b_stepJCont : Formalism.FourierDecayAlt.B.StepJCont := Formalism.FourierDecayAlt.P.orbital_integral_ae_convergence_continuity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dilation_identity_of_jacobian`.
+A detailed English derivation is pending.
 -/
 theorem b_stepDilBeta : Formalism.FourierDecayAlt.B.StepDilBeta := Formalism.FourierDecayAlt.P.dilation_identity_of_jacobian
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.second_vanishing_off_ring`.
+A detailed English derivation is pending.
 -/
 theorem blockKernelSupport_true : Formalism.FourierDecayAlt.A5.BlockKernelSupport := Formalism.FourierDecayAlt.P.second_vanishing_off_ring
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.second_gram_and_vanishing`.
+A detailed English derivation is pending.
 -/
 theorem gram_determinant_dual_bound_a : Formalism.FourierDecayAlt.A5.A2 := Formalism.FourierDecayAlt.P.second_gram_and_vanishing
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.duality_plus`.
+A detailed English derivation is pending.
 -/
 theorem wd_dualPlus : Formalism.FourierDecayAlt.Wd.DualPlus := Formalism.FourierDecayAlt.P.duality_plus
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.duality_minus`.
+A detailed English derivation is pending.
 -/
 theorem wd_dualMinus : Formalism.FourierDecayAlt.Wd.DualMinus := Formalism.FourierDecayAlt.P.duality_minus
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.regularized_beta_bound_continuity_sesquilinear`.
+A detailed English derivation is pending.
 -/
 theorem b_stepRegBound : Formalism.FourierDecayAlt.B.StepRegBound := Formalism.FourierDecayAlt.P.regularized_beta_bound_continuity_sesquilinear
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.regularised_average_identity`.
+A detailed English derivation is pending.
 -/
 theorem b_stepRegAverage : Formalism.FourierDecayAlt.B.StepRegAverage := Formalism.FourierDecayAlt.P.regularised_average_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exchange_plus_factor`.
+A detailed English derivation is pending.
 -/
 theorem exchange_e1 : Formalism.FourierDecayAlt.Wd.ExchangePlusFactor := Formalism.FourierDecayAlt.P.exchange_plus_factor
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exchange_second_case`.
+A detailed English derivation is pending.
 -/
 theorem exchange_e2 : Formalism.FourierDecayAlt.Wd.ExchangeMinusFactorStar := Formalism.FourierDecayAlt.P.exchange_second_case
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exchange_third_case`.
+A detailed English derivation is pending.
 -/
 theorem exchange_e3 : Formalism.FourierDecayAlt.Wd.ExchangeMinusFactorTranspose := Formalism.FourierDecayAlt.P.exchange_third_case
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exchange_fourth_case`.
+A detailed English derivation is pending.
 -/
 theorem exchange_e4 : Formalism.FourierDecayAlt.Wd.ExchangePlusFactorTranspose := Formalism.FourierDecayAlt.P.exchange_fourth_case
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_B_of_components`.
+A detailed English derivation is pending.
 -/
 theorem b_lemmaB : Formalism.FourierDecayAlt.B.LemmaB := Formalism.FourierDecayAlt.P.lemma_B_of_components
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.site_exchange_relation`.
+A detailed English derivation is pending.
 -/
 theorem wd_siteStep : Formalism.FourierDecayAlt.Wd.SiteStep := Formalism.FourierDecayAlt.P.site_exchange_relation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.positive_word_fixed`.
+A detailed English derivation is pending.
 -/
 theorem wd_xpFix : Formalism.FourierDecayAlt.Wd.XpFix := Formalism.FourierDecayAlt.P.positive_word_fixed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.negative_word_fixed`.
+A detailed English derivation is pending.
 -/
 theorem wd_xmFix : Formalism.FourierDecayAlt.Wd.XmFix := Formalism.FourierDecayAlt.P.negative_word_fixed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.word_matrix_entry_one`.
+A detailed English derivation is pending.
 -/
 theorem wd_entryOne : Formalism.FourierDecayAlt.Wd.EntryOne := Formalism.FourierDecayAlt.P.word_matrix_entry_one
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exchange_vector_positive`.
+A detailed English derivation is pending.
 -/
 theorem wd_exchVecA : Formalism.FourierDecayAlt.Wd.ExchVecA := Formalism.FourierDecayAlt.P.exchange_vector_positive
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exchange_vector_negative`.
+A detailed English derivation is pending.
 -/
 theorem wd_exchVecB : Formalism.FourierDecayAlt.Wd.ExchVecB := Formalism.FourierDecayAlt.P.exchange_vector_negative
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.conjugate_word_eigen`.
+A detailed English derivation is pending.
 -/
 theorem wd_cwEigen : Formalism.FourierDecayAlt.Wd.CwEigen := Formalism.FourierDecayAlt.P.conjugate_word_eigen
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.word_product_formula`.
+A detailed English derivation is pending.
 -/
 theorem wd_uwProduct : Formalism.FourierDecayAlt.Wd.UwProduct := Formalism.FourierDecayAlt.P.word_product_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.vandermondeNonTop`.
+A detailed English derivation is pending.
 -/
 theorem sz_vandNonTop : Formalism.FourierDecayAlt.Sz.VandNonTop := Formalism.FourierDecayAlt.P.vandermondeNonTop
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.vandermondeTop`.
+A detailed English derivation is pending.
 -/
 theorem sz_vandTop : Formalism.FourierDecayAlt.Sz.VandTop := Formalism.FourierDecayAlt.P.vandermondeTop
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.edgeFactors`.
+A detailed English derivation is pending.
 -/
 theorem sz_edgeFactors : Formalism.FourierDecayAlt.Sz.EdgeFactors := Formalism.FourierDecayAlt.P.edgeFactors
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.edgeRatios`.
+A detailed English derivation is pending.
 -/
 theorem sz_edgeRatios : Formalism.FourierDecayAlt.Sz.EdgeRatios := Formalism.FourierDecayAlt.P.edgeRatios
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.vandermondeWords`.
+A detailed English derivation is pending.
 -/
 theorem sz_vandWords : Formalism.FourierDecayAlt.Sz.VandWords := Formalism.FourierDecayAlt.P.vandermondeWords
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.R_matrix_UU_relation`.
+A detailed English derivation is pending.
 -/
 theorem wd_rhUU : Formalism.FourierDecayAlt.Wd.RhUU := Formalism.FourierDecayAlt.P.R_matrix_UU_relation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transposed_R_matrix_UU_relation`.
+A detailed English derivation is pending.
 -/
 theorem wd_rhtUU : Formalism.FourierDecayAlt.Wd.RhtUU := Formalism.FourierDecayAlt.P.transposed_R_matrix_UU_relation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.plane_wave_vector_identity`.
+A detailed English derivation is pending.
 -/
 theorem wd_planeWaveVec : Formalism.FourierDecayAlt.Wd.PlaneWaveVec := Formalism.FourierDecayAlt.P.plane_wave_vector_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.plane_wave_word_identity`.
+A detailed English derivation is pending.
 -/
 theorem wd_planeWaveWord : Formalism.FourierDecayAlt.Wd.PlaneWaveWord := Formalism.FourierDecayAlt.P.plane_wave_word_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.letter_module_plus`.
+A detailed English derivation is pending.
 -/
 theorem wd_letterPlus : Formalism.FourierDecayAlt.Wd.LetterPlus := Formalism.FourierDecayAlt.P.letter_module_plus
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.letter_module_minus`.
+A detailed English derivation is pending.
 -/
 theorem wd_letterMinus : Formalism.FourierDecayAlt.Wd.LetterMinus := Formalism.FourierDecayAlt.P.letter_module_minus
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.size_bounds_conclusion`.
+A detailed English derivation is pending.
 -/
 theorem sz_sizesMain : Formalism.FourierDecayAlt.Sz.SizesMain := Formalism.FourierDecayAlt.P.size_bounds_conclusion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.critical_threshold_words`.
+A detailed English derivation is pending.
 -/
 theorem sz_tcritWords : Formalism.FourierDecayAlt.Sz.TcritWords := Formalism.FourierDecayAlt.P.critical_threshold_words
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.threshold_words`.
+A detailed English derivation is pending.
 -/
 theorem sz_tWords : Formalism.FourierDecayAlt.Sz.TWords := Formalism.FourierDecayAlt.P.threshold_words
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.vandermonde_lambda_lower_bound`.
+A detailed English derivation is pending.
 -/
 theorem sz_vandLamLower : Formalism.FourierDecayAlt.Sz.VandLamLower := Formalism.FourierDecayAlt.P.vandermonde_lambda_lower_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.critical_threshold_lower_bound`.
+A detailed English derivation is pending.
 -/
 theorem sz_tcritLower : Formalism.FourierDecayAlt.Sz.TcritLower := Formalism.FourierDecayAlt.P.critical_threshold_lower_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.duality_list_holds`.
+A detailed English derivation is pending.
 -/
 theorem wd_dualityList : Formalism.FourierDecayAlt.Wd.DualityList := Formalism.FourierDecayAlt.P.duality_list_holds
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.kappa_formula_holds`.
+A detailed English derivation is pending.
 -/
 theorem wd_kapFormula : Formalism.FourierDecayAlt.Wd.KapFormula := Formalism.FourierDecayAlt.P.kappa_formula_holds
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.word_free_of_unused_positions`.
+A detailed English derivation is pending.
 -/
 theorem wd_wordFree : Formalism.FourierDecayAlt.Wd.WordFree := Formalism.FourierDecayAlt.P.word_free_of_unused_positions
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.word_module_structure`.
+A detailed English derivation is pending.
 -/
 theorem wd_wordModule : Formalism.FourierDecayAlt.Wd.WordModule := Formalism.FourierDecayAlt.P.word_module_structure
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transfer_matrix_factorization`.
+A detailed English derivation is pending.
 -/
 theorem wd_tTFactor : Formalism.FourierDecayAlt.Wd.TTFactor := Formalism.FourierDecayAlt.P.transfer_matrix_factorization
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.a_zero_le_one_sixty`.
+A detailed English derivation is pending.
 -/
 theorem sz_aZeroBound : Formalism.FourierDecayAlt.Sz.AZeroBound := Formalism.FourierDecayAlt.P.a_zero_le_one_sixty
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.beta_bound_on_boundary`.
+A detailed English derivation is pending.
 -/
 theorem sz_betaOnCut : Formalism.FourierDecayAlt.Sz.BetaOnCut := Formalism.FourierDecayAlt.P.beta_bound_on_boundary
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.words_assemble_holds`.
+A detailed English derivation is pending.
 -/
 theorem wd_wordsAssemble : Formalism.FourierDecayAlt.Wd.WordsAssemble := Formalism.FourierDecayAlt.P.words_assemble_holds
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.word_statements_all_hold`.
+A detailed English derivation is pending.
 -/
 theorem wd_wordsAll : Formalism.FourierDecayAlt.Wd.WordsAll := Formalism.FourierDecayAlt.P.word_statements_all_hold
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.l_shift_from_determinant`.
+A detailed English derivation is pending.
 -/
 theorem fr_lShift : Formalism.FourierDecayAlt.Fr.LShift := Formalism.FourierDecayAlt.P.l_shift_from_determinant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.quasi_determinant_from_entries`.
+A detailed English derivation is pending.
 -/
 theorem fr_quasiDetT : Formalism.FourierDecayAlt.Fr.QuasiDetT := Formalism.FourierDecayAlt.P.quasi_determinant_from_entries
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gauss_decomp_minus_letter`.
+A detailed English derivation is pending.
 -/
 theorem fr_gaussMinus : Formalism.FourierDecayAlt.Fr.GaussMinus := Formalism.FourierDecayAlt.P.gauss_decomp_minus_letter
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rtt_relation_entries`.
+A detailed English derivation is pending.
 -/
 theorem fr_rTTEntries : Formalism.FourierDecayAlt.Fr.RTTEntries := Formalism.FourierDecayAlt.P.rtt_relation_entries
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.adjoint_l_shift_relation`.
+A detailed English derivation is pending.
 -/
 theorem fr_adjL : Formalism.FourierDecayAlt.Fr.AdjL := Formalism.FourierDecayAlt.P.adjoint_l_shift_relation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.divided_difference_l`.
+A detailed English derivation is pending.
 -/
 theorem fr_etaLevel : Formalism.FourierDecayAlt.Fr.EtaLevel := Formalism.FourierDecayAlt.P.divided_difference_l
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_gives_one_letter_hyps`.
+A detailed English derivation is pending.
 -/
 theorem fr_frameModHyp : Formalism.FourierDecayAlt.Fr.FrameModHyp := Formalism.FourierDecayAlt.P.frame_gives_one_letter_hyps
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.start_is_frame`.
+A detailed English derivation is pending.
 -/
 theorem fr_startFrame : Formalism.FourierDecayAlt.Fr.StartFrame := Formalism.FourierDecayAlt.P.start_is_frame
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_module_of_word`.
+A detailed English derivation is pending.
 -/
 theorem fr_wordJoint : Formalism.FourierDecayAlt.Fr.WordJoint := Formalism.FourierDecayAlt.P.frame_module_of_word
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.residue_partial_fractions`.
+A detailed English derivation is pending.
 -/
 theorem fr_residueStep : Formalism.FourierDecayAlt.Fr.ResidueStep := Formalism.FourierDecayAlt.P.residue_partial_fractions
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_of_steps`.
+A detailed English derivation is pending.
 -/
 theorem fr_frameAssemble : Formalism.FourierDecayAlt.Fr.FrameAssemble := Formalism.FourierDecayAlt.P.frame_of_steps
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.c_diagonal`.
+A detailed English derivation is pending.
 -/
 theorem fr_cDiag : Formalism.FourierDecayAlt.Fr.CDiag := Formalism.FourierDecayAlt.P.c_diagonal
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cPos_true`.
+A detailed English derivation is pending.
 -/
 theorem fr_cPos : Formalism.FourierDecayAlt.Fr.CPos := Formalism.FourierDecayAlt.P.cPos_true
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.q_positive_shift`.
+A detailed English derivation is pending.
 -/
 theorem fr_qPositiveShift : Formalism.FourierDecayAlt.Fr.QPositiveShift := Formalism.FourierDecayAlt.P.q_positive_shift
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.c_pos_truncated`.
+A detailed English derivation is pending.
 -/
 theorem fr_cPosCut : Formalism.FourierDecayAlt.Fr.CPosCut := Formalism.FourierDecayAlt.P.c_pos_truncated
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.c_pos_base`.
+A detailed English derivation is pending.
 -/
 theorem fr_cPosBase : Formalism.FourierDecayAlt.Fr.CPosBase := Formalism.FourierDecayAlt.P.c_pos_base
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.admissible_rec_of_admissible`.
+A detailed English derivation is pending.
 -/
 theorem admissible_recursion_of_adm : Formalism.FourierDecayAlt.Fr.AdmRecOfAdm := Formalism.FourierDecayAlt.P.admissible_rec_of_admissible
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.admissible_rec_of_base_case`.
+A detailed English derivation is pending.
 -/
 theorem admissible_recursion_of_base : Formalism.FourierDecayAlt.Fr.AdmRecOfBase := Formalism.FourierDecayAlt.P.admissible_rec_of_base_case
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_rec_of_steps`.
+A detailed English derivation is pending.
 -/
 theorem fr_frameRecAssemble : Formalism.FourierDecayAlt.Fr.FrameRecAssemble := Formalism.FourierDecayAlt.P.frame_rec_of_steps
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.c_pos_truncated_base`.
+A detailed English derivation is pending.
 -/
 theorem fr_cPosCutBase : Formalism.FourierDecayAlt.Fr.CPosCutBase := Formalism.FourierDecayAlt.P.c_pos_truncated_base
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.position_block_plus_alt`.
+A detailed English derivation is pending.
 -/
 theorem position_block_plus : Formalism.FourierDecayAlt.Fr.CoordinateBlockCondition := Formalism.FourierDecayAlt.P.position_block_plus_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.position_block_minus`.
+A detailed English derivation is pending.
 -/
 theorem position_block_difference_minus : Formalism.FourierDecayAlt.Fr.TransposedCoordinateBlockCondition := Formalism.FourierDecayAlt.P.position_block_minus
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_free_of_new_position`.
+A detailed English derivation is pending.
 -/
 theorem fr_frameFree : Formalism.FourierDecayAlt.Fr.FrameFree := Formalism.FourierDecayAlt.P.frame_free_of_new_position
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.split_xy_coordinates`.
+A detailed English derivation is pending.
 -/
 theorem g_splitXY : Formalism.FourierDecayAlt.G.SplitXY := Formalism.FourierDecayAlt.P.split_xy_coordinates
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.split_xy_matrix`.
+A detailed English derivation is pending.
 -/
 theorem g_splitXYMatrix : Formalism.FourierDecayAlt.G.SplitXYMatrix := Formalism.FourierDecayAlt.P.split_xy_matrix
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.limit_coordinates`.
+A detailed English derivation is pending.
 -/
 theorem g_limitCoords : Formalism.FourierDecayAlt.G.LimitCoords := Formalism.FourierDecayAlt.P.limit_coordinates
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.plus_letter_frame_of_data`.
+A detailed English derivation is pending.
 -/
 theorem fr_plusAssemble : Formalism.FourierDecayAlt.Fr.PlusAssemble := Formalism.FourierDecayAlt.P.plus_letter_frame_of_data
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.minus_letter_frame_of_data`.
+A detailed English derivation is pending.
 -/
 theorem fr_minusAssemble : Formalism.FourierDecayAlt.Fr.MinusAssemble := Formalism.FourierDecayAlt.P.minus_letter_frame_of_data
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fr_residue_form`.
+A detailed English derivation is pending.
 -/
 theorem fr_residueForm : Formalism.FourierDecayAlt.Fr.ResidueForm := Formalism.FourierDecayAlt.P.fr_residue_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gauss_form_minus_letter`.
+A detailed English derivation is pending.
 -/
 theorem fr_gaussFormMinus : Formalism.FourierDecayAlt.Fr.GaussFormMinus := Formalism.FourierDecayAlt.P.gauss_form_minus_letter
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.minus_letter_form`.
+A detailed English derivation is pending.
 -/
 theorem fr_minusForm : Formalism.FourierDecayAlt.Fr.MinusForm := Formalism.FourierDecayAlt.P.minus_letter_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.zeta_conj_nabla`.
+A detailed English derivation is pending.
 -/
 theorem fr_zetaConj : Formalism.FourierDecayAlt.Fr.ZetaConj := Formalism.FourierDecayAlt.P.zeta_conj_nabla
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ee_conjugation`.
+A detailed English derivation is pending.
 -/
 theorem fr_eeConj : Formalism.FourierDecayAlt.Fr.EeConj := Formalism.FourierDecayAlt.P.ee_conjugation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_adjoint_m`.
+A detailed English derivation is pending.
 -/
 theorem fr_frameM : Formalism.FourierDecayAlt.Fr.FrameM := Formalism.FourierDecayAlt.P.frame_adjoint_m
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.new_vector_letter_plus`.
+A detailed English derivation is pending.
 -/
 theorem fr_newLetterPlus : Formalism.FourierDecayAlt.Fr.NewLetterPlus := Formalism.FourierDecayAlt.P.new_vector_letter_plus
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.start_ee`.
+A detailed English derivation is pending.
 -/
 theorem fr_startEe : Formalism.FourierDecayAlt.Fr.StartEe := Formalism.FourierDecayAlt.P.start_ee
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.minus_letter_last_entry`.
+A detailed English derivation is pending.
 -/
 theorem fr_minusLast : Formalism.FourierDecayAlt.Fr.MinusLast := Formalism.FourierDecayAlt.P.minus_letter_last_entry
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gauss_form_plus_letter`.
+A detailed English derivation is pending.
 -/
 theorem fr_gaussFormPlus : Formalism.FourierDecayAlt.Fr.GaussFormPlus := Formalism.FourierDecayAlt.P.gauss_form_plus_letter
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.plus_letter_form`.
+A detailed English derivation is pending.
 -/
 theorem fr_plusForm : Formalism.FourierDecayAlt.Fr.PlusForm := Formalism.FourierDecayAlt.P.plus_letter_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.det_matrix_xy`.
+A detailed English derivation is pending.
 -/
 theorem g_detMXY : Formalism.FourierDecayAlt.G.DetMXY := Formalism.FourierDecayAlt.P.det_matrix_xy
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.reduced_integrand_integrable`.
+A detailed English derivation is pending.
 -/
 theorem g_redIntegrable : Formalism.FourierDecayAlt.G.RedIntegrable := Formalism.FourierDecayAlt.P.reduced_integrand_integrable
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.inner_xy_of_reduced`.
+A detailed English derivation is pending.
 -/
 theorem g_innerXYOfReduced : Formalism.FourierDecayAlt.G.InnerXYOfReduced := Formalism.FourierDecayAlt.P.inner_xy_of_reduced
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.quotient_measure_long_orbit`.
+A detailed English derivation is pending.
 -/
 theorem g_quotientMeasureLong : Formalism.FourierDecayAlt.G.QuotientMeasureLong := Formalism.FourierDecayAlt.P.quotient_measure_long_orbit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_invariant`.
+A detailed English derivation is pending.
 -/
 theorem g_stabInvariant : Formalism.FourierDecayAlt.G.StabInvariant := Formalism.FourierDecayAlt.P.stabilizer_invariant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cofactor_lower_bound_radius`.
+A detailed English derivation is pending.
 -/
 theorem g_cofLowerR : Formalism.FourierDecayAlt.G.CofLowerR := Formalism.FourierDecayAlt.P.cofactor_lower_bound_radius
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.smooth_cutoff_spec`.
+A detailed English derivation is pending.
 -/
 theorem g_chi0Spec : Formalism.FourierDecayAlt.G.Chi0Spec := Formalism.FourierDecayAlt.P.smooth_cutoff_spec
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.amplitude_eq`.
+A detailed English derivation is pending.
 -/
 theorem g_ampEq : Formalism.FourierDecayAlt.G.AmpEq := Formalism.FourierDecayAlt.P.amplitude_eq
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.limit_coordinates_xy`.
+A detailed English derivation is pending.
 -/
 theorem g_limitCoordsXY : Formalism.FourierDecayAlt.G.LimitCoordsXY := Formalism.FourierDecayAlt.P.limit_coordinates_xy
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.matrix_cutoff_spec`.
+A detailed English derivation is pending.
 -/
 theorem g_cutMSpec : Formalism.FourierDecayAlt.G.CutMSpec := Formalism.FourierDecayAlt.P.matrix_cutoff_spec
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.critical_cutoff_spec`.
+A detailed English derivation is pending.
 -/
 theorem g_critCutSpec : Formalism.FourierDecayAlt.G.CritCutSpec := Formalism.FourierDecayAlt.P.critical_cutoff_spec
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cutoff_phase_bound`.
+A detailed English derivation is pending.
 -/
 theorem g_cutPhiBound : Formalism.FourierDecayAlt.G.CutPhiBound := Formalism.FourierDecayAlt.P.cutoff_phase_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exists_small_delta`.
+A detailed English derivation is pending.
 -/
 theorem g_smallDeltaExists : Formalism.FourierDecayAlt.G.SmallDeltaExists := Formalism.FourierDecayAlt.P.exists_small_delta
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.product_lower_bound`.
+A detailed English derivation is pending.
 -/
 theorem g_prodLower : Formalism.FourierDecayAlt.G.ProdLower := Formalism.FourierDecayAlt.P.product_lower_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.tailBound_statement`.
+A detailed English derivation is pending.
 -/
 theorem g_tailBound : Formalism.FourierDecayAlt.G.TailBound := Formalism.FourierDecayAlt.P.tailBound_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.tail_estimate_of_bound`.
+A detailed English derivation is pending.
 -/
 theorem g_tailStepOfBound : Formalism.FourierDecayAlt.G.TailStepOfBound := Formalism.FourierDecayAlt.P.tail_estimate_of_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_large_parameter`.
+A detailed English derivation is pending.
 -/
 theorem g_germLargeT : Formalism.FourierDecayAlt.G.GermLargeT := Formalism.FourierDecayAlt.P.germ_large_parameter
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phase_relative_deriv`.
+A detailed English derivation is pending.
 -/
 theorem g_g0RelDeriv : Formalism.FourierDecayAlt.G.PhaseFunctionRelativeDeriv := Formalism.FourierDecayAlt.P.phase_relative_deriv
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phase_near_critical`.
+A detailed English derivation is pending.
 -/
 theorem g_g0NearCrit : Formalism.FourierDecayAlt.G.PhaseFunctionNearCritical := Formalism.FourierDecayAlt.P.phase_near_critical
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.majorant_y`.
+A detailed English derivation is pending.
 -/
 theorem g_majorantY : Formalism.FourierDecayAlt.G.MajorantY := Formalism.FourierDecayAlt.P.majorant_y
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.amplitude_continuous_at_critical`.
+A detailed English derivation is pending.
 -/
 theorem g_ampCritContinuous : Formalism.FourierDecayAlt.G.AmpCritContinuous := Formalism.FourierDecayAlt.P.amplitude_continuous_at_critical
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.minus_letter_tau`.
+A detailed English derivation is pending.
 -/
 theorem fr_minusTau : Formalism.FourierDecayAlt.Fr.MinusTau := Formalism.FourierDecayAlt.P.minus_letter_tau
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.minus_letter_l`.
+A detailed English derivation is pending.
 -/
 theorem fr_minusL : Formalism.FourierDecayAlt.Fr.MinusL := Formalism.FourierDecayAlt.P.minus_letter_l
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.nonstationary_estimate_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem g_nonStatStepOfParts : Formalism.FourierDecayAlt.G.NonStatStepOfParts := Formalism.FourierDecayAlt.P.nonstationary_estimate_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stationary_estimate_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem g_statStepOfParts : Formalism.FourierDecayAlt.G.StatStepOfParts := Formalism.FourierDecayAlt.P.stationary_estimate_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_rate_of_estimates`.
+A detailed English derivation is pending.
 -/
 theorem g_germRateOfSteps : Formalism.FourierDecayAlt.G.GermRateOfSteps := Formalism.FourierDecayAlt.P.germ_rate_of_estimates
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.wirtinger_integration_by_parts`.
+A detailed English derivation is pending.
 -/
 theorem g_wirtingerIBP : Formalism.FourierDecayAlt.G.WirtingerIBP := Formalism.FourierDecayAlt.P.wirtinger_integration_by_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.nonstationary_phase`.
+A detailed English derivation is pending.
 -/
 theorem g_nonStatPhase : Formalism.FourierDecayAlt.G.NonStatPhase := Formalism.FourierDecayAlt.P.nonstationary_phase
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.plus_letter_tau`.
+A detailed English derivation is pending.
 -/
 theorem fr_plusTau : Formalism.FourierDecayAlt.Fr.PlusTau := Formalism.FourierDecayAlt.P.plus_letter_tau
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.plus_letter_l`.
+A detailed English derivation is pending.
 -/
 theorem fr_plusL : Formalism.FourierDecayAlt.Fr.PlusL := Formalism.FourierDecayAlt.P.plus_letter_l
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.plus_letter_maps_frames`.
+A detailed English derivation is pending.
 -/
 theorem fr_plusStep : Formalism.FourierDecayAlt.Fr.PlusStep := Formalism.FourierDecayAlt.P.plus_letter_maps_frames
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.minus_letter_maps_frames`.
+A detailed English derivation is pending.
 -/
 theorem fr_minusStep : Formalism.FourierDecayAlt.Fr.MinusStep := Formalism.FourierDecayAlt.P.minus_letter_maps_frames
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_of_admissible_word`.
+A detailed English derivation is pending.
 -/
 theorem fr_frameAll : Formalism.FourierDecayAlt.Fr.FrameAll := Formalism.FourierDecayAlt.P.frame_of_admissible_word
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_eq_word_module`.
+A detailed English derivation is pending.
 -/
 theorem fr_frameWord : Formalism.FourierDecayAlt.Fr.FrameWord := Formalism.FourierDecayAlt.P.frame_eq_word_module
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_of_recursive_word`.
+A detailed English derivation is pending.
 -/
 theorem fr_frameAllRec : Formalism.FourierDecayAlt.Fr.FrameAllRec := Formalism.FourierDecayAlt.P.frame_of_recursive_word
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stationary_phase_holomorphic`.
+A detailed English derivation is pending.
 -/
 theorem g_stationaryPhase : Formalism.FourierDecayAlt.G.StationaryPhase := Formalism.FourierDecayAlt.P.stationary_phase_holomorphic
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.amplitude_bound_far`.
+A detailed English derivation is pending.
 -/
 theorem g_ampBoundFar : Formalism.FourierDecayAlt.G.AmpBoundFar := Formalism.FourierDecayAlt.P.amplitude_bound_far
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.amplitude_bound_critical`.
+A detailed English derivation is pending.
 -/
 theorem g_ampBoundCrit : Formalism.FourierDecayAlt.G.AmpBoundCrit := Formalism.FourierDecayAlt.P.amplitude_bound_critical
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.amplitude_limit`.
+A detailed English derivation is pending.
 -/
 theorem g_ampLimit : Formalism.FourierDecayAlt.G.AmpLimit := Formalism.FourierDecayAlt.P.amplitude_limit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_b_normalised_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem lemma_b_norm_of_parts : Formalism.FourierDecayAlt.B2.LemmaBNormFromParts := Formalism.FourierDecayAlt.P.lemma_b_normalised_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_b_any_measure_from_normalised`.
+A detailed English derivation is pending.
 -/
 theorem lemma_b_from_norm_bound : Formalism.FourierDecayAlt.B2.LemmaBAnyFromNorm := Formalism.FourierDecayAlt.P.lemma_b_any_measure_from_normalised
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_b_crude_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem lemma_b_crude_from_parts : Formalism.FourierDecayAlt.B2.LemmaBCrudeFromParts := Formalism.FourierDecayAlt.P.lemma_b_crude_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.doubleB_of_components_true`.
+A detailed English derivation is pending.
 -/
 theorem lemma_b_double_of_parts : Formalism.FourierDecayAlt.B2.LemmaBDoubleFromParts := Formalism.FourierDecayAlt.P.doubleB_of_components_true
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_b_from_xi_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem lemma_b_from_xi_parts : Formalism.FourierDecayAlt.B2.LemmaBFromXiFromParts := Formalism.FourierDecayAlt.P.lemma_b_from_xi_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.haar_measure_unique_up_to_scalar`.
+A detailed English derivation is pending.
 -/
 theorem haar_measure_unique : Formalism.FourierDecayAlt.B2.HaarUnique := Formalism.FourierDecayAlt.P.haar_measure_unique_up_to_scalar
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.haar_measure_inversion`.
+A detailed English derivation is pending.
 -/
 theorem haar_measure_inversion_invariant : Formalism.FourierDecayAlt.B2.HaarInv := Formalism.FourierDecayAlt.P.haar_measure_inversion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.haar_inversion_of_uniqueness`.
+A detailed English derivation is pending.
 -/
 theorem haar_invariance_of_unique : Formalism.FourierDecayAlt.B2.HaarInvFromUnique := Formalism.FourierDecayAlt.P.haar_inversion_of_uniqueness
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.conjugation_preserves_haar`.
+A detailed English derivation is pending.
 -/
 theorem conjugation_haar : Formalism.FourierDecayAlt.B2.ConjHaar := Formalism.FourierDecayAlt.P.conjugation_preserves_haar
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.compact_subgroup_conjugation`.
+A detailed English derivation is pending.
 -/
 theorem compact_conjugation : Formalism.FourierDecayAlt.B2.CompactConj := Formalism.FourierDecayAlt.P.compact_subgroup_conjugation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.compact_conjugation_of_uniqueness`.
+A detailed English derivation is pending.
 -/
 theorem compact_conjugation_of_unique : Formalism.FourierDecayAlt.B2.CompactConjFromUnique := Formalism.FourierDecayAlt.P.compact_conjugation_of_uniqueness
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_heisenberg_decomposition`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_radical_decomposition : Formalism.FourierDecayAlt.B2.NDecomp := Formalism.FourierDecayAlt.P.unipotent_heisenberg_decomposition
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_haar_recursion`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_recursive_haar_measure : Formalism.FourierDecayAlt.B2.NRecHaar := Formalism.FourierDecayAlt.P.unipotent_haar_recursion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_haar_base_case`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_base_case : Formalism.FourierDecayAlt.B2.NBase := Formalism.FourierDecayAlt.P.unipotent_haar_base_case
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_haar_exists`.
+A detailed English derivation is pending.
 -/
 theorem heisenberg_haar_exists : Formalism.FourierDecayAlt.B2.HaarNExists := Formalism.FourierDecayAlt.P.unipotent_haar_exists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_recursion_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem n_recursion_assembly : Formalism.FourierDecayAlt.B2.AssembleNRec := Formalism.FourierDecayAlt.P.unipotent_recursion_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_haar_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem haar_measure_unipotent_formula : Formalism.FourierDecayAlt.B2.AssembleHaarN := Formalism.FourierDecayAlt.P.unipotent_haar_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dilation_conjugates_heisenberg`.
+A detailed English derivation is pending.
 -/
 theorem dilation_heisenberg_action : Formalism.FourierDecayAlt.B2.DilHeis := Formalism.FourierDecayAlt.P.dilation_conjugates_heisenberg
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dilation_levi_conjugation`.
+A detailed English derivation is pending.
 -/
 theorem dilation_levi_action : Formalism.FourierDecayAlt.B2.DilLev := Formalism.FourierDecayAlt.P.dilation_levi_conjugation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dilation_scales_heisenberg_measure`.
+A detailed English derivation is pending.
 -/
 theorem dilation_heisenberg_measure_preserving : Formalism.FourierDecayAlt.B2.DilHeisMeas := Formalism.FourierDecayAlt.P.dilation_scales_heisenberg_measure
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.modular_exponent_recursion`.
+A detailed English derivation is pending.
 -/
 theorem modular_character_recursion : Formalism.FourierDecayAlt.B2.KapRec := Formalism.FourierDecayAlt.P.modular_exponent_recursion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dilation_jacobian_unipotent`.
+A detailed English derivation is pending.
 -/
 theorem dilation_jacobian_formula : Formalism.FourierDecayAlt.B2.DilJacRaw := Formalism.FourierDecayAlt.P.dilation_jacobian_unipotent
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dilation_jacobian_every_setting`.
+A detailed English derivation is pending.
 -/
 theorem dilation_jacobian_all : Formalism.FourierDecayAlt.B2.DilJacAll := Formalism.FourierDecayAlt.P.dilation_jacobian_every_setting
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.semidirect_product_haar`.
+A detailed English derivation is pending.
 -/
 theorem semidirect_haar : Formalism.FourierDecayAlt.B2.SemiHaar := Formalism.FourierDecayAlt.P.semidirect_product_haar
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.levi_haar_measure_exists`.
+A detailed English derivation is pending.
 -/
 theorem levi_haar_measure : Formalism.FourierDecayAlt.B2.LevHaar := Formalism.FourierDecayAlt.P.levi_haar_measure_exists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.compact_group_haar_exists`.
+A detailed English derivation is pending.
 -/
 theorem compact_group_haar_measure_exists : Formalism.FourierDecayAlt.B2.CompactHaarExists := Formalism.FourierDecayAlt.P.compact_group_haar_exists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.spherical_shell_integral`.
+A detailed English derivation is pending.
 -/
 theorem shell_integral : Formalism.FourierDecayAlt.B2.ShellInt := Formalism.FourierDecayAlt.P.spherical_shell_integral
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unitary_group_closed`.
+A detailed English derivation is pending.
 -/
 theorem closed_subgroup_general_linear : Formalism.FourierDecayAlt.B2.ClosedG := Formalism.FourierDecayAlt.P.unitary_group_closed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_radical_closed`.
+A detailed English derivation is pending.
 -/
 theorem closed_subgroup_unipotent_radical : Formalism.FourierDecayAlt.B2.ClosedN := Formalism.FourierDecayAlt.P.unipotent_radical_closed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.heisMul_statement`.
+A detailed English derivation is pending.
 -/
 theorem heisenberg_multiplication : Formalism.FourierDecayAlt.B2.HeisMul := Formalism.FourierDecayAlt.P.heisMul_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.heisenberg_inverse`.
+A detailed English derivation is pending.
 -/
 theorem heisenberg_group_inverse : Formalism.FourierDecayAlt.B2.HeisInv := Formalism.FourierDecayAlt.P.heisenberg_inverse
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.heisenberg_subgroup_closed`.
+A detailed English derivation is pending.
 -/
 theorem heisenberg_group_closed : Formalism.FourierDecayAlt.B2.HeisClosed := Formalism.FourierDecayAlt.P.heisenberg_subgroup_closed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.heisenberg_haar_measure`.
+A detailed English derivation is pending.
 -/
 theorem heisenberg_haar : Formalism.FourierDecayAlt.B2.HeisHaar := Formalism.FourierDecayAlt.P.heisenberg_haar_measure
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.heisenberg_conjugation_by_levi`.
+A detailed English derivation is pending.
 -/
 theorem heisenberg_conjugation_levi : Formalism.FourierDecayAlt.B2.HeisConjLev := Formalism.FourierDecayAlt.P.heisenberg_conjugation_by_levi
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.heisenberg_levi_conjugation_measure`.
+A detailed English derivation is pending.
 -/
 theorem heisenberg_conjugation_measure_preserving : Formalism.FourierDecayAlt.B2.HeisConjLevMeas := Formalism.FourierDecayAlt.P.heisenberg_levi_conjugation_measure
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_power_integrable_crude_of_volume`.
+A detailed English derivation is pending.
 -/
 theorem crude_integral_of_volume : Formalism.FourierDecayAlt.B2.GNIntCrudeFromVol := Formalism.FourierDecayAlt.P.norm_power_integrable_crude_of_volume
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.matrix_coefficient_bound_by_norm`.
+A detailed English derivation is pending.
 -/
 theorem cc_from_g_n : Formalism.FourierDecayAlt.B2.CCFromGN := Formalism.FourierDecayAlt.P.matrix_coefficient_bound_by_norm
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.matrix_coefficient_integrable_crude_all`.
+A detailed English derivation is pending.
 -/
 theorem crude_cc_integral_all : Formalism.FourierDecayAlt.B2.CCIntCrudeAll := Formalism.FourierDecayAlt.P.matrix_coefficient_integrable_crude_all
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.matrix_coefficient_integrable_double`.
+A detailed English derivation is pending.
 -/
 theorem cc_integral_double : Formalism.FourierDecayAlt.B2.CCIntDouble := Formalism.FourierDecayAlt.P.matrix_coefficient_integrable_double
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.matrix_coefficient_integrable_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem integral_cc_assembly : Formalism.FourierDecayAlt.B2.AssembleCCInt := Formalism.FourierDecayAlt.P.matrix_coefficient_integrable_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.sharp_volume_of_exact`.
+A detailed English derivation is pending.
 -/
 theorem volume_sharp_of_exact : Formalism.FourierDecayAlt.B2.VolSharpFromExact := Formalism.FourierDecayAlt.P.sharp_volume_of_exact
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_ball_volume_crude`.
+A detailed English derivation is pending.
 -/
 theorem crude_volume_bound : Formalism.FourierDecayAlt.B2.VolCrude := Formalism.FourierDecayAlt.P.norm_ball_volume_crude
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.group_measure_from_diagonal`.
+A detailed English derivation is pending.
 -/
 theorem g_from_diagonal : Formalism.FourierDecayAlt.B2.GFromDiag := Formalism.FourierDecayAlt.P.group_measure_from_diagonal
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_power_integrable_crude`.
+A detailed English derivation is pending.
 -/
 theorem g_n_integral_crude : Formalism.FourierDecayAlt.B2.GNIntCrude := Formalism.FourierDecayAlt.P.norm_power_integrable_crude
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_power_integrable_sharp_of_volume`.
+A detailed English derivation is pending.
 -/
 theorem g_n_sharp_of_volume : Formalism.FourierDecayAlt.B2.GNIntSharpFromVol := Formalism.FourierDecayAlt.P.norm_power_integrable_sharp_of_volume
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weyl_haar_from_compact`.
+A detailed English derivation is pending.
 -/
 theorem haar_w_of_compact : Formalism.FourierDecayAlt.B2.HaarWFromCompact := Formalism.FourierDecayAlt.P.weyl_haar_from_compact
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof`.
+A detailed English derivation is pending.
 -/
 theorem conjugation_invariance_raw : Formalism.FourierDecayAlt.B2.ConjInvRaw := Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.conjugation_invariance_every_setting`.
+A detailed English derivation is pending.
 -/
 theorem conjugation_invariance_all : Formalism.FourierDecayAlt.B2.ConjInvAll := Formalism.FourierDecayAlt.P.conjugation_invariance_every_setting
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.conjugation_invariance_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem conjugation_invariance_assembly : Formalism.FourierDecayAlt.B2.AssembleConjInv := Formalism.FourierDecayAlt.P.conjugation_invariance_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.heisenberg_action_formula`.
+A detailed English derivation is pending.
 -/
 theorem heisenberg_action : Formalism.FourierDecayAlt.B2.HeisAct := Formalism.FourierDecayAlt.P.heisenberg_action_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.heisenberg_mem_unipotent`.
+A detailed English derivation is pending.
 -/
 theorem heisenberg_membership : Formalism.FourierDecayAlt.B2.HeisMem := Formalism.FourierDecayAlt.P.heisenberg_mem_unipotent
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.crude_integrability_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem crude_integral_assembly : Formalism.FourierDecayAlt.B2.AssembleCCIntCrude := Formalism.FourierDecayAlt.P.crude_integrability_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.base_vector_exists`.
+A detailed English derivation is pending.
 -/
 theorem z_exists : Formalism.FourierDecayAlt.B2.ZExists := Formalism.FourierDecayAlt.P.base_vector_exists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.character_exists_alt`.
+A detailed English derivation is pending.
 -/
 theorem chiExists_true : Formalism.FourierDecayAlt.B2.ChiExists := Formalism.FourierDecayAlt.P.character_exists_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.setting_exists_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem existence_assembly : Formalism.FourierDecayAlt.B2.AssembleExists := Formalism.FourierDecayAlt.P.setting_exists_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.doubleMeanSplit`.
+A detailed English derivation is pending.
 -/
 theorem meanSplit_gauss_true : Formalism.FourierDecayAlt.A6.MeanSplit := Formalism.FourierDecayAlt.P.doubleMeanSplit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.partialMeansOrthogonal`.
+A detailed English derivation is pending.
 -/
 theorem p_orthogonality : Formalism.FourierDecayAlt.A6.POrth := Formalism.FourierDecayAlt.P.partialMeansOrthogonal
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.orthogonalMeanNorm`.
+A detailed English derivation is pending.
 -/
 theorem orthogonal_projection_norm_bound : Formalism.FourierDecayAlt.A6.OrthNorm := Formalism.FourierDecayAlt.P.orthogonalMeanNorm
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.averageBound`.
+A detailed English derivation is pending.
 -/
 theorem average_bound : Formalism.FourierDecayAlt.A6.AvgBound := Formalism.FourierDecayAlt.P.averageBound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.averageBoundOfSteps`.
+A detailed English derivation is pending.
 -/
 theorem average_bound_from_local_pieces : Formalism.FourierDecayAlt.A6.AvgBoundAssemble := Formalism.FourierDecayAlt.P.averageBoundOfSteps
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dilation_jacobian_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem dilation_jacobian_assembly : Formalism.FourierDecayAlt.B2.AssembleDilJac := Formalism.FourierDecayAlt.P.dilation_jacobian_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_one_parameter_mem`.
+A detailed English derivation is pending.
 -/
 theorem single_move_membership : Formalism.FourierDecayAlt.B2.OneStepMem := Formalism.FourierDecayAlt.P.stabilizer_one_parameter_mem
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rank_one_coordinates_formula`.
+A detailed English derivation is pending.
 -/
 theorem single_move_coordinates : Formalism.FourierDecayAlt.B2.OneStepCoord := Formalism.FourierDecayAlt.P.rank_one_coordinates_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.isotropic_cone_invariance`.
+A detailed English derivation is pending.
 -/
 theorem cone_invariant : Formalism.FourierDecayAlt.B2.ConeInv := Formalism.FourierDecayAlt.P.isotropic_cone_invariance
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.isotropic_cone_finite_measure`.
+A detailed English derivation is pending.
 -/
 theorem coneFinite_true : Formalism.FourierDecayAlt.B2.ConeFinite := Formalism.FourierDecayAlt.P.isotropic_cone_finite_measure
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_factorization`.
+A detailed English derivation is pending.
 -/
 theorem stabilizer_decomposition : Formalism.FourierDecayAlt.B2.StabDecomp := Formalism.FourierDecayAlt.P.stabilizer_factorization
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germExpansionOfSteps`.
+A detailed English derivation is pending.
 -/
 theorem local_germ_expansion : Formalism.FourierDecayAlt.A6.GermAssemble := Formalism.FourierDecayAlt.P.germExpansionOfSteps
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.orbit_tail_estimate`.
+A detailed English derivation is pending.
 -/
 theorem g_tailStep : Formalism.FourierDecayAlt.G.TailStep := Formalism.FourierDecayAlt.P.orbit_tail_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.change_of_variables_xy`.
+A detailed English derivation is pending.
 -/
 theorem g_innerXY : Formalism.FourierDecayAlt.G.InnerXY := Formalism.FourierDecayAlt.P.change_of_variables_xy
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.nonstationary_estimate`.
+A detailed English derivation is pending.
 -/
 theorem g_nonStatStep : Formalism.FourierDecayAlt.G.NonStatStep := Formalism.FourierDecayAlt.P.nonstationary_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stationary_estimate`.
+A detailed English derivation is pending.
 -/
 theorem g_statStep : Formalism.FourierDecayAlt.G.StatStep := Formalism.FourierDecayAlt.P.stationary_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_rate`.
+A detailed English derivation is pending.
 -/
 theorem g_germRate : Formalism.FourierDecayAlt.G.GermRate := Formalism.FourierDecayAlt.P.germ_rate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germExpansion_true`.
+A detailed English derivation is pending.
 -/
 theorem g_germ : Formalism.FourierDecayAlt.G.Germ := Formalism.FourierDecayAlt.P.germExpansion_true
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germExpansionKernelOfSteps`.
+A detailed English derivation is pending.
 -/
 theorem germ_kernel_expansion_from_pieces : Formalism.FourierDecayAlt.A6.GermKernelAssemble := Formalism.FourierDecayAlt.P.germExpansionKernelOfSteps
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.domination_minimum_of_text`.
+A detailed English derivation is pending.
 -/
 theorem tc_domMinOfText : Formalism.FourierDecayAlt.TC.DomMinOfText := Formalism.FourierDecayAlt.P.domination_minimum_of_text
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.after_of_old`.
+A detailed English derivation is pending.
 -/
 theorem tc_afterOfOld : Formalism.FourierDecayAlt.TC.AfterOfOld := Formalism.FourierDecayAlt.P.after_of_old
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.majorant_positive_semidefinite`.
+A detailed English derivation is pending.
 -/
 theorem tc_majorantPSD : Formalism.FourierDecayAlt.TC.MajorantPSD := Formalism.FourierDecayAlt.P.majorant_positive_semidefinite
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.domination_monotone`.
+A detailed English derivation is pending.
 -/
 theorem tc_domMonoE : Formalism.FourierDecayAlt.TC.DomMonoE := Formalism.FourierDecayAlt.P.domination_monotone
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.one_level_after`.
+A detailed English derivation is pending.
 -/
 theorem tc_oneLevelAfter : Formalism.FourierDecayAlt.TC.OneLevelAfter := Formalism.FourierDecayAlt.P.one_level_after
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.one_level_after_of_old`.
+A detailed English derivation is pending.
 -/
 theorem tc_oneLevelAfterOfOld : Formalism.FourierDecayAlt.TC.OneLevelAfterOfOld := Formalism.FourierDecayAlt.P.one_level_after_of_old
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_a_after`.
+A detailed English derivation is pending.
 -/
 theorem tc_theoremAAfter : Formalism.FourierDecayAlt.TC.TheoremAAfter := Formalism.FourierDecayAlt.P.theorem_a_after
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_a_after_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem tc_theoremAAfterOfSteps : Formalism.FourierDecayAlt.TC.TheoremAAfterOfSteps := Formalism.FourierDecayAlt.P.theorem_a_after_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_a_of_after`.
+A detailed English derivation is pending.
 -/
 theorem tc_theoremAOfAfter : Formalism.FourierDecayAlt.TC.TheoremAOfAfter := Formalism.FourierDecayAlt.P.theorem_a_of_after
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.domMinOfTextA_statement`.
+A detailed English derivation is pending.
 -/
 theorem tc_domMinOfTextA : Formalism.FourierDecayAlt.TC.DomMinOfTextA := Formalism.FourierDecayAlt.P.domMinOfTextA_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.afterOfOldA_statement`.
+A detailed English derivation is pending.
 -/
 theorem tc_afterOfOldA : Formalism.FourierDecayAlt.TC.AfterOfOldA := Formalism.FourierDecayAlt.P.afterOfOldA_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.majorantPSDA_statement`.
+A detailed English derivation is pending.
 -/
 theorem tc_majorantPSDA : Formalism.FourierDecayAlt.TC.MajorantPSDA := Formalism.FourierDecayAlt.P.majorantPSDA_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.oneLevelAfterA_statement`.
+A detailed English derivation is pending.
 -/
 theorem tc_oneLevelAfterA : Formalism.FourierDecayAlt.TC.OneLevelAfterA := Formalism.FourierDecayAlt.P.oneLevelAfterA_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.oneLevelAfterOfOldA_statement`.
+A detailed English derivation is pending.
 -/
 theorem tc_oneLevelAfterOfOldA : Formalism.FourierDecayAlt.TC.OneLevelAfterOfOldA := Formalism.FourierDecayAlt.P.oneLevelAfterOfOldA_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.reduction_after`.
+A detailed English derivation is pending.
 -/
 theorem tc_reductionAfter : Formalism.FourierDecayAlt.TC.ReductionAfter := Formalism.FourierDecayAlt.P.reduction_after
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.reduction_after_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem tc_reductionAfterOfSteps : Formalism.FourierDecayAlt.TC.ReductionAfterOfSteps := Formalism.FourierDecayAlt.P.reduction_after_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.reduction_of_after_inequality`.
+A detailed English derivation is pending.
 -/
 theorem tc_reductionOfAfter : Formalism.FourierDecayAlt.TC.ReductionOfAfter := Formalism.FourierDecayAlt.P.reduction_of_after_inequality
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.domination_agree`.
+A detailed English derivation is pending.
 -/
 theorem tc_domAgree : Formalism.FourierDecayAlt.TC.DomAgree := Formalism.FourierDecayAlt.P.domination_agree
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.domination_text_of_systems`.
+A detailed English derivation is pending.
 -/
 theorem tc_domTextOfSystems : Formalism.FourierDecayAlt.TC.DomTextOfSystems := Formalism.FourierDecayAlt.P.domination_text_of_systems
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.recursion_hypothesis_after_of_old`.
+A detailed English derivation is pending.
 -/
 theorem tc_recHypAfterOfOld : Formalism.FourierDecayAlt.TC.RecHypAfterOfOld := Formalism.FourierDecayAlt.P.recursion_hypothesis_after_of_old
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.recursion_gives_explicit_after`.
+A detailed English derivation is pending.
 -/
 theorem recursion_gives_densityData_after' : Formalism.FourierDecayAlt.TC.RecursionGivesUniformBoundsAfter := Formalism.FourierDecayAlt.P.recursion_gives_explicit_after
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exponent_of_densities`.
+A detailed English derivation is pending.
 -/
 theorem tc_eOfDens : Formalism.FourierDecayAlt.TC.EOfDens := Formalism.FourierDecayAlt.P.exponent_of_densities
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.product_of_exponent_max`.
+A detailed English derivation is pending.
 -/
 theorem tc_productOfEMax : Formalism.FourierDecayAlt.TC.ProductOfEMax := Formalism.FourierDecayAlt.P.product_of_exponent_max
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.density_le_two`.
+A detailed English derivation is pending.
 -/
 theorem tc_densLeTwo : Formalism.FourierDecayAlt.TC.DensLeTwo := Formalism.FourierDecayAlt.P.density_le_two
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.density_size`.
+A detailed English derivation is pending.
 -/
 theorem tc_densSize : Formalism.FourierDecayAlt.TC.DensSize := Formalism.FourierDecayAlt.P.density_size
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.sum_bound_max`.
+A detailed English derivation is pending.
 -/
 theorem tc_sumBoundMax : Formalism.FourierDecayAlt.TC.SumBoundMax := Formalism.FourierDecayAlt.P.sum_bound_max
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.recursion_with_densities`.
+A detailed English derivation is pending.
 -/
 theorem tc_recursionWithDens : Formalism.FourierDecayAlt.TC.RecursionWithDens := Formalism.FourierDecayAlt.P.recursion_with_densities
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.once_only_max`.
+A detailed English derivation is pending.
 -/
 theorem tc_onceOnlyMax : Formalism.FourierDecayAlt.TC.OnceOnlyMax := Formalism.FourierDecayAlt.P.once_only_max
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.massData_covers`.
+A detailed English derivation is pending.
 -/
 theorem densityData_covers' : Formalism.FourierDecayAlt.TC.MassDataCovers := Formalism.FourierDecayAlt.P.massData_covers
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germExpansionOfTestFunction`.
+A detailed English derivation is pending.
 -/
 theorem germ_phi_assembly : Formalism.FourierDecayAlt.A6.GermPhiAssemble := Formalism.FourierDecayAlt.P.germExpansionOfTestFunction
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weyl_subgroup_closed`.
+A detailed English derivation is pending.
 -/
 theorem closed_subgroup_weyl : Formalism.FourierDecayAlt.B2.ClosedW := Formalism.FourierDecayAlt.P.weyl_subgroup_closed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.opposite_weyl_subgroup_closed`.
+A detailed English derivation is pending.
 -/
 theorem closed_subgroup_opposite_weyl : Formalism.FourierDecayAlt.B2.ClosedWb := Formalism.FourierDecayAlt.P.opposite_weyl_subgroup_closed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weyl_subgroup_compact`.
+A detailed English derivation is pending.
 -/
 theorem compact_w : Formalism.FourierDecayAlt.B2.CompactW := Formalism.FourierDecayAlt.P.weyl_subgroup_compact
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unitary_group_haar_exists`.
+A detailed English derivation is pending.
 -/
 theorem haar_measure_general_linear_exists : Formalism.FourierDecayAlt.B2.HaarGExists := Formalism.FourierDecayAlt.P.unitary_group_haar_exists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.opposite_weyl_haar_exists`.
+A detailed English derivation is pending.
 -/
 theorem haar_wb_exists : Formalism.FourierDecayAlt.B2.HaarWbExists := Formalism.FourierDecayAlt.P.opposite_weyl_haar_exists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weyl_haar_exists`.
+A detailed English derivation is pending.
 -/
 theorem haar_measure_on_weyl_subgroup_exists : Formalism.FourierDecayAlt.B2.HaarWExists := Formalism.FourierDecayAlt.P.weyl_haar_exists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.thetaOnDomainOfSteps`.
+A detailed English derivation is pending.
 -/
 theorem theta_omega_assembly : Formalism.FourierDecayAlt.A6.ThOmAssemble := Formalism.FourierDecayAlt.P.thetaOnDomainOfSteps
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.thetaExistsStepOfSteps`.
+A detailed English derivation is pending.
 -/
 theorem thetaExistence_recursion_of_components : Formalism.FourierDecayAlt.A6.ThetaExistenceInductive := Formalism.FourierDecayAlt.P.thetaExistsStepOfSteps
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.averaged_vector_norm_bound`.
+A detailed English derivation is pending.
 -/
 theorem u_norm_bound : Formalism.FourierDecayAlt.A6.UNormBound := Formalism.FourierDecayAlt.P.averaged_vector_norm_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cut_posSemidef`.
+A detailed English derivation is pending.
 -/
 theorem positive_semidefinite_restriction : Formalism.FourierDecayAlt.A6.CutPSD := Formalism.FourierDecayAlt.P.cut_posSemidef
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.heads_distinct_determinant_orthogonal`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_block : Formalism.FourierDecayAlt.A6.UBlock := Formalism.FourierDecayAlt.P.heads_distinct_determinant_orthogonal
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.averaged_vector_choices_exist`.
+A detailed English derivation is pending.
 -/
 theorem average_data_exists : Formalism.FourierDecayAlt.A6.AvgDataExists := Formalism.FourierDecayAlt.P.averaged_vector_choices_exist
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.truncated_average_norm_formula`.
+A detailed English derivation is pending.
 -/
 theorem norm_evaluation : Formalism.FourierDecayAlt.A6.CutNormEval := Formalism.FourierDecayAlt.P.truncated_average_norm_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lattice_family_finite`.
+A detailed English derivation is pending.
 -/
 theorem lattice_finite : Formalism.FourierDecayAlt.A6.LatFinite := Formalism.FourierDecayAlt.P.lattice_family_finite
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.integral_lattice_refinement_identity`.
+A detailed English derivation is pending.
 -/
 theorem integral_lattice_refinement : Formalism.FourierDecayAlt.A6.IntLatRefine := Formalism.FourierDecayAlt.P.integral_lattice_refinement_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.integral_field_refinement`.
+A detailed English derivation is pending.
 -/
 theorem integral_k_refine : Formalism.FourierDecayAlt.A6.IntKRefine := Formalism.FourierDecayAlt.P.integral_field_refinement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.volume_scaling_identity`.
+A detailed English derivation is pending.
 -/
 theorem volume_scaling_formula : Formalism.FourierDecayAlt.A6.VolScale := Formalism.FourierDecayAlt.P.volume_scaling_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.orthogonal_lattice_properties`.
+A detailed English derivation is pending.
 -/
 theorem orthogonal_complement_lattice : Formalism.FourierDecayAlt.A6.PerpLat := Formalism.FourierDecayAlt.P.orthogonal_lattice_properties
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stationaryPhaseOfSteps`.
+A detailed English derivation is pending.
 -/
 theorem stationary_phase_formula : Formalism.FourierDecayAlt.A6.StationaryAssemble := Formalism.FourierDecayAlt.P.stationaryPhaseOfSteps
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.thetaAverageLower`.
+A detailed English derivation is pending.
 -/
 theorem theta_series_lower_bound : Formalism.FourierDecayAlt.A6.ThxLower := Formalism.FourierDecayAlt.P.thetaAverageLower
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.characterMean`.
+A detailed English derivation is pending.
 -/
 theorem character_mean : Formalism.FourierDecayAlt.A6.CharMean := Formalism.FourierDecayAlt.P.characterMean
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.annihilatorCharacters`.
+A detailed English derivation is pending.
 -/
 theorem perpendicular_dual : Formalism.FourierDecayAlt.A6.PerpDual := Formalism.FourierDecayAlt.P.annihilatorCharacters
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.compactOpenChoice`.
+A detailed English derivation is pending.
 -/
 theorem lattice_choice_exists : Formalism.FourierDecayAlt.A6.LatChoice := Formalism.FourierDecayAlt.P.compactOpenChoice
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.modulusLocallyConstant`.
+A detailed English derivation is pending.
 -/
 theorem modulus_locally_constant : Formalism.FourierDecayAlt.A6.ModLocConst := Formalism.FourierDecayAlt.P.modulusLocallyConstant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.smallUnits`.
+A detailed English derivation is pending.
 -/
 theorem small_units : Formalism.FourierDecayAlt.A6.SmallUnits := Formalism.FourierDecayAlt.P.smallUnits
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.domination_scale_top`.
+A detailed English derivation is pending.
 -/
 theorem tc_domScaleTop : Formalism.FourierDecayAlt.TC.DomScaleTop := Formalism.FourierDecayAlt.P.domination_scale_top
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.recursion_hypothesis_scale_top`.
+A detailed English derivation is pending.
 -/
 theorem tc_recHypScaleTop : Formalism.FourierDecayAlt.TC.RecHypScaleTop := Formalism.FourierDecayAlt.P.recursion_hypothesis_scale_top
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.domination_after_of_local`.
+A detailed English derivation is pending.
 -/
 theorem tc_domAfterOfLocal : Formalism.FourierDecayAlt.TC.DomAfterOfLocal := Formalism.FourierDecayAlt.P.domination_after_of_local
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.density_sum`.
+A detailed English derivation is pending.
 -/
 theorem tc_densSum : Formalism.FourierDecayAlt.TC.DensSum := Formalism.FourierDecayAlt.P.density_sum
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.density_chain`.
+A detailed English derivation is pending.
 -/
 theorem tc_densChain : Formalism.FourierDecayAlt.TC.DensChain := Formalism.FourierDecayAlt.P.density_chain
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.smallModules`.
+A detailed English derivation is pending.
 -/
 theorem small_modules_classification : Formalism.FourierDecayAlt.A6.SmallModules := Formalism.FourierDecayAlt.P.smallModules
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rootsFinite`.
+A detailed English derivation is pending.
 -/
 theorem rootsFinite_true : Formalism.FourierDecayAlt.A6.RootsFinite := Formalism.FourierDecayAlt.P.rootsFinite
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rootsSeparated`.
+A detailed English derivation is pending.
 -/
 theorem roots_separated_in_residue_field : Formalism.FourierDecayAlt.A6.RootsSeparated := Formalism.FourierDecayAlt.P.rootsSeparated
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rootStableExhaustion`.
+A detailed English derivation is pending.
 -/
 theorem exhaust_true : Formalism.FourierDecayAlt.A6.Exhaust := Formalism.FourierDecayAlt.P.rootStableExhaustion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.blockParametrisation`.
+A detailed English derivation is pending.
 -/
 theorem parametrisation : Formalism.FourierDecayAlt.A6.Param := Formalism.FourierDecayAlt.P.blockParametrisation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gramKernelHermitian`.
+A detailed English derivation is pending.
 -/
 theorem kp_hermitian : Formalism.FourierDecayAlt.A6.KpHerm := Formalism.FourierDecayAlt.P.gramKernelHermitian
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.shiftUnit_statement`.
+A detailed English derivation is pending.
 -/
 theorem shift_unit : Formalism.FourierDecayAlt.A6.ShiftUnit := Formalism.FourierDecayAlt.P.shiftUnit_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.shiftSmall_statement`.
+A detailed English derivation is pending.
 -/
 theorem shiftSmall_true : Formalism.FourierDecayAlt.A6.ShiftSmall := Formalism.FourierDecayAlt.P.shiftSmall_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rootCutStable`.
+A detailed English derivation is pending.
 -/
 theorem truncation_same_on_ring : Formalism.FourierDecayAlt.A6.CutSame := Formalism.FourierDecayAlt.P.rootCutStable
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rootCorrection`.
+A detailed English derivation is pending.
 -/
 theorem root_correction_term : Formalism.FourierDecayAlt.A6.RootCorr := Formalism.FourierDecayAlt.P.rootCorrection
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.averaged_kernel_periodic_psd`.
+A detailed English derivation is pending.
 -/
 theorem theta_series_basic_bounds : Formalism.FourierDecayAlt.A6.ThxBasic := Formalism.FourierDecayAlt.P.averaged_kernel_periodic_psd
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.averaged_kernel_parseval`.
+A detailed English derivation is pending.
 -/
 theorem theta_x_sum : Formalism.FourierDecayAlt.A6.ThxSum := Formalism.FourierDecayAlt.P.averaged_kernel_parseval
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.finite_family_truncation_module`.
+A detailed English derivation is pending.
 -/
 theorem support_module_description : Formalism.FourierDecayAlt.A6.SupportModule := Formalism.FourierDecayAlt.P.finite_family_truncation_module
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.head_size_one_in_GL`.
+A detailed English derivation is pending.
 -/
 theorem c_size_one : Formalism.FourierDecayAlt.A6.CSizeOne := Formalism.FourierDecayAlt.P.head_size_one_in_GL
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.induction_from_assembled_pieces`.
+A detailed English derivation is pending.
 -/
 theorem iteration_bound_from_local_pieces : Formalism.FourierDecayAlt.A6.ThetaExistenceInductiveFromPieces := Formalism.FourierDecayAlt.P.induction_from_assembled_pieces
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.parsevalGroup_statement`.
+A detailed English derivation is pending.
 -/
 theorem parseval_group : Formalism.FourierDecayAlt.A6.ParsevalGroup := Formalism.FourierDecayAlt.P.parsevalGroup_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gramRealisation`.
+A detailed English derivation is pending.
 -/
 theorem gram_realisation_truncated : Formalism.FourierDecayAlt.A6.GramRealiseCut := Formalism.FourierDecayAlt.P.gramRealisation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.posSemidefEntryBound`.
+A detailed English derivation is pending.
 -/
 theorem psd_entry_bound : Formalism.FourierDecayAlt.A6.PSDEntryBound := Formalism.FourierDecayAlt.P.posSemidefEntryBound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.posSemidefClosed`.
+A detailed English derivation is pending.
 -/
 theorem psd_closed : Formalism.FourierDecayAlt.A6.PSDClosed := Formalism.FourierDecayAlt.P.posSemidefClosed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.boundedSubsequence`.
+A detailed English derivation is pending.
 -/
 theorem bounded_subsequence_exists : Formalism.FourierDecayAlt.A6.BoundedSubseq := Formalism.FourierDecayAlt.P.boundedSubsequence
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.nonStationary`.
+A detailed English derivation is pending.
 -/
 theorem non_stationary_phase : Formalism.FourierDecayAlt.A6.NonStationary := Formalism.FourierDecayAlt.P.nonStationary
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_haar_measure`.
+A detailed English derivation is pending.
 -/
 theorem stabiliser_haar : Formalism.FourierDecayAlt.B2.StabHaar := Formalism.FourierDecayAlt.P.stabilizer_haar_measure
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_haar_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem stabilizer_haar_integral_decomposition : Formalism.FourierDecayAlt.B2.AssembleStab := Formalism.FourierDecayAlt.P.stabilizer_haar_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_integration_formula`.
+A detailed English derivation is pending.
 -/
 theorem single_move_integral : Formalism.FourierDecayAlt.B2.OneStepInt := Formalism.FourierDecayAlt.P.stabilizer_integration_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_integration_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem single_move_assembly : Formalism.FourierDecayAlt.B2.AssembleOneStep := Formalism.FourierDecayAlt.P.stabilizer_integration_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_null_set`.
+A detailed English derivation is pending.
 -/
 theorem null_direction_vanishing : Formalism.FourierDecayAlt.B2.OneStepNull := Formalism.FourierDecayAlt.P.stabilizer_null_set
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_null_of_integrable`.
+A detailed English derivation is pending.
 -/
 theorem null_direction_from_integral : Formalism.FourierDecayAlt.B2.OneStepNullFromInt := Formalism.FourierDecayAlt.P.stabilizer_null_of_integrable
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germIdentityOfSteps`.
+A detailed English derivation is pending.
 -/
 theorem germ_identity_assembly : Formalism.FourierDecayAlt.A6.GermIdentityAssemble := Formalism.FourierDecayAlt.P.germIdentityOfSteps
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.normalisation_every_setting`.
+A detailed English derivation is pending.
 -/
 theorem integral_norm_b_of_norm : Formalism.FourierDecayAlt.B2.IntNormBFromNorm := Formalism.FourierDecayAlt.P.normalisation_every_setting
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.matrix_norm_ge_one`.
+A detailed English derivation is pending.
 -/
 theorem g_n_lower : Formalism.FourierDecayAlt.B2.GNLower := Formalism.FourierDecayAlt.P.matrix_norm_ge_one
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hilbert_schmidt_block`.
+A detailed English derivation is pending.
 -/
 theorem hilbert_schmidt_block_norm_bound : Formalism.FourierDecayAlt.B2.HSBlock := Formalism.FourierDecayAlt.P.hilbert_schmidt_block
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_ball_volume_exact`.
+A detailed English derivation is pending.
 -/
 theorem volume_exact : Formalism.FourierDecayAlt.B2.VolExact := Formalism.FourierDecayAlt.P.norm_ball_volume_exact
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_ball_volume_sharp`.
+A detailed English derivation is pending.
 -/
 theorem volume_sharp : Formalism.FourierDecayAlt.B2.VolSharp := Formalism.FourierDecayAlt.P.norm_ball_volume_sharp
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gauss_index_independent_of_choice`.
+A detailed English derivation is pending.
 -/
 theorem gaussian_independence : Formalism.FourierDecayAlt.A6.GaussIndep := Formalism.FourierDecayAlt.P.gauss_index_independent_of_choice
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gauss_hessian_index_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem gaussian_hessian_formula : Formalism.FourierDecayAlt.A6.GaussHessAssemble := Formalism.FourierDecayAlt.P.gauss_hessian_index_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.admissible_gauss_sum_small`.
+A detailed English derivation is pending.
 -/
 theorem admissible_gaussian_small : Formalism.FourierDecayAlt.A6.GaussAdmSmall := Formalism.FourierDecayAlt.P.admissible_gauss_sum_small
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.oscillatory_integral_invariant`.
+A detailed English derivation is pending.
 -/
 theorem oscillatory_invariant : Formalism.FourierDecayAlt.A6.OscInvariant := Formalism.FourierDecayAlt.P.oscillatory_integral_invariant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.kernel_as_coset_sum`.
+A detailed English derivation is pending.
 -/
 theorem kernel_from_bilinear : Formalism.FourierDecayAlt.A6.KpFromBB := Formalism.FourierDecayAlt.P.kernel_as_coset_sum
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phase_locally_constant`.
+A detailed English derivation is pending.
 -/
 theorem locally_constant_phase : Formalism.FourierDecayAlt.A6.LocConst := Formalism.FourierDecayAlt.P.phase_locally_constant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phase_critical_points`.
+A detailed English derivation is pending.
 -/
 theorem phase_critical_points_nondegenerate : Formalism.FourierDecayAlt.A6.CritPoints := Formalism.FourierDecayAlt.P.phase_critical_points
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phase_critical_value`.
+A detailed English derivation is pending.
 -/
 theorem critical_value : Formalism.FourierDecayAlt.A6.CritValue := Formalism.FourierDecayAlt.P.phase_critical_value
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hessian_jet_formula`.
+A detailed English derivation is pending.
 -/
 theorem hessian_jet : Formalism.FourierDecayAlt.A6.HessianJet := Formalism.FourierDecayAlt.P.hessian_jet_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phase_hessian_determinant`.
+A detailed English derivation is pending.
 -/
 theorem hessian_determinant_formula : Formalism.FourierDecayAlt.A6.HessDet := Formalism.FourierDecayAlt.P.phase_hessian_determinant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gauss_sum_modulus_of_lattice`.
+A detailed English derivation is pending.
 -/
 theorem gaussModulus_true : Formalism.FourierDecayAlt.A6.GaussModulus := Formalism.FourierDecayAlt.P.gauss_sum_modulus_of_lattice
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_weyl_properties`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_weyl_facts : Formalism.FourierDecayAlt.B2.UWbFacts := Formalism.FourierDecayAlt.P.unipotent_weyl_properties
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weight_factorization`.
+A detailed English derivation is pending.
 -/
 theorem weight_factor : Formalism.FourierDecayAlt.B2.WeightFactor := Formalism.FourierDecayAlt.P.weight_factorization
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hyperbolic_element_inverse`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_inverse_formula : Formalism.FourierDecayAlt.B2.HypInv := Formalism.FourierDecayAlt.P.hyperbolic_element_inverse
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.b2_rank_one_mem`.
+A detailed English derivation is pending.
 -/
 theorem rank_one_membership : Formalism.FourierDecayAlt.B2.RankOneMem := Formalism.FourierDecayAlt.P.b2_rank_one_mem
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.b2_rank_one_coord`.
+A detailed English derivation is pending.
 -/
 theorem rank_one_coordinates : Formalism.FourierDecayAlt.B2.RankOneCoord := Formalism.FourierDecayAlt.P.b2_rank_one_coord
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rank_one_integration_formula`.
+A detailed English derivation is pending.
 -/
 theorem rank_one_integral_formula : Formalism.FourierDecayAlt.B2.RankOneInt := Formalism.FourierDecayAlt.P.rank_one_integration_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.head_reduction_lemma`.
+A detailed English derivation is pending.
 -/
 theorem head_reduction : Formalism.FourierDecayAlt.A6.HeadReduction := Formalism.FourierDecayAlt.P.head_reduction_lemma
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weyl_measure_from_diagonal`.
+A detailed English derivation is pending.
 -/
 theorem wb_from_diagonal : Formalism.FourierDecayAlt.B2.WbFromDiag := Formalism.FourierDecayAlt.P.weyl_measure_from_diagonal
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rank_one_formula_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem rank_one_assembly : Formalism.FourierDecayAlt.B2.AssembleRankOne := Formalism.FourierDecayAlt.P.rank_one_formula_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.integration_formula_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem integral_formula_from_pieces : Formalism.FourierDecayAlt.B2.AssembleInt := Formalism.FourierDecayAlt.P.integration_formula_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.integral_normalisation_from_constant`.
+A detailed English derivation is pending.
 -/
 theorem integral_norm_from_constant : Formalism.FourierDecayAlt.B2.IntNormFromConst := Formalism.FourierDecayAlt.P.integral_normalisation_from_constant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.morseLemma`.
+A detailed English derivation is pending.
 -/
 theorem padicMorse_true : Formalism.FourierDecayAlt.A6.MorseLemma := Formalism.FourierDecayAlt.P.morseLemma
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.square_near_unit`.
+A detailed English derivation is pending.
 -/
 theorem square_near : Formalism.FourierDecayAlt.A6.SquareNear := Formalism.FourierDecayAlt.P.square_near_unit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phase_difference_estimate`.
+A detailed English derivation is pending.
 -/
 theorem phase_difference : Formalism.FourierDecayAlt.A6.PhaseDiff := Formalism.FourierDecayAlt.P.phase_difference_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.padic_change_of_variables`.
+A detailed English derivation is pending.
 -/
 theorem change_of_variables : Formalism.FourierDecayAlt.A6.ChangeVar := Formalism.FourierDecayAlt.P.padic_change_of_variables
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.head_size_add_block`.
+A detailed English derivation is pending.
 -/
 theorem c_size_add_block : Formalism.FourierDecayAlt.A6.CSizeAddBlock := Formalism.FourierDecayAlt.P.head_size_add_block
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_equality_of_vectors`.
+A detailed English derivation is pending.
 -/
 theorem u_gram_eq : Formalism.FourierDecayAlt.A6.UGramEq := Formalism.FourierDecayAlt.P.gram_equality_of_vectors
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.psd_agree`.
+A detailed English derivation is pending.
 -/
 theorem jx_pSDAgree : Formalism.FourierDecayAlt.J.PSDAgree := Formalism.FourierDecayAlt.P.psd_agree
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.psd_transpose`.
+A detailed English derivation is pending.
 -/
 theorem jx_pSDTranspose : Formalism.FourierDecayAlt.J.PSDTranspose := Formalism.FourierDecayAlt.P.psd_transpose
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.axioms_agree`.
+A detailed English derivation is pending.
 -/
 theorem jx_axiomsAgree : Formalism.FourierDecayAlt.J.AxiomsAgree := Formalism.FourierDecayAlt.P.axioms_agree
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.towers_agree`.
+A detailed English derivation is pending.
 -/
 theorem jx_towersAgree : Formalism.FourierDecayAlt.J.TowersAgree := Formalism.FourierDecayAlt.P.towers_agree
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.forms_agree`.
+A detailed English derivation is pending.
 -/
 theorem jx_formsAgree : Formalism.FourierDecayAlt.J.FormsAgree := Formalism.FourierDecayAlt.P.forms_agree
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.box_sum_lattice`.
+A detailed English derivation is pending.
 -/
 theorem jx_boxSumLattice : Formalism.FourierDecayAlt.J.BoxSumLattice := Formalism.FourierDecayAlt.P.box_sum_lattice
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.majorant_is_profinite`.
+A detailed English derivation is pending.
 -/
 theorem jx_majIsProf : Formalism.FourierDecayAlt.J.MajIsProf := Formalism.FourierDecayAlt.P.majorant_is_profinite
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.supremum_A_is_majorant`.
+A detailed English derivation is pending.
 -/
 theorem jx_supAIsCore : Formalism.FourierDecayAlt.J.SupAIsCore := Formalism.FourierDecayAlt.P.supremum_A_is_majorant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.threshold_mono`.
+A detailed English derivation is pending.
 -/
 theorem jx_thrMono : Formalism.FourierDecayAlt.J.ThresholdsMonotone := Formalism.FourierDecayAlt.P.threshold_mono
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.instance_sizes`.
+A detailed English derivation is pending.
 -/
 theorem jx_instSizes : Formalism.FourierDecayAlt.J.InstSizes := Formalism.FourierDecayAlt.P.instance_sizes
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.instance_lattice_sums`.
+A detailed English derivation is pending.
 -/
 theorem jx_instLatticeSums : Formalism.FourierDecayAlt.J.InstLatticeSums := Formalism.FourierDecayAlt.P.instance_lattice_sums
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.sizes_to_recursion`.
+A detailed English derivation is pending.
 -/
 theorem jx_sizesToRecursion : Formalism.FourierDecayAlt.J.SizesToRecursion := Formalism.FourierDecayAlt.P.sizes_to_recursion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.global_positive`.
+A detailed English derivation is pending.
 -/
 theorem jx_globPositive : Formalism.FourierDecayAlt.J.GlobPositive := Formalism.FourierDecayAlt.P.global_positive
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.majorant_mono`.
+A detailed English derivation is pending.
 -/
 theorem jx_majMono : Formalism.FourierDecayAlt.J.MajMono := Formalism.FourierDecayAlt.P.majorant_mono
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lattice_sums_joint`.
+A detailed English derivation is pending.
 -/
 theorem jx_latticeSumsJoint : Formalism.FourierDecayAlt.J.LatticeSumsJoint := Formalism.FourierDecayAlt.P.lattice_sums_joint
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_sizes_joint`.
+A detailed English derivation is pending.
 -/
 theorem jx_levelSizesJoint : Formalism.FourierDecayAlt.J.LevelSizesJoint := Formalism.FourierDecayAlt.P.level_sizes_joint
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_sizes_joint_mean`.
+A detailed English derivation is pending.
 -/
 theorem jx_levelSizesJointMean : Formalism.FourierDecayAlt.J.LevelSizesJointMean := Formalism.FourierDecayAlt.P.level_sizes_joint_mean
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.nu_index`.
+A detailed English derivation is pending.
 -/
 theorem jx_nuIndex : Formalism.FourierDecayAlt.J.NuIndex := Formalism.FourierDecayAlt.P.nu_index
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.block_lattices`.
+A detailed English derivation is pending.
 -/
 theorem jx_blockLattices : Formalism.FourierDecayAlt.J.BlockLattices := Formalism.FourierDecayAlt.P.block_lattices
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.embedding_facts`.
+A detailed English derivation is pending.
 -/
 theorem jx_embFacts : Formalism.FourierDecayAlt.J.EmbFacts := Formalism.FourierDecayAlt.P.embedding_facts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.euclidean_frame`.
+A detailed English derivation is pending.
 -/
 theorem jx_euclidFrame : Formalism.FourierDecayAlt.J.EuclidFrame := Formalism.FourierDecayAlt.P.euclidean_frame
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.crossTermsVanish`.
+A detailed English derivation is pending.
 -/
 theorem crossVanish_true : Formalism.FourierDecayAlt.A6.CrossVanish := Formalism.FourierDecayAlt.P.crossTermsVanish
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.threshold_below_one`.
+A detailed English derivation is pending.
 -/
 theorem jx_thresholdBelowOne : Formalism.FourierDecayAlt.J.ThresholdBelowOne := Formalism.FourierDecayAlt.P.threshold_below_one
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.letters_at_places`.
+A detailed English derivation is pending.
 -/
 theorem jx_lettersAtPlaces : Formalism.FourierDecayAlt.J.LettersAtPlaces := Formalism.FourierDecayAlt.P.letters_at_places
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.wave_letters`.
+A detailed English derivation is pending.
 -/
 theorem jx_waveLetters : Formalism.FourierDecayAlt.J.WaveLetters := Formalism.FourierDecayAlt.P.wave_letters
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.wave_letters_one`.
+A detailed English derivation is pending.
 -/
 theorem jx_waveLettersOne : Formalism.FourierDecayAlt.J.WaveLettersOne := Formalism.FourierDecayAlt.P.wave_letters_one
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lift_letters`.
+A detailed English derivation is pending.
 -/
 theorem jx_liftLetters : Formalism.FourierDecayAlt.J.LiftLetters := Formalism.FourierDecayAlt.P.lift_letters
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.wave_letters_mixed`.
+A detailed English derivation is pending.
 -/
 theorem jx_waveLettersMix : Formalism.FourierDecayAlt.J.WaveLettersMix := Formalism.FourierDecayAlt.P.wave_letters_mixed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lift_letters_mixed`.
+A detailed English derivation is pending.
 -/
 theorem jx_liftLettersMix : Formalism.FourierDecayAlt.J.LiftLettersMix := Formalism.FourierDecayAlt.P.lift_letters_mixed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.scaling_bound`.
+A detailed English derivation is pending.
 -/
 theorem jx_scaleOk : Formalism.FourierDecayAlt.J.ScaleOk := Formalism.FourierDecayAlt.P.scaling_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phaseOk_statement`.
+A detailed English derivation is pending.
 -/
 theorem jx_phaseOk : Formalism.FourierDecayAlt.J.PhaseOk := Formalism.FourierDecayAlt.P.phaseOk_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.outside_bound`.
+A detailed English derivation is pending.
 -/
 theorem jx_outsideOk : Formalism.FourierDecayAlt.J.OutsideOk := Formalism.FourierDecayAlt.P.outside_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.outside_systems_bound`.
+A detailed English derivation is pending.
 -/
 theorem jx_outsideSysOk : Formalism.FourierDecayAlt.J.OutsideSysOk := Formalism.FourierDecayAlt.P.outside_systems_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.outside_domination`.
+A detailed English derivation is pending.
 -/
 theorem jx_outsideDomination : Formalism.FourierDecayAlt.J.OutsideDomination := Formalism.FourierDecayAlt.P.outside_domination
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.uniformMajorant_statement`.
+A detailed English derivation is pending.
 -/
 theorem jx_uniformMajorant : Formalism.FourierDecayAlt.J.UniformMajorant := Formalism.FourierDecayAlt.P.uniformMajorant_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.uniform_majorant_on`.
+A detailed English derivation is pending.
 -/
 theorem jx_uniformMajorantOn : Formalism.FourierDecayAlt.J.UniformMajorantOn := Formalism.FourierDecayAlt.P.uniform_majorant_on
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.trace_pairing`.
+A detailed English derivation is pending.
 -/
 theorem jx_tracePairing : Formalism.FourierDecayAlt.J.TracePairing := Formalism.FourierDecayAlt.P.trace_pairing
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.trace_dual_alt`.
+A detailed English derivation is pending.
 -/
 theorem jx_traceDual : Formalism.FourierDecayAlt.J.TraceDual := Formalism.FourierDecayAlt.P.trace_dual_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.block_frame`.
+A detailed English derivation is pending.
 -/
 theorem jx_blockFrame : Formalism.FourierDecayAlt.J.BlockFrame := Formalism.FourierDecayAlt.P.block_frame
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dual_covolume`.
+A detailed English derivation is pending.
 -/
 theorem jx_dualCovolume : Formalism.FourierDecayAlt.J.DualCovolume := Formalism.FourierDecayAlt.P.dual_covolume
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dual_measure_bound`.
+A detailed English derivation is pending.
 -/
 theorem jx_dualMeasureBound : Formalism.FourierDecayAlt.J.DualMeasureBound := Formalism.FourierDecayAlt.P.dual_measure_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dual_covolume_change_of_variables`.
+A detailed English derivation is pending.
 -/
 theorem jx_dualCovolumeCV : Formalism.FourierDecayAlt.J.DualCovolumeCV := Formalism.FourierDecayAlt.P.dual_covolume_change_of_variables
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.poisson_joint`.
+A detailed English derivation is pending.
 -/
 theorem jx_poissonJoint : Formalism.FourierDecayAlt.J.PoissonJoint := Formalism.FourierDecayAlt.P.poisson_joint
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.local_pullback`.
+A detailed English derivation is pending.
 -/
 theorem jx_localPullback : Formalism.FourierDecayAlt.J.LocalPullback := Formalism.FourierDecayAlt.P.local_pullback
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.local_unit_heads`.
+A detailed English derivation is pending.
 -/
 theorem jx_localUnitHeads : Formalism.FourierDecayAlt.J.LocalUnitHeads := Formalism.FourierDecayAlt.P.local_unit_heads
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.top_pullback`.
+A detailed English derivation is pending.
 -/
 theorem jx_topPullback : Formalism.FourierDecayAlt.J.TopPullback := Formalism.FourierDecayAlt.P.top_pullback
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.axioms_from_systems`.
+A detailed English derivation is pending.
 -/
 theorem jx_axiomsFromSystems : Formalism.FourierDecayAlt.J.AxiomsFromSystems := Formalism.FourierDecayAlt.P.axioms_from_systems
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.global_of_local`.
+A detailed English derivation is pending.
 -/
 theorem jx_globalOfLocal : Formalism.FourierDecayAlt.J.GlobalOfLocal := Formalism.FourierDecayAlt.P.global_of_local
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.axioms_from_families`.
+A detailed English derivation is pending.
 -/
 theorem jx_axiomsFromFamilies : Formalism.FourierDecayAlt.J.AxiomsFromFamilies := Formalism.FourierDecayAlt.P.axioms_from_families
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.kernel_of_local`.
+A detailed English derivation is pending.
 -/
 theorem jx_kernelOfLocal : Formalism.FourierDecayAlt.J.KernelOfLocal := Formalism.FourierDecayAlt.P.kernel_of_local
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fourier_transform_at_zero`.
+A detailed English derivation is pending.
 -/
 theorem jx_transformAtZero : Formalism.FourierDecayAlt.J.TransformAtZero := Formalism.FourierDecayAlt.P.fourier_transform_at_zero
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.poisson_level_joint`.
+A detailed English derivation is pending.
 -/
 theorem jx_poissonStepJoint : Formalism.FourierDecayAlt.J.PoissonStepJoint := Formalism.FourierDecayAlt.P.poisson_level_joint
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.poisson_joint_first_reduction`.
+A detailed English derivation is pending.
 -/
 theorem jx_poissonJointTA : Formalism.FourierDecayAlt.J.PoissonJointTA := Formalism.FourierDecayAlt.P.poisson_joint_first_reduction
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.poisson_forms_agree`.
+A detailed English derivation is pending.
 -/
 theorem jx_poissonAgree : Formalism.FourierDecayAlt.J.PoissonAgree := Formalism.FourierDecayAlt.P.poisson_forms_agree
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.block_poisson_frame`.
+A detailed English derivation is pending.
 -/
 theorem jx_blockPoissonFrame : Formalism.FourierDecayAlt.J.BlockPoissonFrame := Formalism.FourierDecayAlt.P.block_poisson_frame
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lattice_x_eq_lambda_one`.
+A detailed English derivation is pending.
 -/
 theorem jx_xIsLamOne : Formalism.FourierDecayAlt.J.XIsLamOne := Formalism.FourierDecayAlt.P.lattice_x_eq_lambda_one
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_product_identities`.
+A detailed English derivation is pending.
 -/
 theorem jx_frameProducts : Formalism.FourierDecayAlt.J.FrameProducts := Formalism.FourierDecayAlt.P.frame_product_identities
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.joint_theorem_A`.
+A detailed English derivation is pending.
 -/
 theorem jx_mainJoint : Formalism.FourierDecayAlt.J.MainJoint := Formalism.FourierDecayAlt.P.joint_theorem_A
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.joint_form_theorem_A`.
+A detailed English derivation is pending.
 -/
 theorem jx_mainJointForm : Formalism.FourierDecayAlt.J.MainJointForm := Formalism.FourierDecayAlt.P.joint_form_theorem_A
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.joint_instance_theorem_A`.
+A detailed English derivation is pending.
 -/
 theorem jx_mainJointInst : Formalism.FourierDecayAlt.J.MainJointInst := Formalism.FourierDecayAlt.P.joint_instance_theorem_A
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.schur_product`.
+A detailed English derivation is pending.
 -/
 theorem jx_schurProduct : Formalism.FourierDecayAlt.J.SchurProduct := Formalism.FourierDecayAlt.P.schur_product
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.product_domination`.
+A detailed English derivation is pending.
 -/
 theorem jx_productDomination : Formalism.FourierDecayAlt.J.ProductDomination := Formalism.FourierDecayAlt.P.product_domination
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.diagonal_scaling`.
+A detailed English derivation is pending.
 -/
 theorem jx_diagScale : Formalism.FourierDecayAlt.J.DiagScale := Formalism.FourierDecayAlt.P.diagonal_scaling
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.product_lemma`.
+A detailed English derivation is pending.
 -/
 theorem jx_productLemma : Formalism.FourierDecayAlt.J.ProductLemma := Formalism.FourierDecayAlt.P.product_lemma
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.local_kernel_psd`.
+A detailed English derivation is pending.
 -/
 theorem jx_localKernelPSD : Formalism.FourierDecayAlt.J.LocalKernelPSD := Formalism.FourierDecayAlt.P.local_kernel_psd
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.intersection_of_local`.
+A detailed English derivation is pending.
 -/
 theorem jx_intersectionOfLocal : Formalism.FourierDecayAlt.J.IntersectionOfLocal := Formalism.FourierDecayAlt.P.intersection_of_local
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lattice_of_local`.
+A detailed English derivation is pending.
 -/
 theorem jx_latticeOfLocal : Formalism.FourierDecayAlt.J.LatticeOfLocal := Formalism.FourierDecayAlt.P.lattice_of_local
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pull_lattice_typed`.
+A detailed English derivation is pending.
 -/
 theorem jx_pullLatticeTyped : Formalism.FourierDecayAlt.J.PullLatticeTyped := Formalism.FourierDecayAlt.P.pull_lattice_typed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.minimum_shape`.
+A detailed English derivation is pending.
 -/
 theorem jx_minShape : Formalism.FourierDecayAlt.J.MinShape := Formalism.FourierDecayAlt.P.minimum_shape
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chebyshev_to_threshold`.
+A detailed English derivation is pending.
 -/
 theorem jx_chebToThreshold : Formalism.FourierDecayAlt.J.ChebToThreshold := Formalism.FourierDecayAlt.P.chebyshev_to_threshold
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.threshold_below`.
+A detailed English derivation is pending.
 -/
 theorem jx_thresholdBelow : Formalism.FourierDecayAlt.J.ThresholdBelow := Formalism.FourierDecayAlt.P.threshold_below
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.estimates_mono`.
+A detailed English derivation is pending.
 -/
 theorem jx_estimatesMono : Formalism.FourierDecayAlt.J.EstimatesMono := Formalism.FourierDecayAlt.P.estimates_mono
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.recursion_gives_explicit_form`.
+A detailed English derivation is pending.
 -/
 theorem jx_recursionGivesMassData : Formalism.FourierDecayAlt.J.RecursionGivesBounds := Formalism.FourierDecayAlt.P.recursion_gives_explicit_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.recursion_gives_form`.
+A detailed English derivation is pending.
 -/
 theorem jx_recursionGivesForm : Formalism.FourierDecayAlt.J.RecursionGivesForm := Formalism.FourierDecayAlt.P.recursion_gives_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.product_of_energies`.
+A detailed English derivation is pending.
 -/
 theorem jx_productOfE : Formalism.FourierDecayAlt.J.ProductOfE := Formalism.FourierDecayAlt.P.product_of_energies
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.top_energy`.
+A detailed English derivation is pending.
 -/
 theorem jx_topE : Formalism.FourierDecayAlt.J.TopE := Formalism.FourierDecayAlt.P.top_energy
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.each_level_counted_once`.
+A detailed English derivation is pending.
 -/
 theorem jx_onceOnly : Formalism.FourierDecayAlt.J.OnceOnly := Formalism.FourierDecayAlt.P.each_level_counted_once
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.form_gives_theorem_A`.
+A detailed English derivation is pending.
 -/
 theorem jx_formGivesMain : Formalism.FourierDecayAlt.J.FormGivesMain := Formalism.FourierDecayAlt.P.form_gives_theorem_A
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.bigCellRec_statement`.
+A detailed English derivation is pending.
 -/
 theorem big_cell_recursion : Formalism.FourierDecayAlt.B2.BigCellRec := Formalism.FourierDecayAlt.P.bigCellRec_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.long_weyl_element_commutation`.
+A detailed English derivation is pending.
 -/
 theorem weylElementCommutesLevelOne_true : Formalism.FourierDecayAlt.B2.WeylElementCommutesLevelOne := Formalism.FourierDecayAlt.P.long_weyl_element_commutation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_weyl_recursion`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_wb_recursion : Formalism.FourierDecayAlt.B2.UWbRec := Formalism.FourierDecayAlt.P.unipotent_weyl_recursion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.iterated_integration_formula`.
+A detailed English derivation is pending.
 -/
 theorem iterated_integral_identity : Formalism.FourierDecayAlt.B2.IterInt := Formalism.FourierDecayAlt.P.iterated_integration_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.iterated_integral_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem iterated_integral_formula : Formalism.FourierDecayAlt.B2.AssembleIter := Formalism.FourierDecayAlt.P.iterated_integral_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.bruhat_big_cell_factorization`.
+A detailed English derivation is pending.
 -/
 theorem big_cell_factorization : Formalism.FourierDecayAlt.B2.BigCellFactor := Formalism.FourierDecayAlt.P.bruhat_big_cell_factorization
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.integration_formula_constant`.
+A detailed English derivation is pending.
 -/
 theorem integral_constant_value : Formalism.FourierDecayAlt.B2.IntConst := Formalism.FourierDecayAlt.P.integration_formula_constant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.integration_formula_normalisation_unique`.
+A detailed English derivation is pending.
 -/
 theorem integral_norm : Formalism.FourierDecayAlt.B2.IntNorm := Formalism.FourierDecayAlt.P.integration_formula_normalisation_unique
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.normalisation_unique_every_setting`.
+A detailed English derivation is pending.
 -/
 theorem integral_norm_bound_variant_b : Formalism.FourierDecayAlt.B2.IntNormB := Formalism.FourierDecayAlt.P.normalisation_unique_every_setting
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_power_integrable_sharp`.
+A detailed English derivation is pending.
 -/
 theorem g_n_integral_sharp : Formalism.FourierDecayAlt.B2.GNIntSharp := Formalism.FourierDecayAlt.P.norm_power_integrable_sharp
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.matrix_coefficient_integrable_all`.
+A detailed English derivation is pending.
 -/
 theorem integral_bound_all : Formalism.FourierDecayAlt.B2.CCIntAll := Formalism.FourierDecayAlt.P.matrix_coefficient_integrable_all
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.setting_with_prescribed_data_exists`.
+A detailed English derivation is pending.
 -/
 theorem b_setting_exists : Formalism.FourierDecayAlt.B2.RealPlaceDataExists := Formalism.FourierDecayAlt.P.setting_with_prescribed_data_exists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.setting_nonempty`.
+A detailed English derivation is pending.
 -/
 theorem admissible_setting_nonempty : Formalism.FourierDecayAlt.B2.RealPlaceDataNonempty := Formalism.FourierDecayAlt.P.setting_nonempty
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_b_from_xi`.
+A detailed English derivation is pending.
 -/
 theorem lemma_b_from_xi_function : Formalism.FourierDecayAlt.B2.LemmaBFromXi := Formalism.FourierDecayAlt.P.lemma_b_from_xi
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pull_lattice_typed_unit`.
+A detailed English derivation is pending.
 -/
 theorem jx_pullLatticeTypedUnit : Formalism.FourierDecayAlt.J.PullLatticeTypedUnit := Formalism.FourierDecayAlt.P.pull_lattice_typed_unit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pull_lift_typed`.
+A detailed English derivation is pending.
 -/
 theorem jx_pullLiftTyped : Formalism.FourierDecayAlt.J.PullLiftTyped := Formalism.FourierDecayAlt.P.pull_lift_typed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pull_lift_typed_unit`.
+A detailed English derivation is pending.
 -/
 theorem jx_pullLiftTypedUnit : Formalism.FourierDecayAlt.J.PullLiftTypedUnit := Formalism.FourierDecayAlt.P.pull_lift_typed_unit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.top_is_local_kernel`.
+A detailed English derivation is pending.
 -/
 theorem jx_topIsLocalKernel : Formalism.FourierDecayAlt.J.TopIsLocalKernel := Formalism.FourierDecayAlt.P.top_is_local_kernel
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.top_unit_heads`.
+A detailed English derivation is pending.
 -/
 theorem jx_topUnitHeads : Formalism.FourierDecayAlt.J.TopUnitHeads := Formalism.FourierDecayAlt.P.top_unit_heads
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.diagonal_phase_conj`.
+A detailed English derivation is pending.
 -/
 theorem jx_diagPhase : Formalism.FourierDecayAlt.J.DiagPhase := Formalism.FourierDecayAlt.P.diagonal_phase_conj
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.block_diagonal_psd`.
+A detailed English derivation is pending.
 -/
 theorem jx_blockDiagPSD : Formalism.FourierDecayAlt.J.BlockDiagPSD := Formalism.FourierDecayAlt.P.block_diagonal_psd
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.orbital_integral_change_of_variables`.
+A detailed English derivation is pending.
 -/
 theorem oscillatory_reduction : Formalism.FourierDecayAlt.A6.OscReduction := Formalism.FourierDecayAlt.P.orbital_integral_change_of_variables
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gauss_hessian_index_exists`.
+A detailed English derivation is pending.
 -/
 theorem gaussian_hessian : Formalism.FourierDecayAlt.A6.GaussHess := Formalism.FourierDecayAlt.P.gauss_hessian_index_exists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.padic_stationary_phase`.
+A detailed English derivation is pending.
 -/
 theorem stationary_phase : Formalism.FourierDecayAlt.A6.StationaryPhase := Formalism.FourierDecayAlt.P.padic_stationary_phase
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_expansion_matrix_function`.
+A detailed English derivation is pending.
 -/
 theorem germ_phi : Formalism.FourierDecayAlt.A6.GermPhi := Formalism.FourierDecayAlt.P.germ_expansion_matrix_function
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_expansion_with_head`.
+A detailed English derivation is pending.
 -/
 theorem germ_expansion : Formalism.FourierDecayAlt.A6.Germ := Formalism.FourierDecayAlt.P.germ_expansion_with_head
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_kernel_expansion`.
+A detailed English derivation is pending.
 -/
 theorem germ_kernel : Formalism.FourierDecayAlt.A6.GermKernel := Formalism.FourierDecayAlt.P.germ_kernel_expansion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_identity_bis`.
+A detailed English derivation is pending.
 -/
 theorem germIdentity_true : Formalism.FourierDecayAlt.A6.GermIdentity := Formalism.FourierDecayAlt.P.germ_identity_bis
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theta_omega_bound`.
+A detailed English derivation is pending.
 -/
 theorem thetaOmega_true : Formalism.FourierDecayAlt.A6.ThOm := Formalism.FourierDecayAlt.P.theta_omega_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lattice_average_induction`.
+A detailed English derivation is pending.
 -/
 theorem thetaExistence_recursion_true : Formalism.FourierDecayAlt.A5.ThetaExistsStep := Formalism.FourierDecayAlt.P.lattice_average_induction
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lattice_average_lemma_full`.
+A detailed English derivation is pending.
 -/
 theorem latticeAverage_true : Formalism.FourierDecayAlt.A5.LemmaA := Formalism.FourierDecayAlt.P.lattice_average_lemma_full
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.four_parts`.
+A detailed English derivation is pending.
 -/
 theorem pb_fourParts : Formalism.FourierDecayAlt.PB.FourParts := Formalism.FourierDecayAlt.P.four_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.split_sum_alt`.
+A detailed English derivation is pending.
 -/
 theorem pb_splitSum : Formalism.FourierDecayAlt.PB.SplitSum := Formalism.FourierDecayAlt.P.split_sum_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.equal_index`.
+A detailed English derivation is pending.
 -/
 theorem pb_equalIota : Formalism.FourierDecayAlt.PB.GramSumLeOfPosSemidef := Formalism.FourierDecayAlt.P.equal_index
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gamma_numeric_bound`.
+A detailed English derivation is pending.
 -/
 theorem pb_gGNumeric : Formalism.FourierDecayAlt.PB.GGNumeric := Formalism.FourierDecayAlt.P.gamma_numeric_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.price_of_index`.
+A detailed English derivation is pending.
 -/
 theorem pb_priceOfIota : Formalism.FourierDecayAlt.PB.NormSqBoundOfEqualIota := Formalism.FourierDecayAlt.P.price_of_index
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pair_split_alt`.
+A detailed English derivation is pending.
 -/
 theorem pb_pairSplit : Formalism.FourierDecayAlt.PB.PairSplit := Formalism.FourierDecayAlt.P.pair_split_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.subfamilyAlt`.
+A detailed English derivation is pending.
 -/
 theorem pb_subFamily : Formalism.FourierDecayAlt.PB.SubFamily := Formalism.FourierDecayAlt.P.subfamilyAlt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.loops_give_series`.
+A detailed English derivation is pending.
 -/
 theorem pb_loopsGiveRows : Formalism.FourierDecayAlt.PB.LoopsGiveRows := Formalism.FourierDecayAlt.P.loops_give_series
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.total_count_bound`.
+A detailed English derivation is pending.
 -/
 theorem pb_nGTotal : Formalism.FourierDecayAlt.PB.NGTotal := Formalism.FourierDecayAlt.P.total_count_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.text_closing`.
+A detailed English derivation is pending.
 -/
 theorem pb_textClosing : Formalism.FourierDecayAlt.PB.NormSqAddBoundBySqrtSum := Formalism.FourierDecayAlt.P.text_closing
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pair_bound_abstract`.
+A detailed English derivation is pending.
 -/
 theorem pb_pairBoundAbstract : Formalism.FourierDecayAlt.PB.PairBoundAbstract := Formalism.FourierDecayAlt.P.pair_bound_abstract
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.numerical_price`.
+A detailed English derivation is pending.
 -/
 theorem pb_numPrice : Formalism.FourierDecayAlt.PB.NumPrice := Formalism.FourierDecayAlt.P.numerical_price
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.numerical_exponent`.
+A detailed English derivation is pending.
 -/
 theorem pb_numExp : Formalism.FourierDecayAlt.PB.NumExp := Formalism.FourierDecayAlt.P.numerical_exponent
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.numerical_density`.
+A detailed English derivation is pending.
 -/
 theorem pb_numDens : Formalism.FourierDecayAlt.PB.NumDens := Formalism.FourierDecayAlt.P.numerical_density
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.numerical_loops`.
+A detailed English derivation is pending.
 -/
 theorem pb_numLoops : Formalism.FourierDecayAlt.PB.NumLoops := Formalism.FourierDecayAlt.P.numerical_loops
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.numerical_count`.
+A detailed English derivation is pending.
 -/
 theorem pb_numNG : Formalism.FourierDecayAlt.PB.NumNG := Formalism.FourierDecayAlt.P.numerical_count
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.count_exponent`.
+A detailed English derivation is pending.
 -/
 theorem pb_nGExponent : Formalism.FourierDecayAlt.PB.NGExponent := Formalism.FourierDecayAlt.P.count_exponent
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.eta_zero_alt`.
+A detailed English derivation is pending.
 -/
 theorem pb_etaZero : Formalism.FourierDecayAlt.PB.SqrtSumSqLeOneAddInvPowSix := Formalism.FourierDecayAlt.P.eta_zero_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.principal_series_shape`.
+A detailed English derivation is pending.
 -/
 theorem pb_mainRowShape : Formalism.FourierDecayAlt.PB.MainRowShape := Formalism.FourierDecayAlt.P.principal_series_shape
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pair_bound_alt`.
+A detailed English derivation is pending.
 -/
 theorem pb_pairBound : Formalism.FourierDecayAlt.PB.PairBound := Formalism.FourierDecayAlt.P.pair_bound_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.axioms_of_local_model`.
+A detailed English derivation is pending.
 -/
 theorem pb_axiomsOfLocalModel : Formalism.FourierDecayAlt.PB.AxiomsOfLocalModel := Formalism.FourierDecayAlt.P.axioms_of_local_model
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.principal_series`.
+A detailed English derivation is pending.
 -/
 theorem pb_mainRow : Formalism.FourierDecayAlt.PB.MainRow := Formalism.FourierDecayAlt.P.principal_series
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.loops_joint`.
+A detailed English derivation is pending.
 -/
 theorem pb_loopsJoint : Formalism.FourierDecayAlt.PB.LoopsJoint := Formalism.FourierDecayAlt.P.loops_joint
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pair_bound_from_local`.
+A detailed English derivation is pending.
 -/
 theorem pb_pairBoundFromLocal : Formalism.FourierDecayAlt.PB.PairBoundFromLocal := Formalism.FourierDecayAlt.P.pair_bound_from_local
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_function_relations`.
+A detailed English derivation is pending.
 -/
 theorem mx_levFns : Formalism.FourierDecayAlt.M.LevFns := Formalism.FourierDecayAlt.P.level_function_relations
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_p_relations`.
+A detailed English derivation is pending.
 -/
 theorem mx_levP : Formalism.FourierDecayAlt.M.LevP := Formalism.FourierDecayAlt.P.level_p_relations
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_pb_relations`.
+A detailed English derivation is pending.
 -/
 theorem mx_levPb : Formalism.FourierDecayAlt.M.LevPb := Formalism.FourierDecayAlt.P.level_pb_relations
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_pp_relations`.
+A detailed English derivation is pending.
 -/
 theorem mx_levPP : Formalism.FourierDecayAlt.M.LevPP := Formalism.FourierDecayAlt.P.level_pp_relations
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_nabla_relations`.
+A detailed English derivation is pending.
 -/
 theorem mx_levNab : Formalism.FourierDecayAlt.M.LevNab := Formalism.FourierDecayAlt.P.level_nabla_relations
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_nabla_star_relations`.
+A detailed English derivation is pending.
 -/
 theorem mx_levNabs : Formalism.FourierDecayAlt.M.LevNabs := Formalism.FourierDecayAlt.P.level_nabla_star_relations
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_exists_model`.
+A detailed English derivation is pending.
 -/
 theorem mx_levelExists : Formalism.FourierDecayAlt.M.LevelExists := Formalism.FourierDecayAlt.P.level_exists_model
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_assemble`.
+A detailed English derivation is pending.
 -/
 theorem mx_levelAssemble : Formalism.FourierDecayAlt.M.LevelAssemble := Formalism.FourierDecayAlt.P.level_assemble
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.multiplication_op_hom`.
+A detailed English derivation is pending.
 -/
 theorem mx_mulOpHom : Formalism.FourierDecayAlt.M.MulOpHom := Formalism.FourierDecayAlt.P.multiplication_op_hom
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.euler_leibniz`.
+A detailed English derivation is pending.
 -/
 theorem mx_eulerLeibniz : Formalism.FourierDecayAlt.M.EulerLeibniz := Formalism.FourierDecayAlt.P.euler_leibniz
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.euler_coordinates`.
+A detailed English derivation is pending.
 -/
 theorem mx_eulerCoord : Formalism.FourierDecayAlt.M.EulerCoord := Formalism.FourierDecayAlt.P.euler_coordinates
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.euler_commute`.
+A detailed English derivation is pending.
 -/
 theorem mx_eulerComm : Formalism.FourierDecayAlt.M.EulerComm := Formalism.FourierDecayAlt.P.euler_commute
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.eulerMul_statement`.
+A detailed English derivation is pending.
 -/
 theorem mx_eulerMul : Formalism.FourierDecayAlt.M.EulerMul := Formalism.FourierDecayAlt.P.eulerMul_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.function_nonzero`.
+A detailed English derivation is pending.
 -/
 theorem mx_fnNonzero : Formalism.FourierDecayAlt.M.FnNonzero := Formalism.FourierDecayAlt.P.function_nonzero
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_nontrivial`.
+A detailed English derivation is pending.
 -/
 theorem mx_modelNontrivial : Formalism.FourierDecayAlt.M.ModelNontrivial := Formalism.FourierDecayAlt.P.model_nontrivial
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.star_generators`.
+A detailed English derivation is pending.
 -/
 theorem mx_starGens : Formalism.FourierDecayAlt.M.StarGens := Formalism.FourierDecayAlt.P.star_generators
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_star`.
+A detailed English derivation is pending.
 -/
 theorem mx_levelStar : Formalism.FourierDecayAlt.M.LevelStar := Formalism.FourierDecayAlt.P.level_star
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_words_assemble`.
+A detailed English derivation is pending.
 -/
 theorem mx_modelWordsAssemble : Formalism.FourierDecayAlt.M.ModelWordsAssemble := Formalism.FourierDecayAlt.P.model_words_assemble
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cut_admissible`.
+A detailed English derivation is pending.
 -/
 theorem mx_cutAdm : Formalism.FourierDecayAlt.M.CutAdm := Formalism.FourierDecayAlt.P.cut_admissible
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cut_admissible_base`.
+A detailed English derivation is pending.
 -/
 theorem mx_cutAdmBase : Formalism.FourierDecayAlt.M.CutAdmBase := Formalism.FourierDecayAlt.P.cut_admissible_base
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_assemble`.
+A detailed English derivation is pending.
 -/
 theorem mx_modelAssemble : Formalism.FourierDecayAlt.M.ModelAssemble := Formalism.FourierDecayAlt.P.model_assemble
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_assemble_base`.
+A detailed English derivation is pending.
 -/
 theorem mx_modelAssembleBase : Formalism.FourierDecayAlt.M.ModelAssembleBase := Formalism.FourierDecayAlt.P.model_assemble_base
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.types_interlace`.
+A detailed English derivation is pending.
 -/
 theorem mx_tyInterlaces : Formalism.FourierDecayAlt.M.TyInterlaces := Formalism.FourierDecayAlt.P.types_interlace
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.types_complete`.
+A detailed English derivation is pending.
 -/
 theorem mx_tyComplete : Formalism.FourierDecayAlt.M.TyComplete := Formalism.FourierDecayAlt.P.types_complete
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rho_raise`.
+A detailed English derivation is pending.
 -/
 theorem mx_rhoUp : Formalism.FourierDecayAlt.M.RhoUp := Formalism.FourierDecayAlt.P.rho_raise
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.nrmFacts_statement`.
+A detailed English derivation is pending.
 -/
 theorem mx_nrmFacts : Formalism.FourierDecayAlt.M.NrmFacts := Formalism.FourierDecayAlt.P.nrmFacts_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.realPoints_statement`.
+A detailed English derivation is pending.
 -/
 theorem mx_realPoints : Formalism.FourierDecayAlt.M.RealPoints := Formalism.FourierDecayAlt.P.realPoints_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weight_exact`.
+A detailed English derivation is pending.
 -/
 theorem mx_wExact : Formalism.FourierDecayAlt.M.WExact := Formalism.FourierDecayAlt.P.weight_exact
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.interlace_sign_two`.
+A detailed English derivation is pending.
 -/
 theorem mx_interlaceSignTwo : Formalism.FourierDecayAlt.M.InterlaceSignTwo := Formalism.FourierDecayAlt.P.interlace_sign_two
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.shift_scalar_relation`.
+A detailed English derivation is pending.
 -/
 theorem mx_sSScalar : Formalism.FourierDecayAlt.M.SSScalar := Formalism.FourierDecayAlt.P.shift_scalar_relation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.shift_shift_relation`.
+A detailed English derivation is pending.
 -/
 theorem mx_sSShift : Formalism.FourierDecayAlt.M.SSShift := Formalism.FourierDecayAlt.P.shift_shift_relation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.shift_norm_relation`.
+A detailed English derivation is pending.
 -/
 theorem mx_sSNorm : Formalism.FourierDecayAlt.M.SSNorm := Formalism.FourierDecayAlt.P.shift_norm_relation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.shift_commute_relation`.
+A detailed English derivation is pending.
 -/
 theorem mx_sSComm : Formalism.FourierDecayAlt.M.SSComm := Formalism.FourierDecayAlt.P.shift_commute_relation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.shift_mixed_relation`.
+A detailed English derivation is pending.
 -/
 theorem mx_sSMixed : Formalism.FourierDecayAlt.M.SSMixed := Formalism.FourierDecayAlt.P.shift_mixed_relation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.nabla_shift_relation`.
+A detailed English derivation is pending.
 -/
 theorem mx_nabSS : Formalism.FourierDecayAlt.M.NabSS := Formalism.FourierDecayAlt.P.nabla_shift_relation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.m_curvature_proof`.
+A detailed English derivation is pending.
 -/
 theorem mx_curvature : Formalism.FourierDecayAlt.M.Curvature := Formalism.FourierDecayAlt.P.m_curvature_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pull_lattice_ordinary`.
+A detailed English derivation is pending.
 -/
 theorem pb_pullLatticeOrdinary : Formalism.FourierDecayAlt.PB.PullLatticeOrdinary := Formalism.FourierDecayAlt.P.pull_lattice_ordinary
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lattice_link`.
+A detailed English derivation is pending.
 -/
 theorem pb_latticeLink : Formalism.FourierDecayAlt.PB.LatticeLink := Formalism.FourierDecayAlt.P.lattice_link
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transfer_normal_alt`.
+A detailed English derivation is pending.
 -/
 theorem mx_qQNormal : Formalism.FourierDecayAlt.M.QQNormal := Formalism.FourierDecayAlt.P.transfer_normal_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transfer_hermitian`.
+A detailed English derivation is pending.
 -/
 theorem mx_qQHerm : Formalism.FourierDecayAlt.M.QQHerm := Formalism.FourierDecayAlt.P.transfer_hermitian
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transfer_leading`.
+A detailed English derivation is pending.
 -/
 theorem mx_qQLeading : Formalism.FourierDecayAlt.M.QQLeading := Formalism.FourierDecayAlt.P.transfer_leading
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transfer_zeta`.
+A detailed English derivation is pending.
 -/
 theorem mx_qQZeta : Formalism.FourierDecayAlt.M.QQZeta := Formalism.FourierDecayAlt.P.transfer_zeta
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.start_module_assemble`.
+A detailed English derivation is pending.
 -/
 theorem mx_startIsStartAssemble : Formalism.FourierDecayAlt.M.StartIsStartAssemble := Formalism.FourierDecayAlt.P.start_module_assemble
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.start_assemble`.
+A detailed English derivation is pending.
 -/
 theorem mx_startAssemble : Formalism.FourierDecayAlt.M.StartAssemble := Formalism.FourierDecayAlt.P.start_assemble
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.sites_admissible_model`.
+A detailed English derivation is pending.
 -/
 theorem mx_sitesOKM : Formalism.FourierDecayAlt.M.SitesOKM := Formalism.FourierDecayAlt.P.sites_admissible_model
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.site_joint`.
+A detailed English derivation is pending.
 -/
 theorem mx_siteJoint : Formalism.FourierDecayAlt.M.SiteJoint := Formalism.FourierDecayAlt.P.site_joint
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_chain`.
+A detailed English derivation is pending.
 -/
 theorem mx_chainM : Formalism.FourierDecayAlt.M.ChainM := Formalism.FourierDecayAlt.P.model_chain
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lower_commutes`.
+A detailed English derivation is pending.
 -/
 theorem mx_lowerCommutes : Formalism.FourierDecayAlt.M.LowerCommutes := Formalism.FourierDecayAlt.P.lower_commutes
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transfer_rtt_entries`.
+A detailed English derivation is pending.
 -/
 theorem mx_qQRTTEntries : Formalism.FourierDecayAlt.M.QQRTTEntries := Formalism.FourierDecayAlt.P.transfer_rtt_entries
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transfer_rtt`.
+A detailed English derivation is pending.
 -/
 theorem mx_qQRTT : Formalism.FourierDecayAlt.M.QQRTT := Formalism.FourierDecayAlt.P.transfer_rtt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transfer_rtt_of_entries`.
+A detailed English derivation is pending.
 -/
 theorem mx_qQRTTOfEntries : Formalism.FourierDecayAlt.M.QQRTTOfEntries := Formalism.FourierDecayAlt.P.transfer_rtt_of_entries
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transfer_determinant`.
+A detailed English derivation is pending.
 -/
 theorem mx_qQDet : Formalism.FourierDecayAlt.M.QQDet := Formalism.FourierDecayAlt.P.transfer_determinant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lower_left_commute_model`.
+A detailed English derivation is pending.
 -/
 theorem commutator_relation_of_transvections : Formalism.FourierDecayAlt.M.T21Commute := Formalism.FourierDecayAlt.P.lower_left_commute_model
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.start_matrix_is_module`.
+A detailed English derivation is pending.
 -/
 theorem mx_startIsStart : Formalism.FourierDecayAlt.M.StartIsStart := Formalism.FourierDecayAlt.P.start_matrix_is_module
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.start_admissible_model`.
+A detailed English derivation is pending.
 -/
 theorem mx_startOK : Formalism.FourierDecayAlt.M.StartOK := Formalism.FourierDecayAlt.P.start_admissible_model
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lower_levels_same_scalar`.
+A detailed English derivation is pending.
 -/
 theorem mx_lowerStart : Formalism.FourierDecayAlt.M.LowerStart := Formalism.FourierDecayAlt.P.lower_levels_same_scalar
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_words_all_levels`.
+A detailed English derivation is pending.
 -/
 theorem mx_modelWords : Formalism.FourierDecayAlt.M.ModelWords := Formalism.FourierDecayAlt.P.model_words_all_levels
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_frame`.
+A detailed English derivation is pending.
 -/
 theorem mx_modelFrame : Formalism.FourierDecayAlt.M.ModelFrame := Formalism.FourierDecayAlt.P.model_frame
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_frame_base`.
+A detailed English derivation is pending.
 -/
 theorem mx_modelFrameBase : Formalism.FourierDecayAlt.M.ModelFrameBase := Formalism.FourierDecayAlt.P.model_frame_base
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pn_norm_bound`.
+A detailed English derivation is pending.
 -/
 theorem pn_normBound : Formalism.FourierDecayAlt.PN.NormBound := Formalism.FourierDecayAlt.P.pn_norm_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_of_leading_term`.
+A detailed English derivation is pending.
 -/
 theorem pn_normOfMain : Formalism.FourierDecayAlt.PN.NormOfMain := Formalism.FourierDecayAlt.P.norm_of_leading_term
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_of_lemmas`.
+A detailed English derivation is pending.
 -/
 theorem pn_normOfLemmas : Formalism.FourierDecayAlt.PN.NormOfLemmas := Formalism.FourierDecayAlt.P.norm_of_lemmas
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_passage`.
+A detailed English derivation is pending.
 -/
 theorem pn_framePassage : Formalism.FourierDecayAlt.PN.FramePassage := Formalism.FourierDecayAlt.P.frame_passage
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_real_part`.
+A detailed English derivation is pending.
 -/
 theorem pn_normRe : Formalism.FourierDecayAlt.PN.NormRe := Formalism.FourierDecayAlt.P.norm_real_part
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pn_zpow_form`.
+A detailed English derivation is pending.
 -/
 theorem pn_zpowForm : Formalism.FourierDecayAlt.PN.ZpowForm := Formalism.FourierDecayAlt.P.pn_zpow_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.mean_amplitude_joint`.
+A detailed English derivation is pending.
 -/
 theorem pn_meanAmpJoint : Formalism.FourierDecayAlt.PN.MeanAmpJoint := Formalism.FourierDecayAlt.P.mean_amplitude_joint
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.class_squares_sum`.
+A detailed English derivation is pending.
 -/
 theorem pn_classSquaresSum : Formalism.FourierDecayAlt.PN.ClassSquaresSum := Formalism.FourierDecayAlt.P.class_squares_sum
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.class_cauchy_schwarz`.
+A detailed English derivation is pending.
 -/
 theorem pn_classCS : Formalism.FourierDecayAlt.PN.ClassCS := Formalism.FourierDecayAlt.P.class_cauchy_schwarz
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_bracket`.
+A detailed English derivation is pending.
 -/
 theorem pn_firstBracket : Formalism.FourierDecayAlt.PN.FirstBracket := Formalism.FourierDecayAlt.P.first_bracket
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.second_bracket`.
+A detailed English derivation is pending.
 -/
 theorem pn_secondBracket : Formalism.FourierDecayAlt.PN.SecondBracket := Formalism.FourierDecayAlt.P.second_bracket
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.line_from_classes`.
+A detailed English derivation is pending.
 -/
 theorem pn_rowFromClasses : Formalism.FourierDecayAlt.PN.RowFromClasses := Formalism.FourierDecayAlt.P.line_from_classes
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.general_mass_of_split`.
+A detailed English derivation is pending.
 -/
 theorem pn_genMassOfSplit : Formalism.FourierDecayAlt.PN.GenMassOfSplit := Formalism.FourierDecayAlt.P.general_mass_of_split
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.line_norm_abstract`.
+A detailed English derivation is pending.
 -/
 theorem pn_rowNGAbstract : Formalism.FourierDecayAlt.PN.RowNGAbstract := Formalism.FourierDecayAlt.P.line_norm_abstract
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exponent_sum`.
+A detailed English derivation is pending.
 -/
 theorem pn_exponentSum : Formalism.FourierDecayAlt.PN.ExponentSum := Formalism.FourierDecayAlt.P.exponent_sum
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exponent_sum_explicit`.
+A detailed English derivation is pending.
 -/
 theorem pn_exponentSumText : Formalism.FourierDecayAlt.PN.ExponentSumText := Formalism.FourierDecayAlt.P.exponent_sum_explicit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_numbers`.
+A detailed English derivation is pending.
 -/
 theorem pn_nGNumbers : Formalism.FourierDecayAlt.PN.NGNumbers := Formalism.FourierDecayAlt.P.norm_numbers
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.line_norm_joint`.
+A detailed English derivation is pending.
 -/
 theorem pn_rowNGJoint : Formalism.FourierDecayAlt.PN.RowNGJoint := Formalism.FourierDecayAlt.P.line_norm_joint
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pair_bound_from_local_norm`.
+A detailed English derivation is pending.
 -/
 theorem pn_pairBoundFromLocalNG : Formalism.FourierDecayAlt.PN.PairBoundFromLocalNG := Formalism.FourierDecayAlt.P.pair_bound_from_local_norm
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_is_normal_form`.
+A detailed English derivation is pending.
 -/
 theorem qx_modelIsNF : Formalism.FourierDecayAlt.Q.ModelIsNF := Formalism.FourierDecayAlt.P.model_is_normal_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.slice_right_coordinates`.
+A detailed English derivation is pending.
 -/
 theorem ux_sliceRight : Formalism.FourierDecayAlt.U.SliceRight := Formalism.FourierDecayAlt.P.slice_right_coordinates
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.slice_left_coordinates`.
+A detailed English derivation is pending.
 -/
 theorem ux_sliceLeft : Formalism.FourierDecayAlt.U.SliceLeft := Formalism.FourierDecayAlt.P.slice_left_coordinates
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.slice_z_coordinates`.
+A detailed English derivation is pending.
 -/
 theorem ux_sliceZ : Formalism.FourierDecayAlt.U.SliceZ := Formalism.FourierDecayAlt.P.slice_z_coordinates
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.directions_in_parabolic`.
+A detailed English derivation is pending.
 -/
 theorem ux_directionsInP : Formalism.FourierDecayAlt.U.DirectionsInP := Formalism.FourierDecayAlt.P.directions_in_parabolic
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_z_affine`.
+A detailed English derivation is pending.
 -/
 theorem ux_zjAffine : Formalism.FourierDecayAlt.U.ZjAffine := Formalism.FourierDecayAlt.P.level_z_affine
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.budget_word`.
+A detailed English derivation is pending.
 -/
 theorem ux_budgetWord : Formalism.FourierDecayAlt.U.BudgetWord := Formalism.FourierDecayAlt.P.budget_word
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.budget_word_star`.
+A detailed English derivation is pending.
 -/
 theorem ux_budgetWordStar : Formalism.FourierDecayAlt.U.BudgetWordStar := Formalism.FourierDecayAlt.P.budget_word_star
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.budget_second_corollary`.
+A detailed English derivation is pending.
 -/
 theorem budget_second_unipotent : Formalism.FourierDecayAlt.U.DerivativeBudgetCount := Formalism.FourierDecayAlt.P.budget_second_corollary
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.thresholds_second_corollary`.
+A detailed English derivation is pending.
 -/
 theorem thresholds_second_unipotent : Formalism.FourierDecayAlt.U.GermThresholds := Formalism.FourierDecayAlt.P.thresholds_second_corollary
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.budget_top_level`.
+A detailed English derivation is pending.
 -/
 theorem ux_budgetTop : Formalism.FourierDecayAlt.U.BudgetTop := Formalism.FourierDecayAlt.P.budget_top_level
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.budget_top_convergence`.
+A detailed English derivation is pending.
 -/
 theorem ux_budgetTopConv : Formalism.FourierDecayAlt.U.BudgetTopConv := Formalism.FourierDecayAlt.P.budget_top_convergence
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.decay_minimum`.
+A detailed English derivation is pending.
 -/
 theorem ux_decayMin : Formalism.FourierDecayAlt.U.DecayMin := Formalism.FourierDecayAlt.P.decay_minimum
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.scale_matching`.
+A detailed English derivation is pending.
 -/
 theorem ux_scaleMatch : Formalism.FourierDecayAlt.U.ScaleMatch := Formalism.FourierDecayAlt.P.scale_matching
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.power_matching`.
+A detailed English derivation is pending.
 -/
 theorem ux_powerMatch : Formalism.FourierDecayAlt.U.PowerMatch := Formalism.FourierDecayAlt.P.power_matching
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.derivative_bound_of_decay`.
+A detailed English derivation is pending.
 -/
 theorem ux_derivBoundOfDecay : Formalism.FourierDecayAlt.U.DerivBoundOfDecay := Formalism.FourierDecayAlt.P.derivative_bound_of_decay
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.derivative_bound_composition`.
+A detailed English derivation is pending.
 -/
 theorem ux_derivBoundComp : Formalism.FourierDecayAlt.U.DerivBoundComp := Formalism.FourierDecayAlt.P.derivative_bound_composition
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.compactly_supported_monotone`.
+A detailed English derivation is pending.
 -/
 theorem ux_cCMono : Formalism.FourierDecayAlt.U.CCMono := Formalism.FourierDecayAlt.P.compactly_supported_monotone
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.seminorm_of_form`.
+A detailed English derivation is pending.
 -/
 theorem ux_seminormOfForm : Formalism.FourierDecayAlt.U.SeminormOfForm := Formalism.FourierDecayAlt.P.seminorm_of_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.seminorm_completion`.
+A detailed English derivation is pending.
 -/
 theorem ux_seminormCompletion : Formalism.FourierDecayAlt.U.SeminormCompletion := Formalism.FourierDecayAlt.P.seminorm_completion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.star_projection`.
+A detailed English derivation is pending.
 -/
 theorem ux_starPi : Formalism.FourierDecayAlt.U.StarPi := Formalism.FourierDecayAlt.P.star_projection
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phi_support_level_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ux_phiSuppGOfParts : Formalism.FourierDecayAlt.U.PhiSuppGOfParts := Formalism.FourierDecayAlt.P.phi_support_level_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corollary_u2_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_corollary_of_parts : Formalism.FourierDecayAlt.U.GermExpansionHypothesisFromComponents := Formalism.FourierDecayAlt.P.corollary_u2_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.derivative_bound_use_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ux_useDerivBoundOfParts : Formalism.FourierDecayAlt.U.UseDerivBoundOfParts := Formalism.FourierDecayAlt.P.derivative_bound_use_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_expansion_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ux_useGermOfParts : Formalism.FourierDecayAlt.U.UseGermOfParts := Formalism.FourierDecayAlt.P.germ_expansion_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_top_level_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ux_useGermTopOfParts : Formalism.FourierDecayAlt.U.UseGermTopOfParts := Formalism.FourierDecayAlt.P.germ_top_level_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_top_count_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ux_useGermTopCountOfParts : Formalism.FourierDecayAlt.U.UseGermTopCountOfParts := Formalism.FourierDecayAlt.P.germ_top_count_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_in_form_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ux_germInFormOfParts : Formalism.FourierDecayAlt.U.GermInFormOfParts := Formalism.FourierDecayAlt.P.germ_in_form_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.coordinate_sizes_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_sizes_bound_of_parts : Formalism.FourierDecayAlt.U.CoordinateSizesFromComponents := Formalism.FourierDecayAlt.P.coordinate_sizes_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_decay_of_coordinate_sizes`.
+A detailed English derivation is pending.
 -/
 theorem coordinateDecay_of_sizes : Formalism.FourierDecayAlt.U.CoordinateDecayOfSizes := Formalism.FourierDecayAlt.P.norm_decay_of_coordinate_sizes
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weight_integrability`.
+A detailed English derivation is pending.
 -/
 theorem weightIntegrable_true : Formalism.FourierDecayAlt.U.WeightIntegrable := Formalism.FourierDecayAlt.P.weight_integrability
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.integrability_top_level`.
+A detailed English derivation is pending.
 -/
 theorem ux_intTop : Formalism.FourierDecayAlt.U.IntTop := Formalism.FourierDecayAlt.P.integrability_top_level
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.le_thetaForm_proof`.
+A detailed English derivation is pending.
 -/
 theorem lex_thetaForm : Formalism.FourierDecayAlt.LE.ThetaForm := Formalism.FourierDecayAlt.P.le_thetaForm_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.le_thetaRange_proof`.
+A detailed English derivation is pending.
 -/
 theorem lex_thetaRange : Formalism.FourierDecayAlt.LE.ThetaRange := Formalism.FourierDecayAlt.P.le_thetaRange_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.le_thetaSmooth_proof`.
+A detailed English derivation is pending.
 -/
 theorem lex_thetaSmooth : Formalism.FourierDecayAlt.LE.ThetaSmooth := Formalism.FourierDecayAlt.P.le_thetaSmooth_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.le_thetaBound_proof`.
+A detailed English derivation is pending.
 -/
 theorem lex_thetaBound : Formalism.FourierDecayAlt.LE.ThetaBound := Formalism.FourierDecayAlt.P.le_thetaBound_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theta_limit`.
+A detailed English derivation is pending.
 -/
 theorem lex_thetaLimit : Formalism.FourierDecayAlt.LE.ThetaLimit := Formalism.FourierDecayAlt.P.theta_limit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.le_thetaMono_proof`.
+A detailed English derivation is pending.
 -/
 theorem lex_thetaMono : Formalism.FourierDecayAlt.LE.ThetaMono := Formalism.FourierDecayAlt.P.le_thetaMono_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cutoff_bound`.
+A detailed English derivation is pending.
 -/
 theorem lex_cutBound : Formalism.FourierDecayAlt.LE.CutBound := Formalism.FourierDecayAlt.P.cutoff_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cutoff_theta`.
+A detailed English derivation is pending.
 -/
 theorem lex_cutTheta : Formalism.FourierDecayAlt.LE.CutTheta := Formalism.FourierDecayAlt.P.cutoff_theta
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.leibniz_rule`.
+A detailed English derivation is pending.
 -/
 theorem lex_leibniz : Formalism.FourierDecayAlt.LE.Leibniz := Formalism.FourierDecayAlt.P.leibniz_rule
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.le_termZero_proof`.
+A detailed English derivation is pending.
 -/
 theorem lex_termZero : Formalism.FourierDecayAlt.LE.TermZero := Formalism.FourierDecayAlt.P.le_termZero_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.measure_measurable`.
+A detailed English derivation is pending.
 -/
 theorem lex_dsMeas : Formalism.FourierDecayAlt.LE.DsMeas := Formalism.FourierDecayAlt.P.measure_measurable
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.coefficient_integrable`.
+A detailed English derivation is pending.
 -/
 theorem lex_coefIntegrable : Formalism.FourierDecayAlt.LE.CoefIntegrable := Formalism.FourierDecayAlt.P.coefficient_integrable
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.adjoint_identity`.
+A detailed English derivation is pending.
 -/
 theorem lex_adj : Formalism.FourierDecayAlt.LE.Adj := Formalism.FourierDecayAlt.P.adjoint_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.energy_finite`.
+A detailed English derivation is pending.
 -/
 theorem lex_eFinite : Formalism.FourierDecayAlt.LE.EFinite := Formalism.FourierDecayAlt.P.energy_finite
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cauchy_schwarz_term`.
+A detailed English derivation is pending.
 -/
 theorem lex_cSTerm : Formalism.FourierDecayAlt.LE.CSTerm := Formalism.FourierDecayAlt.P.cauchy_schwarz_term
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.le_shiftBound_proof`.
+A detailed English derivation is pending.
 -/
 theorem lex_shiftBound : Formalism.FourierDecayAlt.LE.ShiftBound := Formalism.FourierDecayAlt.P.le_shiftBound_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.markov_term`.
+A detailed English derivation is pending.
 -/
 theorem lex_markovTerm : Formalism.FourierDecayAlt.LE.MarkovTerm := Formalism.FourierDecayAlt.P.markov_term
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.le_termBound_proof`.
+A detailed English derivation is pending.
 -/
 theorem lex_termBound : Formalism.FourierDecayAlt.LE.TermBound := Formalism.FourierDecayAlt.P.le_termBound_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.geometric_sum_bound`.
+A detailed English derivation is pending.
 -/
 theorem lex_geomSum : Formalism.FourierDecayAlt.LE.GeomSum := Formalism.FourierDecayAlt.P.geometric_sum_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.energy_estimate`.
+A detailed English derivation is pending.
 -/
 theorem lex_energyStep : Formalism.FourierDecayAlt.LE.EnergyStep := Formalism.FourierDecayAlt.P.energy_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.absorb_term`.
+A detailed English derivation is pending.
 -/
 theorem lex_absorb : Formalism.FourierDecayAlt.LE.Absorb := Formalism.FourierDecayAlt.P.absorb_term
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.le_uniformBound_proof`.
+A detailed English derivation is pending.
 -/
 theorem lex_uniformBound : Formalism.FourierDecayAlt.LE.UniformBound := Formalism.FourierDecayAlt.P.le_uniformBound_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fatou_estimate`.
+A detailed English derivation is pending.
 -/
 theorem lex_fatouStep : Formalism.FourierDecayAlt.LE.FatouStep := Formalism.FourierDecayAlt.P.fatou_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dominated_convergence`.
+A detailed English derivation is pending.
 -/
 theorem lex_domConv : Formalism.FourierDecayAlt.LE.DomConv := Formalism.FourierDecayAlt.P.dominated_convergence
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.energy_estimate_of_lemmas`.
+A detailed English derivation is pending.
 -/
 theorem lex_stepClaim : Formalism.FourierDecayAlt.LE.StepClaim := Formalism.FourierDecayAlt.P.energy_estimate_of_lemmas
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.energy_estimate_from_parts`.
+A detailed English derivation is pending.
 -/
 theorem lex_stepClaimFromSteps : Formalism.FourierDecayAlt.LE.StepClaimFromSteps := Formalism.FourierDecayAlt.P.energy_estimate_from_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.le_interpolation_coefficients_in_L2`.
+A detailed English derivation is pending.
 -/
 theorem coefficient_square_summable : Formalism.FourierDecayAlt.LE.InterpolationCoefficientsInL2 := Formalism.FourierDecayAlt.P.le_interpolation_coefficients_in_L2
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.limit_A`.
+A detailed English derivation is pending.
 -/
 theorem lex_limitA : Formalism.FourierDecayAlt.LE.LimitA := Formalism.FourierDecayAlt.P.limit_A
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.le_cutoff_limit_in_L2`.
+A detailed English derivation is pending.
 -/
 theorem limit_l2 : Formalism.FourierDecayAlt.LE.CutoffLimitInL2 := Formalism.FourierDecayAlt.P.le_cutoff_limit_in_L2
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pair_limit`.
+A detailed English derivation is pending.
 -/
 theorem lex_pairLimit : Formalism.FourierDecayAlt.LE.PairLimit := Formalism.FourierDecayAlt.P.pair_limit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.limit_B`.
+A detailed English derivation is pending.
 -/
 theorem lex_limitB : Formalism.FourierDecayAlt.LE.LimitB := Formalism.FourierDecayAlt.P.limit_B
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.grid_convergence`.
+A detailed English derivation is pending.
 -/
 theorem lex_gridConvergence : Formalism.FourierDecayAlt.LE.GridConvergence := Formalism.FourierDecayAlt.P.grid_convergence
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.constant_sign`.
+A detailed English derivation is pending.
 -/
 theorem lex_constSign : Formalism.FourierDecayAlt.LE.ConstSign := Formalism.FourierDecayAlt.P.constant_sign
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ratio_middle_range`.
+A detailed English derivation is pending.
 -/
 theorem lex_pRatioMiddle : Formalism.FourierDecayAlt.LE.PRatioMiddle := Formalism.FourierDecayAlt.P.ratio_middle_range
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.constants_choice`.
+A detailed English derivation is pending.
 -/
 theorem lex_constants : Formalism.FourierDecayAlt.LE.Constants := Formalism.FourierDecayAlt.P.constants_choice
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.boxes_fit`.
+A detailed English derivation is pending.
 -/
 theorem lex_boxesFit : Formalism.FourierDecayAlt.LE.BoxesFit := Formalism.FourierDecayAlt.P.boxes_fit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.imported_results_hold`.
+A detailed English derivation is pending.
 -/
 theorem lex_pImportsHold : Formalism.FourierDecayAlt.LE.PImportsHold := Formalism.FourierDecayAlt.P.imported_results_hold
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.reduce_to_boxes`.
+A detailed English derivation is pending.
 -/
 theorem lex_reduceToBoxes : Formalism.FourierDecayAlt.LE.ReduceToBoxes := Formalism.FourierDecayAlt.P.reduce_to_boxes
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_induction`.
+A detailed English derivation is pending.
 -/
 theorem lex_claimInduction : Formalism.FourierDecayAlt.LE.ClaimInduction := Formalism.FourierDecayAlt.P.level_induction
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.induction_all_levels`.
+A detailed English derivation is pending.
 -/
 theorem lex_claimAll : Formalism.FourierDecayAlt.LE.ClaimAll := Formalism.FourierDecayAlt.P.induction_all_levels
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.box_limit_of_induction`.
+A detailed English derivation is pending.
 -/
 theorem lex_boxLimitFromClaim : Formalism.FourierDecayAlt.LE.BoxLimitFromClaim := Formalism.FourierDecayAlt.P.box_limit_of_induction
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.le_E_proof`.
+A detailed English derivation is pending.
 -/
 theorem lex_lemmaE : Formalism.FourierDecayAlt.LE.LemmaE := Formalism.FourierDecayAlt.P.le_E_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_E_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem lex_lemmaEFromSteps : Formalism.FourierDecayAlt.LE.LemmaEFromSteps := Formalism.FourierDecayAlt.P.lemma_E_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.le_weightedIntegrable_proof`.
+A detailed English derivation is pending.
 -/
 theorem e_prime_l2 : Formalism.FourierDecayAlt.LE.WeightedIntegrable := Formalism.FourierDecayAlt.P.le_weightedIntegrable_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.derived_coefficient_integrable`.
+A detailed English derivation is pending.
 -/
 theorem lex_epCoefInt : Formalism.FourierDecayAlt.LE.EpCoefInt := Formalism.FourierDecayAlt.P.derived_coefficient_integrable
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.derived_energy_fifth_estimate`.
+A detailed English derivation is pending.
 -/
 theorem lex_epStep5 : Formalism.FourierDecayAlt.LE.EpStep5 := Formalism.FourierDecayAlt.P.derived_energy_fifth_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.derived_energy_sixth_estimate`.
+A detailed English derivation is pending.
 -/
 theorem lex_epStep6 : Formalism.FourierDecayAlt.LE.EpStep6 := Formalism.FourierDecayAlt.P.derived_energy_sixth_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_E_derived`.
+A detailed English derivation is pending.
 -/
 theorem lex_lemmaEprime : Formalism.FourierDecayAlt.LE.LemmaEprime := Formalism.FourierDecayAlt.P.lemma_E_derived
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_E_derived_full`.
+A detailed English derivation is pending.
 -/
 theorem lex_lemmaEprimeFull : Formalism.FourierDecayAlt.LE.LemmaEprimeFull := Formalism.FourierDecayAlt.P.lemma_E_derived_full
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_E_derived_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem lex_lemmaEprimeFromSteps : Formalism.FourierDecayAlt.LE.LemmaEprimeFromSteps := Formalism.FourierDecayAlt.P.lemma_E_derived_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.energy_estimate_joint`.
+A detailed English derivation is pending.
 -/
 theorem lex_estEJoint : Formalism.FourierDecayAlt.LE.EstEJoint := Formalism.FourierDecayAlt.P.energy_estimate_joint
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weak_to_strong_smoothness`.
+A detailed English derivation is pending.
 -/
 theorem ux_weakToStrong : Formalism.FourierDecayAlt.U.WeakToStrong := Formalism.FourierDecayAlt.P.weak_to_strong_smoothness
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_u_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ux_theoremUOfParts : Formalism.FourierDecayAlt.U.TheoremUOfParts := Formalism.FourierDecayAlt.P.theorem_u_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.compactly_supported_banach_model`.
+A detailed English derivation is pending.
 -/
 theorem ux_cCModelExists : Formalism.FourierDecayAlt.U.CCModelExists := Formalism.FourierDecayAlt.P.compactly_supported_banach_model
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.block3_apply_embedding`.
+A detailed English derivation is pending.
 -/
 theorem sizes_first_unipotent : Formalism.FourierDecayAlt.U.BigCellCoordinateSizes := Formalism.FourierDecayAlt.P.block3_apply_embedding
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.aux_statement_17`.
+A detailed English derivation is pending.
 -/
 theorem sizes_second_unipotent : Formalism.FourierDecayAlt.U.BlockHeadSizes := Formalism.FourierDecayAlt.P.aux_statement_17
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.sizes_top_level`.
+A detailed English derivation is pending.
 -/
 theorem ux_sizesTop : Formalism.FourierDecayAlt.U.SizesTop := Formalism.FourierDecayAlt.P.sizes_top_level
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hat_z_on_slice`.
+A detailed English derivation is pending.
 -/
 theorem ux_zhSlice : Formalism.FourierDecayAlt.U.ZhSlice := Formalism.FourierDecayAlt.P.hat_z_on_slice
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_determinant_z`.
+A detailed English derivation is pending.
 -/
 theorem ux_detZj : Formalism.FourierDecayAlt.U.DetZj := Formalism.FourierDecayAlt.P.level_determinant_z
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hat_z_minimum_degree`.
+A detailed English derivation is pending.
 -/
 theorem ux_zhDmin : Formalism.FourierDecayAlt.U.ZhDmin := Formalism.FourierDecayAlt.P.hat_z_minimum_degree
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_function_slice`.
+A detailed English derivation is pending.
 -/
 theorem ux_gfSlice : Formalism.FourierDecayAlt.U.GfSlice := Formalism.FourierDecayAlt.P.level_function_slice
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.big_cell_bijection`.
+A detailed English derivation is pending.
 -/
 theorem ux_bigCellBij : Formalism.FourierDecayAlt.U.BigCellBij := Formalism.FourierDecayAlt.P.big_cell_bijection
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.top_cells`.
+A detailed English derivation is pending.
 -/
 theorem ux_topCells : Formalism.FourierDecayAlt.U.TopCells := Formalism.FourierDecayAlt.P.top_cells
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.top_cells_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ux_topCellsOfParts : Formalism.FourierDecayAlt.U.TopCellsOfParts := Formalism.FourierDecayAlt.P.top_cells_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transfer_triples`.
+A detailed English derivation is pending.
 -/
 theorem qx_tTriples : Formalism.FourierDecayAlt.Q.TTriples := Formalism.FourierDecayAlt.P.transfer_triples
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.leading_term_alt`.
+A detailed English derivation is pending.
 -/
 theorem qx_leading : Formalism.FourierDecayAlt.Q.Leading := Formalism.FourierDecayAlt.P.leading_term_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transfer_linear_local`.
+A detailed English derivation is pending.
 -/
 theorem qx_tLinLoc : Formalism.FourierDecayAlt.Q.TLinLoc := Formalism.FourierDecayAlt.P.transfer_linear_local
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.transfer_joint_smooth`.
+A detailed English derivation is pending.
 -/
 theorem qx_tJointSmooth : Formalism.FourierDecayAlt.Q.TJointSmooth := Formalism.FourierDecayAlt.P.transfer_joint_smooth
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.family_operators`.
+A detailed English derivation is pending.
 -/
 theorem qx_famOps : Formalism.FourierDecayAlt.Q.FamOps := Formalism.FourierDecayAlt.P.family_operators
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.restriction_good_family`.
+A detailed English derivation is pending.
 -/
 theorem qx_resGFam : Formalism.FourierDecayAlt.Q.ResGFam := Formalism.FourierDecayAlt.P.restriction_good_family
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.restriction_mem`.
+A detailed English derivation is pending.
 -/
 theorem qx_resMem : Formalism.FourierDecayAlt.Q.ResMem := Formalism.FourierDecayAlt.P.restriction_mem
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.expansion_first_column`.
+A detailed English derivation is pending.
 -/
 theorem qx_expFirstCol : Formalism.FourierDecayAlt.Q.ExpFirstCol := Formalism.FourierDecayAlt.P.expansion_first_column
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.expansion_last_column`.
+A detailed English derivation is pending.
 -/
 theorem qx_expLastCol : Formalism.FourierDecayAlt.Q.ExpLastCol := Formalism.FourierDecayAlt.P.expansion_last_column
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.expansion_first_line`.
+A detailed English derivation is pending.
 -/
 theorem qx_expFirstRow : Formalism.FourierDecayAlt.Q.ExpFirstRow := Formalism.FourierDecayAlt.P.expansion_first_line
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.expansion_last_line`.
+A detailed English derivation is pending.
 -/
 theorem qx_expLastRow : Formalism.FourierDecayAlt.Q.ExpLastRow := Formalism.FourierDecayAlt.P.expansion_last_line
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.line_form_of_minor`.
+A detailed English derivation is pending.
 -/
 theorem qx_rowForm : Formalism.FourierDecayAlt.Q.RowForm := Formalism.FourierDecayAlt.P.line_form_of_minor
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.skip_succ_identity`.
+A detailed English derivation is pending.
 -/
 theorem qx_skipSucc : Formalism.FourierDecayAlt.Q.SkipSucc := Formalism.FourierDecayAlt.P.skip_succ_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.skip_succ_double_identity`.
+A detailed English derivation is pending.
 -/
 theorem qx_skipSucc2 : Formalism.FourierDecayAlt.Q.SkipSucc2 := Formalism.FourierDecayAlt.P.skip_succ_double_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.star_quantum_minor`.
+A detailed English derivation is pending.
 -/
 theorem qx_starMinor : Formalism.FourierDecayAlt.Q.StarMinor := Formalism.FourierDecayAlt.P.star_quantum_minor
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rtt_independence`.
+A detailed English derivation is pending.
 -/
 theorem qx_rTTIndependence : Formalism.FourierDecayAlt.Q.RTTIndependence := Formalism.FourierDecayAlt.P.rtt_independence
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_d_determinant_identity`.
+A detailed English derivation is pending.
 -/
 theorem qx_lemmaD : Formalism.FourierDecayAlt.Q.LemmaD := Formalism.FourierDecayAlt.P.lemma_d_determinant_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.contractions_covariant`.
+A detailed English derivation is pending.
 -/
 theorem qx_contractionsCovariant : Formalism.FourierDecayAlt.Q.ContractionsCovariant := Formalism.FourierDecayAlt.P.contractions_covariant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_contraction_adapted`.
+A detailed English derivation is pending.
 -/
 theorem first_contraction_adapted₂ : Formalism.FourierDecayAlt.Q.ChatAdapted := Formalism.FourierDecayAlt.P.first_contraction_adapted
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.second_contraction_adapted`.
+A detailed English derivation is pending.
 -/
 theorem second_contraction_adapted₂ : Formalism.FourierDecayAlt.Q.Chat2Adapted := Formalism.FourierDecayAlt.P.second_contraction_adapted
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.generator_gl_level`.
+A detailed English derivation is pending.
 -/
 theorem qx_eabGlLev : Formalism.FourierDecayAlt.Q.EabGlLev := Formalism.FourierDecayAlt.P.generator_gl_level
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.generator_action_preserved`.
+A detailed English derivation is pending.
 -/
 theorem qx_eabPres : Formalism.FourierDecayAlt.Q.EabPres := Formalism.FourierDecayAlt.P.generator_action_preserved
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fusion_form_vanishes`.
+A detailed English derivation is pending.
 -/
 theorem qx_fFZero : Formalism.FourierDecayAlt.Q.FFZero := Formalism.FourierDecayAlt.P.fusion_form_vanishes
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.quantum_minor_left_hermitian`.
+A detailed English derivation is pending.
 -/
 theorem qx_qMinorLeftH : Formalism.FourierDecayAlt.Q.QMinorLeftH := Formalism.FourierDecayAlt.P.quantum_minor_left_hermitian
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.right_differential_skew`.
+A detailed English derivation is pending.
 -/
 theorem qx_rdSkew : Formalism.FourierDecayAlt.Q.RdSkew := Formalism.FourierDecayAlt.P.right_differential_skew
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.right_action_rule`.
+A detailed English derivation is pending.
 -/
 theorem qx_ruleRight : Formalism.FourierDecayAlt.Q.RuleRight := Formalism.FourierDecayAlt.P.right_action_rule
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.capelli_polynomial_monic`.
+A detailed English derivation is pending.
 -/
 theorem qx_vMonic : Formalism.FourierDecayAlt.Q.VMonic := Formalism.FourierDecayAlt.P.capelli_polynomial_monic
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weyl_level_element_properties`.
+A detailed English derivation is pending.
 -/
 theorem qx_w1Facts : Formalism.FourierDecayAlt.Q.WeylLevelElementFacts := Formalism.FourierDecayAlt.P.weyl_level_element_properties
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.twisted_leibniz_rule`.
+A detailed English derivation is pending.
 -/
 theorem qx_yLeibniz : Formalism.FourierDecayAlt.Q.YLeibniz := Formalism.FourierDecayAlt.P.twisted_leibniz_rule
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.capelli_level_zero`.
+A detailed English derivation is pending.
 -/
 theorem qx_capLZero : Formalism.FourierDecayAlt.Q.CapLZero := Formalism.FourierDecayAlt.P.capelli_level_zero
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.operator_level_zero`.
+A detailed English derivation is pending.
 -/
 theorem qx_tLZero : Formalism.FourierDecayAlt.Q.TLZero := Formalism.FourierDecayAlt.P.operator_level_zero
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hermitian_group_blocks`.
+A detailed English derivation is pending.
 -/
 theorem ux_hpkBlocks : Formalism.FourierDecayAlt.U.HpkBlocks := Formalism.FourierDecayAlt.P.hermitian_group_blocks
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.slice_membership`.
+A detailed English derivation is pending.
 -/
 theorem ux_sliceMem : Formalism.FourierDecayAlt.U.SliceMem := Formalism.FourierDecayAlt.P.slice_membership
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.radical_parametrisation`.
+A detailed English derivation is pending.
 -/
 theorem ux_radicalParam : Formalism.FourierDecayAlt.U.RadicalParam := Formalism.FourierDecayAlt.P.radical_parametrisation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.low_weight_specialisation`.
+A detailed English derivation is pending.
 -/
 theorem ux_lowWSpec : Formalism.FourierDecayAlt.U.LowWSpec := Formalism.FourierDecayAlt.P.low_weight_specialisation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.head_orbit`.
+A detailed English derivation is pending.
 -/
 theorem ux_headOrbit : Formalism.FourierDecayAlt.U.HeadOrbit := Formalism.FourierDecayAlt.P.head_orbit
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.character_on_blocks`.
+A detailed English derivation is pending.
 -/
 theorem ux_charBlock : Formalism.FourierDecayAlt.U.CharBlock := Formalism.FourierDecayAlt.P.character_on_blocks
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corner_inverse`.
+A detailed English derivation is pending.
 -/
 theorem ux_cornerInv : Formalism.FourierDecayAlt.U.CornerInv := Formalism.FourierDecayAlt.P.corner_inverse
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rtt_level_from_upper`.
+A detailed English derivation is pending.
 -/
 theorem qx_rTTLevelFromUpper : Formalism.FourierDecayAlt.Q.RTTLevelFromUpper := Formalism.FourierDecayAlt.P.rtt_level_from_upper
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.resSurj_statement`.
+A detailed English derivation is pending.
 -/
 theorem qx_resSurj : Formalism.FourierDecayAlt.Q.ResSurj := Formalism.FourierDecayAlt.P.resSurj_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cell_decomposition`.
+A detailed English derivation is pending.
 -/
 theorem qx_cellDecomp : Formalism.FourierDecayAlt.Q.CellDecomp := Formalism.FourierDecayAlt.P.cell_decomposition
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cells_dense`.
+A detailed English derivation is pending.
 -/
 theorem qx_cellDense : Formalism.FourierDecayAlt.Q.CellDense := Formalism.FourierDecayAlt.P.cells_dense
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.flag_frame_transfer`.
+A detailed English derivation is pending.
 -/
 theorem qx_fFTransfer : Formalism.FourierDecayAlt.Q.FFTransfer := Formalism.FourierDecayAlt.P.flag_frame_transfer
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phi_bound_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem pointwiseIntegralBound_of_components : Formalism.FourierDecayAlt.U.PointwiseIntegralBoundFromComponents := Formalism.FourierDecayAlt.P.phi_bound_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phi_support_determinant`.
+A detailed English derivation is pending.
 -/
 theorem ux_phiSupport : Formalism.FourierDecayAlt.U.PhiSupport := Formalism.FourierDecayAlt.P.phi_support_determinant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.casimir_eigenvalue_coefficients`.
+A detailed English derivation is pending.
 -/
 theorem qx_eigenCoeff : Formalism.FourierDecayAlt.Q.EigenCoeff := Formalism.FourierDecayAlt.P.casimir_eigenvalue_coefficients
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.derivative_cost_bound`.
+A detailed English derivation is pending.
 -/
 theorem derivativeCost_true : Formalism.FourierDecayAlt.U.DerivativeCost := Formalism.FourierDecayAlt.P.derivative_cost_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rtt_upper_relations_from_descent`.
+A detailed English derivation is pending.
 -/
 theorem qx_rTTUpperFromSteps : Formalism.FourierDecayAlt.Q.RTTUpperFromSteps := Formalism.FourierDecayAlt.P.rtt_upper_relations_from_descent
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.quantum_determinant_from_rtt`.
+A detailed English derivation is pending.
 -/
 theorem qx_qdetFromRTT : Formalism.FourierDecayAlt.Q.QdetFromRTT := Formalism.FourierDecayAlt.P.quantum_determinant_from_rtt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.border_first_expansion`.
+A detailed English derivation is pending.
 -/
 theorem qx_borderE : Formalism.FourierDecayAlt.Q.BorderE := Formalism.FourierDecayAlt.P.border_first_expansion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.border_last_expansion`.
+A detailed English derivation is pending.
 -/
 theorem qx_borderS : Formalism.FourierDecayAlt.Q.BorderS := Formalism.FourierDecayAlt.P.border_last_expansion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.border_full_expansion`.
+A detailed English derivation is pending.
 -/
 theorem qx_borderFull : Formalism.FourierDecayAlt.Q.BorderFull := Formalism.FourierDecayAlt.P.border_full_expansion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.move_vector_identity`.
+A detailed English derivation is pending.
 -/
 theorem qx_moveVec : Formalism.FourierDecayAlt.Q.MoveVec := Formalism.FourierDecayAlt.P.move_vector_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.move_covariance`.
+A detailed English derivation is pending.
 -/
 theorem qx_moveCov : Formalism.FourierDecayAlt.Q.MoveCov := Formalism.FourierDecayAlt.P.move_covariance
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rtt_sandwich`.
+A detailed English derivation is pending.
 -/
 theorem qx_rTTSandwich : Formalism.FourierDecayAlt.Q.RTTSandwich := Formalism.FourierDecayAlt.P.rtt_sandwich
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_group_image`.
+A detailed English derivation is pending.
 -/
 theorem qx_glevImage : Formalism.FourierDecayAlt.Q.GlevImage := Formalism.FourierDecayAlt.P.level_group_image
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_transfer`.
+A detailed English derivation is pending.
 -/
 theorem qx_levelTransfer : Formalism.FourierDecayAlt.Q.LevelTransfer := Formalism.FourierDecayAlt.P.level_transfer
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.left_action_rule`.
+A detailed English derivation is pending.
 -/
 theorem qx_ruleLeft : Formalism.FourierDecayAlt.Q.RuleLeft := Formalism.FourierDecayAlt.P.left_action_rule
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.torus_action_rule`.
+A detailed English derivation is pending.
 -/
 theorem qx_ruleTorus : Formalism.FourierDecayAlt.Q.RuleTorus := Formalism.FourierDecayAlt.P.torus_action_rule
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.operator_invariance`.
+A detailed English derivation is pending.
 -/
 theorem qx_tInvariant : Formalism.FourierDecayAlt.Q.TInvariant := Formalism.FourierDecayAlt.P.operator_invariance
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.operator_preserves_fusion_forms`.
+A detailed English derivation is pending.
 -/
 theorem qx_tPreservesFF : Formalism.FourierDecayAlt.Q.TPreservesFF := Formalism.FourierDecayAlt.P.operator_preserves_fusion_forms
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.capelli_commutation`.
+A detailed English derivation is pending.
 -/
 theorem qx_capCommute : Formalism.FourierDecayAlt.Q.CapCommute := Formalism.FourierDecayAlt.P.capelli_commutation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hermitian_haar_invariance`.
+A detailed English derivation is pending.
 -/
 theorem qx_hermHaar : Formalism.FourierDecayAlt.Q.HermHaar := Formalism.FourierDecayAlt.P.hermitian_haar_invariance
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hermitian_from_algebra`.
+A detailed English derivation is pending.
 -/
 theorem qx_hermFromSteps : Formalism.FourierDecayAlt.Q.HermFromSteps := Formalism.FourierDecayAlt.P.hermitian_from_algebra
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weyl_cell_big_cell`.
+A detailed English derivation is pending.
 -/
 theorem qx_wCellBigCell : Formalism.FourierDecayAlt.Q.WCellBigCell := Formalism.FourierDecayAlt.P.weyl_cell_big_cell
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.compose_discrete_series`.
+A detailed English derivation is pending.
 -/
 theorem ux_composeDD : Formalism.FourierDecayAlt.U.ComposeDD := Formalism.FourierDecayAlt.P.compose_discrete_series
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corollary_u1_plain`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_first_corollary_plain : Formalism.FourierDecayAlt.U.StarBoundOfCutoffOperator := Formalism.FourierDecayAlt.P.corollary_u1_plain
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corollary_u1_truncated_alt`.
+A detailed English derivation is pending.
 -/
 theorem corollary_u1_truncated : Formalism.FourierDecayAlt.U.StarBoundOfTwoCutoffOperator := Formalism.FourierDecayAlt.P.corollary_u1_truncated_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.derivative_cost_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_cost_bound_of_parts : Formalism.FourierDecayAlt.U.DerivativeCostFromComponents := Formalism.FourierDecayAlt.P.derivative_cost_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chain_sum_identity`.
+A detailed English derivation is pending.
 -/
 theorem chainSum_true : Formalism.FourierDecayAlt.crystallineComparison.ChainSum := Formalism.FourierDecayAlt.P.chain_sum_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.row_sums_identity`.
+A detailed English derivation is pending.
 -/
 theorem rowSums_true : Formalism.FourierDecayAlt.crystallineComparison.RowSums := Formalism.FourierDecayAlt.P.row_sums_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.sizes_product_identity`.
+A detailed English derivation is pending.
 -/
 theorem product_of_sizes_bound : Formalism.FourierDecayAlt.crystallineComparison.SizesProduct := Formalism.FourierDecayAlt.P.sizes_product_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.baseGramMonotone`.
+A detailed English derivation is pending.
 -/
 theorem base_gram_monotone : Formalism.FourierDecayAlt.crystallineComparison.BaseGramMonotone := Formalism.FourierDecayAlt.P.baseGramMonotone
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cosetSumBound`.
+A detailed English derivation is pending.
 -/
 theorem corollary_t : Formalism.FourierDecayAlt.crystallineComparison.CorT := Formalism.FourierDecayAlt.P.cosetSumBound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.blockEstimateOfCosetSum`.
+A detailed English derivation is pending.
 -/
 theorem block_estimate_of_sum_form : Formalism.FourierDecayAlt.crystallineComparison.EstBlockOfSumForm := Formalism.FourierDecayAlt.P.blockEstimateOfCosetSum
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.mean_bound_estimate`.
+A detailed English derivation is pending.
 -/
 theorem mean_bound : Formalism.FourierDecayAlt.crystallineComparison.MeanBound := Formalism.FourierDecayAlt.P.mean_bound_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.mean_split_identity`.
+A detailed English derivation is pending.
 -/
 theorem meanSplit_crystalline_true : Formalism.FourierDecayAlt.crystallineComparison.MeanSplit := Formalism.FourierDecayAlt.P.mean_split_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.right_type_action`.
+A detailed English derivation is pending.
 -/
 theorem qx_rightTypeAction : Formalism.FourierDecayAlt.Q.RightTypeAction := Formalism.FourierDecayAlt.P.right_type_action
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.left_type_action`.
+A detailed English derivation is pending.
 -/
 theorem qx_leftTypeAction : Formalism.FourierDecayAlt.Q.LeftTypeAction := Formalism.FourierDecayAlt.P.left_type_action
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.coordinate_sizes_in_norm`.
+A detailed English derivation is pending.
 -/
 theorem sliceCoordinateSizes_true : Formalism.FourierDecayAlt.U.SliceCoordinateSizes := Formalism.FourierDecayAlt.P.coordinate_sizes_in_norm
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_decay_in_coordinates`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_size_bound_second : Formalism.FourierDecayAlt.U.CoordinateDecay := Formalism.FourierDecayAlt.P.norm_decay_in_coordinates
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phi_pointwise_bound`.
+A detailed English derivation is pending.
 -/
 theorem pointwiseIntegralBound_true : Formalism.FourierDecayAlt.U.PointwiseIntegralBound := Formalism.FourierDecayAlt.P.phi_pointwise_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_u`.
+A detailed English derivation is pending.
 -/
 theorem ux_theoremU : Formalism.FourierDecayAlt.U.TheoremU := Formalism.FourierDecayAlt.P.theorem_u
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phi_support_level_function`.
+A detailed English derivation is pending.
 -/
 theorem ux_phiSuppG : Formalism.FourierDecayAlt.U.PhiSuppG := Formalism.FourierDecayAlt.P.phi_support_level_function
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corollary_u2_germ_hypothesis`.
+A detailed English derivation is pending.
 -/
 theorem corollary_u2 : Formalism.FourierDecayAlt.U.GermExpansionHypothesis := Formalism.FourierDecayAlt.P.corollary_u2_germ_hypothesis
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.derivative_bound_in_banach_space`.
+A detailed English derivation is pending.
 -/
 theorem ux_useDerivBound : Formalism.FourierDecayAlt.U.UseDerivBound := Formalism.FourierDecayAlt.P.derivative_bound_in_banach_space
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_expansion_applies`.
+A detailed English derivation is pending.
 -/
 theorem ux_useGerm : Formalism.FourierDecayAlt.U.UseGerm := Formalism.FourierDecayAlt.P.germ_expansion_applies
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_expansion_top_level`.
+A detailed English derivation is pending.
 -/
 theorem ux_useGermTop : Formalism.FourierDecayAlt.U.UseGermTop := Formalism.FourierDecayAlt.P.germ_expansion_top_level
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_expansion_top_count`.
+A detailed English derivation is pending.
 -/
 theorem ux_useGermTopCount : Formalism.FourierDecayAlt.U.UseGermTopCount := Formalism.FourierDecayAlt.P.germ_expansion_top_count
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.germ_expansion_in_form_space`.
+A detailed English derivation is pending.
 -/
 theorem ux_germInForm : Formalism.FourierDecayAlt.U.GermInForm := Formalism.FourierDecayAlt.P.germ_expansion_in_form_space
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.majorantIntegral`.
+A detailed English derivation is pending.
 -/
 theorem majorant_integral_finite : Formalism.FourierDecayAlt.crystallineComparison.MajIntegral := Formalism.FourierDecayAlt.P.majorantIntegral
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.majorantIntegralProd`.
+A detailed English derivation is pending.
 -/
 theorem majorant_integral_product_form : Formalism.FourierDecayAlt.crystallineComparison.MajIntegralProd := Formalism.FourierDecayAlt.P.majorantIntegralProd
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.latticeHerglotzBound_statement`.
+A detailed English derivation is pending.
 -/
 theorem latticeHerglotzBound_true : Formalism.FourierDecayAlt.crystallineComparison.LatticeHerglotzBound := Formalism.FourierDecayAlt.P.latticeHerglotzBound_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.determinant_hat`.
+A detailed English derivation is pending.
 -/
 theorem qx_detHat : Formalism.FourierDecayAlt.Q.DetHat := Formalism.FourierDecayAlt.P.determinant_hat
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.determinant_hat_regular`.
+A detailed English derivation is pending.
 -/
 theorem qx_detHatRegular : Formalism.FourierDecayAlt.Q.DetHatRegular := Formalism.FourierDecayAlt.P.determinant_hat_regular
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.regular_to_smooth`.
+A detailed English derivation is pending.
 -/
 theorem qx_regularToSmooth : Formalism.FourierDecayAlt.Q.RegularToSmooth := Formalism.FourierDecayAlt.P.regular_to_smooth
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.determinant_generic`.
+A detailed English derivation is pending.
 -/
 theorem qx_detGeneric : Formalism.FourierDecayAlt.Q.DetGeneric := Formalism.FourierDecayAlt.P.determinant_generic
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.latticeSummable_statement`.
+A detailed English derivation is pending.
 -/
 theorem lattice_sum_summable : Formalism.FourierDecayAlt.crystallineComparison.LatticeSummable := Formalism.FourierDecayAlt.P.latticeSummable_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.invariantMeanExists`.
+A detailed English derivation is pending.
 -/
 theorem mean_value_exists : Formalism.FourierDecayAlt.crystallineComparison.MeanExists := Formalism.FourierDecayAlt.P.invariantMeanExists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.second_polynomial_first_identity`.
+A detailed English derivation is pending.
 -/
 theorem pairingGramBound_true : Formalism.FourierDecayAlt.PairingProductCorollary.PairingGramBound := Formalism.FourierDecayAlt.P.second_polynomial_first_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_degree_three_of_clauses`.
+A detailed English derivation is pending.
 -/
 theorem unnormalisedLiftBound_of_components : Formalism.FourierDecayAlt.PairingProductCorollary.UnnormalisedLiftBoundFromComponents := Formalism.FourierDecayAlt.P.unipotent_degree_three_of_clauses
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.second_polynomial_third_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem lower_block_normalised_bound_of_components : Formalism.FourierDecayAlt.PairingProductCorollary.LowerBlockNormalisedBoundFromComponents := Formalism.FourierDecayAlt.P.second_polynomial_third_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lower_block_lift_bound`.
+A detailed English derivation is pending.
 -/
 theorem theorem_p2 : Formalism.FourierDecayAlt.PairingProductCorollary.LowerBlockLiftBound := Formalism.FourierDecayAlt.P.lower_block_lift_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lower_block_lift_bound_of_components`.
+A detailed English derivation is pending.
 -/
 theorem theorem_p2_of_parts : Formalism.FourierDecayAlt.PairingProductCorollary.LowerBlockLiftBoundFromComponents := Formalism.FourierDecayAlt.P.lower_block_lift_bound_of_components
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.leading_block_recursive_bound_of_components`.
+A detailed English derivation is pending.
 -/
 theorem third_period_bound_part_a_of_parts : Formalism.FourierDecayAlt.PairingProductCorollary.LeadingBlockRecursiveBoundFromComponents := Formalism.FourierDecayAlt.P.leading_block_recursive_bound_of_components
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.third_polynomial_second_of_first`.
+A detailed English derivation is pending.
 -/
 theorem third_period_part_b_from_part_a : Formalism.FourierDecayAlt.PairingProductCorollary.LeadingBlockBoundFromRecursion := Formalism.FourierDecayAlt.P.third_polynomial_second_of_first
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.leading_block_lift_bound`.
+A detailed English derivation is pending.
 -/
 theorem third_period_theorem : Formalism.FourierDecayAlt.PairingProductCorollary.LeadingBlockLiftBound := Formalism.FourierDecayAlt.P.leading_block_lift_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.leading_block_lift_bound_of_components`.
+A detailed English derivation is pending.
 -/
 theorem third_period_theorem_of_parts : Formalism.FourierDecayAlt.PairingProductCorollary.LeadingBlockLiftBoundFromComponents := Formalism.FourierDecayAlt.P.leading_block_lift_bound_of_components
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.local_places_combine`.
+A detailed English derivation is pending.
 -/
 theorem places_combine : Formalism.FourierDecayAlt.PairingProductCorollary.PlacesCombine := Formalism.FourierDecayAlt.P.local_places_combine
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.third_polynomial_prime_combine`.
+A detailed English derivation is pending.
 -/
 theorem third_period_prime_combination : Formalism.FourierDecayAlt.PairingProductCorollary.LeadingBlockSeveralPlacesBound := Formalism.FourierDecayAlt.P.third_polynomial_prime_combine
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.local_factors_positive`.
+A detailed English derivation is pending.
 -/
 theorem factors_positive : Formalism.FourierDecayAlt.PairingProductCorollary.FactorsPositive := Formalism.FourierDecayAlt.P.local_factors_positive
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.truncation_room_estimate`.
+A detailed English derivation is pending.
 -/
 theorem truncation_room : Formalism.FourierDecayAlt.PairingProductCorollary.CutRoom := Formalism.FourierDecayAlt.P.truncation_room_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weight_lower_bound`.
+A detailed English derivation is pending.
 -/
 theorem weight_function_lower_bound : Formalism.FourierDecayAlt.PairingProductCorollary.WeightLower := Formalism.FourierDecayAlt.P.weight_lower_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.constant_product_corollary`.
+A detailed English derivation is pending.
 -/
 theorem corollary_a_product : Formalism.FourierDecayAlt.PairingProductCorollary.CorAProduct := Formalism.FourierDecayAlt.P.constant_product_corollary
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.constant_wave_corollary`.
+A detailed English derivation is pending.
 -/
 theorem corollary_a_constant_wave : Formalism.FourierDecayAlt.PairingProductCorollary.CorAConstWave := Formalism.FourierDecayAlt.P.constant_wave_corollary
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.constant_top_corollary`.
+A detailed English derivation is pending.
 -/
 theorem constant_term_top_weight : Formalism.FourierDecayAlt.PairingProductCorollary.CorAConstTop := Formalism.FourierDecayAlt.P.constant_top_corollary
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weighted_kernel_posSemidef`.
+A detailed English derivation is pending.
 -/
 theorem weighted_kernel_positive_semidefinite : Formalism.FourierDecayAlt.PairingProductCorollary.WeightedKernelPSD := Formalism.FourierDecayAlt.P.weighted_kernel_posSemidef
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.scale_thresholds_estimate`.
+A detailed English derivation is pending.
 -/
 theorem scale_thresholds : Formalism.FourierDecayAlt.PairingProductCorollary.ScaleThresholds := Formalism.FourierDecayAlt.P.scale_thresholds_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pairing_product_scale_bounds_below`.
+A detailed English derivation is pending.
 -/
 theorem scale_thresholds_below : Formalism.FourierDecayAlt.PairingProductCorollary.ScaleThresholdsBelow := Formalism.FourierDecayAlt.P.pairing_product_scale_bounds_below
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.scaling_beta_identity`.
+A detailed English derivation is pending.
 -/
 theorem scale_beta : Formalism.FourierDecayAlt.PairingProductCorollary.ScaleBeta := Formalism.FourierDecayAlt.P.scaling_beta_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.scale_character_identity`.
+A detailed English derivation is pending.
 -/
 theorem scaling_character_identity : Formalism.FourierDecayAlt.PairingProductCorollary.ScaleCharacter := Formalism.FourierDecayAlt.P.scale_character_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.standard_frame_phase_alt`.
+A detailed English derivation is pending.
 -/
 theorem standard_frame_phase : Formalism.FourierDecayAlt.PairingProductCorollary.StdFramePhase := Formalism.FourierDecayAlt.P.standard_frame_phase_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.block_phase_identity`.
+A detailed English derivation is pending.
 -/
 theorem block_phase : Formalism.FourierDecayAlt.PairingProductCorollary.BlockPhase := Formalism.FourierDecayAlt.P.block_phase_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.real_character_identity`.
+A detailed English derivation is pending.
 -/
 theorem real_character : Formalism.FourierDecayAlt.PairingProductCorollary.RealCharacter := Formalism.FourierDecayAlt.P.real_character_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.real_frame_entry_alt`.
+A detailed English derivation is pending.
 -/
 theorem real_frame_entry : Formalism.FourierDecayAlt.PairingProductCorollary.RealFrameEntry := Formalism.FourierDecayAlt.P.real_frame_entry_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_jacobian_formula`.
+A detailed English derivation is pending.
 -/
 theorem frame_map_jacobian : Formalism.FourierDecayAlt.PairingProductCorollary.FrameJacobian := Formalism.FourierDecayAlt.P.frame_jacobian_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gamma_exponent_formula`.
+A detailed English derivation is pending.
 -/
 theorem ga_exponent : Formalism.FourierDecayAlt.PairingProductCorollary.GaExponent := Formalism.FourierDecayAlt.P.gamma_exponent_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.frame_integral_formula_alt`.
+A detailed English derivation is pending.
 -/
 theorem frame_integral_formula : Formalism.FourierDecayAlt.PairingProductCorollary.FrameIntegral := Formalism.FourierDecayAlt.P.frame_integral_formula_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cofactorPair_statement`.
+A detailed English derivation is pending.
 -/
 theorem cofactor_pair_identity : Formalism.FourierDecayAlt.C7.CofactorPair := Formalism.FourierDecayAlt.P.cofactorPair_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cofactor_corner_identity`.
+A detailed English derivation is pending.
 -/
 theorem cofactor_corner : Formalism.FourierDecayAlt.C7.CofactorCorner := Formalism.FourierDecayAlt.P.cofactor_corner_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.adjLastCol_statement`.
+A detailed English derivation is pending.
 -/
 theorem adjugate_last_column : Formalism.FourierDecayAlt.C7.AdjLastCol := Formalism.FourierDecayAlt.P.adjLastCol_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_cofactor_identity`.
+A detailed English derivation is pending.
 -/
 theorem gram_determinant_cofactor_expansion : Formalism.FourierDecayAlt.C7.GramCofactor := Formalism.FourierDecayAlt.P.gram_cofactor_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.omega_norm_identity`.
+A detailed English derivation is pending.
 -/
 theorem omega_norm_cofactor_formula : Formalism.FourierDecayAlt.C7.OmNorm := Formalism.FourierDecayAlt.P.omega_norm_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.omNormCofactor_statement`.
+A detailed English derivation is pending.
 -/
 theorem omega_norm_cofactor : Formalism.FourierDecayAlt.C7.OmNormCofactor := Formalism.FourierDecayAlt.P.omNormCofactor_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.omNormCofactorOfParts_statement`.
+A detailed English derivation is pending.
 -/
 theorem omega_norm_cofactor_of_parts : Formalism.FourierDecayAlt.C7.OmNormCofactorOfParts := Formalism.FourierDecayAlt.P.omNormCofactorOfParts_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.scalar_pair_common_factor`.
+A detailed English derivation is pending.
 -/
 theorem scalar_pair_common : Formalism.FourierDecayAlt.C7.ScalarPairCommon := Formalism.FourierDecayAlt.P.scalar_pair_common_factor
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.torus_action_group`.
+A detailed English derivation is pending.
 -/
 theorem torus_action_group_structure : Formalism.FourierDecayAlt.C7.TaGroup := Formalism.FourierDecayAlt.P.torus_action_group
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.torus_argument_multiplicative`.
+A detailed English derivation is pending.
 -/
 theorem ta_argument_multiplicative : Formalism.FourierDecayAlt.C7.TaArgMul := Formalism.FourierDecayAlt.P.torus_argument_multiplicative
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.schur_product_posSemidef`.
+A detailed English derivation is pending.
 -/
 theorem schur_product_positive_semidefinite : Formalism.FourierDecayAlt.C7.SchurProductPSD := Formalism.FourierDecayAlt.P.schur_product_posSemidef
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.c7_form_mono`.
+A detailed English derivation is pending.
 -/
 theorem form_monotone : Formalism.FourierDecayAlt.C7.FormMono := Formalism.FourierDecayAlt.P.c7_form_mono
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.c7_form_mono_of_schur`.
+A detailed English derivation is pending.
 -/
 theorem form_monotone_of_schur : Formalism.FourierDecayAlt.C7.FormMonoOfSchur := Formalism.FourierDecayAlt.P.c7_form_mono_of_schur
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.extend_by_zero_posSemidef`.
+A detailed English derivation is pending.
 -/
 theorem extend_zero_psd : Formalism.FourierDecayAlt.C7.ExtendZeroPSD := Formalism.FourierDecayAlt.P.extend_by_zero_posSemidef
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.schur_isotypic_decomposition`.
+A detailed English derivation is pending.
 -/
 theorem schur_isotypic : Formalism.FourierDecayAlt.C7.SchurIsotypic := Formalism.FourierDecayAlt.P.schur_isotypic_decomposition
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weight_determinant`.
+A detailed English derivation is pending.
 -/
 theorem det_w : Formalism.FourierDecayAlt.C7.DetW := Formalism.FourierDecayAlt.P.weight_determinant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.equal_roots_determinant`.
+A detailed English derivation is pending.
 -/
 theorem d_equal_roots : Formalism.FourierDecayAlt.C7.DEqualRoots := Formalism.FourierDecayAlt.P.equal_roots_determinant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.equal_roots_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem d_equal_of_parts : Formalism.FourierDecayAlt.C7.DEqualOfParts := Formalism.FourierDecayAlt.P.equal_roots_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.nprime_le_bound`.
+A detailed English derivation is pending.
 -/
 theorem n_prime_le : Formalism.FourierDecayAlt.C7.NprimeLe := Formalism.FourierDecayAlt.P.nprime_le_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.threshold_exponent_estimate`.
+A detailed English derivation is pending.
 -/
 theorem threshold_e : Formalism.FourierDecayAlt.C7.ThresholdE := Formalism.FourierDecayAlt.P.threshold_exponent_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.degree_count_identity`.
+A detailed English derivation is pending.
 -/
 theorem degree_count_of_eigenvalues : Formalism.FourierDecayAlt.C7.DegreeCount := Formalism.FourierDecayAlt.P.degree_count_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.budget_sum_estimate`.
+A detailed English derivation is pending.
 -/
 theorem budget_sum : Formalism.FourierDecayAlt.C7.BudgetSum := Formalism.FourierDecayAlt.P.budget_sum_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.c7_letter_product_degree_count`.
+A detailed English derivation is pending.
 -/
 theorem lemma_b3_count : Formalism.FourierDecayAlt.C7.LetterProductDegreeCount := Formalism.FourierDecayAlt.P.c7_letter_product_degree_count
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.eigenvalue_shift`.
+A detailed English derivation is pending.
 -/
 theorem eigen_shift : Formalism.FourierDecayAlt.C7.EigenShift := Formalism.FourierDecayAlt.P.eigenvalue_shift
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lambda_side_inequality`.
+A detailed English derivation is pending.
 -/
 theorem lambda_side : Formalism.FourierDecayAlt.C7.LamSide := Formalism.FourierDecayAlt.P.lambda_side_inequality
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rho_side_inequality`.
+A detailed English derivation is pending.
 -/
 theorem rho_side_identity : Formalism.FourierDecayAlt.C7.RhoSide := Formalism.FourierDecayAlt.P.rho_side_inequality
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.sign_change_count`.
+A detailed English derivation is pending.
 -/
 theorem sign_count : Formalism.FourierDecayAlt.C7.SignCount := Formalism.FourierDecayAlt.P.sign_change_count
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.polynomial_sign`.
+A detailed English derivation is pending.
 -/
 theorem p_sign : Formalism.FourierDecayAlt.C7.PSign := Formalism.FourierDecayAlt.P.polynomial_sign
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.polynomial_sign_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem p_sign_of_parts : Formalism.FourierDecayAlt.C7.PSignOfParts := Formalism.FourierDecayAlt.P.polynomial_sign_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.roots_outside_jointly`.
+A detailed English derivation is pending.
 -/
 theorem roots_out_joint : Formalism.FourierDecayAlt.C7.RootsOutJoint := Formalism.FourierDecayAlt.P.roots_outside_jointly
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.roots_outside_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem roots_outside_disc_of_parts : Formalism.FourierDecayAlt.C7.RootsOutOfParts := Formalism.FourierDecayAlt.P.roots_outside_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.interlacing_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem lemma_e_interlacing_of_parts : Formalism.FourierDecayAlt.C7.LemmaEInterlacingOfParts := Formalism.FourierDecayAlt.P.interlacing_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.line_expansions_from_line_form`.
+A detailed English derivation is pending.
 -/
 theorem qx_expRowsFromRowForm : Formalism.FourierDecayAlt.Q.ExpRowsFromRowForm := Formalism.FourierDecayAlt.P.line_expansions_from_line_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.border_from_expansions`.
+A detailed English derivation is pending.
 -/
 theorem qx_borderFromExpansions : Formalism.FourierDecayAlt.Q.BorderFromExpansions := Formalism.FourierDecayAlt.P.border_from_expansions
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chain_recursion_from_single_descent`.
+A detailed English derivation is pending.
 -/
 theorem qx_chainFromStep : Formalism.FourierDecayAlt.Q.ChainFromStep := Formalism.FourierDecayAlt.P.chain_recursion_from_single_descent
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.determinant_capelli_from_descent`.
+A detailed English derivation is pending.
 -/
 theorem qx_detCoreFromSteps : Formalism.FourierDecayAlt.Q.DetCoreFromSteps := Formalism.FourierDecayAlt.P.determinant_capelli_from_descent
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.determinant_level_from_capelli_identity`.
+A detailed English derivation is pending.
 -/
 theorem qx_detLevelFromCore : Formalism.FourierDecayAlt.Q.DetLevelFromCore := Formalism.FourierDecayAlt.P.determinant_level_from_capelli_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.eigen_bessel_from_commuting_operators`.
+A detailed English derivation is pending.
 -/
 theorem qx_eigenBesselFromCommutes : Formalism.FourierDecayAlt.Q.EigenBesselFromCommutes := Formalism.FourierDecayAlt.P.eigen_bessel_from_commuting_operators
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.radial_operators`.
+A detailed English derivation is pending.
 -/
 theorem qx_radOps : Formalism.FourierDecayAlt.Q.RadOps := Formalism.FourierDecayAlt.P.radial_operators
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.actual_operators_from_parts`.
+A detailed English derivation is pending.
 -/
 theorem qx_actualOpsFromSteps : Formalism.FourierDecayAlt.Q.ActualOpsFromSteps := Formalism.FourierDecayAlt.P.actual_operators_from_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.actual_adjointness_from_hermitian`.
+A detailed English derivation is pending.
 -/
 theorem qx_actualAdjointFromHerm : Formalism.FourierDecayAlt.Q.ActualAdjointFromHerm := Formalism.FourierDecayAlt.P.actual_adjointness_from_hermitian
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_start_from_normal_form`.
+A detailed English derivation is pending.
 -/
 theorem qx_levelStartFromNormalForm : Formalism.FourierDecayAlt.Q.LevelStartFromNormalForm := Formalism.FourierDecayAlt.P.level_start_from_normal_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.actual_start_from_level_starts`.
+A detailed English derivation is pending.
 -/
 theorem qx_actualStartFromLevels : Formalism.FourierDecayAlt.Q.ActualStartFromLevels := Formalism.FourierDecayAlt.P.actual_start_from_level_starts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weight_inverse`.
+A detailed English derivation is pending.
 -/
 theorem w_inverse : Formalism.FourierDecayAlt.C7.WInv := Formalism.FourierDecayAlt.P.weight_inverse
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weight_exactness`.
+A detailed English derivation is pending.
 -/
 theorem w_exact : Formalism.FourierDecayAlt.C7.WExact := Formalism.FourierDecayAlt.P.weight_exactness
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.normal_form_weight`.
+A detailed English derivation is pending.
 -/
 theorem nf_weight : Formalism.FourierDecayAlt.C7.NFWeight := Formalism.FourierDecayAlt.P.normal_form_weight
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dbar_conjugation_weight`.
+A detailed English derivation is pending.
 -/
 theorem dbar_conjugate_w : Formalism.FourierDecayAlt.C7.DbarConjW := Formalism.FourierDecayAlt.P.dbar_conjugation_weight
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.leibniz_log_derivative`.
+A detailed English derivation is pending.
 -/
 theorem leibniz_rule_lower_diagonal : Formalism.FourierDecayAlt.C7.LdLeibniz := Formalism.FourierDecayAlt.P.leibniz_log_derivative
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rootPushforwardDensity`.
+A detailed English derivation is pending.
 -/
 theorem density_change_of_variables : Formalism.FourierDecayAlt.crystallineComparison.DensityChange := Formalism.FourierDecayAlt.P.rootPushforwardDensity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.eigenvalue_interlacing`.
+A detailed English derivation is pending.
 -/
 theorem eigenvalueInterlacing_true : Formalism.FourierDecayAlt.C7.LemmaEInterlacing := Formalism.FourierDecayAlt.P.eigenvalue_interlacing
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hilbertSchmidt_frame`.
+A detailed English derivation is pending.
 -/
 theorem hilbert_schmidt_frame : Formalism.FourierDecayAlt.C7.HSFrame := Formalism.FourierDecayAlt.P.hilbertSchmidt_frame
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fibre_chain_expansion`.
+A detailed English derivation is pending.
 -/
 theorem fibre_chain_exponent : Formalism.FourierDecayAlt.C6.FibChainExp := Formalism.FourierDecayAlt.P.fibre_chain_expansion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fibre_expansion_identity`.
+A detailed English derivation is pending.
 -/
 theorem fibre_exponent_formula : Formalism.FourierDecayAlt.C6.FibExpText := Formalism.FourierDecayAlt.P.fibre_expansion_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fibre_expansion_zero_fails`.
+A detailed English derivation is pending.
 -/
 theorem fibre_exponent_zero_fails : Formalism.FourierDecayAlt.C6.FibExpZeroFails := Formalism.FourierDecayAlt.P.fibre_expansion_zero_fails
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.homogeneity_natural_degree`.
+A detailed English derivation is pending.
 -/
 theorem homogeneity_natural : Formalism.FourierDecayAlt.C6.SSNatHomog := Formalism.FourierDecayAlt.P.homogeneity_natural_degree
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.minor_polynomial_property`.
+A detailed English derivation is pending.
 -/
 theorem d_min_polynomial : Formalism.FourierDecayAlt.C6.DminPoly := Formalism.FourierDecayAlt.P.minor_polynomial_property
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_function_polynomial`.
+A detailed English derivation is pending.
 -/
 theorem gf_polynomial : Formalism.FourierDecayAlt.C6.GfPoly := Formalism.FourierDecayAlt.P.gram_function_polynomial
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_function_last_minor`.
+A detailed English derivation is pending.
 -/
 theorem gf_d_last : Formalism.FourierDecayAlt.C6.GfDlast := Formalism.FourierDecayAlt.P.gram_function_last_minor
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.c6_budgetArith_proof`.
+A detailed English derivation is pending.
 -/
 theorem budget_arithmetic : Formalism.FourierDecayAlt.C6.BudgetArith := Formalism.FourierDecayAlt.P.c6_budgetArith_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.big_cell_threshold`.
+A detailed English derivation is pending.
 -/
 theorem bigCellVanishingThreshold_true : Formalism.FourierDecayAlt.C6.BigCellVanishingThreshold := Formalism.FourierDecayAlt.P.big_cell_threshold
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.inner_density_threshold`.
+A detailed English derivation is pending.
 -/
 theorem density_threshold_j : Formalism.FourierDecayAlt.C6.DensThreshJ := Formalism.FourierDecayAlt.P.inner_density_threshold
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.top_density_threshold`.
+A detailed English derivation is pending.
 -/
 theorem density_threshold_top : Formalism.FourierDecayAlt.C6.DensThreshTop := Formalism.FourierDecayAlt.P.top_density_threshold
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.big_cell_vanishing_of_commute'`.
+A detailed English derivation is pending.
 -/
 theorem big_cell_vanishing_of_commute : Formalism.FourierDecayAlt.C6.BigCellVanishingOfCommute := Formalism.FourierDecayAlt.P.big_cell_vanishing_of_commute'
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.averaging_vanishes`.
+A detailed English derivation is pending.
 -/
 theorem averaging_zero : Formalism.FourierDecayAlt.C6.AveragingZero := Formalism.FourierDecayAlt.P.averaging_vanishes
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.averaging_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem averaging_identity_of_parts : Formalism.FourierDecayAlt.C6.AveragingOfParts := Formalism.FourierDecayAlt.P.averaging_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.polynomial_root_facts`.
+A detailed English derivation is pending.
 -/
 theorem rootFacts_true : Formalism.FourierDecayAlt.C6.RootFacts := Formalism.FourierDecayAlt.P.polynomial_root_facts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.vanishing_of_components_true`.
+A detailed English derivation is pending.
 -/
 theorem vanishing_of_parts : Formalism.FourierDecayAlt.C6.VanishingOfParts := Formalism.FourierDecayAlt.P.vanishing_of_components_true
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.scale_thresholds_at_one`.
+A detailed English derivation is pending.
 -/
 theorem scale_threshold_at_one : Formalism.FourierDecayAlt.PairingProductCorollary.ScaleThresholdsOne := Formalism.FourierDecayAlt.P.scale_thresholds_at_one
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.pairing_adjoint_identity`.
+A detailed English derivation is pending.
 -/
 theorem pair_adjoint : Formalism.FourierDecayAlt.FormPairingAction.PairAdj := Formalism.FourierDecayAlt.P.pairing_adjoint_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cauchy_schwarz_positive`.
+A detailed English derivation is pending.
 -/
 theorem cs_positive : Formalism.FourierDecayAlt.FormPairingAction.CSPos := Formalism.FourierDecayAlt.P.cauchy_schwarz_positive
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.form_sesquilinear`.
+A detailed English derivation is pending.
 -/
 theorem sesquilinear_form_properties : Formalism.FourierDecayAlt.FormPairingAction.FormSesq := Formalism.FourierDecayAlt.P.form_sesquilinear
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_sum_identity`.
+A detailed English derivation is pending.
 -/
 theorem form_pairing_gram_sum : Formalism.FourierDecayAlt.FormPairingAction.GramSum := Formalism.FourierDecayAlt.P.gram_sum_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_matrix_positive`.
+A detailed English derivation is pending.
 -/
 theorem gram_positive : Formalism.FourierDecayAlt.FormPairingAction.GramPos := Formalism.FourierDecayAlt.P.gram_matrix_positive
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_matrix_realisation`.
+A detailed English derivation is pending.
 -/
 theorem gram_realisation : Formalism.FourierDecayAlt.FormPairingAction.GramRealise := Formalism.FourierDecayAlt.P.gram_matrix_realisation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.duality_pairing_formula`.
+A detailed English derivation is pending.
 -/
 theorem dualityPairingFormula_true : Formalism.FourierDecayAlt.FormPairingAction.DualityPairingFormula := Formalism.FourierDecayAlt.P.duality_pairing_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.duality_isometry`.
+A detailed English derivation is pending.
 -/
 theorem derivative_lemma_part_b : Formalism.FourierDecayAlt.FormPairingAction.DualityIsometry := Formalism.FourierDecayAlt.P.duality_isometry
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.duality_cauchy_schwarz`.
+A detailed English derivation is pending.
 -/
 theorem dualityCauchySchwarz_true : Formalism.FourierDecayAlt.FormPairingAction.DualityCauchySchwarz := Formalism.FourierDecayAlt.P.duality_cauchy_schwarz
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.letter_duality`.
+A detailed English derivation is pending.
 -/
 theorem letterDuality_true : Formalism.FourierDecayAlt.FormPairingAction.LetterDuality := Formalism.FourierDecayAlt.P.letter_duality
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.letter_duality_of_components`.
+A detailed English derivation is pending.
 -/
 theorem derivative_lemma_first_of_parts : Formalism.FourierDecayAlt.FormPairingAction.LetterDualityOfParts := Formalism.FourierDecayAlt.P.letter_duality_of_components
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.formPairingAction_dual_kernel`.
+A detailed English derivation is pending.
 -/
 theorem dualKernel_true : Formalism.FourierDecayAlt.FormPairingAction.LemmaDK := Formalism.FourierDecayAlt.P.formPairingAction_dual_kernel
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_reduction_estimate`.
+A detailed English derivation is pending.
 -/
 theorem dk_first_stage : Formalism.FourierDecayAlt.FormPairingAction.DKStep1 := Formalism.FourierDecayAlt.P.first_reduction_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dual_kernel_duality`.
+A detailed English derivation is pending.
 -/
 theorem dual_kernel_compatibility : Formalism.FourierDecayAlt.FormPairingAction.DKDualOK := Formalism.FourierDecayAlt.P.dual_kernel_duality
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fourth_reduction_estimate`.
+A detailed English derivation is pending.
 -/
 theorem dk_fourth_stage : Formalism.FourierDecayAlt.FormPairingAction.DKStep4 := Formalism.FourierDecayAlt.P.fourth_reduction_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dual_kernel_lemma_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem lemma_dk_of_parts : Formalism.FourierDecayAlt.FormPairingAction.LemmaDKOfParts := Formalism.FourierDecayAlt.P.dual_kernel_lemma_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.grid_spacing_estimate`.
+A detailed English derivation is pending.
 -/
 theorem grid_spacing : Formalism.FourierDecayAlt.FormPairingAction.GridSpacing := Formalism.FourierDecayAlt.P.grid_spacing_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.logarithm_small_estimate`.
+A detailed English derivation is pending.
 -/
 theorem logarithm_small_argument_bound : Formalism.FourierDecayAlt.FormPairingAction.LogSmall := Formalism.FourierDecayAlt.P.logarithm_small_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.Q_product_identity`.
+A detailed English derivation is pending.
 -/
 theorem q_product : Formalism.FourierDecayAlt.FormPairingAction.QProduct := Formalism.FourierDecayAlt.P.Q_product_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_Q_estimate`.
+A detailed English derivation is pending.
 -/
 theorem formPairingQuadratic_true : Formalism.FourierDecayAlt.FormPairingAction.LemmaQ := Formalism.FourierDecayAlt.P.lemma_Q_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_Q_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem lemma_q_of_parts : Formalism.FourierDecayAlt.FormPairingAction.LemmaQOfParts := Formalism.FourierDecayAlt.P.lemma_Q_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weighted_quadratic_of_real`.
+A detailed English derivation is pending.
 -/
 theorem q_w_of_real : Formalism.FourierDecayAlt.FormPairingAction.QwOfReal := Formalism.FourierDecayAlt.P.weighted_quadratic_of_real
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_polynomial_bound`.
+A detailed English derivation is pending.
 -/
 theorem cauchySchwarzInvariantForm_true : Formalism.FourierDecayAlt.FormPairingAction.CauchySchwarzInvariantForm := Formalism.FourierDecayAlt.P.first_polynomial_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.plane_wave_norm_bound'`.
+A detailed English derivation is pending.
 -/
 theorem plane_wave_norm_bound : Formalism.FourierDecayAlt.FormPairingAction.PlaneWaveNormBound := Formalism.FourierDecayAlt.P.plane_wave_norm_bound'
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.admDK_statement`.
+A detailed English derivation is pending.
 -/
 theorem admissible_dual_kernel : Formalism.FourierDecayAlt.FormPairingAction.AdmDK := Formalism.FourierDecayAlt.P.admDK_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.admissible_point_size_bound`.
+A detailed English derivation is pending.
 -/
 theorem admissiblePointSizeBound_true : Formalism.FourierDecayAlt.FormPairingAction.AdmissiblePointSizeBound := Formalism.FourierDecayAlt.P.admissible_point_size_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_polynomial_bound_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem planeWaveNormBound_of_components : Formalism.FourierDecayAlt.FormPairingAction.PlaneWaveNormBoundOfParts := Formalism.FourierDecayAlt.P.first_polynomial_bound_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_polynomial_size_of_clauses`.
+A detailed English derivation is pending.
 -/
 theorem sizeBound_of_components : Formalism.FourierDecayAlt.FormPairingAction.SizeBoundOfParts := Formalism.FourierDecayAlt.P.first_polynomial_size_of_clauses
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.capelli_two_by_two`.
+A detailed English derivation is pending.
 -/
 theorem capelliIdentityEntry_true : Formalism.FourierDecayAlt.Q.CapelliIdentityEntry := Formalism.FourierDecayAlt.P.capelli_two_by_two
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.zeta_commutes`.
+A detailed English derivation is pending.
 -/
 theorem qx_zetaComm : Formalism.FourierDecayAlt.Q.ZetaComm := Formalism.FourierDecayAlt.P.zeta_commutes
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.q_radial_decomposition_of_pieces`.
+A detailed English derivation is pending.
 -/
 theorem radialDecomposition_of_components : Formalism.FourierDecayAlt.Q.RadialDecompositionOfParts := Formalism.FourierDecayAlt.P.q_radial_decomposition_of_pieces
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.capelli_left_translation`.
+A detailed English derivation is pending.
 -/
 theorem jf_cVLeft : Formalism.FourierDecayAlt.JF.CVLeft := Formalism.FourierDecayAlt.P.capelli_left_translation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.capelli_post_composition`.
+A detailed English derivation is pending.
 -/
 theorem jf_cVPost : Formalism.FourierDecayAlt.JF.CVPost := Formalism.FourierDecayAlt.P.capelli_post_composition
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.capelli_rho_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem jf_cVRhoOfParts : Formalism.FourierDecayAlt.JF.CVRhoOfParts := Formalism.FourierDecayAlt.P.capelli_rho_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.capelli_word_sum`.
+A detailed English derivation is pending.
 -/
 theorem jf_cVWordSum : Formalism.FourierDecayAlt.JF.CVWordSum := Formalism.FourierDecayAlt.P.capelli_word_sum
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.capelli_under_integral_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem jf_cVUnderIntOfParts : Formalism.FourierDecayAlt.JF.CVUnderIntOfParts := Formalism.FourierDecayAlt.P.capelli_under_integral_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.bessel_capelli_commute_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem jf_besselCommutesOfParts : Formalism.FourierDecayAlt.JF.BesselCommutesOfParts := Formalism.FourierDecayAlt.P.bessel_capelli_commute_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theta_bessel_commute_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem jf_jThetaOfParts : Formalism.FourierDecayAlt.JF.JThetaOfParts := Formalism.FourierDecayAlt.P.theta_bessel_commute_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.radial_part_intertwines_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem radialComponentIntertwines_of_components : Formalism.FourierDecayAlt.JF.RadialPartIntertwinesFromComponents := Formalism.FourierDecayAlt.P.radial_part_intertwines_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.psiQUnique_true`.
+A detailed English derivation is pending.
 -/
 theorem jf_psiQUnique : Formalism.FourierDecayAlt.JF.PsiQUnique := Formalism.FourierDecayAlt.P.psiQUnique_true
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.equiv_det_of_onto`.
+A detailed English derivation is pending.
 -/
 theorem jf_equivDetOfOnto : Formalism.FourierDecayAlt.JF.EquivDetOfOnto := Formalism.FourierDecayAlt.P.equiv_det_of_onto
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theta_equivariant`.
+A detailed English derivation is pending.
 -/
 theorem jf_thetaEquiv : Formalism.FourierDecayAlt.JF.ThetaEquiv := Formalism.FourierDecayAlt.P.theta_equivariant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.bessel_smooth_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem jf_jqSmoothOfParts : Formalism.FourierDecayAlt.JF.JqSmoothOfParts := Formalism.FourierDecayAlt.P.bessel_smooth_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.bessel_words_of_domain`.
+A detailed English derivation is pending.
 -/
 theorem jf_jWordsOfDom : Formalism.FourierDecayAlt.JF.JWordsOfDom := Formalism.FourierDecayAlt.P.bessel_words_of_domain
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rewrite_rho_action`.
+A detailed English derivation is pending.
 -/
 theorem jf_rwRho : Formalism.FourierDecayAlt.JF.RwRho := Formalism.FourierDecayAlt.P.rewrite_rho_action
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.big_cell_domain`.
+A detailed English derivation is pending.
 -/
 theorem jf_gqDom : Formalism.FourierDecayAlt.JF.GqDom := Formalism.FourierDecayAlt.P.big_cell_domain
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.big_cell_orbit_set`.
+A detailed English derivation is pending.
 -/
 theorem jf_gqOm : Formalism.FourierDecayAlt.JF.GqOm := Formalism.FourierDecayAlt.P.big_cell_orbit_set
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.t22_entry_from_descent_identities`.
+A detailed English derivation is pending.
 -/
 theorem radialDecomposition_of_components_q : Formalism.FourierDecayAlt.Q.RadialDecompositionOfParts := Formalism.FourierDecayAlt.P.t22_entry_from_descent_identities
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_positive_semidefinite`.
+A detailed English derivation is pending.
 -/
 theorem c_gramPSDOfParts : Formalism.FourierDecayAlt.C.GramPSDOfParts := Formalism.FourierDecayAlt.P.gram_positive_semidefinite
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.words_pos_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem c_wordsPosOfParts : Formalism.FourierDecayAlt.C.WordsPosOfParts := Formalism.FourierDecayAlt.P.words_pos_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.wave_estimate_of_integral`.
+A detailed English derivation is pending.
 -/
 theorem c_estWaveOfParts : Formalism.FourierDecayAlt.C.EstWaveOfParts := Formalism.FourierDecayAlt.P.wave_estimate_of_integral
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.poisson_input_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem c_poissonInputOfParts : Formalism.FourierDecayAlt.C.PoissonInputOfParts := Formalism.FourierDecayAlt.P.poisson_input_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lift_estimate_of_base`.
+A detailed English derivation is pending.
 -/
 theorem c_estLiftOfParts : Formalism.FourierDecayAlt.C.EstLiftOfParts := Formalism.FourierDecayAlt.P.lift_estimate_of_base
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.block_estimate_of_base`.
+A detailed English derivation is pending.
 -/
 theorem c_estBlockOfParts : Formalism.FourierDecayAlt.C.EstBlockOfParts := Formalism.FourierDecayAlt.P.block_estimate_of_base
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_zero_estimate_product`.
+A detailed English derivation is pending.
 -/
 theorem c_estEOfParts : Formalism.FourierDecayAlt.C.EstEOfParts := Formalism.FourierDecayAlt.P.level_zero_estimate_product
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cutoff_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem c_cutoffOfParts : Formalism.FourierDecayAlt.C.CutoffOfParts := Formalism.FourierDecayAlt.P.cutoff_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.real_inputs_concrete_holds`.
+A detailed English derivation is pending.
 -/
 theorem c_realInputsConcrete : Formalism.FourierDecayAlt.C.RealInputsConcrete := Formalism.FourierDecayAlt.P.real_inputs_concrete_holds
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.real_inputs_by_parts`.
+A detailed English derivation is pending.
 -/
 theorem c_realInputsConcreteOfParts : Formalism.FourierDecayAlt.C.RealInputsConcreteOfParts := Formalism.FourierDecayAlt.P.real_inputs_by_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.concrete_bound_holds`.
+A detailed English derivation is pending.
 -/
 theorem c_theoremAConcrete : Formalism.FourierDecayAlt.C.TheoremAConcrete := Formalism.FourierDecayAlt.P.concrete_bound_holds
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.concrete_bound_of_recursion`.
+A detailed English derivation is pending.
 -/
 theorem c_theoremAConcreteOfParts : Formalism.FourierDecayAlt.C.TheoremAConcreteOfParts := Formalism.FourierDecayAlt.P.concrete_bound_of_recursion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_map_frame`.
+A detailed English derivation is pending.
 -/
 theorem u_map_frame : Formalism.FourierDecayAlt.C2.UMapFrame := Formalism.FourierDecayAlt.P.unipotent_map_frame
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.zhat_equivalence`.
+A detailed English derivation is pending.
 -/
 theorem z_hat_equivalence : Formalism.FourierDecayAlt.C2.ZhatEquiv := Formalism.FourierDecayAlt.P.zhat_equivalence
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.determinant_nonzero`.
+A detailed English derivation is pending.
 -/
 theorem det_nonzero : Formalism.FourierDecayAlt.C2.DetNonzero := Formalism.FourierDecayAlt.P.determinant_nonzero
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_fourth_condition`.
+A detailed English derivation is pending.
 -/
 theorem relevant_orbit_fourth_case : Formalism.FourierDecayAlt.C2.C1iv := Formalism.FourierDecayAlt.P.stabilizer_fourth_condition
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.relevant_pair_criterion`.
+A detailed English derivation is pending.
 -/
 theorem relevant_pair : Formalism.FourierDecayAlt.C2.RelevantPair := Formalism.FourierDecayAlt.P.relevant_pair_criterion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.relevant_trivial_case`.
+A detailed English derivation is pending.
 -/
 theorem trivial_relevant_orbit_contribution : Formalism.FourierDecayAlt.C2.RelevantTriv := Formalism.FourierDecayAlt.P.relevant_trivial_case
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.relevant_criterion`.
+A detailed English derivation is pending.
 -/
 theorem relevant_critical : Formalism.FourierDecayAlt.C2.RelevantCrit := Formalism.FourierDecayAlt.P.relevant_criterion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.inverse_star_substitution`.
+A detailed English derivation is pending.
 -/
 theorem inverse_star_subgroup : Formalism.FourierDecayAlt.C2.InvStarSub := Formalism.FourierDecayAlt.P.inverse_star_substitution
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.psi_neg_conj_identity`.
+A detailed English derivation is pending.
 -/
 theorem negation_conjugation_symmetry : Formalism.FourierDecayAlt.C2.PsiNegConj := Formalism.FourierDecayAlt.P.psi_neg_conj_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_antidiagonal`.
+A detailed English derivation is pending.
 -/
 theorem stabiliser_antidiagonal : Formalism.FourierDecayAlt.C2.StabAntidiag := Formalism.FourierDecayAlt.P.stabilizer_antidiagonal
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.relevant_monotone`.
+A detailed English derivation is pending.
 -/
 theorem relevant_orbit_monotone : Formalism.FourierDecayAlt.C2.RelevantMono := Formalism.FourierDecayAlt.P.relevant_monotone
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.relevant_monotone_of_parts_alt`.
+A detailed English derivation is pending.
 -/
 theorem relevant_monotone_of_parts : Formalism.FourierDecayAlt.C2.RelevantMonoOfParts := Formalism.FourierDecayAlt.P.relevant_monotone_of_parts_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lower_parabolic_coordinates`.
+A detailed English derivation is pending.
 -/
 theorem lp_coordinates : Formalism.FourierDecayAlt.C2.LPCoords := Formalism.FourierDecayAlt.P.lower_parabolic_coordinates
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_radical_image`.
+A detailed English derivation is pending.
 -/
 theorem u_r_image : Formalism.FourierDecayAlt.C2.URImage := Formalism.FourierDecayAlt.P.unipotent_radical_image
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.upper_splitting_of_lower`.
+A detailed English derivation is pending.
 -/
 theorem upper_split_of_lower : Formalism.FourierDecayAlt.C2.UpSplitOfLowSplit := Formalism.FourierDecayAlt.P.upper_splitting_of_lower
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.minor_C_nonzero`.
+A detailed English derivation is pending.
 -/
 theorem minor_c_nonzero : Formalism.FourierDecayAlt.C2.MinorCNonzero := Formalism.FourierDecayAlt.P.minor_C_nonzero
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.projection_property`.
+A detailed English derivation is pending.
 -/
 theorem projection_onto_relevant_part : Formalism.FourierDecayAlt.C2.ProjClaim := Formalism.FourierDecayAlt.P.projection_property
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.slice_threshold_bound`.
+A detailed English derivation is pending.
 -/
 theorem threshold_exponent_comparison : Formalism.FourierDecayAlt.C2.SliceThresholdBound := Formalism.FourierDecayAlt.P.slice_threshold_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_product_identity`.
+A detailed English derivation is pending.
 -/
 theorem c2_gram_product_identity : Formalism.FourierDecayAlt.C2.GramProductIdentity := Formalism.FourierDecayAlt.P.gram_product_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.slice_exponent_identity`.
+A detailed English derivation is pending.
 -/
 theorem weight_four_exponent : Formalism.FourierDecayAlt.C2.SliceExponentIdentity := Formalism.FourierDecayAlt.P.slice_exponent_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_block_form`.
+A detailed English derivation is pending.
 -/
 theorem stabiliser_block : Formalism.FourierDecayAlt.C2.StabBlock := Formalism.FourierDecayAlt.P.stabilizer_block_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_antidiagonal_exact`.
+A detailed English derivation is pending.
 -/
 theorem stabiliser_antidiagonal_exact : Formalism.FourierDecayAlt.C2.StabAntidiagExact := Formalism.FourierDecayAlt.P.stabilizer_antidiagonal_exact
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_polynomial_expansion_identity`.
+A detailed English derivation is pending.
 -/
 theorem slotExpansionLeadingCoefficients_true : Formalism.FourierDecayAlt.FormPairingAction.PositionExpansionTopCoefficients := Formalism.FourierDecayAlt.P.first_polynomial_expansion_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_polynomial_degree_identity`.
+A detailed English derivation is pending.
 -/
 theorem first_period_polynomial_degree : Formalism.FourierDecayAlt.FormPairingAction.GridDegreeIdentity := Formalism.FourierDecayAlt.P.first_polynomial_degree_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_degree_bound`.
+A detailed English derivation is pending.
 -/
 theorem combinedDegreeSizeBound_true : Formalism.FourierDecayAlt.FormPairingAction.CombinedDegreeSizeBound := Formalism.FourierDecayAlt.P.unipotent_degree_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_polynomial_degree_of_clauses`.
+A detailed English derivation is pending.
 -/
 theorem first_period_degree_of_parts : Formalism.FourierDecayAlt.FormPairingAction.DegreeIdentityOfParts := Formalism.FourierDecayAlt.P.first_polynomial_degree_of_clauses
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_degree_of_clauses`.
+A detailed English derivation is pending.
 -/
 theorem combinedBound_of_degreeSize : Formalism.FourierDecayAlt.FormPairingAction.CombinedBoundOfDegreeSize := Formalism.FourierDecayAlt.P.unipotent_degree_of_clauses
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.branching_proof`.
+A detailed English derivation is pending.
 -/
 theorem qx_branching : Formalism.FourierDecayAlt.Q.Branching := Formalism.FourierDecayAlt.P.branching_proof
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.spectral_two_by_two`.
+A detailed English derivation is pending.
 -/
 theorem radialDecompositionSpectral_true : Formalism.FourierDecayAlt.Q.RadialDecompositionSpectral := Formalism.FourierDecayAlt.P.spectral_two_by_two
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_polynomial_third_clause`.
+A detailed English derivation is pending.
 -/
 theorem first_period_bound_part_c : Formalism.FourierDecayAlt.FormPairingAction.NormaliserLowerBound := Formalism.FourierDecayAlt.P.first_polynomial_third_clause
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_polynomial_corollary`.
+A detailed English derivation is pending.
 -/
 theorem first_period_corollary : Formalism.FourierDecayAlt.FormPairingAction.SmallParameterNormBound := Formalism.FourierDecayAlt.P.first_polynomial_corollary
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_polynomial_theorem`.
+A detailed English derivation is pending.
 -/
 theorem first_period_theorem : Formalism.FourierDecayAlt.FormPairingAction.PlaneWaveBoundAllPlaces := Formalism.FourierDecayAlt.P.first_polynomial_theorem
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.third_clause_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem first_period_bound_part_c_of_parts : Formalism.FourierDecayAlt.FormPairingAction.NormaliserBoundOfParts := Formalism.FourierDecayAlt.P.third_clause_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corollary_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem corollary_p1_of_parts : Formalism.FourierDecayAlt.FormPairingAction.SmallParameterBoundOfParts := Formalism.FourierDecayAlt.P.corollary_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_polynomial_theorem_of_components`.
+A detailed English derivation is pending.
 -/
 theorem theorem_p1_of_parts : Formalism.FourierDecayAlt.FormPairingAction.PlaneWaveTheoremOfParts := Formalism.FourierDecayAlt.P.first_polynomial_theorem_of_components
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.psiOnto_true`.
+A detailed English derivation is pending.
 -/
 theorem jf_psiOnto : Formalism.FourierDecayAlt.JF.PsiOnto := Formalism.FourierDecayAlt.P.psiOnto_true
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.equiv_det`.
+A detailed English derivation is pending.
 -/
 theorem jf_equivDet : Formalism.FourierDecayAlt.JF.EquivDet := Formalism.FourierDecayAlt.P.equiv_det
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_peeling_identity`.
+A detailed English derivation is pending.
 -/
 theorem peel_p1 : Formalism.FourierDecayAlt.C3.PeelingOmittedColumn := Formalism.FourierDecayAlt.P.first_peeling_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.second_peeling_identity`.
+A detailed English derivation is pending.
 -/
 theorem peeling_second_variable : Formalism.FourierDecayAlt.C3.PeelingCovector := Formalism.FourierDecayAlt.P.second_peeling_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.third_peeling_identity`.
+A detailed English derivation is pending.
 -/
 theorem peeling_third_variable : Formalism.FourierDecayAlt.C3.PeelingDualColumn := Formalism.FourierDecayAlt.P.third_peeling_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fourth_peeling_identity`.
+A detailed English derivation is pending.
 -/
 theorem peel_p4 : Formalism.FourierDecayAlt.C3.PeelingDualCovector := Formalism.FourierDecayAlt.P.fourth_peeling_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.antidiagonal_determinant`.
+A detailed English derivation is pending.
 -/
 theorem antidiagonal_det : Formalism.FourierDecayAlt.C3.AntiDiagDet := Formalism.FourierDecayAlt.P.antidiagonal_determinant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.derivative_leading_zb`.
+A detailed English derivation is pending.
 -/
 theorem leading_derivative_at_zero : Formalism.FourierDecayAlt.C3.DleadZb := Formalism.FourierDecayAlt.P.derivative_leading_zb
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.minors_first_case`.
+A detailed English derivation is pending.
 -/
 theorem plucker_e1 : Formalism.FourierDecayAlt.C3.MinorsFirstCase := Formalism.FourierDecayAlt.P.minors_first_case
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.third_polynomial_expansion`.
+A detailed English derivation is pending.
 -/
 theorem plucker_e3 : Formalism.FourierDecayAlt.C3.MinorsThirdCase := Formalism.FourierDecayAlt.P.third_polynomial_expansion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.sign_permutation_identity`.
+A detailed English derivation is pending.
 -/
 theorem sign_e : Formalism.FourierDecayAlt.C3.SignE := Formalism.FourierDecayAlt.P.sign_permutation_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_expansion_identity`.
+A detailed English derivation is pending.
 -/
 theorem first_elementary_exponent : Formalism.FourierDecayAlt.C3.ExpansionOmittedColumn := Formalism.FourierDecayAlt.P.first_expansion_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.second_expansion_identity`.
+A detailed English derivation is pending.
 -/
 theorem exponent_e2 : Formalism.FourierDecayAlt.C3.ExpansionDualColumn := Formalism.FourierDecayAlt.P.second_expansion_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.column_indicator_expansion`.
+A detailed English derivation is pending.
 -/
 theorem exponent_e3 : Formalism.FourierDecayAlt.C3.ExpansionCovector := Formalism.FourierDecayAlt.P.column_indicator_expansion
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fourth_expansion_identity`.
+A detailed English derivation is pending.
 -/
 theorem exponent_e4 : Formalism.FourierDecayAlt.C3.ExpansionDualCovector := Formalism.FourierDecayAlt.P.fourth_expansion_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_expansion_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem exponent_e1_of_parts : Formalism.FourierDecayAlt.C3.ExpansionFirstCaseFromComponents := Formalism.FourierDecayAlt.P.first_expansion_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.second_expansion_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem exponent_of_second_elementary_term : Formalism.FourierDecayAlt.C3.ExpansionSecondCaseFromComponents := Formalism.FourierDecayAlt.P.second_expansion_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.third_expansion_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem exponent_e3_of_parts : Formalism.FourierDecayAlt.C3.ExpansionThirdCaseFromComponents := Formalism.FourierDecayAlt.P.third_expansion_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fourth_expansion_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem exponent_e4_of_parts : Formalism.FourierDecayAlt.C3.ExpansionFourthCaseFromComponents := Formalism.FourierDecayAlt.P.fourth_expansion_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.peeling_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem peeling_reduction_of_parts : Formalism.FourierDecayAlt.C3.PeelOfParts := Formalism.FourierDecayAlt.P.peeling_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chain_first_identity`.
+A detailed English derivation is pending.
 -/
 theorem chain_x1 : Formalism.FourierDecayAlt.C3.LastColumnChain := Formalism.FourierDecayAlt.P.chain_first_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chain_first_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem chain_x1_of_parts : Formalism.FourierDecayAlt.C3.LastColumnChainFromComponents := Formalism.FourierDecayAlt.P.chain_first_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.right_derivative_rule_psi`.
+A detailed English derivation is pending.
 -/
 theorem right_derivation_rule : Formalism.FourierDecayAlt.C3.RuleRightDpsi := Formalism.FourierDecayAlt.P.right_derivative_rule_psi
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dpsi_is_derivation`.
+A detailed English derivation is pending.
 -/
 theorem derivation_dpsi : Formalism.FourierDecayAlt.C3.DpsiDerivation := Formalism.FourierDecayAlt.P.dpsi_is_derivation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.leading_term_identity`.
+A detailed English derivation is pending.
 -/
 theorem leading_coefficient_product_identity : Formalism.FourierDecayAlt.C3.LeadAA := Formalism.FourierDecayAlt.P.leading_term_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.leading_term_vector_identity`.
+A detailed English derivation is pending.
 -/
 theorem leading_coefficient_product_vector : Formalism.FourierDecayAlt.C3.LeadAAv := Formalism.FourierDecayAlt.P.leading_term_vector_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.xi_Y_zhat_identity`.
+A detailed English derivation is pending.
 -/
 theorem xi_y_z_hat : Formalism.FourierDecayAlt.C3.XiYZhat := Formalism.FourierDecayAlt.P.xi_Y_zhat_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.operators_commute_translations'`.
+A detailed English derivation is pending.
 -/
 theorem operatorsCommuteTranslations_true : Formalism.FourierDecayAlt.C3.OperatorsCommuteTranslations := Formalism.FourierDecayAlt.P.operators_commute_translations'
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.isotropicNormalFormPartial_statement`.
+A detailed English derivation is pending.
 -/
 theorem isotropicNormalFormPartial_true : Formalism.FourierDecayAlt.C3.IsotropicNormalFormPartial := Formalism.FourierDecayAlt.P.isotropicNormalFormPartial_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.isotropicNormalFormFull_statement`.
+A detailed English derivation is pending.
 -/
 theorem isotropic_normal_form_full : Formalism.FourierDecayAlt.C3.IsotropicNormalFormFull := Formalism.FourierDecayAlt.P.isotropicNormalFormFull_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.bessel_integral_domain`.
+A detailed English derivation is pending.
 -/
 theorem jfx_jDom : Formalism.FourierDecayAlt.JF.JDom := Formalism.FourierDecayAlt.P.bessel_integral_domain
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.bessel_integral_converges`.
+A detailed English derivation is pending.
 -/
 theorem jfx_jConv : Formalism.FourierDecayAlt.JF.JConv := Formalism.FourierDecayAlt.P.bessel_integral_converges
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.slice_at_last_level_diagonal`.
+A detailed English derivation is pending.
 -/
 theorem lastLevelDiagonalSlice_true : Formalism.FourierDecayAlt.JF.LastLevelDiagonalSlice := Formalism.FourierDecayAlt.P.slice_at_last_level_diagonal
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chain_descent_relation_raw`.
+A detailed English derivation is pending.
 -/
 theorem qx_chainStepRaw : Formalism.FourierDecayAlt.Q.ChainStepRaw := Formalism.FourierDecayAlt.P.chain_descent_relation_raw
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chain_descent_relation`.
+A detailed English derivation is pending.
 -/
 theorem qx_chainStep : Formalism.FourierDecayAlt.Q.ChainStep := Formalism.FourierDecayAlt.P.chain_descent_relation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chain_recursion_all_levels`.
+A detailed English derivation is pending.
 -/
 theorem qx_chainAll : Formalism.FourierDecayAlt.Q.ChainAll := Formalism.FourierDecayAlt.P.chain_recursion_all_levels
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.capelli_vector_valued_all_levels`.
+A detailed English derivation is pending.
 -/
 theorem qx_cVv : Formalism.FourierDecayAlt.Q.CVv := Formalism.FourierDecayAlt.P.capelli_vector_valued_all_levels
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.chain_descent_from_rules`.
+A detailed English derivation is pending.
 -/
 theorem qx_chainStepFromRules : Formalism.FourierDecayAlt.Q.ChainStepFromRules := Formalism.FourierDecayAlt.P.chain_descent_from_rules
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.capelli_right_invariant`.
+A detailed English derivation is pending.
 -/
 theorem jf_cVRight : Formalism.FourierDecayAlt.JF.CVRight := Formalism.FourierDecayAlt.P.capelli_right_invariant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.capelli_rho_commute`.
+A detailed English derivation is pending.
 -/
 theorem jf_cVRho : Formalism.FourierDecayAlt.JF.CVRho := Formalism.FourierDecayAlt.P.capelli_rho_commute
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.big_cell_orbit_of_domain`.
+A detailed English derivation is pending.
 -/
 theorem jf_gqOmOfDom : Formalism.FourierDecayAlt.JF.GqOmOfDom := Formalism.FourierDecayAlt.P.big_cell_orbit_of_domain
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.jacquet_derivative_formula`.
+A detailed English derivation is pending.
 -/
 theorem jf_jWords : Formalism.FourierDecayAlt.JF.JWords := Formalism.FourierDecayAlt.P.jacquet_derivative_formula
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.invariant_operator_under_jacquet`.
+A detailed English derivation is pending.
 -/
 theorem jf_jTheta : Formalism.FourierDecayAlt.JF.JTheta := Formalism.FourierDecayAlt.P.invariant_operator_under_jacquet
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.jacquet_invariant_operator_ae`.
+A detailed English derivation is pending.
 -/
 theorem radialComponentIntertwines_true : Formalism.FourierDecayAlt.JF.RadialPartIntertwines := Formalism.FourierDecayAlt.P.jacquet_invariant_operator_ae
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.jacquet_smooth_coordinates`.
+A detailed English derivation is pending.
 -/
 theorem jf_jqSmooth : Formalism.FourierDecayAlt.JF.JqSmooth := Formalism.FourierDecayAlt.P.jacquet_smooth_coordinates
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.casimir_under_jacquet_integral`.
+A detailed English derivation is pending.
 -/
 theorem jf_cVUnderInt : Formalism.FourierDecayAlt.JF.CVUnderInt := Formalism.FourierDecayAlt.P.casimir_under_jacquet_integral
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.casimir_commutes_bessel`.
+A detailed English derivation is pending.
 -/
 theorem qx_besselCommutes : Formalism.FourierDecayAlt.Q.BesselCommutes := Formalism.FourierDecayAlt.P.casimir_commutes_bessel
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.casimir_eigenvalue_bessel`.
+A detailed English derivation is pending.
 -/
 theorem qx_eigenBessel : Formalism.FourierDecayAlt.Q.EigenBessel := Formalism.FourierDecayAlt.P.casimir_eigenvalue_bessel
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.right_transfer_upper_levels`.
+A detailed English derivation is pending.
 -/
 theorem qx_rTTUpper : Formalism.FourierDecayAlt.Q.RTTUpper := Formalism.FourierDecayAlt.P.right_transfer_upper_levels
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.right_transfer_all_levels`.
+A detailed English derivation is pending.
 -/
 theorem qx_rTTLevel : Formalism.FourierDecayAlt.Q.RTTLevel := Formalism.FourierDecayAlt.P.right_transfer_all_levels
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.determinant_identity_all_levels`.
+A detailed English derivation is pending.
 -/
 theorem qx_detLevel : Formalism.FourierDecayAlt.Q.DetLevel := Formalism.FourierDecayAlt.P.determinant_identity_all_levels
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.actual_operators_exist`.
+A detailed English derivation is pending.
 -/
 theorem qx_actualOpsExist : Formalism.FourierDecayAlt.Q.ActualOpsExist := Formalism.FourierDecayAlt.P.actual_operators_exist
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.actual_adjointness`.
+A detailed English derivation is pending.
 -/
 theorem qx_actualAdjoint : Formalism.FourierDecayAlt.Q.ActualAdjoint := Formalism.FourierDecayAlt.P.actual_adjointness
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.actual_start`.
+A detailed English derivation is pending.
 -/
 theorem qx_actualStart : Formalism.FourierDecayAlt.Q.ActualStart := Formalism.FourierDecayAlt.P.actual_start
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fibre_unit_normalization`.
+A detailed English derivation is pending.
 -/
 theorem fibre_unit_property : Formalism.FourierDecayAlt.C6.FibUnit := Formalism.FourierDecayAlt.P.fibre_unit_normalization
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fibre_cost_estimate`.
+A detailed English derivation is pending.
 -/
 theorem fibre_cost : Formalism.FourierDecayAlt.C6.FibCost := Formalism.FourierDecayAlt.P.fibre_cost_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.c6_fib_cost_of_pieces`.
+A detailed English derivation is pending.
 -/
 theorem fibre_cost_of_parts : Formalism.FourierDecayAlt.C6.FibCostOfParts := Formalism.FourierDecayAlt.P.c6_fib_cost_of_pieces
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.budget_class_estimate`.
+A detailed English derivation is pending.
 -/
 theorem budget_class : Formalism.FourierDecayAlt.C6.BudgetClass := Formalism.FourierDecayAlt.P.budget_class_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.disc_mean_value`.
+A detailed English derivation is pending.
 -/
 theorem discriminant_mean : Formalism.FourierDecayAlt.C6.DiscMean := Formalism.FourierDecayAlt.P.disc_mean_value
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.standard_flag_property`.
+A detailed English derivation is pending.
 -/
 theorem s_flag : Formalism.FourierDecayAlt.C2.SFlag := Formalism.FourierDecayAlt.P.standard_flag_property
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_block_form`.
+A detailed English derivation is pending.
 -/
 theorem gramBlocks_true : Formalism.FourierDecayAlt.C2.GramBlocks := Formalism.FourierDecayAlt.P.gram_block_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.majorant_estimate`.
+A detailed English derivation is pending.
 -/
 theorem majorant_true : Formalism.FourierDecayAlt.C2.Majorant := Formalism.FourierDecayAlt.P.majorant_estimate
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.norm_of_inverse`.
+A detailed English derivation is pending.
 -/
 theorem norm_inverse : Formalism.FourierDecayAlt.C2.NormInv := Formalism.FourierDecayAlt.P.norm_of_inverse
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lower_triangular_splitting`.
+A detailed English derivation is pending.
 -/
 theorem lower_split : Formalism.FourierDecayAlt.C2.LowSplit := Formalism.FourierDecayAlt.P.lower_triangular_splitting
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.upper_splitting`.
+A detailed English derivation is pending.
 -/
 theorem upperSplit_true : Formalism.FourierDecayAlt.C2.UpSplit := Formalism.FourierDecayAlt.P.upper_splitting
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.upper_minor_identity`.
+A detailed English derivation is pending.
 -/
 theorem upper_minor : Formalism.FourierDecayAlt.C2.MinorU := Formalism.FourierDecayAlt.P.upper_minor_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lower_minor_identity`.
+A detailed English derivation is pending.
 -/
 theorem lower_minor_bound : Formalism.FourierDecayAlt.C2.MinorL := Formalism.FourierDecayAlt.P.lower_minor_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.monomial_factorization_bound`.
+A detailed English derivation is pending.
 -/
 theorem monomialFactorizationBound_true : Formalism.FourierDecayAlt.C2.MonomialFactorizationBound := Formalism.FourierDecayAlt.P.monomial_factorization_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.c2_tau_mem`.
+A detailed English derivation is pending.
 -/
 theorem tau_membership : Formalism.FourierDecayAlt.C2.TauMem := Formalism.FourierDecayAlt.P.c2_tau_mem
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.tau_norm_bound`.
+A detailed English derivation is pending.
 -/
 theorem tau_section_bound : Formalism.FourierDecayAlt.C2.TauBound := Formalism.FourierDecayAlt.P.tau_norm_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.c2_section_decomp_of_pieces`.
+A detailed English derivation is pending.
 -/
 theorem section_decomposition_of_parts : Formalism.FourierDecayAlt.C2.SectionDecompOfParts := Formalism.FourierDecayAlt.P.c2_section_decomp_of_pieces
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.zhat_section_exists`.
+A detailed English derivation is pending.
 -/
 theorem z_hat_section : Formalism.FourierDecayAlt.C2.ZhatSection := Formalism.FourierDecayAlt.P.zhat_section_exists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.zhat_section_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem z_hat_section_of_parts : Formalism.FourierDecayAlt.C2.ZhatSectionOfParts := Formalism.FourierDecayAlt.P.zhat_section_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.zhat_norm_bound`.
+A detailed English derivation is pending.
 -/
 theorem z_hat_bound : Formalism.FourierDecayAlt.C2.ZhatBound := Formalism.FourierDecayAlt.P.zhat_norm_bound
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fixed_frame_property`.
+A detailed English derivation is pending.
 -/
 theorem fix_frame : Formalism.FourierDecayAlt.C2.FixFrame := Formalism.FourierDecayAlt.P.fixed_frame_property
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fibreOrbitOfParts_statement`.
+A detailed English derivation is pending.
 -/
 theorem fibre_orbit_of_parts : Formalism.FourierDecayAlt.C2.FibreOrbitOfParts := Formalism.FourierDecayAlt.P.fibreOrbitOfParts_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fibre_stabilizer`.
+A detailed English derivation is pending.
 -/
 theorem fibre_stabiliser : Formalism.FourierDecayAlt.C2.FibreStab := Formalism.FourierDecayAlt.P.fibre_stabilizer
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rootCOV_statement`.
+A detailed English derivation is pending.
 -/
 theorem root_change_of_variables : Formalism.FourierDecayAlt.C2.RootCOV := Formalism.FourierDecayAlt.P.rootCOV_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.linear_change_of_variables_bis`.
+A detailed English derivation is pending.
 -/
 theorem linearChangeOfVariables_true : Formalism.FourierDecayAlt.C2.LinCOV := Formalism.FourierDecayAlt.P.linear_change_of_variables_bis
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.slice_density_independent`.
+A detailed English derivation is pending.
 -/
 theorem weight_four_density : Formalism.FourierDecayAlt.C2.SliceDensityIndependent := Formalism.FourierDecayAlt.P.slice_density_independent
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fourth_weight_density_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem sliceDensity_of_changeOfVariables : Formalism.FourierDecayAlt.C2.SliceDensityOfChangeOfVariables := Formalism.FourierDecayAlt.P.fourth_weight_density_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.compose_differential_operators`.
+A detailed English derivation is pending.
 -/
 theorem composition_of_positive_differentials : Formalism.FourierDecayAlt.C6.ComposeDDPlus := Formalism.FourierDecayAlt.P.compose_differential_operators
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.orbital_integral_commutes_large`.
+A detailed English derivation is pending.
 -/
 theorem commuting_involution_large_rank : Formalism.FourierDecayAlt.C6.JCommuteBig := Formalism.FourierDecayAlt.P.orbital_integral_commutes_large
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rule_A1_of_derivatives`.
+A detailed English derivation is pending.
 -/
 theorem finite_order_intersection_in_smooth : Formalism.FourierDecayAlt.C2.FiniteOrderIntersectionInSmooth := Formalism.FourierDecayAlt.P.rule_A1_of_derivatives
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rule_A2_derivatives`.
+A detailed English derivation is pending.
 -/
 theorem rule_a2 : Formalism.FourierDecayAlt.C2.SmoothClassInFiniteOrder := Formalism.FourierDecayAlt.P.rule_A2_derivatives
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rule_B_derivatives`.
+A detailed English derivation is pending.
 -/
 theorem rule_b : Formalism.FourierDecayAlt.C2.RuleB := Formalism.FourierDecayAlt.P.rule_B_derivatives
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lower_splitting_measurable`.
+A detailed English derivation is pending.
 -/
 theorem lower_split_measure_identity : Formalism.FourierDecayAlt.C2.LowSplitMeas := Formalism.FourierDecayAlt.P.lower_splitting_measurable
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ptPerm_spec`.
+A detailed English derivation is pending.
 -/
 theorem d_ptPermSpec : Formalism.FourierDecayAlt.D.PtPermSpec := Formalism.FourierDecayAlt.P.ptPerm_spec
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.ptG_spec`.
+A detailed English derivation is pending.
 -/
 theorem d_ptGSpec : Formalism.FourierDecayAlt.D.PtGSpec := Formalism.FourierDecayAlt.P.ptG_spec
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.orbital_transfer_of_data`.
+A detailed English derivation is pending.
 -/
 theorem d_orbJOfData : Formalism.FourierDecayAlt.D.OrbJOfData := Formalism.FourierDecayAlt.P.orbital_transfer_of_data
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.orbital_integral_indep_choice`.
+A detailed English derivation is pending.
 -/
 theorem d_orbJIndep : Formalism.FourierDecayAlt.D.OrbJIndep := Formalism.FourierDecayAlt.P.orbital_integral_indep_choice
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.orbital_data_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem d_orbDataOfParts : Formalism.FourierDecayAlt.D.OrbDataOfParts := Formalism.FourierDecayAlt.P.orbital_data_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.relevant_points_holds`.
+A detailed English derivation is pending.
 -/
 theorem d_ptRelevant : Formalism.FourierDecayAlt.D.PtRelevant := Formalism.FourierDecayAlt.P.relevant_points_holds
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.nilpotent_measure_is_haar`.
+A detailed English derivation is pending.
 -/
 theorem d_muNHaar : Formalism.FourierDecayAlt.D.MuNHaar := Formalism.FourierDecayAlt.P.nilpotent_measure_is_haar
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_dual_lattice_covolume`.
+A detailed English derivation is pending.
 -/
 theorem d_nhatCovol : Formalism.FourierDecayAlt.D.NhatCovol := Formalism.FourierDecayAlt.P.unipotent_dual_lattice_covolume
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exists_level_tower`.
+A detailed English derivation is pending.
 -/
 theorem d_towerExists : Formalism.FourierDecayAlt.D.TowerExists := Formalism.FourierDecayAlt.P.exists_level_tower
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.module_of_words`.
+A detailed English derivation is pending.
 -/
 theorem d_moduleOfWdOn : Formalism.FourierDecayAlt.D.ModuleOfWdOn := Formalism.FourierDecayAlt.P.module_of_words
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.good_of_admissible`.
+A detailed English derivation is pending.
 -/
 theorem d_goodOfAdm : Formalism.FourierDecayAlt.D.GoodOfAdm := Formalism.FourierDecayAlt.P.good_of_admissible
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_E_of_residue`.
+A detailed English derivation is pending.
 -/
 theorem d_lemmaEOfRR0 : Formalism.FourierDecayAlt.D.LemmaEOfRR0 := Formalism.FourierDecayAlt.P.lemma_E_of_residue
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.positivity_of_forms`.
+A detailed English derivation is pending.
 -/
 theorem d_thmPPosOfForms : Formalism.FourierDecayAlt.D.ThmPPosOfForms := Formalism.FourierDecayAlt.P.positivity_of_forms
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.positivity_of_module`.
+A detailed English derivation is pending.
 -/
 theorem d_thmPPosOfModule : Formalism.FourierDecayAlt.D.ThmPPosOfModule := Formalism.FourierDecayAlt.P.positivity_of_module
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hahn_laws_hold`.
+A detailed English derivation is pending.
 -/
 theorem ma_hahnLaws : Formalism.FourierDecayAlt.MA.HahnLaws := Formalism.FourierDecayAlt.P.hahn_laws_hold
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hahn_joint`.
+A detailed English derivation is pending.
 -/
 theorem ma_hahnJoint : Formalism.FourierDecayAlt.MA.HahnJoint := Formalism.FourierDecayAlt.P.hahn_joint
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_exists_alt`.
+A detailed English derivation is pending.
 -/
 theorem ma_levelExistsD : Formalism.FourierDecayAlt.MA.LevelExistsD := Formalism.FourierDecayAlt.P.level_exists_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_star_holds`.
+A detailed English derivation is pending.
 -/
 theorem ma_levelStarD : Formalism.FourierDecayAlt.MA.LevelStarD := Formalism.FourierDecayAlt.P.level_star_holds
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.start_admissible`.
+A detailed English derivation is pending.
 -/
 theorem ma_startOKD : Formalism.FourierDecayAlt.MA.StartOKD := Formalism.FourierDecayAlt.P.start_admissible
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.sites_admissible`.
+A detailed English derivation is pending.
 -/
 theorem ma_sitesOKD : Formalism.FourierDecayAlt.MA.SitesOKD := Formalism.FourierDecayAlt.P.sites_admissible
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.admissible_joint_alt`.
+A detailed English derivation is pending.
 -/
 theorem admissible_joint : Formalism.FourierDecayAlt.MA.AdmJoint := Formalism.FourierDecayAlt.P.admissible_joint_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_frame_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ma_modelFrameDOfParts : Formalism.FourierDecayAlt.MA.ModelFrameDOfParts := Formalism.FourierDecayAlt.P.model_frame_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.analytic_leibniz`.
+A detailed English derivation is pending.
 -/
 theorem ma_anLeibniz : Formalism.FourierDecayAlt.MA.AnLeibniz := Formalism.FourierDecayAlt.P.analytic_leibniz
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.analytic_coordinates`.
+A detailed English derivation is pending.
 -/
 theorem ma_anCoord : Formalism.FourierDecayAlt.MA.AnCoord := Formalism.FourierDecayAlt.P.analytic_coordinates
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.analytic_commutation`.
+A detailed English derivation is pending.
 -/
 theorem ma_anComm : Formalism.FourierDecayAlt.MA.AnComm := Formalism.FourierDecayAlt.P.analytic_commutation
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.analytic_units_hold`.
+A detailed English derivation is pending.
 -/
 theorem ma_anUnits : Formalism.FourierDecayAlt.MA.AnUnits := Formalism.FourierDecayAlt.P.analytic_units_hold
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.analytic_nontrivial`.
+A detailed English derivation is pending.
 -/
 theorem ma_anNontrivial : Formalism.FourierDecayAlt.MA.AnNontrivial := Formalism.FourierDecayAlt.P.analytic_nontrivial
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.analytic_laws_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ma_anLawsOfParts : Formalism.FourierDecayAlt.MA.AnLawsOfParts := Formalism.FourierDecayAlt.P.analytic_laws_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.analytic_laws`.
+A detailed English derivation is pending.
 -/
 theorem ma_anLaws : Formalism.FourierDecayAlt.MA.AnLaws := Formalism.FourierDecayAlt.P.analytic_laws
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_frame_analytic_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ma_modelFrameAnOfParts : Formalism.FourierDecayAlt.MA.ModelFrameAnOfParts := Formalism.FourierDecayAlt.P.model_frame_analytic_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_frame_algebra`.
+A detailed English derivation is pending.
 -/
 theorem ma_modelFrameD : Formalism.FourierDecayAlt.MA.ModelFrameD := Formalism.FourierDecayAlt.P.model_frame_algebra
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_frame_analytic`.
+A detailed English derivation is pending.
 -/
 theorem ma_modelFrameAn : Formalism.FourierDecayAlt.MA.ModelFrameAn := Formalism.FourierDecayAlt.P.model_frame_analytic
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_zero_holds`.
+A detailed English derivation is pending.
 -/
 theorem d_levelZero : Formalism.FourierDecayAlt.D.LevelZero := Formalism.FourierDecayAlt.P.level_zero_holds
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rule_C_derivatives`.
+A detailed English derivation is pending.
 -/
 theorem rule_c : Formalism.FourierDecayAlt.C2.RuleC := Formalism.FourierDecayAlt.P.rule_C_derivatives
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_coordinates_commute`.
+A detailed English derivation is pending.
 -/
 theorem nf_tCoordComm : Formalism.FourierDecayAlt.NF.TCoordComm := Formalism.FourierDecayAlt.P.level_coordinates_commute
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.actual_pre_level`.
+A detailed English derivation is pending.
 -/
 theorem nf_actualPreLevel : Formalism.FourierDecayAlt.NF.ActualPreLevel := Formalism.FourierDecayAlt.P.actual_pre_level
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.relations_core_and_norms`.
+A detailed English derivation is pending.
 -/
 theorem nf_relIsCoreNorm : Formalism.FourierDecayAlt.NF.RelIsCoreNorm := Formalism.FourierDecayAlt.P.relations_core_and_norms
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.two_sided_derivative_rule`.
+A detailed English derivation is pending.
 -/
 theorem twoSided_true : Formalism.FourierDecayAlt.C2.TwoSided := Formalism.FourierDecayAlt.P.two_sided_derivative_rule
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_independent_signature'`.
+A detailed English derivation is pending.
 -/
 theorem gram_independent_signature : Formalism.FourierDecayAlt.C2.GramIndependentSignature := Formalism.FourierDecayAlt.P.gram_independent_signature'
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.polynomial_map_proper`.
+A detailed English derivation is pending.
 -/
 theorem polynomial_proper : Formalism.FourierDecayAlt.C2.PolyProper := Formalism.FourierDecayAlt.P.polynomial_map_proper
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_E_of_model`.
+A detailed English derivation is pending.
 -/
 theorem jc_lemmaEOfModel : Formalism.FourierDecayAlt.JC.LemmaEOfModel := Formalism.FourierDecayAlt.P.lemma_E_of_model
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.cutoff_smooth`.
+A detailed English derivation is pending.
 -/
 theorem jc_cutFSmooth : Formalism.FourierDecayAlt.JC.CutFSmooth := Formalism.FourierDecayAlt.P.cutoff_smooth
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.plane_exponential_bound_of_places`.
+A detailed English derivation is pending.
 -/
 theorem theorem_p1_of_places : Formalism.FourierDecayAlt.JC.PlaneExponentialBoundOfPlaces := Formalism.FourierDecayAlt.P.plane_exponential_bound_of_places
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.off_diagonal_lift_bound_of_places`.
+A detailed English derivation is pending.
 -/
 theorem offDiagonalLiftBound_of_places : Formalism.FourierDecayAlt.JC.OffDiagonalLiftBoundOfPlaces := Formalism.FourierDecayAlt.P.off_diagonal_lift_bound_of_places
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corollary_T_of_sum_form`.
+A detailed English derivation is pending.
 -/
 theorem jc_corollaryTOfSumForm : Formalism.FourierDecayAlt.JC.CorollaryTOfSumForm := Formalism.FourierDecayAlt.P.corollary_T_of_sum_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.jc_theta_exists_variant`.
+A detailed English derivation is pending.
 -/
 theorem theta_existence : Formalism.FourierDecayAlt.JC.ThetaExistence₂ := Formalism.FourierDecayAlt.P.jc_theta_exists_variant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_P_integral_of_places`.
+A detailed English derivation is pending.
 -/
 theorem jc_thmPIntOfPlaces : Formalism.FourierDecayAlt.JC.ThmPIntOfPlaces := Formalism.FourierDecayAlt.P.theorem_P_integral_of_places
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_proposition_of_places`.
+A detailed English derivation is pending.
 -/
 theorem jc_propGramOfPlaces : Formalism.FourierDecayAlt.JC.PropGramOfPlaces := Formalism.FourierDecayAlt.P.gram_proposition_of_places
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.gram_at_built_place`.
+A detailed English derivation is pending.
 -/
 theorem jc_gramPlaceBuilt : Formalism.FourierDecayAlt.JC.GramPlaceBuilt := Formalism.FourierDecayAlt.P.gram_at_built_place
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.orbital_integral_cutoff_scalar`.
+A detailed English derivation is pending.
 -/
 theorem jc_orbJCutScalar : Formalism.FourierDecayAlt.JC.OrbJCutScalar := Formalism.FourierDecayAlt.P.orbital_integral_cutoff_scalar
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.concrete_data_instance`.
+A detailed English derivation is pending.
 -/
 theorem jc_mkDataInst : Formalism.FourierDecayAlt.JC.MkDataInst := Formalism.FourierDecayAlt.P.concrete_data_instance
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.concrete_sizes_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem jc_sizesConcreteOfParts : Formalism.FourierDecayAlt.JC.SizesConcreteOfParts := Formalism.FourierDecayAlt.P.concrete_sizes_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.concrete_axioms`.
+A detailed English derivation is pending.
 -/
 theorem jc_axiomsConcrete : Formalism.FourierDecayAlt.JC.AxiomsConcrete := Formalism.FourierDecayAlt.P.concrete_axioms
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_split`.
+A detailed English derivation is pending.
 -/
 theorem condition_c1_ii : Formalism.FourierDecayAlt.C2.C1ii := Formalism.FourierDecayAlt.P.stabilizer_split
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.stabilizer_pairs`.
+A detailed English derivation is pending.
 -/
 theorem condition_c1_iii : Formalism.FourierDecayAlt.C2.CurvatureConditionOneClauseThree := Formalism.FourierDecayAlt.P.stabilizer_pairs
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.c2_section_decomp`.
+A detailed English derivation is pending.
 -/
 theorem section_decomposition : Formalism.FourierDecayAlt.C2.SectionDecomp := Formalism.FourierDecayAlt.P.c2_section_decomp
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.mirrorDecomp_statement`.
+A detailed English derivation is pending.
 -/
 theorem mirror_decomposition : Formalism.FourierDecayAlt.C2.MirrorDecomp := Formalism.FourierDecayAlt.P.mirrorDecomp_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.shift_block`.
+A detailed English derivation is pending.
 -/
 theorem nf_sBlock : Formalism.FourierDecayAlt.NF.SBlock := Formalism.FourierDecayAlt.P.shift_block
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.shift_connection`.
+A detailed English derivation is pending.
 -/
 theorem nf_sConn : Formalism.FourierDecayAlt.NF.SConn := Formalism.FourierDecayAlt.P.shift_connection
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.shift_norm`.
+A detailed English derivation is pending.
 -/
 theorem nf_sNorm : Formalism.FourierDecayAlt.NF.SNorm := Formalism.FourierDecayAlt.P.shift_norm
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_S_of_steps`.
+A detailed English derivation is pending.
 -/
 theorem nf_thmSOfSteps : Formalism.FourierDecayAlt.NF.ThmSOfSteps := Formalism.FourierDecayAlt.P.theorem_S_of_steps
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_S_ring`.
+A detailed English derivation is pending.
 -/
 theorem nf_thmSRing : Formalism.FourierDecayAlt.NF.ThmSRing := Formalism.FourierDecayAlt.P.theorem_S_ring
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exists_auxiliary_xi`.
+A detailed English derivation is pending.
 -/
 theorem b_xiExists : Formalism.FourierDecayAlt.B.XiExists := Formalism.FourierDecayAlt.P.exists_auxiliary_xi
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fibre_orbit_description`.
+A detailed English derivation is pending.
 -/
 theorem fibre_orbit : Formalism.FourierDecayAlt.C2.FibreOrbit := Formalism.FourierDecayAlt.P.fibre_orbit_description
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.adjoint_generators`.
+A detailed English derivation is pending.
 -/
 theorem ma_adjGens : Formalism.FourierDecayAlt.MA.AdjGens := Formalism.FourierDecayAlt.P.adjoint_generators
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.adjoint_closed`.
+A detailed English derivation is pending.
 -/
 theorem ma_adjClosed : Formalism.FourierDecayAlt.MA.AdjClosed := Formalism.FourierDecayAlt.P.adjoint_closed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.adjoint_algebra`.
+A detailed English derivation is pending.
 -/
 theorem ma_adjAlg : Formalism.FourierDecayAlt.MA.AdjAlg := Formalism.FourierDecayAlt.P.adjoint_algebra
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.adjoint_algebra_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ma_adjAlgOfParts : Formalism.FourierDecayAlt.MA.AdjAlgOfParts := Formalism.FourierDecayAlt.P.adjoint_algebra_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.adjoint_matrix`.
+A detailed English derivation is pending.
 -/
 theorem ma_adjMatrix : Formalism.FourierDecayAlt.MA.AdjMatrix := Formalism.FourierDecayAlt.P.adjoint_matrix
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.measure_joint`.
+A detailed English derivation is pending.
 -/
 theorem ma_measureJoint : Formalism.FourierDecayAlt.MA.MeasureJoint := Formalism.FourierDecayAlt.P.measure_joint
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.jacobi_norm`.
+A detailed English derivation is pending.
 -/
 theorem ma_jnNorm : Formalism.FourierDecayAlt.MA.JnNorm := Formalism.FourierDecayAlt.P.jacobi_norm
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.adjoint_at_zero`.
+A detailed English derivation is pending.
 -/
 theorem ma_jAdjZero : Formalism.FourierDecayAlt.MA.JAdjZero := Formalism.FourierDecayAlt.P.adjoint_at_zero
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hypotheses_nonvacuous`.
+A detailed English derivation is pending.
 -/
 theorem ma_hypsNonvacuous : Formalism.FourierDecayAlt.MA.HypsNonvacuous := Formalism.FourierDecayAlt.P.hypotheses_nonvacuous
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_words`.
+A detailed English derivation is pending.
 -/
 theorem ma_modelWordsD : Formalism.FourierDecayAlt.MA.ModelWordsD := Formalism.FourierDecayAlt.P.model_words
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.factor_chosen`.
+A detailed English derivation is pending.
 -/
 theorem ma_factorChosen : Formalism.FourierDecayAlt.MA.FactorChosen := Formalism.FourierDecayAlt.P.factor_chosen
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.family_restriction`.
+A detailed English derivation is pending.
 -/
 theorem ma_famRestQ : Formalism.FourierDecayAlt.MA.FamRestQ := Formalism.FourierDecayAlt.P.family_restriction
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.family_imports_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ma_famImportsQOfParts : Formalism.FourierDecayAlt.MA.FamImportsQOfParts := Formalism.FourierDecayAlt.P.family_imports_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_P_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ma_thmPQOfParts : Formalism.FourierDecayAlt.MA.ThmPQOfParts := Formalism.FourierDecayAlt.P.theorem_P_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_model_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ma_lemmaEModelOfParts : Formalism.FourierDecayAlt.MA.LemmaEModelOfParts := Formalism.FourierDecayAlt.P.lemma_model_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.roots_outside_of_parts_alt`.
+A detailed English derivation is pending.
 -/
 theorem ma_rootsOutQOfParts : Formalism.FourierDecayAlt.MA.RootsOutQOfParts := Formalism.FourierDecayAlt.P.roots_outside_of_parts_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.induction_imports_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ma_stepImportsQOfParts : Formalism.FourierDecayAlt.MA.StepImportsQOfParts := Formalism.FourierDecayAlt.P.induction_imports_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.third_identity_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem ma_i3QOfParts : Formalism.FourierDecayAlt.MA.EnergyAbsoluteIdentityFromComponents := Formalism.FourierDecayAlt.P.third_identity_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.hermitian_curvature_degree_count`.
+A detailed English derivation is pending.
 -/
 theorem degree_count_second : Formalism.FourierDecayAlt.C7.DegreeCount2 := Formalism.FourierDecayAlt.P.hermitian_curvature_degree_count
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.third_count_lemma_variant`.
+A detailed English derivation is pending.
 -/
 theorem lemma_b3_count_second : Formalism.FourierDecayAlt.C7.LetterProductDoubleDegreeCount := Formalism.FourierDecayAlt.P.third_count_lemma_variant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.duality_positive_subspace`.
+A detailed English derivation is pending.
 -/
 theorem dualityPositiveSubspace_true : Formalism.FourierDecayAlt.FormPairingAction.DualityPositiveSubspace := Formalism.FourierDecayAlt.P.duality_positive_subspace
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.dual_kernel_lemma_restricted`.
+A detailed English derivation is pending.
 -/
 theorem dualKernelSubmodule_true : Formalism.FourierDecayAlt.FormPairingAction.LemmaDKSub := Formalism.FourierDecayAlt.P.dual_kernel_lemma_restricted
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.model_hypotheses`.
+A detailed English derivation is pending.
 -/
 theorem nf_modelSHyp : Formalism.FourierDecayAlt.NF.ModelSHyp := Formalism.FourierDecayAlt.P.model_hypotheses
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.normal_form_of_S`.
+A detailed English derivation is pending.
 -/
 theorem nf_normalFormOfS : Formalism.FourierDecayAlt.NF.NormalFormOfS := Formalism.FourierDecayAlt.P.normal_form_of_S
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.normal_form_from_module`.
+A detailed English derivation is pending.
 -/
 theorem nf_normalFormFromModuleOfParts : Formalism.FourierDecayAlt.NF.NormalFormFromModuleOfParts := Formalism.FourierDecayAlt.P.normal_form_from_module
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.actual_hypotheses_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem nf_actualSHypOfParts : Formalism.FourierDecayAlt.NF.ActualSHypOfParts := Formalism.FourierDecayAlt.P.actual_hypotheses_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.actual_spectral_hypotheses`.
+A detailed English derivation is pending.
 -/
 theorem nf_actualSHyp : Formalism.FourierDecayAlt.NF.ActualSHyp := Formalism.FourierDecayAlt.P.actual_spectral_hypotheses
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.normalFormFromModule_statement`.
+A detailed English derivation is pending.
 -/
 theorem qx_normalFormFromModule : Formalism.FourierDecayAlt.Q.NormalFormFromModule := Formalism.FourierDecayAlt.P.normalFormFromModule_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.normal_form_actual`.
+A detailed English derivation is pending.
 -/
 theorem qx_normalFormActual : Formalism.FourierDecayAlt.Q.NormalFormActual := Formalism.FourierDecayAlt.P.normal_form_actual
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.level_start_actual`.
+A detailed English derivation is pending.
 -/
 theorem qx_levelStartActual : Formalism.FourierDecayAlt.Q.LevelStartActual := Formalism.FourierDecayAlt.P.level_start_actual
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.radial_measure_is_haar`.
+A detailed English derivation is pending.
 -/
 theorem d_muRHaar : Formalism.FourierDecayAlt.D.MuRHaar := Formalism.FourierDecayAlt.P.radial_measure_is_haar
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.exists_isotropic_frame`.
+A detailed English derivation is pending.
 -/
 theorem d_dFrameExists : Formalism.FourierDecayAlt.D.DFrameExists := Formalism.FourierDecayAlt.P.exists_isotropic_frame
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.slice_measure_identity`.
+A detailed English derivation is pending.
 -/
 theorem d_sliceOm : Formalism.FourierDecayAlt.D.SliceOm := Formalism.FourierDecayAlt.P.slice_measure_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.unipotent_measure_splitting`.
+A detailed English derivation is pending.
 -/
 theorem d_muNSplit : Formalism.FourierDecayAlt.D.MuNSplit := Formalism.FourierDecayAlt.P.unipotent_measure_splitting
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.multiplication_zeta_exists`.
+A detailed English derivation is pending.
 -/
 theorem nf_mulZExists : Formalism.FourierDecayAlt.NF.MulZExists := Formalism.FourierDecayAlt.P.multiplication_zeta_exists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.actual_zeta_smooth_alt`.
+A detailed English derivation is pending.
 -/
 theorem nf_actualZetaSmooth : Formalism.FourierDecayAlt.NF.ActualZetaSmooth := Formalism.FourierDecayAlt.P.actual_zeta_smooth_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.normal_form_order_zero`.
+A detailed English derivation is pending.
 -/
 theorem nf_nFOrder0 : Formalism.FourierDecayAlt.NF.NFOrder0 := Formalism.FourierDecayAlt.P.normal_form_order_zero
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.normal_form_order_zero_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem nf_nFOrder0OfParts : Formalism.FourierDecayAlt.NF.NFOrder0OfParts := Formalism.FourierDecayAlt.P.normal_form_order_zero_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.shift_extra`.
+A detailed English derivation is pending.
 -/
 theorem nf_sExtra : Formalism.FourierDecayAlt.NF.SExtra := Formalism.FourierDecayAlt.P.shift_extra
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.isotropic_vectors_linear_indep`.
+A detailed English derivation is pending.
 -/
 theorem d_vecVIndep : Formalism.FourierDecayAlt.D.VecVIndep := Formalism.FourierDecayAlt.P.isotropic_vectors_linear_indep
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.real_inputs_built`.
+A detailed English derivation is pending.
 -/
 theorem jct_realInputsBuilt : Formalism.FourierDecayAlt.JCT.RealInputsBuilt := Formalism.FourierDecayAlt.P.real_inputs_built
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_A_built`.
+A detailed English derivation is pending.
 -/
 theorem jct_theoremABuilt : Formalism.FourierDecayAlt.JCT.TheoremABuilt := Formalism.FourierDecayAlt.P.theorem_A_built
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.real_inputs_built_closed_form`.
+A detailed English derivation is pending.
 -/
 theorem jct_realInputsBuiltClosed : Formalism.FourierDecayAlt.JCT.RealInputsBuiltClosed := Formalism.FourierDecayAlt.P.real_inputs_built_closed_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.energy_of_built_setting`.
+A detailed English derivation is pending.
 -/
 theorem jct_energyOfLemmaE : Formalism.FourierDecayAlt.JCT.EnergyOfLemmaE := Formalism.FourierDecayAlt.P.energy_of_built_setting
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.orbital_integral_converges`.
+A detailed English derivation is pending.
 -/
 theorem d_orbJConv : Formalism.FourierDecayAlt.D.OrbJConv := Formalism.FourierDecayAlt.P.orbital_integral_converges
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.levels_of_built_setting`.
+A detailed English derivation is pending.
 -/
 theorem jct_levelsActualBuilt : Formalism.FourierDecayAlt.JCT.LevelsActualBuilt := Formalism.FourierDecayAlt.P.levels_of_built_setting
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.vector_valued_types`.
+A detailed English derivation is pending.
 -/
 theorem top_vecVTypes : Formalism.FourierDecayAlt.Top.VecVTypes := Formalism.FourierDecayAlt.P.vector_valued_types
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.type_projectors_exist`.
+A detailed English derivation is pending.
 -/
 theorem top_typeProjExists : Formalism.FourierDecayAlt.Top.TypeProjExists := Formalism.FourierDecayAlt.P.type_projectors_exist
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.top_of_empty`.
+A detailed English derivation is pending.
 -/
 theorem top_topOfEmpty : Formalism.FourierDecayAlt.Top.TopOfEmpty := Formalism.FourierDecayAlt.P.top_of_empty
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.top_of_radial`.
+A detailed English derivation is pending.
 -/
 theorem top_topOfRadial : Formalism.FourierDecayAlt.Top.TopOfRadial := Formalism.FourierDecayAlt.P.top_of_radial
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.typed_inputs_of_inputs`.
+A detailed English derivation is pending.
 -/
 theorem top_inputsTOfInputs : Formalism.FourierDecayAlt.Top.InputsTOfInputs := Formalism.FourierDecayAlt.P.typed_inputs_of_inputs
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.real_inputs_closed_typed`.
+A detailed English derivation is pending.
 -/
 theorem top_realInputsBuiltClosedT : Formalism.FourierDecayAlt.Top.RealInputsBuiltClosedT := Formalism.FourierDecayAlt.P.real_inputs_closed_typed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.radical_reduction_mem`.
+A detailed English derivation is pending.
 -/
 theorem nf_radRedMem : Formalism.FourierDecayAlt.NF.RadRedMem := Formalism.FourierDecayAlt.P.radical_reduction_mem
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.radical_reduction_injective`.
+A detailed English derivation is pending.
 -/
 theorem nf_radRedInj : Formalism.FourierDecayAlt.NF.RadRedInj := Formalism.FourierDecayAlt.P.radical_reduction_injective
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.radical_order_zero`.
+A detailed English derivation is pending.
 -/
 theorem nf_radOrder0 : Formalism.FourierDecayAlt.NF.RadOrder0 := Formalism.FourierDecayAlt.P.radical_order_zero
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.radical_reduction_surjective`.
+A detailed English derivation is pending.
 -/
 theorem nf_radRedSurj : Formalism.FourierDecayAlt.NF.RadRedSurj := Formalism.FourierDecayAlt.P.radical_reduction_surjective
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PBA.block_of_cauchy_schwarz`.
+A detailed English derivation is pending.
 -/
 theorem PBA.pb_blockOfCS : Formalism.FourierDecayAlt.KB.BlockOfCS := Formalism.FourierDecayAlt.P.PBA.block_of_cauchy_schwarz
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PBA.blockSchur_true`.
+A detailed English derivation is pending.
 -/
 theorem PBA.pb_blockSchur : Formalism.FourierDecayAlt.KB.BlockSchur := Formalism.FourierDecayAlt.P.PBA.blockSchur_true
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PBA.liftOfLoc_statement`.
+A detailed English derivation is pending.
 -/
 theorem PBA.pb_liftOfLoc : Formalism.FourierDecayAlt.KB.LiftOfLoc := Formalism.FourierDecayAlt.P.PBA.liftOfLoc_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PBA.top_of_local`.
+A detailed English derivation is pending.
 -/
 theorem PBA.pb_topOfLoc : Formalism.FourierDecayAlt.KB.TopOfLoc := Formalism.FourierDecayAlt.P.PBA.top_of_local
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.PBA.limit_closed`.
+A detailed English derivation is pending.
 -/
 theorem PBA.pb_limitClosed : Formalism.FourierDecayAlt.KB.LimitClosed := Formalism.FourierDecayAlt.P.PBA.limit_closed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theta_compact_support`.
+A detailed English derivation is pending.
 -/
 theorem pb_thetaCpt : Formalism.FourierDecayAlt.KB.ThetaCpt := Formalism.FourierDecayAlt.P.theta_compact_support
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.factor_exists`.
+A detailed English derivation is pending.
 -/
 theorem ma_factorExistsQ : Formalism.FourierDecayAlt.MA.FactorExistsQ := Formalism.FourierDecayAlt.P.factor_exists
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.measure_regular`.
+A detailed English derivation is pending.
 -/
 theorem ma_measQ : Formalism.FourierDecayAlt.MA.MeasQ := Formalism.FourierDecayAlt.P.measure_regular
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weight_positive`.
+A detailed English derivation is pending.
 -/
 theorem ma_wPosQ : Formalism.FourierDecayAlt.MA.WPosQ := Formalism.FourierDecayAlt.P.weight_positive
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.polynomial_regular`.
+A detailed English derivation is pending.
 -/
 theorem ma_pRegQ : Formalism.FourierDecayAlt.MA.PRegQ := Formalism.FourierDecayAlt.P.polynomial_regular
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.probability_ratio`.
+A detailed English derivation is pending.
 -/
 theorem ma_pRatioQ : Formalism.FourierDecayAlt.MA.PRatioQ := Formalism.FourierDecayAlt.P.probability_ratio
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.third_identity_signed`.
+A detailed English derivation is pending.
 -/
 theorem ma_i3Signed : Formalism.FourierDecayAlt.MA.SignedEnergyIdentity := Formalism.FourierDecayAlt.P.third_identity_signed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.third_identity`.
+A detailed English derivation is pending.
 -/
 theorem ma_i3Q : Formalism.FourierDecayAlt.MA.EnergyAbsoluteIdentity := Formalism.FourierDecayAlt.P.third_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.adjoint_bounded`.
+A detailed English derivation is pending.
 -/
 theorem ma_adjBQ : Formalism.FourierDecayAlt.MA.AdjBQ := Formalism.FourierDecayAlt.P.adjoint_bounded
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.jet_module_closed`.
+A detailed English derivation is pending.
 -/
 theorem ma_jetQ : Formalism.FourierDecayAlt.MA.JetQ := Formalism.FourierDecayAlt.P.jet_module_closed
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fourth_identity`.
+A detailed English derivation is pending.
 -/
 theorem ma_i4Q : Formalism.FourierDecayAlt.MA.EnergyPolynomialInParameter := Formalism.FourierDecayAlt.P.fourth_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fourth_identity_dual`.
+A detailed English derivation is pending.
 -/
 theorem ma_i4'Q : Formalism.FourierDecayAlt.MA.I4'Q := Formalism.FourierDecayAlt.P.fourth_identity_dual
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.fifth_identity_first`.
+A detailed English derivation is pending.
 -/
 theorem ma_i5aQ : Formalism.FourierDecayAlt.MA.EnergyShiftDifference := Formalism.FourierDecayAlt.P.fifth_identity_first
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.residuesAlt`.
+A detailed English derivation is pending.
 -/
 theorem ma_residuesQ : Formalism.FourierDecayAlt.MA.ResiduesQ := Formalism.FourierDecayAlt.P.residuesAlt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.weight_ratio`.
+A detailed English derivation is pending.
 -/
 theorem ma_weightRatioQ : Formalism.FourierDecayAlt.MA.WeightRatioQ := Formalism.FourierDecayAlt.P.weight_ratio
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.induction_imports`.
+A detailed English derivation is pending.
 -/
 theorem ma_stepImportsQ : Formalism.FourierDecayAlt.MA.StepImportsQ := Formalism.FourierDecayAlt.P.induction_imports
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.family_imports`.
+A detailed English derivation is pending.
 -/
 theorem ma_famImportsQ : Formalism.FourierDecayAlt.MA.FamImportsQ := Formalism.FourierDecayAlt.P.family_imports
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.roots_outside`.
+A detailed English derivation is pending.
 -/
 theorem ma_rootsOutQ : Formalism.FourierDecayAlt.MA.RootsOutQ := Formalism.FourierDecayAlt.P.roots_outside
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.first_identity`.
+A detailed English derivation is pending.
 -/
 theorem ma_i1Q : Formalism.FourierDecayAlt.MA.EnergyPolynomialInPoints := Formalism.FourierDecayAlt.P.first_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.jacobi_square_integrable`.
+A detailed English derivation is pending.
 -/
 theorem sourceSquareIntegrable_true : Formalism.FourierDecayAlt.MA.SourceSquareIntegrable := Formalism.FourierDecayAlt.P.jacobi_square_integrable
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.jacobi_base`.
+A detailed English derivation is pending.
 -/
 theorem empty_word_energy_density : Formalism.FourierDecayAlt.MA.EmptyWordEnergyDensity := Formalism.FourierDecayAlt.P.jacobi_base
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_P_form`.
+A detailed English derivation is pending.
 -/
 theorem ma_thmPForm : Formalism.FourierDecayAlt.MA.ThmPForm := Formalism.FourierDecayAlt.P.theorem_P_form
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_P_adjoint`.
+A detailed English derivation is pending.
 -/
 theorem ma_thmPAdj : Formalism.FourierDecayAlt.MA.ThmPAdj := Formalism.FourierDecayAlt.P.theorem_P_adjoint
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_P_weight`.
+A detailed English derivation is pending.
 -/
 theorem ma_thmPGw : Formalism.FourierDecayAlt.MA.ThmPGw := Formalism.FourierDecayAlt.P.theorem_P_weight
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_P`.
+A detailed English derivation is pending.
 -/
 theorem ma_thmPQ : Formalism.FourierDecayAlt.MA.ThmPQ := Formalism.FourierDecayAlt.P.theorem_P
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_model`.
+A detailed English derivation is pending.
 -/
 theorem ma_lemmaEModel : Formalism.FourierDecayAlt.MA.LemmaEModel := Formalism.FourierDecayAlt.P.lemma_model
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_s_induction_base`.
+A detailed English derivation is pending.
 -/
 theorem tbb_stepOne : Formalism.FourierDecayAlt.TBB.StepOne := Formalism.FourierDecayAlt.P.lemma_s_induction_base
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_s_induction_up`.
+A detailed English derivation is pending.
 -/
 theorem tbb_stepUp : Formalism.FourierDecayAlt.TBB.StepUp := Formalism.FourierDecayAlt.P.lemma_s_induction_up
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.lemma_s_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem tbb_lemmaSOfSteps : Formalism.FourierDecayAlt.TBB.LemmaSOfSteps := Formalism.FourierDecayAlt.P.lemma_s_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.corSOfLemmaS_statement`.
+A detailed English derivation is pending.
 -/
 theorem tbb_corSOfLemmaS : Formalism.FourierDecayAlt.TBB.CorSOfLemmaS := Formalism.FourierDecayAlt.P.corSOfLemmaS_statement
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.plane_wave_bound_of_local_bounds`.
+A detailed English derivation is pending.
 -/
 theorem pb_waveOfLoc : Formalism.FourierDecayAlt.KB.WaveOfLoc := Formalism.FourierDecayAlt.P.plane_wave_bound_of_local_bounds
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.integral_formula_passes_to_limits`.
+A detailed English derivation is pending.
 -/
 theorem pb_limitInt : Formalism.FourierDecayAlt.KB.LimitInt := Formalism.FourierDecayAlt.P.integral_formula_passes_to_limits
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.head_algebra_relations`.
+A detailed English derivation is pending.
 -/
 theorem pb_headAlg : Formalism.FourierDecayAlt.KB.HeadAlg := Formalism.FourierDecayAlt.P.head_algebra_relations
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.kloosterman_density`.
+A detailed English derivation is pending.
 -/
 theorem pb_kloostDens : Formalism.FourierDecayAlt.KB.KloostDens := Formalism.FourierDecayAlt.P.kloosterman_density
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.top_positive_semidefinite`.
+A detailed English derivation is pending.
 -/
 theorem top_topPSDT : Formalism.FourierDecayAlt.Top.TopPSDT := Formalism.FourierDecayAlt.P.top_positive_semidefinite
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.real_inputs_closed_model_place`.
+A detailed English derivation is pending.
 -/
 theorem real_inputs_closed_leading_form : Formalism.FourierDecayAlt.KB.RealInputsClosedLeadingForm := Formalism.FourierDecayAlt.P.real_inputs_closed_model_place
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.real_inputs_closed_model_place_two`.
+A detailed English derivation is pending.
 -/
 theorem real_inputs_closed_admissible_settings : Formalism.FourierDecayAlt.KB.RealInputsClosedAdmissibleSettings := Formalism.FourierDecayAlt.P.real_inputs_closed_model_place_two
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.point_bound_of_corollary_s`.
+A detailed English derivation is pending.
 -/
 theorem tbb_ptBoundOfCorS : Formalism.FourierDecayAlt.TBB.PtBoundOfCorS := Formalism.FourierDecayAlt.P.point_bound_of_corollary_s
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.vector_truncation_all_places`.
+A detailed English derivation is pending.
 -/
 theorem tbb_vecCutAll : Formalism.FourierDecayAlt.TBB.VecCutAll := Formalism.FourierDecayAlt.P.vector_truncation_all_places
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.theorem_b_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem tbb_thmBpOfParts : Formalism.FourierDecayAlt.TBB.ThmBpOfParts := Formalism.FourierDecayAlt.P.theorem_b_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.triangle_inequality_at_place`.
+A detailed English derivation is pending.
 -/
 theorem tbb_triAt : Formalism.FourierDecayAlt.TBB.TriAt := Formalism.FourierDecayAlt.P.triangle_inequality_at_place
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.phi_zero_hermitian_curvature`.
+A detailed English derivation is pending.
 -/
 theorem pb_phiZero : Formalism.FourierDecayAlt.KB.PhiZero := Formalism.FourierDecayAlt.P.phi_zero_hermitian_curvature
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.density_constant`.
+A detailed English derivation is pending.
 -/
 theorem pb_densC : Formalism.FourierDecayAlt.KB.DensC := Formalism.FourierDecayAlt.P.density_constant
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.sum_form_of_local_statements`.
+A detailed English derivation is pending.
 -/
 theorem pb_sumFormOfLoc : Formalism.FourierDecayAlt.KB.SumFormOfLoc := Formalism.FourierDecayAlt.P.sum_form_of_local_statements
 

@@ -9,9 +9,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `P' X S T a W V q h π H`. Establish `e1hom : ((a ⁻¹ᵁ W).ι.isoImage ((a ∣_ W) ⁻¹ᵁ V) ≪≫ X.isoOfEq (image_morphismRestrict_preimage a W V)).hom ≫ (a ⁻¹ᵁ (W.ι ''ᵁ V)).ι = ((a ∣_ W) ⁻¹ᵁ V).ι ≫ (a ⁻¹ᵁ W).ι`. Simplify using `only [Iso.trans_hom, Category.assoc, Scheme.isoOfEq_hom_ι, Scheme.Hom.isoImage_hom_ι]`. Use `IsPullback.of_iso H ((a ⁻¹ᵁ W).ι.isoImage ((a ∣_ W) ⁻¹ᵁ V) ≪≫ X.isoOfEq (image_morphismRestrict_preimage a W V)) (W.ι.isoImage V) (Iso.refl S) (Iso.refl T) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono (W.ι ''ᵁ V).ι]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc, Scheme.Hom.isoImage_hom_ι, morphismRestrict_ι]`. Rewrite using `[reassoc_of% e1hom, morphismRestrict_ι_assoc, morphismRestrict_ι]`. Simplify using `only [Iso.refl_hom, Category.comp_id]`. Rewrite using `[reassoc_of% e1hom]`. Simplify using `only [Iso.refl_hom, Category.comp_id, Scheme.Hom.isoImage_hom_ι_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/

@@ -21,7 +21,7 @@ open scoped GlobalTheory.VacAny
 namespace GlobalTheory.LatParam
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.vecMulVec_apply, Finset.sum_apply, Matrix.sum_apply, Pi.smul_apply, Matrix.smul_apply, Fintype.sum_prod_type, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [zsmul_eq_mul, Int.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vecMulVec_sum_zsmul {E : Type} [Field E] {n d kx ky : ℕ} (ex : Fin kx → Fin n → E) (fy : Fin ky → Fin d → E)
     (c : Fin kx → ℤ) (c' : Fin ky → ℤ) :
@@ -34,21 +34,19 @@ theorem vecMulVec_sum_zsmul {E : Type} [Field E] {n d kx ky : ℕ} (ex : Fin kx 
   simp only [zsmul_eq_mul, Int.cast_mul]; ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n d X Y hX hY v`. Take `⟨kx, ex, hex⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (hX.fg.restrictScalars (R := ℤ))`. Take `⟨ky, fy, hfy⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (hY.fg.restrictScalars (R := ℤ))`. Set `I : Matrix (Fin n) (Fin d) E →+ Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)` to `(inclR (F := F) (E := E) (AF F)).toAddMonoidHom.mapMatrix`. Establish `hI : ∀ J, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F J = I J` using `fun J => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨Fin kx × Fin ky, inferInstance, fun m => Matrix.vecMulVec (ex m.1) (fy m.2), fun γ => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hint, x, hx, y, hy, rfl⟩` from `hz`. Establish `hx' : x ∈ Submodule.span ℤ (Set.range ex)` using `by rw [hex]; exact hx`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy' : y ∈ Submodule.span ℤ (Set.range fy)` using `by rw [hfy]; exact hy`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hx'`. Take `⟨c', rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hy'`. Use `⟨fun m => ⟨(c m.1 * c' m.2) • GlobalTheory.AdelicU.evFin F v a, zsmul_mem hint _⟩, ?_⟩` and prove the remaining obligations. Establish `ha'` using `GlobalTheory.VacAny.eq_atPlace_of_at v a ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hI, vecMulVec_sum_zsmul, map_sum, map_zsmul, Finset.smul_sum, map_zsmul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← ha', smul_comm, smul_assoc]`. Consider the case `zero => exact ⟨fun _ => 0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, by simp only [Pi.add_apply, AddMemClass.coe_add, map_add, add_smul, Finset.sum_add_distrib]⟩`. Consider the case `neg x _ hx`. Take `⟨a, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨-a, by simp only [Pi.neg_apply, NegMemClass.coe_neg, map_neg, neg_smul, Finset.sum_neg_distrib]⟩`. Introduce and unpack `⟨a, rfl⟩`. Use `AddSubgroup.sum_mem _ fun m _ => AddSubgroup.subset_closure ?_` and prove the remaining obligations. Use `⟨_, GlobalTheory.VacAny.at_atPlace _, ?_, ex m.1, ?_, fy m.2, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.EmbChart.evFin_atPlace]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(a m).2`. Establish `: ex m.1 ∈ Submodule.span ℤ (Set.range ex)` using `Submodule.subset_span ⟨m.1, rfl⟩`. Rewrite `this` using `[hex]`. Conclude with `this`. Establish `: fy m.2 ∈ Submodule.span ℤ (Set.range fy)` using `Submodule.subset_span ⟨m.2, rfl⟩`.
-
-Rewrite `this` using `[hfy]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAtV_param : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ} (X : Spc F E n)
     (Y : Spc F E d), X.L.IsLattice E → Y.L.IsLattice E → ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F,

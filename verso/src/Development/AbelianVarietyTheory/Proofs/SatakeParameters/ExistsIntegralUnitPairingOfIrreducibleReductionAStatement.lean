@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolyApproxZer
 open GlobalTheory.Cong
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Cong.exists_integral_unit_pairing_of_irreducible_reduction` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsIntegralUnitPairingOfIrreducibleReductionA.lean&line=219#L219)
 -/

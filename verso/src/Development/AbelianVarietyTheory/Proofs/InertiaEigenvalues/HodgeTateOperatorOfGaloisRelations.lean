@@ -2,23 +2,21 @@ import Mathlib
 open Matrix
 
 /- English proof (translation)
-Introduce `k _ d N q p a b z w y y' v v₀ e r sy sv ha hb hzw hy hyv hr hsv hsy`. Establish `hz : z ≠ 0` using `left_ne_zero_of_mul_eq_one hzw`. Establish `hw : w = z⁻¹` using `eq_inv_of_mul_eq_one_right hzw`. Establish `haN : a ^ N ≠ 0` using `pow_ne_zero _ ha`. Establish `hbN : b ^ N ≠ 0` using `pow_ne_zero _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha2 : a ^ (2 * N) ≠ 0` using `pow_ne_zero _ ha`. Establish `hy' : y' * y = a ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) k)`. Establish `h1 : y * ((a ^ (2 * N))⁻¹ • y') = 1`. Rewrite using `[Matrix.mul_smul, hy, smul_smul, inv_mul_cancel₀ ha2, one_smul]`. Establish `h2` using `mul_eq_one_comm.mp h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.smul_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, mul_inv_cancel₀ ha2, one_smul]`. Use `_ = _ := by rw [h2]`. Establish `hD : r * sv = v * Matrix.diagonal (fun i => z ^ ((p i : ℤ) - q))`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdd : Matrix.diagonal (fun j => w ^ p j) * Matrix.diagonal (fun j => z ^ p j) = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[← mul_pow, mul_comm, hzw, one_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiag : w ^ q • Matrix.diagonal (fun j => z ^ p j) = Matrix.diagonal (fun i => z ^ ((p i : ℤ) - q))`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.smul_apply, Matrix.diagonal_apply_eq, smul_eq_mul]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_sub₀ hz, zpow_natCast, zpow_natCast, hw, inv_pow, div_eq_mul_inv, mul_comm]`. Simplify using `[Matrix.diagonal_apply_ne _ hij]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hdd, Matrix.mul_one]`. Use `_ = (w ^ q • v) * Matrix.diagonal (fun j => z ^ p j) := by rw [← Matrix.mul_assoc, hsv]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = _ := by rw [Matrix.smul_mul, ← Matrix.mul_smul, hdiag]`. Establish `hyev : y * e * v₀ = a ^ N • (r * sv)`. Establish `h1 : b ^ N • (y * e * v₀) = b ^ N • (a ^ N • (r * sv))`. Rewrite using `[← Matrix.smul_mul, ← hr, Matrix.smul_mul, Matrix.mul_assoc, hsy, Matrix.mul_smul, smul_comm]`. Conclude with `smul_right_injective _ hbN h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy'v : y' * v = a ^ N • v₀`. Establish `h1 : a ^ N • (y' * v) = a ^ N • (a ^ N • v₀)`. Rewrite using `[← Matrix.mul_smul, ← hyv, ← Matrix.mul_assoc, hy', Matrix.smul_mul, Matrix.one_mul, smul_smul, ← pow_add, two_mul]`. Conclude with `smul_right_injective _ haN h1`. Use `⟨(a ^ (2 * N))⁻¹ • (y * e * y'), ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Matrix.smul_mul, Matrix.mul_assoc, hy', Matrix.mul_smul, Matrix.mul_one, smul_smul, inv_mul_cancel₀ ha2, one_smul]`. Establish `hc : (a ^ (2 * N))⁻¹ * a ^ N * a ^ N = 1`. Rewrite using `[mul_assoc, ← pow_add, ← two_mul, inv_mul_cancel₀ ha2]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_assoc, hy'v, Matrix.mul_smul, hyev, smul_smul, smul_smul, hc, one_smul, hD]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ht_operator_of_galois_relations : ∀ {k : Type} [Field k] (d N q : ℕ) (p : Fin d → ℕ) (a b z w : k) (y y' v v₀ e r sy sv : Matrix (Fin d) (Fin d) k), a ≠ 0 → b ≠ 0 → z * w = 1 → y * y' = a ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) k) → y * v₀ = a ^ N • v → a ^ N • (r * sy) = b ^ N • (y * e) → r * sv * Matrix.diagonal (fun j => w ^ p j) = w ^ q • v → sy * v₀ = b ^ N • sv → ∃ u : Matrix (Fin d) (Fin d) k, u * y = y * e ∧ u * v = v * Matrix.diagonal (fun i => z ^ ((p i : ℤ) - q)) := by
   intro k _ d N q p a b z w y y' v v₀ e r sy sv ha hb hzw hy hyv hr hsv hsy

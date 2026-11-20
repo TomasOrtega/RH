@@ -5,7 +5,7 @@ namespace GlobalTheory
 open Finset
 
 /- English proof (translation)
-Use extensionality with `α`. Simplify using `[Finset.mem_finsuppAntidiag, Finsupp.degree_eq_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem setOf_degree_eq_coe_finsuppAntidiag (σ : Type*) [Fintype σ] [DecidableEq σ] (a : ℕ) :
     {α : σ →₀ ℕ | α.degree = a} = ↑(finsuppAntidiag (univ : Finset σ) a) := by
@@ -13,7 +13,7 @@ theorem setOf_degree_eq_coe_finsuppAntidiag (σ : Type*) [Fintype σ] [Decidable
   simp [Finset.mem_finsuppAntidiag, Finsupp.degree_eq_sum]
 
 /- English proof (translation)
-Rewrite using `[setOf_degree_eq_coe_finsuppAntidiag, Set.ncard_coe_finset, Finset.card_finsuppAntidiag_nat_eq_choose, Finset.card_univ, Nat.add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ncard_degree_eq (σ : Type*) [Fintype σ] (a : ℕ) :
     {α : σ →₀ ℕ | α.degree = a}.ncard = (a + Fintype.card σ - 1).choose a := by
@@ -22,9 +22,9 @@ theorem ncard_degree_eq (σ : Type*) [Fintype σ] (a : ℕ) :
     Finset.card_finsuppAntidiag_nat_eq_choose, Finset.card_univ, Nat.add_comm]
 
 /- English proof (translation)
-Establish `hset : {α : σ →₀ ℕ | α.degree ≤ k} = ↑((range (k + 1)).biUnion fun a => finsuppAntidiag (univ : Finset σ) a)`. Use extensionality with `α`. Simplify using `[Finset.mem_finsuppAntidiag, Finsupp.degree_eq_sum]`. Rewrite using `[hset, Set.ncard_coe_finset, Finset.card_biUnion]`. Repeatedly rewrite using `[Finset.card_finsuppAntidiag_nat_eq_choose, Finset.card_univ, ← Nat.multichoose_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `Nat.sum_range_multichoose k _`. Introduce `a _ b _ hab`. Conclude with `Finset.disjoint_left.2 fun α h1 h2 => hab ((Finset.mem_finsuppAntidiag.1 h1).1.symm.trans (Finset.mem_finsuppAntidiag.1 h2).1)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ncard_degree_le (σ : Type*) [Fintype σ] (k : ℕ) :
     {α : σ →₀ ℕ | α.degree ≤ k}.ncard = (k + Fintype.card σ).choose (Fintype.card σ) := by
@@ -41,7 +41,7 @@ theorem ncard_degree_le (σ : Type*) [Fintype σ] (k : ℕ) :
       hab ((Finset.mem_finsuppAntidiag.1 h1).1.symm.trans (Finset.mem_finsuppAntidiag.1 h2).1)
 
 /- English proof (translation)
-Establish `h` using `ncard_degree_eq σ a`. Rewrite `h` using `[← Nat.card_coe_set_eq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_degree_eq (σ : Type*) [Fintype σ] (a : ℕ) :
     Nat.card {α : σ →₀ ℕ // α.degree = a} = (a + Fintype.card σ - 1).choose a := by
@@ -50,7 +50,7 @@ theorem natCard_degree_eq (σ : Type*) [Fintype σ] (a : ℕ) :
   exact h
 
 /- English proof (translation)
-Establish `h` using `ncard_degree_le σ k`. Rewrite `h` using `[← Nat.card_coe_set_eq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_degree_le (σ : Type*) [Fintype σ] (k : ℕ) :
     Nat.card {α : σ →₀ ℕ // α.degree ≤ k} = (k + Fintype.card σ).choose (Fintype.card σ) := by
@@ -59,7 +59,7 @@ theorem natCard_degree_le (σ : Type*) [Fintype σ] (k : ℕ) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `natCard_degree_le σ k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fintypeCard_degree_le (σ : Type*) [Fintype σ] (k : ℕ)
     [Fintype {α : σ →₀ ℕ // α.degree ≤ k}] :

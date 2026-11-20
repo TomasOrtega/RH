@@ -1,27 +1,25 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.GlobalUnitaryForms.FibAbs
 
 /- English proof (translation)
-Introduce `G _ S U U' x Ux s₀ hS hU hx`. Establish `hmem : ∀ w : ↥(U' ⊓ S), (s₀ : G) * x * (w : G) * x⁻¹ ∈ S`. Introduce `w`. Establish `h1` using `S.mul_mem s₀.2 (hS.conj_mem (w : G) (Subgroup.mem_inf.1 w.2).2 x)`. Simplify `h1` using `[mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `g : ↥(U' ⊓ S) → ↥S ⧸ Ux` to `fun w => ((⟨_, hmem w⟩ : ↥S) : ↥S ⧸ Ux)`. Establish `hg : ∀ w w' : ↥(U' ⊓ S), g w = g w' ↔ (w : G)⁻¹ * (w' : G) ∈ U`. Introduce `w w'`. Simplify using `only [g]`. Rewrite using `[QuotientGroup.eq, hx]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : x⁻¹ * (((⟨_, hmem w⟩ : ↥S)⁻¹ * ⟨_, hmem w'⟩ : ↥S) : G) * x = (w : G)⁻¹ * (w' : G)`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`. Rewrite using `[e]`. Establish `hgT : ∀ w, g w ∈ {s : ↥S ⧸ Ux | (((Quotient.out s : ↥S) : G) * x : G ⧸ U') = ((s₀ : G) * x : G ⧸ U')}`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul Ux (⟨_, hmem w⟩ : ↥S)`. Simplify using `only [Set.mem_setOf_eq, g]`. Rewrite using `[hk, QuotientGroup.eq]`. Establish `hkU : x⁻¹ * ((k : ↥S) : G) * x ∈ U'` using `hU ((hx k).1 k.2)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((((⟨_, hmem w⟩ : ↥S) * (k : ↥S) : ↥S) : G) * x)⁻¹ * ((s₀ : G) * x) = (x⁻¹ * ((k : ↥S) : G) * x)⁻¹ * ((w : G))⁻¹`. Simplify using `only [Subgroup.coe_mul]`. Use `group`. Rewrite using `[e]`. Conclude with `U'.mul_mem (U'.inv_mem hkU) (U'.inv_mem (Subgroup.mem_inf.1 w.2).1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Introduce a local definition for the expression.
 
-Rewrite using `[← Nat.card_coe_set_eq]`. Unfold `Subgroup.relIndex Subgroup.index`. Set `F : ↥(U' ⊓ S) ⧸ U.subgroupOf (U' ⊓ S) → {s : ↥S ⧸ Ux | (((Quotient.out s : ↥S) : G) * x : G ⧸ U') = ((s₀ : G) * x : G ⧸ U')}` to `Quotient.lift (fun w => ⟨g w, hgT w⟩) (fun a b hab => Subtype.ext ((hg a b).2 (by`. Establish `h` using `QuotientGroup.leftRel_apply.1 hab`. Simplify `h)))` using `[Subgroup.mem_subgroupOf]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(Nat.card_congr (Equiv.ofBijective F ⟨?_, ?_⟩)).symm` and prove the remaining obligations. Introduce `a b hab`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective a`. Take `⟨b, rfl⟩` from `QuotientGroup.mk_surjective b`. Establish `h` using `congrArg Subtype.val hab`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Express the relevant statement in the definitionally equal form `g a = g b at h`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using (hg a b).1 h`. Introduce and unpack `⟨s, hs⟩`. Rewrite `hs` using `[Set.mem_setOf_eq]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hwS : x⁻¹ * ((s₀ : G)⁻¹ * ((Quotient.out s : ↥S) : G)) * x ∈ S`. Simplify using `using hS.conj_mem _ (S.mul_mem (S.inv_mem s₀.2) (Quotient.out s).2) x⁻¹`. Establish `hwU : x⁻¹ * ((s₀ : G)⁻¹ * ((Quotient.out s : ↥S) : G)) * x ∈ U'`. Establish `h1` using `QuotientGroup.eq.1 hs`. Establish `e : x⁻¹ * ((s₀ : G)⁻¹ * ((Quotient.out s : ↥S) : G)) * x = ((((Quotient.out s : ↥S) : G) * x)⁻¹ * ((s₀ : G) * x))⁻¹` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Conclude with `U'.inv_mem h1`. Use `⟨((⟨_, Subgroup.mem_inf.2 ⟨hwU, hwS⟩⟩ : ↥(U' ⊓ S)) : ↥(U' ⊓ S) ⧸ U.subgroupOf (U' ⊓ S)), Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g _ = s`. Use `conv_rhs => rw [← QuotientGroup.out_eq' s]`.
-
-Simplify using `only [g]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only`. Use `group`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem UpperTheory.orbitalFiber_card_formula : UpperTheory.V.Z.Sym.Glob.Fib.CardFib := by
   intro G _ S U U' x Ux s₀ hS hU hx

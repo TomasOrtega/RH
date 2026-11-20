@@ -15,25 +15,25 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Unfold `inLie at *`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.sub_mul, Matrix.mul_sub, sub_add_sub_comm, hX, hY, sub_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_sub {X Y : Mat k r} (hX : inLie k r X) (hY : inLie k r Y) : inLie k r (X - Y) := by
   unfold inLie at *
   rw [Matrix.conjTranspose_sub, Matrix.sub_mul, Matrix.mul_sub, sub_add_sub_comm, hX, hY, sub_zero]
 
 /- English proof (translation)
-Unfold `inLie at *`. Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add, add_add_add_comm, hX, hY, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_add {X Y : Mat k r} (hX : inLie k r X) (hY : inLie k r Y) : inLie k r (X + Y) := by
   unfold inLie at *
   rw [Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add, add_add_add_comm, hX, hY, add_zero]
 
 /- English proof (translation)
-Establish `hc : ContDiffOn ℝ (((1 + 1 : ℕ) : ℕ∞) : WithTop ℕ∞) F U` using `by simpa using hF`. Establish `hφ2 : CkOn ((1 : ℕ∞) + 1) (GV k r) φ`. Establish `e : ((1 : ℕ∞) + 1) = 2` using `by norm_num`. Rewrite using `[e]`. Conclude with `hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφ1 : ∀ X : Mat k r, inLie k r X → CkOn 1 (GV k r) (Dx (false, X) φ)` using `fun X hX => CkOn_Dx (x := (false, X)) hX hφ2`. Establish `hop : ∀ X Y : Mat k r, inLie k r X → inLie k r Y → Dx (false, X) (Dx (false, Y) φ) g = fderiv ℝ (fderiv ℝ F) g (g * X) (g * Y) + fderiv ℝ F g (g * X * Y)` using `fun X Y hX hY => Formalism.FourierDecayAlt.P.B4.op_op_ext false false hU hc hff hX hY hgU hg`. Establish `hEcd : Q.EH k r c d φ = fun h => Dx (false, Xa k r c d) φ h + Complex.I • Dx (false, Xb k r c d) φ h` using `EH_eq c d φ`. Rewrite using `[EH_eq a b, hEcd]`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Dx_add (x := (false, Xa k r a b)) (Xa_lie a b) (hφ1 _ (Xa_lie c d)) (CkOn_smul _ (hφ1 _ (Xb_lie c d))) g hg, Dx_add (x := (false, Xb k r a b)) (Xb_lie a b) (hφ1 _ (Xa_lie c d)) (CkOn_smul _ (hφ1 _ (Xb_lie c d))) g hg, Dx_smul, Dx_smul]`. Simplify using `only`. Rewrite using `[hop _ _ (Xa_lie a b) (Xa_lie c d), hop _ _ (Xa_lie a b) (Xb_lie c d), hop _ _ (Xb_lie a b) (Xa_lie c d), hop _ _ (Xb_lie a b) (Xb_lie c d)]`. Simplify using `only [smul_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem EHH {φ F : Mat k r → E} {U : Set (Mat k r)} {g : Mat k r} (hφ : CkOn 2 (GV k r) φ) (hU : IsOpen U)
     (hgU : g ∈ U) (hg : g ∈ GV k r) (hF : ContDiffOn ℝ 2 F U) (hff : ∀ h ∈ U, h ∈ GV k r → φ h = F h)
@@ -71,9 +71,7 @@ theorem EHH {φ F : Mat k r → E} {U : Set (Mat k r)} {g : Mat k r} (hφ : CkOn
   abel
 
 /- English proof (translation)
-Use `split_ifs with h1 h2 h2`. Apply the tactic sequence `all_goals first`. Consider the case `(try subst h1)`. Apply the tactic sequence `(try subst h2)`. Simplify using `[Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne, *]`.
-
-Consider the case `ext i j`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, mul_ite, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify the hypotheses and the goal together. A detailed English derivation is pending.
 -/
 theorem single_comm (a b c d : Fin (2 * r + k + 1)) :
     Matrix.single a b (1 : ℂ) * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1 =
@@ -88,23 +86,17 @@ theorem single_comm (a b c d : Fin (2 * r + k + 1)) :
         Finset.sum_ite_eq']
 
 /- English proof (translation)
-Introduce `a b c d φ hφ g hg`. Take `⟨U, F, hU, hgU, hF, hff⟩` from `hφ g hg`. Establish `hF2 : ContDiffOn ℝ 2 F U` using `by exact_mod_cast hF`. Establish `hF' : HasFDerivAt F (fderiv ℝ F g) g` using `((hF2.differentiableOn (by norm_num)).differentiableAt (hU.mem_nhds hgU)).hasFDerivAt`. Establish `hsym : ∀ v w : Mat k r, fderiv ℝ (fderiv ℝ F) g v w = fderiv ℝ (fderiv ℝ F) g w v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ContDiffOn ℝ (((1 + 1 : ℕ) : ℕ∞) : WithTop ℕ∞) F U` using `by simpa using hF2`. Use `(hc.contDiffAt (hU.mem_nhds hgU)).isSymmSndFDerivAt (by rw [minSmoothness_of_isRCLikeNormedField]; norm_cast)` as an intermediate fact. Introduce `v w`. Conclude with `this v w`. Use `set A1 := Xa k r a b with hA1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set A2 := Xb k r a b with hA2`. Use `set C1 := Xa k r c d with hC1`. Use `set C2 := Xb k r c d with hC2`. Use `set D1 := fderiv ℝ F g with hD1`. Use `set D2 := fderiv ℝ (fderiv ℝ F) g with hD2`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : (if b = c then Q.EH k r a d φ g else 0) - (if d = a then Q.EH k r c b φ g else 0) = Psi D1 g (Matrix.single a b (1 : ℂ) * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1)`. Rewrite using `[single_comm, Psi_sub]`. Use `congr 1`. Use `split_ifs`. Conclude with `EH_psi hU hgU hg hF' hff a d`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Psi_zero D1 g).symm`. Use `split_ifs`. Conclude with `EH_psi hU hgU hg hF' hff c b`. Conclude with `(Psi_zero D1 g).symm`. Establish `e1 : A1 + Complex.I • A2 = Matrix.single a b 1` using `hp_decomp _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : C1 + Complex.I • C2 = Matrix.single c d 1` using `hp_decomp _`. Establish `hbr : Matrix.single a b (1 : ℂ) * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1 = ((A1 * C1 - C1 * A1) - (A2 * C2 - C2 * A2)) + Complex.I • ((A1 * C2 - C2 * A1) + (A2 * C1 - C1 * A2))`. Rewrite using `[← e1, ← e2]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul]`. Establish `hI : Complex.I * Complex.I = -1` using `Complex.I_mul_I`.
-
-Take the linear combination `(norm := module) hI • (A2 * C2 - C2 * A2)`. Establish `hl1 : inLie k r ((A1 * C1 - C1 * A1) - (A2 * C2 - C2 * A2))` using `lie_sub (lie_bracket (Xa_lie a b) (Xa_lie c d)) (lie_bracket (Xb_lie a b) (Xb_lie c d))`. Establish `hl2 : inLie k r ((A1 * C2 - C2 * A1) + (A2 * C1 - C1 * A2))` using `lie_add (lie_bracket (Xa_lie a b) (Xb_lie c d)) (lie_bracket (Xb_lie a b) (Xa_lie c d))`. Establish `hP : Psi D1 g (((A1 * C1 - C1 * A1) - (A2 * C2 - C2 * A2)) + Complex.I • ((A1 * C2 - C2 * A1) + (A2 * C1 - C1 * A2))) = D1 (g * ((A1 * C1 - C1 * A1) - (A2 * C2 - C2 * A2))) + Complex.I • D1 (g * ((A1 * C2 - C2 * A1) + (A2 * C1 - C1 * A2)))`. Unfold `Psi`.
-
-Rewrite using `[(hp_of_parts hl1 hl2).1, (hp_of_parts hl1 hl2).2]`. Rewrite using `[hR, hbr, hP, EHH hφ hU hgU hg hF2 hff a b c d, EHH hφ hU hgU hg hF2 hff c d a b]`. Rewrite using `[← hA1, ← hA2, ← hC1, ← hC2, ← hD1, ← hD2]`. Rewrite using `[hsym (g * C1) (g * A1), hsym (g * C2) (g * A1), hsym (g * C1) (g * A2), hsym (g * C2) (g * A2)]`. Simplify using `only [Matrix.mul_sub, Matrix.mul_add, map_sub, map_add, ← Matrix.mul_assoc]`.
-
-Establish `hI : Complex.I * Complex.I = -1` using `Complex.I_mul_I`. Take the linear combination `(norm := module) hI • (D1 (g * A2 * C2) - D1 (g * C2 * A2))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem EH_HGl : HGl (Q.EH (E := E) k r) := by
   intro a b c d φ hφ g hg
@@ -157,11 +149,9 @@ theorem EH_HGl : HGl (Q.EH (E := E) k r) := by
   linear_combination (norm := module) hI • (D1 (g * A2 * C2) - D1 (g * C2 * A2))
 
 /- English proof (translation)
-Introduce `k r E _ _ y u f hy hf h hh`. Establish `hyu` using `gv_unit hy`. Establish `hQP : y * y⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hyu`. Establish `hm : Q.mdim k r 0 = 2 * r + k + 1` using `by simp [Q.mdim]`. Use `set e : Fin (Q.mdim k r 0) ≃ Fin (2 * r + k + 1) := finCongr hm with he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : Q.posL k r 0 = ⇑e`. Use function extensionality and compare the values at `j`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[Q.posL, he]`. Rewrite using `[hpos]`.
-
-Conclude with `ad_main (Q.EH k r) EH_HC EH_HL EH_HA EH_HS EH_HGl (EHc k r y) (EHc_HL hy) hQP (fun c d φ hφ g hg => EHc_change hy c d φ hφ g hg) e u f (by rw [hm]; exact hf) h hh`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capAdInv : CapAdInv := by
   intro k r E _ _ y u f hy hf h hh
@@ -176,12 +166,12 @@ theorem capAdInv : CapAdInv := by
     (fun c d φ hφ g hg => EHc_change hy c d φ hφ g hg) e u f (by rw [hm]; exact hf) h hh
 
 /- English proof (translation)
-The claim follows from `cvRight_of capAdInv`.
+A detailed English derivation is pending.
 -/
 theorem cVRight : JF.CVRight := cvRight_of capAdInv
 
 /- English proof (translation)
-The claim follows from `cvRho_of capAdInv`.
+A detailed English derivation is pending.
 -/
 theorem cVRho : JF.CVRho := cvRho_of capAdInv
 

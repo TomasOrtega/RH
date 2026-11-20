@@ -14,7 +14,7 @@ namespace GlobalTheory.GKinfStable
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Establish `hd : e ∣ l ^ a - 1` using `⟨1, by omega⟩`. Use `ϖ.isGalois_field a hd` as an intermediate fact. Conclude with `(IntermediateField.normal_iff_forall_map_le'.1 inferInstance g) ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_field_le (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (he : e + 1 = l ^ a) (g : GQ l)
     {x : Om l} (hx : x ∈ (ϖ.field a).1) : g x ∈ (ϖ.field a).1 := by
@@ -23,7 +23,7 @@ theorem map_field_le (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (he : e 
   exact (IntermediateField.normal_iff_forall_map_le'.1 inferInstance g) ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Introduce `h hh`. Use `(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hh (g x) (map_field_le a e ϖ he g hx)`. Simplify using `only [AlgEquiv.mul_apply, h1]`. Rewrite using `[← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (he : e + 1 = l ^ a) (g : GQ l) :
     ∀ h ∈ GK (ϖ.field a), g⁻¹ * h * g ∈ GK (ϖ.field a) := by
@@ -34,7 +34,7 @@ theorem conj_mem (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (he : e + 1 
   rw [← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Set `F` to `(ϖ.field a).1`. Set `φ : ↥F →ₐ[ℚ_[l]] ↥F` to `{ toFun := fun y => ⟨g y, map_field_le a e ϖ he g y.2⟩ map_one' := Subtype.ext (map_one g : g (1 : Om l) = 1) map_mul' := fun y z => Subtype.ext (map_mul g (y : Om l) (z : Om l)) map_zero' := Subtype.ext (map_zero g : g (0 : Om l) = 0) map_add' := fun y z => Subtype.ext (map_add …`. Use `⟨{ toFun := fun x => ⟨φ x, x.2.map (φ.restrictScalars ℤ_[l])⟩ map_one' := Subtype.ext (map_one φ : φ (1 : ↥F) = 1) map_mul' := fun y z => Subtype.ext (map_mul φ (y : ↥F) (z : ↥F)) map_zero' := Subtype.ext (map_zero φ : φ (0 : ↥F) = 0) map_add' := fun y z => Subtype.ext (map_add φ …` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem res_exists (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (he : e + 1 = l ^ a) (g : GQ l) :
     ∃ σ : ↥(OL (ϖ.field a)) →+* ↥(OL (ϖ.field a)),
@@ -54,7 +54,7 @@ theorem res_exists (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (he : e + 
             map_add' := fun y z => Subtype.ext (map_add φ (y : ↥F) (z : ↥F)) }, fun x => rfl⟩
 
 /- English proof (translation)
-Use `letI := zlLat T`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul w x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Equip the data with the indicated structure. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem kappa_act {LL : FinExt l} (T : QLat LL) (g : Gl l) (z : letI := zlLat T; WCb l ⊗[ℤ_[l]] ↥T.L.T) :
     letI := zlLat T
@@ -67,7 +67,7 @@ theorem kappa_act {LL : FinExt l} (T : QLat LL) (g : Gl l) (z : letI := zlLat T;
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (LinearMap.congr_fun (map_mul T.ρ g h) (x : T.V)).symm`.
+A detailed English derivation is pending.
 -/
 theorem actZ_mul_apply {LL : FinExt l} (T : QLat LL) (g h : Gl l) (x : ↥T.L.T) :
     letI := zlLat T
@@ -75,7 +75,7 @@ theorem actZ_mul_apply {LL : FinExt l} (T : QLat LL) (g h : Gl l) (x : ↥T.L.T)
   Subtype.ext (LinearMap.congr_fun (map_mul T.ρ g h) (x : T.V)).symm
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (LinearMap.congr_fun (map_one T.ρ) (x : T.V))`.
+A detailed English derivation is pending.
 -/
 theorem actZ_one_apply {LL : FinExt l} (T : QLat LL) (x : ↥T.L.T) :
     letI := zlLat T
@@ -87,21 +87,17 @@ end GlobalTheory.GKinfStable
 open GlobalTheory.GKinfStable in
 
 /- English proof (translation)
-Introduce `BS l _ a e _ _ ϖ LL _ _ ι _ _ P T I hBK g γ hcov v hv`. Establish `he : e + 1 = l ^ a` using `TameDescentExponentData.succ_eq (K := ↥LL.1)`. Use `choose σ hσ using res_exists (l := l) a e ϖ he (sQ l g)`. Use `choose ψ hψ using GlobalTheory.T.covers_tame_acts_ringEndo_wittPowerSeries a e ϖ LL (sQ l g) γ hcov`. Use `choose H hH using GlobalTheory.T.breuilKisinPrism_galoisLift_isPrismHom a e ϖ (sQ l g) σ hσ ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `letI := zlLat T`. Take `⟨E, j, hR, hiff⟩` from `hBK`. Set `ρg : ↥T.L.T ≃ₗ[ℤ_[l]] ↥T.L.T` to `LinearEquiv.ofLinear (actZ T g) (actZ T g⁻¹) (LinearMap.ext fun x => (actZ_mul_apply T g g⁻¹ x).trans ((congrArg (fun k => actZ T k x) (mul_inv_cancel g)).trans (actZ_one_apply T x))) (LinearMap.ext fun x => (actZ_mul_apply T g⁻¹ g x).trans ((congrArg (fun k => actZ T k x) (inv_m …`. Establish `hPR` using `GlobalTheory.T.realisesEtaleFCrystal_pullback_galois (ϖ.field a) E ↥T.L.T _ j hR (sQ l g) σ hσ (conj_mem (l := l) a e ϖ he (sQ l g)) ρg (fun h h' hh x => by`. Establish `e2 : g * inclG (ϖ.field a) h' = inclG (ϖ.field a) h * g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show inclG (ϖ.field a) h' = g⁻¹ * inclG (ϖ.field a) h * g from Subtype.ext hh]`. Use `group`. Conclude with `(actZ_mul_apply T g _ x).trans ((congrArg (fun k => actZ T k x) e2).trans (actZ_mul_apply T _ g x).symm))`. Use `choose gH j' hgH hR' hj' using hPR`. Establish `hBS` using `(BS l (ϖ.field a) (ainfObj _) (ainfId _) (isAinf_ainfObj _)).2 ↥T.L.T ↥T.L.T _ _ (E.pullback σ) E j' j hR' hR LinearMap.id (fun _ _ => rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose u hu using hBS.exists`. Establish `hx` using `(hiff (I.j (toW (thetaW a LL) ϖ P v))).2 ⟨v.1, hv, rfl⟩`. Use `choose x hx using hx`. Establish `hm` using `(hiff (kappa T (j (E.tr (ϖ.toAinf a) (u.u (ϖ.prism a) (E.tr H x)))))).1 ⟨_, rfl⟩`. Use `choose m' hm' hm'eq using hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : gH.comp (ϖ.toAinf a) = ((ϖ.toAinf a).restrict σ).comp H` using `Hom.ext' (RingHom.ext fun y => by`. Express the relevant statement in the definitionally equal form `gH.f (ϖ.ev a y) = ϖ.ev a (H.f y)`. Rewrite using `[hH]`. Conclude with `(hgH _).trans (hψ y).symm)`. Establish `key : TensorProduct.map (galW l (sQ l g)).toLinearMap (actZ T g) (j (E.tr (ϖ.toAinf a) x)) = j (E.tr (ϖ.toAinf a) (u.u (ϖ.prism a) (E.tr H x)))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : j (u.u (ainfObj _) ((E.pullback σ).tr (ϖ.toAinf a) (E.tr H x))) = j' ((E.pullback σ).tr (ϖ.toAinf a) (E.tr H x))`. Use `(hu _).trans ?_` and prove the remaining obligations. Conclude with `LinearMap.lTensor_id_apply _ _ _`. Use `(hj' (E.tr (ϖ.toAinf a) x)).symm.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((congrArg j (u.u_tr (ϖ.toAinf a) (E.tr H x))).symm.trans h2).symm` and prove the remaining obligations.
-
-Use `congrArg j' ?_` and prove the remaining obligations. Use `((E.tr_comp _ _ x).symm).trans ?_` and prove the remaining obligations. Use `(congrArg (fun f => E.tr f x) e1).trans ?_` and prove the remaining obligations. Conclude with `E.tr_comp _ _ x`. Use `⟨⟨m', mem_ME_of_mem_M hm'⟩, hm', ?_⟩` and prove the remaining obligations.
-
-Apply `I.j.injective` to reduce the goal to its premises. Use `(Ident.j_act _ _ _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ hm'eq` and prove the remaining obligations. Use `(congrArg (TWact (galOW (↥(OL LL)) (sQ l g)) T g) hx).trans ?_` and prove the remaining obligations. Conclude with `(kappa_act T g _).trans (congrArg _ key)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GKinfStable.main : GlobalTheory.Published.BhattScholzeCrystallineLattices → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T), IsBK (T := resF T (ϖ.field a)) (I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) → ∀ (g : Gl l) (γ : TameGal ↥LL.1 l e a), Covers ↥LL.1 (thetaW a LL) ϖ (sQ l g) γ → ∀ v : ME P, v.1 ∈ P.M → ∃ v' : ME P, v'.1 ∈ P.M ∧ I.act (sQ l g) g (toW (thetaW a LL) ϖ P v) = toW (thetaW a LL) ϖ P v' := by
   intro BS l _ a e _ _ ϖ LL _ _ ι _ _ P T I hBK g γ hcov v hv

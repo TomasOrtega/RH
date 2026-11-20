@@ -3,19 +3,17 @@ import Mathlib
 namespace Bl.general_b_fact_third_version
 
 /- English proof (translation)
-Introduce `E _ _ V _ _ _ _ Λ hΛ v`. Establish `key : ∀ c : E, ∃ m : ℕ, m ≠ 0 ∧ ∃ a : NumberField.RingOfIntegers E, (m : E) * c = algebraMap (NumberField.RingOfIntegers E) E a`. Introduce `c`. Establish `hc : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (IsAlgebraic.of_finite ℚ c)`. Take `⟨m, s, hm, h⟩` from `hc.exists_nsmul_eq (NumberField.RingOfIntegers E)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, hm, s, by rw [← h, nsmul_eq_mul]⟩`. Establish `h1 : ∀ (k : ℕ) (w : V), w ∈ Λ → (k : E) • w ∈ Λ` using `fun k w hw => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `Λ.nsmul_mem hw k`. Set `S : Submodule E V` to `{ carrier := {w | ∃ m : ℕ, m ≠ 0 ∧ (m : E) • w ∈ Λ} add_mem' := by`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a b ⟨m, hm, ha⟩ ⟨n, hn, hb⟩`. Use `⟨m * n, mul_ne_zero hm hn, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, smul_add]`. Use `Λ.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 _ _ ha`. Rewrite using `[mul_smul]`. Conclude with `h1 _ _ hb`. Use the proof step `zero_mem' := ⟨1, one_ne_zero, by simp⟩`. Use the proof step `smul_mem' := by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `c w ⟨m, hm, hw⟩`. Take `⟨n, hn, a, ha⟩` from `key c`. Use `⟨n * m, mul_ne_zero hn hm, ?_⟩` and prove the remaining obligations. Establish `e : ((n * m : ℕ) : E) • (c • w) = a • ((m : E) • w)`. Rewrite using `[← algebraMap_smul E a ((m : E) • w), ← ha, Nat.cast_mul, smul_smul, smul_smul]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Λ.smul_mem a hw }`. Establish `hle : Submodule.span E (Λ : Set V) ≤ S` using `Submodule.span_le.mpr (fun w hw => ⟨1, one_ne_zero, by simpa using hw⟩)`.
-
-Rewrite `hle` using `[hΛ.span_eq_top]`. Take `⟨m, hm, h⟩` from `hle (Submodule.mem_top : v ∈ (⊤ : Submodule E V))`. Conclude with `⟨m, hm, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {E : Type} [inst : Field.{0} E] [@NumberField.{0} E inst] {V : Type} [inst_2 : AddCommGroup.{0} V]

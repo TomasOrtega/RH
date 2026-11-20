@@ -4,21 +4,19 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hV hR F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 Fx A h e he`. Establish `hmem : ∀ b ∈ rB ℂ K (xv x) {0}, algebraMap K K' b ∈ rB ℂ K' (xv x) {0}` using `fun b hb => ((hR F K K' d x j2 h.toY0).2.2.2.1 {0} b hb).1`. Set `ι : rB ℂ K (xv x) {0} →ₐ[ℂ] rB ℂ K' (xv x) {0}` to `((IsScalarTower.toAlgHom ℂ K K').comp (rB ℂ K (xv x) {0}).val).codRestrict _ fun b => hmem b b.2`. Establish `hι : ∀ (b : K) (hb : b ∈ rB ℂ K (xv x) {0}), (e.1.comp ι) ⟨b, hb⟩ = e.1 ⟨_, hmem b hb⟩` using `fun _ _ => rfl`. Use `⟨⟨e.1.comp ι, fun j => ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hι]`. Use `Eq.trans ?_ (e.2 j)` and prove the remaining obligations. Use `congr 2`. Conclude with `(IsScalarTower.algebraMap_apply F K K' _).symm`. Introduce and unpack `v c ⟨b, hb, hbv, hzb, hz⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hzb` using `[hι]`. Rewrite `hz` using `[hι, hι]`. Establish `h1b` using `hmem b hb`. Establish `h1bv` using `hmem _ hbv`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `hm : algebraMap K K' b * algebraMap K K' v ∈ rB ℂ K' (xv x) {0}`. Rewrite using `[← map_mul]`. Conclude with `h1bv`. Use `⟨_, h1b, hm, hzb, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 2`. Conclude with `(map_mul _ _ _).symm`. Establish `fix` using `(h.fx e).1 he`. Take `⟨-, ⟨ev, hev⟩, -, hinv⟩` from `hV K' (rB ℂ K' (xv x) {0}) e.1`. Establish `v1` using `fix b hb h1b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `v2` using `fix _ hbv h1bv`. Take `⟨m1, hm1⟩` from `(hev _ _).1 v1`. Take `⟨m2, hm2⟩` from `(hev _ _).1 v2`. Take `⟨hne, hi⟩` from `hinv _ _ v1 hzb`. Establish `hv : j2 v = (j2 b)⁻¹ * j2 (b * v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, inv_mul_cancel_left₀ hne]`. Establish `hl : j2 v ∈ loc (rB ℂ K' (xv x) {0}) e.1`. Rewrite using `[hv]`. Conclude with `mul_mem hi m2`. Use `(hev _ _).2 ⟨hl, ?_⟩` and prove the remaining obligations.
-
-Establish `hmul : (⟨j2 b, m1⟩ : loc (rB ℂ K' (xv x) {0}) e.1) * ⟨j2 v, hl⟩ = ⟨j2 (b * v), m2⟩` using `Subtype.ext (map_mul j2 b v).symm`. Use `congrArg ev hmul` as an intermediate fact. Rewrite `this` using `[map_mul, hm1, hm2, hz]`. Conclude with `mul_left_cancel₀ hzb this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.fixZ_of :
     ValBasic → RYBasic → FixZ := by

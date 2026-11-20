@@ -15,7 +15,7 @@ section ND
 variable {R : Type} [CommRing R] {n' k : ℕ}
 
 /- English proof (translation)
-Unfold `normDeg`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `v _ hv`. Rewrite `hv` using `[Finsupp.notMem_support_iff]`. Simplify using `[hv]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem normDeg_univ (r : ℕ) (m : TV n' k →₀ ℕ) :
     normDeg r m = ∑ v : TV n' k, if IsNormal r v then m v else 0 := by
@@ -26,7 +26,7 @@ theorem normDeg_univ (r : ℕ) (m : TV n' k →₀ ℕ) :
   simp [hv]
 
 /- English proof (translation)
-Simplify using `only [normDeg_univ, Finsupp.coe_add, Pi.add_apply, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem normDeg_add (r : ℕ) (m m' : TV n' k →₀ ℕ) : normDeg r (m + m') = normDeg r m + normDeg r m' := by
   simp only [normDeg_univ, Finsupp.coe_add, Pi.add_apply, ← Finset.sum_add_distrib]
@@ -37,7 +37,7 @@ def NDsub (R : Type) [CommRing R] (n' k r T : ℕ) : Submodule R (MvPolynomial (
   restrictSupport R {mm | normDeg r mm ≤ T}
 
 /- English proof (translation)
-Use `show P ∈ restrictSupport R {mm | normDeg r mm ≤ T} ↔ _`. Conclude with `⟨fun h mm hm => h hm, fun h mm hm => h mm hm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_NDsub {r T : ℕ} {P : MvPolynomial (TV n' k) R} :
     P ∈ NDsub R n' k r T ↔ ∀ mm ∈ P.support, normDeg r mm ≤ T := by
@@ -45,7 +45,7 @@ theorem mem_NDsub {r T : ℕ} {P : MvPolynomial (TV n' k) R} :
   exact ⟨fun h mm hm => h hm, fun h mm hm => h mm hm⟩
 
 /- English proof (translation)
-Introduce `P hP`. Rewrite `hP`, the goal using `[mem_NDsub]`. Introduce `mm hm`. Conclude with `(hP mm hm).trans h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem NDsub_mono {r T T' : ℕ} (h : T ≤ T') : NDsub R n' k r T ≤ NDsub R n' k r T' := by
   intro P hP
@@ -54,11 +54,11 @@ theorem NDsub_mono {r T T' : ℕ} (h : T ≤ T') : NDsub R n' k r T ≤ NDsub R 
   exact (hP mm hm).trans h
 
 /- English proof (translation)
-Rewrite using `[normDeg_add]`. Establish `h1 : normDeg r (Finsupp.single v 1 : TV n' k →₀ ℕ) ≤ 1`. Rewrite using `[normDeg_univ]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : normDeg r (mm - Finsupp.single v' 1) ≤ normDeg r mm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[normDeg_univ, normDeg_univ]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `w _`. Use `split_ifs`. Simplify using `only [Finsupp.tsub_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `tsub_le_self`. Conclude with `le_rfl`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem nd_move (r : ℕ) (mm : TV n' k →₀ ℕ) (v v' : TV n' k) :
     normDeg r (Finsupp.single v 1 + (mm - Finsupp.single v' 1)) ≤ normDeg r mm + 1 := by
@@ -80,9 +80,9 @@ theorem nd_move (r : ℕ) (mm : TV n' k →₀ ℕ) (v v' : TV n' k) :
   omega
 
 /- English proof (translation)
-Rewrite `hP` using `[mem_NDsub]`. Rewrite using `[P.as_sum, map_sum, Finset.mul_sum]`. Use `Submodule.sum_mem _ fun mm hmm => ?_` and prove the remaining obligations. Rewrite using `[pderiv_monomial, ← pow_one (X v), ← monomial_single_add, mem_NDsub]`. Introduce `mm' hmm'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.mem_singleton.mp (support_monomial_subset hmm')]`. Conclude with `(nd_move r mm v v').trans (Nat.add_le_add_right (hP mm hmm) 1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nd_op (r T : ℕ) (v v' : TV n' k) {P : MvPolynomial (TV n' k) R} (hP : P ∈ NDsub R n' k r T) :
     X v * pderiv v' P ∈ NDsub R n' k r (T + 1) := by
@@ -95,9 +95,9 @@ theorem nd_op (r T : ℕ) (v v' : TV n' k) {P : MvPolynomial (TV n' k) R} (hP : 
   exact (nd_move r mm v v').trans (Nat.add_le_add_right (hP mm hmm) 1)
 
 /- English proof (translation)
-Rewrite `*` using `[mem_NDsub]`. Introduce `mm hmm`. Establish `h1` using `support_mul P Q hmm`. Rewrite `h1` using `[Finset.mem_add]`. Take `⟨a, ha, b, hb, rfl⟩` from `h1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[normDeg_add]`. Conclude with `Nat.add_le_add (hP a ha) (hQ b hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nd_mul {r T T' : ℕ} {P Q : MvPolynomial (TV n' k) R} (hP : P ∈ NDsub R n' k r T) (hQ : Q ∈ NDsub R n' k r T') :
     P * Q ∈ NDsub R n' k r (T + T') := by
@@ -110,9 +110,9 @@ theorem nd_mul {r T T' : ℕ} {P Q : MvPolynomial (TV n' k) R} (hP : P ∈ NDsub
   exact Nat.add_le_add (hP a ha) (hQ b hb)
 
 /- English proof (translation)
-Simplify using `only [Lin_chain, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul]`. Establish `hm : ∀ a, ∑ c, N' s c b * N s a c = (1 : Matrix (Fin k) (Fin k) R) a b`. Introduce `a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h s, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`. Simplify using `[hm, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Lin_pderiv (N N' : Fin n' → Matrix (Fin k) (Fin k) R) (h : ∀ s, N s * N' s = 1) (s : Fin n') (b : Fin k)
     (f : MvPolynomial (Fin n' × Fin k) R) :
@@ -127,9 +127,9 @@ theorem Lin_pderiv (N N' : Fin n' → Matrix (Fin k) (Fin k) R) (h : ∀ s, N s 
   simp [hm, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[map_mul, Lin_X, Lin_pderiv N N' h, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, mul_assoc, ← smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (nd_op r T _ _ hf))`.
+A detailed English derivation is pending.
 -/
 theorem nd_Lin_op (N N' : Fin n' → Matrix (Fin k) (Fin k) R) (h : ∀ s, N s * N' s = 1) (r T : ℕ) (s : Fin n')
     (a b : Fin k) {f : MvPolynomial (Fin n' × Fin k) R} (hf : Lin N f ∈ NDsub R n' k r T) :
@@ -142,9 +142,9 @@ theorem nd_Lin_op (N N' : Fin n' → Matrix (Fin k) (Fin k) R) (h : ∀ s, N s *
   exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (nd_op r T _ _ hf))
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact hf`. Consider the case `cons y l ih => show Lin N (X (y.1, y.2.1) * pderiv (y.1, y.2.2) (opWord l f)) ∈ NDsub R n' k r (T + (l.length + 1))`. Rewrite using `[← Nat.add_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nd_Lin_op N N' h r (T + l.length) y.1 y.2.1 y.2.2 ih`.
+A detailed English derivation is pending.
 -/
 theorem nd_word (N N' : Fin n' → Matrix (Fin k) (Fin k) R) (h : ∀ s, N s * N' s = 1) (r T : ℕ)
     {f : MvPolynomial (Fin n' × Fin k) R} (hf : Lin N f ∈ NDsub R n' k r T) :
@@ -158,11 +158,11 @@ theorem nd_word (N N' : Fin n' → Matrix (Fin k) (Fin k) R) (h : ∀ s, N s * N
     exact nd_Lin_op N N' h r (T + l.length) y.1 y.2.1 y.2.2 ih
 
 /- English proof (translation)
-Introduce `l hl hc`. Establish `key : ∀ l : List (Fin n' × τ), (∀ z ∈ l, z.1 ∈ TT) → l.length = ∑ s ∈ TT, (l.filter fun z => z.1 = s).length`. Introduce `l hl`. Proceed by induction on `l with`. Consider the case `nil => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `cons z l ih`. Establish `e : ∀ s, ((z :: l).filter fun w => w.1 = s).length = (l.filter fun w => w.1 = s).length + if z.1 = s then 1 else 0`. Introduce `s`. Apply the tactic sequence `by_cases hs : z.1 = s <;> simp [List.filter_cons, hs]`. Rewrite using `[List.length_cons, ih (fun w hw => hl w (List.mem_cons_of_mem _ hw)), Finset.sum_congr rfl (fun s _ => e s), Finset.sum_add_distrib, Finset.sum_ite_eq]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hl z (by simp)]`. Rewrite using `[key l hl]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem word_length {τ : Type} (TT : Finset (Fin n')) (c : ℕ) :
     ∀ l : List (Fin n' × τ), (∀ z ∈ l, z.1 ∈ TT) → (∀ s, (l.filter fun z => z.1 = s).length ≤ c) →
@@ -186,11 +186,9 @@ theorem word_length {τ : Type} (TT : Finset (Fin n')) (c : ℕ) :
     _ = TT.card * c := by rw [Finset.sum_const, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `f hf`. Unfold `OpCl at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f0, hf0, l, h1, h2, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `NDsub_mono (Nat.add_le_add_left (word_length TT c l h1 h2) T) (nd_word N N' h r T (hM f0 hf0) l)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nd_OpCl (N N' : Fin n' → Matrix (Fin k) (Fin k) R) (h : ∀ s, N s * N' s = 1) (r T : ℕ) (TT : Finset (Fin n'))
     (c : ℕ) (M : Submodule R (MvPolynomial (Fin n' × Fin k) R)) (hM : ∀ f ∈ M, Lin N f ∈ NDsub R n' k r T) :

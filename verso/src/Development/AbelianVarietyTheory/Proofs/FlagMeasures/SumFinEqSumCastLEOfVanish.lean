@@ -5,9 +5,9 @@ open Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeter
 namespace GlobalTheory.LeadMinorTri
 
 /- English proof (translation)
-Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE hl) ((Fin.castLE_injective hl).injOn) (by simp) ?_ (by simp)` and prove the remaining obligations. Introduce `k _ hk`. Apply `hf` to reduce the goal to its premises. Assume the negation of the conclusion as `h`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hk ⟨⟨k.val, by omega⟩, by simp, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem sum_fin_eq_sum_castLE_of_vanish {n l : ℕ} (hl : l ≤ n) (f : Fin n → ℂ)
     (hf : ∀ k : Fin n, l ≤ k.val → f k = 0) :
@@ -20,7 +20,7 @@ theorem sum_fin_eq_sum_castLE_of_vanish {n l : ℕ} (hl : l ≤ n) (f : Fin n �
   exact hk ⟨⟨k.val, by omega⟩, by simp, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `sum_fin_eq_sum_castLE_of_vanish hl (fun k => c (Fin.castLE hl i) k * z k (Fin.castLE hl j)) ?_` and prove the remaining obligations. Introduce `k hk`. Rewrite using `[hc _ k (by rw [Fin.lt_def]; have := i.isLt; simp only [Fin.val_castLE]; omega), zero_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem leadBlock_lower_mul {n l : ℕ} (hl : l ≤ n) (c z : Matrix (Fin n) (Fin n) ℂ)
     (hc : ∀ i j, i < j → c i j = 0) :
@@ -33,7 +33,7 @@ theorem leadBlock_lower_mul {n l : ℕ} (hl : l ≤ n) (c z : Matrix (Fin n) (Fi
   rw [hc _ k (by rw [Fin.lt_def]; have := i.isLt; simp only [Fin.val_castLE]; omega), zero_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `sum_fin_eq_sum_castLE_of_vanish hl (fun k => z (Fin.castLE hl i) k * c k (Fin.castLE hl j)) ?_` and prove the remaining obligations. Introduce `k hk`. Rewrite using `[hc k _ (by rw [Fin.lt_def]; have := j.isLt; simp only [Fin.val_castLE]; omega), mul_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem leadBlock_mul_upper {n l : ℕ} (hl : l ≤ n) (z c : Matrix (Fin n) (Fin n) ℂ)
     (hc : ∀ i j, j < i → c i j = 0) :
@@ -46,11 +46,11 @@ theorem leadBlock_mul_upper {n l : ℕ} (hl : l ≤ n) (z c : Matrix (Fin n) (Fi
   rw [hc k _ (by rw [Fin.lt_def]; have := j.isLt; simp only [Fin.val_castLE]; omega), mul_zero]
 
 /- English proof (translation)
-Introduce `n c z c' hc hc' l hl`. Establish `h1 : (c.submatrix (Fin.castLE hl) (Fin.castLE hl)).det = ∏ i : Fin l, c (Fin.castLE hl i) (Fin.castLE hl i)`. Apply `Matrix.det_of_lowerTriangular` to reduce the goal to its premises. Introduce `i j hij`. Conclude with `hc _ _ (show i < j from hij)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (c'.submatrix (Fin.castLE hl) (Fin.castLE hl)).det = ∏ i : Fin l, c' (Fin.castLE hl i) (Fin.castLE hl i)`. Apply `Matrix.det_of_upperTriangular` to reduce the goal to its premises. Introduce `i j hij`. Conclude with `hc' _ _ (show j < i from hij)`. Express the relevant statement in the definitionally equal form `((c * z * c').submatrix (Fin.castLE hl) (Fin.castLE hl)).det = _ * (z.submatrix (Fin.castLE hl) (Fin.castLE hl)).det`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[leadBlock_mul_upper hl _ _ hc', leadBlock_lower_mul hl _ _ hc, Matrix.det_mul, Matrix.det_mul, h1, h2, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem leadMinor_lower_mul_mul_upper :
     ∀ (n : ℕ) (c z c' : Matrix (Fin n) (Fin n) ℂ), (∀ i j, i < j → c i j = 0) → (∀ i j, j < i → c' i j = 0) → ∀ (l : ℕ) (hl : l ≤ n), leadMinor (c * z * c') l hl = (∏ i : Fin l, c (Fin.castLE hl i) (Fin.castLE hl i) * c' (Fin.castLE hl i) (Fin.castLE hl i)) * leadMinor z l hl := by

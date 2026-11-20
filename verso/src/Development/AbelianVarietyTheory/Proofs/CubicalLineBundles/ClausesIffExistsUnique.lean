@@ -19,21 +19,19 @@ section Bundles
 variable {X X' Y : Scheme.{0}}
 
 /- English proof (translation)
-Set `M : LB Y` to `LB.LinComb L (K := Fin 1) (fun _ => φ) (fun _ => 1)`. Establish `mem : ∀ (j : Fin 1 → L.ι) (y : X'), g y ∈ M.U j → (g ≫ φ) y ∈ L.U (j 0)` using `fun j y hy => LB.wchart_le L _ j 0 hy`. Establish `le' : ∀ J : PUnit → Fin 1 → L.ι, (M.pull g).U J ≤ g ⁻¹ᵁ M.U (J PUnit.unit)` using `fun J y hy => mem_pull.1 hy`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, s', -, hp, hi, hc⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨secPullBack L g rfl s, fun J k => fn_ext fun y hy => ?_, fun j => ⟨chart_le_preimage' L g rfl j, rfl⟩⟩` and prove the remaining obligations. Establish `hb : y ∈ (M.pull g).U (fun _ _ => J PUnit.unit)` using `mem_pull.2 (chart_le_preimage' L g rfl J hy.1)`. Establish `e₁` using `(isoMaps_iff _ _ _).1 hi _ (𝟙 X') y (fun _ _ => J PUnit.unit) k hb hy.2`. Rewrite `e₁` using `[hp _ (le' _)]`. Use `replace e₁ := (gs_appLE g _ _ _ (𝟙 X') y hb _).symm.trans e₁`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂` using `hc J (fun _ _ => J PUnit.unit) k y hy.1 hb hy.2`. Use `replace e₂ := e₂.trans ((congrArg (· * _) (gm_self hL (g ≫ φ) y (mem_pull.1 hy.1))).trans (_root_.one_mul _))`. Use `(gs_res _ y inf_le_left hy _).trans ((gs_appLE g _ _ _ (𝟙 X') y hy.1 _).trans (e₁.trans (Eq.symm ?_)))` and prove the remaining obligations. Conclude with `(gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit _ y _ hy _).trans (congrArg Units.val e₂)) (gs_res _ y _ hy _))`. Introduce and unpack `⟨s₁, hi, hs⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `le : ∀ p : (PUnit → Fin 1 → L.ι) × L'.ι, (M.pull g).U p.1 ⊓ L'.U p.2 ≤ (L.pull (g ≫ φ)).U (fun _ => p.1 PUnit.unit 0) ⊓ L'.U p.2` using `fun p y hy => ⟨mem_pull.2 (mem _ y (mem_pull.1 hy.1)), hy.2⟩`. Set `w' : LB.Iso L' (M.pull g)` to `⟨fun p => res (le p) (wP.s (fun _ => p.1 PUnit.unit 0, p.2))⟩`. Establish `hw' : ∀ (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) (j : Fin 1 → L.ι) (k : L'.ι), g (r z) ∈ M.U j → r z ∈ L'.U k → gw w' r z j k = gw wP r z (j 0) k` using `fun Z r z j k hj hk => gm_res r z (le (fun _ => j, k)) ⟨mem_pull.2 hj, hk⟩ _`. Set `s' : LB.Sec (M.pull g)` to `⟨fun J => (g.appLE _ _ (le' J)).hom (s.f (J PUnit.unit)), fun J J' => fn_ext fun y hy => (gs_res _ y _ hy _).trans ((gs_appLE g _ _ _ (𝟙 _) y hy.1 _).trans ((gs_compat s (𝟙 X' ≫ g) y (le' J hy.1) (le' J' hy.2)).trans (Eq.symm ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_u …`. Use `⟨w', s', (isGen_iff w').2 fun Z r z j j' k k' hj hj' hk hk' => ?_, fun _ _ => rfl, (isoMaps_iff _ _ _).2 fun Z r z J k hJ hk => ?_, fun a b i pt ha hb hk => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : gm (r ≫ g) z _ (M.g j j') = gm (r ≫ g ≫ φ) z (L.U (j 0) ⊓ L.U (j' 0)) (L.g (j 0) (j' 0))` using `(gm_linComb L (K := Fin 1) (fun _ => φ) (fun _ => 1) (r ≫ g) z j j' hj hj').trans (by rw [Fin.prod_univ_one, zpow_one, Category.assoc])`. Rewrite using `[hw' Z r z j k hj hk, hw' Z r z j' k' hj' hk', e]`. Conclude with `(isGen_iff wP).1 hw Z r z _ _ k k' (mem j _ hj) (mem j' _ hj') hk hk'`. Establish `hj` using `le' J hJ`. Establish `h₁ : r z ∈ (L.pull (g ≫ φ)).U (fun _ => J PUnit.unit 0)` using `mem_pull.2 (mem _ _ hj)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `(isoMaps_iff _ _ _).1 hi Z r z (fun _ => J PUnit.unit 0) k h₁ hk`. Take `⟨h, hs⟩` from `hs (fun _ => J PUnit.unit 0)`. Rewrite `e` using `[hs]`. Use `replace e := (gs_appLE g _ _ _ r z h₁ _).symm.trans e`. Rewrite using `[hw' Z r z _ k hj hk]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(gs_appLE g _ _ _ r z hJ _).trans (Eq.trans ?_ e)` and prove the remaining obligations. Take `⟨j, hj⟩ : ∃ j, J PUnit.unit = fun _ => j` from `⟨J PUnit.unit 0, funext fun a => congrArg (J PUnit.unit) (Subsingleton.elim _ _)⟩`. Rewrite using `[hj]`. Establish `e` using `(isGen_iff wP).1 hw _ (𝟙 X') pt (a ⟨⟩) (b ⟨⟩ 0) i i (mem_pull.1 ha) (mem _ _ (le' b hb)) hk hk`. Rewrite `e` using `[gm_self hL' (𝟙 X') pt hk, inv_one, _root_.mul_one, ← hw' _ (𝟙 X') pt (b ⟨⟩) i (le' b hb) hk]`.
-
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem reading_iff {L : LB X} (hL : L.IsLB) {L' : LB X'} (g : X' ⟶ Y) (φ : Y ⟶ X)
     (wP : LB.Iso L' (L.pull (g ≫ φ))) (hw : wP.IsGen) (hL' : L'.IsLB) (th : LB.Sec L')
@@ -123,7 +121,7 @@ def lettersEquiv (o : LamObj c nΨ n') : LamLetters o ≃ IndefiniteRowSideFullH
 variable {o : LamObj c nΨ n'}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, HEq.rfl, fun _ => rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem lettersEquiv_fields (L : LamLetters o) :
     (lettersEquiv o L).m = L.m ∧ HEq (lettersEquiv o L).e L.e ∧
@@ -132,7 +130,7 @@ theorem lettersEquiv_fields (L : LamLetters o) :
   ⟨rfl, HEq.rfl, fun _ => rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Use `show _ ↔ w.left ≫ o.φB = (srcEquiv o (L.src k)).img`. Unfold `LamLetters.IsLetter`. Apply the tactic sequence `rcases L.src k with ⟨_, _⟩ | ⟨_, _⟩ <;> exact Iff.rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isLetter_iff (L : LamLetters o) (k : Fin o.xB.P.g) (w : epsR o.K₁ ⟶ o.xB.P.A) :
     L.IsLetter k w ↔ (lettersEquiv o L).IsLetter k w := by
@@ -141,9 +139,9 @@ theorem isLetter_iff (L : LamLetters o) (k : Fin o.xB.P.g) (w : epsR o.K₁ ⟶ 
   rcases L.src k with ⟨_, _⟩ | ⟨_, _⟩ <;> exact Iff.rfl
 
 /- English proof (translation)
-Establish `h₁ : Function.Bijective L.src ↔ Function.Bijective (lettersEquiv o L).src` using `(Equiv.comp_bijective L.src (srcEquiv o)).symm`. Establish `h₄ : (∀ k, ∃ w, L.IsLetter k w ∧ IsLieComb (L.U k) o.xB.v w) ↔ ∀ k, ∃ w, (lettersEquiv o L).IsLetter k w ∧ IsLieComb (L.U k) o.xB.v w` using `forall_congr' fun k => exists_congr fun w => and_congr_left' (isLetter_iff L k w)`. Use `(and_congr h₁ (and_congr (forall_congr' fun b => forall_congr' fun i => ?_) ((and_congr h₄ (forall_congr' fun k => ?_)).trans and_comm))).trans ((and_congr_right fun _ => and_assoc.symm).trans and_assoc.symm)` and prove the remaining obligations. Use `show _ ↔ (srcEquiv o (L.src (L.e ⟨b, i⟩))).chr = b ∧ (srcEquiv o (L.src (L.e ⟨b, i⟩))).copy = (i : ℕ)`. Apply the tactic sequence `rcases L.src (L.e ⟨b, i⟩) with ⟨_, _⟩ | ⟨_, _⟩ <;> exact Iff.rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show _ ↔ L.ℓ k = (srcEquiv o (L.src k)).line`. Apply the tactic sequence `rcases L.src k with ⟨_, _⟩ | ⟨_, _⟩ <;> exact Iff.rfl`.
+A detailed English derivation is pending.
 -/
 theorem isGood_iff (L : LamLetters o) : L.IsGood ↔ (lettersEquiv o L).IsGood := by
   have h₁ : Function.Bijective L.src ↔ Function.Bijective (lettersEquiv o L).src :=
@@ -166,21 +164,21 @@ section Data
 variable {Dw : Datum H} {Xo : Moduli Dw l}
 
 /- English proof (translation)
-The claim follows from `(IsPullback.of_hasPullback x Xo.univ.t.G.hom).flip`.
+A detailed English derivation is pending.
 -/
 theorem gx_isPullback {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) :
     IsPullback (gxFst x) (gxSnd x) Xo.univ.t.G.hom x :=
   (IsPullback.of_hasPullback x Xo.univ.t.G.hom).flip
 
 /- English proof (translation)
-The claim follows from `(gx_isPullback x).hom_ext h (h₁.trans h₂.symm)`.
+A detailed English derivation is pending.
 -/
 theorem toFibre_ext {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {A : Over (Sp S)} {g g' : A.left ⟶ Gx x}
     (h : g ≫ gxFst x = g' ≫ gxFst x) (h₁ : g ≫ gxSnd x = A.hom) (h₂ : g' ≫ gxSnd x = A.hom) : g = g' :=
   (gx_isPullback x).hom_ext h (h₁.trans h₂.symm)
 
 /- English proof (translation)
-Establish `hx` using `gx_isPullback x`. Use `⟨Over.isoMk (hp.isoIsPullback _ _ hx) (hp.isoIsPullback_hom_snd _ _ hx), hp.isoIsPullback_hom_fst _ _ hx, fun e he => Iso.ext (Over.OverMorphism.ext ?_)⟩` and prove the remaining obligations. Conclude with `toFibre_ext (he.trans (hp.isoIsPullback_hom_fst _ _ hx).symm) (Over.w e.hom) (hp.isoIsPullback_hom_snd _ _ hx)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsUnique_iso {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {A : Over (Sp S)}
     {ψ : A.left ⟶ Xo.univ.t.G.left} (hp : IsPullback ψ A.hom Xo.univ.t.G.hom x) :
@@ -199,11 +197,11 @@ def embEquiv {F : Type} [Field F] (σ₀ : F →+* ℂ) (K : Type) [Field K] [Al
   right_inv _ := rfl
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `y eY`. Use `and_congr_right fun _ => and_comm.trans (and_congr (forall_congr' fun a => exists_congr fun α => and_congr_right fun _ => ?_) (exists_congr fun he => exists_congr fun wP => ?_))` and prove the remaining obligations. Simplify using `only [Over.comp_left, Category.assoc]`. Prove the components needed by the constructor for the conclusion.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨w, s', h₁, h₂, h⟩`. Take `⟨s₁, h₃, h₄⟩` from `(reading_iff Xo.univ.t.PP.isLB eY.hom.left (gxFst y.x) wP h₁ o.xB.P.isLB o.xB.th y.s).1 ⟨w, s', h⟩`. Conclude with `⟨s₁, eY.hom.left, h₁, h₂, h₃, rfl, Over.w eY.hom, h₄⟩`. Introduce and unpack `⟨s₁, g, h₁, h₂, h₃, g₁, g₂, h₄⟩`. Take `rfl : g = eY.hom.left` from `toFibre_ext g₁ g₂ (Over.w eY.hom)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨w, s', h⟩` from `(reading_iff Xo.univ.t.PP.isLB eY.hom.left (gxFst y.x) wP h₁ o.xB.P.isLB o.xB.th y.s).2 ⟨s₁, h₃, h₄⟩`. Conclude with `⟨w, s', h₁, h₂, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tie_iff (o : IndefiniteRowSideFullHecke.LatticeLetterSources.CMObj Dw c) :
     letI := H.starRing
@@ -245,7 +243,7 @@ end Data
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `fdeg`. Rewrite using `[hostSize_finrank]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem fdeg_host (D : D7) : fdeg D.host.E = D.R.f := by
   unfold fdeg
@@ -253,11 +251,11 @@ theorem fdeg_host (D : D7) : fdeg D.host.E = D.R.f := by
   omega
 
 /- English proof (translation)
-Use `letI := T.Q.H.starRing`. Introduce `o L σ₁ y eY`. Establish `hu : ∀ (τ : D.host.E →+* ℂ) (i : Fin ((T.Q.Dw j).mult τ)), (∃ (kk : Fin o.xB.P.g) (w : epsR o.K₁ ⟶ o.xB.P.A), (∃ (b : D.host.E →+* ℂ) (i' : Fin (L.m b)), b = τ ∧ (i' : ℕ) = i ∧ L.e ⟨b, i'⟩ = kk) ∧ L.IsLetter kk w ∧ y.u τ i = (w ≫ eY.hom).left ≫ gxFst y.x) ↔ ∃ (i' : Fin (L.m τ)) ( …`. Introduce `τ i`. Prove the components needed by the constructor for the conclusion.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, w, ⟨b, i', rfl, hi, rfl⟩, h₁, h₂⟩`. Conclude with `⟨i', w, hi, (isLetter_iff L _ w).1 h₁, (h₂.trans (Category.assoc _ _ _)).symm⟩`. Introduce and unpack `⟨i', w, hi, h₁, h₂⟩`. Conclude with `⟨_, w, ⟨τ, i', rfl, hi, rfl⟩, (isLetter_iff L _ w).2 h₁, h₂.symm.trans (Category.assoc _ _ _).symm⟩`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hG, hL, hm, hp, hpol, hl, hv, hx⟩`. Conclude with `⟨fdeg_host D ▸ hG, (isGood_iff L).1 hL, hm, (embEquiv T.σ₀ o.K₁ σ₁).2, (tie_iff o y eY).1 ⟨hp, hpol, hl⟩, fun τ i => (hu τ i).1 (hv τ i), hx⟩`. Introduce and unpack `⟨hG, hL, hm, -, ht, hv, hx⟩`. Take `⟨hp, hpol, hl⟩` from `(tie_iff o y eY).2 ht`. Conclude with `⟨fdeg_host D ▸ hG, (isGood_iff L).2 hL, hm, hp, hpol, hl, fun τ i => (hu τ i).2 (hv τ i), hx⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem clauses_iff (T : Core D) (j : ℕ) (La : ℝ) (k : (T.U j T.σ₀).Comp) (x₀ : ((T.U j T.σ₀).X k).dom) :
     letI := T.Q.H.starRing
@@ -289,11 +287,11 @@ theorem clauses_iff (T : Core D) (j : ℕ) (La : ℝ) (k : (T.U j T.σ₀).Comp)
     exact ⟨fdeg_host D ▸ hG, (isGood_iff L).2 hL, hm, hp, hpol, hl, fun τ i => (hu τ i).2 (hv τ i), hx⟩
 
 /- English proof (translation)
-Use `letI := T.Q.H.starRing`. Introduce `o L σ y ψ`. Take `⟨L, rfl⟩` from `(lettersEquiv o).surjective L`. Rewrite using `[Equiv.symm_apply_apply]`. Prove the components needed by the constructor for the conclusion.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Take `⟨eY, rfl, hu⟩` from `existsUnique_iso h.2.2.2.2.1.1.1`. Use `⟨((embEquiv T.σ₀ o.K₁).symm ⟨σ, h.2.2.2.1⟩, eY), ⟨rfl, rfl, (clauses_iff T j La k x₀ o L _ y eY).2 h⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨σ', e'⟩ ⟨h₁, h₂, -⟩`. Conclude with `Prod.ext ((Equiv.eq_symm_apply _).2 (Subtype.ext h₁)) (hu e' h₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨σ₁, eY⟩, ⟨rfl, rfl, h⟩, -⟩`. Conclude with `(clauses_iff T j La k x₀ o L σ₁ y eY).1 h`.
+A detailed English derivation is pending.
 -/
 theorem clauses_iff_existsUnique (T : Core D) (j : ℕ) (La : ℝ) (k : (T.U j T.σ₀).Comp)
     (x₀ : ((T.U j T.σ₀).X k).dom) :
@@ -318,9 +316,9 @@ theorem clauses_iff_existsUnique (T : Core D) (j : ℕ) (La : ℝ) (k : (T.U j T
     exact (clauses_iff T j La k x₀ o L σ₁ y eY).1 h
 
 /- English proof (translation)
-Use `letI := T.Q.H.starRing`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, L, σ₁, y, eY, h⟩`. Conclude with `⟨o, _, _, y, _, (clauses_iff T j La k x₀ o L σ₁ y eY).1 h⟩`. Introduce and unpack `⟨o, L, σ, y, ψ, h⟩`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨p, ⟨-, -, h'⟩, -⟩` from `(clauses_iff_existsUnique T j La k x₀ o L σ y ψ).1 h`. Conclude with `⟨o, _, p.1, y, p.2, h'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem conclusion_iff (T : Core D) (j : ℕ) (La : ℝ) (k : (T.U j T.σ₀).Comp) (x₀ : ((T.U j T.σ₀).X k).dom) :
     letI := T.Q.H.starRing
@@ -339,7 +337,7 @@ theorem conclusion_iff (T : Core D) (j : ℕ) (La : ℝ) (k : (T.U j T.σ₀).Co
     exact ⟨o, _, p.1, y, p.2, h'⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨lattice_eq_span_hostIdeal_smul D T h j hj k Xx hX, fun e a ha v hv => by rw [e]; exact Submodule.subset_span ⟨a, ha, v, hv, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem lattice_iff {T : Core D} (h : LawsCore T) {j : ℕ} (hj : InR D j) (k : (T.U j T.σ₀).Comp)
     (Xx : DataX D.host.E D.R.r) (hX : Xx.toData = (T.U j T.σ₀).X k) :
@@ -349,14 +347,14 @@ theorem lattice_iff {T : Core D} (h : LawsCore T) {j : ℕ} (hj : InR D j) (k : 
     rw [e]; exact Submodule.subset_span ⟨a, ha, v, hv, rfl⟩⟩
 
 /- English proof (translation)
-Substitute `hX` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem frame_eq {r : ℕ} (Xx : DataX E r) {X : Data E r} (hX : Xx.toData = X) (x : Frame X.Ψ r) :
     (hX ▸ x : Frame Xx.Ψ r) = IndefiniteRowSideFullHecke.LatticeLetterSources.frameOf Xx hX x := by
   subst hX; rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h hT hj k Xx hX hL x₀ lam hb => (conclusion_iff T j La k x₀).1 (h hT hj k x₀ Xx hX ((lattice_iff hT hj k Xx hX).2 hL) lam ((frame_eq Xx hX x₀.1).symm ▸ hb)), fun h hT hj k x₀ Xx hX hL lam hb => (conclusion_iff T j La k x₀).2 (h hT hj k Xx hX ((lattice_iff hT hj k Xx hX).1 hL …`.
+Supply the required witnesses or components.
 -/
 theorem lamPtSt_at_iff (T : Core D) (j : ℕ) (La : ℝ) :
     LamPtSt T j La ↔ (LawsCore T → InR D j →
@@ -374,14 +372,14 @@ theorem lamPtSt_at_iff (T : Core D) (j : ℕ) (La : ℝ) :
       (h hT hj k Xx hX ((lattice_iff hT hj k Xx hX).1 hL) x₀ lam (frame_eq Xx hX x₀.1 ▸ hb))⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h hT hj k Xx hX hL x₀ lam La => (lamPtSt_at_iff T j La).1 (h La) hT hj k Xx hX hL x₀ lam, fun h La => (lamPtSt_at_iff T j La).2 fun hT hj k Xx hX hL x₀ lam => h hT hj k Xx hX hL x₀ lam La⟩`.
+Supply the required witnesses or components.
 -/
 theorem lamPtSt_iff (T : Core D) (j : ℕ) : (∀ La, LamPtSt T j La) ↔ IndefiniteRowSideFullHecke.LatticeLetterSources.LamPtSt T j :=
   ⟨fun h hT hj k Xx hX hL x₀ lam La => (lamPtSt_at_iff T j La).1 (h La) hT hj k Xx hX hL x₀ lam,
     fun h La => (lamPtSt_at_iff T j La).2 fun hT hj k Xx hX hL x₀ lam => h hT hj k Xx hX hL x₀ lam La⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ _ _ _ _ L => ⟨isLetter_iff L, isGood_iff L⟩, fun _ T j La k x₀ => ⟨clauses_iff T j La k x₀, clauses_iff_existsUnique T j La k x₀⟩, fun _ _ h _ hj k Xx hX => lattice_iff h hj k Xx hX, fun _ => lamPtSt_iff⟩`.
+Supply the required witnesses or components.
 -/
 theorem comparison :
     (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] (H : Host E) (l : Level H) (c : Coeff l)

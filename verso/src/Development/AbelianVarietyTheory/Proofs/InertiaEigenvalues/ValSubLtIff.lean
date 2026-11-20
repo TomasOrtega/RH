@@ -14,7 +14,7 @@ open Pointwise
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Use `⟨fun h x => apply_mem_iff_of_mem_Dec h x, fun h => ?_⟩` and prove the remaining obligations. Use `show σ • A = A`. Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, ← h, mul_inv_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Dec_iff {F : Type} [Field F] [NumberField F] [Algebra F Ω] {A : ValuationSubring Ω} {σ : G F Ω} :
     σ ∈ Dec (F := F) A ↔ ∀ x, (σ x ∈ A ↔ x ∈ A) := by
@@ -24,7 +24,7 @@ theorem mem_Dec_iff {F : Type} [Field F] [NumberField F] [Algebra F Ω] {A : Val
   rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, ← h, mul_inv_apply]
 
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 K)`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 L) w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normV_eq_pow {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (w : HeightOneSpectrum (𝓞 L)) :
@@ -37,7 +37,7 @@ theorem normV_eq_pow {K L : Type} [Field K] [NumberField K] [Field L] [NumberFie
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
 
 /- English proof (translation)
-Use `eq_of_isPlaceOver (A := A) ?_ h` and prove the remaining obligations. Introduce `x`. Use `show _ ↔ algebraMap (𝓞 K) (𝓞 L) x ∈ w.asIdeal`. Rewrite using `[← h' (algebraMap (𝓞 K) (𝓞 L) x), IsScalarTower.algebraMap_apply K L Ω]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem under_eq {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     [Algebra K Ω] [Algebra L Ω] [IsScalarTower K L Ω] {A : ValuationSubring Ω}
@@ -50,7 +50,7 @@ theorem under_eq {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L
   rfl
 
 /- English proof (translation)
-The claim follows from `(A.valuation_le_one_iff _).mpr (mem_of_isIntegral_int A ((x.isIntegral_coe).algebraMap))`.
+A detailed English derivation is pending.
 -/
 theorem val_le_one {L : Type} [Field L] [NumberField L] [Algebra L Ω] (A : ValuationSubring Ω) (x : 𝓞 L) :
     A.valuation (algebraMap L Ω x) ≤ 1 :=

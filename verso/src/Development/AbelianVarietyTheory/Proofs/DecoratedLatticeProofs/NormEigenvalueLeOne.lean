@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.EigenvalueNormBound
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_smul, ih, smul_smul, pow_succ, mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_mulVec_eq {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) (μ : ℂ)
     (h : Matrix.mulVec M v = μ • v) (k : ℕ) : Matrix.mulVec (M ^ k) v = μ ^ k • v := by
@@ -13,13 +13,13 @@ theorem pow_mulVec_eq {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → 
     rw [pow_succ, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_smul, ih, smul_smul, pow_succ, mul_comm]
 
 /- English proof (translation)
-Introduce `n M C hC v hv μ hμ`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, v i ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hv (funext fun j => by_contra fun hj => h ⟨j, hj⟩)`. Establish `hvi : 0 < ‖v i‖` using `norm_pos_iff.mpr hi`. Establish `bound : ∀ k : ℕ, ‖μ‖ ^ k * ‖v i‖ ≤ C * ∑ j, ‖v j‖`. Introduce `k`. Establish `e` using `congrFun (pow_mulVec_eq M v μ hμ k) i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : ‖μ‖ ^ k * ‖v i‖ = ‖∑ j, (M ^ k) i j * v j‖`. Establish `: (M ^ k).mulVec v i = ∑ j, (M ^ k) i j * v j` using `by simp [Matrix.mulVec, dotProduct]`. Rewrite using `[← this, e, Pi.smul_apply, smul_eq_mul, norm_mul, norm_pow]`. Rewrite using `[hk]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `htend : Filter.Tendsto (fun k : ℕ => ‖μ‖ ^ k * ‖v i‖) Filter.atTop Filter.atTop` using `Filter.Tendsto.atTop_mul_const hvi (tendsto_pow_atTop_atTop_of_one_lt hlt)`. Take `⟨k, hk⟩` from `(htend.eventually_gt_atTop (C * ∑ j, ‖v j‖)).exists`. Conclude with `absurd (bound k) (not_le.mpr hk)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem norm_eigenvalue_le_one : ∀ {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (C : ℝ),
     (∀ (k : ℕ) (i j : Fin n), ‖(M ^ k) i j‖ ≤ C) → ∀ (v : Fin n → ℂ), v ≠ (0 : Fin n → ℂ) →

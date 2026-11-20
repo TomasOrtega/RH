@@ -44,9 +44,9 @@ def tauPair (τ : ℍ) : PeriodPair where
     exact ⟨rfl, by simpa using hre⟩
 
 /- English proof (translation)
-Take `⟨hone, hmul⟩` from `h`. Introduce `γ`. Use `Function.bijective_iff_has_inverse.mpr ⟨fun i => act i γ⁻¹, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `show act (act i γ) γ⁻¹ = i`. Rewrite using `[hmul, mul_inv_cancel, hone]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show act (act i γ⁻¹) γ = i`. Rewrite using `[hmul, inv_mul_cancel, hone]`.
+A detailed English derivation is pending.
 -/
 theorem IsRAct.actBij {ι : Type} {act : ι → SL(2, ℤ) → ι} (h : IsRAct act) : ActBij act := by
   obtain ⟨hone, hmul⟩ := h
@@ -58,9 +58,9 @@ theorem IsRAct.actBij {ι : Type} {act : ι → SL(2, ℤ) → ι} (h : IsRAct a
     rw [hmul, inv_mul_cancel, hone]
 
 /- English proof (translation)
-Establish `key : ∀ (τ : ℍ) (n : ℕ), Complex.exp (2 * Real.pi * Complex.I * n * τ / N) = Complex.exp (2 * Real.pi * Complex.I * τ / N) ^ n`. Introduce `τ n`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [HasQ, key]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hasQ_iff (N : ℕ) (f : ℍ → ℂ) (a : ℕ → ℂ) :
     HasQ N f a ↔ ∀ τ : ℍ, HasSum (fun n : ℕ => a n * Complex.exp (2 * Real.pi * Complex.I * τ / N) ^ n) (f τ) := by

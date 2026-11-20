@@ -14,7 +14,7 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
 /- English proof (translation)
-Introduce `k _ X p t L M hL hM ⟨w, hw, h⟩`. Use `⟨w, hw, fun τ a b y ha hb => ?_⟩` and prove the remaining obligations. Conclude with `h (emb p y) a b (unsheet p y) ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem toZ_isometric : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (L M : HermLB p)
     (hL : ∀ τ, (wZ L t τ).IsCInf) (hM : ∀ τ, (wZ M t τ).IsCInf), L.Isometric M →

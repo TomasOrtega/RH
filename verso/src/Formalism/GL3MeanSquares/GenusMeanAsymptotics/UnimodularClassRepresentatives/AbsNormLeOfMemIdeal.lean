@@ -13,7 +13,7 @@ open BoxSum
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
 /- English proof (translation)
-Establish `h1 : Ideal.absNorm b ∣ Ideal.absNorm (Ideal.span {n})` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem b).2 hn)`. Establish `h2 : Ideal.absNorm (Ideal.span {n}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `h0`. Conclude with `Nat.le_of_dvd (Nat.pos_of_ne_zero h2) h1` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_le_of_mem_ideal {b : Ideal (𝓞 F)} {n : 𝓞 F} (hn : n ∈ b) (h0 : n ≠ 0) :
     (Ideal.absNorm b : ℝ) ≤ (Ideal.absNorm (Ideal.span {n}) : ℝ) := by
@@ -25,7 +25,7 @@ theorem absNorm_le_of_mem_ideal {b : Ideal (𝓞 F)} {n : 𝓞 F} (hn : n ∈ b)
   exact_mod_cast Nat.le_of_dvd (Nat.pos_of_ne_zero h2) h1
 
 /- English proof (translation)
-The claim follows from `(absNorm_le_of_mem_ideal hb (ne_zero_of_mem_boxSet hn)).trans (absNorm_le_of_mem hK hF hn)`.
+A detailed English derivation is pending.
 -/
 theorem absNorm_le_pow (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {b : Ideal (𝓞 F)} {T : ℝ}
     {n : 𝓞 F} (hn : n ∈ boxSet K F T) (hb : n ∈ b) :
@@ -33,13 +33,13 @@ theorem absNorm_le_pow (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF 
   (absNorm_le_of_mem_ideal hb (ne_zero_of_mem_boxSet hn)).trans (absNorm_le_of_mem hK hF hn)
 
 /- English proof (translation)
-Establish `hR : IsTotallyReal F` using `QuadraticExtensionConjugation.isTotallyReal hK hF`. Assume the negation of the conclusion as `hne`. Establish `h0 : n - n' ≠ 0` using `sub_ne_zero.2 hne`. Establish `h1` using `absNorm_le_of_mem_ideal (b.sub_mem hn hn') h0`. Rewrite `h1` using `[absNorm_eq_prod]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne' : (Finset.univ : Finset {w : InfinitePlace F // w.IsReal}).Nonempty`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Conclude with `⟨⟨w, IsTotallyReal.isReal w⟩, Finset.mem_univ _⟩`. Establish `h2 : ∏ w : {w : InfinitePlace F // w.IsReal}, |rEmb w (n - n')| < ∏ _w : {w : InfinitePlace F // w.IsReal}, δ`. Use `Finset.prod_lt_prod_of_nonempty (fun w _ => ?_) (fun w _ => ?_) hne'` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[abs_pos]`. Introduce `h3`. Apply `h0` to reduce the goal to its premises. Establish `: (InfinitePlace.embedding_of_isReal w.2) ((n - n' : 𝓞 F) : F) = 0` using `h3`. Rewrite `this` using `[map_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `RingOfIntegers.coe_injective (by simpa using this)`. Rewrite using `[map_sub]`. Conclude with `hc w`. Rewrite `h2` using `[Finset.prod_const, Finset.card_univ, card_real hK hF]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_of_close (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {b : Ideal (𝓞 F)} {δ : ℝ}
     (hδ : δ ^ Formalism.HermitianLatticesTheory.fDeg K ≤ (Ideal.absNorm b : ℝ)) {n n' : 𝓞 F} (hn : n ∈ b) (hn' : n' ∈ b)
@@ -67,9 +67,9 @@ theorem eq_of_close (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
   linarith
 
 /- English proof (translation)
-Establish `h1` using `Nat.floor_le (div_nonneg ha hδ.le)`. Establish `h2` using `Nat.lt_floor_add_one (a / δ)`. Establish `h3` using `Nat.floor_le (div_nonneg ha' hδ.le)`. Establish `h4` using `Nat.lt_floor_add_one (a' / δ)`. Rewrite `h1`, `h2` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : a / δ - a' / δ < 1` using `by linarith`. Establish `h6 : a' / δ - a / δ < 1` using `by linarith`. Rewrite `h5`, `h6` using `[← sub_div, div_lt_one hδ]`. Rewrite using `[abs_lt]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_sub_lt_of_floor_eq {δ a a' : ℝ} (hδ : 0 < δ) (ha : 0 ≤ a) (ha' : 0 ≤ a')
     (h : ⌊a / δ⌋₊ = ⌊a' / δ⌋₊) : |a - a'| < δ := by
@@ -85,11 +85,11 @@ theorem abs_sub_lt_of_floor_eq {δ a a' : ℝ} (hδ : 0 < δ) (ha : 0 ≤ a) (ha
   constructor <;> linarith
 
 /- English proof (translation)
-Set `W` to `{w : InfinitePlace F // w.IsReal}`. Set `g : {n : 𝓞 F // n ∈ boxSet K F T ∧ n ∈ b} → (W → Fin (⌊T / δ⌋₊ + 1))` to `fun n w => ⟨⌊rEmb w n.1 / δ⌋₊, Nat.lt_succ_of_le (Nat.floor_le_floor (div_le_div_of_nonneg_right (((mem_boxSet_iff hK hF).1 n.2.1) w).2 hδ0.le))⟩`. Establish `hg : Function.Injective g`. Introduce `n n' h`. Use `Subtype.ext (eq_of_close hK hF hδ n.2.2 n'.2.2 fun w => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ⌊rEmb w n.1 / δ⌋₊ = ⌊rEmb w n'.1 / δ⌋₊` using `congrArg Fin.val (congrFun h w)`. Conclude with `abs_sub_lt_of_floor_eq hδ0 (((mem_boxSet_iff hK hF).1 n.2.1) w).1.le (((mem_boxSet_iff hK hF).1 n'.2.1) w).1.le h1`. Establish `h1` using `Nat.card_le_card_of_injective g hg`. Establish `h2 : Nat.card (W → Fin (⌊T / δ⌋₊ + 1)) = (⌊T / δ⌋₊ + 1) ^ Formalism.HermitianLatticesTheory.fDeg K`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_fun, Fintype.card_fin, card_real hK hF]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem card_le_pow (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {b : Ideal (𝓞 F)} {δ T : ℝ}
     (hδ0 : 0 < δ) (hδ : δ ^ Formalism.HermitianLatticesTheory.fDeg K ≤ (Ideal.absNorm b : ℝ)) :
@@ -110,22 +110,20 @@ theorem card_le_pow (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
   rwa [h2] at h1
 
 /- English proof (translation)
-The claim follows from `Fintype.card_pos`.
+A detailed English derivation is pending.
 -/
 theorem fDeg_pos : 0 < Formalism.HermitianLatticesTheory.fDeg K := Fintype.card_pos
 
 /- English proof (translation)
-Establish `hf : Formalism.HermitianLatticesTheory.fDeg K ≠ 0` using `(fDeg_pos (K := K)).ne'`. Establish `hN : (0 : ℝ) < (Ideal.absNorm b : ℝ)`. Establish `: Ideal.absNorm b ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Distinguish the cases in `he : IsEmpty {n : 𝓞 F // n ∈ boxSet K F T ∧ n ∈ b}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_of_isEmpty, Nat.cast_zero, ← mul_pow]`. Check the signs of the components of the expression. Rewrite `he` using `[not_isEmpty_iff]`. Take `⟨n, hn, hnb⟩` from `he`. Establish `hT : 0 < T`.
+Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨φ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Conclude with `(hn φ).1.trans_le (hn φ).2`. Use `set δ : ℝ := (Ideal.absNorm b : ℝ) ^ ((Formalism.HermitianLatticesTheory.fDeg K : ℝ)⁻¹) with hδdef`. Establish `hδ0 : 0 < δ` using `Real.rpow_pos_of_pos hN _`. Establish `hδ : δ ^ Formalism.HermitianLatticesTheory.fDeg K = (Ideal.absNorm b : ℝ)` using `Real.rpow_inv_natCast_pow hN.le hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hδT : δ ≤ T`. Use `absNorm_le_pow hK hF hn hnb` as an intermediate fact. Rewrite `this` using `[← hδ]`. Conclude with `(pow_le_pow_iff_left₀ hδ0.le hT.le hf).1 this`. Establish `h1` using `card_le_pow hK hF (T := T) hδ0 hδ.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h2 : ((⌊T / δ⌋₊ + 1 : ℕ) : ℝ) ≤ 2 * T / δ`. Establish `h3` using `Nat.floor_le (div_nonneg hT.le hδ0.le)`. Establish `h4 : 1 ≤ T / δ` using `(one_le_div hδ0).2 hδT`. Use `push_cast`. Rewrite using `[mul_div_assoc]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_box_le (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {b : Ideal (𝓞 F)}
     (hb : b ≠ ⊥) {T : ℝ} (hT0 : 0 ≤ T) :

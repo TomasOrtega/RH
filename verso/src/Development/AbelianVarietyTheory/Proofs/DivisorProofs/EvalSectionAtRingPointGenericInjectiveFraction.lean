@@ -10,7 +10,7 @@ open scoped CategoryTheory.Obj RatFunc
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Conclude with `RingHom.injective (φ : C.functionField →+* A)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem injective_ringHom_genericStalk_integralScheme (C : Scheme.{0}) [IsIntegral C] (q : C) (hq : q = genericPoint C)
     {A : Type} [CommRing A] [Nontrivial A] (φ : C.presheaf.stalk q →+* A) : Function.Injective φ := by
@@ -18,9 +18,9 @@ theorem injective_ringHom_genericStalk_integralScheme (C : Scheme.{0}) [IsIntegr
   exact RingHom.injective (φ : C.functionField →+* A)
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Use `haveI : Nonempty V := ⟨⟨_, hqV⟩⟩`. Use `haveI := functionField_isFractionRing_of_isAffineOpen (X := C) V hV`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.mk'_surjective (S := C.functionField) (nonZeroDivisors Γ(C, V)) s`. Use `⟨a, b, nonZeroDivisors.ne_zero b.2, ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `IsLocalization.mk'_spec (S := C.functionField) a b` as an intermediate fact. Rewrite using `[← hab]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_fraction_genericStalk_germ_affineOpen (C : Scheme.{0}) [IsIntegral C] (V : C.Opens) (hV : IsAffineOpen V)
     (q : C) (hq : q = genericPoint C) (hqV : q ∈ V) (s : C.presheaf.stalk q) :
@@ -35,7 +35,7 @@ theorem exists_fraction_genericStalk_germ_affineOpen (C : Scheme.{0}) [IsIntegra
   exact this
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.germ_stalkMap_apply, Scheme.Hom.appLE]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem germ_appLE_eq_stalkMap_germ_specField {K : Type} [Field K] (C : Scheme.{0}) (x : Sp K ⟶ C) (V : C.Opens) (h : ⊤ ≤ x ⁻¹ᵁ V)
     (p : Sp K) (hp : x p ∈ V) (c : Γ(C, V)) :
@@ -48,23 +48,21 @@ end GlobalTheory.Nef
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `K _ C _ x hx V hV`. Use `haveI : IsDominant x := hx.1`. Use `haveI : IsPreimmersion x := hx.2`. Establish `hsub : ∀ p q : Sp K, p = q` using `fun p q => Subsingleton.elim (α := PrimeSpectrum K) p q`. Establish `hgen : ∀ p : Sp K, x p = genericPoint C`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p`. Apply `((genericPoint_spec C).eq _).symm` to reduce the goal to its premises. Rewrite using `[isGenericPoint_def]`. Establish `hr : Set.range x = {x p}`. Use extensionality with `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩`. Rewrite using `[hsub q p]`. Both sides reduce to the same expression. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨p, rfl⟩`. Rewrite using `[← hr]`. Conclude with `x.denseRange.closure_range`. Establish `hmem : genericPoint C ∈ V` using `((genericPoint_spec C).mem_open_set_iff V.isOpen).mpr (by simpa using hV)`. Establish `h : ⊤ ≤ x ⁻¹ᵁ V`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `p _`. Use `show x p ∈ V`. Rewrite using `[hgen p]`. Conclude with `hmem`. Take `⟨p⟩ : Nonempty (Sp K)` from `⟨(⊥ : PrimeSpectrum K)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp : x p ∈ V` using `by rw [hgen p]; exact hmem`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Establish `h1 : x.appLE V ⊤ h c = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (Scheme.ΓSpecIso (.of K)).inv.hom hc` as an intermediate fact. Simplify `this` using `[evAt]`. Establish `h2` using `germ_appLE_eq_stalkMap_germ_specField C x V h p hp c`. Rewrite `h2` using `[h1, map_zero]`. Establish `h3 : C.presheaf.germ V (x p) hp c = 0` using `injective_ringHom_genericStalk_integralScheme C (x p) (hgen p) (x.stalkMap p).hom (by rw [← h2, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `germ_injective_of_isIntegral (X := C) (x p) hp (by rw [h3, map_zero])`. Introduce `hA z`. Take `⟨s, hs⟩` from `x.stalkMap_surjective p ((Sp K).presheaf.germ ⊤ p (by simp) ((Scheme.ΓSpecIso (.of K)).inv.hom z))`. Take `⟨a, b, hb, hab⟩` from `exists_fraction_genericStalk_germ_affineOpen C V hA (x p) (hgen p) hp s`. Use `⟨a, b, hb, ?_⟩` and prove the remaining obligations.
-
-Establish `e` using `congrArg (x.stalkMap p).hom hab`. Rewrite `e` using `[map_mul, hs, ← germ_appLE_eq_stalkMap_germ_specField C x V h p hp, ← germ_appLE_eq_stalkMap_germ_specField C x V h p hp, ← map_mul]`. Establish `e2` using `germ_injective_of_isIntegral (X := Sp K) p (by simp) e`. Establish `e3` using `congrArg (Scheme.ΓSpecIso (.of K)).hom.hom e2`. Simplify `e3` using `[evAt]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isGen_evAt_frac : ∀ (K : Type) [Field K] (C : Scheme.{0}) [IsIntegral C] (x : Sp K ⟶ C), IsGen x →
     ∀ V : C.Opens, (V : Set C).Nonempty → ∃ h : ⊤ ≤ x ⁻¹ᵁ V, Function.Injective (evAt x h) ∧

@@ -11,11 +11,11 @@ noncomputable section
 namespace GlobalTheory.JR.WeilQuad
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ x μ ω hH G₁ hG`. Establish `hG'` using `GlobalTheory.T.stableQuadraticGauss_neg_one_eq_one F E A ψ x μ ω hH G₁ hG`. Take `⟨Λ₀, -, hc₀, h₀⟩` from `hG`. Take `⟨Λ₁, -, hc₁, h₁⟩` from `hG'`. Take `⟨Λ, ho, hc, hsub, hperp, hV⟩` from `GlobalTheory.T.exists_large_compactOpen_subgroup_with_small_dual F E A ψ x μ ω hH ((Λ₀ : Set A.L) ∪ Λ₁) (hc₀.union hc₁) _ (GlobalTheory.T.etaleTraceAddChar_norm_eq_one_near_zero F E A ψ x μ ω hH)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e0` using `h₀ Λ ho hc (fun y hy => hsub (Or.inl hy))`. Establish `e1` using `h₁ Λ ho hc (fun y hy => hsub (Or.inr hy))`. Establish `hp` using `GlobalTheory.T.gaussIntegral_one_mul_gaussIntegral_neg_one_eq_one F E A ψ x μ ω hH Λ ho hc hperp (fun y hy => hV hy)`. Rewrite `hp` using `[e0, e1]`. Rewrite using `[sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp`.
+A detailed English derivation is pending.
 -/
 theorem stableGauss_sq_eq_one : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.Kˣ) (μ : Measure A.L)

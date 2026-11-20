@@ -15,9 +15,9 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 namespace GlobalTheory.AdjPart
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R hP hB p w hw h0`. Establish `h2` using `hB A3.A.μ0 p w hw`. Rewrite `h2` using `[LinearMap.comp_apply, h0, map_zero, Formalism.IndefR.Links.RealDat3.prod_lamN]`. Establish `hpos : 0 < R.kap * ∏ j : Fin D.R.m, R.lam3 j A3.A.μ0 p A3.A.v0` using `mul_pos hP.1 (Finset.prod_pos fun j _ => hP.2 j A3.A.μ0 p)`. Establish `hne : ((R.kap * ∏ j : Fin D.R.m, R.lam3 j A3.A.μ0 p A3.A.v0 : ℝ) : ℂ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hpos.ne'` after adjusting the coercions. Conclude with `(smul_eq_zero.1 h2.symm).resolve_left hne`.
+A detailed English derivation is pending.
 -/
 theorem adjoint_injective_on_part : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks), (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → R.PThmB → (∀ p, ∀ w ∈ R.EEp3 p, LinearMap.adjoint (R.Th A3.A.μ0) w = 0 → w = 0) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R hP hB p w hw h0

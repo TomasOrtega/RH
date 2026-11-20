@@ -29,13 +29,13 @@ def repEquiv (k r : ℕ) : HRep k r ≃ {R : BranchingSupport.Rep k r // IsURepO
   right_inv _ := rfl
 
 /- English proof (translation)
-Take `⟨-, P, hP, -, -, ⟨⟨h1, hm⟩, hn, hc⟩, -⟩` from `h`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1.1`. Establish `hPP : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Establish `hmaps` using `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.cayley_maps hP`. Establish `e : ∀ g : Mx k r, P⁻¹ * (P * g * P⁻¹) * P = g` using `fun g => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hPP, Matrix.one_mul, Matrix.mul_assoc, hPP, Matrix.mul_one]`. Use `⟨⟨by simpa [hPP] using h1, fun a ha b hb => ?_⟩, fun g hg v => ?_, fun v => ?_⟩` and prove the remaining obligations. Use `hm _ (hmaps ha) _ (hmaps hb)` as an intermediate fact. Establish `e2 : P * a * P⁻¹ * (P * b * P⁻¹) = P * (a * b) * P⁻¹`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc P⁻¹ P, hPP, Matrix.one_mul]`. Simplify `this` using `only [e2, e]`. Simplify `hn _ (hmaps hg) v` using `only [e]`. Establish `h3 : Continuous fun g : Mx k r => P * g * P⁻¹` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `(hc v).comp h3.continuousOn hmaps` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [Function.comp_def, e]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isURepOn_of_isDS {R : BranchingSupport.Rep k r} {ε : Ix k r → Bool} {μ : Ix k r → ℝ} (h : R.IsDS ε μ) :
     IsURepOn (BranchingSupport.GG k r) R.σ := by
@@ -69,7 +69,7 @@ section Smooth
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul a hv`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem (R : HRep k r) (a : ℂ) {v : R.H} (hv : v ∈ R.smooth) : a • v ∈ R.smooth :=
   Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul a hv
@@ -81,7 +81,7 @@ section Tensor
 variable {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Introduce `d`. Distinguish the cases in `h : d = c`. Substitute `h` using the available equality. Simplify using `using hv`. Simplify `GlobalTheory.IndefiniteRowSideFullHecke.SmoothDecompositionForms.zero_mem_smooth R` using `[Pi.single_eq_of_ne h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem single_mem (R : HRep k r) (c : ι) {v : R.H} (hv : v ∈ R.smooth) : Pi.single c v ∈ tensSmooth ι R := by
   intro d
@@ -97,7 +97,7 @@ def Linked (R R' : HRep k r) (P : ι → R.H → R'.H) (A : (ι → R.H) → R'.
   (∀ c, P c 0 = 0) ∧ ∀ x ∈ tensSmooth ι R, A x = ∑ c, P c (x c)
 
 /- English proof (translation)
-Rewrite using `[h.2 _ (single_mem R c hv), Finset.sum_eq_single c (fun d _ hd => by simp [Pi.single_eq_of_ne hd, h.1]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Linked.comp {R R' : HRep k r} {P : ι → R.H → R'.H} {A : (ι → R.H) → R'.H} (h : Linked R R' P A) (c : ι)
     {v : R.H} (hv : v ∈ R.smooth) : P c v = A (Pi.single c v) := by
@@ -110,9 +110,7 @@ variable {ρ : Mx k r → Matrix ι ι ℂ} {Γ : Matrix ι ι ℂ} {R : HRep k 
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hg, hF, hag⟩` from `hf g₀ hg₀`. Establish `h1 : ContinuousAt F g₀` using `hF.continuousOn.continuousAt (hU.mem_nhds hg)`. Use `h1.continuousWithinAt.congr_of_eventuallyEq ?_ (hag g₀ hg hg₀)` and prove the remaining obligations. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (hU.mem_nhds hg), self_mem_nhdsWithin] with g h1 h2`.
-
-Conclude with `hag g h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousOn_of_smoothOnH {n : ℕ} {H : Matrix (Fin n) (Fin n) ℂ} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hf : SmoothOnH H f) : ContinuousOn f (UH H) := by

@@ -38,23 +38,23 @@ def valM {a : ℕ} (k : Formalism.MainNotions.StandardLatticesGL3.GA D a) : Matr
   ((k : GL (Fin a) (𝔸 D)) : Matrix (Fin a) (Fin a) (𝔸 D))
 
 /- English proof (translation)
-The claim follows from `Units.inv_mul _`.
+A detailed English derivation is pending.
 -/
 theorem invM_mul {a : ℕ} (k : Formalism.MainNotions.StandardLatticesGL3.GA D a) : invM k * valM k = 1 := Units.inv_mul _
 
 /- English proof (translation)
-The claim follows from `Units.mul_inv _`.
+A detailed English derivation is pending.
 -/
 theorem valM_mul {a : ℕ} (k : Formalism.MainNotions.StandardLatticesGL3.GA D a) : valM k * invM k = 1 := Units.mul_inv _
 
 /- English proof (translation)
-The claim follows from `(toE_int_iff x).1 ((GlobalTheory.T.memIdealIntegral_tensorSwap_iff_mem_idealSubgroup 𝔪 x).2 hx).1`.
+A detailed English derivation is pending.
 -/
 theorem int_of_hat {𝔪 : Ideal (𝓞 D.host.E)} {x : 𝔸 D} (hx : x ∈ hatId D 𝔪) : x ∈ OhE D :=
   (toE_int_iff x).1 ((GlobalTheory.T.memIdealIntegral_tensorSwap_iff_mem_idealSubgroup 𝔪 x).2 hx).1
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `sum_mem fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `GlobalTheory.FunObj.StdDatum.mul_mem_hatId (hB l j) (hA i l)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hat_mul_mat {𝔪 : Ideal (𝓞 D.host.E)} {a : ℕ} {A B : Matrix (Fin a) (Fin a) (𝔸 D)} (hA : ∀ i j, A i j ∈ hatId D 𝔪)
     (hB : ∀ i j, B i j ∈ OhE D) (i j : Fin a) : (A * B) i j ∈ hatId D 𝔪 := by
@@ -64,11 +64,11 @@ theorem hat_mul_mat {𝔪 : Ideal (𝓞 D.host.E)} {a : ℕ} {A B : Matrix (Fin 
   exact GlobalTheory.FunObj.StdDatum.mul_mem_hatId (hB l j) (hA i l)
 
 /- English proof (translation)
-Establish `hi` using `(GlobalTheory.NormSum.mem_intG k).1 hk`. Express the relevant statement in the definitionally equal form `_ ↔ ∀ i j, (invM r * valM k - 1) i j ∈ hatId D 𝔪`. Prove the components needed by the constructor for the conclusion. Introduce `h' i j`. Establish `e : invM r * valM k - 1 = ((N - invM k) - (N - invM r)) * valM k`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[sub_sub_sub_cancel_left, sub_mul, invM_mul]`. Rewrite using `[e]`. Conclude with `hat_mul_mat (fun i j => sub_mem (h i j) (h' i j)) (fun i j => (hi i j).1) i j`. Introduce `h' i j`. Establish `e : N - invM r = (N - invM k) - (invM r * valM k - 1) * invM k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_mul, mul_assoc, valM_mul, mul_one, one_mul, sub_sub, add_sub_cancel]`. Rewrite using `[e]`. Conclude with `sub_mem (h i j) (hat_mul_mat h' (fun i j => (hi i j).2) i j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_iff {𝔪 : Ideal (𝓞 D.host.E)} {a : ℕ} {N : Matrix (Fin a) (Fin a) (𝔸 D)} {r k : Formalism.MainNotions.StandardLatticesGL3.GA D a}
     (hk : k ∈ intG D a) (h : ∀ i j, (N - invM k) i j ∈ hatId D 𝔪) :
@@ -88,13 +88,11 @@ theorem cong_iff {𝔪 : Ideal (𝓞 D.host.E)} {a : ℕ} {N : Matrix (Fin a) (F
     exact sub_mem (h i j) (hat_mul_mat h' (fun i j => (hi i j).2) i j)
 
 /- English proof (translation)
-Establish `hi` using `(GlobalTheory.NormSum.mem_intG r).1 hr`. Establish `h1` using `GlobalTheory.T.unitDetCharIndicator_eq_one_of_congruent_one e 𝔪 hG ν hK (N * valM r) fun i j => by`. Rewrite using `[← invM_mul r, ← sub_mul]`. Conclude with `hat_mul_mat h (fun i j => (hi i j).1) i j`. Take `⟨S, -, he, -⟩` from `hG`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.T.unitDetCharIndicator_mul_integralFrame ν e (GlobalTheory.PlaceDatum.idemSum_mul_self he) (StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.toEAf_mem he) (N.map (toE D)) (Matrix.GeneralLinearGroup.map (toE D) (r : GL (Fin a) (𝔸 D))) (fun i j => (toE_int_i …`. Rewrite `h1` using `[Matrix.map_mul]`. Establish `h3 : unitChar ν e (N.map (toE D)) * unitChar ν e (matE r) = 1` using `h2.symm.trans h1`. Establish `hx : ∃ x, IsUnitDet e (N.map (toE D)) x`. Assume the negation of the conclusion as `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[unitChar, dif_neg hx, zero_mul]`. Conclude with `zero_ne_one h3`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hx`. Rewrite `h3`, the goal using `[unitChar_eq ν e _ hx]`.
-
-Rewrite using `[← Circle.coe_inv_eq_conj, Circle.coe_inv]`. Conclude with `inv_eq_of_mul_eq_one_right h3`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value {e : AE D} {𝔪 : Ideal (𝓞 D.host.E)} (hG : GoodMod e 𝔪) {ν : (AE D)ˣ →* Circle} (hK : KillsCong ν 𝔪) {a : ℕ}
     {N : Matrix (Fin a) (Fin a) (𝔸 D)} {r : Formalism.MainNotions.StandardLatticesGL3.GA D a} (hr : r ∈ intG D a)
@@ -121,9 +119,9 @@ theorem value {e : AE D} {𝔪 : Ideal (𝓞 D.host.E)} (hG : GoodMod e 𝔪) {�
   exact inv_eq_of_mul_eq_one_right h3
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨i.1, h⟩ (fun l _ hl => ?_) (fun hh => (hh (Finset.mem_univ _)).elim)]`. Simplify using `[unitBlock]`. Establish `: i.1 ≠ l.1` using `fun hh => hl (Fin.ext hh.symm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[unitBlock, this]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Establish `: i.1 ≠ l.1` using `fun hh => h (hh ▸ l.2)`. Simplify using `[unitBlock, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitBlock_mul {a d : ℕ} (M : Matrix (Fin a) (Fin a) (𝔸 D)) (i : Fin d) (j : Fin a) :
     (HMul.hMul ((unitBlock D 0 a d).map (inc D)) M : Matrix (Fin d) (Fin a) (𝔸 D)) i j =
@@ -139,17 +137,17 @@ theorem unitBlock_mul {a d : ℕ} (M : Matrix (Fin a) (Fin a) (𝔸 D)) (i : Fin
     simp [unitBlock, this]
 
 /- English proof (translation)
-Establish `h1 : ∀ i j, (W i j - if h : i.1 < a then invM r ⟨i.1, h⟩ j else 0) - (W i j - ε * inc D (z i j)) ∈ hatId D 𝔪`. Introduce `i j`. Establish `h2 : inc D (z i j) - (if h : i.1 < a then invM r ⟨i.1, h⟩ j else 0) ∈ hatId D 𝔪`. Rewrite using `[← unitBlock_mul]`. Conclude with `ha i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hz i j`. Establish `h3` using `sub_mem h2 (GlobalTheory.FunObj.StdDatum.mul_mem_hatId (hb ▸ inc_int b : inc D (z i j) ∈ OhE D) hε)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : ∀ (i : Fin a) j, (topL a W - invM r) i j = W ⟨i.1, i.2.trans_le had⟩ j - invM r i j` using `fun i j => by`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_apply, topL, dif_pos ⟨i.2.trans_le had, j.2⟩]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h5` using `fun i j => add_mem (h1 i j) (h i j)`. Simplify using `only [sub_add_cancel] at h5`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i j => ?_, fun i j hi => ?_⟩` and prove the remaining obligations. Use `h5 ⟨i.1, i.2.trans_le had⟩ j` as an intermediate fact. Rewrite `this` using `[dif_pos i.2, ← h4]`. Then use the resulting hypothesis. Use `h5 i j` as an intermediate fact. Rewrite `this` using `[dif_neg (not_lt.2 hi), sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h, h'⟩ i j`. Establish `h6 : (W i j - if h : i.1 < a then invM r ⟨i.1, h⟩ j else 0) ∈ hatId D 𝔪` using `by split_ifs with hi`. Use `h ⟨i.1, hi⟩ j` as an intermediate fact. Rewrite `this` using `[h4]`. Then use the resulting hypothesis. Rewrite using `[sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h' i j (not_lt.1 hi)`. Use `sub_mem h6 (h1 i j)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coset_iff {ε : 𝔸 D} {𝔪 : Ideal (𝓞 D.host.E)} (hε : 1 - ε ∈ hatId D 𝔪) {a d : ℕ} (had : a ≤ d)
     {r : Formalism.MainNotions.StandardLatticesGL3.GA D a} {z : Matrix (Fin d) (Fin a) D.host.E} (hz : IsIntE z) (ha : Approx 𝔪 0 r z)
@@ -187,15 +185,15 @@ theorem coset_iff {ε : 𝔸 D} {𝔪 : Ideal (𝓞 D.host.E)} (hε : 1 - ε ∈
     rwa [sub_sub_cancel] at this
 
 /- English proof (translation)
-Distinguish the cases in `hc : ((∀ i j, W i j ∈ OhE D) ∧ ∀ i j, a ≤ i.1 → W i j ∈ hatId D 𝔪) ∧ ∃ x, IsUnitDet e ((topL a W).map (toE D)) x`. Take `⟨hc, x, hx⟩` from `hc`. Establish `hN : ∀ i j, topL a W i j ∈ OhE D` using `fun i j => by`. Rewrite using `[topL, dif_pos ⟨i.2.trans_le had, j.2⟩]`. Conclude with `hc.1 _ _`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨S, -, he, -⟩` from `id hG`. Take `⟨k, hk, hkN⟩` from `GlobalTheory.T.exists_integral_unitary_lift_idempotentPart e S he _ hN x hx`. Establish `h1 : ∀ i j, (topL a W - invM k) i j ∈ hatId D 𝔪` using `fun i j => by`. Use `GlobalTheory.FunObj.StdDatum.mul_mem_hatId (sub_mem (hN i j) ((GlobalTheory.NormSum.mem_intG k).1 hk i j).2) (one_sub_eps_mod hG)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_apply, invM]`. Take the linear combination `-hkN i j`. Take `⟨r, ⟨hr, hrk⟩, hu⟩` from `hU k hk`. Establish `h2` using `(cong_iff hk h1).2 hrk`. Rewrite using `[if_pos hc, Finset.sum_eq_single r (fun s hs hsr => ?_) (fun h => (h hr).elim), if_pos ⟨h2, hc.2⟩, mul_one, (value hG hK (hR r hr) h2).2]`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg fun h => hsr (hu s ⟨hs, (cong_iff hk h1).1 h.1⟩), mul_zero]`. Rewrite using `[Finset.sum_eq_zero fun r hr => ?_]`. Use `split_ifs with h`. Rewrite using `[unitChar, dif_neg fun hx => hc ⟨h, hx⟩, map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg fun h => hc ⟨⟨fun i j => ?_, h.2⟩, (value hG hK (hR r hr) h.1).1⟩, mul_zero]`. Distinguish the cases in `hi : i.1 < a`. Use `add_mem (int_of_hat (h.1 ⟨i.1, hi⟩ j)) ((GlobalTheory.NormSum.mem_intG r).1 (hR r hr) ⟨i.1, hi⟩ j).2` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, invM, sub_add_cancel, topL, dif_pos ⟨i.2, j.2⟩]`. Then use the resulting hypothesis. Conclude with `int_of_hat (h.2 i j (not_lt.1 hi))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sum_eq {e : AE D} {𝔪 : Ideal (𝓞 D.host.E)} (hG : GoodMod e 𝔪) {ν : (AE D)ˣ →* Circle} (hK : KillsCong ν 𝔪) {a d : ℕ}
     (had : a ≤ d) {R : Finset (Formalism.MainNotions.StandardLatticesGL3.GA D a)} (hR : ∀ r ∈ R, r ∈ intG D a)
@@ -232,17 +230,17 @@ theorem sum_eq {e : AE D} {𝔪 : Ideal (𝓞 D.host.E)} (hG : GoodMod e 𝔪) {
       · exact int_of_hat (h.2 i j (not_lt.1 hi))
 
 /- English proof (translation)
-Introduce `D S T a d hS hT had e 𝔪 hG ν hK β hβ hβ' R hR hU z hz`. Substitute `hS hT` using the available equality. Use function extensionality and compare the values at `t`. Take `⟨SS, -, he, -⟩` from `id hG`. Set `W : Matrix (Fin T.rank) (Fin S.rank) (𝔸 D)` to `Matrix.of fun i j => finQ D (t i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hW : ∀ i j, toEAf D (t i j) = toE D (W i j)` using `fun i j => (toE_finQ _).symm`. Establish `hN : topL S.rank (Matrix.of fun i j => toEAf D (t i j)) = (topL S.rank W).map (toE D)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, topL, topL, dif_pos ⟨i.2.trans_le had, j.2⟩, dif_pos ⟨i.2.trans_le had, j.2⟩]`. Conclude with `hW _ _`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ r ∈ R, cosInd e 𝔪 rfl rfl (z r) t = if IsHalf e t then (if (∀ i j, (topL S.rank W - invM r) i j ∈ hatId D 𝔪) ∧ ∀ i j, S.rank ≤ i.1 → W i j ∈ hatId D 𝔪 then 1 else 0) else 0` using `fun r hr => by`. Rewrite using `[← ite_and, cosInd]`. Use `if_congr (and_congr_right fun _ => ?_) rfl rfl` and prove the remaining obligations. Rewrite using `[← coset_iff (one_sub_eps_mod hG) had (hz r hr).1 (hz r hr).2 W]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.T.memIdealIntegral_tensorSwap_iff_mem_idealSubgroup, RingHom.map_sub, RingHom.map_mul, ← hW, toE_finQ, ← finQ_incA, toE_finQ]`. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.T.standardPairFirstMember_integralFrame_eq S T ν e 𝔪 β hβ hβ' t, GlobalTheory.T.unitDetCharIndicator_mul_integralFrame ν e (GlobalTheory.PlaceDatum.idemSum_mul_self he) (StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.toEAf_mem he) _ β hβ hβ', hN]`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_congr rfl fun r hr => by rw [hc r hr]]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ht : IsHalf e t`. Simplify using `only [ht, true_and, if_true]`. Rewrite using `[sum_eq hG hK had hR hU W]`. Simplify using `only [hW, toE_int_iff, GlobalTheory.T.memIdealIntegral_tensorSwap_iff_mem_idealSubgroup]`. Use `split_ifs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, mul_comm]`. Rewrite using `[map_zero, mul_zero]`. Simplify using `[ht]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_stdFst_eq_sum : ∀ {D : D7} (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d), a ≤ d → ∀ (e : AE D) (𝔪 : Ideal (𝓞 D.host.E)), GoodMod e 𝔪 →
   ∀ ν : (AE D)ˣ →* Circle, KillsCong ν 𝔪 → ∀ β : GL (Fin S.rank) (EAf D), IsIntM β.val → IsIntM (β⁻¹).val →

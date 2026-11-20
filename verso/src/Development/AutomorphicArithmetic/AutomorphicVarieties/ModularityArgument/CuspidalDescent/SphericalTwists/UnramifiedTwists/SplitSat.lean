@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SatakeParamete
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual GlobalTheory.WeilDeligne GlobalTheory.LFun GlobalTheory.PRep UpperTheory.V.Af.Gu
 
 /- English proof (translation)
-Establish `he : ∀ g v, e.toLinearEquiv (ρ g v) = ρ' g (e.toLinearEquiv v)` using `fun g v => e.toIntertwiningMap.isIntertwining _ _ g v`. Prove the components needed by the constructor for the conclusion. Take `⟨x, hx⟩` from `h.exists_vec`. Establish `h1` using `hx.map e.toLinearEquiv.toLinearMap he ((map_ne_zero_iff _ e.toLinearEquiv.injective).2 hx.1)`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨_, h1.2.1, h1.1⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy h0`. Take `⟨x, rfl⟩` from `e.toLinearEquiv.surjective y`. Use `(h.2 x (GlobalTheory.LGrp.mem_fixed.2 fun k hk => e.toLinearEquiv.injective ?_) fun hx => h0 (by rw [hx, map_zero])).map e.toLinearEquiv.toLinearMap he h0` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `GlobalTheory.LGrp.mem_fixed.1 hy k hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sat_of_equiv {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {n : ℕ} {V W : Type}
     [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
@@ -26,13 +26,13 @@ private theorem sat_of_equiv {E : Type} [Field E] [NumberField E] {w : HeightOne
     exact GlobalTheory.LGrp.mem_fixed.1 hy k hk
 
 /- English proof (translation)
-Introduce and unpack `- E _ _ n c a d hn w ρ σ had hsp S hS τ ⟨e⟩ B hB`. Take `⟨S', s1, s2⟩` from `GlobalTheory.SatInd.satake_locProd_speh E w c n a d hn ρ σ (fun i => (had i).2) hsp B (sat_of_equiv e hB)`. Take `rfl : S = S'` from `funext fun i => (hS i).unique (s1 i)`. Simplify using `only [Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def] at s2`. Apply `Multiset.map_injective (f := fun z : ℂˣ => (z : ℂ)) Units.val_injective` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← s2]`. Unfold `satTot`. Rewrite using `[← Multiset.coe_mapAddMonoidHom (fun z : ℂˣ => (z : ℂ)), map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, ← Equiv.sum_comp Fin.revPerm]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Multiset.coe_mapAddMonoidHom, Multiset.map_map]`. Use `Multiset.map_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `hq : Ideal.absNorm w.asIdeal = normV w` using `rfl`. Simplify using `only [Function.comp_apply, Units.val_mul, coe_qPow, Fin.revPerm_apply, Fin.val_rev, hq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Rewrite using `[Nat.cast_sub k.2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.V.Z.Desc.W.splitSat :
     UpperTheory.V.Z.Desc.W.SplitSat := by

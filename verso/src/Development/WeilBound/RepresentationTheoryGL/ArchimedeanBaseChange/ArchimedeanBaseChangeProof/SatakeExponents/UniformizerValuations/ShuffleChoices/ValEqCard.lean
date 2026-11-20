@@ -24,25 +24,25 @@ def gg {n : ℕ} (x : Fin n → ℤ) (k k' : Fin n) : ℤ :=
   x k * (1 - 2 * if k' < k then 1 else 0) + x k' * (1 - 2 * if k < k' then 1 else 0)
 
 /- English proof (translation)
-Unfold `gg`. Rewrite using `[if_neg (not_lt.2 h.le), if_pos h]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gg_lt {n : ℕ} (x : Fin n → ℤ) (p q : Fin n) (h : p < q) : gg x p q = x p - x q := by
   unfold gg; rw [if_neg (not_lt.2 h.le), if_pos h]; ring
 
 /- English proof (translation)
-Unfold `gg`. Rewrite using `[if_pos h, if_neg (not_lt.2 h.le)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gg_gt {n : ℕ} (x : Fin n → ℤ) (p q : Fin n) (h : q < p) : gg x p q = x q - x p := by
   unfold gg; rw [if_pos h, if_neg (not_lt.2 h.le)]; ring
 
 /- English proof (translation)
-Establish `hi'` using `i.isLt`. Establish `hj'` using `j.isLt`. Rewrite using `[lOf_eq, lOf_eq]`. Break down `lt_or_gt_of_ne (fun h' => hij (Fin.ext h')) with h | h` into its components or cases. Establish `c1 : loF n i < loF n j` using `show i.val < j.val from h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `c2 : loF n i < hiF n j` using `show i.val < n - 1 - j.val by omega`. Establish `c3 : loF n j < hiF n i` using `show j.val < n - 1 - i.val by omega`. Establish `c4 : hiF n j < hiF n i` using `show n - 1 - j.val < n - 1 - i.val by omega`. Rewrite using `[gg_lt x _ _ c1, gg_lt x _ _ c2, gg_gt x _ _ c3, gg_gt x _ _ c4]`. Use `hx _ _ c1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hx _ _ c4` as an intermediate fact. Rewrite using `[max_eq_left (by linarith)]; ring`. Establish `c1 : loF n j < loF n i` using `show j.val < i.val from h`. Establish `c2 : loF n i < hiF n j` using `show i.val < n - 1 - j.val by omega`. Establish `c3 : loF n j < hiF n i` using `show j.val < n - 1 - i.val by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c4 : hiF n i < hiF n j` using `show n - 1 - i.val < n - 1 - j.val by omega`. Rewrite using `[gg_gt x _ _ c1, gg_lt x _ _ c2, gg_gt x _ _ c3, gg_lt x _ _ c4]`. Use `hx _ _ c1` as an intermediate fact. Use `hx _ _ c4` as an intermediate fact. Rewrite using `[max_eq_right (by linarith)]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem p4 {n : ℕ} (x : Fin n → ℤ) (hx : ∀ p q : Fin n, p < q → x q + 2 ≤ x p) (i j : Fin (n / 2)) (hij : i ≠ j) :
     gg x (loF n i) (loF n j) + gg x (loF n i) (hiF n j) + (gg x (hiF n i) (loF n j) + gg x (hiF n i) (hiF n j)) =
@@ -70,13 +70,13 @@ end StandardSymmetricSums
 open StandardSymmetricSums
 
 /- English proof (translation)
-Introduce `n x _ hx`. Establish `hx' : ∀ p q : Fin n, p < q → x q + 2 ≤ x p` using `hx`. Unfold `Cone`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hi'` using `i.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hj'` using `j.isLt`. Rewrite using `[lOf_eq, lOf_eq]`. Establish `c1 : loF n i < loF n j` using `show i.val < j.val by omega`. Establish `c4 : hiF n j < hiF n i` using `show n - 1 - j.val < n - 1 - i.val by omega`. Use `hx' _ _ c1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hx' _ _ c4` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi'` using `i.isLt`. Rewrite using `[lOf_eq]`. Establish `c : loF n i < hiF n i` using `show i.val < n - 1 - i.val by omega`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hx' _ _ c` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem coneTwo : ConeTwo := by
   intro n x _ hx

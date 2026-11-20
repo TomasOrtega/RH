@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CuspLimit
 
 /- English proof (translation)
-Establish `key : ∀ ε : ℝ, 0 < ε → ‖∫ x, v x ∂μ‖ ≤ ε * ∫ x, w x ∂μ` using `fun ε hε => by`. Take `⟨n, hn⟩` from `h ε hε`. Establish `e : ∫ x, (u n x - v x) ∂μ = -∫ x, v x ∂μ` using `by rw [integral_sub (hu n) hv, h0, zero_sub]`. Rewrite using `[← norm_neg, ← e, ← integral_const_mul]`. Conclude with `norm_integral_le_of_norm_le (hw.const_mul ε) (Filter.Eventually.of_forall hn)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `t : Filter.Tendsto (fun ε : ℝ => ε * ∫ x, w x ∂μ) (nhdsWithin 0 (Set.Ioi 0)) (nhds (0 * ∫ x, w x ∂μ))` using `((continuous_id.mul continuous_const).tendsto 0).mono_left nhdsWithin_le_nhds`. Rewrite `t` using `[zero_mul]`. Conclude with `norm_le_zero_iff.1 (ge_of_tendsto t (eventually_nhdsWithin_of_forall key))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_eq_zero_of_approx {X : Type} [MeasurableSpace X] {μ : Measure X} {u : ℕ → X → ℂ} {v : X → ℂ}
     {w : X → ℝ} (hu : ∀ n, Integrable (u n) μ) (hv : Integrable v μ) (hw : Integrable w μ)
@@ -34,13 +34,11 @@ theorem integral_eq_zero_of_approx {X : Type} [MeasurableSpace X] {μ : Measure 
   exact norm_le_zero_iff.1 (ge_of_tendsto t (eventually_nhdsWithin_of_forall key))
 
 /- English proof (translation)
-Introduce `D V N ψ f hψ hf hl ht`. Establish `hint : ∀ φ : GA D V → ℂ, Continuous φ → (∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g) → ∀ W, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.IsIsotropic V W → ∀ μ : Measure (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.unipRad D.sp.cm V (AF D.host.F) W), μ.IsHaarM …`. Introduce `φ hc hl W hW μ hμ 𝓕 h𝓕 g`. Rewrite `hl` using `[GlobalTheory.AutFunCompare.GQ_eq]`. Conclude with `GlobalTheory.AutFunCompare.integrableOn_constTerm D.sp.cm V W hW φ hc hl μ hμ 𝓕 h𝓕 g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.AutFunCompare.isCuspFun_iff_constTerm]`. Introduce `W hW μ hμ 𝓕 h𝓕 g`. Take `⟨h1, h2, -, h4⟩` from `GlobalTheory.Size.quotHeight_laws V`. Establish `hw` using `(hint (fun x => ((GlobalTheory.Grow.quotHeight V x ^ N : ℝ) : ℂ)) (Complex.continuous_ofReal.comp (h4.pow N)) (fun γ hγ x => by rw [h2 γ hγ]) W hW μ hμ 𝓕 h𝓕 g).re`. Use `integral_eq_zero_of_approx (μ := μ.restrict 𝓕) (u := fun k n => ψ k (n.1 * g)) (v := fun n => f (n.1 * g)) (fun k => hint _ (hψ k).1 (hψ k).2.1 W hW μ hμ 𝓕 h𝓕 g) (hint _ hf hl W hW μ hμ 𝓕 h𝓕 g) hw (fun k => (GlobalTheory.AutFunCompare.isCuspFun_iff_constTerm V _).1 (hψ k).2.2 W h …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `(ht.eventually (ge_mem_nhds (ENNReal.ofReal_pos.2 hε))).exists`. Use `⟨k, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Size.growthSize_eq_quot (fun γ hγ x => by`. Rewrite `hk` using `[Pi.sub_apply, Pi.sub_apply, (hψ k).2.1 γ hγ, hl γ hγ])]`. Use `(ENNReal.ofReal_le_ofReal_iff hε.le).1 ((le_iSup _ (n.1 * g)).trans hk)` as an intermediate fact.
-
-Conclude with `(div_le_iff₀ (pow_pos (lt_of_lt_of_le one_pos (h1 _).1) N)).1 this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCuspFun_of_tendsto : ∀ (D : D7) (V : HSp D) (N : ℕ) (ψ : ℕ → GA D V → ℂ) (f : GA D V → ℂ), (∀ n, Continuous (ψ n) ∧ (∀ γ ∈ GQ V, ∀ g, ψ n (γ * g) = ψ n g) ∧ IsCuspFun V (ψ n)) → Continuous f → (∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g) → Filter.Tendsto (fun n => GlobalTheory.Size.growthSize V N (ψ n - f)) Filter.atTop (nhds 0) → IsCuspFun V f := by
   intro D V N ψ f hψ hf hl ht

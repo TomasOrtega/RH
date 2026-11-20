@@ -23,9 +23,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.StepTwo.Dyadic
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 D N X bkP`. Establish `hS` using `GlobalTheory.SelFun.oneMatrix_of_galoisCohomology h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 D N X bkP`. Establish `hgw` using `GlobalTheory.T.residual_selmer_finrank_eq_dual h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 D N X bkP`. Establish `hk4` using `GlobalTheory.ScalarFrob.firstHalf h5 h6 h7 h4 D N X bkP`. Use `GlobalTheory.StepTwo.TwoBound.thmC_of_parts D N X bkP (GlobalTheory.ChosenPrimes.stepAB h1 D N X) (fun i => GlobalTheory.ChooseForms.chooseH h8 D N X bkP i fun s hs => ⟨GlobalTheory.ResSel.SpanOddPf.spanOdd D N X bkP i s hs, GlobalTheory.ResSel.AltSpan.spanTwo_of_galHyp D N X bkP …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.StepTwo.StartInd.start_of_resBound D N X bkP i s hs (GlobalTheory.ScalarFrob.firstPlace h5 h6 h7 D N X bkP i s hs) (GlobalTheory.ResOrder.resBound h4 D N X bkP i s hs (hk4 i s hs) (GlobalTheory.ResRecip.reciprocity h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 D N X bkP i s hs …`. Conclude with `GlobalTheory.Growth.grow h4 D N X bkP hS i s hs`. Conclude with `GlobalTheory.NewPrime.step h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 D N X bkP hS i s hs`.
+A detailed English derivation is pending.
 -/
 theorem bound_mod_two_of_hypothesis : Cheb → PoitouTateTotallyComplex → CohDimTwo → TameLocal → LocalFiniteness → LocalTateDuality → LocalEulerChar → GlobalFiniteness → GlobalEulerChar → UnramifiedOrthogonality → Gen.ArchimedeanSignatureMatching → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X), ThmC bkP := by
   intro h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 D N X bkP

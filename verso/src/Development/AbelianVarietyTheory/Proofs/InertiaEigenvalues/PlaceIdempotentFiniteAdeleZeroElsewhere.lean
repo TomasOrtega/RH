@@ -10,13 +10,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ExportSeries
 
 /- English proof (translation)
-Introduce `D ι h1 h2 P e he P' hP`. Establish `hee : e * e = e` using `he.1.1`. Establish `hm : ∀ a b : AE D, ι (finPart D (a * b)) P' = ι (finPart D a) P' * ι (finPart D b) P'` using `fun a b => by`. Rewrite using `[RingHom.map_mul, map_mul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Assume the negation of the conclusion as `h0`. Establish `hone : ι (finPart D e) P' = 1` using `mul_left_cancel₀ h0 (by rw [← hm, hee, mul_one])`. Use `hP (HeightOneSpectrum.ext (P'.isMaximal.eq_of_le P.isPrime.ne_top fun x hx => ?_))` and prove the remaining obligations. Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Use `(he.2 x hx0).2 fun hint => ?_` and prove the remaining obligations. Establish `hv` using `(h2 _).1 hint P'`. Establish `hi : ι (finPart D (incA D ((x : D.host.E)⁻¹))) P' = algebraMap D.host.E (P'.adicCompletion D.host.E) ((x : D.host.E)⁻¹)` using `congrArg (fun z : FiniteAdeleRing (𝓞 D.host.E) D.host.E => z P') (h1 ((x : D.host.E)⁻¹))`. Rewrite `hv` using `[hm, hone, one_mul, hi, map_inv₀, map_inv₀, GlobalTheory.GeoLevel.valued_coe_int]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : P'.intValuation x < 1` using `(P'.intValuation_lt_one_iff_mem x).2 hx`. Establish `hpos : 0 < P'.intValuation x` using `zero_lt_iff.2 (P'.intValuation_ne_zero x hx0)`. Conclude with `absurd ((inv_le_one₀ hpos).1 hv) (not_le.2 hlt)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idem_apply_eq_zero_of_ne : ∀ (D : D7) (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E), (∀ k : D.host.E, ι ((1 : Af D.host.F) ⊗ₜ[D.host.F] k) = algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) k) → (∀ y, y ∈ intAE D ↔ ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (ι y P) ≤ 1) → ∀ (P : Pl D.host.E) (e : AE D), Formalism.L2.NTheta.IsIdemAt e P → ∀ P' : Pl D.host.E, P' ≠ P → ι (finPart D e) P' = 0 := by
   intro D ι h1 h2 P e he P' hP

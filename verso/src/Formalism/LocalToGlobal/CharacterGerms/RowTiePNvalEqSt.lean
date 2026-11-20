@@ -10,11 +10,11 @@ namespace Formalism.L2.FormalSeriesBounds
 open Formalism.L2.Pj
 
 /- English proof (translation)
-Introduce `T C _ V ι hι x`. Unfold `nval eOf`. Establish `hl : 0 ≤ vV T.V ((V.l : ℕ) : T.Fr)`. Establish `h` using `vV_algebraMap_nonneg T ((V.l : ℕ) : T.V)`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[if_pos rfl, map_zero, AddValuation.map_zero]`. Both sides reduce to the same expression. Rewrite using `[if_neg hx, hι x hx]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `he : ((vV T.V ((V.l : ℕ) : T.Fr)).toNat : ℝ) = (vV T.V ((V.l : ℕ) : T.Fr) : ℝ)` using `by first`. Consider the case `exact_mod_cast Int.toNat_of_nonneg hl`. Consider the case `rw [← Int.cast_natCast (R := ℝ), Int.toNat_of_nonneg hl]`. Rewrite using `[he]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nvalEqSt_holds : NvalEqSt := by
   intro T C _ V ι hι x

@@ -10,25 +10,23 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped ContDiff
 
 /- English proof (translation)
-Set `ι : (⊤ : Subgroup 𝔸ˣ) → 𝔸` to `fun A => ((A : 𝔸ˣ) : 𝔸)`. Establish `hemb : Topology.IsOpenEmbedding ι` using `Units.isOpenEmbedding_val.comp (IsOpen.isOpenEmbedding_subtypeVal (by simp))`. Establish `hinj` using `hemb.injective`. Set `β : 𝔸 → ℝ` to `Function.extend ι κ 0`. Establish `hβ : ∀ A, β (ι A) = κ A` using `fun A => hinj.extend_apply _ _ A`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hβ0 : ∀ x, x ∉ Set.range ι → β x = 0` using `fun x hx => Function.extend_apply' _ _ _ (by simpa using hx)`. Establish `hCc : IsCompact (ι '' tsupport κ)` using `IsCompact.image hc hemb.continuous`. Establish `hCcl` using `hCc.isClosed`. Establish `hsupp : Function.support β ⊆ ι '' tsupport κ`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hr : x ∈ Set.range ι`. Take `⟨A, rfl⟩` from `hr`. Use `⟨A, subset_tsupport _ ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Function.mem_support, ← hβ]`. Conclude with `hx`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd (hβ0 x hr) hx`. Establish `hts : tsupport β ⊆ ι '' tsupport κ` using `closure_minimal hsupp hCcl`. Use `⟨β, ?_, hCc.of_isClosed_subset (isClosed_tsupport β) hts, ?_, hβ⟩` and prove the remaining obligations. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `X`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hX : X ∈ ι '' tsupport κ`. Take `⟨g, -, rfl⟩` from `hX`. Set `e` to `expPartialHomeomorph ℝ 𝔸`. Establish `hF` using `(h.isSmoothFun_iff.1 hs) g`. Establish `hF' : ContDiff ℝ ∞ fun Y : (⊤ : Submodule ℝ 𝔸) => κ (g * h.expG Y)` using `Complex.reCLM.contDiff.comp hF`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `gi : 𝔸` to `(((g : 𝔸ˣ)⁻¹ : 𝔸ˣ) : 𝔸)`. Establish `hm : ContDiff ℝ ∞ (fun x : 𝔸 => gi * x)` using `contDiff_const.mul contDiff_id`. Establish `h1 : gi * ι g = 1` using `Units.inv_mul _`. Establish `hn : e.target ∈ nhds (gi * ι g)`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e.open_target.mem_nhds (one_mem_expPartialHomeomorph_target ℝ _)`. Establish `hl : ContDiffAt ℝ ∞ (fun x => subspaceProj (⊤ : Submodule ℝ 𝔸) (e.symm (gi * x))) (ι g)` using `(subspaceProj (⊤ : Submodule ℝ 𝔸)).contDiff.contDiffAt.comp _ (((contDiffOn_expPartialHomeomorph_symm ℝ _).contDiffAt hn).comp _ hm.contDiffAt)`. Use `(hF'.contDiffAt.comp _ hl).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hm.continuous.continuousAt.preimage_mem_nhds hn] with x hx`. Establish `hexp : NormedSpace.exp (e.symm (gi * x)) = gi * x` using `e.right_inv hx`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ι (g * h.expG (subspaceProj (⊤ : Submodule ℝ 𝔸) (e.symm (gi * x)))) = x`. Simplify using `only [ι, Subgroup.coe_mul, Units.val_mul, IsExpLieAlgebra.coe_expG]`. Rewrite using `[subspaceProj_of_mem Submodule.mem_top, hexp, ← mul_assoc]`. Simplify using `[gi]`. Rewrite using `[Function.comp_apply, ← hβ, key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hz : β =ᶠ[nhds X] fun _ => (0 : ℝ)` using `by filter_upwards [hCcl.isOpen_compl.mem_nhds hX] with x hx`. Assume the negation of the conclusion as `hne`. Conclude with `hx (hsupp hne)`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hz`. Introduce `x hx`.
-
-Take `⟨A, -, rfl⟩` from `hts hx`. Conclude with `⟨(A : 𝔸ˣ), rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.exists_smooth_bump_units {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
     [FiniteDimensional ℝ 𝔸] (h : IsExpLieAlgebra (⊤ : Subgroup 𝔸ˣ) (⊤ : Submodule ℝ 𝔸))
@@ -93,7 +91,7 @@ private theorem UpperTheory.exists_smooth_bump_units {𝔸 : Type*} [NormedRing 
     exact ⟨(A : 𝔸ˣ), rfl⟩
 
 /- English proof (translation)
-Introduce `K _ _ n κ hs hc`. Conclude with `UpperTheory.exists_smooth_bump_units (isExpLieAlgebra K n) κ hs hc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_contDiff_archMatrix_extension_of_smooth :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (κ : archGroup K n → ℝ),

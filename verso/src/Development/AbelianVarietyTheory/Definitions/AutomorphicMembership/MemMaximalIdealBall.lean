@@ -39,13 +39,13 @@ instance ball_isLocalRing (C : Type) [NormedField C] [IsUltrametricDist C] : IsL
   ValuationRing.isLocalRing _
 
 /- English proof (translation)
-Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Establish `ha : ‖(a : C)‖ ≤ 1` using `a.2`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2 : ‖(a : C)‖ = 1` using `le_antisymm ha (not_lt.1 h1)`. Establish `h0 : (a : C) ≠ 0` using `by rintro h0; simp [h0] at h2`. Use `h (IsUnit.of_mul_eq_one ⟨(a : C)⁻¹, ?_⟩ (Subtype.ext (mul_inv_cancel₀ h0)))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(a : C)⁻¹‖ ≤ 1`. Simplify using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Introduce `h hu`. Take `⟨b, hb⟩` from `hu.exists_right_inv`. Establish `h1 : ‖(a : C)‖ * ‖(b : C)‖ = 1`. Rewrite using `[← norm_mul, ← Subring.coe_mul, hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : ‖(b : C)‖ ≤ 1` using `b.2`. Use polynomial arithmetic with `[norm_nonneg (a : C), norm_nonneg (b : C)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem mem_maximalIdeal_ball (a : ↥(intO C)) : a ∈ maximalIdeal ↥(intO C) ↔ ‖(a : C)‖ < 1 := by
   rw [mem_maximalIdeal, mem_nonunits_iff]
@@ -228,7 +228,7 @@ def GoodIff (ct : At S κ p) : Prop :=
   ∀ (Z : ct.Mdl) (x : ct.Pt Z), Subsingleton (ct.Ylat x) ↔ Z.abP (x.z (closedPoint ↥(intO ↥x.C.S)))
 
 /- English proof (translation)
-Use `haveI := y.dvr`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible ↥(intO ↥y.K)`. Conclude with `⟨⟨y.K, le_rfl, RingHom.Finite.of_surjective _ fun x => ⟨x, rfl⟩, π, hπ⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_ext (y : DVP ct) : Nonempty (Ext y) := by
   haveI := y.dvr
@@ -236,7 +236,7 @@ theorem nonempty_ext (y : DVP ct) : Nonempty (Ext y) := by
   exact ⟨⟨y.K, le_rfl, RingHom.Finite.of_surjective _ fun x => ⟨x, rfl⟩, π, hπ⟩⟩
 
 /- English proof (translation)
-Establish `h1 : ‖((e.π : ↥e.L) : ↥y.C.S)‖ < 1` using `(mem_maximalIdeal_ball e.π).1 ((mem_maximalIdeal _).2 e.irr.not_isUnit)`. Establish `h0 : ((e.π : ↥e.L) : ↥y.C.S) ≠ 0` using `fun h => e.irr.ne_zero (Subtype.ext (Subtype.ext h))`. Use `Real.logb_neg (b := p) (by exact_mod_cast ct.hp.one_lt) (norm_pos_iff.2 h0) h1` as an intermediate fact. Simplify using `only [vpi]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem vpi_pos (e : Ext y) : 0 < vpi e := by
   have h1 : ‖((e.π : ↥e.L) : ↥y.C.S)‖ < 1 :=
@@ -246,7 +246,7 @@ theorem vpi_pos (e : Ext y) : 0 < vpi e := by
   simp only [vpi]; linarith
 
 /- English proof (translation)
-The claim follows from `(specializes_closedPoint (primeU e : PrimeSpectrum e.R)).map χ.hom.continuous`.
+A detailed English derivation is pending.
 -/
 theorem img_spz (χ : Chart Z y e) : ct.spz (imgU χ) (imgM χ) :=
   (specializes_closedPoint (primeU e : PrimeSpectrum e.R)).map χ.hom.continuous

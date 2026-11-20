@@ -17,11 +17,11 @@ variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] {T : ι → Type} [∀
   (f : ∀ i, R →+* T i)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y e`. Use extensionality with `n`. Use `h.1 (funext fun i => ?_)` and prove the remaining obligations. Use `congrArg (fun w => WittVector.coeff w n) (congrFun e i)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `only [WittVector.map_coeff]`. Introduce `y choose c hc using fun n => h.2 (fun i => (y i).coeff n)`. Use `⟨WittVector.mk l c, funext fun i => ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Rewrite using `[WittVector.map_coeff]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (hc n) i`.
+A detailed English derivation is pending.
 -/
 private theorem wit_bij (h : Function.Bijective fun (a : R) i => f i a) :
     Function.Bijective fun (x : WittVector l R) i => WittVector.map (f i) x := by
@@ -39,7 +39,7 @@ private theorem wit_bij (h : Function.Bijective fun (a : R) i => f i a) :
     exact congrFun (hc n) i
 
 /- English proof (translation)
-Establish `: IsUnit (algebraMap (WittVector l S) (WL l S) (l : WittVector l S))` using `IsLocalization.Away.algebraMap_isUnit (l : WittVector l S)`. Rewrite `this` using `[map_natCast]`. Conclude with `this.pow k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem l_unit (S : Type) [CommRing S] (k : ℕ) :
     IsUnit ((l : WL l S) ^ k) := by
@@ -49,7 +49,7 @@ private theorem l_unit (S : Type) [CommRing S] (k : ℕ) :
   exact this.pow k
 
 /- English proof (translation)
-Take `⟨⟨a, ⟨_, k, rfl⟩⟩, h⟩` from `IsLocalization.surj (Submonoid.powers (l : WittVector l S)) x`. Use `⟨a, k, ?_⟩` and prove the remaining obligations. Simplify `h` using `only [map_pow, map_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem exists_num {S : Type} [CommRing S] (x : WL l S) :
     ∃ (a : WittVector l S) (k : ℕ), x * (l : WL l S) ^ k = algebraMap _ (WL l S) a := by
@@ -58,21 +58,21 @@ private theorem exists_num {S : Type} [CommRing S] (x : WL l S) :
   simpa only [map_pow, map_natCast] using h
 
 /- English proof (translation)
-Establish `hw` using `wit_bij (l := l) f h`. Prove the components needed by the constructor for the conclusion. Establish `hz : ∀ x : WL l R, (∀ i, awayW (f i) x = 0) → x = 0`. Introduce `x hx`. Take `⟨a, k, hk⟩` from `exists_num x`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ∀ i, ∃ m : ℕ, (l : WittVector l (T i)) ^ m * WittVector.map (f i) a = 0`. Introduce `i`. Establish `: algebraMap _ (WL l (T i)) (WittVector.map (f i) a) = 0`. Rewrite using `[← awayW_algebraMap, ← hk, map_mul, hx i, zero_mul]`. Take `⟨⟨_, m, rfl⟩, hm⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (l : WittVector l (T i))) _ _).1 this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, hm⟩`. Use `choose m hm using h1`. Establish `h2 : (l : WittVector l R) ^ (∑ i, m i) * a = 0`. Use `hw.1 (funext fun i => ?_)` and prove the remaining obligations. Establish `hd : m i ≤ ∑ j, m j` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `WittVector.map (f i) _ = WittVector.map (f i) 0`. Rewrite using `[map_mul, map_pow, map_natCast, map_zero, ← Nat.sub_add_cancel hd, pow_add, mul_assoc, hm i, mul_zero]`. Establish `h3 : (l : WL l R) ^ (∑ i, m i) * (x * (l : WL l R) ^ k) = 0`. Rewrite using `[hk]`. Use `congrArg (algebraMap _ (WL l R)) h2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_mul, map_pow, map_natCast, map_zero]`. Then use the resulting hypothesis. Conclude with `((l_unit R _).mul_right_eq_zero.1 h3 |> (l_unit R k).mul_left_eq_zero.1)`. Introduce `x y e`. Use `hz (x - y) fun i => by` as an intermediate fact. Use `congrFun e i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at this`. Rewrite using `[map_sub, this, sub_self]`. Conclude with `sub_eq_zero.1 this`. Introduce `y choose a k hk using fun i => exists_num (y i)`. Establish `hd : ∀ i, k i ≤ ∑ j, k j` using `fun i => Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `hw.2 fun i => a i * (l : WittVector l (T i)) ^ (∑ j, k j - k i)`. Take `⟨u, hu⟩` from `l_unit (l := l) R (∑ j, k j) |>.exists_right_inv`. Use `⟨algebraMap _ (WL l R) c * u, funext fun i => ?_⟩` and prove the remaining obligations. Use `(l_unit (l := l) (T i) (∑ j, k j)).mul_right_cancel ?_` and prove the remaining obligations. Establish `e1 : awayW (f i) ((l : WL l R) ^ ∑ j, k j) = (l : WL l (T i)) ^ ∑ j, k j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_natCast]`. Establish `e2 : awayW (f i) (algebraMap _ (WL l R) c * u) * (l : WL l (T i)) ^ ∑ j, k j = algebraMap _ (WL l (T i)) (WittVector.map (f i) c)`. Rewrite using `[← e1, ← map_mul, mul_assoc, mul_comm u, hu, mul_one, awayW_algebraMap]`. Establish `hci : WittVector.map (f i) c = a i * (l : WittVector l (T i)) ^ (∑ j, k j - k i)` using `congrFun hc i`. Rewrite using `[e2, hci, map_mul, ← hk i, map_pow, map_natCast, mul_assoc, ← pow_add, Nat.add_sub_cancel' (hd i)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem away_bij (h : Function.Bijective fun (a : R) i => f i a) :
     Function.Bijective fun (x : WL l R) i => awayW (f i) x := by
@@ -127,32 +127,28 @@ section Acr
 variable {A : PAlg l} {ι : Type} [Fintype ι] {B : ι → PAlg l} (f : ∀ i, A ⟶ B i)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (awayW_algebraMap (Hom.f g) w)`.
+A detailed English derivation is pending.
 -/
 private theorem crystallineAlgebra_algebraMap {C D : PAlg l} (g : C ⟶ D) (w : C.W) :
     (pdOk_hom g).acr0 (algebraMap C.W C.Acr0 w) = algebraMap D.W D.Acr0 (mapW g w) :=
   Subtype.ext (awayW_algebraMap (Hom.f g) w)
 
 /- English proof (translation)
-Establish `hw` using `wit_bij (l := l) (fun i => Hom.f (f i)) h`. Establish `ha` using `away_bij (l := l) (fun i => Hom.f (f i)) h`. Prove the components needed by the constructor for the conclusion. Introduce `x y e`. Conclude with `Subtype.ext (ha.1 (funext fun i => congrArg Subtype.val (congrFun e i)))`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : ∀ i (y : WL l (B i).A), y ∈ (B i).Acr0 → ∃ z : A.Acr0, awayW (Hom.f (f i)) z.1 = y`. Introduce `i y hy`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A.dxi0 k, ?_⟩` and prove the remaining obligations. Use `awayW_dpw (Hom.f (f i)) k (A.isUnit_natCast k.factorial_ne_zero) A.xi` as an intermediate fact. Conclude with `this.trans (congrArg (dpw k) (mapW_xi (f i)))`. Consider the case `algebraMap w`. Take `⟨c, hc⟩` from `hw.2 (Pi.single i w)`.
+Establish an intermediate fact. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hci : WittVector.map (Hom.f (f i)) c = w` using `by simpa using congrFun hc i`. Use `⟨algebraMap A.W A.Acr0 c, ?_⟩` and prove the remaining obligations. Use `awayW_algebraMap (l := l) (Hom.f (f i)) c` as an intermediate fact. Rewrite `this` using `[hci]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, map_add _ _ _⟩`. Consider the case `mul x y _ _ hx hy`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a * b, map_mul _ _ _⟩`. Introduce `y`. Use `choose z hz using fun i => hs i (y i).1 (y i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose E hE using fun i => hw.2 (Pi.single i (1 : WittVector l (B i).A))`. Use `⟨∑ i, algebraMap A.W A.Acr0 (E i) * z i, funext fun j => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[map_sum, Finset.sum_eq_single j]`. Establish `e0 : mapW (f j) (E j) = 1` using `(congrFun (hE j) j).trans (Pi.single_eq_same _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : (pdOk_hom (f j)).acr0 (algebraMap A.W A.Acr0 (E j)) = 1`. Rewrite using `[crystallineAlgebra_algebraMap, e0]`. Conclude with `map_one _`. Rewrite using `[map_mul, e1, one_mul]`. Conclude with `Subtype.ext (hz j)`.
-
-Introduce `i _ hij`. Establish `e0 : mapW (f j) (E i) = 0` using `(congrFun (hE i) j).trans (Pi.single_eq_of_ne hij.symm _)`. Establish `e1 : (pdOk_hom (f j)).acr0 (algebraMap A.W A.Acr0 (E i)) = 0`. Rewrite using `[crystallineAlgebra_algebraMap, e0]`. Conclude with `map_zero _`.
-
-Rewrite using `[map_mul, e1, zero_mul]`. Introduce `hj`. Conclude with `absurd (Finset.mem_univ j) hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem crystallineAlgebra_bijective (h : Function.Bijective fun (a : A.A) i => Hom.f (f i) a) :
     Function.Bijective fun (x : A.Acr0) i => (pdOk_hom (f i)).acr0 x := by
@@ -205,17 +201,15 @@ private theorem crystallineAlgebra_bijective (h : Function.Bijective fun (a : A.
       exact absurd (Finset.mem_univ j) hj
 
 /- English proof (translation)
-Establish `h0` using `crystallineAlgebra_bijective f h`. Prove the components needed by the constructor for the conclusion. Establish `hz : ∀ x : A.Acr n, (∀ i, mapAcr (f i) n x = 0) → x = 0`. Introduce `x hx`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ∀ i, ∃ c : (B i).Acr0, c * (l : (B i).Acr0) ^ n = (pdOk_hom (f i)).acr0 y` using `fun i => Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq_zero_iff_mem.1 (hx i))`. Use `choose c hc using h1`. Take `⟨d, hd⟩` from `h0.2 c`. Establish `hy : y = d * (l : A.Acr0) ^ n` using `h0.1 (funext fun i => by`. Establish `hdi : (pdOk_hom (f i)).acr0 d = c i` using `congrFun hd i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[map_mul, map_pow, map_natCast, hdi, hc i])`. Rewrite using `[hy]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))`. Introduce `x y e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hz (x - y) fun i => by` as an intermediate fact. Use `congrFun e i` as an intermediate fact. Simplify using `only at this`. Rewrite using `[map_sub, this, sub_self]`. Conclude with `sub_eq_zero.1 this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y choose z hz using fun i => Ideal.Quotient.mk_surjective (y i)`. Take `⟨d, hd⟩` from `h0.2 z`. Use `⟨A.mkAcr n d, funext fun i => ?_⟩` and prove the remaining obligations. Establish `hdi : (pdOk_hom (f i)).acr0 d = z i` using `congrFun hd i`. Establish `: mapAcr (f i) n (A.mkAcr n d) = (B i).mkAcr n ((pdOk_hom (f i)).acr0 d)` using `rfl`.
-
-Simplify using `only`. Rewrite using `[this, hdi]`. Conclude with `hz i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem acr_bij (n : ℕ) (h : Function.Bijective fun (a : A.A) i => Hom.f (f i) a) :
     Function.Bijective fun (x : A.Acr n) i => mapAcr (f i) n x := by
@@ -255,7 +249,7 @@ end Acr
 end UpperTheory.Ru.crystallineComparison
 
 /- English proof (translation)
-Introduce `_ _ n _ S hS` and use `UpperTheory.Ru.crystallineComparison.acr_bij (fun i => (S.f i).hom) n hS`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ru.crystallineComparison.acrAdd :
     UpperTheory.Ru.crystallineComparison.AcrAdd := fun _ _ n _ S hS => UpperTheory.Ru.crystallineComparison.acr_bij (fun i => (S.f i).hom) n hS

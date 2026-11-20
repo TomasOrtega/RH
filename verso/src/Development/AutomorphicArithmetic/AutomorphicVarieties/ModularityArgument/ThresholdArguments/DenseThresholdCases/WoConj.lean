@@ -15,7 +15,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} {l : ℕ} [Fact l.Prime] {n : ℕ}
   {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin n) (Qbar l)} {y : WD h}
 /- English proof (translation)
-The claim follows from `k.of_conj hl P hP`.
+A detailed English derivation is pending.
 -/
 theorem woConj'_alt (k : _root_.UpperTheory.V.Z.Win.WDT ι r y) (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {r' : G E Ω →* GL (Fin n) (Qbar l)}
     (P : GL (Fin n) (Qbar l)) (hP : ∀ g : ↥(Weil h), P * r g = r' g * P) : _root_.UpperTheory.V.Z.Win.WDT ι r' y := k.of_conj hl P hP

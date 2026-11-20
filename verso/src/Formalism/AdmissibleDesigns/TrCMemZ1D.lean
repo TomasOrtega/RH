@@ -134,7 +134,7 @@ def trC {e : ℕ} (Cd : CoefDict PD LL O σ M r χ Dw eG e) (z : Dw → M) : G �
   fun g => Cd.u (z (eG.symm g))
 
 /- English proof (translation)
-Use `Submodule.Quotient.induction_on _ x (fun v => ?_)` and prove the remaining obligations. Simplify using `only [actD, Submodule.mapQ_apply, map_mul]`. Apply the tactic sequence `all_goals rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actD_mul {e : ℕ} (Ce : TwLat PD LL O e) (g h : G) (x : Ce.V ⧸ Ce.L.T) :
     actD Ce.L (g * h) x = actD Ce.L g (actD Ce.L h x) := by
@@ -143,9 +143,9 @@ theorem actD_mul {e : ℕ} (Ce : TwLat PD LL O e) (g h : G) (x : Ce.V ⧸ Ce.L.T
   all_goals rfl
 
 /- English proof (translation)
-Take `⟨φ, hφ1, hφ2⟩` from `hψ ψ hψe`. Establish `hfun : trC Cd z = fun g => φ (Y.ρ g Y.e₀ - Y.e₀)`. Use function extensionality and compare the values at `g`. Establish `h` using `hφ2 (eG.symm g)`. Rewrite `h` using `[MulEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Simplify using `only [trC, hz]`. Rewrite using `[hfun]`. Conclude with `hTB.1 Y.V Y.ρ Y.L Y.cont hY.1 hY.2 Y.p Y.p_inv Y.p_int Y.e₀ Y.e₀_mem Y.p_e₀ e het Cd.Ce.V Cd.Ce.ρ Cd.Ce.L Cd.Ce.cont Cd.Ce.mat φ hφ1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trC_hf {e t cB : ℕ} {I : Subgroup G} {J : (K →ₐ[Qp] LL) → Set ℤ}
     (hTB : Formalism.MainNotions.N.TBAt PD (O := O) I J t cB) (het : e < t)
@@ -166,9 +166,9 @@ theorem trC_hf {e t cB : ℕ} {I : Subgroup G} {J : (K →ₐ[Qp] LL) → Set �
     Cd.Ce.V Cd.Ce.ρ Cd.Ce.L Cd.Ce.cont Cd.Ce.mat φ hφ1
 
 /- English proof (translation)
-Apply `Submodule.smul_mem` to reduce the goal to its premises. Use `show IsLocallyConstant (trC Cd (z : Dw → M)) ∧ ∀ g h, trC Cd (z : Dw → M) (g * h) = trC Cd (z : Dw → M) g + actD Cd.Ce.L g (trC Cd (z : Dw → M) h)`. Use `⟨(hz.comp_continuous heG).comp Cd.u, fun g h => ?_⟩` and prove the remaining obligations. Establish `hc : (z : Dw → M) (eG.symm g * eG.symm h) = (z : Dw → M) (eG.symm g) + resRep (uRep O' (M` using `M) r χ) Dw (eG.symm g) ((z : Dw → M) (eG.symm h)) := z.2 _ _`. Simplify using `only [trC, map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, map_add]`. Use `congr 1`. Establish `hu` using `Cd.u_act (eG.symm g) ((z : Dw → M) (eG.symm h))`. Rewrite `hu` using `[MulEquiv.apply_symm_apply]`. Conclude with `hu`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trC_mem_Z1D {e : ℕ} (Cd : CoefDict PD LL O σ M r χ Dw eG e) [TopologicalSpace Dw]
     (heG : Continuous eG.symm) (z : coZ1s (resRep (uRep O' (M := M) r χ) Dw))
@@ -219,7 +219,7 @@ def TBTarget (cB : ℕ) : Prop :=
       (Hc i dc Dd c n) (Fc i dc Dd c n)
 
 /- English proof (translation)
-Simplify using `only [plSet, Finset.mem_union]`. Conclude with `Or.inl ((dc.cover w).2 hw)`.
+Simplify using the standard rewrite rules. Prove the first alternative.
 -/
 theorem mem_plSet {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) :
     w ∈ plSet i dc := by
@@ -227,7 +227,7 @@ theorem mem_plSet {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver
   exact Or.inl ((dc.cover w).2 hw)
 
 /- English proof (translation)
-Establish `hm` using `mem_plSet i dc hw`. Establish `hpl : plOf i dc (idx i dc w) = w`. Simplify using `[plOf, idx, hm]`. Simplify using `only [Dw, Aw, hpl, ReciprocityTheory.Gal.Dec]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Dw_idx {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) :
     Dw i dc (idx i dc w) = Dec (F := D.host.E) (D.nd.plOm.1 w) := by

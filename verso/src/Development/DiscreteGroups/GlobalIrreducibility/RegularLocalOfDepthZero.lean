@@ -8,7 +8,7 @@ noncomputable section
 namespace DiscreteGroups.sglob.DzType.Rt
 
 /- English proof (translation)
-Establish `h1` using `Fintype.card_le_of_injective _ (sigma_mk_injective (β := fun a => Fin (d a)) (i := a))`. Simplify `h1` using `[Fintype.card_congr e]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem le_of_sigmaEquiv {s n : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fin (d a)) ≃ Fin n) (a : Fin s) : d a ≤ n := by
   have h1 := Fintype.card_le_of_injective _ (sigma_mk_injective (β := fun a => Fin (d a)) (i := a))
@@ -33,11 +33,11 @@ variable {Ω : Type} [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : Valuatio
 include hi hrc hDZ ht hκ
 
 /- English proof (translation)
-Establish `hi'` using `GlobalTheory.TameRecord.continuous_symm w i hi`. Establish `hc' : IsCuspidal (σ.π.comp (Matrix.GeneralLinearGroup.map (n` using `Fin n) i.toRingHom)) := GlobalTheory.LocGL.isCuspidal_comp_generalLinearGroupMap i.symm hi σ.π hc`. Set `ρ : GLRep g` to `⟨n, Rep.of (σ.π.comp (Matrix.GeneralLinearGroup.map (n := Fin n) i.toRingHom))⟩`. Establish `hρ : TameGen.IsSC ρ` using `⟨hn, (Model.isIrrRep_iff _).2 (GlobalTheory.CuspRep.ParLaws.isIrreducible_comp σ.irr _ fun y => ⟨_, GlobalTheory.TameRecord.glMap_apply_symm i y⟩), GlobalTheory.CuspCoef.isSupercuspidal_of_isCuspidal _ _ _ _ hc'⟩`. Take `⟨τ, φ, hs, hinj, heq, he⟩` from `TameGen.exists_simple_of_has (sysOf L h5 hA) ρ.2.ρ f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hφ : (fixK1 ρ.2.ρ).subtype ∘ₗ φ ≠ 0` using `fun e => by`. Establish `h0 : ∀ u : τ, u = 0` using `fun u => hinj (Subtype.ext (by simpa using LinearMap.congr_fun e u))`. Conclude with `CategoryTheory.id_nonzero τ (by ext u; exact (h0 _).trans (h0 _).symm)`. Establish `hfix : fixK1 ρ.2.ρ ≠ ⊥` using `fun e => hφ (LinearMap.ext fun u => (Submodule.eq_bot_iff _).1 e _ (φ u).2)`. Establish `hτ : FiniteGL.IsCuspidal τ.ρ` using `fun b hb hb' u hu => hinj (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `GlobalTheory.DepthZeroCusp.depthZeroCuspidal g ρ hρ hfix b hb hb' _ fun x hx => by rw [← heq, hu x hx])`. Use `hDZ E Ω g A w h rc hrc i hi κ L t ht hκ n hbig σ.toIrrRep (IrrGL.isCusp_of.2 ⟨hn, hc⟩) τ f (isCuspOf_of_series L h5 hA τ (TameGen.isCusp_character hn τ hs hτ) f he) ⟨_, hφ, fun k u => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg Subtype.val (heq (red g n k) u)).trans (repK_red ρ.2.ρ k (φ u))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem inePol_cusp {n : ℕ} (hn : 0 < n) (hbig : n = 1 ∨ 16 * n ^ 2 < g) (σ : Irr (w.adicCompletion E) n) (hc : IsCuspidal σ.π) (f : (ZMod g)[X])
     (hf : Has (sysOf L h5 hA) (σ.π.comp (Matrix.GeneralLinearGroup.map i.toRingHom)) f) :
@@ -61,13 +61,13 @@ theorem inePol_cusp {n : ℕ} (hn : 0 < n) (hbig : n = 1 ∨ 16 * n ^ 2 < g) (σ
   exact (congrArg Subtype.val (heq (red g n k) u)).trans (repK_red ρ.2.ρ k (φ u))
 
 /- English proof (translation)
-Establish `hi'` using `GlobalTheory.TameRecord.continuous_symm w i hi`. Take `⟨s, d, σ, hs⟩` from `GlobalTheory.T.exists_cuspidalSupport_irreducibleSmoothGL hBZ hGL _ n π`. Establish `h1` using `hrc.recSupp n s π d σ hs (ineIncl h ⟨t, ht⟩)`. Take `⟨-, hc, e, U, T, hT⟩` from `hs`. Take `⟨φ⟩` from `GlobalTheory.IndField.multiProd_comp_glMap i.symm hi' hi (GlobalTheory.SplitWeil.nabs_map_of_homeomorph i.symm hi' hi) e (fun a => (σ a).π)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2 : IsSubquotient (π.π.comp (Matrix.GeneralLinearGroup.map (n` using `Fin n) i.toRingHom)) ((multiProd e fun a => (σ a).π).comp (Matrix.GeneralLinearGroup.map (n := Fin n) i.toRingHom)) := ⟨⟨U.toSubmodule, fun x _ hv => U.apply_mem_toSubmodule _ hv⟩, ⟨T.toLinearMap, fun x => T.isIntertwining' _⟩, hT⟩`. Take `⟨fs, hfs, rfl⟩` from `series_of_isSubquotient (sysOf L h5 hA) e (fun a => (σ a).π.comp (Matrix.GeneralLinearGroup.map (n := Fin (d a)) i.toRingHom)) (h2.trans (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)) f hf`. Establish `hbig : ∀ a, d a = 1 ∨ 16 * d a ^ 2 < g` using `fun a => Or.inr (lt_of_le_of_lt (Nat.mul_le_mul_left 16 (Nat.pow_le_pow_left (DiscreteGroups.sglob.DzType.Rt.le_of_sigmaEquiv e a) 2)) hB)`. Establish `h3 : ∀ a, (rc (cls (σ a).toIrrRep)).charPol (ineIncl h ⟨t, ht⟩) = TameGen.liftPoly L.teich (fs a)` using `fun a => by`. Rewrite using `[← WD.inePol_of_mem_Ine _ ht]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `DiscreteGroups.sglob.DzType.Rt.inePol_cusp i hi hrc hDZ κ L h5 hA ht hκ (hc a).1 (hbig a) (σ a) (hc a).2.2 _ (hfs a)`. Establish `h4 : ∀ u : Finset (Fin s), TameGen.liftPoly L.teich (∏ a ∈ u, fs a) = ∏ a ∈ u, TameGen.liftPoly L.teich (fs a)`. Introduce `u`. Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty => simp [TameGen.liftPoly_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert a u ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, TameGen.liftPoly_mul _ (TameGen.Has.monic (hfs a)).ne_zero (monic_prod_of_monic _ _ fun b _ => TameGen.Has.monic (hfs b)).ne_zero, ih]`. Rewrite using `[WD.inePol_of_mem_Ine _ ht, h4]`. Conclude with `h1.trans (Finset.prod_congr rfl fun a _ => h3 a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inePol_of_has (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (hGL : GlobalTheory.Published.GeometricLemma) {n : ℕ}
     (π : Irr (w.adicCompletion E) n) (hB : 16 * n ^ 2 < g) (f : (ZMod g)[X])
@@ -108,17 +108,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.WeilDeligne in
 
 /- English proof (translation)
-Introduce `hP hDZ hL D Γ hG k v π ρ f hρ hsq ⟨x, hx, hnk⟩`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Use `haveI : IsTotallyComplex D.host.E := D.sp.cm.cmUnram.1`. Take `⟨I⟩` from `GlobalTheory.TypeRec.Model.nonempty_ident D`. Establish `hrc` using `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 (D.naut.plGw k v))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw` using `D.naut.plGw_over k v`. Establish `hA` using `GlobalTheory.RegType.allLab (Γ.O k) (hG k)`. Establish `h5` using `GlobalTheory.SerSys.Bridge.five_le D k`. Establish `hx'` using `GlobalTheory.RegType.mem_principalCongruenceFixed_of_levelOne hw (I.i k v) (I.cont k v) π.π hx`. Establish `hz` using `GlobalTheory.RegType.actK_ne_of_notKilled hw (I.i k v) (I.cont k v) π.π hx _ hnk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `GlobalTheory.RegType.eSerC_mul_zIdem (Γ.O k) (hG k) ρ hρ.1 f (by rw [← Γ.eSer_def k f]; exact hρ.2)`. Establish `hHas` using `GlobalTheory.RegType.has_of_actK (GlobalTheory.RegType.sysOf _ h5 hA) _ hx' hz he`. Establish `hine : (rcAt hL D (D.naut.plGw k v) D.R.r π).inePol (D.ntypes.tg k v) = ((Formalism.CyclotomicNorms.rootsBar f).map fun x => X - C (D.ntypes.teichC k x)).prod` using `DiscreteGroups.sglob.DzType.Rt.inePol_of_has (I.i k v) (I.cont k v) hrc hDZ (Γ.kv k v) _ h5 hA (D.ntypes.tg_mem k v) (Γ.tg_tame k v) hP.bz hP.geo π (DiscreteGroups.sglob.DzType.sixteen_sq_lt_g D k) f hHas`. Use `⟨WD.noMonodromy_of_inertia_separable_charpoly _ _ _ _ _ _ _ (D.ntypes.tg_mem k v) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hine]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.GoodRowMono.separable_prod_teich _ (D.ntypes.teichC_inj k) hsq`. Establish `hSet : TeichmullerInertiaLabelCondition (D.nd.plOm.1 (D.naut.plGw k v)) (D.naut.plGw k v) (D.ntypes.teichC k) (D.ntypes.tg k v)` using `.of_tameGenAt (GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) (D.naut.plGw_over k v)) (D.ntypes.tg_gen k v) (D.ntypes.teichC_inj k)`. Establish `htame : (rcAt hL D (D.naut.plGw k v) D.R.r π).tame`. Take `⟨a, ha, ε, -, hl⟩` from `hrc`. Use `GlobalTheory.SerSys.LabDepth.tame_of_isTameWD ((hl.depth _).1 ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.LocLanglands.fixed_ne_bot_of_equiv (GlobalTheory.SmGL.IrrRep.nonempty_equiv_rep π.toIrrRep).some.symm ?_` and prove the remaining obligations. Use `(Submodule.ne_bot_iff _).2 ⟨x, GlobalTheory.Parabolic.mem_fixed.2 fun u hu => hx u fun a b => ?_, fun h0 => hz ?_⟩` and prove the remaining obligations. Use `GlobalTheory.StepData.mem_KOne.1 hu a b` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply]`. Then use the resulting hypothesis. Rewrite using `[h0, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e1 : (Formalism.CyclotomicNorms.rootsBar f).map (fun x => X - C (D.ntypes.teichC k x)) = ((Formalism.CyclotomicNorms.rootsBar f).map (D.ntypes.teichC k)).map (fun a => X - C a)`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[labAt, WD.lab_eq_iff_of_tame hSet htame, hine, e1, roots_multiset_prod_X_sub_C]`. Conclude with `⟨GlobalTheory.SerSys.TameGen.Has.monic hHas, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem regLoc : GlobalTheory.NRows.Hypotheses₂ → DiscreteGroups.sglob.DzType.DepthZeroInertiaBig → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (Γ : GrpSide D), GreenLab Γ → RegLoc hL D := by
   intro hP hDZ hL D Γ hG k v π ρ f hρ hsq ⟨x, hx, hnk⟩
@@ -159,7 +159,7 @@ theorem regLoc : GlobalTheory.NRows.Hypotheses₂ → DiscreteGroups.sglob.DzTyp
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-The claim follows from `DiscreteGroups.sglob.DzType.Rt.regLoc`.
+A detailed English derivation is pending.
 -/
 theorem regularLocal_of_depthZero : GlobalTheory.NRows.Hypotheses₂ → DiscreteGroups.sglob.DzType.DepthZeroInertiaBig → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (Γ : GrpSide D), GreenLab Γ → RegLoc hL D :=
   DiscreteGroups.sglob.DzType.Rt.regLoc

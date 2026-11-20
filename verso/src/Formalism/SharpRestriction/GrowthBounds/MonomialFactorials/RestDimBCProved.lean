@@ -10,17 +10,13 @@ open MvPolynomial Finset Formalism.MainNotions.G Formalism.MainNotions.flipOneTh
 variable (C0 CE1 CE2 : ℝ) (X : flipOneThree.Inst)
 
 /- English proof (translation)
-Introduce `aTop _ aPlus _ b _`. Use `set Dd := blockData X.p (X.S C0 CE1 CE2) aTop aPlus X.m b with hDd`. Use `set V0 := Submodule.span ℚ_[X.p] (((gmB Dd).SSZ X.p (r := X.r) : Submodule ℤ_[X.p] (MvPolynomial (Formalism.GM.M.BVar (2 * X.s + 1) X.r (gmB Dd).T.t) ℚ_[X.p])) : Set (MvPolynomial (Formalism.GM.M.BVar (2 * X.s + 1) X.r (gmB Dd).T.t) ℚ_[X.p])) with hV0`. Use `set W := Submodule.span (KK X.O) ((Dd.SSZ X.O (r := X.r) : Submodule X.O (MvPolynomial (BVar (2 * X.s + 1) X.r Dd.T.t) (KK X.O))) : Set (MvPolynomial (BVar (2 * X.s + 1) X.r Dd.T.t) (KK X.O))) with hW`. Use `show Module.finrank ℚ_[X.p] V0 ≤ Module.finrank (KK X.O) W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: FiniteDimensional (KK X.O) W` using `span_SSZ_finite Dd`. Distinguish the cases in `hfin : FiniteDimensional ℚ_[X.p] V0`. Use `swap`. Rewrite using `[Module.finrank_of_not_finite hfin]`. Conclude with `Nat.zero_le _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hmemW : ∀ x ∈ V0, MvPolynomial.map (iotaX X) x ∈ W`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact map_SSZ (ι := iotaX X) (iotaX_int X) Dd x hx`. Consider the case `zero => rw [map_zero]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `W.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `W.add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul_Q]`. Conclude with `W.smul_mem _ hx`.
-
-Use `set bs := Module.finBasis ℚ_[X.p] V0`. Establish `hli : LinearIndependent ℚ_[X.p] (fun i => (bs i : MvPolynomial (Formalism.GM.M.BVar (2 * X.s + 1) X.r (gmB Dd).T.t) ℚ_[X.p]))` using `bs.linearIndependent.map' V0.subtype (Submodule.ker_subtype V0)`. Establish `hli2` using `li_map (iotaX X) _ hli`. Set `w : Fin (Module.finrank ℚ_[X.p] V0) → W` to `fun i => ⟨MvPolynomial.map (iotaX X) (bs i).1, hmemW _ (bs i).2⟩`. Establish `hli3 : LinearIndependent (KK X.O) w` using `LinearIndependent.of_comp W.subtype hli2`.
-
-Establish `h` using `hli3.fintype_card_le_finrank`. Rewrite `h` using `[Fintype.card_fin]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restDimBC_proved : RestDimBC C0 CE1 CE2 X := by
   intro aTop _ aPlus _ b _

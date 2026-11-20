@@ -13,9 +13,9 @@ section Lin
 variable {Ω₃ : Type} [Field Ω₃] (O : ValuationSubring Ω₃) {r : ℕ}
 
 /- English proof (translation)
-Use `choose N hN using fun k => (Submodule.mem_span_range_iff_exists_fun O).1 (h k)`. Establish `e : T = T' * (Matrix.of fun a b => N b a).map O.subtype`. Use extensionality with `m k`. Use `congrFun (hN k) m` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply] at this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Establish `e2 : ((Matrix.of fun a b => N b a).map O.subtype).det = ((Matrix.of fun a b => N b a).det : O)` using `(RingHom.map_det O.subtype _).symm`. Rewrite using `[e, Matrix.det_mul, map_mul, e2]`. Conclude with `mul_le_of_le_one_right' (O.valuation_le_one _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_det_le (T T' : Matrix (Fin r) (Fin r) Ω₃)
     (h : ∀ k, (fun m => T m k) ∈ Submodule.span O (Set.range fun k m => T' m k)) :
@@ -33,7 +33,7 @@ theorem mu_det_le (T T' : Matrix (Fin r) (Fin r) Ω₃)
   exact mul_le_of_le_one_right' (O.valuation_le_one _)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (mu_det_le O T T' fun k => h ▸ Submodule.subset_span ⟨k, rfl⟩) (mu_det_le O T' T fun k => h ▸ Submodule.subset_span ⟨k, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mu_det_eq (T T' : Matrix (Fin r) (Fin r) Ω₃)
     (h : Submodule.span O (Set.range fun k m => T m k) = Submodule.span O (Set.range fun k m => T' m k)) :
@@ -42,15 +42,15 @@ theorem mu_det_eq (T T' : Matrix (Fin r) (Fin r) Ω₃)
     (mu_det_le O T' T fun k => h ▸ Submodule.subset_span ⟨k, rfl⟩)
 
 /- English proof (translation)
-Establish `key : ∀ w ∈ Submodule.span R Z, ∃ x : Fin r → Ω, w = ∑ m, x m • c m ∧ (fun m => i (x m)) ∈ Λ`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => exact hZ w hw`. Consider the case `zero => exact ⟨0, by simp, by simp only [Pi.zero_apply, map_zero]; exact Λ.zero_mem⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨x, rfl, hx⟩` from `ha`. Take `⟨y, rfl, hy⟩` from `hb`. Use `⟨x + y, by simp [add_smul, Finset.sum_add_distrib], ?_⟩` and prove the remaining obligations. Use `Λ.add_mem hx hy using 1` and compare the differences between its conclusion and the goal.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `m`. Simplify using the standard rewrite rules. Consider the case `smul a w _ hw`. Take `⟨x, rfl, hx⟩` from `hw`. Use `⟨fun m => (a : Ω) * x m, ?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subring.smul_def]`. Simplify using `[Finset.smul_sum, mul_smul]`. Use `Λ.smul_mem ⟨i a, hi a a.2⟩ hx using 1` and compare the differences between its conclusion and the goal. Use extensionality with `m`. Use `show i (a * x m) = i a * i (x m)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Conclude with `map_mul _ _ _`. Take `⟨x', e, hx'⟩` from `key _ hx`. Establish `: x = x'` using `funext (Fintype.linearIndependent_iffₛ.1 hc x x' e)`. Conclude with `this ▸ hx'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mu_coord {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] (R : Subring Ω) (i : Ω →+* Ω₃) (hi : ∀ a ∈ R, i a ∈ O)
     (c : Fin r → V) (hc : LinearIndependent Ω c) (Z : Set V) (Λ : Submodule O (Fin r → Ω₃))
@@ -81,7 +81,7 @@ theorem mu_coord {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] (R : Su
   exact this ▸ hx'
 
 /- English proof (translation)
-Establish `he : e₂ ≠ 0` using `by rintro rfl; simp at h₂`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (mul_ne_zero hr he)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem mu_alg {G : Type} [CommGroupWithZero G] {m₁ m₂ e₁ e₂ t₁ t₂ r₁ r₂ : G} (h₁ : m₁ * e₁ * t₁ = 1) (h₂ : m₂ * e₂ * t₂ = 1)
     (h : r₁ * t₁ = r₂ * t₂) (hr : r₁ ≠ 0) : m₂ = e₁ * r₂ / (r₁ * e₂) * m₁ := by
@@ -99,7 +99,7 @@ section Lats
 variable {X : Scheme.{0}} {Ω Ω₃ : Type} [Field Ω] [Field Ω₃] {ξ : Sp Ω ⟶ X} {q : Cpt ξ}
 
 /- English proof (translation)
-Establish `: t' ∈ Submodule.span (regAt ξ q) {t}` using `h.2 ▸ h'.2 ▸ Submodule.mem_span_singleton_self _`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 this`. Establish `e : (a : Ω) * t = t'` using `ha`. Rewrite using `[← e, mul_div_cancel_right₀ _ h.1]`. Conclude with `a.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_gen_ratio {Λ : Lat ξ Ω} {t t' : Ω} (h : Λ.IsGenAt q t) (h' : Λ.IsGenAt q t') : t' / t ∈ regAt ξ q := by
   have : t' ∈ Submodule.span (regAt ξ q) {t} := h.2 ▸ h'.2 ▸ Submodule.mem_span_singleton_self _
@@ -109,9 +109,7 @@ theorem mu_gen_ratio {Λ : Lat ξ Ω} {t t' : Ω} (h : Λ.IsGenAt q t) (h' : Λ.
   exact a.2
 
 /- English proof (translation)
-Establish `k : ∀ {t t' : Ω}, Λ.IsGenAt q t → Λ.IsGenAt q t' → O.valuation (i t') ≤ O.valuation (i t)` using `fun {t t'} h h' => by`. Establish `h1` using `(O.valuation_le_one_iff _).2 (hD.1 _ (mu_gen_ratio h h'))`. Establish `e : t' = t * (t' / t)` using `(mul_div_cancel₀ _ h.1).symm`. Rewrite using `[e, map_mul, map_mul]`. Conclude with `mul_le_of_le_one_right' h1`.
-
-Conclude with `le_antisymm (k h' h) (k h h')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_gen_val {O : ValuationSubring Ω₃} {i : Ω →+* Ω₃} (hD : Dom O i ξ q) {Λ : Lat ξ Ω} {t t' : Ω} (h : Λ.IsGenAt q t)
     (h' : Λ.IsGenAt q t') : O.valuation (i t) = O.valuation (i t') := by
@@ -123,11 +121,9 @@ theorem mu_gen_val {O : ValuationSubring Ω₃} {i : Ω →+* Ω₃} (hD : Dom O
   exact le_antisymm (k h' h) (k h h')
 
 /- English proof (translation)
-Use `⟨Finset.prod_ne_zero_iff.2 fun j _ => zpow_ne_zero _ (h j).1, le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Establish `hm : ∏ j, (s j / t j) ^ a j ∈ regAt ξ q` using `prod_mem fun j _ => by`. Take `⟨n, e | e⟩` from `(a j).eq_nat_or_neg`. Rewrite using `[e, zpow_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_mem (mu_gen_ratio (h j) (hs j)) _`. Rewrite using `[e, zpow_neg, zpow_natCast, ← inv_pow, inv_div]`. Conclude with `pow_mem (mu_gen_ratio (hs j) (h j)) _`. Use `Submodule.mem_span_singleton.2 ⟨⟨_, hm⟩, ?_⟩` and prove the remaining obligations. Use `show (∏ j, (s j / t j) ^ a j) * ∏ j, t j ^ a j = _`.
-
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun j _ => by rw [← mul_zpow, div_mul_cancel₀ _ (h j).1]`. Introduce and unpack `_ rfl`. Conclude with `Submodule.subset_span ⟨t, h, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mu_tens_gen {I : Type} [Fintype I] {Λ : I → Lat ξ Ω} (a : I → ℤ) {t : I → Ω} (h : ∀ j, (Λ j).IsGenAt q (t j)) :
     (Lat.tens Λ a).IsGenAt q (∏ j, t j ^ a j) := by
@@ -146,9 +142,9 @@ theorem mu_tens_gen {I : Type} [Fintype I] {Λ : I → Lat ξ Ω} (a : I → ℤ
     exact Submodule.subset_span ⟨t, h, rfl⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `e : (Lat.tens Λ a) q = ⊥`. Use `le_bot_iff.1 (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `absurd ⟨s, hs⟩ hn`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: w ∈ (Lat.tens Λ a) q` using `h.2 ▸ Submodule.mem_span_singleton_self _`. Rewrite `this` using `[e]`. Conclude with `h.1 this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_tens_ex {I : Type} [Fintype I] {Λ : I → Lat ξ Ω} {a : I → ℤ} {w : Ω} (h : (Lat.tens Λ a).IsGenAt q w) :
     ∃ t : I → Ω, ∀ j, (Λ j).IsGenAt q (t j) := by
@@ -162,7 +158,7 @@ theorem mu_tens_ex {I : Type} [Fintype I] {Λ : I → Lat ξ Ω} {a : I → ℤ}
   exact h.1 this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (Finset.prod_ne_zero_iff.1 hc.1 k (Finset.mem_univ _))) h.1, h.2 q trivial ch hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem mu_deg_gen {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} {Λ : Lat ξ Ω} {a : K → ℤ} {e : Ω}
     (h : Λ.IsDegOn Set.univ y a e) {ch : ∀ k, J k} (hc : InChart ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) ch q) :
@@ -171,9 +167,9 @@ theorem mu_deg_gen {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → 
     h.2 q trivial ch hc⟩
 
 /- English proof (translation)
-Establish `: CharZero Ω₃` using `algebraRat.charZero Ω₃`. Establish `h0 : (p : Ω) ≠ 0` using `fun h => by`. Use `congrArg i h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `hp.ne_zero (Nat.cast_eq_zero.1 this)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `not_not.2 ⟨h0, natCast_mem _ _, hD.2 _ (natCast_mem _ _) h0 ?_⟩` and prove the remaining obligations. Simplify using `using hO (p : ℚ)⁻¹`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mu_char0 [Algebra ℚ Ω₃] {O : ValuationSubring Ω₃} {i : Ω →+* Ω₃} (hD : Dom O i ξ q)
     (hO : ∀ x : ℚ, algebraMap ℚ Ω₃ x ∈ O) (p : ℕ) (hp : p.Prime) : ¬ InFibre ξ p q := by
@@ -186,23 +182,21 @@ theorem mu_char0 [Algebra ℚ Ω₃] {O : ValuationSubring Ω₃} {i : Ω →+* 
   simpa using hO (p : ℚ)⁻¹
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Substitute `hW` using the available equality. Use `choose P hP using fun k => (Submodule.mem_span_range_iff_exists_fun Ω).1 (hsW k)`. Establish `hPi : LinearIndependent Ω P`. Use `LinearIndependent.of_comp (Fintype.linearCombination Ω c) ?_` and prove the remaining obligations.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hs using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify `hP k` using `[Fintype.linearCombination_apply]`. Use `set Pm : Matrix (Fin r) (Fin r) Ω := (Matrix.of P).transpose with hPm`. Establish `hd : Pm.det ≠ 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hPm, Matrix.det_transpose]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_rows_iff_isUnit.1 hPi)).ne_zero`. Use `⟨Pm.det, hd, fun q O i Ω₀ ψ B hD hq => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, b, hb, hf⟩` from `hL q trivial`. Establish `hf` using `hf q trivial hU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose T₀ hT using fun k => (Submodule.mem_span_range_iff_exists_fun Ω).1 (show b k ∈ Submodule.span Ω (Set.range c) from hb ▸ Submodule.subset_span ⟨k, rfl⟩)`. Use `set Tm : Matrix (Fin r) (Fin r) Ω := (Matrix.of T₀).transpose with hTm`. Establish `hPT : Pm * (Pm⁻¹ * Tm) = Tm`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (Ne.isUnit hd), Matrix.one_mul]`. Establish `hbs : ∀ k, b k = ∑ k', (Pm⁻¹ * Tm) k' k • s k'` using `fun k => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hT k]`. Simplify using `only [← hP, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `congrFun (congrFun hPT m) k` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`. Rewrite using `[show T₀ k m = Tm m k from rfl, ← this]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `⟨(Pm⁻¹ * Tm).det, Tm.map i, GlobalTheory.T.det_lattice_frame_gen X Ω ξ V L r s b _ q hs hf hbs, ?_, le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)⟩` and prove the remaining obligations. Rewrite using `[← Matrix.det_mul, hPT]`. Conclude with `(RingHom.map_det i _).symm`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `mu_coord O (regAt ξ q) i hD.1 c hc {w | ∃ a ∈ B, w = ∑ m, ψ (a m) • c m} _ ?_ (T₀ k) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `⟨_, rfl, Submodule.subset_span ⟨a, ha, rfl⟩⟩`. Rewrite using `[← hq, hT k, hf.2]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
-
-Use `mu_coord O (regAt ξ q) i hD.1 c hc (Set.range b) _ ?_ (fun m => ψ (a m)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨T₀ k, (hT k).symm, Submodule.subset_span ⟨k, rfl⟩⟩`. Rewrite using `[← hf.2, hq]`. Conclude with `Submodule.subset_span ⟨a, ha, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_side {V : Type} [AddCommGroup V] [Module Ω V] (L : Lat ξ V) {r r' : ℕ} (hr : r = r') (W : Submodule Ω V)
     (hL : L.IsVB r W) (c : Fin r → V) (hc : LinearIndependent Ω c) (hW : Submodule.span Ω (Set.range c) = W)

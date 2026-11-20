@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Rewrite using `[tor_val, tor_val, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tor_conj_apply {R : Type} [CommRing R] (t : Rˣ) (Y : Matrix (Fin 3) (Fin 3) R) (a b : Fin 3) :
     ((tor R t).val * Y * (tor R t⁻¹).val) a b =
@@ -11,31 +11,31 @@ private theorem tor_conj_apply {R : Type} [CommRing R] (t : Rˣ) (Y : Matrix (Fi
   rw [tor_val, tor_val, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tor_mul_inv {R : Type} [CommRing R] (t : Rˣ) :
     (tor R t⁻¹).val * (tor R t).val = 1 := by
   rw [← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]
 
 /- English proof (translation)
-Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tor_mul_inv' {R : Type} [CommRing R] (t : Rˣ) :
     (tor R t).val * (tor R t⁻¹).val = 1 := by
   rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
 
 /- English proof (translation)
-Use `⟨fun {R R'} _ _ _ _ φ _ X h H => ⟨fun a b => ?_, fun a => ?_, ?_⟩, fun {R} _ _ X h t H => ⟨fun a b => ?_, fun a => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `e : ((GeneralLinearGroup.map φ h : GL (Fin 3) R').val - 1) a b = φ ((h.val - 1) a b)`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, map_sub, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[map_zero]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `map_nonunit φ _ (H.hat a b)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show φ (h.val a a) = 1`. Rewrite using `[H.one, map_one]`. Establish `e : ((GeneralLinearGroup.map φ h)⁻¹ : GL (Fin 3) R').val * X.map φ * (GeneralLinearGroup.map φ h).val = ((h⁻¹ : GL (Fin 3) R).val * X * h.val).map φ`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, ← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `H.diag.map (map_zero φ)`. Establish `e : (tor R t * h * tor R t⁻¹).val - 1 = (tor R t).val * (h.val - 1) * (tor R t⁻¹).val`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, tor_mul_inv', Units.val_mul, Units.val_mul]`. Rewrite using `[e, tor_conj_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (H.hat a b))`. Rewrite using `[Units.val_mul, Units.val_mul, tor_conj_apply, H.one, mul_one, ← Units.val_mul, ← mul_zpow, mul_inv_cancel, _root_.one_zpow, Units.val_one]`. Establish `e : ((tor R t * h * tor R t⁻¹)⁻¹ : GL (Fin 3) R).val * ((tor R t).val * X * (tor R t⁻¹).val) * (tor R t * h * tor R t⁻¹).val = (tor R t).val * ((h⁻¹ : GL (Fin 3) R).val * X * h.val) * (tor R t⁻¹).val`. Establish `hc : ∀ Y : Matrix (Fin 3) (Fin 3) R, (tor R t⁻¹).val * ((tor R t).val * Y) = Y` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, tor_mul_inv, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, ← map_inv, ← map_inv, inv_inv]`. Simplify using `only [Units.val_mul, Matrix.mul_assoc, hc]`. Rewrite using `[e]`. Introduce `a b hab`. Rewrite using `[tor_conj_apply, H.diag hab, mul_zero, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.canon_map :
     (∀ {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R'] (φ : R →+* R') [IsLocalHom φ] (X : Matrix (Fin 3) (Fin 3) R) (h : GL (Fin 3) R), Canon X h → Canon (X.map φ) (GeneralLinearGroup.map φ h)) ∧

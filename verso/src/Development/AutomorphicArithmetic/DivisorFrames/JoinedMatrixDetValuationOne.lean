@@ -8,17 +8,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
 /- English proof (translation)
-Establish `hb : Function.Bijective (Sum.elim (lo h) (hi h) : Fin r ⊕ Fin s → Fin N)`. Rewrite using `[Fintype.bijective_iff_surjective_and_card]`. Use `⟨fun i => ?_, by simp [h]⟩` and prove the remaining obligations. Break down `lo_or_hi h i with ⟨k, hk⟩ | ⟨k, hk⟩` into its components or cases. Conclude with `⟨.inl k, hk⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨.inr k, hk⟩`. Set `e : Fin r ⊕ Fin s ≃ Fin N` to `Equiv.ofBijective _ hb`. Establish `hJ : (joinM h M₁ L).submatrix e e = (Matrix.fromCols M₁ L).submatrix e id`. Use extensionality with `a b`. Break down `b with b | b` into its components or cases.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: ((lo h b : Fin N) : ℕ) < r` using `b.2`. Simplify using `only [Matrix.submatrix_apply, e, Equiv.ofBijective_apply, Sum.elim_inl, id, Matrix.fromCols_apply_inl, RootFrame.joinM, Matrix.of_apply, dif_pos this]`. Both sides reduce to the same expression. Establish `hb2` using `b.2`. Establish `: ¬ ((hi h b : Fin N) : ℕ) < r` using `by simp only [hi]; omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.submatrix_apply, e, Equiv.ofBijective_apply, Sum.elim_inr, id, Matrix.fromCols_apply_inr, RootFrame.joinM, Matrix.of_apply, dif_neg this]`. Use `congr 1`. Conclude with `Fin.ext (by simp only [hi]; omega)`. Set `P : Matrix (Fin r) (Fin N) A` to `(1 : Matrix (Fin N) (Fin N) A).submatrix σ id`. Establish `hP : P * M₁ = M₁.submatrix σ id`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `[P, Matrix.mul_apply, Matrix.one_apply]`. Establish `hm : (Matrix.fromRows P M₂ᵀ).submatrix id e * (joinM h M₁ L).submatrix e e = Matrix.fromBlocks (M₁.submatrix σ id) (P * L) 0 1`. Rewrite using `[hJ, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id, Matrix.fromRows_mul_fromCols, hP, h2, h3]`. Establish `hd` using `congrArg Matrix.det hm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁, h1, Matrix.det_one, _root_.one_mul, Matrix.det_submatrix_equiv_self]`. Conclude with `IsUnit.of_mul_eq_one_right _ hd`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.isUnit_det_joinM {A : Type} [CommRing A] {r s N : ℕ} (h : r + s = N)
     (M₁ : Matrix (Fin N) (Fin r) A) (M₂ L : Matrix (Fin N) (Fin s) A) (σ : Fin r → Fin N)
@@ -57,7 +57,7 @@ private theorem UpperTheory.isUnit_det_joinM {A : Type} [CommRing A] {r s N : �
   exact IsUnit.of_mul_eq_one_right _ hd
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [RootFrame.joinM, Matrix.map_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem UpperTheory.joinM_map' {A B : Type} {r s N : ℕ} (h : r + s = N) (f : A → B)
     (M₁ : Matrix (Fin N) (Fin r) A) (L : Matrix (Fin N) (Fin s) A) :
@@ -67,29 +67,23 @@ private theorem UpperTheory.joinM_map' {A B : Type} {r s N : ℕ} (h : r + s = N
   split_ifs <;> rfl
 
 /- English proof (translation)
-Introduce `K _ w hw r s N h M₁ M₂ L σ b1 b2 b3 h1 h2 h3`. Set `O : Subring K` to `{ carrier := {x | w x ≤ 1} mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, map_mul] at *`. Conclude with `mul_le_one₀ ha (w.nonneg _) hb`. Use the proof step `one_mem' := by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use the proof step `add_mem' := fun {a b} ha hb => (hw a b).trans (max_le ha hb)`. Use the proof step `zero_mem' := by simp`. Use the proof step `neg_mem' := fun {a} ha => by simpa using ha }`. Set `I : Ideal O` to `{ carrier := {x | w (x : K) < 1} add_mem' := fun {a b} ha hb => (hw a b).trans_lt (max_lt ha hb) zero_mem' := by simp smul_mem' := fun c x hx => by`. Establish `hc : w (c : K) ≤ 1` using `c.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hx' : w (x : K) < 1` using `hx`. Use `show w ((c : K) * x) < 1`. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left (w.nonneg _) hc).trans_lt hx' }`. Establish `hI : I ≠ ⊤`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.ne_top_iff_one]`. Use `show ¬ w (1 : K) < 1`. Simplify using the standard rewrite rules. Set `A₁ : Matrix (Fin N) (Fin r) O` to `Matrix.of fun k i => ⟨M₁ k i, b1 k i⟩`. Set `A₂ : Matrix (Fin N) (Fin s) O` to `Matrix.of fun k i => ⟨M₂ k i, b2 k i⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `B : Matrix (Fin N) (Fin s) O` to `Matrix.of fun k i => ⟨L k i, b3 k i⟩`. Establish `e1 : A₁.map O.subtype = M₁` using `rfl`. Establish `e2 : A₂.map O.subtype = M₂` using `rfl`. Establish `e3 : B.map O.subtype = L` using `rfl`. Establish `g1 : (A₁.submatrix σ id).det = 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `O.subtype_injective` to reduce the goal to its premises. Rewrite using `[RingHom.map_det, map_one, ← h1]`. Both sides reduce to the same expression. Establish `g2 : A₂ᵀ * B = 1`. Use extensionality with `i j`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun (congrFun h2 i) j` as an intermediate fact. Rewrite `this` using `[← e2, ← e3, ← Matrix.transpose_map, ← Matrix.map_mul, Matrix.map_apply]`. Use `show O.subtype _ = O.subtype _`. Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `g3 : ∀ i j, (A₂ᵀ * A₁) i j ∈ I`. Introduce `i j`. Use `h3 j i` as an intermediate fact. Rewrite `this` using `[← e2, ← e1, ← Matrix.transpose_map, ← Matrix.map_mul, Matrix.map_apply]`. Establish `e : A₂ᵀ * A₁ = (A₁ᵀ * A₂)ᵀ` using `by rw [Matrix.transpose_mul, Matrix.transpose_transpose]`.
+By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `this`. Set `q` to `Ideal.Quotient.mk I`. Establish `hu` using `UpperTheory.isUnit_det_joinM h (A₁.map q) (A₂.map q) (B.map q) σ (by rw [← map_one q, ← g1, RingHom.map_det]; rfl) (by rw [← Matrix.transpose_map, ← Matrix.map_mul, g2, Matrix.map_one _ (map_zero q) (map_one q)]) (by`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul]`.
-
-Use extensionality with `i j`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (g3 i j))`. Rewrite `hu` using `[← UpperTheory.joinM_map', ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Establish `hn : (joinM h A₁ B).det ∉ I`. Introduce `hmem`.
-
-Use `haveI := Ideal.Quotient.nontrivial_iff.2 hI`. Rewrite `hu` using `[Ideal.Quotient.eq_zero_iff_mem.2 hmem]`. Conclude with `not_isUnit_zero hu`. Establish `hd : (joinM h M₁ L).det = O.subtype (joinM h A₁ B).det`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, UpperTheory.joinM_map', e1, e3]`.
-
-Rewrite using `[hd]`. Conclude with `le_antisymm (joinM h A₁ B).det.2 (not_lt.1 hn)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.joined_matrix_det_valuation_one :
     ∀ (K : Type) [Field K] (w : AbsoluteValue K ℝ), IsNonarchimedean w → ∀ (r s N : ℕ) (h : r + s = N) (M₁ : Matrix (Fin N) (Fin r) K) (M₂ L : Matrix (Fin N) (Fin s) K) (σ : Fin r → Fin N), (∀ k i, w (M₁ k i) ≤ 1) → (∀ k i, w (M₂ k i) ≤ 1) → (∀ k i, w (L k i) ≤ 1) → (M₁.submatrix σ id).det = 1 → M₂ᵀ * L = 1 → (∀ i j, w ((M₁ᵀ * M₂) i j) < 1) → w (joinM h M₁ L).det = 1 := by

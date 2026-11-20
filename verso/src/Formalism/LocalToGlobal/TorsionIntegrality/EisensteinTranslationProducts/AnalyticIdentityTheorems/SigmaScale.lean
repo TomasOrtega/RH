@@ -13,7 +13,7 @@ namespace Scale
 open PowerSeries
 
 /- English proof (translation)
-Unfold `cW`. Rewrite using `[Nat.strongRecOn_eq]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cW_eq {K : Type} [Field K] (g2 g3 : K) (k : ℕ) :
     cW g2 g3 k =
@@ -27,15 +27,15 @@ theorem cW_eq {K : Type} [Field K] (g2 g3 : K) (k : ℕ) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Rewrite using `[cW_eq, cW_eq g2 g3 k]`. Use `split_ifs with h2 h3 h4`. Substitute `h2` using the available equality.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Substitute `h3` using the available equality. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_left_comm]`. Use `congr 1`.
+Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `hm` using `m.isLt`. Rewrite using `[ih (m.val + 2) (by omega), ih (k - (m.val + 2)) (by omega)]`. Establish `e : lam ^ (2 * k) = lam ^ (2 * (m.val + 2)) * lam ^ (2 * (k - (m.val + 2)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem cW_scale {K : Type} [Field K] (g2 g3 lam : K) (k : ℕ) :
     cW (lam ^ 4 * g2) (lam ^ 6 * g3) k = lam ^ (2 * k) * cW g2 g3 k := by
@@ -57,11 +57,11 @@ theorem cW_scale {K : Type} [Field K] (g2 g3 lam : K) (k : ℕ) :
     · rw [mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Rewrite using `[cW_eq, cW_eq (φ g2) (φ g3) k]`. Use `split_ifs with h2 h3 h4`. Rewrite using `[map_div₀, map_ofNat]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀, map_ofNat]`. Rewrite using `[map_mul, map_div₀, map_mul, map_add, map_sub, map_mul, map_natCast, map_one, map_sum]`. Simplify using `only [map_ofNat]`. Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm` using `m.isLt`. Rewrite using `[map_mul, ih (m.val + 2) (by omega), ih (k - (m.val + 2)) (by omega)]`. Conclude with `map_zero φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cW_map {K K' : Type} [Field K] [Field K'] (φ : K →+* K') (g2 g3 : K) (k : ℕ) :
     φ (cW g2 g3 k) = cW (φ g2) (φ g3) k := by
@@ -80,9 +80,9 @@ theorem cW_map {K K' : Type} [Field K] [Field K'] (φ : K →+* K') (g2 g3 : K) 
     · exact map_zero φ
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_rescale]`. Unfold `wpNum`. Rewrite using `[coeff_mk, coeff_mk]`. Use `split_ifs with h0 he`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[cW_scale, Nat.two_mul_div_two_of_even he]`. Rewrite using `[mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wpNum_scale {K : Type} [Field K] (g2 g3 lam : K) :
     wpNum (lam ^ 4 * g2) (lam ^ 6 * g3) = rescale lam (wpNum g2 g3) := by
@@ -96,9 +96,9 @@ theorem wpNum_scale {K : Type} [Field K] (g2 g3 lam : K) :
   · rw [mul_zero]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_rescale]`. Unfold `wpDen`. Rewrite using `[coeff_mk, coeff_mk]`. Use `split_ifs with h0 he`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[cW_scale, Nat.two_mul_div_two_of_even he]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wpDen_scale {K : Type} [Field K] (g2 g3 lam : K) :
     wpDen (lam ^ 4 * g2) (lam ^ 6 * g3) = rescale lam (wpDen g2 g3) := by
@@ -112,7 +112,7 @@ theorem wpDen_scale {K : Type} [Field K] (g2 g3 lam : K) :
   · rw [mul_zero]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_C_mul, coeff_rescale]`. Unfold `pOf`. Rewrite using `[coeff_mk, coeff_mk, wpNum_scale, coeff_rescale]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pOf_scale {K : Type} [Field K] (g2 g3 lam : K) :
     pOf (lam ^ 4 * g2) (lam ^ 6 * g3) = C (lam ^ 2) * rescale lam (pOf g2 g3) := by
@@ -123,7 +123,7 @@ theorem pOf_scale {K : Type} [Field K] (g2 g3 lam : K) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Unfold `wpDen`. Rewrite using `[coeff_mk, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_wpDen {K : Type} [Field K] (g2 g3 : K) : constantCoeff (wpDen g2 g3) = 1 := by
   rw [← coeff_zero_eq_constantCoeff_apply]
@@ -131,7 +131,7 @@ theorem cc_wpDen {K : Type} [Field K] (g2 g3 : K) : constantCoeff (wpDen g2 g3) 
   rw [coeff_mk, if_pos rfl]
 
 /- English proof (translation)
-Establish `h1 : constantCoeff (rescale lam f) ≠ 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_rescale, pow_zero, one_mul, coeff_zero_eq_constantCoeff_apply]`. Conclude with `hf`. Rewrite using `[PowerSeries.eq_inv_iff_mul_eq_one h1, ← map_mul, PowerSeries.inv_mul_cancel _ hf, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rescale_inv {K : Type} [Field K] (lam : K) {f : PowerSeries K}
     (hf : constantCoeff f ≠ 0) : rescale lam f⁻¹ = (rescale lam f)⁻¹ := by
@@ -142,7 +142,7 @@ theorem rescale_inv {K : Type} [Field K] (lam : K) {f : PowerSeries K}
   rw [PowerSeries.eq_inv_iff_mul_eq_one h1, ← map_mul, PowerSeries.inv_mul_cancel _ hf, map_one]
 
 /- English proof (translation)
-Unfold `uSer`. Rewrite using `[map_mul, map_mul, rescale_X, rescale_inv lam (by rw [cc_wpDen]; exact one_ne_zero), wpNum_scale, wpDen_scale]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem uSer_scale {K : Type} [Field K] (g2 g3 lam : K) :
     C lam * uSer (lam ^ 4 * g2) (lam ^ 6 * g3) = rescale lam (uSer g2 g3) := by
@@ -154,9 +154,9 @@ theorem uSer_scale {K : Type} [Field K] (g2 g3 lam : K) :
 variable {K : Type} [Field K] [CharZero K]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_rescale]`. Unfold `Formalism.L2.Th1.B.prim`. Rewrite using `[coeff_mk, coeff_mk]`. Use `split_ifs with h0`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero]`. Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero h0`. Rewrite using `[Nat.succ_sub_one, coeff_C_mul, coeff_rescale, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem prim_scale (lam : K) (f : PowerSeries K) :
     Formalism.L2.Th1.B.prim (C lam * rescale lam f) = rescale lam (Formalism.L2.Th1.B.prim f) := by
@@ -171,9 +171,9 @@ theorem prim_scale (lam : K) (f : PowerSeries K) :
     ring
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_C_mul]`. Unfold `Formalism.L2.Th1.B.prim`. Rewrite using `[coeff_mk, coeff_mk]`. Use `split_ifs with h0`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero]`. Rewrite using `[coeff_C_mul, mul_div_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_C_mul (a : K) (f : PowerSeries K) :
     Formalism.L2.Th1.B.prim (C a * f) = C a * Formalism.L2.Th1.B.prim f := by
@@ -186,7 +186,7 @@ theorem prim_C_mul (a : K) (f : PowerSeries K) :
   · rw [coeff_C_mul, mul_div_assoc]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.B.sigS`. Rewrite using `[map_neg, ← prim_scale, ← prim_scale, ← prim_C_mul, ← mul_assoc, ← map_mul, sq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigS_scale (lam : K) (P : PowerSeries K) :
     Formalism.L2.Th1.B.sigS (C (lam ^ 2) * rescale lam P) = rescale lam (Formalism.L2.Th1.B.sigS P) := by
@@ -194,7 +194,7 @@ theorem sigS_scale (lam : K) (P : PowerSeries K) :
   rw [map_neg, ← prim_scale, ← prim_scale, ← prim_C_mul, ← mul_assoc, ← map_mul, sq]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.B.sigma`. Rewrite using `[map_mul, rescale_X, Formalism.L2.Th1.B.Sq.rescale_fExp lam (Formalism.L2.Th1.B.Map.cc_sigS P), sigS_scale, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_scale (lam : K) (P : PowerSeries K) :
     C lam * Formalism.L2.Th1.B.sigma (C (lam ^ 2) * rescale lam P)
@@ -204,11 +204,11 @@ theorem sigma_scale (lam : K) (P : PowerSeries K) :
     sigS_scale, mul_assoc]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.B.sgStar`. Rewrite using `[map_mul, ← sigma_scale, Formalism.L2.Th1.B.Sq.rescale_fExp lam (by simp), mul_assoc]`. Use `congr 3`. Rewrite using `[map_neg, map_mul, map_pow, rescale_X, mul_pow, ← map_pow, ← mul_assoc]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hC : rescale lam (C (s / 2)) = C (s / 2)`. Use extensionality with `n`. Rewrite using `[coeff_rescale, coeff_C]`. Use `split_ifs with h0`. Substitute `h0` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero, one_mul]`. Rewrite using `[mul_zero]`. Rewrite using `[hC, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sgStar_scale (s lam : K) (P : PowerSeries K) :
     C lam * Formalism.L2.Th1.B.sgStar (lam ^ 2 * s) (C (lam ^ 2) * rescale lam P)
@@ -231,14 +231,14 @@ theorem sgStar_scale (s lam : K) (P : PowerSeries K) :
 end Scale
 
 /- English proof (translation)
-Introduce `_ _ _ g2 g3 lam` and use `⟨Scale.cW_scale g2 g3 lam, Scale.wpNum_scale g2 g3 lam, Scale.wpDen_scale g2 g3 lam, Scale.pOf_scale g2 g3 lam, Scale.uSer_scale g2 g3 lam⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem series_scale : SeriesScale := fun _ _ _ g2 g3 lam =>
   ⟨Scale.cW_scale g2 g3 lam, Scale.wpNum_scale g2 g3 lam, Scale.wpDen_scale g2 g3 lam,
     Scale.pOf_scale g2 g3 lam, Scale.uSer_scale g2 g3 lam⟩
 
 /- English proof (translation)
-Introduce `_ _ _ P s lam` and use `⟨Scale.sigma_scale lam P, Scale.sgStar_scale s lam P⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sigma_scale' : SigmaScale := fun _ _ _ P s lam =>
   ⟨Scale.sigma_scale lam P, Scale.sgStar_scale s lam P⟩
@@ -250,9 +250,7 @@ open PowerSeries
 variable {K K' : Type} [Field K] [Field K'] (φ : K →+* K')
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_map]`. Unfold `wpNum`. Rewrite using `[coeff_mk, coeff_mk]`. Use `split_ifs`.
-
-Conclude with `map_one φ`. Conclude with `cW_map φ g2 g3 _`. Conclude with `map_zero φ`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wpNum_map (g2 g3 : K) : map φ (wpNum g2 g3) = wpNum (φ g2) (φ g3) := by
   ext n
@@ -265,9 +263,9 @@ theorem wpNum_map (g2 g3 : K) : map φ (wpNum g2 g3) = wpNum (φ g2) (φ g3) := 
   · exact map_zero φ
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_map]`. Unfold `wpDen`. Rewrite using `[coeff_mk, coeff_mk]`. Use `split_ifs`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_one φ`. Rewrite using `[map_mul, map_neg, map_sub, map_natCast, map_one, cW_map]`. Conclude with `map_zero φ`.
+A detailed English derivation is pending.
 -/
 theorem wpDen_map (g2 g3 : K) : map φ (wpDen g2 g3) = wpDen (φ g2) (φ g3) := by
   ext n
@@ -280,7 +278,7 @@ theorem wpDen_map (g2 g3 : K) : map φ (wpDen g2 g3) = wpDen (φ g2) (φ g3) := 
   · exact map_zero φ
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_map]`. Unfold `pOf`. Rewrite using `[coeff_mk, coeff_mk, ← wpNum_map, coeff_map]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pOf_map (g2 g3 : K) : map φ (pOf g2 g3) = pOf (φ g2) (φ g3) := by
   ext n
@@ -289,7 +287,7 @@ theorem pOf_map (g2 g3 : K) : map φ (pOf g2 g3) = pOf (φ g2) (φ g3) := by
   rw [coeff_mk, coeff_mk, ← wpNum_map, coeff_map]
 
 /- English proof (translation)
-Unfold `uSer`. Rewrite using `[map_mul, map_mul, map_X, Formalism.L2.Th1.B.Map.map_inv' φ (by rw [cc_wpDen]; exact one_ne_zero), wpNum_map, wpDen_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem uSer_map [CharZero K] [CharZero K'] (g2 g3 : K) :
     map φ (uSer g2 g3) = uSer (φ g2) (φ g3) := by
@@ -300,7 +298,7 @@ theorem uSer_map [CharZero K] [CharZero K'] (g2 g3 : K) :
 end Scale
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ φ g2 g3 s P` and use `⟨Scale.wpNum_map φ g2 g3, Scale.wpDen_map φ g2 g3, Scale.pOf_map φ g2 g3, Scale.uSer_map φ g2 g3, Formalism.L2.Th1.B.Map.map_sigma φ P, Formalism.L2.Th1.B.Map.map_sgStar φ s P⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem series_map : SeriesMap := fun _ _ _ _ _ _ φ g2 g3 s P =>
   ⟨Scale.wpNum_map φ g2 g3, Scale.wpDen_map φ g2 g3, Scale.pOf_map φ g2 g3,

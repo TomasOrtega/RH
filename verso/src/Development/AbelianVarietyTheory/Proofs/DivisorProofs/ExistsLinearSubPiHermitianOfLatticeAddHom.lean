@@ -6,19 +6,19 @@ open Complex Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g Λ H _ hΛ hH p`. Take `⟨F, hF⟩` from `AppellHumbert.exists_real_extension Λ hΛ p`. Establish `hinj : Function.Injective H.vecMulLinear`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h0`. Use `hH v h0` as an intermediate fact. Rewrite `this` using `[dotProduct_mulVec]`. Rewrite `hv` using `[vecMulLinear_apply]`. Simplify using `[hv] at this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsurj` using `LinearMap.injective_iff_surjective.1 hinj`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Set `s : Fin g → ℂ` to `fun b => (F (Pi.single b 1) - I * F (Pi.single b I)) / 2`. Set `c : Fin g → ℂ` to `fun b => (F (Pi.single b 1) + I * F (Pi.single b I)) / 2`. Establish `hsplit : ∀ u, F u = s ⬝ᵥ u + c ⬝ᵥ star u`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `u`. Use `conv_lhs => rw [AppellHumbert.eq_sum_re_im u]`. Simplify using `only [map_sum, map_add, map_smul, dotProduct, ← Finset.sum_add_distrib, Pi.star_apply, real_smul, s, c]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `h1 : u b = (u b).re + (u b).im * I` using `(re_add_im _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : star (u b) = (u b).re - (u b).im * I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Rewrite using `[h2]`. Generalize the expression as in `(u b).re = x at *`. Generalize the expression as in `(u b).im = y at *`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Take the linear combination `(y * F (Pi.single b I)) * I_mul_I`. Take `⟨v, hv⟩` from `hsurj (-(Real.pi : ℂ)⁻¹ • c)`. Rewrite `hv` using `[vecMulLinear_apply]`. Use `⟨LinearMap.toContinuousLinearMap (dotProductBilin ℂ ℂ s), v, fun l => ?_⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hF, hsplit, dotProduct_mulVec, hv, smul_dotProduct]`. Simplify using `only [LinearMap.coe_toContinuousLinearMap', dotProductBilin_apply_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_linear_sub_pi_mul_form_of_addMonoidHom :
     ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (H : Matrix (Fin g) (Fin g) ℂ), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ H.mulVec (star z)).re) → ∀ p : Λ →+ ℂ, ∃ (f : (Fin g → ℂ) →L[ℂ] ℂ) (v : Fin g → ℂ), ∀ l : Λ, p l = f l - Real.pi * (v ⬝ᵥ H.mulVec (star (l : Fin g → ℂ))) := by

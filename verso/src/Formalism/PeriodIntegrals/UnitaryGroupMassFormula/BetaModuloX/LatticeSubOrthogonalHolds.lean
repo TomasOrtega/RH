@@ -14,7 +14,7 @@ section Loc
 variable {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V] [Module (𝓞 E) V]
 
 /- English proof (translation)
-Introduce `x hx`. Use `show ∃ s ∈ p.primeCompl, s • x ∈ L`. Conclude with `⟨1, p.primeCompl.one_mem, by rw [one_smul]; exact hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem le_locP (p : Ideal (𝓞 E)) [p.IsPrime] (L : Submodule (𝓞 E) V) : L ≤ Formalism.HermitianLatticesTheory.localization₂ p L := by
   intro x hx
@@ -22,7 +22,7 @@ theorem le_locP (p : Ideal (𝓞 E)) [p.IsPrime] (L : Submodule (𝓞 E) V) : L 
   exact ⟨1, p.primeCompl.one_mem, by rw [one_smul]; exact hx⟩
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨s, hs, hsx⟩ : ∃ s ∈ p.primeCompl, s • x ∈ L` from `hx`. Use `show ∃ s ∈ p.primeCompl, s • x ∈ L'`. Conclude with `⟨s, hs, h hsx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem localization_mono (p : Ideal (𝓞 E)) [p.IsPrime] {L L' : Submodule (𝓞 E) V} (h : L ≤ L') :
     Formalism.HermitianLatticesTheory.localization₂ p L ≤ Formalism.HermitianLatticesTheory.localization₂ p L' := by
@@ -32,7 +32,7 @@ theorem localization_mono (p : Ideal (𝓞 E)) [p.IsPrime] {L L' : Submodule (�
   exact ⟨s, hs, h hsx⟩
 
 /- English proof (translation)
-Take `⟨t, ht, htx⟩ : ∃ t ∈ p.primeCompl, t • s • x ∈ L` from `h`. Establish `hs' : s ∈ p.primeCompl` using `hs`. Use `show ∃ s ∈ p.primeCompl, s • x ∈ L`. Conclude with `⟨t * s, p.primeCompl.mul_mem ht hs', by rw [mul_smul]; exact htx⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_localization_of_smul_mem' (p : Ideal (𝓞 E)) [p.IsPrime] (L : Submodule (𝓞 E) V) (x : V) (s : 𝓞 E) (hs : s ∉ p)
     (h : s • x ∈ Formalism.HermitianLatticesTheory.localization₂ p L) : x ∈ Formalism.HermitianLatticesTheory.localization₂ p L := by
@@ -42,13 +42,13 @@ theorem mem_localization_of_smul_mem' (p : Ideal (𝓞 E)) [p.IsPrime] (L : Subm
   exact ⟨t * s, p.primeCompl.mul_mem ht hs', by rw [mul_smul]; exact htx⟩
 
 /- English proof (translation)
-Set `I : Ideal (𝓞 E)` to `Submodule.comap (LinearMap.toSpanSingleton (𝓞 E) V x) N`. Establish `hmem : ∀ r : 𝓞 E, r ∈ I ↔ r • x ∈ N` using `fun r => by show (LinearMap.toSpanSingleton (𝓞 E) V x) r ∈ N ↔ r • x ∈ N`. Rewrite using `[LinearMap.toSpanSingleton_apply]`. Assume the negation of the conclusion as `hx`. Establish `hIt : I ≠ ⊤`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `hI`. Apply `hx` to reduce the goal to its premises. Establish `h1 : (1 : 𝓞 E) ∈ I` using `by rw [hI]; exact Submodule.mem_top`. Establish `h2` using `(hmem 1).1 h1`. Rewrite `h2` using `[one_smul]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I hIt`. Establish `hMb : M ≠ ⊥`. Introduce `hb`. Rewrite `hM` using `[hb]`. Conclude with `NumberField.RingOfIntegers.not_isField E (Ring.isField_iff_maximal_bot.mpr hM)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsx⟩ : ∃ s ∈ M.primeCompl, s • x ∈ N` from `h ⟨M, hM.isPrime, hMb⟩`. Conclude with `hs (hIM ((hmem s).2 hsx))`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_locP (N : Submodule (𝓞 E) V) (x : V)
     (h : ∀ P : HeightOneSpectrum (𝓞 E), x ∈ (haveI := P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal N)) : x ∈ N := by
@@ -80,31 +80,27 @@ section D7
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D u u' F0 Λ hΛ y x hx`. Take `⟨-, ⟨-, -, -, hlc⟩, -⟩` from `hΛ`. Take `⟨-, ⟨ξ, hξl, hξd, hξm⟩, hyc, -⟩` from `y.2`. Establish `hxΛ : x ∈ Λ` using `(Submodule.mem_inf.1 hx).1`. Use `mem_of_locP _ x (fun P => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := P.isPrime`. Distinguish the cases in `hgP : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Use `swap`. Apply `mem_localization_of_smul_mem' P.asIdeal _ x ((gS D : ℕ) : 𝓞 D.host.E) hgP` to reduce the goal to its premises. Apply `le_locP` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.mem_sup_left (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hxΛ)`. Establish `hsm : ∀ (o : 𝓞 D.host.E) (v : (VS D).V), v ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ ⊔ XLam Λ y.1) → ((o : D.host.E)) • v ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {((gS D : ℕ) : 𝓞 D.host. …`. Introduce `o v hv`. Establish `h1` using `(Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ ⊔ XLam Λ y.1)).smul_mem o hv`. Rewrite `h1` using `[← algebraMap_smul D.host.E o v]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hye : ∀ b, y.1.fl.e b ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ ⊔ XLam Λ y.1)`. Introduce `b`. Take `⟨cy, -, hcy1, hcyeq⟩` from `hyc.1 P`. Establish `hmem : cy b • y.1.fl.e b ∈ Submodule.span (𝓞 D.host.E) (Set.range fun a => cy a • y.1.fl.e a)` using `Submodule.subset_span ⟨b, rfl⟩`. Rewrite `hmem` using `[hcy1 hgP b, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : y.1.fl.e b ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (XLam Λ y.1)`. Rewrite using `[hcyeq]`. Conclude with `le_locP _ _ hmem`. Conclude with `localization_mono P.asIdeal le_sup_right h1`. Establish `key : ∀ n : ℕ, ∀ b : Fin D.R.rS, (b : ℕ) = n → (lf D F0).fl.e b ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ ⊔ XLam Λ y.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `n`. Use `Nat.strong_induction_on n ?_` and prove the remaining obligations. Introduce `n ih b hbn`. Establish `hm` using `hξm (Fin.castSucc b)`. Unfold `ModG frameAct frame at hm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiff` using `localization_mono P.asIdeal (le_sup_left : Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ ≤ Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ ⊔ XLam Λ y.1) (hm P hgP)`. Establish `hY : y.1.fl.fvec (Fin.castSucc b) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ ⊔ XLam Λ y.1)`. Simplify `hye b` using `[Formalism.MainNotions.S.FlagG.fvec]`. Establish `hS : (∑ a, ((ξ a (Fin.castSucc b) : 𝓞 D.host.E) : D.host.E) • (lf D F0).fl.fvec a) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ ⊔ XLam Λ y.1)`. Establish `h1` using `Submodule.sub_mem _ hY hdiff`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h1` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `hR : (∑ a ∈ Finset.univ.erase (Fin.castSucc b), ((ξ a (Fin.castSucc b) : 𝓞 D.host.E) : D.host.E) • (lf D F0).fl.fvec a) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ ⊔ XLam Λ y.1)`. Use `Submodule.sum_mem _ (fun a ha => ?_)` and prove the remaining obligations. Establish `hab : a ≠ Fin.castSucc b` using `Finset.ne_of_mem_erase ha`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨a', rfl⟩ : ∃ a' : Fin D.R.rS, Fin.castSucc a' = a` from `⟨⟨a.val, lt_trans h b.isLt⟩, Fin.ext rfl⟩`. Establish `h' : (a' : ℕ) < (b : ℕ)` using `h`. Simplify using `only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc]`. Conclude with `hsm _ _ (ih a' (by omega) a' rfl)`. Rewrite using `[hξl a (Fin.castSucc b) h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hsum` using `Finset.add_sum_erase Finset.univ (fun a => ((ξ a (Fin.castSucc b) : 𝓞 D.host.E) : D.host.E) • (lf D F0).fl.fvec a) (Finset.mem_univ (Fin.castSucc b))`. Establish `h2 : ((ξ (Fin.castSucc b) (Fin.castSucc b) : 𝓞 D.host.E) : D.host.E) • (lf D F0).fl.fvec (Fin.castSucc b) = (∑ a, ((ξ a (Fin.castSucc b) : 𝓞 D.host.E) : D.host.E) • (lf D F0).fl.fvec a) - ∑ a ∈ Finset.univ.erase (Fin.castSucc b), ((ξ a (Fin.castSucc b) : 𝓞 D.host.E) : D.host.E) • …` using `eq_sub_of_add_eq hsum`. Establish `hfb : ((ξ (Fin.castSucc b) (Fin.castSucc b) : 𝓞 D.host.E) : D.host.E) • (lf D F0).fl.fvec (Fin.castSucc b) = (lf D F0).fl.e b`. Rewrite using `[hξd]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `[Formalism.MainNotions.S.FlagG.fvec]`. Rewrite using `[← hfb, h2]`. Conclude with `Submodule.sub_mem _ hS hR`. Take `⟨cl, -, hcl1, hcleq⟩` from `hlc.1 P`. Establish `hxl : x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Submodule.span (𝓞 D.host.E) (Set.range fun a => cl a • (lf D F0).fl.e a))`.
-
-Rewrite using `[← hcleq]`. Conclude with `le_locP _ _ hx`. Take `⟨s, hs, hsx⟩ : ∃ s ∈ P.asIdeal.primeCompl, s • x ∈ Submodule.span (𝓞 D.host.E) (Set.range fun a => cl a • (lf D F0).fl.e a)` from `hxl`. Apply `mem_localization_of_smul_mem' P.asIdeal _ x s hs` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_ hsx` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨a, rfl⟩`. Simplify using `only [hcl1 hgP a, one_smul]`. Conclude with `key _ a rfl`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lattice_sub_orthogonal_holds : XLamSub := by
   intro D u u' F0 Λ hΛ y x hx

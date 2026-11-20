@@ -103,7 +103,7 @@ variable {p : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValua
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O}
 
 /- English proof (translation)
-Rewrite using `[D.sp.X_rank (i + 1) hi]`. Use `k_pred D.R` as an intermediate fact. Simplify using `only [Ranks.N]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_step (D : D7) (i : ℕ) (hi : i < D.R.m) :
     D.R.k - 1 + (i + 1) * (D.R.t + 1) + 1 = (D.sp.X (i + 1)).rank := by

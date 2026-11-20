@@ -20,7 +20,7 @@ variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'}
   [GrpObj A] [GrpObj A'] {φ : A'.left ⟶ A.left}
 
 /- English proof (translation)
-Establish `hl : x.left ≫ φ = y.left ≫ φ` using `congrArg CommaMorphism.left e`. Use `ext1`. Conclude with `h.1.hom_ext hl (by rw [Over.w x, Over.w y])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem push_inj (h : IsGrpPullback A' A f φ) {T : Over S'} {x y : T ⟶ A'}
     (e : pushHom h T x = pushHom h T y) : x = y := by
@@ -29,7 +29,7 @@ theorem push_inj (h : IsGrpPullback A' A f φ) {T : Over S'} {x y : T ⟶ A'}
   exact h.1.hom_ext hl (by rw [Over.w x, Over.w y])
 
 /- English proof (translation)
-Use `ext1`. Express the relevant statement in the definitionally equal form `(x ≫ p').left ≫ φ = (x.left ≫ φ) ≫ p.left`. Rewrite using `[Over.comp_left, Category.assoc, Category.assoc, e]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_comp (h : IsGrpPullback A' A f φ) {p : A ⟶ A} {p' : A' ⟶ A'}
     (e : p'.left ≫ φ = φ ≫ p.left) {T : Over S'} (x : T ⟶ A') :

@@ -28,9 +28,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
 variable (σ : X.K →+* ℂ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h p`. Use `⟨(h () _).1, fun g hg => ?_⟩` and prove the remaining obligations. Use `show F () (trivPt X _ _ _ _ (g • p)) = _`. Rewrite using `[← stepX_smul_trivPt]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(h () (trivPt X _ _ _ _ p)).2 g hg`. Introduce and unpack `h ⟨⟩ d`. Take `⟨p, rfl⟩` from `(trivPt X _ ∅ Pr.vGs (QE sel (mu : Chr X.F X.E X.K))).surjective d`. Use `⟨(h p).1, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (F ()) (stepX_smul_trivPt Ch sel mu P g p)).trans ((h p).2 g hg)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_perStepX_Mt (F : ∀ b, (stepX Ch sel mu P).D b → Pol ℂ X.Tau (R.N R.m - 1)) :
     F ∈ (perStepX W Ch sel mu P C b0 til ext tz).Mt X.emb σ ↔
@@ -69,13 +69,13 @@ end General
 variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.NormOneUnit.disjoint_vGs_QE (I.tup a) l.pr hI.sel_ok (fun i => hI.g_mem i)`.
+A detailed English derivation is pending.
 -/
 theorem disjoint_vGs_Q (hI : I.Ok) (l : I.Laws) (a : I.ι) : Disjoint (B.primes X).vGs (I.Q a) :=
   GlobalTheory.NormOneUnit.disjoint_vGs_QE (I.tup a) l.pr hI.sel_ok (fun i => hI.g_mem i)
 
 /- English proof (translation)
-Introduce `B X I hI _ l _ u a`. Set `g` to `mtEquivStepX B.wts I.Ch I.sel (I.tup a) I.Ps (I.chIn u a) (I.perIn u a).b0 (I.perIn u a).til (I.perIn u a).ext (I.perIn u a).tz B.embLL (disjoint_vGs_Q I hI l a)`. Conclude with `⟨g, fun F p => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem mtCx_equiv_per : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (hX : B.fields.Ok),
     ∀ (u : B.Word) (a : I.ι), ∃ g : MtCx I a ≃ₗ[ℂ] (I.per l u a).Mt, ∀ F, SameForm I l u a F (g F) := by

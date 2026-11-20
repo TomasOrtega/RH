@@ -25,13 +25,13 @@ def HasCoords (x : Sp A ⟶ X) (t : ι → LB.Sec H) (c : ι → A) : Prop :=
   ∃ k, ⊤ ≤ x ⁻¹ᵁ H.U k ∧ ∃ u : Aˣ, ∀ l, valR x (H.U k) ((t l).f k) = c l * u
 
 /- English proof (translation)
-Introduce `_ hz` and use `⟨hU hz, hV hz⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_preimage_inf (x : Sp A ⟶ X) {U V : X.Opens} (hU : ⊤ ≤ x ⁻¹ᵁ U) (hV : ⊤ ≤ x ⁻¹ᵁ V) :
     ⊤ ≤ x ⁻¹ᵁ (U ⊓ V) := fun _ hz => ⟨hU hz, hV hz⟩
 
 /- English proof (translation)
-Establish `h` using `le_preimage_inf x hj hk`. Establish `e` using `congrArg (valR x (H.U j ⊓ H.U k)) (s.compat j k)`. Rewrite `e` using `[valR_mul x _ h, valR_res x _ h, valR_res x _ h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem valR_compat (s : LB.Sec H) (x : Sp A ⟶ X) {j k : H.ι} (hj : ⊤ ≤ x ⁻¹ᵁ H.U j) (hk : ⊤ ≤ x ⁻¹ᵁ H.U k) :
     valR x (H.U j) (s.f j) = valR x (H.U j ⊓ H.U k) (H.g j k).val * valR x (H.U k) (s.f k) := by
@@ -40,9 +40,9 @@ theorem valR_compat (s : LB.Sec H) (x : Sp A ⟶ X) {j k : H.ι} (hj : ⊤ ≤ x
   rwa [valR_mul x _ h, valR_res x _ h, valR_res x _ h] at e
 
 /- English proof (translation)
-Take `⟨k, hk, u, hu⟩` from `h`. Establish `hg : IsUnit (valR x (H.U j ⊓ H.U k) (H.g j k).val)`. Rewrite using `[valR_eq x _ (le_preimage_inf x hj hk)]`. Conclude with `(Units.isUnit _).map _`. Use `⟨hg.unit * u, fun l => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[valR_compat (t l) x hj hk, hu, Units.val_mul, IsUnit.unit_spec, mul_left_comm]`.
+A detailed English derivation is pending.
 -/
 theorem HasCoords.chart (h : HasCoords x t c) {j : H.ι} (hj : ⊤ ≤ x ⁻¹ᵁ H.U j) :
     ∃ u : Aˣ, ∀ l, valR x (H.U j) ((t l).f j) = c l * u := by
@@ -54,7 +54,7 @@ theorem HasCoords.chart (h : HasCoords x t c) {j : H.ι} (hj : ⊤ ≤ x ⁻¹�
   rw [valR_compat (t l) x hj hk, hu, Units.val_mul, IsUnit.unit_spec, mul_left_comm]
 
 /- English proof (translation)
-Take `⟨k, hk, u, hu⟩` from `h`. Take `⟨a, rfl⟩` from `ha`. Conclude with `⟨k, hk, a⁻¹ * u, fun l => by rw [hu, Units.val_mul, mul_assoc, Units.mul_inv_cancel_left]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasCoords.mul_unit (h : HasCoords x t c) {a : A} (ha : IsUnit a) : HasCoords x t fun l => c l * a := by
   obtain ⟨k, hk, u, hu⟩ := h
@@ -62,7 +62,7 @@ theorem HasCoords.mul_unit (h : HasCoords x t c) {a : A} (ha : IsUnit a) : HasCo
   exact ⟨k, hk, a⁻¹ * u, fun l => by rw [hu, Units.val_mul, mul_assoc, Units.mul_inv_cancel_left]⟩
 
 /- English proof (translation)
-Take `⟨k, hk, u', hu'⟩` from `h'`. Take `⟨u, hu⟩` from `h.chart hk`. Conclude with `⟨u * u'⁻¹, fun l => by rw [Units.val_mul, ← mul_assoc, ← hu, hu', Units.mul_inv_cancel_right]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasCoords.exists_unit {c' : ι → A} (h : HasCoords x t c) (h' : HasCoords x t c') :
     ∃ u : Aˣ, ∀ l, c' l = c l * u := by
@@ -71,7 +71,7 @@ theorem HasCoords.exists_unit {c' : ι → A} (h : HasCoords x t c) (h' : HasCoo
   exact ⟨u * u'⁻¹, fun l => by rw [Units.val_mul, ← mul_assoc, ← hu, hu', Units.mul_inv_cancel_right]⟩
 
 /- English proof (translation)
-Take `⟨k, hk, u, hu⟩` from `h`. Conclude with `⟨k, le_preimage_comp _ x hk (le_preimage_top _), Units.map σ.toMonoidHom u, fun l => by`. Rewrite using `[valR_spMap_comp σ x _ hk, hu, map_mul]`. Use the proof step `rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasCoords.spMap_comp (h : HasCoords x t c) {A' : Type} [CommRing A'] (σ : A →+* A') :
     HasCoords (spMap σ ≫ x) t fun l => σ (c l) := by
@@ -80,7 +80,7 @@ theorem HasCoords.spMap_comp (h : HasCoords x t c) {A' : Type} [CommRing A'] (σ
     rw [valR_spMap_comp σ x _ hk, hu, map_mul]; rfl⟩
 
 /- English proof (translation)
-Take `⟨k, hk, u, hu⟩` from `h`. Use `le_preimage_mono x (le_iSup (fun k => X.basicOpen ((t l).f k)) k) ?_` and prove the remaining obligations. Rewrite using `[le_preimage_basicOpen_iff x hk, hu]`. Conclude with `hl.mul u.isUnit`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasCoords.le_nonzeroLocus (h : HasCoords x t c) {l : ι} (hl : IsUnit (c l)) :
     ⊤ ≤ x ⁻¹ᵁ nonzeroLocus (t l) := by
@@ -90,7 +90,7 @@ theorem HasCoords.le_nonzeroLocus (h : HasCoords x t c) {l : ι} (hl : IsUnit (c
   exact hl.mul u.isUnit
 
 /- English proof (translation)
-Establish `h` using `le_preimage_inf x hx hk`. Establish `e` using `congrArg (valR x (nonzeroLocus s₀ ⊓ H.U k)) (hρ k)`. Rewrite `e` using `[valR_mul x _ h, valR_res x _ h, valR_res x _ h, valR_res x _ h]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem valR_isRatio {s s₀ : LB.Sec H} {ρ : Γ(X, nonzeroLocus s₀)} (hρ : IsRatio s s₀ ρ) (x : Sp A ⟶ X)
     (hx : ⊤ ≤ x ⁻¹ᵁ nonzeroLocus s₀) {k : H.ι} (hk : ⊤ ≤ x ⁻¹ᵁ H.U k) :
@@ -100,7 +100,7 @@ theorem valR_isRatio {s s₀ : LB.Sec H} {ρ : Γ(X, nonzeroLocus s₀)} (hρ : 
   rwa [valR_mul x _ h, valR_res x _ h, valR_res x _ h, valR_res x _ h] at e
 
 /- English proof (translation)
-Take `⟨k, hk, u, hu⟩` from `h`. Establish `e` using `valR_isRatio hρ x hx hk`. Rewrite `e` using `[hu, hu, ← mul_assoc]`. Conclude with `(u.mul_left_inj.1 e).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasCoords.valR_ratio (h : HasCoords x t c) {l m : ι} (hx : ⊤ ≤ x ⁻¹ᵁ nonzeroLocus (t m))
     {ρ : Γ(X, nonzeroLocus (t m))} (hρ : IsRatio (t l) (t m) ρ) : valR x (nonzeroLocus (t m)) ρ * c m = c l := by
@@ -110,7 +110,7 @@ theorem HasCoords.valR_ratio (h : HasCoords x t c) {l m : ι} (hx : ⊤ ≤ x �
   exact (u.mul_left_inj.1 e).symm
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Opens.mem_iSup.1 ((le_preimage_iff x _).1 hx)`. Establish `hk'` using `(le_preimage_iff x _).2 hk`. Establish `hU` using `le_preimage_mono x (X.basicOpen_le _) hk'`. Conclude with `⟨k, hU, (le_preimage_basicOpen_iff x hU _).1 hk'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_chart_isUnit [IsLocalRing A] {s : LB.Sec H} (hx : ⊤ ≤ x ⁻¹ᵁ nonzeroLocus s) :
     ∃ k, ⊤ ≤ x ⁻¹ᵁ H.U k ∧ IsUnit (valR x (H.U k) (s.f k)) := by
@@ -120,7 +120,7 @@ theorem exists_chart_isUnit [IsLocalRing A] {s : LB.Sec H} (hx : ⊤ ≤ x ⁻¹
   exact ⟨k, hU, (le_preimage_basicOpen_iff x hU _).1 hk'⟩
 
 /- English proof (translation)
-Use `⟨fun hx => ?_, h.le_nonzeroLocus⟩` and prove the remaining obligations. Take `⟨k, hk, hu⟩` from `exists_chart_isUnit hx`. Take `⟨u, e⟩` from `h.chart hk`. Rewrite `hu` using `[e]`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasCoords.le_nonzeroLocus_iff [IsLocalRing A] (h : HasCoords x t c) (l : ι) :
     ⊤ ≤ x ⁻¹ᵁ nonzeroLocus (t l) ↔ IsUnit (c l) := by
@@ -131,7 +131,7 @@ theorem HasCoords.le_nonzeroLocus_iff [IsLocalRing A] (h : HasCoords x t c) (l :
   exact isUnit_of_mul_isUnit_left hu
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `exists_le_preimage_of_iSup_eq_top x hcov`. Conclude with `⟨l, (h.le_nonzeroLocus_iff l).1 hl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasCoords.exists_isUnit [IsLocalRing A] (h : HasCoords x t c) (hcov : ⨆ l, nonzeroLocus (t l) = ⊤) :
     ∃ l, IsUnit (c l) := by
@@ -139,7 +139,7 @@ theorem HasCoords.exists_isUnit [IsLocalRing A] (h : HasCoords x t c) (hcov : �
   exact ⟨l, (h.le_nonzeroLocus_iff l).1 hl⟩
 
 /- English proof (translation)
-Take `⟨k, hk, hu⟩` from `exists_chart_isUnit hx`. Conclude with `⟨k, hk, hu.unit, fun l => valR_isRatio (hρ l) x hx hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasCoords_ratio [IsLocalRing A] {m : ι} (hx : ⊤ ≤ x ⁻¹ᵁ nonzeroLocus (t m))
     {ρ : ι → Γ(X, nonzeroLocus (t m))} (hρ : ∀ l, IsRatio (t l) (t m) (ρ l)) :
@@ -148,7 +148,7 @@ theorem hasCoords_ratio [IsLocalRing A] {m : ι} (hx : ⊤ ≤ x ⁻¹ᵁ nonzer
   exact ⟨k, hk, hu.unit, fun l => valR_isRatio (hρ l) x hx hk⟩
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_le_preimage_of_iSup_eq_top x hcov`. Use `choose ρ hρ using fun l => exists_isRatio (t l) (t m)`. Conclude with `⟨_, hasCoords_ratio hm hρ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hasCoords [IsLocalRing A] (hcov : ⨆ l, nonzeroLocus (t l) = ⊤) (x : Sp A ⟶ X) :
     ∃ c, HasCoords x t c := by
@@ -157,7 +157,7 @@ theorem exists_hasCoords [IsLocalRing A] (hcov : ⨆ l, nonzeroLocus (t l) = ⊤
   exact ⟨_, hasCoords_ratio hm hρ⟩
 
 /- English proof (translation)
-Rewrite using `[valR_eq x U hx, MvPolynomial.map_eval₂Hom, ← appLE_valMap x f (U := ⊤) le_top hx]`. Simplify using `only [valR_eq x U hx]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem valR_eval₂Hom (f : X ⟶ Y) (x : Sp A ⟶ X) {U : X.Opens} (hx : ⊤ ≤ x ⁻¹ᵁ U) (ρ : ι → Γ(X, U))
     (q : MvPolynomial ι Γ(Y, ⊤)) :
@@ -174,9 +174,9 @@ section Embedded
 variable {A : Type} [CommRing A] {X Y : Scheme.{0}} {f : X ⟶ Y} {H : LB X} {ι : Type} {t : ι → LB.Sec H}
 
 /- English proof (translation)
-Take `⟨hD, ρ, hρ, hsurj⟩` from `ht.2 m`. Establish `hx` using `h.le_nonzeroLocus hm`. Establish `hx'` using `h'.le_nonzeroLocus hm`. Use `ext_of_valR hD hx hx' fun g => ?_` and prove the remaining obligations. Take `⟨q, rfl⟩` from `hsurj g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[valR_eval₂Hom f x hx, valR_eval₂Hom f x' hx']`. Establish `e : (fun l => valR x _ (ρ l)) = fun l => valR x' _ (ρ l)` using `funext fun l => hm.mul_right_cancel ((h.valR_ratio hx (hρ l)).trans (h'.valR_ratio hx' (hρ l)).symm)`. Rewrite using `[e]`. Simplify using `only [hf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem HasCoords.ext (ht : EmbedsBy f t) {x x' : Sp A ⟶ X} (hf : x ≫ f = x' ≫ f) {c : ι → A}
     (h : HasCoords x t c) (h' : HasCoords x' t c) {m : ι} (hm : IsUnit (c m)) : x = x' := by
@@ -192,7 +192,7 @@ theorem HasCoords.ext (ht : EmbedsBy f t) {x x' : Sp A ⟶ X} (hf : x ≫ f = x'
   simp only [hf]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `h.exists_isUnit ht.1`. Conclude with `h.ext ht hf h' hm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem HasCoords.ext_of_isLocalRing [IsLocalRing A] (ht : EmbedsBy f t) {x x' : Sp A ⟶ X} (hf : x ≫ f = x' ≫ f)
     {c : ι → A} (h : HasCoords x t c) (h' : HasCoords x' t c) : x = x' := by
@@ -202,14 +202,14 @@ theorem HasCoords.ext_of_isLocalRing [IsLocalRing A] (ht : EmbedsBy f t) {x x' :
 variable {K : Type} [Field K] {j : A →+* K}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical j).2 (by rw [(RingHom.injective_iff_ker_eq_bot j).1 hj]; exact bot_le)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDominant_spMap (hj : Function.Injective j) : IsDominant (spMap j) :=
   ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical j).2 (by
     rw [(RingHom.injective_iff_ker_eq_bot j).1 hj]; exact bot_le)⟩
 
 /- English proof (translation)
-Use `isDominant_spMap hj` as an intermediate fact. Establish `: IsDomain A` using `hj.isDomain j`. Conclude with `ext_of_isDominant_of_isSeparated f hf (spMap j) h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ext_of_spMap_comp [IsSeparated f] (hj : Function.Injective j) {ξ ξ' : Sp A ⟶ X} (hf : ξ ≫ f = ξ' ≫ f)
     (h : spMap j ≫ ξ = spMap j ≫ ξ') : ξ = ξ' := by
@@ -218,9 +218,9 @@ theorem ext_of_spMap_comp [IsSeparated f] (hj : Function.Injective j) {ξ ξ' : 
   exact ext_of_isDominant_of_isSeparated f hf (spMap j) h
 
 /- English proof (translation)
-Use `choose φ hφ using h`. Simplify using `only [valR_eq x D hx] at hφ`. Set `ψ : Γ(X, D) →+* A` to `⟨⟨⟨φ, hj (by simp [hφ])⟩, fun a b => hj (by simp [hφ])⟩, hj (by simp [hφ]), fun a b => hj (by simp [hφ])⟩`. Use `⟨_, le_preimage_specMap_fromSpec hD (CommRingCat.ofHom ψ), ?_⟩` and prove the remaining obligations. Rewrite using `[← specMap_valMap_fromSpec hD x hx, ← Category.assoc, ← Spec.map_comp]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Conclude with `CommRingCat.hom_ext (RingHom.ext hφ)`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_of_valR_mem (hj : Function.Injective j) {D : X.Opens} (hD : IsAffineOpen D) (x : Sp K ⟶ X)
     (hx : ⊤ ≤ x ⁻¹ᵁ D) (h : ∀ g, valR x D g ∈ j.range) :
@@ -235,13 +235,13 @@ theorem exists_lift_of_valR_mem (hj : Function.Injective j) {D : X.Opens} (hD : 
   exact CommRingCat.hom_ext (RingHom.ext hφ)
 
 /- English proof (translation)
-Take `⟨hD, ρ, hρ, hsurj⟩` from `ht.2 m`. Establish `hx` using `h.le_nonzeroLocus (hm.map j)`. Take `⟨ξ, hξ, e⟩` from `exists_lift_of_valR_mem hj hD x hx fun g => by`. Take `⟨q, rfl⟩` from `hsurj g`. Rewrite using `[valR_eval₂Hom f x hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.eval₂Hom_C, ← valR_eq, hb, valR_spMap_comp j b ⊤ (le_preimage_top _)]`. Conclude with `⟨_, rfl⟩`. Consider the case `add p q hp hq => rw [map_add]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `add_mem hp hq`. Consider the case `mul_X p l hp`. Rewrite using `[map_mul, MvPolynomial.eval₂Hom_X']`. Use `mul_mem hp ⟨c l * hm.unit⁻¹.val, (hm.map j).mul_right_cancel ?_⟩` and prove the remaining obligations. Rewrite using `[h.valR_ratio hx (hρ l), ← map_mul, mul_assoc, IsUnit.val_inv_mul, mul_one]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ξ, hξ, ext_of_spMap_comp (f := terminal.from Y) hj (terminal.hom_ext _ _) ?_, e⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, e, hb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift [Y.IsSeparated] (ht : EmbedsBy f t) (hj : Function.Injective j) {b : Sp A ⟶ Y} {x : Sp K ⟶ X}
     (hb : x ≫ f = spMap j ≫ b) {c : ι → A} (h : HasCoords x t fun l => j (c l)) {m : ι} (hm : IsUnit (c m)) :
@@ -280,21 +280,21 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_toAway (r a : R) : (toAway i r a : K) = i a := rfl
 
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one ⟨_, Subring.subset_closure (Or.inr rfl)⟩ (Subtype.ext (mul_inv_cancel₀ hr))`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_toAway {r : R} (hr : i r ≠ 0) : IsUnit (toAway i r r) :=
   IsUnit.of_mul_eq_one ⟨_, Subring.subset_closure (Or.inr rfl)⟩ (Subtype.ext (mul_inv_cancel₀ hr))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Proceed by induction on `hz using Subring.closure_induction with`. Consider the case `mem z hz`. Break down `hz with ⟨a, rfl⟩ | rfl` into its components or cases.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨0, a, by simp⟩`. Conclude with `⟨1, 1, by simp [hr]⟩`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `one => exact ⟨0, 1, by simp⟩`. Consider the case `add z w _ _ hz hw`.
+Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨m, a, ha⟩` from `hz`. Take `⟨n, b, hb⟩` from `hw`. Conclude with `⟨m + n, a * r ^ n + b * r ^ m, by simp only [map_add, map_mul, map_pow, ← ha, ← hb]; ring⟩`. Consider the case `neg z _ hz`. Take `⟨m, a, ha⟩` from `hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, -a, by rw [map_neg, ← ha, neg_mul]⟩`. Consider the case `mul z w _ _ hz hw`. Take `⟨m, a, ha⟩` from `hz`. Take `⟨n, b, hb⟩` from `hw`. Conclude with `⟨m + n, a * b, by rw [map_mul, ← ha, ← hb]; ring⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨n, a, h⟩`. Establish `: z = i a * (i r)⁻¹ ^ n` using `by rw [← h, mul_assoc, ← mul_pow, mul_inv_cancel₀ hr, one_pow, mul_one]`. Rewrite using `[this]`. Establish `h₁ : (i r)⁻¹ ∈ awayRing i r` using `Subring.subset_closure (Or.inr rfl)`. Conclude with `mul_mem (toAway i r a).2 (pow_mem h₁ n)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_awayRing {r : R} (hr : i r ≠ 0) {z : K} : z ∈ awayRing i r ↔ ∃ (n : ℕ) (a : R), z * i r ^ n = i a := by
   constructor
@@ -324,7 +324,7 @@ theorem mem_awayRing {r : R} (hr : i r ≠ 0) {z : K} : z ∈ awayRing i r ↔ �
     exact mul_mem (toAway i r a).2 (pow_mem h₁ n)
 
 /- English proof (translation)
-Use `letI := (toAway i r).toAlgebra`. Use `IsLocalization.Away.mk _ (isUnit_toAway hr) (fun z => ?_) fun a b h => ?_` and prove the remaining obligations. Take `⟨n, a, h⟩` from `(mem_awayRing hr).1 z.2`. Conclude with `⟨n, a, Subtype.ext h⟩`. Conclude with `⟨0, congrArg _ (hi (congrArg Subtype.val h))⟩`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem isLocalization_awayRing (hi : Function.Injective i) {r : R} (hr : i r ≠ 0) :
     letI := (toAway i r).toAlgebra
@@ -336,7 +336,7 @@ theorem isLocalization_awayRing (hi : Function.Injective i) {r : R} (hr : i r �
   · exact ⟨0, congrArg _ (hi (congrArg Subtype.val h))⟩
 
 /- English proof (translation)
-Introduce `h` and use `hr (by rw [hi (h.trans (map_zero i).symm), map_zero])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_ev (hi : Function.Injective i) {ev : R →+* C} {r : R} (hr : ev r ≠ 0) : i r ≠ 0 :=
   fun h => hr (by rw [hi (h.trans (map_zero i).symm), map_zero])
@@ -348,7 +348,7 @@ def awayLift (hi : Function.Injective i) {r : R} (hr : i r ≠ 0) {T : Type} [Co
   IsLocalization.Away.lift r hg
 
 /- English proof (translation)
-The claim follows from `letI := (toAway i r).toAlgebra haveI := isLocalization_awayRing hi hr IsLocalization.Away.lift_eq r hg a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem awayLift_toAway (hi : Function.Injective i) {r : R} (hr : i r ≠ 0) {T : Type} [CommRing T]
     (g : R →+* T) (hg : IsUnit (g r)) (a : R) : awayLift hi hr g hg (toAway i r a) = g a :=
@@ -357,7 +357,7 @@ The claim follows from `letI := (toAway i r).toAlgebra haveI := isLocalization_a
   IsLocalization.Away.lift_eq r hg a
 
 /- English proof (translation)
-The claim follows from `letI := (toAway i r).toAlgebra haveI := isLocalization_awayRing hi hr IsLocalization.ringHom_ext (Submonoid.powers r) (RingHom.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem awayRing_hom_ext (hi : Function.Injective i) {r : R} (hr : i r ≠ 0) {T : Type} [CommRing T]
     {g g' : awayRing i r →+* T} (h : ∀ a, g (toAway i r a) = g' (toAway i r a)) : g = g' :=
@@ -369,13 +369,13 @@ def awayEv (hi : Function.Injective i) (ev : R →+* C) {r : R} (hr : ev r ≠ 0
   awayLift hi (ne_zero_of_ev hi hr) ev hr.isUnit
 
 /- English proof (translation)
-The claim follows from `awayLift_toAway _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem awayEv_toAway (hi : Function.Injective i) (ev : R →+* C) {r : R} (hr : ev r ≠ 0) (a : R) :
     awayEv hi ev hr (toAway i r a) = ev a := awayLift_toAway _ _ _ _ _
 
 /- English proof (translation)
-Rewrite using `[← awayEv_toAway hi ev hr a, ← awayEv_toAway hi ev hr s, ← map_mul]`. Conclude with `congrArg _ (Subtype.ext h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem awayEv_mul (hi : Function.Injective i) (ev : R →+* C) {r : R} (hr : ev r ≠ 0) {z : awayRing i r} {a s : R}
     (h : (z : K) * i s = i a) : awayEv hi ev hr z * ev s = ev a := by
@@ -393,32 +393,32 @@ def LocAt.emb (hi : Function.Injective i) (ev : R →+* C) : LocAt ev →+* K :=
   IsLocalization.lift (M := (RingHom.ker ev).primeCompl) (g := i) fun s => IsUnit.mk0 _ (ne_zero_of_ev hi s.2)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem LocAt.eval_algebraMap (ev : R →+* C) (a : R) : LocAt.eval ev (algebraMap R _ a) = ev a :=
   IsLocalization.lift_eq _ a
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem LocAt.emb_algebraMap (hi : Function.Injective i) (ev : R →+* C) (a : R) :
     LocAt.emb hi ev (algebraMap R _ a) = i a := IsLocalization.lift_eq _ a
 
 /- English proof (translation)
-The claim follows from `(IsLocalization.lift_injective_iff _).2 fun _ _ => ⟨fun h => by simpa using congrArg (LocAt.emb hi ev) h, fun h => congrArg _ (hi h)⟩`.
+A detailed English derivation is pending.
 -/
 theorem LocAt.emb_injective (hi : Function.Injective i) (ev : R →+* C) : Function.Injective (LocAt.emb hi ev) :=
   (IsLocalization.lift_injective_iff _).2 fun _ _ =>
     ⟨fun h => by simpa using congrArg (LocAt.emb hi ev) h, fun h => congrArg _ (hi h)⟩
 
 /- English proof (translation)
-The claim follows from `IsLocalization.map_units (M := (RingHom.ker ev).primeCompl) _ ⟨s, hs⟩`.
+A detailed English derivation is pending.
 -/
 theorem LocAt.isUnit_algebraMap {ev : R →+* C} {s : R} (hs : ev s ≠ 0) : IsUnit (algebraMap R (LocAt ev) s) :=
   IsLocalization.map_units (M := (RingHom.ker ev).primeCompl) _ ⟨s, hs⟩
 
 /- English proof (translation)
-Take `⟨⟨a, s⟩, h⟩` from `IsLocalization.surj (RingHom.ker ev).primeCompl z`. Conclude with `⟨a, s, s.2, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LocAt.surj {ev : R →+* C} (z : LocAt ev) :
     ∃ a s : R, ev s ≠ 0 ∧ z * algebraMap R _ s = algebraMap R _ a := by
@@ -426,7 +426,7 @@ theorem LocAt.surj {ev : R →+* C} (z : LocAt ev) :
   exact ⟨a, s, s.2, h⟩
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (RingHom.ker ev).primeCompl (RingHom.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem LocAt.hom_ext {ev : R →+* C} {T : Type} [CommRing T] {g g' : LocAt ev →+* T}
     (h : ∀ a, g (algebraMap R _ a) = g' (algebraMap R _ a)) : g = g' :=
@@ -442,7 +442,7 @@ instance LocAt.isLocalHom_eval (ev : R →+* C) : IsLocalHom (LocAt.eval ev) :=
 end Rings
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, show g'.comp g = g'' from RingHom.ext h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_spMap {A B D : Type} [CommRing A] [CommRing B] [CommRing D] {g : A →+* B} {g' : B →+* D}
     {g'' : A →+* D} (h : ∀ a, g' (g a) = g'' a) {X : Scheme.{0}} (z : Sp A ⟶ X) :
@@ -461,21 +461,21 @@ def Specializes (hi : Function.Injective i) (ev : R →+* C) (p : X ⟶ S) (b : 
 variable {hi : Function.Injective i} {ev : R →+* C} {p : X ⟶ S} {b : Sp R ⟶ S} {x : Sp K ⟶ X} {y : Sp C ⟶ X}
 
 /- English proof (translation)
-Take `⟨ξ, hp, rfl, -⟩` from `h`. Rewrite using `[Category.assoc, hp, spMap_spMap (LocAt.emb_algebraMap hi ev)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Specializes.over_left (h : Specializes hi ev p b x y) : x ≫ p = spMap i ≫ b := by
   obtain ⟨ξ, hp, rfl, -⟩ := h
   rw [Category.assoc, hp, spMap_spMap (LocAt.emb_algebraMap hi ev)]
 
 /- English proof (translation)
-Take `⟨ξ, hp, -, rfl⟩` from `h`. Rewrite using `[Category.assoc, hp, spMap_spMap (LocAt.eval_algebraMap ev)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Specializes.over_right (h : Specializes hi ev p b x y) : y ≫ p = spMap ev ≫ b := by
   obtain ⟨ξ, hp, -, rfl⟩ := h
   rw [Category.assoc, hp, spMap_spMap (LocAt.eval_algebraMap ev)]
 
 /- English proof (translation)
-Take `⟨ξ, hp, hx, rfl⟩` from `h`. Take `⟨ξ', hp', hx', rfl⟩` from `h'`. Rewrite using `[ext_of_spMap_comp (f := p) (LocAt.emb_injective hi ev) (hp.trans hp'.symm) (hx.trans hx'.symm)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Specializes.unique [IsSeparated p] {y' : Sp C ⟶ X} (h : Specializes hi ev p b x y)
     (h' : Specializes hi ev p b x y') : y = y' := by
@@ -484,7 +484,7 @@ theorem Specializes.unique [IsSeparated p] {y' : Sp C ⟶ X} (h : Specializes hi
   rw [ext_of_spMap_comp (f := p) (LocAt.emb_injective hi ev) (hp.trans hp'.symm) (hx.trans hx'.symm)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨spMap (algebraMap R _) ≫ z, by rw [Category.assoc, hz], spMap_spMap (LocAt.emb_algebraMap hi ev) z, spMap_spMap (LocAt.eval_algebraMap ev) z⟩`.
+Supply the required witnesses or components.
 -/
 theorem Specializes.of_point (hi : Function.Injective i) (ev : R →+* C) {z : Sp R ⟶ X} (hz : z ≫ p = b) :
     Specializes hi ev p b (spMap i ≫ z) (spMap ev ≫ z) :=
@@ -492,16 +492,16 @@ theorem Specializes.of_point (hi : Function.Injective i) (ev : R →+* C) {z : S
     spMap_spMap (LocAt.eval_algebraMap ev) z⟩
 
 /- English proof (translation)
-The claim follows from `.of_point hi ev (by rw [Category.assoc, hσ, Category.comp_id])`.
+A detailed English derivation is pending.
 -/
 theorem Specializes.of_section (hi : Function.Injective i) (ev : R →+* C) (b : Sp R ⟶ S) {σ : S ⟶ X}
     (hσ : σ ≫ p = 𝟙 S) : Specializes hi ev p b (spMap i ≫ b ≫ σ) (spMap ev ≫ b ≫ σ) :=
   .of_point hi ev (by rw [Category.assoc, hσ, Category.comp_id])
 
 /- English proof (translation)
-Establish `h0` using `ne_zero_of_ev hi hr`. Set `g` to `awayLift hi h0 (algebraMap R (LocAt ev)) (LocAt.isUnit_algebraMap hr)`. Establish `hg : ∀ a, g (toAway i r a) = algebraMap R _ a` using `awayLift_toAway _ _ _ _`. Use `⟨spMap g ≫ ξ, by rw [Category.assoc, hξ, spMap_spMap hg], spMap_spMap (DFunLike.congr_fun (awayRing_hom_ext hi h0 (g := (LocAt.emb hi ev).comp g) fun a => ?_)) ξ, spMap_spMap (DFunLike.congr_fun (awayRing_hom_ext hi h0 (g := (LocAt.eval ev).comp g) fun a => ?_)) ξ⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hg, LocAt.emb_algebraMap]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[RingHom.comp_apply, hg, LocAt.eval_algebraMap, awayEv_toAway]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem Specializes.of_away (hi : Function.Injective i) (ev : R →+* C) {r : R} (hr : ev r ≠ 0)
     {ξ : Sp (awayRing i r) ⟶ X} (hξ : ξ ≫ p = spMap (toAway i r) ≫ b) :
@@ -516,7 +516,7 @@ theorem Specializes.of_away (hi : Function.Injective i) (ev : R →+* C) {r : R}
   · rw [RingHom.comp_apply, hg, LocAt.eval_algebraMap, awayEv_toAway]
 
 /- English proof (translation)
-Take `⟨ξ, hp, rfl, rfl⟩` from `h`. Conclude with `⟨ξ ≫ f, by rw [Category.assoc, w, ← Category.assoc, hp, Category.assoc], by rw [Category.assoc], by rw [Category.assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Specializes.map (h : Specializes hi ev p b x y) {X' S' : Scheme.{0}} {p' : X' ⟶ S'} (f : X ⟶ X')
     (g : S ⟶ S') (w : f ≫ p' = p ≫ g) : Specializes hi ev p' (b ≫ g) (x ≫ f) (y ≫ f) := by
@@ -525,16 +525,16 @@ theorem Specializes.map (h : Specializes hi ev p b x y) {X' S' : Scheme.{0}} {p'
     by rw [Category.assoc]⟩
 
 /- English proof (translation)
-Simplify `h.map f (𝟙 S) (w.trans (Category.comp_id p).symm)` using `only [Category.comp_id]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Specializes.comp (h : Specializes hi ev p b x y) {X' : Scheme.{0}} {p' : X' ⟶ S} (f : X ⟶ X')
     (w : f ≫ p' = p) : Specializes hi ev p' b (x ≫ f) (y ≫ f) := by
   simpa only [Category.comp_id] using h.map f (𝟙 S) (w.trans (Category.comp_id p).symm)
 
 /- English proof (translation)
-Take `⟨ξ, hp, h₁, h₂⟩` from `h`. Use `⟨sq.lift ξ (spMap (algebraMap R _) ≫ b) (by rw [hp, Category.assoc]), sq.lift_snd _ _ _, sq.hom_ext ?_ ?_, sq.hom_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, sq.lift_fst, h₁]`. Rewrite using `[Category.assoc, sq.lift_snd, hx, spMap_spMap (LocAt.emb_algebraMap hi ev)]`. Rewrite using `[Category.assoc, sq.lift_fst, h₂]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, sq.lift_snd, hy, spMap_spMap (LocAt.eval_algebraMap ev)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Specializes.of_isPullback {X' S' : Scheme.{0}} {p' : X' ⟶ S'} {f : X ⟶ X'} {g : S ⟶ S'}
     (sq : IsPullback f p p' g) (hx : x ≫ p = spMap i ≫ b) (hy : y ≫ p = spMap ev ≫ b)
@@ -548,11 +548,11 @@ theorem Specializes.of_isPullback {X' S' : Scheme.{0}} {p' : X' ⟶ S'} {f : X �
   · rw [Category.assoc, sq.lift_snd, hy, spMap_spMap (LocAt.eval_algebraMap ev)]
 
 /- English proof (translation)
-Take `⟨ξ, hp, rfl, rfl⟩` from `h`. Set `g : LocAt ev →+* LocAt ev'` to `IsLocalization.lift (M := (RingHom.ker ev).primeCompl) (g := (algebraMap R' _).comp ρ) fun s => LocAt.isUnit_algebraMap (s := ρ s) (by`. Rewrite using `[hγ]`. Conclude with `(map_ne_zero γ).2 s.2)`. Establish `hg : ∀ a, g (algebraMap R _ a) = algebraMap R' _ (ρ a)` using `IsLocalization.lift_eq _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨spMap g ≫ ξ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hp, spMap_spMap (g'' := (algebraMap R' _).comp ρ) hg, spMap_spMap (g'' := (algebraMap R' _).comp ρ) fun _ => rfl]`. Rewrite using `[spMap_spMap (g'' := κ.comp (LocAt.emb hi ev)) (g' := κ) fun _ => rfl]`. Use `spMap_spMap (DFunLike.congr_fun (LocAt.hom_ext (g := (LocAt.emb hi' ev').comp g) fun a => ?_)) ξ` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, hg, LocAt.emb_algebraMap, hκ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[spMap_spMap (g'' := γ.comp (LocAt.eval ev)) (g' := γ) fun _ => rfl]`. Use `spMap_spMap (DFunLike.congr_fun (LocAt.hom_ext (g := (LocAt.eval ev').comp g) fun a => ?_)) ξ` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, hg, LocAt.eval_algebraMap, hγ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Specializes.change (h : Specializes hi ev p b x y) {R' K' C' : Type} [CommRing R'] [Field K'] [Field C']
     {i' : R' →+* K'} (hi' : Function.Injective i') (ev' : R' →+* C') (ρ : R →+* R') (κ : K →+* K') (γ : C →+* C')
@@ -574,7 +574,7 @@ theorem Specializes.change (h : Specializes hi ev p b x y) {R' K' C' : Type} [Co
     simp only [RingHom.comp_apply, hg, LocAt.eval_algebraMap, hγ]
 
 /- English proof (translation)
-Establish `: IsLocalHom (CommRingCat.ofHom (LocAt.eval ev)).hom` using `LocAt.isLocalHom_eval ev`. Rewrite using `[le_preimage_iff, ← Spec_closedPoint (f := CommRingCat.ofHom (LocAt.eval ev))]`. Conclude with `h (x := IsLocalRing.closedPoint C) trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_preimage_of_eval {ξ : Sp (LocAt ev) ⟶ X} {U : X.Opens} (h : ⊤ ≤ (spMap (LocAt.eval ev) ≫ ξ) ⁻¹ᵁ U) :
     ⊤ ≤ ξ ⁻¹ᵁ U := by
@@ -583,7 +583,7 @@ theorem le_preimage_of_eval {ξ : Sp (LocAt ev) ⟶ X} {U : X.Opens} (h : ⊤ �
   exact h (x := IsLocalRing.closedPoint C) trivial
 
 /- English proof (translation)
-Take `⟨ξ, -, rfl, rfl⟩` from `h`. Conclude with `le_preimage_comp _ ξ (le_preimage_of_eval hU) (le_preimage_top _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Specializes.le_preimage (h : Specializes hi ev p b x y) {U : X.Opens} (hU : ⊤ ≤ y ⁻¹ᵁ U) :
     ⊤ ≤ x ⁻¹ᵁ U := by
@@ -591,9 +591,9 @@ theorem Specializes.le_preimage (h : Specializes hi ev p b x y) {U : X.Opens} (h
   exact le_preimage_comp _ ξ (le_preimage_of_eval hU) (le_preimage_top _)
 
 /- English proof (translation)
-Take `⟨ξ, -, rfl, rfl⟩` from `h`. Establish `hξ` using `le_preimage_of_eval hU`. Take `⟨a, s, hs, e⟩` from `LocAt.surj (valR ξ U g)`. Use `⟨a, s, hs, ?_, ?_⟩` and prove the remaining obligations. Simplify `congrArg (LocAt.emb hi ev) e` using `only [valR_spMap_comp _ ξ U hξ, map_mul, LocAt.emb_algebraMap]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `congrArg (LocAt.eval ev) e` using `only [valR_spMap_comp _ ξ U hξ, map_mul, LocAt.eval_algebraMap]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Specializes.exists_valR (h : Specializes hi ev p b x y) {U : X.Opens} (hU : ⊤ ≤ y ⁻¹ᵁ U) (g : Γ(X, U)) :
     ∃ a s : R, ev s ≠ 0 ∧ valR x U g * i s = i a ∧ valR y U g * ev s = ev a := by
@@ -605,7 +605,7 @@ theorem Specializes.exists_valR (h : Specializes hi ev p b x y) {U : X.Opens} (h
   · simpa only [valR_spMap_comp _ ξ U hξ, map_mul, LocAt.eval_algebraMap] using congrArg (LocAt.eval ev) e
 
 /- English proof (translation)
-Take `⟨a', s', hs', e₁, e₂⟩` from `h.exists_valR hU g`. Establish `e₃ : a' * s = a * s'` using `hi (by rw [map_mul, map_mul, ← e₁, ← e]; ring)`. Use `mul_right_cancel₀ hs' ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← e₃, map_mul, ← e₂]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Specializes.valR_mul_eq (h : Specializes hi ev p b x y) {U : X.Opens} (hU : ⊤ ≤ y ⁻¹ᵁ U) {g : Γ(X, U)}
     {a s : R} (e : valR x U g * i s = i a) : valR y U g * ev s = ev a := by
@@ -616,14 +616,14 @@ theorem Specializes.valR_mul_eq (h : Specializes hi ev p b x y) {U : X.Opens} (h
   ring
 
 /- English proof (translation)
-Simplify `e)` using `using h.valR_mul_eq hU (s := 1) (a := a) (by simpa`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Specializes.valR_eq (h : Specializes hi ev p b x y) {U : X.Opens} (hU : ⊤ ≤ y ⁻¹ᵁ U) {g : Γ(X, U)}
     {a : R} (e : valR x U g = i a) : valR y U g = ev a := by
   simpa using h.valR_mul_eq hU (s := 1) (a := a) (by simpa using e)
 
 /- English proof (translation)
-Take `⟨a, s, hs, e₁, e₂⟩` from `h.exists_valR hU g`. Conclude with `mul_right_cancel₀ hs (e₂.trans (awayEv_mul hi ev hr (z := ⟨_, hg⟩) e₁).symm)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Specializes.valR_eq_awayEv (h : Specializes hi ev p b x y) {U : X.Opens} (hU : ⊤ ≤ y ⁻¹ᵁ U) {g : Γ(X, U)}
     {r : R} (hr : ev r ≠ 0) (hg : valR x U g ∈ awayRing i r) : valR y U g = awayEv hi ev hr ⟨_, hg⟩ := by
@@ -631,7 +631,7 @@ theorem Specializes.valR_eq_awayEv (h : Specializes hi ev p b x y) {U : X.Opens}
   exact mul_right_cancel₀ hs (e₂.trans (awayEv_mul hi ev hr (z := ⟨_, hg⟩) e₁).symm)
 
 /- English proof (translation)
-Take `⟨a, s, hs, e, -⟩` from `h.exists_valR hU g`. Establish `hg` using `(mem_awayRing (ne_zero_of_ev hi hs)).2 ⟨1, a, by rw [pow_one, e]⟩`. Conclude with `⟨s, hs, hg, h.valR_eq_awayEv hU hs hg⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Specializes.exists_away (h : Specializes hi ev p b x y) {U : X.Opens} (hU : ⊤ ≤ y ⁻¹ᵁ U) (g : Γ(X, U)) :
     ∃ (r : R) (hr : ev r ≠ 0) (hg : valR x U g ∈ awayRing i r), valR y U g = awayEv hi ev hr ⟨_, hg⟩ := by
@@ -640,7 +640,7 @@ theorem Specializes.exists_away (h : Specializes hi ev p b x y) {U : X.Opens} (h
   exact ⟨s, hs, hg, h.valR_eq_awayEv hU hs hg⟩
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_le_preimage_of_iSup_eq_top y hcov`. Use `choose ρ hρ using fun l => exists_isRatio (t l) (t m)`. Establish `e : ∀ l, valR y _ (ρ l) * ev (r m) = ev (r l)` using `fun l => h.valR_mul_eq hm (hx.valR_ratio (h.le_preimage hm) (hρ l))`. Establish `hm0 : ev (r m) ≠ 0` using `fun h0 => h₀ (by rw [← e l₀, h0, mul_zero])`. Simplify `(hasCoords_ratio hm hρ).mul_unit hm0.isUnit` using `only [e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Specializes.hasCoords (h : Specializes hi ev p b x y) {H : LB X} {ι : Type*} {t : ι → LB.Sec H}
     (hcov : ⨆ l, nonzeroLocus (t l) = ⊤) {r : ι → R} (hx : HasCoords x t fun l => i (r l)) {l₀ : ι}
@@ -660,7 +660,7 @@ variable {R K C : Type} [CommRing R] [Field K] [Field C] {i : R →+* K} {X S : 
   {H : LB X} {ι : Type} {t : ι → LB.Sec H} {b : Sp R ⟶ S} {x : Sp K ⟶ X} {r : ι → R}
 
 /- English proof (translation)
-The claim follows from `exists_lift ht Subtype.val_injective (hb.trans (spMap_spMap (coe_toAway (r m)) b).symm) (c := fun l => toAway i (r m) (r l)) hx (isUnit_toAway hm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_extension [S.IsSeparated] (ht : EmbedsBy p t) (hb : x ≫ p = spMap i ≫ b)
     (hx : HasCoords x t fun l => i (r l)) {m : ι} (hm : i (r m) ≠ 0) :
@@ -670,7 +670,7 @@ theorem exists_extension [S.IsSeparated] (ht : EmbedsBy p t) (hb : x ≫ p = spM
     (c := fun l => toAway i (r m) (r l)) hx (isUnit_toAway hm)
 
 /- English proof (translation)
-Take `⟨ξ, -, hp, rfl⟩` from `exists_extension ht hb hx (ne_zero_of_ev hi hm)`. Conclude with `⟨_, .of_away hi ev hm hp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_specializes [S.IsSeparated] (ht : EmbedsBy p t) (hi : Function.Injective i) (ev : R →+* C)
     (hb : x ≫ p = spMap i ≫ b) (hx : HasCoords x t fun l => i (r l)) {m : ι} (hm : ev (r m) ≠ 0) :
@@ -679,7 +679,7 @@ theorem exists_specializes [S.IsSeparated] (ht : EmbedsBy p t) (hi : Function.In
   exact ⟨_, .of_away hi ev hm hp⟩
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.over_right, h.hasCoords ht.1 hx hm⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨y', h'⟩` from `exists_specializes ht hi ev hb hx hm`. Rewrite using `[h.2.ext ht (h.1.trans h'.over_right.symm) (h'.hasCoords ht.1 hx hm) hm.isUnit]`. Conclude with `h'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specializes_iff [S.IsSeparated] (ht : EmbedsBy p t) (hi : Function.Injective i) (ev : R →+* C)
     (hb : x ≫ p = spMap i ≫ b) (hx : HasCoords x t fun l => i (r l)) {m : ι} (hm : ev (r m) ≠ 0) (y : Sp C ⟶ X) :
@@ -699,7 +699,7 @@ variable {R K C : Type} [CommRing R] [Field K] [Field C] {i : R →+* K} {S : Sc
   {hi : Function.Injective i} {ev : R →+* C} {b : Sp R ⟶ S} {sK : Sp K ⟶ S} {sC : Sp C ⟶ S}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨ξ, h, hx, hy⟩ => ⟨Over.homMk ξ h, Over.OverMorphism.ext hx, Over.OverMorphism.ext hy⟩, fun ⟨ξ, hx, hy⟩ => ⟨ξ.left, Over.w ξ, congrArg CommaMorphism.left hx, congrArg CommaMorphism.left hy⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem specializes_iff_over (hK : spMap i ≫ b = sK) (hC : spMap ev ≫ b = sC) (x : Over.mk sK ⟶ A)
     (y : Over.mk sC ⟶ A) : Specializes hi ev A.hom b x.left y.left ↔
@@ -712,26 +712,26 @@ theorem specializes_iff_over (hK : spMap i ≫ b = sK) (hC : spMap ev ≫ b = sC
     fun ⟨ξ, hx, hy⟩ => ⟨ξ.left, Over.w ξ, congrArg CommaMorphism.left hx, congrArg CommaMorphism.left hy⟩⟩
 
 /- English proof (translation)
-The claim follows from `h.over_left.symm.trans (Over.w x)`.
+A detailed English derivation is pending.
 -/
 theorem Specializes.base_left {x : Over.mk sK ⟶ A} {y : Sp C ⟶ A.left} (h : Specializes hi ev A.hom b x.left y) :
     spMap i ≫ b = sK := h.over_left.symm.trans (Over.w x)
 
 /- English proof (translation)
-The claim follows from `h.over_right.symm.trans (Over.w y)`.
+A detailed English derivation is pending.
 -/
 theorem Specializes.base_right {x : Sp K ⟶ A.left} {y : Over.mk sC ⟶ A} (h : Specializes hi ev A.hom b x y.left) :
     spMap ev ≫ b = sC := h.over_right.symm.trans (Over.w y)
 
 /- English proof (translation)
-The claim follows from `h.comp f.left (Over.w f)`.
+A detailed English derivation is pending.
 -/
 theorem Specializes.comp_over {x : Over.mk sK ⟶ A} {y : Over.mk sC ⟶ A} (h : Specializes hi ev A.hom b x.left y.left)
     {A' : Over S} (f : A ⟶ A') : Specializes hi ev A'.hom b (x ≫ f).left (y ≫ f).left :=
   h.comp f.left (Over.w f)
 
 /- English proof (translation)
-Establish `hK` using `h.base_left`. Establish `hC` using `h.base_right`. Take `⟨ξ, rfl, rfl⟩` from `(specializes_iff_over hK hC x y).1 h`. Take `⟨ξ', rfl, rfl⟩` from `(specializes_iff_over hK hC x' y').1 h'`. Conclude with `(specializes_iff_over hK hC _ _).2 ⟨ξ * ξ', MonObj.comp_mul _ _ _, MonObj.comp_mul _ _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Specializes.mul [MonObj A] {x x' : Over.mk sK ⟶ A} {y y' : Over.mk sC ⟶ A}
     (h : Specializes hi ev A.hom b x.left y.left) (h' : Specializes hi ev A.hom b x'.left y'.left) :
@@ -743,14 +743,14 @@ theorem Specializes.mul [MonObj A] {x x' : Over.mk sK ⟶ A} {y y' : Over.mk sC 
   exact (specializes_iff_over hK hC _ _).2 ⟨ξ * ξ', MonObj.comp_mul _ _ _, MonObj.comp_mul _ _ _⟩
 
 /- English proof (translation)
-The claim follows from `(specializes_iff_over hK hC _ _).2 ⟨1, MonObj.comp_one _, MonObj.comp_one _⟩`.
+A detailed English derivation is pending.
 -/
 theorem Specializes.one [MonObj A] (hi : Function.Injective i) (hK : spMap i ≫ b = sK) (hC : spMap ev ≫ b = sC) :
     Specializes hi ev A.hom b (1 : Over.mk sK ⟶ A).left (1 : Over.mk sC ⟶ A).left :=
   (specializes_iff_over hK hC _ _).2 ⟨1, MonObj.comp_one _, MonObj.comp_one _⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa only [pow_zero] using Specializes.one hi h.base_left h.base_right`. Consider the case `succ n ih => simpa only [pow_succ] using ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem Specializes.pow [MonObj A] {x : Over.mk sK ⟶ A} {y : Over.mk sC ⟶ A}
     (h : Specializes hi ev A.hom b x.left y.left) (n : ℕ) : Specializes hi ev A.hom b (x ^ n).left (y ^ n).left := by
@@ -759,7 +759,7 @@ theorem Specializes.pow [MonObj A] {x : Over.mk sK ⟶ A} {y : Over.mk sC ⟶ A}
   | succ n ih => simpa only [pow_succ] using ih.mul h
 
 /- English proof (translation)
-Establish `hK` using `h.base_left`. Establish `hC` using `h.base_right`. Take `⟨ξ, rfl, rfl⟩` from `(specializes_iff_over hK hC x y).1 h`. Conclude with `(specializes_iff_over hK hC _ _).2 ⟨ξ⁻¹, GrpObj.comp_inv _ _, GrpObj.comp_inv _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Specializes.inv [GrpObj A] {x : Over.mk sK ⟶ A} {y : Over.mk sC ⟶ A}
     (h : Specializes hi ev A.hom b x.left y.left) : Specializes hi ev A.hom b (x⁻¹).left (y⁻¹).left := by
@@ -769,7 +769,7 @@ theorem Specializes.inv [GrpObj A] {x : Over.mk sK ⟶ A} {y : Over.mk sC ⟶ A}
   exact (specializes_iff_over hK hC _ _).2 ⟨ξ⁻¹, GrpObj.comp_inv _ _, GrpObj.comp_inv _ _⟩
 
 /- English proof (translation)
-Take `⟨n, rfl | rfl⟩` from `n.eq_nat_or_neg`. Simplify `h.pow n` using `only [zpow_natCast]`. Simplify `(h.pow n).inv` using `only [zpow_neg, zpow_natCast]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Specializes.zpow [GrpObj A] {x : Over.mk sK ⟶ A} {y : Over.mk sC ⟶ A}
     (h : Specializes hi ev A.hom b x.left y.left) (n : ℤ) : Specializes hi ev A.hom b (x ^ n).left (y ^ n).left := by
@@ -778,14 +778,14 @@ theorem Specializes.zpow [GrpObj A] {x : Over.mk sK ⟶ A} {y : Over.mk sC ⟶ A
   · simpa only [zpow_neg, zpow_natCast] using (h.pow n).inv
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (h.unique h')`.
+A detailed English derivation is pending.
 -/
 theorem Specializes.unique_over [IsSeparated A.hom] {x : Sp K ⟶ A.left} {y y' : Over.mk sC ⟶ A}
     (h : Specializes hi ev A.hom b x y.left) (h' : Specializes hi ev A.hom b x y'.left) : y = y' :=
   Over.OverMorphism.ext (h.unique h')
 
 /- English proof (translation)
-The claim follows from `h''.unique_over (h.mul h')`.
+A detailed English derivation is pending.
 -/
 theorem Specializes.eq_mul [IsSeparated A.hom] [MonObj A] {x x' : Over.mk sK ⟶ A} {y y' y'' : Over.mk sC ⟶ A}
     (h : Specializes hi ev A.hom b x.left y.left) (h' : Specializes hi ev A.hom b x'.left y'.left)

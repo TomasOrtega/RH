@@ -13,11 +13,11 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `S : Set R` to `{f | ∀ (R' : Type) [CommRing R'] (φ : R →+* R'), IsUnit (φ f) → Q (pullback.snd s (spMap φ))}`. Establish `hS : Ideal.span S = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨p, hp, -, hmp, -⟩` from `hP m 1 hm.isPrime ((Ideal.ne_top_iff_one m).1 hm.ne_top)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hfS⟩` from `h p hp`. Conclude with `hf (hmp (hle (Ideal.subset_span hfS)))`. Establish `hS' : Ideal.span (Set.range (fun f : S => (f : R))) = ⊤`. Rewrite using `[Subtype.range_coe]`. Conclude with `hS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `IsZariskiLocalAtTarget.of_openCover (P := Q) (Scheme.affineOpenCoverOfSpanRangeEqTop (R := CommRingCat.of R) (fun f : S => (f : R)) hS').openCover ?_` and prove the remaining obligations. Introduce `i`. Conclude with `(show S from i).2 (Localization.Away ((show S from i) : R)) (algebraMap R _) (IsLocalization.Away.algebraMap_isUnit _)`.
+A detailed English derivation is pending.
 -/
 theorem of_local_near_veryDense (Q : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget Q]
     (R : Type) [CommRing R] (Z : Scheme.{0}) (s : Z ⟶ Sp R) (P : Set (Ideal R))
@@ -41,13 +41,13 @@ theorem of_local_near_veryDense (Q : MorphismProperty Scheme.{0}) [IsZariskiLoca
     (IsLocalization.Away.algebraMap_isUnit _)
 
 /- English proof (translation)
-Introduce `R _ _ Z s g P hP hproj hflat h`. Establish `hsm : SmoothOfRelativeDimension g s`. Establish `: IsZariskiLocalAtTarget (@SmoothOfRelativeDimension.{0} g)` using `HasRingHomProperty.instIsZariskiLocalAtTarget _`. Use `of_local_near_veryDense (@SmoothOfRelativeDimension.{0} g) R Z s P hP ?_` and prove the remaining obligations. Introduce `q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨K, _, x, hx, h1, -⟩` from `h q hq`. Take `⟨f, hf, H⟩` from `GlobalTheory.T.exists_smoothOfRelDim_of_isUnit_proper_flat R Z s g K x (projProper R Z s hproj) hflat h1`. Conclude with `⟨f, by rw [← hx]; exact hf, H⟩`. Use `⟨hsm, ?_⟩` and prove the remaining obligations. Establish `: IsZariskiLocalAtTarget (@GeometricallyConnected.{0})`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[GeometricallyConnected.eq_geometrically]`. Use `infer_instance`. Use `of_local_near_veryDense (@GeometricallyConnected.{0}) R Z s P hP ?_` and prove the remaining obligations. Introduce `q hq`. Take `⟨K, _, x, hx, -, h2⟩` from `h q hq`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, H⟩` from `GlobalTheory.T.geometricallyConnected_open_condition_smooth_projective R Z s K x hproj (SmoothOfRelativeDimension.smooth g s) h2`. Conclude with `⟨f, by rw [← hx]; exact hf, H⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smooth_and_geomConnected_of_veryDense : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (Z : Scheme.{0}) (s : Z ⟶ Sp R) (g : ℕ) (P : Set (Ideal R)), (∀ (q : Ideal R) (f : R), q.IsPrime → f ∉ q → ∃ p ∈ P, p.IsPrime ∧ q ≤ p ∧ f ∉ p) → IsProjOver s → Flat s → (∀ q ∈ P, ∃ (K : Type) (_ : Field K) (x : R →+* K), RingHom.ker x = q ∧ SmoothOfRelativeDimension g (pullback.snd s (spMap x)) ∧ GeometricallyConnected (pullback.snd s (spMap x))) → SmoothOfRelativeDimension g s ∧ GeometricallyConnected s := by
   intro R _ _ Z s g P hP hproj hflat h

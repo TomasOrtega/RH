@@ -43,7 +43,7 @@ def ht (II : IntersectionSystem) : ℝ :=
 include G in
 
 /- English proof (translation)
-The claim follows from `charZero_of_injective_algebraMap (algebraMap G.F R.Ω).injective`.
+A detailed English derivation is pending.
 -/
 theorem charZero : CharZero R.Ω := charZero_of_injective_algebraMap (algebraMap G.F R.Ω).injective
 

@@ -9,13 +9,13 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.Globa
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Unfold `RatSpan at hP`. Proceed by induction on `hP using AddSubgroup.closure_induction with`. Consider the case `mem p hp`. Take `⟨r, f, -, rfl⟩` from `hp`. Use `⟨MvPolynomial.C r * ten (fun τ => MvPolynomial.map (Int.castRingHom D.what₂.LL) (f τ)), ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[ten, MvPolynomial.map_map, MvPolynomial.smul_eq_C_mul]`. Use `left`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_rename, MvPolynomial.map_map, show D.what₂.embLL.comp (Int.castRingHom D.what₂.LL) = Int.castRingHom ℂ from RingHom.ext_int _ _]`. Consider the case `zero => exact ⟨0, map_zero _⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add p q _ _ hp hq`. Take `⟨a, ha⟩` from `hp`. Take `⟨b, hb⟩` from `hq`. Conclude with `⟨a + b, by rw [map_add, ha, hb]⟩`. Consider the case `neg p _ hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hp`. Conclude with `⟨-a, by rw [map_neg, ha]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rational_span_map_surjective {n : ℕ} (lam : D.what₂.Tau → DomWeight n) (P : MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ)
     (hP : P ∈ RatSpan D lam) :
@@ -40,9 +40,9 @@ theorem rational_span_map_surjective {n : ℕ} (lam : D.what₂.Tau → DomWeigh
     exact ⟨-a, by rw [map_neg, ha]⟩
 
 /- English proof (translation)
-Establish `hr` using `((Tf.val 0 (Nat.zero_le _)).rat ((D.fm u).emb 0 x)).1 ⟨x, rfl⟩`. Use `choose P hP hPe using hr.2`. Use `choose Q hQ using fun c => rational_span_map_surjective _ (P c) (hP c)`. Use `⟨fun c => if (D.fm u).emb 0 x c = 0 then 0 else Q c, fun c h => by simp [h], fun c z => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : (D.fm u).emb 0 x c = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Simplify using `only [h, if_true, map_zero, Pi.zero_apply]`. Simplify using `only [h, if_false, hQ]`. Conclude with `hPe c z`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polynomial_rep_of_rational_form (Tf : FormsTied D u) (x : ((D.fm u).lat 0).V) :
     ∃ Pc : (D.mem u).C.cls 0 → MvPolynomial (D.what₂.Tau × Fin (D.R.N 0) × Fin (D.R.N 0)) D.what₂.LL,
@@ -60,7 +60,7 @@ theorem polynomial_rep_of_rational_form (Tf : FormsTied D u) (x : ((D.fm u).lat 
     exact hPe c z
 
 /- English proof (translation)
-Simplify using `only [nfAll]`. Rewrite using `[div_eq_zero_iff]`. Use `left`. Unfold `REAL.fockF`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_form_zero {n : ℕ} (lam : D.what₂.Tau → DomWeight n) : nfAll lam 0 0 = 0 := by
   simp only [nfAll]
@@ -70,7 +70,7 @@ theorem norm_form_zero {n : ℕ} (lam : D.what₂.Tau → DomWeight n) : nfAll l
   simp
 
 /- English proof (translation)
-Unfold `majAt`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, Complex.star_def, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem majAt_swap_eq_conj {V ι : Type} [AddCommGroup V] [Module D.what₂.LL V] [Fintype ι] [DecidableEq ι] (b : Module.Basis ι D.what₂.LL V)
     (X : InfinitePlace D.what₂.LL → Matrix ι ι ℂ) (v : InfinitePlace D.what₂.LL) (x y : V) :
@@ -82,25 +82,23 @@ theorem majAt_swap_eq_conj {V ι : Type} [AddCommGroup V] [Module D.what₂.LL V
   ring
 
 /- English proof (translation)
-Introduce `v x y hxy`. Use `set s := v.embedding with hs`. Establish `hv : InfinitePlace.mk s = v` using `InfinitePlace.mk_embedding v`. Take `⟨C, hC, -, -⟩` from `(Tf.val 0 (Nat.zero_le _)).de`. Use `letI := D.host.cmStar`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨o, ho⟩` from `exists_isON_of_gram (sigD D : D.host.E →+* D.host.E) (embS D s) (fun τ x => D.sp.cm.cmUnram.2.1 (embS D s τ) x) (gramN D 0 (Nat.zero_le _)) C hC`. Take `⟨Px, hPx0, hPx⟩` from `polynomial_rep_of_rational_form Tf x`. Take `⟨Py, hPy0, hPy⟩` from `polynomial_rep_of_rational_form Tf y`. Establish `hay : ∀ (a : D.what₂.LL) c z, (D.fm u).emb 0 (a • y) c z = fnOf _ (shiftOf (lamT u 0)) 1 (MvPolynomial.map D.what₂.embLL (MvPolynomial.C a * Py c)) ((Tf.val 0 (Nat.zero_le _)).eY z)`. Introduce `a c z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smulₛₗ, Pi.smul_apply, Pi.smul_apply, hPy, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul, map_smul, Pi.smul_apply]`. Establish `hxay : ∀ (a : D.what₂.LL) c z, (D.fm u).emb 0 (x + a • y) c z = fnOf _ (shiftOf (lamT u 0)) 1 (MvPolynomial.map D.what₂.embLL (Px c + MvPolynomial.C a * Py c)) ((Tf.val 0 (Nat.zero_le _)).eY z)`. Introduce `a c z`. Rewrite using `[map_add, Pi.add_apply, Pi.add_apply, hPx, hay, map_add, map_add, Pi.add_apply]`. Establish `key : ∀ a : D.what₂.LL, (majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v (x + a • y) (x + a • y)).re = (majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x x).re + (majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v (a • y) (a • y)).re`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Establish `e1` using `Tf.norm 0 (Nat.zero_le _) s (x + a • y) _ (hxay a) o ho`. Establish `e2` using `Tf.norm 0 (Nat.zero_le _) s x Px hPx o ho`. Establish `e3` using `Tf.norm 0 (Nat.zero_le _) s (a • y) _ (hay a) o ho`. Rewrite `e1`, `e2`, `e3` using `[hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, e3, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Break down `hxy c with h | h` into its components or cases. Rewrite using `[hPx0 c h]`. Simplify using `only [zero_add, map_zero, norm_form_zero, Complex.zero_re, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPy0 c h]`. Simplify using `only [mul_zero, add_zero, map_zero, norm_form_zero, Complex.zero_re]`. Establish `a1 : ∀ x x' y : ((D.fm u).lat 0).V, majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v (x + x') y = majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x y + majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x' y` using `(isSesq_maj ((D.fm u).lat 0).b ((D.fm u).lat 0).X v).1`. Establish `a2 : ∀ x y y' : ((D.fm u).lat 0).V, majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x (y + y') = majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x y + majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x y'` using `(isSesq_maj ((D.fm u).lat 0).b ((D.fm u).lat 0).X v).2.1`. Establish `s2 : ∀ (a : D.what₂.LL) (x y : ((D.fm u).lat 0).V), majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x (a • y) = s a * majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x y` using `(isSesq_maj ((D.fm u).lat 0).b ((D.fm u).lat 0).X v).2.2.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre : ∀ a : D.what₂.LL, (s a * majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x y).re = 0`. Introduce `a`. Establish `k` using `key a`. Rewrite `k` using `[a1, a2, a2, majAt_swap_eq_conj ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x (a • y)]`. Rewrite `k` using `[s2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.add_re, Complex.conj_re] at k`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨a0, ha0⟩` from `exists_im_ne_zero v`. Establish `h1` using `hre 1`. Establish `h2` using `hre a0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_one, one_mul]`. Rewrite `h2` using `[Complex.mul_re, h1, mul_zero, zero_sub, neg_eq_zero]`. Apply `Complex.ext` to reduce the goal to its premises. Conclude with `h1`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases.
-
-Conclude with `absurd h ha0`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem metric_disjoint_support_orthogonal (Tf : FormsTied D u) : MetricOrthogonalClasses D u := by
   intro v x y hxy

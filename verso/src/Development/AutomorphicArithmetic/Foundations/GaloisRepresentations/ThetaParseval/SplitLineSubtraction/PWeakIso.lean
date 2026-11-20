@@ -10,11 +10,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Introduce `hA E Ω _ _ _ _ _ _ l _ ι a U hU r r' hr hr'`. Take `⟨hc, hs, he⟩` from `hr`. Take `⟨hc', hs', he'⟩` from `hr'`. Establish `hev` using `he.and (he'.and (hA E a U hU))`. Use `GlobalTheory.SplitAttUniq.repIso_of_dense r r' hc hc' hs hs' _ (GlobalTheory.SplitAttUniq.dense_splitFrobInv_away E Ω l (Fact.out) _ (Filter.eventually_cofinite.1 hev)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `g ⟨w, hw, hsp, hl, A, hP, hF⟩`. Take `⟨h1, h2, h3⟩` from `not_not.1 hw`. Take `⟨B, hB⟩` from `h3 hsp`. Establish `e1` using `((h1 hsp B hB) A hP).2 g⁻¹ hF`. Establish `e2` using `((h2 hsp B hB) A hP).2 g⁻¹ hF`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1`, `e2` using `[inv_inv]`. Conclude with `Polynomial.map_injective ι.toRingHom ι.injective (e1.trans e2.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Sub.weakIso_holds :
     SatAE → WeakIso := by

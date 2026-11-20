@@ -17,15 +17,15 @@ open Formalism.L2.SG.RealObj Formalism.L2.SG.RealObj.EnergyCut Formalism.L2.SG.P
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hm : Measurable (fun x : ι → E => ∏ i, F i (x i))` using `Finset.measurable_prod _ fun i _ => (hF i).comp (measurable_pi_apply i)`. Establish `key : ∀ s : Finset ι, ∀ x : ι → E, (∫⋯∫⁻_s, (fun x : ι → E => ∏ i, F i (x i)) ∂μ) x = (∏ i ∈ s, ∫⁻ y, F i y ∂(μ i)) * ∏ i ∈ sᶜ, F i (x i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `insert i s hi ih`. Introduce `x`. Rewrite using `[lmarginal_insert _ hm hi]`. Repeatedly rewrite using `[ih]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hsplit : ∀ y, ∏ j ∈ sᶜ, F j (Function.update x i y j) = F i y * ∏ j ∈ (insert i s)ᶜ, F j (x j)`. Introduce `y`. Establish `hic : i ∈ sᶜ` using `Finset.mem_compl.2 hi`. Rewrite using `[← Finset.mul_prod_erase _ _ hic, Function.update_self, Finset.compl_insert]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hj)]`. Repeatedly rewrite using `[hsplit]`. Establish `h2 : ∀ y, (∏ i ∈ s, ∫⁻ y, F i y ∂(μ i)) * (F i y * ∏ j ∈ (insert i s)ᶜ, F j (x j)) = ((∏ i ∈ s, ∫⁻ y, F i y ∂(μ i)) * ∏ j ∈ (insert i s)ᶜ, F j (x j)) * F i y` using `fun y => by ring`. Repeatedly rewrite using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[lintegral_const_mul _ (hF i), Finset.prod_insert hi]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[lintegral_eq_lmarginal_univ (fun _ => Classical.arbitrary E), key, Finset.compl_univ, Finset.prod_empty, mul_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_pi_prod {ι : Type*} [Fintype ι] [DecidableEq ι] {E : Type*} [MeasurableSpace E] [Nonempty E]
     (μ : ι → Measure E) [∀ i, SigmaFinite (μ i)] (F : ι → E → ℝ≥0∞) (hF : ∀ i, Measurable (F i)) :
@@ -60,17 +60,15 @@ theorem lintegral_pi_prod {ι : Type*} [Fintype ι] [DecidableEq ι] {E : Type*}
 variable {D : D7} {X : HidaSetting D} {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Take `⟨hpos, hLc⟩` from `hL`. Establish `hG : MeasurableSet (Good X u u')`. Rewrite using `[good_eq_pi]`. Conclude with `MeasurableSet.univ_pi fun _ => goodV_meas u u'`. Establish `hpt : ∀ c ∈ Good X u u', ENNReal.ofReal (Formalism.L2.SG.RealObj.wt X u u' c * hilbertSchmidtSqGram X u u' 1 c) = ∏ v, ENNReal.ofReal (wtV u u' (c v) * L v (c v))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Establish `hcv : ∀ v, c v ∈ GoodV u u'` using `fun v => hc v`. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg (fun v _ => mul_nonneg (wtV_nonneg u u' (hcv v)) ((hpos v).2 _))]`. Use `congr 1`. Establish `hO : hilbertSchmidtSqGram X u u' 1 c = ∏ v, L v (c v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `hilbertSchmidtSqGram`. Rewrite using `[hilbert_schmidt_tensor_product_factor]`. Conclude with `Finset.prod_congr rfl fun v _ => hLc c hc v`. Rewrite using `[hO, Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `intCe`. Rewrite using `[setLIntegral_congr_fun hG hpt, good_eq_pi]`. Establish `h2s : SigmaFinite ((2 : ℝ≥0∞) • (volume : Measure ℂ))`. Establish `h : ((2 : ℝ≥0∞) • (volume : Measure ℂ)) = ((2 : NNReal) • (volume : Measure ℂ))`. Rewrite using `[ENNReal.smul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h]`. Use `infer_instance`. Unfold `dcInf`. Rewrite using `[Measure.restrict_pi_pi]`.
-
-Establish `hdc : SigmaFinite ((dcV (D` using `D)).restrict (GoodV u u')) := by unfold dcV; infer_instance`. Rewrite using `[show (Measure.pi fun _ : Fin (D.R.rS + 1) => (2 : ℝ≥0∞) • (volume : Measure ℂ)) = dcV (D := D) from rfl]`. Conclude with `lintegral_pi_prod _ (fun v cv => ENNReal.ofReal (wtV u u' cv * L v cv)) (fun v => ENNReal.measurable_ofReal.comp ((wtV_cont u u').measurable.mul (hpos v).1))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intCe_eq_prodE (L : InfinitePlace X.B.I.F → (Fin (D.R.rS + 1) → ℂ) → ℝ) (hL : LocRep X u u' L) :
     intCe X u u' 1 = ∏ v, ∫⁻ cv in GoodV u u', ENNReal.ofReal (wtV u u' cv * L v cv) ∂(dcV (D := D)) := by
@@ -109,11 +107,11 @@ def PlaceEnergyE (P : Parts X u u') (L : InfinitePlace X.B.I.F → (Fin (D.R.rS 
     ENNReal.ofReal (K v) * Formalism.FourierDecayAlt.B.normSq (P.T (P.τ.symm v)).base (P.f (P.τ.symm v))
 
 /- English proof (translation)
-Use `set n : InfinitePlace X.B.I.F → ℝ := fun v => (Formalism.FourierDecayAlt.B.normSq (P.T (P.τ.symm v)).base (P.f (P.τ.symm v))).toReal with hn`. Establish `hC : IntC X u u' 1 = (∏ v, K v) * ∏ v, n v`. Unfold `IntC`. Rewrite using `[intCe_eq_prodE L h1]`. Rewrite using `[Finset.prod_congr rfl (fun v _ => h2 v)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.toReal_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (h3.1 v)]`. Unfold `Parts.EnergyNorm IntNX`. Rewrite using `[hC]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hre : (∏ j, (Formalism.FourierDecayAlt.B.normSq (P.T j).base (P.f j)).toReal / P.Gam0) = (∏ v, n v) * (P.Gam0 ^ P.S.f)⁻¹`. Rewrite using `[← Equiv.prod_comp P.τ.symm, Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, ← Fintype.card_congr P.τ, Fintype.card_fin, div_eq_mul_inv]`. Rewrite using `[hre, ← h3.2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem energyNorm_of_stepsE (P : Parts X u u') (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ)
     (L : InfinitePlace X.B.I.F → (Fin (D.R.rS + 1) → ℂ) → ℝ) (K : InfinitePlace X.B.I.F → ℝ)
@@ -138,7 +136,7 @@ theorem energyNorm_of_stepsE (P : Parts X u u') (ψ : AddChar (Formalism.MainNot
   ring
 
 /- English proof (translation)
-Introduce `v`. Rewrite using `[setLIntegral_congr_fun (goodV_meas u u') (fun cv hcv => by rw [hPN v cv hcv])]`. Rewrite using `[hCV hk hT v (fun q => ‖Formalism.FourierDecayAlt.B.hsVec (Formalism.FourierDecayAlt.B.JF (P.T (P.τ.symm v)).base (P.f (P.τ.symm v)) (Formalism.FourierDecayAlt.B.gq (P.T (P.τ.symm v)).base q))‖ ^ 2) (fun q => by positivity)]`. Rewrite using `[← Formalism.L2.SG.Pf.Carrier.EnergyKM.kMatch_holds P hg hrd hr hk hg0 hk1]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem placeEnergyE_of_steps (P : Parts X u u') (hr : P.S.G.r = D.R.rS) (hk : P.S.G.k = D.R.k)
     (hT : ∀ v, Formalism.QuantumDeterminants.Tz P.S.G.k P.S.G.r (P.T (P.τ.symm v)).base.z = Tw (D := D) u ∧
@@ -156,7 +154,7 @@ theorem placeEnergyE_of_steps (P : Parts X u u') (hr : P.S.G.r = D.R.rS) (hk : P
   rfl
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `Formalism.L2.SG.Pf.Carrier.EnergyPfLoc.locRep_holds X u u'`. Rewrite using `[intN_massDataY]`. Conclude with `energyNorm_of_stepsE P ψ L (fun _ => EnergyConst.Kexp P) hL (placeEnergyE_of_steps P hr hk hT hg hrd hg0 hk1 L (placeNorm_of_G P hr hPN L hL) hCV) (EnergyConst.constPin_of P ψ hC hMS hf)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem energyNorm_bookY_of_placeNormG_of_changeVar (hb : AdBridgeIso X.B.I) (Y : Full X)
     (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E) (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) (sd C Th : ℝ)
@@ -179,7 +177,7 @@ theorem energyNorm_bookY_of_placeNormG_of_changeVar (hb : AdBridgeIso X.B.I) (Y 
     (EnergyConst.constPin_of P ψ hC hMS hf)
 
 /- English proof (translation)
-The claim follows from `energyNorm_bookY_of_placeNormG_of_changeVar hb Y X0 ψ sd C Th vR Q i0 i0' νq P hr hk hT hg hrd hg0 hk1 hf hC hMS hPN (Formalism.L2.SG.Pf.Carrier.EnergyCV.changeVar_of_pos P hr hg0)`.
+A detailed English derivation is pending.
 -/
 theorem energy_norm_bound_second_form (hb : AdBridgeIso X.B.I) (Y : Full X)
     (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E) (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) (sd C Th : ℝ)
@@ -199,7 +197,7 @@ theorem energy_norm_bound_second_form (hb : AdBridgeIso X.B.I) (Y : Full X)
     (Formalism.L2.SG.Pf.Carrier.EnergyCV.changeVar_of_pos P hr hg0)
 
 /- English proof (translation)
-The claim follows from `energy_norm_bound_second_form hb Y X0 ψ sd C Th vR Q i0 i0' νq P hr hk hT hg hrd hg0 hk1 hf hC (hMS hψ hstd hC) hPN`.
+A detailed English derivation is pending.
 -/
 theorem energy_norm_bound_third_form (hb : AdBridgeIso X.B.I) (Y : Full X)
     (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E) (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) (sd C Th : ℝ)

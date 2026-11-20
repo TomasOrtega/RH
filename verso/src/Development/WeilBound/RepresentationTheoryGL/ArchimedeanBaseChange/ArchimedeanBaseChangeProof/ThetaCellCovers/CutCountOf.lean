@@ -12,15 +12,15 @@ namespace PositivityTheory.Rg.BcB.E1
 attribute [local instance] borelH
 
 /- English proof (translation)
-Introduce `E _ _ _ a b`. Take `⟨a1, a2, a3⟩` from `ht E a`. Take `⟨b1, b2, b3⟩` from `ht E b`. Establish `inv : ∀ x : H E a b, th (th x) = x` using `fun x => Prod.ext (a2 _) (b2 _)`. Use `⟨fun Ω x => ?_, (a1.comp continuous_fst).prodMk (b1.comp continuous_snd), fun φ x y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : ratH E a b → ratH E a b` to `fun γ => ⟨th γ.1, by`. Take `⟨_, γ, rfl⟩` from `γ`. Conclude with `⟨(thetaE E a γ.1, thetaE E b γ.2), Prod.ext (a3 _).symm (b3 _).symm⟩⟩`. Establish `hf : Function.Involutive f` using `fun γ => Subtype.ext (inv _)`. Unfold `cnt`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hf.toPerm.tsum_eq]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Establish `e : (th x)⁻¹ * ((hf.toPerm f γ : ratH E a b) : H E a b) * th x = th (x⁻¹ * γ.1 * x)` using `Prod.ext (by simp [th, f]) (by simp [th, f])`. Rewrite using `[e]`. Distinguish the cases in `hz : th (x⁻¹ * γ.1 * x) ∈ Ω`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hz, Set.indicator_of_mem (show _ ∈ th '' Ω from ⟨_, hz, inv _⟩)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hz, Set.indicator_of_notMem]`. Introduce and unpack `⟨z, h1, h2⟩`. Conclude with `hz (by rw [← h2, inv]; exact h1)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_eq_of_bijective ((ratGL E a).prodMap (ratGL E b)).rangeRestrict ⟨fun p q e => ?_, MonoidHom.rangeRestrict_surjective _⟩ fun _ => rfl` and prove the remaining obligations. Establish `e'` using `congrArg Subtype.val e`. Conclude with `Prod.ext ((h E a).1 (congrArg Prod.fst e')) ((h E b).1 (congrArg Prod.snd e'))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cntPair_of (h : RatProper) (ht : ThetaBasic) : CntPair := by
   intro E _ _ _ a b
@@ -50,9 +50,9 @@ theorem cntPair_of (h : RatProper) (ht : ThetaBasic) : CntPair := by
     exact Prod.ext ((h E a).1 (congrArg Prod.fst e')) ((h E b).1 (congrArg Prod.snd e'))
 
 /- English proof (translation)
-Introduce `E _ _ _ a b D φ hφ M hM`. Take `⟨B, hB⟩` from `hφ.1.bounded_above_of_compact_support hφ.2`. Establish `c₀ : ∀ x, ‖kerH φ x x‖ₑ ≤ ENNReal.ofReal B * cnt (ratH E a b) (tsupport φ) x` using `(h1 (ctx h D)).2.2.2 φ B hφ hB`. Establish `c` using `h2 E a b D _ hφ.2 M hM`. Use `lt_of_le_of_lt (lintegral_mono fun x => mul_le_mul_right (c₀ x) _) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_left_comm _ (ENNReal.ofReal B)]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top c.lt_top`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtDiag_of (h : RatProper) (h1 : CntBasic) (h2 : WtCount) : WtDiag := by
   intro E _ _ _ a b D φ hφ M hM
@@ -65,7 +65,7 @@ theorem wtDiag_of (h : RatProper) (h1 : CntBasic) (h2 : WtCount) : WtDiag := by
   exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top c.lt_top
 
 /- English proof (translation)
-Rewrite using `[_root_.zpow_neg, zpow_natCast, ← div_eq_mul_inv, le_div_iff₀ (by positivity), inv_mul_le_iff₀ (by positivity), ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) (by nlinarith) M`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_aux {r x C : ℝ} (M : ℕ) (hr : 0 ≤ r) (hx : 0 ≤ x) (hC : 0 ≤ C) (h : x ≤ C * (1 + r)) :
     ((1 + r) ^ M)⁻¹ ≤ (1 + C) ^ M * (1 + x) ^ (-(M : ℤ)) := by
@@ -73,17 +73,17 @@ theorem zpow_aux {r x C : ℝ} (M : ℕ) (hr : 0 ≤ r) (hx : 0 ≤ x) (hC : 0 �
   exact pow_le_pow_left₀ (by positivity) (by nlinarith) M
 
 /- English proof (translation)
-Introduce `E _ _ _ a b D Ω hΩ M hM`. Take `⟨Ω₁, k₁, c₁⟩` from `h2 E a`. Take `⟨Ω₂, k₂, c₂⟩` from `h2 E b`. Take `⟨C₁, p₁, r₁⟩` from `h4 E a Ω₁ k₁`. Take `⟨C₂, p₂, r₂⟩` from `h4 E b Ω₂ k₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key` using `h1 (ctx h D) ((Fin a → ℤ) × (Fin b → ℤ)) (fun m => (An.tor E fun i => (m.1 i : ℝ), An.tor E fun i => (m.2 i : ℝ))) (Ω₁ ×ˢ Ω₂) Ω (fun x : H E a b => ENNReal.ofReal (wt x ^ (-(2 * M : ℤ)))) (fun m => (ENNReal.ofReal ((1 + C₁) ^ M) * ENNReal.ofReal ((1 + ‖fun i => (m.1 i : ℝ)‖) ^ (- …`. Take `⟨γ₁, m₁, o₁, q₁, e₁⟩` from `c₁ x.1`. Take `⟨γ₂, m₂, o₂, q₂, e₂⟩` from `c₂ x.2`. Conclude with `⟨_, ⟨(γ₁, γ₂), rfl⟩, (m₁, m₂), (o₁, o₂), ⟨q₁, q₂⟩, Prod.ext e₁ e₂⟩)`. Use the proof step `(by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨γ, rfl⟩ (x : H E a b)`. Establish `e : wt (((ratGL E a).prodMap (ratGL E b)) γ * (x : H E a b)) = wt (x : H E a b)`. Rewrite using `[wt_eq, wt_eq, ← (h3 E a).1 γ.1 x.1, ← (h3 E b).1 γ.2 x.2]`. Both sides reduce to the same expression. Conclude with `congrArg (fun t : ℝ => ENNReal.ofReal (t ^ (-(2 * M : ℤ)))) e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use the proof step `(by`. Introduce and unpack `m ⟨o₁, o₂⟩ ⟨q₁, q₂⟩`. Establish `s₁` using `((h3 E a).2.1 (An.tor E (fun i => (m.1 i : ℝ)) * o₁)).1`. Establish `s₂` using `((h3 E b).2.1 (An.tor E (fun i => (m.2 i : ℝ)) * o₂)).1`. Establish `t₁` using `zpow_aux M s₁ (norm_nonneg _) p₁ (r₁ _ o₁ q₁).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `t₂` using `zpow_aux M s₂ (norm_nonneg _) p₂ (r₂ _ o₂ q₂).1`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal (le_trans ?_ (mul_le_mul t₁ t₂ (by positivity) (by positivity)))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 + red (An.tor E (fun i => (m.1 i : ℝ)) * o₁ : GA E a) + red (An.tor E (fun i => (m.2 i : ℝ)) * o₂ : GA E b)) ^ (-(2 * M : ℤ)) ≤ _`. Rewrite using `[← mul_inv, ← mul_pow, _root_.zpow_neg, show (2 * M : ℤ) = ((2 * M : ℕ) : ℤ) by push_cast; ring, zpow_natCast, pow_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity) (by nlinarith) M))`. Use `ne_top_of_le_ne_top (ENNReal.mul_ne_top (@IsCompact.measure_lt_top _ _ _ _ (ctx h D).haar.toIsFiniteMeasureOnCompacts _ (IsCompact.mul (k₁.prod k₂) hΩ)).ne ?_) key` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_prod']`. Simplify using `only [ENNReal.tsum_mul_left, ENNReal.tsum_mul_right]`. Conclude with `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (h5 a M (by omega))) (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (h5 b M (by omega)))`.
+A detailed English derivation is pending.
 -/
 theorem wtCount_of (h : RatProper) (h1 : CellSum) (h2 : CellCover) (h3 : RedBasic) (h4 : RedCell) (h5 : LatSum) :
     WtCount := by
@@ -126,13 +126,11 @@ theorem wtCount_of (h : RatProper) (h1 : CellSum) (h2 : CellCover) (h3 : RedBasi
     (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (h5 b M (by omega)))
 
 /- English proof (translation)
-Introduce `E _ _ _ a b D Ω hΩ`. Take `⟨C₁, p₁, r₁⟩` from `h2 E a`. Take `⟨C₂, p₂, r₂⟩` from `h2 E b`. Establish `hI` using `h3 E a b D Ω hΩ (2 * (a + b)) le_rfl`. Use `set M := 2 * (a + b)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set I := ∫⁻ x, ENNReal.ofReal (wt x ^ (-(2 * M : ℤ))) * cnt (ratH E a b) Ω x ∂D.ν with hI'`. Use `⟨(1 + C₁ + C₂) ^ (2 * M) * I.toReal, 2 * M, by positivity, fun τ hτ => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_right_comm, ← mul_pow, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_toReal hI, hI', ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono fun x => Set.indicator_apply_le' (fun hx => ?_) fun _ => zero_le` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_mul_of_one_le_left' (ENNReal.one_le_ofReal.2 ?_)` and prove the remaining obligations. Establish `s₁` using `((h1 E a).2.1 x.1).1`. Establish `s₂` using `((h1 E b).2.1 x.2).1`. Establish `t₁` using `r₁ τ hτ _ hx.1`. Establish `t₂` using `r₂ τ hτ _ hx.2`.
-
-Rewrite using `[wt_eq, _root_.zpow_neg, show (2 * M : ℤ) = ((2 * M : ℕ) : ℤ) by push_cast; ring, zpow_natCast, ← div_eq_mul_inv, one_le_div₀ (by positivity)]`. Conclude with `pow_le_pow_left₀ (by positivity) (by nlinarith) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutCount_of (h1 : RedBasic) (h2 : CutRed) (h3 : WtCount) : CutCount := by
   intro E _ _ _ a b D Ω hΩ

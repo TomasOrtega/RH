@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 open NumberField IsDedekindDomain Polynomial UpperTheory.V UpperTheory.V.Z.Gam UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 
 /- English proof (translation)
-Introduce `K _ _ _ π π' h t v hw`. Establish `e : π = π'` using `GlobalTheory.CuspRep.CuspSub.ext (UpperTheory.V.Af.strongMultOneC K 1 π π' h)`. Conclude with `e ▸ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.suppSmo1 :
     UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.SuppSmo1 := by

@@ -14,22 +14,22 @@ section Grp
 variable {A : Type} [AddCommGroup A]
 
 /- English proof (translation)
-Establish `e` using `map_zsmul (AddMonoidHom.mk' g h) n 1`. Simplify using `using e`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem add_rule (g : ℤ → A) (h : ∀ n m, g (n + m) = g n + g m) (n : ℤ) : g n = n • g 1 := by
   have e := map_zsmul (AddMonoidHom.mk' g h) n 1
   simpa using e
 
 /- English proof (translation)
-Establish `ev : ∀ m, g (-m) = g m`. Introduce `m`. Establish `e` using `h 0 m`. Rewrite `e` using `[zero_add, zero_sub, h0]`. Establish `e' : g (-m) = 0 + 0 + g m + g m - g m` using `eq_sub_of_add_eq' e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e']`. Normalize the expressions using the abelian group laws. Establish `nat : ∀ k : ℕ, g k = ((k : ℤ) ^ 2) • g 1 ∧ g ((k : ℤ) + 1) = (((k : ℤ) + 1) ^ 2) • g 1`. Introduce `k`. Proceed by induction on `k with`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp [h0]`. Consider the case `succ k ih`. Use `⟨by push_cast; exact ih.2, ?_⟩` and prove the remaining obligations. Establish `e` using `h ((k : ℤ) + 1) 1`. Rewrite `e` using `[add_sub_cancel_right, ih.1, ih.2]`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e'` using `eq_sub_of_add_eq e`. Use `push_cast`. Rewrite using `[e']`. Use `module`. Take `⟨k, rfl | rfl⟩` from `n.eq_nat_or_neg`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(nat k).1`. Rewrite using `[ev, (nat k).1, neg_sq]`.
+A detailed English derivation is pending.
 -/
 theorem quad_rule (g : ℤ → A) (h0 : g 0 = 0)
     (h : ∀ n m, g (n + m) + g (n - m) = g n + g n + g m + g m) (n : ℤ) :
@@ -77,7 +77,7 @@ def lam (K ι : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] :
 def cl (f : MvPowerSeries ι K) : MvPowerSeries ι K ⧸ lam K ι := QuotientAddGroup.mk' (lam K ι) f
 
 /- English proof (translation)
-Unfold `cl`. Rewrite using `[QuotientAddGroup.mk'_apply, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_iff_sub_mem]`. Conclude with `⟨cube_simeq_congr (by ring), cube_simeq_congr (by ring)⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem simeq_iff_cl (f g : MvPowerSeries ι K) : Simeq f g ↔ cl f = cl g := by
   unfold cl
@@ -85,22 +85,22 @@ theorem simeq_iff_cl (f g : MvPowerSeries ι K) : Simeq f g ↔ cl f = cl g := b
   exact ⟨cube_simeq_congr (by ring), cube_simeq_congr (by ring)⟩
 
 /- English proof (translation)
-The claim follows from `map_add _ f g`.
+A detailed English derivation is pending.
 -/
 theorem cl_add (f g : MvPowerSeries ι K) : cl (f + g) = cl f + cl g := map_add _ f g
 
 /- English proof (translation)
-The claim follows from `map_sub _ f g`.
+A detailed English derivation is pending.
 -/
 theorem cl_sub (f g : MvPowerSeries ι K) : cl (f - g) = cl f - cl g := map_sub _ f g
 
 /- English proof (translation)
-The claim follows from `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem cl_zero : cl (0 : MvPowerSeries ι K) = 0 := map_zero _
 
 /- English proof (translation)
-Rewrite using `[← zsmul_eq_mul]`. Conclude with `map_zsmul _ n f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cl_int (n : ℤ) (f : MvPowerSeries ι K) : cl ((n : MvPowerSeries ι K) * f) = n • cl f := by
   rw [← zsmul_eq_mul]
@@ -117,13 +117,13 @@ def IsMul (l : PowerSeries K) (n : ℤ) (N : PowerSeries K) : Prop :=
     PowerSeries.subst N l = PowerSeries.C (n : K) * l
 
 /- English proof (translation)
-The claim follows from `PowerSeries.X_subst f`.
+A detailed English derivation is pending.
 -/
 theorem subst_X_self (f : PowerSeries K) : PowerSeries.subst (PowerSeries.X : PowerSeries K) f = f :=
   PowerSeries.X_subst f
 
 /- English proof (translation)
-Use `⟨map_zero _, law_integral_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[law_subst_zero l hl]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isMul_zero {l : PowerSeries K} (hl : PowerSeries.constantCoeff l = 0) : IsMul l 0 0 := by
   refine ⟨map_zero _, law_integral_zero, ?_⟩
@@ -131,7 +131,7 @@ theorem isMul_zero {l : PowerSeries K} (hl : PowerSeries.constantCoeff l = 0) : 
   simp
 
 /- English proof (translation)
-Use `⟨PowerSeries.constantCoeff_X, law_integral_X (), ?_⟩` and prove the remaining obligations. Rewrite using `[subst_X_self]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isMul_one (l : PowerSeries K) : IsMul l 1 PowerSeries.X := by
   refine ⟨PowerSeries.constantCoeff_X, law_integral_X (), ?_⟩
@@ -139,7 +139,7 @@ theorem isMul_one (l : PowerSeries K) : IsMul l 1 PowerSeries.X := by
   simp
 
 /- English proof (translation)
-Use `⟨hi.1, hi.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hi.2.2]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isMul_neg_one {l i : PowerSeries K} (hi : IsInv l i) : IsMul l (-1) i := by
   refine ⟨hi.1, hi.2.1, ?_⟩
@@ -147,7 +147,7 @@ theorem isMul_neg_one {l i : PowerSeries K} (hi : IsInv l i) : IsMul l (-1) i :=
   simp
 
 /- English proof (translation)
-Use `⟨constantCoeff_subst_two_variables F h.1 N M hN.1 hM.1, integral_subst_two_variables h.2.1 N M hN.1 hM.1 hN.2.1 hM.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[cube_log_add h N M hN.1 hM.1, hN.2.2, hM.2.2]`. Use `push_cast`. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isMul_add {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l) {n m : ℤ}
     {N M : PowerSeries K} (hN : IsMul l n N) (hM : IsMul l m M) :
@@ -159,9 +159,9 @@ theorem isMul_add {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog 
   ring
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `invExists K F l h`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => exact ⟨0, isMul_zero h.2.2.1⟩`. Consider the case `succ k ih`. Take `⟨N, hN⟩` from `ih`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, isMul_add h hN (isMul_one l)⟩`. Consider the case `pred k ih`. Take `⟨N, hN⟩` from `ih`. Conclude with `⟨_, isMul_add h hN (isMul_neg_one hi)⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isMul_exists {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l) (n : ℤ) :
     ∃ N, IsMul l n N := by
@@ -179,13 +179,13 @@ def mulN {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l) (n :
     PowerSeries K := (isMul_exists h n).choose
 
 /- English proof (translation)
-The claim follows from `(isMul_exists h n).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mulN_spec {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l) (n : ℤ) :
     IsMul l n (mulN h n) := (isMul_exists h n).choose_spec
 
 /- English proof (translation)
-The claim follows from `log_inj l h.2.2.1 h.2.2.2.1 N (mulN h n) hN0 (mulN_spec h n).1 (hN.trans (mulN_spec h n).2.2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem mulN_eq {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l) (n : ℤ)
     (N : PowerSeries K) (hN0 : PowerSeries.constantCoeff N = 0)
@@ -194,21 +194,21 @@ theorem mulN_eq {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F 
     (hN.trans (mulN_spec h n).2.2.symm)
 
 /- English proof (translation)
-The claim follows from `(mulN_eq h 0 0 (isMul_zero h.2.2.1).1 (isMul_zero h.2.2.1).2.2).symm`.
+A detailed English derivation is pending.
 -/
 theorem mulN_zero {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l) :
     mulN h 0 = 0 :=
   (mulN_eq h 0 0 (isMul_zero h.2.2.1).1 (isMul_zero h.2.2.1).2.2).symm
 
 /- English proof (translation)
-The claim follows from `(mulN_eq h 1 _ (isMul_one l).1 (isMul_one l).2.2).symm`.
+A detailed English derivation is pending.
 -/
 theorem mulN_one {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l) :
     mulN h 1 = PowerSeries.X :=
   (mulN_eq h 1 _ (isMul_one l).1 (isMul_one l).2.2).symm
 
 /- English proof (translation)
-The claim follows from `have e := isMul_add h (mulN_spec h n) (mulN_spec h m) mulN_eq h (n + m) _ e.1 e.2.2`.
+A detailed English derivation is pending.
 -/
 theorem mulN_add {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l) (n m : ℤ) :
     MvPowerSeries.subst ![mulN h n, mulN h m] F = mulN h (n + m) :=
@@ -216,7 +216,7 @@ theorem mulN_add {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F
   mulN_eq h (n + m) _ e.1 e.2.2
 
 /- English proof (translation)
-Use `cube_sub_eq h hi _ _ _ (mulN_spec h n).1 (mulN_spec h m).1 (mulN_spec h (n - m)).1 ?_` and prove the remaining obligations. Rewrite using `[(mulN_spec h n).2.2, (mulN_spec h m).2.2, (mulN_spec h (n - m)).2.2]`. Use `push_cast`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mulN_sub {F : MvPowerSeries (Fin 2) K} {l i : PowerSeries K} (h : LawLog F l)
     (hi : IsInv l i) (n m : ℤ) :
@@ -230,18 +230,18 @@ theorem mulN_sub {F : MvPowerSeries (Fin 2) K} {l i : PowerSeries K} (h : LawLog
 end Law
 
 /- English proof (translation)
-Introduce `K _ _ _ F l h n`. Conclude with `isMul_exists h n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem formal_multiplication_exists : MulExists := by
   intro K _ _ _ F l h n
   exact isMul_exists h n
 
 /- English proof (translation)
-Introduce `K _ _ _ F l i f h hi hq n N hN0 hN`. Establish `hf0` using `constantCoeff_eq_zero_of_parallelogram h hi hq`. Rewrite using `[mulN_eq h n N hN0 hN, simeq_iff_cl, cl_int]`. Establish `key` using `quad_rule (fun k : ℤ => cl (PowerSeries.subst (mulN h k) f : PowerSeries K)) (by show cl (PowerSeries.subst (mulN h 0) f : PowerSeries K) = 0`. Rewrite using `[mulN_zero, law_subst_zero f hf0, cl_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Introduce `a b`. Establish `q` using `cube_simeq_subst2 hq _ _ (mulN_spec h a).1 (mulN_spec h b).1 (mulN_spec h a).2.1 (mulN_spec h b).2.1`. Rewrite `q` using `[cube_par_subst F h.1 i f hi.1 _ _ (mulN_spec h a).1 (mulN_spec h b).1, mulN_add, mulN_sub h hi, simeq_iff_cl, cl_zero, two_mul, two_mul, cl_sub, cl_sub, cl_add, cl_add, cl_add]`. Use `show cl (PowerSeries.subst (mulN h (a + b)) f : PowerSeries K) + cl (PowerSeries.subst (mulN h (a - b)) f : PowerSeries K) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `q` using `[sub_sub, sub_eq_zero]`. Rewrite using `[q]`. Use the proof step `abel) n`. Establish `key' : cl (PowerSeries.subst (mulN h n) f : PowerSeries K) = (n ^ 2) • cl (PowerSeries.subst (mulN h 1) f : PowerSeries K)` using `key`. Rewrite using `[key', mulN_one, subst_X_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multiplication_square_holds : MulSq := by
   intro K _ _ _ F l i f h hi hq n N hN0 hN
@@ -268,9 +268,9 @@ theorem multiplication_square_holds : MulSq := by
   rw [key', mulN_one, subst_X_self]
 
 /- English proof (translation)
-Introduce `K _ _ _ F l f h hq n N hN0 hN`. Rewrite using `[mulN_eq h n N hN0 hN, simeq_iff_cl, cl_int]`. Establish `key` using `add_rule (fun k : ℤ => cl (PowerSeries.subst (mulN h k) f : PowerSeries K)) (by`. Introduce `a b`. Establish `q` using `cube_simeq_subst2 hq _ _ (mulN_spec h a).1 (mulN_spec h b).1 (mulN_spec h a).2.1 (mulN_spec h b).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `q` using `[cube_cob_subst F h.1 f _ _ (mulN_spec h a).1 (mulN_spec h b).1, mulN_add, simeq_iff_cl, cl_zero, cl_sub, cl_sub, sub_sub, sub_eq_zero]`. Conclude with `q) n`. Establish `key' : cl (PowerSeries.subst (mulN h n) f : PowerSeries K) = n • cl (PowerSeries.subst (mulN h 1) f : PowerSeries K)` using `key`. Rewrite using `[key', mulN_one, subst_X_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multiplication_additive_holds : AddMul := by
   intro K _ _ _ F l f h hq n N hN0 hN
@@ -292,9 +292,9 @@ section Two
 variable {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K] {ι : Type}
 
 /- English proof (translation)
-Establish `hb` using `hs3 hU hV hW`. Establish `c3 : MvPowerSeries.constantCoeff (in3 F) = 0` using `constantCoeff_subst_two_variables F hF _ _ (by simp) (by simp)`. Unfold `d1`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hb, map_sub, map_sub, MvPowerSeries.coe_substAlgHom hb, subst2_subst be c3 (by simp) hb, subst2_subst be (by simp) (by simp) hb, subst2_subst be (by simp) (by simp) hb]`. Unfold `in3`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[subst2_subst F (by simp) (by simp) hb, MvPowerSeries.subst_X hb, MvPowerSeries.subst_X hb, MvPowerSeries.subst_X hb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subst_first_coboundary (F be : MvPowerSeries (Fin 2) K) (hF : MvPowerSeries.constantCoeff F = 0)
     (U V W : MvPowerSeries ι K) (hU : MvPowerSeries.constantCoeff U = 0)
@@ -314,7 +314,7 @@ theorem subst_first_coboundary (F be : MvPowerSeries (Fin 2) K) (hF : MvPowerSer
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `have e := (equivalence_rules K (Fin 3)).2.2.2.2 ι q 0 ![U, V, W] (fun j => by fin_cases j <;> simpa) (fun j => by fin_cases j <;> simpa) hq`. Rewrite `e` using `[subst_zero' (hs3 hU hV hW)]`. Then use the resulting hypothesis.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem simeq_subst3 {q : MvPowerSeries (Fin 3) K} (hq : Simeq q 0) (U V W : MvPowerSeries ι K)
     (hU : MvPowerSeries.constantCoeff U = 0) (hV : MvPowerSeries.constantCoeff V = 0)
@@ -325,7 +325,7 @@ theorem simeq_subst3 {q : MvPowerSeries (Fin 3) K} (hq : Simeq q 0) (U V W : MvP
   rwa [subst_zero' (hs3 hU hV hW)] at e
 
 /- English proof (translation)
-Rewrite using `[← mulN_add h n m]`. Conclude with `(subst2_subst F (mulN_spec h n).1 (mulN_spec h m).1 (PowerSeries.HasSubst.X x).const).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formal_multiplication_add {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l) (n m : ℤ)
     (x : ι) :
@@ -337,11 +337,11 @@ theorem formal_multiplication_add {F : MvPowerSeries (Fin 2) K} {l : PowerSeries
 end Two
 
 /- English proof (translation)
-Introduce `K _ _ _ F be l h hq n N hN0 hN`. Rewrite using `[mulN_eq h n N hN0 hN, simeq_iff_cl, cl_int]`. Establish `c1 : MvPowerSeries.constantCoeff (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Establish `key` using `add_rule (fun k : ℤ => cl (MvPowerSeries.subst ![at1 0 (mulN h k), (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)] be)) (by`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ca` using `constantCoeff_series_at_variable (0 : Fin 2) _ (mulN_spec h a).1`. Establish `cb` using `constantCoeff_series_at_variable (0 : Fin 2) _ (mulN_spec h b).1`. Establish `q` using `simeq_subst3 hq _ _ _ ca cb c1 (integral_series_at_variable 0 _ (mulN_spec h a).2.1) (integral_series_at_variable 0 _ (mulN_spec h b).2.1) (law_integral_X 1)`. Rewrite `q` using `[subst_first_coboundary F be h.1 _ _ _ ca cb c1, formal_multiplication_add, simeq_iff_cl, cl_zero, cl_sub, cl_sub, sub_sub, sub_eq_zero]`. Conclude with `q) n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key' : cl (MvPowerSeries.subst ![at1 0 (mulN h n), (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)] be) = n • cl (MvPowerSeries.subst ![at1 0 (mulN h 1), (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)] be)` using `key`. Establish `e1 : at1 (0 : Fin 2) (PowerSeries.X : PowerSeries K) = MvPowerSeries.X 0` using `PowerSeries.subst_X (PowerSeries.HasSubst.X 0)`. Rewrite using `[key', mulN_one, e1, Formalism.G.LogP.subst_XX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multiplication_biadditive_holds : BiaddMul := by
   intro K _ _ _ F be l h hq n N hN0 hN

@@ -20,15 +20,11 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [FiniteDimensional ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Establish `h0 : f x = 0` using `h.eq_of_nhds`. Establish `hd : fderiv ℝ f x = 0`. Rewrite using `[h.fderiv_eq]`. Conclude with `fderiv_const_apply (0 : E)`. Use `fin_cases j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show pOp l f x = 0`. Unfold `pOp QuantumDeterminants.wirt`. Rewrite using `[hd]`. Simplify using the standard rewrite rules. Use `show cOp l f x = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[cOp, h0]`. Use `show ciOp l f x = 0`. Simplify using `[ciOp, h0]`. Use `show pbOp l f x = 0`. Unfold `pbOp QuantumDeterminants.wirtBar`.
-
-Rewrite using `[hd]`. Simplify using the standard rewrite rules. Use `show cbOp l f x = 0`. Simplify using `[cbOp, h0]`. Use `show cbiOp l f x = 0`.
-
-Simplify using `[cbiOp, h0]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem opL_eq_zero_of_eventuallyEq_zero {m : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (l : Fin m)
     (j : Fin 6) (f : (Fin m → ℂ) → E) (x : Fin m → ℂ) (h : f =ᶠ[𝓝 x] 0) : opL l j f x = 0 := by
@@ -55,13 +51,13 @@ private theorem opL_eq_zero_of_eventuallyEq_zero {m : ℕ} {E : Type*} [NormedAd
     simp [cbiOp, h0]
 
 /- English proof (translation)
-Establish `hmem : ∀ Ψ : RadSp k r z z' π π', Ψ ∈ lcSub k r z z' π π' ↔ ∀ c ∈ OmX r, LCptAt Ψ c` using `fun Ψ => Iff.rfl`. Establish `hop : ∀ j, ∀ Ψ ∈ lcSub k r z z' π π', X.op l j Ψ ∈ lcSub k r z z' π π'`. Introduce `j Ψ hΨ`. Rewrite `hΨ`, the goal using `[hmem]`. Introduce `c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U', hU', hcU, K, hK, hKG, h0⟩` from `hΨ c hc`. Use `⟨U', hU', hcU, K, hK, hKG, fun c' hc' g hg hgK => ?_⟩` and prove the remaining obligations. Rewrite using `[X.op_apply]`. Use `show opL l j (fun c'' => (Ψ : Fn k r (Wq →L[ℂ] Wp)) c'' g) c' = 0`. Apply `opL_eq_zero_of_eventuallyEq_zero` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Proceed by induction.
 
-Use `filter_upwards [hU'.mem_nhds hc'] with c'' hc''`. Conclude with `h0 c'' hc'' g hg hgK`. Proceed by induction on `js with`. Consider the case `nil`. Introduce `Φ hΦ`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hΦ` using `[wOp]`. Consider the case `cons j js ih`. Introduce `Φ hΦ`. Use `show X.op l j (wOp X l js Φ) ∈ lcSub k r z z' π π'`. Conclude with `hop j _ (ih Φ hΦ)`.
+A detailed English derivation is pending.
 -/
 theorem jsl_wOp_lc (X : ActualOps k r z z' π π') (l : Fin r) (js : List (Fin 6)) :
     ∀ Φ ∈ lcSub k r z z' π π', wOp X l js Φ ∈ lcSub k r z z' π π' := by
@@ -88,18 +84,16 @@ theorem jsl_wOp_lc (X : ActualOps k r z z' π π') (l : Fin r) (js : List (Fin 6
     exact hop j _ (ih Φ hΦ)
 
 /- English proof (translation)
-Rewrite using `[B.hsInner, inner_self_eq_norm_sq_to_K]`. Simplify using `[norm_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jsl_hsInner_self_norm (C : Wq →L[ℂ] Wp) : ‖B.hsInner C C‖ = ‖B.hsVec C‖ ^ 2 := by
   rw [B.hsInner, inner_self_eq_norm_sq_to_K]
   simp [norm_pow]
 
 /- English proof (translation)
-Establish `hlin : B.hsVec (∑ i, a i • A i) = ∑ i, a i • B.hsVec (A i)`. Express the relevant statement in the definitionally equal form `hsVecLin (∑ i, a i • A i) = ∑ i, a i • hsVecLin (A i)`. Simplify using `[map_sum, map_smul]`. Rewrite using `[jsl_hsInner_self_norm, hlin]`. Repeatedly rewrite using `[jsl_hsInner_self_norm]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_sum_le _ _`. Use `_ ≤ (K : ℝ) * ∑ i, ‖a i • B.hsVec (A i)‖ ^ 2 := by`. Simplify using `using sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun i => ‖a i • B.hsVec (A i)‖)`. Use `_ = (K : ℝ) * ∑ i, ‖a i‖ ^ 2 * ‖B.hsVec (A i)‖ ^ 2 := by`.
-
-Simplify using `[norm_smul, mul_pow]`.
+Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jsl_hs_comb_le {K : ℕ} (a : Fin K → ℂ) (A : Fin K → (Wq →L[ℂ] Wp)) :
     ‖B.hsInner (∑ i, a i • A i) (∑ i, a i • A i)‖ ≤ (K : ℝ) * ∑ i, ‖a i‖ ^ 2 * ‖B.hsInner (A i) (A i)‖ := by
@@ -117,11 +111,9 @@ theorem jsl_hs_comb_le {K : ℕ} (a : Fin K → ℂ) (A : Fin K → (Wq →L[ℂ
         simp [norm_smul, mul_pow]
 
 /- English proof (translation)
-Establish `hint : ∀ i, Integrable (fun g : Mt k r => ‖B.hsInner ((v i : Fn k r (Wq →L[ℂ] Wp)) x (Matrix.of g)) ((v i : Fn k r (Wq →L[ℂ] Wp)) x (Matrix.of g))‖) μ` using `fun i => (int_lc μ hμ (hv i) (hv i) x).norm`. Rewrite using `[norm_pairAt_selfI]`. Simplify using `only [norm_pairAt_selfI]`. Combine the equalities or inequalities in the displayed calculation. Use `integral_mono_of_nonneg (ae_of_all _ fun _ => norm_nonneg _) ((integrable_finsetSum _ fun i _ => (hint i).const_mul _).const_mul _) (ae_of_all _ fun g => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[hx]`. Conclude with `jsl_hs_comb_le _ _`. Use `_ = _ := by`. Rewrite using `[integral_const_mul, integral_finsetSum _ fun i _ => (hint i).const_mul _]`.
-
-Simplify using `only [integral_const_mul]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jsl_pairAt_comb_le (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) {K : ℕ}
     (a : Fin K → ℂ) (u : RadSp k r z z' π π') (v : Fin K → RadSp k r z z' π π')
@@ -145,7 +137,7 @@ theorem jsl_pairAt_comb_le (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Glev k r (
         simp only [integral_const_mul]
 
 /- English proof (translation)
-Repeatedly rewrite using `[Complex.norm_real, Real.norm_of_nonneg (hf _)]`. Rewrite using `[integral_complex_ofReal, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg hf)]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem integral_norm_ofReal_eq_norm_integral_of_nonneg {α : Type*} [MeasurableSpace α] (ν : Measure α) (f : α → ℝ)
     (hf : ∀ a, 0 ≤ f a) : ∫ a, ‖((f a : ℝ) : ℂ)‖ ∂ν = ‖∫ a, ((f a : ℝ) : ℂ) ∂ν‖ := by
@@ -153,11 +145,11 @@ private theorem integral_norm_ofReal_eq_norm_integral_of_nonneg {α : Type*} [Me
   rw [integral_complex_ofReal, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg hf)]
 
 /- English proof (translation)
-Establish `key : ∀ c' : Cf r i, wtI i c' * pairAt μ v v (glue i c c') = (((∏ l, ‖c' l‖ ^ (-2 : ℤ)) * ∫ g : Mt k r, ‖B.hsVec ((v : Fn k r (Wq →L[ℂ] Wp)) (glue i c c') (Matrix.of g))‖ ^ 2 ∂μ : ℝ) : ℂ)`. Introduce `c'`. Establish `hh : ∀ A : Wq →L[ℂ] Wp, B.hsInner A A = ((‖B.hsVec A‖ ^ 2 : ℝ) : ℂ)` using `fun A => by`. Rewrite using `[B.hsInner, inner_self_eq_norm_sq_to_K]`. Use `norm_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Rewrite using `[wtI, pairAt]`. Repeatedly rewrite using `[hh]`. Rewrite using `[integral_complex_ofReal, Complex.ofReal_mul]`. Repeatedly rewrite using `[key]`. Apply `integral_norm_ofReal_eq_norm_integral_of_nonneg` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c'`. Apply `mul_nonneg` to reduce the goal to its premises. Conclude with `Finset.prod_nonneg fun l _ => by positivity`. Conclude with `integral_nonneg fun g => by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem jsl_int_norm_self (μ : Measure (Mt k r)) (i : Fin (r + 1)) (v : RadSp k r z z' π π') (c : Fin r → ℂ) :
     ∫ c' : Cf r i, ‖wtI i c' * pairAt μ v v (glue i c c')‖ =
@@ -180,7 +172,7 @@ theorem jsl_int_norm_self (μ : Measure (Mt k r)) (i : Fin (r + 1)) (v : RadSp k
   · exact integral_nonneg fun g => by positivity
 
 /- English proof (translation)
-Unfold `glue`. Rewrite using `[dif_neg (by simp [Fin.val_succ])]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jsl_glue_self (l : Fin r) (c : Fin r → ℂ) (t : ℂ) (c' : Cf r l.succ) :
     glue l.succ (Function.update c l t) c' l = t := by
@@ -191,31 +183,29 @@ theorem jsl_glue_self (l : Fin r) (c : Fin r → ℂ) (t : ℂ) (c' : Cf r l.suc
 end JSL
 
 /- English proof (translation)
-Introduce `hNF hRad Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl c hc Ψ hΨ js t0 ht0`. Establish `hμ : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ` using `hD.2.1`. Establish `: SFinite μ` using `sfinite_of_isHaarOn _ μ hμ`. Take `⟨hΨlc, s, ε, G, hε, hN, hG, hΨv⟩` from `hΨ`. Set `Wv : Module.End ℂ (RadSp P.k P.r z z' π π')` to `P5.mulOp (fun x => fsv s (x.1 l)) (P5.contDiff_fsv_coord l s) (fun _ _ _ _ _ _ => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hW : multiplicationOperator Wv (fun c _ => fsv s (c l))` using `P5.mulOp_isMulOp _ _ _`. Set `Wn : Module.End ℂ (RadSp P.k P.r z z' π π')` to `P5.mulOp (fun x => fsv (-s) (x.1 l)) (P5.contDiff_fsv_coord l (-s)) (fun _ _ _ _ _ _ => rfl)`. Establish `hWn : multiplicationOperator Wn (fun c _ => fsv (-s) (c l))` using `P5.mulOp_isMulOp _ _ _`. Establish `hΦlc : Wn Ψ ∈ lcSub P.k P.r z z' π π'` using `mul_lc hWn Ψ hΨlc`. Establish `hΦv : ∀ y ∈ DomR P.k P.r z z', ((Wn Ψ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) y.1 y.2 = resG P.k P.r (Fin.last P.r) (B.JF D G) y.1 y.2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite using `[hWn Ψ y.1 y.2, hΨv y hy, smul_smul, fsv_neg_mul_fsv, one_smul]`. Establish `hΨeq : Wv (Wn Ψ) = Ψ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c' g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show ((Wv (Wn Ψ) : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) c' g = (Ψ : Fn P.k P.r (Wq →L[ℂ] Wp)) c' g`. Rewrite using `[hW (Wn Ψ) c' g, hWn Ψ c' g, smul_smul, fsv_mul_fsv_neg, one_smul]`. Take `⟨K, m, ab, hm, hab, hE⟩` from `hNF P.k P.r z z' Wp Wq π π' X l s Wv hW js`. Establish `hR : ∀ i, ∃ ε' : ℝ, 0 < ε' ∧ ∃ M : ℝ, ∀ t ∈ Metric.ball t0 ε', LevelSquareIntegrable μ l.succ (wOp X l (ab i) (Wn Ψ)) (Function.update c l t) ∧ ‖fs μ l (wOp X l (ab i) (Wn Ψ)) (wOp X l (ab i) (Wn Ψ)) c t‖ ≤ M` using `fun i => hRad Wp Wq P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl ε hε G hN hG (Wn Ψ) hΦlc hΦv c hc (ab i) (hab i) t0 ht0`. Use `choose ε' hε' M hM using hR`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hac : ∀ i, ContinuousAt (fun t => m i t * fsv s t) t0` using `fun i => ((hm i).continuousAt (isOpen_compl_singleton.mem_nhds ht0)).mul (P5.contDiff_fsv s).continuous.continuousAt`. Establish `hev : ∀ᶠ t in 𝓝 t0, ∀ i, (LevelSquareIntegrable μ l.succ (wOp X l (ab i) (Wn Ψ)) (Function.update c l t) ∧ ‖fs μ l (wOp X l (ab i) (Wn Ψ)) (wOp X l (ab i) (Wn Ψ)) c t‖ ≤ M i) ∧ ‖m i t * fsv s t‖ ≤ ‖m i t0 * fsv s t0‖ + 1`. Rewrite using `[Filter.eventually_all]`. Introduce `i`. Use `(Filter.eventually_of_mem (Metric.ball_mem_nhds t0 (hε' i)) fun t ht => hM i t ht).and ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((hac i).norm.eventually (gt_mem_nhds (lt_add_one _))).mono fun t ht => ht.le`. Take `⟨δ, hδ, hδP⟩` from `Metric.eventually_nhds_iff_ball.1 hev`. Use `⟨δ, hδ, (K : ℝ) * ∑ i, (‖m i t0 * fsv s t0‖ + 1) ^ 2 * M i, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hP` using `hδP t ht`. Establish `hvlc : ∀ i, wOp X l (ab i) (Wn Ψ) ∈ lcSub P.k P.r z z' π π'` using `fun i => jsl_wOp_lc X l (ab i) _ hΦlc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hx : ∀ (c' : Cf P.r l.succ) (g : Mx P.k P.r), (wOp X l js Ψ : Fn P.k P.r (Wq →L[ℂ] Wp)) (glue l.succ (Function.update c l t) c') g = ∑ i, (m i t * fsv s t) • (wOp X l (ab i) (Wn Ψ) : Fn P.k P.r (Wq →L[ℂ] Wp)) (glue l.succ (Function.update c l t) c') g`. Introduce `c' g`. Distinguish the cases in `hxo : glue l.succ (Function.update c l t) c' ∈ OmX P.r`. Establish `e` using `hE (Wn Ψ) _ hxo g`. Rewrite `e` using `[hΨeq, jsl_glue_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `e`. Establish `h0 : ∀ w : RadSp P.k P.r z z' π π', (w : Fn P.k P.r (Wq →L[ℂ] Wp)) (glue l.succ (Function.update c l t) c') g = 0` using `fun w => radSp_zero_off w (x := (glue l.succ (Function.update c l t) c', g)) (fun h => hxo h.1)`. Rewrite using `[h0]`. Simplify using `only [h0, smul_zero, Finset.sum_const_zero]`. Establish `hpt : ∀ c' : Cf P.r l.succ, ‖wtI l.succ c' * pairAt μ (wOp X l js Ψ) (wOp X l js Ψ) (glue l.succ (Function.update c l t) c')‖ ≤ (K : ℝ) * ∑ i, ‖m i t * fsv s t‖ ^ 2 * ‖wtI l.succ c' * pairAt μ (wOp X l (ab i) (Wn Ψ)) (wOp X l (ab i) (Wn Ψ)) (glue l.succ (Function.update c l t) c' …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c'`. Use `jsl_pairAt_comb_le μ hμ (fun i => m i t * fsv s t) (wOp X l js Ψ) (fun i => wOp X l (ab i) (Wn Ψ)) hvlc _ (hx c')` as an intermediate fact. Rewrite using `[norm_mul]`. Use `(mul_le_mul_of_nonneg_left this (norm_nonneg _)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[mul_left_comm, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [norm_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : Integrable (fun c' : Cf P.r l.succ => (K : ℝ) * ∑ i, ‖m i t * fsv s t‖ ^ 2 * ‖wtI l.succ c' * pairAt μ (wOp X l (ab i) (Wn Ψ)) (wOp X l (ab i) (Wn Ψ)) (glue l.succ (Function.update c l t) c')‖)` using `(integrable_finsetSum _ fun i _ => ((hP i).1.1.norm.const_mul _)).const_mul _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `LevelSquareIntegrable`. Conclude with `hb.mono' ((wtI_measurable l.succ).aestronglyMeasurable.mul (pairAt_measI μ l.succ _ _ _).aestronglyMeasurable) (ae_of_all _ hpt)`. Establish `hfs : ‖fs μ l (wOp X l js Ψ) (wOp X l js Ψ) c t‖ ≤ (K : ℝ) * ∑ i, ‖m i t * fsv s t‖ ^ 2 * ‖fs μ l (wOp X l (ab i) (Wn Ψ)) (wOp X l (ab i) (Wn Ψ)) c t‖`. Unfold `fs`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Use `(integral_mono_of_nonneg (ae_of_all _ fun _ => norm_nonneg _) hb (ae_of_all _ hpt)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_finsetSum _ fun i _ => (hP i).1.1.norm.const_mul _]`. Simplify using `only [integral_const_mul, jsl_int_norm_self]`. Use `hfs.trans (mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i _ => ?_) (Nat.cast_nonneg _))` and prove the remaining obligations.
-
-Conclude with `mul_le_mul (pow_le_pow_left₀ (norm_nonneg _) (hP i).2 2) (hP i).1.2 (norm_nonneg _) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem jSL2Loc_of : JSWordNF → JSRadLoc → SpectralL2Locality := by
   intro hNF hRad Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl c hc Ψ hΨ js t0 ht0

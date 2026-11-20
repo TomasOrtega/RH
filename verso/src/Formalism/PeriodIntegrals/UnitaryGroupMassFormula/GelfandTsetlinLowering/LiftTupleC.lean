@@ -8,7 +8,7 @@ namespace PI.WGL.LTC
 open Formalism.BasicNotions Formalism.GradedWeylDivisibility MvPolynomial PI.WGL.LTA PI.WGL.LTM
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h1` using `congrArg Fin.val hab`. Simplify using `only [eRow] at h1`. Conclude with `Fin.ext (by simpa using h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eRow_inj {n N : ℕ} (h : n + 1 = N) : Function.Injective (eRow h) := by
   intro a b hab
@@ -17,7 +17,7 @@ theorem eRow_inj {n N : ℕ} (h : n + 1 = N) : Function.Injective (eRow h) := by
   exact Fin.ext (by simpa using h1)
 
 /- English proof (translation)
-Introduce `hb`. Establish `h1` using `congrArg Fin.val hb`. Establish `h2` using `b.2`. Simplify using `[eRow] at h1`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eRow_ne_last {n N : ℕ} (h : n + 1 = N) (b : Fin n) : eRow h b ≠ ⟨N - 1, by omega⟩ := by
   intro hb
@@ -27,15 +27,13 @@ theorem eRow_ne_last {n N : ℕ} (h : n + 1 = N) (b : Fin n) : eRow h b ≠ ⟨N
   omega
 
 /- English proof (translation)
-The claim follows from `exp_gmin id Function.injective_id (Fin.castLE (hsz k))`.
+A detailed English derivation is pending.
 -/
 theorem exp_bidet {n K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) (k : Fin K) :
     Exp (id : Fin n → Fin n) (fun ρ : Fin (sz k) → Fin n => initMinor ℤ (n := n) ρ (hsz k)) := exp_gmin id Function.injective_id (Fin.castLE (hsz k))
 
 /- English proof (translation)
-Introduce `a b ρ`. Distinguish the cases in `hk : k ∈ L`. Simplify using `only [hk, if_true, ite_true]`. Conclude with `exp_lift (eRow h) (eRow_inj h) ⟨N - 1, by omega⟩ (eRow_ne_last h) (Fin.castLE (by have := hsz k; omega)) a b ρ`. Simplify using `only [hk, if_false, ite_false]`.
-
-Conclude with `exp_gmin (eRow h) (eRow_inj h) (Fin.castLE (by have := hsz k; omega)) a b ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exp_M {n N : ℕ} (h : n + 1 = N) {K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) (L : Finset (Fin K))
     (k : Fin K) :
@@ -50,15 +48,15 @@ theorem exp_M {n N : ℕ} (h : n + 1 = N) {K : ℕ} (sz : Fin K → ℕ) (hsz : 
     exact exp_gmin (eRow h) (eRow_inj h) (Fin.castLE (by have := hsz k; omega)) a b ρ
 
 /- English proof (translation)
-Rewrite using `[rowGen_gmin, Finset.sum_eq_single ∅]`. Establish `hu : upd ρ ∅ a = ρ`. Use function extensionality and compare the values at `p`. Simplify using `[upd]`. Simplify using `[hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `S _ hS split_ifs with hc`. Take `⟨p0, hp0⟩` from `Finset.nonempty_iff_ne_empty.mpr hS`. Break down `hρ with ⟨pa, hpa⟩ | hρ` into its components or cases. Establish `hne : pa ≠ p0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hab` to reduce the goal to its premises. Rewrite using `[← hpa, h]`. Conclude with `hc p0 hp0`. Establish `hpaS : pa ∉ S` using `fun h => hab (hpa.symm.trans (hc pa h))`. Establish `hz : gmin (upd ρ S a) κ = 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `gmin`. Apply `Matrix.det_zero_of_row_eq hne` to reduce the goal to its premises. Use function extensionality and compare the values at `q`. Simplify using `[upd, hpaS, hp0, hpa]`. Simplify using `[hz]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `absurd (hc p0 hp0) (hρ p0)`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowGen_gmin_inv {r c m : ℕ} (a b : Fin r) (hab : a ≠ b) (ρ : Fin m → Fin r) (κ : Fin m → Fin c)
     (hρ : (∃ pa, ρ pa = a) ∨ ∀ p, ρ p ≠ b) :
@@ -90,15 +88,13 @@ theorem rowGen_gmin_inv {r c m : ℕ} (a b : Fin r) (hab : a ≠ b) (ρ : Fin m 
   · simp
 
 /- English proof (translation)
-Establish `hab' : eRow h a ≠ eRow h b` using `fun h' => hab (eRow_inj h h')`. Establish `hlp : ∀ i : Fin n, i.1 + 1 = n → ∀ (hr : i.1 + 1 ≤ N) (hc : i.1 + 1 ≤ N), rowGen ℤ (eRow h a) (eRow h b) (lpMinor ℤ (i.1 + 1) hr hc) = Polynomial.C (lpMinor ℤ (i.1 + 1) hr hc)`. Introduce `i hi hr hc`. Establish `ha` using `a.2`. Conclude with `rowGen_gmin_inv _ _ hab' (Fin.castLE hr) (Fin.castLE hc) (Or.inl ⟨⟨a.1, by omega⟩, Fin.ext (by simp [eRow])⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrz : ∀ i : Fin n, i.1 = 0 → ∀ (hs : i.1 + 1 ≤ N), rowGen ℤ (eRow h a) (eRow h b) (initMinor ℤ (rowsZ h i) hs) = Polynomial.C (initMinor ℤ (rowsZ h i) hs)`. Introduce `i hi hs`. Use `rowGen_gmin_inv _ _ hab' (rowsZ h i) (Fin.castLE hs) (Or.inr fun p hp => ?_)` and prove the remaining obligations. Establish `hp0 : p.1 = i.1` using `by have := p.2; omega`. Apply `eRow_ne_last h b` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp]`. Simplify using `[rowsZ, hp0]`. Unfold `C0`. Simplify using `only [map_prod, map_mul]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `split_ifs with hi`. Rewrite using `[map_pow, map_pow, hlp i hi]`. Simplify using the standard rewrite rules. Use `split_ifs with hi`.
-
-Rewrite using `[map_pow, map_pow, hrz i hi]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polarization_of_constant {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) (a b : Fin n) (hab : a ≠ b) :
     rowGen ℤ (eRow h a) (eRow h b) (C0 h lam sg) = Polynomial.C (C0 h lam sg) := by
@@ -129,11 +125,11 @@ theorem polarization_of_constant {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N)
     · simp
 
 /- English proof (translation)
-Use `⟨twd sz w (Finsupp.single I 1), ?_, ?_⟩` and prove the remaining obligations. Establish `hmap : w.map (fun x => (id x.1, id x.2.1, x.2.2)) = w`. Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih => simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1` using `applyWord_comb id sz (fun k ρ => initMinor ℤ (n := n) ρ (hsz k)) (exp_bidet sz hsz) 1 (fun a b _ => by simp) w hw (Finsupp.single I 1)`. Rewrite `h1` using `[hmap, Finsupp.linearCombination_single, one_smul]`. Simplify using `only [one_mul, Finsupp.linearCombination_apply] at h1`. Unfold `bideterminant`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h2` using `applyWord_comb (eRow h) sz (fun k ρ => if k ∈ L then lif h ρ (by have := hsz k; omega) else unl h ρ (by have := hsz k; omega)) (exp_M h sz hsz L) (C0 h lam sg) (fun a b hab => polarization_of_constant h lam sg a b hab) w hw (Finsupp.single I 1)`. Rewrite `h2` using `[Finsupp.linearCombination_single, one_smul]`. Simplify using `only [Finsupp.linearCombination_apply] at h2`. Unfold `Mlift`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem word_clause {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) {K : ℕ} (sz : Fin K → ℕ)
     (hsz : ∀ k, sz k ≤ n) (L : Finset (Fin K)) (I : ∀ k, Fin (sz k) → Fin n)

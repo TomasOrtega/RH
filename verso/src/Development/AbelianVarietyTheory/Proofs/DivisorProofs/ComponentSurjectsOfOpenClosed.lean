@@ -16,35 +16,31 @@ noncomputable section
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Introduce `hTop hPt E _ _ _ H Dw l l' Xo Xo' c c' hle hIrr hIrr' r h hfin het hsurj Z`. Use `set sF := pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) with hsF`. Use `set g := spMap (IntermediateField.inclusion hle).toRingHom with hg`. Use `set r' := pullback.lift r _ h with hr'`. Take `⟨U₀, hU₀, hU₀irr⟩` from `hIrr Z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hirrB : IrreducibleSpace ↑(pullback (U₀.ι ≫ sF) g)` using `hU₀irr c'.F (IntermediateField.inclusion hle).toRingHom`. Establish `hZc_eq : Set.range (pullback.snd U₀.ι (pullback.fst sF g)) = pullback.fst sF g ⁻¹' (Z : Set (Xo.XF c))`. Rewrite using `[IsOpenImmersion.range_pullbackSnd]`. Use extensionality with `w`. Simplify using `only [Scheme.Hom.coe_preimage, Set.mem_preimage, SetLike.mem_coe, Scheme.Hom.coe_opensRange, Scheme.Opens.range_ι, hU₀]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZc_irr : IsIrreducible (pullback.fst sF g ⁻¹' (Z : Set (Xo.XF c)))`. Establish `hr : Set.range ((pullbackRightPullbackFstIso sF g U₀.ι).inv ≫ pullback.snd U₀.ι (pullback.fst sF g)) = Set.range (pullback.snd U₀.ι (pullback.fst sF g))`. Rewrite using `[show ⇑((pullbackRightPullbackFstIso sF g U₀.ι).inv ≫ pullback.snd U₀.ι (pullback.fst sF g)) = ⇑(pullback.snd U₀.ι (pullback.fst sF g)) ∘ ⇑(pullbackRightPullbackFstIso sF g U₀.ι).inv from rfl, Set.range_comp, ((pullbackRightPullbackFstIso sF g U₀.ι).inv).surjective.range_eq, Set. …`. Rewrite using `[← hZc_eq, ← hr, ← Set.image_univ]`. Conclude with `IrreducibleSpace.isIrreducible_univ _ |>.image _ ((pullbackRightPullbackFstIso sF g U₀.ι).inv ≫ pullback.snd U₀.ι (pullback.fst sF g)).continuous.continuousOn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZclosed : IsClosed (Z : Set (Xo.XF c))` using `isClosed_of_mem_irreducibleComponents _ Z.2`. Establish `hZopen : IsOpen (Z : Set (Xo.XF c))` using `by rw [← hU₀]; exact U₀.2`. Establish `hZc_clopen : IsClopen (pullback.fst sF g ⁻¹' (Z : Set (Xo.XF c)))` using `⟨hZclosed.preimage (pullback.fst sF g).continuous, hZopen.preimage (pullback.fst sF g).continuous⟩`. Establish `hr'open : IsOpenMap r'` using `r'.isOpenMap`. Establish `hr'closed : IsClosedMap r'` using `r'.isClosedMap`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hcompOpen : ∀ C ∈ irreducibleComponents (Xo'.XF c'), IsOpen C`. Introduce `C hC`. Take `⟨U, hU, -⟩` from `hIrr' ⟨C, hC⟩`. Rewrite using `[show C = (U : Set _) from hU.symm]`. Conclude with `U.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨z, hz⟩` from `(Z.2.1 : IsIrreducible (Z : Set (Xo.XF c))).nonempty`. Take `⟨b, hb⟩` from `(pullback.fst sF g).surjective z`. Take `⟨a, ha⟩` from `r'.surjective b`. Establish `haZ : r' a ∈ pullback.fst sF g ⁻¹' (Z : Set (Xo.XF c))`. Simplify using `only [Set.mem_preimage]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ha, hb]`. Conclude with `hz`. Take `⟨C, hC, haC, hCim⟩` from `hTop r' r'.continuous hr'open hr'closed hcompOpen _ hZc_clopen (IsIrreducible.isConnected hZc_irr).isPreconnected a haZ`. Take `⟨U, hU, hUirr⟩` from `hIrr' ⟨C, hC⟩`. Establish `hUC : (U : Set (Xo'.XF c')) = C` using `hU`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr'fst : r' ≫ pullback.fst sF g = r` using `pullback.lift_fst _ _ _`. Establish `hr'snd : r' ≫ pullback.snd sF g = pullback.snd Xo'.s (spMap (IntermediateField.inclusion c'.le).toRingHom)` using `pullback.lift_snd _ _ _`. Use `⟨U, ?_, hUirr, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Establish `hw' : r' w ∈ pullback.fst sF g ⁻¹' (Z : Set (Xo.XF c))`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hCim]`. Conclude with `⟨w, hUC ▸ hw, rfl⟩`. Establish `: r w = pullback.fst sF g (r' w)` using `by rw [← hr'fst]; rfl`. Rewrite using `[this]`. Conclude with `hw'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k _ _ fK x hx hxZ`. Establish `hcomm : x ≫ sF = spMap fK ≫ g`. Rewrite using `[hx, hg]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `set x' := pullback.lift x (spMap fK) hcomm with hx'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx'fst : x' ≫ pullback.fst sF g = x` using `pullback.lift_fst _ _ _`. Establish `hx'snd : x' ≫ pullback.snd sF g = spMap fK` using `pullback.lift_snd _ _ _`. Establish `hrange : Set.range x' ⊆ Set.range (U.ι ≫ r')`. Introduce and unpack `_ ⟨q, rfl⟩`. Establish `hq : x' q ∈ pullback.fst sF g ⁻¹' (Z : Set (Xo.XF c))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `only [Set.mem_preimage]`. Establish `: pullback.fst sF g (x' q) = x q` using `by rw [← hx'fst]; rfl`. Rewrite using `[this]`. Conclude with `hxZ ⟨q, rfl⟩`. Rewrite `hq` using `[← hCim]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hwC, hw⟩` from `hq`. Establish `hwU : w ∈ Set.range U.ι` using `by rw [Scheme.Opens.range_ι, hUC]; exact hwC`. Take `⟨u, rfl⟩` from `hwU`. Conclude with `⟨u, by rw [← hw]; rfl⟩`. Take `⟨yy₀, hyy₀⟩` from `hPt (U.ι ≫ r') k x' hrange`.
-
-Use `⟨yy₀ ≫ U.ι, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr'snd, ← hx'snd, ← hyy₀]`. Simplify using `only [Category.assoc]`. Rewrite using `[← hr'fst, ← hx'fst, ← hyy₀]`. Simplify using `only [Category.assoc]`.
-
-Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[← Scheme.Opens.range_ι U]`. Conclude with `⟨yy₀ q, rfl⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_comp_cover_lift : (∀ {A B : Type} [TopologicalSpace A] [TopologicalSpace B] (f : A → B), Continuous f → IsOpenMap f → IsClosedMap f →
     (∀ C ∈ irreducibleComponents A, IsOpen C) → ∀ S : Set B, IsClopen S → IsPreconnected S → ∀ a : A, f a ∈ S →

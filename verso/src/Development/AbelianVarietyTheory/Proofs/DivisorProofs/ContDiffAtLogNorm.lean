@@ -17,7 +17,7 @@ namespace BdSec
 variable {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ}
 
 /- English proof (translation)
-Establish `h1 : AnalyticAt ℂ (fun y => Complex.log (G y / G z)) z` using `(hG.div_const (c := G z)).clog (by simp [div_self h0])`. Establish `h2 : (fun y => Real.log ‖G y‖ - Real.log ‖G z‖) =ᶠ[𝓝 z] fun y => (Complex.log (G y / G z)).re` using `by filter_upwards [hG.continuousAt.eventually_ne h0] with y hy`. Rewrite using `[Complex.log_re, norm_div, Real.log_div (norm_ne_zero_iff.2 hy) (norm_ne_zero_iff.2 h0)]`. Rewrite using `[← levi_sub_const _ (Real.log ‖G z‖), levi_congr h2, levi_re_analytic h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_log_norm {G : (Fin e → ℂ) → ℂ} {z : Fin e → ℂ} (hG : AnalyticAt ℂ G z) (h0 : G z ≠ 0)
     (w : Fin e → ℂ) : levi (fun y => Real.log ‖G y‖) z w = 0 := by
@@ -29,14 +29,14 @@ theorem levi_log_norm {G : (Fin e → ℂ) → ℂ} {z : Fin e → ℂ} (hG : An
   rw [← levi_sub_const _ (Real.log ‖G z‖), levi_congr h2, levi_re_analytic h1]
 
 /- English proof (translation)
-The claim follows from `(((hG.restrictScalars (𝕜 := ℝ)).contDiffAt).norm ℝ h0).log (norm_ne_zero_iff.2 h0)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_log_norm {G : (Fin e → ℂ) → ℂ} {z : Fin e → ℂ} (hG : AnalyticAt ℂ G z) (h0 : G z ≠ 0) :
     ContDiffAt ℝ ∞ (fun y => Real.log ‖G y‖) z :=
   (((hG.restrictScalars (𝕜 := ℝ)).contDiffAt).norm ℝ h0).log (norm_ne_zero_iff.2 h0)
 
 /- English proof (translation)
-The claim follows from `(hP.1 x j).contDiffAt (((A.chart j).isOpen_inter_preimage_symm (P.isOpen_U x)).mem_nhds hy)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_pot {P : LocPot X} (hP : IsPotential A P) (x : X) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x) :
@@ -44,7 +44,7 @@ theorem contDiffAt_pot {P : LocPot X} (hP : IsPotential A P) (x : X) (j : Fin A.
   (hP.1 x j).contDiffAt (((A.chart j).isOpen_inter_preimage_symm (P.isOpen_U x)).mem_nhds hy)
 
 /- English proof (translation)
-Rewrite using `[mem_interior_iff_mem_nhds, ← (A.chart j).symm.map_nhds_eq hy.1, mem_map]`. Use `eventually_congr ?_` and prove the remaining obligations. Use `filter_upwards [((A.chart j).isOpen_inter_preimage_symm (L.isOpen_U x)).mem_nhds hy] with z hz`. Conclude with `bdry_iff hS hz.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_interior_iff (hS : IsSection A L s) (x : X) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' L.U x) :
@@ -55,11 +55,11 @@ theorem mem_interior_iff (hS : IsSection A L s) (x : X) (j : Fin A.n) {y : Fin e
   exact bdry_iff hS hz.2
 
 /- English proof (translation)
-Establish `hc : IsClosed (interior (bdry s))`. Rewrite using `[← closure_subset_iff_isClosed]`. Introduce `p hp`. Take `⟨j, hj⟩` from `A.cover p`. Establish `hO` using `(A.chart j).isOpen_inter_preimage_symm (L.isOpen_U p)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpO : A.chart j p ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' L.U p` using `⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using L.mem_U p⟩`. Take `⟨ε, hε, hB⟩` from `Metric.isOpen_iff.1 hO _ hpO`. Take `⟨q, ⟨hq, hqB⟩, hqi⟩` from `mem_closure_iff.1 hp _ ((A.chart j).isOpen_inter_preimage (Metric.isOpen_ball (x := A.chart j p) (ε := ε))) ⟨hj, Metric.mem_ball_self hε⟩`. Rewrite `hqi` using `[← (A.chart j).left_inv hq, mem_interior_iff hS p j (hB hqB)]`. Establish `h1` using `((hS.1 p j).mono hB).eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball _ _).isPreconnected hqB hqi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← (A.chart j).left_inv hj, mem_interior_iff hS p j hpO]`. Use `filter_upwards [Metric.ball_mem_nhds _ hε] with z hz using h1 hz`. Break down `isClopen_iff.1 ⟨hc, isOpen_interior⟩ with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd (interior_eq_univ.1 h1) h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem interior_bdry [ConnectedSpace X] (hS : IsSection A L s) (h : bdry s ≠ Set.univ) :
     interior (bdry s) = ∅ := by
@@ -84,11 +84,11 @@ theorem interior_bdry [ConnectedSpace X] (hS : IsSection A L s) (h : bdry s ≠ 
   · exact absurd (interior_eq_univ.1 h1) h
 
 /- English proof (translation)
-Establish `hAn : A.IsAnalyticSubset (bdry s)`. Introduce `x`. Use `⟨L.U x, L.isOpen_U x, L.mem_U x, 1, fun _ => s x, fun _ => hS.1 x, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hz, hzU⟩`. Conclude with `⟨hzU, fun _ => (bdry_iff hS hzU).1 hz⟩`. Introduce and unpack `⟨hzU, hz⟩`. Conclude with `⟨(bdry_iff hS hzU).2 (hz 0), hzU⟩`. Use `analyticNull A (bdry s) hAn h j` as an intermediate fact.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `this` using `[Set.inter_comm, (A.chart j).image_source_inter_eq']`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem bdry_null_chart (hS : IsSection A L s) (h : interior (bdry s) = ∅) (j : Fin A.n) :
     volume ((A.chart j).target ∩ (A.chart j).symm ⁻¹' bdry s) = 0 := by
@@ -105,9 +105,7 @@ theorem bdry_null_chart (hS : IsSection A L s) (h : interior (bdry s) = ∅) (j 
   rwa [Set.inter_comm, (A.chart j).image_source_inter_eq'] at this
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun y => ?_` and prove the remaining obligations. Establish `hc` using `continuousAt_of_holoOn A (hS.1 y) (L.mem_U y)`. Establish `hφ` using `continuousAt_of_smoothOn A (L.isOpen_U y) (hL.1 y) (L.mem_U y)`. Use `(hc.norm.mul (Real.continuous_exp.continuousAt.comp hφ.neg)).congr ?_` and prove the remaining obligations. Use `filter_upwards [(L.isOpen_U y).mem_nhds (L.mem_U y)] with z hz`.
-
-Conclude with `hS.2 y z z ⟨hz, L.mem_U z⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_norm_sec (hL : IsPotential A L) (hS : IsSection A L s) :
     Continuous fun y => ‖s y y‖ * Real.exp (-L.φ y y) := by
@@ -121,11 +119,9 @@ theorem continuous_norm_sec (hL : IsPotential A L) (hS : IsSection A L s) :
 variable {r : X → ℝ}
 
 /- English proof (translation)
-Introduce `a`. Establish `hc` using `isClosed_le (continuous_const (y := Real.exp ((Real.exp 1 - a) / 2))) (continuous_norm_sec hL hS)`. Use `(closure_minimal ?_ hc).trans ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hxa⟩`. Establish `hx' : s x x ≠ 0` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [hr x hx, rW, logNormSec] at hxa`. Conclude with `(Real.le_log_iff_exp_le (mul_pos (norm_pos_iff.2 hx') (Real.exp_pos _))).1 (by linarith)`. Introduce `x hx hx0`. Establish `hx' : s x x = 0` using `hx0`. Rewrite `hx` using `[Set.mem_setOf_eq, hx', norm_zero, zero_mul]`.
-
-Conclude with `(Real.exp_pos _).not_ge hx`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toBot (hL : IsPotential A L) (hS : IsSection A L s) (hr : ∀ x, x ∉ bdry s → r x = rW L s x) :
     ToBot (bdry s) fun x => -r x := by
@@ -142,14 +138,14 @@ theorem toBot (hL : IsPotential A L) (hS : IsSection A L s) (hr : ∀ x, x ∉ b
     exact (Real.exp_pos _).not_ge hx
 
 /- English proof (translation)
-Rewrite using `[hr z fun h => h0 ((bdry_iff hS hz).1 h), rW, logNormSecLocal A L s x z hS hz h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem local_eq (hS : IsSection A L s) (hr : ∀ x, x ∉ bdry s → r x = rW L s x) {x z : X} (hz : z ∈ L.U x)
     (h0 : s x z ≠ 0) : r z = Real.exp 1 - 2 * (Real.log ‖s x z‖ - L.φ x z) := by
   rw [hr z fun h => h0 ((bdry_iff hS hz).1 h), rW, logNormSecLocal A L s x z hS hz h0]
 
 /- English proof (translation)
-Establish `hm : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' L.U ((A.chart j).symm y)` using `⟨hy, L.mem_U _⟩`. Use `filter_upwards [((A.chart j).isOpen_inter_preimage_symm (L.isOpen_U _)).mem_nhds hm, (hS.1 _ j y hm).continuousAt.eventually_ne h0] with z hz hz0`. Conclude with `local_eq hS hr hz.2 hz0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem local_eventuallyEq (hS : IsSection A L s) (hr : ∀ x, x ∉ bdry s → r x = rW L s x) (j : Fin A.n)
     {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) (h0 : (A.chart j).symm y ∉ bdry s) :
@@ -161,7 +157,7 @@ theorem local_eventuallyEq (hS : IsSection A L s) (hr : ∀ x, x ∉ bdry s → 
   exact local_eq hS hr hz.2 hz0
 
 /- English proof (translation)
-Introduce `j y hy`. Establish `hm : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' L.U ((A.chart j).symm y)` using `⟨hy.1, L.mem_U _⟩`. Conclude with `((contDiffAt_const.sub (contDiffAt_const.mul ((contDiffAt_log_norm (hS.1 _ j y hm) hy.2).sub (contDiffAt_pot hL _ j hm)))).congr_of_eventuallyEq (local_eventuallyEq hS hr j hy.1 hy.2)).contDiffWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothOn (hL : IsPotential A L) (hS : IsSection A L s) (hr : ∀ x, x ∉ bdry s → r x = rW L s x) :
     A.SmoothOn (bdry s)ᶜ r := by
@@ -172,13 +168,13 @@ theorem smoothOn (hL : IsPotential A L) (hS : IsSection A L s) (hr : ∀ x, x �
     (local_eventuallyEq hS hr j hy.1 hy.2)).contDiffWithinAt
 
 /- English proof (translation)
-Introduce `j K hKt hK`. Use `LocallyIntegrableOn.integrableOn_isCompact (fun y hy => ?_) hK` and prove the remaining obligations. Use `set x := (A.chart j).symm y with hx`. Establish `hO` using `(A.chart j).isOpen_inter_preimage_symm (L.isOpen_U x)`. Establish `hm : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' L.U x` using `⟨hKt hy, L.mem_U _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hBn, hB, hBc⟩` from `local_compact_nhds (hO.mem_nhds hm)`. Use `⟨B, mem_nhdsWithin_of_mem_nhds hBn, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `locallyIntegrableOn_log_norm_of_frequently_ne_zero volume hO (hS.1 x j).differentiableOn fun z hz hev => by`. Use `(mem_interior_iff hS x j hz).2 (hev.mono fun _ h => not_not.1 h)` as an intermediate fact. Rewrite `this` using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h3` using `h2.integrableOn_compact_subset hB hBc`. Establish `h4 : IntegrableOn (L.φ x ∘ (A.chart j).symm) B` using `((hL.1 x j).continuousOn.mono hB).integrableOn_compact hBc`. Establish `h5 : IntegrableOn (fun _ => Real.exp 1) B` using `continuousOn_const.integrableOn_compact hBc`. Establish `h6 : IntegrableOn (fun z => Real.exp 1 - 2 * (Real.log ‖s x ((A.chart j).symm z)‖ - L.φ x ((A.chart j).symm z))) B` using `h5.sub ((h3.sub h4).const_mul 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(h6.mul_continuousOn ((locDensCont A Φ hΦ j).mono (hB.trans Set.inter_subset_left)) hBc).congr ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_of_ae_restrict_of_subset hB h1, ae_restrict_mem hBc.measurableSet] with z hz hzB`. Establish `hzU` using `(hB hzB).2`. Rewrite using `[cut, Set.indicator_of_mem (show _ ∈ Set.univ ∩ (bdry s)ᶜ from ⟨trivial, fun h => hz ((bdry_iff hS hzU).1 h)⟩), local_eq hS hr hzU hz]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mIntegrable (hL : IsPotential A L) (hS : IsSection A L s) (hr : ∀ x, x ∉ bdry s → r x = rW L s x)
     (h : interior (bdry s) = ∅) {Φ : Fin e → LocPot X} (hΦ : ∀ i, IsPotential A (Φ i)) :
@@ -208,17 +204,15 @@ theorem mIntegrable (hL : IsPotential A L) (hS : IsSection A L s) (hr : ∀ x, x
     ⟨trivial, fun h => hz ((bdry_iff hS hzU).1 h)⟩), local_eq hS hr hzU hz]
 
 /- English proof (translation)
-Take `⟨C, hC, -, hpsh⟩` from `TailBoundAlt.exists_psh_chern_bound A Om L hO hP hL`. Use `⟨1 / (2 * (C + 1)), by positivity, fun j y hy h0 w => ?_⟩` and prove the remaining obligations. Use `set c := 1 / (2 * (C + 1)) with hc`. Use `set x := (A.chart j).symm y with hx`. Establish `hm : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' L.U x` using `⟨hy, L.mem_U _⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Om.U x` using `⟨hy, Om.mem_U _⟩`. Establish `c1` using `(contDiffAt_pot hO x j hm').of_le two_le_infty`. Establish `c2` using `(contDiffAt_pot hL x j hm).of_le two_le_infty`. Establish `c3` using `(contDiffAt_log_norm (hS.1 x j y hm) h0).of_le two_le_infty`. Establish `e1 : (Om + LocPot.ofFun fun x => -c * r x).φ x ∘ (A.chart j).symm =ᶠ[𝓝 y] fun z => ((Om.φ x ∘ (A.chart j).symm) z + (-2 * c) * (L.φ x ∘ (A.chart j).symm) z + (2 * c) * Real.log ‖(s x ∘ (A.chart j).symm) z‖) - c * Real.exp 1` using `by filter_upwards [local_eventuallyEq hS hr j hy h0] with z hz show Om.φ x _ + -c * r _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz]`. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hpsh x j y ⟨hy, Om.mem_U _, L.mem_U _⟩ w`. Establish `h2` using `TailBoundAlt.isPsh_of_isPosPot A Om hP x j y hm' w`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `TailChernBound.levi_lin C (-1) c1 c2 w`. Establish `h3 : 0 ≤ C * levi (Om.φ x ∘ (A.chart j).symm) y w + (-1) * levi (L.φ x ∘ (A.chart j).symm) y w` using `e2 ▸ h1`. Rewrite using `[leviAt, ← hx, levi_congr e1, levi_sub_const, levi_add_smul _ (c1.add (contDiffAt_const.mul c2)) c3, levi_add_smul _ c1 c2, levi_log_norm (hS.1 x j y hm) h0]`. Generalize the expression as in `levi (Om.φ x ∘ (A.chart j).symm) y w = a at *`. Generalize the expression as in `levi (L.φ x ∘ (A.chart j).symm) y w = b at *`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : a + -2 * c * b + 2 * c * 0 = (a + (C * a + -1 * b)) / (C + 1)`. Rewrite using `[hc]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`.
-
-Check the signs of the components of the expression.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem exists_pshOff [CompactSpace X] [T2Space X] {Om : LocPot X} (hO : IsPotential A Om) (hP : IsPosPot A Om)
     (hL : IsPotential A L) (hS : IsSection A L s) (hr : ∀ x, x ∉ bdry s → r x = rW L s x) :
@@ -259,7 +253,7 @@ theorem exists_pshOff [CompactSpace X] [T2Space X] {Om : LocPot X} (hO : IsPoten
 end BdSec
 
 /- English proof (translation)
-Establish `he` using `IsBdSec.exp_le A Z r h`. Take `⟨hL, hS, -, rfl, hne, hr⟩` from `h`. Establish `hi` using `BdSec.interior_bdry hS hne`. Conclude with `⟨isClosed_bdry hS, BdSec.bdry_null_chart hS hi, hO, hP, BdSec.smoothOn hL hS hr, he, BdSec.toBot hL hS hr, BdSec.mIntegrable hL hS hr hi fun _ => hO, BdSec.exists_pshOff hO hP hL hS hr⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isBd_of_isBdSec (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] [ConnectedSpace X]
     (A : FinHolAtlas e X) (Z : Set X) (r : X → ℝ) (Om L : LocPot X) (s : X → X → ℂ)

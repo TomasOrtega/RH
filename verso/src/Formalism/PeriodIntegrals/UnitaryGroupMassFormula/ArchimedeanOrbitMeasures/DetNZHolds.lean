@@ -13,9 +13,9 @@ def wF {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) : Fin (D.R.rS + 1 + D.
   Fin.append (Fin.snoc X.eX (X.zu u')) X.fY
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [tupH, F0, wF, Fin.append_left]`. Use `Fin.lastCases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify using `only [Fin.snoc_last]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [Fin.snoc_castSucc]`. Both sides reduce to the same expression. Simplify using `only [tupH, wF, Fin.append_right]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tupH_eq {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) :
     tupH (frameOf X u') = fun i => X.crd (wF X u' i) := by
@@ -30,7 +30,7 @@ theorem tupH_eq {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) :
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Rewrite using `[tupH_eq, ← Formalism.L2.SG.PoincareInHH.Cut.hform_crd X, RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_eq {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (i j : Fin (D.R.rS + 1 + D.R.rS)) :
     gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')) i j = X.ιE.symm ((VS D).hT (wF X u' i) (wF X u' j)) := by
@@ -38,7 +38,7 @@ theorem gram_eq {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (i j : Fin (D
   rfl
 
 /- English proof (translation)
-Establish `h` using `(VS D).herm.eq (X.eX b) (X.fY a)`. Rewrite `h` using `[X.ef]`. Rewrite using `[← h]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hT_fe {D : D7} (X : HidaSetting D) (a b : Fin D.R.rS) :
     (VS D).hT (X.fY a) (X.eX b) = if b = a then 1 else 0 := by
@@ -48,7 +48,7 @@ theorem hT_fe {D : D7} (X : HidaSetting D) (a b : Fin D.R.rS) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h` using `(VS D).herm.eq (X.eX a) (X.zu u')`. Rewrite `h` using `[(X.zu_orth u' a).1]`. Rewrite using `[← h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hT_ze {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (a : Fin D.R.rS) :
     (VS D).hT (X.zu u') (X.eX a) = 0 := by
@@ -57,7 +57,7 @@ theorem hT_ze {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (a : Fin D.R.rS
   rw [← h]; simp
 
 /- English proof (translation)
-Establish `h` using `(VS D).herm.eq (X.fY a) (X.zu u')`. Rewrite `h` using `[(X.zu_orth u' a).2]`. Rewrite using `[← h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hT_zf {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (a : Fin D.R.rS) :
     (VS D).hT (X.zu u') (X.fY a) = 0 := by
@@ -66,7 +66,7 @@ theorem hT_zf {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (a : Fin D.R.rS
   rw [← h]; simp
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, gram_eq, map_sum, map_mul, RingEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem row_eq {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (v : Fin (D.R.rS + 1 + D.R.rS) → X.B.I.E)
     (i : Fin (D.R.rS + 1 + D.R.rS)) :
@@ -75,19 +75,17 @@ theorem row_eq {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (v : Fin (D.R.
   simp only [Matrix.mulVec, dotProduct, gram_eq, map_sum, map_mul, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf _`. Rewrite using `[Ne, ← Matrix.exists_mulVec_eq_zero_iff]`. Introduce and unpack `⟨v, hv0, hv⟩`. Apply `hv0` to reduce the goal to its premises. Establish `row : ∀ i, ∑ j, (VS D).hT (wF X u' i) (wF X u' j) * X.ιE (v j) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[← row_eq, hv]`. Simplify using the standard rewrite rules. Establish `hTne : ((((D.mem u').A.T : ℕ) : D.host.E)) ≠ 0`. Conclude with `(D.mem u').A.T_prime.ne_zero` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∀ a, v (Fin.castAdd D.R.rS (Fin.castSucc a)) = 0`. Introduce `a`. Establish `h` using `row (Fin.natAdd (D.R.rS + 1) a)`. Rewrite `h` using `[Fin.sum_univ_add, Fin.sum_univ_castSucc]`. Simplify using `[wF, Fin.append_left, Fin.append_right, Fin.snoc_castSucc, Fin.snoc_last, hT_fe, X.ff, (X.zu_orth u' _).2] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hf : ∀ a, v (Fin.natAdd (D.R.rS + 1) a) = 0`. Introduce `a`. Establish `h` using `row (Fin.castAdd D.R.rS (Fin.castSucc a))`. Rewrite `h` using `[Fin.sum_univ_add, Fin.sum_univ_castSucc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[wF, Fin.append_left, Fin.append_right, Fin.snoc_castSucc, Fin.snoc_last, X.ee, X.ef, (X.zu_orth u' _).1] at h`. Conclude with `h`. Establish `hz : v (Fin.castAdd D.R.rS (Fin.last D.R.rS)) = 0`. Establish `h` using `row (Fin.castAdd D.R.rS (Fin.last D.R.rS))`. Rewrite `h` using `[Fin.sum_univ_add, Fin.sum_univ_castSucc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[wF, Fin.append_left, Fin.append_right, Fin.snoc_castSucc, Fin.snoc_last, hT_ze, hT_zf, X.zu_norm, hTne] at h`. Conclude with `h`. Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun k => ?_) j` and prove the remaining obligations.
-
-Conclude with `hz`. Conclude with `he k`. Conclude with `hf j`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem detNZ_holds : DetNZ := by
   intro D X u' ψ hT μinf νinf fibInf _

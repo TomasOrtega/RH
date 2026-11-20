@@ -19,15 +19,13 @@ open GlobalTheory.Unf GlobalTheory.Unf.FB
 namespace GlobalTheory.Unf.FB
 
 /- English proof (translation)
-Introduce `D hD ψ σ J B s vL Y G Φ hY hG hΦ 𝓑 h𝓑`. Use `s.vW.haar` as an intermediate fact. Use `J.v0.haar` as an intermediate fact. Establish `hI` using `GlobalTheory.T.jacobiToBessel_unfoldedIntegrand_integrable D hD ψ σ J B s vL Y G Φ hY hG hΦ 𝓑 h𝓑`. Establish `hin` using `GlobalTheory.T.fourierJacobi_integral_over_N_unfold D hD ψ σ J B s vL Y G Φ hY hG hΦ 𝓑 h𝓑`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `(GlobalTheory.T.pairedFlatMap_family_continuous_invariant_integral D hD ψ σ J B s vL Y Φ hY hΦ).2.2`. Establish `hU : ∀ h, unfF s vL Y G Φ h = ∫ h₀ in J.v0.𝓕, G h * tFlat s vL (Y h₀) (s.om (J.d.emb0 h₀, h) Φ) ∂J.v0.μ`. Introduce `h`. Rewrite using `[unfF, hc h, integral_const_mul]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `hI.integral_prod_right` as an intermediate fact. Use `this.congr ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun h => (hU h).symm`. Combine the equalities or inequalities in the displayed calculation. Unfold `JacLev.per fjSrcKer`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `h₀`. Conclude with `hin h₀`. Use `_ = ∫ h in 𝓑, ∫ h₀ in J.v0.𝓕, G h * tFlat s vL (Y h₀) (s.om (J.d.emb0 h₀, h) Φ) ∂J.v0.μ ∂s.vW.μ := integral_integral_swap hI`. Use `_ = ∫ h in 𝓑, unfF s vL Y G Φ h ∂s.vW.μ := by`.
-
-Use `congr 1`. Use function extensionality and compare the values at `h`. Conclude with `(hU h).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem per_lift_eq_integral_unfF : ∀ (D : D7), Descent D → ∀ (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (s : StepFB ψ J B), ∀ (vL : VolM D B.L.rank J.W₀.rank) (Y : GA D J.W₀ → WO J.W₀ B.L → ℂ) (G : GA D B.V → ℂ) (Φ : WO J.W B.V → ℂ), IsQuasiFam ψ J.W₀ B.L Y → RapidDec B.V G → IsThetaFunO ψ J.W B.V Φ → ∀ 𝓑 : Set (GA D B.V), IsFundamentalDomain (GQ B.V ⊓ besGrp B.d B.o : Subgroup (GA D B.V)) 𝓑 s.vW.μ → IntegrableOn (unfF s vL Y G Φ) 𝓑 s.vW.μ ∧ J.per ψ B.ζ Y (s.lift G Φ) = ∫ h in 𝓑, unfF s vL Y G Φ h ∂s.vW.μ := by
   intro D hD ψ σ J B s vL Y G Φ hY hG hΦ 𝓑 h𝓑

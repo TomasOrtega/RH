@@ -12,9 +12,9 @@ namespace GlobalTheory.Proof.QuotientLengthInfimum
 open GlobalTheory.IndefiniteRowSideFullHecke
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `le_iInf₂ fun x hx => ?_` and prove the remaining obligations. Establish `hle : Ideal.span {x} ≤ I` using `(Ideal.span_singleton_le_iff_mem _).2 hx`. Conclude with `Module.length_le_of_surjective (Submodule.factor hle) (Submodule.factor_surjective hle)`. Establish `hg : Ideal.span {Submodule.IsPrincipal.generator I} = I` using `Ideal.span_singleton_generator I`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `iInf₂_le_of_le (Submodule.IsPrincipal.generator I) (Submodule.IsPrincipal.generator_mem I) ?_` and prove the remaining obligations. Rewrite using `[hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quot_eq_iInf {O : Type} [CommRing O] [IsPrincipalIdealRing O] (I : Ideal O) :
     Module.length O (O ⧸ I) = ⨅ x ∈ I, Module.length O (O ⧸ Ideal.span {x}) := by
@@ -29,7 +29,7 @@ theorem length_quot_eq_iInf {O : Type} [CommRing O] [IsPrincipalIdealRing O] (I 
     rw [hg]
 
 /- English proof (translation)
-Establish `hs : Function.Surjective ((Pi.evalRingHom (fun _ : X => O) π).comp T.val.toRingHom)` using `fun a => ⟨algebraMap O T a, by simp⟩`. Unfold `ccAt`. Rewrite using `[Ideal.mem_map_iff_of_surjective _ hs]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_ccAt {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (Z : Finset X) (π : X) (y : O) :
     y ∈ ccAt T Z π ↔ ∃ f ∈ ccIdeal T Z, ((f : T) : X → O) π = y := by
@@ -40,7 +40,7 @@ theorem mem_ccAt {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (Z : Fin
   rfl
 
 /- English proof (translation)
-Establish `he0' : (e : ℝ≥0∞) ≠ 0` using `by simpa using he0`. Establish `he' : (e : ℝ≥0∞) ≠ ⊤` using `by simpa using he`. Rewrite using `[← ENat.toENNReal_le, ← ENNReal.mul_le_mul_iff_right he0' he']`. Simplify using `only [mul_add, ENNReal.mul_div_cancel he0' he', ENat.toENNReal_add, ENat.toENNReal_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem div_le_iff_lengths (e c s h v q : ℕ∞) (he0 : e ≠ 0) (he : e ≠ ⊤) :
     ((c : ℝ≥0∞) / (e : ℝ≥0∞) ≤ (s : ℝ≥0∞) / (e : ℝ≥0∞) + (h : ℝ≥0∞) + (v : ℝ≥0∞) + (q : ℝ≥0∞) / (e : ℝ≥0∞)) ↔
@@ -51,7 +51,7 @@ theorem div_le_iff_lengths (e c s h v q : ℕ∞) (he0 : e ≠ 0) (he : e ≠ �
   simp only [mul_add, ENNReal.mul_div_cancel he0' he', ENat.toENNReal_add, ENat.toENNReal_mul]
 
 /- English proof (translation)
-The claim follows from `map_sum ENat.toENNRealRingHom f s`.
+A detailed English derivation is pending.
 -/
 theorem toENNReal_sum {ι : Type} (s : Finset ι) (f : ι → ℕ∞) :
     ((∑ a ∈ s, f a : ℕ∞) : ℝ≥0∞) = ∑ a ∈ s, (f a : ℝ≥0∞) :=
@@ -66,9 +66,9 @@ section Terms
 variable (D : D7) (i : D.nd.Loc)
 
 /- English proof (translation)
-Establish `h` using `BaseSizes.vO_l D i`. Unfold `BaseSizes.vO BaseSizes.nlen at h`. Express the relevant statement in the definitionally equal form `((SelmerSumLargePrime.ramLen D i : ℕ∞) : ℝ≥0∞) / ((SelmerSumLargePrime.ramLen D i : ℕ∞) : ℝ≥0∞) = 1 at h`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[h0]`. Simplify using `at h`. Introduce `h0`. Rewrite `h` using `[h0]`. Simplify using `at h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ramLen_ne : SelmerSumLargePrime.ramLen D i ≠ 0 ∧ SelmerSumLargePrime.ramLen D i ≠ ⊤ := by
   have h := BaseSizes.vO_l D i
@@ -79,11 +79,11 @@ theorem ramLen_ne : SelmerSumLargePrime.ramLen D i ≠ 0 ∧ SelmerSumLargePrime
   · intro h0; rw [h0] at h; simp at h
 
 /- English proof (translation)
-Unfold `BaseSizes.vCC BaseSizes.vO BaseSizes.nlen SelmerSumLargePrime.ccLen`. Express the relevant statement in the definitionally equal form `⨅ f ∈ D.nd.cc i, _ / (SelmerSumLargePrime.ramLen D i : ℝ≥0∞) = _`. Apply `le_antisymm` to reduce the goal to its premises. Use `set I := ccAt (D.nd.T i) (D.nd.Z i) π with hI`. Establish `hg : Ideal.span {Submodule.IsPrincipal.generator I} = I` using `Ideal.span_singleton_generator I`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hfx⟩` from `(mem_ccAt _ _ π _).1 (Submodule.IsPrincipal.generator_mem I)`. Use `iInf₂_le_of_le f hf ?_` and prove the remaining obligations. Rewrite using `[hfx, hg]`. Use `le_iInf₂ fun f hf => ?_` and prove the remaining obligations. Use `ENNReal.div_le_div_right ?_ _` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENat.toENNReal_le, length_quot_eq_iInf]`. Conclude with `iInf₂_le _ ((mem_ccAt _ _ π _).2 ⟨f, hf, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem vCC_eq (π : D.nd.X i) :
     BaseSizes.vCC D i π = (SelmerSumLargePrime.ccLen D i π : ℝ≥0∞) / (SelmerSumLargePrime.ramLen D i : ℝ≥0∞) := by
@@ -107,14 +107,14 @@ theorem sPi_eq (π : D.nd.X i) (ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O i)) :
     BaseSizes.sPi D i π ρ = (SelmerSumLargePrime.selLen D i ρ π : ℝ≥0∞) / (SelmerSumLargePrime.ramLen D i : ℝ≥0∞) := rfl
 
 /- English proof (translation)
-Unfold `BaseSizes.shaSum SelmerSumLargePrime.shaSum`. Rewrite using `[toENNReal_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem shaSum_eq : BaseSizes.shaSum D i = (SelmerSumLargePrime.shaSum D i : ℝ≥0∞) := by
   unfold BaseSizes.shaSum SelmerSumLargePrime.shaSum
   rw [toENNReal_sum]
 
 /- English proof (translation)
-Unfold `BaseSizes.vClass hE`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem vClass_eq :
     BaseSizes.vClass D i = (((padicValNat (D.nd.l i) (hE D.host) : ℕ) : ℕ∞) : ℝ≥0∞) := by
@@ -127,7 +127,7 @@ Both sides reduce to the same expression.
 theorem zetaP_eq (P : HeightOneSpectrum (𝓞 D.host.E)) : BaseSizes.zetaP D i P = SelmerSumLargePrime.zetaP D i P := rfl
 
 /- English proof (translation)
-Unfold `BaseSizes.epsQ SelmerSumLargePrime.twistLen BaseSizes.vO BaseSizes.nlen`. Rewrite using `[ENat.toENNReal_mul, toENNReal_sum, mul_div_assoc, div_eq_mul_inv (∑ _ ∈ _, _), Finset.sum_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem epsQ_eq : BaseSizes.epsQ D i = (SelmerSumLargePrime.twistLen D i : ℝ≥0∞) / (SelmerSumLargePrime.ramLen D i : ℝ≥0∞) := by
   unfold BaseSizes.epsQ SelmerSumLargePrime.twistLen BaseSizes.vO BaseSizes.nlen
@@ -135,7 +135,7 @@ theorem epsQ_eq : BaseSizes.epsQ D i = (SelmerSumLargePrime.twistLen D i : ℝ�
   rfl
 
 /- English proof (translation)
-Rewrite using `[vCC_eq, sPi_eq, shaSum_eq, vClass_eq, epsQ_eq]`. Conclude with `div_le_iff_lengths _ _ _ _ _ _ (ramLen_ne D i).1 (ramLen_ne D i).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conclusion_iff (π : D.nd.X i) (ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O i)) :
     (BaseSizes.vCC D i π ≤ BaseSizes.sPi D i π ρ + BaseSizes.shaSum D i + BaseSizes.vClass D i + BaseSizes.epsQ D i) ↔

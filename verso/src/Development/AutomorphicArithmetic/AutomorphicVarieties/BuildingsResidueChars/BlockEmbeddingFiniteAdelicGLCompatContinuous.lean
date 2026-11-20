@@ -4,7 +4,7 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Use `Continuous.units_map (embM (R := R) e) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun X : Matrix (Fin a) (Fin a) R => 1 + inc e R * (X - 1) * (inc e R)ᵀ`. Conclude with `continuous_const.add ((continuous_const.matrix_mul (continuous_id.sub continuous_const)).matrix_mul continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private theorem continuous_emb' {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {a n : ℕ}
     (e : Fin a ↪ Fin n) : Continuous (emb e : GL (Fin a) R → GL (Fin n) R) := by
@@ -14,7 +14,7 @@ private theorem continuous_emb' {R : Type} [CommRing R] [TopologicalSpace R] [Is
     ((continuous_const.matrix_mul (continuous_id.sub continuous_const)).matrix_mul continuous_const)
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use extensionality with `i j : 2`. Conclude with `AdelicGLn.prodEquiv_apply_fst K n g i j`. Use extensionality with `i j : 2`. Conclude with `AdelicGLn.prodEquiv_apply_snd K n g i j`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem prodEquiv_eq (K : Type) [Field K] [NumberField K] (n : ℕ) (g : AdelicGLn.AdelicGL K n) :
     AdelicGLn.prodEquiv K n g =
@@ -27,7 +27,7 @@ private theorem prodEquiv_eq (K : Type) [Field K] [NumberField K] (n : ℕ) (g :
     exact AdelicGLn.prodEquiv_apply_snd K n g i j
 
 /- English proof (translation)
-Rewrite using `[prodEquiv_eq, prodEquiv_eq]`. Conclude with `Prod.ext (emb_map e (RingHom.fst (InfiniteAdeleRing K) (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)) g) (emb_map e (RingHom.snd (InfiniteAdeleRing K) (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)) g)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prodEquiv_emb (K : Type) [Field K] [NumberField K] {a n : ℕ} (e : Fin a ↪ Fin n)
     (g : AdelicGLn.AdelicGL K a) :
@@ -39,7 +39,7 @@ private theorem prodEquiv_emb (K : Type) [Field K] [NumberField K] {a n : ℕ} (
     (emb_map e (RingHom.snd (InfiniteAdeleRing K) (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)) g)
 
 /- English proof (translation)
-Introduce `K _ _ a n e`. Use `⟨fun y => ?_, fun γ => ?_, continuous_emb' e⟩` and prove the remaining obligations. Apply `(AdelicGLn.prodEquiv K n).injective` to reduce the goal to its premises. Rewrite using `[prodEquiv_emb, prodEquiv_finEmb, prodEquiv_finEmb, map_one]`. Conclude with `(emb_map e (algebraMap K (AdeleRing (𝓞 K) K)) γ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.blockEmbedding_finiteAdelicGL_compat_continuous :
     ∀ (K : Type) [Field K] [NumberField K] (a n : ℕ) (e : Fin a ↪ Fin n), (∀ y, emb e (finEmb K a y) = finEmb K n (emb e y)) ∧ (∀ γ, emb e (AdelicGLn.diagonal K a γ) = AdelicGLn.diagonal K n (emb e γ)) ∧ Continuous (emb e : AdelicGLn.FiniteAdelicGL K a → AdelicGLn.FiniteAdelicGL K n) := by

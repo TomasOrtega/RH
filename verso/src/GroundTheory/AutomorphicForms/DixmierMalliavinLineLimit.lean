@@ -8,7 +8,7 @@ open scoped FourierTransform ContDiff
 namespace WeakLimit
 
 /- English proof (translation)
-Simplify using `using! (VectorFourier.integral_fourierIntegral_smul_eq_flip (L := innerₗ ℝ) Real.continuous_fourierChar continuous_inner hf hg)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integral_fourier_mul_eq {f g : ℝ → ℂ} (hf : Integrable f) (hg : Integrable g) :
     ∫ ξ, 𝓕 f ξ * g ξ = ∫ x, f x * 𝓕 g x := by
@@ -16,7 +16,7 @@ theorem integral_fourier_mul_eq {f g : ℝ → ℂ} (hf : Integrable f) (hg : In
       Real.continuous_fourierChar continuous_inner hf hg)
 
 /- English proof (translation)
-Rewrite using `[Real.fourierInv_eq_fourier_comp_neg, integral_fourier_mul_eq hf.comp_neg hg, ← integral_neg_eq_self (fun x => f x * 𝓕⁻ g x)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[Real.fourierInv_eq_fourier_neg]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem integral_fourierInv_mul_eq {f g : ℝ → ℂ} (hf : Integrable f) (hg : Integrable g) :
     ∫ ξ, 𝓕⁻ f ξ * g ξ = ∫ x, f x * 𝓕⁻ g x := by
@@ -26,27 +26,27 @@ theorem integral_fourierInv_mul_eq {f g : ℝ → ℂ} (hf : Integrable f) (hg :
   simp [Real.fourierInv_eq_fourier_neg]
 
 /- English proof (translation)
-The claim follows from `VectorFourier.norm_fourierIntegral_le_integral_norm _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem norm_fourier_le (f : ℝ → ℂ) (ξ : ℝ) : ‖𝓕 f ξ‖ ≤ ∫ x, ‖f x‖ :=
   VectorFourier.norm_fourierIntegral_le_integral_norm _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `VectorFourier.fourierIntegral_continuous Real.continuous_fourierChar continuous_inner hf`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fourier_of_integrable {f : ℝ → ℂ} (hf : Integrable f) : Continuous (𝓕 f) :=
   VectorFourier.fourierIntegral_continuous Real.continuous_fourierChar continuous_inner hf
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `exists_polynomial_near_of_continuousOn a b (fun t => (ψ t).re) (Complex.continuous_re.comp hψ).continuousOn (η / 2) (by positivity)`. Take `⟨q, hq⟩` from `exists_polynomial_near_of_continuousOn a b (fun t => (ψ t).im) (Complex.continuous_im.comp hψ).continuousOn (η / 2) (by positivity)`. Establish `hpd : ∀ r : Polynomial ℝ, ContDiff ℝ ∞ (fun t : ℝ => r.eval t)` using `fun r => by`. Simplify `r.contDiff_aeval (𝕜 := ℝ) ∞` using `[Polynomial.coe_aeval_eq_eval]`. Set `χ : ContDiffBump ((a + b) / 2)` to `⟨|b - a| + 1, |b - a| + 2, by positivity, by linarith⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Use `⟨fun t => (χ t : ℂ) * (((p.eval t : ℝ) : ℂ) + ((q.eval t : ℝ) : ℂ) * Complex.I), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Complex.ofRealCLM.contDiff.comp χ.contDiff).mul ((Complex.ofRealCLM.contDiff.comp (hpd p)).add ((Complex.ofRealCLM.contDiff.comp (hpd q)).mul contDiff_const))`. Conclude with `(χ.hasCompactSupport.comp_left Complex.ofReal_zero).mul_right`. Introduce `t ht`. Establish `hχ : χ t = 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `χ.one_of_mem_closedBall` to reduce the goal to its premises. Rewrite using `[Metric.mem_closedBall, Real.dist_eq]`. Use `ht.1` as an intermediate fact. Use `ht.2` as an intermediate fact. Apply the tactic sequence `rw [abs_le]; constructor <;> cases abs_cases (b - a) <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ‖ψ t - (χ t : ℂ) * _‖ ≤ η`. Rewrite using `[hχ, Complex.ofReal_one, one_mul]`. Use `(Complex.norm_le_abs_re_add_abs_im _).trans ?_` and prove the remaining obligations. Establish `h1` using `hp t ht`. Establish `h2` using `hq t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [Complex.sub_re, Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.I_re, Complex.ofReal_im, Complex.I_im, Complex.sub_im, Complex.add_im, Complex.mul_im, mul_zero, mul_one, sub_zero, add_zero, zero_add]`. Rewrite `h1`, `h2` using `[abs_sub_comm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem exists_smooth_near (a b : ℝ) {ψ : ℝ → ℂ} (hψ : Continuous ψ) {η : ℝ} (hη : 0 < η) :
     ∃ ψ' : ℝ → ℂ, ContDiff ℝ ∞ ψ' ∧ HasCompactSupport ψ' ∧ ∀ t ∈ Icc a b, ‖ψ t - ψ' t‖ ≤ η := by
@@ -82,57 +82,49 @@ theorem exists_smooth_near (a b : ℝ) {ψ : ℝ → ℂ} (hψ : Continuous ψ) 
 end WeakLimit
 
 /- English proof (translation)
-Use `set Kc : ℕ → ℝ → ℂ := fun N t => (K N t : ℂ) with hKc`. Establish `hKci : ∀ N, Integrable (Kc N)` using `fun N => (hKi N).ofReal`. Establish `hKn : ∀ N ξ, ‖𝓕 (Kc N) ξ‖ ≤ 1`. Introduce `N ξ`. Use `(WeakLimit.norm_fourier_le _ ξ).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Kc, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hK0 N _)]`. Conclude with `hK1 N`. Use `choose Φ hΦ using hconv`. Establish `hΦd : ∀ m : ℕ, ∃ C, ∀ ξ, ‖Φ ξ‖ ≤ C * (1 + |ξ|) ^ (-(m : ℝ))`. Introduce `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨C, N₀, hC⟩` from `hdecay m`. Conclude with `⟨C, fun ξ => le_of_tendsto ((hΦ ξ).norm) (eventually_atTop.2 ⟨N₀, fun N hN => hC N hN ξ⟩)⟩`. Establish `hΦm : AEStronglyMeasurable Φ` using `aestronglyMeasurable_of_tendsto_ae atTop (fun N => (WeakLimit.continuous_fourier_of_integrable (hKci N)).aestronglyMeasurable) (ae_of_all _ hΦ)`. Establish `hΦint : ∀ n : ℕ, Integrable (fun ξ : ℝ => ‖ξ‖ ^ n * ‖Φ ξ‖)`. Introduce `n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hC⟩` from `hΦd (n + 2)`. Establish `hI : Integrable (fun ξ : ℝ => C * (1 + ‖ξ‖) ^ (-(2 : ℝ)))` using `(integrable_one_add_norm (by norm_num)).const_mul C`. Use `hI.mono' ((continuous_norm.pow n).aestronglyMeasurable.mul hΦm.norm) (ae_of_all _ fun ξ => ?_)` and prove the remaining obligations. Establish `h1 : 0 < 1 + |ξ|` using `by positivity`. Rewrite using `[norm_mul, norm_pow, norm_norm, norm_norm, Real.norm_eq_abs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_natCast, mul_left_comm, ← Real.rpow_add h1]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦi : Integrable Φ` using `(integrable_norm_iff hΦm).1 (by simpa using hΦint 0)`. Use `set g : ℝ → ℂ := 𝓕⁻ Φ with hgdef`. Establish `hg : ContDiff ℝ ∞ g`. Rewrite using `[hgdef, Real.fourierInv_eq_fourier_comp_neg]`. Conclude with `Real.contDiff_fourier fun n _ => by simpa using (hΦint n).comp_neg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmooth : ∀ ψ : ℝ → ℂ, ContDiff ℝ ∞ ψ → HasCompactSupport ψ → Tendsto (fun N => ∫ t, ψ t * Kc N t) atTop (𝓝 (∫ t, ψ t * g t))`. Introduce `ψ hψ hψc`. Set `ψS` to `hψc.toSchwartzMap hψ`. Establish `hψi : Integrable ψ` using `hψ.continuous.integrable_of_hasCompactSupport hψc`. Establish `hθi : Integrable (𝓕⁻ ψ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(𝓕⁻ ψS).integrable (μ := volume)` as an intermediate fact. Rewrite `this` using `[SchwartzMap.fourierInv_coe]`. Then use the resulting hypothesis. Establish `hFψ : Integrable (𝓕 ψ)`. Use `(𝓕 ψS).integrable (μ := volume)` as an intermediate fact. Rewrite `this` using `[SchwartzMap.fourier_coe]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hinv : 𝓕 (𝓕⁻ ψ) = ψ` using `hψ.continuous.fourier_fourierInv_eq hψi hFψ`. Establish `e1 : ∀ N, ∫ t, ψ t * Kc N t = ∫ ξ, 𝓕⁻ ψ ξ * 𝓕 (Kc N) ξ`. Introduce `N`. Use `conv_lhs => rw [← hinv]`. Conclude with `WeakLimit.integral_fourier_mul_eq hθi (hKci N)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∫ t, ψ t * g t = ∫ ξ, 𝓕⁻ ψ ξ * Φ ξ` using `(WeakLimit.integral_fourierInv_mul_eq hψi hΦi).symm`. Repeatedly rewrite using `[e1, e2]`. Use `tendsto_integral_of_dominated_convergence (fun ξ => ‖𝓕⁻ ψ ξ‖) (fun N => ?_) hθi.norm (fun N => ae_of_all _ fun ξ => ?_) (ae_of_all _ fun ξ => (hΦ ξ).const_mul _)` and prove the remaining obligations. Conclude with `hθi.aestronglyMeasurable.mul (WeakLimit.continuous_fourier_of_integrable (hKci N)).aestronglyMeasurable`. Rewrite using `[norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hKn N ξ)`. Establish `hgi : LocallyIntegrable g` using `hg.continuous.locallyIntegrable`. Establish `hsupp : Function.support g ⊆ Icc a b`. Establish `hae : ∀ᵐ x, x ∈ (Icc a b)ᶜ → g x = 0`. Use `isClosed_Icc.isOpen_compl.ae_eq_zero_of_integral_contDiff_smul_eq_zero (hgi.locallyIntegrableOn _) fun φ hφ hφc hφs => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hlim` using `hsmooth (fun x => (φ x : ℂ)) (Complex.ofRealCLM.contDiff.comp hφ) (hφc.comp_left Complex.ofReal_zero)`. Establish `h0 : ∀ N, ∫ t, (φ t : ℂ) * Kc N t = 0`. Introduce `N`. Use `integral_eq_zero_of_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Distinguish the cases in `ht : t ∈ Icc a b`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: φ t = 0` using `image_eq_zero_of_notMem_tsupport fun h' => hφs h' ht`. Simplify using `[this]`. Establish `: K N t = 0` using `Function.notMem_support.1 fun h' => ht (hKs N h')`. Simplify using `[Kc, this]`. Rewrite `hlim` using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Repeatedly rewrite using `[Complex.real_smul]`. Conclude with `tendsto_nhds_unique hlim tendsto_const_nhds`. Introduce `x hx`. Assume the negation of the conclusion as `hxI`. Establish `hopen : IsOpen ((Icc a b)ᶜ ∩ Function.support g)` using `isClosed_Icc.isOpen_compl.inter hg.continuous.isOpen_support`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hnull : volume ((Icc a b)ᶜ ∩ Function.support g) = 0`. Rewrite using `[measure_eq_zero_iff_ae_notMem]`. Conclude with `hae.mono fun y hy hy' => hy'.2 (hy hy'.1)`. Conclude with `(hopen.measure_ne_zero volume ⟨x, hxI, hx⟩) hnull`. Use `⟨g, hg, closure_minimal hsupp isClosed_Icc, fun ψ hψ => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgc : HasCompactSupport g` using `isCompact_Icc.of_isClosed_subset (isClosed_tsupport g) (closure_minimal hsupp isClosed_Icc)`. Establish `hIK : ∀ φ : ℝ → ℂ, Continuous φ → ∀ N, Integrable (fun t => φ t * Kc N t)`. Introduce `φ hφ N`. Take `⟨B, hB⟩` from `(isCompact_Icc (a := a) (b := b)).exists_bound_of_continuousOn hφ.continuousOn`. Use `((hKi N).const_mul B).mono' (hφ.aestronglyMeasurable.mul (hKci N).aestronglyMeasurable) (ae_of_all _ fun t => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `ht : t ∈ Icc a b`. Rewrite using `[norm_mul]`. Simplify using `only [Kc, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hK0 N t)]`. Conclude with `mul_le_mul_of_nonneg_right (hB t ht) (hK0 N t)`. Establish `: K N t = 0` using `Function.notMem_support.1 fun h' => ht (hKs N h')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Kc, this]`. Establish `hIg : ∀ φ : ℝ → ℂ, Continuous φ → Integrable (fun t => φ t * g t)` using `fun φ hφ => (hφ.mul hg.continuous).integrable_of_hasCompactSupport hgc.mul_left`. Use `set L := ∫ t, ‖g t‖ with hLdef`. Establish `hL : 0 ≤ L` using `integral_nonneg fun _ => norm_nonneg _`. Rewrite using `[Metric.tendsto_atTop]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `δ hδ`. Use `set η := δ / (4 * (L + 2)) with hη`. Establish `hηpos : 0 < η` using `by positivity`. Take `⟨ψ', hψ', hψ'c, hψψ'⟩` from `WeakLimit.exists_smooth_near a b hψ hηpos`. Take `⟨N₀, hN₀⟩` from `Metric.tendsto_atTop.1 (hsmooth ψ' hψ' hψ'c) (δ / 2) (by positivity)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `⟨N₀, fun N hN => ?_⟩` and prove the remaining obligations. Establish `hdiffK : ‖(∫ t, ψ t * Kc N t) - ∫ t, ψ' t * Kc N t‖ ≤ η`. Rewrite using `[← integral_sub (hIK ψ hψ N) (hIK ψ' hψ'.continuous N)]`. Use `(norm_integral_le_of_norm_le ((hKi N).const_mul η) (ae_of_all _ fun t => ?_)).trans ?_` and prove the remaining obligations. Rewrite using `[← sub_mul, norm_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Distinguish the cases in `ht : t ∈ Icc a b`. Simplify using `only [Kc, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hK0 N t)]`. Conclude with `mul_le_mul_of_nonneg_right (hψψ' t ht) (hK0 N t)`. Establish `: K N t = 0` using `Function.notMem_support.1 fun h' => ht (hKs N h')`. Simplify using `[Kc, this]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_const_mul]`. Conclude with `mul_le_of_le_one_right hηpos.le (hK1 N)`. Establish `hdiffg : ‖(∫ t, ψ' t * g t) - ∫ t, ψ t * g t‖ ≤ η * L`. Rewrite using `[← integral_sub (hIg ψ' hψ'.continuous) (hIg ψ hψ), hLdef, ← integral_const_mul]`. Use `norm_integral_le_of_norm_le ((hg.continuous.norm.integrable_of_hasCompactSupport hgc.norm).const_mul η) (ae_of_all _ fun t => ?_)` and prove the remaining obligations.
-
-Rewrite using `[← sub_mul, norm_mul]`. Distinguish the cases in `ht : t ∈ Icc a b`. Rewrite using `[norm_sub_rev]`. Conclude with `mul_le_mul_of_nonneg_right (hψψ' t ht) (norm_nonneg _)`. Establish `: g t = 0` using `Function.notMem_support.1 fun h' => ht (hsupp h')`.
-
-Simplify using `[this]`. Establish `hmid : dist (∫ t, ψ' t * Kc N t) (∫ t, ψ' t * g t) < δ / 2` using `hN₀ N hN`. Rewrite `hmid`, the goal using `[dist_eq_norm]`. Establish `h3 : ‖(∫ t, ψ t * Kc N t) - ∫ t, ψ t * g t‖ ≤ ‖(∫ t, ψ t * Kc N t) - ∫ t, ψ' t * Kc N t‖ + ‖(∫ t, ψ' t * Kc N t) - ∫ t, ψ' t * g t‖ + ‖(∫ t, ψ' t * g t) - ∫ t, ψ t * g t‖` using `(norm_sub_le_norm_sub_add_norm_sub _ _ _).trans (by`. Combine the linear relations using `[norm_sub_le_norm_sub_add_norm_sub (∫ t, ψ' t * Kc N t) (∫ t, ψ' t * g t) (∫ t, ψ t * g t)])`.
-
-Establish `h4 : η + η * L < δ / 2`. Establish `hpos : 0 < 4 * (L + 2)` using `by positivity`. Establish `h5 : η * (4 * (L + 2)) = δ` using `by rw [hη]; field_simp`. Use polynomial arithmetic with `[mul_nonneg hηpos.le hL]`. Use `show ‖(∫ t, ψ t * Kc N t) - ∫ t, ψ t * g t‖ < δ`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_smooth_weak_limit {K : ℕ → ℝ → ℝ} {a b : ℝ} (hKi : ∀ N, Integrable (K N))
     (hK0 : ∀ N t, 0 ≤ K N t) (hK1 : ∀ N, ∫ t, K N t ≤ 1)

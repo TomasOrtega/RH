@@ -13,9 +13,9 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `isFiniteQC_twist (F := GlobalTheory.structureModule X) hN` as an intermediate fact. Use `(hA.eventually_isGloballyGenerated_twist (twist (GlobalTheory.structureModule X) N)).mono fun n hn => ?_` and prove the remaining obligations. Establish `hP` using `isLB_lbPow hA.isLB n`. Establish `hT` using `isLB_tens hN hP`. Take `⟨e⟩` from `nonempty_twist_twist_iso_of_cls_eq (GlobalTheory.structureModule X) hN hP hT (cls_tens hN hP hT)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(isGloballyGenerated_toMod_iff hT).1 ((hn.of_epi e.hom).of_epi (unitTwistIso _).hom)`.
+A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.eventually_isGenerated_tens_lbPow {X : Scheme.{0}} {A N : LB X} (hA : IsAmpleLB A)
     (hN : N.IsLB) : ∀ᶠ n : ℕ in atTop, IsGenerated (tens N (lbPow A n)) := by
@@ -29,9 +29,9 @@ theorem IsAmpleLB.eventually_isGenerated_tens_lbPow {X : Scheme.{0}} {A N : LB X
   exact (isGloballyGenerated_toMod_iff hT).1 ((hn.of_epi e.hom).of_epi (unitTwistIso _).hom)
 
 /- English proof (translation)
-Use `(hA.eventually_isGenerated_tens_lbPow hN).mono fun n hn => ?_` and prove the remaining obligations. Establish `hP` using `isLB_lbPow hA.isLB n`. Establish `hP'` using `isLB_lbPow hA.isLB (n + 1)`. Establish `hT` using `isLB_tens hN hP'`. Establish `hD` using `LB.isLB_div hT hA.isLB`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA.tensor_isGenerated hn hT ((cls_eq_zero_iff (LB.isLB_div hD hn.isLB)).1 ?_)` and prove the remaining obligations. Rewrite using `[cls_div hD hn.isLB, cls_div hT hA.isLB, cls_tens hN hP', cls_tens hN hP, cls_lbPow hA.isLB, cls_lbPow hA.isLB, succ_nsmul]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem IsAmpleLB.eventually_isAmpleLB_tens_lbPow_succ {X : Scheme.{0}} {A N : LB X}
     (hA : IsAmpleLB A) (hN : N.IsLB) : ∀ᶠ n : ℕ in atTop, IsAmpleLB (tens N (lbPow A (n + 1))) := by
@@ -46,7 +46,7 @@ theorem IsAmpleLB.eventually_isAmpleLB_tens_lbPow_succ {X : Scheme.{0}} {A N : L
   abel
 
 /- English proof (translation)
-Introduce `k _ _ X _ _ A N hA hN`. Take `⟨n, hn⟩` from `(hA.eventually_isAmpleLB_tens_lbPow_succ hN).exists`. Conclude with `⟨n + 1, Nat.succ_pos n, hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isAmpleLB_tens_lbPow : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ A N : LB X, IsAmpleLB A → N.IsLB → ∃ c : ℕ, 1 ≤ c ∧ IsAmpleLB (tens N (lbPow A c)) := by
   intro k _ _ X _ _ A N hA hN

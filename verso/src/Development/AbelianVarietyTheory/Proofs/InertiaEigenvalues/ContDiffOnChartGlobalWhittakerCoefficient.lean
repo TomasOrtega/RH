@@ -29,14 +29,14 @@ open GroundTheory.Automorphic.FourierWhittaker GlobalTheory.ConstTermSmooth
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use `chart_val F g 1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem chart_oneL (F : GA E a → ℂ) (g : GA E a) : chart F g (oneL E a) = F g := by
   have := chart_val F g 1
   simpa using this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Distinguish the cases in `h : IsUnit (Matrix.of y)`. Simplify using `only [chart, dif_pos h, GlobalTheory.JSW.WhitAlg.whit_eq, mul_assoc]`. Simplify using `only [chart, dif_neg h, zero_mul, integral_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem chart_whit (F : GA E a → ℂ) (g : GA E a) :
     chart (GlobalTheory.JSW.whit F) g = fun y => ∫ X in vecDomain E (Pos a),
@@ -47,13 +47,11 @@ theorem chart_whit (F : GA E a → ℂ) (g : GA E a) :
   · simp only [chart, dif_neg h, zero_mul, integral_zero]
 
 /- English proof (translation)
-Rewrite using `[chart_whit]`. Establish `hy : oneL E a ∈ invSet E a` using `isUnit_one`. Take `⟨S, hSy, hSU, hS⟩` from `local_compact_nhds (isOpen_invSet.mem_nhds hy)`. Establish `hm : Continuous fun p : (Pos a → Ad E) × Lie E a => ((uGL p.1 * g, p.2) : GA E a × Lie E a)` using `((continuous_uGL.comp continuous_fst).mul continuous_const).prodMk continuous_snd`. Establish `hmt : Set.MapsTo (fun p : (Pos a → Ad E) × Lie E a => ((uGL p.1 * g, p.2) : GA E a × Lie E a)) (Set.univ ×ˢ invSet E a) (Set.univ ×ˢ invSet E a)` using `fun p hp => ⟨Set.mem_univ _, hp.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `h.continuousOn_fderiv.comp hm.continuousOn hmt`. Establish `hc0` using `h.continuousOn_chart.comp hm.continuousOn hmt`. Take `⟨C, hC⟩` from `(isCompact_closure_vecDomain.prod hS).exists_bound_of_continuousOn (hc.mono (Set.prod_mono (Set.subset_univ _) hSU))`. Establish `hint : ∀ z ∈ invSet E a, Integrable (fun X => chart φ.1 (uGL X * g) z * (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ)) ((vecMeasure E (Pos a)).restrict (vecDomain E (Pos a)))` using `fun z hz => ((((hc0.comp_continuous (continuous_id.prodMk continuous_const) fun _ => ⟨trivial, hz⟩)).mul GlobalTheory.JSW.WhitAlg.continuous_psiNeg).continuousOn.integrableOn_compact isCompact_closure_vecDomain).mono_set subset_closure`. Establish `hint' : Integrable (fun X => (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ) • fderiv ℝ (chart φ.1 (uGL X * g)) (oneL E a)) ((vecMeasure E (Pos a)).restrict (vecDomain E (Pos a)))` using `((GlobalTheory.JSW.WhitAlg.continuous_psiNeg.smul (hc.comp_continuous (continuous_id.prodMk continuous_const) fun _ => ⟨trivial, hy⟩)).continuousOn.integrableOn_compact isCompact_closure_vecDomain).mono_set subset_closure`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsFiniteMeasure ((vecMeasure E (Pos a)).restrict (vecDomain E (Pos a))) := ⟨by rw [Measure.restrict_apply_univ, vecMeasure_vecDomain]; exact ENNReal.one_lt_top⟩`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (bound := fun _ => C) (F' := fun z X => (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ) • fderiv ℝ (chart φ.1 (uGL X * g)) z) hSy (Filter.eventually_of_mem (isOpen_invSet.mem_nhds hy) fun z hz => (hint z hz).1) (hint _ hy) hint' …` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem measurableSet_vecDomain] with X hX z hz`. Rewrite using `[norm_smul, Circle.norm_coe, one_mul]`. Conclude with `hC (X, z) ⟨subset_closure hX, hz⟩`.
-
-Use `.of_forall fun X z hz => ?_` and prove the remaining obligations. Conclude with `((contDiffAt_chart φ.2 _ (hSU hz)).differentiableAt (by simp)).hasFDerivAt.mul_const _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_chart_whit {φ : Sm E a} (h : Good φ) (g : GA E a) :
     HasFDerivAt (chart (GlobalTheory.JSW.whit φ.1) g)
@@ -92,11 +90,11 @@ theorem hasFDerivAt_chart_whit {φ : Sm E a} (h : Good φ) (g : GA E a) :
     exact ((contDiffAt_chart φ.2 _ (hSU hz)).differentiableAt (by simp)).hasFDerivAt.mul_const _
 
 /- English proof (translation)
-Use `(hasFDerivAt_chart_whit h g).congr_fderiv ?_` and prove the remaining obligations. Establish `hy : oneL E a ∈ invSet E a` using `isUnit_one`. Establish `e : ∀ X : Pos a → Ad E, (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ) • fderiv ℝ (chart φ.1 (uGL X * g)) (oneL E a) = ∑ i, (chart (lie E a (Module.finBasis ℝ (Lie E a) i) φ).1 (uGL X * g) (oneL E a) * (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ)) • coef i (oneL E a …` using `fun X => by`. Rewrite using `[fderiv_chart φ _ hy, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul, mul_comm]`. Repeatedly rewrite using `[e]`. Rewrite using `[integral_finset_sum _ fun i _ => ?_]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_smul_const, ← congrFun (chart_whit _ g) (oneL E a), chart_oneL]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hl` using `h.lie (Module.finBasis ℝ (Lie E a) i)`. Use `(Integrable.smul_const ?_ _)` and prove the remaining obligations. Repeatedly rewrite using `[chart_oneL]`. Conclude with `GlobalTheory.JSW.WhitAlg.integrableOn_whit (ContAut.continuous_of_isOpen_stab E a _ hl.2) g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_chart_whit' {φ : Sm E a} (h : Good φ) (g : GA E a) :
     HasFDerivAt (chart (GlobalTheory.JSW.whit φ.1) g)
@@ -120,7 +118,7 @@ theorem hasFDerivAt_chart_whit' {φ : Sm E a} (h : Good φ) (g : GA E a) :
     exact GlobalTheory.JSW.WhitAlg.integrableOn_whit (ContAut.continuous_of_isOpen_stab E a _ hl.2) g
 
 /- English proof (translation)
-Use `GlobalTheory.SmOfDeriv.mem_Sm_of_hasFDerivAt E a {f | ∃ ψ : Sm E a, Good ψ ∧ f = GlobalTheory.JSW.whit ψ.1} ?_ _ ⟨φ, h, rfl⟩` and prove the remaining obligations. Introduce and unpack `f ⟨ψ, hψ, rfl⟩`. Conclude with `⟨_, inferInstance, fun i => GlobalTheory.JSW.whit (lie E a (Module.finBasis ℝ (Lie E a) i) ψ).1, fun i => coef i (oneL E a), fun i => ⟨_, hψ.lie _, rfl⟩, hasFDerivAt_chart_whit' hψ⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem whit_mem_Sm (φ : Sm E a) (h : Good φ) : GlobalTheory.JSW.whit φ.1 ∈ Sm E a := by
   refine GlobalTheory.SmOfDeriv.mem_Sm_of_hasFDerivAt E a {f | ∃ ψ : Sm E a, Good ψ ∧ f = GlobalTheory.JSW.whit ψ.1} ?_ _
@@ -130,7 +128,7 @@ theorem whit_mem_Sm (φ : Sm E a) (h : Good φ) : GlobalTheory.JSW.whit φ.1 ∈
     fun i => coef i (oneL E a), fun i => ⟨_, hψ.lie _, rfl⟩, hasFDerivAt_chart_whit' hψ⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ hφ g`. Conclude with `whit_mem_Sm φ ⟨hφ.left, hφ.level⟩ g`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem whit_contDiffOn : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a),
     IsAutForm φ → ∀ g, ContDiffOn ℝ ∞ (chart (GlobalTheory.JSW.whit φ.1) g) (invSet E a) := by

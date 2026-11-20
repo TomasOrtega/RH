@@ -8,35 +8,33 @@ noncomputable section
 namespace GlobalTheory.LevCover
 
 /- English proof (translation)
-Introduce `Y Z P Q hfin het hP hQ`. Take `⟨U, hUc, HU⟩` from `hP`. Take `⟨V, hVc, HV⟩` from `hQ`. Set `B : Set Z.left` to `(U : Set Z.left) \ V`. Establish `hBo : IsOpen B` using `U.isOpen.sdiff hVc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hBc : IsClosed B` using `hUc.sdiff V.isOpen`. Establish `c1 : ∀ (Tb : Scheme.{0}) (t : Tb ⟶ Y), Set.range t.base ⊆ (Z.hom.base '' B)ᶜ ↔ ∀ (T : Over Y) (σ : T.left ⟶ Tb), σ ≫ t = T.hom → ∀ z : T ⟶ Z, P T z → Q T z`. Introduce `Tb t`. Prove the components needed by the constructor for the conclusion. Introduce `hW T σ hσ z hPz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hPz` using `[HU]`. Rewrite using `[HV]`. Introduce and unpack `_ ⟨w, rfl⟩`. Assume the negation of the conclusion as `hv`. Establish `hb : z.left.base w ∈ B` using `⟨hPz ⟨w, rfl⟩, hv⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Apply `hW ⟨σ.base w, rfl⟩` to reduce the goal to its premises. Use `⟨_, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Over.w z, ← hσ, Scheme.Hom.comp_apply]`. Introduce `H`. Introduce and unpack `_ ⟨τ, rfl⟩ ⟨u, hu, hτ⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Take `⟨p, hp1, hp2⟩` from `Scheme.Pullback.exists_preimage_pullback τ u hτ.symm`. Set `O : (pullback t Z.hom).Opens` to `(pullback.snd t Z.hom) ⁻¹ᵁ ⟨B, hBo⟩`. Set `T : Over Y` to `Over.mk (O.ι ≫ pullback.fst t Z.hom ≫ t)`. Set `z : T ⟶ Z` to `Over.homMk (O.ι ≫ pullback.snd t Z.hom) (by simp [T, pullback.condition])`. Establish `hmem : ∀ w, O.ι.base w ∈ (O : Set _)` using `fun w => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Opens.range_ι O]`. Conclude with `⟨w, rfl⟩`. Establish `hPz : P T z`. Rewrite using `[HU]`. Introduce and unpack `_ ⟨w, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `(hmem w).1`. Establish `hQz` using `H T (O.ι ≫ pullback.fst t Z.hom) (Category.assoc _ _ _) z hPz`. Rewrite `hQz` using `[HV]`. Establish `hpO : p ∈ Set.range O.ι.base`. Rewrite using `[Scheme.Opens.range_ι O]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (pullback.snd t Z.hom).base p ∈ B`. Rewrite using `[hp2]`. Conclude with `hu`. Take `⟨w, hw⟩` from `hpO`. Apply `hu.2` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `hQz ⟨w, rfl⟩` as an intermediate fact. Simplify `this` using `[z, Scheme.Hom.comp_apply, hw, hp2]`. Use `⟨(Z.hom.base '' B)ᶜ, (Z.hom.isClosedMap _ hBc).isOpen_compl, (Z.hom.isOpenMap _ hBo).isClosed_compl, c1, ?_⟩` and prove the remaining obligations. Introduce `k _ _ x`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce `hW z hPz`. Conclude with `(c1 (Sp k) x).1 hW (Over.mk x) (𝟙 _) (Category.id_comp _) z hPz`. Introduce `H`. Introduce and unpack `_ ⟨s, rfl⟩ ⟨u, hu, hs⟩`. Set `Bo : Z.left.Opens` to `⟨B, hBo⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Use `haveI : IsClosedImmersion Bo.ι := .of_isPreimmersion _ (by rw [Scheme.Opens.range_ι]; exact hBc)`. Establish `huB : u ∈ Set.range Bo.ι.base` using `by rw [Scheme.Opens.range_ι]; exact hu`. Take `⟨v, hv⟩` from `huB`. Take `⟨w, hw⟩` from `GlobalTheory.LevCover.exists_lift_geom (Bo.ι ≫ Z.hom) x (by`. Introduce and unpack `_ ⟨s', rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨v, ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim s' s, Scheme.Hom.comp_apply, hv, hs])`. Set `z : Over.mk x ⟶ Z` to `Over.homMk (w ≫ Bo.ι) (by simpa using hw)`. Establish `hPz : P _ z`. Rewrite using `[HU]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Establish `: (Bo.ι.base (w.base y)) ∈ (Bo : Set Z.left)`. Rewrite using `[← Scheme.Opens.range_ι Bo]`. Conclude with `⟨_, rfl⟩`. Conclude with `this.1`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hQz` using `H z hPz`. Rewrite `hQz` using `[HV]`. Set `y0 : Sp k` to `(⊥ : PrimeSpectrum k)`. Establish `h1 : (Bo.ι.base (w.base y0)) ∈ (Bo : Set Z.left)`. Rewrite using `[← Scheme.Opens.range_ι Bo]`.
-
-Conclude with `⟨_, rfl⟩`. Conclude with `h1.2 (hQz ⟨y0, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem implocus_open_closed : ∀ (Y : Scheme.{0}) (Z : Over Y) (P Q : ∀ T : Over Y, (T ⟶ Z) → Prop), IsFinite Z.hom → Etale Z.hom → GlobalTheory.LevCover.ClopenCond Z P → GlobalTheory.LevCover.ClopenCond Z Q → ∃ W : Set Y, IsOpen W ∧ IsClosed W ∧ (∀ (Tb : Scheme.{0}) (t : Tb ⟶ Y), Set.range t.base ⊆ W ↔ ∀ (T : Over Y) (σ : T.left ⟶ Tb), σ ≫ t = T.hom → ∀ z : T ⟶ Z, P T z → Q T z) ∧ ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Y), Set.range x.base ⊆ W ↔ ∀ z : Over.mk x ⟶ Z, P _ z → Q _ z := by
   intro Y Z P Q hfin het hP hQ

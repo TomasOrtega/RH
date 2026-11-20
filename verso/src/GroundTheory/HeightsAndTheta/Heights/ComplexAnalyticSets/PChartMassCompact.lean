@@ -19,9 +19,9 @@ namespace ChartMassCompact
 variable {n d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.AnForm.A.mdisc_eq_sum_polCoef]`. Use `mul_eq_zero_of_right _ (Finset.sum_eq_zero fun r _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hr : Function.Surjective r`. Take `⟨j, hj⟩` from `hr i`. Use `mul_eq_zero_of_right _ (Matrix.det_eq_zero_of_row_eq_zero j fun k => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hj, hi]`. Rewrite using `[ReciprocityTheory.AnForm.A.polCoef_eq_zero r hr, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mdisc_coord_zero {D : ℕ} (M : Fin D → Matrix (Fin D) (Fin D) ℂ) (i : Fin D)
     (hi : M i = 0) : ReciprocityTheory.AnForm.mdisc M = 0 := by
@@ -34,9 +34,9 @@ theorem mdisc_coord_zero {D : ℕ} (M : Fin D → Matrix (Fin D) (Fin D) ℂ) (i
   · rw [ReciprocityTheory.AnForm.A.polCoef_eq_zero r hr, zero_mul]
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ φ =ᶠ[𝓝 z] fderiv ℝ (0 : (Fin D → ℂ) → ℝ)` using `h.fderiv`. Establish `h2 : fderiv ℝ (fderiv ℝ φ) z = 0`. Rewrite using `[h1.fderiv_eq]`. Simplify using the standard rewrite rules. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[ReciprocityTheory.AnForm.hessC, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hessC_eq_zero_of_eventuallyEq {D : ℕ} {φ : (Fin D → ℂ) → ℝ} {z : Fin D → ℂ}
     (h : φ =ᶠ[𝓝 z] 0) : ReciprocityTheory.AnForm.hessC φ z = 0 := by
@@ -48,11 +48,9 @@ theorem hessC_eq_zero_of_eventuallyEq {D : ℕ} {φ : (Fin D → ℂ) → ℝ} {
   simp [ReciprocityTheory.AnForm.hessC, h2]
 
 /- English proof (translation)
-Take `⟨U, hU, hxU, hsd, hsx, -⟩` from `hs`. Establish `hcont : ContinuousAt s (A *ᵥ x)` using `(hsd.differentiableAt (hU.mem_nhds hxU)).continuousAt`. Establish `hev : (ψ i ∘ s) =ᶠ[𝓝 (A *ᵥ x)] 0`. Establish `hnhds : (tsupport (ψ i))ᶜ ∈ 𝓝 (s (A *ᵥ x))`. Rewrite using `[hsx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isClosed_tsupport _).isOpen_compl.mem_nhds hx`. Use `filter_upwards [hcont.preimage_mem_nhds hnhds] with y hy`. Use `show ψ i (s y) = 0`. Conclude with `image_eq_zero_of_notMem_tsupport hy`. Unfold `ReciprocityTheory.AnForm.maDens`.
-
-Rewrite using `[mdisc_coord_zero _ i (hessC_eq_zero_of_eventuallyEq hev)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem maDens_eq_zero {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     {x : Fin n → ℂ} {s : (Fin d → ℂ) → Fin n → ℂ} (hs : IsSheetAt J A x s)
@@ -72,9 +70,9 @@ theorem maDens_eq_zero {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d
   simp
 
 /- English proof (translation)
-Take `⟨K, hK, hle⟩` from `hC n d J A ψ R hJ hd hA hψ`. Establish `hmeas` using `(SheetSumMeasurable.proof n d J A ((Metric.closedBall (0 : Fin n → ℂ) R).indicator fun _ => (1 : ℝ)) ψ hJ hd hA (measurable_const.indicator Metric.isClosed_closedBall.measurableSet) hψ).2`. Use `⟨hmeas.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hbd : Bornology.IsBounded (WithLp.ofLp ⁻¹' Metric.closedBall (0 : Fin n → ℂ) R : Set (EuclideanSpace ℂ (Fin n)))` using `(PiLp.antilipschitzWith_ofLp 2 fun _ : Fin n => ℂ).isBounded_preimage Metric.isBounded_closedBall`. Take `⟨R', hR'⟩` from `(Metric.isBounded_iff_subset_ball 0).1 hbd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hle (fun _ => 1) measurable_const`. Simplify using `only [enorm_one, setLIntegral_one] at h1`. Use `h1.trans_lt (ENNReal.mul_lt_top hK ?_)` and prove the remaining obligations. Conclude with `(measure_mono (Set.inter_subset_inter_right _ hR')).trans_lt (hMF n d J hJ hd R')`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_ball (hC : ChartMassCompare.Statement) (hMF : MassFinite.Statement)
     (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ) (ψ : Fin d → (Fin n → ℂ) → ℝ)
@@ -96,11 +94,11 @@ theorem integrable_ball (hC : ChartMassCompare.Statement) (hMF : MassFinite.Stat
   exact (measure_mono (Set.inter_subset_inter_right _ hR')).trans_lt (hMF n d J hJ hd R')
 
 /- English proof (translation)
-Unfold `chartAbsDens sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum]`. Use `Finset.sum_le_sum fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Take `⟨hxZ, rfl⟩` from `hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `split_ifs with h`. Simplify using `only`. Distinguish the cases in `hxK : x ∈ K`. Rewrite using `[Set.indicator_of_mem (hKB hxK), one_mul, abs_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hM x ⟨hxZ, hxK⟩) (abs_nonneg _)`.
+Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Rewrite using `[hvan x _ h.choose_spec hxK, abs_zero]`. Check the signs of the components of the expression. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chartAbsDens_le (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ)
     (f : (Fin n → ℂ) → ℝ) (ψ : Fin d → (Fin n → ℂ) → ℝ) {K B : Set (Fin n → ℂ)} {M : ℝ}
@@ -130,13 +128,13 @@ end ChartMassCompact
 open ChartMassCompact in
 
 /- English proof (translation)
-Introduce `n d J A f ψ hJ hd hA hf hψ hsupp`. Choose the witnesses or unpack the hypotheses as in `⟨K, hKc, hvan⟩ : ∃ K : Set (Fin n → ℂ), IsCompact K ∧ ∀ x s, IsSheetAt J A x s → x ∉ K → f x * ReciprocityTheory.AnForm.maDens (fun k => ψ k ∘ s) (A *ᵥ x) = 0 := by`. Break down `hsupp with hc | ⟨i, hc⟩` into its components or cases. Conclude with `⟨tsupport f, hc, fun x s _ hx => by rw [image_eq_zero_of_notMem_tsupport hx, zero_mul]⟩`. Conclude with `⟨tsupport (ψ i), hc, fun x s hs hx => by rw [maDens_eq_zero hs ψ i hx, mul_zero]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨R, hR⟩` from `(Metric.isBounded_iff_subset_closedBall 0).1 hKc.isBounded`. Take `⟨M, hM⟩` from `(hKc.inter_left (SheetSumMeasurable.isClosed_zeroSet J)).exists_bound_of_continuousOn (hf.mono Set.inter_subset_left)`. Establish `heq : chartAbsDens J A f ψ = chartAbsDens J A ((zeroSet J).piecewise f 0) ψ`. Use function extensionality and compare the values at `y`. Unfold `chartAbsDens sheetSum`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use `finsum_congr fun x => finsum_congr fun hx => ?_` and prove the remaining obligations. Simplify using `only [Set.piecewise_eq_of_mem _ _ _ hx.1]`. Establish `hgm : Measurable ((zeroSet J).piecewise f 0)` using `hf.measurable_piecewise continuousOn_const (SheetSumMeasurable.isClosed_zeroSet J).measurableSet`. Establish `hmeas : AEStronglyMeasurable (chartAbsDens J A f ψ) volume`. Rewrite using `[heq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(SheetSumMeasurable.proof n d J A _ ψ hJ hd hA hgm hψ).2.aestronglyMeasurable`. Use `((integrable_ball hC hMF J A ψ hJ hd hA hψ R).const_mul (max M 0)).mono' hmeas (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (chartAbsDens_nonneg _ _ _ _ _)]`. Conclude with `chartAbsDens_le J A f ψ hR (fun x hx => (Real.norm_eq_abs (f x) ▸ hM x hx).trans (le_max_left _ _)) (le_max_right _ _) hvan y (FibreBound.proof n d J A hJ hd hA y).2.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartMassCompact.proof (hC : ChartMassCompare.Statement) (hMF : MassFinite.Statement) :
     ChartMassCompact.Statement := by

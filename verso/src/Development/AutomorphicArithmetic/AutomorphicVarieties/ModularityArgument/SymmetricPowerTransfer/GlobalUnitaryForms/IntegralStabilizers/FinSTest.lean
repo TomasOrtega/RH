@@ -10,7 +10,7 @@ section Generic
 variable {I G : Type} [Group G] {Gv : I → Type} [∀ v, Group (Gv v)] {K : ∀ v, Subgroup (Gv v)} (P : RPG G Gv K)
 
 /- English proof (translation)
-Simplify using `[RPG.box, Subgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_box (U : ∀ v, Subgroup (Gv v)) (g : G) : g ∈ P.box U ↔ ∀ v, P.p v g ∈ U v := by
   simp [RPG.box, Subgroup.mem_iInf]
@@ -20,9 +20,9 @@ end Generic
 variable {F : Type} [Field F] [NumberField F] {Δ : F}
 
 /- English proof (translation)
-Introduce `g hg`. Rewrite `hg` using `[Dat.U2, mem_box]`. Rewrite using `[mem_box]`. Introduce `v`. Establish `hv'` using `hg v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `Dat.J2v at hv'`. Use `split_ifs at hv' with hv`. Conclude with `(h.sig v hv).levelTwoLeIntegral hv'`. Conclude with `hv'`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem normOneLevel_le_maximalCompact (D : Dat Δ) (h : D.Ok) : D.U2 ≤ (rpg _ _).box fun v => KD (cv v Δ) (Ov v) := by
   intro g hg
@@ -36,17 +36,15 @@ theorem normOneLevel_le_maximalCompact (D : Dat Δ) (h : D.Ok) : D.U2 ≤ (rpg _
   · exact hv'
 
 /- English proof (translation)
-Use `set L := (rpg (fun v => ↥(DX (cv v Δ))) fun v => KD (cv v Δ) (Ov v)).box fun v => KD (cv v Δ) (Ov v) with hL`. Use `set M := ⨅ v : (D.Sg : Set (Pl F)), Subgroup.comap ((rpg (fun v => ↥(DX (cv v Δ))) fun v => KD (cv v Δ) (Ov v)).p v) (D.S v).J2 with hM`. Establish `hsub : L ⊓ M ≤ D.U2`. Introduce `g hg`. Rewrite `hg` using `[Subgroup.mem_inf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hgL, hgM⟩` from `hg`. Rewrite `hgL` using `[hL, mem_box]`. Rewrite `hgM` using `[hM, Subgroup.mem_iInf]`. Rewrite using `[Dat.U2, mem_box]`. Introduce `v`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `Dat.J2v`. Use `split_ifs with hv`. Conclude with `hgM ⟨v, hv⟩`. Conclude with `hgL v`. Establish `hMne : M.relIndex L ≠ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hM]`. Use `haveI : Finite (D.Sg : Set (Pl F)) := D.Sg.finite_toSet.to_subtype`. Apply `Subgroup.relIndex_iInf_ne_zero` to reduce the goal to its premises. Introduce and unpack `⟨v, hv⟩`. Rewrite using `[Subgroup.relIndex_comap]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmap : Subgroup.map ((rpg (fun v => ↥(DX (cv v Δ))) fun v => KD (cv v Δ) (Ov v)).p v) L ≤ KD (cv v Δ) (Ov v)`. Rewrite using `[Subgroup.map_le_iff_le_comap]`. Introduce `g hg`. Rewrite `hg` using `[hL, mem_box]`. Conclude with `hg v`.
-
-Introduce `h0`. Conclude with `(h.sig v hv).levelTwoFiniteIndex (Subgroup.relIndex_eq_zero_of_le_right hmap h0)`. Establish `hinf : (L ⊓ M).relIndex L ≠ 0` using `Subgroup.relIndex_inf_ne_zero (by rw [Subgroup.relIndex_self]; exact one_ne_zero) hMne`. Introduce `h0`. Conclude with `hinf (Subgroup.relIndex_eq_zero_of_le_left hsub h0)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem relIndex_normOneLevel_maximalCompact_ne_zero (D : Dat Δ) (h : D.Ok) : D.U2.relIndex ((rpg _ _).box fun v => KD (cv v Δ) (Ov v)) ≠ 0 := by
   set L := (rpg (fun v => ↥(DX (cv v Δ))) fun v => KD (cv v Δ) (Ov v)).box fun v => KD (cv v Δ) (Ov v) with hL
@@ -82,18 +80,16 @@ theorem relIndex_normOneLevel_maximalCompact_ne_zero (D : Dat Δ) (h : D.Ok) : D
   exact hinf (Subgroup.relIndex_eq_zero_of_le_left hsub h0)
 
 /- English proof (translation)
-Use `group`.
+A detailed English derivation is pending.
 -/
 private theorem conj_mul {G : Type} [Group G] (x a b : G) : x⁻¹ * (a * b) * x = x⁻¹ * a * x * (x⁻¹ * b * x) := by group
 
 /- English proof (translation)
-Rewrite `ha` using `[Dat.U2, mem_box]`. Prove the components needed by the constructor for the conclusion. Use `all_goals`. Unfold `Dat.FS`. Apply `finprod_congr` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Establish `hav` using `ha v`. Express the relevant statement in the definitionally equal form `(a : ∀ v, ↥(DX (cv v Δ))) v ∈ Dat.J2v D v at hav`. Unfold `Dat.J2v at hav`. Unfold `Dat.fSv`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.coe_mul, Pi.mul_apply]`. Use `split_ifs at hav ⊢ with hv`. Conclude with `((h.sig v hv).S_inv (t v) (ht v hv) _ hav _).1`. Rewrite using `[Subgroup.mul_mem_cancel_left _ hav]`. Conclude with `((h.sig v hv).S_inv (t v) (ht v hv) _ hav _).2`.
-
-Rewrite using `[Subgroup.mul_mem_cancel_right _ hav]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fs_mul_left_right_eq_of_mem_u2 (D : Dat Δ) (h : D.Ok) (t : Dat.Par F) (ht : D.Cone t) (a b : DA Δ) (ha : a ∈ D.U2) :
     D.FS t (a * b) = D.FS t b ∧ D.FS t (b * a) = D.FS t b := by
@@ -115,11 +111,11 @@ private theorem fs_mul_left_right_eq_of_mem_u2 (D : Dat Δ) (h : D.Ok) (t : Dat.
   · rw [Subgroup.mul_mem_cancel_right _ hav]
 
 /- English proof (translation)
-Introduce `h0`. Apply `hg` to reduce the goal to its premises. Unfold `Dat.FS`. Apply `finprod_eq_zero _ v h0` to reduce the goal to its premises. Establish `hfin : {w | ¬ (g : ∀ v, ↥(DX (cv v Δ))) w ∈ KD (cv w Δ) (Ov w)}.Finite` using `Filter.eventually_cofinite.1 g.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `((D.Sg.finite_toSet.union hfin)).subset` to reduce the goal to its premises. Introduce `w hw`. Rewrite `hw` using `[Function.mem_mulSupport]`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Finset.mem_coe, Set.mem_setOf_eq, not_or, not_not] at hc`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Apply `hw` to reduce the goal to its premises. Unfold `Dat.fSv`. Rewrite using `[if_neg hc.1]`. Simplify using `[one, hc.2]`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem fSv_apply_ne_zero_of_fs_ne_zero (D : Dat Δ) (t : Dat.Par F) (g : DA Δ) (hg : D.FS t g ≠ 0) (v : Pl F) :
     D.fSv t v ((g : ∀ v, ↥(DX (cv v Δ))) v) ≠ 0 := by
@@ -140,31 +136,27 @@ private theorem fSv_apply_ne_zero_of_fs_ne_zero (D : Dat Δ) (t : Dat.Par F) (g 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `F _ _ Δ D hD V _ _ ch x B hB t ht`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u y`. Rewrite using `[hB.ω]`. Simplify using `only [MonoidHom.one_apply, inv_one, Units.val_one, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `Dat.FSx`. Rewrite using `[Subgroup.coe_mul, conj_mul]`. Conclude with `(fs_mul_left_right_eq_of_mem_u2 D hD t ht _ _ ((hB.U u).1 u.2)).1`. Introduce `u y`. Rewrite using `[hB.ω]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonoidHom.one_apply, inv_one, Units.val_one, one_mul]`. Unfold `Dat.FSx`. Express the relevant statement in the definitionally equal form `D.FS t (x⁻¹ * ↑(y * ↑u) * x) = D.FS t (x⁻¹ * ↑y * x)`. Rewrite using `[Subgroup.coe_mul, conj_mul]`. Conclude with `(fs_mul_left_right_eq_of_mem_u2 D hD t ht _ _ ((hB.U u).1 u.2)).2`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `{q : ↥(SA Δ) ⧸ B.U | D.FSx t x (Quotient.out q) ≠ 0}.Finite`. Establish `hc : ∀ (y : ↥(SA Δ)) (v : Pl F), ((x⁻¹ * ↑y * x : DA Δ) : ∀ v, ↥(DX (cv v Δ))) v ∈ SU (cv v Δ)`. Introduce `y v`. Establish `hy : (y : DA Δ) ∈ SA Δ` using `y.2`. Unfold `SA at hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy` using `[Subgroup.mem_iInf]`. Establish `hyv : ((y : DA Δ) : ∀ v, ↥(DX (cv v Δ))) v ∈ SU (cv v Δ)` using `hy v`. Use `haveI : (SU (cv v Δ)).Normal := by`. Unfold `SU`. Use `infer_instance`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Pi.mul_apply, Pi.inv_apply]`. Conclude with `Subgroup.Normal.conj_mem' inferInstance _ hyv _`. Set `Φ : ↥(SA Δ) ⧸ B.U → ((v : ↥D.Sg) → ↥(SU (cv v.1 Δ)) ⧸ (D.S v.1).J2.subgroupOf (SU (cv v.1 Δ)))` to `fun q v => QuotientGroup.mk ⟨_, hc (Quotient.out q) v.1⟩`. Establish `hT : (Set.univ.pi fun v : ↥D.Sg => {c : ↥(SU (cv v.1 Δ)) ⧸ (D.S v.1).J2.subgroupOf (SU (cv v.1 Δ)) | (D.S v.1).fS (t v.1) ((Quotient.out c : ↥(SU (cv v.1 Δ))) : ↥(DX (cv v.1 Δ))) ≠ 0}).Finite` using `Set.Finite.pi fun v => (hD.sig v.1 v.2).S_fin (t v.1) (ht v.1 v.2)`. Apply `Set.Finite.of_finite_image (f := Φ)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hT.subset` to reduce the goal to its premises. Introduce and unpack `_ ⟨q, hq, rfl⟩ v -`. Take `⟨j, hj⟩` from `QuotientGroup.mk_out_eq_mul ((D.S v.1).J2.subgroupOf (SU (cv v.1 Δ))) (⟨_, hc (Quotient.out q) v.1⟩ : ↥(SU (cv v.1 Δ)))`. Use `show (D.S v.1).fS (t v.1) ((Quotient.out (QuotientGroup.mk _ : ↥(SU (cv v.1 Δ)) ⧸ _) : ↥(SU (cv v.1 Δ))) : ↥(DX (cv v.1 Δ))) ≠ 0`. Rewrite using `[hj, Subgroup.coe_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hjm : ((j : ↥(SU (cv v.1 Δ))) : ↥(DX (cv v.1 Δ))) ∈ (D.S v.1).J2` using `Subgroup.mem_subgroupOf.1 j.2`. Rewrite using `[((hD.sig v.1 v.2).S_inv (t v.1) (ht v.1 v.2) _ hjm _).2]`. Establish `hne` using `fSv_apply_ne_zero_of_fs_ne_zero D t _ hq v.1`. Unfold `Dat.fSv at hne`. Rewrite `hne` using `[if_pos v.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hne`. Introduce `q1 hq1 q2 hq2 heq`. Rewrite using `[← QuotientGroup.out_eq' q1, ← QuotientGroup.out_eq' q2, QuotientGroup.eq, hB.U]`. Establish `hsplit : x⁻¹ * ((((Quotient.out q1)⁻¹ * Quotient.out q2 : ↥(SA Δ))) : DA Δ) * x = (x⁻¹ * ↑(Quotient.out q1) * x)⁻¹ * (x⁻¹ * ↑(Quotient.out q2) * x)`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `group`. Rewrite using `[hsplit, Dat.U2, mem_box]`. Introduce `v`. Establish `hk : ∀ q : ↥(SA Δ) ⧸ B.U, D.FSx t x (Quotient.out q) ≠ 0 → v ∉ D.Sg → ((x⁻¹ * ↑(Quotient.out q) * x : DA Δ) : ∀ v, ↥(DX (cv v Δ))) v ∈ KD (cv v Δ) (Ov v)`. Introduce `q hq hv`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hne` using `fSv_apply_ne_zero_of_fs_ne_zero D t _ hq v`. Unfold `Dat.fSv at hne`. Rewrite `hne` using `[if_neg hv]`. Simplify `hne` using `[one]`. Establish `key : (((x⁻¹ * ↑(Quotient.out q1) * x : DA Δ) : ∀ v, ↥(DX (cv v Δ))) v)⁻¹ * ((x⁻¹ * ↑(Quotient.out q2) * x : DA Δ) : ∀ v, ↥(DX (cv v Δ))) v ∈ D.J2v v`.
-
-Unfold `Dat.J2v`. Use `split_ifs with hv`. Establish `hv'` using `congrFun heq ⟨v, hv⟩`. Simplify using `only [Φ] at hv'`. Rewrite `hv'` using `[QuotientGroup.eq, Subgroup.mem_subgroupOf, Subgroup.coe_mul, Subgroup.coe_inv]`.
-
-Conclude with `hv'`. Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ (hk q1 hq1 hv)) (hk q2 hq2 hv)`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finS_test : ∀ (F : Type) [Field F] [NumberField F] (Δ : F) (D : Dat Δ), D.Ok → ∀ (V : Type) [AddCommGroup V] [Module ℂ V]
     (ch : F → ℂ) (x : DA Δ) (B : Base (SU Δ) (SA Δ) V), D.IsBS ch x B → ∀ t, D.Cone t → (Base.Tw.one B).IsTest (D.FSx t x) := by

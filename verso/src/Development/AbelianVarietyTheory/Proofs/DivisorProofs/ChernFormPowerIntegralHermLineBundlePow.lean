@@ -14,7 +14,7 @@ namespace GlobalTheory.HSAmp.ChPow
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ} {B : LB X}
 
 /- English proof (translation)
-Establish `h` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul isOpen_univ (p := fun _ => (0 : ℝ)) (q := fun _ => (0 : ℝ)) contDiffOn_const contDiffOn_const 1 (Set.mem_univ v)`. Simplify using `only [mul_zero, add_zero, Complex.ofReal_one, one_smul] at h`. Simplify using `using h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cHess_zero' (v : ReciprocityTheory.L2DbarEstimates.V D) :
     ReciprocityTheory.L2DbarEstimates.cHess D (fun _ => ((0 : ℝ) : ℂ)) v = 0 := by
@@ -24,11 +24,11 @@ theorem cHess_zero' (v : ReciprocityTheory.L2DbarEstimates.V D) :
   simpa using h
 
 /- English proof (translation)
-Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U (j PUnit.unit)))`. Establish `hm` using `mem_over c.e hy hj`. Establish `e` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul ho (p := fun _ => (0 : ℝ)) contDiffOn_const (contDiffOn_chart (hφ (j PUnit.unit)) c) (n : ℝ) hm`. Rewrite `e` using `[cHess_zero', zero_add]`. Simplify using `only [zero_add, Complex.ofReal_natCast] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Eq.trans ?_ e` and prove the remaining obligations. Use `show ReciprocityTheory.L2DbarEstimates.cHess D (fun v => (((φ.pow n).φ j (c.e.symm v) : ℝ) : ℂ)) (c.e y) = _`. Use `congr 1`. Use function extensionality and compare the values at `v`. Simplify using `only [Function.comp_apply, Weight.zpow_φ]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hess_pow {φ : Weight p σ B} (hφ : φ.IsCInf) (c : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source)
     (n : ℕ) {j : PUnit → B.ι} (hj : y ∈ ptsIn p σ (B.U (j PUnit.unit))) :
@@ -48,7 +48,7 @@ theorem hess_pow {φ : Weight p σ B} (hφ : φ.IsCInf) (c : AlgChart p σ D) {y
   rfl
 
 /- English proof (translation)
-Establish `hj` using `(mem_pow_iff (n := (n : ℤ))).1 (mem_pick (φ.pow n).isLB y)`. Rewrite using `[c.chernDens_eq hφ hy hj, AlgChart.chernDens, hess_pow hφ c hy n hj, Matrix.det_smul, Fintype.card_fin, ← Complex.ofReal_natCast, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chernDens_pow {φ : Weight p σ B} (hφ : φ.IsCInf) (c : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source)
     (n : ℕ) : c.chernDens (φ.pow n) y = (n : ℝ) ^ D * c.chernDens φ y := by
@@ -58,7 +58,7 @@ theorem chernDens_pow {φ : Weight p σ B} (hφ : φ.IsCInf) (c : AlgChart p σ 
   ring
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.ChernScale.glueMeas_restrict_eq (fun c : AlgChart p σ D => c.e) (ρ := fun c y => ENNReal.ofReal ((ε : ℤ) * c.chernDens (φ.pow n) y)) (ρ' := fun c y => ENNReal.ofReal ((ε : ℤ) * c.chernDens φ y)) ENNReal.ofReal_ne_top MeasurableSet.univ fun c y hy _ => by`. Rewrite using `[chernDens_pow hφ c hy n, mul_left_comm, ENNReal.ofReal_mul (by positivity)]`. Rewrite using `[Weight.chernPart, Weight.chernPart]`. Simplify `h` using `only [Measure.restrict_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem chernPart_pow {φ : Weight p σ B} (hφ : φ.IsCInf) (n : ℕ) (ε : ℤˣ) :
     (φ.pow n).chernPart D ε = ENNReal.ofReal ((n : ℝ) ^ D) • φ.chernPart D ε := by
@@ -77,7 +77,7 @@ namespace GlobalTheory.HSAmp
 open ChPow in
 
 /- English proof (translation)
-Introduce `k _ X _ p D _ L n w`. Rewrite using `[chInt, chInt, mul_finsum]`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Use `show ((L.φ σ).pow n).chernInt D Set.univ (w σ) = _`. Rewrite using `[Weight.chernInt, Weight.chernInt, chernPart_pow (L.cInf σ), chernPart_pow (L.cInf σ), Measure.restrict_smul, Measure.restrict_smul, integral_smul_measure, integral_smul_measure, ENNReal.toReal_ofReal (by positivity), smul_eq_mul, smul_eq_mul, mul_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chInt_pow : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (L : HermLB p) (n : ℕ) (w : ∀ σ, CxPts p σ → ℝ), chInt (L.pow n) D w = (n : ℝ) ^ D * chInt L D w := by

@@ -23,7 +23,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω} (𝔐 : HodgeCpt Y S y)
 
 /- English proof (translation)
-The claim follows from `Lat.patch_of_unique S _ _ hp hq fun p' hp' h' => by by_contra hne exact Lat.not_inFibre_of_coprime q ((Nat.coprime_primes (𝔐.S_prime _ hp) (𝔐.S_prime _ hp')).2 (Ne.symm hne)) hq h'`.
+A detailed English derivation is pending.
 -/
 theorem V_eq_HT (s : CMType H ⊕ CMType H) {q : Cpt 𝔐.ξ} {p : ℕ} (hp : p ∈ S) (hq : InFibre 𝔐.ξ p q) :
     𝔐.V s q = 𝔐.HT p s q :=
@@ -32,9 +32,9 @@ theorem V_eq_HT (s : CMType H ⊕ CMType H) {q : Cpt 𝔐.ξ} {p : ℕ} (hp : p 
     exact Lat.not_inFibre_of_coprime q ((Nat.coprime_primes (𝔐.S_prime _ hp) (𝔐.S_prime _ hp')).2 (Ne.symm hne)) hq h'
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ p ∈ S, InFibre 𝔐.ξ p q`. Take `⟨p, hp, hq⟩` from `h`. Rewrite using `[V_eq_HT 𝔐 s hp hq]`. Establish `hd : 𝔐.dR s q ≤ 𝔐.M.htDual 𝔐.t.PP.L (p ^ 𝔐.R p) 𝔐.ρ (𝔐.emb s) q` using `𝔐.M.eigLat_le_htDual _ _ _ _ q`. Break down `s with τ | τ` into its components or cases.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `e he`. Use `Submodule.subset_span ⟨he.2, fun d _ => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ (⟨_, Sandwich.emb_mem 𝔐 _ q d⟩ : regAt 𝔐.ξ q) (hd he)`. Conclude with `hd`. Conclude with `(Lat.patch_of_not S _ _ fun p hp hf => h ⟨p, hp, hf⟩).ge`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dR_le_V (s : CMType H ⊕ CMType H) (q : Cpt 𝔐.ξ) : 𝔐.dR s q ≤ 𝔐.V s q := by
   by_cases h : ∃ p ∈ S, InFibre 𝔐.ξ p q
@@ -50,7 +50,7 @@ theorem dR_le_V (s : CMType H ⊕ CMType H) (q : Cpt 𝔐.ξ) : 𝔐.dR s q ≤ 
   · exact (Lat.patch_of_not S _ _ fun p hp hf => h ⟨p, hp, hf⟩).ge
 
 /- English proof (translation)
-Establish `e : 𝔐.V s q = 𝔐.dR s q` using `Lat.patch_of_not S _ _ h`. Rewrite using `[e]`. Conclude with `fun _ he => he.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem V_le_lat_of_not (s : CMType H ⊕ CMType H) (q : Cpt 𝔐.ξ) (h : ∀ p ∈ S, ¬ InFibre 𝔐.ξ p q) :
     𝔐.V s q ≤ 𝔐.M.lat q := by
@@ -59,15 +59,13 @@ theorem V_le_lat_of_not (s : CMType H ⊕ CMType H) (q : Cpt 𝔐.ξ) (h : ∀ p
   exact fun _ he => he.1
 
 /- English proof (translation)
-Take `⟨hκr, -, -, hS⟩` from `hκ q hq`. Establish `hdual : ∀ s' : CMType H ⊕ CMType H, ∀ e ∈ 𝔐.M.htDual 𝔐.t.PP.L (p ^ 𝔐.R p) 𝔐.ρ (𝔐.emb s') q, κ • e ∈ 𝔐.M.lat q` using `fun s' e he => ((hS s').2 e he).1`. Rewrite `he` using `[V_eq_HT 𝔐 s hp hq]`. Break down `s with τ | τ` into its components or cases. Express the relevant statement in the definitionally equal form `e ∈ 𝔐.M.htW 𝔐.t.PP.L (p ^ 𝔐.R p) 𝔐.ρ (𝔐.emb (.inl τ)) (differentIdeal ℤ (𝓞 E)) q at he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition.
 
-Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx`. Establish `h1` using `hdual _ _ (hx.2 _ hD)`. Rewrite `h1` using `[map_natCast, smul_smul, mul_comm]`. Conclude with `h1`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Rewrite using `[smul_add]`. Conclude with `add_mem ha hb`. Consider the case `smul t a _ ha`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `: ((D₂ : Ω) * κ) • t • a = t • (((D₂ : Ω) * κ) • a)`. Rewrite using `[show t • a = (t : Ω) • a from rfl, show t • (((D₂ : Ω) * κ) • a) = (t : Ω) • (((D₂ : Ω) * κ) • a) from rfl, smul_comm]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ t ha`. Establish `h1` using `hdual _ _ he`.
-
-Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ (⟨_, natCast_mem _ D₂⟩ : regAt 𝔐.ξ q) h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_V_mem_lat (s : CMType H ⊕ CMType H) (q : Cpt 𝔐.ξ) {p : ℕ} (hp : p ∈ S) (hq : InFibre 𝔐.ξ p q) {κ : Ω}
     (hκ : HT.Sandwich 𝔐 p κ) (D₂ : ℕ) (hD : (D₂ : 𝓞 E) ∈ differentIdeal ℤ (𝓞 E)) {e : 𝔐.Li} (he : e ∈ 𝔐.V s q) :
@@ -100,15 +98,15 @@ theorem smul_V_mem_lat (s : CMType H ⊕ CMType H) (q : Cpt 𝔐.ξ) {p : ℕ} (
 end Loc
 
 /- English proof (translation)
-Introduce `E _ _ _`. Take `⟨D₁, hD₁, hop⟩` from `GlobalTheory.T.eigen_projector_denominator E`. Establish `hdiff : differentIdeal ℤ (𝓞 E) ≠ ⊥` using `differentIdeal_ne_bot`. Establish `hD₂ : 0 < Ideal.absNorm (differentIdeal ℤ (𝓞 E))` using `Nat.pos_of_ne_zero (by rwa [Ne, Ideal.absNorm_eq_zero_iff])`. Establish `hmem : ((Ideal.absNorm (differentIdeal ℤ (𝓞 E)) : ℕ) : 𝓞 E) ∈ differentIdeal ℤ (𝓞 E)` using `Ideal.absNorm_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `Ideal.absNorm (differentIdeal ℤ (𝓞 E)) = D₂ at hD₂ hmem`. Use `⟨D₁ * D₂, Nat.mul_pos hD₁ hD₂, ?_⟩` and prove the remaining obligations. Introduce `H D l Xo c Y S Ω _ K _ J _ y 𝔐 s`. Use `haveI := Sandwich.charZero_of_hodgeCpt 𝔐`. Take `⟨T₁, hT₁, hTe, hTD⟩` from `hop Ω 𝔐.Li 𝔐.ρ (𝔐.emb s)`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hreg : ∀ (q : Cpt 𝔐.ξ) (n : ℕ) {e : 𝔐.Li}, e ∈ 𝔐.M.lat q → (n : Ω) • e ∈ 𝔐.M.lat q` using `fun q n _ he => Submodule.smul_mem _ (⟨_, natCast_mem _ n⟩ : regAt 𝔐.ξ q) he`. Use `⟨(D₂ : Ω) • T₁, fun v hv => ?_, fun q => ⟨fun e he => ?_, fun h e he => ?_, fun p hp hq κ hκ e he => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hTD v hv, smul_smul]`. Use `push_cast`. Rewrite using `[mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hst : T₁ e ∈ 𝔐.M.lat q` using `Sandwich.opRing_stable (𝔐.M.lat q).toAddSubgroup (fun a e he => Sandwich.lat_act 𝔐 q a e he) (fun a e he => (𝔐.M.lat q).smul_mem ⟨_, Sandwich.emb_mem 𝔐 s q a⟩ he) hT₁ e he`. Conclude with `dR_le_V 𝔐 s q ⟨hreg q D₂ hst, (eigSp 𝔐.ρ (𝔐.emb s)).smul_mem _ (hTe e)⟩`. Conclude with `hreg q _ (V_le_lat_of_not 𝔐 s q h he)`. Establish `h1` using `hreg q D₁ (smul_V_mem_lat 𝔐 s q hp hq hκ D₂ hmem he)`. Rewrite `h1` using `[smul_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : ((D₁ * D₂ : ℕ) : Ω) * κ = (D₁ : Ω) * ((D₂ : Ω) * κ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hodge_loc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], ∃ Dn : ℕ, 0 < Dn ∧ ∀ (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (s : CMType H ⊕ CMType H), ∃ T : Module.End Ω 𝔐.Li, (∀ v ∈ eigSp 𝔐.ρ (𝔐.emb s), T v = (Dn : Ω) • v) ∧ ∀ q : Cpt 𝔐.ξ, (∀ e ∈ 𝔐.M.lat q, T e ∈ 𝔐.V s q) ∧ ((∀ p ∈ S, ¬ InFibre 𝔐.ξ p q) → ∀ e ∈ 𝔐.V s q, (Dn : Ω) • e ∈ 𝔐.M.lat q) ∧ ∀ p ∈ S, InFibre 𝔐.ξ p q → ∀ κ : Ω, HT.Sandwich 𝔐 p κ → ∀ e ∈ 𝔐.V s q, ((Dn : Ω) * κ) • e ∈ 𝔐.M.lat q := by
   intro E _ _ _

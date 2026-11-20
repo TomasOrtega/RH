@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.LevelOK
 
 /- English proof (translation)
-Introduce `D V β L`. Take `⟨hO, hC, hS, U, hU, hk⟩` from `GlobalTheory.Mem.LevelSmooth.level_open_compact_smooth D V β L`. Use `⟨⟨hC, ?_⟩, U, hU, fun k hkU hkG => ?_⟩` and prove the remaining obligations. Establish `: (((Lev.levA V (lev D.sp.cm (HSpace.gram V) β L)).subgroupOf (GfC V)) : Set (GfC V)) = Subtype.val ⁻¹' ((Subgroup.comap (Lev.finE V) (lev D.sp.cm (HSpace.gram V) β L)) : Set (GA D V))`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Subgroup.mem_subgroupOf, Lev.levA, x.2]`. Rewrite using `[this]`. Conclude with `hO.preimage continuous_subtype_val`. Take `⟨h1, h2⟩` from `hk k hkU hkG`. Conclude with `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem levOK_all : ∀ D : D7, LevOK D := by
   intro D V β L

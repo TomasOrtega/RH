@@ -15,7 +15,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Establish `hmem : u - v ∈ wSub D 𝔞 r` using `(Submodule.Quotient.eq _).mp e`. Establish `h1 : l (u - v) = 1` using `hl.2.2.1 _ hmem`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem level_congr {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {S : Scheme.{0}} {s : S ⟶ Sp R} {o : Obj b N s} {𝔞 : Ideal (𝓞 D.F)} {r : ℕ} {T : Over S}
@@ -28,7 +28,7 @@ private theorem level_congr {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [C
     _ = l v := by rw [h1, _root_.one_mul]
 
 /- English proof (translation)
-Take `⟨g, -, huniq⟩` from `hrep T (fun y => f ≫ lu y) (GlobalTheory.T.etale_level_base_change p D R b N S s o 𝔞 r _ _ lu f hlu)`. Rewrite using `[huniq f (fun y => rfl), huniq f' (fun y => (h y).symm)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rep_ext {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {S : Scheme.{0}} {s : S ⟶ Sp R} {o : Obj b N s} {𝔞 : Ideal (𝓞 D.F)} {r : ℕ} {Y : Scheme.{0}} {π : Y ⟶ S}
@@ -40,37 +40,33 @@ private theorem rep_ext {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommR
   rw [huniq f (fun y => rfl), huniq f' (fun y => (h y).symm)]
 
 /- English proof (translation)
-Introduce `hRep hPt hGrp p _ D R _ b N 𝔞 r hN hcop het S _ s o`. Take `⟨Y, π, lu, hfin, het', hlu, hrep⟩` from `hRep p D R b N 𝔞 r hcop het S s o`. Take `⟨o', ⟨m⟩⟩` from `GlobalTheory.HTPull.exists_objMap_pull p D R b N S Y s π o`. Establish `hpb` using `m.cart.1`. Establish `hluw : ∀ y, (lu y).left ≫ o.A.hom = 𝟙 Y ≫ π` using `fun y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.id_comp]`. Conclude with `Over.w (lu y)`. Set `lv : D.La → (𝟙_ (Over Y) ⟶ o'.A)` to `fun y => Over.homMk (hpb.lift (lu y).left (𝟙 Y) (hluw y)) (by rw [hpb.lift_snd]; rfl)`. Establish `hlv : ∀ y, (lv y).left ≫ m.φ = (lu y).left` using `fun y => hpb.lift_fst _ _ _`. Establish `hlv2 : ∀ y, (lv y).left ≫ o'.A.hom = 𝟙 Y` using `fun y => hpb.lift_snd _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ y, ptOf m (lv y) = lu y` using `fun y => by ext1; exact hlv y`. Establish `hcomp : ∀ (a c : LevGrp D 𝔞 r) (y : D.La), lu (levAct a (levAct c y)) = lu (levAct (a * c) y)` using `fun a c y => level_congr hlu (by rw [mkQ_levAct, mkQ_levAct, mkQ_levAct]; rfl)`. Establish `hone : ∀ y, lu (levAct (1 : LevGrp D 𝔞 r) y) = lu y` using `fun y => level_congr hlu (by rw [mkQ_levAct]; rfl)`. Establish `hact : ∀ g : LevGrp D 𝔞 r, ∃ f : Over.mk π ⟶ Over.mk π, ∀ y, f ≫ lu y = lu (levAct g y)` using `fun g => (hrep _ _ (GlobalTheory.T.etale_level_group_action p D R b N S s o 𝔞 r _ lu g hlu)).exists`. Use `choose fg hfg using hact`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfgeq : ∀ (f : Over.mk π ⟶ Over.mk π) (g : LevGrp D 𝔞 r), (∀ y, f ≫ lu y = lu (levAct g y)) → f = fg g` using `fun f g hf => rep_ext hlu hrep (fun y => by rw [hf, hfg])`. Use `⟨Y, π, o', m, lv, fun g => (fg g).left, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.isEtLev_iff_isEtLevOver' p D R b N S Y s π (π ≫ s) o o' m 𝔞 r lv]`. Simplify `hlu` using `only [hpt]`. Use `⟨(hGrp p D 𝔞 r het.1).2, ?_, ?_, ?_, hfin, het', ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show (fg 1).left = 𝟙 Y`. Rewrite using `[← hfgeq (𝟙 _) 1 (fun y => by rw [Category.id_comp, hone])]`. Both sides reduce to the same expression. Introduce `a c show (fg (a * c)).left = (fg a).left ≫ (fg c).left`. Rewrite using `[← hfgeq (fg a ≫ fg c) (a * c) (fun y => by rw [Category.assoc, hfg, hfg, hcomp])]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Both sides reduce to the same expression. Introduce `a`. Conclude with `Over.w (fg a)`. Prove the components needed by the constructor for the conclusion. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, _, _, a, ha⟩` from `GlobalTheory.FinEt.exists_algClosed_point S x`. Take `⟨l, hl⟩` from `hPt p D R b N 𝔞 r hcop het S s o k a`. Take `⟨f, -, -⟩` from `hrep _ l hl`. Establish `hx : x ∈ Set.range ⇑a` using `by rw [ha]; rfl`. Take `⟨q, hq⟩` from `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : f.left ≫ π = a` using `Over.w f`. Use `⟨f.left q, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq, ← Scheme.Hom.comp_apply, hw]`. Introduce `K _ _ y y' hyy`. Set `j : Over.mk (y ≫ π) ⟶ Over.mk π` to `Over.homMk y rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `j' : Over.mk (y ≫ π) ⟶ Over.mk π` to `Over.homMk y' hyy.symm`. Establish `hl` using `GlobalTheory.T.etale_level_base_change p D R b N S s o 𝔞 r _ _ lu j hlu`. Establish `hl'` using `GlobalTheory.T.etale_level_base_change p D R b N S s o 𝔞 r _ _ lu j' hlu`. Take `⟨g, hg, hguniq⟩` from `GlobalTheory.T.existsUnique_levGrp_of_isEtLevOver p D R b N S s o 𝔞 r K (y ≫ π) _ _ hl hl'`. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: j ≫ fg g = j'` using `rep_ext hlu hrep (fun z => by rw [Category.assoc, hfg]; exact hg z)`. Conclude with `congrArg (fun q => Over.Hom.left q) this`. Introduce `a ha`. Apply `hguniq` to reduce the goal to its premises. Introduce `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `show j ≫ lu (levAct a z) = j' ≫ lu z`. Establish `: j ≫ fg a = j'` using `by ext1; exact ha`. Rewrite using `[← hfg, ← Category.assoc, this]`. Introduce `T t o₁ m₁ l hl`. Establish `hl'` using `(GlobalTheory.T.isEtLev_iff_isEtLevOver' p D R b N S T s t (t ≫ s) o o₁ m₁ 𝔞 r l).mp hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg, hguniq⟩` from `hrep (Over.mk t) _ hl'`. Establish `hgw : g.left ≫ π = t` using `Over.w g`. Establish `hφ : ∀ (f : T ⟶ Y) (_ : f ≫ π = t) (m₃ : GlobalTheory.UPel.HT.ObjMap o₁ o (f ≫ π)), m₃.φ = m₁.φ` using `fun f hf m₃ => Rigid.objMap_phi_unique p D R b N hN hcop S T s (t ≫ s) o o₁ (f ≫ π) t m₃ m₁ hf`. Establish `hgl : ∀ y, (l y).left ≫ m₁.φ = g.left ≫ (lu y).left` using `fun y => by`. Use `congrArg (fun q => Over.Hom.left q) (hg y)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.symm`. Use `⟨g.left, ⟨hgw, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨m₂, hm₂⟩` from `GlobalTheory.HTSympCover.exists_objMap_cancel_φ (by rw [hgw]; exact m₁ : GlobalTheory.UPel.HT.ObjMap o₁ o (g.left ≫ π)) m`. Use `⟨m₂, fun y => ?_⟩` and prove the remaining obligations. Apply `hpb.hom_ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, hm₂, hφ _ hgw, Category.assoc, hlv, hgl]`. Rewrite using `[Category.assoc, m₂.cart.1.w, ← Category.assoc, Over.w (l y), Category.assoc, hlv2, Category.comp_id]`. Conclude with `Category.id_comp _`. Introduce and unpack `f' ⟨hf', m₂', hm₂'⟩`. Take `⟨m₃, hm₃⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ m₂' m`.
-
-Establish `: (Over.homMk f' hf' : Over.mk t ⟶ Over.mk π) = g`. Apply `hguniq` to reduce the goal to its premises. Introduce `y`. Use `ext1`. Use `show f' ≫ (lu y).left = (l y).left ≫ m₁.φ`.
-
-Rewrite using `[← hlv, ← Category.assoc, ← hm₂' y, Category.assoc, ← hm₃, hφ f' hf' m₃]`. Conclude with `congrArg (fun q => Over.Hom.left q) this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.finCover_holds :
     RepAll → PtAll → GrpFin → FinCover := by

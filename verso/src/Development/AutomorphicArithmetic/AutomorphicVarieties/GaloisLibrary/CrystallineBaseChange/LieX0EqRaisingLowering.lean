@@ -16,7 +16,7 @@ private noncomputable def rot (t : ℝ) : TR.Kinf F 2 :=
 
 omit [NumberField F] in
 /- English proof (translation)
-Use extensionality with `i j v`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [rot]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem rot_zero : rot 0 = (1 : TR.Kinf F 2) := by
   ext i j v
@@ -25,9 +25,9 @@ private theorem rot_zero : rot 0 = (1 : TR.Kinf F 2) := by
 private noncomputable def X0 : TR.Lie F 2 := TR.toL !![0, 1; -1, 0]
 
 /- English proof (translation)
-Unfold `TR.Eop`. Rewrite using `[← LinearMap.sub_apply, ← map_sub]`. Use `congr 2`. Use extensionality with `i j u`. Take `rfl : u = v` from `Subsingleton.elim _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [X0]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lie_X0_eq_raising_lowering [IsTotallyReal F] [Subsingleton (InfinitePlace F)] (v : InfinitePlace F) (φ : TR.Sm F 2) :
     TR.Eop v 0 1 φ - TR.Eop v 1 0 φ = TR.lie F 2 X0 φ := by
@@ -39,9 +39,9 @@ private theorem lie_X0_eq_raising_lowering [IsTotallyReal F] [Subsingleton (Infi
   fin_cases i <;> fin_cases j <;> simp [X0]
 
 /- English proof (translation)
-Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun v => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify `Real.hasDerivAt_cos 0` using `[X0, rot]`. Simplify `Real.hasDerivAt_sin 0` using `[X0, rot]`. Simplify `(Real.hasDerivAt_sin 0).fun_neg` using `[X0, rot]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `Real.hasDerivAt_cos 0` using `[X0, rot]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem rot_deriv : HasDerivAt (fun t : ℝ => TR.toL (Unitary.toUnits (rot (F := F) t)).val) X0 0 := by
   refine hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun v => ?_
@@ -52,9 +52,9 @@ private theorem rot_deriv : HasDerivAt (fun t : ℝ => TR.toL (Unitary.toUnits (
   · simpa [X0, rot] using Real.hasDerivAt_cos 0
 
 /- English proof (translation)
-Set `U' : Submodule ℂ (GA F 2 → ℂ)` to `U.map (TR.Sm F 2).subtype`. Establish `hcl : IsClosed (U' : Set (GA F 2 → ℂ))` using `U'.closed_of_finiteDimensional`. Establish `key : ∀ g, HasDerivAt (fun t => (TR.cptRep F 2 (rot t) ψ).1 g) ((TR.lie F 2 X0 ψ).1 g) 0` using `fun g => TR.hasDerivAt_curve ψ g (fun t => Unitary.toUnits (rot t)) X0 (by rw [rot_zero, map_one]) rot_deriv`. Establish `hm : (TR.lie F 2 X0 ψ).1 ∈ U'`. Use `hcl.mem_of_tendsto (b := nhdsWithin (0 : ℝ) {0}ᶜ) (f := fun t g => slope (fun t => (TR.cptRep F 2 (rot t) ψ).1 g) 0 t) (tendsto_pi_nhds.2 fun g => hasDerivAt_iff_tendsto_slope.1 (key g)) (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `U'.smul_of_tower_mem ((t - 0)⁻¹ : ℝ) (U'.sub_mem (Submodule.mem_map_of_mem (hU (rot t) ψ hψ)) (Submodule.mem_map_of_mem (hU (rot 0) ψ hψ)))`. Take `⟨χ, hχ, e⟩` from `hm`. Rewrite using `[← Subtype.ext e]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem lie_mem [IsTotallyReal F] (U : Submodule ℂ (TR.Sm F 2)) [FiniteDimensional ℂ U]
     (hU : ∀ k, ∀ ψ ∈ U, TR.cptRep F 2 k ψ ∈ U) (ψ : TR.Sm F 2) (hψ : ψ ∈ U) : TR.lie F 2 X0 ψ ∈ U := by
@@ -72,11 +72,11 @@ private theorem lie_mem [IsTotallyReal F] (U : Submodule ℂ (TR.Sm F 2)) [Finit
   rwa [← Subtype.ext e]
 
 /- English proof (translation)
-Set `U : Submodule ℂ M` to `Submodule.span ℂ (Set.range fun k => ρ k φ)`. Establish `hUV : U ≤ V` using `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact hV k)`. Establish `hU : ∀ k, ∀ ψ ∈ U, ρ k ψ ∈ U` using `fun k ψ hψ => by`. Establish `h : U ≤ U.comap (ρ k)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k', rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span ⟨k * k', by simp⟩)`. Conclude with `h hψ`. Establish `hφU : φ ∈ U` using `Submodule.subset_span ⟨1, by simp⟩`. Establish `: Nontrivial U` using `⟨⟨⟨φ, hφU⟩, 0, fun h => hφ0 (congrArg Subtype.val h)⟩⟩`. Take `⟨z, hz⟩` from `Module.End.exists_eigenvalue (D.restrict (hD U hf hU))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨ψ, hψ⟩` from `hz.exists_hasEigenvector`. Conclude with `⟨ψ.1, hUV ψ.2, fun h => hψ.2 (Subtype.ext h), z, congrArg Subtype.val hψ.apply_eq_smul⟩`.
+A detailed English derivation is pending.
 -/
 private theorem eig_abs {G M : Type} [Group G] [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ G M) (D : Module.End ℂ M)
     (hD : ∀ U : Submodule ℂ M, FiniteDimensional ℂ U → (∀ k, ∀ ψ ∈ U, ρ k ψ ∈ U) → ∀ ψ ∈ U, D ψ ∈ U)
@@ -97,13 +97,13 @@ private theorem eig_abs {G M : Type} [Group G] [AddCommGroup M] [Module ℂ M] (
   exact ⟨ψ.1, hUV ψ.2, fun h => hψ.2 (Subtype.ext h), z, congrArg Subtype.val hψ.apply_eq_smul⟩
 
 /- English proof (translation)
-Rewrite using `[TR.act]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_cpt [IsTotallyReal F] (k : TR.Kinf F 2) : TR.act (.cpt k) = TR.cptRep F 2 k := by
   rw [TR.act]
 
 /- English proof (translation)
-Take `⟨φ, hφ, hφ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot π.ne_bot`. Take `⟨ψ, h1, h2, z, h3⟩` from `eig_abs (TR.cptRep F 2) (TR.lie F 2 X0) (fun U _ hU => lie_mem U hU) π.V φ hφ0 (fun k => by rw [← act_cpt]; exact π.stable _ φ hφ) (π.cusp φ hφ).1.kfin`. Conclude with `⟨ψ, h1, h2, z, fun v => (lie_X0_eq_raising_lowering v ψ).trans h3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem eig [IsTotallyReal F] [Subsingleton (InfinitePlace F)] (π : TR.CuspSub F 2) :
     ∃ φ ∈ π.V, φ ≠ 0 ∧ ∃ z : ℂ, ∀ v, TR.Eop v 0 1 φ - TR.Eop v 1 0 φ = z • φ := by
@@ -113,13 +113,13 @@ private theorem eig [IsTotallyReal F] [Subsingleton (InfinitePlace F)] (π : TR.
   exact ⟨ψ, h1, h2, z, fun v => (lie_X0_eq_raising_lowering v ψ).trans h3⟩
 
 /- English proof (translation)
-Establish `hr : IsRot (F` using `F) (fun _ => 2 * Real.pi) 1 := by`. Use extensionality with `i j v`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, ψ.1 g ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Conclude with `h0 (Subtype.ext (funext h))`. Establish `h1` using `rotEig F ψ z he _ _ hr g`. Rewrite `h1` using `[map_one, mul_one]`. Establish `h2 : Complex.exp (z * (2 * Real.pi)) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `mul_right_cancel₀ hg (h1.symm.trans (one_mul _).symm)`. Establish `: Unique (InfinitePlace F)` using `uniqueOfSubsingleton (Classical.arbitrary _)`. Simplify using `using h3`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h2`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hpi : (2 * Real.pi : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero]`. Apply `mul_right_cancel₀ hpi` to reduce the goal to its premises. Rewrite using `[hn]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem int_of [IsTotallyReal F] [Subsingleton (InfinitePlace F)] (ψ : TR.Sm F 2) (h0 : ψ ≠ 0) (z : ℂ)
     (he : ∀ v, TR.Eop v 0 1 ψ - TR.Eop v 1 0 ψ = z • ψ) : ∃ n : ℤ, z = Complex.I * n := by
@@ -146,7 +146,7 @@ end UpperTheory.V.Br.WeightVectorLie
 
 open UpperTheory.V.Br.WeightVectorLie in
 /- English proof (translation)
-Introduce `π`. Take `⟨φ, hφ, h0, z, he⟩` from `eig π`. Take `⟨n, rfl⟩` from `int_of φ h0 z he`. Conclude with `⟨φ, hφ, h0, n, he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Br.wtVec :
     UpperTheory.V.Br.WtVec := by

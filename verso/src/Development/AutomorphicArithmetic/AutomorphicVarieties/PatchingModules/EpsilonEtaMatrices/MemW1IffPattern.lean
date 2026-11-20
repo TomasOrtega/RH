@@ -8,7 +8,7 @@ section SlopeTestRemainingChoices
 variable {A X : Type} [CommRing A] [CommRing X] [Algebra A X] {g n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => simp [Finset.sum_insert hi, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem sum_a {ι : Type} (s : Finset ι) (f : ι → DD X g) : (∑ i ∈ s, f i).a = ∑ i ∈ s, (f i).a := by
   classical
@@ -17,7 +17,7 @@ private theorem sum_a {ι : Type} (s : Finset ι) (f : ι → DD X g) : (∑ i �
   | insert i s hi ih => simp [Finset.sum_insert hi, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => simp [Finset.sum_insert hi, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem sum_ep {ι : Type} (s : Finset ι) (f : ι → DD X g) (j) :
     (∑ i ∈ s, f i).ep j = ∑ i ∈ s, (f i).ep j := by
@@ -27,7 +27,7 @@ private theorem sum_ep {ι : Type} (s : Finset ι) (f : ι → DD X g) (j) :
   | insert i s hi ih => simp [Finset.sum_insert hi, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => simp [Finset.sum_insert hi, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem sum_ep' {ι : Type} (s : Finset ι) (f : ι → DD X g) (j) :
     (∑ i ∈ s, f i).ep' j = ∑ i ∈ s, (f i).ep' j := by
@@ -37,7 +37,7 @@ private theorem sum_ep' {ι : Type} (s : Finset ι) (f : ι → DD X g) (j) :
   | insert i s hi ih => simp [Finset.sum_insert hi, ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => simp [Finset.sum_insert hi, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem sum_eta {ι : Type} (s : Finset ι) (f : ι → DD X g) : (∑ i ∈ s, f i).eta = ∑ i ∈ s, (f i).eta := by
   classical
@@ -51,27 +51,27 @@ Both sides reduce to the same expression.
 private theorem alg_eq (c : A) : algebraMap A (DD X g) c = DD.C (algebraMap A X c) := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext a b <;> simp [Matrix.mul_apply, DD.epM, sum_a, sum_ep, sum_ep', sum_eta]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem epM_mul_epM (Z Z' : Fin g → Matrix (Fin n) (Fin n) X) : DD.epM Z * DD.epM Z' = 0 := by
   ext a b <;> simp [Matrix.mul_apply, DD.epM, sum_a, sum_ep, sum_ep', sum_eta]
 
 /- English proof (translation)
-Apply the tactic sequence `ext a b <;> simp [DD.epM, sub_eq_add_neg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem epM_sub (Z Z' : Fin g → Matrix (Fin n) (Fin n) X) :
     DD.epM (fun j => Z j - Z' j) = DD.epM Z - DD.epM Z' := by
   ext a b <;> simp [DD.epM, sub_eq_add_neg]
 
 /- English proof (translation)
-Apply the tactic sequence `ext a b <;> simp [Matrix.mul_apply, DD.epM, sum_a, sum_ep, sum_ep', sum_eta, alg_eq]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mul_epM (M : Matrix (Fin n) (Fin n) A) (Z : Fin g → Matrix (Fin n) (Fin n) X) :
     M.map (algebraMap A (DD X g)) * DD.epM Z = DD.epM fun j => M.map (algebraMap A X) * Z j := by
   ext a b <;> simp [Matrix.mul_apply, DD.epM, sum_a, sum_ep, sum_ep', sum_eta, alg_eq]
 
 /- English proof (translation)
-Apply the tactic sequence `ext a b <;> simp [Matrix.mul_apply, DD.epM, sum_a, sum_ep, sum_ep', sum_eta, alg_eq]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem epM_mul (M : Matrix (Fin n) (Fin n) A) (Z : Fin g → Matrix (Fin n) (Fin n) X) :
     DD.epM Z * M.map (algebraMap A (DD X g)) = DD.epM fun j => Z j * M.map (algebraMap A X) := by
@@ -81,13 +81,13 @@ private def Pat (s t : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) (DD X g)) : P
   ∀ i j, (Z i j).ep' = 0 ∧ (Z i j).eta = 0 ∧ (s i = t j → (Z i j).ep = 0) ∧ (s i ≠ t j → (Z i j).a = 0)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `⟨funext fun m => ?_, ?_, fun e => funext fun m => ?_, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[sum_ep']`. Conclude with `Finset.sum_eq_zero fun c _ => by simp [(hP i c).1, (hQ c j).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_eta]`. Conclude with `Finset.sum_eq_zero fun c _ => by simp [(hP i c).1, (hQ c j).1, (hP i c).2.1, (hQ c j).2.1]`. Rewrite using `[sum_ep]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : s i = t c`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[(hP i c).2.2.1 h, (hQ c j).2.2.1 (h.symm.trans e)]`. Simplify using `[(hP i c).2.2.2 h, (hQ c j).2.2.2 (fun h' => h (e.trans h'.symm))]`. Rewrite using `[sum_a]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : s i = t c`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[(hQ c j).2.2.2 (fun h' => e (h.trans h'))]`. Simplify using `[(hP i c).2.2.2 h]`.
+A detailed English derivation is pending.
 -/
 private theorem Pat.mul {s t u : Fin n → Bool} {P Q : Matrix (Fin n) (Fin n) (DD X g)} (hP : Pat s t P)
     (hQ : Pat t u Q) : Pat s u (P * Q) := by
@@ -110,18 +110,18 @@ private theorem Pat.mul {s t u : Fin n → Bool} {P Q : Matrix (Fin n) (Fin n) (
     · simp [(hP i c).2.2.2 h]
 
 /- English proof (translation)
-Introduce `i j` and use `⟨rfl, rfl, fun _ => rfl, fun e => by simp [h i j e]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem pat_map {s t : Fin n → Bool} (M : Matrix (Fin n) (Fin n) A) (h : ∀ i j, s i ≠ t j → M i j = 0) :
     Pat s t (M.map (algebraMap A (DD X g))) := fun i j =>
   ⟨rfl, rfl, fun _ => rfl, fun e => by simp [h i j e]⟩
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨funext fun m => ?_, ?_, fun e => funext fun m => ?_, fun e => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases c : i = j <;> simp [DD.epM, Matrix.one_apply, c]`. Apply the tactic sequence `by_cases c : i = j <;> simp [DD.epM, Matrix.one_apply, c]`. Use `h m i j e` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Distinguish the cases in `c : i = j`. Substitute `c` using the available equality. Simplify using `[DD.epM, this]`. Simplify using `[DD.epM, c, this]`. Establish `c : i ≠ j` using `by rintro rfl; exact e rfl`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[DD.epM, c]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem pat_add {s : Fin n → Bool} (M : Fin g → Matrix (Fin n) (Fin n) X)
     (h : ∀ m i j, s i = s j → M m i j = 0) : Pat s s (1 + DD.epM M) := by
@@ -137,7 +137,7 @@ private theorem pat_add {s : Fin n → Bool} (M : Fin g → Matrix (Fin n) (Fin 
     simp [DD.epM, c]
 
 /- English proof (translation)
-Establish `e : 1 - DD.epM M = 1 + DD.epM fun m => - M m`. Apply the tactic sequence `ext a b <;> simp [DD.epM, sub_eq_add_neg]`. Rewrite using `[e]`. Conclude with `pat_add _ fun m i j c => by simp [h m i j c]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pat_sub {s : Fin n → Bool} (M : Fin g → Matrix (Fin n) (Fin n) X)
     (h : ∀ m i j, s i = s j → M m i j = 0) : Pat s s (1 - DD.epM M) := by
@@ -147,7 +147,7 @@ private theorem pat_sub {s : Fin n → Bool} (M : Fin g → Matrix (Fin n) (Fin 
   exact pat_add _ fun m i j c => by simp [h m i j c]
 
 /- English proof (translation)
-Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : ((i : ℕ) < a) ↔ ((j : ℕ) < a)`. Simplify using `[h, ddPart, ← SetLike.mem_coe]`. The claim follows by propositional logic. Simplify using `[h, ddPart, ← SetLike.mem_coe]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. The claim follows by propositional logic. Simplify using the standard rewrite rules.
 
 The claim follows by propositional logic.
 -/
@@ -159,15 +159,15 @@ private theorem mem_W1_iff_pattern (a : ℕ) (Z : Matrix (Fin n) (Fin n) (DD X g
   · simp [h, ddPart, ← SetLike.mem_coe]; tauto
 
 /- English proof (translation)
-Establish `e : (DD.epM fun j => (wi * (K j - (r * Y j * ri - Y j)) * w).map (algebraMap A X)) = wi.map (algebraMap A (DD X g)) * ((DD.epM fun j => (K j).map (algebraMap A X)) - (r.map (algebraMap A (DD X g)) * (DD.epM fun j => (Y j).map (algebraMap A X)) * ri.map (algebraMap A (DD X g)) - D …`. Rewrite using `[mul_epM, epM_mul, ← epM_sub, ← epM_sub, mul_epM, epM_mul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.map_mul, Matrix.map_sub _ (map_sub (algebraMap A X))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `i1 : w.map (algebraMap A (DD X g)) * wi.map (algebraMap A (DD X g)) = 1`. Rewrite using `[← Matrix.map_mul, h1]`. Simplify using the standard rewrite rules. Establish `i2 : ri.map (algebraMap A (DD X g)) * r.map (algebraMap A (DD X g)) = 1`. Rewrite using `[← Matrix.map_mul, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `z1` using `epM_mul_epM (fun j => (Y j).map (algebraMap A X)) (fun j => (K j).map (algebraMap A X))`. Establish `z2 : (DD.epM fun j => (Y j).map (algebraMap A X)) * r.map (algebraMap A (DD X g)) * (DD.epM fun j => (Y j).map (algebraMap A X)) = 0` using `by rw [epM_mul, epM_mul_epM]`. Establish `z3 : (DD.epM fun j => (K j).map (algebraMap A X)) * r.map (algebraMap A (DD X g)) * (DD.epM fun j => (Y j).map (algebraMap A X)) = 0` using `by rw [epM_mul, epM_mul_epM]`. Rewrite using `[e, Matrix.map_mul, Matrix.map_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `(DD.epM fun j => (Y j).map (algebraMap A X)) = P at *`. Generalize the expression as in `(DD.epM fun j => (K j).map (algebraMap A X)) = Q at *`. Generalize the expression as in `wi.map (algebraMap A (DD X g)) = a at *`. Generalize the expression as in `w.map (algebraMap A (DD X g)) = b at *`. Generalize the expression as in `r.map (algebraMap A (DD X g)) = c at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `ri.map (algebraMap A (DD X g)) = d at *`. Combine the equalities or inequalities in the displayed calculation.
+Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation.
 -/
 private theorem key (wi r ri w : Matrix (Fin n) (Fin n) A) (Y K : Fin g → Matrix (Fin n) (Fin n) A)
     (h1 : w * wi = 1) (h2 : ri * r = 1) :
@@ -209,21 +209,21 @@ private theorem key (wi r ri w : Matrix (Fin n) (Fin n) A) (Y K : Fin g → Matr
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `l _ F n x k X _ _ v`. Establish `od : ∀ M ∈ Od x.A x.A n x.a, ∀ i j : Fin n, decide ((i : ℕ) < x.a) = decide ((j : ℕ) < x.a) → M.map (algebraMap x.A X) i j = 0` using `fun M hM i j e => by`. Establish `: M i j = 0` using `(hM i j).1 (by simpa using e)`. Simplify using `[this]`. Establish `hw : Pat (fun i => decide ((i : ℕ) < x.a)) (x.ty v) (k.w1 X v)` using `(pat_sub _ fun m => od _ (k.Y_mem m v)).mul (pat_map _ (x.w_blk v))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hwi : Pat (x.ty v) (fun i => decide ((i : ℕ) < x.a)) (k.wi1 X v)` using `(pat_map _ (tyCard l F n x v 0).2.2.2).mul (pat_add _ fun m => od _ (k.Y_mem m v))`. Take `⟨i1, i2⟩` from `(rho1 l F n x k X).2.2.2.1 v`. Use `⟨fun g => ?_, fun Z => ?_⟩` and prove the remaining obligations. Establish `hr : Pat (fun i => decide ((i : ℕ) < x.a)) (fun i => decide ((i : ℕ) < x.a)) (k.ρ1 X (F.φ v g))` using `(pat_add _ fun m => od _ ((k.mem m).1 _)).mul (pat_map _ fun i j e => (x.blk (F.φ v g) i j).2 (by simpa using e))`. Establish `hp : TyPat (x.ty v) (k.wi1 X v * k.ρ1 X (F.φ v g) * k.w1 X v)` using `(hwi.mul hr).mul hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `key (X := X) (((x.w v)⁻¹ : GL (Fin n) x.A) : Matrix (Fin n) (Fin n) x.A) (mat x.ρ (F.φ v g)) (mat x.ρ (F.φ v g)⁻¹) (x.w v : Matrix (Fin n) (Fin n) x.A) (fun j => k.Y j v) (fun j => k.κ j (F.φ v g)) (Units.mul_inv _) (by simp [mat])`. Express the relevant statement in the definitionally equal form `k.wi1 X v * k.ρ1 X (F.φ v g) * k.w1 X v = _ at e`. Establish `t1 : ∀ i j, j < i → ((((x.w v)⁻¹ : GL (Fin n) x.A) : Matrix (Fin n) (Fin n) x.A) * mat x.ρ (F.φ v g) * (x.w v : Matrix (Fin n) (Fin n) x.A)) i j = 0` using `(x.tri v g).1`. Establish `t2 : ∀ i, ((((x.w v)⁻¹ : GL (Fin n) x.A) : Matrix (Fin n) (Fin n) x.A) * mat x.ρ (F.φ v g) * (x.w v : Matrix (Fin n) (Fin n) x.A)) i i = (x.ψ v i g : x.A)` using `(x.tri v g).2`. Establish `t3 : ∀ m i j, j < i → ((((x.w v)⁻¹ : GL (Fin n) x.A) : Matrix (Fin n) (Fin n) x.A) * (k.κ m (F.φ v g) - (mat x.ρ (F.φ v g) * k.Y m v * mat x.ρ (F.φ v g)⁻¹ - k.Y m v)) * (x.w v : Matrix (Fin n) (Fin n) x.A)) i j = 0` using `fun m i j h => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(k.loc m v g).1 i j h` as an intermediate fact. Simplify `this` using `only [dY, NP.ρX, NP.wX, NP.wiX, Algebra.algebraMap_self, RingHom.coe_id, Matrix.map_id]`. Generalize the expression as in `(((x.w v)⁻¹ : GL (Fin n) x.A) : Matrix (Fin n) (Fin n) x.A) * mat x.ρ (F.φ v g) * (x.w v : Matrix (Fin n) (Fin n) x.A) = T at e t1 t2`. Use `⟨fun i j h => ?_, fun i => ?_, hp⟩` and prove the remaining obligations. Rewrite using `[e, add_mul, one_mul, epM_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ (U : Matrix (Fin n) (Fin n) x.A), (∀ i j, j < i → U i j = 0) → (U * T) i j = 0` using `fun U hU => by`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c < i`. Rewrite using `[hU i c hc, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[t1 c j (lt_of_lt_of_le h (not_lt.1 hc)), mul_zero]`. Use `DD.ext ?_ (funext fun m => ?_) (funext fun m => ?_) ?_` and prove the remaining obligations. Simplify using `[DD.epM, t1 i j h]`. Simplify using `only [← Matrix.map_mul]`. Simplify using `only [DD.epM, Matrix.add_apply, Matrix.map_apply, Matrix.of_apply, DD.add_ep, this _ (t3 m), t1 i j h, map_zero, DD.zero_ep, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[DD.epM, t1 i j h]`. Simplify using `[DD.epM, t1 i j h]`. Use `DD.ext ?_ ((hp i i).2.2.1 rfl) (hp i i).1 (hp i i).2.1` and prove the remaining obligations. Rewrite using `[e, add_mul, one_mul, epM_mul]`. Simplify using `[DD.epM, t2 i]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(mem_W1_iff_pattern x.a Z).trans ⟨fun h => (hwi.mul h).mul hw, fun h => ?_⟩` and prove the remaining obligations. Establish `e : Z = k.w1 X v * (k.wi1 X v * Z * k.w1 X v) * k.wi1 X v`. Rewrite using `[← mul_assoc, ← mul_assoc, i2, one_mul, mul_assoc, i2, mul_one]`. Rewrite using `[e]`. Conclude with `(hw.mul h).mul hwi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.tri :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (x : NP F n) (k : Kap x) (X : Type) [CommRing X] [Algebra x.A X] (v : F.Vl), (∀ g : F.Gv v, (∀ i j, j < i → (k.wi1 X v * k.ρ1 X (F.φ v g) * k.w1 X v) i j = 0) ∧ (∀ i, (k.wi1 X v * k.ρ1 X (F.φ v g) * k.w1 X v) i i = algebraMap x.A (DD X k.g) (x.ψ v i g : x.A)) ∧ TyPat (x.ty v) (k.wi1 X v * k.ρ1 X (F.φ v g) * k.w1 X v)) ∧ ∀ Z : Matrix (Fin n) (Fin n) (DD X k.g), Z ∈ k.M1 X ↔ TyPat (x.ty v) (k.wi1 X v * Z * k.w1 X v) := by

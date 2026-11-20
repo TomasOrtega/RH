@@ -16,13 +16,13 @@ noncomputable section
 namespace GlobalTheory.LieSmooth
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y k _ _ φ x p g n hC`. Take `⟨y, ψ, φ₁, f, t, t', h₁, h₂, h₃⟩` from `hC`. Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`. Use `haveI : IsLocalHom ψ := CoordUniq.isLocalHom_of_algebraic φ₁ ψ`. Establish `hb : below p = y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₁]`. Express the relevant statement in the definitionally equal form `Y.Y.X.fromSpecStalk y (spMap ψ (IsLocalRing.closedPoint k)) = y`. Rewrite using `[show spMap ψ (IsLocalRing.closedPoint k) = IsLocalRing.closedPoint (Y.Y.X.presheaf.stalk y) from IsLocalRing.comap_closedPoint ψ, Scheme.fromSpecStalk_closedPoint]`. Establish `ht : ∀ τ i, (Y.gr τ i).IsEqn y (t τ i)` using `GalCarry.triEqn _ _ _ _ _ _ _ _ _ _ _ Y y φ₁ f t h₂`. Establish `hE : ∀ s : Finset (Letter Dw), (∑ z ∈ s, n z • Y.gr z.1 z.2).IsEqn y (∏ z ∈ s, t z.1 z.2 ^ n z)` using `fun s => by classical`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using GlobalTheory.Cartier.CartierDiv.isEqn_zero y`. Consider the case `insert z s hz ih => rw [Finset.sum_insert hz, Finset.prod_insert hz]`. Conclude with `((ht _ _).zsmul _).add ih`. Take `⟨r, hr, hr'⟩` from `(isEqn_eqn (divOf Y n) y).iff_unitAt.1 (hE Finset.univ)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ψ r * ((∏ z : Letter Dw, t' z.1 z.2 ^ (-n z) : kˣ) : k), mul_ne_zero (hr.map ψ).ne_zero (Units.ne_zero _), y, ψ, φ₁, f, t, t', r, h₁, h₂, h₃, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hb, hr', Units.val_inv_eq_inv_val, div_eq_inv_mul]`.
+A detailed English derivation is pending.
 -/
 theorem coord_eqn_inv_ne_zero : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) {k : Type} [Field k] [NumberField k] {φ : c.F →+* k} {x : Sp k ⟶ Z.X} (p : Sp k ⟶ Y.Y.X) (g : EigFrame Z φ x) (n : Letter Dw → ℤ), Y.Carries p g → ∃ a : k, a ≠ 0 ∧ IsCoord Y p g n (((eqn (divOf Y n) (below p))⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn) a := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y k _ _ φ x p g n hC

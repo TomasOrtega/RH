@@ -9,15 +9,13 @@ open MvPolynomial Finset Coinv
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ _ f n e`. Set `r : Fin f × Fin n → Fin f × Fin n → Prop` to `fun u v => toLex u < toLex v`. Establish `: IsStrictTotalOrder (Fin f × Fin n) r` using `inferInstanceAs (IsStrictTotalOrder (Lex (Fin f × Fin n)) (· < ·))`. Establish `wf : WellFounded (Finsupp.Lex r (· < ·) : (Fin f × Fin n →₀ ℕ) → (Fin f × Fin n →₀ ℕ) → Prop)` using `Finsupp.Lex.wellFounded_of_finite r wellFounded_lt`. Proceed by induction on `e using wf.induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `_ e ih`. Distinguish the cases in `hu : IsUnderStaircase e`. Conclude with `⟨monomial e 1, Submodule.subset_span ⟨e, hu, rfl⟩, by simp⟩`. Simplify using `only [IsUnderStaircase, not_forall, not_le] at hu`. Take `⟨⟨b, k⟩, hbk⟩` from `hu`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨T, c, hT, hmem⟩` from `h1 K f n b k e (by simpa using hbk)`. Establish `hlt : ∀ e' ∈ T, Finsupp.Lex r (· < ·) e' e`. Introduce `e' he'`. Use `Finsupp.lex_def.mpr ⟨(b, k), fun j hj => (hT e' he').1 j ?_, (hT e' he').2⟩` and prove the remaining obligations. Conclude with `Prod.Lex.toLex_lt_toLex.mp hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose! w hw hwm using fun e' (he' : e' ∈ T) => ih e' (hlt e' he')`. Use `⟨∑ e' ∈ T, c e' • w e', Submodule.sum_mem _ fun e' he' => Submodule.smul_mem _ _ (hw e' he'), ?_⟩` and prove the remaining obligations. Establish `hsplit : monomial e (1 : K) - ∑ e' ∈ T, c e' • w e' = (monomial e 1 - ∑ e' ∈ T, c e' • monomial e' 1) + ∑ e' ∈ T, C (c e') * (monomial e' 1 - w e')`. Simplify using `only [smul_eq_C_mul, mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hsplit]`. Conclude with `Ideal.add_mem _ hmem (Ideal.sum_mem _ fun e' he' => Ideal.mul_mem_left _ _ (hwm e' he'))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoinvMonomialReduction.proof (h1 : CoinvStepReduction.Statement) :
     CoinvMonomialReduction.Statement := by

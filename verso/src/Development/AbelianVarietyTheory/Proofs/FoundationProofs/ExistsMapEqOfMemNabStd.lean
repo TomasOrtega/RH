@@ -18,11 +18,11 @@ namespace GlobalTheory.LocInt
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Conclude with `hs w.asIdeal.zero_mem`. Establish `hJ : (Ideal.span {s} : Ideal (𝓞 K)) ≠ 0`. Rewrite using `[ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Unfold `vw`. Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K w hJ]`. Establish `hm : Associates.mk (Ideal.span {s} : Ideal (𝓞 K)) ≠ 0` using `by rwa [ne_eq, Associates.mk_eq_zero]`. Assume the negation of the conclusion as `h`. Establish `h1 : 1 ≤ (Associates.mk w.asIdeal).count (Associates.mk (Ideal.span {s} : Ideal (𝓞 K))).factors`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Nat.one_le_iff_ne_zero.2` to reduce the goal to its premises. Introduce `h0`. Conclude with `h (by rw [h0]; rfl)`. Rewrite `h1` using `[← Associates.prime_pow_dvd_iff_le hm w.associates_irreducible, pow_one, Associates.mk_le_mk_iff_dvd, Ideal.dvd_span_singleton]`. Conclude with `hs h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vw_eq_zero_of_notMem (w : HeightOneSpectrum (𝓞 K)) {s : 𝓞 K} (hs : s ∉ w.asIdeal) :
     vw w (s : K) = 0 := by
@@ -45,9 +45,9 @@ theorem vw_eq_zero_of_notMem (w : HeightOneSpectrum (𝓞 K)) {s : 𝓞 K} (hs :
   exact hs h1
 
 /- English proof (translation)
-Use `(Submodule.span_le.2 ?_ : nabStd K lam ≤ _) hF` and prove the remaining obligations. Introduce and unpack `P ⟨G, hG, rfl⟩`. Use `choose Q _ hQ using fun τ => Submodule.mem_map.1 (hG τ)`. Use `⟨∏ τ, Formalism.GradedWeylDivisibility.blockEmb (𝓞 K) τ (Q τ), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.map (algebraMap (𝓞 K) K) _ = _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← hQ τ]`. Simplify using `only [Formalism.GradedWeylDivisibility.blockEmb]`. Conclude with `map_rename _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_map_eq_of_mem_nabStd {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) {F : Pol K ι n}
     (hF : F ∈ nabStd K lam) : F ∈ LinearMap.range (toK K (ι × Fin n × Fin n)) := by
@@ -63,15 +63,13 @@ theorem exists_map_eq_of_mem_nabStd {ι : Type} [Fintype ι] {n : ℕ} (lam : ι
   exact map_rename _ _ _
 
 /- English proof (translation)
-Introduce `K _ _ _`. Use `⟨fun a h => ?_, fun ι _ n lam w F hF mo => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Conclude with `DualLatticeDivisor.mem_range_of_vw_nonneg a ha h`. Take `⟨s, hs, hsF⟩` from `hF`. Take `⟨Q, hQ⟩` from `exists_map_eq_of_mem_nabStd lam hsF`. Distinguish the cases in `hc : coeff mo F = 0`. Rewrite using `[hc, ValuationRepresentative.vw_zero]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : s ∉ w.asIdeal` using `hs`. Establish `hs0 : (s : K) ≠ 0`. Introduce `h0`. Establish `: s = 0` using `RingOfIntegers.ext h0`. Conclude with `hs' (this ▸ w.asIdeal.zero_mem)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hco : (s : K) * coeff mo F = ((coeff mo Q : 𝓞 K) : K)`. Establish `h1` using `congrArg (coeff mo) hQ`. Rewrite `h1` using `[coeff_smul]`. Establish `h2 : coeff mo (toK K _ Q) = ((coeff mo Q : 𝓞 K) : K)` using `coeff_map _ _ _`. Rewrite using `[← h2, h1, Algebra.smul_def]`.
-
-Establish `h3` using `ValuationRepresentative.vw_int_nonneg w (coeff mo Q)`. Rewrite `h3` using `[← hco, ValuationRepresentative.vw_mul w _ _ hs0 hc, vw_eq_zero_of_notMem w hs', zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem localIntegrality : ∀ (K : Type) [Field K] [NumberField K] [StarRing K], (∀ a : K, (∀ w : HeightOneSpectrum (𝓞 K), 0 ≤ vw w a) → a ∈ (algebraMap (𝓞 K) K).range) ∧ ∀ (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (w : HeightOneSpectrum (𝓞 K)) (F : Pol K ι n), F ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (nabStd K lam) → ∀ mo, 0 ≤ vw w (coeff mo F) := by
   intro K _ _ _

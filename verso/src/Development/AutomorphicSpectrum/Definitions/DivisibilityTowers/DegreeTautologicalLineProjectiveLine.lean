@@ -47,26 +47,26 @@ Both sides reduce to the same expression.
 theorem Tot_eq (τ : Ψ) (F : RP Ψ N) : Tot τ F = GlobalTheory.FlagPoly.totF τ F := rfl
 
 /- English proof (translation)
-The claim follows from `Formalism.DegreeFormula.degreePowerSumMulEqZero Ψ N τ k Q hk`.
+A detailed English derivation is pending.
 -/
 theorem degFl_pk_mul (τ : Ψ) (k : ℕ) (hk : 1 ≤ k) (Q : RP Ψ N) : degFl (pk τ k * Q) = 0 :=
   Formalism.DegreeFormula.degreePowerSumMulEqZero Ψ N τ k Q hk
 
 /- English proof (translation)
-The claim follows from `Formalism.DegreeFormula.degreePoint Ψ N`.
+A detailed English derivation is pending.
 -/
 theorem degFl_point : degFl (∏ x : Ψ × Fin N, (-X x : RP Ψ N) ^ (N - 1 - (x.2 : ℕ))) = 1 :=
   Formalism.DegreeFormula.degreePoint Ψ N
 
 /- English proof (translation)
-Simplify using `only [degFl, coeff_C_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem degFl_C_mul (c : ℝ) (Q : RP Ψ N) : degFl (C c * Q) = c * degFl Q := by
   simp only [degFl, coeff_C_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `h` using `degFl_point (Ψ := Unit) (N := 2)`. Establish `e : (∏ x : Unit × Fin 2, (-X x : RP Unit 2) ^ (2 - 1 - (x.2 : ℕ))) = C (-1) * X ((), 0)`. Simplify using `[Fintype.prod_prod_type, Fin.prod_univ_two]`. Rewrite `h` using `[e, degFl_C_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem degree_tautological_line_projective_line : degFl (X ((), 0) : RP Unit 2) = -1 := by
   have h := degFl_point (Ψ := Unit) (N := 2)
@@ -76,13 +76,13 @@ theorem degree_tautological_line_projective_line : degFl (X ((), 0) : RP Unit 2)
   linarith
 
 /- English proof (translation)
-Simplify using `only [degFl, coeff_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem degFl_add (P Q : RP Ψ N) : degFl (P + Q) = degFl P + degFl Q := by
   simp only [degFl, coeff_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `h` using `degFl_pk_mul (Ψ := Unit) (N := 2) () 1 le_rfl 1`. Simplify using `only [pk, Fin.sum_univ_two, pow_one, mul_one] at h`. Rewrite `h` using `[degFl_add, degree_tautological_line_projective_line]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem degree_quotient_line_projective_line : degFl (X ((), 1) : RP Unit 2) = 1 := by
   have h := degFl_pk_mul (Ψ := Unit) (N := 2) () 1 le_rfl 1
@@ -91,9 +91,9 @@ theorem degree_quotient_line_projective_line : degFl (X ((), 1) : RP Unit 2) = 1
   linarith
 
 /- English proof (translation)
-Establish `hd : dimFl Unit 2 = 1` using `by simp [dimFl]`. Establish `e : linRoot u = C (-u () 0) * X ((), 0) + C (-u () 1) * X ((), 1)`. Simplify using `[linRoot, Fintype.sum_prod_type, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[flagDeg, hd, pow_one, e, degFl_add, degFl_C_mul, degFl_C_mul, degree_tautological_line_projective_line, degree_quotient_line_projective_line]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[gap, ent]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem flagDeg_two (u : Wt Unit 2) : flagDeg u = gap 1 u () := by
   have hd : dimFl Unit 2 = 1 := by simp [dimFl]
@@ -103,7 +103,7 @@ theorem flagDeg_two (u : Wt Unit 2) : flagDeg u = gap 1 u () := by
   simp [gap, ent]; ring
 
 /- English proof (translation)
-Introduce `τ a b h`. Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast h`. Simplify using `only [rhoWt]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rho_regDominant : RegDominant (rhoWt : Wt Ψ N) := by
   intro τ a b h
@@ -111,7 +111,7 @@ theorem rho_regDominant : RegDominant (rhoWt : Wt Ψ N) := by
   simp only [rhoWt]; linarith
 
 /- English proof (translation)
-Establish `h3 : j - 1 < N` using `by omega`. Simplify using `only [gap, ent, dif_pos h2, dif_pos h3, rhoWt]`. Rewrite using `[Nat.cast_sub h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gap_rho {j : ℕ} (h1 : 1 ≤ j) (h2 : j < N) (τ : Ψ) : gap j (rhoWt : Wt Ψ N) τ = 1 := by
   have h3 : j - 1 < N := by omega
@@ -119,11 +119,11 @@ theorem gap_rho {j : ℕ} (h1 : 1 ≤ j) (h2 : j < N) (τ : Ψ) : gap j (rhoWt :
   rw [Nat.cast_sub h1]; push_cast; ring
 
 /- English proof (translation)
-Use `⟨one_pos, rho_regDominant, fun τ => (gap_rho h1 h2 τ).ge, fun τ a b _ hab => ?_⟩` and prove the remaining obligations. Simplify using `only [rhoWt]`. Establish `hne : ((b : ℕ) : ℤ) - ((a : ℕ) : ℤ) ≠ 0`. Introduce `h`. Apply `hab` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Establish `h` using `Int.one_le_abs hne`. Establish `e : ((N : ℝ) - 1 - ((a : ℕ) : ℝ)) - ((N : ℝ) - 1 - ((b : ℕ) : ℝ)) = ((((b : ℕ) : ℤ) - ((a : ℕ) : ℤ) : ℤ) : ℝ)` using `by push_cast; ring`. Rewrite using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem weightHyp_rho {j : ℕ} (h1 : 1 ≤ j) (h2 : j < N) : WeightHyp j (rhoWt : Wt Ψ N) 1 := by
   refine ⟨one_pos, rho_regDominant, fun τ => (gap_rho h1 h2 τ).ge, fun τ a b _ hab => ?_⟩
@@ -136,7 +136,7 @@ theorem weightHyp_rho {j : ℕ} (h1 : 1 ≤ j) (h2 : j < N) : WeightHyp j (rhoWt
   rw [e]; exact_mod_cast h
 
 /- English proof (translation)
-Introduce `τ i h _`. Establish `h3 : i < N` using `by omega`. Simplify using `only [ent, dif_pos h, dif_pos h3, rhoWt]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem compactGaps_rho (j : ℕ) : CompactGapsGE j 1 (rhoWt : Wt Ψ N) := by
   intro τ i h _
@@ -145,15 +145,15 @@ theorem compactGaps_rho (j : ℕ) : CompactGapsGE j 1 (rhoWt : Wt Ψ N) := by
   push_cast; linarith
 
 /- English proof (translation)
-Take `⟨hg, -, hgap, -⟩` from `h`. Introduce `τ`. Establish `hf : (1 : ℝ) ≤ Fintype.card Ψ` using `by exact_mod_cast Fintype.card_pos`. Establish `hn : (1 : ℝ) ≤ (N : ℝ) ^ 2` using `one_le_pow₀ (by exact_mod_cast hN)`. Establish `hu` using `norm_nonneg u`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, hf0⟩ : ∃ f : ℝ, f = (Fintype.card Ψ : ℝ)` from `⟨_, rfl⟩`. Take `⟨n, hn0⟩ : ∃ n : ℝ, n = (N : ℝ) ^ 2` from `⟨_, rfl⟩`. Rewrite `hf`, the goal using `[← hf0]`. Rewrite `hn` using `[← hn0]`. Establish `hfn : 1 ≤ f * n` using `one_le_mul_of_one_le_of_one_le hf hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (bigB0 u g - 2) * g = 4 * (f * n) * g + 4 * (f * n) * ‖u‖ - 2 * g`. Simplify using `only [bigB0, ← hf0, ← hn0]`. Clear the denominators using the available nonvanishing facts. Establish `hb : 0 ≤ bigB0 u g - 2`. Establish `: 0 ≤ (bigB0 u g - 2) * g` using `by rw [e]; nlinarith [mul_nonneg (by linarith : 0 ≤ f * n) hu]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `nonneg_of_mul_nonneg_left this hg`. Establish `h1 : 4 * f * ‖u‖ ≤ (bigB0 u g - 2) * g`. Rewrite using `[e]`. Establish `: f * ‖u‖ ≤ f * n * ‖u‖`. Apply `mul_le_mul_of_nonneg_right _ hu` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Conclude with `h1.trans (mul_le_mul_of_nonneg_left (hgap τ) hb)`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem nef_threshold_at_base_bound [Nonempty Ψ] {j : ℕ} (hN : 1 ≤ N) {u : Wt Ψ N} {g : ℝ} (h : WeightHyp j u g) :
     NefThreshold j (bigB0 u g) u := by
@@ -180,7 +180,7 @@ theorem nef_threshold_at_base_bound [Nonempty Ψ] {j : ℕ} (hN : 1 ≤ N) {u : 
   exact h1.trans (mul_le_mul_of_nonneg_left (hgap τ) hb)
 
 /- English proof (translation)
-Simplify using `only [pkLow, pow_zero, Finset.sum_const, nsmul_eq_mul, mul_one]`. Rewrite using `[Fin.card_filter_val_lt, min_eq_right hj]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pkLow_zero {j : ℕ} (hj : j ≤ N) (τ : Ψ) : (pkLow j τ 0 : RP Ψ N) = C (j : ℝ) := by
   simp only [pkLow, pow_zero, Finset.sum_const, nsmul_eq_mul, mul_one]
@@ -188,9 +188,9 @@ theorem pkLow_zero {j : ℕ} (hj : j ≤ N) (τ : Ψ) : (pkLow j τ 0 : RP Ψ N)
   simp
 
 /- English proof (translation)
-Simplify using `only [pLie, pow_zero, Finset.sum_const, nsmul_eq_mul, mul_one]`. Establish `h` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin N))) (fun i : Fin N => (i : ℕ) < j)`. Rewrite `h` using `[Fin.card_filter_val_lt, min_eq_right hj]`. Simplify using `only [not_lt, Finset.card_univ, Fintype.card_fin] at h`. Establish `: (Finset.univ.filter (fun i : Fin N => j ≤ (i : ℕ))).card = N - j` using `by omega`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this, ← Nat.cast_sub hj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pLie_inr_zero {j : ℕ} (hj : j ≤ N) (τ : Ψ) : (pLie j 0 (Sum.inr τ) : RP Ψ N) = C ((N : ℝ) - j) := by
   simp only [pLie, pow_zero, Finset.sum_const, nsmul_eq_mul, mul_one]
@@ -202,9 +202,9 @@ theorem pLie_inr_zero {j : ℕ} (hj : j ≤ N) (τ : Ψ) : (pLie j 0 (Sum.inr τ
   simp
 
 /- English proof (translation)
-Establish `hp' : (2 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `h0 : (0 : ℝ) ≤ (p : ℝ)⁻¹` using `by positivity`. Establish `h1 : (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by linarith)`. Simplify using `only [deltaTerm, pLie, Nat.sub_self, pkLow_zero hj, degFl_C_mul, pow_one, pow_succ, pow_zero, one_mul]`. Rewrite using `[tsum_mul_right, tsum_mul_right, tsum_geometric_of_lt_one h0 h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (p : ℝ) - 1 ≠ 0` using `by linarith`. Establish `: (p : ℝ) ≠ 0` using `by linarith`. Establish `: 1 - (p : ℝ)⁻¹ = ((p : ℝ) - 1) / p` using `by field_simp`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -221,15 +221,15 @@ theorem deltaTerm_split {j p : ℕ} (hj : j ≤ N) (hp : 2 ≤ p) (τ : Ψ) (fr 
   rw [this]; field_simp; ring
 
 /- English proof (translation)
-Establish `hp' : (2 : ℝ) ≤ p` using `by exact_mod_cast hp`. Use `set r : ℝ := (p : ℝ)⁻¹ with hr`. Establish `h0 : (0 : ℝ) ≤ r` using `by positivity`. Establish `h1 : r < 1` using `inv_lt_one_of_one_lt₀ (by linarith)`. Establish `h2 : r ^ 2 < 1` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `hasSum_geometric_of_lt_one (sq_nonneg r) h2`. Establish `hs : HasSum (fun n : ℕ => ((p : ℝ) ^ 1)⁻¹ ^ (n + 1) * degFl ((pLie j (1 - 1) (if Even n then Sum.inr (fr n) else Sum.inl (fr n)) : RP Ψ N) * Q)) ((1 - r ^ 2)⁻¹ * (r * (((N : ℝ) - j) * degFl Q)) + (1 - r ^ 2)⁻¹ * (r ^ 2 * (j * degFl Q)))`. Apply `HasSum.even_add_odd` to reduce the goal to its premises. Use `Eq.mp (congrArg (fun F => HasSum F _) (funext fun k => Eq.symm ?_)) (hg.mul_right (r * (((N : ℝ) - j) * degFl Q))) beta_reduce` and prove the remaining obligations. Rewrite using `[if_pos (even_two_mul k), Nat.sub_self, pLie_inr_zero hj, degFl_C_mul, pow_one, ← hr]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Eq.mp (congrArg (fun F => HasSum F _) (funext fun k => Eq.symm ?_)) (hg.mul_right (r ^ 2 * (j * degFl Q))) beta_reduce` and prove the remaining obligations. Rewrite using `[if_neg (Nat.not_even_iff_odd.2 (odd_two_mul_add_one k)), Nat.sub_self]`. Simplify using `only [pLie]`. Rewrite using `[pkLow_zero hj, degFl_C_mul, pow_one, ← hr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `deltaTerm`. Rewrite using `[hs.tsum_eq, Nat.sub_self, pkLow_zero hj, degFl_C_mul]`. Establish `a1 : (p : ℝ) - 1 ≠ 0` using `by linarith`. Establish `a2 : (p : ℝ) ≠ 0` using `by linarith`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : (p : ℝ) ^ 2 - 1 ≠ 0` using `by nlinarith`. Establish `: 1 - r ^ 2 = ((p : ℝ) ^ 2 - 1) / p ^ 2` using `by rw [hr]; field_simp`. Rewrite using `[this, hr]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deltaTerm_inert {j p : ℕ} (hj : j ≤ N) (hp : 2 ≤ p) (τ : Ψ) (fr : ℕ → Ψ) (Q : RP Ψ N) :
     deltaTerm j p τ (fun n => if Even n then Sum.inr (fr n) else Sum.inl (fr n)) 1 Q =
@@ -263,20 +263,20 @@ theorem deltaTerm_inert {j p : ℕ} (hj : j ≤ N) (hp : 2 ≤ p) (τ : Ψ) (fr 
   rw [this, hr]; field_simp; ring
 
 /- English proof (translation)
-Simplify using `[gap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gap_zero (u : Wt Ψ N) (τ : Ψ) : gap 0 u τ = 0 := by simp [gap]
 
 /- English proof (translation)
-Simplify using `[gap, ent, Fin.last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gap_top (u : Wt Ψ (N + 1)) (τ : Ψ) : gap (N + 1) u τ = u τ (Fin.last N) := by
   simp [gap, ent, Fin.last]
 
 /- English proof (translation)
-Establish `h01 : u () 1 ≤ u () 0` using `h () 0 1 (by decide)`. Establish `hs : (⨆ i, u () i) = u () 0`. Apply `le_antisymm (ciSup_le fun i => h () 0 i (Fin.zero_le i))` to reduce the goal to its premises. Conclude with `le_ciSup (Set.finite_range _).bddAbove 0`. Establish `hi : (⨅ i, u () i) = u () 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm (ciInf_le (Set.finite_range _).bddBelow 1)` to reduce the goal to its premises. Conclude with `le_ciInf fun i => h () i 1 (Fin.le_last i)`. Simplify using `[spread, hs, hi]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spread_two (u : Wt Unit 2) (h : Dominant u) : spread u = u () 0 - u () 1 := by
   have h01 : u () 1 ≤ u () 0 := h () 0 1 (by decide)

@@ -12,21 +12,21 @@ noncomputable section
 namespace GlobalTheory.InertLagChar
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← Matrix.mul_smul, hz u hu, Matrix.mul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_mul_left' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {v : Pl F}
     {a b c : Type} [Fintype b] (P : Matrix a b (AE F E)) {z : Matrix b c (AE F E)} (hz : At (evFin F v) z) :
     At (evFin F v) (P * z) := fun u hu => by rw [← Matrix.mul_smul, hz u hu, Matrix.mul_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← Matrix.smul_mul, hz u hu, Matrix.zero_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_mul_right' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {v : Pl F}
     {a b c : Type} [Fintype b] {z : Matrix a b (AE F E)} (hz : At (evFin F v) z) (P : Matrix b c (AE F E)) :
     At (evFin F v) (z * P) := fun u hu => by rw [← Matrix.smul_mul, hz u hu, Matrix.zero_mul]
 
 /- English proof (translation)
-Introduce `t ht` and use `by ext i j rcases j with j | j · have := congrArg (fun M => M j i) (hu t ht) simpa using this · simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_fromCols_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {v : Pl F}
     {a b c : Type} {u : Matrix a b (AE F E)} (hu : At (evFin F v) u) :
@@ -38,14 +38,14 @@ theorem at_fromCols_zero {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   · simp
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; rcases j with j | j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fromCols_add_fromCols {R : Type} [Add R] {a b c : Type} (x z : Matrix a b R) (y w : Matrix a c R) :
     Matrix.fromCols x y + Matrix.fromCols z w = Matrix.fromCols (x + z) (y + w) := by
   ext i j; rcases j with j | j <;> rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks P, Matrix.fromBlocks_transpose, Matrix.fromCols_mul_fromBlocks]`. Rewrite using `[fromCols_add_fromCols]`. Simplify using `only [Matrix.zero_mul, add_zero, Matrix.transpose_mul, Matrix.transpose_sub, Matrix.mul_sub]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem fromCols_mul_transpose_split {R : Type} [CommRing R] {a b : Type} [Fintype a] (u : Matrix a b R)
     (P : Matrix (a ⊕ a) (a ⊕ a) R) :
@@ -58,27 +58,23 @@ theorem fromCols_mul_transpose_split {R : Type} [CommRing R] {a b : Type} [Finty
   abel
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M ψ hψ v m C hL d' hd' dd hdd omd hsp l hlinv r₀ hr₀ c₀ hc₀ μ hlint p ρ₀ hρ Φ hΦ Φ₁ hΦ₁ hacts z hz`. Establish `hstep : ∀ γ, At (evFin F v) γ → ∀ φ ∈ SB ((Fin n × Fin d) ⊕ (Fin n × Fin d) → Fv F v), dd.rho ψ γ (tens (evFin F v) φ r₀) = tens (evFin F v) (schr (psiAt ψ v) (locCo dd v γ) φ) r₀` using `fun γ hγ φ hφ => GlobalTheory.VacBridge.rho_acts_locCo dd ψ v γ hγ φ r₀ (hr₀ φ hφ)`. Establish `hmem : ∀ γ, At (evFin F v) γ → ∀ φ ∈ SB ((Fin n × Fin d) ⊕ (Fin n × Fin d) → Fv F v), dd.rho ψ γ (tens (evFin F v) φ r₀) ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d))` using `fun γ hγ φ hφ => by`. Rewrite using `[hstep γ hγ φ hφ]`. Conclude with `(hr₀ _ (GlobalTheory.SchrSB.schr_mem_SB ψ hψ v _ φ hφ)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : ∀ u : Matrix (Fin n) (Fin d) (AE F E), locCo dd v (Matrix.fromCols uᵀ 0) = (Sum.elim (locCo M.co v u).1 0, Sum.elim (locCo M.co v u).2 0)` using `fun u => by`. Apply the tactic sequence `ext k <;> rcases k with k | k <;> simp [locCo, hdd uᵀ 0, hd' u]`. Establish `hkey : ∀ u : Matrix (Fin n) (Fin d) (AE F E), At (evFin F v) u → ∀ φ ∈ SB ((Fin n × Fin d) ⊕ (Fin n × Fin d) → Fv F v), c₀ * diagW (psiAt ψ v) μ φ (locCo M.co v u) = l (dd.rho ψ (Matrix.fromCols uᵀ 0) (tens (evFin F v) φ r₀))` using `fun u hu φ hφ => by`. Rewrite using `[hstep _ (at_fromCols_zero hu) φ hφ, hlint _ (GlobalTheory.SchrSB.schr_mem_SB ψ hψ v _ φ hφ), hW, diagW]`. Use `set P : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E) := ((p⁻¹).1.1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) with hP`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u : Matrix (Fin n) (Fin d) (AE F E) := z * Cᵀ with hu`. Use `set u' : Matrix (Fin n) (Fin d) (AE F E) := ((P.toBlocks₁₁ - P.toBlocks₂₁) * z) * Cᵀ with hu'`. Establish `hzat : At (evFin F v) u` using `at_mul_right' hz _`. Establish `hu'at : At (evFin F v) u'` using `at_mul_right' (at_mul_left' _ hz) _`. Use `set xm : Matrix (Fin d) (Fin n) (AE F E) := (P.toBlocks₂₁ * u)ᵀ with hxm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set δ : Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E) := xm * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E))ᵀ with hδ`. Establish `hδc : δ = Matrix.fromCols xm xm`. Rewrite using `[hδ, diagCols, Matrix.transpose_fromRows, Matrix.mul_fromCols, Matrix.transpose_one, Matrix.mul_one]`. Use `set Ψ := tens (evFin F v) Φ r₀ with hΨ`. Establish `hΨm : Ψ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d))` using `(hr₀ Φ hΦ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : tens (evFin F v) Φ₁ r₀ = omd p Ψ` using `(hacts r₀ (hr₀ Φ hΦ)).symm`. Use `set γ := actB (cA σ) p⁻¹ (Matrix.fromCols uᵀ (0 : Matrix (Fin d) (Fin n) (AE F E))) with hγ`. Establish `hγat : At (evFin F v) γ` using `at_mul_right' (at_fromCols_zero hzat) _`. Establish `hinv : dd.rho ψ (Matrix.fromCols uᵀ 0) (omd p Ψ) = omd p (dd.rho ψ γ Ψ)`. Establish `h` using `hsp.impl p⁻¹ (Matrix.fromCols uᵀ 0) (omd p Ψ) (hsp.pres p Ψ hΨm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∀ Y, omd p⁻¹ (omd p Y) = Y` using `fun Y => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `e2 : ∀ Y, omd p (omd p⁻¹ Y) = Y` using `fun Y => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite `h` using `[e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, e2]`. Establish `hdec : γ = δ + Matrix.fromCols u'ᵀ 0`. Establish `e : u' = (P.toBlocks₁₁ - P.toBlocks₂₁) * u` using `by rw [hu', hu, Matrix.mul_assoc]`. Rewrite using `[e, hδc, hxm]`. Conclude with `fromCols_mul_transpose_split u P`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∀ Y, dd.rho ψ γ Y = dd.rho ψ δ (dd.rho ψ (Matrix.fromCols u'ᵀ 0) Y)` using `fun Y => by`. Rewrite using `[hdec]`. Unfold `Darboux.rho`. Rewrite using `[map_add]`. Apply `GlobalTheory.MixXEvUniq.schr_add` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hδc, hdd xm xm, hdd u'ᵀ 0, hd' u', map_zero, hxm, hd' (P.toBlocks₂₁ * u)]`. Simplify using `only [Prod.fst_zero, Prod.snd_zero, neg_zero, sumElim_dotProduct_sumElim, dotProduct_zero, zero_dotProduct, add_zero]`. Establish `hform` using `M.co.form (P.toBlocks₂₁ * u) u'`. Establish `h0` using `GlobalTheory.InertVacIso.symp_eq_zero_of_lagAt σ X.J W v C hL (-1) (P.toBlocks₂₁ * u) u' ⟨at_mul_left' _ hzat, P.toBlocks₂₁ * z, by rw [hu, Matrix.mul_assoc]⟩ ⟨hu'at, (P.toBlocks₁₁ - P.toBlocks₂₁) * z, rfl⟩`. Rewrite `hform` using `[h0]`.
-
-Conclude with `(sub_eq_zero.mp hform.symm)`. Establish `hW'm : dd.rho ψ (Matrix.fromCols u'ᵀ 0) Ψ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d))` using `hmem _ (at_fromCols_zero hu'at) Φ hΦ`. Establish `hγm : dd.rho ψ γ Ψ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d))` using `hmem γ hγat Φ hΦ`. Apply `mul_left_cancel₀ hc₀` to reduce the goal to its premises. Rewrite using `[hkey u hzat Φ₁ hΦ₁, h1, hinv, hρ _ hγm, hsum, hδ, hlinv xm _ hW'm, ← hkey u' hu'at Φ hΦ]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem diagW_omd_point : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W)
     (ψ : AddChar (AF F) ℂ), Continuous ψ → ∀ (v : Pl F) (m : ℕ) (C : Matrix (Fin d) (Fin m) (AE F E)), IsLagrAt σ W v C →

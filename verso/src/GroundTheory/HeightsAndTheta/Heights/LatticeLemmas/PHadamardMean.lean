@@ -14,7 +14,7 @@ section GramHadamard
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 /- English proof (translation)
-Use `set U := Submodule.span ℂ (Set.range v)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Submodule.starProjection_minimal]`. Conclude with `ciInf_le ⟨0, fun _ ⟨_, h⟩ ↦ h ▸ norm_nonneg _⟩ (0 : U)`. Use `_ = ‖y‖ := by simp`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_starProjection_le {ι : Type*} [Fintype ι] (v : ι → V) (y : V) :
     ‖y - (Submodule.span ℂ (Set.range v)).starProjection y‖ ≤ ‖y‖ := by
@@ -25,13 +25,13 @@ theorem norm_sub_starProjection_le {ι : Type*} [Fintype ι] (v : ι → V) (y :
     _ = ‖y‖ := by simp
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro c`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `c`. Set `e : Fin n ⊕ Unit ≃ Fin (n + 1)` to `(Equiv.sumCongr (Equiv.refl _) finOneEquiv.symm).trans finSumFinEquiv`. Establish `he : c ∘ e = Sum.elim (fun i ↦ c i.castSucc) (fun _ : Unit ↦ c (Fin.last n))`. Use function extensionality and compare the values at `b`. Break down `b with i | u` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Both sides reduce to the same expression. Simplify using `only [Function.comp_apply, Sum.elim_inr]`. Use `congr 1`. Establish `key : det (gram ℂ c) = det (gram ℂ fun i : Fin n ↦ c i.castSucc) * ((‖c (Fin.last n) - (Submodule.span ℂ (Set.range fun i : Fin n ↦ c i.castSucc)).starProjection (c (Fin.last n))‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[← det_gram_comp_equiv e c, he, det_gram_sumElim_eq, det_gram_unique]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, Complex.re_mul_ofReal, Fin.prod_univ_castSucc]`. Conclude with `mul_le_mul (ih _) (pow_le_pow_left₀ (norm_nonneg _) (norm_sub_starProjection_le _ _) 2) (sq_nonneg _) (Finset.prod_nonneg fun i _ ↦ sq_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem re_det_gram_le_prod_fin : ∀ (n : ℕ) (c : Fin n → V),
     (det (gram ℂ c)).re ≤ ∏ i, ‖c i‖ ^ 2 := by
@@ -58,7 +58,7 @@ theorem re_det_gram_le_prod_fin : ∀ (n : ℕ) (c : Fin n → V),
       (Finset.prod_nonneg fun i _ ↦ sq_nonneg _)
 
 /- English proof (translation)
-Set `e` to `(Fintype.equivFin ι).symm`. Establish `h` using `re_det_gram_le_prod_fin (Fintype.card ι) (c ∘ e)`. Rewrite `h` using `[det_gram_comp_equiv e c]`. Use `h.trans_eq ?_` and prove the remaining obligations. Conclude with `Fintype.prod_equiv e _ _ fun _ ↦ rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem re_det_gram_le_prod {ι : Type*} [Fintype ι] [DecidableEq ι] (c : ι → V) :
     (det (gram ℂ c)).re ≤ ∏ i, ‖c i‖ ^ 2 := by
@@ -71,15 +71,15 @@ theorem re_det_gram_le_prod {ι : Type*} [Fintype ι] [DecidableEq ι] (c : ι �
 end GramHadamard
 
 /- English proof (translation)
-Introduce `K _ _ M ι _ x hx hcard`. Establish `hn : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Rewrite using `[HermitianBundle.deg, HermitianBundle.arithDegree, arithDegree_eq M.metric hx hcard, degreeWith]`. Use `(div_le_div_iff_of_pos_right hn).mpr ?_` and prove the remaining obligations. Establish `hσ : ∀ σ : K →+* ℂ, Real.log (gramDet M.metric σ x) ≤ 2 * ∑ i, Real.log (M.normAt σ (x i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `σ`. Establish `hne : ∀ i, fibreVec M.metric σ (x i) ≠ 0` using `fun i ↦ (linearIndependent_fibreVec M.metric σ hx).ne_zero i`. Establish `h1 : gramDet M.metric σ x ≤ ∏ i, ‖fibreVec M.metric σ (x i)‖ ^ 2` using `re_det_gram_le_prod _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _`. Conclude with `pow_ne_zero 2 (norm_ne_zero_iff.mpr (hne i))`. Use `_ = 2 * ∑ i, Real.log (M.normAt σ (x i)) := by`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Real.log_pow, HermitianBundle.normAt]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hsum : ∑ σ : K →+* ℂ, Real.log (gramDet M.metric σ x) ≤ 2 * ∑ i, ∑ σ : K →+* ℂ, Real.log (M.normAt σ (x i))`. Rewrite using `[Finset.sum_comm (f := fun i σ ↦ Real.log (M.normAt σ (x i))), Finset.mul_sum]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `Finset.sum_le_sum fun σ _ ↦ hσ σ`. Establish `hc` using `Real.log_natCast_nonneg (Nat.card (M.carrier ⧸ Submodule.span (𝓞 K) (Set.range x)))`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem HadamardMean.intersectionNumber_baseChange : HadamardMean.Statement := by
   intro K _ _ M ι _ x hx hcard
@@ -116,7 +116,7 @@ theorem HadamardMean.intersectionNumber_baseChange : HadamardMean.Statement := b
   linarith
 
 /- English proof (translation)
-The claim follows from `HadamardMean.intersectionNumber_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem HadamardMean.proof (_h1 : Sublattice.Statement) : HadamardMean.Statement :=
   HadamardMean.intersectionNumber_baseChange

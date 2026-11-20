@@ -30,7 +30,7 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.A36
 namespace PositivityTheory.HtPt.Ktw
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.CutOneGenerator.proof GroundTheory.Heights₂.Heights.Kleiman.GlobalFunctionsIntegral.proof`.
+A detailed English derivation is pending.
 -/
 theorem a52 :
     GroundTheory.Heights₂.Heights.Kleiman.CutOneGenerator.Statement.{0, 0} :=
@@ -38,14 +38,14 @@ theorem a52 :
     GroundTheory.Heights₂.Heights.Kleiman.GlobalFunctionsIntegral.proof
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.CutNonempty.proof a52`.
+A detailed English derivation is pending.
 -/
 theorem a53 :
     GroundTheory.Heights₂.Heights.Kleiman.CutNonempty.Statement.{0, 0} :=
   GroundTheory.Heights₂.Heights.Kleiman.CutNonempty.proof a52
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.CutComponent.proof GroundTheory.Heights₂.Heights.Kleiman.CutZeroNotLe.proof a53 GroundTheory.Heights₂.Heights.Kleiman.CutDimLower.proof`.
+A detailed English derivation is pending.
 -/
 theorem a54 :
     GroundTheory.Heights₂.Heights.Kleiman.CutComponent.Statement.{0, 0} :=
@@ -54,7 +54,7 @@ theorem a54 :
     GroundTheory.Heights₂.Heights.Kleiman.CutDimLower.proof
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.VeryAmpleProductPos.proof hR GroundTheory.Heights₂.Heights.Kleiman.PointDegreePos.proof a54 GroundTheory.Heights₂.Heights.Kleiman.CutMultPos.proof`.
+A detailed English derivation is pending.
 -/
 theorem a55 (hR : GroundTheory.Heights₂.Heights.Kleiman.GenericPointSectionInput.Statement.{0, 0}) :
     GroundTheory.Heights₂.Heights.Kleiman.VeryAmpleProductPos.Statement.{0, 0} :=
@@ -63,7 +63,7 @@ theorem a55 (hR : GroundTheory.Heights₂.Heights.Kleiman.GenericPointSectionInp
     GroundTheory.Heights₂.Heights.Kleiman.CutMultPos.proof
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.ClaimSeq.proof GroundTheory.Heights₂.Heights.Kleiman.ZeroIdealChart.proof`.
+A detailed English derivation is pending.
 -/
 theorem a56 :
     GroundTheory.Heights₂.Heights.Kleiman.ClaimSeq.Statement.{0, 0} :=
@@ -71,7 +71,7 @@ theorem a56 :
     GroundTheory.Heights₂.Heights.Kleiman.ZeroIdealChart.proof
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.StepTwo.Filt.proof GroundTheory.Heights₂.Heights.Kleiman.PrimeFiltration.Exists.proof`.
+A detailed English derivation is pending.
 -/
 theorem a57 :
     GroundTheory.Heights₂.Heights.Kleiman.StepTwo.Filt.Statement.{0, 0, 0} :=
@@ -79,7 +79,7 @@ theorem a57 :
     GroundTheory.Heights₂.Heights.Kleiman.PrimeFiltration.Exists.proof
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.StepTwo.Reduce.proof a57 GroundTheory.Heights₂.Heights.Kleiman.QuotTrans.proof GroundTheory.Heights₂.Heights.Kleiman.StepTwo.Piece.proof`.
+A detailed English derivation is pending.
 -/
 theorem a58 :
     GroundTheory.Heights₂.Heights.Kleiman.StepTwo.Reduce.Statement.{0, 0, 0} :=
@@ -88,7 +88,7 @@ theorem a58 :
     GroundTheory.Heights₂.Heights.Kleiman.StepTwo.Piece.proof
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.HtPt.KtwS.ClaimVanish.assembled a58 a4 GroundTheory.Heights₂.Heights.Kleiman.PrimeFiltration.RestrictQuot.proof GroundTheory.Heights₂.Heights.Kleiman.TwistSplit.proof a56`.
+A detailed English derivation is pending.
 -/
 theorem a59 :
     GroundTheory.Heights₂.Heights.Kleiman.ClaimVanish.Statement.{0, 0} :=
@@ -97,7 +97,7 @@ theorem a59 :
     GroundTheory.Heights₂.Heights.Kleiman.TwistSplit.proof a56
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.HtPt.KtwS.StepTwo.assembled a58 a4 GroundTheory.Heights₂.Heights.Kleiman.PrimeFiltration.RestrictQuot.proof GroundTheory.Heights₂.Heights.Kleiman.TwistSplit.proof`.
+A detailed English derivation is pending.
 -/
 theorem a60 :
     GroundTheory.Heights₂.Heights.Kleiman.StepTwo.Statement.{0, 0, 0} :=
@@ -106,14 +106,14 @@ theorem a60 :
     GroundTheory.Heights₂.Heights.Kleiman.TwistSplit.proof
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.StepThree.OnW.Lift.proof a56 a59 a60`.
+A detailed English derivation is pending.
 -/
 theorem a61 :
     GroundTheory.Heights₂.Heights.Kleiman.StepThree.OnW.Lift.Statement.{0, 0} :=
   GroundTheory.Heights₂.Heights.Kleiman.StepThree.OnW.Lift.proof a56 a59 a60
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.StepThree.OnW.Gen.proof a4 GroundTheory.Heights₂.Heights.Kleiman.RestrictGenerated.proof`.
+A detailed English derivation is pending.
 -/
 theorem a62 :
     GroundTheory.Heights₂.Heights.Kleiman.StepThree.OnW.Gen.Statement.{0, 0} :=
@@ -121,7 +121,7 @@ theorem a62 :
     GroundTheory.Heights₂.Heights.Kleiman.RestrictGenerated.proof
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.NefProductNonneg.assembled a39 a43 a48 a51 hR (a55 hR) a61 a62 GroundTheory.Heights₂.Heights.Kleiman.PointGenerated.proof`.
+A detailed English derivation is pending.
 -/
 theorem a63 (hR : GroundTheory.Heights₂.Heights.Kleiman.GenericPointSectionInput.Statement.{0, 0}) :
     GroundTheory.Heights₂.Heights.Kleiman.NefProductNonneg.Statement.{0, 0} :=
@@ -129,7 +129,7 @@ theorem a63 (hR : GroundTheory.Heights₂.Heights.Kleiman.GenericPointSectionInp
     GroundTheory.Heights₂.Heights.Kleiman.PointGenerated.proof
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.VeryAmpleNefPlusAmple.assembled a39 a43 a48 a51 hR (a55 hR) a61 a62 GroundTheory.Heights₂.Heights.Kleiman.PointGenerated.proof`.
+A detailed English derivation is pending.
 -/
 theorem a72 (hR : GroundTheory.Heights₂.Heights.Kleiman.GenericPointSectionInput.Statement.{0, 0}) :
     GroundTheory.Heights₂.Heights.Kleiman.VeryAmpleNefPlusAmple.Statement.{0, 0} :=

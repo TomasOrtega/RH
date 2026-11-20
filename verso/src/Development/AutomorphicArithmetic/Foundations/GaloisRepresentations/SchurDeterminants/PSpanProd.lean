@@ -4,15 +4,15 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Schur
 open Finset MvPolynomial UpperTheory.Gal.Schur
 
 /- English proof (translation)
-Introduce `hS K ι _ _ _ n P hP`. Use `choose k0 hk0 using fun t => hS K n (P t) (hP t)`. Use `⟨univ.sup k0, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hle : ∀ t, k0 t ≤ k` using `fun t => (le_sup (mem_univ t)).trans hk`. Use `choose w hw using fun t => hk0 t k (hle t)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun m => ∏ t, (w t (fun s => m (t, s)) * ∏ s, (-1 : K) ^ ((m (t, s) : Fin (n + 1)) : ℕ)), ?_⟩` and prove the remaining obligations. Introduce `R _ _ g`. Establish `step : ∀ t, aeval (g t) (P t) = ∑ m : Fin k → Fin (n + 1), (w t m * ∏ s, (-1 : K) ^ (m s : ℕ)) • ∏ s, ((-1) ^ (m s : ℕ) * aeval (g t) (esymm (Fin n) K (m s)))`. Introduce `t`. Use `conv_lhs => rw [hw t]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_smul, map_prod]`. Use `sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[prod_mul_distrib, Algebra.smul_def, Algebra.smul_def, map_mul, map_prod]`. Simplify using `only [map_pow, map_neg, map_one]`. Establish `hc : (∏ s, (-1 : R) ^ (m s : ℕ)) * ∏ s, (-1 : R) ^ (m s : ℕ) = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[← prod_mul_distrib]`. Simplify using `[← mul_pow]`. Take the linear combination `(-(algebraMap K R (w t m) * ∏ s, aeval (g t) (esymm (Fin n) K (m s)))) * hc`. Simplify using `only [step]`. Rewrite using `[Fintype.prod_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Fintype.sum_equiv (Equiv.curry ι (Fin k) (Fin (n + 1))).symm _ _ fun M => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type]`. Simplify using `only [Equiv.curry_symm_apply, Function.uncurry_apply_pair, Algebra.smul_def, map_prod, prod_mul_distrib]`. Rewrite using `[← map_prod, prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Schur.spanProd_of :
     SpanE → SpanProd := by

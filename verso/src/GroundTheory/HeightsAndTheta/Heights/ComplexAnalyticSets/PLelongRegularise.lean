@@ -14,11 +14,11 @@ noncomputable section
 namespace LelongRegularise
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.AnForm.mdisc`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Establish `hu : (Finset.univ : Finset (Fin (D + 1))) = insert 0 (Finset.univ.erase 0)` using `(Finset.insert_erase (Finset.mem_univ 0)).symm`. Rewrite using `[← Finset.powerset_univ, hu, Finset.sum_powerset_insert (Finset.notMem_erase 0 _), ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun t ht => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0t : (0 : Fin (D + 1)) ∉ t` using `fun h0 => Finset.notMem_erase 0 _ (Finset.mem_powerset.1 ht h0)`. Establish `hc : t.card ≤ D`. Use `Finset.card_le_card (Finset.mem_powerset.1 ht)` as an intermediate fact. Rewrite `this` using `[Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Finset.sum_insert h0t, h, zero_add, Finset.card_insert_of_notMem h0t]`. Establish `he : D + 1 - t.card = (D + 1 - (t.card + 1)) + 1` using `by omega`. Rewrite using `[he, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mdisc_eq_zero_of_eq_zero {D : ℕ} (B : Fin (D + 1) → Matrix (Fin (D + 1)) (Fin (D + 1)) ℂ)
     (h : B 0 = 0) : ReciprocityTheory.AnForm.mdisc B = 0 := by
@@ -41,9 +41,9 @@ theorem mdisc_eq_zero_of_eq_zero {D : ℕ} (B : Fin (D + 1) → Matrix (Fin (D +
   ring
 
 /- English proof (translation)
-Establish `h2 : fderiv ℝ (fderiv ℝ (F 0)) y = 0`. Rewrite using `[(h.fderiv (𝕜 := ℝ)).fderiv_eq (𝕜 := ℝ)]`. Simplify using the standard rewrite rules. Establish `hH : ReciprocityTheory.AnForm.hessC (F 0) y = 0`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[ReciprocityTheory.AnForm.hessC, h2]`. Unfold `ReciprocityTheory.AnForm.maDens`. Rewrite using `[mdisc_eq_zero_of_eq_zero (fun k => ReciprocityTheory.AnForm.hessC (F k) y) hH]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem maDens_eq_zero_of_eventually {D : ℕ} (F : Fin (D + 1) → (Fin (D + 1) → ℂ) → ℝ)
     {y : Fin (D + 1) → ℂ} (h : F 0 =ᶠ[𝓝 y] fun _ => 0) : ReciprocityTheory.AnForm.maDens F y = 0 := by
@@ -58,7 +58,7 @@ theorem maDens_eq_zero_of_eventually {D : ℕ} (F : Fin (D + 1) → (Fin (D + 1)
   simp
 
 /- English proof (translation)
-The claim follows from `|Real.log (t ^ 2 + ε) / 2| ≤ |Real.log t| + |Real.log (2 * t)| := by have ht2 : 0 < t ^ 2 := by positivity have hlo : Real.log t ≤ Real.log (t ^ 2 + ε) / 2 := by have : Real.log (t ^ 2) ≤ Real.log (t ^ 2 + ε) := Real.log_le_log ht2 (by linarith) rw [Real.log_pow] at this push_cas …`.
+A detailed English derivation is pending.
 -/
 theorem abs_half_log_le {t ε : ℝ} (ht : 0 < t) (hε : 0 < ε) (hε1 : ε ≤ 1) :
     |Real.log (t ^ 2 + ε) / 2| ≤ |Real.log t| + |Real.log (2 * t)| := by
@@ -92,9 +92,9 @@ theorem abs_half_log_le {t ε : ℝ} (ht : 0 < t) (hε : 0 < ε) (hε1 : ε ≤ 
   · linarith
 
 /- English proof (translation)
-Rewrite using `[← logReg_zero]`. Establish `hc : ContinuousAt (fun ε => logReg u ε x) 0`. Unfold `logReg`. Use `ContinuousAt.div_const (ContinuousAt.log (continuousAt_const.add continuousAt_id) ?_) _` and prove the remaining obligations. Simplify using `[hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hc.tendsto.mono_left nhdsWithin_le_nhds`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_logReg {n : ℕ} (u x : Fin n → ℂ) (hx : linEval u x ≠ 0) :
     Tendsto (fun ε => logReg u ε x) (𝓝[>] 0) (𝓝 (Real.log ‖linEval u x‖)) := by
@@ -106,17 +106,15 @@ theorem tendsto_logReg {n : ℕ} (u x : Fin n → ℂ) (hx : linEval u x ≠ 0) 
   exact hc.tendsto.mono_left nhdsWithin_le_nhds
 
 /- English proof (translation)
-Use `hJ` as an intermediate fact. Use `set a := Ideal.Quotient.mk J (linForm u) with ha_def`. Establish `ha : a ≠ 0` using `fun h => hu (Ideal.Quotient.eq_zero_iff_mem.1 h)`. Establish `hint : (projHom J A).toRingHom.IsIntegralElem a` using `hA.finite.to_isIntegral _`. Establish `hex : ∃ k, ∃ p : Polynomial (MvPolynomial (Fin d) ℂ), p.Monic ∧ p.natDegree = k ∧ p.eval₂ (projHom J A).toRingHom a = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hpm, hp⟩` from `hint`. Conclude with `⟨_, p, hpm, rfl, hp⟩`. Take `⟨p, hpm, hpk, hp⟩` from `Nat.find_spec hex`. Use `⟨p.coeff 0, fun h0 => ?_, ?_⟩` and prove the remaining obligations. Take `⟨q, rfl⟩` from `Polynomial.X_dvd_iff.2 h0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hqm : q.Monic` using `Polynomial.monic_X.of_mul_monic_left hpm`. Establish `hq : q.eval₂ (projHom J A).toRingHom a = 0`. Rewrite `hp` using `[Polynomial.eval₂_mul, Polynomial.eval₂_X]`. Conclude with `(mul_eq_zero.1 hp).resolve_left ha`. Establish `hlt : q.natDegree < Nat.find hex`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← hpk, Polynomial.natDegree_X_mul hqm.ne_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `Nat.find_min hex hlt ⟨q, hqm, rfl, hq⟩`. Introduce and unpack `y x ⟨hx, hxy⟩ hux`. Establish `h` using `congrArg (Ideal.Quotient.lift J (MvPolynomial.eval x) fun q hq => hx q hq) hp`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Polynomial.hom_eval₂, IndefiniteRowSideFullHecke.ComplexSets.lift_eval_comp_projHom J A hx, map_zero]`. Establish `hax : (Ideal.Quotient.lift J (MvPolynomial.eval x) fun q hq => hx q hq) a = 0`. Rewrite using `[ha_def, Ideal.Quotient.lift_mk, ← hux]`. Simplify using `[linForm, linEval]`. Rewrite `h` using `[hax, Polynomial.eval₂_at_zero, hxy]`.
-
-Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_poly_of_linEval_eq_zero {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ} {u : Fin n → ℂ} (hJ : J.IsPrime) (hA : IsFiniteProjection J A)
@@ -153,9 +151,9 @@ theorem exists_poly_of_linEval_eq_zero {n d : ℕ} {J : Ideal (MvPolynomial (Fin
     exact h
 
 /- English proof (translation)
-Establish `hU : (⋃ r : ℕ, LogInt.polydisc ι r) = Set.univ`. Use `Set.eq_univ_of_forall fun w => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `exists_nat_ge ‖w‖`. Use `Set.mem_iUnion.mpr ⟨r, Set.mem_univ_pi.mpr fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(norm_le_pi_norm w i).trans hr`. Establish `h` using `(ae_restrict_iUnion_iff (fun r : ℕ => LogInt.polydisc ι r) (fun w => MvPolynomial.eval w g ≠ 0)).mpr fun r => LogInt.ae_eval_ne_zero g hg r`. Rewrite `h` using `[hU, Measure.restrict_univ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ae_eval_ne_zero {ι : Type*} [Fintype ι] (g : MvPolynomial ι ℂ) (hg : g ≠ 0) :
     ∀ᵐ w : ι → ℂ, MvPolynomial.eval w g ≠ 0 := by
@@ -170,19 +168,17 @@ theorem ae_eval_ne_zero {ι : Type*} [Fintype ι] (g : MvPolynomial ι ℂ) (hg 
   rwa [hU, Measure.restrict_univ] at h
 
 /- English proof (translation)
-Establish `hfin` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y`. Unfold `chartDens chartAbsDens sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, ← Finset.sum_add_distrib]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hs : ∃ s, IsSheetAt J A x s`. Simplify using `only [dif_pos hs]`. Distinguish the cases in `hxB : x ∈ Metric.closedBall 0 R`. Rewrite using `[Set.indicator_of_mem hxB, Set.indicator_of_mem hxB, Real.norm_eq_abs, abs_mul, abs_mul, abs_mul, ← add_mul]`. Use `mul_le_mul_of_nonneg_right ?_ (abs_nonneg _)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ‖linEval ((2 : ℂ) • u) x‖ = 2 * ‖linEval u x‖`. Establish `: linEval ((2 : ℂ) • u) x = 2 * linEval u x`. Simplify using `[linEval, Finset.mul_sum, mul_assoc]`. Rewrite using `[this, norm_mul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[h2]`. Conclude with `abs_half_log_le (norm_pos_iff.2 (hy x hx)) hε hε1`. Establish `hM : ReciprocityTheory.AnForm.maDens (fun k => vecCons f φ k ∘ hs.choose) y = 0`. Take `⟨U, hU, hxU, hsd, hsx, -⟩` from `hs.choose_spec`. Use `maDens_eq_zero_of_eventually _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : ContinuousAt hs.choose y`. Rewrite using `[← hx.2]`. Conclude with `hsd.continuousOn.continuousAt (hU.mem_nhds hxU)`. Establish `hx' : x ∉ tsupport f` using `fun h => hxB (hR h)`. Establish `hn : (tsupport f)ᶜ ∈ 𝓝 (hs.choose y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hx.2, hsx]`. Conclude with `(isClosed_tsupport f).isOpen_compl.mem_nhds hx'`. Use `filter_upwards [hc.preimage_mem_nhds hn] with w hw`. Simplify using `only [Matrix.cons_val_zero, Function.comp_apply]`. Conclude with `image_eq_zero_of_notMem_tsupport hw`.
-
-Rewrite using `[hM]`. Simplify using the standard rewrite rules. Simplify using `only [dif_neg hs]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_chartDens_le {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin (d + 1)) (Fin n) ℂ} (hA : IsFiniteProjection J A) {u : Fin n → ℂ}
@@ -232,9 +228,9 @@ theorem norm_chartDens_le {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     simp
 
 /- English proof (translation)
-Establish `hfin` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y`. Unfold `chartDens sheetSum`. Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ hfin]`. Use `tendsto_finsetSum _ fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hs : ∃ s, IsSheetAt J A x s`. Simplify using `only [dif_pos hs]`. Conclude with `(tendsto_logReg u x (hy x hx)).mul_const _`. Simplify using `only [dif_neg hs]`. Conclude with `tendsto_const_nhds`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_chartDens {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ} (hA : IsFiniteProjection J A) {u : Fin n → ℂ}
@@ -255,17 +251,15 @@ theorem tendsto_chartDens {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
 end LelongRegularise
 
 /- English proof (translation)
-Introduce `n d J u f φ hJ hdim hu hf hfc hφ`. Unfold `varInt`. Use `split_ifs with hA`. Use `swap`. Conclude with `tendsto_const_nhds`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hAf` using `hA.choose_spec`. Unfold `chartInt`. Take `⟨R, hR⟩` from `hfc.isCompact.isBounded.subset_closedBall (0 : Fin n → ℂ)`. Establish `hψ : ∀ i, SmoothNear (zeroSet J) (vecCons f φ i)`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using smoothNear_of_contDiff (S := zeroSet J) hf`. Simplify using `using hφ i`. Establish `hu2 : linForm ((2 : ℂ) • u) ∉ J`. Establish `he : linForm ((2 : ℂ) • u) = C 2 * linForm u`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[linForm, Finset.mul_sum, ← mul_assoc, C_mul]`. Introduce `hm`. Apply `hu` to reduce the goal to its premises. Use `J.mul_mem_left (C (1 / 2 : ℂ)) (he ▸ hm)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← C_mul, show (1 / 2 : ℂ) * 2 = 1 by norm_num, C_1, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P, hP, hPy⟩` from `LelongRegularise.exists_poly_of_linEval_eq_zero hJ hAf hu`. Establish `hgood : ∀ᵐ y : Fin (d + 1) → ℂ, ∀ x ∈ fibre J hA.choose y, linEval u x ≠ 0` using `by filter_upwards [LelongRegularise.ae_eval_ne_zero P hP] with y hy x hx h0`. Conclude with `hy (hPy y x hx h0)`. Use `tendsto_integral_filter_of_dominated_convergence _ ?_ ?_ ((h n (d + 1) J hA.choose u (vecCons f φ) R hJ hdim hAf hu hψ).add (h n (d + 1) J hA.choose ((2 : ℂ) • u) (vecCons f φ) R hJ hdim hAf hu2 hψ)) ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ε hε`.
-
-Conclude with `(SheetSumMeasurable.proof n (d + 1) J hA.choose (logReg u ε) (vecCons f φ) hJ hdim hAf (contDiff_logReg u hε).continuous.measurable hψ).1.aestronglyMeasurable`. Use `filter_upwards [Ioc_mem_nhdsGT one_pos] with ε hε filter_upwards [hgood] with y hy`. Conclude with `LelongRegularise.norm_chartDens_le hAf φ hR hε.1 hε.2 hy`. Use `filter_upwards [hgood] with y hy`. Conclude with `LelongRegularise.tendsto_chartDens hAf _ hy`.
+A detailed English derivation is pending.
 -/
 theorem LelongRegularise.proof (h : LogIntegrable.Statement) : LelongRegularise.Statement := by
   intro n d J u f φ hJ hdim hu hf hfc hφ

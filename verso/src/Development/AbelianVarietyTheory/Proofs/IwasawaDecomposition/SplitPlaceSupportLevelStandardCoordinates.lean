@@ -17,7 +17,7 @@ set_option maxHeartbeats 2000000
 namespace GlobalTheory.Mem.R3.LiftBrg.SplitLoc
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: castGL (rfl : m = m) y = y`. Use extensionality with `i j`. Simplify using `[castGL]`. Rewrite using `[this]`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem castGL_mem_St {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {m n : ℕ}
     (h : m = n) (y : GL (Fin m) (E ⊗[F] Formalism.L2.Herm.Af F)) :
@@ -29,7 +29,7 @@ theorem castGL_mem_St {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   rw [this]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `i j`. Simplify using `[castGL]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem castGL_symm_apply {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (y : GL (Fin n) R) :
     castGL h (castGL h.symm y) = y := by
@@ -38,7 +38,7 @@ theorem castGL_symm_apply {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (y : G
   simp [castGL]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `i j`. Simplify using `[castGL, Formalism.UG.bc]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bc_castGL {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {m n : ℕ} (h : m = n) (y : GL (Fin m) R) :
     Formalism.UG.bc φ (castGL h y) = castGL h (Formalism.UG.bc φ y) := by
@@ -47,7 +47,7 @@ theorem bc_castGL {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {m n :
   simp [castGL, Formalism.UG.bc]
 
 /- English proof (translation)
-Rewrite using `[← map_one (castGL (R := R) h)]`. Conclude with `(castGL h).injective.eq_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem castGL_eq_one_iff {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (y : GL (Fin m) R) :
     castGL h y = 1 ↔ y = 1 := by
@@ -59,7 +59,7 @@ end GlobalTheory.Mem.R3.LiftBrg.SplitLoc
 namespace GlobalTheory.Mem.R3.LiftBrg.SplitLoc
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => rw [RingHom.map_add (swapAE D), RingHom.map_add, hx, hy, map_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem prV_swap {D : D7} (w : HeightOneSpectrum (𝓞 D.host.F))
     (z : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) :
@@ -72,15 +72,15 @@ theorem prV_swap {D : D7} (w : HeightOneSpectrum (𝓞 D.host.F))
   | add x y hx hy => rw [RingHom.map_add (swapAE D), RingHom.map_add, hx, hy, map_add, map_add]
 
 /- English proof (translation)
-Use `set τ := Algebra.TensorProduct.comm D.host.F (w.adicCompletion D.host.F) D.host.E`. Establish `hτ : Function.Injective τ` using `τ.injective`. Rewrite using `[← Units.val_eq_one]`. Establish `e : ((Formalism.UG.bc (Formalism.UG.prV (E` using `D.host.E) w) (Formalism.UG.bc (swapAE D) M)) : Matrix (Fin m) (Fin m) _) = ((M : Matrix (Fin m) (Fin m) _).map (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F w) (AlgHom.id D.host.F D.host.E))).map τ := by`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.UG.bc, Units.coe_map, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply]`. Conclude with `prV_swap w _`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply, Matrix.one_apply]`. Rewrite using `[Matrix.one_apply]`. Apply `hτ` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `h`. Rewrite using `[h]`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Matrix.map_apply, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem bc_prV_swap_eq_one_iff {D : D7} {m : ℕ} (w : HeightOneSpectrum (𝓞 D.host.F))
     (M : GL (Fin m) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) :
@@ -117,11 +117,11 @@ end GlobalTheory.Mem.R3.LiftBrg.SplitLoc
 namespace GlobalTheory.Mem.R3.LiftBrg.SplitLoc
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `GlobalTheory.Mem.R3.LiftInertChi.locAt_of_isLocElt V _ x ((GlobalTheory.Hk3Split.isLabElt_of_isTEnv V pl ok i x).2.1 h)`. Introduce `h`. Take `⟨e, he⟩` from `GlobalTheory.MovedIdem.exists_isIdemAt (D := D) (pl i.1) hs`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα, hfin⟩` from `GlobalTheory.HeckeRowsCompare.fin_lift V x`. Establish `hI : IsPrimeIdem (pl i.1) e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨-, ε, hε, hf⟩` from `GlobalTheory.IdemSupport.of_isPrimeIdem hΦ hI`. Use `⟨e, α, he, hα, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show SuppF V (e + cA D e) α`. Rewrite using `[hf, GlobalTheory.HeckeRowsCompare.suppF_iff V hε hα, hfin, GlobalTheory.HeckeRowsCompare.mem_locGrp]`. Conclude with `h`. Rewrite using `[← hfin]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isLocEnv_iff {D : D7} (V : HSp D) {Pl0 : Type} (pl : Pl0 → Pl D.host.E) (ok : Set Pl0) (i : ok × ℕ)
     (x : Bridge.Gf V) (hs : Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) (pl i.1).asIdeal ≠ (pl i.1).asIdeal) :
@@ -147,15 +147,13 @@ end GlobalTheory.Mem.R3.LiftBrg.SplitLoc
 namespace GlobalTheory.Mem.R3.LiftBrg.SplitLoc
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Formalism.L2.DIV.parLev_St (Formalism.L2.DIV.lev_le_parLev h)`. Introduce `hS set y := Formalism.UG.bc (swapAE D) (x : GL (Fin V.rank) _) with hy`. Establish `hred : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → Formalism.L2.DIV.redFn β PP y = 1` using `fun PP hPP => GlobalTheory.Mem.R3.LiftInertChi.redFn_eq_one_of_locAt β x hS v hloc PP (hoff PP hPP)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpar : ∀ PP, PP ∈ L.Pg ∨ PP ∈ L.Q → ∀ b, y ∈ Formalism.L2.DIV.parah β PP b`. Introduce `PP hPP b`. Use `⟨⟨y, hS⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show Formalism.L2.DIV.redAt β PP ⟨y, hS⟩ ∈ Formalism.L2.DIV.blockTri b`. Use `hred PP hPP` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Formalism.L2.DIV.redFn, Formalism.L2.DIV.extendOne_of_mem _ hS]`. Rewrite using `[this]`. Conclude with `one_mem _`. Use `show y ∈ Formalism.L2.DIV.lev D.sp.cm V.gram β (flag1L L)`. Use `⟨⟨⟨⟨hU, hS⟩, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hPP => hpar PP (Or.inl hPP) _`. Conclude with `Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hPP => hpar PP (Or.inr hPP) _`. Establish `hr1 : Formalism.L2.DIV.rTup β (flag1L L) y = 1`. Use function extensionality and compare the values at `PP`. Use `show Formalism.L2.DIV.upperLeftBlock _ (Formalism.L2.DIV.redFn _ PP.1 _) = 1`.
-
-Rewrite using `[hred PP.1 (Or.inl PP.2)]`. Conclude with `Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one _ _`. Rewrite using `[hr1]`. Conclude with `one_mem _`.
+A detailed English derivation is pending.
 -/
 theorem mem_levJ_iff {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (x : Bridge.Gf V) (v : HeightOneSpectrum (𝓞 D.host.F)) (hloc : GlobalTheory.IndefiniteRowSideFullHecke.HeckeIntertwinersInert.LocAt V v x)
@@ -194,9 +192,9 @@ end GlobalTheory.Mem.R3.LiftBrg.SplitLoc
 namespace GlobalTheory.Mem.R3.LiftBrg.SplitLoc
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: u = a⁻¹ * (a * u * a⁻¹) * a` using `by group`. Rewrite using `[this, h]`. Use `group`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem conj_eq_one_iff {G : Type} [Group G] (a u : G) : a * u * a⁻¹ = 1 ↔ u = 1 := by
   constructor
@@ -206,9 +204,9 @@ theorem conj_eq_one_iff {G : Type} [Group G] (a u : G) : a * u * a⁻¹ = 1 ↔ 
   · rintro rfl; group
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: u = a⁻¹ * (a * u * a⁻¹) * a` using `by group`. Rewrite using `[this]`. Conclude with `H.mul_mem (H.mul_mem (H.inv_mem ha) h) ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `H.mul_mem (H.mul_mem ha h) (H.inv_mem ha)`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_iff {G : Type} [Group G] (H : Subgroup G) {a : G} (ha : a ∈ H) (u : G) : a * u * a⁻¹ ∈ H ↔ u ∈ H := by
   constructor
@@ -220,9 +218,9 @@ theorem conj_mem_iff {G : Type} [Group G] (H : Subgroup G) {a : G} (ha : a ∈ H
     exact H.mul_mem (H.mul_mem ha h) (H.inv_mem ha)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hK`. Rewrite using `[Formalism.L2.Col.mhl_eq_put u.2 h1]`. Conclude with `Formalism.L2.Col.rll_put_mem_St n v hK.2`. Introduce `hS`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite `hS` using `[Formalism.L2.Col.St_one]`. Conclude with `Formalism.L2.DIV.lc_stab_loc v (Formalism.L2.Col.stdLat E n) _ hS`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mhlKv_iff_St {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} [NeZero n] {v : HeightOneSpectrum (𝓞 F)} (u : Formalism.L2.Col.UAd hc n)
@@ -243,25 +241,21 @@ end GlobalTheory.Mem.R3.LiftBrg.SplitLoc
 namespace GlobalTheory.Mem.R3.LiftBrg.SplitLoc
 
 /- English proof (translation)
-Introduce `X px I hX U Xg tr L hI hV hL cV i t A k hF x v Pb hPb hv g u hg`. Use `set P : HeightOneSpectrum (𝓞 X.toD7.host.E) := x.1.1.1 with hPdef`. Establish `hoffset : P ∈ Formalism.L2.DIV.offSet ∅ (sgL X I U t) ∅` using `x.1.2`. Establish `hP : Formalism.L2.Col.IsOver v P`. Rewrite using `[← hPb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Formalism.L2.Col.IsOver.conj X.toD7.sp.cm hv`. Establish `hunder : P.under (𝓞 X.toD7.host.F) = v` using `HeightOneSpectrum.ext hP.symm`. Establish `hA1 : (envL X I hX U Xg tr L cV i t).isLoc x g ↔ GlobalTheory.IndefiniteRowSideFullHecke.HeckeIntertwinersInert.LocAt (Vc X.toD7 i) v g`. Rewrite using `[← hunder]`. Conclude with `isLocEnv_iff (Vc X.toD7 i) (fun P : PlS X.B px => (P.1 : Pl X.toD7.host.E)) _ x g hoffset.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : ∀ w : HeightOneSpectrum (𝓞 X.toD7.host.F), (Units.val ((g : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af X.toD7.host.F ⊗[X.toD7.host.F] X.toD7.host.E))).map (Algebra.TensorProduct.map (Formalism.MainN …` using `X.toD7.host.E) w) (u : GL (Fin X.B.R.nV) (EA X)) = 1 := by`. Introduce `w`. Rewrite using `[← bc_prV_swap_eq_one_iff, ← castGL_eq_one_iff (rkEq X i).symm, ← bc_castGL, hg, map_mul, map_mul, map_inv, conj_eq_one_iff]`. Establish `hA2 : GlobalTheory.IndefiniteRowSideFullHecke.HeckeIntertwinersInert.LocAt (Vc X.toD7 i) v g ↔ ∀ w : HeightOneSpectrum (𝓞 X.toD7.host.F), w ≠ v → Formalism.UG.bc (Formalism.UG.prV (E` using `X.toD7.host.E) w) (u : GL (Fin X.B.R.nV) (EA X)) = 1 := forall₂_congr fun w _ => hcomp w`. Use `⟨hA1.trans hA2, fun hloc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL1` using `hA1.1 hloc`. Establish `hu1` using `hA2.1 hL1`. Establish `hk` using `hF.2.2.2.1`. Establish `hkuk : k * (u : GL (Fin X.B.R.nV) (EA X)) * k⁻¹ ∈ Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV` using `mul_mem (mul_mem hk u.2) (inv_mem hk)`. Establish `hU` using `(hF.2.2.1 _).1 hkuk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : castGL (rkEq X i) (A * (k * (u : GL (Fin X.B.R.nV) (EA X)) * k⁻¹) * A⁻¹) = Formalism.UG.bc (swapAE X.toD7) ((g : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _)`. Rewrite using `[show A * (k * (u : GL (Fin X.B.R.nV) (EA X)) * k⁻¹) * A⁻¹ = A * k * (u : GL (Fin X.B.R.nV) (EA X)) * (A * k)⁻¹ by group, ← hg, castGL_symm_apply]`. Rewrite `hU` using `[e1]`. Establish `hsg : ∀ PP ∈ sgL X I U t, PP.under (𝓞 X.toD7.host.F) ≠ v`. Introduce `PP hPP hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Establish `hov : Formalism.L2.Col.IsOver v PP` using `by rw [← hu]; rfl`. Break down `Formalism.L2.Col.mhl_over_eq X.toD7.sp.cm hv PP hov with h | h` into its components or cases. Substitute `h` using the available equality. Use `hoffset.2.2 PP (Or.inr hPP) ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.Col.conjIdeal_asIdeal, ← hPb, Formalism.L2.Col.conjPrime_conjPrime]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite `h` using `[hPb]`. Substitute `h` using the available equality. Conclude with `hoffset.2.1 (Or.inr hPP)`. Establish `hoff : ∀ PP, PP ∈ (L.datVt i t).Pg ∨ PP ∈ (L.datVt i t).Q → PP.under (𝓞 X.toD7.host.F) ≠ v`. Introduce `PP hPP`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hsg PP ?_` and prove the remaining obligations. Break down `hPP with hPP | hPP` into its components or cases. Rewrite `hPP`, `classical` using `[show (L.datVt i t).Pg = L.Pg from rfl, hL.Pg]`. Conclude with `Finset.mem_union.2 (Or.inl hPP)`. Rewrite `hPP` using `[show (L.datVt i t).Q = L.Q t from rfl, hL.Q t]`.
-
-Establish `e4 : I.Q (ixOf I U t) = Formalism.L2.Col.QE I.sel t.1`. Simplify using `only [ColIn.Q, tup_ixOf]`. Rewrite `hPP` using `[e4]`. Conclude with `Finset.mem_union.2 (Or.inr hPP)`. Use `show g ∈ (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).J ↔ _`.
-
-Rewrite using `[mem_levJ_iff (Vc X.toD7 i) (L.βV i) (L.datVt i t) g v hL1 hU hoff, hL.beta.1 i, mem_mhlKv_iff_St u hu1, ← castGL_mem_St (rkEq X i).symm, hg, conj_mem_iff _ (mul_mem hF.2.1 hF.2.2.2.2.1)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_iff : ∀ (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hI : I.Ok) (hV : ValsIn I) (hL : LevOf X I U L) (cV : ∀ i, CoefA (Vc X.toD7 i)) (i : Fin X.toD7.R.m) (t : TupU I U) (A k : GL (Fin X.B.R.nV) (EA X)) (hF : FrameOK X I U i t A k) (x : (famR X I hX U Xg tr).A.ok t × ℕ) (v : HeightOneSpectrum (𝓞 X.toD7.host.F)) (Pb : HeightOneSpectrum (𝓞 X.toD7.host.E)) (hPb : Formalism.L2.Col.conjPrime₂ Pb = x.1.1.1) (hv : Formalism.L2.Col.IsOver v Pb) (g : Bridge.Gf (Vc X.toD7 i)) (u : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) (hg : castGL (rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) ((g : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _)) = A * k * (u : GL (Fin X.B.R.nV) (EA X)) * (A * k)⁻¹),
     ((envL X I hX U Xg tr L cV i t).isLoc x g ↔

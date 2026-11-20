@@ -4,7 +4,7 @@ import ReciprocityTheory.DualLattices.HasColengthEqPowMulPow
 namespace ReciprocityTheory.PGsh.L2
 
 /- English proof (translation)
-Introduce `hC hC0 v hv N _ _ _ K _ _ _ AA`. Use `haveI := hC`. Use `haveI := hC0`. Conclude with `⟨exists_coset_basis hv AA K, mem_of_restrictToSubgroup_eq_zero hv AA K, hasColength_eq_pow_mul_pow hv AA K, mem_sup_of_restrictToSubgroup_mem_sq hv AA K⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem h3 (C R : Type) [Field C] [CommRing R] [Algebra R C] :
     SubgroupFreenessStatement (C := C) (R := R) := by

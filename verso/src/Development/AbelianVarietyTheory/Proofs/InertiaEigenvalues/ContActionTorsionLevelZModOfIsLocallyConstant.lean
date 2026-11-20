@@ -8,11 +8,11 @@ open ReciprocityTheory.Gal
 namespace GlobalTheory.ShapeNeg
 
 /- English proof (translation)
-Use `letI := GlobalTheory.ShapeNeg.levZ (M := M) p r h`. Unfold `ReciprocityTheory.Gal.ContAction`. Apply `IsLocallyConstant.continuous` to reduce the goal to its premises. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce and unpack `⟨g₀, x₀⟩`.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hx` using `hloc x₀.val (Lev.smul_val x₀)`. Use `⟨{g | ρ g x₀.val = ρ g₀ x₀.val} ×ˢ {x₀}, (hx.isOpen_fiber _).prod (isOpen_discrete _), ⟨rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g, x⟩ ⟨hg, hx'⟩`. Simplify using `only [Set.mem_singleton_iff] at hx'`. Substitute `hx'` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Apply `Lev.ext` to reduce the goal to its premises. Use `show (levRep ρ c g x).val = (levRep ρ c g₀ x).val`. Rewrite using `[levRep_val, levRep_val]`. Conclude with `hg`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contAction_levRepZ_of_isLocallyConstant
     {G : Type} [Group G] [TopologicalSpace G] {O : Type} [CommRing O] {M : Type} [AddCommGroup M]

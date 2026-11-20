@@ -9,7 +9,7 @@ set_option maxSynthPendingDepth 1
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.Targets.ChartDivisorCompare.proof GlobalTheory.T.segre_chart_integral_holds GroundTheory.Heights₂.Heights.Targets.SegreChartIntegralPoints.proof GroundTheory.Heights₂.Heights.AutoClose.Targets_ChartDivisorComponents GroundTheory.Heights₂.Heights.Aut …`.
+A detailed English derivation is pending.
 -/
 theorem chartDivisorCompare : GroundTheory.Heights₂.Heights.Targets.ChartDivisorCompare.Statement :=
   @GroundTheory.Heights₂.Heights.Targets.ChartDivisorCompare.proof GlobalTheory.T.segre_chart_integral_holds

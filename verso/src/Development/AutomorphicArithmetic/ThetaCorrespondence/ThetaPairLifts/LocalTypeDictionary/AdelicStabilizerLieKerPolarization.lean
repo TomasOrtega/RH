@@ -19,17 +19,17 @@ namespace GlobalTheory.SquareAgree.StabLieAdelic
 end GlobalTheory.SquareAgree.StabLieAdelic
 open GlobalTheory.SquareAgree.StabLieAdelic in
 /- English proof (translation)
-Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ _ hO hT Pi rf rl p p' _ N' hN τ Y hY ΦD hΦD Φ₀ hD`. Take `⟨γ, hγ, hγt⟩` from `GlobalTheory.KapXLine.exists_line D θ X τ Y hθ hY e Γ.W hO.JX`. Take `⟨δ, hδ⟩` from `_root_.GlobalTheory.T.twist_lie_derivative_model hP Bs Γ Xc om om' hT γ hγ`. Take `⟨m, f, φ, hf, rfl⟩` from `exists_sum_pure Γ.M' Bs.ψ Bs.emb (hN.le hΦD)`. Establish `hstd : ∀ i, ∀ᶠ v in Filter.cofinite, φ i v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers D.host.F} 1` using `fun i => ((hf i).2.2.and hT.geo.hM'.std).mono fun v h => h.1.trans h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hΨalg : (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (δ (f i)) (φ i)) ∈ algD Γ.M' Bs.ψ Bs.emb` using `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨δ (f i), φ i, (hδ _ (hf i).1).1, (hf i).2.1, (hf i).2.2, rfl⟩`. Establish `hder : ∀ x, HasDerivAt (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) x) ((∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (δ (f i)) (φ i)) x) 0`. Introduce `x`. Establish `e1 : (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) x) = fun t => ∑ i, om' (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) x`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_sum, Finset.sum_apply]`. Rewrite using `[e1, Finset.sum_apply]`. Conclude with `HasDerivAt.fun_sum fun i _ => (hδ _ (hf i).1).2 _ (GlobalTheory.ThK.EvUniqInf.rest_pure (f i) (φ i) (hf i).2.1 (hstd i)) x`. Establish `hΨN` using `hN.stabLie γ hγ _ hΦD _ hΨalg hder`. Take `⟨Φ₁, hΦ₁, hD₁⟩` from `hO.algB' _ hΨalg`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hΨN, Φ₁, hΦ₁, hD₁, ?_⟩` and prove the remaining obligations. Introduce `z`. Take `⟨u, rfl⟩` from `cB.surjective z`. Establish `hs : IsStd ψ` using `hO.psi ▸ hT.base.std`. Establish `hg : Γ.M'.IsGood ψ` using `hO.psi ▸ hT.geo.hM'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : Γ.M'.IsWeil ψ Xc.α (Xc.α / Xc.β) om'` using `hO.psi ▸ hT.weil'`. Establish `key` using `_root_.GlobalTheory.T.theta_sum_differentiable_along_line hP Γ.M' ψ Xc.α (Xc.α / Xc.β) om' hT.base.cm hs hg hw γ hγ m f (fun i => δ (f i)) φ (fun i => (hf i).2) (fun i => (hδ _ (hf i).1).2) u`. Establish `e2 : (fun t : ℝ => ωB (1, oneP θ X τ Y t) Φ₀ (cB u)) = fun t : ℝ => GlobalTheory.WeilM.thetaSum D.host.F (Γ.M'.co.rho ψ u (om' (1, γ (Multiplicative.ofAdd t)) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i))))`. Use function extensionality and compare the values at `t`. Establish `h1` using `(hO.weilB _ Φ₀ hD 1 (oneP θ X τ Y t)).2 u`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[conjU_one, ← hγt t]`. Conclude with `h1.symm`. Rewrite using `[e2, ← hD₁.2 u]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SquareAgree.StabLieAdelic.stabilizer_lie_adelic : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
@@ -96,7 +96,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareAgree.StabLieAdelic.stabilizer_lie_adelic | exact _root_.GlobalTheory.SquareAgree.StabLieAdelic.stabilizer_lie_adelic | (intros; apply _root_.GlobalTheory.SquareAgree.StabLieAdelic.stabilizer_lie_adelic <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.adelic_stabilizer_lie_ker_polarization : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

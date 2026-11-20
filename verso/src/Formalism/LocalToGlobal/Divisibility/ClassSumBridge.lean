@@ -34,7 +34,7 @@ Both sides reduce to the same expression.
 theorem pairOne_apply (K : Type) [Field K] [StarRing K] (x y : K) : pairOne K x y = star x * y := rfl
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Submodule.mem_one.mp hz`. Conclude with `Submodule.mem_one.mpr ⟨cO K a, rfl⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem star_mem_one {K : Type} [Field K] [NumberField K] [StarRing K] {z : K}
     (hz : z ∈ (1 : Submodule (𝓞 K) K)) : star z ∈ (1 : Submodule (𝓞 K) K) := by
@@ -42,9 +42,9 @@ theorem star_mem_one {K : Type} [Field K] [NumberField K] [StarRing K] {z : K}
   exact Submodule.mem_one.mpr ⟨cO K a, rfl⟩
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars, pairOne_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using h 1 (Submodule.one_le.mp le_rfl)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hy z hz`. Take `⟨a, ha⟩` from `Submodule.mem_one.mp (star_mem_one hz)`. Take `⟨b, hb⟩` from `Submodule.mem_one.mp hy`. Conclude with `Submodule.mem_one.mpr ⟨a * b, by rw [map_mul, ha, hb]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_dual_one {K : Type} [Field K] [NumberField K] [StarRing K] (y : K) :
     y ∈ Formalism.HermitianLatticesTheory.dual (pairOne K) (1 : Submodule (𝓞 K) K) ↔ y ∈ (1 : Submodule (𝓞 K) K) := by
@@ -59,19 +59,13 @@ theorem mem_dual_one {K : Type} [Field K] [NumberField K] [StarRing K] (y : K) :
     exact Submodule.mem_one.mpr ⟨a * b, by rw [map_mul, ha, hb]⟩
 
 /- English proof (translation)
-Use `⟨fun (x y : K) => ?_⟩` and prove the remaining obligations. Use `show starRingEnd K (star x * y) = star y * x`. Rewrite using `[starRingEnd_apply, star_mul', star_star, mul_comm]`. Use `nondeg := by`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `(x : K) hx`. Establish `h1 : star x * (1 : K) = 0` using `hx (1 : K)`. Establish `h2 : x = (0 : K)` using `by simpa using h1`. Conclude with `h2`. Introduce `(y : K) hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : star (1 : K) * y = 0` using `hy (1 : K)`. Establish `h2 : y = (0 : K)` using `by simpa using h1`. Conclude with `h2`. Use `inv := by intro c γ x y; rfl`. Use `nab_lat := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Use `show Submodule.IsLattice K (1 : Submodule (𝓞 K) K)`. Use `⟨by rw [Submodule.one_eq_span]; exact Submodule.fg_span_singleton _, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`.
-
-Establish `: x = x • (1 : K)` using `by simp`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.one_le.mp le_rfl))`. Use `del_le := fun _ => le_rfl`. Use `del_stable := by intro c γ y hy; exact hy`.
-
-Use `s_pos := Nat.one_pos`. Use `dual_le := by`. Introduce `c (y : K) hy`. Establish `h1 : y ∈ (1 : Submodule (𝓞 K) K)` using `(mem_dual_one y).mp hy`. Conclude with `Submodule.smul_mem _ _ h1`.
-
-Use `del_dual := by`. Introduce `c (y : K) hy`. Establish `h1 : y ∈ Formalism.HermitianLatticesTheory.dual (pairOne K) (1 : Submodule (𝓞 K) K)` using `(mem_dual_one y).mpr hy`. Conclude with `Submodule.smul_mem _ _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_good (K : Type) [Field K] [NumberField K] [StarRing K] : (one K).Good 1 where
   symm := by

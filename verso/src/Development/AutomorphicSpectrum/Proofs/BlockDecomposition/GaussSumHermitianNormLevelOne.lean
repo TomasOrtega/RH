@@ -16,13 +16,13 @@ variable {E : Type} [CommRing E] [Fintype E] {τ : E →+* E} {q : ℕ} {ε : �
 open Classical in
 
 /- English proof (translation)
-Use `set S := ∑ t ∈ Finset.univ.filter (fun t : E => τ t = t), χ (A * t) with hS`. Establish `key : χ (A * b) * S = S`. Rewrite using `[hS, Finset.mul_sum]`. Use `Finset.sum_nbij' (fun t => t + b) (fun t => t - b) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `t ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht ⊢`. Rewrite using `[map_add, ht, hb]`. Introduce `t ht`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ht ⊢`. Rewrite using `[map_sub, ht, hb]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t _`. Simplify using the standard rewrite rules. Introduce `t _`. Simplify using the standard rewrite rules. Introduce `t _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AddChar.map_add_eq_mul, mul_add, add_comm]`. Establish `h1 : (1 - χ (A * b)) * S = 0` using `by rw [sub_mul, one_mul, key, sub_self]`. Break down `mul_eq_zero.mp h1 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h).symm hχ`. Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sum_fixed_eq_zero (χ : AddChar E ℂ) (A b : E) (hb : τ b = b) (hχ : χ (A * b) ≠ 1) :
     ∑ t ∈ Finset.univ.filter (fun t : E => τ t = t), χ (A * t) = 0 := by
@@ -50,7 +50,7 @@ theorem sum_fixed_eq_zero (χ : AddChar E ℂ) (A b : E) (hb : τ b = b) (hχ : 
 open Classical in
 
 /- English proof (translation)
-Establish `hf : Finset.univ.filter (fun w : E => τ w * w = t) = Finset.univ.filter (fun a : E => a * τ a = t)`. Use extensionality with `w`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[mul_comm]`. Rewrite using `[hf, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_filter_norm (t : E) :
     (((Finset.univ.filter (fun w : E => τ w * w = t)).card : ℕ) : ℤ) =
@@ -65,17 +65,17 @@ theorem card_filter_norm (t : E) :
 open Classical in
 
 /- English proof (translation)
-Establish `hmap : ∀ w ∈ (Finset.univ : Finset E), τ w * w ∈ Finset.univ.filter (fun t : E => τ t = t)`. Introduce `w _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, map_mul, h.inv]`. Conclude with `mul_comm _ _`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfib : ∀ t ∈ Finset.univ.filter (fun t : E => τ t = t), (∑ w ∈ Finset.univ.filter (fun w : E => τ w * w = t), χ (A * (τ w * w))) = (((q : ℂ) - ε) + if t = 0 then (q : ℂ) * ε else 0) * χ (A * t)`. Introduce `t ht`. Establish `ht' : τ t = t` using `(Finset.mem_filter.mp ht).2`. Rewrite using `[Finset.sum_congr rfl (fun w hw => by rw [(Finset.mem_filter.mp hw).2]), Finset.sum_const, nsmul_eq_mul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hc` using `card_filter_norm (τ := τ) t`. Establish `hc' : (((Finset.univ.filter (fun w : E => τ w * w = t)).card : ℕ) : ℂ) = ((Nat.card {a : E // a * τ a = t} : ℤ) : ℂ)`. Rewrite using `[← hc]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc']`. Distinguish the cases in `h0 : t = 0`. Substitute `h0` using the available equality. Rewrite using `[GlobalTheory.T.norm_fibre_card_zero E τ q ε h, if_pos rfl]`. Use `push_cast`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GlobalTheory.T.norm_fibre_card_nonzero E τ q ε h t ht' h0, if_neg h0]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hfib]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [add_mul, Finset.sum_add_distrib, ← Finset.mul_sum]`. Rewrite using `[sum_fixed_eq_zero χ A b hb hχ, mul_zero, zero_add]`. Simplify using `only [ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_filter, Finset.mem_univ, true_and, map_zero, if_true, mul_zero, AddChar.map_zero_eq_one, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gauss_core (h : ResAlg E τ q ε) (χ : AddChar E ℂ) (A b : E) (hb : τ b = b)
     (hχ : χ (A * b) ≠ 1) :
@@ -121,9 +121,9 @@ end GlobalTheory.CompanionTheory.SiegLoc.GaussOne
 namespace GlobalTheory.CompanionTheory.SiegLoc
 
 /- English proof (translation)
-Introduce `R _ σ ϖ q ε hR _ ψ hψ a ha hna`. Establish `hex : ∃ b, σ b = b ∧ ψ 1 (Ideal.Quotient.mk _ (a * b)) ≠ 1`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hna (hψ.prim a ha hcon)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb, hχ⟩` from `hex`. Use `GaussOne.gauss_core (GlobalTheory.T.residue_algebra_unramified R σ ϖ q ε hR) (ψ 1) _ (Ideal.Quotient.mk _ b) ?_ ?_` and prove the remaining obligations. Rewrite using `[barσ_mk, hb]`. Rewrite using `[← map_mul]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gauss_level_one : ∀ (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R) (q : ℕ) (ε : ℤ)
     (hR : IsUnrQuad R σ ϖ q ε) [∀ k, Fintype (R ⧸ lev ϖ k)] (ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ),

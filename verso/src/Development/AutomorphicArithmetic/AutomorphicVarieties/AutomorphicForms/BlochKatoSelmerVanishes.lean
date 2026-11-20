@@ -27,7 +27,7 @@ def tw (r : Γ →* GL (Fin n) k) (χ : Γ →* kˣ) : Γ →* GL (Fin n) k wher
     simp [Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul, smul_smul, mul_comm]
 
 /- English proof (translation)
-Simplify using `[tw, Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tw_val (r : Γ →* GL (Fin n) k) (χ : Γ →* kˣ) (s : Γ) :
     (tw r χ s : Matrix (Fin n) (Fin n) k) = (χ s : k) • (r s : Matrix (Fin n) (Fin n) k) := by

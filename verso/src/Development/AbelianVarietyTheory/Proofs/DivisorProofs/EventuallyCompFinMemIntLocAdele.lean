@@ -18,9 +18,9 @@ open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact Eventually.of_forall fun v => by rw [map_zero]; exact zero_mem _`. Consider the case `add y z hy hz => filter_upwards [hy, hz] with v h h' using by rw [map_add]; exact add_mem h h'`. Consider the case `tmul a e => filter_upwards [a.2.2, eventually_one_tmul_mem_intLoc (F := F) e] with v h h'`. Use `mul_mem (tmul_mem_intLoc (a := evFin F v a) h (1 : 𝓞 E)) h'` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `evFin F v a ⊗ₜ[F] e ∈ _`. Simplify using `using this`.
+Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eventually_compFin_mem_intLoc_adele (z : AE F E) :
     ∀ᶠ v : Pl F in cofinite, compFin F E v z ∈ intLoc F E v := by
@@ -36,7 +36,7 @@ theorem eventually_compFin_mem_intLoc_adele (z : AE F E) :
 omit [NumberField E] in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `compFin F E v (eFin v • (l : AE F E) + (1 - eFin v) • 1) = _`. Establish `h : evFin F v (eFin v) = 1` using `GlobalTheory.LatVac.evFin_liftV v 1`. Rewrite using `[map_add, compFin_smul, compFin_smul, map_sub, map_one, h, sub_self, zero_smul, one_smul, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem compFin_unitAt_self (v : Pl F) (l : (AE F E)ˣ) :
     compFin F E v (unitAt E v l : AE F E) = compFin F E v l := by
@@ -45,7 +45,7 @@ theorem compFin_unitAt_self (v : Pl F) (l : (AE F E)ˣ) :
   rw [map_add, compFin_smul, compFin_smul, map_sub, map_one, h, sub_self, zero_smul, one_smul, add_zero]
 
 /- English proof (translation)
-Use `filter_upwards [eventually_compFin_mem_intLoc_adele (l : AE F E), eventually_compFin_mem_intLoc_adele ((l⁻¹ : (AE F E)ˣ) : AE F E)] with v h h'`. Use `mem_unitsAt.2 ⟨unitAt_mem v l, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[compFin_unitAt_self]` and apply the resulting hypothesis. Rewrite using `[← map_inv, compFin_unitAt_self]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eventually_unitAt_mem_unitsAt (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (l : (AE F E)ˣ) : ∀ᶠ v in cofinite, unitAt E v l ∈ unitsAt E v := by

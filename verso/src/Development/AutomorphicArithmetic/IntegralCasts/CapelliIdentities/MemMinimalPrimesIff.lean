@@ -1,17 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `A _ _ _ z hz`. Establish `key : ∀ P : Ideal A, P.IsPrime → z ∈ P → (1 : ℕ∞) ≤ P.height`. Introduce `P hP hzP`. Establish `hlt : (⊥ : Ideal A) < P`. Use `bot_lt_iff_ne_bot.mpr fun h => hz ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hzP` using `[h]`. Conclude with `Ideal.mem_bot.mp hzP`. Use `Ideal.height_add_one_le_of_lt_of_isPrime hlt` as an intermediate fact. Conclude with `le_trans le_add_self this`. Introduce `W`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hW`. Establish `hP : W.IsPrime` using `hW.1.1`. Establish `hzW : z ∈ W` using `hW.1.2 (Ideal.mem_span_singleton_self z)`. Conclude with `⟨hP, le_antisymm (Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ hW) (key W hP hzW), hzW⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨hP, hh, hzW⟩`. Take `⟨P, hPm, hPW⟩` from `Ideal.exists_minimalPrimes_le ((Ideal.span_singleton_le_iff_mem W).mpr hzW)`. Establish `hP' : P.IsPrime` using `hPm.1.1`. Establish `hzP : z ∈ P` using `hPm.1.2 (Ideal.mem_span_singleton_self z)`. Break down `hPW.eq_or_lt with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h ▸ hPm`. It suffices to derive a contradiction. Establish `h1` using `Ideal.height_add_one_le_of_lt_of_isPrime h`. Establish `h2 : (1 : ℕ∞) + 1 ≤ 1`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `absurd h2 (by decide)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yhd1.mem_minimalPrimes_iff.{u_1} :
     ∀ {A : Type u_1} [inst : CommRing A] [IsDomain A] [IsNoetherianRing A] {z : A},

@@ -32,7 +32,7 @@ namespace GlobalTheory.EvenOnto.UpLift
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[mem_multT]`. Use `Submodule.span_mono ?_ hx` and prove the remaining obligations. Introduce `T hT`. Conclude with `⟨hT.aut, hT.cusp, fun v k hk => absurd hk (Set.notMem_empty k), hT.equiv, hT.cont⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem multT_le_noLevel' {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) (J : Set (GA D V))
     (χ : GA D V → ℂ) : MultT θ M J χ ≤ MultT θ M ∅ 1 := by
@@ -43,19 +43,17 @@ theorem multT_le_noLevel' {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam 
   exact ⟨hT.aut, hT.cusp, fun v k hk => absurd hk (Set.notMem_empty k), hT.equiv, hT.cont⟩
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 D c hc k hk s s' hs hs' p hp u φ v _hv`. Take `⟨T, hTK, hKT, hL⟩` from `GlobalTheory.T.liftUp_multiplicitySpaces_span_kFiniteVectors h1 h2 h3 h4 D c k s s' p.ω p.f hc hk hs hs' hp.pre`. Take `⟨F', hF', hint⟩` from `hL _ (multT_le_noLevel' c.θ s.M _ _ u.2)`. Establish `hlaw : ∀ P v', ∀ κ ∈ s'.J, ∀ g, F' (T P v') (g * κ) = F' (T P v') g`. Introduce `P v' κ hκ g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← (hint P v' (g * κ)).2, ← (hint P v' g).2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g' => ?_)` and prove the remaining obligations. Establish `hω : thetaKO p.ω g' (g * κ) (GlobalTheory.Chain.ptOf c.ψ c.θ s.M s'.M p.f P) = thetaKO p.ω g' g (GlobalTheory.Chain.ptOf c.ψ c.θ s.M s'.M p.f P)`. Establish `hm : ((g', g * κ) : GA D s.V × GA D s'.V) = (g', g) * (1, κ)` using `by simp`. Establish `h2` using `hp.pre.law P 1 (one_mem _) κ hκ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [thetaKO]`. Rewrite using `[hm, map_mul, Module.End.mul_apply, h2]`. Simplify using `only [hω]`. Establish `hCC : F' ∈ s'.CC c`. Use `GlobalTheory.T.mem_multiplicitySpace_level_of_KFinite_tensors D s'.V s'.par s'.M c.θ hc.inf _ _ ?_ F' hF' ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `κ hκ`. Conclude with `hs'.fin hκ`. Introduce `w hw κ hκ g`. Establish `hx` using `hKT hw`. Use `clear hw`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨P, v', rfl⟩` from `hx`. Simplify using `using hlaw P v' κ hκ g`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => simp only [map_add, Pi.add_apply, hx, hy, mul_add]`. Consider the case `smul a x _ hx => simp only [map_smul, Pi.smul_apply, smul_eq_mul, hx]`. Expand and normalize the polynomial expressions, which then agree. Establish `hup : p.up φ (PiLocalization₂.val u v) = F' (T φ v)`. Use function extensionality and compare the values at `h`.
-
-Conclude with `(hint φ v h).2`. Rewrite using `[hup]`. Conclude with `Submodule.subset_span ⟨⟨F', hCC⟩, T φ v, hTK φ v, rfl⟩`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upSpan : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay →
     GlobalTheory.Published.CasselmanWallach → ∀ D : D7, UpSpan D := by
@@ -94,13 +92,13 @@ theorem upSpan : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Pub
   exact Submodule.subset_span ⟨⟨F', hCC⟩, T φ v, hTK φ v, rfl⟩
 
 /- English proof (translation)
-Introduce `hP D c hc k hk s s' hs hs' p hp u y φ v _ w _`. Establish `hru : GlobalTheory.Grow.RapidDec s.V (PiLocalization₂.val u v)` using `((GlobalTheory.T.multiplicity_values_continuous_bounded_hecke_conj hP D c hc k hk.le s hs).1 u v).2.2.2.2`. Establish `hry : GlobalTheory.Grow.RapidDec s'.V (PiLocalization₂.val y w)` using `((GlobalTheory.T.multiplicity_values_continuous_bounded_hecke_conj hP D c hc (k + 1) (Nat.succ_le_of_lt hk) s' hs').1 y w).2.2.2.2`. Establish `hF` using `GlobalTheory.T.thetaKernel_iterated_integrals_swap D c.ψ c.θ s.V s'.V (c.χ k) (c.χ k) p.ω hc.inf hp.pre.weil (p.pt φ) (GlobalTheory.T.evenThetaChainStep_fockVectors_spherical_latticeVacua D c hc k hk s s' hs hs' p hp φ).1 s.ν s.fd s'.ν s'.fd hs.haar hs.fund hs'.haar hs'.fund (PiL …`. Simplify using `only [PiLocalization₂.pet, Lift.pet, Step.up]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[← integral_conj, ← integral_const_mul]`. Use `congr 1`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ g in s.fd, ∫ h in s'.fd, thetaKO p.ω g h (p.pt φ) * PiLocalization₂.val y w h * conj (PiLocalization₂.val u v g) ∂s'.ν ∂s.ν := hF`. Use `_ = ∫ g in s.fd, PiLocalization₂.val (p.io y) (p.It φ w) g * starRingEnd ℂ (PiLocalization₂.val u v g) ∂s.ν := by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[integral_mul_const]`. Use `congr 1`. Conclude with `hp.io.eq y φ w g`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem upAdj : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, UpAdj D := by
   intro hP D c hc k hk s s' hs hs' p hp u y φ v _ w _
@@ -126,7 +124,7 @@ theorem upAdj : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, UpAdj D :=
         exact hp.io.eq y φ w g
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 D` and use `⟨upSpan h1 h2 h3 h4 D, upAdj h3 D⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem upSpan_upAdj : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay →
     GlobalTheory.Published.CasselmanWallach → ∀ D : D7, UpSpan D ∧ UpAdj D :=

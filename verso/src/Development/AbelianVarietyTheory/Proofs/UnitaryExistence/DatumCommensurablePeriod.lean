@@ -19,9 +19,9 @@ namespace GlobalTheory.TwoLattices
 open Module
 
 /- English proof (translation)
-Establish `h` using `LinearEquiv.isUnit_det (LinearEquiv.ofBijective B hB) b b.dualBasis`. Establish `e : LinearMap.toMatrix b b.dualBasis (LinearEquiv.ofBijective B hB : M →ₗ[ℤ] _) = (Matrix.of fun i k => B (b i) (b k))ᵀ`. Use extensionality with `i k`. Simplify using `[LinearMap.toMatrix_apply]`. Rewrite `h` using `[e, Matrix.det_transpose]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Int.isUnit_iff_natAbs_eq.mp h`.
+A detailed English derivation is pending.
 -/
 theorem natAbs_det_gram {M κ : Type} [AddCommGroup M] [Fintype κ] [DecidableEq κ] (b : Basis κ ℤ M)
     (B : LinearMap.BilinForm ℤ M) (hB : Function.Bijective B) :
@@ -35,13 +35,13 @@ theorem natAbs_det_gram {M κ : Type} [AddCommGroup M] [Fintype κ] [DecidableEq
   exact Int.isUnit_iff_natAbs_eq.mp h
 
 /- English proof (translation)
-Set `b : Basis (Fin n) ℤ M` to `Module.finBasisOfFinrankEq ℤ M hn`. Set `b' : Basis (Fin n) ℤ M'` to `Module.finBasisOfFinrankEq ℤ M' hn'`. Set `bN : Basis (Fin n) ℤ j.range` to `b.map (AddMonoidHom.ofInjective hj).toIntLinearEquiv`. Establish `hbN : ∀ i, (bN i : M') = j (b i)` using `fun i => rfl`. Rewrite using `[AddSubgroup.index_eq_natAbs_det b' j.range bN, Basis.det_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set J := b'.toMatrix (fun i => (bN i : M')) with hJ`. Establish `key : Jᵀ * (Matrix.of fun i k => B' (b' i) (b' k)) * J = ((N : ℤ) ^ 2) • Matrix.of fun i k => B (b i) (b k)`. Use extensionality with `i k`. Establish `e1 : ∀ i, j (b i) = ∑ l, J l i • b' l` using `fun i => by`. Rewrite using `[← hbN]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(b'.sum_repr _).symm`. Simplify using `only [Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, ← h, e1, Matrix.mul_apply, Matrix.transpose_apply, map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations. Establish `k2` using `congrArg (fun X => X.det.natAbs) key`. Simplify using `only [Matrix.det_mul, Matrix.det_transpose, Matrix.det_smul, Int.natAbs_mul, natAbs_det_gram b B hB, natAbs_det_gram b' B' hB', _root_.mul_one, Int.natAbs_pow, Int.natAbs_natCast, Fintype.card_fin] at k2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: J.det.natAbs ^ 2 = (N ^ n) ^ 2`. Rewrite using `[sq, k2]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Nat.pow_left_injective (by norm_num) this`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem index_similitude {M M' : Type} [AddCommGroup M] [AddCommGroup M'] [Module.Free ℤ M] [Module.Finite ℤ M]
     [Module.Free ℤ M'] [Module.Finite ℤ M'] (B : LinearMap.BilinForm ℤ M) (B' : LinearMap.BilinForm ℤ M')
@@ -74,11 +74,11 @@ theorem index_similitude {M M' : Type} [AddCommGroup M] [AddCommGroup M'] [Modul
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span E (Set.range φ')` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨b, rfl⟩ := hx; exact ⟨1, one_pos, b, by simp⟩`. Consider the case `zero => exact ⟨1, one_pos, 0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨N, hN, b, hb⟩` from `hx`. Take `⟨K, hK, c, hc⟩` from `hy`. Use `⟨N * K, Nat.mul_pos hN hK, K • b + N • c, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_nsmul, map_nsmul, hb, hc, smul_add, smul_smul, smul_smul, mul_comm K N]`. Consider the case `smul e x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨N, hN, b, hb⟩` from `hx`. Establish `halg : IsAlgebraic ℤ e` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic e)`. Take `⟨m, s, hm, hs⟩` from `halg.exists_nsmul_eq (S := 𝓞 E)`. Use `⟨m * N, Nat.mul_pos (Nat.pos_of_ne_zero hm) hN, s • b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hb, ← IsScalarTower.algebraMap_smul E s, ← hs, smul_assoc, smul_comm e N x, mul_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mul_mem {M' V : Type} [AddCommGroup M'] [Module (𝓞 E) M'] [AddCommGroup V] [Module E V]
     [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V] (φ' : M' →ₗ[𝓞 E] V)
@@ -101,13 +101,13 @@ theorem exists_mul_mem {M' V : Type} [AddCommGroup M'] [Module (𝓞 E) M'] [Add
     rw [map_smul, hb, ← IsScalarTower.algebraMap_smul E s, ← hs, smul_assoc, smul_comm e N x, mul_smul]
 
 /- English proof (translation)
-Take `⟨s, hS⟩` from `Module.Finite.fg_top (R := 𝓞 E) (M := M)`. Use `choose n hn c hc using exists_mul_mem φ' hs`. Use `⟨∏ x ∈ s, n (φ x), Finset.prod_pos fun x _ => hn _, fun a => ?_⟩` and prove the remaining obligations. Establish `ha : a ∈ Submodule.span (𝓞 E) (s : Set M)` using `hS ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem (fun x => n (φ x)) (Finset.mem_coe.mp hx)`. Conclude with `⟨k • c (φ x), by rw [map_nsmul, hc, smul_smul, hk, mul_comm]⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hx`. Take `⟨d, hd⟩` from `hy`. Conclude with `⟨b + d, by rw [map_add, map_add, hb, hd, smul_add]⟩`. Consider the case `smul e x _ hx`. Take `⟨b, hb⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨e • b, by rw [map_smul, map_smul, hb, smul_comm]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_le {M M' V : Type} [AddCommGroup M] [Module (𝓞 E) M] [Module.Finite (𝓞 E) M]
     [AddCommGroup M'] [Module (𝓞 E) M'] [AddCommGroup V] [Module E V]
@@ -131,7 +131,7 @@ theorem exists_mul_le {M M' V : Type} [AddCommGroup M] [Module (𝓞 E) M] [Modu
     exact ⟨e • b, by rw [map_smul, map_smul, hb, smul_comm]⟩
 
 /- English proof (translation)
-Use `choose f hf using h`. Use `⟨⟨⟨f, fun x y => hi ?_⟩, fun c x => hi ?_⟩, hf⟩` and prove the remaining obligations. Rewrite using `[map_add, hf, hf, hf, map_add, smul_add]`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[map_smul, hf, hf, map_smul, smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {R M M' V : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R M'] [AddCommGroup V] [Module R V] (φ : M →ₗ[R] V) (φ' : M' →ₗ[R] V)
@@ -144,9 +144,9 @@ theorem exists_lift {R M M' V : Type} [CommRing R] [AddCommGroup M] [Module R M]
     rw [map_smul, hf, hf, map_smul, smul_comm]
 
 /- English proof (translation)
-Set `L : Submodule ℤ (Fin g → ℂ)` to `P.range.toIntSubmodule`. Use `haveI : DiscreteTopology L := hd`. Use `haveI : IsZLattice ℝ L := ⟨hs⟩`. Establish `h` using `ZLattice.rank ℝ L`. Establish `e : M ≃ₗ[ℤ] L` using `(AddMonoidHom.ofInjective hi).toIntLinearEquiv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e.finrank_eq, h, Module.finrank_pi_fintype]`. Simplify using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem rank_of_lattice {M : Type} [AddCommGroup M] {g : ℕ} (P : M →+ (Fin g → ℂ)) (hi : Function.Injective P)
     (hd : DiscreteTopology P.range) (hs : Submodule.span ℝ (Set.range P) = ⊤) :
@@ -162,7 +162,7 @@ theorem rank_of_lattice {M : Type} [AddCommGroup M] {g : ℕ} (P : M →+ (Fin g
 variable [IsCMField E]
 
 /- English proof (translation)
-Simplify using `only [FD.herm, FD.cc, Pi.smul_apply, nsmul_eq_mul, map_mul, map_natCast, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem herm_nsmul {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (N : ℕ) (x y : Fin r → E) :
     FD.herm G (N • x) (N • y) = (N : E) ^ 2 * FD.herm G x y := by
@@ -170,9 +170,9 @@ theorem herm_nsmul {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (N : ℕ) (x y : Fin
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[h', hj, hj, herm_nsmul]`. Use `push_cast`. Rewrite using `[h, ← smul_eq_mul ((N : ℚ) ^ 2), ← map_smul]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Algebra.smul_def]`. Simplify using `only [map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_lift {H : Host E} (D D' : Datum H) {r : ℕ} (ξ : E) (Gm : Matrix (Fin r) (Fin r) E)
     (φ : D.La →ₗ[𝓞 E] (Fin r → E)) (φ' : D'.La →ₗ[𝓞 E] (Fin r → E))
@@ -190,7 +190,7 @@ theorem form_lift {H : Host E} (D D' : Datum H) {r : ℕ} (ξ : E) (Gm : Matrix 
   ring
 
 /- English proof (translation)
-Simplify using `only [hermForm, star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermForm_real_smul {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (t : ℝ) (z w : Fin g → ℂ) :
     hermForm Hm ((t : ℂ) • z) ((t : ℂ) • w) = ((t ^ 2 : ℝ) : ℂ) * hermForm Hm z w := by
@@ -204,33 +204,29 @@ end GlobalTheory.TwoLattices
 open GlobalTheory.TwoLattices in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D D' r ξ Gm φ φ' g ty _ ⟨hi, hs, _, _, hE⟩ ⟨hi', hs', _, _, hE'⟩ P ⟨hPl, hPi, hPd, hPs, Hm, hH, hpos, hIm⟩`. Use `haveI := D.fin`. Use `haveI := D'.fin`. Take `⟨N₁, hN₁, h₁⟩` from `exists_mul_le φ φ' hs'`. Take `⟨N₂, hN₂, h₂⟩` from `exists_mul_le φ' φ hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set N := N₁ * N₂ with hNdef`. Establish `hN : 0 < N` using `Nat.mul_pos hN₁ hN₂`. Take `⟨j, hj⟩` from `exists_lift φ φ' hi' N fun a => by`. Take `⟨b, hb⟩` from `h₁ a`. Conclude with `⟨N₂ • b, by rw [map_nsmul, hb, smul_smul, mul_comm]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨j', hj'⟩` from `exists_lift φ' φ hi N fun a => by`. Take `⟨b, hb⟩` from `h₂ a`. Conclude with `⟨N₁ • b, by rw [map_nsmul, hb, smul_smul]⟩`. Use `clear_value N`. Establish `hNE : (N : E) ≠ 0` using `by exact_mod_cast hN.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNC : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hNR : (N : ℝ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `c₁ : ∀ a, j' (j a) = (N ^ 2) • a` using `fun a => hi (by rw [hj', hj, map_nsmul, smul_smul, sq])`. Establish `c₂ : ∀ a, j (j' a) = (N ^ 2) • a` using `fun a => hi' (by rw [hj, hj', map_nsmul, smul_smul, sq])`. Establish `f₁` using `form_lift D D' ξ Gm φ φ' hE hE' N j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `f₂` using `form_lift D' D ξ Gm φ' φ hE' hE N j' hj'`. Establish `cancel : ∀ v w : Fin r → E, N • v = N • w → v = w` using `fun v w h => by`. Rewrite `h` using `[← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E]`. Conclude with `smul_right_injective _ hNE h`. Establish `ji : Function.Injective j` using `fun a b h => hi (cancel _ _ (by rw [← hj, ← hj, h]))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ji' : Function.Injective j'` using `fun a b h => hi' (cancel _ _ (by rw [← hj', ← hj', h]))`. Set `P' : D'.La →+ (Fin g → ℂ)` to `{ toFun := fun a => (N : ℂ)⁻¹ • P (j' a) map_zero' := by simp map_add' := fun a b => by simp only [map_add, smul_add] }`. Establish `hP' : ∀ a, P' a = (N : ℂ)⁻¹ • P (j' a)` using `fun _ => rfl`. Establish `p₂ : ∀ a, P (j' a) = (N : ℂ) • P' a` using `fun a => by`. Rewrite using `[hP', smul_smul, mul_inv_cancel₀ hNC, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Establish `p₁ : ∀ a, P' (j a) = (N : ℂ) • P a` using `fun a => by`. Rewrite using `[hP', c₁, map_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `P'i : Function.Injective P'` using `fun a b h => ji' (hPi (by rw [p₂, p₂, h]))`. Establish `P'd : DiscreteTopology P'.range`. Set `f : P'.range → P.range` to `fun x => ⟨(N : ℂ) • (x : Fin g → ℂ), by`. Take `⟨a, ha⟩` from `x.2`. Conclude with `⟨j' a, by rw [p₂, ha]⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `DiscreteTopology.of_continuous_injective (f := f) ?_ ?_` and prove the remaining obligations. Conclude with `Continuous.subtype_mk (continuous_subtype_val.const_smul (N : ℂ)) _`. Introduce `x y h`. Conclude with `Subtype.ext (smul_right_injective _ hNC (congrArg Subtype.val h))`. Establish `P's : Submodule.span ℝ (Set.range P') = ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[eq_top_iff, ← hPs, Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `: P a = (N : ℝ)⁻¹ • P' (j a)`. Rewrite using `[p₁]`. Use extensionality with `i`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, Complex.real_smul, smul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Establish `hper : IsPeriod D' ty P'`. Use `⟨fun a x i => ?_, P'i, P'd, P's, Hm, hH, hpos, fun x y => ?_⟩` and prove the remaining obligations. Simplify using `only [hP', map_smul, Pi.smul_apply, hPl, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : ((N : ℂ))⁻¹ = (((N : ℝ)⁻¹ : ℝ) : ℂ)` using `by push_cast; rfl`.
-
-Rewrite using `[hP', hP', e, hermForm_real_smul, Complex.im_ofReal_mul, hIm, f₂]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `haveI : Module.Finite ℤ D.La := Module.Finite.trans (𝓞 E) _`. Use `haveI : Module.Finite ℤ D'.La := Module.Finite.trans (𝓞 E) _`.
-
-Use `haveI : Module.IsTorsionFree ℤ D.La := hPi.moduleIsTorsionFree P (fun c x => map_zsmul P c x)`. Use `haveI : Module.IsTorsionFree ℤ D'.La := P'i.moduleIsTorsionFree P' (fun c x => map_zsmul P' c x)`. Use `⟨N, j, j', P', ⟨hN, c₁, c₂, f₁, f₂, ?_⟩, hper, p₁, p₂⟩` and prove the remaining obligations. Conclude with `index_similitude D.EF D'.EF D.unimod D'.unimod j.toAddMonoidHom ji (2 * g) N (rank_of_lattice P hPi hPd hPs) (rank_of_lattice P' P'i P'd P's) f₁`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.datum_commensurable_period :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D D' : Datum H) (r : ℕ) (ξ : E) (Gm : Matrix (Fin r) (Fin r) E) (φ : D.La →ₗ[𝓞 E] (Fin r → E)) (φ' : D'.La →ₗ[𝓞 E] (Fin r → E)) (g : ℕ) (ty : Fin g → (E →+* ℂ)), FD.cc ξ = -ξ → (Function.Injective φ ∧ Submodule.span E (Set.range φ) = ⊤ ∧ (∀ a b, FD.cc (Gm a b) = Gm b a) ∧ Gm.det ≠ 0 ∧ ∀ x y, ((D.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (ξ * FD.herm Gm (φ x) (φ y))) → (Function.Injective φ' ∧ Submodule.span E (Set.range φ') = ⊤ ∧ (∀ a b, FD.cc (Gm a b) = Gm b a) ∧ Gm.det ≠ 0 ∧ ∀ x y, ((D'.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (ξ * FD.herm Gm (φ' x) (φ' y))) → ∀ P, IsPeriod D ty P → ∃ (N : ℕ) (j : D.La →ₗ[𝓞 E] D'.La) (j' : D'.La →ₗ[𝓞 E] D.La) (P' : D'.La →+ (Fin g → ℂ)), (0 < N ∧ (∀ a, j' (j a) = (N ^ 2) • a) ∧ (∀ a, j (j' a) = (N ^ 2) • a) ∧ (∀ a b, D'.EF (j a) (j b) = (N : ℤ) ^ 2 * D.EF a b) ∧ (∀ a b, D.EF (j' a) (j' b) = (N : ℤ) ^ 2 * D'.EF a b) ∧ Nat.card (D'.La ⧸ LinearMap.range j) = N ^ (2 * g)) ∧ IsPeriod D' ty P' ∧ (∀ a, P' (j a) = (N : ℂ) • P a) ∧ ∀ a, P (j' a) = (N : ℂ) • P' a := by

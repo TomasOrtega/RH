@@ -14,7 +14,7 @@ def permRep (X : Type) [MulAction G X] (A : Rep k G) : Representation k G (X →
   map_mul' g h := by ext x a; simp [mul_smul]
 
 /- English proof (translation)
-Simplify using `[permRep]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem permRep_single {X : Type} [MulAction G X] (A : Rep k G) (g : G) (x : X) (a : A.V) :
     permRep X A g (Finsupp.single x a) = Finsupp.single (g • x) (A.ρ g a) := by

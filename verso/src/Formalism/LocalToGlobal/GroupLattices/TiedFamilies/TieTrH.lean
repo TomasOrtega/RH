@@ -33,12 +33,12 @@ def FullTiedNoG.ofFull {D : D7} (X : FullTied D) : FullTiedNoG D := { X with }
 def FullTiedNoG.toFull {D : D7} (X : FullTiedNoG D) (g : GTied D X.base) : FullTied D := { X with g := g }
 
 /- English proof (authored)
-The constructor toFull copies the underlying AllTied data from X and adds g. Its base projection is therefore the original base of X.
+Completing the datum copies the underlying tied data from X and adds g. Its base projection is therefore the original base of X.
 -/
 theorem FullTiedNoG.toFull_base {D : D7} (X : FullTiedNoG D) (g : GTied D X.base) : (X.toFull g).base = X.base := rfl
 
 /- English proof (authored)
-The constructor toFull assigns g to the g field. Projecting that field gives the supplied g.
+Completing the datum sets the G-data to g. The G-data are therefore the supplied g.
 -/
 theorem FullTiedNoG.toFull_g {D : D7} (X : FullTiedNoG D) (g : GTied D X.base) : (X.toFull g).g = g := rfl
 
@@ -47,7 +47,7 @@ def colsSet (H : HermCols D) : HermCols (setGat D g' hd') := { H with }
 def hermSet (H : HermTied D) : HermTied (setGat D g' hd') := { H with }
 
 /- English proof (authored)
-The construction hermSet copies the HermTied fields from H under the updated datum. In particular, its level-zero Hermitian data are the copied field H.lev0.
+The change of datum copies the tied Hermitian fields from H. In particular, its level-zero Hermitian data are those of H.
 -/
 theorem hermitian_setting_level_zero (H : HermTied D) : (hermSet D g' hd' H).lev0 = H.lev0 := rfl
 
@@ -66,7 +66,7 @@ def allSet (H : AllTied D) : AllTied (setGat D g' hd') where
 
 set_option maxHeartbeats 4000000 in
 /- English proof (authored)
-The change of datum replaces the assigned G-data and its dimension certificate. The adjacency conditions use the original lattice and step data, the Hermitian columns, and the data at T. The constructions colsSet and atTSet copy the latter two sets of data field by field. Consequently the upward, downward, and dilation conditions at level zero and at positive levels are identical to the six supplied conditions in h. Use those six fields for the new adjacency structure.
+The change of datum replaces the assigned G-data and its dimension certificate. The adjacency conditions use the original lattice and step data, the Hermitian columns, and the data at T. The change of datum copies the Hermitian columns and the data at T field by field. Consequently the upward, downward, and dilation conditions at level zero and at positive levels are identical to the six supplied conditions in h. Use those six fields for the new adjacency structure.
 -/
 theorem adSet (H : HermCols D) (aT : ∀ u, AtT D u (H.vT u) (H.Fv u)) (h : AdTied D H aT) :
     AdTied (setGat D g' hd') (colsSet D g' hd' H) (fun u => atTSet D g' hd' (aT u)) :=
@@ -88,7 +88,7 @@ def fullSet (H : FullTiedNoG D) : FullTiedNoG (setGat D g' hd') where
   baseL := H.baseL
 
 /- English proof (authored)
-The base of fullSet comes from allSet, which applies hermSet to the original base. The level-zero field of that adjusted base is the original level-zero field by the definition of hermSet.
+The adjusted tied datum is built by applying the Hermitian change of datum to the original base. That change copies the level-zero field, so the completed datum has the original level-zero data.
 -/
 theorem full_setting_level_zero (H : FullTiedNoG D) : (fullSet D g' hd' H).base.lev0 = H.base.lev0 := rfl
 

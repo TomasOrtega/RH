@@ -26,19 +26,19 @@ open GlobalTheory.EvenOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `hCRD D c hc j hj s hs u B hB`. Take `⟨hu0, hpar⟩` from `hB`. Establish `hex : ∃ v, PiLocalization₂.val u v ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hu0` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Conclude with `h v`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `hex`. Use `set f : GA D s.V → ℂ := fun g => conj (PiLocalization₂.val u v g) with hfdef`. Establish `h3 : GlobalTheory.LFun.IsParamFunV s.V c.S f B` using `hpar v hv`. Take `⟨h4a, _⟩` from `GlobalTheory.T.multiplicity_values_continuous_bounded_hecke_conj hCRD D c hc j hj s hs`. Take `⟨hcont, ⟨C, hC⟩, hinv, hlev, _⟩` from `h4a u v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsph : SphOff (s.J : Set (GA D s.V)) 1 c.S` using `hs.sph`. Establish `hfmem : f ∈ GlobalTheory.FinZeta.bddAut s.V`. Use `⟨(Complex.continuous_conj).comp hcont, fun γ hγ g => ?_, C, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [hfdef, hinv γ hγ g]`. Simplify `hC g` using `[hfdef]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hf0 : f ≠ 0`. Introduce `h0`. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `congrFun h0 g` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[hfdef]`. Establish `hlev' : ∀ k ∈ (s.J : Set (GA D s.V)), ∀ g, f (g * k) = (1 : GA D s.V → ℂ) k * f g`. Introduce `k hk g`. Simplify using `only [hfdef, hlev k hk g, Pi.one_apply, one_mul]`. Take `⟨a, ha⟩` from `GlobalTheory.T.sphericalOperator_eigenvalues_determined_by_params D s.V (s.J : Set (GA D s.V)) 1 c.S hsph B`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨B', hB', hbd⟩` from `GlobalTheory.T.exists_satake_parameters_bounded_eigenfunction D s.V _ _ c.S hsph f hfmem hf0 hlev' a (fun P d R hR => ha f h3 P d R hR)`. Introduce `w hw`. Rewrite using `[GlobalTheory.LFun.IsParamVecOff.unique h3 hB' hw]`. Conclude with `hbd w hw`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EvenOnto.parBound_of_rapidDecay : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, ParBound D := by
   intro hCRD D c hc j hj s hs u B hB

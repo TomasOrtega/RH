@@ -10,7 +10,7 @@ namespace Formalism.MainNotions.G.ColumnFamilies
 
 section B3
 /- English proof (translation)
-Introduce `n _ M CF` and use `Formalism.InvariantFactorPaths.ColumnFamilies.filtration_theorem_one_of Formalism.InvariantFactorPaths.ColumnFamilies.Top.lemmaA n (br_toC M) (br_cfToC CF)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem admissible_thm_B1 (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.admB3 D :=
   fun n _ M CF => Formalism.InvariantFactorPaths.ColumnFamilies.filtration_theorem_one_of Formalism.InvariantFactorPaths.ColumnFamilies.Top.lemmaA n (br_toC M) (br_cfToC CF)
@@ -18,7 +18,7 @@ end B3
 
 section B5
 /- English proof (translation)
-Introduce `n _ M CF` and use `Formalism.InvariantFactorPaths.ColumnFamilies.filtration_criterion_of Formalism.InvariantFactorPaths.ColumnFamilies.Top.lemmaA n (br_toC M) (br_cfToC CF)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem admissible_thm_B3 (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.GenericProjectionCriterion D :=
   fun n _ M CF => Formalism.InvariantFactorPaths.ColumnFamilies.filtration_criterion_of Formalism.InvariantFactorPaths.ColumnFamilies.Top.lemmaA n (br_toC M) (br_cfToC CF)

@@ -10,9 +10,9 @@ section GroupTheory
 variable {G G' : Type*} [Group G] [Group G']
 
 /- English proof (translation)
-Distinguish the cases in `hf : Finite (G ⧸ H)`. Rewrite using `[ENat.card_eq_coe_natCard, Nat.cast_le]`. Conclude with `⟨fun h ↦ ⟨Subgroup.index_ne_zero_of_finite, h⟩, fun h ↦ h.2⟩`. Establish `: Infinite (G ⧸ H)` using `not_finite_iff_infinite.1 hf`. Rewrite using `[ENat.card_eq_top_of_infinite]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun h ↦ absurd h (by simp), fun h ↦ absurd h.1 ?_⟩` and prove the remaining obligations. Rewrite using `[not_not, Subgroup.index, Nat.card_eq_zero_of_infinite]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem enatCard_quotient_le_iff (H : Subgroup G) (n : ℕ) :
     ENat.card (G ⧸ H) ≤ n ↔ H.index ≠ 0 ∧ H.index ≤ n := by
@@ -25,9 +25,9 @@ theorem enatCard_quotient_le_iff (H : Subgroup G) (n : ℕ) :
     rw [not_not, Subgroup.index, Nat.card_eq_zero_of_infinite]
 
 /- English proof (translation)
-Establish `h1 : (H'.comap f).index ≤ H'.index`. Rewrite using `[Subgroup.index_comap, ← Subgroup.relIndex_top_right]`. Conclude with `Subgroup.relIndex_le_of_le_right le_top (by rwa [Subgroup.relIndex_top_right])`. Establish `h2 : (H'.comap f).index ≠ 0`. Rewrite using `[Subgroup.index_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mt (Subgroup.relIndex_eq_zero_of_le_right le_top) (by rwa [Subgroup.relIndex_top_right])`. Establish `h3 : H.index ∣ (H'.comap f).index` using `Subgroup.index_dvd_of_le hle`. Conclude with `⟨fun h ↦ h2 (Nat.eq_zero_of_zero_dvd (h ▸ h3)), (Nat.le_of_dvd (Nat.pos_of_ne_zero h2) h3).trans h1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem index_le_of_comap_le (f : G →* G') {H : Subgroup G} {H' : Subgroup G'}
     (hle : H'.comap f ≤ H) (hH' : H'.index ≠ 0) : H.index ≠ 0 ∧ H.index ≤ H'.index := by
@@ -41,9 +41,9 @@ theorem index_le_of_comap_le (f : G →* G') {H : Subgroup G} {H' : Subgroup G'}
   exact ⟨fun h ↦ h2 (Nat.eq_zero_of_zero_dvd (h ▸ h3)), (Nat.le_of_dvd (Nat.pos_of_ne_zero h2) h3).trans h1⟩
 
 /- English proof (translation)
-Establish `h3 : (H ⊔ f.ker).index ∣ H.index` using `Subgroup.index_dvd_of_le le_sup_left`. Establish `h4 : (H ⊔ f.ker).index ≠ 0` using `fun h ↦ hH (Nat.eq_zero_of_zero_dvd (h ▸ h3))`. Rewrite using `[Subgroup.index_map]`. Use `⟨mul_ne_zero h4 hf, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_le_mul_left _ (Nat.le_of_dvd (Nat.pos_of_ne_zero hH) h3)`.
+A detailed English derivation is pending.
 -/
 theorem index_map_le (f : G →* G') {H : Subgroup G} (hH : H.index ≠ 0) (hf : f.range.index ≠ 0) :
     (H.map f).index ≠ 0 ∧ (H.map f).index ≤ f.range.index * H.index := by
@@ -55,9 +55,9 @@ theorem index_map_le (f : G →* G') {H : Subgroup G} (hH : H.index ≠ 0) (hf :
   exact Nat.mul_le_mul_left _ (Nat.le_of_dvd (Nat.pos_of_ne_zero hH) h3)
 
 /- English proof (translation)
-Establish `hg : ((a.gcd b : ℕ) : ℤ) = a * a.gcdA b + b * a.gcdB b` using `Nat.gcd_eq_gcd_ab a b`. Rewrite `hg` using `[hab, Nat.cast_one]`. Establish `: x = (x ^ a) ^ a.gcdA b * (x ^ b) ^ a.gcdB b`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_add, ← hg, zpow_one]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (zpow_mem ha _) (zpow_mem hb _)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_pow_mem_of_coprime {H : Subgroup G} {x : G} {a b : ℕ} (hab : a.Coprime b)
     (ha : x ^ a ∈ H) (hb : x ^ b ∈ H) : x ∈ H := by
@@ -69,7 +69,7 @@ theorem mem_of_pow_mem_of_coprime {H : Subgroup G} {x : G} {a b : ℕ} (hab : a.
   exact mul_mem (zpow_mem ha _) (zpow_mem hb _)
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := G)`. Take `⟨i, rfl⟩` from `Subgroup.mem_zpowers_iff.1 (hg a)`. Take `⟨j, rfl⟩` from `Subgroup.mem_zpowers_iff.1 (hg b)`. Conclude with `zpow_mul_comm g i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mul_comm_of_isCyclic [IsCyclic G] (a b : G) : a * b = b * a := by
   obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := G)
@@ -89,7 +89,7 @@ section Norms
 variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ideleClassMap K L c, ideleClassNorm_ideleClassMap c⟩`.
+Supply the required witnesses or components.
 -/
 theorem pow_finrank_mem_range_ideleClassNorm (c : IdeleClassGroup K) :
     c ^ finrank K L ∈ (ideleClassNorm K L).range :=

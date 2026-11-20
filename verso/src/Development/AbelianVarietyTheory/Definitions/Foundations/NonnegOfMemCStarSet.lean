@@ -40,7 +40,7 @@ variable {N N'}
 omit [NumberField K] in
 
 /- English proof (translation)
-Establish `key : ∀ s : Σ n : ℕ, (V →ₗ[K] (Fin n → K)) × ((Fin n → K) →ₗ[K] V) × (InfinitePlace K → Matrix (Fin n) (Fin n) ℂ), s = ⟨h.some.1, h.some.2.1.1.equivFun, h.some.2.1.1.equivFun.symm, h.some.2.1.2⟩ → ∃ b : Basis (Fin s.1) K V, IsGram b s.2.2.2 N ∧ s.2.1 = b.equivFun ∧ s.2.2.1 = b.eq …`. Introduce and unpack `_ rfl`. Conclude with `⟨_, h.some.2.2, rfl, rfl⟩`. Conclude with `key _ (dif_pos h)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_basis_co (h : HasGram N) : ∃ b : Basis (Fin (cDim N)) K V,
     IsGram b (frameCo N) N ∧ toCo N = b.equivFun ∧ ofCo N = b.equivFun.symm := by
@@ -55,7 +55,7 @@ theorem exists_basis_co (h : HasGram N) : ∃ b : Basis (Fin (cDim N)) K V,
 omit [NumberField K] in
 
 /- English proof (translation)
-Take `⟨b, -⟩` from `exists_basis_co h`. Rewrite using `[finrank_eq_card_basis b, Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cDim_eq (h : HasGram N) : cDim N = finrank K V := by
   obtain ⟨b, -⟩ := exists_basis_co h
@@ -64,7 +64,7 @@ theorem cDim_eq (h : HasGram N) : cDim N = finrank K V := by
 omit [NumberField K] in
 
 /- English proof (translation)
-Take `⟨b, -, h1, h2⟩` from `exists_basis_co h`. Rewrite using `[h1, h2]`. Conclude with `b.equivFun.symm_apply_apply x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofCo_toCo (h : HasGram N) (x : V) : ofCo N (toCo N x) = x := by
   obtain ⟨b, -, h1, h2⟩ := exists_basis_co h
@@ -73,7 +73,7 @@ theorem ofCo_toCo (h : HasGram N) (x : V) : ofCo N (toCo N x) = x := by
 omit [NumberField K] in
 
 /- English proof (translation)
-Take `⟨b, -, h1, h2⟩` from `exists_basis_co h`. Rewrite using `[h1, h2]`. Conclude with `b.equivFun.apply_symm_apply y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toCo_ofCo (h : HasGram N) (y : Fin (cDim N) → K) : toCo N (ofCo N y) = y := by
   obtain ⟨b, -, h1, h2⟩ := exists_basis_co h
@@ -82,7 +82,7 @@ theorem toCo_ofCo (h : HasGram N) (y : Fin (cDim N) → K) : toCo N (ofCo N y) =
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `Function.bijective_iff_has_inverse.2 ⟨ofCo N, ofCo_toCo h, toCo_ofCo h⟩`.
+A detailed English derivation is pending.
 -/
 theorem toCo_bijective (h : HasGram N) : Function.Bijective (toCo N) :=
   Function.bijective_iff_has_inverse.2 ⟨ofCo N, ofCo_toCo h, toCo_ofCo h⟩
@@ -90,7 +90,7 @@ theorem toCo_bijective (h : HasGram N) : Function.Bijective (toCo N) :=
 omit [NumberField K] in
 
 /- English proof (translation)
-Simplify using `[mapCo, ofCo_toCo h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mapCo_toCo (h : HasGram N) (φ : V →ₗ[K] W) (x : V) : mapCo N N' φ (toCo N x) = toCo N' (φ x) := by
   simp [mapCo, ofCo_toCo h]
@@ -104,7 +104,7 @@ def latCo (L : Submodule (𝓞 K) V) : Submodule (𝓞 K) (Fin (cDim N) → K) :
 omit [NumberField K] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Submodule.map_injective_of_injective (toCo_bijective h).1, Submodule.map_surjective_of_surjective (toCo_bijective h).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem latCo_bijective (h : HasGram N) : Function.Bijective (latCo N) :=
   ⟨Submodule.map_injective_of_injective (toCo_bijective h).1,
@@ -113,7 +113,7 @@ theorem latCo_bijective (h : HasGram N) : Function.Bijective (latCo N) :=
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `Submodule.map_le_map_iff_of_injective (f := (toCo N).restrictScalars (𝓞 K)) (toCo_bijective h).1 _ _`.
+A detailed English derivation is pending.
 -/
 theorem latCo_le_iff (h : HasGram N) {L L' : Submodule (𝓞 K) V} : latCo N L ≤ latCo N L' ↔ L ≤ L' :=
   Submodule.map_le_map_iff_of_injective (f := (toCo N).restrictScalars (𝓞 K)) (toCo_bijective h).1 _ _
@@ -121,7 +121,7 @@ theorem latCo_le_iff (h : HasGram N) {L L' : Submodule (𝓞 K) V} : latCo N L �
 omit [NumberField K] in
 
 /- English proof (translation)
-Rewrite using `[← (latCo_bijective h).1.eq_iff, latCo, latCo, Submodule.map_bot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem latCo_eq_bot_iff (h : HasGram N) {L : Submodule (𝓞 K) V} : latCo N L = ⊥ ↔ L = ⊥ := by
   rw [← (latCo_bijective h).1.eq_iff, latCo, latCo, Submodule.map_bot]
@@ -129,7 +129,7 @@ theorem latCo_eq_bot_iff (h : HasGram N) {L : Submodule (𝓞 K) V} : latCo N L 
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `Submodule.map_inf _ (toCo_bijective h).1`.
+A detailed English derivation is pending.
 -/
 theorem latCo_inf (h : HasGram N) (L : Submodule (𝓞 K) V) (S : Submodule K V) :
     latCo N (L ⊓ S.restrictScalars (𝓞 K)) = latCo N L ⊓ (S.map (toCo N)).restrictScalars (𝓞 K) :=
@@ -138,9 +138,9 @@ theorem latCo_inf (h : HasGram N) (L : Submodule (𝓞 K) V) (S : Submodule K V)
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, ⟨_, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨toCo N x, mapCo_toCo h e x⟩`.
+Supply the required witnesses or components.
 -/
 theorem range_mapCo (h : HasGram N) (e : V →ₗ[K] V) : LinearMap.range (mapCo N N e) = (LinearMap.range e).map (toCo N) := by
   ext y
@@ -151,7 +151,7 @@ theorem range_mapCo (h : HasGram N) (e : V →ₗ[K] V) : LinearMap.range (mapCo
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
 /- English proof (translation)
-Use extensionality with `y`. Take `⟨x, rfl⟩` from `(toCo_bijective h).2 y`. Rewrite using `[LinearMap.mem_ker, mapCo_toCo h, map_eq_zero_iff _ (toCo_bijective h).1]`. Conclude with `⟨fun hx => ⟨x, hx, rfl⟩, fun ⟨y, hy, e'⟩ => (toCo_bijective h).1 e' ▸ hy⟩`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ker_mapCo (h : HasGram N) (e : V →ₗ[K] V) : LinearMap.ker (mapCo N N e) = (LinearMap.ker e).map (toCo N) := by
   ext y
@@ -162,7 +162,7 @@ theorem ker_mapCo (h : HasGram N) (e : V →ₗ[K] V) : LinearMap.ker (mapCo N N
 omit [NumberField K] in
 
 /- English proof (translation)
-Establish `e : Submodule.span K (latCo N L : Set _) = (Submodule.span K (L : Set V)).map (toCo N)`. Rewrite using `[Submodule.map_span]`. Both sides reduce to the same expression. Rewrite using `[rkK, rkK, e]`. Conclude with `(LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ (toCo_bijective h).1 _)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rkK_latCo (h : HasGram N) (L : Submodule (𝓞 K) V) : rkK (latCo N L) = rkK L := by
   have e : Submodule.span K (latCo N L : Set _) = (Submodule.span K (L : Set V)).map (toCo N) := by
@@ -173,9 +173,9 @@ theorem rkK_latCo (h : HasGram N) (L : Submodule (𝓞 K) V) : rkK (latCo N L) =
 variable [StarRing K]
 
 /- English proof (translation)
-Use extensionality with `y`. Establish `e : ∀ x, realize (Pi.basisFun K (Fin (cDim N))) (frameCo N) (toCo N x) = realize b (frameCo N) x` using `fun x => by`. Rewrite using `[h1]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨x, hx, (e x).symm⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨_, ⟨x, hx, rfl⟩, e x⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem zl_latCo {b : Basis (Fin (cDim N)) K V} (h1 : toCo N = b.equivFun) (L : Submodule (𝓞 K) V) :
     zl (realize (Pi.basisFun K (Fin (cDim N))) (frameCo N)) (latCo N L) = zl (realize b (frameCo N)) L := by
@@ -187,7 +187,7 @@ theorem zl_latCo {b : Basis (Fin (cDim N)) K V} (h1 : toCo N = b.equivFun) (L : 
   · rintro ⟨x, hx, rfl⟩; exact ⟨_, ⟨x, hx, rfl⟩, e x⟩
 
 /- English proof (translation)
-Take `⟨b, hb, h1, -⟩` from `exists_basis_co h`. Rewrite using `[slope_sq_eq hb hL, muDef, muDef, Formalism.HN.slope, Formalism.HN.slope, zl_latCo h1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem muDef_latCo (h : HasGram N) {L : Submodule (𝓞 K) V} (hL : L.FG) :
     muDef (Pi.basisFun K (Fin (cDim N))) (frameCo N) (latCo N L) = slope_sq N L := by
@@ -195,9 +195,9 @@ theorem muDef_latCo (h : HasGram N) {L : Submodule (𝓞 K) V} (hL : L.FG) :
   rw [slope_sq_eq hb hL, muDef, muDef, Formalism.HN.slope, Formalism.HN.slope, zl_latCo h1]
 
 /- English proof (translation)
-Take `⟨b, hb, h1, -⟩` from `exists_basis_co h`. Rewrite using `[(slopeMax_slopeMin_eq hb hL h0).1, muMaxDef, muMaxDef, muMax, muMax]`. Use `congr 4`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨M, hM, hM0, rfl⟩`. Take `⟨M, rfl⟩` from `(latCo_bijective h).2 M`. Conclude with `⟨M, (latCo_le_iff h).1 hM, mt (latCo_eq_bot_iff h).2 hM0, by rw [Formalism.HN.slope, Formalism.HN.slope, zl_latCo h1]⟩`. Introduce and unpack `⟨M, hM, hM0, rfl⟩`. Conclude with `⟨latCo N M, (latCo_le_iff h).2 hM, mt (latCo_eq_bot_iff h).1 hM0, by rw [Formalism.HN.slope, Formalism.HN.slope, zl_latCo h1]⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem muMaxDef_latCo (h : HasGram N) {L : Submodule (𝓞 K) V} (hL : L.FG) (h0 : L ≠ ⊥) :
     muMaxDef (Pi.basisFun K (Fin (cDim N))) (frameCo N) (latCo N L) = slopeMax_sq N L := by
@@ -222,13 +222,13 @@ variable {K V : Type} [Field K] [AddCommGroup V] [Module K V] (ι : Type) [Finty
 def piNorm (N : (K →+* ℂ) → V → ℝ) (σ : K →+* ℂ) (F : ι → V) : ℝ := Real.sqrt (∑ i, N σ (F i) ^ 2)
 
 /- English proof (translation)
-Take `⟨n, ⟨b, X⟩, hb⟩` from `h`. Use `IsGram.hasGram (b := (Pi.basis fun _ : ι => b).reindex ((Equiv.sigmaEquivProd ι (Fin n)).trans (Equiv.prodComm _ _))) (X := fun v => Matrix.blockDiagonal fun _ : ι => X v) fun v => ⟨?_, fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_blockDiagonal]`. Conclude with `IsUnit.prod_iff.2 fun _ _ => (hb v).1`. Establish `hi : (Matrix.blockDiagonal fun _ : ι => X v)⁻¹ = Matrix.blockDiagonal fun _ : ι => (X v)⁻¹`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[← Matrix.blockDiagonal_mul]`. Simplify using `only [Matrix.nonsing_inv_mul _ (hb v).1]`. Conclude with `Matrix.blockDiagonal_one`. Simplify using `only [piNorm, ← (hb v).2, normAt, cnorm, fcoord, hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Fintype.sum_prod_type_right]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 2`. Establish `e : ∀ k, vecAt ((Pi.basis fun _ : ι => b).reindex ((Equiv.sigmaEquivProd ι (Fin n)).trans (Equiv.prodComm _ _))) v F k = vecAt b v (F k.2) k.1` using `fun k => by`. Simplify using `only [vecAt, Basis.repr_reindex_apply]`. Both sides reduce to the same expression. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Matrix.blockDiagonal_apply, e]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasGram_piNorm {N : (K →+* ℂ) → V → ℝ} (h : HasGram N) : HasGram (piNorm ι N) := by
   classical
@@ -270,9 +270,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 def compMean (g : Comp Xo c → ℝ) : ℝ := (∑ᶠ Z, g Z) / (Nat.card (Comp Xo c) : ℝ)
 
 /- English proof (translation)
-Use `haveI := CompFin.finite_comp Xo c`. Use `haveI := Fintype.ofFinite (Comp Xo c)`. Use `haveI : Nonempty (Comp Xo c) := ⟨Z⟩`. Establish `hc : (Fintype.card (Comp Xo c) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Simplify using `only [compMean, fun Z' => h Z' Z, finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem compMean_eq {g : Comp Xo c → ℝ} (h : ∀ Z Z', g Z = g Z') (Z : Comp Xo c) : compMean g = g Z := by
   haveI := CompFin.finite_comp Xo c
@@ -296,7 +294,7 @@ def cStarInf (G : WTZ E) : ℝ := sInf (cStarSet U x V dict G)
 variable {U x V dict} {G : WTZ E}
 
 /- English proof (translation)
-Take `⟨n, w, abelian₂, hw, rfl⟩` from `h`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[cStar]`. Conclude with `Real.log_nonneg (one_le_mul_of_one_le_of_one_le (Real.one_le_sqrt.2 (by exact_mod_cast hn)) hw.one_le)`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nonneg_of_mem_cStarSet {t : ℝ} (h : t ∈ cStarSet U x V dict G) : 0 ≤ t := by
   obtain ⟨n, w, abelian₂, hw, rfl⟩ := h
@@ -305,7 +303,7 @@ theorem nonneg_of_mem_cStarSet {t : ℝ} (h : t ∈ cStarSet U x V dict G) : 0 �
   · exact Real.log_nonneg (one_le_mul_of_one_le_of_one_le (Real.one_le_sqrt.2 (by exact_mod_cast hn)) hw.one_le)
 
 /- English proof (translation)
-The claim follows from `Real.sInf_nonneg fun _ => nonneg_of_mem_cStarSet`.
+A detailed English derivation is pending.
 -/
 theorem cStarInf_nonneg : 0 ≤ cStarInf U x V dict G := Real.sInf_nonneg fun _ => nonneg_of_mem_cStarSet
 
@@ -324,9 +322,9 @@ def HasPhi (y : IntFr Xo c T io) (φ : ℝ) : Prop :=
       (∀ a, (β : _ →ₗ[ℤ] _ →ₗ[ℤ] ℝ) a a = 2 * (Q a : ℝ)) ∧ φ = Formalism.MainNotions.ModuliIntegralCharts.phiC _ β
 
 /- English proof (translation)
-Take `⟨G, t', -, -, P, ϖ, Q, β, -, -, h0, hβ, rfl⟩` from `h`. Use `Real.sInf_nonneg ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨lf, -, hl, rfl⟩`. Distinguish the cases in `hb : β = 0`. Rewrite using `[hb, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hl β (fun a => by rw [hβ]; exact mul_nonneg zero_le_two (by exact_mod_cast h0 a)) hb).le`.
+A detailed English derivation is pending.
 -/
 theorem HasPhi.nonneg {y : IntFr Xo c T io} {φ : ℝ} (h : HasPhi y φ) : 0 ≤ φ := by
   obtain ⟨G, t', -, -, P, ϖ, Q, β, -, -, h0, hβ, rfl⟩ := h
@@ -337,7 +335,7 @@ theorem HasPhi.nonneg {y : IntFr Xo c T io} {φ : ℝ} (h : HasPhi y φ) : 0 ≤
   · exact (hl β (fun a => by rw [hβ]; exact mul_nonneg zero_le_two (by exact_mod_cast h0 a)) hb).le
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`. Take `⟨Q, β, hQ, h0, -, hβ, -⟩` from `GlobalTheory.ValForm.main E H T.V G P ϖ hϖ (IsCMField.complexConj E : E → E) fun _ => rfl`. Conclude with `⟨_, G, t', m1, m2, P, ϖ, Q, β, hϖ, hQ, h0, hβ, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hasPhi (y : IntFr Xo c T io) (G : SAB H (Sp T.V)) (t' : SAB H (Sp T.Fr))
     (m1 : letI := io.toAlgebra; SABMap t' Xo.univ.t y.1.x) (m2 : SABMap t' G (spMap (algebraMap T.V T.Fr)))
@@ -356,7 +354,7 @@ def refExp_vp (cst : ℝ) (G : WTZ E) (p : ℕ) : EReal :=
     (_ : y.IsAlg) (φ : ℝ) (_ : HasPhi y φ), depthAt_vp U G p y - ((cst * φ / (vV T.V (p : T.Fr) : ℝ) : ℝ) : EReal)
 
 /- English proof (translation)
-Simplify using `only [refExp_vp, iSup_le_iff, EReal.sub_le_iff_le_add (Or.inl (EReal.coe_ne_bot _)) (Or.inl (EReal.coe_ne_top _))]`.
+Simplify using the standard rewrite rules.
 -/
 theorem refExp_vp_le_iff {cst : ℝ} {G : WTZ E} {p : ℕ} {a : EReal} : refExp_vp U cst G p ≤ a ↔
     ∀ (la : PointsOfFlagModel.abelian₂ p c) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ), OverLa la.1 T.V io e → ∀ y : IntFr Xo c T io,
@@ -370,7 +368,7 @@ def refSum (cst : ℝ) (G : WTZ E) : ℝ≥0∞ :=
 end Ref
 
 /- English proof (translation)
-Establish `h : HasGram fun (σ : ℚ →+* ℂ) (y : ℚ) => ‖σ y‖` using `IsGram.hasGram (b := Basis.singleton Unit ℚ) (X := fun _ => 1) fun v => ⟨by simp, fun x => by simp [normAt, cnorm, fcoord, vecAt, Real.sqrt_sq_eq_abs]⟩`. Rewrite using `[cDim_eq (hasGram_piNorm _ h)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : cDim (piNorm (Fin 2) fun (σ : ℚ →+* ℂ) (y : ℚ) => ‖σ y‖) = 2 := by
   have h : HasGram fun (σ : ℚ →+* ℂ) (y : ℚ) => ‖σ y‖ :=

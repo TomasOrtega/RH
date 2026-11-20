@@ -5,9 +5,9 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.Ar.PB.Flat
 
 /- English proof (translation)
-Introduce `n`. Establish `h : {z : Fin n → ℂ | ∀ i, z i ≠ 0} = Set.pi Set.univ (fun _ => ({0}ᶜ : Set ℂ))`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dense_pi Set.univ (fun _ _ => dense_compl_singleton 0)`.
+A detailed English derivation is pending.
 -/
 theorem dense_forall_coord_ne_zero : ∀ n : ℕ, Dense {z : Fin n → ℂ | ∀ i, z i ≠ 0} := by
   intro n

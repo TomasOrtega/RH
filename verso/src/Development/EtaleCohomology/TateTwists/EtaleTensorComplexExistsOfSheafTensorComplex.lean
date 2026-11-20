@@ -25,15 +25,13 @@ def EtaleSheafTensorComplexExists : Prop :=
     (∀ (U : Scheme.{0}) (w : ℤ) (x : Tens I J U w), φ U w x = 0 → Loc U fun _ g => Tens.res g w x = 0)
 
 /- English proof (translation)
-Introduce `R _ I J`. Take `⟨K, φ, hnat, hd, hsurj, hinj⟩` from `hS R I J`. Set `μ : Pair I J K` to `{ mul := fun U s t w h => (TensorProduct.mk (ULift.{1} R) _ _).compr₂ ((φ U w).comp (DirectSum.lof (ULift.{1} R) {p : ℤ × ℤ // p.1 + p.2 = w} (fun p => Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) ⟨(s, t), h⟩)) nat := by`. Introduce `V U g s t w h a b`. Use `hnat g w (tensPure s t w h a b)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[tensPure, Tens.res, DirectSum.lmap_lof]`. Use `leibniz := by`. Introduce `U s t w h a b`. Simplify `hd U s t w h a b }` using `[tensPure]`. Establish `hlift : ∀ U w, μ.lift U w = φ U w`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U w`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Pair.lift, μ]`. Use `⟨K, μ, ?_, ?_⟩` and prove the remaining obligations. Introduce `U w y`. Simplify `hsurj U w y` using `[hlift]`. Introduce `U w x hx`.
-
-Conclude with `hinj U w x (by simpa [hlift] using hx)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem etale_tensor_complex_exists_of_sheaf_tensor_complex (hS : EtaleSheafTensorComplexExists) : EtaleComplexTensorPairingExists := by
   intro R _ I J

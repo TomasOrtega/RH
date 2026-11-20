@@ -28,11 +28,11 @@ def kum_pow_coc : Prop :=
       IsKumCoc q (u ^ q) γ ∧ CohomologyClass.mk γ = 0
 
 /- English proof (translation)
-Introduce `q _ X u v hq`. Take `⟨γu, eu, ku⟩` from `kum_spec_of_exists he q X u hq`. Take `⟨γv, ev', kv⟩` from `kum_spec_of_exists he q X v hq`. Take `⟨γuv, euv, kuv⟩` from `kum_spec_of_exists he q X (u * v) hq`. Take `⟨γp, epw, kpw⟩` from `kum_spec_of_exists he q X (u ^ q) hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hsum⟩` from `hm q X u v hq γu γv ku kv`. Rewrite using `[← euv, ← eu, ← ev', ← hsum]`. Conclude with `hu q X (u * v) hq γuv γ kuv hγ`. Take `⟨γ, hγ, h0⟩` from `hp q X u hq`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← epw, ← h0]`. Conclude with `hu q X (u ^ q) hq γp γ kpw hγ`.
+A detailed English derivation is pending.
 -/
 theorem kum_add_of (he : kum_exists) (hu : kum_uniq) (hm : kum_mul_coc) (hp : kum_pow_coc) : kum_add := by
   intro q _ X u v hq

@@ -6,23 +6,23 @@ namespace PositivityTheory.HtPt.Plen
 open GroundTheory.FunctionField IsLocalRing
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap A K)` using `IsFractionRing.injective A K`. Establish `hR : ∀ r : Algebra.EssFiniteType.subalgebra k A, algebraMap _ K r = algebraMap A K (r : A)` using `fun _ => rfl`. Establish `hfs : FaithfulSMul (Algebra.EssFiniteType.subalgebra k A) K`. Rewrite using `[faithfulSMul_iff_algebraMap_injective]`. Introduce `a b h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext (hinj h)`. Establish `hfr : IsFractionRing (Algebra.EssFiniteType.subalgebra k A) K`. Use `IsFractionRing.of_field _ K fun z => ?_` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := A) z`. Take `⟨⟨a₁, s⟩, ha⟩` from `IsLocalization.surj (Algebra.EssFiniteType.submonoid k A) a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨b₁, t⟩, hb'⟩` from `IsLocalization.surj (Algebra.EssFiniteType.submonoid k A) b`. Establish `hs : IsUnit ((s.1 : Algebra.EssFiniteType.subalgebra k A) : A)` using `s.2`. Establish `ht : IsUnit ((t.1 : Algebra.EssFiniteType.subalgebra k A) : A)` using `t.2`. Establish `hs0 : algebraMap A K (s.1 : A) ≠ 0` using `(hs.map _).ne_zero`. Establish `ht0 : algebraMap A K (t.1 : A) ≠ 0` using `(ht.map _).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : algebraMap A K b ≠ 0` using `(map_ne_zero_iff _ hinj).2 (nonZeroDivisors.ne_zero hb)`. Establish `ha2 : a * (s.1 : A) = (a₁ : A)` using `ha`. Establish `hb2 : b * (t.1 : A) = (b₁ : A)` using `hb'`. Use `⟨a₁ * t.1, b₁ * s.1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hR, hR, hR, hR, ← ha2, ← hb2, map_mul, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `hfin` using `GroundTheory.Heights₂.Heights.FieldNumbers.NoetherIntegralClosureFinite.proof k (Algebra.EssFiniteType.subalgebra k A) K K`. Establish `hfg : (integralClosure (Algebra.EssFiniteType.subalgebra k A) K).toSubmodule.FG` using `Module.Finite.iff_fg.1 hfin`. Take `⟨t, ht⟩` from `hfg`. Establish `hmem : ∀ x : K, IsIntegral (Algebra.EssFiniteType.subalgebra k A) x ↔ x ∈ Submodule.span (Algebra.EssFiniteType.subalgebra k A) (t : Set K)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[ht]`. Both sides reduce to the same expression. Establish `: (integralClosure A K).toSubmodule.FG`. Use `⟨t, le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `((hmem x).2 (Submodule.subset_span hx)).tower_top`. Introduce `x hx`. Establish `hx' : IsIntegral A x` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `hx'.exists_multiple_integral_of_isLocalization (Algebra.EssFiniteType.submonoid k A)`. Establish `h1` using `Submodule.span_le_restrictScalars (Algebra.EssFiniteType.subalgebra k A) A (t : Set K) ((hmem _).1 hm)`. Establish `hu : IsUnit ((m.1 : Algebra.EssFiniteType.subalgebra k A) : A)` using `m.2`. Take `⟨u, hu⟩` from `hu`. Establish `h2 : (u : A) • x ∈ Submodule.span A (t : Set K)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hu]`. Conclude with `h1`. Establish `h3` using `Submodule.smul_mem _ ((u⁻¹ : Aˣ) : A) h2`. Rewrite `h3` using `[smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis. Conclude with `Module.Finite.iff_fg.2 this`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finite_closure (k K A : Type) [Field k] [Field K] [CommRing A] [IsDomain A] [Algebra k A]
     [Algebra A K] [IsFractionRing A K] [Algebra.EssFiniteType k A] :
@@ -93,7 +93,7 @@ noncomputable def resHom (A : Type) [CommRing A] [Algebra k A] [Algebra A K] [Is
 
 omit [IsFunctionField k K] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `residue v.ring ⟨algebraMap A K a, hv a⟩ = 0 ↔ _`. Rewrite using `[residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem resHom_eq_zero (A : Type) [CommRing A] [Algebra k A] [Algebra A K] [IsScalarTower k A K]
     (v : Place k K) (hv : ∀ a : A, algebraMap A K a ∈ v.ring) (a : A) :
@@ -102,9 +102,9 @@ theorem resHom_eq_zero (A : Type) [CommRing A] [Algebra k A] [Algebra A K] [IsSc
   rw [residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]
 
 /- English proof (translation)
-Establish `hker : p = RingHom.ker (resHom A v hv)`. Use extensionality with `a`. Rewrite using `[hp, RingHom.mem_ker, resHom_eq_zero]`. Substitute `hker` using the available equality. Establish `hinj` using `Ideal.kerLiftAlg_injective (resHom A v hv)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `: Module.Finite k (A ⧸ RingHom.ker (resHom A v hv))` using `Module.Finite.of_injective (Ideal.kerLiftAlg (resHom A v hv)).toLinearMap hinj`. Establish `: IsArtinianRing (A ⧸ RingHom.ker (resHom A v hv))` using `IsArtinianRing.of_finite k _`. Establish `: (RingHom.ker (resHom A v hv)).IsPrime` using `RingHom.ker_isPrime _`. Conclude with `Ideal.Quotient.maximal_of_isField _ (IsArtinianRing.isField_of_isDomain _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isMaximal_center (A : Type) [CommRing A] [Algebra k A] [Algebra A K] [IsScalarTower k A K]
     (v : Place k K) (hv : ∀ a : A, algebraMap A K a ∈ v.ring) (p : Ideal A)
@@ -121,17 +121,15 @@ theorem isMaximal_center (A : Type) [CommRing A] [Algebra k A] [Algebra A K] [Is
   exact Ideal.Quotient.maximal_of_isField _ (IsArtinianRing.isField_of_isDomain _)
 
 /- English proof (translation)
-Establish `hu : ∀ y : p.primeCompl, IsUnit (algebraMap A K y)` using `fun y => by`. Use `IsUnit.mk0 _ ((map_ne_zero_iff _ hinj).2 fun h => y.2 ?_)` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `p.zero_mem`. Set `g : Localization.AtPrime p →+* K` to `IsLocalization.lift (M := p.primeCompl) hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : ∀ a, g (algebraMap A _ a) = algebraMap A K a` using `fun a => IsLocalization.lift_eq hu a`. Take `⟨V, hV, hloc⟩` from `IsLocalRing.exists_factor_valuationRing g`. Establish `hA : ∀ a, algebraMap A K a ∈ V` using `fun a => hg a ▸ hV (algebraMap A _ a)`. Establish `key : ∀ a, a ∈ p ↔ V.valuation (algebraMap A K a) < 1`. Introduce `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : IsUnit (g.codRestrict V.toSubring hV (algebraMap A _ a)) ↔ IsUnit (algebraMap A (Localization.AtPrime p) a)` using `isUnit_map_iff _ _`. Establish `h2 : IsUnit (g.codRestrict V.toSubring hV (algebraMap A _ a)) ↔ V.valuation (g (algebraMap A _ a)) = 1` using `V.valuation_eq_one_iff ⟨g (algebraMap A _ a), hV _⟩`. Rewrite `h1` using `[IsLocalization.AtPrime.isUnit_to_map_iff (Localization.AtPrime p) p, h2, hg]`. Establish `h3 : V.valuation (algebraMap A K a) ≤ 1` using `(V.valuation_le_one_iff _).2 (hA a)`. Rewrite using `[lt_iff_le_and_ne, and_iff_right h3, Ne, h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `not_not.symm`. Establish `hne : V ≠ ⊤`. Introduce and unpack `rfl`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hp0`. Establish `h1` using `(key a).1 ha`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : algebraMap A K a ≠ 0` using `(map_ne_zero_iff _ hinj).2 ha0`. Establish `h2` using `((⊤ : ValuationSubring K).valuation_le_one_iff (algebraMap A K a)⁻¹).2 (ValuationSubring.mem_top _)`. Rewrite `h2` using `[map_inv₀, inv_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 h0))]`. Conclude with `absurd h1 (not_lt.2 h2)`. Set `v : Place k K` to `⟨V, hne, fun c => by`.
-
-Rewrite using `[IsScalarTower.algebraMap_apply k A K]`. Conclude with `hA _⟩`. Conclude with `isMaximal_center A v hA p key`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMaximal_of_ne_bot (A : Type) [CommRing A] [Algebra k A] [Algebra A K]
     [IsScalarTower k A K] (hinj : Function.Injective (algebraMap A K)) (p : Ideal A) (hp0 : p ≠ ⊥)
@@ -170,9 +168,9 @@ theorem isMaximal_of_ne_bot (A : Type) [CommRing A] [Algebra k A] [Algebra A K]
   exact isMaximal_center A v hA p key
 
 /- English proof (translation)
-Establish `hx' : x ∈ nonZeroDivisors v.ring` using `mem_nonZeroDivisors_of_ne_zero hx`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp (Ring.ord_ne_top hx')`. Use `⟨n, hn.symm, ?_⟩` and prove the remaining obligations. Establish `h1` using `Ring.ordMonoidWithZeroHom_eq_intValuation hx'`. Rewrite `h1` using `[Ring.ordMonoidWithZeroHom_eq_coe _ hx' hn.symm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : v.valuation (x : K) = (IsDiscreteValuationRing.maximalIdeal v.ring).intValuation x` using `IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap (K := K) v.heightOneSpectrum x`. Establish `h3 : v.valuation (x : K) = WithZero.exp (-(n : ℤ))`. Rewrite using `[h2, WithZero.exp_neg, WithZero.exp_eq_coe_ofAdd, h1, inv_inv]`. Rewrite using `[Place.ord, h3, WithZero.log_exp, neg_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_eq (v : Place k K) (x : v.ring) (hx : x ≠ 0) :
     ∃ n : ℕ, Ring.ord v.ring x = n ∧ v.ord (x : K) = n := by

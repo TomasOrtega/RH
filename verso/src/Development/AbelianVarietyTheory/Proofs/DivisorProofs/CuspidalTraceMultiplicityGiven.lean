@@ -54,11 +54,11 @@ def conjEquiv {G H W : Type} [Group G] [Group H] [AddCommGroup W] [Module ℂ W]
       group
 
 /- English proof (translation)
-Introduce `hRD hHC hDM hGC hTR D G _ _ Pl0 T A Ks _ _ _ R F hG`. Introduce `i M₀ j Φ hΦ W _ _ σ hirr hadm hgood`. Take `⟨Ty, hNF, hTV⟩` from `GlobalTheory.T.exists_typeVector_of_good_level_representation hGC R F hG W σ hadm hgood`. Apply the tactic sequence `obtain ⟨jl, Φ₀, b, hjl, hΦ₀, hb⟩ := GlobalTheory.T.exists_localIsometries_innerAut_adelicFrameIsometry R F hG i j Φ hΦ`. Take `⟨hr, lam, hodd, hgap, hM₀, hMW⟩` from `GlobalTheory.T.discrete_series_odd_rank_gap R F hG i M₀`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hinf : IsInfFam R.θ` using `hG.core.models.inf`. Set `μ : Measure (GA D (Yc D 0))` to `Measure.haar`. Set `μ' : Measure (GA D (Wc D i))` to `Measure.haar`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.T.isMulRightInvariant_haar_adelicUnitaryGroup_hermitianSpace D _ μ inferInstance`. Use `haveI : μ'.IsMulRightInvariant := GlobalTheory.T.isMulRightInvariant_haar_adelicUnitaryGroup_hermitianSpace D _ μ' inferInstance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hadm' : IsAdmissible (σ.comp Φ.symm.toMulEquiv.toMonoidHom)` using `GlobalTheory.CuspMult.isAdmissible_comp_equiv σ Φ.symm hadm`. Rewrite using `[GlobalTheory.T.cuspidalMultiplicity_eq_discreteSeriesModel_maps hRD hHC hDM D R.θ hinf (Yc D 0) _ M₀ μ W σ hadm.1, GlobalTheory.T.cuspidalMultiplicity_eq_discreteSeriesModel_maps hRD hHC hDM D R.θ hinf (Wc D i) _ (R.MW i (sg0 D A)) μ' W _ hadm'.1, hTR D (Yc D 0) lam _ M₀ Ty hodd …`. Conclude with `((mDS_congr (GlobalTheory.MultEqTrace.conjEquiv σ Φ.toMulEquiv Φ₀.toMulEquiv b hb)).2).symm`.
+A detailed English derivation is pending.
 -/
 theorem multEq_of_trCusp : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.GreenCuspidal → TRCusp → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → GlobalTheory.CuspMult.MultEq R := by
   intro hRD hHC hDM hGC hTR D G _ _ Pl0 T A Ks _ _ _ R F hG

@@ -17,11 +17,11 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Establish `ha` using `one_le_locHeight a`. Establish `hb` using `one_le_locHeight b`. Establish `key : ∀ (A B : Matrix (Fin 2) (Fin 2) E), (∀ i j, ‖A i j‖ ≤ locHeight a) → (∀ i j, ‖B i j‖ ≤ locHeight b) → ∀ i j, ‖(Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks A 0 0 B)) i j‖ ≤ locHeight a * locHeight b`. Introduce `A B hA hB i j`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j`. Conclude with `(hA i j).trans (le_mul_of_one_le_right (by linarith) hb)`. Simplify using `only [Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, norm_zero]`. Check the signs of the components of the expression. Simplify using `only [Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, norm_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Conclude with `(hB i j).trans (le_mul_of_one_le_left (by linarith) ha)`. Conclude with `locHeight_le (one_le_mul_of_one_le_of_one_le ha hb) (key _ _ (norm_apply_le_locHeight a) (norm_apply_le_locHeight b)) (key _ _ (norm_inv_apply_le_locHeight a) (norm_inv_apply_le_locHeight b))`.
+A detailed English derivation is pending.
 -/
 private theorem locHeight_blk {E : Type} [NormedField E] (a b : GL (Fin 2) E) :
     locHeight (blk a b) ≤ locHeight a * locHeight b := by
@@ -41,7 +41,7 @@ private theorem locHeight_blk {E : Type} [NormedField E] (a b : GL (Fin 2) E) :
     (key _ _ (norm_inv_apply_le_locHeight a) (norm_inv_apply_le_locHeight b))
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[hg]`. Express the relevant statement in the definitionally equal form `φ (Matrix.fromBlocks a.val 0 0 b.val (finSumFinEquiv.symm i) (finSumFinEquiv.symm j)) = Matrix.fromBlocks a'.val 0 0 b'.val (finSumFinEquiv.symm i) (finSumFinEquiv.symm j)`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp [h0, ha, hb]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_blk {R S : Type} [CommRing R] [CommRing S] (φ : R → S) (h0 : φ 0 = 0) (a b : GL (Fin 2) R)
     (a' b' : GL (Fin 2) S) (g : GL (Fin (2 + 2)) S) (ha : ∀ i j, a' i j = φ (a i j)) (hb : ∀ i j, b' i j = φ (b i j))
@@ -53,7 +53,7 @@ private theorem map_blk {R S : Type} [CommRing R] [CommRing S] (φ : R → S) (h
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp [h0, ha, hb]
 
 /- English proof (translation)
-Establish `b3 : u ≤ c * (4 * q) * |M₂|` using `h3.trans (mul_le_mul (mul_le_mul_of_nonneg_left hy hc) hz' hz (by positivity))`. Establish `b4 : v ≤ c * |M₁| * (c * (4 * q) * |M₂|)` using `h2.trans (mul_le_mul (mul_le_mul_of_nonneg_left hx hc) b3 hu (by positivity))`. Rewrite `h1` using `[mul_one]`. Conclude with `h1.trans ((mul_le_mul_of_nonneg_left b4 hc).trans_eq (by ring))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chain {c M₁ M₂ q x y z u v w : ℝ} (hc : 0 ≤ c) (hq : 0 ≤ q) (hz : 0 ≤ z) (hu : 0 ≤ u)
     (h1 : w ≤ c * v * 1) (h2 : v ≤ c * x * u) (h3 : u ≤ c * y * z) (hx : x ≤ |M₁|) (hy : y ≤ 4 * q) (hz' : z ≤ |M₂|) :
@@ -65,11 +65,11 @@ private theorem chain {c M₁ M₂ q x y z u v w : ℝ} (hc : 0 ≤ c) (hq : 0 �
   exact h1.trans ((mul_le_mul_of_nonneg_left b4 hc).trans_eq (by ring))
 
 /- English proof (translation)
-Establish `ei : ∀ w : InfinitePlace K, infAt w (blk a b) = blk (infAt w a) (infAt w b)` using `fun w => map_blk (fun x : 𝔸[K] => x.1 w) rfl a b (infAt w a) (infAt w b) (infAt w (blk a b)) (infAt_apply w a) (infAt_apply w b) (infAt_apply w (blk a b))`. Establish `ef : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), finAt v (blk a b) = blk (finAt v a) (finAt v b)` using `fun v => map_blk (fun x : 𝔸[K] => x.2 v) rfl a b (finAt v a) (finAt v b) (finAt v (blk a b)) (finAt_apply v a) (finAt_apply v b) (finAt_apply v (blk a b))`. Generalize the expression as in `blk a b = g at ei ef ⊢`. Establish `h1 : ∏ w : InfinitePlace K, locHeight (infAt w g) ^ w.mult ≤ (∏ w : InfinitePlace K, locHeight (infAt w a) ^ w.mult) * ∏ w : InfinitePlace K, locHeight (infAt w b) ^ w.mult`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_le_prod (fun w _ => (pow_pos (locHeight_pos _) _).le) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, ei]`. Conclude with `pow_le_pow_left₀ (locHeight_pos _).le (locHeight_blk _ _) _`. Establish `fa` using `finite_mulSupport_locHeight_finAt a`. Establish `fb` using `finite_mulSupport_locHeight_finAt b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `finprod_le_finprod (finite_mulSupport_locHeight_finAt g) (fun v => (locHeight_pos _).le) ((fa.union fb).subset (Function.mulSupport_mul _ _)) fun v => by`. Rewrite using `[ef]`. Conclude with `locHeight_blk _ _`. Rewrite `h2` using `[finprod_mul_distrib fa fb]`. Conclude with `(mul_le_mul h1 h2 (zero_le_one.trans (one_le_finprod_locHeight g)) (mul_nonneg (zero_le_one.trans (one_le_prod_locHeight a)) (zero_le_one.trans (one_le_prod_locHeight b)))).trans_eq (mul_mul_mul_comm _ _ _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem height_blk {K : Type} [Field K] [NumberField K] (a b : AdelicGLn.AdelicGL K 2) :
     AutomorphicForm.height (blk a b) ≤ AutomorphicForm.height a * AutomorphicForm.height b := by
@@ -97,7 +97,7 @@ private theorem height_blk {K : Type} [Field K] [NumberField K] (a b : AdelicGLn
     (mul_mul_mul_comm _ _ _ _)
 
 /- English proof (translation)
-Establish `hlc : Continuous fun t : ℝ => lv (1 : G1 K 2) 1 t` using `(blkLaws (K := K)).2.2.2.1.comp (f := fun t : ℝ => ((1 : G1 K 2), (1 : G1 K 2), t)) (by fun_prop)`. Take `⟨M, hM⟩` from `exists_height_le_of_isCompact ((isCompact_Icc (a := -R) (b := R)).image (continuous_subtype_val.comp hlc))`. Conclude with `⟨M, fun t ht => (hM _ ⟨t, abs_le.1 ht, rfl⟩).trans (le_abs_self _)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem ray_bound (K : Type) [Field K] [NumberField K] (R : ℝ) : ∃ M : ℝ, ∀ t, |t| ≤ R →
     AutomorphicForm.height ((lv (1 : G1 K 2) 1 t : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) ≤ |M| := by
@@ -108,9 +108,9 @@ private theorem ray_bound (K : Type) [Field K] [NumberField K] (R : ℝ) : ∃ M
   exact ⟨M, fun t ht => (hM _ ⟨t, abs_le.1 ht, rfl⟩).trans (le_abs_self _)⟩
 
 /- English proof (translation)
-Take `⟨D, hD, hsub⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := 2 + 2) (r := 2)`. Take `⟨M, hM⟩` from `exists_height_le_of_isCompact (hD.image (continuous_subtype_val.comp (continuous_unipOne (K := K) (n := 2 + 2) 2)))`. Use `⟨M, fun X => ?_⟩` and prove the remaining obligations. Use `choose q hq _ using fun p => GroundTheory.Global.existsUnique_sub_mem_fundamentalSet K (X p)`. Set `ξ : unipLattice K (2 + 2) 2` to `⟨fun p => algebraMap K 𝔸[K] (-q p), fun p => -q p, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hξ : ξ.1 + X ∈ D` using `hsub fun p _ => by`. Express the relevant statement in the definitionally equal form `algebraMap K 𝔸[K] (-q p) + X p ∈ GroundTheory.Global.fundamentalSet K`. Rewrite using `[map_neg, neg_add_eq_sub]`. Conclude with `hq p`. Conclude with `⟨ξ, (hM _ ⟨_, hξ, rfl⟩).trans (le_abs_self _)⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem unip_bound (K : Type) [Field K] [NumberField K] : ∃ M : ℝ, ∀ X : UPos (2 + 2) 2 → 𝔸[K],
     ∃ ξ : unipLattice K (2 + 2) 2,
@@ -128,22 +128,20 @@ private theorem unip_bound (K : Type) [Field K] [NumberField K] : ∃ M : ℝ, �
   exact ⟨ξ, (hM _ ⟨_, hξ, rfl⟩).trans (le_abs_self _)⟩
 
 /- English proof (translation)
-The claim follows from `le_ciInf fun _ => one_le_height _`.
+A detailed English derivation is pending.
 -/
 private theorem one_le_qht {K : Type} [Field K] [NumberField K] (m : G1 K 2) : 1 ≤ qht m :=
   le_ciInf fun _ => one_le_height _
 
 /- English proof (translation)
-The claim follows from `exists_lt_of_ciInf_lt (show qht m < 2 * qht m by linarith [one_le_qht m])`.
+A detailed English derivation is pending.
 -/
 private theorem near_qht {K : Type} [Field K] [NumberField K] (m : G1 K 2) : ∃ γ : Gam K 2,
     AutomorphicForm.height (((γ : G1 K 2) * m : G1 K 2) : AdelicGLn.AdelicGL K 2) < 2 * qht m :=
   exists_lt_of_ciInf_lt (show qht m < 2 * qht m by linarith [one_le_qht m])
 
 /- English proof (translation)
-Establish `hz : zt K 0 = 1`. Rewrite using `[zt, ← map_one (centralSection K 2)]`. Use `congr 1`. Conclude with `Subtype.ext Real.exp_zero`. Rewrite using `[blkLaws.1, neg_zero, hz, mul_one, mul_one]`.
-
-Conclude with `height_blk _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem height_lv {K : Type} [Field K] [NumberField K] (a b : G1 K 2) :
     AutomorphicForm.height ((lv a b 0 : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) ≤
@@ -156,7 +154,7 @@ private theorem height_lv {K : Type} [Field K] [NumberField K] (a b : G1 K 2) :
   exact height_blk _ _
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `adMeas a b 0`. Use `⟨e.symm X, ?_⟩` and prove the remaining obligations. Establish `h` using `he (e.symm X)`. Rewrite `h` using `[ContinuousAddEquiv.apply_symm_apply]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← h, mul_assoc (nn _), blkLaws.2.1, zero_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lv_nn {K : Type} [Field K] [NumberField K] (a b m₁ m₂ : G1 K 2) (t : ℝ) (X : UPos (2 + 2) 2 → 𝔸[K])
     (k : G1 K (2 + 2)) : ∃ X', lv a b 0 * (nn X * lv m₁ m₂ t * k) = nn X' * lv (a * m₁) (b * m₂) t * k := by
@@ -167,7 +165,7 @@ private theorem lv_nn {K : Type} [Field K] [NumberField K] (a b m₁ m₂ : G1 K
   rw [← mul_assoc, ← mul_assoc, ← h, mul_assoc (nn _), blkLaws.2.1, zero_add]
 
 /- English proof (translation)
-Establish `e1 : lv a' b' 0 * lv 1 1 t = lv a' b' t` using `by rw [blkLaws.2.1, mul_one, mul_one, zero_add]`. Establish `e2 : nn (ξ + X') = nn ξ * nn X'` using `unipOne_add 2 ξ X'`. Rewrite using `[mul_assoc, h, e1, e2]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem lv_eq {K : Type} [Field K] [NumberField K] (a b a' b' : G1 K 2) (t : ℝ) (ξ X' : UPos (2 + 2) 2 → 𝔸[K])
     (g k : G1 K (2 + 2)) (h : lv a b 0 * g = nn X' * lv a' b' t * k) :
@@ -178,7 +176,7 @@ private theorem lv_eq {K : Type} [Field K] [NumberField K] (a b a' b' : G1 K 2) 
   simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `height_mul_le ((x : AdelicGLn.AdelicGL K n) * ((y : AdelicGLn.AdelicGL K n) * (z : AdelicGLn.AdelicGL K n))) (k : AdelicGLn.AdelicGL K n)`. Rewrite `h` using `[height_eq_one_of_mem_maxCompact (k := (k : AdelicGLn.AdelicGL K n)) hk]`. Conclude with `chain (zero_le_one.trans one_le_heightConst) hq (height_pos _).le (height_pos _).le h (height_mul_le _ _) (height_mul_le _ _) hx hy hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ht_four {K : Type} [Field K] [NumberField K] {n : ℕ} (x y z k : G1 K n) (hk : k ∈ KG K n) {M₁ M₂ q : ℝ}
     (hq : 0 ≤ q) (hx : AutomorphicForm.height (x : AdelicGLn.AdelicGL K n) ≤ |M₁|)
@@ -192,11 +190,11 @@ private theorem ht_four {K : Type} [Field K] [NumberField K] {n : ℕ} (x y z k 
     (height_mul_le _ _) hx hy hz
 
 /- English proof (translation)
-Take `⟨M₁, hM₁⟩` from `unip_bound K`. Take `⟨M₂, hM₂⟩` from `ray_bound K R`. Establish `hc : 0 ≤ heightConst K (2 + 2)` using `zero_le_one.trans one_le_heightConst`. Use `⟨heightConst K (2 + 2) * (heightConst K (2 + 2) * |M₁| * (heightConst K (2 + 2) * 4 * |M₂|)), mul_nonneg hc (mul_nonneg (mul_nonneg hc (abs_nonneg _)) (mul_nonneg (mul_nonneg hc zero_le_four) (abs_nonneg _))), fun X m₁ m₂ t k hk ht => ?_⟩` and prove the remaining obligations. Establish `h1` using `zero_le_one.trans (one_le_qht m₁)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `zero_le_one.trans (one_le_qht m₂)`. Take `⟨γ₁, hγ₁⟩` from `near_qht m₁`. Take `⟨γ₂, hγ₂⟩` from `near_qht m₂`. Take `⟨X', hX'⟩` from `lv_nn (γ₁ : G1 K 2) γ₂ m₁ m₂ t X k`. Take `⟨ξ, b1⟩` from `hM₁ X'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨nn ξ.1 * lv (γ₁ : G1 K 2) γ₂ 0, (pkLaws.2.1 _).2 ⟨ξ, γ₁, γ₂, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `b0 : AutomorphicForm.height ((lv ((γ₁ : G1 K 2) * m₁) ((γ₂ : G1 K 2) * m₂) 0 : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) ≤ 4 * (qht m₁ * qht m₂)` using `((height_lv ((γ₁ : G1 K 2) * m₁) ((γ₂ : G1 K 2) * m₂)).trans (mul_le_mul hγ₁.le hγ₂.le (height_pos _).le (mul_nonneg zero_le_two h1))).trans_eq (by ring)`. Establish `e` using `lv_eq (γ₁ : G1 K 2) γ₂ ((γ₁ : G1 K 2) * m₁) ((γ₂ : G1 K 2) * m₂) t ξ.1 X' (nn X * lv m₁ m₂ t * k) k hX'`. Rewrite using `[e]`. Conclude with `ht_four (nn (ξ.1 + X')) (lv ((γ₁ : G1 K 2) * m₁) ((γ₂ : G1 K 2) * m₂) 0) (lv 1 1 t) k hk (mul_nonneg h1 h2) b1 b0 (hM₂ t ht)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ht_bound {K : Type} [Field K] [NumberField K] (R : ℝ) : ∃ M : ℝ, 0 ≤ M ∧
     ∀ (X : UPos (2 + 2) 2 → 𝔸[K]) (m₁ m₂ : G1 K 2) (t : ℝ), ∀ k ∈ KG K (2 + 2), |t| ≤ R → ∃ γ ∈ PK K,
@@ -224,9 +222,9 @@ private theorem ht_bound {K : Type} [Field K] [NumberField K] (R : ℝ) : ∃ M 
   exact ht_four (nn (ξ.1 + X')) (lv ((γ₁ : G1 K 2) * m₁) ((γ₂ : G1 K 2) * m₂) 0) (lv 1 1 t) k hk (mul_nonneg h1 h2) b1 b0 (hM₂ t ht)
 
 /- English proof (translation)
-Take `⟨D, hD, hsub⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := 2) (r := 1)`. Establish `hi : ∀ j i, Integrable (fun Y => c j i * φ i (unipOne K 2 1 Y * m)) ((unipMeasure K 2 1).restrict (unipFundamentalDomain K 2 1))` using `fun j i => ((continuous_const.mul ((hφ i).cont.comp ((continuous_unipOne 1).mul continuous_const))).continuousOn.integrableOn_compact hD).mono_set hsub`. Rewrite using `[integral_finset_sum _ fun j _ => integrable_finset_sum _ fun i _ => hi j i]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun i _ => hi j i]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, (hφ i).cusp, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cusp_sum {K : Type} [Field K] [NumberField K] {μ₂ : Measure (G1 K 2)} {τ : Submodule ℂ (L2 μ₂)} {a b : ℕ}
     (φ : Fin a → G1 K 2 → ℂ) (hφ : ∀ i, Rd τ (φ i)) (c : Fin b → Fin a → ℂ) (m : G1 K 2) :
@@ -243,29 +241,27 @@ private theorem cusp_sum {K : Type} [Field K] [NumberField K] {μ₂ : Measure (
   rw [integral_const_mul, (hφ i).cusp, mul_zero]
 
 /- English proof (translation)
-Introduce `K _ _ _ μ₂ _ τ₁ τ₂ D h₁ h₂ f hf hD`. Take `⟨hc, ⟨B, hB⟩, hu, hr, hs⟩` from `(secCrit μ₂ τ₁ τ₂ D h₁ h₂ f hD).1 hf`. Take `⟨E₁, E₂, i₁, i₂, r₁, r₂, hE⟩` from `secStr μ₂ τ₁ τ₂ D h₁ h₂`. Take `⟨a, b, φ, ψ, x, y, s, s', hφ, hψ, hT⟩` from `tens E₁ E₂`. Set `c : G1 K (2 + 2) → Fin a → Fin b → ℂ` to `fun k i j => ∑ p, ∑ q, s i p * s' j q * f (lv (x i p) (y j q) 0 * k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hcb : ∀ k i j, ‖c k i j‖ ≤ ∑ p, ∑ q, ‖s i p * s' j q‖ * B` using `fun k i j => norm_sum_le_of_le _ fun p _ => norm_sum_le_of_le _ fun q _ => by`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hB _) (norm_nonneg _)`. Establish `rep : ∀ X m₁ m₂ t, ∀ k ∈ KG K (2 + 2), f (nn X * lv m₁ m₂ t * k) = ∑ i, ∑ j, c k i j * φ i m₁ * ψ j m₂`. Introduce `X m₁ m₂ t k hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : lv m₁ m₂ t = lv 1 1 t * lv m₁ m₂ 0` using `by rw [blkLaws.2.1, one_mul, one_mul, add_zero]`. Rewrite using `[mul_assoc, hu, e, mul_assoc, hr]`. Conclude with `hT (fun u v => f (lv u v 0 * k)) (hE f hc hD hs k hk).1 (hE f hc hD hs k hk).2 m₁ m₂`. Establish `rep' : ∀ u v X m₁ m₂ t, ∀ k ∈ KG K (2 + 2), f (lv u v 0 * (nn X * lv m₁ m₂ t * k)) = ∑ i, ∑ j, c k i j * φ i (u * m₁) * ψ j (v * m₂)`. Introduce `u v X m₁ m₂ t k hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨X', hX'⟩` from `lv_nn u v m₁ m₂ t X k`. Rewrite using `[hX', rep _ _ _ _ k hk]`. Use `⟨⟨hc, ⟨B, hB⟩, hu, fun γ hγ g => ?_, fun g => ?_, fun g => ?_⟩, hr, fun N R => ?_⟩` and prove the remaining obligations. Take `⟨ξ, γ₁, γ₂, rfl⟩` from `(pkLaws.2.1 γ).1 hγ`. Take `⟨X, m₁, m₂, t, k, hk, rfl⟩` from `iwa g`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, hu, rep' _ _ _ _ _ _ k hk, rep _ _ _ _ k hk]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[(r₁ _ (hφ i)).rat _ γ₁.2, (r₂ _ (hψ j)).rat _ γ₂.2]`. Take `⟨X, m₁, m₂, t, k, hk, rfl⟩` from `iwa g`. Rewrite using `[← cusp_sum φ (fun i => r₁ _ (hφ i)) (fun j i => c k i j * ψ j (1 * m₂)) m₁]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `Y`. Rewrite using `[rep' _ _ _ _ _ _ k hk, Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Take `⟨X, m₁, m₂, t, k, hk, rfl⟩` from `iwa g`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← cusp_sum ψ (fun i => r₂ _ (hψ i)) (fun i j => c k i j * φ i (1 * m₁)) m₂]`. Use `congr 1`. Use function extensionality and compare the values at `Y`. Rewrite using `[rep' _ _ _ _ _ _ k hk]`. Take `⟨M, hM0, hM⟩` from `ht_bound (K := K) R choose C₁ hC₁ using fun i => (r₁ _ (hφ i)).decay N choose C₂ hC₂ using fun j => (r₂ _ (hψ j)).decay N`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨∑ i, ∑ j, M ^ N * ((∑ p, ∑ q, ‖s i p * s' j q‖ * B) * (C₁ i * C₂ j)), fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨X, m₁, m₂, t, k, hk, rfl⟩` from `iwa g`. Rewrite `hg` using `[hpSpec.1, (hpSpec.2.1 k hk).1, add_zero]`. Take `⟨γ, hγ, hle⟩` from `hM X m₁ m₂ t k hk hg`. Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `zero_le_one.trans (one_le_qht m₁)`. Establish `h2` using `zero_le_one.trans (one_le_qht m₂)`. Use `(mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (height_pos _).le hle N) (norm_nonneg _)).trans ?_` and prove the remaining obligations. Rewrite using `[rep _ _ _ _ k hk]`. Use `(mul_le_mul_of_nonneg_right (norm_sum_le_of_le _ fun i _ => norm_sum_le _ _) (pow_nonneg (mul_nonneg hM0 (mul_nonneg h1 h2)) N)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `e : ‖c k i j * φ i m₁ * ψ j m₂‖ * (M * (qht m₁ * qht m₂)) ^ N = M ^ N * (‖c k i j‖ * ((‖φ i m₁‖ * qht m₁ ^ N) * (‖ψ j m₂‖ * qht m₂ ^ N)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_mul, mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `p1 : 0 ≤ ‖φ i m₁‖ * qht m₁ ^ N` using `mul_nonneg (norm_nonneg _) (pow_nonneg h1 N)`. Establish `p2 : 0 ≤ ‖ψ j m₂‖ * qht m₂ ^ N` using `mul_nonneg (norm_nonneg _) (pow_nonneg h2 N)`.
-
-Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul (hcb k i j) (mul_le_mul (hC₁ i m₁) (hC₂ j m₂) p2 (p1.trans (hC₁ i m₁))) (mul_nonneg p1 p2) ((norm_nonneg _).trans (hcb k i j))) (pow_nonneg hM0 N)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.secFun :
     ∀ {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)) (D : TypeDat K (2 + 2)), CuspIrr μ₂ τ₁ → CuspIrr μ₂ τ₂ → ∀ f : G1 K (2 + 2) → ℂ, IsSec τ₁ τ₂ f → D.Fix f → SFun f := by

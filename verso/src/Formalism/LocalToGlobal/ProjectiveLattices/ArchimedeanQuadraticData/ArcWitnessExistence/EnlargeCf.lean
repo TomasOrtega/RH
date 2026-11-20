@@ -12,11 +12,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Unfold `arcDet`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `τ _`. Establish `h : Matrix.of (fun i k : Fin (Dw.mult τ) => (MvPolynomial.X (⟨τ, i, k⟩ : ArcLt Dw) : MvPolynomial (ArcLt Dw) (LaurentSeries K₁))) = (MvPolynomial.rename (fun p : Fin (Dw.mult τ) × Fin (Dw.mult τ) => (⟨τ, p.1, p.2⟩ : ArcLt Dw))).mapMatrix (Matrix.mvPolynomialX (Fin (Dw.mult τ)) (F …`. Use extensionality with `i k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mvPolynomialX]`. Rewrite using `[h, ← AlgHom.map_det]`. Introduce `h0`. Establish `hinj : Function.Injective (MvPolynomial.rename (fun p : Fin (Dw.mult τ) × Fin (Dw.mult τ) => (⟨τ, p.1, p.2⟩ : ArcLt Dw)) : MvPolynomial _ (LaurentSeries K₁) → MvPolynomial (ArcLt Dw) (LaurentSeries K₁))` using `MvPolynomial.rename_injective _ (fun p q hpq => by`. Simplify using `only [Sigma.mk.inj_iff, heq_eq_eq, true_and] at hpq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Prod.ext (congrArg Prod.fst hpq) (congrArg Prod.snd hpq))`. Conclude with `Matrix.det_mvPolynomialX_ne_zero (Fin (Dw.mult τ)) (LaurentSeries K₁) (hinj (h0.trans (map_zero _).symm))`.
+A detailed English derivation is pending.
 -/
 theorem arcDet_ne_zero (K₁ : Type) [Field K₁] : arcDet Dw K₁ ≠ 0 := by
   unfold arcDet

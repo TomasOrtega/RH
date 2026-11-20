@@ -28,7 +28,7 @@ def brW (R : AnLogRes P J e) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin
 variable (R : AnLogRes P J e) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
 
 /- English proof (translation)
-Introduce `x hx j hj`. Assume the negation of the conclusion as `h`. Conclude with `hx (Or.inr ⟨j, hj, h⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem brGood : ∀ x ∉ brBad R Ψ, ∀ j, x ∈ (R.A.chart j).source →
     AnalyticAt ℂ (brQ R Ψ ∘ (R.A.chart j).symm) (R.A.chart j x) ∧
@@ -39,26 +39,24 @@ theorem brGood : ∀ x ∉ brBad R Ψ, ∀ j, x ∈ (R.A.chart j).source →
   exact hx (Or.inr ⟨j, hj, h⟩)
 
 /- English proof (translation)
-Introduce `h` and use `hx (Or.inl (Or.inl h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem notMemB_of_notMem_brBad {x : R.X} (hx : x ∉ brBad R Ψ) : R.lift x x ∉ mcPts J := fun h => hx (Or.inl (Or.inl h))
 
 /- English proof (translation)
-Introduce `h` and use `hx (Or.inl (Or.inr h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem projection_zero_ne_of_notMem_bridgeBadSet {x : R.X} (hx : x ∉ brBad R Ψ) :
     Ψ (segre (R.lift x x)) 0 ≠ 0 := fun h => hx (Or.inl (Or.inr h))
 
 /- English proof (translation)
-Establish `hz0 : R.lift x x ∈ mcPts P` using `R.mem x x (R.mem_U x)`. Set `k0 : K` to `hK.some`. Set `cc : K → ℂ` to `fun k => if k = k0 then (Ψ (segre (R.lift x x)) 0)⁻¹ else 1`. Establish `hcc : ∀ k, cc k ≠ 0`. Introduce `k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [cc]`. Use `split_ifs`. Conclude with `inv_ne_zero h0`. Conclude with `one_ne_zero`. Establish `horb : SameOrbit (fun p : (Σ k, ι k) => cc p.1 * R.lift x x p) (R.lift x x)` using `⟨cc, hcc, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod : ∏ k, cc k = (Ψ (segre (R.lift x x)) 0)⁻¹` using `by simp [cc]`. Establish `hseg : segre (fun p : (Σ k, ι k) => cc p.1 * R.lift x x p) = brW R Ψ x`. Rewrite using `[segre_smul, hprod]`. Both sides reduce to the same expression. Use `⟨fun p => cc p.1 * R.lift x x p, mem_mcPts_of_sameOrbit hPh horb hz0, hseg, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Use `show Ψ ((Ψ (segre (R.lift x x)) 0)⁻¹ • segre (R.lift x x)) = Fin.cons 1 (brQ R Ψ x)`. Rewrite using `[map_smul]`. Use function extensionality and compare the values at `i`. Break down `Fin.eq_zero_or_eq_succ i with rfl | ⟨j, rfl⟩` into its components or cases. Simplify using `[inv_mul_cancel₀ h0]`.
-
-Simplify using `[brQ, div_eq_inv_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem brW_mem_fibre (hK : Nonempty K) (hPh : IsMultiHomogIdeal P) {x : R.X}
     (h0 : Ψ (segre (R.lift x x)) 0 ≠ 0) : brW R Ψ x ∈ fibre P Ψ (brQ R Ψ x) := by
@@ -86,9 +84,9 @@ theorem brW_mem_fibre (hK : Nonempty K) (hPh : IsMultiHomogIdeal P) {x : R.X}
   · simp [brQ, div_eq_inv_mul]
 
 /- English proof (translation)
-Introduce `x hx x' hx' h`. Establish `hz'` using `(R.mem x' x' (R.mem_U x')).1`. Apply `R.inj x x' hx.1` to reduce the goal to its premises. Apply `sameOrbit_of_segre hz' (Ψ (segre (R.lift x x)) 0 * (Ψ (segre (R.lift x' x')) 0)⁻¹) (mul_ne_zero hx.2 (inv_ne_zero hx'.2))` to reduce the goal to its premises. Establish `h' : (Ψ (segre (R.lift x x)) 0)⁻¹ • segre (R.lift x x) = (Ψ (segre (R.lift x' x')) 0)⁻¹ • segre (R.lift x' x')` using `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[mul_smul, ← h', smul_smul, mul_inv_cancel₀ hx.2, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem brW_injOn : Set.InjOn (brW R Ψ) {x | R.lift x x ∉ mcPts J ∧ Ψ (segre (R.lift x x)) 0 ≠ 0} := by
   intro x hx x' hx' h
@@ -101,9 +99,9 @@ theorem brW_injOn : Set.InjOn (brW R Ψ) {x | R.lift x x ∉ mcPts J ∧ Ψ (seg
   rw [mul_smul, ← h', smul_smul, mul_inv_cancel₀ hx.2, one_smul]
 
 /- English proof (translation)
-Establish `hPh : IsMultiHomogIdeal P` using `hP.2.1.2.1`. Use `Set.Finite.of_injOn (f := brW R Ψ) (t := fibre P Ψ y) ?_ ?_ (fibreFinite K ι P e Ψ hP hΨ y)` and prove the remaining obligations. Introduce `x hx`. Establish `h0` using `projection_zero_ne_of_notMem_bridgeBadSet R Ψ hx.2`. Establish `hq : brQ R Ψ x = y` using `hx.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hq]`. Conclude with `brW_mem_fibre R Ψ hP.1 hPh h0`. Introduce `x hx x' hx' h`. Conclude with `brW_injOn R Ψ ⟨notMemB_of_notMem_brBad R Ψ hx.2, projection_zero_ne_of_notMem_bridgeBadSet R Ψ hx.2⟩ ⟨notMemB_of_notMem_brBad R Ψ hx'.2, projection_zero_ne_of_notMem_bridgeBadSet R Ψ hx'.2⟩ h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem brFib_finite (hP : IsArithVar P (e + 1)) (hΨ : IsGoodProj P Ψ) (y : Fin e → ℂ) :
     (brQ R Ψ ⁻¹' {y} \ brBad R Ψ).Finite := by
@@ -119,17 +117,17 @@ theorem brFib_finite (hP : IsArithVar P (e + 1)) (hΨ : IsGoodProj P Ψ) (y : Fi
       ⟨notMemB_of_notMem_brBad R Ψ hx'.2, projection_zero_ne_of_notMem_bridgeBadSet R Ψ hx'.2⟩ h
 
 /- English proof (translation)
-Take `⟨z, hz, hzw, hΨw⟩` from `hw`. Establish `hzJ : z ∉ mcPts J`. Introduce `hzJ`. Use `hy ⟨z, hz, hzJ, ?_⟩` and prove the remaining obligations. Rewrite using `[hzw]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hΨw`. Take `⟨x, hx⟩` from `R.surj z hz hzJ`. Take `⟨cc, hcc, hlift⟩` from `hx`. Establish `hμ : ∏ k, cc k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hcc k`. Establish `hseg : segre (R.lift x x) = (∏ k, cc k) • w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlift, segre_smul, hzw]`. Establish `hΨl : Ψ (segre (R.lift x x)) = (∏ k, cc k) • Fin.cons 1 y`. Rewrite using `[hseg, map_smul, hΨw]`. Establish `h0 : Ψ (segre (R.lift x x)) 0 = ∏ k, cc k`. Rewrite using `[hΨl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨x, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hzJ` to reduce the goal to its premises. Use `mem_mcPts_of_sameOrbit R.homog ⟨fun k => (cc k)⁻¹, fun k => inv_ne_zero (hcc k), ?_⟩ h` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Rewrite using `[hlift]`. Conclude with `(inv_mul_cancel_left₀ (hcc p.1) (z p)).symm`. Rewrite using `[h0]`. Conclude with `hμ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [brQ, hΨl]`. Simplify using `[hμ]`. Use `show (Ψ (segre (R.lift x x)) 0)⁻¹ • segre (R.lift x x) = w`. Rewrite using `[h0, hseg, smul_smul, inv_mul_cancel₀ hμ, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_fibre {y : Fin e → ℂ} {w : ((k : K) → ι k) → ℂ} (hw : w ∈ fibre P Ψ y)
     (hy : ¬ ∃ z ∈ mcPts P, z ∈ mcPts J ∧ Ψ (segre z) = Fin.cons 1 y) :

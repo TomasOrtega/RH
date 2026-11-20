@@ -4,9 +4,9 @@ open MeasureTheory GroundTheory.Automorphic
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Use `Pairwise.countable_of_isOpen_disjoint (s := fun i => Metric.ball (b i) (1 / 2)) ?_ (fun _ => Metric.isOpen_ball) (fun _ => Metric.nonempty_ball.2 (by norm_num))` and prove the remaining obligations. Introduce `i j hij`. Use `Metric.ball_disjoint_ball ?_` and prove the remaining obligations. Establish `h0 : ⟪b i, b j⟫_ℂ = 0` using `hb.2 hij`. Establish `h` using `norm_sub_sq (𝕜 := ℂ) (b i) (b j)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[h0, hb.1 i, hb.1 j]`. Simplify using `only [map_zero] at h`. Rewrite using `[dist_eq_norm]`. Use polynomial arithmetic with `[norm_nonneg (b i - b j)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem UpperTheory.ConvolutionTheory.K.hsOfKer_countable {H : Type*} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [TopologicalSpace.SeparableSpace H] {ι : Type*} {b : ι → H}
@@ -23,7 +23,7 @@ private theorem UpperTheory.ConvolutionTheory.K.hsOfKer_countable {H : Type*} [N
   nlinarith [norm_nonneg (b i - b j)]
 
 /- English proof (translation)
-Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]`. Simplify using `only [ENNReal.toReal_ofNat, ENNReal.rpow_ofNat]`. Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private theorem UpperTheory.ConvolutionTheory.K.hsOfKer_sq {X : Type*} [MeasurableSpace X] (ν : Measure X)
     {E : Type*} [NormedAddCommGroup E] (f : X → E) :
@@ -34,11 +34,11 @@ private theorem UpperTheory.ConvolutionTheory.K.hsOfKer_sq {X : Type*} [Measurab
   norm_num
 
 /- English proof (translation)
-Introduce `X _ ν _ _ A k hk hA`. Set `b` to `stdHilbertBasis ℂ (Lp ℂ 2 ν)`. Use `haveI := UpperTheory.ConvolutionTheory.K.hsOfKer_countable b.orthonormal`. Rewrite using `[isHilbertSchmidt_iff b]`. Establish `h1 : ∀ i, ‖A (b i)‖ₑ ^ 2 = ∫⁻ x, ‖⟪b i, k x⟫_ℂ‖ₑ ^ 2 ∂ν`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[Lp.enorm_def, eLpNorm_congr_ae (hA (b i)), UpperTheory.ConvolutionTheory.K.hsOfKer_sq]`. Simplify using `only [enorm_inner_comm (k _)]`. Simplify using `only [h1]`. Rewrite using `[← lintegral_tsum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← enorm_sq_eq_tsum b]`. Rewrite using `[← UpperTheory.ConvolutionTheory.K.hsOfKer_sq]`. Conclude with `ENNReal.pow_lt_top hk.2`. Introduce `i`. Conclude with `((aestronglyMeasurable_const.inner hk.1).enorm).pow_const 2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.K.hsOfKer :
     ∀ {X : Type} [MeasurableSpace X] (ν : Measure X) [SFinite ν] [TopologicalSpace.SeparableSpace (Lp ℂ 2 ν)]

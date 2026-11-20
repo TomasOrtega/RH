@@ -14,13 +14,11 @@ private noncomputable def toArch (E : Type) [Field E] [NumberField E] [IsTotally
       map_smul' := fun c X => map_smul (matEq E a) c (Matrix.of X) }
 
 /- English proof (translation)
-Establish `h` using `((isExpLieAlgebra E a).isSmoothFun_iff).1 (hφ g) 1`. Use `set e := expPartialHomeomorph ℝ (ArchMatrix E a)`. Establish `h1 : toArch E a (TR.oneL E a) = 1` using `map_one (matEq E a)`. Establish `hn : e.target ∈ 𝓝 (toArch E a (TR.oneL E a))`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e.open_target.mem_nhds (one_mem_expPartialHomeomorph_target ℝ _)`. Establish `hl : ContDiffAt ℝ ∞ (fun x => subspaceProj (archLie E a) (e.symm (toArch E a x))) (TR.oneL E a)` using `(subspaceProj (archLie E a)).contDiff.contDiffAt.comp _ (((contDiffOn_expPartialHomeomorph_symm ℝ _).contDiffAt hn).comp _ (toArch E a).contDiff.contDiffAt)`. Use `(h.contDiffAt.comp _ hl).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(toArch E a).continuous.continuousAt.preimage_mem_nhds hn, TR.isOpen_invSet.mem_nhds (TR.val_mem_invSet (1 : GL (Fin a) (TR.Rinf E)))] with x hx hu`. Take `⟨u, hu⟩` from `hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `hxu : x = TR.toL u.val` using `hu.symm`. Substitute `hxu` using the available equality. Rewrite using `[TR.chart_val, ← infEmb_grpEq]`. Simplify using `only [Function.comp_apply, archSlice_apply, one_mul]`. Use `congr 3`.
-
-Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[IsExpLieAlgebra.coe_expG, subspaceProj_of_mem Submodule.mem_top]`. Conclude with `(e.right_inv hx).symm`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem contDiffAt_one {φ : GA E a → ℂ} (hφ : IsArchSmooth φ) (g : GA E a) :
     ContDiffAt ℝ ∞ (TR.chart φ g) (TR.oneL E a) := by
@@ -48,11 +46,11 @@ private theorem contDiffAt_one {φ : GA E a → ℂ} (hφ : IsArchSmooth φ) (g 
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ hφ g x hx`. Take `⟨u, hu⟩` from `hx`. Establish `hxu : x = TR.toL u.val` using `hu.symm`. Substitute `hxu` using the available equality. Establish `e : TR.chart φ g = TR.chart φ (g * TR.infGL E a u) ∘ TR.lmul (TR.toL (u⁻¹).val)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[← TR.chart_mul, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Establish `e1 : TR.lmul (TR.toL (u⁻¹).val) (TR.toL u.val) = TR.oneL E a` using `u.inv_mul`. Rewrite using `[e]`. Use `(ContDiffAt.comp _ ?_ (TR.lmul (TR.toL (u⁻¹).val)).contDiff.contDiffAt).contDiffWithinAt` and prove the remaining obligations. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `contDiffAt_one hφ _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.contDiff_chart_of_isArchSmooth :
     UpperTheory.V.Fb.SmOf := by

@@ -11,25 +11,23 @@ namespace Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts
 open DirichletCharacter
 
 /- English proof (translation)
-Take `⟨C₀, hC₀⟩` from `h`. Use `⟨max C₀ 0, ?_⟩` and prove the remaining obligations. Introduce `t _ θ Q S hθ hθ2 hS`. Distinguish the cases in `hSe : S = ∅`. Substitute `hSe` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Finset.card_empty, Nat.cast_zero]`. Apply `mul_nonneg (le_max_right _ _)` to reduce the goal to its premises. Break down `le_or_gt 0 Q with hQ | hQ` into its components or cases. Conclude with `Real.rpow_nonneg hQ _`. Rewrite using `[Real.rpow_def_of_neg hQ]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_nonneg (Real.exp_pos _).le` to reduce the goal to its premises. Apply the tactic sequence `apply Real.cos_nonneg_of_neg_pi_div_two_le_of_le <;> nlinarith [Real.pi_pos]`. Take `⟨q₀, hq₀⟩` from `Finset.nonempty_iff_ne_empty.2 hSe`. Establish `htpos : 1 ≤ t` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne t)`. Establish `hQ3 : (3 : ℝ) ≤ Q`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, h4, _, hle, _⟩` from `hS q₀ hq₀`. Establish `hq3 : 3 ≤ q₀` using `by omega`. Establish `: 3 ≤ t * q₀` using `le_trans hq3 (Nat.le_mul_of_pos_left _ htpos)`. Establish `h3 : (3 : ℝ) ≤ ((t * q₀ : ℕ) : ℝ)` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression.
 
-Set `f : ℕ → Σ N : ℕ, DirichletCharacter ℂ (N + 1)` to `fun q => if hq : q.Prime then haveI : Fact q.Prime := ⟨hq⟩ toSig (Formalism.HermitianLattices.ZeroFreeRegionGL2.tw θ q) else ⟨0, 1⟩`. Establish `hf : ∀ q (hq : Fact q.Prime), f q = toSig (Formalism.HermitianLattices.ZeroFreeRegionGL2.tw θ q)`. Introduce `q hq`. Simplify using `only [f, dif_pos hq.out]`. Establish `hinj : Set.InjOn f S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb hab`. Take `⟨ia, -⟩` from `hS a ha`. Take `⟨ib, -⟩` from `hS b hb`. Rewrite `hab` using `[hf a ia, hf b ib]`. Use `toSig_level_eq _ _ hab` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.eq_of_mul_eq_mul_left htpos this`. Establish `hcard : (S.image f).card = S.card` using `Finset.card_image_of_injOn hinj`. Establish `key` using `hC₀ Q (S.image f) hQ3 (by`. Introduce `p hp`. Take `⟨q, hq, rfl⟩` from `Finset.mem_image.1 hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨iq, h4, hco, hle, hbox⟩` from `hS q hq`. Rewrite using `[hf q iq]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[toSig_isPrimitive]`. Conclude with `(Formalism.HermitianLattices.ThinSetIntegral.twist_is_primitive_character.2 t θ q hθ (by omega) hco).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Rewrite using `[toSig_fst]`. Conclude with `hle`. Unfold `Formalism.HermitianLattices.ZeroFreeRegionGL2.ZeroFreeBox at hbox push Not at hbox`. Take `⟨s, h1, h2, h3⟩` from `hbox`. Conclude with `⟨s, h1, h2, by rw [toSig_LFunction]; exact h3⟩)`.
-
-Rewrite `key` using `[hcard]`. Combine the equalities or inequalities in the displayed calculation.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem boxCountHyp_of_zeroDensityBox (h : ZeroDensityBox) : ∃ C : ℝ, Formalism.HermitianLattices.ZeroFreeRegionGL2.BoxCountHyp C := by
   obtain ⟨C₀, hC₀⟩ := h

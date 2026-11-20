@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace UpperTheory.V.Pa
 
 /- English proof (translation)
-Simplify using `[GFrame.star, GFrame.starOp]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem star_single' {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     (R : Type) [CommRing R] [Algebra O R] (n : ℕ) (g : F.G₀) (b : R) :
@@ -14,7 +14,7 @@ private theorem star_single' {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) 
   simp [GFrame.star, GFrame.starOp]
 
 /- English proof (translation)
-Simplify using `[GFrame.star]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem star_sub' {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     (R : Type) [CommRing R] [Algebra O R] (n : ℕ) (x y : MonoidAlgebra R F.G₀) :
@@ -24,17 +24,17 @@ private theorem star_sub' {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [Co
 end UpperTheory.V.Pa
 
 /- English proof (translation)
-Establish `hD : ∀ (y : F.G₀) (t : ResidueField O), (GDet.ofRep (diagRep r.chib)).D (ResidueField O) (MonoidAlgebra.single y t - 1) = ∏ i, (((r.chib i y : (ResidueField O)ˣ) : ResidueField O) * t - 1)`. Introduce `y t`. Simplify using `only [GDet.ofRep, GDet.repAlg, diagRep]`. Simplify using the standard rewrite rules. Establish `e : (t • Matrix.diagonal fun i ↦ ((r.chib i y : (ResidueField O)ˣ) : ResidueField O)) - 1 = Matrix.diagonal fun i ↦ ((r.chib i y : (ResidueField O)ˣ) : ResidueField O) * t - 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i k`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using `[mul_comm]`. Simplify using `[Matrix.diagonal, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Matrix.det_diagonal]`. Use `set t : ResidueField O := ((r.chib j (F.conj x) : (ResidueField O)ˣ) : ResidueField O) with ht`. Establish `hs : F.star O (ResidueField O) n (MonoidAlgebra.single x t - 1) = MonoidAlgebra.single (F.conj x)⁻¹ t - 1`. Rewrite using `[star_sub', star_single', he]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[MonoidAlgebra.one_def, star_single']`. Simplify using the standard rewrite rules. Establish `hp` using `r.polar (ResidueField O) (MonoidAlgebra.single x t - 1)`. Rewrite `hp` using `[hs, hD, hD]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hχ, Units.val_one, one_mul, Finset.prod_const, Finset.card_univ, Fintype.card_fin] at hp`. Establish `h0 : ∏ i, (((r.chib i (F.conj x)⁻¹ : (ResidueField O)ˣ) : ResidueField O) * t - 1) = 0`. Apply `Finset.prod_eq_zero (Finset.mem_univ j)` to reduce the goal to its premises. Rewrite using `[ht, map_inv, Units.val_inv_eq_inv_val, inv_mul_cancel₀ (Units.ne_zero _), sub_self]`. Rewrite `hp` using `[h0]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : t - 1 = 0` using `(pow_eq_zero_iff (Fin.pos j).ne').mp hp.symm`. Use `ext`. Simplify `h1` using `[ht, sub_eq_zero]`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem chib_conj_eq_one_of_chib_eq_one_of_eps_eq_one {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [IsLocalRing O]
     [Algebra ℤ_[l] O] (n : ℕ) (r : Resid F O n) (x : F.G₀) (hχ : ∀ i, r.chib i x = 1)
@@ -73,9 +73,9 @@ private theorem chib_conj_eq_one_of_chib_eq_one_of_eps_eq_one {l : ℕ} [Fact l.
   simpa [ht, sub_eq_zero] using h1
 
 /- English proof (translation)
-Establish `hm : ((F.ε x : ℤ_[l]ˣ) : ℤ_[l]) - 1 ∈ maximalIdeal ℤ_[l]`. Rewrite using `[← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, hx, map_one, sub_self]`. Rewrite `hm` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Take `⟨w, hw⟩` from `hm`. Use `ext`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Simplify using `only [GFrame.eps, pushCh, MonoidHom.comp_apply, Units.coe_map, Units.val_one]`. Establish `key` using `congrArg (algebraMap ℤ_[l] (ResidueField O)) hw`. Simplify using `only [map_sub, map_one, map_mul, map_natCast, CharP.cast_eq_zero, zero_mul, sub_eq_zero] at key`. Simplify `key` using `[IsScalarTower.algebraMap_apply ℤ_[l] O (ResidueField O)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eps_residueField_eq_one_of_toZMod_eq_one {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [IsLocalRing O]
     [Algebra ℤ_[l] O] [CharP (ResidueField O) l] (x : F.G₀)
@@ -92,35 +92,29 @@ private theorem eps_residueField_eq_one_of_toZMod_eq_one {l : ℕ} [Fact l.Prime
   simpa [IsScalarTower.algebraMap_apply ℤ_[l] O (ResidueField O)] using key
 
 /- English proof (translation)
-Introduce `l _ F O _ _ _ n _ r`. Set `P : F.Γ → Prop` to `fun g => ∃ h : F.η g = 1, (∀ i, r.chib i ⟨g, h⟩ = 1) ∧ PadicInt.toZMod ((F.ε g : ℤ_[l]ˣ) : ℤ_[l]) = 1`. Set `S : Subgroup F.Γ` to `{ carrier := {g | P g} mul_mem' := by`. Introduce and unpack `a b ⟨ha, hχa, hεa⟩ ⟨hb, hχb, hεb⟩`. Use `⟨by simp [ha, hb], fun i => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show r.chib i (⟨a, ha⟩ * ⟨b, hb⟩) = 1`. Rewrite using `[map_mul, hχa, hχb, one_mul]`. Rewrite using `[map_mul, Units.val_mul, map_mul, hεa, hεb, one_mul]`. Use the proof step `one_mem' := by`. Use `⟨by simp, fun i => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `show r.chib i 1 = 1`. Conclude with `map_one _`. Simplify using the standard rewrite rules. Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨ha, hχa, hεa⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨by simp [ha], fun i => ?_, ?_⟩` and prove the remaining obligations. Use `show r.chib i (⟨a, ha⟩)⁻¹ = 1`. Rewrite using `[map_inv, hχa, inv_one]`. Establish `hu : ((F.ε a⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) * ((F.ε a : ℤ_[l]ˣ) : ℤ_[l]) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg PadicInt.toZMod hu` as an intermediate fact. Rewrite `this` using `[map_mul, hεa, mul_one, map_one]`. Conclude with `this }`. Establish `hmem : ∀ g, g ∈ S ↔ P g` using `fun g => Iff.rfl`. Establish `hopen : IsOpen (S : Set F.Γ)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsOpen {x : F.G₀ | ∀ i, r.chib i x = 1}`. Establish `e : {x : F.G₀ | ∀ i, r.chib i x = 1} = ⋂ i, ((r.chib i).ker : Set F.G₀)`. Use extensionality with `x`. Simplify using `[MonoidHom.mem_ker]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `isOpen_iInter_of_finite fun i => r.chib_open i`. Establish `h2 : IsOpen {x : F.G₀ | PadicInt.toZMod ((F.ε x : ℤ_[l]ˣ) : ℤ_[l]) = 1}`. Establish `e : ∀ z : ℤ_[l], PadicInt.toZMod z = 1 ↔ ‖z - 1‖ < 1`. Introduce `z`. Rewrite using `[← PadicInt.mem_nonunits, ← IsLocalRing.mem_maximalIdeal, ← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Repeatedly rewrite using `[e]`. Conclude with `isOpen_lt (continuous_norm.comp ((Units.continuous_val.comp (F.ε_cont.comp continuous_subtype_val)).sub continuous_const)) continuous_const`. Establish `e : (S : Set F.Γ) = Subtype.val '' ({x : F.G₀ | ∀ i, r.chib i x = 1} ∩ {x : F.G₀ | PadicInt.toZMod ((F.ε x : ℤ_[l]ˣ) : ℤ_[l]) = 1})`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h, hχ, hε⟩`. Conclude with `⟨⟨g, h⟩, ⟨hχ, hε⟩, rfl⟩`. Introduce and unpack `⟨x, ⟨hχ, hε⟩, rfl⟩`. Conclude with `⟨x.2, hχ, hε⟩`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `F.η_open.isOpenMap_subtype_val _ (h1.inter h2)`. Establish `case1 : ∀ g, P g → ∀ a, F.η a = 1 → P (a * g * a⁻¹)`. Introduce and unpack `g ⟨h, hχ, hε⟩ a ha`. Use `⟨by simp [h, ha], fun i => ?_, ?_⟩` and prove the remaining obligations. Use `show r.chib i (⟨a, ha⟩ * ⟨g, h⟩ * (⟨a, ha⟩)⁻¹) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Conclude with `hχ i`. Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Conclude with `hε`. Establish `hnorm : S.Normal`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun g hg a => ?_⟩` and prove the remaining obligations. Rewrite `hg`, the goal using `[hmem]`. Break down `Int.units_eq_one_or (F.η a) with ha | ha` into its components or cases. Conclude with `case1 g hg a ha`. Establish `hb : F.η (F.c⁻¹ * a) = 1`.
-
-Rewrite using `[map_mul, map_inv, F.η_c, ha]`. Both sides reduce to the same expression. Take `⟨h', hχ', hε'⟩` from `case1 g hg (F.c⁻¹ * a) hb`. Take `⟨h, -, hε⟩` from `hg`. Establish `hη : F.η (a * g * a⁻¹) = 1` using `by simp [h]`.
-
-Establish `hx : (⟨a * g * a⁻¹, hη⟩ : F.G₀) = F.conj ⟨F.c⁻¹ * a * g * (F.c⁻¹ * a)⁻¹, h'⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [GFrame.conj, MonoidHom.coe_mk, OneHom.coe_mk]`. Use `group`. Use `⟨hη, fun i => ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hx]`. Conclude with `chib_conj_eq_one_of_chib_eq_one_of_eps_eq_one F O n r _ hχ' (eps_residueField_eq_one_of_toZMod_eq_one F O _ hε') i`. Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Conclude with `hε`. Conclude with `⟨⟨⟨S, hopen⟩, hnorm⟩, fun g => Iff.rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.hEx :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (n : ℕ) [CharP (ResidueField O) l] (r : Resid F O n), ∃ H : OpenNormalSubgroup F.Γ, ∀ g : F.Γ, g ∈ H ↔ ∃ h : F.η g = 1, (∀ i, r.chib i ⟨g, h⟩ = 1) ∧ PadicInt.toZMod ((F.ε g : ℤ_[l]ˣ) : ℤ_[l]) = 1 := by

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PointsNonemptyUnita
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount GlobalTheory.LKCx
 open scoped TensorProduct Classical
 /- English proof (citation)
-Apply `GlobalTheory.LKCx.FiniteClassIntegralRoots.finite_cls_term_one_a_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteMarkedPairClassesDegreeOneTermNeZero.lean&line=282#L282)
 -/

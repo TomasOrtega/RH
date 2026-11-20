@@ -18,19 +18,19 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.Rg
 open GlobalTheory.Published GlobalTheory.Published.AutFin GlobalTheory.StdPar GlobalTheory.ThK.SmoothLev GlobalTheory.CompanionTheory.Hypotheses₂.ConstFin GlobalTheory.UAut GlobalTheory.AdelicU GlobalTheory.SiegelSet
 
 /- English proof (translation)
-Set `P : (∀ i, H i) →* G` to `Subgroup.noncommPiCoprod hcomm`. Establish `hrange : P.range = L` using `by rw [Subgroup.noncommPiCoprod_range, hgen]`. Establish `hP : ∀ i (t : H i), P (Pi.mulSingle i t) = t` using `fun i t => Subgroup.noncommPiCoprod_mulSingle i t`. Set `R : G → (G → ℂ) →ₗ[ℂ] ((∀ i, H i) → ℂ)` to `fun b => LinearMap.funLeft ℂ ℂ fun x => P x * b`. Establish `hfin : ∀ b, FiniteDimensional ℂ (Submodule.span ℂ (R b '' 𝓒))` using `fun b => by haveI := fun i => hcore i b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `finiteDimensional_of_slices (fun i => Submodule.span ℂ (sliceSet 𝓒 (H i) L b)) _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩ i x`. Establish `e : ∀ t : H i, Function.update x i t = Pi.mulSingle i t * Function.update x i 1` using `fun t => by`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `e' : ∀ t : H i, Function.update x i t = Function.update x i 1 * Pi.mulSingle i t` using `fun t => by`. Use function extensionality and compare the values at `j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Use `Submodule.subset_span ⟨φ, hφ, P (Function.update x i 1), hrange ▸ ⟨_, rfl⟩, fun t ht => ?_, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrArg P ((e ⟨t, ht⟩).symm.trans (e' ⟨t, ht⟩))`. Rewrite `h1` using `[map_mul, map_mul, hP]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `φ (P (Function.update x i t) * b) = φ ((t : G) * P (Function.update x i 1) * b)`. Rewrite using `[e t, map_mul, hP]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : ∀ b, ∀ φ ∈ Submodule.span ℂ 𝓒, R b φ ∈ Submodule.span ℂ (R b '' 𝓒)` using `fun b φ hφ => by`. Rewrite using `[← Submodule.map_span]`. Conclude with `Submodule.mem_map_of_mem hφ`. Set `Ψ : Submodule.span ℂ 𝓒 →ₗ[ℂ] (∀ b : B, Submodule.span ℂ (R b.1 '' 𝓒))` to `LinearMap.pi fun b => ((R b.1).comp (Submodule.span ℂ 𝓒).subtype).codRestrict _ fun φ => hmap b.1 φ.1 φ.2`. Use `haveI := fun b : B => hfin b.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `FiniteDimensional.of_injective Ψ ((injective_iff_map_eq_zero Ψ).2 fun φ hφ => ?_)` and prove the remaining obligations. Use `Subtype.ext (hB φ.1 φ.2 fun b hb g hg => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩ : g ∈ P.range` from `hrange ▸ hg`. Conclude with `congrFun (congrArg Subtype.val (congrFun hφ ⟨b, hb⟩)) x`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_of_parts {G : Type} [Group G] {ι : Type} [Fintype ι] [DecidableEq ι] (H : ι → Subgroup G)
     (hcomm : Pairwise fun i j : ι => ∀ x y : G, x ∈ H i → y ∈ H j → Commute x y) (L : Subgroup G) (hgen : L = ⨆ i, H i)
@@ -75,9 +75,9 @@ theorem finiteDimensional_of_parts {G : Type} [Group G] {ι : Type} [Fintype ι]
   exact congrFun (congrArg Subtype.val (congrFun hφ ⟨b, hb⟩)) x
 
 /- English proof (translation)
-Introduce `D θ hθ V U hU ε fr hfr W _ _ _ ρ hρ c m X Y hW T hT`. Establish `hh` using `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Take `⟨B, hB⟩` from `GlobalTheory.T.archimedean_frame_K_type_decomposition D θ hθ V U hU ε fr hfr W ρ hρ c m X Y hW T hT`. Use `finiteDimensional_of_parts (part D.sp.cm.sig V.gram X Y T) (GlobalTheory.T.levi_parts_commute D.host.F D.host.E D.sp.cm.sig hh.1 V.rank V.gram (hh.2 V) m X Y hW T) (levi D.sp.cm.sig V.gram X Y T) (GlobalTheory.T.levi_eq_iSup_parts D.host.F D.host.E D.sp.cm.sig hh.1 V.rank V.gram …` and prove the remaining obligations. Introduce and unpack `(_ | k) b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `UCore.Rg.finite_slices_uPart D θ hθ V U hU ε fr hfr W ρ hρ c m X Y hW T hT b`. Conclude with `CoreGL.Rg.finite_slices_glPart D θ hθ V U hU ε fr hfr W ρ hρ c m X Y hW T hT k.1 k.2 b`.
+A detailed English derivation is pending.
 -/
 theorem finite_cuspOn : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (U : Subgroup (GA D V)), IsOpen (U : Set (GA D V)) → ∀ (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), IsFrameFam V ε fr → ∀ (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] [∀ τ, FiniteDimensional ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (ε τ)) (W τ)), (∀ τ, IsContRep (ρ τ)) → ∀ (c : D.what₂.Tau → ℕ → ℂ) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ T : Finset (Fin m), T.Nonempty → FiniteDimensional ℂ (Submodule.span ℂ {φ | φ ∈ formsOn θ V X Y T U ε fr ρ c ∧ ∀ T' : Finset (Fin m), T ⊂ T' → IsConstAlong D.sp.cm.sig V.gram X T' φ 0}) := by
   intro D θ hθ V U hU ε fr hfr W _ _ _ ρ hρ c m X Y hW T hT

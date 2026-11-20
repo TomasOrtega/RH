@@ -23,9 +23,9 @@ def part (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℕ) (σ : E →+* ℂ) (i
   if i < Dw.mult σ then a (σ, i) else 0
 
 /- English proof (translation)
-Introduce `i j hij`. Unfold `part`. Distinguish the cases in `hj : j < Dw.mult σ`. Rewrite using `[if_pos hj, if_pos (lt_of_le_of_lt hij hj)]`. Conclude with `ha σ i j hij hj`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hj]`. Conclude with `Nat.zero_le _`.
+A detailed English derivation is pending.
 -/
 theorem part_anti {Dw : Datum H} {a : (E →+* ℂ) × ℕ → ℕ} (ha : IsPartFam Dw a) (σ : E →+* ℂ) :
     Antitone (part Dw a σ) := by
@@ -67,7 +67,7 @@ def coefAct (γ : Matrix (Fin n) (Fin n) E) : CoefSp Dw c n ha d →ₗ[c.F] Coe
   if h : IsUnit γ then coefRep Dw c n ha d h.unit else 0
 
 /- English proof (translation)
-Unfold `coefAct`. Rewrite using `[dif_pos g.isUnit, IsUnit.unit_of_val_units]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefAct_coe (g : GL (Fin n) E) :
     coefAct Dw c n ha d (g : Matrix (Fin n) (Fin n) E) = coefRep Dw c n ha d g := by
@@ -80,7 +80,7 @@ def coefLat : Submodule (𝓞 c.F) (CoefSp Dw c n ha d) :=
   nabAtr (embPsi c) (lamP Dw n ha d) (Formalism.L2.Pj.stdLat E n)
 
 /- English proof (translation)
-Introduce `i j hij`. Use `lam.anti hij` as an intermediate fact. Unfold `DomWeight.natW`. Conclude with `Int.toNat_le_toNat (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem natW_anti {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   intro i j hij
@@ -89,7 +89,7 @@ theorem natW_anti {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   exact Int.toNat_le_toNat (by omega)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨fun τ => extremal K N (lam τ), fun τ => Formalism.GradedWeylDivisibility.hwMem K N N le_rfl _ (natW_anti (lam τ)), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ten_extremal_mem {K ι : Type} [Field K] [Fintype ι] {N : ℕ} (lam : ι → DomWeight N) :
     ten (fun τ => extremal K N (lam τ)) ∈ VV K lam :=
@@ -132,13 +132,13 @@ def LFTieWeil : Prop :=
     Odd (Dw.p + Dw.q) → LFTieAt Dw c n ha (dTw Dw e)
 
 /- English proof (translation)
-Introduce `E _ _ _ H l Dw c n a ha e _` and use `h E H l Dw c n a ha (dTw Dw e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LFTie.weil (h : LFTie) : LFTieWeil :=
   fun E _ _ _ H l Dw c n a ha e _ => h E H l Dw c n a ha (dTw Dw e)
 
 /- English proof (translation)
-Use `⟨?_, by simp [vacChar]⟩` and prove the remaining obligations. Use `coefAct_coe Dw c n ha d 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H}
     (Dw : Datum H) (c : Coeff l) (n : ℕ) {a : (E →+* ℂ) × ℕ → ℕ} (ha : IsPartFam Dw a) (d : Psi H → ℤ) :

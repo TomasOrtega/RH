@@ -7,7 +7,7 @@ namespace GlobalTheory.UnipKill
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
 
 /- English proof (translation)
-Establish `: s • v = (⟨s, hs⟩ : 𝓞 E) • v`. Rewrite using `[← algebraMap_smul E (⟨s, hs⟩ : 𝓞 E) v]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `X.Λ.smul_mem _ hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hypRot_smul_mem (X : Data E N) {s : E} (hs : IsIntegral ℤ s) {v : Fin N → E}
     (hv : v ∈ X.Λ) : s • v ∈ X.Λ := by
@@ -16,7 +16,7 @@ theorem hypRot_smul_mem (X : Data E N) {s : E} (hs : IsIntegral ℤ s) {v : Fin 
   rw [this]; exact X.Λ.smul_mem _ hv
 
 /- English proof (translation)
-Simplify using `only [Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, one_add_smul_vecMulVec_mulVec, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hypRot_mulVec (X : Data E N) (ξ η : Fin N → E) (a b : E) (x : Fin N → E) :
     (1 + a • rk1 X.Gm ξ η + b • rk1 X.Gm η ξ).mulVec x =
@@ -24,9 +24,9 @@ theorem hypRot_mulVec (X : Data E N) (ξ η : Fin N → E) (a b : E) (x : Fin N 
   simp only [Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, one_add_smul_vecMulVec_mulVec, smul_smul]
 
 /- English proof (translation)
-Establish `hPP : rk1 X.Gm ξ η * rk1 X.Gm ξ η = (d : E) • rk1 X.Gm ξ η` using `by rw [one_add_smul_vecMulVec_mul, hξη]`. Establish `hPQ : rk1 X.Gm ξ η * rk1 X.Gm η ξ = 0` using `by rw [one_add_smul_vecMulVec_mul, hηη, zero_smul]`. Establish `hQP : rk1 X.Gm η ξ * rk1 X.Gm ξ η = 0` using `by rw [one_add_smul_vecMulVec_mul, hξξ, zero_smul]`. Establish `hQQ : rk1 X.Gm η ξ * rk1 X.Gm η ξ = (d : E) • rk1 X.Gm η ξ` using `by rw [one_add_smul_vecMulVec_mul, hηξ]`. Simplify using `only [add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, hPP, hPQ, hQP, hQQ, smul_zero, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem hypRot_mul_hypRot (X : Data E N) (ξ η : Fin N → E) (d : ℕ) (a b : E)
     (hξξ : herm X.Gm ξ ξ = 0) (hηη : herm X.Gm η η = 0) (hξη : herm X.Gm ξ η = d)
@@ -42,7 +42,7 @@ theorem hypRot_mul_hypRot (X : Data E N) (ξ η : Fin N → E) (d : ℕ) (a b : 
     _ = 1 := by rw [key, zero_smul, zero_smul, add_zero, add_zero]
 
 /- English proof (translation)
-Establish `hc` using `cc_herm X.Gm X.Gm_herm`. Simplify using `only [herm_add_left, herm_add_right, herm_smul_left, herm_smul_right, cc_mul, ha, hb, hc, hξξ, hηη, hξη, hηξ]`. Take the linear combination `(herm X.Gm x ξ * herm X.Gm η y + herm X.Gm x η * herm X.Gm ξ y) * key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem herm_hypRot (X : Data E N) (ξ η : Fin N → E) (d : ℕ) (a b : E)
     (hξξ : herm X.Gm ξ ξ = 0) (hηη : herm X.Gm η η = 0) (hξη : herm X.Gm ξ η = d)
@@ -56,25 +56,23 @@ theorem herm_hypRot (X : Data E N) (ξ η : Fin N → E) (d : ℕ) (a b : E)
   linear_combination (herm X.Gm x ξ * herm X.Gm η y + herm X.Gm x η * herm X.Gm ξ y) * key
 
 /- English proof (translation)
-Introduce `E _ _ _ N X ξ η d ε c hd hξ hη hξξ hηη hξη hεr hε0 hεi hεii hεc`. Establish `hdE : (d : E) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `hηξ : herm X.Gm η ξ = d` using `by rw [← cc_herm X.Gm X.Gm_herm ξ η, hξη, cc_natCast]`. Take `⟨a, ha_def⟩ : ∃ a : E, a = (ε - 1) / d` from `⟨_, rfl⟩`. Take `⟨b, hb_def⟩ : ∃ b : E, b = (ε⁻¹ - 1) / d` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ha : cc a = a`. Rewrite using `[ha_def, div_eq_mul_inv, cc_mul, cc_inv, cc_sub, cc_one, cc_natCast, hεr]`. Establish `hb : cc b = b`. Rewrite using `[hb_def, div_eq_mul_inv, cc_mul, cc_inv, cc_sub, cc_one, cc_natCast, cc_inv, hεr]`. Establish `key : a + b + a * b * d = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha_def, hb_def]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `key' : b + a + b * a * d = 0` using `by linear_combination key`. Establish `ha' : a = (X.den : E) * c`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ha_def, div_eq_iff hdE, hεc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinv : ε⁻¹ * ε = 1` using `inv_mul_cancel₀ hε0`. Establish `hb' : b = -(ε⁻¹ * ((X.den : E) * c))`. Rewrite using `[hb_def, div_eq_iff hdE]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-ε⁻¹) * hεc + hinv`. Establish `hA : ∀ x ∈ X.Λ, ∀ y ∈ X.Λ, IsIntegral ℤ (a * herm X.Gm x y)`. Introduce `x hx y hy`. Rewrite using `[ha', show (X.den : E) * c * herm X.Gm x y = c * (X.den * herm X.Gm x y) by ring]`. Conclude with `(RingOfIntegers.isIntegral_coe c).mul (X.Λ_int x hx y hy)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : ∀ x ∈ X.Λ, ∀ y ∈ X.Λ, IsIntegral ℤ (b * herm X.Gm x y)`. Introduce `x hx y hy`. Rewrite using `[hb', show -(ε⁻¹ * ((X.den : E) * c)) * herm X.Gm x y = -(ε⁻¹ * c * (X.den * herm X.Gm x y)) by ring]`. Conclude with `((hεii.mul (RingOfIntegers.isIntegral_coe c)).mul (X.Λ_int x hx y hy)).neg`. Establish `h01` using `hypRot_mul_hypRot X ξ η d a b hξξ hηη hξη hηξ key`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h10` using `hypRot_mul_hypRot X ξ η d b a hξξ hηη hξη hηξ key'`. Establish `hm0 : ∀ x ∈ X.Λ, (1 + a • rk1 X.Gm ξ η + b • rk1 X.Gm η ξ).mulVec x ∈ X.Λ`. Introduce `x hx`. Rewrite using `[hypRot_mulVec]`. Conclude with `X.Λ.add_mem (X.Λ.add_mem hx (hypRot_smul_mem X (hA x hx η hη) hξ)) (hypRot_smul_mem X (hB x hx ξ hξ) hη)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hm1 : ∀ x ∈ X.Λ, (1 + b • rk1 X.Gm ξ η + a • rk1 X.Gm η ξ).mulVec x ∈ X.Λ`. Introduce `x hx`. Rewrite using `[hypRot_mulVec]`. Conclude with `X.Λ.add_mem (X.Λ.add_mem hx (hypRot_smul_mem X (hB x hx η hη) hξ)) (hypRot_smul_mem X (hA x hx ξ hξ) hη)`. Use `⟨⟨_, _, h01, h10⟩, ⟨fun x y => ?_, fun x => ⟨hm0 x, fun h => ?_⟩⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `show herm X.Gm ((1 + a • rk1 X.Gm ξ η + b • rk1 X.Gm η ξ).mulVec x) ((1 + a • rk1 X.Gm ξ η + b • rk1 X.Gm η ξ).mulVec y) = herm X.Gm x y`. Rewrite using `[hypRot_mulVec, hypRot_mulVec]`. Conclude with `herm_hypRot X ξ η d a b hξξ hηη hξη hηξ ha hb key x y`. Use `hm1 _ h` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, h10, Matrix.one_mulVec]`. Then use the resulting hypothesis.
-
-Use `show (1 + a • rk1 X.Gm ξ η + b • rk1 X.Gm η ξ).mulVec ξ = ε • ξ`. Rewrite using `[hypRot_mulVec, hξη, hξξ, mul_zero, zero_smul, add_zero]`. Establish `: a * d = ε - 1` using `by rw [ha_def]; field_simp`. Rewrite using `[this]`. Use `module`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isUStab_hypRot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) (X : Data E N) (ξ η : Fin N → E) (d : ℕ) (ε : E) (c : 𝓞 E), 0 < d → ξ ∈ X.Λ → η ∈ X.Λ → herm X.Gm ξ ξ = 0 → herm X.Gm η η = 0 → herm X.Gm ξ η = d → cc ε = ε → ε ≠ 0 → IsIntegral ℤ ε → IsIntegral ℤ ε⁻¹ → ε - 1 = d * X.den * c → ∃ g : GL (Fin N) E, IsUStab X.Gm X.Λ g ∧ (g : Matrix (Fin N) (Fin N) E).mulVec ξ = ε • ξ := by
   intro E _ _ _ N X ξ η d ε c hd hξ hη hξξ hηη hξη hεr hε0 hεi hεii hεc

@@ -7,17 +7,15 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 open MvPolynomial
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_mul, coeff_mul]`. Use `split_ifs with hd`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `split_ifs with hx1`. Both sides reduce to the same expression. Distinguish the cases in `h2 : coeff x.2 f = 0`. Rewrite using `[h2, mul_zero, mul_zero]`. It suffices to derive a contradiction.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hx1` to reduce the goal to its premises. Establish `hw` using `hf h2`. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite `hd` using `[← hx, map_add, hw]`. Conclude with `add_right_cancel hd`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs with hx1`. Distinguish the cases in `h2 : coeff x.2 f = 0`. Rewrite using `[h2, mul_zero]`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-It suffices to derive a contradiction. Apply `hd` to reduce the goal to its premises. Establish `hw` using `hf h2`. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[← hx, map_add, hw, hx1]`.
-
-Rewrite using `[zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem component_mul_multiHomog {R : Type*} [CommRing R] {K : Type} [DecidableEq K]
     {ι : K → Type} (y f : MRing ι R) (b s : K → ℕ) (hf : IsMultiHomog f s) :
@@ -52,7 +50,7 @@ theorem component_mul_multiHomog {R : Type*} [CommRing R] {K : Type} [DecidableE
     · rw [zero_mul]
 
 /- English proof (translation)
-Introduce `R _ K _ ι I f s hI hf y hy b`. Rewrite `hy`, the goal using `[Submodule.mem_colon_singleton, smul_eq_mul]`. Rewrite using `[component_mul_multiHomog y f b s hf]`. Conclude with `hI _ hy _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ColonMultiHomog.proof : ColonMultiHomog.Statement := by
   intro R _ K _ ι I f s hI hf y hy b

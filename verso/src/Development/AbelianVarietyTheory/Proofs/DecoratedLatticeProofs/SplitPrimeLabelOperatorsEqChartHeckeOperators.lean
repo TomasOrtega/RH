@@ -27,15 +27,15 @@ namespace GlobalTheory.ChainOnto.LabChart
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨e, f, hef⟩` from `GlobalTheory.IdemSupport.exists_isPrimeIdem (comp_finAdEquiv D) w`. Take `⟨ϖ, p1, p2⟩ : ∃ ϖ ∈ w.asIdeal, ϖ ∉ w.asIdeal ^ 2` from `SetLike.exists_of_lt (Ideal.pow_lt_self w.asIdeal w.ne_bot w.isPrime.ne_top 2 le_rfl)`. Establish `hs` using `Supp.suppF_iff_of_isPrimeIdem V hef h`. Establish `hK : ∀ y, y ∈ {k | k ∈ KsphC V ∅ ∧ SuppF V f k} ↔ ∃ k ∈ Kv V v, embV V v k = y` using `fun y => by`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨m1, m2⟩`. Take `⟨k, rfl⟩` from `(hs y).1 m2`. Conclude with `⟨k, (Supp.emb_mem_KsphC V k).1 m1, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨(Supp.emb_mem_KsphC V k).2 hk, (hs _).2 ⟨k, rfl⟩⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨s1, s2⟩` from `rep_image (embV V v) (emb_injective _ _ v) hK r1 r2`. Establish `hR : GlobalTheory.Hk3.SphOp V w (List.ofFn d) (R0.image (embV V v))`. Use `⟨e, f, ϖ, embV V v g, ?_, hef, p1, p2, List.pairwise_ofFn.2 fun i j hij => hd hij.le, fun _ _ => Iff.rfl, fun _ _ _ => rfl, (hs _).2 ⟨g, rfl⟩, divAt_of_diagonal h hef p1 p2 ha hu (by rw [proj_emb_self, hg]), fun γ hγ => ?_, fun γ hγ => ⟨?_, s1 γ hγ⟩, s2⟩` and prove the remaining obligations. Introduce `u hu`. Conclude with `absurd hu (Finset.notMem_empty u)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hγ`. Conclude with `(hs _).2 ⟨y, rfl⟩`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hγ`. Conclude with `mem_finPts.2 (projInf_emb _ _ v y)`. Establish `hhyp : ∀ k ∈ hyp V w, π k x = x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `k ⟨hk, e', f', hef', hsf⟩`. Take `⟨y, rfl⟩` from `(Supp.suppF_iff_of_isPrimeIdem V hef' h k).1 hsf`. Conclude with `hx y ((Supp.emb_mem_KsphC V y).1 hk)`. Rewrite using `[← ((GlobalTheory.SphLabelOps.label_operators V w).1 _ _ hR).2 M π x hhyp, Finset.sum_image (emb_injective _ _ v).injOn]`.
+A detailed English derivation is pending.
 -/
 theorem opOf_eq_sum_rep {V : HSp D} {v : HeightOneSpectrum (𝓞 D.host.F)} {w : HeightOneSpectrum (𝓞 D.host.E)}
     (h : w.under (𝓞 D.host.F) = v) {a : GL (Fin V.rank) (w.adicCompletion D.host.E)} (ha : IsFrameAt w (frameLat V) a)
@@ -84,9 +84,9 @@ namespace GlobalTheory.ChainOnto.LabChart
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hK : ∀ y, y ∈ (KGL w V.rank : Set (GL (Fin V.rank) (w.adicCompletion D.host.E))) ↔ ∃ k ∈ Kv V v, e.toMonoidHom k = y` using `fun y => ⟨fun hy => ⟨e.symm y, (he.2 _).2 (by simpa using hy), by simp⟩, by rintro ⟨k, hk, rfl⟩; exact (he.2 k).1 hk⟩`. Take `⟨s1, s2⟩` from `rep_image e.toMonoidHom e.injective hK r1 r2`. Establish `ht : e.toMonoidHom (e.symm t) = t` using `by simp`. Rewrite `s1`, `s2` using `[ht]`. Establish `hfix : x ∈ fixed ((π.comp (embV V v)).comp e.symm.toMonoidHom) (KGL w V.rank)` using `(mem_fixed_comp_symm e he.2).2 (GlobalTheory.LGrp.mem_fixed.2 fun k hk => hx k hk)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[heckeVec_dosetInd hfix (R := R0.image e.toMonoidHom) (fun γ hγ => DoubleCoset.mem_doubleCoset.2 (s1 γ hγ)) fun y hy => s2 y (DoubleCoset.mem_doubleCoset.1 hy), Finset.sum_image (f := fun γ => (((π.comp (embV V v)).comp e.symm.toMonoidHom) γ) x) (show Function.Injective e.toMonoi …`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem heckeVec_chart {V : HSp D} {v : HeightOneSpectrum (𝓞 D.host.F)} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {h : w.under (𝓞 D.host.F) = v} {e : Gv V v ≃* GL (Fin V.rank) (w.adicCompletion D.host.E)}
@@ -127,13 +127,13 @@ variable {L : Type} [Field L] {n : ℕ}
 def revM (L : Type) [Field L] (n : ℕ) : Matrix (Fin n) (Fin n) L := fun i j => if i.rev = j then 1 else 0
 
 /- English proof (translation)
-Simplify using `[revM, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem revM_mul (A : Matrix (Fin n) (Fin n) L) (i j : Fin n) : (revM L n * A) i j = A i.rev j := by
   simp [revM, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j.rev]`. Simplify using `[revM]`. Introduce `b _ hb`. Establish `: b.rev ≠ j` using `fun e => hb (by rw [← e, Fin.rev_rev])`. Simplify using `[revM, this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -146,7 +146,7 @@ theorem mul_revM (A : Matrix (Fin n) (Fin n) L) (i j : Fin n) : (A * revM L n) i
   · simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[revM_mul, revM, Matrix.one_apply, Fin.rev_rev]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem revM_mul_revM : revM L n * revM L n = 1 := by
   ext i j
@@ -155,9 +155,7 @@ theorem revM_mul_revM : revM L n * revM L n = 1 := by
 def revGL (L : Type) [Field L] (n : ℕ) : GL (Fin n) L := ⟨revM L n, revM L n, revM_mul_revM, revM_mul_revM⟩
 
 /- English proof (translation)
-Apply the tactic sequence `refine Formalism.UG.P.cartan_mem_of_entries O _ (fun i j => ?_) (fun i j => ?_) <;>`. Express the relevant statement in the definitionally equal form `revM L n i j ∈ O`. Unfold `revM`. Use `split_ifs`. Conclude with `one_mem O`.
-
-Conclude with `zero_mem O`.
+Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem revGL_mem (O : Subring L) : revGL L n ∈ Formalism.UG.GLint (Fin n) O := by
   refine Formalism.UG.P.cartan_mem_of_entries O _ (fun i j => ?_) (fun i j => ?_) <;>
@@ -168,9 +166,9 @@ theorem revGL_mem (O : Subring L) : revGL L n ∈ Formalism.UG.GLint (Fin n) O :
     · exact zero_mem O
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(revM L n * Matrix.diagonal u * revM L n) i j = _`. Rewrite using `[mul_revM, revM_mul]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `: i.rev ≠ j.rev` using `fun e => hij (Fin.rev_injective e)`. Simplify using `[Matrix.diagonal_apply_ne _ hij, Matrix.diagonal_apply_ne _ this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem revGL_conj_diagonal (u : Fin n → L) (hu : ∀ i, u i ≠ 0) :
     ((revGL L n * Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.diagonal u)
@@ -193,29 +191,27 @@ noncomputable section
 namespace GlobalTheory.ChainOnto.LabChart
 
 /- English proof (translation)
-Introduce `D V v w h _ e he M _ _ π x hx ϖ hϖ k hk`. Take `⟨a, ha, hea⟩` from `he.1`. Use `GlobalTheory.HeckeDual.isLattice_frameLat V` as an intermediate fact. Establish `hϖ0 : ϖ ≠ 0` using `fun h0 => by simp [IsUnifV, h0] at hϖ`. Establish `hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (d : Fin V.rank → ℤ) (t : GL (Fin V.rank) (w.adicCompletion D.host.E)) (uu : Fin V.rank → w.adicCompletion D.host.E), Antitone d → (∀ i, Valued.v (uu i) = WithZero.exp (-d i)) → t.1 = Matrix.diagonal uu → opOf π w (Finsupp.single (List.ofFn d) 1) x = heckeVec ((π.comp (em …`. Introduce `d t uu hd hu ht`. Take `⟨R0, r1, r2⟩` from `GlobalTheory.HeckeDual.exists_rep _ (isOpen_stabLoc D.sp.cm.sig V.gram (frameLat V) v) (isCompact_stabLoc D.sp.cm.sig V.gram (frameLat V) v) (e.symm t)`. Establish `hg : (a⁻¹ * locMat D.sp.cm.sig V.gram h (e.symm t) * a).1 = Matrix.diagonal uu`. Rewrite using `[← hea, MulEquiv.apply_symm_apply, ht]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[opOf_eq_sum_rep h ha hd hu hg r1 r2 π x hx, heckeVec_chart he t r1 r2 π x hx]`. Use `set n := V.rank with hn`. Use `set tJ := Matrix.GeneralLinearGroup.mkOfDetNeZero (Formalism.UG.diagJ n ϖ k) (GlobalTheory.SatHecke.diagJ_det_ne hϖ k) with htJ`. Establish `hTj : Tj ℂ n (Ov D.host.E w) ϖ k = Formalism.UG.dosetInd ℂ (KGL w n) tJ` using `GlobalTheory.SatHecke.Tj_eq_dosetInd hϖ k`. Establish `hJ` using `key (fun i => if (i : ℕ) < k then 1 else 0) tJ (fun i => if (i : ℕ) < k then ϖ else 1) (fun i j hij => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hij' : (i : ℕ) ≤ j` using `hij`. Apply the tactic sequence `by_cases h1 : (i : ℕ) < k <;> by_cases h2 : (j : ℕ) < k <;> simp only [h1, h2, if_true, if_false] <;> omega)`. Apply the tactic sequence `(fun i => by by_cases h1 : (i : ℕ) < k <;> simp [h1, hv])`. Use the proof step `(by rw [htJ]; rfl)`. Establish `hlJ : List.ofFn (fun i : Fin n => if (i : ℕ) < k then (1 : ℤ) else 0) = dualLab (splitLab n k)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `List.ext_getElem (by simp [dualLab, splitLab]; omega) fun i h1 h2 => ?_` and prove the remaining obligations. Use `GlobalTheory.SphPar.dualLab_splitLab_getD n k i` as an intermediate fact. Rewrite `this` using `[List.getD_eq_getElem _ _ h2]`. Simplify using `[this]`. Establish `huS : ∀ i : Fin n, (if n - k ≤ (i : ℕ) then ϖ⁻¹ else 1) ≠ 0` using `fun i => by split_ifs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `inv_ne_zero hϖ0`. Conclude with `one_ne_zero`. Use `set tS := Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.diagonal fun i : Fin n => if n - k ≤ (i : ℕ) then ϖ⁻¹ else 1) (by rw [Matrix.det_diagonal]; exact Finset.prod_ne_zero_iff.2 fun i _ => huS i) with htS`. Establish `hS` using `key (fun i => if n - k ≤ (i : ℕ) then -1 else 0) tS (fun i => if n - k ≤ (i : ℕ) then ϖ⁻¹ else 1) (fun i j hij => by`. Establish `hij' : (i : ℕ) ≤ j` using `hij`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `by_cases h1 : n - k ≤ (i : ℕ) <;> by_cases h2 : n - k ≤ (j : ℕ) <;> simp only [h1, h2, if_true, if_false] <;> omega)`. Apply the tactic sequence `(fun i => by by_cases h1 : n - k ≤ (i : ℕ) <;> simp [h1, hv])`. Use the proof step `(by rw [htS]; rfl)`. Establish `hlS : List.ofFn (fun i : Fin n => if n - k ≤ (i : ℕ) then (-1 : ℤ) else 0) = splitLab n k`. Use `List.ext_getElem (by simp [splitLab]; omega) fun i h1 h2 => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [List.getElem_ofFn, splitLab]`. Distinguish the cases in `hi : n - k ≤ i`. Rewrite using `[List.getElem_append_right (by simpa using hi)]`. Simplify using `[hi]`. Rewrite using `[List.getElem_append_left (by simp; omega)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[hi]`. Establish `hinv : tJ⁻¹ = revGL _ n * tS * revGL _ n`. Use `(eq_inv_of_mul_eq_one_right (Units.ext ?_)).symm` and prove the remaining obligations. Rewrite using `[Units.val_mul, htS, revGL_conj_diagonal _ huS, Units.val_one, htJ]`. Express the relevant statement in the definitionally equal form `Formalism.UG.diagJ n ϖ k * _ = 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.UG.diagJ, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `e1 : (n - k ≤ (i.rev : ℕ)) ↔ (i : ℕ) < k` using `by rw [Fin.val_rev]; omega`. Distinguish the cases in `h1 : (i : ℕ) < k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h1, if_pos (e1.2 h1), mul_inv_cancel₀ hϖ0]`. Rewrite using `[if_neg h1, if_neg (mt e1.1 h1), mul_one]`. Establish `hTinv : (fun g => Tj ℂ n (Ov D.host.E w) ϖ k g⁻¹) = Formalism.UG.dosetInd ℂ (KGL w n) tS`. Rewrite using `[hTj, GlobalTheory.ChainOnto.dosetInd_comp_inv, hinv, dosetInd_mul (revGL_mem _) (revGL_mem _)]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hlS, hS, hTinv]`. Rewrite using `[← hlJ, hJ, hTj]`.
+A detailed English derivation is pending.
 -/
 theorem split_label_ops : ∀ (D : D7) (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), IsSplit (E := D.host.E) v → ∀ e, IsSplitChart D.sp.cm.sig V.gram (frameLat V) h e → ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (u : M), (∀ k ∈ Kv V v, π (embV V v k) u = u) → ∀ ϖ, IsUnifV D.host.E w ϖ → ∀ k ≤ V.rank, opOf π w (Finsupp.single (splitLab V.rank k) 1) u = heckeVec ((π.comp (embV V v)).comp e.symm.toMonoidHom) (KGL w V.rank) (fun g => Tj ℂ V.rank (Ov D.host.E w) ϖ k g⁻¹) u ∧ opOf π w (Finsupp.single (dualLab (splitLab V.rank k)) 1) u = heckeVec ((π.comp (embV V v)).comp e.symm.toMonoidHom) (KGL w V.rank) (Tj ℂ V.rank (Ov D.host.E w) ϖ k) u := by
   intro D V v w h _ e he M _ _ π x hx ϖ hϖ k hk

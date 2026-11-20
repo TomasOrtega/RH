@@ -11,7 +11,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.ConeSmallCT.eisGood_qht_measurable | exact GlobalTheory.ConeSmallCT.eisGood_qht_measurable | (intros; apply GlobalTheory.ConeSmallCT.eisGood_qht_measurable <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.eisenstein_meromorphic_continuation : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} (b : ℕ) (Eis : ℂ → UA σ J → ℂ), GlobalTheory.ConeSmallCT.EisGood b Eis →

@@ -94,11 +94,11 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {S : Formalism.L2.Col
 variable {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
 
 /- English proof (translation)
-Establish `key : ∀ (γ : Γ) (c : S.Cl) (k : J), (classPresOf A h σ ρ χ coef hli hspan hpair hK1 hgl).ext (f : S.Cl → S.V) (ι γ * A.y c * k) = coef ((((S.res h).symm f : S.EqFun) : S.D → S.V) (A.q (ι γ * A.y c * k)))`. Introduce `γ c k`. Establish `e1 : (classPresOf A h σ ρ χ coef hli hspan hpair hK1 hgl).ext (f : S.Cl → S.V) (ι γ * A.y c * k) = (χ k : ℂ) • ρ γ (coef ((f : S.Cl → S.V) c))` using `ClassPres.ext_eq (classPresOf A h σ ρ χ coef hli hspan hpair hK1 hgl) f γ c k`. Establish `e2 : A.q (ι γ * A.y c * k) = A.gl (γ, k⁻¹) • S.outSec.rep c`. Rewrite using `[A.q_mul, A.q_y]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : (((S.res h).symm f : S.EqFun) : S.D → S.V) (S.outSec.rep c) = (f : S.Cl → S.V) c`. Use `S.resOf_apply h S.outSec ((S.res h).symm f) c` as an intermediate fact. Rewrite using `[← this]`. Use `show ((((S.res h) ((S.res h).symm f)).1 : S.Cl → S.V) c) = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e4` using `(S.mem_EqFun _).1 ((S.res h).symm f).2 (A.gl (γ, k⁻¹)) (S.outSec.rep c)`. Rewrite using `[e1, e2, e4, e3, hgl, map_inv, inv_inv, Units.smul_def]`. Rewrite using `[(classPresOf A h σ ρ χ coef hli hspan hpair hK1 hgl).dec_spec g]`. Conclude with `key _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classPresOf_ext (A : AdPts S ι J) (h : S.Ok) (σ : K →+* ℂ) (ρ : Γ →* Module.End ℂ W) (χ : J →* ℂˣ)
     (coef : S.V →ₛₗ[σ] W) (hli : LinearIndependent ℂ fun i => coef (S.bV i))
@@ -132,9 +132,9 @@ variable {G' Γ' : Type} [Group G'] [Group Γ'] {ι' : Γ' →* G'} {ρ : Γ →
   {J' : Subgroup G'} {χ : J →* ℂˣ} {χ' : J' →* ℂˣ} {T : Formalism.L2.DIV.CSD K} {σ : K →+* ℂ}
 
 /- English proof (translation)
-Rewrite using `[P.dec_spec g]`. Establish `hk : eG (P.decK g : G) ∈ J'`. Rewrite using `[hJ]`. Conclude with `Subgroup.mem_map_of_mem eG.toMonoidHom (P.decK g).2`. Establish `e : eG (ι (P.decG g) * P.y (P.decC g) * (P.decK g : G)) = ι' (eΓ (P.decG g)) * (P.transport eG eΓ hι hρ hJ hχ).y (P.decC g) * ((⟨_, hk⟩ : J') : G')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hι]`. Both sides reduce to the same expression. Rewrite using `[e, ClassPres.ext_eq, ClassPres.ext_eq, hχ, hρ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem transport_ext (P : ClassPres ι T σ ρ J χ) (eG : G ≃* G') (eΓ : Γ ≃* Γ') (hι : ∀ γ, ι' (eΓ γ) = eG (ι γ))
     (hρ : ∀ γ, ρ' (eΓ γ) = ρ γ) (hJ : J' = J.map eG.toMonoidHom)
@@ -235,7 +235,7 @@ end GlobalTheory.Mem.R3.LiftPres
 namespace GlobalTheory.Mem.R3.LiftPres
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `i j`. Simplify using `[GlobalTheory.Mem.R3.LiftBrg.castGL]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem castGL_symm_castGL {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (x : GL (Fin m) R) :
     GlobalTheory.Mem.R3.LiftBrg.castGL h.symm (GlobalTheory.Mem.R3.LiftBrg.castGL h x) = x := by
@@ -252,7 +252,7 @@ end GlobalTheory.Mem.R3.LiftPres
 namespace GlobalTheory.Mem.R3.LiftPres
 
 /- English proof (translation)
-Use `show Formalism.L2.Col.toGLm E n (Formalism.UG.glEquiv (γ : GL (Fin n) E)) = _`. Simplify using `only [Formalism.L2.Col.toGLm, Formalism.UG.glEquiv, MulEquiv.trans_apply, MulEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ufGL_ratHom {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) (γ : Formalism.L2.Col.URat hc n) :

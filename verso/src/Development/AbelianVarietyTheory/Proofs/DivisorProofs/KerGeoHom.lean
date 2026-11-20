@@ -24,7 +24,7 @@ def geoHom (t : PrimeSpectrum P) : P →+* GeoF t :=
   (algebraMap t.asIdeal.ResidueField (GeoF t)).comp (algebraMap P t.asIdeal.ResidueField)
 
 /- English proof (translation)
-Rewrite using `[geoHom, RingHom.ker_comp_of_injective _ (algebraMap t.asIdeal.ResidueField (GeoF t)).injective]`. Conclude with `Ideal.ker_algebraMap_residueField t.asIdeal`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_geoHom (t : PrimeSpectrum P) : RingHom.ker (geoHom t) = t.asIdeal := by
   rw [geoHom, RingHom.ker_comp_of_injective _ (algebraMap t.asIdeal.ResidueField (GeoF t)).injective]

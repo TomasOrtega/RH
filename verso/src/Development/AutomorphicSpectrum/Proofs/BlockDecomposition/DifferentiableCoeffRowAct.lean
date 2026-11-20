@@ -16,16 +16,16 @@ namespace GlobalTheory.CompanionTheory.RmHol
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-The claim follows from `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ a b)).differentiable`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_entry {r : ℕ} (a b : Fin r) :
     Differentiable ℂ fun M : Matrix (Fin r) (Fin r) ℂ => M a b :=
   (LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ a b)).differentiable
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Use `Differentiable.fun_sum fun σ _ => Differentiable.const_mul ?_ _` and prove the remaining obligations. Establish `h : ∀ t : Finset (Fin r), Differentiable ℂ fun M : Matrix (Fin r) (Fin r) ℂ => ∏ i ∈ t, M (σ i) i`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `empty => simp`. Consider the case `insert a t ha ih`. Simplify using `only [Finset.prod_insert ha]`. Apply the tactic sequence `exact (differentiable_entry (σ a) a).mul ih`. Conclude with `h Finset.univ`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_det {r : ℕ} :
     Differentiable ℂ fun M : Matrix (Fin r) (Fin r) ℂ => M.det := by
@@ -41,15 +41,13 @@ theorem differentiable_det {r : ℕ} :
   exact h Finset.univ
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Introduce `s`. Simplify `(differentiable_const (MvPolynomial.coeff s (MvPolynomial.C a : MvPolynomial (Fin r × Fin m) ℂ)) : Differentiable ℂ fun _ : Matrix (Fin r) (Fin r) ℂ => _)` using `[MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `s`. Simplify using `only [map_add, MvPolynomial.coeff_add]`. Conclude with `(hp s).add (hq s)`. Consider the case `mul_X p v hp`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ M : Matrix (Fin r) (Fin r) ℂ, MvPolynomial.coeff s (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `m) Mᵀ (p * MvPolynomial.X v)) = ∑ b : Fin r, M b v.1 * (if (b, v.2) ∈ s.support then MvPolynomial.coeff (s - Finsupp.single (b, v.2) 1) (Formalism.GradedWeylDivisibility.rowAct ℂ (n := m) Mᵀ p) else 0) := by`. Introduce `M`. Establish `hX : Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `m) Mᵀ (MvPolynomial.X v) = ∑ b : Fin r, MvPolynomial.C (M b v.1) * MvPolynomial.X (b, v.2) := by`. Simplify using `[Formalism.GradedWeylDivisibility.rowAct, MvPolynomial.aeval_X]`. Rewrite using `[map_mul, hX, Finset.mul_sum, MvPolynomial.coeff_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_mul_X']`. Simplify using `only [key]`. Use `Differentiable.fun_sum fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `refine (differentiable_entry b v.1).mul ?_`.
-
-Use `split_ifs`. Conclude with `hp _`. Conclude with `differentiable_const _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiable_coeff_rowAct {r m : ℕ} (f : MvPolynomial (Fin r × Fin m) ℂ) :
     ∀ s : (Fin r × Fin m) →₀ ℕ, Differentiable ℂ fun M : Matrix (Fin r) (Fin r) ℂ =>
@@ -85,7 +83,7 @@ theorem differentiable_coeff_rowAct {r m : ℕ} (f : MvPolynomial (Fin r × Fin 
     · exact differentiable_const _
 
 /- English proof (translation)
-Establish `e : ((Matrix.GeneralLinearGroup.det (Matrix.nonsingInvUnit x h) : ℂˣ) : ℂ) = x.det` using `rfl`. Rewrite using `[Formalism.BasicNotions.detPow, Units.val_zpow_eq_zpow_val, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem detPow_nonsingInvUnit {n : ℕ} {x : Mat n} (h : IsUnit x.det) (c : ℤ) :
     Formalism.BasicNotions.detPow ℂ n (Matrix.nonsingInvUnit x h) c = x.det ^ c := by
@@ -93,11 +91,11 @@ theorem detPow_nonsingInvUnit {n : ℕ} {x : Mat n} (h : IsUnit x.det) (c : ℤ)
   rw [Formalism.BasicNotions.detPow, Units.val_zpow_eq_zpow_val, e]
 
 /- English proof (translation)
-Introduce `i j g hg`. Take `⟨S, c, hc⟩` from `GlobalTheory.CompanionTheory.WInfCont.exists_finset_factor (Formalism.BasicNotions.nablaSq ℂ n (dw lam)) ((wb lam).coord i)`. Establish `hev : (fun x : Mat n => Rm lam x i j) =ᶠ[𝓝 g] fun x : Mat n => ∑ s : S, c s * (x.det ^ (dw lam).detShift * MvPolynomial.coeff s.1 (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) xᵀ (wb lam j).1)) := by filter_upwards [isOpen_GLs.mem_nhds hg] with x hx`. Establish `hu` using `isUnit_det_of_mem hx`. Rewrite using `[Rm_of_unit lam hu, LinearMap.toMatrix_apply, ← Module.Basis.coord_apply, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Branching.sqRep_coe, Formalism.BasicNotions.sqAct, MvPolynomial.coeff_smul, smul_eq_mul, detPow_nonsingInvUnit hu]`. Both sides reduce to the same expression. Use `DifferentiableAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Use `DifferentiableAt.fun_sum fun s _ => DifferentiableAt.const_mul ?_ _` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `DifferentiableAt.mul ?_ (differentiable_coeff_rowAct _ _ _)` and prove the remaining obligations. Conclude with `(differentiable_det g).zpow (Or.inl hg)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem holRm (n : ℕ) (lam : Fin n → ℤ) : HolRm lam := by
   intro i j g hg

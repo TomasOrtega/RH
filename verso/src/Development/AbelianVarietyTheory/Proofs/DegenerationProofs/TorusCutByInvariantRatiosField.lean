@@ -13,13 +13,11 @@ open GlobalTheory.ZJ
 namespace GlobalTheory.ZJ.KerCut
 
 /- English proof (translation)
-Establish `: IsAffine V.toScheme` using `hV`. Establish `r : ∀ (f : Y ⟶ X), ⊤ ≤ f ⁻¹ᵁ V → ∃ f' : Y ⟶ V.toScheme, f = f' ≫ V.ι`. Introduce `f hf`. Use `⟨IsOpenImmersion.lift V.ι f ?_, (IsOpenImmersion.lift_fac _ _ _).symm⟩` and prove the remaining obligations. Rewrite using `[Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `hf (show y ∈ (⊤ : Y.Opens) from trivial)`. Take `⟨f', ef⟩` from `r f hf`. Take `⟨g', eg⟩` from `r g hg`. Rewrite `e` using `[← GlobalTheory.FunDescent.res_comp_appTop V f' f ef, ← GlobalTheory.FunDescent.res_comp_appTop V g' g eg]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: f' = g'`. Apply `ext_of_isAffine` to reduce the goal to its premises. Use extensionality with `x`. Take `⟨y, rfl⟩` from `(GlobalTheory.FunDescent.res_bijective V).2 x`. Conclude with `congrArg (fun ψ => ψ.hom y) e`.
-
-Rewrite using `[ef, eg, this]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_appLE {X Y : Scheme.{0}} (V : X.Opens) (hV : IsAffineOpen V) (f g : Y ⟶ X)
     (hf : ⊤ ≤ f ⁻¹ᵁ V) (hg : ⊤ ≤ g ⁻¹ᵁ V) (e : f.appLE V ⊤ hf = g.appLE V ⊤ hg) : f = g := by
@@ -41,7 +39,7 @@ theorem hom_ext_of_appLE {X Y : Scheme.{0}} (V : X.Opens) (hV : IsAffineOpen V) 
   rw [ef, eg, this]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[← Scheme.Hom.appLE_comp_appLE k q V W ⊤ h h']`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appLE_appLE_apply {X Y Z : Scheme.{0}} (k : Z ⟶ Y) (q : Y ⟶ X) (V : X.Opens) (W : Y.Opens)
     (h : W ≤ q ⁻¹ᵁ V) (h' : ⊤ ≤ k ⁻¹ᵁ W) (p : Z ⟶ X) (e : k ≫ q = p) (h'' : ⊤ ≤ p ⁻¹ᵁ V) (v : Γ(X, V)) :
@@ -55,21 +53,19 @@ end GlobalTheory.ZJ.KerCut
 namespace GlobalTheory.ZJ
 
 /- English proof (translation)
-Introduce `K _ H _ _ _ _ _ C d c i a j hc hT hB`. Take `⟨B, _, q, -, hq, -, -, -, hP, hV⟩` from `GlobalTheory.T.splitCharts_torus_extension_over_field K H C d c i hc hT`. Take `⟨V, hW, hVa, hu⟩` from `hV a`. Establish `one_mem : ∀ Y : Over (Sp K), ⊤ ≤ (1 : Y ⟶ H).left ⁻¹ᵁ C.W a`. Introduce `Y y _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hB.1 (show (toUnit Y).left y ∈ (⊤ : (Sp K).Opens) from trivial)`. Use `⟨⟨fun {Y} s t e => hP.hom_ext e (toUnit_unique _ _)⟩, fun Y k => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨h, h₁, hr⟩`. Establish `key : k ≫ q = (1 : Y ⟶ H) ≫ q`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `m : ∀ g : Y ⟶ H, ⊤ ≤ g.left ⁻¹ᵁ C.W a → ⊤ ≤ (g ≫ q).left ⁻¹ᵁ V`. Introduce `g hg`. Rewrite `hg` using `[hW]`. Conclude with `hg`. Use `KerCut.hom_ext_of_appLE V hVa _ _ (m k h) (m 1 h₁) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `v`. Establish `hv` using `hT.gen a _ ((hu _).2 ⟨v, rfl⟩)`. Establish `eq` using `RingHom.eqOn_set_closure (f := (k.left.appLE _ ⊤ h).hom) (g := ((1 : Y ⟶ H).left.appLE _ ⊤ h₁).hom) (by`. Introduce and unpack `u (⟨w, rfl⟩ | ⟨j', hj', rfl⟩)`. Conclude with `(KerCut.appLE_appLE_apply _ _ _ _ _ _ Y.hom (Over.w k) le_rfl w).trans (KerCut.appLE_appLE_apply _ _ _ _ _ _ Y.hom (Over.w _) le_rfl w).symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hr j' hj') hv`. Conclude with `(KerCut.appLE_appLE_apply _ _ _ _ _ _ _ rfl (m k h) v).symm.trans (eq.trans (KerCut.appLE_appLE_apply _ _ _ _ _ _ _ rfl (m 1 h₁) v))`. Establish `w : k ≫ q = toUnit Y ≫ η[B]`. Rewrite using `[key, MonObj.one_comp]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hP.lift _ _ w, (hP.lift_fst _ _ w).symm⟩`. Introduce and unpack `⟨t, rfl⟩`. Establish `h'` using `hT.stable a Y t 1 (one_mem Y)`. Establish `hr` using `fun j' hj' => hT.inv a j' hj' Y t 1 (one_mem Y) h'`. Use `revert h' hr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[_root_.mul_one]`. Introduce `h' hr`. Use `⟨h', one_mem Y, fun j' hj' => ?_⟩` and prove the remaining obligations. Rewrite using `[hr j' hj', charUnit_zero_val, map_one, _root_.one_mul]`. Introduce `Y t n h h₁`.
-
-Use `hT.wt a (j n) n (hB.2 n).1 Y t 1 h₁` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `this h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Charts.kerIs_of_torus : ∀ (K : Type) [Field K] (H : Over (Sp K)) [GrpObj H] [IsCommMonObj H] [Smooth H.hom] [IsSeparated H.hom] [QuasiCompact H.hom] (C : Charts H.left) (d : ℕ) (c : Fin d → C.Cl) (i : splitTorus (Sp K) (Fin d → ℤ) ⟶ H) (a) (j : Fin d → C.I), GeometricallyConnected H.hom → C.Torus c i → C.Based c a j → C.KerIs a j i := by
   intro K _ H _ _ _ _ _ C d c i a j hc hT hB

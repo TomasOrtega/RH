@@ -12,14 +12,14 @@ namespace GlobalTheory.HQStepBlocks
 variable {F : Type} [Field F] {r c : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i|i) (j|j) <;> simp [bAA, bAD, bDA, bDD]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem submatrix_eq_fromBlocks (x : Matrix (Fin (r + c)) (Fin (r + c)) F) :
     x.submatrix finSumFinEquiv finSumFinEquiv = fromBlocks (bAA x) (bAD x) (bDA x) (bDD x) := by
   ext (i|i) (j|j) <;> simp [bAA, bAD, bDA, bDD]
 
 /- English proof (translation)
-Rewrite using `[Matrix.submatrix_mul_equiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem submatrix_mul' (x y : Matrix (Fin (r + c)) (Fin (r + c)) F) :
     (x * y).submatrix finSumFinEquiv finSumFinEquiv =
@@ -27,7 +27,7 @@ theorem submatrix_mul' (x y : Matrix (Fin (r + c)) (Fin (r + c)) F) :
   rw [Matrix.submatrix_mul_equiv]
 
 /- English proof (translation)
-Establish `h` using `submatrix_mul' x y`. Rewrite `h` using `[submatrix_eq_fromBlocks, submatrix_eq_fromBlocks, submatrix_eq_fromBlocks, fromBlocks_multiply, fromBlocks_inj]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blocks_mul (x y : Matrix (Fin (r + c)) (Fin (r + c)) F) :
     bAA (x * y) = bAA x * bAA y + bAD x * bDA y ∧ bAD (x * y) = bAA x * bAD y + bAD x * bDD y ∧
@@ -38,7 +38,7 @@ theorem blocks_mul (x y : Matrix (Fin (r + c)) (Fin (r + c)) F) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv x, submatrix_eq_fromBlocks, hx, Matrix.det_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_eq_of_bDA_eq_zero (x : Matrix (Fin (r + c)) (Fin (r + c)) F) (hx : bDA x = 0) :
     x.det = (bAA x).det * (bDD x).det := by
@@ -46,17 +46,17 @@ theorem det_eq_of_bDA_eq_zero (x : Matrix (Fin (r + c)) (Fin (r + c)) F) (hx : b
     Matrix.det_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Introduce `F _ r c p q hp hq`. Take `⟨h11, -, h21, h22⟩` from `blocks_mul (p : Matrix (Fin (r + c)) (Fin (r + c)) F) (q : Matrix _ _ F)`. Use `⟨?_, ?_, ?_, det_eq_of_bDA_eq_zero _ hp, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, h21, hp, hq]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Units.val_mul, h11, hq]`. Simplify using the standard rewrite rules. Rewrite using `[Units.val_mul, h22, hp]`. Simplify using the standard rewrite rules. Take `⟨k11, -, k21, -⟩` from `blocks_mul ((p⁻¹ : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) (p : Matrix _ _ F)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hone : ((p⁻¹ : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) * (p : Matrix _ _ F) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite `k11`, `k21` using `[hone, hp, Matrix.mul_zero, add_zero]`. Establish `e11 : bAA (1 : Matrix (Fin (r + c)) (Fin (r + c)) F) = 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[bAA, Matrix.one_apply]`. Establish `e21 : bDA (1 : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0`. Use extensionality with `i j`. Simplify using `[bDA, Matrix.one_apply, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `k11` using `[e11]`. Rewrite `k21` using `[e21]`. Establish `hA : bAA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) * bAA ((p⁻¹ : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) = 1` using `mul_eq_one_comm.mp k11.symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hA, Matrix.mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 0 := by rw [← Matrix.mul_assoc, ← k21, Matrix.zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] (r c : ℕ) (p q : GL (Fin (r + c)) F), bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0 → bDA (q : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0 → bDA ((p * q : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0 ∧ bAA ((p * q : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) = bAA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) * bAA (q : Matrix (Fin (r + c)) (Fin (r + c)) F) ∧ bDD ((p * q : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) = bDD (p : Matrix (Fin (r + c)) (Fin (r + c)) F) * bDD (q : Matrix (Fin (r + c)) (Fin (r + c)) F) ∧ (p : Matrix (Fin (r + c)) (Fin (r + c)) F).det = (bAA (p : Matrix (Fin (r + c)) (Fin (r + c)) F)).det * (bDD (p : Matrix (Fin (r + c)) (Fin (r + c)) F)).det ∧ bDA ((p⁻¹ : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0 := by
   intro F _ r c p q hp hq

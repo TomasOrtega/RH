@@ -7,35 +7,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 open UpperTheory.V UpperTheory.V.PropA Formalism.GaloisCohomology
 
 /- English proof (translation)
-Introduce `l _ D _ _ hfin`. Establish `hl : l.Prime` using `Fact.out`. Take `⟨ι, hιinj, hιrange, -⟩` from `UpperTheory.V.Kum.zmodToQZ l 1`. Use `haveI : NeZero (l ^ 1) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Use `haveI : Fact (1 < l ^ 1) := ⟨by rw [pow_one]; exact hl.one_lt⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q : Set (QZ l) := {q | (l : ℤ_[l]) • q = 0} with hQ`. Establish `hQfin : Q.Finite`. Establish `: Q = Set.range ι`. Use extensionality with `q`. Rewrite using `[hιrange q, pow_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Set.finite_range ι`. Establish `hι1 : ι 1 ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ι 1 = ι 0` using `by rw [h, map_zero]`. Use `hιinj h0` as an intermediate fact. Conclude with `one_ne_zero this`. Establish `hlι : (l : ℤ_[l]) • ι 1 = 0`. Use `(hιrange (ι 1)).mp ⟨1, rfl⟩` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Take `⟨s, hs⟩` from `hfin.fg_top`. Establish `hsep : ∀ t : D, (l : ℤ_[l]) • t = 0 → (∀ g ∈ s, g t = 0) → t = 0`. Introduce `t htl hg`. Establish `hall : LinearMap.applyₗ (R` using `ℤ_[l]) (M₂ := QZ l) t = 0 := LinearMap.ext_on hs (fun g hg' => by simpa using hg g hg')`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `ht`. Set `μt : ℤ_[l] →ₗ[ℤ_[l]] D` to `LinearMap.toSpanSingleton ℤ_[l] D t`. Set `ν : ℤ_[l] →ₗ[ℤ_[l]] QZ l` to `LinearMap.toSpanSingleton ℤ_[l] (QZ l) (ι 1)`. Establish `hker : LinearMap.ker μt ≤ LinearMap.ker ν`. Introduce `a ha`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `ha' : a • t = 0` using `by simpa [μt] using ha`. Use `show a • ι 1 = 0`. Distinguish the cases in `hu : IsUnit a`. Conclude with `absurd ((hu.smul_eq_zero).mp ha') ht`. Establish `hm : a ∈ IsLocalRing.maximalIdeal ℤ_[l]` using `(IsLocalRing.mem_maximalIdeal a).mpr hu`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hm` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨b, rfl⟩` from `hm`. Rewrite using `[mul_smul, hlι, smul_zero]`. Set `g0 : LinearMap.range μt →ₗ[ℤ_[l]] QZ l` to `((LinearMap.ker μt).liftQ ν hker).comp (LinearMap.quotKerEquivRange μt).symm.toLinearMap`. Take `⟨y, hy⟩` from `(qzInj l).out (LinearMap.range μt).subtype Subtype.val_injective g0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmem : μt 1 ∈ LinearMap.range μt` using `LinearMap.mem_range_self μt 1`. Establish `h3 : (LinearMap.quotKerEquivRange μt).symm ⟨μt 1, hmem⟩ = Submodule.Quotient.mk 1`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Establish `h1` using `hy ⟨μt 1, hmem⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : g0 ⟨μt 1, hmem⟩ = ι 1`. Simplify using `only [g0, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply]`. Rewrite using `[h3, Submodule.liftQ_apply]`. Simplify using `[ν]`. Rewrite `h1` using `[h2]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hyt : y t = 0`. Use `LinearMap.congr_fun hall y` as an intermediate fact. Simplify using `using this`. Establish `: μt 1 = t` using `by simp [μt]`. Simplify using `only [Submodule.coe_subtype, this] at h1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hι1 (h1 ▸ hyt)`. Set `f : D → (s → QZ l)` to `fun φ g => (g : D →ₗ[ℤ_[l]] QZ l) φ`. Establish `hpi : (Set.pi Set.univ (fun _ : s => Q)).Finite` using `Set.Finite.pi (fun _ => hQfin)`. Apply `Set.Finite.of_finite_image (f := f) _ _` to reduce the goal to its premises. Apply `hpi.subset` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨φ, hφ, rfl⟩ g _`. Use `show (l : ℤ_[l]) • (g : D →ₗ[ℤ_[l]] QZ l) φ = 0`. Rewrite using `[← map_smul, show (l : ℤ_[l]) • φ = 0 from hφ, map_zero]`. Introduce `φ hφ ψ hψ hfe`. Establish `hφ' : (l : ℤ_[l]) • φ = 0` using `hφ`.
-
-Establish `hψ' : (l : ℤ_[l]) • ψ = 0` using `hψ`. Use `hsep (φ - ψ) (by rw [smul_sub, hφ', hψ', sub_zero]) (fun g hg => by` as an intermediate fact. Use `congr_fun hfe ⟨g, hg⟩` as an intermediate fact. Simplify using `only [f] at this`. Rewrite using `[map_sub, this, sub_self])`.
-
-Conclude with `sub_eq_zero.mp this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.PropA.torsFin :
     ∀ (l : ℕ) [Fact l.Prime] (D : Type) [AddCommGroup D] [Module ℤ_[l] D], Module.Finite ℤ_[l] (D →ₗ[ℤ_[l]] QZ l) →

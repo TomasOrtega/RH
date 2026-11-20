@@ -11,7 +11,7 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `h : τ.1 X.ξ0 ≠ 0` using `(map_ne_zero_iff τ.1 τ.1.injective).2 X.ξ0_ne`. Unfold `Data.c`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem c_pos (τ : X.Ψ) : 0 < X.c τ := by
   have h : τ.1 X.ξ0 ≠ 0 := (map_ne_zero_iff τ.1 τ.1.injective).2 X.ξ0_ne
@@ -19,9 +19,9 @@ theorem c_pos (τ : X.Ψ) : 0 < X.c τ := by
   positivity
 
 /- English proof (translation)
-Establish `hv : Data.emb τ.1 ξ ≠ 0`. Introduce `h`. Apply `hξ` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Conclude with `(map_eq_zero_iff τ.1 τ.1.injective).1 (congrFun h a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `X.maj_pos hx τ hv` as an intermediate fact. Use `c_pos X τ` as an intermediate fact. Unfold `Data.tt`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem tt_pos {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hξ : ξ ≠ 0) (τ : X.Ψ) :
     0 < X.tt ξ x τ := by
@@ -36,11 +36,11 @@ theorem tt_pos {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hξ : �
   positivity
 
 /- English proof (translation)
-Establish `he : X.IsIsoV (fun τ => Data.emb τ.1 ξ)`. Introduce `σ`. Use `⟨?_, fun h => hξ.2.2 ?_⟩` and prove the remaining obligations. Establish `h0` using `congrArg σ.1 hξ.2.1`. Simplify `h0` using `[herm, hermC, Data.emb, emb_cc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `a`. Conclude with `(map_eq_zero_iff σ.1 σ.1.injective).1 (congrFun h a)`. Establish `h` using `(flowDomainCriterion_holds r X _ he x hx s).2 hs τ`. Establish `h' : X.tt ξ (X.flow ξ s x) τ = X.tt ξ x τ + (s τ).im` using `h`. Rewrite using `[← h']`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Data.tt]`.
+A detailed English derivation is pending.
 -/
 theorem scaled_maj_flow {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hξ : X.IsIso ξ)
     (s : X.Ψ → ℂ) (hs : X.flow ξ s x ∈ X.dom) (τ : X.Ψ) :
@@ -58,17 +58,17 @@ theorem scaled_maj_flow {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E}
   simp [Data.tt]
 
 /- English proof (translation)
-Establish `hcc : cc X.κ0 = -X.κ0`. Break down `X.κ0_xi with h | h` into its components or cases. Rewrite using `[h, cc_mul, X.ξ0_im]`. Establish `: cc (2 : E) = 2` using `map_ofNat _ 2`. Rewrite using `[this]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e : -(2 * X.ξ0) = 0 - 2 * X.ξ0` using `by ring`. Rewrite using `[h, e, cc_sub, cc_zero, cc_mul, X.ξ0_im]`. Establish `: cc (2 : E) = 2` using `map_ofNat _ 2`. Rewrite using `[this]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hre : (τ.1 X.κ0).re = 0`. Establish `h1 : conj (τ.1 X.κ0) = -(τ.1 X.κ0)` using `by rw [← emb_cc, hcc, map_neg]`. Establish `h2` using `congrArg Complex.re h1`. Simplify using `only [Complex.conj_re, Complex.neg_re] at h2`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn : ‖τ.1 X.κ0‖ = X.c τ`. Unfold `Data.c`. Apply the tactic sequence `rcases X.κ0_xi with h | h <;> simp [h, map_ofNat]`. Establish `hk : τ.1 X.κ0 = -(I * X.c τ)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h3 : ‖τ.1 X.κ0‖ = |(τ.1 X.κ0).im|` using `(Complex.abs_im_eq_norm.2 hre).symm`. Rewrite `h3` using `[abs_of_neg (X.κ0_sign τ)]`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`. Combine the linear equalities and inequalities to obtain the conclusion. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `have h1 : τ.1 (if a = b then 1 else 0) = if a = b then 1 else 0 := by split_ifs <;> simp`. Simplify using `only [Data.flowMat, transvMat, Matrix.of_apply, Matrix.map_apply, map_add, map_mul, map_sum, h1, hk, emb_cc]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem flowMat_eq_transv (ξ : Fin r → E) (τ : X.Ψ) (s : E) :
     X.flowMat ξ τ (τ.1 s) = (transvMat X.Gm ξ (s * X.κ0)).map τ.1 := by
@@ -99,9 +99,9 @@ theorem flowMat_eq_transv (ξ : Fin r → E) (τ : X.Ψ) (s : E) :
   ring
 
 /- English proof (translation)
-Establish `: {t | ∃ v ∈ Y.Λ, v ≠ 0 ∧ t = ∑ τ, Y.c τ * Y.maj x τ (Data.emb τ.1 v)} = (∅ : Set ℝ)`. Use extensionality with `t`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨v, -, hv, -⟩`. Conclude with `hv (Subsingleton.elim _ _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions.
 
-Unfold `Data.la1 Data.firstMinimumSq`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem first_minimum_rank_zero (Y : Data E 0) (x : Frame Y.Ψ 0) : Y.la1 x = 0 := by
   have : {t | ∃ v ∈ Y.Λ, v ≠ 0 ∧ t = ∑ τ, Y.c τ * Y.maj x τ (Data.emb τ.1 v)} = (∅ : Set ℝ) := by

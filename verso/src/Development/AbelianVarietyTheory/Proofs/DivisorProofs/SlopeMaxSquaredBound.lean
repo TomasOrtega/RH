@@ -20,15 +20,15 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Forma
 namespace GlobalTheory.CovTop.LamCore
 
 /- English proof (translation)
-Establish `hn : (0 : ℝ) ≤ ((n / 2 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `key : ∀ (b : E →+* ℂ) (i : ℕ), i < Dw.mult b → (a (b, i) : ℝ) ≤ B`. Introduce `b i hi`. Distinguish the cases in `hb : b (H.rt : E) = H.rt0`. Establish `hp : i < Dw.p` using `by simpa [Datum.mult, hb] using hi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `h ⟨b, hb⟩ ⟨i, by omega⟩` as an intermediate fact. Simplify using `only [laOf, weightOf, if_pos hp, Int.cast_add, Int.cast_natCast] at this`. Combine the linear relations using `[le_abs_self ((a (b, i) : ℝ) + ((n / 2 : ℕ) : ℝ))]`. Establish `hq : i < Dw.q` using `by simpa [Datum.mult, hb] using hi`. Use `h ⟨conjEmb b, conj_mem hb⟩ ⟨Dw.p + (Dw.q - 1 - i), by omega⟩` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ¬ (Dw.p + (Dw.q - 1 - i) < Dw.p)` using `by omega`. Establish `e2 : Dw.q - 1 - (Dw.p + (Dw.q - 1 - i) - Dw.p) = i` using `by omega`. Simplify using `only [laOf, weightOf, if_neg e1, e2, conjEmb_conjEmb, Int.cast_sub, Int.cast_neg, Int.cast_natCast] at this`. Combine the linear relations using `[neg_abs_le (-(a (b, i) : ℝ) - ((n / 2 : ℕ) : ℝ))]`. Unfold `GlobalTheory.LevGeo.absA`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Rewrite using `[Nat.cast_sum, ← NumberField.Embeddings.card E ℂ, ← nsmul_eq_mul, ← Finset.card_univ]`. Use `Finset.sum_le_card_nsmul _ _ _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_sum]`. Use `(Finset.sum_le_card_nsmul _ _ B fun (i : Fin (Dw.mult b)) _ => key b (i : Fin (Dw.mult b)) i.2).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_right ?_ hB` and prove the remaining obligations. Apply the tactic sequence `have : Dw.mult b ≤ Dw.p + Dw.q := by unfold Datum.mult; split_ifs <;> omega`. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem absA_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
     (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) {B : ℝ} (hB : 0 ≤ B) (h : ∀ τ k, |(laOf Dw a n τ k : ℝ)| ≤ B) :
@@ -58,11 +58,11 @@ theorem absA_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reciproc
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `hfr : 1 ≤ f * r` using `by nlinarith`. Establish `hZ0 : L ≤ f * r * L` using `by nlinarith`. Establish `hfrX : f * r ≤ X` using `by nlinarith`. Establish `hX : 1 ≤ X` using `hfr.trans hfrX`. Establish `a1 : (2 * q + 1) * (6 * f + 48) ≤ (3 * r) * (12 * f)` using `mul_le_mul (by linarith) (by linarith) (by linarith) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : (2 * q + 1) * (6 * f + 48) * (2 * L) ≤ 72 * (f * r * L)` using `by nlinarith`. Establish `a3 : (1 + |Om|) / 2 + 2 * L + (2 * q + 1) * (6 * f + 48) * (2 * L) ≤ 76 * X` using `by linarith`. Establish `a4 : w ≤ 10 * X * b` using `hw.trans (by gcongr)`. Establish `a5 : lam ≤ 76 * X * (10 * X * b)` using `h1.trans (mul_le_mul a3 a4 hw0 (by positivity))`. Establish `a6 : (f * r * L) ^ 2 ≤ X ^ 2` using `pow_le_pow_left₀ (by linarith) hZ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a7 : (f * r) * (f * r * L) ≤ X * X` using `mul_le_mul hfrX hZ (by linarith) (by linarith)`. Establish `a8 : X ^ 2 ≤ X ^ 2 * b` using `le_mul_of_one_le_right (by positivity) hb`. Establish `a9 : (10 : ℝ) ^ 4 ≤ x ^ 4` using `pow_le_pow_left₀ (by norm_num) (hL.trans hLx) 4`. Establish `a10 : 10 ^ 4 * (X ^ 2 * b) ≤ x ^ 4 * (X ^ 2 * b)` using `mul_le_mul_of_nonneg_right a9 (by positivity)`. Establish `a11 : 0 ≤ X ^ 2 * b` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -93,9 +93,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
 /- English proof (translation)
-Substitute `hC` using the available equality. Introduce and unpack `rfl`. Rewrite `hs` using `[Submodule.bot_coe, Submodule.span_zero_singleton]`. Establish `h3 : ∀ k, b k = 0` using `fun k => by`. Establish `h1 : e.symm ⟨b k, hb k⟩ ∈ (⊥ : Submodule K C')` using `by rw [hs]; exact Submodule.mem_top`.
+Substitute using the available equality. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Submodule.mem_bot, LinearEquiv.map_eq_zero_iff]`. Conclude with `congrArg Subtype.val h1`. Establish `h4 : Submodule.span K' (Set.range b) ≤ ⊥` using `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact h3 k)`. Conclude with `hy (h4 (by rw [hsp]; exact Submodule.mem_top))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ne_bot_of_form {K K' R W : Type} [Field K] [NumberField K] [Field K'] [AddCommGroup R] [Module K R] [AddCommGroup W]
     [Module K W] [Module K' W] {C C' : Submodule K R} (hC : C' = C) [Module (𝓞 K) C'] {M : Submodule (𝓞 K) C'}
@@ -114,7 +114,7 @@ theorem ne_bot_of_form {K K' R W : Type} [Field K] [NumberField K] [Field K'] [A
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨-, -, hg, -, -, hs⟩` from `h`. Take `⟨y, -, hy⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hg`. Take `⟨n, b, hb, -, -, -, hsp⟩` from `p.fw.ks i`. Conclude with `ne_bot_of_form (cuspW_wtZ _ _) hs (p.fw.e i) hb hsp hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem latW_ne_bot (h : GramAt p i) : latW (p.T.U ((i : ℕ) + 1)) (Gk p i) ≠ ⊥ := by
   obtain ⟨-, -, hg, -, -, hs⟩ := h
@@ -125,35 +125,33 @@ theorem latW_ne_bot (h : GramAt p i) : latW (p.T.U ((i : ℕ) + 1)) (Gk p i) ≠
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hj : Formalism.L2.Pj.InR D ((i : ℕ) + 1)` using `⟨by omega, i.2⟩`. Take `⟨hLaws, hnorm⟩` from `GlobalTheory.LevGeo.laws_of_coreJ D p.T _ p.fw.laws hj`. Establish `hn : normW (p.T.U ((i : ℕ) + 1)) (xiR D) (fun _ => D.sp.W ((i : ℕ) + 1)) (GlobalTheory.LevGeo.coreDict p.T.toCore ((i : ℕ) + 1)) (Gk p i) = nrmK p.fw i`. Use function extensionality and compare the values at `σ f`. Conclude with `hnorm _ σ f`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨_, χ, hχ, hOm, -, -⟩` from `GlobalTheory.T.logPeriod_eq_kroneckerCharacter_logPeriod_of_host D L p.T.Q p.fw.laws.pins.1 p.Del p.h0`. Establish `hgood : GoodW (p.T.U ((i : ℕ) + 1)) (xiR D) (fun _ => D.sp.W ((i : ℕ) + 1)) (GlobalTheory.LevGeo.coreDict p.T.toCore ((i : ℕ) + 1)) (Gk p i)` using `⟨by rw [hn]; exact hG.2.2.2.1, hG.2.2.2.2⟩`. Establish `main` using `GlobalTheory.T.kronecker_character_frame_third h6 D _ _ _ _ _ _ _ _ hLaws χ hχ (wtA (p.κ i)) (p.κ i).n hW.dom hgood (latW_ne_bot p i hG)`. Rewrite `main` using `[hn]`. Use `main.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hOm, p.fw.laws.pins.2.1.1, hW.cols]`. Take `⟨-, hL, hLx, -⟩` from `hN.big`. Establish `hfd : fdeg D.host.E = D.R.f` using `by unfold fdeg; rw [hN.deg]; omega`. Establish `hf : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast hN.f8`. Establish `hr2 : 2 ≤ D.R.r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hr : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast (by omega : 1 ≤ D.R.r)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnV : (1 : ℝ) ≤ D.R.nV` using `by exact_mod_cast (by unfold Ranks.nV; omega : 1 ≤ D.R.nV)`. Establish `hbL : L.sc.b = Real.exp L.sc.L` using `rfl`. Establish `hb : 1 ≤ L.sc.b` using `by rw [hbL]; exact Real.one_le_exp (by linarith)`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hXb : L.sc.x ^ A ≤ L.sc.b` using `by simpa using hN.room`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `hN.poly.2.2`. Establish `hfr : (1 : ℝ) ≤ (D.R.f : ℝ) * D.R.r` using `by nlinarith`. Establish `hZ : (D.R.f : ℝ) * D.R.r * L.sc.L ≤ L.sc.x ^ A` using `le_trans (mul_le_mul_of_nonneg_right (le_mul_of_one_le_right (by positivity) hnV) (by linarith)) hP`. Establish `ht : ((fdeg D.host.E * D.R.r * D.R.nV : ℕ) : ℝ) ≤ L.sc.b`. Rewrite using `[hfd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `(le_mul_of_one_le_right (by positivity) (by linarith)).trans (hP.trans hXb)`. Establish `hs : ((GlobalTheory.LevGeo.absA (dat p i) (wtA (p.κ i)) : ℕ) : ℝ) ≤ 8 * ((D.R.f : ℝ) * D.R.r) * L.sc.b`. Use `absA_le (dat p i) (wtA (p.κ i)) (p.κ i).n (by positivity) hW.up` as an intermediate fact. Rewrite `this` using `[hW.sig.2.2, hN.deg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs0 : (0 : ℝ) ≤ ((GlobalTheory.LevGeo.absA (dat p i) (wtA (p.κ i)) : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `ht0 : (0 : ℝ) ≤ ((fdeg D.host.E * D.R.r * D.R.nV : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Generalize the expression as in `((GlobalTheory.LevGeo.absA (dat p i) (wtA (p.κ i)) : ℕ) : ℝ) = s at *`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `((fdeg D.host.E * D.R.r * D.R.nV : ℕ) : ℝ) = t at *`. Establish `hbb : L.sc.b ≤ (D.R.f : ℝ) * D.R.r * L.sc.b` using `le_mul_of_one_le_left (by linarith) hfr`. Establish `hw : s + t + 1 ≤ 10 * ((D.R.f : ℝ) * D.R.r) * L.sc.b` using `by linarith`. Establish `hlw : Real.log (s + t + 1) ≤ 2 * (2 * L.sc.L)`. Use `(Real.log_le_log (by linarith) hw).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by norm_num) (by positivity), hbL, Real.log_exp]`. Combine the linear relations using `[hN.logfr.1, Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 10)]`. Establish `hg : ∀ k, 0 < D.host.g k` using `fun k => (D.host.g_prime k).pos`. Establish `hM : 1 ≤ D.host.g 0 * D.host.g 1` using `Nat.mul_pos (hg 0) (hg 1)`. Establish `hlM : Real.log ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ) ≤ 30 * (2 * L.sc.L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[Real.log_mul (by exact_mod_cast (hg 0).ne') (by exact_mod_cast (hg 1).ne')]`. Combine the linear relations using `[hN.logg 0, hN.logg 1]`. Establish `hd : 1 ≤ D.host.d` using `by rw [← p.fw.laws.pins.1.1]; exact p.T.Q.H.d_prime.pos`. Establish `hl1 : Real.log ((fdeg D.host.E : ℝ) * D.R.r) ≤ 2 * L.sc.L` using `by rw [hfd]; linarith [hN.logfr.1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl2 : Real.log (dE D.host.E) ≤ 4 * (fdeg D.host.E : ℝ) * (2 * L.sc.L)`. Rewrite using `[hfd]`. Unfold `dE`. Establish `: 0 ≤ (D.R.f : ℝ) * L.sc.L` using `by positivity`. Combine the linear relations using `[hN.disc]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl3 : Real.log (D.host.d : ℝ) ≤ 4 * (2 * L.sc.L)` using `by linarith [hN.logd]`. Establish `n1` using `(GlobalTheory.T.supremum_constant_log_bound D.host.E D.R.r D.host.d _ (s + t + 1) (2 * L.sc.L) hr2 hd hM (by linarith) (by linarith) hl1 hlM hl2 hl3 hlw).2`. Establish `n2` using `GlobalTheory.T.meanLogSupNormLoss_le_linear_in_weight D.host.E D.R.r (dat p i).q D.host.d _ (ofRecord D L p.Del p.h0).logOm s t (2 * L.sc.L) (by omega) hd hM (by linarith) hs0 ht0 hl1 hlM hl2 hl3 hlw`. Establish `n3` using `(log_rd_le_fieldSz _).trans (hR.core_size_le p (by linarith))`. Rewrite `n1`, `n2` using `[hfd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : ((dat p i).q : ℝ) ≤ D.R.r` using `by exact_mod_cast (by have := hW.sig.2.2; omega : (dat p i).q ≤ D.R.r)`. Establish `e : L.sc.x ^ (2 * A + 4) = L.sc.x ^ 4 * (L.sc.x ^ A) ^ 2`. Rewrite using `[Real.rpow_add hx0, mul_comm 2 A, Real.rpow_mul hx0.le, mul_comm]`. Use `norm_cast`. Rewrite using `[e]`.
-
-Conclude with `collect hf hr (Nat.cast_nonneg _) hq hL hLx hb hZ hW.om (add_nonneg hs0 ht0) (by linarith) n2 n1 n3`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slopeMax_le (h6 : GlobalTheory.Published.TamagawaSpecialUnitary) {PP A : ℝ} (hR : RecTied D L) (hG : GramAt p i)
     (hN : HostNum D L PP A 1) (hW : WtNum p i PP) :
@@ -232,9 +230,9 @@ theorem slopeMax_le (h6 : GlobalTheory.Published.TamagawaSpecialUnitary) {PP A :
   exact collect hf hr (Nat.cast_nonneg _) hq hL hLx hb hZ hW.om (add_nonneg hs0 ht0) (by linarith) n2 n1 n3
 
 /- English proof (translation)
-Introduce `hP hG`. Use `Closed.imp (Closed.and hG (Closed.and (GlobalTheory.CovTop.Sizes.hostN 1) GlobalTheory.T.weight_bound_holds)) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨_, -, h1⟩, ⟨A, hA, h2⟩, ⟨_, -, h3⟩⟩`. Take `⟨x0, h⟩` from `h1.and (h2.and h3)`. Use `⟨2 * A + 4, by linarith, x0, fun x hx hle ι p hp i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, b, c⟩` from `h x hx hle ι p hp`. Conclude with `slopeMax_le p i hP.p6 hp.2 (a i) (b i) (c i)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lamCore : Hypotheses2 → Gram → Lifts fun Fm x _ ι p i _ A =>
     slopeMax_sq (nrmK p.fw i) (latW (p.T.U ((i : ℕ) + 1)) (Gk p i)) ≤ (Fm.L x ι).sc.x ^ A * (Fm.L x ι).sc.b := by

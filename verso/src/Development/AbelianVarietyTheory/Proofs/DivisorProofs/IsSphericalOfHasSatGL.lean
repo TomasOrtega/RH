@@ -14,7 +14,7 @@ namespace GlobalTheory.TempSatUnr
 open GlobalTheory.TempSat
 
 /- English proof (translation)
-Establish `hK : GlobalTheory.SplitWeil.KO (w.adicCompletion E) (Fin a) = GlobalTheory.LFun.KGL w a` using `GlobalTheory.SmGL.SphCompletion.KO_completion w a`. Unfold `GlobalTheory.SmGL.IsSpherical GlobalTheory.SmGL.IsSphericalFor`. Rewrite using `[hK]`. Conclude with `hS.1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSpherical_of_hasSatGL {E : Type} [Field E] [NumberField E] {a : ℕ} {w : HeightOneSpectrum (𝓞 E)}
     {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ (GL (Fin a) (w.adicCompletion E)) V}

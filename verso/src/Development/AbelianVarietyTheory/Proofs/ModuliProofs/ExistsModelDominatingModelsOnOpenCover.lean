@@ -22,7 +22,7 @@ namespace ModelJoin
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `sabComp pullCubComp E H _ _ _ t t' t'' f g m m'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem comp_of_eq {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S}
     {g : S'' ⟶ S'} {h : S'' ⟶ S} (m : SABMap t' t f) (m' : SABMap t'' t' g) (e : g ≫ f = h) :
@@ -31,7 +31,7 @@ theorem comp_of_eq {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : 
   exact sabComp pullCubComp E H _ _ _ t t' t'' f g m m'
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `sabCancel pullCubCancel E H _ _ _ t t' t'' f g m n`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cancel_of_eq {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S}
     {g : S'' ⟶ S'} {h : S'' ⟶ S} (m : SABMap t' t f) (n : SABMap t'' t h) (e : g ≫ f = h) :
@@ -40,7 +40,7 @@ theorem cancel_of_eq {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' 
   exact sabCancel pullCubCancel E H _ _ _ t t' t'' f g m n
 
 /- English proof (translation)
-Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull Out.CubePf.cubePull f t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
     ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by
@@ -48,7 +48,7 @@ theorem exists_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) :
   exact ⟨_, ⟨m⟩⟩
 
 /- English proof (translation)
-Use `letI := b.toAlgebra`. Conclude with `IsOpenImmersion.of_isLocalization (R := O) (S := R) a`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_away {O R : Type} [CommRing O] [CommRing R] (a : O) (b : O →+* R)
     (h : @IsLocalization.Away O _ a R _ b.toAlgebra) : IsOpenImmersion (spMap b) := by
@@ -56,9 +56,7 @@ theorem isOpenImmersion_away {O R : Type} [CommRing O] [CommRing R] (a : O) (b :
   exact IsOpenImmersion.of_isLocalization (R := O) (S := R) a
 
 /- English proof (translation)
-Use `letI := b.toAlgebra`. Use `PrimeSpectrum.localization_away_comap_range R a` as an intermediate fact. Establish `h2 : (x : PrimeSpectrum O) ∈ Set.range (PrimeSpectrum.comap (algebraMap O R))`. Rewrite using `[this]`. Conclude with `hx`.
-
-Conclude with `h2`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_away {O R : Type} [CommRing O] [CommRing R] (a : O) (b : O →+* R)
     (h : @IsLocalization.Away O _ a R _ b.toAlgebra) (x : Sp O) (hx : a ∉ x.asIdeal) :
@@ -70,7 +68,7 @@ theorem mem_range_away {O R : Type} [CommRing O] [CommRing R] (a : O) (b : O →
   exact h2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Conclude with `RingHom.finiteType_algebraMap.mpr inferInstance`. Rewrite using `[Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.mpr inferInstance`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arith_base (O : Type) [CommRing O] [IsDomain O] [CharZero O] [Algebra.FiniteType ℤ O] :
     LocallyOfFiniteType (spMap (algebraMap ℤ O)) ∧ Flat (spMap (algebraMap ℤ O)) := by
@@ -85,37 +83,31 @@ end ModelJoin
 open ModelJoin
 
 /- English proof (translation)
-Introduce `hext E _ _ _ H U F O _ _ c t β I _ _ R _ a b ω C hβ hω hspan hft hprop`. Take `⟨⟨hdom, hded⟩, hchar, hfrac⟩` from `id hβ`. Take `⟨X, s, jQ, f, hn, hproj, hflat, hover, hopen, hdense, hf⟩` from `GlobalTheory.T.exists_join_normal_projective_models E H U F O c t β I R a b ω C hβ hω hspan hchar`. Establish `hpo : IsPreimmersion (jQ ≫ pullback.fst s (spMap β)) ∧ Flat (jQ ≫ pullback.fst s (spMap β)) ∧ IsDominant (jQ ≫ pullback.fst s (spMap β)) ∧ QuasiCompact (jQ ≫ pullback.fst s (spMap β))`. Use `letI := β.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `(genericPart_dense_proOpen O F X U s jQ hflat hproj hopen hdense).2.2.2`. Establish `hβp : IsPreimmersion (spMap β)`. Use `letI := β.toAlgebra`. Conclude with `IsPreimmersion.of_isLocalization (R := CommRingCat.of O) (S := F) (nonZeroDivisors O)`. Establish `hfp : IsPreimmersion (pullback.fst s (spMap β))` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip hβp`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ i, IsOpenImmersion (spMap (b i))` using `fun i => isOpenImmersion_away (a i) (b i) (hω i).2.2`. Establish `hβe : ∀ i, spMap β = spMap (ω i) ≫ spMap (b i)` using `fun i => by`. Rewrite using `[← (hω i).2.1]`. Conclude with `Spec.map_comp (CommRingCat.ofHom (b i)) (CommRingCat.ofHom (ω i))`. Establish `hsp : IsProper s` using `projProper O X s hproj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `V : I → X.Opens` to `fun i => (pullback.fst s (spMap (b i))).opensRange`. Set `e : ∀ i, pullback s (spMap (b i)) ≅ (V i).toScheme` to `fun i => (pullback.fst s (spMap (b i))).isoOpensRange`. Establish `he : ∀ i, (e i).hom ≫ (V i).ι = pullback.fst s (spMap (b i))` using `fun i => Scheme.Hom.isoOpensRange_hom_ι _`. Establish `hcov' : ∀ x : X, ∃ i, x ∈ Set.range (pullback.fst s (spMap (b i)))`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ∃ i, a i ∉ (s x).asIdeal`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `(s x).isPrime.ne_top (top_le_iff.mp ?_)` and prove the remaining obligations. Rewrite using `[← hspan, Ideal.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hc i`. Take `⟨i, hi⟩` from `this`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Pullback.range_fst]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_range_away (a i) (b i) (hω i).2.2 _ hi`. Establish `hcov : ⨆ i, V i = ⊤`. Use `top_le_iff.mp fun x _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hcov' x`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨i, hi⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw : ∀ i, (jQ ≫ pullback.fst s (spMap β)) ≫ s = (c ≫ spMap (ω i)) ≫ spMap (b i)` using `fun i => by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hover, Category.assoc, ← hβe]`. Set `g : ∀ i, U ⟶ pullback s (spMap (b i))` to `fun i => pullback.lift _ _ (hw i)`. Establish `hg : ∀ i, g i ≫ pullback.fst _ _ = jQ ≫ pullback.fst s (spMap β)` using `fun i => pullback.lift_fst _ _ _`. Use `choose tV mV using fun i => exists_pull ((e i).inv ≫ f i) (C i).t`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `replace mV := fun i => (mV i).some`. Use `choose t₁ k using fun i => exists_pull (e i).hom (tV i)`. Use `replace k := fun i => (k i).some`. Use `choose aV haV using fun i => cancel_of_eq (g := g i ≫ (e i).hom) (mV i) (C i).m (by`. Rewrite using `[Category.assoc, Iso.hom_inv_id_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hf i).2.1 _ (hg i))`. Take `⟨hz₁, hz₂⟩` from `arith_base O`. Take `⟨t', a', n, hn'⟩` from `GlobalTheory.T.exists_semiAbelianTriple_glue_common_genericPart hext E H X U (jQ ≫ pullback.fst s (spMap β)) t I V (fun i => g i ≫ (e i).hom) tV aV inferInstance ⟨hn, s ≫ spMap (algebraMap ℤ O), inferInstance, inferInstance⟩ hpo.1 hpo.2.1 hpo.2.2.1 hpo.2.2.2 hprop hcov (fun i => …`. Use `choose m₁ hm₁ using fun i => comp_of_eq (n i) (k i) (he i)`. Use `choose m₂ hm₂ using fun i => comp_of_eq (h := f i) (mV i) (k i) (Iso.hom_inv_id_assoc _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hab : pullback.fst s (spMap β) ⁻¹' abLocus t'.G = Set.range jQ`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce `z hz`. Take `⟨i, w, hw'⟩` from `hcov' (pullback.fst s (spMap β) z)`. Establish `h1 : w ∈ abLocus (t₁ i).G` using `(abLocus_pullback abLocusOne t'.semi (m₁ i).cart.1 w).1 (by rw [hw']; exact hz)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : f i w ∈ abLocus (C i).t.G` using `(abLocus_pullback abLocusOne (C i).t.semi (m₂ i).cart.1 w).2 h1`. Establish `h3 : f i w ∈ Set.range (pullback.fst (C i).s (spMap (ω i)))`. Rewrite using `[Scheme.Pullback.range_fst]`. Use `⟨pullback.snd s (spMap β) z, (spMap (b i)).isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← hβe, ← Scheme.Hom.comp_apply, ← pullback.condition, ← Scheme.Hom.comp_apply (f i), (hf i).1, ← Scheme.Hom.comp_apply, ← pullback.condition, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hw']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z', hz'⟩` from `h3`. Establish `h4 : z' ∈ Set.range (C i).jQ`. Rewrite using `[← (C i).ab_gen]`. Use `show _ ∈ abLocus (C i).t.G`. Rewrite using `[hz']`.
-
-Conclude with `h2`. Take `⟨u, hu⟩` from `h4`. Take `⟨u', hu'⟩` from `(hf i).2.2 w ⟨u, by rw [Cpt.j, Scheme.Hom.comp_apply, hu, hz']⟩`. Use `⟨u', (pullback.fst s (spMap β)).isEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hu', hw']`.
-
-Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `range_subset_abLocus_of_isProper t'.semi a'.cart.1 ⟨u, Scheme.Hom.comp_apply _ _ _⟩`. Use `⟨⟨X, s, hn, hproj, hflat, jQ, hover, hopen, hdense, t', a', hab⟩, fun i => ?_⟩` and prove the remaining obligations. Use `⟨f i, t₁ i, m₁ i, m₂ i, (hf i).1, (hf i).2.1, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hmono : IsOpenImmersion (n i).φ` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) (n i).cart.1.flip inferInstance`.
-
-Establish `hy' : y ≫ (k i).φ = (aV i).φ`. Rewrite using `[← cancel_mono (n i).φ, Category.assoc, ← hm₁, hn']`. Conclude with `hy`. Rewrite using `[hm₂, ← Category.assoc, hy', haV]`.
+A detailed English derivation is pending.
 -/
 theorem exists_join_of_models : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (U : Scheme.{0}) (F O : Type) [Field F] [CommRing O] (c : U ⟶ Sp F) (t : SAB H U) (β : O →+* F) (I : Type) [Finite I] [Nonempty I] (R : I → Type) [∀ i, CommRing (R i)] (a : I → O) (b : ∀ i, O →+* R i) (ω : ∀ i, R i →+* F) (C : ∀ i, Cpt c t (ω i)), IsDedFrac β → (∀ i, IsDedFrac (ω i) ∧ (ω i).comp (b i) = β ∧ @IsLocalization.Away O _ (a i) (R i) _ (b i).toAlgebra) → Ideal.span (Set.range a) = ⊤ → Algebra.FiniteType ℤ O → IsProper t.G.hom → ∃ C' : Cpt c t β, ∀ i, ∃ (f : pullback C'.s (spMap (b i)) ⟶ (C i).X) (t₁ : SAB H (pullback C'.s (spMap (b i)))) (m₁ : SABMap t₁ C'.t (pullback.fst _ _)) (m₂ : SABMap t₁ (C i).t f), f ≫ (C i).s = pullback.snd _ _ ∧ (∀ g : U ⟶ pullback C'.s (spMap (b i)), g ≫ pullback.fst _ _ = C'.j → g ≫ f = (C i).j) ∧ ∀ y : t.G.left ⟶ t₁.G.left, y ≫ m₁.φ = C'.m.φ → y ≫ m₂.φ = (C i).m.φ := by
   intro hext E _ _ _ H U F O _ _ c t β I _ _ R _ a b ω C hβ hω hspan hft hprop

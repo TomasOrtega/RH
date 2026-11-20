@@ -14,7 +14,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.HeightCounting.Up.ChebAtThird
 
 /- English proof (translation)
-Introduce `hP hL`. Conclude with `StepW.of_all fun _ _ _ _ _ _ _ _ _ _ _ => GlobalTheory.ChebSplitDense.chebSplit_nd hP.what₂.cheb _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chebSplit_allSt : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL,
     AllSt fun _ _ _ _ _ _ x => ∀ _ : LC hL x, GlobalTheory.RowTie.ChebSplit (Dof x).nd := by

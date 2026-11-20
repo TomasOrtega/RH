@@ -15,9 +15,9 @@ namespace Formalism.L2.SG.NGCut.NormalVectorPairings
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `h1 : (mapFlag γ hγ F).Xa j = (F.Xa j).map (γ : S.V →ₗ[E] S.V)`. Unfold `FlagG.Xa`. Rewrite using `[Submodule.map_span, ← Set.image_comp]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `h`. Conclude with `⟨γ.symm x, h, by simp⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_Xa_mapFlag {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
     (γ : S.V ≃ₗ[E] S.V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : FlagG S r T) (j : ℕ) (x : S.V) :
@@ -34,7 +34,7 @@ theorem mem_Xa_mapFlag {E : Type} [Field E] [NumberField E] [StarRing E] {S : HS
     exact ⟨γ.symm x, h, by simp⟩
 
 /- English proof (translation)
-Unfold `Xflag mapLF`. Rewrite using `[dif_pos hγ]`. Conclude with `mem_Xa_mapFlag γ hγ F.fl j x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Xflag_mapLF {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
     (γ : S.V ≃ₗ[E] S.V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : LFlag S r T) (j : ℕ) (x : S.V) :
@@ -46,7 +46,7 @@ theorem mem_Xflag_mapLF {E : Type} [Field E] [NumberField E] [StarRing E] {S : H
 variable {D : D7} {X : HidaSetting D} (Y : Full X) {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Take `⟨hA, hf, hp⟩` from `hn`. Use `⟨hA.1, hf, hp _ ?_⟩` and prove the remaining obligations. Use `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth _).2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hT_swap F.fl.z x, hT_z_X F.fl hx, star_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem NLam_SRat {T : D.host.E} {Λ : Submodule (𝓞 D.host.E) (VS D).V} {F : LFlag (VS D) D.R.rS T}
     {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NLam Λ F) : n ∈ SRat F := by
@@ -56,11 +56,11 @@ theorem NLam_SRat {T : D.host.E} {Λ : Submodule (𝓞 D.host.E) (VS D).V} {F : 
   rw [hT_swap F.fl.z x, hT_z_X F.fl hx, star_zero]
 
 /- English proof (translation)
-Establish `hγ : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Establish `hS` using `NLam_SRat hm`. Take `⟨hmi, hmf, hmz⟩` from `hS`. Use `⟨(Formalism.HermitianLatticesTheory.isom _).mul_mem ((Formalism.HermitianLatticesTheory.isom _).mul_mem ((Formalism.HermitianLatticesTheory.isom _).inv_mem hγ) hmi) hγ, fun j x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `hx' : t.lin x ∈ Xflag t.frame (j + 1)` using `(mem_Xflag_mapLF t.lin hγ (lf D (X.Fu u')) (j + 1) _).2 (by rw [LinearEquiv.symm_apply_apply]; exact hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hmf j _ hx'`. Establish `h'` using `(mem_Xflag_mapLF t.lin hγ (lf D (X.Fu u')) j _).1 h`. Rewrite `h'` using `[map_sub, LinearEquiv.symm_apply_apply]`. Conclude with `h'`. Establish `h2 : m t.frame.fl.z - t.frame.fl.z ∈ t.frame.fl.X` using `hmz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(mem_frameX Y t _).1 h2`. Rewrite `h3` using `[map_sub, frame_z_eq_lin_zu, LinearEquiv.symm_apply_apply]`. Use `show t.lin.symm (m (t.lin (X.Fu u').z)) - (X.Fu u').z ∈ _`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NLam_transport (t : TauC Y u u') {Λ : Submodule (𝓞 D.host.E) (VS D).V} {m : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hm : m ∈ NLam Λ t.frame) : t.lin⁻¹ * m * t.lin ∈ SRat (lf D (X.Fu u')) := by

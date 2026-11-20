@@ -15,7 +15,7 @@ namespace GlobalTheory.StdUnn.Model
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Unfold `blk4`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem submatrix_fromBlocks_mul {R : Type} [CommRing R] (a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R) :
     blk4 a b c d * blk4 a' b' c' d' = blk4 (a * a' + b * c') (a * b' + b * d') (c * a' + d * c') (c * b' + d * d') := by
@@ -23,14 +23,14 @@ theorem submatrix_fromBlocks_mul {R : Type} [CommRing R] (a b c d a' b' c' d' : 
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Unfold `blk4`. Rewrite using `[Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem block_matrix_one {R : Type} [CommRing R] : blk4 (1 : Matrix (Fin n) (Fin n) R) 0 0 1 = 1 := by
   unfold blk4
   rw [Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
 
 /- English proof (translation)
-Use `congrArg (fun M => Matrix.submatrix M finSumFinEquiv finSumFinEquiv) h` as an intermediate fact. Simplify `this` using `[blk4, Matrix.fromBlocks_inj]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem blockMatrixTwoByTwoFin_injective {R : Type} {a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R} (h : blk4 a b c d = blk4 a' b' c' d') :
     a = a' ∧ b = b' ∧ c = c' ∧ d = d' := by
@@ -38,7 +38,7 @@ theorem blockMatrixTwoByTwoFin_injective {R : Type} {a b c d a' b' c' d' : Matri
   simpa [blk4, Matrix.fromBlocks_inj] using this
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [adj, blk4, Matrix.transpose_apply, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adelicConjTranspose_blockMatrixTwoByTwoFin (a b c d : Mx D n n) :
     adj (blk4 a b c d : Mx D (n + n) (n + n)) = blk4 (adj a) (adj c) (adj b) (adj d) := by
@@ -47,7 +47,7 @@ theorem adelicConjTranspose_blockMatrixTwoByTwoFin (a b c d : Mx D n n) :
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [JR, Jst, blk4, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;>`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem JR_Jst : (JR (AF D.host.F) (Jst D n) : Mx D (n + n) (n + n)) = blk4 0 1 (-1) 0 := by
   ext i j
@@ -56,7 +56,7 @@ theorem JR_Jst : (JR (AF D.host.F) (Jst D n) : Mx D (n + n) (n + n)) = blk4 0 1 
     by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨M, N, h1, h2⟩, by change adj M * JR (AF D.host.F) (Jst D n) * M = JR (AF D.host.F) (Jst D n) rw [JR_Jst]; exact h⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_mat (M N : Mx D (n + n) (n + n)) (h1 : M * N = 1) (h2 : N * M = 1)
     (h : adj M * blk4 0 1 (-1) 0 * M = blk4 0 1 (-1) 0) : ∃ g : G D n, mat g = M :=
@@ -65,9 +65,9 @@ theorem exists_mat (M N : Mx D (n + n) (n + n)) (h1 : M * N = 1) (h2 : N * M = 1
     rw [JR_Jst]; exact h⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h1 : (adj a.1 : Mx D n n) * adj (a⁻¹).1 = 1` using `by rw [← adj_mul]; simp [adj_one]`. Establish `h2 : (adj (a⁻¹).1 : Mx D n n) * adj a.1 = 1` using `by rw [← adj_mul]; simp [adj_one]`. Use `exists_mat _ (blk4 (a⁻¹).1 0 0 (adj a.1)) ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[submatrix_fromBlocks_mul, h2, block_matrix_one, -Matrix.coe_units_inv]`. Simplify using `[submatrix_fromBlocks_mul, h1, block_matrix_one, -Matrix.coe_units_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[adelicConjTranspose_blockMatrixTwoByTwoFin, submatrix_fromBlocks_mul, h1, adj_zero, adj_adj, -Matrix.coe_units_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_levi (a : GL (Fin n) (AE D)) : ∃ g : G D n, mat g = blk4 a.1 0 0 (adj (a⁻¹).1) := by
   have h1 : (adj a.1 : Mx D n n) * adj (a⁻¹).1 = 1 := by rw [← adj_mul]; simp [adj_one]
@@ -78,11 +78,11 @@ theorem exists_levi (a : GL (Fin n) (AE D)) : ∃ g : G D n, mat g = blk4 a.1 0 
   · simp [adelicConjTranspose_blockMatrixTwoByTwoFin, submatrix_fromBlocks_mul, h1, adj_zero, adj_adj, -Matrix.coe_units_inv]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Establish `h : adj (mat g) * JR (AF D.host.F) (Jst D n) * mat g = JR (AF D.host.F) (Jst D n)` using `g.2`. Rewrite `h` using `[JR_Jst, hg]`. Simplify using `only [adelicConjTranspose_blockMatrixTwoByTwoFin, submatrix_fromBlocks_mul, adj_one, adj_zero, mul_zero, zero_mul, mul_one, one_mul, add_zero, zero_add, mul_neg, neg_mul] at h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(neg_add_eq_zero.1 (blockMatrixTwoByTwoFin_injective h).2.2.2).symm`. Introduce `hb`. Use `exists_mat _ (blk4 1 (-b) 0 1) ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[submatrix_fromBlocks_mul, block_matrix_one]`. Simplify using `[submatrix_fromBlocks_mul, block_matrix_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[adelicConjTranspose_blockMatrixTwoByTwoFin, submatrix_fromBlocks_mul, adj_zero, adj_one, hb]`.
+A detailed English derivation is pending.
 -/
 theorem exists_unip (b : Mx D n n) : (∃ g : G D n, mat g = blk4 1 b 0 1) ↔ adj b = b := by
   constructor
@@ -99,7 +99,7 @@ theorem exists_unip (b : Mx D n n) : (∃ g : G D n, mat g = blk4 1 b 0 1) ↔ a
     · simp [adelicConjTranspose_blockMatrixTwoByTwoFin, submatrix_fromBlocks_mul, adj_zero, adj_one, hb]
 
 /- English proof (translation)
-Use `exists_mat _ (blk4 0 (-1) 1 0) ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[submatrix_fromBlocks_mul, block_matrix_one]`. Simplify using `[submatrix_fromBlocks_mul, block_matrix_one]`. Simplify using `[adelicConjTranspose_blockMatrixTwoByTwoFin, submatrix_fromBlocks_mul, adj_zero, adj_one, adj_neg]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_weyl : ∃ g : G D n, mat g = blk4 0 1 (-1) 0 := by
   refine exists_mat _ (blk4 0 (-1) 1 0) ?_ ?_ ?_
@@ -108,18 +108,18 @@ theorem exists_weyl : ∃ g : G D n, mat g = blk4 0 1 (-1) 0 := by
   · simp [adelicConjTranspose_blockMatrixTwoByTwoFin, submatrix_fromBlocks_mul, adj_zero, adj_one, adj_neg]
 
 /- English proof (translation)
-Simplify using `[pow_succ, submatrix_fromBlocks_mul, block_matrix_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weyl_unip_cube {R : Type} [CommRing R] :
     (blk4 0 1 (-1) 0 * blk4 1 1 0 1 : Matrix (Fin (n + n)) (Fin (n + n)) R) ^ 3 = 1 := by
   simp [pow_succ, submatrix_fromBlocks_mul, block_matrix_one]
 
 /- English proof (translation)
-Establish `hs : Subsingleton (Mx D V.rank n)` using `⟨fun x y => by ext i; exact absurd i.2 (by omega)⟩`. Establish `hi : ∀ x y : Mx D V.rank n, inner V x y = 0` using `fun x y => by`. Rewrite using `[Subsingleton.elim x 0, StdUnn.inner, adj_zero, Matrix.zero_mul]`. Establish `hu : μ Set.univ = 1`. Break down `𝓕.eq_empty_or_nonempty with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `hμ.2.2` as an intermediate fact. Simplify using `[h] at this`. Rewrite using `[← hμ.2.2, Subsingleton.eq_univ_of_nonempty h]`. Use `⟨fun g a _ Φ x => ?_, fun g b _ Φ x => ?_, fun g _ Φ x => ?_⟩` and prove the remaining obligations. Simplify `congrArg Φ.1 (Subsingleton.elim _ _)` using `[npow, hV]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[hi, halfTr]`. Simplify using `only [hi, Matrix.trace_zero, map_zero, AddChar.map_zero_eq_one, mul_one]`. Rewrite using `[integral_congr_ae (g := fun _ => Φ.1 x) (.of_forall fun y => by rw [Subsingleton.elim y x])]`. Simplify using `[Measure.real, hu]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isWeilSch_rank_zero (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V : HSp D) (hV : V.rank = 0)
     (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n)) (hμ : IsCovolOne (ratMx D V.rank n) μ 𝓕) :
@@ -139,9 +139,9 @@ theorem isWeilSch_rank_zero (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V 
     simp [Measure.real, hu]
 
 /- English proof (translation)
-Establish `h` using `(hp (Pi.single (finSumFinEquiv (.inl j)) 1)).1 (by`. Use extensionality with `k`. Establish `: (finSumFinEquiv (Sum.inr k : Fin n ⊕ Fin n)) ≠ finSumFinEquiv (.inl j)`. Rewrite using `[Ne, finSumFinEquiv.apply_eq_iff_eq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.funLeft_apply, Pi.single_eq_of_ne this, Pi.zero_apply])`. Establish `h2` using `congrFun h i`. Simplify using `only [LinearMap.funLeft_apply, Matrix.mulVec_single_one, Pi.zero_apply] at h2`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lower_eq_zero {p : G D n} (hp : p ∈ P D n) (i j : Fin n) :
     mat p (finSumFinEquiv (.inr i)) (finSumFinEquiv (.inl j)) = 0 := by
@@ -155,7 +155,7 @@ theorem lower_eq_zero {p : G D n} (hp : p ∈ P D n) (i j : Fin n) :
   exact h2
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `e : mat (p * q) = mat p * mat q` using `rfl`. Simplify using `only [e, blkA, Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [lower_eq_zero hq, mul_zero, Finset.sum_const_zero, add_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blkA_mul {p q : G D n} (hq : q ∈ P D n) : blkA (mat (p * q)) = blkA (mat p) * blkA (mat q) := by
   ext i j
@@ -165,7 +165,7 @@ theorem blkA_mul {p q : G D n} (hq : q ∈ P D n) : blkA (mat (p * q)) = blkA (m
   simp only [lower_eq_zero hq, mul_zero, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Establish `e : mat (1 : G D n) = 1` using `rfl`. Rewrite using `[e, blkA, Matrix.submatrix_one_equiv, ← Matrix.fromBlocks_one, Matrix.toBlocks_fromBlocks₁₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem blkA_one : blkA (mat (1 : G D n)) = 1 := by
   have e : mat (1 : G D n) = 1 := rfl
@@ -175,13 +175,13 @@ def levi : P D n →* GL (Fin n) (AE D) :=
   MonoidHom.toHomUnits ⟨⟨fun p => blkA (mat p.1), blkA_one⟩, fun p q => blkA_mul q.2⟩
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp (isEmbedding_matHom (AF D.host.F) D.sp.cm.sig (Jst D n)).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat : Continuous (mat : G D n → Mx D (n + n) (n + n)) :=
   Units.continuous_val.comp (isEmbedding_matHom (AF D.host.F) D.sp.cm.sig (Jst D n)).continuous
 
 /- English proof (translation)
-Establish `hA : Continuous fun g : G D n => blkA (mat g)` using `continuous_matrix fun i j => continuous_mat.matrix_elem _ _`. Rewrite using `[Units.continuous_iff]`. Use `⟨hA.comp continuous_subtype_val, ?_⟩` and prove the remaining obligations. Use `(hA.comp (continuous_subtype_val.comp continuous_inv)).congr fun p => ?_` and prove the remaining obligations. Rewrite using `[← map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -194,7 +194,7 @@ theorem continuous_levi : Continuous (levi (D := D) (n := n)) := by
   rw [← map_inv]; rfl
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Rewrite using `[Units.continuous_iff]`. Use `⟨Units.continuous_val.matrix_det, (Units.continuous_coe_inv.matrix_det).congr fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem continuous_det : Continuous (Matrix.GeneralLinearGroup.det : GL (Fin n) (AE D) → (AE D)ˣ) := by
   haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
@@ -203,18 +203,16 @@ theorem continuous_det : Continuous (Matrix.GeneralLinearGroup.det : GL (Fin n) 
   rw [← map_inv]; rfl
 
 /- English proof (translation)
-The claim follows from `haveI : Submodule.IsLattice D.host.E (stdLattice D.host.E (n + n)) := isLattice_stdLattice isCompact_levelAll (isCMExt_host D) _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_K : IsCompact (K D n : Set (G D n)) :=
   haveI : Submodule.IsLattice D.host.E (stdLattice D.host.E (n + n)) := isLattice_stdLattice
   isCompact_levelAll (isCMExt_host D) _ _ _
 
 /- English proof (translation)
-Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Use `haveI := t2Space_tensorProduct_finiteExtension (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Establish `: (P D n : Set (G D n)) = ⋂ x ∈ upperHalf D n, ({g | (mat g).mulVec x ∈ upperHalf D n} ∩ {g | (mat g⁻¹).mulVec x ∈ upperHalf D n})`. Use extensionality with `g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_iInter, Set.mem_inter_iff, Set.mem_setOf_eq, SetLike.mem_coe]`. Use `⟨fun h x hx => ⟨(h x).1 hx, ((P D n).inv_mem h x).1 hx⟩, fun h x => ⟨fun hx => (h x hx).1, fun hx => ?_⟩⟩` and prove the remaining obligations. Use `(h _ hx).2` as an intermediate fact. Express the relevant statement in the definitionally equal form `(mat g⁻¹).mulVec ((mat g).mulVec x) ∈ _ at this`. Rewrite `this` using `[Matrix.mulVec_mulVec, show mat g⁻¹ * mat g = mat (g⁻¹ * g) from rfl, inv_mul_cancel, show mat (1 : G D n) = 1 from rfl, Matrix.one_mulVec]`. Then use the resulting hypothesis.
-
-Establish `hU : IsClosed (upperHalf D n : Set (Fin (n + n) → AE D))` using `isClosed_eq (f := fun (x : Fin (n + n) → AE D) (i : Fin n) => x (finSumFinEquiv (Sum.inr i : Fin n ⊕ Fin n))) (g := fun _ => 0) (continuous_pi fun i => continuous_apply _) continuous_const`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun x _ => (hU.preimage (continuous_mat.matrix_mulVec continuous_const)).inter (hU.preimage ((continuous_mat.comp continuous_inv).matrix_mulVec continuous_const))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_P : IsClosed (P D n : Set (G D n)) := by
   haveI := t2Space_adeleRing' (F := D.host.F)
@@ -237,9 +235,9 @@ theorem isClosed_P : IsClosed (P D n : Set (G D n)) := by
     (hU.preimage ((continuous_mat.comp continuous_inv).matrix_mulVec continuous_const))
 
 /- English proof (translation)
-Set `δ : P D n →* ℝ≥0` to `(absA D).comp (Matrix.GeneralLinearGroup.det.comp levi)`. Establish `hc : Continuous δ` using `continuous_absE.comp (continuous_det.comp continuous_levi)`. Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Establish `ht` using `triv_of_isCompact (δ := δ) isClosed_P hc isCompact_K`. Use `⟨iwAbs δ (K D n), fun p hp a ha k hk => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show a = levi (D := D) (n := n) ⟨p, hp⟩ from Units.ext ha.symm]`. Conclude with `iwAbs_mul_of_triv ht ⟨p, hp⟩ hk`.
+A detailed English derivation is pending.
 -/
 theorem exists_isHeight : ∃ H : G D n → ℝ≥0, IsHeight H := by
   let δ : P D n →* ℝ≥0 := (absA D).comp (Matrix.GeneralLinearGroup.det.comp levi)
@@ -251,9 +249,9 @@ theorem exists_isHeight : ∃ H : G D n → ℝ≥0, IsHeight H := by
   exact iwAbs_mul_of_triv ht ⟨p, hp⟩ hk
 
 /- English proof (translation)
-Take `⟨A, B, h0, h1, h2, h3⟩` from `(GlobalTheory.SiegelWeilMiddle.Model.range_inhabited D).1`. Take `⟨ψ, χ, ω, a, -, -, s, -, -, ν, -, hω, -, -, -, -, hs, -, -, hν, -⟩` from `GlobalTheory.SiegelWeilMiddle.Model.all_hypotheses_inhabited D A B`. Take `⟨θ, hθ⟩` from `hω.std.2.1`. Take `⟨μ, 𝓕, hμ⟩` from `GlobalTheory.MixModel.exists_isCovolOne D B.rank A.rank`. Take `⟨H, hH⟩` from `exists_isHeight (D := D) (n := A.rank)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨A.rank, B, ψ, χ, θ, μ, 𝓕, H, fun _ => -1, s, ν, h0, h1, h2, h3, hω.std.1, hω.hecT, hω.resT, hθ, hμ, hH, fun x => ?_, hs, hν⟩` and prove the remaining obligations. Rewrite using `[hω.std.2.2 θ hθ x]`. Use `congr 1`. Simplify using `[Finset.sum_neg_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem data_inhabited (D : D7) : ∃ (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (θ : InfFam D)
     (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n)) (H : G D n → ℝ≥0) (l : D.what₂.Tau → ℝ)

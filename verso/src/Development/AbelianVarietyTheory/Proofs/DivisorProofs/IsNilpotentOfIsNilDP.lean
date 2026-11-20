@@ -34,13 +34,13 @@ namespace GlobalTheory.AnPer.TaylorCore
 open GlobalTheory.PeriodFamily GlobalTheory.CatCoh
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `h`. Establish `key : ∀ (n : ℕ) (l : List D), (∀ x ∈ l, x ∈ J) → N ≤ l.length + n → ∀ y ∈ J ^ n, l.prod * y = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `l hl hn y _`. Use `hN (l.map fun x => (1, x)) (by simpa using hl) (by simpa [Function.comp_def] using hn)` as an intermediate fact. Rewrite `this` using `[List.map_map, List.map_congr_left (f := (fun p : ℕ × D ↦ κ.dpow p.1 p.2) ∘ fun x ↦ (1, x)) (g := id) fun x hx => κ.dpow_one (hl x hx), List.map_id]`. Rewrite using `[this, zero_mul]`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `l hl hn y hy`. Rewrite `hy` using `[pow_succ']`. Use `Submodule.mul_induction_on hy (fun a ha b hb => ?_) fun a b ha hb => by rw [mul_add, ha, hb, add_zero]` and prove the remaining obligations. Use `ih (a :: l) (by simpa [ha] using hl) (by simp; omega) b hb` as an intermediate fact. Rewrite `this` using `[List.prod_cons]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `this`. Conclude with `⟨N, eq_bot_iff.2 fun y hy => by simpa using key N [] (by simp) (by simp) y hy⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components.
 -/
 theorem isNilpotent_of_isNilDP {D : Type} [CommRing D] {J : Ideal D} {κ : DividedPowers J} (h : IsNilDP κ) : IsNilpotent J := by
   obtain ⟨N, hN⟩ := h
@@ -83,7 +83,7 @@ def tayHom {I : Type} [Fintype I] [DecidableEq I] {D : Type} [CommRing D] [Algeb
       (taylor_formal_properties N t).1 _ _ (f.analytic _ h0) (f'.analytic _ h0)]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul d c`. Simplify using `only [Algebra.TensorProduct.lift_tmul, map_mul, AlgHom.comp_apply, AlgHom.id_apply, Algebra.ofId_apply, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem ev_red {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {W : Opens E} {D : Type} [CommRing D] [Algebra ℂ D]
     (π : D →ₐ[ℂ] ℂ) (p : E) (hp : p ∈ W) (x : D ⊗[ℂ] Hol W) :
@@ -98,29 +98,25 @@ theorem ev_red {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {W : Opens 
       AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply]
 
 /- English proof (translation)
-Introduce `I _ _ g Λ _ F F₀ B _ X X₀ s s₀ σ e e₀ hX hX₀ h0 hV₀ hτ φ₀ hφ₀ D _ _ π κ hκ hπ N t ht htN j hj s' hs' n φ hφ k c per hper m d cs p ps hps hcs hdec l`. Set `πa : D →ₐ[ℂ] ℂ` to `{ π with commutes' := hπ }`. Take `⟨D', _, _, io, π', nn, hio, hpio, hnil, hn0, hn2, hnt⟩` from `SquareZeroSum.exists_sum_sq_zero N D πa t (isNilpotent_of_isNilDP hκ) ht htN`. Take `⟨M, hM⟩` from `id hnil`. Establish `hJ : ∀ s : Fin (N + M + 1) → D', (∀ a, s a ∈ RingHom.ker π') → ∏ a, s a = 0` using `fun s hs => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∏ a, s a ∈ ∏ _a : Fin (N + M + 1), RingHom.ker π'` using `Ideal.prod_mem_prod fun a _ => hs a`. Rewrite `h1` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `h2` using `Ideal.pow_le_pow_right (show M ≤ N + M + 1 by omega) h1`. Rewrite `h2` using `[hM, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `ht0 : ∀ i, π' (io (t i)) = 0` using `fun i => (hpio _).trans (ht i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `ht' : ∀ s : Fin (N + M + 1) → I, ∏ a, io (t (s a)) = 0` using `fun s => hJ _ fun a => ht0 _`. Establish `hT : ∀ f, PeriodFamily.taylor (N + M) (fun i => io (t i)) f = io (PeriodFamily.taylor N t f)` using `fun f => by`. Rewrite using `[← (taylor_formal_properties (N + M) t).2.2.2.2.1 D' io f, taylor_eq_of_le N t htN _ (Nat.le_add_right _ _)]`. Establish `hred : ∀ f, π' (PeriodFamily.taylor (N + M) (fun i => io (t i)) f) = f 0` using `fun f => by`. Establish `h1 : PeriodFamily.taylor (N + M) (fun i => io (t i)) f - algebraMap ℂ D' (f 0) ∈ RingHom.ker π'` using `(Ideal.span_le.2 (by rintro _ ⟨i, rfl⟩; exact ht0 i)) ((taylor_formal_properties (N + M) _).2.2.2.2.2 f)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[RingHom.mem_ker, map_sub, sub_eq_zero, AlgHom.commutes]`. Conclude with `h1`. Take `⟨K₀, K, ν, hrich, hK₀, hK, hW, hν⟩` from `ChartPair.exists_pair e₀ e (fun _ => 0) analyticOnNhd_const (fun _ _ => h0) LinearMap.id (AddMonoidHom.id Λ) fun l z _ => (hτ l z).symm`. Take `⟨r₀, hr₀, -⟩` from `exists_real_isFor e₀ hX₀ K₀ hK₀`. Take `⟨r, hr, -⟩` from `exists_real_isFor e hX K hK`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `choose Ta hTa hTd using fun k => TaylorHom.exists_taylor_algHom (N + M) (fun i => io (t i)) ht' (K.W (ν k)) (K₀.W k) (hW k)`. Set `τV : Hol F.V →+* D'` to `tayHom (N + M) (fun i => io (t i)) ht' h0`. Establish `hfam` using `TenFam.main π' r₀ rfl κ hs' (io : D →+* D') hpio hnil K r ν hν Ta τV (fun k f => tensor_hol_ext_of_values _ _ _ _ fun q hq => by`. Rewrite using `[hTa k _ q hq, Algebra.TensorProduct.lift_tmul, map_one, _root_.mul_one]`. Use `(taylor_formal_properties _ _).2.2.2.1 _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : Continuous fun z : I → ℂ => ((z, q.2) : Tot I g)` using `by fun_prop`. Use `filter_upwards [hc.continuousAt.preimage_mem_nhds ((K.W (ν k)).isOpen.mem_nhds (hW k q hq))] with z hz`. Conclude with `K.fn_cst _ f hz)`. Use `hTd (fun l k' k h₀ => close_paramTaylor_shift F F₀ h0 hτ _ (N + M) hJ _ N nn hn0 hn2 hnt K K₀ l _ _ k k' (hν l k' k h₀) h₀ (hW k') (Ta k) (Ta k') (hTa k) (hTa k')) φ₀`. Use the proof step `(fun k => point_hol_ext_of_isSeparated _ hX _ _ fun q hq => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[← Category.assoc, ← Category.assoc, hr₀ k q hq, hφ₀ q (K₀.base k q hq), ← hr (ν k) (0, q.2) (hW k q hq), ← Cris.spMap_comp]`. Use `congrArg (fun ψ => spMap ψ ≫ r.x (ν k)) (RingHom.ext fun h => ?_)` and prove the remaining obligations. Use `(ev_red π' q hq (Ta k h)).trans ?_` and prove the remaining obligations. Rewrite using `[hTa k h q hq, hred]`. Conclude with `(Hol.ev_apply _ _ _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `j n (fun b => (congrArg io (hj b)).trans (hT _).symm) c per (τV.toAddMonoidHom.comp per) (fun _ => rfl) (hper K r hr)`. Take `⟨z₀, hz₀⟩` from `hV₀`. Set `q : Fin m → Λ →+ D'` to `fun i => ((algebraMap ℂ D').comp (Hol.ev z₀ hz₀).toRingHom).toAddMonoidHom.comp (ps i)`. Establish `hq : ∀ i l, q i l = algebraMap ℂ D' (p i l)` using `fun i l => congrArg (algebraMap ℂ D') ((congrArg (Hol.ev z₀ hz₀) (hps i l)).trans ((Hol.ev z₀ hz₀).commutes _))`. Establish `hfib` using `fun i => TenFib.ten_fib π' r₀ rfl κ hs' (io : D →+* D') hpio hnil (algebraMap ℂ D) φ hφ k io.commutes (cs i) (p i) (ps i) (q i) (hps i) (hq i) (hcs i K₀ r₀ hr₀)`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hfam` using `[hdec, map_sum]`. Simplify using `only [LinearMap.map_smulₛₗ, hfib] at hfam`. Establish `hz : K₀.tenZ (∑ i, io (d i) • q i - τV.toAddMonoidHom.comp per) = ∑ i, io (d i) • K₀.tenZ (q i) - K₀.tenZ (τV.toAddMonoidHom.comp per)`. Set `Z : (Λ →+ D') →ₗ[D'] Z1 (K₀.Ten D')` to `{ toFun := K₀.tenZ map_add' := fun a b => Subtype.ext (by funext T T' f; exact map_add (algebraMap D' (T'.ten D')) _ _) map_smul' := fun a b => Subtype.ext (by`. Use function extensionality and compare the values at `T T' f`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_mul (algebraMap D' (T'.ten D')) _ _).trans (Algebra.smul_def _ _).symm) }`. Express the relevant statement in the definitionally equal form `Z _ = ∑ i, io (d i) • Z _ - Z _`. Simplify using `only [map_sub, map_sum, map_smul]`. Use `Charts.tenZ_eq_zero K₀ hrich ⟨z₀, hz₀⟩ (∑ i, io (d i) • q i - τV.toAddMonoidHom.comp per) (by` as an intermediate fact. Rewrite using `[hz, map_sub, ← hfam, map_sum]`.
-
-Simplify using `only [map_smul]`. Conclude with `sub_self _)`. Establish `h1` using `DFunLike.congr_fun (sub_eq_zero.1 this) l`. Use `hio ?_` and prove the remaining obligations. Rewrite using `[← hT, map_sum]`.
-
-Use `Eq.trans ?_ h1` and prove the remaining obligations. Rewrite using `[AddMonoidHom.finset_sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_mul, io.commutes, AddMonoidHom.smul_apply, hq, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {I : Type} [Fintype I] [DecidableEq I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} {F₀ : Fam Empty g Λ} {B : Type} [CommRing B] {X X₀ : Scheme.{0}} {s : X ⟶ Sp B} {s₀ : X₀ ⟶ Sp ℂ} {σ : B →+* Hol F.V} (e : Unif F s σ) (e₀ : Unif F₀ s₀ (algebraMap ℂ (Hol F₀.V))), X.IsSeparated → X₀.IsSeparated → (0 : I → ℂ) ∈ F.V → (∃ z, z ∈ F₀.V) → (∀ l z, F₀.τ l z = F.τ l 0) → ∀ (φ₀ : X₀ ⟶ X), (∀ p : Tot Empty g, p.1 ∈ F₀.V → e₀.E p ≫ φ₀ = e.E (0, p.2)) → ∀ (D : Type) [CommRing D] [Algebra ℂ D] (π : D →+* ℂ) (κ : DividedPowers (RingHom.ker π)), IsNilDP κ → (∀ a : ℂ, π (algebraMap ℂ D a) = a) → ∀ (N : ℕ) (t : I → D), (∀ i, π (t i) = 0) → (∀ s : Fin (N + 1) → I, ∏ a, t (s a) = 0) → ∀ (j : B →+* D), (∀ b, j b = GlobalTheory.PeriodFamily.taylor N t (σ b).fn) → ∀ (s' : X₀ ⟶ Sp D), s' = s₀ ≫ spMap π → ∀ (n : IsMor (dp0 B) s κ s' j φ₀) (φ : X₀ ⟶ X₀), φ = 𝟙 X₀ → ∀ (k : IsMor (dp0 ℂ) s₀ κ s' (algebraMap ℂ D) φ) (c : FirstDeRham s) (per : Λ →+ Hol F.V), IsPeriod e c per → ∀ (m : ℕ) (d : Fin m → D) (cs : Fin m → FirstDeRham s₀) (p : Fin m → Λ → ℂ) (ps : Fin m → Λ →+ Hol F₀.V), (∀ i l, ps i l = algebraMap ℂ _ (p i l)) → (∀ i, IsPeriod e₀ (cs i) (ps i)) → n.pull1 c = ∑ i, d i • k.pull1 (cs i) → ∀ l, ∑ i, d i * algebraMap ℂ D (p i l) = GlobalTheory.PeriodFamily.taylor N t (per l).fn := by
   intro I _ _ g Λ _ F F₀ B _ X X₀ s s₀ σ e e₀ hX hX₀ h0 hV₀ hτ φ₀ hφ₀ D _ _ π κ hκ hπ N t ht htN j hj s' hs' n φ hφ k c per hper

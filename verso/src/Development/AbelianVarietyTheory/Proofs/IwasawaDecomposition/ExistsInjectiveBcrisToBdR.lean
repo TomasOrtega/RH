@@ -13,11 +13,11 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Establish `hu : ∀ y : M, IsUnit (g y)`. Introduce `y`. Establish `h : g y ≠ 0` using `fun h => hM y y.2 (hg (by rw [h, map_zero]))`. Take `⟨b, hb⟩` from `hK.mul_inv_cancel h`. Conclude with `IsUnit.of_mul_eq_one b hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IsLocalization.lift hu, fun x => IsLocalization.lift_eq hu x, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.lift_injective_iff]`. Introduce `x y`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsLocalization.lift_eq (S := S) hu x, h, IsLocalization.lift_eq]`. Introduce `h`. Rewrite using `[hg h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_injective_lift_field {R S K : Type} [CommRing R] [CommRing S] [CommRing K] [Algebra R S]
     (M : Submonoid R) [IsLocalization M S] (hK : IsField K) (g : R →+* K) (hg : Function.Injective g)
@@ -38,7 +38,7 @@ theorem exists_injective_lift_field {R S K : Type} [CommRing R] [CommRing S] [Co
     rw [hg h]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RingIface.tower l x`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_ainf_acris_eq {l : ℕ} [Fact l.Prime] (x : Per.Ainf l) :
     algebraMap (Per.Ainf l) (Per.Acris l) x =
@@ -46,9 +46,9 @@ theorem algebraMap_ainf_acris_eq {l : ℕ} [Fact l.Prime] (x : Per.Ainf l) :
   GlobalTheory.RingIface.tower l x
 
 /- English proof (translation)
-Take `⟨hd, -, hi⟩` from `GlobalTheory.T.usage l`. Introduce `h'`. Apply `hx0` to reduce the goal to its premises. Establish `h1` using `hj.on0 (algebraMap (Per.Ainf l) (Per.Acris0 l) x)`. Rewrite `h1` using `[← algebraMap_ainf_acris_eq]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h', map_zero]`. Establish `h2 : ((algebraMap (Per.Ainf l) (Per.Acris0 l) x : Per.Acris0 l) : Per.AinfP l) = 0` using `GlobalTheory.T.algebraMap_ainfInvPrime_bdRPlus_injective l (by rw [map_zero]; exact h1.symm)`. Conclude with `hi (by rw [map_zero]; exact h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraMap_ainf_acris_ne_zero_pt {l : ℕ} [Fact l.Prime] (j : Per.Acris l →+* Per.BdRp l)
     (hj : IsCrisP j) (x : Per.Ainf l) (hx0 : x ≠ 0) : algebraMap (Per.Ainf l) (Per.Acris l) x ≠ 0 := by
@@ -63,7 +63,7 @@ theorem algebraMap_ainf_acris_ne_zero_pt {l : ℕ} [Fact l.Prime] (j : Per.Acris
   exact hi (by rw [map_zero]; exact h2)
 
 /- English proof (translation)
-Take `⟨hd, -, -⟩` from `GlobalTheory.T.usage l`. Rewrite using `[← map_pow]`. Use `algebraMap_ainf_acris_ne_zero_pt j hj _ (pow_ne_zero n fun h => ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.CrisLoc.constantCoeff_root_ne_zero l e hne (by rw [h, map_zero])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pow_root_ne_zero {l : ℕ} [Fact l.Prime] (j : Per.Acris l →+* Per.BdRp l) (hj : IsCrisP j)
     (e : Per.Fl l) (hne : e ≠ 1) (n : ℕ) :
@@ -74,9 +74,9 @@ theorem pow_root_ne_zero {l : ℕ} [Fact l.Prime] (j : Per.Acris l →+* Per.BdR
   exact GlobalTheory.CrisLoc.constantCoeff_root_ne_zero l e hne (by rw [h, map_zero])
 
 /- English proof (translation)
-Introduce `l _ j hj`. Take `⟨-, hi, hK, -⟩` from `GlobalTheory.T.bdRPlus_isDomain_bdR_isField l`. Take `⟨e, he, hne⟩` from `GlobalTheory.CrisLoc.exists_root_ne_one l`. Use `haveI := GlobalTheory.CrisLoc.bcris_away l e he hne`. Use `exists_injective_lift_field (Submonoid.powers (algebraMap (Per.Ainf l) (Per.Acris l) (Per.tm e - 1))) hK ((algebraMap (Per.BdRp l) (Per.BdR l)).comp j) (hi.comp (GlobalTheory.T.acrisToBdRPlus_injective l j hj)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨n, rfl⟩`. Conclude with `pow_root_ne_zero j hj e hne n`.
+A detailed English derivation is pending.
 -/
 theorem exists_iota_cris_dR : ∀ (l : ℕ) [Fact l.Prime], ∀ j : Per.Acris l →+* Per.BdRp l, IsCrisP j →
     ∃ ι : Per.Bcris l →+* Per.BdR l, (∀ x : Per.Acris l, ι (algebraMap (Per.Acris l) (Per.Bcris l) x) =

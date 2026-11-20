@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.MapOfRealAdd
 
 /- English proof (translation)
-Introduce `d1 m n M N`. Use extensionality with `i j`. Use `show ((M i j + N i j : ℝ) : ℂ) = (M i j : ℂ) + (N i j : ℂ)`. Conclude with `Complex.ofReal_add _ _`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_ofReal_add :
     (let d1 : {m n : Type} → Matrix m n ℝ → Matrix m n ℂ :=

@@ -24,17 +24,17 @@ open MvPolynomial
 variable {Ty : Type} {r : Ty → ℕ} {n : ℕ} {k T : Type} [Field k] [CommRing T]
 
 /- English proof (translation)
-Set `_ : Algebra k T` to `φ.toAlgebra`. Set `G : Letter Ty r n → MvPolynomial (Option (Letter Ty r n)) k` to `fun ℓ => if ∃ b, ℓ = ⟨σ, (i, b)⟩ then X (some ℓ) + X none * X (some ⟨σ, (i', ℓ.snd.2)⟩) else X (some ℓ)`. Establish `hQ : aeval G P = rename some P`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (aeval (x ∘ some)) (hP σ i i' hi (x none))`. Unfold `rowShift at h1`. Rewrite `h1` using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Express the relevant statement in the definitionally equal form `aeval x (aeval G P) = aeval x (rename some P)`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval, aeval_rename, ← h1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `ℓ`. Distinguish the cases in `hℓ : ∃ b, ℓ = ⟨σ, (i, b)⟩`. Simplify using `[G, hℓ]`. Simplify using `[G, hℓ]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `g : Option (Letter Ty r n) → T` to `fun o => o.elim t y`. Establish `e1 : (fun ℓ => aeval g (G ℓ)) = y'`. Use function extensionality and compare the values at `ℓ`. Distinguish the cases in `hℓ : ∃ b, ℓ = ⟨σ, (i, b)⟩`. Take `⟨b, rfl⟩` from `hℓ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Simplify using `only [G, if_pos (show ∃ b', (⟨σ, (i, b)⟩ : Letter Ty r n) = ⟨σ, (i, b')⟩ from ⟨b, rfl⟩)]`. Simplify using `[g, h₁]`. Simplify using `only [G, if_neg hℓ]`. Simplify using `[g, h₂ ℓ hℓ]`. Establish `e2` using `congrArg (aeval g) hQ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `e2` using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval, aeval_rename, e1]`. Conclude with `e2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval₂_shift [Infinite k] (φ : k →+* T) {P : MvPolynomial (Letter Ty r n) k} (hP : RowInv r n k P)
     (σ : Ty) (i i' : Fin (r σ)) (hi : i' < i) (t : T) (y y' : Letter Ty r n → T)
@@ -72,13 +72,13 @@ theorem eval₂_shift [Infinite k] (φ : k →+* T) {P : MvPolynomial (Letter Ty
   exact e2
 
 /- English proof (translation)
-Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `j S hj ih`. Rewrite using `[← ih]`. Distinguish the cases in `hji : j < i`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `eval₂_shift φ hP σ i j hji (N j) _ _ ?_ ?_` and prove the remaining obligations. Introduce `b`. Establish `hb : ∃ b', (⟨σ, (i, b)⟩ : Letter Ty r n) = ⟨σ, (i, b')⟩` using `⟨b, rfl⟩`. Establish `hb' : ¬ ∃ b', (⟨σ, (j, b)⟩ : Letter Ty r n) = ⟨σ, (i, b')⟩`. Introduce and unpack `⟨b', h⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Sigma.mk.inj_iff, heq_eq_eq, Prod.mk.injEq, true_and] at h`. Conclude with `hji.ne h.1`. Simplify using `only [if_pos hb, if_neg hb', Finset.sum_insert hj]`. Expand and normalize the polynomial expressions, which then agree. Introduce `ℓ hℓ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg hℓ]`. Establish `h0 : N j = 0` using `hN j (not_lt.1 hji)`. Use `congrArg (fun g => eval₂Hom φ g P) (funext fun ℓ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [Finset.sum_insert hj, h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem eval₂Hom_unipotent_substitution_eq [Infinite k] (φ : k →+* T) {P : MvPolynomial (Letter Ty r n) k}
     (hP : RowInv r n k P) (σ : Ty) (i : Fin (r σ))
@@ -107,19 +107,19 @@ private theorem eval₂Hom_unipotent_substitution_eq [Infinite k] (φ : k →+* 
       split_ifs <;> simp [Finset.sum_insert hj, h0]
 
 /- English proof (translation)
-Use `Finset.induction_on_max_value (fun p : (Σ σ : Ty, Fin (r σ)) => (p.2 : ℕ)) R ?_ ?_` and prove the remaining obligations. Introduce `y`. Simplify using the standard rewrite rules. Introduce `p R hp hmax ih y`. Take `⟨σ, i⟩` from `p`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hA` using `eval₂Hom_unipotent_substitution_eq φ hP σ i (N σ i) (hN σ i) y Finset.univ`. Use `Eq.trans ?_ ((ih _).trans hA)` and prove the remaining obligations. Use `congrArg (fun g => eval₂Hom φ g P) (funext fun ℓ => ?_)` and prove the remaining obligations. Break down `ℓ with ⟨σ', i', b⟩` into its components or cases. Distinguish the cases in `hrow : (⟨σ', i'⟩ : Σ σ : Ty, Fin (r σ)) = ⟨σ, i⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Consider the cases of `hrow dsimp only`. Rewrite using `[if_pos (Finset.mem_insert_self _ _), if_neg hp, if_pos (show ∃ b', (⟨σ, (i, b)⟩ : Letter Ty r n) = ⟨σ, (i, b')⟩ from ⟨b, rfl⟩), add_zero]`. Establish `hne : ∀ j : Fin (r σ'), (⟨σ', j⟩ : Σ σ : Ty, Fin (r σ)) ≠ ⟨σ, i⟩ → ¬ ∃ b', (⟨σ', (j, b)⟩ : Letter Ty r n) = ⟨σ, (i, b')⟩`. Introduce and unpack `j hj ⟨b', h⟩`. Apply `hj` to reduce the goal to its premises.
+Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Consider the cases of `h`. Both sides reduce to the same expression. Simplify using `only`. Rewrite using `[if_neg (hne i' hrow)]`. Distinguish the cases in `hR : (⟨σ', i'⟩ : Σ σ : Ty, Fin (r σ)) ∈ R`.
+Reduce the claim to the hypotheses of an applicable result. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (Finset.mem_insert_of_mem hR), if_pos hR]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : i' ≤ j`. Rewrite using `[hN σ' i' j hj, zero_mul, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg (hne j ?_)]`. Introduce `hji`. Consider the cases of `hji`. Conclude with `hj (Fin.le_iff_val_le_val.2 (hmax _ hR))`. Establish `hI : (⟨σ', i'⟩ : Σ σ : Ty, Fin (r σ)) ∉ insert ⟨σ, i⟩ R`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_insert]`. Introduce and unpack `(h | h)`. Use `exacts [hrow h, hR h]`. Rewrite using `[if_neg hI, if_neg hR]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eval₂Hom_unipotent_block_substitution_eq [Infinite k] (φ : k →+* T) {P : MvPolynomial (Letter Ty r n) k}
     (hP : RowInv r n k P) (N : ∀ σ, Fin (r σ) → Fin (r σ) → T) (hN : ∀ σ i j, i ≤ j → N σ i j = 0)
@@ -167,7 +167,7 @@ private theorem eval₂Hom_unipotent_block_substitution_eq [Infinite k] (φ : k 
         rw [if_neg hI, if_neg hR]
 
 /- English proof (translation)
-Establish `h` using `eval₂Hom_unipotent_block_substitution_eq φ hP N hN Finset.univ y`. Simplify `h` using `only [Finset.mem_univ, ↓reduceIte]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eval₂_unip [Infinite k] [Fintype Ty] (φ : k →+* T) {P : MvPolynomial (Letter Ty r n) k}
     (hP : RowInv r n k P) (N : ∀ σ, Fin (r σ) → Fin (r σ) → T) (hN : ∀ σ i j, i ≤ j → N σ i j = 0)
@@ -178,11 +178,11 @@ theorem eval₂_unip [Infinite k] [Fintype Ty] (φ : k →+* T) {P : MvPolynomia
   simpa only [Finset.mem_univ, ↓reduceIte] using h
 
 /- English proof (translation)
-Simplify using `only [coe_eval₂Hom, eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Simplify using `only [mul_pow, Finset.prod_mul_distrib]`. Establish `hc : ∏ ℓ : Letter Ty r n, c ℓ.1 ℓ.2.1 ^ m ℓ = ∏ p : (Σ σ : Ty, Fin (r σ)), c p.1 p.2 ^ a p.1 p.2`. Rewrite using `[Fintype.prod_sigma, Fintype.prod_sigma]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hP m hm σ i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval₂_diag [Fintype Ty] (φ : k →+* T) {a : Ty → ℕ → ℕ} {P : MvPolynomial (Letter Ty r n) k}
     (hP : RowDeg r n k a P) (c : ∀ σ, Fin (r σ) → T) (y : Letter Ty r n → T) :
@@ -203,13 +203,13 @@ theorem eval₂_diag [Fintype Ty] (φ : k →+* T) {a : Ty → ℕ → ℕ} {P :
   ring
 
 /- English proof (translation)
-Set `N : ∀ σ, Fin (r σ) → Fin (r σ) → T` to `fun σ i j => if j < i then ↑(hu σ i).unit⁻¹ * c σ i j else 0`. Establish `hN : ∀ σ i j, i ≤ j → N σ i j = 0` using `fun σ i j h => by simp [N, not_lt.2 h]`. Establish `hfun : (fun ℓ : Letter Ty r n => ∑ j, c ℓ.1 ℓ.2.1 j * y ⟨ℓ.1, j, ℓ.2.2⟩) = fun ℓ => c ℓ.1 ℓ.2.1 ℓ.2.1 * (y ℓ + ∑ j, N ℓ.1 ℓ.2.1 j * y ⟨ℓ.1, j, ℓ.2.2⟩)`. Use function extensionality and compare the values at `ℓ`. Break down `ℓ with ⟨σ, i, b⟩` into its components or cases.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e : ∀ j, c σ i j * y ⟨σ, j, b⟩ = (if j = i then c σ i i * y ⟨σ, i, b⟩ else 0) + c σ i i * (N σ i j * y ⟨σ, j, b⟩)`. Introduce `j`. Break down `lt_trichotomy j i with h | h | h` into its components or cases. Simplify using `only [N, if_pos h, if_neg h.ne, zero_add]`. Rewrite using `[← _root_.mul_assoc, ← _root_.mul_assoc, (hu σ i).mul_val_inv, _root_.one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Simplify using `[N]`. Simplify using `[N, h.ne', not_lt.2 h.le, hc σ i j h]`. Simplify using `only`. Rewrite using `[Finset.sum_congr rfl fun j _ => e j, Finset.sum_add_distrib, Finset.sum_ite_eq', if_pos (Finset.mem_univ _), mul_add, Finset.mul_sum]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `eval₂_diag φ hD (fun σ i => c σ i i) (fun ℓ => y ℓ + ∑ j, N ℓ.1 ℓ.2.1 j * y ⟨ℓ.1, j, ℓ.2.2⟩)`. Establish `h2` using `eval₂_unip φ hI N hN y`. Rewrite using `[hfun]`. Conclude with `h1.trans (by rw [h2])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval₂_triangular [Infinite k] [Fintype Ty] (φ : k →+* T) {a : Ty → ℕ → ℕ}
     {P : MvPolynomial (Letter Ty r n) k} (hI : RowInv r n k P) (hD : RowDeg r n k a P)
@@ -253,15 +253,13 @@ variable {S : Type} [CommRing S] {d : ℕ}
 def dEnd (F : Fin d → PS S 2 d) (v : Fin d → S) : Module.End S (PS S 1 d) := (GE.dofD F v).toLinearMap
 
 /- English proof (translation)
-Conclude with `GE.dofD_apply F v g`.
+A detailed English derivation is pending.
 -/
 theorem dEnd_apply (F : Fin d → PS S 2 d) (v : Fin d → S) (g : PS S 1 d) : dEnd F v g = Dof F v g := by
   exact GE.dofD_apply F v g
 
 /- English proof (translation)
-Use `LinearMap.ext fun g => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply, dEnd_apply, Dof, hv, map_sum, map_mul, Finset.sum_mul, Finset.smul_sum, MvPowerSeries.smul_eq_C_mul]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
-
-Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dEnd_comb (F : Fin d → PS S 2 d) {κ : Type} [Fintype κ] (c : κ → S) (w : κ → Fin d → S) (v : Fin d → S)
     (hv : ∀ e, v e = ∑ j, c j * w j e) : dEnd F v = ∑ j, c j • dEnd F (w j) := by
@@ -275,9 +273,9 @@ theorem dEnd_comb (F : Fin d → PS S 2 d) {κ : Type} [Fintype κ] (c : κ → 
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Establish `hD : ∀ v, ⇑(dEnd F v) = Dof F v` using `fun v => funext (dEnd_apply F v)`. Establish `key : ∀ L : List I, L.foldr (fun l h => (Dof F (u l))^[m l] h) g = Ψ ((L.map fun l => x l ^ m l).prod) g`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `cons l L ih`. Rewrite using `[List.foldr_cons, List.map_cons, List.prod_cons, map_mul, Module.End.mul_apply, ← ih, map_pow, hx, Module.End.pow_apply, hD]`. Rewrite using `[DmonOf, key, Finset.prod_map_toList]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dmon_eq {A : Type} [CommRing A] [Algebra S A] (F : Fin d → PS S 2 d) (Ψ : A →ₐ[S] Module.End S (PS S 1 d))
     {I : Type} [Fintype I] (u : I → Fin d → S) (x : I → A) (hx : ∀ l, Ψ (x l) = dEnd F (u l)) (m : I →₀ ℕ)
@@ -295,7 +293,7 @@ theorem dmon_eq {A : Type} [CommRing A] [Algebra S A] (F : Fin d → PS S 2 d) (
   rw [DmonOf, key, Finset.prod_map_toList]
 
 /- English proof (translation)
-Distinguish the cases in `h : (1 : S) = 0`. Establish `: Subsingleton S` using `subsingleton_of_zero_eq_one h.symm`. Conclude with `MvPowerSeries.ext fun _ => Subsingleton.elim _ _`. Simplify using `[DpolyOf, MvPolynomial.support_monomial, h]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dpoly_monomial (F : Fin d → PS S 2 d) {I : Type} [Fintype I] (u : I → Fin d → S) (m : I →₀ ℕ)
     (g : PS S 1 d) : DpolyOf F u (MvPolynomial.monomial m 1) g = DmonOf F u m g := by
@@ -310,7 +308,7 @@ def prodForm {A : Type} [CommRing A] [Algebra S A] {n : ℕ} (lam : Fin n → A 
   PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra S (Fin n) S).compLinearMap lam)
 
 /- English proof (translation)
-Establish `e : (∏ b, PiTensorProduct.singleAlgHom (R` using `S) (A := fun _ : Fin n => A) b (x b)) = PiTensorProduct.tprod S x := by`. Simplify using `only [PiTensorProduct.singleAlgHom_apply, MonoidHom.mulSingle_apply]`. Rewrite using `[← PiTensorProduct.tprod_prod, Finset.univ_prod_mulSingle]`. Rewrite using `[e]`. Simplify using `[prodForm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prodForm_prod {A : Type} [CommRing A] [Algebra S A] {n : ℕ} (lam : Fin n → A →ₗ[S] S) (x : Fin n → A) :
     prodForm lam (∏ b, PiTensorProduct.singleAlgHom (R := S) (A := fun _ : Fin n => A) b (x b)) = ∏ b, lam b (x b) := by
@@ -331,33 +329,31 @@ open RowTriangular ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ in
 open scoped TensorProduct in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l c _ S _ _ _ d B hg _ k n f uvec uvec' cf hcf huv hu a P hP`. Unfold `HHa at hP`. Take `⟨-, hI, hD⟩` from `hP`. Establish `t4 : B.FK S = B.G.F`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[FB.FK, FGLaw.mapF]`. Establish `hcomm : ∀ u v : Fin d → S, dEnd (B.FK S) u * dEnd (B.FK S) v = dEnd (B.FK S) v * dEnd (B.FK S) u`. Introduce `u v`. Use `LinearMap.ext fun g => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, dEnd_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[t4]`. Conclude with `FormalConnection.dof_comm_law B.G u v g`. Set `s : Set (Module.End S (PS S 1 d))` to `Set.range fun e : Fin d => dEnd (B.FK S) (Pi.single e 1)`. Establish `hs : ∀ x ∈ s, ∀ y ∈ s, x * y = y * x`. Introduce and unpack `_ ⟨e, rfl⟩ _ ⟨e', rfl⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Equip the data with the indicated structure.
 
-Conclude with `hcomm _ _`. Use `letI : CommRing (Algebra.adjoin S s) := Algebra.adjoinCommRingOfComm S hs`. Establish `hmem : ∀ v : Fin d → S, dEnd (B.FK S) v ∈ Algebra.adjoin S s`. Introduce `v`. Rewrite using `[dEnd_comb (B.FK S) (fun e => v e) (fun e => Pi.single e 1) v (fun e' => by simp [Pi.single_apply])]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `Subalgebra.sum_mem _ fun e _ => Subalgebra.smul_mem _ (Algebra.subset_adjoin (Set.mem_range_self e)) _`. Take `⟨G, hG⟩ : ∃ G : Fin n → PS S 1 d, ∀ (b : Fin n) (u : Lt1 Dw → Fin d → S) (Q : MvPolynomial (Lt1 Dw) S), B.nabVal S hg H.w0 k (f b) u Q = MvPowerSeries.constantCoeff (DpolyOf (B.FK S) u Q (G b))` from `⟨_, fun b u Q => rfl⟩`. Set `lam : Fin n → Algebra.adjoin S s →ₗ[S] S` to `fun b => { toFun := fun z => MvPowerSeries.constantCoeff ((z : Module.End S (PS S 1 d)) (G b)) map_add' := fun z z' => by simp map_smul' := fun r z => by simp [MvPowerSeries.smul_eq_C_mul] }`. Set `φ : c.F →+* (⨂[S] _ : Fin n, Algebra.adjoin S s)` to `(algebraMap S (⨂[S] _ : Fin n, Algebra.adjoin S s)).comp (algebraMap c.F S)`. Establish `hpull : ∀ (r : S) (t : ⨂[S] _ : Fin n, Algebra.adjoin S s), prodForm lam (algebraMap S _ r * t) = r * prodForm lam t`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `r t`. Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul]`. Establish `hval : ∀ (U : Lt1 Dw → Fin d → S) (X : Lt1 Dw → Algebra.adjoin S s), (∀ l, (Algebra.adjoin S s).val (X l) = dEnd (B.FK S) (U l)) → ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b, B.nabVal S hg H.w0 k (f b) U (MvPolynomial.monomial (colOf m b) 1) = prodForm lam (MvPolynomial. …` using `S) (A := fun _ : Fin n => Algebra.adjoin S s) ℓ.2.2 (X ⟨ℓ.1, ℓ.2.1⟩)) P) := by`. Introduce `U X hX`. Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_eq', map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[show φ (P.coeff m) = algebraMap S _ (algebraMap c.F S (P.coeff m)) from rfl, hpull]`. Use `congr 1`. Establish `e1 : ∀ b, B.nabVal S hg H.w0 k (f b) U (MvPolynomial.monomial (colOf m b) 1) = lam b (∏ l, X l ^ (colOf m b) l)`. Introduce `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[hG, dpoly_monomial, dmon_eq (B.FK S) (Algebra.adjoin S s).val U X hX]`. Both sides reduce to the same expression. Simplify using `only [e1]`. Rewrite using `[← prodForm_prod]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_prod, map_pow]`. Rewrite using `[Finset.prod_comm, Fintype.prod_sigma, Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using `[colOf]`. Set `X : Lt1 Dw → Algebra.adjoin S s` to `fun l => ⟨dEnd (B.FK S) (uvec l), hmem _⟩`. Set `X' : Lt1 Dw → Algebra.adjoin S s` to `fun l => ⟨dEnd (B.FK S) (uvec' l), hmem _⟩`. Establish `hx' : ∀ τ i, X' ⟨τ, i⟩ = ∑ j, cf τ i j • X ⟨τ, j⟩`. Introduce `τ i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.val_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `dEnd (B.FK S) (uvec' ⟨τ, i⟩) = (Algebra.adjoin S s).val (∑ j, cf τ i j • X ⟨τ, j⟩)`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Conclude with `dEnd_comb (B.FK S) (cf τ i) (fun j => uvec ⟨τ, j⟩) _ (huv τ i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval uvec' X' (fun l => rfl), hval uvec X (fun l => rfl)]`. Establish `hY : (fun ℓ : LtN Dw n => PiTensorProduct.singleAlgHom (R` using `S) (A := fun _ : Fin n => Algebra.adjoin S s) ℓ.2.2 (X' ⟨ℓ.1, ℓ.2.1⟩)) = fun ℓ => ∑ j, algebraMap S (⨂[S] _ : Fin n, Algebra.adjoin S s) (cf ℓ.1 ℓ.2.1 j) * PiTensorProduct.singleAlgHom (R := S) (A := fun _ : Fin n => Algebra.adjoin S s) ℓ.2.2 (X ⟨ℓ.1, j⟩) := by`. Use function extensionality and compare the values at `ℓ`. Rewrite using `[hx', map_sum]`. Simplify using `only [map_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Algebra.smul_def]`. Establish `h3` using `eval₂_triangular φ hI hD (fun τ i j => algebraMap S (⨂[S] _ : Fin n, Algebra.adjoin S s) (cf τ i j)) (fun τ i j h => by simp [hcf τ i j h]) (fun τ i => (hu τ i).map _) (fun ℓ : LtN Dw n => PiTensorProduct.singleAlgHom (R := S) (A := fun _ : Fin n => Algebra.adjoin S s) ℓ.2.2 (X ⟨ …`. Rewrite using `[hY]`. Use `(congrArg (prodForm lam) h3).trans ?_` and prove the remaining obligations. Rewrite using `[← hpull]`.
-
-Use `congr 2`. Simplify using `[map_prod, map_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nabVal_triangular : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (c : Coeff l) [StarRing (𝓞 E)] (S : Type) [CommRing S] [Algebra c.F S] [Algebra ℚ S] (d : ℕ) (B : Germ.FB S d (𝓞 E)) (hg : Germ.PS S 2 d), B.IsCanonGauge S hg → ∀ (k n : ℕ) (f : Fin n → MvPowerSeries (Fin 1 × Fin d) S) (uvec uvec' : Lt1 Dw → Fin d → S) (cf : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Fin (Dw.mult τ) → S), (∀ τ i j, i < j → cf τ i j = 0) → (∀ τ i e, uvec' ⟨τ, i⟩ e = ∑ j, cf τ i j * uvec ⟨τ, j⟩ e) → (∀ τ i, IsUnit (cf τ i i)) → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) → ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b, B.nabVal S hg H.w0 k (f b) uvec' (MvPolynomial.monomial (colOf m b) 1) = (∏ ℓ : Lt1 Dw, cf ℓ.1 ℓ.2 ℓ.2 ^ a (ℓ.1, ℓ.2)) * ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b, B.nabVal S hg H.w0 k (f b) uvec (MvPolynomial.monomial (colOf m b) 1) := by
   classical

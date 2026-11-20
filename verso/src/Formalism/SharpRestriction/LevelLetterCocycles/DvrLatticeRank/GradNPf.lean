@@ -7,11 +7,11 @@ namespace Formalism.MainNotions.N.Ln34
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules
 
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK hA l hlp hl K LL hG π' E hR T h' hh' hT`. Establish `h1 : adm1 D HW F Cm` using `hA.1`. Break down `Nat.eq_zero_or_pos (sK l K) with hs0 | hs` into its components or cases. Apply `gradNPf_small` to reduce the goal to its premises. Simplify using `[MK, hs0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Take `⟨f, t, x, u, -, -, hf, ht, hE, hΔ, hγ, hK, hN⟩` from `gradNPf_hyps D HW F Cm h1 l hl K LL hG π' E hR T hT hs`. Break down `le_or_gt (MK l K h') 1 with hM | hM` into its components or cases. Apply `gradNPf_small` to reduce the goal to its premises. Conclude with `hM`. Take `⟨a, ha⟩` from `hN (MK l K h' - 1)`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[Nat.sub_add_cancel (by omega : 1 ≤ MK l K h')]`. Use `gradNPf_local (hf := hf) (ht := ht) (hu := hE) (hπΔ := hΔ) (hγN := hγ) (hK := hK) (hM := by omega) (a := a) (ha := ?_)` and prove the remaining obligations. Use `ha using 2` and compare the differences between its conclusion and the goal. Rewrite using `[(D.loc l).PD_p K]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gradNCondition : Formalism.MainNotions.N.Ln34.GradNStep := by
   intro D HW F Cm CA CB CK hA l hlp hl K LL hG π' E hR T h' hh' hT

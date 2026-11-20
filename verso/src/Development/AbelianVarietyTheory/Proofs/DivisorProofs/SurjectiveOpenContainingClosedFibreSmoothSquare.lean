@@ -9,13 +9,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.NearSurj
 
 /- English proof (translation)
-Introduce `R _ _ U hs hsu V hV`. Establish `: Smooth (U ⊗ U).hom` using `inferInstanceAs (Smooth (pullback.fst U.hom U.hom ≫ U.hom))`. Take `⟨u, hu⟩` from `U.hom.surjective (closedPoint R)`. Set `d : U.left ⟶ (U ⊗ U).left` to `pullback.lift (𝟙 _) (𝟙 _) rfl`. Establish `hd : (U ⊗ U).hom (d u) = closedPoint R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hu, ← Scheme.Hom.comp_apply]`. Express the relevant statement in the definitionally equal form `(pullback.lift (𝟙 U.left) (𝟙 U.left) rfl ≫ pullback.fst U.hom U.hom ≫ U.hom) u = _`. Rewrite using `[pullback.lift_fst_assoc, Category.id_comp]`. Establish `hmem : d u ∈ V` using `hV _ hd`. Establish `ho : IsOpenMap (V.ι ≫ (U ⊗ U).hom)` using `(V.ι ≫ (U ⊗ U).hom).isOpenMap`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun r => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩ : d u ∈ Set.range V.ι` from `by rw [Scheme.Opens.range_ι]; exact hmem`. Establish `h₂ : (V.ι ≫ (U ⊗ U).hom) y = closedPoint R`. Rewrite using `[Scheme.Hom.comp_apply, hy]`. Conclude with `hd`.
-
-Conclude with `(IsLocalRing.specializes_closedPoint r).mem_open ho.isOpen_range ⟨_, h₂⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_of_open_closedFibre : ∀ {R : Type} [CommRing R] [IsLocalRing R] (U : Over (Sp R)), Smooth U.hom → Surjective U.hom → ∀ (V : (U ⊗ U).left.Opens), (∀ z : (U ⊗ U).left, (U ⊗ U).hom z = closedPoint R → z ∈ V) → Surjective (V.ι ≫ (U ⊗ U).hom) := by
   intro R _ _ U hs hsu V hV

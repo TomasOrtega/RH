@@ -20,19 +20,17 @@ section Path
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Break down `w.isReal_or_isComplex with hw | hw` into its components or cases. Set `u : ℝ → ℝˣ` to `fun t ↦ Units.mk0 (Real.exp t) (Real.exp_ne_zero t)`. Establish `hu : Continuous u` using `Units.isEmbedding_val₀.isInducing.continuous_iff.2 Real.continuous_exp`. Establish `hu0 : u 0 = 1` using `Units.ext (by simp [u])`. Use `⟨fun t ↦ infiniteEmbedding w (realUnitsHom hw (u t)), (continuous_infiniteEmbedding w).comp ((realUnitsHom hw).continuous.comp hu), ?_, fun t ↦ ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hu0, map_one]`. Rewrite using `[ideleModule_infiniteEmbedding]`. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Establish `hval : ((realUnitsHom hw (u t) : (w.Completion)ˣ) : w.Completion) = e.symm (Real.exp t)`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Establish `hn : ‖e.symm (Real.exp t)‖ = ‖e (e.symm (Real.exp t))‖`. Rewrite using `[InfinitePlace.Completion.ringEquivRealOfIsReal_apply]`. Conclude with `((InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) _).symm`. Rewrite using `[hval, hn, RingEquiv.apply_symm_apply, Real.norm_of_nonneg (Real.exp_pos t).le]`. Simplify using `[InfinitePlace.mult, hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `u : ℝ → ℂˣ` to `fun t ↦ Units.mk0 ((Real.exp (t / 2) : ℝ) : ℂ) (Complex.ofReal_ne_zero.2 (Real.exp_ne_zero _))`. Establish `hu : Continuous u` using `Units.isEmbedding_val₀.isInducing.continuous_iff.2 (Complex.continuous_ofReal.comp (Real.continuous_exp.comp (continuous_id.div_const 2)))`. Establish `hu0 : u 0 = 1` using `Units.ext (by simp [u])`. Use `⟨fun t ↦ infiniteEmbedding w (complexUnitsHom hw (u t)), (continuous_infiniteEmbedding w).comp ((complexUnitsHom hw).continuous.comp hu), ?_, fun t ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [hu0, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ideleModule_infiniteEmbedding]`. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex hw`. Establish `hval : ((complexUnitsHom hw (u t) : (w.Completion)ˣ) : w.Completion) = e.symm ((Real.exp (t / 2) : ℝ) : ℂ)`. Both sides reduce to the same expression. Establish `hn : ‖e.symm ((Real.exp (t / 2) : ℝ) : ℂ)‖ = ‖e (e.symm ((Real.exp (t / 2) : ℝ) : ℂ))‖`.
+Introduce a local definition for the expression. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[InfinitePlace.Completion.ringEquivComplexOfIsComplex_apply]`. Conclude with `((InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) _).symm`. Establish `hw' : ¬ w.IsReal` using `InfinitePlace.not_isReal_iff_isComplex.2 hw`. Rewrite using `[hval, hn, RingEquiv.apply_symm_apply, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`. Simplify using `only [InfinitePlace.mult, hw', if_false]`.
-
-Rewrite using `[sq, ← Real.exp_add, add_halves]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IdeleGroup.exists_continuous_ideleModule_eq_exp (w : InfinitePlace K) :
     ∃ γ : ℝ → IdeleGroup K, Continuous γ ∧ γ 0 = 1 ∧
@@ -78,11 +76,11 @@ theorem IdeleGroup.exists_continuous_ideleModule_eq_exp (w : InfinitePlace K) :
       rw [sq, ← Real.exp_add, add_halves]
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace K)` from `inferInstance`. Take `⟨γ, hγc, hγ0, hγm⟩` from `IdeleGroup.exists_continuous_ideleModule_eq_exp w`. Use `set t := Real.log (IdeleClassGroup.ideleModule K c : ℝ)`. Use `set e := IdeleClassGroup.mk K (γ t)`. Establish `he : IdeleClassGroup.ideleModule K e = IdeleClassGroup.ideleModule K c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(IdeleGroup.ideleModule K (γ t) : ℝ) = _`. Rewrite using `[hγm, Real.exp_log (IdeleClassGroup.ideleModule K c).2]`. Use `⟨c * e⁻¹, ?_, e, ?_, (inv_mul_cancel_right c e).symm⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IdeleClassGroup.ideleModule K (c * e⁻¹) = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_inv, he, mul_inv_cancel]`. Use `(isPreconnected_range ((IdeleClassGroup.continuous_mk K).comp hγc)).subset_connectedComponent ⟨0, ?_⟩ ⟨t, rfl⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hγ0, map_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IdeleClassGroup.exists_mem_normOneSubgroup_mul_eq (c : IdeleClassGroup K) :
     ∃ d ∈ IdeleClassGroup.normOneSubgroup K, ∃ e ∈ connectedComponent (1 : IdeleClassGroup K),
@@ -109,7 +107,7 @@ section Surjective
 variable {K : Type u} [Field K] [NumberField K] {Ω : Type u} [Field Ω] [Algebra K Ω] [IsGalois K Ω]
 
 /- English proof (translation)
-The claim follows from `fun c hc ↦ ext_restrictAb fun L _ _ ↦ by rw [restrictAb_artinMap, map_one] have hopen : IsOpen ((reciprocityMap K L).ker : Set (IdeleClassGroup K)) := by rw [MonoidHom.coe_ker] exact (isOpen_discrete _).preimage continuous_reciprocityMap exact Subgroup.subset_of_isPreconnected _ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem connectedComponent_subset_ker_artinMap :
     connectedComponent (1 : IdeleClassGroup K) ⊆ (artinMap K Ω).ker := fun c hc ↦
@@ -122,7 +120,7 @@ theorem connectedComponent_subset_ker_artinMap :
       mem_connectedComponent hc
 
 /- English proof (translation)
-Take `⟨d, hd, e, he, rfl⟩` from `IdeleClassGroup.exists_mem_normOneSubgroup_mul_eq c`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Establish `h` using `connectedComponent_subset_ker_artinMap (Ω := Ω) he`. Rewrite `h` using `[SetLike.mem_coe, MonoidHom.mem_ker]`. Rewrite using `[map_mul, h, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mem_normOneSubgroup_artinMap_eq (c : IdeleClassGroup K) :
     ∃ d ∈ IdeleClassGroup.normOneSubgroup K, artinMap K Ω d = artinMap K Ω c := by
@@ -133,19 +131,17 @@ theorem exists_mem_normOneSubgroup_artinMap_eq (c : IdeleClassGroup K) :
   rw [map_mul, h, mul_one]
 
 /- English proof (translation)
-Introduce `τ`. Set `N` to `IdeleClassGroup.normOneSubgroup K`. Set `f : N → (maximalAbelianExtension K Ω ≃ₐ[K] maximalAbelianExtension K Ω)` to `fun d ↦ artinMap K Ω d`. Establish `hf : Continuous f` using `continuous_artinMap.comp continuous_subtype_val`. Set `t : finiteAbelianExtensions K Ω → Set N` to `fun L ↦`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `L.2.1` as an intermediate fact. Use `L.2.2` as an intermediate fact. Use the proof step `{d | restrictAb (L : IntermediateField K Ω) (le_maximalAbelianExtension _) (f d) = restrictAb (L : IntermediateField K Ω) (le_maximalAbelianExtension _) τ}`. Establish `hcl : ∀ L, IsClosed (t L)` using `fun L ↦ by`. Use `L.2.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `L.2.2` as an intermediate fact. Conclude with `isClosed_eq ((continuous_restrictAb _ _).comp hf) continuous_const`. Establish `hne : ∀ L, (t L).Nonempty` using `fun L ↦ by`. Use `L.2.1` as an intermediate fact. Use `L.2.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `reciprocityMap_surjective (K := K) (L := (L : IntermediateField K Ω)) (restrictAb (L : IntermediateField K Ω) (le_maximalAbelianExtension _) τ)`. Take `⟨d, hd, hdc⟩` from `exists_mem_normOneSubgroup_artinMap_eq (Ω := Ω) c`. Use `⟨⟨d, hd⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `restrictAb _ _ (artinMap K Ω d) = _`. Rewrite using `[hdc, restrictAb_artinMap, hc]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdir : Directed (· ⊇ ·) t`. Introduce `L₁ L₂`. Use `L₁.2.1` as an intermediate fact. Use `L₁.2.2` as an intermediate fact. Use `L₂.2.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `L₂.2.2` as an intermediate fact. Use `⟨⟨(L₁ : IntermediateField K Ω) ⊔ L₂, inferInstance, inferInstance⟩, fun d hd ↦ ?_, fun d hd ↦ ?_⟩` and prove the remaining obligations. Conclude with `restrictAb_eq_of_le (le_maximalAbelianExtension _) le_sup_left hd`. Conclude with `restrictAb_eq_of_le (le_maximalAbelianExtension _) le_sup_right hd`. Take `⟨d, hd⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed t hdir hne (fun L ↦ (hcl L).isCompact) hcl`.
-
-Use `⟨d, ext_restrictAb fun L _ _ ↦ ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter.1 hd ⟨L, inferInstance, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem artinMap_surjective : Function.Surjective (artinMap K Ω) := by
   intro τ
@@ -194,9 +190,9 @@ variable {K : Type u} [Field K] [NumberField K] {Ω : Type u} [Field Ω] [Algebr
   [IsAlgClosure K Ω]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective y`. Establish `h : (QuotientGroup.mk : IdeleClassGroup K → IdeleClassGroup K ⧸ Subgroup.connectedComponentOfOne (IdeleClassGroup K)) ⁻¹' {(a : IdeleClassGroup K ⧸ Subgroup.connectedComponentOfOne (IdeleClassGroup K))} = (fun x ↦ a * x) '' connectedComponent (1 : IdeleClassGroup K)`. Use extensionality with `x`. Rewrite using `[Set.image_mul_left, Set.mem_preimage, Set.mem_preimage, Set.mem_singleton_iff, eq_comm, QuotientGroup.eq]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h]`. Conclude with `isConnected_connectedComponent.image _ (continuous_const_mul a).continuousOn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IdeleClassGroup.isConnected_preimage_mk_connectedComponent
     (y : IdeleClassGroup K ⧸ Subgroup.connectedComponentOfOne (IdeleClassGroup K)) :
@@ -215,19 +211,17 @@ theorem IdeleClassGroup.isConnected_preimage_mk_connectedComponent
   exact isConnected_connectedComponent.image _ (continuous_const_mul a).continuousOn
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed K`. Use `le_antisymm (fun c hc ↦ ?_) fun c hc ↦ connectedComponent_subset_ker_artinMap hc` and prove the remaining obligations. Assume the negation of the conclusion as `hcD`. Use `set D := Subgroup.connectedComponentOfOne (IdeleClassGroup K)`. Establish `hDcl : IsClosed (D : Set (IdeleClassGroup K))` using `isClosed_connectedComponent`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `π : IdeleClassGroup K → IdeleClassGroup K ⧸ D` to `QuotientGroup.mk`. Establish `hπc : Continuous π` using `continuous_quotient_mk'`. Establish `himage : π '' (IdeleClassGroup.normOneSubgroup K : Set (IdeleClassGroup K)) = Set.univ`. Use `Set.eq_univ_of_forall fun q ↦ ?_` and prove the remaining obligations. Take `⟨c', rfl⟩` from `QuotientGroup.mk_surjective q`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, e, he, rfl⟩` from `IdeleClassGroup.exists_mem_normOneSubgroup_mul_eq c'`. Use `⟨d, hd, QuotientGroup.eq.2 ?_⟩` and prove the remaining obligations. Conclude with `(inv_mul_cancel_left d e).symm ▸ he`. Establish `: CompactSpace (IdeleClassGroup K ⧸ D)` using `⟨himage ▸ (IdeleClassGroup.isCompact_normOneSubgroup K).image hπc⟩`. Establish `hpre` using `(QuotientGroup.isQuotientMap_mk D).isCoinducing.preimage_connectedComponent IdeleClassGroup.isConnected_preimage_mk_connectedComponent 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnot : π c ∉ connectedComponent (π 1)`. Introduce `h`. Establish `h' : c ∈ π ⁻¹' connectedComponent (π 1)` using `h`. Rewrite `h'` using `[hpre]`. Conclude with `hcD h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hnot` using `[connectedComponent_eq_iInter_isClopen, Set.mem_iInter]`. Use `push Not at hnot`. Take `⟨⟨W, hWc, hW1⟩, hcW⟩` from `hnot`. Use `replace hW1 : (1 : IdeleClassGroup K ⧸ D) ∈ W := hW1`. Take `⟨H, hHW⟩` from `IsTopologicalGroup.exist_openSubgroup_sub_clopen_nhds_of_one hWc hW1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `N : Subgroup (IdeleClassGroup K)` to `(H : Subgroup (IdeleClassGroup K ⧸ D)).comap (QuotientGroup.mk' D)`. Establish `hNopen : IsOpen (N : Set (IdeleClassGroup K))` using `H.isOpen.preimage hπc`. Establish `: (H : Subgroup (IdeleClassGroup K ⧸ D)).FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`. Establish `: N.FiniteIndex` using `⟨by`. Rewrite using `[Subgroup.index_comap_of_surjective _ (QuotientGroup.mk'_surjective D)]`.
-
-Conclude with `Subgroup.FiniteIndex.index_ne_zero⟩`. Establish `hcN : c ∉ N` using `fun h ↦ hcW (hHW h)`. Take `⟨L, _, _, hL⟩` from `exists_intermediateField_range_ideleClassNorm_eq_of_finiteIndex (Ω := Ω) N hNopen`. Apply `hcN` to reduce the goal to its premises. Rewrite using `[← hL, ← ker_reciprocityMap, MonoidHom.mem_ker, ← restrictAb_artinMap L c, MonoidHom.mem_ker.1 hc, map_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_artinMap :
     (artinMap K Ω).ker = Subgroup.connectedComponentOfOne (IdeleClassGroup K) := by

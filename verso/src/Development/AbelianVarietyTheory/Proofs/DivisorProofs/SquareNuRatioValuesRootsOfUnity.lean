@@ -22,11 +22,11 @@ open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `⟨⟨?_, fun x => ?_⟩, fun P e he k x hx => ?_⟩` and prove the remaining obligations. Establish `: ((c ^ a : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => c x ^ a`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.1.1.pow a`. Establish `h1` using `h.1.2 x`. Simplify using `only [MonoidHom.pow_apply, h1, one_pow]`. Establish `hp : (χ ^ a).locK P k = χ.locK P k ^ a`. Establish `: ∀ x, (χ ^ a).1 x = χ.1 x ^ a` using `fun x => by rw [SubgroupClass.coe_pow, MonoidHom.pow_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this _`. Rewrite using `[MonoidHom.pow_apply, hp, Units.val_pow_eq_pow_val, ← h.2 P e he k x hx]`. Conclude with `map_pow Circle.coeHom _ _`.
+A detailed English derivation is pending.
 -/
 private theorem chrEq_pow' {D : D7} {c : (AE D)ˣ →* Circle} {χ : HChar D.host.E} (h : ChrEq c χ) (a : ℕ) :
     ChrEq (c ^ a) (χ ^ a) := by
@@ -44,7 +44,7 @@ private theorem chrEq_pow' {D : D7} {c : (AE D)ˣ →* Circle} {χ : HChar D.hos
     exact map_pow Circle.coeHom _ _
 
 /- English proof (translation)
-Establish `h1` using `chrEq_pow' h n`. Rewrite `h1` using `[show χ ^ n = 1 from hn]`. Conclude with `MonoidHom.ext fun x => GlobalTheory.ChrEqUnique.eq_one_of_chrEq h1 x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_prime_power_pow_eq_one {D : D7} {c : (AE D)ˣ →* Circle} {χ : HChar D.host.E} (h : ChrEq c χ) {n : ℕ}
     (hn : χ.OrderDvd n) : c ^ n = 1 := by
@@ -53,13 +53,11 @@ private theorem exists_prime_power_pow_eq_one {D : D7} {c : (AE D)ˣ →* Circle
   exact MonoidHom.ext fun x => GlobalTheory.ChrEqUnique.eq_one_of_chrEq h1 x
 
 /- English proof (translation)
-Use `⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D _ _ _ _ T Lc μ₀ hL G W S hN i j t k => ?_⟩⟩` and prove the remaining obligations. Take `⟨n, hn, ho⟩` from `hL.xi_fin t`. Establish `hc1 : Lc.xi μ₀ k = 1` using `GlobalTheory.ChrEqUnique.eq_one_of_chrEq (hL.xi_base ▸ hL.xi μ₀) k`. Establish `e : (GlobalTheory.SqStep.chs G i j t).ν k / (GlobalTheory.SqStep.chs G i j μ₀).ν k = Lc.xi t k`. Establish `key : ∀ {Γ : Type} [CommGroup Γ] (a x y e c : Γ), y = 1 → (a * x * e / (c * e)) / (a * y * e / (c * e)) = x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Γ _ a x y e c hy`. Substitute `hy` using the available equality. Rewrite using `[mul_one, div_div_div_cancel_right, mul_div_mul_right_eq_div, mul_div_cancel_left]`. Conclude with `key (Lc.mu0 ((j : ℕ) + 1) k) (Lc.xi t k) (Lc.xi μ₀ k) ((Lc.eta ^ (rankV D i j % 2)) k) (G.ch.chi (D.R.m - i) k) hc1`. Take `⟨y, hy⟩` from `GlobalTheory.Adopt.heckeCharacter_finiteOrder_values_in_field D (Lc.xi t) (Lc.xiH t) n _ D.what₂.embLL (hL.xi t) hn ho ((hN.chars.xi t).valuesIn) k`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ((Lc.xi t k : Circle) : ℂ) ^ n = 1`. Use `DFunLike.congr_fun (exists_prime_power_pow_eq_one (hL.xi t) ho) k` as an intermediate fact. Rewrite `this` using `[MonoidHom.pow_apply, MonoidHom.one_apply]`. Conclude with `(map_pow Circle.coeHom _ _).symm.trans (congrArg _ this)`. Establish `hyn : (y : D.what₂.LL) ^ n = 1` using `D.what₂.embLL.injective (by rw [map_pow, hy, h1, map_one])`.
-
-Conclude with `⟨y, GlobalTheory.KappaArith.isAwayUnit_of_pow_eq_one _ hn hyn, by rw [e, hy]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.squareNu_ratio_values_roots_of_unity : GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), NumbersIn D.what₂.embLL S μ₀ →
     ∀ (i j : Fin D.R.m) (t : T) (k : (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE D.host.F D.host.E)ˣ), ∃ ζ : D.what₂.LL, GlobalTheory.Square.IsAwayUnit (Qn G t) ζ ∧

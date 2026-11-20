@@ -3,25 +3,23 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h1 h2`. Use `set R : Submodule A N := LinearMap.range φ.toLinearMap with hR`. Establish `hQ : (⊤ : Submodule A (N ⧸ R)) ≤ J • ⊤`. Introduce and unpack `q -`. Take `⟨y, rfl⟩` from `R.mkQ_surjective q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `h1 y`. Establish `hz : y - φ t ∈ J • (⊤ : Submodule A N)`. Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `ht`. Establish `hm : R.mkQ (y - φ t) ∈ J • (⊤ : Submodule A (N ⧸ R))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.mem_map_of_mem (f := R.mkQ) hz` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ]`. Conclude with `this`. Establish `he : R.mkQ (y - φ t) = R.mkQ y`. Rewrite using `[map_sub, sub_eq_self, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, rfl⟩`. Rewrite `hm` using `[he]`. Then use the resulting hypothesis. Take `⟨r, hr1, hr⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul J (⊤ : Submodule A (N ⧸ R)) (Module.Finite.fg_top) hQ`. Establish `hrR : ∀ y : N, r • y ∈ R`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hr (R.mkQ y) trivial` as an intermediate fact. Rewrite `this` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Use `set K : Submodule A M := LinearMap.ker φ.toLinearMap with hK`. Establish `hKfg : K.FG` using `IsNoetherian.noetherian K`. Establish `hKle : K ≤ J • K`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `t ht`. Establish `hφ : φ t = 0` using `ht`. Establish `hmem : t ∈ (⨅ i : ℕ, J ^ i • ⊤ : Submodule A M)`. Rewrite using `[Submodule.mem_iInf]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `h2 i t (by rw [hφ]; exact Ideal.zero_mem _)`. Take `⟨⟨s, hs⟩, hst⟩` from `(J.mem_iInf_smul_pow_eq_bot_iff t).1 hmem`. Simplify using `only at hst`. Rewrite using `[← hst]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem_smul hs ht`. Take `⟨u, hu1, hu⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul J K hKfg hKle`. Use `⟨r * u, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: r * u - 1 = r * (u - 1) + (r - 1)` using `by ring`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.add_mem (J.mul_mem_left r hu1) hr1`. Introduce `y`. Rewrite using `[← Algebra.smul_def, mul_comm, mul_smul]`. Take `⟨t, ht⟩` from `hrR y`. Conclude with `⟨u • t, by`.
-
-Express the relevant statement in the definitionally equal form `φ (u • t) = u • (r • y)`. Rewrite using `[map_smul]`. Use `congr 1⟩`. Introduce `t ht`. Rewrite using `[← Algebra.smul_def, mul_smul, hu t ht, smul_zero]`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_alg_hom_ker_coker_killed_of_onto_mod_ideal
     (A : Type) [CommRing A] [IsNoetherianRing A] (J : Ideal A) (M N : Type) [CommRing M]

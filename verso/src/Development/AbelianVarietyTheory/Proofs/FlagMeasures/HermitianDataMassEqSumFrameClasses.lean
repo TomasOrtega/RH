@@ -12,15 +12,15 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S P hP`. Use `⟨?_, fun h hh d C => ?_⟩` and prove the remaining obligations. Establish `e : (fun d => S.mass d (P d)) = fun d => S.sumCls fun C => S.nT d C (P d)`. Use function extensionality and compare the values at `fun d => mass_eq_sumCls L r k S d (P d) fun h hh Λ => hP h hh d Λ`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Unfold `Frames.sumData Frames.sumCls`. Simplify using `only [← ENNReal.tsum_mul_left]`. Rewrite using `[ENNReal.tsum_comm]`. Use `tsum_congr fun c => ?_` and prove the remaining obligations. Use `split_ifs`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `tsum_congr fun o => mul_left_comm _ _ _`. Simplify using the standard rewrite rules. Unfold `Frames.nT`. Establish `e : ({Λ | S.IsTerm d Λ ∧ P d Λ ∧ S.Fr d Λ = h • C} : Set (Submodule L.O S.V)) = (fun Λ => h • Λ) '' {Λ | S.IsTerm d Λ ∧ P d Λ ∧ S.Fr d Λ = C}`. Use extensionality with `Λ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Establish `A` using `GlobalTheory.FrameAct.stabiliser_acts_on_terms L r k S d Λ h1 h⁻¹ (S.St.inv_mem hh)`. Use `⟨h⁻¹ • Λ, ⟨A.1, hP _ (S.St.inv_mem hh) d Λ h1 h2, ?_⟩, smul_inv_smul h Λ⟩` and prove the remaining obligations. Rewrite using `[A.2.2.2.2.1, h3, inv_smul_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨Λ, ⟨h1, h2, h3⟩, rfl⟩`. Establish `A` using `GlobalTheory.FrameAct.stabiliser_acts_on_terms L r k S d Λ h1 h hh`. Use `⟨A.1, hP _ hh d Λ h1 h2, ?_⟩` and prove the remaining obligations. Rewrite using `[A.2.2.2.2.1, h3]`. Rewrite using `[e, (MulAction.injective h).encard_image]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumData_mass_eq_sumCls : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ P : S.Datum → Submodule L.O S.V → Prop, (∀ h ∈ S.St, ∀ d Λ, S.IsTerm d Λ → P d Λ → P d (h • Λ)) → (S.sumData fun d => S.mass d (P d)) = (S.sumCls fun C => S.sumData fun d => S.nT d C (P d)) ∧ ∀ h ∈ S.St, ∀ d C, S.nT d (h • C) (P d) = S.nT d C (P d) := by
   intro F _ _ _ _ _ E _ _ _ L r k S P hP

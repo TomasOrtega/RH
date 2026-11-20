@@ -24,7 +24,7 @@ section ClassSum
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
 /- English proof (translation)
-Establish `k0` using `j_coordMap (R := R) (F := F) j ((thetaMat R F j t).mulVec y)`. Establish `k1` using `(R.toCx F).key_lift F.cr false hB.1 hB.2.1 j t y`. Establish `k2` using `tC_cpt (R.toCx F) F.cr false j t y`. Establish `k3 : (R.toCx F).θ' j t ((R.toCx F).jL j t (F.cr.toL (R.toCx F).zs false j t y)) = Tw.mk (twAt D.what₂.embLL A.v0) (R.thG j t (R.jV j t ((A.fam.L j t).toF (liftLvl F) (liftSub R F j t) y)))` using `rfl`. Conclude with `k0.trans ((k1.trans k2).trans k3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem j_thetaMat_base (hB : BaseLinks R F) (j : Fin D.R.m) (t : T0)
     (y : Fin ((A.fam.L j t).dZ (liftLvl F) (liftSub R F j t)) → D.what₂.LL) :
@@ -38,9 +38,9 @@ theorem j_thetaMat_base (hB : BaseLinks R F) (j : Fin D.R.m) (t : T0)
   exact k0.trans ((k1.trans k2).trans k3)
 
 /- English proof (translation)
-Rewrite `hu` using `[← range_coordMap]`. Take `⟨z, rfl⟩` from `hu`. Take `⟨y, rfl⟩ : ∃ y, (thetaMat R F i t).mulVec y = z` from `((R.toCx F).liftMat_bij F.cr false (RealDat.kForm hU false) (RealDat.ewNorm false) (RealDat.nP_pos false) hB.1 hB.2.1 i t).2 z`. Establish `hb : _ = R.thG i t (R.jV i t (srcF F i t (((A.fam.L i t).lE (liftLvl F) (liftSub R F i t)).mulVec y)))` using `(j_thetaMat_base hB i t y).trans (congrArg (fun f => R.thG i t (R.jV i t f)) (toF_eq_srcF hOk i t y))`. Establish `h0` using `lPr_eq_zero_of_ker hOk hHV hjV i t (x - ((A.fam.L i t).lE (liftLvl F) (liftSub R F i t)).mulVec y) ((lift_sub i t _ _).trans (sub_eq_zero.2 (ha.symm.trans hb)))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec, BlockDat.lf_lPr_lE (blockHyp (F := F) hOk i t), Matrix.one_mulVec, sub_eq_zero]`. Rewrite using `[← h0, Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eq_thetaOp_base {s : ℕ} (hOk : A.fam.Ok s) (hHV : R.models_HV) (hjV : R.models_jV) (hU : R.LUnif) (hB : BaseLinks R F)
     (i : Fin D.R.m) (t : T0) (x : Fin (OntoChain.srcDim F i t) → D.what₂.LL) {u : Fin (R.nW i) → D.what₂.LL}
@@ -60,7 +60,7 @@ theorem eq_thetaOp_base {s : ℕ} (hOk : A.fam.Ok s) (hHV : R.models_HV) (hjV : 
   rfl
 
 /- English proof (translation)
-Use `eq_thetaOp_base hOk hHV hjV hU hB i t x hx ((hHW i _).1 ?_)` and prove the remaining obligations. Use `(adForm_goodOp hU i _).trans ?_` and prove the remaining obligations. Use `(congrArg (Mult.postOn _ (R.eWf i (sg0 D A))) (hθ x)).trans ?_` and prove the remaining obligations. Conclude with `(LinearMap.map_smul _ _ _).trans (hG i t _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem goodOp_classSum_base {s : ℕ} (hOk : A.fam.Ok s) {ph : Fin D.R.m → ℂ} (hG : PhasedLift R ph) (hHV : R.models_HV)
     (hjV : R.models_jV) (hHW : R.models_HW) (hU : R.LUnif) (hB : BaseLinks R F) (i : Fin D.R.m) (t : T0)
@@ -89,13 +89,13 @@ variable {fw : FWTie J R κ v₀} {hc : LawsCore J.toCore} {run : HeightOneSpect
   {ph : Fin D.R.m → ℂ} {c : OnConst} {s : ℕ}
 
 /- English proof (translation)
-Take `⟨z, act, y, ht⟩` from `ht`. Take `⟨v₁, -⟩` from `exists_place3 D.what₂.LL`. Set `w : ∀ j, (Fin (O.nZ j) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (R.nW j) → D.what₂.LL)` to `fun j => LinearEquiv.ofBijective (toForms (T := (run v₁).full) (R := R) (h v₁) fw j (z j)) (toForms_bijective (T := (run v₁).full) (R := R) (h v₁) fw j (z j))`. Establish `he : ∀ j x, w j (O.e j x) = goodOp R j (w j x)` using `fun j x => (ht v₁ j).1.e_eOp x`. Establish `hZ : ∀ j x, x ∈ O.Zg j ↔ w j x ∈ R.WL F false j` using `fun j => mem_Zg_iff h1 h2 hinc j ((ht v₁ j).1.rho_eq_of_actionPin (ht v₁ j).2) (ht v₁ j).1.U_eq (ht v₁ j).1.ψ_eq (he j) (ht v₁ j).1.V₀_eq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : ∀ j x, x ∈ O.Ms j ↔ w j x ∈ supLat (R.FW j)` using `fun j x => mem_Ms_iff (ht v₁ j).1 x`. Establish `key : ∀ v j, ClassSumRational R j (R.mu v) F.P0 F.ψ0⁻¹ (ph j) → (O.θ' v j ∘ₗ O.eX v j = O.e j ∘ₗ O.θ' v j ∧ ∀ x ∈ LinearMap.range (O.eX v j), x - O.pr v j x ∈ LinearMap.ker (O.θ' v j)) → IsLatIn (O.Zg j) (O.Im v j) → (withCoord O w).TjId j v (R.mu v)` using `fun v j hra hI hT => by`. Use `coord_tuple j v (y v j) (fun x => by rw [(ht v j).1.Mt_eq]; rfl) (fun x hx => ?_) hI` and prove the remaining obligations. Establish `hθ : OnTies.IsClassSum R j (R.mu v) F.P0 F.ψ0⁻¹ (ph j) ((w j).toLinearMap ∘ₗ O.θ' v j ∘ₗ (y v j).symm.toLinearMap)` using `(ht v j).1.θ'_eq hra`. Establish `e : ((w j).toLinearMap ∘ₗ O.θ' v j ∘ₗ (y v j).symm.toLinearMap) (y v j x) = w j (O.θ' v j x)` using `congrArg (fun u => w j (O.θ' v j u)) ((y v j).symm_apply_apply x)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : w j (O.e j (O.θ' v j x)) ∈ R.WL F false j` using `(hZ j _).1 (hT.2.le (Submodule.subset_span ⟨_, ⟨x, hx, rfl⟩, rfl⟩))`. Use `goodOp_classSum_base hOk hG hHV hjV hHW hU hB j (R.mu v) hθ (y v j x) (by rw [e, ← he]; exact hm)` as an intermediate fact. Rewrite `this` using `[e, ← he]`. Conclude with `this`. Use `⟨w, fun j => coord_lattice j (hZ j) (hM j), fun v hv j => ⟨key v j (hrat v hv j) ((hI v hv).1 j) ((hT v hv).1 j).2.1, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `key (conjPl v) j (by rw [hμ v]; exact hrat v hv j) ((hI v hv).2 j) ((hT v hv).2 j).2.1` as an intermediate fact. Rewrite `this` using `[hμ v]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_tieCoord_base {P : Type} [Group P] [Finite P] {inc : P →* G} {O : OnObj ((R.toCx F).data F.cr false) P c}
     (ht : OnObjLevelCompatibility F fw hc run h hinj EX p wL wF nT ℓ ph inc O) (hinc : F.P0 ≤ inc.range)

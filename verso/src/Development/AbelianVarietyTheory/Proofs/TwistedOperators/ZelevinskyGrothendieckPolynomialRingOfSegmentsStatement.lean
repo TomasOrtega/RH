@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Gr
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ZelevinskyGrothendieckPolynomialRingOfSegments
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.JHMult
 /- English proof (citation)
-Apply `GlobalTheory.zelevinskyPolynomialRing_of_parts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FZelevinskyGrothendieckPolynomialRingOfSegments.lean&line=13#L13)
 -/

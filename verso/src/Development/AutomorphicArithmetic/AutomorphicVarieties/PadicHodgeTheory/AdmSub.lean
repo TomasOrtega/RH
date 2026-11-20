@@ -13,14 +13,14 @@ private noncomputable def invT {V : Type} [AddCommGroup V] [Module Q V] (ρ : Re
   ⨅ g : G, LinearMap.ker (AlgebraTensorModule.map (ρ g) (a g) - LinearMap.id)
 
 /- English proof (translation)
-Simplify using `only [invT, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_invT {V : Type} [AddCommGroup V] [Module Q V] (ρ : Representation Q G V) (x : V ⊗[Q] B) :
     x ∈ invT a ρ ↔ ∀ g, AlgebraTensorModule.map (ρ g) (a g) x = x := by
   simp only [invT, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [hf g]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem rT_comm {V V' : Type} [AddCommGroup V] [Module Q V] [AddCommGroup V'] [Module Q V']
     {ρ : Representation Q G V} {ρ' : Representation Q G V'} {f : V →ₗ[Q] V'}
@@ -39,13 +39,13 @@ private noncomputable def invMap {V V' : Type} [AddCommGroup V] [Module Q V] [Ad
     rw [← rT_comm a hf, (mem_invT a ρ _).1 hx]
 
 /- English proof (translation)
-Establish `hex : Function.Exact (i.rTensor B) (p.rTensor B)` using `rTensor_exact B h2 h3`. Establish `hinj : Function.Injective (i.rTensor B)` using `Module.Flat.rTensor_preserves_injective_linearMap _ h1`. Establish `e1 : Function.Injective (invMap a hi)` using `fun x y h => Subtype.ext (hinj (congrArg Subtype.val h))`. Establish `e2 : Function.Exact (invMap a hi) (invMap a hp)`. Use `fun x => ⟨fun h => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `(hex x).1 (congrArg Subtype.val h)`. Use `⟨⟨y, (mem_invT a ρ₀ y).2 fun g => hinj ?_⟩, Subtype.ext hy⟩` and prove the remaining obligations. Rewrite using `[rT_comm a hi, hy]`. Conclude with `(mem_invT a ρ _).1 x.2 g`. Introduce and unpack `⟨y, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `Subtype.ext ((hex _).2 ⟨_, rfl⟩)`. Establish `h4` using `(invMap a hp).finrank_range_add_finrank_ker`. Rewrite `h4` using `[e2.linearMap_ker_eq, LinearMap.finrank_range_of_inj e1]`. Establish `h5` using `p.finrank_range_add_finrank_ker`. Rewrite `h5` using `[h2.linearMap_ker_eq, LinearMap.finrank_range_of_inj h1, LinearMap.range_eq_top.2 h3, finrank_top]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h6` using `(LinearMap.range (invMap a hp)).finrank_le`. Rewrite `h` using `[← h5, mul_add]`. Conclude with `⟨by omega, by omega⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem of_exact {V₀ V V' : Type} [AddCommGroup V₀] [Module Q V₀] [AddCommGroup V] [Module Q V]
     [AddCommGroup V'] [Module Q V'] [FiniteDimensional Q V]
@@ -77,11 +77,11 @@ private theorem of_exact {V₀ V V' : Type} [AddCommGroup V₀] [Module Q V₀] 
   exact ⟨by omega, by omega⟩
 
 /- English proof (translation)
-Use `(hb V ρ).1` as an intermediate fact. Use `(hb V' ρ').1` as an intermediate fact. Use `⟨fun hi h => ?_, fun hs h => ?_⟩` and prove the remaining obligations. Establish `hst : ∀ g, LinearMap.range f ≤ (LinearMap.range f).comap (ρ' g)`. Introduce and unpack `g _ ⟨v, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨ρ g v, hf g v⟩`. Use `(hb _ (ρ'.quotient (LinearMap.range f) hst)).1` as an intermediate fact. Conclude with `(of_exact a (ρ' := ρ'.quotient (LinearMap.range f) hst) hf (fun g v => rfl) hi (LinearMap.exact_map_mkQ_range f) (LinearMap.range f).mkQ_surjective n (hb V ρ).2 (hb _ _).2 h).1`. Establish `hst : ∀ g, LinearMap.ker f ≤ (LinearMap.ker f).comap (ρ g)`. Introduce `g v hv`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_comap, LinearMap.mem_ker, hf, LinearMap.mem_ker.1 hv, map_zero]`. Conclude with `(of_exact a (ρ₀ := ρ.subrepresentation (LinearMap.ker f) hst) (fun g v => rfl) hf (LinearMap.ker f).injective_subtype (LinearMap.exact_subtype_ker_map f) hs n (hb _ _).2 (hb V' ρ').2 h).2`.
+A detailed English derivation is pending.
 -/
 private theorem sub_quot (n : ℕ)
     (hb : ∀ (W : Type) [AddCommGroup W] [Module Q W] [FiniteDimensional Q W] (σ : Representation Q G W),
@@ -111,7 +111,7 @@ private theorem sub_quot (n : ℕ)
 end Generic
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.Per.FontaineBound.finite_finrank_le_base (Qp := Q) (act.comp e.toMonoidHom) (fun b b' hb h => hreg b b' hb fun g => by simpa using h (e.symm g)) σ`. Establish `: a = fun g => ((act.comp e.toMonoidHom g).toAlgHom.toLinearMap).restrictScalars Q`. Use function extensionality and compare the values at `fun g => LinearMap.ext fun b => ha g b`. Substitute `this` using the available equality. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem bound {G H Q K B : Type} [Group G] [Group H] [Field Q] [Field K] [Algebra Q K] [CommRing B]
     [IsDomain B] [Algebra Q B] [Algebra K B] [IsScalarTower Q K B] [FiniteDimensional Q K]
@@ -128,13 +128,13 @@ private theorem bound {G H Q K B : Type} [Group G] [Group H] [Field Q] [Field K]
   exact h
 
 /- English proof (translation)
-Introduce `l _ G _ _ _ φ hφ A _ _ A' _ _ V _ _ _ _ _ _ _ _ _ V' _ _ _ _ _ _ _ _ _ ρ ρ' _ _ f hf`. Take `⟨K, e, -, -, he, -, hK, hK0⟩` from `openField φ hφ`. Take `⟨T⟩` from `tiedP l`. Establish `hF` using `GlobalTheory.Per.FontaineBound.isField_of_tied T`. Use `GlobalTheory.Per.FontaineBound.isDomain_cris ((PP l).PD K) hF` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hF.isDomain` as an intermediate fact. Use `((PP l).PD K).finK₀` as an intermediate fact. Use `K.2` as an intermediate fact. Establish `hφe : ∀ g, φ g = (e g : GQ l)` using `fun g => by rw [← he]; rfl`. Establish `hc` using `sub_quot (fun g => ((PP l).actQ (φ g)).toLinearMap) _ (bound e ((PP l).PD K).actB (fun b b' hb h => GlobalTheory.Per.FracInv.tied_frac_invariant l (PP l) (AIP l) T K b' b hb fun g hg => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `h ⟨g, hg⟩`. Rewrite `h1` using `[(PP l).PD_actB, (PP l).PD_actB]`. Rewrite using `[mul_comm, h1, mul_comm]) _ fun g b => by rw [(PP l).PD_actB, hφe]; rfl)`. Use the proof step `(ρ := resCoef ℚ_[l] ρ) (ρ' := resCoef ℚ_[l] ρ') (f := f) hf`. Establish `hd` using `sub_quot (fun g => ((PP l).actQdR (φ g)).toLinearMap) _ (bound e ((PP l).PD K).actdR (GlobalTheory.Per.FontaineBound.frac_dR ((PP l).PD K) hF) _ fun g b => by rw [(PP l).PD_actdR, hφe]; rfl) (ρ := resCoef ℚ_[l] ρ) (ρ' := resCoef ℚ_[l] ρ') (f := f) hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `IsCr IsDr`. Rewrite using `[hK, hK0]`. Conclude with `⟨fun h => ⟨hc.1 h, hd.1 h⟩, fun h => ⟨hc.2 h, hd.2 h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.isCrys_isDR_sub_quot :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {A : Type} [CommRing A] [Algebra ℚ_[l] A] {A' : Type} [CommRing A'] [Algebra ℚ_[l] A'] {V : Type} [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V] [ContinuousConstSMul A V] {V' : Type} [AddCommGroup V'] [Module A' V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] A' V'] [FiniteDimensional ℚ_[l] V'] [TopologicalSpace V'] [IsModuleTopology ℚ_[l] V'] [IsTopologicalAddGroup V'] [ContinuousConstSMul A' V'] (ρ : Representation A G V) (ρ' : Representation A' G V'), ContAction ρ → ContAction ρ' → ∀ f : V →ₗ[ℚ_[l]] V', (∀ g x, f (ρ g x) = ρ' g (f x)) → (Function.Injective f → (IsCr φ ρ' → IsCr φ ρ) ∧ (IsDr φ ρ' → IsDr φ ρ)) ∧ (Function.Surjective f → (IsCr φ ρ → IsCr φ ρ') ∧ (IsDr φ ρ → IsDr φ ρ')) := by

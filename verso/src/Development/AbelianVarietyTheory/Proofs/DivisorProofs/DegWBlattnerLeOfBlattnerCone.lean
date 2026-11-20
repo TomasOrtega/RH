@@ -7,7 +7,7 @@ namespace GlobalTheory.FlowLemma
 
 open MvPolynomial in
 /- English proof (translation)
-Apply the tactic sequence `cases a <;> simp only [_root_.Formalism.BasicNotions.TH.shiftNu] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma shiftNu_add_right {p q : ℕ} (c : ℚ) (f g : _root_.Formalism.BasicNotions.TH.Ix p q → ℚ) (a : _root_.Formalism.BasicNotions.TH.Ix p q) :
     _root_.Formalism.BasicNotions.TH.shiftNu c (fun x => f x + g x) a = _root_.Formalism.BasicNotions.TH.shiftNu c f a + g a := by
@@ -15,17 +15,15 @@ private lemma shiftNu_add_right {p q : ℕ} (c : ℚ) (f g : _root_.Formalism.Ba
 
 open MvPolynomial in
 /- English proof (translation)
-Take `⟨m, hm, rfl⟩` from `hC μ v hv`. Use `set Δ : _root_.Formalism.BasicNotions.TH.Ix p q → ℚ := fun x => ∑ a, ∑ b, (m a b : ℚ) * ((if x = a then 1 else 0) - if x = b then 1 else 0) with hΔ`. Establish `key : ∑ x, s x * Δ x = ∑ a, ∑ b, (m a b : ℚ) * (s a - s b)`. Simplify using `only [hΔ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [mul_sub, Finset.sum_sub_distrib, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hnn : 0 ≤ ∑ x, s x * Δ x`. Rewrite using `[key]`. Use `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : m a b = 0`. Simplify using `[h0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `mul_nonneg (Nat.cast_nonneg _) (sub_nonneg.2 (hmono a b (hm a b h0)))`. Establish `habs : ∀ x y : ℚ, ∀ a, s a * (x + y) ≤ |x + y|`. Introduce `x y a`. Apply the tactic sequence `rcases hs a with h | h <;> rw [h]`. Simplify using `using le_abs_self (x + y)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Simplify using `using neg_le_abs (x + y)`. Unfold `_root_.Formalism.BasicNotions.TH.degW`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_add_distrib]`. Simplify using `[mul_add]`.
-
-Use `_ ≤ ∑ a, |_root_.Formalism.BasicNotions.TH.shiftNu c (_root_.Formalism.BasicNotions.TH.blattner lam) a + Δ a| := Finset.sum_le_sum fun a _ => habs _ _ a`. Use `_ = ∑ a, |_root_.Formalism.BasicNotions.TH.shiftNu c (fun x => _root_.Formalism.BasicNotions.TH.blattner lam x + Δ x) a| := by`. Simplify using `[shiftNu_add_right]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma degW_blattner_le_of_sign_lemma {p q : ℕ} (M : _root_.Formalism.BasicNotions.TH.GKMod p q) (lam : _root_.Formalism.BasicNotions.TH.Ix p q → ℚ)
     (c : ℚ) (hC : _root_.GlobalTheory.FockAlg.ConeTypes M lam) (s : _root_.Formalism.BasicNotions.TH.Ix p q → ℚ)
@@ -71,9 +69,9 @@ private lemma degW_blattner_le_of_sign_lemma {p q : ℕ} (M : _root_.Formalism.B
 open MvPolynomial in
 
 /- English proof (translation)
-Use `degW_blattner_le_of_sign_lemma M lam c hC (fun a => if θ < lam a then 1 else -1) (fun a => ?_) (fun a => ?_) (fun a b hab => ?_) μ v hv` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Use `split_ifs with h`. Simplify using `[abs_of_nonneg ((hs a).1 h)]`. Simplify using `[abs_of_nonpos ((hs a).2 (not_lt.1 h))]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `beta_reduce split_ifs with h1 h2 h2 <;> first | exact absurd (h1.trans hab) h2 | norm_num`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FlowLemma.degW_blattner_le (p q : ℕ) (M : _root_.Formalism.BasicNotions.TH.GKMod p q) (lam : _root_.Formalism.BasicNotions.TH.Ix p q → ℚ)
     (c θ : ℚ)

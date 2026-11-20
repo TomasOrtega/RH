@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 open Polynomial Finset Equiv
 
 /- English proof (translation)
-The claim follows from `Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde w (fun s => descPochhammer ℚ (s : ℕ)) (fun _ => descPochhammer_natDegree (R := ℚ) _) (fun _ => monic_descPochhammer (R := ℚ) _)`.
+A detailed English derivation is pending.
 -/
 theorem VandermondeBranch.det_vandermonde_eq_descPochhammer {j : ℕ} (w : Fin j → ℚ) :
     (Matrix.vandermonde w).det =
@@ -16,7 +16,7 @@ theorem VandermondeBranch.det_vandermonde_eq_descPochhammer {j : ℕ} (w : Fin j
     (fun _ => descPochhammer_natDegree (R := ℚ) _) (fun _ => monic_descPochhammer (R := ℚ) _)
 
 /- English proof (translation)
-Rewrite using `[← descPochhammer_succ_eval, descPochhammer_succ_left]`. Simplify using `[eval_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem VandermondeBranch.mul_eval_sub_one (k : ℕ) (x : ℚ) :
     x * (descPochhammer ℚ k).eval (x - 1) = (descPochhammer ℚ k).eval x * (x - k) := by
@@ -24,9 +24,9 @@ theorem VandermondeBranch.mul_eval_sub_one (k : ℕ) (x : ℚ) :
   simp [eval_comp]
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase univ _ (mem_univ i₀), ← Finset.mul_prod_erase univ _ (mem_univ i₀)]`. Establish `hrest : ∏ i ∈ univ.erase i₀, (descPochhammer ℚ (i : ℕ)).eval (Function.update v (σ i₀) (v (σ i₀) - 1) (σ i)) = ∏ i ∈ univ.erase i₀, (descPochhammer ℚ (i : ℕ)).eval (v (σ i))`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hne : σ i ≠ σ i₀` using `fun h => (Finset.ne_of_mem_erase hi) (σ.injective h)`. Rewrite using `[Function.update_of_ne hne]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrest, Function.update_self, ← mul_assoc, VandermondeBranch.mul_eval_sub_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem VandermondeBranch.term {j : ℕ} (v : Fin j → ℚ) (σ : Perm (Fin j)) (i₀ : Fin j) :
     v (σ i₀) * ∏ i : Fin j, (descPochhammer ℚ (i : ℕ)).eval
@@ -43,9 +43,9 @@ theorem VandermondeBranch.term {j : ℕ} (v : Fin j → ℚ) (σ : Perm (Fin j))
   ring
 
 /- English proof (translation)
-Introduce `j v`. Simplify using `only [VandermondeBranch.det_vandermonde_eq_descPochhammer]`. Simplify using `only [Matrix.det_apply', Matrix.of_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ a, v a * (↑↑(Perm.sign σ) * ∏ i : Fin j, (descPochhammer ℚ (i : ℕ)).eval (Function.update v a (v a - 1) (σ i))) = ↑↑(Perm.sign σ) * (v a * ∏ i : Fin j, (descPochhammer ℚ (i : ℕ)).eval (Function.update v a (v a - 1) (σ i)))` using `fun a => by ring`. Simplify using `only [h1]`. Rewrite using `[← Finset.mul_sum, ← Equiv.sum_comp σ]`. Simplify using `only [VandermondeBranch.term, ← Finset.mul_sum, Finset.sum_sub_distrib, Equiv.sum_comp σ v]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem VandermondeBranch.proof : VandermondeBranch.Statement := by
   intro j v

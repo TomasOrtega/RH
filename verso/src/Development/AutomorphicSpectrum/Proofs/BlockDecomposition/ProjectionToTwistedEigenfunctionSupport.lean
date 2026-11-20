@@ -14,21 +14,19 @@ namespace GlobalTheory.CompanionTheory.TwAvgInd
 open GlobalTheory.CompanionTheory.TwistedAverage
 
 /- English proof (translation)
-Use `haveI := finiteIndex_stabKer hρ hL θ hθ x`. Use `haveI : Finite (L ⧸ stabKer ρ L θ x) := Subgroup.finite_quotient_of_finiteIndex`. Use `letI := Fintype.ofFinite (L ⧸ stabKer ρ L θ x)`. Establish `hn : ((Fintype.card (L ⧸ stabKer ρ L θ x) : ℕ) : ℂ) ≠ 0`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF : ∀ a b : L, (QuotientGroup.mk a : L ⧸ stabKer ρ L θ x) = QuotientGroup.mk b → twOrbit ρ L θ x a = twOrbit ρ L θ x b`. Introduce `a b h`. Establish `hm : a⁻¹ * b ∈ stabKer ρ L θ x` using `QuotientGroup.eq.1 h`. Use `twOrbit_mul_right ρ L θ x a _ hm` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.symm`. Use `⟨L ⧸ stabKer ρ L θ x, inferInstance, Quotient.out, ((Fintype.card (L ⧸ stabKer ρ L θ x) : ℕ) : ℂ)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `e : x - ((Fintype.card (L ⧸ stabKer ρ L θ x) : ℕ) : ℂ)⁻¹ • ∑ q : L ⧸ stabKer ρ L θ x, twOrbit ρ L θ x (Quotient.out q) = ((Fintype.card (L ⧸ stabKer ρ L θ x) : ℕ) : ℂ)⁻¹ • ∑ q : L ⧸ stabKer ρ L θ x, (x - twOrbit ρ L θ x (Quotient.out q))`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, smul_sub, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hn, one_smul]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun q _ => ?_)` and prove the remaining obligations. Establish `e2 : x - twOrbit ρ L θ x (Quotient.out q) = (-(((θ (Quotient.out q))⁻¹ : ℂˣ) : ℂ)) • (ρ ((Quotient.out q : L) : G) x - (θ (Quotient.out q) : ℂ) • x)`. Rewrite using `[twOrbit, smul_sub, smul_smul, neg_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, neg_smul, neg_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, _, rfl⟩)`. Introduce `l`. Establish `h1 : ∀ t : L, ρ (l : G) (twOrbit ρ L θ x t) = (θ l : ℂ) • twOrbit ρ L θ x (l * t)`. Introduce `t`. Establish `h0 : θ l * (θ (l * t))⁻¹ = (θ t)⁻¹`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[map_mul, mul_inv, mul_inv_cancel_left]`. Simplify using `only [twOrbit, map_smul, smul_smul]`. Rewrite using `[← Units.val_mul, h0, Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Establish `h2 : ∑ q : L ⧸ stabKer ρ L θ x, twOrbit ρ L θ x (l * Quotient.out q) = ∑ q : L ⧸ stabKer ρ L θ x, twOrbit ρ L θ x (Quotient.out q)`. Set `e : Equiv.Perm (L ⧸ stabKer ρ L θ x)` to `MulAction.toPerm l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h3 : ∀ q : L ⧸ stabKer ρ L θ x, twOrbit ρ L θ x (l * Quotient.out q) = twOrbit ρ L θ x (Quotient.out (e q))`. Introduce `q`. Use `hF _ _ ?_` and prove the remaining obligations. Rewrite using `[QuotientGroup.out_eq']`. Use `conv_rhs => rw [← QuotientGroup.out_eq' q]`.
-
-Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun q _ => h3 q]`. Conclude with `Equiv.sum_comp e (fun q => twOrbit ρ L θ x (Quotient.out q))`. Rewrite using `[map_smul, map_sum, Finset.sum_congr rfl fun q _ => h1 _, ← Finset.smul_sum, h2, smul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_average {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Representation ℂ G V) (hρ : IsSmooth ρ)
@@ -97,13 +95,11 @@ def evalAt {G W : Type} [AddCommGroup W] [Module ℂ W] [Group G]
   (LinearMap.proj g) ∘ₗ (indSpace P τ).subtype ∘ₗ (smoothPart (ind P τ)).subtype
 
 /- English proof (translation)
-Take `⟨ι, _, r, c, h1, h2⟩` from `exists_finite_average (smInd P τ) (GlobalTheory.CompanionTheory.BZFun.isSmooth_smInd P τ) hL θ hθ f`. Use `⟨_, h1, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hg` to reduce the goal to its premises. Establish `hz : ∀ i, evalAt P τ g (twOrbit (smInd P τ) L θ f (r i)) = 0`. Introduce `i`. Establish `: evalAt P τ g (smInd P τ ((r i : L) : G) f) = 0` using `hcon _ (r i).2`. Simplify using `only [twOrbit, map_smul, this, smul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: evalAt P τ g (c • ∑ i, twOrbit (smInd P τ) L θ f (r i)) = 0`. Rewrite using `[map_smul, map_sum, Finset.sum_eq_zero fun i _ => hz i, smul_zero]`. Conclude with `this`. Introduce `l g`. Establish `h3` using `congrArg (evalAt P τ g) (h2 l)`.
-
-Rewrite `h3` using `[map_smul]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_twisted_average_smInd {G : Type} {W : Type} [AddCommGroup W] [Module ℂ W] [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] (P : Subgroup G) (τ : Representation ℂ P W)

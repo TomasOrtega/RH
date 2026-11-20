@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsNatCast
 open NumberField
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_natCast_mem_differentIdeal_pow_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCuspFormEvaluations%2FExistsNatCastMemDifferentIdealPowLe.lean&line=80#L80)
 -/

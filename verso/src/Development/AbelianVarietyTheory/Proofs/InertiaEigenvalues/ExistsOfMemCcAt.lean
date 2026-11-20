@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.CutFam
 
 /- English proof (translation)
-Unfold `ccAt Ideal.map at hc`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`. Conclude with `⟨f, hf, rfl⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, zero_mem _, rfl⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨f, hf, rfl⟩` from `hx`. Take `⟨g, hg, rfl⟩` from `hy`. Conclude with `⟨f + g, add_mem hf hg, rfl⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul r x _ hx`. Take `⟨f, hf, rfl⟩` from `hx`. Use `⟨algebraMap O T r * f, Ideal.mul_mem_left _ _ hf, ?_⟩` and prove the remaining obligations. Simplify using `[smul_eq_mul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_of_mem_ccAt {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (Z : Finset X) (π : X)
     {c : O} (hc : c ∈ ccAt T Z π) : ∃ f ∈ ccIdeal T Z, ((f : T) : X → O) π = c := by
@@ -38,9 +38,9 @@ theorem exists_of_mem_ccAt {O X : Type} [CommRing O] (T : Subalgebra O (X → O)
     simp [smul_eq_mul]
 
 /- English proof (translation)
-Unfold `ccIdeal`. Rewrite using `[RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Use `congrFun h ⟨y, hy⟩` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `h`. Use function extensionality and compare the values at `y`. Simplify using `using h y.1 y.2`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_ccIdeal_iff {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (Z : Finset X) (f : T) :
     f ∈ ccIdeal T Z ↔ ∀ y, y ∉ Z → (f : X → O) y = 0 := by
@@ -55,13 +55,11 @@ theorem mem_ccIdeal_iff {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (
     simpa using h y.1 y.2
 
 /- English proof (translation)
-Establish `h : ∀ x : {x // x ∉ Z}, ∃ f : T, (f : X → O) x.1 ≠ (f : X → O) π`. Introduce `x`. Take `⟨f, hfT, hf⟩` from `hsep x.1 π (fun h => x.2 (h ▸ hπ))`. Conclude with `⟨⟨f, hfT⟩, hf⟩`. Use `choose g hg using h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∏ x : {x // x ∉ Z}, (g x - algebraMap O T ((g x : X → O) x.1)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ccIdeal_iff]`. Introduce `y hy`. Rewrite using `[SubmonoidClass.coe_finset_prod, Finset.prod_apply]`. Use `Finset.prod_eq_zero (Finset.mem_univ ⟨y, hy⟩) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[SubmonoidClass.coe_finset_prod, Finset.prod_apply]`. Use `Finset.prod_ne_zero_iff.mpr fun x _ => ?_` and prove the remaining obligations. Establish `e : ∀ c : O, ((algebraMap O T c : T) : X → O) π = c` using `fun c => by simp`. Rewrite using `[AddSubgroupClass.coe_sub, Pi.sub_apply, e]`.
-
-Conclude with `sub_ne_zero.mpr (hg x).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero {O X : Type} [CommRing O] [IsDomain O] [Fintype X] (T : Subalgebra O (X → O))
     (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) (Z : Finset X) (π : X) (hπ : π ∈ Z) :
@@ -85,9 +83,9 @@ theorem exists_ne_zero {O X : Type} [CommRing O] [IsDomain O] [Fintype X] (T : S
     exact sub_ne_zero.mpr (hg x).symm
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ht hϖ`. Rewrite using `[IsDiscreteValuationRing.addVal_def' u hϖ n]`. Establish `: Ideal.span {(u : O) * ϖ ^ n} = IsLocalRing.maximalIdeal O ^ n`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.span_singleton_mul_left_unit u.isUnit]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem length_span {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (t : O) (ht : t ≠ 0) :
     Module.length O (O ⧸ Ideal.span {t}) = IsDiscreteValuationRing.addVal O t := by
@@ -99,9 +97,9 @@ theorem length_span {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
   rw [this, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]
 
 /- English proof (translation)
-Unfold `lenUnit`. Rewrite using `[length_span _ (mul_ne_zero ha hb), length_span _ ha, length_span _ hb, IsDiscreteValuationRing.addVal_mul]`. Establish `h1 : IsDiscreteValuationRing.addVal O a ≠ ⊤` using `fun h => ha (IsDiscreteValuationRing.addVal_eq_top_iff.mp h)`. Establish `h2 : IsDiscreteValuationRing.addVal O b ≠ ⊤` using `fun h => hb (IsDiscreteValuationRing.addVal_eq_top_iff.mp h)`. Rewrite using `[ENat.toNat_add h1 h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[add_div]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lenUnit_mul {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (l : ℕ) {a b : O}
     (ha : a ≠ 0) (hb : b ≠ 0) :
@@ -121,7 +119,7 @@ theorem lenUnit_mul {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h` using `(Submodule.mem_iInf _).mp hu f`. Rewrite `h` using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[h, algebraMap_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_bc_eig (i : D.nd.Loc) (f : D.nd.T i) (x : D.nd.X i)
     {u : TensorProduct (D.nd.O i) (FractionRing (D.nd.O i)) (D.nd.Mt i)}
@@ -132,9 +130,9 @@ theorem act_bc_eig (i : D.nd.Loc) (f : D.nd.T i) (x : D.nd.X i)
   rw [h, algebraMap_smul]
 
 /- English proof (translation)
-Use `(Submodule.mem_iInf _).mpr fun f => ?_` and prove the remaining obligations. Establish `h` using `(Submodule.mem_iInf _).mp hu f`. Rewrite `h`, the goal using `[Module.End.mem_eigenspace_iff]`. Establish `e : (D.nd.act i f).baseChange (FractionRing (D.nd.O i)) (β.baseChange (FractionRing (D.nd.O i)) u) = β.baseChange (FractionRing (D.nd.O i)) ((D.nd.act i f).baseChange (FractionRing (D.nd.O i)) u)`. Rewrite using `[← Module.End.mul_apply, ← LinearMap.baseChange_mul, ← hβ f, LinearMap.baseChange_mul, Module.End.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, h, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_mem_eig (i : D.nd.Loc) (β : Module.End (D.nd.O i) (D.nd.Mt i))
     (hβ : ∀ f : D.nd.T i, β * D.nd.act i f = D.nd.act i f * β) (x : D.nd.X i)
@@ -151,17 +149,17 @@ theorem bc_mem_eig (i : D.nd.Loc) (β : Module.End (D.nd.O i) (D.nd.Mt i))
   rw [e, h, map_smul]
 
 /- English proof (translation)
-Take `⟨_, hπZ, hXZ, hcomm, hb0, hbπ, hbout, hblen⟩` from `h`. Establish `hπc : π ∈ cutLocus i Xs` using `by simp [cutLocus, hπZ]`. Take `⟨f0, hf0, hf0π⟩` from `exists_ne_zero (D.nd.T i) (D.nd.T_sep i) _ π hπc`. Take `⟨c, hc⟩ : ∃ c, ccAt (D.nd.T i) (cutLocus i Xs) π = Ideal.span {c}` from `⟨Submodule.IsPrincipal.generator _, (Ideal.span_singleton_generator _).symm⟩`. Establish `hcI : c ∈ ccAt (D.nd.T i) (cutLocus i Xs) π` using `hc ▸ Ideal.mem_span_singleton_self c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg, hgπ⟩` from `exists_of_mem_ccAt _ _ _ hcI`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Establish `hm : ((Pi.evalRingHom (fun _ : D.nd.X i => D.nd.O i) π).comp (D.nd.T i).val.toRingHom) f0 ∈ ccAt (D.nd.T i) (cutLocus i Xs) π` using `Ideal.mem_map_of_mem _ hf0`. Rewrite `hm` using `[hc, Ideal.span_singleton_eq_bot.mpr rfl, Ideal.mem_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hf0π hm`. Use `⟨D.nd.act i g * β, c * b, ?_, ?_, mul_ne_zero hc0 hb0, ?_, ?_⟩` and prove the remaining obligations. Introduce `f`. Rewrite using `[mul_assoc, hcomm f, ← mul_assoc, ← map_mul, mul_comm g f, map_mul, mul_assoc]`. Introduce `x hx u hu`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.baseChange_mul, Module.End.mul_apply]`. Distinguish the cases in `hxs : x ∈ Xs`. Establish `hxZ : x ∉ D.nd.Z i` using `fun hz => hx (hXZ x hxs hz)`. Establish `hxc : x ∉ cutLocus i Xs` using `by simp [cutLocus, hxZ, hxs]`. Rewrite using `[act_bc_eig i g x (bc_mem_eig i β hcomm x hu), (mem_ccIdeal_iff _ _ g).mp hg x hxc, zero_smul]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbout x hxs u hu, map_zero]`. Introduce `u hu`. Rewrite using `[LinearMap.baseChange_mul, Module.End.mul_apply, hbπ u hu, LinearMap.map_smul_of_tower, act_bc_eig i g π hu, hgπ, smul_smul, mul_comm]`. Unfold `vccCut`. Rewrite using `[lenUnit_mul _ hc0 hb0, ← hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem perPoint (i : D.nd.Loc) (k : Fin 2) (π : D.nd.X i) (Xs : Set (D.nd.X i))
     (β : Module.End (D.nd.O i) (D.nd.Mt i)) (b : D.nd.O i) (h : CutAt i k π Xs β b) :
@@ -205,9 +203,9 @@ theorem perPoint (i : D.nd.Loc) (k : Fin 2) (π : D.nd.X i) (Xs : Set (D.nd.X i)
     linarith
 
 /- English proof (translation)
-Introduce `D CT i k ρ eta hcut`. Take `⟨Xs, β, b, h⟩` from `hcut`. Establish `hp : ∀ π ∈ D.nd.Zgood i, ∃ (α : Module.End (D.nd.O i) (D.nd.Mt i)) (a : D.nd.O i), (∀ f : D.nd.T i, α * D.nd.act i f = D.nd.act i f * α) ∧ (∀ x, x ∉ D.nd.Zgood i → ∀ u ∈ heckeEig (D.nd.T i) (D.nd.act i) x, α.baseChange (FractionRing (D.nd.O i)) u = 0) ∧ a ≠ 0 ∧ (∀ u ∈ heckeEig (D …` using `D.nd.O i) (D.nd.l i) (D.nd.O i ⧸ Ideal.span {a}) ≤ vccCut i (Xs π) π + padicValNat (D.host.g k) D.what₂.restRowsFiniteGroupCard := fun π hπ => perPoint i k π (Xs π) (β π) (b π) (h π hπ).1`. Use `choose! α a hα using hp`. Use `⟨α '' ((D.nd.Zgood i : Finset (D.nd.X i)) : Set (D.nd.X i)), a, fun π => vccCut i (Xs π) π, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨π, hπ, rfl⟩`. Conclude with `⟨(hα π hπ).1, (hα π hπ).2.1⟩`. Introduce `π hπ`. Take `⟨_, _, h3, h4, h5⟩` from `hα π hπ`. Conclude with `⟨h3, ⟨α π, ⟨π, hπ, rfl⟩, h4⟩, h5, (h π hπ).2⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fam_of_cut : ∀ (D : D7) (CT : ℕ) (i : D.nd.Loc) (k : Fin 2)
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (eta : ℕ),

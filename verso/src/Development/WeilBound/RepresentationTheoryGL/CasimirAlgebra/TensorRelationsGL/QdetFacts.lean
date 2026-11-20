@@ -123,9 +123,9 @@ def SemiZero : Prop := ∀ (n : ℕ), 1 ≤ n → ∀ (M : Type) [AddCommGroup M
   Semi bar κ E ρ φ 0 → ∃ ξ : M, (∀ γ, ρ γ ξ = ξ) ∧ ∃ w ∈ envAlg E, φ (w ξ) ≠ 0
 
 /- English proof (translation)
-Introduce `n hn M _ _ ι _ _ Γ _ _ _ _ _ bar κ E ρ hK hG s φ h0 hφ`. Take `⟨m, hm⟩` from `h1 n M ι Γ bar κ E ρ hK hG φ h0`. Use `h3 n hn M ι Γ bar κ E ρ hK hG s φ hφ ?_` and prove the remaining obligations. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Break down `Nat.eq_zero_or_pos m with rfl | hp` into its components or cases. Conclude with `hm`. Take `⟨m', h, h'⟩` from `h2 n hn M ι Γ bar κ E ρ hK hG s φ hφ m hp hm`. Conclude with `ih m' h h'`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sphAll_of (h1 : SWStart) (h2 : Contract) (h3 : SemiZero) : SphAll := by
   intro n hn M _ _ ι _ _ Γ _ _ _ _ _ bar κ E ρ hK hG s φ h0 hφ

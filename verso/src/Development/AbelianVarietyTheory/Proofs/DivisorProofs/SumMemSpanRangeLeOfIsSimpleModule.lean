@@ -3,15 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A P M _ _ _ _ _ _ _ _ _ _ hP n T ξ N hN`. Set `F : (Fin n → P) →ₗ[A] M` to `∑ i, (T i).comp (LinearMap.proj i)`. Establish `hF : ∀ y, F y = ∑ i, T i (y i)`. Introduce `y`. Simplify using `[F, LinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `D : Submodule A (Fin n → P)` to `N.comap F`. Take `⟨C, hC⟩` from `exists_isCompl D`. Set `G : (Fin n → P) →ₗ[A] M` to `F.comp (D.subtype.comp (D.projectionOnto C hC))`. Establish `hGN : ∀ y, G y ∈ N` using `fun y => ((D.projectionOnto C hC) y).2`. Establish `hξD : ξ ∈ D` using `by show F ξ ∈ N`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hF]`. Conclude with `hN`. Establish `hGξ : G ξ = ∑ i, T i (ξ i)`. Establish `: D.projectionOnto C hC ξ = ⟨ξ, hξD⟩` using `Submodule.linearProjOfIsCompl_apply_left hC ⟨ξ, hξD⟩`. Simplify using `only [G, LinearMap.comp_apply, this, Submodule.subtype_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hF ξ`. Rewrite using `[← hGξ, ← Finset.univ_sum_single ξ, map_sum]`. Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span ?_` and prove the remaining obligations. Use `⟨G.comp (LinearMap.single A (fun _ : Fin n => P) i), ξ i, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
-
-Conclude with `hGN _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_mem_span_range_le_of_isSimpleModule :
     ∀ (A P M : Type) [Ring A] [Algebra ℂ A] [AddCommGroup P] [Module A P] [Module ℂ P] [IsScalarTower ℂ A P]

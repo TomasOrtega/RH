@@ -13,35 +13,33 @@ open Module
 open scoped TensorProduct nonZeroDivisors
 
 /- English proof (translation)
-Take `⟨u, snf⟩` from `U.smithNormalForm (Module.Free.chooseBasis ℤ_[l] T)`. Establish `hu : finrank ℤ_[l] U = u` using `by rw [finrank_eq_card_basis snf.bN, Fintype.card_fin]`. Rewrite using `[hu]`. Establish `ha : ∀ i, snf.a i ≠ 0`. Introduce `i h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `snf.bN.ne_zero i` to reduce the goal to its premises. Use `ext`. Rewrite using `[snf.snf, h, zero_smul]`. Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : ℕ, ∀ i, snf.a i ∣ (l : ℤ_[l]) ^ e := by`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `⟨∑ i, (snf.a i).valuation, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : snf.a i ∣ (l : ℤ_[l]) ^ (snf.a i).valuation` using `by conv_lhs => rw [PadicInt.unitCoeff_spec (ha i)]`. Rewrite using `[Units.mul_left_dvd]`. Conclude with `h1.trans (pow_dvd_pow _ (Finset.single_le_sum (f := fun i => (snf.a i).valuation) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)))`. Establish `hl0 : (l : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 hl.out.ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ n, (l ^ n) ^ u ≤ C * l ^ ((n + e) * k)`. Introduce `n`. Use `le_trans ?_ (hc (n + e))` and prove the remaining obligations. Establish `htor : ∀ x, l ^ (n + e) • π (n + e) x = 0` using `fun x => by`. Rewrite using `[← map_nsmul, hker]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨x, rfl⟩`. Use `haveI : Finite {x : H // l ^ (n + e) • x = 0} := by haveI := hfin (n + e)`. Use `Finite.of_injective (β := {x : M // l ^ (n + e) • x = 0}) (fun x => ⟨x.1.1, congrArg Subtype.val x.2⟩) ?_` and prove the remaining obligations. Introduce `x y h`. Conclude with `Subtype.ext (Subtype.ext (congrArg (fun z => z.1) h))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `v : (Fin u → Fin (l ^ n)) → U` to `fun c => snf.bN.equivFun.symm fun i => ((c i : ℕ) : ℤ_[l])`. Set `F : (Fin u → Fin (l ^ n)) → {x : H // l ^ (n + e) • x = 0}` to `fun c => ⟨⟨π (n + e) (v c), hU _ _ (v c).2⟩, Subtype.ext (htor _)⟩`. Establish `hF : Function.Injective F`. Introduce `c c' h`. Establish `h1 : π (n + e) ((v c - v c' : U) : T) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Submodule.coe_sub, map_sub, sub_eq_zero]`. Conclude with `congrArg (fun z => z.1.1) h`. Take `⟨y, hy⟩` from `(hker _ _).1 h1`. Use function extensionality and compare the values at `i`. Establish `h2` using `snf.repr_apply_embedding_eq_repr_smul (v c - v c') (i := i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[hy, map_nsmul, map_smul, map_sub]`. Establish `h3 : ∀ c, snf.bN.repr (v c) i = ((c i : ℕ) : ℤ_[l])` using `fun c => by`. Rewrite using `[← snf.bN.equivFun_apply]`. Simplify using `only [v, LinearEquiv.apply_symm_apply]`. Simplify using `only [Finsupp.smul_apply, Finsupp.sub_apply, h3, nsmul_eq_mul, smul_eq_mul] at h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : (l : ℤ_[l]) ^ e * (l : ℤ_[l]) ^ n ∣ (l : ℤ_[l]) ^ e * (((c i : ℕ) : ℤ_[l]) - ((c' i : ℕ) : ℤ_[l]))`. Use `Dvd.dvd.trans ?_ (mul_dvd_mul_right (he i) _)` and prove the remaining obligations. Rewrite using `[← h2]`. Use `Dvd.dvd.mul_right ?_ _` and prove the remaining obligations. Rewrite using `[← pow_add, add_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h5` using `(mul_dvd_mul_iff_left (pow_ne_zero e hl0)).1 h4`. Establish `h6 : ((l : ℤ) ^ n) ∣ (((c i : ℕ) : ℤ) - ((c' i : ℕ) : ℤ))`. Rewrite using `[← PadicInt.pow_p_dvd_int_iff]`. Simplify using `using h5`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h7` using `(c i).2`. Establish `h8` using `(c' i).2`. Establish `h9 : (((c i : ℕ) : ℤ) - ((c' i : ℕ) : ℤ)) = 0`. Use `Int.eq_zero_of_abs_lt_dvd h6 ?_` and prove the remaining obligations. Use `zify at h7 h8`.
+Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply the tactic sequence `rw [abs_lt]; constructor <;> omega`. Use `ext`. Use linear arithmetic over natural numbers and integers. Use `Nat.card_le_card_of_injective F hF` as an intermediate fact. Simplify using `using this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Use `set n := C * l ^ (e * k) with hn`. Establish `h1` using `key n`. Establish `h2 : l ^ n * l ^ (n * k) ≤ (l ^ n) ^ u`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[← pow_add, ← pow_mul]`. Conclude with `Nat.pow_le_pow_right hl.out.pos (by nlinarith)`. Establish `h3 : C * l ^ ((n + e) * k) = n * l ^ (n * k)`. Rewrite using `[add_mul, pow_add]`. Use `conv_rhs => rw [hn]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `h4 : n < l ^ n` using `Nat.lt_pow_self hl.out.one_lt`. Establish `h5 : 0 < l ^ (n * k)` using `pow_pos hl.out.pos _`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem finrank_le_of_card (l : ℕ) [hl : Fact l.Prime] {T M : Type} [AddCommGroup T]
     [Module ℤ_[l] T] [Module.Free ℤ_[l] T] [Module.Finite ℤ_[l] T] [AddCommGroup M]
@@ -126,47 +124,45 @@ theorem finrank_le_of_card (l : ℕ) [hl : Fact l.Prime] {T M : Type} [AddCommGr
   nlinarith
 
 /- English proof (translation)
-Set `V` to `ℚ_[l] ⊗[ℤ_[l]] T`. Set `ι : T →ₗ[ℤ_[l]] V` to `TensorProduct.mk ℤ_[l] ℚ_[l] T 1`. Use `haveI hloc : IsLocalizedModule (ℤ_[l])⁰ ι := inferInstanceAs (IsLocalizedModule (ℤ_[l])⁰ (TensorProduct.mk ℤ_[l] ℚ_[l] T 1))`. Establish `hinj : Function.Injective ι` using `(IsLocalizedModule.injective_iff_isRegular (ℤ_[l])⁰ ι).2 fun s => IsSMulRegular.of_ne_zero (nonZeroDivisors.ne_zero s.2)`. Establish `hsurj : ∀ v : V, ∃ (s : ℚ_[l]) (t : T), v = s • ι t`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Take `⟨⟨t, s⟩, h⟩` from `IsLocalizedModule.surj (ℤ_[l])⁰ ι v`. Establish `hs : (algebraMap ℤ_[l] ℚ_[l] s) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective ℤ_[l] ℚ_[l])).2 (nonZeroDivisors.ne_zero s.2)`. Use `⟨(algebraMap ℤ_[l] ℚ_[l] s)⁻¹, t, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_inv_smul_iff₀ hs, algebraMap_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `h`. Set `S' : V ≃ₗ[ℚ_[l]] V` to `LinearEquiv.baseChange ℤ_[l] ℚ_[l] T T S`. Set `Φ' : V ≃ₗ[ℚ_[l]] V` to `LinearEquiv.baseChange ℤ_[l] ℚ_[l] T T Φ`. Establish `hS' : ∀ t, S' (ι t) = ι (S t)` using `fun t => LinearEquiv.baseChange_tmul ..`. Establish `hΦ' : ∀ t, Φ' (ι t) = ι (Φ t)` using `fun t => LinearEquiv.baseChange_tmul ..`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `B' : LinearMap.BilinForm ℚ_[l] V` to `B.baseChange ℚ_[l]`. Establish `hB' : ∀ x y, B' (ι x) (ι y) = algebraMap ℤ_[l] ℚ_[l] (B x y)` using `fun x y => by`. Use `LinearMap.BilinForm.baseChange_tmul (A := ℚ_[l]) B 1 x 1 y` as an intermediate fact. Rewrite `this` using `[mul_one, ← Algebra.algebraMap_eq_smul_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hsk' : ∀ x y, B' y x = - B' x y`. Introduce `x y`. Take `⟨s, x, rfl⟩` from `hsurj x`. Take `⟨s', y, rfl⟩` from `hsurj y`. Simplify using `only [map_smul, LinearMap.smul_apply, hB', hsk x y, map_neg, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hleft : ∀ x, (∀ y, B' x y = 0) → x = 0`. Introduce `x hx`. Take `⟨s, x, rfl⟩` from `hsurj x`. Distinguish the cases in `hs : s = 0`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hs]`. Establish `: x = 0` using `hB x fun y => by`. Use `hx (ι y)` as an intermediate fact. Simplify using `only [map_smul, LinearMap.smul_apply, hB', smul_eq_mul, mul_eq_zero, hs, false_or] at this`. Conclude with `(map_eq_zero_iff _ (IsFractionRing.injective ℤ_[l] ℚ_[l])).1 this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `[this]`. Establish `hfix : ∀ v, S' v = v → ∃ (s : ℚ_[l]) (t : T), S t = t ∧ v = s • ι t`. Introduce `v hv`. Take `⟨s, t, rfl⟩` from `hsurj v`. Distinguish the cases in `hs : s = 0`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨0, 0, by simp, by simp [hs]⟩`. Use `⟨s, t, hinj ?_, rfl⟩` and prove the remaining obligations. Rewrite `hv` using `[map_smul, hS']`. Conclude with `smul_right_injective V hs hv`. Establish `hmem : ∀ (U : Submodule ℤ_[l] T) (s : ℚ_[l]) (t : T), t ∈ U → s • ι t ∈ U.localized' ℚ_[l] (ℤ_[l])⁰ ι` using `fun U s t ht => Submodule.smul_mem _ _ ⟨t, ht, 1, IsLocalizedModule.mk'_one _ _ _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hrk : ∀ (U : Submodule ℤ_[l] T), finrank ℚ_[l] (U.localized' ℚ_[l] (ℤ_[l])⁰ ι) = finrank ℤ_[l] U` using `fun U => by`. Rewrite using `[IsLocalization.finrank_eq ℚ_[l] (ℤ_[l])⁰ le_rfl, IsLocalizedModule.finrank_eq (ℤ_[l])⁰ (U.toLocalized' ℚ_[l] (ℤ_[l])⁰ ι) le_rfl]`. Establish `hit : ∀ (E : T ≃ₗ[ℤ_[l]] T) (E' : V ≃ₗ[ℚ_[l]] V), (∀ t, E' (ι t) = ι (E t)) → ∀ (j : ℕ) t, E'^[j] (ι t) = ι (E^[j] t)`. Introduce `E E' h j`. Proceed by induction on `j with`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `zero => intro t`. Both sides reduce to the same expression. Consider the case `succ j ih => intro t`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, h, ih]`. Establish `main` using `GlobalTheory.T.finrank_le_of_weights_unipotent_symplectic ℚ_[l] V B' ⟨hleft, fun y hy => hleft y fun x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsk' x y, hy x, neg_zero]⟩ hsk' S' Φ' q hq ?_ ?_ ?_ ?_`. Use the proof step `(W.localized' ℚ_[l] (ℤ_[l])⁰ ι) P hP ?_ ?_`. Establish `h1 : finrank ℚ_[l] V = finrank ℤ_[l] T` using `Module.finrank_baseChange`. Rewrite `main` using `[h1, hrk]`. Use `main.trans (Nat.add_le_add_right ?_ _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hrk]`. Use `Submodule.finrank_mono fun v hv => ?_` and prove the remaining obligations. Take `⟨s, t, ht, rfl⟩` from `hfix v (by simpa [sub_eq_zero] using hv)`. Conclude with `hmem _ s t (by simpa [sub_eq_zero] using ht)`. Use `hN.map (Module.End.baseChangeHom ℤ_[l] ℚ_[l] T)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[map_sub, map_one]`. Conclude with `this`. Introduce `x y`. Take `⟨s, x, rfl⟩` from `hsurj x`. Take `⟨s', y, rfl⟩` from `hsurj y`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_smul, LinearMap.smul_apply, hS', hB', hS]`. Introduce `x y`. Take `⟨s, x, rfl⟩` from `hsurj x`. Take `⟨s', y, rfl⟩` from `hsurj y`. Simplify using `only [map_smul, LinearMap.smul_apply, hΦ', hB', hΦ, map_mul, map_natCast, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Use extensionality with `v`. Take `⟨s, t, rfl⟩` from `hsurj v`. Establish `h1 : Φ (S t) = S^[q] (Φ t)`. Use `LinearEquiv.congr_fun hc t` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[LinearEquiv.mul_apply, LinearEquiv.mul_apply, LinearEquiv.pow_apply]`. Then use the resulting hypothesis. Rewrite using `[map_smul, map_smul, LinearEquiv.mul_apply, LinearEquiv.mul_apply, LinearEquiv.pow_apply, hS', hΦ', hΦ', hit S S' hS', h1]`. Introduce `v hv`. Rewrite `hv` using `[Submodule.localized'_eq_span]`. Proceed by induction on `hv using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `mem v hv`. Take `⟨t, ht, rfl⟩` from `hv`. Rewrite using `[hΦ', hW t ht, map_nsmul, Nat.cast_smul_eq_nsmul]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul a x _ hx => rw [map_smul, hx, smul_comm]`. Introduce `v hv`. Take `⟨s, t, ht, rfl⟩` from `hfix v hv`. Establish `hc1 : (c : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 hc0`. Establish `h1 : s • ι t = (s * (c : ℚ_[l])⁻¹) • ι (c • t)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_nsmul, ← Nat.cast_smul_eq_nsmul ℚ_[l], smul_smul, mul_assoc, inv_mul_cancel₀ hc1, mul_one]`. Establish `h2` using `hmem W (s * (c : ℚ_[l])⁻¹) _ (hPW t ht)`. Rewrite using `[h1, map_smul, Polynomial.aeval_eq_sum_range, LinearMap.sum_apply]`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[map_sum]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← hit Φ Φ' hΦ', LinearMap.smul_apply, Module.End.pow_apply]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem finrank_le_ker_add (l : ℕ) [Fact l.Prime] {T : Type} [AddCommGroup T]
     [Module ℤ_[l] T] [Module.Free ℤ_[l] T] [Module.Finite ℤ_[l] T]
@@ -296,11 +292,11 @@ theorem finrank_le_ker_add (l : ℕ) [Fact l.Prime] {T : Type} [AddCommGroup T]
     rfl
 
 /- English proof (translation)
-Establish `hext : ∀ x y : T, (∀ n, π n x = π n y) → x = y` using `fun x y h => (hu (fun n => π n y) (h0 y) (fun n => h1 n y)).unique h fun _ => rfl`. Establish `lin : ∀ S : M ≃+ M, ∃ S' : T →ₗ[ℤ_[l]] T, ∀ n x, π n (S' x) = S (π n x)`. Introduce `S`. Use `choose f hf using fun x => (hu (fun n => S (π n x)) (by simp [h0]) (fun n => by rw [← map_nsmul, h1])).exists`. Use `⟨⟨⟨f, fun x y => hext _ _ fun n => ?_⟩, fun a x => hext _ _ fun n => ?_⟩, fun n x => hf x n⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hf]`. Simplify using `[hf, hs]`. Take `⟨f, hf⟩` from `lin S`. Take `⟨g, hg⟩` from `lin S.symm`. Use `⟨LinearEquiv.ofLinear f g ?_ ?_, hf⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `x; exact hext _ _ fun n => by simp [hf, hg]`. Use extensionality with `x; exact hext _ _ fun n => by simp [hf, hg]`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_lift (l : ℕ) [Fact l.Prime] {T M : Type} [AddCommGroup T]
     [Module ℤ_[l] T] [AddCommGroup M] (π : ℕ → T →+ M)
@@ -325,43 +321,41 @@ theorem exists_lift (l : ℕ) [Fact l.Prime] {T M : Type} [AddCommGroup T]
   · ext x; exact hext _ _ fun n => by simp [hf, hg]
 
 /- English proof (translation)
-Use `haveI : Fact l.Prime := ⟨hl⟩`. Take `⟨T, _, _, π, _, _, hrk, h1, h0, hs, hsurj, hker, hu⟩` from `GlobalTheory.exists_tateModule_of_card M l (2 * g) fun n => by rw [hM, mul_comm]`. Take `⟨T', _, _, π', _, _, hrk', h1', h0', hs', -, -, hu'⟩` from `GlobalTheory.exists_tateModule_of_card A l 1 fun n => by rw [hA, one_mul]`. Establish `hext : ∀ x y : T, (∀ n, π n x = π n y) → x = y` using `fun x y h => (hu (fun n => π n y) (h0 y) (fun n => h1 n y)).unique h fun _ => rfl`. Establish `hext' : ∀ x y : T', (∀ n, π' n x = π' n y) → x = y` using `fun x y h => (hu' (fun n => π' n y) (h0' y) (fun n => h1' n y)).unique h fun _ => rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htor : ∀ n x, l ^ n • π n x = 0` using `fun n x => by`. Rewrite using `[← map_nsmul, hker]`. Conclude with `⟨x, rfl⟩`. Establish `hfin : ∀ n, Finite {x : M // l ^ n • x = 0}` using `fun n => Nat.finite_of_card_ne_zero (by rw [hM]; exact pow_ne_zero _ hl.ne_zero)`. Establish `hsm : ∀ n (k : ℕ) x y, l ^ n • x = 0 → l ^ n • y = 0 → e n (k • x) y = k • e n x y`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n k x y hx hy`. Proceed by induction on `k with`. Consider the case `zero`. Use `(he1 n 0 0 y (by simp) (by simp) hy).1` as an intermediate fact. Simplify using `using this`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `succ k ih`. Rewrite using `[succ_nsmul, succ_nsmul, (he1 n _ x y (by rw [smul_comm, hx, smul_zero]) hx hy).1, ih]`. Establish `hsk : ∀ n x y, l ^ n • x = 0 → l ^ n • y = 0 → e n y x = - e n x y` using `fun n x y hx hy => (he1 n x x y hx hx hy).2`. Use `choose b hb using fun x y : T => (hu' (fun n => e n (π n x) (π n y)) (by`. Use `hsm 0 0 (π 0 x) (π 0 y) (htor _ _) (htor _ _)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[zero_smul, zero_smul]`. Rewrite using `[← this, h0 x])`. Use the proof step `(fun n => by`. Establish `hy : l ^ (n + 1) • π n y = 0` using `by rw [pow_succ', mul_smul, htor, smul_zero]`. Rewrite using `[hsk (n + 1) _ _ (htor _ y) (htor _ x), smul_neg, ← hsm _ _ _ _ (htor _ y) (htor _ x), h1, ← hsk (n + 1) _ _ hy (htor _ x), he2 _ _ _ (htor _ x) (htor _ y), h1])).exists`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `bsk : ∀ x y, b y x = - b x y` using `fun x y => hext' _ _ fun n => by`. Rewrite using `[map_neg, hb, hb, hsk n _ _ (htor _ x) (htor _ y)]`. Establish `badd : ∀ x x' y, b (x + x') y = b x y + b x' y` using `fun x x' y => hext' _ _ fun n => by`. Rewrite using `[map_add, hb, hb, hb, map_add, (he1 n _ _ _ (htor _ x) (htor _ x') (htor _ y)).1]`. Establish `bsm : ∀ (r : ℤ_[l]) x y, b (r • x) y = r • b x y` using `fun r x y => hext' _ _ fun n => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hs', hb, hb, hs, hsm n _ _ _ (htor _ x) (htor _ y)]`. Set `φ : T' ≃ₗ[ℤ_[l]] ℤ_[l]` to `LinearEquiv.ofFinrankEq T' ℤ_[l] (by rw [hrk', finrank_self])`. Set `B : LinearMap.BilinForm ℤ_[l] T` to `LinearMap.mk₂ ℤ_[l] (fun x y => φ (b x y)) (fun x x' y => by rw [badd, map_add]) (fun r x y => by rw [bsm, map_smul]) (fun x y y' => by rw [bsk (y + y'), badd, bsk y x, bsk y' x, neg_add, map_add]) (fun r x y => by rw [bsk (r • y), bsm, bsk y x, ← smul_neg, map_smul])`. Establish `hBb : ∀ x y, B x y = φ (b x y)` using `fun _ _ => rfl`. Take `⟨S', hS'⟩` from `exists_lift l π h1 h0 hs hu S`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Φ', hΦ'⟩` from `exists_lift l π h1 h0 hs hu Φ`. Establish `hit : ∀ (E : M ≃+ M) (E' : T ≃ₗ[ℤ_[l]] T), (∀ n x, π n (E' x) = E (π n x)) → ∀ n (j : ℕ) x, π n (E'^[j] x) = E^[j] (π n x)`. Introduce `E E' h n j`. Proceed by induction on `j with`. Consider the case `zero => intro t`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `succ j ih => intro t`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, ih, h]`. Establish `hcomm' : Φ' * S' = S' ^ q * Φ'`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hext _ _ fun n => ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.mul_apply, LinearEquiv.mul_apply, LinearEquiv.pow_apply, hit S S' hS', hΦ', hΦ', hS', hcomm n _ (htor n x)]`. Establish `hN` using `GlobalTheory.isNilpotent_sub_one_of_conj_pow l hl3 T S' Φ' q hq hcomm' fun x => by`. Establish `: π 1 (S' x - x) = 0`. Rewrite using `[map_sub, hS', hS1 _ (by simpa using htor 1 x), sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `using (hker 1 _).1 this`. Set `W' : Submodule ℤ_[l] T` to `{ carrier := {x | ∀ n, π n x ∈ W} add_mem' := fun hx hy n => by rw [map_add]; exact W.add_mem (hx n) (hy n) zero_mem' := fun n => by rw [map_zero]; exact W.zero_mem smul_mem' := fun r x hx n => by rw [hs]; exact W.nsmul_mem (hx n) _ }`. Establish `hfixH : ∀ x, S' x = x → ∀ n, π n (c • x) ∈ H` using `fun x hx n => by`. Rewrite using `[map_nsmul]`. Conclude with `hH n _ (htor n x) (by rw [← hS', hx])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `main` using `finrank_le_ker_add l B ?_ ?_ S' Φ' q hq hN ?_ ?_ hcomm' W' P hP ?_ c (by omega) ?_`. Establish `hW' : finrank ℤ_[l] W' ≤ t` using `finrank_le_of_card l π hker hfin W' W (fun n x hx => hx n) C t fun n => (hcard n).2`. Establish `hinj : Function.Injective (c • LinearMap.id : T →ₗ[ℤ_[l]] T)`. Introduce `x y h`. Establish `hc0 : (c : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `smul_right_injective T hc0 ?_` and prove the remaining obligations. Simplify `h` using `[Nat.cast_smul_eq_nsmul]`. Establish `hK` using `finrank_le_of_card l π hker hfin ((LinearMap.ker ((S' : T →ₗ[ℤ_[l]] T) - 1)).map (c • LinearMap.id : T →ₗ[ℤ_[l]] T)) H (by`. Introduce and unpack `n _ ⟨x, hx, rfl⟩`. Conclude with `hfixH x (by simpa [sub_eq_zero] using hx) n) C _ fun n => (hcard n).1`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hK` using `[← (Submodule.equivMapOfInjective _ hinj _).finrank_eq]`. Use linear arithmetic over natural numbers and integers. Introduce `x hx`. Use `hext _ _ fun n => ?_` and prove the remaining obligations. Rewrite using `[map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `he3 n _ (htor n x) fun y hy => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hsurj n y hy`. Rewrite using `[← hb, (map_eq_zero_iff φ φ.injective).1 (hx y), map_zero]`. Introduce `x y`. Rewrite using `[hBb, hBb, bsk, map_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Rewrite using `[hBb, hBb]`. Use `congr 1`. Use `hext' _ _ fun n => ?_` and prove the remaining obligations. Rewrite using `[hb, hb, hS', hS', (hSΦ n _ _ (htor n x) (htor n y)).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Rewrite using `[hBb, hBb, ← nsmul_eq_mul, ← map_nsmul]`. Use `congr 1`. Use `hext' _ _ fun n => ?_` and prove the remaining obligations. Rewrite using `[map_nsmul, hb, hb, hΦ', hΦ', (hSΦ n _ _ (htor n x) (htor n y)).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Use `hext _ _ fun n => ?_` and prove the remaining obligations. Rewrite using `[hΦ', map_nsmul, hW n _ (hx n) (htor n x)]`. Introduce `x hx n`. Rewrite using `[map_sum]`.
-
-Simplify using `only [map_zsmul, hit Φ Φ' hΦ']`. Conclude with `hPW n _ (hfixH x hx n) (htor n _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem le_add_of_pairing (M A : Type) [AddCommGroup M] [AddCommGroup A] (l q g t a c C : ℕ)
     (hl : l.Prime) (hl3 : 3 ≤ l) (hq : 2 ≤ q) (hc : 1 ≤ c)
@@ -496,7 +490,7 @@ theorem le_add_of_pairing (M A : Type) [AddCommGroup M] [AddCommGroup A] (l q g 
     exact hPW n _ (hfixH x hx n) (htor n _)
 
 /- English proof (translation)
-Use `haveI : NeZero ((l ^ n : ℕ) : K) := ⟨by rw [Nat.cast_pow]; exact pow_ne_zero _ hl⟩`. Use `haveI : NeZero (l ^ n) := NeZero.of_neZero_natCast K`. Conclude with `HasEnoughRootsOfUnity.natCard_rootsOfUnity K (l ^ n)`.
+A detailed English derivation is pending.
 -/
 theorem card_torsion_units (K : Type) [Field K] [IsAlgClosed K] (l : ℕ) (hl : (l : K) ≠ 0)
     (n : ℕ) : Nat.card {x : Additive Kˣ // l ^ n • x = 0} = l ^ n := by
@@ -512,15 +506,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.SS
 
 /- English proof (translation)
-Introduce `M _ Ω _ l q g t a c C hl hl3 hlΩ hq hc hM e he S Φ hSΦ hcomm hS1 H W P hH hcard hP hW hPW`. Take `⟨he1, he2, he3⟩` from `he`. Set `K` to `AlgebraicClosure Ω`. Set `u : Ωˣ →* Kˣ` to `Units.map (algebraMap Ω K : Ω →* K)`. Establish `hu : Function.Injective u` using `Units.map_injective (algebraMap Ω K).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hlK : (l : K) ≠ 0`. Rewrite using `[← map_natCast (algebraMap Ω K)]`. Conclude with `(map_ne_zero_iff _ (algebraMap Ω K).injective).2 hlΩ`. Use `GlobalTheory.SS.Weight.le_add_of_pairing (Additive M) (Additive Kˣ) l q g t a c C hl hl3 hq hc (GlobalTheory.SS.Weight.card_torsion_units K l hlK) hM (fun n x y => Additive.ofMul (u (e n x.toMul y.toMul))) ?_ ?_ ?_ (MulEquiv.toAdditive S) (MulEquiv.toAdditive Φ) ?_ hcomm hS1 (Sub …` and prove the remaining obligations. Introduce `n x x' y hx hx' hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `he1 n x.toMul x'.toMul y.toMul hx hx' hy`. Conclude with `⟨by rw [toMul_add, h1, map_mul, ofMul_mul], by rw [h2, map_inv, ofMul_inv]⟩`. Introduce `n x y hx hy`. Rewrite using `[he2 n x.toMul y.toMul hx hy, toMul_nsmul]`. Introduce `n x hx h`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `he3 n x.toMul hx fun y hy => hu ((h (Additive.ofMul y) hy).trans (map_one u).symm)`. Introduce `n x y hx hy`. Take `⟨h1, h2⟩` from `hSΦ n x.toMul y.toMul hx hy`. Conclude with `⟨congrArg (fun z => Additive.ofMul (u z)) h1, (congrArg (fun z => Additive.ofMul (u z)) h2).trans (by rw [map_pow, ofMul_pow])⟩`. Introduce `n x hx hx'`.
-
-Conclude with `hPW n x.toMul hx hx'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SS.Weight.le_add_of_torsion : ∀ (M : Type) [CommGroup M] (Ω : Type) [Field Ω] (l q g t a c C : ℕ), l.Prime → 3 ≤ l → (l : Ω) ≠ 0 → 2 ≤ q → 1 ≤ c → (∀ n, Nat.card {x : M // x ^ l ^ n = 1} = l ^ (n * (2 * g))) → ∀ e : ℕ → M → M → Ωˣ, ((∀ n x x' y, x ^ l ^ n = 1 → x' ^ l ^ n = 1 → y ^ l ^ n = 1 → e n (x * x') y = e n x y * e n x' y ∧ e n y x = (e n x y)⁻¹) ∧ (∀ n x y, x ^ l ^ (n + 1) = 1 → y ^ l ^ n = 1 → e (n + 1) x y = e n (x ^ l) y) ∧ (∀ n x, x ^ l ^ n = 1 → (∀ y, y ^ l ^ n = 1 → e n x y = 1) → x = 1)) → ∀ S Φ : M ≃* M, (∀ n x y, x ^ l ^ n = 1 → y ^ l ^ n = 1 → e n (S x) (S y) = e n x y ∧ e n (Φ x) (Φ y) = e n x y ^ q) → (∀ n x, x ^ l ^ n = 1 → Φ (S x) = S^[q] (Φ x)) → (∀ x, x ^ l = 1 → S x = x) → ∀ (H W : Subgroup M) (P : Polynomial ℤ), (∀ n x, x ^ l ^ n = 1 → S x = x → x ^ c ∈ H) → (∀ n, Nat.card {x : H // x ^ l ^ n = 1} ≤ C * l ^ (n * (t + 2 * a)) ∧ Nat.card {x : W // x ^ l ^ n = 1} ≤ C * l ^ (n * t)) → (∀ β : ℂ, Polynomial.aeval β P = 0 → ‖β‖ < q) → (∀ n, ∀ x ∈ W, x ^ l ^ n = 1 → Φ x = x ^ q) → (∀ n, ∀ x ∈ H, x ^ l ^ n = 1 → ∏ j ∈ Finset.range (P.natDegree + 1), (Φ^[j] x) ^ P.coeff j ∈ W) → g ≤ t + a := by
   intro M _ Ω _ l q g t a c C hl hl3 hlΩ hq hc hM e he S Φ hSΦ hcomm hS1 H W P hH hcard hP hW hPW

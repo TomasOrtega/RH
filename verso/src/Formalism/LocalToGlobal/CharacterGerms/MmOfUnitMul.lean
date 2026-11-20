@@ -26,9 +26,9 @@ theorem coeff_aOf (Y : FBChart C V O dd) (u : Fin dd → C) (ν : Fin 1 × Fin d
       (Finsupp.single ((0 : Fin 2), i) V.l + ν.mapDomain (fun q : Fin 1 × Fin dd => ((1 : Fin 2), q.2))) Y.u1 := rfl
 
 /- English proof (translation)
-Unfold `FBChart.aLin`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_aOf, coeff_aOf, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aLin_mul_left (Y : FBChart C V O dd) (c : C) (u v : Fin dd → C) :
     Y.aLin (fun i => c * u i) v = c ^ V.l * Y.aLin u v := by
@@ -41,7 +41,7 @@ theorem aLin_mul_left (Y : FBChart C V O dd) (c : C) (u v : Fin dd → C) :
   ring
 
 /- English proof (translation)
-Unfold `FBChart.aLin`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aLin_mul_right (Y : FBChart C V O dd) (c : C) (u v : Fin dd → C) :
     Y.aLin u (fun i => c * v i) = c * Y.aLin u v := by
@@ -51,7 +51,7 @@ theorem aLin_mul_right (Y : FBChart C V O dd) (c : C) (u v : Fin dd → C) :
   ring
 
 /- English proof (translation)
-Unfold `FBChart.aLin`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aLin_sum_right (Y : FBChart C V O dd) {ι : Type} [Fintype ι] (u : Fin dd → C) (b : ι → C)
     (e : ι → Fin dd → C) : Y.aLin u (∑ c, b c • e c) = ∑ c, b c * Y.aLin u (e c) := by
@@ -62,23 +62,23 @@ theorem aLin_sum_right (Y : FBChart C V O dd) {ι : Type} [Fintype ι] (u : Fin 
   ring
 
 /- English proof (translation)
-The claim follows from `VF.Ge.sum fun j _ => (hv j).mul_int (intS_aOf Y (first_unit_series_integral C V O dd Y) u hu _)`.
+A detailed English derivation is pending.
 -/
 theorem aLin_int (Y : FBChart C V O dd) {u v : Fin dd → C} (hu : ∀ i, V.Ge 0 (u i)) (hv : ∀ i, V.Ge 0 (v i)) :
     V.Ge 0 (Y.aLin u v) :=
   VF.Ge.sum fun j _ => (hv j).mul_int (intS_aOf Y (first_unit_series_integral C V O dd Y) u hu _)
 
 /- English proof (translation)
-Unfold `VF.MM at *`. Rewrite `h` using `[V.v.map_mul, hc, zero_add]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mm_of_unit_mul {c x : C} (hc : V.v c = 0) (h : V.MM (c * x)) : V.MM x := by
   unfold VF.MM at *
   rwa [V.v.map_mul, hc, zero_add] at h
 
 /- English proof (translation)
-Establish `h1` using `mm_add_pow (V := V) hB (hA.sub hB)`. Establish `h2 : V.MM ((A - B) ^ V.l)` using `mm_pow h V.l_prime.ne_zero`. Establish `e : A ^ V.l - B ^ V.l = ((B + (A - B)) ^ V.l - B ^ V.l - (A - B) ^ V.l) + (A - B) ^ V.l`. Rewrite using `[add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `mm_add h1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_pow_sub {A B : C} (hA : V.Ge 0 A) (hB : V.Ge 0 B) (h : V.MM (A - B)) : V.MM (A ^ V.l - B ^ V.l) := by
   have h1 := mm_add_pow (V := V) hB (hA.sub hB)
@@ -93,9 +93,9 @@ section Self
 variable {d : ℕ} {I0 : Type} [Fintype I0]
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `p.gm_lim 1`. Establish `h0` using `hM a r s`. Establish `h1` using `hM (a + 1) r s`. Rewrite `h0`, `h1` using `[Nat.cast_one]`. Establish `e : p.gm (a + 1) r s - p.gm a r s ^ V.l = (p.gm (a + 1) r s - p.em (a + 1) (M r s)) + (p.em (a + 1) (M r s) - p.em a (M r s) ^ V.l) - (p.gm a r s ^ V.l - p.em a (M r s) ^ V.l)` using `by ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `mm_sub (mm_add (maximal_of_valuation_ge_one h1) (p.em_frob a _)) (mm_pow_sub (SelfData.gm_int Y p a r s) (p.em_int a _) (maximal_of_valuation_ge_one h0))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_frob (Y : FBChart C V O dd) (p : SelfData Y d I0) (a : ZMod d) (r s : Fin 2) :
     V.MM (p.gm (a + 1) r s - p.gm a r s ^ V.l) := by
@@ -113,7 +113,7 @@ theorem gm_frob (Y : FBChart C V O dd) (p : SelfData Y d I0) (a : ZMod d) (r s :
 end Self
 
 /- English proof (translation)
-Take `⟨e, eb, hi, hib, he, heb, hhom, hexp⟩` from `endomorphism_limit_integral Y s h1 h2`. Use `⟨e, eb, he, heb, hib, ?_⟩` and prove the remaining obligations. Conclude with `hAdj C V O dd Y e eb hi hib (const_of_lim Y (tends_of_endomorphism_limit Y he)) (const_of_lim Y (a := fun n => star (s n)) (tends_of_endomorphism_limit Y (a := fun n => star (s n)) heb)) hhom hexp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem adj_seq (hAdj : ALinAdjSt) (Y : FBChart C V O dd) (s : ℕ → O) (h1 : ActCv Y s)
     (h2 : ActCv Y (fun n => star (s n))) :
@@ -131,9 +131,9 @@ theorem adj_seq (hAdj : ALinAdjSt) (Y : FBChart C V O dd) (s : ℕ → O) (h1 : 
     (const_of_lim Y (a := fun n => star (s n)) (tends_of_endomorphism_limit Y (a := fun n => star (s n)) heb)) hhom hexp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `L` using `linAct_tends (tends_of_endomorphism_limit Y he) u i`. Establish `eq : (fun n => linAct (Y.B.A.act (s n)) u i) = fun n => χ n * u i` using `funext fun n => by`. Rewrite using `[hu]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `L` using `[eq]`. Conclude with `L.unique (hχ.mul (tends_const _))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linAct_of_lim (Y : FBChart C V O dd) {s : ℕ → O} {e : Pt C 1 dd}
     (he : ∀ (N : ℕ) i μ, ∃ n0 : ℕ, ∀ n ≥ n0,
@@ -148,13 +148,13 @@ theorem linAct_of_lim (Y : FBChart C V O dd) {s : ℕ → O} {e : Pt C 1 dd}
   exact L.unique (hχ.mul (tends_const _))
 
 /- English proof (translation)
-Introduce `N _ _` and use `⟨0, fun _ _ => by rw [sub_self]; exact VF.Ge.zero _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem actCv_const (Y : FBChart C V O dd) (β : O) : ActCv Y (fun _ => β) := fun N _ _ =>
   ⟨0, fun _ _ => by rw [sub_self]; exact VF.Ge.zero _⟩
 
 /- English proof (translation)
-The claim follows from `VF.Ge.sum fun j _ => (hφ i _).mul_int (hv j)`.
+A detailed English derivation is pending.
 -/
 theorem linAct_int {φ : Pt C 1 dd} (hφ : ∀ i, IntS V (φ i)) {v : Fin dd → C} (hv : ∀ i, V.Ge 0 (v i)) (i : Fin dd) :
     V.Ge 0 (linAct φ v i) :=
@@ -165,11 +165,11 @@ section Self2
 variable {d : ℕ} [NeZero d] {I0 : Type} [Fintype I0]
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `p.em_sep (a0 + 1) (p.ty0 q + p.hd) hq`. Take `⟨e, eb, he, heb, -, hadj⟩` from `adj_seq hAdj Y (fun _ => β) (actCv_const Y β) (actCv_const Y (star β))`. Establish `e1 : linAct e u0 = p.em a0 β • u0` using `linAct_of_lim Y he (fun _ => heig β) (tends_const _)`. Establish `e2 : linAct eb (p.e q) = p.em (p.ty0 q + p.hd) β • p.e q` using `linAct_of_lim Y (s := fun _ => star β) heb (fun _ => by rw [p.e_eig, p.em_conj]) (tends_const _)`. Establish `h` using `hadj u0 hu0 hV1 (p.e q) (p.e_int q)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e1, e2]`. Establish `f1 : Y.aLin (p.em a0 β • u0) (p.e q) = p.em a0 β ^ V.l * Y.aLin u0 (p.e q)` using `aLin_mul_left Y (p.em a0 β) u0 (p.e q)`. Establish `f2 : Y.aLin u0 (p.em (p.ty0 q + p.hd) β • p.e q) = p.em (p.ty0 q + p.hd) β * Y.aLin u0 (p.e q)` using `aLin_mul_right Y _ u0 (p.e q)`. Rewrite `h` using `[f1, f2]`. Establish `hL` using `aLin_int Y hu0 (p.e_int q)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `mm_of_unit_mul hβ ?_` and prove the remaining obligations. Establish `e3 : (p.em (a0 + 1) β - p.em (p.ty0 q + p.hd) β) * Y.aLin u0 (p.e q) = (p.em (a0 + 1) β - p.em a0 β ^ V.l) * Y.aLin u0 (p.e q) + (p.em a0 β ^ V.l * Y.aLin u0 (p.e q) - p.em (p.ty0 q + p.hd) β * Y.aLin u0 (p.e q))` using `by ring`. Rewrite using `[e3]`. Conclude with `mm_add (mm_mul_ge (p.em_frob a0 β) hL) h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth (hAdj : ALinAdjSt) (Y : FBChart C V O dd) (p : SelfData Y d I0) (a0 : ZMod d) (u0 : Fin dd → C)
     (hu0 : ∀ i, V.Ge 0 (u0 i)) (heig : ∀ β, linAct (Y.B.A.act β) u0 = p.em a0 β • u0) (hV1 : Y.FirstVanishingAt u0)
@@ -195,13 +195,13 @@ theorem orth (hAdj : ALinAdjSt) (Y : FBChart C V O dd) (p : SelfData Y d I0) (a0
   exact mm_add (mm_mul_ge (p.em_frob a0 β) hL) h
 
 /- English proof (translation)
-Establish `hty : p.ty0 q = a0 + 1 + p.hd`. Rewrite using `[hq, add_assoc, p.hd_two, add_zero]`. Establish `hL` using `aLin_int Y hu0 (p.e_int q)`. Establish `e1 : ∑ col, Y.aLin (fun i => p.gm a0 col g * u0 i) (fun i => p.gm (p.ty0 q) col (1 - g) * p.e q i) = (∑ col, p.gm a0 col g ^ V.l * p.gm (a0 + 1 + p.hd) col (1 - g)) * Y.aLin u0 (p.e q)`. Rewrite using `[Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun col _ => ?_` and prove the remaining obligations. Rewrite using `[aLin_mul_left, aLin_mul_right, hty]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hc0` using `[e1]`. Establish `hS : V.MM (1 - ∑ col, p.gm a0 col g ^ V.l * p.gm (a0 + 1 + p.hd) col (1 - g))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← SelfData.gm_pair Y p (a0 + 1) g, ← Finset.sum_sub_distrib]`. Use `mm_sum _ _ fun col _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul]`. Conclude with `mm_mul_ge (gm_frob Y p a0 col g) (SelfData.gm_int Y p _ _ _)`. Establish `e2 : Y.aLin u0 (p.e q) = (1 - ∑ col, p.gm a0 col g ^ V.l * p.gm (a0 + 1 + p.hd) col (1 - g)) * Y.aLin u0 (p.e q) + (∑ col, p.gm a0 col g ^ V.l * p.gm (a0 + 1 + p.hd) col (1 - g)) * Y.aLin u0 (p.e q)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `mm_add (mm_mul_ge hS hL) hc0`.
+A detailed English derivation is pending.
 -/
 theorem onType (Y : FBChart C V O dd) (p : SelfData Y d I0) (g : Fin 2) (a0 : ZMod d) (u0 : Fin dd → C)
     (hu0 : ∀ i, V.Ge 0 (u0 i)) (q : I0) (hq : a0 + 1 = p.ty0 q + p.hd)
@@ -235,25 +235,23 @@ end SelfLinear
 open Formalism.IncomingBounds ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ MaximalIdealCongruence RowTiePE0 RowTiePProj RowTiePLSmall SelfLinear in
 
 /- English proof (translation)
-Introduce `v hv`. Establish `hq : ∀ q, V.MM (Y.aLin u0 (p.e q))` using `fun q => by`. Distinguish the cases in `h : a0 + 1 = p.ty0 q + p.hd`. Conclude with `onType Y p g a0 u0 hu0 q h (hc0 q)`. Conclude with `orth hAdj Y p a0 u0 hu0 heig hV1 q h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ε, hε, hε1, hεx⟩` from `p.em_unr`. Establish `hl2 : 2 ≤ V.l` using `V.l_prime.two_le`. Establish `hεs` using `star_rel hε`. Establish `hεs1 : ∀ a, V.MM (p.em a (star ε) - 1)` using `fun a => by rw [p.em_conj]; exact hε1 _`. Establish `hεsx : ∀ x : O, (∀ a, V.MM (p.em a x)) → ∃ y, star ε * x = (V.l : O) * y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨y, hy⟩` from `hεx (star x) fun a => by rw [p.em_conj]; exact hx _`. Use `⟨star y, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg star hy`. Simplify using `only [star_mul, star_star, star_natCast] at h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, h, mul_comm]`. Establish `cvA : ActCv Y (fun n => ε ^ V.l ^ n)` using `fun N i μ => by`. Take `⟨n0, h⟩` from `lSmall_holds C V O dd Y (fun n => ε ^ V.l ^ (n + 1)) (fun n => ε ^ V.l ^ n) (pow_cong hl2 hε) N i μ`. Conclude with `⟨n0, h⟩`. Establish `cvB : ActCv Y (fun n => star ε ^ V.l ^ n)` using `fun N i μ => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨n0, h⟩` from `lSmall_holds C V O dd Y (fun n => star ε ^ V.l ^ (n + 1)) (fun n => star ε ^ V.l ^ n) (pow_cong hl2 hεs) N i μ`. Conclude with `⟨n0, h⟩`. Establish `sA : (fun n => star (ε ^ V.l ^ n)) = fun n => star ε ^ V.l ^ n` using `funext fun n => star_pow _ _`. Take `⟨e, eb, he, heb, hib, hadj⟩` from `adj_seq hAdj Y (fun n => ε ^ V.l ^ n) cvA (by rw [sA]; exact cvB)`. Simplify using `only [star_pow] at heb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : linAct e u0 = (1 : C) • u0` using `linAct_of_lim Y he (χ := fun n => p.em a0 ε ^ V.l ^ n) (fun n => by rw [heig, map_pow]) (tends_pow_one (hε1 a0))`. Rewrite `e1` using `[one_smul]`. Take `⟨b, hb⟩` from `hPL C V O dd Y d I0 p (star ε) hεs hεs1 hεsx eb heb v`. Take `⟨wd, hwd, hsat⟩` from `p.e_sat`. Establish `hbint : ∀ c, V.Ge 0 (b c)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c`. Establish `e : b c = ∑ x, linAct eb v x * wd x c`. Rewrite using `[hb]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ∀ c', ∑ x, b c' * p.e c' x * wd x c = b c' * (if c' = c then 1 else 0)`. Introduce `c'`. Rewrite using `[← hsat c' c, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [this, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[e]`. Conclude with `VF.Ge.sum fun x _ => (linAct_int hib hv x).mul_int (hwd x c)`. Establish `h` using `hadj u0 hu0 hV1 v hv`. Rewrite `h` using `[e1, hb, aLin_sum_right]`.
-
-Establish `e2 : Y.aLin u0 v = (Y.aLin u0 v - ∑ c, b c * Y.aLin u0 (p.e c)) + ∑ c, b c * Y.aLin u0 (p.e c)` using `by ring`. Rewrite using `[e2]`. Conclude with `mm_add h (mm_sum _ _ fun c _ => mm_mul_ge' (hbint c) (hq c))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem noLin_self (hAdj : ALinAdjSt) (hPL : ProjLieSelfSt) {C : Type} [Field C] [CharZero C] {V : VF C}
     {O : Type} [CommRing O] [StarRing O] {dd : ℕ} (Y : FBChart C V O dd) {d : ℕ} [NeZero d] {I0 : Type} [Fintype I0]

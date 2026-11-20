@@ -5,17 +5,15 @@ open scoped ENNReal NNReal Topology
 namespace GlobalTheory.CompanionTheory.MeasureBump
 
 /- English proof (translation)
-Establish `hmU : m U ≠ 0`. Introduce `h0`. Apply `hm` to reduce the goal to its premises. Rewrite using `[← Measure.measure_univ_eq_zero]`. Establish `huniv : (Set.univ : Set X) = U ∪ Uᶜ` using `(Set.union_compl_self U).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[huniv]`. Conclude with `measure_union_null h0 hc`. Use `haveI : LocallyCompactSpace U := hU.locallyCompactSpace`. Establish `hσ : IsSigmaCompact U` using `isSigmaCompact_iff_sigmaCompactSpace.2 inferInstance`. Take `⟨K, hK, hKU⟩` from `hσ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hex : ∃ n, m (K n) ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hmU` to reduce the goal to its premises. Rewrite using `[← hKU]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `measure_iUnion_null hcon`. Take `⟨n, hn⟩` from `hex`. Establish `hsub : K n ⊆ U` using `hKU ▸ Set.subset_iUnion K n`. Take `⟨f, hf1, hfc, hfU, hf01⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen (hK n) hU hsub`. Use `⟨f, f.continuous, hfc, hfU, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : Integrable (f : X → ℝ) m` using `hint f f.continuous hfc hfU`. Establish `hnn : 0 ≤ᵐ[m] (f : X → ℝ)` using `Filter.Eventually.of_forall fun x => (hf01 x).1`. Establish `hpos : 0 < ∫ x, f x ∂m`. Rewrite using `[integral_pos_iff_support_of_nonneg_ae hnn hI]`. Use `lt_of_lt_of_le (pos_iff_ne_zero.2 hn) (measure_mono ?_)` and prove the remaining obligations.
-
-Introduce `x hx`. Simplify using `[Function.mem_support, hf1 hx]`. Conclude with `hpos.ne'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_integral_ne_zero_of_carried_by_isOpen
     (X : Type) [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X]

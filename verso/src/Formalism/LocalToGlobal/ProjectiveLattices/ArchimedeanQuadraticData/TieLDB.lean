@@ -9,19 +9,19 @@ variable {A : Type*} [CommRing A] (p : Ideal A) [p.IsPrime]
   [IsScalarTower A (Localization.AtPrime p) V]
 
 /- English proof (translation)
-Rewrite using `[← smul_assoc, Algebra.smul_def, mul_comm, mul_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_comm' (s : A) (o : Localization.AtPrime p) (v : V) : s • (o • v) = o • (s • v) := by
   rw [← smul_assoc, Algebra.smul_def, mul_comm, mul_smul, algebraMap_smul]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, p.primeCompl.one_mem, by rw [one_smul]; exact hy⟩`. Consider the case `zero => exact ⟨1, p.primeCompl.one_mem, by rw [smul_zero]; exact G.zero_mem⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs, hsx⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s * t, p.primeCompl.mul_mem hs ht, ?_⟩` and prove the remaining obligations. Establish `e1 : (s * t) • x = t • (s • x)` using `by rw [mul_comm, mul_smul]`. Establish `e2 : (s * t) • y = s • (t • y)` using `by rw [mul_smul]`. Rewrite using `[smul_add, e1, e2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (G.smul_mem t hsx) (G.smul_mem s hty)`. Consider the case `smul o x _ hx`. Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨⟨a, s'⟩, hos⟩` from `IsLocalization.mk'_surjective p.primeCompl o`. Use `⟨s' * s, p.primeCompl.mul_mem s'.2 hs, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (s' : A) • o = algebraMap A (Localization.AtPrime p) a`. Rewrite using `[← hos, Algebra.smul_def, mul_comm, IsLocalization.mk'_spec]`. Rewrite using `[mul_smul, smul_comm' p s o x, ← smul_assoc, h1, algebraMap_smul]`. Conclude with `G.smul_mem a hsx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem (G : Submodule A V) {x : V}
     (hx : x ∈ Submodule.span (Localization.AtPrime p) (G : Set V)) :
@@ -47,11 +47,11 @@ theorem exists_smul_mem (G : Submodule A V) {x : V}
     exact G.smul_mem a hsx
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `⟨Submodule.subset_span hx.1, hx.2⟩`. Introduce and unpack `x ⟨hxM, hxW⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨s, hs, hsx⟩` from `exists_smul_mem p M hxM`. Establish `hu` using `IsLocalization.map_units (Localization.AtPrime p) (⟨s, hs⟩ : p.primeCompl)`. Establish `hmem : s • x ∈ Submodule.span (Localization.AtPrime p) ((M ⊓ W.restrictScalars A : Submodule A V) : Set V)` using `Submodule.subset_span ⟨hsx, W.smul_of_tower_mem s hxW⟩`. Establish `hx : x = hu.unit⁻¹ • (s • x)`. Rewrite using `[← algebraMap_smul (Localization.AtPrime p) s x]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `x = hu.unit⁻¹ • (hu.unit • x)`. Rewrite using `[inv_smul_smul]`. Rewrite using `[hx]`. Conclude with `Submodule.smul_of_tower_mem _ _ hmem`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_inf_eq (M : Submodule A V) (W : Submodule (Localization.AtPrime p) V) :
     Submodule.span (Localization.AtPrime p) ((M ⊓ W.restrictScalars A : Submodule A V) : Set V) =
@@ -100,17 +100,15 @@ theorem locMap_mk (h : H) :
     locMap p H G (Submodule.Quotient.mk h) = Submodule.Quotient.mk (inc p H h) := rfl
 
 /- English proof (translation)
-Rewrite using `[Module.End.isUnit_iff]`. Establish `hu` using `IsLocalization.map_units (Localization.AtPrime p) s`. Prove the components needed by the constructor for the conclusion. Introduce `z1 z2 h`. Rewrite `h` using `[Module.algebraMap_end_apply, Module.algebraMap_end_apply, ← algebraMap_smul (Localization.AtPrime p) (s : A) z1, ← algebraMap_smul (Localization.AtPrime p) (s : A) z2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hu.smul_left_cancel.1 h`. Introduce `z`. Use `⟨hu.unit⁻¹ • z, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.algebraMap_end_apply, ← algebraMap_smul (Localization.AtPrime p) (s : A)]`. Express the relevant statement in the definitionally equal form `hu.unit • hu.unit⁻¹ • z = z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_inv_smul]`. Use `surj y := by`. Take `⟨⟨x, hx⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨s, hs, hsx⟩` from `exists_smul_mem p H hx`. Use `⟨(Submodule.Quotient.mk ⟨s • x, hsx⟩, ⟨s, hs⟩), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[locMap_mk]`. Both sides reduce to the same expression. Use `exists_of_eq {x₁ x₂} h := by`. Take `⟨h1, rfl⟩` from `Submodule.Quotient.mk_surjective _ x₁`. Take `⟨h2, rfl⟩` from `Submodule.Quotient.mk_surjective _ x₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[locMap_mk, locMap_mk, Submodule.Quotient.eq]`. Establish `h' : (h1 : V) - h2 ∈ Submodule.span (Localization.AtPrime p) (G : Set V)` using `h`. Take `⟨s, hs, hsx⟩` from `exists_smul_mem p G h'`. Use `⟨⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`.
-
-Express the relevant statement in the definitionally equal form `(s • (h1 : V)) - s • (h2 : V) ∈ G`. Rewrite using `[← smul_sub]`. Conclude with `hsx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalizedModule : IsLocalizedModule p.primeCompl (locMap p H G) where
   map_units s := by
@@ -146,7 +144,7 @@ theorem isLocalizedModule : IsLocalizedModule p.primeCompl (locMap p H G) where
     exact hsx
 
 /- English proof (translation)
-Use `isLocalizedModule p H G` as an intermediate fact. Establish `: IsLocalizedModule p.primeCompl (locMap p H G ∘ₗ e.toLinearMap)` using `inferInstance`. Conclude with `((IsLocalizedModule.iso p.primeCompl (locMap p H G ∘ₗ e.toLinearMap)).extendScalarsOfIsLocalization p.primeCompl (Localization.AtPrime p)).length_eq`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem length_localized_eq {P : Type*} [AddCommGroup P] [Module A P]
     (e : P ≃ₗ[A] H ⧸ G.comap H.subtype) :

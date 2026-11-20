@@ -18,17 +18,15 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Establish `: (A.subgroupOf B).FiniteIndex` using `⟨hidx⟩`. Establish `: Finite (B ⧸ A.subgroupOf B)` using `Subgroup.finite_quotient_of_finiteIndex`. Set `` to `Fintype.ofFinite (B ⧸ A.subgroupOf B)`. Use `set bad := {l : G | ¬ ∃ γ : B.map f, γ • l ∈ FD} with hbad_def`. Establish `hbad : μ bad = 0` using `measure_eq_zero_iff_ae_notMem.2 (hFD.ae_covers.mono fun x hx hx' => hx' hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(⋃ k : B ⧸ A.subgroupOf B, (fun x => f ((Quotient.out k : B) : K) * x) ⁻¹' toMeasurable μ FD) ∪ toMeasurable μ bad, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(MeasurableSet.iUnion fun k => (measurableSet_toMeasurable μ FD).preimage (measurable_const_mul _)).union (measurableSet_toMeasurable μ bad)`. Use `lt_of_le_of_lt (measure_union_le _ _) ?_` and prove the remaining obligations. Rewrite using `[measure_toMeasurable, hbad, add_zero]`. Use `lt_of_le_of_lt (measure_iUnion_fintype_le μ _) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [measure_preimage_mul, measure_toMeasurable]`. Conclude with `ENNReal.sum_lt_top.2 fun _ _ => hfin`. Introduce `l`. Distinguish the cases in `hl : l ∈ bad`. Conclude with `⟨1, one_mem _, Or.inr (subset_toMeasurable μ bad (by simpa using hl))⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hl` using `[hbad_def, Set.mem_ofPred_eq, not_not]`. Take `⟨⟨γ, hγ⟩, hγl⟩` from `hl`. Take `⟨b, hb, rfl⟩` from `Subgroup.mem_map.1 hγ`. Take `⟨c, hc⟩` from `QuotientGroup.mk_out_eq_mul (A.subgroupOf B) (⟨b, hb⟩ : B)`. Use `set k : B ⧸ A.subgroupOf B := QuotientGroup.mk (⟨b, hb⟩ : B)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hcA : (((c : B) : K)) ∈ A` using `c.2`. Use `⟨((c : B) : K)⁻¹, inv_mem hcA, Or.inl (Set.mem_iUnion.2 ⟨k, ?_⟩)⟩` and prove the remaining obligations. Apply `subset_toMeasurable` to reduce the goal to its premises. Establish `e : ((Quotient.out k : B) : K) = b * ((c : B) : K)`. Rewrite using `[hc]`.
-
-Both sides reduce to the same expression. Simplify using `only [e, map_mul, map_inv, mul_assoc, mul_inv_cancel_left]`. Simplify `hγl` using `[Subgroup.smul_def]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_covering_of_relIndex_ne_zero {G K : Type*} [Group G] [MeasurableSpace G]
     [MeasurableMul G] [Group K] (μ : Measure G) [μ.IsMulLeftInvariant] (f : K →* G)
@@ -72,35 +70,33 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
 variable {W : Type u} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Introduce `D La x₀ hLa hx₀ hne hiso ν hν`. Take `⟨w₀, hxw, hww⟩` from `WittPartner.proof h x₀ hne hiso`. Establish `hp : IsHyperbolicPair h x₀ w₀` using `⟨hiso, hww, hxw⟩`. Take `⟨h', hh'⟩` from `ComplementForm.proof h x₀ w₀ hp`. Set `v'` to `Module.finBasis E (hypComplement h x₀ w₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hlt : finrank E (hypComplement h x₀ w₀) < finrank E W`. Use `Submodule.finrank_lt fun htop => ?_` and prove the remaining obligations. Establish `hmem : w₀ ∈ hypComplement h x₀ w₀` using `htop ▸ Submodule.mem_top`. Rewrite `hmem` using `[mem_hypComplement, hxw]`. Conclude with `one_ne_zero hmem.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i, q, hi, hq, hqi, hker, hiw, hcompat⟩` from `h₃ x₀ w₀ hp h' hh' _ v'`. Take `⟨D', La', G'', hLa', hG'', hidx, hlift⟩` from `h₆ D La x₀ w₀ hLa hx₀ hp h' hh'`. Set `μL : Measure (archUnitary h' v')` to `Measure.haar`. Take `⟨FD', hFD', hFD'fin⟩` from `h₁ (hypComplement h x₀ w₀) h' _ v' hlt μL D' La' hLa'`. Take `⟨T, hTm, hTfin, hT⟩` from `exists_covering_of_relIndex_ne_zero μL (archEmbed h' v') G'' (latticeStab h' La') hidx FD' hFD' hFD'fin`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set Γ := (vecStabGroup h v La x₀).subgroupOf (vecFixGroup h v x₀) with hΓ`. Establish `hcovL : ∀ l, ∃ γ ∈ Γ, q γ * l ∈ T`. Introduce `l`. Take `⟨m, hm, hml⟩` from `hT l`. Take `⟨γ₀, hγx, hγw, hγm⟩` from `ComplementExtension.proof h x₀ w₀ hp h' hh' m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hγ₀ : γ₀ ∈ latticeStab h La` using `hlift m hm γ₀ hγx hγw hγm`. Use `⟨i (archEmbed h' v' m), ?_, by rw [hqi]; exact hml⟩` and prove the remaining obligations. Rewrite using `[hΓ, Subgroup.mem_subgroupOf, hcompat γ₀ m hγx hγw hγm]`. Conclude with `⟨⟨γ₀, hγ₀⟩, hγx, rfl⟩`. Take `⟨C, hC, hcovN⟩` from `h₅ D La x₀ hLa hx₀ hne hiso`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `j : unipRadical h v x₀ →* vecFixGroup h v x₀` to `Subgroup.inclusion (unipRadical_le_vecFixGroup h v x₀)`. Establish `hjc : Continuous j` using `(continuous_subtype_val.subtype_mk _)`. Establish `hj : IsClosedEmbedding j`. Use `⟨IsEmbedding.of_comp hjc continuous_subtype_val IsEmbedding.subtypeVal, ?_⟩` and prove the remaining obligations. Establish `: Set.range j = Subtype.val ⁻¹' (unipRadical h v x₀ : Set (archUnitary h v))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Use extensionality with `g`. Conclude with `⟨by rintro ⟨n, rfl⟩; exact n.2, fun hg => ⟨⟨g, hg⟩, rfl⟩⟩`. Rewrite using `[this]`. Conclude with `(isClosed_unipRadical h v x₀).preimage continuous_subtype_val`. Establish `hjr : ∀ g, q g = 1 ↔ g ∈ j.range` using `fun g => (hker g).trans ⟨fun hg => ⟨⟨g, hg⟩, rfl⟩, by rintro ⟨n, rfl⟩; exact n.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `μN : Measure (unipRadical h v x₀)` to `Measure.haar`. Establish `hemb : MeasurableEmbedding (Subtype.val : vecFixGroup h v x₀ → archUnitary h v)` using `(isClosed_vecFixGroup h v x₀).isClosedEmbedding_subtypeVal.measurableEmbedding`. Establish `hconj : ∀ l, μN.map (fun n => i l * j n * (i l)⁻¹) = μN.map j`. Introduce `l`. Establish `key` using `h₄ x₀ w₀ hp μN ((i l : vecFixGroup h v x₀) : archUnitary h v) ⟨(i l).2, hiw l⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : Continuous fun n : unipRadical h v x₀ => i l * j n * (i l)⁻¹` using `(continuous_const.mul hjc).mul continuous_const`. Rewrite using `[← hemb.comap_map (μN.map _), ← hemb.comap_map (μN.map j), Measure.map_map hemb.measurable hf.measurable, Measure.map_map hemb.measurable hjc.measurable]`. Establish `e1 : (Subtype.val ∘ fun n : unipRadical h v x₀ => i l * j n * (i l)⁻¹) = fun n : unipRadical h v x₀ => ((i l : vecFixGroup h v x₀) : archUnitary h v) * (n : archUnitary h v) * ((i l : vecFixGroup h v x₀) : archUnitary h v)⁻¹`. Use function extensionality and compare the values at `n`. Simplify using `[j]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Establish `e2 : (Subtype.val ∘ j) = (Subtype.val : unipRadical h v x₀ → archUnitary h v)`. Use function extensionality and compare the values at `n`. Both sides reduce to the same expression. Rewrite using `[e1, e2, key]`. Establish `hcovN' : ∀ n, ∃ δ, j δ ∈ Γ ∧ δ * n ∈ C` using `fun n => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, hδn⟩` from `hcovN n`. Conclude with `⟨δ, hδ, hδn⟩`. Take `⟨S, -, hSfin, hScov⟩` from `h₂ x₀ w₀ h' _ v' i q j hi hq hj hqi hjr μL μN hconj Γ C T hC hTm hTfin hcovN' hcovL ν`. Establish `hdG : DiscreteTopology (vecStabGroup h v La x₀)`. Use `ArchLatticeDiscrete.proof h v La hLa.isLattice` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hle : vecStabGroup h v La x₀ ≤ archLatticeGroup h v La`. Introduce and unpack `_ ⟨γ, -, rfl⟩`. Conclude with `⟨(γ : h.unitaryGroup), γ.2, rfl⟩`. Conclude with `DiscreteTopology.of_continuous_injective (f := Subgroup.inclusion hle) (continuous_subtype_val.subtype_mk _) (Subgroup.inclusion_injective hle)`. Establish `hdisc : DiscreteTopology Γ` using `DiscreteTopology.of_continuous_injective (f := fun x : Γ => (⟨((x : vecFixGroup h v x₀) : archUnitary h v), x.2⟩ : vecStabGroup h v La x₀)) ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _) (fun a b hab => Subtype.ext (Subtype.ext (by simpa using congrArg Subtyp …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Countable Γ` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨FD, -, hFD⟩` from `DiscreteFundamentalDomain.proof (vecFixGroup h v x₀) ν Γ hdisc`. Establish `hle : ν FD ≤ ν S`. Rewrite using `[hFD.measure_eq_tsum S]`. Use `(measure_mono fun x hx => ?_).trans (measure_iUnion_le _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨γ, hγ, hγx⟩` from `hScov x`. Use `Set.mem_iUnion.2 ⟨(⟨γ, hγ⟩ : Γ)⁻¹, ?_, hx⟩` and prove the remaining obligations. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv]`. Conclude with `hγx`. Establish `hν0 : ν ≠ 0` using `fun h0 => (isOpen_univ.measure_ne_zero ν Set.univ_nonempty) (by simp [h0])`.
-
-Conclude with `⟨FD, hFD, pos_iff_ne_zero.2 (hFD.measure_ne_zero hν0), hle.trans_lt hSfin⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem StabilizerCovolumeFinite.proof [FiniteDimensional E W] (h : HermitianForm F E W)
     (v : Basis ι E W) (h₁ : CovolumeFiniteBelow.{u} F E (finrank E W))

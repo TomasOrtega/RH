@@ -15,7 +15,7 @@ namespace GlobalTheory.AbDual
 variable {S S' : Scheme.{0}} {b : S' ⟶ S}
 
 /- English proof (translation)
-Establish `w : v ≫ (P ⊗ Q).hom = u ≫ (P ⊗ Q).hom`. Rewrite using `[← Over.w (fst P Q), ← Category.assoc, ← Category.assoc, h₁]`. Establish `e` using `CartesianMonoidalCategory.hom_ext (Over.homMk u rfl : Over.mk (u ≫ (P ⊗ Q).hom) ⟶ P ⊗ Q) (Over.homMk v w) (Over.OverMorphism.ext h₁) (Over.OverMorphism.ext h₂)`. Conclude with `congrArg (fun z ↦ z.left) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem left_ext {P Q : Over S} {X : Scheme.{0}} {u v : X ⟶ (P ⊗ Q).left}
     (h₁ : u ≫ (fst P Q).left = v ≫ (fst P Q).left) (h₂ : u ≫ (snd P Q).left = v ≫ (snd P Q).left) : u = v := by
@@ -30,7 +30,7 @@ section Pt
 variable {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G'] {φ : G'.left ⟶ G.left}
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (hφ.1.hom_ext e (by rw [Over.w x, Over.w y]))`.
+A detailed English derivation is pending.
 -/
 theorem pt_ext (hφ : IsGrpPullback G' G b φ) {Y : Over S'} {x y : Y ⟶ G'} (e : x.left ≫ φ = y.left ≫ φ) :
     x = y :=
@@ -41,14 +41,14 @@ def liftPt (hφ : IsGrpPullback G' G b φ) {X : Scheme.{0}} (s : X ⟶ S') (x : 
   Over.homMk (hφ.1.lift x s w) (hφ.1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `hφ.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftPt_left (hφ : IsGrpPullback G' G b φ) {X : Scheme.{0}} (s : X ⟶ S') (x : X ⟶ G.left)
     (w : x ≫ G.hom = s ≫ b) : (liftPt hφ s x w).left ≫ φ = x :=
   hφ.1.lift_fst _ _ _
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Conclude with `(hφ.2 _ x y x₀ y₀ hx.symm hy.symm).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mul_left_comp (hφ : IsGrpPullback G' G b φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S}
     (hs : s ≫ b = s₀) {x y : Over.mk s ⟶ G'} {x₀ y₀ : Over.mk s₀ ⟶ G} (hx : x.left ≫ φ = x₀.left)
@@ -57,9 +57,9 @@ theorem mul_left_comp (hφ : IsGrpPullback G' G b φ) {X : Scheme.{0}} {s : X �
   exact (hφ.2 _ x y x₀ y₀ hx.symm hy.symm).symm
 
 /- English proof (translation)
-Set `x₀ : Over.mk s₀ ⟶ G` to `Over.homMk ((1 : Over.mk s ⟶ G').left ≫ φ) (by show _ ≫ G.hom = s₀`. Rewrite using `[Category.assoc, hφ.1.w, ← Category.assoc, Over.w (1 : Over.mk s ⟶ G')]`. Conclude with `hs)`. Establish `e : x₀ = x₀ * x₀` using `Over.OverMorphism.ext (by`. Use `mul_left_comp hφ hs (x := 1) (y := 1) (x₀ := x₀) (y₀ := x₀) rfl rfl` as an intermediate fact.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[_root_.mul_one]`. Conclude with `this)`. Conclude with `congrArg (fun z ↦ z.left) (left_eq_mul.1 e)`.
+A detailed English derivation is pending.
 -/
 theorem one_left_comp (hφ : IsGrpPullback G' G b φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S}
     (hs : s ≫ b = s₀) : (1 : Over.mk s ⟶ G').left ≫ φ = (1 : Over.mk s₀ ⟶ G).left := by
@@ -88,20 +88,20 @@ def pushP (hφ : IsGrpPullback G' G b φ) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ 
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, lift_fst]`. Use the proof step `@[reassoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_left_fst {P Q Y : Over S} (a : Y ⟶ P) (t : Y ⟶ Q) : (lift a t).left ≫ (fst P Q).left = a.left := by
   rw [← Over.comp_left, lift_fst]
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_left_snd {P Q Y : Over S} (a : Y ⟶ P) (t : Y ⟶ Q) : (lift a t).left ≫ (snd P Q).left = t.left := by
   rw [← Over.comp_left, lift_snd]
 
 /- English proof (translation)
-Rewrite using `[Over.w (fst G _), ← Over.w (snd G (Over.mk (T.hom ≫ b))), Category.assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trR_w (T : Over S') :
     (fst G (Over.mk (T.hom ≫ b))).left ≫ G.hom = ((snd G (Over.mk (T.hom ≫ b))).left ≫ T.hom) ≫ b := by
@@ -115,7 +115,7 @@ def trR (hφ : IsGrpPullback G' G b φ) (T : Over S') :
 
 @[reassoc]
 /- English proof (translation)
-Conclude with `(congrArg (· ≫ φ) (lift_left_fst _ _)).trans (liftPt_left _ _ _ _)`. Use the proof step `@[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem trR_fst (hφ : IsGrpPullback G' G b φ) (T : Over S') :
     (trR hφ T).left ≫ (fst G' T).left ≫ φ = (fst G (Over.mk (T.hom ≫ b))).left := by
@@ -123,14 +123,14 @@ theorem trR_fst (hφ : IsGrpPullback G' G b φ) (T : Over S') :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `lift_left_snd _ _`.
+A detailed English derivation is pending.
 -/
 theorem trR_snd (hφ : IsGrpPullback G' G b φ) (T : Over S') :
     (trR hφ T).left ≫ (snd G' T).left = (snd G (Over.mk (T.hom ≫ b))).left :=
   lift_left_snd _ _
 
 /- English proof (translation)
-Rewrite using `[Over.w (snd _ G), ← Over.w (fst (Over.mk (T.hom ≫ b)) G), Category.assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trL_w (T : Over S') :
     (snd (Over.mk (T.hom ≫ b)) G).left ≫ G.hom = ((fst (Over.mk (T.hom ≫ b)) G).left ≫ T.hom) ≫ b := by
@@ -144,7 +144,7 @@ def trL (hφ : IsGrpPullback G' G b φ) (T : Over S') :
 
 @[reassoc]
 /- English proof (translation)
-Conclude with `(congrArg (· ≫ φ) (lift_left_snd _ _)).trans (liftPt_left _ _ _ _)`. Use the proof step `@[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem trL_snd (hφ : IsGrpPullback G' G b φ) (T : Over S') :
     (trL hφ T).left ≫ (snd T G').left ≫ φ = (snd (Over.mk (T.hom ≫ b)) G).left := by
@@ -152,7 +152,7 @@ theorem trL_snd (hφ : IsGrpPullback G' G b φ) (T : Over S') :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `lift_left_fst _ _`.
+A detailed English derivation is pending.
 -/
 theorem trL_fst (hφ : IsGrpPullback G' G b φ) (T : Over S') :
     (trL hφ T).left ≫ (fst T G').left = (fst (Over.mk (T.hom ≫ b)) G).left :=
@@ -166,7 +166,7 @@ variable {A B : Over S} [GrpObj A] [GrpObj B] {A' B' : Over S'} [GrpObj A'] [Grp
   {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left} {h : (A' ⊗ B').left ⟶ (A ⊗ B).left}
 
 /- English proof (translation)
-Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h₁, lift_left_fst_assoc, ha, lift_left_fst]`. Rewrite using `[Category.assoc, h₂, lift_left_snd_assoc, ht, lift_left_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_comp_eq (h₁ : h ≫ (fst A B).left = (fst A' B').left ≫ f)
     (h₂ : h ≫ (snd A B).left = (snd A' B').left ≫ g) {X : Scheme.{0}} {s : X ⟶ S'} {s₀ : X ⟶ S}
@@ -177,7 +177,7 @@ theorem lift_comp_eq (h₁ : h ≫ (fst A B).left = (fst A' B').left ≫ f)
   · rw [Category.assoc, h₂, lift_left_snd_assoc, ht, lift_left_snd]
 
 /- English proof (translation)
-Rewrite using `[evc, evc, ← (cls_eq_iff (pull_isLB hP h) hP').2 e, cls_pull hP, ← pull_comp, lift_comp_eq h₁ h₂ a t a₀ t₀ ha ht]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evc_eq (h₁ : h ≫ (fst A B).left = (fst A' B').left ≫ f)
     (h₂ : h ≫ (snd A B).left = (snd A' B').left ≫ g) {P : LB (A ⊗ B).left} {P' : LB (A' ⊗ B').left}
@@ -188,9 +188,9 @@ theorem evc_eq (h₁ : h ≫ (fst A B).left = (fst A' B').left ≫ f)
     lift_comp_eq h₁ h₂ a t a₀ t₀ ha ht]
 
 /- English proof (translation)
-Rewrite using `[pull_evc]`. Use `evc_eq h₁ h₂ hP hP' e _ _ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, Category.assoc]`. Conclude with `trR_fst hf T`. Simplify using `only [Over.comp_left, Category.assoc, trR_snd_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem evc_trR (hf : IsGrpPullback A' A b f) (hg : IsGrpPullback B' B b g)
     (h₁ : h ≫ (fst A B).left = (fst A' B').left ≫ f) (h₂ : h ≫ (snd A B).left = (snd A' B').left ≫ g)
@@ -206,9 +206,9 @@ theorem evc_trR (hf : IsGrpPullback A' A b f) (hg : IsGrpPullback B' B b g)
     rfl
 
 /- English proof (translation)
-Rewrite using `[pull_evc]`. Use `evc_eq h₁ h₂ hP hP' e _ _ _ _ ?_ ?_` and prove the remaining obligations. Simplify using `only [Over.comp_left, Category.assoc, trL_fst_assoc]`. Both sides reduce to the same expression. Rewrite using `[Over.comp_left, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `trL_snd hg T`.
+A detailed English derivation is pending.
 -/
 theorem evc_trL (hf : IsGrpPullback A' A b f) (hg : IsGrpPullback B' B b g)
     (h₁ : h ≫ (fst A B).left = (fst A' B').left ≫ f) (h₂ : h ≫ (snd A B).left = (snd A' B').left ≫ g)
@@ -224,9 +224,9 @@ theorem evc_trL (hf : IsGrpPullback A' A b f) (hg : IsGrpPullback B' B b g)
     exact trL_snd hg T
 
 /- English proof (translation)
-Apply `left_ext` to reduce the goal to its premises. Rewrite using `[lift_left_fst]`. Apply `hf.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, trR_fst, lift_left_fst, liftPt_left]`. Rewrite using `[Category.assoc, Category.assoc, Over.w (fst A' T), ← Over.w (snd A' T), trR_snd_assoc, lift_left_snd_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Over.w (liftPt hf _ _ _)).symm`. Rewrite using `[Category.assoc, trR_snd, lift_left_snd, lift_left_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lift_trR (hf : IsGrpPullback A' A b f) (T : Over S') {Y : Over S} (a₀ : Y ⟶ A)
     (t₀ : Y ⟶ Over.mk (T.hom ≫ b)) :
@@ -244,9 +244,9 @@ theorem lift_trR (hf : IsGrpPullback A' A b f) (T : Over S') {Y : Over S} (a₀ 
     rfl
 
 /- English proof (translation)
-Rewrite using `[lift_trR]`. Apply `left_ext` to reduce the goal to its premises. Rewrite using `[lift_left_fst]`. Use `Eq.trans ?_ (Category.id_comp _).symm` and prove the remaining obligations. Apply `hf.1.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[liftPt_left]`. Both sides reduce to the same expression. Conclude with `((Over.w _).trans (Over.w (snd A' T))).trans (Over.w (fst A' T)).symm`. Rewrite using `[lift_left_snd]`. Conclude with `(Category.id_comp _).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trR_section (hf : IsGrpPullback A' A b f) (T : Over S') :
     (lift (pushP hf (s := (A' ⊗ T).hom) rfl (fst A' T))
@@ -264,21 +264,19 @@ theorem trR_section (hf : IsGrpPullback A' A b f) (T : Over S') :
     exact (Category.id_comp _).symm
 
 /- English proof (translation)
-Use `⟨hP', (isAdditive_iff hP').2 fun Y a a' t ↦ ?_, (triv_ev_iff hP' _ _).2 ?_, fun T M hM hA ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[evc_eq h₁ h₂ hd.isLB hP' e (a * a') t (pushP hf (s := Y.hom) rfl a * pushP hf (s := Y.hom) rfl a') (pushP hg (s := Y.hom) rfl t) (mul_left_comp hf rfl rfl rfl) rfl, evc_eq h₁ h₂ hd.isLB hP' e a t (pushP hf (s := Y.hom) rfl a) (pushP hg (s := Y.hom) rfl t) rfl rfl, evc_eq h₁ h₂ h …`. Conclude with `(isAdditive_iff hd.isLB).1 hd.additive _ _ _ _`. Rewrite using `[evc_eq h₁ h₂ hd.isLB hP' e (𝟙 A') 1 (pushP hf (s := A'.hom) rfl (𝟙 A')) (1 : Over.mk (A'.hom ≫ b) ⟶ B) rfl (one_left_comp hg rfl)]`. Conclude with `evc_one_right hd.isLB hd.zero _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T₀ : Over S` to `Over.mk (T.hom ≫ b)`. Set `k` to `trR hf T`. Establish `hM₀ : (M.pull k.left).IsLB` using `pull_isLB hM _`. Establish `ev₀ : ∀ (Y : Over S) (a₀ : Y ⟶ A) (t₀ : Y ⟶ T₀), evc hM₀ a₀ t₀ = evc hM (liftPt hf (t₀.left ≫ T.hom) a₀.left (by rw [Over.w a₀, Category.assoc]; exact (Over.w t₀).symm)) (Over.homMk t₀.left rfl : Over.mk (t₀.left ≫ T.hom) ⟶ T)` using `fun Y a₀ t₀ ↦ by`. Rewrite using `[evc, evc, cls_pull hM, ← pull_comp, lift_trR]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd : IsAdditive (M.pull k.left)` using `(isAdditive_iff hM₀).2 fun Y a₀ a₀' t₀ ↦ by`. Establish `hs : (t₀.left ≫ T.hom) ≫ b = Y.hom` using `by rw [Category.assoc]; exact Over.w t₀`. Establish `w₁ : a₀.left ≫ A.hom = (t₀.left ≫ T.hom) ≫ b` using `by rw [Over.w a₀]; exact hs.symm`. Establish `w₂ : a₀'.left ≫ A.hom = (t₀.left ≫ T.hom) ≫ b` using `by rw [Over.w a₀']; exact hs.symm`. Establish `w₃ : (a₀ * a₀').left ≫ A.hom = (t₀.left ≫ T.hom) ≫ b` using `by rw [Over.w (a₀ * a₀')]; exact hs.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmul : liftPt hf (t₀.left ≫ T.hom) (a₀ * a₀').left w₃ = liftPt hf _ a₀.left w₁ * liftPt hf _ a₀'.left w₂` using `pt_ext hf (by`. Rewrite using `[liftPt_left]`. Conclude with `(mul_left_comp hf hs (x₀ := a₀) (y₀ := a₀') (liftPt_left _ _ _ _) (liftPt_left _ _ _ _)).symm)`. Rewrite using `[ev₀, ev₀, ev₀, hmul]`. Conclude with `(isAdditive_iff hM).1 hA _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x₀, hx₀, hu⟩` from `hd.univ T₀ _ hM₀ hadd`. Take `⟨j, hj⟩ : ∃ j : (A' ⊗ T).left ⟶ (A ⊗ T₀).left, j ≫ k.left = 𝟙 (A' ⊗ T).left` from `⟨_, trR_section hf T⟩`. Establish `inj : ∀ c c' : Pic (A' ⊗ T).left, CechPic.pull k.left c = CechPic.pull k.left c' → c = c'` using `fun c c' hc ↦ by`. Use `congrArg (CechPic.pull j) hc` as an intermediate fact. Rewrite `this` using `[← pull_comp, ← pull_comp, hj, pull_id, pull_id]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ y : T ⟶ B', LBIso M (ev P' (fst A' T) (snd A' T ≫ y)) ↔ LBIso (X` using `(A ⊗ T₀).left) (M.pull k.left) (ev P (fst A (Over.mk (T.hom ≫ b))) (snd A (Over.mk (T.hom ≫ b)) ≫ pushP hg (s := T.hom) rfl y)) := fun y ↦ by`. Establish `c₁ : LBIso M (ev P' (fst A' T) (snd A' T ≫ y)) ↔ cls M hM = evc hP' (fst A' T) (snd A' T ≫ y)` using `(cls_eq_iff hM (pull_isLB hP' _)).symm`. Establish `c₂ : LBIso (X` using `(A ⊗ T₀).left) (M.pull k.left) (ev P (fst A (Over.mk (T.hom ≫ b))) (snd A (Over.mk (T.hom ≫ b)) ≫ pushP hg (s := T.hom) rfl y)) ↔ CechPic.pull k.left (cls M hM) = evc hd.isLB (fst A (Over.mk (T.hom ≫ b))) (snd A (Over.mk (T.hom ≫ b)) ≫ pushP hg (s := T.hom) rfl y) := (cls_eq_iff …`. Rewrite using `[c₁, c₂, ← evc_trR hf hg h₁ h₂ hd.isLB hP' e]`. Conclude with `⟨congrArg _, inj _ _⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨liftPt hg T.hom x₀.left (Over.w x₀), (key _).2 ?_, fun y hy ↦ ?_⟩` and prove the remaining obligations. Establish `hx : pushP hg (s` using `T.hom) rfl (liftPt hg T.hom x₀.left (Over.w x₀)) = x₀ := Over.OverMorphism.ext (liftPt_left _ _ _ _)`. Rewrite using `[hx]`. Conclude with `hx₀`. Use `pt_ext hg ?_` and prove the remaining obligations.
-
-Rewrite using `[liftPt_left]`. Conclude with `congrArg (fun z ↦ z.left) (hu _ ((key y).1 hy))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDual.baseChange (hf : IsGrpPullback A' A b f) (hg : IsGrpPullback B' B b g)
     (h₁ : h ≫ (fst A B).left = (fst A' B').left ≫ f) (h₂ : h ≫ (snd A B).left = (snd A' B').left ≫ g)
@@ -337,11 +335,9 @@ theorem IsDual.baseChange (hf : IsGrpPullback A' A b f) (hg : IsGrpPullback B' B
       exact congrArg (fun z ↦ z.left) (hu _ ((key y).1 hy))
 
 /- English proof (translation)
-Use `⟨hP', (triv_ev_iff hP' _ _).2 ?_, (triv_ev_iff hP' _ _).2 ?_, fun T x hx ↦ ?_, fun T x hx ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[evc_eq h₁ h₂ hd.isLB hP' e (1 : B' ⟶ A') (𝟙 B') (1 : Over.mk (B'.hom ≫ b) ⟶ A) (pushP hg (s := B'.hom) rfl (𝟙 B')) (one_left_comp hf rfl) rfl]`. Conclude with `evc_one_left hd.isLB hd.zero_left _`. Rewrite using `[evc_eq h₁ h₂ hd.isLB hP' e (𝟙 A') (1 : A' ⟶ B') (pushP hf (s := A'.hom) rfl (𝟙 A')) (1 : Over.mk (A'.hom ≫ b) ⟶ B) rfl (one_left_comp hg rfl)]`. Conclude with `evc_one_right hd.isLB hd.zero_right _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `hd.ker_left _ (pushP hf (s := T.hom) rfl x) ((triv_ev_iff hd.isLB _ _).2 (by`. Rewrite using `[← evc_trL hf hg h₁ h₂ hd.isLB hP' e, (triv_ev_iff hP' _ _).1 hx, map_zero]))`. Conclude with `pt_ext hf ((congrArg (fun z ↦ z.left) h0).trans (one_left_comp hf (s := T.hom) rfl).symm)`. Establish `h0` using `hd.ker_right _ (pushP hg (s := T.hom) rfl x) ((triv_ev_iff hd.isLB _ _).2 (by`. Rewrite using `[← evc_trR hf hg h₁ h₂ hd.isLB hP' e, (triv_ev_iff hP' _ _).1 hx, map_zero]))`.
-
-Conclude with `pt_ext hg ((congrArg (fun z ↦ z.left) h0).trans (one_left_comp hg (s := T.hom) rfl).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsPerfect.baseChange (hf : IsGrpPullback A' A b f) (hg : IsGrpPullback B' B b g)
     (h₁ : h ≫ (fst A B).left = (fst A' B').left ≫ f) (h₂ : h ≫ (snd A B).left = (snd A' B').left ≫ g)

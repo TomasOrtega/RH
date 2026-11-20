@@ -14,13 +14,13 @@ noncomputable section
 namespace VarIntAdd
 
 /- English proof (translation)
-Set `: Algebra R S` to `f.toAlgebra`. Establish `: Algebra.IsIntegral R S` using `⟨hfin.to_isIntegral⟩`. Apply `le_antisymm` to reduce the goal to its premises. Establish `hg : StrictMono (PrimeSpectrum.comap (algebraMap R S))`. Introduce `q₁ q₂ hq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlt : q₁.asIdeal < q₂.asIdeal` using `hq`. Take `⟨hle, x, hx2, hx1⟩` from `SetLike.lt_iff_le_and_exists.mp hlt`. Use `show q₁.asIdeal.comap (algebraMap R S) < q₂.asIdeal.comap (algebraMap R S)`. Conclude with `Ideal.comap_lt_comap_of_integral_mem_sdiff hle ⟨hx2, hx1⟩ (Algebra.IsIntegral.isIntegral x)`. Conclude with `Order.krullDim_le_of_strictMono _ hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `iSup_le fun l => ?_` and prove the remaining obligations. Establish `hker : (⊥ : Ideal S).comap (algebraMap R S) ≤ (RelSeries.head l).asIdeal`. Introduce `r hr`. Establish `: f r = 0` using `hr`. Rewrite using `[show r = 0 from hinj (by rw [this, map_zero])]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.zero_mem _`. Take `⟨P, -, hP, hPo⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral _ ⊥ hker`. Establish `: P.LiesOver (RelSeries.head l).asIdeal` using `⟨hPo.symm⟩`. Take `⟨L, hlen, -, -⟩` from `Ideal.exists_ltSeries_of_hasGoingUp l P`. Conclude with `le_iSup_of_le L (by rw [hlen])`.
+A detailed English derivation is pending.
 -/
 theorem ringKrullDim_eq_of_injective_finite {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S)
     (hinj : Function.Injective f) (hfin : f.Finite) : ringKrullDim S = ringKrullDim R := by
@@ -47,7 +47,7 @@ theorem ringKrullDim_eq_of_injective_finite {R S : Type*} [CommRing R] [CommRing
     exact le_iSup_of_le L (by rw [hlen])
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_eq_of_injective_finite (projHom J A).toRingHom hA.injective hA.finite, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ringKrullDim_of_isFiniteProjection {n k : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin k) (Fin n) ℂ} (hA : IsFiniteProjection J A) :
@@ -57,7 +57,7 @@ theorem ringKrullDim_of_isFiniteProjection {n k : ℕ} {J : Ideal (MvPolynomial 
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [chartDens, sheetSum, Pi.add_apply]`. Rewrite using `[← finsum_mem_add_distrib (hfin y)]`. Use `finsum_mem_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chartDens_add {n k : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin k) (Fin n) ℂ}
     (hfin : ∀ y, (fibre J A y).Finite) (f g : (Fin n → ℂ) → ℝ) (φ : Fin k → (Fin n → ℂ) → ℝ) :
@@ -69,7 +69,7 @@ theorem chartDens_add {n k : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Ma
   split_ifs <;> ring
 
 /- English proof (translation)
-Simplify using `only [chartDens, chartAbsDens, sheetSum]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfin y), finsum_mem_eq_finite_toFinset_sum _ (hfin y)]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (le_of_eq (Finset.sum_congr rfl fun x _ => ?_))` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_chartDens_le {n k : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin k) (Fin n) ℂ}
     (hfin : ∀ y, (fibre J A y).Finite) (w : (Fin n → ℂ) → ℝ) (φ : Fin k → (Fin n → ℂ) → ℝ)
@@ -82,13 +82,11 @@ theorem abs_chartDens_le {n k : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A :
 end VarIntAdd
 
 /- English proof (translation)
-Introduce `n k J f g φ hJ hfc hfs hgc hgs hφ`. Unfold `varInt`. Use `split_ifs with h`. Use `set A := h.choose`. Establish `hA : IsFiniteProjection J A` using `h.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `VarIntAdd.ringKrullDim_of_isFiniteProjection hA`. Establish `hfin : ∀ y, (fibre J A y).Finite` using `fun y => (FibreBound.proof n k J A hJ hd hA y).2.1`. Establish `hint : ∀ w : (Fin n → ℂ) → ℝ, Continuous w → HasCompactSupport w → Integrable (chartDens J A w φ)`. Introduce `w hwc hws`. Establish `hm` using `SheetSumMeasurable.proof n k J A w φ hJ hd hA hwc.measurable hφ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hCM n k J A w φ hJ hd hA hwc.continuousOn hφ (Or.inl hws)).mono' hm.1.aestronglyMeasurable (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`. Conclude with `VarIntAdd.abs_chartDens_le hfin w φ y`. Unfold `chartInt`. Rewrite using `[VarIntAdd.chartDens_add hfin, integral_add' (hint f hfc hfs) (hint g hgc hgs)]`.
-
-Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem VarIntAdd.proof (hCM : ChartMassCompact.Statement) : VarIntAdd.Statement := by
   intro n k J f g φ hJ hfc hfs hgc hgs hφ

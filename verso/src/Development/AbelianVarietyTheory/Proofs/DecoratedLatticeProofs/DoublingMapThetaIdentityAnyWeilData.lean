@@ -30,7 +30,7 @@ def inR : Matrix (Fin (m + n)) (Fin n) R :=
 variable {R m n}
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨k | k, rfl⟩` from `finSumFinEquiv.surjective i`. Apply the tactic sequence `simp only [inL, Matrix.map_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Matrix.fromRows_apply_inl, Matrix.one_apply] split_ifs <;> simp`. Simplify using `only [inL, Matrix.map_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Matrix.fromRows_apply_inr, Matrix.zero_apply, map_zero]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem inL_map {R' : Type} [CommRing R'] (f : R →+* R') : (inL R m n).map f = inL R' m n := by
   ext i j
@@ -42,7 +42,7 @@ theorem inL_map {R' : Type} [CommRing R'] (f : R →+* R') : (inL R m n).map f =
       Matrix.zero_apply, map_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨k | k, rfl⟩` from `finSumFinEquiv.surjective i`. Simplify using `only [inR, Matrix.map_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Matrix.fromRows_apply_inl, Matrix.zero_apply, map_zero]`. Apply the tactic sequence `simp only [inR, Matrix.map_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Matrix.fromRows_apply_inr, Matrix.one_apply] split_ifs <;> simp`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inR_map {R' : Type} [CommRing R'] (f : R →+* R') : (inR R m n).map f = inR R' m n := by
   ext i j
@@ -54,7 +54,7 @@ theorem inR_map {R' : Type} [CommRing R'] (f : R →+* R') : (inR R m n).map f =
     split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, ← finSumFinEquiv.sum_comp]`. Simplify using `only [inL, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Fintype.sum_sum_type, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.one_apply, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_tru …`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_inL {l : ℕ} (x : Matrix (Fin l) (Fin (m + n)) R) :
     x * inL R m n = Matrix.of fun i j => x i (finSumFinEquiv (Sum.inl j)) := by
@@ -65,7 +65,7 @@ theorem mul_inL {l : ℕ} (x : Matrix (Fin l) (Fin (m + n)) R) :
     mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, Matrix.of_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, ← finSumFinEquiv.sum_comp]`. Simplify using `only [inR, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Fintype.sum_sum_type, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.one_apply, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, zero_add, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_tru …`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_inR {l : ℕ} (x : Matrix (Fin l) (Fin (m + n)) R) :
     x * inR R m n = Matrix.of fun i j => x i (finSumFinEquiv (Sum.inr j)) := by
@@ -76,7 +76,7 @@ theorem mul_inR {l : ℕ} (x : Matrix (Fin l) (Fin (m + n)) R) :
     mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, Matrix.of_apply]
 
 /- English proof (translation)
-Rewrite using `[blkMat, inL, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_mul_fromRows]`. Use extensionality with `i j`. Apply the tactic sequence `obtain ⟨k | k, rfl⟩ := finSumFinEquiv.surjective i <;>`. Simplify using `[-finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right, Matrix.mul_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blkMat_inL (a : Matrix (Fin m) (Fin m) R) (b : Matrix (Fin n) (Fin n) R) :
     blkMat finSumFinEquiv a b * inL R m n = inL R m n * a := by
@@ -86,7 +86,7 @@ theorem blkMat_inL (a : Matrix (Fin m) (Fin m) R) (b : Matrix (Fin n) (Fin n) R)
     simp [-finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right, Matrix.mul_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[blkMat, inR, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_mul_fromRows]`. Use extensionality with `i j`. Apply the tactic sequence `obtain ⟨k | k, rfl⟩ := finSumFinEquiv.surjective i <;>`. Simplify using `[-finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right, Matrix.mul_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blkMat_inR (a : Matrix (Fin m) (Fin m) R) (b : Matrix (Fin n) (Fin n) R) :
     blkMat finSumFinEquiv a b * inR R m n = inR R m n * b := by
@@ -98,21 +98,21 @@ theorem blkMat_inR (a : Matrix (Fin m) (Fin m) R) (b : Matrix (Fin n) (Fin n) R)
 variable [StarRing R]
 
 /- English proof (translation)
-Rewrite using `[mul_inL]`. Use extensionality with `i j`. Simplify using `[-finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right, inL, Matrix.one_apply, eq_comm, apply_ite star]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem inL_inL : (inL R m n)ᴴ * inL R m n = 1 := by
   rw [mul_inL]; ext i j
   simp [-finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right, inL, Matrix.one_apply, eq_comm, apply_ite star]
 
 /- English proof (translation)
-Rewrite using `[mul_inR]`. Use extensionality with `i j`. Simplify using `[-finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right, inR, Matrix.one_apply, eq_comm, apply_ite star]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem inR_inR : (inR R m n)ᴴ * inR R m n = 1 := by
   rw [mul_inR]; ext i j
   simp [-finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right, inR, Matrix.one_apply, eq_comm, apply_ite star]
 
 /- English proof (translation)
-Rewrite using `[mul_inL]`. Use extensionality with `i j`. Simplify using `[-finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right, inR]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem inR_inL : (inR R m n)ᴴ * inL R m n = 0 := by
   rw [mul_inL]; ext i j
@@ -140,19 +140,19 @@ def sumDec (V W : HSp D) : GlobalTheory.MixModel.OrthDec (sumSp V W) V W where
   rank_add := rfl
 
 /- English proof (translation)
-The claim follows from `inL_map (incA D)`.
+A detailed English derivation is pending.
 -/
 theorem sumDec_jA (V W : HSp D) : (sumDec V W).jA = inL (AE D) V.rank W.rank := inL_map (incA D)
 
 /- English proof (translation)
-The claim follows from `inR_map (incA D)`.
+A detailed English derivation is pending.
 -/
 theorem sumDec_jB (V W : HSp D) : (sumDec V W).jB = inR (AE D) V.rank W.rank := inR_map (incA D)
 
 /- English proof (translation)
-Use `GlobalTheory.MixModel.mt_injective _ ?_` and prove the remaining obligations. Establish `hA : HMul.hMul (mt (sumSp V W) (ioSum V W (g, g'))) (sumDec V W).jA = HMul.hMul (sumDec V W).jA (mt V g)`. Rewrite using `[sumDec_jA]`. Conclude with `blkMat_inL (mt V g) (mt W g')`. Establish `hB : HMul.hMul (mt (sumSp V W) (ioSum V W (g, g'))) (sumDec V W).jB = HMul.hMul (sumDec V W).jB (mt W g')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sumDec_jB]`. Conclude with `blkMat_inR (mt V g) (mt W g')`. Rewrite using `[GlobalTheory.MixModel.OrthDec.mt_emb, ← hA, ← hB, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_add, GlobalTheory.MixModel.OrthDec.sum_eq_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumDec_emb (V W : HSp D) (g : GA D V) (g' : GA D W) : (sumDec V W).emb (g, g') = ioSum V W (g, g') := by
   refine GlobalTheory.MixModel.mt_injective _ ?_
@@ -164,7 +164,7 @@ theorem sumDec_emb (V W : HSp D) (g : GA D V) (g' : GA D W) : (sumDec V W).emb (
     GlobalTheory.MixModel.OrthDec.sum_eq_one, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.MixModel.OrthDec.boxS, GlobalTheory.MixModel.OrthDec.resS_apply, sumDec_jA, sumDec_jB]`. Conclude with `congrArg₂ (· * ·) (congrArg f (mul_inL x)) (congrArg f' (mul_inR x))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boxS_apply (A B : HSp D) (f : WO A B → ℂ) (f' : WO (negSp A) B → ℂ) (x : WO (dblSp A) B) :
     (sumDec A (negSp A)).boxS B f f' x = f (resL A B x) * f' (resR A B x) := by
@@ -172,13 +172,13 @@ theorem boxS_apply (A B : HSp D) (f : WO A B → ℂ) (f' : WO (negSp A) B → �
   exact congrArg₂ (· * ·) (congrArg f (mul_inL x)) (congrArg f' (mul_inR x))
 
 /- English proof (translation)
-Introduce `D ψ A B χA χB om omh hom homh f₁ f₂ h₁ h₂`. Use `⟨GlobalTheory.T.isThetaFunction_doublingSeesaw_of_standard_char D ψ A B hom.std f₁ f₂ h₁ h₂, fun g₁ g₂ h => ?_⟩` and prove the remaining obligations. Take `⟨hθ, om', hom', hact⟩` from `GlobalTheory.T.exists_conjugate_weilDatum_hermitianSpaceNeg D ψ A B χA χB om hom`. Establish `hT` using `GlobalTheory.T.thetaTensorRule_orthogonalSum_source D ψ hom.std (sumSp A (negSp A)) A (negSp A) (sumDec A (negSp A)) B`. Establish `hh : IsWeilDatumO ψ (sumSp A (negSp A)) B (χA * χA⁻¹) χB omh` using `by rw [mul_inv_cancel]; exact homh`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hT.om_box χA χA⁻¹ χB omh om om' hh hom hom' g₁ ((negEquiv A).symm g₂) h f₁ _ h₁ (hθ f₂ h₂)`. Rewrite `key` using `[hact _ h f₂ h₂, sumDec_emb, io_eq_ioSum, MulEquiv.apply_symm_apply]`. Establish `e : (sumDec A (negSp A)).boxS B f₁ (fun x => conj (f₂ (-x))) = delta A B f₁ f₂`. Use function extensionality and compare the values at `fun x => boxS_apply A B _ _ x`. Establish `main : omh (io A (g₁, g₂), h) (delta A B f₁ f₂) = (((χB (detA A g₂))⁻¹ : Circle) : ℂ) • delta A B (om (g₁, h) f₁) (om (g₂, h) f₂)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Use `key.trans (funext fun x => (boxS_apply A B _ _ x).trans ?_)` and prove the remaining obligations. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨main, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `zL : resL A B 0 = 0` using `rfl`. Establish `zR : resR A B 0 = 0` using `rfl`. Rewrite using `[thetaKO, main]`. Simplify using `only [thetaKO, GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta, Pi.smul_apply, smul_eq_mul, zL, zR, neg_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thetaClause : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle)
     (om : WRep A B) (omh : WRep (dblSp A) B), IsWeilDatumO ψ A B χA χB om → IsWeilDatumO ψ (dblSp A) B 1 χB omh →

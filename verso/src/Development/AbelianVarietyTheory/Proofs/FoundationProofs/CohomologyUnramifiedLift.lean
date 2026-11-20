@@ -28,27 +28,27 @@ section HtComm
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.IntegralAlgebraMapNormBound.main x hx`.
+A detailed English derivation is pending.
 -/
 private theorem htc_norm_le_one_of_isIntegral (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) :
     ‖x‖ ≤ 1 :=
   _root_.GlobalTheory.IntegralAlgebraMapNormBound.main x hx
 
 /- English proof (translation)
-The claim follows from `htc_norm_le_one_of_isIntegral x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)`.
+A detailed English derivation is pending.
 -/
 theorem htc_norm_le_one (c : Coef l) (x : Qbar l) (hx : x ∈ c.O) : ‖x‖ ≤ 1 :=
   htc_norm_le_one_of_isIntegral x ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨x, hx⟩ : c.O)).map c.O.val)
 
 /- English proof (translation)
-The claim follows from `(Continuous.units_map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom ((continuous_algebraMap ℚ_[l] (Qbar l)).comp continuous_subtype_val)).comp (continuous_cycZ ℚ Ω l)`.
+A detailed English derivation is pending.
 -/
 theorem htc_continuous_cycBar : Continuous (cycBar ℚ Ω l) :=
   (Continuous.units_map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom
     ((continuous_algebraMap ℚ_[l] (Qbar l)).comp continuous_subtype_val)).comp (continuous_cycZ ℚ Ω l)
 
 /- English proof (translation)
-Take `⟨hc, hw⟩` from `Subgroup.mem_inf.1 hs`. Rewrite `hc`, `hw` using `[MonoidHom.mem_ker]`. Establish `hd : dt W s = 1` using `by simp [dt, hw]`. Simplify using `[dual1, tw, hw, hc, hd]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem htc_dual1_eq_one {W : R2 Ω l} {s : G ℚ Ω} (hs : s ∈ N0g W) : dual1 W s = 1 := by
   obtain ⟨hc, hw⟩ := Subgroup.mem_inf.1 hs
@@ -57,7 +57,7 @@ theorem htc_dual1_eq_one {W : R2 Ω l} {s : G ℚ Ω} (hs : s ∈ N0g W) : dual1
   simp [dual1, tw, hw, hc, hd]
 
 /- English proof (translation)
-Use `hx.2 s t` as an intermediate fact. Simplify `this` using `[Loc.colRep, Matrix.toLin'_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem htc_cocycle {W : R2 Ω l} {x : G ℚ Ω → Fin 2 → Qbar l} (hx : x ∈ Z1 (Loc.colRep W)) (s t : G ℚ Ω) :
     x (s * t) = x s + mat W s *ᵥ x t := by
@@ -65,7 +65,7 @@ theorem htc_cocycle {W : R2 Ω l} {x : G ℚ Ω → Fin 2 → Qbar l} (hx : x �
   simpa [Loc.colRep, Matrix.toLin'_apply] using this
 
 /- English proof (translation)
-Establish `hc : Continuous fun a : G ℚ Ω => ‖f (σ * a) - f σ‖` using `((hf.comp (continuous_const_mul σ)).sub continuous_const).norm`. Establish `h1 : {a : G ℚ Ω | ‖f (σ * a) - f σ‖ < r} ∈ nhds (1 : G ℚ Ω)` using `(isOpen_lt hc continuous_const).mem_nhds (by simp [hr])`. Take `⟨E, hE, hsub⟩` from `(krullTopology_mem_nhds_one_iff ℚ Ω _).1 h1`. Use `haveI := hE`. Conclude with `⟨E.fixingSubgroup, E.fixingSubgroup_isOpen, fun a ha => hsub ha⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem htc_open_near (f : G ℚ Ω → Qbar l) (hf : Continuous f) (σ : G ℚ Ω) (r : ℝ) (hr : 0 < r) :
     ∃ U : Subgroup (G ℚ Ω), IsOpen (U : Set (G ℚ Ω)) ∧ ∀ a ∈ U, ‖f (σ * a) - f σ‖ < r := by
@@ -78,16 +78,16 @@ theorem htc_open_near (f : G ℚ Ω → Qbar l) (hf : Continuous f) (σ : G ℚ 
   exact ⟨E.fixingSubgroup, E.fixingSubgroup_isOpen, fun a ha => hsub ha⟩
 
 /- English proof (translation)
-Unfold `toGS`. Conclude with `QuotientGroup.ker_mk' _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem htc_ker_toGS (S : Set Pl) : (toGS Ω S).ker = NS (F := ℚ) Ω S := by
   unfold toGS
   exact QuotientGroup.ker_mk' _
 
 /- English proof (translation)
-Unfold `NS`. Use `Subgroup.topologicalClosure_minimal _ (le_trans (Subgroup.normalClosure_mono ?_) (Subgroup.le_topologicalClosure _)) (Subgroup.isClosed_topologicalClosure _)` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Set.mem_iUnion] at hx ⊢`. Take `⟨v, hv, A, hA, hx⟩` from `hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v, fun h' => hv (h h'), A, hA, hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem htc_NS_anti {S S' : Set Pl} (h : S ⊆ S') : NS (F := ℚ) Ω S' ≤ NS (F := ℚ) Ω S := by
   unfold NS
@@ -99,7 +99,7 @@ theorem htc_NS_anti {S S' : Set Pl} (h : S ⊆ S') : NS (F := ℚ) Ω S' ≤ NS 
   exact ⟨v, fun h' => hv (h h'), A, hA, hx⟩
 
 /- English proof (translation)
-Introduce `s hs` and use `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure (by simp only [Set.mem_iUnion] exact ⟨v, hv, B, hB, hs⟩))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem htc_Ine_le_NS {S : Set Pl} {v : Pl} (hv : v ∉ S) {B : ValuationSubring Ω} (hB : IsPlaceOver B v) :
     Ine (F := ℚ) B ≤ NS (F := ℚ) Ω S := fun s hs =>
@@ -108,9 +108,9 @@ theorem htc_Ine_le_NS {S : Set Pl} {v : Pl} (hv : v ∉ S) {B : ValuationSubring
     exact ⟨v, hv, B, hB, hs⟩))
 
 /- English proof (translation)
-Unfold `NS`. Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal ?_) hc` and prove the remaining obligations. Introduce `s hs`. Simplify using `only [Set.mem_iUnion] at hs`. Take `⟨v, hv, B, hB, hs⟩` from `hs`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `h v hv B hB hs`.
+A detailed English derivation is pending.
 -/
 theorem htc_NS_le (S : Set Pl) (H : Subgroup (G ℚ Ω)) [H.Normal] (hc : IsClosed (H : Set (G ℚ Ω)))
     (h : ∀ v ∉ S, ∀ B : ValuationSubring Ω, IsPlaceOver B v → Ine (F := ℚ) B ≤ H) : NS (F := ℚ) Ω S ≤ H := by
@@ -122,7 +122,7 @@ theorem htc_NS_le (S : Set Pl) (H : Subgroup (G ℚ Ω)) [H.Normal] (hc : IsClos
   exact h v hv B hB hs
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.FinTwoMembership.ht_mem c W y z u hO hyO hzO huO s`.
+A detailed English derivation is pending.
 -/
 theorem htc_ht_mem (c : Coef l) (W : R2 Ω l) (y z : G ℚ Ω → Fin 2 → Qbar l) (u : G ℚ Ω → Qbar l)
     (hO : ∀ s i j, mat W s i j ∈ c.O) (hyO : ∀ s i, y s i ∈ c.O) (hzO : ∀ s i, z s i ∈ c.O) (huO : ∀ s, u s ∈ c.O)
@@ -130,14 +130,14 @@ theorem htc_ht_mem (c : Coef l) (W : R2 Ω l) (y z : G ℚ Ω → Fin 2 → Qbar
   _root_.GlobalTheory.FinTwoMembership.ht_mem c W y z u hO hyO hzO huO s
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Yza4.congruence_mul_of_unit_factor h1 h2 hun hh`.
+A detailed English derivation is pending.
 -/
 theorem congruence_mul_of_unit_factor {n : ℕ} {P h un D : Qbar l} (h1 : Cg n (P * h) 0) (h2 : Cg n P (un * D)) (hun : ‖un‖ = 1)
     (hh : ‖h‖ ≤ 1) : Cg n (D * h) 0 :=
   _root_.UpperTheory.Reformulated.B.Yza4.congruence_mul_of_unit_factor h1 h2 hun hh
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.ZeroSubmodule.main S V H x hN hc hV hx h`.
+A detailed English derivation is pending.
 -/
 theorem htc_cocycle_NS (S : Set Pl) (V : R2 Ω l) (H : Subgroup (G ℚ Ω)) (x : G ℚ Ω → Fin 2 → Qbar l) (hN : H.Normal)
     (hc : IsClosed (H : Set (G ℚ Ω))) (hV : ∀ a ∈ H, V a = 1) (hx : x ∈ Z1 (Loc.colRep V))
@@ -146,21 +146,21 @@ theorem htc_cocycle_NS (S : Set Pl) (V : R2 Ω l) (H : Subgroup (G ℚ Ω)) (x :
   _root_.GlobalTheory.ZeroSubmodule.main S V H x hN hc hV hx h
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.OpenKernelLocallyConstant.isOpen_ker_and_isLocallyConstant C N ψ hN h`.
+A detailed English derivation is pending.
 -/
 theorem htc_killsMu_open [IsAlgClosure ℚ Ω] (C : Type) [Group C] (N : ℕ) (ψ : G ℚ Ω →* C) (hN : N ≠ 0)
     (h : KillsMu N ψ) : IsOpen (ψ.ker : Set (G ℚ Ω)) ∧ IsLocallyConstant ψ :=
   _root_.GlobalTheory.OpenKernelLocallyConstant.isOpen_ker_and_isLocallyConstant C N ψ hN h
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.InertiaRootOfUnity.inertia_fixes_root_of_unity N v B hB hN`.
+A detailed English derivation is pending.
 -/
 theorem htc_Ine_fix_mu (N : ℕ) (v : Pl) (B : ValuationSubring Ω) (hB : IsPlaceOver B v) (hN : ((N : ℕ) : 𝓞 ℚ) ∉ v.asIdeal) :
     ∀ s ∈ Ine (F := ℚ) B, ∀ ζ : Ω, ζ ^ N = 1 → s ζ = ζ :=
   _root_.GlobalTheory.InertiaRootOfUnity.inertia_fixes_root_of_unity N v B hB hN
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Yza3.htc_places w`.
+A detailed English derivation is pending.
 -/
 theorem htc_places (w : Pl) : normV w ≠ 0 ∧ (∀ v : Pl, v ≠ w → ((normV w : ℕ) : 𝓞 ℚ) ∉ v.asIdeal) ∧
     ∀ (p : ℕ), p.Prime → ∀ v v' : Pl, ((p : ℕ) : 𝓞 ℚ) ∈ v.asIdeal → ((p : ℕ) : 𝓞 ℚ) ∈ v'.asIdeal → v = v' :=
@@ -169,61 +169,53 @@ theorem htc_places (w : Pl) : normV w ≠ 0 ∧ (∀ v : Pl, v ≠ w → ((normV
 end HtComm
 
 /- English proof (translation)
-Introduce `hLit l _ Ω _ _ _ e S A W hW c y z u S' n hn hO hy hz hyO hzO hyU hzq hzl hTame huc huO huS hcup σ hσ`. Establish `hWc : Continuous W` using `hW.cont`. Establish `hdet2 : dt W ^ 2 = 1` using `hW.det2`. Establish `hAbove : ContainsAbove S l` using `hW.above`. Establish `hyc : Continuous y` using `hy.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzc : Continuous z` using `hz.1`. Establish `hσH : σ ∈ H0g W`. Use `(Subgroup.commutator_le.2 fun g₁ h₁ g₂ h₂ => ?_) hσ` and prove the remaining obligations. Rewrite using `[commutatorElement_def]`. Conclude with `mul_mem (mul_mem (mul_mem h₁ h₂) (inv_mem h₁)) (inv_mem h₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hσcyc : σ ∈ ⁅(cycBar ℚ Ω l).ker, (cycBar ℚ Ω l).ker⁆` using `Subgroup.commutator_mono inf_le_left inf_le_left hσ`. Establish `hdtσ : dt W σ = 1` using `(Subgroup.mem_inf.1 hσH).2`. Use `set F : G ℚ Ω → Qbar l := fun s => (mat W s - 1).det * ht W y z u s with hF`. Establish `hmatc : Continuous fun s => mat W s` using `Units.continuous_val.comp hWc`. Establish `hFc : Continuous F`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Continuous fun s => mat W s - 1` using `hmatc.sub continuous_const`. Establish `h2 : Continuous fun s => (mat W s - 1).det` using `h1.matrix_det`. Establish `h3 : Continuous fun s => (mat W s - 1).adjugate *ᵥ y s` using `h1.matrix_adjugate.matrix_mulVec hyc`. Use `h2.mul ?_` and prove the remaining obligations. Unfold `ht om`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(h2.mul huc).sub ?_` and prove the remaining obligations. Establish `hz0` using `(continuous_apply 0).comp hzc`. Establish `hz1` using `(continuous_apply 1).comp hzc`. Establish `h30` using `(continuous_apply 0).comp h3`. Establish `h31` using `(continuous_apply 1).comp h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h30.mul hz1).sub (h31.mul hz0)`. Establish `hr : (0 : ℝ) < ‖((l : ℕ) : Qbar l) ^ n‖` using `norm_pos_iff.2 (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero))`. Establish `hr2 : (0 : ℝ) < ‖(2 : Qbar l)‖` using `norm_pos_iff.2 two_ne_zero`. Take `⟨U₁, hU₁o, hU₁⟩` from `htc_open_near F hFc σ _ hr`. Take `⟨U₂, hU₂o, hU₂⟩` from `htc_open_near (fun s => (mat W s).det) hmatc.matrix_det σ _ hr2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdtv : ∀ s, ((dt W s : (Qbar l)ˣ) : Qbar l) = (mat W s).det` using `fun s => rfl`. Take `⟨w, B, τ, hwS, hwS', hB, hFrob, hτD, hστ, hdiv, hpow⟩` from `GlobalTheory.T.exists_auxiliary_prime_frobenius_near_commutator l Ω n S S' (U₁ ⊓ U₂) σ (by rw [Subgroup.coe_inf]; exact hU₁o.inter hU₂o) hσcyc`. Establish `hdtτ : dt W τ = 1`. Establish `h` using `congrArg (fun f : G ℚ Ω →* (Qbar l)ˣ => f τ) hdet2`. Simplify using `only [pow_two, MonoidHom.mul_apply, MonoidHom.one_apply] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `hsq : ((dt W τ : (Qbar l)ˣ) : Qbar l) * (dt W τ : Qbar l) = 1` using `by rw [← Units.val_mul, h, Units.val_one]`. Break down `mul_self_eq_one_iff.1 hsq with h1 | h1` into its components or cases. Conclude with `Units.ext h1`. It suffices to derive a contradiction. Establish `h3` using `hU₂ _ (Subgroup.mem_inf.1 hστ).2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [mul_inv_cancel_left] at h3`. Rewrite `h3` using `[← hdtv, ← hdtv, h1, hdtσ, Units.val_one, show (-1 : Qbar l) - 1 = -2 by ring, norm_neg]`. Conclude with `lt_irrefl _ h3`. Establish `hwl : ((l : ℕ) : 𝓞 ℚ) ∉ w.asIdeal` using `fun h => hwS (hAbove w h)`. Take `⟨ψ, hKill, hSurj, hIne1, hDecK⟩` from `GlobalTheory.T.exists_character_primeConductor_degree_prime_pow l Ω n w hn hdiv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT` using `hTame w hwS' hdiv ψ hKill hSurj`. Take `⟨P, un, d, hPO, hun, hPfrob, hdc, hdO, hdrel, hdker, hdq⟩` from `GlobalTheory.T.unramified_cocycle_kills_roots l Ω c n S W y w ψ hWc hO hAbove hW.unr hyO hKill hwS hT`. Take `⟨hNw, hNwv, hpl⟩` from `htc_places w`. Take `⟨hψo, hψlc⟩` from `htc_killsMu_open _ (normV w) ψ hNw hKill`. Establish `hψIne : ∀ v, v ≠ w → ∀ B' : ValuationSubring Ω, IsPlaceOver B' v → Ine (F` using `ℚ) B' ≤ ψ.ker := fun v hv B' hB' s hs => hKill s (fun ζ hζ => htc_Ine_fix_mu (normV w) v B' hB' (hNwv v hv) s hs ζ hζ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI hN0n : (N0g W).Normal := by unfold N0g; infer_instance`. Establish `hN0c : IsClosed (N0g W : Set (G ℚ Ω))`. Unfold `N0g`. Rewrite using `[Subgroup.coe_inf, MonoidHom.coe_ker, MonoidHom.coe_ker]`. Conclude with `(isClosed_singleton.preimage htc_continuous_cycBar).inter (isClosed_singleton.preimage hWc)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIneN0 : ∀ v, v ∉ (S : Set Pl) → ∀ B' : ValuationSubring Ω, IsPlaceOver B' v → Ine (F` using `ℚ) B' ≤ N0g W := by`. Introduce `v hv B' hB' s hs`. Establish `hvl : ((l : ℕ) : 𝓞 ℚ) ∉ v.asIdeal` using `fun h => hv (hAbove v h)`. Use `Subgroup.mem_inf.2 ⟨?_, hW.unr v hv B' hB' hs⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `cyc_eq_one_of_mem_Ine hvl hB' hs`. Establish `hNS_N0 : NS (F` using `ℚ) Ω (S : Set Pl) ≤ N0g W := htc_NS_le _ _ hN0c hIneN0`. Establish `hNSy : ∀ a ∈ NS (F` using `ℚ) Ω (S : Set Pl), y a = 0 := htc_cocycle_NS _ W (N0g W) y hN0n hN0c (fun a ha => (Subgroup.mem_inf.1 ha).2) hy (by`. Introduce `v hv B' hB' s hs`. Establish `hvl : ((l : ℕ) : 𝓞 ℚ) ∉ v.asIdeal` using `fun h => hv (hAbove v h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hWs : W s = 1` using `(hIneN0 v hv B' hB' hs).2`. Take `⟨B0, hB0, hcob⟩` from `hyU v hvl`. Take `⟨x, hx⟩` from `(GlobalTheory.T.localConditions_independent_of_place_over l Ω W y hy v B0 B' hB0 hB').1 hcob`. Use `⟨hIneN0 v hv B' hB' hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hx s hs, show mat W s = 1 by simp [mat, hWs], Matrix.one_mulVec, sub_self])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hNSz : ∀ a ∈ NS (F` using `ℚ) Ω (S : Set Pl), z a = 0 := htc_cocycle_NS _ (dual1 W) (N0g W) z hN0n hN0c (fun a ha => htc_dual1_eq_one ha) hz (by`. Introduce `v hv B' hB' s hs`. Establish `hvl : ((l : ℕ) : 𝓞 ℚ) ∉ v.asIdeal` using `fun h => hv (hAbove v h)`. Establish `hd1 : dual1 W s = 1` using `htc_dual1_eq_one (hIneN0 v hv B' hB' hs)`. Take `⟨x, -, hx⟩` from `hzq v hvl B' hB'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hIneN0 v hv B' hB' hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hx s hs, show mat (dual1 W) s = 1 by simp [mat, hd1], Matrix.one_mulVec, sub_self])`. Use `set S2 : Finset Pl := insert w S with hS2`. Establish `hsub : (S : Set Pl) ⊆ (S2 : Set Pl)` using `Finset.coe_subset.2 (Finset.subset_insert _ _)`. Establish `hNSψ : NS (F` using `ℚ) Ω (S2 : Set Pl) ≤ ψ.ker := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `htc_NS_le _ _ (Subgroup.isClosed_of_isOpen _ hψo) fun v hv B' hB' => hψIne v ?_ B' hB'` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hv (by simp [hS2])`. Establish `hker2 : (toGS Ω (S2 : Set Pl)).ker ≤ N0g W ⊓ ψ.ker`. Rewrite using `[htc_ker_toGS]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_inf ((htc_NS_anti hsub).trans hNS_N0) hNSψ`. Establish `hxi` using `GlobalTheory.T.cocycle_pairing_locally_constant l Ω c n S2 W y z d u P ψ hWc hO hdet2 hker2 hψlc hPO hy hz hyO hzO (fun a ha => by`. Rewrite `ha` using `[htc_ker_toGS]`. Establish `ha'` using `htc_NS_anti hsub ha`. Use `⟨hNSy a ha', hNSz a ha', hdker a ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[htc_ker_toGS, ← Finset.coe_insert]`. Conclude with `ha)`. Use `huc huO (fun s a ha => huS s a (by rw [htc_ker_toGS] at ha ⊢; exact htc_NS_anti hsub ha)) hcup hdc hdO hdrel`. Establish `hψ0 : ∀ s, ψ s = 1 → (((ψ s).toAdd.val : ℕ) : Qbar l) = 0` using `fun s hs => by rw [hs]; simp`. Establish `hDecψ : ∀ v ∈ S, ∀ B' : ValuationSubring Ω, IsPlaceOver B' v → ∀ s ∈ Dec (F` using `ℚ) B', ψ s = 1 := fun v hv B' hB' s hs => hDecK v (fun h => hwS (h ▸ hv)) (hpow v hv) B' hB' hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hCv : ∀ a : Fin 2 → Qbar l, Cv n a a` using `fun a i => by simp [Cg]`. Establish `hCocd : ∀ v ∈ S, ∀ B' : ValuationSubring Ω, IsPlaceOver B' v → Coc1 c n W (Dec (F` using `ℚ) B') d := fun v hv B' hB' => ⟨hdc.continuousOn, hdO, fun s hs t _ => by`. Use `hdrel s t` as an intermediate fact. Rewrite `this` using `[hψ0 s (hDecψ v hv B' hB' s hs), zero_mul, zero_smul, add_zero]`. Conclude with `this⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hCocz : ∀ H : Subgroup (G ℚ Ω), Coc1 c n (dual1 W) H z` using `fun H => ⟨hzc.continuousOn, hzO, fun s _ t _ => by rw [htc_cocycle hz]; exact hCv _⟩`. Use `set ξ : G ℚ Ω → G ℚ Ω → Qbar l := fun s t => cup W d z s t - (((ψ s).toAdd.val : ℕ) : Qbar l) * P * eps l s * u t with hξ`. Establish `hξDec : ∀ v ∈ S, ∀ B' : ValuationSubring Ω, IsPlaceOver B' v → Cob2 c n (Dec (F` using `ℚ) B') (cup W d z) → Cob2 c n (Dec (F := ℚ) B') ξ := by`. Introduce and unpack `v hv B' hB' ⟨x, hx1, hx2, hx3⟩`. Use `⟨x, hx1, hx2, fun s hs t ht => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ξ s t = cup W d z s t`. Simplify using `only [hξ, hψ0 s (hDecψ v hv B' hB' s hs), zero_mul, sub_zero]`. Rewrite using `[e]`. Conclude with `hx3 s hs t ht`. Establish `hloc : ∀ v ∈ S2, v ≠ w → ∃ B' : ValuationSubring Ω, IsPlaceOver B' v ∧ Cob2 c n (Dec (F` using `ℚ) B') ξ := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v hv hvw`. Establish `hvS : v ∈ S` using `(Finset.mem_insert.1 hv).resolve_left hvw`. Distinguish the cases in `hvl : ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal`. Take `⟨v', hAv', hlv'⟩` from `hW.atL`. Establish `hvv' : v = v'` using `hpl l (Fact.out : l.Prime) v v' hvl hlv'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `hvv'` using the available equality. Use `⟨A, hAv', hξDec v hvS A hAv' ?_⟩` and prove the remaining obligations. Take `⟨x, hxO, hx⟩` from `hzl`. Conclude with `GlobalTheory.T.cup_product_coboundary_mod l Ω c n W (Dec (F := ℚ) A) d z hWc hO hdet2 (hCocd v hvS A hAv') (hCocz _) (Or.inr ⟨x, hxO, fun s hs => by rw [hx s hs]; exact hCv _⟩)`. Take `⟨B', hB', hcobd⟩` from `hdq v hvS hvl`.
-
-Take `⟨x, hxO, hx⟩` from `hzq v hvl B' hB'`. Use `⟨B', hB', hξDec v hvS B' hB' ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.cupProduct_unramifiedClasses_vanishes hLit l Ω c n W v B' d z hWc hO hdet2 hB' hvl (hCocd v hvS B' hB') (hCocz _) hcobd ⟨x, hxO, fun s hs => by rw [hx s hs]; exact hCv _⟩`. Establish `hAbove2 : ContainsAbove S2 l` using `fun v hv => Finset.mem_insert_of_mem (hAbove v hv)`. Establish `hCobw` using `GlobalTheory.T.integralTwoCocycle_reciprocity_trivial_at_last_place hLit l Ω c n S2 ξ w hW.l_odd hAbove2 hxi (Finset.mem_insert_self w S) hloc B hB`.
-
-Establish `hIneB : Ine (F` using `ℚ) B ≤ NS (F := ℚ) Ω (S : Set Pl) := htc_Ine_le_NS (by exact_mod_cast hwS) hB`. Establish `hlocw` using `GlobalTheory.T.local_height_frobenius_place l Ω c n W y z d u P ψ w B τ hn hWc hO hdet2 hB hdiv hFrob hτD hdtτ (hW.unr w hwS B hB) hψlc (hIne1 B hB) hPO hy hz hyO hzO (fun a ha => ⟨hNSy a (hIneB ha), hNSz a (hIneB ha)⟩) huc huO (fun s a ha => huS s a (by rw [htc_ker_toGS]; exact …`. Establish `hFτ : Cg n (F τ) 0` using `congruence_mul_of_unit_factor hlocw (hPfrob B τ hB hFrob) hun (htc_norm_le_one c _ (htc_ht_mem c W y z u hO hyO hzO huO τ))`. Establish `hFσ` using `hU₁ _ (Subgroup.mem_inf.1 hστ).1`. Simplify using `only [mul_inv_cancel_left] at hFσ`.
-
-Use `show ‖F σ - 0‖ ≤ _`. Unfold `Cg at hFτ`. Rewrite `hFτ`, the goal using `[sub_zero]`. Establish `e : F σ = F τ + -(F τ - F σ)` using `by ring`. Rewrite using `[e]`.
-
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hFτ ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `hFσ.le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ht_vanish_commutator : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W → ∀ (c : Coef l) (y z : G ℚ Ω → Fin 2 → Qbar l) (u : G ℚ Ω → Qbar l) (S' : Finset Pl) (n : ℕ), 1 ≤ n → (∀ s i j, mat W s i j ∈ c.O) → y ∈ Z1 (Loc.colRep W) → z ∈ Z1 (Loc.colRep (dual1 W)) → (∀ s i, y s i ∈ c.O) → (∀ s i, z s i ∈ c.O) → Unr W y → (∀ q : Pl, ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal → ∀ B : ValuationSubring Ω, IsPlaceOver B q → ∃ x : Fin 2 → Qbar l, (∀ i, x i ∈ c.O) ∧ ∀ s ∈ Ine (F := ℚ) B, z s = mat (dual1 W) s *ᵥ x - x) → (∃ x : Fin 2 → Qbar l, (∀ i, x i ∈ c.O) ∧ ∀ s ∈ Dec (F := ℚ) A, z s = mat (dual1 W) s *ᵥ x - x) → (∀ w : Pl, w ∉ S' → l ^ n ∣ normV w - 1 → ∀ ψ : G ℚ Ω →* Multiplicative (ZMod (l ^ n)), KillsMu (normV w) ψ → Function.Surjective ψ → Tame c W y n w ψ) → Continuous u → (∀ s, u s ∈ c.O) → (∀ s, ∀ a ∈ (toGS Ω (S : Set Pl)).ker, Cg n (u (s * a)) (u s)) → (∀ s t, Cg n (cup W y z s t) (eps l s * u t - u (s * t) + u s)) → ∀ σ ∈ ⁅H0g W, H0g W⁆, Cg n ((mat W σ - 1).det * ht W y z u σ) 0 := by
   intro hLit l _ Ω _ _ _ e S A W hW c y z u S' n hn hO hy hz hyO hzO hyU hzq hzl hTame huc huO huS hcup σ hσ

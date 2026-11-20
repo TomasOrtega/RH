@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.SncBase
 
 /- English proof (translation)
-Establish `e : j.opensRange.ι = j.isoOpensRange.inv ≫ j` using `(Iso.eq_inv_comp _).mpr j.isoOpensRange_hom_ι`. Rewrite using `[e, Category.assoc, ← zero_add n]`. Conclude with `smoothOfRelativeDimension_comp 0 n _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_opensRange_ι_comp
     (A B T : Scheme.{0}) (j : A ⟶ B) [IsOpenImmersion j] (g : B ⟶ T) (n : ℕ)

@@ -81,7 +81,7 @@ def zeroOAct (O : Type) [Ring O] [StarRing O] (S : Scheme.{0}) : (zeroPolAV S).O
     intro i j; erw [linComb_triv_g, _root_.one_mul]; dsimp only; repeat erw [map_one]⟩
 
 /- English proof (translation)
-The claim follows from `zeroOAct ℤ S`.
+A detailed English derivation is pending.
 -/
 example (S : Scheme.{0}) : (zeroPolAV S).OAct ℤ := zeroOAct ℤ S
 

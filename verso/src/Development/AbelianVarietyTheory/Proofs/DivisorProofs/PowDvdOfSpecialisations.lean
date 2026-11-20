@@ -13,9 +13,9 @@ noncomputable def lastSubst (l₀ : Fin N → F) : Fin (D + 1) × Fin N → MvPo
   fun p => if p.1 = Fin.last D then C (l₀ p.2) else X p
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`. Consider the case `mul_X p q hp`. Simplify using `only [map_mul, hp, aeval_X, eval_X, lastSubst]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_aeval_lastSubst (l₀ : Fin N → F) (x : Fin (D + 1) × Fin N → F)
     (f : MvPolynomial (Fin (D + 1) × Fin N) F) :
@@ -28,7 +28,7 @@ theorem eval_aeval_lastSubst (l₀ : Fin N → F) (x : Fin (D + 1) × Fin N → 
     split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨i, j⟩`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp [join]`. Consider the case `cast i => simp [join, Fin.castSucc_ne_last]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem replace_eq_join (l : Fin N → F) (x : Fin (D + 1) × Fin N → F) :
     (fun p : Fin (D + 1) × Fin N => if p.1 = Fin.last D then l p.2 else x p) =
@@ -39,9 +39,9 @@ theorem replace_eq_join (l : Fin N → F) (x : Fin (D + 1) × Fin N → F) :
   | cast i => simp [join, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Rewrite using `[eval_eq']`. Use `Finset.sum_eq_zero fun d hd => ?_` and prove the remaining obligations. Establish `hs` using `hf d hd (Fin.last D)`. Establish `hne : (∑ j : Fin N, d (Fin.last D, j)) ≠ 0` using `by simp only at hs; omega`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `mul_eq_zero_of_right _ (Finset.prod_eq_zero (i := (Fin.last D, j)) (Finset.mem_univ _) ?_)` and prove the remaining obligations. Simplify using `[zero_pow hj]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem eval_last_zero {δ : ℕ} (hδ : 1 ≤ δ) (f : MvPolynomial (Fin (D + 1) × Fin N) F)
     (hf : IsMultiHomogeneous (fun _ => δ) f) (x : Fin (D + 1) × Fin N → F) :
@@ -55,37 +55,31 @@ theorem eval_last_zero {δ : ℕ} (hδ : 1 ≤ δ) (f : MvPolynomial (Fin (D + 1
   simp [zero_pow hj]
 
 /- English proof (translation)
-Use `haveI : Infinite F := Infinite.of_injective Nat.cast Nat.cast_injective`. Establish `hf0 : f ≠ 0` using `hirr.ne_zero`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x₀, eval x₀ f ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hf0 (MvPolynomial.funext fun x => by simp [h x])`. Use `set l₀ : Fin N → F := fun j => x₀ (Fin.last D, j) with hl₀`. Use `set g := aeval (lastSubst l₀) f with hg`. Use `set G₀ := aeval (lastSubst l₀) G with hG₀`. Use `set Q' : MvPolynomial (Fin (D + 1) × Fin N) F := rename (fun p : Fin D × Fin N => (p.1.castSucc, p.2)) Q with hQ'`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ'0 : Q' ≠ 0`. Introduce `h`. Apply `hQ` to reduce the goal to its premises. Apply `rename_injective _ _ (h.trans (map_zero _).symm)` to reduce the goal to its premises. Introduce `p q hpq`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Prod.mk.injEq, Fin.castSucc_inj] at hpq`. Conclude with `Prod.ext hpq.1 hpq.2`. Establish `key : Q' * (G * g ^ b - f ^ b * G₀) = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `set s : Fin D → Fin N → F := fun i j => x (i.castSucc, j) with hs`. Establish `hx : x = join s (fun j => x (Fin.last D, j))`. Rewrite using `[← replace_eq_join]`. Use function extensionality and compare the values at `p`. Use `split_ifs with h`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← h]`. Both sides reduce to the same expression. Establish `hQx : eval x Q' = eval (fun p => s p.1 p.2) Q`. Rewrite using `[hQ', eval_rename]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_sub, map_pow, map_zero]`. Distinguish the cases in `hq : eval (fun p => s p.1 p.2) Q = 0`. Rewrite using `[hQx, hq, zero_mul]`. Take `⟨E, _, _, γ, hγ⟩` from `hG s hq`. Establish `h1` using `hγ (fun j => x (Fin.last D, j))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hγ l₀`. Rewrite `h1` using `[← hx]`. Establish `hgx : eval x g = eval (join s l₀) f` using `by rw [hg, eval_aeval_lastSubst, replace_eq_join]`. Establish `hGx : eval x G₀ = eval (join s l₀) G` using `by rw [hG₀, eval_aeval_lastSubst, replace_eq_join]`. Rewrite using `[hgx, hGx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `: eval x G * eval (join s l₀) f ^ b - eval x f ^ b * eval (join s l₀) G = 0`. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Simplify using `only [map_sub, map_mul, map_pow, map_zero, h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `heq : G * g ^ b = f ^ b * G₀`. Use `(mul_eq_zero.mp key).resolve_left hQ'0` as an intermediate fact. Conclude with `sub_eq_zero.mp this`. Establish `hp : Prime f` using `hirr.prime`. Establish `hndvd : ¬ f ∣ g`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h, hh⟩`. Establish `hg0 : g ≠ 0`. Introduce `h0`. Use `congrArg (eval x₀) h0` as an intermediate fact. Rewrite `this` using `[hg, eval_aeval_lastSubst, map_zero]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx₀` to reduce the goal to its premises. Establish `hpt : (fun p : Fin (D + 1) × Fin N => if p.1 = Fin.last D then l₀ p.2 else x₀ p) = x₀`. Use function extensionality and compare the values at `p`. Use `split_ifs with hp1`. Rewrite using `[hl₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only`. Rewrite using `[← hp1]`. Both sides reduce to the same expression. Rewrite `this` using `[hpt]`. Conclude with `this`.
-
-Apply `hg0` to reduce the goal to its premises. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Establish `e1 : eval x g = eval (fun p => if p.1 = Fin.last D then 0 else x p) g`. Rewrite using `[hg, eval_aeval_lastSubst, eval_aeval_lastSubst]`.
-
-Establish `hpt : (fun p : Fin (D + 1) × Fin N => if p.1 = Fin.last D then l₀ p.2 else x p) = (fun p => if p.1 = Fin.last D then l₀ p.2 else if p.1 = Fin.last D then 0 else x p)`. Use function extensionality and compare the values at `p`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[hpt]`. Rewrite using `[e1, hh, map_mul, eval_last_zero hδ f hf, zero_mul, map_zero]`.
-
-Establish `hndvd' : ¬ f ∣ g ^ b` using `fun h => hndvd (hp.dvd_of_dvd_pow h)`. Conclude with `hp.pow_dvd_of_dvd_mul_right b hndvd' ⟨G₀, heq⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pow_dvd_of_specialisations (F : Type) [Field F] [CharZero F] (D N δ b : ℕ) (f G : MvPolynomial (Fin (D + 1) × Fin N) F)
     (Q : MvPolynomial (Fin D × Fin N) F) (hδ : 1 ≤ δ) (hf : IsMultiHomogeneous (fun _ => δ) f)

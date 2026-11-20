@@ -17,14 +17,14 @@ section Res
 variable {R : Type} [CommRing R] {F : Shv R}
 
 /- English proof (translation)
-The claim follows from `map_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem res_smul {V U : Scheme.{0}} (g : V ⟶ U) (c : ULift.{1} R) (a : Sec F U) :
     Sec.res g (c • a) = c • Sec.res g a :=
   map_smul _ _ _
 
 /- English proof (translation)
-Use `show (F.obj.map k.op).hom ((F.obj.map g.op).hom a) = (F.obj.map (k ≫ g).op).hom a`. Rewrite using `[op_comp, F.obj.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem res_res {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (a : Sec F U) :
     Sec.res k (Sec.res g a) = Sec.res (k ≫ g) a := by
@@ -35,7 +35,7 @@ theorem res_res {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (a : Sec F U) :
 end Res
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem nsmul_eq_up {q : ℕ} {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M] (c : ℕ) (t : M) :
     c • t = (ULift.up (c : ZMod q) : ULift.{1} (ZMod q)) • t := by
@@ -43,7 +43,7 @@ theorem nsmul_eq_up {q : ℕ} {M : Type*} [AddCommGroup M] [Module (ULift.{1} (Z
   congr 1
 
 /- English proof (translation)
-Establish `hq : q ∣ a.val` using `(hg q i).2.1 V ζ a.val (by`. Rewrite using `[nsmul_eq_up (q := q), ZMod.natCast_zmod_val]`. Conclude with `h)`. Rewrite using `[← ZMod.natCast_zmod_val a]`. Conclude with `(ZMod.natCast_eq_zero_iff _ _).2 hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_eq_zero (hg : InGen) {q : ℕ} [NeZero q] (i : ℤ) {V : Scheme.{0}} [Nonempty V]
     (ζ : Prim q Γ(V, ⊤)) (a : ZMod q)
@@ -55,7 +55,7 @@ theorem coef_eq_zero (hg : InGen) {q : ℕ} [NeZero q] (i : ℤ) {V : Scheme.{0}
   exact (ZMod.natCast_eq_zero_iff _ _).2 hq
 
 /- English proof (translation)
-Use `sub_eq_zero.1 (coef_eq_zero hg i ζ _ ?_)` and prove the remaining obligations. Establish `e : (ULift.up (a - b) : ULift.{1} (ZMod q)) = ULift.up a - ULift.up b` using `rfl`. Rewrite using `[e, sub_smul, h, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_unique (hg : InGen) {q : ℕ} [NeZero q] (i : ℤ) {V : Scheme.{0}} [Nonempty V]
     (ζ : Prim q Γ(V, ⊤)) (a b : ZMod q)
@@ -66,9 +66,9 @@ theorem coef_unique (hg : InGen) {q : ℕ} [NeZero q] (i : ℤ) {V : Scheme.{0}}
   rw [e, sub_smul, h, sub_self]
 
 /- English proof (translation)
-Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback v v' hv`. Establish `: Nonempty ↑(pullback g g')` using `⟨z⟩`. Establish `e1 : Sec.res (pullback.fst g g' ≫ g) x = (ULift.up c : ULift.{1} (ZMod q)) • Sec.res (pullback.fst g g' ≫ g) (twGen i ζ)`. Rewrite using `[← res_res, h, res_smul, res_res]`. Establish `e2 : Sec.res (pullback.fst g g' ≫ g) x = (ULift.up c' : ULift.{1} (ZMod q)) • Sec.res (pullback.fst g g' ≫ g) (twGen i ζ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pullback.condition, ← res_res, h', res_smul, res_res]`. Rewrite `e1`, `e2` using `[((hR q i U ζ).1 _ (pullback.fst g g' ≫ g)).1]`. Conclude with `coef_unique hg i _ c c' (e1.symm.trans e2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_agree (hR : RepRoot) (hg : InGen) {q : ℕ} [NeZero q] (i : ℤ) {U : Scheme.{0}}
     (ζ : Prim q Γ(U, ⊤)) (x : Sec (tw q i) U) {V V' : Scheme.{0}} (g : V ⟶ U) (g' : V' ⟶ U)
@@ -88,9 +88,9 @@ theorem coef_agree (hR : RepRoot) (hg : InGen) {q : ℕ} [NeZero q] (i : ℤ) {U
   exact coef_unique hg i _ c c' (e1.symm.trans e2)
 
 /- English proof (translation)
-Use `(loc_iff_etale_affine_points U (fun V g => ∃ c : ZMod q, Sec.res g x = (ULift.up c : ULift.{1} (ZMod q)) • Sec.res g (twGen i ζ)) ?_).1 ?_ u` and prove the remaining obligations. Introduce and unpack `V W g k ⟨c, hc⟩`. Conclude with `⟨c, by rw [← res_res, hc, res_smul, res_res]⟩`. Take `⟨S, hS, hc⟩` from `(hg q i).1 U ζ x`. Use `⟨S, hS, fun V g hgS => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `hc V g hgS`. Use `⟨(c : ZMod q), ?_⟩` and prove the remaining obligations. Rewrite using `[hc, nsmul_eq_up (q := q), ((hR q i U ζ).1 V g).1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_chart (hR : RepRoot) (hg : InGen) {q : ℕ} [NeZero q] (i : ℤ) {U : Scheme.{0}}
     (ζ : Prim q Γ(U, ⊤)) (x : Sec (tw q i) U) (u : U) :
@@ -109,11 +109,11 @@ theorem exists_chart (hR : RepRoot) (hg : InGen) {q : ℕ} [NeZero q] (i : ℤ) 
     rfl
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero (kap i ζ)).2 fun f hf => LocallyConstant.ext fun u => ?_` and prove the remaining obligations. Set `O : U.Opens` to `⟨f ⁻¹' {f u}, f.isLocallyConstant.isOpen_fiber _⟩`. Establish `: Nonempty O.toScheme` using `⟨⟨u, rfl⟩⟩`. Establish `hO : ∀ v : O.toScheme, f (O.ι v) = f u` using `fun v => by`. Establish `: O.ι v ∈ Set.range O.ι` using `⟨v, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Scheme.Opens.range_ι]`. Conclude with `this`. Establish `h` using `(hK q i U ζ f).1 O.toScheme O.ι (f u) hO`. Rewrite `h` using `[hf]`. Establish `h0 : Sec.res O.ι (0 : Sec (tw q i) U) = 0` using `map_zero _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h0]`. Conclude with `coef_eq_zero hg i _ _ h.symm`.
+A detailed English derivation is pending.
 -/
 theorem kap_injective (hK : KapSpec) (hg : InGen) {q : ℕ} [NeZero q] (i : ℤ) {U : Scheme.{0}}
     (ζ : Prim q Γ(U, ⊤)) : Function.Injective (kap i ζ) := by
@@ -131,13 +131,11 @@ theorem kap_injective (hK : KapSpec) (hg : InGen) {q : ℕ} [NeZero q] (i : ℤ)
   exact coef_eq_zero hg i _ _ h.symm
 
 /- English proof (translation)
-Introduce `x`. Use `choose V g hA hE hu c hc using exists_chart hR hg i ζ x`. Use `choose y hy using hu`. Establish `hagree : ∀ (u : U) (v : V u), c (g u v) = c u` using `fun u v => coef_agree hR hg i ζ x (g (g u v)) (g u) _ _ (hc _) (hc u) (y _) v (hy _)`. Establish `hop : ∀ u, IsOpen (Set.range (g u))` using `fun u => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `hE u` as an intermediate fact. Conclude with `(g u).isOpenMap.isOpen_range`. Set `f : LocallyConstant U (ZMod q)` to `⟨c, (IsLocallyConstant.iff_exists_open c).2 fun u => ⟨Set.range (g u), hop u, ⟨y u, hy u⟩, by`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hagree u v⟩⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f, ((sec_ext_glue _ _ U).1 _ _ ?_)⟩` and prove the remaining obligations. Use `(loc_iff_etale_affine_points U (fun V g => Sec.res g (kap i ζ f) = Sec.res g x) ?_).2 fun u => ?_` and prove the remaining obligations. Introduce `V W g k h`. Rewrite using `[← res_res, h, res_res]`. Use `⟨V u, g u, hA u, hE u, ⟨y u, hy u⟩, ?_⟩` and prove the remaining obligations.
-
-Establish `h` using `(hK q i U ζ f).1 (V u) (g u) (c u) (hagree u)`. Rewrite using `[h, hc u, ((hR q i U ζ).1 _ (g u)).1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_surjective (hR : RepRoot) (hK : KapSpec) (hg : InGen) {q : ℕ} [NeZero q] (i : ℤ)
     {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) : Function.Surjective (kap i ζ) := by
@@ -162,7 +160,7 @@ theorem kap_surjective (hR : RepRoot) (hK : KapSpec) (hg : InGen) {q : ℕ} [NeZ
     rw [h, hc u, ((hR q i U ζ).1 _ (g u)).1]
 
 /- English proof (translation)
-Introduce `_ hR hK hg q _ i _ ζ` and use `⟨kap_injective hK hg i ζ, kap_surjective hR hK hg i ζ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem kapBij : LcCover → RepRoot → KapSpec → KapBij := fun _ hR hK hg q _ i _ ζ =>
   ⟨kap_injective hK hg i ζ, kap_surjective hR hK hg i ζ⟩

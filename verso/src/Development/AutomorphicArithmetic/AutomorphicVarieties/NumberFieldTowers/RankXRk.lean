@@ -7,9 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
 /- English proof (translation)
-Take `⟨I, hI, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.1 h`. Use `IsLocalRing.eq_maximalIdeal hI` as an intermediate fact. Substitute `this` using the available equality. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Use `haveI : Finite (ℤ_[l] ⧸ IsLocalRing.maximalIdeal ℤ_[l]) := Finite.of_equiv _ (PadicInt.residueField (p := l)).toEquiv.symm`.
-
-Conclude with `Finite.of_equiv _ e.toEquiv.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem finite_simple (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module ℤ_[l] M]
     [h : IsSimpleModule ℤ_[l] M] : Finite M := by
@@ -22,7 +20,7 @@ private theorem finite_simple (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup 
   exact Finite.of_equiv _ e.toEquiv.symm
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `of_subsingleton => infer_instance`. Consider the case `@of_simple_quotient M _ _ N _ _ ih => haveI : Finite (M ⧸ N.toAddSubgroup) := finite_simple l (M ⧸ N) haveI : Finite N.toAddSubgroup := ih`. Conclude with `Finite.of_equiv _ (AddSubgroup.addGroupEquivQuotientProdAddSubgroup (s := N.toAddSubgroup)).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem finite_of_len (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module ℤ_[l] M]
     (h : IsFiniteLength ℤ_[l] M) : Finite M := by
@@ -34,9 +32,9 @@ private theorem finite_of_len (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup 
     exact Finite.of_equiv _ (AddSubgroup.addGroupEquivQuotientProdAddSubgroup (s := N.toAddSubgroup)).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h haveI := finite_of_len l M (Module.length_ne_top_iff.1 (ne_top_of_le_ne_top (ENat.coe_ne_top r) h))`. Take `⟨k, hk, hc⟩` from `lenOfCard l M`. Rewrite `h` using `[hk]`. Conclude with `⟨inferInstance, hc ▸ Nat.pow_le_pow_right hl.out.pos (by exact_mod_cast h)⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, h⟩`. Take `⟨k, hk, hc⟩` from `lenOfCard l M`. Rewrite `h` using `[hc]`. Rewrite using `[hk]`. Conclude with `(Nat.pow_le_pow_iff_right hl.out.one_lt).1 h` after adjusting the coercions.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem len_le_iff (l : ℕ) [hl : Fact l.Prime] (M : Type) [AddCommGroup M] [Module ℤ_[l] M] (r : ℕ) :
     Module.length ℤ_[l] M ≤ r ↔ Finite M ∧ Nat.card M ≤ l ^ r := by
@@ -53,9 +51,9 @@ private theorem len_le_iff (l : ℕ) [hl : Fact l.Prime] (M : Type) [AddCommGrou
     exact_mod_cast (Nat.pow_le_pow_iff_right hl.out.one_lt).1 h
 
 /- English proof (translation)
-Establish `h0 : ∀ a, ι a = 0 ↔ a = 0` using `fun a => map_eq_zero_iff ι hι`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `⟨h1.comp ι, fun a b => by simp only [h2, map_add], fun A u h => (h0 _).2 (h3 A u h), fun A hA u h => (h0 _).2 (h4 A hA u h)⟩`. Introduce and unpack `⟨h1, h2, h3, h4⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨IsLocallyConstant.desc φ ι h1 hι, fun a b => hι (by rw [map_add]; exact h2 a b), fun A u h => (h0 _).1 (h3 A u h), fun A hA u h => (h0 _).1 (h4 A hA u h)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem xdual_comp {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     {R S A B : Type} [CommRing R] [CommRing S] [AddCommGroup A] [Module R A] [AddCommGroup B]
@@ -71,13 +69,11 @@ private theorem xdual_comp {F Ω : Type} [Field F] [NumberField F] [Field Ω] [A
       fun A u h => (h0 _).1 (h3 A u h), fun A hA u h => (h0 _).1 (h4 A hA u h)⟩
 
 /- English proof (translation)
-Introduce `k Ω _ _ _ _ _ l _ N U r`. Choose the witnesses or unpack the hypotheses as in `⟨ι, hι, hr⟩ : ∃ ι : ZMod l →+ QZ l, Function.Injective ι ∧ ∀ x, x ∈ Set.range ι ↔ (l : ℤ_[l]) • x = 0 := by`. Take `⟨ι, hι, hr, -⟩` from `zmodToQZ l 1`. Establish `key : ∀ n, n = l → (∃ ι : ZMod n →+ QZ l, Function.Injective ι ∧ ∀ x, x ∈ Set.range ι ↔ (l : ℤ_[l]) • x = 0) → ∃ ι : ZMod l →+ QZ l, Function.Injective ι ∧ ∀ x, x ∈ Set.range ι ↔ (l : ℤ_[l]) • x = 0`. Introduce and unpack `n rfl h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `h`. Conclude with `key _ (pow_one l) ⟨ι, hι, fun x => by rw [hr, pow_one]⟩`. Set `f : XDual N (cycU l U) (ZMod l) (ZMod l) → Submodule.torsionBy ℤ_[l] (Dinf l N U) (l : ℤ_[l])` to `fun φ => ⟨⟨fun x => ι (φ.1 x), (xdual_comp ι hι N _ φ.1).1 φ.2⟩, (Submodule.mem_torsionBy_iff _ _).2 (Subtype.ext (funext fun x => (hr _).1 ⟨_, rfl⟩))⟩`. Establish `hf : Function.Bijective f`. Use `⟨fun a b h => Subtype.ext (funext fun x => hι (congrFun (congrArg (fun z => z.1.1) h) x)), fun ψ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : ∀ x, ψ.1.1 x ∈ Set.range ι` using `fun x => (hr _).2 (congrFun (congrArg Subtype.val ((Submodule.mem_torsionBy_iff _ _).1 ψ.2)) x)`. Use `choose φ hφ using hψ`. Establish `h : (fun x => ι (φ x)) = ψ.1.1` using `funext hφ`. Conclude with `⟨⟨φ, (xdual_comp ι hι N _ φ).2 (h ▸ ψ.1.2)⟩, Subtype.ext (Subtype.ext h)⟩`. Establish `e` using `Equiv.ofBijective f hf`.
-
-Rewrite using `[xRank, len_le_iff, ← e.finite_iff, ← Nat.card_congr e]`. Conclude with `Iff.rfl`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Tower.rankXRk :
     ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ) [Fact l.Prime] (N : ℕ) (U : Subgroup (G k Ω)) (r : ℕ), xRank l N U ≤ r ↔ Two.XRk l N (cycU l U) r := by

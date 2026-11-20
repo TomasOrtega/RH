@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CovTop.GoodWCore
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hl`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem fullLat_congr {K Rg : Type} [Field K] [NumberField K] [CommRing Rg] [Algebra K Rg] [Algebra (𝓞 K) Rg]
     [IsScalarTower (𝓞 K) K Rg] {C C' : Submodule K Rg} (h : C = C')
@@ -25,27 +25,25 @@ theorem fullLat_congr {K Rg : Type} [Field K] [NumberField K] [CommRing Rg] [Alg
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Establish `hl' : FullLat (cuspW (T.Q.Xo j) T.Q.c (T.U j) (wtZ (wtA w) w.n)) (valSet (T.Q.Xo j) T.Q.c (algCls (T.Q.Xo j) T.Q.c)) fun la => isVal_valSet la` using `fullLat_congr (cuspW_wtZ _ _).symm hl`. Use `⟨?_, hl'.fg, hl'.span_eq_top⟩` and prove the remaining obligations. Use `haveI : FiniteDimensional T.Q.c.F (cuspW (T.Q.Xo j) T.Q.c (T.U j) (wtZ (wtA w) w.n)) := by`. Take `⟨s, hs⟩` from `hl'.fg`. Use `⟨⟨s, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hl'.span_eq_top, ← hs, Submodule.span_span_of_tower]`. Use `GlobalTheory.HSApp.hasGram_of_inner _ _ _ fun v => ?_` and prove the remaining obligations. Use `set σ := goodOf T.Q.c v.embedding with hσdef`. Establish `hσ : GoodEmb T.Q.c σ` using `goodEmb_goodOf _ _`. Establish `hD : Dom (wtA w) w.n` using `dom_wtA w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ι` to `LinearEquiv.ofEq _ _ (cuspW_wtZ (Xo := T.Q.Xo j) (c := T.Q.c) (U := T.U j) (wtA w) w.n)`. Set `cf : ℝ` to `lieFac (T.Q.Dw j) (xiR D) (wtA w)`. Establish `hcf : 0 < cf` using `lieFac_pos _ _ _`. Set `J` to `uniformisationL2 (T.V j σ) σ (rdC (T.U j) σ (wtA w) w.n) (T.dict j σ) (T.mu j σ) (hT.cuspidalL2Subspace j hj σ hσ (wtA w) w.n hD)`. Set `Φ : cuspW (T.Q.Xo j) T.Q.c (T.U j) (wtZ (wtA w) w.n) →+ MeasureTheory.Lp ℂ 2 (muQ1 (T.V j σ))` to `AddMonoidHom.mk' (fun f => (cf : ℂ) • J (ι f)) (fun f g => by rw [map_add, map_add, smul_add])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ : ∀ f, Φ f = (cf : ℂ) • J (ι f)` using `fun _ => rfl`. Establish `hs : ∀ (a : T.Q.c.F) f, Φ (a • f) = σ a • Φ f` using `fun a f => by`. Rewrite using `[hΦ, hΦ, map_smul, map_smulₛₗ]`. Conclude with `smul_comm _ _ _`. Use `⟨_, inferInstance, inferInstance, Φ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `hg : GoodEmb T.Q.c v.embedding`. Use `left`. Introduce `a f`. Establish `e' : σ a = v.embedding a`. Rewrite using `[hσdef]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `goodOf`. Rewrite using `[if_pos hg]`. Rewrite using `[hs, e']`. Use `right`. Introduce `a f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e' : σ a = starRingEnd ℂ (v.embedding a)`. Rewrite using `[hσdef]`. Unfold `goodOf`. Rewrite using `[if_neg hg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, e']`. Introduce `f`. Establish `hf : (f : Rul (T.Q.Xo j) T.Q.c) ∈ cusp (T.Q.Xo j) T.Q.c (T.U j) (wtA w) w.n` using `(ι f).2`. Establish `e1 : normW (T.U j) (xiR D) (T.V j) (T.dict j) (wtZ (wtA w) w.n) v.embedding f = petAt (T.U j σ) (xiR D) (T.V j σ) (T.dict j σ) (muQ1 (T.V j σ)) (wtZ (wtA w) w.n) f` using `rfl`. Rewrite using `[e1, petAt_wtZ (T.U j) (xiR D) (T.V j σ) (T.dict j σ) (T.mu j σ) (hT.muUnit j hj σ hσ) _ _ (hT.cuspidalL2Subspace j hj σ hσ (wtA w) w.n hD) hf, l2C, dif_pos hf, hΦ, norm_smul, Complex.norm_real, Real.norm_of_nonneg hcf.le]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `m e he`. Establish `hi : LinearIndependent T.Q.c.F fun k => ι (e k)` using `he.map' ι.toLinearMap ι.ker`. Establish `h1` using `(GlobalTheory.VolPairExists.adelic_linearIndependent D T hT j hj σ hσ (wtA w) w.n hD).2 m _ hi`. Rewrite `h1`, the goal using `[Fintype.linearIndependent_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c hc`. Use `h1 c ?_` and prove the remaining obligations. Establish `: (cf : ℂ) • ∑ k, c k • J (ι (e k)) = 0`. Rewrite using `[Finset.smul_sum]`. Use `Eq.trans (Finset.sum_congr rfl fun k _ => ?_) hc` and prove the remaining obligations.
-
-Rewrite using `[hΦ]`. Conclude with `smul_comm _ _ _`. Conclude with `(smul_eq_zero.1 this).resolve_left (Complex.ofReal_ne_zero.2 hcf.ne')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodW_core {D : D7} (T : CoreJ D) (hT : LawsJ T) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j)
     (hl : FullLat (T.cuspA j (wtA w) w.n) (valSet (T.Q.Xo j) T.Q.c (algCls (T.Q.Xo j) T.Q.c))
@@ -112,7 +110,7 @@ end GlobalTheory.CovTop.GoodWCore
 namespace GlobalTheory.CovTop
 
 /- English proof (translation)
-Introduce `p _ _ i` and use `GoodWCore.goodW_core p.T p.fw.laws _ ⟨Nat.le_add_left _ _, i.2⟩ (p.κ i) (GlobalTheory.GoodLat.Obj.latFull p.T p.fw.laws p.fw.kap i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem goodW_at : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz),

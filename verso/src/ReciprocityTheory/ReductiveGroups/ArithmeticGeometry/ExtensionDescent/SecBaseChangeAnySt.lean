@@ -35,7 +35,7 @@ def IsSecBasis {S : Scheme.{0}} {A : Over S} {T : Over S} (N : LB (T ⊗ A).left
       ((fst T A).left.appTop.hom (r i)) * (b i).f j
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hy'` using `Set.mem_iInter.1 hy`. Use `show h.base y ∈ (⋂ k, (φ k).base ⁻¹' (L.U (j k) : Set X))`. Conclude with `Set.mem_iInter.2 fun k => by simpa [Scheme.Hom.comp_base] using hy' k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wchart_comp_le {X Y Y' : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X))
     (h : Y' ⟶ Y) (j : K → L.ι) : LB.wchart L (fun k => h ≫ φ k) j ≤ h ⁻¹ᵁ LB.wchart L φ j := by

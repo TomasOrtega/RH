@@ -7,9 +7,9 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open MeasureTheory MvPolynomial
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Unfold `sphereProb`. Apply `ProbabilityTheory.cond_isProbabilityMeasure_of_finite` to reduce the goal to its premises. Rewrite using `[Measure.toSphere_apply_univ]`. Use `mul_ne_zero ?_ (Metric.measure_ball_pos _ _ one_pos).ne'` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Module.finrank_pos (R := ℝ) (M := EuclideanSpace ℂ (Fin n))).ne'` after adjusting the coercions. Rewrite using `[Measure.toSphere_apply_univ]`. Conclude with `ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) measure_ball_lt_top.ne`.
+A detailed English derivation is pending.
 -/
 theorem sphereMeasure_isProbability {n : ℕ} (hn : 0 < n) : IsProbabilityMeasure (sphereProb n) := by
   haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
@@ -22,7 +22,7 @@ theorem sphereMeasure_isProbability {n : ℕ} (hn : 0 < n) : IsProbabilityMeasur
     exact ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) measure_ball_lt_top.ne
 
 /- English proof (translation)
-Use `haveI := sphereMeasure_isProbability hn`. Unfold `blockSphereProb`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem blockSphereMeasure_isProbability {B n : ℕ} (hn : 0 < n) :
     IsProbabilityMeasure (blockSphereProb B n) := by
@@ -31,7 +31,7 @@ theorem blockSphereMeasure_isProbability {B n : ℕ} (hn : 0 < n) :
   infer_instance
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => simp only [map_mul, aeval_X, eval_X, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eval_aeval_alt {σ τ : Type*} (v : σ → MvPolynomial τ ℂ) (x : τ → ℂ)
     (g : MvPolynomial σ ℂ) : eval x (aeval v g) = eval (fun i => eval x (v i)) g := by
@@ -41,7 +41,7 @@ theorem eval_aeval_alt {σ τ : Type*} (v : σ → MvPolynomial τ ℂ) (x : τ 
   | mul_X p i hp => simp only [map_mul, aeval_X, eval_X, hp]
 
 /- English proof (translation)
-Establish `hc : Continuous fun z : BlockSphere B n => blockPoint z` using `continuous_pi fun p => (continuous_apply p.2).comp ((PiLp.continuous_ofLp 2 _).comp (continuous_subtype_val.comp (continuous_apply p.1)))`. Conclude with `((MvPolynomial.continuous_eval g).comp hc).measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_eval_blockCoords {B n : ℕ} (g : MvPolynomial (Fin B × Fin n) ℂ) :
     Measurable fun z : BlockSphere B n => eval (blockPoint z) g := by
@@ -51,7 +51,7 @@ theorem measurable_eval_blockCoords {B n : ℕ} (g : MvPolynomial (Fin B × Fin 
   exact ((MvPolynomial.continuous_eval g).comp hc).measurable
 
 /- English proof (translation)
-Introduce `s hs`. Rewrite `hs` using `[← MvPolynomial.smul_eq_C_mul]`. Conclude with `hg s (MvPolynomial.support_smul hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomogeneous_C_mul {B n : ℕ} {a : Fin B → ℕ} {g : MvPolynomial (Fin B × Fin n) ℂ}
     (hg : IsMultiHomogeneous a g) (c : ℂ) : IsMultiHomogeneous a (C c * g) := by
@@ -60,19 +60,17 @@ theorem isMultiHomogeneous_C_mul {B n : ℕ} {a : Fin B → ℕ} {g : MvPolynomi
   exact hg s (MvPolynomial.support_smul hs)
 
 /- English proof (translation)
-Use `haveI := blockSphereMeasure_isProbability (B := B) hn`. Establish `hZm : MeasurableSet {z : BlockSphere B n | eval (blockPoint z) g = 0}` using `measurableSet_eq_fun (measurable_eval_blockCoords g) measurable_const`. Establish `hg0 : g ≠ 0` using `by rintro rfl; exact hu (by simp)`. Establish `hI` using `hInt B n a g hg0 hg`. Establish `hmean : ∀ c : ℂ, c ≠ 0 → blockSphereMean B n (C c * g) = blockSphereMean B n g + (blockSphereProb B n).real {z | eval (blockPoint z) g = 0}ᶜ * Real.log ‖c‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Establish `hpt : (fun z => Real.log ‖eval (blockPoint z) (C c * g)‖) = fun z => Real.log ‖eval (blockPoint z) g‖ + {z : BlockSphere B n | eval (blockPoint z) g = 0}ᶜ.indicator (fun _ => Real.log ‖c‖) z`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : eval (blockPoint z) g = 0`. Establish `hz' : z ∉ {z : BlockSphere B n | eval (blockPoint z) g = 0}ᶜ` using `fun h => h hz`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hz', map_mul, hz, mul_zero, add_zero]`. Establish `hz' : z ∈ {z : BlockSphere B n | eval (blockPoint z) g = 0}ᶜ` using `hz`. Rewrite using `[Set.indicator_of_mem hz', map_mul, eval_C, norm_mul, Real.log_mul (norm_ne_zero_iff.mpr hc) (norm_ne_zero_iff.mpr hz)]`. Expand and normalize the polynomial expressions, which then agree. Unfold `blockSphereMean`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpt, integral_add hI ((integrable_const _).indicator hZm.compl), integral_indicator_const _ hZm.compl, smul_eq_mul]`. Assume the negation of the conclusion as `hne`. Establish `hP : 0 < (blockSphereProb B n).real {z | eval (blockPoint z) g = 0}` using `ENNReal.toReal_pos hne (measure_ne_top _ _)`. Establish `hcompl : (blockSphereProb B n).real {z | eval (blockPoint z) g = 0}ᶜ = 1 - (blockSphereProb B n).real {z | eval (blockPoint z) g = 0}`. Simplify using `only [Measure.real]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prob_compl_eq_one_sub hZm, ENNReal.toReal_sub_of_le prob_le_one ENNReal.one_ne_top, ENNReal.toReal_one]`. Use `set P := (blockSphereProb B n).real {z | eval (blockPoint z) g = 0} with hPdef`. Use `set M : ℝ := blockSphereMean B n g - Real.log ‖eval (blockPoint u) g‖ + (∑ b, (a b : ℝ)) / 2 * (harmonic (n - 1) : ℝ) with hM`. Use `set c : ℂ := ((Real.exp ((M + 1) / P) : ℝ) : ℂ) with hcdef`. Establish `hc : c ≠ 0` using `Complex.ofReal_ne_zero.mpr (Real.exp_ne_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlc : Real.log ‖c‖ = (M + 1) / P`. Rewrite using `[hcdef, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), Real.log_exp]`. Establish `hb` using `hbound a (C c * g) u (isMultiHomogeneous_C_mul hg c) (by rw [map_mul, eval_C]; exact mul_ne_zero hc hu)`. Rewrite `hb` using `[hmean c hc, hcompl, map_mul, eval_C, norm_mul, Real.log_mul (norm_ne_zero_iff.mpr hc) (norm_ne_zero_iff.mpr hu), hlc]`. Establish `h1 : P * ((M + 1) / P) = M + 1` using `by field_simp`.
-
-Establish `h2 : (1 - P) * ((M + 1) / P) = (M + 1) / P - (M + 1)` using `by rw [sub_mul, one_mul, h1]`. Rewrite `hb` using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem null_of_logBound {B n : ℕ} (hn : 0 < n) (hInt : SphereLogIntegrableStatement)
     (hbound : ∀ (a : Fin B → ℕ) (g : MvPolynomial (Fin B × Fin n) ℂ) (u : BlockSphere B n),
@@ -141,7 +139,7 @@ abbrev lh0Split (B n : ℕ) :=
   MeasurableEquiv.piFinSuccAbove (fun _ : Fin (B + 1) => UnitSphereC n) 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨b, j⟩`. Rewrite using `[MeasurableEquiv.piFinSuccAbove_symm_apply]`. Apply the tactic sequence `refine Fin.cases ?_ (fun b => ?_) b <;>`. Simplify using `[lh0First, blockPoint, Fin.insertNthEquiv, Fin.insertNth_zero']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem firstBlockSubst_eval {B n : ℕ} (x : UnitSphereC n) (y : BlockSphere B n) :
     (fun p => eval (spherePoint x) (lh0First y p)) =
@@ -152,7 +150,7 @@ theorem firstBlockSubst_eval {B n : ℕ} (x : UnitSphereC n) (y : BlockSphere B 
     simp [lh0First, blockPoint, Fin.insertNthEquiv, Fin.insertNth_zero']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨b, j⟩`. Rewrite using `[MeasurableEquiv.piFinSuccAbove_symm_apply]`. Apply the tactic sequence `refine Fin.cases ?_ (fun b => ?_) b <;>`. Simplify using `[lh0Rest, blockPoint, Fin.insertNthEquiv, Fin.insertNth_zero']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem restBlockSubst_eval {B n : ℕ} (x : UnitSphereC n) (y : BlockSphere B n) :
     (fun p => eval (blockPoint y) (lh0Rest (spherePoint x) p)) =
@@ -163,7 +161,7 @@ theorem restBlockSubst_eval {B n : ℕ} (x : UnitSphereC n) (y : BlockSphere B n
     simp [lh0Rest, blockPoint, Fin.insertNthEquiv, Fin.insertNth_zero']
 
 /- English proof (translation)
-Rewrite using `[MeasurableEquiv.piFinSuccAbove_symm_apply]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun b => ?_) i <;> simp [Fin.insertNthEquiv, Fin.insertNth_zero']`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockSplitEquiv_self {B n : ℕ} (u : BlockSphere (B + 1) n) :
     (lh0Split B n).symm (u 0, fun b => u b.succ) = u := by
@@ -172,7 +170,7 @@ theorem blockSplitEquiv_self {B n : ℕ} (u : BlockSphere (B + 1) n) :
   refine Fin.cases ?_ (fun b => ?_) i <;> simp [Fin.insertNthEquiv, Fin.insertNth_zero']
 
 /- English proof (translation)
-Rewrite using `[g.as_sum, map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun s hs => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, MvPolynomial.algebraMap_eq, ← hg s hs, ← zero_add (∑ i ∈ s.support, s i • d i), Finsupp.prod]`. Conclude with `(isWeightedHomogeneous_C w _).mul (IsWeightedHomogeneous.prod _ _ _ fun i _ => (hv i).pow _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aeval_whom_lemma {σ τ : Type*} {M : Type*} [AddCommMonoid M] (w : τ → M)
     (v : σ → MvPolynomial τ ℂ) (d : σ → M) (hv : ∀ i, IsWeightedHomogeneous w (v i) (d i))
@@ -187,9 +185,9 @@ private theorem aeval_whom_lemma {σ τ : Type*} {M : Type*} [AddCommMonoid M] (
     (IsWeightedHomogeneous.prod _ _ _ fun i _ => (hv i).pow _)
 
 /- English proof (translation)
-Use `aeval_whom_lemma 1 (lh0First y) (fun p => (Fin.cons 1 (fun _ => 0) : Fin (B + 1) → ℕ) p.1) ?_ g (a 0) ?_` and prove the remaining obligations. Introduce and unpack `⟨b, j⟩`. Use `Fin.cases ?_ (fun b => ?_) b` and prove the remaining obligations. Simplify `isWeightedHomogeneous_X ℂ (1 : Fin n → ℕ) j` using `[lh0First]`. Simplify `isWeightedHomogeneous_C (1 : Fin n → ℕ) (blockPoint y (b, j))` using `[lh0First]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `s hs`. Rewrite using `[Finset.sum_subset (Finset.subset_univ _) fun i _ hi => by`. Rewrite using `[Finsupp.notMem_support_iff.mp hi, zero_smul], Fintype.sum_prod_type, Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, smul_eq_mul, mul_one, mul_zero, Finset.sum_const_zero, add_zero]`. Conclude with `hg s hs 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem firstBlockSubst_isHomogeneous {B n : ℕ} {a : Fin (B + 1) → ℕ}
     {g : MvPolynomial (Fin (B + 1) × Fin n) ℂ} (hg : IsMultiHomogeneous a g)
@@ -209,17 +207,17 @@ theorem firstBlockSubst_isHomogeneous {B n : ℕ} {a : Fin (B + 1) → ℕ}
     exact hg s hs 0
 
 /- English proof (translation)
-Establish `hW : IsWeightedHomogeneous (fun p : Fin B × Fin n => (Pi.single p.1 1 : Fin B → ℕ)) (aeval (lh0Rest x) g) (fun b => a b.succ)`. Use `aeval_whom_lemma _ (lh0Rest x) (fun p => (Fin.cons (0 : Fin B → ℕ) (fun b => Pi.single b 1) : Fin (B + 1) → Fin B → ℕ) p.1) ?_ g _ ?_` and prove the remaining obligations. Introduce and unpack `⟨b, j⟩`. Use `Fin.cases ?_ (fun b => ?_) b` and prove the remaining obligations. Simplify `isWeightedHomogeneous_C (fun p : Fin B × Fin n => (Pi.single p.1 1 : Fin B → ℕ)) (x j)` using `[lh0Rest]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `isWeightedHomogeneous_X ℂ (fun p : Fin B × Fin n => (Pi.single p.1 1 : Fin B → ℕ)) (b, j)` using `[lh0Rest]`. Introduce `s hs`. Use function extensionality and compare the values at `b`. Rewrite using `[Finset.sum_subset (Finset.subset_univ _) fun i _ hi => by`. Rewrite using `[Finsupp.notMem_support_iff.mp hi, zero_smul], Finset.sum_apply,`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `Fintype.sum_prod_type, Fin.sum_univ_succ, ← hg s hs b.succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, smul_zero, Pi.zero_apply, Finset.sum_const_zero, zero_add]`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, Ne.symm hc]`. Simplify using the standard rewrite rules. Introduce `s hs b`. Establish `hb` using `congrFun (hW (MvPolynomial.mem_support_iff.mp hs)) b`. Use `Eq.trans ?_ hb` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Finset.sum_subset (s₁ := s.support) (Finset.subset_univ _) fun i _ hi => by`. Rewrite using `[Finsupp.notMem_support_iff.mp hi, zero_smul, Pi.zero_apply],`. Use the proof step `Fintype.sum_prod_type, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, Ne.symm hc]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem restBlockSubst_isMultiHomogeneous {B n : ℕ} {a : Fin (B + 1) → ℕ}
     {g : MvPolynomial (Fin (B + 1) × Fin n) ℂ} (hg : IsMultiHomogeneous a g) (x : Fin n → ℂ) :
@@ -261,33 +259,31 @@ theorem restBlockSubst_isMultiHomogeneous {B n : ℕ} {a : Fin (B + 1) → ℕ}
   · simp
 
 /- English proof (translation)
-Use `haveI hP1 : IsProbabilityMeasure (sphereProb n) := sphereMeasure_isProbability hn`. Introduce `B`. Proceed by induction on `B with`. Consider the case `zero`. Introduce `a g u _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : Measurable fun z : BlockSphere 0 n => Real.log ‖eval (blockPoint z) g‖` using `(measurable_eval_blockCoords g).norm.log`. Unfold `blockSphereMean blockSphereProb`. Rewrite using `[Measure.pi_of_empty _ u, integral_dirac' _ _ hm.stronglyMeasurable]`. Simplify using the standard rewrite rules. Consider the case `succ B ih`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a g u hg hu`. Use `haveI hP2 : IsProbabilityMeasure (blockSphereProb B n) := by`. Unfold `blockSphereProb`. Use `infer_instance`. Establish `hu_split : (lh0Split B n).symm (u 0, fun b => u b.succ) = u` using `blockSplitEquiv_self u`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : g ≠ 0` using `by rintro rfl; exact hu (by simp)`. Establish `hIpi` using `hInt (B + 1) n a g hg0 hg`. Establish `hmp : MeasurePreserving (lh0Split B n) (blockSphereProb (B + 1) n) ((sphereProb n).prod (blockSphereProb B n))` using `measurePreserving_piFinSuccAbove (fun _ => sphereProb n) 0`. Establish `hmp'` using `hmp.symm (lh0Split B n)`. Establish `hIprod : Integrable (fun p => Real.log ‖eval (blockPoint ((lh0Split B n).symm p)) g‖) ((sphereProb n).prod (blockSphereProb B n))` using `(hmp'.integrable_comp_emb (lh0Split B n).symm.measurableEmbedding).mpr hIpi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hmean : blockSphereMean (B + 1) n g = ∫ y, ∫ x, Real.log ‖eval (blockPoint ((lh0Split B n).symm (x, y))) g‖ ∂sphereProb n ∂blockSphereProb B n`. Unfold `blockSphereMean`. Rewrite using `[← hmp'.integral_comp (lh0Split B n).symm.measurableEmbedding (fun z => Real.log ‖eval (blockPoint z) g‖), integral_prod_symm _ hIprod]`. Establish `hfirst : ∀ x y, eval (spherePoint x) (aeval (lh0First y) g) = eval (blockPoint ((lh0Split B n).symm (x, y))) g`. Introduce `x y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eval_aeval_alt, firstBlockSubst_eval]`. Establish `hrest : ∀ y, eval (blockPoint y) (aeval (lh0Rest (spherePoint (u 0))) g) = eval (blockPoint ((lh0Split B n).symm (u 0, y))) g`. Introduce `y`. Rewrite using `[eval_aeval_alt, restBlockSubst_eval]`. Establish `hmh` using `restBlockSubst_isMultiHomogeneous hg (spherePoint (u 0))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hhu : eval (blockPoint fun b => u b.succ) (aeval (lh0Rest (spherePoint (u 0))) g) ≠ 0`. Rewrite using `[hrest, hu_split]`. Conclude with `hu`. Establish `hIB` using `ih (fun b => a b.succ) _ _ hmh hhu`. Establish `hnull` using `null_of_logBound hn hInt ih (fun b => a b.succ) _ _ hmh hhu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hae : ∀ᵐ y ∂blockSphereProb B n, eval (blockPoint ((lh0Split B n).symm (u 0, y))) g ≠ 0`. Establish `hset : {y | ¬ eval (blockPoint ((lh0Split B n).symm (u 0, y))) g ≠ 0} = {z | eval (blockPoint z) (aeval (lh0Rest (spherePoint (u 0))) g) = 0}`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, not_not, hrest]`. Rewrite using `[ae_iff, hset]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hnull`. Establish `hh0 : aeval (lh0Rest (spherePoint (u 0))) g ≠ 0`. Introduce `h0`. Apply `hhu` to reduce the goal to its premises. Rewrite using `[h0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hIh` using `hInt B n _ _ hh0 hmh`. Establish `hSJy : ∀ y, eval (blockPoint ((lh0Split B n).symm (u 0, y))) g ≠ 0 → Real.log ‖eval (blockPoint ((lh0Split B n).symm (u 0, y))) g‖ - (a 0 : ℝ) / 2 * (harmonic (n - 1) : ℝ) ≤ ∫ x, Real.log ‖eval (blockPoint ((lh0Split B n).symm (x, y))) g‖ ∂sphereProb n`. Introduce `y hy`. Establish `hnorm : ‖((u 0 : UnitSphereC n) : EuclideanSpace ℂ (Fin n))‖ = 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (u 0).2`. Establish `h` using `(hSJ n (a 0) (aeval (lh0First y) g) ((u 0 : UnitSphereC n) : EuclideanSpace ℂ (Fin n)) (firstBlockSubst_isHomogeneous hg y) hnorm (by`. Rewrite using `[show WithLp.ofLp ((u 0 : UnitSphereC n) : EuclideanSpace ℂ (Fin n)) = spherePoint (u 0) from rfl, hfirst]`. Conclude with `hy)).2`. Rewrite `h` using `[show WithLp.ofLp ((u 0 : UnitSphereC n) : EuclideanSpace ℂ (Fin n)) = spherePoint (u 0) from rfl]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `h` using `only [hfirst]`. Establish `hstep : ∫ y, (Real.log ‖eval (blockPoint y) (aeval (lh0Rest (spherePoint (u 0))) g)‖ - (a 0 : ℝ) / 2 * (harmonic (n - 1) : ℝ)) ∂blockSphereProb B n ≤ ∫ y, ∫ x, Real.log ‖eval (blockPoint ((lh0Split B n).symm (x, y))) g‖ ∂sphereProb n ∂blockSphereProb B n`. Use `integral_mono_ae (hIh.sub (integrable_const _)) hIprod.integral_prod_right ?_` and prove the remaining obligations. Use `filter_upwards [hae] with y hy`. Rewrite using `[hrest]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hSJy y hy`. Rewrite `hstep` using `[integral_sub hIh (integrable_const _)]`. Establish `hc : ∫ _y, (a 0 : ℝ) / 2 * (harmonic (n - 1) : ℝ) ∂blockSphereProb B n = (a 0 : ℝ) / 2 * (harmonic (n - 1) : ℝ)` using `by simp`. Rewrite `hstep` using `[hc]`. Rewrite using `[hmean, Fin.sum_univ_succ]`.
-
-Establish `hIB' : Real.log ‖eval (blockPoint u) g‖ - (∑ b : Fin B, (a b.succ : ℝ)) / 2 * (harmonic (n - 1) : ℝ) ≤ ∫ y, Real.log ‖eval (blockPoint y) (aeval (lh0Rest (spherePoint (u 0))) g)‖ ∂blockSphereProb B n`. Use `hIB` as an intermediate fact. Rewrite `this` using `[hrest, hu_split]`. Conclude with `this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem blockSphere_logMean_bound (hSJ : SJStatement) (hInt : SphereLogIntegrableStatement) {n : ℕ}
     (hn : 0 < n) : ∀ (B : ℕ) (a : Fin B → ℕ) (g : MvPolynomial (Fin B × Fin n) ℂ)

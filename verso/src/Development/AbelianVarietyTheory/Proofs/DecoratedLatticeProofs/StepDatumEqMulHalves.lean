@@ -21,7 +21,7 @@ namespace GlobalTheory.DatumHalves
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `omegaQ`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem omegaQ_empty {a b : ℕ} (r : ℕ) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (k : ℤ)
     (y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)) : omegaQ ∅ r ξ k y = 1 := by
@@ -29,9 +29,9 @@ theorem omegaQ_empty {a b : ℕ} (r : ℕ) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ
   simp
 
 /- English proof (translation)
-Establish `hn : ∀ PP, PP ∉ L.Pg` using `fun PP h => Finset.notMem_empty PP (hL ▸ h)`. Use `haveI : IsEmpty ↥L.Pg := ⟨fun PP => hn PP.1 PP.2⟩`. Establish `h1 : ∀ g : G0 L.Pg L.r, g = 1` using `fun g => funext fun PP => isEmptyElim PP`. Establish `h2 : ∀ g : L.P.H, L.P.chi g = 1` using `fun g => by`. Rewrite using `[show g = 1 from Subtype.ext (h1 _), map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `omegaG`. Rewrite using `[dif_pos ⟨fun PP h => absurd h (hn PP), fun PP => isEmptyElim PP, fun PP => isEmptyElim PP, fun PP => isEmptyElim PP, by rw [h1 (fun PP => _)]; exact L.P.H.one_mem⟩, h2, Fintype.prod_empty, Fintype.prod_empty]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem omegaG_of_empty {a b : ℕ} (L : LevDat D.host.E ℂ a) (hL : L.Pg = ∅) (χj : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)) : omegaG L χj y = 1 := by
@@ -54,7 +54,7 @@ theorem omegaG_datY {n b : ℕ} (r t j : ℕ) (hr : r ≤ n) (Pg Q Q' : Finset (
     omegaG (datY n r t j hr Pg Q P χ ξ Frm.B) χj y = omegaG (datY n r t j hr Pg Q' P χ ξ' Frm.B) χj y := rfl
 
 /- English proof (translation)
-Introduce `i j` and use `by show e * (e * x i j) = e * x i j rw [← mul_assoc, GlobalTheory.PlaceDatum.idemSum_mul_self he]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHalf_smul {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {S T : HSp D} (x : WO S T) :
     IsHalf e (e • x) := fun i j => by
@@ -64,17 +64,17 @@ theorem isHalf_smul {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D S T βS βT r t j hr Pg Q P χ χj ξ eG eQ hG hQ _ x`. Take `⟨iG, rG⟩` from `GlobalTheory.InnerSteps.resS_idemSum hG`. Take `⟨iQ, rQ⟩` from `GlobalTheory.InnerSteps.resS_idemSum hQ`. Establish `hsm : ∀ e : AE D, frMapO S T βS βT (e • x) = toEAf D e • frMapO S T βS βT x` using `fun e => GlobalTheory.RedHalfDrop.frMapO_smul_eq βS βT e x`. Establish `hhG : IsHalf eG (eG • x)` using `isHalf_smul hG x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhQ : IsHalf eQ (eQ • x)` using `isHalf_smul hQ x`. Distinguish the cases in `hx : IsHalf (eG + eQ) x`. Use `swap`. Rewrite using `[if_neg hx, if_neg (fun h => hx h.1), mul_zero]`. Establish `hxx : (eG + eQ) • x = x` using `funext fun a => funext fun b => hx a b`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNs` using `hsm (eG + eQ)`. Rewrite `hNs` using `[hxx, RingHom.map_add, add_smul]`. Rewrite using `[if_pos hx, hsm, hsm]`. Generalize the expression as in `frMapO S T βS βT x = N at hNs ⊢`. Distinguish the cases in `hI : IsIntM N`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `iGN : IsIntM (toEAf D eG • N)` using `fun a b => mul_mem iG (hI a b)`. Establish `iQN : IsIntM (toEAf D eQ • N)` using `fun a b => mul_mem iQ (hI a b)`. Establish `e1` using `GlobalTheory.PlaceDatum.omegaG_congr (datY S.rank r t j hr Pg ∅ P χ (fun _ => 1) Frm.B) χj (fun PP => redM PP (toEAf D eG • N)) (fun PP => redM PP N) (fun PP hPP => GlobalTheory.LocSuppTw.redM_smul_of_res iG PP (rG PP hPP) hI)`. Establish `e2` using `GlobalTheory.PlaceDatum.omegaQ_congr Q r ξ 1 (fun PP => redM PP (toEAf D eQ • N)) (fun PP => redM PP N) (fun PP hPP => GlobalTheory.LocSuppTw.redM_smul_of_res iQ PP (rQ PP hPP) hI)`. Rewrite using `[if_pos (And.intro hx hI), if_pos (And.intro hhG iGN), if_pos (And.intro hhQ iQN), omegaQ_empty, omegaG_of_empty (datY S.rank r t j hr ∅ Q (LevelP.triv ∅ r ℂ) χ ξ Frm.B) rfl, e1, mul_one, mul_one, one_mul, omegaG_datY r t j hr Pg Q ∅ P χ ξ (fun _ => 1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ e2.symm`. Rewrite using `[if_neg (fun h : IsHalf (eG + eQ) x ∧ IsIntM N => hI h.2)]`. Distinguish the cases in `h1 : IsIntM (toEAf D eG • N)`. Establish `h2 : ¬ IsIntM (toEAf D eQ • N)` using `fun h2 => hI fun a b => by`. Establish `e : N a b = (toEAf D eG • N) a b + (toEAf D eQ • N) a b` using `congrFun (congrFun hNs a) b`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.symm ▸ Subring.add_mem _ (h1 a b) (h2 a b)`. Rewrite using `[if_neg (fun k : IsHalf eQ (eQ • x) ∧ IsIntM (toEAf D eQ • N) => h2 k.2), mul_zero, zero_mul]`. Rewrite using `[if_neg (fun k : IsHalf eG (eG • x) ∧ IsIntM (toEAf D eG • N) => h1 k.2), zero_mul, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem stepDatum_eq_mul : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (r t j : ℕ) (hr : r ≤ S.rank) (Pg Q : Finset (Pl D.host.E)) (P : LevelP Pg r ℂ) (χ : ℕ → ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (χj ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (eG eQ : AE D), IsIdemSum eG Pg → IsIdemSum eQ Q → eG * eQ = 0 → ∀ x : WO S T, (if IsHalf (eG + eQ) x ∧ IsIntM (frMapO S T βS βT x) then omegaG (datY S.rank r t j hr Pg Q P χ ξ Frm.B) χj (fun PP => redM PP (frMapO S T βS βT x)) * omegaQ Q (datY S.rank r t j hr Pg Q P χ ξ Frm.B).r ξ 1 (fun PP => redM PP (frMapO S T βS βT x)) else 0) = (if IsHalf eG (eG • x) ∧ IsIntM (frMapO S T βS βT (eG • x)) then omegaG (datY S.rank r t j hr Pg ∅ P χ (fun _ => 1) Frm.B) χj (fun PP => redM PP (frMapO S T βS βT (eG • x))) * omegaQ ∅ (datY S.rank r t j hr Pg ∅ P χ (fun _ => 1) Frm.B).r (fun _ => 1) 1 (fun PP => redM PP (frMapO S T βS βT (eG • x))) else 0) * (if IsHalf eQ (eQ • x) ∧ IsIntM (frMapO S T βS βT (eQ • x)) then omegaG (datY S.rank r t j hr ∅ Q (LevelP.triv ∅ r ℂ) χ ξ Frm.B) χj (fun PP => redM PP (frMapO S T βS βT (eQ • x))) * omegaQ Q (datY S.rank r t j hr ∅ Q (LevelP.triv ∅ r ℂ) χ ξ Frm.B).r ξ 1 (fun PP => redM PP (frMapO S T βS βT (eQ • x))) else 0) * (if IsHalf (eG + eQ) x then 1 else 0) := by
   intro D S T βS βT r t j hr Pg Q P χ χj ξ eG eQ hG hQ _ x

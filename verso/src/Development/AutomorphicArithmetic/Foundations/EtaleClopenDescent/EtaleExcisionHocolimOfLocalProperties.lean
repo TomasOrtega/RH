@@ -7,13 +7,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 namespace UpperTheory.Cb
 
 /- English proof (translation)
-Apply the tactic sequence `apply pushout.hom_ext <;> simp [dbl.map] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dbl_map_id (P : Arrow Spc) : dbl.map (𝟙 P) = 𝟙 _ := by
   apply pushout.hom_ext <;> simp [dbl.map] <;> rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `pull _ (dbl.map (𝟙 P)) _ _ x.1 = x.1`. Rewrite using `[dbl_map_id, pull_id]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hs_pull_id (q : ℕ) (P : Arrow Spc) (n i : ℤ) (x : Hs q P n i) : Hs.pull q (𝟙 P) n i x = x := by
   apply Subtype.ext
@@ -21,7 +21,7 @@ private theorem hs_pull_id (q : ℕ) (P : Arrow Spc) (n i : ℤ) (x : Hs q P n i
   rw [dbl_map_id, pull_id]
 
 /- English proof (translation)
-Introduce `n i` and use `Function.bijective_iff_has_inverse.2 ⟨Hs.pull q e.inv n i, fun x => by rw [← hs_pull_comp, e.inv_hom_id, hs_pull_id], fun x => by rw [← hs_pull_comp, e.hom_inv_id, hs_pull_id]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem exc_iso (q : ℕ) {P' P : Arrow Spc} (e : P' ≅ P) : Exc q e.hom := fun n i =>
   Function.bijective_iff_has_inverse.2 ⟨Hs.pull q e.inv n i,
@@ -29,7 +29,7 @@ private theorem exc_iso (q : ℕ) {P' P : Arrow Spc} (e : P' ≅ P) : Exc q e.ho
     fun x => by rw [← hs_pull_comp, e.hom_inv_id, hs_pull_id]⟩
 
 /- English proof (translation)
-Establish `h` using `(IsPullback.of_hasPullback π (sch.map U.ι)).map ((evaluation _ _).obj n)`. Conclude with `IsPullback.of_forall_isPullback_app fun _ => h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pb_app {X : Scheme.{0}} (U : X.Opens) {E : Spc} (π : E ⟶ sch.obj X) (n : SimplexCategoryᵒᵖ) :
     IsPullback (P := disc.obj ((pullback π (sch.map U.ι)).obj n)) (X := disc.obj (E.obj n)) (Y := sch.obj U.toScheme) (Z := sch.obj X)
@@ -44,22 +44,22 @@ private def levIso {X : Scheme.{0}} (U : X.Opens) {E : Spc} (π : E ⟶ sch.obj 
     ((pb_app U π n).isoPullback_hom_fst.trans (Category.comp_id _).symm)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem pbRel_fst {B G E' E : Spc} (g : G ⟶ B) (a : E' ⟶ E) (π' : E' ⟶ B) (π : E ⟶ B) (h : a ≫ π = π') :
     pbRel g a π' π h ≫ pullback.fst π g = pullback.fst π' g ≫ a := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `(pullback.lift_snd _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 private theorem pbRel_snd {B G E' E : Spc} (g : G ⟶ B) (a : E' ⟶ E) (π' : E' ⟶ B) (π : E ⟶ B) (h : a ≫ π = π') :
     pbRel g a π' π h ≫ pullback.snd π g = pullback.snd π' g :=
   (pullback.lift_snd _ _ _).trans (Category.comp_id _)
 
 /- English proof (translation)
-Apply `Arrow.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `pbRel _ a _ _ h1 ≫ pbRel _ b _ _ h2 = pbRel _ c _ _ h3 ≫ pbRel _ d _ _ h4`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, pbRel_fst]`. Rewrite using `[← Category.assoc, pbRel_fst, ← Category.assoc, pbRel_fst, Category.assoc, Category.assoc, w]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc, pbRel_snd]`. Conclude with `w`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem abvRel_square {X : Scheme.{0}} (U : X.Opens) {A B C D : Spc} (a : A ⟶ B) (b : B ⟶ D) (c : A ⟶ C) (d : C ⟶ D)
     (pA : A ⟶ sch.obj X) (pB : B ⟶ sch.obj X) (pC : C ⟶ sch.obj X) (pD : D ⟶ sch.obj X) (h1 : a ≫ pB = pA) (h2 : b ≫ pD = pB)
@@ -74,7 +74,7 @@ private theorem abvRel_square {X : Scheme.{0}} (U : X.Opens) {A B C D : Spc} (a 
   · exact w
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, pbRel_fst, hp.isoPullback_hom_fst, ← Category.assoc _ (pullback.fst _ _), hp'.isoPullback_hom_fst, h1]`. Rewrite using `[Category.assoc, Category.assoc, pbRel_snd, hp.isoPullback_hom_snd, hp'.isoPullback_hom_snd, h2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem iso_gen {B G E' E P' P : Spc} (g : G ⟶ B) (a : E' ⟶ E) (π' : E' ⟶ B) (π : E ⟶ B) (h : a ≫ π = π')
     (f' : P' ⟶ E') (s' : P' ⟶ G) (f : P ⟶ E) (s : P ⟶ G) (hp' : IsPullback f' s' π' g) (hp : IsPullback f s π g)
@@ -86,7 +86,7 @@ private theorem iso_gen {B G E' E P' P : Spc} (g : G ⟶ B) (a : E' ⟶ E) (π' 
   · rw [Category.assoc, Category.assoc, pbRel_snd, hp.isoPullback_hom_snd, hp'.isoPullback_hom_snd, h2]
 
 /- English proof (translation)
-Establish `f1` using `pbRel_fst (sch.map U.ι) a π' π h`. Establish `f2` using `pbRel_snd (sch.map U.ι) a π' π h`. Apply `Arrow.hom_ext` to reduce the goal to its premises. Conclude with `iso_gen _ _ _ _ hn _ _ _ _ (pb_app U π' n) (pb_app U π n) (disc.map ((pbRel _ a _ _ h).app n)) ((disc.map_comp _ _).symm.trans ((congrArg (fun t => disc.map (NatTrans.app t n)) f1).trans (disc.map_comp _ _))) ((disc.map_comp _ _).symm.trans (congrArg (fun t => disc.map (NatTrans. …`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem lev_abvRel {X : Scheme.{0}} (U : X.Opens) {E' E : Spc} (a : E' ⟶ E) (π' : E' ⟶ sch.obj X) (π : E ⟶ sch.obj X)
     (h : a ≫ π = π') (n : SimplexCategoryᵒᵖ) (hn) :
@@ -105,7 +105,7 @@ section
 variable {J : Type} [SmallCategory J]
 
 /- English proof (translation)
-Establish `e : σ.map (homOfLE (Fin.zero_le (0 : Fin (n.unop.len + 1)))) = 𝟙 _` using `σ.map_id _`. Use extensionality with `U x`. Express the relevant statement in the definitionally equal form `(c (σ.obj 0)).app U ((D.map (σ.map (homOfLE (Fin.zero_le (0 : Fin (n.unop.len + 1)))))).app U x) = _`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem inj_aug {D : J ⥤ PSh} {Y : PSh} (c : ∀ j, D.obj j ⟶ Y) (hc : Coc D c) (n : SimplexCategoryᵒᵖ)
     (σ : Fin (n.unop.len + 1) ⥤ J) : inj D n σ ≫ (aug c hc).app n = c (σ.obj 0) := by
@@ -116,9 +116,9 @@ private theorem inj_aug {D : J ⥤ PSh} {Y : PSh} (c : ∀ j, D.obj j ⟶ Y) (hc
   simp
 
 /- English proof (translation)
-Use extensionality with `U x`. Establish `e : (fun i => (α.app (σ.obj i)).app U ((D'.map (σ.map (homOfLE (Fin.zero_le i)))).app U x)) = fun i => (D.map (σ.map (homOfLE (Fin.zero_le i)))).app U ((α.app (σ.obj 0)).app U x)`. Use function extensionality and compare the values at `fun i => ConcreteCategory.congr_hom (NatTrans.congr_app (α.naturality (σ.map (homOfLE (Fin.zero_le i)))) U) x`. Establish `hk : ∀ i k (g : i ⟶ k), (D.flip.obj U).map (σ.map g) ((α.app (σ.obj i)).app U ((D'.map (σ.map (homOfLE (Fin.zero_le i)))).app U x)) = (α.app (σ.obj k)).app U ((D'.map (σ.map (homOfLE (Fin.zero_le k)))).app U x)` using `fun i k g => by`. Establish `a` using `congrFun e i`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `congrFun e k`. Simplify using `only at a b`. Rewrite using `[a, b]`. Conclude with `ConcreteCategory.congr_hom (NatTrans.congr_app (laurent_adjoin_eq_of_image_eq D σ i k g) U) _`. Conclude with `mkChn_congr (F := D.flip.obj U) σ e hk (fun i k g => ConcreteCategory.congr_hom (NatTrans.congr_app (laurent_adjoin_eq_of_image_eq D σ i k g) U) _)`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inj_nat {D' D : J ⥤ PSh} (α : D' ⟶ D) (n : SimplexCategoryᵒᵖ) (σ : Fin (n.unop.len + 1) ⥤ J) :
     inj D' n σ ≫ ((hocF J).map α).app n = α.app (σ.obj 0) ≫ inj D n σ := by
@@ -139,9 +139,9 @@ private theorem inj_nat {D' D : J ⥤ PSh} (α : D' ⟶ D) (n : SimplexCategory�
 end
 
 /- English proof (translation)
-Introduce `n i`. Use `(Function.Bijective.of_comp_iff' (B' n i) _).1 ?_` and prove the remaining obligations. Establish `T : Function.Bijective (Pi.map fun a => Hs.pull q (t a) n i)` using `Function.Bijective.piMap fun a => ht a n i`. Use `T.comp (B n i) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `Hs.pull q (r' a) n i (Hs.pull q f n i x) = Hs.pull q (t a) n i (Hs.pull q (r a) n i x)`. Rewrite using `[← hs_pull_comp, ← hs_pull_comp, w]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_transfer (q : ℕ) {P' P : Arrow Spc} (f : P' ⟶ P) {A : Type} (Q' Q : A → Arrow Spc)
     (r' : ∀ a, Q' a ⟶ P') (r : ∀ a, Q a ⟶ P) (t : ∀ a, Q' a ⟶ Q a) (w : ∀ a, r' a ≫ f = t a ≫ r a) (ht : ∀ a, Exc q (t a))
@@ -156,9 +156,9 @@ private theorem sum_transfer (q : ℕ) {P' P : Arrow Spc} (f : P' ⟶ P) {A : Ty
   rw [← hs_pull_comp, ← hs_pull_comp, w]
 
 /- English proof (translation)
-Take `⟨cD⟩` from `hL J D n`. Take `⟨cD'⟩` from `hL J D' n`. Establish `hp : ∀ σ : Fin (n.unop.len + 1) ⥤ J, disc.map (inj D n σ) ≫ disc.map π = disc.map (c (σ.obj 0))` using `fun σ => (disc.map_comp _ _).symm.trans (congrArg disc.map (e ▸ inj_aug c hc n σ))`. Establish `hp' : ∀ σ : Fin (n.unop.len + 1) ⥤ J, disc.map (inj D' n σ) ≫ disc.map π' = disc.map (c' (σ.obj 0))` using `fun σ => (disc.map_comp _ _).symm.trans (congrArg disc.map (e' ▸ inj_aug c' hc' n σ))`. Use `sum_transfer q _ (fun σ : Fin (n.unop.len + 1) ⥤ J => abv U (E := disc.obj (D'.obj (σ.obj 0))) (disc.map (c' (σ.obj 0)))) (fun σ => abv U (E := disc.obj (D.obj (σ.obj 0))) (disc.map (c (σ.obj 0)))) (fun σ => abvRel U (disc.map (inj D' n σ)) _ _ (hp' σ)) (fun σ => abvRel U (disc.m …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `abvRel_square U _ _ _ _ _ _ _ _ _ _ _ _ ((disc.map_comp _ _).symm.trans ((congrArg disc.map (inj_nat α n σ)).trans (disc.map_comp _ _)))`. Conclude with `fun m i => hS q X U _ (fun σ : Fin (n.unop.len + 1) ⥤ J => D.obj (σ.obj 0)) (Cofan.mk _ (inj D n)) ⟨cD⟩ π (fun σ => c (σ.obj 0)) hp m i`. Conclude with `fun m i => hS q X U _ (fun σ : Fin (n.unop.len + 1) ⥤ J => D'.obj (σ.obj 0)) (Cofan.mk _ (inj D' n)) ⟨cD'⟩ π' (fun σ => c' (σ.obj 0)) hp' m i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem exc_lvl (hL : LeafLevel) (hS : LeafHsSum) (q : ℕ) {J : Type} [SmallCategory J] {D' D : J ⥤ PSh} (α : D' ⟶ D)
     {X : Scheme.{0}} (U : X.Opens) (c' : ∀ j, D'.obj j ⟶ yoneda.obj X) (c : ∀ j, D.obj j ⟶ yoneda.obj X)
@@ -186,9 +186,9 @@ private theorem exc_lvl (hL : LeafLevel) (hS : LeafHsSum) (q : ℕ) {J : Type} [
       π' (fun σ => c' (σ.obj 0)) hp' m i
 
 /- English proof (translation)
-Introduce `hE hL hS _ _ _ _ _ a3 q J _ D' D α X U c' c hc' hc h h' ht`. Use `hE a3 q _ _ _ fun n => ?_` and prove the remaining obligations. Establish `hn : disc.map (((hocF J).map α).app n) ≫ disc.map ((aug c hc).app n) = disc.map ((aug c' hc').app n)` using `(disc.map_comp _ _).symm.trans (congrArg (fun t => disc.map (t.app n)) h')`. Establish `e` using `lev_abvRel U ((hocF J).map α) (aug c' hc') (aug c hc) h' n hn`. Establish `k` using `exc_lvl hL hS q α U c' c hc' hc h ht n _ _ rfl rfl hn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : (lev n).map (abvRel U ((hocF J).map α) (aug c' hc') (aug c hc) h') = (levIso U (aug c' hc') n).hom ≫ abvRel U (E'` using `disc.obj ((hoc D').obj n)) (E := disc.obj ((hoc D).obj n)) (disc.map (((hocF J).map α).app n)) (disc.map ((aug c' hc').app n)) (disc.map ((aug c hc).app n)) hn ≫ (levIso U (aug c hc) n).inv := by`. Rewrite using `[← Category.assoc, ← e, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[e']`. Conclude with `exc_comp q (exc_iso q _) (exc_comp q k (exc_iso q (levIso U (aug c hc) n).symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_excision_hocolim_of_local_properties :
     LateralTheory.CohomologicalPurity.TubeCut.LeafExcLevel → LateralTheory.CohomologicalPurity.TubeCut.LeafLevel → LateralTheory.CohomologicalPurity.TubeCut.LeafHsSum → LateralTheory.CohomologicalPurity.LeafAW → LateralTheory.CohomologicalPurity.LeafBd → LateralTheory.CohomologicalPurity.LeafExc → LateralTheory.CohomologicalPurity.LeafHens → LateralTheory.CohomologicalPurity.LeafIndExc → LateralTheory.CohomologicalPurity.TubeCut.LeafExcHoc := by

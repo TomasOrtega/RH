@@ -14,7 +14,7 @@ namespace GlobalTheory.Mean4O.Cover
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y)
 
 /- English proof (translation)
-Set `` to `(V.π.residueFieldMap w).hom.toAlgebra`. Establish `: Module.Finite (Y.X.residueField (V.π w)) (V.G.residueField w)` using `residueFieldMap_finite_of_locallyQuasiFinite V.π _`. Conclude with `Module.finrank_pos`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem residueDegree_pos_at (w : V.G) : 0 < V.π.residueDegree w := by
   let := (V.π.residueFieldMap w).hom.toAlgebra
@@ -23,7 +23,7 @@ theorem residueDegree_pos_at (w : V.G) : 0 < V.π.residueDegree w := by
   exact Module.finrank_pos
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `V.π.surjective (below y)`. Establish `hp : 0 < Nat.card {z : Sp ℂ ⟶ V.G // below z = x ∧ z ≫ V.π = y}` using `(CoverHt.card_lifts V.π x y hx.symm).symm ▸ residueDegree_pos_at V x`. Take `⟨⟨z, -, hz⟩⟩` from `(Nat.card_pos_iff.1 hp).1`. Conclude with `⟨z, hz⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift_cx (y : Sp ℂ ⟶ Y.X) : ∃ w : Sp ℂ ⟶ V.G, w ≫ V.π = y := by
   obtain ⟨x, hx⟩ := V.π.surjective (below y)
@@ -33,17 +33,17 @@ theorem exists_lift_cx (y : Sp ℂ ⟶ Y.X) : ∃ w : Sp ℂ ⟶ V.G, w ≫ V.π
   exact ⟨z, hz⟩
 
 /- English proof (translation)
-Introduce `F _ _ Y V e M I ε π hD σ`. Take `⟨hε, hw⟩` from `hD σ`. Establish `hs : spMap σ = spMap (I.ε (ε σ)) ≫ spMap (algebraMap (𝓞 F) F)` using `(congrArg spMap hε.symm).trans (Spec.map_comp (CommRingCat.ofHom _) (CommRingCat.ofHom _))`. Set `L : CxPts V.p σ → (Sp ℂ ⟶ V.G)` to `fun z => V.pb.lift z.1 (spMap (I.ε (ε σ))) (z.2.trans hs)`. Establish `key (z : CxPts V.p σ) : (I.pt _ (π σ z)).1 = L z ≫ V.π`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨w, hw1, hw2⟩` from `hw z`. Establish `h : w = L z` using `V.pb.hom_ext (by rw [hw1, V.pb.lift_fst]) (by rw [V.pb.lift_snd, ← Category.assoc, hw2]; exact (I.pt _ (π σ z)).2)`. Rewrite using `[← hw2, h]`. Establish `hL : Continuous L`. Rewrite using `[(Points.isEmbedding_of_isPullback (C := ℂ) V.pb).continuous_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ((fun z : Sp ℂ ⟶ V.G => (z ≫ V.j, z ≫ (V.π ≫ Y.str))) ∘ L) = fun z => (z.1, spMap (I.ε (ε σ)))`. Use function extensionality and compare the values at `fun z => Prod.ext (V.pb.lift_fst _ _ _) (V.pb.lift_snd _ _ _)`. Rewrite using `[h]`. Conclude with `continuous_subtype_val.prodMk continuous_const`. Use `⟨?_, fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (I.pt (ε σ)).comp_continuous_iff]`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Conclude with `((Points.continuous_comp V.π).comp hL).congr fun z => (key z).symm`. Take `⟨w, hw'⟩` from `exists_lift_cx V (I.pt _ y).1`. Establish `hwτ : w ≫ V.π ≫ Y.str = spMap (I.ε (ε σ))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hw']`. Conclude with `(I.pt _ y).2`. Establish `hz : (w ≫ V.j) ≫ V.p = spMap σ`. Rewrite using `[Category.assoc, V.pb.w, ← Category.assoc, hwτ, hs]`. Use `⟨⟨w ≫ V.j, hz⟩, (I.pt _).injective (Subtype.ext ?_)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Establish `h : L ⟨w ≫ V.j, hz⟩ = w` using `V.pb.hom_ext (V.pb.lift_fst _ _ _) ((V.pb.lift_snd _ _ _).trans hwτ.symm)`. Rewrite using `[h, hw']`.
+A detailed English derivation is pending.
 -/
 theorem isDown_continuous_surjective : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (e : ℕ)
     (M : Man e) (I : ManIs M Y) (ε : (𝓞 F →+* ℂ) → Fin (M.n + 1)) (π : ∀ σ, CxPts V.p σ → M.X (ε σ)),

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivDvr
 import Mathlib
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.dvr_fg_module_structure` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsEquivDvrFgModuleStructure.lean&line=7#L7)
 -/

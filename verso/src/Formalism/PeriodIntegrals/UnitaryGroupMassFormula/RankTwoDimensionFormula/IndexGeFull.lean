@@ -8,7 +8,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RankTwoDimensionFormula
 namespace PI.UnitaryDimensionFormula
 
 /- English proof (translation)
-The claim follows from `indexGe_of uniSub idxHom (idxSurj_of_frame idxDFrame)`.
+A detailed English derivation is pending.
 -/
 theorem indexGe : IndexGe := indexGe_of uniSub idxHom (idxSurj_of_frame idxDFrame)
 

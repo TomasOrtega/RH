@@ -21,19 +21,17 @@ namespace GlobalTheory.FlagPull
 open VMetric
 
 /- English proof (translation)
-Introduce `hA k _ X p _ Y _ q hp hq π hπ hg hd E r h H fl a`. Use `set d := π.residueDegree (genericPoint Y) with hd'`. Establish `hd0 : (d : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hd`. Establish `hdE₀ : (d : ENNReal) ≠ 0` using `Nat.cast_ne_zero.2 hd`. Establish `hdE₁ : (d : ENNReal) ≠ ⊤` using `ENNReal.natCast_ne_top d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `fun i σ => bcMeas_pullStep hp hq π hπ hg hd H fl i σ`. Establish `hfin : h.FlagBcFinite fl ↔ (h.pull π hπ).FlagBcFinite (fl.pull π)`. Establish `key (x : ENNReal) : x ≠ ⊤ ↔ (d : ENNReal) * x ≠ ⊤`. Simplify using `[ENNReal.mul_eq_top, hdE₀, hdE₁]`. Use `forall_congr' fun i => forall_congr' fun σ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm i σ]`. Conclude with `key _`. Use `hp.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Establish `hbc : (h.pull π hπ).flagBc (fl.pull π) = d * h.flagBc fl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[flagBc, flagBc, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[bcInt, bcInt, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[hm i σ, ENNReal.toReal_mul, ENNReal.toReal_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : ∀ (i : Fin r) (x : ℝ), (grLB fl i H).IsSelfInter x → (grLB (fl.pull π) i (H.pull π hπ)).IsSelfInter (d * x)` using `fun i x hx => (GlobalTheory.T.graded_metric_pullback_isometric k X Y p q E r h H fl π hπ i).symm.isSelfInter hq ((hA.arProj k X Y p q 1 hp hq π hπ hg hd).1 _ x hx)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨h₁, x, h₂, rfl⟩`. Use `⟨hfin.1 h₁, fun i => d * x i, fun i => hx i _ (h₂ i), ?_⟩` and prove the remaining obligations. Rewrite using `[hbc, mul_sub, Finset.mul_sum]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `only [mul_div_assoc]`. Introduce and unpack `⟨h₁, x', h₂, e⟩ choose x hx₀ using fun i => exists_isSelfInter hA hp (grLB fl i H)`. Use `⟨hfin.2 h₁, x, hx₀, mul_left_cancel₀ hd0 (e.trans ?_)⟩` and prove the remaining obligations. Establish `e' (i) : x' i = d * x i` using `(h₂ i).unique hq (hx i _ (hx₀ i))`. Rewrite using `[hbc, mul_sub, Finset.mul_sum]`.
-
-Simplify using `only [e', mul_div_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFlagCh2_flag_pull : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k), IsArithVar p 1 → IsArithVar q 1 → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (fl : Vert.Flag E r) (a : ℝ), VMetric.IsFlagCh2 H fl a ↔ VMetric.IsFlagCh2 (H.pull π hπ) (fl.pull π) (π.residueDegree (genericPoint Y) * a) := by
   intro hA k _ X p _ Y _ q hp hq π hπ hg hd E r h H fl a

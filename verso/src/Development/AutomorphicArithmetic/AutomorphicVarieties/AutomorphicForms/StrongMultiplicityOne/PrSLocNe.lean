@@ -14,7 +14,7 @@ section
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Use `cmp_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `h : w ∈ S`. Rewrite using `[hk w h, mul_one, one_mul]`. Rewrite using `[hx w h, mul_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pr_comm {S : Finset (HeightOneSpectrum (𝓞 E))} {x k : GL (Fin n) (Af E)} (hx : SuppIn S x)
     (hk : Away S k) : k * x = x * k := by
@@ -25,14 +25,14 @@ private theorem pr_comm {S : Finset (HeightOneSpectrum (𝓞 E))} {x k : GL (Fin
   · rw [hx w h, mul_one, one_mul]
 
 /- English proof (translation)
-Conclude with `Pi.single_eq_same (M := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) w x`.
+A detailed English derivation is pending.
 -/
 private theorem pr_sLoc (w : HeightOneSpectrum (𝓞 E)) (x : w.adicCompletion E) : pLoc E w (sLoc E w x) = x := by
   classical
   exact Pi.single_eq_same (M := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) w x
 
 /- English proof (translation)
-Conclude with `Pi.single_eq_of_ne (M := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) h x`.
+A detailed English derivation is pending.
 -/
 private theorem pr_sLoc_ne {v w : HeightOneSpectrum (𝓞 E)} (h : v ≠ w) (x : w.adicCompletion E) :
     pLoc E v (sLoc E w x) = 0 := by
@@ -40,9 +40,9 @@ private theorem pr_sLoc_ne {v w : HeightOneSpectrum (𝓞 E)} (h : v ≠ w) (x :
   exact Pi.single_eq_of_ne (M := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) h x
 
 /- English proof (translation)
-Establish `h1 : ∀ v, v ≠ w → cmp v (locGL E n w k) = 1` using `fun v hv => GlobalTheory.CuspRep.map_cornerGL_of_zero _ _ (pr_sLoc_ne hv) k`. Establish `h2 : cmp w (locGL E n w k) = k` using `GlobalTheory.CuspRep.map_cornerGL_of_hom _ _ (RingHom.id _) (pr_sLoc w) k`. Use `⟨fun v hv => h1 v fun e => hw (e ▸ hv), fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[h2]`. Conclude with `hk`. Rewrite using `[h1 v h]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pr_loc {S : Finset (HeightOneSpectrum (𝓞 E))} {w : HeightOneSpectrum (𝓞 E)} (hw : w ∉ S)
     {k : GL (Fin n) (w.adicCompletion E)} (hk : k ∈ GlobalTheory.LFun.KGL w n) : InKS S (locGL E n w k) := by
@@ -56,7 +56,7 @@ private theorem pr_loc {S : Finset (HeightOneSpectrum (𝓞 E))} {w : HeightOneS
   · rw [h1 v h]; exact one_mem _
 
 /- English proof (translation)
-Unfold `fop`. Use `Finsupp.sum_congr fun x hx => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← map_mul, pr_comm (hc x hx) hk.1, map_mul, ← mul_assoc, hf _ _ hk]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pr_fop {S : Finset (HeightOneSpectrum (𝓞 E))} {c : GL (Fin n) (Af E) →₀ ℂ}
     (hc : ∀ x ∈ c.support, SuppIn S x) {f : GA E n → ℂ} (hf : ∀ g k, InKS S k → f (g * finGL E n k) = f g)
@@ -66,7 +66,7 @@ private theorem pr_fop {S : Finset (HeightOneSpectrum (𝓞 E))} {c : GL (Fin n)
   rw [mul_assoc, ← map_mul, pr_comm (hc x hx) hk.1, map_mul, ← mul_assoc, hf _ _ hk]
 
 /- English proof (translation)
-Unfold `whittaker`. Simplify using `only [← mul_assoc, hf]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem pr_wh {f : GA E n → ℂ} {u : GA E n} (hf : ∀ g, f (g * u) = f g) (g : GA E n) :
     whittaker f (g * u) = whittaker f g := by
@@ -74,9 +74,9 @@ private theorem pr_wh {f : GA E n → ℂ} {u : GA E n} (hf : ∀ g, f (g * u) =
   simp only [← mul_assoc, hf]
 
 /- English proof (translation)
-Unfold `Af.StrongMultiplicityOne.conv`. Use `congr 1`. Use function extensionality and compare the values at `x`. Use `congr 1`. Unfold `chart`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h`. Rewrite using `[mul_assoc, ← GlobalTheory.CuspRep.infGL_comm, ← mul_assoc, hf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem pr_conv [IsTotallyComplex E] {f : GA E n → ℂ} {k : GL (Fin n) (Af E)} (hf : ∀ g, f (g * finGL E n k) = f g)
     (α : Lie E n → ℂ) (g : GA E n) : conv f α (g * finGL E n k) = conv f α g := by
@@ -90,7 +90,7 @@ private theorem pr_conv [IsTotallyComplex E] {f : GA E n → ℂ} {k : GL (Fin n
   · rfl
 
 /- English proof (translation)
-Use `⟨∑ x ∈ c.support, c x • finRepCusp E n x φ, U.sum_mem fun x _ => U.smul_mem _ (sU.τ _ _ hφ), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply, fop, ← Fb.finEmb_eq]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem pr_mem {U : Submodule ℂ (cuspForms E n)} (sU : Fb.Stab U) (c : GL (Fin n) (Af E) →₀ ℂ)
     {φ : cuspForms E n} (hφ : φ ∈ U) : ∃ ψ ∈ U, ψ.1 = fop c φ.1 := by
@@ -102,19 +102,17 @@ private theorem pr_mem {U : Submodule ℂ (cuspForms E n)} (sU : Fb.Stab U) (c :
 end
 
 /- English proof (translation)
-Introduce `hSeed hSet hKill hVan hWB hWL hCN hES hEM E _ _ _ n hn π π' h0 h0' hc hc' st st' hs`. Establish `hN : ∀ φ ∈ π, Nice φ.1` using `fun φ hφ => (hES E n φ).2 (hc hφ)`. Establish `hN' : ∀ φ ∈ π', Nice φ.1` using `fun φ hφ => (hES E n φ).2 (hc' hφ)`. Take `⟨φ, hφ, α, hα⟩` from `hSeed E n π h0 hc st`. Take `⟨φ', hφ', α', hα'⟩` from `hSeed E n π' h0' hc' st'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, B, hS, hK, hK'⟩` from `hSet E n π π' hs φ φ'`. Take `⟨V, hV⟩` from `(hN φ hφ).level`. Take `⟨V', hV'⟩` from `(hN' φ' hφ').level`. Take `⟨c, H, hH, hc, hop⟩` from `hKill E n hn S (V ⊓ V')`. Establish `side : ∀ (σ : Submodule ℂ (cuspForms E n)), Fb.Stab σ → (∀ φ ∈ σ, Nice φ.1) → (∀ w ∉ S, Sat w (B w) σ) → ∀ φ ∈ σ, ∀ α : 𝓢(Lie E n, ℂ), conv (whittaker φ.1) α 1 = 1 → (∀ g k, InKS S k → φ.1 (g * finGL E n k) = φ.1 g) → (∀ g, ∀ u ∈ V ⊓ V', φ.1 (g * finGL E n u) = φ.1 g) → ∃ ψ ∈ σ, …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `σ sσ hN hsat φ hφ α hα hK hU`. Take `⟨ψ, hψ, e⟩` from `pr_mem sσ c hφ`. Take `⟨β, hβ⟩` from `hop α`. Establish `hK₁ : ∀ g k, InKS S k → ψ.1 (g * finGL E n k) = ψ.1 g`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pr_fop hc hK`. Use `⟨ψ, hψ, β, (hCN E n _ (hN ψ hψ) β).1, fun w hw => ?_, fun g k hk => pr_conv (fun g => hK₁ g k hk) _ g, fun p hp => ?_⟩` and prove the remaining obligations. Conclude with `(hEM E n w (B w) _ (hsat w hw ψ hψ fun g k hk => hK₁ g _ (pr_loc hw hk))).2.1 (hN ψ hψ) β`. Take `⟨b1, b2, b3⟩` from `hWB E n _ (hN φ hφ)`. Rewrite using `[(hCN E n _ (hN ψ hψ) β).2, e, ((hWL E n _ (hN φ hφ)).1 c).2, hβ _ b1 b2 b3 (fun g u hu => pr_wh (fun g => hU g u hu) g) p hp, hα, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ, β, n1, e1, k1, w1⟩` from `side π st hN (fun w hw => (hS w hw).2.1) φ hφ α hα hK fun g u hu => hV g u hu.1`. Take `⟨ψ', hψ', β', n2, e2, k2, w2⟩` from `side π' st' hN' (fun w hw => (hS w hw).2.2) φ' hφ' α' hα' hK' fun g u hu => hV' g u hu.2`. Take `⟨n3, w3⟩` from `(hWL E n _ n1).2 _ n2`. Use `⟨ψ, hψ, ψ', hψ', β, β', sub_eq_zero.1 (hVan E n hn S B _ n3 (fun w hw => ⟨(hS w hw).1, (hEM E n w (B w) _ (e1 w hw)).2.2 _ (e2 w hw)⟩) (fun g k hk => ?_) fun p hp => ?_), fun h00 => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.sub_apply, Pi.sub_apply, k1 g k hk, k2 g k hk]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[w3, Pi.sub_apply, w1 p hp, w2 p hp, sub_self]`. Establish `h1 : InPS S (1 : GA E n)`. Use `⟨fun i _ => ⟨by simp, fun j hj => ?_⟩, fun w _ => by rw [map_one, map_one]⟩` and prove the remaining obligations. Conclude with `Matrix.one_apply_ne hj.ne'`. Establish `h2` using `w1 1 h1`.
-
-Rewrite `h2` using `[h00, hH]`. Simplify using `[whittaker] at h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.pair :
     UpperTheory.V.Af.StrongMultiplicityOne.Seed → UpperTheory.V.Af.StrongMultiplicityOne.SetUp → UpperTheory.V.Af.StrongMultiplicityOne.KillP → UpperTheory.V.Af.StrongMultiplicityOne.Vanish → UpperTheory.V.Af.Smo.WhBasic → UpperTheory.V.Af.Smo.WhLin → UpperTheory.V.Af.StrongMultiplicityOne.ConvNice → UpperTheory.V.Af.StrongMultiplicityOne.NiceOf → UpperTheory.V.Af.StrongMultiplicityOne.EigMap → UpperTheory.V.Af.StrongMultiplicityOne.Pair := by

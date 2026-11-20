@@ -24,7 +24,7 @@ section
 variable {p q r s : ℕ}
 
 /- English proof (translation)
-Take `⟨⟨d, h0, h1, h2⟩, h3, h4⟩` from `h`. Conclude with `⟨⟨d, h0, h2, h1⟩, h4, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cJoint_swap {σ : Type} (a₁ : Mat p q →ₗ[ℂ] Module.End ℂ (MvPolynomial σ ℂ))
     (a₂ : Mat r s →ₗ[ℂ] Module.End ℂ (MvPolynomial σ ℂ)) (Λ₁ : Ix p q → ℚ) (Λ₂ : Ix r s → ℚ)
@@ -33,9 +33,9 @@ theorem cJoint_swap {σ : Type} (a₁ : Mat p q →ₗ[ℂ] Module.End ℂ (MvPo
   exact ⟨⟨d, h0, h2, h1⟩, h4, h3⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `Y`. Rewrite using `[LinearMap.comp_assoc, h.2 Y, ← LinearMap.comp_assoc, ← LinearMap.comp_assoc]`. Use `congr 1`. Use extensionality with `x y`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Introduce `Y`. Rewrite using `[LinearMap.comp_assoc, h.1 Y, ← LinearMap.comp_assoc, ← LinearMap.comp_assoc]`. Use `congr 1`. Use extensionality with `x y`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -56,7 +56,7 @@ theorem tIntw_swap {W : Type} [AddCommGroup W] [Module ℂ W] (a₁ : Mat p q �
     simp
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Conclude with `(TensorProduct.comm ℂ A B).injective (LinearMap.congr_fun h x)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comm_comp_inj {W A B : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup A] [Module ℂ A]
     [AddCommGroup B] [Module ℂ B] {f g : W →ₗ[ℂ] A ⊗[ℂ] B}
@@ -65,7 +65,7 @@ theorem comm_comp_inj {W A B : Type} [AddCommGroup W] [Module ℂ W] [AddCommGro
   exact (TensorProduct.comm ℂ A B).injective (LinearMap.congr_fun h x)
 
 /- English proof (translation)
-Establish `e : (TensorProduct.comm ℂ A B).toLinearMap ∘ₗ TensorProduct.map (LinearMap.id : A →ₗ[ℂ] A) j = TensorProduct.map j (LinearMap.id : A →ₗ[ℂ] A) ∘ₗ (TensorProduct.comm ℂ A C).toLinearMap`. Use extensionality with `x y`. Simplify using the standard rewrite rules. Apply `Submodule.map_injective_of_injective (f := (TensorProduct.comm ℂ A B).toLinearMap) (TensorProduct.comm ℂ A B).injective` to reduce the goal to its premises. Rewrite using `[← LinearMap.range_comp, ← LinearMap.range_comp, h, e, LinearMap.range_comp_of_range_eq_top _ (LinearEquiv.range _)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_swap {W A B C : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup A] [Module ℂ A]
     [AddCommGroup B] [Module ℂ B] [AddCommGroup C] [Module ℂ C] (f : W →ₗ[ℂ] A ⊗[ℂ] B) (j : C →ₗ[ℂ] B)
@@ -84,17 +84,17 @@ theorem range_swap {W A B C : Type} [AddCommGroup W] [Module ℂ W] [AddCommGrou
 end
 
 /- English proof (translation)
-Introduce `X p q r s lam lam' h1 hU hD hL`. Take `⟨hiff, hnorm, huniq⟩` from `GlobalTheory.T.fockModel_jointHarmonics_form_normalisation_uniqueness X p q r s (blattner lam) (blattner lam')`. Take `⟨Φ₀, hΦ₀⟩` from `h1.1`. Establish `hex : CJoint (fockAct1 p q r s) (fockAct2 p q r s) (blattner lam) (blattner lam') Φ₀` using `(hiff Φ₀).2 ⟨hΦ₀.1, hΦ₀.2.1, hΦ₀.2.2.1⟩`. Use `⟨⟨⟨Φ₀, hex⟩, huniq, ?_, hL⟩, ⟨⟨Φ₀, cJoint_swap _ _ _ _ _ hex⟩, fun Φ Φ' h h' => huniq Φ Φ' (cJoint_swap _ _ _ _ _ h) (cJoint_swap _ _ _ _ _ h'), ?_, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `MM f hf hf0`. Take `⟨⟨N, -, e, he⟩, hΦ⟩` from `hU MM f hf hf0`. Use `⟨⟨N, e, he⟩, fun Φ hJ => ?_⟩` and prove the remaining obligations. Take `⟨c, -, hc⟩` from `hnorm Φ hJ`. Take `⟨g1, g2⟩` from `hΦ _ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun h0 => g1 (by rw [map_smul, h0, smul_zero]), fun f' hf' h => g2 f' hf' ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, h]`. Introduce `MM f hf hf0`. Establish `hf1` using `tIntw_swap _ _ _ _ f hf`. Take `⟨⟨N, -, e, he, hr⟩, hΦ⟩` from `hD MM _ hf1 (fun h => hf0 (comm_comp_inj (by rw [h, LinearMap.comp_zero])))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨N, e, he, range_swap f _ hr⟩, fun Φ hJ => ?_⟩` and prove the remaining obligations. Take `⟨c, -, hc⟩` from `hnorm Φ (cJoint_swap _ _ _ _ _ hJ)`. Take `⟨g1, g2⟩` from `hΦ _ hc`. Use `⟨fun h0 => g1 (by rw [map_smul, LinearMap.comp_apply, h0, map_zero, smul_zero]), fun f' hf' h => comm_comp_inj (g2 _ (tIntw_swap _ _ _ _ f' hf') ?_)⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, LinearMap.comp_apply, LinearMap.comp_apply, h]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f₀, hf₀, hne, hall⟩` from `hL`. Use `⟨_, tIntw_swap _ _ _ _ f₀ hf₀, fun h => hne (comm_comp_inj (by rw [h, LinearMap.comp_zero])), fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hall _ (tIntw_swap _ _ _ _ f hf)`. Use `⟨c, comm_comp_inj ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tensLaw_of : ∀ (X : ProvA) (p q r s : ℕ) (lam : Ix p q → ℚ) (lam' : Ix r s → ℚ), ARi X lam lam' → ARiiiUp X lam lam' → ARiiiDown X lam lam' → ARiiiLine X lam lam' → TensLaw (fockAct1 p q r s) (fockAct2 p q r s) (X.ds p q lam) (X.ds r s lam') (blattner lam) (blattner lam') ∧ TensLaw (fockAct2 p q r s) (fockAct1 p q r s) (X.ds r s lam') (X.ds p q lam) (blattner lam') (blattner lam) := by
   intro X p q r s lam lam' h1 hU hD hL

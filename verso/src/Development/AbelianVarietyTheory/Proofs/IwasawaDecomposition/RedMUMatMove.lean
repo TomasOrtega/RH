@@ -18,9 +18,9 @@ def adj (φ : A →+* R) (C : Matrix (Fin m) (Fin m) R) (B : Matrix (Fin n) (Fin
     Matrix (Fin m) (Fin n) R := C * (Matrix.of Z).map φ * B
 
 /- English proof (translation)
-Establish `e : (Matrix.of Z).map φ + M • (Matrix.of w).map φ = (Matrix.of Z').map φ * (u.map φ)ᵀ`. Use extensionality with `b a`. Use `congrArg φ (congrFun (hZ b) a)` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Pi.add_apply, Pi.smul_apply, map_add, map_nsmul] at this`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, ← this, mul_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Unfold `adj`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, ← Matrix.add_mul, ← Matrix.mul_add, e]`. Use `conv_lhs => rw [← h]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adj_move (φ : A →+* R) (C : Matrix (Fin m) (Fin m) R) (B Y : Matrix (Fin n) (Fin n) R)
     (u : Matrix (Fin n) (Fin n) A) (h : (u.map φ)ᵀ * B * Y = B) (M : ℕ) (Z Z' w : Fin m → Fin n → A)
@@ -37,7 +37,7 @@ theorem adj_move (φ : A →+* R) (C : Matrix (Fin m) (Fin m) R) (B Y : Matrix (
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `adj`. Rewrite using `[Matrix.mul_assoc]`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adj_apply (φ : A →+* R) (C : Matrix (Fin m) (Fin m) R) (B : Matrix (Fin n) (Fin n) R) (Z : Fin m → Fin n → A)
     (b' : Fin m) (a : Fin n) : adj φ C B Z b' a = ∑ b, C b' b * ∑ j, φ (Z b j) * B j a := by
@@ -46,9 +46,9 @@ theorem adj_apply (φ : A →+* R) (C : Matrix (Fin m) (Fin m) R) (B : Matrix (F
   simp only [Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply]
 
 /- English proof (translation)
-Establish `e : (⟨X' i j, hX' i j⟩ : S) = ∑ a, (⟨X i a, hX i a⟩ + M • ⟨W i a, hW i a⟩) * y a j`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[h, Matrix.mul_apply]`. Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_add, map_nsmul, nsmul_eq_mul, hM, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem red_eq (S : Subring R) (ρ : S →+* k) (M : ℕ) (hM : (M : k) = 0) (X X' W : Matrix (Fin m) (Fin n) R)
     (y : Matrix (Fin n) (Fin n) S) (hX : ∀ i j, X i j ∈ S) (hX' : ∀ i j, X' i j ∈ S) (hW : ∀ i j, W i j ∈ S)
@@ -64,7 +64,7 @@ theorem red_eq (S : Subring R) (ρ : S →+* k) (M : ℕ) (hM : (M : k) = 0) (X 
 def lft (c : R) (P Q : Matrix (Fin m) (Fin m) R) : Matrix (Fin m) (Fin m) R := c • (P * Q)
 
 /- English proof (translation)
-Establish `e1 : X.map f = (Matrix.of Z).map φ` using `Matrix.ext h`. Unfold `adj lft`. Rewrite using `[Matrix.smul_mul, Matrix.smul_mul, ← e1, Matrix.map_mul, Matrix.map_mul]`. Use extensionality with `b a`. Simplify using `only [Matrix.mul_assoc, Matrix.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem entry_eq {E : Type} [CommRing E] (f : E →+* R) (φ : A →+* R) (c : R) (P : Matrix (Fin m) (Fin m) R)
     (Q : Matrix (Fin m) (Fin m) E) (X : Matrix (Fin m) (Fin n) E) (G : Matrix (Fin n) (Fin n) E)
@@ -77,9 +77,9 @@ theorem entry_eq {E : Type} [CommRing E] (f : E →+* R) (φ : A →+* R) (c : R
   simp only [Matrix.mul_assoc, Matrix.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `h1 : β * Formalism.UG.bc S.subtype y = Formalism.UG.bc s u * β` using `by rw [← hy, inv_mul_cancel_right]`. Establish `h2 : β.1 * y.1.map S.subtype = u.1.map s * β.1` using `congrArg Units.val h1`. Establish `h4 : (u.1.map σ)ᵀ * J * u.1 = J` using `hu`. Establish `h5` using `congrArg (fun N => Matrix.map N s) h4`. Simplify using `only [Matrix.map_mul] at h5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h6 : (u.1.map (s.comp σ))ᵀ * J.map s * u.1.map s = J.map s` using `h5`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h6]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_rel_ring (S : Subring R) (σ : A →+* A) (s : A →+* R) (J : Matrix (Fin n) (Fin n) A) (u : GL (Fin n) A)
     (β : GL (Fin n) R) (y : GL (Fin n) S) (hu : u ∈ Formalism.UG.UJ σ J)
@@ -94,15 +94,15 @@ theorem unit_rel_ring (S : Subring R) (σ : A →+* A) (s : A →+* R) (J : Matr
   rw [Matrix.mul_assoc, Matrix.mul_assoc, h2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h6]
 
 /- English proof (translation)
-Rewrite using `[adj_apply]`. Use `sum_mem fun b _ => ?_` and prove the remaining obligations. Establish `key : ∀ z ∈ AddSubgroup.closure s, C b' b * ∑ j, φ (z j) * B j a ∈ S`. Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem z hz`. Take `⟨t, ht, l, hl⟩` from `hs z hz`. Establish `h1` using `h (Pi.single b l) b' a`. Rewrite `h1` using `[adj_apply, Finset.sum_eq_single b]`. Establish `h2` using `mul_mem ht h1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Pi.single_eq_same, mul_left_comm, Finset.mul_sum]`. Simplify `h2` using `only [hl, mul_assoc]`. Introduce `c _ hc`. Rewrite using `[Pi.single_eq_of_ne hc]`. Simplify using `[v0]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib, mul_add]`. Conclude with `add_mem hx hy`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `neg x _ hx`. Simplify using `only [Pi.neg_apply, map_neg, neg_mul, Finset.sum_neg_distrib, mul_neg]`. Conclude with `neg_mem hx`. Conclude with `key _ (hw b)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adj_int_ring (S : Subring R) (φ : A →+* R) (C : Matrix (Fin m) (Fin m) R) (B : Matrix (Fin n) (Fin n) R)
     (s : Set (Fin n → A)) (La : Type) [Zero La] (v : La → Fin n → A) (v0 : ∀ j, v 0 j = 0)
@@ -142,7 +142,7 @@ noncomputable def barSwap (D : D7) : Af D.host.F ⊗[D.host.F] D.host.E →+* EA
   (Lev.swapAE D).comp (sigR (Af D.host.F) D.sp.cm.sig)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `D.sp.cm.sig x ⊗ₜ[D.host.F] a = ((1 : D.host.E) ⊗ₜ[D.host.F] a) * (D.sp.cm.sig x ⊗ₜ[D.host.F] 1)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem barSwap_tmul (a : Af D.host.F) (x : D.host.E) :
     barSwap D (a ⊗ₜ[D.host.F] x) = ((1 : D.host.E) ⊗ₜ[D.host.F] a) * barSwap D ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) := by
@@ -150,7 +150,7 @@ theorem barSwap_tmul (a : Af D.host.F) (x : D.host.E) :
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]
 
 /- English proof (translation)
-The claim follows from `entry_eq (eToEAf D) (barSwap D) _ _ _ _ _ _ _ fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem uMat_eq (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D)
     (X : Fin S.rank → Fin T.rank → D.host.E) :
@@ -159,7 +159,7 @@ theorem uMat_eq (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.r
   entry_eq (eToEAf D) (barSwap D) _ _ _ _ _ _ _ fun _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `unit_rel_ring _ (sigR (Af D.host.F) D.sp.cm.sig) (Lev.swapAE D) (JR (Af D.host.F) T.gram) (finHom T u) βT y (GlobalTheory.UnitarySplit.finHom_mem T u) hy`.
+A detailed English derivation is pending.
 -/
 theorem unit_rel (T : HSp D) (βT : GL (Fin T.rank) (EAf D)) (u : GA D T)
     (y : GL (Fin T.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)) (hy : frGL βT y = Lev.finE T u) :
@@ -169,9 +169,7 @@ theorem unit_rel (T : HSp D) (βT : GL (Fin T.rank) (EAf D)) (u : GA D T)
     (GlobalTheory.UnitarySplit.finHom_mem T u) hy
 
 /- English proof (translation)
-Use `adj_int_ring _ (barSwap D) C B _ La (fun l => finVec T (ι l)) (fun j => ?_) h ?_ w hw` and prove the remaining obligations. Use `show (1 : Af D.host.F) ⊗ₜ[D.host.F] (ι 0 j) = 0`. Rewrite using `[LinearMap.map_zero]`. Conclude with `TensorProduct.tmul_zero _ _`. Introduce and unpack `z ⟨α, hα, _, ⟨l, rfl⟩, rfl⟩`.
-
-Conclude with `⟨(1 : D.host.E) ⊗ₜ[D.host.F] α, Subring.subset_closure (Or.inr ⟨⟨α, hα⟩, rfl⟩), l, fun j => barSwap_tmul α (ι l j)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem adj_int {m : ℕ} (T : HSp D) (C : Matrix (Fin m) (Fin m) (EAf D)) (B : Matrix (Fin T.rank) (Fin T.rank) (EAf D))
     (La : Type) [AddCommGroup La] [Module (𝓞 D.host.E) La] (ι : La →ₗ[𝓞 D.host.E] (Fin T.rank → D.host.E))
@@ -189,13 +187,11 @@ theorem adj_int {m : ℕ} (T : HSp D) (C : Matrix (Fin m) (Fin m) (EAf D)) (B : 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D S T βS βT e La _ _ ι hint u y hy M PP hM x x' hx`. Use `choose w hw hx using hx`. Establish `hW` using `adj_int T _ _ La ι (fun x => by rw [← uMat_eq S T βS βT e]; exact hint x) w hw`. Establish `hmv` using `adj_move (barSwap D) (lft (toEAf D e) (βS⁻¹).1 (S.gram⁻¹.map (eToEAf D))) _ _ _ (unit_rel T βT u y hy) M (fun b => finVec T (ι (x b))) (fun b => finVec T (ι (x' b))) w hx`. Rewrite `hmv` using `[← uMat_eq S T βS βT e, ← uMat_eq S T βS βT e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hM' : (M : kP PP) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk PP.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hM`. Use extensionality with `i j`. Use `red_eq _ (resS D.host.F PP) M hM' _ _ _ y.1 (hint x) (hint x') hW hmv i j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.mul_apply]`. Unfold `redM`. Rewrite using `[dif_pos (hint x' i j), this]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (hint x i a)]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem redM_uMat_move : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D) (La : Type) [AddCommGroup La] [Module (𝓞 D.host.E) La] (ι : La →ₗ[𝓞 D.host.E] (Fin T.rank → D.host.E)), (∀ x : Fin S.rank → La, IsIntM (uMat S T βS βT e fun b => ι (x b))) → ∀ (u : GA D T) (y : GL (Fin T.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)), frGL βT y = Lev.finE T u → ∀ (M : ℕ) (PP : Pl D.host.E), (M : 𝓞 D.host.E) ∈ PP.asIdeal → ∀ x x' : Fin S.rank → La, (∀ b, ∃ w ∈ GlobalTheory.AdLat.hat D.host.F (Set.range ι), (finHom T u).1.mulVec (finVec T (ι (x' b))) = finVec T (ι (x b)) + M • w) → redM PP (uMat S T βS βT e fun b => ι (x' b)) = redM PP (uMat S T βS βT e fun b => ι (x b)) * y.1.map (resS D.host.F PP) := by
   intro D S T βS βT e La _ _ ι hint u y hy M PP hM x x' hx

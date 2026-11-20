@@ -19,13 +19,13 @@ namespace GlobalTheory.BottomRallis.TrivParFun
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `D V L Sf hLd _ v _ w h`. Establish `hH` using `GlobalTheory.Doubling.isHermND_gram V`. Establish `hL` using `hLd.1`. Establish `hd` using `GlobalTheory.Core.Rk.IwSplit.isSelfDualAt_of_isSelfDualC hLd v`. Establish `hun : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `D.host.E) v := fun P _ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.BaseChangeExistsCompare.unram_of_cm D D.sp.cm P` as an intermediate fact. Conclude with `Ideal.ramificationIdx_eq_one_of_isUnramifiedAt`. Establish `h0 : (fun _ : GA D V => (1 : ℂ)) ≠ 0` using `fun e => one_ne_zero (congrFun e 1)`. Break down `(LFun.exists_isInertChart _ (isCMExt_host D) v).1 hun with hs | ⟨w', hw'⟩` into its components or cases. Take `⟨e, he, -, -⟩` from `LFun.SplitChart.exists_isSplitChart (isCMExt_host D) hH hL.fg hL.span_eq_top h hs hd`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Prove the first alternative.
 
-Conclude with `Or.inl ⟨hs, e, he, ((LFun.Model.hasSatGL_trivial w V.rank).2 1 (GlobalTheory.LGrp.mem_fixed.2 fun _ _ => rfl) one_ne_zero).map (LinearMap.pi fun _ => LinearMap.id) (fun _ _ => rfl) h0⟩`. Take `rfl` from `(GlobalTheory.LFun.InertChart.under_eq_iff hw' w).1 h`. Take `⟨-, ⟨τ, hτ, -⟩, -, -, hconj⟩` from `(LFun.exists_isInertChart _ (isCMExt_host D) v).2 w h hw'`. Take `⟨⟨ϖ, hϖ⟩, hch⟩` from `hconj τ hτ`. Take `⟨e, he, -, -⟩` from `hch V.rank V.gram L hH hL.fg hL.span_eq_top hd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr ⟨hw', τ, ϖ, e, _, hϖ, he, ((LFun.Model.hasSatU_trivial hϖ (LFun.qV_ne_zero v) V.rank).2 1 (GlobalTheory.LGrp.mem_fixed.2 fun _ _ => rfl) one_ne_zero).map hϖ (LinearMap.pi fun _ => LinearMap.id) (fun _ _ => rfl) h0, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Core.Rk.Exh.Model.bcParam_rho]`. Conclude with `GlobalTheory.Core.Rk.Exh.Model.seg_eq_str (LFun.qV_ne_zero v) (LFun.InertChart.absNorm_eq D.sp.cm.deg2 hw') _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isParamFun_one_trivPar : ∀ {D : D7} (A : HSp D) (LA : Lat A) (Sf : Finset (FinPl D)), IsSelfDualC A LA →
     (∀ v ∉ Sf, (2 : 𝓞 D.host.F) ∈ v.asIdeal → Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v) →

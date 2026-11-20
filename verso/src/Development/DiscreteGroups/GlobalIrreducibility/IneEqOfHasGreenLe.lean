@@ -20,9 +20,9 @@ def PinnedLe (b : ℕ) (S : Sys g) (teich : Formalism.CyclotomicNorms.Fbar g →
     Inflates ρ.2.ρ τ → ∀ f, Representation.asAlgebraHom τ.ρ (S.e ρ.1 f) = 1 → ine (rec ρ) = liftPoly teich f
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil π _ _ => intro ρ hρ`. Simplify using `at hρ`. Consider the case `cons π σ ρ T _ _ _ hm ih`. Introduce `ρ' hρ'`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : π.1 = σ.1 + ρ.1` using `hm.1`. Break down `List.mem_cons.1 hρ' with rfl | h'` into its components or cases. Use linear arithmetic over natural numbers and integers. Use `ih ρ' h'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem InInd.rank_le {π : GLRep g} {T : List (GLRep g)} (h : InInd π T) : ∀ ρ ∈ T, ρ.1 ≤ π.1 := by
   induction h with
@@ -36,9 +36,9 @@ theorem InInd.rank_le {π : GLRep g} {T : List (GLRep g)} (h : InInd π T) : ∀
       omega
 
 /- English proof (translation)
-Take `⟨τ, φ, hs, hinj, heq, he⟩` from `exists_simple_of_has S _ f h`. Establish `hφ : (fixK1 ρ.2.ρ).subtype ∘ₗ φ ≠ 0` using `fun e => by`. Establish `h0 : ∀ u : τ, u = 0` using `fun u => hinj (Subtype.ext (by simpa using LinearMap.congr_fun e u))`. Conclude with `id_nonzero τ (by ext u; exact (h0 _).trans (h0 _).symm)`. Establish `hfix : fixK1 ρ.2.ρ ≠ ⊥` using `fun e => hφ (LinearMap.ext fun u => (Submodule.eq_bot_iff _).1 e _ (φ u).2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h3 ρ hb hρ τ hs (fun c hc hc' u hu => hinj ?_) ⟨_, hφ, fun k w => ?_⟩ f he` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `h2 ρ hρ hfix c hc hc' _ fun x hx => by rw [← heq, hu x hx]`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, heq, repK_red]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ine_eq_of_isSC_le (b : ℕ) (S : Sys g) (teich : Formalism.CyclotomicNorms.Fbar g → ℂ) {LP : Type} (ine : LP → ℂ[X])
     (rec : GLRep g → LP) (h2 : DepthZeroCuspidal g) (h3 : PinnedLe b S teich ine rec) (ρ : GLRep g) (hb : ρ.1 ≤ b)
@@ -54,11 +54,11 @@ theorem ine_eq_of_isSC_le (b : ℕ) (S : Sys g) (teich : Formalism.CyclotomicNor
   · simp only [LinearMap.comp_apply, Submodule.subtype_apply, heq, repK_red]
 
 /- English proof (translation)
-Take `⟨L, hL, hsc, he⟩` from `h1 π hπ hs`. Establish `hbL : ∀ ρ ∈ L, ρ.1 ≤ b` using `fun ρ hρ => (InInd.rank_le hL ρ hρ).trans hb`. Take `⟨fs, hfs, rfl⟩` from `GlobalTheory.T.series_eq_prod_of_parabolic_induction_chain g S π L hL f h`. Rewrite using `[he]`. Express the relevant statement in the definitionally equal form `_ = liftPoly teich fs.prod`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `clear he hL h`. It suffices to establish `fs.prod.Monic ∧ (L.map fun ρ => ine (rec ρ)).prod = liftPoly teich fs.prod from this.2`. Proceed by induction on `hfs with`. Consider the case `nil => simp [liftPoly_one]`. Consider the case `@cons ρ f L fs hρ _ ih`.
+Reduce the argument to an intermediate assertion. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨hm, ih⟩` from `ih (fun ρ' h' => hsc ρ' (List.mem_cons_of_mem _ h')) (fun ρ' h' => hbL ρ' (List.mem_cons_of_mem _ h'))`. Use `⟨by simpa using (Has.monic hρ).mul hm, ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_cons, List.prod_cons, List.prod_cons, liftPoly_mul _ (Has.monic hρ).ne_zero hm.ne_zero, ih, ine_eq_of_isSC_le b S teich ine rec h2 h3 ρ (hbL ρ List.mem_cons_self) (hsc ρ List.mem_cons_self) f hρ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ine_eq_of_has_le (b : ℕ) (S : Sys g) (teich : Formalism.CyclotomicNorms.Fbar g → ℂ) (LP : Type) (ine : LP → ℂ[X])
     (rec : GLRep g → LP) (h1 : SupportCompat ine rec) (h2 : DepthZeroCuspidal g) (h3 : PinnedLe b S teich ine rec)
@@ -81,9 +81,9 @@ theorem ine_eq_of_has_le (b : ℕ) (S : Sys g) (teich : Formalism.CyclotomicNorm
       ine_eq_of_isSC_le b S teich ine rec h2 h3 ρ (hbL ρ List.mem_cons_self) (hsc ρ List.mem_cons_self) f hρ]
 
 /- English proof (translation)
-Introduce `ρ hb hρ τ hs hc hi f he`. Take `⟨t, h1, -, h3⟩` from `hG g L ρ.1 hρ.1`. Take `⟨P, hP, e⟩` from `h3 _ (isCusp_character hρ.1 τ hs hc)`. Establish `hP' : IsCuspOf L P τ.character` using `e ▸ (h1 P hP).1`. Establish `: f = P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Apply `hS _ τ P hP'` to reduce the goal to its premises. Rewrite using `[← one_mul (Representation.asAlgebraHom τ.ρ _), ← he, ← map_mul, S.orth _ _ _ hne, map_zero]`. Rewrite using `[this]`. Conclude with `hT ρ hb hρ τ P hP' hi`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pinned_of_green_le (b : ℕ) (S : Sys g) (L : LabelDatum g) {LP : Type} (ine : LP → ℂ[X]) (rec : GLRep g → LP)
     (hG : Green) (hT : TameParamLe b L ine rec) (hS : LabelsCusp S L) : PinnedLe b S L.teich ine rec := by
@@ -99,7 +99,7 @@ theorem pinned_of_green_le (b : ℕ) (S : Sys g) (L : LabelDatum g) {LP : Type} 
   exact hT ρ hb hρ τ P hP' hi
 
 /- English proof (translation)
-The claim follows from `ine_eq_of_has_le b S L.teich LP ine rec h1 h2 (pinned_of_green_le b S L ine rec hG hT hS) π hb hπ hs f h`.
+A detailed English derivation is pending.
 -/
 theorem ine_eq_of_has_green_le (b : ℕ) (S : Sys g) (L : LabelDatum g) (LP : Type) (ine : LP → ℂ[X])
     (rec : GLRep g → LP) (h1 : SupportCompat ine rec) (h2 : DepthZeroCuspidal g) (hG : Green)

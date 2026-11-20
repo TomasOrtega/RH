@@ -15,9 +15,9 @@ def leftForm {P : V → V → ℝ} (hP : IsPairing P) (b : V) : V →ₗ[ℝ] �
   map_smul' c x := hP.smulL c x b
 
 /- English proof (translation)
-Establish `hy : y = ∑ i, C y i • C.symm (EuclideanSpace.single i 1)` using `by conv_lhs => rw [← C.symm_apply_apply y, ← (EuclideanSpace.basisFun (Fin n) ℝ).sum_repr (C y)]`. Simplify using `[map_sum]`. Establish `e : P y b = leftForm hP b y` using `rfl`. Rewrite using `[e]`. Use `conv_lhs => rw [hy]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Simplify using `[leftForm, hP.smulL]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pair_expand {n : ℕ} (C : V ≃L[ℝ] EuclideanSpace ℝ (Fin n)) {P : V → V → ℝ} (hP : IsPairing P) (y b : V) :
     P y b = ∑ i, C y i * P (C.symm (EuclideanSpace.single i 1)) b := by
@@ -41,11 +41,11 @@ def pairCoordsL {n : ℕ} (C : V ≃L[ℝ] EuclideanSpace ℝ (Fin n)) {P : V �
     rcases j with i | i <;> simp [hP.smulR]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨a, b⟩ h`. Establish `ha : a = 0`. Apply `C.injective` to reduce the goal to its premises. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify `congrFun h (Sum.inl i)` using `[pairCoordsL]`. Establish `hb : b = 0`. Apply `hP.nondegR` to reduce the goal to its premises. Introduce `x`. Rewrite using `[pair_expand C hP]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `congrFun h (Sum.inr i)` as an intermediate fact. Simplify using `[pairCoordsL] at this`. Simplify using `[this]`. Simplify using `[ha, hb]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pairCoordsL_injective {n : ℕ} (C : V ≃L[ℝ] EuclideanSpace ℝ (Fin n)) {P : V → V → ℝ} (hP : IsPairing P) :
     Function.Injective (pairCoordsL C hP) := by
@@ -66,17 +66,17 @@ theorem pairCoordsL_injective {n : ℕ} (C : V ≃L[ℝ] EuclideanSpace ℝ (Fin
   simp [ha, hb]
 
 /- English proof (translation)
-Introduce `V _ _ _ P hP n hn`. Set `C : V ≃L[ℝ] EuclideanSpace ℝ (Fin n)` to `ContinuousLinearEquiv.ofFinrankEq (hn.trans (finrank_euclideanSpace_fin).symm)`. Establish `hdim : Module.finrank ℝ (V × V) = Module.finrank ℝ (Fin n ⊕ Fin n → ℝ)`. Simplify using `[Module.finrank_prod, hn]`. Set `φ : (V × V) ≃ₗ[ℝ] (Fin n ⊕ Fin n → ℝ)` to `LinearMap.linearEquivOfInjective (pairCoordsL C hP) (pairCoordsL_injective C hP) hdim`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hφ : ∀ v, φ v = pairCoordsL C hP v` using `fun v => rfl`. Establish `hp : ∀ v : V × V, pPart (φ v) = C v.1`. Introduce `v`. Use extensionality with `i`. Simplify using `[hφ, pPart, pairCoordsL]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hq : ∀ (v : V × V) (x : EuclideanSpace ℝ (Fin n)), ⟪qPart (φ v), x⟫ = -∑ i, P (C.symm (EuclideanSpace.single i 1)) v.2 * x i`. Introduce `v x`. Simplify using `[hφ, qPart, pairCoordsL, PiLp.inner_apply, mul_comm]`. Establish `hq' : ∀ (v : V × V) (y : V), ⟪qPart (φ v), C y⟫ = -P y v.2`. Introduce `v y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hq, pair_expand C hP y v.2]`. Simplify using `[mul_comm]`. Establish `hCq : ∀ (v : V × V) (y : V), ⟪C y, qPart (φ v)⟫ = -P y v.2`. Introduce `v y`. Rewrite using `[real_inner_comm, hq']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨C, φ, ?_, ?_⟩` and prove the remaining obligations. Introduce `v v'`. Simplify using `only [sympl, omega, hp, hCq, hq']`. Expand and normalize the polynomial expressions, which then agree. Introduce `v f`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [schrF, rhoFun, phase, Function.comp_apply, map_add, hp, hq', hCq]`. Use `congr 1`. Use `congr 1`. Use `push_cast`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

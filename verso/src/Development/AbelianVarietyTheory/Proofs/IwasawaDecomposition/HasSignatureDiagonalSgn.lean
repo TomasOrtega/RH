@@ -8,11 +8,11 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `e1 : {i // neg i = false} ≃ Fin (Finset.univ.filter fun i => neg i = false).card` to `Fintype.equivFinOfCardEq (Fintype.card_subtype _)`. Set `e2 : {i // ¬ neg i = false} ≃ Fin (Finset.univ.filter fun i => neg i = true).card` to `Fintype.equivFinOfCardEq (by rw [Fintype.card_subtype]; simp)`. Set `f : Fin (Finset.univ.filter fun i => neg i = false).card ⊕ Fin (Finset.univ.filter fun i => neg i = true).card ≃ Fin N` to `(Equiv.sumCongr e1.symm e2.symm).trans (Equiv.sumCompl fun i => neg i = false)`. Establish `h1 : ∀ i, neg (f (Sum.inl i)) = false` using `fun i => (e1.symm i).2`. Establish `h2 : ∀ i, neg (f (Sum.inr i)) = true` using `fun i => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : ¬ neg (f (Sum.inr i)) = false` using `(e2.symm i).2`. Simplify using `using h`. Use `⟨f.symm, 1, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_one, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`. Use extensionality with `i j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply, h1, h2, Examples₂.sgn]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hasSignature_diagonal_sgn (N : ℕ) (neg : Fin N → Bool) :
     Formalism.UG.HasSignature (Matrix.diagonal fun i : Fin N => (Examples₂.sgn (neg i) : ℂ))
@@ -38,9 +38,9 @@ theorem hasSignature_diagonal_sgn (N : ℕ) (neg : Fin N → Bool) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `τ`. Establish `hg : (Formalism.BasicNotions.Examples₂.stdSpace hstar N neg (Finset.univ.filter fun i => neg i = false).card (Finset.univ.filter fun i => neg i = true).card).gram.map τ = Matrix.diagonal fun i : Fin N => (Examples₂.sgn (neg i) : ℂ)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply]`. Use `(congrArg τ (Examples₂.stdSpace_gram_apply hstar N neg _ _ i j)).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `τ (if i = j then (Examples₂.sgn (neg i) : E) else 0) = if i = j then (Examples₂.sgn (neg i) : ℂ) else 0`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Examples₂.map_sgn]`. Rewrite using `[hg]`. Conclude with `hasSignature_diagonal_sgn N neg`.
+Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdSpace_sigOK_count (E : Type) [Field E] [NumberField E] [StarRing E]
     (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (N : ℕ) (neg : Fin N → Bool) :

@@ -32,11 +32,11 @@ def IsLatBasis (La : Submodule O U) (w : Fin n → U) : Prop :=
     Submodule.span O (Set.range w) = La ⊓ (Submodule.span C (Set.range w)).restrictScalars O
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `h1 : ∑ i, a i • w i ∈ Submodule.span O (Set.range w)` using `h.2.ge ⟨ha, Submodule.sum_mem (Submodule.span C (Set.range w)) fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)⟩`. Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 h1`. Establish `h2` using `Fintype.linearIndependent_iffₛ.1 h.1 (fun i => algebraMap O C (b i)) a (by simpa only [algebraMap_smul] using hb)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `fun i => ⟨b i, h2 i⟩`. Introduce `ha`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `ha i`. Rewrite using `[← hb, algebraMap_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `La.smul_mem b (h.2.le (Submodule.subset_span ⟨i, rfl⟩)).1`.
+A detailed English derivation is pending.
 -/
 theorem IsLatBasis.sum_mem_iff {La : Submodule O U} {w : Fin n → U} (h : IsLatBasis C La w) (a : Fin n → C) :
     ∑ i, a i • w i ∈ La ↔ ∀ i, a i ∈ (algebraMap O C).range := by
@@ -56,14 +56,14 @@ theorem IsLatBasis.sum_mem_iff {La : Submodule O U} {w : Fin n → U} (h : IsLat
     exact La.smul_mem b (h.2.le (Submodule.subset_span ⟨i, rfl⟩)).1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hw, (inf_eq_left.2 (Submodule.span_le_restrictScalars O C _)).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLatBasis_span {w : Fin n → U} (hw : LinearIndependent C w) :
     IsLatBasis C (Submodule.span O (Set.range w)) w :=
   ⟨hw, (inf_eq_left.2 (Submodule.span_le_restrictScalars O C _)).symm⟩
 
 /- English proof (translation)
-Introduce `h` and use `by have h0 : algebraMap O C a ≠ 0 := fun h0 => h.1.ne_zero 0 (by show a • x = 0 rw [← algebraMap_smul C a, h0, zero_smul]) obtain ⟨b, hb⟩ := (h.sum_mem_iff ![(algebraMap O C a)⁻¹]).1 (by have : (algebraMap O C a)⁻¹ • a • x = x := by rw [← algebraMap_smul C a, smul_smul, inv_mul_c …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (hi : Function.Injective (algebraMap O C)) {x : U} (hx : x ≠ 0) {a : O} (ha : ¬ IsUnit a) :
     ¬ IsLatBasis C (Submodule.span O {x}) ![a • x] := fun h => by
@@ -89,27 +89,27 @@ def val_vw (x : C) : EReal :=
   if x = 0 then ⊤ else (((vLa la (p : K) : ℝ) * (Real.log (v x) / Real.log (v (p : C))) : ℝ) : EReal)
 
 /- English proof (translation)
-The claim follows from `if_pos rfl`.
+A detailed English derivation is pending.
 -/
 theorem val_vw_zero : val_vw la p v 0 = ⊤ := if_pos rfl
 
 /- English proof (translation)
-The claim follows from `if_neg hx`.
+A detailed English derivation is pending.
 -/
 theorem val_vw_of_ne {x : C} (hx : x ≠ 0) : val_vw la p v x =
     (((vLa la (p : K) : ℝ) * (Real.log (v x) / Real.log (v (p : C))) : ℝ) : EReal) := if_neg hx
 
 /- English proof (translation)
-Unfold `val_vw`. Use `split_ifs`. Use `exacts [top_ne_bot, EReal.coe_ne_bot _]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem val_vw_ne_bot (x : C) : val_vw la p v x ≠ ⊥ := by
   unfold val_vw; split_ifs
   exacts [top_ne_bot, EReal.coe_ne_bot _]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, zero_mul, val_vw_zero, EReal.top_add_of_ne_bot (val_vw_ne_bot la p v y)]`. Distinguish the cases in `hy : y = 0`. Rewrite using `[hy, mul_zero, val_vw_zero, EReal.add_top_of_ne_bot (val_vw_ne_bot la p v x)]`. Rewrite using `[val_vw_of_ne la p v hx, val_vw_of_ne la p v hy, val_vw_of_ne la p v (mul_ne_zero hx hy), map_mul, NNReal.coe_mul, Real.log_mul (by simpa using hx) (by simpa using hy), ← EReal.coe_add]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_vw_mul (x y : C) : val_vw la p v (x * y) = val_vw la p v x + val_vw la p v y := by
   by_cases hx : x = 0
@@ -121,7 +121,7 @@ theorem val_vw_mul (x y : C) : val_vw la p v (x * y) = val_vw la p v x + val_vw 
   congr 1; ring
 
 /- English proof (translation)
-Rewrite using `[val_vw_of_ne la p v (by rintro rfl; simp at hx), hx]; simp`.
+Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem val_vw_of_eq_one {x : C} (hx : v x = 1) : val_vw la p v x = 0 := by
   rw [val_vw_of_ne la p v (by rintro rfl; simp at hx), hx]; simp
@@ -129,11 +129,9 @@ theorem val_vw_of_eq_one {x : C} (hx : v x = 1) : val_vw la p v x = 0 := by
 variable {p v}
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, val_vw_zero]`. Conclude with `le_top`. Establish `hx' : (0 : ℝ) < v x` using `by simpa [pos_iff_ne_zero] using hx`. Establish `hy : y ≠ 0` using `by rintro rfl; exact hx (by simpa using h)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : Real.log (v (p : C)) < 0` using `Real.log_neg (by simpa [pos_iff_ne_zero] using h0) (by exact_mod_cast h1)`. Establish `he : (0 : ℝ) ≤ vLa la (p : K)`. Establish `hp : p ≠ 0` using `by rintro rfl; exact h0 Nat.cast_zero`. Use `vAdd_int_nonneg la (a := (p : 𝓞 K)) (by simpa using hp)` as an intermediate fact. Conclude with `(show (0 : ℤ) ≤ vLa la (p : K) by simpa [vLa, Formalism.BasicNotions.vAdd] using this)` after adjusting the coercions.
-
-Rewrite using `[val_vw_of_ne la p v hx, val_vw_of_ne la p v hy, EReal.coe_le_coe_iff]`. Conclude with `mul_le_mul_of_nonneg_left (div_le_div_of_nonpos_of_le hl.le (Real.log_le_log hx' (by exact_mod_cast h))) he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_vw_anti (h0 : (p : C) ≠ 0) (h1 : v (p : C) < 1) {x y : C} (h : v x ≤ v y) :
     val_vw la p v y ≤ val_vw la p v x := by
@@ -152,7 +150,7 @@ theorem val_vw_anti (h0 : (p : C) ≠ 0) (h1 : v (p : C) < 1) {x y : C} (h : v x
     (div_le_div_of_nonpos_of_le hl.le (Real.log_le_log hx' (by exact_mod_cast h))) he
 
 /- English proof (translation)
-Break down `le_max_iff.1 (v.map_add x y) with h | h` into its components or cases. Use `exacts [(min_le_left _ _).trans (val_vw_anti la h0 h1 h), (min_le_right _ _).trans (val_vw_anti la h0 h1 h)]`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem val_vw_add (h0 : (p : C) ≠ 0) (h1 : v (p : C) < 1) (x y : C) :
     min (val_vw la p v x) (val_vw la p v y) ≤ val_vw la p v (x + y) := by
@@ -162,7 +160,7 @@ theorem val_vw_add (h0 : (p : C) ≠ 0) (h1 : v (p : C) < 1) (x y : C) :
 variable {O : Type} [CommRing O] [Algebra O C]
 
 /- English proof (translation)
-Establish `h` using `hv.map_le_one (p : O)`. Rewrite `h` using `[map_natCast]`. Use `lt_of_le_of_ne h fun e => hp (hv.isUnit_of_one' (by rwa [map_natCast]))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem lt_one_of_not_isUnit (hv : v.Integers O) (hp : ¬ IsUnit (p : O)) : v (p : C) < 1 := by
   have h := hv.map_le_one (p : O)
@@ -173,15 +171,15 @@ variable {V F : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Fie
   [IsFractionRing V F]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `hinj` using `IsFractionRing.injective V F`. Establish `hne : ∀ {a : V}, a ≠ 0 → algebraMap V F a ≠ 0` using `fun h => (map_ne_zero_iff _ hinj).2 h`. Establish `h1 : valV V (algebraMap V F ϖ) = WithZero.exp (-1)`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `HeightOneSpectrum.intValuation_singleton _ hϖ.ne_zero hϖ.maximalIdeal_eq`. Establish `hu : ∀ u : Vˣ, valV V (algebraMap V F u) = 1` using `fun u => by`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => h u.isUnit`. Use `⟨Real.log (v (k (algebraMap V F ϖ))), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hint : ∀ a : V, a ≠ 0 → Real.log (v (k (algebraMap V F a))) = (vV V (algebraMap V F a) : ℝ) * Real.log (v (k (algebraMap V F ϖ)))` using `fun a ha => by`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Establish `h2 : v (k (algebraMap V F u)) = 1` using `by rw [← hk]; exact hv.one_of_isUnit (u.isUnit.map kO)`. Simplify using `only [vV, map_mul, map_pow, h1, hu, h2, _root_.one_mul, NNReal.coe_pow, Real.log_pow]`. Simplify using `[← WithZero.exp_nsmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := V) x`. Establish `hb0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hx`. Establish `e` using `vV_mul (V := V) hx (hne hb0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[div_mul_cancel₀ _ (hne hb0)]`. Rewrite using `[map_div₀, map_div₀, NNReal.coe_div, Real.log_div (by simpa using ha0) (by simpa using hb0), hint a ha0, hint b hb0, e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_log_eq (hv : v.Integers O) (k : F →+* C) (kO : V →+* O)
     (hk : ∀ a, algebraMap O C (kO a) = k (algebraMap V F a)) :
@@ -213,11 +211,11 @@ theorem exists_log_eq (hv : v.Integers O) (k : F →+* C) (kO : V →+* O)
   push_cast; ring
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, map_zero, val_vw_zero, nval_zero]`. Take `⟨r, hr⟩` from `exists_log_eq hv k kO hk`. Establish `hl : Real.log (v (p : C)) ≠ 0` using `(Real.log_neg (by simpa [pos_iff_ne_zero] using h0) (by exact_mod_cast lt_one_of_not_isUnit hv hp)).ne`. Establish `h1` using `hr (p : F) fun h => h0 (by rw [← map_natCast k, h, map_zero])`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_natCast, ← map_natCast io, ho.2]`. Rewrite using `[val_vw_of_ne la p v ((map_ne_zero k).2 hx), nval_of_ne hx, hr x hx]`. Rewrite `hl`, the goal using `[h1]`. Rewrite `hl`, the goal using `[Int.cast_mul, Int.cast_natCast]`. Establish `h2` using `(mul_ne_zero_iff.1 hl).2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `mul_ne_zero_iff.1 (mul_ne_zero_iff.1 hl).1`. Establish `h4` using `h3.1`. Establish `h5` using `h3.2`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 -/
 theorem val_vw_map (hv : v.Integers O) (h0 : (p : C) ≠ 0) (hp : ¬ IsUnit (p : O)) {io : K →+* F} {e : ℕ}
     (ho : OverLa la V io e) (k : F →+* C) (kO : V →+* O)
@@ -253,22 +251,22 @@ def LieTie {Y : Scheme.{0}} (ψ : P.A.A.left ⟶ Y) (x : LieG P.Gt) (u : Sp (Dua
 variable {P}
 
 /- English proof (translation)
-Introduce `m` and use `by rw [← Category.assoc, ← Category.assoc, h, P.cmp_act]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem corr_act {R : Type} [CommRing R] [Algebra O R] {x : specO O R ⟶ P.Gt} {y : specO O R ⟶ P.G}
     (h : Corr P x y) (a : Λ) : Corr P (x ≫ P.oGt.act a) (y ≫ P.oG.act a) := fun m => by
   rw [← Category.assoc, ← Category.assoc, h, P.cmp_act]
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'')
     (g : R →+* R') : spMap f ≫ spMap g = spMap (f.comp g) := (Spec.map_comp _ _).symm
 
 /- English proof (translation)
-Take `⟨xG, u', h1, h2, h3⟩` from `h`. Use `⟨AvDefs.lieScale P.G a xG, ptMap (dualScale (algebraMap O C a)) ≫ u', h1.comp (dualScale a), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans (congrArg (_ ≫ ·) h2)`. Express the relevant statement in the definitionally equal form `(spMap (epsMul (algebraMap O C a)) ≫ u'.left) ≫ P.gen = _ ≫ spMap (epsMul a) ≫ xG.1.left`. Rewrite using `[Category.assoc, h3, ← Category.assoc, ← Category.assoc, spMap_spMap, spMap_spMap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Apply the tactic sequence `ext s <;> simp [dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem LieTie.scale {Y : Scheme.{0}} {ψ : P.A.A.left ⟶ Y} {x : LieG P.Gt} {u : Sp (DualNumber C) ⟶ Y}
     (h : LieTie P ψ x u) (a : O) :
@@ -282,7 +280,7 @@ theorem LieTie.scale {Y : Scheme.{0}} {ψ : P.A.A.left ⟶ Y} {x : LieG P.Gt} {u
     ext s <;> simp [dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Take `⟨xG, u', h1, h2, h3⟩` from `h`. Use `⟨AvDefs.lieAct P.G P.oG a xG, u' ≫ P.oA.act a, corr_act h1 a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left, Category.assoc, hf, ← Category.assoc, h2]`. Express the relevant statement in the definitionally equal form `_ = _ ≫ xG.1.left ≫ (P.oG.act a).left`. Rewrite using `[Over.comp_left, Category.assoc, P.gen_act, ← Category.assoc, h3, Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem LieTie.act {Y : Scheme.{0}} {ψ : P.A.A.left ⟶ Y} {x : LieG P.Gt} {u : Sp (DualNumber C) ⟶ Y}
     (h : LieTie P ψ x u) (a : Λ) {f : Y ⟶ Y} (hf : (P.oA.act a).left ≫ ψ = ψ ≫ f) :
@@ -296,11 +294,9 @@ theorem LieTie.act {Y : Scheme.{0}} {ψ : P.A.A.left ⟶ Y} {x : LieG P.Gt} {u :
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O]
 
 /- English proof (translation)
-Take `⟨xG, w, h1, h2, h3⟩` from `h`. Take `⟨xG', w', h1', h2', h3'⟩` from `h'`. Establish `e1 : w.left = w'.left` using `hψ.hom_ext (h2.trans h2'.symm) ((Over.w w).trans (Over.w w').symm)`. Use `haveI : IsSchemeTheoreticallyDominant (spMap (dualMap (algebraMap O C))) := (schemeDominant_specMap_iff _).2 fun a b hab => TrivSqZeroExt.ext (P.integers.hom_inj (by simpa [dualMap] using congrArg TrivSqZeroExt.fst hab)) (P.integers.hom_inj (by simpa [dualMap, Algebra.algebraMap_ …`. Use `haveI := P.semi.separated`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : xG.1 = xG'.1` using `Over.OverMorphism.ext (ext_of_schDom P.G.hom ((Over.w xG.1).trans (Over.w xG'.1).symm) _ (by rw [← h3, ← h3', e1]))`. Use `haveI := P.isLocalRing`. Use `haveI := HodgeTateCompare.isLocalRing_dualNumber (O := O)`. Establish `hp : ¬ IsUnit (p : DualNumber O)` using `fun h => (Fact.out : ¬ IsUnit (p : O)) (by`. Simplify using `using h.map (TrivSqZeroExt.fstHom O O O))`.
-
-Conclude with `Subtype.ext ((existsUnique_left hp (isAdicComplete_dualNumber p) xG.1).unique h1 (e2 ▸ h1'))`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem LieTie.unique {Y S : Scheme.{0}} {ψ : P.A.A.left ⟶ Y} {s : Y ⟶ S} {y : Sp C ⟶ S}
     (hψ : IsPullback ψ P.A.A.hom s y) {x x' : LieG P.Gt} {u : Sp (DualNumber C) ⟶ Y}
@@ -324,11 +320,11 @@ theorem LieTie.unique {Y S : Scheme.{0}} {ψ : P.A.A.left ⟶ Y} {s : Y ⟶ S} {
 variable (P) in
 
 /- English proof (translation)
-Use `haveI := P.isLocalRing`. Use `haveI := HodgeTateCompare.isLocalRing_dualNumber (O := O)`. Establish `hp₀ : ¬ IsUnit (p : O)` using `Fact.out`. Establish `hp : ¬ IsUnit (p : DualNumber O)` using `fun h => hp₀ (by simpa using h.map (TrivSqZeroExt.fstHom O O O))`. Take `⟨y, hy, -⟩` from `existsUnique_right (P := P) hp (isAdicComplete_dualNumber p) x.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hy.comp (TrivSqZeroExt.fstHom O O O)`. Rewrite `h1` using `[x.2]`. Establish `w : (spMap (dualMap (algebraMap O C)) ≫ y.left) ≫ P.G.hom = spMap (algebraMap C (DualNumber C)) ≫ spMap (algebraMap O C)`. Rewrite using `[Category.assoc, Over.w y, spMap_spMap]`. Use `(spMap_spMap _ _).trans (congrArg _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 
-Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Conclude with `⟨_, ⟨y, (existsUnique_right (P := P) hp₀ inferInstance 1).unique h1 Corr.one⟩, Over.homMk (P.gen_pull.1.lift _ _ w) (P.gen_pull.1.lift_snd _ _ w), hy, rfl, P.gen_pull.1.lift_fst _ _ w⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_lieTie {Y : Scheme.{0}} (ψ : P.A.A.left ⟶ Y) (x : LieG P.Gt) : ∃ u, LieTie P ψ x u := by
   haveI := P.isLocalRing
@@ -354,9 +350,9 @@ def evLie (x : LieG P.Gt) : P.OmC →ₗ[C] C :=
 variable [IsAlgClosed C] [CharZero C] [Algebra ℤ_[p] C] [Algebra ℤ_[p] O] [IsScalarTower ℤ_[p] O C]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul c t`. Establish `: (c ⊗ₜ t : P.V) = c • (1 : C) ⊗ₜ t`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[P.alC_tmul, this, map_smul, P.pairV_bLie]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pairV_bLie_eq_evLie (x : LieG P.Gt) (w : P.V) : P.pairV (P.bLie x) w = evLie P x (P.alC w) := by
   induction w using TensorProduct.induction_on with
@@ -369,7 +365,7 @@ theorem pairV_bLie_eq_evLie (x : LieG P.Gt) (w : P.V) : P.pairV (P.bLie x) w = e
     rfl
 
 /- English proof (translation)
-The claim follows from `(P.wRec_le τ ⟨⟨x, hx⟩, rfl⟩).2`.
+A detailed English derivation is pending.
 -/
 theorem bLie_mem_eigV {τ : Λ →+* O} {x : LieG P.Gt} (hx : AvDefs.IsEig P.Gt P.oGt τ x) : P.bLie x ∈ P.eigV τ :=
   (P.wRec_le τ ⟨⟨x, hx⟩, rfl⟩).2
@@ -395,13 +391,13 @@ def embInt (hv : v.Integers O) (τ : E →+* ℂ) : 𝓞 E →+* O := embO hv (e
 omit [StarRing (𝓞 E)] in
 
 /- English proof (translation)
-The claim follows from `algebraMap_embO hv _ a`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_embInt (hv : v.Integers O) (τ : E →+* ℂ) (a : 𝓞 E) :
     algebraMap O C (embInt c hv τ a) = algebraMap c.F C (embK c τ a) := algebraMap_embO hv _ a
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => hv.hom_inj (by rw [RingHom.comp_apply, algebraMap_embInt, algebraMap_embInt, starRingEnd_apply, hs] refine congrArg _ (Subtype.ext ?_) rw [embK_coe, embK_coe, H.bar_eq] exact (IsCMField.complexEmbedding_complexConj E τ a).symm)`.
+A detailed English derivation is pending.
 -/
 theorem embInt_conj (hs : ∀ a : 𝓞 E, star a = H.bar a) (hv : v.Integers O) (τ : E →+* ℂ) :
     embInt c hv (conjEmb τ) = (embInt c hv τ).comp (starRingEnd (𝓞 E)) :=
@@ -430,7 +426,7 @@ variable {P} {V F : Type} [CommRing V] [Field F] [Algebra V F] {x₀ : Sp F ⟶ 
   {ψ : P.A.A.left ⟶ Xo.univ.t.G.left}
 
 /- English proof (translation)
-Take `⟨-, G, t', m₁, m₂, π, φ, -, -, h3, -, rfl, -⟩` from `h`. Conclude with `h3.comp m₁.cart`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem PointOver.isGrpPullback (h : PointOver P x₀ k kO ψ) :
     IsGrpPullback P.A.A Xo.univ.t.G (spMap k ≫ x₀) ψ := by
@@ -438,7 +434,7 @@ theorem PointOver.isGrpPullback (h : PointOver P x₀ k kO ψ) :
   exact h3.comp m₁.cart
 
 /- English proof (translation)
-Take `⟨-, G, t', m₁, m₂, π, φ, -, h2, h3, h4, rfl, -⟩` from `h`. Establish `e : (P.oA.act a).left ≫ φ = φ ≫ (t'.act.act a).left` using `m₂.cart.1.hom_ext (by rw [Category.assoc, Category.assoc, m₂.act, h4, ← Category.assoc φ, h4, ← Category.assoc, P.gen_act, Category.assoc, h2, Category.assoc]) (by rw [Category.assoc, Category.assoc, Over.w, h3.1.w, Over.w_assoc])`. Rewrite using `[← Category.assoc, e, Category.assoc, Category.assoc, m₁.act]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem PointOver.act (h : PointOver P x₀ k kO ψ) (a : 𝓞 E) :
     (P.oA.act a).left ≫ ψ = ψ ≫ (Xo.univ.t.act.act a).left := by
@@ -464,25 +460,25 @@ def htLat (τ : E →+* ℂ) : Submodule O P.V :=
 open Classical in
 
 /- English proof (translation)
-The claim follows from `if_pos τ.2`.
+A detailed English derivation is pending.
 -/
 theorem htLat_psi (τ : Psi H) : htLat c P τ.1 =
     P.latTQuot (σ := fun φ : E →+* C => embO P.integers φ) (isSplitting_embO P.integers) (embAt c C τ.1) :=
   if_pos τ.2
 
 /- English proof (translation)
-The claim follows from `if_neg (conj_not_mem τ)`.
+A detailed English derivation is pending.
 -/
 theorem htLat_conj (τ : Psi H) : htLat c P (conjEmb τ.1) = P.latTSub (embInt c P.integers (conjEmb τ.1)) :=
   if_neg (conj_not_mem τ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨if_pos τ.2, if_neg (conj_not_mem τ)⟩`.
+Supply the required witnesses or components.
 -/
 example (τ : Psi H) : Dw.mult τ.1 = Dw.p ∧ Dw.mult (conjEmb τ.1) = Dw.q := ⟨if_pos τ.2, if_neg (conj_not_mem τ)⟩
 
 /- English proof (translation)
-Unfold `htLat`. Use `split_ifs`. Conclude with `P.latTSub_le_latTQuot (σ := fun φ : E →+* C => embO P.integers φ) (isSplitting_embO P.integers) (embAt c C τ)`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem latTSub_le_htLat (τ : E →+* ℂ) : P.latTSub (embInt c P.integers τ) ≤ htLat c P τ := by
   classical
@@ -495,7 +491,7 @@ theorem latTSub_le_htLat (τ : E →+* ℂ) : P.latTSub (embInt c P.integers τ)
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O]
 
 /- English proof (translation)
-The claim follows from `(P.wRec_le_latTSub _).trans (latTSub_le_htLat P τ)`.
+A detailed English derivation is pending.
 -/
 theorem wRec_le_htLat (τ : E →+* ℂ) : P.wRec (embInt c P.integers τ) ≤ htLat c P τ :=
   (P.wRec_le_latTSub _).trans (latTSub_le_htLat P τ)
@@ -504,7 +500,7 @@ omit [IsAlgClosed C] [CharZero C] [Algebra ℤ_[p] C] [Algebra ℤ_[p] O] [IsSca
 variable {P} in
 
 /- English proof (translation)
-Introduce `a` and use `(h.act a (hP.act a)).unique hP.isGrpPullback.1 (by rw [hu a, ← algebraMap_embInt P.integers]; exact h.scale _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LieTie.isEig {V F : Type} [CommRing V] [Field F] [Algebra V F] {x₀ : Sp F ⟶ Xo.X} {k : F →+* C} {kO : V →+* O}
     {ψ : P.A.A.left ⟶ Xo.univ.t.G.left} (hP : PointOver P x₀ k kO ψ) {x : LieG P.Gt}
@@ -521,9 +517,9 @@ def IsHTChange (ψ : P.A.A.left ⟶ Xo.univ.t.G.left) (z y : FrPt Xo c C) : Prop
 variable {P} in
 
 /- English proof (translation)
-Take `⟨g, a, x, ⟨h1, h2, pm, h3, h4, h5⟩, hg, ha, -, hb⟩` from `h`. Establish `hd : ∀ τ i, g τ i i ≠ 0` using `fun τ i => by`. Establish `hl : LinearIndependent C (g τ).row` using `LinearIndependent.of_comp (Fintype.linearCombination C fun j => P.bLie (x τ j)) (hb τ).1`. Establish `hu` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_rows_iff_isUnit.1 hl)`. Rewrite `hu` using `[Matrix.det_of_lowerTriangular _ fun i j hij => hg τ i j hij]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.prod_ne_zero_iff.1 hu.ne_zero i (Finset.mem_univ i)`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at ha`. Use `⟨fun i => Option.rec (Units.mk0 a ha0) (fun s => Units.mk0 _ (hd s.1 s.2)) i, ⟨h1, fun τ i => ⟨g τ i, rfl, hg τ i, h2 τ i⟩, pm, h3, ?_, h5⟩, ha⟩` and prove the remaining obligations. Rewrite using `[h4, show spMap (RingHom.id C) = 𝟙 _ from Spec.map_id _]`. Conclude with `Category.comp_id _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsHTChange.exists_frBor {ψ : P.A.A.left ⟶ Xo.univ.t.G.left} {z y : FrPt Xo c C} (h : IsHTChange P ψ z y) :
     ∃ t : Ix Dw → Cˣ, FrBor t z y ∧ v (t none) = 1 := by
@@ -554,7 +550,7 @@ variable {T : CDVR} {io : c.F →+* T.Fr} {y₀ : IntFr Xo c T io} {k : letI := 
   {y : FrPt Xo c C}
 
 /- English proof (translation)
-Take `⟨-, _, _, _, z, -, h1, _, _, _, h2, -⟩` from `h`. Conclude with `h2.1.trans h1.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsHTFrame.x_eq (h : IsHTFrame p v O y₀ k y) :
     letI := io.toAlgebra; y.x = spMap k.toRingHom ≫ y₀.1.x := by
@@ -562,7 +558,7 @@ theorem IsHTFrame.x_eq (h : IsHTFrame p v O y₀ k y) :
   exact h2.1.trans h1.1
 
 /- English proof (translation)
-Take `⟨-, kO, P, _, _, hP, -⟩` from `h`. Use `letI := io.toAlgebra`. Conclude with `CompHt.val_vw_map la P.integers (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) Fact.out ho k.toRingHom kO hP.1 x`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem IsHTFrame.val_vw_map (h : IsHTFrame p v O y₀ k y) {la : HeightOneSpectrum (𝓞 c.F)} {e : ℕ}
     (ho : OverLa la T.V io e) (x : T.Fr) : val_vw la p v (k x) = nval T.V e x := by
@@ -572,9 +568,9 @@ theorem IsHTFrame.val_vw_map (h : IsHTFrame p v O y₀ k y) {la : HeightOneSpect
     hP.1 x
 
 /- English proof (translation)
-Establish `hm` using `h.val_vw_map ho`. Take `⟨-, _, P, -⟩` from `h`. Use `letI := io.toAlgebra`. Use `⟨(congrArg _ (evalAt_zero _ _ y)).trans (val_vw_zero la p v), fun _ => val_vw_ne_bot la p v _, fun f g => ?_, fun a f ha => ?_, fun f g => (congrArg _ (evalAt_mul _ _ f g y)).trans (val_vw_mul la p v _ _)⟩` and prove the remaining obligations. Conclude with `(val_vw_add la (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) (lt_one_of_not_isUnit P.integers Fact.out) _ _).trans_eq (congrArg _ (evalAt_add _ _ f g y).symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((congrArg _ (evalAt_smul _ _ a f y)).trans (val_vw_mul la p v _ _)).trans ?_` and prove the remaining obligations. Establish `h1` using `nval_smul ho ha 1`. Rewrite `h1` using `[_root_.mul_one, ← hm, ← hm, map_one, val_vw_of_eq_one la p v v.map_one, add_zero]`. Rewrite using `[← k.commutes a]`. Conclude with `congrArg (· + _) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsHTFrame.isVal (h : IsHTFrame p v O y₀ k y) {la : HeightOneSpectrum (𝓞 c.F)} {e : ℕ}
     (ho : OverLa la T.V io e) : IsVal la fun f : Rul Xo c => val_vw la p v (evR Xo c f y) := by
@@ -601,7 +597,7 @@ section Families
   ((algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp (padicIntHom p)).toAlgebra
 
 /- English proof (translation)
-The claim follows from `letI := algPadicInt p letI := algPadicField p IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem towerPadic (p : ℕ) [Fact p.Prime] :
     @IsScalarTower ℤ_[p] 𝓞_ℂ_[p] ℂ_[p] (algPadicInt p).toSMul Algebra.toSMul (algPadicField p).toSMul :=
@@ -610,7 +606,7 @@ theorem towerPadic (p : ℕ) [Fact p.Prime] :
   IsScalarTower.of_algebraMap_eq fun _ => rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PadicComplexHost.not_isUnit_p p⟩`.
+Supply the required witnesses or components.
 -/
 theorem factPadic (p : ℕ) [Fact p.Prime] : Fact ¬IsUnit (p : 𝓞_ℂ_[p]) := ⟨PadicComplexHost.not_isUnit_p p⟩
 
@@ -638,11 +634,11 @@ def htVals : ValFam Xo c :=
     exact IsHTFrame.isVal h ho⟩
 
 /- English proof (translation)
-Use `letI := H.starRing`. Use `letI := io.toAlgebra`. Take `⟨-, kO, P, _, _, hP, -⟩` from `h`. Take `⟨r, hr⟩` from `exists_log_eq P.integers k.toRingHom kO hP.1`. Establish `h0 : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hr (p : T.Fr) fun h => h0 (by rw [← map_natCast k, h, map_zero])`. Rewrite `h1` using `[map_natCast, ← map_natCast io, ho.2]`. Assume the negation of the conclusion as `hn`. Establish `h2 : la.valuation c.F (p : c.F) = 1`. Rewrite using `[← map_natCast (algebraMap (𝓞 c.F) c.F), HeightOneSpectrum.valuation_of_algebraMap]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.2 hn`. Rewrite `h1` using `[vLa, h2]`. Establish `h3 : Real.log ((Valued.v : Valuation ℂ_[p] ℝ≥0) (p : ℂ_[p])) < 0` using `Real.log_neg (NNReal.coe_pos.2 (pos_iff_ne_zero.2 ((Valuation.ne_zero_iff _).2 h0))) (NNReal.coe_lt_one.2 (lt_one_of_not_isUnit P.integers Fact.out))`. Use `h3.ne (h1.trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsHTFrameCp.mem {p : ℕ} [Fact p.Prime] [Algebra c.F ℂ_[p]] {T : CDVR} {io : c.F →+* T.Fr}
     {y₀ : IntFr Xo c T io} {k : letI := io.toAlgebra; T.Fr →ₐ[c.F] ℂ_[p]} {y : FrPt Xo c ℂ_[p]}
@@ -671,9 +667,9 @@ variable (l) in
 def htPrimes (B : ℝ) : Set ℕ := {p | p.Prime ∧ ((p : ℝ) ≤ B ∨ p ∣ 2 * (discr E).natAbs * l.M')}
 
 /- English proof (translation)
-Establish `h1 : 2 * (discr E).natAbs ≠ 0` using `mul_ne_zero two_ne_zero (Int.natAbs_ne_zero.2 (discr_ne_zero E))`. Establish `h2 : l.M' ≠ 0` using `Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'`. Use extensionality with `p`. Simplify using `only [htPrimes, Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_union, Finset.mem_filter, Finset.mem_range, Nat.mem_primeFactors, Nat.lt_succ_iff, h1, h2, ne_eq, not_false_eq_true, and_true]`. Distinguish the cases in `hp : p.Prime`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hp, true_and, and_true, Nat.le_floor_iff' hp.ne_zero, hp.dvd_mul (m := 2 * (discr E).natAbs)]`. Simplify using `only [hp, false_and, and_false, or_self]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem htPrimes_eq (B : ℝ) : htPrimes l B = ↑(((Finset.range (⌊B⌋₊ + 1)).filter Nat.Prime) ∪
     (Nat.primeFactors (2 * (discr E).natAbs) ∪ l.M'.primeFactors)) := by
@@ -687,12 +683,12 @@ theorem htPrimes_eq (B : ℝ) : htPrimes l B = ↑(((Finset.range (⌊B⌋₊ + 
   · simp only [hp, false_and, and_false, or_self]
 
 /- English proof (translation)
-The claim follows from `htPrimes_eq (l := l) B ▸ Finset.finite_toSet _`.
+A detailed English derivation is pending.
 -/
 theorem htPrimes_finite (B : ℝ) : (htPrimes l B).Finite := htPrimes_eq (l := l) B ▸ Finset.finite_toSet _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Nat.prime_two, Or.inr (Dvd.dvd.mul_right (dvd_mul_right _ _) _)⟩`.
+Supply the required witnesses or components.
 -/
 example (B : ℝ) : 2 ∈ htPrimes l B := ⟨Nat.prime_two, Or.inr (Dvd.dvd.mul_right (dvd_mul_right _ _) _)⟩
 
@@ -701,14 +697,14 @@ variable (Xo c) in
 def mixVals (B : ℝ) : ValFam Xo c := ValFam.patch (htPrimes l B) (htVals Xo c) (recVals Xo c)
 
 /- English proof (translation)
-The claim follows from `if_pos ⟨p, hp, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem mixVals_of_mem {B : ℝ} {la : HeightOneSpectrum (𝓞 c.F)} {p : ℕ} (hp : p ∈ htPrimes l B)
     (h : (p : 𝓞 c.F) ∈ la.asIdeal) : (mixVals Xo c B).1 la = htValSet Xo c la :=
   if_pos ⟨p, hp, h⟩
 
 /- English proof (translation)
-Use `if_neg fun ⟨q, hq, h'⟩ => hn ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime (p : 𝓞 c.F) (q : 𝓞 c.F)` using `Nat.Coprime.cast ((Nat.coprime_primes hp hq.1).2 fun e => hne (e ▸ hq))`. Take `⟨a, b, hab⟩` from `hc`. Conclude with `la.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h) (Ideal.mul_mem_left _ _ h')))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mixVals_of_not_mem {B : ℝ} {la : HeightOneSpectrum (𝓞 c.F)} {p : ℕ} (hp : p.Prime) (hn : p ∉ htPrimes l B)
     (h : (p : 𝓞 c.F) ∈ la.asIdeal) : (mixVals Xo c B).1 la = valSet Xo c (algCls Xo c) la := by

@@ -14,9 +14,9 @@ variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂
   (Y : NExp D.R D.host D.what₂ D.LL0 N X)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨f, ⟨hf, hf0⟩, rfl⟩`. Use `⟨hφ f hf, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ f ∈ IntegralHeckeForms.Fm0 Y i j b`. Use `replace hf0 : f ∈ IntegralHeckeForms.Fm0 Y i j b := hf0`. Simplify using `only [IntegralHeckeForms.Fm0, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hf0 ⊢`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Establish `h` using `LinearMap.congr_fun (hc u) f`. Simplify using `only [LinearMap.comp_apply] at h`. Rewrite using `[h, hf0 u, map_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mall_map_le (i : X.Tw) (j : ℕ) (b : Bool) (φ : Module.End (FractionRing (X.O i)) (Y.Fm i j b))
     (hφ : ∀ f ∈ Y.Bsup i j b, φ f ∈ Y.Bsup i j b)
@@ -34,11 +34,11 @@ theorem mall_map_le (i : X.Tw) (j : ℕ) (b : Bool) (φ : Module.End (FractionRi
   rw [h, hf0 u, map_smul]
 
 /- English proof (translation)
-Introduce `D E hG hF hH hU hT hC i hi j hj b`. Take `⟨hfg, hsp⟩` from `hF i hi j hj b`. Use `⟨fun g => ?_, ?_, GlobalTheory.IntRestBall.span_inf_of_span_top _ hsp _ _ (fun _ => Iff.rfl), fun k P hk => mall_map_le D.nexp i j b _ (hH i hi j hj b k P hk) (fun g => hC i hi b j hj g k P hk), ?_, hT i hi j hj b⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `hG i hi j hj b g f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hfg.of_le (fun f hf => hf.1)`. Introduce `a ha`. Take `⟨c, hc⟩` from `hU i hi j hj b a ha`. Use `⟨c, fun Q M h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations. Take `⟨Xi, hXi, hδ⟩` from `hc Q M h1 h2 h3 h4`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hXi, Finsupp.sum, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun δ _ => ?_` and prove the remaining obligations. Establish `hm : ((D.ntw.l i : D.ntw.O i) ^ c) • Xi δ ∈ IntegralHeckeForms.Mall D.nexp i j b` using `⟨(hδ δ).2, ((IntegralHeckeForms.Fm0 D.nexp i j b).restrictScalars (D.ntw.O i)).smul_mem _ (hδ δ).1⟩`. Conclude with `⟨(⟨_, hm⟩ : IntegralHeckeForms.Mall D.nexp i j b) ⊗ₜ AddMonoidAlgebra.single δ (1 : D.ntw.O i), by`. Simplify using `[TensorProduct.smul_tmul']⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem admInt_of_sup : ∀ (D : D7) (E : IntegralHeckeForms.XD D), SupG D → SupFull D → SupHk D → UnivSup D E → TypeKept E → CommG D →
     IntegralHeckeForms.IsotypicPartsInternalDirectSum D.nexp E := by

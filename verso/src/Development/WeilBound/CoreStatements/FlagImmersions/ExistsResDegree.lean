@@ -15,9 +15,9 @@ open ReciprocityTheory.AnForm.M
 open GlobalTheory.CompanionTheory.Ar.Chg GlobalTheory.CompanionTheory.Ar.Chg.DegBlock GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Introduce `hG`. Apply `h` to reduce the goal to its premises. Establish `hk : mConeMap y G = 0` using `hG`. Establish `e : ((MvPolynomial.aeval (R` using `Ω) (fun _ : K => (1 : Ω))).restrictScalars ℤ).comp (mConeMap y) = aeval y := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p`. Simplify using `[mConeMap]`. Use `congrArg (fun f => f G) e` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this`. Rewrite using `[← this, hk, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem not_mem_mCoordIdeal_of_aeval_ne_zero {K : Type} {ι : K → Type} {Ω : Type} [Field Ω]
     (y : (Σ k, ι k) → Ω) (G : MRing ι) (h : aeval y G ≠ 0) : G ∉ mCoordIdeal y := by
@@ -33,7 +33,7 @@ private theorem not_mem_mCoordIdeal_of_aeval_ne_zero {K : Type} {ι : K → Type
   rw [← this, hk, map_zero]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => c (κ k), fun k => hc _, by funext p; rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem sameOrbit_comp_blkV {K₀ K : Type} {ι₀ : K₀ → Type} {ι : K → Type} (κ : K₀ → K)
     (bx : ∀ k, ι₀ k ≃ ι (κ k)) {z z₁ : (Σ k, ι k) → ℂ} (h : SameOrbit z₁ z) :
@@ -42,73 +42,59 @@ private theorem sameOrbit_comp_blkV {K₀ K : Type} {ι₀ : K₀ → Type} {ι 
   exact ⟨fun k => c (κ k), fun k => hc _, by funext p; rfl⟩
 
 /- English proof (translation)
-Take `⟨bx, rfl⟩` from `RootFieldNumerics.Ref.Zeros.exists_blkV hv`. Substitute `hJ` using the available equality. Establish `hκ : Function.Injective κ` using `hv.1`. Establish `hyk : ∀ (k : K₀) (a : ι₀ k), y ⟨κ k, bx k a⟩ = (RingHom.id Ω) (y₀ ⟨k, a⟩)` using `fun k a => hy ⟨k, a⟩`. Establish `hrk : Module.finrank Ω Ω = 1` using `Module.finrank_self Ω`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP₀ : (mCoordIdeal y₀).IsPrime` using `RingHom.ker_isPrime _`. Take `⟨G₁, a₁, hG₁, hG₁P, hcount⟩` from `GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.exists_count y₀ y κ bx (RingHom.id Ω) D 1 hκ hyk hA₀ hA hB₀ hB hrk one_pos`. Take `⟨G₃, a₃, hG₃, hG₃P, hloc3⟩` from `GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.exists_local_section y₀ y κ bx (RingHom.id Ω) 1 hyk hP₀ hB₀ hrk one_pos`. Establish `hTop : IsMultiHomogIdeal (⊤ : Ideal (MRing ι))`. Use `⟨{1}, ?_, Ideal.span_singleton_one.symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f hf`. Rewrite `hf` using `[Set.mem_singleton_iff]`. Substitute `hf` using the available equality. Conclude with `⟨0, GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.isMultiHomog_one'⟩`. Establish `hTopP : ¬ (⊤ : Ideal (MRing ι)) ≤ mCoordIdeal y` using `fun h => not_mem_mCoordIdeal_of_aeval_ne_zero y 1 (by simp) (h Submodule.mem_top)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨J', -, hJ'h, hJ'P, ⟨R⟩⟩` from `hRes K ι (mCoordIdeal y) ⊤ D hA hTop hTopP`. Choose the witnesses or unpack the hypotheses as in `⟨F₁, hF₁J, hF₁P, a₄, hF₁h⟩ : ∃ F ∈ J', F ∉ mCoordIdeal y ∧ ∃ a, IsMultiHomog F a := by`. Take `⟨S, hS, rfl⟩` from `hJ'h`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hJ'P` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce `f hf`. Take `⟨a, ha⟩` from `hS f hf`. Assume the negation of the conclusion as `hfP`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hcon f (Ideal.subset_span hf) hfP a ha`. Establish `halg1 : ∀ α : Ω, letI` using `(RingHom.id Ω).toAlgebra; IsAlgebraic Ω α := by`. Introduce `α`. Use `letI := (RingHom.id Ω).toAlgebra`. Conclude with `isAlgebraic_algebraMap (R := Ω) (A := Ω) α`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨G₄, a₄', hG₄h, hG₄y, hG₄z⟩` from `RootFieldNumerics.Ref.Zeros.zeros_proj y₀ y (RingHom.id Ω) hv hy hB₀ halg1 hF₁h hF₁P`. Establish `hG₄P : G₄ ∉ mCoordIdeal y₀` using `not_mem_mCoordIdeal_of_aeval_ne_zero y₀ G₄ hG₄y`. Establish `hFh` using `GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.isMultiHomog_mul' (GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.isMultiHomog_mul' hG₁ hG₃) hG₄h`. Establish `hFP : G₁ * G₃ * G₄ ∉ mCoordIdeal y₀`. Introduce `hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression.
 
-Break down `hP₀.mem_or_mem hm with hm | hm` into its components or cases. Break down `hP₀.mem_or_mem hm with hm | hm` into its components or cases. Conclude with `hG₁P hm`. Conclude with `hG₃P hm`. Conclude with `hG₄P hm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `bk' : Unit → K₀` to `fun _ => k₀`. Set `bx' : ∀ u : Unit, Fin (n + 1) ≃ ι₀ (bk' u)` to `fun _ => ix`. Establish `hv' : IsBlockMap bk' (blkV bk' bx')` using `GlobalTheory.CompanionTheory.Ar.Chg.isBlockMap_blkV bx' (fun a b _ => Subsingleton.elim a b)`. Establish `hy' : ∀ p, y₀ (blkV bk' bx' p) = g ((fun p : (Σ _ : Unit, Fin (n + 1)) => yf p.2) p)` using `fun p => hyf p.2`. Establish `hBf` using `RootFieldNumerics.Ref.Zeros.birational_of_closure yf hgen`.
+Equip the data with the indicated structure. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `halg2 : ∀ α : Ω, letI` using `g.toAlgebra; IsAlgebraic Ωf α := by`. Use `letI := g.toAlgebra`. Use `haveI : FiniteDimensional Ωf Ω := Module.finite_of_finrank_pos hfin`. Conclude with `fun α => Algebra.IsAlgebraic.isAlgebraic α`. Take `⟨G', b', hG'h, hG'y, hG'z⟩` from `RootFieldNumerics.Ref.Zeros.zeros_proj (fun p : (Σ _ : Unit, Fin (n + 1)) => yf p.2) y₀ g hv' hy' hBf halg2 hFh hFP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hGh` using `GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.isMultiHomog_rename' hv' hG'h`. Establish `hGy0 : aeval y₀ (rename (blkV bk' bx') G') ≠ 0`. Rewrite using `[MvPolynomial.aeval_rename]`. Establish `e1 : y₀ ∘ blkV bk' bx' = fun p => g.toIntAlgHom ((fun p : (Σ _ : Unit, Fin (n + 1)) => yf p.2) p)`. Use function extensionality and compare the values at `hy'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, ← MvPolynomial.comp_aeval_apply]`. Conclude with `(map_ne_zero g).mpr hG'y`. Establish `hGP : rename (blkV bk' bx') G' ∉ mCoordIdeal y₀` using `not_mem_mCoordIdeal_of_aeval_ne_zero y₀ _ hGy0`. Establish `hG2P : rename (blkV κ bx) (rename (blkV bk' bx') G') ∉ mCoordIdeal y`. Apply `not_mem_mCoordIdeal_of_aeval_ne_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[MvPolynomial.aeval_rename]`. Establish `e2 : y ∘ blkV κ bx = y₀` using `funext hy`. Rewrite using `[e2]`. Conclude with `hGy0`. Establish `hnz : ∀ w ∈ mcPts (mCoordIdeal y₀), eval w (map (Int.castRingHom ℂ) (rename (blkV bk' bx') G')) ≠ 0 → eval w (map (Int.castRingHom ℂ) G₁) ≠ 0 ∧ eval w (map (Int.castRingHom ℂ) G₃) ≠ 0 ∧ eval w (map (Int.castRingHom ℂ) G₄) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w hw hGw`. Establish `hFw : eval w (map (Int.castRingHom ℂ) (G₁ * G₃ * G₄)) ≠ 0`. Introduce `h0`. Apply `hGw` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.eval_map_rename']`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hG'z w hw h0`. Simplify using `only [map_mul, mul_ne_zero_iff] at hFw`. Conclude with `⟨hFw.1.1, hFw.1.2, hFw.2⟩`. Take `⟨h, hh, hho⟩` from `GlobalTheory.CompanionTheory.Ar.PB.Proj.holoMap_of_blockProj K₀ ι₀ K ι κ (blkV κ bx) (mCoordIdeal y₀) (mCoordIdeal y) J' D D R₀ R hv (GlobalTheory.CompanionTheory.Ar.Chg.mCoordIdeal_le_imageZ (RingHom.id Ω) bx hyk)`. Use `haveI := R₀.compact`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := R₀.t2`. Use `haveI := R.compact`. Use `haveI := R.t2`. Establish `hdeg1` using `GlobalTheory.CompanionTheory.Ar.PB.CovMap.Deg.isDegreeOff_of_correspondence K₀ ι₀ K ι (mCoordIdeal y₀) ⊤ (mCoordIdeal y) J' D R₀.X R₀.A R₀ id R h (fun z w => SameOrbit (fun p => z (blkV κ bx p)) w) (rename (blkV bk' bx') G') (rename (blkV κ bx) (rename (blkV bk' bx') G')) _ _ 1 r …`. Introduce `x x₀ hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [id] at hx`. Substitute `hx` using the available equality. Conclude with `GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.sameOrbit_symm' (hho x))`. Use the proof step `(by`. Introduce `x x₀ hr`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `R₀.inj x₀ (h x) (GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.not_mem_mcPts_top _) (GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.sameOrbit_trans' (GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.sameOrbit_symm' hr) (GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.sameOrbit_symm' (hho x …`. Use the proof step `(by`. Introduce `w hw hGw`. Conclude with `hcount w hw (hnz w hw hGw).1)`. Use the proof step `(by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz hzJ w hw hr`. Assume the negation of the conclusion as `hGw`. Apply `(hnz w hw hGw).2.2` to reduce the goal to its premises. Establish `hFz : eval z (map (Int.castRingHom ℂ) F₁) = 0` using `hzJ.2 F₁ hF₁J`. Conclude with `(HilbertSamuel.AnResNullForm.eval_eq_zero_iff_of_sameOrbit hG₄h hr).1 (hG₄z z hz hFz))`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use the proof step `(by`. Introduce `z hz w hw hr hGw`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.eval_map_rename']`. Conclude with `(HilbertSamuel.AnResNullForm.eval_eq_zero_iff_of_sameOrbit hGh hr).2 hGw)`. Use the proof step `(by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz w₀ hw₀ hr hGw`. Conclude with `hloc3 z hz w₀ hw₀ hr (hnz w₀ hw₀ hGw).2.1)`. Use `set S : Set X := {x | eval (fun p : (Σ _ : Unit, Fin (n + 1)) => pt x p.2) (map (Int.castRingHom ℂ) G') = 0} with hSdef`. Establish `hpre : ∀ x₀ : R₀.X, (eval (R₀.lift x₀ x₀) (map (Int.castRingHom ℂ) (rename (blkV bk' bx') G')) = 0 ↔ π x₀ ∈ S)`. Introduce `x₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha⟩` from `hpt x₀`. Establish `hmem : R₀.lift x₀ x₀ ∈ mcPts (mCoordIdeal y₀)` using `R₀.mem x₀ x₀ (R₀.mem_U x₀)`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Take `⟨i, hi⟩` from `hmem.1 k₀`.
+Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `hi` to reduce the goal to its premises. Use `congrFun ha (ix.symm i)` as an intermediate fact. Simplify using `using this`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Chg.DegBlock.eval_map_rename']`. Apply `HilbertSamuel.AnResNullForm.eval_eq_zero_iff_of_sameOrbit hG'h` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨fun _ => a, fun _ => ha0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Use `congrFun ha p.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `R₀.lift x₀ x₀ ⟨k₀, ix p.2⟩ = a * pt (π x₀) p.2`. Simplify using `using this`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hNS : id '' {x : R₀.X | eval (R₀.lift x x) (map (Int.castRingHom ℂ) (rename (blkV bk' bx') G')) = 0} ⊆ π ⁻¹' S`. Introduce and unpack `_ ⟨x₀, hx, rfl⟩`. Conclude with `(hpre x₀).1 hx`. Establish `hint : interior (π ⁻¹' S) = ∅`. Establish `e3 : π ⁻¹' S = {x : R₀.X | eval (R₀.lift x x) (map (Int.castRingHom ℂ) (rename (blkV bk' bx') G')) = 0}`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x₀`. Conclude with `(hpre x₀).symm`. Rewrite using `[e3]`. Conclude with `HilbertSamuel.AnResNullForm.interior_eq_empty HilbertSamuel.NonvanishingDense.full R₀.toAnRes hA₀ hGh hGP`. Establish `hSan : A.IsAnalyticSubset S`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `x`. Take `⟨U, lam, hU, hxU, hlam, hprop⟩` from `hloc x`. Establish `hpoly : ∀ q : MvPolynomial (Σ _ : Unit, Fin (n + 1)) ℂ, A.HoloOn U (fun y => eval (fun p : (Σ _ : Unit, Fin (n + 1)) => lam y p.2) q)`. Introduce `q`. Proceed by induction on `q using MvPolynomial.induction_on`.
-
-Introduce `j`. Simplify using `only [eval_C]`. Conclude with `analyticOnNhd_const`. Name the introduced variables `p q hp hq`. Introduce `j`.
-
-Simplify using `only [map_add]`. Conclude with `(hp j).add (hq j)`. Name the introduced variables `p i hp`. Introduce `j`. Simplify using `only [map_mul, eval_X]`.
-
-Conclude with `(hp j).mul (hlam i.2 j)`. Use `⟨U, hU, hxU, 1, fun _ y => eval (fun p : (Σ _ : Unit, Fin (n + 1)) => lam y p.2) (map (Int.castRingHom ℂ) G'), fun _ => hpoly _, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, hSdef]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨hyS, hyU⟩`. Use `⟨hyU, fun _ => ?_⟩` and prove the remaining obligations. Take `⟨a₀, ha₀, he⟩` from `hprop y hyU`. Use `(HilbertSamuel.AnResNullForm.eval_eq_zero_iff_of_sameOrbit hG'h ⟨fun _ => a₀, fun _ => ha₀, ?_⟩).2 hyS` and prove the remaining obligations. Use function extensionality and compare the values at `p`.
-
-Rewrite using `[he]`. Both sides reduce to the same expression. Introduce and unpack `⟨hyU, hz⟩`. Use `⟨?_, hyU⟩` and prove the remaining obligations. Take `⟨a₀, ha₀, he⟩` from `hprop y hyU`.
-
-Use `(HilbertSamuel.AnResNullForm.eval_eq_zero_iff_of_sameOrbit hG'h ⟨fun _ => a₀, fun _ => ha₀, ?_⟩).1 (hz 0)` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Rewrite using `[he]`. Both sides reduce to the same expression. Establish `hcomp` using `RootFieldNumerics.Ref.Comp.degree_comp hπ hh hd hdeg hdeg1 hSan hint hNS`.
-
-Conclude with `⟨J', R, h, br ∪ S, hh, fun x => hho x, GlobalTheory.CompanionTheory.Ar.PB.CovMap.holoMap_comp hh hπ, hcomp⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_res_degree (hRes : ResExistsStatement) {K₀ K : Type} [Fintype K₀] [Fintype K] {ι₀ : K₀ → Type}
     {ι : K → Type} [∀ k, Fintype (ι₀ k)] [∀ k, Fintype (ι k)] {Ω Ωf : Type} [Field Ω] [Field Ωf] [CharZero Ω]

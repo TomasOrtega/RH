@@ -7,7 +7,7 @@ open scoped Real
 namespace GlobalTheory.JacobiTriple
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Finset.sum_range_succ, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finTriple_sum_odd (n : ℕ) : ∑ k ∈ Finset.range n, (2 * k + 1) = n ^ 2 := by
   induction n with
@@ -15,13 +15,13 @@ theorem finTriple_sum_odd (n : ℕ) : ∑ k ∈ Finset.range n, (2 * k + 1) = n 
   | succ n ih => rw [Finset.sum_range_succ, ih]; ring
 
 /- English proof (translation)
-Establish `hc : finCoeff (s ^ 2) n ((k : ℤ) - n) = qBinom (s ^ 2) (2 * n) k`. Unfold `finCoeff`. Rewrite using `[if_pos (by omega)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hc]`. Establish `hkk : ((k * (k - 1) : ℕ) : ℤ) = (k : ℤ) * ((k : ℤ) - 1)`. Break down `k with _ | k` into its components or cases. Simplify using the standard rewrite rules. Move the coercions through the operations in `[Nat.add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `he : ((k : ℤ) - n) ^ 2 = ((n ^ 2 + k * (k - 1) : ℕ) : ℤ) + (1 - 2 * n) * k`. Rewrite using `[Nat.cast_add, hkk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hxz : x ^ ((k : ℤ) - n) = x ^ k * x⁻¹ ^ n`. Rewrite using `[zpow_sub₀ hx, zpow_natCast, zpow_natCast, div_eq_mul_inv, inv_pow]`. Rewrite using `[hxz, he, zpow_add₀ hs, zpow_natCast, zpow_mul, zpow_natCast, pow_add, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finTriple_term (s x : ℂ) (hs : s ≠ 0) (hx : x ≠ 0) (n k : ℕ) (hk : k ≤ 2 * n) :
     (x⁻¹ ^ n * s ^ (n ^ 2)) *
@@ -45,27 +45,25 @@ theorem finTriple_term (s x : ℂ) (hs : s ≠ 0) (hx : x ≠ 0) (n k : ℕ) (hk
   ring
 
 /- English proof (translation)
-Use `set X := x * s ^ ((1 : ℤ) - 2 * n) with hX`. Establish `ha : ∀ k ∈ Finset.range n, 1 + x * s ^ (2 * k + 1) = 1 + X * s ^ (2 * (n + k))`. Introduce `k _`. Rewrite using `[hX, mul_assoc, ← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hs]`. Use `congr 3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : ∀ k ∈ Finset.range n, 1 + x⁻¹ * s ^ (2 * k + 1) = (x⁻¹ * s ^ (2 * k + 1)) * (1 + X * s ^ (2 * (n - 1 - k)))`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_range]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ((2 * k + 1 : ℕ) : ℤ) + (1 - 2 * n) + ((2 * (n - 1 - k) : ℕ) : ℤ) = 0` using `by omega`. Establish `hab : x⁻¹ * s ^ (2 * k + 1) * (X * s ^ (2 * (n - 1 - k))) = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hX, zpow_natCast, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 1 := by`. Rewrite using `[inv_mul_cancel₀ hx, ← zpow_add₀ hs, ← zpow_add₀ hs, e, zpow_zero, one_mul]`. Take the linear combination `-hab`. Establish `hr : ∏ k ∈ Finset.range n, (1 + X * s ^ (2 * (n - 1 - k))) = ∏ k ∈ Finset.range n, (1 + X * s ^ (2 * k))` using `Finset.prod_range_reflect (fun k => 1 + X * s ^ (2 * k)) n`. Establish `hC : ∏ k ∈ Finset.range n, (x⁻¹ * s ^ (2 * k + 1)) = x⁻¹ ^ n * s ^ (n ^ 2)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range, Finset.prod_pow_eq_pow_sum, finTriple_sum_odd]`. Establish `hsplit : ∏ k ∈ Finset.range (2 * n), (1 + X * s ^ (2 * k)) = (∏ k ∈ Finset.range n, (1 + X * s ^ (2 * k))) * ∏ k ∈ Finset.range n, (1 + X * s ^ (2 * (n + k)))`. Rewrite using `[two_mul, Finset.prod_range_add]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_congr rfl ha, Finset.prod_congr rfl hb, Finset.prod_mul_distrib, hr, hC]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hsplit]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = x⁻¹ ^ n * s ^ (n ^ 2) * ∑ k ∈ Finset.range (2 * n + 1), qBinom (s ^ 2) (2 * n) k * s ^ (k * (k - 1)) * X ^ k := by`. Rewrite using `[GlobalTheory.T.prod_range_one_add_mul_pow_two_mul_eq_sum_qBinom s X hs1 (2 * n)]`. Use `_ = ∑ k ∈ Finset.range (2 * n + 1), finCoeff (s ^ 2) n ((k : ℤ) - n) * (x ^ ((k : ℤ) - n) * s ^ (((k : ℤ) - n) ^ 2)) := by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun k hk => ?_)` and prove the remaining obligations. Rewrite `hk` using `[Finset.mem_range]`. Conclude with `finTriple_term s x hs hx n k (by omega)`. Use `_ = _ := by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_nbij' (fun k : ℕ => (k : ℤ) - n) (fun j : ℤ => (j + n).toNat) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Simplify using `only [Finset.mem_coe, Finset.mem_range] at ha`. Simplify using `only [Finset.mem_coe, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 
-Introduce `a ha`. Simplify using `only [Finset.mem_coe, Finset.mem_Icc] at ha`. Simplify using `only [Finset.mem_coe, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Introduce `a _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Use linear arithmetic over natural numbers and integers. Introduce `a ha`. Simplify using `only [Finset.mem_coe, Finset.mem_Icc] at ha`. Use linear arithmetic over natural numbers and integers. Introduce `a _`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem finTriple (s x : ℂ) (hs : s ≠ 0) (hs1 : ‖s‖ < 1) (hx : x ≠ 0) (n : ℕ) :
     ∏ k ∈ Finset.range n, ((1 + x * s ^ (2 * k + 1)) * (1 + x⁻¹ * s ^ (2 * k + 1))) =

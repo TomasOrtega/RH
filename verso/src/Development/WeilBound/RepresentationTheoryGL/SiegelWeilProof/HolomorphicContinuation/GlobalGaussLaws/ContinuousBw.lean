@@ -27,7 +27,7 @@ variable {D : D7} {n m : ℕ}
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [compAt, Matrix.map_apply, Matrix.add_apply, RingHom.map_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compAt_add (θ : InfFam D) (τ : D.what₂.Tau) (a b : Mx D m n) :
     compAt θ τ (a + b) = compAt θ τ a + compAt θ τ b := by
@@ -35,13 +35,13 @@ theorem compAt_add (θ : InfFam D) (τ : D.what₂.Tau) (a b : Mx D m n) :
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, RingHom.map_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem finMap_add (a b : Mx D m n) : (a + b).map (finPart D) = a.map (finPart D) + b.map (finPart D) := by
   ext i j; simp only [Matrix.map_apply, Matrix.add_apply, RingHom.map_add]
 
 /- English proof (translation)
-Use `hΨ.1 _ _ (fun τ' hne => ?_) ?_` and prove the remaining obligations. Rewrite using `[compAt_add, show sIns (D := D) τ fr u = insT τ (fr * Matrix.of u) from rfl, compAt_insT hθ, if_neg hne, add_zero]`. Rewrite using `[finMap_add, show sIns (D := D) τ fr u = insT τ (fr * Matrix.of u) from rfl, finMap_insT, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem away_add {θ : InfFam D} (hθ : IsInfFam θ) {τ : D.what₂.Tau} {fr : Matrix (Fin m) (Fin m) ℂ}
     {Ψ : Mx D m n → ℂ} (hΨ : AwayCls θ τ fr Ψ) (y : Mx D m n) (u : Fin m → Fin n → ℂ) :
@@ -52,11 +52,11 @@ theorem away_add {θ : InfFam D} (hθ : IsInfFam θ) {τ : D.what₂.Tau} {fr : 
   · rw [finMap_add, show sIns (D := D) τ fr u = insT τ (fr * Matrix.of u) from rfl, finMap_insT, add_zero]
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `gs_sch (m := m) (n := n) 1 one_pos`. Establish `hmem` using `hΨ.2 (gs 1) ⟨S, funext hS⟩`. Establish `hc` using `GlobalTheory.RegSch.CentreWeilComm.continuous_of_mem hθ ⟨_, hmem⟩`. Establish `hg : Continuous fun x : Mx D m n => gs (n` using `n) 1 (fr⁻¹ * compAt θ τ x) := by`. Establish `h1 : Continuous fun x : Mx D m n => (S (piF θ τ fr x))` using `S.continuous.comp (continuous_piF hθ τ fr)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.congr fun x => ?_` and prove the remaining obligations. Rewrite using `[hS]`. Both sides reduce to the same expression. Establish `hne : ∀ x : Mx D m n, gs (n` using `n) 1 (fr⁻¹ * compAt θ τ x) ≠ 0 := fun x => Complex.exp_ne_zero _`. Establish `e : Ψ = fun x => tens θ τ fr (gs 1) Ψ x / gs (n` using `n) 1 (fr⁻¹ * compAt θ τ x) := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [tens]`. Clear denominators, using `[hne x]` for the nonvanishing conditions. Rewrite using `[e]`. Conclude with `hc.div hg hne`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cont_of_away {θ : InfFam D} (hθ : IsInfFam θ) {τ : D.what₂.Tau} {fr : Matrix (Fin m) (Fin m) ℂ}
     {Ψ : Mx D m n → ℂ} (hΨ : AwayCls θ τ fr Ψ) : Continuous Ψ := by
@@ -80,7 +80,7 @@ def Bw (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) (θ : InfFam D) (τ : D.what
   Ψ y * ψ (trA (Matrix.trace (inner V x (y - sIns τ fr (piF θ τ fr y)))))
 
 /- English proof (translation)
-Establish `e : y + sIns τ fr u - sIns τ fr (piF θ τ fr (y + sIns τ fr u)) = y - sIns τ fr (piF θ τ fr y)`. Rewrite using `[(piF θ τ fr).map_add, piF_sIns hθ τ hdet, (sIns τ fr).map_add]`. Normalize the expressions using the abelian group laws. Unfold `Bw`. Rewrite using `[away_add hθ hΨ, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bw_add {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hdet : IsUnit fr.det) (ψ : AddChar (AF D.host.F) ℂ) {Ψ : Mx D V.rank n → ℂ} (hΨ : AwayCls θ τ fr Ψ)
@@ -94,7 +94,7 @@ theorem Bw_add {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.T
 
 set_option synthInstance.maxHeartbeats 800000 in
 /- English proof (translation)
-Use `GlobalTheory.Doubling.isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Establish `: ContinuousSub (Mx D V.rank n)` using `inferInstance`. Use `(cont_of_away hθ hΨ).mul ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.CompanionTheory.EisUnfold.Core.continuous_lin ψ hψ V x`. Conclude with `h.comp (continuous_id.sub ((continuous_sIns τ fr).comp (continuous_piF hθ τ fr)))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_Bw {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau}
     {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
@@ -107,7 +107,7 @@ theorem continuous_Bw {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.wh
   exact h.comp (continuous_id.sub ((continuous_sIns τ fr).comp (continuous_piF hθ τ fr)))
 
 /- English proof (translation)
-Unfold `Bw`. Rewrite using `[norm_mul, hψ.2.1, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_Bw {V : HSp D} {θ : InfFam D} {τ : D.what₂.Tau} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (Ψ : Mx D V.rank n → ℂ) (x y : Mx D V.rank n) :

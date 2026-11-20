@@ -29,9 +29,9 @@ namespace GlobalTheory.SchurQuot
 open GlobalTheory.MinorFrame
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Establish `h` using `Matrix.mem_unitaryGroup_iff.1 A.2`. Combine the equalities or inequalities in the displayed calculation. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.mul_apply, Matrix.star_apply, Matrix.map_apply, RCLike.star_def, Complex.conj_conj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Use `_ = 1 := by rw [h, Matrix.transpose_one]`.
+A detailed English derivation is pending.
 -/
 theorem map_conj_mem_unitaryGroup {d : ℕ} (A : Matrix.unitaryGroup (Fin d) ℂ) :
     (A : Matrix (Fin d) (Fin d) ℂ).map (starRingEnd ℂ) ∈ Matrix.unitaryGroup (Fin d) ℂ := by
@@ -51,7 +51,7 @@ def conjFam {d : ℕ} (κ : ι → Matrix.unitaryGroup (Fin d) ℂ) : ι → Mat
   fun τ => ⟨(κ τ : Matrix (Fin d) (Fin d) ℂ).map (starRingEnd ℂ), map_conj_mem_unitaryGroup (κ τ)⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use extensionality with `i j`. Simplify using `[conjFam]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjFam_map {d : ℕ} (κ : ι → Matrix.unitaryGroup (Fin d) ℂ) :
     (fun τ => ((conjFam κ τ : Matrix.unitaryGroup (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ).map (starRingEnd ℂ)) =
@@ -61,7 +61,7 @@ theorem conjFam_map {d : ℕ} (κ : ι → Matrix.unitaryGroup (Fin d) ℂ) :
   simp [conjFam]
 
 /- English proof (translation)
-Unfold `detChar`. Use `Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ ?_` and prove the remaining obligations. Establish `h` using `congrArg Matrix.det (Matrix.mem_unitaryGroup_iff.1 (κ τ).2)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `left_ne_zero_of_mul_eq_one h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detChar_unitary_ne_zero {d : ℕ} (n : ι → ℕ) (κ : ι → Matrix.unitaryGroup (Fin d) ℂ) :
     detChar n (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) ≠ 0 := by
@@ -72,9 +72,9 @@ theorem detChar_unitary_ne_zero {d : ℕ} (n : ι → ℕ) (κ : ι → Matrix.u
   exact left_ne_zero_of_mul_eq_one h
 
 /- English proof (translation)
-Introduce `P hP`. Take `⟨hPV, hPk⟩` from `Submodule.mem_inf.1 hP`. Use `Submodule.mem_inf.2 ⟨rowSub_mem_inv _ hPV, ?_⟩` and prove the remaining obligations. Rewrite `hPk`, the goal using `[LinearMap.mem_ker]`. Use `hh (conjFam κ) P hPV` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[conjFam_map]`. Rewrite using `[this, hPk, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_inf_ker_stable {a d : ℕ} (n₀ : ι → ℕ) {Pr : Type} [AddCommGroup Pr] [Module ℂ Pr]
     (h : Pol ι d a →ₗ[ℂ] Pr) (σ : (ι → Matrix (Fin d) (Fin d) ℂ) → Module.End ℂ Pr)
@@ -99,9 +99,9 @@ open GlobalTheory.MinorFrame
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `GlobalTheory.T.exists_unitary_detPowCharacter_separates_weights a ha n n₀ hn`. Establish `h1` using `hq g P`. Rewrite `h1` using `[hP, map_smul]`. Establish `h2 : (detChar n (fun τ => (g τ : Matrix (Fin a) (Fin a) ℂ)) - detChar n₀ (fun τ => (g τ : Matrix (Fin a) (Fin a) ℂ))) • q P = 0`. Rewrite using `[sub_smul, h1, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hg)`.
+A detailed English derivation is pending.
 -/
 theorem quot_eq_zero_of_weight_ne {a d : ℕ} (ha : 0 < a) {n n₀ : ι → ℕ} (hn : n ≠ n₀) {Pr : Type} [AddCommGroup Pr]
     [Module ℂ Pr] (q : Pol ι d a →ₗ[ℂ] Pr)
@@ -116,7 +116,7 @@ theorem quot_eq_zero_of_weight_ne {a d : ℕ} (ha : 0 < a) {n n₀ : ι → ℕ}
   exact (smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hg)
 
 /- English proof (translation)
-Establish `hfin : (Set.range (prodMinors (ι` using `ι) (a := a) (d := d) (n := n))).Finite := Set.finite_range _`. Use `haveI := FiniteDimensional.span_of_finite ℂ hfin`. Conclude with `Submodule.finiteDimensional_of_le (GlobalTheory.MinorFrame.inv_le_span_prodMinors a d n)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_inv (a d : ℕ) (n : ι → ℕ) : FiniteDimensional ℂ (inv (ι := ι) a d n) := by
   have hfin : (Set.range (prodMinors (ι := ι) (a := a) (d := d) (n := n))).Finite := Set.finite_range _
@@ -124,27 +124,23 @@ theorem finiteDimensional_inv (a d : ℕ) (n : ι → ℕ) : FiniteDimensional �
   exact Submodule.finiteDimensional_of_le (GlobalTheory.MinorFrame.inv_le_span_prodMinors a d n)
 
 /- English proof (translation)
-Use `set V := inv (ι := ι) a d n₀ with hV`. Establish `havg` using `GlobalTheory.T.exists_detCharInvariant_same_value_twisted a d n₀ Pr q hq`. Establish `hsurj : Function.Surjective (q ∘ₗ V.subtype)`. Introduce `x`. Take `⟨P, rfl⟩` from `hqs x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P₀, hP₀, he⟩` from `havg P`. Conclude with `⟨⟨P₀, hP₀⟩, he.symm⟩`. Establish `hker` using `GlobalTheory.T.fockDetCharInvariants_rowSubstitution_irreducible a d n₀ had (V ⊓ LinearMap.ker q) inf_le_left (inv_inf_ker_stable n₀ q σ hqσ)`. Establish `hinj : Function.Injective (q ∘ₗ V.subtype)`. Break down `hker with h0 | hV'` into its components or cases.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.ker_eq_bot]`. Rewrite `h0`, the goal using `[eq_bot_iff]`. Introduce `P hP`. Establish `h'` using `h0 (Submodule.mem_inf.2 ⟨P.2, hP⟩)`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext ((Submodule.mem_bot ℂ).1 h'))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-It suffices to derive a contradiction. Take `⟨x, hx⟩` from `exists_ne (0 : Pr)`. Take `⟨P, hP⟩` from `hsurj x`. Establish `: (P : Pol ι d a) ∈ V ⊓ LinearMap.ker q` using `by rw [hV']; exact P.2`. Conclude with `hx (hP.symm.trans (LinearMap.mem_ker.1 (Submodule.mem_inf.1 this).2))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `e : V ≃ₗ[ℂ] Pr` to `LinearEquiv.ofBijective (q ∘ₗ V.subtype) ⟨hinj, hsurj⟩`. Use `haveI : FiniteDimensional ℂ V := finiteDimensional_inv a d n₀`. Use `haveI : Nontrivial V := e.toEquiv.nontrivial`. Set `E : Module.End ℂ V` to `e.symm.toLinearMap ∘ₗ F ∘ₗ V.subtype`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue E`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `hc.exists_hasEigenvector`. Establish `hEv : E v = c • v` using `hv.apply_eq_smul`. Establish `hFv : F v = c • q v`. Establish `h1 : e (E v) = F v` using `by simp [E]`. Establish `h2 : e (c • v) = c • q v` using `by rw [map_smul]; rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← h1, hEv, h2]`. Establish `hFc : ∀ (κ : ι → Matrix.unitaryGroup (Fin d) ℂ), ∀ P ∈ V, (F - c • q) (rowSub (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ).map (starRingEnd ℂ)) P) = σ (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) ((F - c • q) P)`. Introduce `κ P hP`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, map_sub, map_smul, hFσ κ P hP, hqσ κ P hP]`. Establish `hker2` using `GlobalTheory.T.fockDetCharInvariants_rowSubstitution_irreducible a d n₀ had (V ⊓ LinearMap.ker (F - c • q)) inf_le_left (inv_inf_ker_stable n₀ (F - c • q) σ hFc)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hall : ∀ P ∈ V, F P = c • q P`. Break down `hker2 with h0 | hV'` into its components or cases. It suffices to derive a contradiction. Establish `: (v : Pol ι d a) ∈ V ⊓ LinearMap.ker (F - c • q)`. Use `Submodule.mem_inf.2 ⟨v.2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero]`. Conclude with `hFv`. Establish `h' : (v : Pol ι d a) ∈ (⊥ : Submodule ℂ (Pol ι d a))` using `h0 ▸ this`. Conclude with `hv.2 (Subtype.ext ((Submodule.mem_bot ℂ).1 h'))`. Introduce `P hP`.
-
-Establish `: P ∈ V ⊓ LinearMap.ker (F - c • q)` using `by rw [hV']; exact hP`. Use `LinearMap.mem_ker.1 (Submodule.mem_inf.1 this).2` as an intermediate fact. Rewrite `this` using `[LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero]`. Conclude with `this`. Use `⟨c, ?_, hall⟩` and prove the remaining obligations.
-
-Introduce and unpack `rfl`. Take `⟨P, hP, hFP⟩` from `hF`. Conclude with `hFP (by rw [hall P hP, zero_smul])`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_const_of_equivariant {a d : ℕ} (had : a ≤ d) (n₀ : ι → ℕ) (Pr : Type) [AddCommGroup Pr] [Module ℂ Pr]
     (q F : Pol ι d a →ₗ[ℂ] Pr) (σ : (ι → Matrix (Fin d) (Fin d) ℂ) → Module.End ℂ Pr) [Nontrivial Pr]
@@ -225,7 +221,7 @@ namespace GlobalTheory.SchurQuot
 open GlobalTheory.MinorFrame
 
 /- English proof (translation)
-Unfold `GlobalTheory.BotFormula.minorF GlobalTheory.NormSum.minorPol prodMinors minorAt`. Rewrite using `[show (fun k : D.what₂.Tau × Fin d × Fin a => (k.1, Fin.cast rfl k.2.1, Fin.cast rfl k.2.2)) = id from`. Use function extensionality and compare the values at `fun k => rfl, MvPolynomial.rename_id]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem minorF_eq_prodMinors (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : Tup D a d n) :
     GlobalTheory.BotFormula.minorF rfl rfl T = prodMinors (ι := D.what₂.Tau) (n := n) T := by
@@ -235,27 +231,25 @@ theorem minorF_eq_prodMinors (D : D7) {a d : ℕ} {n : D.what₂.Tau → ℕ} (T
   rfl
 
 /- English proof (translation)
-Introduce `D a a' d had n₀ Pr _ _ q q' σ ha ha' hPr hqs hq's hq hq' hqσ hq'σ`. Take `⟨Pl, ε, hPlT, hPlκ⟩` from `GlobalTheory.T.exists_complementaryMinor_map_realPlaces D had n₀`. Establish `hPlV : ∀ P ∈ inv (ι` using `D.what₂.Tau) a d n₀, Pl P ∈ inv (ι := D.what₂.Tau) a' d n₀ := by`. Introduce `P hP`. Establish `hle : Submodule.span ℂ (Set.range (prodMinors (ι` using `D.what₂.Tau) (a := a) (d := d) (n := n₀))) ≤ (inv (ι := D.what₂.Tau) a' d n₀).comap Pl := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨T, rfl⟩`. Use `show Pl (prodMinors T) ∈ inv (ι := D.what₂.Tau) a' d n₀`. Establish `h` using `hPlT T`. Rewrite `h` using `[minorF_eq_prodMinors, minorF_eq_prodMinors]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (prodMinors_mem_inv _)`. Conclude with `hle (GlobalTheory.MinorFrame.inv_le_span_prodMinors a d n₀ hP)`. Set `F : PolF D d a →ₗ[ℂ] Pr` to `q' ∘ₗ Pl`. Establish `hFσ : ∀ (κ : D.what₂.Tau → Matrix.unitaryGroup (Fin d) ℂ), ∀ P ∈ inv (ι` using `D.what₂.Tau) a d n₀, F (rowSub (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ).map (starRingEnd ℂ)) P) = σ (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) (F P) := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `κ P hP`. Simplify using `only [F, LinearMap.comp_apply]`. Rewrite using `[hPlκ κ P hP, map_smul, hq'σ κ (Pl P) (hPlV P hP), smul_smul, inv_mul_cancel₀ (detChar_unitary_ne_zero n₀ κ), one_smul]`. Establish `hF : ∃ P ∈ inv (ι` using `D.what₂.Tau) a d n₀, F P ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hcon`. Take `⟨x, hx⟩` from `exists_ne (0 : Pr)`. Take `⟨P', rfl⟩` from `hq's x`. Take `⟨P₀, hP₀, he⟩` from `GlobalTheory.T.exists_detCharInvariant_same_value_twisted a' d n₀ Pr q' hq' P'`. Apply `hx` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[he]`. Establish `hle : Submodule.span ℂ (Set.range (prodMinors (ι` using `D.what₂.Tau) (a := a') (d := d) (n := n₀))) ≤ LinearMap.ker q' := by`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨T', rfl⟩`. Take `⟨T, rfl⟩` from `(GlobalTheory.BotMatch.complTup_bijective D had).2 T'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0` using `hcon (prodMinors T) (prodMinors_mem_inv T)`. Establish `h` using `hPlT T`. Rewrite `h` using `[minorF_eq_prodMinors, minorF_eq_prodMinors]`. Simplify using `only [F, LinearMap.comp_apply, h, map_smul] at h0`. Use `show q' (prodMinors (GlobalTheory.BotMatch.complTup D had T)) = 0`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hε : ((ε T : ℤ) : ℂ) ≠ 0`. Apply the tactic sequence `rcases Int.units_eq_one_or (ε T) with h1 | h1 <;> simp [h1]`. Conclude with `(smul_eq_zero.1 h0).resolve_left hε`. Conclude with `hle (GlobalTheory.MinorFrame.inv_le_span_prodMinors a' d n₀ hP₀)`. Take `⟨ρ, hρ, hFq⟩` from `exists_const_of_equivariant (by omega) n₀ Pr q F σ hqs hq hqσ hFσ hF`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨ρ⁻¹, inv_ne_zero hρ, fun n T => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hn : n = n₀`. Substitute `hn` using the available equality. Use `⟨ε T, ?_⟩` and prove the remaining obligations. Establish `h` using `hFq (prodMinors T) (prodMinors_mem_inv T)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hT` using `hPlT T`. Rewrite `hT`, the goal using `[minorF_eq_prodMinors, minorF_eq_prodMinors]`. Simplify using `only [F, LinearMap.comp_apply, hT, map_smul] at h`. Rewrite using `[mul_smul, h, smul_smul, inv_mul_cancel₀ hρ, one_smul]`. Use `⟨1, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[minorF_eq_prodMinors, minorF_eq_prodMinors]`. Rewrite using `[quot_eq_zero_of_weight_ne ha hn q hq (fun g => colSub_prodMinors g T), quot_eq_zero_of_weight_ne ha' hn q' hq' (fun g => colSub_prodMinors g _), smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem quot_minor_eq_const_smul_compl : ∀ (D : D7) {a a' d : ℕ} (had : a + a' = d) (n₀ : D.what₂.Tau → ℕ) (Pr : Type) [AddCommGroup Pr] [Module ℂ Pr]
     (q : PolF D d a →ₗ[ℂ] Pr) (q' : PolF D d a' →ₗ[ℂ] Pr) (σ : (D.what₂.Tau → Matrix (Fin d) (Fin d) ℂ) → Module.End ℂ Pr),

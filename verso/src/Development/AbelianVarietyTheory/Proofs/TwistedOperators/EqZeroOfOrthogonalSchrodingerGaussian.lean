@@ -9,25 +9,23 @@ open scoped FourierTransform RealInnerProductSpace Real
 namespace GlobalTheory.RealWeil
 
 /- English proof (translation)
-Introduce `l _ k h`. Use `set G := GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ l) with hG`. Set `m : EuclideanSpace ℝ l → ℂ` to `fun x => G x * k x`. Establish `hGn : ∀ x, ‖G x‖ ≤ 1` using `fun x => by`. Rewrite using `[hG, GroundTheory.Global.gaussianSchwartz_apply, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), Real.exp_le_one_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Real.pi_pos` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg ‖x‖]`. Establish `hm_cont : Continuous m` using `G.continuous.mul k.continuous`. Establish `hm_int : Integrable m` using `k.integrable.norm.mono' hm_cont.aestronglyMeasurable (ae_of_all _ fun x => by`. Simplify using `only [m, norm_mul]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hGn x))`. Establish `hF : 𝓕 m = 0`. Use function extensionality and compare the values at `q`. Establish `hq` using `h (Sum.elim 0 (fun i => q i))`. Establish `hp : pPart (Sum.elim 0 (fun i => q i) : l ⊕ l → ℝ) = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using `[pPart]`. Establish `hqq : qPart (Sum.elim 0 (fun i => q i) : l ⊕ l → ℝ) = q`. Use extensionality with `i`. Simplify using `[qPart]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hq` using `[SchwartzMap.inner_toL2_toL2_eq _ _ volume]`. Rewrite using `[Real.fourier_eq', Pi.zero_apply, ← hq]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [m, coe_rhoSch, rhoFun, phase, hp, hqq, add_zero, inner_zero_left, mul_zero, RCLike.inner_apply, map_mul, smul_eq_mul]`. Rewrite using `[← Complex.exp_conj]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGc : (starRingEnd ℂ) (G x) = G x`. Rewrite using `[hG, GroundTheory.Global.gaussianSchwartz_apply, Complex.conj_ofReal]`. Rewrite using `[hGc]`. Establish `: (starRingEnd ℂ) (((2 * π * ⟪q, x⟫ : ℝ) : ℂ) * Complex.I) = ((-2 * π * ⟪x, q⟫ : ℝ) : ℂ) * Complex.I`. Rewrite using `[map_mul, Complex.conj_ofReal, Complex.conj_I, real_inner_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm0 : m = 0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : Integrable (𝓕 m)` using `by rw [hF]; exact integrable_zero _ _ _`. Rewrite using `[← hm_cont.fourierInv_fourier_eq hm_int hi, hF]`. Use function extensionality and compare the values at `v`. Simplify using `[Real.fourierInv_eq]`. Use extensionality with `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hx` using `congrFun hm0 x`. Simplify using `only [m, Pi.zero_apply, mul_eq_zero] at hx`. Break down `hx with hx | hx` into its components or cases. It suffices to derive a contradiction. Rewrite `hx` using `[hG, GroundTheory.Global.gaussianSchwartz_apply, Complex.ofReal_eq_zero]`.
-
-Conclude with `(Real.exp_pos _).ne' hx`. Simplify using `using hx`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_inner_rhoSch_gaussian : ∀ (l : Type) [Fintype l] (k : Sch l),
     (∀ w : l ⊕ l → ℝ, inner ℂ ((rhoSch w (GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ l))).toLp 2 volume)

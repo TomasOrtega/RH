@@ -49,7 +49,7 @@ def FrRatJ : Prop :=
         (inclE (F := D.host.F) (w'.adicCompletion D.host.F))) B
 
 /- English proof (translation)
-The claim follows from `reGL_mem_UJ (rankN D (i + 1) hi) _ (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) _ (t.gamI c γ).2`.
+A detailed English derivation is pending.
 -/
 theorem locJ_UJ (c : cmp) (γ : ((gatCh (gatJ Lv (i + 1)) em).lev c).Γ) :
     (locJ hi t B).gamI c γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D (i + 1) hi) :=
@@ -58,7 +58,7 @@ theorem locJ_UJ (c : cmp) (γ : ((gatCh (gatJ Lv (i + 1)) em).lev c).Γ) :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `LocAt.actB_of (locJ hi t B) (rankN D (i + 1) hi) B (fun c γ => (t.gamI c γ).1) rfl (fun _ _ => rfl) ?_` and prove the remaining obligations. Introduce `c v γ a b a' b' ha hb`. Establish `h1` using `t.act_eq c v _ rfl ((X.g u w hg).pl v).2 γ a b a' b' ha hb`. Rewrite `h1` using `[hB _ ((X.g u w hg).pl v).2, bc_comp]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locJ_actB (hB : FrRatJ t B) : (locJ hi t B).ActB := by
   refine LocAt.actB_of (locJ hi t B) (rankN D (i + 1) hi) B (fun c γ => (t.gamI c γ).1) rfl (fun _ _ => rfl) ?_
@@ -70,7 +70,7 @@ theorem locJ_actB (hB : FrRatJ t B) : (locJ hi t B).ActB := by
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `isHerm_re (rankN D (i + 1) hi) _ (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) (gram_herm D.sp.cm (D.sp.X (i + 1))) det := det_re (rankN D (i + 1) hi) (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) (gram_det_unit D.sp.cm (D.sp.X (i + 1))) sig := fun v x => (X.g u w hg).s …`.
+A detailed English derivation is pending.
 -/
 theorem locGood_locJ : LocGood (sigD D) (gramN D (i + 1) hi) (locJ hi t B) where
   herm := isHerm_re (rankN D (i + 1) hi) _ (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) (gram_herm D.sp.cm (D.sp.X (i + 1)))
@@ -84,7 +84,7 @@ theorem locGood_locJ : LocGood (sigD D) (gramN D (i + 1) hi) (locJ hi t B) where
     exact h2
 
 /- English proof (translation)
-Introduce `v x` and use `(X.g u w hg).completion_integers_iff v _ rfl x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locInt_locJ : LocInt (locJ hi t B) :=
   fun v x => (X.g u w hg).completion_integers_iff v _ rfl x

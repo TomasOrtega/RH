@@ -12,13 +12,11 @@ noncomputable section
 namespace PositivityTheory.KReal
 
 /- English proof (translation)
-Set `S : Subalgebra ℂ D` to `Subalgebra.centralizer ℂ (Subalgebra.centralizer ℂ {x} : Set D)`. Establish `hS : ∀ a : D, a ∈ S ↔ ∀ g : D, x * g = g * x → g * a = a * g`. Introduce `a`. Simplify using `only [S, Subalgebra.mem_centralizer_iff, SetLike.mem_coe, Set.mem_singleton_iff, forall_eq]`. Establish `hx : x ∈ S` using `(hS x).2 fun g hg => hg.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hF : IsField S` using `{ exists_pair_ne := ⟨0, 1, zero_ne_one⟩ mul_comm := fun a b => Subtype.ext ((hS b).1 b.2 a ((hS a).1 a.2 x rfl)) mul_inv_cancel := fun {a} ha => by`. Establish `ha' : (a : D) ≠ 0` using `fun h0 => ha (Subtype.ext h0)`. Use `⟨⟨(a : D)⁻¹, (hS _).2 fun g hg => ?_⟩, Subtype.ext (mul_inv_cancel₀ ha')⟩` and prove the remaining obligations. Conclude with `(Commute.inv_right₀ ((hS a).1 a.2 g hg : Commute g a)).eq }`. Use `letI : Field S := hF.toField`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hx' : IsAlgebraic ℂ (⟨x, hx⟩ : S)`. Assume the negation of the conclusion as `ht`. Establish `h1` using `(Transcendental.linearIndependent_sub_inv (F := ℂ) (E := S) ht).cardinal_le_rank`. Establish `h2 : Module.rank ℂ S ≤ Module.rank ℂ D` using `LinearMap.rank_le_of_injective S.val.toLinearMap Subtype.val_injective`. Rewrite `h1` using `[Cardinal.mk_complex]`.
-
-Conclude with `absurd (h1.trans (h2.trans h)) (not_le.2 Cardinal.aleph0_lt_continuum)`. Conclude with `hx'.algHom S.val`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_rank_le {D : Type} [DivisionRing D] [Algebra ℂ D]
     (h : Module.rank ℂ D ≤ Cardinal.aleph0) (x : D) : IsAlgebraic ℂ x := by
@@ -45,11 +43,11 @@ theorem isAlgebraic_of_rank_le {D : Type} [DivisionRing D] [Algebra ℂ D]
   exact hx'.algHom S.val
 
 /- English proof (translation)
-Establish `: Nontrivial V` using `IsSimpleModule.nontrivial B V`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Set `ev : Module.End B V →ₗ[ℂ] V` to `{ toFun := fun T => T v map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hev : Function.Injective ev`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `T hT`. Assume the negation of the conclusion as `h0`. Conclude with `hv ((LinearMap.injective_of_ne_zero h0) (by rw [map_zero]; exact hT))`. Establish `hr : Module.rank ℂ (Module.End B V) ≤ Cardinal.aleph0` using `(LinearMap.rank_le_of_injective ev hev).trans h`. Establish `: Algebra.IsAlgebraic ℂ (Module.End B V)` using `⟨isAlgebraic_of_rank_le hr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.IsIntegral ℂ (Module.End B V)` using `Algebra.IsAlgebraic.isIntegral`. Conclude with `(IsAlgClosed.algebraMap_bijective_of_isIntegral (k := ℂ)).2`.
+A detailed English derivation is pending.
 -/
 theorem schur_countable {B V : Type} [Ring B] [Algebra ℂ B] [AddCommGroup V] [Module ℂ V] [Module B V]
     [IsScalarTower ℂ B V] [IsSimpleModule B V] (h : Module.rank ℂ V ≤ Cardinal.aleph0) :
@@ -73,7 +71,7 @@ theorem schur_countable {B V : Type} [Ring B] [Algebra ℂ B] [AddCommGroup V] [
   exact (IsAlgClosed.algebraMap_bijective_of_isIntegral (k := ℂ)).2
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.DYhd6.main h B hB f s`.
+A detailed English derivation is pending.
 -/
 theorem dense_countable {V : Type} [AddCommGroup V] [Module ℂ V] [Nontrivial V]
     (h : Module.rank ℂ V ≤ Cardinal.aleph0) (B : Subalgebra ℂ (Module.End ℂ V))
@@ -89,9 +87,9 @@ def one_op (i : ι) (f : Module.End ℂ (M i)) : Module.End ℂ (PiTensorProduct
   PiTensorProduct.map (Function.update (fun j => (LinearMap.id : M j →ₗ[ℂ] M j)) i f)
 
 /- English proof (translation)
-Rewrite using `[one_op, PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem one_op_tprod (i : ι) (f : Module.End ℂ (M i)) (x : ∀ j, M j) :
     one_op i f (PiTensorProduct.tprod ℂ x) = PiTensorProduct.tprod ℂ (Function.update x i (f (x i))) := by
@@ -103,30 +101,30 @@ theorem one_op_tprod (i : ι) (f : Module.End ℂ (M i)) (x : ∀ j, M j) :
   · simp [Function.update_of_ne hj]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[one_op_tprod]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_op_mul (i : ι) (f g : Module.End ℂ (M i)) : one_op i (f * g) = one_op i f * one_op i g := by
   ext x
   simp [one_op_tprod]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[one_op_tprod]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_op_add (i : ι) (f g : Module.End ℂ (M i)) : one_op i (f + g) = one_op i f + one_op i g := by
   ext x
   simp [one_op_tprod]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[one_op_tprod]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_op_alg (i : ι) (c : ℂ) : one_op i (algebraMap ℂ (Module.End ℂ (M i)) c) = algebraMap ℂ _ c := by
   ext x
   simp [one_op_tprod]
 
 /- English proof (translation)
-Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r y`. Use `⟨{y i}, fun f g h => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, one_op_tprod, one_op_tprod, h _ (Finset.mem_singleton_self _)]`. Consider the case `add y z hy hz`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨s, hs⟩` from `hy`. Take `⟨t, ht⟩` from `hz`. Use `⟨s ∪ t, fun f g h => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, hs f g fun m hm => h m (Finset.mem_union_left _ hm), ht f g fun m hm => h m (Finset.mem_union_right _ hm)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_op_fin (i : ι) (x : PiTensorProduct ℂ M) :
     ∃ s : Finset (M i), ∀ f g : Module.End ℂ (M i), (∀ m ∈ s, f m = g m) → one_op i f x = one_op i g x := by
@@ -143,13 +141,13 @@ theorem one_op_fin (i : ι) (x : PiTensorProduct ℂ M) :
       ht f g fun m hm => h m (Finset.mem_union_right _ hm)]
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, PiTensorProduct.map (fun j => if j ∈ s then f j else (LinearMap.id : M j →ₗ[ℂ] M j)) x ∈ N`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hx`. Consider the case `insert i s hi ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e : PiTensorProduct.map (fun j => if j ∈ insert i s then f j else (LinearMap.id : M j →ₗ[ℂ] M j)) = one_op i (f i) ∘ₗ PiTensorProduct.map (fun j => if j ∈ s then f j else (LinearMap.id : M j →ₗ[ℂ] M j))`. Rewrite using `[one_op, ← PiTensorProduct.map_comp]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Simplify using `[hi]`. Simplify using `[hj, Function.update_of_ne hj]`. Rewrite using `[e]`. Conclude with `hN i (f i) _ ih`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using key Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_of_one_op [Fintype ι] (N : Submodule ℂ (PiTensorProduct ℂ M))
     (hN : ∀ i (f : Module.End ℂ (M i)), ∀ x ∈ N, one_op i f x ∈ N)
@@ -176,19 +174,15 @@ theorem map_mem_of_one_op [Fintype ι] (N : Submodule ℂ (PiTensorProduct ℂ M
 end
 
 /- English proof (translation)
-Introduce `ι _ _ A M _ _ act hr hnt hirr N hN`. Establish `hall : ∀ i (f : Module.End ℂ (M i)), ∀ x ∈ N, one_op i f x ∈ N`. Introduce `i f x hx`. Set `B : Subalgebra ℂ (Module.End ℂ (M i))` to `{ carrier := {b | ∀ y ∈ N, one_op i b y ∈ N} mul_mem' := fun {a b} ha hb y hy => by`. Rewrite using `[one_op_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha _ (hb y hy)`. Use the proof step `add_mem' := fun {a b} ha hb y hy => by`. Rewrite using `[one_op_add]`. Conclude with `N.add_mem (ha y hy) (hb y hy)`. Use the proof step `algebraMap_mem' := fun c y hy => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[one_op_alg]`. Conclude with `N.smul_mem c hy }`. Take `⟨s, hs⟩` from `one_op_fin i x`. Use `hnt i` as an intermediate fact. Take `⟨b, hb, hfb⟩` from `dense_countable (hr i) B (fun P hP => hirr i P fun a y hy => hP (act i a) (hN i a) y hy) f s`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[hs f b hfb]`. Conclude with `hb x hx`. Rewrite using `[or_iff_not_imp_left]`. Introduce `h0`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Set `b` to `fun i => Module.Basis.ofVectorSpace ℂ (M i)`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p, (Basis.piTensorProduct b).repr x p ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hx0 ((Basis.piTensorProduct b).repr.map_eq_zero_iff.1 (Finsupp.ext hc))`.
-
-Rewrite using `[eq_top_iff, ← PiTensorProduct.span_tprod_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨v, rfl⟩`. Establish `e : PiTensorProduct.map (fun i => ((b i).coord (p i)).smulRight (v i)) = ((Basis.piTensorProduct b).coord p).smulRight (PiTensorProduct.tprod ℂ v)`. Use extensionality with `y`. Simplify using `[Basis.piTensorProduct_repr_tprod_apply, MultilinearMap.map_smul_univ]`.
-
-Establish `h1` using `map_mem_of_one_op N hall (fun i => ((b i).coord (p i)).smulRight (v i)) x hx`. Rewrite `h1` using `[e, LinearMap.smulRight_apply]`. Conclude with `(N.smul_mem_iff hp).1 h1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensorIrr : TensorIrr := by
   intro ι _ _ A M _ _ act hr hnt hirr N hN

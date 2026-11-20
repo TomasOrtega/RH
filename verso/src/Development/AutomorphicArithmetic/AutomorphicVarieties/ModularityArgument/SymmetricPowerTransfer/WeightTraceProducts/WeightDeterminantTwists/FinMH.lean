@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Polynomial UpperTheory.V.Z.Sym.Wt
 
 /- English proof (translation)
-Introduce `K _ d n`. Establish `hle : MH d n ≤ MvPolynomial.restrictDegree (K × Fin d) ℂ (∑ k, n k)`. Introduce `P hP`. Rewrite using `[MvPolynomial.mem_restrictDegree]`. Introduce and unpack `m hm ⟨k, i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h` using `(memMH K d n P).1 hP m hm k`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Module.Finite.of_injective (Submodule.inclusion hle) (Submodule.inclusion_injective hle)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Wt.finMH :
     UpperTheory.V.Z.Sym.Wt.FinMH := by

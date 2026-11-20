@@ -30,11 +30,9 @@ abbrev SecA {R : Type} [CommRing R] [IsDomain R] (A : PolAV (Spec (CommRingCat.o
   SecMod (F := F) (fst (TFK (R := R) F) A.A).left (LPow A.A A.L (k : ℤ) (TFK (R := R) F))
 
 /- English proof (translation)
-Introduce `V _ _ _ hV D A G _ _ U F _ _ k hk`. Use `choose x hx using GlobalTheory.T.exists_fourierJacobi_expansion_over_field hL hL₂ V hV D A G U F k hk`. Establish `uq` using `GlobalTheory.T.fourierJacobiExpansion_overField_injective V hV D A G U F k`. Establish `lin` using `ExpLin.expF_linear V hV D A G U F k`. Set `S₀ : ∀ α, SecA A F k → CompMod D F k α` to `fun α v => SecMod.mk _ (x v.sec α)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `comb : ∀ (c : F) (v v' : SecA A F k) α, S₀ α (c • v + v') = c • S₀ α v + S₀ α v'` using `fun c v v' => congrFun ((uq _ _ _ _ (hx (c • v + v').sec) (lin v.sec v'.sec (c • v + v').sec _ _ (fun α => (c • S₀ α v + S₀ α v').sec) c (hx v.sec) (hx v'.sec) (fun _ => rfl) fun _ _ => rfl)).1 rfl)`. Establish `z : ∀ α, S₀ α 0 = 0` using `fun α => by`. Use `comb 1 0 0 α` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul, add_zero]`. Conclude with `left_eq_add.1 this`.
-
-Use `⟨fun α => { toFun := S₀ α map_add' := fun v v' => by simpa only [one_smul] using comb 1 v v' α map_smul' := fun c v => by simpa only [add_zero, z, RingHom.id_apply] using comb c v 0 α }, fun v s => ⟨fun h => (uq _ _ _ _ h (hx v.sec)).1 rfl, fun h => h ▸ hx v.sec⟩, fun v h => ?_⟩` and prove the remaining obligations. Conclude with `(uq _ _ _ _ (hx v.sec) (hx (0 : SecA A F k).sec)).2 (funext fun α => (h α).trans (z α).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_expansion (hL : Laws) (hL₂ : Laws2) : AllPre fun {V} _ _ _ {D} {A} {_} _ _ U =>
     ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (k : ℕ), 1 ≤ k →
@@ -61,7 +59,7 @@ theorem exists_expansion (hL : Laws) (hL₂ : Laws2) : AllPre fun {V} _ _ _ {D} 
   exact (uq _ _ _ _ (hx v.sec) (hx (0 : SecA A F k).sec)).2 (funext fun α => (h α).trans (z α).symm)
 
 /- English proof (translation)
-Take `⟨Φ, e, hd, h⟩` from `exists_projective_rep hL hL₂ A (jFK (R := R) F) hN`. Conclude with `⟨Φ, e, hd, (hL.mulN _ A N (Nat.pos_of_ne_zero fun e => hN (by rw [e, Nat.cast_zero]))).2.2.2.2 F (jFK (R := R) F) hN, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rep (hL : Laws) (hL₂ : Laws2) {R : Type} [CommRing R] [IsDomain R]
     (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (F : Type) [Field F] [IsAlgClosed F]
@@ -79,9 +77,9 @@ theorem exists_rep (hL : Laws) (hL₂ : Laws2) {R : Type} [CommRing R] [IsDomain
 attribute [local instance] gtGroup
 
 /- English proof (translation)
-Set `K` to `(nsmulAddMonoidHom N : GtPtF D F →+ GtPtF D F).ker`. Set `κ : K ≃ {g : GtPtF D F // GtTors D N g}` to `Equiv.subtypeEquivRight fun g => (GtCount.gtTors_iff N g).symm`. Set `ν : Multiplicative K →* A` to `MonoidHom.mk' (fun g => m (κ g.toAdd)) fun g g' => madd _ _ _ ((isAdd_iff_eq _ _ _).2 rfl)`. Establish `hν : Function.Injective ν` using `fun g g' h => κ.injective (minj h)`. Set `i : TorChar D.X F N →* Multiplicative K` to `MonoidHom.mk' (fun τ => Multiplicative.ofAdd ⟨torusPt D F (Additive.ofMul τ.1), show N • torusPt D F (Additive.ofMul τ.1) = 0 by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[← map_nsmul, ← ofMul_pow, show τ.1 ^ N = 1 from τ.2, ofMul_one, map_zero]⟩)`. Use `fun τ τ' => Subtype.ext (map_add (torusPt D F) (Additive.ofMul τ.1) (Additive.ofMul τ'.1))`. Establish `iinj : Function.Injective i` using `fun τ τ' h => Subtype.ext (Additive.ofMul.injective (torusPt_injective (congrArg Subtype.val h)))`. Conclude with `⟨ν.range, ν.comp i, fun h => ⟨fun ⟨g, e⟩ => ⟨_, e⟩, fun ⟨g, e⟩ => ⟨Multiplicative.ofAdd (κ.symm g), (congrArg m (κ.apply_symm_apply g)).trans e⟩⟩, (Nat.card_congr (MonoidHom.ofInjective hν).toEquiv).symm.trans (Nat.card_congr κ), hν.comp iinj, fun τ => ⟨κ (i τ).toAdd, rfl, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_range {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (N : ℕ) {A : Type} [CommGroup A] (m : {g : GtPtF D F // GtTors D N g} → A)
@@ -106,19 +104,17 @@ theorem exists_range {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Ty
     fun τ => ⟨κ (i τ).toAdd, rfl, rfl⟩⟩
 
 /- English proof (translation)
-Establish `hN0 : N ≠ 0` using `fun e => hN (by rw [e, Nat.cast_zero])`. Establish `hN1 : 0 < N` using `Nat.pos_of_ne_zero hN0`. Take `⟨Φ, e, hd, cA, hθ, hm, hc, hn⟩` from `exists_rep hL hL₂ A F hN`. Establish `: Finite (TorsPt A (TFK (R` using `V) F) N) := Nat.finite_of_card_ne_zero (cA.trans_ne (pow_ne_zero _ hN0))`. Establish `fd : FiniteDimensional F (SecA A F N)` using `Module.finite_of_finrank_pos ((pow_pos hN1 _).trans_eq hd.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m', hm'⟩ : ∃ m' : {g : GtPtF D F // GtTors D N g} → TorsPt A (TFK (R` from `V) F) N, ∀ g, (m' g).1 = m g := ⟨fun g => ⟨m g, (mact g).1⟩, fun _ => rfl⟩`. Establish `hΨ : ∀ g : {g : GtPtF D F // GtTors D N g}, ∃ w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F g.1.b) (DegPre.lineε N)), w.IsGen ∧ ∀ v : SecA A F N, PhiRaw D F N 0 g.1 w (fun α => (S α v).sec) fun α => (S α (Φ (m' g) v)).sec` using `fun g => by`. Take `⟨θ, h₁, h₂⟩` from `hθ (m' g)`. Take `⟨w, hw, h⟩` from `(mact g).2 θ (h₁.trans (hm' g))`. Conclude with `⟨w, hw, fun v => h _ _ _ _ ((hS v _).2 rfl) ((hS _ _).2 rfl) (h₂ v)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨H, a, hH, cH, ainj, ha⟩` from `exists_range D F N m' (fun g g' h => minj ((hm' g).symm.trans ((congrArg Subtype.val h).trans (hm' g')))) fun g g' g'' h => Subtype.ext ((hm' g'').trans ((madd g g' g'' h).trans (congrArg₂ (· * ·) (hm' g) (hm' g')).symm))`. Establish `cT : Nat.card (TorChar D.X F N) = N ^ D.rank` using `GtCount.card_torus_torsion D.X F N hN`. Rewrite `cH` using `[(GtCount.card_gtTors hL hL₂ V D F N hN).1]`. Establish `k₁ : ∀ τ, ∃ c : Fˣ, ∀ v α, S α (Φ (a τ) v) = ((c * evalChar F N α τ : Fˣ) : F) • S α v` using `fun τ => by`. Take `⟨g, e₁, e₂⟩` from `ha τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, h⟩` from `hΨ g`. Take `⟨c, hc⟩` from `phiRaw_torus hL.globalFns τ.1 e₂ g.2 hw`. Rewrite using `[e₁]`. Conclude with `⟨c, fun v => hc (fun α => S α v) (fun α => S α (Φ (m' g) v)) (h v)⟩`. Establish `k₂ : ∀ h ∈ H, ∀ α v v' (c : F), S α v = c • S α v' → S α (Φ h v) = c • S α (Φ h v')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `x hx β v v' c e`. Take `⟨g, rfl⟩` from `(hH x).1 hx`. Take `⟨w, hw, h⟩` from `hΨ g`. Conclude with `phiRaw_smul hL.globalFns g.2 hw (s := fun α => S α v) (s' := fun α => S α (Φ (m' g) v)) (t := fun α => S α v') (t' := fun α => S α (Φ (m' g) v')) (h v) (h v') β c e`. Use `⟨fun g => Φ (m' g), fd, hΨ, fun α => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, h₂, h₃⟩` from `classSub_structure hN e Φ (by rw [cA, Nat.cast_pow]; exact pow_ne_zero _ hN) (by rw [cA, hd, mul_comm, pow_mul]) hm hc hn S hS₀ a ainj k₁ H k₂ (by rw [cT, cH, cA, hg]; ring) α`. Use `⟨h₁, ?_, fun W hW hst => h₃ W hW fun x hx => ?_⟩` and prove the remaining obligations. Use `Nat.eq_of_mul_eq_mul_right (pow_pos hN1 D.rank) ?_` and prove the remaining obligations. Rewrite using `[← cT, h₂, cT, ← pow_add, ← hg, hd]`. Take `⟨g, rfl⟩` from `(hH x).1 hx`.
-
-Conclude with `hst g`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem structure_of_acts (hL : Laws) (hL₂ : Laws2) {V : Type} [CommRing V] [IsDomain V] [IsNoetherianRing V] {I : Ideal V}
     {D : DegPre V} {A : PolAV (Spec (CommRingCat.of (FractionRing V)))} {G : Over (Spec (CommRingCat.of V))} [GrpObj G]
@@ -178,9 +174,9 @@ theorem structure_of_acts (hL : Laws) (hL₂ : Laws2) {V : Type} [CommRing V] [I
     exact hst g
 
 /- English proof (translation)
-Introduce `V _ _ _ hV D A G _ _ U N hN1`. Establish `: IsNoetherianRing V` using `by have := hV.1; infer_instance`. Establish `hN : (N : Kbar V) ≠ 0`. Use `hV.2.2` as an intermediate fact. Establish `: CharZero (FractionRing V)` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.cast_ne_zero.2 (by omega)`. Take `⟨S, hS, hS₀⟩` from `exists_expansion hL hL₂ V hV D A G U (Kbar V) N hN1`. Take `⟨m, minj, mact, madd⟩` from `GlobalTheory.T.torusTorsion_to_abelianTorsion_theta_action hL hL₂ V hV D A G U N hN1`. Take `⟨Ψ, fd, h⟩` from `structure_of_acts hL hL₂ U (PreU.dim_eq V hV D A G U) (Kbar V) hN S hS hS₀ m minj mact madd`. Conclude with `⟨S, Ψ, fd, hS, hS₀, h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem weight_structure (hL : Laws) (hL₂ : Laws2) : AllPre fun {V} _ _ _ {D} {A} {_} _ _ U => ∀ N : ℕ, 1 ≤ N →
     ∃ (S : ∀ α, SecA A (Kbar V) N →ₗ[Kbar V] CompMod D (Kbar V) N α)
@@ -207,17 +203,17 @@ theorem weight_structure (hL : Laws) (hL₂ : Laws2) : AllPre fun {V} _ _ _ {D} 
   exact ⟨S, Ψ, fd, hS, hS₀, h⟩
 
 /- English proof (translation)
-Introduce `hL hL₂ V _ _ _ hV D A G _ _ U N hN`. Take `⟨S, Ψ, fd, hS, hS₀, hΨ, h⟩` from `weight_structure hL hL₂ V hV D A G U N hN`. Use `⟨fun α t s hs => ?_, fun α => ?_, fun α ⟨t₀, s₀, h₀, j₀, hj₀⟩ t s hs hz hα => ?_⟩` and prove the remaining obligations. Take `rfl` from `(hS (SecMod.mk _ t) s).1 hs`. Take `⟨v', hv', e⟩` from `(h α).1 (SecMod.mk _ t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨v'.sec, _, (hS v' _).2 rfl, fun β => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hβ : ∃ mu, β = α + N • mu`. Use `Or.inl ⟨hβ, ?_⟩` and prove the remaining obligations. Take `⟨mu, rfl⟩` from `hβ`. Conclude with `e mu`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Prove the second alternative.
 
-Conclude with `Or.inr ⟨hβ, (SecMod.eq_zero_iff_coord _).1 (hv' β hβ)⟩`. Establish `: Nontrivial (classSub S N α)` using `Module.nontrivial_of_finrank_pos (R := Kbar V) ((pow_pos hN _).trans_eq (h α).2.1.symm)`. Take `⟨v, hv⟩` from `exists_ne (0 : classSub S N α)`. Take `⟨β, hβ⟩` from `not_forall.1 fun e => hv (Subtype.ext (hS₀ v.1 e))`. Take `⟨mu, rfl⟩` from `not_not.1 fun e => hβ (v.2 β e)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨mu, v.1.sec, _, (hS v.1 _).2 rfl, not_forall.1 fun e => hβ ((SecMod.eq_zero_iff_coord _).2 e)⟩`. Take `rfl` from `(hS (SecMod.mk _ t) s).1 hs`. Take `rfl` from `(hS (SecMod.mk _ t₀) s₀).1 h₀`. Establish `st : ∀ g β v, S β v = 0 → S β (Ψ g v) = 0` using `fun g β v e => by`. Take `⟨w, hw, hp⟩` from `hΨ g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(phiRaw_smul hL.globalFns g.2 hw (s := fun α => S α v) (s' := fun α => S α (Ψ g v)) (t := fun α => S α v) (t' := fun α => S α (Ψ g v)) (hp v) (hp v) β 0 (e.trans (zero_smul _ _).symm)).trans (zero_smul _ _)`. Break down `(h α).2.2 (classSub S N α ⊓ LinearMap.ker (S α)) inf_le_left (fun g v hv => ⟨fun β hβ => st g β v (hv.1 β hβ), st g α v hv.2⟩) with e | e` into its components or cases. Establish `: SecMod.mk _ t ∈ classSub S N α ⊓ LinearMap.ker (S α)` using `⟨fun β hβ => (SecMod.eq_zero_iff_coord _).2 (hz β hβ), (SecMod.eq_zero_iff_coord _).2 hα⟩`. Rewrite `this` using `[e]`. Conclude with `(SecMod.eq_zero_iff_coord _).1 ((Submodule.mem_bot _).1 this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v', hv', e'⟩` from `(h α).1 (SecMod.mk _ t₀)`. Establish `e₁ : ∀ β, β = α + N • (0 : D.X) → S β v' = S β (SecMod.mk _ t₀)` using `fun β hβ => hβ ▸ e' 0`. Establish `e₂ : S α v' = 0` using `(e.symm ▸ hv' : v' ∈ classSub S N α ⊓ LinearMap.ker (S α)).2`. Conclude with `absurd ((SecMod.eq_zero_iff_coord _).1 ((e₁ α (by rw [nsmul_zero, add_zero])).symm.trans e₂) j₀) hj₀`.
+A detailed English derivation is pending.
 -/
 theorem main : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {_} _ _ U => ∀ N : ℕ, 1 ≤ N → (∀ (α : D.X) t s, U.ExpF (Kbar V) N t s → ∃ t' s', U.ExpF (Kbar V) N t' s' ∧ ∀ β, (∃ mu, β = α + N • mu) ∧ s' β = s β ∨ (¬ ∃ mu, β = α + N • mu) ∧ ∀ j, (s' β).f j = 0) ∧ (∀ α : D.X, ∃ mu, U.Supp (Kbar V) N (α + N • mu)) ∧ ∀ (α : D.X), U.Supp (Kbar V) N α → ∀ t s, U.ExpF (Kbar V) N t s → (∀ β, (¬ ∃ mu, β = α + N • mu) → ∀ j, (s β).f j = 0) → (∀ j, (s α).f j = 0) → ∀ j, t.f j = 0) := by
   intro hL hL₂ V _ _ _ hV D A G _ _ U N hN

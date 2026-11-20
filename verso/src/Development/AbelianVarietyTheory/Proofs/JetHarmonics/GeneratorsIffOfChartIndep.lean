@@ -64,7 +64,7 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdi
   [CharZero V] {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃, h₄, h₅⟩` from `GlobalTheory.lawsAndExpansions`. Conclude with `GlobalTheory.UT.torsionIso_of_pelUnif h₁ h₂ h₃ h₄ h₅ E H _ _ ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩ t P`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem torsionIso {t : SAB H (Sp V)} (P : PELUnif (maximalIdeal V) t) : P.TorsionIso := by
   obtain ⟨h₁, h₂, h₃, h₄, h₅⟩ := GlobalTheory.lawsAndExpansions

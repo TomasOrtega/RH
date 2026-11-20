@@ -27,11 +27,11 @@ namespace GlobalTheory.DeRhamCharpolyZero
 open GlobalTheory.AV
 
 /- English proof (translation)
-Set `e` to `LinearEquiv.ofBijective E hE`. Establish `hT : T = e.conj (φ.baseChange K)`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `e.surjective v`. Rewrite using `[LinearEquiv.conj_apply_apply, e.symm_apply_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x m`. Establish `: x ⊗ₜ[R] m = x • ((1 : K) ⊗ₜ[R] m)` using `by simp [TensorProduct.smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[this, map_smul, map_smul, map_smul, map_smul]`. Conclude with `congrArg (x • ·) (h m)`. Rewrite using `[hT, LinearEquiv.charpoly_conj, LinearMap.charpoly_baseChange]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_of_bijective {R K M V : Type*} [CommRing R] [Field K] [Algebra R K] [AddCommGroup M] [Module R M]
     [Module.Free R M] [Module.Finite R M] [AddCommGroup V] [Module K V] [Module.Finite K V]
@@ -52,7 +52,7 @@ theorem charpoly_of_bijective {R K M V : Type*} [CommRing R] [Field K] [Algebra 
   rw [hT, LinearEquiv.charpoly_conj, LinearMap.charpoly_baseChange]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.charpoly_toMatrix f (Module.finBasis K V), ← LinearMap.charpoly_toMatrix f.dualMap (Module.finBasis K V).dualBasis, ← Matrix.charpoly_transpose, LinearMap.dualMap_def, LinearMap.toMatrix_transpose, Matrix.transpose_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_dualMap {K V : Type*} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     [Module.Finite K (Module.Dual K V)] (f : Module.End K V) : (f.dualMap).charpoly = f.charpoly := by
@@ -62,24 +62,22 @@ theorem charpoly_dualMap {K V : Type*} [Field K] [AddCommGroup V] [Module K V] [
     LinearMap.dualMap_def, LinearMap.toMatrix_transpose, Matrix.transpose_transpose]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.abelianDeRham.1.prim B.ab B.smooth).1`.
+A detailed English derivation is pending.
 -/
 theorem finite_prim {K : Type} [Field K] (B : AbVar K) : Module.Finite K (primDR B.X) :=
   (GlobalTheory.abelianDeRham.1.prim B.ab B.smooth).1
 
 /- English proof (translation)
-The claim follows from `haveI := finite_prim B inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem finite_HdR {K : Type} [Field K] (B : AbVar K) : Module.Finite K (HdR B.X) :=
   haveI := finite_prim B
   inferInstance
 
 /- English proof (translation)
-Use `haveI := finite_prim B₀`. Use `haveI := finite_prim B`. Establish `m` using `GlobalTheory.Published.AbelianDeRham.bcMor h`. Establish `hm : m.IsBC` using `(GlobalTheory.abelianDeRham.2.2.1 K B₀.X B₀.dim B₀.ab B₀.smooth L B.X φ h).1`. Establish `h1 : LinearMap.charpoly (push (dp0 L) (𝟙 _) f.hom) = (primPull (dp0 L) (𝟙 _) f.hom).charpoly` using `charpoly_dualMap _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : LinearMap.charpoly (push (dp0 K) (𝟙 _) f₀.hom) = (primPull (dp0 K) (𝟙 _) f₀.hom).charpoly` using `charpoly_dualMap _`. Rewrite using `[h1, h2]`. Use `charpoly_of_bijective (liftSemi m.pull) hm _ _ fun c => ?_` and prove the remaining obligations. Rewrite using `[liftSemi_tmul, liftSemi_tmul, one_smul, one_smul]`. Establish `k` using `(homMor (dp0 K) (𝟙 _) f₀.hom).comp m`.
-
-Conclude with `(GrpMor.pull_pull m (homMor (dp0 L) (𝟙 _) f.hom) k (fun _ ↦ rfl) e.symm c).trans (GrpMor.pull_pull (homMor (dp0 K) (𝟙 _) f₀.hom) m k (fun _ ↦ rfl) rfl c).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charpoly_push_of_pullback {K L : Type} [Field K] [Field L] [Algebra K L] (B₀ : AbVar K) (B : AbVar L)
     {φ : B.X.left ⟶ B₀.X.left} (h : IsGrpPullback B.X B₀.X (spMap (algebraMap K L)) φ) (f₀ : B₀ ⟶ B₀) (f : B ⟶ B)
@@ -102,7 +100,7 @@ theorem charpoly_push_of_pullback {K L : Type} [Field K] [Field L] [Algebra K L]
     (GrpMor.pull_pull (homMor (dp0 K) (𝟙 _) f₀.hom) m k (fun _ ↦ rfl) rfl c).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pullback.fst B₀.X.hom (spMap (algebraMap K L)), isGrpPullback_pullback B₀.X _, (pullback.lift_fst _ _ _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isGrpPullback_baseChange {K : Type} (L : Type) [Field K] [Field L] [Algebra K L] {B₀ : AbVar K}
     (f₀ : B₀ ⟶ B₀) : ∃ q : (AbVar.baseChange L B₀).X.left ⟶ B₀.X.left,
@@ -111,11 +109,11 @@ theorem exists_isGrpPullback_baseChange {K : Type} (L : Type) [Field K] [Field L
   ⟨pullback.fst B₀.X.hom (spMap (algebraMap K L)), isGrpPullback_pullback B₀.X _, (pullback.lift_fst _ _ _).symm⟩
 
 /- English proof (translation)
-Take `⟨q, h', hq⟩` from `exists_isGrpPullback_baseChange L f₀`. Take `⟨i, hi, hφ⟩` from `grpPullback_iso h h'`. Set `u : B ⟶ AbVar.baseChange L B₀` to `AbVar.Hom.mk i.hom`. Establish `hu : AbVar.IsIsogeny u`. Establish `: IsIso i.hom.left` using `⟨⟨i.inv.left, by rw [← Over.comp_left, i.hom_inv_id, Over.id_left], by rw [← Over.comp_left, i.inv_hom_id, Over.id_left]⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨inferInstanceAs (IsFinite i.hom.left), inferInstanceAs (Surjective i.hom.left)⟩`. Rewrite using `[← AbVar.charpoly_bcMap K L B₀ f₀]`. Use `AbVar.charpoly_eq_of_isogeny_intertwines L B _ u f _ hu (AbVar.hom_ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f.hom ≫ i.hom = i.hom ≫ (AbVar.bcMap L f₀).hom`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h'.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hφ, ← e, ← hq, ← Category.assoc, hφ]`. Rewrite using `[Over.w, Over.w]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_of_pullback {K L : Type} [Field K] [Field L] [Algebra K L] (B₀ : AbVar K) (B : AbVar L)
     {φ : B.X.left ⟶ B₀.X.left} (h : IsGrpPullback B.X B₀.X (spMap (algebraMap K L)) φ) (f₀ : B₀ ⟶ B₀) (f : B ⟶ B)
@@ -136,29 +134,25 @@ theorem charpoly_of_pullback {K L : Type} [Field K] [Field L] [Algebra K L] (B�
   · rw [Over.w, Over.w]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨L, hL, ⟨u⟩⟩ : ∃ L : LB B.X.left, L.IsLB ∧ Nonempty (HolUnif B.X L B.dim) := by`. Use `B.ab.proper` as an intermediate fact. Take `⟨H, m, s, hH, hs, -⟩` from `GlobalTheory.SymVeryAmple.exists_symmetric_veryAmple ℂ B.X B.ab`. Establish `hamp : Out.RelAmple B.X H` using `(GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine B.X hH).2 (GlobalTheory.isAmpleLB_of_veryAmpleBy hs)`. Conclude with `⟨_, Out.Inh.trivLB_isLB _, GlobalTheory.RealMultChart.exists_holUnif_of_compact B.X B.dim B.smooth (GlobalTheory.RealMultChart.compactSpace_points B.X H hamp) (fun a n hn => GlobalTheory.RealMultChart.exists_pow_eq B.X B.ab a n hn)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `ht` using `GlobalTheory.TorusTransfer.tangent_bijective u B.smooth`. Take `⟨M, hM, hΛ, -, -⟩` from `GlobalTheory.HomLinear.exists_linear_of_isMonHom B.X B.X B.ab B.ab L L B.dim B.dim u u ht.1 ht.2 f.hom inferInstance`. Take `⟨ε, hP⟩` from `GlobalTheory.PeriodFamily.periodComparison_holds`. Take `⟨P, hsp, hrk, -, hnat, -⟩` from `hP B.X B.dim B.ab B.smooth L hL u`. Use `haveI := u.discrete`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsZLattice ℝ u.Λ := ⟨u.full⟩`. Establish `hr : Module.finrank ℤ u.Λ = 2 * B.dim`. Rewrite using `[ZLattice.rank ℝ u.Λ, Module.finrank_pi_fintype]`. Simplify using `[mul_comm]`. Set `φ : u.Λ →ₗ[ℤ] u.Λ` to `(M.restrictScalars ℤ).restrict hΛ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `E : ℂ ⊗[ℤ] u.Λ →ₗ[ℂ] HdR B.X` to `P.toIntLinearMap.liftBaseChange ℂ`. Establish `hE1 : ∀ x, E (1 ⊗ₜ x) = P x` using `fun x => one_smul ℂ (P x)`. Establish `hs : Function.Surjective E`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hsp, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨_, hE1 x⟩`. Establish `hE : Function.Bijective E` using `⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by rw [Module.finrank_baseChange, hr, hrk])).2 hs, hs⟩`. Establish `h1` using `charpoly_of_bijective E hE φ (push (dp0 ℂ) (𝟙 _) f.hom) fun x => by`. Rewrite using `[hE1, hE1]`. Conclude with `hnat f.hom M hM x (φ x) rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hpow : ∀ (n : ℕ) (z : Fin B.dim → ℂ), u.ex (n • z) = u.ex z ^ n` using `fun n z => by`. Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero]`. Conclude with `(u.ker 0).2 (zero_mem _)`. Consider the case `succ n ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : ∀ (j : ℕ) (z : Fin B.dim → ℂ), (2 ^ j : ℕ) • (((2 : ℂ) ^ j)⁻¹ • z) = z` using `fun j z => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Simplify using the standard rewrite rules. Establish `hc' : ∀ (j : ℕ) (z : Fin B.dim → ℂ), ((2 : ℂ) ^ j)⁻¹ • ((2 ^ j : ℕ) • z) = z` using `fun j z => by`. Rewrite using `[smul_comm, hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `AbVar.charpoly_eq_lattice_model ℂ B f u.Λ φ 2 Nat.prime_two (by norm_num) (fun j x => u.ex (((2 : ℂ) ^ j)⁻¹ • (x : Fin B.dim → ℂ))) (fun j x y => by`. Simplify using `only [Submodule.coe_add, smul_add]`. Conclude with `u.ex_add _ _)`. Use the proof step `(fun j x => by`. Use `Eq.trans ?_ (hM _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[map_smul]`. Use the proof step `rfl)`. Use the proof step `(fun j x => by`. Use `(u.ker _).trans ⟨fun h => ⟨⟨_, h⟩, Subtype.ext (hc j x).symm⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[show ((2 ^ j • y : u.Λ) : Fin B.dim → ℂ) = (2 ^ j : ℕ) • (y : Fin B.dim → ℂ) from rfl, hc']`. Conclude with `y.2)`. Use the proof step `(fun j q => by`. Take `⟨z, rfl⟩` from `u.ex_onto q`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `h`. Conclude with `⟨⟨_, (u.ker _).1 ((hpow _ z).trans h)⟩, congrArg u.ex (hc' j z)⟩`. Introduce and unpack `⟨x, hx⟩`. Establish `hx' : u.ex (((2 : ℂ) ^ j)⁻¹ • (x : Fin B.dim → ℂ)) = u.ex z` using `hx`. Express the relevant statement in the definitionally equal form `u.ex z ^ (2 ^ j) = 1`.
-
-Rewrite using `[← hx', ← hpow, hc]`. Conclude with `(u.ker _).2 x.2)`. Rewrite using `[h1, h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem charpoly_push_complex (B : AbVar ℂ) (f : B ⟶ B) [Module.Finite ℂ (HdR B.X)] :
     LinearMap.charpoly (push (dp0 ℂ) (𝟙 _) f.hom) = (AbVar.charpoly f).map (Int.castRingHom ℂ) := by
@@ -230,15 +224,13 @@ theorem charpoly_push_complex (B : AbVar ℂ) (f : B ⟶ B) [Module.Finite ℂ (
   rfl
 
 /- English proof (translation)
-Take `⟨S, A, _, ψ, -, hS, hA, hg, hψ⟩` from `GlobalTheory.AbelianLimit.abelianScheme_descends_to_fg_subring k B.dim B.X ∅ B.ab B.smooth`. Establish `hSc : Countable S`. Take `⟨n, p, hp⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 hS`. Establish `hc : Countable (MvPolynomial (Fin n) ℤ)`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(MvPolynomial.cardinalMk_le_max).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `hp.countable`. Set `F : Subfield k` to `Subfield.closure (S : Set k)`. Establish `hF : Cardinal.mk F ≤ Cardinal.aleph0` using `(Subfield.cardinalMk_closure_le_max _).trans (max_le (Cardinal.mk_le_aleph0_iff.2 hSc) le_rfl)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `K : IntermediateField F k` to `algebraicClosure F k`. Use `haveI : IsAlgClosed K := (algebraicClosure.isAlgClosure F k).isAlgClosed`. Establish `hK : Countable K` using `Cardinal.mk_le_aleph0_iff.1 ((Algebra.IsAlgebraic.cardinalMk_le_max F K).trans (max_le hF le_rfl))`. Set `j : S →+* K` to `S.subtype.codRestrict K fun x => K.algebraMap_mem (⟨x, Subfield.subset_closure x.2⟩ : F)`. Establish `e : spMap (algebraMap K k) ≫ spMap j = spMap S.subtype`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Cris.spMap_comp]`. Both sides reduce to the same expression. Set `B₀ : AbVar K` to `{ X := (Over.pullback (spMap j)).obj A ab := GlobalTheory.isAbelianScheme_pullback_obj _ A hA dim := B.dim smooth := (smoothOfRelativeDimension_isStableUnderBaseChange (n := B.dim)).of_isPullback (IsPullback.of_hasPullback A.hom (spMap j)) hg }`. Take `⟨φ, hφ⟩ : ∃ φ : B.X.left ⟶ B₀.X.left, IsGrpPullback B.X B₀.X (spMap (algebraMap K k)) φ` from `⟨_, Chart.isGrpPullback_factor (spMap j) (spMap (algebraMap K k)) (hψ.congr e.symm rfl)⟩`. Take `⟨f₀, hf₀, he⟩` from `GlobalTheory.AlgClosedHomDescent.hom_descends K k (algebraMap K k) B₀.X B₀.X B.X B.X φ φ B₀.ab B₀.ab hφ hφ f.hom inferInstance`.
-
-Conclude with `⟨K, inferInstance, hK, inferInstance, B₀, AbVar.Hom.mk f₀, φ, hφ, he⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_countable_model (k : Type) [Field k] [CharZero k] [IsAlgClosed k] (B : AbVar k) (f : B ⟶ B) :
     ∃ (K : Type) (_ : Field K) (_ : Countable K) (_ : Algebra K k) (B₀ : AbVar K) (f₀ : B₀ ⟶ B₀)
@@ -277,13 +269,11 @@ theorem exists_countable_model (k : Type) [Field k] [CharZero k] [IsAlgClosed k]
   exact ⟨K, inferInstance, hK, inferInstance, B₀, AbVar.Hom.mk f₀, φ, hφ, he⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ B f _`. Take `⟨K, _, _, _, B₀, f₀, φ, hφ, he⟩` from `exists_countable_model k B f`. Use `haveI : CharZero K := (RingHom.charZero_iff (algebraMap K k).injective).2 inferInstance`. Take `⟨σ⟩` from `GlobalTheory.KeyRuleUnique.nonempty_ringHom_complex K`. Use `letI : Algebra K ℂ := σ.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI := finite_HdR B₀`. Use `haveI := finite_HdR (AbVar.baseChange ℂ B₀)`. Take `⟨q, hq, hq'⟩` from `exists_isGrpPullback_baseChange ℂ f₀`. Establish `h3` using `charpoly_push_of_pullback B₀ _ hq f₀ _ hq'`. Establish `h4` using `charpoly_push_complex (AbVar.baseChange ℂ B₀) (AbVar.bcMap ℂ f₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h4` using `[AbVar.charpoly_bcMap]`. Establish `h5 : LinearMap.charpoly (push (dp0 K) (𝟙 _) f₀.hom) = (AbVar.charpoly f₀).map (Int.castRingHom K)`. Apply `Polynomial.map_injective (algebraMap K ℂ) σ.injective` to reduce the goal to its premises. Rewrite using `[← h3, h4, Polynomial.map_map]`. Conclude with `congrArg (Polynomial.map · _) (RingHom.ext_int _ _)`.
-
-Rewrite using `[charpoly_push_of_pullback B₀ B hφ f₀ f he, h5, charpoly_of_pullback B₀ B hφ f₀ f he, Polynomial.map_map]`. Conclude with `congrArg (Polynomial.map · _) (RingHom.ext_int _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_push : ∀ (k : Type) [Field k] [CharZero k] [IsAlgClosed k]
     (B : GlobalTheory.AV.AbVar k) (f : B ⟶ B) [Module.Finite k (HdR B.X)],

@@ -18,23 +18,21 @@ namespace GlobalTheory.USep
 open GlobalTheory.TorsFrame
 
 /- English proof (translation)
-Introduce `S P rig n T x τ ⟨hx, hτ, α, hα, hN, hC⟩`. Establish `hL` using `P.isLB`. Establish `eN : (mulA P.A n).left ≫ (mulA P.A n).left = (mulA P.A (n ^ 2)).left`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id, ← pow_mul, ← sq]`. Establish `ex : x.left ≫ (mulA P.A n).left = T.hom ≫ eSec P.A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id, hx, one_left]`. Take `⟨α', hα', vα'⟩` from `exists_gen hL (φ' := ![𝟙 P.A.left, (mulA P.A (n ^ 2)).left]) (ε' := ![((n ^ 2 : ℕ) : ℤ) ^ 2, -1]) (fun U _ h => by`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Category.comp_id, eN]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Use the proof step `module)`. Use the proof step `(LB.mulGen P.L _ _ _ _ (LB.pullGen P.L _ _ α (mulA P.A n).left) (GeneratorPullback.powGen P.L _ _ α (n ^ 2)))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hα _) (DVR.powGen_isGen _ _ _ _ hα _))`. Establish `vα₂ : ∀ (Z : Scheme.{0}) (r : Z ⟶ P.A.left) (z : Z) (J), Good P.L z J → val α' r z J = val α (r ≫ (mulA P.A n).left) z J * val α r z J ^ (n ^ 2)` using `fun Z r z J hJ => by`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[vα' _ _ z J hJ, val_mul hJ, val_pull hJ, val_powGen]`. Use `⟨by rw [sq, pow_mul, hx, one_pow], hτ, α', hα', corr_of_val hL fun z J hJ => ?_, corr_of_val hL fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `h0` using `val_corr hJ hN (𝟙 (𝟙_ (Over S)).left)`. Rewrite `h0`, the goal using `[val_pull hJ, val_mul hJ, val_inv]`. Rewrite using `[vα₂ _ _ z J hJ, Category.assoc, eSec_mulA, h0]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hp : ∀ k : ℤ, val (rigPow P.A P.L rig k) (𝟙 (𝟙_ (Over S)).left) z J = val (φ` using `fun _ : PUnit => eSec P.A) (ε := fun _ => 1) rig (𝟙 (𝟙_ (Over S)).left) z J ^ k := fun k => map_zpow _ _ _`. Rewrite using `[hp, hp]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_zpow]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `module`. Establish `h1` using `val_corr hJ hC (𝟙 T.left)`. Establish `h2` using `val_corr hJ hN T.hom`. Establish `hp : ∀ k : ℤ, val (rigPow P.A P.L rig k) T.hom z J = val (φ` using `fun _ : PUnit => eSec P.A) (ε := fun _ => 1) rig T.hom z J ^ k := fun k => map_zpow _ _ _`. Establish `hf : ∀ k : ℤ, val (powFrame P.A P.L x τ k) (𝟙 T.left) z J = val τ (𝟙 T.left) z J ^ k` using `fun k => map_zpow _ _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[val_pull hJ, val_mul hJ, val_inv, hp]`. Rewrite `h1` using `[hf, val_mul hJ, val_pull hJ, val_rigT rig _ z hJ]`. Simplify using `only [Category.id_comp] at h1`. Rewrite using `[hf, val_mul hJ, val_pull hJ, val_rigT rig _ z hJ]`. Simplify using `only [Category.id_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[vα₂ _ _ z J hJ, ex, h2]`. Establish `ha : val α x.left z J = val τ (𝟙 T.left) z J ^ ((n : ℤ) ^ 2) * (val (φ` using `fun _ : PUnit => eSec P.A) (ε := fun _ => 1) rig T.hom z J)⁻¹ := by`. Rewrite using `[h1, mul_inv_cancel_right]`. Rewrite using `[ha]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
-
-Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_zpow]`. Use `push_cast`. Use `module`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem isTorsFrame_sq : ∀ (S : Scheme.{0}) (P : PolAV S) (rig : LB.Gen (P.L.pull (eSec P.A))) (n : ℕ) (T : Over S)
     (x : T ⟶ P.A) (τ : LB.Gen (LB.LinComb P.L (Y := T.left) (K := Fin 1) (fun _ => x.left) (fun _ => 1))),

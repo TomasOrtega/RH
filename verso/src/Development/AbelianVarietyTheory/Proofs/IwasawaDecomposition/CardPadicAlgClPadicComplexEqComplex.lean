@@ -9,11 +9,9 @@ open Cardinal Filter Topology
 namespace GlobalTheory.PadicCard
 
 /- English proof (translation)
-Establish `h : ∀ x : X, ∃ u : ℕ → D, Tendsto (fun n => f (u n)) atTop (𝓝 x)`. Introduce `x`. Take `⟨v, hv, hlim⟩` from `mem_closure_iff_seq_limit.1 (hf x)`. Use `choose u hu using hv`. Conclude with `⟨u, by simpa only [hu] using hlim⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose g hg using h`. Establish `hinj : Function.Injective g`. Introduce `x y hxy`. Use `hg y` as an intermediate fact. Rewrite `this` using `[← hxy]`.
-
-Conclude with `tendsto_nhds_unique (hg x) this`. Simplify using `using mk_le_of_injective hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mk_le_pow_aleph0_of_denseRange {D X : Type} [TopologicalSpace X] [FirstCountableTopology X]
     [T2Space X] (f : D → X) (hf : DenseRange f) : #X ≤ #D ^ ℵ₀ := by
@@ -31,13 +29,13 @@ theorem mk_le_pow_aleph0_of_denseRange {D X : Type} [TopologicalSpace X] [FirstC
   simpa using mk_le_of_injective hinj
 
 /- English proof (translation)
-Simplify using `using mk_le_pow_aleph0_of_denseRange _ (Padic.denseRange_ratCast l)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mk_padic_le (l : ℕ) [Fact l.Prime] : #ℚ_[l] ≤ 𝔠 := by
   simpa using mk_le_pow_aleph0_of_denseRange _ (Padic.denseRange_ratCast l)
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((Algebra.IsAlgebraic.cardinalMk_le_max ℚ_[l] (PadicAlgCl l)).trans (max_le (mk_padic_le l) aleph0_le_continuum)) ((continuum_le_cardinal_of_nontriviallyNormedField ℚ_[l]).trans (mk_le_of_injective (algebraMap ℚ_[l] (PadicAlgCl l)).injective))`.
+A detailed English derivation is pending.
 -/
 theorem mk_padicAlgCl (l : ℕ) [Fact l.Prime] : #(PadicAlgCl l) = 𝔠 :=
   le_antisymm
@@ -47,7 +45,7 @@ theorem mk_padicAlgCl (l : ℕ) [Fact l.Prime] : #(PadicAlgCl l) = 𝔠 :=
       (mk_le_of_injective (algebraMap ℚ_[l] (PadicAlgCl l)).injective))
 
 /- English proof (translation)
-Use `le_antisymm ?_ (continuum_le_cardinal_of_nontriviallyNormedField ℂ_[l])` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem mk_padicComplex (l : ℕ) [Fact l.Prime] : #ℂ_[l] = 𝔠 := by
   refine le_antisymm ?_ (continuum_le_cardinal_of_nontriviallyNormedField ℂ_[l])
@@ -56,7 +54,7 @@ theorem mk_padicComplex (l : ℕ) [Fact l.Prime] : #ℂ_[l] = 𝔠 := by
     _ = 𝔠 := by rw [mk_padicAlgCl, continuum_power_aleph0]
 
 /- English proof (translation)
-Introduce `l _`. Conclude with `⟨by rw [mk_padicAlgCl, mk_complex], by rw [mk_padicComplex, mk_complex]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem card_padicAlgCl_padicComplex :
     ∀ (l : ℕ) [Fact l.Prime], Cardinal.mk (PadicAlgCl l) = Cardinal.mk ℂ ∧

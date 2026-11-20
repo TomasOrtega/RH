@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 namespace GlobalTheory.Glob
 
 /- English proof (translation)
-Introduce `hL N N' S Γ hN`. Take `⟨hB, hG, hLk, -⟩` from `GlobalTheory.HeightCounting.Up.rows_of_stronger_nExt hL N N' S Γ hN`. Establish `m : ∀ H : ∀ 𝒜 : FamClass, RawSel Bundle 𝒜 → Prop, RL.At (prmR N S Γ) (fun Q L => Row Q L H) → RL.At (prmR N' S Γ) (fun Q L => Row Q L H)` using `fun H h => GlobalTheory.HeightCounting.Up.eventually_coreProperty_mono_fewerCores hB hG (fun _ _ hS h => GlobalTheory.HeightCounting.Up.row_mono_id hS hLk h) h`. Conclude with `⟨m, fun o => ⟨m _ o.hPA, m _ o.hLamP, m _ o.hDivG, m _ o.hDcPtG, m _ o.selJ, m _ o.tie, m _ o.lab, m _ o.good, m _ o.geo, m _ o.mi, m _ o.kap, m _ o.df⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem open_and_linked_of_stronger_extension : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N N' : NExt hL) (S : SExt) (Γ : GeoP), (∀ K B f T w Z Wt p0 t nch n xd c, N' K B f T w Z Wt p0 t nch n xd c → Nonempty (N K B f T w Z Wt p0 t nch n xd c)) → (∀ H : ∀ 𝒜 : FamClass, RawSel Bundle 𝒜 → Prop, RL.At (prmR N S Γ) (fun Q L => Row Q L H) → RL.At (prmR N' S Γ) (fun Q L => Row Q L H)) ∧ (S0.Open0 (prmR N S Γ) → S0.Open0 (prmR N' S Γ)) := by
   intro hL N N' S Γ hN

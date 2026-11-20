@@ -11,9 +11,9 @@ namespace Formalism.L2.SG.Pf.Tau
 open Size Formalism.MainNotions.S
 
 /- English proof (translation)
-Establish `ha` using `norm_nonneg p`. Establish `hb` using `norm_nonneg q`. Establish `h1 : ‖p + q‖ ≤ ‖p‖ + ‖q‖` using `norm_add_le p q`. Establish `h2 : ‖p + q‖ ^ 2 ≤ (‖p‖ + ‖q‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h1 2`. Establish `h3 : 2 * ‖p‖ * ‖q‖ ≤ t * ‖p‖ ^ 2 + 1 / t * ‖q‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 0 ≤ (t * ‖p‖ - ‖q‖) ^ 2 / t` using `div_nonneg (sq_nonneg _) ht.le`. Establish `e : (t * ‖p‖ - ‖q‖) ^ 2 / t = t * ‖p‖ ^ 2 - 2 * ‖p‖ * ‖q‖ + 1 / t * ‖q‖ ^ 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -32,7 +32,7 @@ theorem norm_add_sq_le_young (p q : ℂ) {t : ℝ} (ht : 0 < t) :
   nlinarith
 
 /- English proof (translation)
-Establish `h1 : ‖∑ l, d l * w l‖ ≤ ∑ l, ‖d l‖ * ‖w l‖` using `(norm_sum_le _ _).trans (le_of_eq (by simp [norm_mul]))`. Establish `h2` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun l => ‖d l‖) (fun l => ‖w l‖)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_sum_mul_sq_le {m : ℕ} (d w : Fin m → ℂ) :
     ‖∑ l, d l * w l‖ ^ 2 ≤ (∑ l, ‖d l‖ ^ 2) * ∑ l, ‖w l‖ ^ 2 := by
@@ -43,11 +43,11 @@ theorem norm_sum_mul_sq_le {m : ℕ} (d w : Fin m → ℂ) :
     _ ≤ _ := h2
 
 /- English proof (translation)
-Establish `hY : ∀ i, (Y *ᵥ w) i = w i + ((Y - 1) *ᵥ w) i`. Introduce `i`. Simplify using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Establish `hc : 0 ≤ 1 + 1 / t`. Use `one_div_pos.mpr ht` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi : ∀ i, ‖(Y *ᵥ w) i‖ ^ 2 ≤ (1 + t) * ‖w i‖ ^ 2 + (1 + 1 / t) * ((∑ l, ‖(Y - 1) i l‖ ^ 2) * ∑ l, ‖w l‖ ^ 2)`. Introduce `i`. Rewrite using `[hY]`. Use `(norm_add_sq_le_young _ _ ht).trans ?_` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `add_le_add le_rfl (mul_le_mul_of_nonneg_left (norm_sum_mul_sq_le _ _) hc)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_norm_mulVec_sq_le {m : ℕ} (Y : Matrix (Fin m) (Fin m) ℂ) (w : Fin m → ℂ) {t : ℝ} (ht : 0 < t) :
     ∑ i, ‖(Y *ᵥ w) i‖ ^ 2 ≤

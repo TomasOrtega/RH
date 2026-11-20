@@ -5,9 +5,9 @@ universe u_4
 namespace Bl.FirstBlockLemmaB
 
 /- English proof (translation)
-Introduce `R _ P Q _ hPQ x hxQ hxP`. Establish `hne : Ideal.Quotient.mk P x ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Use `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hPQ) (Ideal.Quotient.factor_surjective hPQ) (r := Ideal.Quotient.mk P x) (mem_nonZeroDivisors_of_ne_zero hne) ?_` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxQ`.
+A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {R : Type u_4} [inst : CommRing.{u_4} R] {P Q : Ideal.{u_4} R} [Ideal.IsPrime.{u_4} P],

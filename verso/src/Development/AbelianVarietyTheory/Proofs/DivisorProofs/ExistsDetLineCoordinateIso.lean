@@ -5,33 +5,31 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C _ O _ _ Λ _ h N ρ σ q hq`. Set `b : Module.Basis (Fin N) C (eig C ρ σ)` to `Module.Basis.ofEquivFun q`. Establish `hbq : ∀ v i, b.repr v i = q v i` using `fun v i => by`. Simplify using `only [b, Module.Basis.ofEquivFun_repr_apply]`. Set `f : detLine C ρ σ N →ₗ[C] C` to `exteriorPower.alternatingMapLinearEquiv b.det`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hdet : ∀ x : Fin N → eig C ρ σ, f (exteriorPower.ιMulti C N x) = b.det x` using `fun x => exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ _`. Establish `hfx : ∀ x : Fin N → eig C ρ σ, f (exteriorPower.ιMulti C N x) = (Matrix.of fun i => q (x i)).det`. Introduce `x`. Rewrite using `[hdet, Module.Basis.det_apply, ← Matrix.det_transpose]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hfb : f (exteriorPower.ιMulti C N b) = 1` using `by rw [hdet, Module.Basis.det_self]`. Establish `hall : ∀ w, f w • exteriorPower.ιMulti C N b = w`. Introduce `w`. Establish `hw : w ∈ Submodule.span C (exteriorPower.ιMulti C N '' {a : Fin N → eig C ρ σ | Set.range a ⊆ Set.range b})`. Rewrite using `[exteriorPower.ιMulti_span_of_span C N (eig C ρ σ) b.span_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`. Establish `hv : ∀ i, ∃ j, b j = a i` using `fun i => ha ⟨i, rfl⟩`.
+Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose v hv using hv`. Establish `hav : a = b ∘ v` using `funext fun i => (hv i).symm`. Substitute `hav` using the available equality. Rewrite using `[hdet]`. Distinguish the cases in `hinj : Function.Injective v`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression.
 
-Set `e : Equiv.Perm (Fin N)` to `Equiv.ofBijective v (Finite.injective_iff_bijective.mp hinj)`. Establish `hve : (⇑b ∘ v) = ⇑b ∘ ⇑e` using `rfl`. Rewrite using `[hve, AlternatingMap.map_perm, AlternatingMap.map_perm, Module.Basis.det_self]`. Simplify using the standard rewrite rules. Rewrite using `[AlternatingMap.map_eq_zero_of_not_injective _ _ (fun h => hinj (Function.Injective.of_comp h)), AlternatingMap.map_eq_zero_of_not_injective _ _ (fun h => hinj (Function.Injective.of_comp h)), zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, add_smul, hx, hy]`. Consider the case `smul a x _ hx => rw [map_smul, smul_eq_mul, mul_smul, hx]`. Set `δ : detLine C ρ σ N ≃ₗ[C] C` to `{ f with invFun := fun c => c • exteriorPower.ιMulti C N b left_inv := hall right_inv := fun c => by show f (c • exteriorPower.ιMulti C N b) = c`. Rewrite using `[map_smul, hfb, smul_eq_mul, mul_one] }`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨δ, hfx, fun w => ⟨fun hw => ?_, fun hw => ?_⟩⟩` and prove the remaining obligations. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Establish `hy' : ∀ i j, ∃ o : O, algebraMap O C o = q (y i) j` using `fun i j => (hq (y i)).1 (hy i) j`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose g hg using hy'`. Use `show f _ ∈ _`. Rewrite using `[hfx]`. Use `⟨(Matrix.of g).det, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[RingHom.mapMatrix_apply, hg]`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `Subring.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[← algebraMap_smul C a x, map_smul, smul_eq_mul]`. Conclude with `Subring.mul_mem _ ⟨a, rfl⟩ hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨o, ho⟩` from `hw`. Establish `hb : ∀ i, b i ∈ quotLattice C ρ σ`. Introduce `i`. Use `(hq (b i)).2 fun j => ?_` and prove the remaining obligations. Rewrite using `[← hbq, Module.Basis.repr_self, Finsupp.single_apply]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp⟩`. Establish `hw' : w = o • exteriorPower.ιMulti C N b`. Rewrite using `[← algebraMap_smul C o, ho]`.
-
-Conclude with `(hall w).symm`. Rewrite using `[hw']`. Conclude with `Submodule.smul_mem _ o (Submodule.subset_span ⟨b, hb, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem detLine_coord : ∀ (C : Type) [Field C] (O : Type) [CommRing O] [Algebra O C] (Λ : Type) [CommRing Λ] (h N : ℕ) (ρ : Λ → Matrix (Fin h) (Fin h) O) (σ : Λ →+* O) (q : eig C ρ σ ≃ₗ[C] (Fin N → C)), (∀ x, x ∈ quotLattice C ρ σ ↔ ∀ i, q x i ∈ (algebraMap O C).range) → ∃ δ : detLine C ρ σ N ≃ₗ[C] C, (∀ x : Fin N → eig C ρ σ, δ (exteriorPower.ιMulti C N x) = (Matrix.of fun i => q (x i)).det) ∧ ∀ w, w ∈ detLattice C ρ σ N ↔ δ w ∈ (algebraMap O C).range := by
   intro C _ O _ _ Λ _ h N ρ σ q hq

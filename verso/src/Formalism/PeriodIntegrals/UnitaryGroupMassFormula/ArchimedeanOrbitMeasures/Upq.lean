@@ -13,14 +13,14 @@ variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 def cT (σ : A →+* A) {m p : Type} (M : Matrix m p A) : Matrix p m A := (M.map σ)ᵀ
 
 /- English proof (translation)
-Simplify using `[cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul (σ : A →+* A) {m p q : Type} [Fintype p] (M : Matrix m p A) (N : Matrix p q A) :
     cT σ (M * N) = cT σ N * cT σ M := by
   simp [cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Simplify using `[cT, Matrix.map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_one (σ : A →+* A) : cT σ (1 : Matrix n n A) = 1 := by
   simp [cT, Matrix.map_one]

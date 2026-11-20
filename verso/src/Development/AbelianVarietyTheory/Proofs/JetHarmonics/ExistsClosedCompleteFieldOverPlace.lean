@@ -11,9 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.PlaceClosedField
 
 /- English proof (translation)
-Establish `h1 : la.intValuation x < 1` using `(la.intValuation_lt_one_iff_mem _).2 hx`. Establish `h2 : WithZero.log (la.intValuation x) < 0`. Use `(WithZero.log_lt_log (la.intValuation_ne_zero _ h0) one_ne_zero).2 h1` as an intermediate fact. Simplify using `using this`. Establish `h : ((x : 𝓞 K) : K) = algebraMap (𝓞 K) K x` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[vLa, h, HeightOneSpectrum.valuation_of_algebraMap]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vLa_pos_of_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K))
     {x : 𝓞 K} (hx : x ∈ la.asIdeal) (h0 : x ≠ 0) : 0 < vLa la ((x : 𝓞 K) : K) := by
@@ -26,9 +26,9 @@ theorem vLa_pos_of_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpect
   omega
 
 /- English proof (translation)
-Establish `h` using `Crude.crv_vLa_char la`. Establish `h0 : ((resCharOf la : ℕ) : 𝓞 K) ≠ 0` using `by exact_mod_cast (Crude.resCharOf_prime la).ne_zero`. Establish `h1` using `vLa_pos_of_mem la (Crude.crv_char_mem la) h0`. Establish `h2 : ((((resCharOf la : ℕ) : 𝓞 K)) : K) = ((resCharOf la : ℕ) : K)` using `map_natCast (algebraMap (𝓞 K) K) _`. Rewrite `h1` using `[h2, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem ramOverZ_pos {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) :
     0 < ramOverZ la := by
@@ -40,9 +40,9 @@ theorem ramOverZ_pos {K : Type} [Field K] [NumberField K] (la : HeightOneSpectru
   exact_mod_cast h1
 
 /- English proof (translation)
-Establish `h : valV T.V (algebraMap T.V T.Fr x) = 1`. Unfold `valV`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Introduce `hm`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hm hx`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[vV, h]`.
+A detailed English derivation is pending.
 -/
 theorem vV_unit (T : CDVR) {x : T.V} (hx : IsUnit x) : vV T.V (algebraMap T.V T.Fr x) = 0 := by
   have h : valV T.V (algebraMap T.V T.Fr x) = 1 := by
@@ -53,9 +53,9 @@ theorem vV_unit (T : CDVR) {x : T.V} (hx : IsUnit x) : vV T.V (algebraMap T.V T.
   simp [vV, h]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[nval_zero]`. Conclude with `le_top`. Rewrite `h`, the goal using `[nval_of_ne hx, EReal.coe_le_coe_iff]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr' : (0 : ℝ) < r` using `by exact_mod_cast hr`. Rewrite using `[Nat.cast_mul, ← div_div, le_div_iff₀ hr', mul_comm]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_nval_mul (T : CDVR) {e r : ℕ} (hr : 0 < r) (ν : ℝ) (x : T.Fr)
     (h : (((r : ℝ) * ν : ℝ) : EReal) ≤ nval T.V e x) : (ν : EReal) ≤ nval T.V (e * r) x := by
@@ -67,21 +67,21 @@ theorem le_nval_mul (T : CDVR) {e r : ℕ} (hr : 0 < r) (ν : ℝ) (x : T.Fr)
   exact h
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw lv Xo c _ la T io e ho`. Establish `hp` using `Crude.resCharOf_prime la`. Establish `hr` using `ramOverZ_pos la`. Establish `he : 0 < e` using `ho.1`. Establish `hv : vV T.V ((resCharOf la : ℕ) : T.Fr) = (e : ℤ) * (ramOverZ la : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast io, ho.2, Crude.crv_vLa_char]`. Establish `hpos : (0 : ℤ) < (e : ℤ) * (ramOverZ la : ℤ)` using `by positivity`. Establish `hnu : ¬ IsUnit ((resCharOf la : ℕ) : T.V)`. Introduce `hu`. Establish `h0` using `vV_unit T hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h0` using `[map_natCast, hv]`. Use linear arithmetic over natural numbers and integers. Take `⟨C, _, _, v, ι, h1, h2, h3, h4⟩` from `GlobalTheory.DvrClosedEmbedding.exists_complete_isAlgClosed_addValuation T _ hp hnu`. Use `⟨C, inferInstance, inferInstance, ⟨v, resCharOf la, hp, h1⟩, ι, rfl, h2, h3, h4, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx show (0 : WithTop ℝ) < v _`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : x = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Establish `hx0 : ((x : 𝓞 c.F) : c.F) ≠ 0` using `by simpa using h0`. Rewrite using `[h2 _ ((map_ne_zero io).2 hx0), ho.2, hv]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `vLa_pos_of_mem la hx h0` as an intermediate fact. Establish `h5 : (0 : ℝ) < (((e : ℤ) * vLa la ((x : 𝓞 c.F) : c.F) : ℤ) : ℝ) / (((e : ℤ) * (ramOverZ la : ℤ) : ℤ) : ℝ)`. Apply `div_pos` to reduce the goal to its premises. Conclude with `mul_pos (by exact_mod_cast he) this` after adjusting the coercions. Conclude with `hpos` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h5` after adjusting the coercions. Introduce `m hm`. Establish `hm0 : m ≠ 0` using `fun h => hm (h ▸ dvd_zero _)`. Establish `hm1 : ((m : ℕ) : c.F) ≠ 0` using `by exact_mod_cast hm0`. Use `show v (m : C) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast ι, ← map_natCast io, h2 _ ((map_ne_zero io).2 hm1), ho.2, Crude.crv_vLa_coprime la hm]`. Simplify using the standard rewrite rules. Introduce `y C3 k a n ν h`. Establish `hE : eOf T (⟨v, resCharOf la, hp, h1⟩ : VF C) = e * ramOverZ la` using `by show (vV T.V ((resCharOf la : ℕ) : T.Fr)).toNat = _`. Rewrite using `[hv, ← Nat.cast_mul, Int.toNat_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hE]`. Unfold `nuLocC at h ⊢`. Simplify using `only [le_iInf_iff] at h ⊢`. Introduce `P hP f hf`. Conclude with `le_nval_mul T hr ν _ (h P hP f hf)`.
+A detailed English derivation is pending.
 -/
 theorem exists_closed_field_over_place : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (lv : Level H) (Xo : Moduli Dw lv) (c : Coeff lv) [StarRing (𝓞 E)] (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ), OverLa la T.V io e → ∃ (C : Type) (_ : Field C) (_ : CharZero C) (V : VF C) (ι : T.Fr →+* C), V.l = resCharOf la ∧ EmbOK T V ι ∧ IsAlgClosed C ∧ (∀ s : ℕ → C, (∀ n : ℕ, V.Ge n (s (n + 1) - s n)) → ∃ x, ∀ n : ℕ, V.Ge n (x - s n)) ∧ (∀ x ∈ la.asIdeal, V.MM (ι (io ((x : 𝓞 c.F) : c.F)))) ∧ (∀ m : ℕ, ¬ resCharOf la ∣ m → V.v (m : C) = 0) ∧ ∀ (y : IntFr Xo c T io) (C3 : IntChart T io y) (k : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (ν : ℝ), (((ramOverZ la : ℝ) * ν : ℝ) : EReal) ≤ nuLocC C3 e k a n → (ν : EReal) ≤ nuLocC C3 (eOf T V) k a n := by
   intro E _ _ _ H Dw lv Xo c _ la T io e ho

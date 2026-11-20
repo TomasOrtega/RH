@@ -8,23 +8,23 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open MvPolynomial Topology Filter
 
 /- English proof (translation)
-Take `⟨p, r, hp⟩` from `hf`. Establish `hrad : p.shift.radius = p.radius` using `FormalMultilinearSeries.radius_shift p`. Establish `hq : 0 < p.shift.radius` using `by rw [hrad]; exact lt_of_lt_of_le hp.r_pos hp.r_le`. Establish `hG : HasFPowerSeriesOnBall p.shift.sum p.shift 0 p.shift.radius` using `p.shift.hasFPowerSeriesOnBall hq`. Use `⟨fun i z => p.shift.sum (z - w) (Pi.single i 1), fun i => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : AnalyticAt ℂ (fun z : σ → ℂ => z - w) w` using `analyticAt_id.sub analyticAt_const`. Establish `h3 : AnalyticAt ℂ p.shift.sum ((fun z : σ → ℂ => z - w) w)`. Simplify using `using hG.analyticAt`. Conclude with `((ContinuousLinearMap.apply ℂ ℂ (Pi.single i (1 : ℂ))).analyticAt _).comp (AnalyticAt.comp (g := p.shift.sum) (f := fun z : σ → ℂ => z - w) h3 h2)`. Use `filter_upwards [Metric.eball_mem_nhds w hp.r_pos] with z hz set y := z - w with hy`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hy0 : y ∈ Metric.eball (0 : σ → ℂ) r`. Rewrite `hz`, the goal using `[Metric.mem_eball]`. Rewrite using `[edist_zero_right, hy, ← edist_eq_enorm_sub]` and apply the resulting hypothesis. Establish `hy1 : y ∈ Metric.eball (0 : σ → ℂ) p.shift.radius` using `Metric.eball_subset_eball (hrad ▸ hp.r_le) hy0`. Establish `h1` using `hp.hasSum hy0`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hG.hasSum hy1`. Rewrite `h2` using `[zero_add]`. Establish `h3` using `(ContinuousLinearMap.apply ℂ ℂ y).hasSum h2`. Establish `h4 : ∀ n, (ContinuousLinearMap.apply ℂ ℂ y) (p.shift n fun _ => y) = p (n + 1) fun _ => y`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [ContinuousLinearMap.apply_apply, FormalMultilinearSeries.shift, ContinuousMultilinearMap.curryRight_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun k => ?_) j <;> simp`. Simplify using `only [h4, ContinuousLinearMap.apply_apply] at h3`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h5` using `(hasSum_nat_add_iff' 1).mpr h1`. Simplify using `only [Finset.range_one, Finset.sum_singleton, hp.coeff_zero] at h5`. Establish `e` using `h5.unique h3`. Establish `hwz : w + y = z` using `by rw [hy]; abel`. Rewrite `e` using `[hwz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : p.shift.sum y y = ∑ i, (z i - w i) * p.shift.sum y (Pi.single i 1)`. Establish `hyy : p.shift.sum y y = p.shift.sum y (∑ i, Pi.single i (y i))`. Rewrite using `[Finset.univ_sum_single]`. Rewrite using `[hyy, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[show (Pi.single i (y i) : σ → ℂ) = y i • Pi.single i 1 by`. Use extensionality with `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h], map_smul, smul_eq_mul, hy, Pi.sub_apply]`. Rewrite using `[← e2, ← e]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hadamard_decomposition {σ : Type} [Fintype σ] {w : σ → ℂ} {f : (σ → ℂ) → ℂ}
     (hf : AnalyticAt ℂ f w) :
@@ -80,17 +80,17 @@ theorem hadamard_decomposition {σ : Type} [Fintype σ] {w : σ → ℂ} {f : (�
     ring
 
 /- English proof (translation)
-Introduce `σ _ w`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `⟨_, f, hf, rfl⟩ hφ`. Establish `hfw : f w = 0` using `hφ`. Take `⟨g, hg, hfg⟩` from `hadamard_decomposition hf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : (⟨(f : Germ (𝓝 w) ℂ), f, hf, rfl⟩ : holGerms w) = ∑ i, polyGerm w (X i - C (w i)) * ⟨(g i : Germ (𝓝 w) ℂ), g i, hg i, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(f : Germ (𝓝 w) ℂ) = (holGerms w).subtype (∑ i, _)`. Rewrite using `[map_sum]`. Simplify using `only [map_mul, Subring.coe_subtype]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsum : ((fun z => ∑ i, (z i - w i) * g i z : (σ → ℂ) → ℂ) : Germ (𝓝 w) ℂ) = ∑ i, ((fun z : σ → ℂ => z i - w i : (σ → ℂ) → ℂ) : Germ (𝓝 w) ℂ) * (g i : Germ (𝓝 w) ℂ)`. Express the relevant statement in the definitionally equal form `Germ.coeRingHom (𝓝 w) (fun z => ∑ i, (z i - w i) * g i z) = _`. Rewrite using `[show (fun z => ∑ i, (z i - w i) * g i z : (σ → ℂ) → ℂ) = ∑ i, (fun z : σ → ℂ => z i - w i) * g i by`. Use function extensionality and compare the values at `z`. Simplify using `[Finset.sum_apply], map_sum]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hfe : (f : Germ (𝓝 w) ℂ) = ((fun z => ∑ i, (z i - w i) * g i z : (σ → ℂ) → ℂ) : Germ (𝓝 w) ℂ)` using `Germ.coe_eq.mpr (hfg.mono fun z hz => by rw [hz, hfw, zero_add])`. Rewrite using `[hfe, hsum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `_ = ((fun z : σ → ℂ => eval z (X i - C (w i)) : (σ → ℂ) → ℂ) : Germ (𝓝 w) ℂ)`. Simplify using the standard rewrite rules. Rewrite using `[key]`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨i, rfl⟩)`. Rewrite using `[Ideal.span_le]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Express the relevant statement in the definitionally equal form `holGermValue w (polyGerm w (X i - C (w i))) = 0`. Rewrite using `[holGermValue_polyGerm]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HolGermPointIdealSpan.proof : HolGermPointIdealSpan.Statement := by
   intro σ _ w

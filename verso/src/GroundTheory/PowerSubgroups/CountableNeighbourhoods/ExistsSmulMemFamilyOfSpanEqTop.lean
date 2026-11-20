@@ -5,15 +5,15 @@ namespace GroundTheory.Variant₂.N1
 open NumberField
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span K (M : Set (Fin N → K))` using `by rw [hM]; exact Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨s, hs, hsy⟩` from `hy`. Take `⟨t, ht, htz⟩` from `hz`. Use `⟨s * t, mul_ne_zero hs ht, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap (RingOfIntegers K) K (s * t) • y = t • (algebraMap (RingOfIntegers K) K s • y)`. Rewrite using `[map_mul, mul_comm, mul_smul, algebraMap_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : algebraMap (RingOfIntegers K) K (s * t) • z = s • (algebraMap (RingOfIntegers K) K t • z)`. Rewrite using `[map_mul, mul_smul, algebraMap_smul]`. Rewrite using `[smul_add, h1, h2]`. Conclude with `M.add_mem (M.smul_mem t hsy) (M.smul_mem s htz)`. Consider the case `smul c y _ hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, hty⟩` from `hy`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors (RingOfIntegers K)) c`. Simplify using `only at hab`. Use `⟨(b : RingOfIntegers K) * t, mul_ne_zero (nonZeroDivisors.coe_ne_zero b) ht, ?_⟩` and prove the remaining obligations. Establish `key : algebraMap (RingOfIntegers K) K ((b : RingOfIntegers K) * t) • (c • y) = a • (algebraMap (RingOfIntegers K) K t • y)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K a (algebraMap (RingOfIntegers K) K t • y), smul_smul, smul_smul, ← hab, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `M.smul_mem a hty`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_of_span_eq_top {K : Type} [Field K] [NumberField K] {N : ℕ}
     (M : Submodule (RingOfIntegers K) (Fin N → K))
@@ -50,7 +50,7 @@ theorem exists_smul_mem_of_span_eq_top {K : Type} [Field K] [NumberField K] {N :
     exact M.smul_mem a hty
 
 /- English proof (translation)
-Use `choose s hs hsv using fun i => exists_smul_mem_of_span_eq_top M hM (v i)`. Use `⟨∏ i, s i, Finset.prod_ne_zero_iff.mpr fun i _ => hs i, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase Finset.univ s (Finset.mem_univ i), mul_comm, map_mul, mul_smul, algebraMap_smul]`. Conclude with `M.smul_mem _ (hsv i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_family_of_span_eq_top {K : Type} [Field K] [NumberField K] {N : ℕ}
     (M : Submodule (RingOfIntegers K) (Fin N → K))

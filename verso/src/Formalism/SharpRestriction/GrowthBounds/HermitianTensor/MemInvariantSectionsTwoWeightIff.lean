@@ -10,7 +10,7 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.CountingSumsFrames Formalism.GradedWeylDivisibility MvPolynomial Formalism.MainNotions.G.LatticeSystems
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hi` using `i.isLt`. Simplify using `only [wtPQ, letterWt, Pi.add_apply, Fin.ext_iff, Fin.val_zero, Fin.val_last, if_true, Bool.false_eq_true, if_false]`. Apply the tactic sequence `split_ifs <;> omega`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wtPQ_eq (m a b : ℕ) (hm : 1 ≤ m) : wtPQ m a b = letterWt m a true + letterWt m b false := by
   funext i
@@ -19,9 +19,9 @@ theorem wtPQ_eq (m a b : ℕ) (hm : 1 ≤ m) : wtPQ m a b = letterWt m a true + 
   split_ifs <;> omega
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `hij' : i.val ≤ j.val` using `hij`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [wtPQ, Fin.ext_iff, Fin.val_zero, Fin.val_last]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wtPQ_anti (m a b : ℕ) (hm : 1 ≤ m) : Antitone (wtPQ m a b) := by
   intro i j hij
@@ -32,7 +32,7 @@ theorem wtPQ_anti (m a b : ℕ) (hm : 1 ≤ m) : Antitone (wtPQ m a b) := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `ht` using `t.isLt`. Simplify using `only [nuOf, wtPQ_eq m a b hm, Pi.add_apply, letterWt, Fin.ext_iff, Fin.val_zero, Fin.val_last, if_true, Bool.false_eq_true, if_false]`. Apply the tactic sequence `split_ifs <;> omega`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nuOf_wtPQ (m a b : ℕ) (hm : 1 ≤ m) :
     nuOf (wtPQ m a b) = nuOf (letterWt m a true) + nuOf (letterWt m b false) := by
@@ -42,7 +42,7 @@ theorem nuOf_wtPQ (m a b : ℕ) (hm : 1 ≤ m) :
   split_ifs <;> omega
 
 /- English proof (translation)
-Simplify using `[deltaB, blockEmb, rename_rename, Function.comp_def]`. Conclude with `rename_id_apply F`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem delta_block (K : Type) [Field K] (m : ℕ) (b : Bool) (F : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K) :
     deltaB K m (blockEmb K b F) = F := by
@@ -50,24 +50,24 @@ theorem delta_block (K : Type) [Field K] (m : ℕ) (b : Bool) (F : MvPolynomial 
   exact rename_id_apply F
 
 /- English proof (translation)
-Rewrite using `[map_prod, Fintype.prod_bool, delta_block, delta_block]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem delta_prod (K : Type) [Field K] (m : ℕ) (F : Bool → MvPolynomial (Fin (m + 1) × Fin (m + 1)) K) :
     deltaB K m (∏ b, blockEmb K b (F b)) = F true * F false := by
   rw [map_prod, Fintype.prod_bool, delta_block, delta_block]
 
 /- English proof (translation)
-Establish `hA : Antitone (letterWt m a true)`. Introduce `i j hij`. Establish `hij' : i.val ≤ j.val` using `hij`. Simplify using `only [letterWt, if_true, Fin.ext_iff, Fin.val_zero]`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hB : Antitone (letterWt m b false)`. Introduce `i j hij`. Establish `hij' : i.val ≤ j.val` using `hij`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [letterWt, Bool.false_eq_true, if_false, Fin.ext_iff, Fin.val_last]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `key : H0 O m (wtPQ m a b) Λ = Submodule.map ((deltaB Kf m).toLinearMap.restrictScalars O) (twoLat O m a b Λ)`. Rewrite using `[wtPQ_eq m a b hm, hCO O Kf m _ _ Λ hΛ hA hB, twoLat, tensorLat, Submodule.map_span]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hF, G, hG, rfl⟩`. Use `⟨∏ s, blockEmb Kf s (if s = true then F else G), ⟨fun s => if s = true then F else G, ?_, rfl⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s`. Apply the tactic sequence `cases s <;> simpa using ‹_›`. Simplify using `[delta_block]`. Introduce and unpack `⟨x, ⟨F, hF, rfl⟩, rfl⟩`. Use `⟨F true, by simpa using hF true, F false, by simpa using hF false, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[delta_block]`. Rewrite using `[key, Submodule.mem_map]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_invariant_sections_two_weight_iff (hCO : CartanOnto) {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf]
     [Algebra O Kf] [IsFractionRing O Kf] (m a b : ℕ) (hm : 1 ≤ m) (Λ : Submodule O (Fin (m + 1) → Kf))
@@ -104,13 +104,13 @@ theorem mem_invariant_sections_two_weight_iff (hCO : CartanOnto) {O Kf : Type} [
   exact Iff.rfl
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[nuOf_wtPQ m a b hm]`. Unfold `twoSp tensorLat at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨F, hF, rfl⟩` from `hy`. Rewrite using `[delta_prod]`. Establish `h1` using `hF true`. Establish `h2` using `hF false`. Simplify using `only [eq_self_iff_true, if_true, Bool.false_eq_true, if_false] at h1 h2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Formalism.GradedWeylDivisibility.dualWeyl_mul h1 h2`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add]`. Conclude with `add_mem hy hz`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c y _ hy`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c hy`.
+A detailed English derivation is pending.
 -/
 theorem delta_twoSp (K : Type) [Field K] (m a b : ℕ) (hm : 1 ≤ m) :
     ∀ x ∈ twoSp K m a b, deltaB K m x ∈ dualWeyl K (m + 1) (m + 1) (nuOf (wtPQ m a b)) := by
@@ -134,7 +134,7 @@ theorem delta_twoSp (K : Type) [Field K] (m a b : ℕ) (hm : 1 ≤ m) :
     exact Submodule.smul_mem _ c hy
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg (MvPolynomial.eval (Sum.elim (fun i : Fin (k + 1) => if i = 0 then (1 : K) else 0) (fun i : Fin (k + 1) => if i = 0 then (1 : K) else 0))) h` as an intermediate fact. Simplify using `[hXY] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem hXY_ne_zero (K : Type) [Field K] (k : ℕ) : hXY K (k + 1) ≠ 0 := by
   intro h

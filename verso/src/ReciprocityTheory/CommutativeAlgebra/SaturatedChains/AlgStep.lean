@@ -7,11 +7,9 @@ open Polynomial
 attribute [local instance] Polynomial.algebra Polynomial.isLocalization in
 
 /- English proof (translation)
-Establish `hd : Disjoint ((Submonoid.map (C : A →+* A[X]) (nonZeroDivisors A) : Submonoid A[X]) : Set A[X]) (Q : Set A[X])`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨s, hs, rfl⟩ hsQ`. Establish `h0 : s ∈ Q.comap C` using `hsQ`. Rewrite `h0` using `[hQ, Ideal.mem_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `nonZeroDivisors.ne_zero hs h0`. Use `haveI hQ' : (Q.map (algebraMap A[X] (FractionRing A)[X])).IsPrime := IsLocalization.isPrime_of_isPrime_disjoint _ _ Q ‹Q.IsPrime› hd`. Establish `hcomap` using `IsLocalization.comap_map_of_isPrime_disjoint (Submonoid.map (C : A →+* A[X]) (nonZeroDivisors A)) (FractionRing A)[X] ‹Q.IsPrime› hd`. Establish `hh : Q.height = (Q.map (algebraMap A[X] (FractionRing A)[X])).height` using `(congrArg Ideal.height hcomap.symm).trans (IsLocalization.height_comap (Submonoid.map (C : A →+* A[X]) (nonZeroDivisors A)) _)`. Establish `h1` using `Ideal.height_le_ringKrullDim_of_ne_top hQ'.ne_top`.
-
-Rewrite `h1` using `[Polynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add, ← hh]`. Conclude with `h1` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_le_one_of_comap_C_eq_bot {A : Type*} [CommRing A] [IsDomain A]
     (Q : Ideal A[X]) [Q.IsPrime] (hQ : Q.comap C = ⊥) : Q.height ≤ 1 := by
@@ -36,11 +34,9 @@ theorem height_le_one_of_comap_C_eq_bot {A : Type*} [CommRing A] [IsDomain A]
   exact_mod_cast h1
 
 /- English proof (translation)
-Use `set p := P.comap (C : R →+* R[X]) with hp`. Use `letI : Algebra R[X] (Localization.AtPrime p)[X] := Polynomial.algebra R (Localization.AtPrime p)`. Use `haveI : IsLocalization (Submonoid.map (C : R →+* R[X]) p.primeCompl) (Localization.AtPrime p)[X] := Polynomial.isLocalization p.primeCompl (Localization.AtPrime p)`. Use `haveI : IsNoetherianRing (Localization.AtPrime p) := IsLocalization.isNoetherianRing p.primeCompl (Localization.AtPrime p) inferInstance`. Establish `hd : Disjoint ((Submonoid.map (C : R →+* R[X]) p.primeCompl : Submonoid R[X]) : Set R[X]) (P : Set R[X])`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨s, hs, rfl⟩ hsP`. Conclude with `hs hsP`. Use `haveI hP' : (P.map (algebraMap R[X] (Localization.AtPrime p)[X])).IsPrime := IsLocalization.isPrime_of_isPrime_disjoint _ _ P ‹P.IsPrime› hd`. Establish `hcomap` using `IsLocalization.comap_map_of_isPrime_disjoint (Submonoid.map (C : R →+* R[X]) p.primeCompl) (Localization.AtPrime p)[X] ‹P.IsPrime› hd`.
-
-Establish `hh : P.height = (P.map (algebraMap R[X] (Localization.AtPrime p)[X])).height` using `(congrArg Ideal.height hcomap.symm).trans (IsLocalization.height_comap (Submonoid.map (C : R →+* R[X]) p.primeCompl) _)`. Establish `h1` using `Ideal.height_le_ringKrullDim_of_ne_top hP'.ne_top`. Rewrite `h1` using `[Polynomial.ringKrullDim_of_isNoetherianRing, IsLocalization.AtPrime.ringKrullDim_eq_height p (Localization.AtPrime p), ← hh]`. Conclude with `h1` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_le_height_comap_C_add_one {R : Type*} [CommRing R] [IsNoetherianRing R]
     (P : Ideal R[X]) [P.IsPrime] : P.height ≤ (P.comap C).height + 1 := by
@@ -69,11 +65,9 @@ theorem height_le_height_comap_C_add_one {R : Type*} [CommRing R] [IsNoetherianR
   exact_mod_cast h1
 
 /- English proof (translation)
-Establish `hmem : p ∈ p.minimalPrimes`. Rewrite using `[Ideal.minimalPrimes_eq_subsingleton_self]`. Conclude with `Set.mem_singleton p`. Unfold `Ideal.height`. Use `le_antisymm ((iInf₂_le p hmem).trans (le_of_eq rfl)) (le_iInf₂ fun J hJ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hJp : J = p`. Establish `h2` using `hJ`. Rewrite `h2` using `[Ideal.minimalPrimes_eq_subsingleton_self]`. Conclude with `h2`. Substitute `hJp` using the available equality.
-
-Conclude with `le_of_eq rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem height_eq_order_height_lemma {R : Type*} [CommRing R] (p : Ideal R) [hp : p.IsPrime] :
     p.height = Order.height (⟨p, hp⟩ : PrimeSpectrum R) := by
@@ -90,15 +84,15 @@ private theorem height_eq_order_height_lemma {R : Type*} [CommRing R] (p : Ideal
   exact le_of_eq rfl
 
 /- English proof (translation)
-Set `g : WithBot (PrimeSpectrum S) → PrimeSpectrum A` to `fun x => Option.elim x ⟨⊥, Ideal.isPrime_bot⟩ (fun p => ⟨p.asIdeal.comap φ, inferInstance⟩)`. Establish `hg : StrictMono g`. Introduce `a b hab`. Proceed by induction on `b using WithBot.recBotCoe with`. Consider the case `bot => exact (not_lt_bot hab).elim`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `coe p'`. Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot`. Express the relevant statement in the definitionally equal form `(⊥ : Ideal A) < p'.asIdeal.comap φ`. Establish `hk : RingHom.ker φ ≤ p'.asIdeal.comap φ` using `fun y hy => by`.
+Treat this case separately. Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker.mp hy]`. Conclude with `p'.asIdeal.zero_mem`. Conclude with `bot_lt_iff_ne_bot.mpr fun h => hker (le_bot_iff.mp (hk.trans h.le))`. Consider the case `coe p`. Establish `hpp : p < p'` using `WithBot.coe_lt_coe.mp hab`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `p.asIdeal.comap φ < p'.asIdeal.comap φ`. Use `lt_of_le_of_ne (Ideal.comap_mono (show p.asIdeal ≤ p'.asIdeal from hpp.le)) ?_` and prove the remaining obligations. Introduce `h`. Establish `h' : p'.asIdeal ≤ p.asIdeal` using `(Ideal.comap_le_comap_iff_of_surjective φ hφ _ _).mp h.ge`. Conclude with `lt_irrefl _ (lt_of_lt_of_le ((PrimeSpectrum.asIdeal_lt_asIdeal p p').mpr hpp) h')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Order.height_le_height_apply_of_strictMono g hg ((⟨q, ‹_›⟩ : PrimeSpectrum S) : WithBot (PrimeSpectrum S))`. Rewrite `h1` using `[Order.height_coe_withBot]`. Rewrite using `[height_eq_order_height_lemma q, height_eq_order_height_lemma (q.comap φ)]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem height_add_one_le_height_comap_of_surjective {A S : Type*} [CommRing A] [IsDomain A]
     [CommRing S] (φ : A →+* S) (hφ : Function.Surjective φ) (hker : RingHom.ker φ ≠ ⊥)
@@ -132,13 +126,13 @@ theorem height_add_one_le_height_comap_of_surjective {A S : Type*} [CommRing A] 
   exact h1
 
 /- English proof (translation)
-Establish `hker : RingHom.ker (eval₂RingHom f x) ≠ ⊥`. Take `⟨g, hg0, hg⟩` from `halg`. Introduce `h`. Apply `hg0` to reduce the goal to its premises. Establish `hmem : g ∈ RingHom.ker (eval₂RingHom f x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker]`. Simplify using `using hg`. Rewrite `hmem` using `[h, Ideal.mem_bot]`. Conclude with `hmem`. Establish `h3` using `height_add_one_le_height_comap_of_surjective (eval₂RingHom f x) hgen hker q`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `height_le_height_comap_C_add_one (q.comap (eval₂RingHom f x))`. Establish `hc : (q.comap (eval₂RingHom f x)).comap (C : R →+* R[X]) = q.comap f`. Rewrite using `[Ideal.comap_comap]`. Use `congr 1`. Use extensionality with `r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `h2` using `[hc]`. Conclude with `(WithTop.add_le_add_iff_right ENat.one_ne_top).mp (h3.trans h2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_le_height_comap_of_eval₂_surjective {R S : Type*} [CommRing R] [IsDomain R]
     [IsNoetherianRing R] [CommRing S] [IsDomain S] (f : R →+* S) (hf : Function.Injective f) (x : S)

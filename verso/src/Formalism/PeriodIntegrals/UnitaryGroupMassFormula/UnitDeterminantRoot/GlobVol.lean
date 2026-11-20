@@ -12,9 +12,9 @@ section Vol
 variable (F : IntermediateField ℚ ℂ) {m : Type} [Fintype m] [DecidableEq m]
 
 /- English proof (translation)
-Unfold `vol volSet`. Rewrite using `[Submodule.span_mul_span]`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, _, ⟨v, hv, rfl⟩, rfl⟩`. Take `rfl` from `Set.mem_singleton_iff.mp hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun j => c • v j, fun j => h _ (hv j), ?_⟩` and prove the remaining obligations. Rewrite using `[show (Matrix.of fun j => c • v j) = c • Matrix.of v from by ext i j; rfl, Matrix.det_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma vol_smul_le {Λ Λ' : AddSubgroup (m → ℂ)} (c : ℂ) (h : ∀ x ∈ Λ, c • x ∈ Λ') :
     Submodule.span (𝓞 F) {c ^ Fintype.card m} * vol F Λ ≤ vol F Λ' := by
@@ -28,9 +28,9 @@ lemma vol_smul_le {Λ Λ' : AddSubgroup (m → ℂ)} (c : ℂ) (h : ∀ x ∈ Λ
   rw [show (Matrix.of fun j => c • v j) = c • Matrix.of v from by ext i j; rfl, Matrix.det_smul]
 
 /- English proof (translation)
-Establish `h : Matrix.of (fun j => δ (w j)) = Matrix.of w * Matrix.transpose (LinearMap.toMatrix' δ)`. Use extensionality with `j i`. Rewrite using `[Matrix.of_apply, ← LinearMap.toMatrix'_mulVec]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl (fun k _ => mul_comm _ _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Matrix.det_mul, Matrix.det_transpose, LinearMap.det_toMatrix', mul_comm]`.
+A detailed English derivation is pending.
 -/
 lemma det_rows_map (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) (w : m → m → ℂ) :
     (Matrix.of fun j => δ (w j)).det = LinearMap.det δ * (Matrix.of w).det := by
@@ -42,11 +42,11 @@ lemma det_rows_map (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) (w : m → m → �
   rw [h, Matrix.det_mul, Matrix.det_transpose, LinearMap.det_toMatrix', mul_comm]
 
 /- English proof (translation)
-Unfold `UnitDetRootDefs.imgLat vol volSet`. Rewrite using `[Submodule.span_mul_span]`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨v, hv, rfl⟩ choose w hw hwv using fun j => AddSubgroup.mem_map.mp (hv j)`. Use `Set.mem_mul.mpr ⟨_, Set.mem_singleton _, _, ⟨w, hw, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hv' : v = fun j => (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) (w j)` using `funext fun j => (hwv j).symm`. Rewrite using `[hv', det_rows_map]`. Introduce `hz`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨_, h1, _, ⟨w, hw, rfl⟩, rfl⟩` from `Set.mem_mul.mp hz`. Take `rfl` from `Set.mem_singleton_iff.mp h1`. Use `⟨fun j => (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) (w j), fun j => AddSubgroup.mem_map.mpr ⟨w j, hw j, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[det_rows_map]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma vol_img (δ : (m → ℂ) ≃ₗ[ℂ] (m → ℂ)) (Λ : AddSubgroup (m → ℂ)) :
     vol F (UnitDetRootDefs.imgLat (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λ)
@@ -97,15 +97,13 @@ lemma algebraMap_thetaO {a : ℕ} {b c : ℤ} {d : ℕ} (hok : UnitDetRootDefs.C
   rfl
 
 /- English proof (translation)
-Unfold `vol volSet UnitDetRootDefs.stdLat`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `h1 : ∀ j i, v j i ∈ (UnitDetRootDefs.cmL a b d ha hd lam hlam).lattice` using `fun j i => (show ∀ i ∈ (Set.univ : Set m), v j i ∈ _ from hv j) i (Set.mem_univ i)`. Use `clear hv`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hent : ∀ j i, ∃ o : 𝓞 (KF b d), v j i = lam * algebraMap (𝓞 (KF b d)) ℂ o`. Introduce `j i`. Establish `h2` using `h1 j i`. Simplify using `only [PeriodPair.lattice, UnitDetRootDefs.cmL, UnitDetRootDefs.scalePair, UnitDetRootDefs.cmPair] at h2`. Take `⟨p, q, hpq⟩` from `Submodule.mem_span_pair.mp h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p * (a : 𝓞 (KF b d)) + q * thetaO hok, ?_⟩` and prove the remaining obligations. Rewrite using `[← hpq]`. Simplify using `only [map_add, map_mul, algebraMap_thetaO, map_intCast, map_natCast, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `choose o ho using hent`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hM : Matrix.of v = lam • (algebraMap (𝓞 (KF b d)) ℂ).mapMatrix (Matrix.of o)`. Use extensionality with `j i`. Simplify using `[ho j i]`. Rewrite using `[hM, Matrix.det_smul, ← RingHom.map_det]`. Use `Submodule.mem_span_singleton.mpr ⟨(Matrix.of o).det, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Algebra.smul_def, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma vol_std_le {a : ℕ} {b c : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam : ℂ} {hlam : lam ≠ 0}
     (hok : UnitDetRootDefs.CmOK a b c d) {m : Type} [Fintype m] [DecidableEq m] :
@@ -135,13 +133,11 @@ lemma vol_std_le {a : ℕ} {b c : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam 
   rw [Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Unfold `vol volSet UnitDetRootDefs.stdLat`. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨(Matrix.of fun (j i : m) => if i = j then lam * (a : ℂ) else 0).det, Submodule.subset_span ⟨_, fun j => ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `fun i _ => ?_ show (if i = j then lam * (a : ℂ) else 0) ∈ (UnitDetRootDefs.cmL a b d ha hd lam hlam).lattice` and prove the remaining obligations. Establish `hω : lam * (a : ℂ) ∈ (UnitDetRootDefs.cmL a b d ha hd lam hlam).lattice`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [PeriodPair.lattice, UnitDetRootDefs.cmL, UnitDetRootDefs.scalePair, UnitDetRootDefs.cmPair]`. Conclude with `Submodule.subset_span (Set.mem_insert _ _)`. Distinguish the cases in `h : i = j`. Rewrite using `[if_pos h]`. Conclude with `hω`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg h]`. Conclude with `zero_mem _`. Establish `hD : (Matrix.of fun (j i : m) => if i = j then lam * (a : ℂ) else 0) = Matrix.diagonal (fun _ => lam * (a : ℂ))`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.diagonal_apply, h, eq_comm]`.
-
-Rewrite using `[hD, Matrix.det_diagonal, Finset.prod_const]`. Conclude with `pow_ne_zero _ (mul_ne_zero hlam (by exact_mod_cast ha.ne'))`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma vol_std_ne_bot {a : ℕ} {b : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam : ℂ} {hlam : lam ≠ 0}
     {m : Type} [Fintype m] [DecidableEq m] :

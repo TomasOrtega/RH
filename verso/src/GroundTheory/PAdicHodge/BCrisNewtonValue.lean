@@ -22,24 +22,24 @@ variable (p) in
 def sig (ρ : ℝ) : ℝ := Real.log ρ / Real.log (p : ℝ)⁻¹
 
 /- English proof (translation)
-The claim follows from `inv_pos.2 (Nat.cast_pos.2 hp.out.pos)`.
+A detailed English derivation is pending.
 -/
 theorem inv_p_pos : (0 : ℝ) < (p : ℝ)⁻¹ := inv_pos.2 (Nat.cast_pos.2 hp.out.pos)
 
 /- English proof (translation)
-The claim follows from `inv_lt_one_of_one_lt₀ (Nat.one_lt_cast.2 hp.out.one_lt)`.
+A detailed English derivation is pending.
 -/
 theorem inv_p_lt_one : (p : ℝ)⁻¹ < 1 := inv_lt_one_of_one_lt₀ (Nat.one_lt_cast.2 hp.out.one_lt)
 
 /- English proof (translation)
-The claim follows from `Real.log_neg inv_p_pos inv_p_lt_one`.
+A detailed English derivation is pending.
 -/
 theorem log_inv_p_neg : Real.log (p : ℝ)⁻¹ < 0 := Real.log_neg inv_p_pos inv_p_lt_one
 
 /- English proof (translation)
-Rewrite using `[Real.rpow_def_of_pos inv_p_pos]`. Establish `: Real.log (p : ℝ)⁻¹ * sig p ρ = Real.log ρ`. Unfold `sig`. Rewrite using `[← mul_div_assoc]`. Conclude with `mul_div_cancel_left₀ _ log_inv_p_neg.ne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Real.exp_log hρ]`.
+A detailed English derivation is pending.
 -/
 theorem rpow_sig {ρ : ℝ} (hρ : 0 < ρ) : ((p : ℝ)⁻¹) ^ sig p ρ = ρ := by
   rw [Real.rpow_def_of_pos inv_p_pos]
@@ -50,39 +50,39 @@ theorem rpow_sig {ρ : ℝ} (hρ : 0 < ρ) : ((p : ℝ)⁻¹) ^ sig p ρ = ρ :=
   rw [this, Real.exp_log hρ]
 
 /- English proof (translation)
-The claim follows from `div_pos_of_neg_of_neg (Real.log_neg hρ0 hρ1) log_inv_p_neg`.
+A detailed English derivation is pending.
 -/
 theorem sig_pos {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1) : 0 < sig p ρ :=
   div_pos_of_neg_of_neg (Real.log_neg hρ0 hρ1) log_inv_p_neg
 
 /- English proof (translation)
-The claim follows from `div_self log_inv_p_neg.ne`.
+A detailed English derivation is pending.
 -/
 theorem sig_inv_p : sig p (p : ℝ)⁻¹ = 1 := div_self log_inv_p_neg.ne
 
 /- English proof (translation)
-Rewrite using `[← PadicComplex.coe_natCast, PadicComplex.norm_extends, ← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)) p, PadicAlgCl.norm_extends, Padic.norm_p]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_p_Cp : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
   rw [← PadicComplex.coe_natCast, PadicComplex.norm_extends,
     ← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)) p, PadicAlgCl.norm_extends, Padic.norm_p]
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)) p, PadicAlgCl.norm_extends, Padic.norm_p]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_p_algCl : ‖(p : PadicAlgCl p)‖ = (p : ℝ)⁻¹ := by
   rw [← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)) p, PadicAlgCl.norm_extends, Padic.norm_p]
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx, mul_comm, Real.rpow_mul hx, Real.rpow_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_rpow_comm {x : ℝ} (hx : 0 ≤ x) (n : ℕ) (s : ℝ) : (x ^ n) ^ s = (x ^ s) ^ n := by
   rw [← Real.rpow_natCast, ← Real.rpow_mul hx, mul_comm, Real.rpow_mul hx, Real.rpow_natCast]
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Rewrite using `[map_zero, map_zero, gn_zero, norm_zero, Real.zero_rpow (sig_pos hρ0 hρ1).ne']`. Establish `hn : ‖c‖ = ((p : ℝ)⁻¹) ^ c.valuation` using `by conv_lhs => rw [PadicInt.unitCoeff_spec hc]`. Rewrite using `[norm_mul, PadicInt.norm_units, one_mul, norm_pow, PadicInt.norm_p]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [PadicInt.unitCoeff_spec hc]`. Rewrite using `[map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast, gn_mul hρ0 hρ1, gn_unit hρ0 hρ1 ((PadicInt.unitCoeff hc).isUnit.map _), one_mul, gn_pow hρ0 hρ1, gn_natCast_p hρ0, hn, pow_rpow_comm inv_p_pos.le, rpow_sig hρ0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gn_padicInt {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1) (c : ℤ_[p]) :
     gn ℂ_[p] p ρ (algebraMap (AInf ℂ_[p] p) 𝔸 (IsPerfectoidField.padicIntToWitt (K := ℂ_[p]) p c)) =
@@ -99,19 +99,17 @@ theorem gn_padicInt {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1) (c : ℤ_[p]) :
       gn_natCast_p hρ0, hn, pow_rpow_comm inv_p_pos.le, rpow_sig hρ0]
 
 /- English proof (translation)
-The claim follows from `minpoly.natDegree_pos (Algebra.IsIntegral.isIntegral y)`.
+A detailed English derivation is pending.
 -/
 theorem natDegree_minpoly_pos (y : PadicAlgCl p) : 0 < (minpoly ℚ_[p] y).natDegree :=
   minpoly.natDegree_pos (Algebra.IsIntegral.isIntegral y)
 
 /- English proof (translation)
-Use `set q := minpoly ℚ_[p] y with hq`. Break down `hi.lt_or_eq with hi | hi` into its components or cases. Establish `h1 : ‖q.coeff i‖ ^ (1 / (q.natDegree - i : ℝ)) ≤ ‖y‖`. Establish `e : ‖y‖ = spectralValue q` using `rfl`. Rewrite using `[e, ← spectralValueTerms_of_lt_natDegree _ hi]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_ciSup (spectralValueTerms_bddAbove _) i`. Establish `hpos : (0 : ℝ) < (q.natDegree - i : ℝ)`. Establish `: (i : ℝ) < q.natDegree` using `by exact_mod_cast hi`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcast : ((q.natDegree - i : ℕ) : ℝ) = (q.natDegree - i : ℝ)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Nat.cast_sub hi.le]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul (norm_nonneg _), hcast, one_div, inv_mul_cancel₀ hpos.ne', Real.rpow_one]`. Use `_ ≤ ‖y‖ ^ ((q.natDegree - i : ℕ) : ℝ) := Real.rpow_le_rpow (by positivity) h1 (Nat.cast_nonneg _)`. Use `_ = ‖y‖ ^ (q.natDegree - i) := Real.rpow_natCast _ _`.
-
-Rewrite using `[hi, Nat.sub_self, pow_zero, (minpoly.monic (Algebra.IsIntegral.isIntegral y)).coeff_natDegree, norm_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_minpoly_coeff_le (y : PadicAlgCl p) {i : ℕ} (hi : i ≤ (minpoly ℚ_[p] y).natDegree) :
     ‖(minpoly ℚ_[p] y).coeff i‖ ≤ ‖y‖ ^ ((minpoly ℚ_[p] y).natDegree - i) := by
@@ -135,7 +133,7 @@ theorem norm_minpoly_coeff_le (y : PadicAlgCl p) {i : ℕ} (hi : i ≤ (minpoly 
       norm_one]
 
 /- English proof (translation)
-Establish `h` using `spectralNorm.spectralNorm_eq_norm_coeff_zero_rpow (K := ℚ_[p]) (L := PadicAlgCl p) y`. Rewrite `h` using `[PadicAlgCl.spectralNorm_eq]`. Establish `hd : (0 : ℝ) < (minpoly ℚ_[p] y).natDegree` using `by exact_mod_cast natDegree_minpoly_pos y`. Rewrite using `[h, ← Real.rpow_natCast, ← Real.rpow_mul (norm_nonneg _), one_div, inv_mul_cancel₀ hd.ne', Real.rpow_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_minpoly_coeff_zero (y : PadicAlgCl p) :
     ‖(minpoly ℚ_[p] y).coeff 0‖ = ‖y‖ ^ (minpoly ℚ_[p] y).natDegree := by
@@ -146,19 +144,17 @@ theorem norm_minpoly_coeff_zero (y : PadicAlgCl p) :
     Real.rpow_one]
 
 /- English proof (translation)
-Break down `lt_trichotomy Fa (μ * Fb) with hlt | heq | hgt` into its components or cases. It suffices to derive a contradiction. Use `hnd 0 (Finset.mem_range.2 (by omega)) ?_ fun i hi hi0 => ?_` and prove the remaining obligations. Rewrite using `[hG0]`. Check the signs of the components of the expression.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Establish `hid : i ≤ d` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Take `⟨hG1, hG2⟩` from `hG i hid`. Establish `hpow : Fa ^ i < (μ * Fb) ^ i` using `pow_lt_pow_left₀ hlt hFa.le hi0`. Establish `e1 : ρk * μ ^ (d - i) * (μ * Fb) ^ i * Fb ^ (d - i) = ρk * μ ^ d * Fb ^ d`. Rewrite using `[mul_pow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : μ ^ (d - i) * μ ^ i = μ ^ d` using `by rw [← pow_add, Nat.sub_add_cancel hid]`. Establish `h2 : Fb ^ i * Fb ^ (d - i) = Fb ^ d` using `by rw [← pow_add, Nat.add_sub_cancel' hid]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hG0, Nat.sub_zero, pow_zero, mul_one, ← e1]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `: 0 < ρk * μ ^ (d - i)` using `by positivity`. Establish `: 0 < Fb ^ (d - i)` using `by positivity`. Use `gcongr`. Conclude with `heq`. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hnd d (Finset.mem_range.2 (by omega)) ?_ fun i hi hid' => ?_` and prove the remaining obligations. Rewrite using `[hGd, Nat.sub_self, pow_zero, mul_one]`. Check the signs of the components of the expression. Establish `hid : i < d` using `lt_of_le_of_ne (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)) hid'`. Take `⟨hG1, hG2⟩` from `hG i hid.le`.
+Check the signs of the components of the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : (μ * Fb) ^ (d - i) < Fa ^ (d - i)` using `pow_lt_pow_left₀ hgt (by positivity) (by omega)`. Establish `e1 : ρk * Fa ^ i * Fa ^ (d - i) = ρk * Fa ^ d`. Rewrite using `[mul_assoc, ← pow_add, Nat.add_sub_cancel' hid.le]`. Rewrite using `[hGd, Nat.sub_self, pow_zero, mul_one, ← e1]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `: 0 < ρk * Fa ^ i` using `by positivity`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_no_dominant {d : ℕ} (hd : 1 ≤ d) {Fa Fb μ ρk : ℝ} (hFa : 0 < Fa) (hFb : 0 < Fb)
     (hμ : 0 < μ) (hρk : 0 < ρk) (G : ℕ → ℝ) (hG : ∀ i ≤ d, 0 ≤ G i ∧ G i ≤ ρk * μ ^ (d - i))

@@ -9,19 +9,17 @@ noncomputable section
 namespace GlobalTheory.DetSat
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hi`. Take `⟨j, -, hj⟩` from `Finset.exists_max_image Finset.univ (fun i => A.valuation (c i)) ⟨i, Finset.mem_univ i⟩`. Establish `h1 : 1 < A.valuation (c j)` using `lt_of_lt_of_le (not_le.mp fun h => hi ((A.valuation_le_one_iff _).mp h)) (hj i (Finset.mem_univ i))`. Establish `hv0 : 0 < A.valuation (c j)` using `lt_trans zero_lt_one h1`. Establish `hj0 : c j ≠ 0`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `h`. Rewrite `hv0` using `[h, map_zero]`. Conclude with `lt_irrefl _ hv0`. Establish `ha : ∀ k, c k / c j ∈ A` using `fun k => by`. Rewrite using `[← A.valuation_le_one_iff, map_div₀, div_le_one₀ hv0]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hj k (Finset.mem_univ k)`. Set `a : ι → A` to `fun k => ⟨c k / c j, ha k⟩`. Establish `key : ∑ k, IsLocalRing.residue A (a k) • map (Int.castRingHom (IsLocalRing.ResidueField A)) (q k) = 0`. Use extensionality with `m`. Establish `e1 : (∑ k, IsLocalRing.residue A (a k) • map (Int.castRingHom (IsLocalRing.ResidueField A)) (q k)).coeff m = IsLocalRing.residue A (∑ k, a k * (((q k).coeff m : ℤ) : A))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[coeff_sum, coeff_map]`. Rewrite using `[e1, coeff_zero, IsLocalRing.residue_eq_zero_iff, A.valuation_lt_one_iff]`. Establish `e2 : ((∑ k, a k * (((q k).coeff m : ℤ) : A) : A) : K) = (∑ i, c i • map (Int.castRingHom K) (q i)).coeff m / c j`. Rewrite using `[coeff_sum, Finset.sum_div]`. Express the relevant statement in the definitionally equal form `A.subtype _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, coeff_smul, coeff_map]`. Simplify using `only [a, ValuationSubring.coe_subtype, smul_eq_mul, eq_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2, map_div₀, div_lt_one₀ hv0]`. Conclude with `lt_of_le_of_lt ((A.valuation_le_one_iff _).mpr (hc m)) h1`. Establish `h0` using `Fintype.linearIndependent_iff.mp hq _ key j`. Establish `: a j = 1` using `Subtype.ext (div_self hj0)`. Rewrite `h0` using `[this, map_one]`.
-
-Conclude with `one_ne_zero h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_valuationSubring_of_indep {K σ ι : Type} [Field K] [Fintype ι] (A : ValuationSubring K)
     (q : ι → MvPolynomial σ ℤ)
@@ -64,7 +62,7 @@ theorem mem_valuationSubring_of_indep {K σ ι : Type} [Field K] [Fintype ι] (A
   exact one_ne_zero h0
 
 /- English proof (translation)
-Use `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 K) K (c i) fun v => ?_` and prove the remaining obligations. Use `mem_valuationSubring_of_indep (v.valuation K).valuationSubring q (hq _) c (fun m => ?_) i` and prove the remaining obligations. Conclude with `v.valuation_le_one (K := K) (⟨_, hc m⟩ : 𝓞 K)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_of_indep {K σ ι : Type} [Field K] [NumberField K] [Fintype ι] (q : ι → MvPolynomial σ ℤ)
     (hq : ∀ (k : Type) [Field k], LinearIndependent k (fun i => map (Int.castRingHom k) (q i)))
@@ -78,9 +76,9 @@ def ssZ (n : ℕ) (ν : Fin n → ℕ) : Formalism.GradedWeylDivisibility.ssIdx 
   (Formalism.GradedWeylDivisibility.sSBasis ℤ n n ν).choose
 
 /- English proof (translation)
-Establish `h : ∀ m, (Formalism.GradedWeylDivisibility.colLex n n).degree (map (Int.castRingHom k) (ssZ n ν m)) = m.1 ∧ (Formalism.GradedWeylDivisibility.colLex n n).leadingCoeff (map (Int.castRingHom k) (ssZ n ν m)) = 1` using `fun m => by`. Take `⟨hd, -, N, sz, hsz, I, -, hI, hb⟩` from `(Formalism.GradedWeylDivisibility.sSBasis ℤ n n ν).choose_spec.2 m`. Establish `hb' : ssZ n ν m = Formalism.GradedWeylDivisibility.bideterminant ℤ sz hsz I` using `hb`. Establish `hd' : (Formalism.GradedWeylDivisibility.colLex n n).degree (ssZ n ν m) = m.1` using `hd`. Rewrite `hd'` using `[hb', (Formalism.GradedWeylDivisibility.column_lex_bideterminant ℤ n n N sz hsz I hI).1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hb', Formalism.GradedWeylDivisibility.ldlat_map_bidet, ← hd']`. Conclude with `Formalism.GradedWeylDivisibility.column_lex_bideterminant k n n N sz hsz I hI`. Use `Formalism.GradedWeylDivisibility.ldbasis_linearIndependent (Formalism.GradedWeylDivisibility.colLex n n) _ (fun m m' e => ?_) fun m => (h m).2` and prove the remaining obligations. Conclude with `Subtype.ext ((h m).1.symm.trans (e.trans (h m').1))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ssZ_indep (k : Type) [Field k] (n : ℕ) (ν : Fin n → ℕ) :
     LinearIndependent k (fun m => map (Int.castRingHom k) (ssZ n ν m)) := by
@@ -96,9 +94,9 @@ theorem ssZ_indep (k : Type) [Field k] (n : ℕ) (ν : Fin n → ℕ) :
   exact Subtype.ext ((h m).1.symm.trans (e.trans (h m').1))
 
 /- English proof (translation)
-Establish `h` using `(Formalism.GradedWeylDivisibility.nablaLKBasis ℤ K (algebraMap ℤ K).injective_int n n ν (ssZ n ν) _ (Formalism.GradedWeylDivisibility.sSBasis ℤ n n ν).choose_spec.1 1 (by simp)).2`. Establish `h1 : Formalism.GradedWeylDivisibility.rowAct K (n` using `n) ((1 : Matrix (Fin n) (Fin n) K)⁻¹) = AlgHom.id K _ := by`. Rewrite using `[inv_one]`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Formalism.GradedWeylDivisibility.rowAct, Matrix.one_apply, apply_ite C]`. Rewrite `h` using `[h1]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ssZ_span (K : Type) [Field K] [CharZero K] (n : ℕ) (ν : Fin n → ℕ) :
     Submodule.span K (Set.range fun m => map (Int.castRingHom K) (ssZ n ν m)) = Formalism.GradedWeylDivisibility.dualWeyl K n n ν := by
@@ -113,7 +111,7 @@ theorem ssZ_span (K : Type) [Field K] [CharZero K] (n : ℕ) (ν : Fin n → ℕ
   exact h
 
 /- English proof (translation)
-Rewrite using `[← (Formalism.GradedWeylDivisibility.sSBasis ℤ n n ν).choose_spec.1.2.1]`. Conclude with `Submodule.subset_span ⟨m, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ssZ_mem (n : ℕ) (ν : Fin n → ℕ) (m) : ssZ n ν m ∈ Formalism.GradedWeylDivisibility.dualWeyl ℤ n n ν := by
   rw [← (Formalism.GradedWeylDivisibility.sSBasis ℤ n n ν).choose_spec.1.2.1]
@@ -125,7 +123,7 @@ def prodZ (lam : Ix → DomWeight n) (i : VVIdx lam) : MvPolynomial (Ix × Fin n
   ∏ t, Formalism.GradedWeylDivisibility.blockEmb ℤ t (ssZ n (lam t).natW (i t))
 
 /- English proof (translation)
-Simplify using `only [prodZ, map_prod, Formalism.GradedWeylDivisibility.blockEmb, map_rename]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_prodZ (k : Type) [CommRing k] (lam : Ix → DomWeight n) (i : VVIdx lam) :
     map (Int.castRingHom k) (prodZ lam i) =
@@ -133,7 +131,7 @@ theorem map_prodZ (k : Type) [CommRing k] (lam : Ix → DomWeight n) (i : VVIdx 
   simp only [prodZ, map_prod, Formalism.GradedWeylDivisibility.blockEmb, map_rename]
 
 /- English proof (translation)
-Simplify using `only [map_prodZ]`. Conclude with `Formalism.GradedWeylDivisibility.tensorBasis k k Ix n n (fun t => Formalism.GradedWeylDivisibility.ssIdx n n (lam t).natW) _ (fun t m => map (Int.castRingHom k) (ssZ n (lam t).natW m)) (fun t => ssZ_indep k n _) (fun _ => rfl)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prodZ_basis (k : Type) [Field k] (lam : Ix → DomWeight n) :
     LinearIndependent k (fun i => map (Int.castRingHom k) (prodZ lam i)) ∧
@@ -145,9 +143,9 @@ theorem prodZ_basis (k : Type) [Field k] (lam : Ix → DomWeight n) :
     (fun t m => map (Int.castRingHom k) (ssZ n (lam t).natW m)) (fun t => ssZ_indep k n _) (fun _ => rfl)
 
 /- English proof (translation)
-Rewrite using `[map_prodZ]`. Use `Submodule.subset_span ⟨_, fun t => ?_, rfl⟩` and prove the remaining obligations. Use `⟨map (Int.castRingHom (𝓞 K)) (ssZ n (lam t).natW (i t)), Formalism.GradedWeylDivisibility.dualWeylMap _ _ _ n n _ _ (ssZ_mem n _ _), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `map (algebraMap (𝓞 K) K) _ = _`. Rewrite using `[map_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 theorem prodZ_mem (K : Type) [Field K] [NumberField K] (lam : Ix → DomWeight n) (i : VVIdx lam) :
     map (Int.castRingHom K) (prodZ lam i) ∈ nabStd K lam := by
@@ -160,7 +158,7 @@ theorem prodZ_mem (K : Type) [Field K] [NumberField K] (lam : Ix → DomWeight n
   congr 2
 
 /- English proof (translation)
-Simplify using `only [map_prod, map_pow, RingHom.map_det]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `congr 2`. Use extensionality with `a s : 2`. Simplify using `[gen]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_detProd (k : Type) [CommRing k] (e : Ix → ℕ) :
     map (Int.castRingHom k) (∏ t, (gen ℤ n t).det ^ e t) = ∏ t, (gen k n t).det ^ e t := by
@@ -171,9 +169,9 @@ theorem map_detProd (k : Type) [CommRing k] (e : Ix → ℕ) :
   simp [gen]
 
 /- English proof (translation)
-Use `Finset.prod_ne_zero_iff.mpr fun t _ => pow_ne_zero _ fun h => ?_` and prove the remaining obligations. Establish `h2` using `congrArg (eval fun v : Ix × Fin n × Fin n => (1 : Matrix (Fin n) (Fin n) k) v.2.1 v.2.2) h`. Rewrite `h2` using `[RingHom.map_det, map_zero]`. Establish `h3 : (eval fun v : Ix × Fin n × Fin n => (1 : Matrix (Fin n) (Fin n) k) v.2.1 v.2.2).mapMatrix (gen k n t) = 1`. Use extensionality with `a s`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[gen]`. Rewrite `h2` using `[h3, Matrix.det_one]`. Conclude with `one_ne_zero h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detProd_ne_zero (k : Type) [Field k] (e : Ix → ℕ) : (∏ t, (gen k n t).det ^ e t) ≠ 0 := by
   refine Finset.prod_ne_zero_iff.mpr fun t _ => pow_ne_zero _ fun h => ?_
@@ -187,13 +185,11 @@ theorem detProd_ne_zero (k : Type) [Field k] (e : Ix → ℕ) : (∏ t, (gen k n
   exact one_ne_zero h2
 
 /- English proof (translation)
-Introduce `K _ _ Ix _ n lam e F hF hint`. Establish `hV : Submodule.span K (Set.range fun i => map (Int.castRingHom K) (prodZ lam i)) = VV K lam`. Rewrite using `[(prodZ_basis K lam).2]`. Simplify using `only [ssZ_span]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite `hF` using `[← hV, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, rfl⟩` from `hF`. Establish `h` using `integral_of_indep (fun i => (∏ t, (gen ℤ n t).det ^ e t) * prodZ lam i) (fun k _ => by`. Simplify using `only [map_mul, map_detProd]`. Conclude with `(prodZ_basis k lam).1.map' (LinearMap.mulLeft k (∏ t, (gen k n t).det ^ e t)) (LinearMap.ker_eq_bot.mpr (mul_right_injective₀ (detProd_ne_zero k e)))) c (fun m => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hint m` as an intermediate fact. Rewrite `this` using `[Finset.mul_sum]`. Simplify `this)` using `only [map_mul, map_detProd, mul_smul_comm]`. Use `choose a ha using h`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← ha i, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (prodZ_mem K lam i)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_nabStd_of_det_mul_integral : ∀ (K : Type) [Field K] [NumberField K] (Ix : Type) [Fintype Ix] (n : ℕ)
     (lam : Ix → DomWeight n) (e : Ix → ℕ), ∀ F ∈ VV K lam,

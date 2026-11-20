@@ -11,17 +11,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.EqLocus
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `Z hZ a b`. Use `⟨Z, 𝟙 Z, hZ, fun k => k.elim0, fun T h _ => ⟨h, by simp, fun g hg => by simpa using hg⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `succ n ih`. Introduce `Z hZ a b`. Set `e` to `equalizer.ι (a 0) (b 0)`. Establish `hE : IsFinite (equalizer (a 0) (b 0)).hom`. Rewrite using `[← Over.w e]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Take `⟨Y, i', hY, hi', hu⟩` from `ih _ hE (fun k => e ≫ a k.succ) (fun k => e ≫ b k.succ)`. Use `⟨Y, i' ≫ e, hY, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[equalizer.condition]`. Simplify `hi' k` using `only [Category.assoc]`. Introduce `T h hh`. Set `l : T ⟶ equalizer (a 0) (b 0)` to `equalizer.lift h (hh 0)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hl : l ≫ e = h` using `equalizer.lift_ι _ _`. Take `⟨h'', hh'', hu''⟩` from `hu T l (fun k => by`. Simplify using `only [← Category.assoc, hl]`. Conclude with `hh k.succ)`. Use `⟨h'', show h'' ≫ i' ≫ e = h by rw [← Category.assoc, hh'', hl], fun g hg => hu'' g ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `g ≫ i' ≫ e = h at hg`. Express the relevant statement in the definitionally equal form `g ≫ i' = l`. Apply `(cancel_mono e).1` to reduce the goal to its premises. Rewrite using `[Category.assoc, hg, hl]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fin (H : Scheme.{0}) (G : Over H) [IsSeparated G.hom] :
     ∀ (n : ℕ) (Z : Over H), IsFinite Z.hom → ∀ (a b : Fin n → (Z ⟶ G)),
@@ -58,7 +58,7 @@ theorem exists_fin (H : Scheme.{0}) (G : Over H) [IsSeparated G.hom] :
       rw [Category.assoc, hg, hl]
 
 /- English proof (translation)
-Introduce `H Z G hZ hG Ix _ a b`. Take `⟨n, ⟨σ⟩⟩` from `Finite.exists_equiv_fin Ix`. Take `⟨Y, i, hY, hi, hu⟩` from `exists_fin H G n Z hZ (fun k => a (σ.symm k)) (fun k => b (σ.symm k))`. Use `⟨Y, i, hY, fun k => by simpa using hi (σ k), fun T h hh => hu T h (fun k => hh _)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_finite_eqLocus : ∀ (H : Scheme.{0}) (Z G : Over H), IsFinite Z.hom → IsSeparated G.hom →
     ∀ (Ix : Type) [Finite Ix] (a b : Ix → (Z ⟶ G)), ∃ (Y : Over H) (i : Y ⟶ Z), IsFinite Y.hom ∧

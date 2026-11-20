@@ -15,25 +15,23 @@ open scoped ComplexOrder
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `set v : Fin n → ℂ := a - b with hv`. Use `set s : ℂ := star v ⬝ᵥ a with hs`. Establish `hsa : star (star a ⬝ᵥ a) = star a ⬝ᵥ a` using `(Matrix.star_dotProduct (v := a) (w := a)).symm`. Establish `hba : star (star b ⬝ᵥ a) = star a ⬝ᵥ b` using `(Matrix.star_dotProduct (v := a) (w := b)).symm`. Establish `hvv : star v ⬝ᵥ v = s + star s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [hv, hs, star_sub, sub_dotProduct, dotProduct_sub, hsa, hba]`. Take the linear combination `(-1 : ℂ) * hab`. Distinguish the cases in `hs0 : s = 0`. Establish `hv0 : v = 0`. Establish `h0 : star v ⬝ᵥ v = 0` using `by rw [hvv, hs0, star_zero, add_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `dotProduct_star_self_eq_zero.mp h0`. Establish `hab' : a = b` using `sub_eq_zero.mp (by rw [← hv]; exact hv0)`. Use `⟨1, by simp, by simp, by rw [Matrix.one_mulVec, hab'], fun w _ _ => Matrix.one_mulVec w⟩` and prove the remaining obligations. Use `set A : Matrix (Fin n) (Fin n) ℂ := Matrix.vecMulVec v (star v) with hA`. Establish `hA1 : ∀ w, A *ᵥ w = (star v ⬝ᵥ w) • v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Rewrite using `[hA, Matrix.vecMulVec_mulVec, op_smul_eq_smul]`. Establish `hA2 : Aᴴ = A` using `by rw [hA, Matrix.conjTranspose_vecMulVec, star_star]`. Establish `hA3 : A * A = (star v ⬝ᵥ v) • A`. Rewrite using `[hA, Matrix.vecMulVec_mul_vecMulVec]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.vecMulVec_apply, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hHv : H *ᵥ v = ε • v` using `by rw [hv, Matrix.mulVec_sub, ha, hb, smul_sub]`. Establish `hvH : star v ᵥ* H = ε • star v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Matrix.star_mulVec H v`. Rewrite `h1` using `[hH, hHv, star_smul, hε]`. Conclude with `h1.symm`. Establish `hHA : H * A = A * H`. Rewrite using `[hA, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, hHv, hvH]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨1 - s⁻¹ • A, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hss : star s ≠ 0` using `by rwa [star_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoef : -s⁻¹ - star s⁻¹ + star s⁻¹ * s⁻¹ * (s + star s) = 0`. Rewrite using `[star_inv₀]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_one, Matrix.conjTranspose_smul, hA2]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [sub_mul, mul_sub, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, hA3, smul_smul]`. Use `module`. Use `_ = 1 := by rw [hvv, hcoef, zero_smul, add_zero]`. Rewrite using `[mul_sub, sub_mul, mul_one, one_mul, Matrix.mul_smul, Matrix.smul_mul, hHA]`.
-
-Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, hA1, ← hs, smul_smul, inv_mul_cancel₀ hs0, one_smul, hv, sub_sub_cancel]`. Introduce `w hw1 hw2`. Establish `hvw : star v ⬝ᵥ w = 0` using `by rw [hv, star_sub, sub_dotProduct, hw1, hw2, sub_zero]`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, hA1, hvw, zero_smul, smul_zero, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_refl (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (ε : ℂ) (hε : star ε = ε) (a b : Fin n → ℂ)
     (ha : H *ᵥ a = ε • a) (hb : H *ᵥ b = ε • b) (hab : star a ⬝ᵥ a = star b ⬝ᵥ b) :
@@ -93,36 +91,36 @@ theorem exists_refl (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (ε : ℂ) 
       rw [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, hA1, hvw, zero_smul, smul_zero, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_mulVec, hH, Matrix.dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_herm (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (x w : Fin n → ℂ) :
     star (H *ᵥ x) ⬝ᵥ w = star x ⬝ᵥ H *ᵥ w := by
   rw [Matrix.star_mulVec, hH, Matrix.dotProduct_mulVec]
 
 /- English proof (translation)
-Establish `hHz : ∀ z : Fin n → ℂ, H *ᵥ (H *ᵥ z) = z` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, hHH, Matrix.one_mulVec]`. Establish `hpl : ∀ z : Fin n → ℂ, H *ᵥ ((1 / 2 : ℂ) • (z + H *ᵥ z)) = (1 : ℂ) • ((1 / 2 : ℂ) • (z + H *ᵥ z))`. Introduce `z`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_add, hHz, one_smul, add_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmi : ∀ z : Fin n → ℂ, H *ᵥ ((1 / 2 : ℂ) • (z - H *ᵥ z)) = (-1 : ℂ) • ((1 / 2 : ℂ) • (z - H *ᵥ z))`. Introduce `z`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_sub, hHz]`. Use `module`. Establish `hst : star (1 / 2 : ℂ) = 1 / 2` using `by simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnp : ∀ z : Fin n → ℂ, star ((1 / 2 : ℂ) • (z + H *ᵥ z)) ⬝ᵥ ((1 / 2 : ℂ) • (z + H *ᵥ z)) = (1 / 2 : ℂ) * (star z ⬝ᵥ z + star z ⬝ᵥ H *ᵥ z)`. Introduce `z`. Establish `e1` using `dot_herm H hH z z`. Establish `e2` using `dot_herm H hH z (H *ᵥ z)`. Rewrite `e2` using `[hHz]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [star_smul, star_add, smul_dotProduct, dotProduct_smul, add_dotProduct, dotProduct_add, smul_eq_mul, e1, e2, hst]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnm : ∀ z : Fin n → ℂ, star ((1 / 2 : ℂ) • (z - H *ᵥ z)) ⬝ᵥ ((1 / 2 : ℂ) • (z - H *ᵥ z)) = (1 / 2 : ℂ) * (star z ⬝ᵥ z - star z ⬝ᵥ H *ᵥ z)`. Introduce `z`. Establish `e1` using `dot_herm H hH z z`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `dot_herm H hH z (H *ᵥ z)`. Rewrite `e2` using `[hHz]`. Simplify using `only [star_smul, star_sub, smul_dotProduct, dotProduct_smul, sub_dotProduct, dotProduct_sub, smul_eq_mul, e1, e2, hst]`. Expand and normalize the polynomial expressions, which then agree. Establish `horth1 : ∀ p m : Fin n → ℂ, H *ᵥ p = (1 : ℂ) • p → H *ᵥ m = (-1 : ℂ) • m → star p ⬝ᵥ m = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p m hp hm`. Establish `h` using `dot_herm H hH p m`. Rewrite `h` using `[hp, hm, one_smul, dotProduct_smul, smul_eq_mul]`. Take the linear combination `h / 2`. Establish `horth2 : ∀ p m : Fin n → ℂ, H *ᵥ p = (1 : ℂ) • p → H *ᵥ m = (-1 : ℂ) • m → star m ⬝ᵥ p = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p m hp hm`. Establish `h` using `dot_herm H hH m p`. Establish `hs1 : star (-1 : ℂ) = -1` using `by simp`. Rewrite `h` using `[hp, hm, one_smul, star_smul, smul_dotProduct, smul_eq_mul, hs1]`. Take the linear combination `(-1 / 2 : ℂ) * h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hpw : ∀ z w : Fin n → ℂ, star z ⬝ᵥ w = 0 → star z ⬝ᵥ H *ᵥ w = 0 → star ((1 / 2 : ℂ) • (z + H *ᵥ z)) ⬝ᵥ w = 0`. Introduce `z w hz1 hz2`. Rewrite using `[star_smul, star_add, smul_dotProduct, add_dotProduct, dot_herm H hH, hz1, hz2, add_zero, smul_zero]`. Establish `hmw : ∀ z w : Fin n → ℂ, star z ⬝ᵥ w = 0 → star z ⬝ᵥ H *ᵥ w = 0 → star ((1 / 2 : ℂ) • (z - H *ᵥ z)) ⬝ᵥ w = 0`. Introduce `z w hz1 hz2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_smul, star_sub, smul_dotProduct, sub_dotProduct, dot_herm H hH, hz1, hz2, sub_zero, smul_zero]`. Establish `hnp' : star ((1 / 2 : ℂ) • (x + H *ᵥ x)) ⬝ᵥ ((1 / 2 : ℂ) • (x + H *ᵥ x)) = star ((1 / 2 : ℂ) • (y + H *ᵥ y)) ⬝ᵥ ((1 / 2 : ℂ) • (y + H *ᵥ y))`. Rewrite using `[hnp, hnp, h1, h2]`. Establish `hnm' : star ((1 / 2 : ℂ) • (x - H *ᵥ x)) ⬝ᵥ ((1 / 2 : ℂ) • (x - H *ᵥ x)) = star ((1 / 2 : ℂ) • (y - H *ᵥ y)) ⬝ᵥ ((1 / 2 : ℂ) • (y - H *ᵥ y))`. Rewrite using `[hnm, hnm, h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨U₁, hU₁u, hU₁H, hU₁a, hU₁f⟩` from `exists_refl H hH 1 (by simp) _ _ (hpl x) (hpl y) hnp'`. Take `⟨U₂, hU₂u, hU₂H, hU₂a, hU₂f⟩` from `exists_refl H hH (-1) (by simp) _ _ (hmi x) (hmi y) hnm'`. Establish `hfix1 : U₁ *ᵥ ((1 / 2 : ℂ) • (x - H *ᵥ x)) = (1 / 2 : ℂ) • (x - H *ᵥ x)` using `hU₁f _ (horth1 _ _ (hpl x) (hmi x)) (horth1 _ _ (hpl y) (hmi x))`. Establish `hfix2 : U₂ *ᵥ ((1 / 2 : ℂ) • (y + H *ᵥ y)) = (1 / 2 : ℂ) • (y + H *ᵥ y)` using `hU₂f _ (horth2 _ _ (hpl y) (hmi x)) (horth2 _ _ (hpl y) (hmi y))`. Establish `hx : x = (1 / 2 : ℂ) • (x + H *ᵥ x) + (1 / 2 : ℂ) • (x - H *ᵥ x)` using `by module`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : (1 / 2 : ℂ) • (y + H *ᵥ y) + (1 / 2 : ℂ) • (y - H *ᵥ y) = y` using `by module`. Use `⟨U₂ * U₁, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc U₂ᴴ, hU₂u, Matrix.one_mul, hU₁u]`. Rewrite using `[← Matrix.mul_assoc, hU₂H, Matrix.mul_assoc, hU₁H, ← Matrix.mul_assoc]`. Use `conv_lhs => rw [hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mulVec_mulVec, Matrix.mulVec_add, hU₁a, hfix1, Matrix.mulVec_add, hfix2, hU₂a, hy]`. Introduce `w hw1 hw2 hw3 hw4`. Rewrite using `[← Matrix.mulVec_mulVec, hU₁f w (hpw x w hw1 hw3) (hpw y w hw2 hw4), hU₂f w (hmw x w hw1 hw3) (hmw y w hw2 hw4)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (hHH : H * H = 1) (x y : Fin n → ℂ)
     (h1 : star x ⬝ᵥ x = star y ⬝ᵥ y) (h2 : star x ⬝ᵥ H *ᵥ x = star y ⬝ᵥ H *ᵥ y) :
@@ -200,11 +198,11 @@ theorem exists_unitary (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (hHH : H
       hU₂f w (hmw x w hw1 hw3) (hmw y w hw2 hw4)]
 
 /- English proof (translation)
-Establish `hS : star (H *ᵥ y) ⬝ᵥ (H *ᵥ y) = star y ⬝ᵥ y`. Rewrite using `[GlobalTheory.CompanionTheory.BesselCartan.dot_herm H hH, Matrix.mulVec_mulVec, hHH, Matrix.one_mulVec]`. Establish `hC : star (H *ᵥ y) ⬝ᵥ y = -2`. Rewrite using `[GlobalTheory.CompanionTheory.BesselCartan.dot_herm H hH, h]`. Establish `hnn` using `dotProduct_star_self_nonneg (y + H *ᵥ y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hnn` using `[star_add, add_dotProduct, dotProduct_add, dotProduct_add, hS, hC, h]`. Establish `h2 : (0 : ℂ) ≤ 2 * (star y ⬝ᵥ y) - 4`. Use `hnn using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨hre, him⟩` from `Complex.le_def.mp h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Simplify using `at hre him`. Use `⟨(star y ⬝ᵥ y).re, by linarith, ?_⟩` and prove the remaining obligations. Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -228,13 +226,13 @@ theorem two_le (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (hHH : H * H = 1
     linarith
 
 /- English proof (translation)
-Establish `hd0 : 0 ≤ N ^ 2 - 4` using `by nlinarith`. Use `set d := Real.sqrt (N ^ 2 - 4) with hd`. Establish `hdsq : d ^ 2 = N ^ 2 - 4` using `Real.sq_sqrt hd0`. Establish `hdlt : d < N`. Rewrite using `[hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Real.sqrt_lt' (by linarith)).mpr (by linarith)`. Establish `hdge : N - 2 ≤ d`. Establish `h1 : (N - 2) ^ 2 ≤ N ^ 2 - 4` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Use `set s := (N - d) / 2 with hs`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 < s` using `by rw [hs]; linarith`. Establish `hs1 : s ≤ 1` using `by rw [hs]; linarith`. Establish `hprod : s * (N - s) = 1`. Rewrite using `[hs]`. Take the linear combination `(-1 / 4 : ℝ) * hdsq`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hinv : N - s = s⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact hprod)`. Use `⟨Real.sqrt s, Real.sqrt_pos.mpr hs0, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_pow, Real.sq_sqrt hs0.le, ← hinv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_u (N : ℝ) (hN : 2 ≤ N) : ∃ u : ℝ, 0 < u ∧ u ≤ 1 ∧ u⁻¹ ^ 2 + u ^ 2 = N := by
   have hd0 : 0 ≤ N ^ 2 - 4 := by nlinarith
@@ -261,9 +259,9 @@ theorem exists_u (N : ℝ) (hN : 2 ≤ N) : ∃ u : ℝ, 0 < u ∧ u ≤ 1 ∧ u
     ring
 
 /- English proof (translation)
-Establish `hHq : ∀ i j : Fin (2 * r + k + 1), Hq k r i j = if outer k r i then (if (i : ℕ) + (j : ℕ) = 2 * r + k then 1 else 0) else if i = j then 1 else 0` using `fun _ _ => rfl`. Establish `hout : ∀ i : Fin (2 * r + k + 1), outer k r i ↔ ((i : ℕ) ≤ r ∨ r + k ≤ (i : ℕ))` using `fun _ => Iff.rfl`. Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.conjTranspose_apply, hHq, hout, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> (try simp) <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hq_herm (k r : ℕ) : (Hq k r)ᴴ = Hq k r := by
   have hHq : ∀ i j : Fin (2 * r + k + 1), Hq k r i j =
@@ -277,9 +275,9 @@ theorem Hq_herm (k r : ℕ) : (Hq k r)ᴴ = Hq k r := by
   split_ifs <;> (try simp) <;> omega
 
 /- English proof (translation)
-Establish `hHq : ∀ i j : Fin (2 * r + k + 1), Hq k r i j = if outer k r i then (if (i : ℕ) + (j : ℕ) = 2 * r + k then 1 else 0) else if i = j then 1 else 0` using `fun _ _ => rfl`. Establish `hout : ∀ i : Fin (2 * r + k + 1), outer k r i ↔ ((i : ℕ) ≤ r ∨ r + k ≤ (i : ℕ))` using `fun _ => Iff.rfl`. Establish `hbv : ∀ {m : ℕ} (i : Fin m), bvec i = Pi.single i (1 : ℂ)` using `fun _ => rfl`. Use function extensionality and compare the values at `m`. Establish `hm` using `m.isLt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hjl` using `j.isLt`. Simplify using `only [Matrix.mulVec, dotProduct, hbv, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite `hi` using `[hout]`. Simplify using `only [hHq, hout, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> (try simp) <;> omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hq_outer (k r : ℕ) (i j : Fin (2 * r + k + 1)) (hi : outer k r i) (hij : i.val + j.val = 2 * r + k) :
     Hq k r *ᵥ bvec j = bvec i := by
@@ -298,9 +296,9 @@ theorem Hq_outer (k r : ℕ) (i j : Fin (2 * r + k + 1)) (hi : outer k r i) (hij
   split_ifs <;> (try simp) <;> omega
 
 /- English proof (translation)
-Establish `hHq : ∀ i j : Fin (2 * r + k + 1), Hq k r i j = if outer k r i then (if (i : ℕ) + (j : ℕ) = 2 * r + k then 1 else 0) else if i = j then 1 else 0` using `fun _ _ => rfl`. Establish `hout : ∀ i : Fin (2 * r + k + 1), outer k r i ↔ ((i : ℕ) ≤ r ∨ r + k ≤ (i : ℕ))` using `fun _ => Iff.rfl`. Establish `hbv : ∀ {m : ℕ} (i : Fin m), bvec i = Pi.single i (1 : ℂ)` using `fun _ => rfl`. Use function extensionality and compare the values at `m`. Establish `hm` using `m.isLt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hjl` using `j.isLt`. Simplify using `only [Matrix.mulVec, dotProduct, hbv, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite `hj` using `[hout]`. Simplify using `only [hHq, hout, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> (try simp) <;> omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hq_inner (k r : ℕ) (j : Fin (2 * r + k + 1)) (hj : ¬ outer k r j) :
     Hq k r *ᵥ bvec j = bvec j := by
@@ -319,13 +317,13 @@ theorem Hq_inner (k r : ℕ) (j : Fin (2 * r + k + 1)) (hj : ¬ outer k r j) :
   split_ifs <;> (try simp) <;> omega
 
 /- English proof (translation)
-Establish `hHq : ∀ i j : Fin (2 * r + k + 1), Hq k r i j = if outer k r i then (if (i : ℕ) + (j : ℕ) = 2 * r + k then 1 else 0) else if i = j then 1 else 0` using `fun _ _ => rfl`. Establish `hout : ∀ i : Fin (2 * r + k + 1), outer k r i ↔ ((i : ℕ) ≤ r ∨ r + k ≤ (i : ℕ))` using `fun _ => Iff.rfl`. Establish `hbv : ∀ {m : ℕ} (i : Fin m), bvec i = Pi.single i (1 : ℂ)` using `fun _ => rfl`. Establish `hcol : ∀ j, (Hq k r * Hq k r) *ᵥ bvec j = bvec j`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hjl` using `j.isLt`. Rewrite using `[← Matrix.mulVec_mulVec]`. Distinguish the cases in `hj : outer k r j`. Establish `hlt : 2 * r + k - j.val < 2 * r + k + 1` using `by omega`. Establish `hj' : outer k r ⟨2 * r + k - j.val, hlt⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hj`, the goal using `[hout]`. Simplify using `only [Fin.val_mk]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[GlobalTheory.CompanionTheory.BesselCartan.Hq_outer k r ⟨2 * r + k - j.val, hlt⟩ j hj' (by simp only [Fin.val_mk]; omega), GlobalTheory.CompanionTheory.BesselCartan.Hq_outer k r j ⟨2 * r + k - j.val, hlt⟩ hj (by simp only [Fin.val_mk]; omega)]`. Rewrite using `[GlobalTheory.CompanionTheory.BesselCartan.Hq_inner k r j hj, GlobalTheory.CompanionTheory.BesselCartan.Hq_inner k r j hj]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Establish `h` using `congrFun (hcol j) i`. Simplify using `only [Matrix.mulVec, dotProduct, hbv, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Rewrite using `[h, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hq_sq (k r : ℕ) : Hq k r * Hq k r = 1 := by
   have hHq : ∀ i j : Fin (2 * r + k + 1), Hq k r i j =
@@ -356,9 +354,9 @@ def tor (k r : ℕ) (u : ℝ) : Fin (2 * r + k + 1) → ℝ := fun i =>
   if i.val = r then u else if i.val = r + k then u⁻¹ else 1
 
 /- English proof (translation)
-Establish `hbv : ∀ {m : ℕ} (i : Fin m), bvec i = Pi.single i (1 : ℂ)` using `fun _ => rfl`. Establish `hdg : ∀ {m : ℕ} (d : Fin m → ℝ), dg d = Matrix.diagonal (fun i => ((d i : ℝ) : ℂ))` using `fun _ => rfl`. Rewrite using `[hdg, hbv]`. Use function extensionality and compare the values at `m`. Distinguish the cases in `h : m = i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[Matrix.mulVec_diagonal]`. Simplify using `[Matrix.mulVec_diagonal, Pi.single_apply, h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dg_bvec {m : ℕ} (d : Fin m → ℝ) (i : Fin m) : dg d *ᵥ bvec i = (d i : ℂ) • bvec i := by
   have hbv : ∀ {m : ℕ} (i : Fin m), bvec i = Pi.single i (1 : ℂ) := fun _ => rfl
@@ -371,9 +369,9 @@ theorem dg_bvec {m : ℕ} (d : Fin m → ℝ) (i : Fin m) : dg d *ᵥ bvec i = (
   · simp [Matrix.mulVec_diagonal, Pi.single_apply, h]
 
 /- English proof (translation)
-Establish `hdg : ∀ {m : ℕ} (d : Fin m → ℝ), dg d = Matrix.diagonal (fun i => ((d i : ℝ) : ℂ))` using `fun _ => rfl`. Establish `hu' : (u : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hu`. Rewrite using `[hdg, hdg, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [GlobalTheory.CompanionTheory.BesselCartan.tor]`. Apply the tactic sequence `split_ifs <;> push_cast <;> simp [hu']`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_mul (k r : ℕ) (u : ℝ) (hu : u ≠ 0) : dg (tor k r u⁻¹) * dg (tor k r u) = 1 := by
   have hdg : ∀ {m : ℕ} (d : Fin m → ℝ), dg d = Matrix.diagonal (fun i => ((d i : ℝ) : ℂ)) := fun _ => rfl
@@ -385,7 +383,7 @@ theorem dg_mul (k r : ℕ) (u : ℝ) (hu : u ≠ 0) : dg (tor k r u⁻¹) * dg (
   split_ifs <;> push_cast <;> simp [hu']
 
 /- English proof (translation)
-Establish `hil` using `i.isLt`. Establish `hjl` using `j.isLt`. Unfold `GlobalTheory.CompanionTheory.BesselCartan.tor`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp [hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tor_pair (k r : ℕ) (hk : 1 ≤ k) (u : ℝ) (hu : u ≠ 0) (i j : Fin (2 * r + k + 1))
     (hij : i.val + j.val = 2 * r + k) : tor k r u i * tor k r u j = 1 := by
@@ -395,7 +393,7 @@ theorem tor_pair (k r : ℕ) (hk : 1 ≤ k) (u : ℝ) (hu : u ≠ 0) (i j : Fin 
   split_ifs <;> first | (exfalso; omega) | simp [hu]
 
 /- English proof (translation)
-Establish `hout : outer k r i ↔ ((i : ℕ) ≤ r ∨ r + k ≤ (i : ℕ))` using `Iff.rfl`. Rewrite `hi` using `[hout]`. Unfold `GlobalTheory.CompanionTheory.BesselCartan.tor`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tor_inner (k r : ℕ) (u : ℝ) (i : Fin (2 * r + k + 1)) (hi : ¬ outer k r i) : tor k r u i = 1 := by
   have hout : outer k r i ↔ ((i : ℕ) ≤ r ∨ r + k ≤ (i : ℕ)) := Iff.rfl
@@ -404,13 +402,13 @@ theorem tor_inner (k r : ℕ) (u : ℝ) (i : Fin (2 * r + k + 1)) (hi : ¬ outer
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Establish `hHq : ∀ i j : Fin (2 * r + k + 1), Hq k r i j = if outer k r i then (if (i : ℕ) + (j : ℕ) = 2 * r + k then 1 else 0) else if i = j then 1 else 0` using `fun _ _ => rfl`. Establish `hout : ∀ i : Fin (2 * r + k + 1), outer k r i ↔ ((i : ℕ) ≤ r ∨ r + k ≤ (i : ℕ))` using `fun _ => Iff.rfl`. Establish `hdg : ∀ {m : ℕ} (d : Fin m → ℝ), dg d = Matrix.diagonal (fun i => ((d i : ℝ) : ℂ))` using `fun _ => rfl`. Establish `hUH : ∀ {m : ℕ} (H g : Matrix (Fin m) (Fin m) ℂ), g ∈ UH H ↔ gᴴ * H * g = H` using `fun _ _ => Iff.rfl`. Rewrite using `[hUH]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `only [hdg, Matrix.diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul, Pi.star_apply, Complex.star_def, Complex.conj_ofReal]`. Distinguish the cases in `h1 : outer k r i`. Distinguish the cases in `h2 : i.val + j.val = 2 * r + k`. Establish `ht` using `GlobalTheory.CompanionTheory.BesselCartan.tor_pair k r hk u hu i j h2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `: ((tor k r u i : ℝ) : ℂ) * (tor k r u j : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, ht, Complex.ofReal_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[hHq, h1, h2]`. Distinguish the cases in `h3 : i = j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h3` using the available equality. Rewrite using `[GlobalTheory.CompanionTheory.BesselCartan.tor_inner k r u i h1]`. Simplify using the standard rewrite rules. Simplify using `[hHq, h1, h3]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dg_mem (k r : ℕ) (hk : 1 ≤ k) (u : ℝ) (hu : u ≠ 0) : dg (tor k r u) ∈ UH (Hq k r) := by
   have hHq : ∀ i j : Fin (2 * r + k + 1), Hq k r i j =
@@ -439,9 +437,9 @@ theorem dg_mem (k r : ℕ) (hk : 1 ≤ k) (u : ℝ) (hu : u ≠ 0) : dg (tor k r
     · simp [hHq, h1, h3]
 
 /- English proof (translation)
-Establish `hUH : ∀ {m : ℕ} (H g : Matrix (Fin m) (Fin m) ℂ), g ∈ UH H ↔ gᴴ * H * g = H` using `fun _ _ => Iff.rfl`. Rewrite `hg`, `hh`, the goal using `[hUH]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = H := by rw [hg, hh]`.
+A detailed English derivation is pending.
 -/
 theorem UH_mul {m : ℕ} {H g h : Matrix (Fin m) (Fin m) ℂ} (hg : g ∈ UH H) (hh : h ∈ UH H) : g * h ∈ UH H := by
   have hUH : ∀ {m : ℕ} (H g : Matrix (Fin m) (Fin m) ℂ), g ∈ UH H ↔ gᴴ * H * g = H := fun _ _ => Iff.rfl
@@ -452,7 +450,7 @@ theorem UH_mul {m : ℕ} {H g h : Matrix (Fin m) (Fin m) ℂ} (hg : g ∈ UH H) 
     _ = H := by rw [hg, hh]
 
 /- English proof (translation)
-Establish `hbv : ∀ {m : ℕ} (i : Fin m), bvec i = Pi.single i (1 : ℂ)` using `fun _ => rfl`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[hbv, dotProduct_single]`. Simplify using `[hbv, h, dotProduct_single, Pi.single_apply, Ne.symm h]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bvec_dot {m : ℕ} (i j : Fin m) : star (bvec i) ⬝ᵥ bvec j = if i = j then (1 : ℂ) else 0 := by
   have hbv : ∀ {m : ℕ} (i : Fin m), bvec i = Pi.single i (1 : ℂ) := fun _ => rfl
@@ -462,55 +460,49 @@ theorem bvec_dot {m : ℕ} (i j : Fin m) : star (bvec i) ⬝ᵥ bvec j = if i = 
   · simp [hbv, h, dotProduct_single, Pi.single_apply, Ne.symm h]
 
 /- English proof (translation)
-Introduce `k r hk μ hμ`. Establish `hbv : ∀ {m : ℕ} (i : Fin m), bvec i = Pi.single i (1 : ℂ)` using `fun _ => rfl`. Establish `hUH : ∀ {m : ℕ} (H g : Matrix (Fin m) (Fin m) ℂ), g ∈ UH H ↔ gᴴ * H * g = H` using `fun _ _ => Iff.rfl`. Take `⟨hμU, hμfix⟩` from `hμ`. Establish `hH : (Hq k r)ᴴ = Hq k r` using `Hq_herm k r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hHH : Hq k r * Hq k r = 1` using `Hq_sq k r`. Establish `hμU' : μᴴ * Hq k r * μ = Hq k r` using `(hUH _ _).mp hμU`. Establish `hνμ : (Hq k r * μᴴ * Hq k r) * μ = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hμν : μ * (Hq k r * μᴴ * Hq k r) = 1` using `mul_eq_one_comm.mp hνμ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hform : ∀ g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, gᴴ * Hq k r * g = Hq k r → ∀ z z' : Fin (2 * r + k + 1) → ℂ, star (g *ᵥ z) ⬝ᵥ Hq k r *ᵥ (g *ᵥ z') = star z ⬝ᵥ Hq k r *ᵥ z'`. Introduce `g hg z z'`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`. Establish `hi0 : ((Formalism.QuantumDeterminants.wI k r 0 : Fin (2 * r + k + 1)) : ℕ) = r` using `by show r + ((0 : Fin (k + 1)) : ℕ) = r`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hiL : ((Formalism.QuantumDeterminants.wI k r (Fin.last k) : Fin (2 * r + k + 1)) : ℕ) = r + k` using `by show r + ((Fin.last k : Fin (k + 1)) : ℕ) = r + k`. Simplify using the standard rewrite rules. Use `set i0 := Formalism.QuantumDeterminants.wI k r 0 with hi0def`. Use `set iL := Formalism.QuantumDeterminants.wI k r (Fin.last k) with hiLdef`. Establish `hne : i0 ≠ iL` using `fun h => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `congrArg Fin.val h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `ho0 : outer k r i0` using `by show _ ∨ _; left; omega`. Establish `hoL : outer k r iL` using `by show _ ∨ _; right; omega`. Establish `hHe0 : Hq k r *ᵥ bvec i0 = bvec iL` using `Hq_outer k r iL i0 hoL (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHeL : Hq k r *ᵥ bvec iL = bvec i0` using `Hq_outer k r i0 iL ho0 (by omega)`. Use `set v0 : Fin (2 * r + k + 1) → ℂ := bvec i0 - bvec iL with hv0`. Establish `hv0H : star v0 ⬝ᵥ Hq k r *ᵥ v0 = -2`. Rewrite using `[hv0, Matrix.mulVec_sub, hHe0, hHeL, star_sub, sub_dotProduct, dotProduct_sub, dotProduct_sub, bvec_dot, bvec_dot, bvec_dot, bvec_dot, if_pos rfl, if_pos rfl, if_neg hne, if_neg (Ne.symm hne)]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set y := (Hq k r * μᴴ * Hq k r) *ᵥ v0 with hy`. Establish `hμy : μ *ᵥ y = v0` using `by rw [hy, Matrix.mulVec_mulVec, hμν, Matrix.one_mulVec]`. Establish `hyH : star y ⬝ᵥ Hq k r *ᵥ y = -2`. Rewrite using `[← hform μ hμU' y y, hμy, hv0H]`. Take `⟨N, hN2, hyN⟩` from `two_le (Hq k r) hH hHH y hyH`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu0, hu1, huN⟩` from `exists_u N hN2`. Establish `hu : u ≠ 0` using `ne_of_gt hu0`. Establish `hg1U : dg (tor k r u⁻¹) ∈ UH (Hq k r)` using `dg_mem k r hk u⁻¹ (inv_ne_zero hu)`. Establish `hg1U'` using `(hUH _ _).mp hg1U`. Establish `ht0 : tor k r u⁻¹ i0 = u⁻¹`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `tor`. Rewrite using `[if_pos hi0]`. Establish `htL : tor k r u⁻¹ iL = u`. Unfold `tor`. Rewrite using `[if_neg (by omega), if_pos hiL, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set xv := dg (tor k r u⁻¹) *ᵥ v0 with hxvdef`. Establish `hxv : xv = ((u⁻¹ : ℝ) : ℂ) • bvec i0 - ((u : ℝ) : ℂ) • bvec iL`. Rewrite using `[hxvdef, hv0, Matrix.mulVec_sub, dg_bvec, dg_bvec, ht0, htL]`. Establish `hxn : star xv ⬝ᵥ xv = star y ⬝ᵥ y`. Rewrite using `[hyN, hxv, star_sub, star_smul, star_smul, sub_dotProduct, dotProduct_sub, dotProduct_sub, smul_dotProduct, smul_dotProduct, smul_dotProduct, smul_dotProduct, dotProduct_smul, dotProduct_smul, dotProduct_smul, dotProduct_smul, bvec_dot, bvec_dot, bvec_dot, bvec_dot, if_pos rfl, i …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [smul_eq_mul, mul_one, mul_zero, sub_zero, zero_sub, sub_neg_eq_add, Complex.star_def, Complex.conj_ofReal]`. Rewrite using `[← huN]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hxH : star xv ⬝ᵥ Hq k r *ᵥ xv = star y ⬝ᵥ Hq k r *ᵥ y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxvdef, hform _ hg1U' v0 v0, hv0H, hyH]`. Take `⟨K', hK'u, hK'H, hK'x, hK'f⟩` from `exists_unitary (Hq k r) hH hHH xv y hxn hxH`. Establish `hK'u' : K' * K'ᴴ = 1` using `mul_eq_one_comm.mp hK'u`. Establish `hK'U : K' ∈ UH (Hq k r)`. Rewrite using `[hUH, Matrix.mul_assoc, hK'H, ← Matrix.mul_assoc, hK'u, Matrix.one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxz : ∀ j : Fin (2 * r + k + 1), (j : ℕ) ≠ r → (j : ℕ) ≠ r + k → star xv ⬝ᵥ bvec j = 0`. Introduce `j hj1 hj2`. Establish `h1 : i0 ≠ j` using `fun h => hj1 (by rw [← h]; exact hi0)`. Establish `h2 : iL ≠ j` using `fun h => hj2 (by rw [← h]; exact hiL)`. Rewrite using `[hxv, star_sub, star_smul, star_smul, sub_dotProduct, smul_dotProduct, smul_dotProduct, bvec_dot, bvec_dot, if_neg h1, if_neg h2, smul_zero, smul_zero, sub_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvz : ∀ j : Fin (2 * r + k + 1), (j : ℕ) ≠ r → (j : ℕ) ≠ r + k → star v0 ⬝ᵥ bvec j = 0`. Introduce `j hj1 hj2`. Establish `h1 : i0 ≠ j` using `fun h => hj1 (by rw [← h]; exact hi0)`. Establish `h2 : iL ≠ j` using `fun h => hj2 (by rw [← h]; exact hiL)`. Rewrite using `[hv0, star_sub, sub_dotProduct, bvec_dot, bvec_dot, if_neg h1, if_neg h2, sub_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfixK : ∀ a : Fin r, K' *ᵥ bvec (Formalism.QuantumDeterminants.eI k r a) = bvec (Formalism.QuantumDeterminants.eI k r a) ∧ K' *ᵥ bvec (Formalism.QuantumDeterminants.esI k r a) = bvec (Formalism.QuantumDeterminants.esI k r a)`. Introduce `a`. Establish `ha` using `a.isLt`. Establish `he : ((Formalism.QuantumDeterminants.eI k r a : Fin (2 * r + k + 1)) : ℕ) = a` using `rfl`. Establish `hes : ((Formalism.QuantumDeterminants.esI k r a : Fin (2 * r + k + 1)) : ℕ) = 2 * r + k - a` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hoe : outer k r (Formalism.QuantumDeterminants.eI k r a)` using `by show _ ∨ _; left; omega`. Establish `hoes : outer k r (Formalism.QuantumDeterminants.esI k r a)` using `by show _ ∨ _; right; omega`. Establish `hHe : Hq k r *ᵥ bvec (Formalism.QuantumDeterminants.eI k r a) = bvec (Formalism.QuantumDeterminants.esI k r a)` using `Hq_outer k r _ _ hoes (by omega)`. Establish `hHes : Hq k r *ᵥ bvec (Formalism.QuantumDeterminants.esI k r a) = bvec (Formalism.QuantumDeterminants.eI k r a)` using `Hq_outer k r _ _ hoe (by omega)`. Establish `hye : star y ⬝ᵥ bvec (Formalism.QuantumDeterminants.eI k r a) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← hHes, ← hform μ hμU' y _, hμy, (hμfix a).2, hHes]`. Conclude with `hvz _ (by omega) (by omega)`. Establish `hyes : star y ⬝ᵥ bvec (Formalism.QuantumDeterminants.esI k r a) = 0`. Rewrite using `[← hHe, ← hform μ hμU' y _, hμy, (hμfix a).1, hHe]`. Conclude with `hvz _ (by omega) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Conclude with `hK'f _ (hxz _ (by omega) (by omega)) hye (by rw [hHe]; exact hxz _ (by omega) (by omega)) (by rw [hHe]; exact hyes)`. Conclude with `hK'f _ (hxz _ (by omega) (by omega)) hyes (by rw [hHes]; exact hxz _ (by omega) (by omega)) (by rw [hHes]; exact hye)`. Establish `hg1fix : ∀ j : Fin (2 * r + k + 1), (j : ℕ) ≠ r → (j : ℕ) ≠ r + k → dg (tor k r u⁻¹) *ᵥ bvec j = bvec j`. Introduce `j hj1 hj2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dg_bvec]`. Establish `: tor k r u⁻¹ j = 1`. Unfold `tor`. Rewrite using `[if_neg hj1, if_neg hj2]`. Rewrite using `[this, Complex.ofReal_one, one_smul]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨μ * K' * dg (tor k r u⁻¹), ⟨UH_mul (UH_mul hμU hK'U) hg1U, fun a => ?_⟩, tor k r u, K'ᴴ, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `ha` using `a.isLt`. Establish `he : ((Formalism.QuantumDeterminants.eI k r a : Fin (2 * r + k + 1)) : ℕ) = a` using `rfl`. Establish `hes : ((Formalism.QuantumDeterminants.esI k r a : Fin (2 * r + k + 1)) : ℕ) = 2 * r + k - a` using `rfl`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hg1fix _ (by omega) (by omega), ← Matrix.mulVec_mulVec, (hfixK a).1, (hμfix a).1]`. Rewrite using `[← Matrix.mulVec_mulVec, hg1fix _ (by omega) (by omega), ← Matrix.mulVec_mulVec, (hfixK a).2, (hμfix a).2]`. Rewrite using `[hUH, Matrix.conjTranspose_conjTranspose, ← hK'H, Matrix.mul_assoc, hK'u', Matrix.mul_one]`. Rewrite using `[← Matrix.mulVec_mulVec, ← hxvdef, ← Matrix.mulVec_mulVec, hK'x, hμy]`. Use `⟨fun i => ?_, fun i j hi hij => tor_pair k r hk u hu i j hij, fun i hi => tor_inner k r u i hi, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `tor split_ifs`. Conclude with `hu0`. Conclude with `inv_pos.mpr hu0`. Conclude with `one_pos`. Use `show tor k r u i0 ≤ 1`.
-
-Unfold `tor`. Rewrite using `[if_pos hi0]`. Conclude with `hu1`. Introduce `a`. Establish `ha` using `a.isLt`.
-
-Establish `he : ((Formalism.QuantumDeterminants.eI k r a : Fin (2 * r + k + 1)) : ℕ) = a` using `rfl`. Unfold `tor`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`. Rewrite using `[Matrix.conjTranspose_conjTranspose, hK'u']`. Simplify using `only [Matrix.mul_assoc]`.
-
-Rewrite using `[← Matrix.mul_assoc (dg (tor k r u⁻¹)), dg_mul k r u hu, Matrix.one_mul, hK'u', Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cartanQ : CartanQ := by
   intro k r hk μ hμ

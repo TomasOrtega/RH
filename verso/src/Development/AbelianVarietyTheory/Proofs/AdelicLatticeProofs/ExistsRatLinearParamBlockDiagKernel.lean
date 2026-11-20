@@ -8,7 +8,7 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Establish `h : (1 - E) * E = 0` using `by rw [sub_mul, one_mul, hE, sub_self]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem corner_mul_corner {A : Type} [Ring A] (E x y : A) (hE : E * E = E)
     (hx : E * x * (1 - E) = x) (hy : E * y * (1 - E) = y) : x * y = 0 := by
@@ -18,19 +18,17 @@ theorem corner_mul_corner {A : Type} [Ring A] (E x y : A) (hE : E * E = E)
     _ = 0 := by rw [h]; simp
 
 /- English proof (translation)
-Introduce `ι _ _ Γ e hΓ he`. Use `set E : Matrix ι ι ℂ := e.map (algebraMap ℚ ℂ) with hEdef`. Establish `hE : E * E = E`. Rewrite using `[hEdef, ← Matrix.map_mul, he]`. Set `S : Submodule ℂ (Matrix ι ι ℂ)` to `{ carrier := {ε | 1 + ε ∈ Γ ∧ E * ε * (1 - E) = ε} zero_mem' := ⟨by simpa using hΓ.one_mem, by simp⟩ add_mem' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x y ⟨hx1, hx2⟩ ⟨hy1, hy2⟩`. Use `⟨?_, by rw [mul_add, add_mul, hx2, hy2]⟩` and prove the remaining obligations. Establish `h0` using `corner_mul_corner E x y hE hx2 hy2`. Establish `h1` using `hΓ.mul_mem _ hx1 _ hy1`. Establish `h2 : (1 + x) * (1 + y) = 1 + (x + y)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, add_mul, add_mul, h0]`. Simplify using `[add_assoc]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Use the proof step `smul_mem' := by`. Introduce and unpack `t x ⟨hx1, hx2⟩`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨GlobalTheory.T.one_add_smul_mem_of_sq_zero' ι Γ hΓ x (corner_mul_corner E x x hE hx2 hx2) hx1 t, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, hx2] }`. Establish `hS : ∀ σ : ℂ ≃+* ℂ, ∀ x ∈ S, x.map σ ∈ S`. Introduce and unpack `σ x ⟨hx1, hx2⟩`. Establish `hEσ : (σ : ℂ →+* ℂ).mapMatrix E = E`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[hEdef]`. Establish `hx : x.map σ = (σ : ℂ →+* ℂ).mapMatrix x` using `rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hΓ.aut_mem σ _ hx1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (1 + x).map σ = (σ : ℂ →+* ℂ).mapMatrix (1 + x)` using `rfl`. Rewrite `h1` using `[h2, map_add, map_one]`. Conclude with `h1`. Establish `h3` using `congrArg (σ : ℂ →+* ℂ).mapMatrix hx2`. Rewrite `h3` using `[map_mul, map_mul, map_sub, map_one, hEσ]`.
-
-Conclude with `h3`. Take `⟨c, hc1, hc2⟩` from `GlobalTheory.T.exists_rat_projector_of_autStable_matrices ι S hS`. Conclude with `⟨c, fun X => hc1 X, fun ε h1 h2 => hc2 ε ⟨h1, h2⟩⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_linExt_corner_proj : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)) (e : Matrix ι ι ℚ), IsQGroup Γ → e * e = e → ∃ c : ι × ι → ι × ι → ℚ, (∀ X : Matrix ι ι ℂ, 1 + linExt c X ∈ Γ ∧ e.map (algebraMap ℚ ℂ) * linExt c X * (1 - e.map (algebraMap ℚ ℂ)) = linExt c X) ∧ ∀ ε : Matrix ι ι ℂ, 1 + ε ∈ Γ → e.map (algebraMap ℚ ℂ) * ε * (1 - e.map (algebraMap ℚ ℂ)) = ε → linExt c ε = ε := by
   intro ι _ _ Γ e hΓ he

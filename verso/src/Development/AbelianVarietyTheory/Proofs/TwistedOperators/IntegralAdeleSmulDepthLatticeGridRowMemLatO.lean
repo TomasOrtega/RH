@@ -15,9 +15,9 @@ namespace GlobalTheory.RowInt
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `latO`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `w ⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩`. Rewrite using `[← neg_neg (Matrix.of _)]`. Use `neg_mem (AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, s, hs, t, ht, ?_⟩)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i j`. Simplify using `[negSp_gram, Finset.sum_neg_distrib, TensorProduct.tmul_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem latO_negSp_le (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) : latO (negSp S) T LS LT P ≤ latO S T LS LT P := by
@@ -30,9 +30,9 @@ theorem latO_negSp_le (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : S
   simp [negSp_gram, Finset.sum_neg_distrib, TensorProduct.tmul_neg]
 
 /- English proof (translation)
-Introduce `D _ T L μ0 _ sc G W M _ i _ v e he u hu`. Establish `h0 : u ∈ latO (negSp (G.V (.grid (i + 1) 0))) (G.V (.grid i 0)) (G.Λ (.grid (i + 1) 0) : Set _) (G.Λ (.grid i 0) : Set _) (fun _ => True)` using `hu.1`. Establish `h1 : u ∈ latO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)) (G.Λ (.grid (i + 1) 0) : Set _) (G.Λ (.grid i 0) : Set _) (fun _ => True)` using `latO_negSp_le _ _ _ _ _ h0`. Establish `h2` using `GlobalTheory.LatticeStable.smul_mem_latO D _ _ _ _ _ e he.2 u h1`. Establish `h3 : MxAt (· = v) (e • u)` using `fun a b => Ideal.mul_mem_right _ _ he.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.AscFinWit.mem_latO_at h3).1 h2`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_latO_at : All fun {D} _ _ _ {G} _ _ =>
     ∀ i, i < D.R.m → ∀ v, ∀ e ∈ intAt D (· = v), ∀ u ∈ latRow G i,

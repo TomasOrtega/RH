@@ -28,7 +28,7 @@ structure TiesB {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL
   nV : 8 * D.R.f * D.R.r + 4 ≤ D.R.nV
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.ok, h.char, h.ex, h.host, h.params, h.ccK, h.guard, h.types, h.ser, h.junk, h.trSem, h.std, h.phs, h.nV⟩`.
+Supply the required witnesses or components.
 -/
 theorem TiesA.toB {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3}
     (h : TiesA R F) : TiesB R F :=

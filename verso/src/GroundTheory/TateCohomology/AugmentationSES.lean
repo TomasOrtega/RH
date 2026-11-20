@@ -15,7 +15,7 @@ variable {k G : Type u} [CommRing k] [Group G]
 section Linear
 
 /- English proof (translation)
-Establish `: Mono S.f` using `(Rep.mono_iff_injective _).2 hf`. Establish `: Epi S.g` using `(Rep.epi_iff_surjective _).2 hg`. Use `ShortComplex.ShortExact.mk' ?_ inferInstance inferInstance` and prove the remaining obligations. Rewrite using `[← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} k G) (ModuleCat.{u} k)), ShortComplex.moduleCat_exact_iff]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shortExact_of_linear {S : ShortComplex (Rep.{u} k G)} (hf : Function.Injective S.f.hom)
     (hg : Function.Surjective S.g.hom) (h : ∀ y : S.X₂, S.g.hom y = 0 → ∃ x, S.f.hom x = y) :
@@ -39,16 +39,16 @@ variable {k G}
 
 @[simp]
 /- English proof (translation)
-Simplify using `[augmentation]`.
+Simplify using the standard rewrite rules.
 -/
 theorem augmentation_single (g : G) (r : k) :
     augmentation k G (MonoidAlgebra.single g r) = r := by
   simp [augmentation]
 
 /- English proof (translation)
-Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `single h r`. Simplify using `only [Representation.ofMulAction_single, smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[augmentation_single, augmentation_single]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem augmentation_ρ (g : G) (x : (Rep.leftRegular k G).V) :
     augmentation k G ((Rep.leftRegular k G).ρ g x) = augmentation k G x := by
@@ -62,7 +62,7 @@ theorem augmentation_ρ (g : G) (x : (Rep.leftRegular k G).V) :
 variable (k G)
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Submodule.mem_comap, LinearMap.mem_ker] at hx ⊢`. Rewrite using `[augmentation_ρ, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_augmentation_le_comap (g : G) :
     LinearMap.ker (augmentation k G) ≤
@@ -88,7 +88,7 @@ noncomputable def augIdealRetract : (Rep.leftRegular k G).V →ₗ[k] (augIdeal 
 variable {k G}
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hy : augmentation k G y.1 = 0` using `y.2`. Express the relevant statement in the definitionally equal form `y.1 - MonoidAlgebra.single 1 (augmentation k G y.1) = y.1`. Rewrite using `[hy, MonoidAlgebra.single_zero, sub_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem augIdealRetract_ι (y : augIdeal k G) : augIdealRetract k G ((augIdealι k G).hom y) = y := by
   apply Subtype.ext
@@ -117,7 +117,7 @@ noncomputable def augX (X : Rep.{u} k G) : Rep.leftRegular k G ⊗ X ⟶ X :=
       exact congrArg (fun r => r • X.ρ g a) (augmentation_ρ g x)⟩
 
 /- English proof (translation)
-Simplify using `[augX]`.
+Simplify using the standard rewrite rules.
 -/
 theorem augX_tmul (X : Rep.{u} k G) (x : (Rep.leftRegular k G).V) (a : X) :
     (augX X).hom (x ⊗ₜ[k] a : (Rep.leftRegular k G ⊗ X : Rep k G)) = augmentation k G x • a := by
@@ -140,7 +140,7 @@ theorem whiskerLeft_hom_tmul (Y : Rep.{u} k G) (f : A ⟶ B) (y : Y) (a : A) :
     (Y ◁ f).hom (y ⊗ₜ[k] a : (Y ⊗ A : Rep k G)) = y ⊗ₜ[k] f.hom a := rfl
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y => rw [whiskerRight_hom_tmul, LinearMap.rTensor_tmul, hr]`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem whiskerRight_retract (f : A ⟶ B) (r : B.V →ₗ[k] A.V)
     (hr : ∀ a, r (f.hom a) = a) (Y : Rep.{u} k G) (t : (A ⊗ Y : Rep k G)) :
@@ -151,7 +151,7 @@ theorem whiskerRight_retract (f : A ⟶ B) (r : B.V →ₗ[k] A.V)
   | add s t hs ht => rw [map_add, map_add, hs, ht]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul y a => rw [whiskerLeft_hom_tmul, LinearMap.lTensor_tmul, hr]`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem whiskerLeft_retract (f : A ⟶ B) (r : B.V →ₗ[k] A.V)
     (hr : ∀ a, r (f.hom a) = a) (Y : Rep.{u} k G) (t : (Y ⊗ A : Rep k G)) :
@@ -162,7 +162,7 @@ theorem whiskerLeft_retract (f : A ⟶ B) (r : B.V →ₗ[k] A.V)
   | add s t hs ht => rw [map_add, map_add, hs, ht]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y => rfl`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem whiskerRight_hom_eq_rTensor (f : A ⟶ B) (Y : Rep.{u} k G) (t : (A ⊗ Y : Rep k G)) :
     (f ▷ Y).hom t = LinearMap.rTensor Y.V f.hom.toLinearMap t := by
@@ -172,7 +172,7 @@ theorem whiskerRight_hom_eq_rTensor (f : A ⟶ B) (Y : Rep.{u} k G) (t : (A ⊗ 
   | add s t hs ht => rw [map_add, map_add, hs, ht]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y => rfl`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem whiskerLeft_hom_eq_lTensor (Y : Rep.{u} k G) (f : A ⟶ B) (t : (Y ⊗ A : Rep k G)) :
     (Y ◁ f).hom t = LinearMap.lTensor Y.V f.hom.toLinearMap t := by
@@ -182,7 +182,7 @@ theorem whiskerLeft_hom_eq_lTensor (Y : Rep.{u} k G) (f : A ⟶ B) (t : (Y ⊗ A
   | add s t hs ht => rw [map_add, map_add, hs, ht]
 
 /- English proof (translation)
-Establish `h` using `hS.exact.map (forget₂ (Rep.{u} k G) (ModuleCat.{u} k))`. Rewrite `h` using `[ShortComplex.moduleCat_exact_iff_range_eq_ker]`. Conclude with `LinearMap.exact_iff.mpr h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem function_exact_of_shortExact {S : ShortComplex (Rep.{u} k G)} (hS : S.ShortExact) :
     Function.Exact S.f.hom.toLinearMap S.g.hom.toLinearMap := by
@@ -191,9 +191,9 @@ theorem function_exact_of_shortExact {S : ShortComplex (Rep.{u} k G)} (hS : S.Sh
   exact LinearMap.exact_iff.mpr h.symm
 
 /- English proof (translation)
-Establish `hg : Function.Surjective S.g.hom` using `(Rep.epi_iff_surjective _).1 hS.epi_g`. Establish `hex` using `rTensor_exact Y.V (function_exact_of_shortExact hS) hg`. Use `shortExact_of_linear hinj (fun t => ?_) (fun t ht => ?_)` and prove the remaining obligations. Take `⟨s, hs⟩` from `LinearMap.rTensor_surjective Y.V hg t`. Conclude with `⟨s, (whiskerRight_hom_eq_rTensor _ _ s).trans hs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `ht' : LinearMap.rTensor Y.V S.g.hom.toLinearMap t = 0` using `(whiskerRight_hom_eq_rTensor _ _ t).symm.trans ht`. Take `⟨s, hs⟩` from `(hex t).1 ht'`. Conclude with `⟨s, (whiskerRight_hom_eq_rTensor _ _ s).trans hs⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem shortExact_map_tensorRight {S : ShortComplex (Rep.{u} k G)} (hS : S.ShortExact)
     (Y : Rep.{u} k G) (hinj : Function.Injective (S.f ▷ Y).hom) :
@@ -209,9 +209,9 @@ theorem shortExact_map_tensorRight {S : ShortComplex (Rep.{u} k G)} (hS : S.Shor
     exact ⟨s, (whiskerRight_hom_eq_rTensor _ _ s).trans hs⟩
 
 /- English proof (translation)
-Establish `hg : Function.Surjective S.g.hom` using `(Rep.epi_iff_surjective _).1 hS.epi_g`. Establish `hex` using `lTensor_exact Y.V (function_exact_of_shortExact hS) hg`. Use `shortExact_of_linear hinj (fun t => ?_) (fun t ht => ?_)` and prove the remaining obligations. Take `⟨s, hs⟩` from `LinearMap.lTensor_surjective Y.V hg t`. Conclude with `⟨s, (whiskerLeft_hom_eq_lTensor _ _ s).trans hs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `ht' : LinearMap.lTensor Y.V S.g.hom.toLinearMap t = 0` using `(whiskerLeft_hom_eq_lTensor _ _ t).symm.trans ht`. Take `⟨s, hs⟩` from `(hex t).1 ht'`. Conclude with `⟨s, (whiskerLeft_hom_eq_lTensor _ _ s).trans hs⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem shortExact_map_tensorLeft {S : ShortComplex (Rep.{u} k G)} (hS : S.ShortExact)
     (Y : Rep.{u} k G) (hinj : Function.Injective (Y ◁ S.f).hom) :
@@ -233,7 +233,7 @@ variable {W P₁ P₂ Q₁ Q₂ : Type u} [AddCommGroup W] [Module k W] [Module.
   [AddCommGroup Q₁] [Module k Q₁] [AddCommGroup Q₂] [Module k Q₂]
 
 /- English proof (translation)
-Introduce `x y hxy`. Apply `e₁.injective` to reduce the goal to its premises. Apply `Module.Flat.lTensor_preserves_injective_linearMap ψ hψ` to reduce the goal to its premises. Rewrite using `[← h, ← h, hxy]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem injective_of_lTensor_conj (φ : P₁ →ₗ[k] P₂) (ψ : Q₁ →ₗ[k] Q₂)
     (hψ : Function.Injective ψ) (e₁ : P₁ ≃ₗ[k] TensorProduct k W Q₁)
@@ -251,7 +251,7 @@ section FlatRep
 variable (V : Rep.{u} k G) [Module.Flat k V.V] {X₁ X₂ : Rep.{u} k G} (f : X₁ ⟶ X₂)
 
 /- English proof (translation)
-Introduce `s t hst`. Apply `Module.Flat.lTensor_preserves_injective_linearMap (M := V.V) f.hom.toLinearMap hf` to reduce the goal to its premises. Rewrite using `[← whiskerLeft_hom_eq_lTensor, ← whiskerLeft_hom_eq_lTensor, hst]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem injective_whiskerLeft_of_flat (hf : Function.Injective f.hom) :
     Function.Injective (V ◁ f).hom := by
@@ -260,9 +260,9 @@ theorem injective_whiskerLeft_of_flat (hf : Function.Injective f.hom) :
   rw [← whiskerLeft_hom_eq_lTensor, ← whiskerLeft_hom_eq_lTensor, hst]
 
 /- English proof (translation)
-Use `injective_of_lTensor_conj (W := V.V) (f ▷ (V ⊗ Y)).hom.toLinearMap (f ▷ Y).hom.toLinearMap hf (TensorProduct.leftComm k X₁.V V.V Y.V) (TensorProduct.leftComm k X₂.V V.V Y.V) fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Consider the case `tmul a t`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [TensorProduct.tmul_add, map_add, hs, ht]`. Consider the case `tmul v y => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem injective_whiskerRight_tensor_of_flat (Y : Rep.{u} k G)
     (hf : Function.Injective (f ▷ Y).hom) : Function.Injective (f ▷ (V ⊗ Y)).hom := by
@@ -278,9 +278,9 @@ theorem injective_whiskerRight_tensor_of_flat (Y : Rep.{u} k G)
     | tmul v y => rfl
 
 /- English proof (translation)
-Use `injective_of_lTensor_conj (W := V.V) ((V ◁ f) ▷ Y).hom.toLinearMap (f ▷ Y).hom.toLinearMap hf (TensorProduct.assoc k V.V X₁.V Y.V) (TensorProduct.assoc k V.V X₂.V Y.V) fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Consider the case `tmul t y`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [TensorProduct.add_tmul, map_add, hs, ht]`. Consider the case `tmul v a => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem injective_whiskerLeft_whiskerRight_of_flat (Y : Rep.{u} k G)
     (hf : Function.Injective (f ▷ Y).hom) : Function.Injective ((V ◁ f) ▷ Y).hom := by
@@ -296,9 +296,9 @@ theorem injective_whiskerLeft_whiskerRight_of_flat (Y : Rep.{u} k G)
     | tmul v a => rfl
 
 /- English proof (translation)
-Use `injective_of_lTensor_conj (W := V.V) ((V ⊗ Y) ◁ f).hom.toLinearMap (Y ◁ f).hom.toLinearMap hf (TensorProduct.assoc k V.V Y.V X₁.V) (TensorProduct.assoc k V.V Y.V X₂.V) fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Consider the case `tmul t a`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [TensorProduct.add_tmul, map_add, hs, ht]`. Consider the case `tmul v y => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem injective_tensor_whiskerLeft_of_flat (Y : Rep.{u} k G)
     (hf : Function.Injective (Y ◁ f).hom) : Function.Injective ((V ⊗ Y) ◁ f).hom := by
@@ -314,9 +314,9 @@ theorem injective_tensor_whiskerLeft_of_flat (Y : Rep.{u} k G)
     | tmul v y => rfl
 
 /- English proof (translation)
-Use `injective_of_lTensor_conj (W := V.V) (Y ◁ (V ◁ f)).hom.toLinearMap (Y ◁ f).hom.toLinearMap hf (TensorProduct.leftComm k Y.V V.V X₁.V) (TensorProduct.leftComm k Y.V V.V X₂.V) fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Consider the case `tmul y t`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [TensorProduct.tmul_add, map_add, hs, ht]`. Consider the case `tmul v a => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem injective_whiskerLeft_whiskerLeft_of_flat (Y : Rep.{u} k G)
     (hf : Function.Injective (Y ◁ f).hom) : Function.Injective (Y ◁ (V ◁ f)).hom := by
@@ -338,9 +338,9 @@ end Tensor
 section AugSES
 
 /- English proof (translation)
-Use extensionality with `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul y a`. Express the relevant statement in the definitionally equal form `(augX X).hom ((augIdealι k G).hom y ⊗ₜ[k] a) = 0`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[augX_tmul]`. Establish `hy : augmentation k G y.1 = 0` using `y.2`. Conclude with `(congrArg (· • a) hy).trans (zero_smul k a)`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem augSES_zero (X : Rep.{u} k G) : augIdealι k G ▷ X ≫ augX X = 0 := by
   ext t
@@ -354,9 +354,9 @@ theorem augSES_zero (X : Rep.{u} k G) : augIdealι k G ▷ X ≫ augX X = 0 := b
   | add s t hs ht => rw [map_add, map_add, hs, ht]
 
 /- English proof (translation)
-Use extensionality with `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x a`. Express the relevant statement in the definitionally equal form `(augX Y).hom (x ⊗ₜ[k] f.hom a) = f.hom ((augX X).hom (x ⊗ₜ[k] a))`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[augX_tmul, augX_tmul, map_smul]`. Consider the case `add s t hs ht`. Rewrite using `[map_add, map_add, hs, ht]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem augX_naturality {X Y : Rep.{u} k G} (f : X ⟶ Y) :
     Rep.leftRegular k G ◁ f ≫ augX Y = augX X ≫ f := by
@@ -401,9 +401,9 @@ Both sides reduce to the same expression.
 @[simp] theorem augSES_obj_X₃ (X : Rep.{u} k G) : ((augSES k G).obj X).X₃ = X := rfl
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x a`. Rewrite using `[LinearMap.rTensor_tmul, whiskerRight_hom_tmul, ι_augIdealRetract, augX_tmul, TensorProduct.tmul_smul, TensorProduct.smul_tmul', MonoidAlgebra.smul_single, smul_eq_mul, mul_one, ← TensorProduct.add_tmul, sub_add_cancel]`. Consider the case `add s t hs ht`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_add, map_add, map_add, TensorProduct.tmul_add]`. Use `conv_rhs => rw [← hs, ← ht]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem augSES_decomp (X : Rep.{u} k G) (t : (Rep.leftRegular k G ⊗ X : Rep k G)) :
     (augIdealι k G ▷ X).hom (LinearMap.rTensor X.V (augIdealRetract k G) t) +
@@ -420,14 +420,14 @@ theorem augSES_decomp (X : Rep.{u} k G) (t : (Rep.leftRegular k G ⊗ X : Rep k 
     abel
 
 /- English proof (translation)
-The claim follows from `whiskerRight_retract _ _ augIdealRetract_ι X t`.
+A detailed English derivation is pending.
 -/
 theorem augSES_f_retract (X : Rep.{u} k G) (t : (augIdeal k G ⊗ X : Rep k G)) :
     LinearMap.rTensor X.V (augIdealRetract k G) (((augSES k G).obj X).f.hom t) = t :=
   whiskerRight_retract _ _ augIdealRetract_ι X t
 
 /- English proof (translation)
-The claim follows from `shortExact_of_linear (Function.LeftInverse.injective (augSES_f_retract X)) (fun (a : X) => ⟨(MonoidAlgebra.single 1 1 ⊗ₜ[k] a : (Rep.leftRegular k G ⊗ X : Rep k G)), by change (augX X).hom _ = a rw [augX_tmul, augmentation_single, one_smul]⟩) (fun t ht => ⟨LinearMap.rTensor X.V ( …`.
+A detailed English derivation is pending.
 -/
 theorem augSES_shortExact (X : Rep.{u} k G) : ((augSES k G).obj X).ShortExact :=
   shortExact_of_linear (Function.LeftInverse.injective (augSES_f_retract X))
@@ -441,7 +441,7 @@ theorem augSES_shortExact (X : Rep.{u} k G) : ((augSES k G).obj X).ShortExact :=
       exact h⟩)
 
 /- English proof (translation)
-The claim follows from `shortExact_map_tensorRight (augSES_shortExact A) B (Function.LeftInverse.injective (whiskerRight_retract _ _ (augSES_f_retract A) B))`.
+A detailed English derivation is pending.
 -/
 theorem augSES_tensorRight_shortExact (A B : Rep.{u} k G) :
     (((augSES k G).obj A).map (tensorRight B)).ShortExact :=
@@ -449,7 +449,7 @@ theorem augSES_tensorRight_shortExact (A B : Rep.{u} k G) :
     (Function.LeftInverse.injective (whiskerRight_retract _ _ (augSES_f_retract A) B))
 
 /- English proof (translation)
-The claim follows from `shortExact_map_tensorLeft (augSES_shortExact B) A (Function.LeftInverse.injective (whiskerLeft_retract _ _ (augSES_f_retract B) A))`.
+A detailed English derivation is pending.
 -/
 theorem augSES_tensorLeft_shortExact (A B : Rep.{u} k G) :
     (((augSES k G).obj B).map (tensorLeft A)).ShortExact :=
@@ -459,20 +459,20 @@ theorem augSES_tensorLeft_shortExact (A B : Rep.{u} k G) :
 variable [Fintype G]
 
 /- English proof (translation)
-The claim follows from `tateAcyclic_leftRegular_tensor X`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_augSES_X₂ (X : Rep.{u} k G) : TateAcyclic ((augSES k G).obj X).X₂ :=
   tateAcyclic_leftRegular_tensor X
 
 /- English proof (translation)
-The claim follows from `(tateAcyclic_leftRegular_tensor (A ⊗ B)).of_iso (α_ (Rep.leftRegular k G) A B)`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_augSES_tensorRight_X₂ (A B : Rep.{u} k G) :
     TateAcyclic (((augSES k G).obj A).map (tensorRight B)).X₂ :=
   (tateAcyclic_leftRegular_tensor (A ⊗ B)).of_iso (α_ (Rep.leftRegular k G) A B)
 
 /- English proof (translation)
-The claim follows from `(tateAcyclic_leftRegular_tensor (A ⊗ B)).of_iso ((α_ A (Rep.leftRegular k G) B).symm ≪≫ whiskerRightIso (β_ A (Rep.leftRegular k G)) B ≪≫ α_ (Rep.leftRegular k G) A B)`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_augSES_tensorLeft_X₂ (A B : Rep.{u} k G) :
     TateAcyclic (((augSES k G).obj B).map (tensorLeft A)).X₂ :=
@@ -481,7 +481,7 @@ theorem tateAcyclic_augSES_tensorLeft_X₂ (A B : Rep.{u} k G) :
       α_ (Rep.leftRegular k G) A B)
 
 /- English proof (translation)
-Substitute `hij` using the available equality. Conclude with `isIso_δ_of_tateAcyclic hS h i`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isIso_tδ_of_tateAcyclic {S : ShortComplex (Rep.{u} k G)} (hS : S.ShortExact)
     (h : TateAcyclic S.X₂) (i j : ℤ) (hij : i + 1 = j) : IsIso (tδ hS i j hij) := by

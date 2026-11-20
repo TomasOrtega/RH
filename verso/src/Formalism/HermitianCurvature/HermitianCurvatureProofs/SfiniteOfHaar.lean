@@ -13,7 +13,7 @@ namespace Formalism.FourierDecayAlt.P.PTieJ
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Formalism.FourierDecayAlt.P.haar_measure_unique_up_to_scalar k r U μ ν hU hμ hν.conc hν.left hν.finite_compact`. Conclude with `⟨c, by rw [hc, ENNReal.smul_def]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem haar_prop {k r : ℕ} {U : Set (B.Mat k r)} (hU : B2.IsClosedSubgroup U) {μ ν : Measure (Mt k r)}
     (hμ : B.IsHaarOn U μ) (hν : B.IsHaarOn U ν) : ∃ c : ℝ≥0∞, ν = c • μ := by
@@ -21,20 +21,20 @@ theorem haar_prop {k r : ℕ} {U : Set (B.Mat k r)} (hU : B2.IsClosedSubgroup U)
   exact ⟨c, by rw [hc, ENNReal.smul_def]⟩
 
 /- English proof (translation)
-Establish `: IsFiniteMeasureOnCompacts μ` using `⟨h.finite_compact⟩`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sfinite_of_haar {k r : ℕ} {U : Set (B.Mat k r)} {μ : Measure (Mt k r)} (h : B.IsHaarOn U μ) : SFinite μ := by
   have : IsFiniteMeasureOnCompacts μ := ⟨h.finite_compact⟩
   infer_instance
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ Bs Bs' hz hz' hπ hπ'`. Establish `hW` using `Bs.haarW`. Establish `hW'` using `Bs.haarW'`. Rewrite `hW` using `[hz]`. Rewrite `hW'` using `[hz']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha⟩` from `haar_prop (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r Bs'.z) Bs'.haarW hW`. Take `⟨a', ha'⟩` from `haar_prop (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r Bs'.z') Bs'.haarW' hW'`. Take `⟨b, hb⟩` from `haar_prop (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r) Bs'.haarN Bs.haarN`. Use `sfinite_of_haar Bs'.haarW` as an intermediate fact. Use `sfinite_of_haar Bs'.haarW'` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sfinite_of_haar Bs'.haarN` as an intermediate fact. Use `⟨(((a * b) * (a' * b)).toReal : ℂ), fun F => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [B.JF, Pi.smul_apply]`. Rewrite using `[hz, hz', hπ, hπ', ha, ha', hb]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `besselJ`. Simplify using `only [Measure.prod_smul_left, Measure.prod_smul_right, smul_smul]`. Rewrite using `[integral_smul_measure, Complex.coe_smul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jfScale : Formalism.FourierDecayAlt.P.PTie.JFScale := by
   intro k r Wp Wq _ _ _ _ Bs Bs' hz hz' hπ hπ'
@@ -63,7 +63,7 @@ end Formalism.FourierDecayAlt.P.PTieJ
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `PTieJ.jfScale`.
+A detailed English derivation is pending.
 -/
 theorem jacquet_scaling : Formalism.FourierDecayAlt.P.PTie.JFScale := PTieJ.jfScale
 

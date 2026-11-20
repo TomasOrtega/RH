@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv
 open GroundTheory.Heights₂.Heights.AnalyticLimit in
 
 /- English proof (translation)
-The claim follows from `LemmaETailMass.proof LemmaETrunc.proof LemmaETruncMass.proof (LemmaETruncTail.proof LemmaEScale.proof LemmaEEnergy.proof LemmaEWeight.proof LogNormSecIntegrable.proof)`.
+A detailed English derivation is pending.
 -/
 theorem lemmaETailMass : GroundTheory.Heights₂.Heights.AnalyticLimit.LemmaETailMass.Statement :=
   LemmaETailMass.proof LemmaETrunc.proof LemmaETruncMass.proof

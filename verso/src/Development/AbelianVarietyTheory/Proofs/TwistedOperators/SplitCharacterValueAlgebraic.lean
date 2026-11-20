@@ -34,11 +34,11 @@ open Formalism.L2.Host
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `h2 : (χ ^ 2).HasInf φ (fun i => 2 * n i)`. Introduce `k`. Establish `e1 : (((χ ^ 2).inf k : ℂˣ) : ℂ) = ((χ.inf k : ℂˣ) : ℂ) ^ 2` using `rfl`. Rewrite using `[e1, h k, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ = _ ^ (2 * n i)`. Rewrite using `[mul_comm, zpow_mul]`. Use `norm_cast`. Take `⟨M, hM, hv⟩` from `GlobalTheory.HeckeLocVals.locVals_of_even h2`. Establish `hx` using `hv v x`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (((χ ^ 2).loc v x : ℂˣ) : ℂ) = ((χ.loc v x : ℂˣ) : ℂ) ^ 2` using `rfl`. Rewrite `hx` using `[e2]`. Establish `hint : IsIntegral ℚ (((⟨_, hx⟩ : M) : ℂ))` using `(IsIntegral.of_finite ℚ (⟨_, hx⟩ : M)).map M.val`. Conclude with `IsAlgebraic.of_pow two_pos hint.isAlgebraic`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_loc {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {φ : I → E →+* ℂ} {n : I → ℤ}
     {χ : HChar E} (h : χ.HasInf φ n) (v : HeightOneSpectrum (𝓞 E)) (x : (v.adicCompletion E)ˣ) :
@@ -61,13 +61,13 @@ theorem isAlgebraic_loc {E : Type} [Field E] [NumberField E] {I : Type} [Fintype
 open GlobalTheory.AdelicU GlobalTheory.AdelicU.Supp GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
 
 /- English proof (translation)
-Take `⟨v, τ, rfl⟩` from `isSplitIdem_iff_exists.1 he`. Establish `hA : At (evFin D.host.F v) (splitIdemAd (isCMExt_host D) τ)`. Introduce `u hu`. Rewrite using `[Algebra.smul_def, mul_comm]`. Express the relevant statement in the definitionally equal form `singleTens D.host.E v _ * _ = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[singleTens_mul]`. Establish `: compFin D.host.F D.host.E v (algebraMap (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E) u) = 0`. Express the relevant statement in the definitionally equal form `(evFin D.host.F v u) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Rewrite using `[hu, TensorProduct.zero_tmul]`. Rewrite using `[this, mul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (x : AE D) - 1 = splitIdemAd (isCMExt_host D) τ * ((x : AE D) - 1)`. Rewrite using `[mul_sub, mul_one]`. Use `nth_rewrite 1 [hx]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨_, _, GlobalTheory.ChrLocal.eq_locIdele_splitPrime (isCMExt_host D) τ x ?_ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Rewrite using `[h1, ← smul_mul_assoc, hA u hu, zero_mul]`. Take `⟨-, e0⟩` from `GlobalTheory.LatSplit.piW_splitIdemAd (isCMExt_host D) τ`. Rewrite using `[hx, map_add, map_mul, map_sub, map_one, e0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_locIdele {D : D7} {e : AE D} (he : IsSplitIdem D e) (x : (AE D)ˣ) (hx : (x : AE D) = e * x + (1 - e)) :
     ∃ (w : HeightOneSpectrum (𝓞 D.host.E)) (y : (w.adicCompletion D.host.E)ˣ), x = GlobalTheory.LFun.locIdele D.host.F w y := by
@@ -97,9 +97,9 @@ end GlobalTheory.SplitCharAlg
 namespace GlobalTheory.SplitCharAlg
 
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ hL _ e he x hx`. Take `⟨w, y, rfl⟩` from `exists_locIdele he x hx`. Establish `hi1 : 1 ≤ D.R.m - (i : ℕ)` using `by have := i.2; omega`. Establish `hi2 : D.R.m - (i : ℕ) ≤ D.R.m` using `Nat.sub_le _ _`. Establish `hchi : (((G.ch.chi (D.R.m - i)) (GlobalTheory.LFun.locIdele D.host.F w y) : Circle) : ℂ) = (((G.ch.chiH (D.R.m - i)).loc w y : ℂˣ) : ℂ)` using `congrArg (fun f => ((f y : ℂˣ) : ℂ)) (GlobalTheory.LFun.locChar_eq_of_chrEq (G.ch.chi_eq _ hi1 hi2) w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heta : ((L.eta (GlobalTheory.LFun.locIdele D.host.F w y) : Circle) : ℂ) = ((L.C.eta.loc w y : ℂˣ) : ℂ)` using `congrArg (fun f => ((f y : ℂˣ) : ℂ)) (GlobalTheory.LFun.locChar_eq_of_chrEq hL.eta w)`. Rewrite using `[MonoidHom.mul_apply, Circle.coe_mul, MonoidHom.pow_apply, Circle.coe_pow, hchi, heta]`. Conclude with `(isAlgebraic_loc (G.ch.inf _ hi1 hi2) w y).mul ((isAlgebraic_loc L.C.isEta.inf w y).pow _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem beta_isAlgebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

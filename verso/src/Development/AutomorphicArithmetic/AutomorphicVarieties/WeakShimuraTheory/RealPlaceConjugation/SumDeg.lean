@@ -5,19 +5,17 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ l hl S`. Establish `hl0 : (l : ℤ) ≠ 0` using `by exact_mod_cast hl.out.ne_zero`. Use `set p : Ideal ℤ := Ideal.span {(l : ℤ)} with hpdef`. Establish `hpp : p.IsPrime` using `(Ideal.span_singleton_prime hl0).2 (Nat.prime_iff_prime_int.mp hl.out)`. Establish `hpb : p ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpdef, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hl0`. Use `haveI hpm : p.IsMaximal := hpp.isMaximal hpb`. Establish `key` using `Ideal.sum_ramification_inertia_eq_finrank p (𝓞 F)`. Rewrite `key` using `[NumberField.RingOfIntegers.rank]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key, ← Finset.sum_filter]`. Use `set g : Ideal (𝓞 F) → ℕ := fun I => I.ramificationIdx ℤ * I.inertiaDeg ℤ with hg`. Establish `h1 : ∑ v ∈ S.filter (fun v => ((l : ℕ) : 𝓞 F) ∈ v.asIdeal), locDeg v = ∑ I ∈ (S.filter (fun v => ((l : ℕ) : 𝓞 F) ∈ v.asIdeal)).image (fun v => v.asIdeal), g I`. Rewrite using `[Finset.sum_image]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _ b _ hab`. Conclude with `HeightOneSpectrum.ext hab`. Establish `h2 : ∑ q : p.primesOver (𝓞 F), q.1.ramificationIdx ℤ * q.1.inertiaDeg ℤ = ∑ I ∈ (Finset.univ : Finset (p.primesOver (𝓞 F))).image Subtype.val, g I`. Rewrite using `[Finset.sum_image]`. Introduce `a _ b _ hab`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `Subtype.ext hab`. Rewrite using `[h1, h2]`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `I hI`. Simplify using `only [Finset.mem_image, Finset.mem_filter] at hI`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨v, ⟨_, hv⟩, rfl⟩` from `hI`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and]`. Establish `hle : p ≤ Ideal.under ℤ v.asIdeal`. Rewrite using `[hpdef, Ideal.span_le, Set.singleton_subset_iff]`. Simplify `hv` using `[Ideal.under, Ideal.mem_comap]`.
-
-Establish `hne : Ideal.under ℤ v.asIdeal ≠ ⊤` using `(Ideal.IsPrime.under ℤ v.asIdeal).ne_top`. Establish `heq : p = Ideal.under ℤ v.asIdeal` using `hpm.eq_of_le hne hle`. Conclude with `⟨⟨v.asIdeal, ⟨v.isPrime, ⟨heq⟩⟩⟩, rfl⟩`. Introduce `_ _ _`. Conclude with `Nat.zero_le _`.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.sum_local_degree_above_l_le_finrank :
     ∀ (F : Type) [Field F] [NumberField F] (l : ℕ) [Fact l.Prime] (S : Finset (HeightOneSpectrum (𝓞 F))), (∑ v ∈ S, if ((l : ℕ) : 𝓞 F) ∈ v.asIdeal then locDeg v else 0) ≤ Module.finrank ℚ F := by

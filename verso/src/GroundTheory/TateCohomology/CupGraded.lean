@@ -21,17 +21,17 @@ theorem braiding_hom_tmul (X Y : Rep k G) (a : X) (b : Y) :
   rfl
 
 /- English proof (translation)
-Substitute `h'` using the available equality. Establish `hpre : (fun i : Fin p => revInv x ⟨i, by omega⟩) = revInv (fun j : Fin p => x ⟨q + j, by omega⟩)`. Use function extensionality and compare the values at `i`. Simplify using `only [revInv_apply]`. Use `congr 2`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Establish `hsuf : (fun j : Fin q => revInv x ⟨p + j, by omega⟩) = revInv (fun i : Fin q => x ⟨i, by omega⟩)`. Use function extensionality and compare the values at `j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [revInv_apply]`. Use `congr 2`. Use `ext`. Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hP₁ : Fin.partialProd (revInv x) ⟨p, by omega⟩ = (Fin.partialProd (fun j : Fin p => x ⟨q + j, by omega⟩) (Fin.last p))⁻¹`. Rewrite using `[← partialProd_prefix (revInv x) (m := p) (by omega) le_rfl, hpre, ← partialProd_last_revInv]`. Both sides reduce to the same expression. Establish `hP : Fin.partialProd x (Fin.last (q + p)) = Fin.partialProd (fun i : Fin q => x ⟨i, by omega⟩) (Fin.last q) * Fin.partialProd (fun j : Fin p => x ⟨q + j, by omega⟩) (Fin.last p)`. Use `partialProd_add x (fun j : Fin p => x ⟨q + j, by omega⟩) (p := q) (q := p) le_rfl (fun _ => rfl) le_rfl` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← partialProd_prefix x (m := q) (by omega) le_rfl]`. Conclude with `this`. Establish `hP₂ : Fin.partialProd x ⟨q, by omega⟩ = Fin.partialProd (fun i : Fin q => x ⟨i, by omega⟩) (Fin.last q)` using `(partialProd_prefix x (m := q) (by omega) le_rfl).symm`. Rewrite using `[revCochain_apply, cupCochain_apply, cupCochain_apply, revCochain_apply, revCochain_apply, hpre, hsuf, hP₁, hP₂, map_smul, ← TensorProduct.smul_tmul', TensorProduct.tmul_smul, smul_smul, map_smul, braiding_hom_tmul, tensor_ρ_tmul, ← Module.End.mul_apply, ← map_mul, ← Module.End.m …`. Use `congr 2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem revCochain_cupCochain (h : p + q = n) (h' : q + p = n) (f : (Fin p → G) → A)
     (g : (Fin q → G) → B) (x : Fin n → G) :
@@ -77,11 +77,9 @@ theorem revCochain_cupCochain (h : p + q = n) (h' : q + p = n) (f : (Fin p → G
   ring
 
 /- English proof (translation)
-Use `groupCohomology_induction_on x fun z => ?_` and prove the remaining obligations. Use `groupCohomology_induction_on y fun w => ?_` and prove the remaining obligations. Establish `key : HomologicalComplex.cyclesMap (revHom (A ⊗ B)) n (cupCocycles h z w) = (-1 : k) ^ (p * q) • cocyclesMap (MonoidHom.id G) (β_ B A).hom n (cupCocycles h' (HomologicalComplex.cyclesMap (revHom B) q w) (HomologicalComplex.cyclesMap (revHom A) p z))`. Use `cocycles_ext ?_` and prove the remaining obligations. Rewrite using `[iCocycles_cyclesMap_revHom, map_smul, iCocycles_cocyclesMap, iCocycles_cupCocycles]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `erw [iCocycles_cupCocycles]`. Rewrite using `[iCocycles_cyclesMap_revHom, iCocycles_cyclesMap_revHom]`. Use function extensionality and compare the values at `x`. Conclude with `revCochain_cupCochain h h' _ _ x`. Rewrite using `[cupH_π, ← π_cyclesMap_revHom (cupCocycles h z w), key, map_smul, ← map_π_apply]`.
-
-Use `erw [← cupH_π]`. Rewrite using `[π_cyclesMap_revHom, π_cyclesMap_revHom]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupH_eq_neg_one_pow_smul_map_braiding (h : p + q = n) (h' : q + p = n)
     (x : groupCohomology A p) (y : groupCohomology B q) :
@@ -103,7 +101,7 @@ theorem cupH_eq_neg_one_pow_smul_map_braiding (h : p + q = n) (h' : q + p = n)
   rw [π_cyclesMap_revHom, π_cyclesMap_revHom]
 
 /- English proof (translation)
-Rewrite using `[cupH_eq_neg_one_pow_smul_map_braiding h' h y x, smul_smul, ← pow_add, mul_comm q p, ← two_mul, pow_mul, neg_one_sq, one_pow, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_braiding_cupH (h : p + q = n) (h' : q + p = n) (x : groupCohomology A p)
     (y : groupCohomology B q) :

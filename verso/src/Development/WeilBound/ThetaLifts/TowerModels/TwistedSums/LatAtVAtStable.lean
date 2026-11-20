@@ -30,7 +30,7 @@ def locCo {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F} {
   map_add' a b := by ext <;> simp
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdelicU.evalV_singleFin_self v a`.
+A detailed English derivation is pending.
 -/
 theorem evFin_liftV (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (a : Fv F v) : GlobalTheory.AdelicU.evFin F v (liftV v a) = a :=
   GlobalTheory.AdelicU.evalV_singleFin_self v a
@@ -41,9 +41,9 @@ namespace Tw.LatVac
 open _root_.GlobalTheory
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.symp GlobalTheory.WeilM.hTens`. Establish `h : ξ * ∑ i, ∑ j, ∑ k, ∑ l, (a • x) i j * JA i k * JB j l * (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) ((a' • y) k l) = (a * a') • (ξ * ∑ i, ∑ j, ∑ k, ∑ l, x i j * JA i k * JB j l * (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (y k l))`. Simplify using `only [Matrix.smul_apply, map_smul, Finset.mul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Simplify using `only [Algebra.smul_def, map_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, map_smul, smul_eq_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem symp_smul_smul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n d : ℕ} (JA : Matrix (Fin n) (Fin n) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E))

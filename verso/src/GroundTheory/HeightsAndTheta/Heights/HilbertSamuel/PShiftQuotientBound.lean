@@ -18,11 +18,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce `c' hc'`. Establish `hk : ∀ k, y ⟨k, c' k⟩ ^ (-(((1 : ℕ) : ℤ) * (B + γ) k)) = y ⟨k, c' k⟩ ^ (-(((1 : ℕ) : ℤ) * γ k)) * y ⟨k, c' k⟩ ^ (-(((1 : ℕ) : ℤ) * B k))`. Introduce `k`. Rewrite using `[← zpow_add₀ (hc' k)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `heq : g * s * ∏ k, y ⟨k, c' k⟩ ^ (-(((1 : ℕ) : ℤ) * (B + γ) k)) = (g * ∏ k, y ⟨k, c' k⟩ ^ (-(((1 : ℕ) : ℤ) * γ k))) * (s * ∏ k, y ⟨k, c' k⟩ ^ (-(((1 : ℕ) : ℤ) * B k)))`. Simplify using `only [hk, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[heq]`. Conclude with `Subalgebra.mul_mem _ (hg c' hc') (hs c' hc')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_chartLatQ_add {B γ : K → ℤ} {g s : Ω} (hg : g ∈ chartLatQ y γ 1) (hs : s ∈ chartLatQ y B 1) :
     g * s ∈ chartLatQ y (B + γ) 1 := by
@@ -42,15 +42,15 @@ theorem mul_mem_chartLatQ_add {B γ : K → ℤ} {g s : Ω} (hg : g ∈ chartLat
   exact Subalgebra.mul_mem _ (hg c' hc') (hs c' hc')
 
 /- English proof (translation)
-Set `φ : chartLatQ y B 1 →ₗ[ℚ] chartLatQ y (B + γ) 1` to `{ toFun := fun s => ⟨g * s, mul_mem_chartLatQ_add hg s.2⟩ map_add' := fun s t => Subtype.ext (mul_add _ _ _) map_smul' := fun r s => Subtype.ext (mul_smul_comm r g (s : Ω)) }`. Establish `hle : chartDivSec y c B ≤ (chartDivSec y c (B + γ)).comap φ`. Introduce `s hs`. Take `⟨t, ht, hts⟩` from `Submodule.mem_map.mp (Submodule.mem_comap.mp hs)`. Use `Submodule.mem_comap.mpr (Submodule.mem_comap.mpr (Submodule.mem_map.mpr ⟨g * t, ?_, ?_⟩))` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `mul_mem_chartLatQ_add hg ht`. Rewrite `h` using `[show B - 1 + γ = B + γ - 1 by abel]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `(∏ k, y ⟨k, c k⟩) * (g * t) = g * (s : Ω)`. Establish `hts' : (∏ k, y ⟨k, c k⟩) * t = (s : Ω)` using `hts`. Rewrite using `[← hts']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `LinearMap.finrank_le_finrank_of_injective (f := Submodule.mapQ _ _ φ hle) ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Take `⟨s, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Establish `hm0 : (∏ k, y ⟨k, c k⟩) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`. Take `⟨t, ht, hts⟩` from `Submodule.mem_map.mp (Submodule.mem_comap.mp hx)`. Establish `hts' : (∏ k, y ⟨k, c k⟩) * t = g * (s : Ω)` using `hts`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu` using `hreg s s.2 (by rwa [← hts', mul_div_cancel_left₀ _ hm0])`. Use `Submodule.mem_comap.mpr (Submodule.mem_map.mpr ⟨_, hu, ?_⟩)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∏ k, y ⟨k, c k⟩) * ((s : Ω) / ∏ k, y ⟨k, c k⟩) = (s : Ω)`. Conclude with `mul_div_cancel₀ _ hm0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem finrank_quot_le_of_regular {B γ : K → ℤ} {g : Ω} [FiniteDimensional ℚ (chartLatQ y (B + γ) 1)]
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (hg : g ∈ chartLatQ y γ 1)
@@ -90,19 +90,17 @@ theorem finrank_quot_le_of_regular {B γ : K → ℤ} {g : Ω} [FiniteDimensiona
 end Mul
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D a b c hD hV hB hc`. Take `⟨C₀, hC₀⟩` from `hQ K ι Ω y D (fun _ => 1) c hD hV hB hc`. Use `set N : ℕ := 1 + ∑ k, (a k).natAbs with hN`. Use `set M : ℕ := ∑ k, (b k).natAbs with hM`. Establish `hN1 : 1 ≤ N` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht : Tendsto (fun n : ℕ => n * N + M) atTop atTop` using `tendsto_atTop_mono (fun n => by dsimp only [id]; nlinarith [Nat.zero_le n, hN1]) tendsto_id`. Use `⟨|C₀| * ((N + M : ℕ) : ℝ) ^ (D - 1), ((ht.eventually hC₀).and (eventually_ge_atTop 1)).mono fun n ⟨hn, hn1⟩ => ?_⟩` and prove the remaining obligations. Use `set B : K → ℤ := (n : ℤ) • a + b with hBdef`. Use `set γ : K → ℤ := (((n * N + M : ℕ) : ℤ) • fun _ => (1 : ℤ)) - B with hγdef`. Establish `hγ : ∀ k, 0 ≤ γ k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Establish `ha : (a k).natAbs ≤ ∑ j, (a j).natAbs` using `Finset.single_le_sum (f := fun j => (a j).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Establish `hb : (b k).natAbs ≤ ∑ j, (b j).natAbs` using `Finset.single_le_sum (f := fun j => (b j).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Establish `ha' : a k < (N : ℤ)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `hb' : b k ≤ (M : ℤ)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hγdef, hBdef, Pi.sub_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, mul_one]`. Use `push_cast`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left ha'.le (Int.natCast_nonneg n)]`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨g, -, hg, hreg⟩` from `hR K ι Ω y c (fun k => (γ k).toNat) hc`. Establish `he : (fun k => ((γ k).toNat : ℤ)) = γ` using `funext fun k => Int.toNat_of_nonneg (hγ k)`. Rewrite `hg`, `hreg` using `[he]`. Use `finiteDimensional_chartLatQ hfin (fun k => ⟨c k, hc k⟩) (B + γ)` as an intermediate fact. Establish `h1` using `finrank_quot_le_of_regular hc hg (hreg B)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[show B + γ = ((n * N + M : ℕ) : ℤ) • fun _ => (1 : ℤ) by rw [hγdef]; abel]`. Establish `h2 : (Module.finrank ℚ (chartLatQ y B 1 ⧸ chartDivSec y c B) : ℝ) ≤ C₀ * ((n * N + M : ℕ) : ℝ) ^ (D - 1)` using `le_trans (by exact_mod_cast h1) hn`. Establish `h3 : ((n * N + M : ℕ) : ℝ) ≤ ((N + M : ℕ) : ℝ) * (n : ℝ)`. Establish `: n * N + M ≤ (N + M) * n` using `by nlinarith`. Conclude with `this` after adjusting the coercions.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ShiftQuotientBound.proof (hfin : SectionLatticeFinite.Statement) (hQ : HyperplaneQuotientBound.Statement)
     (hR : HyperplaneRegularSection.Statement) : ShiftQuotientBound.Statement := by

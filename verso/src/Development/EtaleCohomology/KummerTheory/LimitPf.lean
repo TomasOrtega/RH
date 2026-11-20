@@ -31,13 +31,11 @@ def LimAssemble : Prop := A9 → ∀ (l : ℕ) [Fact l.Prime] {X Y S : Scheme.{0
         (((1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] x) ⊗ₜ[ℚ_[l]] ((1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] y))) = (1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] e a x y
 
 /- English proof (translation)
-Introduce `hA9 hA11 l _ X Y S pX pY n i M N r c hnM hN hB hfin hiso`. Use `choose e he using fun a : ℤ => h1 hA11 l pX pY a n i`. Take `⟨Φ, hΦ, hΦN⟩` from `h2 hA11 l pX pY n i M N r c hfin hiso`. Establish `key : ∀ y, Φ y = ∑ a : Fin (M + 1), ∑ s : Fin (r a), e ((a : ℕ) : ℤ) (c a s) (y a s)`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `lev l (Φ y) k = _`. Rewrite using `[hΦ y k, Submodule.coe_sum, Finset.sum_apply]`. Unfold `lh`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Conclude with `(he _ _ _ k).symm`. Take `⟨κ, hκ⟩` from `h3 hA9 l pX pY n i M N r c hnM hN hB e Φ key hΦN`.
-
-Conclude with `⟨κ, fun a x y => ⟨e a x y, fun k => he a x y k, hκ a x y⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Limit_of (h1 : LimExtHl) (h2 : LimLH) (h3 : LimAssemble) : Limit := by
   intro hA9 hA11 l _ X Y S pX pY n i M N r c hnM hN hB hfin hiso

@@ -21,13 +21,13 @@ noncomputable section
 namespace GlobalTheory.NormExact
 
 /- English proof (translation)
-Introduce `D cc δ t0 a d e0 W hC hodd x y h0`. Establish `he0` using `hodd.1`. Establish `hSD0 : ∀ N : ℕ, Formalism.MainNotions.StandardLatticesGL3.SD D (stdL D N)`. Introduce `N`. Take `⟨Lt, h1, h2, -⟩` from `GlobalTheory.NormSum.exists_lattice_of_adelic_point D N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← h2]`. Conclude with `(h1 1).2`. Take `⟨-, hWL, -, -⟩` from `GlobalTheory.ThetaLine.theta_line D (GlobalTheory.InducedType.induced_type D).1 cc δ hC a d (Formalism.MainNotions.StandardLatticesGL3.La0 D (tor0 D cc δ) a d) (Or.inr ⟨_, _, hSD0 _, hSD0 _, rfl⟩)`. Establish `hfix : ∀ v ∈ Formalism.MainNotions.StandardLatticesGL3.La0 D (tor0 D cc δ) a d, Formalism.MainNotions.StandardLatticesGL3.Wd D (tor0 D cc δ) v e0 = e0`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hWL v hv]`. Use function extensionality and compare the values at `w`. Conclude with `he0.2 v hv w`. Establish `heT : e0 ∈ TT D (tor0 D cc δ) a d` using `⟨he0.1, 1, one_pos, fun v hv => by rw [one_nsmul]; exact hfix v hv⟩`. Establish `h1` using `W.mul x⁻¹ x y⁻¹ y e0 heT`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[inv_mul_cancel, inv_mul_cancel, W.one _ heT, h0]`. Establish `h2` using `W.smul x⁻¹ y⁻¹ 0 e0 heT`. Rewrite `h2` using `[zero_smul, zero_smul]`. Conclude with `W.nz (h1.trans h2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_normalising_ne_zero : ∀ {D : D7} (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ) {a d : ℕ} (e0 : VC D a d → ℂ) (W : WeilO D cc δ a d e0),
   Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ → oddE0 D cc δ t0 a d e0 →

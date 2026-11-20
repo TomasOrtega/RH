@@ -18,7 +18,7 @@ variable {K : Type} [Field K] {σ : Type}
 def fockB (f g : MvPolynomial σ K) : K := ∑ m ∈ f.support, f.coeff m * g.coeff m * (mfact m : K)
 
 /- English proof (translation)
-Unfold `fockB`. Use `Finset.sum_subset hs fun m _ hm => ?_` and prove the remaining obligations. Simplify using `only [MvPolynomial.mem_support_iff, not_not] at hm`. Rewrite using `[hm, zero_mul, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockB_eq_sum (f g : MvPolynomial σ K) (s : Finset (σ →₀ ℕ)) (hs : f.support ⊆ s) :
     fockB f g = ∑ m ∈ s, f.coeff m * g.coeff m * (mfact m : K) := by
@@ -74,7 +74,7 @@ theorem pairB_apply (lam : ι → DomWeight n) (F F' : Pol K ι n) :
     pairB lam F F' = (extNormB K lam)⁻¹ * fockB F F' := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.domRestrict₁₂_apply _ _ _ x y`.
+A detailed English derivation is pending.
 -/
 theorem pairBK_apply (lam : ι → DomWeight n) (x y : VV K lam) : pairBK lam x y = pairB lam x.1 y.1 :=
   LinearMap.domRestrict₁₂_apply _ _ _ x y
@@ -146,17 +146,17 @@ Both sides reduce to the same expression.
 theorem pb_extNorm_triv (lam : ι → DomWeight n) : @extNorm ι _ n K _ starRingOfComm lam = extNormB K lam := rfl
 
 /- English proof (translation)
-Simplify using `[gramTw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pb_gramTw_one (lam : ι → DomWeight n) : gramTw lam (fun _ : ι => (1 : Matrix (Fin n) (Fin n) K)) = 1 := by
   simp [gramTw]
 
 /- English proof (translation)
-Establish `h : Formalism.GradedWeylDivisibility.blockAct K (fun _ : ι => (1 : Matrix (Fin n) (Fin n) K)ᵀ) = AlgHom.id K (Pol K ι n)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [Formalism.GradedWeylDivisibility.blockAct, MvPolynomial.aeval_X, AlgHom.id_apply, Matrix.transpose_one]`. Rewrite using `[Finset.sum_eq_single v.2.1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Matrix.one_apply_ne' hb, map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pb_blockAct_one_tr (F : Pol K ι n) :
     Formalism.GradedWeylDivisibility.blockAct K (fun _ : ι => (1 : Matrix (Fin n) (Fin n) K)ᵀ) F = F := by
@@ -174,7 +174,7 @@ theorem pb_blockAct_one_tr (F : Pol K ι n) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[pairB_apply]`. Simplify using `only [pairP, LinearMap.smul_apply, LinearMap.compl₂_apply, AlgHom.toLinearMap_apply, fockL, LinearMap.mk₂'ₛₗ_apply, pb_gramTw_one, pb_blockAct_one_tr, pb_fockS_triv, pb_extNorm_triv, smul_eq_mul, one_div]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pairP_trivial (lam : ι → DomWeight n) (F F' : Pol K ι n) :
     @pairP K _ ι _ n starRingOfComm lam (fun _ => 1) F F' = pairB lam F F' := by
@@ -185,7 +185,7 @@ theorem pairP_trivial (lam : ι → DomWeight n) (F F' : Pol K ι n) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem pb_conjTranspose_triv (A : Matrix (Fin n) (Fin n) K) :
     @Matrix.conjTranspose _ _ K starRingOfComm.toStarAddMonoid.toInvolutiveStar.toStar A = Aᵀ := by
@@ -195,7 +195,7 @@ theorem pb_conjTranspose_triv (A : Matrix (Fin n) (Fin n) K) :
 end Triv
 
 /- English proof (translation)
-Introduce `K _ ι _ n lam F F'`. Rewrite using `[pairB_apply, pairB_apply, fockB_eq_sum F F' (F.support ∪ F'.support) Finset.subset_union_left, fockB_eq_sum F' F (F.support ∪ F'.support) Finset.subset_union_right]`. Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairingBSymm_holds : PairBSymm := by
   intro K _ ι _ n lam F F'
@@ -207,11 +207,11 @@ theorem pairingBSymm_holds : PairBSymm := by
   ring
 
 /- English proof (translation)
-Introduce `K _ ι _ n lam g F F'`. Rewrite using `[← pairP_trivial, ← pairP_trivial]`. Set `_ : StarRing K` to `starRingOfComm`. Rewrite using `[pairTransport K ι n lam (fun _ => 1) (invTrK g) g F F']`. Establish `hG : (fun τ => ((invTrK g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᴴ * (1 : Matrix (Fin n) (Fin n) K) * ((g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) = fun _ => 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Establish `h1 : ((invTrK g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᴴ = (((g τ)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Rewrite using `[invTrK_coe]`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Rewrite using `[h1, Matrix.mul_one, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite using `[hG]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairingBInvariantK_holds : PairBInvK := by
   intro K _ ι _ n lam g F F'
@@ -230,7 +230,7 @@ theorem pairingBInvariantK_holds : PairBInvK := by
   rw [hG]
 
 /- English proof (translation)
-Introduce `E K _ _ ι _ n emb lam γ x y`. Rewrite using `[pairBK_apply, pairBK_apply]`. Conclude with `pairingBInvariantK_holds K ι n lam (embGL emb γ) x.1 y.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairingBInvariant_holds : PairBInv := by
   intro E K _ _ ι _ n emb lam γ x y
@@ -238,9 +238,9 @@ theorem pairingBInvariant_holds : PairBInv := by
   exact pairingBInvariantK_holds K ι n lam (embGL emb γ) x.1 y.1
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam`. Establish `h` using `@pairingNondegenerate_holds K _ starRingOfComm _ ι _ n lam (fun _ => 1) (fun _ => by simp)`. Use `show (∀ x, (∀ y, pairBK lam x y = 0) → x = 0) ∧ (∀ y, (∀ x, pairBK lam x y = 0) → y = 0)`. Use `⟨fun x hx => (And.left h) x fun y => ?_, fun y hy => (And.right h) y fun x => ?_⟩` and prove the remaining obligations. Establish `hxy` using `hx y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hxy` using `[pairBK_apply, ← pairP_trivial]`. Conclude with `hxy`. Establish `hxy` using `hy x`. Rewrite `hxy` using `[pairBK_apply, ← pairP_trivial]`. Conclude with `hxy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairingBNondegenerate_holds : PairBNondeg := by
   intro K _ _ ι _ n lam
@@ -255,9 +255,7 @@ theorem pairingBNondegenerate_holds : PairBNondeg := by
     exact hxy
 
 /- English proof (translation)
-Introduce `K _ ι _ n lam K0 i j`. Establish `h` using `@pairingRational_holds K _ starRingOfComm ι _ n lam K0 (fun _ => 1) (fun τ a b => by`. Simplify using `only [Matrix.one_apply]`. Use `split_ifs`. Use `exacts [K0.one_mem, K0.zero_mem]) i j`.
-
-Rewrite using `[pairBK_apply, ← pairP_trivial]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairingBRational_holds : PairBRat := by
   intro K _ ι _ n lam K0 i j
@@ -270,14 +268,14 @@ theorem pairingBRational_holds : PairBRat := by
   exact h
 
 /- English proof (translation)
-Simplify using `[actP, detTwK_one, trAct_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem actP_one' {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     (F : Pol K ι n) : actP lam (1 : ι → GL (Fin n) K) F = F := by
   simp [actP, detTwK_one, trAct_one]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h` using `@pairingExtremal_holds K _ starRingOfComm _ ι _ n lam (fun _ => 1) 1 (fun τ => by simp)`. Rewrite `h` using `[actP_one', pairP_trivial, pairB_apply, h0, inv_zero, zero_mul]`. Conclude with `zero_ne_one h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pb_extNormB_ne (K : Type) [Field K] [CharZero K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) :
     extNormB K lam ≠ 0 := by
@@ -287,7 +285,7 @@ theorem pb_extNormB_ne (K : Type) [Field K] [CharZero K] {ι : Type} [Fintype ι
   exact zero_ne_one h
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam B`. Rewrite using `[pairingBInvariantK_holds K ι n lam B]`. Establish `h` using `@pairingExtremal_holds K _ starRingOfComm _ ι _ n lam (fun _ => 1) 1 (fun τ => by simp)`. Rewrite `h` using `[actP_one', pairP_trivial]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairingBExtremal_holds : PairBExtremal := by
   intro K _ _ ι _ n lam B
@@ -301,7 +299,7 @@ section Star
 variable {K : Type} [Field K] [StarRing K]
 
 /- English proof (translation)
-Rewrite using `[fockS_eq_sum _ g f.support (MvPolynomial.support_map_subset ..)]`. Unfold `fockB`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map, starRingEnd_apply, star_star]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pb_fockS_map_star {σ : Type} (f g : MvPolynomial σ K) :
     fockS (MvPolynomial.map (starRingEnd K) f) g = fockB f g := by
@@ -311,7 +309,7 @@ theorem pb_fockS_map_star {σ : Type} (f g : MvPolynomial σ K) :
   rw [MvPolynomial.coeff_map, starRingEnd_apply, star_star]
 
 /- English proof (translation)
-Rewrite using `[fockS_eq_sum _ g (MvPolynomial.map (Int.castRingHom K) P).support (Finset.Subset.refl _)]`. Unfold `fockB`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [MvPolynomial.coeff_map, eq_intCast, star_intCast]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem pb_fockS_int {σ : Type} (P : MvPolynomial σ ℤ) (g : MvPolynomial σ K) :
     fockS (MvPolynomial.map (Int.castRingHom K) P) g = fockB (MvPolynomial.map (Int.castRingHom K) P) g := by
@@ -321,9 +319,9 @@ theorem pb_fockS_int {σ : Type} (P : MvPolynomial σ ℤ) (g : MvPolynomial σ 
   simp only [MvPolynomial.coeff_map, eq_intCast, star_intCast]
 
 /- English proof (translation)
-Unfold `extremal Formalism.GradedWeylDivisibility.hw Formalism.GradedWeylDivisibility.lpMinor`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, RingHom.map_det]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `p q`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem extremal_eq_map_intCast (K : Type) [Field K] {N : ℕ} (l : DomWeight N) :
     extremal K N l = MvPolynomial.map (Int.castRingHom K) (extremal ℤ N l) := by
@@ -336,7 +334,7 @@ private theorem extremal_eq_map_intCast (K : Type) [Field K] {N : ℕ} (l : DomW
   simp
 
 /- English proof (translation)
-Unfold `extNorm extNormB`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[extremal_eq_map_intCast, pb_fockS_int]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pb_extNorm_eq {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) : extNorm K lam = extNormB K lam := by
   unfold extNorm extNormB
@@ -346,7 +344,7 @@ theorem pb_extNorm_eq {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight
 end Star
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam F F'`. Establish `hf : ∀ a b : Pol K ι n, fockL a b = fockS a b` using `fun a b => rfl`. Rewrite using `[pairB_apply]`. Simplify using `only [pairP, LinearMap.smul_apply, LinearMap.compl₂_apply, AlgHom.toLinearMap_apply, hf, pb_gramTw_one, pb_blockAct_one_tr, pb_fockS_map_star, pb_extNorm_eq, smul_eq_mul, one_div]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pairingBStar_holds : PairBStar := by
   intro K _ _ ι _ n lam F F'
@@ -356,7 +354,7 @@ theorem pairingBStar_holds : PairBStar := by
     pb_gramTw_one, pb_blockAct_one_tr, pb_fockS_map_star, pb_extNorm_eq, smul_eq_mul, one_div]
 
 /- English proof (translation)
-Rewrite using `[← pairP_trivial, @pairP_vecP K _ starRingOfComm]`. Simplify using `only [Matrix.one_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pairB_vecP {K : Type} [Field K] (φ v : Fin 2 → K) :
     pairB (fun _ : Unit => lamVec) (vecP φ) (vecP v) = φ ⬝ᵥ v := by
@@ -365,7 +363,7 @@ theorem pairB_vecP {K : Type} [Field K] (φ v : Fin 2 → K) :
   rfl
 
 /- English proof (translation)
-Establish `h0 : (lamVec : DomWeight 2).detShift = 0` using `by rfl`. Establish `hd : detTwK (fun _ : Unit => lamVec) h = 1`. Simplify using `[detTwK, detPow, h0]`. Simplify using `only [actP, LinearMap.smul_apply, hd, one_smul, AlgHom.toLinearMap_apply, trAct, vecP, map_sum, map_mul, Formalism.GradedWeylDivisibility.blockAct, MvPolynomial.aeval_C, MvPolynomial.aeval_X, MvPolynomial.algebraMap_eq, Matrix.transpose_apply, Matrix.mulVec, dotProduct, Fin.sum_u …`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem actP_lamVec_vecP {K : Type} [Field K] (h : Unit → GL (Fin 2) K) (w : Fin 2 → K) :
     actP (fun _ : Unit => lamVec) h (vecP w) = vecP ((h () : Matrix (Fin 2) (Fin 2) K) *ᵥ w) := by
@@ -378,7 +376,7 @@ private theorem actP_lamVec_vecP {K : Type} [Field K] (h : Unit → GL (Fin 2) K
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨actP_lamVec_vecP (invTrK g) φ, actP_lamVec_vecP g v⟩`.
+Supply the required witnesses or components.
 -/
 theorem actP_invTrK_vecP_and_actP_vecP {K : Type} [Field K] (g : Unit → GL (Fin 2) K) (φ v : Fin 2 → K) :
     actP (fun _ => lamVec) (invTrK g) (vecP φ) =
@@ -386,14 +384,14 @@ theorem actP_invTrK_vecP_and_actP_vecP {K : Type} [Field K] (g : Unit → GL (Fi
       actP (fun _ => lamVec) g (vecP v) = vecP ((g () : Matrix (Fin 2) (Fin 2) K) *ᵥ v) := ⟨actP_lamVec_vecP (invTrK g) φ, actP_lamVec_vecP g v⟩
 
 /- English proof (translation)
-Rewrite using `[← pairP_trivial, @pairP_char K _ starRingOfComm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pairB_char {K : Type} [Field K] (e : ℤ) : pairB (fun _ : Unit => lamChar e) (1 : Pol K Unit 1) 1 = 1 := by
   rw [← pairP_trivial, @pairP_char K _ starRingOfComm]
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((g τ : Matrix (Fin n) (Fin n) K)ᵀ)ᵀ = (g τ : Matrix (Fin n) (Fin n) K)`. Conclude with `Matrix.transpose_transpose _`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem pb_invTrK_invTrK {K : Type} [Field K] {ι : Type} {n : ℕ} (g : ι → GL (Fin n) K) : invTrK (invTrK g) = g := by
   funext τ
@@ -402,7 +400,7 @@ theorem pb_invTrK_invTrK {K : Type} [Field K] {ι : Type} {n : ℕ} (g : ι → 
   exact Matrix.transpose_transpose _
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun φ : Module.End K (Pol K ι n) => φ F) ((rhoP lam).map_mul a b)`. Simplify `h` using `[rhoP]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem actP_mul' {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     (a b : ι → GL (Fin n) K) (F : Pol K ι n) : actP lam (a * b) F = actP lam a (actP lam b F) := by
@@ -410,7 +408,7 @@ private theorem actP_mul' {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ
   simpa [rhoP] using h
 
 /- English proof (translation)
-Establish `h1` using `pairingBInvariantK_holds K ι n lam (invTrK g)⁻¹ (actP lam g F) F'`. Rewrite `h1` using `[map_inv, pb_invTrK_invTrK, ← actP_mul', inv_mul_cancel, actP_one']`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairB_adj {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (g : ι → GL (Fin n) K)
     (F F' : Pol K ι n) : pairB lam (actP lam g F) F' = pairB lam F (actP lam (invTrK g)⁻¹ F') := by
@@ -419,7 +417,7 @@ theorem pairB_adj {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam :
   exact h1.symm
 
 /- English proof (translation)
-Rewrite using `[fockS_eq_sum f g f.support (Finset.Subset.refl _), fockB_eq_sum _ g f.support (MvPolynomial.support_map_subset ..)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pb_fockS_eq {K : Type} [Field K] [StarRing K] {σ : Type} (f g : MvPolynomial σ K) :
     fockS f g = fockB (MvPolynomial.map (starRingEnd K) f) g := by
@@ -429,9 +427,9 @@ theorem pb_fockS_eq {K : Type} [Field K] [StarRing K] {σ : Type} (f g : MvPolyn
   rw [MvPolynomial.coeff_map, starRingEnd_apply]
 
 /- English proof (translation)
-Establish `hf : ∀ a b : Pol K ι n, fockL a b = fockS a b` using `fun a b => rfl`. Establish `hs : ∀ (c : K) (a b : Pol K ι n), fockB a (c • b) = c * fockB a b`. Introduce `c a b`. Rewrite using `[← fockBL_apply, ← fockBL_apply, map_smul, smul_eq_mul]`. Establish `hd : detTwK lam G = gramTw lam (fun τ => ((G τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `detTwK gramTw detPow`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[pairB_apply]`. Simplify using `only [pairP, actP, trAct, LinearMap.smul_apply, LinearMap.compl₂_apply, AlgHom.toLinearMap_apply, hf, pb_fockS_eq, pb_extNorm_eq, smul_eq_mul, hs, hd]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

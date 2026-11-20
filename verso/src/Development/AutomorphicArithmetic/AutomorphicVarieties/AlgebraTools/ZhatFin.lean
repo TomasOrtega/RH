@@ -3,41 +3,37 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.ProdM
 open UpperTheory.V.AlgebraTools UpperTheory.V.AlgebraTools.Cx
 
 /- English proof (translation)
-Introduce `A _ G _ _ _ M _ _ _ _ _ ρ _ _ _ I hI φ hρ hd hχ m hm`. Establish `hmul : ∀ g h x, ρ (g * h) x = ρ g (ρ h x)` using `fun g h x => by rw [map_mul]; rfl`. Establish `hinv : ∀ g x, ρ g⁻¹ (ρ g x) = x` using `fun g x => by rw [← hmul, inv_mul_cancel, map_one]; rfl`. Establish `hinv' : ∀ g x, ρ g (ρ g⁻¹ x) = x` using `fun g x => by rw [← hmul, mul_inv_cancel, map_one]; rfl`. Establish `hall : ∀ S : Subgroup G, IsClosed (S : Set G) → I ≤ S → φ ∈ S → ∀ g, g ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `S hS h1 h2 g`. Establish `h3 : I ⊔ Subgroup.zpowers φ ≤ S` using `sup_le h1 ((Subgroup.zpowers_le).2 h2)`. Conclude with `hS.closure_subset_iff.2 (show ((I ⊔ Subgroup.zpowers φ : Subgroup G) : Set G) ⊆ S from h3) (hd g)`. Apply `existsUnique_of_exists_of_unique` to reduce the goal to its premises. Set `T : Equiv.Perm M` to `{ toFun := fun x => m + ρ φ x invFun := fun x => ρ φ⁻¹ (x - m) left_inv := fun x => by simp only [add_sub_cancel_left, hinv] right_inv := fun x => by simp only [hinv', add_sub_cancel] }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : ∀ x, T x = m + ρ φ x` using `fun _ => rfl`. Establish `hk : 0 < orderOf T` using `orderOf_pos T`. Take `⟨χ, hχo, hχI, hχφ⟩` from `hχ (orderOf T) hk`. Use `haveI : NeZero (orderOf T) := ⟨hk.ne'⟩`. Set `Θ : G → Equiv.Perm M` to `fun g => T ^ (Multiplicative.toAdd (χ g)).val`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΘmul : ∀ g h x, Θ (g * h) x = Θ g (Θ h x)` using `fun g h x => by`. Establish `: Θ (g * h) = Θ g * Θ h`. Simplify using `only [Θ, map_mul, toAdd_mul, ZMod.val_add, pow_mod_orderOf, pow_add]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΘI : ∀ u ∈ I, ∀ x, Θ u x = x` using `fun u hu x => by`. Establish `: χ u = 1` using `hχI hu`. Simplify using `[Θ, this]`. Establish `hΘφ : ∀ x, Θ φ x = m + ρ φ x` using `fun x => by`. Establish `: Θ φ = T`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : (1 : ZMod (orderOf T)) = ((1 : ℕ) : ZMod (orderOf T))` using `Nat.cast_one.symm`. Simplify using `only [Θ, hχφ, toAdd_ofAdd]`. Rewrite using `[e, ZMod.val_natCast, pow_mod_orderOf, pow_one]`. Rewrite using `[this, hT]`. Establish `hlc : IsLocallyConstant χ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`. Establish `ho : IsOpen {h : G | g⁻¹ * h ∈ χ.ker}` using `hχo.preimage (continuous_const.mul continuous_id)`. Use `filter_upwards [ho.mem_nhds (show g⁻¹ * g ∈ χ.ker by simp)] with h hh`. Establish `: χ (g⁻¹ * h) = 1` using `hh`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `this.symm`. Establish `hΘc : ∀ x, Continuous fun g => Θ g x` using `fun x => (hlc.comp fun a => (T ^ (Multiplicative.toAdd a).val) x).continuous`. Establish `hTF : ∀ (n : ℕ) x, (∀ u ∈ I, ρ u x = x) → ∀ u ∈ I, ρ u ((T ^ n) x) = (T ^ n) x`. Introduce `n x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => simpa using hx`. Consider the case `succ n ih`. Introduce `u hu`. Rewrite using `[pow_succ', Equiv.Perm.mul_apply, hT, map_add, hm u hu, ← hmul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: u * φ = φ * (φ⁻¹ * u * φ⁻¹⁻¹)` using `by group`. Rewrite using `[this, hmul, ih _ (hI.conj_mem u hu φ⁻¹)]`. Establish `hΘF : ∀ g x, (∀ u ∈ I, ρ u x = x) → ∀ u ∈ I, ρ u (Θ g x) = Θ g x` using `fun g x hx => hTF _ x hx`. Establish `h0 : ∀ u ∈ I, ρ u (0 : M) = 0` using `fun u _ => map_zero _`. Set `S : Subgroup G` to `{ carrier := {g | ∀ x, (∀ u ∈ I, ρ u x = x) → Θ g x = Θ g 0 + ρ g x} one_mem' := fun x _ => by simp [hΘI 1 I.one_mem] mul_mem' := fun {g h} hg hh x hx => by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hΘmul, hΘmul, hg _ (hΘF h x hx), hg _ (hΘF h 0 h0), hh x hx, map_add, hmul, add_assoc]`. Use the proof step `inv_mem' := fun {g} hg x hx => by`. Establish `e1` using `hg _ (hΘF g⁻¹ x hx)`. Establish `e2` using `hg _ (hΘF g⁻¹ 0 h0)`. Rewrite `e1`, `e2` using `[← hΘmul, mul_inv_cancel, hΘI 1 I.one_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : x = ρ g (Θ g⁻¹ x - Θ g⁻¹ 0)`. Rewrite using `[map_sub, eq_sub_iff_add_eq, ← add_right_inj (Θ g 0), ← e1, add_left_comm, ← e2, add_zero]`. Establish `e4` using `congrArg (ρ g⁻¹) e3`. Rewrite `e4` using `[hinv]`. Rewrite using `[e4, add_sub_cancel] }`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hSc : IsClosed (S : Set G)`. Establish `: (S : Set G) = ⋂ x, ⋂ _ : (∀ u ∈ I, ρ u x = x), {g | Θ g x = Θ g 0 + ρ g x}`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `isClosed_iInter fun x => isClosed_iInter fun _ => isClosed_eq (hΘc x) ((hΘc 0).add ?_)` and prove the remaining obligations. Conclude with `Continuous.comp hρ (continuous_id.prodMk continuous_const)`. Establish `hS` using `hall S hSc (fun u hu x hx => by rw [hΘI u hu, hΘI u hu, hx u hu, zero_add]) (fun x _ => by rw [hΘφ, hΘφ, map_zero, add_zero])`. Use `⟨⟨fun g => Θ g 0, hΘc 0, fun g h => ?_⟩, fun u hu => hΘI u hu 0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `show Θ (g * h) 0 = Θ g 0 + ρ g (Θ h 0)`. Rewrite using `[hΘmul]`. Conclude with `hS g _ (hΘF h 0 h0)`. Use `show Θ φ 0 = m`. Rewrite using `[hΘφ, map_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨y, hyc, hy⟩ ⟨z, hzc, hz⟩ ⟨hy1, hy2⟩ ⟨hz1, hz2⟩`. Simplify using `only at hy1 hy2 hz1 hz2`. Set `S : Subgroup G` to `{ carrier := {g | y g = z g} one_mem' := (hy1 1 I.one_mem).trans (hz1 1 I.one_mem).symm mul_mem' := fun {g h} (hg : y g = z g) (hh : y h = z h) => by show y (g * h) = z (g * h)`. Rewrite using `[hy, hz, hg, hh]`. Use the proof step `inv_mem' := fun {g} (hg : y g = z g) => by show y g⁻¹ = z g⁻¹`.
-
-Establish `e1` using `hy g⁻¹ g`. Establish `e2` using `hz g⁻¹ g`. Rewrite `e1`, `e2` using `[inv_mul_cancel]`. Rewrite `e1` using `[hy1 1 I.one_mem, hg]`. Rewrite `e2` using `[hz1 1 I.one_mem]`.
-
-Conclude with `add_right_cancel (e1.symm.trans e2) }`. Establish `hS` using `hall S (isClosed_eq hyc hzc) (fun u hu => (hy1 u hu).trans (hz1 u hu).symm) (hy2.trans hz2.symm)`. Conclude with `Subtype.ext (funext hS)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.zhatFin :
     ∀ (A : Type) [CommRing A] (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (M : Type) [AddCommGroup M] [Module A M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul A M] (ρ : Representation A G M) [CompactSpace G] [Finite M] [DiscreteTopology M] (I : Subgroup G) [I.Normal] (φ : G), ContAct ρ →

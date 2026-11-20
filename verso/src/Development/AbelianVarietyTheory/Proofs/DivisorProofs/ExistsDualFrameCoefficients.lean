@@ -13,11 +13,11 @@ namespace GlobalTheory.VB
 open GlobalTheory.Twist (resM resM_self)
 
 /- English proof (translation)
-Use `hF.isIso_toBidual_of_local_frames` as an intermediate fact. Establish `he' : IsFrame fun j => (inv (cartierDualToBidual F)).app V (he.coord j)` using `he.dual.map_iso _`. Use `⟨_, he', fun l => ?_⟩` and prove the remaining obligations. Establish `key (j : ι) : he'.dual.coord j = he.coord j`. Rewrite using `[← he'.toBidual_app j]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(inv (cartierDualToBidual F) ≫ cartierDualToBidual F).app V (he.coord j) = _`. Rewrite using `[IsIso.inv_hom_id]`. Both sides reduce to the same expression. Use `(he.basis le_rfl).repr.injective (Finsupp.ext fun j => ?_)` and prove the remaining obligations. Establish `h₁` using `he'.dual.dualApp_coord_frame j l le_rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₂` using `he.dualApp_coord_frame j l le_rfl`. Rewrite `h₁` using `[key, resM_self]`. Rewrite `h₂` using `[resM_self]`. Conclude with `h₁.trans h₂.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsVB.exists_frame_coord_eq {X : Scheme.{0}} {F : X.Modules} {n : ℕ} (hF : IsVB F n) {V : X.Opens}
     {ι : Type} [Fintype ι] {e : ι → Γ(VB.dual F, V)} (he : IsFrame e) :
@@ -43,7 +43,7 @@ end GlobalTheory.VB
 namespace GlobalTheory.ChainPts
 
 /- English proof (translation)
-Introduce `X F n r hF V e he`. Take `⟨e', he', h⟩` from `hF.exists_frame_coord_eq he`. Use `⟨e', he', fun V' s hs l i => ?_⟩` and prove the remaining obligations. Use `(hs.dual_basis_repr inf_le_right _ i).trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.VB.dualApp_res, ← h l]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

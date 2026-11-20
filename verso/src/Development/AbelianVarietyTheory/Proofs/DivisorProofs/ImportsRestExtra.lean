@@ -16,11 +16,11 @@ namespace GlobalTheory.GramDet
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 /- English proof (translation)
-Take `⟨hn, A, hA⟩` from `h`. Substitute `hn` using the available equality. Use `set A' : Matrix (Fin (r + s)) (Fin (r + s)) ℂ := A.submatrix id finSumFinEquiv.symm with hA'`. Establish `key : A'ᵀ * M * A'.map star = (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Rewrite using `[← hA]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[hA', Matrix.mul_apply, Matrix.submatrix_apply, Matrix.transpose_apply]`. Introduce `h0`. Establish `hd` using `congrArg Matrix.det key`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, h0, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.det_neg] at hd`. Conclude with `pow_ne_zero s (neg_ne_zero.mpr one_ne_zero) hd.symm`.
+A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hn, A, hA⟩ := h
@@ -38,7 +38,7 @@ theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h 
   exact pow_ne_zero s (neg_ne_zero.mpr one_ne_zero) hd.symm
 
 /- English proof (translation)
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_ne_zero_of_map {n : ℕ} {K : Type} [Field K] (φ : K →+* ℂ) {J : Matrix (Fin n) (Fin n) K}
     (h : (J.map φ).det ≠ 0) : J.det ≠ 0 := by
@@ -47,9 +47,9 @@ theorem det_ne_zero_of_map {n : ℕ} {K : Type} [Field K] (φ : K →+* ℂ) {J 
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `⟨det_ne_zero_of_map (B.emb w).1 (det_ne_zero_of_hasSig (hT.geo.hV'.sig w)), ?_⟩` and prove the remaining obligations. Use `det_ne_zero_of_map (B.emb w).1 ?_` and prove the remaining obligations. Establish `h` using `det_ne_zero_of_hasSig (hT.geo.hW.sig w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.det_smul]`. Introduce `h0`. Conclude with `h (by rw [h0, mul_zero])`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gram_det_ne_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

@@ -49,7 +49,7 @@ instance : Category (Tag γ s U) where
   assoc _ _ _ := Tag.Hom.ext (Category.assoc _ _ _)
 
 /- English proof (translation)
-The claim follows from `Tag.Hom.ext h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem Tag.hom_ext {S T : Tag γ s U} {f g : S ⟶ T} (h : f.f = g.f) : f = g := Tag.Hom.ext h
 

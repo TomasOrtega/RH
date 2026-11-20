@@ -45,7 +45,7 @@ def LimWPhi : Prop :=
         GlobalTheory.RoadU.SphAt .phi π ι r w B)
 
 /- English proof (translation)
-Introduce `i hi` and use `absurd hi (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : GapJ 1 0 := fun i hi => absurd hi (by omega)
 

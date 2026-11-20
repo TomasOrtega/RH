@@ -6,7 +6,7 @@ namespace PI.AreaLatWork
 open PI
 
 /- English proof (translation)
-Simplify using `only [zsmul_eq_mul, map_add, map_mul, map_intCast, Complex.mul_im, Complex.mul_re, Complex.add_re, Complex.add_im, Complex.intCast_re, Complex.intCast_im, Complex.conj_re, Complex.conj_im]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma im_conj_mul_combo (w₁ w₂ : ℂ) (m n m' n' : ℤ) :
     ((starRingEnd ℂ) (m • w₁ + n • w₂) * (m' • w₁ + n' • w₂)).im
@@ -18,7 +18,7 @@ lemma im_conj_mul_combo (w₁ w₂ : ℂ) (m n m' n' : ℤ) :
   ring
 
 /- English proof (translation)
-Introduce `a ha b hb`. Take `⟨m, n, rfl⟩` from `(AddSubgroup.mem_closure_pair (x := w₁) (y := w₂)).mp ha`. Take `⟨m', n', rfl⟩` from `(AddSubgroup.mem_closure_pair (x := w₁) (y := w₂)).mp hb`. Conclude with `⟨m * n' - n * m', im_conj_mul_combo w₁ w₂ m n m' n'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma im_integral (w₁ w₂ : ℂ) :
     ∀ a ∈ lat2 w₁ w₂, ∀ b ∈ lat2 w₁ w₂,
@@ -29,13 +29,13 @@ lemma im_integral (w₁ w₂ : ℂ) :
   exact ⟨m * n' - n * m', im_conj_mul_combo w₁ w₂ m n m' n'⟩
 
 /- English proof (translation)
-Introduce `w₁ w₂ hne`. Use `⟨?_, im_integral w₁ w₂⟩` and prove the remaining obligations. Unfold `PI.area`. Apply `IsLeast.csInf_eq` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion.
 
-Use `⟨abs_pos.mpr hne, w₁, ?_, w₂, ?_, rfl⟩` and prove the remaining obligations. Conclude with `AddSubgroup.subset_closure (Set.mem_insert _ _)`. Conclude with `AddSubgroup.subset_closure (Set.mem_insert_of_mem _ rfl)`. Introduce and unpack `a ⟨ha, x, hx, y, hy, rfl⟩`. Take `⟨n, hn⟩` from `im_integral w₁ w₂ x hx y hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ha`, the goal using `[hn, abs_mul]`. Establish `hn0 : (n : ℝ) ≠ 0`. Introduce `h0`. Rewrite `ha` using `[h0, abs_zero, zero_mul]`. Conclude with `lt_irrefl _ ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn1 : (1 : ℝ) ≤ |(n : ℝ)|`. Rewrite using `[← Int.cast_abs]`. Conclude with `Int.one_le_abs (by exact_mod_cast hn0)` after adjusting the coercions. Establish `h2` using `mul_le_mul_of_nonneg_right hn1 (abs_nonneg (((starRingEnd ℂ) w₁ * w₂).im))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem areaLat : PI.AreaLat := by
   intro w₁ w₂ hne

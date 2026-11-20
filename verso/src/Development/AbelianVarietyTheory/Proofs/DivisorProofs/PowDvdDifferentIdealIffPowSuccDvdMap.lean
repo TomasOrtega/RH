@@ -5,19 +5,19 @@ open GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 namespace GlobalTheory.TameDifferent
 
 /- English proof (translation)
-Establish `: Module.Finite k A` using `Module.Finite.of_injective f hf`. Establish `: Module.Finite k C` using `Module.Finite.of_surjective g hg`. Take `⟨s, hs⟩` from `g.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hg)`. Take `⟨l, hl⟩` from `f.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hf)`. Establish `hs' : ∀ c, g (s c) = c` using `fun c => LinearMap.congr_fun hs c`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl' : ∀ a, l (f a) = a` using `fun a => LinearMap.congr_fun hl a`. Set `r : M →ₗ[k] A` to `l ∘ₗ (LinearMap.id - s ∘ₗ g)`. Establish `hr : ∀ m, f (r m) = m - s (g m)`. Introduce `m`. Take `⟨a, ha⟩` from `hex (m - s (g m)) (by simp [hs'])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: r m = a`. Simplify using `only [r, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply]`. Rewrite using `[← ha, hl']`. Rewrite using `[this, ha]`. Establish `hrf : ∀ a, r (f a) = a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Apply `hf` to reduce the goal to its premises. Rewrite using `[hr, hfg, map_zero, sub_zero]`. Establish `hφ : φ = (φ ∘ₗ f) ∘ₗ r + (φ ∘ₗ s) ∘ₗ g`. Use extensionality with `m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[hr]`. Establish `e1 : r ∘ₗ (φ ∘ₗ f) = α`. Use extensionality with `a`. Simplify using `only [LinearMap.comp_apply, h1, hrf]`. Establish `e2 : g ∘ₗ (φ ∘ₗ s) = γ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `c`. Simplify using `only [LinearMap.comp_apply, h2, hs']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_add, ← hφ]`. Use `_ = _ := by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.trace_comp_comm' r (φ ∘ₗ f), LinearMap.trace_comp_comm' g (φ ∘ₗ s), e1, e2]`.
+A detailed English derivation is pending.
 -/
 private theorem trace_add_of_short_exact {k A M C : Type*} [Field k]
     [AddCommGroup A] [Module k A] [AddCommGroup M] [Module k M] [AddCommGroup C] [Module k C]
@@ -60,39 +60,37 @@ private theorem trace_add_of_short_exact {k A M C : Type*} [Field k]
         rw [LinearMap.trace_comp_comm' r (φ ∘ₗ f), LinearMap.trace_comp_comm' g (φ ∘ₗ s), e1, e2]
 
 /- English proof (translation)
-Name the introduced variables `hmax instA instP instF`. Use `revert h instF instA`. Proceed by induction on `e with`. Consider the case `zero`. Introduce `instA instF h`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbij : Function.Bijective (Ideal.Quotient.factor (Ideal.pow_le_self (I` using `P) (Nat.succ_ne_zero 0))) := by`. Use `⟨?_, Ideal.Quotient.factor_surjective _⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using hy`. Set `g : (B ⧸ P ^ (0 + 1)) →ₐ[k] B ⧸ P` to `{ toRingHom := Ideal.Quotient.factor (Ideal.pow_le_self (Nat.succ_ne_zero 0)) commutes' := h }`. Use `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofBijective g hbij) (Ideal.Quotient.mk _ x)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Simplify using `[g]`. Consider the case `succ e ih`. Introduce `instA instF h`. Establish `hle : P ^ (e + 1 + 1) ≤ P ^ (e + 1)` using `Ideal.pow_le_pow_right (Nat.le_succ _)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `instB : Algebra k (B ⧸ P ^ (e + 1))` to `((Ideal.Quotient.factor hle).comp (algebraMap k (B ⧸ P ^ (e + 1 + 1)))).toAlgebra`. Set `g : (B ⧸ P ^ (e + 1 + 1)) →ₐ[k] B ⧸ P ^ (e + 1)` to `{ toRingHom := Ideal.Quotient.factor hle commutes' := fun _ => rfl }`. Establish `hgmk : ∀ y : B, g (Ideal.Quotient.mk _ y) = Ideal.Quotient.mk _ y` using `fun _ => rfl`. Establish `hg : Function.Surjective g` using `Ideal.Quotient.factor_surjective hle`. Establish `instG : Module.Finite k (B ⧸ P ^ (e + 1))` using `Module.Finite.of_surjective g.toLinearMap hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ih'` using `@ih instB instG (by`. Introduce `c`. Rewrite using `[← h c]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.factor _ (Ideal.Quotient.factor hle (algebraMap k _ c)) = _`. Take `⟨z, hz⟩` from `Ideal.Quotient.mk_surjective (algebraMap k (B ⧸ P ^ (e + 1 + 1)) c)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hz]`. Use the proof step `rfl)`. Take `⟨a, ha, ha'⟩` from `Ideal.exists_mem_pow_notMem_pow_succ P hP hmax.ne_top (e + 1)`. Set `f0 : (B ⧸ P) →ₗ[B] B ⧸ P ^ (e + 1 + 1)` to `Submodule.mapQ P (P ^ (e + 1 + 1) : Ideal B) (LinearMap.mul B B a) (by`. Introduce `y hy`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `a * y ∈ P ^ (e + 1 + 1)`. Rewrite using `[pow_succ P (e + 1)]`. Conclude with `Ideal.mul_mem_mul ha hy)`. Establish `hf0 : ∀ y : B, f0 (Ideal.Quotient.mk _ y) = Ideal.Quotient.mk _ (a * y)` using `fun _ => rfl`. Set `f : (B ⧸ P) →ₗ[k] B ⧸ P ^ (e + 1 + 1)` to `{ toFun := f0 map_add' := f0.map_add map_smul' := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `c y`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨z, hz⟩` from `Ideal.Quotient.mk_surjective (algebraMap k (B ⧸ P ^ (e + 1 + 1)) c)`. Rewrite using `[RingHom.id_apply, Algebra.smul_def, Algebra.smul_def, ← h c, ← hz, Ideal.Quotient.factor_mk, ← map_mul, hf0, hf0, ← map_mul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ring }`. Establish `hf : ∀ y : B, f (Ideal.Quotient.mk _ y) = Ideal.Quotient.mk _ (a * y)` using `fun _ => rfl`. Establish `key` using `trace_add_of_short_exact f g.toLinearMap ?_ hg ?_ ?_ (Algebra.lmul k _ (Ideal.Quotient.mk _ x)) (Algebra.lmul k _ (Ideal.Quotient.mk _ x)) (Algebra.lmul k _ (Ideal.Quotient.mk _ x)) ?_ ?_`. Rewrite `key` using `[← Algebra.trace_apply, ← Algebra.trace_apply, ← Algebra.trace_apply]`. Rewrite using `[key, ih']`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hy` using `[hf, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `(Ideal.IsMaximal.mem_pow_mul P hy).resolve_left ha'`. Introduce `y`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf, AlgHom.toLinearMap_apply, hgmk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_right _ _ ha`. Introduce `m hm`. Take `⟨m, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Rewrite `hm` using `[AlgHom.toLinearMap_apply, hgmk, Ideal.Quotient.eq_zero_iff_mem]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsup : P ^ (e + 1 + 1) ⊔ Ideal.span {a} = P ^ (e + 1)`. Use `Ideal.eq_prime_pow_of_succ_lt_of_le hP ?_ ?_` and prove the remaining obligations. Use `lt_of_le_of_ne le_sup_left fun hh => ha' ?_` and prove the remaining obligations. Rewrite using `[hh]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self a)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `sup_le hle ((Ideal.span_singleton_le_iff_mem _).2 ha)`. Rewrite `hm` using `[← hsup]`. Take `⟨u, hu, w, hw, rfl⟩` from `Submodule.mem_sup.1 hm`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hw`. Use `⟨Ideal.Quotient.mk _ y, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hf, map_add, Ideal.Quotient.eq_zero_iff_mem.2 hu, zero_add, mul_comm]`. Introduce `y`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ x * f (Ideal.Quotient.mk _ y) = f (Ideal.Quotient.mk _ x * Ideal.Quotient.mk _ y)`. Rewrite using `[← map_mul, hf, hf, ← map_mul]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `m`. Express the relevant statement in the definitionally equal form `g (Ideal.Quotient.mk _ x * m) = Ideal.Quotient.mk _ x * g m`. Rewrite using `[map_mul, hgmk]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_quotient_pow {k B : Type*} [Field k] [CommRing B] [IsDedekindDomain B]
     (P : Ideal B) [P.IsMaximal] (hP : P ≠ ⊥) (e : ℕ)
@@ -213,15 +211,13 @@ variable {A B : Type} [CommRing A] [CommRing B] [Algebra A B]
   [IsDedekindDomain A] [IsDedekindDomain B] [Module.IsTorsionFree A B] [Module.Finite A B]
 
 /- English proof (translation)
-Set `: Algebra (A ⧸ p) (B ⧸ Q)` to `Ideal.Quotient.algebraQuotientOfLEComap (by`. Rewrite using `[← Ideal.map_le_iff_le_comap, ← hP]`. Conclude with `Ideal.mul_le_right)`. Establish `: IsScalarTower A (A ⧸ p) (B ⧸ Q)` using `.of_algebraMap_eq' rfl`. Establish `: Module.Finite (A ⧸ p) (B ⧸ Q)` using `Module.Finite.of_restrictScalars_finite A (A ⧸ p) (B ⧸ Q)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `: Algebra (A ⧸ p) (B ⧸ P ^ (n + 1))` to `Ideal.Quotient.algebraQuotientOfLEComap (by`. Rewrite using `[← Ideal.map_le_iff_le_comap, ← hP]`. Conclude with `Ideal.mul_le_left)`. Establish `: IsScalarTower A (A ⧸ p) (B ⧸ P ^ (n + 1))` using `.of_algebraMap_eq' rfl`. Establish `: Module.Finite (A ⧸ p) (B ⧸ P ^ (n + 1))` using `Module.Finite.of_restrictScalars_finite A (A ⧸ p) (B ⧸ P ^ (n + 1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : (B ⧸ p.map (algebraMap A B)) ≃ₐ[A ⧸ p] ((B ⧸ P ^ (n + 1)) × B ⧸ Q)` to `{ __ := (Ideal.quotEquivOfEq hP.symm).trans (Ideal.quotientMulEquivQuotientProd _ Q hPQ.pow_left), commutes' := Quotient.ind fun _ ↦ rfl }`. Establish `hx' : (e (Ideal.Quotient.mk _ x)).2 = 0`. Simplify using `[e, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hx'' : (e (Ideal.Quotient.mk _ x)).1 = Ideal.Quotient.mk _ x`. Simplify using `[e]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `` to `Ideal.Quotient.field p`. Rewrite using `[← Algebra.trace_quotient_eq_of_isDedekindDomain, ← Algebra.trace_eq_of_algEquiv e, Algebra.trace_prod_apply, hx', hx'', map_zero, add_zero, Nat.cast_add, Nat.cast_one]`. Use `trace_quotient_pow P hP0 n ?_ x` and prove the remaining obligations. Introduce `c`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective c`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem intTrace_mk_eq
     {p : Ideal A} [p.IsMaximal] (P Q : Ideal B) [P.IsMaximal] [P.LiesOver p] (hP0 : P ≠ ⊥)
@@ -258,11 +254,11 @@ theorem intTrace_mk_eq
   rfl
 
 /- English proof (translation)
-Introduce `h`. Set `` to `Ideal.Quotient.field p`. Set `` to `Ideal.Quotient.field P`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, Algebra.trace (A ⧸ p) (B ⧸ P) x ≠ 0 := by`. Simplify `Algebra.trace_ne_zero (A ⧸ p) (B ⧸ P)` using `[LinearMap.ext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `h1 : x ∈ P ⊔ Q`. Rewrite using `[Ideal.isCoprime_iff_sup_eq.mp hPQ]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨u, hu, y, hy, rfl⟩` from `Submodule.mem_sup.mp h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[map_add, Ideal.Quotient.eq_zero_iff_mem.mpr hu, zero_add]`. Use `not_dvd_differentIdeal_of_intTrace_not_mem A _ Q hP y hy ?_ h` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, intTrace_mk_eq P Q hP0 n hPQ hP y hy]`. Conclude with `mul_ne_zero hn hx`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_pow_dvd_differentIdeal [Algebra.IsSeparable (FractionRing A) (FractionRing B)]
     {p : Ideal A} [p.IsMaximal] (P Q : Ideal B) [P.IsMaximal] [P.LiesOver p]
@@ -293,27 +289,23 @@ open nonZeroDivisors
 attribute [local instance] FractionRing.liftAlgebra FractionRing.isScalarTower_liftAlgebra
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ _ _ _ _ _ Q _ _ n`. Establish `hm : IsLocalRing.maximalIdeal A ≠ ⊥` using `IsDiscreteValuationRing.not_a_field A`. Establish `hm' : (IsLocalRing.maximalIdeal A).map (algebraMap A B) ≠ ⊥` using `(Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective A B)).not.mpr hm`. Establish `hQ0 : Q ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot hm Q`. Take `⟨R, h₁, h₂⟩` from `Ideal.eq_prime_pow_mul_coprime hm' Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set e := Multiset.count Q (UniqueFactorizationMonoid.normalizedFactors ((IsLocalRing.maximalIdeal A).map (algebraMap A B)))`. Establish `hQm : Q ∣ (IsLocalRing.maximalIdeal A).map (algebraMap A B)` using `Ideal.dvd_iff_le.mpr (Ideal.map_le_iff_le_comap.mpr Ideal.LiesOver.over.le)`. Establish `hk : ∀ k, Q ^ k ∣ (IsLocalRing.maximalIdeal A).map (algebraMap A B) ↔ k ≤ e`. Introduce `k`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `h3 : Q ^ e * Q ∣ Q ^ e * R`. Rewrite using `[← pow_succ, ← h₂]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_dvd_pow Q hlt).trans h`. Establish `h4 : Q ∣ R` using `(mul_dvd_mul_iff_left (pow_ne_zero _ hQ0)).mp h3`. Establish `h5 : R ≤ Q` using `Ideal.dvd_iff_le.mp h4`. Apply `(Ideal.IsMaximal.ne_top ‹Q.IsMaximal›)` to reduce the goal to its premises. Rewrite using `[← h₁]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_antisymm le_sup_left (sup_le le_rfl h5)`. Introduce `h`. Rewrite using `[h₂]`. Conclude with `(pow_dvd_pow Q h).trans (dvd_mul_right _ _)`. Establish `he : e ≠ 0`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hk 1).mp (by simpa using hQm)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨k, hke⟩` from `Nat.exists_eq_succ_of_ne_zero he`. Establish `: CharZero A` using `RingHom.charZero (IsLocalRing.residue A)`. Establish `: CharZero (FractionRing A)` using `charZero_of_injective_algebraMap (IsFractionRing.injective A (FractionRing A))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocalization (Algebra.algebraMapSubmonoid B A⁰) (FractionRing B)` using `IsIntegralClosure.isLocalization _ (FractionRing A) _ _`. Establish `: FiniteDimensional (FractionRing A) (FractionRing B)` using `.of_isLocalization A B A⁰`. Establish `: Algebra.IsSeparable (FractionRing A) (FractionRing B)` using `inferInstance`. Establish `hc : CharZero (A ⧸ IsLocalRing.maximalIdeal A)` using `inferInstanceAs (CharZero (IsLocalRing.ResidueField A))`. Establish `: Algebra.IsSeparable (A ⧸ IsLocalRing.maximalIdeal A) (B ⧸ Q)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `` to `Ideal.Quotient.field (IsLocalRing.maximalIdeal A)`. Set `` to `Ideal.Quotient.field Q`. Use `infer_instance`. Establish `hD1 : Q ^ (e - 1) ∣ differentIdeal A B` using `pow_sub_one_dvd_differentIdeal A Q e hm ((hk e).mpr le_rfl)`. Establish `hD2 : ¬ Q ^ e ∣ differentIdeal A B`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hke]`. Use `not_pow_dvd_differentIdeal (p := IsLocalRing.maximalIdeal A) Q R hQ0 k (Ideal.isCoprime_iff_sup_eq.mpr h₁) ?_ ?_` and prove the remaining obligations. Rewrite using `[h₂, hke]`. Conclude with `Nat.cast_ne_zero.mpr (Nat.succ_ne_zero k)`. Rewrite using `[hk (n + 1)]`.
-
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hlt`. Conclude with `hD2 ((pow_dvd_pow Q (by omega)).trans h)`. Introduce `h`.
-
-Conclude with `(pow_dvd_pow Q (by omega)).trans hD1`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pow_dvd_differentIdeal_iff_pow_succ_dvd_map : ∀ (A B : Type) [CommRing A] [IsDomain A]
     [IsDiscreteValuationRing A] [CommRing B] [IsDedekindDomain B] [Algebra A B] [Module.Finite A B]

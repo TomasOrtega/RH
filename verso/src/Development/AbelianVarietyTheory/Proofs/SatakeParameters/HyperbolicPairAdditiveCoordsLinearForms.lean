@@ -24,9 +24,9 @@ namespace GlobalTheory.KerStd.HypOrbit
 open Formalism.InvariantFactorPaths.G7 (lgF at1)
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.C.flin`. Establish `hA : constantCoeff (∑ k, C (c k) * PowerSeries.subst (v k) (lgF ℂ_[p] p)) = 0`. Simplify using `only [map_sum, map_mul, constantCoeff_C]`. Conclude with `Finset.sum_eq_zero fun k _ => by`. Rewrite using `[PowerSeries.constantCoeff_subst_eq_zero (hv k) _ (Formalism.L2.Th1.D.Pair.cc_lgF hl), mul_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' (Formalism.L2.Th1.D.expSpec ℂ_[p] p hl).1) (PowerSeries.HasSubst.of_constantCoeff_zero hA), (Formalism.L2.Th1.D.expSpec ℂ_[p] p hl).2.1, PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_z …`.
+A detailed English derivation is pending.
 -/
 theorem lg_flin {p : ℕ} [Fact p.Prime] (hl : 2 ≤ p) {τ m : Type} [Fintype m] (c : m → ℂ_[p]) (v : m → MvPowerSeries τ ℂ_[p])
     (hv : ∀ k, constantCoeff (v k) = 0) :
@@ -43,9 +43,7 @@ theorem lg_flin {p : ℕ} [Fact p.Prime] (hl : 2 ≤ p) {τ m : Type} [Fintype m
     PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero hA)]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.C.flin`. Establish `hA : constantCoeff (∑ k, C (c k) * PowerSeries.subst (v k) (lgF ℂ_[p] p)) = 0`. Simplify using `only [map_sum, map_mul, constantCoeff_C]`. Conclude with `Finset.sum_eq_zero fun k _ => by`. Rewrite using `[PowerSeries.constantCoeff_subst_eq_zero (hv k) _ (Formalism.L2.Th1.D.Pair.cc_lgF hl), mul_zero]`.
-
-Conclude with `PowerSeries.constantCoeff_subst_eq_zero hA _ (Formalism.L2.Th1.D.expSpec ℂ_[p] p hl).1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_flin {p : ℕ} [Fact p.Prime] (hl : 2 ≤ p) {τ m : Type} [Fintype m] (c : m → ℂ_[p]) (v : m → MvPowerSeries τ ℂ_[p])
     (hv : ∀ k, constantCoeff (v k) = 0) :
@@ -58,31 +56,31 @@ theorem cc_flin {p : ℕ} [Fact p.Prime] (hl : 2 ≤ p) {τ m : Type} [Fintype m
   exact PowerSeries.constantCoeff_subst_eq_zero hA _ (Formalism.L2.Th1.D.expSpec ℂ_[p] p hl).1
 
 /- English proof (translation)
-Introduce `D p _ hp σ om oms R M N N' r eA f f' Θ`. Establish `hl : 2 ≤ p` using `by omega`. Establish `hcl : PowerSeries.constantCoeff (lgF ℂ_[p] p) = 0` using `Formalism.L2.Th1.D.Pair.cc_lgF hl`. Establish `hA0 : HasSubst (fun i : Fin r => (at1 i (lgF ℂ_[p] p) : MvPowerSeries (Fin r) ℂ_[p]))` using `hasSubst_of_constantCoeff_zero fun i => Formalism.L2.Th1.D.Pair.constantCoeff_inVar_eq_zero i hcl`. Establish `hu : ∀ k : ((R × Fin (nP D p / 2)) × Fin N × Fin N') ⊕ ((R × Fin (nP D p / 2)) × Fin N × Fin N'), constantCoeff ((Sum.elim (fun e => (X (false, e) : MvPowerSeries (Bool × ((R × Fin (nP D p / 2)) × Fin N × Fin N')) ℂ_[p])) (fun e => X (true, e))) k) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `intro k; cases k <;> simp`. Establish `hhc : HasSubst (Formalism.L2.Th1.E.hypCoord (lgF ℂ_[p] p) (Formalism.L2.Th1.D.expF ℂ_[p] p) (MaximalUnramifiedExtension p).subtype f f')` using `hasSubst_of_constantCoeff_zero fun i => cc_flin hl _ _ hu`. Establish `hL : ∀ i : Fin r, subst (Formalism.L2.Th1.E.hypCoord (lgF ℂ_[p] p) (Formalism.L2.Th1.D.expF ℂ_[p] p) (MaximalUnramifiedExtension p).subtype f f') (at1 i (lgF ℂ_[p] p) : MvPowerSeries (Fin r) ℂ_[p]) = ∑ e : (R × Fin (nP D p / 2)) × Fin N × Fin N', (C ((f e i : MaximalUnramifiedExt …`. Introduce `i`. Rewrite using `[Formalism.L2.Th1.D.Pair.subst_single_var hhc]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.L2.Th1.E.hypCoord`. Rewrite using `[lg_flin hl _ _ hu, Fintype.sum_sum_type, ← Finset.sum_add_distrib]`. Both sides reduce to the same expression. Use `set ren1 := (fun x : Bool × (R × Fin (nP D p / 2)) × Fin N × Fin N' => (X (x.1, x.2.1.2, eA.symm (x.2.1.1, x.2.2.1), x.2.2.2) : MvPowerSeries (Bool × Fin (nP D p / 2) × Fin M × Fin N') ℂ_[p])) with hren1`. Use `set Y := (fun y : ZV (nP D p) M N' => (X (OrbitPlaces.orbMap D p (eA y.2.1).1 y.1, (eA y.2.1).2, y.2.2) : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p])) with hYdef`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : HasSubst ren1` using `hasSubst_of_constantCoeff_zero fun x => constantCoeff_X _`. Establish `hX : HasSubst (Formalism.L2.Th1.D.xOfZ (d` using `nP D p) (N0 := M) (N1 := N') p (MaximalUnramifiedExtension p).subtype σ om oms) := hasSubst_of_constantCoeff_zero (CofactorConverse.cc_xOfZ hl _ σ om oms)`. Establish `hY : HasSubst Y` using `hasSubst_of_constantCoeff_zero fun y => constantCoeff_X _`. Establish `hRX0 : ∀ x, constantCoeff (subst (Formalism.L2.Th1.D.xOfZ (d` using `nP D p) (N0 := M) (N1 := N') p (MaximalUnramifiedExtension p).subtype σ om oms) (ren1 x)) = 0 := fun x => constantCoeff_subst_eq_zero hX (CofactorConverse.cc_xOfZ hl _ σ om oms) (constantCoeff_X _)`. Establish `hRX : HasSubst (fun x => subst (Formalism.L2.Th1.D.xOfZ (d` using `nP D p) (N0 := M) (N1 := N') p (MaximalUnramifiedExtension p).subtype σ om oms) (ren1 x)) := hasSubst_of_constantCoeff_zero hRX0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set W := (fun x : Bool × (R × Fin (nP D p / 2)) × Fin N × Fin N' => subst Y (subst (Formalism.L2.Th1.D.xOfZ (d := nP D p) (N0 := M) (N1 := N') p (MaximalUnramifiedExtension p).subtype σ om oms) (ren1 x))) with hWdef`. Establish `hW : HasSubst W` using `hasSubst_of_constantCoeff_zero fun x => constantCoeff_subst_eq_zero hY (fun y => constantCoeff_X _) (hRX0 x)`. Establish `hcomp : ∀ g : MvPowerSeries (Bool × (R × Fin (nP D p / 2)) × Fin N × Fin N') ℂ_[p], subst Y (subst (Formalism.L2.Th1.D.xOfZ (d` using `nP D p) (N0 := M) (N1 := N') p (MaximalUnramifiedExtension p).subtype σ om oms) (subst ren1 g)) = subst W g := by`. Introduce `g`. Rewrite using `[subst_comp_subst_apply hR hX, subst_comp_subst_apply hRX hY]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLf : HasSubst (fun i : Fin r => subst (Formalism.L2.Th1.E.hypCoord (lgF ℂ_[p] p) (Formalism.L2.Th1.D.expF ℂ_[p] p) (MaximalUnramifiedExtension p).subtype f f') (at1 i (lgF ℂ_[p] p) : MvPowerSeries (Fin r) ℂ_[p]))` using `hasSubst_of_constantCoeff_zero fun i => constantCoeff_subst_eq_zero hhc (fun i => cc_flin hl _ _ hu) (Formalism.L2.Th1.D.Pair.constantCoeff_inVar_eq_zero i hcl)`. Establish `hWx : ∀ (c : Bool) (e : (R × Fin (nP D p / 2)) × Fin N × Fin N'), subst W (at1 (c, e) (lgF ℂ_[p] p)) = ∑ s : ZMod (nP D p), C ((MaximalUnramifiedExtension p).subtype (Formalism.L2.Th1.D.TranslateJetMomentLawAnyIdempotentLevel.pXY σ om oms (c, e.1.2) s)) * (X (OrbitPlaces.orbMap D …`. Introduce `c e`. Rewrite using `[Formalism.L2.Th1.D.Pair.subst_single_var hW]`. Simplify using `only [hWdef, hren1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[subst_X hX]`. Establish `ha : PowerSeries.HasSubst (Formalism.L2.Th1.D.xOfZ (d` using `nP D p) (N0 := M) (N1 := N') p (MaximalUnramifiedExtension p).subtype σ om oms (c, e.1.2, eA.symm (e.1.1, e.2.1), e.2.2)) := PowerSeries.HasSubst.of_constantCoeff_zero (CofactorConverse.cc_xOfZ hl _ σ om oms _)`. Rewrite using `[← Formalism.L2.Th1.D.Pair.subst_subst1 hY ha]`. Establish `hlog` using `CofactorConverse.log_xOfZ (d := nP D p) hl (MaximalUnramifiedExtension p).subtype σ om oms (eA.symm (e.1.1, e.2.1)) e.2.2 (c, e.1.2)`. Simplify using `only at hlog`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlog]`. Unfold `CofactorConverse.linP`. Rewrite using `[← coe_substAlgHom hY]`. Simplify using `only [map_sum, map_mul]`. Simplify using `only [coe_substAlgHom hY, subst_C]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[subst_X hY]`. Simplify using `only [hYdef, Equiv.apply_symm_apply]`. Establish `hEv : ∀ (k : Fin (nP D p / 2)) (q : OrbitPlaces.Pl D) (a : Fin N) (b : Fin N'), (∑ s : ZMod (nP D p), C ((MaximalUnramifiedExtension p).subtype (Formalism.L2.Th1.D.TranslateJetMomentLawAnyIdempotentLevel.pXY σ om oms (false, k) s)) * (X (OrbitPlaces.orbMap D p q s, a, b) : MvPowe …`. Introduce `k q a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `linEv`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Unfold `Formalism.L2.Th1.D.TranslateJetMomentLawAnyIdempotentLevel.pXY`. Apply the tactic sequence `by_cases hs : s.val % 2 = 0 <;> simp [hs]`. Establish `hOd : ∀ (k : Fin (nP D p / 2)) (q : OrbitPlaces.Pl D) (a : Fin N) (b : Fin N'), (∑ s : ZMod (nP D p), C ((MaximalUnramifiedExtension p).subtype (Formalism.L2.Th1.D.TranslateJetMomentLawAnyIdempotentLevel.pXY σ om oms (true, k) s)) * (X (OrbitPlaces.orbMap D p q s, a, b) : MvPower …`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k q a b`. Unfold `linOd`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Unfold `Formalism.L2.Th1.D.TranslateJetMomentLawAnyIdempotentLevel.pXY`. Apply the tactic sequence `by_cases hs : s.val % 2 = 0 <;> simp [hs]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `Formalism.L2.Th1.D.thetaInZ Formalism.L2.Th1.Top.inHyp`. Rewrite using `[hcomp, subst_comp_subst_apply hA0 hhc, subst_comp_subst_apply hLf hW]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hL i]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← coe_substAlgHom hW]`. Simplify using `only [map_sum, map_add, map_mul]`. Simplify using `only [coe_substAlgHom hW, subst_C, hWx, hEv, hOd]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hypZ_of_inHyp : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (hp : 5 ≤ p) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (om oms : Fin (nP D p / 2) → MaximalUnramifiedExtension p)
     (R : Finset (OrbitPlaces.Pl D)) {M N N' r : ℕ} (eA : Fin M ≃ R × Fin N)

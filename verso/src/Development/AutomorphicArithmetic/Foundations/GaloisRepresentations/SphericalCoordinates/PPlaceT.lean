@@ -6,9 +6,9 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `hc`. Establish `him : r.im = 0` using `Complex.conj_eq_iff_im.mp hc`. Apply the tactic sequence `obtain ⟨x, rfl⟩ : ∃ x : ℝ, r = (x : ℂ) := ⟨r.re, by apply Complex.ext <;> simp [him]⟩`. Establish `h1 : x ^ 2 - (tr : ℝ) * x + (nm : ℝ) = 0` using `by exact_mod_cast hr`. Establish `h2 : ((tr : ℝ)) ^ 2 - 4 * (nm : ℝ) < 0` using `by exact_mod_cast hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg (2 * x - (tr : ℝ))]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem rho_not_real {tr nm : ℤ} {r : ℂ} (hd : tr ^ 2 - 4 * nm < 0)
     (hr : r ^ 2 - (tr : ℂ) * r + (nm : ℂ) = 0) : (starRingEnd ℂ) r ≠ r := by
@@ -20,19 +20,17 @@ private theorem rho_not_real {tr nm : ℤ} {r : ℂ} (hd : tr ^ 2 - 4 * nm < 0)
   nlinarith [sq_nonneg (2 * x - (tr : ℝ))]
 
 /- English proof (translation)
-Introduce `p _ D G L ha v hv t₀ ht`. Establish `i₀ : Fin D.a` using `⟨0, by omega⟩`. Establish `hsub : ∀ i j : Fin D.a, i = j` using `fun i j => by`. Apply `Fin.ext` to reduce the goal to its premises. Use `i.2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hρ : t₀ (D.ω : D.F) = D.ρc` using `by rw [← ht i₀]; exact D.tau_ω i₀`. Establish `hne : (starRingEnd ℂ) D.ρc ≠ D.ρc` using `rho_not_real D.disc_neg D.ρc_root`. Take `⟨i, hi⟩` from `(L.sig v).1 hv`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hφ : ∀ x, (G.iotaC.comp (L.s i)) (L.e x) = t₀ x` using `fun x => by`. Rewrite using `[← ht i]`. Conclude with `L.s_C i x`. Use `⟨fun v' hv' => ?_, hρ, hne, ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `(L.sig v').1 hv'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hi, hj, hsub i j]`. Establish `hemb` using `InfinitePlace.embedding_mk_eq (G.iotaC.comp (L.s i))`. Rewrite `hemb` using `[← hi]`. Break down `hemb with h | h` into its components or cases. Use `left`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : ∀ x, v.embedding (L.e x) = t₀ x` using `fun x => by rw [h]; exact hφ x`. Use `⟨?_, hx⟩` and prove the remaining obligations. Unfold `sgnV`. Rewrite using `[if_pos (by rw [hx, hρ])]`. Use `right`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : ∀ x, v.embedding (L.e x) = (starRingEnd ℂ) (t₀ x)` using `fun x => by`. Rewrite using `[h, ComplexEmbedding.conjugate_coe_eq, hφ]`. Establish `hω : v.embedding (L.e (D.ω : D.F)) ≠ D.ρc` using `by rw [hx, hρ]; exact hne`. Use `⟨?_, fun hall => hω (by rw [hall, hρ]), fun x => by rw [hx, Complex.conj_conj]⟩` and prove the remaining obligations. Unfold `sgnV`.
-
-Rewrite using `[if_neg hω]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.placeT_of :
     UpperTheory.Gal.W2.PlaceT := by

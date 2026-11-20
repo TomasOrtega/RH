@@ -17,11 +17,11 @@ variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Introduce `D`. Proceed by induction on `D with`. Consider the case `nil => intro _`. Both sides reduce to the same expression. Consider the case `cons X D ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `hD`. Establish `hX : Formalism.MainNotions.S.InLieHpk k r X` using `hD X List.mem_cons_self`. Establish `hD1 : ∀ Y ∈ D, Formalism.MainNotions.S.InLieHpk k r Y` using `fun Y hY => hD Y (List.mem_cons_of_mem _ hY)`. Use `show deriv (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (Formalism.MainNotions.S.dsigW (k := k) (r := r) σ D _)) 0 = _`. Rewrite using `[ih hD1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub]`. Conclude with `((Formalism.MainNotions.LowestKTypeMultiplicity.dsigW_hasDeriv hU hv D hD1 hX).sub (hD' D X hD1 hX)).deriv`.
+A detailed English derivation is pending.
 -/
 theorem dsigW_sub_avg {μ : Measure (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)}
     {φ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → ℂ} {v : H}
@@ -47,21 +47,21 @@ theorem dsigW_sub_avg {μ : Measure (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + 
     exact ((Formalism.MainNotions.LowestKTypeMultiplicity.dsigW_hasDeriv hU hv D hD1 hX).sub (hD' D X hD1 hX)).deriv
 
 /- English proof (translation)
-Introduce `k r ε lam H _ _ _ σ _ hDS v hv Ws hWs e he`. Take `⟨-, hU, -⟩` from `GlobalTheory.BesselMapOne.rep_of_isDSHpk hDS`. Take `⟨μ, hμ⟩` from `GlobalTheory.T.exists_isHaarProbabilityMaxCompactHermitian k r`. Establish `hv' : Formalism.MainNotions.S.IsSmoothVec (k` using `k) (r := r) σ v := hv`. Take `⟨hpc, hp1, hp01, hpδ⟩` from `GlobalTheory.T.unitaryRealTraceBump_peak_properties (2 * r + k + 1) (Nat.succ_pos _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hKc : IsCompact (GlobalTheory.ThA.KH k r)` using `isCompact_KH k r`. Establish `hK1 : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ GlobalTheory.ThA.KH k r` using `⟨by show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ᴴ * _ * 1 = _; simp, one_mem _⟩`. Establish `hpK : ∀ x ∈ GlobalTheory.ThA.KH k r, 0 ≤ peak (2 * r + k + 1) x ∧ peak (2 * r + k + 1) x ≤ 1` using `fun x hx => hp01 x hx.2`. Establish `hpU : ∀ U ∈ 𝓝 (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ), ∃ δ < 1, ∀ x ∈ GlobalTheory.ThA.KH k r, x ∉ U → peak (2 * r + k + 1) x ≤ δ` using `fun U hU' => by`. Take `⟨δ, hδ, h⟩` from `hpδ U hU'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨δ, hδ, fun x hx hxU => h x hx.2 hxU⟩`. Establish `hσ1 : σ 1 = 1` using `hU.1.1`. Establish `hconv : ∀ w ∈ Ws, Tendsto (fun m : ℕ => ∫ g, peakN μ m g • Formalism.MainNotions.S.dsigW (k` using `k) (r := r) σ w (σ g v) ∂μ) atTop (𝓝 (Formalism.MainNotions.S.dsigW (k := k) (r := r) σ w v)) := by`. Introduce `w hw`. Establish `hc` using `(Formalism.MainNotions.LowestKTypeMultiplicity.orbit_cont hU hv' w (hWs w hw)).mono (Set.inter_subset_left : GlobalTheory.ThA.KH k r ⊆ _)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `GlobalTheory.T.tendsto_integral_normalised_pow_smul_of_unique_peak _ μ hμ.1 _ 1 _ hKc hμ.2.1 hK1 hμ.2.2.2 hpc hp1 hpK hpU H _ hc` as an intermediate fact. Rewrite `this` using `[hσ1, ContinuousLinearMap.one_apply]`. Conclude with `this`. Use `set L := Ws.length`. Establish `hε : 0 < e / (L + 1)` using `by positivity`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hev : ∀ᶠ m : ℕ in atTop, ∀ w ∈ {w | w ∈ Ws}, dist (∫ g, peakN μ m g • Formalism.MainNotions.S.dsigW (k` using `k) (r := r) σ w (σ g v) ∂μ) (Formalism.MainNotions.S.dsigW (k := k) (r := r) σ w v) < e / (L + 1) := (Filter.eventually_all_finite Ws.finite_toSet).2 fun w hw => Metric.tendsto_nhds.1 (hconv w hw) _ hε`. Take `⟨m, hm⟩` from `hev.exists`. Take `⟨N, b, c, hbc, hpoly, htr⟩` from `GlobalTheory.T.unitaryRealTraceBump_pow_finite_translation_stable_polys (2 * r + k + 1) m`. Use `set Z : ℝ := ∫ h, peak (2 * r + k + 1) h ^ m ∂μ`. Establish `e1 : ∀ g, peakN μ m g = ∑ j, (c j / (Z : ℂ)) * b j g` using `fun g => by show ((peak (2 * r + k + 1) g ^ m / Z : ℝ) : ℂ) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Complex.ofReal_div, hpoly g, Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `⟨∫ g, peakN μ m g • σ g v ∂μ, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.integral_translate_family_isKFinite_hermitian k r H σ μ hU hμ N b hbc htr (fun j => c j / (Z : ℂ)) v` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [← e1]`. Establish `hD'` using `fun D X hD hX => GlobalTheory.T.hasDerivAt_derived_action_max_compact_average k r H σ μ (peakN μ m) v D X hU hμ (by rw [show peakN μ m = fun g => ∑ j, (c j / (Z : ℂ)) * b j g from funext e1]`. Conclude with `continuous_finset_sum _ fun j _ => continuous_const.mul (hbc j)) hv' hD hX`. Establish `hterm : ∀ w ∈ Ws, ‖PI.UpqRep.dsigW (k` using `k) (r := r) σ w (v - ∫ g, peakN μ m g • σ g v ∂μ)‖ ≤ e / (L + 1) := by`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[Formalism.MainNotions.BridgeCS3d.dsigW_eq, dsigW_sub_avg hU hv' hD' w (hWs w hw), norm_sub_rev, ← dist_eq_norm]`. Conclude with `(hm w hw).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_div_assoc', div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem kDense : Formalism.MainNotions.S.Pv.AmpDD.KDense := by
   intro k r ε lam H _ _ _ σ _ hDS v hv Ws hWs e he

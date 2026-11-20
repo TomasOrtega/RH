@@ -11,11 +11,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1.S0.A
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Take `⟨c, hc0, rfl⟩` from `hSF k r U μ₀ μ hU h₀ hμ`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, h₀.conc, smul_zero]`. Introduce `a ha`. Rewrite using `[Measure.map_smul, h₀.left a ha]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Rewrite using `[Measure.map_smul, h₀.right a ha]`. Introduce `K hK`. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top (h₀.finite_compact K hK)`.
-
-Conclude with `smul_ne_zero hc0 h₀.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarUp (hSF : HaarUniqueSF) {k r : ℕ} {U : Set (Mat k r)} {μ₀ μ : Measure (Mt k r)}
     (hU : IsClosedSubgroup U) (h₀ : Formalism.FourierDecayAlt.B.IsHaarOn U μ₀) (hμ : Formalism.MainNotions.S.IsHaarOn U μ) :
@@ -33,7 +31,7 @@ theorem haarUp (hSF : HaarUniqueSF) {k r : ℕ} {U : Set (Mat k r)} {μ₀ μ : 
   · exact smul_ne_zero hc0 h₀.ne_zero
 
 /- English proof (translation)
-Take `⟨μ₀, h₀⟩` from `hHW k r z hz hT`. Conclude with `haarUp hSF (hCW k r z) h₀ hμ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isHaarOn_fourier_of_isHaarOn_main (hSF : HaarUniqueSF) (hCW : ClosedW) (hHW : HaarWExists) {k r : ℕ}
     {z : Fin (2 * r + k + 1) → ℂ} {μW : Measure (Mt k r)} (hz : inWb k r z) (hT : 0 < Tz k r z)
@@ -42,7 +40,7 @@ theorem isHaarOn_fourier_of_isHaarOn_main (hSF : HaarUniqueSF) (hCW : ClosedW) (
   exact haarUp hSF (hCW k r z) h₀ hμ
 
 /- English proof (translation)
-Take `⟨μ₀, h₀⟩` from `hHN k r`. Conclude with `haarUp hSF (hCN k r) h₀ hμ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem haarUp_N (hSF : HaarUniqueSF) (hCN : ClosedN) (hHN : HaarNExists) {k r : ℕ}
     {μN : Measure (Mt k r)} (hμ : Formalism.MainNotions.S.IsHaarOn (Nset k r) μN) : Formalism.FourierDecayAlt.B.IsHaarOn (Nset k r) μN := by
@@ -50,7 +48,7 @@ theorem haarUp_N (hSF : HaarUniqueSF) (hCN : ClosedN) (hHN : HaarNExists) {k r :
   exact haarUp hSF (hCN k r) h₀ hμ
 
 /- English proof (translation)
-Take `⟨μ₀, h₀⟩` from `hHG k r`. Conclude with `haarUp hSF (hCG k r) h₀ hμ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem haarUp_G (hSF : HaarUniqueSF) (hCG : ClosedG) (hHG : HaarGExists) {k r : ℕ}
     {μG : Measure (Mt k r)} (hμ : Formalism.MainNotions.S.IsHaarOn (UH (Hpk k r)) μG) : Formalism.FourierDecayAlt.B.IsHaarOn (GV k r) μG := by
@@ -58,7 +56,7 @@ theorem haarUp_G (hSF : HaarUniqueSF) (hCG : ClosedG) (hHG : HaarGExists) {k r :
   exact haarUp hSF (hCG k r) h₀ hμ
 
 /- English proof (translation)
-Establish `hK : μW (UWset k r z : Set (Mt k r)) < ∞` using `hμ.finite_compact _ (hCpW k r z hz hT)`. Establish `hc : μW (UWset k r z : Set (Mt k r))ᶜ = 0` using `hμ.conc`. Use `lt_of_le_of_lt (measure_univ_le_add_compl (μ := μW) (UWset k r z : Set (Mt k r))) ?_` and prove the remaining obligations. Conclude with `ENNReal.add_lt_top.2 ⟨hK, hc ▸ ENNReal.zero_lt_top⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem haar_measure_univ_lt_infinity_of_compactW (hCpW : CompactW) {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {μW : Measure (Mt k r)}
     (hz : inWb k r z) (hT : 0 < Tz k r z) (hμ : Formalism.FourierDecayAlt.B.IsHaarOn (UWset k r z) μW) : μW Set.univ < ∞ := by
@@ -68,7 +66,7 @@ theorem haar_measure_univ_lt_infinity_of_compactW (hCpW : CompactW) {k r : ℕ} 
   exact ENNReal.add_lt_top.2 ⟨hK, hc ▸ ENNReal.zero_lt_top⟩
 
 /- English proof (translation)
-The claim follows from `hc k r z μN hz hT (haarUp_N hSF hCN hHN hμ)`.
+A detailed English derivation is pending.
 -/
 theorem conjInv_N (hSF : HaarUniqueSF) (hCN : ClosedN) (hHN : HaarNExists) (hc : ConjInvRaw) {k r : ℕ}
     {z : Fin (2 * r + k + 1) → ℂ} {μN : Measure (Mt k r)} (hz : inWb k r z) (hT : 0 < Tz k r z)

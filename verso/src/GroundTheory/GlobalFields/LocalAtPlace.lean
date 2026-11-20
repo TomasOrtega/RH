@@ -10,7 +10,7 @@ variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Al
   [IsFractionRing R K] (v : HeightOneSpectrum R)
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, adicCompletionIntegers.isUnit_iff_valued_eq_one, algebraMap_adicCompletionIntegers_apply, valuedAdicCompletion_eq_valuation', valuation_eq_one_iff_notMem, not_not]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_mem_maximalIdeal_adicCompletionIntegers_iff (r : R) :
     algebraMap R (v.adicCompletionIntegers K) r ∈
@@ -20,15 +20,15 @@ theorem algebraMap_mem_maximalIdeal_adicCompletionIntegers_iff (r : R) :
     valuedAdicCompletion_eq_valuation', valuation_eq_one_iff_notMem, not_not]
 
 /- English proof (translation)
-Establish `hnhds : {y : v.adicCompletion K | Valued.v (y - (x : v.adicCompletion K)) < 1} ∈ nhds (x : v.adicCompletion K)` using `Valued.mem_nhds.2 ⟨1, fun y hy ↦ by`. Simplify `hy⟩` using `[Valuation.restrict_lt_one_iff]`. Take `⟨k, hk⟩` from `(denseRange_algebraMap (K := K) v).mem_nhds hnhds`. Establish `hk' : Valued.v ((x : v.adicCompletion K) - (k : v.adicCompletion K)) < 1`. Rewrite using `[Valuation.map_sub_swap]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Establish `hk1 : v.valuation K k ≤ 1`. Rewrite using `[← valuedAdicCompletion_eq_valuation']`. Establish `: (k : v.adicCompletion K) = (x : v.adicCompletion K) - ((x : v.adicCompletion K) - (k : v.adicCompletion K))` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Valuation.map_sub _ _ _).trans (max_le x.2 hk'.le)`. Take `⟨r, hr⟩` from `exists_valuation_sub_lt_of_integer v hk1 1`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Use `ne_of_lt ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr' : Valued.v (algebraMap K (v.adicCompletion K) (k - algebraMap R K r)) < 1`. Rewrite `hr` using `[Valuation.map_sub_swap]`. Use `valuedAdicCompletion_eq_valuation' (R := R) v (k - algebraMap R K r)` as an intermediate fact. Conclude with `this.trans_lt (by simpa using hr)`. Establish `: ((x - algebraMap R (v.adicCompletionIntegers K) r : v.adicCompletionIntegers K) : v.adicCompletion K) = ((x : v.adicCompletion K) - (k : v.adicCompletion K)) + algebraMap K (v.adicCompletion K) (k - algebraMap R K r)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub]`. Simplify using `[algebraMap_adicCompletion]`. Rewrite using `[this]`. Conclude with `Valuation.map_add_lt _ hk' hr'`.
+A detailed English derivation is pending.
 -/
 theorem exists_algebraMap_sub_mem_maximalIdeal (x : v.adicCompletionIntegers K) :
     ∃ r : R, x - algebraMap R (v.adicCompletionIntegers K) r ∈
@@ -70,7 +70,7 @@ noncomputable def toResidueFieldAdicCompletionIntegers :
   (IsLocalRing.residue _).comp (algebraMap R (v.adicCompletionIntegers K))
 
 /- English proof (translation)
-Use extensionality with `r`. Rewrite using `[RingHom.mem_ker, toResidueFieldAdicCompletionIntegers, RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, algebraMap_mem_maximalIdeal_adicCompletionIntegers_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_toResidueFieldAdicCompletionIntegers :
     RingHom.ker (toResidueFieldAdicCompletionIntegers (K := K) v) = v.asIdeal := by
@@ -79,7 +79,7 @@ theorem ker_toResidueFieldAdicCompletionIntegers :
     IsLocalRing.residue_eq_zero_iff, algebraMap_mem_maximalIdeal_adicCompletionIntegers_iff]
 
 /- English proof (translation)
-Introduce `y`. Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨r, hr⟩` from `exists_algebraMap_sub_mem_maximalIdeal v x`. Conclude with `⟨r, (Ideal.Quotient.eq.2 hr).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toResidueFieldAdicCompletionIntegers_surjective :
     Function.Surjective (toResidueFieldAdicCompletionIntegers (K := K) v) := by
@@ -113,7 +113,7 @@ instance : Finite (IsLocalRing.ResidueField (v.adicCompletionIntegers K)) :=
   Finite.of_equiv _ (residueFieldEquiv v).toEquiv
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (residueFieldEquiv v).toEquiv).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_residueField_adicCompletionIntegers :
     Nat.card (IsLocalRing.ResidueField (v.adicCompletionIntegers K)) =
@@ -128,21 +128,21 @@ section Topology
 variable {K : Type*} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-The claim follows from `Valued.isOpen_valuationSubring _`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_adicCompletionIntegers :
     IsOpen (v.adicCompletionIntegers K : Set (v.adicCompletion K)) :=
   Valued.isOpen_valuationSubring _
 
 /- English proof (translation)
-The claim follows from `(Valued.isClopen_integer (v.adicCompletion K)).isClosed`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_adicCompletionIntegers :
     IsClosed (v.adicCompletionIntegers K : Set (v.adicCompletion K)) :=
   (Valued.isClopen_integer (v.adicCompletion K)).isClosed
 
 /- English proof (translation)
-Establish `: CompleteSpace (Valued.integer (v.adicCompletion K))` using `(isClosed_adicCompletionIntegers v).completeSpace_coe`. Establish `: IsDiscreteValuationRing (Valued.integer (v.adicCompletion K))` using `inferInstanceAs (IsDiscreteValuationRing (v.adicCompletionIntegers K))`. Establish `: Finite (Valued.ResidueField (v.adicCompletion K))` using `inferInstanceAs (Finite (IsLocalRing.ResidueField (v.adicCompletionIntegers K)))`. Establish `h : CompactSpace (Valued.integer (v.adicCompletion K))` using `Valued.integer.compactSpace_iff_completeSpace_and_isDiscreteValuationRing_and_finite_residueField.2 ⟨inferInstance, inferInstance, inferInstance⟩`. Conclude with `isCompact_iff_compactSpace.2 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_adicCompletionIntegers :
     IsCompact (v.adicCompletionIntegers K : Set (v.adicCompletion K)) := by

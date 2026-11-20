@@ -17,13 +17,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hB D Y`. Use `haveI : IsNoetherianRing R := hB.1.1`. Take `⟨-, -, hsurj, -, hterm⟩` from `GlobalTheory.T.torusExtension_smooth_affine_surjective_fourierTerms R D.toPre Y`. Take `⟨th, x, hx, hn⟩` from `GlobalTheory.ThetaSectionTest.exists_nonzero_closed GlobalTheory.abelianSchemeLaws_all.1.secBaseChange D.toPre`. Take `⟨τ, hτ⟩` from `hterm 1 0 th`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Y.q.left.surjective x`. Use `⟨th, τ, y, hτ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, ← Scheme.Hom.comp_apply, Over.w]`. Take `⟨J, hJ⟩` from `GlobalTheory.ConstFam.exists_good' D.toPre.P.isLB y`. Establish `e` using `hτ Y.H (𝟙 _) y J hJ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (sval th (𝟙 Y.H ≫ Y.q).left y J)`. Rewrite using `[Category.id_comp]`. Conclude with `GlobalTheory.ThetaUnit.isUnit_sval th _ y hn hJ`. Establish `hτu : IsUnit (sval τ (𝟙 Y.H : Y.H ⟶ Y.H).left y J)`. Rewrite using `[e]`.
-
-Conclude with `hu.mul (Units.isUnit _)`. Rewrite `hτu` using `[Over.id_left]`. Conclude with `(GlobalTheory.SectionBaseChange.mem_nonzeroLocus τ _).2 ⟨_, hJ.mem (fun _ : Fin 1 => Y.q.left) (𝟙 Y.H.left), (GlobalTheory.ThetaUnit.isUnit_gs_iff _ y _ (hJ.mem (fun _ : Fin 1 => Y.q.left) (𝟙 Y.H.left)) _).1 hτu⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_term_nonzero_closed : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R →
     ∀ (D : DegData R (maximalIdeal R)) (Y : Ext D.toPre), ∃ (b : D.toPre.SecB 1 0) (τ : SecK D.toPre.P.L Y.q.left 1)

@@ -11,7 +11,7 @@ open GlobalTheory.Doubling (absE)
 namespace PositivityTheory.SiegelWeilFormula.Kdil
 
 /- English proof (translation)
-The claim follows from `locFamG_of' hT hA PositivityTheory.SiegelWeilFormula.KFock.goodAwayEx hFP hLI`.
+A detailed English derivation is pending.
 -/
 theorem locFamG_done (hT : TAll) (hA : AuxiliaryPrimeFunction) (hFP : FPSw) (hLI : LocInst) : LocFamG :=
   locFamG_of' hT hA PositivityTheory.SiegelWeilFormula.KFock.goodAwayEx hFP hLI

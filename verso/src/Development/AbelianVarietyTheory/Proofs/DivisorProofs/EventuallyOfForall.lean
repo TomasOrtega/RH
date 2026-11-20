@@ -19,14 +19,14 @@ def Eventually (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* �
 variable {l : ℕ} [Fact l.Prime] {lam : algebraicClosure ℚ ℂ →+* ℂ_[l]}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hR.1, hR.2.1, fun x hx hs ↦ hR.2.2 x (h hx) hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsPlaceOver.mono {k k' : IntermediateField ℚ ℂ} {R : Subring ℂ} (h : k ≤ k')
     (hR : IsPlaceOver l lam k' R) : IsPlaceOver l lam k R :=
   ⟨hR.1, hR.2.1, fun x hx hs ↦ hR.2.2 x (h hx) hs⟩
 
 /- English proof (translation)
-Take `⟨k, hk, H⟩` from `h₁`. Take `⟨k', hk', H'⟩` from `h₂`. Conclude with `⟨k ⊔ k', inferInstance, fun R hR ↦ ⟨H R (hR.mono le_sup_left), H' R (hR.mono le_sup_right)⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Eventually.and {P Q : Subring ℂ → Prop} (h₁ : Eventually l lam P) (h₂ : Eventually l lam Q) :
     Eventually l lam fun R ↦ P R ∧ Q R := by
@@ -35,7 +35,7 @@ theorem Eventually.and {P Q : Subring ℂ → Prop} (h₁ : Eventually l lam P) 
   exact ⟨k ⊔ k', inferInstance, fun R hR ↦ ⟨H R (hR.mono le_sup_left), H' R (hR.mono le_sup_right)⟩⟩
 
 /- English proof (translation)
-Take `⟨k, hk, H⟩` from `h`. Conclude with `⟨k, hk, fun R hR ↦ hPQ R (H R hR)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Eventually.mono {P Q : Subring ℂ → Prop} (h : Eventually l lam P) (hPQ : ∀ R, P R → Q R) :
     Eventually l lam Q := by
@@ -43,7 +43,7 @@ theorem Eventually.mono {P Q : Subring ℂ → Prop} (h : Eventually l lam P) (h
   exact ⟨k, hk, fun R hR ↦ hPQ R (H R hR)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨k, inferInstance, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem eventually_of_forall {P : Subring ℂ → Prop} (k : IntermediateField ℚ ℂ) [FiniteDimensional ℚ k]
     (h : ∀ R, IsPlaceOver l lam k R → P R) : Eventually l lam P :=

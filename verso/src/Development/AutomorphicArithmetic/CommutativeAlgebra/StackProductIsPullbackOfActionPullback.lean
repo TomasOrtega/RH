@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace UpperTheory.PbSp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem hom_val {c : Act} {A : CommRingCat.{0}} {J : Type} [SmallCategory J] {F G : J ⥤ Ob c A} (h : F = G)
     {i j : J} (f : i ⟶ j) : (F.map f).1 = (G.map f).1 := by
@@ -14,7 +14,7 @@ private theorem hom_val {c : Act} {A : CommRingCat.{0}} {J : Type} [SmallCategor
   rfl
 
 /- English proof (translation)
-Rewrite using `[x.map_id]`. Conclude with `map_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem law_id {P a : Act} (φ : Act.Hom P a) {A : CommRingCat.{0}} {J : Type} [SmallCategory J] (x : J ⥤ Ob a A)
     (j : J) : φ.g.app A 1 = (x.map (𝟙 j)).1 := by
@@ -22,7 +22,7 @@ private theorem law_id {P a : Act} (φ : Act.Hom P a) {A : CommRingCat.{0}} {J :
   exact map_one _
 
 /- English proof (translation)
-Rewrite using `[x.map_comp]`. Express the relevant statement in the definitionally equal form `_ = (x.map f).1 * (x.map g).1`. Rewrite using `[map_mul, hp, hq]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem law_comp {P a : Act} (φ : Act.Hom P a) {A : CommRingCat.{0}} {J : Type} [SmallCategory J] (x : J ⥤ Ob a A)
     {i j k : J} (f : i ⟶ j) (g : j ⟶ k) (p q : P.G.obj A) (hp : φ.g.app A p = (x.map f).1)
@@ -32,7 +32,7 @@ private theorem law_comp {P a : Act} (φ : Act.Hom P a) {A : CommRingCat.{0}} {J
   rw [map_mul, hp, hq]
 
 /- English proof (translation)
-Establish `ho : ∀ z : Ob P A, (t.fn A ⋙ r.fn A).obj z = (l.fn A ⋙ u.fn A).obj z` using `fun z => congrArg Ob.mk (h1 z.pt)`. Use `Functor.hext ho (fun z w f => ?_)` and prove the remaining obligations. Conclude with `Ob.hom_heq (ho z) (ho w) _ _ (h2 f.1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem fn_square {P a b c : Act} (t : Act.Hom P a) (l : Act.Hom P b) (r : Act.Hom a c) (u : Act.Hom b c)
     (A : CommRingCat.{0})
@@ -45,17 +45,13 @@ private theorem fn_square {P a b c : Act} (t : Act.Hom P a) (l : Act.Hom P b) (r
   exact Ob.hom_heq (ho z) (ho w) _ _ (h2 f.1)
 
 /- English proof (translation)
-Establish `hobj : ∀ j, r.d.app A (x.obj j).pt = u.d.app A (y.obj j).pt` using `fun j => congrArg (fun F : J ⥤ Ob c A => (F.obj j).pt) h`. Establish `hmap : ∀ (i j : J) (f : i ⟶ j), r.g.app A (x.map f).1 = u.g.app A (y.map f).1` using `fun i j f => hom_val h f`. Use `choose zo hzo hzu using fun j => h3 (x.obj j).pt (y.obj j).pt (hobj j)`. Use `choose zg hzg hzgu using fun (i j : J) (f : i ⟶ j) => h4 (x.map f).1 (y.map f).1 (hmap i j f)`. Set `F : J ⥤ Ob P A` to `{ obj := fun j => Ob.mk (zo j) map := fun {i j} f => ⟨zg i j f, by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(hzu i _ ⟨?_, ?_⟩).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t.d.app A (P.smul A (zg i j f) (zo j)) = _`. Rewrite using `[t.eq, (hzg i j f).1, (hzo j).1]`. Conclude with `(x.map f).2.symm`. Express the relevant statement in the definitionally equal form `l.d.app A (P.smul A (zg i j f) (zo j)) = _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[l.eq, (hzg i j f).2, (hzo j).2]`. Conclude with `(y.map f).2.symm⟩`. Use `map_id := fun j => by`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hzgu j j (𝟙 j) 1 ⟨law_id t x j, law_id l y j⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `map_comp := fun {i j k} f g => by`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hzgu i k (f ≫ g) (zg i j f * zg j k g) ⟨law_comp t x f g _ _ (hzg i j f).1 (hzg j k g).1, law_comp l y f g _ _ (hzg i j f).2 (hzg j k g).2⟩).symm }`. Use `⟨F, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `ho : ∀ j, (F ⋙ t.fn A).obj j = x.obj j` using `fun j => congrArg Ob.mk (hzo j).1`.
-
-Conclude with `Functor.hext ho (fun i j f => Ob.hom_heq (ho i) (ho j) _ _ (hzg i j f).1)`. Establish `ho : ∀ j, (F ⋙ l.fn A).obj j = y.obj j` using `fun j => congrArg Ob.mk (hzo j).2`. Conclude with `Functor.hext ho (fun i j f => Ob.hom_heq (ho i) (ho j) _ _ (hzg i j f).2)`. Introduce and unpack `w ⟨hw1, hw2⟩`. Establish `ho : ∀ j, w.obj j = F.obj j` using `fun j => congrArg Ob.mk (hzu j (w.obj j).pt ⟨congrArg (fun G : J ⥤ Ob a A => (G.obj j).pt) hw1, congrArg (fun G : J ⥤ Ob b A => (G.obj j).pt) hw2⟩)`.
-
-Conclude with `Functor.hext ho (fun i j f => Ob.hom_heq (ho i) (ho j) _ _ (hzgu i j f (w.map f).1 ⟨hom_val hw1 f, hom_val hw2 f⟩))`.
+A detailed English derivation is pending.
 -/
 private theorem lift_chain {P a b c : Act} (t : Act.Hom P a) (l : Act.Hom P b) (r : Act.Hom a c) (u : Act.Hom b c)
     (A : CommRingCat.{0})
@@ -115,15 +111,15 @@ end UpperTheory.PbSp
 
 open UpperTheory.PbSp in
 /- English proof (translation)
-Introduce `E P a b c t l r u h1 h2 h3 h4`. Establish `hsq : ∀ A, t.fn A ⋙ r.fn A = l.fn A ⋙ u.fn A` using `fun A => fn_square t l r u A (h1 A) (h2 A)`. Apply `isPullback_of_unique_simplices_pullback` to reduce the goal to its premises. Use extensionality with `k T s`. Use `Prod.ext rfl ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun F => s.2 ⋙ F) (hsq _)`. Introduce `k T x y hxy`. Establish `e1 : pr1 x = pr1 y` using `congrArg pr1 hxy`. Establish `e2 : pr2 x ⋙ r.fn _ = pr2 y ⋙ u.fn _` using `congrArg pr2 hxy`. Take `⟨z, ⟨hz1, hz2⟩, hzu⟩` from `lift_chain t l r u _ (h3 _) (h4 _) (pr2 x) (pr2 y) e2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨mkS (pr1 x) z, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mkS (pr1 x) (z ⋙ t.fn _) = x`. Rewrite using `[hz1]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `mkS (pr1 x) (z ⋙ l.fn _) = y`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz2, e1]`. Both sides reduce to the same expression. Introduce and unpack `w ⟨hw1, hw2⟩`. Establish `f1 : pr1 w = pr1 x` using `congrArg pr1 hw1`. Establish `f2 : pr2 w = z` using `hzu _ ⟨congrArg pr2 hw1, congrArg pr2 hw2⟩`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `mkS (pr1 w) (pr2 w) = mkS (pr1 x) z`. Rewrite using `[f1, f2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.stackProduct_isPullback_of_actionPullback :
     ∀ (E : Spc) {P a b c : Act} (t : Act.Hom P a) (l : Act.Hom P b) (r : Act.Hom a c) (u : Act.Hom b c),

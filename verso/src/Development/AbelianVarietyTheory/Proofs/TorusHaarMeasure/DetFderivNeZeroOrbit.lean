@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `h1 : mat o τ * mat a τ = mat o τ * mat c τ` using `congrFun h τ`. Establish `hu : IsUnit (mat o τ)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 (ho τ))`. Conclude with `hu.mul_left_cancel h1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rmul_left_cancel {r : ℕ} {Ψ : Finset (E →+* ℂ)} {o a c : Frame Ψ r}
     (ho : ∀ τ, (mat o τ).det ≠ 0) (h : rmul o a = rmul o c) : a = c := by
@@ -25,13 +25,11 @@ theorem rmul_left_cancel {r : ℕ} {Ψ : Finset (E →+* ℂ)} {o a c : Frame Ψ
   exact hu.mul_left_cancel h1
 
 /- English proof (translation)
-Establish `ho : IsOrth X (x0F X)` using `fun τ => (X.signature τ).choose_spec.2`. Establish `hod : x0F X ∈ X.dom` using `IW.orth_mem_dom X _ ho`. Take `⟨Δ, zOf, bOf, hΔ, -, hz, -, hsplit, huniq⟩` from `lu_holds r X (x0F X) ho`. Establish `hcd` using `OntoB.cd_cpt X (rmul (x0F X) b)`. Establish `h0` using `huniq 0 (IW.zero_mem_OmF X _ ho) b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[IW.cpt_zero]`. Use `⟨cpt X (rmul (x0F X) b) ⁻¹' {x | x ∈ X.dom ∧ Δ x ≠ 0}, fun z => zOf (cpt X (rmul (x0F X) b) z), fun z => bOf (cpt X (rmul (x0F X) b) z), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((FourierCoefficientDomain.isOpen_dom X).inter (isOpen_ne_fun hΔ.continuous continuous_const)).preimage hcd.continuous`. Use `show cpt X _ 0 ∈ X.dom ∧ Δ (cpt X _ 0) ≠ 0`. Rewrite using `[IW.cpt_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨OntoS.dom_rmul X hod hb, h0.1⟩`. Conclude with `hz.comp (hcd.differentiable (by simp)).differentiableOn fun _ h => h`. Use `show zOf (cpt X _ 0) = 0`. Rewrite using `[IW.cpt_zero]`. Conclude with `h0.2.1`.
-
-Introduce `z hzU`. Take `⟨-, h2, h3⟩` from `hsplit _ hzU.1 hzU.2`. Use `⟨h2, rmul_left_cancel (fun τ => (hod τ).1) ?_⟩` and prove the remaining obligations. Rewrite using `[← ExtFPf.rmul_assoc, ← ExtFPf.rmul_assoc]`. Conclude with `h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_swap {r : ℕ} (X : Data E r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) :
     ∃ (U : Set (V (nd X))) (Φ : V (nd X) → V (nd X)) (bf : V (nd X) → Frame X.Ψ r),
@@ -61,25 +59,23 @@ theorem exists_swap {r : ℕ} (X : Data E r) {b : Frame X.Ψ r} (hb : b ∈ Bor 
     exact h3
 
 /- English proof (translation)
-Introduce `hK r X L w0 s hw0 hs x hx hwx hdet γ hγ b hb`. Take `⟨U, Φ, bf, hU, h0U, hΦ, hΦ0, hsw⟩` from `exists_swap X hb`. Use `set y := lact γ (rmul x b) with hy`. Establish `hyd : y ∈ X.dom` using `OntoS.dom_lact X hγ (OntoS.dom_rmul X hx hb)`. Establish `hcpt : ∀ z ∈ U, cpt X y z = lact γ (rmul (cpt X x (Φ z)) (bf z))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Unfold `cpt`. Rewrite using `[hy, ← FundSetPf.lact_rmul, ExtFPf.rmul_assoc, (hsw z hz).2, ExtFPf.rmul_assoc]`. Establish `h0y : (0 : V (nd X)) ∈ OmF X y` using `by show cpt X y 0 ∈ X.dom`. Rewrite using `[IW.cpt_zero]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h0x : (0 : V (nd X)) ∈ OmF X x` using `by show cpt X x 0 ∈ X.dom`. Rewrite using `[IW.cpt_zero]` and apply the resulting hypothesis. Establish `hJ : (fderiv ℂ Φ 0).det = bchar (kapW X) (bf 0)` using `hK r X y x γ (U ∩ OmF X y) Φ bf (hU.inter (OntoB.isOpen_OmF X y)) (hΦ.mono Set.inter_subset_left) (fun z hz => ⟨hz.2, (hsw z hz.1).1, hcpt z hz.1⟩) 0 ⟨h0U, h0y⟩`. Establish `hJ0 : (fderiv ℂ Φ 0).det ≠ 0` using `hJ ▸ OntoE.bchar_ne X _ (hsw 0 h0U).1`. Establish `hΦd : DifferentiableAt ℂ Φ 0` using `hΦ.differentiableAt (hU.mem_nhds h0U)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnx : OmF X x ∈ 𝓝 (0 : V (nd X))` using `(OntoB.isOpen_OmF X x).mem_nhds h0x`. Use `set F : V (nd X) → V (nd X) := fun z : V (nd X) => (WithLp.toLp 2 fun k => s k (cpt X (x) z) / w0 (cpt X (x) z) : V (nd X)) with hF`. Establish `hFd : DifferentiableAt ℂ F 0`. Establish `hw : DifferentiableAt ℂ (fun z => w0 (cpt X x z)) 0` using `(OntoB.hol_comp X x hw0.1).differentiableAt hnx`. Establish `hsk : ∀ k, DifferentiableAt ℂ (fun z => s k (cpt X x z)) 0` using `fun k => (OntoB.hol_comp X x (hs k).1).differentiableAt hnx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hF]`. Use `(differentiableAt_piLp 2).2 fun k => ?_` and prove the remaining obligations. Establish `hne : w0 (cpt X x 0) ≠ 0` using `by rwa [IW.cpt_zero]`. Use `(hsk k).mul (hw.inv hne)` as an intermediate fact. Simplify using `only [div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hev : (fun z : V (nd X) => (WithLp.toLp 2 fun k => s k (cpt X y z) / w0 (cpt X y z) : V (nd X))) =ᶠ[𝓝 0] F ∘ Φ`. Establish `h1 : ∀ᶠ z in 𝓝 (0 : V (nd X)), Φ z ∈ OmF X x` using `hΦd.continuousAt.preimage_mem_nhds (by rwa [hΦ0])`. Use `filter_upwards [hU.mem_nhds h0U, h1] with z hz hzx`. Establish `hzx' : cpt X x (Φ z) ∈ X.dom` using `hzx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbz` using `(hsw z hz).1`. Establish `hd` using `OntoS.dom_rmul X hzx' hbz`. Establish `hχ : X.χ L γ ≠ 0`. Introduce `h`. Use `OntoE.chi_norm X L hγ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Use `show _ = F (Φ z)`. Rewrite using `[hF]`. Use `show (WithLp.toLp 2 _ : V (nd X)) = WithLp.toLp 2 _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[hcpt z hz, (hs k).2.2 γ hγ _ hd, hw0.2.2 γ hγ _ hd, mul_div_mul_left _ _ hχ, (hs k).2.1 _ hzx' _ hbz, hw0.2.1 _ hzx' _ hbz, mul_div_mul_left _ _ (OntoE.bchar_ne X L hbz)]`. Rewrite using `[hev.fderiv_eq, fderiv_comp 0 (by rwa [hΦ0]) hΦd, hΦ0]`. Establish `: ((fderiv ℂ F 0).comp (fderiv ℂ Φ 0)).det = (fderiv ℂ F 0).det * (fderiv ℂ Φ 0).det`.
-
-Unfold `ContinuousLinearMap.det`. Rewrite using `[← LinearMap.det_comp]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `mul_ne_zero hdet hJ0`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_fderiv_ne_zero_orbit : (KapGGStatement (E := E)) → (∀ (r : ℕ) (X : Data E r) (L : Wt X.Ψ r) (w0 : Frame X.Ψ r → ℂ) (s : Fin (nd X) → Frame X.Ψ r → ℂ), X.IsSec L w0 → (∀ k, X.IsSec L (s k)) → ∀ x ∈ X.dom, w0 x ≠ 0 → (fderiv ℂ (fun z : V (nd X) => (WithLp.toLp 2 fun k => s k (cpt X (x) z) / w0 (cpt X (x) z) : V (nd X))) 0).det ≠ 0 → ∀ γ ∈ X.Γ, ∀ b ∈ Bor X.Ψ r, (fderiv ℂ (fun z : V (nd X) => (WithLp.toLp 2 fun k => s k (cpt X (lact γ (rmul x b)) z) / w0 (cpt X (lact γ (rmul x b)) z) : V (nd X))) 0).det ≠ 0) := by
   intro hK r X L w0 s hw0 hs x hx hwx hdet γ hγ b hb

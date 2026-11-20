@@ -14,14 +14,14 @@ section T
 variable {l : ℕ} [Fact l.Prime] {OE : Type} [CommRing OE]
 
 /- English proof (translation)
-Simplify using `[tauX]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tauX_tmul {R : Type} [CommRing R] [Algebra ℤ_[l] R] (τ : OE →+* R) (z : ℤ_[l]) (x : OE) :
     tauX τ (z ⊗ₜ x) = algebraMap ℤ_[l] R z * τ x := by
   simp [tauX]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [Nat.cast_succ, ih, Nat.cast_succ, TensorProduct.add_tmul, Algebra.TensorProduct.one_def]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem natCast_eq_tmul (k : ℕ) : ((k : ℕ) : ℤ_[l] ⊗[ℤ] OE) = (k : ℤ_[l]) ⊗ₜ (1 : OE) := by
   induction k with
@@ -29,7 +29,7 @@ theorem natCast_eq_tmul (k : ℕ) : ((k : ℕ) : ℤ_[l] ⊗[ℤ] OE) = (k : ℤ
   | succ k ih => rw [Nat.cast_succ, ih, Nat.cast_succ, TensorProduct.add_tmul, Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Establish `h1 : (k : ℤ_[l]) = (k : ℤ) • (1 : ℤ_[l])` using `by simp`. Establish `h2 : ((k : OE) * y) = (k : ℤ) • y` using `by simp`. Rewrite using `[h1, h2, TensorProduct.smul_tmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_tmul (k : ℕ) (y : OE) : (k : ℤ_[l]) ⊗ₜ[ℤ] y = (1 : ℤ_[l]) ⊗ₜ[ℤ] ((k : OE) * y) := by
   have h1 : (k : ℤ_[l]) = (k : ℤ) • (1 : ℤ_[l]) := by simp
@@ -37,18 +37,18 @@ theorem natCast_tmul (k : ℕ) (y : OE) : (k : ℤ_[l]) ⊗ₜ[ℤ] y = (1 : ℤ
   rw [h1, h2, TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Rewrite using `[natCast_eq_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_mul_tmul (k : ℕ) (z : ℤ_[l]) (y : OE) :
     ((k : ℕ) : ℤ_[l] ⊗[ℤ] OE) * (z ⊗ₜ y) = ((k : ℤ_[l]) * z) ⊗ₜ y := by
   rw [natCast_eq_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul z y`. Take `⟨n, -, hn⟩` from `PadicInt.exists_mem_range (x := z)`. Rewrite `hn` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z', hz'⟩` from `hn`. Use `⟨(n : OE) * y, z' ⊗ₜ y, ?_⟩` and prove the remaining obligations. Rewrite using `[natCast_mul_tmul, ← natCast_tmul, ← TensorProduct.add_tmul, mul_comm (l : ℤ_[l]) z', hz']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `add a b ha hb`. Take `⟨x, s', hs⟩` from `ha`. Take `⟨x', t', ht⟩` from `hb`. Use `⟨x + x', s' + t', ?_⟩` and prove the remaining obligations. Rewrite using `[hs, ht, TensorProduct.tmul_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -72,29 +72,27 @@ theorem decomp (s : ℤ_[l] ⊗[ℤ] OE) :
     ring
 
 /- English proof (translation)
-Establish `key : ∀ (A : Type) [CommRing A] (a x : A) (n : ℕ), x ∈ (Ideal.span {a} ^ n • ⊤ : Submodule A A) ↔ ∃ s, x = a ^ n * s`. Introduce `A _ a x n`. Rewrite using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, -, hs⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨s, by rw [← hs, smul_eq_mul]⟩`. Introduce and unpack `⟨s, hs⟩`. Conclude with `⟨s, Submodule.mem_top, by rw [hs, smul_eq_mul]⟩`. Set `bR` to `Algebra.TensorProduct.basis ℤ_[l] (Module.Free.chooseBasis ℤ OE)`. Establish `hl : ∀ (n : ℕ) (s : ℤ_[l] ⊗[ℤ] OE), ((l : ℕ) : ℤ_[l] ⊗[ℤ] OE) ^ n * s = ((l : ℤ_[l]) ^ n) • s`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `n s`. Rewrite using `[Algebra.smul_def, map_pow, map_natCast]`. Establish `hcoord : ∀ (n : ℕ) (x : ℤ_[l] ⊗[ℤ] OE), (∃ s, x = ((l : ℕ) : ℤ_[l] ⊗[ℤ] OE) ^ n * s) ↔ ∀ i, ∃ c, bR.repr x i = (l : ℤ_[l]) ^ n * c`. Introduce `n x`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨s, rfl⟩ i`. Use `⟨bR.repr s i, ?_⟩` and prove the remaining obligations. Rewrite using `[hl, LinearEquiv.map_smul, Finsupp.smul_apply, smul_eq_mul]`. Introduce `h choose c hc using h`. Use `⟨∑ i, c i • bR i, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hl]`. Apply `bR.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[hc i, LinearEquiv.map_smul, Finsupp.smul_apply, bR.repr_sum_self, smul_eq_mul]`. Establish `hZ : IsAdicComplete (Ideal.span {((l : ℕ) : ℤ_[l])}) ℤ_[l]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← PadicInt.maximalIdeal_eq_span_p]`. Use `infer_instance`. Establish `haus : ∀ x : ℤ_[l] ⊗[ℤ] OE, (∀ n : ℕ, x ≡ 0 [SMOD (Ideal.span {((l : ℕ) : ℤ_[l] ⊗[ℤ] OE)} ^ n • ⊤ : Submodule (ℤ_[l] ⊗[ℤ] OE) (ℤ_[l] ⊗[ℤ] OE))]) → x = 0`. Introduce `x hx`. Apply `bR.repr.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Rewrite using `[map_zero, Finsupp.zero_apply]`. Apply `hZ.toIsHausdorff.haus` to reduce the goal to its premises. Introduce `n`. Rewrite using `[SModEq.sub_mem, sub_zero, key]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hx n`. Rewrite `h` using `[SModEq.sub_mem, sub_zero, key, hcoord]`. Conclude with `h i`. Establish `prec : ∀ f : ℕ → ℤ_[l] ⊗[ℤ] OE, (∀ {m n : ℕ}, m ≤ n → f m ≡ f n [SMOD (Ideal.span {((l : ℕ) : ℤ_[l] ⊗[ℤ] OE)} ^ m • ⊤ : Submodule (ℤ_[l] ⊗[ℤ] OE) (ℤ_[l] ⊗[ℤ] OE))]) → ∃ L, ∀ n, f n ≡ L [SMOD (Ideal.span {((l : ℕ) : ℤ_[l] ⊗[ℤ] OE)} ^ n • ⊤ : Submodule (ℤ_[l] ⊗[ℤ] OE) (ℤ_[l] ⊗[ℤ] O …`. Introduce `f hf`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hci : ∀ i, ∃ Li : ℤ_[l], ∀ n, bR.repr (f n) i ≡ Li [SMOD (Ideal.span {((l : ℕ) : ℤ_[l])} ^ n • ⊤ : Submodule ℤ_[l] ℤ_[l])]`. Introduce `i`. Apply `hZ.toIsPrecomplete.prec` to reduce the goal to its premises. Introduce `m n hmn`. Establish `h` using `hf hmn`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[SModEq.sub_mem, key, hcoord]`. Rewrite using `[SModEq.sub_mem, key]`. Take `⟨c, hc⟩` from `h i`. Conclude with `⟨c, by rw [← hc, map_sub, Finsupp.sub_apply]⟩`. Use `choose L hL using hci`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∑ i, L i • bR i, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, key, hcoord]`. Introduce `i`. Establish `h` using `hL i n`. Rewrite `h` using `[SModEq.sub_mem, key]`.
-
-Take `⟨c, hc⟩` from `h`. Conclude with `⟨c, by rw [map_sub, Finsupp.sub_apply, bR.repr_sum_self, hc]⟩`. Use `haveI : IsHausdorff (Ideal.span {((l : ℕ) : ℤ_[l] ⊗[ℤ] OE)}) (ℤ_[l] ⊗[ℤ] OE) := ⟨haus⟩`. Use `haveI : IsPrecomplete (Ideal.span {((l : ℕ) : ℤ_[l] ⊗[ℤ] OE)}) (ℤ_[l] ⊗[ℤ] OE) := ⟨fun f hf => prec f hf⟩`. Conclude with `IsAdicComplete.mk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem completeA [Module.Free ℤ OE] [Module.Finite ℤ OE] :
     IsAdicComplete (Ideal.span {((l : ℕ) : ℤ_[l] ⊗[ℤ] OE)}) (ℤ_[l] ⊗[ℤ] OE) := by
@@ -180,13 +178,13 @@ Both sides reduce to the same expression.
 theorem chi_apply (τ : OE →+* R) (s : ℤ_[l] ⊗[ℤ] OE) : chi τ s = residue R (tauX τ s) := rfl
 
 /- English proof (translation)
-Rewrite using `[chi_apply, tauX_tmul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_one_tmul (τ : OE →+* R) (x : OE) : chi τ ((1 : ℤ_[l]) ⊗ₜ[ℤ] x) = residue R (τ x) := by
   rw [chi_apply, tauX_tmul, map_one, one_mul]
 
 /- English proof (translation)
-Establish `hl0 : ((l : ℕ) : ResidueField R) = 0`. Rewrite using `[← map_natCast (residue R), residue_eq_zero_iff]`. Conclude with `hl`. Rewrite using `[map_mul, map_natCast, hl0, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_l (hl : ((l : ℕ) : R) ∈ maximalIdeal R) (τ : OE →+* R) (s : ℤ_[l] ⊗[ℤ] OE) :
     chi τ (((l : ℕ) : ℤ_[l] ⊗[ℤ] OE) * s) = 0 := by
@@ -196,7 +194,7 @@ theorem chi_l (hl : ((l : ℕ) : R) ∈ maximalIdeal R) (τ : OE →+* R) (s : �
   rw [map_mul, map_natCast, hl0, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[chi_apply, AlgHom.commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chi_alg (τ : OE →+* R) (r : ℤ_[l]) :
     chi τ (algebraMap ℤ_[l] (ℤ_[l] ⊗[ℤ] OE) r) = ((residue R).comp (algebraMap ℤ_[l] R)) r := by
@@ -206,7 +204,7 @@ theorem chi_alg (τ : OE →+* R) (r : ℤ_[l]) :
 variable {d : ℕ} [NeZero d] (em : ZMod d → OE →+* R)
 
 /- English proof (translation)
-Establish `h` using `(residue_eq_zero_iff _).mpr (hfrob a x)`. Rewrite `h` using `[map_sub, map_pow, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_frob (hfrob : ∀ a x, em (a + 1) x - em a x ^ l ∈ maximalIdeal R) (a : ZMod d) (x : OE) :
     residue R (em (a + 1) x) = residue R (em a x) ^ l := by
@@ -215,7 +213,7 @@ theorem res_frob (hfrob : ∀ a x, em (a + 1) x - em a x ^ l ∈ maximalIdeal R)
   exact h
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp | k + 1 => by have e : a + ((k + 1 : ℕ) : ZMod d) = (a + (k : ZMod d)) + 1 := by push_cast; ring rw [e, res_frob em hfrob, res_frob_pow hfrob a x k, ← pow_mul, pow_succ]`.
+A detailed English derivation is pending.
 -/
 theorem res_frob_pow (hfrob : ∀ a x, em (a + 1) x - em a x ^ l ∈ maximalIdeal R) (a : ZMod d) (x : OE) :
     ∀ k : ℕ, residue R (em (a + (k : ZMod d)) x) = residue R (em a x) ^ (l ^ k)
@@ -225,7 +223,7 @@ theorem res_frob_pow (hfrob : ∀ a x, em (a + 1) x - em a x ^ l ∈ maximalIdea
     rw [e, res_frob em hfrob, res_frob_pow hfrob a x k, ← pow_mul, pow_succ]
 
 /- English proof (translation)
-Establish `hk` using `res_frob_pow em hfrob 0 x a.val`. Rewrite `hk` using `[zero_add, ZMod.natCast_zmod_val]`. Rewrite using `[← residue_eq_zero_iff, hk, (residue_eq_zero_iff _).mpr h, zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_all (hfrob : ∀ a x, em (a + 1) x - em a x ^ l ∈ maximalIdeal R) {x : OE}
     (h : em 0 x ∈ maximalIdeal R) (a : ZMod d) : em a x ∈ maximalIdeal R := by
@@ -235,9 +233,9 @@ theorem mem_all (hfrob : ∀ a x, em (a + 1) x - em a x ^ l ∈ maximalIdeal R) 
     zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)]
 
 /- English proof (translation)
-Take `⟨x, s', hs'⟩` from `decomp s`. Establish `hx0 : em 0 x ∈ maximalIdeal R`. Rewrite `h0` using `[hs', map_add, chi_one_tmul, chi_l hl, add_zero, residue_eq_zero_iff]`. Conclude with `h0`. Take `⟨y, hy⟩` from `hε x (mem_all em hfrob hx0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hkey : (1 : ℤ_[l]) ⊗ₜ[ℤ] ε * (1 ⊗ₜ x) = ((l : ℕ) : ℤ_[l] ⊗[ℤ] OE) * (1 ⊗ₜ y)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, hy, natCast_mul_tmul, mul_one, natCast_tmul]`. Use `⟨1 ⊗ₜ y + z * (1 ⊗ₜ x) + e * s', ?_⟩` and prove the remaining obligations. Take the linear combination `(-1 : ℤ_[l] ⊗[ℤ] OE) * hs + e * hs' + (1 ⊗ₜ x) * he + hkey`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem key (hl : ((l : ℕ) : R) ∈ maximalIdeal R)
     (hfrob : ∀ a x, em (a + 1) x - em a x ^ l ∈ maximalIdeal R) {ε : OE}

@@ -4,29 +4,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Alg UpperTheory.V.Pr UpperTheory.V
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ O _ _ η Ψ σ g₁ B M L _ _ _ _ _ Φ k v A hA hM`. Use `haveI := Φ.cv v`. Use `haveI := Φ.t2v v`. Take `⟨hemb, -, -⟩` from `galEmbTop ℚ L Ω`. Set `e1 : Dec (F` to `L) A →* G ℚ Ω := (galEmb ℚ L Ω).comp (Dec (F := L) A).subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e2 : Φ.Gv v →* G ℚ Ω` to `(upl Ω L).subtype.comp (k.j v)`. Establish `he1 : Function.Injective e1` using `hemb.injective.comp Subtype.val_injective`. Establish `he2 : Function.Injective e2` using `Subtype.val_injective.comp (k.j_inj v)`. Establish `hrange : e1.range = e2.range`. Use extensionality with `τ`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Establish `hup : e1 g ∈ upl Ω L`. Use `galEmb_mem ℚ L Ω (g : G L Ω)` as an intermediate fact. Rewrite `this` using `[k.gal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.1`. Establish `hdec : e1 g ∈ Dec (F` using `ℚ) (k.pl v) := by show galEmb ℚ L Ω g ∈ _`. Rewrite using `[← hA, galEmb_mem_Dec]`. Conclude with `g.2`. Take `⟨x, hx⟩` from `(k.j_range v ⟨_, hup⟩).2 hdec`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, congrArg Subtype.val hx⟩`. Introduce and unpack `⟨x, rfl⟩`. Establish `hdec : e2 x ∈ Dec (F` using `ℚ) A := by`. Rewrite using `[hA]`. Conclude with `(k.j_range v (k.j v x)).1 ⟨x, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hup : e2 x ∈ upl Ω L` using `(k.j v x).2`. Establish `hker : e2 x ∈ η.ker` using `k.split A hM ⟨hdec, hup⟩`. Establish `hfix : e2 x ∈ galOf ℚ L Ω`. Rewrite using `[k.gal]`. Conclude with `⟨hup, hker⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Set `g : G L Ω` to `AlgEquiv.ofRingEquiv (f := (e2 x).toRingEquiv) (fun y => hfix y)`. Establish `hg : galEmb ℚ L Ω g = e2 x`. Use extensionality with `y`. Both sides reduce to the same expression. Establish `hgd : g ∈ Dec (F` using `L) A := by`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← galEmb_mem_Dec (k := ℚ), hg]`. Conclude with `hdec`. Conclude with `⟨⟨g, hgd⟩, hg⟩`. Set `m : Dec (F` to `L) A ≃* Φ.Gv v := (MonoidHom.ofInjective he1).trans ((MulEquiv.subgroupCongr hrange).trans (MonoidHom.ofInjective he2).symm)`. Establish `hm : ∀ g, e2 (m g) = e1 g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g`. Use `MonoidHom.ofInjective_apply he2 (x := m g)` as an intermediate fact. Rewrite using `[← this, ← MonoidHom.ofInjective_apply he1 (x := g)]`. Simplify using `[m]`. Establish `hinv : Continuous m.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp : e1 ∘ m.symm = e2`. Use function extensionality and compare the values at `x`. Rewrite using `[Function.comp_apply, ← hm, MulEquiv.apply_symm_apply]`. Establish `he1emb : Topology.IsEmbedding e1` using `hemb.comp Topology.IsEmbedding.subtypeVal`. Rewrite using `[he1emb.continuous_iff, hcomp]`.
-
-Conclude with `continuous_subtype_val.comp (k.j_cont v)`. Establish `hfwd : Continuous m`. Use `hinv.continuous_symm_of_equiv_compact_to_t2 (f := m.symm.toEquiv)` as an intermediate fact. Simplify using `using this`. Use `⟨{ m with continuous_toFun := hfwd, continuous_invFun := hinv }, fun g => ?_⟩` and prove the remaining obligations.
-
-Conclude with `hm g`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.frame_criterion_lambda_characters :
     UpperTheory.V.Pr.CrLam := by

@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `hPM E _ _ _ H D Xo s l hg Z BD φ m hA htw hall c`. Conclude with `GlobalTheory.T.open_embedding_of_level_one E H D Xo s l hg c (Z c) hA (hall c).1 (GlobalTheory.T.exists_generic_fibre_open_embedding E H D l (Xo l) Z BD φ m hPM htw (fun c => (hall c).2) c)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem polDescSt_of_polMapSt : PolMapSt → PolDescSt := by
   intro hPM E _ _ _ H D Xo s l hg Z BD φ m hA htw hall c

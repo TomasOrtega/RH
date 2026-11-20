@@ -11,7 +11,7 @@ open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalis
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SigmaDuplication.U1_two_mul_at_zero_eq_neg_wpD_mul_pow_four` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FTranslateModifiedSigmaTwoMulAtZero.lean&line=45#L45)
 -/

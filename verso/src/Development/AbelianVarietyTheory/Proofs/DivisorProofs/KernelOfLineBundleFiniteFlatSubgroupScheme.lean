@@ -12,13 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ _ A _ hA L hL ha`. Take `⟨Z, i, hci, hfin, hflat, hZ⟩` from `GlobalTheory.kernelFiniteFlat_holds R A hA L hL ha`. Use `haveI : IsClosedImmersion i.left := hci`. Establish `hmono : Mono i` using `(Over.forget _).mono_of_mono_map (inferInstanceAs (Mono i.left))`. Establish `hmem : ∀ (T : Over (Sp R)) (z : T ⟶ Z), GlobalTheory.MemKL A L (z ≫ i)` using `fun T z => (hZ T _).2 ⟨z, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (1 : 𝟙_ (Over (Sp R)) ⟶ A) = η[A]` using `by show toUnit _ ≫ η[A] = η[A]`. Rewrite using `[toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Take `⟨o, ho⟩` from `(hZ _ η[A]).1 (e1 ▸ memKL_one hL _)`. Establish `e2 : (i ⊗ₘ i) ≫ μ[A] = (fst Z Z ≫ i) * (snd Z Z ≫ i)` using `by show (i ⊗ₘ i) ≫ μ[A] = lift (fst Z Z ≫ i) (snd Z Z ≫ i) ≫ μ[A]`. Rewrite using `[lift_fst_comp_snd_comp]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `(hZ _ ((i ⊗ₘ i) ≫ μ[A])).1 (e2 ▸ GlobalTheory.UU.InK.mul hL (hmem _ _) (hmem _ _))`. Establish `e3 : i ≫ GrpObj.inv = (𝟙 Z ≫ i)⁻¹`. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression. Take `⟨n, hn⟩` from `(hZ _ (i ≫ GrpObj.inv)).1 (e3 ▸ GlobalTheory.UU.InK.inv hL (hmem _ _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hG⟩` from `GlobalTheory.exists_grpObj_of_mono i o m n ho hm hn`. Conclude with `⟨Z, G, i, hG, hmono, hfin, hflat, hZ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kernel_finiteFlat_subgroup : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A],
     IsAbelianScheme A → ∀ (L : LB A.left), L.IsLB → Out.RelAmple A L → ∃ (H : Over (Sp R)) (_ : GrpObj H)

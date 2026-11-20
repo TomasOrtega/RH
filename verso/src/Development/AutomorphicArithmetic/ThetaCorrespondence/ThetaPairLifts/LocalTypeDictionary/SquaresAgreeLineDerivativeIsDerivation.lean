@@ -18,17 +18,17 @@ namespace GlobalTheory.SquareAgree.LineDerFun
 end GlobalTheory.SquareAgree.LineDerFun
 open GlobalTheory.SquareAgree.LineDerFun in
 /- English proof (translation)
-Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ _ hO hT τ Y hY ΦD hΦD Ψ hΨ hD Φ Φ' hDat hDat'`. Take `⟨γ, hγ, hγt⟩` from `GlobalTheory.KapXLine.exists_line D θ X τ Y hθ hY e Γ.W hO.JX`. Take `⟨δ, hδ⟩` from `GlobalTheory.T.exists_lieDerivative_polynomialFock_seesaw Bs Γ Xc om om' hT γ hγ`. Take `⟨m, f, φ, hf, rfl⟩` from `algebraicDatum_eq_sum_pureTensors_vacua Γ.M Bs.ψ Bs.emb hΦD`. Establish `hstd : ∀ i, ∀ᶠ v in Filter.cofinite, φ i v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers D.host.F} 1` using `fun i => ((hf i).2.2.and hT.geo.hM.std).mono fun v h => h.1.trans h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hder : ∀ x, HasDerivAt (fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) x) ((∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (δ (f i)) (φ i)) x) 0`. Introduce `x`. Establish `e1 : (fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) x) = fun t => ∑ i, om (1, γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) x`. Use function extensionality and compare the values at `t`. Rewrite using `[map_sum, Finset.sum_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Finset.sum_apply]`. Conclude with `HasDerivAt.fun_sum fun i _ => (hδ _ (hf i).1).2 _ (GlobalTheory.ThK.EvUniqInf.rest_pure (f i) (φ i) (hf i).2.1 (hstd i)) x`. Establish `hΨe : Ψ = ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (δ (f i)) (φ i)`. Use function extensionality and compare the values at `x`. Establish `h1` using `hD x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← hγt] at h1`. Conclude with `h1.unique (hder x)`. Introduce `z`. Take `⟨u, rfl⟩` from `cA.surjective z`. Establish `hs : IsStd ψ` using `hO.psi ▸ hT.base.std`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Γ.M.IsGood ψ` using `hO.psi ▸ hT.geo.hM`. Establish `hw : Γ.M.IsWeil ψ Xc.β (Xc.β / Xc.α) om` using `hO.psi ▸ hT.weil`. Establish `key` using `_root_.GlobalTheory.T.theta_sum_differentiable_along_line hP Γ.M ψ Xc.β (Xc.β / Xc.α) om hT.base.cm hs hg hw γ hγ m f (fun i => δ (f i)) φ (fun i => (hf i).2) (fun i => (hδ _ (hf i).1).2) u`. Establish `e2 : (fun t : ℝ => ωA (1, oneP θ X τ Y t) Φ (cA u)) = fun t : ℝ => GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co.rho ψ u (om (1, γ (Multiplicative.ofAdd t)) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i))))`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(hO.weilA _ Φ hDat 1 (oneP θ X τ Y t)).2 u`. Rewrite `h1` using `[conjugateUnitaryAdelicIso_map_one, ← hγt t]`. Conclude with `h1.symm`. Rewrite using `[e2, ← hDat'.2 u, hΨe]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SquareAgree.LineDerFun.lineDerivation_isDerivation_of_datum : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
@@ -93,7 +93,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareAgree.LineDerFun.lineDerivation_isDerivation_of_datum | exact _root_.GlobalTheory.SquareAgree.LineDerFun.lineDerivation_isDerivation_of_datum | (intros; apply _root_.GlobalTheory.SquareAgree.LineDerFun.lineDerivation_isDerivation_of_datum …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.squares_agree_line_derivative_isDerivation : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

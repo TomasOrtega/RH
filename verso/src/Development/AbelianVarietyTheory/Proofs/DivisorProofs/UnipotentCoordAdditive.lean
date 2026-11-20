@@ -10,11 +10,11 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ThK.UnipDom.Additive in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' _ _ hA u hu v hv`. Take `⟨-, -, -, hxy, horth, -⟩` from `hA`. Use function extensionality and compare the values at `j`. Use `set e : Fin d → AE F E := incM F H'.ι *ᵥ Pi.single j 1 with he`. Establish `hval : ∀ c : AE F E, fA σ W.J (e + c • incV F H'.x) (incV F H'.y) = c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Rewrite using `[fA_add_left, fA_smul_left, fA_incV, hxy, map_one, mul_one, he, single_eq_incV, incM_mulVec_incV, fA_incV, (horth _).2, map_zero, zero_add]`. Take `⟨a, ha⟩` from `(unip_spec hu).2 (Pi.single j 1)`. Take `⟨b, hb⟩` from `(unip_spec hv).2 (Pi.single j 1)`. Establish `hux` using `(unip_spec hu).1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huv : mat (u * v) *ᵥ e = e + (a + b) • incV F H'.x`. Rewrite using `[mat_mul', ← Matrix.mulVec_mulVec, he, hb, Matrix.mulVec_add, Matrix.mulVec_smul, hux, ha, add_smul, add_assoc]`. Simplify using `only [Pi.add_apply, coA]`. Rewrite using `[← he, huv, hval, ha, ← he, hval, hb, ← he, hval]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.UnipDom.coA_mul_of_isIsoPlane : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁), IsCMExt F E σ → (∀ i j, σ (Y.J j i) = -Y.J i j) → IsIsoPlane σ B H Y Y₁ → ∀ u ∈ unip σ Y H, ∀ v ∈ unip σ Y H, coA σ Y.J H (u * v) = coA σ Y.J H u + coA σ Y.J H v := by
   intro F E _ _ _ _ _ σ B d d₁ W W₁ H' _ _ hA u hu v hv

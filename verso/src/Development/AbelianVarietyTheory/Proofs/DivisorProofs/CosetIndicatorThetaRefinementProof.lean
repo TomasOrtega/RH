@@ -9,7 +9,7 @@ namespace GlobalTheory.ColNorms
 open NumberField IsDedekindDomain Formalism.L2.Ker
 
 /- English proof (translation)
-Introduce `X A a b S Md _ _ hOdd hLa`. Conclude with `indAdd_of A a b S Md hOdd.pos (lattice_classes_finite_refinement X a b S) (indTieD_of_la A a b S Md hOdd.pos hLa)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coset_refinement : CosetRefinement := by
   intro X A a b S Md _ _ hOdd hLa

@@ -6,23 +6,21 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `l hl K bk A _ s`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Establish `he : (0 : ℝ) < bk.Ep.natDegree` using `by exact_mod_cast bk.deg_pos`. Establish `hρ : ((bk.ρ₀ : ℝ≥0) : ℝ) = (l : ℝ) ^ (-(1 / (bk.Ep.natDegree : ℝ)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[BK.ρ₀, NNReal.coe_rpow]`. Establish `hρpos : 0 < bk.ρ₀`. Rewrite using `[← NNReal.coe_pos, hρ]`. Conclude with `Real.rpow_pos_of_pos hl0 _`. Establish `hρe : ((bk.ρ₀ : ℝ)) ^ bk.Ep.natDegree = (l : ℝ)⁻¹`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hρ, ← Real.rpow_natCast, ← Real.rpow_mul hl0.le]`. Establish `: -(1 / (bk.Ep.natDegree : ℝ)) * (bk.Ep.natDegree : ℝ) = -1` using `by field_simp`. Rewrite using `[this, Real.rpow_neg_one]`. Use `⟨hρpos, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← NNReal.coe_lt_coe, hρ, NNReal.coe_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.rpow_lt_one_of_one_lt_of_neg hl1 (neg_neg_of_pos (one_div_pos.2 he))`. Rewrite using `[hρ, ← Real.rpow_neg_one]`. Use `Real.rpow_le_rpow_of_exponent_le hl1.le ?_` and prove the remaining obligations. Establish `: 1 / (bk.Ep.natDegree : ℝ) ≤ 1`. Rewrite using `[div_le_one he]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `bk.deg_pos` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE : bk.E = X ^ bk.Ep.natDegree + ∑ i ∈ Finset.range bk.Ep.natDegree, C (bk.Ep.coeff i) * X ^ i` using `by show (bk.Ep : (Wq l bk.a)⟦X⟧) = _ conv_lhs => rw [bk.monic.as_sum]`. Simplify using `only [Polynomial.coe_add, Polynomial.coe_pow, Polynomial.coe_X]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Polynomial.coeToPowerSeries.ringHom_apply, map_sum]`. Simplify using the standard rewrite rules. Establish `hmem : algebraMap A (PreDisc l (s X) bk.ρ₀) (s bk.E) ∈ ball l (s X) bk.ρ₀ (l : ℝ)⁻¹`. Rewrite using `[hE, map_add, map_add, map_sum, map_sum]`. Use `add_mem ?_ (Submodule.sum_mem _ fun i hi => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Submodule.subset_span ⟨0, bk.Ep.natDegree, 0, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hρe]`. Simplify using `[map_pow]`. Take `⟨c, hc⟩` from `bk.dvd_coeff i (Finset.mem_range.1 hi)`. Establish `h2 : algebraMap A (PreDisc l (s X) bk.ρ₀) (s (C (bk.Ep.coeff i) * X ^ i)) = s (C c * X ^ i) • (algebraMap A (PreDisc l (s X) bk.ρ₀) ((l : A) ^ 1 * (s X) ^ 0) * IsLocalization.Away.invSelf (l : A) ^ 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hc, Algebra.smul_def]`. Simplify using `only [map_mul, map_natCast, map_pow, pow_one, pow_zero, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, 0, 0, by simp [hl0.ne'], rfl⟩)`.
-
-Conclude with `(norm_ofPre l (s X) bk.ρ₀ _).trans_le (gauge_le l (s X) bk.ρ₀ (by positivity) hmem)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_E_le_radius : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (A : Type) [CommRing A] (s : bk.S →+* A), 0 < bk.ρ₀ ∧ bk.ρ₀ < 1 ∧ ((l : ℝ)⁻¹ ≤ bk.ρ₀) ∧ ‖toDisc l (s X) bk.ρ₀ (s bk.E)‖ ≤ (l : ℝ)⁻¹ := by
   intro l hl K bk A _ s

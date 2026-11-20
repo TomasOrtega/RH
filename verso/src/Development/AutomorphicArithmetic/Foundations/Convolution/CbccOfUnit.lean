@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeas
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.CbccOfCore
 
 /- English proof (translation)
-The claim follows from `UpperTheory.ConvolutionTheory.T.cbcc_of_core UpperTheory.ConvolutionTheory.ci (UpperTheory.ConvolutionTheory.GM.gm_of_bcfl h)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.cbcc_of_unit (h : PositivityTheory.Rg.Tf.Loc.BCFLUnit) : UpperTheory.V.Z.Bc.CBCc :=
   UpperTheory.ConvolutionTheory.T.cbcc_of_core UpperTheory.ConvolutionTheory.ci (UpperTheory.ConvolutionTheory.GM.gm_of_bcfl h)

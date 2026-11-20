@@ -6,7 +6,7 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ GlobalTheor
 namespace GlobalTheory.CompanionTheory.Ar.Conj
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Cb.mulp_V`.
+A detailed English derivation is pending.
 -/
 theorem mulp_factors_frobenius : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] [CharP R p] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O), ∃ V : Pt R 1 d, (∀ i, constantCoeff (V i) = 0) ∧ B.A.act (p : O) = comp1 V (ptPow R d p 0) ∧ lin V 1 = hw B p :=
   @PositivityTheory.HtPt.Cb.mulp_V

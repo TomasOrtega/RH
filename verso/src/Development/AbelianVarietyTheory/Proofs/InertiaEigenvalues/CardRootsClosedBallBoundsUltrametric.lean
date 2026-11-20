@@ -6,11 +6,11 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ _ f ρ d hρ hd`. Establish `hf : f ≠ 0`. Introduce and unpack `rfl`. Conclude with `hd (by simp)`. Take `⟨hA, hB⟩` from `GlobalTheory.T.card_roots_closedBall_dominant_coeff K f ρ hρ hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set e := Multiset.card (f.roots.filter fun z => ‖z‖ ≤ ρ) with he`. Use `⟨fun H => ?_, fun H => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt push_neg at hlt`. Establish `h1` using `hB d hlt`. Establish `h2` using `H e`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hlt push_neg at hlt`. Establish `h1` using `H e hlt`. Establish `h2` using `hA d`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem card_roots_le_radius_bounds :
     ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [IsAlgClosed K] (f : K[X]) (ρ : ℝ) (d : ℕ),

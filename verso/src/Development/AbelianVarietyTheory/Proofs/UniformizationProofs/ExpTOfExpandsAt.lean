@@ -16,13 +16,13 @@ open GlobalTheory.UU
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U U' hM k σ σ₀ σ' f f' hσ hG hB hE e`. Take `⟨S, hS⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.expandsAt_val U' e k σ f (hE e)`. Use `⟨S, fun Z x rG rB h1 h2 _ z JG J hJG hJ => ?_⟩` and prove the remaining obligations. Take `⟨h₀, h₁⟩` from `hS Z x z J hJ`. Use `clear hS hE`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hL, -, -, hgt, hw⟩` from `hM`. Consider the cases of `U'`. Simplify using `only at hL hgt hw`. Substitute `hL hgt` using the available equality. Consider the cases of `hw`.
+Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hσ`. Establish `eB : ∀ α, sval (f' α) rB z J = sval (f α) (x ≫ (U.gt e).pG.left) z J` using `fun α => by`. Rewrite using `[hB α Z rB z J hJ, h2]`. Use `⟨fun α hα => (eB α).trans (h₀ α hα), ?_⟩` and prove the remaining obligations. Establish `H` using `h₁ (JG (x ≫ (fstG I e G).left)) (hJG (x ≫ (fstG I e G).left))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hG Z rG z JG hJG, h1, Finset.sum_congr rfl fun α _ => congrArg (· * _) (eB α)]`. Use `Eq.trans ?_ H` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, sval_of σ₀ _ z JG (fun _ => JG (x ≫ (fstG I e G).left)) (fun _ => by rw [Category.comp_id])]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem expT_of_expandsAt : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : PreU I D.toPre A G) (U' : UnifPre I D A G), Match U U' → ∀ (k : ℕ) (σ : H0 U'.LG.L k) (σ₀ : H0 U.P.L.L k) (σ' : U.SecGT (𝟙_ _) k) (f) (f'), HEq σ σ₀ → SameG σ₀ σ' → SameB f f' → (∀ e, U'.ExpandsAt e k σ f) → U.ExpT (𝟙_ _) k σ' f' := by
   intro R _ _ I D A G _ _ U U' hM k σ σ₀ σ' f f' hσ hG hB hE e

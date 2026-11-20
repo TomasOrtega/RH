@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights.Kleiman
 universe u w
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ Q₁ Q₂` and use `⟨Q₁.tensorProd Q₂, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem LineTwist.proof : LineTwist.Statement.{u, w} :=
   fun _ _ _ _ _ _ _ Q₁ Q₂ => ⟨Q₁.tensorProd Q₂, rfl⟩

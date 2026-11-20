@@ -8,7 +8,7 @@ open scoped ENNReal
 namespace Formalism.L2.SG.PiMeasureScaling
 
 /- English proof (translation)
-Use `lift c to NNReal using hc`. Use `first`. Consider the case `exact (inferInstance : SigmaFinite (c • (volume : Measure ℂ)))`. Consider the case `(rw [← ENNReal.smul_def]; infer_instance)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sf_smul (c : ℝ≥0∞) (hc : c ≠ ⊤) : SigmaFinite (c • (volume : Measure ℂ)) := by
   lift c to NNReal using hc
@@ -17,7 +17,7 @@ theorem sf_smul (c : ℝ≥0∞) (hc : c ≠ ⊤) : SigmaFinite (c • (volume :
   | (rw [← ENNReal.smul_def]; infer_instance)
 
 /- English proof (translation)
-Use `haveI : ∀ i, SigmaFinite (c i • (volume : Measure ℂ)) := fun i => sf_smul (c i) (hc i)`. Use `Measure.pi_eq fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, volume_pi_pi, ← Finset.prod_mul_distrib]`. Simplify using `only [Measure.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pi_smul_vol {ι : Type*} [Fintype ι] (c : ι → ℝ≥0∞) (hc : ∀ i, c i ≠ ⊤) :
     Measure.pi (fun i => c i • (volume : Measure ℂ)) = (∏ i, c i) • (volume : Measure (ι → ℂ)) := by
@@ -27,9 +27,9 @@ theorem pi_smul_vol {ι : Type*} [Fintype ι] (c : ι → ℝ≥0∞) (hc : ∀ 
   simp only [Measure.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hdet : LinearMap.det (LinearMap.mulLeft ℝ s) = Complex.normSq s`. Rewrite using `[← Algebra.norm_complex_apply, Algebra.norm_apply]`. Both sides reduce to the same expression. Establish `hpos : 0 < Complex.normSq s` using `Complex.normSq_pos.mpr hs`. Establish `h` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure ℂ) (f := LinearMap.mulLeft ℝ s) (by rw [hdet]; exact hpos.ne')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hdet, abs_of_pos (inv_pos.mpr hpos)]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_scale (s : ℂ) (hs : s ≠ 0) :
     (volume : Measure ℂ).map (fun z => s * z) = ENNReal.ofReal (Complex.normSq s)⁻¹ • volume := by
@@ -43,9 +43,9 @@ theorem map_scale (s : ℂ) (hs : s ≠ 0) :
   exact h
 
 /- English proof (translation)
-Establish `h` using `volume_measurePreserving_piCongrLeft (fun _ : ι => ℂ) e.symm`. Establish `hf : (⇑(MeasurableEquiv.piCongrLeft (fun _ : ι => ℂ) e.symm)) = fun (y : κ → ℂ) (i : ι) => y (e i)`. Use function extensionality and compare the values at `y i`. Establish `h1` using `MeasurableEquiv.piCongrLeft_apply_apply e.symm (β := fun _ : ι => ℂ) y (e i)`. Simplify using `using h1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h` using `[hf]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reindex_mp {ι κ : Type*} [Fintype ι] [Fintype κ] (e : ι ≃ κ) :
     MeasurePreserving (fun (y : κ → ℂ) (i : ι) => y (e i)) volume volume := by
@@ -59,11 +59,11 @@ theorem reindex_mp {ι κ : Type*} [Fintype ι] [Fintype κ] (e : ι ≃ κ) :
   exact h
 
 /- English proof (translation)
-Establish `hk : Measure.pi (fun _ : κ => a • (volume : Measure ℂ)) = (∏ _k : κ, a) • (volume : Measure (κ → ℂ))` using `pi_smul_vol (fun _ => a) (fun _ => ha)`. Establish `hsc : (volume : Measure (ι → ℂ)).map (fun x i => s i * x i) = (∏ i, ENNReal.ofReal (Complex.normSq (s i))⁻¹) • (volume : Measure (ι → ℂ))` using `by haveI : ∀ i, SigmaFinite (Measure.map (fun x => s i * x) (volume : Measure ℂ)) := fun i => by`. Rewrite using `[map_scale _ (hs i)]`. Conclude with `sf_smul _ ENNReal.ofReal_ne_top`. Rewrite using `[volume_pi, Measure.pi_map_pi (fun i => (measurable_const_mul (s i)).aemeasurable)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[map_scale _ (hs _)]`. Rewrite using `[pi_smul_vol _ (fun i => ENNReal.ofReal_ne_top), volume_pi]`. Establish `hcomp : (fun (y : κ → ℂ) (i : ι) => s i * y (e i)) = (fun (x : ι → ℂ) i => s i * x i) ∘ (fun (y : κ → ℂ) (i : ι) => y (e i))` using `rfl`. Rewrite using `[hk, Measure.map_smul, hcomp, ← Measure.map_map (measurable_pi_lambda _ fun i => (measurable_pi_apply i).const_mul (s i)) (reindex_mp e).measurable, (reindex_mp e).map_eq, hsc, smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.prod_const, Finset.card_univ, Finset.card_univ, Fintype.card_congr e]`.
+A detailed English derivation is pending.
 -/
 theorem pi_reindex_scale {ι κ : Type*} [Fintype ι] [Fintype κ] (e : ι ≃ κ)
     (a : ℝ≥0∞) (ha : a ≠ ⊤) (s : ι → ℂ) (hs : ∀ i, s i ≠ 0) :

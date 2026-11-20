@@ -7,9 +7,9 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.ZjScalar
 
 /- English proof (translation)
-Simplify using `only [modExp, Fintype.card_fin, mul_sub, Finset.sum_sub_distrib, Finset.mul_sum, Finset.sum_filter]`. Rewrite using `[sub_eq_zero, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : b < a`. Simplify using `[hab, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hab]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_card_mul_modExp {h : ℕ} (d : Fin h → ℕ) :
     ∑ a, (d a : ℤ) * modExp (fun a => Fin (d a)) a = 0 := by
@@ -22,7 +22,7 @@ theorem sum_card_mul_modExp {h : ℕ} (d : Fin h → ℕ) :
   · simp [hab]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hx]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_eq {ι : Type} (s : Finset ι) (x : ℝ) (hx : x ≠ 0) (f : ι → ℤ) :
     ∏ a ∈ s, x ^ f a = x ^ ∑ a ∈ s, f a := by
@@ -34,7 +34,7 @@ theorem prod_zpow_eq {ι : Type} (s : Finset ι) (x : ℝ) (hx : x ≠ 0) (f : �
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `: a ≤ j`. Use `a.2` as an intermediate fact. Conclude with `Fin.le_def.2 (by omega)`. Simplify using `[Zl.JC.zj, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zj_last {h : ℕ} (d : Fin h → ℕ) (t : kˣ) (j : Fin h) (hj : j.val + 1 = h) (a : Fin h) :
     Zl.JC.zj d t j a = Matrix.GeneralLinearGroup.scalar (Fin (d a)) t := by
@@ -44,9 +44,9 @@ theorem zj_last {h : ℕ} (d : Fin h → ℕ) (t : kˣ) (j : Fin h) (hj : j.val 
   simp [Zl.JC.zj, this]
 
 /- English proof (translation)
-Rewrite using `[zj_last d t j hj a]`. Establish `: Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin (d a)) t) = t ^ (d a)`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.scalar]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[nabs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nabs_det_zj_last {h : ℕ} (d : Fin h → ℕ) (t : kˣ) (j : Fin h) (hj : j.val + 1 = h) (a : Fin h) :
     nabs k (Matrix.GeneralLinearGroup.det (Zl.JC.zj d t j a)) = nabs k t ^ (d a) := by
@@ -58,15 +58,15 @@ theorem nabs_det_zj_last {h : ℕ} (d : Fin h → ℕ) (t : kˣ) (j : Fin h) (hj
   simp [nabs]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `p q`. Take `⟨⟨a, x⟩, rfl⟩` from `(stdBlocks d hd).surjective p`. Take `⟨⟨b, y⟩, rfl⟩` from `(stdBlocks d hd).surjective q`.
+Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same, zj_last d t j hj a]`. Distinguish the cases in `hxy : x = y`. Substitute `hxy` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Matrix.GeneralLinearGroup.scalar]`. Establish `: stdBlocks d hd ⟨a, x⟩ ≠ stdBlocks d hd ⟨a, y⟩` using `fun e => hxy (by simpa using (stdBlocks d hd).injective e)`. Simplify using `[Matrix.GeneralLinearGroup.scalar, hxy, this]`. Establish `: stdBlocks d hd ⟨a, x⟩ ≠ stdBlocks d hd ⟨b, y⟩` using `fun e => hab (congrArg Sigma.fst ((stdBlocks d hd).injective e))`. Rewrite using `[leviEmb_apply_ne k _ _ hab]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.GeneralLinearGroup.scalar, this]`. Establish `hx : nabs k t ≠ 0` using `(nabs_pos' k t).ne'`. Simplify using `only [modulus, nabs_det_zj_last d t j hj]`. Establish `: ∀ a, (nabs k t ^ d a) ^ modExp (fun a => Fin (d a)) a = nabs k t ^ ((d a : ℤ) * modExp (fun a => Fin (d a)) a)` using `fun a => by`. Rewrite using `[zpow_mul, zpow_natCast]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [this]`. Rewrite using `[prod_zpow_eq _ _ hx, sum_card_mul_modExp, zpow_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem zj_last_scalar_modulus (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) (t : kˣ) (j : Fin h)

@@ -14,14 +14,14 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 namespace GlobalTheory.OrdLoc
 
 /- English proof (translation)
-Simplify using `[conjBy, MulAut.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjBy_right_eq {G C : Type} [Group G] [CommRing C] (h : GL (Fin 3) C) (r : G →* GG 3 C) (g : G) :
     (conjBy h r g).right = (r g).right := by
   simp [conjBy, MulAut.conj_apply]
 
 /- English proof (translation)
-Simplify using `[conjBy, GG.ofGL, SemidirectProduct.mul_left, SemidirectProduct.mul_right, SemidirectProduct.inv_left, SemidirectProduct.inv_right, hg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjBy_left_eq {G C : Type} [Group G] [CommRing C] (h : GL (Fin 3) C) (r : G →* GG 3 C) (g : G)
     (hg : (r g).right = 1) : (conjBy h r g).left = h * (r g).left * h⁻¹ := by
@@ -30,17 +30,17 @@ theorem conjBy_left_eq {G C : Type} [Group G] [CommRing C] (h : GL (Fin 3) C) (r
 end GlobalTheory.OrdLoc
 
 /- English proof (translation)
-Establish `e : ∀ c, Matrix.diagonal p - Matrix.scalar (Fin 3) c = Matrix.diagonal (fun i => p i - c)`. Introduce `c`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply_ne _ hij]`. Simplify using `only [e] at h0 h1 h2`. Establish `u01` using `hp 0 1 (by decide)`. Establish `u02` using `hp 0 2 (by decide)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u10` using `hp 1 0 (by decide)`. Establish `u12` using `hp 1 2 (by decide)`. Establish `u20` using `hp 2 0 (by decide)`. Establish `u21` using `hp 2 1 (by decide)`. Establish `a10` using `congrFun (congrFun h0 1) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a20` using `congrFun (congrFun h0 2) 0`. Establish `a00` using `congrFun (congrFun h0 0) 0`. Establish `b21` using `congrFun (congrFun h1 2) 1`. Establish `b11` using `congrFun (congrFun h1 1) 1`. Establish `c22` using `congrFun (congrFun h2 2) 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Matrix.mul_diagonal, Matrix.diagonal_mul] at a10 a20 a00 b21 b11 c22`. Establish `k : ∀ {x a b : C}, IsUnit a → IsUnit b → x * a * b = 0 → x = 0`. Introduce `x a b ha hb h`. Rewrite `h` using `[mul_assoc]`. Conclude with `(ha.mul hb).mul_left_eq_zero.mp h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b21` using `[mul_comm (p 2 - p 0)]`. Rewrite `b11` using `[mul_comm (p 1 - p 0)]`. Rewrite `c22` using `[mul_comm]`. Use `⟨k u01 u02 a10, k u01 u02 a20, k u20 u12 b21, sub_eq_zero.mp (k u01 u02 a00), sub_eq_zero.mp (k u10 u12 b11), sub_eq_zero.mp ((u20.mul u21).mul_left_eq_zero.mp c22)⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem fin_eq_eI_or_wI_or_esI {C : Type} [CommRing C] (p q : Fin 3 → C)
     (hp : ∀ a b, a ≠ b → IsUnit (p a - p b)) (N : Matrix (Fin 3) (Fin 3) C)
@@ -82,11 +82,11 @@ private theorem fin_eq_eI_or_wI_or_esI {C : Type} [CommRing C] (p q : Fin 3 → 
     sub_eq_zero.mp (k u10 u12 b11), sub_eq_zero.mp ((u20.mul u21).mul_left_eq_zero.mp c22)⟩
 
 /- English proof (translation)
-Take `⟨t10, t20, t21, t00, t11, t22⟩` from `hT`. Establish `e20` using `congrFun (congrFun h 2) 0`. Establish `e10` using `congrFun (congrFun h 1) 0`. Establish `e21` using `congrFun (congrFun h 2) 1`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_three, Matrix.mul_diagonal, t10, t20, t21, t00, t11, t22] at e20 e10 e21`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `m20 : M 2 0 = 0`. Establish `: (p 2 - p 0) * M 2 0 = 0` using `by linear_combination e20`. Conclude with `(hp 2 0 (by decide)).mul_right_eq_zero.mp this`. Establish `m10 : M 1 0 = 0`. Establish `: (p 1 - p 0) * M 1 0 = 0` using `by linear_combination e10 - T 1 2 * m20`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hp 1 0 (by decide)).mul_right_eq_zero.mp this`. Establish `m21 : M 2 1 = 0`. Establish `: (p 2 - p 1) * M 2 1 = 0` using `by linear_combination e21`. Conclude with `(hp 2 1 (by decide)).mul_right_eq_zero.mp this`. Conclude with `⟨m10, m20, m21⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_isUnit_det_apply_eq_sum_of_mem_Nof {C : Type} [CommRing C] (p : Fin 3 → C)
     (hp : ∀ a b, a ≠ b → IsUnit (p a - p b)) (M T : Matrix (Fin 3) (Fin 3) C)
@@ -109,9 +109,9 @@ private theorem exists_isUnit_det_apply_eq_sum_of_mem_Nof {C : Type} [CommRing C
   exact ⟨m10, m20, m21⟩
 
 /- English proof (translation)
-Take `⟨a10, a20, a21⟩` from `hA`. Take `⟨b10, b20, b21⟩` from `hB`. Use `⟨fun i => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [Matrix.mul_apply, Fin.sum_univ_three, a10, a20, a21, b10, b20, b21]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_three, a10, a20, a21, b10, b20, b21]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_three, a10, a20, a21, b10, b20, b21]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_three, a10, a20, a21, b10, b20, b21]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem upperTriangular_fin_three_mul_entries {C : Type} [CommRing C] (A B : Matrix (Fin 3) (Fin 3) C)
     (hA : A 1 0 = 0 ∧ A 2 0 = 0 ∧ A 2 1 = 0) (hB : B 1 0 = 0 ∧ B 2 0 = 0 ∧ B 2 1 = 0) :
@@ -129,69 +129,65 @@ private theorem upperTriangular_fin_three_mul_entries {C : Type} [CommRing C] (A
 open GlobalTheory.OrdLoc in
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ _ _ D B _ _ _ _ _ _ _ _ _ _ _ r hmult hcont hbot`. Take `⟨hHLn, -, -, hPsi, hS0⟩` from `GlobalTheory.T.galoisSubgroupL_basic_properties D`. Take `⟨hsHL, hsIq, -⟩` from `hS0`. Take `⟨hpu, hcc⟩` from `GlobalTheory.T.isUnit_characterDiff_at_chosenInertia D B`. Use `set p : Fin 3 → B := fun a => algebraMap O B (UpperTheory.V.UnitaryThreeInertia.psi D.Ψ a D.s0) with hp_def`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hchar : (r D.s0).mat.charpoly = ∏ a : Fin 3, (X - Polynomial.C (p a))`. Rewrite using `[← sub_eq_zero]`. Use extensionality with `i`. Establish `hm : ((r D.s0).mat.charpoly - ∏ a : Fin 3, (X - Polynomial.C (p a))).coeff i ∈ GlobalTheory.OrdLoc.ordIdeal D r` using `Ideal.subset_span (Set.mem_union_left _ ⟨D.s0, ⟨hsHL, hsIq⟩, i, rfl⟩)`. Rewrite `hm` using `[hbot, Ideal.mem_bot]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hm`. Take `⟨h, hh⟩` from `GlobalTheory.T.diagonalize_of_distinct_eigenvalues (r D.s0).mat p hpu hchar`. Establish `hright : ∀ g ∈ D.HL, (r g).right = 1`. Introduce `g hg`. Rewrite using `[hmult g]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(Subgroup.mem_inf.mp hg).1` as an intermediate fact. Simplify using `using this`. Use `set r' := conjBy h r with hr'_def`. Establish `hright' : ∀ g ∈ D.HL, (r' g).right = 1`. Introduce `g hg`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hr'_def, GlobalTheory.OrdLoc.conjBy_right_eq]`. Conclude with `hright g hg`. Establish `hmat : ∀ g ∈ D.HL, (r' g).mat = (h : Matrix (Fin 3) (Fin 3) B) * (r g).mat * ((h⁻¹ : GL (Fin 3) B) : Matrix (Fin 3) (Fin 3) B)` using `fun g hg => GlobalTheory.OrdLoc.conjBy_mat h r g (hright g hg)`. Establish `hs0' : (r' D.s0).mat = Matrix.diagonal p` using `by rw [hmat _ hsHL, hh]`. Establish `hbot' : GlobalTheory.OrdLoc.ordIdeal D r' = ⊥` using `by rw [(GlobalTheory.T.ordinaryIdeal_saturators_conj_invariant D r h hmult).1, hbot]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hsh : ∀ s : Fin 3 → GQ l, (∀ a, s a ∈ D.HL ⊓ Iq l) → D.sh r' 0 (s 0) * D.sh r' 1 (s 1) * D.sh r' 2 (s 2) = 0`. Introduce `s hs`. Use extensionality with `i j`. Establish `hm : (D.sh r' 0 (s 0) * D.sh r' 1 (s 1) * D.sh r' 2 (s 2)) i j ∈ GlobalTheory.OrdLoc.ordIdeal D r'` using `Ideal.subset_span (Set.mem_union_right _ ⟨s, hs, i, j, rfl⟩)`. Rewrite `hm` using `[hbot', Ideal.mem_bot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hm`. Establish `hs0I : D.s0 ∈ D.HL ⊓ Iq l` using `⟨hsHL, hsIq⟩`. Establish `htriI : ∀ t ∈ D.HL ⊓ Iq l, (r' t).mat 1 0 = 0 ∧ (r' t).mat 2 0 = 0 ∧ (r' t).mat 2 1 = 0 ∧ (r' t).mat 0 0 = algebraMap O B (UpperTheory.V.UnitaryThreeInertia.psi D.Ψ 0 t) ∧ (r' t).mat 1 1 = algebraMap O B (UpperTheory.V.UnitaryThreeInertia.psi D.Ψ 1 t) ∧ (r' t).mat 2 2 = algebraMa …`. Introduce `t ht`. Apply `fin_eq_eI_or_wI_or_esI p (fun a => algebraMap O B (UpperTheory.V.UnitaryThreeInertia.psi D.Ψ a t)) hpu` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have := hsh ![t, D.s0, D.s0] (by intro a; fin_cases a <;> simpa)`. Simplify `this` using `[UpperTheory.V.Loc.Dat3.sh, hs0']`. Apply the tactic sequence `have := hsh ![D.s0, t, D.s0] (by intro a; fin_cases a <;> simpa)`. Simplify `this` using `[UpperTheory.V.Loc.Dat3.sh, hs0']`. Apply the tactic sequence `have := hsh ![D.s0, D.s0, t] (by intro a; fin_cases a <;> simpa)`.
+Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[UpperTheory.V.Loc.Dat3.sh, hs0']`. Establish `hmm : ∀ x y : GG 3 B, x.right = 1 → (x * y).mat = x.mat * y.mat`. Introduce `x y hx`. Simplify using `[UpperTheory.V.U3.GG.mat, SemidirectProduct.mul_left, hx]`. Establish `hpsiconj : ∀ g a, UpperTheory.V.UnitaryThreeInertia.psi D.Ψ a (g * D.s0 * g⁻¹) = UpperTheory.V.UnitaryThreeInertia.psi D.Ψ a D.s0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `g a`. Simplify using `[UpperTheory.V.UnitaryThreeInertia.psi, mul_inv_cancel_comm]`. Establish `htri : ∀ g ∈ D.HL, (r' g).mat 1 0 = 0 ∧ (r' g).mat 2 0 = 0 ∧ (r' g).mat 2 1 = 0`. Introduce `g hg`. Establish `ht : g * D.s0 * g⁻¹ ∈ D.HL ⊓ Iq l` using `⟨hHLn.conj_mem _ hsHL g, (UpperTheory.V.Loc.iqBasic l).1.conj_mem _ hsIq g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, b, c, d, e, f⟩` from `htriI _ ht`. Apply `exists_isUnit_det_apply_eq_sum_of_mem_Nof p hpu (r' g).mat (r' (g * D.s0 * g⁻¹)).mat` to reduce the goal to its premises. Use `⟨a, b, c, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[d, hpsiconj]`. Rewrite using `[e, hpsiconj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[f, hpsiconj]`. Rewrite using `[← hs0', ← hmm _ _ (hright' _ ht.1), ← hmm _ _ (hright' _ hg), ← map_mul, ← map_mul]`. Rewrite using `[show g * D.s0 * g⁻¹ * g = g * D.s0 by group]`. Establish `hc : ∀ a b, Continuous fun g : GQ l => (r g).mat a b`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hcont a b` as an intermediate fact. Unfold `UpperTheory.V.Loc.QCont at this`. Rewrite `this` using `[← eq_moduleTopology ℚ_[l] B]`. Then use the resulting hypothesis. Establish `hMc : ∀ i j, Continuous fun g : ↥D.HL => (r' (g : GQ l)).mat i j`. Introduce `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun g : ↥D.HL => (r' (g : GQ l)).mat i j) = fun g : ↥D.HL => ((h : Matrix (Fin 3) (Fin 3) B) * (r (g : GQ l)).mat * ((h⁻¹ : GL (Fin 3) B) : Matrix (Fin 3) (Fin 3) B)) i j`. Use function extensionality and compare the values at `g`. Rewrite using `[hmat g g.2]`. Rewrite using `[e]`. Establish `hr : Continuous fun g : GQ l => (r g).mat` using `continuous_matrix fun a b => hc a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((continuous_const.matrix_mul (hr.comp continuous_subtype_val)).matrix_mul continuous_const).matrix_elem i j`. Establish `hmulHL : ∀ a b : ↥D.HL, (r' ((a * b : ↥D.HL) : GQ l)).mat = (r' a).mat * (r' b).mat`. Introduce `a b`. Rewrite using `[Subgroup.coe_mul, map_mul, hmm _ _ (hright' _ a.2)]`. Establish `hinv1 : ∀ a : ↥D.HL, (r' a).mat * (r' ((a⁻¹ : ↥D.HL) : GQ l)).mat = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[← hmulHL, mul_inv_cancel]`. Simplify using `[UpperTheory.V.U3.GG.mat]`. Establish `hdiag : ∀ (a b : ↥D.HL) i, (r' ((a * b : ↥D.HL) : GQ l)).mat i i = (r' a).mat i i * (r' b).mat i i`. Introduce `a b i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmulHL]`. Conclude with `(upperTriangular_fin_three_mul_entries _ _ (htri _ a.2) (htri _ b.2)).1 i`. Establish `hunit : ∀ (a : ↥D.HL) i, (r' a).mat i i * (r' ((a⁻¹ : ↥D.HL) : GQ l)).mat i i = 1`. Introduce `a i`. Rewrite using `[← (upperTriangular_fin_three_mul_entries _ _ (htri _ a.2) (htri _ (a⁻¹).2)).1 i, hinv1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using the standard rewrite rules. Establish `hunit' : ∀ (a : ↥D.HL) i, (r' ((a⁻¹ : ↥D.HL) : GQ l)).mat i i * (r' a).mat i i = 1`. Introduce `a i`. Rewrite using `[mul_comm]`. Conclude with `hunit a i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `κ : Fin 3 → ↥D.HL →* Bˣ` to `fun i => MonoidHom.mk' (fun g => ⟨(r' g).mat i i, (r' ((g⁻¹ : ↥D.HL) : GQ l)).mat i i, hunit g i, hunit' g i⟩) (fun a b => by`. Use `ext`. Simplify using `only [Units.val_mul]`. Conclude with `hdiag a b i)`. Set `ρ : ↥D.HL →* GL (Fin 3) B` to `MonoidHom.mk' (fun g => (r' g).left) (fun a b => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.coe_mul, map_mul, SemidirectProduct.mul_left, hright' _ a.2, map_one]`. Use the proof step `rfl)`. Establish `hκ : ∀ i (g : ↥D.HL), ((κ i g : Bˣ) : B) = (r' g).mat i i` using `fun i g => rfl`. Establish `hq : ∀ (i j : Fin 3) (a : ↥D.HL), (((κ i / κ j) a : Bˣ) : B) = (r' a).mat i i * (r' ((a⁻¹ : ↥D.HL) : GQ l)).mat j j`. Introduce `i j a`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MonoidHom.div_apply, div_eq_mul_inv, Units.val_mul]`. Both sides reduce to the same expression. Establish `hcyc : ∀ s, Units.map (algebraMap O B : O →* B) (cycA l l O s) = cycA l l B s`. Introduce `s`. Use `ext`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[UpperTheory.V.Loc.cycA, ← IsScalarTower.algebraMap_apply]`. Use `⟨h, ρ, κ, fun g => (r' g).mat 0 1 * (r' ((g⁻¹ : ↥D.HL) : GQ l)).mat 1 1, fun g => (r' g).mat 1 2 * (r' ((g⁻¹ : ↥D.HL) : GQ l)).mat 2 2, fun g => (r' g).mat 0 2 * (r' ((g⁻¹ : ↥D.HL) : GQ l)).mat 2 2, fun g => rfl, fun i => hMc i i, ?_, (hMc 0 2).mul ((hMc 2 2).comp continuous_inv) …` and prove the remaining obligations. Introduce `g hgI i`. Take `⟨-, -, -, d0, d1, d2⟩` from `htriI _ ⟨g.2, hgI⟩`. Establish `key : ∀ i, algebraMap O B (UpperTheory.V.UnitaryThreeInertia.psi D.Ψ i g) = ((cycA l l B (g : GQ l) ^ ((D.e : ℤ) * wt1 i) : Bˣ) : B)`.
+By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[UpperTheory.V.UnitaryThreeInertia.psi, hPsi _ g.2 hgI, ← hcyc, ← map_zpow, Units.coe_map, zpow_mul, zpow_natCast]`. Both sides reduce to the same expression. Use `ext`. Use `fin_cases i`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Conclude with `d0.trans (key 0)`. Conclude with `d1.trans (key 1)`. Conclude with `d2.trans (key 2)`. Introduce `g`. Take `⟨t10, t20, t21⟩` from `htri _ g.2`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `u1` using `hunit g 1`. Establish `u2` using `hunit g 2`. Express the relevant statement in the definitionally equal form `(r' (g : GQ l)).mat = _`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [UpperTheory.V.Loc.triM, hκ, t10, t20, t21] at u1 u2 ⊢`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Apply the tactic sequence `all_goals first`. Consider the case `linear_combination -(r' (g : GQ l)).mat 0 1 * u1`. Consider the case `linear_combination -(r' (g : GQ l)).mat 0 2 * u2`. Consider the case `linear_combination -(r' (g : GQ l)).mat 1 2 * u2`. Use `⟨(hMc 0 1).mul ((hMc 1 1).comp continuous_inv), fun a b => ?_⟩ dsimp only` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[UpperTheory.V.Loc.chRep_apply, hq, mul_inv_rev, hmulHL, hmulHL]`. Take `⟨-, e01, -, -⟩` from `upperTriangular_fin_three_mul_entries _ _ (htri _ a.2) (htri _ b.2)`. Take `⟨dB, -, -, -⟩` from `upperTriangular_fin_three_mul_entries _ _ (htri _ (b⁻¹).2) (htri _ (a⁻¹).2)`. Rewrite using `[e01, dB 1]`. Take the linear combination `((r' a).mat 0 1 * (r' ((a⁻¹ : ↥D.HL) : GQ l)).mat 1 1) * hunit b 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(hMc 1 2).mul ((hMc 2 2).comp continuous_inv), fun a b => ?_⟩ dsimp only` and prove the remaining obligations. Rewrite using `[UpperTheory.V.Loc.chRep_apply, hq, mul_inv_rev, hmulHL, hmulHL]`. Take `⟨-, -, e12, -⟩` from `upperTriangular_fin_three_mul_entries _ _ (htri _ a.2) (htri _ b.2)`. Take `⟨dB, -, -, -⟩` from `upperTriangular_fin_three_mul_entries _ _ (htri _ (b⁻¹).2) (htri _ (a⁻¹).2)`. Rewrite using `[e12, dB 2]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `((r' a).mat 1 2 * (r' ((a⁻¹ : ↥D.HL) : GQ l)).mat 2 2) * hunit b 2`. Introduce `hσ`. Establish `hdd : ∀ a, D.dd r a = D.dd r' a` using `fun a => ((GlobalTheory.T.ordinaryIdeal_saturators_conj_invariant D r h hmult).2.1 a).symm`. Establish `hdiag'` using `GlobalTheory.T.ordinary_derivative_entry_formula D r' hs0'`. Establish `hc' : algebraMap O B ((cycA l l O (GlobalTheory.OrdLoc.fr D) : Oˣ) : O) = ((cycA l l B (GlobalTheory.OrdLoc.fr D) : Bˣ) : B)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcyc]`. Both sides reduce to the same expression. Establish `u1` using `hunit ⟨_, hσ⟩ 1`. Establish `u2` using `hunit ⟨_, hσ⟩ 2`. Use `⟨⟨(hcc 0).unit * (hcc 1).unit * κ 1 ⟨_, hσ⟩, ?_⟩, ⟨(hcc 1).unit * (hcc 2).unit * κ 2 ⟨_, hσ⟩, ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[hdd, hdiag' 0, hq, Units.val_mul, Units.val_mul, IsUnit.unit_spec, IsUnit.unit_spec, hκ, ← hc']`. Simplify using `only [map_mul]`. Establish `e01 : (0 : Fin 3) + 1 = 1` using `rfl`. Rewrite using `[e01]`. Take the linear combination `(-(algebraMap O B (D.cc 0) * algebraMap O B (D.cc 1) * (r' (GlobalTheory.OrdLoc.fr D)).mat 0 0)) * u1`.
-
-Rewrite using `[hdd, hdiag' 1, hq, Units.val_mul, Units.val_mul, IsUnit.unit_spec, IsUnit.unit_spec, hκ, ← hc']`. Simplify using `only [map_mul]`. Establish `e12 : (1 : Fin 3) + 1 = 2` using `rfl`. Rewrite using `[e12]`. Take the linear combination `(-(algebraMap O B (D.cc 1) * algebraMap O B (D.cc 2) * (r' (GlobalTheory.OrdLoc.fr D)).mat 1 1)) * u2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.OrdLoc.triangular_of_ordIdeal_eq_bot : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra O B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] O B] [IsScalarTower ℤ_[l] ℚ_[l] B] [IsLocalRing B] [TopologicalSpace B] [IsModuleTopology ℚ_[l] B] [IsTopologicalRing B] (r : GQ l →* GG 3 B), HasMult D.η r → (∀ a b, QCont l fun g => (r g).mat a b) → GlobalTheory.OrdLoc.ordIdeal D r = ⊥ → ∃ (h : GL (Fin 3) B) (ρ : ↥D.HL →* GL (Fin 3) B) (κ : Fin 3 → ↥D.HL →* Bˣ) (x y z : ↥D.HL → B), (∀ g, ρ g = (conjBy h r g).left) ∧ (∀ i, Continuous fun g => (κ i g : B)) ∧ (∀ g : ↥D.HL, (g : GQ l) ∈ Iq l → ∀ i, κ i g = cycA l l B (g : GQ l) ^ ((D.e : ℤ) * wt1 i)) ∧ Continuous z ∧ (∀ g, (ρ g : Matrix (Fin 3) (Fin 3) B) = triM (fun i => κ i g) (x g) (y g) (z g)) ∧ x ∈ Z1 (chRep (κ 0 / κ 1)) ∧ y ∈ Z1 (chRep (κ 1 / κ 2)) ∧ ∀ hσ : GlobalTheory.OrdLoc.fr D ∈ D.HL, (∃ v : Bˣ, GlobalTheory.OrdLoc.dd D r 0 = v * (((κ 0 / κ 1) ⟨_, hσ⟩ : Bˣ) - (cycA l l B (GlobalTheory.OrdLoc.fr D) : B))) ∧ ∃ v : Bˣ, GlobalTheory.OrdLoc.dd D r 1 = v * (((κ 1 / κ 2) ⟨_, hσ⟩ : Bˣ) - (cycA l l B (GlobalTheory.OrdLoc.fr D) : B)) := by
   intro l _ O _ _ _ _ _ _ _ D B _ _ _ _ _ _ _ _ _ _ _ r hmult hcont hbot

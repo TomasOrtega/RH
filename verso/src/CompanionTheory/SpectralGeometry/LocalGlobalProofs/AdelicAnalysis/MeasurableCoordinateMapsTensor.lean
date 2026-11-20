@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW
 
 /- English proof (translation)
-Establish `hm : Measurable (fun (Y : Fin M → Fin d → R) (p : Fin M × Fin d) => Y p.1 p.2)` using `by fun_prop`. Use `symm`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `hpre : (fun (Y : Fin M → Fin d → R) (p : Fin M × Fin d) => Y p.1 p.2) ⁻¹' Set.univ.pi s = Set.univ.pi fun i : Fin M => Set.univ.pi fun k : Fin d => s (i, k)`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `Y`. Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_imp_iff, Prod.forall]`. Rewrite using `[hpre, Measure.pi_pi]`. Simplify using `only [Measure.pi_pi]`. Rewrite using `[Fintype.prod_prod_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_curry_pi_pi {R : Type} [MeasurableSpace R] (lam : Measure R) [SigmaFinite lam] (M d : ℕ) :
     (Measure.pi fun _ : Fin M => Measure.pi fun _ : Fin d => lam).map
@@ -31,15 +31,15 @@ theorem map_curry_pi_pi {R : Type} [MeasurableSpace R] (lam : Measure R) [SigmaF
   rw [Fintype.prod_prod_type]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ R _ _ _ _ _ _ _ _ _ d b M lam hlam`. Take `⟨-, -, -, -, -, -, hom, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`. Establish `: BorelSpace (R ⊗[F] E)` using `⟨rfl⟩`. Establish `hh` using `hom d b`. Set `e : (R ⊗[F] E) ≃ᵐ (Fin d → R)` to `(hh.homeomorph _).toMeasurableEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hce : (⇑e : (R ⊗[F] E) → Fin d → R) = fun y k => (Algebra.TensorProduct.basis R b).repr y k` using `rfl`. Establish `hK : (coordK R b lam).map e = Measure.pi fun _ => lam`. Establish `h` using `e.measurableEmbedding.map_comap (Measure.pi fun _ : Fin d => lam)`. Rewrite `h` using `[e.surjective.range_eq, Measure.restrict_univ]`. Rewrite using `[coordK, ← hce]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hK' : coordK R b lam = (Measure.pi fun _ : Fin d => lam).map e.symm`. Rewrite using `[← hK, Measure.map_map e.symm.measurable e.measurable]`. Simplify using the standard rewrite rules. Establish `: SigmaFinite (coordK R b lam)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK']`. Conclude with `e.symm.sigmaFinite_map`. Establish `hmpK : MeasurePreserving e (coordK R b lam) (Measure.pi fun _ : Fin d => lam)` using `⟨e.measurable, hK⟩`. Establish `h1 : MeasurePreserving (fun (X : Fin 1 → Fin M → R ⊗[F] E) => X default) (coordW R b lam 1 M) (Measure.pi fun _ : Fin M => coordK R b lam)` using `measurePreserving_funUnique (Measure.pi fun _ : Fin M => coordK R b lam) (Fin 1)`. Establish `h2 : MeasurePreserving (fun (Y : Fin M → R ⊗[F] E) (i : Fin M) => e (Y i)) (Measure.pi fun _ : Fin M => coordK R b lam) (Measure.pi fun _ : Fin M => Measure.pi fun _ : Fin d => lam)` using `measurePreserving_pi _ _ fun _ => hmpK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : MeasurePreserving (fun (Y : Fin M → Fin d → R) (p : Fin M × Fin d) => Y p.1 p.2) (Measure.pi fun _ : Fin M => Measure.pi fun _ : Fin d => lam) (Measure.pi fun _ : Fin M × Fin d => lam)` using `⟨by fun_prop, map_curry_pi_pi lam M d⟩`. Establish `h` using `h3.comp (h2.comp h1)`. Conclude with `⟨h.measurable, h.map_eq⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coordW_one_map_coords : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R], ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ (M : ℕ) (lam : Measure R), lam.IsAddHaarMeasure → (Measurable fun (X : Fin 1 → Fin M → R ⊗[F] E) (p : Fin M × Fin d) => (Algebra.TensorProduct.basis R b).repr (X 0 p.1) p.2) ∧ (coordW R b lam 1 M).map (fun X (p : Fin M × Fin d) => (Algebra.TensorProduct.basis R b).repr (X 0 p.1) p.2) = Measure.pi fun _ => lam := by
   intro F E _ _ _ _ _ σ hσ R _ _ _ _ _ _ _ _ _ d b M lam hlam

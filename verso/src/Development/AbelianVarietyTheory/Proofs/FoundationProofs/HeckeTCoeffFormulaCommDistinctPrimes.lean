@@ -13,11 +13,11 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hσ`. Take `⟨h3, h4⟩` from `hτ`. Establish `h1' : ((σ 1 0 : ℤ) : ZMod N) = 0`. Use `congrArg (ZMod.castHom (dvd_mul_right N l) (ZMod N)) h1` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Use `push_cast`. Rewrite using `[h1, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Use `push_cast`. Rewrite using `[h1', h2, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma isDia_mul_of_isDia {N l : ℕ} {d e : ℤ} {σ τ : SL(2, ℤ)} (hσ : IsDia N l d σ)
     (hτ : IsDia N l e τ) : IsDia N l (d * e) (σ * τ) := by
@@ -35,7 +35,7 @@ lemma isDia_mul_of_isDia {N l : ℕ} {d e : ℤ} {σ τ : SL(2, ℤ)} (hσ : IsD
     rw [h1', h2, h4]; ring
 
 /- English proof (translation)
-Use `GlobalTheory.T.diamondOperatorOfMatrix_congr N l k q σ τ hN hσ hτ f` as an intermediate fact. Unfold `dia at this`. Unfold `heckeT`. Rewrite using `[this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma heckeT_congr_dia {N l q : ℕ} {k : ℤ} {σ τ : SL(2, ℤ)} (hN : 0 < N)
     (hσ : IsDia N l q σ) (hτ : IsDia N l q τ) (f : ModularForm (lev N l) k) :
@@ -46,19 +46,19 @@ lemma heckeT_congr_dia {N l q : ℕ} {k : ℤ} {σ τ : SL(2, ℤ)} (hN : 0 < N)
   rw [this]
 
 /- English proof (translation)
-Establish `hcop : Nat.Coprime q r` using `(Nat.coprime_primes hq hr).2 hqr`. Establish `i1 : r ∣ q * n ↔ r ∣ n` using `hcop.symm.dvd_mul_left`. Establish `i2 : q ∣ r * n ↔ q ∣ n` using `hcop.dvd_mul_left`. Establish `ha : r * (q * n) = q * (r * n)` using `by ring`. Simplify using `only [ha, i1, i2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases hqn : q ∣ n <;> by_cases hrn : r ∣ n`. Establish `i3 : r ∣ n / q`. Take `⟨m, rfl⟩` from `hqn`. Rewrite using `[Nat.mul_div_cancel_left _ hq.pos]`. Conclude with `(hcop.symm.dvd_mul_left).1 hrn`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `i4 : q ∣ n / r`. Take `⟨m, rfl⟩` from `hrn`. Rewrite using `[Nat.mul_div_cancel_left _ hr.pos]`. Conclude with `(hcop.dvd_mul_left).1 hqn`. Establish `d1 : q * n / r = q * (n / r)` using `Nat.mul_div_assoc q hrn`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d2 : r * n / q = r * (n / q)` using `Nat.mul_div_assoc r hqn`. Establish `d3 : n / r / q = n / q / r`. Rewrite using `[Nat.div_div_eq_div_mul, Nat.div_div_eq_div_mul, mul_comm]`. Simplify using `only [hqn, hrn, i3, i4, if_true, d1, d2, d3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `i3 : ¬ r ∣ n / q`. Introduce `h`. Conclude with `hrn (h.trans (Nat.div_dvd_of_dvd hqn))`. Establish `d2 : r * n / q = r * (n / q)` using `Nat.mul_div_assoc r hqn`. Simplify using `only [hqn, hrn, i3, if_true, if_false, d2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `i4 : ¬ q ∣ n / r`. Introduce `h`. Conclude with `hqn (h.trans (Nat.div_dvd_of_dvd hrn))`. Establish `d1 : q * n / r = q * (n / r)` using `Nat.mul_div_assoc q hrn`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hqn, hrn, i4, if_true, if_false, d1]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hqn, hrn, if_false]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma heckeT_coeff_formula_comm_distinct_primes {q r : ℕ} (hq : q.Prime) (hr : r.Prime) (hqr : q ≠ r) (kq kr : ℂ)
     (a b c e : ℕ → ℂ) (n : ℕ) :
@@ -104,17 +104,15 @@ lemma heckeT_coeff_formula_comm_distinct_primes {q r : ℕ} (hq : q.Prime) (hr :
     ring
 
 /- English proof (translation)
-Introduce `N l q r k σ τ hN hq hr hqN hrN hσ hτ f`. Distinguish the cases in `hqr : q = r`. Substitute `hqr` using the available equality. Take `⟨g, hg⟩` from `GlobalTheory.T.heckeTOperatorExplicit_modularForm N l q k τ hN hq hqN hτ f`. Rewrite using `[heckeT_congr_dia hN hσ hτ f, ← hg, heckeT_congr_dia hN hσ hτ g]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨gr, hgr⟩` from `GlobalTheory.T.heckeTOperatorExplicit_modularForm N l r k τ hN hr hrN hτ f`. Take `⟨gq, hgq⟩` from `GlobalTheory.T.heckeTOperatorExplicit_modularForm N l q k σ hN hq hqN hσ f`. Take `⟨h1, hh1⟩` from `GlobalTheory.T.heckeTOperatorExplicit_modularForm N l q k σ hN hq hqN hσ gr`. Take `⟨h2, hh2⟩` from `GlobalTheory.T.heckeTOperatorExplicit_modularForm N l r k τ hN hr hrN hτ gq`. Take `⟨fσ, hfσ⟩` from `GlobalTheory.T.diamondOperatorOfMatrix_modularForm_gamma1InterGamma0 N l k q σ hN hσ f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨fτ, hfτ⟩` from `GlobalTheory.T.diamondOperatorOfMatrix_modularForm_gamma1InterGamma0 N l k r τ hN hτ f`. Establish `dσ : dia k σ ⇑gr = heckeT k r τ ⇑fσ`. Rewrite using `[hgr, hfσ, GlobalTheory.T.hecke_operator_commutes_diamond N l r k q τ σ hN hr hrN hτ hσ f]`. Establish `dτ : dia k τ ⇑gq = heckeT k q σ ⇑fτ`. Rewrite using `[hgq, hfτ, GlobalTheory.T.hecke_operator_commutes_diamond N l q k r σ τ hN hq hqN hσ hτ f]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `dd : dia k τ ⇑fσ = dia k σ ⇑fτ`. Establish `h' : IsDia N l ((r : ℤ) * q) (σ * τ)`. Rewrite using `[mul_comm]`. Conclude with `isDia_mul_of_isDia hσ hτ`. Rewrite using `[hfσ, hfτ, GlobalTheory.T.diamondOperatorOfMatrix_comp_mul N l k q r σ τ (σ * τ) hN hσ hτ (isDia_mul_of_isDia hσ hτ) f, GlobalTheory.T.diamondOperatorOfMatrix_comp_mul N l k r q τ σ (σ * τ) hN hτ hσ h' f]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : h1 = h2`. Apply `GlobalTheory.T.modularForm_gamma1InterGamma0_ext_qExpansionCoeff N l k hN` to reduce the goal to its premises. Introduce `n`. Rewrite using `[hh1, hh2, GlobalTheory.T.qExpansionCoeff_heckeTOperator_gamma1InterGamma0 N l q k σ hN hq hqN hσ gr, GlobalTheory.T.qExpansionCoeff_heckeTOperator_gamma1InterGamma0 N l r k τ hN hr hrN hτ gq, dσ, dτ, GlobalTheory.T.qExpansionCoeff_heckeTOperator_gamma1InterGamma0 N l r k τ hN hr …`. Conclude with `heckeT_coeff_formula_comm_distinct_primes hq hr hqr _ _ _ _ _ _ n`.
-
-Rewrite using `[← hgr, ← hgq, ← hh1, ← hh2, key]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeT_comm : ∀ (N l q r : ℕ) (k : ℤ) (σ τ : SL(2, ℤ)), 0 < N → q.Prime → r.Prime →
     ¬ q ∣ N * l → ¬ r ∣ N * l → GlobalTheory.Hk.IsDia N l q σ → GlobalTheory.Hk.IsDia N l r τ →

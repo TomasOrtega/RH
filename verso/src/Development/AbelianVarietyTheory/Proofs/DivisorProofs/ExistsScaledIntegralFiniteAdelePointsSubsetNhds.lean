@@ -10,11 +10,9 @@ noncomputable section
 namespace GlobalTheory.EvAdm
 
 /- English proof (translation)
-Establish `hmem : (c : 𝓞 F) ∈ v.asIdeal`. Take `⟨k, hk⟩` from `hc`. Rewrite using `[hk, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`. Establish `hval` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := F) v (c : 𝓞 F)).2 hmem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valued.toNormedField.norm_lt_one_iff]`. Establish `e : (c : v.adicCompletion F) = (((algebraMap (𝓞 F) F (c : 𝓞 F)) : F) : v.adicCompletion F)`. Rewrite using `[map_natCast]`. Rewrite using `[show (((c : F)) : v.adicCompletion F) = algebraMap F (v.adicCompletion F) (c : F) from rfl, map_natCast]`. Rewrite using `[e, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`.
-
-Conclude with `hval`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_lt_one_of_dvd (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (c : ℕ) (hc : Ideal.absNorm v.asIdeal ∣ c) :
@@ -33,29 +31,25 @@ theorem norm_natCast_lt_one_of_dvd (F : Type) [Field F] [NumberField F]
   exact hval
 
 /- English proof (translation)
-Establish `hAopen : ∀ v : HeightOneSpectrum (𝓞 F), IsOpen ((v.adicCompletionIntegers F : Set (v.adicCompletion F)))` using `fun _ => Valued.isOpen_valuationSubring _`. Establish `hU' : U ∈ Filter.map (RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) cofinite) (𝓝 (fun v => ⟨0, zero_mem (v.adicCompletionIntegers F)⟩))`. Rewrite using `[← RestrictedProduct.nhds_eq_map_structureMap hAopen]`. Conclude with `hU`. Establish `hU2 : (RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) cofinite) ⁻¹' (U : Set (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicComp …` using `hU'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hU2` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, hI, t, ht, hIt⟩` from `hU2`. Establish `hε : ∀ v : HeightOneSpectrum (𝓞 F), ∃ ε > (0 : ℝ), ∀ y : (v.adicCompletionIntegers F : Set (v.adicCompletion F)), ‖(y : v.adicCompletion F)‖ < ε → y ∈ t v`. Introduce `v`. Take `⟨u, hu, hut⟩` from `(mem_nhds_subtype _ _ _).1 (ht v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hu`. Use `⟨ε, hε, fun y hy => hut (hball ?_)⟩` and prove the remaining obligations. Simplify `hy` using `[Metric.mem_ball, dist_zero_right]`. Use `choose ε hεpos hεt using hε`. Use `set c : ℕ := ∏ v ∈ hI.toFinset, Ideal.absNorm v.asIdeal with hcdef`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc0 : c ≠ 0`. Rewrite using `[hcdef, Finset.prod_ne_zero_iff]`. Introduce `v _`. Conclude with `(lt_trans zero_lt_one (NumberField.HeightOneSpectrum.one_lt_absNorm v)).ne'`. Establish `hcv : ∀ v ∈ I, ‖(c : v.adicCompletion F)‖ < 1` using `fun v hv => norm_natCast_lt_one_of_dvd F v c (Finset.dvd_prod_of_mem _ (hI.mem_toFinset.2 hv))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hev : ∀ v ∈ I, ∀ᶠ k in atTop, ‖(c : v.adicCompletion F)‖ ^ k < ε v` using `fun v hv => (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) (hcv v hv)).eventually (Iio_mem_nhds (hεpos v))`. Take `⟨k, hk⟩` from `((Filter.eventually_all_finite hI).2 hev).exists`. Use `⟨c ^ k, pow_ne_zero _ hc0, fun m hm hdvd x hx => ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `hdvd`. Establish `hmv : ∀ v : HeightOneSpectrum (𝓞 F), algebraMap F (v.adicCompletion F) (m : F) = (m : v.adicCompletion F)` using `fun v => map_natCast _ m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hm0 : ∀ v : HeightOneSpectrum (𝓞 F), (m : v.adicCompletion F) ≠ 0` using `fun v => by rw [← hmv]; exact (map_ne_zero _).2 (Nat.cast_ne_zero.2 hm)`. Establish `hxv : ∀ v : HeightOneSpectrum (𝓞 F), x v = (m : v.adicCompletion F) * ((m : v.adicCompletion F)⁻¹ * x v)`. Introduce `v`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ (hm0 v), one_mul]`. Establish `hmem : ∀ v : HeightOneSpectrum (𝓞 F), x v ∈ (v.adicCompletionIntegers F : Set (v.adicCompletion F))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Establish `h1` using `hx v`. Rewrite `h1` using `[hmv]`. Rewrite using `[hxv v]`. Conclude with `mul_mem (natCast_mem _ _) h1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hxe : x = RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) cofinite (fun v => ⟨_, hmem v⟩)`. Use extensionality with `v`. Both sides reduce to the same expression. Rewrite using `[hxe]`. Apply `hIt` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `v hv`. Apply `hεt` to reduce the goal to its premises. Use `show ‖x v‖ < ε v`. Establish `h1` using `hx v`. Rewrite `h1` using `[hmv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz1 : ‖(m : v.adicCompletion F)⁻¹ * x v‖ ≤ 1`. Rewrite using `[Valued.toNormedField.norm_le_one_iff]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 h1`. Establish `hd1 : ‖(d : v.adicCompletion F)‖ ≤ 1`. Rewrite using `[Valued.toNormedField.norm_le_one_iff]`.
-
-Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (natCast_mem _ _)`. Establish `hnm : ‖(m : v.adicCompletion F)‖ ≤ ‖(c : v.adicCompletion F)‖ ^ k`. Rewrite using `[hd, Nat.cast_mul, norm_mul, Nat.cast_pow, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hxv v, norm_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_nat_scaled_subset (F : Type) [Field F] [NumberField F]
     (U : Set (FiniteAdeleRing (𝓞 F) F)) (hU : U ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 F) F)) :
@@ -152,9 +146,9 @@ end GlobalTheory.EvAdm
 namespace GlobalTheory.EvAdm
 
 /- English proof (translation)
-Introduce `F _ _ κ _ W hW`. Rewrite `hW` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, _, t, ht, hIt⟩` from `hW`. Establish `ht' : ∀ i, t i ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 F) F)` using `fun i => ht i`. Use `choose N hN0 hN using fun i => exists_nat_scaled_subset F (t i) (ht' i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : (∏ i, N i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hN0 i`. Use `⟨((∏ i, N i : ℕ) : F), Nat.cast_ne_zero.2 hP, fun z hz => hIt ?_⟩` and prove the remaining obligations. Introduce `i _`. Conclude with `hN i _ hP (Finset.dvd_prod_of_mem _ (Finset.mem_univ i)) (z i) (fun v => hz i v)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_scaledInt_subset_of_mem_nhds : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (W : Set (κ → FiniteAdeleRing (𝓞 F) F)),

@@ -7,19 +7,19 @@ open NumberField
 namespace Formalism.L2.SG.NGCut.TorsionTotientBound
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.recOnPosPrimePosCoprime with`. Consider the case `prime_pow p k hp hk`. Rewrite using `[Nat.totient_prime_pow hp hk]`. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Break down `hp.eq_two_or_odd' with rfl | hodd` into its components or cases. Establish `he : Even (2 ^ (m + 1))` using `Nat.even_pow.mpr ⟨even_two, by omega⟩`. Rewrite using `[if_pos he]`. Establish `h1 : 2 ^ m ≤ 2 ^ m * 2 ^ m` using `Nat.le_mul_of_pos_right _ (by positivity)`. Rewrite using `[pow_succ]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hne : ¬ Even (p ^ (m + 1))`. Rewrite using `[Nat.not_even_iff_odd]`. Conclude with `hodd.pow`. Rewrite using `[if_neg hne, one_mul]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : 3 ≤ p`. Use `hp.two_le` as an intermediate fact. Break down `hodd with ⟨j, hj⟩` into its components or cases. Use linear arithmetic over natural numbers and integers. Take `⟨q, rfl⟩ : ∃ q, p = q + 1` from `⟨p - 1, by omega⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.add_sub_cancel]`. Establish `hP : 1 ≤ (q + 1) ^ m` using `Nat.one_le_pow _ _ (by omega)`. Establish `hq : q + 1 ≤ q ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately.
 
-Consider the case `one => simp`. Consider the case `coprime a b ha hb hab iha ihb`. Rewrite using `[Nat.totient_mul hab, mul_pow]`. Establish `hce : (if Even (a * b) then 2 else 1) = (if Even a then 2 else 1) * (if Even b then 2 else 1)`. Apply the tactic sequence `by_cases ea : Even a <;> by_cases eb : Even b <;> simp [ea, eb, Nat.even_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h2 : 2 ∣ Nat.gcd a b` using `Nat.dvd_gcd (even_iff_two_dvd.mp ea) (even_iff_two_dvd.mp eb)`. Rewrite `h2` using `[hab.gcd_eq_one]`. Evaluate the numerical expressions using `at h2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem le_mul_totient_sq (n : ℕ) : n ≤ (if Even n then 2 else 1) * n.totient ^ 2 := by
   induction n using Nat.recOnPosPrimePosCoprime with
@@ -64,20 +64,18 @@ theorem le_mul_totient_sq (n : ℕ) : n ≤ (if Even n then 2 else 1) * n.totien
       _ = _ := by rw [hce]; ring
 
 /- English proof (translation)
-Use `le_mul_totient_sq n` as an intermediate fact. Apply the tactic sequence `split_ifs at this <;> nlinarith [Nat.zero_le (n.totient ^ 2)]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem le_two_totient_sq (n : ℕ) : n ≤ 2 * n.totient ^ 2 := by
   have := le_mul_totient_sq n
   split_ifs at this <;> nlinarith [Nat.zero_le (n.totient ^ 2)]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := NumberField.Units.torsion E)`. Establish `hord : orderOf g = Units.torsionOrder E`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hg]`. Both sides reduce to the same expression. Establish `hpos : 0 < Units.torsionOrder E` using `hord ▸ orderOf_pos g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Set `f : NumberField.Units.torsion E →* E` to `((algebraMap (𝓞 E) E : 𝓞 E →+* E) : 𝓞 E →* E).comp ((Units.coeHom (𝓞 E)).comp (NumberField.Units.torsion E).subtype)`. Establish `hf : Function.Injective f`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(FaithfulSMul.algebraMap_injective (𝓞 E) E) hxy`. Establish `hζ : IsPrimitiveRoot (f g) (Units.torsionOrder E)` using `hord ▸ (IsPrimitiveRoot.orderOf g).map_of_injective hf`. Establish `hdeg : (Units.torsionOrder E).totient ≤ Module.finrank ℚ E`. Rewrite using `[← Polynomial.natDegree_cyclotomic (Units.torsionOrder E) ℚ, Polynomial.cyclotomic_eq_minpoly_rat hζ hpos]`. Conclude with `minpoly.natDegree_le _`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem torsionOrder_le (E : Type) [Field E] [NumberField E] :
     Units.torsionOrder E ≤ 2 * (Module.finrank ℚ E) ^ 2 := by

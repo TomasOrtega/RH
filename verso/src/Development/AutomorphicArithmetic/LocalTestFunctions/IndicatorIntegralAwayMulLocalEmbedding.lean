@@ -12,11 +12,11 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Introduce `K _ _ n r w i y x`. Establish `key : ∀ v, v ∉ Set.range w → finAt v (finEmb K n (AdelicGLn.localEmbedding (w i) y * x)) = finAt v (finEmb K n x)`. Introduce `v hv`. Establish `hne : v ≠ w i` using `fun h => hv ⟨i, h.symm⟩`. Establish `h1` using `(UpperTheory.ConvolutionTheory.Tf.locEmb K n (w i)).2.2.1 v hne y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ z : AdelicGLn.FiniteAdelicGL K n, finAt v (finEmb K n z) = AdelicGLn.finiteRestrictedEquiv K n z v` using `fun z => rfl`. Rewrite `h1` using `[e]`. Rewrite using `[e, e, map_mul, RestrictedProduct.mul_apply, h1, one_mul]`. Establish `hmem : (AdelicGLn.localEmbedding (w i) y * x ∈ ({y | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompletion K) n} : Set (AdelicGLn.FiniteAdelicGL K n))) ↔ (x ∈ ({y | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompleti …`. Simplify using `only [Set.mem_setOf_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `forall₂_congr fun v hv => by rw [key v hv]`. Distinguish the cases in `hx : x ∈ ({y | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompletion K) n} : Set (AdelicGLn.FiniteAdelicGL K n))`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (hmem.2 hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun h => hx (hmem.1 h))]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.indicator_integral_away_mul_localEmbedding :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) (w : Fin r → Pl K) (i : Fin r) (y : Gw n (w i)) (x : AdelicGLn.FiniteAdelicGL K n),

@@ -7,7 +7,7 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.Invariant
 open scoped ComplexConjugate Classical InnerProductSpace
 
 /- English proof (translation)
-Unfold `chi`. Rewrite using `[← Complex.exp_add, ← mul_add, ← Finset.sum_add_distrib]`. Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Int.cast_add, add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma chi_add (ν ν' : Fin (2 + 2) → ℤ) (θ : Fin (2 + 2) → ℝ) :
     chi (ν + ν') θ = chi ν θ * chi ν' θ := by
@@ -18,9 +18,9 @@ private lemma chi_add (ν ν' : Fin (2 + 2) → ℤ) (θ : Fin (2 + 2) → ℝ) 
   simp only [Pi.add_apply, Int.cast_add, add_mul]
 
 /- English proof (translation)
-Establish `h1` using `h 1 (fun i => -(((π.symm i : Fin (2 + 2)) : ℕ) : ℤ)) (by`. Introduce `a b hab`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply, neg_le_neg_iff, Nat.cast_le]`. Conclude with `hab)`. Rewrite `h1` using `[← Equiv.sum_comp π, ← Equiv.sum_comp π (fun i => μ i * _)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `only [Equiv.Perm.one_apply, Equiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 private lemma weak (π : Equiv.Perm (Fin (2 + 2))) (ν μ : Fin (2 + 2) → ℤ)
     (h : ∀ (w : Equiv.Perm (Fin (2 + 2))) (y : Fin (2 + 2) → ℤ), Antitone (y ∘ π) →
@@ -34,13 +34,13 @@ private lemma weak (π : Equiv.Perm (Fin (2 + 2))) (ν μ : Fin (2 + 2) → ℤ)
   simpa only [Equiv.Perm.one_apply, Equiv.symm_apply_apply] using h1
 
 /- English proof (translation)
-Introduce and unpack `π ψ ψ' μ μ' ⟨J, _, j₀, a, b, ν, hc, he, ha, hb, hν, hw, hg, hg'⟩ ⟨J', _, j₀', a', b', ν', hc', he', ha', hb', hν', hw', hf, hf'⟩`. Use `⟨J × J', inferInstance, (j₀, j₀'), fun j h => a j.1 h * a' j.2 h, fun j h => b j.1 h * b' j.2 h, fun j => ν j.1 + ν' j.2, fun j => ⟨(hc j.1).1.mul (hc' j.2).1, (hc j.1).2.mul (hc' j.2).2⟩, fun h k => ?_, ?_, ?_, ?_, fun j θ h => ?_, fun j w y hy => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Simplify using `only [he, he', Finset.sum_mul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [ha, ha']`. Simplify using `only [hb, hb']`. Simplify using `only [hν, hν']`. Take `⟨h1, h2, h3⟩` from `hw j.1 θ h`. Take `⟨h1', h2', h3'⟩` from `hw' j.2 θ h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [h1, h2, h3, h1', h2', h3', chi_add]`. Use `⟨by ring, by ring, by ring⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`. Conclude with `add_le_add (hg j.1 w y hy) (hf j.2 w y hy)`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : j.1 = j₀`. Establish `h2 : j.2 ≠ j₀'` using `fun h2 => hj (Prod.ext h1 h2)`. Conclude with `add_lt_add_of_le_of_lt (weak π _ _ (hg j.1)) (hf' j.2 h2)`. Conclude with `add_lt_add_of_lt_of_le (hg' j.1 h1) (weak π _ _ (hf j.2))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.expMul :
     ∀ π ψ ψ' μ μ', OExp π ψ μ → OExp π ψ' μ' → OExp π (fun k => ψ k * ψ' k) (μ + μ') := by

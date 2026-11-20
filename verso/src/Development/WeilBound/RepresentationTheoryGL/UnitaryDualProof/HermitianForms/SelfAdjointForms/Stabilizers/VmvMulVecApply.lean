@@ -14,7 +14,7 @@ open PositivityTheory.RgUd.Form PositivityTheory.RgUd.Form.ColumnElementGluing P
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, vecMulVec_apply, xi0, Pi.single_apply, mul_comm, mul_left_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vmv_sq {m : ℕ} (η : Fin (m + 1) → k) :
     vecMulVec (xi0 k m) η * vecMulVec (xi0 k m) η = η (Fin.last m) • vecMulVec (xi0 k m) η := by
@@ -22,9 +22,9 @@ theorem vmv_sq {m : ℕ} (η : Fin (m + 1) → k) :
   simp [Matrix.mul_apply, vecMulVec_apply, xi0, Pi.single_apply, mul_comm, mul_left_comm]
 
 /- English proof (translation)
-Establish `h : E = c • E + (c * a) • E`. Rewrite using `[← add_smul, ← mul_one_add, hc, one_smul]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[add_mul, one_mul, mul_sub, mul_one, mul_smul_comm, hE, smul_smul]`. Establish `h2 : E - (c * a) • E = c • E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_iff_eq_add]`. Conclude with `h`. Rewrite using `[sub_add_eq_add_sub, add_sub_assoc, h2, sub_self, add_zero]`. Rewrite using `[sub_mul, one_mul, mul_add, mul_one, smul_mul_assoc, hE, smul_smul, ← h, add_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_pair {m : ℕ} (E : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (a c : k) (hE : E * E = a • E)
     (hc : c * (1 + a) = 1) : (1 + E) * (1 - c • E) = 1 ∧ (1 - c • E) * (1 + E) = 1 := by
@@ -56,9 +56,9 @@ theorem gU_inv_val {m : ℕ} (η : Fin (m + 1) → k) (hη : 1 + η (Fin.last m)
       1 - (1 + η (Fin.last m))⁻¹ • vecMulVec (xi0 k m) η := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[gU_val, Matrix.transpose_add, Matrix.add_mulVec, Matrix.transpose_vecMulVec, Matrix.mulVec, dotProduct, vecMulVec_apply, xi0, Pi.single_apply]`. Distinguish the cases in `h : i = Fin.last m`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Matrix.one_apply_ne (Ne.symm h)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gU_transpose {m : ℕ} (η : Fin (m + 1) → k) (hη : 1 + η (Fin.last m) ≠ 0) :
     ((gU η hη : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k)ᵀ *ᵥ xi0 k m = xi0 k m + η := by
@@ -71,7 +71,7 @@ theorem gU_transpose {m : ℕ} (η : Fin (m + 1) → k) (hη : 1 + η (Fin.last 
   · simp [h, Matrix.one_apply_ne (Ne.symm h)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, gU_val, vecMulVec_eq Unit, det_one_add_replicateCol_mul_replicateRow]`. Simplify using `[xi0, dotProduct_single]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gU_det {m : ℕ} (η : Fin (m + 1) → k) (hη : 1 + η (Fin.last m) ≠ 0) :
     ((Matrix.GeneralLinearGroup.det (gU η hη) : kˣ) : k) = 1 + η (Fin.last m) := by
@@ -80,7 +80,7 @@ theorem gU_det {m : ℕ} (η : Fin (m + 1) → k) (hη : 1 + η (Fin.last m) ≠
   simp [xi0, dotProduct_single]
 
 /- English proof (translation)
-Simplify using `only [dotProduct]`. Use `Valuation.map_sum_le _ (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem val_dot_le {n : ℕ} (a x : Fin n → k) (γ : ValueGroupWithZero k) (ha : ∀ i, valuation k (a i) ≤ 1)
     (hx : ∀ i, valuation k (x i) ≤ γ) : valuation k (a ⬝ᵥ x) ≤ γ := by
@@ -91,18 +91,18 @@ theorem val_dot_le {n : ℕ} (a x : Fin n → k) (γ : ValueGroupWithZero k) (ha
     _ = γ := one_mul γ
 
 /- English proof (translation)
-Simplify using `[mulVec, vecMulVec, dotProduct, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vmv_mulVec_apply {m : ℕ} (u v w : Fin (m + 1) → k) (i : Fin (m + 1)) :
     (vecMulVec u v *ᵥ w) i = u i * (v ⬝ᵥ w) := by
   simp [mulVec, vecMulVec, dotProduct, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `hx' : ∀ i, valuation k (x i) ≤ valuation k (s : k)` using `hx`. Use `show ∀ i, valuation k (((1 + c • vecMulVec (xi0 k m) η) *ᵥ x) i) ≤ valuation k (s : k)`. Introduce `i`. Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec, Pi.add_apply, Matrix.smul_mulVec, Pi.smul_apply, vmv_mulVec_apply, smul_eq_mul]`. Use `Valuation.map_add_le _ (hx' i) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.map_mul, Valuation.map_mul]`. Establish `hu : valuation k (xi0 k m i) ≤ 1`. Unfold `xi0`. Rewrite using `[Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hd` using `val_dot_le η x _ hη hx'`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mem_ball_of {m : ℕ} (c : k) (η x : Fin (m + 1) → k) (hc : valuation k c ≤ 1) (hη : ∀ i, valuation k (η i) ≤ 1)
     (s : kˣ) (hx : x ∈ ball (m + 1) s) : (1 + c • vecMulVec (xi0 k m) η) *ᵥ x ∈ ball (m + 1) s := by
@@ -122,27 +122,25 @@ theorem mem_ball_of {m : ℕ} (c : k) (η x : Fin (m + 1) → k) (hc : valuation
     _ = _ := by rw [one_mul, one_mul]
 
 /- English proof (translation)
-Establish `hv : {x : k | valuation k x < 1} ∈ nhds (0 : k)` using `(IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨1, fun x hx => by simpa using hx⟩`. Establish `hS : {η : Fin (m + 1) → k | ∀ i, valuation k (η i) < 1} ∈ nhds (0 : Fin (m + 1) → k)`. Simplify using `only [Set.setOf_forall]`. Use `Filter.iInter_mem.2 fun i => ?_` and prove the remaining obligations. Establish `h1 : (fun η : Fin (m + 1) → k => η i) ⁻¹' {x : k | valuation k x < 1} ∈ nhds (0 : Fin (m + 1) → k)` using `((continuous_apply i).tendsto (0 : Fin (m + 1) → k)) hv`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h1`. Take `⟨U, hU, hUK⟩` from `isOpen_induced_iff.1 hK`. Set `F : (Fin (m + 1) → k) → Matrix (Fin (m + 1)) (Fin (m + 1)) k × (Matrix (Fin (m + 1)) (Fin (m + 1)) k)ᵐᵒᵖ` to `fun η => (1 + vecMulVec (xi0 k m) η, MulOpposite.op (1 - (1 + η (Fin.last m))⁻¹ • vecMulVec (xi0 k m) η))`. Establish `hF : ContinuousAt F 0`. Establish `hE : Continuous fun η : Fin (m + 1) → k => vecMulVec (xi0 k m) η` using `Continuous.matrix_vecMulVec continuous_const continuous_id`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContinuousAt (fun η : Fin (m + 1) → k => (1 + η (Fin.last m))⁻¹) 0` using `ContinuousAt.inv₀ (continuous_const.add (continuous_apply _)).continuousAt (by simp)`. Establish `h3 : ContinuousAt (fun η : Fin (m + 1) → k => 1 - (1 + η (Fin.last m))⁻¹ • vecMulVec (xi0 k m) η) 0` using `continuousAt_const.sub (h2.smul hE.continuousAt)`. Conclude with `ContinuousAt.prodMk (continuous_const.add hE).continuousAt (MulOpposite.continuous_op.continuousAt.comp h3)`. Establish `h0 : F 0 ∈ U`. Establish `h1 : (1 : GL (Fin (m + 1)) k) ∈ (K : Set (GL (Fin (m + 1)) k))` using `K.one_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hUK]`. Establish `e : F 0 = Units.embedProduct _ (1 : GL (Fin (m + 1)) k)` using `Prod.ext (by simp [F]) (MulOpposite.unop_injective (by simp [F]))`. Rewrite using `[e]`. Conclude with `h1`. Use `⟨F ⁻¹' U ∩ {η | ∀ i, valuation k (η i) < 1}, Filter.inter_mem (hF.preimage_mem_nhds (hU.mem_nhds h0)) hS, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `η ⟨hηU, hηv⟩`. Establish `hl : valuation k (1 + η (Fin.last m)) = 1` using `Valuation.map_one_add_of_lt _ (hηv _)`. Establish `hne : 1 + η (Fin.last m) ≠ 0`. Introduce `h`. Rewrite `hl` using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `zero_ne_one hl`. Establish `hη1 : ∀ i, valuation k (η i) ≤ 1` using `fun i => (hηv i).le`. Use `⟨(gU η hne)⁻¹, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `K.inv_mem` to reduce the goal to its premises. Establish `e : Units.embedProduct _ (gU η hne) = F η` using `Prod.ext (gU_val η hne) (MulOpposite.unop_injective (gU_inv_val η hne))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : gU η hne ∈ Units.embedProduct _ ⁻¹' U` using `by show Units.embedProduct _ (gU η hne) ∈ U`. Rewrite using `[e]`. Conclude with `hηU`. Rewrite `h1` using `[hUK]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[GlobalTheory.SplitWeil.nabs_eq_one_iff, map_inv, Units.val_inv_eq_inv_val, gU_det, map_inv₀, hl, inv_one]`. Introduce `s`. Rewrite using `[inv_inv]`. Use extensionality with `x`. Simplify using `only [pre, AddSubgroup.mem_comap, LinearMap.toAddMonoidHom_coe, Matrix.mulVecLin_apply, gU_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hc' : valuation k (-(1 + η (Fin.last m))⁻¹) ≤ 1`. Rewrite using `[Valuation.map_neg, map_inv₀, hl, inv_one]`. Establish `hmul : (1 + (-(1 + η (Fin.last m))⁻¹) • vecMulVec (xi0 k m) η) * (1 + vecMulVec (xi0 k m) η) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[neg_smul, ← sub_eq_add_neg]`. Conclude with `(inv_pair _ _ _ (vmv_sq η) (inv_mul_cancel₀ hne)).2`. Establish `h1` using `mem_ball_of _ η _ hc' hη1 s hx`. Rewrite `h1` using `[Matrix.mulVec_mulVec, hmul, Matrix.one_mulVec]`. Then use the resulting hypothesis. Introduce `hx`.
-
-Establish `h1` using `mem_ball_of 1 η x (map_one (valuation k)).le hη1 s hx`. Rewrite `h1` using `[one_smul]`. Then use the resulting hypothesis. Rewrite using `[inv_inv]`. Conclude with `gU_transpose η hne`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_nbhd_pf {m : ℕ} (K : Subgroup (GL (Fin (m + 1)) k)) (hK : IsOpen (K : Set (GL (Fin (m + 1)) k))) :
     ∃ D ∈ nhds (0 : Fin (m + 1) → k), ∀ η ∈ D, ∃ g ∈ K, nabs k (Matrix.GeneralLinearGroup.det g) = 1 ∧

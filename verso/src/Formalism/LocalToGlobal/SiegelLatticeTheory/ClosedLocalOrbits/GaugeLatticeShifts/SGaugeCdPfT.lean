@@ -12,29 +12,29 @@ section Reindex
 variable {α β : Type*} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
 /- English proof (translation)
-Rewrite using `[Matrix.reindex_apply, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reindex_mul' (e : α ≃ β) (A B : Matrix α α ℂ) : reindex e e (A * B) = reindex e e A * reindex e e B := by
   rw [Matrix.reindex_apply, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_mul_equiv]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.reindex_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reindex_add' (e : α ≃ β) (A B : Matrix α α ℂ) : reindex e e (A + B) = reindex e e A + reindex e e B := by
   ext i j
   simp [Matrix.reindex_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.reindex_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reindex_zero' (e : α ≃ β) : reindex e e (0 : Matrix α α ℂ) = 0 := by
   ext i j
   simp [Matrix.reindex_apply]
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix α α ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedRing (Matrix β β ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix α α ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℂ (Matrix β β ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℚ (Matrix α α ℂ) := Matrix.linftyOpNormedAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : NormedAlgebra ℚ (Matrix β β ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `hc : Continuous (Matrix.reindexAlgEquiv ℂ ℂ e)` using `by show Continuous fun M : Matrix α α ℂ => M.submatrix e.symm e.symm`. Conclude with `continuous_id.matrix_submatrix _ _`. Conclude with `(NormedSpace.map_exp (Matrix.reindexAlgEquiv ℂ ℂ e) hc X).symm`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exp_reindex (e : α ≃ β) (X : Matrix α α ℂ) :
     NormedSpace.exp (reindex e e X) = reindex e e (NormedSpace.exp X) := by
@@ -50,7 +50,7 @@ theorem exp_reindex (e : α ≃ β) (X : Matrix α α ℂ) :
   exact (NormedSpace.map_exp (Matrix.reindexAlgEquiv ℂ ℂ e) hc X).symm
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem l1_entry_sum_reindex (e : α ≃ β) (X : Matrix α α ℂ) :
     ∑ i, ∑ j, ‖reindex e e X i j‖ = ∑ i, ∑ j, ‖X i j‖ := by
@@ -63,9 +63,9 @@ end Reindex
 variable {n P Q : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨s, rfl⟩` from `e.surjective i`. Take `⟨t, rfl⟩` from `e.surjective j`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Formalism.UG.Jpq, Formalism.REAL.Jm, Matrix.diagonal_apply, e.injective.eq_iff]`. Apply the tactic sequence `rcases s with s | s <;> rcases t with t | t <;>`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [h1, h2, Matrix.one_apply] <;> split_ifs <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem reindex_Jpq (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n) (h1 : ∀ i, ε (e (Sum.inl i)) = true)
     (h2 : ∀ j, ε (e (Sum.inr j)) = false) : reindex e e (Formalism.UG.Jpq P Q) = Formalism.REAL.Jm ε := by
@@ -78,9 +78,7 @@ theorem reindex_Jpq (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n) (h1 : 
     simp [h1, h2, Matrix.one_apply] <;> split_ifs <;> simp_all
 
 /- English proof (translation)
-Establish `hJ` using `reindex_Jpq ε e h1 h2`. Use `show Xᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * X = 0 ↔ (reindex e e X)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * reindex e e X = 0`. Establish `hc : (reindex e e X)ᴴ = reindex e e Xᴴ`. Simplify using `[Matrix.reindex_apply, Matrix.conjTranspose_submatrix]`. Rewrite using `[← hJ, hc, ← reindex_mul', ← reindex_mul', ← reindex_add', ← reindex_zero' e]`.
-
-Conclude with `(Matrix.reindex e e).injective.eq_iff.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieU_iff (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n) (h1 : ∀ i, ε (e (Sum.inl i)) = true)
     (h2 : ∀ j, ε (e (Sum.inr j)) = false) (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
@@ -94,13 +92,13 @@ theorem lieU_iff (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n) (h1 : ∀
   exact (Matrix.reindex e e).injective.eq_iff.symm
 
 /- English proof (translation)
-Unfold `UpqIn`. Introduce `h1 h2 g`. Establish `hJ` using `reindex_Jpq ε e h1 h2`. Set `g' : Formalism.UG.Upq P Q` to `g`. Establish `hct : ∀ M : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ, Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `M`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply]`. Establish `hg : g.matᴴ * Formalism.UG.Jpq P Q * g.mat = Formalism.UG.Jpq P Q`. Establish `h : Formalism.UG.cT (starRingEnd ℂ) g.mat * Formalism.UG.Jpq P Q * g.mat = Formalism.UG.Jpq P Q` using `g'.2`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hct]`. Then use the resulting hypothesis. Set `u : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `Units.map (Matrix.reindexAlgEquiv ℂ ℂ e : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ →* Matrix (Fin n) (Fin n) ℂ) g'.1`. Establish `hu : (u : Matrix (Fin n) (Fin n) ℂ) = reindex e e g.mat` using `rfl`. Establish `hmem : u ∈ Formalism.REAL.UJ ε` using `by show (u : Matrix (Fin n) (Fin n) ℂ)ᴴ * Formalism.REAL.Jm ε * (u : Matrix (Fin n) (Fin n) ℂ) = Formalism.REAL.Jm ε`. Establish `hc : (reindex e e g.mat)ᴴ = reindex e e g.matᴴ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Matrix.reindex_apply, Matrix.conjTranspose_submatrix]`. Rewrite using `[hu, ← hJ, hc, ← reindex_mul', ← reindex_mul', hg]`. Conclude with `⟨⟨u, hmem⟩, hu⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem upqIn (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n) : UpqIn ε e := by
   unfold UpqIn
@@ -125,15 +123,13 @@ theorem upqIn (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n) : UpqIn ε e
   exact ⟨⟨u, hmem⟩, hu⟩
 
 /- English proof (translation)
-Introduce `h1 h2 r`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ⟨t, ht, rfl⟩, hat⟩`. Establish `hexp : umat (expC ε t) = NormedSpace.exp (linT ε t)` using `uMat_expC' ε t`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hY : Formalism.REAL.inG ε (linT ε t)` using `by rw [linT_apply]; exact inG_of_gLie ε _`. Establish `hXY : reindex e e ((reindex e e).symm (linT ε t)) = linT ε t` using `(reindex e e).apply_symm_apply _`. Establish `hX : (reindex e e).symm (linT ε t) ∈ Formalism.BasicNotions.lieU P Q` using `(lieU_iff ε e h1 h2 _).2 (by rw [hXY]; exact hY)`. Use `⟨⟨_, hX⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show ∑ i, ∑ j, ‖(reindex e e).symm (linT ε t) i j‖ < r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← l1_entry_sum_reindex e, hXY]`. Conclude with `ht`. Apply `(reindex e e).injective show reindex e e (Formalism.BasicNotions.UpqT.mat g) = reindex e e (NormedSpace.exp ((reindex e e).symm (linT ε t)))` to reduce the goal to its premises. Rewrite using `[← hat, hexp, ← exp_reindex, hXY]`. Introduce and unpack `⟨X, hXb, hgX⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hY : Formalism.REAL.inG ε (reindex e e (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ))` using `(lieU_iff ε e h1 h2 _).1 X.2`. Use `⟨expC ε (cM ε (reindex e e (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ))), ⟨_, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show ∑ i, ∑ j, ‖linT ε (cM ε (reindex e e (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ))) i j‖ < r`. Rewrite using `[linT_cM hY, l1_entry_sum_reindex]`. Conclude with `hXb`.
-
-Establish `hexp : umat (expC ε (cM ε (reindex e e (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)))) = NormedSpace.exp (linT ε (cM ε (reindex e e (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ))))` using `uMat_expC' ε _`. Rewrite using `[hexp, linT_cM hY, hgX, exp_reindex]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setEq (ε : Fin n → Bool) (e : Fin P ⊕ Fin Q ≃ Fin n) : SetEq ε e := by
   intro h1 h2 r

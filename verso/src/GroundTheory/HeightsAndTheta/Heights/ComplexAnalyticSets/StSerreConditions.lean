@@ -23,7 +23,7 @@ def NormalRing (A : Type*) [CommRing A] : Prop :=
   ∀ (P : Ideal A) [P.IsPrime], IsDomain (Localization.AtPrime P) ∧ IsIntegrallyClosed (Localization.AtPrime P)
 
 /- English proof (translation)
-Introduce `h`. Establish `hle : Ideal.map (algebraMap S (Localization.AtPrime P)) (Ideal.map (algebraMap R S) (Ideal.comap (algebraMap R S) P)) ≤ maximalIdeal (Localization.AtPrime P)`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `Ideal.map_mono Ideal.map_comap_le`. Conclude with `(maximalIdeal.isMaximal _).ne_top (top_le_iff.mp (h ▸ hle))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeFibreLocalRing_ideal_ne_top (R : Type*) {S : Type*} [CommRing R] [CommRing S] [Algebra R S]
     (P : Ideal S) [P.IsPrime] :

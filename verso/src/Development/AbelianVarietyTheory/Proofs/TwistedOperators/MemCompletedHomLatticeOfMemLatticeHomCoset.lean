@@ -16,15 +16,13 @@ namespace GlobalTheory.CosLatHalf
 open GlobalTheory.RowLatChi Formalism.L2.DIV GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim GlobalTheory.FlipRun
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Rewrite using `[Finset.sum_smul]`. Use `sum_mem fun w hw => ?_` and prove the remaining obligations. Take `⟨a, ha, hv⟩` from `hAA w hw`. Establish `ha0 : a ≠ 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hv` using `[map_zero, Valuation.map_zero]`. Conclude with `zero_ne_one hv`. Establish `hc : finPart D (es w * incA D a⁻¹) ∈ intAE D`. Use `((comp_toAd D).int (es w * incA D a⁻¹)).2 fun Q => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `show Valued.v (cpt (D := D) Q (toEAf D (es w * incA D a⁻¹))) ≤ 1`. Take `⟨h1, h2⟩` from `cpt_of_isIdemAt (hes w hw)`. Rewrite using `[RingHom.map_mul, RingHom.map_mul, show cpt (D := D) Q (toEAf D (incA D a⁻¹)) = algebraMap D.host.E (Kw Q) a⁻¹ from Comparison₂.cpt_tmul Q a⁻¹]`. Break down `eq_or_ne Q w with rfl | hQ` into its components or cases. Rewrite using `[h1, one_mul, map_inv₀, map_inv₀, hv, inv_one]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2 Q hQ, zero_mul, Valuation.map_zero]`. Conclude with `zero_le`. Establish `e : es w • u = (es w * incA D a⁻¹) • (incA D a • u)`. Rewrite using `[smul_smul, mul_assoc, ← RingHom.map_mul, inv_mul_cancel₀ ha0, RingHom.map_one, mul_one]`. Rewrite using `[e]`.
-
-Conclude with `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ hc _ (smul_mem_latO_of_mem_hatMx hS ha hm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_latO_of_mem_hatMx' {D : D7} {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hS : IsSelfDualC S ΛS) {e : AE D}
@@ -59,13 +57,13 @@ end GlobalTheory.CosLatHalf
 open GlobalTheory.CosLatHalf Formalism.L2.DIV in
 
 /- English proof (translation)
-Introduce `D S T ΛS ΛT hS e P he hAA 𝔪 κ t ht`. Take `⟨hth, x₀, -, hd⟩` from `ht`. Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `hinf : infPart D e = 0` using `GlobalTheory.PlaceDatum.infPart_idemSum he`. Set `u : WO S T` to `Matrix.of fun i j => pairA D.host.F 0 1 ⊗ₜ[D.host.F] (x₀ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hu : u ∈ hatMx (homLat ΛS ΛT)` using `AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact (v.adicCompletionIntegers D.host.F).one_mem, x₀, x₀.2, rfl⟩`. Establish `heu : e • (x₀ : Matrix (Fin T.rank) (Fin S.rank) D.host.E).map (incA D) = e • u`. Use `Matrix.ext fun i j => GlobalTheory.SplitScalar.adele_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul, RingHom.map_mul, hinf, zero_mul]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, RingHom.map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hd' : t - e • (x₀ : Matrix (Fin T.rank) (Fin S.rank) D.host.E).map (incA D) ∈ hatMx (homLat ΛS ΛT)`. Use `AddSubgroup.closure_mono ?_ hd` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, x, hx, rfl⟩`. Conclude with `⟨α, hα, x, Submodule.smul_le_right hx, rfl⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `key : t = e • (t - e • (x₀ : Matrix (Fin T.rank) (Fin S.rank) D.host.E).map (incA D)) + e • u`. Rewrite using `[smul_sub, smul_smul, hee, heu, sub_add_cancel]`. Conclude with `Matrix.ext fun i j => (hth i j).symm`. Rewrite using `[key]`. Conclude with `add_mem (smul_mem_latO_of_mem_hatMx' hS he hAA hd') (smul_mem_latO_of_mem_hatMx' hS he hAA hu)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CosLatHalf.mem_latO_of_mem_cosSet : ∀ {D : D7} {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}, IsSelfDualC S ΛS → ∀ {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)}, IsIdemSum e P → (∀ w ∈ P, ∃ a ∈ D.host.AA, Valued.v ((algebraMap D.host.E (Kw w)) a) = 1) → ∀ {𝔪 : Ideal (𝓞 D.host.E)} (κ : Cos ΛS ΛT 𝔪) {t : WO S T}, t ∈ cosSet e κ → t ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True := by
   intro D S T ΛS ΛT hS e P he hAA 𝔪 κ t ht

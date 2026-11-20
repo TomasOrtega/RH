@@ -18,7 +18,7 @@ def Law (χ : Chr F E) (z : ℂ) (f : G2 σ Y → ℂ) : Prop :=
 variable {χ : Chr F E} {z : ℂ} {f : G2 σ Y → ℂ} {e : UA σ Y.J × UA σ Y.J →* G2 σ Y}
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `mem_parabolic_GL2_iff.1 a`. Take `⟨T, hT⟩` from `par_rat ht b`. Take `⟨u, hu⟩` from `det_rat hT`. Rewrite using `[h p t x ht, hu, hχ.2, GlobalTheory.Doubling.absE_inclR]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Law.rat (h : Law χ z f) (hχ : IsHecke F E χ) {p : G2 σ Y} (a : p ∈ par2 σ Y) (b : p ∈ rat2 σ Y) (x) : f (p * x) = f x := by
   obtain ⟨t, ht⟩ := mem_parabolic_GL2_iff.1 a
@@ -27,20 +27,20 @@ theorem Law.rat (h : Law χ z f) (hχ : IsHecke F E χ) {p : G2 σ Y} (a : p ∈
   rw [h p t x ht, hu, hχ.2, GlobalTheory.Doubling.absE_inclR]; simp
 
 /- English proof (translation)
-Rewrite using `[h _ _ x (he g g).par, absE_det hJ, detInv, mul_right_comm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Law.diag (h : Law χ z f) (hJ : Aniso σ Y.J) (he : ∀ h h', IsEmb h h' (e (h, h'))) (g : UA σ Y.J) (x) :
     f (e (g, g) * x) * detInv χ g = f x := by
   rw [h _ _ x (he g g).par, absE_det hJ, detInv, mul_right_comm]; simp
 
 /- English proof (translation)
-Set `i : ratU σ Y.J → Quotient (QuotientGroup.rightRel ((par2 σ Y).subgroupOf (rat2 σ Y)))` to `fun δ => Quotient.mk _ ⟨e (1, δ), (he _ _).rat (one_mem _) δ.2⟩`. Establish `hi : Function.Bijective i`. Use `⟨fun δ δ' h => ?_, fun q => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `mem_parabolic_GL2_iff.1 (Subgroup.mem_subgroupOf.1 (QuotientGroup.rightRel_apply.1 (Quotient.exact (s := QuotientGroup.rightRel ((par2 σ Y).subgroupOf (rat2 σ Y))) h)))`. Express the relevant statement in the definitionally equal form `IsPar (e (1, δ') * (e (1, δ))⁻¹) t at ht`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `ht` using `[← map_inv, ← map_mul, isPar_iff, he]`. Simplify using `only [diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul, Matrix.mul_one, Matrix.zero_mul, add_zero, zero_add, Matrix.one_mul] at ht`. Take `⟨a, b⟩` from `Matrix.fromRows_inj ht`. Establish `: (1 : UA σ Y.J) * 1⁻¹ = δ'.1 * δ.1⁻¹` using `Subtype.ext (Units.ext (a.trans b.symm))`. Rewrite `this` using `[inv_one, mul_one, eq_mul_inv_iff_mul_eq, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext this`. Take `⟨γ, rfl⟩` from `Quotient.exists_rep q`. Take `⟨δ, hδ, hp⟩` from `orbit hJ (γ⁻¹).2`. Use `⟨⟨δ, hδ⟩, (Quotient.sound (QuotientGroup.rightRel_apply.2 (Subgroup.mem_subgroupOf.2 ?_))).symm⟩` and prove the remaining obligations. Conclude with `hp _ (he _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Use `(Equiv.ofBijective i hi).hasSum_iff.2 hs using 2 with δ` and compare the differences between its conclusion and the goal. Use `QuotientGroup.rightRel_apply.1 (Quotient.exact (i δ).out_eq)` as an intermediate fact. Conclude with `Eq.trans (by simp [mul_assoc]) (h.rat hχ this (mul_mem ((he _ _).rat (one_mem _) δ.2) (inv_mem (i δ).out.2)) _)`.
+A detailed English derivation is pending.
 -/
 theorem Law.hasSum (h : Law χ z f) (hχ : IsHecke F E χ) (hJ : Aniso σ Y.J) (he : ∀ h h', IsEmb h h' (e (h, h'))) {x v}
     (hs : HasSum (eisTerm f x) v) : HasSum (fun δ : ratU σ Y.J => f (e (1, δ) * x)) v := by
@@ -67,9 +67,9 @@ theorem Law.hasSum (h : Law χ z f) (hχ : IsHecke F E χ) (hJ : Aniso σ Y.J) (
   exact Eq.trans (by simp [mul_assoc]) (h.rat hχ this (mul_mem ((he _ _).rat (one_mem _) δ.2) (inv_mem (i δ).out.2)) _)
 
 /- English proof (translation)
-Use `(h.hasSum hχ hJ he (hs _)).unique ?_` and prove the remaining obligations. Use `((Equiv.mulLeft (⟨γ, hγ⟩ : ratU σ Y.J)⁻¹).trans (Equiv.mulRight ⟨δ, hδ⟩)).hasSum_iff.2 (h.hasSum hχ hJ he (hs x))` as an intermediate fact. Use `this using 2 with η` and compare the differences between its conclusion and the goal. Use `h.diag hJ he γ (e (1, γ⁻¹ * η * δ) * x)` as an intermediate fact. Rewrite `this` using `[detInv_rat hχ hγ, mul_one, ← mul_assoc, ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← map_mul]`. Simplify `this` using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Law.eis_inv (h : Law χ z f) (hχ : IsHecke F E χ) (hJ : Aniso σ Y.J) (he : ∀ h h', IsEmb h h' (e (h, h')))
     {Ê : G2 σ Y → ℂ} (hs : ∀ x, HasSum (eisTerm f x) (Ê x)) {γ δ : UA σ Y.J} (hγ : γ ∈ ratU σ Y.J) (hδ : δ ∈ ratU σ Y.J) (x) :
@@ -83,7 +83,7 @@ theorem Law.eis_inv (h : Law χ z f) (hχ : IsHecke F E χ) (hJ : Aniso σ Y.J) 
   simpa [mul_assoc] using this
 
 /- English proof (translation)
-Use `haveI : Countable E := Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.toEquiv.symm`. Use `haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))`. Use `haveI : Countable (GL (Fin n) E) := Units.val_injective.countable`. Conclude with `(Set.countable_range (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F)))).preimage Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem countable_ratU : Countable (ratU σ Y.J) := by
   haveI : Countable E := Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.toEquiv.symm
@@ -93,13 +93,13 @@ theorem countable_ratU : Countable (ratU σ Y.J) := by
     Subtype.val_injective
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n Y r s hB hY h0 χ e hχ he f Ê z _ _ hs hf μ D hμ hD hi φ hφ h`. Establish `hJ` using `aniso_of hB hY h0`. Use `haveI := countable_ratU (σ := σ) (Y := Y)`. Use `haveI : BorelSpace (UA σ Y.J) := ⟨rfl⟩`. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `hφ.2.2 0`. Set `k : UA σ Y.J → ℂ` to `fun g => f (e (1, g)) * (detInv χ g * φ (h * g))`. Establish `ik : Integrable k μ` using `hi.mul_bdd (c := C) ((continuous_detInv hχ).mul (hφ.1.comp (continuous_const_mul h))).aestronglyMeasurable (.of_forall fun g => by simpa [norm_detInv] using hC (h * g))`. Use `An.unfold hD (ik.comp_mul_left h⁻¹)` as an intermediate fact. Rewrite `this` using `[integral_mul_left_eq_self k]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_assoc]`. Use `Eq.trans (integral_congr_ae (.of_forall fun g => ?_)) this` and prove the remaining obligations. Use `(((Law.hasSum hf hχ hJ he (hs _)).mul_right _).tsum_eq.symm).trans (tsum_congr fun δ => ?_)` and prove the remaining obligations. Simplify using `only [k]`. Rewrite using `[← Law.diag hf hJ he h (e _), ← map_mul, ← map_mul, detInv_mul, detInv_mul, detInv_rat hχ δ.2, mul_inv_cancel_left, hφ.2.1 _ δ.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `: detInv χ h * detInv χ h⁻¹ = 1` using `by rw [← detInv_mul, mul_inv_cancel, detInv_rat hχ (one_mem _)]`. Simplify using `only [Prod.mk_mul_mk, one_mul, mul_one, mul_inv_cancel_left]`. Take the linear combination `(-(f (e (h, δ * g)) * detInv χ g * φ g)) * this`.
+A detailed English derivation is pending.
 -/
 theorem unfold0 : Unfold0 := by
   intro F E _ _ _ _ _ σ B n Y r s hB hY h0 χ e hχ he f Ê z _ _ hs hf μ D hμ hD hi φ hφ h

@@ -24,19 +24,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace StdExProof
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.padic_residueField_card_and_prime_irreducible T`.
+A detailed English derivation is pending.
 -/
 theorem qt_facts (T : ℕ) [Fact T.Prime] : Nat.card 𝓀[ℚ_[T]] = T ∧ Irreducible ((T : 𝒪[ℚ_[T]])) := GlobalTheory.T.padic_residueField_card_and_prime_irreducible T
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.not_sq_dvd_of_rationalPrimeSplitsCompletely E T hT hs w hw`.
+A detailed English derivation is pending.
 -/
 theorem not_sq_dvd (E : Type) [Field E] [NumberField E] (T : ℕ) (hT : T.Prime) (hs : GlobalTheory.St.G.SplitsIn E T)
     (w : HeightOneSpectrum (𝓞 E)) (hw : (T : 𝓞 E) ∈ w.asIdeal) : ¬ w.asIdeal ^ 2 ∣ Ideal.span {(T : 𝓞 E)} :=
   GlobalTheory.T.not_sq_dvd_of_rationalPrimeSplitsCompletely E T hT hs w hw
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.places_dvd_norm_iff_under_primes_dvd D π π' T hπ' hT hne x`.
+A detailed English derivation is pending.
 -/
 theorem places_over (D : D7) (π π' : 𝓞 D.host.E) (T : ℕ) (hπ' : (π' : D.host.E) = star (π : D.host.E))
     (hT : π * π' = (T : 𝓞 D.host.E)) (hne : π ≠ 0) (x : HeightOneSpectrum (𝓞 D.host.F)) :
@@ -46,7 +46,7 @@ theorem places_over (D : D7) (π π' : 𝓞 D.host.E) (T : ℕ) (hπ' : (π' : D
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h1 : IsIntegral ℤ (p.pr (incA D (x : D.host.E)))` using `(x.2).map ((p.pr.comp (incA D)).toIntAlgHom)`. Establish `h2 : IsIntegral 𝒪[k] (p.pr (incA D (x : D.host.E)))` using `h1.tower_top`. Conclude with `(Valuation.integer.integers (valuation k)).mem_of_integral h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pr_int (p : SplitPt D k) (x : 𝓞 D.host.E) : p.pr (incA D (x : D.host.E)) ∈ 𝒪[k] := by
   have h1 : IsIntegral ℤ (p.pr (incA D (x : D.host.E))) := (x.2).map ((p.pr.comp (incA D)).toIntAlgHom)
@@ -54,13 +54,13 @@ theorem pr_int (p : SplitPt D k) (x : 𝓞 D.host.E) : p.pr (incA D (x : D.host.
   exact (Valuation.integer.integers (valuation k)).mem_of_integral h2
 
 /- English proof (translation)
-Establish `hy0 : y ≠ 0` using `fun h => hy (h ▸ w.asIdeal.zero_mem)`. Establish `hyE : (y : D.host.E) ≠ 0` using `by exact_mod_cast hy0`. Establish `hI : finPart D (p.e * incA D ((y : D.host.E))⁻¹) ∈ intAE D` using `not_not.1 (mt (hw.2 y hy0).2 hy)`. Establish `h1 : p.pr (incA D ((y : D.host.E))⁻¹) ∈ 𝒪[k]`. Rewrite using `[p.int_iff, p.sec_pr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hI`. Establish `h2` using `pr_int p y`. Establish `hmul : p.pr (incA D (y : D.host.E)) * p.pr (incA D ((y : D.host.E))⁻¹) = 1`. Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel₀ hyE, map_one, map_one]`. Establish `e1 : valuation k (p.pr (incA D (y : D.host.E))) ≤ 1` using `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : valuation k (p.pr (incA D ((y : D.host.E))⁻¹)) ≤ 1` using `h1`. Establish `e3` using `congrArg (valuation k) hmul`. Rewrite `e3` using `[map_mul, map_one]`. Use `le_antisymm e1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hlt`. Establish `: valuation k (p.pr (incA D (y : D.host.E))) * valuation k (p.pr (incA D ((y : D.host.E))⁻¹)) < 1` using `mul_lt_one_of_lt_of_le hlt e2`. Rewrite `this` using `[e3]`. Conclude with `lt_irrefl _ this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_pr_eq_one (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : Formalism.L2.NTheta.IsIdemAt p.e w)
     (y : 𝓞 D.host.E) (hy : y ∉ w.asIdeal) : valuation k (p.pr (incA D (y : D.host.E))) = 1 := by
@@ -85,9 +85,9 @@ theorem val_pr_eq_one (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)} 
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Introduce `x`. Establish `hL' : ∀ z : Fin S.rank → D.host.E, z ∈ L ↔ ∀ i, ∃ b : 𝓞 D.host.E, (b : D.host.E) = z i` using `fun z => by`. Rewrite using `[hL z]`. Conclude with `⟨fun h i => ⟨⟨z i, h i⟩, rfl⟩, fun h i => by obtain ⟨b, hb⟩ := h i; exact hb ▸ b.2⟩`. Rewrite using `[hb, Matrix.one_mulVec, GlobalTheory.FinPl.Model.mem_latV_std S L hL' p.v, mem_stdLat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[p.int_iff]`. Conclude with `⟨fun h => ⟨GlobalTheory.FinPl.FrameLat.sec_mem_idAt p _, h⟩, fun h => h.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isLat_std (p : SplitPt D k) (S : HSp D) (β : Frame p S (Fin S.rank)) (hb : β.b = 1) (L : Lat S)
     (hL : ∀ z, z ∈ L ↔ z ∈ intVec D _) : β.IsLat L (stdLat k (Fin S.rank)) := by
@@ -107,7 +107,7 @@ def scPair (c : 𝒪[k]) (hc : IsUnit c) {n : Type} [Fintype n] (i : n) : Pair k
   fn_ne h := (stdPair k i).fn_ne (LinearMap.ext fun x => (hc.smul_eq_zero).1 (LinearMap.congr_fun h x))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mem_stdLat.2 hx, by show c • residue 𝒪[k] ⟨x i, _⟩ = _ rw [map_mul, Algebra.smul_def]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem scPair_hasVal (c : 𝒪[k]) (hc : IsUnit c) {n : Type} [Fintype n] (i : n) (x : n → k) (hx : ∀ j, x j ∈ 𝒪[k]) :
     (scPair c hc i).HasVal x (residue 𝒪[k] (c * ⟨x i, hx i⟩)) :=
@@ -122,41 +122,35 @@ namespace GlobalTheory.AdForm.StdExProof
 open GlobalTheory.AdForm
 
 /- English proof (translation)
-Introduce `B X I hI _hP l Z u ψ hψ L hL`. Use `haveI hTf : Fact (B.T u).Prime := ⟨l.pr.T_prime u⟩`. Take `⟨hcard, hirr⟩` from `qt_facts (B.T u)`. Establish `hcop : IsCoprime (X.piT u) (B.fields.conjO (X.piT u))` using `l.pr.piT_cop u`. Establish `hne : X.piT u ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `hcop` using `[h0, map_zero, isCoprime_zero_left]`. Conclude with `not_isUnit_zero hcop`. Establish `hmem : ∀ i : (B.primes X).vT u, X.piT u ∈ i.1.asIdeal` using `fun i => (Formalism.L2.Col.mem_divs hne _).1 i.2`. Establish `hconj : ∀ i : (B.primes X).vT u, B.fields.conjO (X.piT u) ∉ i.1.asIdeal`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `i hc`. Take `⟨a, b, hab⟩` from `hcop`. Conclude with `i.1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ i.1.asIdeal.add_mem (Ideal.mul_mem_left _ a (hmem i)) (Ideal.mul_mem_left _ b hc)))`. Establish `hcP : ∀ i : (B.primes X).vT u, GlobalTheory.IdemSupport.cP (D` using `I.rec7 l Z) i.1 ≠ i.1 := by`. Introduce `i h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hconj i` to reduce the goal to its premises. Establish `h1 : X.piT u ∈ (GlobalTheory.IdemSupport.cP (D` using `I.rec7 l Z) i.1).asIdeal := by rw [h]; exact hmem i`. Establish `h2` using `(GlobalTheory.IdemSupport.mem_cP (D := I.rec7 l Z) i.1 (X.piT u)).1 h1`. Establish `h3 : B.fields.conjO (X.piT u) = GlobalTheory.IdemSupport.cO (I.rec7 l Z) (X.piT u)` using `RingOfIntegers.ext rfl`. Rewrite using `[h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2`. Use `choose e he using fun i : (B.primes X).vT u => GlobalTheory.StdFrames.exists_isIdemAt (hcP i)`. Establish `hsplitT` using `(GlobalTheory.St.G.record_facts (I.rec7 l Z) u).1`. Establish `hsp : ∀ i : (B.primes X).vT u, ∃ p : SplitPt (I.rec7 l Z) ℚ_[B.T u], p.e = e i` using `fun i => (GlobalTheory.InhPt.exists_splitPt_frame_char (I.rec7 l Z)).1 ℚ_[B.T u] (B.T u) hTf.out hcard hirr i.1 (e i) (he i) (he i).1 (l.pr.vT_norm u _ i.2) (not_sq_dvd _ (B.T u) hTf.out hsplitT i.1 (by`. Establish `h` using `Ideal.mul_mem_right (B.fields.conjO (X.piT u)) _ (hmem i)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[l.pr.piT_norm u]`. Conclude with `h))`. Use `choose p hpe using hsp`. Establish `hidem : ∀ i, Formalism.L2.NTheta.IsIdemAt (p i).e i.1` using `fun i => (hpe i).symm ▸ he i`. Set `wE : (B.primes X).vT u → HeightOneSpectrum (𝓞 (I.rec7 l Z).host.E)` to `fun i => i.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ i : (B.primes X).vT u, HeightOneSpectrum.under (𝓞 (I.rec7 l Z).host.F) (wE i) = (p i).v`. Introduce `i`. Take `⟨ε, h1, h2⟩` from `(p i).above`. Conclude with `GlobalTheory.IdemUnder.under_eq_of_isIdemAt _ _ _ _ ε (hidem i) h1 h2`. Establish `hover` using `fun x => places_over (I.rec7 l Z) (X.piT u) (B.fields.conjO (X.piT u)) (B.T u) rfl (l.pr.piT_norm u) hne x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTv : ∀ i, ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∈ (p i).v.asIdeal` using `fun i => (hover (p i).v).2 ⟨wE i, i.2, hv i⟩`. Establish `hunit : ∀ i, (p i).UnitAA` using `fun i => GlobalTheory.FinPl.UnitAt.unitAA_level I l Z u (p i) (hTv i)`. Establish `hpart2` using `fun i => (GlobalTheory.InhPt.exists_splitPt_frame_char (I.rec7 l Z)).2 ℚ_[B.T u] (p i)`. Use `choose χ hχ using fun i => (hpart2 i).2 ψ hψ`. Use `choose β hβ using fun j i => (hpart2 i).1 ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank) 1 1 (mul_one 1) (mul_one 1)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Establish `hβ' : ∀ j i, (β j i).b' = 1` using `fun j i => by`. Use `(β j i).bb'` as an intermediate fact. Rewrite `this` using `[hβ j i, one_mul]`. Then use the resulting hypothesis. Establish `hrank : ∀ j, 0 < ((I.rec7 l Z).sp.X j).rank`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨hs, h1, -⟩` from `hI.spaces`. Rewrite using `[show (I.rec7 l Z).sp.X j = B.sp.X j from rfl, h1 j]`. Use `show 0 < B.R.k + j * (B.R.t + 1)`. Use `B.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c : (B.primes X).vT u → 𝒪[ℚ_[B.T u]]` to `fun i => ⟨(p i).pr (incA (I.rec7 l Z) (B.fields.conjO (X.piT u) : B.fields.E)), pr_int (p i) (B.fields.conjO (X.piT u))⟩`. Establish `hcv : ∀ i, valuation ℚ_[B.T u] ((p i).pr (incA (I.rec7 l Z) (B.fields.conjO (X.piT u) : B.fields.E))) = 1` using `fun i => val_pr_eq_one (p i) (hidem i) (B.fields.conjO (X.piT u)) (hconj i)`. Establish `hc : ∀ i, IsUnit (c i)` using `fun i => (Valuation.integer.integers (valuation ℚ_[B.T u])).isUnit_iff_valuation_eq_one.2 (hcv i)`. Set `last : ∀ j, Fin ((I.rec7 l Z).sp.X j).rank` to `fun j => ⟨((I.rec7 l Z).sp.X j).rank - 1, by have := hrank j; omega⟩`. Set `Q : ∀ j, (B.primes X).vT u → Pair ℚ_[B.T u] (Fin ((I.rec7 l Z).sp.X j).rank)` to `fun j i => scPair (c i) (hc i) (last j)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hStd : StdT I l Z u p β Q L`. Use `⟨⟨Equiv.refl _, fun i => hidem i⟩, fun j hj => ⟨hL j hj, fun i => ⟨isLat_std (p i) _ (β j i) (hβ j i) (L j) (hL j hj), ?_⟩⟩⟩` and prove the remaining obligations. Introduce `z hz r hr`. Establish `hz' : ∀ r', IsIntegral ℤ (z r')` using `(hL j hj z).1 hz`. Establish `hx : ∀ r', (p i).pr (incA (I.rec7 l Z) (z r')) ∈ 𝒪[ℚ_[B.T u]]` using `fun r' => pr_int (p i) ⟨z r', hz' r'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hrl : r = last j` using `Fin.ext (by show r.1 = _ - 1; omega)`. Substitute `hrl` using the available equality. Use `⟨c i * ⟨_, hx (last j)⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show (p i).pr (incA (I.rec7 l Z) (B.fields.conjO (X.piT u) : B.fields.E)) * (p i).pr (incA (I.rec7 l Z) (z (last j))) = _`. Rewrite using `[← map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (map_mul _ _ _).symm`. Rewrite using `[hβ' j i, Matrix.one_mulVec]`. Conclude with `scPair_hasVal (c i) (hc i) (last j) _ hx`. Use `⟨ℚ_[B.T u], inferInstance, inferInstance, inferInstance, inferInstance, (B.primes X).vT u, p, Finset.univ.toList, ⟨(B.T u : 𝒪[ℚ_[B.T u]]), hirr⟩, χ, β, Q, ⟨Finset.nodup_toList _, fun i => Finset.mem_toList.2 (Finset.mem_univ _), GlobalTheory.AdForm.StdT.places_injective I hI _hP …` and prove the remaining obligations. Establish `hm : (p i).pr (incA (I.rec7 l Z) (X.piT u : B.fields.E)) * (p i).pr (incA (I.rec7 l Z) (B.fields.conjO (X.piT u) : B.fields.E)) = (B.T u : ℚ_[B.T u])`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `: ((X.piT u : B.fields.E) * (B.fields.conjO (X.piT u) : B.fields.E)) = ((B.T u : ℕ) : B.fields.E)`. Conclude with `congrArg (fun x : 𝓞 B.fields.E => (x : B.fields.E)) (l.pr.piT_norm u)` after adjusting the coercions. Establish `h2 : (p i).pr (incA (I.rec7 l Z) (X.piT u : B.fields.E)) * (p i).pr (incA (I.rec7 l Z) (B.fields.conjO (X.piT u) : B.fields.E)) = (p i).pr (incA (I.rec7 l Z) (((B.T u : ℕ) : B.fields.E)))`. Rewrite using `[← map_mul, ← this]`. Conclude with `congrArg _ (map_mul _ _ _).symm`.
-
-Rewrite using `[h2]`. Conclude with `map_natCast ((p i).pr.comp (incA (I.rec7 l Z))) (B.T u)`. Establish `hv2` using `congrArg (valuation ℚ_[B.T u]) hm`. Rewrite `hv2` using `[map_mul, hcv i, mul_one]`. Rewrite using `[hv2]`.
-
-Both sides reduce to the same expression. Rewrite using `[hover x]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨wE i, i.2, hv i⟩`.
-
-Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `⟨⟨w, hw⟩, hv ⟨w, hw⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem stdEx' : StdEx' := by
   intro B X I hI _hP l Z u ψ hψ L hL

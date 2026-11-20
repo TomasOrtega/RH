@@ -21,7 +21,7 @@ def ev (t : Fin s → Fˣ) : AddMonoidAlgebra F (Fin s → ℤ) →ₐ[F] F :=
   AddMonoidAlgebra.lift F F (Fin s → ℤ) (chi t)
 
 /- English proof (translation)
-Rewrite using `[ev, AddMonoidAlgebra.lift_single]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_single (t : Fin s → Fˣ) (a : Fin s → ℤ) (c : F) :
     ev t (AddMonoidAlgebra.single a c) = c * ((∏ j, t j ^ a j : Fˣ) : F) := by
@@ -34,9 +34,9 @@ def univ (F : Type) [Field F] (s : ℕ) (j : Fin s) : (AddMonoidAlgebra F (Fin s
   inv_val := by rw [AddMonoidAlgebra.single_mul_single]; simp [AddMonoidAlgebra.one_def]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ev t (AddMonoidAlgebra.single (Pi.single j 1) 1) = _`. Rewrite using `[ev_single, one_mul, Finset.prod_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_univ (t : Fin s → Fˣ) (j : Fin s) :
     Units.map (ev t : AddMonoidAlgebra F (Fin s → ℤ) →* F) (univ F s j) = t j := by
@@ -48,11 +48,11 @@ theorem map_univ (t : Fin s → Fˣ) (j : Fin s) :
   · simp
 
 /- English proof (translation)
-Establish `hadd : ∀ x y : E ⊗[F] AddMonoidAlgebra F (Fin s → ℤ), (∃ c : (Fin s → ℤ) →₀ E ⊗[F] F, ∀ t : Fin s → Fˣ, Algebra.TensorProduct.map (AlgHom.id F E) (ev t) x = c.sum fun a y => ((∏ j, t j ^ a j : Fˣ) : F) • y) → (∃ c : (Fin s → ℤ) →₀ E ⊗[F] F, ∀ t : Fin s → Fˣ, Algebra.TensorProduct …`. Introduce and unpack `x y ⟨c, hc⟩ ⟨d, hd⟩`. Use `⟨c + d, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hc, hd, Finsupp.sum_add_index' (by simp) (by simp [smul_add])]`. Proceed by induction on `x with`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `zero => exact ⟨0, fun t => by simp⟩`. Consider the case `add x y hx hy => exact hadd x y hx hy`. Consider the case `tmul e p`. Proceed by induction on `p using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => exact ⟨0, fun t => by simp⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `add p q hp hq => rw [TensorProduct.tmul_add]`. Conclude with `hadd _ _ hp hq`. Consider the case `single a c`. Use `⟨Finsupp.single a (e ⊗ₜ c), fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (by simp), Algebra.TensorProduct.map_tmul, ev_single, AlgHom.id_apply, mul_comm, ← smul_eq_mul, TensorProduct.tmul_smul]`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coeff {E : Type} [CommRing E] [Algebra F E]
     (x : E ⊗[F] AddMonoidAlgebra F (Fin s → ℤ)) :
@@ -91,11 +91,11 @@ namespace GlobalTheory.RegSS
 open Laurent
 
 /- English proof (translation)
-Introduce `F E _ _ _ n _ _ σ J γ s A`. Use `choose c hc using fun i j : n => exists_coeff (F := F) (s := s) ((A.hom _ (univ F s) : Matrix n n (E ⊗[F] AddMonoidAlgebra F (Fin s → ℤ))) i j)`. Use `⟨Finset.univ.biUnion fun p : n × n => (c p.1 p.2).support, fun a => Matrix.of fun i j => c i j a, fun t => ?_⟩` and prove the remaining obligations. Establish `h` using `A.natural _ F (ev t) (univ F s)`. Simplify using `only [map_univ] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `h2 : (A.hom F t : Matrix n n (E ⊗[F] F)) i j = Algebra.TensorProduct.map (AlgHom.id F E) (ev t) ((A.hom _ (univ F s) : Matrix n n (E ⊗[F] AddMonoidAlgebra F (Fin s → ℤ))) i j)`. Rewrite using `[h]`. Both sides reduce to the same expression. Rewrite using `[h2, hc, Matrix.sum_apply, Finsupp.sum_of_support_subset _ (Finset.subset_biUnion_of_mem (fun p : n × n => (c p.1 p.2).support) (Finset.mem_univ (i, j))) _ (by simp)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem subtorusLaurent : SubtorusLaurent := by
   intro F E _ _ _ n _ _ σ J γ s A

@@ -4,19 +4,17 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hA h`. Set `p : V →ₗ[K] V` to `U.subtype ∘ₗ Submodule.linearProjOfIsCompl U U' h`. Set `q : V →ₗ[𝓞 K] V` to `p.restrictScalars (𝓞 K)`. Establish `hpU : ∀ x, p x ∈ U` using `fun x => (Submodule.linearProjOfIsCompl U U' h x).2`. Establish `hpl : ∀ x ∈ U, p x = x` using `fun x hx => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left h ⟨x, hx⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpr : ∀ x ∈ U', p x = 0` using `fun x hx => by`. Use `(Submodule.linearProjOfIsCompl_apply_eq_zero_iff h).2 hx` as an intermediate fact. Use `show ((Submodule.linearProjOfIsCompl U U' h x : U) : V) = 0`. Conclude with `congrArg Subtype.val this`. Establish `hsub : ∀ x, x - p x ∈ U'` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.linearProjOfIsCompl_apply_eq_zero_iff h]`. Establish `h1 : p (x - p x) = 0` using `by rw [map_sub, hpl _ (hpU x), sub_self]`. Establish `h2 : ((Submodule.linearProjOfIsCompl U U' h (x - p x) : U) : V) = 0` using `h1`. Conclude with `h2` after adjusting the coercions. Establish `heq : U.restrictScalars (𝓞 K) ⊓ (A ⊔ U'.restrictScalars (𝓞 K)) = A.map q`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxU, hx⟩`. Take `⟨a, ha, u, hu, rfl⟩` from `Submodule.mem_sup.1 hx`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `p a = a + u`. Establish `e1 : p (a + u) = a + u` using `hpl _ hxU`. Rewrite `e1` using `[map_add, hpr u hu, add_zero]`. Conclude with `e1`. Introduce and unpack `⟨a, ha, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨hpU a, ?_⟩` and prove the remaining obligations. Use `Submodule.mem_sup.2 ⟨a, ha, p a - a, ?_, by abel⟩` and prove the remaining obligations. Use `U'.neg_mem (hsub a)` as an intermediate fact. Simplify using `using this`. Rewrite using `[heq]`.
-
-Conclude with `hA.map q`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_inf_sup_of_isCompl (K V : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (A : Submodule (𝓞 K) V) (U U' : Submodule K V) :

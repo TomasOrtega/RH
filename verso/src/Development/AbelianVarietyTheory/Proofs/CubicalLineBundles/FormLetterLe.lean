@@ -17,9 +17,9 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Establish `hp : IsPolFibre (algebraMap (𝓞 K) K) A x.P φ` using `(isFibreOf_iff_isPolFibre (𝓞 K) K (algebraMap (𝓞 K) K) A x φ).1 hx`. Take `⟨h, H⟩` from `(GlobalTheory.CM.LieMetric.exists_unique_isHerm hU hL K A (GenFib.mk x.P φ hp x.v x.basis)).1`. Establish `hg : IsMonHom (oa.act a)` using `oa.hom a`. Take `⟨w, hw1, hw2⟩` from `hT a i`. Establish `h1` using `GlobalTheory.T.hermitianLength_image_eigenBasisVector_le hU hL K A B (GenFib.mk x.P φ hp x.v x.basis) F' h h' f (oa.act a) H H' hf hg (lamEq_of_weilIs_all_points hL K A B f (oa.act a) hf hg hW) i _ w U w' hw1 hw2 hw e s`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.CM.LieMetric.vecLine_norm_sq_eq_form hU hL K A x φ hp h H i ℓ hℓ s`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[mul_pow]`. Use `le_trans (le_of_eq (congrArg _ h2.symm)) ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (hb (s.comp (lab (τ i)))) (sq_nonneg _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem form_letter_le (hU : ThetaUnifAV) (hL : Out.Laws) {E : Type} [Field E] [NumberField E] [IsCMField E]
     [StarRing (𝓞 E)] {K : Type} [Field K] [NumberField K] {S : Set (E →+* ℂ)}
@@ -48,15 +48,15 @@ theorem form_letter_le (hU : ThetaUnifAV) (hL : Out.Laws) {E : Type} [Field E] [
   exact mul_le_mul_of_nonneg_right (hb (s.comp (lab (τ i)))) (sq_nonneg _)
 
 /- English proof (translation)
-Introduce `hU hL E _ _ _ _ H l c _ nΨ n' f o La hG L hLg σ`. Take `⟨-, -, -, hB, hΨ, hA', -, -, -, tΨ, t', -, -, hI, hP, hb, vΨ, v', -, hgood, -, harch, -⟩` from `hG`. Establish `hp : IsPolFibre (algebraMap (𝓞 o.K₁) o.K₁) o.B o.xB.P o.φB` using `(isFibreOf_iff_isPolFibre (𝓞 o.K₁) o.K₁ (algebraMap (𝓞 o.K₁) o.K₁) o.B o.xB o.φB).1 hB`. Take `⟨h, Hh⟩` from `(GlobalTheory.CM.LieMetric.exists_unique_isHerm hU hL o.K₁ o.B (GenFib.mk o.xB.P o.φB hp o.xB.v o.xB.basis)).1`. Take `⟨g1, g2⟩` from `gram_stdBasis_posDef_and_hq o.K₁ o.xB.P.g h σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨_, g1, ?_, fun k => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.topLieVector_norm_sq_eq_gramDet hU hL o.K₁ o.B o.xB o.φB hp h Hh o.Tl o.LamL σ (harch σ)` as an intermediate fact. Conclude with `((congrArg Real.sqrt this).symm.trans (Real.sqrt_sq (hgood.2 σ).le)).symm`. Rewrite using `[g2]`. Take `⟨w, hw1, hw2⟩` from `hLg.2.2.1 k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4` using `hLg.2.2.2 k`. Unfold `LamLetters.IsLetter at hw1`. Consider the cases of `hs : L.src k with`. Consider the case `inl q`. Rewrite `hw1`, `h4` using `[hs]`.
+Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only at hw1 h4`. Rewrite using `[h4]`. Conclude with `form_letter_le hU hL o.AΨ o.B o.oaΨ o.xΨ o.φΨg (S := psiSet H) o.τΨ _ hΨ tΨ (GenFib.mk o.xB.P o.φB hp o.xB.v o.xB.basis) h Hh (o.φΨ q.1) (hI.1 _) (o.hΨ q.1) (hP.2.2.1 q.1) La (hb.1 q.1) q.2 _ (vΨ q.2) _ w hw2 hw1 σ`. Consider the case `inr q`. Rewrite `hw1`, `h4` using `[hs]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at hw1 h4`. Rewrite using `[h4]`. Conclude with `form_letter_le hU hL o.A' o.B o.oa' o.x' o.φ'g (S := (psiSet H)ᶜ) o.τ' _ hA' t' (GenFib.mk o.xB.P o.φB hp o.xB.v o.xB.basis) h Hh (o.φ' q.1) (hI.2.1 _) (o.h' q.1) (hP.2.2.2 q.1) La (hb.2 q.1) q.2 _ (v' q.2) _ w hw2 hw1 σ`.
+A detailed English derivation is pending.
 -/
 theorem lamLen : ThetaUnifAV → Out.Laws → LamLenSt := by
   intro hU hL E _ _ _ _ H l c _ nΨ n' f o La hG L hLg σ

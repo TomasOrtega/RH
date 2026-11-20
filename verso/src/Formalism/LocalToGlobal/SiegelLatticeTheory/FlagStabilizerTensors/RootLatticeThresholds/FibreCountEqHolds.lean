@@ -17,9 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {X : HidaSetting D} {Y : Formalism.L2.SG.Full.Full X} {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Take `⟨γ, rfl⟩` from `Formalism.L2.SG.Pf.KernelOfEmbedding.fib_gam hN h`. Use `⟨Formalism.L2.SG.Pf.KernelOfEmbedding.act Y ⟨l₁.lam', l₁.mem'⟩ γ l₂, Formalism.L2.SG.Pf.KernelOfEmbedding.toTerm_act _ _ _, ?_⟩` and prove the remaining obligations. Establish `hl` using `Formalism.L2.SG.Pf.KernelOfEmbedding.lam_eq_of_row hrow`. Establish `i1` using `Formalism.L2.SG.Pf.KernelOfEmbedding.iota_act hIR ⟨l₁.lam', l₁.mem'⟩ γ l₁ rfl`. Establish `i2` using `Formalism.L2.SG.Pf.KernelOfEmbedding.iota_act hIR ⟨l₁.lam', l₁.mem'⟩ γ l₂ hl.2.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hι : iotaOf Y.TR (Y.cs u) (Y.cs u') l₁ = iotaOf Y.TR (Y.cs u) (Y.cs u') l₂` using `congrArg (fun r => r.2.2) hrow`. Unfold `rowOf`. Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq]`. Conclude with `⟨hl.1, hl.2, by rw [i1, i2, hι]⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem partner (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u' Y.hK) (hIR : Formalism.L2.SG.Pf.SatGramRep.IotaRepC)
     {l₁ l₂ s₁ : TT Y u u'} (hrow : rowOf Y.TR (Y.cs u) (Y.cs u') l₁ = rowOf Y.TR (Y.cs u) (Y.cs u') l₂)
@@ -38,15 +38,15 @@ theorem partner (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u' Y.hK) (hIR : 
   exact ⟨hl.1, hl.2, by rw [i1, i2, hι]⟩
 
 /- English proof (translation)
-Introduce `u u' q`. Set `_` to `hF.fibFT q.1.1`. Set `_` to `hF.fibFT q.1.2`. Take `⟨l₁, l₂, hrow⟩` from `q.2`. Establish `hinner : ∀ r₁ : fib Y q.1.1, ∑ r₂ : fib Y q.1.2, (if Formalism.L2.SG.Pf.KernelOfEmbedding.row Y r₁.1 = Formalism.L2.SG.Pf.KernelOfEmbedding.row Y r₂.1 then Formalism.MainNotions.S.wRow D (X.Fu u') r₁.1.lam' else 0) = Formalism.MainNotions.S.wRow D (X.Fu u') r₁.1.lam'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `r₁`. Take `⟨s₂, hs₂t, hs₂r⟩` from `partner (hN u') hIR hrow (l₁.2.trans r₁.2.symm)`. Establish `hs₂ : s₂.toTerm = q.1.2` using `hs₂t.trans l₂.2`. Use `(Finset.sum_eq_single (s := (Finset.univ : Finset (fib Y q.1.2))) (show fib Y q.1.2 from ⟨s₂, hs₂⟩) (fun b _ hb => ?_) (fun hb => absurd (Finset.mem_univ _) hb)).trans (if_pos hs₂r)` and prove the remaining obligations. Use `if_neg (fun hrb => hb (Subtype.ext ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hRF u u' b.1 s₂ (b.2.trans hs₂.symm) (hrb.symm.trans hs₂r)`. Establish `hlam : ∀ r₁ : fib Y q.1.1, r₁.1.lam' = l₁.1.lam'` using `fun r₁ => Formalism.L2.SG.Pf.FibreCounting.lam'_eq (r₁.2.trans l₁.2.symm)`. Establish `hsum : ∑ r₁ : fib Y q.1.1, ∑ r₂ : fib Y q.1.2, (if Formalism.L2.SG.Pf.KernelOfEmbedding.row Y r₁.1 = Formalism.L2.SG.Pf.KernelOfEmbedding.row Y r₂.1 then Formalism.MainNotions.S.wRow D (X.Fu u') r₁.1.lam' else 0) = (Fintype.card (fib Y q.1.1) : ℝ) * Formalism.MainNotions.S.wRow D …`. Rewrite using `[Finset.sum_congr rfl (fun r₁ _ => (hinner r₁).trans (by rw [hlam r₁])), Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[Fintype.sum_prod_type]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hsum.trans ?_` and prove the remaining obligations. Take `⟨f, hf⟩` from `Formalism.L2.SG.Pf.FibreCounting.fib_bij (hN u') l₁.1`. Establish `hcard : Fintype.card (fib Y q.1.1) = Nat.card ↥(autLz D (X.Fu u') l₁.1.lam')`. Rewrite using `[← Nat.card_eq_fintype_card]`. Establish `e1 : fib Y q.1.1 ≃ {s : TT Y u u' // s.toTerm = l₁.1.toTerm}` using `Equiv.subtypeEquivRight (fun s => by rw [l₁.2])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Nat.card_congr e1).trans (Nat.card_congr (Equiv.ofBijective f hf))`. Establish `hpos : 0 < Fintype.card (fib Y q.1.1)` using `Fintype.card_pos_iff.2 ⟨l₁⟩`. Unfold `Formalism.MainNotions.S.wRow`. Rewrite using `[← hcard]`. Conclude with `mul_inv_cancel₀ (Nat.cast_ne_zero.2 hpos.ne')`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreCountEq_of (hF : FinX Y) (hN : ∀ u' : D.what₂.Word, Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u' Y.hK)
     (hIR : Formalism.L2.SG.Pf.SatGramRep.IotaRepC) (hRF : Formalism.L2.SG.Pf.FibreCounting.RowFree Y) :
@@ -86,14 +86,14 @@ theorem fibreCountEq_of (hF : FinX Y) (hN : ∀ u' : D.what₂.Word, Formalism.L
   exact mul_inv_cancel₀ (Nat.cast_ne_zero.2 hpos.ne')
 
 /- English proof (translation)
-The claim follows from `fibreCountEq_of hF (fun u' => Formalism.L2.SG.Closed.NeatKu_holds X u' Y.hK) hIR hRF`.
+A detailed English derivation is pending.
 -/
 theorem fibreCountEq_of' (hF : FinX Y) (hIR : Formalism.L2.SG.Pf.SatGramRep.IotaRepC) (hRF : Formalism.L2.SG.Pf.FibreCounting.RowFree Y) :
     Formalism.L2.SG.Pf.KernelOfEmbedding.FibreCountEq hF :=
   fibreCountEq_of hF (fun u' => Formalism.L2.SG.Closed.NeatKu_holds X u' Y.hK) hIR hRF
 
 /- English proof (translation)
-The claim follows from `fibreCountEq_of' hF Formalism.L2.SG.Pf.iotaRepC_holds (Formalism.L2.SG.Pf.Act.rowFree_of (fun u' => Formalism.L2.SG.Closed.NeatKu_holds X u' Y.hK) Formalism.L2.SG.Pf.iotaRepC_holds)`.
+A detailed English derivation is pending.
 -/
 theorem FibreCountEq_holds (hF : FinX Y) : Formalism.L2.SG.Pf.KernelOfEmbedding.FibreCountEq hF :=
   fibreCountEq_of' hF Formalism.L2.SG.Pf.iotaRepC_holds

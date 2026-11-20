@@ -11,33 +11,31 @@ open GlobalTheory.CompanionTheory.GodementH
 namespace GlobalTheory.CompanionTheory.IntegerCount
 
 /- English proof (translation)
-Introduce `E _ _`. Set `ι` to `Module.Free.ChooseBasisIndex ℤ (𝓞 E)`. Set `b : Module.Basis ι ℤ (𝓞 E)` to `RingOfIntegers.basis E`. Set `B` to `canonicalEmbedding.latticeBasis E`. Set `L : ι → (((E →+* ℂ) → ℂ) →L[ℂ] ℂ)` to `fun i => LinearMap.toContinuousLinearMap (B.coord i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `C₀ : ℝ` to `∑ i, ‖L i‖`. Establish `hC₀ : 0 ≤ C₀` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hcoord : ∀ (β : 𝓞 E) (i : ι), L i (canonicalEmbedding E (β : E)) = ((b.repr β i : ℤ) : ℂ)`. Introduce `β i`. Establish `hx : canonicalEmbedding E (β : E) = ∑ j, ((b.repr β j : ℤ) : ℂ) • B j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : (β : E) = ∑ j, ((b.repr β j : ℤ) : E) * ((b j : 𝓞 E) : E)` using `by conv_lhs => rw [← b.sum_repr β]`. Simplify using `[map_sum, zsmul_eq_mul]`. Rewrite using `[h0, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use extensionality with `τ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[B, b, canonicalEmbedding.latticeBasis_apply, integralBasis_apply]`. Express the relevant statement in the definitionally equal form `B.coord i _ = _`. Rewrite using `[hx, map_sum]`. Simplify using `[Module.Basis.coord_apply, Finsupp.single_apply]`. Establish `hbound : ∀ (R : ℝ), 1 ≤ R → ∀ β : 𝓞 E, (∀ τ : E →+* ℂ, ‖τ (β : E)‖ ≤ R) → ∀ i, |((b.repr β i : ℤ) : ℝ)| ≤ C₀ * R`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `R hR β hβ i`. Establish `hx : ‖canonicalEmbedding E (β : E)‖ ≤ R` using `(pi_norm_le_iff_of_nonneg (by linarith)).2 fun τ => by simpa using hβ τ`. Establish `h1 : ‖L i (canonicalEmbedding E (β : E))‖ ≤ ‖L i‖ * R` using `((L i).le_opNorm _).trans (mul_le_mul_of_nonneg_left hx (norm_nonneg _))`. Rewrite `h1` using `[hcoord, Complex.norm_intCast]`. Use `h1.trans (mul_le_mul_of_nonneg_right ?_ (by linarith))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.single_le_sum (f := fun i => ‖L i‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)`. Establish `hcard : Fintype.card ι = Module.finrank ℚ E`. Rewrite using `[← RingOfIntegers.rank E]`. Conclude with `(Module.finrank_eq_card_chooseBasisIndex ℤ (𝓞 E)).symm`. Use `⟨(2 * C₀ + 1) ^ Module.finrank ℚ E, by positivity, fun R hR => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set S : Set (𝓞 E) := {β : 𝓞 E | ∀ τ : E →+* ℂ, ‖τ (β : E)‖ ≤ R} with hS`. Set `N : ℤ` to `⌊C₀ * R⌋`. Establish `hN0 : 0 ≤ N` using `Int.floor_nonneg.2 (by nlinarith)`. Set `box : Finset (ι → ℤ)` to `Fintype.piFinset fun _ => Finset.Icc (-N) N`. Set `f : 𝓞 E → (ι → ℤ)` to `fun β i => b.repr β i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hf : Function.Injective f`. Introduce `x y hxy`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Conclude with `congrFun hxy i`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmaps : Set.MapsTo f S (box : Set (ι → ℤ))`. Introduce `β hβ`. Simplify using `only [box, Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc]`. Introduce `i`. Establish `h` using `abs_le.1 (hbound R hR β hβ i)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 
-Prove the components needed by the constructor for the conclusion. Establish `h2 : -(b.repr β i) ≤ N` using `Int.le_floor.2 (by push_cast; linarith [h.1])`. Express the relevant statement in the definitionally equal form `-N ≤ b.repr β i`. Use linear arithmetic over natural numbers and integers. Conclude with `Int.le_floor.2 h.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hfin : S.Finite` using `Set.Finite.of_injOn hmaps hf.injOn box.finite_toSet`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `hle : S.ncard ≤ box.card`. Establish `h` using `Set.ncard_le_ncard_of_injOn f hmaps hf.injOn box.finite_toSet`. Rewrite `h` using `[Set.ncard_coe_finset]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hboxcard : (box.card : ℝ) = (2 * (N : ℝ) + 1) ^ Module.finrank ℚ E`. Establish `h1 : ((Finset.Icc (-N) N).card : ℤ) = 2 * N + 1`. Rewrite using `[Int.card_Icc]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ((Finset.Icc (-N) N).card : ℝ) = 2 * (N : ℝ) + 1`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `h1` after adjusting the coercions. Simplify using `only [box, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, hcard]`. Use `push_cast`. Rewrite using `[h2]`. Establish `hNle : (N : ℝ) ≤ C₀ * R` using `Int.floor_le _`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hN0' : (0 : ℝ) ≤ N` using `by exact_mod_cast hN0`. Conclude with `pow_le_pow_left₀ (by positivity) (by nlinarith) _`. Use `_ = (2 * C₀ + 1) ^ Module.finrank ℚ E * R ^ Module.finrank ℚ E := mul_pow _ _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_bounded_conjugates_le :
     ∀ (E : Type) [Field E] [NumberField E], ∃ C : ℝ, 0 < C ∧ ∀ R : ℝ, 1 ≤ R →

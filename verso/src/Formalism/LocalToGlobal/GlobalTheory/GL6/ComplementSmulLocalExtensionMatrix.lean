@@ -28,23 +28,23 @@ def localAdeleSingle (v : HeightOneSpectrum (𝓞 F)) : v.adicCompletion F →�
     · simp [Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Use `show RestrictedProduct.single _ v x v = x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem local_adele_single_same_place (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion F) : (localAdeleSingle v x) v = x := by
   show RestrictedProduct.single _ v x v = x
   simp
 
 /- English proof (translation)
-Use `show RestrictedProduct.single _ v x w = 0`. Conclude with `RestrictedProduct.single_eq_of_ne _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem local_adele_single_other_place (v w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) (x : v.adicCompletion F) : (localAdeleSingle v x) w = 0 := by
   show RestrictedProduct.single _ v x w = 0
   exact RestrictedProduct.single_eq_of_ne _ _ h
 
 /- English proof (translation)
-Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `w`. Express the relevant statement in the definitionally equal form `Pi.single v (x * y) w = Pi.single v x w * Pi.single v y w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem local_adele_single_mul (v : HeightOneSpectrum (𝓞 F)) (x y : v.adicCompletion F) :
     localAdeleSingle v (x * y) = localAdeleSingle v x * localAdeleSingle v y := by
@@ -65,9 +65,9 @@ theorem local_extension_tensor_tmul (v : HeightOneSpectrum (𝓞 F)) (x : E) (y 
     localExtensionTensor v (x ⊗ₜ y) = x ⊗ₜ localAdeleSingle v y := rfl
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Rewrite using `[local_extension_tensor_tmul]`. Simplify using `only [prV, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Conclude with `local_adele_single_same_place v y`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem proj_local_extension_same_place (v : HeightOneSpectrum (𝓞 F)) (t : E ⊗[F] v.adicCompletion F) :
     prV (E := E) v (localExtensionTensor v t) = t := by
@@ -81,9 +81,9 @@ theorem proj_local_extension_same_place (v : HeightOneSpectrum (𝓞 F)) (t : E 
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Rewrite using `[local_extension_tensor_tmul]`. Simplify using `only [prV, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: (evalV F w) (localAdeleSingle v y) = 0` using `local_adele_single_other_place v w h y`. Rewrite using `[this, TensorProduct.tmul_zero]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem proj_local_extension_other_place (v w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) (t : E ⊗[F] v.adicCompletion F) :
     prV (E := E) w (localExtensionTensor v t) = 0 := by
@@ -97,9 +97,9 @@ theorem proj_local_extension_other_place (v w : HeightOneSpectrum (𝓞 F)) (h :
   | add a b ha hb => rw [map_add, map_add, ha, hb, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Proceed by induction on `t' using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul x' y'`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, local_extension_tensor_tmul, local_extension_tensor_tmul, local_extension_tensor_tmul, Algebra.TensorProduct.tmul_mul_tmul, local_adele_single_mul]`. Consider the case `add a b ha hb => rw [mul_add, map_add, map_add, ha, hb, mul_add]`. Consider the case `add a b ha hb => rw [add_mul, map_add, map_add, ha, hb, add_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 -/
 theorem local_extension_tensor_mul (v : HeightOneSpectrum (𝓞 F)) (t t' : E ⊗[F] v.adicCompletion F) :
     localExtensionTensor v (t * t') = localExtensionTensor v t * localExtensionTensor v t' := by
@@ -115,7 +115,7 @@ theorem local_extension_tensor_mul (v : HeightOneSpectrum (𝓞 F)) (t t' : E �
   | add a b ha hb => rw [add_mul, map_add, map_add, ha, hb, add_mul]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Simplify using `only [inclE, Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, local_extension_tensor_tmul]`. Consider the case `add a b ha hb => rw [add_mul, map_add, map_add, ha, hb, add_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem local_extension_mul_incl (v : HeightOneSpectrum (𝓞 F)) (t : E ⊗[F] v.adicCompletion F) (j : E) :
     localExtensionTensor v (t * inclE (F := F) (v.adicCompletion F) j) = localExtensionTensor v t * inclE (F := F) (FiniteAdeleRing (𝓞 F) F) j := by
@@ -127,7 +127,7 @@ theorem local_extension_mul_incl (v : HeightOneSpectrum (𝓞 F)) (t : E ⊗[F] 
   | add a b ha hb => rw [add_mul, map_add, map_add, ha, hb, add_mul]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Simplify using `only [sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, local_extension_tensor_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem local_extension_conj_comm (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (t : E ⊗[F] v.adicCompletion F) :
     sigR σ (FiniteAdeleRing (𝓞 F) F) (localExtensionTensor v t) = localExtensionTensor v (sigR σ (v.adicCompletion F) t) := by
@@ -151,33 +151,33 @@ def localDiagMatrix (M : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) :
   (1 - localIdempotent (E := E) v) • (1 : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) + localExtensionMatrix v M
 
 /- English proof (translation)
-Rewrite using `[localIdempotent, ← local_extension_tensor_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem local_idempotent_mul_extension (t : E ⊗[F] v.adicCompletion F) : localIdempotent (E := E) v * localExtensionTensor v t = localExtensionTensor v t := by
   rw [localIdempotent, ← local_extension_tensor_mul, one_mul]
 
 /- English proof (translation)
-Rewrite using `[sub_mul, one_mul, local_idempotent_mul_extension, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem complement_idempotent_mul_extension (t : E ⊗[F] v.adicCompletion F) : (1 - localIdempotent (E := E) v) * localExtensionTensor v t = 0 := by
   rw [sub_mul, one_mul, local_idempotent_mul_extension, sub_self]
 
 /- English proof (translation)
-Establish `h : localIdempotent (E` using `E) v * localIdempotent (E := E) v = localIdempotent (E := E) v := local_idempotent_mul_extension v 1`. Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, h, sub_self, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem complement_local_idempotent_idem : (1 - localIdempotent (E := E) v) * (1 - localIdempotent (E := E) v) = 1 - localIdempotent (E := E) v := by
   have h : localIdempotent (E := E) v * localIdempotent (E := E) v = localIdempotent (E := E) v := local_idempotent_mul_extension v 1
   rw [sub_mul, one_mul, mul_sub, mul_one, h, sub_self, sub_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [localExtensionMatrix, Matrix.mul_apply, Matrix.map_apply, map_sum, local_extension_tensor_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem local_extension_matrix_mul (M N : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) : localExtensionMatrix v M * localExtensionMatrix v N = localExtensionMatrix v (M * N) := by
   ext i j
   simp only [localExtensionMatrix, Matrix.mul_apply, Matrix.map_apply, map_sum, local_extension_tensor_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [localExtensionMatrix, Matrix.mul_apply, Matrix.map_apply, map_sum, local_extension_mul_incl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem local_extension_matrix_mul_gram (M : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) (J : Matrix (Fin n) (Fin n) E) :
     localExtensionMatrix v M * J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) = localExtensionMatrix v (M * J.map (inclE (F := F) (v.adicCompletion F))) := by
@@ -185,7 +185,7 @@ theorem local_extension_matrix_mul_gram (M : Matrix (Fin n) (Fin n) (E ⊗[F] v.
   simp only [localExtensionMatrix, Matrix.mul_apply, Matrix.map_apply, map_sum, local_extension_mul_incl]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [localExtensionMatrix, Matrix.mul_apply, Matrix.map_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← local_extension_mul_incl, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_mul_local_extension_matrix (M : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) (J : Matrix (Fin n) (Fin n) E) :
     J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) * localExtensionMatrix v M = localExtensionMatrix v (J.map (inclE (F := F) (v.adicCompletion F)) * M) := by
@@ -195,14 +195,14 @@ theorem gram_mul_local_extension_matrix (M : Matrix (Fin n) (Fin n) (E ⊗[F] v.
   rw [mul_comm, ← local_extension_mul_incl, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [localExtensionMatrix, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, complement_idempotent_mul_extension, Matrix.zero_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem complement_smul_local_extension_matrix (M : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) : (1 - localIdempotent (E := E) v) • localExtensionMatrix v M = 0 := by
   ext i j
   simp only [localExtensionMatrix, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, complement_idempotent_mul_extension, Matrix.zero_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[localExtensionMatrix, localIdempotent]`. Simplify using `[localExtensionMatrix, Matrix.one_apply_ne h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem local_extension_matrix_one : localExtensionMatrix (E := E) v (1 : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) = localIdempotent (E := E) v • 1 := by
   ext i j
@@ -211,7 +211,7 @@ theorem local_extension_matrix_one : localExtensionMatrix (E := E) v (1 : Matrix
   · simp [localExtensionMatrix, Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [localExtensionMatrix, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, localIdempotent]`. Rewrite using `[← local_extension_mul_incl, one_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem local_extension_matrix_map_gram (J : Matrix (Fin n) (Fin n) E) :
     localExtensionMatrix v (J.map (inclE (F := F) (v.adicCompletion F))) = localIdempotent (E := E) v • J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) := by
@@ -220,14 +220,14 @@ theorem local_extension_matrix_map_gram (J : Matrix (Fin n) (Fin n) E) :
   rw [← local_extension_mul_incl, one_mul]
 
 /- English proof (translation)
-Simplify using `only [localDiagMatrix, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, smul_smul, local_extension_matrix_mul, complement_smul_local_extension_matrix, complement_local_idempotent_idem, add_zero, zero_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem local_diag_matrix_mul (M N : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) : localDiagMatrix v M * localDiagMatrix v N = localDiagMatrix v (M * N) := by
   simp only [localDiagMatrix, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, smul_smul,
     local_extension_matrix_mul, complement_smul_local_extension_matrix, complement_local_idempotent_idem, add_zero, zero_add]
 
 /- English proof (translation)
-Rewrite using `[localDiagMatrix, local_extension_matrix_one, ← add_smul, sub_add_cancel, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem local_diag_matrix_one : localDiagMatrix (E := E) v (1 : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) = 1 := by
   rw [localDiagMatrix, local_extension_matrix_one, ← add_smul, sub_add_cancel, one_smul]
@@ -236,19 +236,19 @@ def localExtensionGL (M : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : GL (Fin n)
   ⟨localDiagMatrix v M, localDiagMatrix v ↑M⁻¹, by rw [local_diag_matrix_mul, Units.mul_inv, local_diag_matrix_one], by rw [local_diag_matrix_mul, Units.inv_mul, local_diag_matrix_one]⟩
 
 /- English proof (translation)
-The claim follows from `proj_local_extension_same_place v 1`.
+A detailed English derivation is pending.
 -/
 theorem proj_local_idempotent_same_place : prV (E := E) v (localIdempotent (E := E) v) = 1 := proj_local_extension_same_place v 1
 
 /- English proof (translation)
-The claim follows from `proj_local_extension_other_place v w h 1`.
+A detailed English derivation is pending.
 -/
 theorem proj_local_idempotent_other_place (w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) : prV (E := E) w (localIdempotent (E := E) v) = 0 := proj_local_extension_other_place v w h 1
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[bc, localExtensionGL, localDiagMatrix, localExtensionMatrix, proj_local_idempotent_same_place, proj_local_extension_same_place]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[bc, localExtensionGL, localDiagMatrix, localExtensionMatrix, proj_local_idempotent_same_place, proj_local_extension_same_place, Matrix.one_apply_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem local_extension_GL_same_place (M : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : bc (prV (E := E) v) (localExtensionGL v M) = M := by
   apply Units.ext
@@ -259,9 +259,9 @@ theorem local_extension_GL_same_place (M : GL (Fin n) (E ⊗[F] v.adicCompletion
   · simp [bc, localExtensionGL, localDiagMatrix, localExtensionMatrix, proj_local_idempotent_same_place, proj_local_extension_same_place, Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[bc, localExtensionGL, localDiagMatrix, localExtensionMatrix, proj_local_idempotent_other_place v w hw, proj_local_extension_other_place v w hw]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[bc, localExtensionGL, localDiagMatrix, localExtensionMatrix, proj_local_idempotent_other_place v w hw, proj_local_extension_other_place v w hw, Matrix.one_apply_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem local_extension_GL_other_place (w : HeightOneSpectrum (𝓞 F)) (hw : w ≠ v) (M : GL (Fin n) (E ⊗[F] v.adicCompletion F)) :
     bc (prV (E := E) w) (localExtensionGL v M) = 1 := by
@@ -279,13 +279,13 @@ section Unit
 variable {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E)
 
 /- English proof (translation)
-Rewrite using `[localIdempotent, local_extension_conj_comm, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_local_idempotent : sigR σ (FiniteAdeleRing (𝓞 F) F) (localIdempotent (E := E) v) = localIdempotent (E := E) v := by
   rw [localIdempotent, local_extension_conj_comm, map_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[cT, localDiagMatrix, localExtensionMatrix, Matrix.transpose_apply, Matrix.map_apply, local_extension_conj_comm, conj_local_idempotent]`. Simplify using `[cT, localDiagMatrix, localExtensionMatrix, Matrix.transpose_apply, Matrix.map_apply, local_extension_conj_comm, conj_local_idempotent, Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem local_diag_matrix_conj_transpose (M : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) :
     cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (localDiagMatrix v M) = localDiagMatrix v (cT (sigR σ (v.adicCompletion F)) M) := by
@@ -297,7 +297,7 @@ theorem local_diag_matrix_conj_transpose (M : Matrix (Fin n) (Fin n) (E ⊗[F] v
       Matrix.one_apply_ne (Ne.symm h)]
 
 /- English proof (translation)
-Establish `h : cT (sigR σ (v.adicCompletion F)) (M : Matrix (Fin n) (Fin n) _) * J.map (inclE (F` using `F) (v.adicCompletion F)) * (M : Matrix (Fin n) (Fin n) _) = J.map (inclE (F := F) (v.adicCompletion F)) := hM`. Use `show cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (localDiagMatrix v (M : Matrix (Fin n) (Fin n) _)) * J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) * localDiagMatrix v (M : Matrix (Fin n) (Fin n) _) = J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F))`. Rewrite using `[local_diag_matrix_conj_transpose]`. Simplify using `only [localDiagMatrix, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, local_extension_matrix_mul_gram, gram_mul_local_extension_matrix, local_extension_matrix_mul, smul_smul, complement_local_idempotent_idem, complement_smul_local_extension_ma …`. Rewrite using `[h, local_extension_matrix_map_gram, ← add_smul, sub_add_cancel, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_extension_GL_mem_unitary (J : Matrix (Fin n) (Fin n) E) (M : GL (Fin n) (E ⊗[F] v.adicCompletion F))
     (hM : M ∈ UPts σ J (v.adicCompletion F)) : localExtensionGL v M ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) := by
@@ -325,11 +325,11 @@ def IsLocalDiamond (S : Formalism.L2.Forms.StepLevel F E σ J T f bad) (v : Heig
       ∀ x, k • S.fT v hv ⟨(M : Matrix (Fin n) (Fin n) _) *ᵥ x.1, (hg x.1).1 x.2⟩ = S.fT v hv x
 
 /- English proof (translation)
-Take `⟨M, hM, hg, hf⟩` from `h`. Establish `hU : M ∈ UPts σ J (v.adicCompletion F)` using `(Subgroup.mem_inf.1 hM).1`. Use `⟨⟨localExtensionGL v M, local_extension_GL_mem_unitary v σ J M hU⟩, fun v' hv' => local_extension_GL_other_place v v' hv' M, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[local_extension_GL_same_place]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM`. Simplify using `only`. Establish `e` using `local_extension_GL_same_place v M`. Use `⟨by rw [e]; exact hg, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf x]`.
+Simplify by unfolding definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Conclude with `Subtype.ext (congrArg (fun N : GL (Fin n) (E ⊗[F] v.adicCompletion F) => (N : Matrix (Fin n) (Fin n) _) *ᵥ x.1) e)`.
+A detailed English derivation is pending.
 -/
 theorem is_diamond_of_local_diamond (S : Formalism.L2.Forms.StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F))
     (hv : (T : 𝓞 F) ∈ v.asIdeal) (k : ℤ) (h : IsLocalDiamond S v hv k) : ∃ δ, Formalism.L2.Forms.IsDia S v hv k δ := by
@@ -361,7 +361,7 @@ def LocalDiamondElementsExist (Tf : FormsTied D u) : Prop :=
     IsLocalDiamond (Tf.cls i hi).lev (Tf.atT.eV v).1 (Tf.atT.eV v).2 k
 
 /- English proof (translation)
-Introduce `i hi v a`. Take `⟨k, hk, hl⟩` from `h i hi v a`. Conclude with `⟨k, hk, is_diamond_of_local_diamond _ _ _ k hl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem diamond_elements_of_local (Tf : FormsTied D u) (h : LocalDiamondElementsExist Tf) : DiamondElementsExist Tf := by
   intro i hi v a
@@ -369,7 +369,7 @@ theorem diamond_elements_of_local (Tf : FormsTied D u) (h : LocalDiamondElements
   exact ⟨k, hk, is_diamond_of_local_diamond _ _ _ k hl⟩
 
 /- English proof (translation)
-The claim follows from `diamond_mul_of_diamond_elements Tf (diamond_elements_of_local Tf h)`.
+A detailed English derivation is pending.
 -/
 theorem diamond_mul_of_local_diamonds (Tf : FormsTied D u) (h : LocalDiamondElementsExist Tf) : Formalism.MainNotions.product_first_zeroth_parts.DiaMul D u :=
   diamond_mul_of_diamond_elements Tf (diamond_elements_of_local Tf h)

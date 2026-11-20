@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Introduce `N` and use `by have hle : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap (f : R →+* R') := by refine le_trans (Ideal.pow_right_mono (fun y hy => ?_) N) (Ideal.le_comap_pow _ N) show f y ∈ maximalIdeal R' rw [← res_eq_zero_iff O, res_map, res_eq_zero_iff] exact hy exact (ha N).comp (Ideal.q …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem adic_map {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R]
     [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') {Γ : Type} [TopologicalSpace Γ] {a : Γ → R}
@@ -18,7 +18,7 @@ private theorem adic_map {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [
   exact (ha N).comp (Ideal.quotientMap _ (f : R →+* R') hle)
 
 /- English proof (translation)
-Simplify using `only [GFrame.star, GFrame.starOp, MonoidAlgebra.lift_single, one_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem star_single {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     (R : Type) [CommRing R] [Algebra O R] (n : ℕ) (g : F.G₀) :
@@ -28,21 +28,21 @@ private theorem star_single {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [
   rfl
 
 /- English proof (translation)
-Introduce `l _ F O _ _ _ _ _ _ _ n r R R' _ _ _ _ _ _ p f`. Take `⟨-, hcomp, hlam, -⟩` from `d_gmap p.D`. Establish `hl : ∀ i y, (p.D.map (f : R →+* R')).lam i (MonoidAlgebra.mapRingHom F.G₀ (f : R →+* R') y) = f (p.D.lam i y)` using `fun i y => (hlam (f : R →+* R') y).2 i`. Establish `h1 : ∀ g : F.G₀, MonoidAlgebra.mapRingHom F.G₀ (f : R →+* R') (MonoidAlgebra.single g 1) = MonoidAlgebra.single g 1` using `fun g => by rw [MonoidAlgebra.mapRingHom_single, map_one]`. Use `⟨{ D := p.D.map (f : R →+* R'), ψ := fun v i => pushCh (f : R →+* R') (p.ψ v i), cont := ?_, red := ?_, psi := ?_, P := ?_, Ord := ?_, I := ?_ }, rfl, fun _ _ => rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Use `adic_map f (p.cont i)` as an intermediate fact. Simplify `this` using `only [← hl, h1]`. Rewrite using `[hcomp, ← p.red]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Conclude with `res_map f x`. Introduce `v i`. Use `⟨adic_map f (p.psi v i).cont, fun g => (res_map f _).trans ((p.psi v i).red g), fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (p.ψ v i g : R) = _`.
+By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(p.psi v i).mu g, f.commutes]`. Introduce `i g`. Establish `hs : F.star O R' n (MonoidAlgebra.single g 1) = MonoidAlgebra.mapRingHom F.G₀ (f : R →+* R') (F.star O R n (MonoidAlgebra.single g 1))`. Rewrite using `[star_single, star_single, MonoidAlgebra.mapRingHom_single]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `he : F.eps O R' g = Units.map ((f : R →+* R') : R →* R') (F.eps O R g)` using `Units.ext (f.commutes _).symm`. Rewrite using `[he, ← map_zpow]`. Both sides reduce to the same expression. Rewrite using `[hs, hl, p.P, ← hl, h1]`. Introduce `v g h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ho : MonoidAlgebra.single h 1 * F.oEl v (fun i => pushCh (f : R →+* R') (p.ψ v i)) g = MonoidAlgebra.mapRingHom F.G₀ (f : R →+* R') (MonoidAlgebra.single h 1 * F.oEl v (p.ψ v) g)`. Rewrite using `[map_mul, h1, GFrame.oEl, GFrame.oEl, map_list_prod, List.map_ofFn]`. Use `congr 3`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, map_sub, h1, MonoidAlgebra.mapRingHom_single]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `p.Ord v g h` as an intermediate fact. Rewrite `this`, the goal using `[GDet.tr]`. Rewrite using `[ho, hl, this, map_zero]`. Introduce `u g hg h`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ho : (MonoidAlgebra.single h 1 * (MonoidAlgebra.single g 1 - 1) : MonoidAlgebra R' F.G₀) = MonoidAlgebra.mapRingHom F.G₀ (f : R →+* R') (MonoidAlgebra.single h 1 * (MonoidAlgebra.single g 1 - 1))`. Rewrite using `[map_mul, map_sub, h1, h1, map_one]`. Use `p.I u g hg h` as an intermediate fact. Rewrite `this`, the goal using `[GDet.tr]`. Rewrite using `[ho, hl, this, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.pair_map :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)] [CharP (ResidueField O) l] [Algebra ℤ_[l] O] {n : ℕ} (r : Resid F O n) {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R] [CommRing R'] [Algebra O R'] [IsCO O R'] (p : Pair r R) (f : R →ₐ[O] R'), ∃ p' : Pair r R', p.Maps (f : R →+* R') p'.D p'.ψ := by

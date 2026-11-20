@@ -11,7 +11,7 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `i hi`. Use `le_antisymm (hle i hi) ?_` and prove the remaining obligations. Rewrite `hprod` using `[← Finset.mul_prod_erase s f hi]`. Establish `h2 : ∏ j ∈ s.erase i, f j ≤ 1` using `Finset.prod_le_one' (fun j hj => hle j (Finset.mem_of_mem_erase hj))`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem finset_prod_eq_one_of_le_one_eq_one {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] {ι : Type*}
     [DecidableEq ι] (s : Finset ι) (f : ι → Γ) (hle : ∀ i ∈ s, f i ≤ 1)
@@ -25,27 +25,25 @@ theorem finset_prod_eq_one_of_le_one_eq_one {Γ : Type*} [LinearOrderedCommGroup
     _ ≤ f i := mul_le_of_le_one_right' h2
 
 /- English proof (translation)
-Introduce `L β u V N hβ hβim hu hN hodd z hz hNz`. Establish `hN0 : (N : ℂ) ≠ 0`. Establish `: N ≠ 0` using `by rintro rfl; exact absurd hodd (by decide)`. Conclude with `this` after adjusting the coercions. Establish `hstab : MulStable L (N : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ω hω`. Use `L.lattice.smul_mem (N : ℤ) hω` as an intermediate fact. Simplify `this` using `[zsmul_eq_mul]`. Establish `hΔ` using `latticeCurve_Δ_ne_zero L`. Establish `hvΔ : V.valuation (latticeCurve L).Δ ≠ 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hΔ`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Apply `hvΔ` to reduce the goal to its premises. Rewrite using `[← hu]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hvu : V.valuation u ≠ 0` using `by simpa using hu0`. Take `⟨S, hS⟩` from `kerRepsExist L (N : ℂ) hN0 hstab`. Establish `hcard` using `kerRepsCard L (N : ℂ) S hN0 hstab hS`. Establish `hcardN : S.card + 1 = N * N`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((S.card + 1 : ℕ) : ℝ) = ((N * N : ℕ) : ℝ)` using `by push_cast; rw [hcard]; simp [Complex.normSq_apply]`. Conclude with `this` after adjusting the coercions. Establish `heven : Even S.card`. Establish `hodd2 : Odd (N * N)` using `hodd.mul hodd`. Rewrite `hodd2` using `[← hcardN]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k, hk⟩` from `hodd2`. Conclude with `⟨k, by omega⟩`. Establish `hpf` using `GlobalTheory.T.prod_derivWeierstrassP_kerReps_pow_four_mul' L (N : ℂ) S hN0 hstab hS heven`. Establish `hmem : ∀ t ∈ S, V.valuation (L.derivWeierstrassP t / u ^ 3) ≤ 1`. Introduce `t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ValuationSubring.valuation_le_one_iff]`. Conclude with `(GlobalTheory.T.torsion_weierstrassP_mem_valuationSubring L β u V N hβ hβim hu hN t t (hS.1 t ht).2 (hS.1 t ht).2 (hS.1 t ht).1 (hS.1 t ht).1).1`. Establish `hprod : ∏ t ∈ S, V.valuation (L.derivWeierstrassP t / u ^ 3) ^ 4 = 1`. Establish `hv` using `congrArg V.valuation hpf`. Simplify using `only [map_mul, map_pow, map_prod, hN, one_pow, mul_one] at hv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Simplify using `only [map_div₀, map_pow, div_pow, Finset.prod_div_distrib, Finset.prod_pow, Finset.prod_const, ← pow_mul]`. Rewrite using `[hv, ← hu, ← pow_mul, div_eq_one_iff_eq (pow_ne_zero _ hvu)]`. Put the polynomial expressions in normal form. Establish `hall` using `finset_prod_eq_one_of_le_one_eq_one S _ (fun t ht => pow_le_one' (hmem t ht) 4) hprod`. Take `⟨t, ht, hzt⟩` from `hS.2.2 z (by simpa [mul_comm] using hNz) hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hper : L.derivWeierstrassP z = L.derivWeierstrassP t`. Use `L.derivWeierstrassP_add_coe t ⟨z - t, hzt⟩` as an intermediate fact. Simplify using `using this`. Establish `h1 : V.valuation (L.derivWeierstrassP t / u ^ 3) = 1`. Establish `h4` using `hall t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Establish `hlt : V.valuation (L.derivWeierstrassP t / u ^ 3) < 1` using `lt_of_le_of_ne (hmem t ht) hne`. Conclude with `absurd h4 (ne_of_lt (pow_lt_one' hlt (by norm_num)))`. Rewrite using `[hper]`. Rewrite `h1` using `[map_div₀, map_pow, div_eq_one_iff_eq (pow_ne_zero _ hvu)]`.
-
-Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_derivWeierstrassP_torsion_odd :
     ∀ (L : PeriodPair) (β u : ℂ) (V : ValuationSubring ℂ) (N : ℕ), MulStable L β → β.im ≠ 0 →

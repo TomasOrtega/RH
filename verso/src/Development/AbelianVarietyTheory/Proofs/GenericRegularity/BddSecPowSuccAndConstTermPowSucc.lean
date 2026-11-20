@@ -10,9 +10,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Simplify using `only [zero_add, one_smul, pow_one]`. Conclude with `⟨hP, fun _ _ _ _ => trivial⟩`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately.
 
-Establish `h` using `bddSec_mul_and_constTerm_mul E r X ((m + 1) • la) la (P ^ (m + 1)) P ih.1 hP`. Rewrite using `[succ_nsmul la (m + 1), pow_succ P (m + 1)]`. Use `⟨h.1, fun ξ hξ x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[h.2 ξ hξ x hx, ih.2 ξ hξ x hx, pow_succ _ (m + 1)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bddSec_pow_succ_and_constTerm_pow_succ
     (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
@@ -30,7 +30,7 @@ theorem bddSec_pow_succ_and_constTerm_pow_succ
     rw [h.2 ξ hξ x hx, ih.2 ξ hξ x hx, pow_succ _ (m + 1)]
 
 /- English proof (translation)
-Introduce `E _ _ _ r X la P m hP hpow`. Use `⟨hP, fun ξ hξ x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `(bddSec_pow_succ_and_constTerm_pow_succ E r X la P hP m).2 ξ hξ x hx`. Rewrite `h` using `[hpow.2 ξ hξ x hx]`. Conclude with `pow_eq_zero_iff (Nat.succ_ne_zero m) |>.1 h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspForm_of_bddSec_of_pow_succ :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r),

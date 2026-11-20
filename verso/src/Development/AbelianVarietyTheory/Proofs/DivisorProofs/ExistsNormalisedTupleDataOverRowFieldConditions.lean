@@ -29,11 +29,9 @@ variable (R : RealDat D A Ks) (i : Fin D.R.m)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hv : ∀ y : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP), omegaK R.Pg y * omegaQ (R.Q t) (Wc D i).rank (R.xiR t) (-1) y ∈ M` using `fun y => by`. Use `mul_mem ?_ ?_` and prove the remaining obligations. Unfold `omegaK split_ifs exacts [one_mem _, zero_mem _]`. Unfold `omegaQ split_ifs`. Conclude with `prod_mem fun PP _ => zpow_mem (hM ▸ xiR_mem R hR.lev hR.fam t PP.1 PP.2 _) _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_mem _`. Take `⟨-, e, he, -⟩` from `hR.thP.vP i t`. Establish `hβ` using `GlobalTheory.T.inverse_selfDual_frame_standard_space_integral D i _ _ hV (hR.lev.βV i)`. Establish `hi : ∀ x a, rowP (Wc D i) (R.βW i) e (ι x) a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun x a => rowP_int _ _ _ (hR.lev.βW i) e _ he (fun PP h => hP PP (by simpa using h)) _ (hι.2.le (LinearMap.mem_range_self ι x)) a`. Use `⟨fun q => ⟨_, hv fun PP => redM PP (FWT.uMat (Vc D i) (Wc D i) (R.βV i) (R.βW i) e fun b => ι (q b).out)⟩, e, he, fun x => ⟨(redM_uMat (Vc D i) (Wc D i) hV.1 _ hβ (R.βW i) e (fun b => ι (x b)) fun b a => hi (x b) a).1, ?_⟩⟩` and prove the remaining obligations.
-
-Conclude with `omega_congr _ _ _ _ _ _ _ fun PP hPP => exists_datum (Vc D i) (Wc D i) hV.1 _ hβ (R.βW i) e ι hi J PP (hJ PP hPP) x _ fun b => (Submodule.Quotient.eq _).1 (Quotient.out_eq _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_phi_core {F : Face D A} (hR : GlobalTheory.Hk3.Core R F) (hV : VStd D i) (t : T0) {La : Type} [AddCommGroup La]
     [Module (𝓞 D.host.E) La] (ι : La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)) (hι : LatEmb (Wc D i) ι)
@@ -66,23 +64,21 @@ theorem exists_phi_core {F : Face D A} (hR : GlobalTheory.Hk3.Core R F) (hV : VS
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ O i hR _hoff _hused hfw hO hG hC`. Take `⟨fw⟩` from `id hfw`. Establish `hT` using `fw.laws`. Establish `hpb : T.pb = R.C.P.pb` using `GlobalTheory.CoverHalf.primes_eq_of_halfIs T.toCore R hT.toLawsM hR.lev (hO.2.tuple ()).half`. Take `⟨hc', hP⟩` from `hO`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hV : VStd D i` using `hP.lift.std`. Establish `hB0` using `(hP.tuple ()).B`. Establish `hb0` using `hP.bad ()`. Establish `hjL` using `hP.lift.field`. Establish `hlev` using `hP.lift.lev`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hio` using `hP.io`. Establish `hact` using `hP.act`. Use `choose l₂ hl₁ hl₂ using exists_half_tupPrime T.toCore R hT.toLawsM hR.lev hpb hG`. Take `⟨dδ, U₂, dict₂, xi, -, hcov, hhalf, hxi, hcxi, hmod, -⟩` from `GlobalTheory.CoverOverField.coversAt D G Pl0 T0 A T R hT hR.lev hR.fam.roots (GlobalTheory.TwistValues.xiVal D G Pl0 T0 A _ R hR.lev hR.fam) hC i (Vc D i).rank _ l₂ hl₁ hl₂ (O i).c' (O i).hle hc'`. Take `⟨gramR, c0R, c0L, hTie⟩` from `hR.fam.tie`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c0', hcb, hplace⟩` from `GlobalTheory.Div.CoefExtension.exists_ext_placeEx D G Pl0 T0 A _ R hR.lev hR.grp.chiW hR.fam hR.models gramR c0R c0L hTie i (O i).c'.F (O i).jL (inC (O i).c') hjL`. Establish `hc0 : ∃ gramR c0R c0L, Bridge.FamTie R.B R.pl (R.Sb : Set (Pl D.host.E)) R.Q (labLL D) (fun τ => Bridge.lamRdef (Ptw D) τ) (fun i τ => Bridge.lamLdef (Vc D i).rank ((i : ℕ) + 1) τ) gramR c0R c0L ∧ CoefficientBaseChange R i (O i).jL (inC (O i).c') (c0L i) c0'` using `⟨gramR, c0R, c0L, hTie, hcb⟩`. Use `choose Cl fCl h J' bad Lh gam vol La Nc hrep hdv hvol hok hlat using fun t => GlobalTheory.SplitReps.exists_repsR_repsOK R i (hR.lev.βV i) hV (O i).c'.F t (dδ t).l₂ hb0.1`. Establish `hbad : ∀ t, 0 < bad t ∧ BadPin (bad t) (D.host.QS * D.host.q) D.host.d (D.host.g 0 * D.host.g 1)` using `fun t => ⟨Nat.pos_of_ne_zero (hrep t).1, hb0.2.1.trans (hdv t), hb0.2.2.1.trans (hdv t), hb0.2.2.2.1.trans (hdv t), hb0.2.2.2.2.trans (hdv t)⟩`. Use `choose B hBis using fun t => exists_BIs R i hR.lev hR.fam (O i).c'.F hc' hB0 t (hdv t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hodd : Odd ((T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q)`. Take `⟨e1, e2, -⟩` from `hT.pins.2.2.2 _ (inR i)`. Establish `h5` using `Formalism.L2.NTheta.odd_r D.R`. Establish `h6` using `i.2`. Establish `h7` using `D.R.m_add_three_le_k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2]`. Use `h5 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Use `choose epF hepF using fun t => (GlobalTheory.ClassTieCompare.exists_epIs_iff (n := (Vc D i).rank) (Dw := T.Q.Dw ((i : ℕ) + 1)) (bad t) (B t)).2 fun L cc g d => GlobalTheory.T.law_of_squares_selfDual_splitLattice _ _ _ _ hodd L cc g.1 g.2.2 d.1 d.2`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `choose φ hφis using fun t => exists_phi_core R i hR hV t (iotaW T i) (latEmb_iotaW T hT i) (O i).c'.F hc' (hhalf t).2.2 (Mfr (dδ t).l₂) fun PP hPP c hc => by`. Establish `hM : (dδ t).l₂.Mb ≤ PP.asIdeal`. Rewrite using `[(hcov t).1.2.2.2.1]`. Break down `hPP with hPP | hPP` into its components or cases. Rewrite using `[(hhalf t).1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.mul_le_left.trans (Ideal.prod_le_inf.trans (Finset.inf_le hPP))`. Conclude with `Ideal.mul_le_right.trans ((hhalf t).2.1 PP hPP)`. Take `⟨b, hb, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ T.Q.H.bar.surjective).1 hc`. Use `⟨b, hM hb, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = star ((T.Q.H.bar b : 𝓞 D.host.E) : D.host.E)`.
-
-Rewrite using `[T.Q.H.bar_eq]`. Conclude with `(star_star _).symm`. Use `choose thAd hth using fun t => GlobalTheory.AdelicSide.exists_thAd_of_models D G Pl0 T0 A _ R hR.models i t _ _ c0' _ (h t) _ (hrep t).2.2.1 (hrep t).2.2.2.2.2.1 (v₀ i (sg0 D A))`. Use `⟨{ c' := (O i).c', hle := (O i).hle, jL := (O i).jL, hV := (O i).hV, c0' := c0', lev := (O i).lev, dδ := dδ, Cl' := Cl, bad := bad, Lh := Lh, La := La, Nc := Nc, gam := gam, vol := vol, ep := fun t k => epF t (Lh t k), B := B, epF := epF, io := (O i).io, hw := (O i).hw, φ := φ, w …` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem pinsOverL_of_clauses : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (i : Fin D.R.m), GlobalTheory.Hk3.Core R F → R.tup_mu_off → R.tup_mu_used → Nonempty (FWTie T R κ v₀) → OMPins T R κ v₀ O i → QGuard R → GlobalTheory.TwistField.CoverField T R → GlobalTheory.TwistField.PinsOverL T R κ v₀ i := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ O i hR _hoff _hused hfw hO hG hC

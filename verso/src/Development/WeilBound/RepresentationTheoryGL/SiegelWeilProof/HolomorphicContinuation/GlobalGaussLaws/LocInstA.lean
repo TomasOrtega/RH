@@ -13,9 +13,9 @@ def reP (p : MvPolynomial σ ℂ) : MvPolynomial σ ℝ := ∑ m ∈ p.support, 
 def imaginary (p : MvPolynomial σ ℂ) : MvPolynomial σ ℝ := ∑ m ∈ p.support, monomial m (coeff m p).im
 
 /- English proof (translation)
-Unfold `reP`. Rewrite using `[coeff_sum]`. Distinguish the cases in `h : m ∈ p.support`. Rewrite using `[Finset.sum_eq_single m (fun b _ hb => by rw [coeff_monomial, if_neg hb]) (fun hm => absurd h hm), coeff_monomial, if_pos rfl]`. Rewrite using `[Finset.sum_eq_zero (fun b hb => by rw [coeff_monomial, if_neg (fun (e : b = m) => h (e ▸ hb))])]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : coeff m p = 0` using `by simpa [mem_support_iff] using h`. Simplify using `[h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem coeff_reP (p : MvPolynomial σ ℂ) (m : σ →₀ ℕ) : coeff m (reP p) = (coeff m p).re := by
   classical
@@ -28,9 +28,9 @@ theorem coeff_reP (p : MvPolynomial σ ℂ) (m : σ →₀ ℕ) : coeff m (reP p
     simp [h0]
 
 /- English proof (translation)
-Unfold `imaginary`. Rewrite using `[coeff_sum]`. Distinguish the cases in `h : m ∈ p.support`. Rewrite using `[Finset.sum_eq_single m (fun b _ hb => by rw [coeff_monomial, if_neg hb]) (fun hm => absurd h hm), coeff_monomial, if_pos rfl]`. Rewrite using `[Finset.sum_eq_zero (fun b hb => by rw [coeff_monomial, if_neg (fun (e : b = m) => h (e ▸ hb))])]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : coeff m p = 0` using `by simpa [mem_support_iff] using h`. Simplify using `[h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem coeff_imP (p : MvPolynomial σ ℂ) (m : σ →₀ ℕ) : coeff m (imaginary p) = (coeff m p).im := by
   classical
@@ -43,7 +43,7 @@ theorem coeff_imP (p : MvPolynomial σ ℂ) (m : σ →₀ ℕ) : coeff m (imagi
     simp [h0]
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_add, coeff_C_mul, coeff_map, coeff_map, coeff_reP, coeff_imP]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eq_map_re_add_im (p : MvPolynomial σ ℂ) :
     p = map (algebraMap ℝ ℂ) (reP p) + C Complex.I * map (algebraMap ℝ ℂ) (imaginary p) := by
@@ -52,13 +52,13 @@ theorem eq_map_re_add_im (p : MvPolynomial σ ℂ) :
   apply Complex.ext <;> simp
 
 /- English proof (translation)
-Establish `hev : ∀ (y : σ → ℝ) (q : MvPolynomial σ ℝ), eval (fun i => (y i : ℂ)) (map (algebraMap ℝ ℂ) q) = ((eval y q : ℝ) : ℂ)`. Introduce `y q`. Rewrite using `[eval_map]`. Express the relevant statement in the definitionally equal form `_ = (algebraMap ℝ ℂ) (eval₂ (RingHom.id ℝ) y q)`. Rewrite using `[hom_eval₂]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `key : ∀ y : σ → ℝ, eval y (reP p) = 0 ∧ eval y (imaginary p) = 0`. Introduce `y`. Establish `hy` using `h y`. Rewrite `hy` using `[eq_map_re_add_im p, eval_add, eval_mul, eval_C, hev, hev]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hre` using `congrArg Complex.re hy`. Establish `him` using `congrArg Complex.im hy`. Simplify using `at hre him`. Conclude with `⟨hre, him⟩`. Establish `hr : reP p = 0` using `MvPolynomial.funext fun y => by simpa using (key y).1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hi : imaginary p = 0` using `MvPolynomial.funext fun y => by simpa using (key y).2`. Rewrite using `[eq_map_re_add_im p, hr, hi]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eq_zero_of_eval_real (p : MvPolynomial σ ℂ) (h : ∀ y : σ → ℝ, eval (fun i => (y i : ℂ)) p = 0) : p = 0 := by
   have hev : ∀ (y : σ → ℝ) (q : MvPolynomial σ ℝ),

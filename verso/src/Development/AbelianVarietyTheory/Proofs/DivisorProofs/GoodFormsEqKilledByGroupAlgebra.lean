@@ -20,15 +20,15 @@ section Cosets
 variable {Γ : Type} [Group Γ] {H J : Subgroup Γ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations. Take `⟨b', hb', rfl⟩` from `Finset.mem_map.1 hb`. Take `⟨k₁, k₂, e⟩` from `h1 b' hb'`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨k₁.1.1, k₁.2⟩, ⟨k₂.1.1, k₂.2⟩, congrArg Subtype.val e⟩`. Introduce and unpack `g ⟨k₁, k₂, rfl⟩`. Take `⟨b, ⟨hb, hb2⟩, hu⟩` from `h2 _ ⟨⟨⟨k₁.1, hJ k₁.2⟩, k₁.2⟩, ⟨⟨k₂.1, hJ k₂.2⟩, k₂.2⟩, rfl⟩`. Use `⟨b.1, ⟨Finset.mem_map.2 ⟨b, hb, rfl⟩, hb2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hy2⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨y', hy', rfl⟩` from `Finset.mem_map.1 hy`. Conclude with `congrArg Subtype.val (hu y' ⟨hy', hy2⟩)`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k₁, k₂, e⟩` from `h1 b.1 (Finset.mem_map.2 ⟨b, hb, rfl⟩)`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨⟨k₁.1, hJ k₁.2⟩, k₁.2⟩, ⟨⟨k₂.1, hJ k₂.2⟩, k₂.2⟩, Subtype.ext e⟩`. Introduce and unpack `g ⟨k₁, k₂, rfl⟩`. Take `⟨b, ⟨hb, hb2⟩, hu⟩` from `h2 _ ⟨⟨k₁.1.1, k₁.2⟩, ⟨k₂.1.1, k₂.2⟩, rfl⟩`. Take `⟨b', hb', rfl⟩` from `Finset.mem_map.1 hb`. Use `⟨b', ⟨hb', hb2⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y ⟨hy, hy2⟩`. Conclude with `Subtype.ext (hu y.1 ⟨Finset.mem_map.2 ⟨y, hy, rfl⟩, hy2⟩)`.
+A detailed English derivation is pending.
 -/
 theorem isDC_sub_iff (hJ : J ≤ H) (a : H) (R : Finset H) :
     Bridge.IsDC (J.subgroupOf H) a R ↔ Bridge.IsDC J (a : Γ) (R.map (Function.Embedding.subtype _)) := by
@@ -56,7 +56,7 @@ theorem isDC_sub_iff (hJ : J ≤ H) (a : H) (R : Finset H) :
       exact Subtype.ext (hu y.1 ⟨Finset.mem_map.2 ⟨y, hy, rfl⟩, hy2⟩)
 
 /- English proof (translation)
-Use `⟨R'.subtype (· ∈ H), Finset.subtype_map_of_mem fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨k₁, k₂, rfl⟩` from `h.1 b hb`. Conclude with `H.mul_mem (H.mul_mem (hJ k₁.2) a.2) (hJ k₂.2)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_isDC (hJ : J ≤ H) (a : H) (R' : Finset Γ) (h : Bridge.IsDC J (a : Γ) R') :
     ∃ R : Finset H, R.map (Function.Embedding.subtype _) = R' := by
@@ -70,7 +70,7 @@ end Cosets
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Establish `h2 : ext1 (flagL L).P.H (flagL L).P.chi (rTup β (flagL L) (finE V κ)) = 1` using `subgroupCharExtension_one_apply _ _`. Establish `hs' : (flagL L).s = 0` using `hs`. Establish `hQ' : (flagL L).Q = ∅` using `hQ`. Unfold `levChi levFn`. Rewrite using `[h2, hs', hQ']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -84,7 +84,7 @@ theorem levChi_flag {β : GL (Fin V.rank) (EAf D)} {L : LevDat D.host.E ℂ V.ra
   simp
 
 /- English proof (translation)
-Rewrite using `[← levChi_flag (β := β) hs hQ κ]`. Unfold `levChi`. Rewrite using `[levFn_flag1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem levChi_flag1 {β : GL (Fin V.rank) (EAf D)} {L : LevDat D.host.E ℂ V.rank} (hs : L.s = 0) (hQ : L.Q = ∅)
     (κ : GA D V) : levChi V β (flag1L L) κ = 1 := by
@@ -93,9 +93,9 @@ theorem levChi_flag1 {β : GL (Fin V.rank) (EAf D)} {L : LevDat D.host.E ℂ V.r
   rw [levFn_flag1]
 
 /- English proof (translation)
-Introduce `κ hκ h`. Establish `e : rTup β L (finE V κ) = 1` using `Subgroup.mem_bot.1 hκ.2.2`. Establish `hm : κ ∈ levG V β (withP L P)`. Use `⟨hκ.1, hκ.2.1, ?_⟩` and prove the remaining obligations. Use `show rTup β L (finE V κ) ∈ P.H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `P.H.one_mem`. Rewrite using `[hF κ hm h]`. Unfold `levChi`. Rewrite using `[levFn_withP, e, blockDiagonalExtendByOnePrimeField_one, one_mul, levFn_flag1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasType_flag1 {β : GL (Fin V.rank) (EAf D)} {L : LevDat D.host.E ℂ V.rank} (P : LevelP L.Pg L.r ℂ)
     {F : GA D V → ℂ} (hF : HasType V β (withP L P) F) : HasType V β (flag1L L) F := by
@@ -110,9 +110,9 @@ theorem hasType_flag1 {β : GL (Fin V.rank) (EAf D)} {L : LevDat D.host.E ℂ V.
   rw [levFn_withP, e, blockDiagonalExtendByOnePrimeField_one, one_mul, levFn_flag1]
 
 /- English proof (translation)
-Unfold `gaL`. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Use `level_action_spec hF ⟨κ g, hκ g⟩ (κ g) (hκ g) h` as an intermediate fact. Rewrite `this` using `[levChi_flag hs hQ, inv_one, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gaL_apply {β : GL (Fin V.rank) (EAf D)} {L : LevDat D.host.E ℂ V.rank} (hs : L.s = 0) (hQ : L.Q = ∅)
     {G : Type} [Group G] [Fintype G] (eG : G ≃* G0 L.Pg L.r) (c : G → ℂ) {F : GA D V → ℂ}
@@ -127,9 +127,9 @@ theorem gaL_apply {β : GL (Fin V.rank) (EAf D)} {L : LevDat D.host.E ℂ V.rank
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_sum, LinearMap.sub_apply, sub_eq_zero, LinearMap.sum_apply]`. Simplify using `only [Representation.asAlgebraHom_single, map_one, LinearMap.smul_apply, Module.End.one_apply]`. Rewrite using `[MultilinearMap.ext_iff]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[funext_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun x => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.sum_apply, Finset.sum_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem alg_sum (M : DSModel V S) {ι : Type} (s : Finset ι) (κ : ι → GfC V) (c : ι → ℂ) (a : ℂ) (T : MMap M) :
     (finRep M).asAlgebraHom (∑ i ∈ s, MonoidAlgebra.single (κ i) (c i) - MonoidAlgebra.single 1 a) T = 0 ↔
@@ -144,7 +144,7 @@ theorem alg_sum (M : DSModel V S) {ι : Type} (s : Finset ι) (κ : ι → GfC V
   rfl
 
 /- English proof (translation)
-Use `alg_sum M (Finset.univ : Finset Unit) (fun _ => k) (fun _ => 1) a T` as an intermediate fact. Simplify `this` using `only [Finset.univ_unique, Finset.sum_singleton, one_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem alg_one (M : DSModel V S) (k : GfC V) (a : ℂ) (T : MMap M) :
     (finRep M).asAlgebraHom (MonoidAlgebra.single k 1 - MonoidAlgebra.single 1 a) T = 0 ↔
@@ -153,7 +153,7 @@ theorem alg_one (M : DSModel V S) (k : GfC V) (a : ℂ) (T : MMap M) :
   simpa only [Finset.univ_unique, Finset.sum_singleton, one_mul] using this
 
 /- English proof (translation)
-Unfold `hPart`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, MultilinearMap.ext_iff, funext_iff]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_hPart (M : DSModel V S) (J : Subgroup (GA D V)) {Pl0 : Type} (ok : Set Pl0)
     (pl : Pl0 → Pl D.host.E) (q : Pl0 → ℕ) (Sg : Pl0 → ℂ[X]) (T : MMap M) :
@@ -164,21 +164,19 @@ theorem mem_hPart (M : DSModel V S) (J : Subgroup (GA D V)) {Pl0 : Type} (ok : S
   rfl
 
 /- English proof (translation)
-Introduce `D V S θ M β L G _ _ eG c P Pl0 ok pl q Sg hs hQ hlift`. Establish `hJ : levG V β (flag1L L) ≤ GfC V` using `fun _ h => h.1`. Use extensionality with `T`. Rewrite using `[Submodule.mem_inf, Submodule.mem_inf, mem_goodPart, mem_killed, mem_hPart, GlobalTheory.MultMem.mem_mult_iff, GlobalTheory.MultMem.mem_mult_iff]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨⟨hm, hg⟩, hh⟩`. Use `⟨⟨hm.aut, hm.cusp, fun _ _ h => h.elim, hm.equiv, hm.cont⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ((⟨k, hk, rfl⟩ | ⟨κ, hκ, rfl⟩) | ⟨P0, hP0, k, hk, α, R, hα, hR, rfl⟩)`. Conclude with `(alg_one M k _ T).2 fun v x => hm.lev v k hk x`. Use `(alg_sum M _ κ c 1 T).2 fun v x => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hF : HasType V β (flag1L L) (T v)` using `hasType_flag1 P fun k hk h => hm.lev v k hk h`. Rewrite using `[← gaL_apply hs hQ eG c hF (fun g => κ g) hκ x, hg v, one_mul]`. Use `(alg_sum M R (fun γ => γ) (fun _ => 1) _ T).2 fun v x => ?_` and prove the remaining obligations. Use `hh P0 hP0 k hk α hα _ ((isDC_sub_iff hJ α⁻¹ R).1 hR) v x` as an intermediate fact. Rewrite `this` using `[Finset.sum_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [one_mul]`. Conclude with `this`. Introduce and unpack `⟨hm, hk⟩`. Establish `hlev : ∀ v, HasType V β (withP L P) (T v)` using `fun v k hkk x => (alg_one M ⟨k, hkk.1⟩ _ T).1 (hk _ (Or.inl (Or.inl ⟨⟨k, hkk.1⟩, hkk, rfl⟩))) v x`. Use `⟨⟨⟨hm.aut, hm.cusp, fun v k hkk x => hlev v k hkk x, hm.equiv, hm.cont⟩, fun v => ?_⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `choose κ hκ using fun g => hlift (eG g)`. Use function extensionality and compare the values at `x`. Rewrite using `[gaL_apply hs hQ eG c (hasType_flag1 P (hlev v)) κ hκ x]`. Use `(alg_sum M Finset.univ (fun g => (⟨κ g, (hκ g).1⟩ : GfC V)) c 1 T).1 (hk _ (Or.inl (Or.inr ⟨fun g => ⟨κ g, (hκ g).1⟩, hκ, rfl⟩))) v x` as an intermediate fact. Rewrite `this` using `[one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Introduce `P0 hP0 k hkr α hα R' hR' v x`. Establish `hαf : α ∈ GfC V`. Take `⟨e, ϖ, -, -, -, h⟩` from `hα`. Conclude with `h.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨R, rfl⟩` from `exists_lift_of_isDC hJ (⟨α, hαf⟩ : GfC V)⁻¹ R' hR'`. Establish `hR` using `(isDC_sub_iff hJ (⟨α, hαf⟩ : GfC V)⁻¹ R).2 hR'`. Use `(alg_sum M R (fun γ => γ) (fun _ => 1) _ T).1 (hk _ (Or.inr ⟨P0, hP0, k, hkr, ⟨α, hαf⟩, R, hα, hR, rfl⟩)) v x` as an intermediate fact. Simplify using `only [one_mul] at this`. Rewrite using `[Finset.sum_map]`.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem good_hecke_eq_killed : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (M : DSModel V S) (β : GL (Fin V.rank) (EAf D)) (L : LevDat D.host.E ℂ V.rank) {G : Type} [Group G] [Fintype G] (eG : G ≃* G0 L.Pg L.r) (c : G → ℂ) (P : LevelP L.Pg L.r ℂ) {Pl0 : Type} (ok : Set Pl0) (pl : Pl0 → Pl D.host.E) (q : Pl0 → ℕ) (Sg : Pl0 → ℂ[X]), L.s = 0 → L.Q = ∅ → LiftsExist V β L → goodPart θ M (levS V β (withP L P)) (levChi V β (withP L P)) (gaL V β L eG c) ⊓ hPart M (levG V β (flag1L L)) ok pl q Sg = allMaps θ M ⊓ killed (finRep M) (eqSet V β L eG c P ok pl q Sg) := by
   intro D V S θ M β L G _ _ eG c P Pl0 ok pl q Sg hs hQ hlift

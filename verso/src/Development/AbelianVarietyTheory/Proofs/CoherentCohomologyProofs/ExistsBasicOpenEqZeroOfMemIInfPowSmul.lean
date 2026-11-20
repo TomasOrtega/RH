@@ -9,7 +9,7 @@ section Krull
 variable {A : Type*} [CommRing A] {M : Type*} [AddCommGroup M] [Module A M]
 
 /- English proof (translation)
-Use `IsLocalizedModule.eq_zero_iff p.primeCompl (LocalizedModule.mkLinearMap p.primeCompl M) (m := x)` as an intermediate fact. Rewrite `this` using `[LocalizedModule.mkLinearMap_apply]`. Rewrite using `[this]`. Conclude with `⟨fun ⟨s, hs⟩ ↦ ⟨s.1, s.2, hs⟩, fun ⟨s, hs, h⟩ ↦ ⟨⟨s, hs⟩, h⟩⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem localizedModule_mk_one_eq_zero_iff (p : Ideal A) [p.IsPrime] (x : M) :
     (LocalizedModule.mk x 1 : LocalizedModule p.primeCompl M) = 0 ↔ ∃ s ∉ p, s • x = 0 := by
@@ -22,7 +22,7 @@ theorem localizedModule_mk_one_eq_zero_iff (p : Ideal A) [p.IsPrime] (x : M) :
 variable [IsNoetherianRing A] [Module.Finite A M]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `(I.mem_iInf_smul_pow_eq_bot_iff x).1 hx`. Use `⟨1 - r, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_smul, one_smul, hr, sub_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_smul_eq_zero_of_mem_iInf_pow_smul (I : Ideal A) {x : M}
     (hx : x ∈ (⨅ n : ℕ, I ^ n • ⊤ : Submodule A M)) : ∃ f : A, f - 1 ∈ I ∧ f • x = 0 := by
@@ -37,7 +37,7 @@ section Associated
 variable {A : Type*} [CommRing A] [IsNoetherianRing A] {M : Type*} [AddCommGroup M] [Module A M]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Take `⟨p, hp, hle⟩` from `exists_le_isAssociatedPrime_of_isNoetherianRing A x hx`. Take `⟨s, hs, hsx⟩` from `h p hp`. Conclude with `hs (hle (by simpa [Submodule.mem_colon_singleton] using hsx))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_associatedPrimes_exists_smul_eq_zero {x : M}
     (h : ∀ p ∈ associatedPrimes A M, ∃ s ∉ p, s • x = 0) : x = 0 := by
@@ -54,7 +54,7 @@ variable {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
   {M : Type*} [AddCommGroup M] [Module A M]
 
 /- English proof (translation)
-Take `⟨hq', x, hx⟩` from `hq`. Use `⟨hq'.under A, x, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, hx]`. Simplify using `only [Ideal.mem_radical_iff, Submodule.mem_colon_singleton, Submodule.mem_bot, ← map_pow, algebraMap_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem under_mem_associatedPrimes [Module B M] [IsScalarTower A B M] {q : Ideal B}
     (hq : q ∈ associatedPrimes B M) : q.under A ∈ associatedPrimes A M := by
@@ -66,17 +66,17 @@ theorem under_mem_associatedPrimes [Module B M] [IsScalarTower A B M] {q : Ideal
     algebraMap_smul]
 
 /- English proof (translation)
-Introduce `p hp`. Rewrite `hp`, the goal using `[AssociatedPrimes.mem_iff, isAssociatedPrime_iff]`. Take `⟨hp, x, hx⟩` from `hp`. Establish `hmem : ∀ a, a ∈ p ↔ a • x = 0` using `fun a ↦ by simp [hx, Submodule.mem_colon_singleton]`. Take `⟨k, a, y, hy, ha⟩` from `Module.Flat.exists_factorization_of_comp_eq_zero_of_free (f := p.subtype) (x := LinearMap.toSpanSingleton A M x) (by ext ⟨a, ha⟩; simpa using (hmem a).1 ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx' : x = y (a 1)` using `by simpa using congr($hy 1)`. Establish `hk : ∀ r ∈ p, ∀ j, r * a 1 j = 0` using `fun r hr j ↦ by`. Establish `: a r = 0` using `by simpa using congr($ha ⟨r, hr⟩)`. Establish `h2 : r • a 1 = 0` using `by rw [← map_smul, smul_eq_mul, mul_one, this]`. Simplify using `using congr($h2 j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨hp, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `: ∀ j, ∃ s ∉ p, s * a 1 j = 0` using `fun j ↦ by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `hne ⟨a 1 j, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Simplify using `only [Submodule.mem_colon_singleton, smul_eq_mul, Submodule.mem_bot]`. Conclude with `⟨fun hr ↦ hk r hr j, fun hr ↦ by_contra fun h ↦ hcon r h hr⟩`. Use `choose s hs hs' using this`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hprod : (∏ j, s j) ∉ p` using `p.primeCompl.prod_mem fun j _ ↦ hs j`. Use `hprod ((hmem _).2 ?_)` and prove the remaining obligations. Establish `: (∏ j, s j) • a 1 = 0`. Use extensionality with `j`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem s (Finset.mem_univ j)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.smul_apply, smul_eq_mul, hc, mul_comm (s j), mul_assoc, hs', mul_zero, Finsupp.zero_apply]`. Rewrite using `[hx', ← map_smul, this, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem associatedPrimes_subset_of_flat [IsNoetherianRing A] [Module.Flat A M] :
     associatedPrimes A M ⊆ associatedPrimes A A := by
@@ -114,15 +114,15 @@ theorem associatedPrimes_subset_of_flat [IsNoetherianRing A] [Module.Flat A M] :
 variable [Module B M] [IsScalarTower A B M] [Module.Flat A M]
 
 /- English proof (translation)
-Take `⟨hq', x, hx⟩` from `under_mem_associatedPrimes (A := A) hq`. Establish `key : ∀ a : A, a • x = LinearMap.lTensor M (a • LinearMap.id) x` using `fun a ↦ by`. Rewrite using `[LinearMap.lTensor_smul, LinearMap.lTensor_id, LinearMap.smul_apply, LinearMap.id_apply]`. Use `le_antisymm (fun a ha ↦ ?_) (fun a ha ↦ ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hap`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `ha` using `[hx]`. Take `⟨n, hn⟩` from `ha`. Rewrite `hn` using `[Submodule.mem_colon_singleton, Submodule.mem_bot, key]`. Establish `hinj : Function.Injective (a ^ n • LinearMap.id : (A ⧸ p) →ₗ[A] (A ⧸ p))`. Rewrite using `[injective_iff_map_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Rewrite `hz` using `[LinearMap.smul_apply, LinearMap.id_apply, Algebra.smul_def, mul_eq_zero, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hz.resolve_left fun h ↦ hap (hp.mem_of_pow_mem n h)`. Establish `hx0 : x = 0` using `Module.Flat.lTensor_preserves_injective_linearMap _ hinj (hn.trans (map_zero _).symm)`. Conclude with `hq'.ne_top (by simp [hx, hx0])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx]`. Use `Ideal.le_radical ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_colon_singleton, Submodule.mem_bot, key]`. Establish `: (a • LinearMap.id : (A ⧸ p) →ₗ[A] (A ⧸ p)) = 0`. Use `LinearMap.ext fun z ↦ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Algebra.smul_def, Ideal.Quotient.eq_zero_iff_mem.2 ha]`. Simplify using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem under_eq_of_mem_associatedPrimes_tensor_quotient (p : Ideal A) [hp : p.IsPrime]
     {q : Ideal B} (hq : q ∈ associatedPrimes B (M ⊗[A] (A ⧸ p))) : q.under A = p := by
@@ -152,9 +152,9 @@ theorem under_eq_of_mem_associatedPrimes_tensor_quotient (p : Ideal A) [hp : p.I
     simp [this]
 
 /- English proof (translation)
-Proceed by induction on `hN using IsNoetherianRing.induction_on_isQuotientEquivQuotientPrime A with`. Consider the case `subsingleton N => simp [associatedPrimes.eq_empty_of_subsingleton] at hq`. Consider the case `quotient N p e`. Rewrite `hq` using `[LinearEquiv.AssociatedPrimes.eq (AlgebraTensorModule.congr (LinearEquiv.refl B M) e)]`. Rewrite using `[under_eq_of_mem_associatedPrimes_tensor_quotient p.asIdeal hq]` and apply the resulting hypothesis.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Consider the case `exact N₁ N₂ N₃ f g hf hg hfg h₁ h₃`. Establish `hf' : Function.Injective (AlgebraTensorModule.lTensor B M f)` using `Module.Flat.lTensor_preserves_injective_linearMap _ hf`. Establish `hfg' : Function.Exact (AlgebraTensorModule.lTensor B M f) (AlgebraTensorModule.lTensor B M g)` using `lTensor_exact M hfg hg`. Conclude with `(associatedPrimes.subset_union_of_exact hf' hfg' hq).elim h₁ h₃`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_associatedPrimes_tensor_quotient_under [IsNoetherianRing A] {N : Type*}
     [AddCommGroup N] [Module A N] [hN : Module.Finite A N] {q : Ideal B}
@@ -174,7 +174,7 @@ theorem mem_associatedPrimes_tensor_quotient_under [IsNoetherianRing A] {N : Typ
     exact (associatedPrimes.subset_union_of_exact hf' hfg' hq).elim h₁ h₃
 
 /- English proof (translation)
-The claim follows from `Module.Flat.lTensor_preserves_injective_linearMap _ (IsFractionRing.injective (A ⧸ p) p.ResidueField)`.
+A detailed English derivation is pending.
 -/
 theorem injective_lTensor_residueField (p : Ideal A) [p.IsPrime] :
     Function.Injective (AlgebraTensorModule.lTensor B M
@@ -183,19 +183,19 @@ theorem injective_lTensor_residueField (p : Ideal A) [p.IsPrime] :
     (IsFractionRing.injective (A ⧸ p) p.ResidueField)
 
 /- English proof (translation)
-Use `subset_antisymm ?_ (associatedPrimes.subset_of_injective (injective_lTensor_residueField p))` and prove the remaining obligations. Use `set φ := AlgebraTensorModule.lTensor B M (IsScalarTower.toAlgHom A (A ⧸ p) p.ResidueField).toLinearMap with hφ`. Establish `hinj : Function.Injective φ` using `injective_lTensor_residueField p`. Establish `hsurj : ∀ x : M ⊗[A] p.ResidueField, ∃ r ∉ p, ∃ y, φ y = r • x` using `fun x ↦ by`. Proceed by induction on `x with`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨1, (Ideal.ne_top_iff_one p).1 hp.ne_top, 0, by simp⟩`. Consider the case `tmul m c`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := A ⧸ p) c`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Establish `hb0` using `nonZeroDivisors.ne_zero hb`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, fun h ↦ hb0 (Ideal.Quotient.eq_zero_iff_mem.2 h), m ⊗ₜ a, ?_⟩` and prove the remaining obligations. Establish `: algebraMap (A ⧸ p) p.ResidueField (Ideal.Quotient.mk p b) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (A ⧸ p) p.ResidueField)).2 hb0`. Rewrite using `[← tmul_smul, Algebra.smul_def, IsScalarTower.algebraMap_apply A (A ⧸ p) p.ResidueField, Ideal.Quotient.algebraMap_eq, mul_div_cancel₀ _ this]`. Simplify using `[hφ]`. Consider the case `add x y hx hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, x', hx'⟩` from `hx`. Take `⟨s, hs, y', hy'⟩` from `hy`. Use `⟨r * s, p.primeCompl.mul_mem hr hs, s • x' + r • y', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower, hx', hy', smul_add, smul_smul, smul_smul, mul_comm s r]`. Establish `hreg : ∀ r ∉ p, ∀ x : M ⊗[A] p.ResidueField, r • x = 0 → x = 0` using `fun r hr x hx ↦ by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Function.Injective (r • LinearMap.id : p.ResidueField →ₗ[A] p.ResidueField)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Simplify `hz` using `[Algebra.smul_def, hr]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap (M := M) _ h1 (by simpa using hx)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `q ⟨hq, x, hx⟩`. Take `⟨r, hr, y, hy⟩` from `hsurj x`. Use `⟨hq, y, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `b`. Simplify using `only [Submodule.mem_colon_singleton, Submodule.mem_bot]`. Rewrite using `[← map_eq_zero_iff φ hinj, map_smul, hy, smul_comm]`. Conclude with `⟨fun h ↦ by rw [h, smul_zero], hreg r hr _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem associatedPrimes_tensor_residueField (p : Ideal A) [hp : p.IsPrime] :
     associatedPrimes B (M ⊗[A] p.ResidueField) = associatedPrimes B (M ⊗[A] (A ⧸ p)) := by
@@ -240,11 +240,11 @@ theorem associatedPrimes_tensor_residueField (p : Ideal A) [hp : p.IsPrime] :
   exact ⟨fun h ↦ by rw [h, smul_zero], hreg r hr _⟩
 
 /- English proof (translation)
-Rewrite using `[associatedPrimes_tensor_residueField]`. Establish `e` using `LinearEquiv.AssociatedPrimes.eq (AlgebraTensorModule.rid A B M)`. Prove the components needed by the constructor for the conclusion. Introduce `hq`. Use `⟨associatedPrimes_subset_of_flat (under_mem_associatedPrimes hq), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hq` using `[← e]`. Conclude with `mem_associatedPrimes_tensor_quotient_under hq`. Introduce and unpack `⟨hp, hq⟩`. Take `⟨-, f, hf⟩` from `(isAssociatedPrime_iff_exists_injective_linearMap _ _).1 hp`. Establish `hf' : Function.Injective (AlgebraTensorModule.lTensor B M f)` using `Module.Flat.lTensor_preserves_injective_linearMap _ hf`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `associatedPrimes.subset_of_injective hf' hq`.
+A detailed English derivation is pending.
 -/
 theorem mem_associatedPrimes_iff_of_flat_module [IsNoetherianRing A] (q : Ideal B) [q.IsPrime] :
     q ∈ associatedPrimes B M ↔ q.under A ∈ associatedPrimes A A ∧
@@ -264,17 +264,17 @@ theorem mem_associatedPrimes_iff_of_flat_module [IsNoetherianRing A] (q : Ideal 
     exact associatedPrimes.subset_of_injective hf' hq
 
 /- English proof (translation)
-Set `e` to `Algebra.TensorProduct.comm A B p.ResidueField`. Establish `key : ∀ (b : B) (x : B ⊗[A] p.ResidueField), (Algebra.TensorProduct.includeRight : B →ₐ[A] p.Fiber B) b ∈ ((⊥ : Submodule (p.Fiber B) (p.Fiber B)).colon {e x}).radical ↔ b ∈ ((⊥ : Submodule B (B ⊗[A] p.ResidueField)).colon {x}).radical` using `fun b x ↦ by`. Simplify using `only [Ideal.mem_radical_iff, Submodule.mem_colon_singleton, Submodule.mem_bot, ← map_pow]`. Use `exists_congr fun n ↦ ?_` and prove the remaining obligations. Rewrite using `[← map_eq_zero_iff e e.injective, Algebra.smul_def (b ^ n) x, map_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hq, x, hx⟩`. Use `⟨((⊥ : Submodule (p.Fiber B) (p.Fiber B)).colon {e x}).radical, ⟨⟨?_, ?_⟩, e x, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, ← map_one (Algebra.TensorProduct.includeRight : B →ₐ[A] p.Fiber B), key, ← hx, ← Ideal.ne_top_iff_one]`.
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq.ne_top`. Establish `aux : ∀ y : p.Fiber B, ∃ u : p.Fiber B, IsUnit u ∧ ∃ b : B, u * y = (Algebra.TensorProduct.includeRight : B →ₐ[A] p.Fiber B) b` using `fun y ↦ by`. Take `⟨r, hr, s, h⟩` from `Ideal.Fiber.exists_smul_eq_one_tmul p y`. Use `⟨algebraMap A _ r, ?_, s, by rw [← Algebra.smul_def, h]; rfl⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply A p.ResidueField (p.Fiber B)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(IsUnit.mk0 _ (by simpa using hr)).map _`. Introduce `y z hyz`. Take `⟨u, hu, b, hb⟩` from `aux y`. Take `⟨u', hu', b', hb'⟩` from `aux z`. Rewrite using `[← Ideal.unit_mul_mem_iff_mem _ (x := y) hu, ← Ideal.unit_mul_mem_iff_mem _ (x := z) hu', hb, hb', key, key, ← hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hq.mem_or_mem ?_` and prove the remaining obligations. Rewrite using `[hx, ← key, map_mul, ← hb, ← hb', mul_mul_mul_comm]`. Conclude with `Ideal.mul_mem_left _ _ hyz`. Use extensionality with `b`. Rewrite using `[Ideal.mem_comap, key, hx]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨Q, ⟨hQ, x, hx⟩, rfl⟩`. Take `⟨x, rfl⟩` from `e.surjective x`. Use `⟨Ideal.comap_isPrime _ _, x, ?_⟩` and prove the remaining obligations. Use extensionality with `b`. Rewrite using `[Ideal.mem_comap, ← key, ← hx]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_associatedPrimes_tensor_residueField_iff (p : Ideal A) [p.IsPrime] (q : Ideal B) :
     q ∈ associatedPrimes B (B ⊗[A] p.ResidueField) ↔
@@ -320,7 +320,7 @@ theorem mem_associatedPrimes_tensor_residueField_iff (p : Ideal A) [p.IsPrime] (
 variable [Module.Flat A B]
 
 /- English proof (translation)
-Rewrite using `[mem_associatedPrimes_iff_of_flat_module (A := A), mem_associatedPrimes_tensor_residueField_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_associatedPrimes_iff_of_flat [IsNoetherianRing A] (q : Ideal B) [q.IsPrime] :
     q ∈ associatedPrimes B B ↔ q.under A ∈ associatedPrimes A A ∧
@@ -330,7 +330,7 @@ theorem mem_associatedPrimes_iff_of_flat [IsNoetherianRing A] (q : Ideal B) [q.I
     mem_associatedPrimes_tensor_residueField_iff]
 
 /- English proof (translation)
-Use extensionality with `b`. Rewrite using `[RingHom.mem_ker, ← Ideal.Quotient.eq_zero_iff_mem, ← map_eq_zero_iff _ (Algebra.TensorProduct.quotIdealMapEquivTensorQuot B p).injective, Algebra.TensorProduct.quotIdealMapEquivTensorQuot_mk, ← map_eq_zero_iff _ (injective_lTensor_residueField (B := B) (M := B) p), ← map_eq_zero …`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ker_includeRight_fiber (p : Ideal A) [p.IsPrime] :
     RingHom.ker (Algebra.TensorProduct.includeRight : B →ₐ[A] p.Fiber B) =
@@ -344,15 +344,15 @@ theorem ker_includeRight_fiber (p : Ideal A) [p.IsPrime] :
   simp
 
 /- English proof (translation)
-Rewrite using `[mem_associatedPrimes_iff_of_flat (A := A), and_congr_right_iff, ← ker_includeRight_fiber (q.under A)]`. Introduce `_`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, ⟨hQ, x, hx⟩, h⟩`. Establish `hx0 : x ≠ 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hQ.ne_top (by simp [hx])`. Establish `: Q = ⊥`. Rewrite using `[eq_bot_iff, hx]`. Introduce and unpack `y ⟨n, hn⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.mem_colon_singleton, smul_eq_mul, Submodule.mem_bot, mul_eq_zero, hx0, or_false] at hn`. Conclude with `eq_zero_of_pow_eq_zero hn`. Rewrite using `[RingHom.ker_eq_comap_bot, ← this, h]`. Introduce `h`. Establish `: Nontrivial ((q.under A).Fiber B)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, 0, fun h1 ↦ hq.ne_top ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.eq_top_iff_one, h, RingHom.mem_ker, map_one, h1]`. Use `NoZeroDivisors.to_isDomain ((q.under A).Fiber B)` as an intermediate fact. Use `⟨⊥, ⟨Ideal.isPrime_bot, 1, ?_⟩, by rw [← RingHom.ker_eq_comap_bot, ← h]⟩` and prove the remaining obligations. Rewrite using `[eq_comm, eq_bot_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `y ⟨n, hn⟩`. Simplify using `only [Submodule.mem_colon_singleton, smul_eq_mul, Submodule.mem_bot, mul_one] at hn`. Conclude with `eq_zero_of_pow_eq_zero hn`.
+A detailed English derivation is pending.
 -/
 theorem mem_associatedPrimes_iff_eq_map_of_flat [IsNoetherianRing A] (q : Ideal B) [hq : q.IsPrime]
     [NoZeroDivisors ((q.under A).Fiber B)] :
@@ -385,13 +385,13 @@ theorem mem_associatedPrimes_iff_eq_map_of_flat [IsNoetherianRing A] (q : Ideal 
     exact eq_zero_of_pow_eq_zero hn
 
 /- English proof (translation)
-Rewrite using `[mem_associatedPrimes_iff_eq_map_of_flat (A := A), and_congr_right_iff]`. Introduce `_`. Prove the components needed by the constructor for the conclusion. Introduce `h q' _ h'`. Rewrite using `[h, Ideal.map_le_iff_le_comap, ← h']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `hle : (q.under A).map (algebraMap A B) ≤ q` using `Ideal.map_comap_le`. Establish `: Nontrivial ((q.under A).Fiber B)`. Use `⟨1, 0, fun h1 ↦ hq.ne_top ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.eq_top_iff_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hle ?_` and prove the remaining obligations. Rewrite using `[← ker_includeRight_fiber, RingHom.mem_ker, map_one, h1]`. Use `NoZeroDivisors.to_isDomain ((q.under A).Fiber B)` as an intermediate fact. Use `le_antisymm (h _ ?_ ?_) hle` and prove the remaining obligations. Rewrite using `[← ker_includeRight_fiber]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.ker_isPrime _`. Conclude with `le_antisymm (Ideal.comap_mono hle) Ideal.le_comap_map`.
+A detailed English derivation is pending.
 -/
 theorem mem_associatedPrimes_iff_generic_of_flat [IsNoetherianRing A] (q : Ideal B)
     [hq : q.IsPrime] [NoZeroDivisors ((q.under A).Fiber B)] :
@@ -416,9 +416,9 @@ theorem mem_associatedPrimes_iff_generic_of_flat [IsNoetherianRing A] (q : Ideal
     · exact le_antisymm (Ideal.comap_mono hle) Ideal.le_comap_map
 
 /- English proof (translation)
-Use `eq_zero_of_forall_associatedPrimes_exists_smul_eq_zero (A := B) fun q hq ↦ ?_` and prove the remaining obligations. Establish `hqB` using `associatedPrimes_subset_of_flat hq`. Use `haveI := hqB.isPrime`. Establish `hp` using `((mem_associatedPrimes_iff_of_flat (A := A) q).1 hqB).1`. Use `haveI := hfib ⟨q.under A, inferInstance⟩ hp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q', h1, h2⟩` from `hx ⟨q, inferInstance⟩ hp`. Take `⟨s, hs, h⟩` from `(localizedModule_mk_one_eq_zero_iff q'.asIdeal x).1 h2`. Conclude with `⟨s, fun hsq ↦ hs (((mem_associatedPrimes_iff_generic_of_flat (A := A) q).1 hqB).2 q'.asIdeal q'.2 h1 hsq), h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_flat_of_forall_fiber [IsNoetherianRing A] [IsNoetherianRing B]
     {L : Type*} [AddCommGroup L] [Module B L] [Module.Flat B L]
@@ -450,11 +450,11 @@ noncomputable def symbolicPower (P : Ideal R) [P.IsPrime] (m : ℕ) : Ideal R :=
 open IsLocalRing in
 
 /- English proof (translation)
-Establish `hdim : Ring.KrullDimLE 0 (R ⧸ maximalIdeal R ^ k)`. Rewrite using `[Ring.krullDimLE_zero_iff]`. Introduce `Q hQ`. Establish `h1 : maximalIdeal R ^ k ≤ Q.comap (Ideal.Quotient.mk (maximalIdeal R ^ k))` using `fun x hx ↦ by simp [Ideal.Quotient.eq_zero_iff_mem.2 hx]`. Establish `h2 : maximalIdeal R = Q.comap (Ideal.Quotient.mk (maximalIdeal R ^ k))` using `(maximalIdeal.isMaximal R).eq_of_le (Ideal.IsPrime.ne_top inferInstance) (Ideal.IsPrime.le_of_pow_le h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (Q.comap (Ideal.Quotient.mk (maximalIdeal R ^ k))).IsMaximal` using `h2 ▸ maximalIdeal.isMaximal R`. Establish `h4` using `Ideal.IsMaximal.map_of_surjective_of_ker_le (f := Ideal.Quotient.mk (maximalIdeal R ^ k)) Ideal.Quotient.mk_surjective (m := Q.comap (Ideal.Quotient.mk (maximalIdeal R ^ k))) (by simpa using h1)`. Rewrite `h4` using `[Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`. Then use the resulting hypothesis. Establish `hart : IsArtinianRing (R ⧸ maximalIdeal R ^ k)` using `IsNoetherianRing.isArtinianRing_of_krullDimLE_zero`. Take `⟨m, hm⟩` from `monotone_stabilizes_iff_artinian.2 hart ⟨fun n ↦ OrderDual.toDual ((J n).map (Ideal.Quotient.mk (maximalIdeal R ^ k))), fun a b hab ↦ Ideal.map_mono (hJ hab)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨m, fun m' hm' ↦ ?_⟩` and prove the remaining obligations. Establish `h : (J m).map (Ideal.Quotient.mk (maximalIdeal R ^ k)) = (J m').map (Ideal.Quotient.mk (maximalIdeal R ^ k))` using `hm m' hm'`. Use `congrArg (Ideal.comap (Ideal.Quotient.mk (maximalIdeal R ^ k))) h` as an intermediate fact. Simplify `this.symm` using `[Ideal.comap_map_quotientMk, sup_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_sup_maximalIdeal_pow_stable [IsNoetherianRing R] [IsLocalRing R]
     (J : ℕ → Ideal R) (hJ : Antitone J) (k : ℕ) :
@@ -487,23 +487,21 @@ theorem exists_sup_maximalIdeal_pow_stable [IsNoetherianRing R] [IsLocalRing R]
 open IsLocalRing in
 
 /- English proof (translation)
-Use `set 𝔪 := maximalIdeal R`. Use `choose s hs using exists_sup_maximalIdeal_pow_stable J hJ`. Set `B : ℕ → Ideal R` to `fun k ↦ J (s k) ⊔ 𝔪 ^ k`. Establish `hB : ∀ k m, B k ≤ J m ⊔ 𝔪 ^ k` using `fun k m ↦ by`. Rewrite using `[show B k = _ from (hs k (max m (s k)) (le_max_right _ _)).symm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `sup_le_sup_right (hJ (le_max_left _ _)) _`. Establish `step : ∀ k, ∀ x ∈ B k, ∃ y ∈ B (k + 1), x - y ∈ 𝔪 ^ k` using `fun k x hx ↦ by`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (hB k (s (k + 1)) hx)`. Conclude with `⟨y, Ideal.mem_sup_left hy, by simpa using hz⟩`. Use `choose! g hg hg' using step`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction.
 
-Use `⟨s k, fun x hx ↦ ?_⟩` and prove the remaining obligations. Set `f : ℕ → R` to `fun n ↦ Nat.rec x (fun n y ↦ g (k + n) y) n`. Establish `hf : ∀ n, f n ∈ B (k + n)` using `fun n ↦ by`. Proceed by induction on `n with`. Consider the case `zero => exact Ideal.mem_sup_left hx`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih => exact hg _ _ ih`. Establish `hf' : ∀ n d, f n - f (n + d) ∈ 𝔪 ^ (k + n)` using `fun n d ↦ by`. Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : f (n + d) - f (n + d + 1) ∈ 𝔪 ^ (k + n)` using `Ideal.pow_le_pow_right (by omega) (hg' _ _ (hf (n + d)))`. Simplify `(𝔪 ^ (k + n)).add_mem ih h1` using `[add_assoc]`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := 𝔪) f fun {m n} hmn ↦ by`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.pow_le_pow_right (by omega) (hf' m d)`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at hL`. Establish `hL0 : L = 0`. Rewrite using `[← Ideal.mem_bot, ← h0, Submodule.mem_iInf]`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Submodule.mem_bot R, ← Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := R ⧸ J m) 𝔪 (maximalIdeal.isMaximal R).ne_top, Submodule.mem_iInf]`. Introduce `n`. Take `⟨y, hy, z, hz, e⟩` from `Submodule.mem_sup.1 (hB (k + n) m (hf n))`. Establish `hz' : z - (f n - L) ∈ 𝔪 ^ n` using `(𝔪 ^ n).sub_mem (Ideal.pow_le_pow_right (by omega) hz) (hL n)`. Establish `: Ideal.Quotient.mk (J m) L = (z - (f n - L)) • (1 : R ⧸ J m)`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Algebra.algebraMap_eq_smul_one, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq, ← e]`. Use `hy using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul hz' trivial`.
-
-Establish `h1` using `hf' 0 k`. Establish `h2` using `hL k`. Rewrite `h2` using `[hL0, sub_zero]`. Establish `h3 : x - f k ∈ 𝔪 ^ k` using `by simpa [f] using h1`. Simplify using `using (𝔪 ^ k).add_mem h3 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_le_maximalIdeal_pow_of_iInf_eq_bot [IsNoetherianRing R] [IsLocalRing R]
     [IsPrecomplete (maximalIdeal R) R] (J : ℕ → Ideal R) (hJ : Antitone J) (h0 : ⨅ m, J m = ⊥)

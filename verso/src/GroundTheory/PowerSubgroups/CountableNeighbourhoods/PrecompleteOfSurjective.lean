@@ -3,7 +3,7 @@ import Mathlib
 namespace GroundTheory.Variant₂.N1
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smodEq_span_singleton_pow_iff {R : Type*} [CommRing R] (a : R) (n : ℕ) (x y : R) :
     x ≡ y [SMOD ((Ideal.span {a}) ^ n • (⊤ : Submodule R R))] ↔ a ^ n ∣ x - y := by
@@ -11,19 +11,17 @@ theorem smodEq_span_singleton_pow_iff {R : Type*} [CommRing R] (a : R) (n : ℕ)
     Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Use `⟨fun b hb => ?_⟩` and prove the remaining obligations. Establish `hb' : ∀ {m n : ℕ}, m ≤ n → f a ^ m ∣ b m - b n` using `fun hmn => (smodEq_span_singleton_pow_iff (f a) _ _ _).1 (hb hmn)`. Establish `hstep : ∀ n : ℕ, ∃ x : A, b (n + 1) = b n + f (a ^ n * x)`. Introduce `n`. Take `⟨c, hc⟩` from `hb' (Nat.le_add_right n 1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `hf c`. Use `⟨-x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_neg]`. Take the linear combination `-hc`. Use `choose x hx using hstep`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨y₀, hy₀⟩` from `hf (b 0)`. Set `y : ℕ → A` to `fun n => y₀ + ∑ k ∈ Finset.range n, a ^ k * x k`. Establish `hy_succ : ∀ n, y (n + 1) = y n + a ^ n * x n`. Introduce `n`. Simplify using `only [y, Finset.sum_range_succ, add_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hy : ∀ n, f (y n) = b n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [y, hy₀]`. Consider the case `succ n ih => rw [hy_succ, map_add, ih, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hcauchy : ∀ {m n : ℕ}, m ≤ n → a ^ m ∣ y m - y n`. Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy_succ, sub_add_eq_sub_sub]`. Conclude with `dvd_sub ih (Dvd.dvd.mul_right (pow_dvd_pow a hmn) _)`. Take `⟨L, hL⟩` from `IsPrecomplete.prec (I := Ideal.span {a}) inferInstance (f := y) (fun {m n} hmn => (smodEq_span_singleton_pow_iff a m _ _).2 (hcauchy hmn))`. Use `⟨f L, fun n => (smodEq_span_singleton_pow_iff (f a) n _ _).2 ?_⟩` and prove the remaining obligations. Establish `h` using `map_dvd f ((smodEq_span_singleton_pow_iff a n _ _).1 (hL n))`.
-
-Rewrite `h` using `[map_pow, map_sub, hy]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isPrecomplete_of_surjective {A : Type*} {B : Type*} [CommRing A] [CommRing B]
     (f : A →+* B) (hf : Function.Surjective f) (a : A) [IsPrecomplete (Ideal.span {a}) A] :

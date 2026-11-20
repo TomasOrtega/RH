@@ -69,7 +69,7 @@ def Van {k : Type} [Field k] (T : Finset ℕ) (pl : ℕ → ValuationSubring Ω)
     (∀ v ∈ T, ∃ m, ∀ g ∈ Dec (F := ℚ) (pl v), z g = (γ g : k) * m - m) → ∃ m, ∀ g, z g = (γ g : k) * m - m
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h2, by simpa using hl, by simp, by simp, by simp, by simpa using hA, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (l : ℕ) (hl : l.Prime) (h2 : l ≠ 2) (A : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) :
     GalData l {v | ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal} {l} ∅ (fun _ => A) ⊤ :=

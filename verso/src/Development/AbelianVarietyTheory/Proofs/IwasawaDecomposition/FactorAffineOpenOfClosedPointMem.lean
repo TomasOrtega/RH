@@ -6,11 +6,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.Toroidal
 
 /- English proof (translation)
-Introduce `X A _ _ z U hU hz`. Establish `hr : Set.range z.base ⊆ Set.range hU.fromSpec.base`. Rewrite using `[hU.range_fromSpec]`. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `hs : a ⤳ IsLocalRing.closedPoint A` using `IsLocalRing.specializes_closedPoint a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(hs.map z.continuous).mem_open U.2 hz`. Set `g : Sp A ⟶ Spec Γ(X, U)` to `IsOpenImmersion.lift hU.fromSpec z hr`. Use `⟨(Spec.preimage g).hom, ?_⟩` and prove the remaining obligations. Establish `h1 : spMap (Spec.preimage g).hom = g` using `by show Spec.map (CommRingCat.ofHom (Spec.preimage g).hom) = g`. Rewrite using `[CommRingCat.ofHom_hom]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Spec.map_preimage g`. Rewrite using `[h1]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocM.FJ.factor_affineOpen_of_closedPoint_mem : ∀ (X : Scheme.{0}) (A : Type) [CommRing A] [IsLocalRing A] (z : Sp A ⟶ X) (U : X.Opens) (hU : IsAffineOpen U), z (IsLocalRing.closedPoint A) ∈ U → ∃ φ : Γ(X, U) →+* A, spMap φ ≫ hU.fromSpec = z := by
   intro X A _ _ z U hU hz

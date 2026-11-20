@@ -9,7 +9,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.Dec
 
 /- English proof (translation)
-Introduce `v g`. Take `⟨h1, h2, h3, -⟩` from `hB v`. Simplify `hD _ _ _ _ _ h1 h2 h (hg v) (hh v) (uMat g) g.2 _ h3.2 _ h3.2` using `[h3.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem locDec_of_decOp (hD : DecOp) (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ) (hB : IsDSData B d)
     (hg : GapGe B h) (hh : ∀ v, 8 * (B.I.n : ℝ) * rkR (B.I.ε v) < h) : LocDec B h := by
@@ -18,7 +18,7 @@ theorem locDec_of_decOp (hD : DecOp) (B : RowsAut) (d : InfinitePlace B.I.F → 
   simpa [h3.1] using hD _ _ _ _ _ h1 h2 h (hg v) (hh v) (uMat g) g.2 _ h3.2 _ h3.2
 
 /- English proof (translation)
-Introduce `v g`. Take `⟨h1, h2, h3, -⟩` from `hB v`. Simplify `(hD _ _ _ _ _ h1 h2 h (hg v) (hh v) (uMat g) g.2 _ h3.2 _ h3.2).2` using `[h3.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem locDec_of_decGap (hD : GlobalTheory.DSId.DecGap) (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ)
     (hB : IsDSData B d) (hg : GapGe B h)

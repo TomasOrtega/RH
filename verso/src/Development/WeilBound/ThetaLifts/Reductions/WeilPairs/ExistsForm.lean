@@ -11,19 +11,15 @@ noncomputable section
 namespace GlobalTheory.SplitLagrF
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ ν 𝓕 hν h𝓕 e he f₀ hf₀ hne`. Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT`. Use `letI : MeasurableSpace (GlobalTheory.SplitInvFormF.conjHalf σ e nS nT) := borel _`. Use `haveI : BorelSpace (GlobalTheory.SplitInvFormF.conjHalf σ e nS nT) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (GlobalTheory.SplitInvFormF.conjHalf σ e nS nT) := (isClosed_conjHalf e).isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `μ : Measure (GlobalTheory.SplitInvFormF.conjHalf σ e nS nT)` to `Measure.addHaar`. Use `haveI : μ.IsAddHaarMeasure := inferInstanceAs (Measure.addHaar (G := GlobalTheory.SplitInvFormF.conjHalf σ e nS nT)).IsAddHaarMeasure`. Establish `hth` using `GlobalTheory.HeisThetaF.isThetaFunOF_heisOF F E σ B hB nS (nT + nT) JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀`. Set `L : GlobalTheory.WeilPartsF.thetaSubF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ →ₗ[ℂ] ℂ` to `{ toFun := fun f => ∫ y : GlobalTheory.SplitInvFormF.conjHalf σ e nS nT, prof σ JS JT ξ₀ B.ψ ν 𝓕 f.1 y.1 ∂μ map_add' := fun f g => by`. Rewrite using `[← integral_add (prof_integrable hB hS hT hξ hσξ hν h𝓕 he μ f.2) (prof_integrable hB hS hT hξ hσξ hν h𝓕 he μ g.2)]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun y => prof_add hB hν h𝓕 f.2 g.2 y.1)`. Use the proof step `map_smul' := fun c f => by`. Rewrite using `[RingHom.id_apply, smul_eq_mul, ← integral_const_mul]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun y => prof_smul ν 𝓕 c f.1 y.1) }`. Take `⟨ℓ, hℓ0⟩` from `LinearMap.exists_extend L`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hℓ : ∀ f, IsThetaFunOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ f → ℓ f = ∫ y : GlobalTheory.SplitInvFormF.conjHalf σ e nS nT, prof σ JS JT ξ₀ B.ψ ν 𝓕 f y.1 ∂μ` using `fun f hf => LinearMap.congr_fun hℓ0 ⟨f, hf⟩`. Use `⟨ℓ, fun u hu f hf => ?_, ?_, fun M hM => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `exists_decomp (σ := σ) (e := e) hu`. Rewrite using `[hℓ _ (hth _ _ hf), hℓ f hf, GlobalTheory.SplitVacF.heisOF_add_half he (mul_mem_conjHalf _ ha) (mul_mem_conjHalf _ hb), ← integral_add_right_eq_self (μ := μ) (fun y : GlobalTheory.SplitInvFormF.conjHalf σ e nS nT => prof σ JS JT ξ₀ B.ψ ν 𝓕 f y.1) ⟨b, hb⟩]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ = prof σ JS JT ξ₀ B.ψ ν 𝓕 f (y.1 + b)`. Simplify using `only`. Rewrite using `[prof_heis_dC hB hS hT hξ hσξ hν h𝓕 (hth _ _ hf), GlobalTheory.SplitVacF.commF_half he y.2 (add_mem ha ha), one_mul, prof_heis_aC ν 𝓕 he f y.2 hb]`. Assume the negation of the conclusion as `hall push Not at hall`. Conclude with `hne (lagrInt_eq_zero hB hS hT hξ hσξ hν h𝓕 he μ hf₀ fun u => by`.
-
-Rewrite using `[← hℓ _ (hth u _ hf₀)]`. Conclude with `hall _ (hth u _ hf₀))`. Take `⟨r, hr, hm⟩` from `integral_mul_left e μ M hM`. Use `⟨r, hr, fun f f' k hf hf' hk => ?_⟩` and prove the remaining obligations. Rewrite using `[hℓ f hf, hℓ f' hf', mul_comm (r : ℂ) k, mul_assoc, ← hm, ← integral_const_mul]`.
-
-Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun x => hk x.1 x.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

@@ -19,9 +19,9 @@ def lastQ (B : BesLev D σ) : Matrix (Fin B.V.rank) (Fin (σ + 1)) D.host.E :=
   Matrix.of fun k => Fin.snoc (α := fun _ => D.host.E) (B.d.e k) ((B.d.i₀ *ᵥ vecB B.o B.ζ) k)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Use `congrFun (ratV_mulVec B.d.i₀ (vecB B.o B.ζ)) k` as an intermediate fact. Simplify using `only [xLast, lastQ, rat, Matrix.map_apply, Matrix.of_apply, Fin.snoc_last]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [xLast, lastQ, rat, Matrix.map_apply, Matrix.of_apply, Fin.snoc_castSucc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rat_lastQ (B : BesLev D σ) : rat (lastQ B) = xLast B.d (vecB B.o B.ζ) := by
   funext k j
@@ -33,18 +33,18 @@ theorem rat_lastQ (B : BesLev D σ) : rat (lastQ B) = xLast B.d (vecB B.o B.ζ) 
     rfl
 
 /- English proof (translation)
-Introduce `h` and use `B.line.2 (by rw [h]; simp)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zeta_ne (B : BesLev D σ) : B.ζ ≠ 0 := fun h => B.line.2 (by rw [h]; simp)
 
 /- English proof (translation)
-Establish `key : ∀ c : Fin (σ + 1) → D.host.E, lastQ B *ᵥ c = B.d.e *ᵥ (fun i => c i.castSucc) + c (Fin.last σ) • (B.d.i₀ *ᵥ (B.o.iB *ᵥ B.ζ))` using `fun c => by`. Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `∑ j, lastQ B k j * c j = ∑ i, B.d.e k i * c i.castSucc + c (Fin.last σ) * (B.d.i₀ *ᵥ vecB B.o B.ζ) k`. Rewrite using `[Fin.sum_univ_castSucc, mul_comm (c _)]`. Simplify using `only [lastQ, Matrix.of_apply, Fin.snoc_castSucc, Fin.snoc_last]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Matrix.mulVec_injective_iff.1 ((injective_iff_map_eq_zero (lastQ B).mulVecLin).2 fun c hc => ?_)` and prove the remaining obligations. Rewrite `hc` using `[Matrix.mulVecLin_apply, key]`. Establish `h1` using `congrArg (B.d.qX *ᵥ ·) hc`. Establish `h2` using `congrArg ((B.o.qB * B.d.q0) *ᵥ ·) hc`. Establish `a1 : B.d.qX * B.d.i₀ = 0` using `rat_injective (by rw [rat_mul, rat_zero]; exact B.d.pX_j0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : B.d.q0 * B.d.e = 0` using `rat_injective (by rw [rat_mul, rat_zero]; exact B.d.p0_jX)`. Establish `a3 : B.d.q0 * B.d.i₀ = 1` using `rat_injective (by rw [rat_mul, rat_one]; exact B.d.p0_j0)`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mulVec_zero, qX_e, Matrix.one_mulVec, ← Matrix.mul_assoc, a1, Matrix.zero_mul, Matrix.zero_mulVec, smul_zero, add_zero] at h1`. Establish `a4 : B.o.qB * B.d.q0 * B.d.e = 0` using `by rw [Matrix.mul_assoc, a2, Matrix.mul_zero]`. Establish `a5 : B.o.qB * B.d.q0 * B.d.i₀ * B.o.iB = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc B.o.qB, a3, Matrix.mul_one, B.o.qB_iB]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mulVec_zero, ← Matrix.mul_assoc, a4, a5, Matrix.zero_mulVec, zero_add, Matrix.one_mulVec] at h2`. Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun i => congrFun h1 i) j` and prove the remaining obligations. Conclude with `(smul_eq_zero.1 h2).resolve_right (zeta_ne B)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lastQ_indep (B : BesLev D σ) : LinearIndependent D.host.E (lastQ B).transpose := by
   have key : ∀ c : Fin (σ + 1) → D.host.E, lastQ B *ᵥ c =
@@ -72,9 +72,7 @@ theorem lastQ_indep (B : BesLev D σ) : LinearIndependent D.host.E (lastQ B).tra
   exact (smul_eq_zero.1 h2).resolve_right (zeta_ne B)
 
 /- English proof (translation)
-Introduce `D hF ψ`. Use `⟨fun ρ B J s Ψ hΨ => ?_, fun σ J B s Ψ hΨ => ?_⟩` and prove the remaining obligations. Conclude with `(hF ψ s.weil.std B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.vU J.d.e (isIsoSub_e J.d).1 (yZero B.V₀ ρ (vecB B.o B.ζ)) Ψ hΨ).2`. Establish `h` using `(hF ψ s.weil.std J.W J.W₀ B.V B.V₀ (σ + 1) σ J.d B.d s.vS s.vT s.vU (lastQ B) (lastQ_indep B) 0 Ψ hΨ).2`. Rewrite `h` using `[rat_lastQ]`.
-
-Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_isThetaFun : ∀ D : D7, FlatLaw D → ∀ (ψ : AddChar (AF D.host.F) ℂ), (∀ (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J) Ψ, IsThetaFunO ψ B.V J.W Ψ → IsThetaFunO ψ B.V₀ J.W₀ (flatBF s Ψ)) ∧ ∀ (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (s : StepFB ψ J B) Ψ, IsThetaFunO ψ J.W B.V Ψ → IsThetaFunO ψ J.W₀ B.V₀ (flatFB s Ψ) := by
   intro D hF ψ

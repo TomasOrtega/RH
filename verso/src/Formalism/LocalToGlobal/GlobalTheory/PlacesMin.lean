@@ -9,9 +9,9 @@ namespace Formalism.L2.GlobalTheoryTheory.Places
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory Formalism.HN Formalism.LFunctionChainParameters
 
 /- English proof (translation)
-Take `⟨x0, h0⟩` from `h10`. Take `⟨x1, h1⟩` from `tSet`. Use `J.family_levelPrime_summary_closed Fm crystallineComparison hTu (dlSize eps Fm) ⟨max (max x0 x1) (Fm.x1 + 1), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `hx0 : x0 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `hx1 : x1 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2 : Fm.x1 < x`. Use `le_trans (le_max_right _ _) hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨fun u => (h0 x hx0 i u (h1 x hx1 hx2 i u)).2.1, fun u => (h0 x hx0 i u (h1 x hx1 hx2 i u)).2.2.2.2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components.
 -/
 theorem level_prime_division_of_statements {eps : ℝ} (Fm : FamP eps) (crystallineComparison : ℝ) (h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison) (tSet : SettingEventually Fm) (hTu : TuSize Fm) :
     LocalQuadraticParts.LevelTFamily Fm := by
@@ -26,39 +26,37 @@ theorem level_prime_division_of_statements {eps : ℝ} (Fm : FamP eps) (crystall
   exact ⟨fun u => (h0 x hx0 i u (h1 x hx1 hx2 i u)).2.1, fun u => (h0 x hx0 i u (h1 x hx1 hx2 i u)).2.2.2.2.1⟩
 
 /- English proof (translation)
-Establish `heps` using `Lnk.fam_eps_pos Fm`. Take `⟨xNC, hNC⟩` from `hNC`. Take `⟨CT, xT, δ, hδ, hTa⟩` from `G.TopChoiceBounds.tau_sum_family_of_mertens Fm (fun _ _ => mertens)`. Take `⟨C26, x26, h26⟩` from `h26`. Take `⟨CMu, xMu, hMu⟩` from `lMu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨CG, xG, δG, -, hG⟩` from `lG`. Take `⟨xR, hRank⟩` from `hRank`. Take `⟨xU, hTu⟩` from `hTu`. Take `⟨xE, hE⟩` from `Lnk.ev_pow_le_exp 1 eps 9 one_pos heps`. Take `⟨xM, hM⟩` from `flipTwoThree.le_rpow_for_large_x ((2 : ℝ) / 5) (by norm_num) 6`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨xD, hD⟩ : ∃ xD : ℝ, ∀ x ≥ xD, δ x ≤ 1` from `Filter.eventually_atTop.1 (hδ.eventually (Iic_mem_nhds zero_lt_one))`. Use `⟨max (max C26 CMu) 4, |xNC| + |xT| + |x26| + |xMu| + |xG| + |xR| + |xU| + |xE| + |xM| + |xD| + |Fm.x1| + 4 * |CT| + 5, le_max_right _ _, fun x hx i => ?_⟩` and prove the remaining obligations. Establish `n1` using `abs_nonneg xNC`. Establish `n2` using `abs_nonneg xT`. Establish `n3` using `abs_nonneg x26`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n4` using `abs_nonneg xMu`. Establish `n5` using `abs_nonneg xG`. Establish `n6` using `abs_nonneg xR`. Establish `n7` using `abs_nonneg xU`. Establish `n8` using `abs_nonneg xE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n9` using `abs_nonneg xM`. Establish `n10` using `abs_nonneg xD`. Establish `n11` using `abs_nonneg Fm.x1`. Establish `n12` using `abs_nonneg CT`. Establish `e1 : x ≥ xNC` using `by linarith [le_abs_self xNC]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : x ≥ xT` using `by linarith [le_abs_self xT]`. Establish `e3 : x ≥ x26` using `by linarith [le_abs_self x26]`. Establish `e4 : x ≥ xMu` using `by linarith [le_abs_self xMu]`. Establish `e5 : x ≥ xG` using `by linarith [le_abs_self xG]`. Establish `e6 : x ≥ xR` using `by linarith [le_abs_self xR]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e7 : x ≥ xU` using `by linarith [le_abs_self xU]`. Establish `e8 : x ≥ xE` using `by linarith [le_abs_self xE]`. Establish `e9 : xM ≤ x` using `by linarith [le_abs_self xM]`. Establish `e10 : x ≥ xD` using `by linarith [le_abs_self xD]`. Establish `hx1 : Fm.x1 < x` using `by linarith [le_abs_self Fm.x1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx5 : 5 ≤ x` using `by linarith`. Establish `hxC : 4 * |CT| + 1 ≤ x` using `by linarith`. Establish `hsx : (Fm.L x i).sc.x = x` using `Fm.L_x x i hx1`. Establish `hse : (Fm.L x i).sc.eps = eps` using `Fm.L_eps x i`. Establish `S` using `Fm.sizes x hx1 i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb9 : (Fm.L x i).sc.x ^ 9 ≤ (Fm.L x i).sc.b`. Establish `h` using `hE x e8 (by linarith)`. Rewrite `h` using `[one_mul]`. Unfold `Scale.b Scale.L`. Rewrite using `[hsx, hse, ← Real.rpow_natCast x 9]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h` after adjusting the coercions. Establish `hx5' : 5 ≤ (Fm.L x i).sc.x` using `by rw [hsx]; exact hx5`. Take `⟨s1, s2, s3, s4, s5, s6, s7, s8, s9⟩` from `sizes_at (Fm.L x i) S hx5' hb9`. Establish `hb1 : 1 ≤ (Fm.L x i).sc.b` using `by linarith`. Establish `hm6 : (6 : ℝ) ≤ ((Fm.D x i).R.m : ℝ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z1` using `(flipTwoThree.size_bounds_of_scale (Fm.L x i) S (by linarith)).1`. Rewrite `z1` using `[hsx]`. Conclude with `le_trans (hM x e9) z1`. Establish `hTb : ∀ u, (Fm.L x i).sc.b ^ 3 ≤ (((Fm.D x i).mem u).A.T : ℝ)`. Introduce `u`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans ?_ ((hTu x e7 i).1 u)` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast (Fm.L x i).sc.b 3]`. Use `Real.rpow_le_rpow_of_exponent_le hb1 ?_` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hXT : ∀ u, (Fm.L x i).sc.X' ≤ (((Fm.D x i).mem u).A.T : ℝ)`. Introduce `u`. Establish `h3 : (Fm.L x i).sc.b ≤ (Fm.L x i).sc.b ^ 3`. Establish `: (Fm.L x i).sc.b ^ 3 = (Fm.L x i).sc.b * (Fm.L x i).sc.b ^ 2` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2 : (1 : ℝ) ≤ (Fm.L x i).sc.b ^ 2` using `one_le_pow₀ hb1`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear relations using `[hTb u]`. Establish `hsz` using `fun u => size_alt ((Fm.D x i).R.f : ℝ) (Fm.L x i).sc.b (((Fm.D x i).mem u).A.T : ℝ) (Nat.cast_nonneg _) s8 s9 (hTb u)`. Establish `hfill` using `Fm.fills x hx1 i`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Lnk.IOsum_nonneg (Fm.Gx x i) Fm.GK Fm.GK_nonneg (Fm.ex x hx1 i).kapI_def (fun w => (hfill w).2.2.2.2.2.1), ?_⟩` and prove the remaining obligations. Use `places_at_of C26 CMu _ (le_trans (le_max_left _ _) (le_max_left _ _)) (le_trans (le_max_right _ _) (le_max_left _ _)) (Fm.nprimeDef x hx1 i) (Fm.nuDef x hx1 i) (hNC x e1 i) (hRank x e6 i) (h26 x e3 i) (hMu x e4 i) (fun u w hw => ⟨((hG x e5 i).1 u w hw).1, ((hG x e5 i).1 u w hw).2 …` and prove the remaining obligations. Rewrite using `[(hfill w).2.2.2.2.2.1]`. Conclude with `Lnk.ioP_nonneg (Fm.Gx x i) Fm.GK Fm.GK_nonneg (Fm.ex x hx1 i).kapI_def _ _ _)`. Use the proof step `(fun u w hw => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(hfill w).2.2.2.2.1, hw]`. Conclude with `tau_eq_zero_of_le _ _ _ _ _ (hXT u))`. Use the proof step `(fun u w hs => ?_)`. Use the proof step `(ta_le (Fm.L x i) S hx5' hb9 CT (δ x) (by rw [hsx]; exact hxC) (hD x e10) (hTa x e2 i))`. Use the proof step `(fun u => (hsz u).1) (fun u => (hsz u).2.1) (fun u => (hsz u).2.2)`.
-
-Distinguish the cases in `hw : (Fm.D x i).what₂.places.resChar w = ((Fm.D x i).mem u).A.T`. Conclude with `Or.inl (lenLoc_atT_zero (Fm.ex x hx1 i).lat.atT (Fm.ex x hx1 i).err.edef u w hw hs)`. Use `Or.inr (Fm.lats0 x hx1 i w u (VV_empty_of_ge _ _ _ _ _ ?_) hw)` and prove the remaining obligations. Establish `h1 : ¬ ((((Fm.D x i).what₂.places.resChar w : ℕ) : ℝ) ≤ (Fm.L x i).sc.X'' (Fm.D x i).R.n)` using `fun h => hs (Fm.supp_sat x hx1 i w h)`. Combine the linear relations using `[not_le.1 h1]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem placesF_min' {eps : ℝ} (Fm : FamP eps) (h26 : LocalQuadraticParts.LevelTFamily Fm) (hNC : Lnk.NuCommensF Fm) (hTu : TuSize Fm)
     (hRank : J.MuRank Fm) (lG : LinkG Fm) (lMu : LinkMu Fm) : Lnk.PlacesF Fm := by
@@ -160,7 +158,7 @@ theorem placesF_min' {eps : ℝ} (Fm : FamP eps) (h26 : LocalQuadraticParts.Leve
     linarith [not_le.1 h1]
 
 /- English proof (translation)
-Conclude with `placesF_of`.
+A detailed English derivation is pending.
 -/
 theorem placesF_of_via_min : PlaceConditionsFamily := by
   exact placesF_of

@@ -7,14 +7,14 @@ namespace Formalism.MainNotions.InvariantsGenerators.InvariantsFromGenerators.Cy
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_lt_one_iff_toZMod (x : ℤ_[l]) : ‖x‖ < 1 ↔ PadicInt.toZMod x = 0 := by
 
   rw [← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]
 
 /- English proof (translation)
-Rewrite using `[show (-((1 : ℕ) : ℤ)) = -1 by simp, PadicInt.norm_le_pow_iff_norm_lt_pow_add_one]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_le_inv_of_lt_one (x : ℤ_[l]) (h : ‖x‖ < 1) : ‖x‖ ≤ (l : ℝ) ^ (-((1 : ℕ) : ℤ)) := by
 
@@ -22,15 +22,15 @@ theorem norm_le_inv_of_lt_one (x : ℤ_[l]) (h : ‖x‖ < 1) : ‖x‖ ≤ (l :
   simpa using h
 
 /- English proof (translation)
-Use `set F : Polynomial ℤ := Polynomial.X ^ (l - 1) - 1 with hFdef`. Establish `hc0 : PadicInt.toZMod c ≠ 0` using `fun h0 => by`. Use `(norm_lt_one_iff_toZMod c).mpr h0` as an intermediate fact. Rewrite `this` using `[hc]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : ‖((l - 1 : ℕ) : ℤ_[l])‖ = 1`. Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.mp fun h => ?_)` and prove the remaining obligations. Rewrite `h` using `[norm_lt_one_iff_toZMod, map_natCast, ZMod.natCast_eq_zero_iff]`. Establish `h2` using `hl.out.two_le`. Use `Nat.le_of_dvd (by omega) h` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `e1 : Polynomial.aeval c F = c ^ (l - 1) - 1` using `by simp [hFdef]`. Establish `e2 : Polynomial.aeval c (Polynomial.derivative F) = ((l - 1 : ℕ) : ℤ_[l]) * c ^ (l - 1 - 1)`. Simplify using `[hFdef, Polynomial.derivative_X_pow]`. Establish `hF' : ‖Polynomial.aeval c (Polynomial.derivative F)‖ = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2, norm_mul, norm_pow, hc, one_pow, mul_one, hn]`. Establish `hF : ‖Polynomial.aeval c F‖ < 1`. Rewrite using `[e1, norm_lt_one_iff_toZMod, map_sub, map_pow, map_one, ZMod.pow_card_sub_one_eq_one hc0, sub_self]`. Take `⟨z, hz, hzc, -⟩` from `hensels_lemma (F := F) (a := c) (by rw [hF', one_pow]; exact hF)`. Use `⟨z, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `hz` using `[hFdef, sub_eq_zero]`. Rewrite `hzc` using `[hF']`. Conclude with `hzc`.
+A detailed English derivation is pending.
 -/
 theorem teich (c : ℤ_[l]) (hc : ‖c‖ = 1) : ∃ ω : ℤ_[l], ω ^ (l - 1) = 1 ∧ ‖ω - c‖ < 1 := by
 
@@ -59,39 +59,35 @@ theorem teich (c : ℤ_[l]) (hc : ‖c‖ = 1) : ∃ ω : ℤ_[l], ω ^ (l - 1) 
   · rw [hF'] at hzc; exact hzc
 
 /- English proof (translation)
-Establish `hp` using `hl.out`. Establish `h3 : 3 ≤ l` using `by have := hp.two_le; omega`. Establish `hu1 : u - 1 ∈ Ideal.span {(l : ℤ_[l]) ^ 1}`. Rewrite using `[← PadicInt.norm_le_pow_iff_mem_span_pow, hu]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 hu1`. Establish `hlpos : (0 : ℝ) < l` using `by exact_mod_cast hp.pos`. Establish `hrn : ‖r‖ = 1`. Establish `: ‖u - 1‖ = ‖r‖ * (l : ℝ)⁻¹` using `by rw [← hr, pow_one, norm_mul, PadicInt.norm_p]`. Rewrite `this` using `[hu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : (l : ℝ)⁻¹ ≠ 0` using `inv_ne_zero hlpos.ne'`. Clear denominators, using `at this` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Use `set a : ℤ := ((PadicInt.toZModPow (n + 1) r).val : ℤ) with ha_def`. Establish `ha_cast : (a : ZMod (l ^ (n + 1))) = PadicInt.toZModPow (n + 1) r`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha_def, Int.cast_natCast, ZMod.natCast_zmod_val]`. Establish `ha : ¬ (l : ℤ) ∣ a`. Introduce `hdvd`. Establish `h1 : (a : ZMod (l ^ 1)) = 0`. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hdvd`. Establish `h2 : (a : ZMod (l ^ 1)) = PadicInt.toZModPow 1 r`. Rewrite using `[← PadicInt.zmod_cast_comp_toZModPow 1 (n + 1) (by omega), RingHom.comp_apply, ← ha_cast, map_intCast]`. Rewrite `h1` using `[h2, ← RingHom.mem_ker, PadicInt.ker_toZModPow, ← PadicInt.norm_le_pow_iff_mem_span_pow, hrn]`. Establish `: (l : ℝ) ^ (-((1 : ℕ) : ℤ)) < 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_one, zpow_neg_one]; exact inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hord : orderOf (1 + (l : ZMod (l ^ (n + 1))) ^ 1 * a) = l ^ n` using `ZMod.orderOf_one_add_mul_prime_pow hp 1 one_ne_zero (by omega) a ha n`. Establish `hub : PadicInt.toZModPow (n + 1) u = 1 + (l : ZMod (l ^ (n + 1))) ^ 1 * a`. Establish `: u = 1 + (l : ℤ_[l]) ^ 1 * r` using `by rw [pow_one, mul_comm]; rw [pow_one] at hr; rw [hr]; ring`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_add, map_one, map_mul, map_pow, map_natCast, ha_cast]`. Establish `huu : IsUnit (PadicInt.toZModPow (n + 1) u)`. Apply `IsUnit.map` to reduce the goal to its premises. Rewrite using `[PadicInt.isUnit_iff]`. Establish `: u = 1 + (u - 1)` using `by ring`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Establish `h1 : ‖(u - 1)‖ < ‖(1 : ℤ_[l])‖`. Rewrite using `[hu, norm_one]; exact inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)`. Rewrite using `[← norm_one (α := ℤ_[l])]`. Conclude with `PadicInt.norm_add_eq_max_of_ne (ne_of_lt h1).symm |>.trans (max_eq_left h1.le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcu : IsUnit (PadicInt.toZModPow (n + 1) c)`. Apply `IsUnit.map` to reduce the goal to its premises. Rewrite using `[PadicInt.isUnit_iff]`. Establish `: c = 1 + (c - 1)` using `by ring`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖(c - 1)‖ < ‖(1 : ℤ_[l])‖` using `by rw [norm_one]; exact hc`. Rewrite using `[← norm_one (α := ℤ_[l])]`. Conclude with `PadicInt.norm_add_eq_max_of_ne (ne_of_lt h1).symm |>.trans (max_eq_left h1.le)`. Use `set U := huu.unit`. Use `set C := hcu.unit`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hdiv : l ^ 1 ∣ l ^ (n + 1)` using `pow_dvd_pow l (by omega)`. Use `haveI : NeZero (l ^ (n + 1)) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Use `haveI : NeZero (l ^ 1) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Establish `hker : ∀ x : ℤ_[l], ‖x - 1‖ < 1 → ∀ hx : IsUnit (PadicInt.toZModPow (n + 1) x), hx.unit ∈ (ZMod.unitsMap hdiv).ker`. Introduce `x hx hxu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, ZMod.unitsMap_def, Units.coe_map, IsUnit.unit_spec]`. Express the relevant statement in the definitionally equal form `ZMod.castHom hdiv (ZMod (l ^ 1)) (PadicInt.toZModPow (n + 1) x) = 1`. Rewrite using `[← RingHom.comp_apply, PadicInt.zmod_cast_comp_toZModPow 1 (n + 1) (by omega), ← sub_eq_zero, ← map_one (PadicInt.toZModPow 1), ← map_sub, ← RingHom.mem_ker, PadicInt.ker_toZModPow, ← PadicInt.norm_le_pow_iff_mem_span_pow]`. Conclude with `norm_le_inv_of_lt_one _ hx`. Establish `hUk : U ∈ (ZMod.unitsMap hdiv).ker` using `hker u (by rw [hu]; exact inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)) huu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCk : C ∈ (ZMod.unitsMap hdiv).ker` using `hker c hc hcu`. Establish `hcardG : Nat.card (ZMod (l ^ (n + 1)))ˣ = l ^ n * (l - 1)`. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime_pow_succ hp]`. Establish `hcardH : Nat.card (ZMod (l ^ 1))ˣ = l - 1`. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, pow_one, Nat.totient_prime hp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hrange : (ZMod.unitsMap hdiv).range = ⊤` using `MonoidHom.range_eq_top.2 (ZMod.unitsMap_surjective hdiv)`. Establish `hcardK : Nat.card (ZMod.unitsMap hdiv).ker = l ^ n`. Establish `h1` using `Subgroup.card_mul_index (ZMod.unitsMap hdiv).ker`. Rewrite `h1` using `[Subgroup.index_ker, hrange, Subgroup.card_top, hcardH, hcardG]`. Establish `hl1 : 0 < l - 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.eq_of_mul_eq_mul_right hl1 h1`. Establish `hzp : Subgroup.zpowers U = (ZMod.unitsMap hdiv).ker`. Apply `Subgroup.eq_of_le_of_card_ge` to reduce the goal to its premises. Rewrite using `[Subgroup.zpowers_le]`. Conclude with `hUk`.
-
-Rewrite using `[hcardK, Nat.card_zpowers, ← orderOf_units, IsUnit.unit_spec, hub, hord]`. Rewrite `hCk` using `[← hzp, ← mem_powers_iff_mem_zpowers]`. Take `⟨k, hk⟩` from `hCk`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_pow, sub_eq_zero]`.
-
-Use `congrArg Units.val hk` as an intermediate fact. Simplify `this` using `[U, C]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pow_approx (hl2 : l ≠ 2) (u : ℤ_[l]) (hu : ‖u - 1‖ = (l : ℝ)⁻¹) (c : ℤ_[l]) (hc : ‖c - 1‖ < 1)
     (n : ℕ) : ∃ k : ℕ, ‖u ^ k - c‖ ≤ (l : ℝ) ^ (-((n + 1 : ℕ) : ℤ)) := by

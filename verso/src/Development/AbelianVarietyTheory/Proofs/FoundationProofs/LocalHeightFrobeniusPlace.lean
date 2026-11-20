@@ -16,30 +16,30 @@ open GlobalTheory.Ord2.CupCob
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`.
+A detailed English derivation is pending.
 -/
 theorem sm_add {L : ℝ} {x y : Qbar l} (hx : ‖x‖ ≤ L) (hy : ‖y‖ ≤ L) : ‖x + y‖ ≤ L :=
   (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)
 
 /- English proof (translation)
-Rewrite using `[norm_neg]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem sm_neg {L : ℝ} {x : Qbar l} (hx : ‖x‖ ≤ L) : ‖-x‖ ≤ L := by rwa [norm_neg]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `sm_add hx (sm_neg hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sm_sub {L : ℝ} {x y : Qbar l} (hx : ‖x‖ ≤ L) (hy : ‖y‖ ≤ L) : ‖x - y‖ ≤ L := by
   rw [sub_eq_add_neg]; exact sm_add hx (sm_neg hy)
 
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hk).trans hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sm_mul {L : ℝ} {k x : Qbar l} (hk : ‖k‖ ≤ 1) (hx : ‖x‖ ≤ L) : ‖k * x‖ ≤ L := by
   rw [norm_mul]; exact (mul_le_of_le_one_left (norm_nonneg _) hk).trans hx
 
 /- English proof (translation)
-Establish `: (k : Qbar l) = algebraMap ℚ_[l] (Qbar l) ((k : ℤ_[l]) : ℚ_[l])` using `by simp`. Rewrite using `[this, norm_algebraMap']`. Conclude with `PadicInt.norm_le_one _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nat_norm (k : ℕ) : ‖(k : Qbar l)‖ ≤ 1 := by
   have : (k : Qbar l) = algebraMap ℚ_[l] (Qbar l) ((k : ℤ_[l]) : ℚ_[l]) := by simp
@@ -52,42 +52,42 @@ Both sides reduce to the same expression.
 theorem eps_val (s : G ℚ Ω) : eps l s = algebraMap ℚ_[l] (Qbar l) ((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l]) := rfl
 
 /- English proof (translation)
-Rewrite using `[eps_val, norm_algebraMap']`. Conclude with `PadicInt.norm_units _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_norm (s : G ℚ Ω) : ‖eps l s‖ = 1 := by
   rw [eps_val, norm_algebraMap']
   exact PadicInt.norm_units _
 
 /- English proof (translation)
-Simplify using `[eps, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eps_mul (s t : G ℚ Ω) : eps l (s * t) = eps l s * eps l t := by simp [eps, map_mul]
 
 /- English proof (translation)
-Simplify using `[eps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eps_one : eps l (1 : G ℚ Ω) = 1 := by simp [eps]
 
 /- English proof (translation)
-Rewrite using `[← eps_mul, inv_mul_cancel, eps_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_inv_mul (s : G ℚ Ω) : eps l s⁻¹ * eps l s = 1 := by rw [← eps_mul, inv_mul_cancel, eps_one]
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem normV_eq (v : Pl) : normV v = Ideal.absNorm v.asIdeal := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]; rfl
 
 /- English proof (translation)
-Establish `h1` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem I).2 h)`. Rewrite `h1` using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank, Module.finrank_self, pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dvd_of_mem {I : Ideal (𝓞 ℚ)} {n : ℕ} (h : (n : 𝓞 ℚ) ∈ I) : Ideal.absNorm I ∣ n := by
   have h1 := Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem I).2 h)
   rwa [Ideal.absNorm_span_natCast, RingOfIntegers.rank, Module.finrank_self, pow_one] at h1
 
 /- English proof (translation)
-Rewrite using `[normV_eq]`. Use `⟨dvd_of_mem, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, rfl⟩`. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff (v : Pl) (n : ℕ) : (n : 𝓞 ℚ) ∈ v.asIdeal ↔ normV v ∣ n := by
   rw [normV_eq]
@@ -97,9 +97,9 @@ theorem mem_iff (v : Pl) (n : ℕ) : (n : 𝓞 ℚ) ∈ v.asIdeal ↔ normV v �
   exact Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)
 
 /- English proof (translation)
-Establish `h1 : 1 < normV v` using `NumberField.HeightOneSpectrum.one_lt_absNorm v`. Use `Nat.prime_def.2 ⟨h1, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hm`. Establish `h2` using `(mem_iff v _).2 dvd_rfl`. Rewrite `h2` using `[hc, Nat.cast_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `v.isPrime.mem_or_mem h2 with h | h` into its components or cases. Conclude with `Or.inr (Nat.dvd_antisymm ⟨c, hc⟩ ((mem_iff v _).1 h))`. Establish `h3` using `Nat.dvd_antisymm (Dvd.intro_left m hc.symm) ((mem_iff v _).1 h)`. Rewrite `hc` using `[h3]`. Conclude with `Or.inl (Nat.eq_of_mul_eq_mul_right (by omega) (hc.symm.trans (one_mul _).symm))`.
+Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative.
 -/
 theorem normV_prime (v : Pl) : (normV v).Prime := by
   have h1 : 1 < normV v := NumberField.HeightOneSpectrum.one_lt_absNorm v
@@ -114,9 +114,9 @@ theorem normV_prime (v : Pl) : (normV v).Prime := by
     exact Or.inl (Nat.eq_of_mul_eq_mul_right (by omega) (hc.symm.trans (one_mul _).symm))
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `(mem_iff w l).1 h`. Establish `h2 : normV w = l` using `(Nat.prime_dvd_prime_iff_eq (normV_prime w) (Fact.out : l.Prime)).1 h1`. Rewrite `hw` using `[h2]`. Establish `hl` using `(Fact.out : l.Prime).two_le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : l ^ n ≤ l - 1` using `Nat.le_of_dvd (by omega) hw`. Establish `h4 : l ≤ l ^ n` using `Nat.le_self_pow (by omega) l`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem not_mem_l {w : Pl} {n : ℕ} (hn : 1 ≤ n) (hw : l ^ n ∣ normV w - 1) : ((l : ℕ) : 𝓞 ℚ) ∉ w.asIdeal := by
   intro h
@@ -129,7 +129,7 @@ theorem not_mem_l {w : Pl} {n : ℕ} (hn : 1 ≤ n) (hw : l ^ n ∣ normV w - 1)
   omega
 
 /- English proof (translation)
-Establish `h1 : cycZ ℚ Ω l a = 1`. Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun k => ?_)` and prove the remaining obligations. Rewrite using `[cycZ_toZModPow_eq hl hB (q := 1) (fun x hx => by simpa using ha.2 x hx) k]`. Simplify using the standard rewrite rules. Rewrite using `[eps_val, h1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -142,16 +142,16 @@ theorem eps_ine [IsAlgClosure ℚ Ω] {B : ValuationSubring Ω} {w : Pl} (hl : (
   rw [eps_val, h1]; simp
 
 /- English proof (translation)
-Rewrite using `[eps_val, cycZ_of_isFrob hl hB hτ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eps_frob [IsAlgClosure ℚ Ω] {B : ValuationSubring Ω} {w : Pl} (hl : ((l : ℕ) : 𝓞 ℚ) ∉ w.asIdeal)
     (hB : IsPlaceOver B w) {τ : G ℚ Ω} (hτ : IsFrob B (normV w) τ) : eps l τ = ((normV w : ℕ) : Qbar l) := by
   rw [eps_val, cycZ_of_isFrob hl hB hτ]; simp
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hw`. Establish `h0 : 1 ≤ normV w` using `(normV_prime w).one_lt.le`. Establish `e : ((normV w : ℕ) : Qbar l) - 1 = ((l : ℕ) : Qbar l) ^ n * (k : Qbar l)`. Establish `: normV w = l ^ n * k + 1` using `by omega`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `show ‖_‖ ≤ _`. Rewrite using `[e, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (nat_norm k)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_norm {w : Pl} {n : ℕ} (hw : l ^ n ∣ normV w - 1) : Cg n ((normV w : ℕ) : Qbar l) 1 := by
   obtain ⟨k, hk⟩ := hw
@@ -164,15 +164,13 @@ theorem cg_norm {w : Pl} {n : ℕ} (hw : l ^ n ∣ normV w - 1) : Cg n ((normV w
   exact mul_le_of_le_one_right (norm_nonneg _) (nat_norm k)
 
 /- English proof (translation)
-Use `haveI : IsGalois ℚ Ω := {}`. Use `set S : Subgroup (G ℚ Ω) := Subgroup.closure (insert τ (Ine (F := ℚ) B : Set (G ℚ Ω))) with hS`. Establish `hSQ : ∀ s ∈ S, s ∈ Dec (F` using `ℚ) B ∧ Q s := by`. Introduce `s hs`. Proceed by induction on `hs using Subgroup.closure_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Consider the case `mem x hx`. Break down `hx with rfl | hx` into its components or cases. Conclude with `⟨hτ.1, hτQ⟩`. Conclude with `⟨Ine_le_Dec B hx, hI x hx⟩`. Consider the case `one => exact ⟨(Dec (F := ℚ) B).one_mem, hI 1 (Ine (F := ℚ) B).one_mem⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy => exact ⟨(Dec (F := ℚ) B).mul_mem hx.1 hy.1, hmul x hx.1 y hy.1 hx.2 hy.2⟩`. Consider the case `inv x _ hx => exact ⟨(Dec (F := ℚ) B).inv_mem hx.1, hinv x hx.1 hx.2⟩`. Establish `hD : Dec (F` using `ℚ) B ≤ S.topologicalClosure := by`. Establish `key` using `ProfiniteGrp.closedSubgroup_eq_sInf_open (G := G ℚ Ω) ⟨S.topologicalClosure, Subgroup.isClosed_topologicalClosure _⟩`. Use `le_trans (le_sInf ?_) key.ge` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `N ⟨hNo, hN⟩`. Establish `h` using `(Subgroup.le_topologicalClosure _).trans hN`. Conclude with `Kum.decGen ℚ Ω B w τ N hB hτ hNo (fun a ha => h (Subgroup.subset_closure (Set.mem_insert_of_mem _ ha))) (h (Subgroup.subset_closure (Set.mem_insert _ _)))`. Introduce `s hs`. Establish `h1 : (S.topologicalClosure : Set (G ℚ Ω)) ⊆ {s | Q s}`.
-
-Rewrite using `[Subgroup.topologicalClosure_coe]`. Conclude with `closure_minimal (fun x hx => (hSQ x hx).2) hQ`. Conclude with `h1 (hD hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen [IsAlgClosure ℚ Ω] {B : ValuationSubring Ω} {w : Pl} {τ : G ℚ Ω}
     (hB : IsPlaceOver B w) (hτ : IsFrob B (normV w) τ) (Q : G ℚ Ω → Prop) (hQ : IsClosed {s | Q s})
@@ -207,13 +205,11 @@ theorem gen [IsAlgClosure ℚ Ω] {B : ValuationSubring Ω} {w : Pl} {τ : G ℚ
   exact h1 (hD hs)
 
 /- English proof (translation)
-Establish `hl` using `not_mem_l hn hw`. Use `gen hB hτ (fun s => Cg n (eps l s) 1) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_le ((eps_cont.sub continuous_const).norm) continuous_const`. Introduce `a ha show ‖_‖ ≤ _`. Rewrite using `[eps_ine hl hB ha, sub_self, norm_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_nonneg _`. Use `show Cg n (eps l τ) 1`. Rewrite using `[eps_frob hl hB hτ]`. Conclude with `cg_norm hw`. Introduce `s _ t _ hs ht show ‖_‖ ≤ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : eps l (s * t) - 1 = eps l s * (eps l t - 1) + (eps l s - 1)` using `by rw [eps_mul]; ring`. Rewrite using `[e]`. Conclude with `sm_add (sm_mul (eps_norm s).le ht) hs`. Introduce `s _ hs show ‖_‖ ≤ _`. Establish `e : eps l s⁻¹ - 1 = -(eps l s⁻¹ * (eps l s - 1))` using `by linear_combination eps_inv_mul (l := l) s`.
-
-Rewrite using `[e]`. Conclude with `sm_neg (sm_mul (eps_norm _).le hs)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_dec [IsAlgClosure ℚ Ω] {B : ValuationSubring Ω} {w : Pl} {τ : G ℚ Ω} {n : ℕ} (hn : 1 ≤ n)
     (hB : IsPlaceOver B w) (hw : l ^ n ∣ normV w - 1) (hτ : IsFrob B (normV w) τ) :
@@ -236,11 +232,11 @@ theorem eps_dec [IsAlgClosure ℚ Ω] {B : ValuationSubring Ω} {w : Pl} {τ : G
     rw [e]; exact sm_neg (sm_mul (eps_norm _).le hs)
 
 /- English proof (translation)
-Establish `hm : ∀ s t, mat W (s * t) = mat W s * mat W t` using `fun s t => by simp [mat]`. Use `gen hB hτ (fun s => (mat W s).det = 1) ?_ (fun a ha => ?_) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_eq (Units.continuous_val.comp hW).matrix_det continuous_const`. Use `show (mat W a).det = 1`. Rewrite using `[mat, MonoidHom.mem_ker.1 (hI ha)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `congrArg (fun u : (Qbar l)ˣ => (u : Qbar l)) hdt` as an intermediate fact. Simplify `this` using `[dt, mat]`. Introduce `s _ t _ hs ht show (mat W (s * t)).det = 1`. Rewrite using `[hm, Matrix.det_mul, hs, ht, one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s _ hs show (mat W s⁻¹).det = 1`. Establish `h1 : (mat W s⁻¹).det * (mat W s).det = 1`. Rewrite using `[← Matrix.det_mul, ← hm, inv_mul_cancel]`. Simplify using `[mat]`. Rewrite `h1` using `[hs, mul_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem det_dec [IsAlgClosure ℚ Ω] {B : ValuationSubring Ω} {w : Pl} {τ : G ℚ Ω}
     (hB : IsPlaceOver B w) (hτ : IsFrob B (normV w) τ) (W : R2 Ω l) (hW : Continuous W)
@@ -262,13 +258,13 @@ theorem det_dec [IsAlgClosure ℚ Ω] {B : ValuationSubring Ω} {w : Pl} {τ : G
     rwa [hs, mul_one] at h1
 
 /- English proof (translation)
-Establish `hL : 0 ≤ L` using `(norm_nonneg _).trans (hτc 0)`. Use `gen hB hτ (fun s => ∀ i, ‖c s i‖ ≤ L) ?_ (fun a ha i => ?_) hτc ?_ ?_` and prove the remaining obligations. Establish `: {s | ∀ i, ‖c s i‖ ≤ L} = ⋂ i, {s | ‖c s i‖ ≤ L}` using `by ext; simp`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun i => isClosed_le ((continuous_apply i).comp hc).norm continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI a ha]`. Simplify using `using hL`. Introduce `s _ t _ hs ht i`. Rewrite using `[hmul, Pi.add_apply]`. Conclude with `sm_add (hs i) (mulVec_le _ _ (hA s) ht i)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s _ hs i`. Establish `h1 : c 1 = 0` using `hI 1 (Ine (F := ℚ) B).one_mem`. Establish `h2` using `hmul s⁻¹ s`. Rewrite `h2` using `[inv_mul_cancel, h1]`. Establish `h3 : c s⁻¹ = -(A s⁻¹ *ᵥ c s)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_neg_iff_add_eq_zero]`. Conclude with `h2.symm`. Rewrite using `[h3, Pi.neg_apply]`. Conclude with `sm_neg (mulVec_le _ _ (hA s⁻¹) hs i)`.
+A detailed English derivation is pending.
 -/
 theorem coc_dec [IsAlgClosure ℚ Ω] {B : ValuationSubring Ω} {w : Pl} {τ : G ℚ Ω}
     (hB : IsPlaceOver B w) (hτ : IsFrob B (normV w) τ) {L : ℝ}
@@ -301,13 +297,13 @@ namespace GlobalTheory.Ord2.LocW
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `sm_mul hk hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sm_mul' {L : ℝ} {k x : Qbar l} (hx : ‖x‖ ≤ L) (hk : ‖k‖ ≤ 1) : ‖x * k‖ ≤ L := by
   rw [mul_comm]; exact sm_mul hk hx
 
 /- English proof (translation)
-Simplify using `only [om, Matrix.mulVec, dotProduct, Fin.sum_univ_two, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at *`. Take the linear combination `key`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ident_add (ys yt zt Vt b : Fin 2 → Qbar l) (Ws Ds : Matrix (Fin 2) (Fin 2) (Qbar l)) (de es ust us ut : Qbar l)
     (key : om (Ws *ᵥ yt) (Ds *ᵥ Vt) = es * om yt Vt) :
@@ -318,7 +314,7 @@ theorem ident_add (ys yt zt Vt b : Fin 2 → Qbar l) (Ws Ds : Matrix (Fin 2) (Fi
   linear_combination key
 
 /- English proof (translation)
-Simplify using `only [om, Matrix.mulVec, dotProduct, Fin.sum_univ_two, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at *`. Take the linear combination `-key1 - (ps * P) * key2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ident_cob (ds dt dst yt zt Vt b : Fin 2 → Qbar l) (Ws Ds : Matrix (Fin 2) (Fin 2) (Qbar l))
     (ps P de es ut u't u'st u's : Qbar l)
@@ -332,7 +328,7 @@ theorem ident_cob (ds dt dst yt zt Vt b : Fin 2 → Qbar l) (Ws Ds : Matrix (Fin
   linear_combination -key1 - (ps * P) * key2
 
 /- English proof (translation)
-Rewrite `hA`, the goal using `[Matrix.eta_fin_two A]`. Rewrite using `[Matrix.one_fin_two]`. Simplify using `only [Matrix.det_fin_two_of] at hA`. Simplify using `[om, Matrix.mulVec, dotProduct, Fin.sum_univ_two, Matrix.adjugate_fin_two_of, Matrix.det_fin_two_of]`. Take the linear combination `(-e * (y 0 * z 1 - y 1 * z 0)) * hA`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ident_fin (A : Matrix (Fin 2) (Fin 2) (Qbar l)) (y z : Fin 2 → Qbar l) (e u : Qbar l) (hA : A.det = 1) :
     ((A - 1).det * u - om ((A - 1).adjugate *ᵥ y) z) - ((A - 1).det * u + om y ((e • A) *ᵥ ((A - 1).adjugate *ᵥ z))) =
@@ -344,7 +340,7 @@ theorem ident_fin (A : Matrix (Fin 2) (Fin 2) (Qbar l)) (y z : Fin 2 → Qbar l)
   linear_combination (-e * (y 0 * z 1 - y 1 * z 0)) * hA
 
 /- English proof (translation)
-Establish `h : ∀ v, A *ᵥ v = (A - 1) *ᵥ v + v` using `fun v => by rw [Matrix.sub_mulVec, Matrix.one_mulVec]; abel`. Rewrite using `[h, Matrix.mulVec_mulVec, Matrix.mul_adjugate, Matrix.smul_mulVec, Matrix.one_mulVec, add_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_adj_mulVec (A : Matrix (Fin 2) (Fin 2) (Qbar l)) (z : Fin 2 → Qbar l) :
     A *ᵥ ((A - 1).adjugate *ᵥ z) = (A - 1).adjugate *ᵥ z + (A - 1).det • z := by
@@ -356,57 +352,47 @@ end GlobalTheory.Ord2.LocW
 open GlobalTheory.Ord2.CupCob GlobalTheory.Ord2.LocW in
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ c n W y z d u P ψ w B τ hn hW hint hdet hB hw hτ hτD hdtτ hIW hψlc hψram hP hy hz hyO hzO hyzI hu huO huI hcup hd hdO hdc hcob`. Establish `hWn : ∀ s i j, ‖mat W s i j‖ ≤ 1` using `fun s i j => norm_le_one_of_mem c (hint s i j)`. Establish `hDm : ∀ s i j, mat (dual1 W) s i j ∈ c.O` using `dual_representation_integral c W hdet hint`. Establish `hDn : ∀ s i j, ‖mat (dual1 W) s i j‖ ≤ 1` using `fun s i j => norm_le_one_of_mem c (hDm s i j)`. Establish `hyn : ∀ s i, ‖y s i‖ ≤ 1` using `fun s i => norm_le_one_of_mem c (hyO s i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzn : ∀ s i, ‖z s i‖ ≤ 1` using `fun s i => norm_le_one_of_mem c (hzO s i)`. Establish `hdn : ∀ s i, ‖d s i‖ ≤ 1` using `fun s i => norm_le_one_of_mem c (hdO s i)`. Establish `hun : ∀ s, ‖u s‖ ≤ 1` using `fun s => norm_le_one_of_mem c (huO s)`. Establish `hPn : ‖P‖ ≤ 1` using `norm_le_one_of_mem c hP`. Establish `hl` using `not_mem_l hn hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : Continuous fun s => mat W s` using `Units.continuous_val.comp hW`. Establish `hDc : Continuous fun s => mat (dual1 W) s`. Establish `: (fun s => mat (dual1 W) s) = fun s => (eps l s * (mat W s).det) • mat W s` using `funext (mat_dual1 W hdet)`. Rewrite using `[this]`. Conclude with `(eps_cont.mul hM.matrix_det).smul hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyc : ∀ s t, y (s * t) = y s + mat W s *ᵥ y t` using `fun s t => hy.2 s t`. Establish `hzc : ∀ s t, z (s * t) = z s + mat (dual1 W) s *ᵥ z t` using `fun s t => hz.2 s t`. Take `⟨de, hde⟩ : ∃ de, de = (mat W τ - 1).det` from `⟨_, rfl⟩`. Take `⟨b, hb⟩ : ∃ b, b = (mat W τ - 1).adjugate *ᵥ z τ` from `⟨_, rfl⟩`. Establish `hMO : ∀ i j, (mat W τ - 1) i j ∈ c.O` using `fun i j => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`. Use `split_ifs`. Conclude with `sub_mem (hint τ i j) (one_mem _)`. Conclude with `sub_mem (hint τ i j) (zero_mem _)`. Establish `hdeO : de ∈ c.O`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hde, Matrix.det_fin_two]`. Conclude with `sub_mem (mul_mem (hMO 0 0) (hMO 1 1)) (mul_mem (hMO 0 1) (hMO 1 0))`. Establish `hadjO : ∀ i j, (mat W τ - 1).adjugate i j ∈ c.O`. Generalize the expression as in `mat W τ - 1 = M at hMO ⊢`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.adjugate_fin_two]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> first | exact hMO _ _ | exact neg_mem (hMO _ _)`. Establish `hbO : ∀ i, b i ∈ c.O` using `fun i => by rw [hb]; exact mulVec_mem c _ _ hadjO (hzO τ) i`. Establish `hbn : ∀ i, ‖b i‖ ≤ 1` using `fun i => norm_le_one_of_mem c (hbO i)`. Establish `hden : ‖de‖ ≤ 1` using `norm_le_one_of_mem c hdeO`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hεD` using `eps_dec hn hB hw hτ`. Establish `hdetD` using `det_dec hB hτ W hW hIW hdtτ`. Establish `hWdD : ∀ s ∈ Dec (F` using `ℚ) B, mat (dual1 W) s = eps l s • mat W s := fun s hs => by`. Rewrite using `[mat_dual1 W hdet, hdetD s hs, mul_one]`. Establish `hWI : ∀ a ∈ Ine (F` using `ℚ) B, mat W a = 1 := fun a ha => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mat, MonoidHom.mem_ker.1 (hIW ha)]`. Both sides reduce to the same expression. Establish `hWdI : ∀ a ∈ Ine (F` using `ℚ) B, mat (dual1 W) a = 1 := fun a ha => by`. Rewrite using `[hWdD a (Ine_le_Dec B ha), hWI a ha, eps_ine hl hB ha, one_smul]`. Establish `hX : ∀ s ∈ Dec (F` using `ℚ) B, ∀ i, ‖(de • z s - (mat (dual1 W) s *ᵥ b - b)) i‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖ := by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `coc_dec hB hτ (fun s => mat (dual1 W) s) hDn (fun s => de • z s - (mat (dual1 W) s *ᵥ b - b)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `((continuous_const : Continuous fun _ : G ℚ Ω => de).smul hz.1).sub ((hDc.matrix_mulVec continuous_const).sub continuous_const)`. Introduce `s t`. Simplify using `only [hzc, mat_dual1_mul]`. Use extensionality with `i`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a ha`. Simplify using `only [(hyzI a ha).2, hWdI a ha, Matrix.one_mulVec, smul_zero, sub_self]`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : mat W τ *ᵥ b = b + de • z τ` using `by rw [hb, hde]; exact mul_adj_mulVec _ _`. Establish `h2 : (de • z τ - (mat (dual1 W) τ *ᵥ b - b)) i = (1 - eps l τ) * (mat W τ *ᵥ b) i`. Rewrite using `[hWdD τ hτD, Matrix.smul_mulVec, h1]`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `sm_mul' (by rw [norm_sub_rev]; exact hεD τ hτD) (mulVec_le _ _ (hWn τ) hbn i)`. Establish `hX' : ∀ s ∈ Dec (F` using `ℚ) B, ∀ i, ‖(mat (dual1 W) s *ᵥ b - b - de • z s) i‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖ := by`. Introduce `s hs i`. Establish `e : mat (dual1 W) s *ᵥ b - b - de • z s = -(de • z s - (mat (dual1 W) s *ᵥ b - b))` using `by abel`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, Pi.neg_apply, norm_neg]`. Conclude with `hX s hs i`. Establish `hu1 : ‖u 1‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖`. Establish `h` using `hcup 1 1`. Establish `hy1 : y 1 = 0` using `(hyzI 1 (Ine (F := ℚ) B).one_mem).1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `Cg cup at h`. Rewrite `h` using `[hy1, eps_one, one_mul, mul_one]`. Establish `e : om 0 (mat (dual1 W) 1 *ᵥ z 1) = 0` using `by simp [om]`. Rewrite `h` using `[e]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `huI' : ∀ a ∈ Ine (F` using `ℚ) B, ‖u a‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖ := fun a ha => by`. Establish `h` using `huI 1 a ha`. Rewrite `h` using `[one_mul]`. Establish `e : u a = (u a - u 1) + u 1` using `by ring`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `sm_add h hu1`. Establish `hint' : ∀ s, P * (de * u s + om (y s) (mat (dual1 W) s *ᵥ b)) ∈ c.O` using `fun s => mul_mem hP (add_mem (mul_mem hdeO (huO s)) (om_mem c _ _ (hyO s) (mulVec_mem c _ _ (hDm s) hbO)))`. Establish `hadd : ∀ s ∈ Dec (F` using `ℚ) B, ∀ t ∈ Dec (F := ℚ) B, Cg n (P * (de * u (s * t) + om (y (s * t)) (mat (dual1 W) (s * t) *ᵥ b))) (P * (de * u s + om (y s) (mat (dual1 W) s *ᵥ b)) + P * (de * u t + om (y t) (mat (dual1 W) t *ᵥ b))) := by`. Introduce `s hs t ht`. Use `show ‖_ - _‖ ≤ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_add, ← mul_sub]`. Use `sm_mul hPn ?_` and prove the remaining obligations. Rewrite using `[hyc, mat_dual1_mul, ident_add (y s) (y t) (z t) (mat (dual1 W) t *ᵥ b) b (mat W s) (mat (dual1 W) s) de (eps l s) (u (s * t)) (u s) (u t) (om_key W hdet s _ _)]`. Use `sm_add (sm_add (sm_add ?_ ?_) ?_) ?_` and prove the remaining obligations. Conclude with `sm_mul hden (sm_mul' (hεD s hs) (hun t))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `sm_mul hden (hcup s t)`. Conclude with `om_le_right _ _ (hyn s) (mulVec_le _ _ (hDn s) (hX' t ht))`. Conclude with `sm_mul' (hεD s hs) (om_le_left _ _ (hyn t) (mulVec_le _ _ (hDn t) hbn))`. Establish `hine : ∀ a ∈ Ine (F` using `ℚ) B, Cg n (P * (de * u a + om (y a) (mat (dual1 W) a *ᵥ b))) 0 := by`. Introduce `a ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ‖_ - _‖ ≤ _`. Establish `e : om (y a) (mat (dual1 W) a *ᵥ b) = 0` using `by rw [(hyzI a ha).1]; simp [om]`. Rewrite using `[e, add_zero, sub_zero]`. Conclude with `sm_mul hPn (sm_mul hden (huI' a ha))`. Establish `hvc : Continuous fun s => om (d s) (mat (dual1 W) s *ᵥ b)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : Continuous fun s => mat (dual1 W) s *ᵥ b` using `hDc.matrix_mulVec continuous_const`. Use `show Continuous fun s => d s 0 * (mat (dual1 W) s *ᵥ b) 1 - d s 1 * (mat (dual1 W) s *ᵥ b) 0`. Conclude with `(((continuous_apply 0).comp hd).mul ((continuous_apply 1).comp hv)).sub (((continuous_apply 1).comp hd).mul ((continuous_apply 0).comp hv))`. Establish `hcob' : Cob2 c n (Dec (F` using `ℚ) B) (fun s t => (((ψ s).toAdd.val : ℕ) : Qbar l) * (P * (de * u t + om (y t) (mat (dual1 W) t *ᵥ b)))) := by`. Take `⟨u', hu'c, hu'O, hu'⟩` from `hcob`.
-
-Use `⟨fun s => -(de * u' s + om (d s) (mat (dual1 W) s *ᵥ b)), ((continuousOn_const.mul hu'c).add hvc.continuousOn).neg, fun s => neg_mem (add_mem (mul_mem hdeO (hu'O s)) (om_mem c _ _ (hdO s) (mulVec_mem c _ _ (hDm s) hbO))), ?_⟩` and prove the remaining obligations. Introduce `s hs t ht`. Use `show ‖(((ψ s).toAdd.val : ℕ) : Qbar l) * (P * (de * u t + om (y t) (mat (dual1 W) t *ᵥ b))) - (eps l s * -(de * u' t + om (d t) (mat (dual1 W) t *ᵥ b)) - -(de * u' (s * t) + om (d (s * t)) (mat (dual1 W) (s * t) *ᵥ b)) + -(de * u' s + om (d s) (mat (dual1 W) s *ᵥ b)))‖ ≤ _`. Rewrite using `[mat_dual1_mul, ident_cob (d s) (d t) (d (s * t)) (y t) (z t) (mat (dual1 W) t *ᵥ b) b (mat W s) (mat (dual1 W) s) _ P de (eps l s) (u t) (u' t) (u' (s * t)) (u' s) (om_key W hdet s _ _) (om_key W hdet s _ _)]`. Establish `h1e : ‖1 - eps l s‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖` using `by rw [norm_sub_rev]; exact hεD s hs`.
-
-Use `sm_sub (sm_sub (sm_sub (sm_add ?_ ?_) ?_) ?_) ?_` and prove the remaining obligations. Conclude with `sm_mul (sm_mul' (sm_mul' (sm_mul' (nat_norm _) hPn) hden) (hun t)) h1e`. Conclude with `sm_mul (sm_mul' (sm_mul' (nat_norm _) hPn) (om_le_left _ _ (hyn t) (mulVec_le _ _ (hDn t) hbn))) h1e`. Conclude with `sm_mul hden (hu' s hs t ht)`. Conclude with `om_le_right _ _ (hdn s) (mulVec_le _ _ (hDn s) (hX' t ht))`.
-
-Conclude with `om_le_left _ _ (fun i => hdc s t i) (mulVec_le _ _ (hDn s) (fun i => mulVec_le _ _ (hDn t) hbn i))`. Establish `hT : Cg n (P * (de * u τ + om (y τ) (mat (dual1 W) τ *ᵥ b))) 0` using `GlobalTheory.T.tame_cochain_cocycle_extension l Ω c n w B ψ (fun t => P * (de * u t + om (y t) (mat (dual1 W) t *ᵥ b))) τ hn hB hw hψram hint' hadd hine hcob' hτD`. Use `show ‖_ - _‖ ≤ _`. Establish `hT' : ‖P * (de * u τ + om (y τ) (mat (dual1 W) τ *ᵥ b))‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖`. Use `hT` as an intermediate fact.
-
-Unfold `Cg at this`. Rewrite `this` using `[sub_zero]`. Then use the resulting hypothesis. Rewrite using `[sub_zero]`. Establish `e : P * ht W y z u τ = P * (ht W y z u τ - (de * u τ + om (y τ) (mat (dual1 W) τ *ᵥ b))) + P * (de * u τ + om (y τ) (mat (dual1 W) τ *ᵥ b))` using `by ring`. Rewrite using `[e]`.
-
-Use `sm_add (sm_mul hPn ?_) hT'` and prove the remaining obligations. Rewrite using `[hWdD τ hτD, hde, hb]`. Unfold `ht`. Rewrite using `[ident_fin (mat W τ) (y τ) (z τ) (eps l τ) (u τ) (hdetD τ hτD)]`. Conclude with `sm_mul' (hεD τ hτD) (om_le_left _ _ (mulVec_le _ _ (fun i j => norm_le_one_of_mem c (hadjO i j)) (hyn τ)) (hzn τ))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Ord2.LocW.local_height_at_frobenius : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (c : Coef l) (n : ℕ) (W : R2 Ω l) (y z d : G ℚ Ω → Fin 2 → Qbar l) (u : G ℚ Ω → Qbar l) (P : Qbar l) (ψ : G ℚ Ω →* Multiplicative (ZMod (l ^ n))) (w : Pl) (B : ValuationSubring Ω) (τ : G ℚ Ω), 1 ≤ n → Continuous W → (∀ s i j, mat W s i j ∈ c.O) → dt W ^ 2 = 1 → IsPlaceOver B w → l ^ n ∣ normV w - 1 → IsFrob B (normV w) τ → τ ∈ Dec (F := ℚ) B → dt W τ = 1 → Ine (F := ℚ) B ≤ W.ker → IsLocallyConstant ψ → (∃ t ∈ Ine (F := ℚ) B, (ψ t).toAdd = 1) → P ∈ c.O → y ∈ Z1 (Loc.colRep W) → z ∈ Z1 (Loc.colRep (dual1 W)) → (∀ s i, y s i ∈ c.O) → (∀ s i, z s i ∈ c.O) → (∀ a ∈ Ine (F := ℚ) B, y a = 0 ∧ z a = 0) → Continuous u → (∀ s, u s ∈ c.O) → (∀ s, ∀ a ∈ Ine (F := ℚ) B, Cg n (u (s * a)) (u s)) → (∀ s t, Cg n (cup W y z s t) (eps l s * u t - u (s * t) + u s)) → Continuous d → (∀ s i, d s i ∈ c.O) → (∀ s t, Cv n (d (s * t)) (d s + mat W s *ᵥ d t + ((((ψ s).toAdd.val : ℕ) : Qbar l) * P) • (mat W s *ᵥ y t))) → Cob2 c n (Dec (F := ℚ) B) (fun s t => cup W d z s t - (((ψ s).toAdd.val : ℕ) : Qbar l) * P * eps l s * u t) → Cg n (P * ht W y z u τ) 0 := by
   intro l _ Ω _ _ _ c n W y z d u P ψ w B τ hn hW hint hdet hB hw hτ hτD hdtτ hIW hψlc hψram hP hy hz hyO hzO hyzI hu huO

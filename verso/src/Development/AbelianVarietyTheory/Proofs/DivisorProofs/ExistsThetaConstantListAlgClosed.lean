@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UMin
 
 /- English proof (translation)
-Introduce `S G _ _ L ρ hL hρ g m N K _ _ x θ hm hmK hN hP`. Substitute `hN` using the available equality. Take `⟨pt, hinj, hpt, hall⟩` from `GlobalTheory.T.exists_injective_list_m_sq_torsion_polarisedFibre S G L g m K x hmK hP`. Use `choose c hc using fun a => GlobalTheory.T.exists_thetaConstant_m_sq_torsion_algClosed_fibre S G L ρ hL hρ g m K x θ (pt a) hm hmK hP (hpt a)`. Conclude with `⟨pt, c, hinj, hc, hall⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_thList : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (g m N : ℕ) (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S) (θ : SecAt G L x), Odd m → (m : K) ≠ 0 → N = m ^ (4 * g) → PolFib G L g x → ∃ (pt : Fin N → (Over.mk x ⟶ G)) (c : Fin N → K), ThList G L ρ m x θ pt c := by
   intro S G _ _ L ρ hL hρ g m N K _ _ x θ hm hmK hN hP

@@ -13,13 +13,13 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTh
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `hw : v.left ≫ A.hom = spMap (algebraMap ℂ (DualNumber ℂ))` using `Over.w v`. Establish `u0` using `GlobalTheory.ShFam.Hor.LogCh.PushKer.unit_comp hψ`. Establish `u1` using `GlobalTheory.ShFam.Hor.LogCh.PushKer.one_left xc t.G`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (η[A]).left` using `h`. Use `⟨by rw [Category.assoc, hψ.1.w, ← Category.assoc, hw], ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, h', u0, u1]`. Introduce `h show spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (η[A]).left`. Apply `hψ.1.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc]`. Conclude with `h.2.trans (u1.trans u0.symm)`. Establish `a : η[A].left ≫ A.hom = 𝟙 _` using `Over.w η[A]`. Rewrite using `[Category.assoc, hw, a, ← Spec.map_comp]`. Use `Eq.trans ?_ (Spec.map_id (CommRingCat.of ℂ))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.isTangent_iff_pullback {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) {xc : Sp ℂ ⟶ X} {A : Over (Sp ℂ)} [GrpObj A] {ψ : A.left ⟶ t.G.left}
@@ -42,37 +42,33 @@ theorem UpperTheory.isTangent_iff_pullback {E : Type} [Field E] [NumberField E] 
       congr 1
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t xc Q ψ hψ hL g u Hm χ hAH`. Take `⟨Ef, hEf, -, -, t1, t2, hW⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH GlobalTheory.thetaUnifAV_all Q g u Hm χ hAH`. Set `T : Over (Sp ℂ)` to `MonoidalCategory.tensorUnit (Over (Sp ℂ))`. Set `τ : Over.mk xc ⟶ Over.mk (T.hom ≫ xc)` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans (Category.id_comp _))`. Set `β` to `GlobalTheory.UU.toBaseHom (hw := hψ.1.w) (GlobalTheory.TowerAlg.toBase_mul hψ) T`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hinj : Function.Injective β` using `fun a b e => Over.OverMorphism.ext (hψ.1.hom_ext (congrArg (fun q => q.left) e) ((Over.w a).trans (Over.w b).symm))`. Set `exx : (Fin g → ℂ) → (Over.mk xc ⟶ t.G)` to `fun z => τ ≫ β (u.ex z)`. Establish `hl : (fun z => (exx z).left) = fun z => (show Sp ℂ ⟶ Q.A.left from (u.ex z).left) ≫ ψ`. Use function extensionality and compare the values at `fun z => Category.id_comp _`. Establish `hol : IsHolTo Set.univ (fun z => (show Sp ℂ ⟶ Q.A.left from (u.ex z).left))` using `fun U f => by simpa only [Set.mem_univ, true_and] using u.hol U f`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hol'` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp hol ψ`. Establish `h0 : u.ex 0 = η[Q.A]`. Rewrite using `[(u.ker 0).mpr u.Λ.zero_mem, Hom.one_def, CartesianMonoidalCategory.toUnit_unit, Category.id_comp]`. Establish `dv : ∀ (w : Fin g → ℂ) (v : epsR ℂ ⟶ Q.A), Geo.Tor.IsTangent v → u.IsDiff w v → IsDerivAt0 (fun z => (exx z).left) w (v.left ≫ ψ)` using `fun w v hv hd => by`. Rewrite using `[hl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_comp_hom ⟨?_, hd⟩ ψ` and prove the remaining obligations. Simplify using `only [h0]`. Conclude with `hv`. Establish `vd : ∀ (w : Fin g → ℂ) (v : epsR ℂ ⟶ Q.A), IsDerivAt0 (fun z => (exx z).left) w (v.left ≫ ψ) → u.IsDiff w v` using `fun w v hd => by`. Rewrite `hd` using `[hl]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.TrueCx.TorFrHolo.isDerivAt0_of_cart hψ.1 (𝟙 _) (fun z => Over.w (u.ex z)) hol' ((Over.w v).trans (Category.comp_id _).symm) hd).2`. Establish `ker : ∀ z, exx z = 1 ↔ z ∈ u.Λ` using `fun z => by`. Rewrite using `[← u.ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_one]`. Establish `: IsIso τ` using `by haveI : IsIso ((Over.forget _).map τ) := inferInstanceAs (IsIso (𝟙 _))`. Conclude with `isIso_of_reflects_iso τ (Over.forget _)`. Rewrite using `[← cancel_epi τ, MonObj.comp_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h`. Introduce `h show τ ≫ β (u.ex z) = 1`. Rewrite using `[h, map_one, MonObj.comp_one]`. Use `⟨exx, ⟨fun a b => ?_, fun w => ?_, fun v hv => ?_⟩, hl ▸ hol', ⟨fun v w hv hw => ?_, ?_⟩, dv⟩` and prove the remaining obligations. Use `show τ ≫ β (u.ex (a + b)) = _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[u.ex_add, map_mul, MonObj.comp_mul]`. Take `⟨v, ⟨hv, hd⟩, -⟩` from `t2 w`. Conclude with `⟨v.left ≫ ψ, ⟨(UpperTheory.isTangent_iff_pullback t hψ v).1 hv, dv w v hv hd⟩, fun v' h' => ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_unique h'.2 (dv w v hv hd)⟩`. Set `v' : epsR ℂ ⟶ Q.A` to `Over.homMk (hψ.1.lift v _ hv.1) (hψ.1.lift_snd _ _ _)`. Establish `e : v'.left ≫ ψ = v` using `hψ.1.lift_fst _ _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Rewrite `hv`, the goal using `[← e]`. Establish `ht` using `(UpperTheory.isTangent_iff_pullback t hψ v').2 hv`. Take `⟨w, hw, hw'⟩` from `t1 v' ht`. Conclude with `⟨w, dv w v' ht hw, fun w' h' => hw' w' (vd w' v' h')⟩`. Conclude with `⟨Ef ⟨v, (ker v).1 hv⟩ ⟨w, (ker w).1 hw⟩, (hEf ⟨v, (ker v).1 hv⟩ ⟨w, (ker w).1 hw⟩).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k v w ζ hk hv hw hζ`. Establish `hk' : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Establish `hv'` using `(ker v).1 hv`. Establish `hw'` using `(ker w).1 hw`. Establish `w₁` using `hW k ⟨v, hv'⟩ ⟨w, hw'⟩ ζ hk (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite using `[hζ, ← hEf ⟨v, hv'⟩ ⟨w, hw'⟩]`. Use the proof step `norm_cast)`. Establish `tors : ∀ d ∈ u.Λ, β (u.ex ((k : ℂ)⁻¹ • d)) ^ k = 1` using `fun d hd => by`. Establish `hpow : ∀ (n : ℕ) (z : Fin g → ℂ), u.ex z ^ n = u.ex (n • z)` using `fun n z => by`. Proceed by induction on `n with`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simpa using ((u.ker 0).2 (zero_mem _)).symm`. Consider the case `succ n ih => rw [pow_succ, ih, ← u.ex_add, succ_nsmul]`. Establish `e : k • ((k : ℂ)⁻¹ • d) = d`. Use extensionality with `j`. Simplify using `[hk']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, hpow, e, (u.ker d).2 hd, map_one]`. Take `⟨ζ', hζ', -⟩` from `GlobalTheory.UU.existsUnique_cubWeil t.cub (tors v hv') (tors w hw')`. Establish `hpr : IsProper (Limits.pullback.snd t.G.hom xc)`. Use `Q.isAb.proper` as an intermediate fact. Rewrite using `[← hψ.1.isoPullback_inv_snd]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `w₂` using `GlobalTheory.FlatTors.weilIs_of_cubWeil_of_proper xc t.G t.semi hpr t.cub k T _ _ ζ' hζ'`. Establish `w₃` using `(GlobalTheory.weilIs_iff_of_isGrpPullback_comm _ _ t.G Q.A xc ψ t.PP.L Q.L t.PP.isLB Q.isLB hψ (by exact hL.symm) T k _ _ _ _ ζ' rfl rfl).2 w₂`. Take `rfl : ζ' = unitOn ζ` from `GlobalTheory.CommutatorPairing.weilIs_unique GlobalTheory.SemiRigid.globalFns Q.isAb Q.isLB w₃ w₁`. Establish `h₄` using `hζ'.comp τ`.
-
-Establish `e₂ : Units.map τ.left.appTop.hom.toMonoidHom (unitOn ζ) = unitOn ζ`. Establish `e₃ : τ.left = 𝟙 (Sp ℂ)` using `rfl`. Use `ext`. Simplify using `only [e₃]`. Apply the tactic sequence `first | rfl | simp | (erw [Scheme.Hom.id_appTop]; rfl)`.
-
-Rewrite `h₄` using `[e₂]`. Conclude with `h₄`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_exponential_uniformization :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (xc : Sp ℂ ⟶ X) (Q : Out.PolAV (Sp ℂ)) (ψ : Q.A.left ⟶ t.G.left), IsGrpPullback Q.A t.G xc ψ → LBIso (t.PP.L.pull ψ) Q.L → ∀ (g : ℕ) (u : HolUnif Q.A Q.L g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ), u.IsAH Hm χ → ∃ exx : (Fin g → ℂ) → (Over.mk xc ⟶ t.G), GlobalTheory.ShFam.Hor.LogCh.IsExpAt t xc exx ∧ IsHolTo Set.univ (fun w => (exx w).left) ∧ ((∀ v w : Fin g → ℂ, exx v = 1 → exx w = 1 → ∃ m : ℤ, (hermForm Hm v w).im = m) ∧ (∀ (k : ℕ) (v w : Fin g → ℂ) (ζ : ℂˣ), 0 < k → exx v = 1 → exx w = 1 → (ζ : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * ((hermForm Hm v w).im : ℂ) / k) → GlobalTheory.UU.CubWeil t.cub k (exx ((k : ℂ)⁻¹ • v)) (exx ((k : ℂ)⁻¹ • w)) (unitOn ζ))) ∧ ∀ (w : Fin g → ℂ) (v : epsR ℂ ⟶ Q.A), Geo.Tor.IsTangent v → u.IsDiff w v → IsDerivAt0 (fun z => (exx z).left) w (v.left ≫ ψ) := by

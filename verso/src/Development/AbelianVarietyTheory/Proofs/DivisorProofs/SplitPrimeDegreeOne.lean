@@ -6,27 +6,23 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDede
 namespace GlobalTheory.SplitFullyNorm
 
 /- English proof (translation)
-Use `set P : Ideal ℤ := W.asIdeal.under ℤ with hPdef`. Establish `hP0 : P ≠ ⊥` using `mt Ideal.eq_bot_of_comap_eq_bot W.ne_bot`. Use `haveI hPprime : P.IsPrime := Ideal.IsPrime.under ℤ W.asIdeal`. Use `haveI hPmax : P.IsMaximal := hPprime.isMaximal hP0`. Establish `hunder : (W.under (𝓞 F)).asIdeal.under ℤ = P`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(W.asIdeal.under (𝓞 F)).under ℤ = W.asIdeal.under ℤ`. Conclude with `Ideal.under_under _`. Establish `hcard : (P.primesOver (𝓞 E)).ncard = Module.finrank ℚ E`. Establish `h'` using `h`. Unfold `SplitsFully at h'`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h'` using `[hunder]`. Then use the resulting hypothesis. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank P (𝓞 E)`. Rewrite `hsum` using `[NumberField.RingOfIntegers.rank]`. Establish `hone : ∀ q : P.primesOver (𝓞 E), q.1.ramificationIdx ℤ * q.1.inertiaDeg ℤ = 1`. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : q.1.IsPrime := q.2.1`. Establish `hpos` using `Nat.mul_pos (Ideal.ramificationIdx_pos q.1 ℤ) (Ideal.inertiaDeg_pos q.1 ℤ)`. Assume the negation of the conclusion as `hne`. Establish `hlt : ∑ _r : P.primesOver (𝓞 E), (1 : ℕ) < ∑ r : P.primesOver (𝓞 E), r.1.ramificationIdx ℤ * r.1.inertiaDeg ℤ`. Apply `Finset.sum_lt_sum` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r _ haveI : r.1.IsPrime := r.2.1`. Conclude with `Nat.mul_pos (Ideal.ramificationIdx_pos r.1 ℤ) (Ideal.inertiaDeg_pos r.1 ℤ)`. Conclude with `⟨q, Finset.mem_univ _, by omega⟩`. Rewrite `hlt` using `[hsum, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one, Fintype.card_eq_nat_card, Nat.card_coe_set_eq, hcard]`. Conclude with `lt_irrefl _ hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hWmem : W.asIdeal ∈ P.primesOver (𝓞 E)` using `⟨W.isPrime, ⟨rfl⟩⟩`. Establish `hw` using `hone ⟨W.asIdeal, hWmem⟩`. Establish `he : W.asIdeal.ramificationIdx ℤ = 1` using `Nat.eq_one_of_mul_eq_one_right hw`. Establish `hf : W.asIdeal.inertiaDeg ℤ = 1` using `Nat.eq_one_of_mul_eq_one_left hw`. Use `set n : ℕ := (Submodule.IsPrincipal.generator P).natAbs with hn`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hspan : Ideal.span {((n : ℕ) : ℤ)} = P`. Rewrite using `[hn, Int.span_natAbs, Ideal.span_singleton_generator]`. Establish `hn0 : ((n : ℕ) : ℤ) ≠ 0`. Introduce `h0`. Apply `hP0` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hspan, h0, Ideal.span_singleton_eq_bot]`. Establish `hnprime : n.Prime`. Rewrite using `[Nat.prime_iff_prime_int, ← Ideal.span_singleton_prime hn0, hspan]`. Conclude with `hPprime`. Use `haveI : W.asIdeal.LiesOver (Ideal.span {((n : ℕ) : ℤ)}) := ⟨by rw [hspan]⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨n, hnprime, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.pow_inertiaDeg n W.asIdeal, hf, pow_one]`. Introduce `hmem`. Establish `hmap0 : P.map (algebraMap ℤ (𝓞 E)) ≠ ⊥` using `Ideal.map_ne_bot_of_ne_bot hP0`. Establish `hle : P.map (algebraMap ℤ (𝓞 E)) ≤ W.asIdeal ^ 2`.
-
-Rewrite using `[← hspan, Ideal.map_span, Set.image_singleton, Ideal.span_le, Set.singleton_subset_iff]`. Simplify using `using hmem`. Establish `hdvd : W.asIdeal ^ 2 ∣ P.map (algebraMap ℤ (𝓞 E))` using `Ideal.dvd_iff_le.mpr hle`. Establish `hfin : FiniteMultiplicity W.asIdeal (P.map (algebraMap ℤ (𝓞 E)))` using `FiniteMultiplicity.of_not_isUnit (by rw [Ideal.isUnit_iff]; exact W.isPrime.ne_top) hmap0`. Establish `h2` using `hfin.le_multiplicity_of_pow_dvd hdvd`.
-
-Rewrite `h2` using `[← Ideal.IsDedekindDomain.ramificationIdx_eq_multiplicity P W.asIdeal hmap0, he]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_prime_absNorm_eq_of_splitsFully (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (W : HeightOneSpectrum (𝓞 E)) (h : SplitsFully E (W.under (𝓞 F))) :

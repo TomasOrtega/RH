@@ -7,15 +7,13 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 open UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Introduce `E _ _ _ a W f`. Take `⟨K0, hK0o, hK0c⟩` from `UpperTheory.exists_isOpen_isCompact_subgroup_finiteAdelicUnitary E a`. Set `C : Subgroup (UA E a)` to `K0.map (finU E a).subtype`. Establish `hCf : C ≤ finU E a`. Introduce and unpack `_ ⟨x, _, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `x.2`. Establish `hCc : IsCompact (C : Set (UA E a))`. Establish `h` using `hK0c.image (continuous_subtype_val (p := fun x => x ∈ finU E a))`. Conclude with `h`. Establish `hCo : ∃ N : Set (UA E a), IsOpen N ∧ 1 ∈ N ∧ N ∩ finU E a ⊆ C`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht, hte⟩` from `isOpen_induced_iff.1 hK0o`. Use `⟨t, ht, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : finU E a) ∈ (K0 : Set (finU E a))` using `K0.one_mem`. Rewrite `h1` using `[← hte]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x ⟨hxt, hxf⟩`. Establish `hx : (⟨x, hxf⟩ : finU E a) ∈ (K0 : Set (finU E a))`. Rewrite using `[← hte]`. Conclude with `hxt`. Conclude with `⟨⟨x, hxf⟩, hx, rfl⟩`.
-
-Take `⟨hc, N, hN, h1, hNC⟩` from `GlobalTheory.CongSc.stab_level W f C hCf hCc hCo`. Conclude with `⟨C ⊓ GlobalTheory.CongSc.stab W f, ⟨inf_le_left.trans hCf, hc, N, hN, h1, hNC⟩, fun k hk v g => hk.2 v g⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.levelEx_pf :
     UpperTheory.Gal.Gen.LevelEx := by

@@ -10,7 +10,7 @@ open MeasureTheory Matrix
 open scoped ENNReal NNReal
 
 /- English proof (translation)
-Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, Measure.pi_pi, smul_eq_mul, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pi_smul_measure {V : Type} [Fintype V] {X : V → Type} [∀ v, MeasurableSpace (X v)]
     (μ : ∀ v, Measure (X v)) [∀ v, SigmaFinite (μ v)] (c : V → ℝ≥0) :
@@ -22,11 +22,11 @@ theorem pi_smul_measure {V : Type} [Fintype V] {X : V → Type} [∀ v, Measurab
   rfl
 
 /- English proof (translation)
-Use `haveI : ∀ v, SigmaFinite (μ v) := fun v => SigmaFinite.of_map (μ v) (hf v).aemeasurable (by rw [hc v]; infer_instance)`. Rewrite using `[← pi_smul_measure]`. Use `symm`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Establish `hmeas : Measurable (fun x : ∀ v, X v => fun v => f v (x v))` using `measurable_pi_lambda _ fun v => (hf v).comp (measurable_pi_apply v)`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_apply hmeas (MeasurableSet.univ_pi hs)]`. Establish `hpre : (fun x : ∀ v, X v => fun v => f v (x v)) ⁻¹' Set.univ.pi s = Set.univ.pi (fun v => f v ⁻¹' s v)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[hpre, Measure.pi_pi]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← hc v, Measure.map_apply (hf v) (hs v)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_map_smul {V : Type} [Fintype V] {X Y : V → Type} [∀ v, MeasurableSpace (X v)]
     [∀ v, MeasurableSpace (Y v)] (μ : ∀ v, Measure (X v)) (ν : ∀ v, Measure (Y v)) [∀ v, SigmaFinite (ν v)]
@@ -50,27 +50,25 @@ theorem pi_map_smul {V : Type} [Fintype V] {X Y : V → Type} [∀ v, Measurable
   rw [← hc v, Measure.map_apply (hf v) (hs v)]
 
 /- English proof (translation)
-Establish `key : ∀ s : Set F, MeasurableSet s → μ ((f : E → F) ⁻¹' s) = c * ν s`. Introduce `s hs`. Establish `h1` using `congrArg (fun ρ : Measure F => ρ s) h`. Simplify using `only [Measure.smul_apply, smul_eq_mul] at h1`. Rewrite `h1` using `[Measure.map_apply (LinearMap.continuous_of_finiteDimensional f).measurable hs]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hsurj : Function.Surjective f`. Assume the negation of the conclusion as `hns`. Establish `hr : LinearMap.range f ≠ ⊤` using `fun hh => hns (LinearMap.range_eq_top.mp hh)`. Establish `h0 : ν (LinearMap.range f : Set F) = 0` using `Measure.addHaar_submodule ν _ hr`. Establish `hm : MeasurableSet (LinearMap.range f : Set F)` using `(Submodule.closed_of_finiteDimensional (LinearMap.range f)).measurableSet`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `key _ hm`. Rewrite `h1` using `[h0, mul_zero]`. Establish `hpre : (f : E → F) ⁻¹' (LinearMap.range f : Set F) = Set.univ`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hpre]`. Conclude with `(IsOpen.measure_pos μ isOpen_univ Set.univ_nonempty).ne' h1`. Establish `hdim : Module.finrank ℝ E = Module.finrank ℝ F` using `by set K : Set F := Metric.closedBall 0 1 with hKdef`. Establish `hKc : IsCompact K` using `isCompact_closedBall 0 1`. Establish `hKm : MeasurableSet K` using `hKc.isClosed.measurableSet`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK0 : ν K ≠ 0` using `(Metric.measure_closedBall_pos ν (0 : F) one_pos).ne'`. Establish `hKt : ν K ≠ ⊤` using `hKc.measure_lt_top.ne`. Use `open Pointwise in`. Establish `h2m : MeasurableSet ((2 : ℝ) • K)` using `(hKc.smul (2 : ℝ)).isClosed.measurableSet`. Use `open Pointwise in`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hpre : (f : E → F) ⁻¹' ((2 : ℝ) • K) = (2 : ℝ) • ((f : E → F) ⁻¹' K)`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_smul_set]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Use `⟨(1 / 2 : ℝ) • x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← hxy, smul_smul]`. Evaluate the numerical expressions. Conclude with `hy`. Rewrite using `[smul_smul]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨f y, hy, (map_smul f (2 : ℝ) y).symm⟩`. Establish `e1` using `key _ h2m`. Rewrite `e1` using `[hpre, Measure.addHaar_smul, key K hKm, Measure.addHaar_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set X := c * ν K with hX`. Establish `hX0 : X ≠ 0` using `mul_ne_zero h0 hK0`. Establish `hXt : X ≠ ⊤` using `ENNReal.mul_ne_top htop hKt`. Establish `e2 : ENNReal.ofReal |(2 : ℝ) ^ Module.finrank ℝ E| * X = ENNReal.ofReal |(2 : ℝ) ^ Module.finrank ℝ F| * X`. Rewrite using `[e1, hX]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hu : IsUnit X` using `isUnit_iff_exists_inv.mpr ⟨X⁻¹, ENNReal.mul_inv_cancel hX0 hXt⟩`. Establish `e3` using `hu.mul_left_inj.mp e2`. Rewrite `e3` using `[ENNReal.ofReal_eq_ofReal_iff (by positivity) (by positivity)]`. Establish `e4 : (2 : ℕ) ^ Module.finrank ℝ E = 2 ^ Module.finrank ℝ F`.
-
-Establish `e5 : ((2 : ℕ) : ℝ) ^ Module.finrank ℝ E = ((2 : ℕ) : ℝ) ^ Module.finrank ℝ F`. Simplify using `using e3`. Conclude with `e5` after adjusting the coercions. Conclude with `Nat.pow_right_injective (le_refl 2) e4`. Conclude with `⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mpr hsurj, hsurj⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bij_of_map {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F]
@@ -136,9 +134,9 @@ theorem bij_of_map {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [Fini
   exact ⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mpr hsurj, hsurj⟩
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool, Complex.sq_norm, Complex.normSq_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[reimE, reim, Real.norm_eq_abs, sq_abs, sq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_reimE_sq {a b : ℕ} (M : Matrix (Fin a) (Fin b) ℂ) :
     ‖reimE (r := a) (m := b) M‖ ^ 2 = ∑ i, ∑ j, ‖M i j‖ ^ 2 := by
@@ -152,39 +150,37 @@ theorem norm_reimE_sq {a b : ℕ} (M : Matrix (Fin a) (Fin b) ℂ) :
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Set `R : Matrix (Fin a) (Fin b) ℂ ≃ₗ[ℝ] EuclideanSpace ℝ (Fin a × Fin b × Bool)` to `reimE (r := a) (m := b)`. Establish `hRn : ∀ M : Matrix (Fin a) (Fin b) ℂ, ‖R M‖ ^ 2 = ∑ i, ∑ j, ‖M i j‖ ^ 2` using `fun M => norm_reimE_sq M`. Set `S : V → Submodule ℝ (EuclideanSpace ℝ (Fin a × Fin b × Bool))` to `fun v => LinearMap.range (R.toLinearMap ∘ₗ (LinearMap.proj v ∘ₗ L))`. Establish `hmem : ∀ v (M : Matrix (Fin a) (Fin b) ℂ), R M ∈ S v ↔ Q v M`. Introduce `v M`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hM`. Take `⟨x, hx⟩` from `LinearMap.mem_range.mp hM`. Establish `hx' : R (L x v) = R M` using `by simpa using hx`. Rewrite using `[← R.injective hx']`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hQ x v`. Introduce `hq`. Take `⟨x, hx⟩` from `hs (Pi.single v M) (fun w => by`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_same]`. Conclude with `hq`. Rewrite using `[Pi.single_eq_of_ne hw]`. Conclude with `hQ0 w)`. Use `LinearMap.mem_range.mpr ⟨x, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using `[hx]`. Set `n : V → ℕ` to `fun v => Module.finrank ℝ (S v)`. Set `B : ∀ v, OrthonormalBasis (Fin (n v)) ℝ (S v)` to `fun v => stdOrthonormalBasis ℝ (S v)`. Set `Lv : ∀ v, EuclideanSpace ℝ (Fin (n v)) →ₗ[ℝ] Matrix (Fin a) (Fin b) ℂ` to `fun v => R.symm.toLinearMap ∘ₗ (S v).subtype ∘ₗ (B v).repr.symm.toLinearEquiv.toLinearMap`. Establish `hLv_apply : ∀ v y, R (Lv v y) = ((B v).repr.symm y : EuclideanSpace ℝ (Fin a × Fin b × Bool))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `v y`. Simplify using `[Lv]`. Establish `hLv_norm : ∀ v y, ∑ i, ∑ j, ‖Lv v y i j‖ ^ 2 = ‖y‖ ^ 2`. Introduce `v y`. Rewrite using `[← hRn, hLv_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun t => t ^ 2) ((B v).repr.symm.norm_map y)`. Establish `hLvQ : ∀ v y, Q v (Lv v y)`. Introduce `v y`. Use `(hmem v _).mp ?_` and prove the remaining obligations. Rewrite using `[hLv_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `((B v).repr.symm y).2`. Establish `hLvSurj : ∀ v M, Q v M → ∃ y, Lv v y = M`. Introduce `v M hq`. Use `⟨(B v).repr ⟨R M, (hmem v M).mpr hq⟩, ?_⟩` and prove the remaining obligations. Apply `R.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hLv_apply, LinearIsometryEquiv.symm_apply_apply]`. Establish `hLvinj : ∀ v, Function.Injective (Lv v)`. Introduce `v`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hLv_norm v y`. Rewrite `h1` using `[hy]`. Establish `h2 : ‖y‖ ^ 2 = 0`. Rewrite using `[← h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `norm_eq_zero.mp ((pow_eq_zero_iff two_ne_zero).mp h2)`. Establish `hLinj : Function.Injective L`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Establish `h1` using `hn y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite `h1` using `[hy]`. Establish `h2 : ‖y‖ ^ 2 = 0`. Rewrite using `[← h1]`. Simplify using the standard rewrite rules. Conclude with `norm_eq_zero.mp ((pow_eq_zero_iff two_ne_zero).mp h2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `Tv : ∀ v, EuclideanSpace ℝ ι →ₗ[ℝ] S v` to `fun v => LinearMap.codRestrict (S v) (R.toLinearMap ∘ₗ (LinearMap.proj v ∘ₗ L)) (fun x => LinearMap.mem_range_self _ x)`. Set `T : EuclideanSpace ℝ ι →ₗ[ℝ] ∀ v, EuclideanSpace ℝ (Fin (n v))` to `LinearMap.pi fun v => (B v).repr.toLinearEquiv.toLinearMap ∘ₗ Tv v`. Establish `hTL : ∀ x v, Lv v (T x v) = L x v`. Introduce `x v`. Apply `R.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hLv_apply]`. Simplify using `[T, Tv]`. Establish `hTinj : Function.Injective T`. Introduce `x x' hxx`. Apply `hLinj` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[← hTL x v, ← hTL x' v, hxx]`. Establish `hTsurj : Function.Surjective T`. Introduce `y`. Take `⟨x, hx⟩` from `hs (fun v => Lv v (y v)) (fun v => hLvQ v (y v))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Apply `hLvinj v` to reduce the goal to its premises. Rewrite using `[hTL, hx]`. Establish `hTnorm : ∀ x, ∑ v, ‖T x v‖ ^ 2 = ‖x‖ ^ 2`.
-
-Introduce `x`. Rewrite using `[← hn x]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← hLv_norm v (T x v), hTL]`. Conclude with `⟨fun v => Fin (n v), fun v => inferInstance, Lv, T, hLvQ, hLv_norm, hLvSurj, hTL, ⟨hTinj, hTsurj⟩, hTnorm⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem place_split {V : Type} [Fintype V] {a b : ℕ} {ι : Type} [Fintype ι]
     (L : EuclideanSpace ℝ ι →ₗ[ℝ] (V → Matrix (Fin a) (Fin b) ℂ)) (Q : V → Matrix (Fin a) (Fin b) ℂ → Prop)

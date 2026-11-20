@@ -24,7 +24,7 @@ open GlobalTheory.CechPic GlobalTheory.EffBound
 variable {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsCommMonObj B]
 
 /- English proof (translation)
-Establish `e : (1 : B ⟶ B).left = (toUnit B).left ≫ eSec B`. Rewrite using `[Hom.one_def]`. Both sides reduce to the same expression. Rewrite using `[e, pull_comp, ← cls_pull M.L.isLB _ (pull_isLB M.L.isLB _), (cls_eq_zero_iff (pull_isLB M.L.isLB _)).2 ⟨M.L.rig, M.L.rigGen⟩, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_one (M : GlobalTheory.UU.CP B) : pull (1 : B ⟶ B).left (cls M.L.L M.L.isLB) = 0 := by
   have e : (1 : B ⟶ B).left = (toUnit B).left ≫ eSec B := by
@@ -33,9 +33,9 @@ theorem pull_one (M : GlobalTheory.UU.CP B) : pull (1 : B ⟶ B).left (cls M.L.L
     (cls_eq_zero_iff (pull_isLB M.L.isLB _)).2 ⟨M.L.rig, M.L.rigGen⟩, map_zero]
 
 /- English proof (translation)
-Establish `h0` using `(cls_eq_zero_iff (LB.isLB_linComb M.L.isLB _ _)).2 ⟨M.sym, M.sym_gen⟩`. Rewrite `h0` using `[cls_linComb M.L.isLB, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, pull_id, one_zsmul, neg_one_zsmul] at h0`. Establish `hι : pull (ι[B]).left (cls M.L.L M.L.isLB) = cls M.L.L M.L.isLB`. Rewrite using `[← sub_eq_zero, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Rewrite using `[Hom.inv_def, Over.comp_left, pull_comp, hι]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_inv (M : GlobalTheory.UU.CP B) (f : B ⟶ B) :
     pull (f⁻¹).left (cls M.L.L M.L.isLB) = pull f.left (cls M.L.L M.L.isLB) := by
@@ -54,9 +54,9 @@ namespace GlobalTheory.OEndDegree
 open GlobalTheory.CechPic GlobalTheory.EffBound
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.lbIso_pw_sq_pull_pow_of_isLocalRing k B M n`. Establish `e : pull (𝟙 B ^ n).left (cls M.L.L M.L.isLB) = ((n : ℤ) ^ 2) • cls M.L.L M.L.isLB`. Rewrite using `[← cls_pull M.L.isLB _ (pull_isLB M.L.isLB _), ← (cls_eq_iff (isLB_pw M.L.isLB _) (pull_isLB M.L.isLB _)).2 h, cls_pw]`. Establish `e2 : f ^ n = f ≫ 𝟙 B ^ n` using `by rw [MonObj.comp_pow, Category.comp_id]`. Rewrite using `[e2, Over.comp_left, pull_comp, e, map_zsmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `norm_cast`.
+Put the expressions in a common number system so they can be compared.
 -/
 theorem pull_pow (k : Type) [Field k] (B : Over (Sp k)) [GrpObj B] [IsCommMonObj B] (M : GlobalTheory.UU.CP B) (f : B ⟶ B) (n : ℕ) :
     pull (f ^ n).left (cls M.L.L M.L.isLB) = (n ^ 2) • pull f.left (cls M.L.L M.L.isLB) := by
@@ -75,11 +75,11 @@ namespace GlobalTheory.OEndDegree
 open GlobalTheory.CechPic GlobalTheory.EffBound
 
 /- English proof (translation)
-Establish `h0 : act.act 0 = 1`. Use `act.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this |>.symm ▸ rfl`. Proceed by induction on `n using Int.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [zero_zsmul, zpow_zero, h0]`. Consider the case `succ k ih => rw [add_zsmul, one_zsmul, act.add, ih, zpow_add_one]`. Consider the case `pred k ih`. Rewrite using `[sub_zsmul, one_zsmul, zpow_sub_one, ← ih]`. Use `eq_mul_inv_of_mul_eq ?_` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← act.add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem act_zsmul {O : Type} [CommRing O] {S : Scheme.{0}} {B : Over S} [GrpObj B] (act : OAct O B) (a : O) (n : ℤ) :
     act.act (n • a) = act.act a ^ n := by
@@ -102,7 +102,7 @@ namespace GlobalTheory.OEndDegree
 open GlobalTheory.CechPic GlobalTheory.EffBound
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat m => rw [Int.ofNat_eq_natCast, zpow_natCast, pull_pow, Int.natAbs_natCast]`. Consider the case `negSucc m => rw [zpow_negSucc, pull_inv, pull_pow, Int.natAbs_negSucc]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem pull_zpow (k : Type) [Field k] (B : Over (Sp k)) [GrpObj B] [IsCommMonObj B] (M : GlobalTheory.UU.CP B) (f : B ⟶ B) (n : ℤ) :
     pull (f ^ n).left (cls M.L.L M.L.isLB) = (n.natAbs ^ 2) • pull f.left (cls M.L.L M.L.isLB) := by
@@ -111,7 +111,7 @@ theorem pull_zpow (k : Type) [Field k] (B : Over (Sp k)) [GrpObj B] [IsCommMonOb
   | negSucc m => rw [zpow_negSucc, pull_inv, pull_pow, Int.natAbs_negSucc]
 
 /- English proof (translation)
-The claim follows from `| 0 => by rw [zero_smul]; exact hE0 | n + 1 => by rw [succ_nsmul]; exact GlobalTheory.T.isEffectivePicClass_add_integral _ _ (eff_nsmul hE0 hx n) hx`.
+A detailed English derivation is pending.
 -/
 theorem eff_nsmul {X : Scheme.{0}} [IsIntegral X] (hE0 : Eff (0 : Pic X)) {x : Pic X} (hx : Eff x) :
     ∀ n : ℕ, Eff (n • x)
@@ -119,15 +119,13 @@ theorem eff_nsmul {X : Scheme.{0}} [IsIntegral X] (hE0 : Eff (0 : Pic X)) {x : P
   | n + 1 => by rw [succ_nsmul]; exact GlobalTheory.T.isEffectivePicClass_add_integral _ _ (eff_nsmul hE0 hx n) hx
 
 /- English proof (translation)
-Establish `h0 : act.act 0 = 1` using `by rw [← zero_smul ℤ (0 : O), act_zsmul, zpow_zero]`. Introduce `l`. Proceed by induction on `l with`. Consider the case `zero`. Introduce `b t _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.univ_eq_empty, Finset.sum_empty, Finset.sum_empty, h0, h1, mul_zero, zero_smul, sub_zero]`. Conclude with `hE0`. Consider the case `succ l ih`. Introduce `b t ht`. Rewrite using `[Fin.sum_univ_castSucc (f := b), Fin.sum_univ_castSucc (f := t), act.add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP` using `ih (fun i => b i.castSucc) (fun i => t i.castSucc) fun i => ht _`. Use `set P := act.act (∑ i : Fin l, b i.castSucc)`. Use `set g := act.act (b (Fin.last l))`. Use `set T := ∑ i : Fin l, t i.castSucc`. Use `set u := t (Fin.last l)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `h2 : 2 ≤ 2 ^ (l + 1)`. Combine the equalities or inequalities in the displayed calculation. Establish `e : (2 ^ (l + 1) * (T + u)) • c0 - F (P * g) = (2 • F P + 2 • F g - F (P * g)) + 2 • ((2 ^ l * T) • c0 - F P) + 2 • (u • c0 - F g) + ((2 ^ (l + 1) - 2) * u) • c0`. Simplify using `only [← natCast_zsmul]`. Move the coercions through the operations in `[Nat.cast_sub h2]`.
-
-Use `module`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.isEffectivePicClass_add_integral _ _ (GlobalTheory.T.isEffectivePicClass_add_integral _ _ (GlobalTheory.T.isEffectivePicClass_add_integral _ _ (hpar P g) (eff_nsmul hE0 hP 2)) (eff_nsmul hE0 (ht _) 2)) (eff_nsmul hE0 hc0 _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eff_sum {O : Type} [CommRing O] {S : Scheme.{0}} {B : Over S} [GrpObj B] (act : OAct O B)
     {X : Scheme.{0}} [IsIntegral X] (F : (B ⟶ B) → Pic X) (c0 : Pic X) (hE0 : Eff (0 : Pic X))
@@ -169,27 +167,23 @@ namespace GlobalTheory.OEndDegree
 open GlobalTheory.CechPic GlobalTheory.EffBound
 
 /- English proof (translation)
-Introduce `E _ _ k _ _ _ A _ act g hB hg d a`. Use `haveI := hB.comm`. Use `haveI := hB.smooth`. Use `haveI := hB.proper`. Use `haveI : GeometricallyIntegral A.hom := GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hB.smooth hB.geomConnected`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsIntegral A.left := GeometricallyIntegral.isIntegral_of_subsingleton A.hom`. Establish `hproj` using `GlobalTheory.T.isProjectiveOverRingByCharts_abelian_variety k A hB`. Take `⟨H, m, s, hH, hs, hsym⟩` from `GlobalTheory.SymVeryAmple.exists_symmetric_veryAmpleBy k A hB hproj`. Take `⟨r, hr⟩ : ∃ r : LB.Gen (H.pull (eSec A)), r.IsGen` from `DVR.exists_gen_of_isLB_local (V := k) _ (pull_isLB hH _)`. Take `⟨M, hM⟩` from `(GlobalTheory.T.abelianScheme_cubical_bundle_exists_and_maps GlobalTheory.globalFns_holds _ A hB).1 ⟨H, r, hH, hr⟩ (GlobalTheory.AbLaw.CubeProj.exists_gen_theta_abelianVariety GlobalTheory.globalFns_holds k A hB hproj H hH) hsym`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : M.L.L = H` using `by rw [hM]`. Substitute `hL` using the available equality. Take `⟨c0, hc0⟩ : ∃ c0, cls M.L.L M.L.isLB = c0` from `⟨_, rfl⟩`. Establish `hEF : ∀ φ : A ⟶ A, Eff (pull φ.left c0)` using `fun φ => hc0 ▸ GlobalTheory.T.isEffectivePicClass_pullback_veryAmple k A.hom M.L.L m s M.L.isLB hs φ.left inferInstance`. Establish `h1 : pull (1 : A ⟶ A).left c0 = 0` using `hc0 ▸ pull_one A M`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hE0 : Eff (0 : Pic A.left)` using `h1 ▸ hEF 1`. Establish `hEc : Eff c0`. Use `hEF (𝟙 A)` as an intermediate fact. Rewrite `this` using `[Over.id_left, pull_id]`. Then use the resulting hypothesis. Establish `hpar : ∀ f g : A ⟶ A, Eff (2 • pull f.left c0 + 2 • pull g.left c0 - pull (f * g).left c0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `f g`. Establish `e` using `GlobalTheory.T.cube_theorem_picardGroup A M f g g⁻¹`. Rewrite `e` using `[mul_inv_cancel_right, mul_inv_cancel, pull_one, pull_inv A M g, hc0]`. Establish `e' : 2 • pull f.left c0 + 2 • pull g.left c0 - pull (f * g).left c0 = pull (f * g⁻¹).left c0`. Rewrite using `[← sub_eq_zero, ← sub_eq_zero.2 e]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e']`. Conclude with `hEF _`. Establish `hc : ∀ i, ∃ ci : ℕ, Eff (ci • c0 - pull (act.act (a i)).left c0)` using `fun i => by`. Take `⟨ci, h⟩` from `GlobalTheory.T.exists_nsmul_veryAmple_sub_isEffectivePicClass k A.left A.hom M.L.L m s _ M.L.isLB (pull_isLB M.L.isLB (act.act (a i)).left) hs`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[cls_pull M.L.isLB, hc0]`. Conclude with `⟨ci, h⟩`. Use `choose ci hci using hc`. Use `⟨M.L.L, m, s, 2 ^ d * ∑ i, ci i + 1, M.L.isLB, hs, by omega, fun n K _ hn => ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ i, Eff ((K ^ 2 * ci i) • c0 - pull (act.act (n i • a i)).left c0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `hle : (n i).natAbs ^ 2 ≤ K ^ 2` using `Nat.pow_le_pow_left (hn i) 2`. Establish `e : (K ^ 2 * ci i) • c0 - pull (act.act (n i • a i)).left c0 = (n i).natAbs ^ 2 • (ci i • c0 - pull (act.act (a i)).left c0) + ((K ^ 2 - (n i).natAbs ^ 2) * ci i) • c0`. Rewrite using `[act_zsmul, ← hc0, pull_zpow, hc0]`. Simplify using `only [← natCast_zsmul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `[Nat.cast_sub hle]`. Use `module`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.isEffectivePicClass_add_integral _ _ (eff_nsmul hE0 (hci i) _) (eff_nsmul hE0 hEc _)`. Establish `hsum` using `eff_sum act (fun φ => pull φ.left c0) c0 hE0 hEc h1 hpar d (fun i => n i • a i) (fun i => K ^ 2 * ci i) hterm`.
-
-Use `GlobalTheory.T.exists_section_nonzero_chart_of_effective_class _ (LB.isLB_div (isLB_pw M.L.isLB _) (pull_isLB M.L.isLB _)) ?_` and prove the remaining obligations. Rewrite using `[cls_div (isLB_pw M.L.isLB _) (pull_isLB M.L.isLB _), cls_pw M.L.isLB, cls_pull M.L.isLB, hc0]`. Establish `e : (((2 ^ d * ∑ i, ci i + 1) * K ^ 2 : ℕ) : ℤ) • c0 - pull (act.act (∑ i, n i • a i)).left c0 = ((2 ^ d * ∑ i, K ^ 2 * ci i) • c0 - pull (act.act (∑ i, n i • a i)).left c0) + (K ^ 2) • c0`. Simplify using `only [← Finset.mul_sum, ← natCast_zsmul]`. Use `push_cast`.
-
-Use `module`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.isEffectivePicClass_add_integral _ _ hsum (eff_nsmul hE0 hEc _)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_effective_bound : ∀ (E : Type) [Field E] [NumberField E] (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (A : Over (Sp k)) [GrpObj A] (act : OAct (𝓞 E) A) (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (d : ℕ) (a : Fin d → 𝓞 E), ∃ (H : LB A.left) (m : ℕ) (s : Fin (m + 1) → LB.Sec H) (c : ℕ), H.IsLB ∧ GlobalTheory.AbLaw.VeryAmpleBy A.hom H s ∧ 1 ≤ c ∧ ∀ (n : Fin d → ℤ) (K : ℕ), 1 ≤ K → (∀ i, (n i).natAbs ≤ K) → ∃ (σ : LB.Sec (LB.div (GlobalTheory.AbLaw.pw H ((c * K ^ 2 : ℕ) : ℤ)) (H.pull (act.act (∑ i, n i • a i)).left))) (j : (LB.div (GlobalTheory.AbLaw.pw H ((c * K ^ 2 : ℕ) : ℤ)) (H.pull (act.act (∑ i, n i • a i)).left)).ι), σ.f j ≠ 0 := by
   intro E _ _ k _ _ _ A _ act g hB hg d a

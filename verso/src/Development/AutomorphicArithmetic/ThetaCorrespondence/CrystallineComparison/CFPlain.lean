@@ -11,7 +11,7 @@ variable (l : ℕ) [Fact l.Prime]
 
 set_option maxHeartbeats 200000 in
 /- English proof (translation)
-Use `show algebraMap (Reformulated.AutPerF.Acris l (Cmp6.OC l)) (Reformulated.AutPerF.Bcris l (Cmp6.OC l)) (algebraMap (Reformulated.AutPerF.Ainf l (Cmp6.OC l)) (Reformulated.AutPerF.Acris l (Cmp6.OC l)) (Reformulated.AutPerF.Ainf.ofPadicInt l (Cmp6.OC l) z)) = _`. Rewrite using `[Reformulated.AutPerF.Bcris.algebraMap_padicInt]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem zB_eq (z : ℤ_[l]) : Per.zB l z = algebraMap ℚ_[l] (Reformulated.AutPerF.Bcris l (Cmp6.OC l)) (z : ℚ_[l]) := by
   show algebraMap (Reformulated.AutPerF.Acris l (Cmp6.OC l)) (Reformulated.AutPerF.Bcris l (Cmp6.OC l))
@@ -22,7 +22,7 @@ theorem zB_eq (z : ℤ_[l]) : Per.zB l z = algebraMap ℚ_[l] (Reformulated.AutP
 
 set_option maxHeartbeats 200000 in
 /- English proof (translation)
-Rewrite using `[← Reformulated.AutPerF.Bcris.toBdR_algebraMap_padic, ← zB_eq]`. Use `show algebraMap (Reformulated.AutPerF.BdRPlus l (Cmp6.OC l)) (Reformulated.AutPerF.BdR l (Cmp6.OC l)) (algebraMap (Reformulated.AutPerF.AinfInv l (Cmp6.OC l)) (Reformulated.AutPerF.BdRPlus l (Cmp6.OC l)) (algebraMap (Reformulated.AutPerF.Ainf l (Cmp6.OC l)) (Reformulated.AutPerF. …`. Rewrite using `[Reformulated.AutPerF.Bcris.toBdR_algebraMap_acris, Reformulated.AutPerF.Acris.toBdRPlus_algebraMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem zD_eq (z : ℤ_[l]) : Per.zD l z = algebraMap ℚ_[l] (Reformulated.AutPerF.BdR l (Cmp6.OC l)) (z : ℚ_[l]) := by
   rw [← Reformulated.AutPerF.Bcris.toBdR_algebraMap_padic, ← zB_eq]
@@ -39,7 +39,7 @@ theorem zD_eq (z : ℤ_[l]) : Per.zD l z = algebraMap ℚ_[l] (Reformulated.AutP
 
 set_option maxRecDepth 20000 in
 /- English proof (translation)
-Introduce `z`. Use `show Cmp6.cBc l (Per.zB l z) = _`. Rewrite using `[zB_eq]`. Conclude with `(Cmp6.compat_native l).1 z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integer_to_crystalline_compat : ∀ z : ℤ_[l], equivCrystalline l (Per.zB l z) = Per6.zB l z := by
   intro z
@@ -48,7 +48,7 @@ theorem integer_to_crystalline_compat : ∀ z : ℤ_[l], equivCrystalline l (Per
   exact (Cmp6.compat_native l).1 z
 set_option maxRecDepth 20000 in
 /- English proof (translation)
-Introduce `z`. Use `show Cmp6.cD l (Per.zD l z) = _`. Rewrite using `[zD_eq]`. Conclude with `(Cmp6.compat_native l).2.1 z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integer_to_deRham_compat : ∀ z : ℤ_[l], equivDeRham l (Per.zD l z) = Per6.zD l z := by
   intro z
@@ -57,49 +57,49 @@ theorem integer_to_deRham_compat : ∀ z : ℤ_[l], equivDeRham l (Per.zD l z) =
   exact (Cmp6.compat_native l).2.1 z
 set_option maxRecDepth 20000 in
 /- English proof (translation)
-Introduce `y`. Conclude with `(Cmp6.compat_native l).2.2.1 y`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem deRham_plus_algebraMap_compat : ∀ y : Per.BdRp l, equivDeRham l (algebraMap (Per.BdRp l) (Per.BdR l) y) = algebraMap (Per6.BdRp l) (Per6.BdR l) (equivDeRhamPlus l y) := by
   intro y
   exact (Cmp6.compat_native l).2.2.1 y
 set_option maxRecDepth 20000 in
 /- English proof (translation)
-Introduce `y`. Conclude with `(Cmp6.compat_native l).2.2.2.1 y`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem theta_deRham_compat : ∀ y : Per.BdRp l, Per6.θD l (equivDeRhamPlus l y) = Per.θD l y := by
   intro y
   exact (Cmp6.compat_native l).2.2.2.1 y
 set_option maxRecDepth 20000 in
 /- English proof (translation)
-Introduce `g b`. Conclude with `(Cmp6.compat_native l).2.2.2.2.1 g b`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem galois_action_crystalline_compat : ∀ (g : GQ l) (b : Per.Bcris l), equivCrystalline l (Per.σB g b) = Per6.σB g (equivCrystalline l b) := by
   intro g b
   exact (Cmp6.compat_native l).2.2.2.2.1 g b
 set_option maxRecDepth 20000 in
 /- English proof (translation)
-Introduce `g x`. Conclude with `(Cmp6.compat_native l).2.2.2.2.2.1 g x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem galois_action_deRham_compat : ∀ (g : GQ l) (x : Per.BdR l), equivDeRham l (Per.σD g x) = Per6.σD g (equivDeRham l x) := by
   intro g x
   exact (Cmp6.compat_native l).2.2.2.2.2.1 g x
 set_option maxRecDepth 20000 in
 /- English proof (translation)
-Introduce `b`. Conclude with `(Cmp6.compat_native l).2.2.2.2.2.2.1 b`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem frobenius_crystalline_compat : ∀ b : Per.Bcris l, equivCrystalline l (Per.φB l b) = Per6.φB l (equivCrystalline l b) := by
   intro b
   exact (Cmp6.compat_native l).2.2.2.2.2.2.1 b
 set_option maxRecDepth 20000 in
 /- English proof (translation)
-Introduce `a x`. Conclude with `(Cmp6.compat_native l).2.2.2.2.2.2.2.1 a x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem filtration_deRham_compat : ∀ (a : ℤ) (x : Per.BdR l), x ∈ Per.FilD l a ↔ equivDeRham l x ∈ Per6.FilD l a := by
   intro a x
   exact (Cmp6.compat_native l).2.2.2.2.2.2.2.1 a x
 set_option maxRecDepth 20000 in
 /- English proof (translation)
-Introduce `a`. Conclude with `(Cmp6.compat_native l).2.2.2.2.2.2.2.2.2 a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ainf_to_crystalline_compat : ∀ a : Ainf l, equivCrystalline l (Per.aB l a) = Per6.aB l a := by
   intro a

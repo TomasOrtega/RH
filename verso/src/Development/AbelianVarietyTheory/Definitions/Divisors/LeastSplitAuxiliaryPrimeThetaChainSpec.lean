@@ -22,9 +22,9 @@ section Comb
 variable {G : GlobalTheory.SignedHC.GridData}
 
 /- English proof (translation)
-Establish `e1` using `abs_le.1 (abs_sub_le_of_mem_block hx)`. Establish `e2` using `abs_le.1 (hm i (mem_Icc.2 ⟨h1, h2⟩))`. Rewrite `e2` using `[G.mid_eq h1]`. Rewrite `e1` using `[Nat.cast_sub hs]`. Establish `e3 : (G.s : ℚ) + 1 ≤ G.ga` using `by exact_mod_cast hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Move the coercions through the operations in `at e1`. Apply the tactic sequence `constructor <;> linarith [e1.1, e1.2, e2.1, e2.2]`.
+Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockC'_between (hm : G.NearMid) (hs : 1 ≤ G.s) (hg : G.s < G.ga) {i : ℕ} (h1 : 1 ≤ i) (h2 : i ≤ G.m) {x : ℚ}
     (hx : x ∈ G.blockC' i) : G.a i < x ∧ x < G.a i + G.ga := by
@@ -37,7 +37,7 @@ theorem blockC'_between (hm : G.NearMid) (hs : 1 ≤ G.s) (hg : G.s < G.ga) {i :
   constructor <;> linarith [e1.1, e1.2, e2.1, e2.2]
 
 /- English proof (translation)
-Establish `e` using `G.a_sub_a i j`. Establish `h1 : (i : ℚ) + 1 ≤ j` using `by exact_mod_cast h`. Establish `h2 : (0 : ℚ) ≤ G.ga` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem a_add_le {i j : ℕ} (h : i < j) : G.a j + G.ga ≤ G.a i := by
   have e := G.a_sub_a i j
@@ -46,9 +46,9 @@ theorem a_add_le {i j : ℕ} (h : i < j) : G.a j + G.ga ≤ G.a i := by
   nlinarith
 
 /- English proof (translation)
-Take `⟨i, h1, h2, rfl⟩` from `GridData.mem_cloudHalf.1 hx`. Establish `h3 : G.v i ≤ G.v 2`. Break down `h1.eq_or_lt with rfl | h` into its components or cases. Conclude with `le_rfl`. Conclude with `(G.v_anti 2 i le_rfl h h2).le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (G.v i : ℚ) ≤ G.v 2` using `by exact_mod_cast h3`. Establish `h5 : (0 : ℚ) ≤ G.ga` using `by positivity`. Rewrite using `[G.a_m, GridData.vHalf]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cloudHalf_lt {x : ℚ} (hx : x ∈ G.cloudHalf) : x < G.a G.m := by
   obtain ⟨i, h1, h2, rfl⟩ := GridData.mem_cloudHalf.1 hx
@@ -61,27 +61,25 @@ theorem cloudHalf_lt {x : ℚ} (hx : x ∈ G.cloudHalf) : x < G.a G.m := by
   rw [G.a_m, GridData.vHalf]; linarith
 
 /- English proof (translation)
-Establish `hga : (0 : ℚ) < G.ga` using `by exact_mod_cast (by omega : 0 < G.ga)`. Establish `hle : ∀ {i j : ℕ}, i ≤ j → G.a j ≤ G.a i` using `fun h => by`. Break down `h.eq_or_lt with rfl | h` into its components or cases. Conclude with `le_rfl`. Combine the linear relations using `[a_add_le (G := G) h]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `c1 : G.tops.card = G.m + 1`. Rewrite using `[GridData.tops, card_image_of_injective, card_range]`. Introduce `i j h`. Break down `lt_trichotomy i j with h' | h' | h'` into its components or cases. Combine the linear relations using `[a_add_le (G := G) h']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `h'`. Combine the linear relations using `[a_add_le (G := G) h']`. Establish `c2 : G.cloudHalf.card = G.k - 1`. Rewrite using `[GridData.cloudHalf, card_image_of_injOn, Nat.card_Icc]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi j hj h`. Establish `hi` using `mem_Icc.1 (mem_coe.1 hi)`. Establish `hj` using `mem_Icc.1 (mem_coe.1 hj)`. Establish `e : G.v i = G.v j`. Establish `: (G.v i : ℚ) = G.v j` using `by simp only [GridData.vHalf] at h; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Break down `lt_trichotomy i j with h' | h' | h'` into its components or cases. Conclude with `absurd e (G.v_anti i j hi.1 h' hj.2).ne'`. Conclude with `h'`. Conclude with `absurd e (G.v_anti j i hj.1 h' hi.2).ne`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c3 : ((Icc 1 G.m).biUnion G.blockC').card = G.m * (G.s - 1)`. Rewrite using `[card_biUnion]`. Simplify using `[GridData.blockC']`. Introduce `i hi j hj hij`. Establish `hi` using `mem_Icc.1 (mem_coe.1 hi)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hj` using `mem_Icc.1 (mem_coe.1 hj)`. Use `disjoint_left.2 fun x h1 h2 => ?_` and prove the remaining obligations. Establish `b1` using `blockC'_between hm hs hg hi.1 hi.2 h1`. Establish `b2` using `blockC'_between hm hs hg hj.1 hj.2 h2`. Apply the tactic sequence `rcases lt_or_gt_of_ne hij with h | h <;> linarith [a_add_le (G := G) h, b1.1, b1.2, b2.1, b2.2]`.
+Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `d1 : Disjoint G.tops G.cloudHalf` using `disjoint_left.2 fun x h1 h2 => by`. Take `⟨i, hi, rfl⟩` from `GridData.mem_tops.1 h1`. Combine the linear relations using `[cloudHalf_lt h2, hle hi]`. Establish `d2 : Disjoint (G.tops ∪ G.cloudHalf) ((Icc 1 G.m).biUnion G.blockC')` using `disjoint_left.2 fun x h1 h2 => by`. Take `⟨i, hi, h2⟩` from `mem_biUnion.1 h2`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hi` using `mem_Icc.1 hi`. Establish `b` using `blockC'_between hm hs hg hi.1 hi.2 h2`. Break down `mem_union.1 h1 with h1 | h1` into its components or cases. Take `⟨l, -, rfl⟩` from `GridData.mem_tops.1 h1`. Break down `lt_or_ge l i with h | h` into its components or cases.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Combine the linear relations using `[a_add_le (G := G) h, b.2]`. Combine the linear relations using `[hle h, b.1]`. Combine the linear relations using `[cloudHalf_lt h1, hle hi.2, b.1]`. Use `G.two_le_k` as an intermediate fact. Rewrite using `[GridData.weightX, GridData.entries_lam, Icc_eq_empty (a := 1) (b := 0) (by omega), biUnion_empty, union_empty, card_union_of_disjoint d2, card_union_of_disjoint d1, c1, c2, c3, GridData.nTop, G.n_eq]`.
-
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem card_weightX_zero (hm : G.NearMid) (hs : 1 ≤ G.s) (hg : G.s < G.ga) : (G.weightX 0).card = G.nTop := by
   have hga : (0 : ℚ) < G.ga := by exact_mod_cast (by omega : 0 < G.ga)
@@ -138,11 +136,11 @@ theorem card_weightX_zero (hm : G.NearMid) (hs : 1 ≤ G.s) (hg : G.s < G.ga) : 
   omega
 
 /- English proof (translation)
-Introduce `x hx`. Break down `GridData.mem_weightX.1 hx with h | h | ⟨i, -, -, h⟩ | ⟨l, h1, h2, -⟩` into its components or cases. Take `⟨i, -, rfl⟩` from `GridData.mem_tops.1 h`. Conclude with `⟨G.v 2 + (G.m + 1 - i) * G.ga, by unfold GridData.a; push_cast; ring⟩`. Take `⟨i, -, -, rfl⟩` from `GridData.mem_cloudHalf.1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨G.v i - 1, by unfold GridData.vHalf; push_cast; ring⟩`. Take `⟨a, -, rfl⟩` from `mem_block.1 h`. Take `⟨u, hu⟩` from `hs`. Use `⟨G.cen i + u - 1 - a, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, Nat.add_sub_cancel]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers.
 -/
 theorem inCoset_weightX_zero (hs : Odd G.s) : InCoset (1 / 2) (G.weightX 0) := by
   intro x hx
@@ -185,13 +183,13 @@ def gap (C : ℝ) : ℕ :=
     (2 * bigN D ^ 3 + 2 * sLen D + 3)) ⌈48 * (nRk D : ℝ) ^ 2 * Real.sqrt D.R.m⌉₊
 
 /- English proof (translation)
-Simplify using `only [GapBound, gap, max_le_iff, Nat.ceil_le, and_assoc, Nat.lt_iff_add_one_le]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gapBound_iff (C : ℝ) (g : ℕ) : GapBound D C g ↔ gap D C ≤ g := by
   simp only [GapBound, gap, max_le_iff, Nat.ceil_le, and_assoc, Nat.lt_iff_add_one_le]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(gapBound_iff D C _).2 le_rfl, fun g hg => (gapBound_iff D C g).1 hg⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLeast_gap (C : ℝ) : IsLeast {g | GapBound D C g} (gap D C) :=
   ⟨(gapBound_iff D C _).2 le_rfl, fun g hg => (gapBound_iff D C g).1 hg⟩
@@ -201,19 +199,19 @@ def cen (C : ℝ) (τ : D.what₂.Tau) (i : ℕ) : ℤ := ⌊(GridData.ofHCParam
 def num (C : ℝ) (τ : D.what₂.Tau) : GlobalTheory.SignedHC.GridData := GridData.ofHCParam (D.hc τ) (sLen D) (gap D C) (cen D C τ)
 
 /- English proof (translation)
-The claim follows from `GridData.nearMid_of_floor _ fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem num_nearMid (C : ℝ) (τ : D.what₂.Tau) : (num D C τ).NearMid := GridData.nearMid_of_floor _ fun _ _ => rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem num_ranks (C : ℝ) (τ : D.what₂.Tau) (i j : ℕ) : (num D C τ).rankD i j = rankV D i j ∧
     (num D C τ).rankP i = rankP D i ∧ (num D C τ).rankX j = rankX D j ∧ (num D C τ).bigN = bigN D :=
   ⟨rfl, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Conclude with `⟨a + b - 1, by unfold Ranks.r; omega⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem odd_r : Odd D.R.r := by
   obtain ⟨a, ha⟩ := D.R.k_even
@@ -222,12 +220,12 @@ theorem odd_r : Odd D.R.r := by
   exact ⟨a + b - 1, by unfold Ranks.r; omega⟩
 
 /- English proof (translation)
-The claim follows from `(odd_r D).add_even (by decide)`.
+A detailed English derivation is pending.
 -/
 theorem odd_sLen : Odd (sLen D) := (odd_r D).add_even (by decide)
 
 /- English proof (translation)
-Establish `h1` using `odd_r D`. Establish `h2` using `odd_sLen D`. Establish `h3` using `D.R.t_odd`. Simplify using `only [rankV, Nat.even_add, Nat.even_mul, ← Nat.not_even_iff_odd] at *`. The claim follows by propositional logic.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem even_rankV (i j : ℕ) : Even (rankV D i j) ↔ Odd (i + j) := by
   have h1 := odd_r D
@@ -237,25 +235,25 @@ theorem even_rankV (i j : ℕ) : Even (rankV D i j) ↔ Odd (i + j) := by
   tauto
 
 /- English proof (translation)
-The claim follows from `(odd_r D).add_one.add (((odd_sLen D).tsub_odd odd_one).mul_left i)`.
+A detailed English derivation is pending.
 -/
 theorem even_rankP (i : ℕ) : Even (rankP D i) :=
   (odd_r D).add_one.add (((odd_sLen D).tsub_odd odd_one).mul_left i)
 
 /- English proof (translation)
-The claim follows from `(even_rankP D _).add (D.R.t_odd.add_one.mul_left j)`.
+A detailed English derivation is pending.
 -/
 theorem even_rankX (j : ℕ) : Even (rankX D j) := (even_rankP D _).add (D.R.t_odd.add_one.mul_left j)
 
 /- English proof (translation)
-Use `(isLeast_gap D C).1.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sLen_lt_gap (C : ℝ) : sLen D < gap D C := by
   have := (isLeast_gap D C).1.2.1
   omega
 
 /- English proof (translation)
-The claim follows from `card_weightX_zero (num_nearMid D C τ) (odd_sLen D).pos (sLen_lt_gap D C)`.
+A detailed English derivation is pending.
 -/
 theorem card_weight (C : ℝ) (τ : D.what₂.Tau) : ((num D C τ).weightX 0).card = rankP D D.R.m :=
   card_weightX_zero (num_nearMid D C τ) (odd_sLen D).pos (sLen_lt_gap D C)
@@ -265,7 +263,7 @@ def La (C : ℝ) (τ : D.what₂.Tau) : DomWeight (rankP D D.R.m) where
   anti := fun _ _ h => Int.floor_mono (highestWeight_antitone _ (inCoset_weightX_zero (odd_sLen D)) h)
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `highestWeight_int (card_weight D C τ) (fun x hx => by`. Take `⟨y, rfl⟩` from `inCoset_weightX_zero (G := num D C τ) (odd_sLen D) x hx`. Take `⟨u, hu⟩` from `even_rankP D D.R.m`. Conclude with `⟨y + 1 - u, by rw [hu]; push_cast; ring⟩) a`. Simplify using `[La, hz]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem La_cast (C : ℝ) (τ : D.what₂.Tau) (a : Fin (rankP D D.R.m)) :
     ((La D C τ).w a : ℚ) = highestWeight _ (card_weight D C τ) a := by
@@ -279,7 +277,7 @@ def parV (C : ℝ) (i j : ℕ) (τ : D.what₂.Tau) : SPar :=
   shift (if Odd (i + j) then -(1 / 2) else 0) ((num D C τ).parD i j)
 
 /- English proof (translation)
-Establish `h` using `GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D C) (cen D C τ)`. Rewrite using `[GridData.dpar_eq (num D C τ) (Ptw D) τ rfl rfl rfl h.1 h.2.1 h.2.2 hj, parV, zero_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem parV_zero (C : ℝ) {j : ℕ} (hj : j ≤ D.R.m) (τ : D.what₂.Tau) : parV D C 0 j τ = (Ptw D).Dpar j τ := by
   have h := GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D C) (cen D C τ)
@@ -289,9 +287,9 @@ theorem parV_zero (C : ℝ) {j : ℕ} (hj : j ≤ D.R.m) (τ : D.what₂.Tau) : 
 abbrev q0 : ℕ := Formalism.MainNotions.q0Av D
 
 /- English proof (translation)
-Establish `h1 : LevelStarExponents.condE D ≠ 0`. Use `D.host.qd_big` as an intermediate fact. Unfold `LevelStarExponents.condE`. Conclude with `mul_ne_zero (mul_ne_zero D.host.QS_pos.ne' (by omega)) (by omega)`. Establish `h2` using `D.host.pde_prime.two_le`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `D.host.pde'_prime.two_le`. Establish `h4 : Ideal.absNorm D.host.ccK ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.2 D.host.ccK_ne_bot`. Establish `h5 : LevelStarExponents.condE D * (D.host.pde - 1) * (D.host.pde' - 1) * Ideal.absNorm D.host.ccK ≠ 0` using `mul_ne_zero (mul_ne_zero (mul_ne_zero h1 (by omega)) (by omega)) h4`. Take `⟨p, hp, hp'⟩` from `Nat.exists_infinite_primes (LevelStarExponents.condE D * (D.host.pde - 1) * (D.host.pde' - 1) * Ideal.absNorm D.host.ccK + 1)`. Conclude with `Nat.sInf_mem (s := {p : ℕ | p.Prime ∧ ¬ p ∣ _}) ⟨p, hp', fun h => by have := Nat.le_of_dvd (Nat.pos_of_ne_zero h5) h; omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rPr_spec : (Formalism.MainNotions.rPrAv D).Prime ∧ ¬ Formalism.MainNotions.rPrAv D ∣
     LevelStarExponents.condE D * (D.host.pde - 1) * (D.host.pde' - 1) * Ideal.absNorm D.host.ccK := by
@@ -309,11 +307,11 @@ theorem rPr_spec : (Formalism.MainNotions.rPrAv D).Prime ∧ ¬ Formalism.MainNo
   exact Nat.sInf_mem (s := {p : ℕ | p.Prime ∧ ¬ p ∣ _}) ⟨p, hp', fun h => by have := Nat.le_of_dvd (Nat.pos_of_ne_zero h5) h; omega⟩
 
 /- English proof (translation)
-Establish `h1 : 0 < LevelStarExponents.condE D`. Use `D.host.qd_big` as an intermediate fact. Unfold `LevelStarExponents.condE`. Conclude with `mul_pos (mul_pos D.host.QS_pos (by omega)) (by omega)`. Establish `h2` using `(rPr_spec D).1.two_le`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 1 < Formalism.MainNotions.rPrAv D * LevelStarExponents.condE D` using `by nlinarith`. Establish `h4 : Ideal.absNorm D.host.ccK ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.2 D.host.ccK_ne_bot`. Take `⟨p, hp, hlt, hm⟩` from `Nat.exists_prime_gt_modEq_one (k := Formalism.MainNotions.rPrAv D * LevelStarExponents.condE D) (Ideal.absNorm D.host.ccK) (by omega)`. Use `Nat.sInf_mem (s := {p : ℕ | p.Prime ∧ p % _ = 1 ∧ ¬ p ∣ _}) ⟨p, hp, ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[hm, Nat.mod_eq_of_lt h3]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Nat.le_of_dvd (by omega) h; omega` as an intermediate fact.
+A detailed English derivation is pending.
 -/
 theorem leastSplitAuxiliaryPrimeThetaChain_spec : (q0 D).Prime ∧ q0 D % (Formalism.MainNotions.rPrAv D * LevelStarExponents.condE D) = 1 ∧ ¬ q0 D ∣ Ideal.absNorm D.host.ccK := by
   have h1 : 0 < LevelStarExponents.condE D := by
@@ -330,9 +328,9 @@ theorem leastSplitAuxiliaryPrimeThetaChain_spec : (q0 D).Prime ∧ q0 D % (Forma
   · have := Nat.le_of_dvd (by omega) h; omega
 
 /- English proof (translation)
-Establish `h` using `(leastSplitAuxiliaryPrimeThetaChain_spec D).2.1`. Establish `h1 : Formalism.MainNotions.rPrAv D ∣ q0 D - 1`. Use `Nat.div_add_mod (q0 D) (Formalism.MainNotions.rPrAv D * LevelStarExponents.condE D)` as an intermediate fact. Rewrite `this` using `[h]`. Rewrite using `[← this, Nat.add_sub_cancel, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_mul_right _ _`. Establish `h2` using `(rPr_spec D).2`. Apply the tactic sequence `constructor <;> intro e <;> rw [e] at h1 <;> apply h2`. Conclude with `((h1.mul_left _).mul_right _).mul_right _`. Conclude with `(h1.mul_left _).mul_right _`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem leastSplitAuxiliaryPrime_ne_typePrimes : q0 D ≠ D.host.pde ∧ q0 D ≠ D.host.pde' := by
   have h := (leastSplitAuxiliaryPrimeThetaChain_spec D).2.1
@@ -353,7 +351,7 @@ def sizeP (C b : ℝ) : ℝ :=
 def depth0 (C b : ℝ) : ℕ := ⌊sizeP D C b / Real.log (q0 D)⌋₊ + 1
 
 /- English proof (translation)
-Establish `h : 0 < Real.log (q0 D)` using `Real.log_pos (by exact_mod_cast (leastSplitAuxiliaryPrimeThetaChain_spec D).1.one_lt)`. Rewrite using `[← div_lt_iff₀ h, depth0]`. Use `push_cast`. Conclude with `Nat.lt_floor_add_one _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem sizeP_lt (C b : ℝ) : sizeP D C b < depth0 D C b * Real.log (q0 D) := by
   have h : 0 < Real.log (q0 D) := Real.log_pos (by exact_mod_cast (leastSplitAuxiliaryPrimeThetaChain_spec D).1.one_lt)
@@ -365,7 +363,7 @@ def S1 : Finset (HeightOneSpectrum (𝓞 D.host.F)) :=
   Formalism.L2.DIV.primesOf ((D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde' : ℕ) : 𝓞 D.host.F)
 
 /- English proof (translation)
-Establish `h0 : D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde' ≠ 0` using `mul_ne_zero (mul_ne_zero (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero) D.host.pde_prime.ne_zero) D.host.pde'_prime.ne_zero`. Rewrite using `[S1, Formalism.L2.DIV.mem_primesOf, and_iff_right (by exact_mod_cast h0)]`. Simplify using `only [Nat.cast_mul, v.isPrime.mul_mem_iff_mem_or_mem, or_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem S1_mem_OmF {v : HeightOneSpectrum (𝓞 D.host.F)} : v ∈ S1 D ↔
     ((D.host.g 0 : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal ∨ ((D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal ∨

@@ -26,15 +26,15 @@ noncomputable section
 namespace GlobalTheory.SqStepK.PiLocalization₂
 
 /- English proof (translation)
-Introduce `hP _ _`. Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ _ G => ?_⟩⟩` and prove the remaining obligations. Introduce `W S hψ hN i j p q A A' WW X hX`. Take `⟨hp, hq, hrA, hrA', hnA, hnA', hnW, hXI⟩` from `hX`. Establish `hk` using `D.R.m_add_three_le_k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm` using `D.R.two_le_m`. Establish `hrk` using `hXI.rank`. Establish `hb1 : 2 * qq D j + 3 ≤ rankV D i j`. Simplify using `only [rankV, qq, Formalism.BasicNotions.Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hb2 : 2 * pp D j ≤ rankV D (i + 1) (j + 1)`. Simplify using `only [rankV, pp, Formalism.BasicNotions.Ranks.r]`. Use linear arithmetic over natural numbers and integers. Take `⟨B', Λ₁, ι, x, y, hs, hsig, hsd, hneg⟩` from `GlobalTheory.T.hyperbolicPlane_split_selfDual_hermitian_complement D A' X.rA'.Λ q hXI.rigA'.1 hnA' (by omega) (by omega)`. Take `⟨WW₁, ΛW, ι', x', y', hs', hsig', hsd', hneg'⟩` from `GlobalTheory.T.hyperbolicPlane_split_selfDual_hermitian_complement D WW X.rW.Λ (p + q) hXI.rigW.1 (by simpa only [add_assoc] using hnW) (by omega) (by omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rB, eB, hB⟩` from `GlobalTheory.RigExists.exists_rig D B' Λ₁ hsig hsd`. Take `⟨rW, eW, hW⟩` from `GlobalTheory.RigExists.exists_rig D WW₁ ΛW hsig' hsd'`. Take `⟨Y, e1, e2, e3, hY⟩` from `GlobalTheory.T.rigidified_family_triple_exists hP D T A A' WW B' WW₁ X W.ψ W.θ _ _ _ _ rB rW W.θ_is hXI hB hW (by have := hs.1; omega) (by have := hs'.1; omega)`. Use `⟨B', WW₁, Y, ⟨hp, by omega, hrA, by have := hs.1; omega, hnA, hneg, hneg', hY⟩, e1, ⟨ι, x, y, ?_⟩, ⟨ι', x', y', ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e2, eB]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`. Rewrite using `[e3, eW]`. Conclude with `hs'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stage_first : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

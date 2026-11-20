@@ -6,19 +6,19 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.IndefiniteRowS
 namespace GlobalTheory.GaussModulus
 
 /- English proof (translation)
-Use `set t : w.adicCompletion E := algebraMap E (w.adicCompletion E) ((δ : E) / c) with ht`. Establish `hc0 : w.valuation E (c : E) ≠ 0` using `by rw [hc]; exact WithZero.exp_ne_zero`. Establish `hδ1 : w.valuation E (δ : E) ≤ 1` using `w.valuation_le_one δ`. Establish `hvt : Valued.v t ≤ WithZero.exp (((a + diffExp w : ℕ) : ℤ))`. Rewrite using `[ht, valued_algebraMap, map_div₀, hc, div_le_iff₀ (zero_lt_iff.2 WithZero.exp_ne_zero), ← WithZero.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hδ1`. Establish `key : ∀ s ∈ w.adicCompletionIntegers E, psiAt w (t * s) = 1`. Introduce `s hs`. Establish `hs1 : Valued.v s ≤ 1` using `hs`. Take `⟨r, hr⟩` from `exists_int_approx w hs1 (a + diffExp w)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : t * s = algebraMap E (w.adicCompletion E) ((δ : E) * r / c) + t * (s - algebraMap E (w.adicCompletion E) (r : E))`. Establish `ha : algebraMap E (w.adicCompletion E) ((δ : E) * r / c) = algebraMap E (w.adicCompletion E) ((δ : E) / c) * algebraMap E (w.adicCompletion E) (r : E)`. Rewrite using `[← (algebraMap E (w.adicCompletion E)).map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, ht]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, psiAt_add, hδ r, one_mul]`. Use `psiAt_eq_one ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hvt'` using `(psiAt_conductor w t).1 key`. Rewrite `hvt'` using `[ht, valued_algebraMap, map_div₀, hc, div_le_iff₀ (zero_lt_iff.2 WithZero.exp_ne_zero), ← WithZero.exp_add]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : w.valuation E (δ : E) ≤ WithZero.exp (-(a : ℤ))`. Use `hvt'.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[w.valuation_of_algebraMap]`. Conclude with `(w.intValuation_le_pow_iff_mem δ a).1 (by simpa using h2)`.
+A detailed English derivation is pending.
 -/
 theorem mem_pow_of_psiAt_trivial {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (a : ℕ) (c : Eˣ)
     (hc : w.valuation E (c : E) = WithZero.exp (-((a + diffExp w : ℕ) : ℤ))) (δ : 𝓞 E)

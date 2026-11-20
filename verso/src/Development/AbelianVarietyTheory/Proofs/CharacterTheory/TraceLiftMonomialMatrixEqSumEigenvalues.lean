@@ -8,9 +8,9 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.MonoTrace
 
 /- English proof (translation)
-Use `haveI : NeZero (N : k) := ⟨hN⟩`. Establish `hN0 : N ≠ 0` using `by rintro rfl; simp at hN`. Use `haveI : NeZero N := ⟨hN0⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot k N`. Establish `hs : {μ : k | μ ^ N = 1} = (nthRootsFinset N (1 : k) : Set k)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `[mem_nthRootsFinset (Nat.pos_of_ne_zero hN0)]`. Rewrite using `[hs]`. Conclude with `⟨Finset.finite_toSet _, by rw [Set.ncard_coe_finset, hζ.card_nthRootsFinset]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ncard_pow_eq_one (k : Type) [Field k] [IsAlgClosed k] (N : ℕ) (hN : (N : k) ≠ 0) :
     {μ : k | μ ^ N = 1}.Finite ∧ {μ : k | μ ^ N = 1}.ncard = N := by
@@ -25,11 +25,11 @@ theorem ncard_pow_eq_one (k : Type) [Field k] [IsAlgClosed k] (N : ℕ) (hN : (N
   exact ⟨Finset.finite_toSet _, by rw [Set.ncard_coe_finset, hζ.card_nthRootsFinset]⟩
 
 /- English proof (translation)
-Establish `hN0 : N ≠ 0` using `by rintro rfl; simp at hN`. Establish `hne : ∀ μ : k, μ ^ N = 1 → μ ≠ 0`. Introduce and unpack `μ h rfl`. Simplify using `[hN0] at h`. Establish `hmaps : Set.MapsTo θ {μ : k | μ ^ N = 1} {μ : ℂ | μ ^ N = 1}`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `μ h`. Simplify using `only [Set.mem_setOf_eq] at h ⊢`. Rewrite using `[← map_pow, h, map_one]`. Establish `hinj : Set.InjOn θ {μ : k | μ ^ N = 1}` using `fun x hx y hy h => hθ x y (hne x hx) (hne y hy) h`. Take `⟨_, h1⟩` from `ncard_pow_eq_one k N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f2, h2⟩` from `ncard_pow_eq_one ℂ N (by exact_mod_cast hN0)`. Establish `himg : θ '' {μ : k | μ ^ N = 1} = {μ : ℂ | μ ^ N = 1}`. Apply `Set.eq_of_subset_of_ncard_le hmaps.image_subset _ f2` to reduce the goal to its premises. Rewrite using `[hinj.ncard_image, h1, h2]`. Conclude with `⟨hmaps, hinj, himg.ge⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem bijOn_pow_eq_one (k : Type) [Field k] [IsAlgClosed k] (θ : k →* ℂ)
     (hθ : ∀ x y : k, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) (N : ℕ) (hN : (N : k) ≠ 0) :
@@ -52,13 +52,13 @@ theorem bijOn_pow_eq_one (k : Type) [Field k] [IsAlgClosed k] (θ : k →* ℂ)
   exact ⟨hmaps, hinj, himg.ge⟩
 
 /- English proof (translation)
-Introduce `k _ _ θ hθ n N σ c hc hN hA hB`. Establish `hN0 : N ≠ 0` using `by rintro rfl; simp at hN`. Establish `hE` using `GlobalTheory.T.finrank_eigenspace_monomial_matrix_lift k θ hθ n σ c hc`. Use `set A : Matrix (Fin n) (Fin n) k := Matrix.of fun i j => if i = σ j then c j else 0 with hAdef`. Use `set B : Matrix (Fin n) (Fin n) ℂ := Matrix.of fun i j => if i = σ j then θ (c j) else 0 with hBdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.T.sum_charpoly_roots_eq_finsum_eigenspace_finrank k (Fin n → k) (Matrix.toLin' A) N hN (by rw [← Matrix.toLin'_pow, hA, Matrix.toLin'_one]; rfl) θ`. Establish `h2` using `GlobalTheory.T.sum_charpoly_roots_eq_finsum_eigenspace_finrank ℂ (Fin n → ℂ) (Matrix.toLin' B) N (by exact_mod_cast hN0) (by rw [← Matrix.toLin'_pow, hB, Matrix.toLin'_one]; rfl) id`. Rewrite `h1`, `h2` using `[Matrix.charpoly_toLin']`. Rewrite using `[Matrix.trace_eq_sum_roots_charpoly, h1]`. Rewrite `h2` using `[Multiset.map_id]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[h2]`. Use `symm`. Apply `finsum_mem_eq_of_bijOn θ (bijOn_pow_eq_one k θ hθ N hN)` to reduce the goal to its premises. Introduce `μ hμ`. Establish `hμ0 : μ ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Simplify using `[hN0] at hμ`. Rewrite using `[hE μ hμ0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trace_lift_monomial : ∀ (k : Type) [Field k] [IsAlgClosed k] (θ : k →* ℂ), (∀ x y : k, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) → ∀ (n N : ℕ) (σ : Equiv.Perm (Fin n)) (c : Fin n → k), (∀ j, c j ≠ 0) → (N : k) ≠ 0 → (Matrix.of fun i j => if i = σ j then c j else 0 : Matrix (Fin n) (Fin n) k) ^ N = 1 → (Matrix.of fun i j => if i = σ j then θ (c j) else 0 : Matrix (Fin n) (Fin n) ℂ) ^ N = 1 → Matrix.trace (Matrix.of fun i j => if i = σ j then θ (c j) else 0 : Matrix (Fin n) (Fin n) ℂ) = ((Matrix.charpoly (Matrix.of fun i j => if i = σ j then c j else 0 : Matrix (Fin n) (Fin n) k)).roots.map θ).sum := by
   intro k _ _ θ hθ n N σ c hc hN hA hB

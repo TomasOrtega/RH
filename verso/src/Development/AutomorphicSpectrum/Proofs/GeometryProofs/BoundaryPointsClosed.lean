@@ -14,23 +14,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.BdSym
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y T bd hT hbd`. Establish `key` using `GlobalTheory.T.complex_points_iff_centres X Ω ξ K J y hT`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ((↑) ⁻¹' (mcPts (mCoordIdeal y) ∩ mcPts bd) : Set (mcPts (mCoordIdeal y))) = ⋂ f ∈ bd, {w : mcPts (mCoordIdeal y) | MvPolynomial.eval w.1 (MvPolynomial.map (Int.castRingHom ℂ) f) = 0}`. Use extensionality with `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hw : w.1 ∈ mcPts (mCoordIdeal y)` using `w.2`. Rewrite using `[Set.mem_iInter₂]`. Simplify using `only [mcPts, Set.mem_preimage, Set.mem_inter_iff, Set.mem_ofPred_eq] at hw ⊢`. Conclude with `⟨fun h => h.2.2, fun h => ⟨hw, hw.1, h⟩⟩`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `isClosed_iInter fun f => isClosed_iInter fun _ => isClosed_eq ?_ continuous_const` and prove the remaining obligations. Conclude with `(MvPolynomial.continuous_eval _).comp continuous_subtype_val`. Introduce and unpack `w ⟨hw1, hw2⟩ c hc`. Take `⟨z, hz, hzw⟩` from `(key w).1 hw1`. Establish `hzc : CoordsAt ξ y z (torusSmul c w)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'` using `hzw`. Unfold `CoordsAt at h' ⊢`. Use `⟨fun k => ?_, fun k i hu => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `h'.1 k`. Use `⟨i, isUnit_iff_ne_zero.2 ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show c k * w ⟨k, i⟩ ≠ 0`. Conclude with `mul_ne_zero (hc k) (isUnit_iff_ne_zero.1 hi)`. Establish `hu' : IsUnit (w ⟨k, i⟩)`. Use `isUnit_iff_ne_zero.2 fun h0 => isUnit_iff_ne_zero.1 hu ?_` and prove the remaining obligations. Use `show c k * w ⟨k, i⟩ = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h0, mul_zero]`. Take `⟨hy, hr⟩` from `h'.2 k i hu'`. Use `⟨hy, fun j => ?_⟩` and prove the remaining obligations. Take `⟨r, hr1, hr2⟩` from `hr j`. Use `⟨r, hr1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `show c k * w ⟨k, j⟩ = r * (c k * w ⟨k, i⟩)`. Rewrite using `[hr2]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Set.mem_inter ((key _).2 ⟨z, hz, hzc⟩) ((hbd z _ hzc).2 ((hbd z w hzw).1 hw2))`. Introduce and unpack `w ⟨hw1, hw2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨z, hz, hzw⟩` from `(key w).1 hw1`. Establish `hzc` using `GlobalTheory.CompanionTheory.Ar.HodgeLine.coordsAt_conj hzw`. Establish `hcz : centre (GlobalTheory.CompanionTheory.Ar.HodgeLine.cj z) = centre z` using `GlobalTheory.CompanionTheory.Ar.HodgeLine.centre_cj z`. Establish `hz' : GlobalTheory.CompanionTheory.Ar.genPt ξ ⤳ centre (GlobalTheory.CompanionTheory.Ar.HodgeLine.cj z)`. Rewrite using `[hcz]`.
-
-Conclude with `hz`. Establish `hT' : centre (GlobalTheory.CompanionTheory.Ar.HodgeLine.cj z) ∉ T`. Rewrite using `[hcz]`. Conclude with `(hbd z w hzw).1 hw2`. Conclude with `Set.mem_inter ((key (conjVec w)).2 ⟨GlobalTheory.CompanionTheory.Ar.HodgeLine.cj z, hz', hzc⟩) ((hbd _ _ hzc).2 hT')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boundary_closed_torus_conj : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (T : Set X) (bd : Ideal (MRing J)), CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → (∀ (z : Spec (CommRingCat.of ℂ) ⟶ X) w, CoordsAt ξ y z w → (w ∈ mcPts bd ↔ centre z ∉ T)) → IsClosed ((↑) ⁻¹' (mcPts (mCoordIdeal y) ∩ mcPts bd) : Set (mcPts (mCoordIdeal y))) ∧ (∀ z ∈ mcPts (mCoordIdeal y) ∩ mcPts bd, ∀ c : K → ℂ, (∀ k, c k ≠ 0) → torusSmul c z ∈ mcPts (mCoordIdeal y) ∩ mcPts bd) ∧ ∀ z ∈ mcPts (mCoordIdeal y) ∩ mcPts bd, conjVec z ∈ mcPts (mCoordIdeal y) ∩ mcPts bd := by
   intro X Ω _ ξ K _ J _ y T bd hT hbd

@@ -16,21 +16,21 @@ variable (I : AutInst)
 def eOf (a : Af I.F) : I.E ⊗[I.F] Af I.F := (1 : I.E) ⊗ₜ[I.F] a
 
 /- English proof (translation)
-Unfold `eOf`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem LocB_eOf_mul (a b : Af I.F) : eOf I a * eOf I b = eOf I (a * b) := by
   unfold eOf
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
 /- English proof (translation)
-Unfold `eOf`. Rewrite using `[TensorProduct.tmul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem LocB_eOf_add (a b : Af I.F) : eOf I a + eOf I b = eOf I (a + b) := by
   unfold eOf
   rw [TensorProduct.tmul_add]
 
 /- English proof (translation)
-Unfold `eOf`. Rewrite using `[TensorProduct.tmul_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem LocB_eOf_sub (a b : Af I.F) : eOf I a - eOf I b = eOf I (a - b) := by
   unfold eOf
@@ -42,14 +42,14 @@ Both sides reduce to the same expression.
 theorem LocB_eOf_one : eOf I 1 = 1 := rfl
 
 /- English proof (translation)
-Unfold `eOf`. Rewrite using `[TensorProduct.tmul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem LocB_eOf_zero : eOf I 0 = 0 := by
   unfold eOf
   rw [TensorProduct.tmul_zero]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [Nat.cast_zero, LocB_eOf_zero, Nat.cast_zero]`. Consider the case `succ m ih => rw [Nat.cast_succ, ← LocB_eOf_add, ih, LocB_eOf_one, Nat.cast_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem LocB_eOf_natCast (m : ℕ) : eOf I (m : Af I.F) = (m : I.E ⊗[I.F] Af I.F) := by
   induction m with
@@ -57,19 +57,19 @@ theorem LocB_eOf_natCast (m : ℕ) : eOf I (m : Af I.F) = (m : I.E ⊗[I.F] Af I
   | succ m ih => rw [Nat.cast_succ, ← LocB_eOf_add, ih, LocB_eOf_one, Nat.cast_succ]
 
 /- English proof (translation)
-Rewrite using `[LocB_eOf_mul, ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem LocB_eOf_idem (a : Af I.F) (ha : a * a = a) : eOf I a * eOf I a = eOf I a := by
   rw [LocB_eOf_mul, ha]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.sigR, eOf, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem LocB_sig_eOf (a : Af I.F) : Formalism.UG.sigR I.cm.sig (Af I.F) (eOf I a) = eOf I a := by
   simp [Formalism.UG.sigR, eOf, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-Use `show eOf I a ∈ Formalism.UG.tensInt (F := I.F) (Af I.F) (Formalism.UG.intOE I.E) (Formalism.UG.intAd I.F)`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem LocB_eOf_mem (a : Af I.F) (ha : a ∈ Formalism.UG.intAd I.F) : eOf I a ∈ Formalism.MainNotions.S.IntAf I.F I.E := by
   show eOf I a ∈ Formalism.UG.tensInt (F := I.F) (Af I.F) (Formalism.UG.intOE I.E) (Formalism.UG.intAd I.F)
@@ -85,7 +85,7 @@ def locG (a : Af I.F) (x : I.Gf) : I.Gf :=
   else x
 
 /- English proof (translation)
-Rewrite using `[locG, dif_pos ha]`. Conclude with `Loc_locGL_val _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocB_fmat (a : Af I.F) (ha : a * a = a) (x : I.Gf) :
     I.fmat (locG I a x) = locM (eOf I a) (I.fmat x) := by
@@ -93,7 +93,7 @@ theorem LocB_fmat (a : Af I.F) (ha : a * a = a) (x : I.Gf) :
   exact Loc_locGL_val _ _ _
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem LocB_ext (x y : I.Gf) (h : I.fmat x = I.fmat y) : x = y := Subtype.ext (Units.ext h)
 
@@ -108,7 +108,7 @@ Both sides reduce to the same expression.
 theorem LocB_fmat_one : I.fmat (1 : I.Gf) = 1 := rfl
 
 /- English proof (translation)
-Apply `LocB_ext` to reduce the goal to its premises. Rewrite using `[LocB_fmat_mul, LocB_fmat I a ha, LocB_fmat I a ha, LocB_fmat I a ha, LocB_fmat_mul]`. Conclude with `Loc_locM_mul _ (LocB_eOf_idem I a ha) _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocB_locG_mul (a : Af I.F) (ha : a * a = a) (x y : I.Gf) :
     locG I a (x * y) = locG I a x * locG I a y := by
@@ -117,7 +117,7 @@ theorem LocB_locG_mul (a : Af I.F) (ha : a * a = a) (x y : I.Gf) :
   exact Loc_locM_mul _ (LocB_eOf_idem I a ha) _ _
 
 /- English proof (translation)
-Establish `hab2 : (a + b) * (a + b) = a + b`. Combine the equalities or inequalities in the displayed calculation. Establish `hab' : eOf I a * eOf I b = 0` using `by rw [LocB_eOf_mul, hab, LocB_eOf_zero]`. Apply `LocB_ext` to reduce the goal to its premises. Rewrite using `[LocB_fmat_mul, LocB_fmat I a ha, LocB_fmat I b hb, LocB_fmat I (a + b) hab2, Loc_locM_add _ _ hab', LocB_eOf_add]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem LocB_locG_add (a b : Af I.F) (ha : a * a = a) (hb : b * b = b) (hab : a * b = 0) (x : I.Gf) :
     locG I a x * locG I b x = locG I (a + b) x := by
@@ -130,9 +130,9 @@ theorem LocB_locG_add (a b : Af I.F) (ha : a * a = a) (hb : b * b = b) (hab : a 
     Loc_locM_add _ _ hab', LocB_eOf_add]
 
 /- English proof (translation)
-Establish `h1a : (1 - a) * (1 - a) = 1 - a`. Establish `: (1 - a) * (1 - a) = 1 - a - a + a * a` using `by ring`. Rewrite using `[this, ha]`. Expand and normalize the polynomial expressions, which then agree. Apply `LocB_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[LocB_fmat_mul, LocB_fmat I a ha, LocB_fmat I (1 - a) h1a, ← LocB_eOf_sub, LocB_eOf_one]`. Conclude with `Loc_locM_split _ (LocB_eOf_idem I a ha) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocB_locG_split (a : Af I.F) (ha : a * a = a) (x : I.Gf) :
     locG I a x * locG I (1 - a) x = x := by
@@ -145,14 +145,14 @@ theorem LocB_locG_split (a : Af I.F) (ha : a * a = a) (x : I.Gf) :
   exact Loc_locM_split _ (LocB_eOf_idem I a ha) _
 
 /- English proof (translation)
-Apply `LocB_ext` to reduce the goal to its premises. Rewrite using `[LocB_fmat I 0 (mul_zero 0), LocB_eOf_zero, Loc_locM_zero, LocB_fmat_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem LocB_locG_zero (x : I.Gf) : locG I 0 x = 1 := by
   apply LocB_ext
   rw [LocB_fmat I 0 (mul_zero 0), LocB_eOf_zero, Loc_locM_zero, LocB_fmat_one]
 
 /- English proof (translation)
-Use `Λ.smul_mem (⟨eOf I a, LocB_eOf_mem I a ha⟩ : Formalism.MainNotions.S.IntAf I.F I.E) hv` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LocB_smul_mem (Λ : Submodule (Formalism.MainNotions.S.IntAf I.F I.E) (Fin I.n → I.E ⊗[I.F] Af I.F))
     (a : Af I.F) (ha : a ∈ Formalism.UG.intAd I.F) {v : Fin I.n → I.E ⊗[I.F] Af I.F} (hv : v ∈ Λ) :
@@ -161,7 +161,7 @@ theorem LocB_smul_mem (Λ : Submodule (Formalism.MainNotions.S.IntAf I.F I.E) (F
   exact this
 
 /- English proof (translation)
-Rewrite using `[locM, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem LocB_locM_mulVec (e : I.E ⊗[I.F] Af I.F) (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F))
     (v : Fin I.n → I.E ⊗[I.F] Af I.F) : locM e M *ᵥ v = v + e • (M *ᵥ v - v) := by
@@ -169,11 +169,11 @@ theorem LocB_locM_mulVec (e : I.E ⊗[I.F] Af I.F) (M : Matrix (Fin I.n) (Fin I.
     Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `fwd : ∀ w : I.Gf, w ∈ I.Kset → ∀ y ∈ I.Lf, I.fmat (locG I a w) *ᵥ y ∈ I.Lf`. Introduce `w hw y hy`. Establish `hw' : ∀ y, y ∈ I.Lf ↔ I.fmat w *ᵥ y ∈ I.Lf` using `hw`. Rewrite using `[LocB_fmat I a ha, LocB_locM_mulVec]`. Conclude with `I.Lf.add_mem hy (LocB_smul_mem I _ a hi (I.Lf.sub_mem ((hw' y).mp hy) hy))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxinv : x⁻¹ ∈ I.Kset` using `by show ((x⁻¹ : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf`. Conclude with `(Formalism.UG.stabGL I.Lf).inv_mem hx`. Establish `hl1 : locG I a 1 = 1` using `LocB_ext I _ _ (by`. Rewrite using `[LocB_fmat I a ha, LocB_fmat_one, Loc_locM_one])`. Use `show ∀ y, y ∈ I.Lf ↔ I.fmat (locG I a x) *ᵥ y ∈ I.Lf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `y`. Use `⟨fwd x hx y, fun hy => ?_⟩` and prove the remaining obligations. Use `fwd x⁻¹ hxinv _ hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← LocB_fmat_mul, ← LocB_locG_mul I a ha, inv_mul_cancel, hl1, LocB_fmat_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem LocB_Kset (a : Af I.F) (ha : a * a = a) (hi : a ∈ Formalism.UG.intAd I.F) (x : I.Gf) (hx : x ∈ I.Kset) :
     locG I a x ∈ I.Kset := by
@@ -195,7 +195,7 @@ theorem LocB_Kset (a : Af I.F) (ha : a * a = a) (hi : a ∈ Formalism.UG.intAd I
     LocB_fmat_one, Matrix.one_mulVec] at this
 
 /- English proof (translation)
-Establish `hv' : v ∈ Submodule.span (Formalism.MainNotions.S.IntAf I.F I.E) S ⊔ mL I m` using `hv`. Use `(Submodule.span (Formalism.MainNotions.S.IntAf I.F I.E) S ⊔ mL I m).smul_mem (⟨eOf I a, LocB_eOf_mem I a hi⟩ : Formalism.MainNotions.S.IntAf I.F I.E) hv'` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LocB_InMod (m : ℕ) (S : Set (VA I)) (a : Af I.F) (hi : a ∈ Formalism.UG.intAd I.F) (v : VA I)
     (hv : InMod I m S v) : InMod I m S (eOf I a • v) := by
@@ -205,11 +205,11 @@ theorem LocB_InMod (m : ℕ) (S : Set (VA I)) (a : Af I.F) (hi : a ∈ Formalism
   exact this
 
 /- English proof (translation)
-Establish `hx' : x ∈ I.Kset ∧ K2cong I g e0 z0 β x` using `hx`. Take `⟨hK, h1, h2, h3⟩` from `hx'`. Establish `key : ∀ w : VA I, (I.fmat (locG I a x) - 1) *ᵥ w = eOf I a • ((I.fmat x - 1) *ᵥ w)`. Introduce `w`. Rewrite using `[LocB_fmat I a ha, Loc_locM_sub_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `And.intro (LocB_Kset I a ha hi x hK) (And.intro ?_ (And.intro ?_ ?_))` and prove the remaining obligations. Introduce `r'`. Rewrite using `[key]`. Conclude with `LocB_InMod I _ _ a hi _ (h1 r')`. Rewrite using `[key]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `LocB_InMod I _ _ a hi _ h2`. Introduce `i`. Rewrite using `[key]`. Conclude with `LocB_InMod I _ _ a hi _ (h3 i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocB_K2set {r k : ℕ} (g : ℕ) (e0 : Fin r → VA I) (z0 : VA I) (β : Fin k → VA I)
     (a : Af I.F) (ha : a * a = a) (hi : a ∈ Formalism.UG.intAd I.F) (x : I.Gf) (hx : x ∈ K2set I g e0 z0 β) :
@@ -230,11 +230,11 @@ theorem LocB_K2set {r k : ℕ} (g : ℕ) (e0 : Fin r → VA I) (z0 : VA I) (β :
     exact LocB_InMod I _ _ a hi _ (h3 i)
 
 /- English proof (translation)
-Establish `h1a : (1 - a) * (1 - a) = 1 - a`. Establish `: (1 - a) * (1 - a) = 1 - a - a + a * a` using `by ring`. Rewrite using `[this, ha]`. Expand and normalize the polynomial expressions, which then agree. Establish `hi1a : 1 - a ∈ Formalism.UG.intAd I.F`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← hgc]`. Conclude with `mul_mem (natCast_mem _ g) hc`. Establish `hx' : ∀ y, y ∈ I.Lf ↔ I.fmat x *ᵥ y ∈ I.Lf` using `hx`. Use `And.intro (LocB_Kset I (1 - a) h1a hi1a x hx) (fun y hy => ?_)` and prove the remaining obligations. Use `⟨eOf I c • ((I.fmat x - 1) *ᵥ y), LocB_smul_mem I _ c hc ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `I.Lf.sub_mem ((hx' y).mp hy) hy`. Rewrite using `[LocB_fmat I (1 - a) h1a, Loc_locM_sub_one, ← hgc, ← LocB_eOf_mul, LocB_eOf_natCast, mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocB_Kg (g : ℕ) (a c : Af I.F) (ha : a * a = a) (hc : c ∈ Formalism.UG.intAd I.F)
     (hgc : (g : Af I.F) * c = 1 - a) (x : I.Gf) (hx : x ∈ I.Kset) : locG I (1 - a) x ∈ I.Kg g := by

@@ -16,25 +16,23 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FexTheta
 
 /- English proof (translation)
-Introduce `K _ _ _ c v L _ hL g ξ x e he`. Consider the cases of `L with`. Consider the case `ns w σ η Φ => rfl`. Consider the case `sp w₁ w₂ Φ`. Break down `hL with h | ⟨hU, hstd⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd trivial h`. Establish `r₁ : IsUnramifiedChar (cAt c v w₁)` using `GlobalTheory.CompanionTheory.SphTheta.isUnramifiedChar_comp_unitsMap (Qv v) (Kv K w₁) (localChar c w₁) (hU w₁).1`. Establish `r₂ : IsUnramifiedChar (cAt c v w₂)` using `GlobalTheory.CompanionTheory.SphTheta.isUnramifiedChar_comp_unitsMap (Qv v) (Kv K w₂) (localChar c w₂) (hU w₂).1`. Establish `hval : ValuativeRel.valuation (Qv v) (e : Qv v) = 1`. Establish `ha : ValuativeRel.valuation (Qv v) (e : Qv v) ≤ 1` using `he.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ValuativeRel.valuation (Qv v) ((e⁻¹ : (Qv v)ˣ) : Qv v) ≤ 1` using `he.2`. Establish `hm : ValuativeRel.valuation (Qv v) (e : Qv v) * ValuativeRel.valuation (Qv v) ((e⁻¹ : (Qv v)ˣ) : Qv v) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Use `le_antisymm ha ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hmem : e ∈ unitFiltrationUnits (Qv v) 0` using `mem_unitFiltrationUnits_zero_iff.mpr hval`. Establish `he₁ : cAt c v w₁ e = 1` using `MonoidHom.mem_ker.1 (r₁ hmem)`. Establish `he₂ : cAt c v w₂ e = 1` using `MonoidHom.mem_ker.1 (r₂ hmem)`. Establish `hct : (LM.sp w₁ w₂ Φ : LM c v).ct (x * e) = (LM.sp w₁ w₂ Φ : LM c v).ct x`. Simplify using `[LM.ct, map_mul, he₁, he₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `htw : (LM.sp w₁ w₂ Φ : LM c v).tw (x * e) = (LM.sp w₁ w₂ Φ : LM c v).tw x`. Establish `hΦ : Φ = Set.indicator {x : Qv v × Qv v | x.1 ∈ 𝒪[Qv v] ∧ x.2 ∈ 𝒪[Qv v]} 1` using `hstd`. Simplify using `only [LM.tw]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hO : ∀ (a : Qv v) (u : (Qv v)ˣ), (u : Qv v) ∈ 𝒪[Qv v] → ((u⁻¹ : (Qv v)ˣ) : Qv v) ∈ 𝒪[Qv v] → (a * (u : Qv v) ∈ 𝒪[Qv v] ↔ a ∈ 𝒪[Qv v])`. Introduce `a u h1 h2`. Use `⟨fun h => ?_, fun h => mul_mem h h1⟩` and prove the remaining obligations. Establish `h3` using `mul_mem h h2`. Rewrite `h3` using `[mul_assoc, Units.mul_inv, mul_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `key : (y * (((x * e : (Qv v)ˣ) : Qv v), (((x * e)⁻¹ : (Qv v)ˣ) : Qv v))) ∈ {z : Qv v × Qv v | z.1 ∈ 𝒪[Qv v] ∧ z.2 ∈ 𝒪[Qv v]} ↔ (y * ((x : Qv v), ((x⁻¹ : (Qv v)ˣ) : Qv v))) ∈ {z : Qv v × Qv v | z.1 ∈ 𝒪[Qv v] ∧ z.2 ∈ 𝒪[Qv v]}`. Establish `e1' : y.1 * ((x * e : (Qv v)ˣ) : Qv v) = (y.1 * (x : Qv v)) * (e : Qv v)`. Rewrite using `[Units.val_mul, mul_assoc]`. Establish `e2' : y.2 * (((x * e)⁻¹ : (Qv v)ˣ) : Qv v) = (y.2 * ((x⁻¹ : (Qv v)ˣ) : Qv v)) * ((e⁻¹ : (Qv v)ˣ) : Qv v)`. Rewrite using `[mul_inv, Units.val_mul, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : (((e⁻¹)⁻¹ : (Qv v)ˣ) : Qv v) ∈ 𝒪[Qv v]`. Rewrite using `[inv_inv]`. Conclude with `he.1`. Simplify using `only [Set.mem_ofPred_eq, Prod.fst_mul, Prod.snd_mul]`. Rewrite using `[e1', e2', hO _ e he.1 he.2, hO _ e⁻¹ he.2 hinv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hΦ]`. Distinguish the cases in `h : (y * ((x : Qv v), ((x⁻¹ : (Qv v)ˣ) : Qv v))) ∈ {z : Qv v × Qv v | z.1 ∈ 𝒪[Qv v] ∧ z.2 ∈ 𝒪[Qv v]}`. Rewrite using `[Set.indicator_of_mem (key.2 h), Set.indicator_of_mem h]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (fun h' => h (key.1 h')), Set.indicator_of_notMem h]`.
-
-Simplify using `only [fL, hct, htw]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fL_mul_unit : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
   L.ok → (¬ L.IsSp ∨ (Unr c v ∧ L.std)) → ∀ (g : GL (Fin 2) (Qv v)) (ξ : K) (x : (Qv v)ˣ),

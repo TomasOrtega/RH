@@ -4,11 +4,11 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `E` to `IntermediateField.adjoin K (Set.range a)`. Use `haveI : FiniteDimensional K E := by haveI : Finite (Set.range a) := Set.finite_range a`. Conclude with `IntermediateField.finiteDimensional_adjoin (fun x hx => by`. Take `⟨j, rfl⟩` from `hx`. Conclude with `(ha j).isIntegral)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨β, hβ⟩` from `Field.exists_primitive_element K E`. Establish `hmap` using `congrArg (IntermediateField.map E.val) hβ`. Rewrite `hmap` using `[IntermediateField.adjoin_map, Set.image_singleton]`. Use `⟨E.val β, ((Algebra.IsIntegral.isIntegral (R := K) β).map E.val).isAlgebraic, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hmap]`. Rewrite using `[IntermediateField.mem_map]`. Conclude with `⟨⟨a j, IntermediateField.subset_adjoin K _ ⟨j, rfl⟩⟩, trivial, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_primitive_element_of_isAlgebraic_fin (K C : Type) [Field K] [CharZero K]
     [Field C] [Algebra K C] (m : ℕ) (a : Fin m → C) (ha : ∀ j, IsAlgebraic K (a j)) :

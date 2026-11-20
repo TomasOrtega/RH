@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions.product_first_zeroth_parts For
 variable (D : D7)
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.Forms.ten, map_sum, smul_eq_C_mul, Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, rename_C, Finset.prod_mul_distrib, map_prod]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tensor_sum_expand {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (κ : ι → Type) [∀ τ, Fintype (κ τ)]
     (y : ∀ τ, κ τ → MvPolynomial (Fin N × Fin N) ℂ) (c : ∀ τ, κ τ → ℂ) :
@@ -21,19 +21,19 @@ theorem tensor_sum_expand {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (�
   simp only [map_mul, rename_C, Finset.prod_mul_distrib, map_prod]
 
 /- English proof (translation)
-Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce `p hp`. Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem p hp`. Take `⟨r, f, hr, hf, rfl⟩` from `hp`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hfe : ∀ τ, MvPolynomial.map (Int.castRingHom ℂ) (f τ) = ∑ i, (((b τ).repr ⟨f τ, hf τ⟩ i : ℤ) : ℂ) • MvPolynomial.map (Int.castRingHom ℂ) ((b τ i : delSq ℤ N (lam τ)) : MvPolynomial (Fin N × Fin N) ℤ)`. Introduce `τ`. Establish `h1` using `congrArg (fun x : delSq ℤ N (lam τ) => MvPolynomial.map (Int.castRingHom ℂ) (x : MvPolynomial (Fin N × Fin N) ℤ)) ((b τ).sum_repr ⟨f τ, hf τ⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum, map_zsmul] at h1`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`. Establish `hx : Formalism.L2.Forms.ten (fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ)) = ∑ g : (∀ τ, κ τ), (∏ τ, (((b τ).repr ⟨f τ, hf τ⟩ (g τ) : ℤ) : ℂ)) • Formalism.L2.Forms.ten (fun τ => MvPolynomial.map (Int.castRingHom ℂ) ((b τ (g τ) : delSq ℤ N (lam τ)) : MvPolynomial (Fin N × F …`. Rewrite using `[show (fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ)) = fun τ => ∑ i, (((b τ).repr ⟨f τ, hf τ⟩ i : ℤ) : ℂ) • MvPolynomial.map (Int.castRingHom ℂ) ((b τ i : delSq ℤ N (lam τ)) : MvPolynomial (Fin N × Fin N) ℤ) from funext hfe]`. Conclude with `tensor_sum_expand κ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, hx, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun g _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Establish `hmem : D.what₂.embLL r * ∏ τ, (((b τ).repr ⟨f τ, hf τ⟩ (g τ) : ℤ) : ℂ) ∈ bwA_Ow D w` using `(bwA_Ow D w).mul_mem ⟨r, hr, rfl⟩ ((bwA_Ow D w).prod_mem fun τ _ => intCast_mem _ _)`. Conclude with `Submodule.smul_mem _ (⟨_, hmem⟩ : bwA_Ow D w) (Submodule.subset_span ⟨g, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `neg x _ hx => exact Submodule.neg_mem _ hx`. Introduce `p hp replace hp : p ∈ Submodule.span (bwA_Ow D w) _ := hp`. Rewrite using `[SetLike.mem_coe]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Use `AddSubgroup.subset_closure ⟨1, fun τ => ((b τ (g τ) : delSq ℤ N (lam τ)) : MvPolynomial (Fin N × Fin N) ℤ), (intW D.what₂.places w).one_mem, fun τ => (b τ (g τ)).2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact (Formalism.L2.Forms.IntSpan D w lam).zero_mem`. Consider the case `add x y _ _ hx hy => exact (Formalism.L2.Forms.IntSpan D w lam).add_mem hx hy`. Consider the case `smul o x _ hx`. Take `⟨o, ⟨r, hr, rfl⟩⟩` from `o`. Conclude with `bwG_intSpan_smul D w lam r hr hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integral_span_eq_tensor_span (w : D.what₂.places.Pl) {N : ℕ} (lam : D.what₂.Tau → DomWeight N) (κ : D.what₂.Tau → Type)
     [∀ τ, Fintype (κ τ)] (b : ∀ τ, Module.Basis (κ τ) ℤ (delSq ℤ N (lam τ))) :
@@ -88,7 +88,7 @@ theorem integral_span_eq_tensor_span (w : D.what₂.places.Pl) {N : ℕ} (lam : 
       exact bwG_intSpan_smul D w lam r hr hx
 
 /- English proof (translation)
-Establish `hinj : Function.Injective fun c : bwA_Ow D w => c • (1 : ℂ)`. Introduce `x y h`. Simplify using `using h`. Conclude with `(tensor_weyl_basis_lin_indep lam κ b).restrict_scalars hinj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem integral_tensor_basis_lin_indep (w : D.what₂.places.Pl) {N : ℕ} (lam : D.what₂.Tau → DomWeight N) (κ : D.what₂.Tau → Type)
     (b : ∀ τ, Module.Basis (κ τ) ℤ (delSq ℤ N (lam τ))) :

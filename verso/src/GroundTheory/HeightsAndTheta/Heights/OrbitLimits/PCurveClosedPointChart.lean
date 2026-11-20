@@ -32,7 +32,7 @@ theorem coe_pt (q : Σ _ : Unit, ∀ k, ι k) :
 variable {y f}
 
 /- English proof (translation)
-Establish `: Finite (coneRatios (SegreChart.segre y) fun _ ↦ f)` using `(Set.finite_range _).to_subtype`. Establish `: FiniteDimensional ℚ (fld y f)` using `IntermediateField.finiteDimensional_adjoin (by`. Introduce and unpack `_ ⟨⟨⟨⟩, g⟩, rfl⟩`. Conclude with `(SegreChart.isAlgebraic_segre_ratio hP f hf g).isIntegral)`. Conclude with `{}`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem numberField (hP : IsArithVar (mCoordIdeal y) 1) (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) : NumberField (fld y f) := by
   have : Finite (coneRatios (SegreChart.segre y) fun _ ↦ f) := (Set.finite_range _).to_subtype
@@ -42,7 +42,7 @@ theorem numberField (hP : IsArithVar (mCoordIdeal y) 1) (hf : ∀ k, y ⟨k, f k
   exact {}
 
 /- English proof (translation)
-Rewrite using `[pt, CoordinateConeArithVar.mCoordIdeal_ratioPtL _ _ fun _ ↦ (SegreChart.segre_ne_zero_iff y f).mpr hf]`. Conclude with `SegreChart.isArithVar_segre hP f hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isArithVar_pt (hP : IsArithVar (mCoordIdeal y) 1) (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) :
     IsArithVar (mCoordIdeal (pt y f)) 1 := by
@@ -50,7 +50,7 @@ theorem isArithVar_pt (hP : IsArithVar (mCoordIdeal y) 1) (hf : ∀ k, y ⟨k, f
   exact SegreChart.isArithVar_segre hP f hf
 
 /- English proof (translation)
-Rewrite using `[← SegreChart.segre_ne_zero_iff, ne_eq, ← ZeroMemClass.coe_eq_zero, coe_pt, div_eq_zero_iff, not_or, and_iff_left ((SegreChart.segre_ne_zero_iff y f).mpr hf)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_ne_zero_iff (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) (g : ∀ k, ι k) :
     pt y f ⟨(), g⟩ ≠ 0 ↔ ∀ k, y ⟨k, g k⟩ ≠ 0 := by
@@ -58,7 +58,7 @@ theorem pt_ne_zero_iff (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) (g : ∀ k, ι k) :
     and_iff_left ((SegreChart.segre_ne_zero_iff y f).mpr hf)]
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.coe_div, coe_pt, coe_pt, div_div_div_cancel_right₀ ((SegreChart.segre_ne_zero_iff y f).mpr hf)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_pt_ratio (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) (g h : ∀ k, ι k) :
     ((pt y f ⟨(), h⟩ / pt y f ⟨(), g⟩ : fld y f) : Ω) =
@@ -67,7 +67,7 @@ theorem coe_pt_ratio (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) (g h : ∀ k, ι k) :
     div_div_div_cancel_right₀ ((SegreChart.segre_ne_zero_iff y f).mpr hf)]
 
 /- English proof (translation)
-Rewrite using `[chartRingZ, ← Algebra.adjoin_image, ← Set.range_comp, ← SegreChart.chartRingZ_segre y g hg, chartRingZ]`. Use `congr 2`. Use function extensionality and compare the values at `q`. Take `⟨⟨⟩, h⟩` from `q`. Conclude with `coe_pt_ratio hf g h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem map_chartRingZ (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) (g : ∀ k, ι k) (hg : ∀ k, y ⟨k, g k⟩ ≠ 0) :
     (chartRingZ (pt y f) (fun _ ↦ g)).map (algebraMap (fld y f) Ω).toIntAlgHom = chartRingZ y g := by
@@ -78,7 +78,7 @@ theorem map_chartRingZ (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) (g : ∀ k, ι k) (hg 
   exact coe_pt_ratio hf g h
 
 /- English proof (translation)
-Rewrite using `[← map_chartRingZ hf g hg, Subalgebra.mem_map]`. Use `⟨fun h ↦ ⟨x, h, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x', hx', he⟩`. Rewrite `hx'` using `[show x' = x from Subtype.ext he]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_chartRingZ_iff (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) (g : ∀ k, ι k) (hg : ∀ k, y ⟨k, g k⟩ ≠ 0)
     (x : fld y f) : x ∈ chartRingZ (pt y f) (fun _ ↦ g) ↔ (x : Ω) ∈ chartRingZ y g := by
@@ -88,7 +88,7 @@ theorem mem_chartRingZ_iff (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) (g : ∀ k, ι k) 
   rwa [show x' = x from Subtype.ext he] at hx'
 
 /- English proof (translation)
-Rewrite using `[mem_curveRing, mem_curveRing]`. Use `⟨fun h g hg ↦ (mem_chartRingZ_iff hf g hg x).1 (h _ fun _ ↦ (pt_ne_zero_iff hf g).2 hg), fun h c hc ↦ ?_⟩` and prove the remaining obligations. Establish `hc'` using `(pt_ne_zero_iff hf (c ())).1 (hc ())`. Conclude with `(mem_chartRingZ_iff hf (c ()) hc' x).2 (h _ hc')`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_curveRing_iff (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) (x : fld y f) :
     x ∈ curveRing (pt y f) ↔ (x : Ω) ∈ curveRing y := by
@@ -99,7 +99,7 @@ theorem mem_curveRing_iff (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) (x : fld y f) :
   exact (mem_chartRingZ_iff hf (c ()) hc' x).2 (h _ hc')
 
 /- English proof (translation)
-Establish `h` using `mem_curveRing.mp hb f hf`. Rewrite `h` using `[← map_chartRingZ hf f hf, Subalgebra.mem_map]`. Take `⟨x, -, hx⟩` from `h`. Conclude with `⟨x, hx⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_mem_curveRing (hf : ∀ k, y ⟨k, f k⟩ ≠ 0) {b : Ω} (hb : b ∈ curveRing y) :
     ∃ x : fld y f, (x : Ω) = b := by
@@ -113,13 +113,13 @@ end CurveClosedPointChartAlt
 open CurveClosedPointChartAlt in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y hP m hm`. Use `SegreChart.charZero_of_isArithVar hP` as an intermediate fact. Take `⟨f, hf⟩` from `SegreChart.exists_chart hP`. Use `numberField hP hf` as an intermediate fact. Set `φ : curveRing (pt y f) →+* curveRing y` to `RingHom.codRestrict ((algebraMap (fld y f) Ω).comp (curveRing (pt y f)).subtype) (curveRing y) fun x ↦ (mem_curveRing_iff hf x).1 x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφ : Function.Surjective φ`. Introduce and unpack `⟨b, hb⟩`. Take `⟨x, rfl⟩` from `exists_of_mem_curveRing hf hb`. Conclude with `⟨⟨x, (mem_curveRing_iff hf x).2 hb⟩, rfl⟩`. Establish `hm' : (m.comap φ).IsMaximal` using `Ideal.comap_isMaximal_of_surjective φ hφ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨t, ht, hrat⟩` from `ClosedPointChart.proof ClosedPointUnitSection.proof (∀ k, ι k) (fld y f) (pt y f) (isArithVar_pt hP hf) (m.comap φ) hm'`. Establish `hyt` using `(pt_ne_zero_iff hf t).1 ht`. Use `⟨t, hyt, fun p ↦ ?_⟩` and prove the remaining obligations. Take `⟨a, b, hb, hab⟩` from `hrat (Function.update t p.1 p.2)`. Use `⟨φ a, φ b, hb, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrArg (fun x : fld y f ↦ (x : Ω)) hab`. Simplify using `only [IntermediateField.coe_mul] at h1`. Rewrite `h1` using `[coe_pt_ratio hf, SegreChart.segre_ratio, SegreChart.prod_ratio_update y t hyt p]`. Conclude with `h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CurveClosedPointChart.proof : CurveClosedPointChart.Statement := by
   classical

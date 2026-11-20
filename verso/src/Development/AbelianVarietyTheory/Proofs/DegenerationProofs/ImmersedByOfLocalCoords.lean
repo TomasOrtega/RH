@@ -19,9 +19,9 @@ section
 variable {o : Type} [CommRing o] {m m' : ℕ} {K : Type} [Field K] {Y : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_le_preimage_of_iSup_eq_top (x ≫ toProj f s hs) (iSup_chart o m)`. Establish `hT : ⊤ ≤ x ⁻¹ᵁ (toProj f s hs ⁻¹ᵁ chart o m i ⊓ L.U k)` using `fun z hz => ⟨hi hz, hk hz⟩`. Establish `hu` using `(isUnit_resG_sec (s i) k (W := toProj f s hs ⁻¹ᵁ chart o m i ⊓ L.U k) (inf_le_left.trans (toProj_preimage_chart f s hs i).le) inf_le_right).map (valMap x _ hT).hom`. Rewrite `hu` using `[← valR_eq]`. Use `(LinFrame.crd_iff _ _).2 ⟨i, hu.unit, hi, fun j => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (valR x _) (sec_eq_pullRatio_toProj_mul f s hs i j k (W := toProj f s hs ⁻¹ᵁ chart o m i ⊓ L.U k) inf_le_left inf_le_right)` as an intermediate fact. Rewrite `this` using `[valR_mul x _ hT, valR_res x _ hT, LinFrame.valR_pullRatio x _ _ hT]`. Conclude with `this.trans (mul_comm _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_toProj {L : LB Y} (f : Y ⟶ Sp o) (s : Fin (m + 1) → L.Sec) (hs : ⨆ i, nonzeroLocus (s i) = ⊤)
     (x : Sp K ⟶ Y) (k : L.ι) (hk : ⊤ ≤ x ⁻¹ᵁ L.U k) :

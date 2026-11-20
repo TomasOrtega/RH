@@ -23,7 +23,7 @@ theorem img_eq_map (g : GL (Fin n) K) (W : Submodule K (Fin n → K)) :
     img g W = W.map ((imgEquiv g : (Fin n → K) ≃ₗ[K] (Fin n → K)) : (Fin n → K) →ₗ[K] (Fin n → K)) := rfl
 
 /- English proof (translation)
-Rewrite using `[img_eq_map]`. Conclude with `LinearEquiv.finrank_map_eq _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_img (g : GL (Fin n) K) (W : Submodule K (Fin n → K)) :
     Module.finrank K (img g W) = Module.finrank K W := by
@@ -31,14 +31,14 @@ theorem finrank_img (g : GL (Fin n) K) (W : Submodule K (Fin n → K)) :
   exact LinearEquiv.finrank_map_eq _ _
 
 /- English proof (translation)
-Rewrite using `[img_eq_map, Submodule.map_top]`. Conclude with `LinearEquiv.range _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem img_top (g : GL (Fin n) K) : img g (⊤ : Submodule K (Fin n → K)) = ⊤ := by
   rw [img_eq_map, Submodule.map_top]
   exact LinearEquiv.range _
 
 /- English proof (translation)
-Unfold `img`. Rewrite using `[← Submodule.map_comp, ← Matrix.toLin'_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.toLin'_one, Submodule.map_id]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem img_img_inv (g : GL (Fin n) K) (W : Submodule K (Fin n → K)) :
     img g (img (g⁻¹ : GL (Fin n) K) W) = W := by
@@ -49,11 +49,9 @@ theorem img_img_inv (g : GL (Fin n) K) (W : Submodule K (Fin n → K)) :
 end Img
 
 /- English proof (translation)
-Establish `hx' : (∀ W : Submodule E (Fin n → E), deg x W ≤ prof n τ (Module.finrank E W)) ∧ -τ ≤ deg x ⊤` using `hx`. Use `show (∀ W : Submodule E (Fin n → E), deg (ratGL E n g * x) W ≤ prof n τ (Module.finrank E W)) ∧ -τ ≤ deg (ratGL E n g * x) ⊤`. Use `⟨fun W => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hR E n x g (img (g⁻¹ : GL (Fin n) E) W)`. Rewrite `h` using `[img_img_inv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, ← finrank_img (g⁻¹ : GL (Fin n) E) W]`. Conclude with `hx'.1 _`. Establish `h` using `hR E n x g ⊤`. Rewrite `h` using `[img_top]`. Rewrite using `[h]`.
-
-Conclude with `hx'.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_cutSet_of_mem (hR : DegRat) {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ} {τ : ℝ}
     (g : GL (Fin n) E) {x : GA E n} (hx : x ∈ cutSet E n τ) : ratGL E n g * x ∈ cutSet E n τ := by
@@ -71,19 +69,19 @@ theorem mem_cutSet_of_mem (hR : DegRat) {E : Type} [Field E] [NumberField E] [Is
     exact hx'.2
 
 /- English proof (translation)
-Introduce `hB hR hM E _ _ _ n τ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hset : cutSet E n τ = (⋂ W : Submodule E (Fin n → E), {x : GA E n | deg x W ≤ prof n τ (Module.finrank E W)}) ∩ {x : GA E n | -τ ≤ deg x ⊤}`. Use extensionality with `x`. Simplify using `[cutSet]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hset]`. Conclude with `(isClosed_iInter fun W => isClosed_le ((hB E n).2 W) continuous_const).inter (isClosed_le continuous_const ((hB E n).2 ⊤))`. Introduce `g x`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'` using `mem_cutSet_of_mem hR (g⁻¹) h`. Rewrite `h'` using `[map_inv, inv_mul_cancel_left]`. Then use the resulting hypothesis. Conclude with `mem_cutSet_of_mem hR g`. Take `⟨C, hC, hsub⟩` from `hM E n (|τ| * (2 * n + 1) ^ 2)`. Use `⟨C, hC, fun x hx => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : (∀ W : Submodule E (Fin n → E), deg x W ≤ prof n τ (Module.finrank E W)) ∧ -τ ≤ deg x ⊤` using `hx`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hτ : τ ≤ |τ|` using `le_abs_self τ`. Establish `hτ0 : 0 ≤ |τ|` using `abs_nonneg τ`. Apply `hsub x` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `W hW`. Establish `h1` using `hx'.1 W`. Rewrite `h1` using `[hW]`. Simplify using `only [prof] at h1`. Move the coercions through the operations in `at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg hτ0 hn, mul_nonneg (sub_nonneg.2 hτ) hn, mul_nonneg hτ0 (mul_nonneg hn hn)]`. Establish `h1` using `hx'.1 ⊤`. Rewrite `h1` using `[finrank_top, Module.finrank_fin_fun]`. Simplify using `only [prof] at h1`. Establish `h2` using `hx'.2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Use polynomial arithmetic with `[mul_nonneg hτ0 hn, mul_nonneg hτ0 (mul_nonneg hn hn)]`. Use polynomial arithmetic with `[mul_nonneg hτ0 hn, mul_nonneg hτ0 (mul_nonneg hn hn), mul_nonneg (sub_nonneg.2 hτ) (mul_nonneg hn (by linarith : (0 : ℝ) ≤ n + 1))]`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem mahler_of : DegBdd → DegRat → MahlerC → Mahler := by
   intro hB hR hM E _ _ _ n τ

@@ -63,11 +63,9 @@ def TieRd4Props {j : ℕ}
       R.rd ⟨d.w (jj k) Z, R.w_mem (jj k)⟩ (cpt X x z) / R.rd ⟨d.w j0 Z, R.w_mem j0⟩ (cpt X x z) : V (nd X))) 0).det ≠ 0
 
 /- English proof (translation)
-Introduce `hF hκ hκo hd hn`. Take `⟨R, Gen, pt, H⟩` from `hall hF hκ hκo hd hn`. Use `⟨fun Z => { Rg := (R Z).Rg, w_mem := (R Z).w_mem, rd := (R Z).rd, WE := (R Z).WE, wL_mem := (R Z).wL_mem, wt := (R Z).wt, Gen := Gen Z, Gen_sub := (H Z).2.1.1, Gen_dense := (H Z).2.1.2.1, pt := pt Z, pt_mem := (H Z).2.1.2.2.1, pt_onto := (H Z).2.1.2.2.2.1, w_nz := (H Z).2.2.1.2, …` and prove the remaining obligations. Introduce `Z u F hF`. Conclude with `(H Z).1.2.2.2.2.1 u F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z u F he`. Conclude with `(H Z).1.2.2.1 u F he`. Introduce `Z u he`. Conclude with `(H Z).1.2.2.2.1 u he`. Introduce `Z u hu`.
-
-Conclude with `(H Z).1.2.2.2.2.2 u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tieReading_of (h : LawsP T) (j : ℕ) (hG : GenFrEx (T.Q.Xo j) T.Q.c)
     (d : ReciprocityTheory.ChartRestriction.G.T0.Data T.Q.c.F (Comp (T.Q.Xo j) T.Q.c) (fun Z => Om Z) (WTZ D.host.E) (fun Z => AC Z))

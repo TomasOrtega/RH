@@ -14,16 +14,16 @@ open scoped Classical SchwartzMap
 noncomputable section
 
 /- English proof (translation)
-Use `⟨fun w => ?_⟩` and prove the remaining obligations. Conclude with `(not_isComplex_iff_isReal.2 (IsTotallyReal.isReal w.1)) w.2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isEmpty_complexPlaces_rat : IsEmpty {w : InfinitePlace ℚ // IsComplex w} := by
   refine ⟨fun w => ?_⟩
   exact (not_isComplex_iff_isReal.2 (IsTotallyReal.isReal w.1)) w.2
 
 /- English proof (translation)
-Use `haveI := isEmpty_complexPlaces_rat`. Rewrite using `[WithLp.prod_norm_sq_eq_of_L2, EuclideanSpace.norm_sq_eq]`. Establish `h2 : ‖(GroundTheory.Global.mixedToEuclidean ℚ x).snd‖ = 0`. Rewrite using `[EuclideanSpace.norm_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Establish `h1 : ∀ w, (GroundTheory.Global.mixedToEuclidean ℚ x).fst.ofLp w = x.1 w` using `fun _ => rfl`. Simplify using `only [h1, Real.norm_eq_abs, sq_abs]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_sq_mixedToEuclidean_rat (x : mixedSpace ℚ) :
     ‖GroundTheory.Global.mixedToEuclidean ℚ x‖ ^ 2 = ∑ w, x.1 w ^ 2 := by
@@ -38,7 +38,7 @@ theorem norm_sq_mixedToEuclidean_rat (x : mixedSpace ℚ) :
   simp
 
 /- English proof (translation)
-Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (GroundTheory.Automorphic.Adele2.toEuclid2 ℚ) (GroundTheory.Global.gaussianSchwartz _), fun y => ?_⟩` and prove the remaining obligations. Establish `h : ‖GroundTheory.Automorphic.Adele2.toEuclid2 ℚ y‖ ^ 2 = ∑ i, ∑ w, (y i).1 w ^ 2`. Rewrite using `[GroundTheory.Automorphic.Adele2.toEuclid2_apply, WithLp.prod_norm_sq_eq_of_L2, Fin.sum_univ_two]`. Conclude with `congrArg₂ (· + ·) (norm_sq_mixedToEuclidean_rat _) (norm_sq_mixedToEuclidean_rat _)`. Simplify using `only [SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, GroundTheory.Global.gaussianSchwartz_apply, h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gaussian_exists : Ad3.R.GS := by
   refine ⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (GroundTheory.Automorphic.Adele2.toEuclid2 ℚ)

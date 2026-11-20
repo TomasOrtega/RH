@@ -9,9 +9,9 @@ open MvPolynomial Formalism.BasicNotions Formalism.MainNotions.product_first_zer
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Use `show D.what₂.embLL (D.embE (D.host.sigmaOf (D.eTau τ : D.R.GG) x)) = D.host.φ₀ (D.host.sigmaOf (D.eTau τ : D.R.GG) x)`. Rewrite using `[← D.embE_φ₀]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem embS_embLLF : embS D D.what₂.embLL = Formalism.L2.Forms.embT D := by
   funext τ
@@ -23,11 +23,11 @@ theorem embS_embLLF : embS D D.what₂.embLL = Formalism.L2.Forms.embT D := by
   rfl
 
 /- English proof (translation)
-Take `⟨⟨oN, -⟩, -⟩` from `framesAt D u Ch chOf Tf D.what₂.embLL`. Rewrite `oN` using `[embS_embLLF]`. Establish `hx` using `((Tf.val D.R.m le_rfl (Or.inr rfl)).rat ((D.fm u).emb D.R.m x)).1 ⟨x, rfl⟩`. Take `⟨P1, hP1, hP1z⟩` from `hx.2 c'`. Establish `hP1e : P1 = MvPolynomial.map D.what₂.embLL (Pc c')`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Formalism.L2.Col.fnOf_injective _ _ 1 (fun τ => by simp) oN` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Take `⟨z, rfl⟩` from `(Tf.val D.R.m le_rfl (Or.inr rfl)).eY.surjective y`. Rewrite using `[← hP1z, hPc]`. Rewrite using `[← hP1e]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP1`.
+A detailed English derivation is pending.
 -/
 theorem pc_rat (Tf : FormsTiedSym D u Ch chOf) (x : Vl D u D.R.m)
     (Pc : (D.mem u).C.cls D.R.m → MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) D.what₂.LL)
@@ -47,7 +47,7 @@ theorem pc_rat (Tf : FormsTiedSym D u Ch chOf) (x : Vl D u D.R.m)
   exact hP1
 
 /- English proof (translation)
-Use `(bZ_isUnitS Tf).map (Formalism.L2.Forms.embT D τ)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_bZ_map (Tf : FormsTiedSym D u Ch chOf) (τ : D.what₂.Tau) :
     IsUnit ((bZ u Tf.til.z0).map (Formalism.L2.Forms.embT D τ)).det := by
@@ -58,21 +58,21 @@ theorem isUnit_bZ_map (Tf : FormsTiedSym D u Ch chOf) (τ : D.what₂.Tau) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hB` using `bZ_isUnitS Tf`. Establish `hmZ` using `mZ_isUnit hB`. Take `⟨-, ⟨oP, -⟩⟩` from `framesAt D u Ch chOf Tf D.what₂.embLL`. Rewrite `oP` using `[embS_embLLF]`. Establish `hP0 : MvPolynomial.map D.what₂.embLL (Pc ((D.fm u).til c)) ∈ Formalism.L2.Forms.CSpan ((D.fm u).lam D.R.m)` using `map_mem_CSpan_of_rat _ _ (pc_rat Tf x Pc hPc _) D.what₂.embLL`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `ginv : GL (Fin (D.R.N D.R.m)) D.host.E` to `((Tf.til.ga c).1)⁻¹`. Set `M' : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ` to `atInf (Formalism.L2.Forms.embT D) (ginv : Matrix _ _ D.host.E)`. Set `A0 : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ` to `fun τ => M' τ * (mZ u Tf.til.z0 τ)⁻¹`. Establish `hA0 : ∀ τ, (AL Tf c τ).map D.what₂.embLL = A0 τ`. Introduce `τ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AL_map, embS_embLLF]`. Use `show ((ginv : Matrix _ _ D.host.E) * bZ u Tf.til.z0).map (Formalism.L2.Forms.embT D τ) = (ginv : Matrix _ _ D.host.E).map (Formalism.L2.Forms.embT D τ) * (((bZ u Tf.til.z0)⁻¹).map (Formalism.L2.Forms.embT D τ))⁻¹`. Rewrite using `[Matrix.map_mul, Formalism.L2.Col.map_inv_matrix, Matrix.nonsing_inv_nonsing_inv _ (isUnit_bZ_map Tf τ)]`. Establish `hA0u : ∀ τ, IsUnit (A0 τ).det` using `fun τ => by rw [← hA0]; exact isUnit_AL_map Tf c _ τ`. Establish `hmapPL : MvPolynomial.map D.what₂.embLL (PL Tf c (Pc ((D.fm u).til c))) = (∏ τ, (A0 τ).det ^ shiftOf (lamT u D.R.m) τ) • blkRow A0 (MvPolynomial.map D.what₂.embLL (Pc ((D.fm u).til c)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_PL]`. Simplify using `only [hA0]`. Use `set χ : ℂ := ((((Tf.cls D.R.m le_rfl (Or.inr rfl)).lev.chi (Tf.tilAd.ka c) : ℂˣ) : ℂ)) with hχ`. Establish `hPbmem : χ⁻¹ • MvPolynomial.map D.what₂.embLL (PL Tf c (Pc ((D.fm u).til c))) ∈ Formalism.L2.Forms.CSpan ((D.fm u).lam D.R.m)`. Rewrite using `[hmapPL]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (blkRow_mem_CSpan _ A0 hA0u _ hP0))`. Establish `hPb : ∀ s, Tf.eWz ((D.mem u).P.evz ((D.fm u).emb D.R.m x)) c s = fnOf _ (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) (χ⁻¹ • MvPolynomial.map D.what₂.embLL (PL Tf c (Pc ((D.fm u).til c)))) ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s)`. Introduce `s`. Rewrite using `[Tf.evz ((D.fm u).emb D.R.m x) c s ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY.symm (((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s).tr M' (isUnit_det_atInf (Formalism.L2.Forms.embT D) ginv)))]`. Rewrite using `[hPc, Equiv.apply_symm_apply, fnOf_trG]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (fun τ => (1 : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ) τ * M' τ) = M'`. Use function extensionality and compare the values at `fun τ => by simp`. Rewrite using `[e1, fnOf_change _ _ (mZ u Tf.til.z0) M' hmZ, hmapPL]`. Simplify using `only [map_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ`. Simplify using `only [Equiv.apply_symm_apply]`. Use `show ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s).1 τ = atInf (Formalism.L2.Forms.embT D) (Tf.til.ga c).1.1 τ * (M' τ * ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY s).1 τ)`. Rewrite using `[← Matrix.mul_assoc, atInf_mul_inv, Matrix.one_mul]`. Establish `h3` using `hL hB ((D.mem u).P.evz ((D.fm u).emb D.R.m x)) c _ hPbmem hPb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : fnOf (gramC (gramP D) (Formalism.L2.Forms.embT D)) (shiftOf (sgT u)) 1 (MvPolynomial.map D.what₂.embLL (Qc c)) = fnOf (gramC (gramP D) (Formalism.L2.Forms.embT D)) (shiftOf (sgT u)) 1 (Formalism.L2.Ker.brTen D u (χ⁻¹ • MvPolynomial.map D.what₂.embLL (PL Tf c (Pc ((D.fm u).ti …`. Rewrite using `[← hQc c, (D.fm u).PtL_spec h x, h3]`. Establish `h5` using `Formalism.L2.Col.fnOf_injective _ _ 1 (fun τ => by simp) oP h4`. Rewrite using `[h5, map_smul, map_brTenL]`.
+A detailed English derivation is pending.
 -/
 theorem base_eq (Tf : FormsTiedSym D u Ch chOf) (hL : Formalism.L2.Rows.LowerMapTieS Tf) (h : (D.fm u).PRat) (x : Vl D u D.R.m)
     (Pc : (D.mem u).C.cls D.R.m → MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) D.what₂.LL)

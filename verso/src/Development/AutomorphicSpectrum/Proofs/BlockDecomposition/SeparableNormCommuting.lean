@@ -9,14 +9,14 @@ namespace GlobalTheory.CompanionTheory.Centraliser
 variable {K : Type} [Field K] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[map_mul, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_mul (γ : Matrix (Fin n) (Fin n) K) (a b : K[X]) (v : Fin n → K) :
     (aeval γ (a * b)).mulVec v = (aeval γ a).mulVec ((aeval γ b).mulVec v) := by
   rw [map_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CharpolyPowIrred.charpoly_dvd_pow_of_aeval γ p hp`. Break down `Nat.eq_zero_or_pos (Fintype.card (Fin n)) with h0 | h0` into its components or cases. Rewrite `h` using `[h0, pow_zero]`. Conclude with `h.trans (one_dvd p)`. Conclude with `(hs.squarefree.dvd_pow_iff_dvd h0.ne').1 h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_dvd_of_aeval_eq_zero (γ : Matrix (Fin n) (Fin n) K)
     (hs : γ.charpoly.Separable) {p : K[X]} (hp : aeval γ p = 0) : γ.charpoly ∣ p := by
@@ -27,29 +27,25 @@ theorem charpoly_dvd_of_aeval_eq_zero (γ : Matrix (Fin n) (Fin n) K)
   · exact (hs.squarefree.dvd_pow_iff_dvd h0.ne').1 h
 
 /- English proof (translation)
-Establish `hf0 : γ.charpoly ≠ 0` using `γ.charpoly_monic.ne_zero`. Use `UniqueFactorizationMonoid.induction_on_prime q ?_ ?_ ?_` and prove the remaining obligations. Introduce `h`. Conclude with `absurd (zero_dvd_iff.1 h) hf0`. Introduce `x hx _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨0, by simp, fun h _ => hx.dvd⟩`. Introduce `a p ha hp ih hd`. Take `⟨v', hv1, hv2⟩` from `ih ((dvd_mul_left a p).trans hd)`. Take `⟨g, hg⟩ : p ∣ γ.charpoly` from `(dvd_mul_right p a).trans hd`. Establish `hgne : g ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hf0 (by simpa using hg)`. Establish `hg0 : aeval γ g ≠ 0` using `fun h => by`. Take `⟨c, hc⟩` from `charpoly_dvd_of_aeval_eq_zero γ hs h`. Rewrite `hc` using `[hg]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : g * (p * c) = g * 1`. Rewrite using `[mul_one]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hp.not_unit (IsUnit.of_mul_eq_one _ (mul_left_cancel₀ hgne h1))`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u, (aeval γ g).mulVec u ≠ 0 := by`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hg0 (Matrix.mulVec_injective (funext fun u => by simpa using hcon u))`. Use `set w := (aeval γ g).mulVec u with hw`. Establish `hpw : (aeval γ p).mulVec w = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hw, ← act_mul, ← hg, Matrix.aeval_self_charpoly, Matrix.zero_mulVec]`. Establish `hkey : ∀ h : K[X], (aeval γ h).mulVec w = 0 → p ∣ h`. Introduce `h hh`. Assume the negation of the conclusion as `hnd`. Take `⟨s, t, hst⟩` from `(Prime.coprime_iff_not_dvd hp).2 hnd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `hu` to reduce the goal to its premises. Establish `h1 : (aeval γ (s * p + t * h)).mulVec w = w`. Rewrite using `[hst]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[map_add, Matrix.add_mulVec, act_mul, act_mul, hpw, hh]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h1.symm`. Establish `hpa : ¬ p ∣ a`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `hp.not_unit (hs.squarefree p ((mul_dvd_mul_left p (dvd_mul_right p c)).trans hd))`. Establish `hcop : IsCoprime p a` using `(Prime.coprime_iff_not_dvd hp).2 hpa`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨v' + w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add, act_mul, hv1, mul_comm, act_mul, hpw]`. Simplify using the standard rewrite rules. Introduce `h hh`. Establish `h1 : (aeval γ (h * p)).mulVec v' = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (aeval γ (h * p)).mulVec (v' + w) = 0`. Rewrite using `[mul_comm, act_mul, hh, Matrix.mulVec_zero]`. Rewrite `h2` using `[Matrix.mulVec_add, act_mul γ h p w, hpw, Matrix.mulVec_zero, add_zero]`. Conclude with `h2`. Establish `hah : a ∣ h` using `hcop.symm.dvd_of_dvd_mul_right (hv2 _ h1)`.
-
-Take `⟨c, rfl⟩` from `hah`. Establish `h3 : (aeval γ (a * c)).mulVec v' = 0`. Rewrite using `[mul_comm, act_mul, hv1]`. Simplify using the standard rewrite rules. Rewrite `hh` using `[Matrix.mulVec_add, h3, zero_add]`.
-
-Conclude with `hcop.mul_dvd (hkey _ hh) (dvd_mul_right a c)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vec_ann (γ : Matrix (Fin n) (Fin n) K) (hs : γ.charpoly.Separable) (q : K[X]) :
     q ∣ γ.charpoly → ∃ v : Fin n → K, (aeval γ q).mulVec v = 0 ∧
@@ -112,13 +108,13 @@ theorem exists_vec_ann (γ : Matrix (Fin n) (Fin n) K) (hs : γ.charpoly.Separab
       exact hcop.mul_dvd (hkey _ hh) (dvd_mul_right a c)
 
 /- English proof (translation)
-Take `⟨v, -, hv⟩` from `exists_vec_ann γ hs γ.charpoly dvd_rfl`. Use `⟨v, ?_⟩` and prove the remaining obligations. Set `L : K[X] →ₗ[K] (Fin n → K)` to `{ toFun := fun p => (aeval γ p).mulVec v map_add' := fun a b => by rw [map_add, Matrix.add_mulVec] map_smul' := fun c a => by rw [map_smul, Matrix.smul_mulVec]; rfl }`. Set `φ : degreeLT K n →ₗ[K] (Fin n → K)` to `L.domRestrict (degreeLT K n)`. Establish `hinj : Function.Injective φ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨p, hp⟩ h0`. Establish `hd : γ.charpoly ∣ p` using `hv p h0`. Establish `hlt : p.degree < γ.charpoly.degree`. Rewrite using `[Matrix.charpoly_degree_eq_dim, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Polynomial.mem_degreeLT.1 hp`. Conclude with `Subtype.ext (Polynomial.eq_zero_of_dvd_of_degree_lt hd hlt)`. Establish `hfr : Module.finrank K (degreeLT K n) = Module.finrank K (Fin n → K)` using `(degreeLTEquiv K n).finrank_eq`. Establish `hsurj : Function.Surjective φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfr).1 hinj`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨⟨q, _⟩, hq⟩` from `hsurj w`. Conclude with `⟨q, hq⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_cyclic_vec (γ : Matrix (Fin n) (Fin n) K) (hs : γ.charpoly.Separable) :
     ∃ v : Fin n → K, ∀ w : Fin n → K, ∃ q : K[X], (aeval γ q).mulVec v = w := by
@@ -146,9 +142,9 @@ theorem exists_cyclic_vec (γ : Matrix (Fin n) (Fin n) K) (hs : γ.charpoly.Sepa
   exact ⟨q, hq⟩
 
 /- English proof (translation)
-Introduce `K _ n γ hs M hM`. Take `⟨v, hv⟩` from `exists_cyclic_vec γ hs`. Take `⟨p, hp⟩` from `hv (M.mulVec v)`. Use `⟨p, Matrix.mulVec_injective (funext fun w => ?_)⟩` and prove the remaining obligations. Take `⟨q, rfl⟩` from `hv w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hc : Commute M (aeval γ q)`. Rewrite using `[aeval_eq_sum_range]`. Conclude with `Commute.sum_right _ _ _ fun i _ => (hM.pow_right i).smul_right _`. Rewrite using `[Matrix.mulVec_mulVec, hc.eq, ← Matrix.mulVec_mulVec, ← hp, ← act_mul, mul_comm, act_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem a1 : PositivityTheory.Rg.Tf.Loc.A1 := by
   intro K _ n γ hs M hM

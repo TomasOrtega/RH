@@ -29,7 +29,7 @@ section Frame
 variable {hR : Rd.ReadLimit} {π : Submodule ℂ (UA E n → ℂ)} {S T : Finset (Pl E)} {F₀ : Frame0 hR π S} (F : RunFrame F₀ T)
 
 /- English proof (translation)
-The claim follows from `| [], _ => h₀ | .inl _ :: w, h => wb_wd_ok t₀ h₀ w fun g hg => h g (List.mem_cons_of_mem _ hg) | .inr s :: w, h => (BlockFiniteConvolution.blkOp₀ E B s _ (h _ List.mem_cons_self) (wb_wd_ok t₀ h₀ w fun g hg => h g (List.mem_cons_of_mem _ hg))).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem wb_wd_ok {B : Block E} (t₀ : PT B) (h₀ : t₀.Ok) : ∀ w : List (BGen B), (∀ g ∈ w, g.Ok) → (BGen.wd w t₀).Ok
   | [], _ => h₀
@@ -38,33 +38,31 @@ theorem wb_wd_ok {B : Block E} (t₀ : PT B) (h₀ : t₀.Ok) : ∀ w : List (BG
       (wb_wd_ok t₀ h₀ w fun g hg => h g (List.mem_cons_of_mem _ hg))).2.2.1
 
 /- English proof (translation)
-The claim follows from `| .inl _, _ => trivial | .inr s, h => (BlockFiniteConvolution.blkOp₀ E B s s h h).2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem wb_adj_ok {B : Block E} : ∀ g : BGen B, g.Ok → g.adj.Ok
   | .inl _, _ => trivial
   | .inr s, h => (BlockFiniteConvolution.blkOp₀ E B s s h h).2.2.2.2.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w _ => congrFun (LocComm.adj_m d (ha := ha) (Or.inl rfl)) w, fun _ _ => LocComm.lfStar_idem _, funext fun _ => LocComm.lfStar_idem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem wb_eL_adj (d : LocData E n) {a : ℕ} (ha : a ≤ n) : (d.eL a).adj.Eqv d.P (d.eL a) :=
   ⟨fun w _ => congrFun (LocComm.adj_m d (ha := ha) (Or.inl rfl)) w, fun _ _ => LocComm.lfStar_idem _,
     funext fun _ => LocComm.lfStar_idem _⟩
 
 /- English proof (translation)
-Establish `A` using `BlockFiniteConvolution.fmAlg' E F.d.kap F₀.Sec F.d.P (F.B i) (Equiv.refl _) F₀.hSec (FrameOk.wirtinger_sub F)`. Establish `O` using `(BlockFiniteConvolution.locOk₀ E n F.d F.ok _ (F₀.C.le i)).2.2.2`. Establish `he : adjF (F.ψ i (F.d.eL _)) = fm F₀.Sec F.d.P (F.B i) (Equiv.refl _) (F.d.eL _)` using `(A _ _ (O _ (Or.inl rfl)) (O _ (Or.inl rfl))).2.2.2.2.trans (fm_congr _ (wb_eL_adj F.d (F₀.C.le i)))`. Take `⟨x | x | x, b⟩` from `p`. Use `⟨fun s hs => ?_, fun _ _ => rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the cases of `b`. Take `rfl : F.t₀ i = s` from `Sum.inr.inj hs`. Both sides reduce to the same expression. Take `rfl : (F.t₀ i).adj = s` from `Sum.inr.inj hs`. Conclude with `he`.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun s hs => ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Distinguish the cases in `h : i = x.1`. Establish `e : F.g (.inr (.inl x)) i = .inr (F.tD i x.2.1 x.2.2.1 x.2.2.2.1 x.2.2.2.2)` using `if_pos h`. Unfold `gl at hs`. Rewrite `hs` using `[e]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `b`. Take `rfl` from `Sum.inr.inj hs`. Both sides reduce to the same expression. Take `rfl` from `Sum.inr.inj hs`. Conclude with `he`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e : F.g (.inr (.inl x)) i = .inl (F.dval x)` using `if_neg h`. Unfold `gl at hs`. Rewrite `hs` using `[e]`. Apply the tactic sequence `cases b <;> exact absurd hs Sum.inl_ne_inr`. Consider the cases of `b`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun s hs => ?_, fun c hc => absurd hc Sum.inr_ne_inl⟩` and prove the remaining obligations. Take `rfl` from `Sum.inr.inj hs`. Both sides reduce to the same expression. Use `⟨fun s hs => ?_, fun c hc => absurd hc Sum.inr_ne_inl⟩` and prove the remaining obligations. Take `rfl` from `Sum.inr.inj hs`.
-
-Establish `o` using `O _ (Or.inr ⟨x.1.1, x.2.1, x.2.2, x.1.2.2, rfl⟩)`. Conclude with `(A _ _ o o).2.2.2.2`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wb_letter (i : F₀.C.ι) (p : F.Γ × Bool) :
     (∀ s, gl F i p = Sum.inr s → s.ψ = fm F₀.Sec F.d.P (F.B i) (Equiv.refl _) (locL F.d _ (F₀.C.le i) (lt F p))) ∧
@@ -104,21 +102,19 @@ theorem wb_letter (i : F₀.C.ι) (p : F.Γ × Bool) :
       exact (A _ _ o o).2.2.2.2
 
 /- English proof (translation)
-Establish `O` using `BlockFiniteConvolution.locOk₀ E n F.d F.ok _ (F₀.C.le i)`. Establish `L` using `(h E n F.d F.ok _ (F₀.C.le i) [Sum.inl ()] 0 rfl).1`. Set `prs : List (BGen (F.B i) × LM F.d.kap (F₀.C.a i) (n - F₀.C.a i))` to `(Sum.inr (F.t₁ i), F.d.fixL _) :: (ws.map fun w => List.replicate F.m (Sum.inr (F.β i), F.d.betaL _ (F₀.C.le i)) ++ w.map fun p => (gl F i p, locL F.d _ (F₀.C.le i) (lt F p))).flatten`. Establish `e1 : prs.map Prod.fst = Sum.inr (F.t₁ i) :: (ws.map (bw F i)).flatten`. Simplify using `only [prs, List.map_cons, List.map_flatten, List.map_map, Function.comp_def, List.map_append, List.map_replicate]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `e2 : prs.map Prod.snd = F.d.fixL _ :: (ls F ws).map (locL F.d _ (F₀.C.le i))`. Simplify using `only [prs, ls, List.map_cons, List.map_flatten, List.map_map, Function.comp_def, List.map_append, List.map_replicate]`. Both sides reduce to the same expression. Establish `e3 : prodL F.d (ls F ws) (F₀.C.a i) = (prs.map Prod.snd).foldr LM.mul (F.d.eL _)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[e2, prodL, dif_pos (F₀.C.le i)]`. Establish `e4 : tw F i ws = BGen.wd (prs.map Prod.fst) (F.t₂ i)` using `by rw [e1]; rfl`. Establish `R` using `adelRep2 (S := F₀.Sec) (B := F.B i) (Equiv.refl _) F₀.hSec (FrameOk.wirtinger_sub F) (fun w _ => O.1 w) (F₀.u₁ _) (F₀.u₂ _) (F₀.A i).Ta (F₀.A i).Tb F.d.one (F.d.eL _) (F.d.eL _) (F.t₂ i) (L (.inr (.inl ()))).1 (L (.inr (.inl ()))).1 (L (.inr (.inl ()))).2.1 rfl prs (by`. Introduce `p hp`. Break down `List.mem_cons.1 hp with rfl | hp` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨O.2.2.1, (MatchAll.matchLMId E n F.d F.ok _ (F₀.C.le i) _ (Or.inr (Or.inl rfl))).2, fun s hs => by obtain rfl := Sum.inr.inj hs; rfl, fun c hc => absurd hc Sum.inr_ne_inl⟩`. Take `⟨l, hl, hp⟩` from `List.mem_flatten.1 hp`. Take `⟨w, -, rfl⟩` from `List.mem_map.1 hl`. Break down `List.mem_append.1 hp with hp | hp` into its components or cases. Take `rfl` from `List.eq_of_mem_replicate hp`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(L (.inl ())).1, (L (.inl ())).2.1, fun s hs => by obtain rfl := Sum.inr.inj hs; rfl, fun c hc => absurd hc Sum.inr_ne_inl⟩`. Take `⟨q, -, rfl⟩` from `List.mem_map.1 hp`. Conclude with `⟨(L _).1, (L _).2.1, wb_letter F i q⟩)`. Use `⟨e3 ▸ R.1, wb_wd_ok _ (hF.tok i).2 _ fun g hg => ?_, ?_, ?_⟩` and prove the remaining obligations. Break down `List.mem_cons.1 hg with rfl | hg` into its components or cases.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(hF.tok i).1`. Take `⟨l, hl, hg⟩` from `List.mem_flatten.1 hg`. Take `⟨w, -, rfl⟩` from `List.mem_map.1 hl`. Break down `List.mem_append.1 hg with hg | hg` into its components or cases. Take `rfl` from `List.eq_of_mem_replicate hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hF.βok i`. Take `⟨⟨x, b⟩, -, rfl⟩` from `List.mem_map.1 hg`. Consider the cases of `b`. Conclude with `hF.ok x i`. Conclude with `wb_adj_ok _ (hF.ok x i)`.
-
-Rewrite using `[e3, e4]`. Conclude with `R.2.1`. Rewrite using `[e3, e4]`. Conclude with `R.2.2`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_eq (h : LocWord) (hF : F.Struct) (i : F₀.C.ι) (ws : List (List (F.Γ × Bool))) :
     (prodL F.d (ls F ws) (F₀.C.a i)).Ok F.d.P ∧ (tw F i ws).Ok ∧

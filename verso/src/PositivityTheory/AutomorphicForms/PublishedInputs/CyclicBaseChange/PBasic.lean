@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Published
 
 /- English proof (translation)
-Introduce `F _ _ n sat inf h`. Break down `h with ⟨hC, π, rfl, rfl⟩ | ⟨hR, π, rfl, rfl⟩` into its components or cases. Conclude with `⟨.cx π, rfl, rfl⟩`. Conclude with `⟨.re π, rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem UpperTheory.CBC.SCuspOf_holds : UpperTheory.CBC.SCuspOf := by
   intro F _ _ n sat inf h
@@ -15,7 +15,7 @@ theorem UpperTheory.CBC.SCuspOf_holds : UpperTheory.CBC.SCuspOf := by
   · exact ⟨.re π, rfl, rfl⟩
 
 /- English proof (translation)
-Introduce `F _ _ n π`. Consider the cases of `π with`. Consider the case `cx π => exact Or.inl ⟨inferInstance, π, rfl, rfl⟩`. Consider the case `re π => exact Or.inr ⟨inferInstance, π, rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem UpperTheory.CBC.SIsCusp_holds : UpperTheory.CBC.SIsCusp := by
   intro F _ _ n π
@@ -24,7 +24,7 @@ theorem UpperTheory.CBC.SIsCusp_holds : UpperTheory.CBC.SIsCusp := by
   | re π => exact Or.inr ⟨inferInstance, π, rfl, rfl⟩
 
 /- English proof (translation)
-Introduce `F _ _ n π v B B' h h'`. Consider the cases of `π with`. Consider the case `cx π => exact CG.HasSat.unique (π := CG.mk π) (w := v) h h'`. Consider the case `re π => exact UpperTheory.V.TR.CuspSub.HasSat.unique (π := π) (w := v) h h'`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem UpperTheory.CBC.SSatUniq_holds : UpperTheory.CBC.SSatUniq := by
   intro F _ _ n π v B B' h h'

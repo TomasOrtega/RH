@@ -17,15 +17,13 @@ variable {Ω : Type} [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValua
   [Algebra F Ω] [ValuativeExtension F Ω] [Algebra.IsAlgebraic F Ω]
 
 /- English proof (translation)
-Use `set M := E ⊓ maximalUnramifiedExtension F Ω with hM`. Establish `hME : M ≤ E` using `inf_le_left`. Use `haveI : FiniteDimensional F M := Module.Finite.of_injective (IntermediateField.inclusion hME).toLinearMap (IntermediateField.inclusion_injective hME)`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨x, hx⟩` from `Field.exists_primitive_element F M`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxM : F⟮(x : Ω)⟯ = M`. Use `congrArg (IntermediateField.map M.val) hx` as an intermediate fact. Rewrite `this` using `[adjoin_map, Set.image_singleton, ← AlgHom.fieldRange_eq_map, fieldRange_val]`. Then use the resulting hypothesis. Take `⟨U, hU, hxU⟩` from `mem_maximalUnramifiedExtension_iff.mp x.2.2`. Use `hU.1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMU : M ≤ U` using `hxM ▸ adjoin_simple_le_iff.mpr hxU`. Establish `he : ramificationIndex F M = 1`. Establish `h` using `ramificationIndex_dvd_of_le hMU`. Rewrite `h` using `[hU.ramificationIndex_eq_one]`. Conclude with `Nat.dvd_one.mp h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← ramificationIndex_mul_residueDegree F M, he, one_mul]`. Conclude with `Nat.le_of_dvd (residueDegree_pos F E) (residueDegree_dvd_of_le hME)`. Take `⟨ξ, hξ⟩` from `exists_isPrimitiveRoot_card_residueField_sub_one (L := E)`. Establish `hξ' : IsPrimitiveRoot ((ξ : E) : Ω) (Nat.card 𝓀[F] ^ residueDegree F E - 1)`. Rewrite using `[← card_residueField_eq_pow_residueDegree F E]`.
-
-Conclude with `(hξ.map_of_injective (f := (𝒪[E]).subtype) Subtype.val_injective).map_of_injective (f := E.val) Subtype.val_injective`. Establish `hf0 : residueDegree F E ≠ 0` using `(residueDegree_pos F E).ne'`. Rewrite using `[← (isUnramifiedSubextension_adjoin hf0 hξ').2]`. Conclude with `IntermediateField.finrank_le_of_le_right (le_inf (adjoin_simple_le_iff.mpr (ξ : E).2) (adjoin_le_maximalUnramifiedExtension hf0 hξ'))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_inf_maximalUnramified [IsSepClosed Ω] [CharZero F] (E : IntermediateField F Ω)
     [FiniteDimensional F E] :
@@ -60,33 +58,29 @@ theorem finrank_inf_maximalUnramified [IsSepClosed Ω] [CharZero F] (E : Interme
       (le_inf (adjoin_simple_le_iff.mpr (ξ : E).2) (adjoin_le_maximalUnramifiedExtension hf0 hξ'))
 
 /- English proof (translation)
-Establish `hq` using `one_lt_card_residueField' F`. Establish `hf` using `isLubinTateSeries_ltPoly π`. Use `set p := (ltPoly π).map (algebraMap 𝒪[F] F) with hp`. Establish `hsurj : ∀ y : Ω, ∃ x : Ω, Polynomial.aeval x p = y`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd : (p.map (algebraMap F Ω)).natDegree ≠ 0`. Rewrite using `[hp, Polynomial.map_map, (ltPoly_monic π).natDegree_map, natDegree_ltPoly]`. Use linear arithmetic over natural numbers and integers. Take `⟨x, hx⟩` from `IsAlgClosed.eval_surjective hd y`. Conclude with `⟨x, (Polynomial.eval_map_algebraMap p x).symm.trans hx⟩`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose r hr using hsurj`. Establish `hπ0 : algebraMap F Ω (π : F) ≠ 0`. Rewrite using `[ne_eq, map_eq_zero_iff _ (algebraMap F Ω).injective]`. Conclude with `fun h => hπ.ne_zero (Subtype.ext h)`. Take `⟨w, hw⟩` from `IsAlgClosed.exists_pow_nat_eq (-algebraMap F Ω (π : F)) (n := Nat.card 𝓀[F] - 1) (by omega)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Rewrite `hw` using `[zero_pow (by omega), zero_eq_neg]`. Conclude with `hπ0 hw`. Set `z : ℕ → Ω` to `fun n => Nat.casesOn n 0 fun m => r^[m] w`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ∀ n, Polynomial.aeval (z (n + 1)) p = z n`. Introduce and unpack `(_ | n)`. Use `show Polynomial.aeval w p = 0`. Rewrite using `[hp, aeval_ltPoly, ← Nat.sub_add_cancel hq.le, pow_succ, hw]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `show Polynomial.aeval (r^[n + 1] w) p = r^[n] w`. Rewrite using `[Function.iterate_succ_apply', hr]`. Establish `hiter : ∀ k n, Polynomial.aeval (z (n + k)) ((ltPolyIter π k).map (algebraMap 𝒪[F] F)) = z n`. Introduce `k`. Proceed by induction on `k with`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => intro n`. Simplify using `[ltPolyIter_zero]`. Consider the case `succ k ih`. Introduce `n`. Rewrite using `[ltPolyIter_succ, Polynomial.map_comp, Polynomial.aeval_comp, ← hz n, show n + (k + 1) = n + 1 + k by ring, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h0 : ∀ n, Polynomial.aeval (z n) ((ltPolyIter π n).map (algebraMap 𝒪[F] F)) = 0`. Introduce `n`. Establish `h` using `hiter n 0`. Rewrite `h` using `[zero_add]`. Then use the resulting hypothesis. Establish `hv : ∀ n, valuation Ω (z n) < 1` using `fun n => valuation_lt_one_of_aeval_ltPolyIter_eq_zero hπ n (h0 n)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `e` to `lubinTateLimitGalEquiv (Ω := Ω) hπ hf`. Use `⟨e.symm.toMulEquiv.toMonoidHom.comp (AlgEquiv.restrictNormalHom (lubinTateLimit Ω hπ)), z, rfl, hw0, fun n => by rw [← hz n, hp, aeval_ltPoly], fun g => ?_⟩` and prove the remaining obligations. Use `set u : 𝒪[F]ˣ := e.symm (AlgEquiv.restrictNormalHom (lubinTateLimit Ω hπ) g) with hu`. Establish `hφ0` using `(lubinTateHom hπ hf hf (u : 𝒪[F])).constantCoeff_eq_zero`. Use `⟨(lubinTateHom hπ hf hf (u : 𝒪[F])).toPowerSeries, hφ0, coeff_one_lubinTateHom hπ hf hf _, ?_, fun n => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `subst_lubinTateHom hπ hf hf (u : 𝒪[F])`. Establish `hc : ((ltPoly π : Polynomial 𝒪[F]) : PowerSeries 𝒪[F]) = PowerSeries.C π * PowerSeries.X + PowerSeries.X ^ Nat.card 𝓀[F]`. Simplify using `[ltPoly]`. Generalize the expression as in `(lubinTateHom hπ hf hf (u : 𝒪[F])).toPowerSeries = φ at h hφ0`. Rewrite `h` using `[hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← h]`. Establish `hs : PowerSeries.HasSubst φ` using `PowerSeries.HasSubst.of_constantCoeff_zero' hφ0`. Rewrite using `[← PowerSeries.coe_substAlgHom hs, map_add, map_mul, map_pow, PowerSeries.substAlgHom_X]`. Use `congr 2`. Conclude with `((PowerSeries.substAlgHom hs).commutes π).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Set `x : IdealPoint Ω (lubinTateFormalGroup hπ hf)` to `IdealPoint.mk (z n) (hv n)`. Establish `hx : x ∈ lubinTateTorsion Ω hf n` using `(mem_lubinTateTorsion_ltPoly_iff n x).mpr (h0 n)`. Establish `h1` using `lubinTateLimitGalEquiv_apply hπ hf u hx`. Establish `h2 : lubinTateLimitGalEquiv (Ω` using `Ω) hπ hf u = AlgEquiv.restrictNormalHom (lubinTateLimit Ω hπ) g := e.apply_symm_apply _`. Rewrite `h1` using `[h2, AlgEquiv.restrictNormalHom_apply, lubinTate_smul_val]`.
-
-Establish `h3` using `hasSum_psEval' (lubinTateHom hπ hf hf (u : 𝒪[F])).toPowerSeries (fun _ : Unit => z n) fun _ => hv n`. Express the relevant statement in the definitionally equal form `g (z n) = psEval _ (fun _ => z n) at h1`. Rewrite `h3` using `[← (Finsupp.uniqueEquiv ()).symm.hasSum_iff, ← h1]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
-
-Simplify using `[psTerm, PowerSeries.coeff, Finsupp.uniqueEquiv]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_data [IsAlgClosed Ω] [Normal F Ω] {π : 𝒪[F]} (hπ : Irreducible π) :
     ∃ (χ : (Ω ≃ₐ[F] Ω) →* 𝒪[F]ˣ) (z : ℕ → Ω), z 0 = 0 ∧ z 1 ≠ 0 ∧
@@ -170,7 +164,7 @@ theorem exists_data [IsAlgClosed Ω] [Normal F Ω] {π : 𝒪[F]} (hπ : Irreduc
     simp [psTerm, PowerSeries.coeff, Finsupp.uniqueEquiv]
 
 /- English proof (translation)
-Establish `hsub : PowerSeries.HasSubst (PowerSeries.C π * PowerSeries.X + PowerSeries.X ^ q : PowerSeries A)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [hq])`. Establish `h2` using `PowerSeries.map_subst hsub (h := h) φ`. Rewrite `h2` using `[← hc]`. Express the relevant statement in the definitionally equal form `PowerSeries.map h _ = PowerSeries.subst (PowerSeries.map h _) _ at h2`. Simplify `h2` using `only [map_add, map_mul, map_pow, PowerSeries.map_C, PowerSeries.map_X]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_commute {A B : Type} [CommRing A] [CommRing B] (h : A →+* B) (π : A) {q : ℕ} (hq : q ≠ 0)
     (φ : PowerSeries A) (hc : PowerSeries.C π * φ + φ ^ q =
@@ -198,12 +192,12 @@ def omRel : ValuativeRel (Om l) := ValuativeRel.ofValuation (NormedField.valuati
 attribute [local instance] omRel
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem om_vle_iff (x y : Om l) : x ≤ᵥ y ↔ ‖x‖ ≤ ‖y‖ := Iff.rfl
 
 /- English proof (translation)
-Establish `hc : (NormedField.valuation (K` using `Om l)).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `IsValuativeTopology.of_mem_nhds_zero_iff_vle (NormedField.valuation (K := Om l)) (fun {s} ↦ (NormedField.toValued (K := Om l)).is_topological_valuation s)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem omTop : IsValuativeTopology (Om l) := by
   have hc : (NormedField.valuation (K := Om l)).Compatible := Valuation.Compatible.ofValuation _
@@ -211,7 +205,7 @@ theorem omTop : IsValuativeTopology (Om l) := by
     (fun {s} ↦ (NormedField.toValued (K := Om l)).is_topological_valuation s)
 
 /- English proof (translation)
-Break down `eq_or_ne b 0 with rfl | hb` into its components or cases. Rewrite using `[(valuation ℚ_[l]).vle_iff_le]`. Simplify using the standard rewrite rules. Rewrite using `[(valuation ℚ_[l]).vle_iff_le, ← div_le_one (norm_pos_iff.mpr hb), ← norm_div, ← PadicRank.mem_integer_padic_iff, Valuation.mem_integer_iff, map_div₀, div_le_one₀ (zero_lt_iff.mpr ((valuation ℚ_[l]).ne_zero_iff.mpr hb))]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem padic_vle_iff (a b : ℚ_[l]) : a ≤ᵥ b ↔ ‖a‖ ≤ ‖b‖ := by
   rcases eq_or_ne b 0 with rfl | hb
@@ -222,7 +216,7 @@ theorem padic_vle_iff (a b : ℚ_[l]) : a ≤ᵥ b ↔ ‖a‖ ≤ ‖b‖ := by
       div_le_one₀ (zero_lt_iff.mpr ((valuation ℚ_[l]).ne_zero_iff.mpr hb))]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b => by rw [om_vle_iff, padic_vle_iff, norm_algebraMap', norm_algebraMap']⟩`.
+Supply the required witnesses or components.
 -/
 theorem omExt : ValuativeExtension ℚ_[l] (Om l) :=
   ⟨fun a b => by rw [om_vle_iff, padic_vle_iff, norm_algebraMap', norm_algebraMap']⟩
@@ -232,7 +226,7 @@ attribute [local instance] omTop omExt
 variable {l}
 
 /- English proof (translation)
-Use `haveI := K.2`. Rewrite using `[Valuation.mem_integer_iff, ← isIntegral_iff ℚ_[l] ↥K.1 x]`. Conclude with `(RingEquiv.isIntegral_iff (PadicRank.padicIntEquivInteger l) (RingHom.ext fun _ => rfl) x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_OL_iff (K : FinExt l) (x : ↥K.1) : x ∈ OL K ↔ x ∈ 𝒪[↥K.1] := by
   haveI := K.2
@@ -248,11 +242,9 @@ def intEquiv (K : FinExt l) : 𝒪[↥K.1] ≃+* ↥(OL K) where
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Use `haveI : CharP 𝓀[ℚ_[l]] l := by`. Rewrite using `[CharP.charP_iff_prime_eq_zero hl, ← map_natCast (IsLocalRing.residue 𝒪[ℚ_[l]]), IsLocalRing.residue_eq_zero_iff]`. Conclude with `(GroundTheory.LocalField.Padic.irreducible_natCast_integer l).not_isUnit`. Rewrite using `[maximalUnramifiedExtension_eq_adjoin, MaximalUnramifiedExtension]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `x`. Rewrite using `[mem_unramifiedRoots_iff]`. Use `exists_congr fun m => ?_` and prove the remaining obligations. Rewrite using `[Ne, CharP.cast_eq_zero_iff _ l]`.
-
-Conclude with `⟨fun h => h.2, fun h => ⟨Nat.pos_of_ne_zero (by rintro rfl; exact h.1 (dvd_zero l)), h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kur_eq : MaximalUnramifiedExtension l = maximalUnramifiedExtension ℚ_[l] (Om l) := by
   have hl : l.Prime := Fact.out
@@ -269,7 +261,7 @@ theorem kur_eq : MaximalUnramifiedExtension l = maximalUnramifiedExtension ℚ_[
   exact ⟨fun h => h.2, fun h => ⟨Nat.pos_of_ne_zero (by rintro rfl; exact h.1 (dvd_zero l)), h⟩⟩
 
 /- English proof (translation)
-The claim follows from `K.2; resCard K = Nat.card 𝓀[↥K.1] := by haveI := K.2 rw [card_residueField_eq_pow_residueDegree ℚ_[l] ↥K.1, GroundTheory.LocalField.Padic.card_residueField, resCard, K0, kur_eq, finrank_inf_maximalUnramified]`.
+A detailed English derivation is pending.
 -/
 theorem resCard_eq (K : FinExt l) : haveI := K.2; resCard K = Nat.card 𝓀[↥K.1] := by
   haveI := K.2
@@ -285,11 +277,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc LTExists
 attribute [local instance] omRel omTop omExt
 
 /- English proof (translation)
-Use `haveI := K.2`. Take `⟨π, rfl⟩` from `(intEquiv K).surjective π`. Establish `hπ' : Irreducible π` using `(MulEquiv.irreducible_iff (intEquiv K).toMulEquiv).1 hπ`. Take `⟨χ, z, h0, h1, hz, H⟩` from `exists_data (Ω := Om l) hπ'`. Use `⟨(Units.map (𝒪[↥K.1]).subtype.toMonoidHom).comp (χ.comp (IntermediateField.fixingSubgroupEquiv K.1).toMonoidHom), z, hπ, h0, h1, fun n => by rw [resCard_eq]; exact hz n, fun g => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, c0, c1, hc, hs⟩` from `H (IntermediateField.fixingSubgroupEquiv K.1 g)`. Use `⟨intEquiv K (χ (IntermediateField.fixingSubgroupEquiv K.1 g)), rfl, PowerSeries.map (intEquiv K).toRingHom φ, ⟨?_, ?_, ?_⟩, fun n => hs n⟩` and prove the remaining obligations. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, c0, map_zero]`. Rewrite using `[PowerSeries.coeff_map, c1]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hq` using `one_lt_card_residueField' ↥K.1`. Establish `hr : Nat.card 𝓀[↥K.1] = resCard K` using `(resCard_eq K).symm`. Rewrite `hc`, `hq` using `[hr]`. Conclude with `map_commute (intEquiv K).toRingHom π (by omega) φ hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ltData_of_irreducible (l : ℕ) [Fact l.Prime] (K : FinExt l) (π : ↥(OL K))
     (hπ : Irreducible π) :

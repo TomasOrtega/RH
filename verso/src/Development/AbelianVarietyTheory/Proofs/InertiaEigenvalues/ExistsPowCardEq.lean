@@ -5,11 +5,9 @@ namespace GlobalTheory.CardinalPower
 open IntermediateField
 
 /- English proof (translation)
-Set `M : IntermediateField K L` to `adjoin K (X : Set L)`. Use `haveI : FiniteDimensional K M := finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`. Use `haveI : Finite M := Module.finite_of_finite K`. Use `haveI : Normal K M := inferInstance`. Take `⟨n, hn⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow K M).2 (σ.restrictNormal M)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨n.1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxM : x ∈ M` using `subset_adjoin K _ hx`. Establish `h1` using `AlgEquiv.restrictNormal_commutes σ M ⟨x, hxM⟩`. Rewrite `h1` using `[← hn]`. Simplify using `only [AlgEquiv.coe_pow, FiniteField.coe_frobeniusAlgEquivOfAlgebraic, pow_iterate] at h1`.
-
-Simplify using `using h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pow_card_eq {K L : Type} [Field K] [Fintype K] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L] (σ : Gal(L/K)) (X : Finset L) :
@@ -30,7 +28,7 @@ theorem exists_pow_card_eq {K L : Type} [Field K] [Fintype K] [Field L] [Algebra
   simpa using h1.symm
 
 /- English proof (translation)
-Introduce `σ X` and use `exists_pow_card_eq σ X`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem target : ∀ {K L : Type} [inst : Field K] [inst_1 : Fintype K] [inst_2 : Field L]
     [inst_3 : Algebra K L] [Algebra.IsAlgebraic K L] (σ : Gal(L/K)) (X : Finset L),

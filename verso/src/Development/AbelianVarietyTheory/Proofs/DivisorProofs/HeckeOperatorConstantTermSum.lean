@@ -28,7 +28,7 @@ def Tri (g : GL (Fin N) R) (m : GL (Fin r) R × GL (Fin s) R) : Prop :=
   ∃ X, g.val.submatrix (blkE h) (blkE h) = Matrix.fromBlocks m.1.val X 0 m.2.val
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Matrix.reindex (blkE h) (blkE h) (Matrix.fromBlocks m.1.val 0 0 m.2.val)).submatrix _ _ = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem blk_sub (m : GL (Fin r) R × GL (Fin s) R) :
     (blk h m).val.submatrix (blkE h) (blkE h) = Matrix.fromBlocks m.1.val 0 0 m.2.val := by
@@ -36,14 +36,14 @@ theorem blk_sub (m : GL (Fin r) R × GL (Fin s) R) :
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, blk_sub h m⟩`.
+Supply the required witnesses or components.
 -/
 theorem tri_blk (m : GL (Fin r) R × GL (Fin s) R) : Tri h (blk h m) m := ⟨0, blk_sub h m⟩
 
 variable {h}
 
 /- English proof (translation)
-Take `⟨X, a⟩` from `a`. Take `⟨Y, b⟩` from `b`. Use `⟨m.1.val * Y + X * m'.2.val, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.submatrix_mul_equiv _ _ _ (blkE h), a, b, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Tri.mul {g g' : GL (Fin N) R} {m m' : GL (Fin r) R × GL (Fin s) R} (a : Tri h g m) (b : Tri h g' m') :
     Tri h (g * g') (m * m') := by
@@ -56,11 +56,9 @@ theorem Tri.mul {g g' : GL (Fin N) R} {m m' : GL (Fin r) R × GL (Fin s) R} (a :
 end Tri
 
 /- English proof (translation)
-Establish `key : ∀ m : GL (Fin r) L × GL (Fin s) L, m.1 ∈ GLint (Fin r) O → m.2 ∈ GLint (Fin s) O → ∀ a b, (blk h m).val a b ∈ O` using `fun m h1 h2 a b => by`. Take `⟨a, rfl⟩` from `(blkE h).surjective a`. Take `⟨b, rfl⟩` from `(blkE h).surjective b`. Use `congrFun (congrFun (blk_sub h m) a) b` as an intermediate fact. Rewrite `this` using `[Matrix.submatrix_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Apply the tactic sequence `exacts [satake_glint_entry O h1 a b, O.zero_mem, O.zero_mem, satake_glint_entry O h2 a b]`. Use `satake_mem_glint O _ (key m h1 h2) ?_` and prove the remaining obligations. Rewrite using `[← map_inv]`.
-
-Conclude with `key _ (inv_mem h1) (inv_mem h2)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_mem {L : Type} [Field L] {O : Subring L} {r s N : ℕ} (h : r + s = N) {m : GL (Fin r) L × GL (Fin s) L}
     (h1 : m.1 ∈ GLint (Fin r) O) (h2 : m.2 ∈ GLint (Fin s) O) : blk h m ∈ GLint (Fin N) O := by
@@ -78,9 +76,9 @@ theorem blk_mem {L : Type} [Field L] {O : Subring L} {r s N : ℕ} (h : r + s = 
   exact key _ (inv_mem h1) (inv_mem h2)
 
 /- English proof (translation)
-Set `f : (A → Q) × (B → Q) × (C → Q) ≃ (α → Q)` to `(((Equiv.sumArrowEquivProdArrow _ _ _).trans ((Equiv.refl _).prodCongr (Equiv.sumArrowEquivProdArrow _ _ _))).symm).trans (e.arrowCongr (Equiv.refl Q))`. Rewrite using `[← f.sum_comp, Fintype.sum_prod_type, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[f]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_fun {α A B C Q : Type} [Fintype α] [Fintype A] [Fintype B] [Fintype C] [Fintype Q] [DecidableEq α]
     [DecidableEq A] [DecidableEq B] [DecidableEq C] (e : A ⊕ B ⊕ C ≃ α) (G : (A → Q) → (B → Q) → ℂ) :
@@ -108,11 +106,9 @@ def pairMap : satakePairs S₁ ⊕ satakePairs S₂ ⊕ (S₁ × (S₂ᶜ : Fins
       fun e => Finset.mem_compl.1 p.2.2 ((h2 _).1 e), Nat.lt_add_right _ p.1.1.2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro (p | p | p) (p' | p' | p') e <;> simp [pairMap] at e ⊢`. Conclude with `Subtype.ext (Prod.ext e.1 e.2)`. Conclude with `Subtype.ext (Prod.ext e.1 e.2)`. Conclude with `Prod.ext e.1 e.2`.
+Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨⟨a, b⟩, x, y, z⟩`. Take `⟨a, rfl⟩` from `(blkE h).surjective a`. Take `⟨b, rfl⟩` from `(blkE h).surjective b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Conclude with `⟨.inl ⟨(a, b), (h1 _).1 x, fun e => y ((h1 _).2 e), z⟩, rfl⟩`.
-
-Conclude with `⟨.inr (.inr (⟨a, (h1 _).1 x⟩, ⟨b, Finset.mem_compl.2 fun e => y ((h2 _).2 e)⟩)), rfl⟩`. Conclude with `absurd (Nat.lt_add_right a b.2) (not_lt.2 (le_of_lt z))`. Conclude with `⟨.inr (.inl ⟨(a, b), (h2 _).1 x, fun e => y ((h2 _).2 e), Nat.lt_of_add_lt_add_left z⟩), rfl⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pairMap_bijective : Function.Bijective (pairMap h h1 h2) := by
   constructor
@@ -130,9 +126,9 @@ theorem pairMap_bijective : Function.Bijective (pairMap h h1 h2) := by
     · exact ⟨.inr (.inl ⟨(a, b), (h2 _).1 x, fun e => y ((h2 _).2 e), Nat.lt_of_add_lt_add_left z⟩), rfl⟩
 
 /- English proof (translation)
-Use `⟨Matrix.of fun a b => (satakeGL O hπ S c).val (blkE h (.inl a)) (blkE h (.inr b)), ?_⟩` and prove the remaining obligations. Use extensionality with `(a | a) (b | b)`. Establish `: blkE h (.inl a) < blkE h (.inl b) ↔ a < b` using `Iff.rfl`. Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₁₁, satakeGL_apply, satakeN, h1, this, Matrix.one_apply, Equiv.apply_eq_iff_eq, Sum.inl.injEq]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `satakeGL_lower O hπ S c _ _ (Nat.lt_add_right a b.2)`. Establish `: blkE h (.inr a) < blkE h (.inr b) ↔ a < b` using `Nat.add_lt_add_iff_left`. Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₂₂, satakeGL_apply, satakeN, h2, this, Matrix.one_apply, Equiv.apply_eq_iff_eq, Sum.inr.injEq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tri_satakeGL {L : Type} [Field L] (O : Subring L) {π : L} (hπ : π ≠ 0) (c : satakePairs S → O) :
     Tri h (satakeGL O hπ S c) (satakeGL O hπ S₁ fun p => c (pairMap h h1 h2 (.inl p)),
@@ -165,11 +161,11 @@ abbrev rep {n : ℕ} (S : Finset (Fin n)) (c : satakePairs S → Res hu) : GL (F
 variable [Fintype (Res hu)]
 
 /- English proof (translation)
-Establish `hϖ` using `mem_Ov_of_isUnifV hu`. Establish `hr` using `satake_range_eq v hϖ hu Final.TjCosets hj`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.univ.image (fun i : SatakeIdx v hϖ (n := n) j => ((satakeB v hϖ hu i : GL (Fin n) (v.adicCompletion E)) : GL (Fin n) (v.adicCompletion E) ⧸ KGL v n))) ?_]`. Rewrite using `[Finset.sum_image (fun i _ i' _ h => satakeB_inj v hϖ hu h), Finset.sum_subtype (Finset.univ.powersetCard j) (p := fun S : Finset (Fin n) => S.card = j) (fun S => by simp [Finset.mem_powersetCard]), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun S _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨κ, hκ⟩` from `QuotientGroup.mk_out_eq_mul (KGL v n) (satakeB v hϖ hu ⟨S, c⟩)`. Rewrite using `[hκ, satake_Tj_eq, Set.indicator_of_mem (satake_Tset_right v (satakeB_mem v hϖ hu ⟨S, c⟩) κ.2), Pi.one_apply, one_mul, hF _ _ κ.2]`. Both sides reduce to the same expression. Introduce `x hx`. Establish `hT : Tj ℂ n (Ov E v) ϖ j x.out ≠ 0` using `left_ne_zero_of_mul hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hT` using `[satake_Tj_ne_zero_iff]`. Take `⟨i, rfl⟩` from `(Set.ext_iff.1 hr x).2 hT`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem finsum_Tj {n j : ℕ} (hj : j ≤ n) (F : GL (Fin n) (v.adicCompletion E) → ℂ)
     (hF : ∀ g, ∀ k ∈ KGL v n, F (g * k) = F g) :
@@ -195,7 +191,7 @@ theorem finsum_Tj {n j : ℕ} (hj : j ≤ n) (F : GL (Fin n) (v.adicCompletion E
     simp
 
 /- English proof (translation)
-Use `sum_fun (Equiv.ofBijective _ (pairMap_bijective h h1 h2)) fun (c₁ : satakePairs S₁ → Res hu) (c₂ : satakePairs S₂ → Res hu) => F (blk h (rep hu S₁ c₁, rep hu S₂ c₂))` as an intermediate fact. Rewrite `this` using `[← Nat.card_eq_fintype_card, satake_card_res v _ hu, Fintype.card_prod, Fintype.card_coe, Fintype.card_coe, Finset.card_compl, Fintype.card_fin]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun c _ => hF _ _ (tri_satakeGL h h1 h2 _ _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_rep {r s N : ℕ} (h : r + s = N) {S : Finset (Fin N)} {S₁ : Finset (Fin r)} {S₂ : Finset (Fin s)}
     (h1 : ∀ a, blkE h (.inl a) ∈ S ↔ a ∈ S₁) (h2 : ∀ a, blkE h (.inr a) ∈ S ↔ a ∈ S₂)
@@ -213,17 +209,17 @@ omit [Fintype (Res hu)] in
 include hu in
 
 /- English proof (translation)
-Use `satake_res_finite v (mem_Ov_of_isUnifV hu) hu` as an intermediate fact. Set `_ : Fintype (Res hu)` to `Fintype.ofFinite _`. Set `J : Finset (Fin r) × Finset (Fin s) ≃ Finset (Fin N)` to `Finset.sumEquiv.symm.toEquiv.trans (blkE h).finsetCongr`. Establish `hJ : ∀ T, J T = (T.1.disjSum T.2).map (blkE h).toEmbedding` using `fun _ => rfl`. Rewrite using `[finsum_Tj hu hj F hK, ← Finset.sum_equiv J (s := Finset.univ.filter fun T => T.1.card + T.2.card = j) (f := fun T => ∑ c : satakePairs (J T) → Res hu, F (rep hu (J T) c)) (fun T => by simp [hJ, Finset.mem_powersetCard]) (fun _ _ => rfl), ← Finset.sum_fiberwise_of_maps_to (g := f …`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a1` using `Finset.card_le_univ T.1`. Establish `a2` using `Finset.card_le_univ T.2`. Simplify using `only [Fintype.card_fin] at a1 a2`. Simplify using `only [Finset.mem_filter, Finset.mem_product, Finset.mem_range, Finset.mem_univ, true_and] at hT ⊢`. Use the proof step `omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_product, Finset.mem_range, Nat.lt_succ_iff] at hi`. Establish `e1 : ∀ g : GL (Fin r) (v.adicCompletion E), ∑ᶠ c₂ : GL (Fin s) (v.adicCompletion E) ⧸ KGL v s, Tj ℂ r (Ov E v) ϖ i.1 g * Tj ℂ s (Ov E v) ϖ i.2 c₂.out * F (blk h (g, c₂.out)) = Tj ℂ r (Ov E v) ϖ i.1 g * ∑ S ∈ (Finset.univ : Finset (Fin s)).powersetCard i.2, ∑ c : satakePairs S → R …` using `fun g => by`. Rewrite using `[← finsum_Tj hu hi.1.2 (fun x => F (blk h (g, x))) fun x k hk => ?_, mul_finsum]`. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hK (blk h (g, x)) _ (blk_mem h (m := (1, k)) (one_mem _) hk), ← map_mul]`. Simplify using the standard rewrite rules. Simplify using `only [e1]`. Rewrite using `[finsum_Tj hu hi.1.1 (fun g => ∑ S ∈ (Finset.univ : Finset (Fin s)).powersetCard i.2, ∑ c : satakePairs S → Res hu, F (blk h (g, rep hu S c))) fun x k hk => Finset.sum_congr rfl fun S _ => Finset.sum_congr rfl fun c _ => by`. Rewrite using `[← hK (blk h (x, _)) _ (blk_mem h (m := (k, 1)) hk (one_mem _)), ← map_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp]`. Rewrite using `[Finset.sum_congr (s₂ := Finset.univ.powersetCard i.1 ×ˢ Finset.univ.powersetCard i.2) ?_ fun _ _ => rfl, Finset.sum_product, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun S₁ hS₁ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun S₂ hS₂ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[sum_rep hu h (S₁ := S₁) (S₂ := S₂) (fun a => by simp [hJ]) (fun a => by simp [hJ]) F hF, (Finset.mem_powersetCard.1 hS₁).2, (Finset.mem_powersetCard.1 hS₂).2]`. Use extensionality with `T`. Simplify using `only [Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and, Finset.mem_powersetCard, Finset.subset_univ, Prod.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finsum_Tj_levi {r s N j : ℕ} (h : r + s = N) (hj : j ≤ N) (F : GL (Fin N) (v.adicCompletion E) → ℂ)
     (hK : ∀ g, ∀ k ∈ KGL v N, F (g * k) = F g) (hF : ∀ g m, Tri h g m → F g = F (blk h m)) :

@@ -14,13 +14,13 @@ variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 def polySub : Subalgebra ℚ_[p] (Matrix (Fin n) (Fin n) K) := (Algebra.adjoin K {γ}).restrictScalars ℚ_[p]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_polySub {x : Matrix (Fin n) (Fin n) K} : x ∈ polySub p K n γ ↔ x ∈ Algebra.adjoin K {γ} :=
   Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Algebra.commute_of_mem_adjoin_of_forall_mem_commute (mem_polySub p K n γ |>.1 b.2) (fun y hy => by rw [Set.mem_singleton_iff.1 hy] exact (Algebra.commute_of_mem_adjoin_singleton_of_commute (mem_polySub p K n γ |>.1 a.2) (Commute.refl γ)).symm)).eq`.
+A detailed English derivation is pending.
 -/
 theorem polySub_comm (a b : polySub p K n γ) : a * b = b * a :=
   Subtype.ext (Algebra.commute_of_mem_adjoin_of_forall_mem_commute (mem_polySub p K n γ |>.1 b.2)
@@ -49,7 +49,7 @@ def phi : PolyAlg p K n γ ⊗[ℚ_[p]] Qr p r →ₐ[ℚ_[p]] Matrix (Fin n) (F
     (fun x y => (Algebra.commutes (inclQ p K r y) (((inclK p K r).mapMatrix.comp (val p K n γ)) x)).symm)
 
 /- English proof (translation)
-Unfold `phi`. Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ b q`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phi_tmul (b : PolyAlg p K n γ) (q : Qr p r) :
     phi p K n γ r (b ⊗ₜ q) = (val p K n γ b).map (inclK p K r) * algebraMap (KQ p K r) _ (inclQ p K r q) := by
@@ -60,11 +60,11 @@ def tw : PolyAlg p K n γ ⊗[ℚ_[p]] Qr p r →ₐ[ℚ_[p]] PolyAlg p K n γ �
   Algebra.TensorProduct.map (AlgHom.id ℚ_[p] _) (frobQ p r)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((phi p K n γ r).comp (tw p K n γ r)) x = ((sigKQ p K r).mapMatrix.comp (phi p K n γ r)) x`. Use `congr 1`. Use `Algebra.TensorProduct.ext' fun b q => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, tw, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, phi_tmul, map_mul, AlgHom.mapMatrix_apply]`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Conclude with `(sigKQ_apply_inclK p K r _).symm`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Algebra.algebraMap_eq_smul_one, Matrix.smul_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp [sigKQ_apply_inclQ]`.
+A detailed English derivation is pending.
 -/
 theorem phi_tw (x : PolyAlg p K n γ ⊗[ℚ_[p]] Qr p r) :
     phi p K n γ r (tw p K n γ r x) = (phi p K n γ r x).map (sigKQ p K r) := by
@@ -82,9 +82,9 @@ theorem phi_tw (x : PolyAlg p K n γ ⊗[ℚ_[p]] Qr p r) :
     split_ifs <;> simp [sigKQ_apply_inclQ]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `Commute.zero_right _`. Consider the case `tmul b q`. Rewrite using `[phi_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Commute.mul_right ?_ (Algebra.commutes _ _).symm` and prove the remaining obligations. Establish `h : Commute y (val p K n γ b)` using `Algebra.commute_of_mem_adjoin_singleton_of_commute ((mem_polySub p K n γ).1 b.2) hy`. Conclude with `h.map (inclK p K r).mapMatrix`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `ha.add_right hb`.
+Establish an intermediate fact. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem phi_commute (y : Matrix (Fin n) (Fin n) K) (hy : Commute y γ) (x : PolyAlg p K n γ ⊗[ℚ_[p]] Qr p r) :
     Commute (y.map (inclK p K r)) (phi p K n γ r x) := by

@@ -6,25 +6,21 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W φ C U hC hU hmem`. Use `haveI := hU`. Set `b` to `Module.finBasis ℂ U`. Set `ev : V4 F → Module.Dual ℂ U` to `fun v => { toFun := fun u => (u.1).1 v, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `htop : Submodule.span ℂ (Set.range ev) = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (Submodule.span ℂ (Set.range ev)).dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `u hu`. Rewrite `hu` using `[Submodule.mem_dualCoannihilator]`. Establish `: u = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Conclude with `hu (ev v) (Submodule.subset_span ⟨v, rfl⟩)`. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `Subspace.dualCoannihilator_dualAnnihilator_eq (W := Submodule.span ℂ (Set.range ev))`. Rewrite using `[← h2, hb]`. Simplify using the standard rewrite rules. Establish `hco : ∀ i, ∃ a : V4 F →₀ ℂ, a.sum (fun v x => x • ev v) = b.coord i`. Introduce `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : b.coord i ∈ Submodule.span ℂ (Set.range ev)`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `(Finsupp.mem_span_range_iff_exists_finsupp).1 h3`. Use `choose a ha using hco`.
+Check the elementary cases of the proposition. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Set `c : Fin (Module.finrank ℂ U) → G1 F → ℂ` to `fun i k => ∑ v ∈ (a i).support, a i v * (W.Om k φ).1 v`. Establish `hc : ∀ i, Continuous (c i)`. Introduce `i`. Use `continuous_finset_sum _ fun v _ => continuous_const.mul ?_` and prove the remaining obligations. Conclude with `(W.cont φ).comp (continuous_id.prodMk continuous_const)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hB : ∀ i, ∃ B : ℝ, ∀ k ∈ C, ‖c i k‖ ≤ B` using `fun i => hC.exists_bound_of_continuousOn (hc i).continuousOn`. Use `choose B hB using hB`. Use `⟨Module.finrank ℂ U, fun i => (b i).1, c, ∑ i, |B i|, fun i => (b i).2, fun i => (hc i).continuousOn, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hck : ∀ i, b.repr ⟨W.Om k φ, hmem k hk⟩ i = c i k`. Introduce `i`. Establish `h4 : b.coord i ⟨W.Om k φ, hmem k hk⟩ = c i k`. Rewrite using `[← ha i, Finsupp.sum, LinearMap.sum_apply]`.
-
-Both sides reduce to the same expression. Simplify using `using h4`. Establish `h5` using `b.sum_repr ⟨W.Om k φ, hmem k hk⟩`. Establish `h6` using `congrArg Subtype.val h5`. Simplify using `only [hck, Submodule.coe_sum, Submodule.coe_smul] at h6`.
-
-Conclude with `h6.symm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.coefBd :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (φ : S4 F) (C : Set (G1 F)) (U : Submodule ℂ (S4 F)), IsCompact C → FiniteDimensional ℂ U → (∀ k ∈ C, W.Om k φ ∈ U) →

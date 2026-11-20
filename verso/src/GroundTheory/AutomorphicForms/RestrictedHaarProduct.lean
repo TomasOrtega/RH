@@ -13,9 +13,9 @@ set_option linter.unusedSectionVars false
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n n_ih`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ((measurePreserving_piFinSuccAbove μ 0).symm).lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv, Fin.prod_univ_succ, Fin.insertNth_zero, Equiv.coe_fn_mk, Fin.cons_succ, Fin.zero_succAbove, cast_eq, Fin.cons_zero]`. Use `_ = (∫⁻ x, f 0 x ∂μ 0) * ∏ i : Fin n, ∫⁻ (x : E (Fin.succ i)), f (Fin.succ i) x ∂(μ i.succ) := by`. Rewrite using `[← n_ih (fun i : Fin n ↦ f i.succ) (fun i ↦ hf _)]`. Conclude with `lintegral_prod_mul (hf 0).aemeasurable (Finset.measurable_prod _ fun (i : Fin n) _ ↦ (hf i.succ).comp (measurable_pi_apply i)).aemeasurable`. Use `_ = ∏ i, ∫⁻ x, f i x ∂(μ i) := by rw [Fin.prod_univ_succ]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_fin_nat_prod_eq_prod {n : ℕ} {E : Fin n → Type*} {mE : ∀ i, MeasurableSpace (E i)}
     {μ : (i : Fin n) → Measure (E i)} [∀ i, SigmaFinite (μ i)] (f : (i : Fin n) → E i → ℝ≥0∞)
@@ -40,7 +40,7 @@ theorem lintegral_fin_nat_prod_eq_prod {n : ℕ} {E : Fin n → Type*} {mE : ∀
         _ = ∏ i, ∫⁻ x, f i x ∂(μ i) := by rw [Fin.prod_univ_succ]
 
 /- English proof (translation)
-Set `e` to `(Fintype.equivFin κ).symm`. Rewrite using `[← (measurePreserving_piCongrLeft μ e).lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _)]`. Repeatedly rewrite using `[← e.prod_comp, MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_apply]`. Conclude with `lintegral_fin_nat_prod_eq_prod (fun i ↦ f (e i)) (fun i ↦ hf _)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_fintype_prod_eq_prod {κ : Type*} [Fintype κ] {E : κ → Type*}
     {mE : ∀ i, MeasurableSpace (E i)} {μ : (i : κ) → Measure (E i)} [∀ i, SigmaFinite (μ i)]
@@ -69,19 +69,19 @@ def box (T : Finset ι) : Subgroup (Πʳ i, [G i, (C i : Set (G i))]) where
     exact (C i).inv_mem (hx i hi)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_box {T : Finset ι} {x : Πʳ i, [G i, (C i : Set (G i))]} :
     x ∈ box C T ↔ ∀ i, i ∉ T → x i ∈ C i := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `fun _ hx i hi ↦ hx i fun hiT ↦ hi (h hiT)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem box_mono {T T' : Finset ι} (h : T ⊆ T') : box C T ≤ box C T' :=
   fun _ hx i hi ↦ hx i fun hiT ↦ hi (h hiT)
 
 /- English proof (translation)
-Establish `hx : {i | ¬ x i ∈ C i}.Finite` using `Filter.eventually_cofinite.1 x.2`. Use `⟨hx.toFinset, fun i hi ↦ ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hi (hx.mem_toFinset.2 h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_mem_box (x : Πʳ i, [G i, (C i : Set (G i))]) : ∃ T : Finset ι, x ∈ box C T := by
   have hx : {i | ¬ x i ∈ C i}.Finite := Filter.eventually_cofinite.1 x.2
@@ -110,7 +110,7 @@ open Classical in
 def secFun (T : Finset ι) (a : (i : T) → G i) (i : ι) : G i := if h : i ∈ T then a ⟨i, h⟩ else 1
 
 /- English proof (translation)
-Unfold `secFun`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem secFun_of_mem {T : Finset ι} (a : (i : T) → G i) {i : ι} (h : i ∈ T) :
     secFun T a i = a ⟨i, h⟩ := by
@@ -119,7 +119,7 @@ theorem secFun_of_mem {T : Finset ι} (a : (i : T) → G i) {i : ι} (h : i ∈ 
   rw [dif_pos h]
 
 /- English proof (translation)
-Unfold `secFun`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem secFun_of_notMem {T : Finset ι} (a : (i : T) → G i) {i : ι} (h : i ∉ T) :
     secFun T a i = 1 := by
@@ -154,7 +154,7 @@ Both sides reduce to the same expression.
 theorem sec_apply (T : Finset ι) (a : (i : T) → G i) (i : ι) : sec C T a i = secFun T a i := rfl
 
 /- English proof (translation)
-Introduce `i hi`. Rewrite using `[sec_apply, secFun_of_notMem a hi]`. Conclude with `(C i).one_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_mem_box (T : Finset ι) (a : (i : T) → G i) : sec C T a ∈ box C T := by
   intro i hi
@@ -162,7 +162,7 @@ theorem sec_mem_box (T : Finset ι) (a : (i : T) → G i) : sec C T a ∈ box C 
   exact (C i).one_mem
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[proj_apply, sec_apply, secFun_of_mem a i.2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_sec (T : Finset ι) (a : (i : T) → G i) : proj C T (sec C T a) = a := by
   funext i
@@ -171,13 +171,13 @@ theorem proj_sec (T : Finset ι) (a : (i : T) → G i) : proj C T (sec C T a) = 
 variable [∀ i, TopologicalSpace (G i)]
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i ↦ RestrictedProduct.continuous_eval (i : ι)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_proj (T : Finset ι) : Continuous (proj C T) :=
   continuous_pi fun i ↦ RestrictedProduct.continuous_eval (i : ι)
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.isOpen_forall_imp_mem (R := G) (A := fun i ↦ (C i : Set (G i))) hCo (p := fun i ↦ i ∉ T)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_box (hCo : ∀ i, IsOpen (C i : Set (G i))) (T : Finset ι) :
     IsOpen (box C T : Set (Πʳ i, [G i, (C i : Set (G i))])) :=
@@ -185,21 +185,17 @@ theorem isOpen_box (hCo : ∀ i, IsOpen (C i : Set (G i))) (T : Finset ι) :
     (p := fun i ↦ i ∉ T)
 
 /- English proof (translation)
-Use `set S : Set ι := (↑T)ᶜ with hSdef`. Establish `hS : cofinite ≤ 𝓟 S` using `le_principal_iff.2 T.finite_toSet.compl_mem_cofinite`. Use `set W : Set ((i : ι) → G i) := {x | (fun i : T ↦ x i) ∈ E} ∩ {x | ∀ i ∈ S, x i ∈ C i} with hW`. Establish `hWc : IsCompact W`. Establish `hbig : IsCompact (Set.univ.pi fun i ↦ if h : i ∈ T then (fun a : (j : T) → G j ↦ a ⟨i, h⟩) '' E else (C i : Set (G i)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `isCompact_univ_pi fun i ↦ ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `hE.image (continuous_apply _)`. Conclude with `hCc i`. Use `hbig.of_isClosed_subset ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Simplify by unfolding definitions.
 
-Use `IsClosed.inter (hE.isClosed.preimage (continuous_pi fun i ↦ continuous_apply _)) ?_` and prove the remaining obligations. Simplify using `only [Set.ofPred_forall]`. Conclude with `isClosed_biInter fun i _ ↦ (Subgroup.isClosed_of_isOpen (C i) (hCo i)).preimage (continuous_apply i)`. Introduce and unpack `x ⟨hxE, hxS⟩ i -`. Distinguish the cases in `h : i ∈ T`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[dif_pos h]`. Conclude with `⟨_, hxE, rfl⟩`. Simplify using `only`. Rewrite using `[dif_neg h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hxS i h`. Use `set Z : Set (Πʳ i, [G i, (C i : Set (G i))]_[𝓟 S]) := (fun y ↦ (y : (i : ι) → G i)) ⁻¹' W with hZ`. Establish `hZc : IsCompact Z`. Rewrite using `[(RestrictedProduct.isEmbedding_coe_of_principal (R := G) (A := fun i ↦ (C i : Set (G i))) (S := S)).isCompact_iff, hZ, image_preimage_eq_inter_range, RestrictedProduct.range_coe_principal]`. Rewrite using `[inter_eq_left.2 fun x hx ↦ hx.2]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hWc`. Establish `heq : (box C T : Set (Πʳ i, [G i, (C i : Set (G i))])) ∩ proj C T ⁻¹' E = RestrictedProduct.inclusion G (fun i ↦ (C i : Set (G i))) hS '' Z`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxb, hxE⟩`.
-
-Use `⟨⟨x.1, Filter.eventually_principal.2 fun i hi ↦ hxb i hi⟩, ⟨hxE, fun i hi ↦ hxb i hi⟩, ?_⟩` and prove the remaining obligations. Conclude with `RestrictedProduct.ext _ _ fun i ↦ rfl`. Introduce and unpack `⟨y, ⟨hyE, hyS⟩, rfl⟩`. Conclude with `⟨fun i hi ↦ hyS i hi, hyE⟩`. Rewrite using `[heq]`.
-
-Conclude with `hZc.image (RestrictedProduct.continuous_inclusion hS)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_box_inter_preimage [∀ i, IsTopologicalGroup (G i)] [∀ i, T2Space (G i)] (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (hCc : ∀ i, IsCompact (C i : Set (G i))) (T : Finset ι) {E : Set ((i : T) → G i)}
@@ -258,7 +254,7 @@ def projMeasure (μ : Measure (Πʳ i, [G i, (C i : Set (G i))])) (T : Finset ι
   (μ.restrict (box C T : Set (Πʳ i, [G i, (C i : Set (G i))]))).map (proj C T)
 
 /- English proof (translation)
-Establish `hm : Measurable (proj C T)` using `(continuous_proj C T).measurable`. Rewrite using `[projMeasure, Measure.map_apply hm hE, Measure.restrict_apply (hm hE), inter_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem projMeasure_apply (μ : Measure (Πʳ i, [G i, (C i : Set (G i))]))
     (T : Finset ι) {E : Set ((i : T) → G i)} (hE : MeasurableSet E) :
@@ -267,15 +263,15 @@ theorem projMeasure_apply (μ : Measure (Πʳ i, [G i, (C i : Set (G i))]))
   rw [projMeasure, Measure.map_apply hm hE, Measure.restrict_apply (hm hE), inter_comm]
 
 /- English proof (translation)
-Use `{ lt_top_of_isCompact := fun K hK ↦ ?_, map_mul_left_eq_self := fun a ↦ ?_, open_pos := fun U hU hne ↦ ?_ }` and prove the remaining obligations. Rewrite using `[projMeasure_apply C μ T hK.isClosed.measurableSet]`. Conclude with `(isCompact_box_inter_preimage C hCo hCc T hK).measure_lt_top`. Use extensionality with `E hE`. Rewrite using `[Measure.map_apply (measurable_const_mul a) hE, projMeasure_apply C μ T (measurable_const_mul a hE), projMeasure_apply C μ T hE]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hset : (box C T : Set (Πʳ i, [G i, (C i : Set (G i))])) ∩ proj C T ⁻¹' ((a * ·) ⁻¹' E) = (sec C T a * ·) ⁻¹' ((box C T : Set (Πʳ i, [G i, (C i : Set (G i))])) ∩ proj C T ⁻¹' E)`. Use extensionality with `x`. Simplify using `only [mem_inter_iff, mem_preimage, SetLike.mem_coe, map_mul, proj_sec]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hxE⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨(box C T).mul_mem (sec_mem_box C T a) hx, hxE⟩`. Introduce and unpack `⟨hx, hxE⟩`. Use `⟨?_, hxE⟩` and prove the remaining obligations. Use `(box C T).mul_mem ((box C T).inv_mem (sec_mem_box C T a)) hx` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `: Fact (∀ i, IsOpen (C i : Set (G i)))` using `⟨hCo⟩`. Establish `: MeasurableMul (Πʳ i, [G i, (C i : Set (G i))])` using `⟨fun c ↦ (continuous_const_mul c).measurable, fun c ↦ (continuous_mul_const c).measurable⟩`. Rewrite using `[hset, measure_preimage_mul]`. Rewrite using `[projMeasure_apply C μ T hU.measurableSet]`. Take `⟨a, ha⟩` from `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `((isOpen_box C hCo T).inter (hU.preimage (continuous_proj C T))).measure_ne_zero μ ⟨sec C T a, sec_mem_box C T a, ?_⟩` and prove the remaining obligations. Use `show proj C T (sec C T a) ∈ U`. Rewrite using `[proj_sec]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarMeasure_projMeasure (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (hCc : ∀ i, IsCompact (C i : Set (G i))) (μ : Measure (Πʳ i, [G i, (C i : Set (G i))]))
@@ -311,7 +307,7 @@ theorem isHaarMeasure_projMeasure (hCo : ∀ i, IsOpen (C i : Set (G i)))
     exact ha
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_ofPred_eq, mem_inter_iff, SetLike.mem_coe, mem_box, Finset.notMem_empty, not_false_eq_true, true_implies, mem_preimage, mem_univ, and_true]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem setOf_forall_mem_eq :
     {x : Πʳ i, [G i, (C i : Set (G i))] | ∀ i, x i ∈ C i} =
@@ -321,7 +317,7 @@ theorem setOf_forall_mem_eq :
     not_false_eq_true, true_implies, mem_preimage, mem_univ, and_true]
 
 /- English proof (translation)
-Rewrite using `[setOf_forall_mem_eq]`. Use `isCompact_box_inter_preimage C hCo hCc ∅ ?_` and prove the remaining obligations. Conclude with `Set.Subsingleton.isCompact fun a _ b _ ↦ funext fun i ↦ absurd i.2 (Finset.notMem_empty _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCompact_setOf_forall_mem (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (hCc : ∀ i, IsCompact (C i : Set (G i))) :
@@ -331,7 +327,7 @@ theorem isCompact_setOf_forall_mem (hCo : ∀ i, IsOpen (C i : Set (G i)))
   exact Set.Subsingleton.isCompact fun a _ b _ ↦ funext fun i ↦ absurd i.2 (Finset.notMem_empty _)
 
 /- English proof (translation)
-Establish `h : {x : Πʳ i, [G i, (C i : Set (G i))] | ∀ i, x i ∈ C i} = (box C ∅ : Set (Πʳ i, [G i, (C i : Set (G i))]))`. Use extensionality with `x`. Simplify using `[mem_box]`. Rewrite using `[h]`. Conclude with `(isOpen_box C hCo ∅).measure_pos μ ⟨1, (box C ∅).one_mem⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_setOf_forall_mem_pos (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (μ : Measure (Πʳ i, [G i, (C i : Set (G i))])) [μ.IsHaarMeasure] :
@@ -344,7 +340,7 @@ theorem measure_setOf_forall_mem_pos (hCo : ∀ i, IsOpen (C i : Set (G i)))
   exact (isOpen_box C hCo ∅).measure_pos μ ⟨1, (box C ∅).one_mem⟩
 
 /- English proof (translation)
-The claim follows from `ENNReal.toReal_pos (measure_setOf_forall_mem_pos C hCo μ).ne' (isCompact_setOf_forall_mem C hCo hCc).measure_lt_top.ne`.
+A detailed English derivation is pending.
 -/
 theorem measureReal_setOf_forall_mem_pos (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (hCc : ∀ i, IsCompact (C i : Set (G i))) (μ : Measure (Πʳ i, [G i, (C i : Set (G i))]))
@@ -356,17 +352,15 @@ theorem measureReal_setOf_forall_mem_pos (hCo : ∀ i, IsOpen (C i : Set (G i)))
 variable [∀ i, LocallyCompactSpace (G i)]
 
 /- English proof (translation)
-Use `isHaarMeasure_projMeasure C hCo hCc μ T` as an intermediate fact. Establish `h` using `Measure.isMulLeftInvariant_eq_smul (projMeasure C μ T) (Measure.pi fun i : T ↦ ν i)`. Use `set B : Set ((i : T) → G i) := Set.univ.pi fun i ↦ (C i : Set (G i)) with hBdef`. Establish `hB : MeasurableSet B` using `MeasurableSet.univ_pi fun i ↦ (hCo i).measurableSet`. Establish `hpi : Measure.pi (fun i : T ↦ ν i) B = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBdef, Measure.pi_pi]`. Simplify using `[hν]`. Establish `hproj : projMeasure C μ T B = μ {x : Πʳ i, [G i, (C i : Set (G i))] | ∀ i, x i ∈ C i}`. Rewrite using `[projMeasure_apply C μ T hB]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [hBdef, mem_inter_iff, mem_preimage, Set.mem_pi, mem_univ, true_implies, SetLike.mem_coe, mem_ofPred_eq, mem_box, proj_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i`. Distinguish the cases in `hi : i ∈ T`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h2 ⟨i, hi⟩`. Conclude with `h1 i hi`. Introduce `h`. Conclude with `⟨fun i _ ↦ h i, fun i ↦ h i⟩`. Establish `hc : ((projMeasure C μ T).haarScalarFactor (Measure.pi fun i : T ↦ ν i) : ℝ≥0∞) = μ {x : Πʳ i, [G i, (C i : Set (G i))] | ∀ i, x i ∈ C i}`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun m : Measure ((i : T) → G i) ↦ m B) h` as an intermediate fact. Simplify using `only [Measure.smul_apply, hpi, ENNReal.smul_def, smul_eq_mul, mul_one] at this`. Rewrite using `[← hproj, this]`. Use `conv_lhs => rw [h]`. Rewrite using `[← hc]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem projMeasure_eq (hCo : ∀ i, IsOpen (C i : Set (G i))) (hCc : ∀ i, IsCompact (C i : Set (G i)))
     (μ : Measure (Πʳ i, [G i, (C i : Set (G i))])) [μ.IsHaarMeasure] (ν : ∀ i, Measure (G i))
@@ -403,9 +397,9 @@ theorem projMeasure_eq (hCo : ∀ i, IsOpen (C i : Set (G i))) (hCc : ∀ i, IsC
   rfl
 
 /- English proof (translation)
-Establish `hb` using `(isOpen_box C hCo T).measurableSet`. Establish `hmeas : Measurable fun a : (i : T) → G i ↦ ∏ i : T, F i (a i)` using `Finset.measurable_prod _ fun i _ ↦ (hF i).comp (measurable_pi_apply i)`. Combine the equalities or inequalities in the displayed calculation. Use `setIntegral_congr_fun hb fun x hx ↦ ?_` and prove the remaining obligations. Rewrite using `[hΦ x hx, ← Finset.prod_coe_sort T]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `_ = ∫ a, ∏ i : T, F i (a i) ∂projMeasure C μ T := by`. Rewrite using `[projMeasure, integral_map (continuous_proj C T).measurable.aemeasurable hmeas.aestronglyMeasurable]`. Use `_ = _ := by`. Rewrite using `[projMeasure_eq C hCo hCc μ ν hν T, integral_smul_measure, integral_fintype_prod_eq_prod, Finset.prod_coe_sort T (fun i ↦ ∫ y, F i y ∂ν i), Complex.real_smul, measureReal_def]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_box (hCo : ∀ i, IsOpen (C i : Set (G i))) (hCc : ∀ i, IsCompact (C i : Set (G i)))
     (μ : Measure (Πʳ i, [G i, (C i : Set (G i))])) [μ.IsHaarMeasure] (ν : ∀ i, Measure (G i))
@@ -431,11 +425,9 @@ theorem setIntegral_box (hCo : ∀ i, IsOpen (C i : Set (G i))) (hCc : ∀ i, Is
           Finset.prod_coe_sort T (fun i ↦ ∫ y, F i y ∂ν i), Complex.real_smul, measureReal_def]
 
 /- English proof (translation)
-Establish `hb` using `(isOpen_box C hCo T).measurableSet`. Establish `hmeas : Measurable fun a : (i : T) → G i ↦ ∏ i : T, ‖F i (a i)‖ₑ` using `Finset.measurable_prod _ fun i _ ↦ ((hF i).comp (measurable_pi_apply i)).enorm`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_congr_fun hb fun x hx ↦ ?_` and prove the remaining obligations. Rewrite using `[hΦ x hx, ← Finset.prod_coe_sort T]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [enorm_eq_nnnorm, nnnorm_prod, ENNReal.ofNNReal_finsetProd]`. Both sides reduce to the same expression. Use `_ = ∫⁻ a, ∏ i : T, ‖F i (a i)‖ₑ ∂projMeasure C μ T := by`. Rewrite using `[projMeasure, lintegral_map hmeas (continuous_proj C T).measurable]`. Use `_ = _ := by`.
-
-Rewrite using `[projMeasure_eq C hCo hCc μ ν hν T, lintegral_smul_measure, lintegral_fintype_prod_eq_prod (fun i : T ↦ fun y ↦ ‖F i y‖ₑ) (fun i ↦ (hF i).enorm), Finset.prod_coe_sort T (fun i ↦ ∫⁻ y, ‖F i y‖ₑ ∂ν i), smul_eq_mul]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLIntegral_box (hCo : ∀ i, IsOpen (C i : Set (G i))) (hCc : ∀ i, IsCompact (C i : Set (G i)))
     (μ : Measure (Πʳ i, [G i, (C i : Set (G i))])) [μ.IsHaarMeasure] (ν : ∀ i, Measure (G i))
@@ -470,7 +462,7 @@ variable [∀ i, IsTopologicalGroup (G i)] [∀ i, T2Space (G i)] [∀ i, Second
   [MeasurableSpace (Πʳ i, [G i, (C i : Set (G i))])] [BorelSpace (Πʳ i, [G i, (C i : Set (G i))])]
 
 /- English proof (translation)
-Use `finprod_eq_prod_of_mulSupport_subset _ fun i hi ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hiT`. Conclude with `hi (hT i hiT _ (hx i hiT))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem finprod_eq_prod_of_mem_box {F : ∀ i, G i → ℂ} {T : Finset ι} (hT : ∀ i ∉ T, ∀ c ∈ C i, F i c = 1)
     {x : Πʳ i, [G i, (C i : Set (G i))]} (hx : x ∈ box C T) :
@@ -480,7 +472,7 @@ theorem finprod_eq_prod_of_mem_box {F : ∀ i, G i → ℂ} {T : Finset ι} (hT 
   exact hi (hT i hiT _ (hx i hiT))
 
 /- English proof (translation)
-Establish `h` using `Filter.eventually_cofinite.1 hF1`. Use `⟨h.toFinset, fun i hi ↦ ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `hi (h.mem_toFinset.2 hc)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_finset_of_eventually {F : ∀ i, G i → ℂ} (hF1 : ∀ᶠ i in cofinite, ∀ c ∈ C i, F i c = 1) :
     ∃ T₀ : Finset ι, ∀ i ∉ T₀, ∀ c ∈ C i, F i c = 1 := by
@@ -490,11 +482,11 @@ theorem exists_finset_of_eventually {F : ∀ i, G i → ℂ} (hF1 : ∀ᶠ i in 
   exact hi (h.mem_toFinset.2 hc)
 
 /- English proof (translation)
-Take `⟨T₀, hT₀⟩` from `exists_finset_of_eventually C hF1`. Establish `hbox : ∀ T : Finset ι, T₀ ⊆ T → ∀ x ∈ box C T, Φ x = ∏ i ∈ T, F i (x i)`. Introduce `T hT x hx`. Rewrite using `[hΦ x]`. Conclude with `finprod_eq_prod_of_mem_box C (fun i hi ↦ hT₀ i fun h ↦ hi (hT h)) hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU : ⋃ T : Finset ι, (box C T : Set (Πʳ i, [G i, (C i : Set (G i))])) = univ` using `eq_univ_of_forall fun x ↦ mem_iUnion.2 (exists_mem_box C x)`. Establish `hlim : Tendsto (fun T : Finset ι ↦ ∫ x in (box C T : Set (Πʳ i, [G i, (C i : Set (G i))])), Φ x ∂μ) atTop (𝓝 (∫ x, Φ x ∂μ))`. Use `tendsto_setIntegral_of_monotone (μ := μ) (f := Φ) (fun T ↦ (isOpen_box C hCo T).measurableSet) (fun T T' h ↦ box_mono C h) (by rw [hU]; exact hint.integrableOn)` as an intermediate fact. Rewrite `this` using `[hU, Measure.restrict_univ]`. Then use the resulting hypothesis. Establish `ha` using `(measureReal_setOf_forall_mem_pos C hCo hCc μ).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Tendsto _ atTop _`. Use `(hlim.const_mul _).congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop T₀] with T hT`. Rewrite using `[setIntegral_box C hCo hCc μ ν hν F hF T Φ (hbox T hT), ← mul_assoc, ← Complex.ofReal_mul, inv_mul_cancel₀ ha, Complex.ofReal_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasProd_integral [Countable ι] (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (hCc : ∀ i, IsCompact (C i : Set (G i))) (μ : Measure (Πʳ i, [G i, (C i : Set (G i))]))
@@ -524,7 +516,7 @@ theorem hasProd_integral [Countable ι] (hCo : ∀ i, IsOpen (C i : Set (G i)))
     Complex.ofReal_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[← setLIntegral_box C hCo hCc μ ν hν F hF T Φ fun x hx ↦ by`. Rewrite using `[hΦ x]`. Conclude with `finprod_eq_prod_of_mem_box C hT hx]`. Conclude with `setLIntegral_le_lintegral _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_prod_lintegral_le (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (hCc : ∀ i, IsCompact (C i : Set (G i))) (μ : Measure (Πʳ i, [G i, (C i : Set (G i))]))
@@ -539,7 +531,7 @@ theorem mul_prod_lintegral_le (hCo : ∀ i, IsOpen (C i : Set (G i)))
   exact setLIntegral_le_lintegral _ _
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem one_le_lintegral (ν : ∀ i, Measure (G i)) (hν : ∀ i, ν i (C i) = 1) (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (F : ∀ i, G i → ℂ) {i : ι} (h : ∀ c ∈ C i, F i c = 1) : 1 ≤ ∫⁻ y, ‖F i y‖ₑ ∂ν i := by
@@ -549,11 +541,11 @@ theorem one_le_lintegral (ν : ∀ i, Measure (G i)) (hν : ∀ i, ν i (C i) = 
     _ ≤ _ := setLIntegral_le_lintegral _ _
 
 /- English proof (translation)
-Take `⟨T₀, hT₀⟩` from `exists_finset_of_eventually C hF1`. Use `set T := insert i T₀`. Establish `hT : ∀ j ∉ T, ∀ c ∈ C j, F j c = 1` using `fun j hj ↦ hT₀ j fun h ↦ hj (Finset.mem_insert_of_mem h)`. Establish `hpos : ∀ j, ∫⁻ y, ‖F j y‖ₑ ∂ν j ≠ 0`. Introduce `j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : ∀ c ∈ C j, F j c = 1`. Conclude with `(lt_of_lt_of_le one_pos (one_le_lintegral C ν hν hCo F h)).ne'`. Conclude with `hne j h`. Establish `hle` using `mul_prod_lintegral_le C hCo hCc μ ν hν F hF hT Φ hΦ`. Establish `hfin : μ {x : Πʳ i, [G i, (C i : Set (G i))] | ∀ i, x i ∈ C i} * ∏ j ∈ T, ∫⁻ y, ‖F j y‖ₑ ∂ν j ≠ ⊤` using `(lt_of_le_of_lt hle hint.2).ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hprod : ∏ j ∈ T, ∫⁻ y, ‖F j y‖ₑ ∂ν j ≠ ⊤` using `(ENNReal.lt_top_of_mul_ne_top_right hfin (measure_setOf_forall_mem_pos C hCo μ).ne').ne`. Rewrite `hprod` using `[← Finset.mul_prod_erase T _ (Finset.mem_insert_self i T₀)]`. Establish `hi : ∫⁻ y, ‖F i y‖ₑ ∂ν i < ⊤` using `ENNReal.lt_top_of_mul_ne_top_left hprod (Finset.prod_ne_zero_iff.2 fun j _ ↦ hpos j)`. Conclude with `⟨(hF i).aestronglyMeasurable, hi⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem integrable_factor (hCo : ∀ i, IsOpen (C i : Set (G i)))
     (hCc : ∀ i, IsCompact (C i : Set (G i))) (μ : Measure (Πʳ i, [G i, (C i : Set (G i))]))

@@ -22,7 +22,7 @@ section Model
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Simplify using `[levChi, Formalism.L2.DIV.levFn, flagL, withP, LevCh.datWp, datY, LevelP.full]`. Use `first`. Consider the case `exact subgroupCharExtension_one_apply _ _`. Consider the case `(unfold Formalism.L2.DIV.ext1; exact dite_eq_right_iff.2 fun _ => rfl)`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem levChi_flag (i : Fin D.R.m) (k : GA D (Wc D i)) : levChi _ (R.βW i) (flagL (R.datWp i R.triv)) k = 1 := by
   simp [levChi, Formalism.L2.DIV.levFn, flagL, withP, LevCh.datWp, datY, LevelP.full]
@@ -31,11 +31,11 @@ theorem levChi_flag (i : Fin D.R.m) (k : GA D (Wc D i)) : levChi _ (R.βW i) (fl
     | (unfold Formalism.L2.DIV.ext1; exact dite_eq_right_iff.2 fun _ => rfl)
 
 /- English proof (translation)
-Unfold `RealDat.Wall Formalism.IndefR.Mult.Mult at hT`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx`. Establish `hx' : IsMultMap R.θ (R.MW i σ) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) x` using `hx`. Conclude with `hx'.lev v k hk g`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [MultilinearMap.add_apply, Pi.add_apply, hx, hy]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul a x _ hx`.
+Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [MultilinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, hx]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem wall_apply_mul_eq_levChi_mul_of_mem_levS {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} {T : MMap (R.MW i σ)} (hT : T ∈ R.Wall i σ)
     (v : (R.MW i σ).Vec) {k : GA D (Wc D i)} (hk : k ∈ levS _ (R.βW i) (R.datWp i R.triv)) (g : GA D (Wc D i)) :
@@ -55,7 +55,7 @@ private theorem wall_apply_mul_eq_levChi_mul_of_mem_levS {i : Fin D.R.m} {σ : D
     ring
 
 /- English proof (translation)
-Establish `hm : (R.HW i σ).e y ∈ R.Wall i σ`. Rewrite using `[← (he i σ).2.1]`. Conclude with `LinearMap.mem_range_self _ y`. Introduce `k hk h`. Conclude with `wall_apply_mul_eq_levChi_mul_of_mem_levS R hm v hk h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasType_e (he : R.models_HW) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (y : (R.HW i σ).H) (v : (R.MW i σ).Vec) :
     HasType (Wc D i) (R.βW i) (flag1L (R.datWp i R.triv)) ((R.HW i σ).e y v) := by
@@ -66,7 +66,7 @@ theorem hasType_e (he : R.models_HW) (i : Fin D.R.m) (σ : D.what₂.LL →+* �
   exact wall_apply_mul_eq_levChi_mul_of_mem_levS R hm v hk h
 
 /- English proof (translation)
-Establish `hs` using `level_action_spec (hasType_e R he i σ y v) ⟨k, hk⟩ k hk x`. Rewrite `hs` using `[levChi_flag R i k, inv_one, one_mul]`. Conclude with `hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actW_apply (he : R.models_HW) {i : Fin D.R.m} (σ : D.what₂.LL →+* ℂ) {g : G} {k : GA D (Wc D i)}
     (hk : IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k) (y : (R.HW i σ).H) (v : (R.MW i σ).Vec)
@@ -81,7 +81,7 @@ variable (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) 
   (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_mul {V W : HSp D} (h : V = W) (x y : GA D V) :
     cast (congrArg (GA D) h) (x * y) = cast (congrArg (GA D) h) x * cast (congrArg (GA D) h) y := by

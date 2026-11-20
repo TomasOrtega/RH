@@ -7,11 +7,11 @@ namespace CompanionTheory.WaveGrid
 open Formalism.FourierDecayAlt Finset
 
 /- English proof (translation)
-Introduce `i hi`. Establish `hg` using `hOK.gap i hi`. Unfold `M.Par.lo M.Par.hi at *`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `min_le_left (P.u i) (P.u' i)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `min_le_right (P.u i) (P.u' i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_max_left (P.u (i + 1)) (P.u' (i + 1))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `le_max_right (P.u (i + 1)) (P.u' (i + 1))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem interlaces_of_OK (P : M.Par) (hOK : P.OK) : I.Interlaces P.k P.u P.u' P.lo := by
   intro i hi
@@ -24,11 +24,11 @@ theorem interlaces_of_OK (P : M.Par) (hOK : P.OK) : I.Interlaces P.k P.u P.u' P.
   · have := le_max_right (P.u (i + 1)) (P.u' (i + 1)); linarith
 
 /- English proof (translation)
-Establish `hu` using `Formalism.FourierDecayAlt.P.Interlace.antitone_on (Formalism.FourierDecayAlt.P.Interlace.u_step h)`. Establish `hu'` using `Formalism.FourierDecayAlt.P.Interlace.antitone_on (Formalism.FourierDecayAlt.P.Interlace.u_step (Formalism.FourierDecayAlt.P.Interlace.interlaces_swap h))`. Introduce `i hi1 hik`. Break down `lt_trichotomy i l with hil | rfl | hil` into its components or cases. Take `⟨a, b, c, d⟩` from `h i (mem_Icc.2 ⟨hi1, by omega⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hu' (i + 1) l (by omega) (by omega) hlk`. Conclude with `⟨le_abs.2 (Or.inl (by linarith)), le_abs.2 (Or.inl (by linarith))⟩`. Conclude with `⟨le_abs.2 (Or.inr (by linarith)), le_abs.2 (Or.inl (by linarith))⟩`. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Take `⟨a, b, c, d⟩` from `h j (mem_Icc.2 ⟨by omega, by omega⟩)`.
+Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hu l j hl1 (by omega) (by omega)`. Conclude with `⟨le_abs.2 (Or.inr (by linarith)), le_abs.2 (Or.inr (by linarith))⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem den_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 ≤ l) (hlk : l ≤ k)
     (h : I.Interlaces k u u' ρ) (hA : u l + 2 ≤ -Y ∧ -Y ≤ u' l - 2) :
@@ -48,7 +48,7 @@ theorem den_core (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 
     exact ⟨le_abs.2 (Or.inr (by linarith)), le_abs.2 (Or.inr (by linarith))⟩
 
 /- English proof (translation)
-Break down `hc with hA | hB` into its components or cases. Conclude with `den_core k u u' ρ l Y hl1 hlk h hA`. Introduce `i hi1 hik`. Conclude with `(den_core k u' u ρ l Y hl1 hlk (Formalism.FourierDecayAlt.P.Interlace.interlaces_swap h) hB i hi1 hik).symm`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem den_onCut (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 ≤ l) (hlk : l ≤ k)
     (h : I.Interlaces k u u' ρ) (hc : I.OnCut u u' l Y) :
@@ -59,7 +59,7 @@ theorem den_onCut (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1
     exact (den_core k u' u ρ l Y hl1 hlk (Formalism.FourierDecayAlt.P.Interlace.interlaces_swap h) hB i hi1 hik).symm
 
 /- English proof (translation)
-Rewrite `hu`, `hu'`, the goal using `[abs_le]`. Apply the tactic sequence `rcases hc with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> constructor <;> linarith`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_le_of_onCut (u u' : ℕ → ℝ) (l : ℕ) (Y b : ℝ) (hc : I.OnCut u u' l Y) (hu : |u l| ≤ b)
     (hu' : |u' l| ≤ b) : |Y| ≤ b := by
@@ -67,7 +67,7 @@ theorem abs_le_of_onCut (u u' : ℕ → ℝ) (l : ℕ) (Y b : ℝ) (hc : I.OnCut
   rcases hc with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> constructor <;> linarith
 
 /- English proof (translation)
-Rewrite using `[← abs_of_pos hq]`. Unfold `I.qpoly`. Rewrite using `[abs_mul, abs_neg, abs_of_pos (mul_pos hT hT'), Finset.abs_prod]`. Simplify using `only [abs_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qpoly_eq_of_pos (k : ℕ) (T T' : ℝ) (u u' : ℕ → ℝ) (Y : ℝ) (hT : 0 < T) (hT' : 0 < T')
     (hq : 0 < I.qpoly k T T' u u' Y) :
@@ -100,15 +100,13 @@ noncomputable def P₀ : M.Par where
 noncomputable def lam₀ : ℕ → ℝ := fun s => if s = 1 then 10 else 0
 
 /- English proof (translation)
-Use `show 1 ≤ 2; norm_num T_pos := by show (0 : ℝ) < 1; norm_num T'_pos := by show (0 : ℝ) < 1; norm_num int_u := by`. Introduce `i hi`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hi`. Establish `h2' : i ≤ 2` using `h2`. Use `interval_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, by simp [P₀]⟩`. Conclude with `⟨-20, by simp [P₀]⟩`. Use the proof step `int_u' := by`. Introduce `i hi`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `h2' : i ≤ 2` using `h2`. Use `interval_cases i`. Conclude with `⟨20, by simp [P₀]; norm_num⟩`. Conclude with `⟨-20, by simp [P₀]⟩`. Use `gap := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Introduce `i hi`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hi`. Establish `h2' : i ≤ 1` using `h2`. Use `interval_cases i`. Simplify using `only [M.Par.lo, M.Par.hi, P₀]`.
-
-Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem P₀_OK : P₀.OK where
   k_pos := by show 1 ≤ 2; norm_num
@@ -137,13 +135,11 @@ theorem P₀_OK : P₀.OK where
     norm_num
 
 /- English proof (translation)
-Evaluate the numerical expressions using `g_ge := by norm_num b_ge_three := by norm_num b_ge_k := by show ((2 : ℕ) : ℝ) ≤ 40; norm_num b_ge_c := by norm_num lam_le := by`. Introduce `s _ _`. Unfold `lam₀`. Apply the tactic sequence `split_ifs <;> norm_num`. Use `gap := by`.
+Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s h1 h2`. Establish `: P₀.k = 2` using `rfl`. Use linear arithmetic over natural numbers and integers. Use `inter := by`. Introduce `s h1 h2`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2' : s ≤ 1` using `h2`. Use `interval_cases s`. Simplify using `only [lam₀, P₀]`. Evaluate the numerical expressions. Use `u_le := by`.
-
-Introduce `i h1 h2`. Establish `h2' : i ≤ 2` using `h2`. Apply the tactic sequence `interval_cases i <;> simp [P₀] <;> norm_num`.
+Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lamData₀ : LamData P₀ lam₀ 1 2 40 where
   c_pos := by norm_num
@@ -171,11 +167,11 @@ theorem lamData₀ : LamData P₀ lam₀ 1 2 40 where
     interval_cases i <;> simp [P₀] <;> norm_num
 
 /- English proof (translation)
-Establish `hρ` using `interlaces_of_OK P hOK`. Establish `hq` using `Formalism.FourierDecayAlt.P.q_positive_interlacing P.k P.u P.u' P.lo l Y P.T P.T' hl1 hlk hρ hY hOK.T_pos hOK.T'_pos`. Establish `hTT : 0 < P.T * P.T'` using `mul_pos hOK.T_pos hOK.T'_pos`. Rewrite using `[qC_ofReal, Complex.ofReal_re]`. Use `⟨hq, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hden` using `den_onCut P.k P.u P.u' P.lo l Y hl1 hlk hρ hY`. Establish `hYb : |Y| ≤ b` using `abs_le_of_onCut P.u P.u' l Y b hY (hL.u_le l hl1 hlk).1 (hL.u_le l hl1 hlk).2`. Establish `hmain` using `GroundTheory.BlockD.FourierDecayAlt.WaveGridLiftGrid.pst_mul_le P.k P.r lam P.u P.u' 0 0 c g b Y hk hL.c_pos.le hL.g_ge hL.b_ge_three hL.b_ge_k hL.b_ge_c hYb hL.lam_le hL.gap (GroundTheory.BlockD.FourierDecayAlt.WaveGridLiftGrid.pairOK_of_interlace P.k lam P.u 0 (-Y) fun s h1 h2 …`. Rewrite using `[qpoly_eq_of_pos P.k P.T P.T' P.u P.u' Y hOK.T_pos hOK.T'_pos hq]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[div_mul_eq_mul_div, eq_div_iff hTT.ne']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nq_onCut (P : M.Par) (hOK : P.OK) (l : ℕ) (hl1 : 1 ≤ l) (hlk : l ≤ P.k) (hk : 2 ≤ P.k)
     (lam : ℕ → ℝ) (c g b : ℝ) (hL : LamData P lam c g b) (Y : ℝ) (hY : I.OnCut P.u P.u' l Y) :
@@ -202,7 +198,7 @@ theorem nq_onCut (P : M.Par) (hOK : P.OK) (l : ℕ) (hl1 : 1 ≤ l) (hlk : l ≤
       ring
 
 /- English proof (translation)
-The claim follows from `nq_onCut P₀ P₀_OK 1 le_rfl (by show 1 ≤ 2; norm_num) (by show 2 ≤ 2; norm_num) lam₀ 1 2 40 lamData₀ (-30) (Or.inl ⟨by simp [P₀]; norm_num, by simp [P₀]; norm_num⟩)`.
+A detailed English derivation is pending.
 -/
 theorem nq_onCut_neg_thirty :
     0 < (M.qC P₀ ((-30 : ℝ) : ℂ)).re ∧

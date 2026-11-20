@@ -8,7 +8,7 @@ open MeasureTheory Matrix
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.OrbDesc.NSum.finsum_conj_eq_zero) | (exact GlobalTheory.OrbDesc.NSum.finsum_conj_eq_zero) | (intros; apply GlobalTheory.OrbDesc.NSum.finsum_conj_eq_zero <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.finsum_unipotentConj_eq_zero_of_constantTerm_zero : ∀ (K : Type) [Field K] [TopologicalSpace K] [IsTopologicalRing K] [LocallyCompactSpace K] [MeasurableSpace K] [BorelSpace K]
   (ι : Type) [Fintype ι] [DecidableEq ι] (a b : ℕ) (e : ι ≃ Fin a ⊕ Fin b) (f : GL ι K → ℂ),

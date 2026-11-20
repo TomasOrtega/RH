@@ -10,9 +10,9 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.ProdFormula
 
 /- English proof (translation)
-Introduce `F _ _ ι _ _ A hA`. Take `⟨cinf, c, hU, hinf, hv⟩` from `GlobalTheory.T.global_unit_scaling_haar_product_formula F A.det hA`. Use `⟨cinf, c, hU, ?_, ?_⟩` and prove the remaining obligations. Introduce `μ hμ haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Conclude with `GlobalTheory.T.haar_map_linear_scaling_by_determinant F (Ainf F) ι A hA Measure.addHaar inferInstance cinf (hinf Measure.addHaar inferInstance) μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v μ hμ haveI : BorelSpace (Fv F v) := ⟨rfl⟩ haveI : SecondCountableTopology (Fv F v) := (GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v).2.2.1`. Conclude with `GlobalTheory.T.haar_map_linear_scaling_by_determinant F (Fv F v) ι A hA Measure.addHaar inferInstance (c v) (hv v Measure.addHaar inferInstance) μ hμ`.
+A detailed English derivation is pending.
 -/
 theorem modulus_matrix : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι] (A : Matrix ι ι F), A.det ≠ 0 → ∃ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c ∧ (∀ μ : Measure (ι → Ainf F), μ.IsAddHaarMeasure → μ.map (fun x => A.map (algebraMap F (Ainf F)) *ᵥ x) = cinf • μ) ∧ ∀ v : HeightOneSpectrum (𝓞 F), (∀ μ : Measure (ι → Fv F v), μ.IsAddHaarMeasure → μ.map (fun x => A.map (algebraMap F (Fv F v)) *ᵥ x) = c v • μ) := by
   intro F _ _ ι _ _ A hA

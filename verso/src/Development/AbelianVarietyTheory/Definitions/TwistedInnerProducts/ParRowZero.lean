@@ -99,7 +99,7 @@ def GoodRows : Prop := ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 T :
     PiTensorProduct.lift t ∈ Rows R.toLevCh R.θ (R.MY 0)
 
 /- English proof (translation)
-The claim follows from `funext fun τ => congrArg dualPar (parV_zero D C (Nat.zero_le _) τ)`.
+A detailed English derivation is pending.
 -/
 theorem parRow_zero (D : D7) (C : ℝ) : parRow D C 0 = parB (Ptw D) 0 :=
   funext fun τ => congrArg dualPar (parV_zero D C (Nat.zero_le _) τ)

@@ -46,11 +46,11 @@ def heckeL (ϖ : v.adicCompletion F) : Set (GL (Fin n) (v.adicCompletion F)) :=
     Valued.v x.1.det = Valued.v ϖ ^ k}
 
 /- English proof (translation)
-Use `⟨1, fun a b => ?_, fun a b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[dg_val, Matrix.diagonal_apply] split_ifs with hab`. Rewrite using `[Pi.mulSingle_apply] split_ifs`. Simplify using `using hϖO`. Simplify using `using one_mem (Ov F v)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `zero_mem _`. Rewrite using `[← map_inv, dg_val, Matrix.diagonal_apply] split_ifs with hab`. Rewrite using `[Pi.inv_apply, Pi.mulSingle_apply] split_ifs`. Simplify `one_mem (Ov F v)` using `[h0]`. Simplify using `using hϖO`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero]`. Conclude with `zero_mem _`. Rewrite using `[dg_val, Matrix.det_diagonal, ← Units.coe_prod, Finset.prod_pi_mulSingle']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem single_mem {ϖ : v.adicCompletion F} (h0 : ϖ ≠ 0) (hϖO : ϖ ∈ Ov F v) (i : Fin n) :
     dg (Pi.mulSingle i (Units.mk0 ϖ h0)) ∈ heckeL (n := n) ϖ := by
@@ -74,17 +74,15 @@ theorem single_mem {ϖ : v.adicCompletion F} (h0 : ϖ ≠ 0) (hϖO : ϖ ∈ Ov F
     simp
 
 /- English proof (translation)
-Establish `h0 : ϖ ≠ 0` using `(GlobalTheory.SplitPlace.unif_facts hϖ).1`. Use `set S := ((GLint (Fin n) (Ov F v) : Set (GL (Fin n) (v.adicCompletion F))) ∪ heckeL ϖ ∪ {x | x⁻¹ ∈ heckeL ϖ}) with hS`. Use `set M := (Submonoid.closure S).comap (dg (v := v) (n := n)) with hM`. Establish `hz : ∀ i (z : ℤ), Pi.mulSingle i (Units.mk0 ϖ h0 ^ z) ∈ M`. Introduce `i z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmz` using `map_zpow (MonoidHom.mulSingle (fun _ : Fin n => (v.adicCompletion F)ˣ) i) (Units.mk0 ϖ h0) z`. Simplify using `only [MonoidHom.mulSingle_apply] at hmz`. Rewrite using `[hmz]`. Establish `m1 : Pi.mulSingle i (Units.mk0 ϖ h0) ∈ M` using `Submonoid.subset_closure (Or.inl (Or.inr (single_mem h0 hϖO i)))`. Establish `m2 : (Pi.mulSingle i (Units.mk0 ϖ h0))⁻¹ ∈ M`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Submonoid.subset_closure (Or.inr ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(dg _)⁻¹ ∈ heckeL ϖ`. Rewrite using `[map_inv, inv_inv]`. Conclude with `single_mem h0 hϖO i`. Break down `z with m | m` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Int.ofNat_eq_coe, zpow_natCast]`. Conclude with `pow_mem m1 m`. Rewrite using `[zpow_negSucc, ← inv_pow]`. Conclude with `pow_mem m2 _`. Take `⟨a, -, k₁, hk₁, k₂, hk₂, e⟩` from `Formalism.UG.Final.CartanDecomp F v n ϖ hϖO hϖ g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : (fun i => Units.mk0 ϖ h0 ^ a i) ∈ M`. Rewrite using `[← Finset.univ_prod_mulSingle (fun i => Units.mk0 ϖ h0 ^ a i)]`. Conclude with `Submonoid.prod_mem M fun i _ => hz i (a i)`. Establish `hg : g = k₁ * dg (fun i => Units.mk0 ϖ h0 ^ a i) * k₂`. Use `Units.ext ?_` and prove the remaining obligations.
-
-Rewrite using `[Units.val_mul, Units.val_mul, dg_val, e]`. Use `congr 2`. Simplify using `[diagPow, Units.val_zpow_eq_zpow_val]`. Rewrite using `[hg]`. Conclude with `mul_mem (mul_mem (Submonoid.subset_closure (Or.inl (Or.inl hk₁))) hu) (Submonoid.subset_closure (Or.inl (Or.inl hk₂)))`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_closure {ϖ : v.adicCompletion F} (hϖ : IsUnifV F v ϖ) (hϖO : ϖ ∈ Ov F v)
     (g : GL (Fin n) (v.adicCompletion F)) :
@@ -132,19 +130,19 @@ namespace GlobalTheory.SplitCartanGen
 open Formalism.UG GlobalTheory.SplitPlace
 
 /- English proof (translation)
-Introduce `D V P e ϖ he hP hP2 h _ hs`. Take `⟨v, π, s, h1, h2, h3, h4, h5⟩` from `GlobalTheory.SplitCoord.exists_coord e he.1`. Take `⟨B, hB⟩` from `GlobalTheory.SplitLatBasis.exists_basis V e v π s he.1.1 h2 h3 h4 (GlobalTheory.LatDual.lamHat_selfDual_and_module V).2`. Take `⟨hex, hinj⟩` from `comp_bij (V := V) (B := B) he.1 h1 h2`. Establish `hK` using `fun g => K_iff (g := g) he.1 h2 h3 hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu` using `isUnif he h4 h5 ϖ hP hP2`. Establish `hH` using `hecke_iff he.1 h1 h2 h3 h4 hB (unif_facts hu).1`. Establish `hloc` using `local_closure hu (unif_facts hu).2 (comp V π B h)`. Establish `s1 : Formalism.L2.Theta.SuppAt e V 1`. Rewrite using `[suppAt_iff, mt_one, sub_self, smul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-It suffices to establish `key : ∀ a ∈ Submonoid.closure ((GLint (Fin V.rank) (Ov D.host.F v) : Set (GL (Fin V.rank) (Fv D.host.F v))) ∪ heckeL (π (finPart D (incA D (ϖ : D.host.E)))) ∪ {x | x⁻¹ ∈ heckeL (π (finPart D (incA D (ϖ : D.host.E))))}), ∀ g, Formalism.L2.Theta.SuppAt e V g → comp V π B g = a → g …`. Introduce `a ha`. Proceed by induction on `ha using Submonoid.closure_induction with`. Consider the case `mem x hx`. Introduce `g hg hgx`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Submonoid.subset_closure` to reduce the goal to its premises. Break down `hx with (hx | ⟨k, hx⟩) | ⟨k, hx⟩` into its components or cases. Conclude with `Or.inl (Or.inl ⟨(hK g hg).2 (hgx ▸ hx), hg⟩)`. Conclude with `Or.inl (Or.inr ⟨k, (hH k g).2 ⟨hg, hgx ▸ hx⟩⟩)`. Use `Or.inr ⟨k, (hH k g⁻¹).2 ⟨suppAt_inv hg, ?_⟩⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_inv, hgx]`. Conclude with `hx`. Consider the case `one`. Introduce `g hg hg1`. Establish `: g = 1` using `hinj _ _ hg s1 (by rw [hg1, map_one])`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `one_mem _`. Consider the case `mul x y _ _ ihx ihy`. Introduce `g hg hgxy`. Take `⟨gx, sx, rfl⟩` from `hex x`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨gy, sy, rfl⟩` from `hex y`. Establish `: g = gx * gy` using `hinj _ _ hg (suppAt_mul sx sy) (by rw [hgxy, map_mul])`. Rewrite using `[this]`. Conclude with `mul_mem (ihx gx sx rfl) (ihy gy sy rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp_mem_closure : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E) (e : AE D) (ϖ : 𝓞 D.host.E), Formalism.L2.NTheta.IsIdemAt e P → ϖ ∈ P.asIdeal →
     ϖ ∉ P.asIdeal ^ 2 → ∀ h ∈ GfC V, Formalism.L2.Theta.SuppAt e V h →

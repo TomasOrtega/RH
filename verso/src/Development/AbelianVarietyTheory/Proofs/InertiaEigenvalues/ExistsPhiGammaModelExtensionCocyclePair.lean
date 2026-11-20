@@ -16,13 +16,13 @@ open scoped LaurentSeries PowerSeries
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Take `⟨f, hf, hfe⟩` from `LinearMap.exists_extend_of_notMem (0 : LinearMap.range a →ₗ[k] k) he 1`. Establish `hfs : Function.Surjective f` using `fun c => ⟨c • e, by simp [hfe]⟩`. Establish `hle : LinearMap.range a ≤ LinearMap.ker f` using `fun x hx => by`. Simplify using `using LinearMap.congr_fun hf ⟨x, hx⟩`. Establish `h1` using `f.finrank_range_add_finrank_ker`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h1` using `[LinearMap.range_eq_top.2 hfs]`. Establish `h2` using `LinearMap.finrank_range_of_inj ha`. Simplify using `only [finrank_top, Module.finrank_self, Module.finrank_fin_fun] at h1 h2`. Establish `heq : LinearMap.range a = LinearMap.ker f` using `Submodule.eq_of_le_of_finrank_eq hle (by omega)`. Use `⟨LinearMap.pi fun _ => f, fun x => ?_, funext fun _ => hfe, fun y => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ ↔ x ∈ LinearMap.range a`. Rewrite using `[heq, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrFun h 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `funext fun _ => h`. Take `⟨x, hx⟩` from `hfs (y 0)`. Conclude with `⟨x, funext fun j => by rw [Subsingleton.elim j 0]; exact hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_proj {m m' : ℕ} (hm : m' = m + 1) (a : (Fin m → k) →ₗ[k] (Fin m' → k)) (e : Fin m' → k)
     (ha : Function.Injective a) (he : e ∉ LinearMap.range a) :
@@ -47,16 +47,16 @@ theorem exists_proj {m m' : ℕ} (hm : m' = m + 1) (a : (Fin m → k) →ₗ[k] 
     exact ⟨x, funext fun j => by rw [Subsingleton.elim j 0]; exact hx⟩
 
 /- English proof (translation)
-Rewrite using `[mem_sh_iff_smul_mem, mem_sh_iff_smul_mem, ← map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_sh_comap {a b : ℕ} (φ : Vc k a →ₗ[k⸨X⸩] Vc k b) (N : Submodule k⟦X⟧ (Vc k b)) (s : ℤ) (x : Vc k a) :
     x ∈ sh s (N.comap (φ.restrictScalars k⟦X⟧)) ↔ φ x ∈ sh s N := by
   rw [mem_sh_iff_smul_mem, mem_sh_iff_smul_mem, ← map_smul]; rfl
 
 /- English proof (translation)
-Proceed by induction on `f using Polynomial.induction_on generalizing x with`. Consider the case `C c`. Simplify using `only [Polynomial.aeval_C, Module.algebraMap_end_apply]`. Conclude with `N.smul_of_tower_mem c hx`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, LinearMap.add_apply]`. Conclude with `N.add_mem (hp x hx) (hq x hx)`. Consider the case `monomial m c ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, Module.End.mul_apply]`. Conclude with `ih _ ((condC_iff_nab_mem g N).1 hN x hx)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_nab_mem {a : ℕ} (g : Vc k a →ₗ[k] Vc k a) (N : Submodule k⟦X⟧ (Vc k a)) (hN : CondC g N)
     (f : Polynomial k) (x : Vc k a) (hx : x ∈ N) : Polynomial.aeval (nab g) f x ∈ N := by
@@ -72,7 +72,7 @@ theorem aeval_nab_mem {a : ℕ} (g : Vc k a →ₗ[k] Vc k a) (N : Submodule k�
     exact ih _ ((condC_iff_nab_mem g N).1 hN x hx)
 
 /- English proof (translation)
-Apply `Module.End.aeval_apply_of_mem_apply_eq_smul` to reduce the goal to its premises. Rewrite using `[nab_apply_eq, hu, sub_self, smul_zero, zero_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_nab_fixed {a : ℕ} (g : Vc k a →ₗ[k] Vc k a) (f : Polynomial k) (u : Vc k a) (hu : g u = u) :
     Polynomial.aeval (nab g) f u = f.eval 0 • u := by
@@ -80,51 +80,45 @@ theorem aeval_nab_fixed {a : ℕ} (g : Vc k a →ₗ[k] Vc k a) (f : Polynomial 
   rw [nab_apply_eq, hu, sub_self, smul_zero, zero_smul]
 
 /- English proof (translation)
-Introduce `k G _ _ l n _ _ _ R F r Dt M h1 h2 h3 A z hz`. Take `⟨E, NE, ⟨hm, a, e, ha, hai, he, hez⟩, hNE⟩` from `hz`. Take `⟨p, hex, hpe, hps⟩` from `exists_proj hm a e hai he`. Establish `hpa : ∀ y, p (a y) = 0` using `hex.apply_apply_eq_zero`. Establish `hp : IsHom E (chr 1) p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ x`. Take `⟨y, hy⟩` from `(hex (x - p x 0 • e)).1 (by`. Rewrite using `[map_sub, map_smul, hpe]`. Use function extensionality and compare the values at `j`. Rewrite using `[Subsingleton.elim j 0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Establish `hx : x = a y + p x 0 • e` using `by rw [hy]; abel`. Establish `h : p (E.ρ σ x) = p x` using `by conv_lhs => rw [hx] conv_rhs => rw [hx]`. Rewrite using `[map_add, map_smul, ← ha, hez]`. Simplify using `only [map_add, map_smul, hpa, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `_ = (((1 : G →* kˣ) σ : kˣ) : k) • p x`. Simplify using the standard rewrite rules. Take `⟨oE, -, hAB, hC⟩` from `GlobalTheory.T.obj_and_abc_of_model F M E NE hNE`. Establish `oA` using `F.obj_sub A E a ha hai oE`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `o1` using `F.obj_one`. Establish `hq : M.Model (chr 1) (F.push E (chr 1) p NE)` using `GlobalTheory.Models.ModTh.model_push_of_surjective F M E (chr 1) p NE hp hps hNE`. Establish `hq' : ∀ χ : G →* kˣ, χ = 1 → M.Model (chr χ) (F.push E (chr 1) p NE)`. Introduce and unpack `_ rfl`. Conclude with `hq`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpush : ∀ i, F.push E (chr 1) p NE i = Submodule.span k⟦X⟧ {F.unit i}` using `fun i => by`. Rewrite using `[← M.χ_zero i]`. Conclude with `congrFun (GlobalTheory.T.twistedPhiGammaModel_character_eq_standard F M h1 h2 h3 0 le_rfl (by exact_mod_cast Dt.one_le_letterBlockLength) _ (hq' _ (by simp))) i`. Establish `hε : ∀ i, ∃ ε ∈ NE i, F.map E (chr 1) p i ε = F.unit i` using `fun i => by`. Establish `: F.unit i ∈ F.push E (chr 1) p NE i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpush]`. Conclude with `Submodule.mem_span_singleton_self _`. Conclude with `this`. Use `choose ε hεN hεp using hε`. Establish `hD` using `GlobalTheory.Models.DFun.map_exact_middle F A E (chr 1) a p oE ha hp hai hps hex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `F.map_inj A E a oA oE ha hai`. Establish `aφ` using `F.map_φ A E a oA oE ha`. Establish `aγ` using `F.map_γ A E a oA oE ha`. Establish `pφ` using `F.map_φ E (chr 1) p oE o1 hp`. Establish `pγ` using `F.map_γ E (chr 1) p oE o1 hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hb : ∀ i, ∃ b, F.map A E a i b = (F.D E).φ i (ε (i - 1)) - ε i` using `fun i => (hD i _).1 (by rw [map_sub, pφ, hεp, hεp, F.unit_φ, sub_self])`. Establish `hg : ∀ i, ∃ g, F.map A E a i g = (F.D E).γ i (ε i) - ε i` using `fun i => (hD i _).1 (by rw [map_sub, pγ, hεp, F.unit_γ, sub_self])`. Use `choose b hb using hb`. Use `choose g hg using hg`. Use `⟨F.pre A E a NE, b, g, GlobalTheory.T.model_preimage_of_injective_finDimRepModelHom F M A E a NE ha hai hNE, ⟨E, a, p, e, ε, oE, ha, hp, hai, hex, hpe, hez, fun i => ⟨hεp i, hb i, hg i⟩⟩, fun i => ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj i` to reduce the goal to its premises. Rewrite using `[map_sub, map_sub, aφ, aγ, hb, hg, hg, map_sub, map_sub, (F.D E).comm]`. Normalize the expressions using the abelian group laws. Use `(mem_sh_comap _ _ _ _).2 ?_` and prove the remaining obligations. Rewrite using `[hg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hC i _ (hεN i)`. Introduce `_`. Use `(mem_sh_comap _ _ _ _).2 ?_` and prove the remaining obligations. Rewrite using `[hb]`. Establish `hw : 1 ≤ Dt.w i` using `(Dt.range i (Dt.w i) (Multiset.mem_add.2 (Or.inr (mem_block.2 ⟨le_rfl, by have := Dt.one_le_letterBlockLength; omega⟩)))).1`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `Submodule.sub_mem _ ((hAB i).1 (Submodule.subset_span ⟨_, hεN _, rfl⟩)) ?_` and prove the remaining obligations. Apply `sh_le_sh_of_le (a := 0) (by omega)` to reduce the goal to its premises. Rewrite using `[sh_zero_eq]`. Conclude with `hεN i`. Introduce `hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Establish `hdec : ∀ y ∈ pull ((F.D E).φ i) (NE (i - 1)), ∃ m ∈ pull ((F.D A).φ i) (F.pre A E a NE (i - 1)), ∃ c : k⸨X⸩, y = F.map A E a i m + c • (F.D E).φ i (ε (i - 1))`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx, rfl⟩` from `hy`. Establish `h4 : F.map E (chr 1) p (i - 1) x ∈ F.push E (chr 1) p NE (i - 1)` using `⟨x, hx, rfl⟩`. Rewrite `h4` using `[hpush, Submodule.mem_span_singleton]`. Take `⟨c, hc⟩` from `h4`. Take `⟨m, hm⟩` from `(hD (i - 1) (x - c • ε (i - 1))).1 (by`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_sub, LinearMap.map_smul_of_tower, hεp, hc, sub_self])`. Establish `hmN : m ∈ F.pre A E a NE (i - 1)`. Express the relevant statement in the definitionally equal form `F.map A E a (i - 1) m ∈ NE (i - 1)`. Rewrite using `[hm]`. Conclude with `Submodule.sub_mem _ hx (Submodule.smul_mem _ _ (hεN _))`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(F.D A).φ i m, Submodule.subset_span ⟨m, hmN, rfl⟩, R.φ (algebraMap k⟦X⟧ k⸨X⸩ c), ?_⟩` and prove the remaining obligations. Rewrite using `[aφ, hm, ← (F.D E).φ_semi i, algebraMap_smul, ← map_add, sub_add_cancel]`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, 0, by simp⟩`. Consider the case `add y y' _ _ hy hy'`. Take `⟨m, hm, c, rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m', hm', c', rfl⟩` from `hy'`. Conclude with `⟨m + m', Submodule.add_mem _ hm hm', c + c', by rw [map_add, add_smul]; abel⟩`. Consider the case `smul d y _ hy`. Take `⟨m, hm, c, rfl⟩` from `hy`. Use `⟨d • m, Submodule.smul_mem _ _ hm, d • c, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add, LinearMap.map_smul_of_tower, smul_assoc]`. Take `⟨m, hm, c, hc⟩` from `hdec _ ((hAB i).2 (mem_sh_iff_exists.2 ⟨_, hεN i, rfl⟩))`. Establish `h5` using `congrArg (F.map E (chr 1) p i) hc`. Rewrite `h5` using `[map_smul, map_add, map_smul, pφ, hεp, hεp, F.unit_φ, (hD i).apply_apply_eq_zero, zero_add]`. Establish `h6 : vv k ^ Dt.wst i = c` using `smul_left_injective _ (F.unit_ne i) h5`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mem_sh_iff_smul_mem, neg_neg]`. Establish `h7 : vv k ^ Dt.wst i • b i = -m`. Apply `hinj i` to reduce the goal to its premises. Rewrite using `[map_smul, hb, smul_sub, hc, h6, map_neg]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h7]`. Conclude with `Submodule.neg_mem _ hm`. Take `⟨f, hf, hfN⟩` from `GlobalTheory.Models.EPolyModel.model_ePoly F M h1 h3 E NE hNE i hi`. Take `⟨x, hx⟩` from `(hD i (ε i - (f.eval 0)⁻¹ • Polynomial.aeval (nab ((F.D E).γ i)) f (ε i))).1 (by`. Rewrite using `[map_sub, LinearMap.map_smul_of_tower, EPolyModel.map_aeval_nab (F.map E (chr 1) p i) _ _ (pγ i), hεp, aeval_nab_fixed _ _ _ (F.unit_γ i), smul_smul, inv_mul_cancel₀ hf, one_smul, sub_self])`.
-
-Use `⟨x, ?_, (mem_sh_comap _ _ _ _).2 ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F.map A E a i x ∈ NE i`. Rewrite using `[hx]`. Conclude with `Submodule.sub_mem _ (hεN i) (Submodule.smul_of_tower_mem _ _ (aeval_nab_mem _ _ (hC i) f _ (hεN i)))`. Establish `h4` using `hfN _ (hεN i) set y := Polynomial.aeval (nab ((F.D E).γ i)) f (ε i)`.
-
-Establish `h5 : (F.D E).γ i y - y ∈ sh (Dt.wst i + 2) (NE i)`. Rewrite using `[show Dt.wst i + 2 = 1 + (Dt.wst i + 1) by ring, ← sh_sh_eq, mem_sh_iff_smul_mem, zpow_neg_one]`. Conclude with `h4`. Establish `h6 : F.map A E a i (g i - ((F.D A).γ i x - x)) = (f.eval 0)⁻¹ • ((F.D E).γ i y - y)`. Rewrite using `[map_sub, map_sub, aγ, hg, hx, map_sub, map_smul, smul_sub]`.
-
-Normalize the expressions using the abelian group laws. Rewrite using `[h6]`. Conclude with `Submodule.smul_of_tower_mem _ _ h5`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_model_repr_inZZ : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n]
     {R : RingPG k l} (F : DFun R n G) {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt), Dt.T1 l → Dt.T2 l → Dt.T3 l →

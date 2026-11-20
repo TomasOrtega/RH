@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace UpperTheory.One.M.B
 
 /- English proof (translation)
-Distinguish the cases in `h : p`. Establish `h1` using `fixOne L n a S hS s f hf hf0 (fun κ x y z => hff κ x y fun _ => z) σ hσ`. Conclude with `GlobalTheory.AVGood.good_of_fixed_KOne UpperTheory.Zero.LLC.Pr.zel (hp h) _ (GlobalTheory.LocLanglands.fixed_ne_bot_of_equiv (GlobalTheory.SmGL.IrrRep.nonempty_equiv_rep σ).some.symm h1)`. Conclude with `GlobalTheory.AVGood.good_of_isSpherical UpperTheory.Zero.LLC.Pr.bz _ (GlobalTheory.LocLanglands.fixed_ne_bot_of_equiv (GlobalTheory.SmGL.IrrRep.nonempty_equiv_rep σ).some.symm (fixSph L n a S hS s f hf hf0 (fun κ x y => hff κ x y fun z => absurd z h) σ hσ))`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem good_of_fix {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (a : NG.AlgWt L n) (S : Submodule ℂ (GAf L n → a.W))
     (hS : NG.IsIrrRep a.ρ S) (s : SplitPlace L) {p : Prop}

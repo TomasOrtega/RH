@@ -23,9 +23,9 @@ abbrev rest (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) : Submodule LL (T.V �
   ⨆ (τ' : K →ₐ[Qp] LL) (_ : τ' ≠ τ), DdRE PD T.ρ τ'
 
 /- English proof (translation)
-Proceed by induction on `b, hab using Int.le_induction with`. Consider the case `base => rfl`. Consider the case `succ b hb ih`. Establish `hn` using `hj b hb (by omega)`. Unfold `IsJumpV at hn`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hn` using `[not_not]`. Rewrite using `[hn, ih fun i h1 h2 => hj i h1 (by omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fildR_gap (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) (a b : ℤ) (hab : a ≤ b)
     (hj : ∀ i, a ≤ i → i < b → ¬ IsJumpV PD T.ρ τ i) : FildR PD T.ρ τ b = FildR PD T.ρ τ a := by
@@ -38,9 +38,9 @@ theorem fildR_gap (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) (a b : ℤ) (hab
     rw [hn, ih fun i h1 h2 => hj i h1 (by omega)]
 
 /- English proof (translation)
-Establish `h0 : FildR PD T.ρ τ a = ⊥`. Use `(Submodule.eq_bot_iff _).2 fun w hw => CrystallineExponents.filV_sep PD (LL := LL) w fun b => ?_` and prove the remaining obligations. Break down `le_total a b with h | h` into its components or cases. Rewrite `hw` using `[← fildR_gap T τ a b h fun i h1 _ => hj i h1]`. Conclude with `(Submodule.mem_inf.1 hw).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `CrystallineExponents.filVB_anti PD h (Submodule.mem_inf.1 hw).2`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.FilC at hz`. Rewrite `hz` using `[h0, bot_sup_eq]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem filC_top (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) (a : ℤ)
     (hj : ∀ i, a ≤ i → ¬ IsJumpV PD T.ρ τ i) {z : T.V ⊗[Qp] BdR}
@@ -57,23 +57,21 @@ theorem filC_top (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) (a : ℤ)
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Use `set I := Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c with hI`. Use `set R := rest (PD := PD) T τ with hR`. Use `set D := DdRE PD T.ρ τ with hD`. Take `⟨a₀, h₀⟩` from `CrystallineExponents.exists_le_filV PD D`. Take `⟨a₁, h₁⟩` from `CrystallineExponents.exists_inf_filV_eq_bot PD D`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `key : ∀ d : ℕ, FildR PD T.ρ τ (a₁ - d) ≤ I ⊔ R`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Establish `: FildR PD T.ρ τ (a₁ - ((0 : ℕ) : ℤ)) = ⊥`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Nat.cast_zero, sub_zero]`. Conclude with `h₁`. Rewrite using `[this]`. Conclude with `bot_le`. Consider the case `succ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Take `⟨x, a, -, -, hk⟩` from `h42 (-(a₁ - ((d + 1 : ℕ) : ℤ))) w (by rwa [neg_neg])`. Rewrite `hk` using `[show -(-(a₁ - ((d + 1 : ℕ) : ℤ))) + 1 = a₁ - d by push_cast; ring]`. Establish `h2 : Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ (a₁ - d) ≤ I ⊔ R := sup_le ih le_sup_right`. Establish `h3` using `Submodule.sub_mem _ (Submodule.mem_sup_left (T := R) (I.smul_mem a (Submodule.mem_inf.1 (h41 x (-(a₁ - ((d + 1 : ℕ) : ℤ))))).1)) (h2 hk)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h3` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `hDI : D ≤ I ⊔ R`. Introduce `w hw`. Use `key (a₁ - a₀).toNat ⟨hw, CrystallineExponents.filVB_anti PD ?_ (h₀ hw)⟩` and prove the remaining obligations. Use `Int.self_le_toNat (a₁ - a₀)` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hDR : D ⊓ R = ⊥` using `CrystallineExponents.ddRE_inf_rest T τ`. Establish `hker : ∀ S : Submodule LL (T.V ⊗[Qp] BdR), LinearMap.ker (R.mkQ ∘ₗ S.subtype) = ⊥ ↔ S ⊓ R = ⊥`. Introduce `S`. Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ, ← Submodule.disjoint_iff_comap_eq_bot, disjoint_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hr1` using `LinearMap.finrank_range_add_finrank_ker (R.mkQ ∘ₗ D.subtype)`. Rewrite `hr1` using `[(hker D).2 hDR, finrank_bot, add_zero]`. Establish `hr2` using `LinearMap.finrank_range_add_finrank_ker (R.mkQ ∘ₗ I.subtype)`. Establish `hle : LinearMap.range (R.mkQ ∘ₗ D.subtype) ≤ LinearMap.range (R.mkQ ∘ₗ I.subtype)`. Introduce and unpack `_ ⟨w, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 (hDI w.2)`. Use `⟨⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.eq, ← hyz]`. Simplify using `using hz`.
-
-Establish `hr3` using `Submodule.finrank_mono hle`. Rewrite using `[← hker, ← Submodule.finrank_eq_zero]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ιDi_inf_rest (T : LocLat G Qp LL O) (c : ZMod n) (ζ : LL) (τ : K →ₐ[Qp] LL)
     (h41 : ∀ (x : ↥(W.N T)) (k : ℤ), W.levN T c ζ ((letE c : LetA O n) • x) k ∈
@@ -151,9 +149,9 @@ structure ValH (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) 
 variable {W}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `H.smul τ ζ hpt 0 0 (Submodule.zero_mem _)` as an intermediate fact. Simplify using `using this`. Consider the case `insert j s hj ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, H.add τ ζ hpt _ (Submodule.smul_mem _ _ (hy j)) _ (Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hy k)), H.smul τ ζ hpt _ _ (hy j), ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ValH.sum {T : LocLat G Qp LL O} {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} {π' : LetA O n}
     {c : ZMod n} (H : ValH W T Pt π' c) {τ : K →ₐ[Qp] LL} {ζ : LL} (hpt : Pt c ζ τ) {ι : Type}
@@ -169,9 +167,9 @@ theorem ValH.sum {T : LocLat G Qp LL O} {Pt : ZMod n → LL → (K →ₐ[Qp] LL
       (Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hy k)), H.smul τ ζ hpt _ _ (hy j), ih]
 
 /- English proof (translation)
-Establish `h : ∀ y, φVB PD (LL` using `LL) (V := T.V) y = (PD.φ.toLinearMap.lTensor T.V) y := fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp [φVB]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hi : Function.Injective PD.φ.toLinearMap` using `PD.φ_inj`. Introduce `a b hab`. Rewrite `hab` using `[h, h]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ hi hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem φVB_inj' (T : LocLat G Qp LL O) : Function.Injective (φVB PD (LL := LL) (V := T.V)) := by
   have h : ∀ y, φVB PD (LL := LL) (V := T.V) y = (PD.φ.toLinearMap.lTensor T.V) y := fun y => by
@@ -185,13 +183,13 @@ theorem φVB_inj' (T : LocLat G Qp LL O) : Function.Injective (φVB PD (LL := LL
   exact Module.Flat.lTensor_preserves_injective_linearMap _ hi hab
 
 /- English proof (translation)
-Take `⟨⟨r, b, hb, hu, hΔ⟩, -⟩` from `hm`. Take `⟨a, ha, hxa⟩` from `hΔ x hx`. Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.1 hπ`. Establish `hyx' : (letπ : LetA O n) • y = x` using `hyx`. Take `⟨a', hya, -⟩` from `hu y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : x = ∑ j, (letπ * a' j) • b j`. Rewrite using `[← hyx', hya, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => smul_smul _ _ _`. Establish `he` using `(hu x hx.1).unique hxa h2`. Establish `ht : ∀ j, ∃ t : LetA O n, a j = π' * t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Take `⟨F, hF, -⟩` from `hp9.2.1 (a j) (ha j)`. Take `⟨t, ht⟩` from `gradNPf_expand π' (a j) hπ0 F hF 0 (fun i => by`. Rewrite using `[he]`. Simplify using `[letπ])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨t, by simpa using ht⟩`. Use `choose t ht using ht`. Use `(mem_PiNS W T π' 1 x).2 ⟨⟨∑ j, t j • b j, Submodule.sum_mem _ fun j _ => (W.N T).smul_mem _ (hb j).1, ?_⟩, hx.2⟩` and prove the remaining obligations. Rewrite using `[hxa, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [pow_one, smul_smul, ht j]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piNS_of_pi (T : LocLat G Qp LL O) {e s' : ℕ} {π' π₀ : LetA O n} {E : ZMod n → Polynomial O}
     (hp9 : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W e s' π' E) (hπ0 : ∀ i, PowerSeries.constantCoeff (π' i) = 0)
@@ -225,23 +223,19 @@ variable {Zl Ai : Type} [CommRing Zl] [CommRing Ai] [Algebra Zl O] [Algebra Zl A
     {Et : EtTie W (O ⊗[Zl] Ai) RW inclR φR gR πA} {ιdR : Ai →+* BdR} {p1 : Ai} {tS zS : BdR}
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hp9.2.2.1`. Establish `hone : ∃ j : ℕ, IsPrimitiveRoot (1 : LL) (PD.p ^ j)` using `⟨0, by simp⟩`. Establish `hπ1 : ∀ i, PowerSeries.constantCoeff (W.lev i 1 letπ) = 0` using `fun i => by`. Rewrite using `[CrystallineExponents.cc_lev_pi W i 1 hone, sub_self]`. Establish `hπ : PowerSeries.constantCoeff (W.lev (c - 1) 1 π') = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hw, map_mul, map_pow, map_mul, map_pow, hπ1, zero_pow (by omega), mul_zero]`. Establish `hπ0 : ∀ i, PowerSeries.constantCoeff (π' i) = 0` using `fun i => by`. Establish `: π' i = (w : LetA O n) i * PowerSeries.X ^ s'` using `by rw [hw]; rfl`. Rewrite using `[this, map_mul, map_pow, PowerSeries.constantCoeff_X, zero_pow (by omega), mul_zero]`. Establish `hX : W.X = letπ` using `by simp [LocWach.X, hs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : ∀ τ ζ, Pt c ζ τ → V.PtHyp (W` using `W) T c ζ := by`. Introduce `τ ζ hpt`. Establish `hz` using `hprim τ ζ hpt`. Take `⟨hQ0, hQ1⟩` from `framepf_Q_at W hs c ζ hz`. Use `⟨hc, ⟨1, by simpa using hz⟩, hz.pow_eq_one, hQ0, hQ1, fun x k hk => ?_, fun x hx => W.N_φ T x hx⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(((h4.1 (c - 1) 1 ⟨0, one_pow _⟩ (by rw [hX]; exact hπ1 _)).1 x k).2 hk)`. Use `⟨fun τ ζ hpt x hx y hy => ?_, fun τ ζ hpt o x hx => ?_, fun τ ζ τ' ζ' hpt hpt' x hx => ?_, fun τ ζ hpt x hx => ⟨fun h0 => ?_, fun hx' => ?_⟩, fun τ ζ hpt m m' a y hy b z hz h => V.expS_wd Ct T hinj (hP τ ζ hpt) π' hπ a y hy b z hz h, fun τ ζ hpt x hx => u3downPf_valAt_fil W T c ζ …` and prove the remaining obligations. Conclude with `(V.valL Ct T (hP τ ζ hpt)).map_add ⟨x, hx⟩ ⟨y, hy⟩`. Conclude with `(V.valL Ct T (hP τ ζ hpt)).map_smul o ⟨x, hx⟩`. Establish `hxN` using `((mem_NcS W T (c - 1) x).1 hx).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(V.valAt_eq Ct T (hP τ ζ hpt) ⟨x, hxN⟩).trans (V.valAt_eq Ct T (hP τ' ζ' hpt') ⟨x, hxN⟩).symm`. Take `⟨hxN, hxΔ, hxc⟩` from `(mem_NcS W T (c - 1) x).1 hx`. Establish `h1` using `(V.valAt_eq Ct T (hP τ ζ hpt) ⟨x, hxN⟩).symm.trans h0`. Unfold `V.val1 at h1`. Establish `h2` using `φVB_inj' T ((framepf_ιV_inj (PD := PD) T (h1.trans (map_zero _).symm)).trans (map_zero _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← Ct.cmp_eq T hc]`. Establish `h5` using `h3.1 _ h2`. Establish `h6 : (((letE (c - 1) : LetA O n) • (⟨x, hxN⟩ : ↥(W.N T)) : ↥(W.N T)) : W.DD T) = x` using `hxc`. Rewrite `h5` using `[h6]`. Conclude with `piNS_of_pi T hp9 hπ0 hm ⟨hxN, hxΔ⟩ h5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `V.valL_ker Ct T (hP τ ζ hpt) π' hπ (x := ⟨x, hx⟩) hx'`. Use `hfd τ` as an intermediate fact. Establish `hb` using `ιDi_inf_rest W T c ζ τ (h4.2 c ζ τ hpt).2.1 (h4.2 c ζ τ hpt).2.2 (hdim τ)`. Establish `hI : valAt W T c ζ x ∈ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c` using `by classical`. Establish `hxN` using `((mem_NcS W T (c - 1) x).1 hx).1`.
-
-Unfold `valAt`. Use `split_ifs with h`. Conclude with `Submodule.smul_mem _ _ ((h4.2 c ζ τ hpt).1.1 ⟨x, hxN⟩ _ (Nat.find_spec h) _).1`. Conclude with `Submodule.zero_mem _`. Establish `: valAt W T c ζ x ∈ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c ⊓ rest (PD` using `PD) T τ := ⟨hI, hr⟩`.
-
-Rewrite `this` using `[hb, Submodule.mem_bot]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem valH_of (Ct : CmpTie W Et ιdR p1 tS zS) [IsDedekindDomain O]
     (hinj : Function.Injective (algebraMap O LL)) (T : LocLat G Qp LL O)

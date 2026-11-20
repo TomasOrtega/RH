@@ -20,9 +20,9 @@ namespace GlobalTheory.OmegaHT.Bundle
 open GlobalTheory.ChainPts.FrameNorm (valHom valF_eq_valHom valHom_resG norm_valF_le_one norm_le_one_iff)
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff_card_le_finrank_span]`. Use `haveI : Module.Finite R (Submodule.span R (Set.range η)) := Module.Finite.span_of_finite R (Set.finite_range η)`. Establish `li : LinearIndependent R fun i => (⟨c • b i, h i⟩ : Submodule.span R (Set.range η))`. Use `LinearIndependent.of_comp (Submodule.span R (Set.range η)).subtype ?_` and prove the remaining obligations. Use `Fintype.linearIndependent_iff.2 fun g hg i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Fintype.linearIndependent_iff.1 b.linearIndependent (fun i => g i * c) (by simp only [mul_smul]; exact hg) i` as an intermediate fact. Conclude with `(mul_eq_zero.1 this).resolve_right hc`. Conclude with `li.fintype_card_le_finrank`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_smul_mem {R M : Type} [CommRing R] [IsDomain R] [AddCommGroup M] [Module R M] {r : ℕ}
     (b : Module.Basis (Fin r) R M) (η : Fin r → M) {c : R} (hc : c ≠ 0)
@@ -38,7 +38,7 @@ theorem linearIndependent_of_smul_mem {R M : Type} [CommRing R] [IsDomain R] [Ad
   exact li.fintype_card_le_finrank
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hσ`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Twist.resM_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resM_mem_span {X : Scheme.{0}} {F : X.Modules} {r : ℕ} {V U : X.Opens} (h : U ≤ V) (η : Fin r → Γ(F, V))
     {σ : Γ(F, V)} (hσ : σ ∈ Submodule.span Γ(X, V) (Set.range η)) :
@@ -50,9 +50,9 @@ theorem resM_mem_span {X : Scheme.{0}} {F : X.Modules} {r : ℕ} {V U : X.Opens}
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)
 
 /- English proof (translation)
-Break down `(U : Set X).eq_empty_or_nonempty with hU | hU` into its components or cases. Take `rfl : U = ⊥` from `TopologicalSpace.Opens.ext hU`. Conclude with `linearIndependent_of_subsingleton`. Use `haveI : Nonempty U := hU.to_subtype`. Take `⟨f, hf, hfp⟩` from `hη`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `linearIndependent_of_smul_mem (hf.basis h) _ (hp U hU) fun i => ?_` and prove the remaining obligations. Use `resM_mem_span h η (hfp i)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Twist.resM_smul, map_natCast, ← hf.basis_apply h]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_holdsP {X : Scheme.{0}} [AlgebraicGeometry.IsIntegral X] {p : ℕ}
     (hp : ∀ U : X.Opens, (U : Set X).Nonempty → (p : Γ(X, U)) ≠ 0) {F : X.Modules} {r : ℕ} {V : X.Opens}
@@ -68,13 +68,11 @@ theorem linearIndependent_of_holdsP {X : Scheme.{0}} [AlgebraicGeometry.IsIntegr
     rwa [GlobalTheory.Twist.resM_smul, map_natCast, ← hf.basis_apply h] at this
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hU`. Take `⟨_, ⟨V, hV, rfl⟩, hzV, hVU⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hz U.2`. Use `haveI : Nonempty V := ⟨⟨z, hzV⟩⟩`. Introduce `h0`. Establish `h1 : (p : Γ(X, V)) = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (resG X (show V ≤ U from hVU)), h0, map_zero]`. Establish `hfl : (s.appLE ⊤ V le_top).hom.Flat` using `HasRingHomProperty.appLE @Flat s inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ le_top`. Set `e` to `(Scheme.ΓSpecIso (CommRingCat.of O)).commRingCatIsoToRingEquiv`. Establish `hfl' : ((s.appLE ⊤ V le_top).hom.comp e.symm.toRingHom).Flat` using `RingHom.Flat.comp (RingHom.Flat.of_bijective e.symm.bijective) hfl`. Use `letI := ((s.appLE ⊤ V le_top).hom.comp e.symm.toRingHom).toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : Module.Flat O Γ(X, V) := hfl'`. Establish `hp' : (p : O) ∈ nonZeroDivisors O` using `mem_nonZeroDivisors_of_ne_zero (Nat.cast_ne_zero.2 hp)`. Establish `hreg` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := Γ(X, V)) hp'`. Establish `: (1 : Γ(X, V)) = 0` using `hreg (by`. Express the relevant statement in the definitionally equal form `(p : O) • (1 : Γ(X, V)) = (p : O) • (0 : Γ(X, V))`.
-
-Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, nsmul_one, h1, nsmul_zero])`. Conclude with `one_ne_zero this`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero_of_flat {O : Type} [CommRing O] [IsDomain O] [CharZero O] {X : Scheme.{0}} (s : X ⟶ Sp O)
     [Flat s] {p : ℕ} (hp : p ≠ 0) (U : X.Opens) (hU : (U : Set X).Nonempty) : (p : Γ(X, U)) ≠ 0 := by
@@ -99,7 +97,7 @@ theorem natCast_ne_zero_of_flat {O : Type} [CommRing O] [IsDomain O] [CharZero O
   exact one_ne_zero this
 
 /- English proof (translation)
-Use `haveI : Nonempty (V ⊓ U : X.Opens) := ⟨⟨z, hV, hU⟩⟩`. Establish `h1` using `Module.finrank_eq_card_basis (hf.basis (inf_le_left : V ⊓ U ≤ V))`. Establish `h2` using `Module.finrank_eq_card_basis (hs.basis (inf_le_right : V ⊓ U ≤ U))`. Simplify using `using h1.symm.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem size_eq {X : Scheme.{0}} {F : X.Modules} {g r : ℕ} {V U : X.Opens} {f : Fin g → Γ(F, V)} {s : Fin r → Γ(F, U)}
     (hf : IsFrame f) (hs : IsFrame s) {z : X} (hV : z ∈ V) (hU : z ∈ U) : g = r := by
@@ -109,7 +107,7 @@ theorem size_eq {X : Scheme.{0}} {F : X.Modules} {g r : ℕ} {V U : X.Opens} {f 
   simpa using h1.symm.trans h2
 
 /- English proof (translation)
-Simplify using `only [crd, map_sum, GlobalTheory.Twist.resM_smul, map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem crd_sum {X : Scheme.{0}} {F : X.Modules} {g r : ℕ} {V V' : X.Opens} {s : Fin r → Γ(F, V')} (hs : IsFrame s)
     (c : Fin g → Γ(X, V)) (f : Fin g → Γ(F, V)) (i : Fin r) :
@@ -117,9 +115,9 @@ theorem crd_sum {X : Scheme.{0}} {F : X.Modules} {g r : ℕ} {V V' : X.Opens} {s
   simp only [crd, map_sum, GlobalTheory.Twist.resM_smul, map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `nat : ∀ {U U' : X.Opens} (h : U' ≤ U) (τ : Γ(G, U)), resM F h (ι.app _ τ) = ι.app _ (resM G h τ)` using `fun h τ => (ConcreteCategory.congr_hom (ι.mapPresheaf.naturality (homOfLE h).op) τ).symm`. Establish `key : resM F (inf_le_left : V ⊓ V' ≤ V) (ι.app _ σ) = ∑ l, crd he σ l • hs.basis inf_le_right l`. Rewrite using `[nat]`. Use `conv_lhs => rw [← (he.basis (inf_le_right : V ⊓ V' ≤ V')).sum_repr (resM G inf_le_left σ)]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, he.basis_apply, hs.basis_apply, ← nat, hι]`. Both sides reduce to the same expression. Use `conv_rhs => rw [crd, key]`. Rewrite using `[Module.Basis.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_app {X : Scheme.{0}} {F G : X.Modules} (ι : G ⟶ F) {r : ℕ} {V V' : X.Opens} {e : Fin r → Γ(G, V')}
     {s : Fin r → Γ(F, V')} (he : IsFrame e) (hs : IsFrame s) (hι : ∀ l, ι.app _ (e l) = s l) (σ : Γ(G, V)) (i : Fin r) :
@@ -137,11 +135,11 @@ theorem crd_app {X : Scheme.{0}} {F G : X.Modules} (ι : G ⟶ F) {r : ℕ} {V V
   rw [Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Use `⟨(Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom.comp (w.appLE V.1 ⊤ hw).hom, ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec w V.2 (isAffineOpen_top _) hw`. Rewrite `h` using `[IsAffineOpen.fromSpec_top]`. Rewrite using `[spMap_comp, Category.assoc]`. Express the relevant statement in the definitionally equal form `Spec.map (Scheme.ΓSpecIso (CommRingCat.of R)).hom ≫ Spec.map (w.appLE V.1 ⊤ hw) ≫ V.2.fromSpec = w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h, ← Scheme.isoSpec_Spec_hom, Iso.hom_inv_id_assoc]`. Establish `h' : ⊤ ≤ (spMap σ ≫ w) ⁻¹ᵁ V.1` using `fun q _ => hw (Set.mem_univ (spMap σ q))`. Rewrite using `[valF, dif_pos h']`. Establish `e : (spMap σ ≫ w).appLE V.1 ⊤ h' = w.appLE V.1 ⊤ hw ≫ (spMap σ).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap σ) w V.1 ⊤ ⊤ hw le_rfl).symm`. Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom σ)`. Establish `n'` using `congrArg (fun q => q.hom ((w.appLE V.1 ⊤ hw).hom a)) n`. Rewrite using `[e]`. Conclude with `n'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringHom {X : Scheme.{0}} {R k : Type} [CommRing R] [Field k] (σ : R →+* k) (w : Sp R ⟶ X)
     (V : X.affineOpens) (hw : ⊤ ≤ w ⁻¹ᵁ V.1) :
@@ -163,11 +161,11 @@ theorem exists_ringHom {X : Scheme.{0}} {R k : Type} [CommRing R] [Field k] (σ 
     exact n'
 
 /- English proof (translation)
-Use `haveI : IsLocalRing ↥(intO C) := by`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Establish `unit : ∀ b : ↥(intO C), ‖(b : C)‖ = 1 → IsUnit b` using `fun b hb => by`. Establish `hb0 : (b : C) ≠ 0` using `fun h => by simp [h] at hb`. Use `IsUnit.of_mul_eq_one (⟨(b : C)⁻¹, ?_⟩ : ↥(intO C)) (Subtype.ext (mul_inv_cancel₀ hb0))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `‖(b : C)⁻¹‖ ≤ 1`. Rewrite using `[norm_inv, hb, inv_one]`. Establish `ha : ‖(a : C)‖ ≤ 1` using `a.2`. Break down `ha.eq_or_lt with h | h` into its components or cases. Conclude with `Or.inl (unit a h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr (unit _ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(1 : C) - a‖ = 1`. Rewrite using `[sub_eq_add_neg, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by simpa using h.ne'), norm_one, norm_neg, max_eq_left h.le]`. Conclude with `⟨w (closedPoint ↥(intO C)), fun V hV => (Scheme.preimage_eq_top_of_closedPoint_mem w hV).ge⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_center {X : Scheme.{0}} (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C]
     (w : Sp ↥(intO C) ⟶ X) : ∃ z : X, ∀ V : X.Opens, z ∈ V → ⊤ ≤ w ⁻¹ᵁ V := by
@@ -193,9 +191,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Introduce `hz`. Establish `h1` using `norm_valF_le_one (↥y.C.S) y.z (Z.U a).1 hz (Z.alg a (p : ↥Z.i.c.F)⁻¹)`. Establish `h' : ⊤ ≤ (spMap (intO ↥y.C.S).subtype ≫ y.z) ⁻¹ᵁ (Z.U a).1` using `fun q _ => hz (Set.mem_univ (spMap (intO ↥y.C.S).subtype q))`. Rewrite `h1` using `[valF_eq_valHom _ _ h']`. Establish `e : valHom _ _ h' (Z.alg a (p : ↥Z.i.c.F)⁻¹) = (p : ↥y.C.S)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `map_inv₀ ((valHom _ _ h').comp (Z.alg a)) (p : ↥Z.i.c.F)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Rewrite `h1` using `[e, norm_inv, y.C.norm_p, inv_inv]`. Conclude with `absurd (by exact_mod_cast h1 : p ≤ 1) hp.one_lt.not_ge`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_le_chart (Z : LocM.Mdl Y i₀) (hp : p.Prime) (y : Z.Pt) (a : Fin Z.m) : ¬ ⊤ ≤ y.z ⁻¹ᵁ (Z.U a).1 := by
   intro hz
@@ -210,21 +208,21 @@ theorem not_le_chart (Z : LocM.Mdl Y i₀) (hp : p.Prime) (y : Z.Pt) (a : Fin Z.
   exact absurd (by exact_mod_cast h1 : p ≤ 1) hp.one_lt.not_ge
 
 /- English proof (translation)
-Take `⟨V, g, e, η, hz, he, ⟨M, hM⟩, hc⟩` from `hb z`. Take `⟨f, hf, hfd⟩` from `hd V g e he`. Take `⟨U, f', hzU, hf'⟩` from `hF z`. Take `rfl : g = r` from `size_eq hf hf' hz hzU`. Use `⟨V.1, fun j => ∑ l, η j l • f l, hz, ⟨f, hf, fun i => ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.mem_span_range_iff_exists_fun _).2 ⟨M i, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, hM, ite_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Introduce `y w hw a φ hφ hV cf v hv`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨κ, hκ, hval⟩` from `exists_ringHom (intO ↥y.C.S).subtype w V hV`. Establish `e1 : spMap ((intO ↥y.C.S).subtype.comp κ) ≫ V.2.fromSpec = spMap (intO ↥y.C.S).subtype ≫ w`. Rewrite using `[spMap_comp, Category.assoc, hκ]`. Establish `e2 : spMap ((intO ↥y.C.S).subtype.comp κ) ≫ V.2.fromSpec ≫ h = y.gen`. Rewrite using `[← Category.assoc, e1, Category.assoc, hw]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e3 : spMap ((intO ↥y.C.S).subtype.comp κ) ≫ V.2.fromSpec ≫ h ≫ Z.π = y.gen ≫ Z.π`. Rewrite using `[← e2, Category.assoc, Category.assoc]`. Establish `hv'` using `hfd (↥y.C.S) ((intO ↥y.C.S).subtype.comp κ) a φ (hφ.trans e2.symm) cf v (by rw [e3]; exact hv)`. Establish `hc'` using `hc y.C κ _ v hv'`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc'` using `[e3, e1]`. Use `hc'.trans (forall_congr' fun j => ?_)` and prove the remaining obligations. Establish `hU : ⊤ ≤ (spMap (intO ↥y.C.S).subtype ≫ w) ⁻¹ᵁ (V.1 ⊓ h ⁻¹ᵁ (Z.U a).1)` using `fun q _ => by`. Use `⟨hV (Set.mem_univ (spMap (intO ↥y.C.S).subtype q)), ?_⟩` and prove the remaining obligations. Establish `: ((spMap (intO ↥y.C.S).subtype ≫ w) ≫ h) q ∈ (Z.U a).1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← e1, Category.assoc, e2, ← hφ]`. Establish `hr : Set.range (Z.chart a) = (Z.U a).1` using `(Z.U a).2.range_fromSpec`. Conclude with `hr.le ⟨spMap φ q, rfl⟩`. Conclude with `this`. Establish `key : ∀ i, valF (spMap (intO ↥y.C.S).subtype ≫ w) _ (crd (hs a) (∑ l, η j l • f l) i) = ∑ l, (κ (η j l) : ↥y.C.S) * valF (spMap (intO ↥y.C.S).subtype ≫ w) _ (crd (hs a) (f l) i)` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[crd_sum, valF_eq_valHom _ _ hU, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, valHom_resG, hval, valF_eq_valHom _ _ hU]`. Both sides reduce to the same expression. Establish `eq : ∑ i, cf i * valF (spMap (intO ↥y.C.S).subtype ≫ w) _ (crd (hs a) (∑ l, η j l • f l) i) = ∑ l, (κ (η j l) : ↥y.C.S) * ∑ i, cf i * valF (spMap (intO ↥y.C.S).subtype ≫ w) _ (crd (hs a) (f l) i)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [key, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sections (Z : LocM.Mdl Y i₀) {X : Scheme.{0}} (h : X ⟶ Z.X) {r : ℕ} (x : Fin r → Letter Dw)
     {F : X.Modules} {s : ∀ a : Fin Z.m, Fin r → Γ(F, h ⁻¹ᵁ (Z.U a).1)} (hs : ∀ a, IsFrame (s a)) (hF : GlobalTheory.VB.IsVB F r)
@@ -275,19 +273,17 @@ theorem exists_sections (Z : LocM.Mdl Y i₀) {X : Scheme.{0}} (h : X ⟶ Z.X) {
 end Model
 
 /- English proof (translation)
-Introduce `hL hS hG E _ _ _ H Dw Xo p W Y i₀ Z hp hW _ B hB h ho r x hx hb`. Take `⟨F, s, k, hF, hd⟩` from `hL E H Dw Xo p W Y i₀ Z B.X h r x hx`. Use `choose V η hz hP hC using exists_sections Z h x k.frame hF hd hb`. Use `haveI := B.isIntegral`. Use `haveI := B.flat`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hp0` using `natCast_ne_zero_of_flat B.str hp.ne_zero`. Set `V' : B.X ⊕ Fin Z.m → B.X.Opens` to `fun α => Sum.rec V (fun a => h ⁻¹ᵁ (Z.U a).1) α`. Set `η' : ∀ α, Fin r → Γ(F, V' α)` to `fun α => Sum.rec (motive := fun α => Fin r → Γ(F, V' α)) η s α`. Establish `hP' : ∀ α, SectionsSatisfyAtPrime p (η' α)`. Introduce and unpack `(z | a)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hP z`. Conclude with `⟨s a, k.frame a, fun i => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)⟩`. Establish `hC' : ∀ α, CutsSec Z h x true k.frame (η' α)`. Introduce and unpack `(z | a)`. Conclude with `hC z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y w hw _ _ _ hV`. Use `absurd ?_ (not_le_chart Z hp y a)` and prove the remaining obligations. Rewrite using `[← hw]`. Conclude with `hV`. Take `⟨G, ι, hGr, he⟩` from `hG B.X F r (B.X ⊕ Fin Z.m) V' η' (fun z => ⟨Sum.inl z, hz z⟩) (fun α U hU => linearIndependent_of_holdsP hp0 (hP' α) U hU) (fun α β => hS E H Dw Xo p W Y i₀ Z hp hW B hB h ho r x true F s k.frame _ _ _ _ (hP' α) (hP' β) (hC' α) (hC' β))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose e hef heι using he`. Establish `hs' : ∀ a : Fin Z.m, IsFrame (F` using `G) (U := h ⁻¹ᵁ (Z.U a).1) (e (Sum.inr a)) := fun a => hef (Sum.inr a)`. Establish `tr : ∀ (a : Fin Z.m) (α) (l i : Fin r), GlobalTheory.ChainPts.coef true (hef α) (hs' a) l i = crd (k.frame a) (η' α l) i` using `fun a α l i => by`. Rewrite using `[coef_true, crd_app ι (hs' a) (k.frame a) (heι (Sum.inr a)), heι]`. Use `⟨G, fun a => e (Sum.inr a), hGr, hs', ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `K _ w a a' φ φ' hφ hφ' j`. Conclude with `Eq.mpr (congrArg (fun c => IsCombAtG (Y Z.i).t _ _ c _) (funext fun i => congrArg (valF w _) (tr a' (Sum.inr a) i j))) (k.glue K w a a' φ φ' hφ hφ' j)`. Introduce `y w hw a φ hφ U f hf hU cf v hv`. Take `⟨z, hc⟩` from `exists_center (↥y.C.S) w`. Establish `hV` using `hc _ (hz z)`.
-
-Use `(hC z y w hw a φ hφ hV cf v hv).trans ?_` and prove the remaining obligations. Use `Iff.trans ?_ (norm_le_one_iff true (hef (Sum.inl z)) hf (hs' a) (↥y.C.S) w hV hU cf)` and prove the remaining obligations. Use `forall_congr' fun l => Iff.of_eq (congrArg (fun c => ‖c‖ ≤ 1) (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations. Conclude with `congrArg (fun c => cf i * valF _ _ c) (tr a (Sum.inl z) l i).symm`.
+A detailed English derivation is pending.
 -/
 theorem bundle_of_locBasis : GlobalTheory.OmegaHT.LinkSt → GlobalTheory.OmegaHT.SpanSt → GlobalTheory.OmegaHT.GlueSt → GlobalTheory.OmegaHT.BundleSt := by
   intro hL hS hG E _ _ _ H Dw Xo p W Y i₀ Z hp hW _ B hB h ho r x hx hb

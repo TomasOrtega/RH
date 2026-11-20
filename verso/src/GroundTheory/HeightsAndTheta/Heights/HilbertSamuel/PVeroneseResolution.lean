@@ -17,7 +17,7 @@ variable {D : ℕ}
 def ix (a b : Fin (D + 1)) : Ix (Veronese.Idx D) := ⟨(), ⟨(min a b, max a b), min_le_max⟩⟩
 
 /- English proof (translation)
-Break down `le_total a b with h | h` into its components or cases. Simplify using `[Veronese.map, ix, min_eq_left h, max_eq_right h]`. Simplify using `[Veronese.map, ix, min_eq_right h, max_eq_left h, mul_comm]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_ix (w : Fin (D + 1) → ℂ) (a b : Fin (D + 1)) : Veronese.map D w (ix a b) = w a * w b := by
   rcases le_total a b with h | h
@@ -25,7 +25,7 @@ theorem map_ix (w : Fin (D + 1) → ℂ) (a b : Fin (D + 1)) : Veronese.map D w 
   · simp [Veronese.map, ix, min_eq_right h, max_eq_left h, mul_comm]
 
 /- English proof (translation)
-Break down `le_total a b with h | h` into its components or cases. Simplify using `[Veronese.x, ix, min_eq_left h, max_eq_right h]`. Simplify using `[Veronese.x, ix, min_eq_right h, max_eq_left h, mul_comm]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem x_ix (a b : Fin (D + 1)) : Veronese.x D (ix a b) = Veronese.t D a * Veronese.t D b := by
   rcases le_total a b with h | h
@@ -33,14 +33,14 @@ theorem x_ix (a b : Fin (D + 1)) : Veronese.x D (ix a b) = Veronese.t D a * Vero
   · simp [Veronese.x, ix, min_eq_right h, max_eq_left h, mul_comm]
 
 /- English proof (translation)
-Take `⟨⟨⟩, ⟨⟨a, b⟩, h⟩⟩` from `q`. Simplify using `[ix, min_eq_left h, max_eq_right h]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem ix_self (q : Ix (Veronese.Idx D)) : ix q.2.1.1 q.2.1.2 = q := by
   obtain ⟨⟨⟩, ⟨⟨a, b⟩, h⟩⟩ := q
   simp [ix, min_eq_left h, max_eq_right h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `only [Veronese.map, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem map_smul (s : ℂ) (v : Fin (D + 1) → ℂ) :
     Veronese.map D (s • v) = (s ^ 2) • Veronese.map D v := by
@@ -52,9 +52,9 @@ def subst (f : MvPolynomial (Ix (Veronese.Idx D)) ℤ) : MvPolynomial (Fin (D + 
   eval₂ (Int.castRingHom _) (fun q => X q.2.1.1 * X q.2.1.2) f
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[subst, eval₂_C]`. Simplify using `[coneMap]`. Consider the case `add p q hp hq => simp only [subst, eval₂_add, map_add, Polynomial.eval_add] at hp hq ⊢`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[hp, hq]`. Consider the case `mul_X p n hp`. Simplify using `only [subst, eval₂_mul, eval₂_X, map_mul, Polynomial.eval_mul] at hp ⊢`. Rewrite using `[hp]`. Simplify using `[coneMap, Veronese.x, Veronese.t]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem algebraMap_subst (f : MvPolynomial (Ix (Veronese.Idx D)) ℤ) :
     algebraMap (MvPolynomial (Fin (D + 1)) ℚ) (Veronese.Fld D) (subst f) =
@@ -70,9 +70,9 @@ theorem algebraMap_subst (f : MvPolynomial (Ix (Veronese.Idx D)) ℤ) :
     simp [coneMap, Veronese.x, Veronese.t]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[subst, eval₂_C, eq_intCast, ← coe_eval₂Hom, map_intCast]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => simp only [subst, eval₂_add, map_add] at hp hq ⊢`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[hp, hq]`. Consider the case `mul_X p n hp`. Simplify using `only [subst, eval₂_mul, eval₂_X, map_mul, map_X, eval_X] at hp ⊢`. Rewrite using `[hp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_veronese (w : Fin (D + 1) → ℂ) (f : MvPolynomial (Ix (Veronese.Idx D)) ℤ) :
     eval (Veronese.map D w) (MvPolynomial.map (Int.castRingHom ℂ) f) = eval₂ (algebraMap ℚ ℂ) w (subst f) := by
@@ -87,7 +87,7 @@ theorem eval_veronese (w : Fin (D + 1) → ℂ) (f : MvPolynomial (Ix (Veronese.
     rfl
 
 /- English proof (translation)
-Establish `h0 : coneMap ℤ (Veronese.x D) f = 0` using `hf`. Apply `IsFractionRing.injective (MvPolynomial (Fin (D + 1)) ℚ) (Veronese.Fld D)` to reduce the goal to its premises. Rewrite using `[algebraMap_subst, h0, map_zero, Polynomial.eval_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_eq_zero {f : MvPolynomial (Ix (Veronese.Idx D)) ℤ} (hf : f ∈ coordIdeal ℤ (Veronese.x D)) :
     subst f = 0 := by
@@ -96,7 +96,7 @@ theorem subst_eq_zero {f : MvPolynomial (Ix (Veronese.Idx D)) ℤ} (hf : f ∈ c
   rw [algebraMap_subst, h0, map_zero, Polynomial.eval_zero]
 
 /- English proof (translation)
-Rewrite using `[eval_veronese, subst_eq_zero hf, eval₂_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_veronese_eq_zero (w : Fin (D + 1) → ℂ) {f : MvPolynomial (Ix (Veronese.Idx D)) ℤ}
     (hf : f ∈ coordIdeal ℤ (Veronese.x D)) :
@@ -104,7 +104,7 @@ theorem eval_veronese_eq_zero (w : Fin (D + 1) → ℂ) {f : MvPolynomial (Ix (V
   rw [eval_veronese, subst_eq_zero hf, eval₂_zero]
 
 /- English proof (translation)
-Introduce `h`. Use `eval_veronese_eq_zero 0 h` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem one_not_mem : (1 : MvPolynomial (Ix (Veronese.Idx D)) ℤ) ∉ coordIdeal ℤ (Veronese.x D) := by
   intro h
@@ -112,7 +112,7 @@ theorem one_not_mem : (1 : MvPolynomial (Ix (Veronese.Idx D)) ℤ) ∉ coordIdea
   simp at this
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [mcPts, mem_ofPred_eq, Submodule.mem_top, mem_empty_iff_false, iff_false, not_and]`. Introduce `_ h`. Use `h 1 trivial` as an intermediate fact. Simplify using `at this`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mcPts_top_eq : mcPts (ι := GlobalTheory (Veronese.Idx D)) ⊤ = ∅ := by
   ext z
@@ -125,7 +125,7 @@ def quad (a b c d : Fin (D + 1)) : MvPolynomial (Ix (Veronese.Idx D)) ℤ :=
   X (ix a b) * X (ix c d) - X (ix a c) * X (ix b d)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `coneMap ℤ (Veronese.x D) (quad a b c d) = 0`. Simplify using `only [quad, coneMap, map_sub, map_mul, aeval_X, x_ix]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quad_mem (a b c d : Fin (D + 1)) : quad a b c d ∈ coordIdeal ℤ (Veronese.x D) := by
   change coneMap ℤ (Veronese.x D) (quad a b c d) = 0
@@ -133,7 +133,7 @@ theorem quad_mem (a b c d : Fin (D + 1)) : quad a b c d ∈ coordIdeal ℤ (Vero
   ring
 
 /- English proof (translation)
-Use `hz _ (quad_mem a b c d)` as an intermediate fact. Simplify using `only [quad, map_sub, map_mul, map_X, eval_X] at this`. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quad_rel {z : Ix (Veronese.Idx D) → ℂ}
     (hz : ∀ f ∈ coordIdeal ℤ (Veronese.x D), eval z (MvPolynomial.map (Int.castRingHom ℂ) f) = 0)
@@ -143,7 +143,7 @@ theorem quad_rel {z : Ix (Veronese.Idx D) → ℂ}
   exact sub_eq_zero.mp this
 
 /- English proof (translation)
-Rewrite using `[chartCoord_mk]`. Use function extensionality and compare the values at `m`. Take `rfl | ⟨k, rfl⟩` from `Fin.eq_self_or_eq_succAbove i m`. Simplify using `[hvi]`. Simplify using `[div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem chartVec_chartCoord_mk (i : Fin (D + 1)) (v : Fin (D + 1) → ℂ) (hv : v ≠ 0) (hvi : v i ≠ 0) :
     chartVec i (chartCoord i (Projectivization.mk ℂ v hv)) = (v i)⁻¹ • v := by
@@ -154,14 +154,14 @@ theorem chartVec_chartCoord_mk (i : Fin (D + 1)) (v : Fin (D + 1) → ℂ) (hv :
   · simp [div_eq_inv_mul]
 
 /- English proof (translation)
-Rewrite `hy` using `[← Projectivization.mk_rep y]`. Conclude with `(mk_mem_chartDomain i _ _).1 hy`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_apply_ne_zero {i : Fin (D + 1)} {y : CP D} (hy : y ∈ chartDomain i) : y.rep i ≠ 0 := by
   rw [← Projectivization.mk_rep y] at hy
   exact (mk_mem_chartDomain i _ _).1 hy
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Projectivization.mk_rep y]`. Conclude with `chartVec_chartCoord_mk i _ _ (rep_apply_ne_zero hy)`.
+A detailed English derivation is pending.
 -/
 theorem chartVec_chartCoord_rep {i : Fin (D + 1)} {y : CP D} (hy : y ∈ chartDomain i) :
     chartVec i (chartCoord i y) = (y.rep i)⁻¹ • y.rep := by
@@ -172,22 +172,22 @@ def lift (p y : CP D) : Ix (Veronese.Idx D) → ℂ :=
   Veronese.map D (chartVec (chartIndex p) (chartCoord (chartIndex p) y))
 
 /- English proof (translation)
-Rewrite using `[lift, chartVec_chartCoord_rep hy, map_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_eq {p y : CP D} (hy : y ∈ chartDomain (chartIndex p)) :
     lift p y = ((y.rep (chartIndex p))⁻¹ ^ 2) • Veronese.map D y.rep := by
   rw [lift, chartVec_chartCoord_rep hy, map_smul]
 
 /- English proof (translation)
-Simplify using `[lift, Veronese.map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lift_ne_zero (p y : CP D) : lift p y ⟨(), ⟨(chartIndex p, chartIndex p), le_rfl⟩⟩ ≠ 0 := by
   simp [lift, Veronese.map]
 
 /- English proof (translation)
-Introduce `j z hz`. Use `set i := chartIndex p`. Establish `hzi : chartVec j z i ≠ 0` using `hz.2`. Establish `hf : AnalyticAt ℂ (fun w : Fin D → ℂ => (chartVec j w i)⁻¹ * chartVec j w q.2.1.1 * ((chartVec j w i)⁻¹ * chartVec j w q.2.1.2)) z` using `((((ProjFS.analyticAt_chartVec_apply j i z).inv hzi).mul (ProjFS.analyticAt_chartVec_apply j _ z)).mul (((ProjFS.analyticAt_chartVec_apply j i z).inv hzi).mul (ProjFS.analyticAt_chartVec_apply j _ z)))`. Use `hf.congr ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `filter_upwards [ProjFS.eventually_chartVec_ne hzi] with w hw`. Express the relevant statement in the definitionally equal form `_ = Veronese.map D (chartVec i (chartCoord i (chartInv j w))) q`. Rewrite using `[ProjFS.chartVec_chartCoord_chartInv hw]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem holo_lift (p : CP D) (q : Ix (Veronese.Idx D)) :
     (projAtlas D).HoloOn (chartDomain (chartIndex p)) (fun y => lift p y q) := by
@@ -299,11 +299,11 @@ def res (D : ℕ) : AnRes (ι := GlobalTheory (Veronese.Idx D)) (coordIdeal ℤ 
     rw [this, preimage_empty, inter_empty, measure_empty]
 
 /- English proof (translation)
-Use `⟨inferInstance, fun j => ⟨fsVolumeDensity j, (fsVolume D).smooth j, fun y _ => fsVolumeDensity_pos j y, fun S hS hsub => ?_⟩⟩` and prove the remaining obligations. Establish `hsub' : S ⊆ chartDomain (N` using `D) j := hsub`. Express the relevant statement in the definitionally equal form `fsMeasure D S = ∫⁻ y in univ ∩ chartInv j ⁻¹' S, ENNReal.ofReal (fsVolumeDensity j y)`. Rewrite using `[univ_inter]`. Establish `h` using `ProjFS.setLIntegral_fsMeasure_chartDomain (N := D) j (S.indicator 1) (measurable_one.indicator hS)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[lintegral_indicator_one hS, Measure.restrict_apply hS, inter_eq_left.mpr hsub']`. Rewrite using `[h, ← lintegral_indicator ((measurable_chartInv j) hS)]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : chartInv j y ∈ S`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `hy' : y ∈ chartInv j ⁻¹' S` using `hy`. Rewrite using `[indicator_of_mem hy, indicator_of_mem hy', Pi.one_apply, one_mul]`. Establish `hy' : y ∉ chartInv j ⁻¹' S` using `hy`. Rewrite using `[indicator_of_notMem hy, indicator_of_notMem hy', zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSmoothVolume_fs (D : ℕ) : IsSmoothVolume (projAtlas D) (fsMeasure D) := by
   refine ⟨inferInstance, fun j => ⟨fsVolumeDensity j, (fsVolume D).smooth j,
@@ -323,7 +323,7 @@ theorem isSmoothVolume_fs (D : ℕ) : IsSmoothVolume (projAtlas D) (fsMeasure D)
     rw [indicator_of_notMem hy, indicator_of_notMem hy', zero_mul]
 
 /- English proof (translation)
-The claim follows from `lift_eq (mem_chartDomain_chartIndex p)`.
+A detailed English derivation is pending.
 -/
 theorem lift_self_eq (p : CP D) :
     lift p p = ((p.rep (chartIndex p))⁻¹ ^ 2) • Veronese.map D p.rep :=
@@ -334,9 +334,7 @@ end VeroneseResolution
 open VeroneseResolution in
 
 /- English proof (translation)
-Introduce `D _`. Use `⟨⊤, res D, CP.instMeasurableSpace, CP.instBorelSpace, fsMeasure D, isSmoothVolume_fs D, fun g hg => ?_⟩` and prove the remaining obligations. Establish `key : ∀ p : CP D, g (lift p p) = g (Veronese.map D p.rep)` using `fun p => by`. Rewrite using `[lift_self_eq p]`. Conclude with `hg _ _ (pow_ne_zero _ (inv_ne_zero (rep_apply_ne_zero (mem_chartDomain_chartIndex p))))`.
-
-Conclude with `integral_congr_ae (Filter.Eventually.of_forall key)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VeroneseResolution.proof : VeroneseResolution.Statement := by
   intro D _

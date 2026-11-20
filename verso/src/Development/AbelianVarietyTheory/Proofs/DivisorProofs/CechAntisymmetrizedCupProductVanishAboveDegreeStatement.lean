@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsFlatLift
 open GlobalTheory GlobalTheory.DI
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.DI.alt_and_phi_vanish_above_degree` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCechAntisymmetrizedCupProductVanishAboveDegree.lean&line=27#L27)
 -/

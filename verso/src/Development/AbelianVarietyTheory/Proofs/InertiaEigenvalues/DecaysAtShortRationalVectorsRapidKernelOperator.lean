@@ -23,7 +23,7 @@ namespace GlobalTheory.RapidKernelDecay
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-The claim follows from `(InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) _`.
+A detailed English derivation is pending.
 -/
 theorem norm_pInf_apply (x : Ad E) (w : InfinitePlace E) : ‖pInf E x w‖ = ‖x.1 w‖ :=
   (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) _
@@ -31,7 +31,7 @@ theorem norm_pInf_apply (x : Ad E) (w : InfinitePlace E) : ‖pInf E x w‖ = �
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Unfold `height`. Rewrite using `[inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem height_inv (y : GL (Fin a) (Cinf E)) : height y⁻¹ = height y := by
   unfold height; rw [inv_inv]; ring
@@ -39,7 +39,7 @@ theorem height_inv (y : GL (Fin a) (Cinf E)) : height y⁻¹ = height y := by
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[vecMul, dotProduct, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pFin_vecMul (x : Fin a → Ad E) (m : GA E a) :
     (fun i => pFin E ((x ᵥ* m.val) i)) = (fun i => pFin E (x i)) ᵥ* m.val.map (pFin E) := by
@@ -47,11 +47,11 @@ theorem pFin_vecMul (x : Fin a → Ad E) (m : GA E a) :
   simp [vecMul, dotProduct, map_sum]
 
 /- English proof (translation)
-Establish `hy : ∀ j i, ‖pInf E ((infGL E a y).val j i)‖ ≤ height y`. Introduce `j i`. Establish `e : pInf E ((infGL E a y).val j i) = y.val j i` using `congrArg (fun u : GL (Fin a) (Cinf E) => u.val j i) (pInf_infGL (E := E) y)`. Rewrite using `[e]`. Establish `: ‖y.val j i‖ ≤ ‖toL y.val‖` using `(norm_le_pi_norm (toL y.val j) i).trans (norm_le_pi_norm (toL y.val) j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `height`. Combine the linear relations using `[norm_nonneg (toL (y⁻¹).val)]`. Establish `h1` using `one_le_height y`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Simplify using `only [vecMul, dotProduct, map_sum, map_mul]`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(norm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ (height y * ‖fun i => pInf E (x i)‖) fun j _ => ?_).trans ?_)` and prove the remaining obligations. Rewrite using `[mul_comm (height y)]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul (norm_le_pi_norm (fun i => pInf E (x i)) j) (hy j i) (norm_nonneg _) (norm_nonneg _))`. Simplify using `only [Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Conclude with `le_of_eq (by ring)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_vecMul_infGL_le (y : GL (Fin a) (Cinf E)) (x : Fin a → Ad E) :
     ‖fun i => pInf E ((x ᵥ* (infGL E a y).val) i)‖ ≤ (a * height y) * ‖fun i => pInf E (x i)‖ := by
@@ -75,13 +75,11 @@ theorem norm_vecMul_infGL_le (y : GL (Fin a) (Cinf E)) (x : Fin a → Ad E) :
     exact le_of_eq (by ring)
 
 /- English proof (translation)
-Use `set u := GeneralLinearGroup.det (infGL E a z) with hu`. Establish `hB : 1 ≤ (a.factorial : ℝ) * height z ^ a` using `one_le_mul_of_one_le_of_one_le (by exact_mod_cast a.factorial_pos) (one_le_pow₀ (one_le_height z))`. Establish `hinf : pInf E (u : Ad E) = (GeneralLinearGroup.det z : Cinf E)`. Rewrite using `[hu, ← CuspRep.det_map, pInf_infGL]`. Establish `hfin : pFin E (u : Ad E) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, ← CuspRep.det_map, pFin_infGL, map_one, Units.val_one]`. Rewrite using `[ideleModule_eq]`. Establish `h2 : ∏ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 E), ‖(u : Ad E).2 v‖ = 1` using `finprod_eq_one_of_forall_eq_one fun v => by`. Establish `: (u : Ad E).2 = 1` using `hfin`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_one`. Rewrite using `[h2, mul_one, pow_mul, ← Finset.card_univ, ← Finset.prod_const]`. Use `Finset.prod_le_prod (fun _ _ => by positivity) fun w _ => ?_` and prove the remaining obligations. Establish `h1 : ‖(u : Ad E).1 w‖ ≤ a.factorial * height z ^ a`. Rewrite using `[← norm_pInf_apply, hinf]`.
-
-Conclude with `(norm_le_pi_norm _ w).trans (norm_det_le _ (by unfold height; linarith [norm_nonneg (toL (z⁻¹).val)]))`. Apply the tactic sequence `have hm : w.mult ≤ 2 := by unfold InfinitePlace.mult; split_ifs <;> norm_num`. Conclude with `(pow_le_pow_left₀ (norm_nonneg _) h1 _).trans (pow_le_pow_right₀ hB hm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ideleModule_det_infGL_le (z : GL (Fin a) (Cinf E)) :
     (ideleModule E (GeneralLinearGroup.det (infGL E a z)) : ℝ) ≤
@@ -112,31 +110,27 @@ end GlobalTheory.RapidKernelDecay
 namespace GlobalTheory.RapidKernelDecay
 
 /- English proof (translation)
-Introduce `E _ _ _ a F X _ ν _ k γ hk hF L hL C₀ hC₀ N`. Take `⟨-, -, hkI⟩` from `hk`. Take `⟨C, hC⟩` from `hF L hL C₀ hC₀ N`. Take `⟨M₁, hM₁, h₁⟩` from `GlobalTheory.ShortVecDecay.exists_norm_vecMul_le hC₀`. Take `⟨M₂, hM₂, h₂⟩` from `GlobalTheory.ShortVecDecay.exists_norm_vecMul_le hC₀.inv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set n := a * Module.finrank ℚ E with hn`. Use `set p := 2 * Fintype.card (InfinitePlace E) with hp`. Use `set K₀ : ℝ := (M₂ * a * M₁) ^ n * (a.factorial : ℝ) ^ p with hK₀`. Use `set m := n + a * p with hm`. Use `set I := ∫ x, ‖k x‖ * height (γ x) ^ (m * N) ∂ν with hI`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨I * (|C| * K₀ ^ N), fun g c hc ξ hξ hξL => ?_⟩` and prove the remaining obligations. Use `set v : Fin a → Ad E := fun j => algebraMap E (Ad E) (ξ j) with hv`. Use `set Xn := ‖fun i => pInf E ((v ᵥ* g.val) i)‖ with hXn`. Use `set G := (ideleModule E (GeneralLinearGroup.det g) : ℝ) with hG`. Establish `hGpos : 0 < G` using `(ideleModule E _).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ y : GL (Fin a) (Cinf E), ‖F (g * c * infGL E a y)‖ ≤ |C| * K₀ ^ N * height y ^ (m * N) * (Xn ^ n / G) ^ N`. Introduce `y`. Establish `hy1` using `one_le_height y`. Use `set g' := g * c * infGL E a y * c⁻¹ with hg'`. Establish `eg : g * c * infGL E a y = g' * c` using `(inv_mul_cancel_right _ c).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hfin : (fun i => pFin E ((v ᵥ* g'.val) i)) = (fun i => pFin E ((v ᵥ* g.val) i))`. Rewrite using `[pFin_vecMul, pFin_vecMul]`. Use `congr 1`. Use `show (GeneralLinearGroup.map (pFin E) g').val = (GeneralLinearGroup.map (pFin E) g).val`. Simplify using `[hg', map_mul, map_inv, pFin_infGL]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hinf : ‖fun i => pInf E ((v ᵥ* g'.val) i)‖ ≤ M₂ * a * M₁ * height y * Xn`. Establish `e : v ᵥ* g'.val = ((v ᵥ* g.val ᵥ* c.val) ᵥ* (infGL E a y).val) ᵥ* (c⁻¹ : GA E a).val`. Simplify using `only [hg', Units.val_mul, vecMul_vecMul]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set D := (ideleModule E (GeneralLinearGroup.det (infGL E a y)) : ℝ) with hD`. Establish `hDpos : 0 < D` using `(ideleModule E _).2`. Establish `hdet : (ideleModule E (GeneralLinearGroup.det g') : ℝ) = G * D`. Establish `: GeneralLinearGroup.det g' = GeneralLinearGroup.det g * GeneralLinearGroup.det (infGL E a y)`. Simplify using `only [hg', map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_right_comm (GeneralLinearGroup.det g), mul_inv_cancel_right]`. Rewrite using `[this, map_mul, Positive.val_mul]`. Establish `hDinv : D⁻¹ ≤ ((a.factorial : ℝ) * height y ^ a) ^ p`. Establish `h` using `ideleModule_det_infGL_le (E := E) y⁻¹`. Rewrite `h` using `[height_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hDD : D * (ideleModule E (GeneralLinearGroup.det (infGL E a y⁻¹)) : ℝ) = 1`. Rewrite using `[hD, ← Positive.val_mul, ← map_mul, ← map_mul, ← map_mul, mul_inv_cancel, map_one, map_one, map_one]`. Both sides reduce to the same expression. Rewrite `h` using `[eq_inv_of_mul_eq_one_right hDD]`. Conclude with `h`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : (‖fun i => pInf E ((v ᵥ* g'.val) i)‖ ^ n / (ideleModule E (GeneralLinearGroup.det g') : ℝ)) ≤ K₀ * height y ^ m * (Xn ^ n / G)`. Rewrite using `[hdet]`. Establish `hXn0 : 0 ≤ Xn` using `norm_nonneg _`. Establish `hb0 : 0 ≤ M₂ * a * M₁ * height y * Xn`. Use `hM₁.le` as an intermediate fact.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `hM₂.le` as an intermediate fact. Check the signs of the components of the expression. Establish `hc0 : 0 ≤ ((a.factorial : ℝ) * height y ^ a) ^ p` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hL' : (fun i => pFin E ((v ᵥ* g'.val) i)) ∈ L` using `hfin ▸ hξL`.
-
-Establish `hF'` using `hC g' c hc ξ hξ hL'`. Rewrite using `[eg]`. Establish `hnn : 0 ≤ (‖fun i => pInf E ((v ᵥ* g'.val) i)‖ ^ n / (ideleModule E (GeneralLinearGroup.det g') : ℝ)) ^ N` using `pow_nonneg (div_nonneg (pow_nonneg (norm_nonneg _) _) (ideleModule E _).2.le) _`. Combine the equalities or inequalities in the displayed calculation. Establish `hint : Integrable (fun x => ‖k x‖ * height (γ x) ^ (m * N)) ν` using `hkI (m * N)`.
-
-Use `show ‖∫ x, k x * F (g * c * infGL E a (γ x)) ∂ν‖ ≤ I * (|C| * K₀ ^ N) * (Xn ^ n / G) ^ N`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = _ := by rw [integral_mul_const, hI]; ring`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem decays_integral : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (F : GA E a → ℂ)
     (X : Type) [MeasurableSpace X] (ν : Measure X) [SFinite ν] (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)),

@@ -5,13 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ F _ _ _ U hU`. Use `haveI : Module.IsTorsionFree F Ω := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : IsAlgClosure F Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) F⟩`. Establish `hemb` using `(galEmbTop ℚ F Ω).1`. Establish `hfam` using `(galEmbFam ℚ F Ω l).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : U.comap (galEmb ℚ F Ω) ≃ U` to `{ toFun := fun u => ⟨galEmb ℚ F Ω u.1, u.2⟩ invFun := fun u => ⟨Kum.toGal F hU u, u.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `hc : Continuous e` using `(hemb.continuous.comp continuous_subtype_val).subtype_mk _`. Establish `hc' : Continuous e.symm` using `(hemb.continuous_iff.2 continuous_subtype_val).subtype_mk _`. Establish `hI : ∀ (A : ValuationSubring Ω) (σ : G F Ω), galEmb ℚ F Ω σ ∈ Ine (F` using `ℚ) A ↔ σ ∈ Ine (F := F) A := fun A σ => SetLike.ext_iff.1 (hfam A).2 σ`. Establish `hD : ∀ (A : ValuationSubring Ω) (σ : G F Ω), galEmb ℚ F Ω σ ∈ Dec (F` using `ℚ) A ↔ σ ∈ Dec (F := F) A := fun A σ => SetLike.ext_iff.1 (hfam A).1 σ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `key : (Kum.XDual 1 U (ZMod l) (ZMod l)).map (LinearEquiv.funCongrLeft (ZMod l) (ZMod l) e).toLinearMap = Kum.XDual 1 (U.comap (galEmb ℚ F Ω)) (ZMod l) (ZMod l)`. Use extensionality with `φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ψ, ⟨h1, h2, h3, h4⟩, rfl⟩`. Conclude with `⟨h1.comp_continuous hc, fun a b => h2 (e a) (e b), fun A u h => h3 A (e u) ((hI A _).2 h), fun A hA u h => h4 A hA (e u) ((hD A _).2 h)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `⟨φ ∘ e.symm, ⟨h1.comp_continuous hc', fun a b => h2 (e.symm a) (e.symm b), fun A u h => h3 A (e.symm u) ((hI A _).1 h), fun A hA u h => h4 A hA (e.symm u) ((hD A _).1 h)⟩, rfl⟩`. Unfold `GC.clRk`. Rewrite using `[← key]`. Conclude with `((LinearEquiv.funCongrLeft (ZMod l) (ZMod l) e).submoduleMap _).rank_eq.symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.clrk_tr :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (F : Type) [Field F] [NumberField F] [Algebra F Ω] (U : Subgroup (G ℚ Ω)), U ≤ galOf ℚ F Ω → GC.clRk l (U.comap (galEmb ℚ F Ω)) = GC.clRk l U := by

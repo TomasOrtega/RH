@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.FlagStep
 
 /- English proof (translation)
-Set `e : {lk : Fin n × Fin n // lk.2 < lk.1} ≃ Σ i : Fin n, Fin i.val` to `{ toFun := fun x => ⟨x.1.1, ⟨x.1.2.val, x.2⟩⟩ invFun := fun y => ⟨(y.1, ⟨y.2.val, y.2.2.trans y.1.2⟩), y.2.2⟩ left_inv := fun ⟨⟨_, _⟩, _⟩ => rfl right_inv := fun ⟨_, _⟩ => rfl }`. Rewrite using `[Fintype.card_congr e, Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => i) n, Finset.sum_range_id, Nat.choose_two_right]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_strictLower (n : ℕ) [Fintype {lk : Fin n × Fin n // lk.2 < lk.1}] :
     Fintype.card {lk : Fin n × Fin n // lk.2 < lk.1} = n.choose 2 := by
@@ -26,7 +26,7 @@ theorem card_strictLower (n : ℕ) [Fintype {lk : Fin n × Fin n // lk.2 < lk.1}
   rw [Fin.sum_univ_eq_sum_range (fun i => i) n, Finset.sum_range_id, Nat.choose_two_right]
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[← add_assoc, Nat.choose_succ_succ' (p + k) 1, Nat.choose_succ_succ' k 1, ih, Nat.choose_one_right, Nat.choose_one_right]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem choose_two_add (p q : ℕ) :
     (p + q).choose 2 = p * q + p.choose 2 + q.choose 2 := by
@@ -38,11 +38,11 @@ theorem choose_two_add (p q : ℕ) :
     ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l c _ _`. Establish `hc : 2 * Fintype.card (CMType H) = Module.finrank ℚ E`. Establish `h` using `(GlobalTheory.CompanionTheory.Ar.labels_all_once E H l c).2`. Rewrite `h` using `[Nat.card_eq_fintype_card, Fintype.card_sum]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hs : Fintype.card (Σ s : CMType H ⊕ CMType H, {lk : Fin (labelRk D s) × Fin (labelRk D s) // lk.2 < lk.1}) = Fintype.card (CMType H) * D.p.choose 2 + Fintype.card (CMType H) * D.q.choose 2` using `by classical`. Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_sigma, Fintype.sum_sum_type]`. Simplify using `only [Nat.card_eq_fintype_card]`. Rewrite using `[Finset.sum_congr rfl (fun a _ => card_strictLower (labelRk D (Sum.inl a))), Finset.sum_congr rfl (fun a _ => card_strictLower (labelRk D (Sum.inr a)))]`. Simplify using `only [labelRk, Sum.elim_inl, Sum.elim_inr, Finset.sum_const, Finset.card_univ, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs, Top.dimFl, Datum.dim, ← hc, ← Nat.choose_two_right, choose_two_add, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dim_add_card_strictLower : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H)
     (c : Coeff l) [Fintype (CMType H)] [Fintype (Σ s : CMType H ⊕ CMType H, {lk : Fin (labelRk D s) × Fin (labelRk D s) // lk.2 < lk.1})],

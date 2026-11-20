@@ -9,11 +9,11 @@ open scoped Classical
 namespace GlobalTheory.UnitLemma
 
 /- English proof (translation)
-Take `⟨ζ, -, hζ⟩` from `GlobalTheory.NormUnits.exists_far_unit F E`. Take `⟨a, ha⟩` from `GlobalTheory.NormUnits.fixed_mem_range F E ζ hζ w hs`. Establish `hprod : ‖w‖ * ‖w'‖ = 1` using `by rw [← norm_mul, hww, norm_one]`. Establish `hwn : ‖w‖ = 1`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `: ‖w‖ * ‖w'‖ < 1`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `han : ‖a‖ = 1` using `by rw [← norm_algebraMap' E a, ha, hwn]`. Take `⟨v, hv⟩` from `GlobalTheory.NormUnits.norm_onto_units F E a han`. Conclude with `⟨v, by rw [hv, ha]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UQ.norm_of_fixed_unit {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [GlobalTheory.JR.Unram F E] (w w' : E) (hs : star w = w) (h1 : ‖w‖ ≤ 1)
@@ -34,11 +34,11 @@ theorem UQ.norm_of_fixed_unit {F E : Type} [NontriviallyNormedField F] [Nontrivi
   exact ⟨v, by rw [hv, ha]⟩
 
 /- English proof (translation)
-Introduce `K t ht hct`. Take `⟨F, nF, nE, hE, nA, st, hU, hst, hball⟩` from `K.exists_unram`. Establish `hmul : ∀ x y : K.E, @HMul.hMul K.E K.E K.E (@instHMul K.E nE.toMul) x y = x * y`. Introduce `x y`. Rewrite using `[← hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hone : @OfNat.ofNat K.E 1 (@One.toOfNat1 K.E nE.toOne) = 1` using `by rw [← hE]`. Take `⟨u, rfl⟩` from `ht`. Establish `hww : algebraMap K.O K.E u * algebraMap K.O K.E (u⁻¹ : K.Oˣ) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Take `⟨v, hv⟩` from `@UQ.norm_of_fixed_unit F K.E nF nE nA st hU (algebraMap K.O K.E u) (algebraMap K.O K.E (u⁻¹ : K.Oˣ)) (by rw [hst]; exact hct) ((hball _).2 ⟨u, rfl⟩) ((hball _).2 ⟨_, rfl⟩) (by rw [hmul, hone]; exact hww)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨v, ?_⟩` and prove the remaining obligations. Rewrite using `[← hst, ← hmul]`. Conclude with `hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UQ.unit_fixed_is_norm : ∀ (K : GlobalTheory.UnitLemma.UQ) (t : K.O), IsUnit t → K.c (algebraMap K.O K.E t) = algebraMap K.O K.E t →
     ∃ v : K.E, v * K.c v = algebraMap K.O K.E t := by

@@ -13,7 +13,7 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK Fr
 
 /- English proof (translation)
-Establish `e : star (A *ᵥ u) = A.map star *ᵥ star u` using `funext fun i => RingHom.map_mulVec (starRingEnd ℂ) A u i`. Rewrite using `[e, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hA]`. Simplify using `[Matrix.fromBlocks_mulVec, dotProduct, Matrix.neg_mulVec, Complex.mul_conj, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sig_val {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} {A : Matrix (Fin n) (Fin r ⊕ Fin s) ℂ}
     (hA : Aᵀ * M * A.map star = Matrix.fromBlocks 1 0 0 (-1)) (u : Fin r ⊕ Fin s → ℂ) :
@@ -24,13 +24,11 @@ theorem sig_val {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} {A : Matrix (Fin 
   simp [Matrix.fromBlocks_mulVec, dotProduct, Matrix.neg_mulVec, Complex.mul_conj, sub_eq_add_neg]
 
 /- English proof (translation)
-Take `⟨hn, A, hA⟩` from `h`. Take `⟨A', -, h1⟩` from `PositivityTheory.ThKG.Tow.Pln.frame_inv hn hA`. Establish `e : x = A *ᵥ (A' *ᵥ x)` using `by rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Generalize the expression as in `A' *ᵥ x = u at e`. Rewrite `hx` using `[e, sig_val hA, Complex.ofReal_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: u = 0`. Break down `Nat.min_eq_zero_iff.1 h0 with rfl | rfl` into its components or cases. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, zero_sub, neg_eq_zero] at hx`. Use extensionality with `(i | i)`. Conclude with `i.elim0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Complex.normSq_eq_zero.1 ((Finset.sum_eq_zero_iff_of_nonneg fun i _ => Complex.normSq_nonneg _).1 hx i (Finset.mem_univ _))`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, sub_zero] at hx`. Use extensionality with `(i | i)`. Conclude with `Complex.normSq_eq_zero.1 ((Finset.sum_eq_zero_iff_of_nonneg fun i _ => Complex.normSq_nonneg _).1 hx i (Finset.mem_univ _))`. Conclude with `i.elim0`.
-
-Rewrite using `[e, this, Matrix.mulVec_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aniso {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) (h0 : min r s = 0) {x : Fin n → ℂ}
     (hx : x ⬝ᵥ M *ᵥ star x = 0) : x = 0 := by
@@ -52,15 +50,13 @@ theorem aniso {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) 
   rw [e, this, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X r s hB hX`. Use `⟨fun h0 x hx => ?_, fun n₁ H h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `e` using `congrArg (B.emb w).1 hx`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hB.cm.2.2.2, map_zero] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `aniso (hX.sig w) h0 (x := fun i => (B.emb w).1 (x i)) e` as an intermediate fact. Conclude with `funext fun i => (B.emb w).1.injective ((congrFun this i).trans (map_zero _).symm)`. Take `⟨c, hc, hσ⟩` from `PositivityTheory.ThKF.exists_scale hB.cm (-1)`. Establish `f : ∀ x, form σ X.J x x = 0 → form σ (c • X.J) x x = 0` using `fun x hx => by`. Rewrite using `[form, Matrix.smul_mulVec, dotProduct_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `smul_eq_zero_of_right _ hx`. Establish `key` using `fun x : IsoV σ X => PositivityTheory.ThKEnd.Grp.wittVec F E σ hB.cm n (c • X.J) (fun i j => by simp [hσ, hX.herm]) (by rw [Matrix.det_smul]; exact mul_ne_zero (pow_ne_zero _ hc) (det_ne (Or.inl hX))) x.1 H.x x.2.1 h1 (f _ x.2.2) (f _ h2)`. Use `choose g g1 g2 using key`. Establish `g3 : ∀ x, (g x).1ᵀ * X.J * (g x).1.map σ = X.J` using `fun x => smul_right_injective _ hc (by`. Use `g1 x` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_smul, Matrix.smul_mul] at this)` and apply the resulting hypothesis. Establish `key : ∀ x, ∃ p : UA σ X.J, mat p = incM F (g x).1` using `fun x => PositivityTheory.ThKG.Tow.Levi.exists_UA (g' := incM F (g x)⁻¹.1) (by rw [← PositivityTheory.ThKEnd.Grp.incM_mul, Units.mul_inv, PositivityTheory.ThKEnd.Grp.incM_one]) (by conv_rhs => rw [← g3 x]`. Rewrite using `[PositivityTheory.ThKEnd.Grp.incM_mul, PositivityTheory.ThKEnd.Grp.incM_mul, PositivityTheory.ThKEnd.Grp.incM_conj]`. Use the proof step `rfl)`. Use `choose γ hγ using key`.
-
-Conclude with `⟨γ, fun x => ⟨mem_ratU.2 ⟨_, hγ x⟩, by rw [hγ, PositivityTheory.ThKEnd.Grp.incM_mulVec, g2]⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem witt_of : Witt := by
   intro F E _ _ _ _ _ σ B n X r s hB hX

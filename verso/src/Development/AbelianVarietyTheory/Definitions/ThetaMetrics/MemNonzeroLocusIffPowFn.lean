@@ -28,7 +28,7 @@ theorem chartSec_f (a : ChartPull A' A h) (s : A.Sec) (i : A'.ι) :
     (chartSec a s).f i = (h.appLE _ _ (a.le i)).hom (s.f (a.idx i)) := rfl
 
 /- English proof (translation)
-Rewrite using `[chartSec_f]`. Conclude with `gs_appLE h _ _ (a.le i) r z hz _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_chartSec (a : ChartPull A' A h) (s : A.Sec) (r : Z ⟶ Y') (z : Z) (i : A'.ι) (hz : r z ∈ A'.U i) :
     gs r z _ ((chartSec a s).f i) = gs (r ≫ h) z _ (s.f (a.idx i)) := by
@@ -36,11 +36,9 @@ theorem gs_chartSec (a : ChartPull A' A h) (s : A.Sec) (r : Z ⟶ Y') (z : Z) (i
   exact gs_appLE h _ _ (a.le i) r z hz _
 
 /- English proof (translation)
-Use `SetLike.ext fun y => ?_` and prove the remaining obligations. Establish `key : ∀ i, y ∈ A'.U i → (y ∈ nonzeroLocus (chartSec a s) ↔ h y ∈ nonzeroLocus s)` using `fun i hi => by`. Rewrite using `[mem_nonzeroLocus_iff_isUnit _ hi, mem_nonzeroLocus_iff_pull s h y (a.le i hi), gs_chartSec a s (𝟙 Y') y i hi, Category.id_comp]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, hi⟩` from `exists_chart_of_mem_nonzeroLocus hy`. Conclude with `(key i hi).1 hy`. Introduce `hy`. Take `⟨j, hj⟩` from `exists_chart_of_mem_nonzeroLocus (show h y ∈ nonzeroLocus s from hy)`. Take `⟨i, hi⟩` from `hc y j hj`.
-
-Conclude with `(key i hi).2 hy`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_chartSec (a : ChartPull A' A h) (s : A.Sec)
     (hc : ∀ (y : Y') j, h y ∈ A.U j → ∃ i, y ∈ A'.U i) :
@@ -59,7 +57,7 @@ theorem nonzeroLocus_chartSec (a : ChartPull A' A h) (s : A.Sec)
     exact (key i hi).2 hy
 
 /- English proof (translation)
-Rewrite using `[nonzeroLocus_chartSec a s hc]`. Conclude with `SetLike.ext fun _ => Iff.rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_chartSec_id {B B' : LB Y} (a : ChartPull B' B (𝟙 Y)) (s : B.Sec)
     (hc : ∀ (y : Y) j, y ∈ B.U j → ∃ i, y ∈ B'.U i) : nonzeroLocus (chartSec a s) = nonzeroLocus s := by
@@ -67,7 +65,7 @@ theorem nonzeroLocus_chartSec_id {B B' : LB Y} (a : ChartPull B' B (𝟙 Y)) (s 
   exact SetLike.ext fun _ => Iff.rfl
 
 /- English proof (translation)
-Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, gm_res (𝟙 Y) y _ hy, gm_res (𝟙 Y) y _ hy, gm_res (𝟙 Y) y _ hy, gm_res (𝟙 Y) y _ hy]`. Establish `c₁` using `gm_cocycle hA (𝟙 Y) y hy.1.1 hy.2.1 hy.2.2`. Establish `c₂` using `gm_cocycle hA (𝟙 Y) y hy.1.1 hy.1.2 hy.2.2`. Rewrite using `[eq_mul_inv_of_mul_eq c₂, ← c₁, mul_right_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lbIso_g_cocycle_on_inter_of_pairs (hA : A.IsLB) (p₁ p₂ q₁ q₂ : A.ι) :
     res (inf_le_left : A.U p₁ ⊓ A.U p₂ ⊓ (A.U q₁ ⊓ A.U q₂) ≤ A.U p₁ ⊓ A.U p₂) (A.g p₁ p₂) =
@@ -83,12 +81,12 @@ private theorem lbIso_g_cocycle_on_inter_of_pairs (hA : A.IsLB) (p₁ p₂ q₁ 
   rw [eq_mul_inv_of_mul_eq c₂, ← c₁, mul_right_comm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun p => A.g p.1 p.2⟩, fun p q => lbIso_g_cocycle_on_inter_of_pairs hA p.1 p.2 q.1 q.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem lbIso_refl (hA : A.IsLB) : LBIso A A := ⟨⟨fun p => A.g p.1 p.2⟩, fun p q => lbIso_g_cocycle_on_inter_of_pairs hA p.1 p.2 q.1 q.2⟩
 
 /- English proof (translation)
-Establish `hV : y ∈ B.U p₁ ⊓ B'.U p₂ ⊓ (B.U q₁ ⊓ B'.U q₂)` using `⟨⟨hp₁, hp₂⟩, ⟨hq₁, hq₂⟩⟩`. Establish `hW : y ∈ B.U p₁ ⊓ B.U (a.idx p₂) ⊓ (B.U q₁ ⊓ B.U (a.idx q₂))` using `⟨⟨hp₁, a.le p₂ hp₂⟩, ⟨hq₁, a.le q₂ hq₂⟩⟩`. Rewrite using `[map_mul, map_mul, map_inv, map_inv, gm_res (𝟙 Y) y _ hV, gm_res (𝟙 Y) y _ hV, gm_res (𝟙 Y) y _ hW, gm_res (𝟙 Y) y _ hW, a.g y p₂ q₂ hp₂ hq₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lbIso_of_chartPull_lemma {B B' : LB Y} (a : ChartPull B' B (𝟙 Y)) {y : Y} {p₁ q₁ : B.ι}
     {p₂ q₂ : B'.ι} (hp₁ : y ∈ B.U p₁) (hp₂ : y ∈ B'.U p₂) (hq₁ : y ∈ B.U q₁) (hq₂ : y ∈ B'.U q₂) :
@@ -108,7 +106,7 @@ private theorem lbIso_of_chartPull_lemma {B B' : LB Y} (a : ChartPull B' B (𝟙
     gm_res (𝟙 Y) y _ hW, a.g y p₂ q₂ hp₂ hq₂]
 
 /- English proof (translation)
-Establish `cp : ChartPull (B.div B') (B.div B) (𝟙 Y)` using `{ idx := fun p => (p.1, a.idx p.2) le := fun p y hy => (show y ∈ B.U p.1 ⊓ B.U (a.idx p.2) from ⟨hy.1, a.le p.2 hy.2⟩) g := fun y p q hp hq => lbIso_of_chartPull_lemma a hp.1 hp.2 hq.1 hq.2 }`. Take `⟨w, hw⟩` from `lbIso_refl hB`. Take `⟨t, ht⟩` from `gen_chartPull cp w hw`. Conclude with `⟨t, ht⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lbIso_of_chartPull {B B' : LB Y} (a : ChartPull B' B (𝟙 Y)) (hB : B.IsLB) : LBIso B' B := by
   have cp : ChartPull (B.div B') (B.div B) (𝟙 Y) :=
@@ -133,18 +131,18 @@ def chartPullPull (L : LB X) (f : Y ⟶ X) : ChartPull (L.pull f) L f where
 def secPull (s : L.Sec) (f : Y ⟶ X) : (L.pull f).Sec := chartSec (chartPullPull L f) s
 
 /- English proof (translation)
-The claim follows from `nonzeroLocus_chartSec _ s fun _ j hy => ⟨fun _ => j, mem_pull.2 hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_secPull (s : L.Sec) (f : Y ⟶ X) : nonzeroLocus (secPull s f) = f ⁻¹ᵁ nonzeroLocus s := nonzeroLocus_chartSec _ s fun _ j hy => ⟨fun _ => j, mem_pull.2 hy⟩
 
 variable {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-Use `SetLike.ext fun y => ?_` and prove the remaining obligations. Establish `key : ∀ j : K → L.ι, y ∈ LB.wchart L (fun k => h ≫ φ k) j → (y ∈ nonzeroLocus (DVR.pullSec L φ ε s h) ↔ h y ∈ nonzeroLocus s)` using `fun j hj => by`. Establish `hj' : h y ∈ LB.wchart L φ j` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hj k`. Establish `e : gs (𝟙 Z) y (LB.wchart L (fun k => h ≫ φ k) j) ((DVR.pullSec L φ ε s h).f j) = gs h y (LB.wchart L φ j) (s.f j)` using `(gs_res (𝟙 Z) y _ hj _).trans ((gs_pull (𝟙 Z) h y _ hj' _).trans (by rw [Category.id_comp]))`. Rewrite using `[mem_nonzeroLocus_iff_isUnit (DVR.pullSec L φ ε s h) hj, mem_nonzeroLocus_iff_pull s h y hj']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg IsUnit e).to_iff`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨j, hj⟩` from `exists_chart_of_mem_nonzeroLocus hy`. Conclude with `(key j hj).1 hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hy`. Take `⟨j, hj⟩` from `exists_chart_of_mem_nonzeroLocus (show h y ∈ nonzeroLocus s from hy)`. Conclude with `(key j (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hj k)).2 hy`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_pullSec (φ : K → (Y ⟶ X)) (ε : K → ℤ) (s : (LB.LinComb L φ ε).Sec) (h : Z ⟶ Y) :
     nonzeroLocus (DVR.pullSec L φ ε s h) = h ⁻¹ᵁ nonzeroLocus s := by
@@ -166,13 +164,13 @@ theorem nonzeroLocus_pullSec (φ : K → (Y ⟶ X)) (ε : K → ℤ) (s : (LB.Li
     exact (key j (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hj k)).2 hy
 
 /- English proof (translation)
-Use `SetLike.ext fun y => ?_` and prove the remaining obligations. Establish `key : ∀ j : K ⊕ K' → L.ι, y ∈ LB.wchart L (Sum.elim φ φ') j → (y ∈ nonzeroLocus (DVR.mulSec L φ ε φ' ε' s s') ↔ y ∈ nonzeroLocus s ⊓ nonzeroLocus s')` using `fun j hj => by`. Establish `h₁ : y ∈ LB.wchart L φ (j ∘ Sum.inl)` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hj (Sum.inl k)`. Establish `h₂ : y ∈ LB.wchart L φ' (j ∘ Sum.inr)` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hj (Sum.inr k)`. Establish `e : gs (𝟙 Y) y (LB.wchart L (Sum.elim φ φ') j) ((DVR.mulSec L φ ε φ' ε' s s').f j) = gs (𝟙 Y) y (LB.wchart L φ (j ∘ Sum.inl)) (s.f (j ∘ Sum.inl)) * gs (𝟙 Y) y (LB.wchart L φ' (j ∘ Sum.inr)) (s'.f (j ∘ Sum.inr))` using `(gs_mul (𝟙 Y) y _ hj _ _).trans (congrArg₂ (· * ·) (gs_res _ y _ hj _) (gs_res _ y _ hj _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_nonzeroLocus_iff_isUnit (DVR.mulSec L φ ε φ' ε' s s') hj, Opens.mem_inf, mem_nonzeroLocus_iff_isUnit s h₁, mem_nonzeroLocus_iff_isUnit s' h₂]`. Conclude with `(congrArg IsUnit e).to_iff.trans IsUnit.mul_iff`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨j, hj⟩` from `exists_chart_of_mem_nonzeroLocus hy`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(key j hj).1 hy`. Introduce `hy`. Take `⟨j₁, hj₁⟩` from `exists_chart_of_mem_nonzeroLocus (Opens.mem_inf.1 hy).1`. Take `⟨j₂, hj₂⟩` from `exists_chart_of_mem_nonzeroLocus (Opens.mem_inf.1 hy).2`. Use `(key (Sum.elim j₁ j₂) (Set.mem_iInter.2 fun k => ?_)).2 hy` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `k with`. Consider the case `inl k => exact Set.mem_iInter.1 hj₁ k`. Consider the case `inr k => exact Set.mem_iInter.1 hj₂ k`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_mulSec (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (s : (LB.LinComb L φ ε).Sec) (s' : (LB.LinComb L φ' ε').Sec) :
@@ -210,22 +208,22 @@ variable {L : LB X} {l m n : ℕ}
 abbrev powChart (L : LB X) (J : PUnit → L.ι) : X.Opens := LB.wchart L (fun _ : PUnit => 𝟙 X) J
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Set.mem_iInter.1 h PUnit.unit, fun h => Set.mem_iInter.2 fun _ => h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_powChart {J : PUnit → L.ι} {x : X} : x ∈ powChart L J ↔ x ∈ L.U (J PUnit.unit) := ⟨fun h => Set.mem_iInter.1 h PUnit.unit, fun h => Set.mem_iInter.2 fun _ => h⟩
 
 /- English proof (translation)
-The claim follows from `SetLike.ext fun _ => mem_powChart`.
+A detailed English derivation is pending.
 -/
 theorem powChart_eq (J : PUnit → L.ι) : powChart L J = L.U (J PUnit.unit) := SetLike.ext fun _ => mem_powChart
 
 /- English proof (translation)
-The claim follows from `LB.isLB_linComb hL _ _`.
+A detailed English derivation is pending.
 -/
 theorem isLB_lbPow (hL : L.IsLB) (n : ℕ) : (lbPow L n).IsLB := LB.isLB_linComb hL _ _
 
 /- English proof (translation)
-Use `(gm_linComb L _ _ r z J J' hJ hJ').trans ?_` and prove the remaining obligations. Simplify using `only [Fintype.prod_unique, Category.comp_id, zpow_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gm_lbPow_g (n : ℕ) (r : Z ⟶ X) (z : Z) (J J' : PUnit → L.ι) (hJ : r z ∈ powChart L J)
     (hJ' : r z ∈ powChart L J') :
@@ -237,7 +235,7 @@ theorem gm_lbPow_g (n : ℕ) (r : Z ⟶ X) (z : Z) (J J' : PUnit → L.ι) (hJ :
 def powFn (s : (lbPow L n).Sec) (J : PUnit → L.ι) : Γ(X, powChart L J) := s.f J
 
 /- English proof (translation)
-Establish `e` using `gs_compat s r z hJ hJ'`. Rewrite `e` using `[gm_lbPow_g n r z J J' hJ hJ', Units.val_pow_eq_pow_val]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_powFn_compat (s : (lbPow L n).Sec) (r : Z ⟶ X) (z : Z) (J J' : PUnit → L.ι) (hJ : r z ∈ powChart L J)
     (hJ' : r z ∈ powChart L J') :
@@ -257,13 +255,13 @@ def powSecOfGerm (n : ℕ) (f : ∀ J : PUnit → L.ι, Γ(X, powChart L J))
     exact h y J J' hJ hJ'
 
 /- English proof (translation)
-The claim follows from `mem_nonzeroLocus_iff_isUnit s hJ`.
+A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_iff_powFn (s : (lbPow L n).Sec) {y : X} {J : PUnit → L.ι} (hJ : y ∈ powChart L J) :
     y ∈ nonzeroLocus s ↔ IsUnit (gs (𝟙 X) y _ (powFn s J)) := mem_nonzeroLocus_iff_isUnit s hJ
 
 /- English proof (translation)
-The claim follows from `nonzeroLocus_eq_of s W hW h`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_pow_eq_of (s : (lbPow L n).Sec) (W : X.Opens) (hW : ∀ y ∈ W, ∃ J, y ∈ powChart L J)
     (h : ∀ (y : X) J, y ∈ powChart L J → (IsUnit (gs (𝟙 X) y _ (powFn s J)) ↔ y ∈ W)) : nonzeroLocus s = W := nonzeroLocus_eq_of s W hW h
@@ -281,9 +279,9 @@ Both sides reduce to the same expression.
     powFn (secMul s t) J = powFn s J * powFn t J := rfl
 
 /- English proof (translation)
-Use `SetLike.ext fun y => ?_` and prove the remaining obligations. Establish `key : ∀ J, y ∈ powChart L J → (y ∈ nonzeroLocus (secMul s t) ↔ y ∈ nonzeroLocus s ⊓ nonzeroLocus t)` using `fun J hJ => by`. Rewrite using `[mem_nonzeroLocus_iff_powFn _ hJ, powFn_secMul, gs_mul _ y _ hJ, IsUnit.mul_iff, Opens.mem_inf, mem_nonzeroLocus_iff_powFn s hJ, mem_nonzeroLocus_iff_powFn t hJ]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨J, hJ⟩` from `exists_chart_of_mem_nonzeroLocus hy`. Conclude with `(key J hJ).1 hy`. Introduce `hy`. Take `⟨J, hJ⟩` from `exists_chart_of_mem_nonzeroLocus (Opens.mem_inf.1 hy).1`. Conclude with `(key J hJ).2 hy`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_secMul (s : (lbPow L m).Sec) (t : (lbPow L n).Sec) :
     nonzeroLocus (secMul s t) = nonzeroLocus s ⊓ nonzeroLocus t := by
@@ -312,9 +310,9 @@ Both sides reduce to the same expression.
     powFn (secPow s k) J = powFn s J ^ k := rfl
 
 /- English proof (translation)
-Use `SetLike.ext fun y => ?_` and prove the remaining obligations. Establish `key : ∀ J, y ∈ powChart L J → (y ∈ nonzeroLocus (secPow s k) ↔ y ∈ nonzeroLocus s)` using `fun J hJ => by`. Rewrite using `[mem_nonzeroLocus_iff_powFn _ hJ, mem_nonzeroLocus_iff_powFn s hJ, powFn_secPow, gs_pow _ y _ hJ, isUnit_pow_iff (by omega)]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨J, hJ⟩` from `exists_chart_of_mem_nonzeroLocus hy`. Conclude with `(key J hJ).1 hy`. Introduce `hy`. Take `⟨J, hJ⟩` from `exists_chart_of_mem_nonzeroLocus hy`. Conclude with `(key J hJ).2 hy`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_secPow (s : (lbPow L m).Sec) {k : ℕ} (hk : 1 ≤ k) : nonzeroLocus (secPow s k) = nonzeroLocus s := by
   refine SetLike.ext fun y => ?_
@@ -353,7 +351,7 @@ Both sides reduce to the same expression.
 @[simp] theorem powFn_secOfFn (c : Γ(X, ⊤)) (J : PUnit → L.ι) : powFn (secOfFn L c) J = resG X le_top c := rfl
 
 /- English proof (translation)
-Use `nonzeroLocus_pow_eq_of _ _ (fun y _ => ?_) fun y J hJ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart hL y`. Conclude with `⟨fun _ => i, mem_powChart.2 hi⟩`. Rewrite using `[powFn_secOfFn, gs_res _ y le_top hJ, isUnit_gs_iff (𝟙 X) y ⊤ (by simp) c]`. Conclude with `Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem nonzeroLocus_secOfFn (hL : L.IsLB) (c : Γ(X, ⊤)) : nonzeroLocus (secOfFn L c) = X.basicOpen c := by
   refine nonzeroLocus_pow_eq_of _ _ (fun y _ => ?_) fun y J hJ => ?_
@@ -378,11 +376,11 @@ Both sides reduce to the same expression.
     powFn (powSecMk n f h) J = resG X (powChart_eq J).le (f (J PUnit.unit)) := rfl
 
 /- English proof (translation)
-Use `nonzeroLocus_pow_eq_of _ _ (fun y hy => ?_) fun y J hJ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 hy`. Conclude with `⟨fun _ => i, mem_powChart.2 (X.basicOpen_le _ hi)⟩`. Rewrite using `[powFn_powSecMk, gs_res _ y _ hJ, isUnit_gs_iff (𝟙 X) y _ (mem_powChart.1 hJ), Opens.mem_iSup]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `fun hy => ⟨_, hy⟩`. Introduce and unpack `⟨i, hi⟩`. Establish `hy : y ∈ L.U i ⊓ L.U (J PUnit.unit)` using `⟨X.basicOpen_le _ hi, mem_powChart.1 hJ⟩`. Establish `e` using `congrArg (gs (𝟙 X) y _) (h i (J PUnit.unit))`. Rewrite `e` using `[gs_res _ y _ hy, gs_mul _ y _ hy, gs_res _ y _ hy, gs_pow _ y _ hy, gs_unit _ y _ hy]`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu` using `(isUnit_gs_iff (𝟙 X) y _ hy.1 (f i)).2 hi`. Rewrite `hu` using `[e]`. Conclude with `(isUnit_gs_iff (𝟙 X) y _ hy.2 _).1 (IsUnit.mul_iff.1 hu).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_powSecMk (n : ℕ) (f : ∀ i, Γ(X, L.U i)) (h) :
     nonzeroLocus (powSecMk n f h) = ⨆ i, X.basicOpen (f i) := by
@@ -404,7 +402,7 @@ def powSecFn (s : (lbPow L n).Sec) (i : L.ι) : Γ(X, L.U i) :=
   resG X (powChart_eq (fun _ => i)).ge (powFn s fun _ => i)
 
 /- English proof (translation)
-The claim follows from `fn_ext fun y hy => by have hi : y ∈ powChart L (fun _ => i) := mem_powChart.2 hy.1 have hj : y ∈ powChart L (fun _ => j) := mem_powChart.2 hy.2 rw [gs_mul _ y _ hy, gs_pow _ y _ hy, gs_unit _ y _ hy, gs_res _ y _ hy, gs_res _ y _ hy] unfold powSecFn rw [gs_res _ y _ hy.1, gs_res …`.
+A detailed English derivation is pending.
 -/
 theorem powSecFn_compat (s : (lbPow L n).Sec) (i j : L.ι) :
     resG X (inf_le_left : L.U i ⊓ L.U j ≤ L.U i) (powSecFn s i) =
@@ -417,11 +415,11 @@ theorem powSecFn_compat (s : (lbPow L n).Sec) (i j : L.ι) :
   exact gs_powFn_compat s (𝟙 X) y _ _ hi hj
 
 /- English proof (translation)
-Use `SetLike.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[Opens.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hs, hy⟩`. Use `(isUnit_gs_iff (𝟙 X) y _ hy (powSecFn s i)).1 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `powSecFn`. Rewrite using `[gs_res _ y _ hy]`. Conclude with `(mem_nonzeroLocus_iff_powFn s (mem_powChart.2 hy)).1 hs`. Introduce `hy`. Establish `hU : y ∈ L.U i` using `X.basicOpen_le _ hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hU⟩` and prove the remaining obligations. Rewrite using `[mem_nonzeroLocus_iff_powFn s (J := fun _ => i) (mem_powChart.2 hU)]`. Establish `hu` using `(isUnit_gs_iff (𝟙 X) y _ hU (powSecFn s i)).2 hy`. Unfold `powSecFn at hu`. Rewrite `hu` using `[gs_res _ y _ hU]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_inf_powSecFn (s : (lbPow L n).Sec) (i : L.ι) :
     nonzeroLocus s ⊓ L.U i = X.basicOpen (powSecFn s i) := by
@@ -447,7 +445,7 @@ def secToPow (s : L.Sec) (n : ℕ) : (lbPow L n).Sec :=
     exact congrArg (· ^ n) (s.compat i j)
 
 /- English proof (translation)
-Unfold `secToPow`. Rewrite using `[nonzeroLocus_powSecMk]`. Conclude with `iSup_congr fun i => X.basicOpen_pow (s.f i) hn`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_secToPow (s : L.Sec) (hn : 1 ≤ n) : nonzeroLocus (secToPow s n) = nonzeroLocus s := by
   unfold secToPow
@@ -459,11 +457,11 @@ def secOfPowOne (s : (lbPow L 1).Sec) : L.Sec where
   compat i j := (powSecFn_compat s i j).trans (by rw [pow_one])
 
 /- English proof (translation)
-Use `SetLike.ext fun y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y ∈ ⨆ i, X.basicOpen (powSecFn s i) ↔ y ∈ nonzeroLocus s`. Rewrite using `[Opens.mem_iSup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `hi` using `[← nonzeroLocus_inf_powSecFn]`. Conclude with `(Opens.mem_inf.1 hi).1`. Introduce `hy`. Take `⟨J, hJ⟩` from `exists_chart_of_mem_nonzeroLocus hy`. Use `⟨J PUnit.unit, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← nonzeroLocus_inf_powSecFn]`. Conclude with `Opens.mem_inf.2 ⟨hy, mem_powChart.1 hJ⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_secOfPowOne (s : (lbPow L 1).Sec) : nonzeroLocus (secOfPowOne s) = nonzeroLocus s := by
   refine SetLike.ext fun y => ?_
@@ -498,7 +496,7 @@ def chartPullPowPull (L : LB X) (f : Y ⟶ X) (n : ℕ) : ChartPull (lbPow (L.pu
 def secPowPull (s : (lbPow L n).Sec) (f : Y ⟶ X) : (lbPow (L.pull f) n).Sec := chartSec (chartPullPowPull L f n) s
 
 /- English proof (translation)
-The claim follows from `nonzeroLocus_chartSec _ s fun _ J hy => ⟨fun _ _ => J PUnit.unit, mem_powChart.2 (mem_pull.2 (mem_powChart.1 hy))⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_secPowPull (s : (lbPow L n).Sec) (f : Y ⟶ X) :
     nonzeroLocus (secPowPull s f) = f ⁻¹ᵁ nonzeroLocus s := nonzeroLocus_chartSec _ s fun _ J hy => ⟨fun _ _ => J PUnit.unit, mem_powChart.2 (mem_pull.2 (mem_powChart.1 hy))⟩
@@ -525,12 +523,12 @@ def secToPowPow (s : (lbPow L (m * n)).Sec) : (lbPow (lbPow L m) n).Sec := chart
 def secOfPowPow (s : (lbPow (lbPow L m) n).Sec) : (lbPow L (m * n)).Sec := chartSec (chartPullPowMul L m n) s
 
 /- English proof (translation)
-The claim follows from `nonzeroLocus_chartSec_id _ s fun _ j hy => ⟨fun _ => j, mem_powChart.2 hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_secToPowPow (s : (lbPow L (m * n)).Sec) : nonzeroLocus (secToPowPow s) = nonzeroLocus s := nonzeroLocus_chartSec_id _ s fun _ j hy => ⟨fun _ => j, mem_powChart.2 hy⟩
 
 /- English proof (translation)
-The claim follows from `nonzeroLocus_chartSec_id _ s fun _ j hy => ⟨j PUnit.unit, mem_powChart.1 hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_secOfPowPow (s : (lbPow (lbPow L m) n).Sec) : nonzeroLocus (secOfPowPow s) = nonzeroLocus s := nonzeroLocus_chartSec_id _ s fun _ j hy => ⟨j PUnit.unit, mem_powChart.1 hy⟩
 
@@ -554,26 +552,26 @@ def secOfFinPow {f : Y ⟶ X} (s : (LB.LinComb L (K := Fin n) (fun _ => f) (fun 
     (lbPow (L.pull f) n).Sec := chartSec (chartPullPowFin L f n) s
 
 /- English proof (translation)
-The claim follows from `nonzeroLocus_chartSec_id _ s fun _ j hy => ⟨fun _ _ => j ⟨0, hn⟩, mem_powChart.2 (mem_pull.2 (Set.mem_iInter.1 hy ⟨0, hn⟩))⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_secOfFinPow {f : Y ⟶ X} (hn : 1 ≤ n)
     (s : (LB.LinComb L (K := Fin n) (fun _ => f) (fun _ => 1)).Sec) :
     nonzeroLocus (secOfFinPow s) = nonzeroLocus s := nonzeroLocus_chartSec_id _ s fun _ j hy => ⟨fun _ _ => j ⟨0, hn⟩, mem_powChart.2 (mem_pull.2 (Set.mem_iInter.1 hy ⟨0, hn⟩))⟩
 
 /- English proof (translation)
-The claim follows from `lbIso_of_chartPull (chartPullPowOne L) hL`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_lbPow_one (hL : L.IsLB) : LBIso (lbPow L 1) L := lbIso_of_chartPull (chartPullPowOne L) hL
 
 /- English proof (translation)
-The claim follows from `lbIso_of_chartPull (chartPullPowPow L m n) (isLB_lbPow hL _)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_lbPow_lbPow (hL : L.IsLB) (m n : ℕ) : LBIso (lbPow (lbPow L m) n) (lbPow L (m * n)) := lbIso_of_chartPull (chartPullPowPow L m n) (isLB_lbPow hL _)
 
 /- English proof (translation)
-Establish `le : ∀ J : PUnit → (L.pull f).ι, (lbPow (L.pull f) n).U J ≤ (𝟙 Y) ⁻¹ᵁ ((lbPow L n).pull f).U (fun _ _ => J PUnit.unit PUnit.unit)` using `fun J y hy => mem_pull.2 (mem_powChart.2 (mem_pull.1 (mem_powChart.1 hy)))`. Establish `cp : ChartPull (lbPow (L.pull f) n) ((lbPow L n).pull f) (𝟙 Y)` using `{ idx := fun J _ _ => J PUnit.unit PUnit.unit le := le g := fun y J J' hJ hJ' => by`. Establish `h₁ : (𝟙 Y ≫ f) y ∈ L.U (J PUnit.unit PUnit.unit)` using `mem_pull.1 (mem_powChart.1 hJ)`. Establish `h₂ : (𝟙 Y ≫ f) y ∈ L.U (J' PUnit.unit PUnit.unit)` using `mem_pull.1 (mem_powChart.1 hJ')`. Rewrite using `[gm_lbPow_g n (𝟙 Y) y J J' hJ hJ', gm_pull_g L f (𝟙 Y) y _ _ (mem_powChart.1 hJ) (mem_powChart.1 hJ'), gm_pull_g (lbPow L n) f (𝟙 Y) y _ _ (le J hJ) (le J' hJ'), gm_lbPow_g n (𝟙 Y ≫ f) y _ _ (mem_powChart.2 h₁) (mem_powChart.2 h₂)] }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lbIso_of_chartPull cp (pull_isLB (isLB_lbPow hL n) f)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_lbPow_pull (hL : L.IsLB) (f : Y ⟶ X) (n : ℕ) : LBIso (lbPow (L.pull f) n) ((lbPow L n).pull f) := by
   have le : ∀ J : PUnit → (L.pull f).ι,
@@ -591,17 +589,17 @@ theorem lbIso_lbPow_pull (hL : L.IsLB) (f : Y ⟶ X) (n : ℕ) : LBIso (lbPow (L
   exact lbIso_of_chartPull cp (pull_isLB (isLB_lbPow hL n) f)
 
 /- English proof (translation)
-The claim follows from `lbIso_of_chartPull (chartPullPowFin L f n) (LB.isLB_linComb hL _ _)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_lbPow_finPow (hL : L.IsLB) (f : Y ⟶ X) (n : ℕ) :
     LBIso (lbPow (L.pull f) n) (LB.LinComb L (K := Fin n) (fun _ => f) (fun _ => 1)) := lbIso_of_chartPull (chartPullPowFin L f n) (LB.isLB_linComb hL _ _)
 
 /- English proof (translation)
-Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `hy₁ : y ∈ (lbPow M n).U P₁ ⊓ (lbPow L n).U P₂` using `hy.1`. Establish `hy₂ : y ∈ (lbPow M n).U Q₁ ⊓ (lbPow L n).U Q₂` using `hy.2`. Establish `hPQ : y ∈ M.U (P₁ PUnit.unit) ⊓ L.U (P₂ PUnit.unit) ⊓ (M.U (Q₁ PUnit.unit) ⊓ L.U (Q₂ PUnit.unit))` using `⟨leP hy₁, leQ hy₂⟩`. Establish `hM₁ : y ∈ (lbPow M n).U P₁` using `hy₁.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM₂ : y ∈ (lbPow M n).U Q₁` using `hy₂.1`. Establish `hL₁ : y ∈ (lbPow L n).U P₂` using `hy₁.2`. Establish `hL₂ : y ∈ (lbPow L n).U Q₂` using `hy₂.2`. Establish `e` using `congrArg (gm (𝟙 X) y _) hu`. Rewrite `e` using `[map_mul, map_mul, map_inv, gm_res (𝟙 X) y _ hPQ, gm_res (𝟙 X) y _ hPQ, gm_res (𝟙 X) y _ hPQ, gm_res (𝟙 X) y _ hPQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, map_inv, gm_res (𝟙 X) y _ hy, gm_res (𝟙 X) y _ hy, gm_res (𝟙 X) y _ hy, gm_res (𝟙 X) y _ hy, map_pow, map_pow, gm_res (𝟙 X) y _ hy₁, gm_res (𝟙 X) y _ hy₂, gm_lbPow_g n (𝟙 X) y P₁ Q₁ hM₁ hM₂, gm_lbPow_g n (𝟙 X) y P₂ Q₂ hL₁ hL₂, e, mul_pow, mul_pow, inv_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem lbIso_lbPow_lemma {M : LB X} (n : ℕ) (P₁ Q₁ : PUnit → M.ι) (P₂ Q₂ : PUnit → L.ι)
     (uP : Γ(X, M.U (P₁ PUnit.unit) ⊓ L.U (P₂ PUnit.unit))ˣ) (uQ : Γ(X, M.U (Q₁ PUnit.unit) ⊓ L.U (Q₂ PUnit.unit))ˣ)
@@ -642,7 +640,7 @@ private theorem lbIso_lbPow_lemma {M : LB X} (n : ℕ) (P₁ Q₁ : PUnit → M.
     gm_lbPow_g n (𝟙 X) y P₁ Q₁ hM₁ hM₂, gm_lbPow_g n (𝟙 X) y P₂ Q₂ hL₁ hL₂, e, mul_pow, mul_pow, inv_pow]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H`. Establish `le : ∀ P : (PUnit → M.ι) × (PUnit → L.ι), (lbPow M n).U P.1 ⊓ (lbPow L n).U P.2 ≤ M.U (P.1 PUnit.unit) ⊓ L.U (P.2 PUnit.unit)` using `fun P y hy => ⟨mem_powChart.1 hy.1, mem_powChart.1 hy.2⟩`. Conclude with `⟨⟨fun P => res (le P) (w.s (P.1 PUnit.unit, P.2 PUnit.unit)) ^ n⟩, fun P Q => lbIso_lbPow_lemma n P.1 Q.1 P.2 Q.2 (w.s (P.1 PUnit.unit, P.2 PUnit.unit)) (w.s (Q.1 PUnit.unit, Q.2 PUnit.unit)) (hw (P.1 PUnit.unit, P.2 PUnit.unit) (Q.1 PUnit.unit, Q.2 PUnit.unit)) (le P) (le Q)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem lbIso_lbPow {M : LB X} (H : LBIso L M) (n : ℕ) : LBIso (lbPow L n) (lbPow M n) := by
   obtain ⟨w, hw⟩ := H

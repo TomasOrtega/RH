@@ -16,7 +16,7 @@ variable {S : Type u} [CommRing S] {N : ℕ}
 def negSet (a : Fin (N + 1) → ℤ) : Finset (Fin (N + 1)) := Finset.univ.filter fun j => a j < 0
 
 /- English proof (translation)
-Simplify using `[negSet]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_negSet {a : Fin (N + 1) → ℤ} {j : Fin (N + 1)} : j ∈ negSet a ↔ a j < 0 := by
   simp [negSet]
@@ -29,14 +29,14 @@ def part (J : Finset (Fin (N + 1))) : Laurent S N →ₗ[S] Laurent S N where
   map_smul' _ _ := Finsupp.filter_smul
 
 /- English proof (translation)
-The claim follows from `Finsupp.filter_apply _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem part_apply (J : Finset (Fin (N + 1))) (f : Laurent S N) (a : Fin (N + 1) → ℤ) :
     part S J f a = if negSet a = J then f a else 0 :=
   Finsupp.filter_apply _ _ _
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[Finsupp.finsetSum_apply]`. Simplify using `only [part_apply]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_part (f : Laurent S N) : ∑ J, part S J f = f := by
   ext a
@@ -51,7 +51,7 @@ def wPart (c : ℤ) (J : Finset (Fin (N + 1))) : Submodule S (Laurent S N) :=
   Finsupp.supported S S {a | negSet a = J ∧ ∑ j, a j = c}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `ha ((Finsupp.mem_supported' S f).mp hf a h)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem mem_exps {c : ℤ} {I : StdCell N} {f : Laurent S N} (hf : f ∈ laurentDeg S N c I)
     {a : Fin (N + 1) → ℤ} (ha : f a ≠ 0) : a ∈ laurentExps N c I.1 := by
@@ -59,9 +59,7 @@ theorem mem_exps {c : ℤ} {I : StdCell N} {f : Laurent S N} (hf : f ∈ laurent
   exact ha ((Finsupp.mem_supported' S f).mp hf a h)
 
 /- English proof (translation)
-Use `(Finsupp.mem_supported' S _).mpr fun a ha => ?_` and prove the remaining obligations. Rewrite using `[part_apply]`. Use `split_ifs with h`. Assume the negation of the conclusion as `h'`. Conclude with `ha ⟨h, (mem_exps hf h').1⟩`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem part_mem_w {c : ℤ} {J : Finset (Fin (N + 1))} {I : StdCell N} {f : Laurent S N}
     (hf : f ∈ laurentDeg S N c I) : part S J f ∈ wPart S N c J := by
@@ -73,11 +71,11 @@ theorem part_mem_w {c : ℤ} {J : Finset (Fin (N + 1))} {I : StdCell N} {f : Lau
   · rfl
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[part_apply, Finsupp.zero_apply]`. Use `split_ifs with h`. Assume the negation of the conclusion as `h'`. Apply `hJ` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Assume the negation of the conclusion as `hjI`. Establish `h1` using `(mem_exps hf h').2 j hjI`. Rewrite `hj` using `[← h, mem_negSet]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem part_eq_zero {c : ℤ} {J : Finset (Fin (N + 1))} {I : StdCell N} {f : Laurent S N}
     (hf : f ∈ laurentDeg S N c I) (hJ : ¬ J ⊆ I.1) : part S J f = 0 := by
@@ -94,9 +92,9 @@ theorem part_eq_zero {c : ℤ} {J : Finset (Fin (N + 1))} {I : StdCell N} {f : L
   · rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : J ⊆ I.1`. Use `(Finsupp.mem_supported' S _).mpr fun a ha => ?_` and prove the remaining obligations. Use `(Finsupp.mem_supported' S _).mp hy a fun ⟨hJa, hc⟩ => ha ⟨hc, fun j hj => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hneg`. Establish `: j ∈ negSet a` using `mem_negSet.mpr (by omega)`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `this` using `[hJa]`. Conclude with `hj (h this)`. Rewrite using `[hJ h]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_deg_of_w {c : ℤ} {J : Finset (Fin (N + 1))} {I : StdCell N} {y : Laurent S N}
     (hy : y ∈ wPart S N c J) (hJ : ¬ J ⊆ I.1 → y = 0) : y ∈ laurentDeg S N c I := by
@@ -110,7 +108,7 @@ theorem mem_deg_of_w {c : ℤ} {J : Finset (Fin (N + 1))} {I : StdCell N} {y : L
   · rw [hJ h]; exact Submodule.zero_mem _
 
 /- English proof (translation)
-The claim follows from `mem_deg_of_w (part_mem_w hf) (part_eq_zero hf)`.
+A detailed English derivation is pending.
 -/
 theorem part_mem_deg {c : ℤ} {J : Finset (Fin (N + 1))} {I : StdCell N} {f : Laurent S N}
     (hf : f ∈ laurentDeg S N c I) : part S J f ∈ laurentDeg S N c I :=
@@ -130,14 +128,14 @@ def partC (J : Finset (Fin (N + 1))) (i : ℕ) : Cech.Cochain (G S N) i →ₗ[S
   Cech.mapC (fun _ => part S J) i
 
 /- English proof (translation)
-The claim follows from `(Cech.mapC_d (ρ := ρ S N) (ρ' := ρ S N) (fun _ => part S J) (fun _ _ _ _ => rfl) i z).symm`.
+A detailed English derivation is pending.
 -/
 theorem partC_d (J : Finset (Fin (N + 1))) (i : ℕ) (z : Cech.Cochain (G S N) i) :
     Cech.d (G S N) (ρ S N) i (partC S J i z) = partC S J (i + 1) (Cech.d (G S N) (ρ S N) i z) :=
   (Cech.mapC_d (ρ := ρ S N) (ρ' := ρ S N) (fun _ => part S J) (fun _ _ _ _ => rfl) i z).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Rewrite using `[Finset.sum_apply]`. Conclude with `sum_part (z I)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_partC (i : ℕ) (z : Cech.Cochain (G S N) i) : ∑ J, partC S J i z = z := by
   funext I
@@ -145,7 +143,7 @@ theorem sum_partC (i : ℕ) (z : Cech.Cochain (G S N) i) : ∑ J, partC S J i z 
   exact sum_part (z I)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearMap.mem_ker.mpr (by rw [partC_d, LinearMap.mem_ker.mp hz.1, map_zero]), fun I _ => part_mem_deg (hz.2 I (Set.mem_univ _))⟩`.
+Supply the required witnesses or components.
 -/
 theorem partC_mem_cocy {c : ℤ} {i : ℕ} (J : Finset (Fin (N + 1))) {z : Cech.Cochain (G S N) i}
     (hz : z ∈ Cech.cocyDeg (G S N) (laurentDeg S N c) (ρ S N) i) :
@@ -154,9 +152,7 @@ theorem partC_mem_cocy {c : ℤ} {i : ℕ} (J : Finset (Fin (N + 1))) {z : Cech.
     fun I _ => part_mem_deg (hz.2 I (Set.mem_univ _))⟩
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i₀, hi₀⟩ : ∃ i₀, i₀ ∉ J := by`. Assume the negation of the conclusion as `h`. Conclude with `hJ (Finset.eq_univ_iff_forall.mpr fun x => by by_contra hx; exact h ⟨x, hx⟩)`. Establish `hzI : ∀ I, z I ∈ laurentDeg S N c I.1` using `fun I => hz.2 I (Set.mem_univ _)`. Take `⟨y, hyW, hy0, hyd⟩` from `(hC S (Laurent S N) N J).1 (wPart S N c J) i₀ hi₀ i (partC S J (i + 1) z) (by rw [partC_d, LinearMap.mem_ker.mp hz.1, map_zero]) (fun I => part_mem_w (hzI I)) (fun I h => part_eq_zero (hzI I) h)`.
-
-Conclude with `Submodule.mem_map.mpr ⟨y, fun I _ => mem_deg_of_w (hyW I) (hy0 I), hyd⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem partC_mem_bdry (hC : Cech.Cone.Statement.{u, u}) {c : ℤ} {i : ℕ}
     {J : Finset (Fin (N + 1))} (hJ : J ≠ Finset.univ) {z : Cech.Cochain (G S N) (i + 1)}
@@ -172,7 +168,7 @@ theorem partC_mem_bdry (hC : Cech.Cone.Statement.{u, u}) {c : ℤ} {i : ℕ}
   exact Submodule.mem_map.mpr ⟨y, fun I _ => mem_deg_of_w (hyW I) (hy0 I), hyd⟩
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i₀, hi₀⟩ : ∃ i₀, i₀ ∉ J := by`. Assume the negation of the conclusion as `h`. Conclude with `hJ (Finset.eq_univ_iff_forall.mpr fun x => by by_contra hx; exact h ⟨x, hx⟩)`. Conclude with `(hC S (Laurent S N) N J).2.1 (Finset.nonempty_iff_ne_empty.mpr hJ0) i₀ hi₀ _ (by rw [partC_d, LinearMap.mem_ker.mp hz.1, map_zero]) (fun I h => part_eq_zero (hz.2 I (Set.mem_univ _)) h)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem partC_zero (hC : Cech.Cone.Statement.{u, u}) {c : ℤ} {J : Finset (Fin (N + 1))}
     (hJ0 : J ≠ ∅) (hJ : J ≠ Finset.univ) {z : Cech.Cochain (G S N) 0}
@@ -185,9 +181,9 @@ theorem partC_zero (hC : Cech.Cone.Statement.{u, u}) {c : ℤ} {J : Finset (Fin 
     (fun I h => part_eq_zero (hz.2 I (Set.mem_univ _)) h)
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[part_apply, Finsupp.zero_apply]`. Use `split_ifs with h`. Assume the negation of the conclusion as `h'`. Establish `hneg : ∀ j ∈ Finset.univ, a j < 0` using `fun j _ => mem_negSet.mp (h ▸ Finset.mem_univ j)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty hneg` as an intermediate fact. Rewrite `this` using `[Finset.sum_const_zero, (mem_exps hf h').1]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem part_univ_eq_zero {c : ℤ} (hc : 0 ≤ c) {I : StdCell N} {f : Laurent S N}
     (hf : f ∈ laurentDeg S N c I) : part S Finset.univ f = 0 := by
@@ -205,13 +201,13 @@ def bnd (c : ℤ) : Set (Fin (N + 1) → ℤ) :=
   {a | ∑ j, a j = c ∧ (negSet a = ∅ ∨ negSet a = Finset.univ)}
 
 /- English proof (translation)
-Use `(Set.Finite.pi (t := fun _ : Fin (N + 1) => Set.Icc (-|c|) |c|) fun _ => Set.finite_Icc _ _).subset ?_` and prove the remaining obligations. Introduce and unpack `a ⟨hc, h | h⟩ j -`. Establish `hnn : ∀ k ∈ Finset.univ, 0 ≤ a k` using `fun k _ => by`. Assume the negation of the conclusion as `hk`. Establish `: k ∈ negSet a` using `mem_negSet.mpr (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Conclude with `Finset.notMem_empty _ this`. Establish `h1` using `Finset.single_le_sum hnn (Finset.mem_univ j)`. Rewrite `h1` using `[hc]`. Use `hnn j (Finset.mem_univ j)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨by linarith [abs_nonneg c], h1.trans (le_abs_self c)⟩`. Establish `hng : ∀ k ∈ Finset.univ, 0 ≤ -a k` using `fun k _ => by`. Use `mem_negSet.mp (h ▸ Finset.mem_univ k)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1` using `Finset.single_le_sum hng (Finset.mem_univ j)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Finset.sum_neg_distrib, hc]`. Use `mem_negSet.mp (h ▸ Finset.mem_univ j)` as an intermediate fact. Conclude with `⟨by linarith [neg_abs_le c], by linarith [abs_nonneg c]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bnd_finite (c : ℤ) : (bnd (N := N) c).Finite := by
   refine (Set.Finite.pi (t := fun _ : Fin (N + 1) => Set.Icc (-|c|) |c|)
@@ -235,15 +231,15 @@ theorem bnd_finite (c : ℤ) : (bnd (N := N) c).Finite := by
     exact ⟨by linarith [neg_abs_le c], by linarith [abs_nonneg c]⟩
 
 /- English proof (translation)
-Set `K : Finset (Finset (Fin (N + 1)))` to `Finset.univ.filter fun J => J ≠ ∅ ∧ J ≠ Finset.univ`. Use `⟨z - ∑ J ∈ K, partC S J i z, Submodule.sub_mem _ hz (Submodule.sum_mem _ fun J _ => partC_mem_cocy J hz), fun I => ?_, ?_⟩` and prove the remaining obligations. Use `(Finsupp.mem_supported' S _).mpr fun a ha => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z I a - (∑ J ∈ K, partC S J i z) I a = 0`. Rewrite using `[Finset.sum_apply, Finsupp.finsetSum_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `z I a - ∑ J ∈ K, part S J (z I) a = 0`. Simplify using `only [part_apply]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hK`. Conclude with `sub_self _`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[sub_zero]`. Assume the negation of the conclusion as `h'`. Establish `hc` using `(mem_exps (hz.2 I (Set.mem_univ _)) h').1`. Apply `ha` to reduce the goal to its premises. Use `⟨hc, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hb`. Conclude with `hK (Finset.mem_filter.mpr ⟨Finset.mem_univ _, fun h0 => hb (Or.inl h0), fun h1 => hb (Or.inr h1)⟩)`. Rewrite using `[sub_sub_cancel]`. Consider the cases of `i with`. Consider the case `zero`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `h0 : ∑ J ∈ K, partC S J 0 z = 0` using `Finset.sum_eq_zero fun J hJ => partC_zero hC (Finset.mem_filter.mp hJ).2.1 (Finset.mem_filter.mp hJ).2.2 hz`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ i`. Conclude with `Submodule.sum_mem _ fun J hJ => partC_mem_bdry hC (Finset.mem_filter.mp hJ).2.2 hz`.
+A detailed English derivation is pending.
 -/
 theorem reduce (hC : Cech.Cone.Statement.{u, u}) {c : ℤ} {i : ℕ} {z : Cech.Cochain (G S N) i}
     (hz : z ∈ Cech.cocyDeg (G S N) (laurentDeg S N c) (ρ S N) i) :
@@ -281,7 +277,7 @@ theorem reduce (hC : Cech.Cone.Statement.{u, u}) {c : ℤ} {i : ℕ} {z : Cech.C
       exact Submodule.sum_mem _ fun J hJ => partC_mem_bdry hC (Finset.mem_filter.mp hJ).2.2 hz
 
 /- English proof (translation)
-The claim follows from `(Submodule.Quotient.eq _).mpr h`.
+A detailed English derivation is pending.
 -/
 theorem mk_eq {c : ℤ} {i : ℕ} {z w : Cech.Cochain (G S N) i}
     (hz : z ∈ Cech.cocyDeg (G S N) (laurentDeg S N c) (ρ S N) i)
@@ -295,21 +291,21 @@ end LaurentCohomProof
 open LaurentCohomProof in
 
 /- English proof (translation)
-Introduce `S _ _ N`. Use `⟨fun i c => ?_, fun c hc i hi => ?_, fun c hc z hz => ?_⟩` and prove the remaining obligations. Set `B` to `Finsupp.supported S S (bnd (N := N) c)`. Establish `: Finite (bnd (N` using `N) c) := (bnd_finite c).to_subtype`. Establish `: Module.Finite S B` using `Module.Finite.equiv (Finsupp.supportedEquivFinsupp _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `T` to `∀ _ : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) i, B`. Set `ψ : T →ₗ[S] Cech.Cochain (G S N) i` to `LinearMap.pi fun I => B.subtype.comp (LinearMap.proj I)`. Set `C` to `Cech.cocyDeg (G S N) (laurentDeg S N c) (ρ S N) i`. Set `P` to `C.comap ψ`. Establish `: IsNoetherian S T` using `isNoetherian_of_linearEquiv (LinearEquiv.piCongrRight fun _ => Finsupp.supportedEquivFinsupp (M := S) (R := S) (bnd c)).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Module.Finite S P` using `Module.Finite.iff_fg.mpr (IsNoetherian.noetherian P)`. Set `g : P →ₗ[S] laurentCohom S N i c` to `(Submodule.mkQ _).comp (ψ.restrict (p := P) (q := C) fun _ hx => hx)`. Use `Module.Finite.of_surjective g fun x => ?_` and prove the remaining obligations. Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.mkQ_surjective _ x`. Take `⟨w, hw, hwB, hzw⟩` from `reduce hC hz`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hP : (fun I => (⟨w I, hwB I⟩ : B)) ∈ P` using `Submodule.mem_comap.mpr hw`. Use `⟨⟨_, hP⟩, ?_⟩` and prove the remaining obligations. Conclude with `(mk_eq hz hw hzw).symm`. Take `⟨i, rfl⟩ : ∃ k, i = k + 1` from `⟨i - 1, by omega⟩`. Use `(Submodule.Quotient.subsingleton_iff).mpr (eq_top_iff.mpr fun ⟨z, hz⟩ _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `z ∈ Cech.bdryDeg _ _ _ _`. Establish `hu : partC S Finset.univ (i + 1) z = 0`. Use function extensionality and compare the values at `I`. Conclude with `part_univ_eq_zero hc (hz.2 I (Set.mem_univ _))`. Rewrite using `[← sum_partC (S := S) (i + 1) z, ← Finset.sum_erase_add _ _ (Finset.mem_univ Finset.univ), hu, add_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ fun J hJ => partC_mem_bdry hC (Finset.ne_of_mem_erase hJ) hz`. Set `sg : Fin (N + 1) → Cech.Idx (Finset.univ : Finset (Fin (N + 1))) 0` to `fun k => ⟨⟨{k}, Finset.singleton_nonempty k, Finset.subset_univ _⟩, Finset.card_singleton k⟩`. Establish `hconst` using `(hC S (Laurent S N) N ∅).2.2 z (LinearMap.mem_ker.mp hz.1)`. Use `⟨z (sg 0), (Finsupp.mem_supported' S _).mpr fun a ha => ?_, fun I => hconst I (sg 0)⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Apply `ha` to reduce the goal to its premises. Use `⟨(mem_exps (hz.2 (sg 0) (Set.mem_univ _)) h').1, fun j _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : ∃ k, k ≠ j`. Take `⟨k, hk⟩` from `hk`. Establish `h'' : z (sg k) a ≠ 0` using `by rwa [hconst (sg k) (sg 0)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `(mem_exps (hz.2 (sg k) (Set.mem_univ _)) h'').2 j (by simpa [sg] using hk.symm)`. Use `replace hk : ∀ k, k = j := fun k => by by_contra h; exact hk ⟨k, h⟩`. Establish `hs` using `(mem_exps (hz.2 (sg 0) (Set.mem_univ _)) h').1`. Rewrite `hs` using `[Finset.sum_eq_single j (fun k _ hkj => absurd (hk k) hkj) (by simp)]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem SerrePoly.LaurentCohom.proof (hC : Cech.Cone.Statement.{u, u}) :
     SerrePoly.LaurentCohom.Statement.{u} := by

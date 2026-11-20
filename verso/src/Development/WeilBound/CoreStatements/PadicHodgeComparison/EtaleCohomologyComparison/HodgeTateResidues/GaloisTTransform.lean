@@ -16,9 +16,9 @@ open Pb Pb.Kap
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Use `le_antisymm (Ideal.span_le.2 ?_) fun z hz => by simpa using pow_mem_pdP δ hz 1` and prove the remaining obligations. Introduce and unpack `_ ⟨L, hL, hr, rfl⟩`. Proceed by induction on `L with`. Consider the case `nil => simp at hr`. Consider the case `cons q L ih`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons] at hr ⊢`. Break down `Nat.eq_zero_or_pos q.1 with h | h` into its components or cases. Conclude with `J.mul_mem_left _ (ih (fun q' hq' => hL q' (List.mem_cons_of_mem _ hq')) (by omega))`. Conclude with `J.mul_mem_right _ (δ.dpow_mem h.ne' (hL q List.mem_cons_self))`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_one {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) : pdP δ 1 = J := by
   refine le_antisymm (Ideal.span_le.2 ?_) fun z hz => by simpa using pow_mem_pdP δ hz 1
@@ -50,9 +50,9 @@ variable {R : Per l K} {Y : CB l K} {e : Y.Λ →+* R.A} {θP : R.P →+* ℂ_[l
 include hb hL
 
 /- English proof (translation)
-Use `⟨(L.toB.liftOfSurjective hL.toB_surj) ⟨θP, fun x hx => ?_⟩, fun x => RingHom.liftOfRightInverse_comp_apply _ _ _ _ _⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(hL.toB_ker x).1 hx`. Take `⟨t, ht, -⟩` from `hb.θ_i Y.t`. Rewrite `ht` using `[hb.et]`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hL.pos`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(hb.ker x).2 ⟨t ^ k * y, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, hk, pow_add, pow_one, Subring.coe_mul, SubmonoidClass.coe_pow, ht, mul_assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Br.θ_ex : ∃ θ : L.B →+* ℂ_[l], ∀ x, θ (L.toB x) = θP x := by
   refine ⟨(L.toB.liftOfSurjective hL.toB_surj) ⟨θP, fun x hx => ?_⟩, fun x => RingHom.liftOfRightInverse_comp_apply _ _ _ _ _⟩
@@ -65,7 +65,7 @@ theorem Br.θ_ex : ∃ θ : L.B →+* ℂ_[l], ∀ x, θ (L.toB x) = θP x := by
   rfl
 
 /- English proof (translation)
-Take `⟨t, ht, -⟩` from `hb.θ_i Y.t`. Use `⟨t, by rw [ht, hb.et]; rfl, hL.ι_lam _ t ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← dividedPowerFiltration_one L.γB, hL.pdP_B 1 t (by rw [ht, hb.et]; rfl), pow_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Br.t_ex : ∃ t : R.P, (t : R.B) = R.tB ∧ L.ι (L.lam (e Y.t)) = L.toB t ∧ L.IB = Ideal.span {L.toB t} := by
   obtain ⟨t, ht, -⟩ := hb.θ_i Y.t
@@ -75,16 +75,16 @@ theorem Br.t_ex : ∃ t : R.P, (t : R.B) = R.tB ∧ L.ι (L.lam (e Y.t)) = L.toB
 def Br.θ : L.B →+* ℂ_[l] := (hb.θ_ex hL).choose
 
 /- English proof (translation)
-The claim follows from `(hb.θ_ex hL).choose_spec x`.
+A detailed English derivation is pending.
 -/
 theorem Br.θ_toB (x : R.P) : hb.θ hL (L.toB x) = θP x := (hb.θ_ex hL).choose_spec x
 
 /- English proof (translation)
-Take `⟨t, ht, -, hI⟩` from `hb.t_ex hL`. Use extensionality with `b`. Take `⟨x, rfl⟩` from `hL.toB_surj b`. Rewrite using `[RingHom.mem_ker, hb.θ_toB, hI, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Take `⟨y, hy⟩` from `(hb.ker x).1 h`. Use `⟨L.toB y, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul]`. Conclude with `congrArg L.toB (Subtype.ext (by rw [hy, Subring.coe_mul, ht, mul_comm]))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, ha⟩`. Establish `h0 : θP t = 0` using `(hb.ker t).2 ⟨1, by rw [ht]; simp⟩`. Rewrite using `[← hb.θ_toB hL, ← ha, map_mul, hb.θ_toB, h0, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Br.ker_θ : RingHom.ker (hb.θ hL) = L.IB := by
   obtain ⟨t, ht, -, hI⟩ := hb.t_ex hL
@@ -102,13 +102,13 @@ theorem Br.ker_θ : RingHom.ker (hb.θ hL) = L.IB := by
     rw [← hb.θ_toB hL, ← ha, map_mul, hb.θ_toB, h0, mul_zero]
 
 /- English proof (translation)
-Take `⟨t, ht, h1, hI⟩` from `hb.t_ex hL`. Rewrite `h` using `[h1]`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 h`. Take `⟨x, rfl⟩` from `hL.toB_surj x`. Take `⟨a, rfl⟩` from `hL.toB_surj a`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2 : L.toB (x * t ^ i - a * t ^ (i + 1)) = 0`. Rewrite using `[map_sub, map_mul, map_mul, map_pow, map_pow, ha, sub_self]`. Take `⟨y, hy⟩` from `(hL.toB_ker _).1 h2`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hi`. Establish `h3 : x = (a + t ^ k * y) * t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Subtype.ext (mul_right_cancel₀ (pow_ne_zero i hb.t_ne) ?_)` and prove the remaining obligations. Move the coercions through the operations in `at hy ⊢`. Rewrite `hy`, the goal using `[ht]`. Take the linear combination `hy`. Rewrite using `[hI, h3, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 theorem Br.gr (i : ℕ) (hi : i < m) (x : L.B)
     (h : x * L.ι (L.lam (e Y.t)) ^ i ∈ Ideal.span {L.ι (L.lam (e Y.t)) ^ (i + 1)}) : x ∈ L.IB := by
@@ -166,11 +166,9 @@ def Br.lv (hd : ∀ n, ∃ d : RedIn (O := OK l K) (Y.γ n) (Y.κ n) L.γ l n, �
   gr := hb.gr hL
 
 /- English proof (translation)
-Take `⟨u, hu, hc⟩` from `hb.galois_t_transform g`. Take `⟨t, ht, h1, -⟩` from `hb.t_ex hL`. Conclude with `⟨{ le := le_rfl sA := L.σA g sB := L.σB g dpA := hL.σ_dp g dpB := hL.σB_dp g oA := hL.σ_O g oB := hL.σB_K g ι := fun a => (hL.σ_ι g a).symm lam := fun x => (hL.σ_lam g (e x)).trans (congrArg L.lam (hb.eσ g x).symm) cris := hb.cris g θ := fun b => by`. Take `⟨x, rfl⟩` from `hL.toB_surj b`. Take `⟨y, h2, h3⟩` from `hb.θ_σ g x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `hb.θ hL (L.σB g (L.toB x)) = sC g (hb.θ hL (L.toB x))`. Rewrite using `[hL.σB_toB g x y h2, hb.θ_toB, hb.θ_toB, h3]`. Use `cB := L.toB u`. Use `t := by`. Express the relevant statement in the definitionally equal form `L.σB g (L.ι (L.lam (e Y.t))) = L.toB u * L.ι (L.lam (e Y.t))`.
-
-Rewrite using `[h1, ← map_mul]`. Conclude with `hL.σB_toB g t (u * t) (by rw [Subring.coe_mul, ht, hu])`. Use `θc := (hb.θ_toB hL u).trans hc }⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Br.gal (hd) (g : K.fixingSubgroup) : Nonempty (LHom (hb.lv hL hd) (hb.lv hL hd) (sΛ g) (sn g) (sC g) (c g)) := by
   obtain ⟨u, hu, hc⟩ := hb.galois_t_transform g
@@ -200,7 +198,7 @@ theorem Br.gal (hd) (g : K.fixingSubgroup) : Nonempty (LHom (hb.lv hL hd) (hb.lv
 
 omit hL in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ L := fun m => hb.lv (hS.lev m) (hd m) dn := fun m => { le := Nat.le_succ _ sA := S.dA m sB := S.dB m dpA := hS.ddp m dpB := hS.ddpB m oA := hS.dO m oB := hS.dK m ι := hS.dι m lam := fun x => hS.dlam m (e x) cris := fun _ _ => rfl θ := fun b => by obtain ⟨x, rfl⟩ := (hS.lev (m …`.
+Supply the required witnesses or components.
 -/
 theorem Br.sys (S : LevSys R) (hS : S.Good)
     (hd : ∀ m n, ∃ d : RedIn (O := OK l K) (Y.γ n) (Y.κ n) (S.L m).γ l n,

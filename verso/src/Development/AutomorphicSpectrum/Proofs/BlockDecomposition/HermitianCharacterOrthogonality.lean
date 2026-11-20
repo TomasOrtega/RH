@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.SiegLoc.HermOrth
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[red]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem red_add' (ϖ : R) (k : ℕ) {a b : ℕ} (x y : Matrix (Fin a) (Fin b) R) :
     red ϖ k (x + y) = red ϖ k x + red ϖ k y := by
@@ -18,7 +18,7 @@ theorem red_add' (ϖ : R) (k : ℕ) {a b : ℕ} (x y : Matrix (Fin a) (Fin b) R)
   simp [red]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[red]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem red_neg' (ϖ : R) (k : ℕ) {a b : ℕ} (x : Matrix (Fin a) (Fin b) R) :
     red ϖ k (-x) = -red ϖ k x := by
@@ -26,7 +26,7 @@ theorem red_neg' (ϖ : R) (k : ℕ) {a b : ℕ} (x : Matrix (Fin a) (Fin b) R) :
   simp [red]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add' (σ : R →+* R) {a b : ℕ} (x y : Matrix (Fin a) (Fin b) R) :
     cT σ (x + y) = cT σ x + cT σ y := by
@@ -34,7 +34,7 @@ theorem cT_add' (σ : R →+* R) {a b : ℕ} (x y : Matrix (Fin a) (Fin b) R) :
   simp [cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_neg' (σ : R →+* R) {a b : ℕ} (x : Matrix (Fin a) (Fin b) R) :
     cT σ (-x) = -cT σ x := by
@@ -42,21 +42,21 @@ theorem cT_neg' (σ : R →+* R) {a b : ℕ} (x : Matrix (Fin a) (Fin b) R) :
   simp [cT]
 
 /- English proof (translation)
-Simplify using `only [PositivityTheory.PfSWUS.Loc.cT, Matrix.map_single, Matrix.transpose_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_single' (σ : R →+* R) {n : ℕ} (i j : Fin n) (c : R) :
     cT σ (Matrix.single i j c) = Matrix.single j i (σ c) := by
   simp only [PositivityTheory.PfSWUS.Loc.cT, Matrix.map_single, Matrix.transpose_single]
 
 /- English proof (translation)
-Rewrite using `[Matrix.trace_single_mul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_single_mul' {n : ℕ} (i j : Fin n) (c : R) (y : Matrix (Fin n) (Fin n) R) :
     Matrix.trace (Matrix.single i j c * y) = c * y j i := by
   rw [Matrix.trace_single_mul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `PositivityTheory.PfSWUS.Loc.red`. Rewrite using `[← Matrix.map_mul]`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.map_apply, map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_red_mul (ϖ : R) (k n : ℕ) (b y : Matrix (Fin n) (Fin n) R) :
     Matrix.trace (red ϖ k b * red ϖ k y) = Ideal.Quotient.mk (lev ϖ k) (Matrix.trace (b * y)) := by
@@ -65,9 +65,9 @@ theorem trace_red_mul (ϖ : R) (k n : ℕ) (b y : Matrix (Fin n) (Fin n) R) :
   simp only [Matrix.trace, Matrix.diag_apply, Matrix.map_apply, map_sum]
 
 /- English proof (translation)
-Set `e : H ≃ H` to `{ toFun := fun B => ⟨B₀ + B.1, hadd _ _ hB₀ B.2⟩ invFun := fun B => ⟨-B₀ + B.1, hadd _ _ (hneg _ hB₀) B.2⟩ left_inv := fun B => Subtype.ext (by simp) right_inv := fun B => Subtype.ext (by simp) }`. Establish `key : ∑' B : H, f B.1 = f B₀ * ∑' B : H, f B.1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hf _ _`. Use `_ = f B₀ * ∑' B : H, f B.1 := tsum_mul_left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzero : (f B₀ - 1) * ∑' B : H, f B.1 = 0`. Rewrite using `[sub_mul, one_mul, ← key, sub_self]`. Break down `mul_eq_zero.mp hzero with h' | h'` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h') h`. Conclude with `h'`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem tsum_eq_zero_of_shift {G : Type} [AddCommGroup G] (H : Set G)
     (hadd : ∀ a b, a ∈ H → b ∈ H → a + b ∈ H) (hneg : ∀ a, a ∈ H → -a ∈ H)
@@ -91,9 +91,9 @@ theorem tsum_eq_zero_of_shift {G : Type} [AddCommGroup G] (H : Set G)
   · exact h'
 
 /- English proof (translation)
-Unfold `PositivityTheory.PfSWUS.Loc.hermMod at ha hb ⊢`. Take `⟨a', ha', rfl⟩` from `ha`. Take `⟨b', hb', rfl⟩` from `hb`. Establish `ha'' : PositivityTheory.PfSWUS.Loc.cT σ a' = a'` using `ha'`. Establish `hb'' : PositivityTheory.PfSWUS.Loc.cT σ b' = b'` using `hb'`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨a' + b', ?_, GlobalTheory.CompanionTheory.SiegLoc.HermOrth.red_add' _ _ _ _⟩` and prove the remaining obligations. Use `show PositivityTheory.PfSWUS.Loc.cT σ (a' + b') = a' + b'`. Rewrite using `[GlobalTheory.CompanionTheory.SiegLoc.HermOrth.cT_add', ha'', hb'']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermMod_add {σ : R →+* R} {ϖ : R} {n k : ℕ}
     (a b : Matrix (Fin n) (Fin n) (R ⧸ lev ϖ k)) (ha : a ∈ hermMod σ ϖ n k)
@@ -108,9 +108,9 @@ theorem hermMod_add {σ : R →+* R} {ϖ : R} {n k : ℕ}
   rw [GlobalTheory.CompanionTheory.SiegLoc.HermOrth.cT_add', ha'', hb'']
 
 /- English proof (translation)
-Unfold `PositivityTheory.PfSWUS.Loc.hermMod at ha ⊢`. Take `⟨a', ha', rfl⟩` from `ha`. Establish `ha'' : PositivityTheory.PfSWUS.Loc.cT σ a' = a'` using `ha'`. Use `⟨-a', ?_, GlobalTheory.CompanionTheory.SiegLoc.HermOrth.red_neg' _ _ _⟩` and prove the remaining obligations. Use `show PositivityTheory.PfSWUS.Loc.cT σ (-a') = -a'`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompanionTheory.SiegLoc.HermOrth.cT_neg', ha'']`.
+A detailed English derivation is pending.
 -/
 theorem hermMod_neg {σ : R →+* R} {ϖ : R} {n k : ℕ}
     (a : Matrix (Fin n) (Fin n) (R ⧸ lev ϖ k)) (ha : a ∈ hermMod σ ϖ n k) :
@@ -123,11 +123,11 @@ theorem hermMod_neg {σ : R →+* R} {ϖ : R} {n k : ℕ}
   rw [GlobalTheory.CompanionTheory.SiegLoc.HermOrth.cT_neg', ha'']
 
 /- English proof (translation)
-Establish `hσσ : ∀ a, σ (σ a) = a` using `hR.1`. Use extensionality with `i j`. Simplify using `only [PositivityTheory.PfSWUS.Loc.red, Matrix.map_apply, Matrix.zero_apply]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Apply `GlobalTheory.CompanionTheory.SiegLoc.trace_nondeg hR hψ k (y i j)` to reduce the goal to its premises.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `t`. Establish `hyji : σ (y i j) = y j i`. Apply the tactic sequence `have hentry := congrFun (congrFun hy j) i`. Simplify `hentry` using `[PositivityTheory.PfSWUS.Loc.cT]`. Establish `hb : PositivityTheory.PfSWUS.Loc.cT σ (Matrix.single j i t + Matrix.single i j (σ t)) = Matrix.single j i t + Matrix.single i j (σ t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.CompanionTheory.SiegLoc.HermOrth.cT_add', GlobalTheory.CompanionTheory.SiegLoc.HermOrth.cT_single', GlobalTheory.CompanionTheory.SiegLoc.HermOrth.cT_single', hσσ, add_comm]`. Establish `htr` using `h _ hb`. Rewrite `htr` using `[Matrix.add_mul, Matrix.trace_add, GlobalTheory.CompanionTheory.SiegLoc.HermOrth.trace_single_mul', GlobalTheory.CompanionTheory.SiegLoc.HermOrth.trace_single_mul']`. Rewrite using `[map_mul σ, hyji]`. Conclude with `htr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_eq_zero_of_trivial {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ}
     {ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ} (hR : IsUnrQuad R σ ϖ q ε) (hψ : IsLevelChars σ ϖ ψ)
@@ -155,11 +155,11 @@ theorem red_eq_zero_of_trivial {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ}
   exact htr
 
 /- English proof (translation)
-Use `⟨fun h0 => ?_, fun hne => ?_⟩` and prove the remaining obligations. Substitute `h0` using the available equality. Simplify using `only [Matrix.mul_zero, Matrix.trace_zero, AddChar.map_zero_eq_one]`. Rewrite using `[tsum_const, nsmul_eq_mul, mul_one]`. Establish `hY'` using `hY`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `PositivityTheory.PfSWUS.Loc.hermMod at hY'`. Take `⟨y, hy, rfl⟩` from `hY'`. Assume the negation of the conclusion as `hsum`. Apply `hne` to reduce the goal to its premises. Apply `GlobalTheory.CompanionTheory.SiegLoc.HermOrth.red_eq_zero_of_trivial hR hψ n k y hy` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b hb`. Rewrite using `[← GlobalTheory.CompanionTheory.SiegLoc.HermOrth.trace_red_mul]`. Assume the negation of the conclusion as `hb1`. Conclude with `hsum (GlobalTheory.CompanionTheory.SiegLoc.HermOrth.tsum_eq_zero_of_shift _ (fun a₁ a₂ h₁ h₂ => GlobalTheory.CompanionTheory.SiegLoc.HermOrth.hermMod_add a₁ a₂ h₁ h₂) (fun a₁ h₁ => GlobalTheory.CompanionTheory.SiegLoc.HermOrth.hermMod_neg a₁ h₁) (fun B => ψ k (Matrix.trace (B * P …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem orth_hermMod (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R) (q : ℕ) (ε : ℤ)
     (hR : IsUnrQuad R σ ϖ q ε) [∀ k, Fintype (R ⧸ lev ϖ k)]

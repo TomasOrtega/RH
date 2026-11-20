@@ -13,19 +13,17 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob UpperT
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `L _ _ _ n U₀ S VL hP w hw hF d`. Take `⟨hsec, hcomm, -, -, -, -, hcomp, hK⟩` from `UpperTheory.V.Z.Sym.Dict.Br.uaFacts L n`. Establish `hsp : IsSplitAt w` using `hP.split w hw`. Take `⟨hloc, hcl, -, hsecx⟩` from `hsec w hsp`. Take `⟨-, -, -, -, -, hfin⟩` from `UpperTheory.V.Z.Sym.Sig.finFacts (Kw w) (VL w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hH, -, -, hJK⟩` from `hfin n`. Establish `hKO : GlobalTheory.SplitWeil.KO (Kw w) (Fin n) = GlobalTheory.LFun.KGL w n` using `GlobalTheory.SmGL.SphCompletion.KO_completion w n`. Establish `hoff : ∀ (h : GL (Fin n) (Kw w)) (u : Plc L), un u ≠ un w → cLoc u (secW n w h) = 1` using `fun h u e => Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (hloc h).2 u) e`. Establish `h2 : ∀ u ∈ lev U₀ S VL, cLoc w u ∈ (VL w).J n ∧ ∀ h, u * (secW n w (cLoc w u))⁻¹ * secW n w h = secW n w h * (u * (secW n w (cLoc w u))⁻¹)` using `fun u hu => by`. Use `⟨Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hu.2 w) hw, fun h => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, hau⟩` from `hcomp w u (hF.1 hu.1).1`. Establish `ea : secW n w (cLoc w u) = a` using `by rw [← hau w rfl, ← hsecx a ha]`. Establish `hy : ∀ u', un u' = un w → cLoc u' (u * (secW n w (cLoc w u))⁻¹) = 1` using `fun u' e => by`. Rewrite using `[map_mul, map_inv, ea, hau u' e, mul_inv_cancel]`. Conclude with `(hcomm w _ (hloc h) _ hy).symm.eq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∀ h ∈ (VL w).J n, secW n w h ∈ lev U₀ S VL` using `fun h hh => by`. Use `⟨hF.2 w (Finset.mem_singleton_self w) ⟨hloc h, ⟨(hloc h).1, Subgroup.mem_iInf.2 fun u => ?_⟩⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : un u = un w`. Use `hK w hsp _ ?_ u e` and prove the remaining obligations. Rewrite using `[hcl, ← hKO]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hJK hh`. Rewrite using `[Subgroup.mem_comap, hoff h u e]`. Conclude with `one_mem _`. Use `Subgroup.mem_iInf.2 fun w' => Subgroup.mem_iInf.2 fun hw' => ?_` and prove the remaining obligations. Distinguish the cases in `e : w' = w`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `e` using the available equality. Rewrite using `[Subgroup.mem_comap, hcl]`. Conclude with `hh`. Rewrite using `[Subgroup.mem_comap, hoff h w' fun e' => e (hP.inj hw' hw e')]`. Conclude with `one_mem _`.
-
-Establish `main` using `fun (V : Type) [AddCommGroup V] [Module ℂ V] => UpperTheory.V.Z.Sym.So.dcLocal _ _ V (secW n w) (cLoc w) ((VL w).J n) (lev U₀ S VL) hcl h2 h3 (Sig.dg d) (hH _)`. Use `⟨(main ℂ).1, fun V _ _ φ hφ c => ?_⟩` and prove the remaining obligations. Unfold `EigAt`. Rewrite using `[(main V).2 φ hφ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.dcAt :
     UpperTheory.V.Z.Sym.So.DcAt := by

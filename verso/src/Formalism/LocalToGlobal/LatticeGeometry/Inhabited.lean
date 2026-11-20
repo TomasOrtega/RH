@@ -133,9 +133,9 @@ def fpJunk (d r : ℕ) : DV.FPair (iThJunk d) r where
   hx := fun _ => by show (0 : ℚ) = 0 - (0 : ℚ →ₗ[ℚ] ℚ) 0; simp
 
 /- English proof (translation)
-Unfold `DV.rkOf`. Distinguish the cases in `h : τ ∈ Ps`. Establish `h' : DV.cEmb D τ ∉ Ps` using `(hPs τ).1 h`. Simplify using `[h, h']`. Establish `h' : DV.cEmb D τ ∈ Ps`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h''`. Conclude with `h ((hPs τ).2 h'')`. Simplify using `[h, h']`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rkOf_dual {p : ℕ} [Fact p.Prime] (Ps : Set (DV.Emb D p)) (N j : ℕ) (hj : j ≤ N)
     (hPs : ∀ τ, τ ∈ Ps ↔ DV.cEmb D τ ∉ Ps) (τ : DV.Emb D p) :
@@ -209,7 +209,7 @@ def shimUJunk {Lev : Type} (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.K
   pad := padJunk D w.N w.j w.j_le jC
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨shimUJunk D jC w⟩`.
+Supply the required witnesses or components.
 -/
 theorem shimU_nonempty {Lev : Type} (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ))
     (w : Dat D Lev) : Nonempty (ShimU D (geoDegenerateNoTau D.what₂.LL) jC ngJunk w) :=
@@ -229,7 +229,7 @@ def linRootZ (lam : ι → Fin N → ℤ) : MvPolynomial (ι × Fin N) ℤ :=
 def flagDegZ (lam : ι → Fin N → ℤ) : ℤ := degFlZ ι N (linRootZ ι N lam ^ Formalism.DegreeFormula.dimFl ι N)
 
 /- English proof (translation)
-Simplify using `[Formalism.DegreeFormula.linRoot, linRootZ, map_neg, map_sum, map_mul, MvPolynomial.map_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linRoot_intCast (lam : ι → Fin N → ℤ) :
     Formalism.DegreeFormula.linRoot (fun τ i => (lam τ i : ℝ)) =
@@ -237,7 +237,7 @@ theorem linRoot_intCast (lam : ι → Fin N → ℤ) :
   simp [Formalism.DegreeFormula.linRoot, linRootZ, map_neg, map_sum, map_mul, MvPolynomial.map_X]
 
 /- English proof (translation)
-Rewrite using `[Formalism.DegreeFormula.flagDeg, linRoot_intCast, Formalism.DegreeFormula.degFl, flagDegZ, degFlZ]`. Use `push_cast`. Use `congr 1`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, MvPolynomial.coeff_map]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -322,9 +322,7 @@ open Classical in
   regOn := fun _ _ _ _ _ => True
 
 /- English proof (translation)
-Use `show (((if h : 0 < Formalism.DegreeFormula.dimFl Tau N then flagDegZ Tau N lam else flagDegZ Tau N 0 : ℤ)) : ℝ) = _`. Use `split_ifs with h`. Rewrite using `[flagDeg_intCast]`. Establish `h0 : Formalism.DegreeFormula.dimFl Tau N = 0` using `by omega`. Rewrite using `[← flagDeg_intCast]`.
-
-Simplify using `only [Formalism.DegreeFormula.flagDeg, h0, pow_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem geoFl_inter (F : Type) [Field F] [NumberField F] [StarRing F] (Tau : Type) [Fintype Tau] (N : ℕ)
     (lam : Tau → Fin N → ℤ) :
@@ -361,7 +359,7 @@ def localBasisTwo (r j p : ℕ) (hp : p.Prime) : BoundaryLocalData.LocB D (loc2 
     · simp)
 
 /- English proof (translation)
-Introduce `hx` and use `pd_of_int ((loc2 D r j p).be y) ((loc2 D r j p).be_symm y) (fun a a' => beK_int D (rkB (rho2 r) y) a a') ((loc2 D r j p).be_pos y) b x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem local_form_positive_definite (r j p : ℕ) {Z : (loc2 D r j p).Mdl} (y : (loc2 D r j p).Pt Z) (n : ℕ)
     (b : Module.Basis (Fin n) ℤ ((loc2 D r j p).Ylat y)) (x : Fin n → ℝ) :
@@ -370,7 +368,7 @@ theorem local_form_positive_definite (r j p : ℕ) {Z : (loc2 D r j p).Mdl} (y :
     (fun a a' => beK_int D (rkB (rho2 r) y) a a') ((loc2 D r j p).be_pos y) b x hx
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨true, locT_not_good D r j p (cfJunk p) (rho2 r) (by simp [rho2, hr])⟩`.
+Supply the required witnesses or components.
 -/
 theorem local_model_bad_reduction (r j p : ℕ) (hr : 2 ≤ r) :
     ∃ y : (loc2 D r j p).Pt (loc2 D r j p).Xm, ¬ (loc2 D r j p).good y :=
@@ -436,7 +434,7 @@ def shimUFl {Lev : Type} (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW 
   pad := padDegenerate D w.N w.j w.j_le jC
 
 /- English proof (translation)
-Introduce `c la`. Use `show (((geoDegenerate D.what₂.LL D.what₂.Tau).inter w.N (fun _ => la) : ℤ) : ℝ) = 1 * _`. Rewrite using `[one_mul]`. Conclude with `geoFl_inter D.what₂.LL D.what₂.Tau w.N la`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mumfordU_fl {Lev : Type} (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)) (w : Dat D Lev) :
     MumfordU (shimUFl D jC w) := by
@@ -446,7 +444,7 @@ theorem mumfordU_fl {Lev : Type} (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p →
   exact geoFl_inter D.what₂.LL D.what₂.Tau w.N la
 
 /- English proof (translation)
-Introduce `p n Z' _ _ _ c`. Conclude with `⟨(), 1, one_pos, fun τ i => by show ((1 : ℕ) : ℝ) * (0 : ℝ) = (((0 : ℤ)) : ℝ) simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem curveHTDom_fl {Lev : Type} (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ))
     (w : Dat D Lev) : CurveHTDom (shimUFl D jC w) := by
@@ -465,7 +463,7 @@ def prB (b : Bool) : MvPolynomial (DV.Vm Tau N) ℝ →ₐ[ℝ] MvPolynomial (DV
     | Sum.inr _ => 0)
 
 /- English proof (translation)
-Unfold `prB DV.tagHT`. Rewrite using `[MvPolynomial.aeval_rename]`. Conclude with `MvPolynomial.aeval_X_left_apply P`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prB_true_HT (P : MvPolynomial (DV.Rt Tau N) ℝ) : prB Tau N true (DV.tagHT Tau N P) = P := by
   unfold prB DV.tagHT
@@ -473,7 +471,7 @@ theorem prB_true_HT (P : MvPolynomial (DV.Rt Tau N) ℝ) : prB Tau N true (DV.ta
   exact MvPolynomial.aeval_X_left_apply P
 
 /- English proof (translation)
-Unfold `prB DV.tagDR`. Rewrite using `[MvPolynomial.aeval_rename]`. Conclude with `MvPolynomial.aeval_X_left_apply P`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prB_false_DR (P : MvPolynomial (DV.Rt Tau N) ℝ) : prB Tau N false (DV.tagDR Tau N P) = P := by
   unfold prB DV.tagDR
@@ -481,7 +479,7 @@ theorem prB_false_DR (P : MvPolynomial (DV.Rt Tau N) ℝ) : prB Tau N false (DV.
   exact MvPolynomial.aeval_X_left_apply P
 
 /- English proof (translation)
-Unfold `prB DV.tagHT`. Rewrite using `[MvPolynomial.aeval_rename]`. Conclude with `MvPolynomial.aeval_zero P`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prB_false_HT (P : MvPolynomial (DV.Rt Tau N) ℝ) :
     prB Tau N false (DV.tagHT Tau N P) = MvPolynomial.C (MvPolynomial.constantCoeff P) := by
@@ -490,7 +488,7 @@ theorem prB_false_HT (P : MvPolynomial (DV.Rt Tau N) ℝ) :
   exact MvPolynomial.aeval_zero P
 
 /- English proof (translation)
-Unfold `prB DV.tagDR`. Rewrite using `[MvPolynomial.aeval_rename]`. Conclude with `MvPolynomial.aeval_zero P`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prB_true_DR (P : MvPolynomial (DV.Rt Tau N) ℝ) :
     prB Tau N true (DV.tagDR Tau N P) = MvPolynomial.C (MvPolynomial.constantCoeff P) := by
@@ -499,7 +497,7 @@ theorem prB_true_DR (P : MvPolynomial (DV.Rt Tau N) ℝ) :
   exact MvPolynomial.aeval_zero P
 
 /- English proof (translation)
-Establish `h0 : ∀ S R (c : ℝ), A S R (MvPolynomial.C c) = 0` using `fun S R c => hA S R _ 0 (Nat.succ_ne_zero _).symm (MvPolynomial.isHomogeneous_C _ c)`. Use `⟨fun S R p => (A (insert p S) R) ∘ₗ (prB Tau N true).toLinearMap + (A (S.erase p) R) ∘ₗ (prB Tau N false).toLinearMap, fun S R p P => ?_, fun S R p P => ?_⟩` and prove the remaining obligations. Simplify using `[prB_true_HT, prB_false_HT, h0]`. Simplify using `[prB_true_DR, prB_false_DR, h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_arMix (A : Finset ℕ → ℝ → MvPolynomial (DV.Rt Tau N) ℝ →ₗ[ℝ] ℝ)
     (hA : ∀ S R (P : MvPolynomial (DV.Rt Tau N) ℝ) (d : ℕ),
@@ -515,7 +513,7 @@ theorem exists_arMix (A : Finset ℕ → ℝ → MvPolynomial (DV.Rt Tau N) ℝ 
   · simp [prB_true_DR, prB_false_DR, h0]
 
 /- English proof (translation)
-Use `⟨MvPolynomial.lcoeff ℝ (Finsupp.single x (Formalism.DegreeFormula.dimFl Tau N + 1)), fun h => ?_, fun P d hd hP => ?_⟩` and prove the remaining obligations. Use `congrArg (fun f => f (MvPolynomial.monomial (Finsupp.single x (Formalism.DegreeFormula.dimFl Tau N + 1)) 1)) h` as an intermediate fact. Simplify using `at this`. Use `hP.coeff_eq_zero ?_` and prove the remaining obligations. Simplify using `using hd.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_arDeg (x : DV.Rt Tau N) :
     ∃ A : MvPolynomial (DV.Rt Tau N) ℝ →ₗ[ℝ] ℝ, A ≠ 0 ∧ ∀ (P : MvPolynomial (DV.Rt Tau N) ℝ) (d : ℕ),
@@ -628,7 +626,7 @@ def famFl (KO : Type) [Field KO] [NumberField KO] (eO : 𝓞 KO ≃+* D.what₂.
   forms := formsFl D KO eO kL kL_eO _ _ _ (fun _ _ => true)
 
 /- English proof (translation)
-Introduce `a b h`. Take `⟨x, rfl⟩` from `P.eO.surjective a`. Take `⟨y, rfl⟩` from `P.eO.surjective b`. Rewrite `h` using `[← P.kL_eO, ← P.kL_eO]`. Rewrite using `[RingOfIntegers.ext (P.kL.injective h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem forms_forces_inj {G : DV.Geo D.what₂.LL} {NW : ℕ → ℕ} {CompW : ℕ → Type} [∀ j, Fintype (CompW j)]
     {algW : ∀ j, AlgPkg G D.what₂.Tau (NW j) (CompW j)} {PtY : ℕ → ℕ → Type}
@@ -699,7 +697,7 @@ def shimXJunk (N j : ℕ) (h1 : 1 ≤ j) (h2 : j < N) : DV.ShimX D.what₂.Tau w
   Mbar := (algJunk D N).Mbar
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Substitute `hj` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem shimXJunk_congr {N j N' j' : ℕ} (h1 h2 h1' h2') (hN : N = N') (hj : j = j') :
     shimXJunk D jC N j h1 h2 = shimXJunk D jC N' j' h1' h2' := by
@@ -721,27 +719,27 @@ def recJ (S : letI := D.host.cmStar; HSpace D.host.E) : ℕ :=
   if 1 ≤ firstSignatureEntry D S ∧ firstSignatureEntry D S < recN D S then firstSignatureEntry D S else 1
 
 /- English proof (translation)
-Apply the tactic sequence `unfold recN; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem two_le_recN (S) : 2 ≤ recN D S := by unfold recN; split_ifs <;> omega
 /- English proof (translation)
-Unfold `recJ`. Use `split_ifs with h`. Use `exacts [h.1, le_rfl]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem recJ_pos (S) : 1 ≤ recJ D S := by unfold recJ; split_ifs with h; exacts [h.1, le_rfl]
 /- English proof (translation)
-Unfold `recJ`. Use `split_ifs with h`. Use `exacts [h.2, two_le_recN D S]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem recJ_lt (S) : recJ D S < recN D S := by
   unfold recJ; split_ifs with h; exacts [h.2, two_le_recN D S]
 
 /- English proof (translation)
-Unfold `recN`. Rewrite using `[if_pos w.two_le]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem recN_dat {Lev : Type} (w : Dat D Lev) : recN D w.S = w.N := by
   unfold recN; rw [if_pos w.two_le]; rfl
 
 /- English proof (translation)
-Apply the tactic sequence `have e : firstSignatureEntry D w.S = w.j := by unfold firstSignatureEntry; rw [w.hsig]`. Unfold `recJ`. Rewrite using `[e, recN_dat, if_pos (show 1 ≤ w.j ∧ w.j < w.N from h)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem recJ_dat {Lev : Type} (w : Dat D Lev) (h : w.Indef) : recJ D w.S = w.j := by
   have e : firstSignatureEntry D w.S = w.j := by unfold firstSignatureEntry; rw [w.hsig]
@@ -786,14 +784,14 @@ def compatibleDivisorData : DivX D :=
       exact Submodule.zero_mem _ }
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Substitute `hj` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem md_heq (p : ℕ) [Fact p.Prime] (jc : DV.KW p →+* ℂ) {N j N' j' : ℕ} (h h') (hN : N = N') (hj : j = j') :
     HEq (fun _ : PUnit.{1} => mdlJunk D p jc N j h) (fun _ : PUnit.{1} => mdlJunk D p jc N' j' h') := by
   subst hN; subst hj; rfl
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem degM_heq {N N' : ℕ} (hN : N = N') :
     HEq (fun (_ : PUnit.{1}) (c : Empty) => (Empty.elim c : DV.Rt D.what₂.Tau N → ℝ))
@@ -801,14 +799,14 @@ theorem degM_heq {N N' : ℕ} (hN : N = N') :
   subst hN; rfl
 
 /- English proof (translation)
-Introduce `_ p hp` and use `by obtain ⟨i, _, rfl⟩ := Finset.mem_image.1 hp exact D.host.g_prime i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prime_of_mem_image : ∀ (_ : Unit), ∀ p ∈ Finset.univ.image D.host.g, p.Prime := fun _ p hp => by
   obtain ⟨i, _, rfl⟩ := Finset.mem_image.1 hp
   exact D.host.g_prime i
 
 /- English proof (translation)
-The claim follows from `{ lev := rfl shv := fun w h => (shimXJunk_congr D jC _ _ _ _ (recN_dat D w) (recJ_dat D w h)).trans (toShimX_junk D jC w h _).symm } pl := { wt := fun _ _ _ => rfl jc := fun _ _ _ => rfl mp := fun _ _ _ _ _ => rfl md := fun w h p _ la => md_heq D p (jC p la) (recJ_lt D w.S).le w. …`.
+A detailed English derivation is pending.
 -/
 theorem tiedX_junk : TiedX (jC := jC) (ng := ngJunk) (compatibleDivisorData D jC X0) (fun _ => Finset.univ.image D.host.g)
     (prime_of_mem_image D) () (fun p _ => Equiv.refl _) (fun w => shimUJunk D jC w) (fun _ _ _ => Equiv.refl _) where
@@ -834,7 +832,7 @@ theorem tiedX_junk : TiedX (jC := jC) (ng := ngJunk) (compatibleDivisorData D jC
 include X0 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, _, _, _, _, _, tiedX_junk D jC X0⟩`.
+Supply the required witnesses or components.
 -/
 theorem tiedX_exists : ∃ (X : DivX D) (levPr : X.Lev → Finset ℕ) (hlev : ∀ κ, ∀ p ∈ levPr κ, p.Prime) (κg : X.Lev)
     (ePl : ∀ (p : ℕ) [Fact p.Prime], X.PlP p ≃ PlL D p) (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ngJunk w)
@@ -903,7 +901,7 @@ def shimXFl (N j : ℕ) (h1 : 1 ≤ j) (h2 : j < N) : DV.ShimX D.what₂.Tau whe
   Mbar := (algDegenerate D N).Mbar
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Substitute `hj` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem shimXFl_congr {N j N' j' : ℕ} (h1 h2 h1' h2') (hN : N = N') (hj : j = j') :
     shimXFl D jC N j h1 h2 = shimXFl D jC N' j' h1' h2' := by
@@ -957,7 +955,7 @@ def divXFl : DivX D :=
     iMj_mem := fun _ _ _ => Submodule.mem_top }
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem degMFl_heq {N N' : ℕ} (hN : N = N') :
     HEq (fun (_ : PUnit.{1}) (_ : PUnit.{1}) (_ : DV.Rt D.what₂.Tau N) => (0 : ℝ))
@@ -965,7 +963,7 @@ theorem degMFl_heq {N N' : ℕ} (hN : N = N') :
   subst hN; rfl
 
 /- English proof (translation)
-The claim follows from `{ lev := rfl shv := fun w h => (shimXFl_congr D jC _ _ _ _ (recN_dat D w) (recJ_dat D w h)).trans (toShimX_fl D jC w h _).symm } pl := { wt := fun _ _ _ => rfl jc := fun _ _ _ => rfl mp := fun _ _ _ _ _ => rfl md := fun w h p _ la => md_heq D p (jC p la) (recJ_lt D w.S).le w.j_le …`.
+A detailed English derivation is pending.
 -/
 theorem tiedX_fl : TiedX (jC := jC) (ng := ng1) (divXFl D jC X0) (fun _ => Finset.univ.image D.host.g)
     (prime_of_mem_image D) () (fun p _ => Equiv.refl _) (fun w => shimUFl D jC w) (fun _ _ _ => Equiv.refl _) where
@@ -994,7 +992,7 @@ theorem tiedX_fl : TiedX (jC := jC) (ng := ng1) (divXFl D jC X0) (fun _ => Finse
 include X0 in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, _, _, _, _, _, tiedX_fl D jC X0, fun w => mumfordU_fl D jC w, fun w => curveHTDom_fl D jC w, fun _ p _ => ⟨⟨(plL_ne D p).some, PUnit.unit⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem joint_fl : ∃ (X : DivX D) (levPr : X.Lev → Finset ℕ) (hlev : ∀ κ, ∀ p ∈ levPr κ, p.Prime) (κg : X.Lev)
     (ePl : ∀ (p : ℕ) [Fact p.Prime], X.PlP p ≃ PlL D p) (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng1 w)
@@ -1005,11 +1003,11 @@ theorem joint_fl : ∃ (X : DivX D) (levPr : X.Lev → Finset ℕ) (hlev : ∀ �
     fun _ p _ => ⟨⟨(plL_ne D p).some, PUnit.unit⟩⟩⟩
 
 /- English proof (translation)
-Set `I` to `{ij : ℕ × ℕ // ∃ w : Dat D Unit, w.Indef ∧ w.N = ij.1 ∧ w.j = ij.2}`. Set `dat : I → Dat D Unit` to `fun i => Classical.choose i.2`. Establish `hI : ∀ i, (dat i).Indef` using `fun i => (Classical.choose_spec i.2).1`. Use `⟨settingVarietiesOverData (divXFl D jC X0) I dat hI (fun w => shimUFl D jC w) (fun S κ hS => ?_)⟩` and prove the remaining obligations. Set `w` to `(shimuraDatumOfSetting (divXFl D jC X0) S κ hS).1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hw : w.Indef` using `(shimuraDatumOfSetting (divXFl D jC X0) S κ hS).2`. Establish `hwS : w.S = S` using `rfl`. Set `i : I` to `⟨(w.N, w.j), w, hw, rfl, rfl⟩`. Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `hs` using `Classical.choose_spec i.2`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `eN : recN D S = recN D (dat i).S` using `by rw [← hwS, recN_dat, recN_dat]; exact hs.2.1.symm`. Establish `eJ : recJ D S = recJ D (dat i).S` using `by rw [← hwS, recJ_dat D w hw, recJ_dat D _ hs.1]; exact hs.2.2.symm`. Establish `e : (divXFl D jC X0).shv S κ = (divXFl D jC X0).shv (dat i).S (dat i).κ` using `shimXFl_congr D jC _ _ _ _ eN eJ`. Rewrite using `[e]`. Conclude with `⟨tieOf (divXFl D jC X0) _ (prime_of_mem_image D) _ (tiedX_fl D jC X0).shv (fun w _ => curveHTDom_fl D jC w) I dat hI i⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem prov_divXFl_nonempty : Nonempty (IntegralModelsLocalData.Prov D (divXFl D jC X0)) := by
   classical

@@ -10,9 +10,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 variable {Ω : Type*} [Field Ω] [CharZero Ω] {κ : Type*} {D : ℕ}
 
 /- English proof (translation)
-Introduce `hk`. Establish `hmem : (MvPolynomial.X k : MvPolynomial ι ℤ) ∈ coordIdeal ℤ y`. Rewrite using `[coordIdeal, RingHom.mem_ker, coneMap]`. Simplify using `[hk]`. Rewrite `hmem` using `[h, Ideal.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `MvPolynomial.X_ne_zero k hmem`.
+A detailed English derivation is pending.
 -/
 theorem coord_ne_zero {ι : Type*} (y : ι → Ω) (h : coordIdeal ℤ y = ⊥) (k : ι) : y k ≠ 0 := by
   intro hk
@@ -23,15 +23,15 @@ theorem coord_ne_zero {ι : Type*} (y : ι → Ω) (h : coordIdeal ℤ y = ⊥) 
   exact MvPolynomial.X_ne_zero k hmem
 
 /- English proof (translation)
-Conclude with `IntermediateField.subset_adjoin ℚ {t | ∃ i j, t = x i / x j} ⟨i, j, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem div_mem_fnField (x : κ → Ω) (i j : κ) : x i / x j ∈ fnField x := by
   exact IntermediateField.subset_adjoin ℚ {t | ∃ i j, t = x i / x j} ⟨i, j, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[deh_apply]`. Proceed by induction on `m using MvPolynomial.induction_on`. Rewrite using `[MvPolynomial.eval₂_C]`. Simplify using `using intCast_mem (fnField y) _`. Rewrite using `[MvPolynomial.eval₂_add]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem ‹_› ‹_›`. Rewrite using `[MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X]`. Conclude with `mul_mem ‹_› (div_mem_fnField y _ i₀)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deh_mem_fnField {ι : Type*} (y : ι → Ω) (i₀ : ι) (m : MvPolynomial ι ℤ) :
     deh y i₀ m ∈ fnField y := by
@@ -60,9 +60,9 @@ def chartRing (y : Fin (D + 1) → Ω) : Subalgebra ℤ (fnField y) :=
   Algebra.adjoin ℤ (Set.range (chartGen y))
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [deh_apply]`. Consider the case `add p q hp hq => simp only [map_add, AddMemClass.coe_add, hp, hq]`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, MvPolynomial.aeval_X, MvPolynomial.rename_X, MulMemClass.coe_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `[deh_apply, chartGen]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem aeval_chartGen (y : Fin (D + 1) → Ω) (g : MvPolynomial {k : Fin (D + 1) // k ≠ 0} ℤ) :
     ((MvPolynomial.aeval (chartGen y) g : fnField y) : Ω) =
@@ -76,17 +76,17 @@ theorem aeval_chartGen (y : Fin (D + 1) → Ω) (g : MvPolynomial {k : Fin (D + 
     simp [deh_apply, chartGen]
 
 /- English proof (translation)
-Rewrite using `[algebraicIndependent_iff_injective_aeval, injective_iff_map_eq_zero]`. Introduce `g hg`. Establish `hy0` using `coord_ne_zero y hfree 0`. Use `set G := MvPolynomial.rename Subtype.val g`. Establish `h1 : deh y 0 G = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← aeval_chartGen]`. Express the relevant statement in the definitionally equal form `(((MvPolynomial.aeval (chartGen y) g : fnField y)) : Ω) = 0`. Rewrite using `[hg]`. Both sides reduce to the same expression. Establish `hH` using `homog_isHomogeneous (0 : Fin (D + 1)) G le_rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : MvPolynomial.aeval y (homog 0 G.totalDegree G) = 0`. Rewrite using `[MvPolynomial.aeval_def, algebraMap_int_eq, eval₂_homog y 0 hy0 G le_rfl, h1, mul_zero]`. Establish `h3` using `mem_coordIdeal_of_isHomogeneous ℤ y hH h2`. Rewrite `h3` using `[hfree, Ideal.mem_bot]`. Apply `MvPolynomial.funext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Set `v : Fin (D + 1) → ℚ` to `fun k => if h : k = 0 then 1 else (u ⟨k, h⟩ : ℚ)`. Establish `h4` using `eval₂_homog v 0 (by simp [v]) G le_rfl`. Rewrite `h4` using `[h3, MvPolynomial.eval₂_zero]`. Establish `h5 : deh v 0 G = ((MvPolynomial.eval u g : ℤ) : ℚ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[deh_apply, MvPolynomial.eval₂_rename, MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, ← eq_intCast (Int.castRingHom ℚ), MvPolynomial.eval₂_comp_left]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[v, k.2]`. Rewrite `h4` using `[h5]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h6 : ((MvPolynomial.eval u g : ℤ) : ℚ) = 0`. Use `h4.symm` as an intermediate fact. Rewrite `this` using `[mul_eq_zero, or_iff_right (pow_ne_zero _ (by simp [v]))]`. Then use the resulting hypothesis. Simplify using `using h6`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem chartGen_indep (y : Fin (D + 1) → Ω) (hfree : coordIdeal ℤ y = ⊥) :
     AlgebraicIndependent ℤ (chartGen y) := by
@@ -122,7 +122,7 @@ theorem chartGen_indep (y : Fin (D + 1) → Ω) (hfree : coordIdeal ℤ y = ⊥)
   simpa using h6
 
 /- English proof (translation)
-Establish `hind` using `chartGen_indep y hfree`. Use `haveI : UniqueFactorizationMonoid (chartRing y) := MulEquiv.uniqueFactorizationMonoid hind.aevalEquiv.toRingEquiv.toMulEquiv inferInstance`. Use `haveI : IsDomain (chartRing y) := Subalgebra.isDomain _`. Conclude with `UniqueFactorizationMonoid.instIsIntegrallyClosed`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chartRing_closed (y : Fin (D + 1) → Ω) (hfree : coordIdeal ℤ y = ⊥) :
     IsIntegrallyClosed (chartRing y) := by
@@ -133,19 +133,17 @@ theorem chartRing_closed (y : Fin (D + 1) → Ω) (hfree : coordIdeal ℤ y = �
   exact UniqueFactorizationMonoid.instIsIntegrallyClosed
 
 /- English proof (translation)
-Establish `hl : y 0 ≠ 0` using `coord_ne_zero y hfree 0`. Use `IsFractionRing.of_field _ _ fun z => ?_` and prove the remaining obligations. Establish `hinj : Function.Injective (algebraMap (chartRing y) Ω)`. Introduce `a b hab`. Conclude with `Subtype.val_injective (Subtype.val_injective hab)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `F : Subfield Ω` to `(IsFractionRing.lift (K := FractionRing (chartRing y)) hinj).fieldRange`. Establish `hgen : ∀ i, y i / y 0 ∈ F`. Introduce `i`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_self hl]`. Conclude with `F.one_mem`. Use `⟨algebraMap (chartRing y) (FractionRing (chartRing y)) ⟨chartGen y ⟨i, hi⟩, Algebra.subset_adjoin ⟨_, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[IsFractionRing.lift_algebraMap hinj]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hle : (fnField y).toSubfield ≤ F`. Unfold `fnField`. Use `IntermediateField.adjoin_le_subfield ℚ _ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[eq_ratCast]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `SubfieldClass.ratCast_mem F q`. Introduce and unpack `_ ⟨i, j, rfl⟩`. Establish `: y i / y j = (y i / y 0) / (y j / y 0)`. Rewrite using `[div_div_div_cancel_right₀ hl]`. Express the relevant statement in the definitionally equal form `y i / y j ∈ F`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `F.div_mem (hgen i) (hgen j)`. Take `⟨w, hw⟩` from `hle z.2`. Take `⟨a, b, _, rfl⟩` from `IsFractionRing.div_surjective (A := chartRing y) w`. Use `⟨a, b, Subtype.val_injective ?_⟩` and prove the remaining obligations.
-
-Rewrite `hw` using `[map_div₀, IsFractionRing.lift_algebraMap, IsFractionRing.lift_algebraMap]`. Rewrite using `[← hw]`. Conclude with `(map_div₀ (fnField y).val _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartRing_frac (y : Fin (D + 1) → Ω) (hfree : coordIdeal ℤ y = ⊥) :
     IsFractionRing (chartRing y) (fnField y) := by
@@ -193,19 +191,19 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 variable {Ω : Type*} [Field Ω] [CharZero Ω] {ι : Type} [Fintype ι] {D : ℕ}
 
 /- English proof (translation)
-Use `set y := x ∘ e with hy`. Express the relevant statement in the definitionally equal form `IsIntegral _ (x i / y 0)`. Establish `hl : y 0 ≠ 0` using `coord_ne_zero y h.free 0`. Establish `hinj : Function.Injective (coneMap ℤ y)`. Rewrite using `[injective_iff_map_eq_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Establish `: f ∈ coordIdeal ℤ y` using `by rw [coordIdeal, RingHom.mem_ker]; exact hf`. Rewrite `this` using `[h.free, Ideal.mem_bot]`. Then use the resulting hypothesis. Set `eqv : MvPolynomial (Fin (D + 1)) ℤ ≃ₐ[ℤ] coneRing ℤ y` to `AlgEquiv.ofInjective (coneMap ℤ y) hinj`. Set `w : Fin (D + 1) → chartRing y` to `fun k => if hk : k = 0 then 1 else ⟨chartGen y ⟨k, hk⟩, Algebra.subset_adjoin ⟨_, rfl⟩⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hw : ∀ k, algebraMap (chartRing y) Ω (w k) = y k * (y 0)⁻¹`. Introduce `k`. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality. Simplify using `[w, mul_inv_cancel₀ hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [w, dif_neg hk]`. Express the relevant statement in the definitionally equal form `y k / y 0 = _`. Conclude with `div_eq_mul_inv _ _`. Set `ψ : Polynomial Ω →+* Ω` to `Polynomial.evalRingHom (y 0)⁻¹`. Establish `hev : ∀ f : MvPolynomial (Fin (D + 1)) ℤ, ψ (coneMap ℤ y f) = MvPolynomial.aeval (fun k => y k * (y 0)⁻¹) f`.
+Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [coneMap, ψ]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p k hp => rw [map_mul, map_mul, map_mul, hp]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[coneMap, ψ]`. Set `φ : coneRing ℤ y →+* chartRing y` to `(MvPolynomial.aeval w).toRingHom.comp eqv.symm.toAlgHom.toRingHom`. Establish `hrel : (algebraMap (chartRing y) Ω).comp φ = ψ.comp (algebraMap (coneRing ℤ y) _)`. Use extensionality with `r`. Take `⟨f, rfl⟩` from `eqv.surjective r`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : ((eqv f : coneRing ℤ y) : Polynomial Ω) = coneMap ℤ y f` using `rfl`. Express the relevant statement in the definitionally equal form `algebraMap _ Ω (MvPolynomial.aeval w (eqv.symm (eqv f))) = ψ ((eqv f : coneRing ℤ y) : Polynomial Ω)`. Rewrite using `[eqv.symm_apply_apply, h1, hev, ← MvPolynomial.aeval_algebraMap_apply, show (⇑(algebraMap (chartRing y) Ω) ∘ w) = fun k => y k * (y 0)⁻¹ from funext hw]`. Use `IsIntegral.map_of_comp_eq φ ψ hrel (h.integral i)` as an intermediate fact. Simplify `this` using `[ψ, div_eq_mul_inv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coord_div_isIntegral (x : ι → Ω) (e : Fin (D + 1) → ι) (h : IsProjFrame x e) (i : ι) :
     IsIntegral (chartRing (x ∘ e)) (x i / x (e 0)) := by
@@ -252,13 +250,13 @@ abbrev Lx (x : ι → Ω) (e : Fin (D + 1) → ι) : IntermediateField (fnField 
   extendScalars (fnField_comp_le x e)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `t ht`. Establish `key : fnField x ≤ (adjoin (fnField (x ∘ e)) (Set.range fun i => x i / x (e 0))).restrictScalars ℚ`. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `s ⟨i, j, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hi : x i / x (e 0) ∈ adjoin (fnField (x ∘ e)) (Set.range fun i => x i / x (e 0))` using `subset_adjoin _ _ ⟨i, rfl⟩`. Establish `hj : x j / x (e 0) ∈ adjoin (fnField (x ∘ e)) (Set.range fun i => x i / x (e 0))` using `subset_adjoin _ _ ⟨j, rfl⟩`. Establish `hq` using `div_mem hi hj`. Establish `e2 : x i / x (e 0) / (x j / x (e 0)) = x i / x j`. Distinguish the cases in `hj0 : x j = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hj0]`. Clear the denominators using the available nonvanishing facts. Rewrite `hq` using `[e2]`. Conclude with `hq`. Conclude with `key ht`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `t ⟨i, rfl⟩`. Conclude with `div_mem_fnField x i (e 0)`.
+A detailed English derivation is pending.
 -/
 theorem Lx_eq (x : ι → Ω) (e : Fin (D + 1) → ι) (hx0 : x (e 0) ≠ 0) :
     Lx x e = adjoin (fnField (x ∘ e)) (Set.range fun i => x i / x (e 0)) := by
@@ -285,9 +283,7 @@ theorem Lx_eq (x : ι → Ω) (e : Fin (D + 1) → ι) (hx0 : x (e 0) ≠ 0) :
     exact div_mem_fnField x i (e 0)
 
 /- English proof (translation)
-Establish `hx0 : x (e 0) ≠ 0` using `coord_ne_zero (x ∘ e) h.free 0`. Establish `hint : ∀ t ∈ Set.range (fun i => x i / x (e 0)), IsIntegral (fnField (x ∘ e)) t`. Introduce and unpack `t ⟨i, rfl⟩`. Conclude with `(coord_div_isIntegral x e h i).tower_top`. Rewrite using `[Lx_eq x e hx0]`.
-
-Conclude with `IntermediateField.finiteDimensional_adjoin hint`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lx_finite (x : ι → Ω) (e : Fin (D + 1) → ι) (h : IsProjFrame x e) :
     FiniteDimensional (fnField (x ∘ e)) (Lx x e) := by
@@ -302,11 +298,9 @@ def gL (x : ι → Ω) (e : Fin (D + 1) → ι) (i : ι) : Lx x e :=
   ⟨x i / x (e 0), div_mem_fnField x i (e 0)⟩
 
 /- English proof (translation)
-Apply `IntermediateField.map_injective (Lx x e).val` to reduce the goal to its premises. Establish `htop : (⊤ : IntermediateField (fnField (x ∘ e)) (Lx x e)).map (Lx x e).val = Lx x e`. Use extensionality with `z`. Rewrite using `[IntermediateField.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨w, -, rfl⟩`. Conclude with `w.2`. Introduce `hz`. Conclude with `⟨⟨z, hz⟩, IntermediateField.mem_top, rfl⟩`. Rewrite using `[IntermediateField.adjoin_map, ← Set.range_comp, htop]`.
-
-Conclude with `(Lx_eq x e hx0).symm`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_gL (x : ι → Ω) (e : Fin (D + 1) → ι) (hx0 : x (e 0) ≠ 0) :
     adjoin (fnField (x ∘ e)) (Set.range (gL x e)) = ⊤ := by
@@ -323,7 +317,7 @@ theorem adjoin_gL (x : ι → Ω) (e : Fin (D + 1) → ι) (hx0 : x (e 0) ≠ 0)
   exact (Lx_eq x e hx0).symm
 
 /- English proof (translation)
-Establish `hx0 : x (e 0) ≠ 0` using `coord_ne_zero (x ∘ e) h.free 0`. Use `Lx_finite x e h` as an intermediate fact. Conclude with `exists_int_primitive (gL x e) (adjoin_gL x e hx0)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_primitive (x : ι → Ω) (e : Fin (D + 1) → ι) (h : IsProjFrame x e) :
     ∃ c : ι → ℤ, (fnField (x ∘ e))⟮∑ i, (c i : Lx x e) * gL x e i⟯ = ⊤ := by

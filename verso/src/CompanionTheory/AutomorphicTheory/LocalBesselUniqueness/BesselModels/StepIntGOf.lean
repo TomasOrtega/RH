@@ -19,45 +19,37 @@ variable {k r : ℕ}
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
 /- English proof (translation)
-Introduce `D hG X u u' sc hsc c hc γ hγ v`. Take `⟨τ, rfl⟩ : ∃ τ, v = vOf X τ` from `⟨X.pl v, (X.pl.symm_apply_apply v).symm⟩`. Establish `: Nonempty D.what₂.Word` using `⟨u⟩`. Take `⟨C⟩` from `Formalism.L2.SG.Pf.choiceExists X 1 one_pos`. Take `⟨l, a, hbe, hW⟩` from `Formalism.L2.SG.RealObj.EnergyIntQ.BM.locDDQ hI hRT hL2 hGp hG C (hLF D hG X 1 C) u τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l', a', hbe', hW'⟩` from `Formalism.L2.SG.RealObj.EnergyIntQ.BM.locDDQ hI hRT hL2 hGp hG C (hLF D hG X 1 C) u' τ`. Establish `h1` using `(transpC' C τ).1`. Establish `h2` using `(transpC' C τ).2.1`. Establish `hg` using `(transpC' C τ).2.2.1`. Take `⟨P, hP⟩` from `Formalism.MainNotions.S.Inh.obj_cayleyU_rows D`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨yc, hyc, hycl⟩` from `y_exists (n_eq' X) (X.B.I.ε (vOf X τ)) (epsSH D.R) (fun i => by rw [X.eps_eq]; exact congrArg (epsS D.R) (Fin.ext rfl)) (X.B.lam (vOf X τ)) (lamD D τ) (fun i => by`. Rewrite using `[X.lam_eq, show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ]`. Conclude with `congrArg (lamS D.R (D.hc τ)) (Fin.ext rfl))`. Use the proof step `(X.B.σ (vOf X τ)) (X.ds (vOf X τ)).2.2.1 (X.low (vOf X τ)).2 (Qcs C τ) (Qics C τ) h2 hg P hP`. Use `set σc := sigB X (Qcs C τ) (Qics C τ) τ with hσc`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set w0 := σc yc (X.B.w (vOf X τ)) with hw0`. Establish `hlow : IsLowUnitH D.R.k D.R.rS (epsSH D.R) (lamD D τ) σc w0`. Use `⟨P, hP, ?_, hycl⟩` and prove the remaining obligations. Rewrite using `[hw0, sigC_norm C τ hyc]`. Conclude with `(X.low (vOf X τ)).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h, hgap, hok⟩` from `hGp D hG τ`. Take `⟨νq, hS⟩` from `sideC C one_pos u τ hgap hok hlow`. Take `⟨νq', hS'⟩` from `sideC C one_pos u' τ hgap hok hlow`. Establish `hμW` using `C.muW_haar u τ`. Establish `hμW'` using `C.muW_haar u' τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: SigmaFinite (C.muW u τ)` using `hμW.1`. Establish `: SigmaFinite (C.muW u' τ)` using `hμW'.1`. Establish `: SigmaFinite (muNB D 1)` using `(Formalism.MainNotions.BridgeCSB.haarLieN _ _ _ (kapN_ne_zero D one_pos) (kapN_ne_top D 1)).1`. Establish `hl : ∀ x ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp σc w0, ∀ y ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp σc w0, Formalism.FourierDecayAlt.ThreeDimData.be (Dc C one_pos u u' τ).z Formalism.QuantumDeterminants.cStd (Dc C one_pos u u' τ).π σc (Dc C one_pos u u' τ).μW (Dc C on …`. Introduce `x hx y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show Formalism.FourierDecayAlt.ThreeDimData.be (zB X (C.Qi τ) u τ) Formalism.QuantumDeterminants.cStd (piB X (Qcs C τ) (Qics C τ) u τ) σc (C.muW u τ) ((muNB D 1).map (conjE (Formalism.L2.SG.Pf.muT_ne D))) x y = _`. Rewrite using `[← scale_eq D, be_tor (Formalism.L2.SG.Pf.muT_ne D) (zT C u τ).1 (cS D) (piB X (C.Q τ) (C.Qi τ) u τ) (piB X (Qcs C τ) (Qics C τ) u τ) (sigB X (C.Q τ) (C.Qi τ) τ) σc (sigC_eq C τ) (fun _ hh => piC_eq C u τ hh) (C.muW u τ) (muNB D 1) hμW.2.2.1 x y]`. Conclude with `hbe x (dd_sub C τ hyc hx) y (dd_sub C τ hyc hy)`. Establish `hl' : ∀ x ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp σc w0, ∀ y ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp σc w0, Formalism.FourierDecayAlt.ThreeDimData.be (Dc C one_pos u u' τ).z' Formalism.QuantumDeterminants.cStd (Dc C one_pos u u' τ).π' σc (Dc C one_pos u u' τ).μW' (Dc …`. Introduce `x hx y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `show Formalism.FourierDecayAlt.ThreeDimData.be (zB X (C.Qi τ) u' τ) Formalism.QuantumDeterminants.cStd (piB X (Qcs C τ) (Qics C τ) u' τ) σc (C.muW u' τ) ((muNB D 1).map (conjE (Formalism.L2.SG.Pf.muT_ne D))) x y = _`. Rewrite using `[← scale_eq D, be_tor (Formalism.L2.SG.Pf.muT_ne D) (zT C u' τ).1 (cS D) (piB X (C.Q τ) (C.Qi τ) u' τ) (piB X (Qcs C τ) (Qics C τ) u' τ) (sigB X (C.Q τ) (C.Qi τ) τ) σc (sigC_eq C τ) (fun _ hh => piC_eq C u' τ hh) (C.muW u' τ) (muNB D 1) hμW'.2.2.1 x y]`. Conclude with `hbe' x (dd_sub C τ hyc hx) y (dd_sub C τ hyc hy)`. Use `set γc := Formalism.L2.SG.RealObj.trG (Qcs C τ) (Qics C τ) (γ (vOf X τ)) with hγc`. Establish `hom` using `Formalism.L2.SG.RealObj.EnergyIntOm.mem_om X (Formalism.L2.SG.Pf.cfS_ne D) (transpC' C τ) hsc u u' c hc γ hγ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hom` using `[zc_eq, zc_eq]`. Establish `hint` using `CompanionTheory.D.Upq.BesselFunctionalConstruction.ooConv CompanionTheory.Lime.BM.inputs D.R.k D.R.rS _ _ (Dc C one_pos u u' τ) (epsSH D.R) (lamD D τ) h _ σc w0 _ _ νq νq' hS hS' l l' hl hl' γc hom`. Use `set μGc := muGB X (Qcs C τ) (Qics C τ) τ with hμGc`. Use `set F : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS → ℝ≥0∞ := fun m => ‖l (σc (Matrix.of m) w0)‖ₑ * ‖l' (σc (γc⁻¹ * Matrix.of m) w0)‖ₑ with hF`. Establish `hFfin : ∫⁻ m, F m ∂μGc < ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfi` using `hint.2`. Unfold `HasFiniteIntegral at hfi`. Use `lt_of_le_of_lt (le_of_eq (lintegral_congr fun m => ?_)) hfi` and prove the remaining obligations. Simplify using `only [hF]`. Rewrite using `[← ofReal_norm, ← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_mul (norm_nonneg _), ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `clear_value F μGc`. Take `⟨hyiU, hyi⟩` from `Formalism.MainNotions.S.Inh.unitary_group_inv_mem yc hyc`. Use `set yi := Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * ycᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS with hyidef`. Establish `hyi' : yc * yi = 1` using `mul_eq_one_comm.mp hyi`. Establish `hR : ∫⁻ m, F (Formalism.FourierDecayAlt.B.rmulF yi m) ∂μGc = ∫⁻ m, F m ∂μGc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrm : μGc.map (Formalism.FourierDecayAlt.B.rmulF yi) = μGc`. Rewrite using `[hμGc]`. Conclude with `(Formalism.L2.SG.Pf.BaseOf.haarG_B (n_eq' X) (X.B.I.ε (vOf X τ)) h2 hg).right yi hyiU`. Rewrite using `[← rmulE_coe yi yc hyi hyi', ← lintegral_map_equiv F (rmulE yi yc hyi hyi'), rmulE_coe, hrm]`. Establish `hTe : MeasurableEmbedding (fun x : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) => (Matrix.of.symm (Formalism.L2.SG.RealObj.trG (Qcs C τ) (Qics C τ) x) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS))` using `(Formalism.L2.SG.Pf.BaseOf.trG_closedEmb (n_eq' X) (X.B.I.ε (vOf X τ)) h2).measurableEmbedding`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `hCV : ∫⁻ x, F (Formalism.FourierDecayAlt.B.rmulF yi (Matrix.of.symm (Formalism.L2.SG.RealObj.trG (Qcs C τ) (Qics C τ) x))) ∂(Formalism.REAL.muG (X.B.I.ε (vOf X τ))) = ∫⁻ m, F (Formalism.FourierDecayAlt.B.rmulF yi m) ∂μGc`. Rewrite using `[hμGc]`. Unfold `muGB`. Conclude with `(hTe.lintegral_map (fun m => F (Formalism.FourierDecayAlt.B.rmulF yi m))).symm`. Establish `key : ∀ x : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)), σc (Formalism.L2.SG.RealObj.trG (Qcs C τ) (Qics C τ) x * yi) w0 = X.B.σ (vOf X τ) (uMat x) (X.B.w (vOf X τ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Introduce `x`. Establish `hTx` using `Formalism.L2.SG.Pf.LTL.trG_mem (Qcs C τ) (Qics C τ) _ h2 hg x`. Rewrite using `[hw0, sigC_mul C τ (Formalism.MainNotions.S.Inh.mul_mem_UH_Hpk_nonempty_parameter_models _ _ hTx hyiU) hyc, Matrix.mul_assoc, hyi, Matrix.mul_one]`. Use `show X.B.σ (vOf X τ) (Qcs C τ * (Qics C τ * uMat x * Qcs C τ) * Qics C τ) (X.B.w (vOf X τ)) = _`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul, Matrix.mul_assoc, h2, Matrix.mul_one]`. Establish `hγinv : γc⁻¹ = Qics C τ * uMat (γ (vOf X τ))⁻¹ * Qcs C τ`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[hγc]`. Unfold `Formalism.L2.SG.RealObj.trG`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h2, Matrix.mul_one, uMat_inv_mul', Matrix.mul_one, h1]`. Establish `hpt : ∀ x : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)), ‖X.Wloc u (vOf X τ) x‖ₑ * ‖X.Wloc u' (vOf X τ) ((γ (vOf X τ))⁻¹ * x)‖ₑ = (‖a‖ₑ * ‖a'‖ₑ) * F (Formalism.FourierDecayAlt.B.rmulF yi (Matrix.of.symm (Formalism.L2.SG.RealObj.trG (Qcs C τ) (Qics C τ) x)))`. Introduce `x`.
-
-Establish `e2 : γc⁻¹ * Matrix.of (Formalism.FourierDecayAlt.B.rmulF yi (Matrix.of.symm (Formalism.L2.SG.RealObj.trG (Qcs C τ) (Qics C τ) x))) = Formalism.L2.SG.RealObj.trG (Qcs C τ) (Qics C τ) ((γ (vOf X τ))⁻¹ * x) * yi` using `by show γc⁻¹ * (Formalism.L2.SG.RealObj.trG (Qcs C τ) (Qics C τ) x * yi) = _`. Rewrite using `[hγinv]`. Unfold `Formalism.L2.SG.RealObj.trG`. Rewrite using `[uMat_mul']`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Qics C τ * (uMat (γ (vOf X τ))⁻¹ * uMat x) * Qcs C τ * yi := by`. Rewrite using `[h2, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hW x, hW' ((γ (vOf X τ))⁻¹ * x), enorm_smul, enorm_smul, ← key x, ← key ((γ (vOf X τ))⁻¹ * x)]`.
-
-Simplify using `only [hF]`. Rewrite using `[e2]`. Use `show ‖a‖ₑ * ‖l (σc (Formalism.L2.SG.RealObj.trG (Qcs C τ) (Qics C τ) x * yi) w0)‖ₑ * (‖a'‖ₑ * ‖l' (σc (Formalism.L2.SG.RealObj.trG (Qcs C τ) (Qics C τ) ((γ (vOf X τ))⁻¹ * x) * yi) w0)‖ₑ) = ‖a‖ₑ * ‖a'‖ₑ * (‖l (σc (Formalism.L2.SG.RealObj.trG (Qcs C τ) (Qics C τ) x * yi) w0)‖ₑ * ‖l …`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hCV, hR]`. Conclude with `ENNReal.mul_lt_top (ENNReal.mul_lt_top enorm_lt_top enorm_lt_top) hFfin`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locOrbG_of (hI : CompanionTheory.Lime.BM.Inputs2) (hRT : ReproTr) (hL2 : L2RightTranslation) (hGp : GapOfHyp)
     (hLF : ∀ (D : D7), Formalism.L2.SG.ConcreteSettingExists.GapHyp D → ∀ (X : HidaSetting D) (θ : ℝ) (C : Choice X θ), LocFactor C) :
@@ -205,7 +197,7 @@ theorem locOrbG_of (hI : CompanionTheory.Lime.BM.Inputs2) (hRT : ReproTr) (hL2 :
         exact ENNReal.mul_lt_top (ENNReal.mul_lt_top enorm_lt_top enorm_lt_top) hFfin
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.RealObj.EnergyInt.stepIntG_of_loc (Formalism.L2.SG.RealObj.EnergyIntLoc.BM.locOrbG_of hI hRT hL2 hGp hLF)`.
+A detailed English derivation is pending.
 -/
 theorem stepIntG_of (hI : CompanionTheory.Lime.BM.Inputs2) (hRT : ReproTr) (hL2 : L2RightTranslation) (hGp : GapOfHyp)
     (hLF : ∀ (D : D7), Formalism.L2.SG.ConcreteSettingExists.GapHyp D → ∀ (X : HidaSetting D) (θ : ℝ) (C : Choice X θ), LocFactor C) :

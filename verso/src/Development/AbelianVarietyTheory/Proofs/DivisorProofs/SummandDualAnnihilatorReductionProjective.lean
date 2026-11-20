@@ -13,15 +13,15 @@ open Module Submodule
 variable {R : Type} [CommRing R] {C : Type*} [AddCommGroup C] [Module R C]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[disjoint_iff, eq_bot_iff]`. Introduce `f hf`. Rewrite `hf` using `[mem_inf, mem_dualAnnihilator, mem_dualAnnihilator]`. Rewrite using `[mem_bot]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `c`. Rewrite using `[← projection_add_projection_eq_self h c, map_add, hf.1 _ (projection_apply_mem h c), hf.2 _ (projection_apply_mem h.symm c)]`. Simplify using the standard rewrite rules. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `f _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : f = f ∘ₗ N.projection K h.symm + f ∘ₗ K.projection N h`. Use extensionality with `c`. Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply]`. Rewrite using `[← map_add, add_comm, projection_add_projection_eq_self h c]`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `add_mem_sup ?_ ?_` and prove the remaining obligations. Rewrite using `[mem_dualAnnihilator]`. Introduce `k hk`. Simplify using `[projection_apply_of_mem_right h.symm hk]`. Rewrite using `[mem_dualAnnihilator]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `n hn`. Simplify using `[projection_apply_of_mem_right h hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isCompl_dualAnnihilator {K N : Submodule R C} (h : IsCompl K N) :
     IsCompl K.dualAnnihilator N.dualAnnihilator := by
@@ -50,11 +50,11 @@ theorem isCompl_dualAnnihilator {K N : Submodule R C} (h : IsCompl K N) :
       simp [projection_apply_of_mem_right h hn]
 
 /- English proof (translation)
-Use `le_antisymm (fun c hc => ?_) (le_dualAnnihilator_dualCoannihilator _)` and prove the remaining obligations. Rewrite `hc` using `[mem_dualCoannihilator]`. Establish `hn : N.projection K h.symm c = 0`. Rewrite using `[← forall_dual_apply_eq_zero_iff R]`. Introduce `φ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hc (φ ∘ₗ N.projection K h.symm) (by` as an intermediate fact. Rewrite using `[mem_dualAnnihilator]`. Introduce `k hk`. Simplify using `[projection_apply_of_mem_right h.symm hk])`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← projection_add_projection_eq_self h c, hn, add_zero]`. Conclude with `projection_apply_mem h c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualAnnihilator_dualCoannihilator_eq [Projective R C] {K N : Submodule R C}
     (h : IsCompl K N) : K.dualAnnihilator.dualCoannihilator = K := by
@@ -72,7 +72,7 @@ theorem dualAnnihilator_dualCoannihilator_eq [Projective R C] {K N : Submodule R
   exact projection_apply_mem h c
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `projective_def.mp (inferInstance : Projective R C)`. Rewrite using `[← hs c, Finsupp.linearCombination_apply, Finsupp.sum]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Conclude with `smul_mem_smul (by simpa using h (Finsupp.lapply m ∘ₗ s)) mem_top`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_smul_top_of_forall_dual [Projective R C] (I : Ideal R) (c : C)
     (h : ∀ x : Dual R C, x c ∈ I) : c ∈ I • (⊤ : Submodule R C) := by
@@ -84,7 +84,7 @@ theorem mem_smul_top_of_forall_dual [Projective R C] (I : Ideal R) (c : C)
 variable {R₀ : Type} [CommRing R₀] {π : R →+* R₀} {C₀ : Type*} [AddCommGroup C₀] [Module R₀ C₀]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `projective_def.mp (inferInstance : Projective R C)`. Use `⟨Finsupp.linearCombination R (fun m => Function.surjInv hπ (y (ρ m))) ∘ₗ s, fun c => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← hs c]`. Simplify using `only [LinearMap.comp_apply, Finsupp.linearCombination_apply, Finsupp.sum, map_sum, smul_eq_mul, map_mul, Function.surjInv_eq, LinearMap.map_smulₛₗ, id, RingHom.id_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_dual_lift [Projective R C] (hπ : Function.Surjective π) (ρ : C →ₛₗ[π] C₀)
     (y : Dual R₀ C₀) : ∃ x : Dual R C, ∀ c, π (x c) = y (ρ c) := by
@@ -95,15 +95,13 @@ theorem exists_dual_lift [Projective R C] (hπ : Function.Surjective π) (ρ : C
     smul_eq_mul, map_mul, Function.surjInv_eq, LinearMap.map_smulₛₗ, id, RingHom.id_apply]
 
 /- English proof (translation)
-Establish `hI : RingHom.ker π • (⊤ : Submodule R C) ≤ Submodule.comap x (RingHom.ker π)`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr n _`. Rewrite using `[Submodule.mem_comap, map_smul, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : ∀ a b, ρ a = ρ b → π (x a) = π (x b)`. Introduce `a b hab`. Establish `h1 : a - b ∈ RingHom.ker π • (⊤ : Submodule R C)` using `(hker _).mp (by rw [map_sub, hab, sub_self])`. Establish `h2` using `hI h1`. Rewrite `h2` using `[Submodule.mem_comap, map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `(RingHom.mem_ker).mp h2`. Set `g` to `Function.surjInv hρ`. Establish `hg : ∀ v, ρ (g v) = v` using `Function.surjInv_eq hρ`. Use `⟨{ toFun := fun v => π (x (g v)), map_add' := ?_, map_smul' := ?_ }, fun c => hx _ _ (hg _)⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Rewrite using `[show π (x (g a)) + π (x (g b)) = π (x (g a + g b)) by simp]`. Conclude with `hx _ _ (by rw [map_add, hg, hg, hg])`. Introduce `r v`. Take `⟨r', rfl⟩` from `hπ r`.
-
-Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Rewrite using `[← map_mul, ← smul_eq_mul, ← map_smul]`. Conclude with `hx _ _ (by rw [LinearMap.map_smulₛₗ, hg, hg])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dual_descent {ρ : C →ₛₗ[π] C₀} (hπ : Function.Surjective π)
     (hρ : Function.Surjective ρ) (hker : ∀ c, ρ c = 0 ↔ c ∈ RingHom.ker π • (⊤ : Submodule R C))
@@ -142,9 +140,9 @@ variable {R : Type} [CommRing R] {C : Type*} [AddCommGroup C] [Module R C]
 variable {R₀ : Type} [CommRing R₀] {π : R →+* R₀} {C₀ : Type*} [AddCommGroup C₀] [Module R₀ C₀]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hρ v`. Rewrite using `[hker]`. Use `mem_smul_top_of_forall_dual _ c fun x => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_dual_descent hπ hρ hker x`. Rewrite using `[RingHom.mem_ker, ← hy]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv y`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_dual_reduction [Projective R C] {ρ : C →ₛₗ[π] C₀}
     (hπ : Function.Surjective π) (hρ : Function.Surjective ρ)
@@ -158,25 +156,25 @@ theorem eq_zero_of_forall_dual_reduction [Projective R C] {ρ : C →ₛₗ[π] 
   exact hv y
 
 /- English proof (translation)
-Establish `hsurj : ∀ ψ : Dual R (Dual R C), ∃ k : C, ∀ φ : Dual R C, φ k = ψ φ`. Introduce `ψ`. Take `⟨k, hk⟩` from `(Module.bijective_dual_eval R C).2 ψ`. Conclude with `⟨k, fun φ => by rw [← hk, Dual.eval_apply]⟩`. Establish `hsplit : ∀ φ : Dual R C, G.projection H hGH φ + H.projection G hGH.symm φ = φ` using `projection_add_projection_eq_self hGH`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hKL : IsCompl G.dualCoannihilator H.dualCoannihilator`. Prove the components needed by the constructor for the conclusion. Rewrite using `[disjoint_iff, eq_bot_iff]`. Introduce `c hc`. Rewrite `hc` using `[mem_inf, mem_dualCoannihilator, mem_dualCoannihilator]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_bot, ← forall_dual_apply_eq_zero_iff R]`. Introduce `φ`. Rewrite using `[← hsplit φ, LinearMap.add_apply, hc.1 _ (projection_apply_mem hGH φ), hc.2 _ (projection_apply_mem hGH.symm φ), add_zero]`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `c _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk⟩` from `hsurj (Dual.eval R C c ∘ₗ H.projection G hGH.symm)`. Take `⟨l, hl⟩` from `hsurj (Dual.eval R C c ∘ₗ G.projection H hGH)`. Use `Submodule.mem_sup.mpr ⟨k, ?_, l, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_dualCoannihilator]`. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hk g]`. Simplify using `[projection_apply_of_mem_right hGH.symm hg]`. Rewrite using `[mem_dualCoannihilator]`. Introduce `h hh`. Rewrite using `[hl h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[projection_apply_of_mem_right hGH hh]`. Rewrite using `[← sub_eq_zero, ← forall_dual_apply_eq_zero_iff R]`. Introduce `φ`. Rewrite using `[map_sub, map_add, hk φ, hl φ]`. Simplify using `only [LinearMap.comp_apply, Dual.eval_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← LinearMap.add_apply, add_comm, hsplit φ, sub_self]`. Use `⟨G.dualCoannihilator, ⟨_, hKL⟩, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce `g hg`. Rewrite using `[mem_dualAnnihilator]`. Introduce `k hk`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mem_dualCoannihilator _).mp hk g hg`. Introduce `φ hφ`. Rewrite `hφ` using `[mem_dualAnnihilator]`. Establish `h0 : H.projection G hGH.symm φ = 0`. Use extensionality with `c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, l, hl, rfl⟩` from `Submodule.mem_sup.mp (hKL.sup_eq_top ▸ mem_top : c ∈ _)`. Establish `e : H.projection G hGH.symm φ = φ - G.projection H hGH φ`. Rewrite using `[eq_sub_iff_add_eq, add_comm, hsplit φ]`. Rewrite using `[map_add, (mem_dualCoannihilator _).mp hl _ (projection_apply_mem hGH.symm φ), e, LinearMap.sub_apply, hφ k hk, (mem_dualCoannihilator _).mp hk _ (projection_apply_mem hGH φ)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsplit φ, h0, add_zero]`. Conclude with `projection_apply_mem hGH φ`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_dualAnnihilator [Projective R C] [Module.Finite R C]
     {G H : Submodule R (Dual R C)} (hGH : IsCompl G H) :
@@ -239,25 +237,25 @@ namespace GlobalTheory.LiftSys
 open Module Submodule GlobalTheory.DualSummand
 
 /- English proof (translation)
-Introduce `R R₀ _ _ π hπ C C₀ _ _ _ _ _ _ ρ hρ hker F₀ ⟨N₀, hF⟩`. Use `⟨fun K ⟨N, hKN⟩ => ⟨⟨_, isCompl_dualAnnihilator hKN⟩, dualAnnihilator_dualCoannihilator_eq hKN, ?_⟩, fun G ⟨H, hGH⟩ => exists_eq_dualAnnihilator hGH⟩` and prove the remaining obligations. Establish `hsplit : ∀ c, K.projection N hKN c + N.projection K hKN.symm c = c` using `projection_add_projection_eq_self hKN`. Establish `hNK : ∀ k ∈ K, N.projection K hKN.symm k = 0` using `fun k hk => projection_apply_of_mem_right hKN.symm hk`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hL y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Rewrite `hy` using `[mem_dualAnnihilator]`. Take `⟨x₀, hx₀⟩` from `exists_dual_lift hπ ρ y`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨x₀ ∘ₗ N.projection K hKN.symm, ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_dualAnnihilator]`. Introduce `k hk`. Simplify using `[hNK k hk]`. Rewrite using `[LinearMap.comp_apply, hx₀] conv_lhs => rw [← hsplit c]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add, hy _ ((hL _).mp (mem_sup_left (projection_apply_mem hKN c))), zero_add]`. Introduce and unpack `⟨x, hx, hxy⟩`. Rewrite `hx`, the goal using `[mem_dualAnnihilator]`. Introduce `f hf`. Take `⟨c, rfl⟩` from `hρ f`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, m, hm, rfl⟩` from `Submodule.mem_sup.mp ((hL c).mpr hf)`. Rewrite using `[map_add, (hker m).mpr hm, add_zero, hxy, hx k hk, map_zero]`. Introduce `hR c`. Prove the components needed by the constructor for the conclusion. Introduce `hc`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk, m, hm, rfl⟩` from `Submodule.mem_sup.mp hc`. Rewrite using `[map_add, (hker m).mpr hm, add_zero]`. Establish `hv : N₀.projection F₀ hF.symm (ρ k) = 0`. Use `eq_zero_of_forall_dual_reduction hπ hρ hker _ fun φ => ?_` and prove the remaining obligations. Take `⟨x, hx, hxy⟩` from `(hR (φ ∘ₗ N₀.projection F₀ hF.symm)).mp (by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mem_dualAnnihilator]`. Introduce `f hf`. Simplify using `[projection_apply_of_mem_right hF.symm hf])`. Use `hxy k` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, (mem_dualAnnihilator _).mp hx k hk, map_zero]`. Rewrite using `[← projection_add_projection_eq_self hF (ρ k), hv, add_zero]`. Conclude with `projection_apply_mem hF _`. Introduce `hc`. Rewrite using `[← hsplit c]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem_sup (projection_apply_mem hKN c) ?_` and prove the remaining obligations. Use `mem_smul_top_of_forall_dual _ _ fun x₀ => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_dual_descent hπ hρ hker (x₀ ∘ₗ N.projection K hKN.symm)`. Establish `hyF : y ∈ F₀.dualAnnihilator` using `(hR y).mpr ⟨x₀ ∘ₗ N.projection K hKN.symm, by`. Rewrite using `[mem_dualAnnihilator]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Simplify using `[hNK k hk], hy⟩`. Rewrite using `[RingHom.mem_ker, ← LinearMap.comp_apply, ← hy]`. Conclude with `(mem_dualAnnihilator _).mp hyF _ hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summand_dual_reduction :
     ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → ∀ (C C₀ : Type 1) [AddCommGroup C] [Module R C] [AddCommGroup C₀] [Module R₀ C₀], Module.Finite R C → Module.Projective R C → ∀ ρ : C →ₛₗ[π] C₀, Function.Surjective ρ → (∀ c, ρ c = 0 ↔ c ∈ RingHom.ker π • (⊤ : Submodule R C)) → ∀ F₀ : Submodule R₀ C₀, (∃ N₀, IsCompl F₀ N₀) → (∀ K : Submodule R C, (∃ N, IsCompl K N) → (∃ N, IsCompl K.dualAnnihilator N) ∧ K.dualAnnihilator.dualCoannihilator = K ∧ ((∀ c, c ∈ K ⊔ RingHom.ker π • ⊤ ↔ ρ c ∈ F₀) ↔ ∀ y : Module.Dual R₀ C₀, y ∈ F₀.dualAnnihilator ↔ ∃ x ∈ K.dualAnnihilator, ∀ c, y (ρ c) = π (x c))) ∧ ∀ G : Submodule R (Module.Dual R C), (∃ N, IsCompl G N) → ∃ K : Submodule R C, (∃ N, IsCompl K N) ∧ G = K.dualAnnihilator := by

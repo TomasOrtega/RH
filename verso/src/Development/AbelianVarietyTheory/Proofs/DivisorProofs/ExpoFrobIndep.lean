@@ -8,11 +8,11 @@ open Formalism.CohomologicalDescent Formalism.CohomologicalDescent.LogSmallConst
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `P hH hL ι _ _ W hW fr cj`. Establish `hW' : ({ W with fr` using `fr, cj := cj } : Wts ι).Ok P := { anti := hW.anti, what₂ := hW.what₂, block := hW.block, centre := hW.centre, window := hW.window, cloud := hW.cloud, low := hW.low, thick := hW.thick, other := hW.other }`. Use `⟨hW', ?_⟩` and prove the remaining obligations. Introduce `l hl hR`. Establish `hN` using `(places_real_holds P hH hL ι W hW (fun _ => 0)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hN'` using `(places_real_holds P hH hL ι ({ W with fr := fr, cj := cj } : Wts ι) hW' (fun _ => 0)).2`. Establish `hi : ({ W with fr` using `fr, cj := cj } : Wts ι).iW P l = W.iW P l := by`. Use function extensionality and compare the values at `τ`. Unfold `Wts.iW SizeData₂.depth`. Take `⟨a1, a2⟩` from `hN l hl hR.1 hR.2.2.1 τ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨b1, b2⟩` from `hN' l hl hR.1 hR.2.2.1 τ`. Rewrite using `[a1, a2, b1, b2]`. Both sides reduce to the same expression. Unfold `Wts.coarseWeightBound`. Rewrite using `[hi]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

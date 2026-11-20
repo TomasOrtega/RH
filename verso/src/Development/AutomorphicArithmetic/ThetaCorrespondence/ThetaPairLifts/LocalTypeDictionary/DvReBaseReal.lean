@@ -14,17 +14,15 @@ open scoped Matrix Classical
 open Formalism.BasicNotions.TH
 open GlobalTheory.RealLift GlobalTheory.RealLift.LieFirstPf GlobalTheory.RealLift.FirstLine
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hB hX hW hM hWeil γ hγ f hf`. Use `choose A hA hAθ using fun w => frameEx_holds _ _ _ _ _ (hX.sig w) (hX.cartan w)`. Use `choose C hC hCθ using fun w => frameEx_holds _ _ _ _ _ (hW.sig w) (hW.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F X.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[incM_map_piInf', one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[incM_map_piInf']`. Conclude with `hC w`. Establish `fr : Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `fr' : Framed B.emb (incM F W.J) (incM F X.J) Complex.I 1 C A` using `⟨mul_one _, hC1, hA1⟩`. Establish `hvl` using `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives GlobalTheory.T.archHeisenbergDerivatives_exist`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives GlobalTheory.T.archHeisenbergDerivatives_exist F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C hB.cm hB.std fr`. Establish `hr` using `GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws actsLaws GlobalTheory.T.archHeisenbergDerivatives_exist hvl F E σ _ _ _ _ _ _ X W M B.ψ B.emb A C Φ hB.cm hB.std fr hAθ hCθ hΦ`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F X.J) (incM F W.J) M.co χX χW om` using `hWeil`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d', hdd, hB1'⟩` from `hwp.2.1`. Establish `hΦ'` using `fockMap_swap hΦ hdd`. Take `⟨c, hact⟩` from `_root_.GlobalTheory.T.weil_lie_algebra_scalar_action hKP GlobalTheory.T.archHeisenbergDerivatives_exist hvl F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ d' Complex.I 1 C A _ (om.comp (MonoidHom.inl _ _)) hB.cm hB.std fr' hΦ' hB1'.1`. Take `⟨Y, -, hY⟩` from `GlobalTheory.T.oneParamSubgroup_generators_exist F E σ (Fin n) r s B.emb (incM F X.J) 1 A hB.cm hA1 γ hγ`. Rewrite `hf` using `[← hr]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨T, rfl⟩` from `hf`. Establish `hT : Φ T = (Φ ∘ₗ (swapT (InfinitePlace F) r s r' s').toLinearMap) ((swapT (InfinitePlace F) r s r' s').symm T)`. Simplify using the standard rewrite rules. Establish `key` using `hact γ hγ Y hY ((swapT (InfinitePlace F) r s r' s').symm T)`. Rewrite `key` using `[← hT]`.
-
-Conclude with `⟨_, key⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rebase_splitting_datum : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
@@ -58,15 +56,15 @@ theorem exists_rebase_splitting_datum : _root_.GlobalTheory.FunPr.ThetaLocalInpu
   exact ⟨_, key⟩
 end First
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hB hX hW hM hWeil g hg h hh T hT hTi γ hγ f hf f₁ hf₁`. Take `⟨f₂, hsd⟩` from `_root_.GlobalTheory.ReBase.exists_rebase_splitting_datum hKP F E σ B n d X W M χX χW om r s r' s' hB hX hW hM hWeil γ hγ f hf`. Establish `e` using `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) f f₂ f₁).2.2.1 _ ((GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) f f₂ f₁).1 _ (fun t => map_zero _) hsd) hf₁`. Substitute `e` using the available equality. Establish `hS` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hWeil`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use `(GlobalTheory.RealLift.actsLaws F _ (T f) (T f₂) (T f₂)).1 _ (fun t => map_zero _) ?_` and prove the remaining obligations. Introduce `g' hg' l hl`. Establish `key : ∀ φ : SInf F (Fin n × Fin d), Acts (evI F) (om (g, h)) φ (T φ) → om (g, h) (GlobalTheory.WeilM.pureA F φ g') = GlobalTheory.WeilM.pureA F (T φ) g'`. Introduce `φ hφ`. Establish `hr : ∀ x z, At (evI F) z → (fun x : Fin n × Fin d → AF F => g' (fun i => (x i).2)) (x + z) = (fun x : Fin n × Fin d → AF F => g' (fun i => (x i).2)) x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x z hz`. Express the relevant statement in the definitionally equal form `g' (fun i => (x i + z i).2) = g' (fun i => (x i).2)`. Use `congr 1`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(x i).2 + (z i).2 = (x i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.RealLift.fin_eq_zero_of_at hz, add_zero]`. Conclude with `hφ _ ⟨hr, Submodule.subset_span ⟨φ, g', hg', rfl⟩⟩`. Establish `hfun : (fun t : ℝ => l (om (g * γ (Multiplicative.ofAdd t) * g⁻¹, 1) (GlobalTheory.WeilM.pureA F (T f) g'))) = fun t => (l ∘ₗ om (g, h)) (om (γ (Multiplicative.ofAdd t), 1) (GlobalTheory.WeilM.pureA F f g'))`. Use function extensionality and compare the values at `t`. Rewrite using `[← key f (hT f), LinearMap.comp_apply, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 3`. Conclude with `Prod.ext (by simp only [Prod.fst_mul, inv_mul_cancel_right]) (by simp)`. Rewrite using `[hfun, ← key f₂ (hT f₂)]`. Conclude with `hsd g' hg' _ (hS.adm (g, h) l hl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deriv_conjugate_line : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
@@ -107,25 +105,23 @@ theorem deriv_conjugate_line : _root_.GlobalTheory.FunPr.ThetaLocalInputs → �
 section Second
 open GlobalTheory.RealLift
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hb hX hW _hM hw g _hg h _hh T hT hTs γ hγ f hf f₁ hf₁`. Establish `hder` using `GlobalTheory.RealLift.Main.i_derex`. Establish `hvl` using `GlobalTheory.RealLift.Main.i_vacline hder`. Establish `hfe` using `GlobalTheory.RealLift.Main.i_fockex hder`. Use `choose A hA hAθ using fun w => GlobalTheory.RealLift.Main.i_frameex _ _ _ _ _ (hX.sig w) (hX.cartan w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose C hC hCθ using fun w => GlobalTheory.RealLift.Main.i_frameex _ _ _ _ _ (hW.sig w) (hW.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F X.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[GlobalTheory.RealLift.Main.incM_map_piInf, one_smul]`. Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.RealLift.Main.incM_map_piInf]`. Conclude with `hC w`. Establish `fr : Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hr` using `GlobalTheory.RealLift.Main.i_polrange GlobalTheory.RealLift.actsLaws hder hvl F E σ _ _ _ _ _ _ X W M B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsp : IsUSplitting (adeleClass F) B.ψ M.co (actAB (cA σ)) om` using `IsUWeilPair.isUSplitting hw`. Establish `hsp2` using `GlobalTheory.WeilSchrodinger.isUSplitting_inr hsp`. Take `⟨c, hc⟩` from `_root_.GlobalTheory.RealLift.Main.i_liescalar_alt hK hder hvl F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C Φ _ hb.cm hb.std fr hΦ hsp2`. Take `⟨Yg, -, hY⟩` from `GlobalTheory.RealLift.Main.i_genex F E σ (Fin d) _ _ B.emb (incM F W.J) Complex.I C hb.cm hC1 γ hγ`. Take `⟨T0, rfl⟩` from `GlobalTheory.RealLift.Main.pol_eq B M Φ hr hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨D, hSD⟩ : ∃ D, SD (fun t => om (1, γ (Multiplicative.ofAdd t))) (Φ T0) D` from `⟨_, hc γ hγ Yg hY T0⟩`. Establish `hAD : ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) (Φ T0) D` using `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) (Φ T0) D D).1 _ (fun t => map_zero _) hSD`. Establish `e0 : f₁ = D` using `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) (Φ T0) f₁ D).2.2.1 _ hf₁ hAD`. Substitute `e0` using the available equality. Establish `hSD2 : SD (fun t => om (1, h * γ (Multiplicative.ofAdd t) * h⁻¹)) (T (Φ T0)) (T f₁)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `g' hg' l hl`. Establish `hl' : l ∘ₗ om (g, h) ∈ (adeleClass F).adm (Fin n × Fin d)` using `hsp.adm (g, h) l hl`. Establish `hrest : ∀ f0 : SInf F (Fin n × Fin d), Rest (evI F) (⇑f0) (fun x => g' fun i => (x i).2)` using `fun f0 => ⟨fun x z hz => by show g' (fun i => (x i + z i).2) = g' (fun i => (x i).2)`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[GlobalTheory.RealLift.fin_eq_zero_of_at hz i, add_zero], Submodule.subset_span ⟨f0, g', hg', rfl⟩⟩`. Establish `hpure : ∀ f0 : SInf F (Fin n × Fin d), pureA F (⇑f0) g' = tens (evI F) (⇑f0) (fun x => g' fun i => (x i).2)` using `fun _ => rfl`. Establish `e1 : om (g⁻¹, h⁻¹) (pureA F (⇑(T (Φ T0))) g') = pureA F (⇑(Φ T0)) g'`. Rewrite using `[hpure, hTs _ _ (hrest _), LinearEquiv.symm_apply_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e2 : om (g, h) (pureA F (⇑f₁) g') = pureA F (⇑(T f₁)) g'`. Rewrite using `[hpure, hT _ _ (hrest _)]`. Both sides reduce to the same expression. Establish `e3 : ∀ t : ℝ, om (1, h * γ (Multiplicative.ofAdd t) * h⁻¹) (pureA F (⇑(T (Φ T0))) g') = om (g, h) (om (1, γ (Multiplicative.ofAdd t)) (pureA F (⇑(Φ T0)) g'))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `t`. Establish `hp : ((1 : UA σ X.J), h * γ (Multiplicative.ofAdd t) * h⁻¹) = (g, h) * (1, γ (Multiplicative.ofAdd t)) * (g⁻¹, h⁻¹)` using `Prod.ext (by simp) (by simp)`. Rewrite using `[hp, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, e1]`. Simplify using `only [e3]`. Use `hSD g' hg' _ hl'` as an intermediate fact.
-
-Simplify `this` using `only [LinearMap.comp_apply, e2]`. Conclude with `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) (T (Φ T0)) (T f₁) (T f₁)).1 _ (fun t => map_zero _) hSD2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem conjugation_acts_on_derivation : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
@@ -194,11 +190,9 @@ section Pair
 open GlobalTheory.MajTransport
 variable {n d : ℕ} {X Y : Spc F E n} {W Z : Spc F E d}
 /- English proof (translation)
-Establish `hpol` using `pair_pol hB hX hW hM hw hg hh hT1 hT2 hθX hθW`. Establish `memT : ∀ f ∈ M.Pol B.ψ B.emb, T f ∈ (reM M Y Z).Pol B.ψ B.emb` using `fun f hf => by`. Use `Submodule.mem_map_of_mem (f := (T : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d))) hf` as an intermediate fact. Rewrite `this` using `[hpol]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun γ hγ f hf f₁ hD => ?_, fun k hk f hf f₁ hA => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_comp, hpol]`. Conclude with `hq.onto`. Conclude with `hq.lie _ (lines_conj hσ hγ hg) (T f) (memT f hf) (T f₁) (_root_.GlobalTheory.ReBase.deriv_conjugate_line hKP F E σ B n d X W M χX χW om r s r' s' hB hX hW hM hw g hg h hh T hT1 hT2 γ hγ f hf f₁ hD)`. Establish `hA'` using `acts_conj (pres_of hw) hT1 hT2 hA`.
-
-Establish `e : ((g, h) * (k, 1) * (g, h)⁻¹ : UA σ X.J × UA σ W.J) = (g * k * g⁻¹, 1)` using `Prod.ext rfl (by simp)`. Rewrite `hA'` using `[e]`. Conclude with `hq.cpt (g * k * g⁻¹) (kinf_conj B.emb hg hθX hk) (T f) (memT f hf) (T f₁) hA'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_quotient_projection (hKP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hσ : ∀ x, σ (σ x) = x) {B : Base F E} {M : Model σ X W} {χX χW : Chr F E}
     {om : Rep σ X W} {r s r' s' : ℕ}
@@ -227,25 +221,21 @@ theorem pair_quotient_projection (hKP : _root_.GlobalTheory.FunPr.ThetaLocalInpu
 end Pair
 open GlobalTheory.MajTransport in
 /- English proof (translation)
-Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hT.base.cm`. Establish `hT1s : ∀ f : SInf F (Fin a × Fin (a + a')), Acts (evI F) (om (g⁻¹⁻¹, h⁻¹⁻¹)) f (T.symm.symm f)` using `fun f => by simpa only [inv_inv, LinearEquiv.symm_symm] using hT1 f`. Establish `hpol` using `pair_pol (Y := V) (Z := W) hT.base hT.geo.hV hT.geo.hW hT.geo.hM hT.weil hg hh hT1 hT2 hθ hθW`. Establish `hpol'` using `pair_pol (Y := V') (Z := W) hT.base hT.geo.hV' hT.geo.hW hT.geo.hM' hT.weil' hg' hh hT1' hT2' hθ' hθW`. Establish `memT : ∀ f ∈ G.M.Pol B.ψ B.emb, T f ∈ (reG G V V' W).M.Pol B.ψ B.emb` using `fun f hf => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.mem_map_of_mem (f := (T : SInf F (Fin a × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a × Fin (a + a')))) hf` as an intermediate fact. Rewrite `this` using `[hpol]`. Conclude with `this`. Establish `memT' : ∀ f ∈ G.M'.Pol B.ψ B.emb, T' f ∈ (reG G V V' W).M'.Pol B.ψ B.emb` using `fun f hf => by`. Use `Submodule.mem_map_of_mem (f := (T' : SInf F (Fin a' × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a' × Fin (a + a')))) hf` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hpol']`. Conclude with `this`. Establish `memTs : ∀ f' ∈ (reG G V V' W).M.Pol B.ψ B.emb, T.symm f' ∈ G.M.Pol B.ψ B.emb` using `fun f' hf' => by`. Establish `hf'' : f' ∈ (G.M.Pol B.ψ B.emb).map (T : SInf F (Fin a × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a × Fin (a + a')))`. Rewrite using `[hpol]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hf'`. Take `⟨f, hf, rfl⟩` from `hf''`. Simplify using `using hf`. Establish `hW' : ∀ w, (mat h⁻¹).map (piInf (B.emb w)) * W.θ w = G.W.θ w * (mat h⁻¹).map (piInf (B.emb w))` using `fun w => rev_conj (map_mul_inv _ h) (map_inv_mul _ h) (hθW w)`. Use `⟨?_, ?_, ?_, ?_, hR₂.nontriv, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `_root_.GlobalTheory.ReBase.pair_quotient_projection (Y := V) (Z := W) hKP hσ hT.base hT.geo.hV hT.geo.hW hT.geo.hM hT.weil hg hh hT1 hT2 hθ hθW R₂.p hR₂.quot`. Conclude with `_root_.GlobalTheory.ReBase.pair_quotient_projection (Y := V') (Z := W) hKP hσ hT.base hT.geo.hV' hT.geo.hW hT.geo.hM' hT.weil' hg' hh hT1' hT2' hθ' hθW R₂.p' hR₂.quot'`. Introduce `γ hγ f hf f' hf' f₁ f₁' hD hD' hpp`. Conclude with `hR₂.lie _ (lines_conj hσ hγ hh) (T f) (memT f hf) (T' f') (memT' f' hf') (T f₁) (T' f₁') (_root_.GlobalTheory.ReBase.conjugation_acts_on_derivation hKP F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hT.base hT.geo.hV hT.geo.hW hT.geo.hM hT.weil g hg h hh T hT1 hT2 γ hγ …`. Introduce `k hk f hf f' hf' f₁ f₁' hA hA' hpp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ((g, h) * (1, k) * (g, h)⁻¹ : UA σ G.V.J × UA σ G.W.J) = (1, h * k * h⁻¹)` using `Prod.ext (by simp) rfl`. Establish `e' : ((g', h) * (1, k) * (g', h)⁻¹ : UA σ G.V'.J × UA σ G.W.J) = (1, h * k * h⁻¹)` using `Prod.ext (by simp) rfl`. Establish `hB` using `acts_conj (pres_of hT.weil) hT1 hT2 hA`. Establish `hB'` using `acts_conj (pres_of hT.weil') hT1' hT2' hA'`. Rewrite `hB` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hB'` using `[e']`. Conclude with `hR₂.cpt (h * k * h⁻¹) (kinf_conj B.emb hh hθW hk) (T f) (memT f hf) (T' f') (memT' f' hf') (T f₁) (T' f₁') hB hB' hpp`. Introduce `N hL hK`. Use `hR₂.irred N (fun γ' hγ' f' hf' f₁' hD hN => ?_) (fun k' hk' f' hf' f₁' hA hN => ?_)` and prove the remaining obligations. Establish `hD'` using `_root_.GlobalTheory.ReBase.conjugation_acts_on_derivation hKP F E σ B a (a + a') (reS G.V V) (reS G.W W) (reG G V V' W).M X.β (X.β / X.α) om _ _ _ _ hT₂.base hT₂.geo.hV hT₂.geo.hW hT₂.geo.hM hT₂.weil g⁻¹ (uat_inv hg) h⁻¹ (uat_inv hh) T.symm hT2 hT1s γ' hγ' f' hf' f₁' hD`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hN' : R₂.p (T (T.symm f')) ∈ N` using `by rwa [LinearEquiv.apply_symm_apply]`. Use `hL _ (lines_conj hσ hγ' (uat_inv hh)) (T.symm f') (memTs f' hf') (T.symm f₁') hD' hN'` as an intermediate fact. Establish `this' : R₂.p (T (T.symm f₁')) ∈ N` using `this`. Rewrite `this'` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `hB` using `acts_conj (pres_of hT.weil) hT2 hT1s hA`.
-
-Establish `hB' : Acts (evI F) (om (1, h⁻¹ * (id k' : UA σ G.W.J) * h⁻¹⁻¹)) (T.symm f') (T.symm f₁')`. Use `hB using 3` and compare the differences between its conclusion and the goal. Conclude with `Prod.ext (by show (1 : UA σ G.V.J) = g⁻¹ * 1 * g⁻¹⁻¹; simp) rfl`. Establish `hN' : R₂.p (T (T.symm f')) ∈ N` using `by rwa [LinearEquiv.apply_symm_apply]`. Use `hK _ (kinf_conj (X := reS G.W W) (Y := G.W) B.emb (uat_inv hh) hW' hk') (T.symm f') (memTs f' hf') (T.symm f₁') hB' hN'` as an intermediate fact.
-
-Establish `this' : R₂.p (T (T.symm f₁')) ∈ N` using `this`. Rewrite `this'` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem real_maps_transport (hKP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
     (hT : IsTriple B G X om om') {V : Spc F E a} {V' : Spc F E a'} {W : Spc F E (a + a')} (R₂ : RealMaps F a a')

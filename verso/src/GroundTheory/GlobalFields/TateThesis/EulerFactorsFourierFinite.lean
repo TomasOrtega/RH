@@ -16,7 +16,7 @@ def differentExp (v : HeightOneSpectrum (𝓞 K)) : ℤ :=
   FractionalIdeal.count K v ((differentIdeal ℤ (𝓞 K) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Conclude with `zero_le`. Rewrite using `[← exp_log hx, exp_le_exp]`. Rewrite `h` using `[← exp_log hx, ← exp_zero, exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_exp_neg_one_of_lt_one {x : ℤᵐ⁰} (h : x < 1) : x ≤ exp (-1) := by
   rcases eq_or_ne x 0 with rfl | hx
@@ -26,21 +26,17 @@ theorem le_exp_neg_one_of_lt_one {x : ℤᵐ⁰} (h : x < 1) : x ≤ exp (-1) :=
     omega
 
 /- English proof (translation)
-Use `set I := ∏ᶠ w : HeightOneSpectrum R, w.asIdeal ^ a w`. Establish `hI : I ≠ ⊥` using `finprod_asIdeal_pow_ne_bot a`. Establish `h1 : a v ≤ multiplicity v.asIdeal I` using `(finprod_asIdeal_pow_dvd_iff ha hI).1 dvd_rfl v`. Use `le_antisymm ?_ h1` and prove the remaining obligations. Assume the negation of the conclusion as `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at h2`. Use `set b : HeightOneSpectrum R → ℕ := fun w ↦ a w + if w = v then 1 else 0`. Establish `hb : (Function.support b).Finite` using `(ha.union (Set.finite_singleton v)).subset fun w hw ↦ by`. Assume the negation of the conclusion as `hw'`. Simplify using `only [Set.mem_union, Function.mem_support, Set.mem_singleton_iff, not_or, not_not] at hw'`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `hw (by simp [b, hw'.1, hw'.2])`. Establish `hdvd : (∏ᶠ w, w.asIdeal ^ b w) ∣ I`. Use `(finprod_asIdeal_pow_dvd_iff hb hI).2 fun w ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Rewrite using `[hw] show a v + (if v = v then 1 else 0) ≤ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[if_pos rfl]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [b, if_neg hw, add_zero]`. Conclude with `(finprod_asIdeal_pow_dvd_iff ha hI).1 dvd_rfl w`. Establish `hfa : Function.HasFiniteMulSupport fun w : HeightOneSpectrum R ↦ w.asIdeal ^ a w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[Function.HasFiniteMulSupport, mulSupport_asIdeal_pow]`. Conclude with `ha`. Establish `hfv : Function.HasFiniteMulSupport fun w : HeightOneSpectrum R ↦ w.asIdeal ^ (if w = v then 1 else 0)`. Use `(Set.finite_singleton v).subset fun w hw ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hw'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hw (by simp [Set.mem_singleton_iff.not.1 hw'])`. Establish `hsplit : (∏ᶠ w, w.asIdeal ^ b w) = I * v.asIdeal`. Simplify using `only [b, pow_add]`. Rewrite using `[finprod_mul_distrib hfa hfv]`. Use `congr 1`.
-
-Rewrite using `[finprod_eq_single _ v fun w hw ↦ by simp [hw], if_pos rfl, pow_one]`. Rewrite `hdvd` using `[hsplit]`. Establish `h1' : I * v.asIdeal ∣ I * 1` using `by rwa [mul_one]`. Establish `hv1` using `(mul_dvd_mul_iff_left (show I ≠ 0 from hI)).1 h1'`. Rewrite `hv1` using `[Ideal.dvd_iff_le, Ideal.one_eq_top, top_le_iff]`.
-
-Conclude with `v.isPrime.ne_top hv1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multiplicity_finprod_asIdeal_pow {R : Type*} [CommRing R] [IsDedekindDomain R]
     {a : HeightOneSpectrum R → ℕ} (ha : (Function.support a).Finite) (v : HeightOneSpectrum R) :
@@ -94,21 +90,21 @@ def condExp (v : HeightOneSpectrum (𝓞 K)) : ℤ :=
   FractionalIdeal.count K v (χ.conductor : FractionalIdeal (𝓞 K)⁰ K)
 
 /- English proof (translation)
-The claim follows from `count_coeIdeal_eq_multiplicity v χ.conductor_ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem condExp_eq (v : HeightOneSpectrum (𝓞 K)) :
     χ.condExp v = multiplicity v.asIdeal χ.conductor :=
   count_coeIdeal_eq_multiplicity v χ.conductor_ne_bot
 
 /- English proof (translation)
-Rewrite using `[condExp_eq, multiplicity_eq_zero.2 hv, Nat.cast_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem condExp_eq_zero {v : HeightOneSpectrum (𝓞 K)} (hv : ¬ v.asIdeal ∣ χ.conductor) :
     χ.condExp v = 0 := by
   rw [condExp_eq, multiplicity_eq_zero.2 hv, Nat.cast_zero]
 
 /- English proof (translation)
-Rewrite using `[condExp_eq]`. Conclude with `multiplicity_pos_of_dvd hv` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_condExp {v : HeightOneSpectrum (𝓞 K)} (hv : v.asIdeal ∣ χ.conductor) :
     1 ≤ χ.condExp v := by
@@ -116,7 +112,7 @@ theorem one_le_condExp {v : HeightOneSpectrum (𝓞 K)} (hv : v.asIdeal ∣ χ.c
   exact_mod_cast multiplicity_pos_of_dvd hv
 
 /- English proof (translation)
-The claim follows from `finprod_congr fun v ↦ χ.finiteTest_add (x v) (by rw [← χ.condExp_eq]; exact hh v)`.
+A detailed English derivation is pending.
 -/
 theorem finiteTestFun_add (x : FiniteAdeleRing (𝓞 K) K) {h : FiniteAdeleRing (𝓞 K) K}
     (hh : ∀ v, Valued.v (h v) ≤ exp (-χ.condExp v)) :
@@ -124,7 +120,7 @@ theorem finiteTestFun_add (x : FiniteAdeleRing (𝓞 K) K) {h : FiniteAdeleRing 
   finprod_congr fun v ↦ χ.finiteTest_add (x v) (by rw [← χ.condExp_eq]; exact hh v)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `hx (χ.finiteTestFun_eq_zero (not_le.1 h))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem valued_le_one_of_finiteTestFun_ne_zero {x : FiniteAdeleRing (𝓞 K) K}
     (hx : χ.finiteTestFun x ≠ 0) (v : HeightOneSpectrum (𝓞 K)) : Valued.v (x v) ≤ 1 := by
@@ -132,9 +128,9 @@ theorem valued_le_one_of_finiteTestFun_ne_zero {x : FiniteAdeleRing (𝓞 K) K}
   exact hx (χ.finiteTestFun_eq_zero (not_le.1 h))
 
 /- English proof (translation)
-Use `finprod_eq_one_of_forall_eq_one fun v ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `χ.finiteTest v 1 = 1`. Distinguish the cases in `hv : v.asIdeal ∣ χ.conductor`. Establish `h` using `χ.finiteTest_of_dvd hv 1 (by simp)`. Rewrite `h` using `[Units.val_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h, map_one, Circle.coe_one, inv_one]`. Conclude with `χ.finiteTest_eq_one hv (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteTestFun_one : χ.finiteTestFun 1 = 1 := by
   refine finprod_eq_one_of_forall_eq_one fun v ↦ ?_
@@ -146,9 +142,9 @@ theorem finiteTestFun_one : χ.finiteTestFun 1 = 1 := by
   · exact χ.finiteTest_eq_one hv (by simp)
 
 /- English proof (translation)
-Use `integral_congr_ae (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Distinguish the cases in `hx : χ.finiteTestFun x = 0`. Simplify using `[hx]`. Establish `hψ : finiteAdelicChar K (x * h) = 1`. Use `finiteAdelicChar_eq_one_of_mem fun v ↦ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `x v * h v ∈ localInvDifferent v`. Rewrite using `[mem_localInvDifferent_iff_valued, Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only`. Rewrite using `[mul_add, AddChar.map_add_eq_mul, hψ, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem finiteFourier_add {y h : FiniteAdeleRing (𝓞 K) K}
     (hh : ∀ v, Valued.v (h v) ≤ exp (differentExp v)) :
@@ -167,13 +163,13 @@ theorem finiteFourier_add {y h : FiniteAdeleRing (𝓞 K) K}
   rw [mul_add, AddChar.map_add_eq_mul, hψ, mul_one]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hF`. Use `set I : (FractionalIdeal (𝓞 K)⁰ K)ˣ := idealUnit χ.conductor χ.conductor_ne_bot`. Establish `hψ : ∀ h ∈ idealFiniteAdeles I, finiteAdelicChar K (h * y) = 1`. Introduce `h hh`. Establish `hh' : ∀ w, Valued.v (h w) ≤ exp (-χ.condExp w)` using `(mem_idealFiniteAdeles I).1 hh`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hshift : finiteFourier K χ.finiteTestFun y = (finiteAdelicChar K (h * y) : ℂ) * finiteFourier K χ.finiteTestFun y` using `by conv_lhs => rw [finiteFourier, ← integral_add_right_eq_self _ h]`. Rewrite using `[finiteFourier, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[χ.finiteTestFun_add x hh', add_mul, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ((finiteAdelicChar K (h * y) : ℂ) - 1) * finiteFourier K χ.finiteTestFun y = 0`. Rewrite using `[sub_mul, ← hshift, one_mul, sub_self]`. Establish `h2` using `(mul_eq_zero.1 h1).resolve_right hF`. Conclude with `Circle.coe_eq_one.1 (sub_eq_zero.1 h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem` using `(forall_finiteAdelicChar_mul_eq_one_iff I y).1 hψ v`. Rewrite `hmem` using `[count_traceDualIdeal, neg_neg]`. Conclude with `hy hmem`.
+A detailed English derivation is pending.
 -/
 theorem finiteFourier_eq_zero_of_not_le {y : FiniteAdeleRing (𝓞 K) K} {v : HeightOneSpectrum (𝓞 K)}
     (hy : ¬ Valued.v (y v) ≤ exp (χ.condExp v + differentExp v)) :
@@ -203,7 +199,7 @@ def conductorChar (u : (FiniteAdeleRing (𝓞 K) K)ˣ) : ℂ :=
   ∏ v ∈ χ.conductorPrimes, (χ.localComponent v (finiteComponent v u) : ℂ)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun _ _ ↦ Circle.coe_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem conductorChar_ne_zero (u : (FiniteAdeleRing (𝓞 K) K)ˣ) : χ.conductorChar u ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun _ _ ↦ Circle.coe_ne_zero _
@@ -211,11 +207,11 @@ theorem conductorChar_ne_zero (u : (FiniteAdeleRing (𝓞 K) K)ˣ) : χ.conducto
 open Classical in
 
 /- English proof (translation)
-Establish `hv' : Valued.v ((u : v.adicCompletion K) * x) = Valued.v x` using `by rw [map_mul, hu, one_mul]`. Distinguish the cases in `hv : v.asIdeal ∣ χ.conductor`. Rewrite using `[if_pos hv]`. Distinguish the cases in `hx : Valued.v x = 1`. Establish `hx0 : x ≠ 0` using `fun h0 ↦ by simp [h0] at hx`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e1` using `χ.finiteTest_of_dvd hv (u * Units.mk0 x hx0) (by`. Rewrite using `[Units.val_mul, Units.val_mk0, hv', hx])`. Establish `e2` using `χ.finiteTest_of_dvd hv (Units.mk0 x hx0) (by rw [Units.val_mk0, hx])`. Simplify using `only [Units.val_mul, Units.val_mk0] at e1 e2`. Rewrite using `[e1, e2, map_mul, Circle.coe_mul, mul_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[χ.finiteTest_eq_zero_of_dvd hv hx, χ.finiteTest_eq_zero_of_dvd hv (by rwa [hv']), mul_zero]`. Rewrite using `[if_neg hv, one_mul]`. Unfold `finiteTest`. Simplify using `only [if_neg hv, hv']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem finiteTest_mul {v : HeightOneSpectrum (𝓞 K)} (u : (v.adicCompletion K)ˣ)
     (hu : Valued.v (u : v.adicCompletion K) = 1) (x : v.adicCompletion K) :
@@ -239,11 +235,11 @@ theorem finiteTest_mul {v : HeightOneSpectrum (𝓞 K)} (u : (v.adicCompletion K
     simp only [if_neg hv, hv']
 
 /- English proof (translation)
-Use `set c : HeightOneSpectrum (𝓞 K) → ℂ := fun v ↦ if v.asIdeal ∣ χ.conductor then ((χ.localComponent v (finiteComponent v u) : ℂ))⁻¹ else 1`. Establish `hc : ∀ v, χ.finiteTest v (((u : FiniteAdeleRing (𝓞 K) K) * x) v) = c v * χ.finiteTest v (x v)` using `fun v ↦ by`. Use `χ.finiteTest_mul (finiteComponent v u) (by rw [coe_finiteComponent]; exact hu v) (x v)` as an intermediate fact. Rewrite `this` using `[coe_finiteComponent]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hfc : Function.HasFiniteMulSupport c` using `χ.finite_setOf_dvd_conductor.subset fun v hv ↦ by`. Assume the negation of the conclusion as `h`. Conclude with `hv (if_neg h)`. Rewrite using `[finiteTestFun, finprod_congr hc, finprod_mul_distrib hfc (χ.hasFiniteMulSupport_finiteTest x), conductorChar, ← Finset.prod_inv_distrib]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := χ.conductorPrimes)]`. Conclude with `Finset.prod_congr rfl fun v hv ↦ if_pos (χ.mem_conductorPrimes.1 hv)`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (if_neg fun h' ↦ h (χ.mem_conductorPrimes.2 h'))`.
+A detailed English derivation is pending.
 -/
 theorem finiteTestFun_units_mul (u : (FiniteAdeleRing (𝓞 K) K)ˣ)
     (hu : ∀ v, Valued.v ((u : FiniteAdeleRing (𝓞 K) K) v) = 1) (x : FiniteAdeleRing (𝓞 K) K) :
@@ -270,9 +266,9 @@ theorem finiteTestFun_units_mul (u : (FiniteAdeleRing (𝓞 K) K)ˣ)
     exact hv (if_neg fun h' ↦ h (χ.mem_conductorPrimes.2 h'))
 
 /- English proof (translation)
-Rewrite using `[map_mul_left_finiteAdeleMeasure]`. Establish `h1 : (∏ᶠ v : HeightOneSpectrum (𝓞 K), ‖((u⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) v‖₊) = 1` using `finprod_eq_one_of_forall_eq_one fun v ↦ by`. Establish `hmul` using `units_mul_inv_apply u v`. Establish `hinv : Valued.v (((u⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) v) = 1`. Use `congrArg Valued.v hmul` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, hu v, one_mul, map_one]`. Then use the resulting hypothesis. Establish `hi : IsIntegralUnitAt u⁻¹ v` using `⟨(mem_adicCompletionIntegers _ _ _).2 hinv.le, (mem_adicCompletionIntegers _ _ _).2 (by rw [inv_inv, hu v])⟩`. Rewrite using `[← NNReal.coe_eq_one, coe_nnnorm]`. Conclude with `norm_eq_one_of_isIntegralUnitAt hi`. Rewrite using `[h1, ENNReal.coe_one, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_units_mul_finiteAdeleMeasure (u : (FiniteAdeleRing (𝓞 K) K)ˣ)
     (hu : ∀ v, Valued.v ((u : FiniteAdeleRing (𝓞 K) K) v) = 1) :
@@ -293,11 +289,11 @@ theorem map_units_mul_finiteAdeleMeasure (u : (FiniteAdeleRing (𝓞 K) K)ˣ)
   rw [h1, ENNReal.coe_one, one_smul]
 
 /- English proof (translation)
-Establish `hemb : MeasurableEmbedding fun x : FiniteAdeleRing (𝓞 K) K ↦ (u : FiniteAdeleRing (𝓞 K) K) * x`. Establish `h : MeasurableEmbedding fun x : FiniteAdeleRing (𝓞 K) K ↦ u • x` using `(Homeomorph.smul u).toMeasurableEquiv.measurableEmbedding`. Simplify `h` using `only [Units.smul_def, smul_eq_mul]`. Use `set g : FiniteAdeleRing (𝓞 K) K → ℂ := fun x ↦ χ.finiteTestFun x * (finiteAdelicChar K (x * y) : ℂ)`. Establish `h` using `hemb.integral_map (μ := finiteAdeleMeasure K) g`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_units_mul_finiteAdeleMeasure u hu]`. Rewrite using `[finiteFourier, finiteFourier, ← integral_const_mul]`. Express the relevant statement in the definitionally equal form `_ = ∫ x, χ.conductorChar u * g x ∂finiteAdeleMeasure K`. Rewrite using `[integral_const_mul, h, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, χ.finiteTestFun_units_mul u hu]`. Rewrite using `[show (u : FiniteAdeleRing (𝓞 K) K) * x * y = x * ((u : FiniteAdeleRing (𝓞 K) K) * y) by ring]`. Clear denominators, using `[χ.conductorChar_ne_zero u]` for the nonvanishing conditions.
+Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem finiteFourier_units_mul (u : (FiniteAdeleRing (𝓞 K) K)ˣ)
     (hu : ∀ v, Valued.v ((u : FiniteAdeleRing (𝓞 K) K) v) = 1) (y : FiniteAdeleRing (𝓞 K) K) :
@@ -321,7 +317,7 @@ theorem finiteFourier_units_mul (u : (FiniteAdeleRing (𝓞 K) K)ˣ)
   field_simp [χ.conductorChar_ne_zero u]
 
 /- English proof (translation)
-The claim follows from `multiplicity_finprod_asIdeal_pow (finite_support_conductorExponentAt Circle.noSmallSubgroups _ (χ.continuous_toIdele.comp continuous_ofFinite)) v`.
+A detailed English derivation is pending.
 -/
 theorem multiplicity_conductor (v : HeightOneSpectrum (𝓞 K)) :
     multiplicity v.asIdeal χ.conductor = conductorExponentAt (χ.toIdele.comp ofFinite) v :=
@@ -329,11 +325,11 @@ theorem multiplicity_conductor (v : HeightOneSpectrum (𝓞 K)) :
     (χ.continuous_toIdele.comp continuous_ofFinite)) v
 
 /- English proof (translation)
-Establish `hloc : ((χ.toIdele.comp ofFinite).comp (finiteUnitsSingle v)) = (χ.localComponent v : (v.adicCompletion K)ˣ →* Circle)`. Use extensionality with `a`. Simplify using `only [MonoidHom.comp_apply, ofFinite_finiteUnitsSingle]`. Both sides reduce to the same expression. Establish `hcont : Continuous ((χ.toIdele.comp ofFinite).comp (finiteUnitsSingle v))` using `(χ.continuous_toIdele.comp continuous_ofFinite).comp (continuous_finiteUnitsSingle v)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hn` using `multiplicity_pos_of_dvd hv`. Establish `hnot : ¬ unitsLevel v (multiplicity v.asIdeal χ.conductor - 1) ≤ ((χ.toIdele.comp ofFinite).comp (finiteUnitsSingle v)).ker`. Rewrite using `[unitsLevel_le_ker_iff v Circle.noSmallSubgroups _ hcont]`. Express the relevant statement in the definitionally equal form `¬ conductorExponentAt (χ.toIdele.comp ofFinite) v ≤ _`. Rewrite using `[← χ.multiplicity_conductor]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hnot` using `[hloc]`. Take `⟨u, hu, hu1⟩` from `Set.not_subset.1 hnot`. Conclude with `⟨u, hu, hu1⟩`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_unitsLevel_ne_one {v : HeightOneSpectrum (𝓞 K)} (hv : v.asIdeal ∣ χ.conductor) :
     ∃ u ∈ unitsLevel v (multiplicity v.asIdeal χ.conductor - 1), χ.localComponent v u ≠ 1 := by
@@ -356,19 +352,17 @@ theorem exists_mem_unitsLevel_ne_one {v : HeightOneSpectrum (𝓞 K)} (hv : v.as
   exact ⟨u, hu, hu1⟩
 
 /- English proof (translation)
-Take `⟨a, ha, ha1⟩` from `χ.exists_mem_unitsLevel_ne_one hv`. Use `set u := finiteUnitsSingle v a`. Establish `hn` using `multiplicity_pos_of_dvd hv`. Establish `hu : ∀ w, Valued.v ((u : FiniteAdeleRing (𝓞 K) K) w) = 1`. Introduce `w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coe_finiteComponent]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[finiteComponent_finiteUnitsSingle]`. Conclude with `ha.1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[finiteComponent_finiteUnitsSingle_of_ne hw]`. Simplify using the standard rewrite rules. Establish `hchar : χ.conductorChar u = χ.localComponent v a`. Rewrite using `[conductorChar, Finset.prod_eq_single v (fun w _ hw ↦ by`. Rewrite using `[finiteComponent_finiteUnitsSingle_of_ne hw, map_one, Circle.coe_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(fun h ↦ absurd (χ.mem_conductorPrimes.2 hv) h), finiteComponent_finiteUnitsSingle]`. Establish `hh : ∀ w, Valued.v ((((u : FiniteAdeleRing (𝓞 K) K) * y - y)) w) ≤ exp (differentExp w)`. Introduce `w`. Express the relevant statement in the definitionally equal form `Valued.v ((u : FiniteAdeleRing (𝓞 K) K) w * y w - y w) ≤ _`. Rewrite using `[← coe_finiteComponent]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[finiteComponent_finiteUnitsSingle, ← sub_one_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← exp_add, χ.condExp_eq]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[finiteComponent_finiteUnitsSingle_of_ne hw, Units.val_one, one_mul, sub_self, map_zero]`. Conclude with `zero_le`. Establish `h1` using `χ.finiteFourier_units_mul u hu y`.
-
-Rewrite `h1` using `[show (u : FiniteAdeleRing (𝓞 K) K) * y = y + ((u : FiniteAdeleRing (𝓞 K) K) * y - y) by ring, χ.finiteFourier_add hh, hchar]`. Establish `h2 : ((χ.localComponent v a : ℂ) - 1) * finiteFourier K χ.finiteTestFun y = 0`. Rewrite using `[sub_mul, ← h1, one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 fun h ↦ ha1 (Circle.coe_eq_one.1 h))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteFourier_eq_zero_of_le {y : FiniteAdeleRing (𝓞 K) K} {v : HeightOneSpectrum (𝓞 K)}
     (hv : v.asIdeal ∣ χ.conductor)
@@ -419,55 +413,47 @@ def unitOrOne {F : Type*} [GroupWithZero F] (x : F) : Fˣ :=
   if h : x = 0 then 1 else Units.mk0 x h
 
 /- English proof (translation)
-Rewrite using `[unitOrOne, dif_neg hx, Units.val_mk0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_unitOrOne {F : Type*} [GroupWithZero F] {x : F} (hx : x ≠ 0) :
     ((unitOrOne x : Fˣ) : F) = x := by
   rw [unitOrOne, dif_neg hx, Units.val_mk0]
 
 /- English proof (translation)
-The claim follows from `finprod_eq_zero _ v (χ.finiteTest_eq_zero_of_dvd hv hx) (χ.hasFiniteMulSupport_finiteTest x)`.
+A detailed English derivation is pending.
 -/
 theorem finiteTestFun_eq_zero_of_dvd {x : FiniteAdeleRing (𝓞 K) K} {v : HeightOneSpectrum (𝓞 K)}
     (hv : v.asIdeal ∣ χ.conductor) (hx : Valued.v (x v) ≠ 1) : χ.finiteTestFun x = 0 :=
   finprod_eq_zero _ v (χ.finiteTest_eq_zero_of_dvd hv hx) (χ.hasFiniteMulSupport_finiteTest x)
 
 /- English proof (translation)
-Use `set z := (δ : FiniteAdeleRing (𝓞 K) K) * y with hz_def`. Establish `hz : ∀ v, Valued.v (z v) = exp (-(χ.condExp v + differentExp v)) * Valued.v (y v)` using `fun v ↦ by`. Express the relevant statement in the definitionally equal form `Valued.v ((δ : FiniteAdeleRing (𝓞 K) K) v * y v) = _`. Rewrite using `[map_mul, hδ]`. Establish `hyz : ∀ v, Valued.v (y v) = exp (χ.condExp v + differentExp v) * Valued.v (z v)` using `fun v ↦ by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, ← mul_assoc, ← exp_add, add_neg_cancel, exp_zero, one_mul]`. Establish `hcond : (χ⁻¹).conductor = χ.conductor` using `χ.conductor_inv`. Distinguish the cases in `ha : ∃ v, 1 < Valued.v (z v)`. Take `⟨v, hv⟩` from `ha`. Rewrite using `[(χ⁻¹).finiteTestFun_eq_zero hv, mul_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `χ.finiteFourier_eq_zero_of_not_le (v := v) fun hle ↦ ?_` and prove the remaining obligations. Establish `h1 : Valued.v (z v) ≤ 1`. Rewrite using `[hz]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd h1 (not_le.2 hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `push Not at ha`. Distinguish the cases in `hb : ∃ v, v.asIdeal ∣ χ.conductor ∧ Valued.v (z v) ≠ 1`. Take `⟨v, hv, hzv⟩` from `hb`. Rewrite using `[(χ⁻¹).finiteTestFun_eq_zero_of_dvd (by rw [hcond]; exact hv) hzv, mul_zero]`. Use `χ.finiteFourier_eq_zero_of_le hv ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[hyz]`. Combine the equalities or inequalities in the displayed calculation. Use `push Not at hb`. Use `set D := χ.conductorPrimes`. Use `set u : (FiniteAdeleRing (𝓞 K) K)ˣ := ∏ v ∈ D, finiteUnitsSingle v (unitOrOne (z v)) with hu_def`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hz0 : ∀ v ∈ D, z v ≠ 0` using `fun v hv h0 ↦ by`. Use `hb v (χ.mem_conductorPrimes.1 hv)` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `zero_ne_one this`. Establish `hcomp : ∀ w, finiteComponent w u = if w ∈ D then unitOrOne (z w) else 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Rewrite using `[hu_def, map_prod]`. Use `split_ifs with hw`. Rewrite using `[Finset.prod_eq_single w (fun x _ hxw ↦ finiteComponent_finiteUnitsSingle_of_ne (Ne.symm hxw) _) (fun h ↦ absurd hw h), finiteComponent_finiteUnitsSingle]`. Use `Finset.prod_eq_one fun x hx ↦ finiteComponent_finiteUnitsSingle_of_ne ?_ _` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `hw hx`. Establish `hcoe : ∀ w, ((u : FiniteAdeleRing (𝓞 K) K) w) = if w ∈ D then z w else 1`. Introduce `w`. Rewrite using `[← coe_finiteComponent, hcomp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs with hw`. Conclude with `coe_unitOrOne (hz0 w hw)`. Both sides reduce to the same expression. Establish `hu : ∀ w, Valued.v ((u : FiniteAdeleRing (𝓞 K) K) w) = 1`. Introduce `w`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hcoe]`. Use `split_ifs with hw`. Conclude with `hb w (χ.mem_conductorPrimes.1 hw)`. Conclude with `map_one _`. Use `set h : FiniteAdeleRing (𝓞 K) K := ((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) * ((u : FiniteAdeleRing (𝓞 K) K) - z) with hh_def`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyh : y + h = ((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) * (u : FiniteAdeleRing (𝓞 K) K)`. Rewrite using `[hh_def, mul_sub, hz_def, Units.inv_mul_cancel_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `hδinv : ∀ w, Valued.v (((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) w) = exp (χ.condExp w + differentExp w)` using `fun w ↦ by`. Use `congrArg Valued.v (units_mul_inv_apply δ w)` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_mul, hδ, map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← exp_add, add_neg_cancel, exp_zero, one_mul]`. Use `_ = _ := by rw [this, mul_one]`. Establish `hhle : ∀ w, Valued.v (h w) ≤ exp (differentExp w)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w`. Express the relevant statement in the definitionally equal form `Valued.v (((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) w * ((u : FiniteAdeleRing (𝓞 K) K) w - z w)) ≤ _`. Rewrite using `[map_mul, hδinv, hcoe]`. Use `split_ifs with hw`. Rewrite using `[sub_self, map_zero, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `zero_le`. Establish `hw' : ¬ w.asIdeal ∣ χ.conductor` using `fun h ↦ hw (χ.mem_conductorPrimes.2 h)`. Rewrite using `[χ.condExp_eq_zero hw', zero_add]`. Combine the equalities or inequalities in the displayed calculation. Establish `hF : finiteFourier K χ.finiteTestFun y = χ.conductorChar u * finiteFourier K χ.finiteTestFun ((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K)`.
-
-Rewrite using `[← χ.finiteFourier_add hhle, hyh, mul_comm, χ.finiteFourier_units_mul u hu]`. Establish `htest : (χ⁻¹).finiteTestFun z = χ.conductorChar u`. Rewrite using `[finiteTestFun, finprod_eq_prod_of_mulSupport_subset _ (s := D), conductorChar]`. Use `Finset.prod_congr rfl fun v hv ↦ ?_` and prove the remaining obligations. Establish `hv'` using `χ.mem_conductorPrimes.1 hv`.
-
-Establish `h1 : Valued.v (((unitOrOne (z v) : (v.adicCompletion K)ˣ)) : v.adicCompletion K) = 1`. Rewrite using `[coe_unitOrOne (hz0 v hv)]`. Conclude with `hb v hv'`. Establish `e` using `(χ⁻¹).finiteTest_of_dvd (by rw [hcond]; exact hv') _ h1`. Rewrite `e` using `[coe_unitOrOne (hz0 v hv)]`.
-
-Rewrite using `[e, localComponent_inv, Circle.coe_inv, inv_inv, hcomp, if_pos hv]`. Introduce `v hv`. Assume the negation of the conclusion as `hvD`. Establish `hv' : ¬ v.asIdeal ∣ (χ⁻¹).conductor`. Rewrite using `[hcond]`.
-
-Conclude with `fun h ↦ hvD (χ.mem_conductorPrimes.2 h)`. Conclude with `hv ((χ⁻¹).finiteTest_eq_one hv' (ha v))`. Rewrite using `[hF, htest, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteFourier_finiteTestFun (δ : (FiniteAdeleRing (𝓞 K) K)ˣ)
     (hδ : ∀ v, Valued.v ((δ : FiniteAdeleRing (𝓞 K) K) v) = exp (-(χ.condExp v + differentExp v)))
@@ -591,9 +577,9 @@ theorem finiteFourier_finiteTestFun (δ : (FiniteAdeleRing (𝓞 K) K)ˣ)
   rw [hF, htest, mul_comm]
 
 /- English proof (translation)
-Introduce `h0`. Establish `hF : finiteFourier K χ.finiteTestFun = 0` using `funext fun y ↦ by`. Rewrite using `[χ.finiteFourier_finiteTestFun δ hδ y, h0, zero_mul]`. Both sides reduce to the same expression. Establish `h` using `congrFun (finiteFourier_finiteFourier χ.finiteTestFun_mem) (-1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `h` using `[hF, finiteFourier_zero, neg_neg, χ.finiteTestFun_one]`. Conclude with `zero_ne_one h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteFourier_finiteTestFun_ne_zero (δ : (FiniteAdeleRing (𝓞 K) K)ˣ)
     (hδ : ∀ v, Valued.v ((δ : FiniteAdeleRing (𝓞 K) K) v) = exp (-(χ.condExp v + differentExp v))) :

@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresent
 open UpperTheory.V.Cj.A
 
 /- English proof (translation)
-Introduce `Γ V S _ _ _ _ d G hG K hKY hK s s'`. Unfold `UpperTheory.V.Lit.Dr.Geo.Proper at hG`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `p ⟨hpY, hpA⟩`. Take `⟨L, hLn, hLY, hL⟩` from `local_compact_nhds (G.isOpen.mem_nhds hpY)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hFfin : {γ | (G.σ γ) s = s' ∧ ∃ q ∈ L ∪ K, (G.ρ γ) q ∈ L ∪ K}.Finite` using `hG (L ∪ K) (Set.union_subset hLY hKY) (hL.union hK) s s'`. Use `set F := {γ | (G.σ γ) s = s' ∧ ∃ q ∈ L ∪ K, (G.ρ γ) q ∈ L ∪ K} with hF`. Establish `hBc : IsClosed (⋃ γ ∈ F, (G.ρ γ) ⁻¹' K)` using `hFfin.isClosed_biUnion fun γ _ => hK.isClosed.preimage (G.ρ γ).continuous`. Establish `hpB : p ∉ ⋃ γ ∈ F, (G.ρ γ) ⁻¹' K`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, not_exists]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγF hγ`. Conclude with `hpA ⟨γ, hγF.1, hγ⟩`. Establish `hnb : (⋃ γ ∈ F, (G.ρ γ) ⁻¹' K)ᶜ ∈ nhds p` using `hBc.isOpen_compl.mem_nhds hpB`. Use `filter_upwards [hLn, hnb] with q hqL hqB`. Use `⟨hLY hqL, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨γ, hσ, hγ⟩`. Apply `hqB` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion, Set.mem_preimage]`. Conclude with `⟨γ, ⟨hσ, q, Or.inl hqL, Or.inr hγ⟩, hγ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.A.orbClosed :
     OrbClosed := by

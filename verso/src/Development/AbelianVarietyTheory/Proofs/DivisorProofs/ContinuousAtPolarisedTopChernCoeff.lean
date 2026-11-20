@@ -14,7 +14,7 @@ open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 
 /- English proof (translation)
-Introduce `n r _ _ K v hK`. Unfold `_root_.GlobalTheory.GoodTop.mixTop`. Simplify using `only [Matrix.det_apply, Matrix.of_apply]`. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GoodTop.continuousAt_mixTop :
     ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r]

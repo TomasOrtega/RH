@@ -17,9 +17,7 @@ def polyMat (i : ι) :
   fun a c => if a = c then 1 else if h : c < a then MvPolynomial.X ⟨i, (a, c), h⟩ else 0
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [Matrix.map_apply, polyMat, uniMat]`. Use `split_ifs`. Conclude with `map_one _`. Conclude with `MvPolynomial.eval_X (f := u) _`.
-
-Conclude with `map_zero _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_polyMat (u : AffPts k (CellIdx k V)) (i : ι) :
     (polyMat (k := k) (V := V) i).map (MvPolynomial.eval u) = uniMat u i := by
@@ -31,7 +29,7 @@ theorem map_polyMat (u : AffPts k (CellIdx k V)) (i : ι) :
   · exact map_zero _
 
 /- English proof (translation)
-Use `RingHom.map_adjugate (MvPolynomial.eval u) (polyMat (k := k) (V := V) i)` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, map_polyMat]`. Conclude with `congrFun (congrFun this a) c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_adjugate_polyMat (u : AffPts k (CellIdx k V)) (i : ι) (a c : Fin (finrank k (V i))) :
     MvPolynomial.eval u ((polyMat (k := k) (V := V) i).adjugate a c) = (uniMat u i).adjugate a c := by
@@ -50,7 +48,7 @@ def polyOnCell (b : Frames k V) : Subalgebra k (Frames k V → k) where
   algebraMap_mem' := fun c => ⟨MvPolynomial.C c, fun u => (MvPolynomial.eval_C (f := u) c).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨∑ l, MvPolynomial.C (φ (b i l)) * polyMat (k := k) (V := V) i l a, fun u => by simp only [cellFrame_apply, map_sum, map_smul, smul_eq_mul, map_mul] refine Finset.sum_congr rfl fun l _ => ?_ rw [MvPolynomial.eval_C (f := u), ← map_polyMat u i, Matrix.map_apply, mul_comm]⟩`.
+Supply the required witnesses or components.
 -/
 theorem dual_mem_polyOnCell (b : Frames k V) (i : ι) (φ : Dual k (V i)) (a : Fin (finrank k (V i))) :
     (fun b' : Frames k V => φ (b' i a)) ∈ polyOnCell b :=
@@ -60,9 +58,9 @@ theorem dual_mem_polyOnCell (b : Frames k V) (i : ι) (φ : Dual k (V i)) (a : F
     rw [MvPolynomial.eval_C (f := u), ← map_polyMat u i, Matrix.map_apply, mul_comm]⟩
 
 /- English proof (translation)
-Establish `hu : IsUnit (uniMat u i).det` using `by rw [det_uniMat]; exact isUnit_one`. Establish `hM : (uniMat u i)⁻¹ = (uniMat u i).adjugate`. Rewrite using `[Matrix.inv_def, det_uniMat]`. Simplify using the standard rewrite rules. Rewrite using `[← hM]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `he : (Matrix.toLinearEquiv (b i) (uniMat u i) hu).symm v = Matrix.toLin (b i) (b i) (uniMat u i)⁻¹ v`. Rewrite using `[LinearEquiv.symm_apply_eq, Matrix.toLinearEquiv_apply, ← LinearMap.comp_apply, ← Matrix.toLin_mul, Matrix.mul_nonsing_inv _ hu, Matrix.toLin_one]`. Both sides reduce to the same expression. Simplify using `only [cellFrame, Basis.map_repr, LinearEquiv.trans_apply]`. Rewrite using `[he, ← LinearMap.toMatrix_mulVec_repr (b i) (b i), LinearMap.toMatrix_toLin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_cellFrame (b : Frames k V) (u : AffPts k (CellIdx k V)) (i : ι) (v : V i) :
     (cellFrame b u i).repr v = (uniMat u i).adjugate.mulVec ((b i).repr v) := by
@@ -79,7 +77,7 @@ theorem repr_cellFrame (b : Frames k V) (u : AffPts k (CellIdx k V)) (i : ι) (v
   rw [he, ← LinearMap.toMatrix_mulVec_repr (b i) (b i), LinearMap.toMatrix_toLin]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨∑ c, (polyMat (k := k) (V := V) i).adjugate a c * MvPolynomial.C ((b i).repr v c), fun u => by show (cellFrame b u i).repr v a = _ rw [repr_cellFrame] simp only [Matrix.mulVec, dotProduct, map_sum, map_mul] refine Finset.sum_congr rfl fun c _ => ?_ rw [MvPolynomial.eval_C (f := …`.
+Supply the required witnesses or components.
 -/
 theorem repr_mem_polyOnCell (b : Frames k V) (i : ι) (v : V i) (a : Fin (finrank k (V i))) :
     (fun b' : Frames k V => (b' i).repr v a) ∈ polyOnCell b :=
@@ -91,7 +89,7 @@ theorem repr_mem_polyOnCell (b : Frames k V) (i : ι) (v : V i) (a : Fin (finran
     rw [MvPolynomial.eval_C (f := u), eval_adjugate_polyMat]⟩
 
 /- English proof (translation)
-Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `f (⟨i, φ, a, rfl⟩ | ⟨i, v, a, rfl⟩)`. Conclude with `dual_mem_polyOnCell b i φ a`. Conclude with `repr_mem_polyOnCell b i v a`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem regFns_le_polyOnCell (b : Frames k V) : regFns k V ≤ polyOnCell b := by
   refine Algebra.adjoin_le ?_
@@ -100,9 +98,9 @@ theorem regFns_le_polyOnCell (b : Frames k V) : regFns k V ≤ polyOnCell b := b
   · exact repr_mem_polyOnCell b i v a
 
 /- English proof (translation)
-Use `continuous_generateFrom_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨P, hP⟩` from `regFns_le_polyOnCell b hf`. Establish `: cellFrame b ⁻¹' {b' | f b' ≠ 0} = {u | MvPolynomial.eval u P ≠ 0}`. Use `Set.ext fun u => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show f (cellFrame b u) ≠ 0 ↔ _`. Rewrite using `[hP]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `isOpen_affPts_ne_zero P`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_cellFrame (b : Frames k V) : Continuous (cellFrame b) := by
   refine continuous_generateFrom_iff.2 ?_
@@ -121,7 +119,7 @@ end GlobalTheory.FlagPts.CellCont
 namespace GlobalTheory.FlagPts
 
 /- English proof (translation)
-Introduce `k _ ι _ V _ _ _ b`. Conclude with `continuous_coinduced_rng.comp (CellCont.continuous_cellFrame b)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem continuous_cellMap : ∀ (k : Type) [Field k] (ι : Type) [Fintype ι] (V : ι → Type) [∀ i, AddCommGroup (V i)]
     [∀ i, Module k (V i)] [∀ i, FiniteDimensional k (V i)] (b : Frames k V), Continuous (cellMap b) := by

@@ -16,7 +16,7 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 namespace GlobalTheory.TorRef.RefineCones
 
 /- English proof (translation)
-Rewrite `h` using `[Ideal.span_singleton_eq_span_singleton]`. Conclude with `le_antisymm ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.dvd) ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.symm.dvd)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_of_span_eq {W : Type} [CommRing W] [IsDomain W] {ϖ : W} (hϖ : Irreducible ϖ) {n n' : ℕ}
     (h : Ideal.span {ϖ ^ n} = Ideal.span {ϖ ^ n'}) : n = n' := by
@@ -25,7 +25,7 @@ theorem pow_eq_of_span_eq {W : Type} [CommRing W] [IsDomain W] {ϖ : W} (hϖ : I
     ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.symm.dvd)
 
 /- English proof (translation)
-Simplify using `using GlobalTheory.PolFan.ConeSub.sum_smul_toReal_mem_psdCone (𝓞 E) H.bar X 1 ![β] ![1] (by simp [hβ]) (by simp [hp]) (by simp)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toReal_mem_psdCone' {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {X : Type} [AddCommGroup X]
     [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ balForms H.bar X)
@@ -34,11 +34,11 @@ theorem toReal_mem_psdCone' {E : Type} [Field E] [NumberField E] [IsCMField E] (
     (by simp)
 
 /- English proof (translation)
-Establish `h1 : φ.evalZ be = ∑ i, c i * φ.evalZ (γ i)`. Rewrite using `[← evalR_toReal, hbe]`. Conclude with `(linearOn_iff φ γ).1 hγ.linear c hc`. Establish `h2 : (ℓ be : ℝ) = ∑ i, c i * (ℓ (γ i) : ℝ)`. Use `sum_mul_eq_zero_of_sum_toReal (j := LinearMap.id) Function.injective_id ℓ (β := Fin.cons be γ) (c := Fin.cons (-1) c) (by` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_succ]`. Simplify using `[hbe])`. Rewrite `this` using `[Fin.sum_univ_succ]`. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, h1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hℓ]; ring`.
+A detailed English derivation is pending.
 -/
 theorem ell_eq_of_cone {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {φ : InvFun (𝓞 E)}
     {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] {m : ℕ}
@@ -59,37 +59,35 @@ theorem ell_eq_of_cone {E : Type} [Field E] [NumberField E] [IsCMField E] {H : H
   exact Finset.sum_congr rfl fun i _ => by rw [hℓ]; ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Z g φs 𝒩 φ EX N hg hfan hRef hZ hN hdiv z`. Take `⟨R, i1, i2, i3, ξ, t, hm, P, m, γ, hCN, hz, het, hfu, hti, hcn, hin⟩` from `hZ z`. Establish `hrk` using `GlobalTheory.T.formally_unramified_etale_completion E H D l Xo c Z R ξ t hm P hCN het hfu hti`. Use `haveI : Module.Projective (𝓞 E) P.D.toPre.X := GlobalTheory.Forms.projective_of_int (𝓞 E) P.D.toPre.X`. Establish `hpf : IsPolFanOn H.bar φ P.D.toPre.X` using `hRef.1 P.D.toPre.X hrk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `good` using `GlobalTheory.T.local_eq_monomial_boundary_form E H D l Xo c Z g φs 𝒩 φ EX N R ξ t hm P m γ hg hfan hRef hN hdiv hCN het hfu hti hcn hin`. Establish `bal` using `GlobalTheory.T.local_order_boundary_form_eq E H D l Xo c Z g φs 𝒩 φ EX N R ξ t hm P m γ hg hfan hRef hN hdiv hCN het hfu hti hcn hin`. Establish `elt` using `GlobalTheory.T.local_boundary_ideal_generated E H D l Xo c Z g φs 𝒩 φ EX N R ξ t hm P m γ hg hfan hRef hN hdiv hCN het hfu hti hcn hin`. Establish `hsemi : ∀ {W : Type} [CommRing W] {ϖ : W} {f : R →+* W} {be : LinearMap.BilinForm ℤ P.D.toPre.X}, FormAt P.D.toPre f ϖ be → ∀ y, 0 ≤ be y y`. Introduce `W _ ϖ f be hF y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, n, -, h, -⟩` from `hF y`. Rewrite using `[h]`. Check the signs of the components of the expression. Establish `hcov : ∀ be : LinearMap.BilinForm ℤ P.D.toPre.X, be ∈ balForms H.bar P.D.toPre.X → (∀ y, 0 ≤ be y y) → ∃ (m' : ℕ) (γ' : Fin m' → LinearMap.BilinForm ℤ P.D.toPre.X) (c' : Fin m' → ℝ), IsCone H.bar φ γ' ∧ (∀ i, 0 ≤ c' i) ∧ toReal be = ∑ i, c' i • toReal (γ' i)` using `fun be hb hp => hpf.cover _ (toReal_mem_psdCone' H hb hp)`. Take `⟨W₀, _, _, _, hW₀, ϖ₀, hϖ₀, f₀, hloc, be₀, hs₀, hF₀, n₀, hn₀, hI₀⟩` from `good`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb₀` using `bal W₀ hW₀ ϖ₀ hϖ₀ f₀ be₀ hs₀ hF₀`. Take `⟨m₀, γ₀, c₀, hγ₀, hc₀, hsum₀⟩` from `hcov be₀ hb₀ (hsemi hF₀)`. Take `⟨N₀, ℓ₀, hN₀, h1, h2, h3⟩` from `hγ₀.strict`. Take `⟨M, u, hM, hu⟩` from `elt N₀ ℓ₀ hN₀ h2`. Establish `hℓ₀` using `ell_eq_of_cone hγ₀ hc₀ hsum₀ h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit : IsUnit u`. Take `⟨n, k, hI, heq, hass⟩` from `hu W₀ hW₀ ϖ₀ hϖ₀ f₀ be₀ hs₀ hF₀`. Take `rfl : n = n₀` from `pow_eq_of_span_eq hϖ₀ (hI.symm.trans hI₀)`. Establish `hk : k = 0`. Establish `e` using `congrArg (Int.cast : ℤ → ℝ) heq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at e`. Rewrite `e` using `[hℓ₀, hn₀]`. Establish `: (k : ℝ) = 0` using `by linear_combination -e`. Conclude with `this` after adjusting the coercions. Substitute `hk` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hass` using `[pow_zero, associated_one_iff_isUnit]`. Conclude with `isUnit_of_map_unit f₀ u hass`. Use `⟨R, i1, i2, i3, ξ, t, hm, P, m₀, γ₀, hCN, hz, het, hfu, hti, hγ₀, ?_⟩` and prove the remaining obligations. Introduce `W _ _ _ hW ϖ hϖ f be hs hF`. Take `⟨n, k, hI, heq, hass⟩` from `hu W hW ϖ hϖ f be hs hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hk : k = 0`. Establish `h0 : IsUnit (ϖ ^ k)` using `hass.isUnit_iff.1 (hunit.map f)`. Assume the negation of the conclusion as `hk`. Conclude with `hϖ.not_isUnit ((isUnit_pow_iff hk).1 h0)`. Substitute `hk` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hb` using `bal W hW ϖ hϖ f be hs hF`. Establish `hp` using `hsemi hF`. Take `⟨m', γ', c', hγ', hc', hsum'⟩` from `hcov be hb hp`. Take `⟨N', ℓ', hN', h1', h2', -⟩` from `hγ'.strict`. Take `⟨M', u', hM', hu'⟩` from `elt N' ℓ' hN' h2'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n', k', hI', heq', -⟩` from `hu' W hW ϖ hϖ f be hs hF`. Take `rfl : n' = n` from `pow_eq_of_span_eq hϖ (hI'.symm.trans hI)`. Establish `hℓ'` using `ell_eq_of_cone hγ' hc' hsum' h1'`. Establish `e1 : (N : ℝ) * ℓ₀ be = N₀ * n'`. Establish `e` using `congrArg (Int.cast : ℤ → ℝ) heq`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at e`. Establish `hM0 : (M : ℝ) ≠ 0` using `by positivity`. Conclude with `mul_left_cancel₀ hM0 (by linear_combination e)`. Establish `e2 : (N' : ℝ) * n' ≤ N * ℓ' be`. Establish `e` using `congrArg (Int.cast : ℤ → ℝ) heq'`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at e`. Establish `hk' : (0 : ℝ) ≤ k'` using `by positivity`. Establish `: (M' : ℝ) * (N' * n') ≤ M' * (N * ℓ' be)` using `by linarith`. Conclude with `le_of_mul_le_mul_left this (by positivity)`. Establish `e4 : (n' : ℝ) ≤ N * φ.evalZ be`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `e2` using `[hℓ']`. Establish `hN'0 : (0 : ℝ) < N'` using `by exact_mod_cast hN'`. Establish `: (N' : ℝ) * n' ≤ N' * (N * φ.evalZ be)` using `by linarith [show (N : ℝ) * (N' * φ.evalZ be) = N' * (N * φ.evalZ be) by ring]`. Conclude with `le_of_mul_le_mul_left this hN'0`. Establish `e5 : (N : ℝ) * ℓ₀ be ≤ N * (N₀ * φ.evalZ be)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Establish `e6 : (ℓ₀ be : ℝ) ≤ N₀ * φ.evalZ be` using `le_of_mul_le_mul_left e5 (by exact_mod_cast hN)`. Establish `heqφ : (N₀ : ℝ) * φ.evalZ be = ℓ₀ be` using `le_antisymm (h2 be hb hp) e6`. Take `⟨kk, cc, hkk, hcc⟩` from `h3 be hb hp heqφ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨fun i => (cc i : ℝ) / kk, fun i => by positivity, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Establish `e` using `LinearMap.congr_fun₂ hcc a b`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, nsmul_eq_mul] at e`. Establish `e' : (kk : ℝ) * (be a b : ℝ) = ∑ i, (cc i : ℝ) * (γ₀ i a b : ℝ)` using `by exact_mod_cast e`. Establish `hkk0 : (kk : ℝ) ≠ 0` using `by positivity`.
-
-Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[show ∑ i, (cc i : ℝ) / kk * (γ₀ i a b : ℝ) = (∑ i, (cc i : ℝ) * (γ₀ i a b : ℝ)) / kk by`. Rewrite using `[Finset.sum_div]; exact Finset.sum_congr rfl fun i _ => by ring, ← e']`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem hasCones_coneO : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Z : GMod Xo c) (g : ℕ) (φs : InvFun ℤ) (𝒩 : Finset ℕ) (φ : InvFun (𝓞 E)) (EX : EffCartierData Z.X) (N : ℕ), Module.finrank ℚ E * min D.p D.q ≤ g → IsPolFan id g φs → Refines H (min D.p D.q) φs 𝒩 φ → HasCones (ConeZ E φs) Z → 0 < N → IsPhiDiv (comb 0 φ N φ) Z EX → HasCones (ConeO H φ) Z := by
   intro E _ _ _ H D l Xo c Z g φs 𝒩 φ EX N hg hfan hRef hZ hN hdiv z

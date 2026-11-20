@@ -16,9 +16,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {Λ : �
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {hQ : QE sel (mu : Chr X.F X.E X.K) = ∅} {m2 : ℕ} {Am : Amb X} {u : Pr.Word}
 
 /- English proof (translation)
-Use `xiEquiv_of_refK fun i => ?_` and prove the remaining obligations. Break down `lt_trichotomy i m2 with h | h | h` into its components or cases. Conclude with `refKEquiv_of_mat h hM`. Substitute `h` using the available equality. Conclude with `referenceKernelEquiv_of_lastComponent hX hPr hF hY h1`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `Nat.lt_or_ge (m2 + 1) i with h' | h'` into its components or cases. Conclude with `refKEquiv_above h'`. Establish `e : i = m2 + 1` using `by omega`. Substitute `e` using the available equality. Conclude with `hTop`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem xiEquiv_one (hX : X.Ok) (hPr : Pr.Ok) (hF : FixE (R := R) Λ m2)
     (hM : MatEquiv W Ch sel mu cst (oneIdx Λ (QE sel (mu : Chr X.F X.E X.K)) m2) (chTh W Ch sel mu cst Am u m2))
@@ -48,7 +48,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : �
   (cst : LocCst X (rowSG Pr sel (mu0 X.F X.E X.K S))) (Am : Amb X) (u : Pr.Word) (m2 : ℕ)
 
 /- English proof (translation)
-The claim follows from `xiEquiv_one hX hPr hF (matrix_equivariance_trivial_tuple W Ch sel S cst _ Am u m2 hm hPr hTh hL hXi) (coupling_index_set_finite sel _ cst _ u m2 _) (penultimate_equivariance_trivial_tuple W Ch sel S cst _ Am u m2 hm hPr hTh hL _ _ hPsi) hTop`.
+A detailed English derivation is pending.
 -/
 theorem kernelEquiv_trivialTuple (hX : X.Ok) (hPr : Pr.Ok) (hm : m2 + 1 < R.m) (hTh : ThHyp W Ch sel (mu0 X.F X.E X.K S) cst Am u m2) {G : ChGlob X R.m}
     (hL : (oneIdx Λ (QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K)) m2).Ok Ch sel (mu0 X.F X.E X.K S) cst G m2)

@@ -18,9 +18,9 @@ section
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `hf' : Ideal.absNorm w.asIdeal = Ideal.absNorm v.asIdeal ^ f` using `hf`. Establish `hy : Valued.v (y : v.adicCompletion K) ≠ 0` using `(Valuation.ne_zero_iff _).2 y.ne_zero`. Establish `hx : Valued.v (x : w.adicCompletion L) ≠ 0` using `(Valuation.ne_zero_iff _).2 x.ne_zero`. Rewrite `h` using `[FinitePlace.norm_def, FinitePlace.norm_def]`. Rewrite `h` using `[WithZeroMulInt.toNNReal_neg_apply _ hy, WithZeroMulInt.toNNReal_neg_apply _ hx, NNReal.coe_inj, hf', Nat.cast_pow, ← zpow_natCast, ← zpow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `HeightOneSpectrum.one_lt_absNorm_nnreal v`. Establish `h2` using `zpow_right_injective₀ (zero_lt_one.trans h1) h1.ne' h`. Rewrite using `[← WithZero.coe_unzero hy, ← WithZero.coe_unzero hx, ← WithZero.coe_pow]`. Use `congrArg _ (Multiplicative.toAdd.injective ?_)` and prove the remaining obligations. Rewrite using `[h2, toAdd_pow, nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem val_of_norm
     (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L)) (y : (v.adicCompletion K)ˣ) (x : (w.adicCompletion L)ˣ)
@@ -41,9 +41,9 @@ private theorem val_of_norm
 variable [Algebra K L]
 
 /- English proof (translation)
-Establish `h` using `GroundTheory.Global.ideleNorm_finiteEmbedding (K := K) w x`. Establish `hm` using `GroundTheory.Automorphic.EllipticTorus.ideleModule_ideleNorm (K := K) (GroundTheory.Global.IdeleGroup.finiteEmbedding w x)`. Rewrite `hm` using `[h]`. Establish `hm'` using `congrArg Subtype.val hm`. Rewrite `hm'` using `[GroundTheory.Global.IdeleGroup.ideleModule_finiteEmbedding, GroundTheory.Global.IdeleGroup.ideleModule_finiteEmbedding]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, h, val_of_norm _ w _ x hm' _ (GlobalTheory.ArtinTransport.normV_eq_pow rfl)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem norm_loc (w : HeightOneSpectrum (𝓞 L)) (x : (w.adicCompletion L)ˣ) :
     ∃ y : ((below K w).adicCompletion K)ˣ, GroundTheory.Global.ideleNorm K L (localIdele L w x) = localIdele K (below K w) y ∧
@@ -58,7 +58,7 @@ private theorem norm_loc (w : HeightOneSpectrum (𝓞 L)) (x : (w.adicCompletion
 
 omit [Algebra K L] in
 /- English proof (translation)
-Establish `hk : diagUnits K k ∈ art.ker`. Rewrite using `[ha.ker]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left ⟨k, rfl⟩)`. Conclude with `hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem art_diag {Ω : Type} [Field Ω] [Algebra K Ω] {art : Ideles K →* Gab K Ω} (ha : IsGlobalArtin art) (k : Kˣ) :
     art (diagUnits K k) = 1 := by
@@ -68,19 +68,19 @@ private theorem art_diag {Ω : Type} [Field Ω] [Algebra K Ω] {art : Ideles K �
   exact hk
 
 /- English proof (translation)
-Establish `hφ : ∀ x, RingEquiv.refl Ω (algebraMap K Ω x) = algebraMap L Ω (algebraMap K L x)` using `fun x => IsScalarTower.algebraMap_apply K L Ω x`. Take `⟨ρ, hρc, hρ⟩` from `GlobalTheory.HeckeGal.exists_abHom_of_ringEquiv K Ω L Ω (RingEquiv.refl Ω) (algebraMap K L) hφ`. Rewrite using `[← hρ τ σ hσ, ← hx, eq_comm, ← mul_inv_eq_one]`. Use `GlobalTheory.GabSep.eq_one_of_forall_isOpen_subgroup K Ω _ fun U hU => ?_` and prove the remaining obligations. Set `χ : Gab K Ω →* Gab K Ω ⧸ U` to `QuotientGroup.mk' U`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `haveI : DiscreteTopology (Gab K Ω ⧸ U) := QuotientGroup.discreteTopology hU`. Establish `hχ : Continuous χ` using `QuotientGroup.continuous_mk`. Set `Nm : Ideles L →* Ideles K` to `GroundTheory.Global.ideleNorm K L`. Establish `hN : Continuous Nm` using `GroundTheory.Global.continuous_ideleNorm`. Set `ψ : Ideles L →* Gab K Ω ⧸ U` to `χ.comp (ρ.comp art') * (χ.comp (art.comp Nm))⁻¹`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : ∀ y, ψ y = χ (ρ (art' y)) * (χ (art (Nm y)))⁻¹` using `fun _ => rfl`. Establish `ho : IsOpen ((χ.comp art).ker : Set (Ideles K))` using `(isOpen_discrete {1}).preimage (hχ.comp ha.quot.continuous)`. Take `⟨S, -, -, hS, -⟩` from `GlobalTheory.OpenIdeleCongr.open_subgroup_contains_congr K _ ho ∅`. Establish `hT : {w : HeightOneSpectrum (𝓞 L) | ¬ below K w ∉ S}.Finite` using `Filter.eventually_cofinite.1 ((tendsto_below (K := K) (L := L)).eventually S.eventually_cofinite_notMem)`. Establish `h1 : ψ = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.FrobDense.eq_one_of_away ψ ((hχ.comp (hρc.comp ha'.quot.continuous)).mul (hχ.comp (ha.quot.continuous.comp hN)).inv) (fun k => ?_) hT.toFinset fun w hw => ?_` and prove the remaining obligations. Establish `e : Nm (diagUnits L k) = diagUnits K _` using `GroundTheory.Global.ideleNorm_diagonal (K := K) k`. Rewrite using `[hψ, e, art_diag ha, art_diag ha']`. Simplify using the standard rewrite rules. Establish `hv : below K w ∉ S` using `by simpa using hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ x, IsUnitAt (below K w) x → χ (art (localIdele K (below K w) x)) = 1` using `hS _ hv`. Use `GlobalTheory.FrobDense.eq_one_of_unif (ψ.comp (localIdele L w)) fun y hy => ?_` and prove the remaining obligations. Establish `h2` using `unif_spec (below K w)`. Establish `h3` using `(GlobalTheory.ArtinTransport.chi_artin_transport K Ω L Ω _ hφ art art' ha ha' ρ hρ _ χ (below K w) w rfl hu).2 y _ hy h2`. Take `⟨z, hz, hv⟩` from `norm_loc (K := K) w y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4` using `hu (z * ((atFin _ (unif (below K w))) ^ w.asIdeal.inertiaDeg (𝓞 K))⁻¹) (by`. Unfold `IsUnitAt IsUnifAt at *`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, map_mul, map_inv₀, map_pow, hv, hy, h2]`. Conclude with `mul_inv_cancel₀ (pow_ne_zero _ WithZero.exp_ne_zero))`. Simplify using `only [map_mul, map_inv, map_pow, mul_inv_eq_one] at h4`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.comp_apply, hψ, h3, show Nm (localIdele L w y) = _ from hz, h4, mul_inv_cancel]`. Establish `h5` using `DFunLike.congr_fun h1 x`. Rewrite `h5` using `[hψ, ← map_inv, ← map_mul]`. Conclude with `(QuotientGroup.eq_one_iff _).1 h5`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem glob_norm {Ω : Type} [Field Ω] [Algebra K Ω] [Algebra L Ω] [IsScalarTower K L Ω] [IsAlgClosure K Ω]
     [IsAlgClosure L Ω] {art : Ideles K →* Gab K Ω} {art' : Ideles L →* Gab L Ω} (ha : IsGlobalArtin art)
@@ -130,11 +130,11 @@ private theorem glob_norm {Ω : Type} [Field Ω] [Algebra K Ω] [Algebra L Ω] [
 
 open Classical in
 /- English proof (translation)
-Use `letI := τ.1.toAlgebra`. Use `haveI : ContinuousSMul ((below K w).adicCompletion K) (Qbar l) := continuousSMul_of_algebraMap _ _ τ.2`. Use `haveI : ContinuousSMul ((below K w).adicCompletion K) (w.adicCompletion L) := continuousSMul_of_algebraMap _ _ (continuous_completionMap _ _)`. Use `haveI : FiniteDimensional ((below K w).adicCompletion K) (w.adicCompletion L) := inferInstance`. Use `haveI : CharZero ((below K w).adicCompletion K) := algebraRat.charZero _`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Algebra.norm_eq_prod_embeddings ((below K w).adicCompletion K) (Qbar l) y`. Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[← finprod_eq_prod_of_fintype, ← finprod_subtype_eq_finprod_cond (f := fun τ' : Emb l w => τ'.1 y) (fun τ' => res τ' = τ)]`. Establish `hc : ∀ σ : w.adicCompletion L →ₐ[(below K w).adicCompletion K] Qbar l, Continuous σ` using `fun σ => by`. Use `letI : NontriviallyNormedField ((below K w).adicCompletion K) := Valued.toNontriviallyNormedField _ _`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `LinearMap.continuous_of_finiteDimensional σ.toLinearMap` as an intermediate fact. Conclude with `this`. Set `e : (w.adicCompletion L →ₐ[(below K w).adicCompletion K] Qbar l) ≃ {τ' : Emb l w // res τ' = τ}` to `{ toFun := fun σ => ⟨⟨σ, hc σ⟩, Subtype.ext (RingHom.ext fun x => (hres _ x).trans (σ.commutes x))⟩ invFun := fun τ' => ⟨τ'.1.1, fun x => (hres _ x).symm.trans (by rw [τ'.2]; rfl)⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Rewrite using `[← finprod_comp_equiv e]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem emb_norm {l : ℕ} [Fact l.Prime] (w : HeightOneSpectrum (𝓞 L)) (res : Emb l w → Emb l (below K w))
     (hres : ∀ τ' x, (res τ').1 x = τ'.1 (algebraMap _ _ x)) (τ : Emb l (below K w)) (y : w.adicCompletion L) :
@@ -164,9 +164,9 @@ private theorem emb_norm {l : ℕ} [Fact l.Prime] (w : HeightOneSpectrum (𝓞 L
 end
 
 /- English proof (translation)
-Introduce `hG F F' Ω _ _ _ _ _ _ _ _ _ _ _ l _ A w w' h h' _`. Take `rfl : below F w' = w` from `HeightOneSpectrum.ext (GlobalTheory.WeilRestrict.comap_eq_of_isPlaceOver h h')`. Use `⟨fun τ' => ⟨τ'.1.comp (algebraMap _ _), τ'.2.comp (continuous_completionMap _ _)⟩, GroundTheory.LocalField.normUnits _ _, fun τ' x => ?_, fun τ y => emb_norm w' _ (fun _ _ => rfl) τ y, fun a a' ha ha' σ σ' hσ => ?_⟩` and prove the remaining obligations. Use `show τ'.1 (algebraMap _ _ (algebraMap F ((below F w').adicCompletion F) x)) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply F F' (w'.adicCompletion F')]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨art, hart⟩` from `hG F Ω`. Take `⟨art', hart'⟩` from `hG F' Ω`. Use `GlobalTheory.ArtinLocalInj.artin_localIdele_injective GlobalTheory.Published.chevalleyUnits' F Ω art hart _ ?_` and prove the remaining obligations. Use `(ha.glob art hart σ).trans ((glob_norm hart hart' _ _ _ hσ (ha'.glob art' hart' σ')).symm.trans ?_)` and prove the remaining obligations. Conclude with `congrArg art (GroundTheory.Global.ideleNorm_finiteEmbedding (K := F) w' (a' σ'))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.CharWD.artNorm :
     GlobalArtinReciprocity → ArtNorm := by

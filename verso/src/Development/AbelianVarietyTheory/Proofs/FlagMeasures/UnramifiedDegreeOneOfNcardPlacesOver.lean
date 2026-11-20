@@ -7,9 +7,9 @@ namespace GlobalTheory
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Rewrite using `[Ideal.liesOver_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hmem : (p : ℤ) ∈ Ideal.under ℤ P` using `h ▸ Ideal.subset_span rfl`. Simplify `hmem` using `[Ideal.under, Ideal.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Use `hmax.eq_of_le (inferInstance : (Ideal.under ℤ P).IsPrime).ne_top ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Simplify `h` using `[Ideal.under, Ideal.mem_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem _root_.GlobalTheory.splitPrime_liesOver_span_iff {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Prime)
     (P : Ideal (𝓞 E)) [hP : P.IsPrime] :
@@ -29,31 +29,25 @@ theorem _root_.GlobalTheory.splitPrime_liesOver_span_iff {E : Type} [Field E] [N
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Use `set q : Ideal ℤ := Ideal.span {(p : ℤ)} with hq`. Use `haveI hqmax : q.IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Establish `hqbot : q ≠ ⊥`. Rewrite using `[hq, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hmemv : ((p : ℕ) : 𝓞 E) ∈ v.asIdeal`. Unfold `_root_.Formalism.BasicNotions.placesOver at hv`. Conclude with `hv`. Use `haveI : v.asIdeal.LiesOver q := (_root_.GlobalTheory.splitPrime_liesOver_span_iff hp v.asIdeal).2 hmemv`. Establish `hcard : (IsDedekindDomain.primesOverFinset q (𝓞 E)).card = Module.finrank ℚ E`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← h, ← Set.ncard_coe_finset, IsDedekindDomain.coe_primesOverFinset hqbot]`. Establish `himage : (fun w : HeightOneSpectrum (𝓞 E) => w.asIdeal) '' _root_.Formalism.BasicNotions.placesOver E p = q.primesOver (𝓞 E)`. Use extensionality with `P`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hw' : ((p : ℕ) : 𝓞 E) ∈ w.asIdeal`. Unfold `_root_.Formalism.BasicNotions.placesOver at hw`. Conclude with `hw`. Conclude with `⟨w.isPrime, (_root_.GlobalTheory.splitPrime_liesOver_span_iff hp w.asIdeal).2 hw'⟩`. Introduce and unpack `⟨hPp, hPl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hPmem : ((p : ℕ) : 𝓞 E) ∈ P` using `(_root_.GlobalTheory.splitPrime_liesOver_span_iff hp P).1 hPl`. Establish `hPbot : P ≠ ⊥`. Introduce `hb`. Rewrite `hPmem` using `[hb, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hPmem)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨P, hPp, hPbot⟩, ?_, rfl⟩` and prove the remaining obligations. Unfold `_root_.Formalism.BasicNotions.placesOver`. Conclude with `hPmem`. Rewrite using `[← himage, Set.ncard_image_of_injective _ (fun a b hab => HeightOneSpectrum.ext hab)]`. Establish `hsum` using `Ideal.sum_ramification_inertia (𝓞 E) ℚ E (p := q) hqbot`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsum` using `[← hcard, Finset.card_eq_sum_ones]`. Establish `hpos : ∀ P ∈ IsDedekindDomain.primesOverFinset q (𝓞 E), 1 ≤ q.ramificationIdx' P * q.inertiaDeg' P`. Introduce `P hP`. Rewrite `hP` using `[IsDedekindDomain.mem_primesOverFinset_iff hqbot]`. Take `⟨hPp, hPl⟩` from `hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hPp`. Use `haveI := hPl`. Establish `he : q.ramificationIdx' P ≠ 0` using `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver P hqbot`. Establish `hf : 0 < q.inertiaDeg' P` using `Ideal.inertiaDeg'_pos' q P`. Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero he hf.ne')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Establish `hall` using `(Finset.sum_eq_sum_iff_of_le hpos).1 hsum.symm`. Establish `hvmem : v.asIdeal ∈ IsDedekindDomain.primesOverFinset q (𝓞 E)`. Rewrite using `[IsDedekindDomain.mem_primesOverFinset_iff hqbot]`. Conclude with `⟨v.isPrime, inferInstance⟩`. Take `⟨he, hf⟩` from `mul_eq_one.1 (hall _ hvmem).symm`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hsq`. Establish `hle : Ideal.map (algebraMap ℤ (𝓞 E)) q ≤ v.asIdeal ^ 2`. Rewrite using `[hq, Ideal.map_span, Ideal.span_le, Set.image_singleton, Set.singleton_subset_iff]`.
-
-Simplify using `using hsq`. Unfold `Ideal.ramificationIdx' at he`. Distinguish the cases in `hb : BddAbove {n | Ideal.map (algebraMap ℤ (𝓞 E)) q ≤ v.asIdeal ^ n}`. Establish `h2` using `le_csSup hb (show 2 ∈ {n | Ideal.map (algebraMap ℤ (𝓞 E)) q ≤ v.asIdeal ^ n} from hle)`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite `he` using `[Nat.sSup_of_not_bddAbove hb]`. Conclude with `zero_ne_one he`. Rewrite using `[← Ideal.ramificationIdx'_eq_ramificationIdx q v.asIdeal hqbot]`. Conclude with `he`. Rewrite using `[← Ideal.inertiaDeg'_eq_inertiaDeg q v.asIdeal]`.
-
-Conclude with `hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.unramified_degree_one_of_ncard_placesOver (E : Type) [Field E] [NumberField E] (p : ℕ)
     (hp : p.Prime) (h : (_root_.Formalism.BasicNotions.placesOver E p).ncard = Module.finrank ℚ E)

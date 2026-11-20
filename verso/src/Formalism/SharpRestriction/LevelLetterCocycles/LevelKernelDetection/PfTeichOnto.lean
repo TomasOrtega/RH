@@ -8,7 +8,7 @@ namespace Formalism.MainNotions.N.Ln03.Pf
 open Formalism.MainNotions.N.Ln03 Polynomial
 
 /- English proof (translation)
-Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← PadicInt.mem_nonunits, mem_nonunits_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem teichOnto_toZMod_eq_zero_iff {p : ℕ} [Fact p.Prime] (x : ℤ_[p]) :
     PadicInt.toZMod x = 0 ↔ ‖x‖ < 1 := by
@@ -16,26 +16,24 @@ theorem teichOnto_toZMod_eq_zero_iff {p : ℕ} [Fact p.Prime] (x : ℤ_[p]) :
     ← PadicInt.mem_nonunits, mem_nonunits_iff]
 
 /- English proof (translation)
-The claim follows from `le_antisymm (PadicInt.norm_le_one x) (not_lt.mp fun h' => h ((teichOnto_toZMod_eq_zero_iff x).mpr h'))`.
+A detailed English derivation is pending.
 -/
 theorem teichOnto_norm_eq_one {p : ℕ} [Fact p.Prime] (x : ℤ_[p]) (h : PadicInt.toZMod x ≠ 0) :
     ‖x‖ = 1 :=
   le_antisymm (PadicInt.norm_le_one x) (not_lt.mp fun h' => h ((teichOnto_toZMod_eq_zero_iff x).mpr h'))
 
 /- English proof (translation)
-Introduce `a ha`. Establish `hp : p.Prime` using `Fact.out`. Use `set a₀ : ℤ_[p] := ((a.val : ℕ) : ℤ_[p]) with ha₀`. Establish `hres : PadicInt.toZMod a₀ = a` using `by rw [ha₀, map_natCast, ZMod.natCast_zmod_val]`. Use `set F : Polynomial ℤ_[p] := X ^ (p - 1) - 1 with hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFa : F.aeval a₀ = a₀ ^ (p - 1) - 1` using `by simp [hF]`. Establish `hF'a : F.derivative.aeval a₀ = ((p - 1 : ℕ) : ℤ_[p]) * a₀ ^ (p - 1 - 1)`. Simplify using `[hF, Polynomial.derivative_X_pow]`. Establish `h1 : ‖F.aeval a₀‖ < 1`. Rewrite using `[← teichOnto_toZMod_eq_zero_iff, hFa, map_sub, map_pow, hres, map_one, ZMod.pow_card_sub_one_eq_one ha, sub_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : ‖F.derivative.aeval a₀‖ = 1`. Apply `teichOnto_norm_eq_one` to reduce the goal to its premises. Rewrite using `[hF'a, map_mul, map_pow, hres, map_natCast]`. Use `mul_ne_zero ?_ (pow_ne_zero _ ha)` and prove the remaining obligations. Rewrite using `[Nat.cast_sub hp.one_le, ZMod.natCast_self, Nat.cast_one, zero_sub, neg_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero`. Take `⟨z, hz, hza, -, -⟩` from `hensels_lemma (F := F) (a := a₀) (by rw [h2, one_pow]; exact h1)`. Rewrite `hza` using `[h2]`. Establish `hzp : z ^ (p - 1) = 1`. Establish `: F.aeval z = z ^ (p - 1) - 1` using `by simp [hF]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz` using `[this, sub_eq_zero]`. Conclude with `hz`. Establish `hzz : z * z ^ (p - 2) = 1`. Establish `h2p` using `hp.two_le`. Rewrite using `[← pow_succ', show p - 2 + 1 = p - 1 by omega, hzp]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `u : ℤ_[p]ˣ` to `⟨z, z ^ (p - 2), hzz, by rw [mul_comm]; exact hzz⟩`. Use `⟨⟨u, Units.ext (by rw [Units.val_pow_eq_pow_val, Units.val_one]; exact hzp)⟩, ?_⟩` and prove the remaining obligations. Use `show PadicInt.toZMod z = a`. Establish `h3 : PadicInt.toZMod (z - a₀) = 0` using `(teichOnto_toZMod_eq_zero_iff _).mpr hza`. Rewrite `h3` using `[map_sub, sub_eq_zero, hres]`.
-
-Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem teichOnto_holds (p : ℕ) [Fact p.Prime] : TeichOnto p := by
   intro a ha

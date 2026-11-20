@@ -31,7 +31,7 @@ def optionToSum (K : Type) : Option K ≃ K ⊕ Unit where
   right_inv := by rintro (k | ⟨⟩) <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `rintro (_ | k) <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem optionToSum_idx {K : Type} (ι : K → Type) (κ : Type) :
     ∀ o, (fun o : Option K => Option.elim o κ ι) o =

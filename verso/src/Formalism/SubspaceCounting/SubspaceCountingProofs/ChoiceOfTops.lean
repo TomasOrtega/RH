@@ -7,9 +7,7 @@ namespace Formalism.G0
 namespace ChoiceOfTopsP
 
 /- English proof (translation)
-Unfold `GoodOrbit at h`. Distinguish the cases in `hN : N₁ ≤ T.card`. The claim follows by propositional logic. Use `right`. Use `right`.
-
-Use `right`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. The claim follows by propositional logic. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma not_good {n : ℕ} {T : Finset ℕ} {L₂ K r N₁ G : ℕ} (h : ¬ GoodOrbit n T L₂ K r N₁ G) :
     ¬ CondA n T L₂ K ∨ (¬ CondB n T L₂ r N₁ ∧ N₁ ≤ T.card) ∨ ¬ CondC n T G ∨ T.card < N₁ := by
@@ -19,7 +17,7 @@ lemma not_good {n : ℕ} {T : Finset ℕ} {L₂ K r N₁ G : ℕ} (h : ¬ GoodOr
   · right; right; right; omega
 
 /- English proof (translation)
-Distinguish the cases in `hp : p`. Apply the tactic sequence `rcases h hp with h' | h' | h' | h' <;> split_ifs <;> linarith`. Apply the tactic sequence `split_ifs <;> linarith`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma term_le (p a b c d : Prop) {_ : Decidable p} {_ : Decidable a} {_ : Decidable b}
     {_ : Decidable c} {_ : Decidable d} (w : ℝ) (hw : 0 ≤ w) (h : p → a ∨ b ∨ c ∨ d) :
@@ -31,11 +29,11 @@ lemma term_le (p a b c d : Prop) {_ : Decidable p} {_ : Decidable a} {_ : Decida
   · split_ifs <;> linarith
 
 /- English proof (translation)
-Unfold `probNotGood condProb`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `T _`. Establish `hw : 0 ≤ δ ^ (T.card - 1) * (1 - δ) ^ (n - T.card)` using `mul_nonneg (pow_nonneg h0 _) (pow_nonneg (sub_nonneg.mpr h1) _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `term_le _ _ _ _ _ _ hw ?_` and prove the remaining obligations. Introduce and unpack `⟨h0T, hg⟩`. Break down `not_good hg with h | h | h | h` into its components or cases. Conclude with `Or.inl ⟨h0T, h⟩`. Conclude with `Or.inr (Or.inl ⟨h0T, h⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr (Or.inr (Or.inl ⟨h0T, h⟩))`. Conclude with `Or.inr (Or.inr (Or.inr ⟨h0T, h⟩))`.
+Prove the second alternative. Prove the second alternative.
 -/
 lemma probNotGood_le (n : ℕ) (δ : ℝ) (L₂ K r N₁ G : ℕ) (h0 : 0 ≤ δ) (h1 : δ ≤ 1) :
     probNotGood n δ L₂ K r N₁ G ≤
@@ -61,9 +59,9 @@ lemma probNotGood_le (n : ℕ) (δ : ℝ) (L₂ K r N₁ G : ℕ) (h0 : 0 ≤ δ
 end ChoiceOfTopsP
 
 /- English proof (translation)
-Introduce `n δ L₂ K r N₁ G hn2 hev hδ hL hLδ hr hN`. Establish `hL' : (1 : ℝ) ≤ L₂` using `by exact_mod_cast hL`. Establish `hδ1 : δ ≤ 1` using `by nlinarith`. Establish `h` using `ChoiceOfTopsP.probNotGood_le n δ L₂ K r N₁ G hδ hδ1`. Establish `h1` using `ha n δ L₂ K hn2 hδ hL hLδ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hb n δ L₂ r N₁ hn2 hev hδ hL hLδ hr hN`. Establish `h3` using `hc n δ G hn2 hδ hδ1`. Establish `h4` using `hn n δ N₁ hn2 hδ hδ1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem choiceOfTops_of (ha : TopsChoicePartA) (hb : TopsChoiceSecondBound) (hc : TopsChoiceThirdBound) (hn : SmallCardCondProbBound) : ChoiceOfTops := by
   intro n δ L₂ K r N₁ G hn2 hev hδ hL hLδ hr hN

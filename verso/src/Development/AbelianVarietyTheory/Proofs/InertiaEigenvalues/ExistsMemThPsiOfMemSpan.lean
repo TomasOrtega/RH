@@ -27,13 +27,13 @@ def specXi (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (
   ∑ a, ρ.eOk i b k (χ (Multiplicative.ofAdd (spread Y i Q M (ρ.ch i) a)) : X.Ok i k) • ρ.xi i j b Y Q M h P a
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem s hs`. Take `⟨z, hz⟩` from `hR k Q ψ hψ hQ _ _ _ (T.dat d) hs`. Use `⟨z, Submodule.subset_span ?_, hz⟩` and prove the remaining obligations. Conclude with `Set.mem_biUnion (Set.mem_singleton d) ((T.thPsi_iff k Q ψ hψ d z).2 (hz ▸ hs))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, zero_mem _, map_zero _⟩`. Consider the case `add f g _ _ hf hg`. Take `⟨z, hz, rfl⟩` from `hf`. Take `⟨z', hz', rfl⟩` from `hg`. Conclude with `⟨z + z', add_mem hz hz', map_add _ _ _⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul c f _ hf`. Take `⟨z, hz, rfl⟩` from `hf`. Take `⟨c', hc'⟩` from `c.2`. Use `⟨c' • z, Submodule.smul_mem _ _ hz, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ρ.eOk i b k c' • rdK rd hρ k z = (c : ℂ) • rdK rd hρ k z`. Rewrite using `[hc']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_thPsi_of_mem_span {ρ : Setup X} {hρ : ρ.Good} {Y : NExp D.R D.host D.what₂ D.LL0 N X} {i : X.Tw}
     {j : Fin D.R.m} {b : Bool} {rd : Rd ρ Y i j b} (T : CellTie hρ Y rd) (hR : RatTwist hρ rd) {k : ℕ}
@@ -97,7 +97,7 @@ variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[grpSum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Formalism.MainNotions.IntegralHeckeForms.specU, LinearMap.coe_comp, Function.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.comm_tmul, AlgHom.toLinearMap_apply, AddMonoidAlgebra.lift_single, one_smul, MonoidHom.coe_comp, Units.coeHom_apply]`. Rewrite using `[rdK_tmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rdK_specU_grpSum {ρ : Setup X} (hρ : ρ.Good) {Y : NExp D.R D.host D.what₂ D.LL0 N X} {i : X.Tw}
     {j : Fin D.R.m} {b : Bool} (rd : Rd ρ Y i j b) (k : ℕ) (Q : Finset (Pl D.host.E)) (M : ℕ)

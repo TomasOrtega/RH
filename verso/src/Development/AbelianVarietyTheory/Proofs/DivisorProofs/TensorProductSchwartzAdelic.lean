@@ -11,7 +11,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.BoxSchwartz
 
 /- English proof (translation)
-Introduce `F _ _ κ κ' _ _ Φ₁ Φ₂ h₁ h₂`. Conclude with `GlobalTheory.SchwartzBox.boxFun_mem_schA F κ κ' Φ₁ h₁ Φ₂ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem boxFun_mem_schA_adelic :
     ∀ (F : Type) [Field F] [NumberField F] (κ κ' : Type) [Fintype κ] [Fintype κ'] (Φ₁ : (κ → AF F) → ℂ) (Φ₂ : (κ' → AF F) → ℂ),

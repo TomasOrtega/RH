@@ -8,7 +8,7 @@ open NumberField MeasureTheory Matrix Formalism.HermitianLatticeCounting.S6 Glob
 open scoped Pointwise ENNReal Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CovolIdx.measure_eq_invVol_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FFundamentalSetMeasureCommensurableIndexRatio.lean&line=64#L64)
 -/

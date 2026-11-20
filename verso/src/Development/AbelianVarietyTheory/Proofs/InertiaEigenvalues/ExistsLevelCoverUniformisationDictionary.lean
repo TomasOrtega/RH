@@ -14,13 +14,13 @@ namespace GlobalTheory.CoverUnif
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D T hT j hj σ hσ c' hle d σ₂ hlev hA hinc`. Take `⟨hr, -⟩` from `hT.modelW j hj σ hσ`. Take `⟨hio, hx₀⟩` from `GlobalTheory.TupleCover.iotaOK_and_frame T hT j hj σ hσ _ rfl hr`. Establish `hpq` using `(exists_iotaOK D T.Q hT.pins j hj).2`. Establish `hpos : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg₂ : GoodEmb d.c₂ σ₂`. Establish `h1` using `hσ`. Rewrite `h1` using `[← hinc]`. Conclude with `h1`. Take `⟨C, hC, hCι, hCx⟩` from `(exists_ctx D T.Q.H (T.Q.Dw j) d.l₂ d.Xo₂ d.c₂ σ₂ (T.V j σ) D.R.r hr _ hio hpos hA hg₂).2.2 (T.x₀ j σ) hx₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Kf, hKf⟩` from `(PrincLevel.exists_levelK_and_nhds D (T.V j σ) d.l₂.M).1`. Take `⟨un, dict, mu, hdict, -, hP⟩` from `exists_pkgLaws D _ _ _ _ _ _ _ _ C hC Kf hKf 1 ⟨continuous_const, fun _ => rfl⟩ (fun _ => rfl)`. Take `⟨g, e, F, ik, φ, th, hth, -, hdl⟩` from `hP.dictLaws`. Establish `hdom` using `(dict_invariant D _ _ _ _ _ _ _ _ C hC dict hdict Kf hKf).2.2.1`. Use `⟨C.unf un, dict, fun cc₂ => ⟨hlev, hA, hinc, hP.unf, hdom, hr, g, e, F, ik, φ, th, hP.modelW, hth, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hCι, ← hCx]`. Conclude with `hdl`.
+A detailed English derivation is pending.
 -/
 theorem exists_unf_dict : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ,
     GoodEmb T.Q.c σ → ∀ (c' : Coeff T.Q.l) (hle : T.Q.c.F ≤ c'.F) (d : DeltaDat (T.Q.Xo j) c' 0) (σ₂ : d.c₂.F →+* ℂ),

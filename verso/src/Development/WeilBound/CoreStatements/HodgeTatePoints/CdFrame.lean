@@ -18,15 +18,15 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1 Formalism.MainNotions.ModuliI
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Use `top_unique fun y _ => ?_` and prove the remaining obligations. Set `s : PrimeSpectrum S` to `PrimeSpectrum.comap (algebraMap S (Jet S Idx m)) y`. Establish `h1 : (s : Sp S) ∈ e ⁻¹ᵁ U` using `by rw [hU]; trivial`. Establish `h2 : PrimeSpectrum.comap ((jetAug : Jet S Idx m →ₐ[S] S) : Jet S Idx m →+* S) s = y`. Use `PrimeSpectrum.ext (Ideal.ext fun a => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk : a - algebraMap S _ ((jetAug : Jet S Idx m →ₐ[S] S) a) ∈ RingHom.ker (jetAug : Jet S Idx m →ₐ[S] S)`. Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes]`. Simplify using the standard rewrite rules. Establish `hn : (a - algebraMap S _ ((jetAug : Jet S Idx m →ₐ[S] S) a)) ^ (m + 1) = 0`. Use `Ideal.pow_mem_pow hk (m + 1)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : RingHom.ker (jetAug : Jet S Idx m →ₐ[S] S) ^ (m + 1) = ⊥` using `Chart.ker_jetAug_pow (R := S) Idx m`. Rewrite `this` using `[e0]`. Then use the resulting hypothesis. Establish `hm : a - algebraMap S _ ((jetAug : Jet S Idx m →ₐ[S] S) a) ∈ PrimeSpectrum.asIdeal y` using `y.isPrime.mem_of_pow_mem (m + 1) (by rw [hn]; exact Ideal.zero_mem _)`. Express the relevant statement in the definitionally equal form `algebraMap S _ ((jetAug : Jet S Idx m →ₐ[S] S) a) ∈ PrimeSpectrum.asIdeal y ↔ a ∈ PrimeSpectrum.asIdeal y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Simplify using `using Ideal.add_mem _ hm h`. Introduce `h`. Simplify using `using Ideal.sub_mem _ h hm`. Rewrite `h1` using `[← he]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show ψ.base y ∈ U`. Rewrite using `[← h2]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_topA {S Idx : Type} [CommRing S] (m : ℕ) {X : Scheme.{0}} (U : X.Opens) (ψ : Sp (Jet S Idx m) ⟶ X)
     (e : Sp S ⟶ X) (he : spMap ((jetAug : Jet S Idx m →ₐ[S] S) : Jet S Idx m →+* S) ≫ ψ = e) (hU : e ⁻¹ᵁ U = ⊤) :
@@ -64,7 +64,7 @@ variable {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S} {act : 𝓞 E → Fin 
 
 variable {t x0 d x} in
 /- English proof (translation)
-Rewrite using `[jptG, ← Category.assoc, homAt_comp, aug_copy, hch.zero m]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jpt_augA (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (i : Fin n) :
     homAt x0 (jetAug : Jet S (Fin n × Fin d) m →ₐ[S] S) ≫ jptG t x0 d x m i = 1 := by
@@ -72,7 +72,7 @@ theorem jpt_augA (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (i 
 
 variable {t x0 d x} in
 /- English proof (translation)
-Establish `hc : (jetTrunc : Jet S (Fin n × Fin d) (m + 1) →ₐ[S] _).comp (jetCopy d (m + 1) i) = (jetCopy d m i).comp (jetTrunc : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[S] _)`. Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Both sides reduce to the same expression. Rewrite using `[jptG, jptG, ← Category.assoc, homAt_comp, hc, ← homAt_comp, Category.assoc, hch.trunc m]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem jpt_truncA (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (i : Fin n) :
     homAt x0 (jetTrunc : Jet S (Fin n × Fin d) (m + 1) →ₐ[S] _) ≫ jptG t x0 d x (m + 1) i = jptG t x0 d x m i := by
@@ -84,7 +84,7 @@ theorem jpt_truncA (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (
   rw [jptG, jptG, ← Category.assoc, homAt_comp, hc, ← homAt_comp, Category.assoc, hch.trunc m]
 
 /- English proof (translation)
-The claim follows from `(psum_hom (preHom (homAt x0 (jetAug : Jet S (Fin n × Fin d) m →ₐ[S] S))) xs I).trans ((congrArg (fun f => psum t.G f I) (funext hxs)).trans (psum_one t.G I))`.
+A detailed English derivation is pending.
 -/
 theorem psum_augA {m n : ℕ} (xs : Fin n → (jOG x0 d m n ⟶ t.G))
     (hxs : ∀ i, homAt x0 (jetAug : Jet S (Fin n × Fin d) m →ₐ[S] S) ≫ xs i = 1) (I : Finset (Fin n)) :
@@ -93,7 +93,7 @@ theorem psum_augA {m n : ℕ} (xs : Fin n → (jOG x0 d m n ⟶ t.G))
     ((congrArg (fun f => psum t.G f I) (funext hxs)).trans (psum_one t.G I))
 
 /- English proof (translation)
-Use `top_unique fun y _ => Set.mem_iInter.2 fun I => ?_` and prove the remaining obligations. Establish `h` using `pre_topA m (t.PP.L.U i0) (cφG t xs I) (e0 t x0) (congrArg Over.Hom.left (psum_augA t x0 d xs hxs I.down)) hi0`. Establish `: y ∈ (cφG t xs I) ⁻¹ᵁ t.PP.L.U i0` using `by rw [h]; trivial`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wchart_topA (i0 : t.PP.L.ι) (hi0 : (e0 t x0) ⁻¹ᵁ t.PP.L.U i0 = ⊤) {m n : ℕ}
     (xs : Fin n → (jOG x0 d m n ⟶ t.G))
@@ -114,7 +114,7 @@ def frA (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (e0 t x0
 
 variable {t x0 d x} in
 /- English proof (translation)
-Introduce `m` and use `corr_of_val t.PP.isLB fun y J hJ => by have hmor : ∀ I : ULift (Finset (Fin 2)), (𝟙 _ ≫ (homAt x0 (jetTrunc : Jet S (Fin 2 × Fin d) (m + 1) →ₐ[S] _)).left) ≫ cφG t ![jptG t x0 d x (m + 1) (0 : Fin 2), jptG t x0 d x (m + 1) (1 : Fin 2)] I = 𝟙 _ ≫ cφG t ![jptG t x0 d x m (0 : Fin 2 …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fr_truncA (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (e0 t x0) ⁻¹ᵁ t.PP.L.U i0 = ⊤) :
     FrTrunc t x0 d x (frA hch i0 hi0) := fun m => corr_of_val t.PP.isLB fun y J hJ => by
@@ -134,17 +134,15 @@ theorem fr_truncA (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 
 
 variable {t x0 d x} in
 /- English proof (translation)
-Establish `hL` using `t.PP.isLB`. Establish `key : ∀ (m : ℕ) (σ : Jet S (Fin 2 × Fin d) m →ₐ[S] Jet S (Fin 1 × Fin d) m) (a b : jOG x0 d m 1 ⟶ t.G), homAt x0 σ ≫ jptG t x0 d x m (0 : Fin 2) = a → homAt x0 σ ≫ jptG t x0 d x m (1 : Fin 2) = b → (a = 1 ∨ b = 1) → LB.Gen.Corr t.PP.L _ _ _ _ (LB.pullGen t.PP.L (cφG t ![jptG t x0 …`. Introduce `m σ a b ha hb hab`. Use `corr_of_val hL fun y J hJ => ?_` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans ((val_cgen _ _ _ _ _ _ y J hJ).trans (Eq.trans ?_ (val_one _).symm))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hI : ∀ I : ULift (Finset (Fin 2)), (𝟙 _ ≫ (homAt x0 σ).left) ≫ cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)] I = (psum t.G ![a, b] I.down).left`. Introduce `I`. Rewrite using `[Category.id_comp]`. Simplify using `only [cφG, ← Over.comp_left]`. Use `congrArg Over.Hom.left ((psum_hom (preHom _) _ I.down).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun f => psum t.G f I.down) (funext fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `ha`. Conclude with `hb`. Rewrite using `[Finset.prod_congr rfl fun I _ => congrArg (fun ψ => cv t.PP.L i0 y J ψ ^ cε 2 I) (hI I)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hc` using `prod_cube2 t.G (fun p : jOG x0 d m 1 ⟶ t.G => cv t.PP.L i0 y J p.left) ![a, b]`. Rewrite using `[hc]`. Apply the tactic sequence `rcases hab with rfl | rfl <;> simp`. Introduce `m`. Use `⟨key m (axis0 d m) 1 (x m) ?_ ?_ (Or.inl rfl), key m (axis1 d m) (x m) 1 ?_ ?_ (Or.inr rfl)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[jptG, ← Category.assoc, homAt_comp, first_axis_at_first_copy, ← homAt_comp, Category.assoc, hch.zero m]`. Conclude with `map_one (preHom (homAt x0 (Algebra.ofId S (Jet S (Fin 1 × Fin d) m))))`. Rewrite using `[jptG, ← Category.assoc, homAt_comp, first_axis_at_second_copy, homAt_id, Category.id_comp]`. Rewrite using `[jptG, ← Category.assoc, homAt_comp, second_axis_at_first_copy, homAt_id, Category.id_comp]`. Rewrite using `[jptG, ← Category.assoc, homAt_comp, second_axis_at_second_copy, ← homAt_comp, Category.assoc, hch.zero m]`.
-
-Conclude with `map_one (preHom (homAt x0 (Algebra.ofId S (Jet S (Fin 1 × Fin d) m))))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fr_axesA (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (e0 t x0) ⁻¹ᵁ t.PP.L.U i0 = ⊤) :
     FrAxes t x0 d x (frA hch i0 hi0) := by
@@ -189,14 +187,14 @@ variable {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S} {act : 𝓞 E → Fin 
   {κ : Type} [Fintype κ] {tg : κ → (Sp (DualNumber S) ⟶ t.G.left)} {uvec : κ → Fin d → S}
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, Category.id_comp, P3, P3, comp_lift, comp_lift, jpt_truncA hch, jpt_truncA hch, jpt_truncA hch]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem triple_point_truncation_alt (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) (i j k : Fin 3) :
     (ρn x0 d 3 m).left ≫ (P3 (x := x) (m + 1) i j k).left = 𝟙 _ ≫ (P3 (x := x) m i j k).left := by
   rw [← Over.comp_left, Category.id_comp, P3, P3, comp_lift, comp_lift, jpt_truncA hch, jpt_truncA hch, jpt_truncA hch]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, Category.id_comp, comp_lift, jpt_truncA hch, jpt_truncA hch]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_point_truncation_alt (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) :
     (ρn x0 d 2 m).left ≫ (lift (jptG t x0 d x (m + 1) (0 : Fin 2)) (jptG t x0 d x (m + 1) (1 : Fin 2))).left =
@@ -213,11 +211,9 @@ variable {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S} {act : 𝓞 E → Fin 
   {κ : Type} [Fintype κ] {tg : κ → (Sp (DualNumber S) ⟶ t.G.left)} {uvec : κ → Fin d → S}
 
 /- English proof (translation)
-Use `(val_cgen _ _ _ _ _ _ z J hJ).trans ?_` and prove the remaining obligations. Establish `hI : ∀ I : ULift.{0} (Finset (Fin 2)), ρ.left ≫ cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)] I = (psum t.G ![a, b] I.down).left`. Introduce `I`. Simplify using `only [cφG, ← Over.comp_left]`. Use `congrArg Over.Hom.left ((psum_hom (preHom _) _ I.down).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun f => psum t.G f I.down) (funext fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `ha`. Conclude with `hb`. Rewrite using `[Finset.prod_congr rfl fun I _ => congrArg (fun ψ => cv t.PP.L i0 z J ψ ^ cε 2 I) (hI I)]`.
-
-Break down `hab with rfl | rfl` into its components or cases. Conclude with `cube_one_left t (fun p : T ⟶ t.G => cv t.PP.L i0 z J p.left) b`. Conclude with `cube_one_right t (fun p : T ⟶ t.G => cv t.PP.L i0 z J p.left) a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem val_fr_oneA (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (e0 t x0) ⁻¹ᵁ t.PP.L.U i0 = ⊤)
     (m : ℕ) {T : Over X0} (ρ : T ⟶ jOG x0 d m 2) (a b : T ⟶ t.G)
@@ -241,13 +237,13 @@ theorem val_fr_oneA (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Establish `hL` using `t.PP.isLB`. Establish `heg : ∀ m, (frA hch i0 hi0 m).IsGen` using `fun m => cgen_isGen t.PP.L hL _ _ _ _`. Establish `htr` using `fr_truncA hch i0 hi0`. Establish `hpe : ∀ m {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S), (peG t x0 d x (frA hch i0 hi0) m φ).IsGen` using `fun m n φ => ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ (heg m) _`. Establish `hXX : ∀ (m : ℕ) {n : ℕ} (k : Fin n) (j : Fin d), (MvPolynomial.X (k, j) : MvPolynomial (Fin n × Fin d) S) - MvPolynomial.X (k, j) ∈ orig S (Fin n × Fin d) ^ (m + 1)` using `fun m n k j => by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB3 : ∀ (φ1 φ2 φ3 : ℕ → Fin 2 → Fin d → MvPolynomial (Fin 3 × Fin d) S), (∀ m i j, φ1 (m + 1) i j - φ1 m i j ∈ orig S (Fin 3 × Fin d) ^ (m + 1)) → (∀ m i j, φ2 (m + 1) i j - φ2 m i j ∈ orig S (Fin 3 × Fin d) ^ (m + 1)) → (∀ m i j, φ3 (m + 1) i j - φ3 m i j ∈ orig S (Fin 3 × Fin d …`. Introduce `φ1 φ2 φ3 h1 h2 h3 m y J hJ`. Rewrite using `[val_mul hJ, val_mul hJ, val_inv, val_inv, val_mul hJ, val_mul hJ, val_inv, val_inv, pe_trunc t x0 d htr φ1 h1 m y J hJ, pe_trunc t x0 d htr φ2 h2 m y J hJ, pe_trunc t x0 d htr φ3 h3 m y J hJ]`. Take `⟨ph1, hph1⟩` from `exists_series t x0 d (n := 3) _ _ _ _ (fun m => LB.pullGen t.PP.L (thφ t.G (x3 t.G)) thε t.cub.t (P3 (x := x) m 0 1 2).left) (fun m => ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ t.cub.isGen _) (fun m => LB.mulGen t.PP.L _ _ _ _ (peG t x0 d x (frA hch i0 hi0) m …`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, th_pt, pe_pt, pt_sub, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, pt_X, pt_law hch, zpow_neg, Finset.prod_inv_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `erw [prod_cube3 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left)]`. Rewrite using `[prod_cube2 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left), prod_cube2 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left), prod_cube2 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left)]`. Establish `ha : jptG t x0 d x m (0 : Fin 3) * jptG t x0 d x m (1 : Fin 3) * jptG t x0 d x m (2 : Fin 3) = jptG t x0 d x m (0 : Fin 3) * (jptG t x0 d x m (1 : Fin 3) * jptG t x0 d x m (2 : Fin 3))` using `_root_.mul_assoc _ _ _`. Apply `ofMul_eq` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `erw [ha]`. Use the proof step `abel!)`. Use the proof step `(fun m y J hJ => (val_pull hJ _ _ _).trans ((congrArg (fun r => val t.cub.t r y J) (triple_point_truncation_alt hch m 0 1 2)).trans (val_pull hJ _ _ _).symm))`. Apply the tactic sequence `(fun m y J hJ => hB3 (fun m => ![fun j => psIn d m ![0, 1] (F j), fun j => MvPolynomial.X ((2 : Fin 3), j)]) (fun m => ![fun j => MvPolynomial.X ((0 : Fin 3), j), fun j => MvPolynomial.X ((2 : Fin 3), j)]) (fun m => ![fun j => MvPolynomial.X ((1 : Fin 3), j), fun j => MvPolynomia …`. Conclude with `⟨_, hph1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ex_ph1A (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (e0 t x0) ⁻¹ᵁ t.PP.L.U i0 = ⊤) :
     ∃ ph : MvPowerSeries (Fin 3 × Fin d) S, ∀ m, ∃ u : (Jet S (Fin 3 × Fin d) m)ˣ,
@@ -316,13 +312,13 @@ theorem ex_ph1A (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : 
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Establish `hL` using `t.PP.isLB`. Establish `heg : ∀ m, (frA hch i0 hi0 m).IsGen` using `fun m => cgen_isGen t.PP.L hL _ _ _ _`. Establish `htr` using `fr_truncA hch i0 hi0`. Establish `hpe : ∀ m {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S), (peG t x0 d x (frA hch i0 hi0) m φ).IsGen` using `fun m n φ => ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ (heg m) _`. Establish `hXX : ∀ (m : ℕ) {n : ℕ} (k : Fin n) (j : Fin d), (MvPolynomial.X (k, j) : MvPolynomial (Fin n × Fin d) S) - MvPolynomial.X (k, j) ∈ orig S (Fin n × Fin d) ^ (m + 1)` using `fun m n k j => by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB3 : ∀ (φ1 φ2 φ3 : ℕ → Fin 2 → Fin d → MvPolynomial (Fin 3 × Fin d) S), (∀ m i j, φ1 (m + 1) i j - φ1 m i j ∈ orig S (Fin 3 × Fin d) ^ (m + 1)) → (∀ m i j, φ2 (m + 1) i j - φ2 m i j ∈ orig S (Fin 3 × Fin d) ^ (m + 1)) → (∀ m i j, φ3 (m + 1) i j - φ3 m i j ∈ orig S (Fin 3 × Fin d …`. Introduce `φ1 φ2 φ3 h1 h2 h3 m y J hJ`. Rewrite using `[val_mul hJ, val_mul hJ, val_inv, val_inv, val_mul hJ, val_mul hJ, val_inv, val_inv, pe_trunc t x0 d htr φ1 h1 m y J hJ, pe_trunc t x0 d htr φ2 h2 m y J hJ, pe_trunc t x0 d htr φ3 h3 m y J hJ]`. Take `⟨ph2, hph2⟩` from `exists_series t x0 d (n := 3) _ _ _ _ (fun m => LB.pullGen t.PP.L (thφ t.G (x3 t.G)) thε t.cub.t (P3 (x := x) m 1 2 0).left) (fun m => ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ t.cub.isGen _) (fun m => LB.mulGen t.PP.L _ _ _ _ (peG t x0 d x (frA hch i0 hi0) m …`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, th_pt, pe_pt, pt_sub, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, pt_X, pt_law hch, zpow_neg, Finset.prod_inv_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `erw [prod_cube3 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left)]`. Rewrite using `[prod_cube2_swap (fun p : jOG x0 d m 3 ⟶ t.G => h p.left), prod_cube2_swap (fun p : jOG x0 d m 3 ⟶ t.G => h p.left), prod_cube2_swap (fun p : jOG x0 d m 3 ⟶ t.G => h p.left)]`. Establish `ha2 : jptG t x0 d x m (1 : Fin 3) * jptG t x0 d x m (2 : Fin 3) * jptG t x0 d x m (0 : Fin 3) = jptG t x0 d x m (1 : Fin 3) * (jptG t x0 d x m (2 : Fin 3) * jptG t x0 d x m (0 : Fin 3))` using `_root_.mul_assoc _ _ _`. Apply `ofMul_eq` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `erw [ha2]`. Use the proof step `abel!)`. Use the proof step `(fun m y J hJ => (val_pull hJ _ _ _).trans ((congrArg (fun r => val t.cub.t r y J) (triple_point_truncation_alt hch m 1 2 0)).trans (val_pull hJ _ _ _).symm))`. Apply the tactic sequence `(fun m y J hJ => hB3 (fun m => ![fun j => MvPolynomial.X ((0 : Fin 3), j), fun j => psIn d m ![1, 2] (F j)]) (fun m => ![fun j => MvPolynomial.X ((0 : Fin 3), j), fun j => MvPolynomial.X ((1 : Fin 3), j)]) (fun m => ![fun j => MvPolynomial.X ((0 : Fin 3), j), fun j => MvPolynomia …`. Conclude with `⟨_, hph2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ex_ph2A (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (e0 t x0) ⁻¹ᵁ t.PP.L.U i0 = ⊤) :
     ∃ ph : MvPowerSeries (Fin 3 × Fin d) S, ∀ m, ∃ u : (Jet S (Fin 3 × Fin d) m)ˣ,
@@ -391,15 +387,15 @@ theorem ex_ph2A (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : 
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Establish `hL` using `t.PP.isLB`. Establish `heg : ∀ m, (frA hch i0 hi0 m).IsGen` using `fun m => cgen_isGen t.PP.L hL _ _ _ _`. Establish `htr` using `fr_truncA hch i0 hi0`. Establish `hpe : ∀ m {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S), (peG t x0 d x (frA hch i0 hi0) m φ).IsGen` using `fun m n φ => ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ (heg m) _`. Establish `hXX : ∀ (m : ℕ) {n : ℕ} (k : Fin n) (j : Fin d), (MvPolynomial.X (k, j) : MvPolynomial (Fin n × Fin d) S) - MvPolynomial.X (k, j) ∈ orig S (Fin n × Fin d) ^ (m + 1)` using `fun m n k j => by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `obtain ⟨sy, hsy⟩ := exists_series t x0 d (n := 2) _ _ _ _ (fun m => peG t x0 d x (frA hch i0 hi0) m ![fun j => MvPolynomial.X ((1 : Fin 2), j), fun j => MvPolynomial.X ((0 : Fin 2), j)]) (fun m => hpe m _) (fun m => frA hch i0 hi0 m) heg (fun m U _ h => by try simp only [pe_pt, p …`. Rewrite using `[prod_cube2_swap (fun p : jOG x0 d m 2 ⟶ t.G => h p.left)]`. Use `erw [prod_cube2 t.G (fun p : jOG x0 d m 2 ⟶ t.G => h p.left)]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`. Apply `ofMul_eq` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ofMul_mul, ofMul_inv, _root_.mul_one]`. Use the proof step `abel!)`. Apply the tactic sequence `(fun m y J hJ => pe_trunc t x0 d htr (fun _ => ![fun j => MvPolynomial.X ((1 : Fin 2), j), fun j => MvPolynomial.X ((0 : Fin 2), j)]) (fun m i j => by fin_cases i <;> exact hXX m _ j) m y J hJ)`. Use the proof step `(fun m y J hJ => (congrArg (fun r => val (frA hch i0 hi0 (m + 1)) r y J) (Category.id_comp _).symm).trans ((val_pull hJ _ _ _).symm.trans (val_corr hJ (htr m) _)))`. Establish `uinv : ∀ {m : ℕ} (u : (Jet S (Fin 2 × Fin d) m)ˣ), unitΓ u⁻¹ = (unitΓ u)⁻¹` using `fun u => map_inv _ u`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hsy' : ∀ m, ∃ u : (Jet S (Fin 2 × Fin d) m)ˣ, (u : Jet S (Fin 2 × Fin d) m) = psJet m sy ∧ LB.Gen.Corr t.PP.L _ _ _ _ (frA hch i0 hi0 m) (scaleGenG t _ _ (unitΓ u⁻¹) (peG t x0 d x (frA hch i0 hi0) m ![fun j => MvPolynomial.X ((1 : Fin 2), j), fun j => MvPolynomial.X ((0 : Fin 2), …`. Introduce `m`. Take `⟨u, hu, hc⟩` from `hsy m`. Use `⟨u, hu, corr_of_val hL fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `e1` using `(val_corr hJ hc (𝟙 _)).trans (val_scale t _ _ _ _ _ y J hJ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `Eq.trans ?_ (val_scale t _ _ _ _ _ y J hJ).symm` and prove the remaining obligations. Rewrite using `[e1, uinv, map_inv, inv_mul_cancel_left]`. Conclude with `⟨sy, hsy'⟩`.
+A detailed English derivation is pending.
 -/
 theorem ex_syA (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (e0 t x0) ⁻¹ᵁ t.PP.L.U i0 = ⊤) :
     ∃ sy : MvPowerSeries (Fin 2 × Fin d) S, ∀ m, ∃ u : (Jet S (Fin 2 × Fin d) m)ˣ,
@@ -446,23 +442,21 @@ theorem ex_syA (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Establish `hL` using `t.PP.isLB`. Establish `heg : ∀ m, (frA hch i0 hi0 m).IsGen` using `fun m => cgen_isGen t.PP.L hL _ _ _ _`. Establish `htr` using `fr_truncA hch i0 hi0`. Establish `hpe : ∀ m {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S), (peG t x0 d x (frA hch i0 hi0) m φ).IsGen` using `fun m n φ => ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ (heg m) _`. Establish `hXX : ∀ (m : ℕ) {n : ℕ} (k : Fin n) (j : Fin d), (MvPolynomial.X (k, j) : MvPolynomial (Fin n × Fin d) S) - MvPolynomial.X (k, j) ∈ orig S (Fin n × Fin d) ^ (m + 1)` using `fun m n k j => by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ad, had⟩` from `exists_series t x0 d (n := 2) _ _ _ _ (fun m => LB.mulGen t.PP.L _ _ _ _ (LB.pullGen t.PP.L _ _ wL (lift (jptG t x0 d x m (0 : Fin 2)) (jptG t x0 d x m (1 : Fin 2))).left) (peG t x0 d x (frA hch i0 hi0) m ![fun j => psIn d m ![0] (act a j), fun j => MvPolynomial.X ((1 : Fin 2), j …`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, wl_pt, wl_pt', pe_pt, pt_sub, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, pt_X, pt_act hch, zpow_neg, Finset.prod_inv_distrib]`. Simplify using `only [inv_mul_cancel_right])`. Use the proof step `(fun m y J hJ => (val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·) ((val_pull hJ _ _ _).trans ((congrArg (fun r => val wL r y J) (pair_point_truncation_alt hch m)).trans (val_pull hJ _ _ _).symm)) (pe_trunc t x0 d htr (fun m => ![fun j => psIn d m ![0] (act a j), fun j => MvP …`. Use the proof step `(fun m y J hJ => pe_trunc t x0 d htr (fun m => ![fun j => MvPolynomial.X ((0 : Fin 2), j), fun j => psIn d m ![1] (act (H.bar a) j)]) (fun m i j => by fin_cases i; exacts [hXX m _ j, psIn_succ_sub m _ _]) m y J hJ)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : x 0 = 1` using `frame_origin_jet_one hch`. Establish `hj0 : ∀ {n : ℕ} (i : Fin n), jptG t x0 d x 0 i = 1` using `fun i => by`. Rewrite using `[jptG, hx0]`. Conclude with `map_one (preHom _)`. Establish `hadc : MvPowerSeries.constantCoeff ad = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu, hc⟩` from `had 0`. Establish `hU : unitΓ u = 1`. Use `unit_ext (V := ⊤) fun y _ => ?_` and prove the remaining obligations. Use `choose I hI using fun χ : (jOG x0 d 0 2).left ⟶ t.G.left => exists_chart hL (χ y)`. Establish `e1` using `(val_corr hI hc (𝟙 _)).trans (val_scale t _ _ _ _ _ y I hI)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hl : (𝟙 _ ≫ (lift (jptG t x0 d x 0 (0 : Fin 2)) (jptG t x0 d x 0 (1 : Fin 2))).left) = ((𝟙 _ ≫ (toUnit (jOG x0 d 0 2)).left) ≫ (zz t).left)`. Rewrite using `[Category.id_comp, Category.id_comp, ← Over.comp_left, comp_lift, hj0, hj0]`. Both sides reduce to the same expression. Establish `hA1 : val (LB.pullGen t.PP.L _ _ wL (lift (jptG t x0 d x 0 (0 : Fin 2)) (jptG t x0 d x 0 (1 : Fin 2))).left) (𝟙 _) y I = 1`. Use `(val_pull hI _ _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hl]`. Conclude with `hwL0 _ _ y I hI`. Establish `hA2 : val (peG t x0 d x (frA hch i0 hi0) 0 ![fun j => psIn d 0 ![0] (act a j), fun j => MvPolynomial.X ((1 : Fin 2), j)]) (𝟙 _) y I = 1` using `(val_pull hI _ _ _).trans ((congrArg (fun r => val (frA hch i0 hi0 0) r y I) (Category.id_comp _)).trans (val_fr_oneA hch i0 hi0 0 (T := jOG x0 d 0 2) _ (1 ≫ t.act.act a) 1 (by rw [pt_sub]; simp only [Matrix.cons_val_zero]; rw [pt_act hch, hj0]) (by rw [pt_sub]; simp only [Matrix …`. Establish `hB : val (peG t x0 d x (frA hch i0 hi0) 0 ![fun j => MvPolynomial.X ((0 : Fin 2), j), fun j => psIn d 0 ![1] (act (H.bar a) j)]) (𝟙 _) y I = 1` using `(val_pull hI _ _ _).trans ((congrArg (fun r => val (frA hch i0 hi0 0) r y I) (Category.id_comp _)).trans (val_fr_oneA hch i0 hi0 0 (T := jOG x0 d 0 2) _ 1 (1 ≫ t.act.act (H.bar a)) (by rw [pt_sub]; simp only [Matrix.cons_val_zero]; rw [pt_X, hj0]) (by rw [pt_sub]; simp only [Matr …`. Rewrite `e1` using `[val_mul hI, hA1, hA2, hB, _root_.one_mul, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one]`. Conclude with `e1.symm`. Establish `hu1 : (u : Jet S (Fin 2 × Fin d) 0) = 1`. Apply `toΓ_injective` to reduce the goal to its premises. Rewrite using `[map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `congrArg Units.val hU`. Use `show MvPowerSeries.coeff 0 ad = 1`. Rewrite using `[← coeff_psTrunc 0 ad 0 le_rfl]`. Establish `h0` using `hu.symm.trans hu1`. Rewrite `h0` using `[psJet, ← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq]`.
-
-Establish `h1` using `coeff_eq_zero_of_mem h0 (e := 0) (by simp)`. Rewrite `h1` using `[MvPolynomial.coeff_sub, sub_eq_zero, MvPolynomial.coeff_one, if_pos rfl]`. Conclude with `h1`. Conclude with `⟨ad, hadc, had⟩`.
+A detailed English derivation is pending.
 -/
 theorem ex_adA (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (e0 t x0) ⁻¹ᵁ t.PP.L.U i0 = ⊤) (a : 𝓞 E)
     (wL : LB.Gen (LB.LinComb t.PP.L
@@ -565,11 +559,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `E _ _ _ H X0 t S _ x0 d G A tg uvec x i0 hch hc`. Establish `hi0 : (GermB.e0 t x0) ⁻¹ᵁ t.PP.L.U i0 = ⊤`. Establish `e : GermB.e0 t x0 = x0 ≫ eSec t.G` using `by show (spMap (algebraMap S S) ≫ x0) ≫ eSec t.G = _`. Simplify using `[spMap]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `top_unique fun y _ => hc ⟨y, rfl⟩`. Use `choose wL hwLg hwL0 using fun a => GermB.exists_wL t a`. Take `⟨ph1, hph1⟩` from `ex_ph1A hch i0 hi0`. Take `⟨ph2, hph2⟩` from `ex_ph2A hch i0 hi0`. Take `⟨sy, hsy⟩` from `ex_syA hch i0 hi0`.
-
-Use `choose ad hadc had using fun a => ex_adA hch i0 hi0 a (wL a) (hwLg a) (hwL0 a)`. Conclude with `⟨frA hch i0 hi0, ph1, ph2, sy, ad, ⟨fun m => GermB.cgen_isGen t.PP.L t.PP.isLB _ _ _ _, hph1, hph2, hsy, fun a => ⟨wL a, hwLg a, had a⟩⟩, fr_truncA hch i0 hi0, fr_axesA hch i0 hi0, hadc⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frame_affine : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (S : Type) [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ) (G : Germ.FGLaw S d) (A : Germ.OAct (𝓞 E) G) (tg : Fin d → (Sp (DualNumber S) ⟶ t.G.left)) (uvec : Fin d → Fin d → S) (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (c : t.PP.L.ι), IsChartG t x0 d G.F A.act tg uvec x → Set.range (x0 ≫ eSec t.G) ⊆ (t.PP.L.U c : Set t.G.left) → ∃ (e : ∀ m, FrTyG t x0 d x m) (ph1 ph2 : Germ.PS S 3 d) (sy : Germ.PS S 2 d) (ad : 𝓞 E → Germ.PS S 2 d), IsFrameG t x0 d x G.F A.act ph1 ph2 sy ad e ∧ FrTrunc t x0 d x e ∧ FrAxes t x0 d x e ∧ ∀ a, MvPowerSeries.constantCoeff (ad a) = 1 := by
   intro E _ _ _ H X0 t S _ x0 d G A tg uvec x i0 hch hc

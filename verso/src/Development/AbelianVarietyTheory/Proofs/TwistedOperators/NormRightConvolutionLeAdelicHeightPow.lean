@@ -19,11 +19,11 @@ namespace GlobalTheory.ConvGrowth
 open GlobalTheory.AutomorphicL2Unitary
 
 /- English proof (translation)
-Establish `hm : AEStronglyMeasurable (lift Γ F) μ` using `aestronglyMeasurable_quotMeasure_iff_lift.1 (Lp.aestronglyMeasurable F)`. Rewrite using `[← lintegral_indicator hS, lintegral_eq_lintegral_tsum (Γ := Γ) ((hm.enorm.pow_const _).indicator hS), ← lintegral_const_mul'' _ ((Lp.aestronglyMeasurable F).enorm.pow_const _)]`. Use `lintegral_mono fun q => ?_` and prove the remaining obligations. Establish `e : ∀ γ : Γ, S.indicator (fun z => ‖lift Γ F z‖ₑ ^ (2 : ℝ)) ((γ : G) * q.out) = {γ : Γ | (γ : G) * q.out ∈ S}.indicator (fun _ => ‖F q‖ₑ ^ (2 : ℝ)) γ`. Introduce `γ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hγ : (γ : G) * q.out ∈ S`. Rewrite using `[Set.indicator_of_mem hγ, Set.indicator_of_mem (show γ ∈ {γ : Γ | (γ : G) * q.out ∈ S} from hγ)]`. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.lift, mk_mul, Quotient.out_eq]`. Rewrite using `[Set.indicator_of_notMem hγ, Set.indicator_of_notMem (show γ ∉ {γ : Γ | (γ : G) * q.out ∈ S} from hγ)]`. Rewrite using `[tsum_congr e, ← tsum_subtype, ENNReal.tsum_set_const]`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Conclude with `hN _`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_sq_le {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [DiscreteTopology Γ] (μ : Measure G) [μ.IsMulLeftInvariant]
@@ -49,27 +49,25 @@ theorem lintegral_sq_le {G : Type*} [Group G] [TopologicalSpace G] [IsTopologica
   exact hN _
 
 /- English proof (translation)
-Introduce `D V μ _ _ Ω hΩ ⟨A, C, hC⟩`. Use `⟨A, (μ Ω ^ (1 / 2 : ℝ)).toReal * Real.sqrt (max C 0), ?_⟩` and prove the remaining obligations. Introduce `f' hf' hsupp M hM F g`. Use `set b : ℝ := Real.sqrt (max C 0) * GlobalTheory.Grow.height V g ^ A with hb`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : 0 ≤ GlobalTheory.Grow.height V g` using `zero_le_one.trans (GlobalTheory.Grow.one_le_height V g)`. Establish `hb0 : 0 ≤ b` using `by positivity`. Use `set S : Set (GA D V) := (g * ·) '' Ω with hSdef`. Establish `hSc : IsCompact S` using `hΩ.image (continuous_const_mul g)`. Establish `hS : MeasurableSet S` using `hSc.isClosed.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcount : ∀ x : GA D V, {γ : GQ V | (γ : GA D V) * x ∈ S}.encard ≤ ENNReal.ofReal b ^ 2`. Introduce `x`. Take `⟨hfin, hle⟩` from `hC g x`. Rewrite using `[← hfin.cast_ncard_eq, ← ENNReal.ofReal_pow hb0]`. Establish `e : b ^ 2 = max C 0 * GlobalTheory.Grow.height V g ^ (2 * A)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, mul_pow, Real.sq_sqrt (le_max_right _ _), ← pow_mul, mul_comm A 2]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Use `set φ : GA D V → ℂ := GlobalTheory.AutomorphicL2Unitary.lift (GQ V) F with hφ`. Establish `hm : AEStronglyMeasurable φ μ` using `aestronglyMeasurable_quotMeasure_iff_lift.1 (Lp.aestronglyMeasurable F)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hmp : MeasurePreserving (g * ·) (μ.restrict Ω) (μ.restrict S)`. Use `(measurePreserving_mul_left μ g).restrict_preimage_emb (measurableEmbedding_mulLeft g) S` as an intermediate fact. Rewrite `this` using `[hSdef, preimage_image_eq _ (mul_right_injective g)]`. Then use the resulting hypothesis. Establish `hm' : AEStronglyMeasurable (φ ∘ (g * ·)) (μ.restrict Ω)` using `hm.restrict.comp_measurePreserving hmp`. Establish `h1 : ‖GlobalTheory.AutomorphicL2Unitary.convR μ f' φ g‖ₑ ≤ ENNReal.ofReal M * eLpNorm (φ ∘ (g * ·)) 1 (μ.restrict Ω)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[eLpNorm_one_eq_lintegral_enorm, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← lintegral_indicator hΩ.measurableSet]`. Use `(enorm_integral_le_lintegral_enorm _).trans (lintegral_mono fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ Ω`. Rewrite using `[Set.indicator_of_mem hy, enorm_mul]`. Use `mul_le_mul_of_nonneg_right ?_ (zero_le)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (hM y)`. Rewrite using `[Set.indicator_of_notMem hy, image_eq_zero_of_notMem_tsupport fun h => hy (hsupp h)]`. Simplify using the standard rewrite rules. Establish `h2 : eLpNorm (φ ∘ (g * ·)) 1 (μ.restrict Ω) ≤ eLpNorm φ 2 (μ.restrict S) * μ Ω ^ (1 / 2 : ℝ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Use `(eLpNorm_le_eLpNorm_mul_rpow_measure_univ (p := 1) (q := 2) (by norm_num) hm').trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[eLpNorm_comp_measurePreserving hm.restrict hmp, Measure.restrict_apply_univ]`. Evaluate the numerical expressions. Establish `h3 : eLpNorm φ 2 (μ.restrict S) ≤ ENNReal.ofReal b * eLpNorm F 2 (quotMeasure (GQ V) μ)`. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm_toReal two_ne_zero ENNReal.ofNat_ne_top, eLpNorm_eq_lintegral_rpow_enorm_toReal two_ne_zero ENNReal.ofNat_ne_top]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [ENNReal.toReal_ofNat]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.mul_rpow_of_nonneg _ _ (by norm_num)]`. Use `congr 1`. Rewrite using `[show (1 / 2 : ℝ) = ((2 : ℕ) : ℝ)⁻¹ by norm_num, ENNReal.pow_rpow_inv_natCast two_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `h1.trans (mul_le_mul_of_nonneg_left (h2.trans (mul_le_mul_of_nonneg_right h3 zero_le)) zero_le)`. Establish `hμ : μ Ω ^ (1 / 2 : ℝ) ≠ ⊤` using `ENNReal.rpow_ne_top_of_nonneg (by norm_num) hΩ.measure_lt_top.ne`. Establish `hfin : ENNReal.ofReal M * (ENNReal.ofReal b * eLpNorm F 2 (quotMeasure (GQ V) μ) * μ Ω ^ (1 / 2 : ℝ)) ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (Lp.eLpNorm_ne_top F)) hμ)`. Use `ENNReal.toReal_mono hfin hE` as an intermediate fact. Rewrite `this` using `[toReal_enorm]`.
-
-Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal hM0, ENNReal.toReal_ofReal hb0, ← Lp.norm_def, hb]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_convR_le_height : ∀ {D : D7} {V : HSp D} (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {Ω : Set (GA D V)}, IsCompact Ω → (∃ (A : ℕ) (C : ℝ), ∀ g x : GA D V, {γ : GQ V | (γ : GA D V) * x ∈ (g * ·) '' Ω}.Finite ∧ ({γ : GQ V | (γ : GA D V) * x ∈ (g * ·) '' Ω}.ncard : ℝ) ≤ C * GlobalTheory.Grow.height V g ^ (2 * A)) → ∃ (A : ℕ) (C : ℝ), ∀ f' : GA D V → ℂ, Continuous f' → tsupport f' ⊆ Ω → ∀ M : ℝ, (∀ y, ‖f' y‖ ≤ M) → ∀ (F : GlobalTheory.AutomorphicL2Unitary.DividedPowerChartLift V μ) (g : GA D V), ‖GlobalTheory.AutomorphicL2Unitary.convR μ f' (GlobalTheory.AutomorphicL2Unitary.lift (GQ V) F) g‖ ≤ C * M * ‖F‖ * GlobalTheory.Grow.height V g ^ A := by
   intro D V μ _ _ Ω hΩ ⟨A, C, hC⟩

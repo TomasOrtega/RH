@@ -36,14 +36,14 @@ namespace GroundTheory.Heights₂.Heights.ForSecondHalf
 open GroundTheory.Heights₂.Heights.AnalyticLimit
 
 /- English proof (translation)
-The claim follows from `ListMono.proof ListMonoRaise.proof ListMonoDens.proof LocDensContOnOpen.proof MIntegrableOfDensLe.proof MIntMonoOfDensLe.proof`.
+A detailed English derivation is pending.
 -/
 theorem ListMono.full : ListMono.Statement :=
   ListMono.proof ListMonoRaise.proof ListMonoDens.proof LocDensContOnOpen.proof
     MIntegrableOfDensLe.proof MIntMonoOfDensLe.proof
 
 /- English proof (translation)
-The claim follows from `RegSection.proof RegYoDense.proof RegRCont.proof (BdMetric.proof ChartCont.proof (BdTransition.proof RegYoDense.proof BdEqHolo.proof (BdDivides.proof (CoordDivDivisible.proof HyperplaneDivisible.proof))) (BdCocycle.proof RegYoDense.proof BdEqHolo.proof) (LogNormHolo.proof ChartCo …`.
+A detailed English derivation is pending.
 -/
 theorem RegSection.full : RegSection.Statement :=
   RegSection.proof RegYoDense.proof RegRCont.proof
@@ -58,25 +58,25 @@ theorem RegSection.full : RegSection.Statement :=
     (BdComparison.proof ChartCont.proof BddOnInner.proof)
 
 /- English proof (translation)
-The claim follows from `TailShift.proof`.
+A detailed English derivation is pending.
 -/
 theorem TailShift.full : TailShift.Statement := TailShift.proof
 
 /- English proof (translation)
-The claim follows from `LemmaETailLog.proof h TailLogOfMass.proof`.
+A detailed English derivation is pending.
 -/
 theorem LemmaETailLog.of_lemmaETailMass (h : LemmaETailMass.Statement) : LemmaETailLog.Statement :=
   LemmaETailLog.proof h TailLogOfMass.proof
 
 /- English proof (translation)
-The claim follows from `ListTailLog.of_lemmaE (LemmaETailLog.of_lemmaETailMass h) ListMono.full RegSection.full TailShift.full`.
+A detailed English derivation is pending.
 -/
 theorem ListTailLog.of_lemmaETailMass (h : LemmaETailMass.Statement) : ListTailLog.Statement :=
   ListTailLog.of_lemmaE (LemmaETailLog.of_lemmaETailMass h) ListMono.full RegSection.full
     TailShift.full
 
 /- English proof (translation)
-The claim follows from `TailBound.of_listTailLog (ListTailLog.of_lemmaETailMass h)`.
+A detailed English derivation is pending.
 -/
 theorem TailBound.of_lemmaETailMass (h : LemmaETailMass.Statement) : TailBound.Statement :=
   TailBound.of_listTailLog (ListTailLog.of_lemmaETailMass h)

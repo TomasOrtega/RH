@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.Ming
 open PositivityTheory.Tls2.Ming3
 
 /- English proof (translation)
-The claim follows from `id`.
+A detailed English derivation is pending.
 -/
 theorem bridge_true : True → True := id
 

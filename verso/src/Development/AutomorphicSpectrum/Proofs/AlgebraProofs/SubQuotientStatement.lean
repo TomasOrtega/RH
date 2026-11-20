@@ -6,7 +6,7 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FlagIndependenceStat
 namespace GlobalTheory.CompanionTheory.Ar.Num.SubQuotFlags
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.NumbersDVR.SubQuotient.proof GlobalTheory.T.flag_independence`.
+A detailed English derivation is pending.
 -/
 theorem main : GroundTheory.Heights₂.Heights.NumbersDVR.SubQuotient.Statement :=
   GroundTheory.Heights₂.Heights.NumbersDVR.SubQuotient.proof GlobalTheory.T.flag_independence

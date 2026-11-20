@@ -59,9 +59,9 @@ def embedding : L →ₐ[K] CompletedAlgClosure K :=
     (IsAlgClosed.lift : L →ₐ[K] SpectralAlgClosure K)
 
 /- English proof (translation)
-Use `set ι : L →ₐ[K] SpectralAlgClosure K := IsAlgClosed.lift`. Establish `h1 : ‖embedding K L x‖ = ‖ι x‖`. Express the relevant statement in the definitionally equal form `‖((ι x : SpectralAlgClosure K) : CompletedAlgClosure K)‖ = _`. Conclude with `UniformSpace.Completion.norm_coe _`. Rewrite using `[h1, SpectralAlgClosure.norm_eq_spectralNorm]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : spectralNorm K (SpectralAlgClosure K) (ι x) = spectralNorm K L x`. Simplify using `only [spectralNorm, minpoly.algHom_eq ι ι.injective x]`. Rewrite using `[h2]`. Conclude with `(spectralNorm_unique_field_norm_ext (f := NormedField.toAbsoluteValue L) (fun k => norm_algebraMap' L k) x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_embedding (x : L) : ‖embedding K L x‖ = ‖x‖ := by
   set ι : L →ₐ[K] SpectralAlgClosure K := IsAlgClosed.lift

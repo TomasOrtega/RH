@@ -5,7 +5,7 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Al
 open scoped TensorProduct
 
 /- English proof (translation)
-Rewrite using `[atEmb_eq τ (z + w), atEmb_eq τ z, atEmb_eq τ w, Complex.add_re, Complex.add_im, add_smul, add_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem atEmb_add' {E : Type} [Field E] (τ : E →+* ℂ) (z w : ℂ) :
     atEmb τ (z + w) = atEmb τ z + atEmb τ w := by
@@ -16,7 +16,7 @@ private noncomputable def atEmbHom {E : Type} [Field E] (τ : E →+* ℂ) : ℂ
   AddMonoidHom.mk' (atEmb τ) (atEmb_add' τ)
 
 /- English proof (translation)
-Use `ext1 i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply]`. Rewrite using `[show atEmb τ (∑ k, coord τ (p i k) * x k j) = ∑ k, atEmb τ (coord τ (p i k) * x k j) from map_sum (atEmbHom τ) _ _]`. Conclude with `Finset.sum_congr rfl fun k _ => GlobalTheory.CapAdInv.mul_atEmb _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_atEmb_map {E : Type} [Field E] {a : ℕ} (τ : E →+* ℂ)
     (p : Matrix (Fin a) (Fin a) (Cinf E)) (x : Matrix (Fin a) (Fin a) ℂ) :
@@ -28,9 +28,7 @@ private theorem mul_atEmb_map {E : Type} [Field E] {a : ℕ} (τ : E →+* ℂ)
   exact Finset.sum_congr rfl fun k _ => GlobalTheory.CapAdInv.mul_atEmb _ _ _
 
 /- English proof (translation)
-Use `ext1 i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply]`. Rewrite using `[show atEmb τ (∑ k, x i k * coord τ (p k j)) = ∑ k, atEmb τ (x i k * coord τ (p k j)) from map_sum (atEmbHom τ) _ _]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_comm (x i k)]`.
-
-Conclude with `GlobalTheory.CapAdInv.mul_atEmb _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem atEmb_map_mul {E : Type} [Field E] {a : ℕ} (τ : E →+* ℂ)
     (p : Matrix (Fin a) (Fin a) (Cinf E)) (x : Matrix (Fin a) (Fin a) ℂ) :
@@ -44,7 +42,7 @@ private theorem atEmb_map_mul {E : Type} [Field E] {a : ℕ} (τ : E →+* ℂ)
   exact GlobalTheory.CapAdInv.mul_atEmb _ _ _
 
 /- English proof (translation)
-Use `ext1 i j`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply]`. Conclude with `map_sub (atEmbHom τ) _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem atEmb_map_sub {E : Type} [Field E] {a : ℕ} (τ : E →+* ℂ)
     (x y : Matrix (Fin a) (Fin a) ℂ) :
@@ -54,7 +52,7 @@ private theorem atEmb_map_sub {E : Type} [Field E] {a : ℕ} (τ : E →+* ℂ)
   exact map_sub (atEmbHom τ) _ _
 
 /- English proof (translation)
-Introduce `E _ _ _ a N _ _ _ _ τ L L'`. Use `⟨fun p q h x => ?_, fun Y h x => ?_⟩` and prove the remaining obligations. Rewrite using `[holEq, holEq, h, h, mul_atEmb_map, atEmb_map_mul, mul_atEmb_map, atEmb_map_mul, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[holEq, holEq, h, h, mul_atEmb_map, atEmb_map_mul, mul_atEmb_map, atEmb_map_mul, Matrix.mul_smul, Matrix.smul_mul, ← atEmb_map_sub, ← atEmb_map_sub, ← smul_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.holMul :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (N : Type) [AddCommGroup N] [Module ℂ N] [Module ℝ N] [IsScalarTower ℝ ℂ N] (τ : E →+* ℂ) (L L' : Lie E a →ₗ[ℝ] N),

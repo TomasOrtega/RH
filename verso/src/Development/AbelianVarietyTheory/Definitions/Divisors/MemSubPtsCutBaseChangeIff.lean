@@ -21,13 +21,13 @@ open GlobalTheory.ThickeningDetermines (secIdeal)
 def ptOf {K : Type} [Field K] {Y : Scheme.{0}} (x : Sp K ⟶ Y) : Y := x (IsLocalRing.closedPoint K)
 
 /- English proof (translation)
-The claim follows from `le_preimage_iff x U`.
+A detailed English derivation is pending.
 -/
 theorem le_iff_ptOf_mem {K : Type} [Field K] {Y : Scheme.{0}} (x : Sp K ⟶ Y) (U : Y.Opens) :
     ⊤ ≤ x ⁻¹ᵁ U ↔ ptOf x ∈ U := le_preimage_iff x U
 
 /- English proof (translation)
-The claim follows from `congrArg x (Subsingleton.elim (α := PrimeSpectrum K) _ _)`.
+A detailed English derivation is pending.
 -/
 theorem ptOf_spMap_comp {K K' : Type} [Field K] [Field K'] {Y : Scheme.{0}} (τ : K →+* K') (x : Sp K ⟶ Y) :
     ptOf (spMap τ ≫ x) = ptOf x :=
@@ -42,12 +42,12 @@ theorem ptOf_comp {K : Type} [Field K] {Y Z : Scheme.{0}} (x : Sp K ⟶ Y) (g : 
 def resPt {Y : Scheme.{0}} (y : Y) : Sp (Y.residueField y) ⟶ Y := Y.fromSpecResidueField y
 
 /- English proof (translation)
-The claim follows from `Scheme.fromSpecResidueField_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem ptOf_resPt {Y : Scheme.{0}} (y : Y) : ptOf (resPt y) = y := Scheme.fromSpecResidueField_apply _ _
 
 /- English proof (translation)
-Rewrite using `[← le_iff_ptOf_mem, le_preimage_basicOpen_iff x ((le_iff_ptOf_mem x U).2 h), isUnit_iff_ne_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_ne_zero_iff {K : Type} [Field K] {Y : Scheme.{0}} (x : Sp K ⟶ Y) {U : Y.Opens} (h : ptOf x ∈ U)
     (f : Γ(Y, U)) : valR x U f ≠ 0 ↔ ptOf x ∈ Y.basicOpen f := by
@@ -57,7 +57,7 @@ def cutIdeal {Y : Scheme.{0}} {L : LB Y} (hL : L.IsLB) {ι : Type} (s : ι → L
   ⨆ i, secIdeal hL (s i)
 
 /- English proof (translation)
-Rewrite using `[cutIdeal, Scheme.IdealSheafData.ideal_iSup, iSup_apply, Ideal.span_range_eq_iSup]`. Conclude with `iSup_congr fun i => ideal_secIdeal hL (s i) W c h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_cutIdeal {Y : Scheme.{0}} {L : LB Y} (hL : L.IsLB) {ι : Type} (s : ι → L.Sec) (W : Y.affineOpens)
     (c : L.ι) (h : W.1 ≤ L.U c) :
@@ -66,7 +66,7 @@ theorem ideal_cutIdeal {Y : Scheme.{0}} {L : LB Y} (hL : L.IsLB) {ι : Type} (s 
   exact iSup_congr fun i => ideal_secIdeal hL (s i) W c h
 
 /- English proof (translation)
-Rewrite using `[cutIdeal, Scheme.IdealSheafData.support_iSup]`. Simplify using `only [Closeds.mem_iInf]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe, coe_support_secIdeal]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_support_cutIdeal {Y : Scheme.{0}} {L : LB Y} (hL : L.IsLB) {ι : Type} (s : ι → L.Sec) (y : Y) :
     y ∈ (cutIdeal hL s).support ↔ ∀ i, y ∉ nonzeroLocus (s i) := by
@@ -123,7 +123,7 @@ abbrev Pt (K : Type) [Field K] [Algebra k K] : Type := S.PtOver (algebraMap k K)
 def chartAt (y : S.Y) : S.L.ι := (exists_chart S.isLB y).choose
 
 /- English proof (translation)
-The claim follows from `(exists_chart S.isLB y).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mem_chartAt (y : S.Y) : y ∈ S.L.U (S.chartAt y) := (exists_chart S.isLB y).choose_spec
 
@@ -140,27 +140,27 @@ def coords : Fin S.N → K := fun j => S.val x (S.b j)
 def baseHom : k →+* K := (Spec.preimage (x ≫ S.str)).hom
 
 /- English proof (translation)
-The claim follows from `(Spec.map_preimage _).symm`.
+A detailed English derivation is pending.
 -/
 theorem comp_str : x ≫ S.str = spMap (S.baseHom x) := (Spec.map_preimage _).symm
 
 variable {S} in
 
 /- English proof (translation)
-Rewrite using `[baseHom, x.2, Spec.preimage_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem baseHom_ptOver {φ : k →+* K} (x : S.PtOver φ) : S.baseHom x.1 = φ := by
   rw [baseHom, x.2, Spec.preimage_map]; rfl
 
 /- English proof (translation)
-The claim follows from `(le_iff_ptOf_mem x _).2 (S.mem_chartAt _)`.
+A detailed English derivation is pending.
 -/
 theorem le_chartAt : ⊤ ≤ x ⁻¹ᵁ S.L.U (S.chartAt (ptOf x)) := (le_iff_ptOf_mem x _).2 (S.mem_chartAt _)
 
 /- English proof (translation)
-Use `set j := S.chartAt (ptOf x)`. Establish `h : ⊤ ≤ x ⁻¹ᵁ (S.L.U i ⊓ S.L.U j)` using `(le_iff_ptOf_mem x _).2 ⟨hi, S.mem_chartAt _⟩`. Use `⟨(Units.map (valMap x _ h).hom.toMonoidHom (S.L.g i j)).val, Units.ne_zero _, fun s => ?_, fun m s => ?_⟩` and prove the remaining obligations. Rewrite using `[← valR_res x inf_le_left h, s.compat i j, valR_mul x _ h, valR_res x inf_le_right h, valR_eq x _ h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e` using `congrArg (valR x _) (zfun_rel s i j inf_le_left inf_le_right le_rfl)`. Rewrite `e` using `[valR_mul x _ h, show res le_rfl (S.L.g i j) = S.L.g i j from Units.ext (LB.resG_self _ _)]`. Use `((valR_res x inf_le_left h _).symm.trans e).trans (congrArg₂ (· * ·) ?_ (valR_res x inf_le_right h _))` and prove the remaining obligations. Rewrite using `[valR_eq x _ h, ← Units.val_zpow_eq_zpow_val, ← map_zpow]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_frame_change (i : S.L.ι) (hi : ptOf x ∈ S.L.U i) :
     ∃ c : K, c ≠ 0 ∧ (∀ s : S.L.Sec, valR x (S.L.U i) (s.f i) = c * S.val x s) ∧
@@ -177,13 +177,13 @@ theorem exists_frame_change (i : S.L.ι) (hi : ptOf x ∈ S.L.U i) :
     rfl
 
 /- English proof (translation)
-The claim follows from `(valR_ne_zero_iff x (S.mem_chartAt _) _).trans (mem_nonzeroLocus_iff_basicOpen s (S.mem_chartAt _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem val_ne_zero_iff (s : S.L.Sec) : S.val x s ≠ 0 ↔ ptOf x ∈ nonzeroLocus s :=
   (valR_ne_zero_iff x (S.mem_chartAt _) _).trans (mem_nonzeroLocus_iff_basicOpen s (S.mem_chartAt _)).symm
 
 /- English proof (translation)
-Use `(valR_ne_zero_iff x (S.mem_chartAt _) _).trans ?_` and prove the remaining obligations. Rewrite using `[basicOpen_zfun]`. Conclude with `and_iff_right (S.mem_chartAt _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powVal_ne_zero_iff {m : ℤ} (s : (lbZPow S.L m).Sec) : S.powVal x s ≠ 0 ↔ ptOf x ∈ nonzeroLocus s := by
   refine (valR_ne_zero_iff x (S.mem_chartAt _) _).trans ?_
@@ -191,23 +191,23 @@ theorem powVal_ne_zero_iff {m : ℤ} (s : (lbZPow S.L m).Sec) : S.powVal x s ≠
   exact and_iff_right (S.mem_chartAt _)
 
 /- English proof (translation)
-The claim follows from `valR_add x _ (S.le_chartAt x) _ _`.
+A detailed English derivation is pending.
 -/
 theorem val_add (s t : S.L.Sec) : S.val x (s + t) = S.val x s + S.val x t := valR_add x _ (S.le_chartAt x) _ _
 
 /- English proof (translation)
-The claim follows from `valR_zero x _ (S.le_chartAt x)`.
+A detailed English derivation is pending.
 -/
 theorem val_zero : S.val x 0 = 0 := valR_zero x _ (S.le_chartAt x)
 
 /- English proof (translation)
-The claim follows from `(valR_comp x S.str ⊤ _).symm.trans (preimage_apply (A := CommRingCat.of k) (x ≫ S.str) a).symm`.
+A detailed English derivation is pending.
 -/
 theorem valR_algebraMap (a : k) : valR x ⊤ (algebraMap k Γ(S.Y, ⊤) a) = S.baseHom x a :=
   (valR_comp x S.str ⊤ _).symm.trans (preimage_apply (A := CommRingCat.of k) (x ≫ S.str) a).symm
 
 /- English proof (translation)
-The claim follows from `(valR_mul x _ (S.le_chartAt x) _ _).trans (congrArg (· * _) ((valR_res x le_top (S.le_chartAt x) _).trans (S.valR_algebraMap x a)))`.
+A detailed English derivation is pending.
 -/
 theorem val_smul (a : k) (s : S.L.Sec) :
     S.val x (algebraMap k Γ(S.Y, ⊤) a • s) = S.baseHom x a * S.val x s :=
@@ -215,27 +215,27 @@ theorem val_smul (a : k) (s : S.L.Sec) :
     ((valR_res x le_top (S.le_chartAt x) _).trans (S.valR_algebraMap x a)))
 
 /- English proof (translation)
-Set `e : S.L.Sec →+ K` to `{ toFun := S.val x, map_zero' := S.val_zero x, map_add' := S.val_add x }`. Conclude with `(map_sum e _ _).trans (Finset.sum_congr rfl fun j _ => S.val_smul x _ _)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem val_comb (u : Fin S.N → k) : S.val x (S.comb u) = ∑ j, S.baseHom x (u j) * S.coords x j := by
   let e : S.L.Sec →+ K := { toFun := S.val x, map_zero' := S.val_zero x, map_add' := S.val_add x }
   exact (map_sum e _ _).trans (Finset.sum_congr rfl fun j _ => S.val_smul x _ _)
 
 /- English proof (translation)
-Rewrite using `[val, ptOf_spMap_comp, valR_spMap_comp τ x _ (S.le_chartAt x), val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_spMap_comp (τ : K →+* K') (s : S.L.Sec) : S.val (spMap τ ≫ x) s = τ (S.val x s) := by
   rw [val, ptOf_spMap_comp, valR_spMap_comp τ x _ (S.le_chartAt x), val]
 
 /- English proof (translation)
-Rewrite using `[powVal, ptOf_spMap_comp, valR_spMap_comp τ x _ (S.le_chartAt x), powVal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem powVal_spMap_comp (τ : K →+* K') {m : ℤ} (s : (lbZPow S.L m).Sec) :
     S.powVal (spMap τ ≫ x) s = τ (S.powVal x s) := by
   rw [powVal, ptOf_spMap_comp, valR_spMap_comp τ x _ (S.le_chartAt x), powVal]
 
 /- English proof (translation)
-The claim follows from `funext fun _ => S.val_spMap_comp x τ _`.
+A detailed English derivation is pending.
 -/
 theorem coords_spMap_comp (τ : K →+* K') : S.coords (spMap τ ≫ x) = fun j => τ (S.coords x j) :=
   funext fun _ => S.val_spMap_comp x τ _
@@ -243,7 +243,7 @@ theorem coords_spMap_comp (τ : K →+* K') : S.coords (spMap τ ≫ x) = fun j 
 variable {S} in
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `Opens.mem_iSup.1 (h.ge (Set.mem_univ (ptOf x)))`. Conclude with `fun e => (S.val_ne_zero_iff x _).2 hj (congrFun e j)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem BasePointFree.coords_ne_zero (h : S.BasePointFree) (x : Sp K ⟶ S.Y) : S.coords x ≠ 0 := by
   obtain ⟨j, hj⟩ := Opens.mem_iSup.1 (h.ge (Set.mem_univ (ptOf x)))
@@ -255,9 +255,9 @@ def form {d : ℕ} {g : MvPolynomial (Fin S.N) k} (hg : g.IsHomogeneous d) : (lb
   Twist.formSec S.b (mem_polyGrading_natCast.2 hg)
 
 /- English proof (translation)
-Establish `h` using `S.le_chartAt x`. Rewrite using `[powVal, form, zfun_formSec, valR_eq x _ h, chartEval, map_eval₂Hom, coe_eval₂Hom]`. Use `congr 1`. Use extensionality with `a`. Conclude with `((valR_eq x _ h _).symm.trans (valR_res x le_top h _)).trans (S.valR_algebraMap x a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[LB.resG_self, ← valR_eq x _ h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem powVal_form {K : Type} [Field K] (x : Sp K ⟶ S.Y) {d : ℕ} {g : MvPolynomial (Fin S.N) k}
     (hg : g.IsHomogeneous d) : S.powVal x (S.form hg) = eval₂ (S.baseHom x) (S.coords x) g := by
@@ -274,11 +274,11 @@ def imageIdeal : Ideal (MvPolynomial (Fin S.N) k) :=
   Ideal.span {g | ∃ (d : ℕ) (hg : g.IsHomogeneous d), S.form hg = 0}
 
 /- English proof (translation)
-Use `⟨fun h => zglobal_ext fun i => ?_, fun h => Ideal.subset_span ⟨d, hg, h⟩⟩` and prove the remaining obligations. Set `ψ : MvPolynomial (Fin S.N) k →+* Polynomial Γ(S.Y, S.L.U i)` to `eval₂Hom (Polynomial.C.comp ((resG S.Y le_top).comp (algebraMap k Γ(S.Y, ⊤)))) fun j => Polynomial.X * Polynomial.C (resG S.Y le_rfl ((S.b j).f i))`. Establish `key : ∀ {e : ℕ} {p : MvPolynomial (Fin S.N) k} (hp : p.IsHomogeneous e), ψ p = Polynomial.X ^ e * Polynomial.C (zfun (S.form hp) i)` using `fun {e p} hp => by`. Rewrite using `[form, zfun_formSec, chartEval, map_eval₂Hom, coe_eval₂Hom, coe_eval₂Hom, eval₂_eq, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: a.degree = e` using `by rw [Finsupp.degree_eq_weight_one]; exact hp (mem_support_iff.1 ha)`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[← this, Finsupp.degree_apply, mul_left_comm]`. Establish `hle : S.imageIdeal ≤ RingHom.ker ψ` using `Ideal.span_le.2 (by`. Introduce and unpack `p ⟨e, hp, h0⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, key hp, h0, zfun_zero, map_zero, mul_zero])`. Establish `h1` using `hle h`. Rewrite `h1` using `[RingHom.mem_ker, key hg, (Polynomial.monic_X_pow d).mul_right_eq_zero_iff, Polynomial.C_eq_zero]`. Conclude with `h1.trans (zfun_zero i).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_imageIdeal_iff {d : ℕ} {g : MvPolynomial (Fin S.N) k} (hg : g.IsHomogeneous d) :
     g ∈ S.imageIdeal ↔ S.form hg = 0 := by
@@ -303,13 +303,13 @@ theorem mem_imageIdeal_iff {d : ℕ} {g : MvPolynomial (Fin S.N) k} (hg : g.IsHo
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-The claim follows from `Ideal.homogeneous_span _ _ fun _ ⟨d, hg, _⟩ => ⟨d, hg⟩`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_imageIdeal : S.imageIdeal.IsHomogeneous (homogeneousSubmodule (Fin S.N) k) :=
   Ideal.homogeneous_span _ _ fun _ ⟨d, hg, _⟩ => ⟨d, hg⟩
 
 /- English proof (translation)
-Establish `hle : S.imageIdeal ≤ RingHom.ker (eval₂Hom (S.baseHom x) (S.coords x))` using `Ideal.span_le.2 (by`. Introduce and unpack `p ⟨e, hp, h0⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, coe_eval₂Hom, ← S.powVal_form x hp, h0, powVal, zfun_zero]`. Conclude with `valR_zero x _ (S.le_chartAt x))`. Conclude with `hle hg`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval₂_coords_eq_zero {K : Type} [Field K] (x : Sp K ⟶ S.Y) {g : MvPolynomial (Fin S.N) k}
     (hg : g ∈ S.imageIdeal) : eval₂ (S.baseHom x) (S.coords x) g = 0 := by
@@ -337,7 +337,7 @@ def InjOnPts {K : Type} [Field K] [Algebra k K] (P : Set (S.Pt K)) : Prop :=
   ∀ x ∈ P, ∀ x' ∈ P, ∀ c : K, c ≠ 0 → S.coords x'.1 = c • S.coords x.1 → x = x'
 
 /- English proof (translation)
-Introduce `d g hg` and use `by have e := eval₂Hom_unit_mul φ (Units.mk0 c hc) (S.coords x.1) (mem_polyGrading_natCast.2 hg) rw [← S.powVal_ne_zero_iff, ← S.powVal_ne_zero_iff, powVal_form, powVal_form, baseHom_ptOver, baseHom_ptOver, h] exact not_congr ((Units.mul_right_eq_zero (Units.mk0 c hc ^ (d : ℤ))).s …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameImage_of_coords {K : Type} [Field K] {φ : k →+* K} (x x' : S.PtOver φ) {c : K} (hc : c ≠ 0)
     (h : S.coords x'.1 = c • S.coords x.1) : S.SameImage (ptOf x.1) (ptOf x'.1) := fun d g hg => by
@@ -361,7 +361,7 @@ def baseChange : LinSys E where
 def bcFst : (S.baseChange E).Y ⟶ S.Y := pullback.fst _ _
 
 /- English proof (translation)
-The claim follows from `IsPullback.of_hasPullback _ _`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_baseChange :
     IsPullback (S.bcFst E) (S.baseChange E).str S.str (spMap (algebraMap k E)) := IsPullback.of_hasPullback _ _
@@ -375,7 +375,7 @@ def toBase {Ω : Type} [Field Ω] [Algebra E Ω] [Algebra k Ω] [IsScalarTower k
     rfl⟩
 
 /- English proof (translation)
-Use `⟨fun x x' h => Subtype.ext (pullback.hom_ext (congrArg Subtype.val h) (x.2.trans x'.2.symm)), fun y => ?_⟩` and prove the remaining obligations. Use `⟨⟨pullback.lift y.1 (spMap (algebraMap E Ω)) ?_, pullback.lift_snd _ _ _⟩, Subtype.ext (pullback.lift_fst _ _ _)⟩` and prove the remaining obligations. Rewrite using `[y.2, IsScalarTower.algebraMap_eq k E Ω, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toBase_bijective (Ω : Type) [Field Ω] [Algebra E Ω] [Algebra k Ω] [IsScalarTower k E Ω] :
     Function.Bijective (toBase : (S.baseChange E).Pt Ω → S.Pt Ω) := by
@@ -386,7 +386,7 @@ theorem toBase_bijective (Ω : Type) [Field Ω] [Algebra E Ω] [Algebra k Ω] [I
   rfl
 
 /- English proof (translation)
-Establish `hm` using `(S.baseChange E).mem_chartAt (ptOf x)`. Take `⟨c, hc, h, -⟩` from `S.exists_frame_change (x ≫ S.bcFst E) ((S.baseChange E).chartAt (ptOf x) PUnit.unit) (LB.pull_U_le _ _ hm)`. Conclude with `⟨c, hc, funext fun j => (valR_appLE x _ _ ((S.baseChange E).le_chartAt x) _).trans (h _)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_coords_baseChange {K : Type} [Field K] (x : Sp K ⟶ (S.baseChange E).Y) :
     ∃ c : K, c ≠ 0 ∧ (S.baseChange E).coords x = c • S.coords (x ≫ S.bcFst E) := by
@@ -398,7 +398,7 @@ theorem exists_coords_baseChange {K : Type} [Field K] (x : Sp K ⟶ (S.baseChang
 variable {S} in
 
 /- English proof (translation)
-Use `smoothOfRelativeDimension_isStableUnderBaseChange.{0} S.D` as an intermediate fact. Use `h.conn` as an intermediate fact. Conclude with `⟨MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension S.D) (S.isPullback_baseChange E) h.smooth, ProjSpace.isProjOver_pullback_snd _ h.proj, inferInstanceAs (GeometricallyConnected (pullback.snd _ _)), h.one_le⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem IsVariety.baseChange (h : S.IsVariety) : (S.baseChange E).IsVariety := by
   have := smoothOfRelativeDimension_isStableUnderBaseChange.{0} S.D
@@ -410,7 +410,7 @@ theorem IsVariety.baseChange (h : S.IsVariety) : (S.baseChange E).IsVariety := b
 variable {S} in
 
 /- English proof (translation)
-The claim follows from `top_le_iff.1 fun y _ => by obtain ⟨j, hj⟩ := Opens.mem_iSup.1 (h.ge (Set.mem_univ (S.bcFst E y))) exact Opens.mem_iSup.2 ⟨j, (nonzeroLocus_secPull (S.b j) _).ge hj⟩`.
+A detailed English derivation is pending.
 -/
 theorem BasePointFree.baseChange (h : S.BasePointFree) : (S.baseChange E).BasePointFree :=
   top_le_iff.1 fun y _ => by
@@ -433,7 +433,7 @@ def subPts (I : S.Y.IdealSheafData) (Ω : Type) [Field Ω] [Algebra k Ω] : Set 
   {x | ∃ z : Sp Ω ⟶ I.subscheme, z ≫ I.subschemeι = x.1}
 
 /- English proof (translation)
-Take `⟨V, hV, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := ptOf x.1) trivial`. Use `(mem_range_comp_iff_of_isClosedImmersion I.subschemeι hV x.1 ((le_iff_ptOf_mem _ _).2 hx)).trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.mem_support_iff_of_mem (U := ⟨V, hV⟩) hx, Scheme.mem_zeroLocus_iff]`. Use `forall_congr' fun f => ?_` and prove the remaining obligations. Rewrite using `[← valR_ne_zero_iff x.1 hx, not_not, ← RingHom.mem_ker, I.ker_subschemeι_app ⟨V, hV⟩]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -447,7 +447,7 @@ theorem mem_subPts_iff (I : S.Y.IdealSheafData) {Ω : Type} [Field Ω] [Algebra 
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_subPts_iff, cut, mem_support_cutIdeal]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[← val_ne_zero_iff, not_not, val_comb, baseHom_ptOver]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_subPts_cut_iff {ι : Type} (s : ι → Fin S.N → k) {Ω : Type} [Field Ω] [Algebra k Ω] (x : S.Pt Ω) :
     x ∈ S.subPts (S.cut s) Ω ↔ ∀ i, ∑ j, algebraMap k Ω (s i j) * S.coords x.1 j = 0 := by
@@ -456,7 +456,7 @@ theorem mem_subPts_cut_iff {ι : Type} (s : ι → Fin S.N → k) {Ω : Type} [F
   rw [← val_ne_zero_iff, not_not, val_comb, baseHom_ptOver]
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `S.exists_coords_baseChange E x.1`. Use `((S.baseChange E).mem_subPts_cut_iff s x).trans (forall_congr' fun i => ?_)` and prove the remaining obligations. Rewrite using `[h, ← mul_eq_zero_iff_left hc (b := ∑ j, algebraMap E Ω (s i j) * S.coords (toBase x).1 j), Finset.mul_sum]`. Conclude with `Eq.congr_left (Finset.sum_congr rfl fun j _ => mul_left_comm _ _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_subPts_cut_baseChange_iff (E : Type) [Field E] [Algebra k E] {ι : Type} (s : ι → Fin S.N → E)
     {Ω : Type} [Field Ω] [Algebra E Ω] [Algebra k Ω] [IsScalarTower k E Ω] (x : (S.baseChange E).Pt Ω) :
@@ -468,11 +468,11 @@ theorem mem_subPts_cut_baseChange_iff (E : Type) [Field E] [Algebra k E] {ι : T
   exact Eq.congr_left (Finset.sum_congr rfl fun j _ => mul_left_comm _ _ _)
 
 /- English proof (translation)
-Establish `: IsFinite (I.subschemeι ≫ S.str)` using `h`. Establish `: IsAffine I.subscheme` using `isAffine_of_isAffineHom (I.subschemeι ≫ S.str)`. Use `letI := algebraΓOfHom (I.subschemeι ≫ S.str)`. Establish `: Module.Finite k Γ(I.subscheme, ⊤)` using `(I.subschemeι ≫ S.str).finite_appTop.comp (RingHom.Finite.of_surjective _ (Scheme.ΓSpecIso (.of k)).symm.commRingCatIsoToRingEquiv.surjective)`. Set `Z` to `PtsOver (I.subschemeι ≫ S.str) (spMap (algebraMap k Ω))`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : Z → (Γ(I.subscheme, ⊤) →ₐ[k] Ω)` to `fun z => { (valMap z.1 ⊤ (le_preimage_top _)).hom with commutes' := fun a => by`. Establish `h₁` using `valR_comp z.1 (I.subschemeι ≫ S.str) ⊤ ((Scheme.ΓSpecIso (.of k)).inv.hom a)`. Rewrite `h₁` using `[z.2, valR_specMap (CommRingCat.ofHom (algebraMap k Ω)) a]`. Conclude with `(valR_eq z.1 ⊤ (le_preimage_top _) _).symm.trans h₁.symm }`. Establish `: Finite Z` using `Finite.of_injective e fun z z' hz => Subtype.ext (ext_of_valR (isAffineOpen_top _) (le_preimage_top _) (le_preimage_top _) fun f => (valR_eq _ _ _ f).trans ((congrArg (fun q : _ →ₐ[k] Ω => q f) hz).trans (valR_eq _ _ _ f).symm))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Set.finite_range (PtsOver.map I.subschemeι rfl _ : Z → S.Pt Ω)).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨z, hz⟩`. Conclude with `⟨⟨z, by rw [← Category.assoc, hz, x.2]⟩, Subtype.ext hz⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsFiniteSub.finite_subPts {S : LinSys k} {I : S.Y.IdealSheafData} (h : S.IsFiniteSub I) (Ω : Type) [Field Ω]
     [Algebra k Ω] : (S.subPts I Ω).Finite := by

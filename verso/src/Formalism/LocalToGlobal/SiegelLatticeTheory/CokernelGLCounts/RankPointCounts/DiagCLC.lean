@@ -10,9 +10,9 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 namespace Formalism.L2.SG.RowsConc
 
 /- English proof (translation)
-Introduce `D X Y u u' hT`. Establish `hF` using `Formalism.L2.SG.Closed.FundExistsC_holds D X Y u u'`. Establish `hO : ∀ w, Formalism.L2.SG.WuDecay.FoldOK X w Y.hK` using `fun w => Formalism.L2.SG.Closed.FoldOKC_outright D X Y w hT.1 hT.2.2.2.2.1`. Establish `hI` using `Formalism.L2.SG.Closed.OOIntAllC_outright D X Y u u' (hO u) (hO u') hF`. Establish `hAbs` using `absConvTied_of_full Formalism.L2.SG.Closed.FoldOKC_outright Formalism.L2.SG.Closed.FundExistsC_holds Formalism.L2.SG.Closed.OOIntAllC_outright Formalism.L2.SG.Closed.AbsConvC_outright D X Y u u' hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Formalism.L2.SG.NormCut.normExpSatC'_of_PD (fun D => Formalism.L2.SG.Pf.positive_definite_isomorphism D) D X Y u u' hI (Formalism.L2.SG.Closed.AmpWellDefC_holds D X Y u u' hI) (Formalism.L2.SG.Closed.OOFundIndepC_holds D X Y u u' hF hI) hAbs`.
+A detailed English derivation is pending.
 -/
 theorem normExpSatTied_holds : NormExpSatTied := by
   intro D X Y u u' hT
@@ -26,14 +26,14 @@ theorem normExpSatTied_holds : NormExpSatTied := by
     (Formalism.L2.SG.Closed.AmpWellDefC_holds D X Y u u' hI) (Formalism.L2.SG.Closed.OOFundIndepC_holds D X Y u u' hF hI) hAbs
 
 /- English proof (translation)
-The claim follows from `idOneC_of_full Formalism.L2.SG.Closed.FoldOKC_outright Formalism.L2.SG.Closed.FundExistsC_holds Formalism.L2.SG.Closed.OOIntAllC_outright Formalism.L2.SG.Closed.IdCellDiagC_holds`.
+A detailed English derivation is pending.
 -/
 theorem idOneC_holds : IdOneC :=
   idOneC_of_full Formalism.L2.SG.Closed.FoldOKC_outright Formalism.L2.SG.Closed.FundExistsC_holds
     Formalism.L2.SG.Closed.OOIntAllC_outright Formalism.L2.SG.Closed.IdCellDiagC_holds
 
 /- English proof (translation)
-Conclude with `diagCL_of_rows Formalism.FourierDecayAlt.P.pair_bound_abstract Formalism.FourierDecayAlt.P.price_of_index Formalism.FourierDecayAlt.P.equal_index Formalism.FourierDecayAlt.P.pair_split_alt Formalism.FourierDecayAlt.P.subfamilyAlt Formalism.L2.SG.Closed.TermsGGBound_holds normExpS …`.
+A detailed English derivation is pending.
 -/
 theorem diagonal_contribution_of_equal_words (hNG : RowNGC) (hM : RowMainEqC) : DiagCL := by
   exact diagCL_of_rows Formalism.FourierDecayAlt.P.pair_bound_abstract Formalism.FourierDecayAlt.P.price_of_index

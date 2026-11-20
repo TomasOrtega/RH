@@ -18,7 +18,7 @@ open scoped ContDiff
 namespace GlobalTheory.HCFiniteSm
 
 /- English proof (translation)
-Establish `hy' : IsUnit (Matrix.of y)` using `hy`. Simplify using `only [chart, dif_pos hy', Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem chart_sum' {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (s : Finset ℕ) (c : ℕ → ℂ)
     (ψ : ℕ → Sm E a) (g : GA E a) {y : Lie E a} (hy : y ∈ invSet E a) :

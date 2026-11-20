@@ -26,9 +26,9 @@ namespace GlobalTheory.TorsionCharacter
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.FamGerm GlobalTheory.HodgeTateStep GlobalTheory.KernelNoTorsion
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h : ρ.act 0 = ρ.act 0 * ρ.act 0`. Use `ρ.map_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Nat.cast_zero, pow_zero]`. Conclude with `left_eq_mul.mp h`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ, ρ.map_add, ih, ρ.map_one, pow_succ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ringAct_natCast {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {Λ : Type} [Ring Λ]
     (ρ : RingAct A Λ) (n : ℕ) : ρ.act n = (𝟙 A) ^ n := by
@@ -48,14 +48,14 @@ abbrev Admissible {V O : Type} [CommRing V] [IsLocalRing V] [CommRing O] (f : V 
   (Module.Finite O A ∧ Module.Free O A) ∨ ∃ n : ℕ, ∀ a ∈ maximalIdeal V ^ n, algebraMap O A (f a) = 0
 
 /- English proof (translation)
-The claim follows from `TrivSqZeroExt.lift_apply_inr _ _ _ _ _ s`.
+A detailed English derivation is pending.
 -/
 theorem dualBC_inr {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (s : O) :
     dualBC (Algebra.ofId O R) (TrivSqZeroExt.inr s) = TrivSqZeroExt.inr (algebraMap O R s) :=
   TrivSqZeroExt.lift_apply_inr _ _ _ _ _ s
 
 /- English proof (translation)
-Apply `DualNumber.algHom_ext` to reduce the goal to its premises. Use `show (dualBC (Algebra.ofId O R) (TrivSqZeroExt.inr 1)).fst = algebraMap O R (TrivSqZeroExt.inr 1 : DualNumber O).fst`. Rewrite using `[dualBC_inr, TrivSqZeroExt.fst_inr, TrivSqZeroExt.fst_inr, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_comp_dualBC {O R : Type} [CommRing O] [CommRing R] [Algebra O R] :
     (TrivSqZeroExt.fstHom O R R).comp (dualBC (Algebra.ofId O R)) =
@@ -69,7 +69,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {V : Ty
   [IsDiscreteValuationRing V] {F : Type} [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (y : Pt1 E H V F)
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[TB.dAct, TB.dLin, Geo.Tor.Germ.FB.actK, hf]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dAct_eq_map {R O F Λ : Type} [CommRing R] [CommRing O] [CommRing F] [CommRing Λ] [StarRing Λ] [Algebra R F]
     [Algebra O F] (f : R →+* O) (hf : ∀ r, algebraMap O F (f r) = algebraMap R F r) {d : ℕ}

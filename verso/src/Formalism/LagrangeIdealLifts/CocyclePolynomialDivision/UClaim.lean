@@ -8,11 +8,11 @@ namespace Formalism.LIFT
 namespace CocyclePolynomialSubmodules
 
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `S.add_mem hp hq`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `monomial n a`. Rewrite using `[Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]`. Apply `S.smul_mem` to reduce the goal to its premises. Proceed by induction on `n with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero, Module.End.one_apply]`. Conclude with `hy`. Consider the case `succ n ih`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hf _ ih`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_pres {R E : Type} [CommRing R] [AddCommGroup E] [Module R E] (f : E →ₗ[R] E)
     (S : Submodule R E) (hf : ∀ y ∈ S, f y ∈ S) (p : Polynomial R) :
@@ -51,7 +51,7 @@ def QS : Submodule A D where
     exact W.N.smul_mem c hy
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_QS {y : D} : y ∈ QS W ↔ W.QInv y := Iff.rfl
 
@@ -66,12 +66,12 @@ def CS : Submodule A D where
     exact ⟨c • y, (QS W).smul_mem c hy, by rw [smul_smul, smul_smul, mul_comm]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_CS {ω : D} : ω ∈ CS W ↔ W.C2 ω := Iff.rfl
 
 /- English proof (translation)
-Introduce `y hy`. Use `(mem_QS W).mpr ?_` and prove the remaining obligations. Unfold `WD.QInv`. Conclude with `W.N.smul_mem _ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem N_le_QS : W.N ≤ QS W := by
   intro y hy
@@ -80,7 +80,7 @@ theorem N_le_QS : W.N ≤ QS W := by
   exact W.N.smul_mem _ hy
 
 /- English proof (translation)
-Introduce `ω hω`. Take `⟨y, hy, rfl⟩` from `(mem_CS W).mp hω`. Conclude with `(QS W).smul_mem B.X ((mem_QS W).mpr hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem CS_le_QS : CS W ≤ QS W := by
   intro ω hω
@@ -88,7 +88,7 @@ theorem CS_le_QS : CS W ≤ QS W := by
   exact (QS W).smul_mem B.X ((mem_QS W).mpr hy)
 
 /- English proof (translation)
-Take `⟨x', hx', h⟩` from `W.γ_N n hn`. Rewrite using `[← sub_add_cancel (W.γ n) n, h]`. Conclude with `W.N.add_mem (W.N.smul_mem _ hx') hn`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γ_mem_N {n : D} (hn : n ∈ W.N) : W.γ n ∈ W.N := by
   obtain ⟨x', hx', h⟩ := W.γ_N n hn
@@ -96,9 +96,9 @@ theorem γ_mem_N {n : D} (hn : n ∈ W.N) : W.γ n ∈ W.N := by
   exact W.N.add_mem (W.N.smul_mem _ hx') hn
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[mem_QS]`. Unfold `WD.QInv at hy ⊢`. Take `⟨t, ht, hQ⟩` from `B.9`. Establish `h1` using `γ_mem_N W hy`. Rewrite `h1` using `[W.γ_smul, map_pow, hQ, mul_pow, mul_comm (B.Q ^ M), mul_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, hv⟩` from `ht.pow M`. Establish `h2` using `W.N.smul_mem (↑v⁻¹ : A) h1`. Rewrite `h2` using `[← hv, smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem γ_mem_QS {y : D} (hy : y ∈ QS W) : W.γ y ∈ QS W := by
   rw [mem_QS] at hy ⊢
@@ -111,7 +111,7 @@ theorem γ_mem_QS {y : D} (hy : y ∈ QS W) : W.γ y ∈ QS W := by
   rwa [← hv, smul_smul, Units.inv_mul, one_smul] at h2
 
 /- English proof (translation)
-Rewrite `hω`, the goal using `[mem_CS]`. Take `⟨y, hy, rfl⟩` from `hω`. Take `⟨t, ht⟩` from `B.8`. Use `⟨((algebraMap ℤ_[ℓ] A) ↑B.u + B.X * t) • W.γ y, (mem_QS W).mp ((QS W).smul_mem _ (γ_mem_QS W ((mem_QS W).mpr hy))), ?_⟩` and prove the remaining obligations. Rewrite using `[W.γ_smul, ht, mul_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem γ_mem_CS {ω : D} (hω : ω ∈ CS W) : W.γ ω ∈ CS W := by
   rw [mem_CS] at hω ⊢
@@ -122,25 +122,25 @@ theorem γ_mem_CS {ω : D} (hω : ω ∈ CS W) : W.γ ω ∈ CS W := by
   rw [W.γ_smul, ht, mul_smul]
 
 /- English proof (translation)
-The claim follows from `aeval_pres W.γ (W.N.restrictScalars ℤ_[ℓ]) (fun _ h => γ_mem_N W h) p y hy`.
+A detailed English derivation is pending.
 -/
 theorem aeval_mem_N (p : Polynomial ℤ_[ℓ]) {y : D} (hy : y ∈ W.N) :
     Polynomial.aeval W.γ p y ∈ W.N := aeval_pres W.γ (W.N.restrictScalars ℤ_[ℓ]) (fun _ h => γ_mem_N W h) p y hy
 
 /- English proof (translation)
-The claim follows from `aeval_pres W.γ ((QS W).restrictScalars ℤ_[ℓ]) (fun _ h => γ_mem_QS W h) p y hy`.
+A detailed English derivation is pending.
 -/
 theorem aeval_mem_QS (p : Polynomial ℤ_[ℓ]) {y : D} (hy : y ∈ QS W) :
     Polynomial.aeval W.γ p y ∈ QS W := aeval_pres W.γ ((QS W).restrictScalars ℤ_[ℓ]) (fun _ h => γ_mem_QS W h) p y hy
 
 /- English proof (translation)
-The claim follows from `aeval_pres W.γ ((CS W).restrictScalars ℤ_[ℓ]) (fun _ h => γ_mem_CS W h) p y hy`.
+A detailed English derivation is pending.
 -/
 theorem aeval_mem_CS (p : Polynomial ℤ_[ℓ]) {y : D} (hy : y ∈ CS W) :
     Polynomial.aeval W.γ p y ∈ CS W := aeval_pres W.γ ((CS W).restrictScalars ℤ_[ℓ]) (fun _ h => γ_mem_CS W h) p y hy
 
 /- English proof (translation)
-Establish `e : (B.X * B.Q) ^ (M + 1) = (B.X ^ (M + 1) * B.Q) * B.Q ^ M` using `by ring`. Rewrite using `[W.φ_smul, map_pow, B.7, e, mul_smul]`. Conclude with `W.N.smul_mem _ (W.φ_N n hn)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocyclePolynomialDivision_φ_mem_fact {n : D} (hn : n ∈ W.N) : W.φ (B.X ^ (M + 1) • n) ∈ W.N := by
   have e : (B.X * B.Q) ^ (M + 1) = (B.X ^ (M + 1) * B.Q) * B.Q ^ M := by ring
@@ -148,13 +148,13 @@ theorem cocyclePolynomialDivision_φ_mem_fact {n : D} (hn : n ∈ W.N) : W.φ (B
   exact W.N.smul_mem _ (W.φ_N n hn)
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, ∀ z ∈ QS W, ((ℓ : ℤ_[ℓ]) ^ k) • z ∈ W.N → z ∈ W.N`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `z _ hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hz`. Consider the case `succ k ih`. Introduce `z hz hkz`. Apply `ih z hz` to reduce the goal to its premises. Apply `h4 _ ((mem_QS W).mp ((QS W).smul_of_tower_mem _ hz))` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[smul_smul, ← pow_succ']` and apply the resulting hypothesis. Take `⟨k, u, hcu⟩ : ∃ (k : ℕ) (u : ℤ_[ℓ]ˣ), c = u * (ℓ : ℤ_[ℓ]) ^ k` from `by first`. Consider the case `exact IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc PadicInt.irreducible_p`. Consider the case `exact DiscreteValuationRing.eq_unit_mul_pow_irreducible hc PadicInt.irreducible_p`. Consider the case `exact ⟨_, _, PadicInt.unitCoeff_spec hc⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite `hcy` using `[hcu, mul_comm, mul_smul]`. Establish `h5` using `key k _ ((QS W).smul_of_tower_mem (u : ℤ_[ℓ]) hy) hcy`. Establish `h6` using `W.N.smul_of_tower_mem (↑u⁻¹ : ℤ_[ℓ]) h5`. Rewrite `h6` using `[smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tors_free (h4 : ∀ y, W.QInv y → (ℓ : ℤ_[ℓ]) • y ∈ W.N → y ∈ W.N)
     {c : ℤ_[ℓ]} (hc : c ≠ 0) {y : D} (hy : y ∈ QS W) (hcy : c • y ∈ W.N) : y ∈ W.N := by
@@ -180,23 +180,21 @@ theorem tors_free (h4 : ∀ y, W.QInv y → (ℓ : ℤ_[ℓ]) • y ∈ W.N → 
   rwa [smul_smul, Units.inv_mul, one_smul] at h6
 
 /- English proof (translation)
-Introduce and unpack `ω hω ⟨k, y, z, ⟨hyQ, n, hn, rfl⟩, hk⟩`. Take `⟨x, hx, n', hn', hxe⟩` from `hU n hn`. Establish `hm : B.X ^ (M + 1) • n' ∈ W.N` using `W.N.smul_mem _ hn'`. Establish `hφm : W.φ (B.X ^ (M + 1) • n') - B.X ^ (M + 1) • n' ∈ W.N` using `W.N.sub_mem (cocyclePolynomialDivision_φ_mem_fact W hn') hm`. Establish `hXx : B.X • x ∈ W.N` using `W.N.smul_mem _ hx`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYQ : cG • y - (W.φ (B.X • x) - B.X • x) ∈ QS W` using `(QS W).sub_mem ((QS W).smul_of_tower_mem _ hyQ) ((QS W).sub_mem (W.φ_N _ hXx) (N_le_QS W hXx))`. Establish `key : (cG * (ℓ : ℤ_[ℓ]) ^ k) • ω = (W.γ (cG • y - (W.φ (B.X • x) - B.X • x)) - (cG • y - (W.φ (B.X • x) - B.X • x))) - (W.φ (B.X ^ (M + 1) • n') - B.X ^ (M + 1) • n')`. Rewrite using `[mul_smul, hk, WD.d1]`. Establish `e1 : cG • W.φ (B.X • n) = W.φ (cG • (B.X • n))` using `(map_smul _ _ _).symm`. Establish `e2 : cG • W.γ y = W.γ (cG • y)` using `(map_smul _ _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_sub, smul_sub, smul_sub, e1, e2, hxe]`. Simplify using `only [map_sub, map_add, W.comm]`. Normalize the expressions using the abelian group laws. Establish `hω' : ω ∈ CS W` using `hω`. Use `set p := Polynomial.aeval W.γ P with hp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpQ : p ω ∈ QS W` using `aeval_mem_QS W P (CS_le_QS W hω')`. Establish `hγ1 : ∀ Y : D, p (W.γ Y - Y) = Polynomial.aeval W.γ ((Polynomial.X - 1) * P) Y`. Introduce `Y`. Rewrite using `[mul_comm, map_mul, Module.End.mul_apply]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hcp : (cG * (ℓ : ℤ_[ℓ]) ^ k) • p ω ∈ W.N`. Rewrite using `[← map_smul, key, map_sub, hγ1]`. Conclude with `W.N.sub_mem (h3 _ hYQ) (aeval_mem_N W P hφm)`. Establish `hn0 : p ω ∈ W.N` using `tors_free W h4 (mul_ne_zero hcG (pow_ne_zero _ (by exact_mod_cast (Fact.out : ℓ.Prime).ne_zero))) hpQ hcp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y₀, hy₀Q, hy₀e⟩ : p ω ∈ CS W` from `aeval_mem_CS W P hω'`. Establish `hy₀ : y₀ ∈ W.N` using `h2 y₀ hy₀Q (hy₀e ▸ hn0)`. Take `⟨x₀, hx₀, n₀', hn₀', e0⟩` from `hU y₀ hy₀`. Take `⟨z₀, hz₀, e1⟩` from `h1 n₀' hn₀'`. Take `⟨S, hS⟩` from `Polynomial.X_sub_C_dvd_sub_C_eval (p := P) (a := 1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eS : P.eval 1 • ω = p ω - (W.γ (Polynomial.aeval W.γ S ω) - Polynomial.aeval W.γ S ω)`. Use `congrArg (fun q => Polynomial.aeval W.γ q ω) hS` as an intermediate fact. Simplify using `only [map_sub, map_mul, Polynomial.aeval_C, Polynomial.aeval_X, map_one, LinearMap.sub_apply, Module.End.mul_apply, Module.algebraMap_end_apply, Module.End.one_apply] at this`. Rewrite `this` using `[← hp]`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hSQ : Polynomial.aeval W.γ S ω ∈ QS W` using `aeval_mem_QS W S (CS_le_QS W hω')`. Use `⟨cG • (-(Polynomial.aeval W.γ S ω)) + B.X • x₀, B.X ^ (M + 1) • z₀, ⟨(QS W).add_mem ((QS W).smul_of_tower_mem _ ((QS W).neg_mem hSQ)) (N_le_QS W (W.N.smul_mem _ hx₀)), ⟨B.X ^ M • z₀, W.N.smul_mem _ hz₀, by rw [pow_succ', mul_smul]⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul, eS, hy₀e, smul_sub, e0, e1, WD.d1]`. Simplify using `only [map_add, map_neg, map_smul, smul_sub, smul_neg]`.
-
-Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem main (P : Polynomial ℤ_[ℓ]) (cG : ℤ_[ℓ]) (hcG : cG ≠ 0)
     (hU : ∀ n ∈ W.N, ∃ x ∈ W.N, ∃ n' ∈ W.N,
@@ -262,11 +260,11 @@ theorem main (P : Polynomial ℤ_[ℓ]) (cG : ℤ_[ℓ]) (hcG : cG ≠ 0)
 end CocyclePolynomialSubmodules
 
 /- English proof (translation)
-Introduce `ℓ _ A _ _ B M D _ _ _ _ W s J hs hs2 hv hJ h1 h2 h3 h4`. Establish `hcG : (∏ i ∈ Finset.Icc 1 M, ((B.u : ℤ_[ℓ]) ^ i - 1)) ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i hi`. Establish `hi0 : (i : ℤ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(Finset.mem_Icc.mp hi).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `(Formalism.WindowSums.valuation_zpow_sub_one ℓ B.u s hs hs2 hv (i : ℤ) hi0).1` as an intermediate fact. Simplify using `using this`. Establish `hP : Polynomial.eval 1 (∏ j ∈ J, (Polynomial.X - Polynomial.C (((B.u ^ (-j) : ℤ_[ℓ]ˣ) : ℤ_[ℓ])))) = ∏ j ∈ J, (1 - ((B.u ^ (-j) : ℤ_[ℓ]ˣ) : ℤ_[ℓ]))`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `[Polynomial.eval_prod]`. Rewrite using `[← hP]`. Conclude with `CocyclePolynomialSubmodules.main W _ _ hcG (hU ℓ A B M D W M) h1 h2 h3 h4`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uClaim_of (hU : UGraded) (_hG : GradedStep) : UClaim := by
   intro ℓ _ A _ _ B M D _ _ _ _ W s J hs hs2 hv hJ h1 h2 h3 h4

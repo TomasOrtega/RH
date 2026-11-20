@@ -11,9 +11,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite
 noncomputable section
 
 /- English proof (translation)
-Establish `hb` using `(hPB _ _ g M W n t ht).bijective_self`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `τ hτ`. Take `⟨r, rfl⟩` from `ht.bijective_self.2 τ`. Establish `h0 : (fun i => g.app W (r i)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hb.1` to reduce the goal to its premises. Simplify using `only [Pi.zero_apply, zero_smul, Finset.sum_const_zero]`. Conclude with `(pullSectionOn_sum g M W t r).symm.trans hτ`. Establish `hr : r = 0` using `funext fun i => hg (by rw [Pi.zero_apply, map_zero]; exact congrFun h0 i)`. Simplify using `[hr]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma pullSectionOn_injective_of_basis_of_app (hPB : PullbackBasis.Statement.{0})
     {T Z : Scheme.{0}} (g : T ⟶ Z) (M : Z.Modules) {W : Z.Opens} {n : ℕ} {t : Fin n → Γ(M, W)}
@@ -31,9 +31,9 @@ lemma pullSectionOn_injective_of_basis_of_app (hPB : PullbackBasis.Statement.{0}
   simp [hr]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `τ hτ`. Apply `modules_eq_of_locally M τ 0` to reduce the goal to its premises. Introduce `x hx`. Take `⟨U, -, hxU, n, t, ht⟩` from `hM x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨U ⊓ V, inf_le_right, ⟨hxU, hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Apply `pullSectionOn_injective_of_basis_of_app hPB g M (ht.restrict inf_le_left) (hg _ inf_le_right)` to reduce the goal to its premises. Rewrite using `[pullSectionOn_res g M inf_le_right (homOfLE ((Opens.map g.base).monotone inf_le_right)) τ, hτ, map_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 lemma pullSectionOn_injective_of_app (hPB : PullbackBasis.Statement.{0}) {T Z : Scheme.{0}}
     (g : T ⟶ Z) (M : Z.Modules) (hM : IsVectorBundle M) (V : Z.Opens)
@@ -52,13 +52,13 @@ lemma pullSectionOn_injective_of_app (hPB : PullbackBasis.Statement.{0}) {T Z : 
     hτ, map_zero, map_zero]
 
 /- English proof (translation)
-Introduce `X f _ _ a ha G hG`. Take `⟨m, hm, hinj⟩` from `h₁ X f`. Use `⟨m, hm, fun n hn hmn V hV => ?_⟩` and prove the remaining obligations. Establish `hk0 : (a : ℤ) * n ≠ 0` using `mul_ne_zero (by exact_mod_cast ha.ne') (by exact_mod_cast hn.ne')`. Establish `hk : IsUnit (((a : ℤ) * n : ℤ) : ℚ)` using `isUnit_intCast_rat _ hk0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : invOpen f ((a : ℤ) * n) ≤ invOpen f a` using `invOpen_mul_le_left f a n`. Establish `hcomp : toInvOpen f ℚ ((a : ℤ) * n) hk ≫ X.homOfLE hle = toInvOpen f ℚ a (isUnit_intCast_rat a (by exact_mod_cast ha.ne'))` using `toInvOpen_homOfLE _ _ _ _ hle`. Apply `pullSectionOn_injective_of_app h₂ _ G hG V` to reduce the goal to its premises. Introduce `W hW`. Establish `hWr : W ≤ (X.homOfLE hle).opensRange`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Scheme.opensRange_homOfLE]`. Conclude with `hW.trans hV`. Establish `hiso : IsIso ((X.homOfLE hle).app W)` using `Scheme.Hom.isIso_app _ W hWr`. Establish `hj : Function.Injective ((X.homOfLE hle).app W)` using `(ConcreteCategory.bijective_of_isIso ((X.homOfLE hle).app W)).1`. Establish `hq : Function.Injective ((toInvOpen f ℚ ((a : ℤ) * n) hk).app ((X.homOfLE hle) ⁻¹ᵁ W))` using `hinj _ hk (Dvd.dvd.mul_left (Int.natCast_dvd_natCast.mpr hmn) _) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcomp, Scheme.Hom.comp_app]`. Introduce `x y hxy`. Conclude with `hj (hq hxy)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GenericPullInj.proof (h₁ : GenericSectionsInj.Statement)
     (h₂ : PullbackBasis.Statement.{0}) : GenericPullInj.Statement := by

@@ -15,23 +15,23 @@ def ratioV (μ : Fin n → ℝ) (s : Fin n) : ℝ := ∏ s' ∈ univ.erase s, (�
 def ratioVd (μ : Fin n → ℝ) (s : Fin n) : ℝ := ∏ s' ∈ univ.erase s, (μ s - 1 - μ s') / (μ s - μ s')
 
 /- English proof (translation)
-Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `R _ _ a _ g _`. Simplify using the standard rewrite rules. Introduce `t S ht ih R _ _ a ha g hg`. Establish `hinj : ∀ x ∈ insert t S, ∀ y ∈ insert t S, a x = a y → x = y` using `fun x hx y hy h => ha (Finset.mem_coe.mpr hx) (Finset.mem_coe.mpr hy) h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `haS : Set.InjOn a ↑S` using `fun x hx y hy h => hinj x (Finset.mem_insert_of_mem hx) y (Finset.mem_insert_of_mem hy) h`. Establish `hne : ∀ s ∈ S, a t - a s ≠ 0` using `fun s hs h => ht ((hinj t (Finset.mem_insert_self t S) s (Finset.mem_insert_of_mem hs) (sub_eq_zero.mp h)) ▸ hs)`. Establish `hgS : ∀ s ∈ S, ∀ s' ∈ S, s ≠ s' → (a s' - a s) • (g s' * g s) = g s' - g s` using `fun s hs s' hs' h => hg s (Finset.mem_insert_of_mem hs) s' (Finset.mem_insert_of_mem hs') h`. Establish `hC : ∏ s ∈ S, (1 + 1 / (a t - a s)) = 1 + ∑ s ∈ S, (∏ s' ∈ S.erase s, (a s - a s' + 1) / (a s - a s')) • (1 / (a t - a s))` using `ih ℂ a haS (fun s => 1 / (a t - a s)) (fun s hs s' hs' _ => by`. Establish `h1` using `hne s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hne s' hs'`. Simplify using `only [smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`. Establish `hR` using `ih R a haS g hgS`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hts : ∀ s ∈ S, g t * g s = (1 / (a t - a s)) • (g t - g s)`. Introduce `s hs`. Establish `h'` using `hg s (Finset.mem_insert_of_mem hs) t (Finset.mem_insert_self t S) (fun h => ht (h ▸ hs))`. Rewrite using `[← h', smul_smul, one_div, inv_mul_cancel₀ (hne s hs), one_smul]`. Establish `hcs : ∀ s ∈ S, (∏ s' ∈ (insert t S).erase s, (a s - a s' + 1) / (a s - a s')) = (a s - a t + 1) / (a s - a t) * (∏ s' ∈ S.erase s, (a s - a s' + 1) / (a s - a s'))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Establish `hst : t ≠ s` using `fun h => ht (h ▸ hs)`. Rewrite using `[Finset.erase_insert_of_ne hst, Finset.prod_insert (fun h => ht (Finset.mem_of_mem_erase h))]`. Establish `hct : ∏ s' ∈ S, (a t - a s' + 1) / (a t - a s') = 1 + ∑ s ∈ S, (∏ s' ∈ S.erase s, (a s - a s' + 1) / (a s - a s')) * (1 / (a t - a s))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `hne s hs` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Use `_ = _ := by rw [hC]; simp only [smul_eq_mul]`. Establish `hper : ∀ s ∈ S, ((a s - a t + 1) / (a s - a t) * (∏ s' ∈ S.erase s, (a s - a s' + 1) / (a s - a s'))) • g s = (∏ s' ∈ S.erase s, (a s - a s' + 1) / (a s - a s')) • g s - ((∏ s' ∈ S.erase s, (a s - a s' + 1) / (a s - a s')) * (1 / (a t - a s))) • g s`. Introduce `s hs`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← sub_smul]`. Use `congr 1`. Establish `h1` using `hne s hs`. Establish `h2 : a s - a t ≠ 0` using `fun h => h1 (by linear_combination -h)`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hmul : ∀ s ∈ S, g t * ((∏ s' ∈ S.erase s, (a s - a s' + 1) / (a s - a s')) • g s) = ((∏ s' ∈ S.erase s, (a s - a s' + 1) / (a s - a s')) * (1 / (a t - a s))) • g t - ((∏ s' ∈ S.erase s, (a s - a s' + 1) / (a s - a s')) * (1 / (a t - a s))) • g s`. Introduce `s hs`. Rewrite using `[mul_smul_comm, hts s hs, smul_smul, smul_sub]`. Establish `hsum2 : ∑ s ∈ S, (∏ s' ∈ (insert t S).erase s, (a s - a s' + 1) / (a s - a s')) • g s = ∑ s ∈ S, ((a s - a t + 1) / (a s - a t) * (∏ s' ∈ S.erase s, (a s - a s' + 1) / (a s - a s'))) • g s` using `Finset.sum_congr rfl fun s hs => by rw [hcs s hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_insert ht, hR, Finset.sum_insert ht, Finset.erase_insert ht, hsum2, hct, Finset.sum_congr rfl hper, add_mul, one_mul, mul_add, mul_one, Finset.mul_sum, Finset.sum_congr rfl hmul, add_smul, one_smul, Finset.sum_smul]`. Simplify using `only [Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem prod_one_add_eq_of_resolvent {ι : Type} [DecidableEq ι] (S : Finset ι) :
     ∀ (R : Type) [CommRing R] [Algebra ℂ R] (a : ι → ℂ) (_ : Set.InjOn a S) (g : ι → R)
@@ -97,9 +97,9 @@ theorem prod_one_add_eq_of_resolvent {ι : Type} [DecidableEq ι] (S : Finset ι
     abel
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[PowerSeries.eq_inv_iff_mul_eq_one (by simp)]`. Use extensionality with `n`. Rewrite using `[mul_sub, mul_one, ← mul_assoc, mul_comm (PowerSeries.mk _) (PowerSeries.C c), mul_assoc]`. Consider the cases of `n with`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp`. Consider the case `succ n`. Rewrite using `[map_sub, PowerSeries.coeff_C_mul, PowerSeries.coeff_succ_mul_X, PowerSeries.coeff_mk, PowerSeries.coeff_mk, PowerSeries.coeff_one, if_neg (Nat.succ_ne_zero n), pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inv_one_sub_C_mul_X (c : ℂ) :
     (1 - PowerSeries.C c * PowerSeries.X)⁻¹ = PowerSeries.mk (fun k => c ^ k) := by
@@ -115,9 +115,9 @@ theorem inv_one_sub_C_mul_X (c : ℂ) :
     ring
 
 /- English proof (translation)
-Establish `hP : ∀ s, PowerSeries.constantCoeff (1 - PowerSeries.C (a s) * PowerSeries.X) ≠ 0`. Introduce `s`. Simplify using the standard rewrite rules. Establish `h` using `prod_one_add_eq_of_resolvent (Finset.univ : Finset (Fin n)) (PowerSeries ℂ) a ha.injOn (fun s => PowerSeries.X * (1 - PowerSeries.C (a s) * PowerSeries.X)⁻¹) (fun s _ t _ _ => by`. Establish `key : (1 - PowerSeries.C (a t) * PowerSeries.X)⁻¹ - (1 - PowerSeries.C (a s) * PowerSeries.X)⁻¹ = (1 - PowerSeries.C (a t) * PowerSeries.X)⁻¹ * (1 - PowerSeries.C (a s) * PowerSeries.X)⁻¹ * ((1 - PowerSeries.C (a s) * PowerSeries.X) - (1 - PowerSeries.C (a t) * PowerSeries.X))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_sub, mul_assoc, PowerSeries.inv_mul_cancel _ (hP s), mul_one, mul_comm ((1 - PowerSeries.C (a t) * PowerSeries.X)⁻¹), mul_assoc, PowerSeries.inv_mul_cancel _ (hP t), mul_one]`. Rewrite using `[← mul_sub, key, PowerSeries.smul_eq_C_mul, map_sub]`. Use the proof step `ring)`. Rewrite using `[resSeries, h, add_sub_cancel_left]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resSeries_eq_sum {n : ℕ} {a : Fin n → ℂ} (ha : Function.Injective a) :
     resSeries a = ∑ s, (∏ s' ∈ univ.erase s, (a s - a s' + 1) / (a s - a s')) •
@@ -137,7 +137,7 @@ theorem resSeries_eq_sum {n : ℕ} {a : Fin n → ℂ} (ha : Function.Injective 
   rw [resSeries, h, add_sub_cancel_left]
 
 /- English proof (translation)
-Rewrite using `[resSeries_eq_sum ha, map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_smul, inv_one_sub_C_mul_X, PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_mk, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem resSeries_coeff_succ' {n : ℕ} {a : Fin n → ℂ} (ha : Function.Injective a) (k : ℕ) :
     PowerSeries.coeff (k + 1) (resSeries a) =
@@ -148,13 +148,11 @@ theorem resSeries_coeff_succ' {n : ℕ} {a : Fin n → ℂ} (ha : Function.Injec
     smul_eq_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `only [Function.Injective, not_forall] at h`. Take `⟨x, y, hxy, hne⟩` from `h`. Distinguish the cases in `hx : x = s`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `hx` using the available equality. Use `⟨y, by simp [Ne.symm hne], ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, hxy, ho y (Ne.symm hne)]`. Distinguish the cases in `hy : y = s`. Substitute `hy` using the available equality.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨x, by simp [hx], ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, ← hxy, ho x hx]`. Conclude with `absurd (hμ (by rw [← ho x hx, ← ho y hy, hxy])) hne`. Introduce and unpack `⟨s', hs', h⟩ hinj`. Establish `hne : s' ≠ s` using `(Finset.mem_erase.mp hs').1`.
-
-Conclude with `hne (hinj (by rw [ho s' hne, hs, h]))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_injective_shift_iff {μ ν : Fin n → ℝ} (hμ : Function.Injective μ) (s : Fin n) (c : ℝ)
     (hs : ν s = μ s + c) (ho : ∀ x, x ≠ s → ν x = μ x) :
@@ -177,13 +175,13 @@ theorem not_injective_shift_iff {μ ν : Fin n → ℝ} (hμ : Function.Injectiv
     exact hne (hinj (by rw [ho s' hne, hs, h]))
 
 /- English proof (translation)
-Simplify using `[resSeries, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem resSeries_coeff_zero (a : Fin n → ℂ) : PowerSeries.coeff 0 (resSeries a) = 0 := by
   simp [resSeries, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_prod]
 
 /- English proof (translation)
-Rewrite using `[resSeries_coeff_succ' ha k]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resSeries_coeff_succ {a : Fin n → ℂ} (ha : Function.Injective a) (k : ℕ) :
     PowerSeries.coeff (k + 1) (resSeries a) = ∑ s, resid a s * a s ^ k := by
@@ -191,7 +189,7 @@ theorem resSeries_coeff_succ {a : Fin n → ℂ} (ha : Function.Injective a) (k 
   rfl
 
 /- English proof (translation)
-Simplify using `only [resid, ratioV, poleV]`. Use `push_cast`. Use `Finset.prod_congr rfl fun s' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem resid_poleV (μ : Fin n → ℝ) (s : Fin n) : resid (poleV μ) s = ((ratioV μ s : ℝ) : ℂ) := by
   simp only [resid, ratioV, poleV]
@@ -200,7 +198,7 @@ theorem resid_poleV (μ : Fin n → ℝ) (s : Fin n) : resid (poleV μ) s = ((ra
   ring
 
 /- English proof (translation)
-Simplify using `only [resid, ratioVd, poleVd]`. Use `push_cast`. Use `Finset.prod_congr rfl fun s' _ => ?_` and prove the remaining obligations. Rewrite using `[← neg_div_neg_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem resid_poleVd (μ : Fin n → ℝ) (s : Fin n) : resid (poleVd μ) s = ((ratioVd μ s : ℝ) : ℂ) := by
   simp only [resid, ratioVd, poleVd]
@@ -210,7 +208,7 @@ theorem resid_poleVd (μ : Fin n → ℝ) (s : Fin n) : resid (poleVd μ) s = ((
   ring
 
 /- English proof (translation)
-Introduce `x y h`. Apply `hμ` to reduce the goal to its premises. Simplify using `only [poleV] at h`. Establish `h'` using `Complex.ofReal_injective h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem poleV_injective {μ : Fin n → ℝ} (hμ : Function.Injective μ) : Function.Injective (poleV μ) := by
   intro x y h
@@ -220,7 +218,7 @@ theorem poleV_injective {μ : Fin n → ℝ} (hμ : Function.Injective μ) : Fun
   linarith
 
 /- English proof (translation)
-Introduce `x y h`. Apply `hμ` to reduce the goal to its premises. Simplify using `only [poleVd] at h`. Establish `h'` using `Complex.ofReal_injective h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem poleVd_injective {μ : Fin n → ℝ} (hμ : Function.Injective μ) : Function.Injective (poleVd μ) := by
   intro x y h
@@ -230,13 +228,13 @@ theorem poleVd_injective {μ : Fin n → ℝ} (hμ : Function.Injective μ) : Fu
   linarith
 
 /- English proof (translation)
-Establish `hfac : ∀ s' ∈ univ.erase s, 0 ≤ (μ s + 1 - μ s') / (μ s - μ s')`. Introduce `s' hs'`. Take `⟨m, hm⟩` from `hint s s'`. Rewrite using `[show μ s + 1 - μ s' = (μ s - μ s') + 1 by ring, hm]`. Establish `hm0 : m ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hm` using `[h0, Int.cast_zero, sub_eq_zero]`. Conclude with `(Finset.mem_erase.mp hs').1 (hμ hm).symm`. Break down `lt_or_gt_of_ne hm0 with h | h` into its components or cases. Establish `h' : (m : ℝ) ≤ -1` using `by exact_mod_cast (show m ≤ -1 by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `div_nonneg_of_nonpos (by linarith) (by linarith)`. Establish `h' : (1 : ℝ) ≤ m` using `by exact_mod_cast h`. Conclude with `div_nonneg (by linarith) (by linarith)`. Use `⟨Finset.prod_nonneg hfac, ?_⟩` and prove the remaining obligations. Rewrite using `[ratioV, Finset.prod_eq_zero_iff, not_injective_shift_iff hμ s 1 (by simp) (fun x hx => by simp [Pi.single_apply, hx])]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `exists_congr fun s' => and_congr_right fun hs' => ?_` and prove the remaining obligations. Establish `hd : μ s - μ s' ≠ 0` using `sub_ne_zero.mpr (fun h => (Finset.mem_erase.mp hs').1 (hμ h).symm)`. Rewrite using `[div_eq_zero_iff, or_iff_left hd, sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ratioV_nonneg {μ : Fin n → ℝ} (hμ : Function.Injective μ) (hint : ∀ a b, ∃ m : ℤ, μ a - μ b = (m : ℝ))
     (s : Fin n) : 0 ≤ ratioV μ s ∧ (ratioV μ s = 0 ↔ ¬ Function.Injective (μ + Pi.single s 1)) := by
@@ -261,13 +259,13 @@ theorem ratioV_nonneg {μ : Fin n → ℝ} (hμ : Function.Injective μ) (hint :
   rw [div_eq_zero_iff, or_iff_left hd, sub_eq_zero]
 
 /- English proof (translation)
-Establish `hfac : ∀ s' ∈ univ.erase s, 0 ≤ (μ s - 1 - μ s') / (μ s - μ s')`. Introduce `s' hs'`. Take `⟨m, hm⟩` from `hint s s'`. Rewrite using `[show μ s - 1 - μ s' = (μ s - μ s') - 1 by ring, hm]`. Establish `hm0 : m ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hm` using `[h0, Int.cast_zero, sub_eq_zero]`. Conclude with `(Finset.mem_erase.mp hs').1 (hμ hm).symm`. Break down `lt_or_gt_of_ne hm0 with h | h` into its components or cases. Establish `h' : (m : ℝ) ≤ -1` using `by exact_mod_cast (show m ≤ -1 by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `div_nonneg_of_nonpos (by linarith) (by linarith)`. Establish `h' : (1 : ℝ) ≤ m` using `by exact_mod_cast h`. Conclude with `div_nonneg (by linarith) (by linarith)`. Use `⟨Finset.prod_nonneg hfac, ?_⟩` and prove the remaining obligations. Rewrite using `[ratioVd, Finset.prod_eq_zero_iff, not_injective_shift_iff hμ s (-1) (by simp [sub_eq_add_neg]) (fun x hx => by simp [Pi.single_apply, hx])]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `exists_congr fun s' => and_congr_right fun hs' => ?_` and prove the remaining obligations. Establish `hd : μ s - μ s' ≠ 0` using `sub_ne_zero.mpr (fun h => (Finset.mem_erase.mp hs').1 (hμ h).symm)`. Rewrite using `[div_eq_zero_iff, or_iff_left hd]`. Apply the tactic sequence `constructor <;> intro h <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ratioVd_nonneg {μ : Fin n → ℝ} (hμ : Function.Injective μ) (hint : ∀ a b, ∃ m : ℤ, μ a - μ b = (m : ℝ))
     (s : Fin n) : 0 ≤ ratioVd μ s ∧ (ratioVd μ s = 0 ↔ ¬ Function.Injective (μ - Pi.single s 1)) := by
@@ -294,11 +292,11 @@ theorem ratioVd_nonneg {μ : Fin n → ℝ} (hμ : Function.Injective μ) (hint 
   constructor <;> intro h <;> linarith
 
 /- English proof (translation)
-Rewrite using `[ratioVd, ratioV, ← Finset.prod_mul_distrib]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `s' hs'`. Establish `hne : s' ≠ s` using `(Finset.mem_erase.mp hs').1`. Establish `h1 : μ s - μ s' ≠ 0` using `sub_ne_zero.mpr (fun h => hne (hμ h).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : μ s + 1 - μ s' ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Apply `hμs` to reduce the goal to its premises. Simplify using `[Pi.single_apply, hne]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Pi.add_apply, Pi.single_eq_same, Pi.single_apply, hne, if_false, add_zero]`. Rewrite using `[show μ s + 1 - 1 - μ s' = μ s - μ s' by ring]`. Clear the denominators using the available nonvanishing facts.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem ratioVd_add_single_mul {μ : Fin n → ℝ} (s : Fin n) (hμ : Function.Injective μ)
     (hμs : Function.Injective (μ + Pi.single s 1)) :

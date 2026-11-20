@@ -17,7 +17,7 @@ def SsCmp {K Ω : Type} [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsA
   AbW x ∨ AbW y → ∀ s, x.charPol s = y.charPol s
 
 /- English proof (translation)
-Introduce `_ _` and use `by rw [e]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SsCmp.of_eq {K Ω : Type} [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] {A : ValuationSubring Ω}
     {v : HeightOneSpectrum (𝓞 K)} {h : IsPlaceOver A v} {x y : WD h} (e : x = y) : SsCmp x y := fun _ _ => by rw [e]
@@ -55,7 +55,7 @@ def CsdSs : Prop :=
             SsCmp (wdAt P ι Bw h hj (R.comp (Dec (F := E) A).subtype)) (rc (algNorm σ))
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hd hc`. Take `⟨R, h1, h2, h3, h4⟩` from `H E Ω l ι a ha π hd hc`. Use `⟨R, h1, h2, h3, fun P AI hT w A h O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations. Conclude with `⟨(h4 P AI hT w A h O Bw hj).1, fun σ hσ rc hrc => SsCmp.of_eq ((h4 P AI hT w A h O Bw hj).2 σ hσ rc hrc)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem csdSs_of_full (H : GlobalTheory.Published.CaraianiLocalGlobalDual) : CsdSs := by
   intro E Ω _ _ _ _ _ _ l _ ι a ha π hd hc

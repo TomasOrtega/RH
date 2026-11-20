@@ -19,23 +19,23 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d)
 namespace Bq
 /- English proof (translation)
-Establish `hQx : ∀ r, r ≠ Sum.inr L.i₀ → QE (E` using `E) d.n ε r (Sum.inl L.i₀) = 0 := by`. Introduce `r hr`. Break down `r with i | i` into its components or cases. Simplify using `[QE]`. Establish `hi : i ≠ L.i₀` using `fun h => hr (by rw [h])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[QE, Matrix.one_apply, hi]`. Establish `hQx' : ∀ a', QE (E` using `E) d.n ε (Sum.inl L.i₀) (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a') = 0 := by`. Introduce `a'`. Break down `a' with k | k` into its components or cases. Simplify using `[QE, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[QE, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, Matrix.one_apply, Ne.symm (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L k)]`. Establish `hne : ∀ a', _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a' ≠ Sum.inr L.i₀`. Introduce `a'`. Break down `a' with k | k` into its components or cases. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L k]`. Establish `hQQ : ∀ a' c', QE (E` using `E) d.n ε (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a') (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L c') = QE L.n ε a' c' := by`. Introduce `a' c'`. Apply the tactic sequence `rcases a' with k | k <;> rcases c' with k' | k' <;> simp [QE, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, Matrix.one_apply, L.inj.eq_iff]`. Use `Matrix.ext fun a c => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrFun (congrFun hM (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L a)) (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L c)`. Rewrite using `[← hQQ, ← h]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.submatrix_apply, Finset.sum_mul]`. Use `symm`. Rewrite using `[Bq.sum_emb (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L) (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_inj_k L)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[Bq.sum_emb (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L) (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_inj_k L)]`. Conclude with `Finset.sum_congr rfl fun a' _ => by rw [hQQ]`. Introduce `r hr`. Establish `hm` using `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.mem_out_k L hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hm`. Break down `hm with rfl | rfl` into its components or cases. Rewrite using `[hQx', mul_zero, zero_mul]`. Rewrite using `[hy _ (hne a), zero_mul, zero_mul]`. Introduce `s hs`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm` using `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.mem_out_k L hs`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hm`. Break down `hm with rfl | rfl` into its components or cases. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Distinguish the cases in `hr : r = Sum.inr L.i₀`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hr` using the available equality. Rewrite using `[hy _ (hne a), zero_mul, zero_mul]`. Rewrite using `[hQx r hr, mul_zero, zero_mul]`. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hy _ (hne c), map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockH_form_k {ε : ℤˣ} {M : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E}
     (hM : Mᵀ * QE d.n ε * M.map σ = QE d.n ε)

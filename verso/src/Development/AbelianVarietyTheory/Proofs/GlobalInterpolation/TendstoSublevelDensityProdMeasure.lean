@@ -11,17 +11,17 @@ namespace GlobalTheory.SublevelDensity
 open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal NNReal in
 /- English proof (translation)
-Establish `hS : MeasurableSet {p : A × B | n p.1 + g p.2 < r}` using `measurableSet_lt ((hn.comp measurable_fst).add (hg.comp measurable_snd)) measurable_const`. Establish `hS' : MeasurableSet {p : A' × B | n' p.1 + g p.2 < r}` using `measurableSet_lt ((hn'.comp measurable_fst).add (hg.comp measurable_snd)) measurable_const`. Rewrite using `[Measure.prod_apply_symm hS, Measure.prod_apply_symm hS']`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.preimage_setOf_eq]`. Distinguish the cases in `hy : r ≤ g y`. Establish `e1 : {x | n x + g y < r} = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_lt]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Combine the linear relations using `[hn0 x]`. Establish `e2 : {x | n' x + g y < r} = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_lt]`. Combine the linear relations using `[hn0' x]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[e1, e2]`. Simplify using the standard rewrite rules. Use `push_neg at hy`. Establish `e1 : {x | n x + g y < r} = {x | n x < r - g y}`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq]`. Apply the tactic sequence `constructor <;> intro hx <;> linarith`. Establish `e2 : {x | n' x + g y < r} = {x | n' x < r - g y}`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> intro hx <;> linarith`. Rewrite using `[e1, e2]`. Conclude with `h _ (by linarith) (by linarith [hg0 y])`. Use `_ = b * ∫⁻ y, m' ((fun x => (x, y)) ⁻¹' {p : A' × B | n' p.1 + g p.2 < r}) ∂μ := lintegral_const_mul _ (measurable_measure_prodMk_right hS')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mul_prod_sublevel_add_le_of_fst_sublevel_le {A A' B : Type*} [MeasurableSpace A] [MeasurableSpace A']
     [MeasurableSpace B] (m : Measure A) (m' : Measure A') (μ : Measure B) [SFinite m]
@@ -69,17 +69,17 @@ private lemma mul_prod_sublevel_add_le_of_fst_sublevel_le {A A' B : Type*} [Meas
 open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal NNReal in
 /- English proof (translation)
-Establish `hS : MeasurableSet {p : A × B | g p.1 + n p.2 < r}` using `measurableSet_lt ((hg.comp measurable_fst).add (hn.comp measurable_snd)) measurable_const`. Establish `hS' : MeasurableSet {p : A × B' | g p.1 + n' p.2 < r}` using `measurableSet_lt ((hg.comp measurable_fst).add (hn'.comp measurable_snd)) measurable_const`. Rewrite using `[Measure.prod_apply hS, Measure.prod_apply hS']`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.preimage_setOf_eq]`. Distinguish the cases in `hx : r ≤ g x`. Establish `e1 : {y | g x + n y < r} = ∅`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_lt]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Combine the linear relations using `[hn0 y]`. Establish `e2 : {y | g x + n' y < r} = ∅`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_lt]`. Combine the linear relations using `[hn0' y]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[e1, e2]`. Simplify using the standard rewrite rules. Use `push_neg at hx`. Establish `e1 : {y | g x + n y < r} = {y | n y < r - g x}`. Use extensionality with `y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq]`. Apply the tactic sequence `constructor <;> intro hy <;> linarith`. Establish `e2 : {y | g x + n' y < r} = {y | n' y < r - g x}`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> intro hy <;> linarith`. Rewrite using `[e1, e2]`. Conclude with `h _ (by linarith) (by linarith [hg0 x])`. Use `_ = b * ∫⁻ x, m' (Prod.mk x ⁻¹' {p : A × B' | g p.1 + n' p.2 < r}) ∂μ := lintegral_const_mul _ (measurable_measure_prodMk_left hS')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mul_prod_sublevel_add_le_of_snd_sublevel_le {A B B' : Type*} [MeasurableSpace A] [MeasurableSpace B]
     [MeasurableSpace B'] (μ : Measure A) (m : Measure B) (m' : Measure B') [SFinite m]
@@ -128,39 +128,35 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal NNReal in
 
 /- English proof (translation)
-Introduce `A₁ E₁ A₂ E₂ _ _ _ _ m₁ l₁ m₂ l₂ _ _ _ _ n₁ N₁ n₂ N₂ c₁ c₂ hn₁ hN₁ hn₂ hN₂ hn₁0 hN₁0 hn₂0 hN₂0 hc₁ hc₂ hl₁ hl₂ h₁ h₂`. Establish `hG : ∀ r : ℝ, 0 < r → (l₁.prod l₂) {p | N₁ p.1 + N₂ p.2 < r} ≠ 0 ∧ (l₁.prod l₂) {p | N₁ p.1 + N₂ p.2 < r} ≠ ⊤`. Introduce `r hr`. Prove the components needed by the constructor for the conclusion. Establish `hsub : {x | N₁ x < r / 2} ×ˢ {y | N₂ y < r / 2} ⊆ {p : E₁ × E₂ | N₁ p.1 + N₂ p.2 < r}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, y⟩ ⟨hx, hy⟩`. Simplify using `only [Set.mem_setOf_eq] at hx hy ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use `ne_of_gt (lt_of_lt_of_le ?_ (measure_mono hsub))` and prove the remaining obligations. Rewrite using `[Measure.prod_prod]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.mul_pos (hl₁ _ (half_pos hr)).1 (hl₂ _ (half_pos hr)).1`. Establish `hsub : {p : E₁ × E₂ | N₁ p.1 + N₂ p.2 < r} ⊆ {x | N₁ x < r} ×ˢ {y | N₂ y < r}`. Introduce and unpack `⟨x, y⟩ hxy`. Simplify using `only [Set.mem_setOf_eq, Set.mem_prod] at hxy ⊢`. Apply the tactic sequence `constructor <;> linarith [hN₁0 x, hN₂0 y]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `ne_top_of_le_ne_top ?_ (measure_mono hsub)` and prove the remaining obligations. Rewrite using `[Measure.prod_prod]`. Conclude with `ENNReal.mul_ne_top (hl₁ r hr).2 (hl₂ r hr).2`. Rewrite using `[tendsto_order]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `hc0 : c₁ * c₂ ≠ 0` using `(lt_of_le_of_lt bot_le ha).ne'`. Establish `hc₁0 : c₁ ≠ 0` using `left_ne_zero_of_mul hc0`. Establish `hc₂0 : c₂ ≠ 0` using `right_ne_zero_of_mul hc0`. Establish `hlim : Tendsto (fun t : ℝ≥0∞ => (c₁ - t) * (c₂ - t)) (𝓝[>] 0) (𝓝 (c₁ * c₂))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1` using `(ENNReal.continuous_sub_left hc₁).tendsto 0`. Establish `t2` using `(ENNReal.continuous_sub_left hc₂).tendsto 0`. Simplify using `only [tsub_zero] at t1 t2`. Conclude with `ENNReal.Tendsto.mul (t1.mono_left nhdsWithin_le_nhds) (Or.inr hc₂) (t2.mono_left nhdsWithin_le_nhds) (Or.inr hc₁)`. Take `⟨t, ht, htpos⟩` from `((hlim.eventually (lt_mem_nhds ha)).and self_mem_nhdsWithin).exists`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htpos' : (0 : ℝ≥0∞) < t` using `htpos`. Establish `ha₁ : c₁ - t < c₁` using `ENNReal.sub_lt_self hc₁ hc₁0 htpos'.ne'`. Establish `ha₂ : c₂ - t < c₂` using `ENNReal.sub_lt_self hc₂ hc₂0 htpos'.ne'`. Take `⟨δ₁, hδ₁, hsub₁⟩` from `mem_nhdsGT_iff_exists_Ioo_subset.1 ((tendsto_order.1 h₁).1 _ ha₁)`. Take `⟨δ₂, hδ₂, hsub₂⟩` from `mem_nhdsGT_iff_exists_Ioo_subset.1 ((tendsto_order.1 h₂).1 _ ha₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hδ : (0 : ℝ) < min δ₁ δ₂` using `lt_min hδ₁ hδ₂`. Use `filter_upwards [Ioo_mem_nhdsGT hδ] with r hr`. Take `⟨hr0, hrδ⟩` from `hr`. Establish `k₁ : ∀ s, 0 < s → s ≤ r → (c₁ - t) * l₁ {x | N₁ x < s} ≤ 1 * m₁ {x | n₁ x < s}`. Introduce `s hs hsr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs' : (c₁ - t) < m₁ {x | n₁ x < s} / l₁ {x | N₁ x < s}` using `hsub₁ ⟨hs, lt_of_le_of_lt hsr (lt_of_lt_of_le hrδ (min_le_left _ _))⟩`. Rewrite using `[one_mul]`. Conclude with `((ENNReal.lt_div_iff_mul_lt (Or.inl (hl₁ s hs).1) (Or.inl (hl₁ s hs).2)).1 hs').le`. Establish `k₂ : ∀ s, 0 < s → s ≤ r → (c₂ - t) * l₂ {x | N₂ x < s} ≤ 1 * m₂ {x | n₂ x < s}`. Introduce `s hs hsr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs' : (c₂ - t) < m₂ {x | n₂ x < s} / l₂ {x | N₂ x < s}` using `hsub₂ ⟨hs, lt_of_le_of_lt hsr (lt_of_lt_of_le hrδ (min_le_right _ _))⟩`. Rewrite using `[one_mul]`. Conclude with `((ENNReal.lt_div_iff_mul_lt (Or.inl (hl₂ s hs).1) (Or.inl (hl₂ s hs).2)).1 hs').le`. Establish `s₁` using `mul_prod_sublevel_add_le_of_fst_sublevel_le l₁ m₁ m₂ N₁ n₁ n₂ hN₁ hn₁ hn₂ hN₁0 hn₁0 hn₂0 _ 1 r k₁`. Establish `s₂` using `mul_prod_sublevel_add_le_of_snd_sublevel_le l₁ l₂ m₂ N₁ N₂ n₂ hN₁ hN₂ hn₂ hN₁0 hN₂0 hn₂0 _ 1 r k₂`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `s₁`, `s₂` using `[one_mul]`. Establish `key : ((c₁ - t) * (c₂ - t)) * (l₁.prod l₂) {p | N₁ p.1 + N₂ p.2 < r} ≤ (m₁.prod m₂) {p | n₁ p.1 + n₂ p.2 < r}`. Combine the equalities or inequalities in the displayed calculation. Conclude with `lt_of_lt_of_le ht ((ENNReal.le_div_iff_mul_le (Or.inl (hG r hr0).1) (Or.inl (hG r hr0).2)).2 key)`. Introduce `b hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlim : Tendsto (fun t : ℝ≥0∞ => (c₁ + t) * (c₂ + t)) (𝓝[>] 0) (𝓝 (c₁ * c₂))`. Establish `t1 : Tendsto (fun t : ℝ≥0∞ => c₁ + t) (𝓝 0) (𝓝 (c₁ + 0))` using `(continuous_const.add continuous_id).tendsto 0`. Establish `t2 : Tendsto (fun t : ℝ≥0∞ => c₂ + t) (𝓝 0) (𝓝 (c₂ + 0))` using `(continuous_const.add continuous_id).tendsto 0`. Rewrite `t1`, `t2` using `[add_zero]`. Conclude with `ENNReal.Tendsto.mul (t1.mono_left nhdsWithin_le_nhds) (Or.inr hc₂) (t2.mono_left nhdsWithin_le_nhds) (Or.inr hc₁)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, htpos⟩` from `((hlim.eventually (gt_mem_nhds hb)).and self_mem_nhdsWithin).exists`. Establish `htpos' : (0 : ℝ≥0∞) < t` using `htpos`. Establish `hb₁ : c₁ < c₁ + t` using `ENNReal.lt_add_right hc₁ htpos'.ne'`. Establish `hb₂ : c₂ < c₂ + t` using `ENNReal.lt_add_right hc₂ htpos'.ne'`. Take `⟨δ₁, hδ₁, hsub₁⟩` from `mem_nhdsGT_iff_exists_Ioo_subset.1 ((tendsto_order.1 h₁).2 _ hb₁)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨δ₂, hδ₂, hsub₂⟩` from `mem_nhdsGT_iff_exists_Ioo_subset.1 ((tendsto_order.1 h₂).2 _ hb₂)`. Establish `hδ : (0 : ℝ) < min δ₁ δ₂` using `lt_min hδ₁ hδ₂`. Use `filter_upwards [Ioo_mem_nhdsGT hδ] with r hr`. Take `⟨hr0, hrδ⟩` from `hr`. Establish `k₁ : ∀ s, 0 < s → s ≤ r → 1 * m₁ {x | n₁ x < s} ≤ (c₁ + t) * l₁ {x | N₁ x < s}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s hs hsr`. Establish `hs' : m₁ {x | n₁ x < s} / l₁ {x | N₁ x < s} < c₁ + t` using `hsub₁ ⟨hs, lt_of_le_of_lt hsr (lt_of_lt_of_le hrδ (min_le_left _ _))⟩`. Rewrite using `[one_mul]`. Conclude with `((ENNReal.div_lt_iff (Or.inl (hl₁ s hs).1) (Or.inl (hl₁ s hs).2)).1 hs').le`. Establish `k₂ : ∀ s, 0 < s → s ≤ r → 1 * m₂ {x | n₂ x < s} ≤ (c₂ + t) * l₂ {x | N₂ x < s}`.
-
-Introduce `s hs hsr`. Establish `hs' : m₂ {x | n₂ x < s} / l₂ {x | N₂ x < s} < c₂ + t` using `hsub₂ ⟨hs, lt_of_le_of_lt hsr (lt_of_lt_of_le hrδ (min_le_right _ _))⟩`. Rewrite using `[one_mul]`. Conclude with `((ENNReal.div_lt_iff (Or.inl (hl₂ s hs).1) (Or.inl (hl₂ s hs).2)).1 hs').le`. Establish `s₁` using `mul_prod_sublevel_add_le_of_fst_sublevel_le m₁ l₁ m₂ n₁ N₁ n₂ hn₁ hN₁ hn₂ hn₁0 hN₁0 hn₂0 1 _ r k₁`.
-
-Establish `s₂` using `mul_prod_sublevel_add_le_of_snd_sublevel_le l₁ m₂ l₂ N₁ n₂ N₂ hN₁ hn₂ hN₂ hN₁0 hn₂0 hN₂0 1 _ r k₂`. Rewrite `s₁`, `s₂` using `[one_mul]`. Establish `key : (m₁.prod m₂) {p | n₁ p.1 + n₂ p.2 < r} ≤ ((c₁ + t) * (c₂ + t)) * (l₁.prod l₂) {p | N₁ p.1 + N₂ p.2 < r}`. Combine the equalities or inequalities in the displayed calculation. Conclude with `lt_of_le_of_lt (ENNReal.div_le_of_le_mul key) ht`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SublevelDensity.tendsto_prod_density : ∀ (A₁ E₁ A₂ E₂ : Type) [MeasurableSpace A₁] [MeasurableSpace E₁] [MeasurableSpace A₂] [MeasurableSpace E₂] (m₁ : Measure A₁) (l₁ : Measure E₁) (m₂ : Measure A₂) (l₂ : Measure E₂) [SFinite m₁] [SFinite l₁] [SFinite m₂] [SFinite l₂] (n₁ : A₁ → ℝ) (N₁ : E₁ → ℝ) (n₂ : A₂ → ℝ) (N₂ : E₂ → ℝ) (c₁ c₂ : ℝ≥0∞), Measurable n₁ → Measurable N₁ → Measurable n₂ → Measurable N₂ → (∀ x, 0 ≤ n₁ x) → (∀ x, 0 ≤ N₁ x) → (∀ x, 0 ≤ n₂ x) → (∀ x, 0 ≤ N₂ x) → c₁ ≠ ⊤ → c₂ ≠ ⊤ → (∀ r : ℝ, 0 < r → l₁ {x | N₁ x < r} ≠ 0 ∧ l₁ {x | N₁ x < r} ≠ ⊤) → (∀ r : ℝ, 0 < r → l₂ {x | N₂ x < r} ≠ 0 ∧ l₂ {x | N₂ x < r} ≠ ⊤) → Tendsto (fun r : ℝ => m₁ {x | n₁ x < r} / l₁ {x | N₁ x < r}) (𝓝[>] 0) (𝓝 c₁) → Tendsto (fun r : ℝ => m₂ {x | n₂ x < r} / l₂ {x | N₂ x < r}) (𝓝[>] 0) (𝓝 c₂) → Tendsto (fun r : ℝ => (m₁.prod m₂) {p | n₁ p.1 + n₂ p.2 < r} / (l₁.prod l₂) {p | N₁ p.1 + N₂ p.2 < r}) (𝓝[>] 0) (𝓝 (c₁ * c₂)) := by
   intro A₁ E₁ A₂ E₂ _ _ _ _ m₁ l₁ m₂ l₂ _ _ _ _ n₁ N₁ n₂ N₂ c₁ c₂ hn₁ hN₁ hn₂ hN₂ hn₁0 hN₁0

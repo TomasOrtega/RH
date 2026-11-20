@@ -15,9 +15,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.PsiUnrAlmostAll
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `hne : differentIdeal ℤ (𝓞 F) ≠ 0` using `by rw [Ideal.zero_eq_bot]; exact differentIdeal_ne_bot`. Use `Filter.eventually_cofinite.2 ((Ideal.finite_factors hne).subset fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hv (GlobalTheory.StdCharUnrF.psiUnr_of_not_le F B.ψ hψ v fun hle => h (Ideal.dvd_iff_le.2 hle))`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E)

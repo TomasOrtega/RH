@@ -11,11 +11,9 @@ namespace GlobalTheory.SqZeroPt
 open GlobalTheory.LieVB GlobalTheory.Conormal
 
 /- English proof (translation)
-Rewrite using `[show (cotMap z h).app ⊤ (cst O c • w) = cst O c • (cotMap z h).app ⊤ w from (QCoh.appLinear (cotMap z h) ⊤).map_smul (cst O c) w]`. Take `⟨b, hb⟩` from `(isChart O M).d_surjective (sec_hom (zeroSec O M)) ((cotMap z h).app ⊤ w)`. Rewrite using `[← hb]`. Establish `key : cst O c • d (sec_hom (zeroSec O M)) (isChart O M).le b = d (sec_hom (zeroSec O M)) (isChart O M).le ((TM O M).hom.appLE ⊤ ⊤ le_top (cst O c) * b)`. Rewrite using `[d_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `erw [d_base (sec_hom (zeroSec O M)) (isChart O M).le le_top (cst O c)]`. Rewrite using `[smul_zero, add_zero]`. Use `erw [appLE_base (sec_hom (zeroSec O M)) _ _ le_rfl]`. Both sides reduce to the same expression. Rewrite using `[key, kappa_d, kappa_d, map_mul, toTsze_base, TrivSqZeroExt.snd_mul]`.
-
-Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kappa_cotMap_cst_smul (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M]
     [Module Oᵐᵒᵖ M] [IsCentralScalar O M] (A : Over (Sp O)) [GrpObj A] (z : TM O M ⟶ A)
@@ -36,7 +34,7 @@ theorem kappa_cotMap_cst_smul (O : Type) [CommRing O] (M : Type) [AddCommGroup M
   simp [TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-The claim follows from `kappa_cotMap_cst_smul O M A z h c w`.
+A detailed English derivation is pending.
 -/
 theorem Phi_smul (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M]
     [IsCentralScalar O M] (A : Over (Sp O)) [GrpObj A] (z : TM O M ⟶ A)

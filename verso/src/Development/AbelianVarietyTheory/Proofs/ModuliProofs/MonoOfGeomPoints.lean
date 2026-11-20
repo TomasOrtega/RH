@@ -19,11 +19,9 @@ open GlobalTheory.ZM
 namespace GlobalTheory.FibreEmbed
 
 /- English proof (translation)
-Establish `hu : FormallyUnramified f` using `TangentCrit.formallyUnramified_of_tangent f h₂`. Establish `hs : Surjective (pullback.diagonal f)`. Use `((tfae_universallyInjective f).out 1 3).1 fun (k : Type) [Field k] y y' e => ?_` and prove the remaining obligations. Set `x : Sp (AlgebraicClosure k) ⟶ Sp k` to `spMap (algebraMap k (AlgebraicClosure k))`. Establish `: Surjective x` using `⟨fun z => ⟨(default : PrimeSpectrum (AlgebraicClosure k)), Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Epi x` using `Flat.epi_of_flat_of_surjective x`. Use `(cancel_epi x).1 (h₁ _ _ _ ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg (x ≫ ·) e`. Establish `: IsIso (pullback.diagonal f)` using `(isIso_iff_isOpenImmersion_and_surjective _).2 ⟨inferInstance, hs⟩`.
-
-Conclude with `(pullback.isIso_diagonal_iff f).1 this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_of_geom_points {X Y : Scheme.{0}} (f : X ⟶ Y) [LocallyOfFiniteType f]
     (h₁ : ∀ (k : Type) [Field k] [IsAlgClosed k] (y y' : Sp k ⟶ X), y ≫ f = y' ≫ f → y = y')
@@ -44,7 +42,7 @@ theorem mono_of_geom_points {X Y : Scheme.{0}} (f : X ⟶ Y) [LocallyOfFiniteTyp
   exact (pullback.isIso_diagonal_iff f).1 this
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (h : B →+* C) :
     spMap h ≫ spMap f = spMap (h.comp f) := by
@@ -52,30 +50,30 @@ theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-The claim follows from `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem sp_id {A : Type} [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := Spec.map_id _
 
 /- English proof (translation)
-Introduce `R σ _ _ X s M th hM hs H`. Take `⟨P, sP, MP, thP, -, hP, -⟩` from `GlobalTheory.T.exists_projCoordRepresentation_homogeneousIdeal_flat R σ ⊥ 0 (by`. Introduce `F hF e`. Rewrite `hF` using `[Ideal.mem_bot]`. Simplify using `[hF])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hPp : IsProper sP` using `(GlobalTheory.T.isProj_proper_relAmple_of_projectiveCoordinateRep R σ ⊥ (Over.mk sP) MP thP hP).2.1`. Take `⟨f, hf, -, hfc, -⟩` from `GlobalTheory.T.exists_scheme_map_of_projective_coordinates R σ ⊥ P X sP s MP M thP th hP hM (by`. Introduce `R' _ β y v hy hv`. Use `⟨?_, fun F hF => by rw [Ideal.mem_bot] at hF; simp [hF]⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Use `letI := Ideal.Quotient.field m`. Set `K` to `AlgebraicClosure (R' ⧸ m)`. Set `φ : R' →+* K` to `(algebraMap (R' ⧸ m) K).comp (Ideal.Quotient.mk m)`. Take `⟨X', π, s', M', th', I, hpb, hrep, hc⟩` from `H K (φ.comp β)`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique _ _ _ _ _ _ _ hM hv).1 K φ`. Establish `e : (spMap φ ≫ y) ≫ s = 𝟙 _ ≫ spMap (φ.comp β)`. Rewrite using `[Category.assoc, hy, sp_comp, Category.id_comp]`. Establish `h2` using `(hrep.2.1 K (RingHom.id K) (hpb.lift _ _ e) _ (by rw [hpb.lift_snd, sp_id]) ((hc K _ _).2 (by rw [hpb.lift_fst]; exact h1))).1`. Establish `h3 : Ideal.span (Set.range fun i => φ (v i)) = ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.span_eq_bot]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `: Ideal.Quotient.mk m (v i) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (hle (Ideal.subset_span ⟨i, rfl⟩))`. Simplify using `[φ, this]`. Conclude with `bot_ne_top (h3.symm.trans h2))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∀ (K : Type) [Field K] [IsAlgClosed K] (T : Type) [CommRing T] [IsLocalRing T] (c : K →+* T) (x : Sp K ⟶ Sp R) (y y' : Sp T ⟶ X), y ≫ s = spMap c ≫ x → y ≫ f = y' ≫ f → y = y'`. Introduce `K _ _ T _ _ c x y y' hy e`. Take `⟨x, rfl⟩ : ∃ g : R →+* K, spMap g = x` from `⟨(Spec.preimage x).hom, Spec.map_preimage x⟩`. Establish `hy' : y' ≫ s = spMap c ≫ spMap x`. Rewrite using `[← hy, ← hf, ← Category.assoc, ← e, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨X', π, s', M', th', I, hpb, hrep, hc⟩` from `H K x`. Take `⟨v, hv⟩` from `(GlobalTheory.T.sectionCoordinateVector_exists_locally X M σ th hM).1 T y`. Establish `hv' : SecCoord M th y' v` using `(hfc T y' v).2 (e ▸ (hfc T y v).1 hv)`. Establish `a1 : SecCoord M' th' (hpb.lift _ _ hy) v` using `(hc T _ _).2 (by rw [hpb.lift_fst]; exact hv)`. Establish `a2 : SecCoord M' th' (hpb.lift _ _ hy') v` using `(hc T _ _).2 (by rw [hpb.lift_fst]; exact hv')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u1, u2⟩` from `hrep.2.1 T c _ v (hpb.lift_snd _ _ hy) a1`. Use `(hrep.2.2 T c v u1 u2).unique ⟨hpb.lift_snd _ _ hy, a1⟩ ⟨hpb.lift_snd _ _ hy', a2⟩` as an intermediate fact. Rewrite using `[← hpb.lift_fst _ _ hy, this, hpb.lift_fst]`. Establish `: IsProper (f ≫ sP)` using `hf ▸ hs`. Establish `: IsProper f` using `IsProper.of_comp f sP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : Mono f`. Use `mono_of_geom_points f (fun k _ _ y y' e => key k k (RingHom.id k) (y ≫ s) y y' ?_ e) fun k _ _ w hw => key k (DualNumber k) (algebraMap _ _) (TangentCrit.dualPt k ≫ w ≫ s) _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[sp_id, Category.id_comp]`. Use `congrArg (· ≫ sP) hw` as an intermediate fact. Simplify `this` using `only [Category.assoc, hf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hw` using `only [Category.assoc]`. Establish `hci : IsClosedImmersion f` using `(IsClosedImmersion.iff_isProper_and_mono f).2 ⟨‹_›, hm⟩`. Use `GlobalTheory.T.isProjectiveCoordinateRepresentation_closedSubscheme R σ ⊥ P X sP MP thP f M th hP hci hM hfc` as an intermediate fact. Rewrite `this` using `[hf]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem projRep_of_fibres : ∀ (R σ : Type) [CommRing R] [Finite σ] (X : Scheme.{0}) (s : X ⟶ Sp R) (M : LB X) (th : σ → M.Sec), M.IsLB → IsProper s → (∀ (K : Type) [Field K] [IsAlgClosed K] (x : R →+* K), ∃ (X' : Scheme.{0}) (π : X' ⟶ X) (s' : X' ⟶ Sp K) (M' : LB X') (th' : σ → M'.Sec) (I : Ideal (MvPolynomial σ K)), IsPullback π s' s (spMap x) ∧ ProjRep I s' M' th' ∧ ∀ (T : Type) [CommRing T] (y : Sp T ⟶ X') (w : σ → T), SecCoord M' th' y w ↔ SecCoord M th (y ≫ π) w) → ProjRep (idealOf s M th (𝟙 X)) s M th := by
   intro R σ _ _ X s M th hM hs H

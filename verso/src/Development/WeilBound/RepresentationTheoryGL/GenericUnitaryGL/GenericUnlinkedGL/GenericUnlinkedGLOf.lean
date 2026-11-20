@@ -12,7 +12,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 namespace GlobalTheory.RgGu
 
 /- English proof (translation)
-Introduce `N V _ _ π hs hi`. Establish `hG : GlobalTheory.Published.GeometricLemma` using `GlobalTheory.T.geometricLemma_of_bzFiniteness_of_filtration GlobalTheory.T.bernstein_zelevinsky_finiteness PositivityTheory.Geo.geometricLemmaFiltration`. Take `⟨s, h⟩` from `GlobalTheory.CompanionTheory.Hypotheses₂.TD.exists_hasSupport GlobalTheory.T.bernstein_zelevinsky_finiteness hG (IrrGL.of π hs hi)`. Conclude with `⟨s, h.of_equiv (IrrGL.equivOf π hs hi).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem suppExists (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     SuppExists k := by
@@ -22,7 +22,7 @@ theorem suppExists (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [I
   exact ⟨s, h.of_equiv (IrrGL.equivOf π hs hi).symm⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ N V _ _ π hs hi hg`. Take `⟨s, hsupp⟩` from `hS k N V π hs hi`. Establish `hsum : (s.map Sigma.fst).sum = N` using `by simpa using hsupp.sum_fst`. Take `⟨h, Δ, x, hd, hΔ, hL, hx, hxg⟩` from `hR k N s (fun y hy => hsupp.isCusp hy) hsum`. Conclude with `⟨h, Δ, x, hd, hΔ, hL, hU k N s V _ π (prodIrr x hd) hsupp hx hg hxg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem genericUnlinkedGL_of
     (hS : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k],

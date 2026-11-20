@@ -27,14 +27,14 @@ def finitePlaceUnder (E : IntermediateField K.1 ℚ̄) [NumberField E] (w : Heig
   ne_bot := mt Ideal.eq_bot_of_comap_eq_bot w.ne_bot
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext (Ideal.LiesOver.over (P := w.asIdeal) (p := v.asIdeal)).symm`.
+A detailed English derivation is pending.
 -/
 theorem finitePlaceUnder_eq (E : IntermediateField K.1 ℚ̄) [NumberField E] {w : HeightOneSpectrum (𝓞 E)}
     {v : HeightOneSpectrum (𝓞 K.1)} (h : w.asIdeal.LiesOver v.asIdeal) : finitePlaceUnder E w = v :=
   HeightOneSpectrum.ext (Ideal.LiesOver.over (P := w.asIdeal) (p := v.asIdeal)).symm
 
 /- English proof (translation)
-Use `NumberField.of_module_finite K.1 E` as an intermediate fact. Use `((finite_setOf_ramified K.1 E).image (finitePlaceUnder E)).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨w, hw, he⟩`. Conclude with `⟨w, he, finitePlaceUnder_eq E hw⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_setOf_ramified_below (E : IntermediateField K.1 ℚ̄) [FiniteDimensional K.1 E] :
     {v : HeightOneSpectrum (𝓞 K.1) | ∃ w : HeightOneSpectrum (𝓞 E), w.asIdeal.LiesOver v.asIdeal ∧
@@ -45,17 +45,15 @@ theorem finite_setOf_ramified_below (E : IntermediateField K.1 ℚ̄) [FiniteDim
   exact ⟨w, he, finitePlaceUnder_eq E hw⟩
 
 /- English proof (translation)
-Take `⟨E, hE, hEU⟩` from `(krullTopology_mem_nhds_one_iff K.1 (maxUnramifiedOutside K.1 ℚ̄ S) (U : Set (galUnramifiedOutside K.1 ℚ̄ S))).1 (hU.mem_nhds U.one_mem)`. Set `E' : IntermediateField K.1 ℚ̄` to `E.map (maxUnramifiedOutside K.1 ℚ̄ S).val`. Establish `hE' : FiniteDimensional K.1 E'` using `LinearEquiv.finiteDimensional (E.equivMap (maxUnramifiedOutside K.1 ℚ̄ S).val).toLinearEquiv`. Use `set R := {v : HeightOneSpectrum (𝓞 K.1) | ∃ w : HeightOneSpectrum (𝓞 E'), w.asIdeal.LiesOver v.asIdeal ∧ w.asIdeal.ramificationIdx (𝓞 K.1) ≠ 1}`. Establish `hR : R.Finite` using `finite_setOf_ramified_below E'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE'S : E' ≤ maxUnramifiedOutside K.1 ℚ̄ S`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Establish `hE'Sun : IsUnramifiedOutside S E'` using `(isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2 hE'S`. Use `⟨T₁ ∪ (R ∩ S), hT₁.union (hR.inter_of_left S), Set.subset_union_left, Set.union_subset hT₁S Set.inter_subset_right, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hE'T : IsUnramifiedOutside (T₁ ∪ (R ∩ S)) E'`. Use `isUnramifiedOutside_of_ramificationIdx_eq_one _ fun v hv w => ?_` and prove the remaining obligations. Distinguish the cases in `hvS : v ∈ S`. Assume the negation of the conclusion as `he`. Conclude with `hv (Or.inr ⟨⟨w.1, w.2, he⟩, hvS⟩)`.
+Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `ramificationIdx_eq_one_of_isUnramifiedOutside S hE'Sun hvS w`. Establish `hE'le : E' ≤ maxUnramifiedOutside K.1 ℚ̄ (T₁ ∪ (R ∩ S))` using `le_maxUnramifiedOutside _ hE'T`. Introduce `σ hσ`. Apply `hEU` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hy : (x : ℚ̄) ∈ maxUnramifiedOutside K.1 ℚ̄ (T₁ ∪ (R ∩ S))` using `hE'le ⟨x, hx, rfl⟩`. Establish `h` using `(mem_ker_gsRes _ σ).1 hσ ⟨x, hy⟩`. Establish `hx' : (⟨((⟨(x : ℚ̄), hy⟩ : maxUnramifiedOutside K.1 ℚ̄ (T₁ ∪ (R ∩ S))) : ℚ̄), maxUnramifiedOutside_mono (Set.union_subset hT₁S Set.inter_subset_right) hy⟩ : maxUnramifiedOutside K.1 ℚ̄ S) = x` using `Subtype.ext rfl`. Rewrite `h` using `[hx']`.
-
-Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_ker_gsRes_le (U : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))
     (hU : IsOpen (U : Set (galUnramifiedOutside K.1 ℚ̄ S)))
@@ -106,7 +104,7 @@ variable (T : Set (HeightOneSpectrum (𝓞 K.1))) {v : HeightOneSpectrum (𝓞 K
   (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1))
 
 /- English proof (translation)
-Introduce `g hg`. Use `MonoidHom.mem_ker.2 (decompHomS_eq_one_of_unramifiedDegree_eq_one T ι hv g ?_)` and prove the remaining obligations. Rewrite using `[← MonoidHom.mem_ker, ker_unramifiedDegree]`. Conclude with `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertiaGroup_le_ker_decompHomS (hv : v ∉ T) :
     inertiaGroup (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)) ≤
@@ -136,7 +134,7 @@ theorem decompHomSUnram_mk (hv : v ∉ T) (g : Gal(AlgebraicClosure (v.adicCompl
 variable (v) in
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Arith.Selmer.exists_isZHatGenerator_inertia _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_isZHatGenerator_inertia_adicCompletion :
     ∃ σ : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1) ⧸

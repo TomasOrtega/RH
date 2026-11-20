@@ -14,13 +14,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `N W g hg`. Use `set Ω : Set (M2 n) := {x | ∀ k, ι k * x ∈ Dom n} with hΩ`. Establish `hΩo : IsOpen Ω` using `isOpen_domK Kg ι hι`. Establish `hGΩ : GSet n ⊆ Ω` using `fun x hx k => gset_sub_dom (inG_mul (hιG k) hx)`. Establish `hF0 : ContDiffOn ℂ ∞ (hF (n` using `n) j p q) (Dom n) := contDiffOn_hF j p q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : ∀ k, ContDiffOn ℂ ∞ (fun x => hF j p q (ι k * x) * ρ k) Ω` using `fun k => (hF0.comp (contDiff_mulLeft (ι k)).contDiffOn (fun x (hx : x ∈ Ω) => hx k)).mul contDiffOn_const`. Establish `hH` using `holInt n Kg μ Ω (fun k x => hF j p q (ι k * x) * ρ k) hΩo (fun N => continuousOn_iteratedFDeriv_translate (hF j p q) (Dom n) isOpen_dom hF0 Kg ι hι ρ hρ N) hsm`. Establish `hz` using `holZero n Ω (fun x => ∫ k, hF j p q (ι k * x) * ρ k ∂μ) hΩo hGΩ hH.1 (fun g hg => hC g hg) N g hg`. Establish `key` using `hH.2 N g (fun i => g * W i) (hGΩ hg)`. Rewrite `key` using `[hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [_root_.zero_apply] at key`. Rewrite using `[key]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Establish `hk : ι k * g ∈ Dom n` using `hGΩ hg k`. Use `show iteratedFDeriv ℂ N (hF j p q) (ι k * g) (fun i => ι k * g * W i) * ρ k = iteratedFDeriv ℂ N (fun x => hF j p q (ι k * x) * ρ k) g (fun i => g * W i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[iteratedFDeriv_mul_const_of (fun x => hF j p q (ι k * x)) Ω hΩo (hF0.comp (contDiff_mulLeft (ι k)).contDiffOn (fun x (hx : x ∈ Ω) => hx k)) (ρ k) g (hGΩ hg) N, iteratedFDeriv_left_mul (hF j p q) (Dom n) isOpen_dom hF0 (ι k) g hk N]`. Simplify using `only [mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem stepD (j : ℕ) (p q : ℤ) {Kg : Type} [TopologicalSpace Kg] [CompactSpace Kg] [MeasurableSpace Kg]
     [BorelSpace Kg] (μ : Measure Kg) [IsFiniteMeasure μ] [IsFiniteMeasureOnCompacts μ]
@@ -53,15 +53,15 @@ theorem stepD (j : ℕ) (p q : ℤ) {Kg : Type} [TopologicalSpace Kg] [CompactSp
   simp only [mul_assoc]
 
 /- English proof (translation)
-Introduce `g hg`. Establish `hGZ : GSet n ⊆ DomZ n` using `(hFz n m 0).2.1`. Establish `hkg : ∀ k, ι k * g ∈ DomZ n` using `fun k => hGZ (inG_mul (hιG k) hg)`. Establish `hFdc : ContDiffOn ℂ ⊤ (Fd (n` using `n) m) (DomZ n) := (hFd n m).1`. Establish `hS` using `hSph n (Fd m) (DomZ n) (hFz n m 0).1 hFdc μ ι hι ρ hρ (LQ (blkA j)) (LR (blkB j)) (fun M x T => by rw [LQ_apply, LQ_apply, mul_assoc]) (fun M x S => by rw [LR_apply, LR_apply, mul_assoc]) g hkg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (fun T : Matrix (blkA (n` using `n) j) (blkA j) ℂ => detD (fun S : Matrix (blkB (n := n) j) (blkB j) ℂ => ∫ k, Fd m (ι k * (g * mX 1 (embOn (blkA j) T) (embOn (blkB j) S) 1)) * ρ k ∂μ)) = fun T => detD (fun S => ∫ k, Fd m (ι k * (g + LQ (blkA j) g T + LR (blkB j) g S)) * ρ k ∂μ) := by`. Use function extensionality and compare the values at `T`. Use `congr 1`. Use function extensionality and compare the values at `S`. Rewrite using `[mul_mX, LQ_apply, LR_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ k, detD (fun T : Matrix (blkA (n` using `n) j) (blkA j) ℂ => detD (fun S : Matrix (blkB (n := n) j) (blkB j) ℂ => Fd m (ι k * g + LQ (blkA j) (ι k * g) T + LR (blkB j) (ι k * g) S))) * ρ k = deriv (fun z : ℂ => (∏ i ∈ Finset.range j, ((i : ℂ) - z)) * (∏ i ∈ Finset.range (n - j), ((i : ℂ) - m - z))) 0 * (hF j (m : ℤ) 0 ( …`. Introduce `k`. Establish `r : (fun T : Matrix (blkA (n` using `n) j) (blkA j) ℂ => detD (fun S : Matrix (blkB (n := n) j) (blkB j) ℂ => Fd m (ι k * g + LQ (blkA j) (ι k * g) T + LR (blkB j) (ι k * g) S))) = fun T => detD (fun S => Fd m ((ι k * g) * mX 1 (embOn (blkA j) T) (embOn (blkB j) S) 1)) := by`. Use function extensionality and compare the values at `T`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `S`. Rewrite using `[mul_mX, LQ_apply, LR_apply]`. Rewrite using `[r, hDj n m j (ι k * g) hj1 hjn (hkg k)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `hB g hg`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `h` using `[e1, hS, integral_congr_ae (Filter.Eventually.of_forall e2), integral_const_mul]`. Conclude with `(mul_eq_zero.1 h).resolve_left ha1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepC (hFd : FdProps) (hDj : DjFd) (hSph : SphU) (hFz : FzHol) (m j : ℕ) (hj1 : 1 ≤ j) (hjn : j ≤ n)
     (ha1 : deriv (fun z : ℂ => (∏ i ∈ Finset.range j, ((i : ℂ) - z)) *

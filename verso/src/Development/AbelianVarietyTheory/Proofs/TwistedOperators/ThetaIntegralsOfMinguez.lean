@@ -24,7 +24,7 @@ open GlobalTheory.SquareComm
 namespace GlobalTheory.SquareAgree
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model.I, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta, map_smul, GlobalTheory.WeilM.thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left, integral_const_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem I_smul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd)
@@ -34,13 +34,13 @@ theorem I_smul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
     tsum_mul_left, integral_const_mul]
 
 /- English proof (translation)
-Introduce `hMi hP hK hL D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pi rf rl p p' hM`. Take `⟨e, Bs, Γ, Xc, om, om', cA, cB, hO, hTD⟩` from `GlobalTheory.T.exists_placewise_seesaw_triple_over_hermitian D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB hM.weilA hM.weilB`. Take `⟨R, Rf, hR⟩` from `hL D.host.F D.host.E D.sp.cm.sig Bs W.rank W₁.rank Γ Xc om om' hTD`. Take `⟨hDec, hK'⟩` from `hK.1 D.host.F D.host.E D.sp.cm.sig Bs W.rank W₁.rank Γ Xc om om' hTD`. Take `⟨⟨-, ⟨c, hc, -⟩, hc0⟩, hCo⟩` from `hK' R Rf hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs0, hs⟩` from `GlobalTheory.T.doubling_integral_factorisation hP.howeDualityUnitary hP.howeDualityReal hMi hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi rf rl p p' hM`. Use `⟨c * s, mul_ne_zero (hc0 c hc) hs0, fun Φ' hΦ' => ?_⟩` and prove the remaining obligations. Take `⟨Φ₀, hΦ₀, hrel, Φ₀D, hD₀, hSo⟩` from `GlobalTheory.SquareAgree.CoinvPass.coinv_passage D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hO hTD R Rf hR hCo Φ' hΦ'`. Take `⟨hbd, hconv, -⟩` from `hDec.2 Φ₀D hSo`. Use `⟨Φ₀, hΦ₀, hrel, GlobalTheory.T.theta_integral_moderate_growth_of_bounded_kernel D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hO hν₁ hTD Φ₀ Φ₀D hD₀ hconv ?_, fun Φ hΦ hp => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, k, hC⟩` from `hbd 0`. Conclude with `⟨C, k, fun g h => by simpa using hC g h⟩`. Take `⟨ΦD, -, hD⟩` from `hO.algA Φ hΦ`. Establish `hm` using `hs Φ hΦ Φ₀ hΦ₀ ΦD Φ₀D hD hD₀ hSo hp`. Use function extensionality and compare the values at `h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[GlobalTheory.SquareAgree.thetaInt_eq_modelI D W X _ _ _ Γ.M 1 hO.JW ν 𝓕 ωA om (kapX X e hO.JX) ΦD Φ hO.measW hO.domW (hO.theta_eq_A hD) h, _root_.Pi.smul_apply, GlobalTheory.SquareAgree.thetaInt_eq_modelI D W₁ X _ _ _ Γ.M' (-1) hO.JW₁ ν₁ 𝓕₁ ωB om' (kapX X e hO.JX) Φ₀D Φ₀ hO.meas …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaIntegralsAgree : GlobalTheory.Published.MinguezThetaGL → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     GlobalTheory.SquareSt.ThetaIntegralsAgree := by

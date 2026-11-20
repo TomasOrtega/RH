@@ -15,7 +15,7 @@ namespace LawUp
 variable {R S : Type} [CommRing R] [CommRing S] {d : ℕ} {τ : Type}
 
 /- English proof (translation)
-Unfold `at2`. Rewrite using `[map_subst (CobCob.elim_has hu hv)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `cases j <;> rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mvPowerSeriesMap_evalTwoGroups (φ : R →+* S) (c : MvPowerSeries (Fin d ⊕ Fin d) R)
     {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
@@ -28,7 +28,7 @@ theorem mvPowerSeriesMap_evalTwoGroups (φ : R →+* S) (c : MvPowerSeries (Fin 
   cases j <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `mvPowerSeriesMap_evalTwoGroups φ (μ i) hu hv`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem map_op (φ : R →+* S) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
@@ -39,15 +39,15 @@ theorem map_op (φ : R →+* S) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) 
   exact mvPowerSeriesMap_evalTwoGroups φ (μ i) hu hv
 
 /- English proof (translation)
-Establish `h12` using `CobCob.op_const h.const (CobCob.constantCoeff_threeGroupsFirstVariables (R := R) (d := d)) CobCob.constantCoeff_threeGroupsSecondVariables`. Establish `h23` using `CobCob.op_const h.const (CobCob.constantCoeff_threeGroupsSecondVariables (R := R) (d := d)) CobCob.constantCoeff_threeGroupsThirdVariables`. Use `⟨fun i => ?_, ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[constantCoeff_map, h.const i, map_zero]`. Establish `e` using `map_op φ μ (τ := Fin d) (u := fun i => (X i : MvPowerSeries (Fin d) R)) (v := fun _ => 0) (fun _ => constantCoeff_X _) (fun _ => map_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[h.unit]`. Simplify using `only [map_X, map_zero] at e`. Conclude with `e.symm`. Establish `e` using `mvPowerSeriesMap_evalTwoGroups φ (μ i) (τ := Fin d ⊕ Fin d) (u := fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) R)) (v := fun i => X (Sum.inl i)) (fun _ => constantCoeff_X _) (fun _ => constantCoeff_X _)`. Simplify using `only [map_X] at e`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `swap`. Rewrite using `[← e]`. Conclude with `congrArg (map φ) (h.comm i)`. Establish `e1` using `map_op φ μ h12 CobCob.constantCoeff_threeGroupsThirdVariables`. Establish `e2` using `map_op φ μ CobCob.constantCoeff_threeGroupsFirstVariables h23`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `map_op φ μ (CobCob.constantCoeff_threeGroupsFirstVariables (R := R) (d := d)) CobCob.constantCoeff_threeGroupsSecondVariables`. Establish `e4` using `map_op φ μ (CobCob.constantCoeff_threeGroupsSecondVariables (R := R) (d := d)) CobCob.constantCoeff_threeGroupsThirdVariables`. Establish `hx1 : (fun i => map φ (x1 (R` using `R) (d := d) i)) = x1 := by funext i; exact map_X _ _`. Establish `hx2 : (fun i => map φ (x2 (R` using `R) (d := d) i)) = x2 := by funext i; exact map_X _ _`. Establish `hx3 : (fun i => map φ (x3 (R` using `R) (d := d) i)) = x3 := by funext i; exact map_X _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e3` using `[hx1, hx2]`. Rewrite `e4` using `[hx2, hx3]`. Rewrite `e1` using `[e3, hx3]`. Rewrite `e2` using `[e4, hx1]`. Rewrite using `[← e1, ← e2, h.assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLaw_map (φ : R →+* S) {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (h : IsLaw μ) :
     IsLaw (fun i => map φ (μ i)) := by
@@ -83,7 +83,7 @@ theorem isLaw_map (φ : R →+* S) {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin 
 end LawUp
 
 /- English proof (translation)
-Introduce `B Q _ _ _ d μ h g`. Establish `hL : IsLaw (up Q μ)` using `LawUp.isLaw_map (algebraMap B Q) h`. Conclude with `((formalGroupLawCoboundaryTwo_coboundaryOne_alt Q d (up Q μ) hL.const g).2.2.2.2.2 hL).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formalGroupLawCoboundaryTwo_coboundaryOne_fractions : ∀ (B Q : Type) [CommRing B] [CommRing Q] [Algebra B Q] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B), IsLaw μ → ∀ g : MvPowerSeries (Fin d) Q, cob2 (up Q μ) (cob1 (up Q μ) g) = 0 := by
   intro B Q _ _ _ d μ h g

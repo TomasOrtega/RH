@@ -37,9 +37,9 @@ noncomputable section
 namespace GlobalTheory.CovTop.DeepGoodAll
 
 /- English proof (translation)
-Unfold `shiftG`. Rewrite using `[zero_smul]`. Establish `: wtOf Dw (0 : AllWt.Weight Dw) 0 = 0`. Unfold `wtOf`. Apply the tactic sequence `ext x <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shiftG_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : shiftG Dw a n 0 = wtZ a n := by
@@ -51,13 +51,13 @@ theorem shiftG_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reci
   rw [this, add_zero]
 
 /- English proof (translation)
-Introduce `hSW hP hG hQ hS hT hN`. Establish `R` using `GlobalTheory.T.weight_conditions_at_index`. Establish `P` using `GlobalTheory.T.rank_pos_negative_weight_bundle hSW hP hG hQ hS hT hN`. Unfold `DeepGood Covers Lifts at *`. Use `(R.and P).imp fun Fm CH _ h => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨C1, h1, e1⟩, ⟨C2, h2, e2⟩⟩` from `h`. Use `⟨C1, h1, ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `e1.and e2`. Use `⟨x0, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Take `⟨hA, hB⟩` from `hx0 x hx hle ι p hp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hL, hp1, hq1, hf, hj, hn, hu1, hu2, hs⟩` from `hA i hi`. Establish `hpos` using `hB i hi Y hY`. Establish `hYg` using `hY.1`. Establish `g` using `fun s hs' => GlobalTheory.T.good_at_of_antitone_gap_weight hP _ p.T hL _ hp1 hq1 hf hj Y _ _ hYg (wtA (p.κ i)) (p.κ i).n s hn (hs s hs').1 (hs s hs').2`. Establish `hon` using `GlobalTheory.T.good_weight_antitone_gap hP _ p.T hL _ hp1 hq1 hf hj Y _ _ hYg (uM p i) hu1 hu2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, g _ (Or.inl rfl), g _ (Or.inr (Or.inr rfl)), hon.1, hpos, CompFin.finite_comp _ _, GlobalTheory.CovTop.good_comp_nonempty _ p.T hL _ hj Y _ _ hYg, hon.2⟩` and prove the remaining obligations. Use `g 0 (Or.inr (Or.inl rfl))` as an intermediate fact. Rewrite `this` using `[shiftG_zero]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem deepGood : GlobalTheory.Published.ScholzeWeinsteinB → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted →
     GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood := by

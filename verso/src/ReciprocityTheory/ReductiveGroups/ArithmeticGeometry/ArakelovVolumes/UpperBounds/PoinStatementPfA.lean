@@ -17,24 +17,24 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `(PairUnfoldPf.lact_mem_dom_iff X hγ x).2 hx`.
+A detailed English derivation is pending.
 -/
 theorem lactDom (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     lact γ x ∈ X.dom := (PairUnfoldPf.lact_mem_dom_iff X hγ x).2 hx
 
 /- English proof (translation)
-The claim follows from `OrthogonalFrameDomain.rmul_mem_dom X hx hb`.
+A detailed English derivation is pending.
 -/
 theorem rmulDom (X : Data E r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     rmul x b ∈ X.dom := OrthogonalFrameDomain.rmul_mem_dom X hx hb
 
 /- English proof (translation)
-The claim follows from `FourierCoefficientDomain.isOpen_dom X`.
+A detailed English derivation is pending.
 -/
 theorem isOpenDom (X : Data E r) : IsOpen X.dom := FourierCoefficientDomain.isOpen_dom X
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `only [lact, mat, Units.val_mul, Matrix.map_mul]`. Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lact_mul' {Ψ : Finset (E →+* ℂ)} (γ γ' : GL (Fin r) E) (x : Frame Ψ r) :
     lact (γ * γ') x = lact γ (lact γ' x) := by
@@ -44,7 +44,7 @@ theorem lact_mul' {Ψ : Finset (E →+* ℂ)} (γ γ' : GL (Fin r) E) (x : Frame
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `(Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map τ.1) (mat x τ) (mat b τ)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lact_rmul' {Ψ : Finset (E →+* ℂ)} (γ : GL (Fin r) E) (x b : Frame Ψ r) :
     lact γ (rmul x b) = rmul (lact γ x) b := by
@@ -52,7 +52,7 @@ theorem lact_rmul' {Ψ : Finset (E →+* ℂ)} (γ : GL (Fin r) E) (x b : Frame 
   exact (Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map τ.1) (mat x τ) (mat b τ)).symm
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `X.χ_fin la`. Establish `h1` using `congrArg norm (h γ hγ)`. Rewrite `h1` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_chi (X : Data E r) (la : Wt X.Ψ r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) :
     ‖X.χ la γ‖ = 1 := by
@@ -62,7 +62,7 @@ theorem norm_chi (X : Data E r) (la : Wt X.Ψ r) {γ : GL (Fin r) E} (hγ : γ �
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h1
 
 /- English proof (translation)
-Introduce `h`. Use `norm_chi X la hγ` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_ne (X : Data E r) (la : Wt X.Ψ r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) :
     X.χ la γ ≠ 0 := by
@@ -72,9 +72,9 @@ theorem chi_ne (X : Data E r) (la : Wt X.Ψ r) {γ : GL (Fin r) E} (hγ : γ ∈
   exact zero_ne_one this
 
 /- English proof (translation)
-Unfold `poin`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `γ`. Simplify using `only`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify by unfolding definitions.
 
-Rewrite using `[X.χ_add la la' γ.1 γ.2, hg.2.2 γ.1 γ.2 x hx]`. Establish `h1` using `chi_ne X la' γ.2`. Establish `h2` using `chi_ne X la γ.2`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem poin_mul (X : Data E r) (la la' : Wt X.Ψ r) (P g : Frame X.Ψ r → ℂ) (hg : X.IsSec la' g)
     (x : Frame X.Ψ r) (hx : x ∈ X.dom) :
@@ -90,7 +90,7 @@ theorem poin_mul (X : Data E r) (la la' : Wt X.Ψ r) (P g : Frame X.Ψ r → ℂ
   field_simp
 
 /- English proof (translation)
-Unfold `poin`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `γ`. Rewrite using `[lact_rmul', hP _ (lactDom X γ.2 hx) b hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -106,11 +106,11 @@ theorem poin_rmul (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ)
   ring
 
 /- English proof (translation)
-Unfold `poin`. Use `set g : X.Γ := ⟨γ', hγ'⟩`. Establish `key : ∀ γ : X.Γ, (X.χ la γ.1)⁻¹ * P (lact γ.1 (lact γ' x)) = X.χ la γ' * ((X.χ la (γ * g).1)⁻¹ * P (lact (γ * g).1 x))`. Introduce `γ`. Establish `hm : ((γ * g : X.Γ) : GL (Fin r) E) = γ.1 * γ'` using `rfl`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, lact_mul', X.χ_mul la γ.1 γ.2 γ' hγ']`. Establish `h1` using `chi_ne X la hγ'`. Establish `h2` using `chi_ne X la γ.2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[tsum_congr key, tsum_mul_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `(Equiv.mulRight g).tsum_eq (fun δ : X.Γ => (X.χ la δ.1)⁻¹ * P (lact δ.1 x))`.
+A detailed English derivation is pending.
 -/
 theorem poin_lact (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) {γ' : GL (Fin r) E}
     (hγ' : γ' ∈ X.Γ) (x : Frame X.Ψ r) :
@@ -138,7 +138,7 @@ namespace ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf
 open Metric
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_version.goal1 .. | (apply Bl.general_b_fact_version.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_version.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fderiv_bound_ball {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] {g : Y → ℂ} {y : Y}
     {R M : ℝ} (hR : 0 < R) (hg : DifferentiableOn ℂ g (ball y (2 * R)))
@@ -146,13 +146,13 @@ theorem fderiv_bound_ball {Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y]
   first | exact Bl.general_b_fact_version.goal1 .. | (apply Bl.general_b_fact_version.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_version.goal1 <;> assumption)
 
 /- English proof (translation)
-Introduce `y0 hy0`. Take `⟨ε, hε, u, hu, hub⟩` from `hb y0 hy0`. Take `⟨δ, hδ, hδU⟩` from `isOpen_iff.1 hU y0 hy0`. Use `set m := min ε δ with hm`. Establish `hm0 : 0 < m` using `lt_min hε hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set R := m / 4 with hR`. Establish `hR0 : 0 < R` using `by positivity`. Establish `hsub : ∀ y ∈ ball y0 R, ball y (2 * R) ⊆ ball y0 m`. Introduce `y hy v hv`. Rewrite `*` using `[mem_ball]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hε' : ball y0 m ⊆ ball y0 ε` using `ball_subset_ball (min_le_left _ _)`. Establish `hδ' : ball y0 m ⊆ U` using `(ball_subset_ball (min_le_right _ _)).trans hδU`. Establish `hin : ∀ y ∈ ball y0 R, y ∈ U` using `fun y hy => hδ' (hsub y hy (mem_ball_self (by linarith)))`. Establish `hder : ∀ i, ∀ y ∈ ball y0 R, HasFDerivAt (f i) (fderiv ℂ (f i) y) y` using `fun i y hy => ((hf i y (hin y hy)).differentiableAt (hU.mem_nhds (hin y hy))).hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd : ∀ i, ∀ y ∈ ball y0 R, ‖fderiv ℂ (f i) y‖ ≤ u i / R` using `fun i y hy => fderiv_bound_ball hR0 ((hf i).mono ((hsub y hy).trans hδ')) (fun v hv => hub i v (hε' (hsub y hy hv)))`. Establish `hs` using `hasFDerivAt_tsum_of_isPreconnected (hu.div_const R) isOpen_ball (convex_ball y0 R).isPreconnected hder hbd (mem_ball_self hR0) (Summable.of_norm_bounded hu fun i => hub i y0 (mem_ball_self hε)) (mem_ball_self hR0)`. Conclude with `hs.differentiableAt.differentiableWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem differentiableOn_tsum_loc {ι Y : Type*} [NormedAddCommGroup Y] [NormedSpace ℂ Y] {U : Set Y}
     (hU : IsOpen U) (f : ι → Y → ℂ) (hf : ∀ i, DifferentiableOn ℂ (f i) U)

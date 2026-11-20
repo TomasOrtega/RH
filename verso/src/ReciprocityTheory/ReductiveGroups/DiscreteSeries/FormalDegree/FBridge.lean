@@ -15,11 +15,11 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `set U : Matrix (Fin n) (Fin n) ℂ := ((pmat_isHermitian z).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU`. Establish `hsp : pmat z = U * diagonal (fun i => (pev z i : ℂ)) * Uᴴ`. Use `(pmat_isHermitian z).spectral_theorem` as an intermediate fact. Rewrite `this` using `[Unitary.conjStarAlgAut_apply]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Uᴴ * U = 1` using `Unitary.coe_star_mul_self _`. Establish `h2 : U * Uᴴ = 1` using `Unitary.coe_mul_star_self _`. Establish `hinv : U⁻¹ = Uᴴ` using `Matrix.inv_eq_right_inv h2`. Establish `hu : IsUnit U` using `⟨⟨U, Uᴴ, h2, h1⟩, rfl⟩`. Rewrite using `[hsp, ← hinv, Matrix.exp_conj _ _ hu, Matrix.det_conj hu, Matrix.exp_diagonal, det_diagonal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he : ∀ i, (NormedSpace.exp (fun i => (pev z i : ℂ))) i = Complex.exp (pev z i : ℂ)`. Introduce `i`. Rewrite using `[Pi.exp_def, Complex.exp_eq_exp_ℂ]`. Simplify using `only [he]`. Rewrite using `[← Complex.exp_sum, ← Complex.ofReal_sum, sum_pev, Complex.ofReal_zero, Complex.exp_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fbr_det_exp_pmat {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     (NormedSpace.exp (pmat z)).det = 1 := by
@@ -40,7 +40,7 @@ theorem fbr_det_exp_pmat {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
   rw [← Complex.exp_sum, ← Complex.ofReal_sum, sum_pev, Complex.ofReal_zero, Complex.exp_zero]
 
 /- English proof (translation)
-Rewrite using `[toMK_inv, Matrix.det_mul, Matrix.det_mul, mul_comm ((toMK k)ᴴ.det) A.det, mul_assoc, ← Matrix.det_mul, (toMK_facts k).1, Matrix.det_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fbr_det_conj {ε : Fin n → Bool} (k : KG ε) (A : Matrix (Fin n) (Fin n) ℂ) :
     (toMK k⁻¹ * A * toMK k).det = A.det := by
@@ -48,29 +48,27 @@ theorem fbr_det_conj {ε : Fin n → Bool} (k : KG ε) (A : Matrix (Fin n) (Fin 
     (toMK_facts k).1, Matrix.det_one, mul_one]
 
 /- English proof (translation)
-Take `⟨hP, hE⟩` from `inP_conj k⁻¹ (pmat_inP z)`. Rewrite `hP`, `hE` using `[inv_inv]`. Rewrite using `[← hE]`. Use `set Y := toMK k⁻¹ * pmat z * toMK k with hY`. Use `set E := NormedSpace.exp Y with hEdef`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpd : E.PosDef` using `exp_noncompactPart_posDef hP`. Establish `hdet : lead n E = 1`. Establish `h1 : E.det = 1` using `by rw [hE, fbr_det_conj, fbr_det_exp_pmat]`. Unfold `lead`. Rewrite using `[dif_pos le_rfl]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `h1 using 2` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `hpos : ∀ i : Fin n, 0 < (lead ((i : ℕ) + 1) E).re` using `fun i => (lead_posDef hpd _ i.isLt).1`. Establish `h : ∀ i : Fin n, lead ((i : ℕ) + 1) E = ((lead ((i : ℕ) + 1) E).re : ℂ)` using `fun i => Complex.ext (by simp) (by simp [(lead_posDef hpd _ i.isLt).2])`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hphi : PhiM μ E = ((∏ i : Fin n, (lead ((i : ℕ) + 1) E).re ^ (-(μ i - muNext μ i)) : ℝ) : ℂ)`. Unfold `PhiM`. Rewrite using `[Complex.ofReal_prod]`. Use `prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_zpow, ← h i]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hphi]`. Use `congr 1`. Establish `hz : ∀ i : Fin n, (lead ((i : ℕ) + 1) E).re ^ (-(μ i - muNext μ i)) = Real.exp (Real.log (lead ((i : ℕ) + 1) E).re * ((-(μ i - muNext μ i) : ℤ) : ℝ))`. Introduce `i`. Rewrite using `[← Real.rpow_intCast, Real.rpow_def_of_pos (hpos i)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[prod_congr rfl fun i _ => hz i, ← Real.exp_sum]`. Use `congr 1`. Use `set g : ℕ → ℝ := fun i => -(sCoef lam i * Real.log (lead (i + 1) E).re) with hg`. Establish `hterm : ∀ i : Fin n, Real.log (lead ((i : ℕ) + 1) E).re * ((-(μ i - muNext μ i) : ℤ) : ℝ) = g i`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hi : (i : ℕ) + 1 < n`. Establish `hm : muNext μ i = μ ⟨(i : ℕ) + 1, hi⟩` using `by simp [muNext, hi]`. Establish `hs : sCoef lam i = lam i - lam ⟨(i : ℕ) + 1, hi⟩ + 1` using `by simp [sCoef, hi]`. Rewrite using `[hm, hg]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Use `push_cast`. Rewrite using `[hμ i, hμ ⟨(i : ℕ) + 1, hi⟩]`. Simplify using `only [rho]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hs : sCoef lam i = 0` using `by simp [sCoef, hi]`. Establish `hn : (i : ℕ) + 1 = n` using `by omega`. Rewrite using `[hg]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, hn, hdet]`. Simplify using the standard rewrite rules. Rewrite using `[sum_congr rfl fun i _ => hterm i, Fin.sum_univ_eq_sum_range g n]`. Establish `hsub : ∑ i ∈ range n, g i = ∑ i ∈ range (n - 1), g i`. Use `symm`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `sum_subset (range_subset_range.mpr (Nat.sub_le n 1)) ?_` and prove the remaining obligations. Introduce `i hi hi'`. Simplify using `only [mem_range] at hi hi'`. Establish `hs : sCoef lam i = 0` using `by simp only [sCoef]; rw [dif_neg (by omega)]`. Simplify using `[hg, hs]`.
-
-Rewrite using `[hsub, Ph, ← sum_neg_distrib]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fbr_phi {ε : Fin n → Bool} {lam : Fin n → ℝ} {μ : Fin n → ℤ} (hμ : IsMu lam μ) (k : KG ε)
     (z : PCoord ε → ℂ) :
@@ -137,7 +135,7 @@ theorem fbr_phi {ε : Fin n → Bool} {lam : Fin n → ℝ} {μ : Fin n → ℤ}
   rfl
 
 /- English proof (translation)
-Simplify using `only [psM, fF]`. Use `congr 1`. Use `congrArg (fun f : KG ε → T.V →L[ℂ] T.V => ∫ k, f k ∂(muK ε)) (funext fun k => ?_)` and prove the remaining obligations. Rewrite using `[fbr_phi hμ k z]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem psM_exp_pmat {ε : Fin n → Bool} {lam : Fin n → ℝ} {μ : Fin n → ℤ} (hμ : IsMu lam μ) {Λ : Fin n → ℝ}
     (T : KType ε Λ) (z : PCoord ε → ℂ) : psM T μ (NormedSpace.exp (pmat z)) = fF ε lam T (pmat z) := by

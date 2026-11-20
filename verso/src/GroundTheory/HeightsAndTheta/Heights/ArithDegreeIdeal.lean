@@ -11,7 +11,7 @@ noncomputable section
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `: Module.FinitePresentation (𝓞 K) M` using `Module.finitePresentation_of_finite _ _`. Conclude with `Module.Flat.projective_of_finitePresentation`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem projective_of_isTorsionFree (M : Type*) [AddCommGroup M] [Module (𝓞 K) M]
     [Module.Finite (𝓞 K) M] [Module.IsTorsionFree (𝓞 K) M] : Module.Projective (𝓞 K) M := by
@@ -25,11 +25,11 @@ instance submodule_projective {E : Type*} [AddCommGroup E] [Module (𝓞 K) E]
   exact projective_of_isTorsionFree F
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (I : Ideal (𝓞 K)) : Module.Projective (𝓞 K) I := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (I : Ideal (𝓞 K)) : Module.Finite (𝓞 K) I := inferInstance
 
@@ -56,7 +56,7 @@ omit [Module.Finite (𝓞 K) E] [Module.Projective (𝓞 K) E] [Module.Finite (�
   [Module.Projective (𝓞 K) E'] in
 
 /- English proof (translation)
-The claim follows from `Module.Flat.lTensor_preserves_injective_linearMap f hf`.
+A detailed English derivation is pending.
 -/
 theorem fibreMap_injective (σ : K →+* ℂ) {f : E' →ₗ[𝓞 K] E} (hf : Function.Injective f) :
     Function.Injective (fibreMap σ f) :=
@@ -66,7 +66,7 @@ omit [NumberField K] [Module.Finite (𝓞 K) E] [Module.Projective (𝓞 K) E]
   [Module.Finite (𝓞 K) E'] [Module.Projective (𝓞 K) E'] in
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul z e => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem conjMap_fibreMap (σ : K →+* ℂ) (f : E' →ₗ[𝓞 K] E) (x : Fibre σ E') :
     conjMap σ E (fibreMap σ f x) = fibreMap (conjugate σ) f (conjMap σ E' x) := by
@@ -96,9 +96,9 @@ def HermitianMetric.ideal (I : Ideal (𝓞 K)) : HermitianMetric K I :=
 def HermitianBundle.ideal (I : Ideal (𝓞 K)) : HermitianBundle K := ⟨I, HermitianMetric.ideal I⟩
 
 /- English proof (translation)
-Take `⟨a, haI, ha⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Establish `hle : Module.finrank (𝓞 K) I ≤ 1`. Use `Submodule.finrank_le I` as an intermediate fact. Rewrite `this` using `[Module.finrank_self]`. Then use the resulting hypothesis. Establish `hge : 1 ≤ Module.finrank (𝓞 K) I`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent (𝓞 K) (fun _ : Fin 1 ↦ (⟨a, haI⟩ : I))` using `linearIndependent_unique_iff.mpr (by simpa using ha)`. Simplify using `using hli.fintype_card_le_finrank`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_ideal {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) : Module.finrank (𝓞 K) I = 1 := by
   obtain ⟨a, haI, ha⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hI
@@ -112,23 +112,19 @@ theorem finrank_ideal {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) : Module.finrank (�
   omega
 
 /- English proof (translation)
-Take `⟨a, haI, ha⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Use `set s : I := ⟨a, haI⟩`. Establish `hs : s ≠ 0` using `by simpa [s] using ha`. Express the relevant statement in the definitionally equal form `arithDegree (HermitianMetric.ideal I) = _`. Rewrite using `[arithDegree_line _ (finrank_ideal hI) hs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set T : Ideal (𝓞 K) := Ideal.span {a}`. Establish `hTI : T ≤ I` using `(Ideal.span_singleton_le_iff_mem I).mpr haI`. Establish `hcard : Nat.card (I ⧸ Submodule.span (𝓞 K) {s}) * Ideal.absNorm I = (Algebra.norm ℤ a).natAbs`. Rewrite using `[← Ideal.absNorm_span_singleton, Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply, ← Submodule.card_quotient_mul_card_quotient I T hTI]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hker : LinearMap.ker (T.mkQ ∘ₗ I.subtype) = Submodule.span (𝓞 K) {s}`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.subtype_apply, T, Ideal.mem_span_singleton', Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨c, Subtype.ext hc⟩`. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, congrArg Subtype.val hc⟩`. Establish `hrange : Submodule.map T.mkQ I = LinearMap.range (T.mkQ ∘ₗ I.subtype)`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hker, hrange]`. Conclude with `Nat.card_congr (LinearMap.quotKerEquivRange _).toEquiv`. Establish `hnorm : ∀ σ : K →+* ℂ, ‖fibreVec (HermitianMetric.ideal I) σ s‖ = ‖σ (a : K)‖`. Introduce `σ`. Establish `h1` using `norm_fibreVec_sq (HermitianMetric.ideal I) σ s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[HermitianMetric.ideal, HermitianMetric.comap_inner]`. Use `erw [HermitianMetric.integers_inner] at h1`. Simplify using `only [Submodule.subtype_apply, s, LinearMap.id_apply, map_one, mul_one] at h1`. Rewrite `h1` using `[mul_comm, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [hnorm, sum_log_norm_embedding a ha]`. Establish `hN : (0 : ℝ) < Ideal.absNorm I`. Conclude with `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.mpr hI)` after adjusting the coercions. Establish `hc : (Nat.card (I ⧸ Submodule.span (𝓞 K) {s}) : ℝ) = (Algebra.norm ℤ a).natAbs / Ideal.absNorm I`. Rewrite using `[eq_div_iff hN.ne', ← hcard]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, Real.log_div]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Int.natAbs_ne_zero.mpr (Algebra.norm_ne_zero_iff.mpr ha)` after adjusting the coercions.
-
-Conclude with `hN.ne'`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem arithDegree_ideal {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) :
     (HermitianBundle.ideal I).arithDegree = -Real.log (Ideal.absNorm I) := by
@@ -180,19 +176,19 @@ theorem arithDegree_ideal {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) :
   · exact hN.ne'
 
 /- English proof (translation)
-Rewrite using `[arithDegree_ideal top_ne_bot, Ideal.absNorm_top, Nat.cast_one, Real.log_one, neg_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example : (HermitianBundle.ideal (⊤ : Ideal (𝓞 K))).arithDegree = 0 := by
   rw [arithDegree_ideal top_ne_bot, Ideal.absNorm_top, Nat.cast_one, Real.log_one, neg_zero]
 
 /- English proof (translation)
-Establish `hf` using `(HermitianBundle.exists_linearIndependent_rank E F).choose_spec`. Use `set f := (HermitianBundle.exists_linearIndependent_rank E F).choose`. Rewrite using `[arithDegree_eq _ hf (Fintype.card_fin _)]`. Simplify using `only [HermitianBundle.degree, HermitianBundle.degreeWith, degreeWith]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun σ _ ↦ ?_` and prove the remaining obligations. Use `congr 1`. Establish `hG : (gram ℂ fun i ↦ fibreVec (E.metric.comap F.subtype F.injective_subtype) σ (f i)) = Matrix.of fun i j ↦ (E.metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] (f i : E.carrier)) ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] (f j : E.carrier))`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hD` using `(posSemidef_gram ℂ fun i ↦ fibreVec (E.metric.comap F.subtype F.injective_subtype) σ (f i)).det_nonneg`. Rewrite `hD` using `[hG]`. Simplify using `only [GroundTheory.Heights₂.Heights.gramDet, HermitianBundle.gramDet]`. Rewrite using `[hG]`. Use `congrArg Complex.re (Complex.norm_of_nonneg' hD)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[f]`.
+A detailed English derivation is pending.
 -/
 theorem HermitianBundle.degree_eq_arithDegree (E : HermitianBundle K)
     (F : Submodule (𝓞 K) E.carrier) :

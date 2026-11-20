@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `P L _ _ _ G hG x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem y hy => exact ⟨0, by simpa using hG y hy⟩`. Consider the case `algebraMap r => exact ⟨r, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨p, hp⟩` from `hy`. Take `⟨q, hq⟩` from `hz`. Use `⟨p + q, ?_⟩` and prove the remaining obligations. Establish `h` using `(Commute.all _ _).isNilpotent_add hp hq`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul y z _ _ hy hz`. Take `⟨p, hp⟩` from `hy`. Take `⟨q, hq⟩` from `hz`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨p * q, ?_⟩` and prove the remaining obligations. Rewrite `hp`, `hq`, the goal using `[← mem_nilradical]`. Establish `h` using `(nilradical L).add_mem ((nilradical L).mul_mem_right z hp) ((nilradical L).mul_mem_left ((Algebra.algebraMap P L : P → L) p) hq)`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

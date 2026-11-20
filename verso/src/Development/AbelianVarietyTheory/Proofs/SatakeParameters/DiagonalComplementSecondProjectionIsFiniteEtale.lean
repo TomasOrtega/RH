@@ -5,9 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace GlobalTheory.EtC.Tr
 
 /- English proof (translation)
-Introduce `Z X f _ _`. Establish `hopen : IsOpen (Set.range (pullback.diagonal f))` using `(pullback.diagonal f).isOpenEmbedding.isOpen_range`. Establish `hcl : IsClosedImmersion (diagCompl f).ι` using `IsClosedImmersion.of_isPreimmersion _ (by`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hopen.isClosed_compl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `diagComplHom`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem diagComplHom_isFinite_etale : ∀ {Z X : Scheme.{0}} (f : Z ⟶ X) [IsFinite f] [Etale f],
     IsFinite (GlobalTheory.EtC.Tr.diagComplHom f) ∧ Etale (GlobalTheory.EtC.Tr.diagComplHom f) := by

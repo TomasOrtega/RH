@@ -5,11 +5,11 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
 /- English proof (translation)
-Establish `hle : LinearMap.range P ≤ (LinearMap.range (a * b * P) ⊔ LinearMap.range ((1 - a) * P)) ⊔ (LinearMap.range ((1 - b) * P)).map a`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : P x = ((a * b * P) x + ((1 - a) * P) x) + a (((1 - b) * P) x)`. Simplify using `only [Module.End.mul_apply, LinearMap.sub_apply, Module.End.one_apply, map_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hx]`. Conclude with `Submodule.add_mem_sup (Submodule.add_mem_sup (LinearMap.mem_range_self _ x) (LinearMap.mem_range_self _ x)) (Submodule.mem_map_of_mem (LinearMap.mem_range_self _ x))`. Establish `h1` using `Submodule.finrank_mono hle`. Establish `h2` using `Submodule.finrank_add_le_finrank_add_finrank (LinearMap.range (a * b * P) ⊔ LinearMap.range ((1 - a) * P)) ((LinearMap.range ((1 - b) * P)).map a)`. Establish `h3` using `Submodule.finrank_add_le_finrank_add_finrank (LinearMap.range (a * b * P)) (LinearMap.range ((1 - a) * P))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `Submodule.finrank_map_le a (LinearMap.range ((1 - b) * P))`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_range_le_three (M : Type) [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M]
     (P a b : Module.End ℂ M) :

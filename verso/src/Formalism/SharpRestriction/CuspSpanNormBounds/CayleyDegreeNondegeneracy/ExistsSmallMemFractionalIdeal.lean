@@ -9,11 +9,11 @@ open NumberField NumberField.mixedEmbedding Formalism.HermitianLatticesTheory
 open scoped nonZeroDivisors NNReal ENNReal
 
 /- English proof (translation)
-Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank K`. Rewrite `h1` using `[IsTotallyComplex.nrRealPlaces_eq_zero K, zero_add]`. Establish `hpos : 0 < Module.finrank ℚ K` using `Module.finrank_pos`. Establish `hn : (Module.finrank ℚ K : ℝ) = 2 * (InfinitePlace.nrComplexPlaces K : ℝ)`. Conclude with `h1.symm` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (InfinitePlace.nrComplexPlaces K : ℝ) ≠ 0`. Establish `: 0 < InfinitePlace.nrComplexPlaces K` using `by omega`. Conclude with `this.ne'` after adjusting the coercions. Unfold `rootDiscriminant`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (abs_nonneg _), hn, Real.sqrt_eq_rpow]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem rootDiscr_pow_eq_sqrt_discr (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] :
     rootDiscriminant K ^ InfinitePlace.nrComplexPlaces K = Real.sqrt |(discr K : ℝ)| := by
@@ -31,32 +31,30 @@ theorem rootDiscr_pow_eq_sqrt_discr (K : Type) [Field K] [NumberField K] [IsTota
   field_simp
 
 /- English proof (translation)
-The claim follows from `Real.rpow_nonneg (abs_nonneg _) _`.
+A detailed English derivation is pending.
 -/
 theorem rootDiscr_nonneg (K : Type) [Field K] [NumberField K] : 0 ≤ rootDiscriminant K := Real.rpow_nonneg (abs_nonneg _) _
 
 open scoped Classical in
 
 /- English proof (translation)
-Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank K`. Rewrite `h1` using `[IsTotallyComplex.nrRealPlaces_eq_zero K, zero_add]`. Establish `hpos : 0 < Module.finrank ℚ K` using `Module.finrank_pos`. Establish `hr2 : 0 < InfinitePlace.nrComplexPlaces K` using `by omega`. Establish `hr0 : 0 ≤ rootDiscriminant K` using `by unfold rootDiscriminant; positivity`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : InfinitePlace K → NNReal` to `fun _ => NNReal.sqrt (Real.toNNReal (rootDiscriminant K))`. Establish `hmult : ∀ w : InfinitePlace K, w.mult = 2` using `fun w => by`. Rewrite using `[InfinitePlace.mult, if_neg]`. Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w)`. Establish `hcard : Fintype.card (InfinitePlace K) = InfinitePlace.nrComplexPlaces K`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero K, zero_add]`. Establish `hS : (∏ w, f w ^ w.mult) = NNReal.sqrt ‖discr K‖₊`. Apply `NNReal.eq` to reduce the goal to its premises. Rewrite using `[NNReal.coe_prod, Real.coe_sqrt, coe_nnnorm, Int.norm_eq_abs, ← rootDiscr_pow_eq_sqrt_discr K]`. Simplify using `only [hmult, f, NNReal.coe_pow, NNReal.sq_sqrt, Real.coe_toNNReal _ hr0, Finset.prod_const, Finset.card_univ, hcard]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hbound : minkowskiBound K I < MeasureTheory.volume (convexBodyLT K f)`. Rewrite using `[convexBodyLT_volume, hS]`. Unfold `minkowskiBound`. Rewrite using `[volume_fundamentalDomain_fractionalIdealLatticeBasis, volume_fundamentalDomain_latticeBasis, mixedEmbedding.finrank]`. Unfold `convexBodyLTFactor`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsTotallyComplex.nrRealPlaces_eq_zero K, pow_zero, one_mul, ← h1]`. Establish `hs0 : ((NNReal.sqrt ‖discr K‖₊ : NNReal) : ℝ≥0∞) ≠ 0`. Simplify using `using discr_ne_zero K`. Establish `hst : ((NNReal.sqrt ‖discr K‖₊ : NNReal) : ℝ≥0∞) ≠ ⊤` using `ENNReal.coe_ne_top`. Establish `hN : ENNReal.ofReal (FractionalIdeal.absNorm (I : FractionalIdeal (𝓞 K)⁰ K) : ℝ) ≤ 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.ofReal_le_one]`. Conclude with `hI` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul, pow_mul, mul_comm, ← mul_assoc, ← mul_pow]`. Use `congr 1`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ((2 : ℝ≥0∞) ^ 2 * 2⁻¹) = 2 by`. Rewrite using `[pow_two, mul_assoc, ENNReal.mul_inv_cancel two_ne_zero ENNReal.ofNat_ne_top, mul_one]]`. Use `_ < ((NNReal.pi ^ InfinitePlace.nrComplexPlaces K : NNReal) : ℝ≥0∞) * ((NNReal.sqrt ‖discr K‖₊ : NNReal) : ℝ≥0∞) := by`. Rewrite using `[mul_comm _ ((NNReal.sqrt ‖discr K‖₊ : NNReal) : ℝ≥0∞), mul_comm _ ((NNReal.sqrt ‖discr K‖₊ : NNReal) : ℝ≥0∞)]`. Use `ENNReal.mul_lt_mul_right hs0 hst ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.coe_pow]`. Use `ENNReal.pow_lt_pow_left hr2.ne' ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.coe_ofNat, ENNReal.coe_lt_coe]`. Conclude with `NNReal.coe_lt_coe.1 (by rw [NNReal.coe_real_pi, NNReal.coe_ofNat]; linarith [Real.pi_gt_three])`. Take `⟨a, haI, ha0, hlt⟩` from `exists_ne_zero_mem_ideal_lt K I hbound`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨a, haI, ha0, fun w => ?_⟩` and prove the remaining obligations. Establish `h2` using `hlt w`. Establish `hw0 : 0 ≤ w a` using `AbsoluteValue.nonneg _ _`. Establish `hf2 : ((f w : NNReal) : ℝ) ^ 2 = rootDiscriminant K`. Rewrite using `[← NNReal.coe_pow, NNReal.sq_sqrt, Real.coe_toNNReal _ hr0]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_small_mem_fractional_ideal (K : Type) [Field K] [NumberField K] [IsTotallyComplex K]
     (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (hI : FractionalIdeal.absNorm (I : FractionalIdeal (𝓞 K)⁰ K) ≤ 1) :
@@ -124,11 +122,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {V : Type} [AddCommGr
   (h : V →ₗ⋆[K] V →ₗ[K] K) (e : Fin 2 → V)
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span K (Set.range e)`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hv`. Establish `hcoef : ∀ j, h (e j) v = c j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[← hc, map_sum]`. Simplify using `[map_smul, ho]`. Rewrite using `[hcoef 0, hcoef 1]`. Use `conv_lhs => rw [← hc]`.
-
-Rewrite using `[Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_sum_coords_orthonormal_pair (hspan : Submodule.span K (Set.range e) = ⊤)
     (ho : ∀ i j, h (e i) (e j) = if i = j then 1 else 0) (v : V) :
@@ -146,7 +142,7 @@ theorem eq_sum_coords_orthonormal_pair (hspan : Submodule.span K (Set.range e) =
   rw [Fin.sum_univ_two]
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_sum_coords_orthonormal_pair h e hspan ho u, eq_sum_coords_orthonormal_pair h e hspan ho v]`. Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ₂, map_smul, smul_eq_mul, ho, starRingEnd_apply]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inner_eq_coords_orthonormal_pair (hspan : Submodule.span K (Set.range e) = ⊤)
     (ho : ∀ i j, h (e i) (e j) = if i = j then 1 else 0) (u v : V) :
@@ -159,7 +155,7 @@ theorem inner_eq_coords_orthonormal_pair (hspan : Submodule.span K (Set.range e)
 def orthCompanion (x : V) : V := -(star (h (e 1) x)) • e 0 + star (h (e 0) x) • e 1
 
 /- English proof (translation)
-Simplify using `only [orthCompanion, map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ₂, smul_eq_mul, starRingEnd_apply, star_neg, star_star]`.
+Simplify using the standard rewrite rules.
 -/
 theorem orthCompanion_inner_apply (x v : V) :
     h (orthCompanion h e x) v = -(h (e 1) x) * h (e 0) v + h (e 0) x * h (e 1) v := by
@@ -167,14 +163,14 @@ theorem orthCompanion_inner_apply (x v : V) :
     star_neg, star_star]
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> simp [orthCompanion, ho]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coords_orthCompanion (ho : ∀ i j, h (e i) (e j) = if i = j then 1 else 0) (x : V) :
     h (e 0) (orthCompanion h e x) = -(star (h (e 1) x)) ∧ h (e 1) (orthCompanion h e x) = star (h (e 0) x) := by
   constructor <;> simp [orthCompanion, ho]
 
 /- English proof (translation)
-Rewrite using `[inner_eq_coords_orthonormal_pair h e hspan ho, inner_eq_coords_orthonormal_pair h e hspan ho x x, (coords_orthCompanion h e ho x).1, (coords_orthCompanion h e ho x).2]`. Simplify using `only [star_neg, star_star]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_self_orthCompanion (hspan : Submodule.span K (Set.range e) = ⊤)
     (ho : ∀ i j, h (e i) (e j) = if i = j then 1 else 0) (x : V) :
@@ -185,7 +181,7 @@ theorem inner_self_orthCompanion (hspan : Submodule.span K (Set.range e) = ⊤)
   ring
 
 /- English proof (translation)
-Rewrite using `[inner_eq_coords_orthonormal_pair h e hspan ho, (coords_orthCompanion h e ho x).1, (coords_orthCompanion h e ho x).2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_orthCompanion_eq_zero (hspan : Submodule.span K (Set.range e) = ⊤)
     (ho : ∀ i j, h (e i) (e j) = if i = j then 1 else 0) (x : V) :
@@ -194,7 +190,7 @@ theorem inner_orthCompanion_eq_zero (hspan : Submodule.span K (Set.range e) = �
   ring
 
 /- English proof (translation)
-Rewrite using `[orthCompanion_inner_apply, orthCompanion_inner_apply, inner_eq_coords_orthonormal_pair h e hspan ho x x, inner_eq_coords_orthonormal_pair h e hspan ho v' v, inner_eq_coords_orthonormal_pair h e hspan ho x v, inner_eq_coords_orthonormal_pair h e hspan ho v' x]`. Simplify using `only [star_add, star_mul', star_neg, star_star]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lagrange_identity_orthCompanion (hspan : Submodule.span K (Set.range e) = ⊤)
     (ho : ∀ i j, h (e i) (e j) = if i = j then 1 else 0) (x v v' : V) :
@@ -205,13 +201,13 @@ theorem lagrange_identity_orthCompanion (hspan : Submodule.span K (Set.range e) 
   ring
 
 /- English proof (translation)
-Introduce `h0`. Apply `hx` to reduce the goal to its premises. Take `⟨φ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `hpar` using `inner_eq_coords_orthonormal_pair h e hspan ho x x`. Rewrite `hpar` using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg φ hpar`. Simplify using `only [map_zero, map_add, map_mul, hcm] at h1`. Establish `e0 : ((Complex.normSq (φ (h (e 0) x)) + Complex.normSq (φ (h (e 1) x)) : ℝ) : ℂ) = 0`. Use `push_cast`. Rewrite using `[Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_conj_mul_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.symm`. Establish `e0'` using `Complex.ofReal_eq_zero.1 e0`. Establish `n0` using `Complex.normSq_nonneg (φ (h (e 0) x))`. Establish `n1` using `Complex.normSq_nonneg (φ (h (e 1) x))`. Establish `hb0 : φ (h (e 0) x) = 0` using `Complex.normSq_eq_zero.1 (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1 : φ (h (e 1) x) = 0` using `Complex.normSq_eq_zero.1 (by linarith)`. Establish `hb0' : h (e 0) x = 0` using `(map_eq_zero_iff φ φ.injective).1 hb0`. Establish `hb1' : h (e 1) x = 0` using `(map_eq_zero_iff φ φ.injective).1 hb1`. Rewrite using `[eq_sum_coords_orthonormal_pair h e hspan ho x, hb0', hb1', zero_smul, zero_smul, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_self_ne_zero_of_orthonormal (hcm : ∀ (φ : K →+* ℂ) (a : K), φ (star a) = starRingEnd ℂ (φ a))
     (hspan : Submodule.span K (Set.range e) = ⊤)
@@ -239,7 +235,7 @@ theorem inner_self_ne_zero_of_orthonormal (hcm : ∀ (φ : K →+* ℂ) (a : K),
 end Alg
 
 /- English proof (translation)
-Take `⟨o, rfl⟩` from `ha`. Establish `hint : IsIntegral ℤ (star (algebraMap (𝓞 K) K o))` using `(NumberField.RingOfIntegers.isIntegral_coe o).map (starRingEnd K).toIntAlgHom`. Conclude with `⟨⟨star (algebraMap (𝓞 K) K o), hint⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem star_mem_integers {K : Type} [Field K] [NumberField K] [StarRing K] {a : K}
     (ha : a ∈ Set.range (algebraMap (𝓞 K) K)) : star a ∈ Set.range (algebraMap (𝓞 K) K) := by
@@ -249,7 +245,7 @@ theorem star_mem_integers {K : Type} [Field K] [NumberField K] [StarRing K] {a :
   exact ⟨⟨star (algebraMap (𝓞 K) K o), hint⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[inner_eq_coords_orthonormal_pair h e hspan ho v, inner_eq_coords_orthonormal_pair h e hspan ho (orthCompanion h e x) v]`. Simplify using `only [star_add, star_mul', star_star]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_orthCompanion_symm {K : Type} [Field K] [NumberField K] [StarRing K] {V : Type} [AddCommGroup V] [Module K V]
     (h : V →ₗ⋆[K] V →ₗ[K] K) (e : Fin 2 → V) (hspan : Submodule.span K (Set.range e) = ⊤)
@@ -260,37 +256,35 @@ theorem inner_orthCompanion_symm {K : Type} [Field K] [NumberField K] [StarRing 
   ring
 
 /- English proof (translation)
-Take `⟨e, -, hspan, -, ho⟩` from `hL`. Establish `: IsTotallyComplex K` using `hK.1`. Establish `hcm` using `hK.2.1`. Use `set y0 := orthCompanion h e x with hy0`. Establish `hα : h x x ≠ 0` using `inner_self_ne_zero_of_orthonormal h e hcm hspan ho x hx0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0y0 : h y0 y0 = h x x` using `inner_self_orthCompanion h e hspan ho x`. Establish `hy0ne : y0 ≠ 0`. Introduce `h0`. Apply `hα` to reduce the goal to its premises. Rewrite using `[← hy0y0, h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hI : ∀ u ∈ M, ∀ v ∈ M, h u v ∈ Set.range (algebraMap (𝓞 K) K)` using `fun u hu v hv => by`. Use `hint u hu v hv` as an intermediate fact. Rewrite `this` using `[Submodule.mem_one]`. Then use the resulting hypothesis. Establish `hLag : ∀ v ∈ M, ∀ v' ∈ M, h y0 v * star (h y0 v') ∈ Set.range (algebraMap (𝓞 K) K)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv v' hv'`. Rewrite using `[hy0, lagrange_identity_orthCompanion h e hspan ho x v v']`. Take `⟨a, ha⟩` from `hI x hx x hx`. Take `⟨b, hb⟩` from `hI v' hv' v hv`. Take `⟨c, hc⟩` from `hI x hx v hv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `hI v' hv' x hx`. Conclude with `⟨a * b - c * d, by rw [map_sub, map_mul, map_mul, ha, hb, hc, hd]⟩`. It suffices to establish `hb : ∃ b : K, b ≠ 0 ∧ (∀ v ∈ M, b * star (h y0 v) ∈ Set.range (algebraMap (𝓞 K) K)) ∧ ∀ φ : K →+* ℂ, ‖φ b‖ ^ 2 ≤ rootDiscriminant K by`. Take `⟨b, hb0, hbM, hbφ⟩` from `hb`. Use `⟨b • y0, ?_, smul_ne_zero hb0 hy0ne, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← huni]`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap]`. Introduce `v hv`. Rewrite using `[Submodule.mem_one]`. Establish `h1 : h v (b • y0) = b * star (h y0 v)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, smul_eq_mul, hy0, inner_orthCompanion_symm h e hspan ho x v]`. Take `⟨c, hc⟩` from `hbM v hv`. Conclude with `⟨c, by rw [hc]; exact h1.symm⟩`. Rewrite using `[map_smul, hy0, inner_orthCompanion_eq_zero h e hspan ho x, smul_zero]`. Introduce `φ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : h (b • y0) (b • y0) = star b * (b * h x x)`. Establish `h2 : h (b • y0) (b • y0) = star b * (b * h y0 y0)`. Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, hy0y0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_mul, map_mul, hcm, norm_mul, norm_mul, RCLike.norm_conj]`. Combine the equalities or inequalities in the displayed calculation. Set `cc : Submodule (𝓞 K) K` to `M.map ((h y0).restrictScalars (𝓞 K))`. Establish `hfg : cc.FG` using `hlat.fg.map _`. Set `ccF : FractionalIdeal (𝓞 K)⁰ K` to `⟨cc, FractionalIdeal.isFractional_of_fg hfg⟩`.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ∀ c, c ∈ ccF ↔ ∃ v ∈ M, h y0 v = c`. Introduce `c`. Express the relevant statement in the definitionally equal form `c ∈ cc ↔ _`. Simplify using `only [cc, Submodule.mem_map, LinearMap.restrictScalars_apply]`. Establish `hne : ccF ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `hz : ∀ v ∈ M, h y0 v = 0` using `fun v hv => by`. Establish `h1 : h y0 v ∈ ccF` using `(hmem _).2 ⟨v, hv, rfl⟩`. Rewrite `h1` using `[h0]`. Conclude with `(FractionalIdeal.mem_zero_iff _).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : y0 ∈ Submodule.span K (M : Set V)` using `hlat.span_eq_top ▸ Submodule.mem_top`. Establish `hle : Submodule.span K (M : Set V) ≤ LinearMap.ker (h y0)` using `Submodule.span_le.2 fun v hv => LinearMap.mem_ker.2 (hz v hv)`. Conclude with `hα (hy0y0 ▸ LinearMap.mem_ker.1 (hle hy))`. Establish `hprod : FractionalIdeal.absNorm ccF * FractionalIdeal.absNorm ccF⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hne, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hc : FractionalIdeal.absNorm ccF ≤ 1`. Take `⟨a, ha, ha0, hw⟩` from `exists_small_mem_fractional_ideal K (Units.mk0 ccF hne) hc`. Take `⟨v', hv', rfl⟩` from `(hmem a).1 ha`. Conclude with `⟨h y0 v', ha0, fun v hv => hLag v' hv' v hv, fun φ => by`. Rewrite using `[← InfinitePlace.apply]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hw _⟩`. Establish `hc' : FractionalIdeal.absNorm ccF⁻¹ ≤ 1`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt`, `hc` using `[not_le]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, ha0, hw⟩` from `exists_small_mem_fractional_ideal K (Units.mk0 ccF hne)⁻¹ (by simpa using hc')`. Establish `ha' : a ∈ ccF⁻¹` using `by simpa using ha`. Rewrite `ha'` using `[FractionalIdeal.mem_inv_iff hne]`. Use `⟨star a, star_ne_zero.2 ha0, fun v hv => ?_, fun φ => ?_⟩` and prove the remaining obligations. Establish `h1` using `ha' (h y0 v) ((hmem _).2 ⟨v, hv, rfl⟩)`.
-
-Rewrite `h1` using `[FractionalIdeal.mem_one_iff]`. Rewrite using `[← star_mul']`. Conclude with `star_mem_integers h1`. Rewrite using `[hcm, RCLike.norm_conj, ← InfinitePlace.apply]`. Conclude with `hw _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orthogonal_second_vector (K : Type) [Field K] [NumberField K] [StarRing K] (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     (V : Type) [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]

@@ -21,11 +21,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G.Out in
 
 /- English proof (translation)
-Establish `hm` using `GlobalTheory.AbLaw.MulN.isMonHom_mulA G n`. Establish `: LocallyOfFiniteType ((mulA G n).left ≫ G.hom)` using `by rw [Over.w]; infer_instance`. Establish `: LocallyOfFiniteType (mulA G n).left` using `locallyOfFiniteType_of_comp _ G.hom`. Establish `: QuasiCompact ((mulA G n).left ≫ G.hom)` using `by rw [Over.w]; infer_instance`. Establish `: QuasiCompact (mulA G n).left` using `QuasiCompact.of_comp _ G.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsSeparated ((mulA G n).left ≫ G.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsSeparated (mulA G n).left` using `IsSeparated.of_comp _ G.hom`. Establish `: LocallyQuasiFinite (mulA G n).left` using `GlobalTheory.locallyQuasiFinite_of_finite_geometric_ker _ G G _ hm inferInstance inferInstance fun K _ _ t => by`. Simplify using `only [GlobalTheory.IntDiv.comp_mulA]`. Conclude with `h K t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: Flat (mulA G n).left` using `GlobalTheory.flat_of_flat_fibres_dvr V (FractionRing V) G G _ inferInstance inferInstance inferInstance inferInstance (GlobalTheory.IntDiv.flat_fibre G _ _ _) (GlobalTheory.IntDiv.flat_fibre G _ _ _)`. Take `⟨s, hs, hs'⟩` from `GlobalTheory.exists_section_of_quasiFinite_flat O C _ (pullback.snd (mulA G n).left c) (pullback.lift y r hy (IsLocalRing.closedPoint K)) ((congrArg (fun g => g (IsLocalRing.closedPoint K)) (pullback.lift_snd y r hy)).trans hr)`. Use `⟨s ≫ pullback.fst _ _, by rw [Category.assoc, pullback.condition, reassoc_of% hs], ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg _ hs').trans ((Scheme.Hom.comp_apply _ _ _).symm.trans (congrArg (fun g => g (IsLocalRing.closedPoint K)) (pullback.lift_fst y r hy))))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_root_through {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] [IsSeparated G.hom] [QuasiCompact G.hom]
@@ -59,23 +59,23 @@ theorem exists_root_through {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValu
     (congrArg (fun g => g (IsLocalRing.closedPoint K)) (pullback.lift_fst y r hy))))
 
 /- English proof (translation)
-Set `j : Sp V ⟶ Sp R` to `spMap α`. Establish `hjρ : spMap ρV ≫ j = spMap ρ`. Rewrite using `[← hρ]`. Simplify using `only [j, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hGV : IsSemiAbelian ((Over.pullback j).obj G)` using `IsSemiAbelian.pullback j G hG`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hGV.comm` as an intermediate fact. Use `hGV.smooth` as an intermediate fact. Use `hGV.separated` as an intermediate fact. Use `hGV.quasiCompact` as an intermediate fact. Use `hGV.geomConnected` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : ∀ (K : Type) [Field K] [IsAlgClosed K] (t : Sp K ⟶ Sp V), Finite {x : Over.mk t ⟶ ((Over.pullback j).obj G) // x ^ n = 1}`. Introduce `K _ _ t`. Take `⟨E⟩` from `hGV.fibres K t`. Use `(IsSemiAbelian.pullback t ((Over.pullback j).obj G) hGV).comm` as an intermediate fact. Conclude with `GlobalTheory.FewZeros.finite_torsion_of_mulEquiv (GlobalTheory.TorsionLift.ptsEquiv t ((Over.pullback j).obj G) (𝟙_ _) t (by simp)) n (hA K ((Over.pullback t).obj ((Over.pullback j).obj G)) ⟨E⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `s : Sp K ⟶ Sp V` to `r ≫ spMap ρV`. Establish `hs : s ≫ j = r ≫ spMap ρ` using `by simp only [s, Category.assoc, hjρ]`. Set `e₀` to `GlobalTheory.TorsionLift.ptsEquiv j G (Over.mk s) (r ≫ spMap ρ) hs`. Take `⟨yV, hyV₀⟩` from `e₀.surjective yG`. Establish `hyV : yV ^ n = 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `e₀.injective` to reduce the goal to its premises. Rewrite using `[map_pow, hyV₀, hyN, map_one]`. Set `rr : Over.mk s ⟶ Over.mk (spMap ρV)` to `Over.homMk r rfl`. Set `c : Sp O ⟶ ((Over.pullback j).obj G).left` to `(1 : Over.mk (spMap ρV) ⟶ ((Over.pullback j).obj G)).left`. Establish `hc : yV.left ≫ (ReciprocityTheory.ChartRestriction.G.Out.mulA ((Over.pullback j).obj G) n).left = r ≫ c`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : yV ≫ ReciprocityTheory.ChartRestriction.G.Out.mulA ((Over.pullback j).obj G) n = rr ≫ (1 : Over.mk (spMap ρV) ⟶ ((Over.pullback j).obj G))`. Rewrite using `[GlobalTheory.IntDiv.comp_mulA, hyV, MonObj.comp_one]`. Conclude with `congrArg (fun q => q.left) h1`. Take `⟨c', hc', hcl⟩` from `exists_root_through ((Over.pullback j).obj G) n hfin O C c K r hr yV.left hc`. Establish `hcw : c' ≫ ((Over.pullback j).obj G).hom = spMap ρV`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Over.w (ReciprocityTheory.ChartRestriction.G.Out.mulA ((Over.pullback j).obj G) n)`. Establish `h2 : c ≫ ((Over.pullback j).obj G).hom = spMap ρV` using `Over.w (1 : Over.mk (spMap ρV) ⟶ ((Over.pullback j).obj G))`. Rewrite using `[← h1, ← Category.assoc, hc', h2]`. Set `c₂ : Over.mk (spMap ρV) ⟶ ((Over.pullback j).obj G)` to `Over.homMk c' hcw`. Establish `hc₂ : c₂ ^ n = 1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← GlobalTheory.IntDiv.comp_mulA]`. Conclude with `Over.OverMorphism.ext hc'`. Set `e₁` to `GlobalTheory.TorsionLift.ptsEquiv j G (Over.mk (spMap ρV)) (spMap ρ) hjρ`. Use `⟨e₁ c₂, by rw [← map_pow, hc₂, map_one], ?_⟩` and prove the remaining obligations. Establish `h1 : (e₁ c₂).left = c' ≫ pullback.fst G.hom j` using `GlobalTheory.TorsionLift.ptsEquiv_left _ _ _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (e₀ yV).left = yV.left ≫ pullback.fst G.hom j` using `GlobalTheory.TorsionLift.ptsEquiv_left _ _ _ _ _ _`. Rewrite using `[h1, ← hyV₀, h2]`. Use `(Scheme.Hom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hcl]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_torsion_point_through {R V O C K : Type} [CommRing R] [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] [CommRing O] [IsDomain O] [ValuationRing O] [Field C] [IsAlgClosed C] [Algebra O C]
@@ -141,7 +141,7 @@ theorem exists_torsion_point_through {R V O C K : Type} [CommRing R] [CommRing V
 end Helpers
 
 /- English proof (translation)
-Introduce `h`. Establish `hinj : Function.Injective a` using `(RingHom.injective_iff_ker_eq_bot a).2 h`. Establish `: Infinite (𝓞 L)` using `Infinite.of_injective (Nat.cast : ℕ → 𝓞 L) Nat.cast_injective`. Conclude with `not_finite_iff_infinite.2 this (Finite.of_injective a hinj)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ker_ne_bot_of_finite (L : Type) [Field L] [NumberField L] (k : Type) [Field k] [Finite k] (a : 𝓞 L →+* k) :
     RingHom.ker a ≠ ⊥ := by
@@ -151,11 +151,11 @@ theorem ker_ne_bot_of_finite (L : Type) [Field L] [NumberField L] (k : Type) [Fi
   exact not_finite_iff_infinite.2 this (Finite.of_injective a hinj)
 
 /- English proof (translation)
-Set `f : 𝓞 L →+* AlgebraicClosure L` to `(algebraMap L (AlgebraicClosure L)).comp (algebraMap (𝓞 L) L)`. Establish `hf : Function.Injective f` using `(algebraMap L (AlgebraicClosure L)).injective.comp (RingOfIntegers.coe_injective)`. Establish `hs : Function.Surjective f.rangeRestrict` using `f.rangeRestrict_surjective`. Establish `hI : p.map f.rangeRestrict ≠ ⊤`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (1 : f.range) ∈ p.map f.rangeRestrict` using `h ▸ Submodule.mem_top`. Take `⟨x, hx, hx1⟩` from `(Ideal.mem_map_iff_of_surjective _ hs).1 h1`. Establish `: x = 1` using `hf (by simpa [Subtype.ext_iff] using hx1)`. Conclude with `hp ((Ideal.eq_top_iff_one _).2 (this ▸ hx))`. Take `⟨B, hAB, hB⟩` from `Ideal.image_subset_nonunits_valuationSubring (p.map f.rangeRestrict) hI`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, f.codRestrict B fun x => hAB ⟨x, rfl⟩, fun a => rfl, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1 : f a ∈ B.nonunits` using `hB ⟨f.rangeRestrict a, Ideal.mem_map_of_mem _ ha, rfl⟩`. Conclude with `ValuationSubring.coe_mem_nonunits_iff.1 h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring_of_ne_top (L : Type) [Field L] [NumberField L] (p : Ideal (𝓞 L)) (hp : p ≠ ⊤) :
     ∃ (O : ValuationSubring (AlgebraicClosure L)) (ρ : 𝓞 L →+* O),
@@ -177,9 +177,9 @@ theorem exists_valuationSubring_of_ne_top (L : Type) [Field L] [NumberField L] (
   exact ValuationSubring.coe_mem_nonunits_iff.1 h1
 
 /- English proof (translation)
-Establish `hu : ∀ y : p.primeCompl, IsUnit (ρ y)`. Introduce `y`. Assume the negation of the conclusion as `hy`. Establish `h1 : p ≤ (IsLocalRing.maximalIdeal O).comap ρ` using `hρ`. Establish `h2 : (IsLocalRing.maximalIdeal O).comap ρ ≠ ⊤` using `Ideal.comap_ne_top _ (Ideal.IsPrime.ne_top inferInstance)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(Ideal.IsMaximal.eq_of_le ‹_› h2 h1).symm`. Establish `h4 : (y : R) ∈ (IsLocalRing.maximalIdeal O).comap ρ`. Simplify `hy` using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal]`. Conclude with `y.2 (h3 ▸ h4)`. Conclude with `⟨IsLocalization.lift hu, IsLocalization.lift_comp hu⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift_atPrime {R O : Type} [CommRing R] [CommRing O] [IsLocalRing O] (p : Ideal R) [p.IsMaximal]
     (ρ : R →+* O) (hρ : ∀ a ∈ p, ρ a ∈ IsLocalRing.maximalIdeal O) :
@@ -196,11 +196,11 @@ theorem exists_lift_atPrime {R O : Type} [CommRing R] [CommRing O] [IsLocalRing 
   exact ⟨IsLocalization.lift hu, IsLocalization.lift_comp hu⟩
 
 /- English proof (translation)
-Use `letI : Field (R ⧸ RingHom.ker a) := Ideal.Quotient.field _`. Set `a' : (R ⧸ RingHom.ker a) →+* k` to `Ideal.Quotient.lift _ a fun x hx => hx`. Set `b' : (R ⧸ RingHom.ker a) →+* K` to `Ideal.Quotient.lift _ b fun x hx => h hx`. Use `letI := a'.toAlgebra`. Use `letI := b'.toAlgebra`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Establish `: Module.Finite (R ⧸ RingHom.ker a) k` using `Module.Finite.of_finite`. Establish `: Algebra.IsAlgebraic (R ⧸ RingHom.ker a) k` using `Algebra.IsAlgebraic.of_finite _ _`. Set `φ : k →ₐ[R ⧸ RingHom.ker a] K` to `IsAlgClosed.lift`. Use `⟨φ.toRingHom, RingHom.ext fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : φ (a' (Ideal.Quotient.mk _ x)) = b' (Ideal.Quotient.mk _ x)` using `φ.commutes _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [a', b', Ideal.Quotient.lift_mk] at h1`. Conclude with `h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_factor_of_finite {R k K : Type} [CommRing R] [Field k] [Finite k] [Field K] [IsAlgClosed K]
     (a : R →+* k) (b : R →+* K) [(RingHom.ker a).IsMaximal] (h : RingHom.ker a ≤ RingHom.ker b) :
@@ -219,11 +219,11 @@ theorem exists_factor_of_finite {R k K : Type} [CommRing R] [Field k] [Finite k]
   exact h1
 
 /- English proof (translation)
-Set `K` to `AlgebraicClosure (IsLocalRing.ResidueField O)`. Set `g : O →+* K` to `(algebraMap (IsLocalRing.ResidueField O) K).comp (IsLocalRing.residue O)`. Establish `: IsLocalHom g`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : IsUnit (IsLocalRing.residue O x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `isUnit_iff_ne_zero.2 fun h => ?_` and prove the remaining obligations. Establish `: g x = 0` using `by simp [g, h]`. Conclude with `hx.ne_zero this`. Conclude with `(isUnit_map_iff (IsLocalRing.residue O) x).1 h1`. Use `⟨K, inferInstance, inferInstance, g.comp ρ, spMap g, ?_, fun x hx => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `h1 : IsLocalRing.residue O (ρ x) = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 hx`. Simplify using `[g, h1]`. Conclude with `IsLocalRing.comap_closedPoint g`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_geometric_closedPoint {R O : Type} [CommRing R] [CommRing O] [IsLocalRing O] (ρ : R →+* O) :
     ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (b : R →+* K) (r : Sp K ⟶ Sp O), r ≫ spMap ρ = spMap b ∧
@@ -245,17 +245,17 @@ theorem exists_geometric_closedPoint {R O : Type} [CommRing R] [CommRing O] [IsL
   · exact IsLocalRing.comap_closedPoint g
 
 /- English proof (translation)
-Introduce `L _ _ G _ _ hG w hw`. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Set `π : Sp (𝓞 L) ⟶ Sp ℤ` to `spMap (Int.castRingHom (𝓞 L))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: LocallyOfFiniteType π`. Establish `h1 : (algebraMap ℤ (𝓞 L)).Finite` using `RingHom.finite_algebraMap.2 inferInstance`. Rewrite `h1` using `[algebraMap_int_eq]`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 h1.finiteType`. Take `⟨hA, hB⟩` from `GlobalTheory.semiAbelian_torsion_finite_and_closedPoint_finiteOrder GlobalTheory.abelian_torsion_finite_and_mulN_surjective.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN1, hN⟩` from `hB (Sp (𝓞 L)) π G w hw`. Establish `: Finite (G.left.residueField w)` using `(GlobalTheory.jacobson_closedPoints_tools_int G.left (G.hom ≫ π)).2.1 w hw`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (G.left.fromSpecResidueField w ≫ G.hom)`. Take `⟨a, rfl⟩ : ∃ a : 𝓞 L →+* G.left.residueField w, CommRingCat.ofHom a = ψ` from `⟨ψ.hom, rfl⟩`. Establish `hp0 : RingHom.ker a ≠ ⊥` using `ker_ne_bot_of_finite L _ a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpp : (RingHom.ker a).IsPrime` using `RingHom.ker_isPrime a`. Establish `hpm : (RingHom.ker a).IsMaximal` using `hpp.isMaximal hp0`. Take `⟨O, ρ, hρL, hρp⟩` from `exists_valuationSubring_of_ne_top L (RingHom.ker a) hpp.ne_top`. Take `⟨ρV, hρV⟩` from `exists_lift_atPrime (RingHom.ker a) ρ hρp`. Establish `hV : IsDiscreteValuationRing (Localization.AtPrime (RingHom.ker a))` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 L) hp0 _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, _, _, b, r, hb, hbk, hr⟩` from `exists_geometric_closedPoint ρ`. Take `⟨φ, hφ⟩` from `exists_factor_of_finite a b (fun x hx => hbk x (hρp x hx))`. Establish `hy₀ : (Spec.map (CommRingCat.ofHom φ) ≫ G.left.fromSpecResidueField w) ≫ G.hom = r ≫ spMap ρ`. Rewrite using `[hb, Category.assoc, ← hψ, ← hφ, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Set `yG : Over.mk (r ≫ spMap ρ) ⟶ G` to `Over.homMk _ hy₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hyl : ∀ z, yG.left z = w` using `fun z => (Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply _ _)`. Establish `hyN : yG ^ N = 1` using `hN K _ yG (Set.eq_singleton_iff_unique_mem.2 ⟨⟨IsLocalRing.closedPoint K, hyl _⟩, by rintro _ ⟨z, rfl⟩; exact hyl z⟩)`. Take `⟨y, hy, hyw⟩` from `exists_torsion_point_through (C := AlgebraicClosure L) G hG N (fun K _ _ G _ _ hE => hA K G hE N hN1) (algebraMap (𝓞 L) (Localization.AtPrime (RingHom.ker a))) ρV ρ hρV r hr yG hyN`. Conclude with `⟨N, O, ρ, y, hN1, hy, hyw.trans (hyl _), hρL⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_torsion_point_reducing_to : ∀ (L : Type) [Field L] [NumberField L] (G : Over (Sp (𝓞 L))) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (w : G.left), IsClosed ({w} : Set G.left) → ∃ (N : ℕ) (O : ValuationSubring (AlgebraicClosure L)) (ρ : 𝓞 L →+* O) (y : Over.mk (spMap ρ) ⟶ G), 1 ≤ N ∧ y ^ N = 1 ∧ y.left (IsLocalRing.closedPoint O) = w ∧ ∀ a : 𝓞 L, ((ρ a : O) : AlgebraicClosure L) = algebraMap L (AlgebraicClosure L) (a : L) := by
   intro L _ _ G _ _ hG w hw

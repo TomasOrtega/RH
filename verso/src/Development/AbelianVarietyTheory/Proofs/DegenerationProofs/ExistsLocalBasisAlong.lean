@@ -14,7 +14,7 @@ namespace GlobalTheory.LN.PolFrames
 variable {S : Scheme.{0}} (G : Over S) (L : LB G.left) (N : ℕ) {T T' : Over S} (h : T' ⟶ T)
 
 /- English proof (translation)
-Take `⟨s', h0, h1⟩` from `SectionLimit.exists_pull (K := Fin 1) s (h ▷ G).left (fun _ => (snd T' G).left) (fun _ => congrArg CommaMorphism.left (whiskerRight_snd h G))`. Conclude with `⟨s', fun j => h0 j _, fun z J hJ => (h1 _ _ z J hJ).trans (by rw [Category.id_comp])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pullSec [GrpObj G] (s : LB.Sec (LPow G L (N : ℤ) T)) : ∃ s' : LB.Sec (LPow G L (N : ℤ) T'),
     IsPullSec G L N (h ▷ G) (whiskerRight_snd h G) s s' ∧
@@ -26,7 +26,7 @@ theorem exists_pullSec [GrpObj G] (s : LB.Sec (LPow G L (N : ℤ) T)) : ∃ s' :
   exact ⟨s', fun j => h0 j _, fun z J hJ => (h1 _ _ z J hJ).trans (by rw [Category.id_comp])⟩
 
 /- English proof (translation)
-Take `⟨s'', h0, h1⟩` from `exists_pullSec G L N h s`. Take `rfl : s' = s''` from `SecOps.sec_ext fun j => (hs j).trans (h0 j).symm`. Conclude with `h1 z J hJ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sval_of_isPullSec [GrpObj G] {s : LB.Sec (LPow G L (N : ℤ) T)} {s' : LB.Sec (LPow G L (N : ℤ) T')}
     (hs : IsPullSec G L N (h ▷ G) (whiskerRight_snd h G) s s') (z : (T' ⊗ G).left) (J) (hJ : Good L z J) :
@@ -37,11 +37,11 @@ theorem sval_of_isPullSec [GrpObj G] {s : LB.Sec (LPow G L (N : ℤ) T)} {s' : L
   exact h1 z J hJ
 
 /- English proof (translation)
-Set `σ` to `SectionLimit.linSec (fun i => (fst T' G).left.appTop.hom (c i)) b'`. Establish `ev : ∀ j, (∑ i, c i • (SecM.ofSec G (b' i) : SecM G L N T')).1 j = σ.f j` using `fun j => by`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Both sides reduce to the same expression. Establish `hv : Lin G L N h b c σ` using `fun z J hJ => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[SectionScalarValuation.sval_lin (s := σ) (fun i => (fst T' G).left.appTop.hom (c i)) b' (fun _ => rfl) (𝟙 _) z hJ]`. Use `Finset.sum_congr rfl fun i _ => congrArg₂ (· * ·) ?_ (sval_of_isPullSec G L N h (hb i) z J hJ)` and prove the remaining obligations. Conclude with `(gs_pull (𝟙 _) (fst T' G).left z ⊤ trivial (c i)).trans (by rw [Category.id_comp])`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (funext fun j => (ev j).trans ?_)` and prove the remaining obligations. Conclude with `sec_ext_val hL (fun y J hJ => (hv y J hJ).trans (H y J hJ).symm) j`. Introduce `H`. Take `rfl : s = σ` from `SecOps.sec_ext fun j => (congrFun (congrArg Subtype.val H) j).symm.trans (ev j)`. Conclude with `hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lin_iff [GrpObj G] (hL : L.IsLB) {n : ℕ} {b : Fin n → LB.Sec (LPow G L (N : ℤ) T)}
     {b' : Fin n → LB.Sec (LPow G L (N : ℤ) T')} (hb : ∀ i, IsPullSec G L N (h ▷ G) (whiskerRight_snd h G) (b i) (b' i))
@@ -64,9 +64,9 @@ theorem lin_iff [GrpObj G] (hL : L.IsLB) {n : ℕ} {b : Fin n → LB.Sec (LPow G
     exact hv
 
 /- English proof (translation)
-Unfold `BasisAlong`. Simplify using `only [lin_iff G L N h hL hb]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `⟨Fintype.linearIndependent_iffₛ.2 fun c c' e i => ?_, eq_top_iff.2 fun x _ => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun ((H (SecM.toSec G (∑ i, c' i • (SecM.ofSec G (b' i) : SecM G L N T')))).unique e rfl) i`. Conclude with `(Submodule.mem_span_range_iff_exists_fun _).2 (H (SecM.toSec G x)).exists`. Introduce and unpack `⟨hli, hsp⟩ s`. Take `⟨r, hr⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 (hsp.ge (Submodule.mem_top : SecM.ofSec G s ∈ ⊤))`. Conclude with `⟨r, hr, fun r' hr' => funext fun i => Fintype.linearIndependent_iffₛ.1 hli _ _ (hr'.trans hr.symm) i⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem basisAlong_iff [GrpObj G] (hL : L.IsLB) {n : ℕ} {b : Fin n → LB.Sec (LPow G L (N : ℤ) T)}
     {b' : Fin n → LB.Sec (LPow G L (N : ℤ) T')} (hb : ∀ i, IsPullSec G L N (h ▷ G) (whiskerRight_snd h G) (b i) (b' i)) :
@@ -85,7 +85,7 @@ theorem basisAlong_iff [GrpObj G] (hL : L.IsLB) {n : ℕ} {b : Fin n → LB.Sec 
     exact ⟨r, hr, fun r' hr' => funext fun i => Fintype.linearIndependent_iffₛ.1 hli _ _ (hr'.trans hr.symm) i⟩
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Conclude with `(funext fun i => by rw [Subsingleton.elim i k] : b = fun _ => b k) ▸ H`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem basisAlong_one {n : ℕ} (hn : n = 1) (b : Fin n → LB.Sec (LPow G L (N : ℤ) T)) (k : Fin n)
     (H : BasisAlong G L N h b) : BasisAlong G L N h (fun _ : Fin 1 => b k) := by
@@ -93,9 +93,9 @@ theorem basisAlong_one {n : ℕ} (hn : n = 1) (b : Fin n → LB.Sec (LPow G L (N
   exact (funext fun i => by rw [Subsingleton.elim i k] : b = fun _ => b k) ▸ H
 
 /- English proof (translation)
-Take `⟨V, hV, b, hb⟩` from `hS S P N hN p`. Establish `key : ∀ f : V.toScheme ⟶ S, (overRes (T` using `baseOver S) V).hom = f → ∃ b : Fin (N ^ P.g) → LB.Sec (LPow P.A P.L (N : ℤ) (Over.mk f)), ∀ (R : Type) [CommRing R] (χ : Sp R ⟶ V.toScheme), BasisAlong P.A P.L N (Over.homMk χ rfl : Over.mk (χ ≫ f) ⟶ Over.mk f) b := by`. Introduce and unpack `_ rfl`. Use `⟨b, fun R _ χ => ?_⟩` and prove the remaining obligations. Use `choose b' hb' _ using fun i => exists_pullSec P.A P.L N (homAt χ) (b i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `(basisAlong_iff P.A P.L N (homAt χ) P.isLB hb').2 (hb R χ b' hb')`. Conclude with `⟨V, hV, key V.ι (Category.comp_id _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_local_basisAlong (hS : SecBaseChangeSt) [IsLocallyNoetherian S] (P : PolAV S) (hN : 1 ≤ N) (p : S) :
     ∃ V : S.Opens, p ∈ V ∧ ∃ b : Fin (N ^ P.g) → LB.Sec (LPow P.A P.L (N : ℤ) (Over.mk V.ι)),
@@ -112,7 +112,7 @@ theorem exists_local_basisAlong (hS : SecBaseChangeSt) [IsLocallyNoetherian S] (
   exact ⟨V, hV, key V.ι (Category.comp_id _)⟩
 
 /- English proof (translation)
-Use `choose b' hb' _ using fun i => exists_pullSec G L N h (b i)`. Use `⟨b' k, (lin_iff G L N h hL (b' := fun _ => b' k) (fun _ => hb' k) _ _).2 (by simp), (lin_iff G L N h hL hb' _ _).2 (by simp [Matrix.one_apply])⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_lin_unit [GrpObj G] (hL : L.IsLB) {n : ℕ} (b : Fin n → LB.Sec (LPow G L (N : ℤ) T)) (k : Fin n) :
     ∃ t, Lin G L N h (fun _ : Fin 1 => b k) (fun _ => 1) t ∧
@@ -122,13 +122,11 @@ theorem exists_lin_unit [GrpObj G] (hL : L.IsLB) {n : ℕ} (b : Fin n → LB.Sec
     (lin_iff G L N h hL hb' _ _).2 (by simp [Matrix.one_apply])⟩
 
 /- English proof (translation)
-Take `⟨U, hU, th, hth⟩` from `exists_local_basisAlong 1 hS P le_rfl (IsLocalRing.closedPoint R)`. Take `rfl : U = ⊤` from `eq_top_of_closedPoint_mem U hU`. Take `⟨U, hU, b, hb⟩` from `exists_local_basisAlong N hS P hN (IsLocalRing.closedPoint R)`. Take `rfl : U = ⊤` from `eq_top_of_closedPoint_mem U hU`. Establish `hA : IsAmpleLB (Inh.trivLB (Sp R))` using `isAmpleLB_of_isAffine (Inh.trivLB_isLB _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : 1 ^ P.g = 1` using `one_pow _`. Set `k₀ : Fin (1 ^ P.g)` to `Fin.cast h1.symm 0`. Use `⟨⟨Inh.trivLB (Sp R), hA.isLB, fun z => ?_, N ^ P.g, fun _ => th k₀, fun _ => b, 0, 0, fun i j => ⟨1, 1, ?_, fun k => ?_, ?_⟩, fun i V _ _ _ _ χ _ => ⟨?_, hb V χ⟩⟩, rfl, rfl, rfl, rfl⟩` and prove the remaining obligations. Take `⟨n, hn, s, hs⟩` from `hA.exists_affine z`. Take `⟨s', e, -⟩` from `exists_sec_oneTerm _ (K' := Fin 1) (e' := (n : ℤ)) rfl s`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, s', hn, by rw [← e] at hs; exact hs⟩`. Take `⟨t, ht, -⟩` from `exists_lin_unit P.A P.L 1 _ P.isLB th k₀`. Conclude with `⟨t, ht, ht⟩`. Conclude with `exists_lin_unit P.A P.L N _ P.isLB b k`. Rewrite using `[zpow_zero, zpow_zero, _root_.mul_one]`.
-
-Conclude with `map_one _`. Conclude with `basisAlong_one P.A P.L 1 _ h1 th k₀ (hth V χ)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ampFrames_local (hS : SecBaseChangeSt) (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (P : PolAV (Sp R)) (hN : 1 ≤ N) :

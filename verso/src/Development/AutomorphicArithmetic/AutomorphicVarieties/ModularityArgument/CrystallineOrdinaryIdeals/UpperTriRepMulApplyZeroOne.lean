@@ -9,7 +9,7 @@ namespace GlobalTheory.UpperTriCoord
 variable {G B : Type} [Group G] [CommRing B]
 
 /- English proof (translation)
-Rewrite using `[map_mul, Units.val_mul, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem entry_mul (ρ : G →* GL (Fin 3) B) (g h : G) (i j : Fin 3) :
     (ρ (g * h) : Matrix (Fin 3) (Fin 3) B) i j =
@@ -22,7 +22,7 @@ variable (ρ : G →* GL (Fin 3) B) (hT : ∀ g i j, j < i → (ρ g : Matrix (F
 include hT
 
 /- English proof (translation)
-Rewrite using `[entry_mul, Fin.sum_univ_three]`. Use `fin_cases i`. Simplify using `[hT h 1 0 (by decide), hT h 2 0 (by decide)]`. Simplify using `[hT g 1 0 (by decide), hT h 2 1 (by decide)]`. Simplify using `[hT g 2 0 (by decide), hT g 2 1 (by decide)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diag_mul (g h : G) (i : Fin 3) :
     (ρ (g * h) : Matrix (Fin 3) (Fin 3) B) i i =

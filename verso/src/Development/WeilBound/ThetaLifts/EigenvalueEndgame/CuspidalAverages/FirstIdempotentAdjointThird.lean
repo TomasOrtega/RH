@@ -14,36 +14,36 @@ variable {R n ι : Type} [CommRing R] [Fintype n] [DecidableEq n] [Fintype ι] [
 def Adj (c : R →+* R) (J x y : Matrix n n R) : Prop := xᵀ * J = J * y.map c
 
 /- English proof (translation)
-Simplify using `[Adj, Matrix.map_one _ (map_zero c) (map_one c)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Adj.one : Adj c J 1 1 := by simp [Adj, Matrix.map_one _ (map_zero c) (map_one c)]
 
 /- English proof (translation)
-Rewrite using `[Adj, transpose_add, Matrix.add_mul, h, h', Matrix.map_add _ (map_add c), Matrix.mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Adj.add (h : Adj c J x y) (h' : Adj c J x' y') : Adj c J (x + x') (y + y') := by
   rw [Adj, transpose_add, Matrix.add_mul, h, h', Matrix.map_add _ (map_add c), Matrix.mul_add]
 
 /- English proof (translation)
-Rewrite using `[Adj, transpose_sub, Matrix.sub_mul, h, h', Matrix.map_sub _ (map_sub c), Matrix.mul_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Adj.sub (h : Adj c J x y) (h' : Adj c J x' y') : Adj c J (x - x') (y - y') := by
   rw [Adj, transpose_sub, Matrix.sub_mul, h, h', Matrix.map_sub _ (map_sub c), Matrix.mul_sub]
 
 /- English proof (translation)
-Rewrite using `[Adj, transpose_mul, Matrix.mul_assoc, h, ← Matrix.mul_assoc, h', Matrix.map_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Adj.mul (h : Adj c J x y) (h' : Adj c J x' y') : Adj c J (x * x') (y' * y) := by
   rw [Adj, transpose_mul, Matrix.mul_assoc, h, ← Matrix.mul_assoc, h', Matrix.map_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[h, Matrix.mul_assoc, ← Matrix.map_mul, e, Matrix.map_one _ (map_zero c) (map_one c), Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Adj.unit (h : Adj c J x y) (e : y * x = 1) : xᵀ * J * x.map c = J := by
   rw [h, Matrix.mul_assoc, ← Matrix.map_mul, e, Matrix.map_one _ (map_zero c) (map_one c), Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `Adj`. Use `conv_rhs => rw [← h]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.map_mul, e, Matrix.map_one _ (map_zero c) (map_one c), Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Adj.of_unit (h : xᵀ * J * x.map c = J) (e : x * y = 1) : Adj c J x y := by
   unfold Adj
@@ -60,7 +60,7 @@ structure Fr (c : R →+* R) (J : Matrix n n R) (u u' : Matrix n ι R) : Prop wh
 def row (c : R →+* R) (J : Matrix n n R) (u : Matrix n ι R) : Matrix ι n R := (J * u.map c)ᵀ
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `h _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_map_c {a b : Type} (h : ∀ r, c (c r) = r) (z : Matrix a b R) : (z.map c).map c = z := by
   ext i j; exact h _
@@ -71,40 +71,40 @@ variable (h : Fr c J u u')
 include h
 
 /- English proof (translation)
-Rewrite using `[row, transpose_map, Matrix.map_mul, map_map_c h.cc, transpose_mul, h.sk, Matrix.mul_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem row_c (w : Matrix n ι R) : (row c J w).map c = -(wᵀ * J) := by
   rw [row, transpose_map, Matrix.map_mul, map_map_c h.cc, transpose_mul, h.sk, Matrix.mul_neg]
 
 /- English proof (translation)
-Rewrite using `[row, ← transpose_transpose u, ← transpose_mul, ← Matrix.mul_assoc, h.uv, transpose_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vu : row c J u' * u = 1 := by
   rw [row, ← transpose_transpose u, ← transpose_mul, ← Matrix.mul_assoc, h.uv, transpose_one]
 
 /- English proof (translation)
-Rewrite using `[row]`. Use `nth_rw 2 [← transpose_transpose u']`. Rewrite using `[← transpose_mul, ← Matrix.mul_assoc, h.vv, transpose_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vv' : row c J u' * u' = 0 := by
   rw [row]; nth_rw 2 [← transpose_transpose u']
   rw [← transpose_mul, ← Matrix.mul_assoc, h.vv, transpose_zero]
 
 /- English proof (translation)
-Rewrite using `[row]`. Use `nth_rw 2 [← transpose_transpose u]`. Rewrite using `[← transpose_mul, ← Matrix.mul_assoc, h.uu, transpose_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uu' : row c J u * u = 0 := by
   rw [row]; nth_rw 2 [← transpose_transpose u]
   rw [← transpose_mul, ← Matrix.mul_assoc, h.uu, transpose_zero]
 
 /- English proof (translation)
-Rewrite using `[← map_map_c h.cc (row c J u * u'), Matrix.map_mul, h.row_c, Matrix.neg_mul, h.uv, Matrix.map_neg _ (map_neg c), Matrix.map_one _ (map_zero c) (map_one c)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem uv' : row c J u * u' = -1 := by
   rw [← map_map_c h.cc (row c J u * u'), Matrix.map_mul, h.row_c, Matrix.neg_mul, h.uv, Matrix.map_neg _ (map_neg c),
     Matrix.map_one _ (map_zero c) (map_one c)]
 
 /- English proof (translation)
-Rewrite using `[Adj, Matrix.map_neg _ (map_neg c), Matrix.map_mul, Matrix.map_mul, h.row_c, transpose_map, map_map_c h.cc, row]`. Simplify using `only [transpose_mul, transpose_transpose, Matrix.mul_neg, neg_neg, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adj (w w' : Matrix n ι R) (g : Matrix ι ι R) : Adj c J (w * g * row c J w') (-(w' * (g.map c)ᵀ * row c J w)) := by
   rw [Adj, Matrix.map_neg _ (map_neg c), Matrix.map_mul, Matrix.map_mul, h.row_c, transpose_map, map_map_c h.cc, row]
@@ -128,7 +128,7 @@ variable (h : Fr c J u u')
 include h
 
 /- English proof (translation)
-Simplify using `only [lv, Matrix.sub_mul, Matrix.add_mul, Matrix.mul_assoc, h.vu, h.uu', Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem lv_u (g g' : Matrix ι ι R) : lv c J u u' g g' * u = u * g := by
   simp only [lv, Matrix.sub_mul, Matrix.add_mul, Matrix.mul_assoc, h.vu, h.uu', Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero,
@@ -136,7 +136,7 @@ theorem lv_u (g g' : Matrix ι ι R) : lv c J u u' g g' * u = u * g := by
   abel
 
 /- English proof (translation)
-Simplify using `only [lv, Matrix.sub_mul, Matrix.add_mul, Matrix.mul_assoc, h.vv', h.uv', Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero, Matrix.mul_sub, Matrix.mul_neg]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem lv_v (g g' : Matrix ι ι R) : lv c J u u' g g' * u' = u' * g' := by
   simp only [lv, Matrix.sub_mul, Matrix.add_mul, Matrix.mul_assoc, h.vv', h.uv', Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero,
@@ -144,7 +144,7 @@ theorem lv_v (g g' : Matrix ι ι R) : lv c J u u' g g' * u' = u' * g' := by
   abel
 
 /- English proof (translation)
-Simplify using `only [lv, Matrix.mul_sub, Matrix.mul_add, ← Matrix.mul_assoc, h.vu, h.vv', Matrix.mul_one, Matrix.one_mul, Matrix.zero_mul, Matrix.sub_mul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem v_lv (g g' : Matrix ι ι R) : row c J u' * lv c J u u' g g' = g * row c J u' := by
   simp only [lv, Matrix.mul_sub, Matrix.mul_add, ← Matrix.mul_assoc, h.vu, h.vv', Matrix.mul_one, Matrix.one_mul, Matrix.zero_mul,
@@ -152,7 +152,7 @@ theorem v_lv (g g' : Matrix ι ι R) : row c J u' * lv c J u u' g g' = g * row c
   abel
 
 /- English proof (translation)
-Simplify using `only [lv, Matrix.mul_sub, Matrix.mul_add, ← Matrix.mul_assoc, h.uu', h.uv', Matrix.mul_one, Matrix.one_mul, Matrix.zero_mul, Matrix.sub_mul, Matrix.neg_mul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem u_lv (g g' : Matrix ι ι R) : row c J u * lv c J u u' g g' = g' * row c J u := by
   simp only [lv, Matrix.mul_sub, Matrix.mul_add, ← Matrix.mul_assoc, h.uu', h.uv', Matrix.mul_one, Matrix.one_mul, Matrix.zero_mul,
@@ -160,7 +160,7 @@ theorem u_lv (g g' : Matrix ι ι R) : row c J u * lv c J u u' g g' = g' * row c
   abel
 
 /- English proof (translation)
-Use `conv_lhs => enter [1]`. Rewrite using `[lv]`. Rewrite using `[Matrix.sub_mul, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc _ (row c J u), h.v_lv, h.u_lv, Matrix.one_mul]`. Simplify using `only [lv, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, Matrix.one_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem lv_mul (g g' k k' : Matrix ι ι R) : lv c J u u' g g' * lv c J u u' k k' = lv c J u u' (g * k) (g' * k') := by
   conv_lhs => enter [1]; rw [lv]
@@ -169,9 +169,9 @@ theorem lv_mul (g g' k k' : Matrix ι ι R) : lv c J u u' g g' * lv c J u u' k k
   abel
 
 /- English proof (translation)
-Establish `e : ∀ g : Matrix ι ι R, ((g - 1).map c)ᵀ = (g.map c)ᵀ - 1` using `fun g => by`. Rewrite using `[Matrix.map_sub _ (map_sub c), Matrix.map_one _ (map_zero c) (map_one c), transpose_sub, transpose_one]`. Use `(Adj.one.add (h.adj u u' (g - 1))).sub (h.adj u' u (g' - 1))` as an intermediate fact. Rewrite `this` using `[e, e]`. Rewrite using `[show lv c J u u' (g'.map c)ᵀ (g.map c)ᵀ = 1 + -(u' * ((g.map c)ᵀ - 1) * row c J u) - -(u * ((g'.map c)ᵀ - 1) * row c J u') by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[lv]`. Use the proof step `abel]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lv_adj (g g' : Matrix ι ι R) : Adj c J (lv c J u u' g g') (lv c J u u' (g'.map c)ᵀ (g.map c)ᵀ) := by
   have e : ∀ g : Matrix ι ι R, ((g - 1).map c)ᵀ = (g.map c)ᵀ - 1 := fun g => by
@@ -183,19 +183,19 @@ theorem lv_adj (g g' : Matrix ι ι R) : Adj c J (lv c J u u' g g') (lv c J u u'
   exact this
 
 /- English proof (translation)
-Rewrite using `[e1, Matrix.mul_assoc, h.v_lv, ← Matrix.mul_assoc (lv c J u u' g g'), h.lv_u, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem first_idempotent_commute_levi (g g' : Matrix ι ι R) : e1 c J u u' * lv c J u u' g g' = lv c J u u' g g' * e1 c J u u' := by
   rw [e1, Matrix.mul_assoc, h.v_lv, ← Matrix.mul_assoc (lv c J u u' g g'), h.lv_u, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[e3, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, h.u_lv, ← Matrix.mul_assoc (lv c J u u' g g'), h.lv_v, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem third_idempotent_commute_levi (g g' : Matrix ι ι R) : e3 c J u u' * lv c J u u' g g' = lv c J u u' g g' * e3 c J u u' := by
   rw [e3, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, h.u_lv, ← Matrix.mul_assoc (lv c J u u' g g'), h.lv_v, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[e1, e3, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h.lv_u, h.lv_v]`. Simplify using `only [lv, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem lv_mid (g g' : Matrix ι ι R) :
     lv c J u u' g g' * (1 - e1 c J u u' - e3 c J u u') = 1 - e1 c J u u' - e3 c J u u' := by
@@ -204,44 +204,44 @@ theorem lv_mid (g g' : Matrix ι ι R) :
   abel
 
 /- English proof (translation)
-Rewrite using `[e1, Matrix.mul_assoc, ← Matrix.mul_assoc _ u, h.vu, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem e11 : e1 c J u u' * e1 c J u u' = e1 c J u u' := by
   rw [e1, Matrix.mul_assoc, ← Matrix.mul_assoc _ u, h.vu, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `[e1, e3, Matrix.mul_assoc, ← Matrix.mul_assoc _ u', h.vv']`.
+Simplify using the standard rewrite rules.
 -/
 theorem e13 : e1 c J u u' * e3 c J u u' = 0 := by
   simp [e1, e3, Matrix.mul_assoc, ← Matrix.mul_assoc _ u', h.vv']
 
 /- English proof (translation)
-Simplify using `[e1, e3, Matrix.mul_assoc, ← Matrix.mul_assoc _ u, h.uu']`.
+Simplify using the standard rewrite rules.
 -/
 theorem e31 : e3 c J u u' * e1 c J u u' = 0 := by
   simp [e1, e3, Matrix.mul_assoc, ← Matrix.mul_assoc _ u, h.uu']
 
 /- English proof (translation)
-Simplify using `[e3, Matrix.mul_assoc, ← Matrix.mul_assoc _ u', h.uv']`.
+Simplify using the standard rewrite rules.
 -/
 theorem e33 : e3 c J u u' * e3 c J u u' = e3 c J u u' := by
   simp [e3, Matrix.mul_assoc, ← Matrix.mul_assoc _ u', h.uv']
 
 /- English proof (translation)
-Simplify `h.adj u u' 1` using `[e1, e3, Matrix.map_one _ (map_zero c) (map_one c)]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem first_idempotent_adjoint_third : Adj c J (e1 c J u u') (e3 c J u u') := by
   simpa [e1, e3, Matrix.map_one _ (map_zero c) (map_one c)] using h.adj u u' 1
 
 /- English proof (translation)
-Use `(Adj.one.sub Adj.one).sub (h.adj u' u 1)` as an intermediate fact. Simplify `this` using `[e1, e3, Matrix.map_one _ (map_zero c) (map_one c)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem third_idempotent_adjoint_first : Adj c J (e3 c J u u') (e1 c J u u') := by
   have := (Adj.one.sub Adj.one).sub (h.adj u' u 1)
   simpa [e1, e3, Matrix.map_one _ (map_zero c) (map_one c)] using this
 
 /- English proof (translation)
-Rewrite using `[row, ← transpose_transpose s, ← transpose_mul, ← Matrix.mul_assoc, hs, Matrix.mul_assoc, ← Matrix.map_mul, e, Matrix.map_mul, ← Matrix.mul_assoc, transpose_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem row_mul {s s' : Matrix n n R} (hs : Adj c J s s') {g : Matrix ι ι R} (e : s' * u = u * g) :
     row c J u * s = (g.map c)ᵀ * row c J u := by
@@ -249,9 +249,9 @@ theorem row_mul {s s' : Matrix n n R} (hs : Adj c J s s') {g : Matrix ι ι R} (
     Matrix.map_mul, ← Matrix.mul_assoc, transpose_mul]
 
 /- English proof (translation)
-Establish `q` using `(Adj.one.sub h.first_idempotent_adjoint_third).sub h.third_idempotent_adjoint_first`. Use `(h.first_idempotent_adjoint_third.add ((q.mul hs).mul q)).add h.third_idempotent_adjoint_first` as an intermediate fact. Rewrite `this` using `[sub_right_comm 1 (e3 c J u u'), ← Matrix.mul_assoc]`. Rewrite using `[show mid c J u u' s' = e3 c J u u' + (1 - e1 c J u u' - e3 c J u u') * s' * (1 - e1 c J u u' - e3 c J u u') + e1 c J u u' by`. Rewrite using `[mid]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `abel]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem mid_adj {s s' : Matrix n n R} (hs : Adj c J s s') : Adj c J (mid c J u u' s) (mid c J u u' s') := by
   have q := (Adj.one.sub h.first_idempotent_adjoint_third).sub h.third_idempotent_adjoint_first
@@ -262,13 +262,13 @@ theorem mid_adj {s s' : Matrix n n R} (hs : Adj c J s s') : Adj c J (mid c J u u
   exact this
 
 /- English proof (translation)
-Establish `h11` using `h.e11`. Establish `h13` using `h.e13`. Establish `h31` using `h.e31`. Establish `h33` using `h.e33`. Rewrite using `[mid, mid, mid]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `e1 c J u u' = p at *`. Generalize the expression as in `e3 c J u u' = r at *`. Establish `q1 : (1 - p - r) * p = 0` using `by simp [Matrix.sub_mul, h11, h31]`. Establish `q2 : (1 - p - r) * r = 0` using `by simp [Matrix.sub_mul, h13, h33]`. Establish `q3 : p * (1 - p - r) = 0` using `by simp [Matrix.mul_sub, h11, h13]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q4 : r * (1 - p - r) = 0` using `by simp [Matrix.mul_sub, h31, h33]`. Establish `q5 : (1 - p - r) * (1 - p - r) = 1 - p - r` using `by nth_rw 1 [Matrix.sub_mul, Matrix.sub_mul, q3, q4]; simp`. Establish `q6 : (1 - p - r) * s * (1 - p - r) * s' * (1 - p - r) = (1 - p - r) * (s * s') * (1 - p - r)` using `by nth_rw 2 [Matrix.mul_sub]`. Rewrite using `[Matrix.mul_sub _ 1, Matrix.mul_assoc _ s p, a, q1, Matrix.sub_mul, Matrix.sub_mul _ _ s', Matrix.sub_mul, Matrix.mul_assoc _ r s', b, Matrix.mul_assoc _ r, q4]`. Simplify using `[Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `1 - p - r = q at *`. Establish `a1 : q * s * q * p = 0` using `by rw [Matrix.mul_assoc, q1, Matrix.mul_zero]`. Establish `a2 : q * s * q * r = 0` using `by rw [Matrix.mul_assoc, q2, Matrix.mul_zero]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, ← Matrix.mul_assoc, h11, h13, h31, h33, q3, q4, a1, a2, Matrix.zero_mul, add_zero, zero_add]`. Rewrite using `[Matrix.mul_assoc (q * s) q q, q5, q6, Matrix.mul_assoc q s s']`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem mid_mul {s s' : Matrix n n R} (a : s * e1 c J u u' = e1 c J u u') (b : e3 c J u u' * s' = e3 c J u u') :
     mid c J u u' (s * s') = mid c J u u' s * mid c J u u' s' := by
@@ -297,7 +297,7 @@ theorem mid_mul {s s' : Matrix n n R} (a : s * e1 c J u u' = e1 c J u u') (b : e
   rw [Matrix.mul_assoc (q * s) q q, q5, q6, Matrix.mul_assoc q s s']
 
 /- English proof (translation)
-Establish `h11` using `h.e11`. Establish `h13` using `h.e13`. Establish `h31` using `h.e31`. Establish `h33` using `h.e33`. Simplify using `only [mid, Matrix.mul_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.one_mul, h11, h13, h31, h33]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -310,7 +310,7 @@ theorem mid_one : mid c J u u' 1 = 1 := by
   abel
 
 /- English proof (translation)
-Establish `: (1 - e1 c J u u' - e3 c J u u') * lv c J u u' g g' = 1 - e1 c J u u' - e3 c J u u'` using `by conv_rhs => rw [← h.lv_mid g g']`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, h.first_idempotent_commute_levi, h.third_idempotent_commute_levi, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[mid, mid, ← Matrix.mul_assoc, ← Matrix.mul_assoc, this, Matrix.mul_assoc _ (lv c J u u' k k'), h.lv_mid]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mid_lv (g g' k k' : Matrix ι ι R) (s : Matrix n n R) :
     mid c J u u' (lv c J u u' g g' * s * lv c J u u' k k') = mid c J u u' s := by
@@ -320,41 +320,41 @@ theorem mid_lv (g g' k k' : Matrix ι ι R) (s : Matrix n n R) :
   rw [mid, mid, ← Matrix.mul_assoc, ← Matrix.mul_assoc, this, Matrix.mul_assoc _ (lv c J u u' k k'), h.lv_mid]
 
 /- English proof (translation)
-Rewrite using `[e1, Matrix.mul_assoc, h.vu, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem first_idempotent_mul_vector : e1 c J u u' * u = u := by rw [e1, Matrix.mul_assoc, h.vu, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[e3, Matrix.neg_mul, Matrix.mul_assoc, h.uu', Matrix.mul_zero, neg_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem third_idempotent_mul_vector : e3 c J u u' * u = 0 := by rw [e3, Matrix.neg_mul, Matrix.mul_assoc, h.uu', Matrix.mul_zero, neg_zero]
 
 /- English proof (translation)
-Simplify using `[Matrix.sub_mul, h.first_idempotent_mul_vector, h.third_idempotent_mul_vector]`.
+Simplify using the standard rewrite rules.
 -/
 theorem q_u : (1 - e1 c J u u' - e3 c J u u') * u = 0 := by simp [Matrix.sub_mul, h.first_idempotent_mul_vector, h.third_idempotent_mul_vector]
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_sub, Matrix.mul_add, e1, e3, ← Matrix.mul_assoc, h.uu', h.uv']`.
+Simplify using the standard rewrite rules.
 -/
 theorem u_q : row c J u * (1 - e1 c J u u' - e3 c J u u') = 0 := by
   simp [Matrix.mul_sub, Matrix.mul_add, e1, e3, ← Matrix.mul_assoc, h.uu', h.uv']
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_one, h.e11, h.e13, h.e31, h.e33]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem qq : (1 - e1 c J u u' - e3 c J u u') * (1 - e1 c J u u' - e3 c J u u') = 1 - e1 c J u u' - e3 c J u u' := by
   simp only [Matrix.mul_sub, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_one, h.e11, h.e13, h.e31, h.e33]
   abel
 
 /- English proof (translation)
-Simplify using `only [mid, Matrix.add_mul, Matrix.mul_assoc, h.q_u, h.first_idempotent_mul_vector, h.third_idempotent_mul_vector, Matrix.mul_zero, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mid_u (s : Matrix n n R) : mid c J u u' s * u = u := by
   simp only [mid, Matrix.add_mul, Matrix.mul_assoc, h.q_u, h.first_idempotent_mul_vector, h.third_idempotent_mul_vector, Matrix.mul_zero, add_zero]
 
 /- English proof (translation)
-Establish `q1 : (1 - e1 c J u u' - e3 c J u u') * e1 c J u u' = 0` using `by simp [Matrix.sub_mul, h.e11, h.e31]`. Establish `q2 : (1 - e1 c J u u' - e3 c J u u') * e3 c J u u' = 0` using `by simp [Matrix.sub_mul, h.e13, h.e33]`. Use `conv_lhs => rw [mid, mid, Matrix.mul_add, Matrix.mul_add, q1, q2, zero_add, add_zero, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h.qq, Matrix.mul_assoc _ _ (1 - _ - _), h.qq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mid_mid (s : Matrix n n R) : mid c J u u' (mid c J u u' s) = mid c J u u' s := by
   have q1 : (1 - e1 c J u u' - e3 c J u u') * e1 c J u u' = 0 := by simp [Matrix.sub_mul, h.e11, h.e31]
@@ -364,9 +364,9 @@ theorem mid_mid (s : Matrix n n R) : mid c J u u' (mid c J u u' s) = mid c J u u
   rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_sub _ s, Matrix.sub_mul _ (_ * 1), Matrix.mul_one, h.qq, mid, sub_eq_zero]`. Apply the tactic sequence `constructor <;> intro e`. Rewrite using `[← e]`. Use `nth_rw 1 [e]`. Use `nth_rw 1 [e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem mid_iff (s : Matrix n n R) :
     mid c J u u' s = 1 ↔ (1 - e1 c J u u' - e3 c J u u') * (s - 1) * (1 - e1 c J u u' - e3 c J u u') = 0 := by
@@ -376,11 +376,11 @@ theorem mid_iff (s : Matrix n n R) :
   · rw [e]; abel
 
 /- English proof (translation)
-Establish `h1 : (s - 1) * e1 c J u u' = 0` using `by rw [e1, ← Matrix.mul_assoc, Matrix.sub_mul, a, Matrix.one_mul, sub_self, Matrix.zero_mul]`. Establish `h2 : e3 c J u u' * (s - 1) = 0`. Use `h.row_mul hs (g := 1) (by rw [a', Matrix.mul_one])` as an intermediate fact. Rewrite `this` using `[Matrix.map_one _ (map_zero c) (map_one c), transpose_one, Matrix.one_mul]`. Rewrite using `[e3, Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_sub, this, Matrix.mul_one, sub_self, Matrix.mul_zero, neg_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `(h.mid_iff s).1 b`. Rewrite `h3` using `[sub_right_comm 1 (e1 c J u u'), Matrix.mul_sub _ (1 - _), Matrix.mul_assoc _ _ (e1 c J u u'), h1, Matrix.mul_zero, sub_zero, Matrix.sub_mul, Matrix.sub_mul 1, h2, Matrix.one_mul, sub_zero, Matrix.sub_mul, sub_eq_zero]`. Rewrite using `[h3, e1]`. Use `conv_rhs => rw [Matrix.mul_assoc, h3, e1]`. Simplify using `only [← Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc u _ u, h.vu, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem move {s s' : Matrix n n R} (hs : Adj c J s s') (a : s * u = u) (a' : s' * u = u) (b : mid c J u u' s = 1) :
     (s - 1) * (1 - e3 c J u u') = u * (row c J u' * (s - 1) * (1 - e3 c J u u')) := by
@@ -400,20 +400,20 @@ theorem move {s s' : Matrix n n R} (hs : Adj c J s s') (a : s * u = u) (a' : s' 
 end Fr
 
 /- English proof (translation)
-Simplify using `[lv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lv_one : lv c J u u' 1 1 = 1 := by simp [lv]
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `u.mulVecLin.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hu)`. Establish `h1 : LinearMap.toMatrix' L * u = 1`. Rewrite using `[← LinearMap.toMatrix'_toLin' u, ← LinearMap.toMatrix'_comp, Matrix.toLin'_apply', hL, LinearMap.toMatrix'_id]`. Use `set w := (J⁻¹ * (LinearMap.toMatrix' L)ᵀ).map c with hw`. Establish `h2 : uᵀ * J * w.map c = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, map_map_c cc, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hJ.isUnit, ← transpose_mul, h1, transpose_one]`. Establish `k : ∀ a b : Matrix n ι K, ((aᵀ * J * b.map c).map c)ᵀ = -(bᵀ * J * a.map c)` using `fun a b => by`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_map_c cc, transpose_mul, transpose_mul, sk, transpose_map, transpose_transpose]`. Simplify using `[Matrix.mul_assoc]`. Establish `h3 : wᵀ * J * u.map c = -1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `k u w` as an intermediate fact. Rewrite `this` using `[h2, Matrix.map_one _ (map_zero c) (map_one c), transpose_one]`. Conclude with `neg_eq_iff_eq_neg.1 this.symm`. Use `set S := wᵀ * J * w.map c with hS`. Establish `h4 : ((2 : K)⁻¹ • Sᵀ).map c = (2 : K)⁻¹ • -S`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hS, ← k w w, ← hS]`. Use extensionality with `i j`. Simplify using `[map_ofNat]`. Use `⟨w - u * ((2 : K)⁻¹ • Sᵀ), cc, sk, uu, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_sub _ (map_sub c), Matrix.map_mul, h4, transpose_sub, transpose_mul, Matrix.sub_mul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_sub, ← hS, ← Matrix.mul_assoc (wᵀ * J), h3, Matrix.mul_assoc _ uᵀ, Matrix.mul_assoc _ (uᵀ * J), h2, Matrix.mul_assoc _ (uᵀ * J), ← Matrix.mu …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.map_sub _ (map_sub c), Matrix.map_mul, Matrix.mul_sub, h2, ← Matrix.mul_assoc, uu, Matrix.zero_mul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dual {K : Type} [Field K] [CharZero K] {c : K →+* K} (cc : ∀ r, c (c r) = r) {J : Matrix n n K} (sk : (J.map c)ᵀ = -J)
     (hJ : J.det ≠ 0) {u : Matrix n ι K} (hu : Function.Injective u.mulVec) (uu : uᵀ * J * u.map c = 0) : ∃ u', Fr c J u u' := by

@@ -26,21 +26,21 @@ namespace GlobalTheory.RowTriple
 open GlobalTheory.TwInputs Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 
 /- English proof (translation)
-Take `⟨x, hxg, hx0, hxe⟩` from `hOcc j h1 h2 σ hiso hgood`. Take `⟨Φ, hΦ0, hΦs, hΦT⟩` from `GlobalTheory.T.exists_descent_map_nonzero_of_small_field_form D S _ (hKs _ h1 h2) i b x hx0`. Use `set e := Bs.eF i j b h1 h2 with he`. Establish `hfix : MonoidAlgebra.lift (FractionRing (D.ntw.O i)) (Module.End (FractionRing (D.ntw.O i)) (D.nexp.Fm i j b)) (G0g D.nd) (LinearEquiv.automorphismGroup.toLinearMapMonoidHom.comp (D.nexp.actG i j b)) (D.nexp.eAlg i b) (e.symm (Φ x)) = e.symm (Φ x)`. Use `letI : Fintype (G0g D.nd) := Formalism.MainNotions.PrimeDegreeVariant.finiteLevelGroupFintype D`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hx1` using `Module.End.mem_eigenspace_iff.1 (Submodule.mem_inf.1 hxg).1`. Rewrite `hx1` using `[one_smul, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[MonoidAlgebra.lift_apply, Finsupp.sum_fintype _ _ (by intros; simp), LinearMap.sum_apply, map_sum, e.apply_symm_apply]`. Use `conv_rhs => rw [← hx1]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, LinearMap.smul_apply, hΦs, D.nexp.eAlg_def]`. Express the relevant statement in the definitionally equal form `readLL0 S i _ (D.nexp.eLL0 g) • e (D.nexp.actG i _ _ g (e.symm (Φ x))) = _`. Rewrite using `[Bs.act i _ _ h1 h2 g, e.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hc : ((((S.A j).chi (S.eG.symm g) : D.what₂.LLˣ) : D.what₂.LL))⁻¹ = (((chiL S _ (Bs.chiL _ h1 h2) (S.eG.symm g))⁻¹ : ↥D.LL0) : D.what₂.LL)`. Simplify using `[chiL]`. Express the relevant statement in the definitionally equal form `_ = Φ (((((S.A j).chi (S.eG.symm g) : D.what₂.LLˣ) : D.what₂.LL))⁻¹ • (S.A j).ρ (S.eG.symm g) x)`. Rewrite using `[hc, hΦs, hΦT _ (Bs.rho _ h1 h2 (S.eG.symm g)), map_inv₀]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hhk : ∀ k P, 1 ≤ k → k ≤ D.R.r → IsSplitPl D.host P → P ∉ D.ntw.S0 i → D.nexp.hkF i j b k P (e.symm (Φ x)) = (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (Bs.cHk i b P : D.ntw.O i) ^ k * (show FractionRing (D.ntw.O i) from readLL0 S i b (eig j σ k P))) • e.symm (Φ x)`. Introduce `k P hk1 hk2 hsp hP`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[Bs.hkEq i _ _ h1 h2 k P _ hP hsp hk2, e.apply_symm_apply, map_smul, e.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hΦT (hL j k P) (Bs.hs _ h1 h2 k P) x`. Rewrite `h3` using `[hxe k P hk1 hk2 hsp (fun h => hP (hSb i h)), hΦs]`. Rewrite using `[mul_smul]`. Use `congr 1`. Conclude with `h3.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨s, hj, hb, hs⟩` from `hall i j b (e.symm (Φ x)) (fun k P => algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (Bs.cHk i b P : D.ntw.O i) ^ k * (show FractionRing (D.ntw.O i) from readLL0 S i b (eig j σ k P))) (by simpa using hΦ0) hfix hhk`. Use `⟨s, hj, hb, fun k P hk1 hk2 hsp hP => ?_⟩` and prove the remaining obligations. Establish `h3` using `hs k P hk1 hk2 hsp hP`. Rewrite `h3` using `[Bs.rowS_eig i s k P hk1 hk2 hsp hP]`. Substitute `hj hb` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (Bs.cHk i (D.ntw.side i s) P : D.ntw.O i) ^ k ≠ 0`. Use `pow_ne_zero _ ?_` and prove the remaining obligations. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective _ _)]`. Conclude with `(Bs.cHk i (D.ntw.side i s) P).ne_zero`. Conclude with `(readLL0 S i (D.ntw.side i s)).injective (mul_left_cancel₀ (M₀ := FractionRing (D.ntw.O i)) hu h3)`.
+A detailed English derivation is pending.
 -/
 theorem exists_sig_of_row (D : D7) (cf : CharFrame D) (Rw : RowSide D) (low : Finset ℕ)
     (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw)
@@ -111,11 +111,11 @@ namespace GlobalTheory.RowTriple
 open GlobalTheory.TwInputs Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 
 /- English proof (translation)
-Introduce `a σ hσ`. Take `⟨hiso, hgood⟩` from `hσ`. Take `⟨h1, h2⟩` from `D.nd.j_range a`. Take `⟨s, hj, hb, he⟩` from `exists_sig_of_row D cf Rw low Pq S hL eig θ Bs Sb hSb hKs hOcc hall (D.ntw.twOf a) (D.ntw.twSide a) (D.nd.j a) h1 h2 σ hiso hgood`. Take `⟨hiso', hgood', -⟩` from `Bs.rhoS _ s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hiso'` using `[hj]`. Use `⟨s, hj, hb, GlobalTheory.T.isRhoOfRow_of_frobenius_eigenvalues D Rw Bs.rowS Bs.rhoS hP a σ s (hR a) hb hj ⟨hiso, hgood⟩ (hloc a σ) ?_⟩` and prove the remaining obligations. Establish `hfin : ((Sb ∪ D.ntw.S0 (D.ntw.twOf a) : Finset (PlE D.host)) : Set (PlE D.host)).Finite` using `Finset.finite_toSet _`. Use `filter_upwards [hfin.compl_mem_cofinite] with P hP' hsp`. Establish `hP1 : P ∉ Sb` using `fun h => hP' (by simp [h])`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP2 : P ∉ D.ntw.S0 (D.ntw.twOf a)` using `fun h => hP' (by simp [h])`. Conclude with `GlobalTheory.T.good_rows_same_eigenvalues_same_frobenius D cf Rw Sb eig hT hP (D.nd.j a) h1 h2 σ (Bs.rowS _ s) hiso hgood hiso' hgood' P hsp hP1 fun k hk1 hk2 => he k P hk1 hk2 hsp hP2`.
+A detailed English derivation is pending.
 -/
 theorem tripAll_of_sideB (D : D7) (cf : CharFrame D) (Rw : RowSide D) (low : Finset ℕ)
     (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw)
@@ -142,7 +142,7 @@ theorem tripAll_of_sideB (D : D7) (cf : CharFrame D) (Rw : RowSide D) (low : Fin
     fun k hk1 hk2 => he k P hk1 hk2 hsp hP2
 
 /- English proof (translation)
-Introduce `hP hS hL`. Use `GlobalTheory.HeightCounting.Up.Model.AtMem.imp (GlobalTheory.T.galois_family_place_data hP hS hL) fun K B f T w Z Wt p0 t nch n c h => ?_` and prove the remaining obligations. Take `⟨cf, Rw, low, Pq, S, hL', eig, θ, Bs, Sb, hSb, hKs, hT, hOcc, hcp, hall, hloc, hR⟩` from `h`. Conclude with `GlobalTheory.TwistedSelmerCompare.allTriples_of_tripAll _ (tripAll_of_sideB _ cf Rw low Pq S hL' eig θ Bs Sb hSb hKs hT hOcc hcp hall hloc hR)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem allTriples_atMem : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c => GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.AllTriples (w.D Z) := by
   intro hP hS hL

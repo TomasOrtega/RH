@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain ValuativeRel GlobalTheory.PRep GlobalTheory.Sm
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ ρ hρ v hv`. Conclude with `GlobalTheory.ContraRefl.exists_smooth_form_ne hρ (GlobalTheory.ThetaLiftGL.compactOpen_basis k n) hv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Loc.separates :
     UpperTheory.Gal.TP.Loc.Separates := by

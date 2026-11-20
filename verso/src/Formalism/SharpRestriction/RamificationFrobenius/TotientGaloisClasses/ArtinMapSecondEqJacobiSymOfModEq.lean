@@ -7,7 +7,7 @@ namespace Formalism.HC.D7
 open Formalism.FrobeniusOrbits Formalism.TwoAdicCyclotomicDecomposition
 
 /- English proof (translation)
-Rewrite using `[jacobiSym.mod_left, jacobiSym.mod_left (y : ℤ)]`. Use `congr 1`. Establish `h : ((x % p : ℕ) : ℤ) = ((y % p : ℕ) : ℤ)` using `congrArg _ hxy`. Simplify `h` using `[Int.natCast_mod]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem jac_congr {x y p : ℕ} (hxy : x ≡ y [MOD p]) : jacobiSym (x : ℤ) p = jacobiSym (y : ℤ) p := by
   rw [jacobiSym.mod_left, jacobiSym.mod_left (y : ℤ)]
@@ -16,9 +16,9 @@ theorem jac_congr {x y p : ℕ} (hxy : x ≡ y [MOD p]) : jacobiSym (x : ℤ) p 
   simpa [Int.natCast_mod] using h
 
 /- English proof (translation)
-Establish `hp' : Odd p` using `Nat.odd_iff.mpr hp`. Establish `hr' : Odd r` using `Nat.odd_iff.mpr (by omega)`. Rewrite using `[jacobiSym.neg _ hp']`. Break down `(show p % 4 = 1 ∨ p % 4 = 3 by omega) with h4 | h4` into its components or cases. Rewrite using `[ZMod.χ₄_nat_one_mod_four h4, one_mul, jacobiSym.quadratic_reciprocity_one_mod_four h4 hr']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.χ₄_nat_three_mod_four h4, jacobiSym.quadratic_reciprocity_three_mod_four hr h4]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jac_recip {r p : ℕ} (hr : r % 4 = 3) (hp : p % 2 = 1) : jacobiSym (-(r : ℤ)) p = jacobiSym (p : ℤ) r := by
   have hp' : Odd p := Nat.odd_iff.mpr hp
@@ -30,9 +30,9 @@ theorem jac_recip {r p : ℕ} (hr : r % 4 = 3) (hp : p % 2 = 1) : jacobiSym (-(r
     ring
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Conclude with `⟨1, Nat.coprime_one_left _, by simp [jacobiSym.one_left]⟩`. Establish `h1 : 1 ≤ p` using `hp.one_lt.le`. Use `⟨p - 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hp]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `Nat.le_of_dvd (by have := hp.two_le; omega) h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hcast : ((p - 1 : ℕ) : ℤ) = -1 + (p : ℤ) * 1` using `by push_cast [h1]; ring`. Rewrite using `[hcast, jacobiSym.mod_left, Int.add_mul_emod_self_left, ← jacobiSym.mod_left (-1) p, jacobiSym.at_neg_one (Nat.odd_iff.mpr (by omega)), ZMod.χ₄_nat_three_mod_four hp4]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -52,7 +52,7 @@ theorem exists_sign {p : ℕ} (hp : p.Prime) (hp4 : p % 4 = 3) (s : ℤˣ) :
       simp
 
 /- English proof (translation)
-Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hm (dvd_zero l)`. Establish `hf : (l ^ k * m).factorization l = k`. Rewrite using `[Nat.factorization_mul (pow_ne_zero _ hl.ne_zero) hm0, Finsupp.add_apply, hl.factorization_pow, Finsupp.single_eq_same, Nat.factorization_eq_zero_of_not_dvd hm, add_zero]`. Rewrite using `[hf, Nat.mul_div_cancel_left _ (pow_pos hl.pos _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ordCompl_eq {l m : ℕ} (hl : l.Prime) (k : ℕ) (hm : ¬ l ∣ m) : ordCompl[l] (l ^ k * m) = m := by
   have hm0 : m ≠ 0 := by rintro rfl; exact hm (dvd_zero l)
@@ -62,7 +62,7 @@ theorem ordCompl_eq {l m : ℕ} (hl : l.Prime) (k : ℕ) (hm : ¬ l ∣ m) : ord
   rw [hf, Nat.mul_div_cancel_left _ (pow_pos hl.pos _)]
 
 /- English proof (translation)
-Simplify using `only [hcl, QuotientGroup.mk_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hcl_pow {e : ℕ} (v : (ZMod (2 ^ (e + 2)))ˣ) (k : ℕ) : hcl e (v ^ k) = hcl e v ^ k := by
   simp only [hcl, QuotientGroup.mk_pow]
@@ -71,7 +71,7 @@ variable {q d : ℕ} (e : ℕ) (hH : HostHyp q d)
 include hH
 
 /- English proof (translation)
-Apply `Nat.Coprime.pow_left` to reduce the goal to its premises. Rewrite using `[Nat.coprime_primes Nat.prime_two hH.1]`. Use `hH.2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cop_2q : Nat.Coprime (2 ^ (e + 2)) q := by
   apply Nat.Coprime.pow_left
@@ -79,7 +79,7 @@ theorem cop_2q : Nat.Coprime (2 ^ (e + 2)) q := by
   have := hH.2.2.1
   omega
 /- English proof (translation)
-Apply `Nat.Coprime.pow_left` to reduce the goal to its premises. Rewrite using `[Nat.coprime_primes Nat.prime_two hH.2.1]`. Use `hH.2.2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cop_2d : Nat.Coprime (2 ^ (e + 2)) d := by
   apply Nat.Coprime.pow_left
@@ -87,7 +87,7 @@ theorem cop_2d : Nat.Coprime (2 ^ (e + 2)) d := by
   have := hH.2.2.2.1
   omega
 /- English proof (translation)
-Rewrite using `[Nat.coprime_primes hH.1 hH.2.1]`. Use `hH.2.2.1` as an intermediate fact. Use `hH.2.2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cop_qd : Nat.Coprime q d := by
   rw [Nat.coprime_primes hH.1 hH.2.1]
@@ -95,20 +95,20 @@ theorem cop_qd : Nat.Coprime q d := by
   have := hH.2.2.2.1
   omega
 /- English proof (translation)
-Use `hH.2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem q4 : q % 4 = 3 := by
   have := hH.2.2.1
   omega
 /- English proof (translation)
-Use `hH.2.2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem d4 : d % 4 = 3 := by
   have := hH.2.2.2.1
   omega
 
 /- English proof (translation)
-Establish `h` using `hH.2.2.2.2`. Establish `h8` using `hH.2.2.1`. Establish `hq : Odd q` using `Nat.odd_iff.mpr (by omega)`. Rewrite `h` using `[jacobiSym.neg _ hq, ZMod.χ₄_nat_three_mod_four (by omega)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem jac_dq : jacobiSym (d : ℤ) q = -1 := by
   have h := hH.2.2.2.2
@@ -118,14 +118,14 @@ theorem jac_dq : jacobiSym (d : ℤ) q = -1 := by
   linarith
 
 /- English proof (translation)
-Rewrite using `[jacobiSym.quadratic_reciprocity_three_mod_four (q4 hH) (d4 hH), jac_dq hH]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem jac_qd : jacobiSym (q : ℤ) d = 1 := by
   rw [jacobiSym.quadratic_reciprocity_three_mod_four (q4 hH) (d4 hH), jac_dq hH]
   norm_num
 
 /- English proof (translation)
-Establish `h8` using `hH.2.2.1`. Establish `hq : Odd q` using `Nat.odd_iff.mpr (by omega)`. Rewrite using `[show ((2 : ℕ) : ℤ) = 2 by norm_num, jacobiSym.at_two hq, ZMod.χ₈_nat_eq_if_mod_eight]`. Establish `h2 : q % 2 ≠ 0` using `by omega`. Simplify using `[h2, h8]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem jac_2q : jacobiSym ((2 : ℕ) : ℤ) q = -1 := by
   have h8 := hH.2.2.1
@@ -135,9 +135,9 @@ theorem jac_2q : jacobiSym ((2 : ℕ) : ℤ) q = -1 := by
   simp [h2, h8]
 
 /- English proof (translation)
-Establish `h16` using `hH.2.2.2.1`. Establish `hd : Odd d` using `Nat.odd_iff.mpr (by omega)`. Rewrite using `[show ((2 : ℕ) : ℤ) = 2 by norm_num, jacobiSym.at_two hd, ZMod.χ₈_nat_eq_if_mod_eight]`. Establish `h2 : d % 2 ≠ 0` using `by omega`. Establish `h8 : d % 8 = 7` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h2, h8]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jac_2d : jacobiSym ((2 : ℕ) : ℤ) d = 1 := by
   have h16 := hH.2.2.2.1
@@ -148,7 +148,7 @@ theorem jac_2d : jacobiSym ((2 : ℕ) : ℤ) d = 1 := by
   simp [h2, h8]
 
 /- English proof (translation)
-Rewrite using `[mul_assoc]`. Use `ordCompl_eq Nat.prime_two (e + 2) ?_` and prove the remaining obligations. Rewrite using `[Nat.Prime.dvd_mul Nat.prime_two]`. Use `hH.2.2.1` as an intermediate fact. Use `hH.2.2.2.1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -161,9 +161,9 @@ theorem ordCompl_two : ordCompl[2] (2 ^ (e + 2) * q * d) = q * d := by
   omega
 
 /- English proof (translation)
-Establish `hq` using `hH.1`. Rewrite using `[show 2 ^ (e + 2) * q * d = q ^ 1 * (2 ^ (e + 2) * d) by ring]`. Use `ordCompl_eq hq 1 ?_` and prove the remaining obligations. Rewrite using `[hq.dvd_mul]`. Use `hH.2.2.1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hH.2.2.2.1` as an intermediate fact. Introduce and unpack `(h | h)`. Establish `h2` using `Nat.le_of_dvd two_pos (hq.dvd_of_dvd_pow h)`. Use linear arithmetic over natural numbers and integers. Establish `h3` using `(Nat.prime_dvd_prime_iff_eq hq hH.2.1).mp h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -181,9 +181,9 @@ theorem ordCompl_q : ordCompl[q] (2 ^ (e + 2) * q * d) = 2 ^ (e + 2) * d := by
     omega
 
 /- English proof (translation)
-Establish `hd` using `hH.2.1`. Rewrite using `[show 2 ^ (e + 2) * q * d = d ^ 1 * (2 ^ (e + 2) * q) by ring]`. Use `ordCompl_eq hd 1 ?_` and prove the remaining obligations. Rewrite using `[hd.dvd_mul]`. Use `hH.2.2.1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hH.2.2.2.1` as an intermediate fact. Introduce and unpack `(h | h)`. Establish `h2` using `Nat.le_of_dvd two_pos (hd.dvd_of_dvd_pow h)`. Use linear arithmetic over natural numbers and integers. Establish `h3` using `(Nat.prime_dvd_prime_iff_eq hd hH.1).mp h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -201,11 +201,9 @@ theorem ordCompl_d : ordCompl[d] (2 ^ (e + 2) * q * d) = 2 ^ (e + 2) * q := by
     omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Break down `hl.dvd_mul.mp h with h | h` into its components or cases. Break down `hl.dvd_mul.mp h with h | h` into its components or cases. Conclude with `Or.inl ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).mp (hl.dvd_of_dvd_pow h))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr (Or.inl ((Nat.prime_dvd_prime_iff_eq hl hH.1).mp h))`. Conclude with `Or.inr (Or.inr ((Nat.prime_dvd_prime_iff_eq hl hH.2.1).mp h))`. Introduce and unpack `(rfl | rfl | rfl)`. Conclude with `Dvd.dvd.mul_right (Dvd.dvd.mul_right (dvd_pow_self 2 (by omega)) _) _`. Conclude with `Dvd.dvd.mul_right (dvd_mul_left _ _) _`.
-
-Conclude with `dvd_mul_left _ _`.
+Prove the second alternative. Prove the second alternative. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem dvd_N_iff {l : ℕ} (hl : l.Prime) : l ∣ 2 ^ (e + 2) * q * d ↔ l = 2 ∨ l = q ∨ l = d := by
   constructor
@@ -221,15 +219,13 @@ theorem dvd_N_iff {l : ℕ} (hl : l.Prime) : l ∣ 2 ^ (e + 2) * q * d ↔ l = 2
     · exact dvd_mul_left _ _
 
 /- English proof (translation)
-Establish `h2q` using `cop_2q e hH`. Establish `h2qd : Nat.Coprime (2 ^ (e + 2) * q) d` using `Nat.Coprime.mul (cop_2d e hH) (cop_qd hH)`. Take `⟨n, hn1, hn2⟩` from `Nat.chineseRemainder h2q x y`. Take `⟨m, hm12, hm3⟩` from `Nat.chineseRemainder h2qd n z`. Establish `hm1 : m ≡ x [MOD 2 ^ (e + 2)]` using `(hm12.of_dvd (dvd_mul_right _ _)).trans hn1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm2 : m ≡ y [MOD q]` using `(hm12.of_dvd (dvd_mul_left _ _)).trans hn2`. Establish `c1 : Nat.Coprime m (2 ^ (e + 2))`. Unfold `Nat.Coprime`. Rewrite using `[hm1.gcd_eq]`. Conclude with `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c2 : Nat.Coprime m q`. Unfold `Nat.Coprime`. Rewrite using `[hm2.gcd_eq]`. Conclude with `hy`. Establish `c3 : Nat.Coprime m d`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Nat.Coprime`. Rewrite using `[hm3.gcd_eq]`. Conclude with `hz`. Establish `cN : Nat.Coprime m (2 ^ (e + 2) * q * d)` using `(c1.mul_right c2).mul_right c3`. Apply the tactic sequence `refine ⟨ZMod.unitOfCoprime m cN, ?_, ?_, ?_⟩ <;> rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast]`.
-
-Conclude with `((Nat.mod_modEq m _).of_dvd (two_dvd e q d)).trans hm1`. Conclude with `((Nat.mod_modEq m _).of_dvd (q_dvd e q d)).trans hm2`. Conclude with `((Nat.mod_modEq m _).of_dvd (d_dvd e q d)).trans hm3`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_unit (x y z : ℕ) (hx : Nat.Coprime x (2 ^ (e + 2))) (hy : Nat.Coprime y q) (hz : Nat.Coprime z d) :
     ∃ u : (ZMod (2 ^ (e + 2) * q * d))ˣ, (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ x [MOD 2 ^ (e + 2)] ∧
@@ -259,7 +255,7 @@ theorem exists_unit (x y z : ℕ) (hx : Nat.Coprime x (2 ^ (e + 2))) (hy : Nat.C
   · exact ((Nat.mod_modEq m _).of_dvd (d_dvd e q d)).trans hm3
 
 /- English proof (translation)
-Use `haveI := neZeroN e hH`. Establish `h : (art0 e hH u).1.1 = sgnN hH.1 (q_dvd e q d) u` using `rfl`. Rewrite using `[h, sgnN_val]`. Conclude with `jac_congr hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem artinMap_first_eq_jacobiSym_of_modEq (u : (ZMod (2 ^ (e + 2) * q * d))ˣ) {y : ℕ} (hu : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ y [MOD q]) :
     (((art0 e hH u).1.1 : ℤˣ) : ℤ) = jacobiSym (y : ℤ) q := by
@@ -269,7 +265,7 @@ theorem artinMap_first_eq_jacobiSym_of_modEq (u : (ZMod (2 ^ (e + 2) * q * d))ˣ
   exact jac_congr hu
 
 /- English proof (translation)
-Use `haveI := neZeroN e hH`. Establish `h : (art0 e hH u).1.2 = sgnN hH.2.1 (d_dvd e q d) u` using `rfl`. Rewrite using `[h, sgnN_val]`. Conclude with `jac_congr hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem artinMap_second_eq_jacobiSym_of_modEq (u : (ZMod (2 ^ (e + 2) * q * d))ˣ) {y : ℕ} (hu : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ y [MOD d]) :
     (((art0 e hH u).1.2 : ℤˣ) : ℤ) = jacobiSym (y : ℤ) d := by
@@ -279,9 +275,9 @@ theorem artinMap_second_eq_jacobiSym_of_modEq (u : (ZMod (2 ^ (e + 2) * q * d))�
   exact jac_congr hu
 
 /- English proof (translation)
-Use `haveI := neZeroN e hH`. Establish `h1 : ZMod.unitsMap (two_dvd e q d) u = v`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hv]`. Express the relevant statement in the definitionally equal form `ZMod.cast (u : ZMod (2 ^ (e + 2) * q * d)) = _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← ZMod.natCast_zmod_val (u : ZMod (2 ^ (e + 2) * q * d)), ZMod.cast_natCast (two_dvd e q d)]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).mpr hu`. Establish `h2 : (art0 e hH u).2 = QuotientGroup.mk (ZMod.unitsMap (two_dvd e q d) u)` using `rfl`. Rewrite using `[h2, h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem artinMap_dyadic_eq_of_modEq (u : (ZMod (2 ^ (e + 2) * q * d))ˣ) {y : ℕ}
     (hu : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ y [MOD 2 ^ (e + 2)]) (v : (ZMod (2 ^ (e + 2)))ˣ)
@@ -298,15 +294,13 @@ theorem artinMap_dyadic_eq_of_modEq (u : (ZMod (2 ^ (e + 2) * q * d))ˣ) {y : �
   rfl
 
 /- English proof (translation)
-Establish `hx' : Nat.Coprime x (2 ^ (e + 2))`. Rewrite using `[← ZMod.isUnit_iff_coprime, ← hv]`. Conclude with `v.isUnit`. Establish `hy' : Nat.Coprime y q` using `by haveI : NeZero q := ⟨hH.1.ne_zero⟩`. Establish `h0 : jacobiSym (y : ℤ) q ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Conclude with `Units.ne_zero _`. Establish `h1` using `mt jacobiSym.eq_zero_iff_not_coprime.mpr h0`. Use `push_neg at h1`. Rewrite `h1` using `[Int.gcd_natCast_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz' : Nat.Coprime z d` using `by haveI : NeZero d := ⟨hH.2.1.ne_zero⟩`. Establish `h0 : jacobiSym (z : ℤ) d ≠ 0`. Rewrite using `[← hz]`. Conclude with `Units.ne_zero _`. Establish `h1` using `mt jacobiSym.eq_zero_iff_not_coprime.mpr h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at h1`. Rewrite `h1` using `[Int.gcd_natCast_natCast]`. Then use the resulting hypothesis. Take `⟨u, h1, h2, h3⟩` from `exists_unit e hH x y z hx' hy' hz'`. Use `⟨u, h1, h2, h3, Prod.ext (Prod.ext (Units.ext ?_) (Units.ext ?_)) ?_⟩` and prove the remaining obligations. Rewrite using `[artinMap_first_eq_jacobiSym_of_modEq e hH u h2, hy]`.
-
-Rewrite using `[artinMap_second_eq_jacobiSym_of_modEq e hH u h3, hz]`. Rewrite using `[artinMap_dyadic_eq_of_modEq e hH u h1 v hv, hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_art (g : FrobeniusOrbits.GG e) (x y z : ℕ) (v : (ZMod (2 ^ (e + 2)))ˣ)
     (hv : (v : ZMod (2 ^ (e + 2))) = (x : ZMod (2 ^ (e + 2)))) (hx : g.2 = hcl e v)
@@ -341,7 +335,7 @@ theorem exists_art (g : FrobeniusOrbits.GG e) (x y z : ℕ) (v : (ZMod (2 ^ (e +
 
 omit hH in
 /- English proof (translation)
-Use `haveI : NeZero (2 ^ (e + 2)) := ⟨by positivity⟩`. Take `⟨v, rfl⟩` from `QuotientGroup.mk_surjective t`. Conclude with `⟨(v : ZMod (2 ^ (e + 2))).val, v, (ZMod.natCast_zmod_val _).symm, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rep (t : HGrp e) : ∃ (x : ℕ) (v : (ZMod (2 ^ (e + 2)))ˣ),
     (v : ZMod (2 ^ (e + 2))) = (x : ZMod (2 ^ (e + 2))) ∧ t = hcl e v := by
@@ -350,9 +344,9 @@ theorem exists_rep (t : HGrp e) : ∃ (x : ℕ) (v : (ZMod (2 ^ (e + 2)))ˣ),
   exact ⟨(v : ZMod (2 ^ (e + 2))).val, v, (ZMod.natCast_zmod_val _).symm, rfl⟩
 
 /- English proof (translation)
-Introduce `g`. Take `⟨x, v, hv, hx⟩` from `exists_rep e g.2`. Take `⟨y, -, hy⟩` from `exists_sign hH.1 (q4 hH) g.1.1`. Take `⟨z, -, hz⟩` from `exists_sign hH.2.1 (d4 hH) g.1.2`. Take `⟨u, -, -, -, hu⟩` from `exists_art e hH g x y z v hv hx hy.symm hz.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u, hu.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem art0_surjective : Function.Surjective (art0 e hH) := by
   intro g
@@ -363,13 +357,13 @@ theorem art0_surjective : Function.Surjective (art0 e hH) := by
   exact ⟨u, hu.symm⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨x, v, hv, hx⟩` from `exists_rep e g.2`. Establish `h1 : ((g.1.1 : ℤˣ) : ℤ) = jacobiSym ((1 : ℕ) : ℤ) q`. Rewrite using `[hg]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[jacobiSym.one_left]`. Establish `h2 : ((g.1.2 : ℤˣ) : ℤ) = jacobiSym ((1 : ℕ) : ℤ) d`. Rewrite using `[hg]`. Simplify using `[jacobiSym.one_left]`. Take `⟨u, -, hq, hd, hu⟩` from `exists_art e hH g x 1 1 v hv hx h1 h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u, (Nat.modEq_and_modEq_iff_modEq_mul (cop_qd hH)).mp ⟨hq, hd⟩, hu⟩`. Introduce and unpack `⟨u, hu, rfl⟩`. Establish `hq : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ 1 [MOD q]` using `hu.of_dvd (dvd_mul_right _ _)`. Establish `hd : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ 1 [MOD d]` using `hu.of_dvd (dvd_mul_left _ _)`. Use `Prod.ext (Units.ext ?_) (Units.ext ?_)` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[artinMap_first_eq_jacobiSym_of_modEq e hH u hq]`. Simplify using `[jacobiSym.one_left]`. Rewrite using `[artinMap_second_eq_jacobiSym_of_modEq e hH u hd]`. Simplify using `[jacobiSym.one_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inertia_two (g : FrobeniusOrbits.GG e) : g.1 = 1 ↔ ∃ u : (ZMod (2 ^ (e + 2) * q * d))ˣ,
     (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ 1 [MOD q * d] ∧ g = art0 e hH u := by
@@ -394,13 +388,13 @@ theorem inertia_two (g : FrobeniusOrbits.GG e) : g.1 = 1 ↔ ∃ u : (ZMod (2 ^ 
       simp [jacobiSym.one_left]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hg2 : g.2 = hcl e 1`. Apply the tactic sequence `rcases hg with rfl | rfl <;> rfl`. Establish `hg12 : ((g.1.2 : ℤˣ) : ℤ) = jacobiSym ((1 : ℕ) : ℤ) d`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hg with rfl | rfl <;> simp [sg, jacobiSym.one_left]`. Take `⟨y, -, hy⟩` from `exists_sign hH.1 (q4 hH) g.1.1`. Take `⟨u, h1, -, h3, hu⟩` from `exists_art e hH g 1 y 1 1 (by simp) hg2 hy.symm hg12`. Conclude with `⟨u, (Nat.modEq_and_modEq_iff_modEq_mul (cop_2d e hH)).mp ⟨h1, h3⟩, hu⟩`. Introduce and unpack `⟨u, hu, rfl⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `h2 : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ 1 [MOD 2 ^ (e + 2)]` using `hu.of_dvd (dvd_mul_right _ _)`. Establish `h3 : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ 1 [MOD d]` using `hu.of_dvd (dvd_mul_left _ _)`. Establish `e2` using `artinMap_dyadic_eq_of_modEq e hH u h2 1 (by simp)`. Establish `e3' : (art0 e hH u).1.2 = 1` using `Units.ext (by rw [artinMap_second_eq_jacobiSym_of_modEq e hH u h3]; simp [jacobiSym.one_left])`. Establish `e2' : (art0 e hH u).2 = 1` using `by rw [e2]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Int.units_eq_one_or (art0 e hH u).1.1 with h | h` into its components or cases. Conclude with `Or.inl (Prod.ext (Prod.ext h e3') e2')`. Conclude with `Or.inr (Prod.ext (Prod.ext h e3') e2')`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem inertia_q (g : FrobeniusOrbits.GG e) : (g = 1 ∨ g = sg e) ↔ ∃ u : (ZMod (2 ^ (e + 2) * q * d))ˣ,
     (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ 1 [MOD 2 ^ (e + 2) * d] ∧ g = art0 e hH u := by
@@ -424,13 +418,13 @@ theorem inertia_q (g : FrobeniusOrbits.GG e) : (g = 1 ∨ g = sg e) ↔ ∃ u : 
     · exact Or.inr (Prod.ext (Prod.ext h e3') e2')
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hg2 : g.2 = hcl e 1`. Apply the tactic sequence `rcases hg with rfl | rfl <;> rfl`. Establish `hg11 : ((g.1.1 : ℤˣ) : ℤ) = jacobiSym ((1 : ℕ) : ℤ) q`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hg with rfl | rfl <;> simp [jacobiSym.one_left]`. Take `⟨z, -, hz⟩` from `exists_sign hH.2.1 (d4 hH) g.1.2`. Take `⟨u, h1, h2, -, hu⟩` from `exists_art e hH g 1 1 z 1 (by simp) hg2 hg11 hz.symm`. Conclude with `⟨u, (Nat.modEq_and_modEq_iff_modEq_mul (cop_2q e hH)).mp ⟨h1, h2⟩, hu⟩`. Introduce and unpack `⟨u, hu, rfl⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `h1 : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ 1 [MOD 2 ^ (e + 2)]` using `hu.of_dvd (dvd_mul_right _ _)`. Establish `h2 : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ 1 [MOD q]` using `hu.of_dvd (dvd_mul_left _ _)`. Establish `e1` using `artinMap_dyadic_eq_of_modEq e hH u h1 1 (by simp)`. Establish `e2' : (art0 e hH u).1.1 = 1` using `Units.ext (by rw [artinMap_first_eq_jacobiSym_of_modEq e hH u h2]; simp [jacobiSym.one_left])`. Establish `e1' : (art0 e hH u).2 = 1` using `by rw [e1]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Int.units_eq_one_or (art0 e hH u).1.2 with h | h` into its components or cases. Conclude with `Or.inl (Prod.ext (Prod.ext e2' h) e1')`. Conclude with `Or.inr (Prod.ext (Prod.ext e2' h) e1')`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem inertia_d (g : FrobeniusOrbits.GG e) : (g = 1 ∨ g = ((1, -1), 1)) ↔ ∃ u : (ZMod (2 ^ (e + 2) * q * d))ˣ,
     (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ 1 [MOD 2 ^ (e + 2) * q] ∧ g = art0 e hH u := by
@@ -454,13 +448,13 @@ theorem inertia_d (g : FrobeniusOrbits.GG e) : (g = 1 ∨ g = ((1, -1), 1)) ↔ 
     · exact Or.inr (Prod.ext (Prod.ext e2' h) e1')
 
 /- English proof (translation)
-Establish `hJ : ∀ k : ℕ, jacobiSym ((2 ^ k : ℕ) : ℤ) q = (-1) ^ k ∧ jacobiSym ((2 ^ k : ℕ) : ℤ) d = 1`. Introduce `k`. Rewrite using `[Nat.cast_pow, jacobiSym.pow_left, jacobiSym.pow_left, jac_2q hH, jac_2d hH, one_pow]`. Conclude with `⟨rfl, rfl⟩`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hg`. Take `⟨x, v, hv, hx⟩` from `exists_rep e g.2`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : ℕ, ((g.1.1 : ℤˣ) : ℤ) = (-1) ^ k := by`. Break down `Int.units_eq_one_or g.1.1 with h | h` into its components or cases. Conclude with `⟨0, by simp [h]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨1, by simp [h]⟩`. Take `⟨u, -, hq, hd, hu⟩` from `exists_art e hH g x (2 ^ k) (2 ^ k) v hv hx (by rw [hk, (hJ k).1]) (by rw [hg, Units.val_one, (hJ k).2])`. Conclude with `⟨u, k, (Nat.modEq_and_modEq_iff_modEq_mul (cop_qd hH)).mp ⟨hq, hd⟩, hu⟩`. Introduce and unpack `⟨u, k, hu, rfl⟩`. Apply `Units.ext` to reduce the goal to its premises.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[artinMap_second_eq_jacobiSym_of_modEq e hH u (hu.of_dvd (dvd_mul_left _ _)), (hJ k).2, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem decomp_two (g : FrobeniusOrbits.GG e) : g.1.2 = 1 ↔ ∃ (u : (ZMod (2 ^ (e + 2) * q * d))ˣ) (k : ℕ),
     (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ 2 ^ k [MOD q * d] ∧ g = art0 e hH u := by
@@ -483,11 +477,11 @@ theorem decomp_two (g : FrobeniusOrbits.GG e) : g.1.2 = 1 ↔ ∃ (u : (ZMod (2 
     rw [artinMap_second_eq_jacobiSym_of_modEq e hH u (hu.of_dvd (dvd_mul_left _ _)), (hJ k).2, Units.val_one]
 
 /- English proof (translation)
-Establish `hJ : ∀ k : ℕ, jacobiSym ((q ^ k : ℕ) : ℤ) d = 1`. Introduce `k`. Rewrite using `[Nat.cast_pow, jacobiSym.pow_left, jac_qd hH, one_pow]`. Establish `hV : ∀ k : ℕ, ((uq ^ k : (ZMod (2 ^ (e + 2)))ˣ) : ZMod (2 ^ (e + 2))) = ((q ^ k : ℕ) : ZMod _)`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Units.val_pow_eq_pow_val, huq, Nat.cast_pow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, k, hk⟩`. Take `⟨y, -, hy⟩` from `exists_sign hH.1 (q4 hH) g.1.1`. Take `⟨u, h1, -, h3, hu⟩` from `exists_art e hH g (q ^ k) y (q ^ k) (uq ^ k) (hV k) (by rw [hk, hcl_pow]) hy.symm (by rw [hg, Units.val_one, hJ k])`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u, k, (Nat.modEq_and_modEq_iff_modEq_mul (cop_2d e hH)).mp ⟨h1, h3⟩, hu⟩`. Introduce and unpack `⟨u, k, hu, rfl⟩`. Use `⟨Units.ext ?_, k, ?_⟩` and prove the remaining obligations. Rewrite using `[artinMap_second_eq_jacobiSym_of_modEq e hH u (hu.of_dvd (dvd_mul_left _ _)), hJ k, Units.val_one]`. Rewrite using `[artinMap_dyadic_eq_of_modEq e hH u (hu.of_dvd (dvd_mul_right _ _)) (uq ^ k) (hV k), hcl_pow]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem decomp_q (uq : (ZMod (2 ^ (e + 2)))ˣ) (huq : (uq : ZMod (2 ^ (e + 2))) = (q : ZMod _)) (g : FrobeniusOrbits.GG e) :
     (g.1.2 = 1 ∧ ∃ k : ℕ, g.2 = hcl e uq ^ k) ↔ ∃ (u : (ZMod (2 ^ (e + 2) * q * d))ˣ) (k : ℕ),
@@ -510,13 +504,13 @@ theorem decomp_q (uq : (ZMod (2 ^ (e + 2)))ˣ) (huq : (uq : ZMod (2 ^ (e + 2))) 
     · rw [artinMap_dyadic_eq_of_modEq e hH u (hu.of_dvd (dvd_mul_right _ _)) (uq ^ k) (hV k), hcl_pow]
 
 /- English proof (translation)
-Establish `hJ : ∀ k : ℕ, jacobiSym ((d ^ k : ℕ) : ℤ) q = (-1) ^ k`. Introduce `k`. Rewrite using `[Nat.cast_pow, jacobiSym.pow_left, jac_dq hH]`. Establish `hV : ∀ k : ℕ, ((ud ^ k : (ZMod (2 ^ (e + 2)))ˣ) : ZMod (2 ^ (e + 2))) = ((d ^ k : ℕ) : ZMod _)`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Units.val_pow_eq_pow_val, hud, Nat.cast_pow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk1, hk2⟩`. Take `⟨z, -, hz⟩` from `exists_sign hH.2.1 (d4 hH) g.1.2`. Take `⟨u, h1, h2, -, hu⟩` from `exists_art e hH g (d ^ k) (d ^ k) z (ud ^ k) (hV k) (by rw [hk2, hcl_pow]) (by rw [hk1, hJ k]; push_cast; rfl) hz.symm`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u, k, (Nat.modEq_and_modEq_iff_modEq_mul (cop_2q e hH)).mp ⟨h1, h2⟩, hu⟩`. Introduce and unpack `⟨u, k, hu, rfl⟩`. Use `⟨k, Units.ext ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[artinMap_first_eq_jacobiSym_of_modEq e hH u (hu.of_dvd (dvd_mul_left _ _)), hJ k]`. Use `push_cast`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[artinMap_dyadic_eq_of_modEq e hH u (hu.of_dvd (dvd_mul_right _ _)) (ud ^ k) (hV k), hcl_pow]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem decomp_d (ud : (ZMod (2 ^ (e + 2)))ˣ) (hud : (ud : ZMod (2 ^ (e + 2))) = (d : ZMod _)) (g : FrobeniusOrbits.GG e) :
     (∃ k : ℕ, g.1.1 = (-1) ^ k ∧ g.2 = hcl e ud ^ k) ↔ ∃ (u : (ZMod (2 ^ (e + 2) * q * d))ˣ) (k : ℕ),
@@ -541,13 +535,11 @@ theorem decomp_d (ud : (ZMod (2 ^ (e + 2)))ˣ) (hud : (ud : ZMod (2 ^ (e + 2))) 
     · rw [artinMap_dyadic_eq_of_modEq e hH u (hu.of_dvd (dvd_mul_right _ _)) (ud ^ k) (hV k), hcl_pow]
 
 /- English proof (translation)
-Use `haveI := neZeroN e hH`. Establish `hup : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ p [MOD 2 ^ (e + 2) * q * d]` using `(ZMod.natCast_eq_natCast_iff _ _ _).mp (by rw [ZMod.natCast_zmod_val, hu])`. Establish `eq1 : (((art0 e hH u).1.1 : ℤˣ) : ℤ) = jacobiSym (-(q : ℤ)) p`. Rewrite using `[artinMap_first_eq_jacobiSym_of_modEq e hH u (hup.of_dvd (q_dvd e q d)), jac_recip (q4 hH) hp]`. Establish `eq2 : (((art0 e hH u).1.2 : ℤˣ) : ℤ) = jacobiSym (-(d : ℤ)) p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[artinMap_second_eq_jacobiSym_of_modEq e hH u (hup.of_dvd (d_dvd e q d)), jac_recip (d4 hH) hp]`. Establish `hc : Nat.Coprime p (2 ^ (e + 2))`. Establish `: Nat.Coprime p 2`. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd Nat.prime_two]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `this.pow_right (e + 2)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, v, hv, h3⟩`. Conclude with `Prod.ext (Prod.ext (Units.ext (h1.trans eq1.symm)) (Units.ext (h2.trans eq2.symm))) (h3.trans (artinMap_dyadic_eq_of_modEq e hH u (hup.of_dvd (two_dvd e q d)) v hv).symm)`. Introduce and unpack `rfl`.
-
-Conclude with `⟨eq1, eq2, ZMod.unitOfCoprime p hc, ZMod.coe_unitOfCoprime _ _, artinMap_dyadic_eq_of_modEq e hH u (hup.of_dvd (two_dvd e q d)) _ (ZMod.coe_unitOfCoprime _ _)⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frob_iff {p : ℕ} (hp : p % 2 = 1) (u : (ZMod (2 ^ (e + 2) * q * d))ˣ)
     (hu : (u : ZMod (2 ^ (e + 2) * q * d)) = (p : ZMod (2 ^ (e + 2) * q * d))) (g : FrobeniusOrbits.GG e) :

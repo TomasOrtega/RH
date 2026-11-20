@@ -14,17 +14,17 @@ namespace GlobalTheory.OrbitAdapt
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryAdjointCongruence GlobalTheory.ShortMove
 
 /- English proof (translation)
-Use `set d := T.dδ j n with hd`. Take `⟨_, hnab⟩` from `hF.sh.dNab j hj n`. Establish `hCI` using `GlobalTheory.T.harmonic_germ_value_chart_independent`. Establish `hbad` using `GlobalTheory.ShortChange.badOK_host D T.Q.H d.l₂`. Establish `hdv : D.host.QS * D.host.q * D.host.d ∣ badN D` using `Dvd.intro _ rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1 : D.host.QS * D.host.q * D.host.d * d.l₂.M ≠ 1` using `fun h => by`. Use `hbad.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hB` using `GlobalTheory.ShortChange.trivAt_mul (trivAt_of_dvd hdv hT) hM`. Establish `hB'` using `GlobalTheory.ShortChange.trivAt_mul (trivAt_of_dvd hdv hT') hM'`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK` using `hF.p.kPsi j hj`. Take `⟨ze, ⟨k, hk, hze⟩, hrep⟩` from `GlobalTheory.T.thetaChangeOfRepRootOfUnity_of_chartIndependence hCI D.host.E T.Q.H (T.Q.Dw j) d.l₂ d.Xo₂ d.c₂ d.nab₂ n ⟨(GlobalTheory.PlaceInt.host_galois_discr_moves D T.Q.H).1, GlobalTheory.ShortChange.odd_rank T hF j hj, hev, hnab⟩ _ hbad Λ g _ _ hU hg hB hB' (isBeta_cover d h …`. Establish `hP'` using `((GlobalTheory.PushKeeps.push_keeps D.host.E T.Q.H (T.Q.Dw j) T.Q.l T.Q.c n a g hg).2 Λ).2.2.2 P hP`. Establish `hz : d.eF.symm ze ^ k = 1` using `by rw [← map_pow, hze, map_one]`. Use `⟨pushLet T.Q.c g P, d.eF.symm ze, hP', fun h0 => ?_, ⟨k, hk, hz⟩, fun x0 N N' f hN hN' hR K _ _ _ _ hKe y y₂ hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[h0, zero_pow hk.ne']`. Conclude with `zero_ne_one hz`. Take `⟨v, hv, hval⟩` from `hR K hKe y y₂ hy`. Establish `h₂` using `(((GlobalTheory.PlaceInt.eF_transfer D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c n d Λ).2.1 a P hP).1)`. Establish `h₂'` using `(((GlobalTheory.PlaceInt.eF_transfer D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c n d _).2.1 a _ hP').1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v', hv', -⟩` from `(GlobalTheory.shortThetaValue_existsUnique_natural GlobalTheory.firstFiveLaws.1 hCI D.host.E T.Q.H (T.Q.Dw j) d.l₂ d.Xo₂ d.c₂ d.nab₂ hnab n _ N' hU' hM' hN' a _ h₂'.1 (d.w x0) (d.eF (betaH (Dw := T.Q.Dw j) T.Q.c (actLat g Λ)))).1 K y₂`. Use `⟨v', hv', ?_⟩` and prove the remaining obligations. Rewrite `hv'` using `[map_pushLet]`. Establish `hvv` using `hrep (d.w x0) (fixesDatum_of_congAt d.c₂ hb hcg _) N N' hN hN' a _ h₂ K y₂ v v' hv hv'`. Establish `hs : evR (T.Q.Xo j) T.Q.c (d.eF.symm ze • f) y = algebraMap T.Q.c.F K (d.eF.symm ze) * evR (T.Q.Xo j) T.Q.c f y` using `evR_mul (T.Q.Xo j) T.Q.c _ f _ (fun p y => Algebra.smul_def _ _) y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hs, hval, hvv, ← hKe, AlgEquiv.apply_symm_apply]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem shortRule_change_mat (D : D7) (T : Full D) (hF : LawsFull T) (j : ℕ) (hj : InR D j) (n : ℕ)
     (Λ : GenLat D.host.E n) (g : Matrix (Fin n) (Fin n) D.host.E) (b : ℕ) (a : (D.host.E →+* ℂ) × ℕ → ℕ)
@@ -75,17 +75,17 @@ theorem shortRule_change_mat (D : D7) (T : Full D) (hF : LawsFull T) (j : ℕ) (
   ring
 
 /- English proof (translation)
-Use `choose k hk b hb using h`. Use `⟨∏ j, k j, Nat.Coprime.prod_left fun j _ => hk j, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hv' : ∀ i, ∃ y : 𝓞 E, (y : E) = v i` using `fun i => by`. Use `(Submodule.mem_pi.1 hv) i (Set.mem_univ _)` as an intermediate fact. Take `⟨y, hy⟩` from `Submodule.mem_one.1 this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, hy⟩`. Use `choose y hy using hv'`. Use `⟨fun i => ((∑ j, ((∏ l ∈ Finset.univ.erase j, k l : ℕ) : 𝓞 E) * b j i * y j : 𝓞 E) : E), ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.mem_pi.2 fun i _ => Submodule.mem_one.2 ⟨_, rfl⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∀ j, ((∏ l, k l : ℕ) : E) * (gm i j - (((1 : Matrix (Fin n) (Fin n) (𝓞 E)) i j : 𝓞 E) : E)) = ((∏ l ∈ Finset.univ.erase j, k l : ℕ) : E) * ((m : E) * (b j i : E))` using `fun j => by`. Establish `hp : (∏ l, k l) = k j * ∏ l ∈ Finset.univ.erase j, k l` using `(Finset.mul_prod_erase (s := Finset.univ) (f := k) (Finset.mem_univ j)).symm`. Rewrite using `[hp]`. Use `push_cast`. Establish `h'` using `hb j i`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only at h'`. Take the linear combination `(∏ l ∈ Finset.univ.erase j, ((k l : ℕ) : E)) * h'`. Establish `e2 : (gm.mulVec v - v) i = ∑ j, (gm i j - (((1 : Matrix (Fin n) (Fin n) (𝓞 E)) i j : 𝓞 E) : E)) * v j`. Simplify using `only [Pi.sub_apply, Matrix.mulVec, dotProduct, sub_mul, Finset.sum_sub_distrib]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply]`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul, e2]`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hy j]`. Establish `h'` using `e1 j`. Move the coercions through the operations in `at h'`. Take the linear combination `((y j : 𝓞 E) : E) * h'`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem congAt_of_cols {E : Type} [Field E] [NumberField E] {n : ℕ} (gm : Matrix (Fin n) (Fin n) E) (m : ℕ)
     (h : ∀ j : Fin n, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryAdjointCongruence.CongAt m (fun i => gm i j)
@@ -124,11 +124,9 @@ theorem congAt_of_cols {E : Type} [Field E] [NumberField E] {n : ℕ} (gm : Matr
     linear_combination ((y j : 𝓞 E) : E) * h'
 
 /- English proof (translation)
-Unfold `Formalism.EigenvalueLevelCeiling.plc`. Use `haveI : lam.asIdeal.IsPrime := lam.isPrime`. Establish `hne : Ideal.absNorm lam.asIdeal ≠ 0` using `fun h => lam.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hz : ((Ideal.absNorm lam.asIdeal : ℕ) : 𝓞 K ⧸ lam.asIdeal) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk lam.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.absNorm_mem _`. Establish `hd : ringChar (𝓞 K ⧸ lam.asIdeal) ∣ Ideal.absNorm lam.asIdeal` using `(ringChar.spec (𝓞 K ⧸ lam.asIdeal) _).1 hz`. Break down `CharP.char_is_prime_or_zero (𝓞 K ⧸ lam.asIdeal) (ringChar (𝓞 K ⧸ lam.asIdeal)) with h | h` into its components or cases. Conclude with `h`. Rewrite `hd` using `[h, zero_dvd_iff]`.
-
-Conclude with `absurd hd hne`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plc_prime {K : Type} [Field K] [NumberField K] (lam : HeightOneSpectrum (𝓞 K)) : (Formalism.EigenvalueLevelCeiling.plc lam).Prime := by
   unfold Formalism.EigenvalueLevelCeiling.plc
@@ -147,13 +145,13 @@ theorem plc_prime {K : Type} [Field K] [NumberField K] (lam : HeightOneSpectrum 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 
 /- English proof (translation)
-Establish `hM0 : 0 < (T.dδ j V.rank).l₂.M` using `by have := (T.dδ j V.rank).l₂.three_le; omega`. Establish `hpos : 0 < badN D * p * (T.dδ j V.rank).l₂.M` using `Nat.mul_pos (Nat.mul_pos hb hp) hM0`. Establish `hT' : Λ.TrivAt (badN D * p * (T.dδ j V.rank).l₂.M)`. Rewrite using `[show badN D * p * (T.dδ j V.rank).l₂.M = badN D * (T.dδ j V.rank).l₂.M * p by ring]` and apply the resulting hypothesis. Take `⟨gm, h, hgm, hc, hh, hs, e⟩` from `GlobalTheory.T.exists_rationalUnitary_move_selfDual_to_split D V hg hL T.Q.H _ hpos Λ hU hT'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `h2 : 2 ∣ badN D * p`. Unfold `badN`. Conclude with `dvd_mul_of_dvd_left (((((dvd_pow_self 2 (by omega)).trans D.host.tower_dvd : 2 ∣ D.host.QS).mul_right _).mul_right _).mul_right _) p`. Take `⟨N', c1, c2, c3, c4, -⟩` from `GlobalTheory.SplitReps.exists_conjLat V hg hL T.Q.H (T.dδ j V.rank).l₂ (badN D * p) h2 h hs`. Rewrite `c1`, `c2`, `c3`, `c4` using `[← e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcg` using `congAt_of_cols gm _ hc`. Establish `hTb : Λ.TrivAt (badN D)` using `trivAt_of_dvd ⟨(T.dδ j V.rank).l₂.M * p, by ring⟩ hT`. Establish `hTM : Λ.TrivAt (T.dδ j V.rank).l₂.M` using `trivAt_of_dvd ⟨badN D * p, by ring⟩ hT`. Take `⟨P', ζ, hP', hζ, hroot, hR⟩` from `shortRule_change_mat D T hF j hj V.rank Λ gm _ a P hgm (dvd_mul_left _ _) hcg hev hU c1 hTb (trivAt_of_dvd (dvd_mul_right _ _) c2) hTM c3 hP`. Establish `hsp : Formalism.IndefR.FWT.SplitOffBad V (badN D * p * (T.dδ j V.rank).l₂.M) h` using `GlobalTheory.SplitReps.splitOffBad_of_suppSplit V _ h hh hs`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h, actLat gm Λ, N', P', ζ, ?_, fun w => by rw [e]; rfl, c1, trivAt_of_dvd (dvd_mul_right _ _) c2, c3, trivAt_of_dvd (dvd_mul_left _ _) c2, c4, hP', hζ, hroot, fun x0 f hf => hR x0 N N' f hN c4 hf⟩` and prove the remaining obligations. Take `⟨h1, e', Q, h3, h4, h5⟩` from `hsp`. Use `⟨h1, e', Q, h3, fun PP hP hbd => h4 PP hP ?_, h5⟩` and prove the remaining obligations. Rewrite using `[show badN D * p * (T.dδ j V.rank).l₂.M = badN D * (T.dδ j V.rank).l₂.M * p by ring, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hbd`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_step_split (D : D7) (T : Full D) (hF : LawsFull T) (j : ℕ) (hj : InR D j) (V : Formalism.BasicNotions.TH.HSp D)
     (hg : V.gram = 1) (hL : Formalism.IndefR.Bridge.hLat V 1 = stdLat D.host.E V.rank) (hev : Even V.rank) (hb : 0 < badN D)
@@ -197,7 +195,7 @@ theorem exists_step_split (D : D7) (T : Full D) (hF : LawsFull T) (j : ℕ) (hj 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Submodule.mem_one.1 hx`. Conclude with `Submodule.mem_one.2 ⟨⟨star (algebraMap _ _ y), (RingOfIntegers.isIntegral_coe y).map (starRingEnd D.host.E).toIntAlgHom⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem star_mem_one (D : D7) {x : D.host.E} (hx : x ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)) :
     star x ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) := by
@@ -208,13 +206,13 @@ theorem star_mem_one (D : D7) {x : D.host.E} (hx : x ∈ (1 : Submodule (𝓞 D.
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 
 /- English proof (translation)
-Take `⟨k, hk, h1, h2⟩` from `hT`. Take `rfl : k = 1` from `(Nat.coprime_zero_right k).1 hk`. Simplify using `only [Nat.cast_one, Ideal.span_singleton_one, Submodule.top_smul] at h1 h2`. Establish `hΛ : Λ.La = stdLat D.host.E V.rank` using `le_antisymm h1 h2`. Use `⟨fun w => ?_, fun b => ?_, fun m => ⟨1, Nat.coprime_one_left m, by simpa using h1, by simpa using h2⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : Formalism.IndefR.FWT.fin V (1 : Formalism.L2.Theta.GA D V) = 1` using `map_one _`. Rewrite using `[hf, hL, hΛ]`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Conclude with `Submodule.mem_pi.2 fun i _ => star_mem_one D ((Submodule.mem_pi.1 hw) i (Set.mem_univ _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hw`. Use `Submodule.mem_pi.2 fun i _ => ?_` and prove the remaining obligations. Use `star_mem_one D ((Submodule.mem_pi.1 hw) i (Set.mem_univ _))` as an intermediate fact. Simplify `this` using `only [star_star]`. Use `⟨one_mem _, 0, ∅, ⟨⟨fun _ => 0, by simp, by simp⟩, by simp⟩, by simp, fun a c => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Formalism.L2.Theta.mt V (1 : Formalism.L2.Theta.GA D V) = 1` using `by simp [Formalism.L2.Theta.mt]`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zero_case (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (hL : Formalism.IndefR.Bridge.hLat V 1 = stdLat D.host.E V.rank)
     (Λ : GenLat D.host.E V.rank) (hT : Λ.TrivAt 0) :

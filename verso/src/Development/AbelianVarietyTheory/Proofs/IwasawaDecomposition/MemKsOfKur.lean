@@ -9,17 +9,15 @@ namespace GlobalTheory.MemN.SelfGood
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Take `⟨w, hw⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Loc.Om l) p`. Set `ψ : AddChar (ZMod p) (Loc.Om l)` to `AddChar.zmodChar p hw.pow_eq_one`. Establish `hψ : ψ.IsPrimitive` using `AddChar.zmodChar_primitive_of_primitive_root p hw`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `χ : MulChar (ZMod p) (Loc.Om l)` to `(quadraticChar (ZMod p)).ringHomComp (Int.castRingHom (Loc.Om l))`. Establish `hch : ringChar (ZMod p) ≠ 2`. Rewrite using `[ZMod.ringChar_zmod_n]`. Use linear arithmetic over natural numbers and integers. Establish `hχ1 : χ ≠ 1` using `(MulChar.ringHomComp_ne_one_iff (Int.cast_injective)).2 (quadraticChar_ne_one hch)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχq : χ.IsQuadratic` using `(quadraticChar_isQuadratic (ZMod p)).comp _`. Establish `hneg : χ (-1) = -1`. Establish `: quadraticChar (ZMod p) (-1) = -1`. Rewrite using `[quadraticChar_neg_one hch, ZMod.card, ZMod.χ₄_nat_three_mod_four h4]`. Simplify using `[χ, MulChar.ringHomComp_apply, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmu : ∀ a, ψ a ∈ S` using `fun a => hS _ (by`. Rewrite using `[AddChar.zmodChar_apply, ← pow_mul, mul_comm, pow_mul, hw.pow_eq_one, one_pow])`. Establish `hg : gaussSum χ ψ ^ 2 = -(p : Loc.Om l)`. Rewrite using `[gaussSum_sq hχ1 hχq hψ, hneg, ZMod.card]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hm : gaussSum χ ψ ∈ S`. Unfold `gaussSum`. Conclude with `sum_mem fun a _ => mul_mem (intCast_mem _ _) (hmu a)`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 (hx.trans hg.symm) with h | h` into its components or cases. Rewrite using `[h]`.
-
-Conclude with `hm`. Rewrite using `[h]`. Conclude with `neg_mem hm`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqrt_mem (p : ℕ) (hp : p.Prime) (h4 : p % 4 = 3) (S : IntermediateField ℚ_[l] (Loc.Om l))
     (hS : ∀ z : Loc.Om l, z ^ p = 1 → z ∈ S) (x : Loc.Om l) (hx : x ^ 2 = -(p : Loc.Om l)) : x ∈ S := by
@@ -50,7 +48,7 @@ theorem sqrt_mem (p : ℕ) (hp : p.Prime) (h4 : p % 4 = 3) (S : IntermediateFiel
   · rw [h]; exact neg_mem hm
 
 /- English proof (translation)
-The claim follows from `IntermediateField.subset_adjoin _ _ ⟨m, hm, hlm, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem root_mem_Kur {z : Loc.Om l} {m : ℕ} (hm : 0 < m) (hlm : ¬ l ∣ m) (h : z ^ m = 1) :
     z ∈ Loc.MaximalUnramifiedExtension l := IntermediateField.subset_adjoin _ _ ⟨m, hm, hlm, h⟩

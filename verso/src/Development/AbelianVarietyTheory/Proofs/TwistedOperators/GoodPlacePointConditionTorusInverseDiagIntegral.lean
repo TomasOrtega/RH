@@ -22,7 +22,7 @@ namespace GlobalTheory.FinPl.PtInv
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[pairS, adj_mul, GlobalTheory.FinPl.InvStep.adj_single, Matrix.mul_assoc, ← Matrix.mul_assoc (gA W), ← Matrix.mul_assoc (adj dW.jY), HypDec.gram_YX, Matrix.one_mul, GlobalTheory.FinPl.InvStep.trace_single_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pairS_jX_single {W W₀ : HSp D} {ρ : ℕ} (dW : HypDec W W₀ ρ) (N : Mx D ρ ρ) (i : Fin ρ) (b : AE D) :
     pairS W (dW.jX ⬝ N) (dW.jY ⬝ Matrix.single i i b) = cA D b * N i i := by
@@ -30,18 +30,18 @@ theorem pairS_jX_single {W W₀ : HSp D} {ρ : ℕ} (dW : HypDec W W₀ ρ) (N :
     ← Matrix.mul_assoc (adj dW.jY), HypDec.gram_YX, Matrix.one_mul, GlobalTheory.FinPl.InvStep.trace_single_mul]
 
 /- English proof (translation)
-Simplify using `only [pairS, Matrix.mul_add, Matrix.trace_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairS_add_left {W : HSp D} {ρ : ℕ} (x x' y : Mx D W.rank ρ) :
     pairS W (x + x') y = pairS W x y + pairS W x' y := by
   simp only [pairS, Matrix.mul_add, Matrix.trace_add]
 
 /- English proof (translation)
-Establish `hfix : SelfDualAt.cP (· = v) • dV.extY W y = dV.extY W y`. Use extensionality with `k l`. Rewrite using `[Matrix.smul_apply, Algebra.smul_def]`. Conclude with `SuppShift.eps_mul (hy k l)`. Establish `h0 : SelfDualAt.cP (· = v) • dV.extX W M = dV.extX W 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `k l`. Rewrite using `[map_zero, Matrix.zero_apply, Matrix.smul_apply, Algebra.smul_def, HypDec.extX_apply, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Establish `h : M k m * algebraMap (AF D.host.F) (AE D) (SelfDualAt.cP (· = v)) = 0` using `GlobalTheory.DisjComb.mul_eq_zero_of_off (hM k m) (SuppShift.eps_idAt v)`. Rewrite using `[← mul_assoc, mul_comm (algebraMap _ _ _), h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hfix, SelfDualAt.symplO_smul_swap, h0, InvStep.symplO_extX_extY]`. Simplify using `[pairS]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem symplO_off {V V₀ W : HSp D} {ρ : ℕ} (dV : HypDec V V₀ ρ) {v : Pl D} {M : Mx D W.rank ρ}
     (hM : GlobalTheory.AscFin.MxOff (· = v) M) (y : Mx D W.rank ρ) (hy : MxAt (· = v) (dV.extY W y)) :
@@ -64,29 +64,27 @@ theorem symplO_off {V V₀ W : HSp D} {ρ : ℕ} (dV : HypDec V V₀ ρ) {v : Pl
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D ψ hψ V V₀ W W₀ ρ dV dW p LV LV₀ LW LW₀ v hG hS t htd ht hpt i`. Take `⟨-, h2, -⟩` from `InvStep.diag_inv t htd`. Establish `hc1 : (t⁻¹).1 i i - 1 ∈ idAt D (· = v)`. Use `InvStep.levi_sub_one_mem dW (P := (· = v)) (t := t⁻¹) (by rw [map_inv]; exact inv_mem ht) i i` as an intermediate fact. Rewrite `this` using `[one_apply_eq]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨u, a, ha, hoff⟩` from `hpt`. Take `⟨b₀, hab, hb₀⟩` from `hS.a' a ha`. Establish `hlev : mt W (dW.levi t)⁻¹ ⬝ (xZero dW ⬝ u.1.1) = dW.jX ⬝ ((t⁻¹).1 ⬝ u.1.1)`. Rewrite using `[← map_inv dW.levi t, ← Matrix.mul_assoc, xZero, HypDec.levi_jX, Matrix.mul_assoc]`. Establish `hu1 : u.1.1 i i = 1` using `((mem_UX.1 u.2) i i).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiag : ((t⁻¹).1 ⬝ u.1.1) i i = (t⁻¹).1 i i` using `by conv_lhs => rw [h2]`. Rewrite using `[diagonal_mul, hu1, mul_one]`. Establish `hsum : dW.jX ⬝ ((t⁻¹).1 ⬝ u.1.1) = (mt W (dW.levi t)⁻¹ ⬝ (xZero dW ⬝ u.1.1) - xZero dW - a) + (a - b₀) + b₀ + dW.jX ⬝ (1 : Mx D ρ ρ)`. Rewrite using `[hlev, Matrix.mul_one, xZero]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `GlobalTheory.T.integral_of_addChar_trivial_on_homLattice_line D ψ hψ V V₀ W W₀ ρ dV dW LV LV₀ LW LW₀ v (GlobalTheory.T.isTameFinitePlaceHermitian_all D v) hG.sdV hG.sdW hG.monoV hG.monoW hG.cols i _ hc1 ?_` and prove the remaining obligations. Introduce `b hb hY`. Establish `hYm : MxAt (· = v) (dV.extY W (dW.jY ⬝ Matrix.single i i b))` using `LatMem.latO_mxAt hY`. Establish `hτ : ∀ M : Mx D W.rank ρ, ψ (symplO V W (dV.extX W M) (dV.extY W (dW.jY ⬝ Matrix.single i i b))) = ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * pairS W M (dW.jY ⬝ Matrix.single i i b)))` using `fun M => by`. Rewrite using `[InvStep.symplO_extX_extY]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : cA D b * (t⁻¹).1 i i = pairS W (mt W (dW.levi t)⁻¹ ⬝ (xZero dW ⬝ u.1.1) - xZero dW - a) (dW.jY ⬝ Matrix.single i i b) + pairS W (a - b₀) (dW.jY ⬝ Matrix.single i i b) + pairS W b₀ (dW.jY ⬝ Matrix.single i i b) + pairS W (dW.jX ⬝ (Matrix.single i i 1 : Mx D ρ ρ)) (dW.jY ⬝ Matr …`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsum, pairS_add_left, pairS_add_left, pairS_add_left]`. Use `_ = _ := by`. Rewrite using `[pairS_jX_single dW (1 : Mx D ρ ρ), pairS_jX_single dW ((Matrix.single i i 1 : Mx D ρ ρ)), Matrix.one_apply_eq, Matrix.single_apply_same]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k1 : ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * pairS W (mt W (dW.levi t)⁻¹ ⬝ (xZero dW ⬝ u.1.1) - xZero dW - a) (dW.jY ⬝ Matrix.single i i b))) = 1`. Rewrite using `[← hτ, symplO_off dV hoff _ hYm, AddChar.map_zero_eq_one]`. Establish `k2 : ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * pairS W (a - b₀) (dW.jY ⬝ Matrix.single i i b))) = 1`. Rewrite using `[← hτ, symplO_off dV hab _ hYm, AddChar.map_zero_eq_one]`. Establish `k3 : ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * pairS W b₀ (dW.jY ⬝ Matrix.single i i b))) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hτ]`. Conclude with `(GlobalTheory.T.homLatticeCompletion_self_annihilator_atPlaces D ψ hψ V W LV LW hG.sdV hG.sdW (· = v) _ (LatMem.latO_mxAt hb₀)).1 hb₀ _ hY`. Establish `hlat : SelfDualAt.cP (· = v) • dV.extX W (dW.jX ⬝ (Matrix.single i i 1 : Mx D ρ ρ)) ∈ latO V W (LV : Set _) (LW : Set _) (· = v)`. Use `(GlobalTheory.T.mem_homLatticeCompletion_iff_supported_maps D V W LV LW hG.sdV hG.sdW (· = v) _).2 ⟨fun k l => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Algebra.smul_def]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Ideal.mul_mem_right _ _ (SuppShift.eps_idAt v)`. Establish `e0 : SelfDualAt.cP (· = v) • dV.extX W (dW.jX ⬝ (Matrix.single i i 1 : Mx D ρ ρ)) = SuppShift.eps v • dV.extX W (dW.jX ⬝ (Matrix.single i i 1 : Mx D ρ ρ))`. Use extensionality with `k l`. Rewrite using `[Matrix.smul_apply, Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha' : SuppShift.eps v * (dV.pX *ᵥ y) i ∈ idAt D (· = v)` using `Ideal.mul_mem_right _ _ (SuppShift.eps_idAt v)`. Establish `hV' : colMul dV.jX i (SuppShift.eps v * (dV.pX *ᵥ y) i) ∈ latV V LV (· = v)`. Rewrite using `[SuppShift.colMul_mul]`. Conclude with `SuppShift.smul_latV (SuppShift.eps_int v) (((hG.monoV y).1 hy).1 i)`. Establish `hA` using `(hG.cols i _ ha').1 hV'`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(SelfDualAt.cP (· = v) • dV.extX W (dW.jX ⬝ (Matrix.single i i 1 : Mx D ρ ρ))) *ᵥ y ∈ _`. Rewrite using `[e0, Matrix.smul_mulVec, HypDec.extX_apply, ← Matrix.mulVec_mulVec, SuppShift.single_mulVec', one_mul, ← SuppShift.colMul_mul]`. Conclude with `hA`. Establish `k4 : ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * pairS W (dW.jX ⬝ (Matrix.single i i 1 : Mx D ρ ρ)) (dW.jY ⬝ Matrix.single i i b))) = 1`. Establish `hfix : SelfDualAt.cP (· = v) • dV.extY W (dW.jY ⬝ Matrix.single i i b) = dV.extY W (dW.jY ⬝ Matrix.single i i b)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `k l`. Rewrite using `[Matrix.smul_apply, Algebra.smul_def]`. Conclude with `SuppShift.eps_mul (hYm k l)`. Rewrite using `[← hτ, ← hfix, SelfDualAt.symplO_smul_swap]`. Conclude with `(GlobalTheory.T.homLatticeCompletion_self_annihilator_atPlaces D ψ hψ V W LV LW hG.sdV hG.sdW (· = v) _ (LatMem.latO_mxAt hlat)).1 hlat _ hY`.
-
-Establish `hadd : ∀ x y : AE D, ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * (x + y))) = ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * x)) * ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * y))` using `fun x y => by`. Rewrite using `[mul_add, map_add, AddChar.map_add_eq_mul]`. Rewrite using `[hτ, pairS_jX_single, Matrix.single_apply_same, e, hadd, hadd, hadd, k1, k2, k3, k4, one_mul, one_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_int_of_pt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V₀ W W₀ : HSp D) (ρ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ ρ) (p : Pieces V₀ W W₀ ρ ρ) (LV : Lat V) (LV₀ : Lat V₀) (LW : Lat W) (LW₀ : Lat W₀) (v : GlobalTheory.FinPl.Pl D), GoodAt dV dW (xZero dW) ψ LV LV₀ LW LW₀ v → StdAt dV dW p LV LW v → ∀ t : GL (Fin ρ) (AE D), (∀ i j, i ≠ j → t.1 i j = 0) → dW.levi t ∈ grpAt W (· = v) → (∃ u : UX D ρ, ∃ a ∈ p.A₁, GlobalTheory.AscFin.MxOff (· = v) (mt W (dW.levi t)⁻¹ ⬝ (xZero dW ⬝ u.1.1) - xZero dW - a)) → ∀ i, (t⁻¹).1 i i - 1 ∈ intAt D (· = v) := by
   intro D ψ hψ V V₀ W W₀ ρ dV dW p LV LV₀ LW LW₀ v hG hS t htd ht hpt i

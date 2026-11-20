@@ -64,21 +64,19 @@ variable (hR : ZOpRd)
 include hR
 
 /- English proof (translation)
-The claim follows from `(hR j E _).add' ((hR j E _).csmul Complex.I)`.
+A detailed English derivation is pending.
 -/
 theorem zop_EZ {j : ℕ} (a b : Fin j) : ZOp (E := E) (EZ a b) :=
   (hR j E _).add' ((hR j E _).csmul Complex.I)
 
 /- English proof (translation)
-The claim follows from `(hR j E _).add' ((hR j E _).csmul Complex.I)`.
+A detailed English derivation is pending.
 -/
 theorem zop_EZs {j : ℕ} (a b : Fin j) : ZOp (E := E) (EZs a b) :=
   (hR j E _).add' ((hR j E _).csmul Complex.I)
 
 /- English proof (translation)
-Unfold `EopZ`. Use `split_ifs`. Conclude with `zop_EZ hR _ _`. Conclude with `zop_zero`. Conclude with `zop_EZs hR _ _`.
-
-Conclude with `zop_zero`. Conclude with `zop_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem zop_EopZ (k r j : ℕ) (p q : Fin (2 * r + k + 1)) : ZOp (E := E) (EopZ k r j p q) := by
   unfold EopZ
@@ -90,7 +88,7 @@ theorem zop_EopZ (k r j : ℕ) (p q : Fin (2 * r + k + 1)) : ZOp (E := E) (EopZ 
   · exact zop_zero
 
 /- English proof (translation)
-Establish `h1 : ZOp (E` using `E) (j := j) (fun f g => if p = q then u • f g else 0) := by split_ifs`. Conclude with `zop_id.csmul u`. Conclude with `zop_zero`. Conclude with `h1.add' (zop_EopZ hR k r j p q)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem zop_TopG (k r j : ℕ) (u : ℂ) (p q : Fin (2 * r + k + 1)) :
     ZOp (E := E) (TopG (EopZ k r j) u p q) := by
@@ -101,9 +99,9 @@ theorem zop_TopG (k r j : ℕ) (u : ℂ) (p q : Fin (2 * r + k + 1)) :
   exact h1.add' (zop_EopZ hR k r j p q)
 
 /- English proof (translation)
-Establish `e : (qminG (E` using `E) (EopZ k r j) a b u) = fun h Z => ∑ σ ∈ (Finset.univ : Finset (Equiv.Perm (Fin t))), (((Equiv.Perm.sign σ : ℤ) : ℂ) • (List.ofFn fun k' : Fin t => TopG (EopZ (E := E) k r j) (u - ((k' : ℕ) : ℂ)) (a (σ k')) (b k')).foldr (fun T h => T h) h Z) := by`. Use function extensionality and compare the values at `h Z`. Simplify using `[qminG, Finset.sum_apply]`. Rewrite using `[e]`. Use `zop_sum _ (fun σ _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ZOp.csmul ?_ _` and prove the remaining obligations. Use `zop_foldr _ (fun T hT => ?_)` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hT`. Conclude with `zop_TopG hR k r j _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem zop_qminG (k r j : ℕ) {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) :
     ZOp (E := E) (qminG (EopZ k r j) a b u) := by
@@ -122,13 +120,13 @@ theorem zop_qminG (k r j : ℕ) {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) 
 end zop
 
 /- English proof (translation)
-The claim follows from `(contDiff_apply ℝ ℂ b).comp (contDiff_apply ℝ (Fin j → ℂ) a)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_entry {j : ℕ} (a b : Fin j) : ContDiff ℝ ∞ fun Z : MJ j => Z a b :=
   (contDiff_apply ℝ ℂ b).comp (contDiff_apply ℝ (Fin j → ℂ) a)
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply]`. Use `ContDiff.sum (fun σ _ => ?_)` and prove the remaining obligations. Simplify using `only [Units.smul_def, zsmul_eq_mul]`. Conclude with `contDiff_const.mul (contDiff_prod (fun i _ => hM _ _))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_det_of {j m : ℕ} (M : MJ j → Matrix (Fin m) (Fin m) ℂ) (hM : ∀ a b, ContDiff ℝ ∞ fun Z => M Z a b) :
     ContDiff ℝ ∞ fun Z => (M Z).det := by
@@ -138,7 +136,7 @@ theorem contDiff_det_of {j m : ℕ} (M : MJ j → Matrix (Fin m) (Fin m) ℂ) (h
   exact contDiff_const.mul (contDiff_prod (fun i _ => hM _ _))
 
 /- English proof (translation)
-Unfold `cZ`. Use `split_ifs`. Apply the tactic sequence `exact contDiff_entry _ _`. Conclude with `contDiff_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_cZ {j N : ℕ} (p : Fin N) (a : Fin j) : ContDiff ℝ ∞ fun Z : MJ j => cZ Z p a := by
   unfold cZ
@@ -147,7 +145,7 @@ theorem contDiff_cZ {j N : ℕ} (p : Fin N) (a : Fin j) : ContDiff ℝ ∞ fun Z
   · exact contDiff_const
 
 /- English proof (translation)
-Unfold `cvZ`. Use `split_ifs`. Apply the tactic sequence `exact Complex.conjCLE.contDiff.comp (contDiff_entry _ _)`. Conclude with `contDiff_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_cvZ (k r : ℕ) {j : ℕ} (p : Fin (2 * r + k + 1)) (a : Fin j) :
     ContDiff ℝ ∞ fun Z : MJ j => cvZ k r Z p a := by
@@ -157,13 +155,13 @@ theorem contDiff_cvZ (k r : ℕ) {j : ℕ} (p : Fin (2 * r + k + 1)) (a : Fin j)
   · exact contDiff_const
 
 /- English proof (translation)
-The claim follows from `(contDiff_det_of (fun Z => Z) (fun a b => contDiff_entry a b)).contDiffOn.inv (fun Z hZ => hZ)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_invDet {j : ℕ} : ContDiffOn ℝ ∞ (fun Z : MJ j => (Z.det)⁻¹) {Z | Z.det ≠ 0} :=
   (contDiff_det_of (fun Z => Z) (fun a b => contDiff_entry a b)).contDiffOn.inv (fun Z hZ => hZ)
 
 /- English proof (translation)
-The claim follows from `(Complex.conjCLE.contDiff.comp (contDiff_det_of (fun Z => Z) (fun a b => contDiff_entry a b))).contDiffOn.inv (fun Z hZ => by simpa using hZ)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_invConjDet {j : ℕ} :
     ContDiffOn ℝ ∞ (fun Z : MJ j => (conj Z.det)⁻¹) {Z | Z.det ≠ 0} :=
@@ -176,7 +174,7 @@ variable (hR : ZOpRd)
 include hR
 
 /- English proof (translation)
-Unfold `AZ`. Use `zop_sum _ (fun c _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `(zop_qminG hR k r j _ _ u).cmul (contDiff_det_of _ (fun a l => contDiff_cZ _ _)).contDiffOn`. Conclude with `zop_zero`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem zop_AZ (k r j m : ℕ) (hm : m ≤ r) (hmj : m ≤ j) (u : ℂ) : ZOp (E := E) (AZ k r j m hm hmj u) := by
   classical
@@ -188,7 +186,7 @@ theorem zop_AZ (k r j m : ℕ) (hm : m ≤ r) (hmj : m ≤ j) (u : ℂ) : ZOp (E
   · exact zop_zero
 
 /- English proof (translation)
-Unfold `AvZ`. Use `zop_sum _ (fun c _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `(zop_qminG hR k r j _ _ _).cmul (contDiff_det_of _ (fun a l => contDiff_cvZ k r _ _)).contDiffOn`. Conclude with `zop_zero`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem zop_AvZ (k r j m : ℕ) (hm : m ≤ r) (hmj : m ≤ j) (ell : ℂ) : ZOp (E := E) (AvZ k r j m hm hmj ell) := by
   classical
@@ -200,7 +198,7 @@ theorem zop_AvZ (k r j m : ℕ) (hm : m ≤ r) (hmj : m ≤ j) (ell : ℂ) : ZOp
   · exact zop_zero
 
 /- English proof (translation)
-Unfold `Aform`. Use `split_ifs`. Conclude with `zop_zero`. Conclude with `(zop_AZ hR _ _ _ _ _ _ _).cmul contDiffOn_invDet`. Conclude with `(zop_AvZ hR _ _ _ _ _ _ _).cmul contDiffOn_invConjDet`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem zop_Aform (k r j : ℕ) (hj : j + 1 ≤ r) (l : C.Letter) (e : Fin 2) :
     ZOp (E := E) (Aform k r j hj l e) := by

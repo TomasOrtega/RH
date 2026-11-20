@@ -20,7 +20,7 @@ instance freeSheafMap_mono {U V : C} (f : U ⟶ V) [Mono f] : Mono (freeSheafMap
   exact (presheafToSheaf J AddCommGrpCat.{v}).map_mono _
 
 /- English proof (translation)
-Introduce `s`. Use `⟨freeSheafHomAddEquiv V I (Injective.factorThru ((freeSheafHomAddEquiv U I).symm s) (freeSheafMap J f)), ?_⟩` and prove the remaining obligations. Rewrite using `[← freeSheafHomAddEquiv_naturality_left, Injective.comp_factorThru, AddEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem surjective_map_of_injective (I : Sheaf J AddCommGrpCat.{v}) [Injective I] {U V : C}
     (f : U ⟶ V) [Mono f] : Function.Surjective (I.obj.map f.op) := by
@@ -37,7 +37,7 @@ section Space
 variable {X : TopCat.{u}}
 
 /- English proof (translation)
-Establish `: Mono i.unop` using `⟨fun _ _ _ => Subsingleton.elim _ _⟩`. Rewrite using `[AddCommGrpCat.epi_iff_surjective]`. Conclude with `surjective_map_of_injective I i.unop`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFlasque_of_injective (I : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})
     [Injective I] : TopCat.Presheaf.IsFlasque I.obj where
@@ -49,17 +49,17 @@ theorem isFlasque_of_injective (I : Sheaf (Opens.grothendieckTopology X) AddComm
 variable [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `F _ U x`. Set `S` to `ShortComplex.mk (Injective.ι F) (cokernel.π (Injective.ι F)) (cokernel.condition _)`. Establish `hS : S.ShortExact` using `{ exact := ShortComplex.exact_cokernel (Injective.ι F) }`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: TopCat.Presheaf.IsFlasque S.X₁.obj` using `inferInstanceAs (TopCat.Presheaf.IsFlasque F.obj)`. Establish `: TopCat.Presheaf.IsFlasque S.X₂.obj` using `isFlasque_of_injective (Injective.under F)`. Take `⟨y, rfl⟩` from `Ext.covariant_sequence_exact₁ (freeSheaf _ U) hS x (by`. Establish `: Injective S.X₂` using `inferInstanceAs (Injective (Injective.under F))`. Conclude with `Ext.eq_zero_of_injective _) (zero_add 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (S.g.hom.app (op U))` using `(AddCommGrpCat.epi_iff_surjective _).1 (TopCat.Sheaf.IsFlasque.epi_of_shortExact (X := X) (U := U) hS)`. Take `⟨z, hz⟩` from `hsurj (H'.equiv₀ S.X₃ U y)`. Take `⟨w, rfl⟩` from `(H'.equiv₀ S.X₂ U).surjective z`. Establish `: y = (show Ext (freeSheaf _ U) S.X₂ 0 from w).comp (Ext.mk₀ S.g) (add_zero 0)`. Apply `(H'.equiv₀ S.X₃ U).injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hz, ← H'.equiv₀_naturality]`. Both sides reduce to the same expression. Rewrite using `[this, Ext.comp_assoc_of_second_deg_zero, hS.comp_extClass, Ext.comp_zero]`. Consider the case `succ n ih`. Introduce `F _ U x`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `S` to `ShortComplex.mk (Injective.ι F) (cokernel.π (Injective.ι F)) (cokernel.condition _)`. Establish `hS : S.ShortExact` using `{ exact := ShortComplex.exact_cokernel (Injective.ι F) }`. Establish `: TopCat.Presheaf.IsFlasque S.X₁.obj` using `inferInstanceAs (TopCat.Presheaf.IsFlasque F.obj)`. Establish `: TopCat.Presheaf.IsFlasque S.X₂.obj` using `isFlasque_of_injective (Injective.under F)`. Establish `: TopCat.Presheaf.IsFlasque S.X₃.obj` using `TopCat.Sheaf.IsFlasque.of_shortExact_of_isFlasque₁₂ (X := X) hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Ext.covariant_sequence_exact₁ (freeSheaf _ U) hS x (by`. Establish `: Injective S.X₂` using `inferInstanceAs (Injective (Injective.under F))`. Conclude with `Ext.eq_zero_of_injective _) (n₀ := n + 1) rfl`. Rewrite using `[ih S.X₃ U y, Ext.zero_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_freeSheaf_eq_zero_of_isFlasque (n : ℕ) :
     ∀ (F : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})
@@ -104,14 +104,14 @@ theorem ext_freeSheaf_eq_zero_of_isFlasque (n : ℕ) :
     rw [ih S.X₃ U y, Ext.zero_comp]
 
 /- English proof (translation)
-The claim follows from `ext_freeSheaf_eq_zero_of_isFlasque n F U x`.
+A detailed English derivation is pending.
 -/
 theorem H'_eq_zero_of_isFlasque (F : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})
     [TopCat.Presheaf.IsFlasque F.obj] (n : ℕ) (U : Opens X) (x : F.H' (n + 1) U) : x = 0 :=
   ext_freeSheaf_eq_zero_of_isFlasque n F U x
 
 /- English proof (translation)
-Apply `(cohomologyPresheafTerminalAddEquiv F (n + 1) (T := ⊤) isTerminalTop).symm.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `H'_eq_zero_of_isFlasque F n ⊤ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem H_eq_zero_of_isFlasque (F : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})
     [TopCat.Presheaf.IsFlasque F.obj] (n : ℕ) (x : Sheaf.H F (n + 1)) : x = 0 := by

@@ -52,7 +52,7 @@ def Cells {G : Type} [Group G] [TopologicalSpace G] (B N : Subgroup G) (s : G �
     ∀ j, closure (cell B N (w j)) ⊆ ⋃ l, ⋃ (_ : j ≤ l), cell B N (w l)
 
 /- English proof (translation)
-Establish `h : cell (⊤ : Subgroup G) ⊤ 1 = Set.univ` using `Set.eq_univ_of_forall fun g => ⟨g, trivial, 1, trivial, by simp⟩`. Conclude with `⟨1, fun _ => 1, fun _ => rfl, fun g => ⟨0, by simp [h], fun _ _ => Subsingleton.elim _ _⟩, fun j => by simp [h, Set.iUnion_const, Subsingleton.elim j 0]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 example {G : Type} [Group G] [TopologicalSpace G] : Cells (⊤ : Subgroup G) ⊤ id := by
   have h : cell (⊤ : Subgroup G) ⊤ 1 = Set.univ := Set.eq_univ_of_forall fun g => ⟨g, trivial, 1, trivial, by simp⟩

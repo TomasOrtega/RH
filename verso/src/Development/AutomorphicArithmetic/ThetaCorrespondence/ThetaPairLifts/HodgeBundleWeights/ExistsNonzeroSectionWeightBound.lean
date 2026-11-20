@@ -33,21 +33,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E}
   {Xo : Moduli Dw l} {c : Coeff l}
 open GlobalTheory.ThetaConst GlobalTheory.FlatLine GlobalTheory.FlatCore GlobalTheory.AllWt in
 /- English proof (translation)
-Take `⟨K, hK, hKv⟩` from `exists_key Xo c hL.pos hL.good`. Establish `h : HasPts U Z` using `hasPts U hL.pos hL.good hL.unf Z`. Establish `h5 : Odd 5` using `by decide`. Take `⟨x₀, hx₀⟩` from `exists_isAdm Dw (R := 5) (by norm_num)`. Take `⟨u, f, hf, hfZ⟩` from `exists_isGenRule_nonzeroOn (Xo := Xo) (c := c) h5 (by norm_num) hM x₀ Z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨thetaOn h s K f, thetaOn_mem_secZ h s hK (IsTauRule.mem_sec h5 hf)⟩, thetaOn_mem_suppOn h s K f, fun h0 => ((nonzeroOn_thetaOn_iff h s K f).2 hfZ).ne_zero (congrArg Subtype.val h0), fun T io y φ hio hZ hφ hne => ?_⟩` and prove the remaining obligations. Use `letI := io.toAlgebra`. Establish `hid : evI y (idem Z) = 1` using `evR_idem hZ y.2.1`. Set `ev : Rul Xo c →* T.Fr` to `⟨⟨evI y, by rw [← mul_one (evI y 1), ← hid, ← evI_mul, one_mul]⟩, evI_mul y⟩`. Establish `hio0 : ∀ a, a ≠ 0 → vV T.V (io a) = 0` using `fun a ha => by`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `(mem_range_iff T _).1 (hio a)`. Establish `h2` using `(mem_range_iff T _).1 (hio a⁻¹)`. Establish `h3` using `vV_mul (V := T.V) ((map_ne_zero io).2 ha) ((map_ne_zero io).2 (inv_ne_zero ha))`. Rewrite `h3` using `[← map_mul, mul_inv_cancel₀ ha, map_one, show vV T.V (1 : T.Fr) = 0 by simp [vV]]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hs : ∀ τ, ev (s τ).sig ∈ (algebraMap T.V T.Fr).range` using `fun τ => by`. Establish `h1` using `_root_.GlobalTheory.T.archimedean_section_integral_frame_of_laws hP hP.q2 E H Dw l Xo c r U x hL Z τ (ArchSec.ofConst (s τ)) T io y hio0 hZ`. Express the relevant statement in the definitionally equal form `nval T.V 1 (ev (s τ).sig) = 0 at h1`. Distinguish the cases in `h0 : ev (s τ).sig = 0`. Conclude with `h0 ▸ zero_mem _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[nval_of_ne h0, Nat.cast_one, div_one, EReal.coe_eq_zero, Int.cast_eq_zero]`. Conclude with `(mem_range_iff T _).2 h1.ge`. Establish `e : evI y (thetaOn h s K f) = evI y f ^ 8 * (ev K ^ (Dw.p + Dw.q) * ∏ τ, ev (s τ).sig ^ (4 * (Dw.p + Dw.q)))`. Express the relevant statement in the definitionally equal form `ev _ = ev f ^ 8 * _`. Rewrite using `[thetaOn, shift_sig]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_pow, map_prod]`. Rewrite using `[show ev (idem Z) = 1 from hid, one_mul, mul_assoc]`. Establish `hB : ev K ^ (Dw.p + Dw.q) * ∏ τ, ev (s τ).sig ^ (4 * (Dw.p + Dw.q)) ∈ (algebraMap T.V T.Fr).range` using `mul_mem (pow_mem (hKv T io y hio) _) (prod_mem fun τ _ => pow_mem (hs τ) _)`. Express the relevant statement in the definitionally equal form `evI y (thetaOn h s K f) ≠ 0 at hne`. Express the relevant statement in the definitionally equal form `_ ≤ (vV T.V (evI y (thetaOn h s K f)) : ℝ)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hne`, the goal using `[e]`. Establish `hf0 : evI y f ≠ 0` using `fun h0 => hne (by rw [h0]; simp)`. Establish `b1` using `tau_bound y hφ h5 (by norm_num) (fun _ => hx₀.spans (by norm_num) u) hf hf0`. Establish `b2 : (0 : ℝ) ≤ vV T.V (ev K ^ (Dw.p + Dw.q) * ∏ τ, ev (s τ).sig ^ (4 * (Dw.p + Dw.q)))`. Conclude with `(mem_range_iff T _).1 hB` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[vV_mul (left_ne_zero_of_mul hne) (right_ne_zero_of_mul hne), show vV T.V (evI y f ^ 8) = 8 * vV T.V (evI y f) by simp [vV]]`. Move the coercions through the operations in `at b1 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem exists_theta_multiplication_rule (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ} (hL : Laws U x) (hM : 5 ^ 4 ∣ l.M)
     (Z : Comp Xo c) (s : ∀ τ, FlatSec U x Z τ) :
@@ -101,23 +101,21 @@ variable {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (Z : Comp Xo c)
 variable {X} in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨f, hfZ, hf0, hf⟩` from `_root_.GlobalTheory.ThetaSteep.exists_theta_multiplication_rule hP hL hM Z s`. Take `⟨hs, -, hc⟩` from `GlobalTheory.VarFlag.isVariety₀_flag _ _ _ _ _ _ TF Z hL.geo`. Use `haveI := hs`. Use `haveI := hc`. Use `haveI : Smooth (str₀ TF.X Z) := SmoothOfRelativeDimension.smooth (FlagTan.dimFlag Dw) _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI := GlobalTheory.isIntegral_of_smooth_of_geometricallyConnected (str₀ TF.X Z)`. Use `haveI : IsLocallyNoetherian (Y₀ TF.X Z) := LocallyOfFiniteType.isLocallyNoetherian (str₀ TF.X Z)`. Establish `hN : Geo.Tor.IsNormalScheme (Y₀ TF.X Z)` using `fun y => by`. Take `⟨_, _⟩` from `TF.X.normal (inc₀ TF.X Z y)`. Set `e` to `(asIso ((inc₀ TF.X Z).stalkMap y)).commRingCatIsoToRingEquiv`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e⟩`. Take `⟨θ, hθ⟩` from `exists_extension hN (isLB_L₀ TF.X Z _) (dense_U₀ TF.X Z).nonempty (sec₀ TF.X Z _ f) fun y hy _ j hj => by`. Take `⟨ν, hν⟩` from `exists_centred y`. Take `⟨_, -, T, io, y', g, ρ, φT, hρ, hφT, -, hpt, hval⟩` from `hdeg y hy ν hν`. Take `⟨g1, g2⟩` from `local_injective_of_centred hν T g ρ hρ hval`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T, g, g1, g2, fun hO hi => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2, -, a4⟩` from `through_point TF.X Z y T io y' g hpt`. Take `⟨u, hu⟩` from `a4 _ f j hj hO hi`. Rewrite using `[hu]`. Use `mul_mem ⟨_, rfl⟩ ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : evI y' f.1 = 0`. Conclude with `h0 ▸ zero_mem _`. Establish `b1` using `hf T io y' φT a1 a2 hφT h0`. Establish `b2` using `hφT.nonneg`. Use `(mem_range_iff T _).2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ vV T.V (evI y' f.1)` using `by linarith`. Conclude with `this` after adjusting the coercions. Use `⟨θ, fun h0 => hf0 (eq_zero_of_sec₀ TF.X Z hfZ (by rw [← hθ, h0, map_zero])), fun y ν hν φ hφ j hj m hm => ?_⟩` and prove the remaining obligations. Take `⟨T, io, y', g, ρ, φT, hρ, hφT, rfl, hpt, hval⟩` from `hφ`. Take `⟨-, g2⟩` from `local_injective_of_centred hν T g ρ hρ hval`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a1, a2, a3, a4⟩` from `through_point TF.X Z y T io y' g hpt`. Establish `hi` using `top_le_stalkPt y ((algebraMap T.V T.Fr).comp g) _ hj`. Take `⟨u, hu⟩` from `a4 _ f j hj a3 hi`. Rewrite `hu` using `[← hθ, val_restr_pt le_top _ j (top_le_stalkPt y _ ⊤ (memTop y)), val_stalkPt y j (memTop y) hj, RingHom.comp_apply]`. Establish `hne : ν (H0.germ j y (memTop y) hj θ) ≠ 0` using `hm ▸ WithZero.coe_ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hg0 : algebraMap T.V T.Fr (g (H0.germ j y (memTop y) hj θ)) ≠ 0` using `fun h => hne (by`. Rewrite using `[(injective_iff_map_eq_zero _).1 g2 _ ((injective_iff_map_eq_zero _).1 (IsFractionRing.injective T.V T.Fr) _ h), map_zero])`. Establish `hv` using `hval _ hne`. Rewrite `hg0`, `hv` using `[hu]`. Rewrite `hv` using `[hm, vV_mul (left_ne_zero_of_mul hg0) (right_ne_zero_of_mul hg0), vV_unit, zero_add, show WithZero.log ((Multiplicative.ofAdd (-m) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) = -m from rfl]`.
-
-Establish `b1` using `mul_le_mul_of_nonneg_left (hf T io y' φT a1 a2 hφT (right_ne_zero_of_mul hg0)) hρ.le`. Move the coercions through the operations in `at hv`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_section_of_theta_datum (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ} (hL : FlatCore.Laws U x)
     (hM : 5 ^ 4 ∣ l.M) (TF : TorFlag Xo c) (s : ∀ τ, FlatLine.FlatSec U x Z τ)
@@ -183,13 +181,13 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `h1 h2 h3 h4`. Use `(((_root_.GlobalTheory.T.exists_pos_phi_at_centred_point h1 h2 h3 h4).and h4).and (GlobalTheory.CovTop.Sizes.hostN 0)).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨⟨C, hC, x0, hx0⟩, ⟨C₁, -, x1, hx1⟩⟩, ⟨C₂, -, x2, hx2⟩⟩` from `h`. Use `⟨C, hC, max x0 (max x1 x2), fun x hx hle ι p hp i hi Y hY Z TF => ?_⟩` and prove the remaining obligations. Establish `l0 : x0 ≤ x` using `(le_max_left _ _).trans hle`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `l1 : x1 ≤ x` using `((le_max_left _ _).trans (le_max_right _ _)).trans hle`. Establish `l2 : x2 ≤ x` using `((le_max_right _ _).trans (le_max_right _ _)).trans hle`. Establish `hdeg` using `hx0 x hx l0 ι p hp i hi Y hY Z TF`. Establish `hfl` using `hx1 x hx l1 ι p hp i hi Y hY`. Establish `hnum` using `hx2 x hx l2 ι p hp i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `GlobalTheory.LawsDeep.laws_deep _ p.T _ Y _ _ p.fw.laws ⟨Nat.le_add_left _ _, i.2⟩ hY.1`. Establish `hM : 5 ^ 4 ∣ Y.d.l₂.M`. Rewrite using `[hY.1.lev.1.2.1, hY.1.pd]`. Conclude with `Dvd.dvd.mul_left ((pow_dvd_pow_of_dvd (by norm_num) 4).trans (pow_dvd_pow 15 (four_le_expL hnum.big.2.1))) _`. Establish `hf : 2 < Module.finrank ℚ (Fm.D x ι).host.E / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hnum.f8` as an intermediate fact. Use `hnum.deg` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨θ, hθ, hb⟩` from `_root_.GlobalTheory.ThetaSteep.exists_section_of_theta_datum Z h1 hL hM TF (fun τ => (hfl Z τ).1.some) hdeg`. Conclude with `⟨θ, hθ, fun la _ f hf' => vanBd_le_space _ _ _ Y _ _ hY.1 hf Z TF la (mul_mem_vanBd TF.X Z _ θ ((GlobalTheory.T.cuspForms_extend_vanish_compactifiedFlagSpace _ _ _ Y _ _ hY.1 hf Z TF _).space_le hf')), fun y _ ν hν φ hφ j hj m hm => hb y ν hν φ hφ j hj m hm⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_theta_section_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂), ∃ θ : H0 (str₀ TF.X Z) (L₀ TF.X Z ((8 * (((dat p i).p + (dat p i).q : ℕ) : ℤ)) • GlobalTheory.CompHt.hodgeWt (dat p i))) ⊤, θ ≠ 0 ∧ (∀ la ∈ ({(⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁, (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).ub} : Set (AllWt.Weight (dat p i))), ∀ f ∈ space TF.X Z Y.U (la - ((8 * (((dat p i).p + (dat p i).q : ℕ) : ℤ)) • GlobalTheory.CompHt.hodgeWt (dat p i))), ((common₀ TF.X Z).addChart (add_sub_cancel ((8 * (((dat p i).p + (dat p i).q : ℕ) : ℤ)) • GlobalTheory.CompHt.hodgeWt (dat p i)) la)).mul θ f ∈ space TF.X Z Y.U la) ∧ ∀ y ∈ (U₀ TF.X Z : Set (Y₀ TF.X Z))ᶜ, ∀ ν, Centred y ν → ∀ φ : ℝ, PhiAt TF.X Z y ν φ → ∀ (j : (L₀ TF.X Z ((8 * (((dat p i).p + (dat p i).q : ℕ) : ℤ)) • GlobalTheory.CompHt.hodgeWt (dat p i))).ι) (hj : y ∈ (L₀ TF.X Z ((8 * (((dat p i).p + (dat p i).q : ℕ) : ℤ)) • GlobalTheory.CompHt.hodgeWt (dat p i))).U j) (m : ℤ), ν (H0.germ j y (memTop y) hj θ) = ((Multiplicative.ofAdd (-m) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) → 8 * φ / 625 ≤ (m : ℝ) := by
   intro h1 h2 h3 h4
@@ -228,7 +226,7 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThetaSteep.exists_theta_section_alt | exact _root_.GlobalTheory.ThetaSteep.exists_theta_section_alt | (intros; apply _root_.GlobalTheory.ThetaSteep.exists_theta_section_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_nonzero_section_weight_bound_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂), ∃ θ : H0 (str₀ TF.X Z) (L₀ TF.X Z ((8 * (((dat p i).p + (dat p i).q : ℕ) : ℤ)) • GlobalTheory.CompHt.hodgeWt (dat p i))) ⊤, θ ≠ 0 ∧ (∀ la ∈ ({(⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁, (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).ub} : Set (AllWt.Weight (dat p i))), ∀ f ∈ space TF.X Z Y.U (la - ((8 * (((dat p i).p + (dat p i).q : ℕ) : ℤ)) • GlobalTheory.CompHt.hodgeWt (dat p i))), ((common₀ TF.X Z).addChart (add_sub_cancel ((8 * (((dat p i).p + (dat p i).q : ℕ) : ℤ)) • GlobalTheory.CompHt.hodgeWt (dat p i)) la)).mul θ f ∈ space TF.X Z Y.U la) ∧ ∀ y ∈ (U₀ TF.X Z : Set (Y₀ TF.X Z))ᶜ, ∀ ν, Centred y ν → ∀ φ : ℝ, PhiAt TF.X Z y ν φ → ∀ (j : (L₀ TF.X Z ((8 * (((dat p i).p + (dat p i).q : ℕ) : ℤ)) • GlobalTheory.CompHt.hodgeWt (dat p i))).ι) (hj : y ∈ (L₀ TF.X Z ((8 * (((dat p i).p + (dat p i).q : ℕ) : ℤ)) • GlobalTheory.CompHt.hodgeWt (dat p i))).U j) (m : ℤ), ν (H0.germ j y (memTop y) hj θ) = ((Multiplicative.ofAdd (-m) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) → 8 * φ / 625 ≤ (m : ℝ) := by
   first | exact @_root_.GlobalTheory.ThetaSteep.exists_theta_section_alt | exact _root_.GlobalTheory.ThetaSteep.exists_theta_section_alt | (intros; apply _root_.GlobalTheory.ThetaSteep.exists_theta_section_alt <;> assumption)

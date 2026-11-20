@@ -17,17 +17,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FamGermExist
 
 /- English proof (translation)
-Set `T₁` to `Finsupp.linearCombination F fun x : M => a (ρ x)`. Set `T₂` to `Finsupp.linearCombination F fun x : M => MvPowerSeries.map ((algebraMap K F).comp (algebraMap R K)) (g x)`. Establish `hk : LinearMap.ker T₁ ≤ LinearMap.ker T₂` using `fun c hc => by`. Rewrite `hc`, the goal using `[LinearMap.mem_ker, Finsupp.linearCombination_apply, Finsupp.sum]`. Use extensionality with `mo`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `(Module.forall_dual_apply_eq_zero_iff K _).1 fun ℓ => ?_` and prove the remaining obligations. Take `⟨Λ, hΛ⟩` from `ha.coord ℓ`. Take `⟨r, hr⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors R) c.support (fun x => ℓ (c x))`. Use `choose! m hm using hr`. Establish `h₁ : ∑ x ∈ c.support, m x • x = 0` using `hρ (by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun z => (algebraMap R K r) • Λ z) hc` as an intermediate fact. Simplify using `only [map_sum, map_zero, smul_zero, Finset.smul_sum] at this`. Rewrite using `[map_zero, ← this, map_sum]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hΛ, map_smulₛₗ, hm x hx, smul_smul, Algebra.smul_def])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂` using `congrArg (fun z => algebraMap R K (MvPowerSeries.coeff mo (g z))) h₁`. Simplify using `only [map_sum, map_smul, map_zero, smul_eq_mul, map_mul] at h₂`. Establish `hr0 : algebraMap R K r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).2 (nonZeroDivisors.coe_ne_zero r)`. Use `mul_left_cancel₀ hr0 ?_` and prove the remaining obligations. Rewrite using `[mul_zero, ← h₂, map_sum, map_sum, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hm x hx, map_smul, MvPowerSeries.coeff_map, smul_eq_mul, RingHom.comp_apply, mul_comm (c x), ← Algebra.smul_def (A := F), map_smul, Algebra.smul_def (r : R) (ℓ (c x)), smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨Λ, hΛ⟩` from `LinearMap.exists_extend ((LinearMap.ker T₁).liftQ T₂ hk ∘ₗ T₁.quotKerEquivRange.symm.toLinearMap)`. Use `⟨Λ, fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `LinearMap.congr_fun hΛ ⟨T₁ (Finsupp.single x 1), LinearMap.mem_range_self _ _⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearEquiv.coe_coe, LinearMap.quotKerEquivRange_symm_apply_image, Submodule.mkQ_apply, Submodule.liftQ_apply] at e`. Simplify `e` using `only [T₁, T₂, Finsupp.linearCombination_single, one_smul]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_linear_extension {R K F : Type} [CommRing R] [IsDomain R] [Field K] [Field F] [Algebra R K]
     [IsFractionRing R K] [Algebra K F] {M N P : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module K N]
@@ -71,19 +71,17 @@ theorem exists_linear_extension {R K F : Type} [CommRing R] [IsDomain R] [Field 
   simpa only [T₁, T₂, Finsupp.linearCombination_single, one_smul] using e
 
 /- English proof (translation)
-Take `⟨h1, -, h3, -⟩` from `hrep R G d x hx (Fin 1 × Fin d)`. Take `⟨y, hy, -⟩` from `h1 (pt R (n := 1) d 0) (TB.WickVanishing.gp_pt 0)`. Establish `hc` using `(h3 _ y hy).1`. Establish `e : ∀ r : PS R 1 d, ev (n` using `1) ![pt R (n := 1) d 0] r = r := fun r => by`. Establish `: (![pt R d 0] : Fin 1 → Germ.Pt R 1 d) = fun j => pt R d j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression. Rewrite using `[this]`. Unfold `ev`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `congrFun MvPowerSeries.subst_self r`. Establish `hs : ∀ f g, JetSer.IsSer1 x U f g → JetSer.HasSer (fun m => (y m).left) U f g` using `fun f g h => by`. Use `h 1 _ y hy` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `ex` using `(hex R G d x hx).1 U hU`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm : ∀ m, ⊤ ≤ (y m).left ⁻¹ᵁ U` using `fun m => (hs _ _ (ex 0).exists.choose_spec m).1`. Take `⟨⟨τ, hτ⟩, -⟩` from `hser R (Fin 1 × Fin d) G.left (fun m => (y m).left) (fun m => by rw [← Over.comp_left, hc m]) U (hm 0)`. Use `⟨⟨τ, fun c => Eq.symm ((hτ _ _).1 fun m => ⟨hm m, ?_⟩)⟩, fun f g => ⟨fun h => (hτ f g).1 (hs f g h), ?_⟩⟩` and prove the remaining obligations. Take `⟨t, ht, -⟩` from `(halg R (Fin 1 × Fin d)).1 m`. Rewrite using `[← ht, AlgHom.commutes]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₁` using `(JetSer.fnVal_comp (y m).left G.hom U ⊤ le_top (hm m) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c)).2`. Use `Eq.trans (Eq.symm h₁) ?_` and prove the remaining obligations. Rewrite using `[Over.w (y m)]`. Establish `h₂` using `JetSer.fnVal_specMap (algebraMap R (Chart.JetR R (Fin 1 × Fin d) m)) (𝟙 _) ⊤ le_top ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c)`. Rewrite `h₂` using `[Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h₂.trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[JetSer.fnVal_eq_fnValHom _ _ le_top]`. Simplify using `[JetSer.fnValHom, Scheme.Hom.appLE]`. Introduce and unpack `rfl`. Take `⟨g, hg⟩` from `(ex f).exists`.
-
-Conclude with `(hτ f g).1 (hs f g hg) ▸ hg`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_serHom (halg : JetSer.JetAlgSt) (hrep : JetSer.RepSt) (hser : JetSer.SerSt) (hex : JetSer.SerExSt)
     {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {d : ℕ} {x : JetSer.Fam G (Fin d)}
@@ -129,9 +127,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G)
 
 /- English proof (translation)
-Use `U.smooth` as an intermediate fact. Introduce `a b h`. Use `SecOver.ext _ _ fun j => ExpInt.generic_app_injective G _ (fn_ext fun y hy => ?_)` and prove the remaining obligations. Establish `hy'` using `(wchart_eq (L := U.LG.L) (φ := fun _ : Fin 1 => 𝟙 G.left) (p := pullback.fst G.hom (jK R)) (φ' := fun _ => pullback.fst G.hom (jK R)) (fun _ => (Category.comp_id _).symm) j).ge hy`. Establish `e` using `congrArg (fun s : LB.Sec (LB.LinComb U.LG.L (K := Fin 1) (fun _ => pullback.fst G.hom (jK R)) (fun _ => (k : ℤ))) => gs (𝟙 _) y _ (s.f j)) h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(gs_res (𝟙 _) y _ hy' _).symm.trans (e.trans (gs_res (𝟙 _) y _ hy' _))`.
+A detailed English derivation is pending.
 -/
 theorem genericSec_injective (k : ℕ) : Function.Injective (genericSec U k) := by
   have := U.smooth
@@ -146,7 +144,7 @@ theorem genericSec_injective (k : ℕ) : Function.Injective (genericSec U k) := 
 variable (F : Type) [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨n, c, σ, f, h₁, (secLin_iff U.LG.isLB _ σ (UnifPre.gFK (G := G) F) c (fun i => extendSec U F k (genericSec U k (σ i))) (fun i y J hJ => (sval_pullOver _ _ _ _ hJ).trans ((sval_pullOver _ _ _ _ hJ).trans (congrArg (fun q => sval (σ i) q y J) (Category.assoc _ _ _))))).2 rfl, h₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem expandsG_sum {k n : ℕ} (c : Fin n → F) (σ : Fin n → IntSec U k) (f : Fin n → ∀ α, D.toPre.SecB k α)
     {s : Fam D.toPre F k} (h₁ : ∀ i e, U.ExpandsAt e k (σ i) (f i))
@@ -160,9 +158,9 @@ theorem expandsG_sum {k n : ℕ} (c : Fin n → F) (σ : Fin n → IntSec U k) (
         (congrArg (fun q => sval (σ i) q y J) (Category.assoc _ _ _))))).2 rfl, h₂⟩
 
 /- English proof (translation)
-Take `⟨-, h₂⟩` from `expandsG_bijective U F hG hk h`. Use `choose f hf using fun s => (h₂ s).exists`. Establish `iff : ∀ v s, U.ExpandsG F k v s ↔ v = f s` using `fun v s => ⟨fun h => (h₂ s).unique h (hf s), fun h => h ▸ hf s⟩`. Establish `lin : ∀ (c : F) s s', f (c • s + s') = c • f s + f s'` using `fun c s s' => ((iff _ _).1 (expandsG_lin U F k c (hf s) (hf s'))).symm`. Establish `f0 : f 0 = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lin 1 0 0` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul, add_zero]`. Conclude with `left_eq_add.1 this`. Conclude with `⟨{ toFun := f map_add' := fun t t' => by simpa only [one_smul] using lin 1 t t' map_smul' := fun c t => by simpa only [add_zero, f0, RingHom.id_apply] using lin c t 0 }, iff⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_linear_section (hG : GlobalFnsSt) {k : ℕ} (hk : 1 ≤ k) (h : U.ExpBij k) :
     ∃ e : Fam D.toPre F k →ₗ[F] GroupSec U F k, ∀ v s, U.ExpandsG F k v s ↔ v = e s := by
@@ -181,7 +179,7 @@ theorem exists_linear_section (hG : GlobalFnsSt) {k : ℕ} (hk : 1 ≤ k) (h : U
            map_smul' := fun c t => by simpa only [add_zero, f0, RingHom.id_apply] using lin c t 0 }, iff⟩
 
 /- English proof (translation)
-Establish `: TopologicalSpace.NoetherianSpace ((Over.pullback (jK R)).obj G).left` using `noetherianSpace_generic U`. Take `⟨Λ, hΛ⟩` from `exists_linear_extension (genericSec U k) (genericSec_injective U k) (extendSec U F k) (isExtension_pullOver (isPullback_groupBase F) U.LG.isLB _ _) g`. Use `⟨Λ, fun n c σ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, hΛ, MvPowerSeries.smul_eq_C_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linear_series {k : ℕ} {κ : Type} (g : IntSec U k →ₗ[R] MvPowerSeries κ R) :
     ∃ Λ : GroupSec U F k →ₗ[F] MvPowerSeries κ F, ∀ (n : ℕ) (c : Fin n → F) (σ : Fin n → IntSec U k),
@@ -195,9 +193,9 @@ theorem exists_linear_series {k : ℕ} {κ : Type} (g : IntSec U k →ₗ[R] MvP
   exact Finset.sum_congr rfl fun i _ => by rw [map_smul, hΛ, MvPowerSeries.smul_eq_C_mul]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_linear_section U F hG hk h`. Take `⟨Λ, hΛ⟩` from `exists_linear_series U F g`. Use `⟨Λ ∘ₗ e, fun s f => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨n, c, σ, fi, h₁, h₂, rfl⟩`. Rewrite using `[LinearMap.comp_apply, ← (he _ s).1 (expandsG_sum U F c σ fi h₁ h₂), hΛ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Take `⟨n, c, σ, fi, h₁, -, h₂⟩` from `(he _ s).2 rfl`. Conclude with `⟨n, c, σ, fi, h₁, h₂, (congrArg Λ ((he _ s).1 (expandsG_sum U F c σ fi h₁ h₂)).symm).trans (hΛ n c σ)⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_linear_germ (hG : GlobalFnsSt) {k : ℕ} (hk : 1 ≤ k) (h : U.ExpBij k) {κ : Type}
     (g : IntSec U k →ₗ[R] MvPowerSeries κ R) : ∃ gm : Fam D.toPre F k →ₗ[F] MvPowerSeries κ F,
@@ -220,9 +218,9 @@ theorem exists_linear_germ (hG : GlobalFnsSt) {k : ℕ} (hk : 1 ≤ k) (h : U.Ex
       (congrArg Λ ((he _ s).1 (expandsG_sum U F c σ fi h₁ h₂)).symm).trans (hΛ n c σ)⟩
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `exists_serHom halg hrep hser hex hx (U := LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => j)) (GermExist.top_le_preimage_wchart _ _ j _ (fun _ => by rw [Category.comp_id]; exact hj))`. Take `⟨u, rfl⟩` from `hr`. Use `⟨LinearMap.mulRight R (u⁻¹).val ∘ₗ τ.toLinearMap ∘ₗ chartLin G.hom (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (k : ℤ))) (fun _ => j), fun σ f => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨S, hS, e⟩`. Conclude with `(Units.eq_mul_inv_iff_mul_eq u).2 (e.trans ((hτ _ _).1 hS))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Conclude with `⟨_, (hτ _ _).2 rfl, (Units.eq_mul_inv_iff_mul_eq u).1 e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_linear_quotient (halg : JetSer.JetAlgSt) (hrep : JetSer.RepSt) (hser : JetSer.SerSt)
     (hex : JetSer.SerExSt) {d : ℕ} {x : JetSer.Fam G (Fin d)} (hx : Chart.IsUnivChart G d x) {j : U.LG.L.ι}
@@ -243,11 +241,11 @@ theorem exists_linear_quotient (halg : JetSer.JetAlgSt) (hrep : JetSer.RepSt) (h
 end Group
 
 /- English proof (translation)
-Introduce `hL _ _ halg hrep hser hex E _ _ _ H V _ _ _ F _ _ _ _ _ _ y q hq`. Set `_` to `H.starRing`. Use `y.t.act.hom H.w0` as an intermediate fact. Take `⟨r, hr, ur⟩` from `(hex V y.t.G y.d y.x y.hx).1 (LB.wchart y.P.U.LG.L (JetSer.primφ (y.t.act.act H.w0)) (fun _ => y.j)) (GermExist.top_le_preimage_wchart _ _ y.j _ (fun k => by`. Rewrite using `[GermExist.unit_comp_primφ _ (IsMonHom.one_hom _) k]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `y.hj)) (y.ρ.s (fun _ => y.j)).val`. Take `⟨g, hg⟩` from `exists_linear_quotient y.P.U.toUnifPre halg hrep hser hex y.hx y.hj q ((GermExist.isUnit_of_isSer1 hrep hser y.hx (Units.isUnit _) hr).pow q)`. Take `⟨gm, h⟩` from `exists_linear_germ y.P.U.toUnifPre F hL.globalFns hq (y.P.U.expand q hq) g`. Use `⟨gm, fun s f => Iff.trans ⟨?_, ?_⟩ (h s f)⟩` and prove the remaining obligations. Introduce and unpack `⟨n, c, σ, fi, g', r', h₁, h₂, hr', h₃, e⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `ur r' hr'`. Take `rfl : g' = fun i => g (σ i)` from `funext fun i => (hg _ _).1 (h₃ i)`. Conclude with `⟨n, c, σ, fi, h₁, h₂, e⟩`. Introduce and unpack `⟨n, c, σ, fi, h₁, h₂, e⟩`. Conclude with `⟨n, c, σ, fi, fun i => g (σ i), r, h₁, h₂, hr, fun i => (hg _ _).2 rfl, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem germ_exists_unique_linear : Laws → Laws4 → TwistBCSpanStatement → JetSer.JetAlgSt → JetSer.RepSt →
     JetSer.SerSt → JetSer.SerExSt → FamGerm.GermExSt := by

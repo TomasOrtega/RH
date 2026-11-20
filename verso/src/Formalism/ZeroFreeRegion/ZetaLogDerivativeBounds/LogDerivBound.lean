@@ -10,13 +10,13 @@ noncomputable section
 namespace Formalism.ZF
 
 /- English proof (translation)
-Establish `hopen : IsOpen (ball z₀ R)` using `isOpen_ball`. Establish `hd : DifferentiableOn ℂ (fun z => deriv f z / f z) (ball z₀ R)` using `(hf.deriv hopen).div hf hne`. Take `⟨G, hG⟩` from `hd.isExactOn_ball`. Use `⟨fun z => G z - G z₀, by simp, fun z hz => (hG z hz).sub_const _, ?_⟩` and prove the remaining obligations. Establish `hk : ∀ z ∈ ball z₀ R, HasDerivAt (fun w => f w * Complex.exp (-(G w - G z₀))) 0 z`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `hfz : HasDerivAt f (deriv f z) z` using `(hf.differentiableAt (hopen.mem_nhds hz)).hasDerivAt`. Establish `hgz : HasDerivAt (fun w => -(G w - G z₀)) (-(deriv f z / f z)) z` using `((hG z hz).sub_const _).neg`. Establish `h : HasDerivAt (fun w => f w * Complex.exp (-(G w - G z₀))) (deriv f z * Complex.exp (-(G z - G z₀)) + f z * (Complex.exp (-(G z - G z₀)) * -(deriv f z / f z))) z` using `hfz.mul hgz.cexp`. Establish `h0 : deriv f z * Complex.exp (-(G z - G z₀)) + f z * (Complex.exp (-(G z - G z₀)) * -(deriv f z / f z)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hne z hz`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `all_goals ring`. Conclude with `h0 ▸ h`. Introduce `z hz`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz₀ : z₀ ∈ ball z₀ R` using `mem_ball_self (pos_of_mem_ball hz)`. Establish `hconst` using `hopen.is_const_of_deriv_eq_zero (convex_ball z₀ R).isPreconnected (fun w hw => (hk w hw).differentiableAt.differentiableWithinAt) (fun w hw => (hk w hw).deriv) hz hz₀`. Simplify using `only [sub_self, neg_zero, Complex.exp_zero, mul_one] at hconst`. Rewrite using `[← hconst, mul_assoc, ← Complex.exp_add, neg_add_cancel, Complex.exp_zero, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma zflb_exists_log {f : ℂ → ℂ} {z₀ : ℂ} {R : ℝ}
     (hf : DifferentiableOn ℂ f (ball z₀ R)) (hne : ∀ z ∈ ball z₀ R, f z ≠ 0) :
@@ -49,33 +49,33 @@ lemma zflb_exists_log {f : ℂ → ℂ} {z₀ : ℂ} {R : ℝ}
   rw [← hconst, mul_assoc, ← Complex.exp_add, neg_add_cancel, Complex.exp_zero, mul_one]
 
 /- English proof (translation)
-Introduce `f z₀ R M hR hM hf hne hbd z hz`. Establish `hR0 : R ≠ 0` using `hR.ne'`. Establish `hfb : DifferentiableOn ℂ f (ball z₀ R)` using `hf.mono ball_subset_closedBall`. Establish `hneb : ∀ w ∈ ball z₀ R, f w ≠ 0` using `fun w hw => hne w (ball_subset_closedBall hw)`. Take `⟨g, hg0, hgd, hgf⟩` from `zflb_exists_log hfb hneb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hf0 : 0 < ‖f z₀‖` using `norm_pos_iff.2 (hne z₀ (mem_closedBall_self hR.le))`. Establish `hre : ∀ w ∈ ball z₀ R, (g w).re ≤ Real.log M`. Introduce `w hw`. Establish `h1` using `hbd w (ball_subset_closedBall hw)`. Rewrite `h1` using `[hgf w hw, norm_mul, Complex.norm_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : Real.exp (g w).re ≤ M`. Assume the negation of the conclusion as `h`. Establish `h3` using `mul_lt_mul_of_pos_left (lt_of_not_ge h) hf0`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Establish `hzb : dist z z₀ ≤ R / 2` using `hz`. Establish `hshift : ∀ v ∈ ball (0 : ℂ) R, z₀ + v ∈ ball z₀ R`. Introduce `v hv`. Rewrite using `[mem_ball, dist_eq_norm, add_sub_cancel_left]`. Conclude with `mem_ball_zero_iff.1 hv`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmain : ∀ A : ℝ, Real.log M < A → ‖deriv f z / f z‖ ≤ 24 * A / R`. Introduce `A hA`. Establish `hA0 : 0 < A` using `lt_of_le_of_lt (Real.log_nonneg hM) hA`. Establish `hhd : DifferentiableOn ℂ (fun v => g (z₀ + v)) (ball 0 R)`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `((hgd _ (hshift v hv)).differentiableAt.comp v (differentiableAt_id.const_add z₀)).differentiableWithinAt`. Establish `hhm : Set.MapsTo (fun v => g (z₀ + v)) (ball 0 R) {w | w.re ≤ A}`. Introduce `v hv`. Conclude with `le_trans (hre _ (hshift v hv)) hA.le`. Establish `hbc : ∀ w ∈ closedBall z₀ (3 * R / 4), ‖g w‖ ≤ 6 * A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `w hw`. Take `⟨u, rfl⟩ : ∃ u, w = z₀ + u` from `⟨w - z₀, by ring⟩`. Rewrite `hw` using `[mem_closedBall, dist_eq_norm, add_sub_cancel_left]`. Establish `huR : u ∈ ball (0 : ℂ) R`. Rewrite using `[mem_ball_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : ‖g (z₀ + u)‖ ≤ 2 * A * ‖u‖ / (R - ‖u‖)` using `Complex.borelCaratheodory_zero hA0 hhd hhm hR huR (by simpa using hg0)`. Establish `hpos : 0 < R - ‖u‖` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_iff₀ hpos]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_nonneg u]`. Establish `hR4 : 0 < R / 4` using `by linarith`. Establish `hsub : closedBall z (R / 4) ⊆ ball z₀ R`. Introduce `w hw`. Rewrite `hw` using `[mem_closedBall]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[mem_ball]`. Combine the equalities or inequalities in the displayed calculation. Establish `hdiff : DiffContOnCl ℂ g (ball z (R / 4))`. Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[closure_ball z hR4.ne']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Conclude with `(hgd w (hsub hw)).differentiableAt.differentiableWithinAt`. Establish `hC : ∀ w ∈ sphere z (R / 4), ‖g w‖ ≤ 6 * A`. Introduce `w hw`. Apply `hbc` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `hw` using `[mem_sphere]`. Rewrite using `[mem_closedBall]`. Combine the equalities or inequalities in the displayed calculation. Establish `hzb' : z ∈ ball z₀ R` using `hsub (mem_closedBall_self hR4.le)`. Establish `hder` using `norm_deriv_le_of_forall_mem_sphere_norm_le hR4 hdiff hC`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hder` using `[(hgd z hzb').deriv]`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `all_goals ring`. Apply `le_of_forall_pos_le_add` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts.
 
-Introduce `ε hε`. Establish `hεR : 0 < ε * R / 24` using `by positivity`. Establish `h` using `hmain (Real.log M + ε * R / 24) (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem logDerivBoundOnBall : LogDerivBound := by
   intro f z₀ R M hR hM hf hne hbd z hz

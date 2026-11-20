@@ -30,7 +30,7 @@ def NoCommonZero (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (s : Set 
   ∀ y : FrPt Xo c (CAt σ), ∃ f ∈ s, evR Xo c f y ≠ 0
 
 /- English proof (translation)
-Introduce and unpack `f ⟨x, P, -, hP, hf⟩`. Conclude with `⟨x, P, hP, hf⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem gens_subset_thGen (Xo : Moduli Dw l) (c : Coeff l) (nab : NabV Xo c) (α : 𝓞 E)
     (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : gens Xo c nab α a n ⊆ thGen Xo c nab a n := by
@@ -38,7 +38,7 @@ theorem gens_subset_thGen (Xo : Moduli Dw l) (c : Coeff l) (nab : NabV Xo c) (α
   exact ⟨x, P, hP, hf⟩
 
 /- English proof (translation)
-Use `Set.Subset.antisymm (gens_subset_thGen Xo c nab α a n) ?_` and prove the remaining obligations. Introduce and unpack `f ⟨x, P, hP, hf⟩`. Use `⟨x, P, fun b => Submodule.smul_mem_smul ?_ Submodule.mem_top, hP, hf⟩` and prove the remaining obligations. Rewrite using `[hα]`. Conclude with `Ideal.subset_span rfl`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gens_eq_thGen (Xo : Moduli Dw l) (c : Coeff l) (nab : NabV Xo c) {α : 𝓞 E}
     (hα : l.Mb = Ideal.span {H.bar α}) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
@@ -49,7 +49,7 @@ theorem gens_eq_thGen (Xo : Moduli Dw l) (c : Coeff l) (nab : NabV Xo c) {α : �
   rw [hα]; exact Ideal.subset_span rfl
 
 /- English proof (translation)
-Take `⟨f, hf, h0⟩` from `h (U.un k ⟨x, hx⟩)`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Use `show (open Classical in if h : x ∈ (U.X k).dom then toC (evR Xo c f (U.un k ⟨x, h⟩)) else 0) ≠ 0`. Rewrite using `[dif_pos hx]`. Conclude with `h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NoCommonZero.rd {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {s : Set (Rul Xo c)}
     (h : NoCommonZero Xo c σ s) {r : ℕ} (U : Unf Xo c σ r) (k : U.Comp) (x) (hx : x ∈ (U.X k).dom) :
@@ -76,7 +76,7 @@ def LongNoCommonZeroFree : Prop :=
       ∀ σ : c.F →+* ℂ, GoodEmb c σ → NoCommonZero Xo c σ (gens Xo c nab α a n)
 
 /- English proof (translation)
-Take `⟨f, hf, h0⟩` from `(hA D T h j hj w α _ hn hα hD σ hσ).rd (T.U j σ) k x hx`. Conclude with `⟨f, gens_subset_thGen _ _ _ _ _ _ hf, h0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LongNoCommonZero.full (hA : LongNoCommonZero) (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j)
     (w : WeightFamilies.Wt D j) (α : 𝓞 D.host.E) (hn : D.R.r ≤ w.n) (hα : IsJetLevel T.Q.l α T.Q.l.M)

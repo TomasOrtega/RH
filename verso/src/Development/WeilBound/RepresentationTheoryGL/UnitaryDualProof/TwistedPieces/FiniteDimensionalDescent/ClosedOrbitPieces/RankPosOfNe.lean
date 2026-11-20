@@ -7,15 +7,15 @@ open Matrix
 variable {k : Type} [Field k] {N : ℕ}
 
 /- English proof (translation)
-Establish `hsup : LinearMap.range (a + b).mulVecLin = LinearMap.range a.mulVecLin ⊔ LinearMap.range b.mulVecLin`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, rfl⟩`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.add_mulVec]`. Conclude with `Submodule.add_mem_sup ⟨v, rfl⟩ ⟨v, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Use `⟨a *ᵥ v, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, add_mul, ha.eq, hba, add_zero]`. Introduce and unpack `_ ⟨v, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b *ᵥ v, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, add_mul, hb.eq, hab, zero_add]`. Establish `hinf : LinearMap.range a.mulVecLin ⊓ LinearMap.range b.mulVecLin = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `w ⟨⟨u, rfl⟩, ⟨v, hv⟩⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVecLin_apply] at hv ⊢`. Establish `h1 : a *ᵥ (a *ᵥ u) = a *ᵥ u` using `by rw [Matrix.mulVec_mulVec, ha.eq]`. Establish `h2 : a *ᵥ (b *ᵥ v) = 0` using `by rw [Matrix.mulVec_mulVec, hab, Matrix.zero_mulVec]`. Rewrite `h1` using `[← hv, h2]`. Rewrite using `[Submodule.mem_bot, ← hv, ← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Submodule.finrank_sup_add_finrank_inf_eq (LinearMap.range a.mulVecLin) (LinearMap.range b.mulVecLin)`. Rewrite `h` using `[hinf, finrank_bot, add_zero, ← hsup]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_add_orth {a b : Matrix (Fin N) (Fin N) k} (ha : IsIdempotentElem a) (hb : IsIdempotentElem b)
     (hab : a * b = 0) (hba : b * a = 0) : (a + b).rank = a.rank + b.rank := by
@@ -44,7 +44,7 @@ theorem rank_add_orth {a b : Matrix (Fin N) (Fin N) k} (ha : IsIdempotentElem a)
   exact h
 
 /- English proof (translation)
-Unfold `IsIdempotentElem`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j hj hji => ho i hi j hj (Ne.symm hji)) (fun h => absurd hi h)]`. Conclude with `hid i hi`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_sum_orth {ι : Type} (s : Finset ι) (e : ι → Matrix (Fin N) (Fin N) k)
     (hid : ∀ i ∈ s, IsIdempotentElem (e i)) (ho : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → e i * e j = 0) :
@@ -56,11 +56,9 @@ theorem idem_sum_orth {ι : Type} (s : Finset ι) (e : ι → Matrix (Fin N) (Fi
   exact hid i hi
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Establish `hid' : ∀ j ∈ s, IsIdempotentElem (e j)` using `fun j hj => hid j (Finset.mem_insert_of_mem hj)`. Establish `ho' : ∀ j ∈ s, ∀ l ∈ s, j ≠ l → e j * e l = 0` using `fun j hj l hl h => ho j (Finset.mem_insert_of_mem hj) l (Finset.mem_insert_of_mem hl) h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, ← ih hid' ho']`. Use `rank_add_orth (hid i (Finset.mem_insert_self i s)) (idem_sum_orth s e hid' ho') ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun j hj => ho i (Finset.mem_insert_self i s) j (Finset.mem_insert_of_mem hj) (fun h => hi (h ▸ hj))`. Rewrite using `[Finset.sum_mul]`.
-
-Conclude with `Finset.sum_eq_zero fun j hj => ho j (Finset.mem_insert_of_mem hj) i (Finset.mem_insert_self i s) (fun h => hi (h ▸ hj))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_sum_orth {ι : Type} (s : Finset ι) (e : ι → Matrix (Fin N) (Fin N) k)
     (hid : ∀ i ∈ s, IsIdempotentElem (e i)) (ho : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → e i * e j = 0) :
@@ -82,9 +80,9 @@ theorem rank_sum_orth {ι : Type} (s : Finset ι) (e : ι → Matrix (Fin N) (Fi
         (fun h => hi (h ▸ hj))
 
 /- English proof (translation)
-Rewrite using `[Nat.pos_iff_ne_zero]`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite `h0` using `[Matrix.rank, Submodule.finrank_eq_zero, LinearMap.range_eq_bot]`. Establish `: Matrix.toLin' e = 0` using `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using congrArg LinearMap.toMatrix' this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rank_pos_of_ne {e : Matrix (Fin N) (Fin N) k} (h : e ≠ 0) : 0 < e.rank := by
   rw [Nat.pos_iff_ne_zero]

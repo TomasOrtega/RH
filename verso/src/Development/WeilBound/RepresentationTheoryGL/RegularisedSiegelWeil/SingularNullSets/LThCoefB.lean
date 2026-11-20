@@ -25,9 +25,9 @@ instance countable_sp (W : HSp D) (n : ℕ) : Countable (Sp W n) := by
   infer_instance
 
 /- English proof (translation)
-Establish `hu` using `GlobalTheory.RatAut.mt_unitary W h⁻¹`. Establish `hr` using `GlobalTheory.CompanionTheory.ThetaCoefND.rat_gramQ W y`. Use `show ((Formalism.L2.Theta.mt W h⁻¹ * y.map (Formalism.L2.Theta.incA D)).map (Formalism.L2.Theta.cA D)).transpose * ((Formalism.BasicNotions.HSpace.gram W).map (Formalism.L2.Theta.incA D) * (Formalism.L2.Theta.mt W h⁻¹ * y.map (Formalism.L2.Theta.incA D))) = (gramQ W y).map (Forma …`. Rewrite using `[hr]`. Use `show _ = ((y.map (Formalism.L2.Theta.incA D)).map (Formalism.L2.Theta.cA D)).transpose * ((Formalism.BasicNotions.HSpace.gram W).map (Formalism.L2.Theta.incA D) * y.map (Formalism.L2.Theta.incA D))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem ip_inv (W : HSp D) {n : ℕ} (h : GA D W) (y : Matrix (Fin W.rank) (Fin n) D.host.E) :
     ip W (mm (mt W h⁻¹) (rat y)) (mm (mt W h⁻¹) (rat y)) = rat (gramQ W y) := by
@@ -48,7 +48,7 @@ theorem ip_inv (W : HSp D) {n : ℕ} (h : GA D W) (y : Matrix (Fin W.rank) (Fin 
     _ = _ := by rw [hu]
 
 /- English proof (translation)
-Use `show ψ (GlobalTheory.StdUnn.halfTr (Matrix.trace (x.1 * rat T.1))) = ψ (GlobalTheory.StdUnn.halfTr (Matrix.trace (rat T.1 * x.1)))`. Rewrite using `[Matrix.trace_mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pch_rat (ψ : AddChar (AF D.host.F) ℂ) {n : ℕ} (x : hermA D n) (T : HermE D n) :
     pch ψ x.1 (rat T.1) = GlobalTheory.CompanionTheory.SiegelND.pairH ψ (GlobalTheory.CompanionTheory.HermPoisson.ofHermE T).1 x := by
@@ -57,7 +57,7 @@ theorem pch_rat (ψ : AddChar (AF D.host.F) ℂ) {n : ℕ} (x : hermA D n) (T : 
   rw [Matrix.trace_mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, hz]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_eq_inv {z : ℂ} (hz : ‖z‖ = 1) : conj z = z⁻¹ := by
   rw [Complex.inv_def, Complex.normSq_eq_norm_sq, hz]
@@ -66,7 +66,7 @@ theorem conj_eq_inv {z : ℂ} (hz : ‖z‖ = 1) : conj z = z⁻¹ := by
 variable {W : HSp D} {n : ℕ} {m : Measure (GA D W)} {𝓕 : Set (GA D W)} {Ψ : Mx D W.rank n → ℂ}
 
 /- English proof (translation)
-Conclude with `hΨ.comp ((GlobalTheory.RealWeil.continuous_mt W).2.matrix_mul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem cont_term (hΨ : Continuous Ψ) (y : Matrix (Fin W.rank) (Fin n) D.host.E) :
     Continuous fun h : GA D W => Ψ (mm (mt W h⁻¹) (rat y)) := by
@@ -77,7 +77,7 @@ def co (W : HSp D) (m : Measure (GA D W)) (𝓕 : Set (GA D W)) (Ψ : Mx D W.ran
   ∫ h in 𝓕, Ψ (mm (mt W h⁻¹) (rat y)) ∂m
 
 /- English proof (translation)
-Establish `hmeas : ∀ y : Sp W n, AEMeasurable (fun h : GA D W => ‖Ψ (mm (mt W h⁻¹) (rat y.1))‖ₑ) (m.restrict 𝓕)` using `fun y => (cont_term hΨ y.1).enorm.measurable.aemeasurable`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem lint_fin (hvol : m 𝓕 < ⊤) (hΨ : Continuous Ψ) {C : ℝ≥0}
     (hC : ∀ h : GA D W, ∑' x : Sp W n, ‖Ψ (mm (mt W h⁻¹) (rat x.1))‖ₑ ≤ C) :
@@ -92,7 +92,7 @@ theorem lint_fin (hvol : m 𝓕 < ⊤) (hΨ : Continuous Ψ) {C : ℝ≥0}
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.coe_lt_top hvol
 
 /- English proof (translation)
-Use `ne_top_of_le_ne_top (lint_fin hvol hΨ hC).ne (ENNReal.tsum_le_tsum (fun y => ?_))` and prove the remaining obligations. Conclude with `MeasureTheory.enorm_integral_le_lintegral_enorm _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tsum_co_ne_top (hvol : m 𝓕 < ⊤) (hΨ : Continuous Ψ) {C : ℝ≥0}
     (hC : ∀ h : GA D W, ∑' x : Sp W n, ‖Ψ (mm (mt W h⁻¹) (rat x.1))‖ₑ ≤ C) :
@@ -101,7 +101,7 @@ theorem tsum_co_ne_top (hvol : m 𝓕 < ⊤) (hΨ : Continuous Ψ) {C : ℝ≥0}
   exact MeasureTheory.enorm_integral_le_lintegral_enorm _
 
 /- English proof (translation)
-Establish `h` using `tsum_co_ne_top hvol hΨ hC`. Simplify using `only [enorm_eq_nnnorm] at h`. Conclude with `NNReal.summable_coe.mpr (ENNReal.tsum_coe_ne_top_iff_summable.mp h)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem summable_co (hvol : m 𝓕 < ⊤) (hΨ : Continuous Ψ) {C : ℝ≥0}
     (hC : ∀ h : GA D W, ∑' x : Sp W n, ‖Ψ (mm (mt W h⁻¹) (rat x.1))‖ₑ ≤ C) :
@@ -111,11 +111,11 @@ theorem summable_co (hvol : m 𝓕 < ⊤) (hΨ : Continuous Ψ) {C : ℝ≥0}
   exact NNReal.summable_coe.mpr (ENNReal.tsum_coe_ne_top_iff_summable.mp h)
 
 /- English proof (translation)
-Establish `hf : ∀ y : Sp W n, MeasureTheory.AEStronglyMeasurable (fun h : GA D W => c y * Ψ (mm (mt W h⁻¹) (rat y.1))) (m.restrict 𝓕)` using `fun y => (continuous_const.mul (cont_term hΨ y.1)).aestronglyMeasurable`. Establish `hc' : ∀ y, ‖c y‖ₑ = 1` using `fun y => by`. Rewrite using `[← ofReal_norm, hc y, ENNReal.ofReal_one]`. Establish `hf' : ∑' y : Sp W n, ∫⁻ h in 𝓕, ‖c y * Ψ (mm (mt W h⁻¹) (rat y.1))‖ₑ ∂m ≠ ⊤`. Repeatedly rewrite using `[enorm_mul, hc', one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `(lint_fin hvol hΨ hC).ne`. Rewrite using `[MeasureTheory.integral_tsum hf hf']`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[MeasureTheory.integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exch (hvol : m 𝓕 < ⊤) (hΨ : Continuous Ψ) {C : ℝ≥0}
     (hC : ∀ h : GA D W, ∑' x : Sp W n, ‖Ψ (mm (mt W h⁻¹) (rat x.1))‖ₑ ≤ C) (c : Sp W n → ℂ) (hc : ∀ y, ‖c y‖ = 1) :

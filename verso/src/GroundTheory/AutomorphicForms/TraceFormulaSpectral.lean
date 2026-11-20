@@ -16,11 +16,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
 
 /- English proof (translation)
-Take `⟨V, hV1, -, hV⟩` from `exists_polar (A.comp B)`. Set `b` to `stdHilbertBasis ℂ H`. Establish `hV1' : ‖V‖ₑ ≤ 1` using `enorm_le_one_of_norm_le_one hV1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.tsum_mul_left]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `ENNReal.tsum_le_tsum fun i => ?_` and prove the remaining obligations. Rewrite using `[← adjoint_inner_left, ← comp_apply (A†) V]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = hsNormSq ((A†).comp V) + hsNormSq B := by`. Rewrite using `[ENNReal.tsum_add, hsNormSq_eq_tsum b, hsNormSq_eq_tsum b]`.
-
-Use `_ ≤ ‖V‖ₑ ^ 2 * hsNormSq (A†) + hsNormSq B := by gcongr; exact hsNormSq_comp_right_le _ _`. Use `_ ≤ 1 ^ 2 * hsNormSq (A†) + hsNormSq B := by gcongr`. Use `_ = hsNormSq A + hsNormSq B := by rw [one_pow, one_mul, hsNormSq_adjoint]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_mul_traceNorm_comp_le_of_hilbertSchmidt (A : K →L[ℂ] H) (B : H →L[ℂ] K) :
     2 * traceNorm (A.comp B) ≤ hsNormSq A + hsNormSq B := by
@@ -43,9 +41,9 @@ theorem two_mul_traceNorm_comp_le_of_hilbertSchmidt (A : K →L[ℂ] H) (B : H �
     _ = hsNormSq A + hsNormSq B := by rw [one_pow, one_mul, hsNormSq_adjoint]
 
 /- English proof (translation)
-Establish `h` using `(two_mul_traceNorm_comp_le_of_hilbertSchmidt A B).trans_lt (ENNReal.add_lt_top.2 ⟨hA, hB⟩)`. Rewrite using `[IsTraceClass]`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt, top_le_iff]`. Rewrite `h` using `[hc, ENNReal.mul_top two_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ h`.
+A detailed English derivation is pending.
 -/
 theorem isTraceClass_comp_of_isHilbertSchmidt {A : K →L[ℂ] H} {B : H →L[ℂ] K}
     (hA : IsHilbertSchmidt A) (hB : IsHilbertSchmidt B) : IsTraceClass (A.comp B) := by
@@ -58,13 +56,13 @@ theorem isTraceClass_comp_of_isHilbertSchmidt {A : K →L[ℂ] H} {B : H →L[�
   exact lt_irrefl _ h
 
 /- English proof (translation)
-Establish `hS' : S = ((e : H →L[ℂ] K).comp T).comp (e.symm : K →L[ℂ] H)`. Use extensionality with `w`. Take `⟨v, rfl⟩` from `e.surjective w`. Simplify using `[hS]`. Establish `hSc : IsTraceClass S`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨A, B, hA, hB, hAB⟩` from `hT.exists_comp`. Rewrite using `[hS', hAB, ← comp_assoc, comp_assoc]`. Conclude with `isTraceClass_comp_of_isHilbertSchmidt (hA.comp_left _) (hB.comp_right _)`. Use `⟨hSc, ?_⟩` and prove the remaining obligations. Set `b` to `stdHilbertBasis ℂ H`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b' : HilbertBasis _ ℂ K` to `HilbertBasis.ofRepr (e.symm.trans b.repr)`. Establish `hb' : ∀ i, b' i = e (b i)` using `fun i => rfl`. Establish `h1` using `hSc.hasSum_trace b'`. Establish `h2` using `hT.hasSum_trace b`. Use `h1.unique (h2.congr_fun fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb', hS, LinearIsometryEquiv.inner_map_map]`.
+A detailed English derivation is pending.
 -/
 theorem isTraceClass_and_trace_eq_of_conj (e : H ≃ₗᵢ[ℂ] K) {T : H →L[ℂ] H} {S : K →L[ℂ] K}
     (hT : IsTraceClass T) (hS : ∀ v, S (e v) = e (T v)) : IsTraceClass S ∧ trace S = trace T := by
@@ -99,7 +97,7 @@ section Equiv
 variable {μ : Measure G} {σ : UnitaryRep G K} {τ : UnitaryRep G L}
 
 /- English proof (translation)
-Use `isTraceClass_and_trace_eq_of_conj e.toLinearIsometryEquiv h fun v => ?_` and prove the remaining obligations. Use `comp_integrated_of_mem_intertwiners σ μ e.mem_intertwiners f` as an intermediate fact. Conclude with `(congrArg (fun T : K →L[ℂ] L => T v) this).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Equiv.isTraceClass_integrated_and_trace_eq (e : σ.Equiv τ) (f : G →₁[μ] ℂ)
     (h : IsTraceClass (σ.integrated μ f)) :
@@ -109,7 +107,7 @@ theorem Equiv.isTraceClass_integrated_and_trace_eq (e : σ.Equiv τ) (f : G →�
   exact (congrArg (fun T : K →L[ℂ] L => T v) this).symm
 
 /- English proof (translation)
-The claim follows from `(e.isTraceClass_integrated_and_trace_eq f h).2`.
+A detailed English derivation is pending.
 -/
 theorem Equiv.trace_integrated (e : σ.Equiv τ) (f : G →₁[μ] ℂ)
     (h : IsTraceClass (σ.integrated μ f)) :
@@ -125,7 +123,7 @@ variable {J : Type*} {V : J → Submodule ℂ H} [∀ j, CompleteSpace (V j)]
   (hinv : ∀ j, π.IsInvariant (V j))
 
 /- English proof (translation)
-Use `comp_integrated_of_mem_intertwiners (π.restrict (V j) (hinv j)) μ (subtypeL_mem_intertwiners π (V j) (hinv j)) f` as an intermediate fact. Conclude with `congrArg (fun T : V j →L[ℂ] H => T v) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrated_restrict_apply (j : J) (v : V j) :
     (((π.restrict (V j) (hinv j)).integrated μ f v : V j) : H) = π.integrated μ f (v : H) := by
@@ -136,11 +134,11 @@ theorem integrated_restrict_apply (j : J) (v : V j) :
 variable {π μ f}
 
 /- English proof (translation)
-Take `⟨A, B, hA, hB, hAB⟩` from `hT.exists_comp`. Use `set ι : V j →L[ℂ] H := (V j).subtypeL`. Establish `hιι : ∀ x : V j, (ι†) (ι x) = x` using `fun x => ext_inner_left ℂ fun w => by`. Rewrite using `[adjoint_inner_right]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `heq : (π.restrict (V j) (hinv j)).integrated μ f = ((ι†).comp A).comp (B.comp ι)` using `by ext1 x`. Simplify using `only [comp_apply]`. Rewrite using `[← hιι ((π.restrict (V j) (hinv j)).integrated μ f x)]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(((π.restrict (V j) (hinv j)).integrated μ f x : V j) : H) = _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integrated_restrict_apply, hAB]`. Both sides reduce to the same expression. Rewrite using `[heq]`. Conclude with `isTraceClass_comp_of_isHilbertSchmidt (hA.comp_left _) (hB.comp_right _)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTraceClass_integrated_restrict (hT : IsTraceClass (π.integrated μ f)) (j : J) :
     IsTraceClass ((π.restrict (V j) (hinv j)).integrated μ f) := by
@@ -186,7 +184,7 @@ def collectedHilbertBasis : HilbertBasis (Σ j, (exists_hilbertBasis ℂ (V j)).
     exact ⟨⟨j, i⟩, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[collectedHilbertBasis, HilbertBasis.coe_mk]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem collectedHilbertBasis_apply (a : Σ j, (exists_hilbertBasis ℂ (V j)).choose) :
     collectedHilbertBasis hsum a = ((stdHilbertBasis ℂ (V a.1) a.2 : V a.1) : H) := by
@@ -196,7 +194,7 @@ theorem collectedHilbertBasis_apply (a : Σ j, (exists_hilbertBasis ℂ (V j)).c
 include hsum in
 
 /- English proof (translation)
-Establish `h1` using `hT.hasSum_trace (collectedHilbertBasis hsum)`. Use `h1.sigma fun j => ?_` and prove the remaining obligations. Use `((isTraceClass_integrated_restrict hinv hT j).hasSum_trace (stdHilbertBasis ℂ (V j))).congr_fun fun i => ?_` and prove the remaining obligations. Rewrite using `[collectedHilbertBasis_apply, ← integrated_restrict_apply π μ f hinv j]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hasSum_trace_integrated_restrict (hT : IsTraceClass (π.integrated μ f)) :
     HasSum (fun j => trace ((π.restrict (V j) (hinv j)).integrated μ f))
@@ -222,13 +220,13 @@ def multiplicity (c : Quotient (restrictSetoid π hinv)) : ℕ :=
 include hsum in
 
 /- English proof (translation)
-Use `set S := restrictSetoid π hinv`. Establish `h0` using `hasSum_trace_integrated_restrict hinv hsum hT`. Set `e` to `Equiv.sigmaFiberEquiv (Quotient.mk S)`. Establish `h1 : HasSum (fun a : Σ c : Quotient S, {j : J // Quotient.mk S j = c} => trace ((π.restrict (V (e a)) (hinv (e a))).integrated μ f)) (trace (π.integrated μ f))` using `(e.hasSum_iff).2 h0`. Use `h1.sigma fun c => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfc : Set.Finite {j : J | Quotient.mk S j = c}`. Use `(hfin c.out).subset fun j hj => ?_` and prove the remaining obligations. Establish `: Quotient.mk S j = Quotient.mk S c.out` using `by rw [show Quotient.mk S j = c from hj]; exact c.out_eq.symm`. Conclude with `Quotient.exact this`. Establish `: Finite {j : J // Quotient.mk S j = c}` using `hfc.to_subtype`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Fintype {j : J // Quotient.mk S j = c}` using `Fintype.ofFinite _`. Establish `hconst : ∀ a : {j : J // Quotient.mk S j = c}, trace ((π.restrict (V (e ⟨c, a⟩)) (hinv (e ⟨c, a⟩))).integrated μ f) = trace ((π.restrict (V c.out) (hinv c.out)).integrated μ f)`. Introduce `a`. Establish `hja : Quotient.mk S a.1 = Quotient.mk S c.out` using `by rw [a.2]; exact c.out_eq.symm`. Take `⟨eq⟩` from `(Quotient.exact hja : S a.1 c.out)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `(eq.trace_integrated f (isTraceClass_integrated_restrict hinv hT a.1)).symm`. Establish `h2` using `hasSum_fintype (fun a : {j : J // Quotient.mk S j = c} => trace ((π.restrict (V (e ⟨c, a⟩)) (hinv (e ⟨c, a⟩))).integrated μ f))`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_congr rfl fun a _ => hconst a, Finset.sum_const, nsmul_eq_mul, Finset.card_univ, multiplicity, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_multiplicity_mul_trace (hT : IsTraceClass (π.integrated μ f))
     (hfin : ∀ j, {k : J | (π.restrict (V k) (hinv k)).IsEquivalent

@@ -15,7 +15,7 @@ open GlobalTheory.OrbitSep
 namespace GlobalTheory.Cartier.Descent
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `h`. Conclude with `⟨q.stalkMap x a, ha.map _, (functionFieldMap_algebraMap q x a).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unitAt_functionFieldMap {X W : Scheme.{0}} [IsIntegral X] [IsIntegral W] (q : X ⟶ W)
     [IsDominant q] (x : X) {f : W.functionField} (h : UnitAt (q x) f) :
@@ -24,17 +24,17 @@ theorem unitAt_functionFieldMap {X W : Scheme.{0}} [IsIntegral X] [IsIntegral W]
   exact ⟨q.stalkMap x a, ha.map _, (functionFieldMap_algebraMap q x a).symm⟩
 
 /- English proof (translation)
-Introduce `X W _ _ Γ _ _ ρ q _ hq D h`. Use `choose b hb using h`. Establish `: IsIntegralHom q` using `hq.isIntegralHom`. Establish `hcl : IsClosedMap q` using `q.isClosedMap`. Establish `hloc : ∀ y : W, ∃ U : W.Opens, y ∈ U ∧ ∃ f, ∀ y' ∈ U, germOf y' (b y') = germOf y' f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Set `O : Set X` to `{x | D.IsEqn x (Units.map (functionFieldMap q).toMonoidHom (b y))}`. Establish `hO : IsOpen O` using `isOpen_iff_forall_mem_open.2 fun x hx => by`. Take `⟨U, hU, hU'⟩` from `CartierDiv.IsEqn.exists_nhds hx`. Conclude with `⟨U, fun z hz => hU' z hz, U.isOpen, hU⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hZ : IsClosed (q '' Oᶜ)` using `hcl _ hO.isClosed_compl`. Use `⟨⟨(q '' Oᶜ)ᶜ, hZ.isOpen_compl⟩, ?_, b y, fun y' hy' => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx, hxy⟩`. Conclude with `hx (hb y x hxy)`. Use `(germOf_eq_iff.2 ?_).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.T.rationalFunctionUnitAtPoint_of_fibre_quotient X W Γ ρ q hq y' _ fun x hx => ?_` and prove the remaining obligations. Establish `h1 : x ∈ O`. Assume the negation of the conclusion as `hn`. Conclude with `hy' ⟨x, hn, hx⟩`. Establish `h2` using `(h1 : D.IsEqn x _).iff_unitAt.1 (hb y' x hx)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `h2` using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, map_div₀]`. Set `E : CartierDiv W` to `show cartierGroup W from ⟨fun y => germOf y (b y), hloc⟩`. Use `⟨E, fun y b' hE x hx => ?_⟩` and prove the remaining obligations. Establish `hu : UnitAt y ((b' : W.functionField) / b y)` using `germOf_eq_iff.1 hE`. Substitute `hx` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(hb (q x) x rfl).iff_unitAt.2 ?_` and prove the remaining obligations. Use `unitAt_functionFieldMap q x hu` as an intermediate fact. Simplify `this` using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, map_div₀]`.
+A detailed English derivation is pending.
 -/
 theorem exists_cartierDiv_descent : ∀ (X W : Scheme.{0}) [IsIntegral X] [IsIntegral W] (Γ : Type) [Group Γ] [Finite Γ]
     (ρ : Γ →* Aut X) (q : X ⟶ W) [IsDominant q], IsAffineQuotient ρ q → ∀ (D : CartierDiv X),

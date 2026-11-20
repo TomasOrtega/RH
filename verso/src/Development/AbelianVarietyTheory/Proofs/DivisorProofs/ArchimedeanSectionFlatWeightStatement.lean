@@ -13,7 +13,7 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.IndefiniteRowSideFullHecke.Sp
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.exists_model | exact GlobalTheory.FlatModel.exists_model | (intros; apply GlobalTheory.FlatModel.exists_model <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.archimedean_section_flat_weight : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.CanonicalExtensionRankOne → GlobalTheory.Published.DeRhamCanonicalExtension →
   GlobalTheory.Published.PrismaticDieudonneHodge →

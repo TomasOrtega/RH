@@ -53,7 +53,7 @@ abbrev upperTriple (S : MarkedPullbackSquare T g) (k' : Type u) [Field k']
   (S.lowerTriple.pullbackOverField S.topScheme k' (S.top ≫ q) S.left).withBoundary E
 
 /- English proof (translation)
-Establish `hval : (MarkedIdealWithBoundary.mk T.base S.baseScheme S.structMap S.ideal T.mult S.boundary).IsAdmissible` using `{ charZero := S.valid.charZero locallyOfFiniteType := S.valid.locallyOfFiniteType nonzeroOnComponents := S.valid.nonzeroOnComponents one_le_mult := hT.one_le_mult quasiCompact := S.valid.quasiCompact smooth := S.valid.smooth snc := S.valid.snc }`. Conclude with `hg S.baseScheme S.bottom S.structMap S.ideal S.boundary hval S.bottom_structMap S.topScheme S.left S.top S.isPullback A y`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem orderAt_comap_verticalMap (S : MarkedPullbackSquare T g) (hT : T.IsAdmissible)
     (hg : OrderAtPullbackInvariant T g) (A : S.baseScheme.IdealSheafData) (y : ↥S.topScheme) :
@@ -71,7 +71,7 @@ theorem orderAt_comap_verticalMap (S : MarkedPullbackSquare T g) (hT : T.IsAdmis
     S.topScheme S.left S.top S.isPullback A y
 
 /- English proof (translation)
-Rewrite using `[S.orderAt_comap_verticalMap hT hg A y]`. Conclude with `hA (S.left.base y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderAt_comap_verticalMap_le (S : MarkedPullbackSquare T g) (hT : T.IsAdmissible)
     (hg : OrderAtPullbackInvariant T g) (A : S.baseScheme.IdealSheafData) (c : ℕ∞)
@@ -81,7 +81,7 @@ theorem orderAt_comap_verticalMap_le (S : MarkedPullbackSquare T g) (hT : T.IsAd
   exact hA (S.left.base y)
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.Flat) S.isPullback.flip ‹AlgebraicGeometry.Flat g›`.
+A detailed English derivation is pending.
 -/
 theorem flat_verticalMap (S : MarkedPullbackSquare T g) [AlgebraicGeometry.Flat g] :
     AlgebraicGeometry.Flat S.left :=

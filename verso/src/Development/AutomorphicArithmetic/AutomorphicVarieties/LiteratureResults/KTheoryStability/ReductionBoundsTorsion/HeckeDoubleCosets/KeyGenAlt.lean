@@ -14,7 +14,7 @@ variable {Γn ΓN Kn KN : Type} [Group Γn] [Group ΓN] [Group Kn] [Group KN]
   {ρn : Γn →* Kn} {ρN : ΓN →* KN} {sO : Γn →* ΓN} {sL : Kn →* KN} {qn : Kn} {q : KN}
 
 /- English proof (translation)
-Unfold `ev`. Simplify using `only [smul_eq_mul, mul_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem ev_one_eq_finsupp_sum {G K : Type} [Group G] [Group K] (ρ : G →* K) {m : ℕ}
     (Ψ : (Fin (m + 2) → K) → ℝ) (z : Chn G (m + 1)) :
@@ -24,7 +24,7 @@ private theorem ev_one_eq_finsupp_sum {G K : Type} [Group G] [Group K] (ρ : G �
   simp only [smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Unfold `Fin.partialProd`. Rewrite using `[map_list_prod, List.map_take, List.map_ofFn]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem partialProd_map_monoidHom {G G' : Type} [Group G] [Group G'] (s : G' →* G) {n : ℕ} (g : Fin n → G')
     (j : Fin (n + 1)) : Fin.partialProd (fun i => s (g i)) j = s (Fin.partialProd g j) := by
@@ -33,11 +33,11 @@ private theorem partialProd_map_monoidHom {G G' : Type} [Group G] [Group G'] (s 
   rfl
 
 /- English proof (translation)
-Rewrite using `[ev_one_eq_finsupp_sum]`. Unfold `cmap`. Rewrite using `[Finsupp.lmapDomain_apply, Finsupp.sum_mapDomain_index]`. Use `congr 1`. Use function extensionality and compare the values at `g r`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 2`. Use function extensionality and compare the values at `j`. Use `congr 1`. Conclude with `partialProd_map_monoidHom s g j`. Introduce `_`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `_ _ _`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem ev_one_cmap_eq_finsupp_sum {G K G' : Type} [Group G] [Group K] [Group G'] (ρ : G →* K)
     (s : G' →* G) {m : ℕ} (Ψ : (Fin (m + 2) → K) → ℝ) (z : Chn G' (m + 1)) :
@@ -58,7 +58,7 @@ private theorem ev_one_cmap_eq_finsupp_sum {G K G' : Type} [Group G] [Group K] [
     ring
 
 /- English proof (translation)
-Unfold `ev`. Simplify using `only [mul_sub]`. Conclude with `Finsupp.sum_sub`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ev_sub_hecke_double_cosets {G H Y : Type} [Group G] [Group H] [MulAction H Y] (ρ : G →* H) {m : ℕ}
     (f g : (Fin (m + 1) → Y) → ℝ) (y : Y) (w : Chn G m) :
@@ -68,11 +68,11 @@ private theorem ev_sub_hecke_double_cosets {G H Y : Type} [Group G] [Group H] [M
   exact Finsupp.sum_sub
 
 /- English proof (translation)
-Unfold `Gq at h`. Rewrite `h` using `[Subgroup.mem_comap, Subgroup.mem_map]`. Take `⟨a, ha1, ha⟩` from `h`. Take `⟨g', rfl⟩` from `MonoidHom.mem_range.mp ha1`. Simplify using `at ha`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hc' : ρ c' = q⁻¹ * ρ g' * q * ρ c`. Rewrite using `[ha]`. Use `group`. Establish `e : (fun j => q * ρ c' * w j) = fun j => ρ g' • (q * ρ c * w j)`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc', smul_eq_mul]`. Use `group`. Rewrite using `[e]`. Conclude with `hF g' _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coset_lemma_4 {G K : Type} [Group G] [Group K] (ρ : G →* K) (q : K) {m : ℕ}
     (F : (Fin (m + 2) → K) → ℝ) (hF : Inv ρ F) {c c' : G} (h : c' * c⁻¹ ∈ Gq ρ q)
@@ -94,7 +94,7 @@ private theorem coset_lemma_4 {G K : Type} [Group G] [Group K] (ρ : G →* K) (
   exact hF g' _
 
 /- English proof (translation)
-Unfold `hecke`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 private theorem hecke_apply_eq_index_inv_mul_finsum_rightRel {G K : Type} [Group G] [Group K] (ρ : G →* K) (q : K) {m : ℕ}
     (Ψ : (Fin (m + 2) → K) → ℝ) (y : Fin (m + 2) → K) :
@@ -104,7 +104,7 @@ private theorem hecke_apply_eq_index_inv_mul_finsum_rightRel {G K : Type} [Group
   rfl
 
 /- English proof (translation)
-Rewrite using `[Quotient.eq]`. Conclude with `QuotientGroup.rightRel_apply`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem quotient_mk_rightRel_eq_iff_mul_inv_mem {G : Type} [Group G] (S : Subgroup G) (a b : G) :
     Quotient.mk (QuotientGroup.rightRel S) a = Quotient.mk (QuotientGroup.rightRel S) b ↔
@@ -113,7 +113,7 @@ private theorem quotient_mk_rightRel_eq_iff_mul_inv_mem {G : Type} [Group G] (S 
   exact QuotientGroup.rightRel_apply
 
 /- English proof (translation)
-Rewrite using `[Subgroup.index_eq_card, ← Nat.card_eq_fintype_card, Nat.card_congr (QuotientGroup.quotientRightRelEquivQuotientLeftRel S)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem index_eq_card_quotient_rightRel {G : Type} [Group G] (S : Subgroup G)
     [Fintype (Quotient (QuotientGroup.rightRel S))] :
@@ -122,53 +122,47 @@ private theorem index_eq_card_quotient_rightRel {G : Type} [Group G] (S : Subgro
     Nat.card_congr (QuotientGroup.quotientRightRelEquivQuotientLeftRel S)]
 
 /- English proof (translation)
-Rewrite using `[ev_one_cmap_eq_finsupp_sum, ev_one_cmap_eq_finsupp_sum, ev_one_eq_finsupp_sum]`. Simplify using `only [hecke_apply_eq_index_inv_mul_finsum_rightRel]`. Establish `hT'` using `hT`. Unfold `PTransfer at hT'`. Set `X` to `{x : Quotient (QuotientGroup.rightRel (Gq ρN q)) // ∀ a : Γn, Quotient.mk (QuotientGroup.rightRel (Gq ρN q)) (sO a) ≠ x}`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression.
 
-Establish `hmem : ∀ (x : X) (g : Γn) (a : Γn), Quotient.mk (QuotientGroup.rightRel (Gq ρN q)) (sO a) ≠ Quotient.mk (QuotientGroup.rightRel (Gq ρN q)) (x.1.out * sO g)`. Introduce `x g a ha`. Rewrite `ha` using `[quotient_mk_rightRel_eq_iff_mul_inv_mem]`. Apply `x.2 (a * g⁻¹)` to reduce the goal to its premises. Rewrite using `[← Quotient.out_eq x.1, quotient_mk_rightRel_eq_iff_mul_inv_mem]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `ha using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, map_inv]`. Use `group`. Take `⟨act, hact⟩ : ∃ act : X → Γn → X, ∀ x g, (act x g).1 = Quotient.mk (QuotientGroup.rightRel (Gq ρN q)) (x.1.out * sO g)` from `⟨fun x g => ⟨_, hmem x g⟩, fun _ _ => rfl⟩`. Establish `hrep : ∀ (x : X) (g : Γn), (act x g).1.out * (x.1.out * sO g)⁻¹ ∈ Gq ρN q`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x g`. Rewrite using `[← quotient_mk_rightRel_eq_iff_mul_inv_mem, Quotient.out_eq, hact]`. Establish `h1 : ∀ x, act x 1 = x`. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hact, map_one, mul_one, Quotient.out_eq]`. Establish `hm : ∀ x g h, act x (g * h) = act (act x g) h`. Introduce `x g h`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hact, hact, quotient_mk_rightRel_eq_iff_mul_inv_mem]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hrep x g using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul]`. Use `group`. Set `Φ : X → (Fin (m + 2) → Γn) → ℝ` to `fun x y => F (fun j => q * ρN x.1.out * ρN (sO (y j))) - F (fun j => ρN (sO (y j)))`. Establish `hΦ1 : ∀ x g y, Φ (act x g) y = Φ x (fun j => g * y j)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x g y`. Simplify using `only [Φ]`. Rewrite using `[coset_lemma_4 ρN q F hFinv (hrep x g) (fun j => ρN (sO (y j)))]`. Use `congr 1`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Simplify using `[map_mul, mul_assoc]`. Rewrite using `[show (fun j => ρN (sO (g * y j))) = fun j => ρN (sO g) • ρN (sO (y j)) from`. Use function extensionality and compare the values at `fun j => by simp]`. Conclude with `(hFinv _ _).symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hΦ2 : ∀ x, dC (Φ x) = 0`. Introduce `x`. Use function extensionality and compare the values at `y`. Establish `e1` using `congrFun hFcoc (fun j => q * ρN x.1.out * ρN (sO (y j)))`. Establish `e2` using `congrFun hFcoc (fun j => ρN (sO (y j)))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [dC, Pi.zero_apply, Φ] at e1 e2 ⊢`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, e1, e2, sub_zero]`. Establish `hΦ3 : ∀ x (w : Chn (stabR act h1 hm x) (m + 1)), IsCyc w → ev (stabR act h1 hm x).subtype (Φ x) 1 w = 0`. Introduce `x w hw`. Establish `hx : ∀ c' : Γn, x.1.out * (sO c')⁻¹ ∉ Gq ρN q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `c' hc`. Apply `x.2 c'` to reduce the goal to its premises. Rewrite using `[← Quotient.out_eq x.1, quotient_mk_rightRel_eq_iff_mul_inv_mem]`. Conclude with `hc`. Establish `hst : ∀ h ∈ stabR act h1 hm x, x.1.out * sO h * x.1.out⁻¹ ∈ Gq ρN q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h hh`. Establish `hh' : act x h = x` using `hh`. Establish `e` using `congrArg Subtype.val hh'`. Rewrite `e` using `[hact]`. Use `conv at e => rhs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Quotient.out_eq x.1]`. Conclude with `(quotient_mk_rightRel_eq_iff_mul_inv_mem _ _ _).mp e.symm`. Establish `e` using `hvan x.1.out hx _ hst w hw`. Use `show ev _ (fun t => F (fun j => q * ρN x.1.out * ρN (sO (t j))) - F (fun j => ρN (sO (t j)))) 1 w = 0`. Rewrite using `[ev_sub_hecke_double_cosets, e, sub_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `haveI : Finite X := Subtype.finite`. Establish `hz0` using `hT' Γn X act h1 hm m Φ hΦ1 hΦ2 hΦ3 z hz`. Rewrite `hz0` using `[ev_one_eq_finsupp_sum]`. Simplify using `only [MonoidHom.id_apply] at hz0`. Use `haveI : Fintype (Quotient (QuotientGroup.rightRel (Gq ρN q))) := Fintype.ofFinite _`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `haveI : Fintype (Quotient (QuotientGroup.rightRel (Gq ρn qn))) := Fintype.ofFinite _`. Use `haveI : Fintype X := Fintype.ofFinite _`. Establish `himg : Finset.univ.filter (fun c : Quotient (QuotientGroup.rightRel (Gq ρN q)) => ¬ ∀ a : Γn, Quotient.mk (QuotientGroup.rightRel (Gq ρN q)) (sO a) ≠ c) = Finset.univ.image (fun d : Quotient (QuotientGroup.rightRel (Gq ρn qn)) => Quotient.mk (QuotientGroup.rightRel (Gq ρN q)) (sO …`. Use extensionality with `c`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, not_forall, not_not]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Use `⟨Quotient.mk (QuotientGroup.rightRel (Gq ρn qn)) a, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, quotient_mk_rightRel_eq_iff_mul_inv_mem, ← map_inv, ← map_mul, hGS, ← quotient_mk_rightRel_eq_iff_mul_inv_mem, Quotient.out_eq]`. Introduce and unpack `⟨d, hd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨d.out, hd⟩`. Establish `hinj : Function.Injective (fun d : Quotient (QuotientGroup.rightRel (Gq ρn qn)) => Quotient.mk (QuotientGroup.rightRel (Gq ρN q)) (sO d.out))`. Introduce `d d' h`. Simplify using `only at h`. Rewrite `h` using `[quotient_mk_rightRel_eq_iff_mul_inv_mem, ← map_inv, ← map_mul, hGS, ← quotient_mk_rightRel_eq_iff_mul_inv_mem, Quotient.out_eq, Quotient.out_eq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hgen : ∀ f : Quotient (QuotientGroup.rightRel (Gq ρN q)) → ℝ, ∑ c, f c = ∑ x : X, f x.1 + ∑ d : Quotient (QuotientGroup.rightRel (Gq ρn qn)), f (Quotient.mk (QuotientGroup.rightRel (Gq ρN q)) (sO d.out))`. Introduce `f`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun c => ∀ a : Γn, Quotient.mk (QuotientGroup.rightRel (Gq ρN q)) (sO a) ≠ c) f, himg, Finset.sum_image (fun x _ y _ h => hinj h), Finset.sum_subtype _ (fun x => Finset.mem_filter.trans (and_iff_right (Finset.mem_univ _)))]`. Establish `hNpos : 0 < Fintype.card (Quotient (QuotientGroup.rightRel (Gq ρN q)))` using `Fintype.card_pos_iff.mpr ⟨Quotient.mk _ 1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hnpos : 0 < Fintype.card (Quotient (QuotientGroup.rightRel (Gq ρn qn)))` using `Fintype.card_pos_iff.mpr ⟨Quotient.mk _ 1⟩`. Establish `hcard` using `hgen (fun _ => 1)`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one] at hcard`. Establish `hpt : ∀ y : Fin (m + 2) → Γn, ((Gq ρN q).index : ℝ)⁻¹ * ∑ᶠ c : Quotient (QuotientGroup.rightRel (Gq ρN q)), F (fun j => q * ρN c.out * ρN (sO (y j))) = (1 - ((Gq ρn qn).index : ℝ) / (Gq ρN q).index) * F (fun j => ρN (sO (y j))) + ((Gq ρn qn).index : ℝ) / (Gq ρN q).index * (((Gq ρ …`. Introduce `y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, index_eq_card_quotient_rightRel, index_eq_card_quotient_rightRel, hgen]`. Establish `hd : ∀ d : Quotient (QuotientGroup.rightRel (Gq ρn qn)), F (fun j => q * ρN (Quotient.mk (QuotientGroup.rightRel (Gq ρN q)) (sO d.out)).out * ρN (sO (y j))) = F (fun j => sL (qn * ρn d.out * ρn (y j)))`. Introduce `d`. Rewrite using `[coset_lemma_4 ρN q F hFinv (c := sO d.out) (c' := (Quotient.mk (QuotientGroup.rightRel (Gq ρN q)) (sO d.out)).out) (by rw [← quotient_mk_rightRel_eq_iff_mul_inv_mem, Quotient.out_eq]) (fun j => ρN (sO (y j)))]`. Use `congr 1`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [hq, hcomm, map_mul]`. Simplify using `only [hd, Φ, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[hcard]`. Establish `h1' : (Fintype.card (Quotient (QuotientGroup.rightRel (Gq ρn qn))) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr hnpos.ne'`.
-
-Establish `h2' : (Fintype.card X : ℝ) + Fintype.card (Quotient (QuotientGroup.rightRel (Gq ρn qn))) ≠ 0`. Check the signs of the components of the expression. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hpt]`.
-
-Rewrite using `[← sub_eq_zero]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finsupp.sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `g _`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [hz0, mul_zero]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem keyGen (hT : PTransfer) (hcomm : ∀ c, ρN (sO c) = sL (ρn c)) (hq : q = sL qn)
     (hGS : ∀ c, sO c ∈ Gq ρN q ↔ c ∈ Gq ρn qn)

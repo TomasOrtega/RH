@@ -45,7 +45,7 @@ variable {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ
 include h
 
 /- English proof (translation)
-Establish `h1` using `h.alt (x + y)`. Rewrite `h1` using `[h.add_left, h.add_right, h.add_right, h.alt, h.alt]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem skew (x y : X) : γ x y * γ y x = 1 := by
   have h1 := h.alt (x + y)
@@ -53,12 +53,12 @@ theorem skew (x y : X) : γ x y * γ y x = 1 := by
   simpa using h1
 
 /- English proof (translation)
-The claim follows from `left_ne_zero_of_mul_eq_one (h.skew x y)`.
+A detailed English derivation is pending.
 -/
 theorem ne_zero (x y : X) : γ x y ≠ 0 := left_ne_zero_of_mul_eq_one (h.skew x y)
 
 /- English proof (translation)
-Establish `h1` using `h.add_left 0 0 y`. Rewrite `h1` using `[add_zero]`. Conclude with `(mul_eq_left₀ (h.ne_zero 0 y)).1 h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_left (y : X) : γ 0 y = 1 := by
   have h1 := h.add_left 0 0 y
@@ -66,7 +66,7 @@ theorem zero_left (y : X) : γ 0 y = 1 := by
   exact (mul_eq_left₀ (h.ne_zero 0 y)).1 h1.symm
 
 /- English proof (translation)
-Establish `h1` using `h.add_right x 0 0`. Rewrite `h1` using `[add_zero]`. Conclude with `(mul_eq_left₀ (h.ne_zero x 0)).1 h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_right (x : X) : γ x 0 = 1 := by
   have h1 := h.add_right x 0 0
@@ -74,7 +74,7 @@ theorem zero_right (x : X) : γ x 0 = 1 := by
   exact (mul_eq_left₀ (h.ne_zero x 0)).1 h1.symm
 
 /- English proof (translation)
-Establish `h1` using `h.add_left (-x) x y`. Rewrite `h1` using `[neg_add_cancel, h.zero_left]`. Conclude with `eq_inv_of_mul_eq_one_left h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_left (x y : X) : γ (-x) y = (γ x y)⁻¹ := by
   have h1 := h.add_left (-x) x y
@@ -82,7 +82,7 @@ theorem neg_left (x y : X) : γ (-x) y = (γ x y)⁻¹ := by
   exact eq_inv_of_mul_eq_one_left h1.symm
 
 /- English proof (translation)
-Establish `h1` using `h.add_right x (-y) y`. Rewrite `h1` using `[neg_add_cancel, h.zero_right]`. Conclude with `eq_inv_of_mul_eq_one_left h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_right (x y : X) : γ x (-y) = (γ x y)⁻¹ := by
   have h1 := h.add_right x (-y) y
@@ -90,17 +90,17 @@ theorem neg_right (x y : X) : γ x (-y) = (γ x y)⁻¹ := by
   exact eq_inv_of_mul_eq_one_left h1.symm
 
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_right (h.skew x y)`.
+A detailed English derivation is pending.
 -/
 theorem swap (x y : X) : γ y x = (γ x y)⁻¹ := eq_inv_of_mul_eq_one_right (h.skew x y)
 
 /- English proof (translation)
-Rewrite using `[h.swap, hxy, inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem swap_eq_one {x y : X} (hxy : γ x y = 1) : γ y x = 1 := by rw [h.swap, hxy, inv_one]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [h.zero_left]`. Consider the case `succ n ih => rw [succ_nsmul, h.add_left, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem nsmul_left (n : ℕ) (x y : X) : γ (n • x) y = γ x y ^ n := by
   induction n with
@@ -108,7 +108,7 @@ theorem nsmul_left (n : ℕ) (x y : X) : γ (n • x) y = γ x y ^ n := by
   | succ n ih => rw [succ_nsmul, h.add_left, ih, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [h.zero_right]`. Consider the case `succ n ih => rw [succ_nsmul, h.add_right, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem nsmul_right (n : ℕ) (x y : X) : γ x (n • y) = γ x y ^ n := by
   induction n with
@@ -116,7 +116,7 @@ theorem nsmul_right (n : ℕ) (x y : X) : γ x (n • y) = γ x y ^ n := by
   | succ n ih => rw [succ_nsmul, h.add_right, ih, pow_succ]
 
 /- English proof (translation)
-Establish `h1 : γ (w • x) y = γ x y * γ (w • y) x`. Establish `h2 : γ x y = γ (w • x) y * γ (σ w • x) y` using `by rw [← h.add_left, ← add_smul, h.w_add, one_smul]`. Rewrite using `[h2, h.adj (σ w), h.sg_sg, mul_assoc, h.skew, mul_one]`. Rewrite using `[h.comp, h.comp, smul_smul, h1, add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm (x y : X) (v : M) : W x (W y v) = γ x y • W y (W x v) := by
   have h1 : γ (w • x) y = γ x y * γ (w • y) x := by
@@ -125,19 +125,19 @@ theorem comm (x y : X) (v : M) : W x (W y v) = γ x y • W y (W x v) := by
   rw [h.comp, h.comp, smul_smul, h1, add_comm]
 
 /- English proof (translation)
-The claim follows from `(hA x).1 hx y hy`.
+A detailed English derivation is pending.
 -/
 theorem iso {A : Submodule R X} (hA : SelfDual γ A) {x y : X} (hx : x ∈ A) (hy : y ∈ A) : γ x y = 1 := (hA x).1 hx y hy
 
 /- English proof (translation)
-Rewrite using `[h.comp, h.iso hA (A.smul_mem w hx) hy, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_of_mem {A : Submodule R X} (hA : SelfDual γ A) {x y : X} (hx : x ∈ A) (hy : y ∈ A) (v : M) :
     W x (W y v) = W (x + y) v := by
   rw [h.comp, h.iso hA (A.smul_mem w hx) hy, one_smul]
 
 /- English proof (translation)
-Rewrite using `[h.comp, neg_add_cancel, h.zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem neg_comp (x : X) (v : M) : W (-x) (W x v) = γ (w • -x) x • v := by
   rw [h.comp, neg_add_cancel, h.zero]
@@ -145,7 +145,7 @@ theorem neg_comp (x : X) (v : M) : W (-x) (W x v) = γ (w • -x) x • v := by
 end IsHeis
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1, h2, by simp, by simp, by simp, by simp, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHeis_trivial (σ : R →+* R) (w : R) (h1 : ∀ r, σ (σ r) = r) (h2 : w + σ w = 1) :
     IsHeis σ w (fun _ _ : X => (1 : ℂ)) (fun _ => (LinearMap.id : M →ₗ[ℂ] M)) :=

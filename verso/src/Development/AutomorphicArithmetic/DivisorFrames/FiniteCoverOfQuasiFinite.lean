@@ -8,7 +8,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TorusPart
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pointOfClosedPoint (M.hom ≫ s) x hx ≫ M.hom, by rw [Category.assoc, pointOfClosedPoint_comp], Over.homMk (pointOfClosedPoint (M.hom ≫ s) x hx) rfl, fun a => pointOfClosedPoint_apply _ x hx a⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_point {k : Type} [Field k] [IsAlgClosed k] {C : Scheme.{0}} (s : C ⟶ Spec (.of k))
     [LocallyOfFiniteType s] (M : Over C) [LocallyOfFiniteType M.hom] (x : M.left) (hx : IsClosed {x}) :
@@ -17,31 +17,25 @@ private theorem exists_point {k : Type} [Field k] [IsAlgClosed k] {C : Scheme.{0
     Over.homMk (pointOfClosedPoint (M.hom ≫ s) x hx) rfl, fun a => pointOfClosedPoint_apply _ x hx a⟩
 
 /- English proof (translation)
-Establish `: IsLocallyNoetherian C` using `LocallyOfFiniteType.isLocallyNoetherian s`. Establish `: CompactSpace G.left` using `QuasiCompact.compactSpace_of_compactSpace (G.hom ≫ s)`. Establish `: JacobsonSpace G.left` using `LocallyOfFiniteType.jacobsonSpace (G.hom ≫ s)`. Set `J` to `Σ Z : {Z : Over C // QFin Z}, (Z.1 ⟶ G)`. Set `mv (i : J) : i.1.1 ⊗ G ⟶ G` to `(fst i.1.1 G ≫ i.2)⁻¹ * snd i.1.1 G`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `O (i : J) : Set G.left` to `(snd i.1.1 G).left '' ((mv i).left ⁻¹ᵁ W : Set _)`. Establish `hO (i : J) : IsOpen (O i)`. Take `⟨h₁, h₂, -, -⟩` from `i.1.2`. Establish `: LocallyOfFinitePresentation i.1.1.hom` using `LocallyOfFinitePresentation.iff_locallyOfFiniteType.mpr h₂`. Establish `: UniversallyOpen i.1.1.hom` using `inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: UniversallyOpen (snd i.1.1 G).left` using `inferInstanceAs (UniversallyOpen (pullback.snd i.1.1.hom G.hom))`. Conclude with `(snd i.1.1 G).left.isOpenMap _ ((mv i).left ⁻¹ᵁ W).isOpen`. Establish `hcov : Set.univ ⊆ ⋃ i, O i`. Assume the negation of the conclusion as `hne`. Establish `hne' : (⋃ i, O i)ᶜ.Nonempty`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.nonempty_compl]`. Introduce `h`. Conclude with `hne h.ge`. Take `⟨x, hx, hc⟩` from `nonempty_inter_closedPoints hne' (isOpen_iUnion hO).isClosed_compl.isLocallyClosed`. Take `⟨p, hp, y, hy⟩` from `exists_point s G x hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hW p hp`. Take `⟨Z, z, g₀, hq, hg⟩` from `hZ p hp (y * w⁻¹)`. Use `hx (Set.mem_iUnion.2 ⟨⟨⟨Z, hq⟩, z⟩, (lift g₀ y).left (IsLocalRing.closedPoint k), ?_, ?_⟩)` and prove the remaining obligations. Establish `e : lift g₀ y ≫ mv ⟨⟨Z, hq⟩, z⟩ = w`. Simplify using `only [mv, MonObj.comp_mul, GrpObj.comp_inv, lift_fst_assoc, lift_snd, hg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Use `show ((lift g₀ y).left ≫ (mv ⟨⟨Z, hq⟩, z⟩).left) (IsLocalRing.closedPoint k) ∈ W`. Rewrite using `[← Over.comp_left, e]`. Conclude with `hw trivial`. Use `show ((lift g₀ y).left ≫ (snd Z G).left) (IsLocalRing.closedPoint k) = x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Over.comp_left, lift_snd]`. Conclude with `hy _`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover O hO hcov`. Use `⟨t.card, fun m => (t.equivFin.symm m).1.1.1, fun m => (t.equivFin.symm m).1.2, fun m => (t.equivFin.symm m).1.1.2, fun p hp y => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨i, hi, x, hxW, hxy⟩ : ∃ i ∈ t, y.left (IsLocalRing.closedPoint k) ∈ O i := by`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using ht (Set.mem_univ (y.left (IsLocalRing.closedPoint k)))`. Take `⟨m, rfl⟩ : ∃ m, i = (t.equivFin.symm m).1` from `⟨t.equivFin ⟨i, hi⟩, by simp⟩`. Use `⟨m, ?_⟩` and prove the remaining obligations. Simplify using `only`. Generalize the expression as in `(t.equivFin.symm m).1 = i at x hxW hxy ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, h₂, -, -⟩` from `i.1.2`. Establish `: LocallyOfFiniteType (i.1.1 ⊗ G).hom` using `inferInstanceAs (LocallyOfFiniteType (pullback.fst i.1.1.hom G.hom ≫ i.1.1.hom))`. Establish `: JacobsonSpace (i.1.1 ⊗ G).left` using `LocallyOfFiniteType.jacobsonSpace ((i.1.1 ⊗ G).hom ≫ s)`. Establish `hy : y.left ≫ G.hom ≫ s = 𝟙 (Spec (.of k))`. Rewrite using `[← Category.assoc, Over.w y]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hp`. Establish `hyc : IsClosed {y.left (IsLocalRing.closedPoint k)}` using `((pointEquivClosedPoint (G.hom ≫ s)) ⟨y.left, hy⟩).2`. Take `⟨x', ⟨hx'W, hx'y⟩, hc⟩` from `nonempty_inter_closedPoints (Z := ((mv i).left ⁻¹ᵁ W : Set _) ∩ (snd i.1.1 G).left ⁻¹' {y.left (IsLocalRing.closedPoint k)}) ⟨x, hxW, hxy⟩ (((mv i).left ⁻¹ᵁ W).isOpen.isLocallyClosed.inter (hyc.preimage (snd i.1.1 G).left.continuous).isLocallyClosed)`. Take `⟨p', hp', q, hq⟩` from `exists_point s (i.1.1 ⊗ G) x' hc`. Establish `e : (q ≫ snd i.1.1 G).left = y.left`.
-
-Use `ext_of_apply_closedPoint_eq (K := k) (G.hom ≫ s) ?_ hy ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, Over.w (q ≫ snd i.1.1 G)]`. Conclude with `hp'`. Conclude with `(congrArg (snd i.1.1 G).left (hq _)).trans hx'y`. Take `rfl : p' = p` from `(Over.w (q ≫ snd i.1.1 G)).symm.trans ((congrArg (· ≫ G.hom) e).trans (Over.w y))`.
-
-Establish `e' : q ≫ snd i.1.1 G = y` using `Over.OverMorphism.ext e`. Use `⟨q ≫ fst i.1.1 G, q ≫ mv i, fun a _ => ?_, ?_⟩` and prove the remaining obligations. Use `show (mv i).left (q.left a) ∈ W`. Rewrite using `[hq a]`. Conclude with `hx'W`.
-
-Simplify using `only [mv, MonObj.comp_mul, GrpObj.comp_inv, e', Category.assoc] group`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem finite_cover_of_quasi_finite_local {k : Type} [Field k] [IsAlgClosed k] {C : Scheme.{0}} (s : C ⟶ Spec (.of k))
     [LocallyOfFiniteType s] [QuasiCompact s] (G : Over C) [GrpObj G] [LocallyOfFiniteType G.hom] [QuasiCompact G.hom]
@@ -125,9 +119,9 @@ private theorem finite_cover_of_quasi_finite_local {k : Type} [Field k] [IsAlgCl
     group
 
 /- English proof (translation)
-Introduce `k _ _ C _ hC G _ h₁ h₂ W hW hZ`. Establish `: IsProper (strHom k C)`. Take `⟨N, i, hi, e⟩` from `hC.2.1`. Use `isProper_str k N` as an intermediate fact. Rewrite using `[← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Conclude with `finite_cover_of_quasi_finite_local (strHom k C) G W hW hZ`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.finite_cover_of_quasi_finite :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)], IsCurve k C →

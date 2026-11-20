@@ -20,15 +20,15 @@ noncomputable def blockL (E : Type) [Field E] (r s : ℕ) : Lie E (r + s) :=
   ∑ i : Fin r, toL (Matrix.single (Fin.castAdd s i) (Fin.castAdd s i) (1 : Cinf E))
 
 /- English proof (translation)
-Establish `e : blockL E r s i j w = ∑ k : Fin r, ((Matrix.single (Fin.castAdd s k) (Fin.castAdd s k) (1 : Cinf E)) i j) w`. Simplify using `only [blockL, Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Rewrite using `[if_pos rfl]`. Distinguish the cases in `hi : (i : ℕ) < r`. Rewrite using `[if_pos hi, Finset.sum_eq_single (⟨i, hi⟩ : Fin r)]`. Establish `: Fin.castAdd s (⟨i, hi⟩ : Fin r) = i` using `Fin.ext rfl`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[this]`. Introduce `b _ hb`. Establish `: Fin.castAdd s b ≠ i` using `fun h => hb (Fin.ext (show (b : ℕ) = i from congrArg Fin.val h))`. Simplify using `[Matrix.single_apply, this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hi]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `: Fin.castAdd s k ≠ i` using `fun h => hi (by rw [← h]; exact k.2)`. Simplify using `[Matrix.single_apply, this]`. Rewrite using `[if_neg hij]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `: ¬ (Fin.castAdd s k = i ∧ Fin.castAdd s k = j)` using `fun h => hij (h.1.symm.trans h.2)`. Simplify using `[Matrix.single_apply, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blockL_apply (E : Type) [Field E] (r s : ℕ) (i j : Fin (r + s)) (w : InfinitePlace E) :
     blockL E r s i j w = if i = j then (if (i : ℕ) < r then (1 : ℂ) else 0) else 0 := by
@@ -58,20 +58,20 @@ theorem blockL_apply (E : Type) [Field E] (r s : ℕ) (i j : Fin (r + s)) (w : I
     simp [Matrix.single_apply, this]
 
 /- English proof (translation)
-The claim follows from `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun w => h i j w`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_entries {ι : Type} [Fintype ι] {a : ℕ} (f : ℝ → Fin a → Fin a → ι → ℂ) (X : Fin a → Fin a → ι → ℂ)
     (h : ∀ i j w, HasDerivAt (fun t => f t i j w) (X i j w) 0) : HasDerivAt f X 0 :=
   hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun w => h i j w
 
 /- English proof (translation)
-Use `hasDerivAt_entries _ _ fun i j w => ?_` and prove the remaining obligations. Rewrite using `[blockL_apply]`. Establish `e : (fun t : ℝ => (toL (aInf E (r + s) r t).val) i j w) = fun t : ℝ => if i = j then Complex.exp (if (i : ℕ) < r then (t : ℂ) else 0) else 0`. Use function extensionality and compare the values at `t`. Distinguish the cases in `hij : i = j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using `[aInf]`. Simplify using `[aInf, hij]`. Rewrite using `[e]`. Distinguish the cases in `hij : i = j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_pos hij]`. Distinguish the cases in `hi : (i : ℕ) < r`. Simplify using `only [if_pos hi]`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).cexp`. Simplify using `only [if_neg hi]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `using hasDerivAt_const (0 : ℝ) (1 : ℂ)`. Simplify using `only [if_neg hij]`. Conclude with `hasDerivAt_const _ _`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_aInf (E : Type) [Field E] [NumberField E] (r s : ℕ) :
     HasDerivAt (fun t : ℝ => toL (aInf E (r + s) r t).val) (blockL E r s) 0 := by
@@ -96,7 +96,7 @@ theorem hasDerivAt_aInf (E : Type) [Field E] [NumberField E] (r s : ℕ) :
     exact hasDerivAt_const _ _
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun i _ => GlobalTheory.CompanionTheory.CapelliTrace.sum_Eop _ _, blockL, map_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lie_blockL (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : ℕ) :
     lie E (r + s) (blockL E r s) =
@@ -105,13 +105,13 @@ theorem lie_blockL (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r 
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ r s F g t`. Establish `h0 : aInf E (r + s) r 0 = 1` using `Units.ext (by`. Express the relevant statement in the definitionally equal form `Matrix.diagonal _ = 1`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i w`. Use the proof step `simp)`. Establish `h1` using `hasDerivAt_curve F (g * aT E (r + s) r t) (aInf E (r + s) r) (blockL E r s) h0 (hasDerivAt_aInf E r s)`. Establish `h2 : HasDerivAt (fun u : ℝ => F.1 ((g * aT E (r + s) r t) * infGL E (r + s) (aInf E (r + s) r (u - t)))) (lieD (blockL E r s) F.1 (g * aT E (r + s) r t)) t` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact h1)`. Rewrite using `[← lie_blockL]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e : aT E (r + s) r u = aT E (r + s) r t * infGL E (r + s) (aInf E (r + s) r (u - t))`. Rewrite using `[← aT, ← PExpFin.aT_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only []`. Rewrite using `[e, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_aT_right : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : ℕ) (F : Sm E (r + s)) (g : GA E (r + s)) (t : ℝ),
   HasDerivAt (fun t : ℝ => F.1 (g * aT E (r + s) r t))

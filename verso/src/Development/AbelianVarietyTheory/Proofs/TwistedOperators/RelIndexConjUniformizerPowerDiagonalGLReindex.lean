@@ -18,9 +18,9 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Subgroup.map_equiv_eq_comap_symm', Subgroup.mem_comap, GlobalTheory.SplitFlip.mem_KO_iff, GlobalTheory.SplitFlip.mem_KO_iff]`. Establish `h1 : ∀ i j, ((reindexGL k σ).symm x).val i j = x.val (σ i) (σ j)` using `fun i j => rfl`. Establish `h2 : ∀ i j, (((reindexGL k σ).symm x)⁻¹).val i j = (x⁻¹).val (σ i) (σ j)` using `fun i j => by`. Rewrite using `[← map_inv]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_coe, h1, h2]`. Conclude with `and_congr ⟨fun h i j => by simpa using h (σ.symm i) (σ.symm j), fun h i j => h _ _⟩ ⟨fun h i j => by simpa using h (σ.symm i) (σ.symm j), fun h i j => h _ _⟩`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_reindexGL_KO (σ : n ≃ n') : (KO k n).map (reindexGL k σ).toMonoidHom = KO k n' := by
   ext x
@@ -33,7 +33,7 @@ theorem map_reindexGL_KO (σ : n ≃ n') : (KO k n).map (reindexGL k σ).toMonoi
     ⟨fun h i j => by simpa using h (σ.symm i) (σ.symm j), fun h i j => h _ _⟩
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[val_reindexGL, val_torusElt, val_torusElt, Matrix.reindex_apply, Matrix.submatrix_diagonal_equiv]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem reindexGL_torusElt (σ : n ≃ n') (ϖ : kˣ) (e : n → ℤ) :
     reindexGL k σ (torusElt k n ϖ e) = torusElt k n' ϖ (e ∘ σ.symm) := by
@@ -42,13 +42,11 @@ theorem reindexGL_torusElt (σ : n ≃ n') (ϖ : kˣ) (e : n → ℤ) :
   rfl
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ϖ n n' _ _ _ _ σ e`. Use `set φ := reindexGL k σ`. Establish `hconj : ∀ g : GL n k, ∀ H : Subgroup (GL n k), (H.map (MulAut.conj g).toMonoidHom).map φ.toMonoidHom = (H.map φ.toMonoidHom).map (MulAut.conj (φ g)).toMonoidHom`. Introduce `g H`. Rewrite using `[Subgroup.map_map, Subgroup.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `x : 1`. Simplify using `[φ, map_mul, map_inv]`. Establish `hK` using `map_reindexGL_KO k σ`. Rewrite using `[← reindexGL_torusElt k σ ϖ e, ← hK, ← hconj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ A B : Subgroup (GL n k), (A.map φ.toMonoidHom).relIndex (B.map φ.toMonoidHom) = A.relIndex B`. Introduce `A B`. Rewrite using `[Subgroup.map_equiv_eq_comap_symm' φ A, Subgroup.relIndex_comap, Subgroup.map_map]`. Establish `: (φ.symm.toMonoidHom.comp φ.toMonoidHom) = MonoidHom.id _` using `by ext x : 1; simp`. Rewrite using `[this, Subgroup.map_id]`.
-
-Conclude with `key _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_conj_torusElt_reindex : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ϖ : kˣ)
     (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (σ : n ≃ n') (e : n → ℤ),

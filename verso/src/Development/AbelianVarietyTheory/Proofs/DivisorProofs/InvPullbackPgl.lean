@@ -8,14 +8,14 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pull_htCast (q : ℕ) {E E' : Spc} (f : E ⟶ E') {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E' n i) :
     pull _ f _ _ (Ht.cast hn hi x) = Ht.cast hn hi (pull _ f _ _ x : Ht q E n i) := by
   subst hn; subst hi; rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [cpow_zero, cpow_zero, pull_htCast, (hA q).2.1 f hE']`. Consider the case `succ k ih => rw [cpow_succ, cpow_succ, pull_htCast, (hA q).1, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pull_cpow (q : ℕ) [NeZero q] (hA : DivisorNaturality) {E E' : Spc} (f : E ⟶ E') (hE' : Inv q E') (x : Ht q E' 2 1) (k : ℕ) :
     pull _ f _ _ (cpow q x k) = cpow q (pull _ f _ _ x : Ht q E 2 1) k := by
@@ -24,7 +24,7 @@ theorem pull_cpow (q : ℕ) [NeZero q] (hA : DivisorNaturality) {E E' : Spc} (f 
   | succ k ih => rw [cpow_succ, cpow_succ, pull_htCast, (hA q).1, ih]
 
 /- English proof (translation)
-Introduce `U ⟨x⟩` and use `hE U ⟨Sx.map (pullback.fst V (PGL.pr N)) x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_pullback_pgl (q : ℕ) {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) (hE : Inv q E) :
     Inv q (pullback V (PGL.pr N)) := fun U ⟨x⟩ => hE U ⟨Sx.map (pullback.fst V (PGL.pr N)) x⟩

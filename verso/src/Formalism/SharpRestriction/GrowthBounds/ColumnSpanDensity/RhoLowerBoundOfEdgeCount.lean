@@ -12,9 +12,9 @@ def RestEdgeCount : Prop :=
       (∀ i, IsEdge p n' 1 (es i) ∧ (es i).tgt = L) ∧ gaussianNumber (p ^ n') k ≤ Ne
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `scale at hx`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hx`. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.lsmul_apply, zpow_natCast]`. Rewrite using `[← map_pow, algebraMap_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.smul_mem _ hy`.
+A detailed English derivation is pending.
 -/
 theorem scale_pos_le {O Kf X : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup X] [Module Kf X]
     [Module O X] [IsScalarTower O Kf X] (w : O) (c : ℕ) (M : Submodule O X) :
@@ -31,7 +31,7 @@ section Clean
 variable {p n' : ℕ} (R : RS p n') {m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ)
 
 /- English proof (translation)
-Establish `hs` using `R.std`. Unfold `UnramifiedQuadraticSetting at hs`. Rewrite using `[← map_pow, hs.1.w_sq, map_natCast]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem RS.p_eq : (p : R.Kf) = algebraMap R.O R.Kf R.w ^ 2 := by
   have hs := R.std
@@ -39,7 +39,7 @@ theorem RS.p_eq : (p : R.Kf) = algebraMap R.O R.Kf R.w ^ 2 := by
   rw [← map_pow, hs.1.w_sq, map_natCast]
 
 /- English proof (translation)
-Establish `hs` using `R.std`. Unfold `UnramifiedQuadraticSetting at hs`. Rewrite using `[← hs.1.w_sq]`. Conclude with `pow_ne_zero 2 hs.2.1.ne_zero`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RS.p_ne : (p : R.O) ≠ 0 := by
   have hs := R.std
@@ -48,7 +48,7 @@ theorem RS.p_ne : (p : R.O) ≠ 0 := by
   exact pow_ne_zero 2 hs.2.1.ne_zero
 
 /- English proof (translation)
-Establish `hs` using `R.std`. Unfold `UnramifiedQuadraticSetting at hs`. Rewrite using `[← hs.1.w_sq]`. Introduce `h`. Conclude with `hs.2.1.not_isUnit (isUnit_of_dvd_unit (dvd_pow_self R.w two_ne_zero) h)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem RS.p_not_unit : ¬ IsUnit (p : R.O) := by
   have hs := R.std
@@ -58,7 +58,7 @@ theorem RS.p_not_unit : ¬ IsUnit (p : R.O) := by
   exact hs.2.1.not_isUnit (isUnit_of_dvd_unit (dvd_pow_self R.w two_ne_zero) h)
 
 /- English proof (translation)
-Establish `hs` using `R.std`. Unfold `UnramifiedQuadraticSetting at hs`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr hs.2.1.not_isUnit)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem RS.w_mem : R.w ∈ IsLocalRing.maximalIdeal R.O := by
   have hs := R.std
@@ -72,7 +72,7 @@ theorem be_add (F : Vsp R.Kf lam0) (G G' : Module.Dual R.Kf (Vsp R.Kf lam0)) :
     be p 1 lam0 F (G + G') = be p 1 lam0 F G + be p 1 lam0 F G' := rfl
 
 /- English proof (translation)
-Unfold `be`. Rewrite using `[LinearMap.smul_apply, Algebra.smul_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem be_smul (F : Vsp R.Kf lam0) (c : R.O) (G : Module.Dual R.Kf (Vsp R.Kf lam0)) :
     be p 1 lam0 F (c • G) = algebraMap R.O R.Kf c * be p 1 lam0 F G := by
@@ -80,7 +80,7 @@ theorem be_smul (F : Vsp R.Kf lam0) (c : R.O) (G : Module.Dual R.Kf (Vsp R.Kf la
   rw [LinearMap.smul_apply, Algebra.smul_def]
 
 /- English proof (translation)
-Unfold `be`. Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem be_smulK (F : Vsp R.Kf lam0) (c : R.Kf) (G : Module.Dual R.Kf (Vsp R.Kf lam0)) :
     be p 1 lam0 F (c • G) = c * be p 1 lam0 F G := by
@@ -88,7 +88,7 @@ theorem be_smulK (F : Vsp R.Kf lam0) (c : R.Kf) (G : Module.Dual R.Kf (Vsp R.Kf 
   rw [LinearMap.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `be`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, Algebra.smul_def, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem be_sum (F : Vsp R.Kf lam0) {ι : Type*} (s : Finset ι) (c : ι → R.O)
     (G : ι → Module.Dual R.Kf (Vsp R.Kf lam0)) :
@@ -99,15 +99,15 @@ theorem be_sum (F : Vsp R.Kf lam0) {ι : Type*} (s : Finset ι) (c : ι → R.O)
   rw [LinearMap.smul_apply, Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Establish `hs` using `R.std`. Unfold `UnramifiedQuadraticSetting at hs`. Use `hs.1.frac_O` as an intermediate fact. Use `set a : R.Kf := algebraMap R.O R.Kf R.w with ha`. Establish `ha0 : a ≠ 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, Ne, map_eq_zero_iff _ (IsFractionRing.injective R.O R.Kf)]`. Conclude with `hs.2.1.ne_zero`. Unfold `Re scale at hF`. Unfold `Re' scale at hG`. Take `⟨F0, hF0, rfl⟩` from `Submodule.mem_map.mp hF`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨G0, hG0, rfl⟩` from `Submodule.mem_map.mp hG`. Take `⟨b, hb⟩` from `hG0 F0 hF0`. Use `⟨b, ?_⟩` and prove the remaining obligations. Use `set A : ℤ := Ar 1 lam0`. Establish `key : a ^ (-A) * ((a ^ 2) ^ A * a ^ (-A)) = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← zpow_natCast a 2, ← zpow_mul, ← zpow_add₀ ha0, ← zpow_add₀ ha0]`. Establish `h0 : -A + (((2 : ℕ) : ℤ) * A + -A) = 0` using `by push_cast; ring`. Rewrite using `[h0, zpow_zero]`. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.lsmul_apply]`. Unfold `be`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[LinearMap.smul_apply, map_smul, map_smul, RS.p_eq R, hb]`. Simplify using `only [smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem be_Re (e : Edge R.W R.Qq (m + 1)) {F : Vsp R.Kf lam0} {G : Module.Dual R.Kf (Vsp R.Kf lam0)}
     (hF : F ∈ Re p R.ι R.σ R.w 1 lam0 e) (hG : G ∈ Re' p R.ι R.σ R.w 1 lam0 e) :
@@ -140,9 +140,9 @@ theorem be_Re (e : Edge R.W R.Qq (m + 1)) {F : Vsp R.Kf lam0} {G : Module.Dual R
     _ = G0 F0 := by rw [key, one_mul]
 
 /- English proof (translation)
-Unfold `scale at hG`. Take `⟨G0, hG0, rfl⟩` from `Submodule.mem_map.mp hG`. Take `⟨b, hb⟩` from `be_Re R lam0 e hF hG0`. Use `⟨b, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.lsmul_apply, zpow_natCast]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[be_smulK, hb, ← map_pow, ← map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem be_Re_scale (e : Edge R.W R.Qq (m + 1)) (c : ℕ) {F : Vsp R.Kf lam0}
     {G : Module.Dual R.Kf (Vsp R.Kf lam0)} (hF : F ∈ Re p R.ι R.σ R.w 1 lam0 e)
@@ -156,11 +156,11 @@ theorem be_Re_scale (e : Edge R.W R.Qq (m + 1)) (c : ℕ) {F : Vsp R.Kf lam0}
   rw [be_smulK, hb, ← map_pow, ← map_mul]
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `CCL at hx`. Unfold `Nsrc`. Simplify using `only [Submodule.mem_inf] at hx ⊢`. Use `⟨hx.1.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Submodule.mem_iInf]`. Introduce `e' he'`. Distinguish the cases in `hne : e' = e`. Substitute `hne` using the available equality. Conclude with `hx.1.2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h3` using `hx.2`. Simplify using `only [Submodule.mem_iInf] at h3`. Conclude with `scale_pos_le R.w c _ (h3 e' ⟨he'.1, he'.2, hne⟩)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CCL_le_Nsrc (t c : ℕ) (e : Edge R.W R.Qq (m + 1)) :
     CCL R lam0 t c e ≤ Nsrc p n' R.ι R.σ R.w 1 lam0 t e.src := by
@@ -179,11 +179,11 @@ theorem CCL_le_Nsrc (t c : ℕ) (e : Edge R.W R.Qq (m + 1)) :
     exact scale_pos_le R.w c _ (h3 e' ⟨he'.1, he'.2, hne⟩)
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `CCL' at hx`. Unfold `Ntgt`. Simplify using `only [Submodule.mem_inf] at hx ⊢`. Use `⟨hx.1.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Submodule.mem_iInf]`. Introduce `e' he'`. Distinguish the cases in `hne : e' = e`. Substitute `hne` using the available equality. Conclude with `hx.1.2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h3` using `hx.2`. Simplify using `only [Submodule.mem_iInf] at h3`. Conclude with `scale_pos_le R.w c _ (h3 e' ⟨he'.1, he'.2, hne⟩)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CCL'_le_Ntgt (t c : ℕ) (e : Edge R.W R.Qq (m + 1)) :
     CCL' R lam0 t c e ≤ Ntgt p n' R.ι R.σ R.w 1 lam0 t e.tgt := by
@@ -202,7 +202,7 @@ theorem CCL'_le_Ntgt (t c : ℕ) (e : Edge R.W R.Qq (m + 1)) :
     exact scale_pos_le R.w c _ (h3 e' ⟨he'.1, he'.2, hne⟩)
 
 /- English proof (translation)
-Unfold `CCL at hx`. Rewrite `hx` using `[Submodule.mem_inf]`. Establish `h3` using `hx.2`. Simplify using `only [Submodule.mem_iInf] at h3`. Conclude with `h3 e' ⟨he', hs, hne⟩`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CCL_other (t c : ℕ) (e e' : Edge R.W R.Qq (m + 1)) (he' : IsEdge p n' 1 e') (hs : e'.src = e.src)
     (hne : e' ≠ e) {x : Vsp R.Kf lam0} (hx : x ∈ CCL R lam0 t c e) :
@@ -214,7 +214,7 @@ theorem CCL_other (t c : ℕ) (e e' : Edge R.W R.Qq (m + 1)) (he' : IsEdge p n' 
   exact h3 e' ⟨he', hs, hne⟩
 
 /- English proof (translation)
-Unfold `CCL' at hx`. Rewrite `hx` using `[Submodule.mem_inf]`. Establish `h3` using `hx.2`. Simplify using `only [Submodule.mem_iInf] at h3`. Conclude with `h3 e' ⟨he', hs, hne⟩`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CCL'_other (t c : ℕ) (e e' : Edge R.W R.Qq (m + 1)) (he' : IsEdge p n' 1 e') (hs : e'.tgt = e.tgt)
     (hne : e' ≠ e) {x : Module.Dual R.Kf (Vsp R.Kf lam0)} (hx : x ∈ CCL' R lam0 t c e) :
@@ -226,11 +226,11 @@ theorem CCL'_other (t c : ℕ) (e e' : Edge R.W R.Qq (m + 1)) (he' : IsEdge p n'
   exact h3 e' ⟨he', hs, hne⟩
 
 /- English proof (translation)
-Establish `hs` using `R.std`. Unfold `UnramifiedQuadraticSetting at hs`. Establish `hq1 : ((p : ℝ) ^ n') ≠ 1`. Introduce `h1`. Establish `h1' : p ^ n' = 1` using `by exact_mod_cast h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc` using `hs.2.2.1`. Rewrite `hc` using `[pow_mul', h1', one_pow]`. Use `haveI : Subsingleton (R.O ⧸ Ideal.span {R.w}) := (Nat.card_eq_one_iff_unique.mp hc).1`. Establish `htop` using `Ideal.Quotient.subsingleton_iff.mp this`. Conclude with `hs.2.1.not_isUnit (Ideal.span_singleton_eq_top.mp htop)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Unfold `gaussianNumber`. Use `push_cast`. Rewrite using `[← geom_sum_eq hq1]`. Conclude with `Finset.sum_pos' (fun i _ => by positivity) ⟨0, Finset.mem_range.mpr (by omega), by simp⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussianNumber_prime_pow_pos (R : RS p n') (k : ℕ) (hk : 1 ≤ k) : 0 < gaussianNumber (p ^ n') k := by
   have hs := R.std
@@ -251,45 +251,41 @@ theorem gaussianNumber_prime_pow_pos (R : RS p n') (k : ℕ) (hk : 1 ≤ k) : 0 
 end Clean
 
 /- English proof (translation)
-Introduce `p n' R m lam0 _ t c D κ h8 h4 hrho`. Use `⟨h4, fun L hL => ?_⟩` and prove the remaining obligations. Establish `hs` using `R.std`. Unfold `UnramifiedQuadraticSetting at hs`. Establish `hp0` using `RS.p_ne R`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hpu` using `RS.p_not_unit R`. Take `⟨Ne, es, hinj, hes, hNe⟩` from `hcnt p n' R (m + 1) (by omega) L hL`. Establish `hdata : ∀ j : Fin Ne, ∃ (k : ℕ) (x : Fin k → Vsp R.Kf lam0) (y : Fin k → Module.Dual R.Kf (Vsp R.Kf lam0)) (z : R.O) (P : Matrix (Fin k) (Fin k) R.O), (1 - κ) * dL R lam0 ≤ k ∧ (∀ i, x i ∈ CCL R lam0 t c (es j)) ∧ (∀ i, y i ∈ CCL' R lam0 t c (es j)) ∧ z ≠ 0 ∧ z ∣ (p : R.O) ^ D ∧ …`. Introduce `j`. Take `⟨k, hk, hfac⟩` from `hrho (es j) (hes j).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Break down `hfac with rfl | ⟨x, y, hx, hy, z, P, hz, hv, hP⟩` into its components or cases. Conclude with `⟨0, Fin.elim0, Fin.elim0, 1, 0, by simpa using hk, fun i => i.elim0, fun i => i.elim0, one_ne_zero, one_dvd _, fun i => i.elim0⟩`. Conclude with `⟨k, x, y, z, P, hk, hx, hy, hz, dvd_pow_of_vLEO hp0 hpu hz hv, hP⟩`. Use `choose k x y z P hk hx hy hz hzd hP using hdata`. Establish `hzd' : ∀ j, ∃ q : R.O, (p : R.O) ^ D = z j * q` using `fun j => by`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `hzd j`. Conclude with `⟨q, hq⟩`. Use `choose zq hzq using hzd'`. Establish `hkey : ∀ s s' : (Σ j : Fin Ne, Fin (k j)), ∃ b : R.O, be p 1 lam0 (x s.1 s.2) (∑ l', P s'.1 l' s'.2 • y s'.1 l') = algebraMap R.O R.Kf ((if s = s' then z s'.1 else 0) + R.w ^ c * b)`. Introduce and unpack `⟨j, i⟩ ⟨j', l⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[be_sum R lam0]`. Distinguish the cases in `hj : j = j'`. Substitute `hj` using the available equality. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[hP j i l]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hil : i = l`. Substitute `hil` using the available equality. Simplify using the standard rewrite rules. Establish `hne : (⟨j, i⟩ : Σ j, Fin (k j)) ≠ ⟨j, l⟩` using `fun h => hil (eq_of_heq (Sigma.mk.inj_iff.1 h).2)`. Simplify using `[hil, hne]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : es j ≠ es j'` using `fun h => hj (hinj h)`. Establish `hxRe : x j i ∈ Re p R.ι R.σ R.w 1 lam0 (es j)`. Establish `h` using `hx j i`. Unfold `CCL at h`. Conclude with `(Submodule.mem_inf.1 (Submodule.mem_inf.1 h).1).2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb : ∀ l', ∃ b : R.O, be p 1 lam0 (x j i) (y j' l') = algebraMap R.O R.Kf (R.w ^ c * b)` using `fun l' => be_Re_scale R lam0 (es j) c hxRe (CCL'_other R lam0 t c (es j') (es j) (hes j).1 ((hes j).2.trans (hes j').2.symm) hne (hy j' l'))`. Use `choose b hb using hb`. Use `⟨∑ l', b l' * P j' l' l, ?_⟩` and prove the remaining obligations. Establish `hs' : (⟨j, i⟩ : Σ j, Fin (k j)) ≠ ⟨j', l⟩` using `fun h => hj (congrArg Sigma.fst h)`. Rewrite using `[if_neg hs', zero_add, Finset.mul_sum, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[hb l', ← map_mul, mul_assoc]`. Use `choose B hB using hkey`. Use `set T : ℕ := ∑ j, k j with hT`. Set `σE : Fin T ≃ (Σ j : Fin Ne, Fin (k j))` to `finSigmaFinEquiv.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcount : (1 - κ) * (dimV R.Kf lam0 : ℝ) ≤ (T : ℝ)`. Establish `hsum : (Ne : ℝ) * ((1 - κ) * dL R lam0) ≤ (T : ℝ)`. Establish `h` using `Finset.card_nsmul_le_sum (Finset.univ : Finset (Fin Ne)) (fun j => (k j : ℝ)) ((1 - κ) * dL R lam0) (fun j _ => hk j)`. Simplify `h` using `[hT, nsmul_eq_mul, Nat.cast_sum]`. Establish `hN0` using `gaussianNumber_prime_pow_pos R (m + 1) (by omega)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdim : (0 : ℝ) ≤ dimV R.Kf lam0` using `Nat.cast_nonneg _`. Establish `hT0 : (0 : ℝ) ≤ T` using `Nat.cast_nonneg _`. Distinguish the cases in `hκ : 1 - κ ≤ 0`. Use the polynomial consequences of the given equalities and inequalities. Establish `hκ' : 0 < 1 - κ` using `lt_of_not_ge hκ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation.
 
-Establish `hdL0 : 0 ≤ dL R lam0`. Unfold `dL`. Conclude with `div_nonneg hdim hN0.le`. Establish `hdL : dL R lam0 * gaussianNumber (p ^ n') (m + 1) = dimV R.Kf lam0`. Unfold `dL`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation. Establish `hYmem : ∀ l : Fin T, (∑ l', P (σE l).1 l' (σE l).2 • y (σE l).1 l') ∈ Ntgt p n' R.ι R.σ R.w 1 lam0 t L`. Introduce `l`. Establish `h1 : (∑ l', P (σE l).1 l' (σE l).2 • y (σE l).1 l') ∈ CCL' R lam0 t c (es (σE l).1)` using `Submodule.sum_mem _ fun l' _ => Submodule.smul_mem _ _ (hy _ l')`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `CCL'_le_Ntgt R lam0 t c (es (σE l).1) h1`. Rewrite `h2` using `[(hes (σE l).1).2]`. Then use the resulting hypothesis. Use `set P' : Matrix (Fin T) (Fin T) R.O := fun i l => (if i = l then 1 else 0) + zq (σE l).1 * R.w ^ (c - 2 * D) * B (σE i) (σE l) with hP'`. Establish `hPunit : IsUnit P'.det`. Apply `isUnit_det_of_one_add` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `i l`. Establish `he : P' i l - (1 : Matrix (Fin T) (Fin T) R.O) i l = zq (σE l).1 * R.w ^ (c - 2 * D) * B (σE i) (σE l)`. Rewrite using `[hP', Matrix.one_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Ideal.mul_mem_right` to reduce the goal to its premises. Apply `Ideal.mul_mem_left` to reduce the goal to its premises. Conclude with `Ideal.pow_mem_of_mem _ (RS.w_mem R) _ (by omega)`. Establish `hw : R.w ^ c = (p : R.O) ^ D * R.w ^ (c - 2 * D)`. Rewrite using `[← hs.1.w_sq, ← pow_mul, ← pow_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Use `⟨T, fun i => es (σE i).1, fun i => x (σE i).1 (σE i).2, fun i => hes _, fun i => CCL_le_Nsrc R lam0 t c _ (hx _ _), fun i e' he' hs' hne => CCL_other R lam0 t c _ e' he' hs' hne (hx _ _), T, hcount, ?_⟩` and prove the remaining obligations. Use `goodRank_core (p : R.O) (Ntgt p n' R.ι R.σ R.w 1 lam0 t L) (fun i G => be p 1 lam0 (x (σE i).1 (σE i).2) G) D (fun i G G' => be_add R lam0 _ G G') (fun i a G => be_smul R lam0 _ a G) (fun l => ∑ l', P (σE l).1 l' (σE l).2 • y (σE l).1 l') hYmem P' (fun l => z (σE l).1) (fun l => …` and prove the remaining obligations. Introduce `i l`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show be p 1 lam0 (x (σE i).1 (σE i).2) (∑ l', P (σE l).1 l' (σE l).2 • y (σE l).1 l') = _`. Rewrite using `[hB (σE i) (σE l)]`. Simplify using `only [Equiv.apply_eq_iff_eq]`. Use `congr 1`. Simplify using `only [hP']`.
-
-Rewrite using `[hw, hzq (σE l).1]`. Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Simplify using `only [if_true]`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using `only [h, if_false]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rho_lower_bound_of_edge_count (hcnt : RestEdgeCount) : RhoLowerBoundLargeConductor := by
   intro p n' R m lam0 _ t c D κ h8 h4 hrho

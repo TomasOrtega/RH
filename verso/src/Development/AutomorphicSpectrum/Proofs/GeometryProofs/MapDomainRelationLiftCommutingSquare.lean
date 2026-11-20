@@ -10,25 +10,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (g.σ.apply_symm_apply (a : E))`.
+A detailed English derivation is pending.
 -/
 theorem HostAut.s_symm_s (g : HostAut H) (a : 𝓞 E) : g.s (g.symm.s a) = a :=
   RingOfIntegers.ext (g.σ.apply_symm_apply (a : E))
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (g.σ.symm_apply_apply (a : E))`.
+A detailed English derivation is pending.
 -/
 theorem HostAut.hostAut_symm_s_s (g : HostAut H) (a : 𝓞 E) : g.symm.s (g.s a) = a :=
   RingOfIntegers.ext (g.σ.symm_apply_apply (a : E))
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem HostAut.hostAut_refl_s (a : 𝓞 E) : (HostAut.refl H).s a = a :=
   RingOfIntegers.ext rfl
 
 /- English proof (translation)
-Consider the cases of `u`. Consider the cases of `v`. Establish `: ∀ a, _ = _` using `h`. Take `rfl : _ = _` from `funext this`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem oAct_eq {O : Type} [CommRing O] {S : Scheme.{0}} {G : Over S} [GrpObj G] {u v : OAct O G}
     (h : ∀ a, u.act a = v.act a) : u = v := by
@@ -39,9 +39,9 @@ theorem oAct_eq {O : Type} [CommRing O] {S : Scheme.{0}} {G : Over S} [GrpObj G]
   rfl
 
 /- English proof (translation)
-Consider the cases of `t with`. Consider the case `mk G semi act PP cub sym adj prim`. Establish `hact : twistAct act g.s = act` using `oAct_eq h`. Establish `key : ∀ (act' : OAct (𝓞 E) G) (_ : act' = act) (adj' prim'), (SAB.mk G semi act' PP cub sym adj' prim' : SAB H S) = SAB.mk G semi act PP cub sym adj prim`. Introduce `act' e adj' prim'`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `e` using the available equality. Both sides reduce to the same expression. Conclude with `key _ hact _ _`.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem twistSAB_eq_of_act {S : Scheme.{0}} (t : SAB H S) (g : HostAut H)
     (h : ∀ a, t.act.act (g.s a) = t.act.act a) : twistSAB t g = t := by
@@ -56,9 +56,9 @@ theorem twistSAB_eq_of_act {S : Scheme.{0}} (t : SAB H S) (g : HostAut H)
     exact key _ hact _ _
 
 /- English proof (translation)
-Consider the cases of `t with`. Consider the case `mk G semi act PP cub sym adj prim`. Establish `hact : twistAct (twistAct act g.s) g'.s = act` using `oAct_eq fun a => congrArg act.act (h a)`. Establish `key : ∀ (act' : OAct (𝓞 E) G) (_ : act' = act) (adj' prim'), (SAB.mk G semi act' PP cub sym adj' prim' : SAB H S) = SAB.mk G semi act PP cub sym adj prim`. Introduce `act' e adj' prim'`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `e` using the available equality. Both sides reduce to the same expression. Conclude with `key _ hact _ _`.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem twistSAB_twistSAB {S : Scheme.{0}} (t : SAB H S) (g g' : HostAut H)
     (h : ∀ a, g.s (g'.s a) = a) : twistSAB (twistSAB t g) g' = t := by
@@ -73,7 +73,7 @@ theorem twistSAB_twistSAB {S : Scheme.{0}} (t : SAB H S) (g g' : HostAut H)
     exact key _ hact _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨twistSAB_twistSAB t g g.symm g.s_symm_s, twistSAB_twistSAB t g.symm g g.hostAut_symm_s_s, twistSAB_eq_of_act t _ fun a => congrArg t.act.act (HostAut.hostAut_refl_s a)⟩`.
+Supply the required witnesses or components.
 -/
 theorem twistSAB_symm_refl (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0})
     (t : SAB H S) (g : HostAut H) :

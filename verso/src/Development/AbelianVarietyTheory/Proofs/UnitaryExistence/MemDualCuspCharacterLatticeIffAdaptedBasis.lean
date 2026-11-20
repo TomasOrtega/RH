@@ -15,13 +15,13 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Unfold `FJ.crdI at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, x, hx, hax⟩` from `hv`. Rewrite using `[← h, ← hax]`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff (𝓞 E)⁰).1 (FractionalIdeal.mem_coe.1 ha)`. Rewrite using `[algebraMap_smul]`. Conclude with `X.Λ.smul_mem o hx.1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => exact fun b => (cc' b).zero_mem`. Consider the case `add x y _ _ hx hy`. Conclude with `fun b => FractionalIdeal.mem_coe.1 (Submodule.add_mem _ (FractionalIdeal.mem_coe.2 (hx b)) (FractionalIdeal.mem_coe.2 (hy b)))`. Consider the case `smul c x _ hx`. Conclude with `fun b => FractionalIdeal.mem_coe.1 (Submodule.smul_mem _ c (FractionalIdeal.mem_coe.2 (hx b)))`.
+Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hv`. Use `Submodule.subset_span ⟨1, FractionalIdeal.mem_coe.2 (FractionalIdeal.one_mem_one _), ∑ i, v i • cu.e i, ⟨(h v).2 hv, ?_⟩, one_smul _ _⟩` and prove the remaining obligations. Conclude with `(show ∑ i, v i • cu.e i ∈ Submodule.span E (Set.range cu.e) from sum_mem fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_crdI_one_iff_of_adapted {E : Type} [Field E] [NumberField E] [IsCMField E] {r ρ : ℕ}
     {X : Data E r} (cu : FJ.CuspFD X ρ) (cc' : Fin ρ → FractionalIdeal (𝓞 E)⁰ E)
@@ -51,23 +51,23 @@ theorem mem_crdI_one_iff_of_adapted {E : Type} [Field E] [NumberField E] [IsCMFi
       sum_mem fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))
 
 /- English proof (translation)
-Introduce `E _ _ _ r ρ X cu cc' h u`. Establish `hc` using `mem_crdI_one_iff_of_adapted cu cc' h`. Prove the components needed by the constructor for the conclusion. Introduce `hu a y hy`. Establish `hm : (Pi.single a y : Fin ρ → E) ∈ FJ.XcFD 1 cu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Submodule.subset_span fun x hx => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `hy (x a) ((hc x).1 hx a)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[Pi.single_apply]`. Establish `h2` using `hu _ hm`. Simplify `h2` using `[Pi.single_apply]`. Introduce `hu x hx`. Express the relevant statement in the definitionally equal form `∑ i, u i * x i ∈ (algebraMap (𝓞 E) E).range`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Unfold `FJ.XcFD at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Use `sum_mem fun i _ => hu i (x i) fun a' ha' => ?_` and prove the remaining obligations. Establish `hm : (Pi.single i a' : Fin ρ → E) ∈ FJ.crdI 1 cu`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Introduce `b`. Distinguish the cases in `hb : b = i`. Substitute `hb` using the available equality. Simplify using `using ha'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Pi.single_eq_of_ne hb]`. Conclude with `(cc' b).zero_mem`. Take `⟨n, hn⟩` from `hx _ hm`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[hn]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `[Pi.single_apply]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `e : ∑ i, u i * (c • x) i = algebraMap (𝓞 E) E c * ∑ i, u i * x i`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem ⟨c, rfl⟩ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_dualOE_xcFD_one_iff_of_adapted : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ : ℕ) (X : Data E r) (cu : FJ.CuspFD X ρ) (cc' : Fin ρ → FractionalIdeal (𝓞 E)⁰ E), (∀ a : Fin ρ → E, (∑ b, a b • cu.e b) ∈ X.Λ ↔ ∀ b, a b ∈ cc' b) → ∀ u : Fin ρ → E, u ∈ FJ.dualOE (FJ.XcFD 1 cu) ↔ ∀ a (y : E), (∀ a' ∈ cc' a, ∃ n : ℤ, Algebra.trace ℚ E (y * a') = n) → u a * y ∈ Set.range (algebraMap (𝓞 E) E) := by
   intro E _ _ _ r ρ X cu cc' h u

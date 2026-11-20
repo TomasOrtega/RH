@@ -33,15 +33,15 @@ def polOf {Pl0 : Type} (ok : Set Pl0) (r : ℕ) (q : Pl0 → ℕ) (c : ok × ℕ
   if h : P ∈ ok then Col.heckePoly r (fun P : ok => q P) c ⟨P, h⟩ else 1
 
 /- English proof (translation)
-The claim follows from `dif_pos P.2`.
+A detailed English derivation is pending.
 -/
 theorem polOf_apply {Pl0 : Type} (ok : Set Pl0) (r : ℕ) (q : Pl0 → ℕ) (c : ok × ℕ → ℂ) (P : ok) :
     polOf ok r q c P = Col.heckePoly r (fun P : ok => q P) c P := dif_pos P.2
 
 /- English proof (translation)
-Simplify using `only [hPart, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `P hP k hk α hα B hB`. Establish `h1` using `eigOf_heckePolyOf (hq ⟨P, hP⟩) (fun k => c (⟨P, hP⟩, k)) hk`. Establish `h2 : polOf ok V.rank q c P = _` using `polOf_apply ok V.rank q c ⟨P, hP⟩`. Rewrite using `[LinearMap.sub_apply, ← hT ⟨P, hP⟩ k hk α hα B hB, he, map_smul, LinearMap.smul_apply, LinearMap.id_apply, h2, sub_eq_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· • H.e e) h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem mem_hPart {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {J : Subgroup (GA D V)} {H : HMod (MMap M)}
     {Pl0 : Type} {ok : Set Pl0} {pl : Pl0 → Pl D.host.E} {q : Pl0 → ℕ} (hq : ∀ P : ok, 0 < q P)
@@ -59,11 +59,11 @@ theorem mem_hPart {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {J 
   exact congrArg (· • H.e e) h1.symm
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Establish `hf` using `model_form (W := c.W) (ι := Bridge.ratF V) (ρ := c.coef.ρ) (J := (levEnv V β L).J) (χ := (levEnv V β L).χ) B.pres N hN hj`. Take `⟨T, hT0, hTt, hTc, hTn⟩` from `hT`. Use `comap_range_adjoint_le_blockSum (r := Y.rank) (q := fun P : ok => q P) hf.1 hf.2.1 hc hs hq hn (fun P => (hdeg P).1) (fun P => (hdeg P).2) Θ hT0 hTc hTn s ?_` and prove the remaining obligations. Introduce `x e he P k hk1 hk U hU`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∀ P ∈ ok, (polOf ok Y.rank q x P).natDegree ≤ Y.rank` using `fun P hP => by`. Establish `h : polOf ok Y.rank q x P = _` using `polOf_apply ok Y.rank q x ⟨P, hP⟩`. Rewrite using `[h]`. Conclude with `natDegree_heckePolyOf _ _ _`. Establish `h3` using `hup (polOf ok Y.rank q x) h0 e (mem_hPart hq hTt he) (P, k) hk1 hk _ (B.hecke.hx_ok (P, k) ⟨hk1, hk⟩) _ (B.hecke.hA_loc (P, k) ⟨hk1, hk⟩) (B.hecke.hDC (P, k) ⟨hk1, hk⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(model_dcOp (W := c.W) (ι := Bridge.ratF V) (ρ := c.coef.ρ) (J := (levEnv V β L).J) (χ := (levEnv V β L).χ) B.pres N hN hj (B.hecke.op_eq (P, k) ⟨hk1, hk⟩) hU _).trans h3`. Simplify using `only [polOf_apply] at h4`. Establish `hinj : Function.Injective N.e` using `hN.1`. Conclude with `hinj (h4.trans (N.e.map_smul _ _).symm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem side_le {G Pl0 : Type} [Group G] [Fintype G] {V Y : HSp D} {c : CoefA V} {β : GL (Fin V.rank) (EAf D)}
     {L : LevDat D.host.E ℂ V.rank} {pl : Pl0 → Pl D.host.E} {ok : Set Pl0} {S : CSD D.what₂.LL}
@@ -130,7 +130,7 @@ def LiftsEquivariant : Prop :=
       R.thG i t (R.jV i t (A.leftGroupActionLift i t g v)) = R.gW i (sg0 D A) g (R.thG i t (R.jV i t v))
 
 /- English proof (translation)
-Use extensionality with `v h`. Simplify using `[postOn, gaL, LinearMap.sum_apply, Finset.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem postOn_gaL {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (β : GL (Fin V.rank) (EAf D))
     (L : LevDat D.host.E ℂ V.rank) (eG : G ≃* G0 L.Pg L.r) (c : G → ℂ) (x : MMap M) :
@@ -141,9 +141,9 @@ theorem postOn_gaL {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (�
 variable {R} {F : Face D A}
 
 /- English proof (translation)
-Use `hC.models.HE.1 ?_` and prove the remaining obligations. Establish `h1 : R.HE.e y ∈ R.EEat R.triv`. Rewrite using `[← hC.models.HE.2.1]`. Conclude with `LinearMap.mem_range_self _ y`. Establish `h2 : postOn (R.MY 0) R.e0 (R.HE.e y) - R.HE.e y = 0` using `h1.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ ((postOn_gaL (R.MY 0) (R.βY 0) (R.dat0 R.triv) R.eG _ _).symm.trans (sub_eq_zero.1 h2))` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => by rw [map_smul, hC.models.gE]; rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_rows (hC : R.Char F) (y : R.HE.H) : ∑ g, D.what₂.embLL ((idemOf A.X).coeff g) • R.gE g y = y := by
   refine hC.models.HE.1 ?_
@@ -156,9 +156,9 @@ theorem proj_rows (hC : R.Char F) (y : R.HE.H) : ∑ g, D.what₂.embLL ((idemOf
   exact Finset.sum_congr rfl fun g _ => by rw [map_smul, hC.models.gE]; rfl
 
 /- English proof (translation)
-Establish `h1 : R.thF i t y ∈ LinearMap.range (R.HW i (sg0 D A)).e` using `(hC.models.HW i (sg0 D A)).2.1.ge (hC.thP.thF_mem i t y)`. Take `⟨z, hz⟩` from `h1`. Establish `hs : ∀ a, sg0 D A a = D.what₂.embLL a` using `fun a => by rw [sg0, sgAt_mk _ R.hv0]`. Establish `h2 : R.thG i t y = ∑ g, D.what₂.embLL ((idemOf A.X).coeff g) • R.gW i (sg0 D A) g z`. Use `(hC.models.HW i _).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hC.thP.thG, ← hz, map_sum]`. Use `(postOn_gaL (R.MW i (sg0 D A)) (R.βW i) (R.datWp i R.triv) R.eG _ _).trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun g _ => by rw [map_smul, hC.models.gW, RealDat.eC, hs]; rfl`. Rewrite using `[h2]`. Conclude with `idem_idem _ hOk.irr _ z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_lifts {s : ℕ} (hC : R.Char F) (hOk : A.fam.Ok s) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) :
     ∑ g, D.what₂.embLL ((idemOf A.X).coeff g) • R.gW i (sg0 D A) g (R.thG i t y) = R.thG i t y := by
@@ -175,14 +175,14 @@ theorem proj_lifts {s : ℕ} (hC : R.Char F) (hOk : A.fam.Ok s) (i : Fin D.R.m) 
   exact idem_idem _ hOk.irr _ z
 
 /- English proof (translation)
-The claim follows from `hC.fam.tie.choose_spec.choose_spec.choose_spec.ranks.2.1`.
+A detailed English derivation is pending.
 -/
 theorem r_eq (hC : R.Char F) : A.r = D.R.r := hC.fam.tie.choose_spec.choose_spec.choose_spec.ranks.2.1
 
 /- English proof (translation)
-Establish `hrk : (Yc D 0).rank = A.r`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), r_eq hC]`. Simplify using `[Ranks.rankY]`. Establish `hn : (A.fam.R t).n = (Yc D 0).rank + (A.fam.R t).bl.length * (A.fam.R t).t`. Rewrite using `[hrk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun k => A.r + k * A.t) List.length_ofFn.symm`. Conclude with `le_inf (side_le (R.B.R t) (R.HX t) (hC.models.HX t) (hC.models.jX t) (hOk.what₂ t).comm (hOk.what₂ t).split (q := A.q) (hOk.what₂ t).q_pos R.B.rankR hn (hC.fam.degR t) (hT.1 t) (R.Th t) _ (hR t)) (model_good (W := R.cX.W) (ι := Bridge.ratF D.sp.X') (ρ := R.cX.coef.ρ) (J := (levEn …`.
+A detailed English derivation is pending.
 -/
 theorem rows_le {s : ℕ} (hC : R.Char F) (hOk : A.fam.Ok s) (hT : HeckeOps R) (hR : HeckeUpRows R)
     (hG : LiftsEquivariant R) (t : T) :
@@ -201,9 +201,9 @@ theorem rows_le {s : ℕ} (hC : R.Char F) (hOk : A.fam.Ok s) (hT : HeckeOps R) (
       fun y => proj_rows hC _)
 
 /- English proof (translation)
-Establish `hrk : (Wc D i).rank = A.r`. Rewrite using `[D.sp.W_rank _ (Nat.le_add_left _ _) i.2, r_eq hC]`. Establish `hn : (A.fam.L i t).n = (Wc D i).rank + (A.fam.L i t).bl.length * (A.fam.L i t).t`. Rewrite using `[hrk]`. Use `show A.r + A.t = A.r + 1 * A.t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`. Conclude with `le_inf (side_le (R.B.L i t) (R.HV i t) (hC.models.HV i t) (hC.models.jV i t) (hOk.lifts i t).comm (hOk.lifts i t).split (q := A.q) (hOk.lifts i t).q_pos (R.B.rankL i) hn (hC.fam.degL i t) (hT.2 i t) (R.thG i t) _ (hL i t)) (model_good (W := (R.cV i).W) (ι := Bridge.ratF (Vc D i)) …`.
+A detailed English derivation is pending.
 -/
 theorem lifts_le {s : ℕ} (hC : R.Char F) (hOk : A.fam.Ok s) (hT : HeckeOps R) (hL : HeckeUpLifts R)
     (hG : LiftsEquivariant R) (i : Fin D.R.m) (t : T) :
@@ -222,7 +222,7 @@ theorem lifts_le {s : ℕ} (hC : R.Char F) (hOk : A.fam.Ok s) (hT : HeckeOps R) 
       (R.gW i (sg0 D A)) (hG.2 i t) fun y => proj_lifts hC hOk i t y)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun t x hx => rows_le hC hOk hT hR hG t ((mem_range_adjoint_tw (twAt D.what₂.embLL A.v0) (R.Th t) (R.jX t x)).1 hx), fun i t x hx => lifts_le hC hOk hT hL hG i t ((mem_range_adjoint_tw (twAt D.what₂.embLL A.v0) (R.thG i t) (R.jV i t x)).1 hx)⟩`.
+Supply the required witnesses or components.
 -/
 theorem lBlock {s : ℕ} (hC : R.Char F) (hOk : A.fam.Ok s) (hT : HeckeOps R) (hR : HeckeUpRows R) (hL : HeckeUpLifts R)
     (hG : LiftsEquivariant R) : R.LBlock F :=

@@ -20,7 +20,7 @@ namespace GlobalTheory.CompanionTheory.Ar.ProdHolo
 variable {k : Type} [CommRing k] {Z X : Scheme.{0}} {q : Z ⟶ Sp k} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_ptsIn]`. Rewrite `hx` using `[← h]`. Conclude with `hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ptsIn_preimage {π : Z ⟶ X} {z : CxPts q σ} {x : CxPts p σ} (h : z.1 ≫ π = x.1)
     {U : X.Opens} (hx : x ∈ ptsIn p σ U) : z ∈ ptsIn q σ (π ⁻¹ᵁ U) := by
@@ -29,9 +29,9 @@ theorem mem_ptsIn_preimage {π : Z ⟶ X} {z : CxPts q σ} {x : CxPts p σ} (h :
   exact hx
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.CxPts.ev_res (p := q) (σ := σ) e hz ((π.app U).hom a)`. Use `Eq.trans ?_ (h1.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Establish `h2` using `GlobalTheory.Points.valR_comp z.1 π U a`. Rewrite `h2` using `[h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem ev_appLE {π : Z ⟶ X} {z : CxPts q σ} {x : CxPts p σ} (h : z.1 ≫ π = x.1)
     {U : X.Opens} {W : Z.Opens} (e : W ≤ π ⁻¹ᵁ U) (hz : z ∈ ptsIn q σ W)
@@ -45,17 +45,15 @@ theorem ev_appLE {π : Z ⟶ X} {z : CxPts q σ} {x : CxPts p σ} (h : z.1 ≫ �
     exact h2.symm
 
 /- English proof (translation)
-Introduce `k _ X Y f g σ E _ _ T U V hU hV s₁ s₂ s h₁ h₂ m₁ m₂ d₁ d₂`. Establish `H` using `IsPullback.of_hasPullback f g`. Take `⟨hW, po⟩` from `GlobalTheory.Conormal.isAffineOpen_and_isPushout H (U := ⊤) (T₀ := V) (W := U) (isAffineOpen_top _) hV hU le_top le_top`. Establish `hin : ∀ v ∈ T, s v ∈ ptsIn (pullback.fst f g ≫ f) σ (pullback.fst f g ⁻¹ᵁ U ⊓ pullback.snd f g ⁻¹ᵁ V)` using `fun v hv => mem_ptsIn_inf.2 ⟨mem_ptsIn_preimage (h₁ v) (m₁ v hv), mem_ptsIn_preimage (h₂ v) (m₂ v hv)⟩`. Use `⟨hW, hin, fun t => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht : t ∈ Subring.closure (Set.range (pullback.fst f g |>.appLE U (pullback.fst f g ⁻¹ᵁ U ⊓ pullback.snd f g ⁻¹ᵁ V) inf_le_left).hom ∪ Set.range (pullback.snd f g |>.appLE V (pullback.fst f g ⁻¹ᵁ U ⊓ pullback.snd f g ⁻¹ᵁ V) inf_le_right).hom)`. Rewrite using `[CommRingCat.closure_range_union_range_eq_top_of_isPushout po]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `ht using Subring.closure_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Break down `hx with ⟨a, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Conclude with `(d₁ a).congr fun v hv => ev_appLE (h₁ v) _ (hin v hv) a`. Conclude with `(d₂ b).congr fun v hv => ev_appLE (h₂ v) _ (hin v hv) b`. Consider the case `zero`. Conclude with `(differentiableOn_const 0).congr fun v hv => by`.
+Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, GlobalTheory.CxPts.ev_eq (hin v hv), map_zero]`. Consider the case `one`. Conclude with `(differentiableOn_const 1).congr fun v hv => by`. Simplify using `only [Function.comp_apply, GlobalTheory.CxPts.ev_eq (hin v hv), map_one]`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `(hx.add hy).congr fun v hv => by`. Simplify using `only [Function.comp_apply, Pi.add_apply, GlobalTheory.CxPts.ev_add]`. Consider the case `neg x _ hx`. Conclude with `hx.neg.congr fun v hv => by`. Simplify using `only [Function.comp_apply, Pi.neg_apply, GlobalTheory.CxPts.ev_eq (hin v hv), map_neg]`.
-
-Consider the case `mul x y _ _ hx hy`. Conclude with `(hx.mul hy).congr fun v hv => by`. Simplify using `only [Function.comp_apply, Pi.mul_apply, GlobalTheory.CxPts.ev_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableOn_ev_prod : ∀ {k : Type} [CommRing k] {X Y : Scheme.{0}} (f : X ⟶ Sp k) (g : Y ⟶ Sp k) (σ : k →+* ℂ) {E : Type*}
   [NormedAddCommGroup E] [NormedSpace ℂ E] (T : Set E) (U : X.Opens) (V : Y.Opens), IsAffineOpen U → IsAffineOpen V →

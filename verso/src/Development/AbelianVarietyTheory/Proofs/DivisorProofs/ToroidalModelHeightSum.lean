@@ -20,7 +20,7 @@ namespace GlobalTheory.LieFilt
 open GlobalTheory.ArLieBase.MetOfEig
 
 /- English proof (translation)
-Simplify using `only [TangentOrigin.evalPt, Scheme.Hom.comp_appLE, CommRingCat.hom_comp, RingHom.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evalPt_app_comp {R : Type} [CommRing R] {X W : Scheme.{0}} (x : Sp R ⟶ W) (j : W ⟶ X) (V : X.Opens)
     (h : ⊤ ≤ (x ≫ j) ⁻¹ᵁ V) (h' : ⊤ ≤ x ⁻¹ᵁ (j ⁻¹ᵁ V)) (f : Γ(X, V)) :
@@ -28,7 +28,7 @@ theorem evalPt_app_comp {R : Type} [CommRing R] {X W : Scheme.{0}} (x : Sp R ⟶
   simp only [TangentOrigin.evalPt, Scheme.Hom.comp_appLE, CommRingCat.hom_comp, RingHom.comp_apply]
 
 /- English proof (translation)
-Set `O : X.Opens` to `⟨(U₀ : Set X) ∩ ⋂ i, (U i : Set X), U₀.2.inter (isOpen_iInter_of_finite fun i => (U i).2)⟩`. Establish `hx : x ∈ O` using `⟨h₀, Set.mem_iInter.2 h⟩`. Take `⟨V, hV, hxV, hle⟩` from `exists_isAffineOpen_mem_and_subset hx`. Conclude with `⟨V, hV, hxV, fun z hz => (hle hz).1, fun i z hz => Set.mem_iInter.1 (hle hz).2 i⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_affine_le_all {X : Scheme.{0}} {ι : Type} [Finite ι] (x : X) (U₀ : X.Opens) (U : ι → X.Opens)
     (h₀ : x ∈ U₀) (h : ∀ i, x ∈ U i) : ∃ V : X.Opens, IsAffineOpen V ∧ x ∈ V ∧ V ≤ U₀ ∧ ∀ i, V ≤ U i := by
@@ -38,29 +38,27 @@ theorem exists_affine_le_all {X : Scheme.{0}} {ι : Type} [Finite ι] (x : X) (U
   exact ⟨V, hV, hxV, fun z hz => (hle hz).1, fun i z hz => Set.mem_iInter.1 (hle hz).2 i⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W q jB πB ρ hpb hρ L g ℓ hℓ hω G hL hMD M t h T hLF hLM hTC`. Establish `key : ∀ (σ₀ : 𝓞 F →+* ℂ) (y : CxPts q σ₀), ∃ (cL : VB.Chart L g) (cM : ∀ τ, VB.Chart (M τ) (Dw.mult τ)), y ∈ CxPts.ptsIn q σ₀ cL.U ∧ (∀ τ, y ∈ CxPts.ptsIn q σ₀ (cM τ).U) ∧ (∀ τ i j, HermFrame.form ((hL.met σ₀).G cL y) (cL.crd q σ₀ ((T τ).app _ ((cM τ).e i)) y) (cL.crd q σ₀ ((T τ) …`. Introduce `σ₀ y`. Take `⟨σ, rfl⟩` from `exists_comp_eq σ₀`. Set `x₀ : X` to `y.1 (IsLocalRing.closedPoint ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨U, eω, hU, heω⟩` from `hω (ρ x₀)`. Set `ch : VB.Chart (omega Z.t.G) g` to `⟨U, eω, heω⟩`. Use `choose UM eM hUM heM using fun τ => (h τ).isVB x₀`. Take `⟨V, hVa, hyV, hVU, hVM⟩` from `exists_affine_le_all x₀ (ρ ⁻¹ᵁ ch.U) UM hU hUM`. Set `cM : ∀ τ, VB.Chart (M τ) (Dw.mult τ)` to `fun τ => ⟨V, fun i => Twist.resM (M τ) (hVM τ) (eM τ i), (heM τ).res (hVM τ)⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `cL : VB.Chart L g` to `⟨ρ ⁻¹ᵁ ch.U, ℓ ch, hℓ ch⟩`. Establish `hy₀ : y ∈ CxPts.ptsIn q _ V` using `CxPts.mem_ptsIn.2 hyV`. Establish `hyL : y ∈ CxPts.ptsIn q _ cL.U` using `CxPts.mem_ptsIn.2 (hVU hyV)`. Set `zg : Sp ℂ ⟶ W` to `hpb.lift y.1 (spMap σ) (by rw [y.2, MetOfEig.spMap_comp])`. Establish `hzg : zg ≫ jB = y.1` using `hpb.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzs : zg ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap σ` using `hpb.lift_snd _ _ _`. Set `yc : CxPts (genStr Z) (σ.comp e.symm.toRingHom)` to `⟨zg ≫ πB, genStr_of hzs⟩`. Establish `hpt : yc.1 ≫ genι Z = zg ≫ πB ≫ genι Z` using `Category.assoc _ _ _`. Establish `hx : ⊤ ≤ (zg ≫ jB) ⁻¹ᵁ V` using `by rw [hzg]; exact hy₀`. Establish `hb : ∀ τ, IsEigBasis Z (σ.comp e.symm.toRingHom) (yc.1 ≫ genι Z) τ (t τ V (cM τ).e (cM τ).isFrame ℂ zg hx)` using `fun τ => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpt]`. Conclude with `(hLF τ).1 V (cM τ).e (cM τ).isFrame ℂ zg hx σ hzs`. Set `u : EigFrame Z (σ.comp e.symm.toRingHom) (yc.1 ≫ genι Z)` to `⟨fun τ => t τ V (cM τ).e (cM τ).isFrame ℂ zg hx, fun τ i => ((hb τ).1 i).1, fun τ i => ((hb τ).1 i).2, fun τ w hw he => (hb τ).2 w ⟨hw, he⟩⟩`. Establish `hyρ : y.1 ≫ ρ = yc.1 ≫ genι Z` using `by rw [hpt, ← hzg, Category.assoc, hρ]`. Establish `hch : ⊤ ≤ (yc.1 ≫ genι Z) ⁻¹ᵁ ch.U` using `by rw [← hyρ]; exact hyL`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P : Matrix (Fin g) (Σ τ, Fin (Dw.mult τ)) ℂ` to `fun b s => cL.crd q _ ((T s.1).app V ((cM s.1).e s.2)) y b`. Establish `hP : IsTanMat Z (yc.1 ≫ genι Z) ch (fun s : Σ τ, Fin (Dw.mult τ) => u.v s.1 s.2) P` using `by show IsTanMat Z ((zg ≫ πB) ≫ genι Z) ch (fun s : Σ τ, Fin (Dw.mult τ) => t s.1 V (cM s.1).e (cM s.1).isFrame ℂ zg hx s.2) P`. Rewrite using `[Category.assoc]`. Introduce and unpack `⟨τ, i⟩ hv hV b`. Use `hTC τ ch V hVU hVa (cM τ).e (cM τ).isFrame ℂ zg hx hx i hv hV b` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Eq.trans ?_ this` and prove the remaining obligations. Simplify using `only [P, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[cL.crd_eq _ le_rfl hVU hy₀ b, CxPts.ev_eq hy₀, CxPts.evHom_eq_evalPt, Twist.resM_self]`. Conclude with `(evalPt_congr hzg.symm _ _ hx _).trans (evalPt_app_comp zg jB V hx hx _).symm`. Take `⟨h1, h2⟩` from `hMD σ y yc hyρ ch hch u P hP`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨cL, cM, hyL, fun _ => hy₀, fun τ i j => ?_, fun τ τ' hne i j => h2 ⟨τ, i⟩ ⟨τ', j⟩ hne⟩` and prove the remaining obligations. Establish `hM` using `hLM τ σ y zg yc hzg rfl (cM τ) hx u (fun _ => rfl)`. Rewrite using `[hM]`. Conclude with `h1 τ i j`. Use `⟨fun τ σ V s s' y hy => ?_, fun τ τ' hne σ V s s' y hy => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Take `⟨cL, cM, hyL, hyM, h1, -⟩` from `key σ y`. Rewrite using `[(hL.met _).form_eq cL hyL _ _ hy, ((h τ).met _).form_eq (cM τ) (hyM τ) _ _ hy, cL.crd_app (cM τ) (T τ) s hy (hyM τ), cL.crd_app (cM τ) (T τ) s' hy (hyM τ), ← HermFrame.form_chg]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[HermFrame.chg_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `h1 τ i j`. Take `⟨cL, cM, hyL, hyM, -, h2⟩` from `key σ y`. Rewrite using `[(hL.met _).form_eq cL hyL _ _ hy, cL.crd_app (cM τ) (T τ) s hy (hyM τ), cL.crd_app (cM τ') (T τ') s' hy (hyM τ'), HermFrame.form_mulVec]`. Establish `h0 : ∀ (A : Matrix (Fin g) (Fin (Dw.mult τ)) ℂ) (B : Matrix (Fin g) (Fin (Dw.mult τ')) ℂ) (K : Matrix (Fin g) (Fin g) ℂ), (∀ i j, HermFrame.form K (fun a => A a i) (fun a => B a j) = 0) → A.transpose * K * B.conjTranspose.transpose = 0` using `fun A B K hh => by`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hh i j` as an intermediate fact. Rewrite `this` using `[HermFrame.form_eq_sum, Finset.sum_comm]`. Simplify `this` using `[Matrix.mul_apply, Finset.sum_mul]`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
-
-Conclude with `h2 τ τ' hne`.
+A detailed English derivation is pending.
 -/
 theorem orthEmb_of_tanCoord : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}

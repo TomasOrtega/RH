@@ -13,9 +13,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {N : ℕ}
 
 /- English proof (translation)
-Establish `hp : piF (y + s • Matrix.single k0 0 1) = piF y`. Use extensionality with `k l`. Simplify using `[piF, Matrix.single_apply, Fin.succ_ne_zero]`. Introduce `_ h`. Conclude with `absurd h.symm (Fin.succ_ne_zero l)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [fsum, hp]`. Apply the tactic sequence `(simp [Matrix.add_apply, Matrix.smul_apply, Matrix.single_apply, add_mul, Finset.sum_add_distrib, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']) <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem fsum_line (t : ℤ) (c k0 : Fin N) (y : Matrix (Fin N) (Fin (N + 1)) ℂ) (s : ℂ) :
     fsum t c (y + s • Matrix.single k0 0 1) =
@@ -30,11 +30,11 @@ theorem fsum_line (t : ℤ) (c k0 : Fin N) (y : Matrix (Fin N) (Fin (N + 1)) ℂ
     ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']) <;> ring
 
 /- English proof (translation)
-Establish `hd : DifferentiableAt ℂ (fsum t c) y` using `(analyticAt_fsum t c y hy).differentiableAt`. Establish `hl : HasDerivAt (fun s : ℂ => y + s • Matrix.single k0 0 (1 : ℂ)) (Matrix.single k0 0 1) 0`. Establish `h0` using `((hasDerivAt_id (0 : ℂ)).smul_const (Matrix.single k0 0 (1 : ℂ))).const_add y`. Simplify using `only [id_eq, one_smul] at h0`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : HasDerivAt (fun s : ℂ => fsum t c (y + s • Matrix.single k0 0 1)) (fderiv ℂ (fsum t c) y (Matrix.single k0 0 1)) 0` using `HasFDerivAt.comp_hasDerivAt_of_eq (0 : ℂ) hd.hasFDerivAt hl (by simp)`. Establish `h2 : HasDerivAt (fun s : ℂ => fsum t c (y + s • Matrix.single k0 0 1)) (-fderiv ℂ (H N t) (piF y) (Matrix.single k0 c 1)) 0`. Establish `he : (fun s : ℂ => fsum t c (y + s • Matrix.single k0 0 1)) = fun s => fsum t c y - s * fderiv ℂ (H N t) (piF y) (Matrix.single k0 c 1)`. Use function extensionality and compare the values at `fun s => fsum_line t c k0 y s`. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using ((hasDerivAt_id (0 : ℂ)).mul_const (fderiv ℂ (H N t) (piF y) (Matrix.single k0 c 1))).const_sub (fsum t c y)`. Conclude with `h1.unique h2`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_fsum (t : ℤ) (c k0 : Fin N) (y : Matrix (Fin N) (Fin (N + 1)) ℂ) (hy : (1 + piF y).det ≠ 0) :
     fderiv ℂ (fsum t c) y (Matrix.single k0 0 1) = -fderiv ℂ (H N t) (piF y) (Matrix.single k0 c 1) := by

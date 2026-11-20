@@ -14,7 +14,7 @@ namespace PositivityTheory.Rg.Rs.Re
 section Pair
 
 /- English proof (translation)
-The claim follows from `Quotient.exact (eq_of_heq (Sigma.mk.inj ((H E N hN).2.2.1 V hV a d a d π π' h h' e e').2).2)`.
+A detailed English derivation is pending.
 -/
 theorem iso (H : UsedReg) {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
     {N a d : ℕ} (hN : 1 ≤ N) {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) {π π' : CuspSub E a} (h : IsNormalised π)
@@ -22,7 +22,7 @@ theorem iso (H : UsedReg) {E : Type} [Field E] [NumberField E] [IsTotallyComplex
   Quotient.exact (eq_of_heq (Sigma.mk.inj ((H E N hN).2.2.1 V hV a d a d π π' h h' e e').2).2)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThetaPull.isCsd_of_iso (iso H hN hV (GlobalTheory.ThetaPull.isNormalised_thetaSub hπ) hπ (GlobalTheory.ThetaPull.isSpehOf_thetaSub hV.stable hc h) h)`.
+A detailed English derivation is pending.
 -/
 theorem isCsd_of_isSpehOf (H : UsedReg) {E : Type} [Field E] [NumberField E]
     [IsCMField E] {N a d : ℕ} (hN : 1 ≤ N) {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V)
@@ -37,9 +37,9 @@ section Local
 open GlobalTheory.DefiniteBC GlobalTheory.BcSpeh GlobalTheory.BcSpehProof
 
 /- English proof (translation)
-Take `⟨V, hV, hS⟩` from `(H E a ha).2.1 a P rfl hP`. Establish `hc` using `(H E a ha).2.2.2 V hV a 1 P hP hS`. Take `⟨-, σ', -, hσ'⟩` from `hc.exLoc w`. Take `⟨hd, h1⟩` from `hc.loc w ρ σ' hρ hσ'`. Take `⟨hd', h2⟩` from `GlobalTheory.LocGL.isSpeh_one (GlobalTheory.LocGL.IrrGL.of ρ.ρ ρ.smooth ρ.irred)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `h1.unique h2`. Establish `hu` using `GlobalTheory.T.discreteAutomorphicRepGL_localComponent_isUnitarisable E a V hV w σ' hσ'`. Conclude with `isUnitarisable_of_equiv' ((GlobalTheory.LocGL.IrrGL.equivOf ρ.ρ ρ.smooth ρ.irred).trans e).symm hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnitarisable_of_isLocComp (H : UsedReg) {E : Type} [Field E] [NumberField E]
     [IsCMField E] {a : ℕ} (ha : 1 ≤ a) (P : CuspSub E a) (hP : GlobalTheory.DiscSpec.IsNormalised P)

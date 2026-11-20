@@ -6,7 +6,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCFinal
 namespace Formalism.FourierDecayAlt.P.CutMP
 
 /- English proof (translation)
-The claim follows from `modelPlaceBuilt2_of_openQQ hJ (Gauge.GC.gCore_of_genTransfer hG) energy_trace_identity_holds energy_reality_holds hD hA`.
+A detailed English derivation is pending.
 -/
 theorem modelPlaceBuilt2_of_genTransfer (hJ : JfSmoothDS) (hG : Gauge.GC.GenTransfer)
     (hD : JDecayTrQQ) (hA : JAdjTrQQ) : Formalism.FourierDecayAlt.JCT.ModelPlaceBuilt2 :=

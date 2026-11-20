@@ -33,7 +33,7 @@ noncomputable abbrev ofHeightOneSpectrum (P : HeightOneSpectrum B) : Place k K w
       (Localization.subalgebra.ofField K _ P.asIdeal.primeCompl_le_nonZeroDivisors) b
 
 /- English proof (translation)
-The claim follows from `Subalgebra.algebraMap_mem (Localization.subalgebra.ofField K _ P.asIdeal.primeCompl_le_nonZeroDivisors) b`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_ofHeightOneSpectrum (P : HeightOneSpectrum B) (b : B) :
     algebraMap B K b ∈ (ofHeightOneSpectrum B hk P).ring :=
@@ -65,9 +65,9 @@ noncomputable def center (v : Place k K) (hv : ∀ b : B, algebraMap B K b ∈ v
 variable [IsFunctionField k K]
 
 /- English proof (translation)
-Use `Place.eq_of_le fun x hx => ?_` and prove the remaining obligations. Take `⟨a, s, hs, rfl⟩` from `hx`. Establish `hs' : centerHom B v hv s ∉ maximalIdeal v.ring` using `hs`. Establish `hs1 : v.ring.valuation (algebraMap B K s) = 1` using `le_antisymm ((v.ring.valuation_le_one_iff _).2 (hv s)) (not_lt.1 fun hlt => hs' ((v.ring.valuation_lt_one_iff _).2 hlt))`. Establish `hsinv : (algebraMap B K s)⁻¹ ∈ v.ring`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← v.ring.valuation_le_one_iff, map_inv₀, hs1, inv_one]`. Conclude with `mul_mem (hv a) hsinv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofHeightOneSpectrum_center (v : Place k K) (hv : ∀ b : B, algebraMap B K b ∈ v.ring) :
     ofHeightOneSpectrum B hk (center B v hv) = v := by
@@ -83,19 +83,17 @@ theorem ofHeightOneSpectrum_center (v : Place k K) (hv : ∀ b : B, algebraMap B
 
 omit [IsFunctionField k K] in
 /- English proof (translation)
-Use extensionality with `b`. Express the relevant statement in the definitionally equal form `centerHom B _ _ b ∈ maximalIdeal (ofHeightOneSpectrum B hk P).ring ↔ b ∈ P.asIdeal`. Rewrite using `[ValuationSubring.valuation_lt_one_iff]`. Express the relevant statement in the definitionally equal form `(ofHeightOneSpectrum B hk P).ring.valuation (algebraMap B K b) < 1 ↔ b ∈ P.asIdeal`. Establish `hbmem` using `algebraMap_mem_ofHeightOneSpectrum B hk P b`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hb`. Assume the negation of the conclusion as `hbP`. Establish `hinv : (algebraMap B K b)⁻¹ ∈ (ofHeightOneSpectrum B hk P).ring` using `⟨1, b, hbP, by simp⟩`. Establish `hb0 : algebraMap B K b ≠ 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hinv` using `[h0, inv_zero]`. Apply `hbP` to reduce the goal to its premises. Establish `: b = 0` using `IsFractionRing.injective B K (h0.trans (map_zero _).symm)`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.asIdeal.zero_mem`. Establish `h1` using `(ofHeightOneSpectrum B hk P).ring.valuation_le_one_iff _ |>.2 hinv`. Rewrite `h1` using `[map_inv₀, inv_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hb0))]`. Conclude with `absurd hb (not_lt.2 h1)`. Introduce `hbP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hb`. Establish `hb1 : (ofHeightOneSpectrum B hk P).ring.valuation (algebraMap B K b) = 1` using `le_antisymm ((ofHeightOneSpectrum B hk P).ring.valuation_le_one_iff _ |>.2 hbmem) (not_lt.1 hb)`. Establish `hb0 : algebraMap B K b ≠ 0`. Introduce `h0`. Rewrite `hb1` using `[h0, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_ne_one hb1`. Establish `hinv : (algebraMap B K b)⁻¹ ∈ (ofHeightOneSpectrum B hk P).ring`. Rewrite using `[← ValuationSubring.valuation_le_one_iff, map_inv₀, hb1, inv_one]`. Establish `hle` using `HeightOneSpectrum.valuationSubringAtPrime_le_valuation (K := K) (v := P)`. Establish `h1 : P.valuation K (algebraMap B K b)⁻¹ ≤ 1` using `hle hinv`.
-
-Establish `h2 : P.valuation K (algebraMap B K b) < 1` using `(P.valuation_lt_one_iff_mem (K := K) b).2 hbP`. Rewrite `h1` using `[map_inv₀, inv_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hb0))]`. Conclude with `absurd h2 (not_lt.2 h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem center_ofHeightOneSpectrum (P : HeightOneSpectrum B) :
     center B (ofHeightOneSpectrum B hk P) (algebraMap_mem_ofHeightOneSpectrum B hk P) = P := by
@@ -142,13 +140,13 @@ noncomputable def equivHeightOneSpectrum :
   right_inv P := center_ofHeightOneSpectrum B hk P
 
 /- English proof (translation)
-Use `valuation_eq_of_isEquiv ?_ (ofHeightOneSpectrum B hk P).valuation_surjective (HeightOneSpectrum.valuation_surjective K P)` and prove the remaining obligations. Use `Valuation.isEquiv_iff_val_le_one.2 fun {x} => ?_` and prove the remaining obligations. Rewrite using `[Place.valuation_le_one_iff]`. Establish `hle` using `HeightOneSpectrum.valuationSubringAtPrime_le_valuation (K := K) (v := P)`. Set `Q : Place k K` to `{ ring := (P.valuation K).valuationSubring ne_top := (ofHeightOneSpectrum B hk P).ne_top ∘ fun htop => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Apply `le_antisymm le_top` to reduce the goal to its premises. Introduce `y _`. Take `⟨π, hπ⟩` from `P.valuation_exists_uniformizer K`. Establish `hmem : π⁻¹ ∈ (P.valuation K).valuationSubring` using `htop ▸ ValuationSubring.mem_top _`. Rewrite `hmem` using `[Valuation.mem_valuationSubring_iff, map_inv₀, hπ, ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use `algebraMap_mem := fun c => hle ((ofHeightOneSpectrum B hk P).algebraMap_mem c) }`. Establish `heq : ofHeightOneSpectrum B hk P = Q` using `Place.eq_of_le hle`. Prove the components needed by the constructor for the conclusion. Conclude with `fun hx => hle hx`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Establish `hxQ : x ∈ Q.ring` using `hx`. Rewrite `hxQ` using `[← heq]`. Conclude with `hxQ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_ofHeightOneSpectrum (P : HeightOneSpectrum B) :
     (ofHeightOneSpectrum B hk P).valuation = P.valuation K := by
@@ -185,9 +183,9 @@ open scoped Polynomial
 omit [Algebra k K] in
 
 /- English proof (translation)
-Establish `: Algebra.Transcendental k K` using `(trdeg_ne_zero_iff (R := k) (A := K)).1 (by rw [h]; exact one_ne_zero)`. Take `⟨x, hx⟩` from `Algebra.Transcendental.transcendental (R := k) (A := K)`. Establish `hbx : IsTranscendenceBasis k ((↑) : ({x} : Set K) → K)` using `AlgebraicIndependent.isTranscendenceBasis_of_trdeg_le_of_finite ((algebraicIndependent_singleton_iff (⟨x, rfl⟩ : ({x} : Set K))).2 hx) (by rw [h, Cardinal.mk_singleton])`. Establish `halg` using `hbx.isAlgebraic_field`. Rewrite `halg` using `[Subtype.range_coe]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: Algebra.EssFiniteType (IntermediateField.adjoin k {x}) K` using `Algebra.EssFiniteType.of_comp k _ K`. Conclude with `⟨⟨x, hx, Algebra.finite_of_essFiniteType_of_isAlgebraic⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem _root_.GroundTheory.FunctionField.IsFunctionField.of_trdeg_eq_one [Algebra k K]
     [Algebra.EssFiniteType k K] (h : Algebra.trdeg k K = 1) : IsFunctionField k K := by
@@ -206,7 +204,7 @@ theorem _root_.GroundTheory.FunctionField.IsFunctionField.of_trdeg_eq_one [Algeb
 
 omit [Algebra k K] in
 /- English proof (translation)
-Establish `: Algebra.EssFiniteType k[X] (RatFunc k)` using `.of_isLocalization _ (nonZeroDivisors k[X])`. Conclude with `.comp k k[X] (RatFunc k)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.FunctionField.essFiniteType_ratFunc : Algebra.EssFiniteType k (RatFunc k) := by
   have : Algebra.EssFiniteType k[X] (RatFunc k) :=
@@ -226,9 +224,9 @@ instance _root_.GroundTheory.FunctionField.isFunctionField_ratFunc : IsFunctionF
 omit [Algebra k K] in
 
 /- English proof (translation)
-Use `essFiniteType_ratFunc (k := k)` as an intermediate fact. Establish `: Algebra.EssFiniteType k K` using `.comp k (RatFunc k) K`. Apply `IsFunctionField.of_trdeg_eq_one` to reduce the goal to its premises. Establish `h` using `lift_trdeg_add_eq k (RatFunc k) K`. Rewrite `h` using `[trdeg_eq_one (k := k) (K := RatFunc k), trdeg_eq_zero, Cardinal.lift_zero, add_zero, Cardinal.lift_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Cardinal.lift_eq_one.1 h.symm)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.FunctionField.IsFunctionField.of_functionField [Algebra k K]
     [Algebra (RatFunc k) K] [IsScalarTower k (RatFunc k) K] [FunctionField k K] :
@@ -253,7 +251,7 @@ variable [IsFunctionField k K] [Algebra k[X] K] [Algebra (RatFunc k) K]
 omit [IsFunctionField k K] [Algebra (RatFunc k) K] [IsScalarTower k[X] (RatFunc k) K]
   [FunctionField k K] in
 /- English proof (translation)
-Establish `h : algebraMap k[X] K p = Polynomial.aeval (algebraMap k[X] K Polynomial.X) p`. Rewrite using `[Polynomial.aeval_algebraMap_apply, Polynomial.aeval_X_left_apply]`. Rewrite using `[h, ← v.ring.valuation_le_one_iff]`. Conclude with `v.valuation_aeval_le_one hv p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_polynomial_mem (v : Place k K) (hv : algebraMap k[X] K Polynomial.X ∈ v.ring)
     (p : k[X]) : algebraMap k[X] K p ∈ v.ring := by
@@ -266,11 +264,11 @@ omit [IsFunctionField k K] [Algebra (RatFunc k) K] [IsScalarTower k[X] (RatFunc 
   [FunctionField k K] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hX : IsIntegral k[X] (algebraMap k[X] K Polynomial.X)` using `isIntegral_algebraMap`. Use `h (IsIntegralClosure.mk' (FunctionField.ringOfIntegers k K) _ hX)` as an intermediate fact. Rewrite `this` using `[IsIntegralClosure.algebraMap_mk']`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `hv b`. Set `: Algebra k[X] v.ring` to `(RingHom.codRestrict (algebraMap k[X] K) v.ring (v.algebraMap_polynomial_mem hv)).toAlgebra`. Establish `: IsScalarTower k[X] v.ring K` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hb : IsIntegral k[X] (algebraMap (FunctionField.ringOfIntegers k K) K b)` using `(IsIntegralClosure.isIntegral k[X] K b).map (IsScalarTower.toAlgHom k[X] (FunctionField.ringOfIntegers k K) K)`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (hb.tower_top (A := v.ring))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hy]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem forall_mem_ringOfIntegers_iff (v : Place k K) :
     (∀ b : FunctionField.ringOfIntegers k K, algebraMap _ K b ∈ v.ring) ↔
@@ -294,7 +292,7 @@ theorem forall_mem_ringOfIntegers_iff (v : Place k K) :
 omit [IsFunctionField k K] [Algebra (RatFunc k) K] [IsScalarTower k[X] (RatFunc k) K]
   [FunctionField k K] in
 /- English proof (translation)
-Establish `hc : IsIntegral k[X] (algebraMap k[X] K (Polynomial.C c))` using `isIntegral_algebraMap`. Use `⟨IsIntegralClosure.mk' (FunctionField.ringOfIntegers k K) _ hc, ?_⟩` and prove the remaining obligations. Rewrite using `[IsIntegralClosure.algebraMap_mk', ← Polynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_mem_range_ringOfIntegers (c : k) :
     algebraMap k K c ∈ (algebraMap (FunctionField.ringOfIntegers k K) K).range := by
@@ -318,7 +316,7 @@ open scoped IntermediateField.algebraAdjoinAdjoin
 omit [Algebra k K] in
 
 /- English proof (translation)
-Use `IsPrincipalIdealRing.of_surjective (Polynomial.aeval (R := k) (⟨t, Algebra.self_mem_adjoin_singleton k t⟩ : Algebra.adjoin k {t})) ?_` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Rewrite `hy` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, rfl⟩` from `(AlgHom.mem_range _).1 hy`. Conclude with `⟨p, Subtype.ext (Polynomial.aeval_subalgebra_coe p _ _)⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isPrincipalIdealRing_adjoin [Algebra k K] (t : K) :
     IsPrincipalIdealRing (Algebra.adjoin k {t}) := by
@@ -332,9 +330,9 @@ theorem isPrincipalIdealRing_adjoin [Algebra k K] (t : K) :
 variable [IsFunctionField k K] (t : K) [Algebra.IsSeparable (IntermediateField.adjoin k {t}) K]
 
 /- English proof (translation)
-Introduce `ht`. Establish `: FiniteDimensional k (IntermediateField.adjoin k {t})` using `IntermediateField.adjoin.finiteDimensional ht.isIntegral`. Establish `: Algebra.IsAlgebraic k (IntermediateField.adjoin k {t})` using `Algebra.IsAlgebraic.of_finite _ _`. Establish `: Algebra.IsAlgebraic k K` using `Algebra.IsAlgebraic.trans k (IntermediateField.adjoin k {t}) K`. Establish `h` using `trdeg_eq_one (k := k) (K := K)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[trdeg_eq_zero]`. Conclude with `zero_ne_one h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transcendental_of_isSeparable : Transcendental k t := by
   intro ht
@@ -347,7 +345,7 @@ theorem transcendental_of_isSeparable : Transcendental k t := by
   exact zero_ne_one h
 
 /- English proof (translation)
-Use `isPrincipalIdealRing_adjoin (k := k) t` as an intermediate fact. Use `finiteDimensional_adjoin (transcendental_of_isSeparable (k := k) t)` as an intermediate fact. Conclude with `IsIntegralClosure.isDedekindDomain (Algebra.adjoin k {t}) (IntermediateField.adjoin k {t}) K _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDedekindDomain_closure_adjoin :
     IsDedekindDomain (integralClosure (Algebra.adjoin k {t}) K) := by
@@ -356,7 +354,7 @@ theorem isDedekindDomain_closure_adjoin :
   exact IsIntegralClosure.isDedekindDomain (Algebra.adjoin k {t}) (IntermediateField.adjoin k {t}) K _
 
 /- English proof (translation)
-Use `finiteDimensional_adjoin (transcendental_of_isSeparable (k := k) t)` as an intermediate fact. Conclude with `integralClosure.isFractionRing_of_finite_extension (A := Algebra.adjoin k {t}) (IntermediateField.adjoin k {t}) K`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFractionRing_closure_adjoin :
     IsFractionRing (integralClosure (Algebra.adjoin k {t}) K) K := by
@@ -369,13 +367,11 @@ attribute [local instance] isDedekindDomain_closure_adjoin isFractionRing_closur
 omit [IsFunctionField k K] [Algebra.IsSeparable (IntermediateField.adjoin k {t}) K] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hint : IsIntegral (Algebra.adjoin k {t}) t` using `isIntegral_algebraMap (R := Algebra.adjoin k {t}) (A := K) (x := ⟨t, Algebra.self_mem_adjoin_singleton k t⟩)`. Conclude with `h ⟨t, hint⟩`. Introduce `hv b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hA : ∀ a : Algebra.adjoin k {t}, (a : K) ∈ v.ring`. Introduce and unpack `⟨y, hy⟩`. Rewrite `hy` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, rfl⟩` from `(AlgHom.mem_range _).1 hy`. Rewrite using `[← v.ring.valuation_le_one_iff]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `v.valuation_aeval_le_one hv p`. Set `: Algebra (Algebra.adjoin k {t}) v.ring` to `(RingHom.codRestrict (algebraMap (Algebra.adjoin k {t}) K) v.ring hA).toAlgebra`. Establish `: IsScalarTower (Algebra.adjoin k {t}) v.ring K` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hb : IsIntegral (Algebra.adjoin k {t}) (b : K)` using `b.2`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (hb.tower_top (A := v.ring))`.
-
-Use `show (b : K) ∈ v.ring`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem forall_mem_closure_adjoin_iff (v : Place k K) :
     (∀ b : integralClosure (Algebra.adjoin k {t}) K, algebraMap _ K b ∈ v.ring) ↔ t ∈ v.ring := by
@@ -403,7 +399,7 @@ theorem forall_mem_closure_adjoin_iff (v : Place k K) :
 
 omit [IsFunctionField k K] [Algebra.IsSeparable (IntermediateField.adjoin k {t}) K] in
 /- English proof (translation)
-Establish `hc : IsIntegral (Algebra.adjoin k {t}) (algebraMap k K c)` using `isIntegral_algebraMap (R := Algebra.adjoin k {t}) (A := K) (x := ⟨algebraMap k K c, Subalgebra.algebraMap_mem _ c⟩)`. Conclude with `⟨⟨algebraMap k K c, hc⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem algebraMap_mem_range_closure_adjoin (c : k) :
     algebraMap k K c ∈ (algebraMap (integralClosure (Algebra.adjoin k {t}) K) K).range := by
@@ -419,9 +415,9 @@ noncomputable def equivOfSeparating :
 
 omit [IsFunctionField k K] [Algebra.IsSeparable (IntermediateField.adjoin k {t}) K] in
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_simple_le_iff]`. Conclude with `inv_mem (IntermediateField.mem_adjoin_simple_self k t)`. Rewrite using `[IntermediateField.adjoin_simple_le_iff]`. Use `inv_mem (IntermediateField.mem_adjoin_simple_self k t⁻¹)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem adjoin_inv_eq : IntermediateField.adjoin k {t⁻¹} = IntermediateField.adjoin k {t} := by
   apply le_antisymm
@@ -434,7 +430,7 @@ theorem adjoin_inv_eq : IntermediateField.adjoin k {t⁻¹} = IntermediateField.
 omit [IsFunctionField k K] in
 
 /- English proof (translation)
-Rewrite using `[adjoin_inv_eq]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSeparable_adjoin_inv : Algebra.IsSeparable (IntermediateField.adjoin k {t⁻¹}) K := by
   rw [adjoin_inv_eq]

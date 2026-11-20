@@ -22,22 +22,22 @@ section Ops
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simpa using star_mul_self_nonneg (1 : H →L[ℂ] H), ContinuousLinearMap.norm_id_le⟩`.
+Supply the required witnesses or components.
 -/
 private lemma one_ok : (0 : H →L[ℂ] H) ≤ 1 ∧ ‖(1 : H →L[ℂ] H)‖ ≤ 1 :=
   ⟨by simpa using star_mul_self_nonneg (1 : H →L[ℂ] H), ContinuousLinearMap.norm_id_le⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.mul_nonneg hS.1 hT.1, (norm_mul_le S T).trans (mul_le_one₀ hS.2 (norm_nonneg _) hT.2)⟩`.
+Supply the required witnesses or components.
 -/
 private lemma mul_ok {S T : H →L[ℂ] H} (hS : 0 ≤ S ∧ ‖S‖ ≤ 1) (hT : 0 ≤ T ∧ ‖T‖ ≤ 1)
     (h : Commute S T) : 0 ≤ S * T ∧ ‖S * T‖ ≤ 1 :=
   ⟨h.mul_nonneg hS.1 hT.1, (norm_mul_le S T).trans (mul_le_one₀ hS.2 (norm_nonneg _) hT.2)⟩
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simpa using one_ok (H := H)`. Consider the case `cons T L ih`. Rewrite using `[List.prod_cons]`. Rewrite `hc` using `[List.pairwise_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_ok (h T (by simp)) (ih (fun S hS => h S (by simp [hS])) hc.2) (Commute.list_prod_right _ _ hc.1)`.
+A detailed English derivation is pending.
 -/
 private lemma prod_ok (L : List (H →L[ℂ] H)) (h : ∀ T ∈ L, 0 ≤ T ∧ ‖T‖ ≤ 1) (hc : L.Pairwise Commute) :
     0 ≤ L.prod ∧ ‖L.prod‖ ≤ 1 := by
@@ -50,7 +50,7 @@ private lemma prod_ok (L : List (H →L[ℂ] H)) (h : ∀ T ∈ L, 0 ≤ T ∧ �
       (Commute.list_prod_right _ _ hc.1)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using one_ok (H := H)`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `mul_ok ih h ((Commute.refl T).pow_left k)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma pow_ok {T : H →L[ℂ] H} (h : 0 ≤ T ∧ ‖T‖ ≤ 1) (k : ℕ) : 0 ≤ T ^ k ∧ ‖T ^ k‖ ≤ 1 := by
   induction k with
@@ -60,11 +60,11 @@ private lemma pow_ok {T : H →L[ℂ] H} (h : 0 ≤ T ∧ ‖T‖ ≤ 1) (k : �
 end Ops
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨a, fun _ => rfl, h1, h2⟩`. Consider the case `succ k ih`. Take `⟨c, hc, -, -⟩` from `ih`. Establish `hb` using `UpperTheory.ConvolutionTheory.L1.cvBasic (archGroup F n) ν a c c a.continuous a.hasCompactSupport c.continuous c.hasCompactSupport c.continuous c.hasCompactSupport`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `γ : TI F n` to `⟨⟨cv ν a c, hb.1⟩, hb.2.1⟩`. Establish `hγ : ∀ g, γ g = cv ν a c g` using `fun _ => rfl`. Establish `hl` using `UpperTheory.ConvolutionTheory.L1.lactCv F n ν a c γ h1 hγ`. Use `⟨γ, fun g => ?_, hl.1, hl.2.1 h2⟩` and prove the remaining obligations. Establish `: (c : archGroup F n → ℂ) = cvPow ν (a : archGroup F n → ℂ) k` using `funext hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hγ, this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma smooth_pow {F : Type} [Field F] [NumberField F] [IsTotallyComplex F] {n : ℕ}
     (ν : Measure (archGroup F n)) [ν.IsHaarMeasure] (a : TI F n) (h1 : SmoothT a) (h2 : LeftFin a) (k : ℕ) :
@@ -84,7 +84,7 @@ private lemma smooth_pow {F : Type} [Field F] [NumberField F] [IsTotallyComplex 
     rfl
 
 /- English proof (translation)
-Establish `h : Pairwise fun i j : Fin k => ∀ (x : G) (y : G), Commute (Pi.mulSingle i x : Fin k → G) (Pi.mulSingle j y)` using `Pi.mulSingle_commute (f := fun _ => G)`. Conclude with `(h hij x y).eq`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma single_comm {G : Type} [Group G] {k : ℕ} {i j : Fin k} (hij : i ≠ j) (x y : G) :
     (Pi.mulSingle i x : Fin k → G) * Pi.mulSingle j y = Pi.mulSingle j y * Pi.mulSingle i x :=
@@ -94,9 +94,9 @@ private lemma single_comm {G : Type} [Group G] {k : ℕ} {i j : Fin k} (hij : i 
   exact (h hij x y).eq
 
 /- English proof (translation)
-Establish `hcm` using `single_comm (G := archGroup F n) hij x y`. Establish `h1 : s i x * s j y = glueA D n (Pi.mulSingle i x * Pi.mulSingle j y)`. Rewrite using `[hmul, ← hs i x, ← hs j y]`. Establish `h2 : s j y * s i x = glueA D n (Pi.mulSingle j y * Pi.mulSingle i x)`. Rewrite using `[hmul, ← hs i x, ← hs j y]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, hcm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma position_comm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E ≃ₐ[F] E} {m : ℕ} {D : InfD σ m} {n : ℕ} {s : Fin (m + 1) → archGroup F n →* archGroup E n}
@@ -110,9 +110,9 @@ private lemma position_comm {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   rw [h1, h2, hcm]
 
 /- English proof (translation)
-Rewrite using `[UpperTheory.ConvolutionTheory.L1.tensOp F E σ m D n νE νF hmeas s hsc hs H π (fun _ => a) aE htens]`. Use `prod_ok _ ?_ ?_` and prove the remaining obligations. Introduce `T hT`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hT`. Use `UpperTheory.ConvolutionTheory.L1.sqOp F n νF b a c m hsq hc hnorm H (π.compHom (s i) (hsc i))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨this.2.1, this.2.2.1⟩`. Rewrite using `[List.pairwise_ofFn]`. Introduce `i j hij`. Conclude with `(UpperTheory.ConvolutionTheory.Tf.commInt (archGroup E n) (archGroup F n) (archGroup F n) H π (s i) (hsc i) (s j) (hsc j) νF νF a a).2 (position_comm hs hmul hij.ne)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma tens_ok {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E ≃ₐ[F] E} {m : ℕ} {D : InfD σ m} {n : ℕ} {νE : Measure (archGroup E n)} [νE.IsHaarMeasure]
@@ -137,7 +137,7 @@ private lemma tens_ok {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
       (s j) (hsc j) νF νF a a).2 (position_comm hs hmul hij.ne)
 
 /- English proof (translation)
-Use `UpperTheory.ConvolutionTheory.L1.sqOp F n νF b a c m hsq hc hnorm H π` as an intermediate fact. Rewrite using `[this.2.2.2]`. Conclude with `pow_ok ⟨this.2.1, this.2.2.1⟩ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pow_op {F : Type} [Field F] [NumberField F] {n m : ℕ} {νF : Measure (archGroup F n)} [νF.IsHaarMeasure]
     {b a c : TI F n} (hsq : ∀ g, a g = cv νF b (fun x => conj (b x⁻¹)) g) (hc : ∀ g, c g = cvPow νF a m g)
@@ -149,15 +149,15 @@ private lemma pow_op {F : Type} [Field F] [NumberField F] {n m : ℕ} {νF : Mea
   exact pow_ok ⟨this.2.1, this.2.2.1⟩ _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ σ m D n νE _ νF _ b a aE aF h`. Establish `hbc : Continuous fun x : archGroup F n => conj (b x⁻¹)` using `Complex.continuous_conj.comp (b.continuous.comp continuous_inv)`. Establish `hbs : HasCompactSupport fun x : archGroup F n => conj (b x⁻¹)`. Establish `h0 : HasCompactSupport fun x : archGroup F n => b x⁻¹` using `b.hasCompactSupport.comp_homeomorph (Homeomorph.inv _)`. Conclude with `h0.comp_left (g := starRingEnd ℂ) (map_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `bs : TI F n` to `⟨⟨fun x => conj (b x⁻¹), hbc⟩, hbs⟩`. Establish `hsq : ∀ g, a g = cv νF b bs g` using `fun g => h.sq g`. Establish `hA` using `UpperTheory.ConvolutionTheory.L1.lactCv F n νF b bs a h.smooth hsq`. Establish `hsa : SmoothT a` using `hA.1`. Establish `hla : LeftFin a` using `hA.2.1 h.fin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `UpperTheory.ConvolutionTheory.L1.tensSmooth F E σ m D n (fun _ => a) aE h.tens`. Take `⟨c, hc, hcs, hcl⟩` from `smooth_pow νF a hsa hla m`. Establish `hcF : c = aF`. Use extensionality with `g`. Rewrite using `[hc, h.pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hcF` using the available equality. Take `⟨-, -, hmul, -, -, ⟨s, hs, hsc⟩, -, -⟩` from `UpperTheory.ConvolutionTheory.L1.archBasic F E σ m D n`. Use `⟨fun μE _ => ?_, fun μF _ => ?_⟩` and prove the remaining obligations. Establish `hok` using `tens_ok h.meas h.sq hc h.norm h.tens hs hsc hmul (LL μE) ((rightRegularRep (rationalGLOne E n) μE).compHom (archP E n) continuous_archP)`. Conclude with `⟨hE.1 fun _ => hsa, hE.2 fun _ => hla, hok.1, hok.2⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hok` using `pow_op h.sq hc h.norm (LL μF) ((rightRegularRep (rationalGLOne F n) μF).compHom (archP F n) continuous_archP)`. Conclude with `⟨hcs, hcl, hok.1, hok.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.ConvolutionTheory.L1.ampPosition :
     UpperTheory.ConvolutionTheory.L1.AmpSlot := by

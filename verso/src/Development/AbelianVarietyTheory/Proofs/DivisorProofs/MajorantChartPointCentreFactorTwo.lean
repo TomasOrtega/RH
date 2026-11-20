@@ -15,11 +15,11 @@ open scoped ENNReal
 namespace GlobalTheory.ChartGraph
 
 /- English proof (translation)
-Introduce `E _ _ _ r X x z hxo hz τ v`. Establish `hx : x ∈ X.dom` using `ModeHalfA.dom_of_orth X hxo`. Establish `ho : X.IsOrtho x` using `hxo`. Establish `hZ` using `GlobalTheory.T.chartGraphCoordinates_opNorm_le_of_small E r X z hz`. Establish `hy : X.xZ x (graphCoord X z) ∈ X.dom` using `OrthonormalChartBounds.xZ_mem_dom X hx ho (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hdet, hcol⟩` from `GlobalTheory.T.chart_firstColumns_eq_graph_times_topBlock E r X x z τ`. Establish `heq` using `GlobalTheory.T.majorant_eq_of_firstColumns_change E r X (cpt X x z) (X.xZ x (graphCoord X z)) τ (chartMatrixTopBlock X z τ) (by rw [hdet]; exact one_ne_zero) (Data.gramPos_det_ne X hy τ) hcol v`. Take `⟨h1, h2⟩` from `UnipMove.MajH.maj_xZ' X hx ho (ρ := 1 / 50) (by norm_num) (by norm_num) hZ τ v`. Establish `h0 : 0 ≤ X.maj x τ v`. Rewrite using `[ModeHalfA.maj_orth X hxo]; exact Finset.sum_nonneg fun _ _ => by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem maj_cpt_le_two : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x : Frame X.Ψ r) (z : V (nd X)), IsOrth X x → (r : ℝ) ^ 2 * ‖z‖ ≤ 1 / 100 → ∀ (τ : X.Ψ) (v : Fin r → ℂ), X.maj (cpt X x z) τ v ≤ 2 * X.maj x τ v ∧ X.maj x τ v ≤ 2 * X.maj (cpt X x z) τ v := by
   intro E _ _ _ r X x z hxo hz τ v

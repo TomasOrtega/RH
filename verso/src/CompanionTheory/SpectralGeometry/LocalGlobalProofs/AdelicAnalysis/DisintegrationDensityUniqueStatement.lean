@@ -6,7 +6,7 @@ open MeasureTheory Topology Matrix
 open scoped ENNReal NNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.SW.FibreDensity.isContDensityOn_fibreIntegral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FAdelicAnalysis%2FDisintegrationDensityUnique.lean&line=211#L211)
 -/

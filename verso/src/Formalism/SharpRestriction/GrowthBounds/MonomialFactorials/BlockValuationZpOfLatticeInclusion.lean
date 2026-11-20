@@ -11,14 +11,14 @@ section Gen
 variable (p : ℕ) [Fact p.Prime] {N r : ℕ} [NeZero r] (G : Formalism.GM.M.BlockData N)
 
 /- English proof (translation)
-The claim follows from `Finset.le_sup (f := fun l : (Fin G.T.t → ℕ) × ℕ => padicValNat p (lvC (r := r) G l.1 l.2 * degFact G l.1 l.2)) hl`.
+A detailed English derivation is pending.
 -/
 theorem le_expM (l : (Fin G.T.t → ℕ) × ℕ) (hl : l ∈ levels G) :
     padicValNat p (lvC (r := r) G l.1 l.2 * degFact G l.1 l.2) ≤ expM p (r := r) G :=
   Finset.le_sup (f := fun l : (Fin G.T.t → ℕ) × ℕ => padicValNat p (lvC (r := r) G l.1 l.2 * degFact G l.1 l.2)) hl
 
 /- English proof (translation)
-Use `⟨(fun _ => 0, 0), ?_⟩` and prove the remaining obligations. Unfold `levels`. Rewrite using `[Finset.mem_filter, Finset.mem_product, Fintype.mem_piFinset]`. Conclude with `⟨⟨fun _ => Finset.mem_range.2 (Nat.succ_pos _), Finset.mem_range.2 (Nat.succ_pos _)⟩, fun _ => ⟨Nat.zero_le _, Nat.zero_le _⟩, Nat.zero_le _⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem levels_nonempty : (levels G).Nonempty := by
   classical
@@ -29,7 +29,7 @@ theorem levels_nonempty : (levels G).Nonempty := by
     fun _ => ⟨Nat.zero_le _, Nat.zero_le _⟩, Nat.zero_le _⟩
 
 /- English proof (translation)
-The claim follows from `Finset.exists_mem_eq_sup (levels G) (levels_nonempty G) (fun l : (Fin G.T.t → ℕ) × ℕ => padicValNat p (lvC (r := r) G l.1 l.2 * degFact G l.1 l.2))`.
+A detailed English derivation is pending.
 -/
 theorem exists_expM : ∃ l ∈ levels G, expM p (r := r) G = padicValNat p (lvC (r := r) G l.1 l.2 * degFact G l.1 l.2) :=
   Finset.exists_mem_eq_sup (levels G) (levels_nonempty G)
@@ -67,17 +67,15 @@ theorem lv_eq (aTop : Fin X.s → ℕ) (aPlus : ℕ) (b : SegBlock X.s X.r) :
     lv C0 CE1 CE2 X aTop b = levels (gB C0 CE1 CE2 X aTop aPlus b) := rfl
 
 /- English proof (translation)
-Use `⟨⟨?_, ?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i i' h`. Establish `h' : (i : ℕ) < (i' : ℕ)` using `h`. Use `show 2 * ((X.S C0 CE1 CE2).sigma + (i : ℕ)) < 2 * ((X.S C0 CE1 CE2).sigma + (i' : ℕ))`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `hi : (X.S C0 CE1 CE2).sigma + (i : ℕ) < X.s` using `(uTop (X.S C0 CE1 CE2) i).2`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show 2 * ((X.S C0 CE1 CE2).sigma + (i : ℕ)) + 1 < 2 * X.s + 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show decide ((2 * ((X.S C0 CE1 CE2).sigma + (i : ℕ))) % 2 = 0) = true`. Simplify using the standard rewrite rules. Use `show decide ((2 * ((X.S C0 CE1 CE2).sigma + (i : ℕ)) + 1) % 2 = 0) = false`. Rewrite using `[decide_eq_false_iff_not]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `hi : (i : ℕ) < (X.S C0 CE1 CE2).t` using `i.2`. Use `⟨(⟨(i : ℕ), Nat.lt_succ_of_lt hi⟩ : Fin ((X.S C0 CE1 CE2).t + 1)), ?_⟩` and prove the remaining obligations. Use `show (if h : (i : ℕ) < (X.S C0 CE1 CE2).t then 2 * (uTop (X.S C0 CE1 CE2) ⟨(i : ℕ), h⟩ : ℕ) + 1 else 2 * X.s + 1) = 2 * ((X.S C0 CE1 CE2).sigma + (i : ℕ)) + 1`. Rewrite using `[dif_pos hi]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Introduce `i`. Establish `hi : (X.S C0 CE1 CE2).sigma + (i : ℕ) < X.s` using `(uTop (X.S C0 CE1 CE2) i).2`. Use `show 2 * ((X.S C0 CE1 CE2).sigma + (i : ℕ)) + 1 < 2 * X.s`. Use linear arithmetic over natural numbers and integers.
-
-Use `show decide ((2 * X.s) % 2 = 0) = true`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gB_blockOK (aTop : Fin X.s → ℕ) (aPlus : ℕ) (b : SegBlock X.s X.r) :
     (gB C0 CE1 CE2 X aTop aPlus b).BlockOK := by
@@ -112,9 +110,9 @@ theorem gB_blockOK (aTop : Fin X.s → ℕ) (aPlus : ℕ) (b : SegBlock X.s X.r)
   · rfl
 
 /- English proof (translation)
-Introduce `aTop hT aPlus hP b hK D _`. Take `⟨n, x, y, hx, hy, hxy, hsum⟩` from `blkZ_gen X.p (r := X.r) (gB C0 CE1 CE2 X aTop aPlus b) (gB_blockOK C0 CE1 CE2 X aTop aPlus b) hr (expU X.p (r := X.r) (gB C0 CE1 CE2 X aTop aPlus b) (aBig X)) (expM X.p (r := X.r) (gB C0 CE1 CE2 X aTop aPlus b)) (hLL aTop hT aPlus hP b hK) (fun l hl => le_expM X.p _ l hl) D`. Use `⟨n, x, y, _, hx, hy, hxy, ?_, hsum⟩` and prove the remaining obligations. Introduce `z hz μ hμ`. Take `⟨l, hl, hl'⟩` from `exists_expM X.p (r := X.r) (gB C0 CE1 CE2 X aTop aPlus b)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hV aTop hT aPlus hP b hK l hl z hz μ hμ`. Rewrite `h` using `[← hl']`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem block_valuation_Zp_of_lattice_inclusion (hr : 1 ≤ X.r) (hLL : RestLL C0 CE1 CE2 X) (hV : RestVal C0 CE1 CE2 X) :
     BlockBoundIntegers C0 CE1 CE2 X := by
@@ -132,31 +130,29 @@ theorem block_valuation_Zp_of_lattice_inclusion (hr : 1 ≤ X.r) (hLL : RestLL C
   linarith
 
 /- English proof (translation)
-Establish `hF` using `hiFacts C0 CYb Cde Ck CD Cb Cc X hCYb hH`. Establish `hmR : (4 : ℝ) ≤ (X.L.m : ℝ)` using `by exact_mod_cast hF.m4`. Establish `hp25 : (25 : ℝ) ≤ (X.L.p : ℝ)` using `by nlinarith [hF.p_ge]`. Establish `hp1 : 1 ≤ X.p`. Establish `: (1 : ℝ) ≤ (X.L.p : ℝ)` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `ha0 : (0 : ℝ) ≤ (X.L.a : ℝ)` using `Nat.cast_nonneg _`. Establish `hs0 : (0 : ℝ) ≤ (X.s : ℝ)` using `Nat.cast_nonneg _`. Establish `hb10 : 5 / 2 * X.L.b' ≤ (X.L.a : ℝ) / 10` using `by nlinarith [hF.b_lt, hF.b0]`. Establish `hE0 : 0 ≤ (X.S C0 CE1 CE2).E0` using `by show 0 ≤ errorTermBound CE1 CE2 X.L.p X.L.k X.L.N1 X.L.Q X.L.c X.L.a X.L.b' (X.L.La C0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `errorTermBound`. Establish `h1` using `hF.La0`. Establish `h2` using `hF.b0.le`. Establish `h3 : (0 : ℝ) ≤ X.L.k` using `by show (0 : ℝ) ≤ (X.L.m : ℝ) + 1; positivity`. Establish `h4 : (0 : ℝ) ≤ X.L.Q` using `by show (0 : ℝ) ≤ (X.L.p : ℝ) ^ X.L.G'; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `hLa : (X.S C0 CE1 CE2).La / ((X.r : ℝ) + 1) + 4 / (X.p : ℝ) ^ 2 ≤ 1` using `by show X.L.La C0 / ((X.L.m : ℝ) + 1) + 4 / (X.L.p : ℝ) ^ 2 ≤ 1`. Establish `h1 : X.L.La C0 / ((X.L.m : ℝ) + 1) ≤ 1 / 2`. Rewrite using `[div_le_iff₀ (by positivity)]`. Combine the linear relations using `[hF.La_lt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2 : 4 / (X.L.p : ℝ) ^ 2 ≤ 1 / 2`. Rewrite using `[div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbig : ((2 * aBig X : ℕ) : ℝ) = 2 * ((3 * (X.s : ℝ) + 2) * (X.L.a : ℝ))`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `aBig`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsa : 0 ≤ (X.s : ℝ) * (X.L.a : ℝ)` using `mul_nonneg hs0 ha0`. Establish `hwin : ∀ x ∈ X.winA, (x : ℝ) ≤ 2 * (X.L.a : ℝ)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `h2` using `(Finset.mem_Icc.1 hx).2`. Establish `h3 : (x : ℝ) ≤ (⌊(X.L.a : ℝ) + X.L.a / (X.L.k * X.L.Y) + X.xa⌋₊ : ℝ)` using `by exact_mod_cast h2`. Conclude with `(h3.trans (Nat.floor_le hF.win0)).trans hF.win_le`. Establish `hbT : ∀ i, ((X.S C0 CE1 CE2).bTop i : ℝ) ≤ (X.L.a : ℝ) / 10` using `fun i => (hF.bT_le _ (segPos_mem X.L.TT X.j i)).trans hb10`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbP : ((X.S C0 CE1 CE2).bPlus : ℝ) ≤ (X.L.a : ℝ) / 10` using `(hF.bT_le _ (segNext_mem X.L.TT X.j)).trans hb10`. Use `⟨?_, fun x => ?_, ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ X.L.a` using `by exact_mod_cast hF.a1`. Unfold `aBig`. Conclude with `Nat.mul_pos (by omega) h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `segChain_deg_le (X.S C0 CE1 CE2) aTop b hK hp1 hE0 hF.La0 hLa (2 * (X.L.a : ℝ)) ((X.L.a : ℝ) / 10) hbT hbP (fun i => hwin _ (Fintype.mem_piFinset.1 haTop i)) (show (X.L.a : ℝ) ≤ 2 * (X.L.a : ℝ) by linarith) x`. Establish `h2 : (((gB C0 CE1 CE2 X aTop aPlus b).LL.deg x : ℕ) : ℝ) ≤ ((2 * aBig X : ℕ) : ℝ)`. Rewrite using `[hbig]`. Use `le_trans h1 ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h2` after adjusting the coercions. Establish `h2 : (((gB C0 CE1 CE2 X aTop aPlus b).B : ℕ) : ℝ) ≤ ((2 * aBig X : ℕ) : ℝ)`. Rewrite using `[hbig]`. Use `le_trans hbP ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h2` after adjusting the coercions. Establish `h0 : (gB C0 CE1 CE2 X aTop aPlus b).T.z i ≤ (X.S C0 CE1 CE2).bTop (uTop (X.S C0 CE1 CE2) i)` using `(Nat.sub_le _ _).trans (coarseA_le (X.S C0 CE1 CE2) b _)`. Establish `h2 : (((gB C0 CE1 CE2 X aTop aPlus b).T.z i : ℕ) : ℝ) ≤ ((2 * aBig X : ℕ) : ℝ)`. Rewrite using `[hbig]`. Use `le_trans (Nat.cast_le.2 h0) (le_trans (hbT _) ?_)` and prove the remaining obligations.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `h2` after adjusting the coercions. Establish `h0 : (gB C0 CE1 CE2 X aTop aPlus b).zPlus ≤ aPlus` using `Nat.sub_le _ _`. Establish `h2 : (((gB C0 CE1 CE2 X aTop aPlus b).zPlus : ℕ) : ℝ) ≤ ((2 * aBig X : ℕ) : ℝ)`. Rewrite using `[hbig]`.
-
-Use `le_trans (Nat.cast_le.2 h0) (le_trans (hwin _ haPlus) ?_)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Conclude with `h2` after adjusting the coercions.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem gB_deg_le {CYb Cde Ck CD Cb Cc : ℝ} (hCYb : 1 ≤ CYb) (hCE1 : 0 ≤ CE1) (hCE2 : 0 ≤ CE2)
     (hH : flipOneThree.HI C0 CYb Cde Ck CD Cb Cc X) (aTop : Fin X.s → ℕ)
@@ -235,7 +231,7 @@ theorem gB_deg_le {CYb Cde Ck CD Cb Cc : ℝ} (hCYb : 1 ≤ CYb) (hCE1 : 0 ≤ C
     exact_mod_cast h2
 
 /- English proof (translation)
-Introduce `aTop hT aPlus hP b hK`. Take `⟨h1, h2, h3, h4, h5⟩` from `gB_deg_le C0 CE1 CE2 X hCYb hCE1 hCE2 hH aTop hT aPlus hP b hK`. Establish `hr : 1 ≤ X.r` using `by have := r_ge C0 CYb Cde Ck CD Cb Cc X hH; omega`. Conclude with `(Formalism.InvariantFactorPaths.KP.Top.levelLattice X.p (2 * X.s + 1) X.r (gB C0 CE1 CE2 X aTop aPlus b) (aBig X) (gB_blockOK C0 CE1 CE2 X aTop aPlus b) hr h1 h2 h3 h4 h5 (hTU aTop aPlus b).1 (hTU aTop aPlus b).2).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem restLL_of {CYb Cde Ck CD Cb Cc : ℝ} (hCYb : 1 ≤ CYb) (hCE1 : 0 ≤ CE1) (hCE2 : 0 ≤ CE2)
     (hH : flipOneThree.HI C0 CYb Cde Ck CD Cb Cc X)

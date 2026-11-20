@@ -16,15 +16,13 @@ noncomputable section
 namespace GlobalTheory.Core.Mi.LevChain
 
 /- English proof (translation)
-Introduce `D c j s hs v hv κ hκ`. Use `haveI : Submodule.IsLattice D.host.E s.Λ := hs.selfDual.1`. Establish `hfg : s.Λ.FG` using `Submodule.IsLattice.fg (A := D.host.E)`. Establish `hGf` using `(GlobalTheory.FinPl.KOpen.mem_grpAt_iff s.V (· = v) κ).1 hκ`. Establish `hSt : Lev.finE s.V κ ∈ Formalism.L2.DIV.St s.β ↔ κ ∈ GlobalTheory.AdelicU.levelOpen D.sp.cm.sig s.V.gram s.Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_of_fg s.V s.β s.Λ hs.frame hfg κ]`. Conclude with `GlobalTheory.AdelicU.mem_levelOpen.symm`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2 : Lev.finE s.V κ ∈ Formalism.L2.DIV.lev D.sp.cm s.V.gram s.β s.L` using `h.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.FinPl.KOpen.moves_of_levelOpen s.V s.Λ hfg _ (hSt.1 (Formalism.L2.DIV.parLev_St h2.1))`. Introduce `hm`. Establish `hS` using `hSt.2 (GlobalTheory.FinPl.KOpen.levelOpen_of_inK s.V s.Λ hfg _ ⟨hκ, hm⟩)`. Take `⟨hr, ξ, hL⟩` from `hs.lev`. Use `⟨hGf.1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `GlobalTheory.LevSplit.mem_lev_of_red _ _ _ _ _ (GlobalTheory.LevSplit.finE_mem_UA _ _) hS fun PP hPP => ?_` and prove the remaining obligations. Establish `hPg : PP ∈ c.Pg`. Rewrite `hPP` using `[hL]`. Simplify `hPP` using `[Lev.datY]`. Use `GlobalTheory.ChainOnto.RedOne.redFn_eq_one D s.V s.β κ PP hS (hGf.2 _ ?_)` and prove the remaining obligations.
-
-Introduce `he`. Conclude with `hv (Finset.mem_image.2 ⟨PP, hPg, he⟩)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_levS_iff_moves : ∀ (D : D7) (c : GlobalTheory.ChainOnto.Com D) (j : ℕ) (s : GlobalTheory.ChainOnto.PiLocalization₂ D), s.Is c j → ∀ v : GlobalTheory.FinPl.Pl D, v ∉ c.S → ∀ κ ∈ grpAt s.V (· = v), κ ∈ levS s.V s.β s.L ↔ Moves s.V κ s.Λ s.Λ (· = v) := by
   intro D c j s hs v hv κ hκ

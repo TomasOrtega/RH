@@ -13,13 +13,13 @@ open GlobalTheory.Dict
 namespace GlobalTheory.Dict
 
 /- English proof (translation)
-Establish `hJK : J * K ≠ ⊥` using `mul_ne_zero hJ hK`. Take `⟨a₀, ha₀⟩` from `IsDedekindDomain.exists_sup_span_eq (Ideal.mul_le_inf.trans inf_le_left : J * K ≤ J) hJK`. Take `⟨b, hbJK, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hJK`. Establish `key : ∃ a : R, a ≠ 0 ∧ J * K ⊔ Ideal.span {a} = J`. Distinguish the cases in `h0 : a₀ = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `⟨b, hb0, ?_⟩` and prove the remaining obligations. Establish `hJKJ : J * K = J` using `by simpa [h0] using ha₀`. Rewrite using `[sup_eq_left.mpr (Ideal.span_le.mpr (Set.singleton_subset_iff.mpr hbJK)), hJKJ]`. Conclude with `⟨a₀, h0, ha₀⟩`. Take `⟨a, ha0, ha⟩` from `key`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `haJ : Ideal.span {a} ≤ J` using `ha ▸ le_sup_right`. Take `⟨A, hA⟩` from `Ideal.dvd_iff_le.mpr haJ`. Use `⟨a, A, ha0, hA, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Establish `h1 : J * (K ⊔ A) = J * ⊤`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mul_sup, ← hA, ha, Ideal.mul_top]`. Rewrite using `[sup_comm]`. Conclude with `mul_left_cancel₀ hJ h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_span_eq_mul_coprime {R : Type*} [CommRing R] [IsDedekindDomain R]
     (J K : Ideal R) (hJ : J ≠ ⊥) (hK : K ≠ ⊥) :
@@ -48,7 +48,7 @@ theorem exists_span_eq_mul_coprime {R : Type*} [CommRing R] [IsDedekindDomain R]
   exact mul_left_cancel₀ hJ h1
 
 /- English proof (translation)
-Introduce `E _ _ _ 𝔍 M h𝔍 hM`. Establish `hK : Ideal.span {(M : 𝓞 E)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hM.ne'` after adjusting the coercions. Conclude with `exists_span_eq_mul_coprime 𝔍 _ h𝔍 hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generator_at_primes_dividing :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (𝔍 : Ideal (𝓞 E)) (M : ℕ), 𝔍 ≠ ⊥ → 0 < M → ∃ (α : 𝓞 E) (𝔞 : Ideal (𝓞 E)), α ≠ 0 ∧ Ideal.span {α} = 𝔍 * 𝔞 ∧ IsCoprime 𝔞 (Ideal.span {(M : 𝓞 E)}) := by

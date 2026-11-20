@@ -8,7 +8,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRhoLagrange
 namespace Formalism.FourierDecayAlt.P.CutMP.JA
 
 /- English proof (translation)
-The claim follows from `PRhoCut.pRhoExists_of_cut PRhoCut.rho_projection_assembly PRhoCut.frame_locality_holds PRhoCut.capacity_smoothness_holds PRhoCut.eigenvector_orthogonality_holds PRhoCut.lagrange_annihilation`.
+A detailed English derivation is pending.
 -/
 theorem rho_projection_existence : PRho.PRhoExists :=
   PRhoCut.pRhoExists_of_cut PRhoCut.rho_projection_assembly PRhoCut.frame_locality_holds PRhoCut.capacity_smoothness_holds

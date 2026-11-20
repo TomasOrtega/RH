@@ -18,21 +18,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX.DC
 
 /- English proof (translation)
-Establish `hw` using `GlobalTheory.EX.wreq_of_wok C cD ch p R H a b M c u0 hC hV hF hI h0 hW`. Take `⟨hv, -, hT2, -, hQD, hBox, -, -, hBad, -, -, -, ⟨hp, hmod, -, hne, hne'⟩, hlev⟩` from `hH`. Establish `hb` using `GlobalTheory.EX.chBad_of_from C p R H a b M c u0 Cb hF hI hBad`. Establish `eS` using `hF.QS_eq`. Establish `hBW` using `hF.boxesW hBox`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQW` using `hF.qdRowsW hBox`. Take `⟨eR, -, eT2, eq, ed, eg, ep, ep', hsub, -⟩` from `hF`. Substitute `eR` using the available equality. Establish `hq0 : (0 : ℝ) < q0` using `by exact_mod_cast hp.pos`. Establish `hXb` using `X'_le_b p.L.sc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨⟨hQ, hw, ?_, ?_, q0, hsub (by rw [hlev]; simp), hp, ?_, ?_, hq, ?_, ?_, ?_⟩, ⟨hV.mem_box.1, hV.mem_box.2, hw⟩⟩, ?_, hb, ?_⟩` and prove the remaining obligations. Conclude with `hBW`. Conclude with `hQW`. Rewrite using `[eS, eq, ed]`. Conclude with `hmod`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.log_le_iff_le_exp hq0]`. Conclude with `hq.le.trans hXb`. Rewrite using `[ep]`. Conclude with `hne`. Rewrite using `[ep']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hne'`. Introduce `i hi`. Establish `hg` using `(hv.2.2.2.2.1 i).1`. Rewrite `hg` using `[← eg, ← hi]`. Establish `hk : (1 : ℝ) ≤ p.D.R.k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Use `p.D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ p.D.R.k)` after adjusting the coercions. Establish `hb1 : 1 ≤ p.L.sc.b` using `Real.one_le_exp (Real.rpow_nonneg (by linarith [p.L.sc.one_lt_alt]) _)`. Establish `h5 : p.L.sc.b ≤ (p.D.R.k : ℝ) * p.L.sc.b` using `le_mul_of_one_le_left (by linarith) hk`. Establish `h6 : (p.D.R.k : ℝ) * p.L.sc.b ≤ ((p.D.R.k : ℝ) * p.L.sc.b) ^ 8` using `le_self_pow₀ (by linarith) (by norm_num)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Unfold `ThickSetLowerBound Host.secondSet_card_lower_bound`. Rewrite using `[eT2, hV.secondConstant_eq, hV.host.2.2.2.2.2.1, ← hT, ← hv.2.2.2.2.2.1]`. Conclude with `hT2`. Unfold `ChQD_at`.
-
-Rewrite using `[eq, ed]`. Conclude with `hQD`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem has_withDuty_wall_and_choices {Q : PtProp} {C : FC} {cD ch C8 C5 c6 Cb : ℝ} (p : Pt C) {R : Ranks} {H : Host R} {q0 : ℕ}
     {a b : R.A → ℤ} {M : ℕ} {c : Fin M → Fin (R.k - 2) → Bool} {u0 : ℕ} (hC : Std C) (hT : H.CT2 = C.CT2)

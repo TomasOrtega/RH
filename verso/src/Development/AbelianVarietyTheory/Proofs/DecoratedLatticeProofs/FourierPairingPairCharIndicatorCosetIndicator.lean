@@ -13,11 +13,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n : Type} [Fintype n]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `Module.projective_lifting_property (Algebra.linearMap 𝒪[k] 𝓀[k]) P.fn residue_surjective`. Set `b` to `Module.Free.chooseBasis 𝒪[k] P.lat`. Set `G : (n → k) →ₗ[k] k` to `(b.extendOfIsLattice k).constr k fun i => (g (b i) : k)`. Establish `h1 : (G.restrictScalars 𝒪[k]) ∘ₗ P.lat.subtype = (Algebra.linearMap 𝒪[k] k) ∘ₗ g` using `b.ext fun i => by`. Use `(b.extendOfIsLattice k).constr_basis k (fun i => (g (b i) : k)) i` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Module.Basis.extendOfIsLattice_apply]`. Conclude with `this`. Use `⟨fun i => G (Pi.single i 1), fun y => ⟨g y, ?_, LinearMap.congr_fun hg y⟩⟩` and prove the remaining obligations. Establish `h2 : G y = (g y : k)` using `LinearMap.congr_fun h1 y`. Rewrite using `[← h2, LinearMap.pi_apply_eq_sum_univ G]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_comm]`. Use `congr 2`. Use extensionality with `j`. Simplify using `[Pi.single_apply, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_lifts [DecidableEq n] (P : Pair k n) : ∃ F, Lifts P.lat F P.red := by
   obtain ⟨g, hg⟩ := Module.projective_lifting_property (Algebra.linearMap 𝒪[k] 𝓀[k]) P.fn residue_surjective
@@ -37,7 +37,7 @@ theorem exists_lifts [DecidableEq n] (P : Pair k n) : ∃ F, Lifts P.lat F P.red
   simp [Pi.single_apply, eq_comm]
 
 /- English proof (translation)
-Introduce `y hy` and use `by obtain ⟨s, hs, hr⟩ := hF ⟨y, hy⟩ obtain ⟨t, ht, hr'⟩ := hF' ⟨y, hy⟩ obtain ⟨u, hu⟩ := q.mem_max_iff.1 ((residue_eq_zero_iff (s - t)).1 (by rw [map_sub, hr, hr', sub_self])) have hu' : (s : k) - t = q.1 * u := by exact_mod_cast congrArg Subtype.val hu rw [← smul_sub, smul_dotPr …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inDual_of_lifts (q : Unif k) {L : Submodule 𝒪[k] (n → k)} {f : Module.Dual 𝓀[k] (Red L)} {F F' : n → k}
     (hF : Lifts L F f) (hF' : Lifts L F' f) : InDual L (q.inv • F - q.inv • F') := fun y hy => by
@@ -50,7 +50,7 @@ theorem inDual_of_lifts (q : Unif k) {L : Submodule 𝒪[k] (n → k)} {f : Modu
   exact u.2
 
 /- English proof (translation)
-Use `if_congr ⟨?_, fun h => ⟨F, hF, by simpa using h⟩⟩ rfl rfl` and prove the remaining obligations. Introduce and unpack `⟨F', hF', h⟩ y hy`. Use `sub_mem (h y hy) (inDual_of_lifts q hF hF' y hy)` as an intermediate fact. Rewrite `this` using `[← sub_dotProduct, show η + q.inv • F - q.inv • F' - (q.inv • F - q.inv • F') = η by abel]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cosetInd_add (q : Unif k) {L : Submodule 𝒪[k] (n → k)} {f : Module.Dual 𝓀[k] (Red L)} {F : n → k}
     (hF : Lifts L F f) (η : n → k) : cosetInd q L f (η + q.inv • F) = dualInd L η := by
@@ -65,7 +65,7 @@ variable {χ : AddChar k Circle} (hχ : HasConductor χ 1) {e : k}
 include hχ in
 
 /- English proof (translation)
-Break down `he with rfl | rfl` into its components or cases. Simplify using `using apply_int_eq_one hχ ⟨_, hη y hy⟩`. Simplify using `using apply_int_eq_one hχ (-⟨_, hη y hy⟩)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem char_dual (he : e = 1 ∨ e = -1) {L : Submodule 𝒪[k] (n → k)} {η y : n → k} (hη : InDual L η) (hy : y ∈ L) :
     χ (e * (η ⬝ᵥ y)) = 1 := by
@@ -74,9 +74,9 @@ theorem char_dual (he : e = 1 ∨ e = -1) {L : Submodule 𝒪[k] (n → k)} {η 
   · simpa using apply_int_eq_one hχ (-⟨_, hη y hy⟩)
 
 /- English proof (translation)
-Take `⟨s, hs, hr⟩` from `hF ⟨y, hy⟩`. Establish `hr' : P.ev y = residue 𝒪[k] s` using `((P.hasVal_fn ⟨y, hy⟩).ev_eq).trans hr.symm`. Rewrite using `[add_dotProduct, mul_add, AddChar.map_add_eq_mul, char_dual hχ (he.imp And.left And.left) hη hy, one_mul, smul_dotProduct, ← hs, hr']`. Break down `he with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Simplify using `[resChar_residue]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use `resChar_residue hχ q (-s)` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem char_coset (q : Unif k) {ε : 𝓀[k]ˣ} (he : (e = 1 ∧ ε = 1) ∨ (e = -1 ∧ ε = -1)) {P : Pair k n} {F η y : n → k}
     (hF : Lifts P.lat F P.red) (hη : InDual P.lat η) (hy : y ∈ P.lat) :
@@ -91,15 +91,15 @@ theorem char_coset (q : Unif k) {ε : 𝓀[k]ˣ} (he : (e = 1 ∧ ε = 1) ∨ (e
     simpa using this.symm
 
 /- English proof (translation)
-Apply the tactic sequence `have hi : ε⁻¹ = ε := by rcases hε with rfl | rfl <;> simp`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy, hc⟩ : ∃ y ∈ Q.lat, -Q.ev y + ε * Q''.ev y ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `hne (Pair.ext fun x a => ?_)` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pair.dia_hasVal, hi]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx'` using `h ▸ hx.mem`. Use `hc x hx'` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hx.ev_eq, neg_add_eq_zero]`. Conclude with `this ▸ Pair.hasVal_ev hx'`. Introduce `hx`. Use `hc x hx.mem` as an intermediate fact. Rewrite `this` using `[hx.ev_eq, neg_add_eq_zero, Units.mul_right_inj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `this ▸ Pair.hasVal_ev (h ▸ hx.mem)`. Take `⟨a, ha⟩` from `AddChar.ne_one_iff.1 (resChar_ne_one hχ q)`. Take `⟨s, hs⟩` from `residue_surjective (R := 𝒪[k]) (a * (-Q.ev y + ε * Q''.ev y)⁻¹)`. Use `⟨s • y, Q.lat.smul_mem s hy, ?_⟩` and prove the remaining obligations. Rewrite using `[((Pair.hasVal_ev hy).smul s).ev_eq, ((Pair.hasVal_ev (h ▸ hy : y ∈ Q''.lat)).smul s).ev_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `ha using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← inv_mul_cancel_right₀ hc a, ← hs]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_char_ne (q : Unif k) {ε : 𝓀[k]ˣ} (hε : ε = 1 ∨ ε = -1) {Q Q'' : Pair k n} (h : Q''.lat = Q.lat)
     (hne : Q'' ≠ ε • Q) : ∃ y ∈ Q.lat, resChar χ hχ q (-Q.ev y + ε * Q''.ev y) ≠ 1 := by
@@ -128,27 +128,25 @@ theorem exists_char_ne (q : Unif k) {ε : 𝓀[k]ˣ} (hε : ε = 1 ∨ ε = -1) 
   ring
 
 /- English proof (translation)
-Use `haveI : T2Space k := GlobalTheory.SplitWeil.t2Space k`. Use `haveI := secondCountable k`. Take `⟨F, hF⟩` from `exists_lifts Q''`. Establish `hε : ε = 1 ∨ ε = -1` using `he.imp And.right And.right`. Establish `key : fpair χ e μ (charInd (resChar χ hχ q) Q) (cosetInd q Q''.lat Q''.red) = ∫ η, (∫ y, vecInd Q.lat y * resChar χ hχ q (-Q.ev y + ε * Q''.ev y) ∂μ) * dualInd Q.lat η ∂μ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `fpair`. Rewrite using `[← integral_add_right_eq_self _ (q.inv • F)]`. Use `congr 1`. Use function extensionality and compare the values at `η`. Rewrite using `[cosetInd_add q hF, h]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hη : InDual Q.lat η`. Use `swap`. Rewrite using `[dualInd, if_neg hη, mul_zero, mul_zero]`. Use `congr 2`. Use function extensionality and compare the values at `y`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `hy : y ∈ Q.lat`. Rewrite using `[char_coset hχ q he hF (h ▸ hη) (h ▸ hy), charInd, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[charInd, vecInd, if_neg hy, mul_zero, zero_mul, zero_mul]`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Unfold `fpair`. Use `congr 1`. Use function extensionality and compare the values at `η`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `hη : InDual Q.lat η`. Use `swap`. Rewrite using `[dualInd, if_neg hη, mul_zero, mul_zero]`. Use `congr 2`. Use function extensionality and compare the values at `y`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hy : y ∈ Q.lat`. Establish `h1 : Q.ev y = (ε⁻¹ : 𝓀[k]ˣ) * (ε • Q).ev y` using `(Pair.dia_hasVal.1 (Pair.hasVal_ev (P := ε • Q) hy)).ev_eq`. Apply the tactic sequence `have hi : ε⁻¹ = ε := by rcases hε with rfl | rfl <;> simp`. Rewrite `h1` using `[hi]`. Rewrite using `[char_dual hχ (he.imp And.left And.left) hη hy, ← h1, neg_add_cancel]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Rewrite using `[vecInd, if_neg hy, zero_mul, zero_mul]`. Introduce `hne`. Take `⟨y₀, hy₀, hc⟩` from `exists_char_ne hχ q hε h hne`. Establish `e1` using `integral_add_right_eq_self (μ := μ) (fun y => vecInd Q.lat y * resChar χ hχ q (-Q.ev y + ε * Q''.ev y)) y₀`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e2 : ∀ y, vecInd Q.lat (y + y₀) * resChar χ hχ q (-Q.ev (y + y₀) + ε * Q''.ev (y + y₀)) = resChar χ hχ q (-Q.ev y₀ + ε * Q''.ev y₀) * (vecInd Q.lat y * resChar χ hχ q (-Q.ev y + ε * Q''.ev y))` using `fun y => by`. Distinguish the cases in `hy : y ∈ Q.lat`. Rewrite using `[vecInd, vecInd, if_pos hy, if_pos (add_mem hy hy₀), one_mul, one_mul, ← AddChar.map_add_eq_mul, ((Pair.hasVal_ev hy).add (Pair.hasVal_ev hy₀)).ev_eq, ((Pair.hasVal_ev (h ▸ hy : y ∈ Q''.lat)).add (Pair.hasVal_ev (h ▸ hy₀ : y₀ ∈ Q''.lat))).ev_eq]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[vecInd, vecInd, if_neg hy, if_neg fun h' => hy ((Q.lat.add_mem_iff_left hy₀).1 h')]`. Simplify using the standard rewrite rules. Simplify using `only [e2] at e1`. Rewrite `e1` using `[integral_const_mul]`. Establish `h0 : ∫ y, vecInd Q.lat y * resChar χ hχ q (-Q.ev y + ε * Q''.ev y) ∂μ = 0`.
-
-Assume the negation of the conclusion as `h0`. Conclude with `hc ((mul_eq_right₀ h0).1 e1)`. Simplify using `[h0]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fpair_charInd_cosetInd (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (q : Unif k) (χ : AddChar k Circle)

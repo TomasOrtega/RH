@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.A
 open scoped MatrixGroups
 
 /- English proof (translation)
-Introduce `x`. Use `set g := (x 0).gcd (x 1) with hg`. Break down `Nat.eq_zero_or_pos g with h0 | hpos` into its components or cases. Take `⟨h0', h1'⟩` from `Int.gcd_eq_zero_iff.mp h0`. Use `⟨0, 1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [h0', h1']`. Establish `hc : IsCoprime (x 0 / (g : ℤ)) (x 1 / (g : ℤ))` using `Int.isCoprime_iff_gcd_eq_one.mpr (Int.gcd_div_gcd_div_gcd hpos)`. Take `⟨γ, -, hγ⟩` from `ModularGroup.bottom_row_surj (R := ℤ) (show ![x 0 / (g : ℤ), x 1 / (g : ℤ)] ∈ {cd : Fin 2 → ℤ | IsCoprime (cd 0) (cd 1)} by simpa using hc)`. Use `⟨g, γ, ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Establish `hi` using `congrFun hγ i`. Simplify using `only [UpperTheory.V.Af.Rs.row, Pi.smul_apply, smul_eq_mul] at hi ⊢`. Rewrite using `[hi]`. Use `fin_cases i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]`. Conclude with `(Int.mul_ediv_cancel' (Int.gcd_dvd_left (x 0) (x 1))).symm`. Simplify using `only [Fin.mk_one, Fin.isValue, Matrix.cons_val_one, Matrix.cons_val_fin_one]`. Conclude with `(Int.mul_ediv_cancel' (Int.gcd_dvd_right (x 0) (x 1))).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rs.rowRep :
     UpperTheory.V.Af.Rs.RowRep := by

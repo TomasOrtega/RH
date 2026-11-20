@@ -12,7 +12,7 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.RTr
 
 /- English proof (translation)
-Introduce `_ _ _ _ hθ _ hk _ hu` and use `rTr_fin_mem_cuspForms hθ Kinf_le hu hk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspFormsArchimedeanKFinite_rightTranslate_finite : ∀ (D : D7) (θ : InfFam D) (A : HSp D) (cA : CptF A), IsInfFam θ → ∀ k ∈ GfC A,
     ∀ u ∈ A0 θ A cA, rTr A k u ∈ A0 θ A cA :=

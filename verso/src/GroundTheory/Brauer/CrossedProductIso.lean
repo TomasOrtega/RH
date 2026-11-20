@@ -30,13 +30,13 @@ namespace MaximalEmbedding
 variable (ι : L →ₐ[K] B)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ι` using `RingHom.injective ι.toRingHom`. Set `e` to `AlgEquiv.ofInjective ι hinj`. Establish `: IsSimpleRing ι.range` using `IsSimpleRing.of_ringEquiv e.toRingEquiv inferInstance`. Establish `hr : finrank K ι.range = finrank K L` using `e.toLinearEquiv.finrank_eq.symm`. Establish `hmul` using `finrank_mul_finrank_centralizer ι.range`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 0 < finrank K L` using `Module.finrank_pos`. Establish `hle : ι.range ≤ Subalgebra.centralizer K (ι.range : Set B)`. Introduce `x hx`. Take `⟨a, rfl⟩` from `(AlgHom.mem_range _).1 hx`. Rewrite using `[Subalgebra.mem_centralizer_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Take `⟨b, rfl⟩` from `(AlgHom.mem_range _).1 hy`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Establish `hdim : finrank K ι.range = finrank K (Subalgebra.centralizer K (ι.range : Set B))`. Rewrite `hmul` using `[hr, h, sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hr]`. Conclude with `(Nat.eq_of_mul_eq_mul_left hL hmul).symm`. Conclude with `(Subalgebra.toSubmodule_injective (Submodule.eq_of_le_of_finrank_eq (Subalgebra.toSubmodule.monotone hle) hdim)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centralizer_range_eq (h : finrank K B = finrank K L ^ 2) :
     Subalgebra.centralizer K (ι.range : Set B) = ι.range := by
@@ -61,7 +61,7 @@ theorem centralizer_range_eq (h : finrank K B = finrank K L ^ 2) :
     (Subalgebra.toSubmodule.monotone hle) hdim)).symm
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_unit_conj ι (ι.comp σ.toAlgHom)`. Use `⟨a, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : ι (σ x) = a * ι x * ↑a⁻¹` using `ha x`. Rewrite using `[hx, Units.inv_mul_cancel_right]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_unit_mul_eq (σ : L ≃ₐ[K] L) : ∃ a : Bˣ, ∀ x, (a : B) * ι x = ι (σ x) * a := by
   obtain ⟨a, ha⟩ := exists_unit_conj ι (ι.comp σ.toAlgHom)
@@ -72,25 +72,23 @@ theorem exists_unit_mul_eq (σ : L ≃ₐ[K] L) : ∃ a : Bˣ, ∀ x, (a : B) * 
 def symbol (σ : L ≃ₐ[K] L) : Bˣ := (exists_unit_mul_eq ι σ).choose
 
 /- English proof (translation)
-The claim follows from `(exists_unit_mul_eq ι σ).choose_spec x`.
+A detailed English derivation is pending.
 -/
 theorem symbol_mul (σ : L ≃ₐ[K] L) (x : L) :
     (symbol ι σ : B) * ι x = ι (σ x) * symbol ι σ :=
   (exists_unit_mul_eq ι σ).choose_spec x
 
 /- English proof (translation)
-Rewrite using `[Units.inv_mul_eq_iff_eq_mul, ← mul_assoc, symbol_mul, Units.mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symbol_inv_mul (σ : L ≃ₐ[K] L) (x : L) :
     (↑(symbol ι σ)⁻¹ : B) * ι (σ x) = ι x * ↑(symbol ι σ)⁻¹ := by
   rw [Units.inv_mul_eq_iff_eq_mul, ← mul_assoc, symbol_mul, Units.mul_inv_cancel_right]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩ : ∃ y, (σ * τ) y = x` from `⟨(σ * τ).symm x, (σ * τ).apply_symm_apply x⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[AlgEquiv.mul_apply]`. Simplify using `only [mul_assoc]`. Use `_ = symbol ι σ * (ι (τ y) * symbol ι τ) * ↑(symbol ι (σ * τ))⁻¹ := by`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← symbol_mul]`. Simplify using `only [mul_assoc]`. Use `_ = symbol ι σ * symbol ι τ * (ι y * ↑(symbol ι (σ * τ))⁻¹) := by`. Rewrite using `[← symbol_mul]`. Simplify using `only [mul_assoc]`.
-
-Use `_ = _ := by rw [← symbol_inv_mul]; simp only [mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem commute_symbols (σ τ : L ≃ₐ[K] L) (x : L) :
     ι x * ((symbol ι σ : B) * symbol ι τ * ↑(symbol ι (σ * τ))⁻¹) =
@@ -109,9 +107,9 @@ variable (h : finrank K B = finrank K L ^ 2)
 include h
 
 /- English proof (translation)
-Establish `hc : (symbol ι σ : B) * symbol ι τ * ↑(symbol ι (σ * τ))⁻¹ ∈ Subalgebra.centralizer K (ι.range : Set B)`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `g hg`. Take `⟨x, rfl⟩` from `(AlgHom.mem_range _).1 hg`. Conclude with `commute_symbols ι σ τ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[centralizer_range_eq ι h]`. Conclude with `(AlgHom.mem_range _).1 hc`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_symbols (σ τ : L ≃ₐ[K] L) :
     ∃ a : L, ι a = (symbol ι σ : B) * symbol ι τ * ↑(symbol ι (σ * τ))⁻¹ := by
@@ -127,14 +125,14 @@ theorem exists_eq_symbols (σ τ : L ≃ₐ[K] L) :
 def cocycleVal (p : (L ≃ₐ[K] L) × (L ≃ₐ[K] L)) : L := (exists_eq_symbols ι h p.1 p.2).choose
 
 /- English proof (translation)
-The claim follows from `(exists_eq_symbols ι h p.1 p.2).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem map_cocycleVal (p : (L ≃ₐ[K] L) × (L ≃ₐ[K] L)) :
     ι (cocycleVal ι h p) = (symbol ι p.1 : B) * symbol ι p.2 * ↑(symbol ι (p.1 * p.2))⁻¹ :=
   (exists_eq_symbols ι h p.1 p.2).choose_spec
 
 /- English proof (translation)
-Introduce `h0`. Establish `hp` using `map_cocycleVal ι h p`. Rewrite `hp` using `[h0, map_zero]`. Conclude with `(symbol ι p.1 * symbol ι p.2 * (symbol ι (p.1 * p.2))⁻¹).ne_zero (by rw [Units.val_mul, Units.val_mul]; exact hp.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycleVal_ne_zero (p : (L ≃ₐ[K] L) × (L ≃ₐ[K] L)) : cocycleVal ι h p ≠ 0 := by
   intro h0
@@ -147,14 +145,14 @@ def cocycle (p : (L ≃ₐ[K] L) × (L ≃ₐ[K] L)) : Lˣ :=
   Units.mk0 (cocycleVal ι h p) (cocycleVal_ne_zero ι h p)
 
 /- English proof (translation)
-Rewrite using `[cocycle, Units.val_mk0, map_cocycleVal, Units.inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symbol_mul_symbol (σ τ : L ≃ₐ[K] L) :
     (symbol ι σ : B) * symbol ι τ = ι (cocycle ι h (σ, τ) : L) * symbol ι (σ * τ) := by
   rw [cocycle, Units.val_mk0, map_cocycleVal, Units.inv_mul_cancel_right]
 
 /- English proof (translation)
-Establish `h1` using `symbol_mul_symbol ι h 1 1`. Rewrite `h1` using `[mul_one]`. Conclude with `(Units.mul_left_inj (symbol ι 1)).1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symbol_one : (symbol ι 1 : B) = ι (cocycle ι h (1, 1) : L) := by
   have h1 := symbol_mul_symbol ι h 1 1
@@ -162,11 +160,9 @@ theorem symbol_one : (symbol ι 1 : B) = ι (cocycle ι h (1, 1) : L) := by
   exact (Units.mul_left_inj (symbol ι 1)).1 h1
 
 /- English proof (translation)
-Introduce `g k j`. Establish `hinj : Function.Injective ι` using `RingHom.injective ι.toRingHom`. Establish `key : ι (↑(cocycle ι h (g * k, j) * cocycle ι h (g, k))) * ↑(symbol ι (g * k * j)) = ι (↑(g • cocycle ι h (k, j) * cocycle ι h (g, k * j))) * ↑(symbol ι (g * k * j))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm (cocycle ι h (g * k, j)), Units.val_mul, map_mul, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `_ = ↑(symbol ι g) * ↑(symbol ι k) * ↑(symbol ι j) := by`. Rewrite using `[← symbol_mul_symbol, ← mul_assoc, ← symbol_mul_symbol]`. Use `_ = ↑(symbol ι g) * (ι ↑(cocycle ι h (k, j)) * ↑(symbol ι (k * j))) := by`. Rewrite using `[← symbol_mul_symbol, mul_assoc]`. Use `_ = ι (g ↑(cocycle ι h (k, j))) * (↑(symbol ι g) * ↑(symbol ι (k * j))) := by`.
-
-Rewrite using `[← mul_assoc, symbol_mul, mul_assoc]`. Use `_ = _ := by`. Rewrite using `[symbol_mul_symbol, ← mul_assoc, ← map_mul, mul_assoc g k j, Units.val_mul, CrossedProduct.val_smul_units]`. Conclude with `Units.ext (hinj ((Units.mul_left_inj (symbol ι (g * k * j))).1 key))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulCocycle₂_cocycle : IsMulCocycle₂ (cocycle ι h) := by
   intro g k j
@@ -191,7 +187,7 @@ def toAlgHom : CrossedProduct (isMulCocycle₂_cocycle ι h) →ₐ[K] B :=
     (fun σ τ => symbol_mul_symbol ι h σ τ) (symbol_one ι h)
 
 /- English proof (translation)
-Establish `hinj` using `RingHom.injective (toAlgHom ι h).toRingHom`. Use `⟨hinj, ?_⟩` and prove the remaining obligations. Establish `hd : finrank K (CrossedProduct (isMulCocycle₂_cocycle ι h)) = finrank K B`. Rewrite using `[CrossedProduct.finrank_eq_sq, h]`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := (toAlgHom ι h).toLinearMap) hd).mp hinj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toAlgHom_bijective [IsGalois K L] : Function.Bijective (toAlgHom ι h) := by
   have hinj := RingHom.injective (toAlgHom ι h).toRingHom
@@ -206,7 +202,7 @@ end MaximalEmbedding
 open MaximalEmbedding in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cocycle ι h, isMulCocycle₂_cocycle ι h, ⟨AlgEquiv.ofBijective (toAlgHom ι h) (toAlgHom_bijective ι h)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_algEquiv_crossedProduct [IsGalois K L] (ι : L →ₐ[K] B)
     (h : finrank K B = finrank K L ^ 2) :
@@ -222,35 +218,33 @@ section Representative
 variable {K : Type u} [Field K] {L : Type u} [Field L] [Algebra K L] [FiniteDimensional K L]
 
 /- English proof (translation)
-Take `⟨s, ⟨e⟩⟩` from `(BrauerGroup.mk_mem_relBrauer_iff A).1 hA`. Establish `hs : s ≠ 0`. Introduce and unpack `rfl`. Conclude with `one_ne_zero (e.injective (Subsingleton.elim _ _) : (1 : L ⊗[K] A) = 0)`. Establish `: NeZero s` using `⟨hs⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set n := finrank K L with hn`. Establish `hn0 : 0 < n` using `Module.finrank_pos`. Establish `: NeZero n` using `⟨hn0.ne'⟩`. Set `lm : L →ₐ[K] Matrix (Fin n) (Fin n) K` to `Algebra.leftMulMatrix (Module.finBasis K L)`. Set `R` to `A ⊗[K] Matrix (Fin n) (Fin n) K`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `j : L ⊗[K] A →ₐ[K] R` to `(Algebra.TensorProduct.map (AlgHom.id K A) lm).comp (Algebra.TensorProduct.comm K L A).toAlgHom`. Set `ι : L →ₐ[K] R` to `Algebra.TensorProduct.includeRight.comp lm`. Establish `hcomm : ∀ (x : L ⊗[K] A) (l : L), j x * ι l = ι l * j x`. Introduce `x l`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul l' a`. Simplify using `only [j, ι, AlgHom.comp_apply, AlgEquiv.toAlgHom_apply, Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.includeRight_apply]`. Express the relevant statement in the definitionally equal form `(a ⊗ₜ[K] lm l' : A ⊗[K] Matrix (Fin n) (Fin n) K) * (1 ⊗ₜ lm l) = (1 ⊗ₜ lm l) * (a ⊗ₜ[K] lm l')`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, ← map_mul, ← map_mul, mul_comm l' l]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Introduce a local definition for the expression.
 
-Consider the case `add x y hx hy => rw [map_add, add_mul, mul_add, hx, hy]`. Set `eK : L ⊗[K] A ≃ₐ[K] Matrix (Fin s) (Fin s) L` to `e.restrictScalars K`. Set `ψ : Matrix (Fin s) (Fin s) K →ₐ[K] R` to `j.comp (eK.symm.toAlgHom.comp (Algebra.ofId K L).mapMatrix)`. Establish `hψ : Function.Injective ψ` using `RingHom.injective ψ.toRingHom`. Set `S` to `ψ.range`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `eS : Matrix (Fin s) (Fin s) K ≃ₐ[K] S` to `AlgEquiv.ofInjective ψ hψ`. Establish `: IsSimpleRing S` using `IsSimpleRing.of_ringEquiv eS.toRingEquiv inferInstance`. Establish `: Algebra.IsCentral K S` using `Algebra.IsCentral.of_algEquiv K _ _ eS`. Set `C` to `Subalgebra.centralizer K (S : Set R)`. Establish `: IsSimpleRing C` using `isSimpleRing_centralizer S`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hιC : ∀ l, ι l ∈ C`. Introduce `l`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `g hg`. Take `⟨M, rfl⟩` from `(AlgHom.mem_range _).1 hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hcomm (eK.symm ((Algebra.ofId K L).mapMatrix M)) l`. Establish `: Algebra.IsCentral K C`. Use `⟨fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[Subalgebra.mem_center_iff]`. Establish `hzC : (z : R) ∈ Subalgebra.centralizer K (C : Set R)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `g hg`. Conclude with `congrArg Subtype.val (hz ⟨g, hg⟩)`. Establish `hzS : (z : R) ∈ S`. Rewrite using `[← centralizer_centralizer S]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hzC`. Take `⟨M, hM⟩` from `(AlgHom.mem_range _).1 hzS`. Establish `hMc : M ∈ Subalgebra.center K (Matrix (Fin s) (Fin s) K)`. Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `N`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hψ` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, hM]`. Conclude with `(Subalgebra.mem_centralizer_iff K).mp z.2 (ψ N) (AlgHom.mem_range_self _ N)`. Take `⟨k, hk⟩` from `Algebra.mem_bot.mp (Algebra.IsCentral.out hMc)`. Use `Algebra.mem_bot.mpr ⟨k, Subtype.ext ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hM, ← hk, AlgHom.commutes]`. Both sides reduce to the same expression. Establish `hAs : finrank K A = s ^ 2`. Establish `h1` using `e.toLinearEquiv.finrank_eq`. Rewrite `h1` using `[Module.finrank_baseChange, Module.finrank_matrix, Fintype.card_fin, Module.finrank_self, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, sq]`. Establish `hR : finrank K R = finrank K A * n ^ 2`. Rewrite using `[Module.finrank_tensorProduct, Module.finrank_matrix, Fintype.card_fin, Module.finrank_self, mul_one, sq]`. Establish `hS : finrank K S = s ^ 2`. Rewrite using `[← eS.toLinearEquiv.finrank_eq, Module.finrank_matrix, Fintype.card_fin, Module.finrank_self, mul_one, sq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hC : finrank K C = n ^ 2`. Establish `h` using `finrank_mul_finrank_centralizer S`. Rewrite `h` using `[hS, hR, hAs]`. Conclude with `Nat.eq_of_mul_eq_mul_left (pow_pos (Nat.pos_of_ne_zero hs) 2) h`. Establish `hRA : IsBrauerEquivalent (csaOf K R) A` using `isBrauerEquivalent_of_algEquiv_matrix (C := A) (matrixEquivTensor (Fin n) K A).symm (matrixFinOneAlgEquiv (K := K) A).symm`.
-
-Establish `hRC : IsBrauerEquivalent (csaOf K R) (csaOf K C)` using `isBrauerEquivalent_of_algEquiv_matrix (C := C) ((tensorCentralizerAlgEquiv S).symm.trans <| (Algebra.TensorProduct.congr eS.symm AlgEquiv.refl).trans <| (Algebra.TensorProduct.comm K _ _).trans (matrixEquivTensor (Fin s) K C).symm) (matrixFinOneAlgEquiv (K := K) C).symm`. Conclude with `⟨csaOf K C, hRA.symm.trans hRC, hC, ⟨ι.codRestrict C hιC⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isBrauerEquivalent_finrank_eq_of_mem_relBrauer (A : CSA.{u, u} K)
     (hA : (⟦A⟧ : BrauerGroup.{u, u} K) ∈ BrauerGroup.relBrauer K L) :
@@ -356,11 +350,9 @@ theorem exists_isBrauerEquivalent_finrank_eq_of_mem_relBrauer (A : CSA.{u, u} K)
 end Representative
 
 /- English proof (translation)
-Use `⟨fun g => ∏ j, f (g, j), fun g h => ?_⟩` and prove the remaining obligations. Establish `H : (∏ j, f (g * h, j)) * f (g, h) ^ Fintype.card G = g • (∏ j, f (h, j)) * ∏ j, f (g, j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Use `_ = ∏ j, (g • f (h, j) * f (g, h * j)) := Finset.prod_congr rfl fun j _ => hf g h j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (∏ j, g • f (h, j)) * ∏ j, f (g, h * j) := Finset.prod_mul_distrib`. Use `_ = g • (∏ j, f (h, j)) * ∏ j, f (g, j) := by`. Rewrite using `[Finset.smul_prod']`. Use `congr 1`. Conclude with `Equiv.prod_comp (Equiv.mulLeft h) (fun j => f (g, j))`.
-
-Rewrite using `[Pi.pow_apply, div_mul_eq_mul_div, div_eq_iff_eq_mul, ← H, mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulCoboundary₂_pow_card {G M : Type*} [Group G] [Fintype G] [CommGroup M]
     [MulDistribMulAction G M] {f : G × G → M} (hf : IsMulCocycle₂ f) :
@@ -382,7 +374,7 @@ theorem isMulCoboundary₂_pow_card {G M : Type*} [Group G] [Fintype G] [CommGro
 namespace H2mul
 
 /- English proof (translation)
-Proceed by induction on `x using H2mul.induction_on with`. Consider the case `h c`. Rewrite using `[← map_pow, mk_eq_one_iff, SubmonoidClass.coe_pow]`. Conclude with `isMulCoboundary₂_pow_card (isMulCocycle₂_of_mem c)`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_card_eq_one {G M : Type*} [Group G] [Fintype G] [CommGroup M]
     [MulDistribMulAction G M] (x : H2mul G M) : x ^ Fintype.card G = 1 := by
@@ -400,9 +392,9 @@ variable {K L : Type u} [Field K] [Field L] [Algebra K L] [FiniteDimensional K L
 namespace H2mul
 
 /- English proof (translation)
-Proceed by induction on `x using Quotient.inductionOn with`. Consider the case `h A`. Take `⟨B, hAB, hdim, ⟨ι⟩⟩` from `exists_isBrauerEquivalent_finrank_eq_of_mem_relBrauer A hx`. Take `⟨f, hf, ⟨e⟩⟩` from `exists_algEquiv_crossedProduct ι hdim`. Use `⟨mk _ _ ⟨f, (mem_mulCocycles₂_iff f).2 hf⟩, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[toBrauer_mk]`. Conclude with `Quotient.sound ((isBrauerEquivalent_of_algEquiv (A := csaOf K (CrossedProduct hf)) (B := B) e).trans hAB.symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_toBrauer_eq (x : BrauerGroup.{u, u} K) (hx : x ∈ BrauerGroup.relBrauer K L) :
     ∃ y : H2mul (L ≃ₐ[K] L) Lˣ, toBrauer K L y = x := by
@@ -416,14 +408,14 @@ theorem exists_toBrauer_eq (x : BrauerGroup.{u, u} K) (hx : x ∈ BrauerGroup.re
     (A := csaOf K (CrossedProduct hf)) (B := B) e).trans hAB.symm)
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨y, hy⟩ := exists_toBrauer_eq (x : BrauerGroup.{u, u} K) x.2 exact ⟨y, Subtype.ext hy⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toRelBrauer_surjective : Function.Surjective (toRelBrauer K L) := fun x => by
   obtain ⟨y, hy⟩ := exists_toBrauer_eq (x : BrauerGroup.{u, u} K) x.2
   exact ⟨y, Subtype.ext hy⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ hxy => toBrauer_injective (congrArg Subtype.val hxy), toRelBrauer_surjective⟩`.
+Supply the required witnesses or components.
 -/
 theorem toRelBrauer_bijective : Function.Bijective (toRelBrauer K L) :=
   ⟨fun _ _ hxy => toBrauer_injective (congrArg Subtype.val hxy), toRelBrauer_surjective⟩

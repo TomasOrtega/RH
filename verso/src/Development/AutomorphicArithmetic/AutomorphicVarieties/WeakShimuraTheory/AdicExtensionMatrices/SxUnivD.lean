@@ -7,33 +7,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `O Γ _ _ _ _ _ _ Φ l _ Λ _ _ _ _ _ a hS`. Use `haveI := Φ.fin`. Use `haveI := hS.char`. Take `⟨A, _, _, _, r, hr⟩` from `UpperTheory.V.Ws.sxUnivRep l hS`. Establish `hC : ∀ t : Φ.ι × Fin 4, ∃ (B : Type) (_ : CommRing B) (_ : Algebra Λ B) (_ : IsCO Λ B) (ψ : Φ.Gv t.1 →* B), AdicCont (maximalIdeal B) ψ ∧ (∀ s : Φ.Gv t.1, res Λ B (ψ s) = residue Λ (a ((Φ.χ t.2) s))) ∧ ∀ (R' : Type) [CommRing R'] [Algebra Λ R'] [IsCO Λ R'] (ψ' : Φ.Gv t.1 →* R'), …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `t`. Use `haveI : CompactSpace (Φ.Gv t.1) := isCompact_iff_compactSpace.mp (hS.closed t.1).isCompact`. Set `χ : Φ.Gv t.1 →* ResidueField Λ` to `((residue Λ).comp a).toMonoidHom.comp ((Units.coeHom O).comp ((Φ.χ t.2).comp (Φ.Gv t.1).subtype))`. Establish `hlc : IsLocallyConstant χ` using `(hS.ok.lc t.2).comp_continuous continuous_subtype_val`. Take `⟨B, i1, i2, i3, ψ, h1, h2, h3⟩` from `UpperTheory.V.Ws.sxUnivChar l χ (hS.phiv t.1) hlc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨B, i1, i2, i3, ψ, h1, h2, fun R' _ _ _ ψ' h h' => h3 R' ψ' h h'⟩`. Use `choose B iB1 iB2 iB3 ψ hψ1 hψ2 hψ3 using hC`. Take `⟨R, _, _, _, ι0, j, hU⟩` from `@UpperTheory.V.Ws.sxCoprodOpt Λ _ _ _ _ (Φ.ι × Fin 4) _ A _ _ _ B iB1 iB2 iB3`. Establish `hmax : ∀ t (x : B t), x ∈ maximalIdeal (B t) ↔ j t x ∈ maximalIdeal R`. Introduce `t x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← res_eq_zero_iff Λ, ← res_eq_zero_iff Λ, res_map]`. Set `D : RD Φ R` to `{ r := (Lift.map ι0 r).hom ψ := fun v k => (j (v, k) : B (v, k) →+* R).toMonoidHom.comp (ψ (v, k)) }`. Use `⟨R, inferInstance, inferInstance, inferInstance, D, ?_, ?_⟩` and prove the remaining obligations. Use `⟨(hr R).1 ι0, fun i k => (Lift.map ι0 r).cont i k, fun v k => ?_, fun g k => ?_, fun g i k hik _ => ?_, fun v k s => ?_⟩` and prove the remaining obligations. Conclude with `UpperTheory.V.Ws.adicCont_map (j (v, k) : B (v, k) →+* R) (J := maximalIdeal R) (fun x hx => Ideal.mem_comap.mpr ((hmax _ x).mp hx)) (hψ1 (v, k))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(Lift.map ι0 r).red g k k` as an intermediate fact. Simplify using `[UpperTheory.V.Ws.Fr.splitRD, UpperTheory.V.GradeZeroInterpolatingElement.mapRep, UpperTheory.V.GradeZeroInterpolatingElement.diagRep] at this`. Conclude with `this`. Apply `(res_eq_zero_iff Λ R _).mp` to reduce the goal to its premises. Use `(Lift.map ι0 r).red g i k` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[UpperTheory.V.Ws.Fr.splitRD, UpperTheory.V.GradeZeroInterpolatingElement.mapRep, UpperTheory.V.GradeZeroInterpolatingElement.diagRep, Matrix.diagonal_apply_ne _ hik] at this`. Conclude with `this`. Use `show res Λ R (j (v, k) (ψ (v, k) s)) = _`. Rewrite using `[res_map]`. Conclude with `hψ2 (v, k) s`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Introduce `R' _ _ _ D' hD'`. Establish `hred : ∀ g i k, res Λ R' (D'.r g i k) = (Φ.splitRD ((residue Λ).comp a)).r g i k`. Introduce `g i k`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `[UpperTheory.V.Ws.Fr.splitRD, UpperTheory.V.GradeZeroInterpolatingElement.mapRep, UpperTheory.V.GradeZeroInterpolatingElement.diagRep]`. Conclude with `hD'.diag g i`. Simplify using `[UpperTheory.V.Ws.Fr.splitRD, UpperTheory.V.GradeZeroInterpolatingElement.mapRep, UpperTheory.V.GradeZeroInterpolatingElement.diagRep, Matrix.diagonal_apply_ne _ hik]`. Conclude with `(res_eq_zero_iff Λ R' _).mpr (hD'.off g i k hik (by simp))`. Set `r' : Lift Λ (Φ.splitRD ((residue Λ).comp a)).r R'` to `⟨D'.r, hD'.cont, hred⟩`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨fa, hfa, hfau⟩` from `(hr R').2 r' hD'.rep`. Establish `hft : ∀ t, ∃! f : B t →ₐ[Λ] R', ∀ s, f (ψ t s) = D'.ψ t.1 t.2 s` using `fun t => hψ3 t R' (D'.ψ t.1 t.2) (hD'.contψ t.1 t.2) (hD'.redψ t.1 t.2)`. Use `choose f hf hfu using hft`. Take `⟨g, ⟨hg1, hg2⟩, hgu⟩` from `hU R' fa f`. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `RD.ext` to reduce the goal to its premises. Establish `h1` using `congrArg Lift.hom hfa`. Rewrite `h1` using `[← hg1]`. Use extensionality with `x i k`. Establish `h2` using `congrArg (fun F => F x i k) h1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2` using `[RD.map, Lift.map, UpperTheory.V.GradeZeroInterpolatingElement.mapRep, D, r']`. Use function extensionality and compare the values at `v k`. Use extensionality with `s`. Use `show g (j (v, k) (ψ (v, k) s)) = D'.ψ v k s`. Rewrite using `[← AlgHom.comp_apply, hg2 (v, k), hf]`.
-
-Introduce `f' hf'`. Apply `hgu` to reduce the goal to its premises. Use `⟨?_, fun t => ?_⟩` and prove the remaining obligations. Apply `hfau` to reduce the goal to its premises. Apply `Lift.ext` to reduce the goal to its premises.
-
-Use extensionality with `x i k`. Establish `h2` using `congrArg (fun E => E.r x i k) hf'`. Simplify `h2` using `[RD.map, Lift.map, UpperTheory.V.GradeZeroInterpolatingElement.mapRep, D, r']`. Apply `hfu t` to reduce the goal to its premises. Introduce `s`.
-
-Establish `h2` using `congrArg (fun E => E.ψ t.1 t.2 s) hf'`. Simplify `h2` using `[RD.map, D]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.sxUnivD :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] {Φ : Fr O Γ} (l : ℕ) [Fact l.Prime] {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] [Finite (ResidueField Λ)] {a : O →+* Λ}, Φ.Std l a → ∃ (R : Type) (_ : CommRing R) (_ : Algebra Λ R) (_ : IsCO Λ R) (D : RD Φ R), Φ.RUniv a D := by

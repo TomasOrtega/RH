@@ -28,13 +28,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   (F : Type) [Field F] [Algebra (FractionRing (PowerSeries k)) F] (hG : GlobalFnsSt) {j : ℕ} (hj : 1 ≤ j)
 
 /- English proof (translation)
-Establish `h0 : ∀ y, 0 ≤ q y y` using `fun y => by`. Distinguish the cases in `h : y = 0`. Simplify using `[h]`. Conclude with `(hq y h).le`. Establish `: AddGroup.FG Y` using `Module.Finite.iff_addGroup_fg.1 inferInstance`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `AddSubgroup.finiteIndex_range_nsmulAddMonoidHom_of_fg Y (n := 4 * n + 1) (by omega)` as an intermediate fact. Use `Set.Finite.of_finite_image (f := fun y => (QuotientAddGroup.mk y : Y ⧸ (nsmulAddMonoidHom (4 * n + 1) : Y →+ Y).range)) (Set.toFinite _) fun y hy y' hy' h => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `QuotientAddGroup.eq.1 h`. Take `rfl : y' = y + (4 * n + 1) • v` from `by rw [show (4 * n + 1) • v = -y + y' from hv, add_neg_cancel_left]`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hv0 : v ≠ 0` using `fun e => hne (by rw [e, smul_zero, add_zero])`. Establish `a₁` using `hq v hv0`. Establish `a₂` using `h0 (y + (y + (4 * n + 1) • v))`. Establish `a₃ : q y y ≤ n` using `hy`. Establish `a₄ : q (y + (4 * n + 1) • v) (y + (4 * n + 1) • v) ≤ n` using `hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul] at a₂ a₄`. Move the coercions through the operations in `at a₂ a₄`. Establish `a₅ : (0 : ℤ) ≤ n` using `Int.natCast_nonneg n`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg a₅ a₅) a₁.le, mul_nonneg a₅ a₁.le, mul_nonneg a₅ (sub_nonneg.2 (Int.add_one_le_of_lt a₁))]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem finite_form_le {Y : Type} [AddCommGroup Y] [Module.Finite ℤ Y] (q : LinearMap.BilinForm ℤ Y)
     (hq : ∀ y, y ≠ 0 → 0 < q y y) (n : ℕ) : {y | q y y ≤ n}.Finite := by
@@ -62,11 +62,11 @@ theorem finite_form_le {Y : Type} [AddCommGroup Y] [Module.Finite ℤ Y] (q : Li
 include hj in
 
 /- English proof (translation)
-Use `Set.Finite.subset ((finite_form_le a.be a.be_pos (2 * n + a.be α α).toNat).preimage (add_left_injective α).injOn) fun mu h => ?_` and prove the remaining obligations. Establish `h₁ : expo a j α mu < n` using `h`. Establish `h₂` using `two_mul_expo a j α mu`. Establish `h₃` using `a.be_symm α mu`. Establish `h₄ : 0 ≤ a.be mu mu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h : mu = 0`. Simplify using `[h]`. Conclude with `(a.be_pos mu h).le`. Establish `h₅ : a.be mu mu ≤ j * a.be mu mu` using `le_mul_of_one_le_left h₄ (by exact_mod_cast hj)`. Use `show a.be (mu + α) (mu + α) ≤ _`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [map_add, LinearMap.add_apply]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem finite_expo_lt (α : a.D₀.X) (n : ℤ) : {mu | expo a j α mu < n}.Finite := by
   refine Set.Finite.subset ((finite_form_le a.be a.be_pos (2 * n + a.be α α).toNat).preimage
@@ -85,7 +85,7 @@ theorem finite_expo_lt (α : a.D₀.X) (n : ℤ) : {mu | expo a j α mu < n}.Fin
 
 include hj in
 /- English proof (translation)
-Take `⟨n, hn⟩` from `((finite_expo_lt hj α 0).image fun mu => expo a j α mu).bddBelow`. Use `⟨(-n).toNat, fun m hm mu => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : expo a j α mu < 0`. Establish `: n ≤ expo a j α mu` using `hn ⟨mu, h, rfl⟩`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -98,13 +98,13 @@ theorem exists_expo_bound (α : a.D₀.X) : ∃ m₀ : ℕ, ∀ m, m₀ ≤ m �
   · omega
 
 /- English proof (translation)
-Rewrite using `[map_add, map_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_add_nsmul (e : a.D₀.X ≃ₗ[𝓞 E] P.toPre.X) (α mu : a.D₀.X) : e (α + j • mu) = e α + j • e mu := by
   rw [map_add, map_nsmul]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ mu, e α + j • mu = χ`. Take `⟨mu, rfl⟩` from `h`. Conclude with `.inl ⟨e.symm mu, by rw [map_add_nsmul, e.apply_symm_apply]⟩`. Conclude with `.inr fun mu h' => h ⟨mu, h'⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_or_off (e : a.D₀.X ≃ₗ[𝓞 E] P.toPre.X) (j : ℕ) (α : a.D₀.X) (χ : P.toPre.X) :
     (∃ mu, e (α + j • mu) = χ) ∨ ∀ mu, e α + j • mu ≠ χ := by
@@ -115,9 +115,9 @@ theorem eq_or_off (e : a.D₀.X ≃ₗ[𝓞 E] P.toPre.X) (j : ℕ) (α : a.D₀
 
 include hj in
 /- English proof (translation)
-Establish `ex : ∀ χ, ∃ t : SecBMod P.toPre j χ, (∀ mu, e (α + j • mu) = χ → HEq t ((PowerSeries.X : PowerSeries k) ^ ((m : ℤ) + expo a j α mu).toNat • pullB hW j (α + j • mu) (feTranslate a.D₀ j mu α s₀))) ∧ ((∀ mu, e α + j • mu ≠ χ) → t = 0)` using `fun χ => by`. Break down `eq_or_off e j α χ with ⟨mu, rfl⟩ | h` into its components or cases. Use `⟨(PowerSeries.X : PowerSeries k) ^ ((m : ℤ) + expo a j α mu).toNat • pullB hW j (α + j • mu) (feTranslate a.D₀ j mu α s₀), fun mu' h => ?_, fun h => absurd (map_add_nsmul e α mu).symm (h _)⟩` and prove the remaining obligations. Take `rfl` from `FamFree.add_nsmul_inj hj α _ _ (e.injective h)`. Both sides reduce to the same expression.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Conclude with `⟨0, fun mu h' => absurd ((map_add_nsmul e α mu).symm.trans h') (h _), fun _ => rfl⟩`. Use `choose f h₁ h₂ using ex`. Conclude with `⟨f, fun mu => ⟨hm mu, eq_of_heq (h₁ _ mu rfl)⟩, h₂⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isIntegralForm (α : a.D₀.X) (s₀ : SecBMod a.D₀ j α) {m : ℕ}
     (hm : ∀ mu, 0 ≤ (m : ℤ) + expo a j α mu) : ∃ f, IsIntegralForm hW j α s₀ m f := by
@@ -136,7 +136,7 @@ theorem exists_isIntegralForm (α : a.D₀.X) (s₀ : SecBMod a.D₀ j α) {m : 
 variable {hW} in
 
 /- English proof (translation)
-Break down `eq_or_off e j α χ with ⟨mu, rfl⟩ | hχ` into its components or cases. Rewrite using `[(h.1 mu).2, map_smulₛₗ, resF_pullB, constFam_add_nsmul, smul_smul, map_pow, map_pow, ← zpow_natCast, Int.toNat_of_nonneg (h.1 mu).1, zpow_add₀ (toF_X_ne_zero F), zpow_natCast]`. Rewrite using `[h.2 χ hχ, map_zero, constFam_off hW F hG hj α s₀ χ hχ, smul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsIntegralForm.resF_eq {α : a.D₀.X} {s₀ : SecBMod a.D₀ j α} {m : ℕ} {f : ∀ χ, SecBMod P.toPre j χ}
     (h : IsIntegralForm hW j α s₀ m f) (χ : P.toPre.X) : resF P.toPre F j χ (f χ) =
@@ -153,11 +153,11 @@ variable {A : PolAV (Spec (CommRingCat.of (FractionRing (PowerSeries k))))}
 include hG hj in
 
 /- English proof (translation)
-Take `⟨s, ⟨r, hr, σ, f', -, hf', hE⟩, -⟩` from `(U.expand j hj).2 (constFam hW _ hG hj α s₀)`. Take `⟨n₀, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hr PowerSeries.X_irreducible`. Take `⟨m₁, hm₁⟩` from `exists_expo_bound hj α`. Use `⟨max n₀ m₁, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `exists_isIntegralForm hW hj α s₀ (hm₁ m ((le_max_right _ _).trans hm))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le ((le_max_left _ _).trans hm)`. Use `⟨f, SecOps.secScale (scal G.hom (u⁻¹.val * PowerSeries.X ^ d)) σ, hf, fun n => expandsAt_secIsMul _ _ _ _ _ U.toUnifPre n j (u⁻¹.val * PowerSeries.X ^ d) σ _ f' f (fun _ => rfl) (fun χ => ?_) (hE n)⟩` and prove the remaining obligations. Establish `e₁ : f χ = (u⁻¹.val * PowerSeries.X ^ d : PowerSeries k) • (show SecBMod P.toPre j χ from f' χ)`. Use `resF_injective P.toPre (FractionRing (PowerSeries k)) j χ ?_` and prove the remaining obligations. Rewrite using `[hf.resF_eq _ hG hj, map_smulₛₗ, (secScal_iff_resF P.toPre _ (famComp _ _ j χ _) _ _).1 (hf' χ), smul_smul, ← map_mul, _root_.mul_mul_mul_comm, Units.inv_mul, _root_.one_mul, ← pow_add, add_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁]`. Conclude with `fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem exists_expandsAt (α : a.D₀.X) (s₀ : SecBMod a.D₀ j α) : ∃ m₀ : ℕ, ∀ m, m₀ ≤ m →
     ∃ (f : ∀ χ, SecBMod P.toPre j χ) (σ : H0 U.LG.L j), IsIntegralForm hW j α s₀ m f ∧
@@ -181,9 +181,9 @@ theorem exists_expandsAt (α : a.D₀.X) (s₀ : SecBMod a.D₀ j α) : ∃ m₀
 include hG hj in
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_basis_constFam hW (FractionRing (PowerSeries k)) hG hj rep hrep bas`. Take `⟨t, ht, h⟩` from `exists_smul_mem_span_of_expandsAt U hj B B.span_eq (fun i => PowerSeries.X ^ m i) (fun i => pow_ne_zero _ PowerSeries.X_ne_zero) σ f (fun i χ => by`. Rewrite using `[show B i = _ from hB i.1 i.2]`. Conclude with `(hf i).resF_eq _ hG hj χ) hE s`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ht PowerSeries.X_irreducible`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Use `Submodule.smul_mem _ u⁻¹.val h` as an intermediate fact. Rewrite `this` using `[smul_smul, Units.inv_mul_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem_span {C : Type} (rep : C → a.D₀.X) (hrep : ∀ α, ∃! x, ∃ mu, rep x + j • mu = α)
     {Idx : C → Type} (bas : ∀ x, Module.Basis (Idx x) k (SecBMod a.D₀ j (rep x))) (m : (Σ x, Idx x) → ℕ)

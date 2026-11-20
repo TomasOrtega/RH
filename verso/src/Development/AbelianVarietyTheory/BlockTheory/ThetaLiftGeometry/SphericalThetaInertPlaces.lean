@@ -93,9 +93,9 @@ def SphericalThetaInert : Prop :=
         HeckeTransfer T S t P (Ideal.absNorm v.asIdeal) (fun a => om (1, a)) (fun b => om (b, 1)) (IsVacAt ψ S T v))
 
 /- English proof (translation)
-Establish `h3 : Odd 3` using `by decide`. Establish `h2 : ¬ Odd 2` using `by decide`. Establish `e3 : ((-1 : ℂ) ^ 3)⁻¹ = -1` using `by norm_num`. Establish `e2 : ((-1 : ℂ) ^ 2)⁻¹ = 1` using `by norm_num`. Simplify using `only [ThetaPar, phPar, bcPar, strPar, h3, h2, if_true, if_false, e3, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[inv_neg]`.
+Simplify using the standard rewrite rules.
 -/
 example (q : ℕ) (z : ℂ) : ThetaPar q 2 3 1 (fun _ => z) (fun _ => -z) := by
   have h3 : Odd 3 := by decide
@@ -106,7 +106,7 @@ example (q : ℕ) (z : ℂ) : ThetaPar q 2 3 1 (fun _ => z) (fun _ => -z) := by
   simp [inv_neg]
 
 /- English proof (translation)
-Simplify using `[strPar, Multiset.range_succ]`.
+Simplify using the standard rewrite rules.
 -/
 example (q : ℕ) : strPar q 2 = {(q : ℂ), (q : ℂ)⁻¹} := by
   simp [strPar, Multiset.range_succ]

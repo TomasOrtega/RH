@@ -18,13 +18,13 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K) {G : Type
   (r : Representation K G S.Forms) (X : Finset (G → K)) (P : Subgroup G) (ψ : P →* Kˣ)
 
 /- English proof (translation)
-Establish `h1 : (S.lvlE r P ψ).mulVec x ∈ LinearMap.range (S.gaMat r (lvlIdem P ψ)).mulVecLin`. Rewrite using `[← (image_idempotent_spec K S.dim (S.gaMat r (lvlIdem P ψ))).2]`. Conclude with `⟨x, rfl⟩`. Take `⟨z, hz⟩` from `h1`. Establish `h2 : (S.gaMat r (goodAt X P ψ)).mulVec z ∈ LinearMap.range (S.V0E r X P ψ).mulVecLin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(image_idempotent_spec K S.dim (S.gaMat r (goodAt X P ψ))).2` as an intermediate fact. Use `show _ ∈ LinearMap.range (imE (S.gaMat r (goodAt X P ψ))).mulVecLin`. Rewrite using `[this]`. Conclude with `⟨z, rfl⟩`. Take `⟨F, hF⟩` from `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨F, ?_⟩` and prove the remaining obligations. Rewrite `hz`, `hF` using `[Matrix.mulVecLin_apply]`. Unfold `CSD.lvlOp`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hF, ← hz]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← (group_action_matrix_hom K S G r).2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lvlOp_range (x : Fin (S.lvlDim r P ψ) → K) :
     ∃ F : Fin (S.BaseDimension r X P ψ) → K,
@@ -54,9 +54,9 @@ section Forms
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[LinearMap.range_eq_map, ← h.span, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Take `⟨F, hF⟩` from `h1 (Pi.single i 1)`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨F, by rw [h.op_eq, hF]⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, rfl⟩`. Conclude with `LinearMap.mem_range.mpr ⟨j (V.mulVec F), by rw [h.op_eq, h2]⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem range_op_eq_span {n k : ℕ} {σ : K →+* ℂ} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     {j : (Fin n → K) →ₛₗ[σ] W} {H E : Matrix (Fin n) (Fin n) K} {op : W →ₗ[ℂ] W} (h : FormsTie σ j H E op)
@@ -82,9 +82,9 @@ structure ColFacts {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBa
   l1b : C.PairingFactorsThroughPeriods
 
 /- English proof (translation)
-Establish `hfin : {w | S.μ w ≠ Bs.μ0}.Finite` using `S.Tw.finite_toSet.subset fun w hw => (h.h0.2 w).2 hw`. Use `(lattice_gluing K S.D (matLat (S.ι Bs.μ0) (Df.abelian₂ Bs.μ0)) (fun w => matLat (S.ι (S.μ w)) (Df.abelian₂ (S.μ w))) (matLat_lattice _ (h.bij _).2 _ (h.wf.Lam_lat _)) (fun w => matLat_lattice _ (h.bij _).2 _ (h.wf.Lam_lat _)) (hfin.subset fun w hw => ?_)).1` and prove the remaining obligations. Introduce `h'`. Apply `hw` to reduce the goal to its premises. Use `show Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (matLat (S.ι (S.μ w)) (Df.abelian₂ (S.μ w))) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h']`.
+A detailed English derivation is pending.
 -/
 theorem ColFacts.rr_lattice {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df : DefSide Bs} {Dc : DefCols Df}
     {Sp : SPer Dc} {S : IndefData Df} {C : ColData Dc Sp S} (h : ColFacts S C) : Submodule.IsLattice K S.RR := by
@@ -101,9 +101,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst 
   {cX : ExtraC} {ex : Extra D L hT Gi Gl K Y cX}
 
 /- English proof (translation)
-Substitute `hZ` using the available equality. Take `rfl` from `eq_of_heq hDc`. Take `rfl` from `eq_of_heq hSp`. Take `rfl` from `eq_of_heq hS`. Take `rfl` from `eq_of_heq hC`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem colFacts_transport {P : RowSideFamily ex} {Z : DefSub P.A3.fam3.amb3} (hZ : Z = P.Zs) {Dc' : DefCols (P.A3.side3 P.Ps P.ψs Z)}
     {Sp' : SPer Dc'} {S' : IndefData (P.A3.side3 P.Ps P.ψs Z)} {C' : ColData Dc' Sp' S'} (hDc : HEq Dc' P.Dc) (hSp : HEq Sp' P.Sp)
@@ -122,7 +122,7 @@ variable {Rc : Formalism.L2.RecT ex} {P : RowSideFamily ex} {Dcf : ∀ Zs : DefS
   {S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `hC` using `complex_data_conditions_base_level_of_primitive_links hOk hsep Q.charW hP`. Establish `hcols` using `(Q.Rl.toCx3 Q.F).exists_zeta_pairing_factors_through_periods Q.F.cr Q.F.cv (Q.F.eV (Q.Rl.toCx3 Q.F).zs) Q.sEE (hC.wf true) hC.h4pos (hC.what₂ true).1 (hC.ratMu true) hC.jIsoR (hC.levs true).1 (hC.levs true).2.1 (hC.levs true).2.2 (definite_coordinates_in_good_part _ true) (EvTie. …`. Establish `hDc : HEq (Dcf (Q.Rl.toCx3 Q.F).zs) P.Dc` using `(congr_arg_heq Dcf Q.zs).trans (heq_of_eq Q.dc)`. Establish `hSp : HEq (Spf (Q.Rl.toCx3 Q.F).zs) P.Sp` using `(congr_arg_heq Spf Q.zs).trans Q.sp`. Conclude with `colFacts_transport Q.zs hDc hSp Q.s1 Q.col ⟨hC.wf true, hC.h0, fun t => (Q.Rl.toCx3 Q.F).rowMat_bij Q.F.cr true (hC.what₂ true).1 (hC.ratMu true) t, (Classical.epsilon_spec hcols).1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem colFacts_real (Q : RealT Rc P Dcf Spf Zscf S Ks) {s : ℕ} (hOk : P.A3.fam3.Ok3 s) (hsep : P.A3.fam3.TypesSep3)
     (hP : PrimRows3 Q.Rl Q.F) (hS : (Q.Rl.toCx3 Q.F).SEEIso Q.sEE)

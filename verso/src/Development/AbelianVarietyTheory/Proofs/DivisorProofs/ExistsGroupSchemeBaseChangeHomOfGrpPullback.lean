@@ -8,13 +8,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.GrpBC
 
 /- English proof (translation)
-Introduce `S S' f G A _ _ G' A' _ _ φG φA p hG hA hp`. Establish `w : (φG ≫ p.left) ≫ A.hom = G'.hom ≫ f`. Rewrite using `[Category.assoc, Over.w p, hG.1.w]`. Establish `hq1 : hA.1.lift (φG ≫ p.left) G'.hom w ≫ φA = φG ≫ p.left` using `hA.1.lift_fst _ _ _`. Establish `hq2 : hA.1.lift (φG ≫ p.left) G'.hom w ≫ A'.hom = G'.hom` using `hA.1.lift_snd _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `p' : G' ⟶ A'` to `Over.homMk (hA.1.lift (φG ≫ p.left) G'.hom w) hq2`. Establish `hp' : p'.left ≫ φA = φG ≫ p.left` using `hq1`. Use `⟨p', GlobalTheory.Serre.isMonHom_of_mul_comp p' fun T x y => ?_, hp'⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hA.1.hom_ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1` using `hG.2 T x y (pushPt hG.1.w x) (pushPt hG.1.w y) rfl rfl`. Establish `e2` using `hA.2 T (x ≫ p') (y ≫ p') (pushPt hG.1.w x ≫ p) (pushPt hG.1.w y ≫ p) (by simp only [Over.comp_left, pushPt, Over.homMk_left, Category.assoc, hp']) (by simp only [Over.comp_left, pushPt, Over.homMk_left, Category.assoc, hp'])`. Establish `e3 : (pushPt hG.1.w x ≫ p * pushPt hG.1.w y ≫ p).left = (x * y).left ≫ φG ≫ p.left`. Rewrite using `[← MonObj.mul_comp, Over.comp_left, e1, Category.assoc]`. Rewrite using `[← e2, e3, Over.comp_left, Category.assoc, hp']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.w, Over.w]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_baseChange_hom : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G A : Over S) [GrpObj G] [GrpObj A] (G' A' : Over S') [GrpObj G'] [GrpObj A'] (φG : G'.left ⟶ G.left) (φA : A'.left ⟶ A.left) (p : G ⟶ A), IsGrpPullback G' G f φG → IsGrpPullback A' A f φA → IsMonHom p → ∃ p' : G' ⟶ A', IsMonHom p' ∧ p'.left ≫ φA = φG ≫ p.left := by
   intro S S' f G A _ _ G' A' _ _ φG φA p hG hA hp

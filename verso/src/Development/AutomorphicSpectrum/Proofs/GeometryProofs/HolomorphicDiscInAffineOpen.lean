@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open scoped Matrix ComplexOrder
 
 /- English proof (translation)
-Establish `key` using `IsAffineOpen.SpecMap_appLE_fromSpec x hW (isAffineOpen_top (Spec (CommRingCat.of ℂ))) h`. Rewrite `key` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Simplify using `only [spMap, CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, key]`. Rewrite using `[← Spec.map_comp_assoc, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem spMap_appLE_comp_fromSpec {X : Scheme.{0}} {W : X.Opens} (hW : IsAffineOpen W)
     (x : Sp ℂ ⟶ X) (h : ⊤ ≤ x ⁻¹ᵁ W) :
@@ -23,17 +23,17 @@ private theorem spMap_appLE_comp_fromSpec {X : Scheme.{0}} {W : X.Opens} (hW : I
   rw [← Spec.map_comp_assoc, Iso.inv_hom_id, Spec.map_id, Category.id_comp]
 
 /- English proof (translation)
-Introduce `X W hW n p hp h0`. Take `⟨hSo, -⟩` from `hp W 0`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hSo 0 ⟨Metric.mem_ball_self one_pos, h0⟩`. Take `⟨ρ, hρpos, hρ1, hρε⟩ : ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ 1 ∧ ρ ≤ ε` from `⟨min ε 1, lt_min hε one_pos, min_le_right _ _, min_le_left _ _⟩`. Establish `hmaps : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, (ρ : ℂ) • z ∈ {b | b ∈ Metric.ball (0 : Fin n → ℂ) 1 ∧ ⊤ ≤ (TopologicalSpace.Opens.map (p b).base).obj W}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z hz`. Apply `hball` to reduce the goal to its premises. Rewrite `hz`, the goal using `[Metric.mem_ball, dist_zero_right]`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hρpos.le]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Set `φ : ∀ x : Sp ℂ ⟶ X, ⊤ ≤ x ⁻¹ᵁ W → (Γ(X, W) →+* ℂ)` to `fun x hx => (x.appLE W ⊤ hx ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).hom`. Use `⟨ρ, fun z => if hz : ⊤ ≤ p ((ρ : ℂ) • z) ⁻¹ᵁ W then φ _ hz else φ _ h0, hρpos, hρ1, ⟨Metric.isOpen_ball, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `r`. Establish `hlin : DifferentiableOn ℂ (fun b : Fin n → ℂ => (ρ : ℂ) • b) (Metric.ball 0 1)` using `differentiableOn_id.const_smul (ρ : ℂ)`. Establish `hd` using `(hp W r).2.comp hlin hmaps`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hd.congr ?_` and prove the remaining obligations. Introduce `z hz`. Establish `hzS : ⊤ ≤ p ((ρ : ℂ) • z) ⁻¹ᵁ W` using `(hmaps z hz).2`. Use `show (if hz : ⊤ ≤ p ((ρ : ℂ) • z) ⁻¹ᵁ W then φ _ hz else φ _ h0) r = valR (p ((ρ : ℂ) • z)) W r`. Rewrite using `[dif_pos hzS]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `valR`. Rewrite using `[dif_pos hzS]`. Both sides reduce to the same expression. Introduce `z hz`. Establish `hzS : ⊤ ≤ p ((ρ : ℂ) • z) ⁻¹ᵁ W` using `(hmaps z hz).2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show spMap (if hz : ⊤ ≤ p ((ρ : ℂ) • z) ⁻¹ᵁ W then φ _ hz else φ _ h0) ≫ hW.fromSpec = _`. Rewrite using `[dif_pos hzS]`. Conclude with `spMap_appLE_comp_fromSpec hW _ hzS`.
+A detailed English derivation is pending.
 -/
 theorem exists_ringMaps_of_hol : ∀ (X : Scheme.{0}) (W : X.Opens) (hW : IsAffineOpen W) (n : ℕ)
     (p : (Fin n → ℂ) → (Sp ℂ ⟶ X)), IsHolTo (Metric.ball 0 1) p → ⊤ ≤ p 0 ⁻¹ᵁ W →

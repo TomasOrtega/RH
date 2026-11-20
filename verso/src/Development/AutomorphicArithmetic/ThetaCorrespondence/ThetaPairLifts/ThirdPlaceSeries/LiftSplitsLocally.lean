@@ -20,11 +20,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.TieChiPin
 /- English proof (translation)
-Introduce `hPr hL D P hRow hLab hChi i k hl v`. Take `⟨S, hS, -, -⟩` from `_root_.GlobalTheory.T.exists_true_reading_with_laws_suppLaws hPr.fin hL D P hRow`. Establish `hsp : IsSplitPl D.host (D.naut.plGw k v)` using `GlobalTheory.T.isSplitPlace_of_over_type_prime D k _ (D.naut.plGw_over k v)`. Take `⟨htame, hχ, u, hu, hlab⟩` from `_root_.GlobalTheory.T.nonGalois_tame_label_mu_alt hPr hL D P hChi S hS i k v hsp`. Use `⟨u, hu, fun w hw => ⟨fun hw0 => ?_, fun hc => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hdR, hwd⟩` from `_root_.GlobalTheory.T.isdRW_chiGL_at_places_over_l hPr hL D P i w hw`. Use `⟨hdR, ?_⟩` and prove the remaining obligations. Rewrite using `[hwd, hw0]`. Rewrite using `[_root_.GlobalTheory.LabFixed.labLP_twist_eq_labAt_ofDet hPr hL D P S hS i k v hsp hχ, hlab]`. Take `⟨hdR, hwd⟩` from `_root_.GlobalTheory.T.isdRW_chiGL_at_places_over_l hPr hL D P i w hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨hdR, ?_⟩` and prove the remaining obligations. Rewrite using `[hwd]`. Conclude with `_root_.GlobalTheory.T.placeLabel_of_conjugate_place_alt hPr hL D P hLab S hS i k v hsp hχ u htame hlab w hc _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locComp_of_isRc_classMapD_cenLoc : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) → LabAll D P.T → ChiTOk D P.cf → PairedCharacterCondition.tieChi (D := D) := by
   intro hPr hL D P hRow hLab hChi i k hl v

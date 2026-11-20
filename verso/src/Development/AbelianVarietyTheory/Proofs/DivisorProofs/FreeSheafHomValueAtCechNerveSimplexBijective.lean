@@ -20,7 +20,7 @@ Both sides reduce to the same expression.
 theorem cechPt_eq : cechPt f k x y h = (cmp f k x y h).app (op Z) (𝟙 Z) := rfl
 
 /- English proof (translation)
-Rewrite using `[cechPt_eq]`. Use `(FunctorToTypes.naturality (cmp f k x y h) g.op (𝟙 Z)).symm.trans ?_` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem map_cechPt {U : Scheme.{0}} (g : U ⟶ Z) :
     ((cech f).obj (op ⦋k⦌)).map g.op (cechPt f k x y h) = (cmp f k x y h).app (op U) g := by
@@ -29,28 +29,26 @@ theorem map_cechPt {U : Scheme.{0}} (g : U ⟶ Z) :
   congr 1
 
 /- English proof (translation)
-Rewrite using `[yonedaEquiv_comp, yonedaEquiv_yoneda_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem app_eq {U : Scheme.{0}} (g : U ⟶ Z) :
     (cmp f k x y h).app (op U) g = yonedaEquiv (yoneda.map g ≫ cmp f k x y h) := by
   rw [yonedaEquiv_comp, yonedaEquiv_yoneda_map]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `g g' hg`. Rewrite `hg` using `[app_eq, app_eq]`. Establish `hm` using `yonedaEquiv.injective hg`. Apply `WidePullbackCone.IsLimit.hom_ext hc` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `yoneda.map_injective` to reduce the goal to its premises. Use `hm =≫ WidePullback.base _` as an intermediate fact. Simplify using `only [cmp, Category.assoc, WidePullback.lift_base] at this`. Conclude with `(yoneda.map_comp _ _).trans (this.trans (yoneda.map_comp _ _).symm)`. Introduce `i`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `yoneda.map_injective` to reduce the goal to its premises. Use `hm =≫ WidePullback.π _ i` as an intermediate fact. Simplify using `only [cmp, Category.assoc, WidePullback.lift_π] at this`. Conclude with `(yoneda.map_comp _ _).trans (this.trans (yoneda.map_comp _ _).symm)`. Introduce `v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, rfl⟩` from `yonedaEquiv.surjective v`. Establish `w : ∀ i, yonedaEquiv (m ≫ WidePullback.π (fun _ : Fin (k + 1) => yoneda.map f) i) ≫ f = yonedaEquiv (m ≫ WidePullback.base (fun _ : Fin (k + 1) => yoneda.map f))`. Introduce `i`. Rewrite using `[← WidePullback.π_arrow (fun _ : Fin (k + 1) => yoneda.map f) i, ← Category.assoc, yonedaEquiv_comp]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨WidePullbackCone.IsLimit.lift hc _ _ w, (app_eq f k x y h _).trans ?_⟩` and prove the remaining obligations. Use `congr 1`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `i`. Apply `yonedaEquiv.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `WidePullbackCone.IsLimit.lift_π hc _ _ w i` as an intermediate fact. Simplify using `only [WidePullbackCone.mk_π] at this`. Rewrite using `[Category.assoc]`. Simplify using `only [cmp, WidePullback.lift_π]`. Conclude with `(congrArg yonedaEquiv (yoneda.map_comp _ _).symm).trans ((yonedaEquiv_yoneda_map _).trans this)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `yonedaEquiv.injective` to reduce the goal to its premises. Use `WidePullbackCone.IsLimit.lift_base hc _ _ w` as an intermediate fact. Simplify using `only [WidePullbackCone.mk_base] at this`. Rewrite using `[Category.assoc]`. Simplify using `only [cmp, WidePullback.lift_base]`.
-
-Conclude with `(congrArg yonedaEquiv (yoneda.map_comp _ _).symm).trans ((yonedaEquiv_yoneda_map _).trans this)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bij (hc : IsLimit (WidePullbackCone.mk (f := fun _ : Fin (k + 1) => f) x y h)) (U : Scheme.{0}) :
     Function.Bijective ((cmp f k x y h).app (op U)) := by
@@ -97,21 +95,21 @@ end GlobalTheory.EtC.CechPts
 open GlobalTheory.EtC.CechPts in
 
 /- English proof (translation)
-Introduce `R _ F Y X f k Z x y h hc`. Establish `e : ∀ U : Scheme.{0}, Function.Bijective (fun g : U ⟶ Z => ((cech f).obj (op ⦋k⦌)).map g.op (cechPt f k x y h))`. Introduce `U`. Establish `hb` using `bij f k x y h hc U`. Use `⟨fun g g' hg => hb.1 ((map_cechPt f k x y h g).symm.trans (hg.trans (map_cechPt f k x y h g'))), fun v => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg⟩` from `hb.2 v`. Conclude with `⟨g, (map_cechPt f k x y h g).trans hg⟩`. Take `⟨hext, hex, hnat, -⟩` from `GlobalTheory.EtC.FreeHom.main R ((cech f).obj (op ⦋k⦌)) F`. Prove the components needed by the constructor for the conclusion. Introduce `s s' hs`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `val s Z (cechPt f k x y h) = val s' Z (cechPt f k x y h) at hs`. Apply `hext` to reduce the goal to its premises. Introduce `U v`. Take `⟨g, rfl⟩` from `(e U).2 v`. Simplify using `only`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Rewrite using `[hnat s U Z g, hnat s' U Z g, hs]`. Introduce `a choose c hc0 using fun (U : Scheme.{0}) (v : ((cech f).obj (op ⦋k⦌)).obj (op U)) => (e U).2 v`. Establish `hc' : ∀ (U : Scheme.{0}) (v : ((cech f).obj (op ⦋k⦌)).obj (op U)), ((cech f).obj (op ⦋k⦌)).map (c U v).op (cechPt f k x y h) = v` using `hc0`. Take `⟨s, hs⟩` from `hex (fun U v => Sec.res (c U v) a) (by`. Introduce `V U g v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : c V (((cech f).obj (op ⦋k⦌)).map g.op v) = g ≫ c U v`. Apply `(e V).1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((cech f).obj (op ⦋k⦌)).map (c V _).op (cechPt f k x y h) = ((cech f).obj (op ⦋k⦌)).map (g ≫ c U v).op (cechPt f k x y h)`. Rewrite using `[hc' V, op_comp, FunctorToTypes.map_comp_apply, hc' U v]`. Simplify using `only`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[h1]`. Simplify using `[Sec.res])`. Use `⟨s, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `val s Z (cechPt f k x y h) = a`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : c Z (cechPt f k x y h) = 𝟙 Z`. Apply `(e Z).1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((cech f).obj (op ⦋k⦌)).map (c Z _).op (cechPt f k x y h) = ((cech f).obj (op ⦋k⦌)).map (𝟙 Z).op (cechPt f k x y h)`. Rewrite using `[hc' Z, op_id, FunctorToTypes.map_id_apply]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.EtC.CechPts.main : ∀ (R : Type) [CommRing R] (F : Shv R) (Y X : Scheme.{0}) (f : Y ⟶ X) (k : ℕ) (Z : Scheme.{0}) (x : Z ⟶ X) (y : Fin (k + 1) → (Z ⟶ Y)) (h : ∀ i, y i ≫ f = x), IsLimit (WidePullbackCone.mk (f := fun _ : Fin (k + 1) => f) x y h) → Function.Bijective (fun s : (free R).obj ((cech f).obj (op ⦋k⦌)) ⟶ F => val s Z (cechPt f k x y h)) := by
   intro R _ F Y X f k Z x y h hc

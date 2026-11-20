@@ -11,27 +11,25 @@ open scoped SchwartzMap Classical Matrix
 noncomputable section
 namespace GlobalTheory.ArchLinePair
 /- English proof (translation)
-Use `set n := Module.finrank ℝ V with hn`. Take `⟨C, φ, hφ, hC⟩` from `exists_pairing_coords V P hp n rfl`. Set `a : ℝ → (Fin n ⊕ Fin n → ℝ) →ₗ[ℝ] (Fin n ⊕ Fin n → ℝ)` to `fun t => φ.toLinearMap ∘ₗ A t ∘ₗ φ.symm.toLinearMap`. Establish `ha : ∀ t v, a t (φ v) = φ (A t v)` using `fun t v => by simp [a]`. Set `g : ℝ → Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ` to `fun t => LinearMap.toMatrix' (a t)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : ∀ t w, g t *ᵥ w = a t w` using `fun t w => LinearMap.toMatrix'_mulVec _ _`. Establish `hext : ∀ M N : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ, (∀ v, M *ᵥ φ v = N *ᵥ φ v) → M = N`. Introduce `M N h`. Use `Matrix.toLin'.injective (LinearMap.ext fun w => ?_)` and prove the remaining obligations. Take `⟨v, rfl⟩` from `φ.surjective w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h v`. Establish `hgc : Continuous g`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun t => φ (A t (φ.symm (Pi.single j 1)))` using `φ.toLinearMap.continuous_of_finiteDimensional.comp (hAc _)`. Establish `h2` using `(continuous_apply i).comp h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.congr fun t => ?_` and prove the remaining obligations. Simplify using `only [g, a, Function.comp_apply, LinearMap.toMatrix'_apply, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Establish `hg0 : g 0 = 1` using `hext _ _ fun v => by rw [hg, ha, hA0, Matrix.one_mulVec]`. Establish `hgm : ∀ s t, g (s + t) = g s * g t` using `fun s t => hext _ _ fun v => by`. Rewrite using `[← Matrix.mulVec_mulVec, hg, hg, hg, ha, ha, ha, hAm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgs : ∀ t, g t ∈ Matrix.symplecticGroup (Fin n) ℝ` using `fun t => by`. Take `⟨M, hM⟩` from `GlobalTheory.exists_symplecticGroup_of_sympl (Fin n) (a t) fun w w' => by`. Take `⟨v, rfl⟩` from `φ.surjective w`. Take `⟨v', rfl⟩` from `φ.surjective w'`. Rewrite using `[ha, ha, hφ, hφ, hAo]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hext (g t) M fun v => by rw [hg, hM]]`. Conclude with `M.2`. Take `⟨Z, hZ, hgZ⟩` from `GlobalTheory.T.exists_symplecticLie_eq_exp_oneParam (Fin n) g hgc hg0 hgm hgs`. Set `B : GlobalTheory.RealWeil.Sch (Fin n) →L[ℂ] 𝓢(V, ℂ)` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) C`. Set `Bi : 𝓢(V, ℂ) →L[ℂ] GlobalTheory.RealWeil.Sch (Fin n)` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) C.symm`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ∀ h, ⇑(B h) = ⇑h ∘ ⇑C` using `fun h => rfl`. Establish `hBi : ∀ h, ⇑(Bi h) = ⇑h ∘ ⇑C.symm` using `fun h => rfl`. Establish `hBBi : ∀ h, B (Bi h) = h` using `fun h => by ext x; simp [hB, hBi]`. Establish `hBiB : ∀ h, Bi (B h) = h` using `fun h => by ext x; simp [hB, hBi]`. Set `S : ℝ → GlobalTheory.RealWeil.Sch (Fin n) →ₗ[ℂ] GlobalTheory.RealWeil.Sch (Fin n)` to `fun t => Bi.toLinearMap ∘ₗ T t ∘ₗ B.toLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∀ t h, S t h = Bi (T t (B h))` using `fun t h => rfl`. Establish `hint : ∀ h : 𝓢(V, ℂ), ∫⁻ x, ‖Bi h x‖ₑ ^ 2 = ∫⁻ x, ‖h x‖ₑ ^ 2 ∂(Measure.map C.symm volume)` using `fun h => (lintegral_map_equiv (fun x => ‖h x‖ₑ ^ 2) C.symm.toHomeomorph.toMeasurableEquiv).symm`. Take `⟨c, hc⟩` from `_root_.GlobalTheory.T.metaplectic_lift_scalar_derivative_eq hP (Fin n) Z hZ S (LinearMap.ext fun h => by rw [hS, hT0, hBiB]; rfl) (fun s t => LinearMap.ext fun h => by show S (s + t) h = S s (S t h)`. Rewrite using `[hS, hS, hS, hBBi, hTm])`. Use the proof step `(fun t w h h₁ e => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v, rfl⟩` from `φ.surjective w`. Establish `h1 : ⇑(B h₁) = schrF P v ⇑(B h)` using `by rw [hB, hB, hC, e]`. Establish `h2` using `hTi t v _ _ h1`. Rewrite using `[← hgZ t, hg, ha, hS, hS, hBi, h2, ← hBBi (T t (B h)), hB, hC, hBiB]`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use the proof step `simp)`. Use the proof step `(fun t h => by`. Rewrite using `[hS, hint, hTu _ (C.symm.isAddHaarMeasure_map volume), ← hint, hBiB])`. Use the proof step `(fun h x => hTc (B h) (C.symm x))`. Use `⟨_, ((B.continuous.tendsto _).comp (hc (Bi f))).congr fun t => ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [Function.comp_apply, ← Complex.coe_smul, map_smul, map_sub, hS, hBBi]`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_slope_of_archimedean_pairing (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (P : V → V → ℝ) (hp : IsPairing P)
@@ -101,37 +99,31 @@ theorem tendsto_slope_of_archimedean_pairing (hP : _root_.GlobalTheory.FunPr.The
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 /- English proof (translation)
-Establish `hs` using `IsUWeilPair.isUSplitting hW`. Establish `hex : ∀ (t : ℝ) (f : SInf F (Fin n × Fin d)), ∃ f₁ : SInf F (Fin n × Fin d), Acts (evI F) (om (δ t)) ⇑f ⇑f₁`. Introduce `t f`. Use `acts_of_comm ψ hψ (om (δ t)) (fun Φ hΦ => hs.pres _ Φ hΦ) (fun u hu p q Φ hΦ => ?_) f` and prove the remaining obligations. Establish `he : M.co.e (u • M.co.e.symm (p, q)) = (u • p, u • q)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.map_smul, LinearEquiv.apply_symm_apply, Prod.smul_mk]`. Establish `h2` using `hs.impl (δ t) (u • M.co.e.symm (p, q)) Φ hΦ`. Simplify using `only [Darboux.rho, he, actAB_fin (hδ1 t) (hδ2 t) u hu] at h2`. Conclude with `h2`. Use `choose S hS using hex`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g₀` to `GlobalTheory.ArchLocality.intInd (F := F) (Fin n × Fin d)`. Establish `hg₀ : g₀ ∈ SB _` using `GlobalTheory.ArchLocality.intInd_mem _`. Establish `hg₀0 : g₀ 0 = 1`. Simplify using `only [g₀, GlobalTheory.ArchLocality.intInd]`. Rewrite using `[Set.indicator_of_mem (show (0 : Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) ∈ Set.pi Set.univ fun _ => (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F)) from fun i _ => zero_mem (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F))]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Set `r₀ : (Fin n × Fin d → AF F) → ℂ` to `fun x => g₀ fun i => (x i).2`. Establish `hrr : ∀ x z, At (evI F) z → r₀ (x + z) = r₀ x`. Introduce `x z hz`. Use `congrArg g₀ (funext fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[GlobalTheory.ArchLocality.snd_eq_zero_of_at hz i, add_zero]`. Establish `hR : ∀ f : SInf F (Fin n × Fin d), Rest (evI F) ⇑f r₀` using `fun f => ⟨hrr, Submodule.subset_span ⟨f, g₀, hg₀, rfl⟩⟩`. Establish `hr0 : r₀ 0 ≠ 0` using `by show g₀ 0 ≠ 0`. Rewrite using `[hg₀0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `one_ne_zero`. Establish `hinj : ∀ f₁ f₂ : SInf F (Fin n × Fin d), tens (evI F) ⇑f₁ r₀ = tens (evI F) ⇑f₂ r₀ → f₁ = f₂` using `fun f₁ f₂ h => DFunLike.coe_injective (GlobalTheory.ArchFam.tens_inj r₀ hrr 0 hr0 _ _ h)`. Establish `key : ∀ t (f : SInf F (Fin n × Fin d)), om (δ t) (tens (evI F) ⇑f r₀) = tens (evI F) ⇑(S t f) r₀` using `fun t f => hS t f r₀ (hR f)`. Establish `tadd : ∀ f g : SInf F (Fin n × Fin d), tens (evI F) ⇑(f + g) r₀ = tens (evI F) ⇑f r₀ + tens (evI F) ⇑g r₀`. Introduce `f g`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `x`. Simplify using `[tens, add_mul]`. Establish `tsmul : ∀ (c : ℂ) (f : SInf F (Fin n × Fin d)), tens (evI F) ⇑(c • f) r₀ = c • tens (evI F) ⇑f r₀`. Introduce `c f`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[tens, mul_assoc]`. Set `T : ℝ → SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)` to `fun t => { toFun := S t map_add' := fun f g => hinj _ _ (by rw [← key, tadd, map_add, key, key, tadd]) map_smul' := fun c f => hinj _ _ (by rw [← key, tsmul, map_smul, key, RingHom.id_apply, tsmul]) }`. Establish `hT : ∀ t f, T t f = S t f` using `fun t f => rfl`. Establish `hT0 : ∀ f, T 0 f = f` using `fun f => hinj _ _ (by rw [hT, ← key, hδ0, map_one, Module.End.one_apply])`. Use `haveI : BorelSpace (Fin n × Fin d → mixedEmbedding.mixedSpace F) := inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `_root_.GlobalTheory.ArchLinePair.tendsto_slope_of_archimedean_pairing hP (trP F (Fin n × Fin d)) (Coord.isPairing_trP _) (fun t => amap M (δ t)) T (fun v => (continuous_amap M v).comp hδc) (fun v => by`. Take `⟨w, rfl⟩ : ∃ w, Coord.coordI M w = v` from `⟨_, Coord.coordI_lift M v⟩`. Rewrite using `[amap_coordI, hδ0, actAB_one])`. Use the proof step `(fun s t v => by`. Take `⟨w, rfl⟩ : ∃ w, Coord.coordI M w = v` from `⟨_, Coord.coordI_lift M v⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[amap_coordI, amap_coordI, amap_coordI, hδm, actAB_mul])`. Use the proof step `(fun t v v' => by`. Take `⟨w, rfl⟩ : ∃ w, Coord.coordI M w = v` from `⟨_, Coord.coordI_lift M v⟩`. Take `⟨w', rfl⟩ : ∃ w, Coord.coordI M w = v'` from `⟨_, Coord.coordI_lift M v'⟩`. Rewrite using `[amap_coordI, amap_coordI, Coord.omega_coordI, Coord.omega_coordI]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Coord.sympM, symp, hTens_actAB])`. Use `hT0`. Use the proof step `(fun s t f => hinj _ _ (by rw [hT, hT, hT, ← key, hδm, map_mul, Module.End.mul_apply, key, key]))`. Use the proof step `(fun t v f f₁ hf => by`. Establish `hc : (locV (M.co.e (GlobalTheory.ArchFam.wv M v)).1, locV (M.co.e (GlobalTheory.ArchFam.wv M v)).2) = v` using `Coord.coordI_lift M v`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : tens (evI F) ⇑f₁ r₀ = M.co.rho ψ (GlobalTheory.ArchFam.wv M v) (tens (evI F) ⇑f r₀)`. Rewrite using `[GlobalTheory.ArchFam.rho_tens ψ hψ M.co _ (GlobalTheory.ArchFam.at_wv M v) _ _ hrr, hc, ← hf]`. Establish `e2` using `hs.impl (δ t) (GlobalTheory.ArchFam.wv M v) _ (hR f).2`. Establish `hat : At (evI F) (actAB (cA σ) (δ t) (GlobalTheory.ArchFam.wv M v))` using `fun u hu => by`. Rewrite using `[← actAB_smul, GlobalTheory.ArchFam.at_wv M v u hu, actAB, Matrix.mul_zero, Matrix.zero_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `GlobalTheory.ArchFam.tens_inj r₀ hrr 0 hr0` to reduce the goal to its premises. Rewrite using `[hT, hT, ← key, e1, e2, key, GlobalTheory.ArchFam.rho_tens ψ hψ M.co _ hat _ _ hrr]`. Use the proof step `rfl)`. Use the proof step `(fun μ hμ t f => by`. Take `⟨μA, hμA, c, hc0, hct, hc⟩` from `GlobalTheory.ArchimedeanUnitaryL2.exists_haar F _ μ g₀ hg₀ hr0`.
-
-Establish `hU` using `hs.unit μA hμA (δ t) (tens (evI F) f r₀) (hR f).2`. Rewrite `hU` using `[key]`. Conclude with `(ENNReal.mul_right_inj hc0 hct).1 (((hc (S t f)).symm.trans hU).trans (hc f)))`. Use the proof step `(fun f y => by`. Set `l : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.proj (R := ℂ) (φ := fun _ => ℂ) (liftV y)`.
-
-Establish `hpure : ∀ (f' : SInf F (Fin n × Fin d)) g', l (pureA F (⇑f') g') = g' 0 * f' y` using `fun f' g' => by show f' (locV (liftV y)) * g' 0 = _`. Rewrite using `[Coord.loc_lift, mul_comm]`. Establish `hl : l ∈ (adeleClass F).adm (Fin n × Fin d)` using `fun g' _ => ⟨g' 0 • ((BoundedContinuousFunction.evalCLM ℂ y).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)), fun f' => hpure f' g'⟩`. Use `((hs.cont l hl _ (hR f).2).comp hδc).congr fun t => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, key]`.
-
-Conclude with `(hpure (S t f) g₀).trans (by rw [hg₀0, one_mul, hT]))`. Use `f`. Conclude with `⟨fun t => T t f, g, hT0 f, hg, fun t => hS t f⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_orbit_pair_archimedean_line (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E)
     (om : Rep σ X W) (hψ : IsStd ψ) (hW : M.IsWeil ψ χX χW om) (δ : ℝ → UA σ X.J × UA σ W.J) (hδc : Continuous δ)
@@ -229,7 +221,7 @@ theorem exists_orbit_pair_archimedean_line (hP : _root_.GlobalTheory.FunPr.Theta
     f
   exact ⟨fun t => T t f, g, hT0 f, hg, fun t => hS t f⟩
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ n d Y Wd M ψ χX χW om hψ _ hW γ hγ f r hr`. Take `⟨c, g, hc0, hg, hc⟩` from `_root_.GlobalTheory.ArchLinePair.exists_orbit_pair_archimedean_line hP M ψ χX χW om hψ hW (fun t => (γ (Multiplicative.ofAdd t), 1)) ((hγ.1.comp continuous_ofAdd).prodMk continuous_const) (by rw [ofAdd_zero, map_one]; rfl) (fun s t => by rw [ofAdd_add, map_mul, Prod.mk_mul_mk, on …`. Conclude with `⟨c, g, fun t => hc t r hr, by rw [hc0]; exact hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_curve_along_archimedean_line : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
@@ -265,7 +257,7 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open Filter Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ArchLinePair.exists_curve_along_archimedean_line | exact _root_.GlobalTheory.ArchLinePair.exists_curve_along_archimedean_line | (intros; apply _root_.GlobalTheory.ArchLinePair.exists_curve_along_archimedean_line <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.archimedean_line_pairing_twist : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)

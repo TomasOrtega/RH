@@ -15,7 +15,7 @@ def PermutesFactors (ρ : Representation k G (∀ x, M x)) : Prop :=
   ∀ (g : G) (f : ∀ x, M x) (x : X), f x = 0 → ρ g f (g • x) = 0
 
 /- English proof (translation)
-Use `hρ g (f - f') x (by rw [Pi.sub_apply, h, sub_self])` as an intermediate fact. Rewrite `this` using `[map_sub, Pi.sub_apply, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem PermutesFactors.apply_eq {ρ : Representation k G (∀ x, M x)} (hρ : PermutesFactors ρ)
     (g : G) {f f' : ∀ x, M x} {x : X} (h : f x = f' x) : ρ g f (g • x) = ρ g f' (g • x) := by
@@ -23,7 +23,7 @@ theorem PermutesFactors.apply_eq {ρ : Representation k G (∀ x, M x)} (hρ : P
   rwa [map_sub, Pi.sub_apply, sub_eq_zero] at this
 
 /- English proof (translation)
-Rewrite using `[← smul_inv_smul g y]`. Use `hρ g _ _ (Pi.single_eq_of_ne ?_ a)` and prove the remaining obligations. Introduce `h`. Conclude with `hy (by rw [← h, smul_inv_smul])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem PermutesFactors.apply_single_of_ne [DecidableEq X] {ρ : Representation k G (∀ x, M x)}
     (hρ : PermutesFactors ρ) (g : G) (x : X) (a : M x) {y : X} (hy : y ≠ g • x) :
@@ -34,7 +34,7 @@ theorem PermutesFactors.apply_single_of_ne [DecidableEq X] {ρ : Representation 
   exact hy (by rw [← h, smul_inv_smul])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z = g • x₀`. Substitute `hz` using the available equality. Rewrite using `[Pi.single_eq_same, hρ.apply_eq g (f' := ρ g⁻¹ f) (Pi.single_eq_same _ _), Representation.self_inv_apply]`. Rewrite using `[Pi.single_eq_of_ne hz, hρ.apply_single_of_ne _ _ _ hz]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem PermutesFactors.single_eq [DecidableEq X] {ρ : Representation k G (∀ x, M x)}
     (hρ : PermutesFactors ρ) (x₀ : X) (g : G) (f : ∀ x, M x) :
@@ -47,7 +47,7 @@ theorem PermutesFactors.single_eq [DecidableEq X] {ρ : Representation k G (∀ 
   · rw [Pi.single_eq_of_ne hz, hρ.apply_single_of_ne _ _ _ hz]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Take `⟨g, rfl⟩` from `MulAction.exists_smul_eq G x₀ y`. Rewrite using `[← hf g, Pi.zero_apply]`. Conclude with `hρ g f x₀ h0`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PermutesFactors.eq_zero_of_invariant [MulAction.IsPretransitive G X]
     {ρ : Representation k G (∀ x, M x)} (hρ : PermutesFactors ρ) {f : ∀ x, M x}
@@ -65,7 +65,7 @@ noncomputable def orbitRep (x₀ y : X) : G :=
   (MulAction.exists_smul_eq G x₀ y).choose
 
 /- English proof (translation)
-The claim follows from `(MulAction.exists_smul_eq G x₀ y).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem orbitRep_smul (x₀ y : X) : orbitRep G x₀ y • x₀ = y :=
   (MulAction.exists_smul_eq G x₀ y).choose_spec
@@ -73,7 +73,7 @@ theorem orbitRep_smul (x₀ y : X) : orbitRep G x₀ y • x₀ = y :=
 variable (G) in
 
 /- English proof (translation)
-The claim follows from `Finite.of_surjective (fun g : G => g • x₀) fun y => MulAction.exists_smul_eq G x₀ y`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_isPretransitive [Finite G] (x₀ : X) : Finite X :=
   Finite.of_surjective (fun g : G => g • x₀) fun y => MulAction.exists_smul_eq G x₀ y
@@ -107,9 +107,9 @@ theorem orbitCores_apply [Fintype X] (ρ : Representation k G (∀ x, M x)) (x�
   rfl
 
 /- English proof (translation)
-Rewrite using `[cycNorm_apply, cycNorm_apply, Finset.sum_apply, orbitCores_apply]`. Rewrite using `[show (∑ g : G, ρ g f x₀) = ∑ p : D × X, ρ ((p.1 : G) * (orbitRep G x₀ p.2)⁻¹) f x₀ from (Fintype.sum_equiv (stabProdEquiv x₀ D hD) (fun p => ρ ((p.1 : G) * (orbitRep G x₀ p.2)⁻¹) f x₀) (fun g => ρ g f x₀) fun p => rfl).symm]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply, hρ₀]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cycNorm_apply_base [Fintype G] [Fintype X] (ρ : Representation k G (∀ x, M x)) (x₀ : X)
     (D : Subgroup G) [Fintype D] (hD : ∀ g, g ∈ D ↔ g • x₀ = x₀) (ρ₀ : Representation k D (M x₀))
@@ -127,9 +127,9 @@ theorem cycNorm_apply_base [Fintype G] [Fintype X] (ρ : Representation k G (∀
 
 omit [MulAction.IsPretransitive G X] in
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y = x₀`. Substitute `hy` using the available equality. Rewrite using `[hρ₀, Pi.single_eq_same, Pi.single_eq_same]`. Rewrite using `[Pi.single_eq_of_ne hy, hρ.apply_single_of_ne]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hD d).1 d.2]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_single_base [DecidableEq X] {ρ : Representation k G (∀ x, M x)}
     (hρ : PermutesFactors ρ) {x₀ : X} {D : Subgroup G} (hD : ∀ g, g ∈ D ↔ g • x₀ = x₀)
@@ -145,7 +145,7 @@ theorem apply_single_base [DecidableEq X] {ρ : Representation k G (∀ x, M x)}
 
 omit [MulAction.IsPretransitive G X] in
 /- English proof (translation)
-Establish `hm : g'⁻¹ * g ∈ D` using `(hD _).2 (by rw [mul_smul, h, inv_smul_smul])`. Establish `hg : g = g' * ((⟨g'⁻¹ * g, hm⟩ : D) : G)` using `by simp`. Rewrite using `[hg, map_mul, Module.End.mul_apply, apply_single_base hρ hD hρ₀, hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_single_eq_of_smul_eq [DecidableEq X] {ρ : Representation k G (∀ x, M x)}
     (hρ : PermutesFactors ρ) {x₀ : X} {D : Subgroup G} (hD : ∀ g, g ∈ D ↔ g • x₀ = x₀)
@@ -157,9 +157,9 @@ theorem apply_single_eq_of_smul_eq [DecidableEq X] {ρ : Representation k G (∀
   rw [hg, map_mul, Module.End.mul_apply, apply_single_base hρ hD hρ₀, hb]
 
 /- English proof (translation)
-Rewrite using `[orbitCores_apply, Finset.sum_eq_single x₀]`. Conclude with `(hρ₀ ⟨_, (hD _).2 (by rw [inv_smul_eq_iff, orbitRep_smul])⟩ _).trans (by rw [Pi.single_eq_same])`. Introduce `y _ hy`. Apply `hρ.apply_single_of_ne` to reduce the goal to its premises. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[eq_inv_smul_iff, orbitRep_smul]`. Conclude with `hy h`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orbitCores_single [Fintype X] [DecidableEq X] {ρ : Representation k G (∀ x, M x)}
     (hρ : PermutesFactors ρ) {x₀ : X} {D : Subgroup G} (hD : ∀ g, g ∈ D ↔ g • x₀ = x₀)
@@ -179,9 +179,9 @@ theorem orbitCores_single [Fintype X] [DecidableEq X] {ρ : Representation k G (
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hmem : ∀ y, (orbitRep G x₀ y)⁻¹ * g * orbitRep G x₀ (g⁻¹ • y) ∈ D` using `fun y => (hD _).2 (by rw [mul_smul, mul_smul, orbitRep_smul, smul_inv_smul, inv_smul_eq_iff, orbitRep_smul])`. Establish `hterm : ∀ y, ρ (orbitRep G x₀ y)⁻¹ (ρ g h) x₀ = ρ₀ ⟨_, hmem y⟩ (ρ (orbitRep G x₀ (g⁻¹ • y))⁻¹ h x₀)`. Introduce `y`. Rewrite using `[← hρ₀ ⟨_, hmem y⟩, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : orbitCores ρ x₀ (ρ g h) = ∑ y, ρ₀ ⟨_, hmem y⟩ (ρ (orbitRep G x₀ (g⁻¹ • y))⁻¹ h x₀)` using `Finset.sum_congr rfl fun y _ => hterm y`. Establish `e2 : orbitCores ρ x₀ h = ∑ y, ρ (orbitRep G x₀ (g⁻¹ • y))⁻¹ h x₀` using `(Fintype.sum_equiv (MulAction.toPerm g⁻¹) (fun y => ρ (orbitRep G x₀ (g⁻¹ • y))⁻¹ h x₀) (fun y => ρ (orbitRep G x₀ y)⁻¹ h x₀) fun y => rfl).symm`. Rewrite using `[e1, e2, ← Finset.sum_sub_distrib]`. Conclude with `sum_mem fun y _ => apply_sub_self_mem_range_cycSubOne ρ₀ hτ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitCores_apply_sub_mem [Fintype X] {ρ : Representation k G (∀ x, M x)} {x₀ : X}
     {D : Subgroup G} [Fintype D] (hD : ∀ g, g ∈ D ↔ g • x₀ = x₀) {ρ₀ : Representation k D (M x₀)}
@@ -207,7 +207,7 @@ theorem orbitCores_apply_sub_mem [Fintype X] {ρ : Representation k G (∀ x, M 
 
 omit [MulAction G X] [MulAction.IsPretransitive G X] in
 /- English proof (translation)
-Rewrite using `[AddMonoidHom.mem_ker, cycSubOne_apply, ← hρ₀, (mem_ker_cycSubOne_iff ρ hσ _).1 f.2 τ, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem base_mem_ker_cycSubOne {ρ : Representation k G (∀ x, M x)} {x₀ : X} {D : Subgroup G}
     {ρ₀ : Representation k D (M x₀)} (hρ₀ : ∀ (d : D) (f : ∀ x, M x), ρ d f x₀ = ρ₀ d (f x₀))
@@ -238,19 +238,17 @@ theorem orbitZeroMap_apply (ρ : Representation k G (∀ x, M x)) (x₀ : X) (D 
   rfl
 
 /- English proof (translation)
-Use `finite_of_isPretransitive G x₀` as an intermediate fact. Use `Fintype.ofFinite X` as an intermediate fact. Introduce `c`. Proceed by induction on `c using QuotientAddGroup.induction_on with`. Consider the case `H b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨b, hb⟩` from `b`. Establish `hbD : ∀ d : D, ρ₀ d b = b`. Rewrite `hb` using `[AddMonoidHom.mem_ker, cycSubOne_apply, sub_eq_zero]`. Conclude with `apply_eq_self_of_generator ρ₀ hτ hb`. Set `F : ∀ x, M x` to `∑ y, ρ (orbitRep G x₀ y) (Pi.single x₀ b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hF : ∀ g, ρ g F = F`. Introduce `g`. Rewrite using `[map_sum]`. Use `(Finset.sum_congr rfl fun y _ => ?_).trans (Fintype.sum_equiv (MulAction.toPerm g) (fun y => ρ (orbitRep G x₀ (g • y)) (Pi.single x₀ b)) (fun y => ρ (orbitRep G x₀ y) (Pi.single x₀ b)) fun y => rfl)` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `apply_single_eq_of_smul_eq hρ hD hρ₀ hbD (by rw [mul_smul, orbitRep_smul, orbitRep_smul])`. Establish `hF0 : F x₀ = b`. Simplify using `only [F, Finset.sum_apply]`. Rewrite using `[Finset.sum_eq_single x₀]`. Establish `hm : orbitRep G x₀ x₀ ∈ D` using `(hD _).2 (orbitRep_smul x₀ x₀)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(hρ₀ ⟨_, hm⟩ _).trans (by rw [Pi.single_eq_same, hbD])`. Introduce `y _ hy`. Apply `hρ.apply_single_of_ne` to reduce the goal to its premises. Rewrite using `[orbitRep_smul]`. Conclude with `Ne.symm hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Use `⟨⟨F, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[AddMonoidHom.mem_ker, cycSubOne_apply, hF, sub_self]`. Rewrite using `[orbitZeroMap_apply]`.
-
-Conclude with `congrArg QuotientAddGroup.mk (Subtype.ext hF0)`.
+A detailed English derivation is pending.
 -/
 theorem orbitZeroMap_surjective [Fintype G] (ρ : Representation k G (∀ x, M x))
     (hρ : PermutesFactors ρ) (x₀ : X) (D : Subgroup G) [Fintype D]
@@ -295,13 +293,11 @@ theorem orbitZeroMap_surjective [Fintype G] (ρ : Representation k G (∀ x, M x
     exact congrArg QuotientAddGroup.mk (Subtype.ext hF0)
 
 /- English proof (translation)
-Use `finite_of_isPretransitive G x₀` as an intermediate fact. Use `Fintype.ofFinite X` as an intermediate fact. Establish `hf : ∀ g, ρ g f = f` using `(mem_ker_cycSubOne_iff ρ hσ _).1 f.2`. Rewrite using `[orbitZeroMap_apply, KerModRange.mk_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨b, hb⟩`. Use `⟨Pi.single x₀ b, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ g, ρ g (cycNorm ρ (Pi.single x₀ b)) = cycNorm ρ (Pi.single x₀ b)` using `fun g => ρ.self_norm_apply g _`. Establish `h2 : cycNorm ρ (Pi.single x₀ b) x₀ = (f : ∀ x, M x) x₀`. Rewrite using `[cycNorm_apply_base ρ x₀ D hD ρ₀ hρ₀, orbitCores_single hρ hD hρ₀]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ρ₀.norm_self_apply _ b).trans hb`. Use `hρ.eq_zero_of_invariant (f := cycNorm ρ (Pi.single x₀ b) - f) (fun g => by rw [map_sub, h1, hf]) x₀ (by rw [Pi.sub_apply, h2, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Introduce and unpack `⟨h, hh⟩`. Use `⟨orbitCores ρ x₀ h, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← cycNorm_apply_base ρ x₀ D hD ρ₀ hρ₀, hh]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitZeroMap_eq_zero_iff [Fintype G] (ρ : Representation k G (∀ x, M x))
     (hρ : PermutesFactors ρ) (x₀ : X) (D : Subgroup G) [Fintype D]
@@ -353,7 +349,7 @@ theorem cycTateZeroOrbitEquiv_mk [Fintype G] (ρ : Representation k G (∀ x, M 
   rfl
 
 /- English proof (translation)
-Rewrite using `[AddMonoidHom.mem_ker, ← cycNorm_apply_base ρ x₀ D hD ρ₀ hρ₀, AddMonoidHom.mem_ker.1 f.2, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem orbitCores_mem_ker_cycNorm [Fintype G] [Fintype X] {ρ : Representation k G (∀ x, M x)}
     {x₀ : X} {D : Subgroup G} [Fintype D] (hD : ∀ g, g ∈ D ↔ g • x₀ = x₀)
@@ -382,9 +378,9 @@ theorem orbitNegOneMap_apply [Fintype G] [Fintype X] (ρ : Representation k G (�
   rfl
 
 /- English proof (translation)
-Use `finite_of_isPretransitive G x₀` as an intermediate fact. Use `Fintype.ofFinite X` as an intermediate fact. Rewrite using `[AddMonoidHom.mem_ker]`. Use `hρ.eq_zero_of_invariant (fun g => ρ.self_norm_apply g _) x₀ ?_` and prove the remaining obligations. Rewrite using `[cycNorm_apply_base ρ x₀ D hD ρ₀ hρ₀, orbitCores_single hρ hD hρ₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ρ₀.norm_self_apply _ b).trans (AddMonoidHom.mem_ker.1 hb)`.
+A detailed English derivation is pending.
 -/
 theorem single_mem_ker_cycNorm [Fintype G] [DecidableEq X] {ρ : Representation k G (∀ x, M x)}
     (hρ : PermutesFactors ρ) {x₀ : X} {D : Subgroup G} [Fintype D]
@@ -399,9 +395,9 @@ theorem single_mem_ker_cycNorm [Fintype G] [DecidableEq X] {ρ : Representation 
   exact (ρ₀.norm_self_apply _ b).trans (AddMonoidHom.mem_ker.1 hb)
 
 /- English proof (translation)
-Introduce `c`. Proceed by induction on `c using QuotientAddGroup.induction_on with`. Consider the case `H b`. Take `⟨b, hb⟩` from `b`. Use `⟨⟨_, single_mem_ker_cycNorm hρ hD hρ₀ hb⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[orbitNegOneMap_apply, KerModRange.mk_eq_mk_iff]`. Use `show orbitCores ρ x₀ (Pi.single x₀ b) - b ∈ _`. Rewrite using `[orbitCores_single hρ hD hρ₀]`. Conclude with `apply_sub_self_mem_range_cycSubOne ρ₀ hτ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitNegOneMap_surjective [Fintype G] [Fintype X] (ρ : Representation k G (∀ x, M x))
     (hρ : PermutesFactors ρ) (x₀ : X) (D : Subgroup G) [Fintype D]
@@ -421,15 +417,13 @@ theorem orbitNegOneMap_surjective [Fintype G] [Fintype X] (ρ : Representation k
   exact apply_sub_self_mem_range_cycSubOne ρ₀ hτ _ _
 
 /- English proof (translation)
-Rewrite using `[orbitNegOneMap_apply, KerModRange.mk_eq_zero_iff]`. Use `show orbitCores ρ x₀ f ∈ _ ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Establish `e1 : (f : ∀ x, M x) = ∑ y, ρ (orbitRep G x₀ y) (Pi.single x₀ (ρ (orbitRep G x₀ y)⁻¹ f x₀))` using `by conv_lhs => rw [← Finset.univ_sum_single (f : ∀ x, M x)]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Use `hρ.single_eq x₀ (orbitRep G x₀ y) f` as an intermediate fact. Rewrite `this` using `[orbitRep_smul]`. Then use the resulting hypothesis. Establish `e2 : Pi.single x₀ (orbitCores ρ x₀ f) = ∑ y, Pi.single x₀ (ρ (orbitRep G x₀ y)⁻¹ f x₀)` using `map_sum (AddMonoidHom.single M x₀) _ _`. Establish `step1 : (f : ∀ x, M x) - Pi.single x₀ (orbitCores ρ x₀ f) ∈ (cycSubOne ρ σ).range`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (f : ∀ x, M x) - Pi.single x₀ (orbitCores ρ x₀ f) = ∑ y, (ρ (orbitRep G x₀ y) (Pi.single x₀ (ρ (orbitRep G x₀ y)⁻¹ f x₀)) - Pi.single x₀ (ρ (orbitRep G x₀ y)⁻¹ f x₀))`. Rewrite using `[Finset.sum_sub_distrib, ← e1, ← e2]`. Rewrite using `[this]`. Conclude with `sum_mem fun y _ => apply_sub_self_mem_range_cycSubOne ρ hσ _ _`. Establish `step2 : Pi.single x₀ (orbitCores ρ x₀ f) ∈ (cycSubOne ρ σ).range`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hc, cycSubOne_apply, Pi.single_sub, ← apply_single_base hρ hD hρ₀ τ]`. Conclude with `apply_sub_self_mem_range_cycSubOne ρ hσ _ _`. Use `add_mem step1 step2` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce and unpack `⟨h, hh⟩`.
-
-Rewrite using `[← hh, cycSubOne_apply, map_sub]`. Conclude with `orbitCores_apply_sub_mem hD hρ₀ hτ σ h`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitNegOneMap_eq_zero_iff [Fintype G] [Fintype X] (ρ : Representation k G (∀ x, M x))
     (hρ : PermutesFactors ρ) (x₀ : X) (D : Subgroup G) [Fintype D]
@@ -481,9 +475,9 @@ noncomputable def cycTateNegOneOrbitEquiv [Fintype G] (ρ : Representation k G (
     (orbitNegOneMap_eq_zero_iff ρ hρ x₀ D hD ρ₀ hρ₀ σ hσ τ hτ)
 
 /- English proof (translation)
-Rewrite using `[AddEquiv.symm_apply_eq, eq_comm]`. Set `_ : Finite X` to `finite_of_isPretransitive G x₀`. Set `_ : Fintype X` to `Fintype.ofFinite X`. Use `show orbitNegOneMap ρ x₀ D hD ρ₀ hρ₀ τ _ = _`. Rewrite using `[orbitNegOneMap_apply, KerModRange.mk_eq_mk_iff]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show orbitCores ρ x₀ (Pi.single x₀ (b : M x₀)) - (b : M x₀) ∈ (cycSubOne ρ₀ τ).range`. Rewrite using `[orbitCores_single hρ hD hρ₀]`. Conclude with `apply_sub_self_mem_range_cycSubOne ρ₀ hτ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cycTateNegOneOrbitEquiv_symm_mk [Fintype G] [DecidableEq X]
     (ρ : Representation k G (∀ x, M x))
@@ -504,7 +498,7 @@ theorem cycTateNegOneOrbitEquiv_symm_mk [Fintype G] [DecidableEq X]
   exact apply_sub_self_mem_range_cycSubOne ρ₀ hτ _ _
 
 /- English proof (translation)
-Rewrite using `[cycHerbrand_eq, cycHerbrand_eq, Nat.card_congr (cycTateZeroOrbitEquiv ρ hρ x₀ D hD ρ₀ hρ₀ σ hσ τ hτ).toEquiv, Nat.card_congr (cycTateNegOneOrbitEquiv ρ hρ x₀ D hD ρ₀ hρ₀ σ hσ τ hτ).toEquiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cycHerbrand_orbit [Fintype G] (ρ : Representation k G (∀ x, M x))
     (hρ : PermutesFactors ρ) (x₀ : X) (D : Subgroup G) [Fintype D]

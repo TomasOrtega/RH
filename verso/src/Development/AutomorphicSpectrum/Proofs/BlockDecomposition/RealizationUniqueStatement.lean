@@ -5,7 +5,7 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 open CrystallineSemistableComparison.Pb.Kap
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.KapUniq.rho_unique` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FRealizationUnique.lean&line=39#L39)
 -/

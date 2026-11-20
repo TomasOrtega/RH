@@ -10,15 +10,15 @@ namespace GlobalTheory.MomDict
 open GlobalTheory.MomOne
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : ℤ, t = 2 * k + 1 := by`. Break down `Int.even_or_odd' t with ⟨k, rfl | rfl⟩` into its components or cases. It suffices to derive a contradiction. Establish `: (2 * k) ^ 2 = 4 * (k * k)` using `by ring`. Rewrite `hD` using `[this]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Generalize the expression as in `k * k = m at hD`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨k, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs2, hw⟩ : ∃ s : ℂ, s ^ 2 = -(d : ℂ) ∧ wK d = (1 + s) / 2 := by`. Use `⟨Complex.I * ((Real.sqrt d : ℝ) : ℂ), ?_, rfl⟩` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hDc : (t : ℂ) ^ 2 - 4 * n = -(d : ℂ)` using `by exact_mod_cast hD`. Establish `hprod : (2 * β - t - s) * (2 * β - t + s) = 0`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `4 * hβ + hDc - hs2`. Establish `hkc : (t : ℂ) = 2 * k + 1` using `by exact_mod_cast hk`. Break down `mul_eq_zero.1 hprod with h | h` into its components or cases. Use `⟨k, Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `h / 2 + hkc / 2`. Use `⟨k + 1, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Use `push_cast`. Take the linear combination `h / 2 + hkc / 2`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem root_eq (d : ℕ) (hd : d % 4 = 3) (t n : ℤ) (hD : t ^ 2 - 4 * n = -(d : ℤ)) (β : ℂ)
     (hβ : β ^ 2 = t * β - n) : ∃ k : ℤ, β = k + wK d ∨ β = k - wK d := by
@@ -45,9 +45,9 @@ theorem root_eq (d : ℕ) (hd : d % 4 = 3) (t n : ℤ) (hD : t ^ 2 - 4 * n = -(d
     rw [hw]; push_cast; linear_combination h / 2 + hkc / 2
 
 /- English proof (translation)
-Break down `hβ with rfl | rfl` into its components or cases. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, v, rfl⟩; exact ⟨u - v * k, v, by push_cast; ring⟩`. Introduce and unpack `⟨x, y, rfl⟩; exact ⟨x + y * k, y, by push_cast; ring⟩`. Prove the components needed by the constructor for the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨u, v, rfl⟩; exact ⟨u + v * k, -v, by push_cast; ring⟩`. Introduce and unpack `⟨x, y, rfl⟩; exact ⟨x + y * k, -y, by push_cast; ring⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 -/
 theorem inOK_iff_int_pair (d : ℕ) (β : ℂ) (k : ℤ) (hβ : β = k + wK d ∨ β = k - wK d) (z : ℂ) :
     InOK d z ↔ ∃ x y : ℤ, z = x + y * β := by
@@ -60,13 +60,13 @@ theorem inOK_iff_int_pair (d : ℕ) (β : ℂ) (k : ℤ) (hβ : β = k + wK d �
     · rintro ⟨x, y, rfl⟩; exact ⟨x + y * k, -y, by push_cast; ring⟩
 
 /- English proof (translation)
-Take `⟨b, t, n, h0, hw, hdisc⟩` from `GlobalTheory.QuadraticZeta.exists_basis (K := D.host.K) (GlobalTheory.CurveLattice.finrank_hostK D)`. Rewrite `hdisc` using `[GlobalTheory.CurveLattice.discr_hostK D]`. Set `σ : 𝓞 D.host.K →+* ℂ` to `D.host.φ₀.comp ((algebraMap D.host.K D.host.E).comp (algebraMap (𝓞 D.host.K) D.host.K))`. Establish `hσ : ∀ x : 𝓞 D.host.K, σ x = D.host.φ₀ ((x : D.host.K) : D.host.E)` using `fun x => rfl`. Establish `hβ : σ (b 1) ^ 2 = t * σ (b 1) - n`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, hw]`. Simplify using the standard rewrite rules. Establish `hd4 : D.host.d % 4 = 3` using `by have := D.host.hyp.2.2.2.1; omega`. Take `⟨k, hk⟩` from `root_eq D.host.d hd4 t n hdisc.symm _ hβ`. Rewrite using `[inOK_iff_int_pair D.host.d _ k hk z]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, y, rfl⟩`. Conclude with `⟨x + y * b 1, by rw [← hσ]; simp⟩`. Introduce and unpack `⟨x, rfl⟩`. Use `⟨b.repr x 0, b.repr x 1, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hσ]`. Use `conv_lhs => rw [GlobalTheory.QuadraticZeta.eq_coord b h0 x]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inOK_iff (D : D7) (z : ℂ) :
     InOK D.host.d z ↔ ∃ x : 𝓞 D.host.K, z = D.host.φ₀ ((x : D.host.K) : D.host.E) := by
@@ -93,9 +93,9 @@ end GlobalTheory.MomDict
 namespace GlobalTheory.MomDict
 
 /- English proof (translation)
-Unfold `area`. Establish `: {a : ℝ | 0 < a ∧ ∃ w₁ ∈ (⊥ : AddSubgroup ℂ), ∃ w₂ ∈ (⊥ : AddSubgroup ℂ), a = |((starRingEnd ℂ) w₁ * w₂).im|} = ∅`. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce and unpack `ha ⟨w₁, h1, w₂, h2, rfl⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Rewrite `h1`, `h2` using `[AddSubgroup.mem_bot]`. Simplify using `[h1, h2] at ha`. Rewrite using `[this, Real.sInf_empty]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem area_bot : area (⊥ : AddSubgroup ℂ) = 0 := by
   unfold area
@@ -108,9 +108,9 @@ theorem area_bot : area (⊥ : AddSubgroup ℂ) = 0 := by
   rw [this, Real.sInf_empty]
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[GlobalTheory.CurveLattice.mem_lamOf, AddSubgroup.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, -, rfl⟩`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl; exact ⟨0, cc.zero_mem, by simp⟩`.
+Assume the hypotheses and unpack their components.
 -/
 theorem lamOf_zero (D : D7) (cc : Ideal (𝓞 D.host.K)) : lamOf D cc 0 = ⊥ := by
   ext w
@@ -120,9 +120,9 @@ theorem lamOf_zero (D : D7) (cc : Ideal (𝓞 D.host.K)) : lamOf D cc 0 = ⊥ :=
   · rintro rfl; exact ⟨0, cc.zero_mem, by simp⟩
 
 /- English proof (translation)
-Break down `eq_or_ne δ 0 with rfl | hδ` into its components or cases. Rewrite using `[lamOf_zero, area_bot]`. Simplify using the standard rewrite rules. Take `⟨a, τ, ha, hN, h⟩` from `GlobalTheory.CurveLattice.exists_tau D cc hcc`. Establish `hda : δ * a ≠ 0` using `mul_ne_zero hδ ha`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : 0 < √(D.host.d : ℝ)` using `Real.sqrt_pos.2 (by exact_mod_cast D.host.hyp.2.1.pos)`. Rewrite using `[GlobalTheory.CurveLattice.area_of_tau hda (h δ), hN, norm_mul, Complex.normSq_eq_norm_sq]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem area_lamOf (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hcc : cc ≠ ⊥) :
     area (lamOf D cc δ) = Complex.normSq δ * (Ideal.absNorm cc : ℝ) * Real.sqrt D.host.d / 2 := by
@@ -135,7 +135,7 @@ theorem area_lamOf (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hcc : cc �
   field_simp
 
 /- English proof (translation)
-Introduce `D`. Use `⟨D.host.hyp.2.1, D.host.hyp.2.2.2.1, inOK_iff D, fun x => D.host.conjE_apply _ _, fun cc δ hcc => ⟨area_lamOf D cc δ hcc, fun z => GlobalTheory.CurveLattice.mem_lamOf D cc δ z⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem main : ∀ (D : D7), D.host.d.Prime ∧ D.host.d % 16 = 7 ∧ (∀ z : ℂ, GlobalTheory.MomOne.InOK D.host.d z ↔ ∃ x : 𝓞 D.host.K, z = D.host.φ₀ ((x : D.host.K) : D.host.E)) ∧ (∀ x : D.host.K, D.host.φ₀ (D.host.conj (x : D.host.E)) = (starRingEnd ℂ) (D.host.φ₀ (x : D.host.E))) ∧ ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), cc ≠ ⊥ → area (lamOf D cc δ) = Complex.normSq δ * (Ideal.absNorm cc : ℝ) * Real.sqrt D.host.d / 2 ∧ ∀ z : ℂ, z ∈ lamOf D cc δ ↔ ∃ x ∈ cc, z = δ * D.host.φ₀ ((x : D.host.K) : D.host.E) := by
   intro D

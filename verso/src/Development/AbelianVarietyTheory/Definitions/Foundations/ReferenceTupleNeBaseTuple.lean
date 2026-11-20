@@ -12,23 +12,21 @@ namespace GlobalTheory.Mem.Chr.TieModel
 open Formalism.BasicNotions Formalism.FrobeniusOrbits
 
 /- English proof (translation)
-Establish `key : ∀ x : L, ∑ i, (m i : ℂ) * σ i x = 0`. Introduce `x`. Set `f : ℂ → ℂ` to `fun t => ∏ i, (1 + t * σ i x) ^ m i`. Establish `hd : ∀ i ∈ (Finset.univ : Finset I), HasDerivAt (fun t : ℂ => (1 + t * σ i x) ^ m i) ((m i : ℂ) * σ i x) 0`. Introduce `i _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : HasDerivAt (fun t : ℂ => 1 + t * σ i x) (σ i x) 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).mul_const (σ i x)).const_add 1`. Establish `h2` using `(hasDerivAt_zpow (m i) ((fun t : ℂ => 1 + t * σ i x) 0) (Or.inl (by simp))).comp (0 : ℂ) h1`. Simplify `h2` using `[Function.comp_def]`. Establish `hf : HasDerivAt f (∑ i, (m i : ℂ) * σ i x) 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `HasDerivAt.fun_finset_prod hd` as an intermediate fact. Simplify `this` using `[f]`. Establish `hs` using `hasDerivAt_iff_tendsto_slope.1 hf`. Establish `hu : Tendsto (fun n : ℕ => ((1 : ℂ) / ((n : ℂ) + 1))) atTop (𝓝[≠] 0)`. Use `tendsto_nhdsWithin_iff.2 ⟨tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℂ), Eventually.of_forall fun n => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `one_div_ne_zero (Nat.cast_add_one_ne_zero n)`. Establish `hfin : ∀ᶠ n : ℕ in atTop, (1 + (1 / ((n : L) + 1)) * x) ≠ 0`. Rewrite using `[← Nat.cofinite_eq_atTop]`. Use `Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce `a ha b hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq, not_not] at ha hb`. Establish `ha1 : ((a : L) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero a`. Establish `hb1 : ((b : L) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero b`. Clear denominators, using `at ha hb` for the nonvanishing conditions. Establish `: (a : L) = b` using `by linear_combination ha - hb`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `h0 : Tendsto (fun n : ℕ => slope f 0 ((1 : ℂ) / ((n : ℂ) + 1))) atTop (𝓝 0)`. Use `tendsto_const_nhds.congr' (hfin.mono fun n hn => ?_)` and prove the remaining obligations. Establish `h1` using `h _ hn`. Establish `h2 : f ((1 : ℂ) / ((n : ℂ) + 1)) = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Eq.trans ?_ h1` and prove the remaining obligations. Simplify using `[f]`. Establish `h3 : f 0 = 1` using `by simp [f]`. Simplify using `only [slope, h2, h3, vsub_self, smul_zero]`. Conclude with `tendsto_nhds_unique (hs.comp hu) h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `li` using `(linearIndependent_monoidHom L ℂ).comp (fun i => (σ i : L →* ℂ)) (fun i j hij => hσ (RingHom.coe_monoidHom_injective hij))`. Use `Fintype.linearIndependent_iff.1 li (fun i => (m i : ℂ)) (by` as an intermediate fact. Use function extensionality and compare the values at `x`. Simplify `key x)` using `[Finset.sum_apply]`. Use function extensionality and compare the values at `i`.
-
-Conclude with `this i` after adjusting the coercions.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem emb_mul_indep {L I : Type} [Field L] [CharZero L] [Fintype I] (σ : I → L →+* ℂ) (hσ : Function.Injective σ)
     (m : I → ℤ) (h : ∀ k : L, k ≠ 0 → ∏ i, σ i k ^ m i = 1) : m = 0 := by
@@ -77,9 +75,9 @@ theorem emb_mul_indep {L I : Type} [Field L] [CharZero L] [Fintype I] (σ : I �
   exact_mod_cast this i
 
 /- English proof (translation)
-Establish `h1 : ((‖z‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.2 hz`. Establish `h2 : starRingEnd ℂ z ≠ 0` using `by simpa using hz`. Establish `h3 : z * starRingEnd ℂ z = ((‖z‖ : ℝ) : ℂ) ^ 2`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Rewrite using `[← h3]`.
+Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_sq (z : ℂ) (hz : z ≠ 0) : (z / ((‖z‖ : ℝ) : ℂ)) ^ 2 = z / starRingEnd ℂ z := by
   have h1 : ((‖z‖ : ℝ) : ℂ) ≠ 0 := by exact_mod_cast norm_ne_zero_iff.2 hz
@@ -90,17 +88,15 @@ theorem unit_sq (z : ℂ) (hz : z ≠ 0) : (z / ((‖z‖ : ℝ) : ℂ)) ^ 2 = z
   rw [← h3]
 
 /- English proof (translation)
-Set `σ : I ⊕ I → L →+* ℂ` to `Sum.elim φ fun i => (starRingEnd ℂ).comp (φ i)`. Establish `hσ : Function.Injective σ`. Introduce and unpack `(i | i) (j | j) hij`. Conclude with `congrArg _ (h1 hij)`. Conclude with `absurd hij (h2 i j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `absurd hij.symm (h2 j i)`. Use `congrArg _ (h1 (RingHom.ext fun x => ?_))` and prove the remaining obligations. Use `congrArg (fun f : L →+* ℂ => starRingEnd ℂ (f x)) hij` as an intermediate fact. Simplify `this` using `[σ]`. Use `emb_mul_indep σ hσ (Sum.elim (n - n') (n' - n)) (fun k hk => by` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e` using `(h (Units.mk0 k hk)).symm.trans (h' (Units.mk0 k hk))`. Simplify using `only [Units.val_mk0] at e`. Establish `hne : ∀ i, φ i k ≠ 0` using `fun i => by simpa using hk`. Establish `hu : ∀ i, φ i k / ((‖φ i k‖ : ℝ) : ℂ) ≠ 0` using `fun i => div_ne_zero (hne i) (by exact_mod_cast norm_ne_zero_iff.2 (hne i))`. Establish `e2 : ∏ i, (φ i k / ((‖φ i k‖ : ℝ) : ℂ)) ^ (n i - n' i) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[zpow_sub₀ (hu _)]`. Rewrite using `[Finset.prod_div_distrib, e, div_self]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (hu i)`. Establish `e3` using `congrArg (· ^ 2) e2`. Simplify using `only [← Finset.prod_pow, one_pow] at e3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fintype.prod_sum_type, ← Finset.prod_mul_distrib, ← e3]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm (n i - n' i), zpow_mul, zpow_natCast, unit_sq _ (hne i), div_zpow]`. Simplify using `only [σ, Sum.elim_inl, Sum.elim_inr, Pi.sub_apply, RingHom.comp_apply]`. Rewrite using `[div_eq_mul_inv, ← zpow_neg, neg_sub])`.
-
-Use function extensionality and compare the values at `i`. Use `congrFun this (Sum.inl i)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasInf_unique {L I : Type} [Field L] [NumberField L] [Fintype I] (φ : I → L →+* ℂ) (h1 : Function.Injective φ)
     (h2 : ∀ i j, φ i ≠ (starRingEnd ℂ).comp (φ j)) {χ : HChar L} {n n' : I → ℤ} (h : χ.HasInf φ n) (h' : χ.HasInf φ n') :
@@ -136,13 +132,11 @@ theorem hasInf_unique {L I : Type} [Field L] [NumberField L] [Fintype I] (φ : I
   simpa [sub_eq_zero] using this
 
 /- English proof (translation)
-Establish `hx : ∀ x, (χ.1 x) ^ n = 1` using `fun x => congrArg (fun ξ : HChar L => ξ.1 x) h`. Establish `hw : ∀ (w : InfinitePlace L) (y : (w.Completion)ˣ), χ.1 (infIdele L w y) = 1`. Introduce `w y`. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (e (y : w.Completion)) hn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hz' : (e.symm z) ^ n = y` using `by rw [← map_pow, hz]; simp`. Establish `hz0 : e.symm z ≠ 0`. Introduce `h0`. Rewrite `hz'` using `[h0, zero_pow hn.ne']`. Conclude with `y.ne_zero hz'.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: y = (Units.mk0 _ hz0) ^ n` using `Units.ext (by simp [hz'])`. Rewrite using `[this, map_pow, map_pow, hx]`. Use `show χ.1 (infDiag k) = 1`. Unfold `infDiag`. Rewrite using `[MonoidHom.finset_prod_apply, map_prod]`.
-
-Conclude with `Finset.prod_eq_one fun w _ => hw w _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_eq_one_of_order {L : Type} [Field L] [NumberField L] [IsTotallyComplex L] {χ : HChar L} {n : ℕ} (hn : 0 < n)
     (h : χ.OrderDvd n) (k : Lˣ) : χ.inf k = 1 := by
@@ -166,15 +160,15 @@ instance totallyComplexE {R : Ranks} (H : Formalism.BasicNotions.Host R) : IsTot
   infer_instance
 
 /- English proof (translation)
-Introduce `_ _ h` and use `D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem embTau_inj (D : D7) : Function.Injective (embTau D) := fun _ _ h =>
   D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))
 
 /- English proof (translation)
-Introduce `h`. Establish `hi : embTau D i (D.host.sqd) = Complex.I * ((Real.sqrt D.host.d : ℝ) : ℂ)` using `((factEmb D.R D.host).2 _).2 (D.eTau i).2`. Establish `hj : embTau D j (D.host.sqd) = Complex.I * ((Real.sqrt D.host.d : ℝ) : ℂ)` using `((factEmb D.R D.host).2 _).2 (D.eTau j).2`. Rewrite `hi` using `[h, RingHom.comp_apply, hj, map_mul, Complex.conj_I, Complex.conj_ofReal]`. Establish `h0 : ((Real.sqrt D.host.d : ℝ) : ℂ) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (2 * Complex.I) * ((Real.sqrt D.host.d : ℝ) : ℂ) = 0` using `by linear_combination -hi`. Conclude with `(mul_eq_zero.1 this).resolve_left (mul_ne_zero two_ne_zero Complex.I_ne_zero)`. Establish `hd : 0 < D.host.d` using `D.host.hyp.2.1.pos`. Establish `: (0 : ℝ) < Real.sqrt D.host.d` using `Real.sqrt_pos.2 (by exact_mod_cast hd)`. Conclude with `this.ne' (by exact_mod_cast h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem embTau_ne_conj (D : D7) (i j : D.what₂.Tau) : embTau D i ≠ (starRingEnd ℂ).comp (embTau D j) := by
   intro h
@@ -191,7 +185,7 @@ theorem embTau_ne_conj (D : D7) (i j : D.what₂.Tau) : embTau D i ≠ (starRing
   exact this.ne' (by exact_mod_cast h0)
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `h`. Take `⟨n', hn', h'⟩` from `h'`. Take `rfl` from `hasInf_unique _ (embTau_inj D) (embTau_ne_conj D) h h'`. Use function extensionality and compare the values at `i`. Use `(hn i).symm.trans (hn' i)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -205,7 +199,7 @@ theorem hasInfQ_unique (D : D7) {χ : HChar D.host.E} {a a' : D.what₂.Tau → 
   linarith
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `h`. Use `⟨fun τ => n (D.eTau τ), fun τ => hn _, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[h k]`. Conclude with `(Fintype.prod_equiv D.eTau _ _ fun _ => rfl).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasInfQ_tau (D : D7) {χ : HChar D.host.E} {a : D.R.Psi → ℚ} (h : χ.HasInfQ (embPsi D.host) a) :
     χ.HasInfQ (embTau D) (fun τ => a (D.eTau τ)) := by
@@ -215,9 +209,9 @@ theorem hasInfQ_tau (D : D7) {χ : HChar D.host.E} {a : D.R.Psi → ℚ} (h : χ
   exact (Fintype.prod_equiv D.eTau _ _ fun _ => rfl).symm
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `h`. Take `⟨n', hn', h'⟩` from `h'`. Use `⟨n + n', fun i => by simp [hn, hn', mul_add], fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[HChar.inf_mul, Units.val_mul, h k, h' k, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : φ i k ≠ 0` using `by simp`. Rewrite using `[Pi.add_apply, zpow_add₀ (div_ne_zero hne (by exact_mod_cast norm_ne_zero_iff.2 hne))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasInfQ_mul {L I : Type} [Field L] [NumberField L] [Fintype I] {φ : I → L →+* ℂ} {χ χ' : HChar L} {a a' : I → ℚ}
     (h : χ.HasInfQ φ a) (h' : χ'.HasInfQ φ a') : (χ * χ').HasInfQ φ (a + a') := by
@@ -230,7 +224,7 @@ theorem hasInfQ_mul {L I : Type} [Field L] [NumberField L] [Fintype I] {φ : I �
   rw [Pi.add_apply, zpow_add₀ (div_ne_zero hne (by exact_mod_cast norm_ne_zero_iff.2 hne))]
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `h`. Use `⟨-n, fun i => by simp [hn], fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[HChar.inf_inv, Units.val_inv_eq_inv_val, h k, ← Finset.prod_inv_distrib]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hasInfQ_inv {L I : Type} [Field L] [NumberField L] [Fintype I] {φ : I → L →+* ℂ} {χ : HChar L} {a : I → ℚ}
     (h : χ.HasInfQ φ a) : (χ⁻¹).HasInfQ φ (-a) := by
@@ -242,14 +236,14 @@ theorem hasInfQ_inv {L I : Type} [Field L] [NumberField L] [Fintype I] {φ : I �
 variable {D : D7} {C : CharFrame D} {nch : NChoice D}
 
 /- English proof (translation)
-Take `⟨n, hn, ho⟩` from `Tp.xi_fin μ`. Conclude with `(C.isMu0 j).unitary.mul (HChar.isUnitary_of_order hn ho)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tup_unitary (Tp : TupTied D C nch) (μ : D.what₂.Tup) (j : Fin D.R.m) : (Tp.tup μ j).IsUnitary := by
   obtain ⟨n, hn, ho⟩ := Tp.xi_fin μ
   exact (C.isMu0 j).unitary.mul (HChar.isUnitary_of_order hn ho)
 
 /- English proof (translation)
-Take `⟨n, hn, ho⟩` from `Tp.xi_fin μ`. Establish `h` using `hasInfQ_tau D ((C.isMu0 j).inf.mul_triv (inf_eq_one_of_order hn ho))`. Simplify `h` using `[eExp, TupTied.tup]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tup_inf (Tp : TupTied D C nch) (μ : D.what₂.Tup) (j : Fin D.R.m) :
     (Tp.tup μ j).HasInfQ (embTau D) (fun τ => -(D.hc τ).e j) := by
@@ -258,7 +252,7 @@ theorem tup_inf (Tp : TupTied D C nch) (μ : D.what₂.Tup) (j : Fin D.R.m) :
   simpa [eExp, TupTied.tup] using h
 
 /- English proof (translation)
-The claim follows from `hasInfQ_tau D (a := fun _ => 1 / 2) ⟨fun _ => 1, fun _ => by norm_num, C.isEta.inf⟩`.
+A detailed English derivation is pending.
 -/
 theorem eta_inf (C : CharFrame D) : C.eta.HasInfQ (embTau D) (fun _ => 1 / 2) :=
   hasInfQ_tau D (a := fun _ => 1 / 2) ⟨fun _ => 1, fun _ => by norm_num, C.isEta.inf⟩
@@ -274,7 +268,7 @@ def halfInt (D : D7) : Subgroup (HChar D.host.E) where
 def expo (c : halfInt D) : D.what₂.Tau → ℚ := c.2.2.choose
 
 /- English proof (translation)
-The claim follows from `c.2.2.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem expo_spec (c : halfInt D) : c.1.HasInfQ (embTau D) (expo c) := c.2.2.choose_spec
 
@@ -285,19 +279,19 @@ def tupNat (Tp : TupTied D C nch) (μ : D.what₂.Tup) (j : ℕ) : halfInt D :=
   if h : 0 < j ∧ j - 1 < D.R.m then tupEl Tp μ ⟨j - 1, h.2⟩ else 1
 
 /- English proof (translation)
-The claim follows from `dif_pos ⟨Nat.succ_pos _, j.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem tupNat_succ (Tp : TupTied D C nch) (μ : D.what₂.Tup) (j : Fin D.R.m) : tupNat Tp μ (j.1 + 1) = tupEl Tp μ j :=
   dif_pos ⟨Nat.succ_pos _, j.2⟩
 
 /- English proof (translation)
-The claim follows from `hasInfQ_unique D (expo_spec c) h`.
+A detailed English derivation is pending.
 -/
 theorem expo_eq (c : halfInt D) {a : D.what₂.Tau → ℚ} (h : c.1.HasInfQ (embTau D) a) : expo c = a :=
   hasInfQ_unique D (expo_spec c) h
 
 /- English proof (translation)
-Rewrite using `[tupNat_succ]`. Conclude with `congrFun (expo_eq (tupEl Tp μ j) (tup_inf Tp μ j)) τ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expo_tupNat (Tp : TupTied D C nch) (μ : D.what₂.Tup) (j : Fin D.R.m) (τ : D.what₂.Tau) :
     expo (tupNat Tp μ (j.1 + 1)) τ = -(D.hc τ).e j := by
@@ -307,13 +301,13 @@ theorem expo_tupNat (Tp : TupTied D C nch) (μ : D.what₂.Tup) (j : Fin D.R.m) 
 def etaEl (C : CharFrame D) : halfInt D := ⟨C.eta, C.isEta.unitary, _, eta_inf C⟩
 
 /- English proof (translation)
-The claim follows from `congrFun (expo_eq (etaEl C) (eta_inf C)) τ`.
+A detailed English derivation is pending.
 -/
 theorem expo_etaEl (C : CharFrame D) (τ : D.what₂.Tau) : expo (etaEl C) τ = 1 / 2 :=
   congrFun (expo_eq (etaEl C) (eta_inf C)) τ
 
 /- English proof (translation)
-The claim follows from `congrFun (expo_eq (χ * χ') (hasInfQ_mul (expo_spec χ) (expo_spec χ'))) τ`.
+A detailed English derivation is pending.
 -/
 theorem expo_mul (χ χ' : halfInt D) (τ : D.what₂.Tau) : expo (χ * χ') τ = expo χ τ + expo χ' τ :=
   congrFun (expo_eq (χ * χ') (hasInfQ_mul (expo_spec χ) (expo_spec χ'))) τ
@@ -343,17 +337,15 @@ def thetaCharacterCompatibility (Tp : TupTied D C nch) (X : ThetaX D)
   etaT := rfl
 
 /- English proof (translation)
-Establish `hP : ∀ k, ∃ p : HeightOneSpectrum (𝓞 D.host.K), ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ p.asIdeal`. Introduce `k`. Establish `hg` using `D.host.g_prime k`. Establish `hnu : ¬ IsUnit ((D.host.g k : ℕ) : 𝓞 D.host.K)`. Introduce `hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : IsUnit (algebraMap ℤ (𝓞 D.host.K) (D.host.g k : ℤ))` using `by simpa using hu`. Establish `h2` using `(isUnit_map_iff (algebraMap ℤ (𝓞 D.host.K)) _).1 h1`. Rewrite `h2` using `[Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast]`. Conclude with `hg.ne_one h2`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {((D.host.g k : ℕ) : 𝓞 D.host.K)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem` using `hle (Ideal.mem_span_singleton_self _)`. Use `⟨⟨M, hM.isPrime, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hg.ne_zero (by exact_mod_cast (Ideal.mem_bot.1 hmem))`. Establish `hW : ∀ k, ∃ f : (ZMod (D.host.g k))ˣ →* ℂˣ, Function.Injective f`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨e⟩ : Nonempty ((ZMod (D.host.g k))ˣ ≃* rootsOfUnity (Nat.card (ZMod (D.host.g k))ˣ) ℂ)` from `by haveI : NeZero (Nat.card (ZMod (D.host.g k))ˣ) := ⟨Nat.card_pos.ne'⟩`. Conclude with `⟨mulEquivOfCyclicCardEq (by first`. Consider the case `exact (Complex.card_rootsOfUnity _).symm`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Consider the case `exact (HasEnoughRootsOfUnity.natCard_rootsOfUnity ℂ _).symm)⟩`. Conclude with `⟨(rootsOfUnity _ ℂ).subtype.comp e.toMonoidHom, Subtype.val_injective.comp e.injective⟩`. Use `choose pb hpb using hP`. Use `choose om hom using hW`. Use `choose mu hmu using hμ ⟨pb, hpb⟩ ⟨om, hom⟩`.
-
-Take `⟨η, hη⟩` from `hη`. Take `⟨δ, hδ⟩` from `hδ`. Take `⟨δ', hδ'⟩` from `hδ'`. Conclude with `⟨⟨⟨pb, hpb⟩, ⟨om, hom⟩, mu, η, η * η, δ, δ', hmu, hη, hη.sq_chiPsi, hδ, hδ'⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem charFrame_nonempty (D : D7) (hη : EtaTExists D.host)
     (hμ : ∀ P W j, Mu0Exists (H := D.host) P W (eExp D j) j.1)
@@ -394,9 +386,9 @@ theorem charFrame_nonempty (D : D7) (hη : EtaTExists D.host)
 def finPart {L : Type} [Field L] [NumberField L] (k : Lˣ) : Ideles L := diagUnits L k * (infDiag k)⁻¹
 
 /- English proof (translation)
-Set `p : Ideles L →* w.Completion` to `((Pi.evalMonoidHom (fun w : InfinitePlace L => w.Completion) w).comp (MonoidHom.fst (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L))).comp (Units.coeHom _)`. Use `show p (infDiag k) = _`. Unfold `infDiag`. Rewrite using `[MonoidHom.finset_prod_apply, map_prod, Finset.prod_eq_single w]`. Use `show Pi.mulSingle (M := fun w : InfinitePlace L => w.Completion) w _ w = _`.
+Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Pi.mulSingle_eq_same]`. Both sides reduce to the same expression. Introduce `w' _ hw show Pi.mulSingle (M := fun w : InfinitePlace L => w.Completion) w' _ w = _`. Rewrite using `[Pi.mulSingle_eq_of_ne hw.symm]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem infDiag_fst {L : Type} [Field L] [NumberField L] (k : Lˣ) (w : InfinitePlace L) :
     ((infDiag k : Ideles L) : AdeleRing (𝓞 L) L).1 w = algebraMap L w.Completion (k : L) := by
@@ -415,7 +407,7 @@ theorem infDiag_fst {L : Type} [Field L] [NumberField L] (k : Lˣ) (w : Infinite
   · simp
 
 /- English proof (translation)
-Introduce `w`. Rewrite using `[finPart, ← map_inv, Units.val_mul]`. Use `show algebraMap L w.Completion (k : L) * ((infDiag k⁻¹ : Ideles L) : AdeleRing (𝓞 L) L).1 w = 1`. Rewrite using `[infDiag_fst, ← map_mul, Units.mul_inv, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinIdele_finPart {L : Type} [Field L] [NumberField L] (k : Lˣ) : IsFinIdele (finPart k) := by
   intro w
@@ -424,7 +416,7 @@ theorem isFinIdele_finPart {L : Type} [Field L] [NumberField L] (k : Lˣ) : IsFi
   rw [infDiag_fst, ← map_mul, Units.mul_inv, map_one]
 
 /- English proof (translation)
-Rewrite using `[finPart, map_mul, map_inv, χ.2.2, one_mul, Units.val_inv_eq_inv_val]`. Use `h k` as an intermediate fact. Rewrite using `[show χ.1 (infDiag k) = χ.inf k from rfl, this, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_mul, zpow_neg, ← unit_sq _ (by simp)]; rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_finPart {L I : Type} [Field L] [NumberField L] [Fintype I] {φ : I → L →+* ℂ} {χ : HChar L} {n : I → ℤ}
     (h : χ.HasInf φ (fun i => 2 * n i)) (k : Lˣ) :
@@ -436,7 +428,7 @@ theorem val_finPart {L I : Type} [Field L] [NumberField L] [Fintype I] {φ : I �
   rw [zpow_mul, zpow_neg, ← unit_sq _ (by simp)]; rfl
 
 /- English proof (translation)
-Establish `: T.eDt (infDiag k) = 1`. Unfold `infDiag`. Rewrite using `[MonoidHom.finset_prod_apply, map_prod]`. Conclude with `Finset.prod_eq_one fun w _ => T.inf w _`. Rewrite using `[finPart, map_mul, map_inv, this, inv_one, mul_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eDt_finPart (T : DtTied D C) (k : D.host.Eˣ) : T.eDt (finPart k) = T.eDt (diagUnits D.host.E k) := by
   have : T.eDt (infDiag k) = 1 := by
@@ -446,7 +438,7 @@ theorem eDt_finPart (T : DtTied D C) (k : D.host.Eˣ) : T.eDt (finPart k) = T.eD
   rw [finPart, map_mul, map_inv, this, inv_one, mul_one]
 
 /- English proof (translation)
-Rewrite using `[← eDt_finPart, T.chiD_eq _ (isFinIdele_finPart k), val_finPart (n := fun _ => 1) C.isChi.inf]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chiD_rat (T : DtTied D C) (k : D.host.Eˣ) :
     ((D.chiD (T.eDt (diagUnits D.host.E k)) : ℂˣ) : ℂ) =
@@ -455,9 +447,9 @@ theorem chiD_rat (T : DtTied D C) (k : D.host.Eˣ) :
   simp
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `(C.isMu0 j).inf`. Establish `: n = fun g => 2 * -e g` using `funext fun g => by`. Use `hn g` as an intermediate fact. Simplify using `only [he] at this`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `this` using the available equality. Rewrite using `[← eDt_finPart, T.muTil_eq j _ (isFinIdele_finPart k), val_finPart h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem muTil_rat (T : DtTied D C) (j : Fin D.R.m) (e : D.R.Psi → ℤ) (he : ∀ g, eExp D j g = e g) (k : D.host.Eˣ) :
     ((D.muTil (j.1 + 1) (T.eDt (diagUnits D.host.E k)) : ℂˣ) : ℂ) =
@@ -472,11 +464,9 @@ theorem muTil_rat (T : DtTied D C) (j : Fin D.R.m) (e : D.R.Psi → ℤ) (he : �
   simp
 
 /- English proof (translation)
-Establish `hnu : ¬ IsUnit ((p : ℕ) : 𝓞 L)`. Introduce `hu`. Establish `h1 : IsUnit (algebraMap ℤ (𝓞 L) (p : ℤ))` using `by simpa using hu`. Establish `h2` using `(isUnit_map_iff (algebraMap ℤ (𝓞 L)) _).1 h1`. Rewrite `h2` using `[Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hg.ne_one h2`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {((p : ℕ) : 𝓞 L)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hmem` using `hle (Ideal.mem_span_singleton_self _)`. Use `⟨⟨M, hM.isPrime, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
-
-Conclude with `hg.ne_zero (by exact_mod_cast (Ideal.mem_bot.1 hmem))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_place_over {L : Type} [Field L] [NumberField L] {p : ℕ} (hg : p.Prime) :
     ∃ v : HeightOneSpectrum (𝓞 L), ((p : ℕ) : 𝓞 L) ∈ v.asIdeal := by
@@ -494,7 +484,7 @@ theorem exists_place_over {L : Type} [Field L] [NumberField L] {p : ℕ} (hg : p
   exact hg.ne_zero (by exact_mod_cast (Ideal.mem_bot.1 hmem))
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : C.del = 1` using `by rw [← Tp.xi_star, ← h, Tp.trueColumnChoices_heckeChar_reference_eq_one]`. Take `⟨v, hv⟩` from `exists_place_over (L := D.host.E) D.host.pde_prime`. Use `(C.isDel.ine v hv 1).1 fun x _ => by rw [h1, pow_one]; rfl` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem reference_tuple_ne_base_tuple (Tp : TupTied D C nch) : D.what₂.mu0 ≠ D.what₂.muStar := by
   intro h
@@ -504,7 +494,7 @@ theorem reference_tuple_ne_base_tuple (Tp : TupTied D C nch) : D.what₂.mu0 ≠
   omega
 
 /- English proof (translation)
-Apply `Tp.xi_inj` to reduce the goal to its premises. Rewrite using `[Tp.xi_tw, Tp.psi_un w h, mul_one, CharFrame.delAt]`. Use `split_ifs`. Conclude with `Tp.xi_star'.symm`. Conclude with `Tp.xi_star.symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muTw_of_untwisted (Tp : TupTied D C nch) (w : D.what₂.places.Pl) (h : D.what₂.muAt w = D.what₂.mu0) :
     D.what₂.muTw w = if D.what₂.places.resChar w = D.host.pde then D.what₂.muStar' else D.what₂.muStar := by

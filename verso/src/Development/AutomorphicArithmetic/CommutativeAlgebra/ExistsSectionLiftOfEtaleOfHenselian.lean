@@ -6,23 +6,21 @@ noncomputable section
 open IsLocalRing UpperTheory.Et
 
 /- English proof (translation)
-Introduce `A E _ _ _ _ _ π`. Set `Q : Ideal E` to `RingHom.ker π`. Use `haveI : Q.IsPrime := RingHom.ker_isPrime π`. Take `⟨f, hfQ, hstd⟩` from `Algebra.IsEtaleAt.exists_isStandardEtale (R := A) Q`. Take `⟨P⟩` from `hstd.nonempty_standardEtalePresentation`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hunit : ∀ y : Submonoid.powers f, IsUnit (π y)`. Introduce and unpack `⟨_, n, rfl⟩`. Simplify using `only [map_pow]`. Conclude with `(isUnit_iff_ne_zero.mpr fun h => hfQ (RingHom.mem_ker.mpr h)).pow n`. Set `πf : Localization.Away f →ₐ[A] ResidueField A` to `IsLocalization.liftAlgHom (M := Submonoid.powers f) hunit`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ι : E →ₐ[A] Localization.Away f` to `IsScalarTower.toAlgHom A E _`. Establish `hπ : ∀ x, πf (ι x) = π x` using `fun x => by`. Simplify using `[πf, ι]`. Set `τ : P.Ring →ₐ[A] ResidueField A` to `πf.comp P.equivRing.symm.toAlgHom`. Establish `hx : P.HasMap (τ P.X)` using `StandardEtalePair.hasMap_X.map τ`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ b : A, residue A b = τ P.X → ∀ p : Polynomial A, residue A (p.eval b) = Polynomial.aeval (τ P.X) p`. Introduce `b hb p`. Rewrite using `[← hb, ← ResidueField.algebraMap_eq, Polynomial.aeval_algebraMap_apply, Polynomial.coe_aeval_eq_eval]`. Take `⟨a₀, ha₀⟩` from `IsLocalRing.residue_surjective (τ P.X)`. Establish `h1 : P.f.eval a₀ ∈ maximalIdeal A`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← IsLocalRing.residue_eq_zero_iff, key a₀ ha₀]`. Conclude with `hx.1`. Establish `h2 : IsUnit (P.f.derivative.eval a₀)`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, key a₀ ha₀]`. Conclude with `hx.isUnit_derivative_f.ne_zero`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, ham⟩` from `HenselianLocalRing.is_henselian P.f P.monic_f a₀ h1 h2`. Establish `hra : residue A a = τ P.X`. Rewrite `ham` using `[← IsLocalRing.residue_eq_zero_iff, map_sub, sub_eq_zero]`. Rewrite using `[ham, ha₀]`. Establish `hA : P.HasMap a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨by rw [Polynomial.coe_aeval_eq_eval]; exact ha, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coe_aeval_eq_eval, ← IsLocalRing.residue_ne_zero_iff_isUnit, key a hra]`. Conclude with `hx.2.ne_zero`. Set `ρ : A →ₐ[A] ResidueField A` to `IsScalarTower.toAlgHom A A (ResidueField A)`. Establish `hρ : ρ.comp (P.lift a hA) = τ`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `StandardEtalePair.hom_ext` to reduce the goal to its premises. Simplify using `[ρ, hra, ResidueField.algebraMap_eq]`. Use `⟨(P.lift a hA).comp (P.equivRing.toAlgHom.comp ι), fun x => ?_⟩` and prove the remaining obligations. Use `congrArg (fun φ => φ (P.equivRing (ι x))) hρ` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, ρ, IsScalarTower.coe_toAlgHom', ResidueField.algebraMap_eq, τ, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgEquiv.symm_apply_apply] at this`.
-
-Simplify `this` using `[hπ]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_section_lift_of_etale_of_henselian :
     ∀ (A E : Type) [CommRing A] [HenselianLocalRing A] [CommRing E] [Algebra A E] [Algebra.Etale A E] (π : E →ₐ[A] ResidueField A), ∃ σ : E →ₐ[A] A, ∀ x, residue A (σ x) = π x := by

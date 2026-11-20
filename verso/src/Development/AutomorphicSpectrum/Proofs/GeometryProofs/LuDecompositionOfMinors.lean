@@ -6,21 +6,21 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.FlagBun.Sm.Cell
 
 /- English proof (translation)
-Set `B : ∀ k : Fin r, Matrix (Fin ((k : ℕ) + 1)) (Fin ((k : ℕ) + 1)) F` to `fun k => Y.submatrix (Fin.castLE k.2) (Fin.castLE k.2)`. Establish `hB : ∀ k, IsUnit (B k).det` using `fun k => isUnit_iff_ne_zero.2 (h _ k.2)`. Set `a : ∀ k : Fin r, Fin ((k : ℕ) + 1) → F` to `fun k => (B k)⁻¹.mulVec (Pi.single (Fin.last _) 1)`. Establish `ha : ∀ k, (B k).mulVec (a k) = Pi.single (Fin.last _) 1` using `fun k => by`. Simplify using `only [a]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hB k), Matrix.one_mulVec]`. Set `C : Matrix (Fin r) (Fin r) F` to `fun l k => if hlk : (l : ℕ) < (k : ℕ) + 1 then a k ⟨l, hlk⟩ else 0`. Establish `hV : ∀ (k : Fin r) (l : Fin ((k : ℕ) + 1)), (Y * C) (Fin.castLE k.2 l) k = (Pi.single (Fin.last (k : ℕ)) (1 : F) : Fin ((k : ℕ) + 1) → F) l`. Introduce `k l`. Rewrite using `[← ha k]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE k.2) (Fin.castLE_injective _).injOn (fun _ _ => Finset.mem_univ _) (fun j _ hj => ?_) (fun b _ => ?_)` and prove the remaining obligations. Establish `hjk : ¬ (j : ℕ) < (k : ℕ) + 1` using `fun hlt => hj ⟨⟨j, hlt⟩, by simp, by ext; simp⟩`. Simplify using `only [C, dif_neg hjk, mul_zero]`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hb : ((Fin.castLE k.2 b : Fin r) : ℕ) < (k : ℕ) + 1` using `b.2`. Simplify using `only [C, dif_pos hb]`. Both sides reduce to the same expression. Use `⟨C, Y * C, fun l k hkl => ?_, fun l k hlk => ?_, fun l => ?_, rfl⟩` and prove the remaining obligations. Establish `hn : ¬ (l : ℕ) < (k : ℕ) + 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (k : ℕ) < l` using `hkl`. Use linear arithmetic over natural numbers and integers. Simplify using `only [C, dif_neg hn]`. Establish `hlt : (l : ℕ) < (k : ℕ) + 1`. Establish `: (l : ℕ) < k` using `hlk`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h1` using `hV k ⟨l, hlt⟩`. Establish `e : Fin.castLE k.2 (⟨l, hlt⟩ : Fin ((k : ℕ) + 1)) = l` using `by ext; simp`. Establish `hne : (⟨l, hlt⟩ : Fin ((k : ℕ) + 1)) ≠ Fin.last (k : ℕ)`. Introduce `hh`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : (l : ℕ) = k` using `by simpa using Fin.ext_iff.1 hh`. Establish `: (l : ℕ) < k` using `hlk`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[e, Pi.single_eq_of_ne hne]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hV l (Fin.last (l : ℕ))`. Establish `e : Fin.castLE l.2 (Fin.last (l : ℕ)) = l` using `by ext; simp`. Rewrite `h1` using `[e, Pi.single_eq_same]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lu_of_leading_minors {F : Type} [Field F] {r : ℕ} (Y : Matrix (Fin r) (Fin r) F)
     (h : ∀ (k : ℕ) (hk : k ≤ r), kMinor Y k hk (Fin.castLE hk) ≠ 0) :

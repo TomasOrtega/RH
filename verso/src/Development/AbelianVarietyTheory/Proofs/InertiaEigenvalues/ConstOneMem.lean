@@ -65,7 +65,7 @@ def iotaW (lam : O) (a k : ℕ) :
 def constOne : LL →ₗ[O] (Fin 1 → LL) := LinearMap.pi fun _ => LinearMap.id
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨c, rfl⟩`. Simplify using `only [constOne, stdG]`. Use `⟨fun _ => c, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem constOne_mem : ∀ v ∈ intO (O := O) LL, constOne (O := O) LL v ∈ stdG O LL 1 := by
   rintro _ ⟨c, rfl⟩

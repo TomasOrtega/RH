@@ -10,11 +10,11 @@ open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Prove the components needed by the constructor for the conclusion. Introduce `h n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, coeff_map]`. Conclude with `PadicInt.norm_le_one _`. Introduce `h`. Establish `hl' : minpoly ℚ_[l] x ∈ lifts (algebraMap ℤ_[l] ℚ_[l])` using `(lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem spec_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
@@ -31,9 +31,9 @@ private theorem spec_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsInte
     exact ⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
 
 /- English proof (translation)
-Set `e : Qbar l →ₐ[c.O] ℂ` to `{ ι.toRingHom with commutes' := fun a => (h a).symm }`. Establish `h1 : IsIntegral c.O (e (ι.symm μ)) ↔ IsIntegral c.O (ι.symm μ)` using `isIntegral_algHom_iff e ι.injective`. Establish `h2 : e (ι.symm μ) = μ` using `ι.apply_symm_apply μ`. Rewrite `h1` using `[h2]`. Rewrite using `[h1, ← spec_intIff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => isIntegral_trans _ h, fun h => h.tower_top⟩`.
+Supply the required witnesses or components.
 -/
 private theorem spec_int {l : ℕ} [Fact l.Prime] (c : Coef l) (ι : Qbar l ≃+* ℂ) [Algebra c.O ℂ]
     (h : ∀ a : c.O, algebraMap c.O ℂ a = ι a) (μ : ℂ) : IsIntegral c.O μ ↔ ‖ι.symm μ‖ ≤ 1 := by
@@ -45,9 +45,9 @@ private theorem spec_int {l : ℕ} [Fact l.Prime] (c : Coef l) (ι : Qbar l ≃+
   exact ⟨fun h => isIntegral_trans _ h, fun h => h.tower_top⟩
 
 /- English proof (translation)
-Rewrite using `[IsIntUnit, spec_int c ι h, spec_int c ι h, map_inv₀, norm_inv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h1, h2⟩`. Establish `h3 : 0 < ‖ι.symm μ‖` using `norm_pos_iff.2 ((map_ne_zero ι.symm).2 h0)`. Conclude with `le_antisymm h1 ((inv_le_one₀ h3).1 h2)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Use `⟨fun h0 => ?_, h1.le, by rw [h1, inv_one]⟩` and prove the remaining obligations. Rewrite `h1` using `[h0, map_zero, norm_zero]`. Conclude with `zero_ne_one h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spec_unit {l : ℕ} [Fact l.Prime] (c : Coef l) (ι : Qbar l ≃+* ℂ) [Algebra c.O ℂ]
     (h : ∀ a : c.O, algebraMap c.O ℂ a = ι a) (μ : ℂ) : IsIntUnit c.O μ ↔ ‖ι.symm μ‖ = 1 := by
@@ -62,11 +62,9 @@ private theorem spec_unit {l : ℕ} [Fact l.Prime] (c : Coef l) (ι : Qbar l ≃
     exact zero_ne_one h1
 
 /- English proof (translation)
-Establish `h : ∀ t : I.T, ∃ a : O, algebraMap O Ω a = R.χ ⟨t, I.T_le t.2⟩` using `fun t => by`. Establish `h1` using `R.integral_torusCharacter t t.2 0 0`. Establish `h2` using `R.torusAction ⟨t, I.T_le t.2⟩ 0`. Rewrite `h2` using `[if_pos rfl]`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Use `choose a ha using h`. Set `f : I.T →* O` to `{ toFun := a map_one' := hinj (by rw [ha, map_one]; exact congrArg Units.val (map_one R.χ)) map_mul' := fun s t => hinj (by`. Rewrite using `[map_mul, ha, ha, ha, ← Units.val_mul, ← map_mul]`. Use the proof step `rfl) }`.
-
-Conclude with `⟨f.toHomUnits, ha⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem spec_chi {G : Type} [Group G] {I : Iwa G} {O Ω : Type} [CommRing O] [IsLocalRing O] [Field Ω] [Algebra O Ω]
     (hinj : Function.Injective (algebraMap O Ω)) (R : WtRep I O Ω) :
@@ -87,15 +85,15 @@ private theorem spec_chi {G : Type} [Group G] {I : Iwa G} {O Ω : Type} [CommRin
   exact ⟨f.toHomUnits, ha⟩
 
 /- English proof (translation)
-Use extensionality with `F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨⟨⟨h1, -⟩, h2⟩, h3⟩, h4⟩, h5⟩`. Use `⟨⟨h1, h2⟩, h3, h4, ?_⟩` and prove the remaining obligations. Set `M : Submonoid H.X.I.T` to `{ carrier := {t | H.X.rpF ℂ d H.m t F = (((φ t)⁻¹ : ℂˣ) : ℂ) • F} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `ha' : H.X.rpF ℂ d H.m a F = (((φ a)⁻¹ : ℂˣ) : ℂ) • F` using `ha`. Establish `hb' : H.X.rpF ℂ d H.m b F = (((φ b)⁻¹ : ℂˣ) : ℂ) • F` using `hb`. Express the relevant statement in the definitionally equal form `H.X.rpF ℂ d H.m ((a : GV n H.Sl) * b) F = (((φ (a * b))⁻¹ : ℂˣ) : ℂ) • F`. Rewrite using `[map_mul, Module.End.mul_apply, hb', map_smul, ha', smul_smul, map_mul, mul_inv_rev, Units.val_mul] }`. Use `Sp.torus_mem_submonoid_of_elementaryTorus H.Sl M fun v i y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h6 : F ∈ ⨅ (v) (i) (y), Module.End.eigenspace (H.X.rpF ℂ d H.m (eV n H.Sl v i y : H.X.I.T)) (ι (H.finPart θ x lam v i y))⁻¹` using `h5`. Simplify using `only [Submodule.mem_iInf, Module.End.mem_eigenspace_iff] at h6`. Express the relevant statement in the definitionally equal form `H.X.rpF ℂ d H.m _ F = _`. Rewrite using `[Units.val_inv_eq_inv_val, hφ]`. Conclude with `h6 v i y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨h1, h2⟩, h3, h4, h5⟩`. Use `⟨⟨⟨⟨⟨h1, fun u hu => h2 u (Subgroup.mem_sup_left hu)⟩, h2⟩, h3⟩, h4⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F ∈ ⨅ (v) (i) (y), Module.End.eigenspace (H.X.rpF ℂ d H.m (eV n H.Sl v i y : H.X.I.T)) (ι (H.finPart θ x lam v i y))⁻¹`. Simplify using `only [Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`. Introduce `v i y`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hφ, ← Units.val_inv_eq_inv_val]`. Conclude with `h5 _`.
+A detailed English derivation is pending.
 -/
 private theorem spec_cl {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime]
     {n : ℕ} {c : Coef l} (H : HSet L Ω l n c) {A : Type} [CommRing A] [Algebra c.O A] (θ : H.X.I.T →* Aˣ) (ι : Qbar l ≃+* ℂ)
@@ -133,43 +131,35 @@ private theorem spec_cl {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Alge
 attribute [local instance 2000] UpperTheory.V.W.coefLocal
 
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ l _ n c H hH A _ _ _ θ hθ ι x lam ⟨e0, he0⟩`. Use `haveI : Finite (ResidueField c.O) := (abelian₂.dvr_finite l c.O).2.1`. Use `haveI : IsCNL A := IsCNL.ofCO c.O A`. Take `⟨⟨c1, -, hx1⟩, a, ha1, -, ha⟩` from `(GradeZeroInterpolatingElement.coPt c A).1 x`. Take `⟨c', hc', hR⟩` from `wtRep L l n H.V H.Sl ι lam c1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra c'.O ℂ := (ι.toRingHom.comp (algebraMap c'.O (Qbar l))).toAlgebra`. Establish `hal : ∀ a : c'.O, algebraMap c'.O ℂ a = ι a` using `fun _ => rfl`. Take `⟨R, hR, hχ⟩ : ∃ R : WtRep H.X.I c'.O ℂ, IsAlgWt (S` from `H.Sl) ι lam R.ξ ∧ _ := hR`. Use `haveI : IsCNL c'.O := { complete := (abelian₂.dvr_finite l c'.O).1, finite := (abelian₂.dvr_finite l c'.O).2.1 }`. Set `y : A →+* c'.O` to `x.toRingHom.codRestrict c'.O fun b => hc' (hx1 b)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra A c'.O := y.toAlgebra`. Use `letI : Algebra A ℂ := (ι.toRingHom.comp x.toRingHom).toAlgebra`. Use `haveI : IsScalarTower A c'.O ℂ := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hinj : Function.Injective (algebraMap c'.O ℂ)` using `ι.injective.comp Subtype.val_injective`. Use `haveI : IsLocalHom (algebraMap A c'.O) := ⟨fun b hu => by`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hb`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `h1 : x b * (w : PadicAlgCl l) = 1` using `congrArg Subtype.val hw`. Establish `h2 : ‖x b‖ ≤ a` using `by simpa using ha 1 b (by rwa [pow_one])`. Establish `h3` using `congrArg norm h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h3` using `[norm_mul, norm_one]`. Establish `h4` using `mul_le_of_le_one_right (norm_nonneg (x b)) ((spec_intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) w).map c'.O.val) : ‖(w : PadicAlgCl l)‖ ≤ 1)`. Use the proof step `linarith⟩`. Take `⟨ψ, hψ⟩` from `spec_chi hinj R`. Set `φ : H.X.I.T →* c'.Oˣ` to `(Units.map y.toMonoidHom).comp θ / ψ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφχ : ∀ t : H.X.I.T, algebraMap A ℂ (θ t) = algebraMap c'.O ℂ (φ t) * R.χ ⟨t, H.X.I.T_le t.2⟩` using `fun t => by`. Rewrite using `[← hψ, ← map_mul, ← Units.val_mul]`. Simplify using `only [φ, MonoidHom.div_apply, div_mul_cancel]`. Both sides reduce to the same expression. Establish `hφe : ∀ v i z, algebraMap c'.O ℂ (φ (eV n H.Sl v i z)) = ι (H.finPart θ x.toRingHom lam v i z)` using `fun v i z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[HSet.finPart, map_div₀, ← Sp.chi_eV H.Sl ι lam R.χ hχ]`. Conclude with `(eq_div_iff (Units.ne_zero _)).2 (hφχ _).symm`. Establish `htriv : ∀ v i (z : Uo ((H.Sl v).adicCompletion L)), (z : ((H.Sl v).adicCompletion L)ˣ) ∈ Uc _ (max e0 R.c0 + 1) → H.finPart θ x.toRingHom lam v i z = 1` using `fun v i z hz => he0 v i z (Sp.Uc_anti _ ((le_max_left _ _).trans (Nat.le_succ _)) hz)`. Establish `hφ1 : ∀ t : H.X.I.T, (t : GV n H.Sl) ∈ H.X.I.Tc (max e0 R.c0) → φ t = 1` using `Sp.gen_Tc H.Sl (MonoidHom.mker φ) _ fun v i z hz => Units.ext (hinj ((hφe v i z).trans (by`. Rewrite using `[htriv v i z hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)))`. Establish `hτ : H.τC ι = (Matrix.GeneralLinearGroup.map (algebraMap A ℂ)).comp (H.τA A)`. Use extensionality with `u i j`. Conclude with `congrArg ι (x.commutes _).symm`. Take `⟨h1, sp, h2, h3, h4, h5, h6, h7⟩` from `Sp.absSpec H.X hinj R (H.τA A) θ hθ.cont φ (max e0 R.c0) (le_max_right _ _) hφ1 hφχ H.lev (Sp.lev_dir H) hH.fin hθ.free (H.τC ι) hτ _ rfl`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hcl` using `fun K e => spec_cl H θ ι x.toRingHom lam R.ξ K e ((Units.map (algebraMap c'.O ℂ).toMonoidHom).comp φ) hφe`. Establish `hlow : ∀ v j, (R.χ ⟨alV n H.Sl v j, H.X.I.P_le _ (Sp.alV_mem H.Sl v j)⟩ : ℂ) = H.lowVal ι lam v j` using `Sp.chi_alV H.Sl ι lam R.χ hχ`. Establish `hU : ∀ v (j : Fin n), H.opC ι lam (R.d + 1) (.inr (v, j)) = H.X.UF H.m R ⟨_, Sp.alV_mem H.Sl v (j + 1)⟩` using `fun v j => by`. Rewrite using `[Frame.UF, Units.val_inv_eq_inv_val, hlow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hz : H.uzC ι lam (R.d + 1) = H.X.UF H.m R ⟨_, H.X.I.z_mem⟩`. Use `congrArg Units.val (Sp.weightChar_central_eq_prod_uniformizerDiag H.Sl R.χ)` as an intermediate fact. Rewrite `this` using `[Units.coe_prod]`. Simplify using `only [Units.coe_prod] at this`. Rewrite using `[Frame.UF, Units.val_inv_eq_inv_val, HSet.uzC]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `(this.trans (Finset.prod_congr rfl fun v _ => Finset.prod_congr rfl fun j _ => hlow v j)).symm`. Use `⟨R.d + 1, R.ξ, max e0 R.c0, sp, hR, htriv, fun K e he => ?_, fun K e he i F hF => ?_, fun K e he i F hF h0 μ hμ => ?_, h2, h3, fun K e he => ?_, h5, fun K i f hf => ?_, fun K K' q g f hf _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hcl]`. Conclude with `(h1 K e he).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Rewrite `hF`, the goal using `[hcl]`. Break down `i with ⟨w, j⟩ | ⟨v, j⟩` into its components or cases. Take `⟨κ, _, u, hu⟩` from `Sp.lev_sph H w.1 (j + 1)`. Take `⟨e1, e2⟩` from `hu ℂ _ (H.X.raF (R.d + 1) (H.τC ι))`. Establish `e3 : H.opC ι lam (R.d + 1) (.inl (w, j)) = _` using `e1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e3]`. Conclude with `Sp.sum_cl H.X R _ _ e _ _ u F hF (e2 hH w.2 K F hF.1.2)`. Rewrite using `[hU]`. Conclude with `((h1 K e he).2.1 _).1 F hF`. Rewrite `hF` using `[hcl]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← spec_int c' ι hal]`. Break down `i with ⟨w, j⟩ | ⟨v, j⟩` into its components or cases. Take `⟨κ, _, u, hu⟩` from `Sp.lev_sph H w.1 (j + 1)`. Establish `e3 : H.opC ι lam (R.d + 1) (.inl (w, j)) = _` using `(hu ℂ _ (H.X.raF (R.d + 1) (H.τC ι))).1`. Rewrite `hμ` using `[e3]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h1 K e he).2.2 κ u F hF h0 μ hμ`. Rewrite `hμ` using `[hU]`. Conclude with `((h1 K e he).2.1 _).2 F hF h0 μ hμ`. Rewrite using `[h4 K e he, HSet.OrdAt, hcl, hz]`. Use `le_antisymm (iSup_le fun μ => ?_) (iSup_le fun μ => ?_)` and prove the remaining obligations.
-
-Conclude with `le_iSup_of_le ⟨μ.1, (spec_unit c' ι hal _).1 μ.2⟩ le_rfl`. Conclude with `le_iSup_of_le ⟨μ.1, (spec_unit c' ι hal _).2 μ.2⟩ le_rfl`. Break down `i with ⟨w, j⟩ | ⟨v, j⟩` into its components or cases. Take `⟨κ, _, u, hu⟩` from `Sp.lev_sph H w.1 (j + 1)`. Take `⟨e1, e2⟩` from `hu ℂ _ (H.X.raF (R.d + 1) (H.τC ι))`.
-
-Establish `e3 : H.opC ι lam (R.d + 1) (.inl (w, j)) = _` using `e1`. Establish `e4 : H.op A (.inl (w, j)) = _` using `(hu A _ (H.X.ra (H.τA A))).1`. Rewrite using `[e3, e4]`. Conclude with `h7 K K κ u (e2 hH w.2 K) f hf`. Rewrite using `[hU]`.
-
-Conclude with `h6 K ⟨_, Sp.alV_mem H.Sl v (j + 1)⟩ f hf`. Take `⟨K'', hK⟩` from `Sp.lev_act H hH K q g`. Use `h7 K K'' Unit (fun _ => H.sec (H.wq q) g) (fun F hF => by` as an intermediate fact. Rewrite using `[Fintype.sum_unique]`. Conclude with `hK ℂ _ _ F hF) f hf`.
-
-Rewrite `this` using `[Fintype.sum_unique, Fintype.sum_unique]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.spec :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →

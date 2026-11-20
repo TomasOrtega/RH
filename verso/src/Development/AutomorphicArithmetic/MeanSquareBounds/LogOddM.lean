@@ -5,15 +5,15 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 /- English proof (translation)
-Introduce `z q hz hq`. Establish `hPle : (∏ p ∈ Icc 3 ⌊z⌋₊ with Nat.Prime p, p) ≤ 4 ^ ⌊z⌋₊`. Use `le_trans ?_ (primorial_le_4_pow ⌊z⌋₊)` and prove the remaining obligations. Unfold `primorial`. Apply `Finset.prod_le_prod_of_subset_of_one_le'` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_range] at hp ⊢`. Conclude with `⟨by omega, hp.2⟩`. Introduce `p hp _`. Simplify using `only [Finset.mem_filter] at hp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hp.2.one_lt.le`. Establish `hPpos : 0 < (∏ p ∈ Icc 3 ⌊z⌋₊ with Nat.Prime p, p)` using `Finset.prod_pos (fun p hp => (Finset.mem_filter.mp hp).2.pos)`. Establish `hoddM : oddM z q = q * (∏ p ∈ Icc 3 ⌊z⌋₊ with Nat.Prime p, p)` using `rfl`. Generalize the expression as in `(∏ p ∈ Icc 3 ⌊z⌋₊ with Nat.Prime p, p) = P at hPle hPpos hoddM`. Rewrite using `[hoddM]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPR : (0 : ℝ) < P` using `by exact_mod_cast hPpos`. Establish `hqR : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hPle' : (P : ℝ) ≤ 4 ^ ⌊z⌋₊` using `by exact_mod_cast hPle`. Rewrite using `[Nat.cast_mul, Nat.cast_mul, Nat.cast_ofNat]`. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Real.log P ≤ (⌊z⌋₊ : ℝ) * Real.log 4`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (⌊z⌋₊ : ℝ) ≤ z` using `Nat.floor_le hz`. Establish `h3 : 0 < Real.log 4` using `Real.log_pos (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem log_oddM :
     ∀ (z : ℝ) (q : ℕ), 0 ≤ z → 0 < q → Real.log ((16 * oddM z q : ℕ) : ℝ) ≤ Real.log 16 + Real.log q + z * Real.log 4 := by

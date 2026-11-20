@@ -4,13 +4,11 @@ open MeasureTheory
 open scoped ENNReal NNReal
 
 /- English proof (translation)
-Take `⟨c, hc⟩ : ∃ c : ℝ≥0, μ.inv = c • μ` from `⟨Measure.haarScalarFactor μ.inv μ, Measure.isMulLeftInvariant_eq_smul _ _⟩`. Establish `hinv : μ.inv.inv = μ` using `Measure.inv_inv μ`. Establish `hsq : μ = (c * c) • μ`. Combine the equalities or inequalities in the displayed calculation. Establish `K : TopologicalSpace.PositiveCompacts G` using `Classical.arbitrary _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hpos : μ K ≠ 0` using `((isOpen_interior.measure_pos μ K.interior_nonempty).trans_le (measure_mono interior_subset)).ne'`. Establish `hfin : μ K ≠ ∞` using `K.isCompact.measure_lt_top.ne`. Establish `h3 : ((c * c : ℝ≥0) : ℝ≥0∞) * μ K = 1 * μ K`. Rewrite using `[one_mul]`. Use `conv_rhs => rw [hsq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h4 : ((c * c : ℝ≥0) : ℝ≥0∞) = 1` using `(ENNReal.mul_left_inj hpos hfin).1 h3`. Establish `h5 : c = 1`. Rewrite `h4` using `[ENNReal.coe_eq_one, ← pow_two]`. Conclude with `(pow_eq_one_iff_of_nonneg (zero_le : (0 : ℝ≥0) ≤ c) two_ne_zero).1 h4`.
-
-Rewrite using `[hc, h5, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem haar_inv_eq_self {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G]
@@ -40,9 +38,9 @@ private theorem haar_inv_eq_self {G : Type} [Group G] [TopologicalSpace G] [IsTo
   rw [hc, h5, one_smul]
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ hμ`. Establish `key : μ.IsMulRightInvariant → Uni μ` using `fun hr => ⟨hμ, ⟨haar_inv_eq_self μ⟩⟩`. Use `⟨key, fun hcomm => key ⟨fun g => ?_⟩⟩` and prove the remaining obligations. Establish `h : (fun x : G => x * g) = fun x => g * x` using `funext fun x => hcomm x g`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_mul_left_eq_self μ g`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.haar_unimodular_criterion :
     UniOf := by

@@ -20,7 +20,7 @@ def ofCoord {d M n : ℕ} (b : Module.Basis (Fin d) F E) (c : Fin n × (Fin M ×
   fun a i => ∑ l, c (a, (i, l)) • b l
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨a, i, l⟩` from `p`. Simplify using `[ratCoord, ofCoord, Finsupp.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem ratCoord_ofCoord {d M n : ℕ} (b : Module.Basis (Fin d) F E) (c : Fin n × (Fin M × Fin d) → F) :
     ratCoord b (ofCoord b c) = c := by
@@ -29,7 +29,7 @@ theorem ratCoord_ofCoord {d M n : ℕ} (b : Module.Basis (Fin d) F E) (c : Fin n
   simp [ratCoord, ofCoord, Finsupp.single_apply]
 
 /- English proof (translation)
-Introduce `Y Y' h`. Use function extensionality and compare the values at `a i`. Use `b.repr.injective (Finsupp.ext fun l => ?_)` and prove the remaining obligations. Conclude with `congrFun h (a, (i, l))`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ratCoord_injective {d M n : ℕ} (b : Module.Basis (Fin d) F E) :
     Function.Injective (ratCoord (M := M) (n := n) b) := by
@@ -39,7 +39,7 @@ theorem ratCoord_injective {d M n : ℕ} (b : Module.Basis (Fin d) F E) :
   exact congrFun h (a, (i, l))
 
 /- English proof (translation)
-Simplify using `[cvN, GlobalTheory.CompanionTheory.SW.BB.cv, ratCoord, inclR, Algebra.TensorProduct.basis_repr_tmul, Algebra.algebraMap_eq_smul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cvN_incl_add (R : Type) [CommRing R] [Algebra F R] {d M n : ℕ} (b : Module.Basis (Fin d) F E)
     (Y : Fin n → Fin M → E) (X : Fin n → Fin M → R ⊗[F] E) (p : Fin n × (Fin M × Fin d)) :
@@ -56,23 +56,21 @@ open GroundTheory.Global
 attribute [local instance 100000] GroundTheory.Global.measurableSpace_adeleRing
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ψ hψ n μ hμ`. Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Set `b` to `Module.finBasis F E`. Take `⟨ξ, hξ⟩` from `GlobalTheory.CompanionTheory.AdeleDual.exists_eq_adelicChar_mul ψ hψ.1 hψ.2.2.1`. Establish `hξ0 : ξ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Take `⟨x, hx⟩` from `hψ.2.2.2`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hξ x]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨e, he, hB⟩` from `exists_coordHomeoN σ hCM n M b`. Establish `hdxc` using `dx_coordN σ hCM J hJ b ψ ξ hξ0 hξ μ hμ e he hB`. Use `hB` as an intermediate fact. Establish `: BorelSpace (AF F)` using `GroundTheory.Global.borelSpace_adeleRing F`. Establish `: SecondCountableTopology (AF F)` using `GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : MeasurableSet (Set.univ.pi fun _ : Fin n × (Fin M × Fin (Module.finrank F E)) => fundamentalSet F)` using `MeasurableSet.univ_pi fun _ => measurableSet_fundamentalSet F`. Establish `hem : Measurable e` using `e.continuous.measurable`. Establish `hmem : ∀ (Y : Fin n → Fin M → E) X, e ((fun a i => inclR (AF F) (Y a i)) + X) ∈ (Set.univ.pi fun _ : Fin n × (Fin M × Fin (Module.finrank F E)) => fundamentalSet F) ↔ ∀ p, algebraMap F (AF F) (ratCoord b Y p) + e X p ∈ fundamentalSet F`. Introduce `Y X`. Simplify using `only [Set.mem_univ_pi, he, cvN_incl_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨e ⁻¹' (Set.univ.pi fun _ => fundamentalSet F), IsAddFundamentalDomain.mk' (hem hD).nullMeasurableSet fun X => ?_, ?_⟩` and prove the remaining obligations. Use `choose k hk huniq using fun p => existsUnique_sub_mem_fundamentalSet F (e X p)`. Use `⟨⟨_, ofCoord b (-k), rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Use `(hmem _ X).2 fun p => ?_` and prove the remaining obligations. Rewrite using `[ratCoord_ofCoord]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hk p` as an intermediate fact. Rewrite using `[Pi.neg_apply, map_neg, neg_add_eq_sub]` and apply the resulting hypothesis. Introduce and unpack `⟨_, Y, rfl⟩ h`. Establish `h'` using `(hmem Y X).1 h`. Establish `hY : ratCoord b Y = -k`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Establish `e1` using `huniq p (-(ratCoord b Y p)) (by`. Express the relevant statement in the definitionally equal form `e X p - algebraMap F (AF F) (-(ratCoord b Y p)) ∈ fundamentalSet F`. Rewrite using `[map_neg, sub_neg_eq_add, add_comm]`. Conclude with `h' p)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.neg_apply, ← e1, neg_neg]`. Establish `: Y = ofCoord b (-k)` using `ratCoord_injective b (by rw [hY, ratCoord_ofCoord])`. Substitute `this` using the available equality. Both sides reduce to the same expression. Rewrite using `[← Measure.map_apply hem hD, hdxc, GroundTheory.Automorphic.GJMatrix.adeleMeasurePi, Measure.pi_pi]`.
-
-Simplify using `[adeleMeasure_fundamentalSet]`.
+Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tupCovol : TupCovol := by
   intro F E _ _ _ _ _ σ hCM M J hJ ψ hψ n μ hμ

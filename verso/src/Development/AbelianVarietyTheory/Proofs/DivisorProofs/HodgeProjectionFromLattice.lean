@@ -3,29 +3,25 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `W _ _ g Λ P F hspan hdim hR hF`. Use `set Ψ : (Λ →₀ ℂ) →ₗ[ℂ] W := Finsupp.linearCombination ℂ (fun x => P x) with hΨ`. Use `set Ψ' : (Λ →₀ ℂ) →ₗ[ℂ] (Fin g → ℂ) := Finsupp.linearCombination ℂ (fun x => (x : Fin g → ℂ)) with hΨ'`. Establish `hF' : ∀ c, Ψ c ∈ F ↔ Ψ' c = 0`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hF c` using `[hΨ, hΨ', Finsupp.linearCombination_apply]`. Establish `hsurj : Function.Surjective Ψ`. Rewrite using `[← LinearMap.range_eq_top, hΨ, Finsupp.range_linearCombination]`. Conclude with `hspan`. Establish `hker : LinearMap.ker Ψ ≤ LinearMap.ker Ψ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `c hc`. Rewrite `hc`, the goal using `[LinearMap.mem_ker]`. Conclude with `(hF' c).1 (by rw [hc]; exact F.zero_mem)`. Set `Q : W →ₗ[ℂ] (Fin g → ℂ)` to `((LinearMap.ker Ψ).liftQ Ψ' hker).comp (Ψ.quotKerEquivOfSurjective hsurj).symm.toLinearMap`. Establish `hQ : ∀ c, Q (Ψ c) = Ψ' c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `c`. Establish `: (Ψ.quotKerEquivOfSurjective hsurj).symm (Ψ c) = (LinearMap.ker Ψ).mkQ c`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [Q, LinearMap.comp_apply, LinearEquiv.coe_coe, this]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hQP : ∀ x, Q (P x) = x`. Introduce `x`. Use `hQ (Finsupp.single x 1)` as an intermediate fact. Simplify `this` using `[hΨ, hΨ']`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hkerQ : LinearMap.ker Q = F`. Use extensionality with `w`. Take `⟨c, rfl⟩` from `hsurj w`. Rewrite using `[LinearMap.mem_ker, hQ, hF']`. Use `⟨Q, hkerQ, hQP, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrange : LinearMap.range Q = ⊤`. Establish `h1 : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) ≤ (LinearMap.range Q).restrictScalars ℝ`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `⟨P ⟨x, hx⟩, hQP ⟨x, hx⟩⟩`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h1` using `[hR]`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Conclude with `h1 (Submodule.mem_top : y ∈ (⊤ : Submodule ℝ (Fin g → ℂ)))`. Break down `Nat.eq_zero_or_pos g with hg | hg` into its components or cases.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `hg` using the available equality. Establish `hP0 : ∀ x, P x = 0`. Introduce `x`. Establish `: x = 0` using `Subsingleton.elim _ _`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hbot : (⊤ : Submodule ℂ W) = ⊥`. Rewrite using `[← hspan, eq_bot_iff, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `[hP0 x]`. Use `haveI : Subsingleton W := by`.
-
-Rewrite using `[← Submodule.subsingleton_iff ℂ]`. Conclude with `subsingleton_of_bot_eq_top hbot.symm`. Conclude with `Module.finrank_zero_of_subsingleton`. Use `haveI : FiniteDimensional ℂ W := Module.finite_of_finrank_pos (by omega)`. Use `LinearMap.finrank_range_add_finrank_ker Q` as an intermediate fact.
-
-Rewrite `this` using `[hrange, finrank_top, Module.finrank_fin_fun, hkerQ, hdim]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem spanning_map_factors_through_quotient :
     ∀ (W : Type 1) [AddCommGroup W] [Module ℂ W] (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (P : Λ →+ W)

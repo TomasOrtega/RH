@@ -17,7 +17,7 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-The claim follows from `d.height_minMax_eq_sum_heights hd h hI2be x hx F hF`.
+A detailed English derivation is pending.
 -/
 theorem HeightMinMaxFormula (hd : d.AxH 𝒜) (h : d.S1) (hI2be : d.HeightIntegralBoundEstimate) (x : Fin (d.N + 1) → K)
     (hx : ∀ c, d.wx x c ≠ 0) (F : ι → KTp K d.D d.N)

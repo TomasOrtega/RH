@@ -6,9 +6,9 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Introduce `hK p _ D G L R _ _ gb k _ _ s N o u hu hT`. Take `⟨-, -, -, -, hp⟩` from `hT`. Take `⟨I', I'', h', h'', hr⟩` from `hp k (𝟙 _) (Spec.preimage (𝟙 _ ≫ s)).hom (by`. Simplify using `[spMap])`. Use `hK p D G L N.1 (by have := N.2.1; omega) N.2.2 u hu fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hr N.1 (by have := N.2.1; omega) N.2.2 x x).1 (by`. Rewrite using `[← h' x, ← h'' x]`. Use the proof step `simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pTransFree :
     KNCong → TransFree := by

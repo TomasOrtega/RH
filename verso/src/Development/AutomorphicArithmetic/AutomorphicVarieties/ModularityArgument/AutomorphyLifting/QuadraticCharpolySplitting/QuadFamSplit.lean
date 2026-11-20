@@ -7,23 +7,19 @@ open private card_bad irr_inf from Development.AutomorphicArithmetic.Automorphic
 namespace UpperTheory.V.Z.Win
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `hcast : (p : Ω) + 1 = 4 * (l : Ω) * (c : Ω)`. Use `congrArg (Nat.cast : ℕ → Ω) hc` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : (g δ) ^ 2 = δ ^ 2`. Rewrite using `[← map_pow, hδ, map_neg, map_natCast]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hsq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set u : Ω := (1 + δ) / 2 with hu`. Establish `hgu : g u = 1 - u`. Rewrite using `[hu, map_div₀, map_add, map_one, h, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `hg1u : g (1 - u) = u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_one, hgu]`. Expand and normalize the polynomial expressions, which then agree. Establish `hprod : u * (1 - u) = (l : Ω) * (c : Ω)`. Rewrite using `[hu]`. Take the linear combination `(-1 / 4 : Ω) * hδ + (1 / 4 : Ω) * hcast`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc1 : A.valuation (c : Ω) ≤ 1`. Use `A.valuation_le_one (c : A)` as an intermediate fact. Simplify using `using this`. Establish `hlc : A.valuation ((l : Ω) * (c : Ω)) < 1`. Rewrite using `[Valuation.map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hc1) hl`. Establish `key : A.valuation u < 1 ∨ A.valuation (1 - u) < 1`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h1 : 1 ≤ A.valuation (u * (1 - u))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.map_mul]`. Conclude with `one_le_mul hne.1 hne.2`. Rewrite `h1` using `[hprod]`. Conclude with `absurd hlc (not_lt.mpr h1)`. Establish `both : A.valuation u < 1 ∧ A.valuation (1 - u) < 1`.
-
-Break down `key with k | k` into its components or cases. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hgu]`. Conclude with `(valuation_apply_lt_one_iff hg u).mpr k`. Use `⟨?_, k⟩` and prove the remaining obligations.
-
-Rewrite using `[← hg1u]`. Conclude with `(valuation_apply_lt_one_iff hg (1 - u)).mpr k`. Establish `h1 : A.valuation (u + (1 - u)) < 1` using `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt both.1 both.2)`. Simplify using `at h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fix_root {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSubring Ω) {l p c : ℕ} (hc : p + 1 = 4 * l * c)
     (hl : A.valuation (l : Ω) < 1) {g : G ℚ Ω} (hg : g ∈ Dec (F := ℚ) A) {δ : Ω} (hδ : δ ^ 2 = -(p : Ω)) : g δ = δ := by
@@ -74,17 +70,17 @@ private theorem fix_root {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationS
   simp at h1
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℚ ![(1 : K), δ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `a b hab`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `at hab`. Conclude with `⟨hab, rfl⟩`. It suffices to derive a contradiction. Establish `hbK : algebraMap ℚ K b ≠ 0` using `(map_ne_zero _).mpr hb`. Establish `hδ' : δ = algebraMap ℚ K (-a / b)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hab` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Rewrite using `[map_div₀, map_neg, eq_div_iff hbK]`. Take the linear combination `hab`. Establish `hq : (-a / b) ^ 2 = -(p : ℚ)`. Apply `(algebraMap ℚ K).injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_pow, ← hδ', hδ, map_neg, map_natCast]`. Establish `h0 : (0 : ℚ) ≤ (-a / b) ^ 2` using `sq_nonneg _`. Establish `hp' : (0 : ℚ) < p` using `by exact_mod_cast hp`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hspan : Submodule.span ℚ (Set.range ![(1 : K), δ]) = ⊤` using `hli.span_eq_top_of_card_eq_finrank (by simp [h2])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hx : x ∈ Submodule.span ℚ (Set.range ![(1 : K), δ])`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Take `⟨f, hf⟩` from `(Submodule.mem_span_range_iff_exists_fun ℚ).mp hx`. Rewrite using `[← hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Fin.sum_univ_two, Algebra.smul_def, ← IsScalarTower.algebraMap_apply, hg]`.
+A detailed English derivation is pending.
 -/
 private theorem fix_field {Ω K : Type} [Field K] [NumberField K] [Field Ω] [Algebra ℚ Ω] [Algebra K Ω] [IsScalarTower ℚ K Ω]
     (h2 : Module.finrank ℚ K = 2) {δ : K} {p : ℕ} (hp : 0 < p) (hδ : δ ^ 2 = -(p : K)) (g : G ℚ Ω)
@@ -118,7 +114,7 @@ private theorem fix_field {Ω K : Type} [Field K] [NumberField K] [Field Ω] [Al
   simp [Fin.sum_univ_two, Algebra.smul_def, ← IsScalarTower.algebraMap_apply, hg]
 
 /- English proof (translation)
-Take `⟨K, _, _, h2, hd⟩` from `KStar.Consta.exists_quadField hp h4`. Take `⟨⟨δ, hδ⟩, htc⟩` from `KStar.Choice.exists_sq_eq_neg_of_discr h2 hp.ne_zero hd`. Use `haveI : Algebra.IsQuadraticExtension ℚ K := ⟨h2⟩`. Conclude with `⟨K, _, _, IsCMField.ofCMExtension ℚ K, h2, hd, δ, hδ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem fam_one (p : ℕ) (hp : p.Prime) (h4 : p % 4 = 3) :
     ∃ (K : Type) (_ : Field K) (_ : NumberField K) (_ : IsCMField K),
@@ -129,17 +125,15 @@ private theorem fam_one (p : ℕ) (hp : p.Prime) (h4 : p % 4 = 3) :
   exact ⟨K, _, _, IsCMField.ofCMExtension ℚ K, h2, hd, δ, hδ⟩
 
 /- English proof (translation)
-Use `haveI : NeZero (4 * l) := ⟨by have := hl.out.pos; omega⟩`. Establish `hS` using `Nat.infinite_setOfPred_prime_and_eq_mod (q := 4 * l) (a := -1) isUnit_one.neg`. Set `e` to `hS.natEmbedding`. Set `P : Fin N → ℕ` to `fun i => (e (i : ℕ)).1`. Establish `hPp : ∀ i, (P i).Prime` using `fun i => (e (i : ℕ)).2.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPm : ∀ i, ((P i : ℕ) : ZMod (4 * l)) = -1` using `fun i => (e (i : ℕ)).2.2`. Establish `hPinj : Function.Injective P`. Introduce `i j h`. Conclude with `Fin.ext (e.injective (Subtype.ext h))`. Establish `hdvd : ∀ i, ∃ c, P i + 1 = 4 * l * c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `h0 : ((P i + 1 : ℕ) : ZMod (4 * l)) = 0`. Use `push_cast`. Rewrite using `[hPm i]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(ZMod.natCast_eq_zero_iff _ _).mp h0`. Establish `hF : ∀ i : Fin N, ∃ (K : Type) (_ : Field K) (_ : NumberField K) (_ : IsCMField K), Module.finrank ℚ K = 2 ∧ discr K = -(P i : ℤ) ∧ ∃ δ : K, δ ^ 2 = -(P i : K)`. Introduce `i`. Take `⟨c, hc⟩` from `hdvd i`. Establish `h4 : 4 ∣ P i + 1` using `⟨l * c, by rw [hc, mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fam_one (P i) (hPp i) (by omega)`. Use `choose K hF1 hF2 hF3 hF4 using hF`. Use `⟨K, hF1, hF2, hF3, fun i => (hF4 i).1, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Rewrite using `[(hF4 i).2.1, (hF4 j).2.1, IsCoprime.neg_neg_iff, Nat.isCoprime_iff_coprime]`.
-
-Conclude with `(Nat.coprime_primes (hPp i) (hPp j)).mpr (fun h => hij (hPinj h))`. Introduce `i`. Take `⟨c, hc⟩` from `hdvd i`. Take `⟨δ, hδ⟩` from `(hF4 i).2.2`. Conclude with `⟨P i, c, δ, (hPp i).pos, hc, hδ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quadFamSplit (l : ℕ) [hl : Fact l.Prime] (N : ℕ) :
     ∃ (K : Fin N → Type) (_ : ∀ i, Field (K i)) (_ : ∀ i, NumberField (K i)) (_ : ∀ i, IsCMField (K i)),
@@ -181,23 +175,19 @@ def SplitIn (l : ℕ) (K Ω : Type) [Field K] [Field Ω] [Algebra ℚ Ω] [Algeb
   ∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → ∀ g ∈ Dec (F := ℚ) A, ∀ x : K, g (algebraMap K Ω x) = algebraMap K Ω x
 
 /- English proof (translation)
-Use `haveI hAC : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI hAlg : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Establish `hclos : ∀ (E : Type) [Field E] [Algebra ℚ E] [Algebra E Ω] [IsScalarTower ℚ E Ω], IsAlgClosure E Ω` using `fun E _ _ _ _ => ⟨hAC, Algebra.IsAlgebraic.tower_top (K := ℚ) E⟩`. Take `⟨Kf, hF, hN, hC, h2f, hcop, hsplit⟩` from `quadFamSplit l (4 * n ^ 2 + 1)`. Establish `hemb : ∀ i, ∃ (_ : Algebra (Kf i) Ω), IsScalarTower ℚ (Kf i) Ω`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `i`. Set `f : Kf i →ₐ[ℚ] Ω` to `IsAlgClosed.lift`. Use `letI : Algebra (Kf i) Ω := f.toRingHom.toAlgebra`. Conclude with `⟨inferInstance, IsScalarTower.of_algebraMap_eq (fun x => (f.commutes x).symm)⟩`. Use `choose algI towI using hemb`.
+Equip the data with the indicated structure. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hsign : ∀ i, ∃ δ : G ℚ Ω →* (Qbar l)ˣ, δ ≠ 1 ∧ IsSign (Kf i) δ`. Introduce `i`. Use `haveI := hclos (Kf i)`. Take `⟨δ, -, h1, h2, -⟩` from `UpperTheory.exists_quadratic_sign_character ℚ (Kf i) Ω l (h2f i)`. Conclude with `⟨δ, h1, h2⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose δf hδne hδs using hsign`. Use `haveI := hclos K`. Use `haveI := hclos K'`. Take `⟨ε, -, hεne, hεs, -⟩` from `UpperTheory.exists_quadratic_sign_character ℚ K Ω l hK`. Take `⟨ε', -, hεne', hεs', -⟩` from `UpperTheory.exists_quadratic_sign_character ℚ K' Ω l hK'`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective δf`. Introduce `i j hij`. Assume the negation of the conclusion as `hne`. Apply `UpperTheory.V.Br.signNe (Kf i) (Kf j) Ω (h2f i) (hcop i j hne)` to reduce the goal to its premises. Use extensionality with `s`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← (hδs i).1 s, ← (hδs j).1 s, hij]`. Establish `hbadK` using `card_bad (resG ℚ K Ω) ε hεs.1 hεs.2 hεne δf hinj (fun i => (hδs i).2) (r.comp (resG ℚ K Ω)) hr`. Establish `hbadK'` using `card_bad (resG ℚ K' Ω) ε' hεs'.1 hεs'.2 hεne' δf hinj (fun i => (hδs i).2) (r.comp (resG ℚ K' Ω)) hr'`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, i ∉ (Finset.univ.filter fun i => RepIso (r.comp (resG ℚ K Ω)) (tw (r.comp (resG ℚ K Ω)) ((δf i).comp (resG ℚ K Ω)))) ∪ (Finset.univ.filter fun i => RepIso (r.comp (resG ℚ K' Ω)) (tw (r.comp (resG ℚ K' Ω)) ((δf i).comp (resG ℚ K' Ω)))) := by`. Assume the negation of the conclusion as `hall`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_neg at hall`. Establish `h1 : (Finset.univ : Finset (Fin (4 * n ^ 2 + 1))) ⊆ _` using `fun i _ => hall i`. Establish `h2` using `(Finset.card_le_card h1).trans ((Finset.card_union_le _ _).trans (add_le_add hbadK hbadK'))`. Simplify using `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Simplify using `only [Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and, not_or] at hi`. Use `⟨Kf i, hF i, hN i, hC i, algI i, towI i, h2f i, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `A hA g hg x`. Take `⟨p, c, δ, hp, hpc, hδ⟩` from `hsplit i`. Establish `hδΩ : (algebraMap (Kf i) Ω δ) ^ 2 = -(p : Ω)`.
-
-Rewrite using `[← map_pow, hδ, map_neg, map_natCast]`. Conclude with `fix_field (h2f i) hp hδ g (fix_root A hpc hA hg hδΩ) x`. Conclude with `irr_inf (resG ℚ K Ω) (resG ℚ (Kf i) Ω).range (δf i) (hδs i).1 (hδs i).2 r hr hi.1`. Conclude with `irr_inf (resG ℚ K' Ω) (resG ℚ (Kf i) Ω).range (δf i) (hδs i).1 (hδs i).2 r hr' hi.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thirdSplit (K K' Ω : Type) [Field K] [NumberField K] [IsCMField K] [Field K'] [NumberField K'] [IsCMField K'] [Field Ω]
     [Algebra ℚ Ω] [Algebra K Ω] [Algebra K' Ω] [IsScalarTower ℚ K Ω] [IsScalarTower ℚ K' Ω] [IsAlgClosure ℚ Ω]

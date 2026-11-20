@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.StabUnfold
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.PointLattice.lamX_selfDual I (1, g)).2.2.2.2 (1, k) hk`. Rewrite `h` using `[Prod.mk_mul_mk, mul_one]`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_lamX_mul_right (I : AutInst) (x : Fin I.n → I.E) (g : I.Gf) (k : I.Gf) (hk : k ∈ I.Kset) :
     x ∈ lamX I (1, g * k) ↔ x ∈ lamX I (1, g) := by
@@ -18,25 +18,23 @@ theorem mem_lamX_mul_right (I : AutInst) (x : Fin I.n → I.E) (g : I.Gf) (k : I
   rw [h]
 
 /- English proof (translation)
-The claim follows from `(Matrix.coe_units_inv (g : (Matrix (Fin n) (Fin n) ℂ)ˣ)).symm`.
+A detailed English derivation is pending.
 -/
 theorem uMat_inv_eq {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) : (uMat g)⁻¹ = uMat g⁻¹ :=
   (Matrix.coe_units_inv (g : (Matrix (Fin n) (Fin n) ℂ)ˣ)).symm
 
 /- English proof (translation)
-Introduce `I x`. Use `⟨?_, fun v => ?_, fun h g hh => ?_, fun g k hk => mem_lamX_mul_right I x g k hk, fun v h g hh => ?_⟩` and prove the remaining obligations. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `g hg`. Establish `hK : IsOpen I.Kset` using `(GlobalTheory.adelicStab_isCompact_isOpen I).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : Continuous fun h : I.Gf => g⁻¹ * h` using `continuous_const.mul continuous_id`. Establish `h1 : (1 : I.Gf) ∈ I.Kset` using `(Ksub I).one_mem`. Use `Filter.mem_of_superset ((hK.preimage hc).mem_nhds (by simpa using h1)) fun h hh => ?_` and prove the remaining obligations. Use `(mem_lamX_mul_right I x g (g⁻¹ * h) hh).2 hg` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Continuous.measurable (ENNReal.continuous_ofReal.comp ?_)` and prove the remaining obligations. Establish `hc : Continuous fun g : Formalism.REAL.UJ (I.ε v) => (uMat g)⁻¹`. Simplify using `only [uMat_inv_eq]`. Conclude with `Units.continuous_coe_inv.comp continuous_subtype_val`. Establish `hc2` using `hc.matrix_mulVec (continuous_const (y := infVec I v x))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `gauss`. Use `Real.continuous_exp.comp (Continuous.neg (continuous_finset_sum _ fun i _ => ?_))` and prove the remaining obligations. Conclude with `(((continuous_apply i).comp hc2).norm).pow 2`. Rewrite using `[(GlobalTheory.PointLattice.lamX_selfDual I (1, h * g)).1, (GlobalTheory.PointLattice.lamX_selfDual I (1, g)).1]`. Establish `h1 : I.fmat g⁻¹ = I.fmat (h * g)⁻¹ * I.fmat h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: g⁻¹ = (h * g)⁻¹ * h` using `by simp`. Rewrite using `[this]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `I.fmat (h * g)⁻¹ *ᵥ afVec I x ∈ I.Lf ↔ I.fmat g⁻¹ *ᵥ afVec I x ∈ I.Lf`. Rewrite using `[h1, ← Matrix.mulVec_mulVec, hh]`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[uMat_inv_eq, uMat_inv_eq]`. Establish `h1 : uMat g⁻¹ = uMat (h * g)⁻¹ * uMat h`. Establish `: g⁻¹ = (h * g)⁻¹ * h` using `by simp`. Rewrite using `[this]`. Both sides reduce to the same expression.
-
-Rewrite using `[h1, ← Matrix.mulVec_mulVec, hh]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussAt_meas_inv : ∀ (I : AutInst) (x : Fin I.n → I.E), IsOpen {h : I.Gf | x ∈ lamX I (1, h)} ∧ (∀ v, Measurable fun g : Formalism.REAL.UJ (I.ε v) => ENNReal.ofReal (gauss ((uMat g)⁻¹ *ᵥ infVec I v x))) ∧ (∀ h g : I.Gf, I.fmat h *ᵥ afVec I x = afVec I x → (x ∈ lamX I (1, h * g) ↔ x ∈ lamX I (1, g))) ∧ (∀ g : I.Gf, ∀ k ∈ I.Kset, x ∈ lamX I (1, g * k) ↔ x ∈ lamX I (1, g)) ∧ ∀ v (h g : Formalism.REAL.UJ (I.ε v)), uMat h *ᵥ infVec I v x = infVec I v x → (uMat (h * g))⁻¹ *ᵥ infVec I v x = (uMat g)⁻¹ *ᵥ infVec I v x := by
   intro I x

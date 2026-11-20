@@ -13,13 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn
 
 /- English proof (translation)
-Establish `hm : (D.R.m : ℝ) ≠ 0`. Introduce `h`. Use `L.etaSz_pos` as an intermediate fact. Rewrite `this` using `[h2, h, zero_mul]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ⌊((D.s.Del : ℚ) : ℝ)⌋₊ = Del`. Rewrite using `[h1, Rat.cast_natCast, Nat.floor_natCast]`. Establish `e2 : ⌊LevelStarExponents.h0 L⌋₊ = h0`. Establish `: LevelStarExponents.h0 L = (h0 : ℝ)`. Unfold `LevelStarExponents.h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, mul_div_cancel_left₀ _ hm]`. Rewrite using `[this, Nat.floor_natCast]`. Establish `e3 : (fun z => D.hc (GlobalTheory.RunDepth.plOf D z)) = fun z => D.hc (Formalism.BasicNotions.tauPl D z)`. Use function extensionality and compare the values at `z`. Take `⟨b, t⟩` from `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases b <;> rfl`. Unfold `GlobalTheory.RunDepth.numOf ofRecord`. Simplify using `only [e1, e2, e3]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem numOf_eq_ofRecord (D : D7) (L : SizeData₂ D) (Del h0 : ℕ) (h1 : D.s.Del = (Del : ℚ))
     (h2 : L.etaSz = (D.R.m : ℝ) * (h0 : ℝ)) : GlobalTheory.RunDepth.numOf D L = ofRecord D L Del h0 := by
@@ -43,7 +43,7 @@ theorem numOf_eq_ofRecord (D : D7) (L : SizeData₂ D) (Del h0 : ℕ) (h1 : D.s.
   simp only [e1, e2, e3]
 
 /- English proof (translation)
-Introduce `D L Del h0 h1 h2 j w`. Rewrite using `[numOf_eq_ofRecord D L Del h0 h1 h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem numOf_Fj_eq_ofRecord :
     ∀ (D : D7) (L : SizeData₂ D) (Del h0 : ℕ), D.s.Del = (Del : ℚ) → L.etaSz = (D.R.m : ℝ) * (h0 : ℝ) → ∀ (j : ℕ) (w : HeightOneSpectrum (𝓞 D.what₂.LL)), (GlobalTheory.RunDepth.numOf D L).Fj j w = (ofRecord D L Del h0).Fj j w := by

@@ -60,7 +60,7 @@ variable {P : M.Par}
 open Formalism.FourierDecayAlt.P.MAx2.Adj
 
 /- English proof (translation)
-Unfold `MA.ipA`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem ipA_add_left (u w U : M.Ty P → MA.SmQ P.r P.TT) (hU : ∀ π, U π ∈ MA.Test P.r P.TT) :
     MA.ipA P (u + w) U = MA.ipA P u U + MA.ipA P w U := by
@@ -72,7 +72,7 @@ theorem ipA_add_left (u w U : M.Ty P → MA.SmQ P.r P.TT) (hU : ∀ π, U π ∈
     _ = MA.ip0 (u π) (U π) + MA.ip0 (w π) (U π) := by rw [← inner_conj_symm_alt, ← inner_conj_symm_alt]
 
 /- English proof (translation)
-Unfold `MA.ipA`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem ipA_add_right (u X Y : M.Ty P → MA.SmQ P.r P.TT) (hX : ∀ π, X π ∈ MA.Test P.r P.TT)
     (hY : ∀ π, Y π ∈ MA.Test P.r P.TT) : MA.ipA P u (X + Y) = MA.ipA P u X + MA.ipA P u Y := by
@@ -84,7 +84,7 @@ theorem ipA_add_right (u X Y : M.Ty P → MA.SmQ P.r P.TT) (hX : ∀ π, X π �
     _ = MA.ip0 (u π) (X π) + MA.ip0 (u π) (Y π) := by rw [← inner_conj_symm_alt, ← inner_conj_symm_alt]
 
 /- English proof (translation)
-Unfold `MA.ipA`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun π _ => inner_smul_left_alt c (u π) (U π)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipA_smul_left (c : ℂ) (u U : M.Ty P → MA.SmQ P.r P.TT) : MA.ipA P (c • u) U = c * MA.ipA P u U := by
   unfold MA.ipA
@@ -92,7 +92,7 @@ theorem ipA_smul_left (c : ℂ) (u U : M.Ty P → MA.SmQ P.r P.TT) : MA.ipA P (c
   exact Finset.sum_congr rfl fun π _ => inner_smul_left_alt c (u π) (U π)
 
 /- English proof (translation)
-Unfold `MA.ipA`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun π _ => inner_smul_right_alt c (u π) (U π)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipA_smul_right (c : ℂ) (u U : M.Ty P → MA.SmQ P.r P.TT) :
     MA.ipA P u (c • U) = conj c * MA.ipA P u U := by
@@ -101,7 +101,7 @@ theorem ipA_smul_right (c : ℂ) (u U : M.Ty P → MA.SmQ P.r P.TT) :
   exact Finset.sum_congr rfl fun π _ => inner_smul_right_alt c (u π) (U π)
 
 /- English proof (translation)
-Unfold `MA.ipA`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun π _ => inner_conj_symm_alt _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipA_conj (u U : M.Ty P → MA.SmQ P.r P.TT) : MA.ipA P u U = conj (MA.ipA P U u) := by
   unfold MA.ipA
@@ -109,11 +109,11 @@ theorem ipA_conj (u U : M.Ty P → MA.SmQ P.r P.TT) : MA.ipA P u U = conj (MA.ip
   exact Finset.sum_congr rfl fun π _ => inner_conj_symm_alt _ _
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Use `⟨fun π => ?_, ?_⟩` and prove the remaining obligations. Simplify using `using (test_zero : (0 : MA.SmQ P.r P.TT) ∈ MA.Test P.r P.TT)`. Simplify using `[MA.ipA, inner_zero_left_alt, inner_zero_right_alt]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Consider the case `cons x l ih`. Take `⟨hX, hXe⟩` from `h x (by simp)`. Take `⟨ihT, ihE⟩` from `ih (fun y hy => h y (by simp [hy]))`. Simplify using `only [List.map_cons, List.sum_cons]`. Use `⟨fun π => test_add (test_smul _ (hX π)) (ihT π), ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ipA_add_right u (c x • X x) _ (fun π => test_smul (c x) (hX π)) ihT, ipA_add_left (conj (c x) • Y x) _ Ku hKu, ipA_smul_right, ipA_smul_left, ihE, ipA_conj u (X x), hXe, ← ipA_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sumAdj (u Ku : M.Ty P → MA.SmQ P.r P.TT) (hKu : ∀ π, Ku π ∈ MA.Test P.r P.TT) {α : Type*} (l : List α)
     (c : α → ℂ) (X Y : α → M.Ty P → MA.SmQ P.r P.TT)
@@ -136,13 +136,13 @@ theorem sumAdj (u Ku : M.Ty P → MA.SmQ P.r P.TT) (hKu : ∀ π, Ku π ∈ MA.T
 end lin
 
 /- English proof (translation)
-Take `⟨C1, hS'⟩` from `hS`. Take `⟨C2, hP'⟩` from `hP`. Use `⟨max C1 C2, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L he _ hL a ha ts hts hrep J hJ`. Establish `hB1 : BuiltOW C1 S T f χ ν' m₀ top A₀` using `⟨isBuiltPlace_mono (le_max_left _ _) hB.1, hB.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hB2 : BuiltOW C2 S T f χ ν' m₀ top A₀` using `⟨isBuiltPlace_mono (le_max_right _ _) hB.1, hB.2⟩`. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hTTpos : 0 < (D.parOf S v).TT` using `by rw [hTT]; exact mul_pos (T v).base.T_pos (T v).base.T'_pos`. Apply `hF (D.parOf S v)` to reduce the goal to its premises. Introduce `U hU`. Take `⟨K, hK, hKU⟩` from `hS' E Wp Wq S T f χ ν' m₀ top A₀ hB1 v e he U hU`. Substitute `hKU` using the available equality.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Rewrite using `[hM _ L hTTpos hL a ha (trJ S T v e J) (trJ S T v e K) hU, (hrep K hK).2]`. Conclude with `(sumAdj (trJ S T v e J) (trJ S T v e K) hU ts (fun t => t.1) (fun t => trJ S T v e (applyL S v t.2 K)) (fun t => trJ S T v e (adjL S v t.2 J)) (fun t ht => hP' E Wp Wq S T f χ ν' m₀ top A₀ hB2 v e he t.2 (hts t ht) K hK J hJ hU)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jAStarOp_of_parts (hM : SAModelAdj) (hS : SASection) (hP : SAPairL) (hF : SAFundQ) : JAStarOp := by
   obtain ⟨C1, hS'⟩ := hS

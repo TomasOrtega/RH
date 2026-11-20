@@ -41,7 +41,7 @@ theorem umat_ex {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (s : ℝ) :
     Formalism.MainNotions.S.umat (ex X hX s) = NormedSpace.exp ((s : ℂ) • X) := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show Formalism.MainNotions.S.umat (ex X hX 0) = Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε)`. Rewrite using `[umat_ex, umat_one, Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_zero {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) : ex X hX 0 = 1 := by
   apply Subtype.ext
@@ -50,7 +50,7 @@ theorem ex_zero {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) : ex X hX 0 = 1
   rw [umat_ex, umat_one, Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show Formalism.MainNotions.S.umat (ex X hX (s + t)) = Formalism.MainNotions.S.umat (ex X hX s * ex X hX t)`. Rewrite using `[umat_mul, umat_ex, umat_ex, umat_ex, Complex.ofReal_add, add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left _).smul_right _)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_add {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (s t : ℝ) :
     ex X hX (s + t) = ex X hX s * ex X hX t := by
@@ -65,7 +65,7 @@ section Deriv
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Establish `h` using `hasDerivAt_exp_smul_const X t`. Rewrite using `[show (fun s : ℝ => NormedSpace.exp ((s : ℂ) • X)) = fun s : ℝ => NormedSpace.exp (s • X) from`. Use function extensionality and compare the values at `fun s => by rw [Complex.coe_smul], Complex.coe_smul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_expm (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) (NormedSpace.exp ((t : ℂ) • X) * X) t := by
@@ -75,7 +75,7 @@ theorem hasDerivAt_expm (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
   exact h
 
 /- English proof (translation)
-Establish `h1 : Continuous (fun s : ℝ => NormedSpace.exp ((s : ℂ) • X))` using `continuous_iff_continuousAt.2 fun s => (hasDerivAt_expm X s).continuousAt`. Unfold `ex toG`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨h1, ?_⟩) _` and prove the remaining obligations. Use `show Continuous fun s : ℝ => Formalism.REAL.Jm ε * (NormedSpace.exp ((s : ℂ) • X))ᴴ * Formalism.REAL.Jm ε`. Conclude with `(continuous_const.mul h1.matrix_conjTranspose).mul continuous_const`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_ex {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) : Continuous (ex X hX) := by
   have h1 : Continuous (fun s : ℝ => NormedSpace.exp ((s : ℂ) • X)) :=
@@ -86,7 +86,7 @@ theorem continuous_ex {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) : Continu
   exact (continuous_const.mul h1.matrix_conjTranspose).mul continuous_const
 
 /- English proof (translation)
-Establish `h1` using `(hasDerivAt_expm X 0).const_mul Y`. Rewrite `h1` using `[Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, one_mul]`. Conclude with `(LinearMap.toContinuousLinearMap (wtLin dual ε ξ c)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_wt (dual : Bool) (ξ c : Fin n) (Y X : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => wt dual ε ξ (Y * NormedSpace.exp ((t : ℂ) • X)) c) (wt dual ε ξ (Y * X) c) 0 := by
@@ -97,9 +97,9 @@ theorem hasDerivAt_wt (dual : Bool) (ξ c : Fin n) (Y X : Matrix (Fin n) (Fin n)
 end Deriv
 
 /- English proof (translation)
-Establish `hX' : Xᴴ * Jm ε + Jm ε * X = 0` using `hX`. Establish `h` using `congrFun (congrFun hX' a) b`. Simplify using `only [Matrix.add_apply, Matrix.zero_apply, Jm_eq, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply] at h`. Establish `ha` using `sg_mul_self ε a`. Establish `hb` using `sg_mul_self ε b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(sg ε a * sg ε b) * h - (sg ε a * star (X b a)) * hb - (sg ε b * X a b) * ha`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem inG_entry {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (a b : Fin n) :
     sg ε a * star (X b a) = -(sg ε b * X a b) := by
@@ -112,11 +112,11 @@ theorem inG_entry {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (a b : Fin n)
   linear_combination (sg ε a * sg ε b) * h - (sg ε a * star (X b a)) * hb - (sg ε b * X a b) * ha
 
 /- English proof (translation)
-Consider the cases of `dual`. Simplify using `only [wt, cond_false, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => by ring`. Apply the tactic sequence `have key : ∀ b c, sg ε c * star (X b c) = -(sg ε b * X c b) := fun b c => inG_entry hX c b`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [wt, cond_true, Matrix.mul_apply, star_sum, star_mul', Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_neg, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(star (Y ξ b) * I c) * key b c`.
+A detailed English derivation is pending.
 -/
 theorem wt_deriv_id (dual : Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (ξ : Fin n)
     (Y : Matrix (Fin n) (Fin n) ℂ) (I : Fin n → ℂ) :
@@ -138,15 +138,15 @@ def mx {W : Type*} [AddCommGroup W] [Module ℂ W] (T : Fin n → Fin n → Modu
     (X : Matrix (Fin n) (Fin n) ℂ) : Module.End ℂ W := ∑ a, ∑ b, X a b • T a b
 
 /- English proof (translation)
-Consider the cases of `dual`. Simplify using `[mx, tensF, tensV, actM, coordV, Finset.smul_sum, smul_add, Finset.sum_add_distrib, smul_ite, Finset.sum_apply, LinearMap.sum_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single c]`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `a _ ha`. Rewrite using `[if_neg (Ne.symm ha)]`. Simplify using the standard rewrite rules. Introduce `h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ c) h`. Simplify using `[mx, tensF, tensVd, actM, coordV, Finset.smul_sum, smul_sub, Finset.sum_sub_distrib, smul_ite, Finset.sum_apply, LinearMap.sum_apply, sub_eq_add_neg]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_neg_distrib, ite_apply, LinearMap.proj_apply, LinearMap.zero_apply, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `congr 2`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg (Ne.symm hb)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ c) h`.
+A detailed English derivation is pending.
 -/
 theorem mx_apply_tensF {M : Type*} [AddCommGroup M] [Module ℂ M] (dual : Bool)
     (E : Fin n → Fin n → Module.End ℂ M) (X : Matrix (Fin n) (Fin n) ℂ) (f : Fin n → M) (c : Fin n) :
@@ -183,7 +183,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Rewrite using `[umat_mul]`. Conclude with `hσ.1.2 _ a.2 _ b.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_mul (hσ : IsURepOn (UJset ε) σ) (a b : Formalism.REAL.UJ ε) :
     σ (Formalism.MainNotions.S.umat (a * b)) = (σ (Formalism.MainNotions.S.umat a)).comp (σ (Formalism.MainNotions.S.umat b)) := by
@@ -191,7 +191,7 @@ theorem sig_mul (hσ : IsURepOn (UJset ε) σ) (a b : Formalism.REAL.UJ ε) :
   exact hσ.1.2 _ a.2 _ b.2
 
 /- English proof (translation)
-Establish `h` using `(sig_mul hσ g g⁻¹).symm`. Rewrite `h` using `[mul_inv_cancel, umat_one, hσ.1.1]`. Establish `h2` using `congrArg (fun L : H →L[ℂ] H => L v) h`. Simplify using `using h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sig_inv_apply (hσ : IsURepOn (UJset ε) σ) (g : Formalism.REAL.UJ ε) (v : H) :
     σ (Formalism.MainNotions.S.umat g) (σ (Formalism.MainNotions.S.umat g⁻¹) v) = v := by
@@ -201,7 +201,7 @@ theorem sig_inv_apply (hσ : IsURepOn (UJset ε) σ) (g : Formalism.REAL.UJ ε) 
   simpa using h2
 
 /- English proof (translation)
-Set `L : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ (Formalism.MainNotions.S.umat g) : H →ₗ[ℂ] H), norm_map' := hσ.2.1 _ g.2 }`. Conclude with `L.inner_map_map a b`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem sig_inner (hσ : IsURepOn (UJset ε) σ) (g : Formalism.REAL.UJ ε) (a b : H) :
     inner ℂ (σ (Formalism.MainNotions.S.umat g) a) (σ (Formalism.MainNotions.S.umat g) b) = inner ℂ a b := by
@@ -210,18 +210,18 @@ theorem sig_inner (hσ : IsURepOn (UJset ε) σ) (g : Formalism.REAL.UJ ε) (a b
   exact L.inner_map_map a b
 
 /- English proof (translation)
-Rewrite using `[← sig_inner hσ g (σ (Formalism.MainNotions.S.umat g⁻¹) y) u, sig_inv_apply hσ g y]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_sig (hσ : IsURepOn (UJset ε) σ) (g : Formalism.REAL.UJ ε) (y u : H) :
     inner ℂ y (σ (Formalism.MainNotions.S.umat g) u) = inner ℂ (σ (Formalism.MainNotions.S.umat g⁻¹) y) u := by
   rw [← sig_inner hσ g (σ (Formalism.MainNotions.S.umat g⁻¹) y) u, sig_inv_apply hσ g y]
 
 /- English proof (translation)
-Consider the cases of `dual`. Simplify using `[wt, Matrix.mul_apply]`. Establish `hkc : ∀ c, sg ε c * star (k c d) = sg ε d * star (k c d)`. Introduce `c`. Establish `h` using `congrFun (congrFun hk c) d`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Jm_eq, Matrix.mul_diagonal, Matrix.diagonal_mul] at h`. Establish `h2` using `congrArg star h`. Simplify using `only [star_mul', star_sg] at h2`. Take the linear combination `(-1 : ℂ) * h2`. Simplify using `only [wt, cond_true, Matrix.mul_apply, star_sum, star_mul', Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Take the linear combination `(star (x ξ c)) * hkc c`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wt_K (dual : Bool) (ξ : Fin n) (x k : Matrix (Fin n) (Fin n) ℂ) (hk : k * Jm ε = Jm ε * k)
     (d : Fin n) : ∑ c, wt dual ε ξ x c * cond dual (star (k c d)) (k c d) = wt dual ε ξ (x * k) d := by
@@ -239,9 +239,9 @@ theorem wt_K (dual : Bool) (ξ : Fin n) (x k : Matrix (Fin n) (Fin n) ℂ) (hk :
     linear_combination (star (x ξ c)) * hkc c
 
 /- English proof (translation)
-Unfold `cf kDiag`. Rewrite using `[sig_mul hσ g κ, umat_mul]`. Simplify using `only [ContinuousLinearMap.comp_apply, map_sum, map_smul, inner_sum, inner_smul_right, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← wt_K dual ξ _ _ hk d, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cf_kDiag (hσ : IsURepOn (UJset ε) σ) (dual : Bool) (y : H) (ξ : Fin n) (F : Fin n → H)
     (κ : Formalism.REAL.UJ ε) (hk : Formalism.MainNotions.S.umat κ * Jm ε = Jm ε * Formalism.MainNotions.S.umat κ) (g : Formalism.REAL.UJ ε) :
@@ -262,9 +262,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Establish `h1` using `hD.deriv X hX v`. Establish `hfun : (fun t : ℝ => inner ℂ y (σ (Formalism.MainNotions.S.umat z * NormedSpace.exp ((t : ℂ) • X)) (v : H))) = fun t : ℝ => inner ℂ y (σ (Formalism.MainNotions.S.umat z) (σ (NormedSpace.exp ((t : ℂ) • X)) (v : H)))`. Use function extensionality and compare the values at `t`. Simplify using `only [hσ.1.2 _ z.2 _ (exp_smul_mem_UJset hX t), ContinuousLinearMap.comp_apply]`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(((innerSL ℂ y).comp (σ (Formalism.MainNotions.S.umat z))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`.
+A detailed English derivation is pending.
 -/
 theorem inner_exp_deriv (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (y : H) (z : Formalism.REAL.UJ ε) (v : D) :
@@ -279,13 +279,13 @@ theorem inner_exp_deriv (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D
   exact (((innerSL ℂ y).comp (σ (Formalism.MainNotions.S.umat z))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1
 
 /- English proof (translation)
-Establish `hterm : ∀ c, HasDerivAt (fun s : ℝ => wt dual ε ξ (Formalism.MainNotions.S.umat z * NormedSpace.exp ((s : ℂ) • X)) c * inner ℂ y (σ (Formalism.MainNotions.S.umat z * NormedSpace.exp ((s : ℂ) • X)) ((f c : D) : H))) (wt dual ε ξ (Formalism.MainNotions.S.umat z * X) c * inner ℂ y ( …`. Introduce `c`. Use `((hasDerivAt_wt dual ξ c _ X).mul (inner_exp_deriv hσ hD hX y z (f c))).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, Matrix.mul_one]`. Establish `hs` using `HasDerivAt.sum (u := (univ : Finset (Fin n))) (fun c _ => hterm c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hs` using `[Finset.sum_fn]`. Establish `hv : cf dual ε σ y ξ (fun c => ((mx (tensF dual E) X f c : D) : H)) z = ∑ c, (wt dual ε ξ (Formalism.MainNotions.S.umat z * X) c * inner ℂ y (σ (Formalism.MainNotions.S.umat z) ((f c : D) : H)) + wt dual ε ξ (Formalism.MainNotions.S.umat z) c * inner ℂ y (σ (Formalism.MainNotions …`. Unfold `cf`. Simplify using `only [mx_apply_tensF, Submodule.coe_add, map_add, inner_add_right, mul_add, Finset.sum_add_distrib]`. Rewrite using `[add_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[wt_deriv_id dual hX ξ (Formalism.MainNotions.S.umat z) (fun c => inner ℂ y (σ (Formalism.MainNotions.S.umat z) ((f c : D) : H)))]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Consider the cases of `dual`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Split into cases according to the possible forms of the given data.
 
-Simplify using `[Submodule.coe_sum, Submodule.coe_smul, map_sum, map_smul, inner_sum, inner_smul_right]`. Simplify using `[Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_neg, map_sum, map_smul, map_neg, inner_sum, inner_smul_right, inner_neg_right]`. Rewrite using `[hv]`. Conclude with `hs`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_matrixCoeff_flow (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (dual : Bool) (y : H) (ξ : Fin n) (f : Fin n → D)
@@ -319,9 +319,9 @@ theorem hasDerivAt_matrixCoeff_flow (hσ : IsURepOn (UJset ε) σ) (hD : IsDeriv
   exact hs
 
 /- English proof (translation)
-Establish `h0` using `hasDerivAt_matrixCoeff_flow hσ hD hX dual y ξ f (x * ex X hX t)`. Establish `h0' : HasDerivAt (fun u => cf dual ε σ y ξ (fun c => ((f c : D) : H)) (x * ex X hX t * ex X hX u)) (cf dual ε σ y ξ (fun c => ((mx (tensF dual E) X f c : D) : H)) (x * ex X hX t)) (t - t)`. Rewrite using `[sub_self]`. Conclude with `h0`. Establish `h1` using `h0'.comp_sub_const t t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[mul_assoc, ← ex_add, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_cf (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (dual : Bool) (y : H) (ξ : Fin n) (f : Fin n → D)

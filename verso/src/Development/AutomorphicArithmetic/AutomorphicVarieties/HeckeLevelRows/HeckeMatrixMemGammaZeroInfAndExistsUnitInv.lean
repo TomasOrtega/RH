@@ -5,25 +5,25 @@ open scoped MatrixGroups Matrix Classical
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.Kd.K4 UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Introduce `l N p L _ _ hlN hpN`. Establish `hN0 : N ≠ 0` using `NeZero.ne N`. Establish `hl0 : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Establish `hpN' : p.Coprime N` using `Nat.Coprime.coprime_dvd_right (dvd_mul_left N l) hpN`. Take `⟨hmem, hd⟩` from `Betti.isDiam_sgD (N := N) (l := l) hN0 hl0 hpN'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨hmem, ?_⟩` and prove the remaining obligations. Establish `hc` using `CongruenceSubgroup.Gamma0_mem.1 hmem.1`. Take `⟨k, hk⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 hc`. Establish `hdet : (sgD N l p : Matrix (Fin 2) (Fin 2) ℤ) 0 0 * (sgD N l p : Matrix (Fin 2) (Fin 2) ℤ) 1 1 - (sgD N l p : Matrix (Fin 2) (Fin 2) ℤ) 0 1 * (sgD N l p : Matrix (Fin 2) (Fin 2) ℤ) 1 0 = 1`. Establish `h` using `(sgD N l p).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `hd' : (((sgD N l p : Matrix (Fin 2) (Fin 2) ℤ) 1 1 : ℤ) : ZMod N) = ((p : ℤ) : ZMod N)`. Rewrite using `[Int.cast_natCast]`. Conclude with `hd`. Rewrite using `[show en (sgD N l p) 0 0 = (sgD N l p : Matrix (Fin 2) (Fin 2) ℤ) 0 0 from rfl]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(sgD N l p : Matrix (Fin 2) (Fin 2) ℤ) 0 0 = a at hdet ⊢`. Generalize the expression as in `(sgD N l p : Matrix (Fin 2) (Fin 2) ℤ) 1 1 = d at hdet hd'`. Generalize the expression as in `(sgD N l p : Matrix (Fin 2) (Fin 2) ℤ) 0 1 = b at hdet`. Generalize the expression as in `(sgD N l p : Matrix (Fin 2) (Fin 2) ℤ) 1 0 = c at hdet hk`. Substitute `hk` using the available equality.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hcop : Nat.Coprime (l ^ L) (N * N)` using `Nat.Coprime.mul_right (hlN.pow_left L) (hlN.pow_left L)`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 hcop`. Move the coercions through the operations in `at huv`. Use `set m : ℤ := 1 + (a - 1) * u * (l : ℤ) ^ L with hm`. Establish `hmN : m = a + (1 - a) * v * ((N : ℤ) * N)`.
+Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hm]`. Take the linear combination `(a - 1) * huv`. Establish `hAN : IsCoprime a (N : ℤ)` using `⟨d, -(b * k), by linear_combination hdet⟩`. Establish `hMN : IsCoprime m (N : ℤ)`. Take `⟨s, t, hst⟩` from `hAN`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s, t - s * ((1 - a) * v * N), ?_⟩` and prove the remaining obligations. Rewrite using `[hmN]`. Take the linear combination `hst`. Establish `hML : IsCoprime m ((l : ℤ) ^ L)` using `⟨1, -((a - 1) * u), by rw [hm]; ring⟩`. Establish `hMn : IsCoprime m (((l ^ L * (N * N) : ℕ)) : ℤ)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `push_cast`. Conclude with `hML.mul_right (hMN.mul_right hMN)`. Use `haveI : NeZero (l ^ L * (N * N)) := ⟨by positivity⟩`. Establish `hU : IsUnit (m : ZMod (l ^ L * (N * N)))`. Take `⟨s, t, hst⟩` from `hMn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `congrArg (fun x : ℤ => (x : ZMod (l ^ L * (N * N)))) hst`. Simplify using `only [Int.cast_add, Int.cast_mul, Int.cast_natCast, ZMod.natCast_self, mul_zero, add_zero, Int.cast_one] at h2`. Conclude with `⟨⟨(m : ZMod (l ^ L * (N * N))), (s : ZMod (l ^ L * (N * N))), (mul_comm _ _).trans h2, h2⟩, rfl⟩`. Use `⟨hU.unit, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.natCast_val, IsUnit.unit_spec, ZMod.cast_intCast (dvd_mul_of_dvd_right (dvd_mul_right N N) _), ZMod.intCast_eq_intCast_iff_dvd_sub]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨-((1 - a) * v * N), by rw [hmN]; ring⟩`. Rewrite using `[ZMod.natCast_val, IsUnit.unit_spec, ZMod.cast_intCast (dvd_mul_right (l ^ L) (N * N)), ← Int.cast_one, ZMod.intCast_eq_intCast_iff_dvd_sub]`. Conclude with `⟨-((a - 1) * u), by push_cast; rw [hm]; ring⟩`. Rewrite using `[ZMod.natCast_val, IsUnit.unit_spec, ZMod.cast_intCast (dvd_mul_of_dvd_right (dvd_mul_right N N) _), ← Int.cast_natCast p, ← hd', ← Int.cast_mul, ← Int.cast_one, ZMod.intCast_eq_intCast_iff_dvd_sub]`. Conclude with `⟨-(b * k) - (1 - a) * v * N * d, by rw [hmN]; linear_combination (-1 : ℤ) * hdet⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.heckeMatrix_mem_gammaZero_inf_and_exists_unit_inv :
     ∀ (l N p L : ℕ) [Fact l.Prime] [NeZero N], Nat.Coprime l N → Nat.Coprime p (l * N) →

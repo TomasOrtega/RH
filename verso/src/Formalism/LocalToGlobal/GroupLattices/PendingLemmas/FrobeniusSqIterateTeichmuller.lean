@@ -11,7 +11,7 @@ variable (p : ℕ) [hp : Fact p.Prime]
 def sig2 : WW p →+* WW p := (sigW p).comp (sigW p)
 
 /- English proof (translation)
-Establish `h : ⇑(sig2 p) = (⇑(sigW p))^[2]`. Use function extensionality and compare the values at `y`. Both sides reduce to the same expression. Rewrite using `[h, ← Function.iterate_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem frobenius_sq_iterate (i : ℕ) (x : WW p) : (sig2 p)^[i] x = (sigW p)^[2 * i] x := by
   have h : ⇑(sig2 p) = (⇑(sigW p))^[2] := by
@@ -20,16 +20,16 @@ theorem frobenius_sq_iterate (i : ℕ) (x : WW p) : (sig2 p)^[i] x = (sigW p)^[2
   rw [h, ← Function.iterate_mul]
 
 /- English proof (translation)
-Use `show WittVector.frobenius (WittVector.teichmuller p y) = _`. Rewrite using `[WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigW_teich (y : kb p) : sigW p (WittVector.teichmuller p y) = WittVector.teichmuller p (y ^ p) := by
   show WittVector.frobenius (WittVector.teichmuller p y) = _
   rw [WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def]
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[Function.iterate_succ_apply', ih]`. Use `show sigW p (sigW p (WittVector.teichmuller p _)) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sigW_teich, sigW_teich, ← pow_mul, ← pow_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frobenius_sq_iterate_teichmuller (y : kb p) (i : ℕ) :
     (sig2 p)^[i] (WittVector.teichmuller p y) = WittVector.teichmuller p (y ^ (p ^ (2 * i))) := by
@@ -43,13 +43,13 @@ theorem frobenius_sq_iterate_teichmuller (y : kb p) (i : ℕ) :
     ring
 
 /- English proof (translation)
-Conclude with `one_lt_pow₀ (Fact.out : p.Prime).one_lt (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem one_lt_q (m : ℕ) : 1 < p ^ (2 * (m + 1)) := by
   exact one_lt_pow₀ (Fact.out : p.Prime).one_lt (by omega)
 
 /- English proof (translation)
-Establish `h1 : 1 ≤ p ^ (2 * (m + 1))` using `(one_lt_q p m).le`. Establish `: NeZero (((p ^ (2 * (m + 1)) - 1 : ℕ)) : ZMod p)` using `⟨by`. Rewrite using `[Nat.cast_sub h1, Nat.cast_pow, ZMod.natCast_self, zero_pow (by omega), Nat.cast_one, zero_sub]`. Conclude with `neg_ne_zero.mpr one_ne_zero⟩`. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot (kb p) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_theta (m : ℕ) : ∃ θ : kb p, IsPrimitiveRoot θ (p ^ (2 * (m + 1)) - 1) := by
   have h1 : 1 ≤ p ^ (2 * (m + 1)) := (one_lt_q p m).le
@@ -60,9 +60,9 @@ theorem exists_theta (m : ℕ) : ∃ θ : kb p, IsPrimitiveRoot θ (p ^ (2 * (m 
   exact HasEnoughRootsOfUnity.exists_primitiveRoot (kb p) _
 
 /- English proof (translation)
-Establish `h2 : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `hpos : 0 < p ^ (2 * i)` using `pow_pos (by omega) _`. Establish `hle : p ^ (2 * i) * (p * p) ≤ p ^ (2 * (m + 1))`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : p ^ (2 * i) * 4 ≤ p ^ (2 * i) * (p * p)` using `Nat.mul_le_mul_left _ (Nat.mul_le_mul h2 h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Generalize the expression as in `p ^ (2 * i) = A at *`. Generalize the expression as in `p ^ (2 * (m + 1)) = Q at *`. Generalize the expression as in `p * p = P at *`. Use linear arithmetic over natural numbers and integers.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pow_lt_q (m i : ℕ) (hi : i ≤ m) : p ^ (2 * i) < p ^ (2 * (m + 1)) - 1 := by
   have h2 : 2 ≤ p := (Fact.out : p.Prime).two_le
@@ -77,41 +77,39 @@ theorem pow_lt_q (m i : ℕ) (hi : i ≤ m) : p ^ (2 * i) < p ^ (2 * (m + 1)) - 
   omega
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `exists_theta p m`. Establish `hper : (sig2 p)^[m + 1] (WittVector.teichmuller p θ) = WittVector.teichmuller p θ`. Rewrite using `[frobenius_sq_iterate_teichmuller]`. Use `congr 1`. Establish `h1 : 1 ≤ p ^ (2 * (m + 1))` using `(one_lt_q p m).le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hq : p ^ (2 * (m + 1)) = (p ^ (2 * (m + 1)) - 1) + 1` using `by omega`. Rewrite using `[hq, pow_succ, hθ.pow_eq_one, one_mul]`. Establish `hper' : Function.IsPeriodicPt (sig2 p) (m + 1) (WittVector.teichmuller p θ)` using `hper`. Take `⟨v, hv⟩ : ∃ v : Fin (m + 1) → WW p, v = fun i => (sig2 p)^[i.val] (WittVector.teichmuller p θ)` from `⟨_, rfl⟩`. Establish `hvi : ∀ i, v i = (sig2 p)^[i.val] (WittVector.teichmuller p θ)` using `fun i => by rw [hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩ : ∃ g : ℕ → Fin (m + 1), g = fun k => ⟨k % (m + 1), Nat.mod_lt _ (by omega)⟩` from `⟨_, rfl⟩`. Establish `hgv : ∀ k, (g k).val = k % (m + 1)` using `fun k => by rw [hg]`. Establish `hg1 : ∀ k, g (k + 1) = g k + 1`. Introduce `k`. Rewrite using `[Fin.ext_iff, Fin.val_add, Fin.val_one', hgv, hgv, Nat.add_mod]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hgi : ∀ i : Fin (m + 1), g i.val = i` using `fun i => by`. Rewrite using `[Fin.ext_iff, hgv, Nat.mod_eq_of_lt i.isLt]`. Establish `hvk : ∀ k : ℕ, v (g k) = (sig2 p)^[k] (WittVector.teichmuller p θ)`. Introduce `k`. Rewrite using `[hvi, hgv, hper'.iterate_mod_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hshift : ∀ i : Fin (m + 1), sig2 p (v i) = v (i + 1)`. Introduce `i`. Establish `h` using `hvk (i.val + 1)`. Rewrite `h` using `[hg1, hgi, Function.iterate_succ_apply', ← hvi]`. Conclude with `h.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdet : IsUnit (Matrix.vandermonde v).det`. Rewrite using `[Matrix.det_vandermonde]`. Use `Finset.prod_induction _ _ (fun a b ha hb => ha.mul hb) isUnit_one (fun i _ => ?_)` and prove the remaining obligations. Use `Finset.prod_induction _ _ (fun a b ha hb => ha.mul hb) isUnit_one (fun j hj => ?_)` and prove the remaining obligations. Establish `hij : i < j` using `Finset.mem_Ioi.mp hj`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `WittVector.isUnit_of_coeff_zero_ne_zero` to reduce the goal to its premises. Rewrite using `[hvi, hvi, frobenius_sq_iterate_teichmuller, frobenius_sq_iterate_teichmuller, ← WittVector.constantCoeff_apply, map_sub]`. Simplify using `only [WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`. Rewrite using `[sub_ne_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hj' : j.val ≤ m` using `Nat.lt_succ_iff.mp j.isLt`. Establish `hi' : i.val ≤ m` using `Nat.lt_succ_iff.mp i.isLt`. Establish `e1` using `hθ.pow_inj (pow_lt_q p m j.val hj') (pow_lt_q p m i.val hi') h`. Establish `e2` using `Nat.pow_right_injective (Fact.out : p.Prime).two_le e1`. Establish `e3 : i.val < j.val` using `hij`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨B, hB⟩ : ∃ B : Matrix (Fin (m + 1)) (Fin (m + 1)) (WW p), (Matrix.vandermonde v)ᵀ * B = 1` from `⟨_, Matrix.mul_nonsing_inv _ (by rw [Matrix.det_transpose]; exact hdet)⟩`. Establish `hB' : B * (Matrix.vandermonde v)ᵀ = 1` using `mul_eq_one_comm.mp hB`. Establish `hBe : ∀ r s : Fin (m + 1), ∑ i : Fin (m + 1), v i ^ (r : ℕ) * B i s = if r = s then 1 else 0`. Introduce `r s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun M : Matrix (Fin (m + 1)) (Fin (m + 1)) (WW p) => M r s) hB`. Simplify using `only [Matrix.mul_apply, Matrix.one_apply, Matrix.transpose_apply, Matrix.vandermonde_apply] at h`. Conclude with `h`. Take `⟨C, hCd⟩ : ∃ C : Matrix (Fin (m + 1)) (Fin (m + 1)) (WW p), C = Matrix.of fun i s => sig2 p (B (i - 1) s)` from `⟨_, rfl⟩`. Establish `hC : (Matrix.vandermonde v)ᵀ * C = 1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.ext fun r s => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Matrix.one_apply, hCd]`. Simplify using `only [Matrix.transpose_apply, Matrix.vandermonde_apply, Matrix.of_apply]`. Rewrite using `[← Equiv.sum_comp (Equiv.addRight (1 : Fin (m + 1)))]`. Simplify using `only [Equiv.coe_addRight, add_sub_cancel_right]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Simplify using `only [map_mul, map_pow, hshift]`. Use `_ = sig2 p (if r = s then 1 else 0) := by rw [hBe]`. Apply the tactic sequence `_ = if r = s then 1 else 0 := by split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hCB : C = B`. Combine the equalities or inequalities in the displayed calculation. Establish `hBshift : ∀ i s, sig2 p (B i s) = B (i + 1) s`. Introduce `i s`. Establish `h` using `congrArg (fun M : Matrix (Fin (m + 1)) (Fin (m + 1)) (WW p) => M (i + 1) s) hCB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hCd, Matrix.of_apply, add_sub_cancel_right] at h`. Conclude with `h`. Establish `hBk : ∀ (k : ℕ) (s : Fin (m + 1)), (sig2 p)^[k] (B 0 s) = B (g k) s`. Introduce `k s`. Proceed by induction on `k with`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Rewrite using `[Function.iterate_zero_apply]`. Use `congr 1`. Rewrite using `[Fin.ext_iff, hgv, Nat.zero_mod]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ k ih => rw [Function.iterate_succ_apply', ih, hBshift, hg1]`. Use `⟨fun r => (WittVector.teichmuller p θ) ^ (r : ℕ), fun r => B 0 r, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r`. Rewrite using `[← RingHom.coe_pow, map_pow, RingHom.coe_pow, hper]`. Introduce `r`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hBk]`. Use `congr 1`. Rewrite using `[Fin.ext_iff, hgv, Nat.mod_self]`. Both sides reduce to the same expression. Introduce `r r'`.
-
-Rewrite using `[← hBe r r']`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← RingHom.coe_pow, map_mul, map_pow, RingHom.coe_pow, hBk, hgi, hvi]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (m : ℕ) : ∃ om omS : Fin (m + 1) → WW p,
     (∀ r, (sig2 p)^[m + 1] (om r) = om r) ∧ (∀ r, (sig2 p)^[m + 1] (omS r) = omS r) ∧
@@ -216,7 +214,7 @@ theorem core (m : ℕ) : ∃ om omS : Fin (m + 1) → WW p,
     rw [← RingHom.coe_pow, map_mul, map_pow, RingHom.coe_pow, hBk, hgi, hvi]
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, ν = m + 1` from `⟨ν - 1, by omega⟩`. Conclude with `core p m`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem core' (ν : ℕ) (hν : 0 < ν) : ∃ om omS : Fin ν → WW p,
     (∀ r, (sig2 p)^[ν] (om r) = om r) ∧ (∀ r, (sig2 p)^[ν] (omS r) = omS r) ∧
@@ -225,9 +223,9 @@ theorem core' (ν : ℕ) (hν : 0 < ν) : ∃ om omS : Fin ν → WW p,
   exact core p m
 
 /- English proof (translation)
-Take `⟨om, omS, h1, h2, h3⟩` from `core' p (n' / 2) (by omega)`. Establish `hn : 2 * (n' / 2) = n'` using `Nat.two_mul_div_two_of_even he`. Use `⟨⟨om, omS, fun r => ?_, fun r => ?_, fun r r' => ?_⟩⟩` and prove the remaining obligations. Establish `h` using `h1 r`. Rewrite `h` using `[frobenius_sq_iterate, hn]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `h2 r`. Rewrite `h` using `[frobenius_sq_iterate, hn]`. Then use the resulting hypothesis. Simplify `h3 r r'` using `only [frobenius_sq_iterate]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nonempty_omBasis (n' : ℕ) (he : Even n') (h2 : 2 ≤ n') : Nonempty (OmBasis p n') := by
   obtain ⟨om, omS, h1, h2, h3⟩ := core' p (n' / 2) (by omega)

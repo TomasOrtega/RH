@@ -12,7 +12,7 @@ variable {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace
   {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸}
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[IsExpLieAlgebra.isSmoothFun_iff]`. Introduce `g'`. Simplify `hf (g * g')` using `only [mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isSmoothFun_leftTranslate (h : IsExpLieAlgebra G 𝔤) {f : G → ℂ}
     (hf : h.IsSmoothFun f) (g : G) : h.IsSmoothFun (fun y => f (g * y)) := by
@@ -35,7 +35,7 @@ theorem coe_leftTranslateSmoothEnd (h : IsExpLieAlgebra G 𝔤) (g : G)
   rfl
 
 /- English proof (translation)
-Use extensionality with `f y`. Simplify using `only [Module.End.mul_apply, IsExpLieAlgebra.coe_rightDerivEnd, coe_leftTranslateSmoothEnd, IsExpLieAlgebra.rightDeriv]`. Simplify using `only [mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem commute_rightDerivEnd_leftTranslate (h : IsExpLieAlgebra G 𝔤) (g : G) (X : 𝔤) :
     Commute (h.rightDerivEnd (F := ℂ) X) (leftTranslateSmoothEnd h g) := by
@@ -45,9 +45,9 @@ theorem commute_rightDerivEnd_leftTranslate (h : IsExpLieAlgebra G 𝔤) (g : G)
   simp only [mul_assoc]
 
 /- English proof (translation)
-Use `⟨leftTranslateSmoothEnd h g f, fun y => rfl, fun T hT y => ?_⟩` and prove the remaining obligations. Establish `hc : Commute T (leftTranslateSmoothEnd h g)`. Use `(Algebra.commute_of_mem_adjoin_of_forall_mem_commute hT ?_).symm` and prove the remaining obligations. Introduce and unpack `_ ⟨X, rfl⟩`. Conclude with `(commute_rightDerivEnd_leftTranslate h g X).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `congrArg (fun S : Module.End ℂ (h.smoothFuns (F := ℂ)) => ((S f : h.smoothFuns (F := ℂ)) : G → ℂ) y) hc.eq` as an intermediate fact. Simplify `this` using `only [Module.End.mul_apply, coe_leftTranslateSmoothEnd]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem leftTranslate_smooth_commute (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸]
     [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸)

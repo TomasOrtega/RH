@@ -75,7 +75,7 @@ def RedPost : Prop := ∀ (Q q : ℕ) [NeZero Q], q ∣ Q → ∀ (i : ℤ) (π 
       HK.post ℤ ((chains ℤ).obj E) π n (restrH (Int.castRingHom (ZMod Q)) E (tw Q i) n x)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hD R K`. Apply `(e M n).injective` to reduce the goal to its premises. Rewrite using `[he, he, he, Functor.map_comp, Functor.map_comp, Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem post_comp (hD : DerDict) {R : Type} [CommRing R] (K : Cx R) {F G M : Shv R} (φ : F ⟶ G) (ψ : G ⟶ M) (n : ℤ)
     (x : HK R K F n) : HK.post R K (φ ≫ ψ) n x = HK.post R K ψ n (HK.post R K φ n x) := by
@@ -84,7 +84,7 @@ theorem post_comp (hD : DerDict) {R : Type} [CommRing R] (K : Cx R) {F G M : Shv
   rw [he, he, he, Functor.map_comp, Functor.map_comp, Category.assoc]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hD R K`. Set `` to `HasDerivedCategory.standard (Shv R)`. Apply `(e F n).injective` to reduce the goal to its premises. Rewrite using `[he, Functor.map_nsmul, Functor.map_nsmul, CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id, Preadditive.comp_nsmul, Category.comp_id, map_nsmul]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem post_nsmul (hD : DerDict) {R : Type} [CommRing R] (K : Cx R) {F : Shv R} (c : ℕ) (n : ℤ)
     (x : HK R K F n) : HK.post R K (c • 𝟙 F) n x = c • x := by
@@ -95,9 +95,9 @@ theorem post_nsmul (hD : DerDict) {R : Type} [CommRing R] (K : Cx R) {F : Shv R}
     Preadditive.comp_nsmul, Category.comp_id, map_nsmul]
 
 /- English proof (translation)
-Establish `: NeZero q` using `⟨ne_zero_of_dvd_ne_zero (NeZero.ne Q) h1⟩`. Use `hE Q i _ _ _ fun U ζ => ?_` and prove the remaining obligations. Take `⟨ξ, hξ⟩` from `(hP Q Γ(U, ⊤)).2.2.2.2.2 q h1 ζ`. Take `⟨η, hη⟩` from `(hP q Γ(U, ⊤)).2.2.2.2.2 r h2 ξ`. Establish `h : η.1 = ζ.1 ^ (Q / r)` using `by rw [hη, hξ, ← pow_mul, Nat.div_mul_div h1 h2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[c U ζ η h, ← b U ξ η hη, ← a U ζ ξ hξ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_comp (hP : LateralTheory.EtaleFoundations.PrimitiveRootsOfUnityBasicIdentities) (hE : TwExt) {Q q r : ℕ} [NeZero Q] (h1 : q ∣ Q) (h2 : r ∣ q) {i : ℤ}
     {π₁ : TZ Q i ⟶ TZ q i} {π₂ : TZ q i ⟶ TZ r i} {π₃ : TZ Q i ⟶ TZ r i} (a : IsRed Q q i π₁) (b : IsRed q r i π₂)
@@ -111,9 +111,9 @@ theorem red_comp (hP : LateralTheory.EtaleFoundations.PrimitiveRootsOfUnityBasic
   rfl
 
 /- English proof (translation)
-Introduce `y`. Rewrite using `[← ec.map_eq_zero_iff, hg, h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨ea.symm x, eb.injective (by rw [hf, ea.apply_symm_apply, hx])⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨ea x, (hf x).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exact_tr {A B C A' B' C' : Type*} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [AddCommGroup A']
     [AddCommGroup B'] [AddCommGroup C'] (ea : A ≃+ A') (eb : B ≃+ B') (ec : C ≃+ C') {f : A → B} {g : B → C}
@@ -128,19 +128,17 @@ theorem exact_tr {A B C A' B' C' : Type*} [AddCommGroup A] [AddCommGroup B] [Add
     exact ⟨ea x, (hf x).symm⟩
 
 /- English proof (translation)
-Introduce `_ h8 _ _ l _ b E i _`. Establish `hl : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Establish `hnz : ∀ c : ℕ, NeZero (l ^ c)` using `fun c => ⟨pow_ne_zero _ hl⟩`. Use `choose π hπ using fun (c a : ℕ) (h : a ≤ c) => hX (l ^ c) (l ^ a) (pow_dvd_pow l h) i`. Establish `hc : ∀ (c a r : ℕ) (h1 : a ≤ c) (h2 : r ≤ a), π c a h1 ≫ π a r h2 = π c r (h2.trans h1)` using `fun c a r h1 h2 => red_comp hP hE (pow_dvd_pow l h1) (pow_dvd_pow l h2) (hπ _ _ _) (hπ _ _ _) (hπ _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose ι hι w hw using fun a : ℕ => hS l b a i (π (b + a) a (by omega)) (π (b + a) b (by omega)) (hπ _ _ _) (hπ _ _ _)`. Establish `hsq : ∀ a : ℕ, π (a + 1) a (by omega) ≫ ι a = ι (a + 1) ≫ π (b + (a + 1)) (b + a) (by omega)` using `fun a => by`. Use `hEpi l (b + (a + 1)) (a + 1) (by omega) i _ (hπ _ _ (Nat.le_add_left _ _))` as an intermediate fact. Rewrite using `[← cancel_epi (π (b + (a + 1)) (a + 1) (Nat.le_add_left _ _)), ← Category.assoc, ← Category.assoc, hι, hc, ← hc (b + (a + 1)) (b + a) a (Nat.le_succ _) (Nat.le_add_left a b), Category.assoc, hι, Preadditive.comp_nsmul, Preadditive.nsmul_comp, Category.comp_id, Category.id_comp]`. Take `⟨d, hd, hnat⟩` from `hL ℤ ((chains ℤ).obj E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : ∀ (c : ℕ) (n : ℤ), Ht (l ^ c) E n i ≃+ HK ℤ ((chains ℤ).obj E) (TZ (l ^ c) i) n` to `fun c n => AddEquiv.ofBijective (restrH (Int.castRingHom (ZMod (l ^ c))) E (tw (l ^ c) i) n) (h8 ℤ _ _ E _ n)`. Establish `he : ∀ (c a : ℕ) (h : a ≤ c) (n : ℤ) (x : Ht (l ^ c) E n i), e a n (red (l ^ c) (l ^ a) E n i x) = HK.post ℤ _ (π c a h) n (e c n x)` using `fun c a h n x => hR _ _ (pow_dvd_pow l h) i _ (hπ c a h) E n x`. Set `u : ∀ (a : ℕ) (n : ℤ), Ht (l ^ a) E n i →+ Ht (l ^ (b + a)) E n i` to `fun a n => ((e (b + a) n).symm.toAddMonoidHom.comp (HK.post ℤ _ (ι a) n)).comp (e a n).toAddMonoidHom`. Set `δ : ∀ (a : ℕ) (n : ℤ), Ht (l ^ b) E n i →+ Ht (l ^ a) E (n + 1) i` to `fun a n => ((e a (n + 1)).symm.toAddMonoidHom.comp (d _ (hw a) n)).comp (e b n).toAddMonoidHom`. Establish `hu : ∀ a n x, e (b + a) n (u a n x) = HK.post ℤ _ (ι a) n (e a n x)` using `fun a n x => (e (b + a) n).apply_symm_apply _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hδ : ∀ a n x, e a (n + 1) (δ a n x) = d _ (hw a) n (e b n x)` using `fun a n x => (e a (n + 1)).apply_symm_apply _`. Use `⟨u, δ, fun a n => ⟨?_, ?_, ?_, fun x => ?_, fun x => ?_, fun x => ?_⟩⟩` and prove the remaining obligations. Conclude with `exact_tr _ _ _ (hu a n) (he _ _ (by omega) n) (hd _ (hw a) n).1`. Conclude with `exact_tr _ _ _ (he _ _ (by omega) n) (hδ a n) (hd _ (hw a) n).2.1`. Conclude with `exact_tr _ _ _ (hδ a n) (hu a (n + 1)) (hd _ (hw a) n).2.2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `(e (b + a) n).injective` to reduce the goal to its premises. Rewrite using `[hu, he _ _ (by omega), ← post_comp hD, hι, post_nsmul hD, map_nsmul]`. Apply `(e a (n + 1)).injective` to reduce the goal to its premises. Set `φ : ShortComplex.mk _ _ (w (a + 1)) ⟶ ShortComplex.mk _ _ (w a)` to `{ τ₁ := π (a + 1) a (by omega) τ₂ := π (b + (a + 1)) (b + a) (by omega) τ₃ := 𝟙 _ comm₁₂ := hsq a comm₂₃ := (hc _ _ _ _ _).trans (Category.comp_id _).symm }`. Establish `h1` using `hnat _ _ (hw (a + 1)) (hw a) φ n (e b n x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `post_nsmul hD ((chains ℤ).obj E) 1 n (e b n x)`. Rewrite `h2` using `[one_smul, one_smul]`. Rewrite using `[he _ _ (by omega), hδ, hδ]`. Conclude with `h1.trans (congrArg _ h2)`. Apply `(e (b + a) n).injective` to reduce the goal to its premises.
-
-Rewrite using `[he _ _ (by omega), hu, hu, he _ _ (by omega), ← post_comp hD, ← post_comp hD, hsq]`.
+A detailed English derivation is pending.
 -/
 theorem goal_of (hD : DerDict) (hL : NatLES) (hX : RedEx) (hE : TwExt) (hEpi : RedEpi) (hS : TwSES) (hR : RedPost)
     (hP : LateralTheory.EtaleFoundations.PrimitiveRootsOfUnityBasicIdentities) : LateralTheory.KummerTheory.Bock := by

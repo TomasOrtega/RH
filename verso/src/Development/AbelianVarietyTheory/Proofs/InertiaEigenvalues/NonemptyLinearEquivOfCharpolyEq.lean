@@ -18,7 +18,7 @@ variable {V W : Type} [AddCommGroup V] [Module k V] [Module A V] [IsScalarTower 
   [AddCommGroup W] [Module k W] [Module A W] [IsScalarTower k A W]
 
 /- English proof (translation)
-Establish `h : Algebra.lsmul k k W a = (e.restrictScalars k).conj (Algebra.lsmul k k V a)`. Use extensionality with `w`. Simplify using `[LinearEquiv.conj_apply]`. Rewrite using `[tr, tr, h, LinearMap.trace_conj']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_congr (e : V ≃ₗ[A] W) (a : A) : tr k V a = tr k W a := by
   have h : Algebra.lsmul k k W a = (e.restrictScalars k).conj (Algebra.lsmul k k V a) := by
@@ -27,7 +27,7 @@ theorem tr_congr (e : V ≃ₗ[A] W) (a : A) : tr k V a = tr k W a := by
   rw [tr, tr, h, LinearMap.trace_conj']
 
 /- English proof (translation)
-Establish `h : Algebra.lsmul k k (V × W) a = (Algebra.lsmul k k V a).prodMap (Algebra.lsmul k k W a)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[tr, h, LinearMap.trace_prodMap']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tr_prod [FiniteDimensional k V] [FiniteDimensional k W] (a : A) :
     tr k (V × W) a = tr k V a + tr k W a := by
@@ -37,27 +37,25 @@ theorem tr_prod [FiniteDimensional k V] [FiniteDimensional k W] (a : A) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[tr, map_one, LinearMap.trace_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_one [FiniteDimensional k V] : tr k V (1 : A) = finrank k V := by rw [tr, map_one, LinearMap.trace_one]
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (FiniteDimensional k (P.restrictScalars k))`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_sub [FiniteDimensional k V] (P : Submodule A V) : FiniteDimensional k P := inferInstanceAs (FiniteDimensional k (P.restrictScalars k))
 
 /- English proof (translation)
-Set `p : End A (V × W)` to `(LinearMap.inl A V W).comp (LinearMap.fst A V W)`. Set `F : End (End A (V × W)) (V × W)` to `{ toFun := p map_add' := p.map_add map_smul' := by`. Introduce and unpack `φ ⟨v, w⟩`. Establish `e₁` using `LinearMap.congr_fun (h₁ ((LinearMap.snd A V W).comp (φ.comp (LinearMap.inl A V W)))) v`. Establish `e₂` using `LinearMap.congr_fun (h₂ ((LinearMap.fst A V W).comp (φ.comp (LinearMap.inr A V W)))) w`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃ : φ (v, w) = φ (v, 0) + φ (0, w)` using `by rw [← map_add]; simp`. Simplify using `only [LinearMap.comp_apply, LinearMap.inl_apply, LinearMap.inr_apply, LinearMap.snd_apply, LinearMap.fst_apply, LinearMap.zero_apply] at e₁ e₂`. Express the relevant statement in the definitionally equal form `((φ (v, w)).1, (0 : W)) = φ (v, 0)`. Rewrite using `[e₃]`. Use `ext`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[e₂]`. Conclude with `e₁.symm }`. Set `b` to `Module.finBasis k (V × W)`. Use `haveI : IsSemisimpleModule A (V × W) := by`. Establish `hs` using `IsSemisimpleModule.sup (IsSemisimpleModule.range (LinearMap.inl A V W)) (IsSemisimpleModule.range (LinearMap.inr A V W))`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hs` using `[LinearMap.sup_range_inl_inr]`. Conclude with `IsSemisimpleModule.congr Submodule.topEquiv.symm`. Take `⟨r, hr⟩` from `jacobson_density F (Finset.univ.image b)`. Establish `hall : (p.restrictScalars k) = Algebra.lsmul k k (V × W) r` using `b.ext fun i => hr _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Establish `hV : Algebra.lsmul k k V r = 1`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Conclude with `(congrArg Prod.fst (LinearMap.congr_fun hall (v, 0))).symm`. Establish `hW : Algebra.lsmul k k W r = 0`. Use extensionality with `w`. Conclude with `(congrArg Prod.snd (LinearMap.congr_fun hall (0, w))).symm`.
-
-Use `h r` as an intermediate fact. Unfold `tr at this`. Rewrite `this` using `[hV, hW, LinearMap.trace_one, map_zero]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eq_zero_of_hom [CharZero k] [FiniteDimensional k V] [FiniteDimensional k W]
     [IsSemisimpleModule A V] [IsSemisimpleModule A W] (h : ∀ a : A, tr k V a = tr k W a)
@@ -102,11 +100,11 @@ theorem finrank_eq_zero_of_hom [CharZero k] [FiniteDimensional k V] [FiniteDimen
   exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨P', hP'⟩` from `exists_isCompl (LinearMap.ker f)`. Take `⟨Q, hQ⟩` from `exists_isCompl (LinearMap.range f)`. Set `e₁ : V ≃ₗ[A] (LinearMap.ker f) × (LinearMap.range f)` to `(Submodule.prodEquivOfIsCompl _ _ hP').symm.trans ((LinearEquiv.refl A _).prodCongr ((Submodule.quotientEquivOfIsCompl _ _ hP').symm.trans f.quotKerEquivRange))`. Set `e₂ : W ≃ₗ[A] Q × (LinearMap.range f)` to `(Submodule.prodEquivOfIsCompl _ _ hQ.symm).symm`. Use `haveI := finiteDimensional_sub (k := k) (LinearMap.ker f)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI := finiteDimensional_sub (k := k) (LinearMap.range f)`. Use `haveI := finiteDimensional_sub (k := k) Q`. Use `haveI : Nontrivial (LinearMap.range f) := Submodule.nontrivial_iff_ne_bot.2 fun h => hf (LinearMap.range_eq_bot.1 h)`. Establish `hpos : 0 < finrank k (LinearMap.range f)` using `Module.finrank_pos`. Use `⟨_, Q, _, ⟨e₁⟩, ⟨e₂⟩, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[(e₁.restrictScalars k).finrank_eq, finrank_prod]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[(e₂.restrictScalars k).finrank_eq, finrank_prod]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem split_of_hom [FiniteDimensional k V] [FiniteDimensional k W]
     [IsSemisimpleModule A V] [IsSemisimpleModule A W] (f : V →ₗ[A] W) (hf : f ≠ 0) :
@@ -132,15 +130,13 @@ theorem split_of_hom [FiniteDimensional k V] [FiniteDimensional k W]
 end
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Establish `step : ∀ (V W : Type) [AddCommGroup V] [Module k V] [Module A V] [IsScalarTower k A V] [AddCommGroup W] [Module k W] [Module A W] [IsScalarTower k A W] [FiniteDimensional k V] [FiniteDimensional k W] [IsSemisimpleModule A V] [IsSemisimpleModule A W], finrank k V + finrank k W ≤ n …`. Introduce `V W _ _ _ _ _ _ _ _ _ _ _ _ hn h f hf`. Take `⟨P, Q, S, ⟨e₁⟩, ⟨e₂⟩, hP, hQ⟩` from `split_of_hom (k := k) f hf`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI := finiteDimensional_sub (k := k) P`. Use `haveI := finiteDimensional_sub (k := k) Q`. Use `haveI := finiteDimensional_sub (k := k) S`. Take `⟨e⟩` from `ih (finrank k P + finrank k Q) (by omega) P Q le_rfl fun a => by`. Use `h a` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[tr_congr e₁, tr_congr e₂, tr_prod, tr_prod]`. Conclude with `add_right_cancel this`. Conclude with `⟨e₁.trans ((e.prodCongr (LinearEquiv.refl A _)).trans e₂.symm)⟩`. Introduce `V W _ _ _ _ _ _ _ _ _ _ _ _ hn h`. Distinguish the cases in `h₁ : ∀ f : V →ₗ[A] W, f = 0`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h₂ : ∀ f : W →ₗ[A] V, f = 0`. Use `haveI : Subsingleton V := Module.finrank_zero_iff.1 (finrank_eq_zero_of_hom h h₁ h₂) haveI : Subsingleton W := Module.finrank_zero_iff.1 (finrank_eq_zero_of_hom (fun a => (h a).symm) h₂ h₁)`. Conclude with `⟨LinearEquiv.ofSubsingleton V W⟩`. Use `push_neg at h₂`. Take `⟨f, hf⟩` from `h₂`.
-
-Take `⟨e⟩` from `step W V (by omega) (fun a => (h a).symm) f hf`. Conclude with `⟨e.symm⟩`. Use `push_neg at h₁`. Take `⟨f, hf⟩` from `h₁`. Conclude with `step V W hn h f hf`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonempty_linear_equiv_of_charpoly_eq [CharZero k] (n : ℕ) : ∀ (V W : Type) [AddCommGroup V] [Module k V] [Module A V]
     [IsScalarTower k A V] [AddCommGroup W] [Module k W] [Module A W] [IsScalarTower k A W]
@@ -179,17 +175,17 @@ theorem nonempty_linear_equiv_of_charpoly_eq [CharZero k] (n : ℕ) : ∀ (V W :
     exact step V W hn h f hf
 
 /- English proof (translation)
-Use `haveI := (Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule ρ).1 hρ`. Use `haveI := (Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule σ).1 hσ`. Establish `key : ∀ a : MonoidAlgebra k Γ, tr k ρ.asModule a = tr k σ.asModule a`. Introduce `a`. Unfold `tr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of g`. Establish `e₁ : LinearMap.trace k _ (Algebra.lsmul k k ρ.asModule (MonoidAlgebra.of k Γ g)) = LinearMap.trace k V (ρ g)`. Rewrite using `[← LinearMap.trace_conj' (ρ g) ρ.asModuleEquiv.symm]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `v`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_symm, Representation.asModuleEquiv_symm_map_rho, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Establish `e₂ : LinearMap.trace k _ (Algebra.lsmul k k σ.asModule (MonoidAlgebra.of k Γ g)) = LinearMap.trace k W (σ g)`. Rewrite using `[← LinearMap.trace_conj' (σ g) σ.asModuleEquiv.symm]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `v`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_symm, Representation.asModuleEquiv_symm_map_rho, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Rewrite using `[e₁, e₂, h]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `smul c a ha => simp only [map_smul, ha]`. Take `⟨e⟩` from `nonempty_linear_equiv_of_charpoly_eq (k := k) (A := MonoidAlgebra k Γ) _ ρ.asModule σ.asModule le_rfl key`. Use `⟨ρ.asModuleEquiv.symm.trans ((e.restrictScalars k).trans σ.asModuleEquiv), fun g v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ.asModuleEquiv (e (ρ.asModuleEquiv.symm (ρ g v))) = σ g (σ.asModuleEquiv (e (ρ.asModuleEquiv.symm v)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Representation.asModuleEquiv_symm_map_rho, map_smul, Representation.asModuleEquiv_map_smul]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_equiv_of_trace_eq [CharZero k] {Γ V W : Type} [Monoid Γ] [AddCommGroup V] [Module k V]
     [AddCommGroup W] [Module k W] [FiniteDimensional k V] [FiniteDimensional k W]

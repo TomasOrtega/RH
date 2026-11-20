@@ -9,7 +9,7 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Rewrite using `[descPochhammer_succ_right]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem descPochhammer_succ_eval_right (j : ℕ) (x : ℤ) :
     (descPochhammer ℤ (j + 1)).eval x = (descPochhammer ℤ j).eval x * (x - j) := by
@@ -17,7 +17,7 @@ theorem descPochhammer_succ_eval_right (j : ℕ) (x : ℤ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[descPochhammer_succ_left]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem descPochhammer_succ_eval_add_one (j : ℕ) (x : ℤ) :
     (descPochhammer ℤ (j + 1)).eval (x + 1) = (x + 1) * (descPochhammer ℤ j).eval x := by
@@ -30,9 +30,9 @@ variable {n : ℕ} {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
   {V : Type*} [AddCommGroup V] [Module (KK O) V] [Module O V] [IsScalarTower O (KK O) V]
 
 /- English proof (translation)
-Establish `hz' : z ∈ ⨅ c, LinearMap.ker (E c c - ((mu c : ℤ) : KK O) • (1 : Module.End (KK O) V))` using `hz`. Establish `hw : ∀ c, E c c z = ((mu c : ℤ) : KK O) • z`. Introduce `c`. Establish `h` using `(Submodule.mem_iInf _).mp hz' c`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hc` using `congrArg (fun f : Module.End (KK O) V => f z) (hE.1 a b b a)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, if_true, eq_self_iff_true] at hc`. Rewrite `hc` using `[hw a, hw b]`. Rewrite using `[← sub_eq_iff_eq_add', hc, Int.cast_sub, sub_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem raise_lower_commutator_on_weight {E : GLOps n (KK O) V} (hE : IsGLRep E) {a b : Fin n} {mu : Fin n → ℤ} {z : V}
     (hz : z ∈ weightSp E mu) : E a b (E b a z) = E b a (E a b z) + (((mu a - mu b : ℤ)) : KK O) • z := by
@@ -49,15 +49,15 @@ theorem raise_lower_commutator_on_weight {E : GLOps n (KK O) V} (hE : IsGLRep E)
   rw [← sub_eq_iff_eq_add', hc, Int.cast_sub, sub_smul]
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ r ih`. Establish `e1 : ∀ s x, E b a (((E b a) ^ s) x) = ((E b a) ^ (s + 1)) x`. Introduce `s x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ', Module.End.mul_apply]`. Establish `hy` using `integral_operator_pow_shifts_weight hE hz b a r`. Establish `h0` using `raise_lower_commutator_on_weight (a := a) (b := b) hE hy`. Establish `hA : (mu + (r : ℤ) • rootW b a) a = mu a - r`. Apply the tactic sequence `simp [rootW, Pi.single_apply, hab, hab.symm] <;> ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hB : (mu + (r : ℤ) • rootW b a) b = mu b + r`. Apply the tactic sequence `simp [rootW, Pi.single_apply, hab, hab.symm] <;> ring`. Rewrite `h0` using `[hA, hB]`. Establish `e2 : ((r : KK O) * ((((mu a - mu b : ℤ)) : KK O) - r + 1)) • E b a (((E b a) ^ (r - 1)) z) = ((r : KK O) * ((((mu a - mu b : ℤ)) : KK O) - r + 1)) • ((E b a) ^ r) z`. Break down `Nat.eq_zero_or_pos r with h | h` into its components or cases.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[e1, Nat.sub_add_cancel h]`. Rewrite using `[← e1, h0, ih, map_add, map_smul, e1, e2, Nat.add_sub_cancel, add_assoc, ← add_smul]`. Use `congr 2`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem raise_lower_pow_commutator_on_weight {E : GLOps n (KK O) V} (hE : IsGLRep E) {a b : Fin n} (hab : a ≠ b) {mu : Fin n → ℤ} {z : V}
     (hz : z ∈ weightSp E mu) (r : ℕ) :
@@ -88,21 +88,21 @@ theorem raise_lower_pow_commutator_on_weight {E : GLOps n (KK O) V} (hE : IsGLRe
     ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `step : ∀ j ∈ range (k + 1), E a b (((E b a) ^ (l - j)) (((E a b) ^ (k - j)) y)) = ((E b a) ^ (l - j)) (((E a b) ^ (k + 1 - j)) y) + (((l - j : ℕ) : KK O) * (((((nu + ((k - j : ℕ) : ℤ) • rootW a b) a - (nu + ((k - j : ℕ) : ℤ) • rootW a b) b : ℤ)) : KK O) - ((l - j : ℕ) : KK O) + 1 …`. Introduce `j hj`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hjk : j ≤ k` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)`. Establish `hw` using `integral_operator_pow_shifts_weight hE hy a b (k - j)`. Rewrite using `[raise_lower_pow_commutator_on_weight hE hab hw (l - j)]`. Use `congr 1`. Rewrite using `[← Module.End.mul_apply (E a b), ← pow_succ', show k - j + 1 = k + 1 - j by omega]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show l - j - 1 = l - (j + 1) by omega, show k + 1 - (j + 1) = k - j by omega]`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, map_sum]`. Simplify using `only [map_smul]`. Use `(Finset.sum_congr rfl (fun j hj => ?_)).trans (weighted_sum_shift_recombine (fun j => ((k.choose j * l.descFactorial j : ℕ) : KK O) * (((descPochhammer ℤ j).eval (nu a - nu b + k - l) : ℤ) : KK O)) (fun j => (((k + 1).choose j * l.descFactorial j : ℕ) : KK O) * (((descPochhammer …` and prove the remaining obligations. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[step j hj]`. Simplify using the standard rewrite rules. Introduce `j hj beta_reduce`. Establish `hjk : j ≤ k` using `Nat.lt_succ_iff.mp hj`. Establish `hA : (nu + ((k - j : ℕ) : ℤ) • rootW a b) a = nu a + ((k - j : ℕ) : ℤ)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[rootW, Pi.single_apply, hab, hab.symm]`. Establish `hB : (nu + ((k - j : ℕ) : ℤ) • rootW a b) b = nu b - ((k - j : ℕ) : ℤ)`. Apply the tactic sequence `simp [rootW, Pi.single_apply, hab, hab.symm] <;> ring`. Rewrite using `[hA, hB]`. Establish `hx : nu a - nu b + ((k + 1 : ℕ) : ℤ) - (l : ℤ) = (nu a - nu b + (k : ℤ) - (l : ℤ)) + 1`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx, descPochhammer_succ_eval_add_one, descPochhammer_succ_eval_right, Nat.choose_succ_succ, Nat.descFactorial_succ]`. Establish `hch : (k.choose (j + 1) : KK O) * ((j : KK O) + 1) = (k.choose j : KK O) * ((k : KK O) - j)`. Use `congrArg (Nat.cast : ℕ → KK O) (Nat.choose_succ_right_eq k j)` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `[hjk] at this`. Conclude with `this`. Generalize the expression as in `(descPochhammer ℤ j).eval (nu a - nu b + (k : ℤ) - (l : ℤ)) = P`. Distinguish the cases in `hjl : j ≤ l`. Move the coercions through the operations in `[hjk, hjl]`.
+Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(((l : KK O) - j) * (l.descFactorial j : KK O) * (P : KK O)) * hch`. Establish `h0 : l.descFactorial j = 0` using `Nat.descFactorial_eq_zero_iff_lt.mpr (by omega)`. Establish `h0' : l - j = 0` using `by omega`. Simplify using `[h0, h0']`. Simplify using `[Nat.choose_succ_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem raise_pow_lower_pow_expansion {E : GLOps n (KK O) V} (hE : IsGLRep E) {a b : Fin n} (hab : a ≠ b) {nu : Fin n → ℤ} {y : V}
     (hy : y ∈ weightSp E nu) (k l : ℕ) :
@@ -165,17 +165,15 @@ theorem raise_pow_lower_pow_expansion {E : GLOps n (KK O) V} (hE : IsGLRep E) {a
     · simp [Nat.choose_succ_self]
 
 /- English proof (translation)
-Simplify using `only [divPowE, LinearMap.smul_apply, map_smul]`. Rewrite using `[raise_pow_lower_pow_expansion hE hab hy k l, Finset.smul_sum, Finset.smul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j hj`. Establish `hjk : j ≤ k` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `split_ifs with hjl`. Simplify using `only [smul_smul]`. Use `congr 1`. Establish `hP : (descPochhammer ℤ j).eval (nu a - nu b + (k : ℤ) - (l : ℤ)) = (j.factorial : ℤ) * Ring.choose (nu a - nu b + (k : ℤ) - (l : ℤ)) j` using `by first`. Consider the case `rw [Polynomial.eval_eq_smeval, Ring.descPochhammer_eq_factorial_smul_choose, nsmul_eq_mul]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [Ring.choose]; simp)`. Rewrite using `[hP]`. Establish `h1 : ((k.factorial : ℕ) : KK O) = (k.choose j : KK O) * j.factorial * (k - j).factorial`. Conclude with `(Nat.choose_mul_factorial_mul_factorial hjk).symm` after adjusting the coercions. Establish `h2 : ((l.factorial : ℕ) : KK O) = ((l - j).factorial : KK O) * l.descFactorial j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Nat.factorial_mul_descFactorial hjl).symm` after adjusting the coercions. Establish `h3 : (k.choose j : KK O) ≠ 0` using `by exact_mod_cast (Nat.choose_pos hjk).ne'`. Establish `h4 : (l.descFactorial j : KK O) ≠ 0`. Conclude with `(Nat.descFactorial_eq_zero_iff_lt.not.mpr (by omega))` after adjusting the coercions. Establish `h5 : (j.factorial : KK O) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h6 : ((k - j).factorial : KK O) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `h7 : ((l - j).factorial : KK O) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Rewrite using `[h1, h2]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
-
-Establish `h0 : l.descFactorial j = 0` using `Nat.descFactorial_eq_zero_iff_lt.mpr (by omega)`. Simplify using `[h0]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem raise_lower_dividedPower_binomial [CharZero (KK O)] {E : GLOps n (KK O) V} (hE : IsGLRep E) {a b : Fin n} (hab : a ≠ b)
     {nu : Fin n → ℤ} {y : V} (hy : y ∈ weightSp E nu) (k l : ℕ) :

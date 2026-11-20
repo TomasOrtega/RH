@@ -3,19 +3,19 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `p.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hp)`. Take `⟨r₀, hr₀⟩` from `i.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hi)`. Establish `hs' : ∀ w, p (s w) = w` using `fun w => LinearMap.congr_fun hs w`. Establish `hr' : ∀ u, r₀ (i u) = u` using `fun u => LinearMap.congr_fun hr₀ u`. Establish `hpi : ∀ u, p (i u) = 0` using `fun u => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: i u ∈ LinearMap.ker p` using `hex ▸ LinearMap.mem_range_self i u`. Conclude with `this`. Establish `hb' : ∀ u, b (i u) = i (a u)` using `fun u => LinearMap.congr_fun hb u`. Establish `hc' : ∀ v, p (b v) = c (p v)` using `fun v => LinearMap.congr_fun hc v`. Set `r : V →ₗ[K] U` to `r₀ ∘ₗ (LinearMap.id - s ∘ₗ p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hri : ∀ u, r (i u) = u` using `fun u => by`. Simplify using `[r, hpi, hr']`. Establish `hir : ∀ v, i (r v) = v - s (p v)` using `fun v => by`. Establish `: v - s (p v) ∈ LinearMap.range i`. Rewrite using `[hex, LinearMap.mem_ker, map_sub, hs', sub_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `this`. Establish `h2 : r v = u` using `by show r₀ (v - s (p v)) = u`. Rewrite using `[← hu, hr']`. Rewrite using `[h2, hu]`. Establish `hdec : b = (b ∘ₗ i) ∘ₗ r + (b ∘ₗ s) ∘ₗ p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, hir, map_sub, sub_add_cancel]`. Establish `h1 : r ∘ₗ (b ∘ₗ i) = a`. Use extensionality with `u`. Simplify using `only [LinearMap.comp_apply, hb', hri]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : p ∘ₗ (b ∘ₗ s) = c`. Use extensionality with `w`. Simplify using `only [LinearMap.comp_apply, hc', hs']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_add, ← hdec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = LinearMap.trace K U a + LinearMap.trace K W c := by`. Rewrite using `[LinearMap.trace_comp_comm' r (b ∘ₗ i), LinearMap.trace_comp_comm' p (b ∘ₗ s), h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem trace_eq_add_of_shortExact (K : Type) [Field K]
     (U : Type) [AddCommGroup U] [Module K U] [FiniteDimensional K U]

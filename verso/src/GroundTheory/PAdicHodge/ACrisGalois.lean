@@ -12,9 +12,9 @@ section ExtGeneric
 variable {A B : Type*} [CommRing A] [CommRing B]
 
 /- English proof (translation)
-Establish `hz' : z ∈ (Ideal.span {a} ^ n).map (algebraMap A (AdicCompletion (Ideal.span {a}) A))`. Rewrite using `[← ker_adicCompletion_evalₐ (Submodule.fg_span_singleton _) n, RingHom.mem_ker]`. Conclude with `hz`. Rewrite `hz'` using `[Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hz'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow, map_pow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hF n)`.
+A detailed English derivation is pending.
 -/
 theorem AdicCompletion.map_mem_span_pow_of_evalₐ_eq_zero {a : A} {b : B}
     (F : AdicCompletion (Ideal.span {a}) A →+* B)
@@ -31,11 +31,11 @@ theorem AdicCompletion.map_mem_span_pow_of_evalₐ_eq_zero {a : A} {b : B}
   exact Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hF n)
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[IsHausdorff.eq_iff_smodEq (I := Ideal.span {b})]`. Introduce `n`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ (Ideal.span {a}) n x)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : AdicCompletion.evalₐ (Ideal.span {a}) n (algebraMap A (AdicCompletion (Ideal.span {a}) A) y) = Ideal.Quotient.mk _ y`. Rewrite using `[AdicCompletion.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, AdicCompletion.evalₐ_of]`. Establish `hz : AdicCompletion.evalₐ (Ideal.span {a}) n (x - algebraMap A (AdicCompletion (Ideal.span {a}) A) y) = 0`. Rewrite using `[map_sub, h1, hy, sub_self]`. Establish `e : F x - G x = F (x - algebraMap A _ y) - G (x - algebraMap A _ y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_sub, h y]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `sub_mem (AdicCompletion.map_mem_span_pow_of_evalₐ_eq_zero F hF n hz) (AdicCompletion.map_mem_span_pow_of_evalₐ_eq_zero G hG n hz)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AdicCompletion.ringHom_ext_span {a : A} {b : B} [IsHausdorff (Ideal.span {b}) B]
     {F G : AdicCompletion (Ideal.span {a}) A →+* B}
@@ -69,9 +69,7 @@ variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K]
 variable {p : ℕ} [hp : Fact p.Prime] [IsPerfectoidField K p]
 
 /- English proof (translation)
-Use `AdicCompletion.ringHom_ext_span (b := (p : B)) ?_ ?_ fun y => ?_` and prove the remaining obligations. Rewrite using `[map_natCast, map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite using `[map_natCast, map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`.
-
-Rewrite using `[AdicCompletion.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Conclude with `h y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringHom_ext {B : Type*} [CommRing B] [IsHausdorff (Ideal.span {(p : B)}) B]
     {F G : ACris K p →+* B}
@@ -84,7 +82,7 @@ theorem ringHom_ext {B : Type*} [CommRing B] [IsHausdorff (Ideal.span {(p : B)})
     exact h y
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_p_le_comap_endo (f : ACrisZero K p →+* ACrisZero K p) :
     Ideal.span {(p : ACrisZero K p)} ≤ (Ideal.span {(p : ACris K p)}).comap
@@ -97,20 +95,20 @@ def extendEndo (f : ACrisZero K p →+* ACrisZero K p) : ACris K p →+* ACris K
     (span_p_le_comap_endo f)
 
 /- English proof (translation)
-The claim follows from `AdicCompletion.extendRingHom_of _ _ _ _ y`.
+A detailed English derivation is pending.
 -/
 theorem extendEndo_of (f : ACrisZero K p →+* ACrisZero K p) (y : ACrisZero K p) :
     extendEndo f (AdicCompletion.of _ _ y) = AdicCompletion.of _ _ (f y) :=
   AdicCompletion.extendRingHom_of _ _ _ _ y
 
 /- English proof (translation)
-The claim follows from `ringHom_ext fun y => by rw [extendEndo_of, RingHom.id_apply, RingHom.id_apply]`.
+A detailed English derivation is pending.
 -/
 theorem extendEndo_id : extendEndo (RingHom.id (ACrisZero K p)) = RingHom.id (ACris K p) :=
   ringHom_ext fun y => by rw [extendEndo_of, RingHom.id_apply, RingHom.id_apply]
 
 /- English proof (translation)
-The claim follows from `ringHom_ext fun y => by rw [RingHom.comp_apply, extendEndo_of g y, extendEndo_of f (g y), extendEndo_of (f.comp g) y, RingHom.comp_apply]`.
+A detailed English derivation is pending.
 -/
 theorem extendEndo_comp (f g : ACrisZero K p →+* ACrisZero K p) :
     (extendEndo f).comp (extendEndo g) = extendEndo (f.comp g) :=
@@ -141,21 +139,21 @@ def galAway (σ : Gal(PadicAlgCl p/K)) : 𝔸 →+* 𝔸 :=
       exact IsLocalization.Away.algebraMap_isUnit (p : AInf ℂ_[p] p))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ x`.
+A detailed English derivation is pending.
 -/
 theorem galAway_algebraMap (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p) :
     galAway σ (algebraMap (AInf ℂ_[p] p) 𝔸 x) = algebraMap (AInf ℂ_[p] p) 𝔸 (σ • x) :=
   IsLocalization.lift_eq _ x
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (p : AInf ℂ_[p] p)) (RingHom.ext fun x => by rw [RingHom.comp_apply, RingHom.comp_apply, galAway_algebraMap, one_smul, RingHom.id_apply])`.
+A detailed English derivation is pending.
 -/
 theorem galAway_one : galAway (1 : Gal(PadicAlgCl p/K)) = RingHom.id 𝔸 :=
   IsLocalization.ringHom_ext (Submonoid.powers (p : AInf ℂ_[p] p)) (RingHom.ext fun x => by
     rw [RingHom.comp_apply, RingHom.comp_apply, galAway_algebraMap, one_smul, RingHom.id_apply])
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (p : AInf ℂ_[p] p)) (RingHom.ext fun x => by rw [RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply, galAway_algebraMap, galAway_algebraMap, galAway_algebraMap, mul_smul])`.
+A detailed English derivation is pending.
 -/
 theorem galAway_mul (σ τ : Gal(PadicAlgCl p/K)) :
     galAway (σ * τ) = (galAway σ).comp (galAway τ) :=
@@ -164,7 +162,7 @@ theorem galAway_mul (σ τ : Gal(PadicAlgCl p/K)) :
       galAway_algebraMap, galAway_algebraMap, mul_smul])
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[dpow_eq_iff, ← map_natCast (galAway σ), ← map_mul, factorial_mul_dpow, map_pow, galAway_algebraMap]`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 -/
 theorem galAway_dpow (σ : Gal(PadicAlgCl p/K)) (n : ℕ) (x : AInf ℂ_[p] p) :
     galAway σ (dpow n x) = dpow n (σ • x) := by
@@ -173,7 +171,7 @@ theorem galAway_dpow (σ : Gal(PadicAlgCl p/K)) (n : ℕ) (x : AInf ℂ_[p] p) :
     galAway_algebraMap]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[RingHom.mem_ker]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AInf.fontaineTheta_gal_smul, hx]`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gal_smul_mem_ker (σ : Gal(PadicAlgCl p/K)) {x : AInf ℂ_[p] p} (hx : x ∈ RingHom.ker θ) :
     σ • x ∈ RingHom.ker θ := by
@@ -183,11 +181,9 @@ theorem gal_smul_mem_ker (σ : Gal(PadicAlgCl p/K)) {x : AInf ℂ_[p] p} (hx : x
   simp
 
 /- English proof (translation)
-Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨n, x, hx, rfl⟩` from `hy`. Rewrite using `[galAway_dpow]`. Conclude with `dpow_mem (gal_smul_mem_ker σ hx) n`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `algebraMap r`. Rewrite using `[galAway_algebraMap]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`.
-
-Consider the case `mul y z _ _ hy hz => rw [map_mul]`. Conclude with `mul_mem hy hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem galAway_mem (σ : Gal(PadicAlgCl p/K)) {y : 𝔸} (hy : y ∈ ACrisZero ℂ_[p] p) :
     galAway σ y ∈ ACrisZero ℂ_[p] p := by
@@ -242,7 +238,7 @@ theorem coe_gal_smul_zero (σ : Gal(PadicAlgCl p/K)) (y : ACrisZero ℂ_[p] p) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (galAway_algebraMap σ x)`.
+A detailed English derivation is pending.
 -/
 theorem gal_smul_algebraMap_zero (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p) :
     σ • algebraMap (AInf ℂ_[p] p) (ACrisZero ℂ_[p] p) x =
@@ -250,7 +246,7 @@ theorem gal_smul_algebraMap_zero (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p)
   Subtype.ext (galAway_algebraMap σ x)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (galAway_dpow σ n x)`.
+A detailed English derivation is pending.
 -/
 theorem gal_smul_dpow (σ : Gal(PadicAlgCl p/K)) {x : AInf ℂ_[p] p} (hx : x ∈ RingHom.ker θ)
     (n : ℕ) :
@@ -259,13 +255,13 @@ theorem gal_smul_dpow (σ : Gal(PadicAlgCl p/K)) {x : AInf ℂ_[p] p} (hx : x �
   Subtype.ext (galAway_dpow σ n x)
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun y => one_smul Gal(PadicAlgCl p/K) y`.
+A detailed English derivation is pending.
 -/
 theorem galZero_one : galZero (1 : Gal(PadicAlgCl p/K)) = RingHom.id (ACrisZero ℂ_[p] p) :=
   RingHom.ext fun y => one_smul Gal(PadicAlgCl p/K) y
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun y => mul_smul σ τ y`.
+A detailed English derivation is pending.
 -/
 theorem galZero_mul (σ τ : Gal(PadicAlgCl p/K)) : galZero (σ * τ) = (galZero σ).comp (galZero τ) :=
   RingHom.ext fun y => mul_smul σ τ y
@@ -274,20 +270,20 @@ def galCris (σ : Gal(PadicAlgCl p/K)) : ACris ℂ_[p] p →+* ACris ℂ_[p] p :
   extendEndo (galZero σ)
 
 /- English proof (translation)
-The claim follows from `extendEndo_of _ y`.
+A detailed English derivation is pending.
 -/
 theorem galCris_of (σ : Gal(PadicAlgCl p/K)) (y : ACrisZero ℂ_[p] p) :
     galCris σ (AdicCompletion.of _ _ y) = AdicCompletion.of _ _ (σ • y) :=
   extendEndo_of _ y
 
 /- English proof (translation)
-Rewrite using `[galCris, galZero_one, extendEndo_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem galCris_one : galCris (1 : Gal(PadicAlgCl p/K)) = RingHom.id (ACris ℂ_[p] p) := by
   rw [galCris, galZero_one, extendEndo_id]
 
 /- English proof (translation)
-Rewrite using `[galCris, galCris, galCris, galZero_mul, extendEndo_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem galCris_mul (σ τ : Gal(PadicAlgCl p/K)) :
     galCris (σ * τ) = (galCris σ).comp (galCris τ) := by
@@ -313,7 +309,7 @@ theorem gal_smul_def (σ : Gal(PadicAlgCl p/K)) (x : ACris ℂ_[p] p) : σ • x
   rfl
 
 /- English proof (translation)
-The claim follows from `galCris_of σ y`.
+A detailed English derivation is pending.
 -/
 theorem gal_smul_of (σ : Gal(PadicAlgCl p/K)) (y : ACrisZero ℂ_[p] p) :
     σ • AdicCompletion.of (Ideal.span {(p : ACrisZero ℂ_[p] p)}) _ y =
@@ -321,7 +317,7 @@ theorem gal_smul_of (σ : Gal(PadicAlgCl p/K)) (y : ACrisZero ℂ_[p] p) :
   galCris_of σ y
 
 /- English proof (translation)
-Rewrite using `[AdicCompletion.algebraMap_apply, AdicCompletion.algebraMap_apply, gal_smul_of, gal_smul_algebraMap_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gal_smul_algebraMap (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p) :
     σ • algebraMap (AInf ℂ_[p] p) (ACris ℂ_[p] p) x =
@@ -330,7 +326,7 @@ theorem gal_smul_algebraMap (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p) :
     gal_smul_algebraMap_zero]
 
 /- English proof (translation)
-Establish `h : (thetaAway ℂ_[p] p).comp (galAway σ) = ((galCp σ : ℂ_[p] ≃+* ℂ_[p]) : ℂ_[p] →+* ℂ_[p]).comp (thetaAway ℂ_[p] p)` using `IsLocalization.ringHom_ext (Submonoid.powers (p : AInf ℂ_[p] p)) (RingHom.ext fun x => by`. Simplify using `only [RingHom.comp_apply, galAway_algebraMap, thetaAway_algebraMap, RingEquiv.coe_toRingHom, galCp_apply]`. Conclude with `AInf.fontaineTheta_gal_smul σ x)`. Conclude with `congrFun (congrArg DFunLike.coe h) y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaAway_galAway (σ : Gal(PadicAlgCl p/K)) (y : 𝔸) :
     thetaAway ℂ_[p] p (galAway σ y) = σ • thetaAway ℂ_[p] p y := by
@@ -343,7 +339,7 @@ theorem thetaAway_galAway (σ : Gal(PadicAlgCl p/K)) (y : 𝔸) :
   exact congrFun (congrArg DFunLike.coe h) y
 
 /- English proof (translation)
-Rewrite using `[coe_thetaZero, coe_thetaZero, coe_gal_smul_zero, thetaAway_galAway]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaZero_gal_smul (σ : Gal(PadicAlgCl p/K)) (y : ACrisZero ℂ_[p] p) :
     ((thetaZero ℂ_[p] p (σ • y) : normInteger ℂ_[p]) : ℂ_[p]) =
@@ -351,9 +347,9 @@ theorem thetaZero_gal_smul (σ : Gal(PadicAlgCl p/K)) (y : ACrisZero ℂ_[p] p) 
   rw [coe_thetaZero, coe_thetaZero, coe_gal_smul_zero, thetaAway_galAway]
 
 /- English proof (translation)
-Establish `h : (theta ℂ_[p] p).comp (galCris σ) = (integerMap (galCp σ : ℂ_[p] →+* ℂ_[p]) (AInf.norm_galCp_toRingHom σ)).comp (theta ℂ_[p] p)` using `ringHom_ext fun y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, galCris_of, theta_of, theta_of, coe_integerMap, thetaZero_gal_smul]`. Both sides reduce to the same expression. Establish `h'` using `congrArg (fun f => ((f x : normInteger ℂ_[p]) : ℂ_[p])) h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [RingHom.comp_apply, coe_integerMap] at h'`. Conclude with `h'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_gal_smul (σ : Gal(PadicAlgCl p/K)) (x : ACris ℂ_[p] p) :
     ((theta ℂ_[p] p (σ • x) : normInteger ℂ_[p]) : ℂ_[p]) =
@@ -371,7 +367,7 @@ theorem theta_gal_smul (σ : Gal(PadicAlgCl p/K)) (x : ACris ℂ_[p] p) :
   exact h'
 
 /- English proof (translation)
-Establish `h : (phiAway ℂ_[p] p).comp (galAway σ) = (galAway σ).comp (phiAway ℂ_[p] p)` using `IsLocalization.ringHom_ext (Submonoid.powers (p : AInf ℂ_[p] p)) (RingHom.ext fun x => by`. Simplify using `only [RingHom.comp_apply, galAway_algebraMap, phiAway_algebraMap, AInf.gal_smul_frobeniusEquiv])`. Conclude with `congrFun (congrArg DFunLike.coe h) y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiAway_galAway (σ : Gal(PadicAlgCl p/K)) (y : 𝔸) :
     phiAway ℂ_[p] p (galAway σ y) = galAway σ (phiAway ℂ_[p] p y) := by
@@ -382,7 +378,7 @@ theorem phiAway_galAway (σ : Gal(PadicAlgCl p/K)) (y : 𝔸) :
   exact congrFun (congrArg DFunLike.coe h) y
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by rw [coe_phiZero, coe_gal_smul_zero, coe_gal_smul_zero, coe_phiZero, phiAway_galAway])`.
+A detailed English derivation is pending.
 -/
 theorem phiZero_gal_smul (σ : Gal(PadicAlgCl p/K)) (y : ACrisZero ℂ_[p] p) :
     phiZero ℂ_[p] p (σ • y) = σ • phiZero ℂ_[p] p y :=
@@ -390,7 +386,7 @@ theorem phiZero_gal_smul (σ : Gal(PadicAlgCl p/K)) (y : ACrisZero ℂ_[p] p) :
     rw [coe_phiZero, coe_gal_smul_zero, coe_gal_smul_zero, coe_phiZero, phiAway_galAway])
 
 /- English proof (translation)
-Establish `h0 : (phiZero ℂ_[p] p).comp (galZero σ) = (galZero σ).comp (phiZero ℂ_[p] p)` using `RingHom.ext fun y => phiZero_gal_smul σ y`. Establish `h : (phi ℂ_[p] p).comp (galCris σ) = (galCris σ).comp (phi ℂ_[p] p)`. Rewrite using `[phi_eq_extendEndo, galCris, extendEndo_comp, extendEndo_comp, h0]`. Conclude with `congrFun (congrArg DFunLike.coe h) x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_gal_smul (σ : Gal(PadicAlgCl p/K)) (x : ACris ℂ_[p] p) :
     phi ℂ_[p] p (σ • x) = σ • phi ℂ_[p] p x := by

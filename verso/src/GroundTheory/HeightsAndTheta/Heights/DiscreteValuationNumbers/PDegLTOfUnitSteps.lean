@@ -5,13 +5,13 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.NumbersDVR
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `h1 K b`. Rewrite using `[hl f]`. Use `clear hl`. Proceed by induction on `l with`. Consider the case `nil`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `cs`. Use `Filter.Eventually.of_forall fun m => ?_` and prove the remaining obligations. Establish `h0` using `(h2 K n cs f f 0 0 0).2.1`. Rewrite `h0` using `[zero_smul, zero_smul]`. Simplify using `only [List.map_nil, List.sum_nil]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Both sides reduce to the same expression. Consider the case `cons t l ih`. Simplify using `only [List.map_cons, List.sum_cons]`. Establish `hs : DegLT (shiftFn t.1.2 (diffStep (Pi.single t.1.1 1) f)) n` using `(h3 K n (diffStep (Pi.single t.1.1 1) f) f 0 t.1.2).2.2.1 (hf t.1.1)`.
+Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : DegLT (t.2 • shiftFn t.1.2 (diffStep (Pi.single t.1.1 1) f)) n` using `(h3 K n (shiftFn t.1.2 (diffStep (Pi.single t.1.1 1) f)) f t.2 0).2.1 hs`. Conclude with `(h3 K n _ (List.map (fun t => t.2 • shiftFn t.1.2 (diffStep (Pi.single t.1.1 1) f)) l).sum 0 0).1 hc ih`.
+A detailed English derivation is pending.
 -/
 theorem DegLTOfUnitSteps.degLT_diffStep (h1 : DiffStepExpansion.Statement)
     (h2 : MixedDiffLinear.Statement) (h3 : DegLTClosure.Statement)
@@ -40,9 +40,9 @@ theorem DegLTOfUnitSteps.degLT_diffStep (h1 : DiffStepExpansion.Statement)
       0 0).1 hc ih
 
 /- English proof (translation)
-Introduce `K _ _ n f hf bs`. Establish `key : mixedDiff bs f = mixedDiff (Fin.tail bs) (diffStep (bs 0) f)`. Rewrite using `[(h2 K n (Fin.tail bs) f f 0 0 (bs 0)).2.2.2.1, ← (h2 K n (Fin.tail bs) f f 0 0 (bs 0)).2.2.2.2]`. Use `congr 1`. Conclude with `(Fin.cons_self_tail bs).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `DegLTOfUnitSteps.degLT_diffStep h1 h2 h3 K n f hf (bs 0) _`.
+A detailed English derivation is pending.
 -/
 theorem DegLTOfUnitSteps.proof (h1 : DiffStepExpansion.Statement)
     (h2 : MixedDiffLinear.Statement) (h3 : DegLTClosure.Statement) :

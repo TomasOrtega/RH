@@ -1,11 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Use `letI : Algebra (FractionRing O) ℂ := FractionRing.liftAlgebra O ℂ`. Use `haveI : IsScalarTower O (FractionRing O) ℂ := FractionRing.isScalarTower_liftAlgebra O ℂ`. Use `haveI : Algebra.IsAlgebraic (FractionRing O) ℂ := Algebra.IsAlgebraic.extendScalars (FaithfulSMul.algebraMap_injective O (FractionRing O))`. Use `haveI : CharZero (FractionRing O) := RingHom.charZero (algebraMap (FractionRing O) ℂ)`. Use `haveI : Algebra.IsSeparable (FractionRing O) ℂ := Algebra.IsAlgebraic.isSeparable_of_perfectField`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsAlgClosure (FractionRing O) ℂ := ⟨inferInstance, inferInstance⟩`. Use `haveI : Normal (FractionRing O) ℂ := inferInstance`. Use `haveI : IsGalois (FractionRing O) ℂ := ⟨⟩`. Establish `hmem : z ∈ Set.range (algebraMap (FractionRing O) ℂ)` using `(InfiniteGalois.mem_range_algebraMap_iff_fixed z).2 (fun f => hz (f.restrictScalars O))`. Take `⟨q, rfl⟩` from `hmem`.
-
-Take `⟨⟨a, b⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors O) q`. Use `⟨a, b, nonZeroDivisors.ne_zero b.2, ?_⟩` and prove the remaining obligations. Use `show algebraMap O ℂ b * algebraMap (FractionRing O) ℂ (IsLocalization.mk' (FractionRing O) a b) = algebraMap O ℂ a`. Rewrite using `[IsScalarTower.algebraMap_apply O (FractionRing O) ℂ (b : O), IsScalarTower.algebraMap_apply O (FractionRing O) ℂ a, ← map_mul, mul_comm, IsLocalization.mk'_spec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.exists_mul_eq_algebraMap_of_galois_fixed (O : Type) [CommRing O] [IsDomain O] [Algebra O ℂ] [FaithfulSMul O ℂ]
     [Algebra.IsAlgebraic O ℂ] (z : ℂ) (hz : ∀ γ : ℂ ≃ₐ[O] ℂ, γ z = z) :
@@ -31,51 +29,43 @@ private theorem UpperTheory.exists_mul_eq_algebraMap_of_galois_fixed (O : Type) 
     IsLocalization.mk'_spec]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ X _ I hI`. Use `haveI := Fintype.ofFinite X`. Establish `hfix : ∀ x ∈ I, (∀ γ : ℂ ≃ₐ[O] ℂ, (fun g => γ (x g)) = x) → x ∈ Submodule.span ℂ {x | x ∈ I ∧ ∀ g, x g ∈ (algebraMap O ℂ).range}`. Introduce `x hx hγ`. Establish `hc : ∀ g, ∃ a b : O, b ≠ 0 ∧ algebraMap O ℂ b * x g = algebraMap O ℂ a` using `fun g => UpperTheory.exists_mul_eq_algebraMap_of_galois_fixed O (x g) (fun γ => congrFun (hγ γ) g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose a b hb hab using hc`. Establish `hB : algebraMap O ℂ (∏ g, b g) ≠ 0`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun g _ => (map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective O ℂ)).2 (hb g))`. Establish `hmem : algebraMap O ℂ (∏ g, b g) • x ∈ Submodule.span ℂ {x | x ∈ I ∧ ∀ g, x g ∈ (algebraMap O ℂ).range}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨I.smul_mem _ hx, fun g => ⟨a g * ∏ h ∈ Finset.univ.erase g, b h, ?_⟩⟩` and prove the remaining obligations. Use `show algebraMap O ℂ (a g * ∏ h ∈ Finset.univ.erase g, b h) = algebraMap O ℂ (∏ g, b g) * x g`. Rewrite using `[← Finset.mul_prod_erase Finset.univ b (Finset.mem_univ g)]`. Simplify using `only [map_mul, ← hab g]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `Submodule.smul_mem _ (algebraMap O ℂ (∏ g, b g))⁻¹ hmem`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hB, one_smul]`. Then use the resulting hypothesis. Establish `key : ∀ n : ℕ, ∀ y ∈ I, (Finset.univ.filter (fun g => y g ≠ 0)).card ≤ n → y ∈ Submodule.span ℂ {x | x ∈ I ∧ ∀ g, x g ∈ (algebraMap O ℂ).range}`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `y hy hc`. Establish `hy0 : y = 0`. Use function extensionality and compare the values at `g`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Use `Finset.card_pos.2 ⟨g, (by simpa using h : g ∈ Finset.univ.filter (fun g => y g ≠ 0))⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hy0]`. Conclude with `Submodule.zero_mem _`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Consider the case `succ n ih`. Introduce `y hy hc`. Distinguish the cases in `h0 : y = 0`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨g0, hg0⟩ : ∃ g, y g ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `h0 (funext h)`. Take `⟨x, hx⟩ : ∃ x : X → ℂ, x = (y g0)⁻¹ • y` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hxI : x ∈ I`. Rewrite using `[hx]`. Conclude with `I.smul_mem _ hy`. Establish `hxg0 : x g0 = 1`. Rewrite using `[hx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hg0]`. Establish `hsupp : ∀ g, x g = 0 ↔ y g = 0`. Introduce `g`. Rewrite using `[hx]`. Simplify using `[hg0]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyx : y = y g0 • x`. Rewrite using `[hx, smul_smul, mul_inv_cancel₀ hg0, one_smul]`. Distinguish the cases in `hall : ∀ γ : ℂ ≃ₐ[O] ℂ, (fun g => γ (x g)) = x`. Rewrite using `[hyx]`. Conclude with `Submodule.smul_mem _ _ (hfix x hxI hall)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_neg at hall`. Take `⟨γ, hγ⟩` from `hall`. Take `⟨d, hd⟩ : ∃ d : X → ℂ, d = (fun g => γ (x g)) - x` from `⟨_, rfl⟩`. Establish `hdI : d ∈ I`. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `I.sub_mem (hI γ x hxI) hxI`. Establish `hd0 : d ≠ 0`. Rewrite using `[hd]`. Conclude with `sub_ne_zero.2 hγ`. Choose the witnesses or unpack the hypotheses as in `⟨g1, hg1⟩ : ∃ g, d g ≠ 0 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hd0 (funext h)`. Establish `hdsupp : ∀ g, y g = 0 → d g = 0`. Introduce `g hg`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hd]`. Simplify using `[(hsupp g).2 hg]`. Establish `hdg0 : d g0 = 0`. Rewrite using `[hd]`. Simplify using `[hxg0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy1 : y g1 ≠ 0` using `fun e => hg1 (hdsupp g1 e)`. Establish `hdcard : (Finset.univ.filter (fun g => d g ≠ 0)).card ≤ n`. Establish `hsub : Finset.univ.filter (fun g => d g ≠ 0) ⊆ (Finset.univ.filter (fun g => y g ≠ 0)).erase g0`. Introduce `g hg`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.mem_erase, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨fun e => hg (e ▸ hdg0), fun e => hg (hdsupp g e)⟩`. Establish `h1` using `Finset.card_le_card hsub`. Establish `h2` using `Finset.card_erase_of_mem (show g0 ∈ Finset.univ.filter (fun g => y g ≠ 0) by simp [hg0])`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hdW` using `ih d hdI hdcard`. Take `⟨y', hy'⟩ : ∃ y' : X → ℂ, y' = y - (y g1 / d g1) • d` from `⟨_, rfl⟩`. Establish `hy'I : y' ∈ I`. Rewrite using `[hy']`. Conclude with `I.sub_mem hy (I.smul_mem _ hdI)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hy'card : (Finset.univ.filter (fun g => y' g ≠ 0)).card ≤ n`. Establish `hsub : Finset.univ.filter (fun g => y' g ≠ 0) ⊆ (Finset.univ.filter (fun g => y g ≠ 0)).erase g1`. Introduce `g hg`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hg`. Simplify using `only [Finset.mem_erase, Finset.mem_filter, Finset.mem_univ, true_and]`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply `hg` to reduce the goal to its premises. Rewrite using `[hy', Pi.sub_apply, Pi.smul_apply, smul_eq_mul, div_mul_cancel₀ _ hg1, sub_self]`. Introduce `e`.
-
-Apply `hg` to reduce the goal to its premises. Rewrite using `[hy', Pi.sub_apply, Pi.smul_apply, smul_eq_mul, e, hdsupp g e, mul_zero, sub_zero]`. Establish `h1` using `Finset.card_le_card hsub`. Establish `h2` using `Finset.card_erase_of_mem (show g1 ∈ Finset.univ.filter (fun g => y g ≠ 0) by simp [hy1])`. Use linear arithmetic over natural numbers and integers.
-
-Establish `hy'W` using `ih y' hy'I hy'card`. Establish `hyy : y = y' + (y g1 / d g1) • d`. Rewrite using `[hy', sub_add_cancel]`. Rewrite using `[hyy]`. Conclude with `Submodule.add_mem _ hy'W (Submodule.smul_mem _ _ hdW)`.
-
-Introduce `y hy`. Conclude with `key _ y hy le_rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.le_span_integralValued_of_galoisStable :
     ∀ (O : Type) [CommRing O] [IsDomain O] [Algebra O ℂ] [FaithfulSMul O ℂ] [Algebra.IsAlgebraic O ℂ] (X : Type) [Finite X] (I : Submodule ℂ (X → ℂ)), (∀ γ : ℂ ≃ₐ[O] ℂ, ∀ x ∈ I, (fun g => γ (x g)) ∈ I) → I ≤ Submodule.span ℂ {x | x ∈ I ∧ ∀ g, x g ∈ (algebraMap O ℂ).range} := by

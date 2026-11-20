@@ -22,11 +22,11 @@ open GlobalTheory
 namespace GlobalTheory.PolCharRes
 
 /- English proof (translation)
-Establish `hr : compNorm E (GlobalTheory.PolChar.resReal ν) = ν * (GlobalTheory.ThetaPull.thetaChar ν)⁻¹`. Use `Subtype.ext (MonoidHom.ext fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ν.1 (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap _ E (GlobalTheory.GalOfCusp.ideleNorm E x)) = ν.1 x * ((ν.1 (Units.map (GlobalTheory.UnitaryBC.conjAd E).toMonoidHom x))⁻¹)⁻¹`. Rewrite using `[GlobalTheory.GalOfCusp.ideleMap_ideleNorm, map_mul, GlobalTheory.PolChar.ideleConj_eq, inv_inv]`. Use `set ε := χ * (GlobalTheory.PolChar.resReal ν)⁻¹ with hε`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hεc : compNorm E ε = 1` using `by rw [hε, map_mul, map_inv, hχ, hr, mul_inv_cancel]`. Establish `hχe : χ = GlobalTheory.PolChar.resReal ν * ε` using `by rw [hε, mul_comm χ, mul_inv_cancel_left]`. Use `filter_upwards [(GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under (maximalRealSubfield E) E).eventually (GlobalTheory.HeckeSplit.eventually_unrAt χ.1 χ.2.1)] with w hu hf he`. Take `⟨hsp, hcard, hw'⟩` from `GlobalTheory.T.degreeOne_prime_CMField_over_split_maxRealSubfield E w hf he`. Use `⟨hu, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hεv : ε.val (w.under (𝓞 (maximalRealSubfield E))) = 1` using `GlobalTheory.T.heckeChar_local_eq_one_of_trivial_on_norms_split E ε hεc _ hsp _`. Rewrite using `[hχe, Formalism.L2.Host.HChar.val_mul, hεv, mul_one, GlobalTheory.T.heckeCharRestrictMaxReal_val_eq_prod_above E ν _ (fun w' h => ⟨hν.1 w', (hw' w' h).2⟩), Units.coe_prod, Finset.prod_congr rfl (fun w' h => by rw [hν.2.1 w', (hw' w' h).1]), Finset.prod_const, hcard, ← Complex.cpo …`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem val_below_of_degree_one (E : Type) [Field E] [NumberField E] [IsCMField E] (ν : Formalism.L2.Host.HChar E) (s : ℝ)
     (hν : ν.IsAbsPow s) (χ : Formalism.L2.Host.HChar (maximalRealSubfield E))
@@ -55,21 +55,21 @@ theorem val_below_of_degree_one (E : Type) [Field E] [NumberField E] [IsCMField 
   ring
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι ν s hν ψ hψ k μ hμ m hm`. Take `⟨hμc, art, n, hart, -, hlad⟩` from `hμ`. Establish `hχ : compNorm E (ψ * quadChar E ^ k) = ν * (GlobalTheory.ThetaPull.thetaChar ν)⁻¹`. Rewrite using `[map_mul, map_pow, compNorm_quadChar, one_pow, mul_one, hψ]`. Establish `hcyc : Continuous (cycBar E Ω l)` using `(Continuous.units_map _ (show Continuous (fun x : ℤ_[l] => algebraMap ℚ_[l] (Qbar l) (x : ℚ_[l])) from (continuous_algebraMap ℚ_[l] (Qbar l)).comp continuous_subtype_val)).comp (ReciprocityTheory.Gal.continuous_cycZ E Ω l)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← div_eq_one]`. Use `GlobalTheory.T.galoisCharacter_eq_one_of_trivial_degreeOne_frobenius E Ω l _ ((hμc.comp (GlobalTheory.T.continuous_restrictScalarsHom_maximalRealSubfield E Ω)).div' (hcyc.zpow m)) ?_` and prove the remaining obligations. Use `filter_upwards [val_below_of_degree_one E ν s hν _ hχ, GlobalTheory.HeightCounting.eventually_natCast_notMem E l] with w h1 hl hf he A σ hA hσ`. Take `⟨hu, hv⟩` from `h1 hf he`. Use `set F := maximalRealSubfield E`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA' : IsPlaceOver (F` using `F) A (w.under (𝓞 F)) := fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply F E Ω]`. Conclude with `hA (algebraMap (𝓞 F) (𝓞 E) x)`. Establish `hσ' : IsFrob (F` using `F) A (normV (w.under (𝓞 F))) (AlgEquiv.restrictScalarsHom F σ) := by`. Rewrite using `[GlobalTheory.T.absNorm_under_eq_of_inertiaDeg_one F E w hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨hσ.1, hσ.2⟩`. Establish `hl' : ((l : ℕ) : 𝓞 F) ∉ (w.under (𝓞 F)).asIdeal` using `fun h => hl (by`. Use `(Ideal.mem_comap).1 h` as an intermediate fact. Simplify using `using this)`. Establish `e1` using `hlad.frob_unr hart (Or.inl hl') hu hA' hσ'`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e2` using `ReciprocityTheory.Gal.cycZ_of_isFrob hl hA hσ`. Rewrite using `[MonoidHom.div_apply, div_eq_one]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[MonoidHom.comp_apply, e1, hv]`. Establish `hN : (Ideal.absNorm w.asIdeal : ℕ) = normV w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Establish `hmC : (-(2 * (s : ℂ))) = (((-m : ℤ)) : ℂ)`. Establish `: (2 * (s : ℂ)) = ((m : ℝ) : ℂ)` using `by rw [hm]; push_cast; ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : ((cycBar E Ω l σ : (Qbar l)ˣ) : Qbar l) = (normV w : Qbar l)`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] (Qbar l) (((ReciprocityTheory.Gal.cycZ E Ω l σ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) = _`. Rewrite using `[e2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Rewrite using `[hN, hmC, Complex.cpow_intCast, map_zpow₀, map_natCast, ← zpow_neg, neg_neg]`. Express the relevant statement in the definitionally equal form `_ = (((cycBar E Ω l σ) ^ m : (Qbar l)ˣ) : Qbar l)`. Rewrite using `[Units.val_zpow_eq_zpow_val, e3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrict_eq_cycBar_pow : ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (ν : Formalism.L2.Host.HChar E) (s : ℝ), ν.IsAbsPow s →

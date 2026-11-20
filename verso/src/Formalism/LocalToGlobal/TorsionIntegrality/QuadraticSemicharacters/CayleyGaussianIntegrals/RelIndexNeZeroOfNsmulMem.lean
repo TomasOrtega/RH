@@ -14,15 +14,13 @@ section Index
 variable {V : Type*} [AddCommGroup V]
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Take `⟨k, φ, hφ⟩` from `Module.Finite.exists_fin' ℤ F`. Set `ψ : (Fin k → ℤ) →+ (Fin k → ZMod N)` to `AddMonoidHom.compLeft (Int.castAddHom (ZMod N)) (Fin k)`. Establish `hle : ψ.ker ≤ (H.addSubgroupOf F).comap φ.toAddMonoidHom`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx'` using `(AddMonoidHom.mem_ker).1 hx`. Establish `hdiv : ∀ i, (N : ℤ) ∣ x i`. Introduce `i`. Establish `hi` using `congrFun hx' i`. Simplify `hi` using `[ψ, AddMonoidHom.compLeft, ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `choose y hy using hdiv`. Establish `hxy : x = (N : ℤ) • y`. Use function extensionality and compare the values at `i`. Simplify using `[hy i]`. Rewrite using `[AddSubgroup.mem_comap, AddSubgroup.mem_addSubgroupOf, hxy]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφy : φ.toAddMonoidHom ((N : ℤ) • y) = N • φ y`. Rewrite using `[LinearMap.toAddMonoidHom_coe, map_zsmul, natCast_zsmul]`. Rewrite using `[hφy, AddSubgroup.coe_nsmul]`. Conclude with `h _ (φ y).2`. Establish `h1 : ψ.ker.index ≠ 0` using `by haveI : Finite ((Fin k → ℤ) ⧸ ψ.ker) := Finite.of_equiv _ (QuotientAddGroup.quotientKerEquivRange ψ).symm.toEquiv`.
-
-Conclude with `AddSubgroup.index_ne_zero_of_finite`. Establish `h2 : ((H.addSubgroupOf F).comap φ.toAddMonoidHom).index ≠ 0` using `ne_zero_of_dvd_ne_zero h1 (AddSubgroup.index_dvd_of_le hle)`. Rewrite `h2` using `[AddSubgroup.index_comap_of_surjective _ hφ]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_nsmul_mem (H F : AddSubgroup V) [Module.Finite ℤ F] (N : ℕ) (hN : 0 < N)
     (h : ∀ x ∈ F, N • x ∈ H) : H.relIndex F ≠ 0 := by
@@ -61,9 +59,7 @@ def nsmulHom [Module ℂ V] (N : ℕ) : V →+ V where
   map_add' _ _ := smul_add _ _ _
 
 /- English proof (translation)
-Introduce `x y hxy`. Establish `hxy' : N • x = N • y` using `hxy`. Establish `h : (N : ℂ) • x = (N : ℂ) • y`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Conclude with `hxy'`.
-
-Conclude with `smul_right_injective V (Nat.cast_ne_zero.mpr hN.ne') h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmulHom_injective [Module ℂ V] (N : ℕ) (hN : 0 < N) : Function.Injective (nsmulHom (V := V) N) := by
   intro x y hxy
@@ -74,11 +70,9 @@ theorem nsmulHom_injective [Module ℂ V] (N : ℕ) (hN : 0 < N) : Function.Inje
   exact smul_right_injective V (Nat.cast_ne_zero.mpr hN.ne') h
 
 /- English proof (translation)
-Set `g : K →+ F` to `{ toFun := fun x => ⟨N • (x : V), hK x x.2⟩ map_zero' := Subtype.ext (by simp) map_add' := fun x y => Subtype.ext (by simp [smul_add]) }`. Establish `hg : Function.Injective g`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `nsmulHom_injective (V := V) N hN` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg Subtype.val hxy`. Use `haveI : Module.Finite ℤ K := Module.Finite.of_injective g.toIntLinearMap hg`. Use `relIndex_ne_zero_of_nsmul_mem H K (M * N) (Nat.mul_pos hM hN) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[mul_smul]`.
-
-Conclude with `hH _ (hK x hx)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_bound [Module ℂ V] (H K F : AddSubgroup V) [Module.Finite ℤ F] (N M : ℕ)
     (hN : 0 < N) (hM : 0 < M) (hK : ∀ x ∈ K, N • x ∈ F) (hH : ∀ x ∈ F, M • x ∈ H) : H.relIndex K ≠ 0 := by
@@ -111,12 +105,12 @@ def stdLatEquiv (L : PeriodPair) (m : Type*) : stdLat L m ≃+ (m → L.lattice)
   map_add' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `Module.Finite.equiv (stdLatEquiv L m).symm.toIntLinearEquiv`.
+A detailed English derivation is pending.
 -/
 theorem stdLat_finite (L : PeriodPair) (m : Type*) [Finite m] : Module.Finite ℤ (stdLat L m) := Module.Finite.equiv (stdLatEquiv L m).symm.toIntLinearEquiv
 
 /- English proof (translation)
-Rewrite using `[mem_stdLat]`. Use `show _ ↔ ∀ a, slice a x ∈ stdLat L n`. Simplify using `only [mem_stdLat, slice]`. Conclude with `⟨fun h a i => h (a, i), fun h p => h p.1 p.2⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_stdLat_fin_four_prod_iff_mem_pow4 (L : PeriodPair) (n : Type*) (x : Fin 4 × n → ℂ) :
     x ∈ stdLat L (Fin 4 × n) ↔ x ∈ pow4 (stdLat L n) := by
@@ -126,13 +120,13 @@ theorem mem_stdLat_fin_four_prod_iff_mem_pow4 (L : PeriodPair) (n : Type*) (x : 
   exact ⟨fun h a i => h (a, i), fun h p => h p.1 p.2⟩
 
 /- English proof (translation)
-Take `⟨p, q, rfl⟩` from `hk`. Establish `hs : ((Real.sqrt (d : ℝ) : ℝ) : ℂ) * ((Real.sqrt (d : ℝ) : ℝ) : ℂ) = (d : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Establish `hδ2 : (Complex.I * ((Real.sqrt (d : ℝ) : ℝ) : ℂ)) * (Complex.I * ((Real.sqrt (d : ℝ) : ℝ) : ℂ)) = -(d : ℂ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take the linear combination `(Complex.I * Complex.I) * hs + (d : ℂ) * Complex.I_mul_I`. Establish `hpP : (p : ℂ) * (p.den : ℂ) = (p.num : ℂ)` using `by exact_mod_cast Rat.mul_den_eq_num p`. Establish `hqQ : (q : ℂ) * (q.den : ℂ) = (q.num : ℂ)` using `by exact_mod_cast Rat.mul_den_eq_num q`. Use `⟨2 * a * p.den * q.den, by positivity, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, n, rfl⟩` from `PeriodPair.mem_lattice.1 hz`. Rewrite using `[PeriodPair.mem_lattice]`. Use `⟨m * (2 * a * q.den * p.num - 2 * a * p.den * q.num * b) + n * (-(p.den * q.num * (b ^ 2 + d))), m * (2 * a * (2 * a * p.den * q.num)) + n * (2 * a * q.den * p.num + 2 * a * p.den * q.num * b), ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.L2.Th1.F.cmPair, Formalism.L2.Th1.F.cmTheta]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(-((m : ℂ) * a + n * ((b + Complex.I * ((Real.sqrt (d : ℝ) : ℝ) : ℂ)) / 2)) * (2 * a * q.den)) * hpP - ((m : ℂ) * a + n * ((b + Complex.I * ((Real.sqrt (d : ℝ) : ℝ) : ℂ)) / 2)) * (2 * a * p.den * (Complex.I * ((Real.sqrt (d : ℝ) : ℝ) : ℂ))) * hqQ - ((a : ℂ) * p.den * q.num * n) * …`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cmPair_mul_mem (a : ℕ) (b : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (k : ℂ) (hk : InK d k) :
     ∃ N : ℕ, 0 < N ∧ ∀ z ∈ (Formalism.L2.Th1.F.cmPair a b d ha hd).lattice,
@@ -161,9 +155,9 @@ theorem cmPair_mul_mem (a : ℕ) (b : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (
     - ((a : ℂ) * p.den * q.num * n) * hδ2
 
 /- English proof (translation)
-Take `⟨N, hN, hmul⟩` from `cmPair_mul_mem a b d ha hd k hk`. Use `⟨N, hN, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨m, n, rfl⟩` from `PeriodPair.mem_lattice.1 hz`. Establish `h0 : ((m : ℂ) * (Formalism.L2.Th1.F.cmPair a b d ha hd).ω₁ + n * (Formalism.L2.Th1.F.cmPair a b d ha hd).ω₂) ∈ (Formalism.L2.Th1.F.cmPair a b d ha hd).lattice` using `PeriodPair.mem_lattice.2 ⟨m, n, rfl⟩`. Take `⟨m', n', hmn⟩` from `PeriodPair.mem_lattice.1 (hmul _ h0)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[PeriodPair.mem_lattice]`. Use `⟨m', n', ?_⟩` and prove the remaining obligations. Simplify using `only [cmL, Formalism.L2.Th1.F.scalePair]`. Take the linear combination `lam * hmn`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cmL_mul_mem (a : ℕ) (b : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (lam : ℂ) (hlam : lam ≠ 0) (k : ℂ)
     (hk : InK d k) : ∃ N : ℕ, 0 < N ∧ ∀ z ∈ (cmL a b d ha hd lam hlam).lattice,
@@ -181,15 +175,15 @@ theorem cmL_mul_mem (a : ℕ) (b : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (lam
   linear_combination lam * hmn
 
 /- English proof (translation)
-Use `choose Nf hNf hmem using fun p : m × m => cmL_mul_mem a b d ha hd lam hlam _ (hf p.1 p.2)`. Use `⟨∏ p, Nf p, Finset.prod_pos fun p _ => hNf p, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem_stdLat]`. Introduce `w`. Establish `hfx : f x w = ∑ w', x w' * f (Pi.single w' 1) w` using `by conv_lhs => rw [← Finset.univ_sum_single x]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun w' _ => ?_` and prove the remaining obligations. Rewrite using `[show (Pi.single w' (x w') : m → ℂ) = x w' • (Pi.single w' (1 : ℂ) : m → ℂ) by`. Use extensionality with `j`. Simplify using `[Pi.single_apply]]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul]`. Use `show (∏ p, Nf p) • f x w ∈ _`. Rewrite using `[hfx, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun w' _ => ?_` and prove the remaining obligations. Establish `h1` using `hmem (w, w') (x w') (hx w')`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr⟩ : Nf (w, w') ∣ ∏ p, Nf p` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ _)`. Rewrite using `[hr]`. Establish `hre : (Nf (w, w') * r) • (x w' * f (Pi.single w' 1) w) = r • ((Nf (w, w') : ℂ) * f (Pi.single w' 1) w * x w')`. Rewrite using `[nsmul_eq_mul, nsmul_eq_mul]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hre]`. Conclude with `nsmul_mem h1 r`.
+A detailed English derivation is pending.
 -/
 theorem entries_bound (a : ℕ) (b : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (lam : ℂ) (hlam : lam ≠ 0)
     {m : Type*} [Fintype m] [DecidableEq m] (f : (m → ℂ) →ₗ[ℂ] (m → ℂ))
@@ -224,7 +218,7 @@ theorem entries_bound (a : ℕ) (b : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (l
 end Lattice
 
 /- English proof (translation)
-Use `⟨H.relIndex K, Nat.pos_of_ne_zero h, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hmem` using `AddSubgroup.nsmul_index_mem (H.addSubgroupOf K) ⟨x, hx⟩`. Use `show (H.addSubgroupOf K).index • x ∈ H`. Simplify `hmem` using `[AddSubgroup.mem_addSubgroupOf]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_pos_nsmul_mem_of_relIndex_ne_zero {W : Type*} [AddCommGroup W] (H K : AddSubgroup W)
     (h : H.relIndex K ≠ 0) : ∃ N : ℕ, 0 < N ∧ ∀ x ∈ K, N • x ∈ H := by
@@ -234,21 +228,19 @@ private theorem exists_pos_nsmul_mem_of_relIndex_ne_zero {W : Type*} [AddCommGro
   simpa [AddSubgroup.mem_addSubgroupOf] using hmem
 
 /- English proof (translation)
-Introduce `a b d ha hd lam hlam n _ _ Λ h1 h2 g hg hg'`. Unfold `relIdx at *`. Take `⟨N₁, hN₁, hΛ₁⟩` from `exists_pos_nsmul_mem_of_relIndex_ne_zero _ _ h1`. Take `⟨N₂, hN₂, hΛ₂⟩` from `exists_pos_nsmul_mem_of_relIndex_ne_zero _ _ h2`. Take `⟨N₃, hN₃, hg3⟩` from `entries_bound a b d ha hd lam hlam (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) hg`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N₄, hN₄, hg4⟩` from `entries_bound a b d ha hd lam hlam (g.symm : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) hg'`. Use `haveI := stdLat_finite (cmL a b d ha hd lam hlam) (Fin 4 × n)`. Establish `hp1 : ∀ x ∈ pow4 Λ, N₁ • x ∈ stdLat (cmL a b d ha hd lam hlam) (Fin 4 × n)`. Introduce `x hx`. Establish `hx' : ∀ i, slice i x ∈ Λ` using `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_stdLat_fin_four_prod_iff_mem_pow4]`. Use `show ∀ i, slice i (N₁ • x) ∈ stdLat (cmL a b d ha hd lam hlam) n`. Introduce `i`. Conclude with `hΛ₁ _ (hx' i)`. Establish `hp2 : ∀ x ∈ stdLat (cmL a b d ha hd lam hlam) (Fin 4 × n), N₂ • x ∈ pow4 Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite `hx` using `[mem_stdLat_fin_four_prod_iff_mem_pow4]`. Establish `hx' : ∀ i, slice i x ∈ stdLat (cmL a b d ha hd lam hlam) n` using `hx`. Use `show ∀ i, slice i (N₂ • x) ∈ Λ`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hΛ₂ _ (hx' i)`. Prove the components needed by the constructor for the conclusion. Use `relIndex_ne_zero_of_bound _ _ (stdLat (cmL a b d ha hd lam hlam) (Fin 4 × n)) (N₃ * N₁) 1 (Nat.mul_pos hN₃ hN₁) one_pos ?_ (fun x hx => by simpa using hx)` and prove the remaining obligations. Introduce `y hy`. Rewrite `hy` using `[imgLat, AddSubgroup.mem_map]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx, rfl⟩` from `hy`. Rewrite using `[mul_smul]`. Use `hg3 _ (hp1 x hx)` as an intermediate fact. Rewrite `this` using `[map_nsmul]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `relIndex_ne_zero_of_bound _ _ (stdLat (cmL a b d ha hd lam hlam) (Fin 4 × n)) 1 (N₂ * N₄) one_pos (Nat.mul_pos hN₂ hN₄) (fun x hx => by simpa using hx) ?_` and prove the remaining obligations. Introduce `z hz`. Rewrite using `[imgLat, AddSubgroup.mem_map]`. Use `⟨(N₂ * N₄) • g.symm z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`.
-
-Conclude with `hp2 _ (hg4 z hz)`. Rewrite using `[LinearMap.toAddMonoidHom_coe, map_nsmul, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem CommensurableK_proof : CommensurableK := by
   intro a b d ha hd lam hlam n _ _ Λ h1 h2 g hg hg'

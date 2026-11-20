@@ -6,15 +6,13 @@ open CategoryTheory LateralTheory.E.t_E3Cut TensorProduct
 namespace LateralTheory.EWeil.AbsorbPf2
 
 /- English proof (translation)
-Introduce `A B C Ω _ ι gB gC hB hC φB φC hφB hφC`. Use `letI := gB.hom.toAlgebra`. Use `letI := gC.hom.toAlgebra`. Use `letI := ι.toAlgebra`. Use `haveI : Algebra.Etale A B := (RingHom.etale_algebraMap (R := A) (S := B)).mp hB`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : Algebra.Etale A C := (RingHom.etale_algebraMap (R := A) (S := C)).mp hC`. Set `φB' : B →ₐ[A] Ω` to `{ φB with commutes' := fun a => RingHom.congr_fun hφB a }`. Set `φC' : C →ₐ[A] Ω` to `{ φC with commutes' := fun a => RingHom.congr_fun hφC a }`. Set `L` to `Algebra.TensorProduct.lift φB' φC' (fun _ _ => Commute.all _ _)`. Use `⟨CommRingCat.of (B ⊗[A] C), CommRingCat.ofHom (algebraMap A (B ⊗[A] C)), L.toRingHom, CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom, CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R := A) (A := B) (B := C)).toRingHom, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. By extensionality, compare the relevant components.
 
-Use `haveI : Algebra.Etale B (B ⊗[A] C) := inferInstance haveI : Algebra.Etale A (B ⊗[A] C) := Algebra.Etale.comp A B (B ⊗[A] C)`. Conclude with `(RingHom.etale_algebraMap (R := A) (S := B ⊗[A] C)).mpr inferInstance`. Use extensionality with `a`. Conclude with `L.commutes a`. Use extensionality with `a show (gB.hom a) ⊗ₜ[A] (1 : C) = algebraMap A (B ⊗[A] C) a`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression. Use extensionality with `a show (1 : B) ⊗ₜ[A] (gC.hom a) = algebraMap A (B ⊗[A] C) a`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.tmul_one_eq_one_tmul (R := A) (A := B) (B := C) a).symm`.
-
-Use extensionality with `b show L (b ⊗ₜ 1) = φB b`. Simplify using `[L, φB']`. Use extensionality with `c show L (1 ⊗ₜ c) = φC c`. Simplify using `[L, φC']`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem etaleNeighborhoods_have_common_refinement : LateralTheory.EWeil.AbsorbPf.Pair := by
   intro A B C Ω _ ι gB gC hB hC φB φC hφB hφC

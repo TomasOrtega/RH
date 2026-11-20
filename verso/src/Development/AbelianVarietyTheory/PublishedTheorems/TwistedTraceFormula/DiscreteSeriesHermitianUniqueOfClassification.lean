@@ -26,9 +26,9 @@ namespace HermitianUnique
 variable {n : ℕ} {ε : Fin n → Bool} {J P P' : Matrix (Fin n) (Fin n) ℂ}
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hP'`. Establish `e1 : P' * P'⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Establish `hg' : gᴴ * J * g = J` using `hg`. Use `show (P * g * P'⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * g * P'⁻¹) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = P'⁻¹ᴴ * (P'ᴴ * Formalism.REAL.Jm ε * P') * P'⁻¹ := by rw [h, hg', h']`. Use `_ = (P' * P'⁻¹)ᴴ * Formalism.REAL.Jm ε * (P' * P'⁻¹) := by`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [e1]; simp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_mem (hP' : IsUnit P') (h : Pᴴ * Formalism.REAL.Jm ε * P = J) (h' : P'ᴴ * Formalism.REAL.Jm ε * P' = J)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH J) : P * g * P'⁻¹ ∈ UJset ε := by
@@ -45,9 +45,9 @@ theorem frame_mem (hP' : IsUnit P') (h : Pᴴ * Formalism.REAL.Jm ε * P = J) (h
     _ = Formalism.REAL.Jm ε := by rw [e1]; simp
 
 /- English proof (translation)
-Use `⟨hl, fun a => ?_⟩` and prove the remaining obligations. Take `⟨-, -, ⟨⟨h1, -⟩, -, -⟩, -, -, ⟨S, -, -, -, ⟨v, -, hv0, hv⟩, -⟩, -⟩` from `h`. Take `⟨m, hm⟩` from `GlobalTheory.DiscreteSeriesTest.wt_int (ε := ε) (μ := PI.UpqRep.lowK ε lam) h1 hv0 hv a`. Establish `h2` using `GlobalTheory.DiscreteSeriesTest.lowK_add ε lam a`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hm, PI.UpqRep.rhoC] at h2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨m + (univ.filter fun b => a < b ∧ ε b = ε a).card - (univ.filter fun b => b < a ∧ ε b = ε a).card - (n - 1) + a, ?_⟩` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem isHCParam_of_isDS {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {lam : Fin n → ℝ}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hl : StrictAnti lam) (h : IsDS ε lam σ) :
@@ -67,19 +67,19 @@ end HermitianUnique
 open HermitianUnique in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h n ε lam hl H H' _ _ _ _ σ σ' hσ hσ'`. Take `⟨U, hU⟩` from `h n ε lam hl (Formalism.REAL.Jm ε) 1 1 isUnit_one isUnit_one (by simp) (by simp) H' H σ' σ hσ' hσ`. Use `⟨U, fun g hg v => ?_⟩` and prove the remaining obligations. Simplify using `using hU g hg v`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h n ε lam hl J P P' hP hP' hJ hJ' H H' _ _ _ _ σ σ' hσ hσ'`. Take `⟨U, hU⟩` from `h n ε lam hl H' H σ' σ hσ' hσ`. Take `⟨-, -, ⟨⟨h1, hmul⟩, hiso, -⟩, -⟩` from `hσ`. Establish `e : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hP)`. Establish `e2 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hP)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : P'⁻¹ * P' = 1` using `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hP')`. Establish `one : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.QuantumDeterminants.UH J` using `by show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * J * 1 = J`. Simplify using the standard rewrite rules. Establish `ha : P * 1 * P'⁻¹ ∈ UJset ε` using `frame_mem hP' hJ hJ' one`. Establish `hb : P' * 1 * P⁻¹ ∈ UJset ε` using `frame_mem hP hJ' hJ one`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ha`, `hb` using `[Matrix.mul_one]`. Establish `hsurj : Function.Surjective (⟨(σ (P * P'⁻¹) : H →ₗ[ℂ] H), hiso _ ha⟩ : H →ₗᵢ[ℂ] H)`. Introduce `v`. Use `⟨σ (P' * P⁻¹) v, ?_⟩` and prove the remaining obligations. Establish `e3 : P * P'⁻¹ * (P' * P⁻¹) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc P'⁻¹, e', Matrix.one_mul, e2]`. Use `hmul _ ha _ hb` as an intermediate fact. Rewrite `this` using `[e3, h1]`. Conclude with `(congrArg (fun T : H →L[ℂ] H => T v) this).symm`. Use `⟨U.trans (LinearIsometryEquiv.ofSurjective _ hsurj), fun g hg w => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show σ (P * P'⁻¹) (U (σ' (P' * g * P'⁻¹) w)) = σ (P * g * P⁻¹) (σ (P * P'⁻¹) (U w))`. Establish `hg'` using `frame_mem hP' hJ' hJ' hg`. Establish `hg1` using `frame_mem hP hJ hJ hg`. Establish `k1` using `congrArg (fun T : H →L[ℂ] H => T (U w)) (hmul _ ha _ hg')`. Establish `k2` using `congrArg (fun T : H →L[ℂ] H => T (U w)) (hmul _ hg1 _ ha)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `k3 : P * P'⁻¹ * (P' * g * P'⁻¹) = P * g * P⁻¹ * (P * P'⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU _ hg']`. Rewrite `k1` using `[k3]`. Conclude with `k1.symm.trans k2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discreteSeriesHermitianUnique_iff : DiscreteSeriesHermitianUnique ↔ DiscreteSeriesUpqUnique := by
   constructor
@@ -123,15 +123,13 @@ theorem discreteSeriesHermitianUnique_iff : DiscreteSeriesHermitianUnique ↔ Di
     exact k1.symm.trans k2
 
 /- English proof (translation)
-The claim follows from `discreteSeriesHermitianUnique_iff.2 (discreteSeriesUpqUnique_of_classification h)`.
+A detailed English derivation is pending.
 -/
 theorem discreteSeriesHermitianUnique_of_classification (h : GlobalTheory.DSId.DSClass) : DiscreteSeriesHermitianUnique :=
   discreteSeriesHermitianUnique_iff.2 (discreteSeriesUpqUnique_of_classification h)
 
 /- English proof (translation)
-Establish `key : ∀ τ, ∃ U : M'.H τ ≃ₗᵢ[ℂ] M.H τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w, U (M'.rep τ g w) = M.rep τ g (U w)`. Introduce `τ`. Take `⟨hl, he⟩` from `GlobalTheory.SignedParTest.isEnum_unique (M.enum τ) (M'.enum τ)`. Conclude with `h _ (M.ε τ) (M.lam τ) (HermitianUnique.isHCParam_of_isDS (M.enum τ).1 (M.ds τ)) _ (M.fr τ) (M'.fr τ) (M.fr_unit τ) (M'.fr_unit τ) (M.fr_gram τ) (he ▸ M'.fr_gram τ) _ _ (M.σ τ) (M'.σ τ) (M.ds τ) (hl ▸ he ▸ M'.ds τ)`. Use `choose U hU using key`.
-
-Conclude with `⟨U, hU⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem DiscreteSeriesHermitianUnique.exists_intertwiner (h : DiscreteSeriesHermitianUnique) {D : D7} {V : HSp D}
     {S : D.what₂.Tau → SPar} (M M' : DSModel V S) :
@@ -148,7 +146,7 @@ theorem DiscreteSeriesHermitianUnique.exists_intertwiner (h : DiscreteSeriesHerm
   exact ⟨U, hU⟩
 
 /- English proof (translation)
-The claim follows from `(discreteSeriesHermitianUnique_iff.2 h).exists_intertwiner M M'`.
+A detailed English derivation is pending.
 -/
 theorem DiscreteSeriesUpqUnique.exists_intertwiner (h : DiscreteSeriesUpqUnique) {D : D7} {V : HSp D}
     {S : D.what₂.Tau → SPar} (M M' : DSModel V S) :

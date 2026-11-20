@@ -13,7 +13,7 @@ noncomputable section
 namespace ShiftIntersectionPolynomial
 
 /- English proof (translation)
-Establish `h : ∀ j, (![q, 1] : Fin 2 → ℝ) (s j) = if s j = 0 then q else 1`. Introduce `j`. Apply the tactic sequence `rcases Fin.exists_fin_two.mp ⟨s j, rfl⟩ with h | h <;> rw [h] <;> simp`. Simplify using `only [h, Finset.prod_ite, Finset.prod_const, one_pow, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem prod_weights {n : ℕ} (q : ℝ) (s : Fin n → Fin 2) :
     ∏ j, (![q, 1] : Fin 2 → ℝ) (s j) = q ^ (Finset.univ.filter fun j => s j = 0).card := by
@@ -23,21 +23,21 @@ theorem prod_weights {n : ℕ} (q : ℝ) (s : Fin n → Fin 2) :
   simp only [h, Finset.prod_ite, Finset.prod_const, one_pow, mul_one]
 
 /- English proof (translation)
-Introduce `K _ ι _ II P n A B hII hP hA hB`. Establish `hI : IsIntersectionFamily (II K ι)` using `hII K ι`. Use `set e : Fin 2 → HermLine ι := ![A, B] with he_def`. Establish `he : ∀ i, IsSmoothHerm (e i)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases Fin.exists_fin_two.mp ⟨i, rfl⟩ with h | h <;> rw [h] <;> simpa [e]`. Use `⟨∑ s : Fin n → Fin 2, Polynomial.C (II K ι P n (e ∘ s)) * Polynomial.X ^ (Finset.univ.filter fun j => s j = 0).card, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun s _ => ?_` and prove the remaining obligations. Use `(Polynomial.natDegree_C_mul_X_pow_le _ _).trans ?_` and prove the remaining obligations. Conclude with `(Finset.card_filter_le _ _).trans (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.finsetSum_coeff, Finset.sum_eq_single (fun _ => 0)]`. Rewrite using `[Polynomial.coeff_C_mul_X_pow]`. Establish `hc : (Finset.univ.filter fun j : Fin n => (fun _ : Fin n => (0 : Fin 2)) j = 0).card = n` using `by simp`. Rewrite using `[if_pos hc.symm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `s _ hs`. Rewrite using `[Polynomial.coeff_C_mul_X_pow, if_neg]`. Introduce `hc`. Apply `hs` to reduce the goal to its premises. Establish `hu : (Finset.univ.filter fun j => s j = 0) = Finset.univ` using `Finset.eq_univ_of_card _ (by rw [← hc, Fintype.card_fin])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Use `Finset.filter_eq_self.mp hu j (Finset.mem_univ j)` as an intermediate fact. Conclude with `this`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q set Z := HermLine.zcomb A B (q : ℤ) 1 with hZ_def`. Establish `hZ : IsSmoothHerm Z` using `ZCombLimit.isSmoothHerm_zcomb_int hA hB _ _`. Establish `hposition : ∀ (L : Fin n → HermLine ι) (a : Fin n), (∀ j, IsSmoothHerm (L j)) → II K ι P n (Function.update L a Z) = (![(q : ℝ), 1] : Fin 2 → ℝ) 0 * II K ι P n (Function.update L a (e 0)) + (![(q : ℝ), 1] : Fin 2 → ℝ) 1 * II K ι P n (Function.update L a (e 1))`. Introduce `L a hL`. Consider the cases of `n with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `zero => exact a.elim0`. Consider the case `succ m`. Establish `h` using `ZCombLimit.fam_update_zcomb_int hI hP L hL a hA hB (q : ℤ) 1`. Simplify using `only [Int.cast_natCast, Int.cast_one, one_mul] at h`. Simplify `h` using `[e]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `ZCombLimit.eq_famExt_of_position (J := II K ι) (P := P) IsSmoothHerm e Z ![(q : ℝ), 1] he hZ hposition Finset.univ (fun _ => 0)`. Simplify using `only [Finset.mem_univ, if_true] at key`. Rewrite using `[key, famExt_apply, Polynomial.eval_finsetSum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[prod_weights, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : ShiftIntersectionPolynomial.Statement := by
   intro K _ ι _ II P n A B hII hP hA hB

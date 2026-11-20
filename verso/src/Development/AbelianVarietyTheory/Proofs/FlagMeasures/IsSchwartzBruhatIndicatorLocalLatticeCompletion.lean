@@ -13,9 +13,9 @@ namespace GlobalTheory.LatticeIndicator
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `: Module.Finite (𝓞 E) L` using `Module.Finite.iff_fg.2 hL`. Establish `: Module.Finite ℤ L` using `Module.Finite.trans (𝓞 E) L`. Take `⟨k, s, hs⟩` from `Module.Finite.exists_fin (R := ℤ) (M := L)`. Use `⟨k, fun j => s j, fun j => (s j).2, fun w hw => ?_⟩` and prove the remaining obligations. Establish `: (⟨w, hw⟩ : L) ∈ Submodule.span ℤ (Set.range s)` using `hs ▸ Submodule.mem_top`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 this`. Conclude with `⟨m, by simpa using (congrArg Subtype.val hm).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_generators (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
     ∃ (k : ℕ) (x : Fin k → Fin n → E), (∀ j, x j ∈ L) ∧
@@ -29,9 +29,9 @@ theorem exists_int_generators (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG)
   exact ⟨m, by simpa using (congrArg Subtype.val hm).symm⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntSmulIntegerEq.exists_int_smul_mem`. Consider the case `exact _root_.GlobalTheory.IntSmulIntegerEq.exists_int_smul_mem`. Consider the case `(apply _root_.GlobalTheory.IntSmulIntegerEq.exists_int_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntSmulIntegerEq.exists_int_smul_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntSmulIntegerEq.exists_int_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntSmulIntegerEq.exists_int_smul_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.IsLattice E L)
     (w : Fin n → E) : ∃ N : ℤ, N ≠ 0 ∧ N • w ∈ L := by
@@ -44,29 +44,27 @@ theorem exists_int_smul_mem (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodu
   | (intros; exact _root_.GlobalTheory.IntSmulIntegerEq.exists_int_smul_mem ..)
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := IsModuleTopology.isTopologicalRing (Fv F v) _`. Use `haveI : CharZero (Fv F v) := charZero_of_injective_ringHom (algebraMap F (Fv F v)).injective`. Take `⟨k, x, hxL, hx⟩` from `exists_int_generators L hL.fg`. Set `f : (Fin k → Fv F v) →ₗ[Fv F v] (Fin n → Fv F v ⊗[F] E)` to `Fintype.linearCombination _ fun j i => (1 : Fv F v) ⊗ₜ[F] x j i`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfa : ∀ a i, f a i = ∑ j, a j ⊗ₜ[F] x j i` using `fun a i => by`. Simplify using `[f, Fintype.linearCombination_apply, TensorProduct.smul_tmul']`. Establish `hm : ∀ (a : Fv F v) (m : Fin k → ℤ), f (fun j => m j • a) = fun i => a ⊗ₜ[F] (∑ j, m j • x j) i` using `fun a m => by`. Use function extensionality and compare the values at `i`. Rewrite using `[hfa]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, TensorProduct.tmul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => TensorProduct.smul_tmul _ _ _`. Establish `hf : Function.Surjective f`. Establish `h1 : ∀ (a : Fv F v) (w : Fin n → E), (fun i => a ⊗ₜ[F] w i) ∈ LinearMap.range f`. Introduce `a w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N, hN, h⟩` from `exists_int_smul_mem L hL w`. Take `⟨m, e⟩` from `hx _ h`. Use `⟨fun j => m j • ((N : Fv F v)⁻¹ * a), ?_⟩` and prove the remaining obligations. Rewrite using `[hm, ← e]`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.smul_apply, ← TensorProduct.smul_tmul, zsmul_eq_mul, ← mul_assoc, mul_inv_cancel₀ (Int.cast_ne_zero.2 hN), one_mul]`. Introduce `y`. Rewrite using `[← LinearMap.mem_range, ← Finset.univ_sum_single y]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Generalize the expression as in `y i = z`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add p q hp hq => rw [Pi.single_add]`. Conclude with `add_mem hp hq`. Consider the case `tmul a e`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `h1 a (Pi.single i e) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[h]`. Establish `hfo : IsOpenMap f` using `IsModuleTopology.isOpenMap_of_surjective (φ := f) hf`. Establish `hfc : Continuous f` using `IsModuleTopology.continuous_of_linearMap f`. Establish `himg : (GlobalTheory.AdelicU.latLoc F L v : Set (Fin n → Fv F v ⊗[F] E)) = f '' Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `y`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Use `GlobalTheory.AdelicU.latLoc_induction (p := fun y => y ∈ f '' Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v))) ?_ ⟨0, fun _ _ => zero_mem _, map_zero _⟩ ?_ ?_` and prove the remaining obligations. Introduce `a ha w hw`. Take `⟨m, rfl⟩` from `hx w hw`. Conclude with `⟨fun j => m j • a, fun j _ => zsmul_mem ha _, hm a m⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, fun j _ => add_mem (s := v.adicCompletionIntegers F) (ha j trivial) (hb j trivial), map_add _ _ _⟩`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `⟨-a, fun j _ => neg_mem (s := v.adicCompletionIntegers F) (ha j trivial), map_neg _ _⟩`. Introduce and unpack `⟨a, ha, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: f a = ∑ j, fun i => a j ⊗ₜ[F] x j i` using `funext fun i => by rw [hfa, Finset.sum_apply]`. Rewrite using `[this]`. Conclude with `sum_mem (S := GlobalTheory.AdelicU.latLoc F L v) fun j _ => GlobalTheory.AdelicU.tmul_mem_latLoc (ha j trivial) (hxL j)`. Establish `hc : IsCompact (v.adicCompletionIntegers F : Set (Fv F v))` using `isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v)`. Establish `ho : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`.
-
-Rewrite using `[himg]`. Conclude with `⟨(isCompact_univ_pi fun _ => hc).image hfc, hfo _ (isOpen_set_pi Set.finite_univ fun _ _ => ho)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latLoc_compact_open (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.IsLattice E L)
     (v : HeightOneSpectrum (𝓞 F)) :
@@ -138,13 +136,13 @@ theorem latLoc_compact_open (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodu
     hfo _ (isOpen_set_pi Set.finite_univ fun _ _ => ho)⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n L hL v`. Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := IsModuleTopology.isTopologicalRing (Fv F v) _`. Take `⟨hc, ho⟩` from `latLoc_compact_open L hL v`. Establish `hcl : IsClosed (GlobalTheory.AdelicU.latLoc F L v : Set (Fin n → Fv F v ⊗[F] E))` using `(GlobalTheory.AdelicU.latLoc F L v).toAddSubgroup.isClosed_of_isOpen ho`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : {X : Fin 1 → Fin n → Fv F v ⊗[F] E | X 0 ∈ GlobalTheory.AdelicU.latLoc F L v} = Set.pi Set.univ fun _ : Fin 1 => (GlobalTheory.AdelicU.latLoc F L v : Set (Fin n → Fv F v ⊗[F] E))`. Use extensionality with `X`. Simplify using `[Fin.forall_fin_one]`. Rewrite using `[e]`. Establish `h1` using `isCompact_univ_pi fun _ : Fin 1 => hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `isOpen_set_pi Set.finite_univ fun (_ : Fin 1) _ => ho`. Establish `h3` using `isClosed_set_pi (i := Set.univ) fun (_ : Fin 1) _ => hcl`. Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun X => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hX : X ∈ Set.pi Set.univ fun _ : Fin 1 => (GlobalTheory.AdelicU.latLoc F L v : Set (Fin n → Fv F v ⊗[F] E))`. Conclude with `⟨_, h2, hX, fun Y hY => by rw [Set.indicator_of_mem hY, Set.indicator_of_mem hX]; rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, h3.isOpen_compl, hX, fun Y hY => by`. Rewrite using `[Set.indicator_of_notMem hY, Set.indicator_of_notMem hX]⟩`. Conclude with `HasCompactSupport.intro' h1 h3 fun X hX => Set.indicator_of_notMem hX _`.
+A detailed English derivation is pending.
 -/
 theorem isSB_indicator_latLoc : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)), Submodule.IsLattice E L → ∀ v : HeightOneSpectrum (𝓞 F), IsSB ({X : Fin 1 → Fin n → Fv F v ⊗[F] E | X 0 ∈ GlobalTheory.AdelicU.latLoc F L v}.indicator (1 : (Fin 1 → Fin n → Fv F v ⊗[F] E) → ℂ)) := by
   intro F E _ _ _ _ _ n L hL v

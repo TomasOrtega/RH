@@ -17,13 +17,13 @@ section SlopeTestRemainingChoices
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(inferInstance : IsDiscreteValuationRing 𝒪[k]).toIsLocalRing`.
+A detailed English derivation is pending.
 -/
 private theorem integers_isLocalRing : IsLocalRing 𝒪[k] := (inferInstance : IsDiscreteValuationRing 𝒪[k]).toIsLocalRing
 attribute [local instance] integers_isLocalRing
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `valuation_surjective (uniformizer k)`. Establish `h0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `uniformizer_pos.ne (by simpa using hx)`. Conclude with `Classical.epsilon_spec (p := fun x : kˣ => valuation k (x : k) = uniformizer k) ⟨Units.mk0 x h0, hx⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem valuation_unif_eq_uniformizer : valuation k (unif k : k) = uniformizer k := by
   obtain ⟨x, hx⟩ := valuation_surjective (uniformizer k)
@@ -33,9 +33,9 @@ private theorem valuation_unif_eq_uniformizer : valuation k (unif k : k) = unifo
   exact Classical.epsilon_spec (p := fun x : kˣ => valuation k (x : k) = uniformizer k) ⟨Units.mk0 x h0, hx⟩
 
 /- English proof (translation)
-Establish `hI` using `Valuation.integer.integers (valuation k)`. Set `p : 𝒪[k]` to `⟨unif k, (valuation_unif_eq_uniformizer.trans_lt uniformizer_lt_one).le⟩`. Establish `hp : valuation k (algebraMap 𝒪[k] k p) = uniformizer k` using `valuation_unif_eq_uniformizer`. Establish `e : IsLocalRing.maximalIdeal 𝒪[k] = Ideal.span {p}`. Use extensionality with `y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← IsLocalRing.residue_eq_zero_iff, GlobalTheory.StepData.residue_eq_zero_iff_lt, Ideal.mem_span_singleton, hI.dvd_iff_le, hp, le_uniformizer_iff]`. Both sides reduce to the same expression. Rewrite using `[e, Ideal.span_singleton_pow, Ideal.mem_span_singleton, hI.dvd_iff_le, map_pow, map_pow, hp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mem_maximal_pow_iff_valuation (c : ℕ) (x : 𝒪[k]) :
     x ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ c ↔ valuation k (x : k) ≤ uniformizer k ^ c := by
@@ -51,11 +51,11 @@ private theorem mem_maximal_pow_iff_valuation (c : ℕ) (x : 𝒪[k]) :
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ u : GL (Fin n) 𝒪[k], u ∈ (Matrix.GeneralLinearGroup.map (n` using `Fin n) (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c))).ker ↔ ∀ i j, valuation k (((Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) u).val - 1) i j) ≤ uniformizer k ^ c := by`. Introduce `u`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, ← Matrix.ext_iff]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `e : ((1 : GL (Fin n) (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ c)).val) i j = Ideal.Quotient.mk _ ((1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `simp only [Units.val_one, Matrix.one_apply]; split_ifs <;> simp`. Rewrite using `[e]`. Use `(Ideal.Quotient.eq.trans (mem_maximal_pow_iff_valuation c _)).trans (iff_of_eq ?_)` and prove the remaining obligations. Use `congr 2`. Apply the tactic sequence `simp only [Matrix.sub_apply, Matrix.one_apply]; split_ifs <;> simp <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨⟨u, rfl⟩, (key u).1 hu⟩`. Introduce and unpack `⟨⟨u, rfl⟩, hu⟩`. Conclude with `⟨u, (key u).2 hu, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem mem_Kc_iff' {c : ℕ} {g : GL (Fin n) k} :
     g ∈ Kc k n c ↔ g ∈ KO k (Fin n) ∧ ∀ i j, valuation k ((g.val - 1) i j) ≤ uniformizer k ^ c := by
@@ -79,9 +79,9 @@ private theorem mem_Kc_iff' {c : ℕ} {g : GL (Fin n) k} :
     exact ⟨u, (key u).2 hu, rfl⟩
 
 /- English proof (translation)
-Establish `e : (Kc k n c : Set (GL (Fin n) k)) = (KO k (Fin n) : Set (GL (Fin n) k)) ∩ ⋂ i, ⋂ j, (fun g : GL (Fin n) k => (g.val - 1) i j) ⁻¹' {x | valuation k x ≤ uniformizer k ^ c}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_Kc_iff', Set.mem_iInter, Set.mem_inter_iff]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.SplitFlip.isOpen_KO.inter <| isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => IsOpen.preimage ?_ ?_` and prove the remaining obligations. Use `Units.continuous_val (M := Matrix (Fin n) (Fin n) k) fun_prop` as an intermediate fact. Establish `h0 : (valuation k).restrict ((unif k : k) ^ c) ≠ 0` using `by simp`. Simplify `Valuation.isOpen_closedBall h0` using `only [Valuation.restrict_le_iff, map_pow (valuation k), valuation_unif_eq_uniformizer]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem congruence_subgroup_isOpen (c : ℕ) : IsOpen (Kc k n c : Set (GL (Fin n) k)) := by
   have e : (Kc k n c : Set (GL (Fin n) k)) = (KO k (Fin n) : Set (GL (Fin n) k)) ∩
@@ -98,9 +98,9 @@ private theorem congruence_subgroup_isOpen (c : ℕ) : IsOpen (Kc k n c : Set (G
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv u hu`. Establish `h` using `hv ⟨u, hu⟩`. Simplify using `using h`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hv u`. Establish `h` using `hv u u.2`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eigenspace_one_eq_fixed {H M : Type} [Group H] [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ H M)
     (K : Subgroup H) : GlobalTheory.PRep.eig ρ K 1 = fixd ρ K := by
@@ -114,9 +114,9 @@ private theorem eigenspace_one_eq_fixed {H M : Type} [Group H] [AddCommGroup M] 
     simpa using h
 
 /- English proof (translation)
-Introduce `L _ _ n w M _ _ ρ Z τ hZ`. Establish `hnat : ∀ (N N' : Type) [AddCommGroup N] [Module ℂ N] [AddCommGroup N'] [Module ℂ N'] (σ : Representation ℂ (GLw n w) N) (σ' : Representation ℂ (GLw n w) N') (f : N →+ N'), (∀ g v, f (σ g v) = σ' g (f v)) → ∀ (j : ℕ) v, f (sphOp σ j v) = sphOp σ' j (f v)`. Introduce `N N' _ _ _ _ σ σ' f hf j v`. Conclude with `(dcSum ℂ _ N σ _ _ _ ((sphComm _ n ℂ N σ).1 _)).2.2.2 ℂ N' σ' f hf v`. Establish `key` using `fun (K : Subgroup (GLw n w)) (hK : IsCompact (K : Set (GLw n w))) => UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.repScalar ρ τ.ρ τ.smooth Z hZ K 1 hK (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [eigenspace_one_eq_fixed] at key`. Use `⟨fun K hK => (key K hK).1, fun j a ha => ?_, fun M' _ _ ρ' => hnat M M' ρ ρ', fun c => ?_⟩` and prove the remaining obligations. Use `(key _ GlobalTheory.SplitFlip.isCompact_KO).2 (sphOp ρ j) (sphOp τ.ρ j) a (fun f v _ => ?_) ha` and prove the remaining obligations. Conclude with `(hnat _ _ τ.ρ ρ f.1.toAddMonoidHom f.2.1 j v).symm`. Conclude with `GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ (congruence_subgroup_isOpen c)) fun g hg => (mem_Kc_iff'.1 hg).1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.partUR2Abs :
     ∀ (L : Type) [Field L] [NumberField L] (n : ℕ) (w : Plc L) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ (GLw n w) M) (Z : Submodule ℂ M) (τ : SmIrr (GLw n w)), IsoSum ρ Z τ →

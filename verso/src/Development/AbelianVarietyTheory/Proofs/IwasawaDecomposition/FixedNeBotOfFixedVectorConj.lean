@@ -25,7 +25,7 @@ noncomputable section
 namespace GlobalTheory.RowLevelSplitData
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH hHost hF k v s hs`. Establish `hβ` using `hP.char.base.lev.βY 0 Y.hm`. Take `⟨h, hh⟩` from `GlobalTheory.RowLevelSplit.lemA_pf (GlobalTheory.RowLevelSplit.stdFrame_splitPlace_entries_off_place GlobalTheory.T.frameComponent_eq_one_off_splitPlace_of_trivOutside GlobalTheory.T.standard_frame_conjugate_close GlobalTheory.T.exists_conjugate_into_K1 GlobalTheory.T.placeOver_s …`. Use `⟨h, fun b κ hκ hk => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.RowLevelSplit.lemB_pf D (Yc D 0) (R.βY 0) _ (_ ∪ _) (Y.PY.ψ κ) Finset.subset_union_left Finset.subset_union_right (Y.PY.into κ) (hh κ hκ hk _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem levS_of_kOne_conj : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0), Pins R F cG → Holds R F → HostHyp D → D.host.F = maximalRealSubfield D.host.E → ∀ (k : Fin 2) (v : D.nd.PlG k) (s : SplitPlace D.host.E), s.w = D.naut.plGw k v → ∃ h : GL (Fin D.R.r) (s.v.adicCompletion (maximalRealSubfield D.host.E)), ∀ (b : Bool) (κ : Formalism.AUTREP.GAf D.host.E D.R.r), TrivOutside {s.v} κ → h⁻¹ * s.loc D.R.r κ * h ∈ GlobalTheory.SplitWeil.KOne (s.v.adicCompletion (maximalRealSubfield D.host.E)) (Fin D.R.r) → Y.PY.ψ κ ∈ levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b)) ∧ levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b)) (Y.PY.ψ κ) = 1 := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH hHost hF k v s hs
@@ -39,15 +39,15 @@ theorem levS_of_kOne_conj : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I
     (Y.PY.into κ) (hh κ hκ hk _)
 
 /- English proof (translation)
-Introduce `L _ _ _ n π s τ h hloc f hf hf0 hfix`. Take `⟨x, hx, e⟩` from `GlobalTheory.SplitLift.exists_trivOutside_loc_eq n s h`. Establish `hmul : ∀ (a b : Formalism.AUTREP.GAf L n) (g : Formalism.AUTREP.GAf L n → ℂ), NG.rt L n (a * b) g = NG.rt L n a (NG.rt L n b g)`. Introduce `a b g`. Use function extensionality and compare the values at `c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[NG.rt, mul_assoc]`. Establish `hone : ∀ g : Formalism.AUTREP.GAf L n → ℂ, NG.rt L n 1 g = g`. Introduce `g`. Use function extensionality and compare the values at `c`. Simplify using `[NG.rt]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hT : ∀ a b : Formalism.AUTREP.GAf L n, TrivOutside {s.v} a → TrivOutside {s.v} b → TrivOutside {s.v} (a * b)` using `fun a b ha hb v hv => by`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.map_mul, ha v hv, hb v hv, mul_one]`. Use `GlobalTheory.FixedAtSplit.fixed_ne_bot_of_fixed_vector L n π s τ hloc (NG.rt L n x⁻¹ f) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `π.stable _ f hf`. Introduce `h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hf0` to reduce the goal to its premises. Rewrite using `[← hone f, ← mul_inv_cancel x, hmul, h0, map_zero]`. Introduce `κ hκ hk`. Establish `h1` using `hfix (x * κ * x⁻¹) (hT _ _ (hT _ _ hx hκ) (GlobalTheory.RowLevelSplit.trivOutside_inv hx)) (by`. Rewrite using `[map_mul, map_mul, map_inv, e, show h⁻¹ * (h * s.loc n κ * h⁻¹) * h = s.loc n κ by group]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hk)`. Rewrite using `[← hmul, show κ * x⁻¹ = x⁻¹ * (x * κ * x⁻¹) by group, hmul, h1]`.
+A detailed English derivation is pending.
 -/
 theorem fixed_ne_bot_of_fixed_vector_conj : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (π : NG.FinTyp L n) (s : SplitPlace L) (τ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L))) (h : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))), GlobalTheory.HeightCounting.IsLocS π.S s τ → ∀ f ∈ π.S, f ≠ 0 → (∀ κ : Formalism.AUTREP.GAf L n, TrivOutside {s.v} κ → h⁻¹ * s.loc n κ * h ∈ GlobalTheory.SplitWeil.KOne (s.v.adicCompletion (maximalRealSubfield L)) (Fin n) → NG.rt L n κ f = f) → GlobalTheory.PRep.fixed τ.ρ (GlobalTheory.SplitWeil.KOne (s.w.adicCompletion L) (Fin n)) ≠ ⊥ := by
   intro L _ _ _ n π s τ h hloc f hf hf0 hfix

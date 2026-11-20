@@ -9,15 +9,15 @@ open CategoryTheory AlgebraicGeometry
 namespace GlobalTheory.PointDescentFactorization
 
 /- English proof (translation)
-Use `letI : Algebra ℚ R := g.toAlgebra`. Establish `hft : Algebra.FiniteType ℚ R` using `hg`. Take `⟨t, ht⟩` from `hft.out`. Use `⟨t.image φ, fun k _ β hs => ?_⟩` and prove the remaining obligations. Establish `hq : ∀ q : ℚ, φ (g q) ∈ β.fieldRange`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `q`. Establish `h` using `map_ratCast (φ.comp g) q`. Rewrite `h` using `[Rat.cast_id, RingHom.comp_apply]`. Rewrite using `[h]`. Conclude with `SubfieldClass.ratCast_mem _ q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hall : ∀ x : R, φ x ∈ β.fieldRange`. Introduce `x`. Establish `hx : x ∈ Algebra.adjoin ℚ (t : Set R)` using `ht ▸ Algebra.mem_top`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hs (by simpa using ⟨x, hx, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `algebraMap q => exact hq q`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `⟨(β.rangeRestrictFieldEquiv.symm.toRingHom).comp (φ.codRestrict β.fieldRange hall), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `h` using `β.rangeRestrictFieldEquiv.apply_symm_apply ⟨φ x, hall x⟩`. Conclude with `congrArg Subtype.val h`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_factor {R Ω : Type} [CommRing R] [Field Ω] (g : ℚ →+* R) (hg : g.FiniteType)
     (φ : R →+* Ω) :
@@ -48,15 +48,15 @@ theorem exists_finset_factor {R Ω : Type} [CommRing R] [Field Ω] (g : ℚ →+
   exact congrArg Subtype.val h
 
 /- English proof (translation)
-Set `x₀ : (Spec (CommRingCat.of Ω))` to `IsLocalRing.closedPoint Ω`. Choose the witnesses or unpack the hypotheses as in `⟨R, j, hj, hx⟩ : ∃ (R : CommRingCat.{0}) (j : Spec R ⟶ X), IsOpenImmersion j ∧ a x₀ ∈ Set.range j := by`. Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := a x₀) (U := ⊤) trivial`. Conclude with `⟨_, hU.fromSpec, inferInstance, by rw [hU.range_fromSpec]; exact hxU⟩`. Establish `hr : Set.range a ⊆ Set.range j`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Establish `: y = x₀` using `Subsingleton.elim (α := PrimeSpectrum Ω) _ _`. Rewrite using `[this]`. Conclude with `hx`. Set `a'` to `IsOpenImmersion.lift j a hr`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ha' : a' ≫ j = a` using `IsOpenImmersion.lift_fac j a hr`. Take `⟨φ, hφ⟩` from `Spec.map_surjective a'`. Take `⟨g, hg⟩` from `Spec.map_surjective (j ≫ p)`. Establish `hl : LocallyOfFiniteType (Spec.map g)` using `by rw [hg]; infer_instance`. Establish `hft : g.hom.FiniteType` using `HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType).mp hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `exists_finset_factor g.hom hft φ.hom`. Use `⟨s, fun k _ β hβ => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `hs k β hβ`. Use `⟨Spec.map (CommRingCat.ofHom ψ) ≫ j, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha', ← hφ, ← Category.assoc, ← Spec.map_comp]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `ext1`. Conclude with `hψ`.
+A detailed English derivation is pending.
 -/
 theorem point_descends {Ω : Type} [Field Ω] {X : Scheme}
     (p : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℚ) [LocallyOfFiniteType p]

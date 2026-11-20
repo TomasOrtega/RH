@@ -18,13 +18,9 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D n ρ p hn M m ψ hψ b₀ f hf X _ _ _ _ c hc`. Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D ρ ρ`. Use `haveI : IsTopologicalAddGroup (Mx D ρ ρ) := i1`. Use `haveI : LocallyCompactSpace (Mx D ρ ρ) := i2`. Use `haveI : SecondCountableTopology (Mx D ρ ρ) := i3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : T2Space (Mx D ρ ρ) := i4`. Use `haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩`. Use `haveI : BorelSpace (hermA D ρ) := Subtype.borelSpace _`. Use `haveI : SecondCountableTopology (hermA D ρ) := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : T2Space (hermA D ρ) := Topology.IsEmbedding.subtypeVal.t2Space`.
-
-Use `haveI : LocallyCompactSpace (hermA D ρ) := (GlobalTheory.CompanionTheory.FourierN.isClosed_hermA (D := D) (n := ρ)).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI := m.hz.1`. Use `haveI : SFinite m.lz := inferInstance`. Establish `hchz : Continuous fun z : hermA D ρ => conj (chz ψ b₀ z)` using `Complex.continuous_conj.comp (hψ.1.comp ((GlobalTheory.CompanionTheory.FourierN.continuous_pr b₀.1).comp continuous_subtype_val))`. Establish `hcont : Continuous fun u : X × hermA D ρ => f (M.w * M.nzx u.2 0 * c u.1) * conj (chz ψ b₀ u.2)`.
-
-Use `(hf.comp ((continuous_const.mul ?_).mul (hc.comp continuous_fst))).mul (hchz.comp continuous_snd)` and prove the remaining obligations. Conclude with `M.nzx_cont.comp (continuous_snd.prodMk continuous_const)`. Conclude with `hcont.stronglyMeasurable.integral_prod_right`.
+A detailed English derivation is pending.
 -/
 theorem Wz_stronglyMeasurable : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (b₀ : HermE D ρ) (f : G D n → ℂ), Continuous f → ∀ {X : Type} [TopologicalSpace X] [SecondCountableTopology X] [MeasurableSpace X] [BorelSpace X] (c : X → G D n), Continuous c → StronglyMeasurable fun v => Wz M m ψ b₀ f (c v) := by
   intro D n ρ p hn M m ψ hψ b₀ f hf X _ _ _ _ c hc

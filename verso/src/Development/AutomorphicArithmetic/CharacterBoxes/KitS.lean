@@ -12,23 +12,21 @@ namespace UpperTheory.Top
 open GlobalTheory.Fc
 
 /- English proof (translation)
-Introduce `Q la G hHost hObj`. Take `⟨εH, hεH, hHost⟩` from `hHost`. Take `⟨εO, hεO, hObj⟩` from `hObj`. Use `⟨min εH εO, lt_min hεH hεO, fun eps he he0 he1 => ?_⟩` and prove the remaining obligations. Take `⟨CT2, C8, C5, c6, Cb, KW, h8, h5, h6, hb, hHost⟩` from `hHost eps he (he0.trans (min_le_left _ _)) he1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨KO, hObj⟩` from `hObj eps C8 C5 c6 Cb he (he0.trans (min_le_right _ _)) he1 h8`. Use `⟨CT2, C8, C5, c6, Cb, KW.sup KO, h8, h5, h6, hb, fun C hC hT hP hL => ?_⟩` and prove the remaining obligations. Take `⟨hLW, hLO⟩` from `fc_large_of_sup hL`. Take `⟨c1, hObj⟩` from `hObj C hC hP hLO`. Take `⟨c1', hHost⟩` from `hHost C hC hT hP hLW`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max c1 c1', fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, hObj⟩` from `hObj cD ((le_max_left _ _).trans hcD)`. Take `⟨c2', hHost⟩` from `hHost cD ((le_max_right _ _).trans hcD)`. Use `⟨max c2 c2', fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨xO, hObj⟩` from `hObj ch ((le_max_left _ _).trans hch)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨xH, S, hHost⟩` from `hHost ch ((le_max_right _ _).trans hch)`. Establish `hmid` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hG : 0 ≤ C.CGam` using `zero_le_one.trans (hmid _ (by simp [FC.cMid]))`. Establish `hF : 0 ≤ C.P.CF` using `zero_le_one.trans (hmid _ (by simp [FC.cMid]))`. Take `⟨xC, hCode⟩` from `exists_injective_words eps C.CGam C.P.CF he he1 hG hF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨xq, hq⟩` from `small_prime_lt eps C8 he h8`. Use `⟨max (max xH xO) (max xC xq), S, fun s hs hx hmem => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨hxH, hxO⟩, hxC, hxq⟩` from `hx`. Take `⟨R, H, q0, a, b, hRV, hHT, hH, hqH, h0, hWin, hW, hGq⟩` from `hHost s hs hxH hmem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, -⟩` from `hCode s R hs hxC hRV`. Establish `hHT' : H.CT2 = C.CT2` using `hHT.trans hT.symm`. Establish `hn : 0 < R.n` using `R.toFrame.ord_pos`. Establish `hq0 : (q0 : ℝ) < s.X'`. Establish `hqp : (0 : ℝ) < H.q` using `by exact_mod_cast H.hyp.1.pos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdp : (0 : ℝ) < H.d` using `by exact_mod_cast H.hyp.2.1.pos`. Establish `hn' : (0 : ℝ) < H.QS` using `by exact_mod_cast H.QS_pos`. Conclude with `hq s _ q0 hs hxq (by positivity) hH.1.log_cond_le hH.2.2.2.2.2.2.2.2.2.2.2.2.1.2.2.1`. Use `choose pt hsc hval har hfrom hcan hhas using fun i : Fin R.n => hObj s R H q0 a b _ c i.1 hs hxO hRV hHT' (by show HostGood s C.P.Cpde C5 c6 Cb H q0; rw [hP]; exact hH) hqH hWin rfl hc i.2`. Use `choose eW heW using fun i => (hfrom i).words`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨Fin R.n, ⟨⟨0, hn⟩⟩, pt, hsc, hval, har, fun i i' => ?_, _, eW, fun i i' u u' h => ?_, fun i0 u0 hu => ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.EX.TieSame.same_of_from C cD ch (pt i) (pt i') R H a b _ c _ _ ((hsc i).trans (hsc i').symm) (hval i) (hval i') (hfrom i) (hfrom i') (hcan i) (hcan i')`. Use function extensionality and compare the values at `l`. Rewrite using `[heW i u l, heW i' u' l, h]`. Rewrite `hu` using `[(hfrom i0).1]`.
-
-Conclude with `⟨⟨u0, hu⟩, (hfrom ⟨u0, hu⟩).2.2.2.2.2.2.2.2.2.1⟩`. Establish `hd` using `DC.has_withDuty_wall_and_choices (C8 := C8) (c6 := c6) (q0 := q0) (pt i) hC hHT' (by rw [hsc i]; exact hH) (by rw [hsc i]; exact hq0) h0 (by rw [hsc i]; exact hW) (hval i) (hfrom i) (hcan i) (hhas i)`. Conclude with `⟨⟨hd.1, G.at_of_from (hfrom i) (by rw [hsc i]; exact hGq)⟩, hd.2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kitS : ∀ (Q : Par → PtProp) (la : ℝ) (G : FReq), DC.HostWW la G.req → ObjCP Q →
     KitCPW la (fun κ => ((withDuty (Q κ)).and DC.WallPt).and G.pt) := by

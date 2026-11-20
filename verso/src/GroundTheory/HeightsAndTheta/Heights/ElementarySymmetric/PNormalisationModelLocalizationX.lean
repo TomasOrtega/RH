@@ -13,7 +13,7 @@ namespace NormalisationModelLocalization
 variable {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {q : Fin n → ℂ}
 
 /- English proof (translation)
-Rewrite using `[Set.disjoint_left]`. Introduce `f hf hfJ`. Conclude with `hf (RingHom.mem_ker.2 (hq f hfJ))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem disjoint_primeCompl (hq : q ∈ zeroSet J) :
     Disjoint ((RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)).primeCompl : Set (MvPolynomial (Fin n) ℂ))
@@ -23,21 +23,21 @@ theorem disjoint_primeCompl (hq : q ∈ zeroSet J) :
   exact hf (RingHom.mem_ker.2 (hq f hfJ))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.isPrime_of_isPrime_disjoint (RingHom.ker (eval q)).primeCompl _ J hJ (disjoint_primeCompl hq)`.
+A detailed English derivation is pending.
 -/
 theorem isPrime_map (hJ : J.IsPrime) (hq : q ∈ zeroSet J) :
     (J.map (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q))))).IsPrime :=
   IsLocalization.isPrime_of_isPrime_disjoint (RingHom.ker (eval q)).primeCompl _ J hJ (disjoint_primeCompl hq)
 
 /- English proof (translation)
-Use `haveI := isPrime_map hJ hq`. Conclude with `Ideal.Quotient.isDomain _`.
+A detailed English derivation is pending.
 -/
 theorem isDomain (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : IsDomain (curveLocalRing J q) := by
   haveI := isPrime_map hJ hq
   exact Ideal.Quotient.isDomain _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (algebraMap _ (Localization.AtPrime (RingHom.ker (eval q))) f) = 0 ↔ _`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, ← Ideal.mem_comap]`. Establish `h` using `IsLocalization.under_map_of_isPrime_disjoint (M := (RingHom.ker (eval q)).primeCompl) (S := Localization.AtPrime (RingHom.ker (eval q))) hJ (disjoint_primeCompl hq)`. Rewrite `h` using `[Ideal.under]`. Rewrite using `[h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_eq_zero_iff (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (f : MvPolynomial (Fin n) ℂ) :
     algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing J q) f = 0 ↔ f ∈ J := by
@@ -54,14 +54,14 @@ def toFrac (J : Ideal (MvPolynomial (Fin n) ℂ)) (q : Fin n → ℂ) :
     (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing J q))
 
 /- English proof (translation)
-Rewrite using `[toFrac, RingHom.comp_apply, map_eq_zero_iff _ (IsFractionRing.injective _ _), algebraMap_eq_zero_iff hJ hq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toFrac_eq_zero_iff (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (f : MvPolynomial (Fin n) ℂ) :
     toFrac J q f = 0 ↔ f ∈ J := by
   rw [toFrac, RingHom.comp_apply, map_eq_zero_iff _ (IsFractionRing.injective _ _), algebraMap_eq_zero_iff hJ hq]
 
 /- English proof (translation)
-The claim follows from `Subalgebra.algebraMap_mem _ _`.
+A detailed English derivation is pending.
 -/
 theorem toFrac_mem (f : MvPolynomial (Fin n) ℂ) :
     toFrac J q f ∈ integralClosure (curveLocalRing J q) (FractionRing (curveLocalRing J q)) :=
@@ -70,9 +70,9 @@ theorem toFrac_mem (f : MvPolynomial (Fin n) ℂ) :
 variable (M : IndefiniteRowSideFullHecke.ComplexSets.NormalModel J)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← M.comap_eq]`. Conclude with `h`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← M.comap_eq]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem rename_mem_iff (f : MvPolynomial (Fin n) ℂ) : rename Sum.inl f ∈ M.ideal ↔ f ∈ J := by
   constructor
@@ -88,12 +88,12 @@ def num (i : Fin M.m) : MvPolynomial (Fin n) ℂ := (M.birational i).choose
 def den (i : Fin M.m) : MvPolynomial (Fin n) ℂ := (M.birational i).choose_spec.choose
 
 /- English proof (translation)
-The claim follows from `(M.birational i).choose_spec.choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem den_not_mem (i : Fin M.m) : den M i ∉ J := (M.birational i).choose_spec.choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(M.birational i).choose_spec.choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem den_mul_sub_mem (i : Fin M.m) :
     rename Sum.inl (den M i) * X (Sum.inr i) - rename Sum.inl (num M i) ∈ M.ideal :=
@@ -105,7 +105,7 @@ def relIdeal : Ideal (MvPolynomial (Fin n ⊕ Fin M.m) ℂ) :=
   Ideal.span (Set.range fun i => rename Sum.inl (den M i) * X (Sum.inr i) - rename Sum.inl (num M i))
 
 /- English proof (translation)
-Rewrite using `[relIdeal, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `den_mul_sub_mem M i`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem relIdeal_le : relIdeal M ≤ M.ideal := by
   rw [relIdeal, Ideal.span_le]
@@ -113,17 +113,17 @@ theorem relIdeal_le : relIdeal M ≤ M.ideal := by
   exact den_mul_sub_mem M i
 
 /- English proof (translation)
-Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C c => exact ⟨0, C c, by simp⟩`. Consider the case `add p r hp hr`. Take `⟨N₁, g₁, h₁⟩` from `hp`. Take `⟨N₂, g₂, h₂⟩` from `hr`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨N₁ + N₂, denProd M ^ N₂ * g₁ + denProd M ^ N₁ * g₂, ?_⟩` and prove the remaining obligations. Establish `e : rename Sum.inl (denProd M) ^ (N₁ + N₂) * (p + r) - rename Sum.inl (denProd M ^ N₂ * g₁ + denProd M ^ N₁ * g₂) = rename Sum.inl (denProd M) ^ N₂ * (rename Sum.inl (denProd M) ^ N₁ * p - rename Sum.inl g₁) + rename Sum.inl (denProd M) ^ N₁ * (rename Sum.inl (denProd M) ^ N₂ * r …`. Simplify using `only [map_add, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (Ideal.mul_mem_left _ _ h₁) (Ideal.mul_mem_left _ _ h₂)`. Consider the case `mul_X p s hp`. Take `⟨N, g, hg⟩` from `hp`. Consider the cases of `s with`. Consider the case `inl i`.
+Treat this case separately. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, g * X i, ?_⟩` and prove the remaining obligations. Establish `e : rename Sum.inl (denProd M) ^ N * (p * X (Sum.inl i)) - rename Sum.inl (g * X i) = (rename Sum.inl (denProd M) ^ N * p - rename Sum.inl g) * X (Sum.inl i)`. Simplify using `only [map_mul, rename_X]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Ideal.mul_mem_right _ _ hg`. Consider the case `inr i => set c := ∏ j ∈ Finset.univ.erase i, den M j with hc`. Establish `hB : denProd M = den M i * c` using `(Finset.mul_prod_erase _ _ (Finset.mem_univ i)).symm`. Use `⟨N + 1, g * c * num M i, ?_⟩` and prove the remaining obligations. Establish `e : rename Sum.inl (denProd M) ^ (N + 1) * (p * X (Sum.inr i)) - rename Sum.inl (g * c * num M i) = (rename Sum.inl (denProd M) ^ N * p - rename Sum.inl g) * (rename Sum.inl (denProd M) * X (Sum.inr i)) + rename Sum.inl g * rename Sum.inl c * (rename Sum.inl (den M i) * X (Sum.in …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hB]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (Ideal.mul_mem_right _ _ hg) (Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clear (h : MvPolynomial (Fin n ⊕ Fin M.m) ℂ) :
     ∃ (N : ℕ) (g : MvPolynomial (Fin n) ℂ),
@@ -172,9 +172,9 @@ def toFracModel (q : Fin n → ℂ) : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+*
     (Sum.elim (fun j => toFrac J q (X j)) (fun i => toFrac J q (num M i) * Ring.inverse (toFrac J q (den M i))))
 
 /- English proof (translation)
-Rewrite using `[toFracModel, eval₂Hom_rename]`. Establish `e : eval₂Hom ((toFrac J q).comp C) (Sum.elim (fun j => toFrac J q (X j)) (fun i => toFrac J q (num M i) * Ring.inverse (toFrac J q (den M i))) ∘ Sum.inl) = toFrac J q`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `j`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem toFracModel_rename (f : MvPolynomial (Fin n) ℂ) : toFracModel M q (rename Sum.inl f) = toFrac J q f := by
   rw [toFracModel, eval₂Hom_rename]
@@ -190,9 +190,9 @@ theorem toFracModel_rename (f : MvPolynomial (Fin n) ℂ) : toFracModel M q (ren
 variable {M}
 
 /- English proof (translation)
-Use `isDomain hJ hq` as an intermediate fact. Rewrite using `[relIdeal, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hu : IsUnit (toFrac J q (den M i))` using `isUnit_iff_ne_zero.2 (fun h => den_not_mem M i ((toFrac_eq_zero_iff hJ hq _).1 h))`. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, map_sub, map_mul, toFracModel_rename]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[toFracModel, eval₂Hom_X', Sum.elim_inr, mul_left_comm, Ring.mul_inverse_cancel _ hu, mul_one, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relIdeal_le_ker (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : relIdeal M ≤ RingHom.ker (toFracModel M q) := by
   have := isDomain hJ hq
@@ -204,15 +204,15 @@ theorem relIdeal_le_ker (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : relIdeal M ≤
   rw [toFracModel, eval₂Hom_X', Sum.elim_inr, mul_left_comm, Ring.mul_inverse_cancel _ hu, mul_one, sub_self]
 
 /- English proof (translation)
-Use `isDomain hJ hq` as an intermediate fact. Establish `hBJ : toFrac J q (denProd M) ≠ 0`. Rewrite using `[denProd, map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun i _ h => den_not_mem M i ((toFrac_eq_zero_iff hJ hq _).1 h))`. Establish `hBM : rename Sum.inl (denProd M) ∉ M.ideal` using `fun h => hBJ ((toFrac_eq_zero_iff hJ hq _).2 ((rename_mem_iff M _).1 h))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `h`. Take `⟨N, g, hg⟩` from `clear M h`. Establish `hφ` using `relIdeal_le_ker hJ hq hg`. Rewrite `hφ` using `[RingHom.mem_ker, map_sub, map_mul, map_pow, toFracModel_rename, toFracModel_rename, sub_eq_zero]`. Establish `hM` using `relIdeal_le M hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite `hφ` using `[h0, mul_zero, eq_comm, toFrac_eq_zero_iff hJ hq]`. Establish `hg' : rename Sum.inl g ∈ M.ideal` using `(rename_mem_iff M g).2 hφ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : rename Sum.inl (denProd M) ^ N * h ∈ M.ideal`. Use `M.ideal.add_mem hM hg'` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `(M.isPrime.mem_or_mem hmul).resolve_left (fun hp => hBM (M.isPrime.mem_of_pow_mem N hp))`. Introduce `hh`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : rename Sum.inl g ∈ M.ideal`. Use `M.ideal.sub_mem (M.ideal.mul_mem_left (rename Sum.inl (denProd M) ^ N) hh) hM` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Rewrite `hφ` using `[(toFrac_eq_zero_iff hJ hq g).2 ((rename_mem_iff M g).1 hg')]`. Conclude with `(mul_eq_zero.1 hφ).resolve_left (pow_ne_zero _ hBJ)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_toFracModel (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : RingHom.ker (toFracModel M q) = M.ideal := by
   have := isDomain hJ hq
@@ -251,14 +251,14 @@ def modelToFrac (hJ : J.IsPrime) (hq : q ∈ zeroSet J) :
     exact ha)
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.lift_mk _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem modelToFrac_mk (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (h : MvPolynomial (Fin n ⊕ Fin M.m) ℂ) :
     modelToFrac M hJ hq (Ideal.Quotient.mk M.ideal h) = toFracModel M q h :=
   Ideal.Quotient.lift_mk _ _ _
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨h, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[modelToFrac_mk, ← RingHom.mem_ker, ker_toFracModel hJ hq]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modelToFrac_injective (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : Function.Injective (modelToFrac M hJ hq) := by
   rw [injective_iff_map_eq_zero]
@@ -268,7 +268,7 @@ theorem modelToFrac_injective (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : Function
   exact Ideal.Quotient.eq_zero_iff_mem.2 hx
 
 /- English proof (translation)
-Take `⟨f, hf, hfy⟩` from `y.2`. Establish `hy : (y : MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) = Ideal.Quotient.mk M.ideal (rename Sum.inl f)` using `hfy.symm`. Rewrite using `[hy, modelToFrac_mk, toFracModel_rename]`. Conclude with `(isUnit_algebraMap_curveLocalRing J q f (fun h0 => hf (RingHom.mem_ker.2 h0))).map (algebraMap (curveLocalRing J q) (FractionRing (curveLocalRing J q)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modelToFrac_isUnit (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (y : normalModelSubmonoid M q) :
     IsUnit (modelToFrac M hJ hq y) := by
@@ -285,7 +285,7 @@ def locToFrac (hJ : J.IsPrime) (hq : q ∈ zeroSet J) :
     (modelToFrac_isUnit M hJ hq)
 
 /- English proof (translation)
-Rewrite using `[locToFrac]`. Conclude with `IsLocalization.lift_eq _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locToFrac_algebraMap (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (r : MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) :
     locToFrac M hJ hq (algebraMap _ _ r) = modelToFrac M hJ hq r := by
@@ -293,9 +293,9 @@ theorem locToFrac_algebraMap (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (r : MvPoly
   exact IsLocalization.lift_eq _ _
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (normalModelSubmonoid M q) z`. Rewrite `hz` using `[locToFrac, IsLocalization.lift_mk'_spec, mul_zero]`. Rewrite using `[modelToFrac_injective M hJ hq (hz.trans (map_zero _).symm)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsLocalization.mk'_zero _`.
+A detailed English derivation is pending.
 -/
 theorem locToFrac_injective (hJ : J.IsPrime) (hq : q ∈ zeroSet J) : Function.Injective (locToFrac M hJ hq) := by
   rw [injective_iff_map_eq_zero]
@@ -317,7 +317,7 @@ def polyLocToModel : Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (F
       (⟨_, Submonoid.mem_map_of_mem _ y.2⟩ : normalModelSubmonoid M q))
 
 /- English proof (translation)
-Rewrite using `[polyLocToModel]`. Conclude with `IsLocalization.lift_eq _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyLocToModel_algebraMap (f : MvPolynomial (Fin n) ℂ) :
     polyLocToModel M (algebraMap _ _ f) =
@@ -337,7 +337,7 @@ def locToModel : curveLocalRing J q →+* Localization (normalModelSubmonoid M q
     exact hle ha)
 
 /- English proof (translation)
-Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)).primeCompl` to reduce the goal to its premises. Use `RingHom.ext fun f => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `locToFrac M hJ hq (polyLocToModel M (algebraMap _ _ f)) = toFrac J q f`. Rewrite using `[polyLocToModel_algebraMap, locToFrac_algebraMap, modelToFrac_mk, toFracModel_rename]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem locToFrac_comp (hJ : J.IsPrime) (hq : q ∈ zeroSet J) :
     (locToFrac M hJ hq).comp (locToModel M) = algebraMap (curveLocalRing J q) (FractionRing (curveLocalRing J q)) := by
@@ -348,17 +348,15 @@ theorem locToFrac_comp (hJ : J.IsPrime) (hq : q ∈ zeroSet J) :
   rw [polyLocToModel_algebraMap, locToFrac_algebraMap, modelToFrac_mk, toFracModel_rename]
 
 /- English proof (translation)
-Establish `hX : ∀ s, toFracModel M q (X s) ∈ integralClosure (curveLocalRing J q) (FractionRing (curveLocalRing J q))`. Introduce `s`. Consider the cases of `s with`. Consider the case `inl j`. Rewrite using `[← rename_X (R := ℂ) (Sum.inl : Fin n → Fin n ⊕ Fin M.m) j, toFracModel_rename]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `toFrac_mem _`. Consider the case `inr i`. Take `⟨P, hPm, hP⟩` from `M.integral i`. Establish `h0 : toFracModel M q (P.eval₂ (rename Sum.inl : MvPolynomial (Fin n) ℂ →ₐ[ℂ] _).toRingHom (X (Sum.inr i))) = 0`. Rewrite using `[← RingHom.mem_ker, ker_toFracModel hJ hq]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hP`. Rewrite `h0` using `[Polynomial.hom_eval₂]`. Establish `hc : (toFracModel M q).comp (rename Sum.inl : MvPolynomial (Fin n) ℂ →ₐ[ℂ] _).toRingHom = (algebraMap (curveLocalRing J q) (FractionRing (curveLocalRing J q))).comp (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing J q))` using `RingHom.ext (toFracModel_rename M)`. Rewrite `h0` using `[hc]`. Use `⟨P.map (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing J q)), hPm.map _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Rewrite using `[Polynomial.eval₂_map]`. Conclude with `h0`. Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C c`. Rewrite using `[← rename_C (R := ℂ) (Sum.inl : Fin n → Fin n ⊕ Fin M.m) c, toFracModel_rename]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `toFrac_mem _`. Consider the case `add p r hp hr`. Rewrite using `[map_add]`. Conclude with `add_mem hp hr`. Consider the case `mul_X p s hp`.
-
-Rewrite using `[map_mul]`. Conclude with `mul_mem hp (hX s)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFracModel_mem (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (h : MvPolynomial (Fin n ⊕ Fin M.m) ℂ) :
     toFracModel M q h ∈ integralClosure (curveLocalRing J q) (FractionRing (curveLocalRing J q)) := by
@@ -396,9 +394,9 @@ theorem toFracModel_mem (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (h : MvPolynomia
     exact mul_mem hp (hX s)
 
 /- English proof (translation)
-Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (normalModelSubmonoid M q) z`. Take `⟨h, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Take `⟨f, hf, hfs⟩` from `s.2`. Establish `hs : (s : MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) = Ideal.Quotient.mk M.ideal (rename Sum.inl f)` using `hfs.symm`. Take `⟨u, hu⟩` from `isUnit_algebraMap_curveLocalRing J q f (fun h0 => hf (RingHom.mem_ker.2 h0))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : locToFrac M hJ hq (IsLocalization.mk' _ (Ideal.Quotient.mk M.ideal h) s) = toFracModel M q h * algebraMap (curveLocalRing J q) (FractionRing (curveLocalRing J q)) ↑u⁻¹`. Rewrite using `[locToFrac, IsLocalization.lift_mk'_spec, hs, modelToFrac_mk, modelToFrac_mk, toFracModel_rename, toFrac, RingHom.comp_apply, ← hu, mul_left_comm, ← map_mul, Units.mul_inv, map_one, mul_one]`. Rewrite using `[key]`. Conclude with `mul_mem (toFracModel_mem M hJ hq h) (Subalgebra.algebraMap_mem _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locToFrac_mem (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (z : Localization (normalModelSubmonoid M q)) :
     locToFrac M hJ hq z ∈ integralClosure (curveLocalRing J q) (FractionRing (curveLocalRing J q)) := by
@@ -416,19 +414,15 @@ theorem locToFrac_mem (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (z : Localization 
   exact mul_mem (toFracModel_mem M hJ hq h) (Subalgebra.algebraMap_mem _ _)
 
 /- English proof (translation)
-Use `isDomain hJ hq` as an intermediate fact. Use `M.isPrime` as an intermediate fact. Use `haveI : IsIntegrallyClosed (MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) := M.isIntegrallyClosed`. Use `letI : Algebra (Localization (normalModelSubmonoid M q)) (FractionRing (curveLocalRing J q)) := (locToFrac M hJ hq).toAlgebra`. Establish `hinj` using `locToFrac_injective M hJ hq`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsDomain (Localization (normalModelSubmonoid M q)) := Function.Injective.isDomain (locToFrac M hJ hq) hinj`. Use `haveI : IsIntegrallyClosed (Localization (normalModelSubmonoid M q)) := isIntegrallyClosed_of_isLocalization _ (normalModelSubmonoid M q) (fun s hs => mem_nonZeroDivisors_of_ne_zero (fun h0 => zero_not_mem_normalModelSubmonoid M q hq (h0 ▸ hs)))`. Use `haveI : IsFractionRing (Localization (normalModelSubmonoid M q)) (FractionRing (curveLocalRing J q)) := by`. Use `(isLocalization_iff _ _).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `isUnit_iff_ne_zero.2 (fun h0 => nonZeroDivisors.coe_ne_zero y ?_)` and prove the remaining obligations. Conclude with `(injective_iff_map_eq_zero _).1 hinj _ h0`. Introduce `z`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors (curveLocalRing J q)) z`. Establish `hb : locToModel M (b : curveLocalRing J q) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `h0`. Establish `h1` using `congrArg (locToFrac M hJ hq) h0`. Rewrite `h1` using `[← RingHom.comp_apply, locToFrac_comp, map_zero]`. Conclude with `nonZeroDivisors.coe_ne_zero b ((injective_iff_map_eq_zero _).1 (IsFractionRing.injective _ _) _ h1)`. Use `⟨⟨locToModel M a, ⟨locToModel M b, mem_nonZeroDivisors_of_ne_zero hb⟩⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `z * locToFrac M hJ hq (locToModel M b) = locToFrac M hJ hq (locToModel M a)`. Rewrite using `[← RingHom.comp_apply, ← RingHom.comp_apply, locToFrac_comp]`. Conclude with `hab`. Introduce `a b hab`. Conclude with `⟨1, by rw [hinj hab]⟩`.
-
-Establish `hx' : IsIntegral (Localization (normalModelSubmonoid M q)) x`. Take `⟨p, hpm, hp⟩` from `hx`. Use `⟨p.map (locToModel M), hpm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, RingHom.algebraMap_toAlgebra, locToFrac_comp]`. Conclude with `hp`.
-
-Conclude with `(IsIntegrallyClosed.isIntegral_iff (K := FractionRing (curveLocalRing J q))).1 hx'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locToFrac (hJ : J.IsPrime) (hq : q ∈ zeroSet J) (x : FractionRing (curveLocalRing J q))
     (hx : IsIntegral (curveLocalRing J q) x) : ∃ z, locToFrac M hJ hq z = x := by
@@ -473,15 +467,15 @@ end NormalisationModelLocalization
 open NormalisationModelLocalization in
 
 /- English proof (translation)
-Introduce `n J q M hJ`. Distinguish the cases in `hq : q ∈ zeroSet J`. Set `g : Localization (normalModelSubmonoid M q) →+* curveNormalisation J q` to `(locToFrac M hJ hq).codRestrict (integralClosure (curveLocalRing J q) (FractionRing (curveLocalRing J q))) (locToFrac_mem M hJ hq)`. Establish `hbij : Function.Bijective g`. Use `⟨fun a b h => locToFrac_injective M hJ hq (congrArg Subtype.val h), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨x, hx⟩`. Take `⟨z, hz⟩` from `exists_locToFrac M hJ hq x hx`. Conclude with `⟨z, Subtype.ext hz⟩`. Use `⟨(RingEquiv.ofBijective g hbij).symm, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[RingEquiv.symm_apply_eq]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `toFrac J q f = locToFrac M hJ hq (algebraMap _ _ (Ideal.Quotient.mk M.ideal (rename Sum.inl f)))`. Rewrite using `[locToFrac_algebraMap, modelToFrac_mk, toFracModel_rename]`. Use `haveI := curveLocalRing_subsingleton J q hq haveI : Subsingleton (FractionRing (curveLocalRing J q)) := IsLocalization.subsingleton (M := nonZeroDivisors (curveLocalRing J q)) (by rw [Subsingleton.elim (0 : curveLocalRing J q) 1]; exact one_mem _) haveI : Subsingleton (curveNorma …`. Establish `h0 : (0 : MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) ∈ normalModelSubmonoid M q`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [zeroSet, Set.mem_ofPred_eq, not_forall] at hq`. Take `⟨g, hg, hgq⟩` from `hq`. Establish `h1` using `mk_rename_mem_normalModelSubmonoid M q g hgq`. Rewrite `h1` using `[Ideal.Quotient.eq_zero_iff_mem.2 ((rename_mem_iff M g).2 hg)]`. Then use the resulting hypothesis. Use `haveI : Subsingleton (Localization (normalModelSubmonoid M q)) := IsLocalization.subsingleton h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Set `e : curveNormalisation J q ≃+* Localization (normalModelSubmonoid M q)` to `{ toFun := fun _ => 0 invFun := fun _ => 0 left_inv := fun _ => Subsingleton.elim _ _ right_inv := fun _ => Subsingleton.elim _ _ map_mul' := fun _ _ => Subsingleton.elim _ _ map_add' := fun _ _ => Subsingleton.elim _ _ }`. Conclude with `⟨e, fun _ => Subsingleton.elim _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem NormalisationModelLocalization.proof : NormalisationModelLocalization.Statement := by
   intro n J q M hJ

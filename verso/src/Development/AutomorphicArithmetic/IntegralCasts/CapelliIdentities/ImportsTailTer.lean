@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R L _ _ φ h s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simp, by simp⟩`. Consider the case `insert z s _ ih`. Take `⟨b0, hb0, hs⟩` from `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hb, hz⟩` from `h z`. Use `⟨b0 * b, by rw [map_mul]; exact hb0.mul hb, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Break down `Finset.mem_insert.mp hw with rfl | hw` into its components or cases. Use `⟨a * b0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_mul, ← hz]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc⟩` from `hs w hw`. Use `⟨c * b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hc]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

@@ -20,13 +20,13 @@ section Transport
 variable {G H V : Type} [Group G] [Group H] [TopologicalSpace G] [TopologicalSpace H] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Introduce `v` and use `(h v).preimage hφ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_comp (ρ : Representation ℂ H V) (φ : G →* H) (hφ : Continuous φ) (h : GlobalTheory.PRep.IsSmooth ρ) :
     GlobalTheory.PRep.IsSmooth (ρ.comp φ) := fun v => (h v).preimage hφ
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CuspRep.isIrreducible_iff]`. Use `⟨h.1, fun W hW => h.2 W fun y v hv => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hs y`. Conclude with `hW x v hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp (ρ : Representation ℂ H V) (φ : G →* H) (hs : Function.Surjective φ)
     (h : GlobalTheory.GLp.IsIrrRep ρ) : Representation.IsIrreducible (ρ.comp φ) := by
@@ -36,11 +36,11 @@ theorem isIrreducible_comp (ρ : Representation ℂ H V) (φ : G →* H) (hs : F
   exact hW x v hv
 
 /- English proof (translation)
-Use `⟨isSmooth_comp ρ φ hφ h.1, fun v l hl => ?_⟩` and prove the remaining obligations. Establish `hl' : l ∈ GlobalTheory.PRep.smoothPart (Representation.dual ρ)`. Establish `e : {y : H | Representation.dual ρ y l = l} = ψ ⁻¹' {x : G | Representation.dual (ρ.comp φ) x l = l}`. Use extensionality with `y`. Simplify using `[Representation.dual_apply, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `show IsOpen {y : H | Representation.dual ρ y l = l}`. Rewrite using `[e]`. Conclude with `hl.preimage hψ`. Take `⟨C, hC, hCv⟩` from `h.2 v l hl'`. Use `⟨ψ '' C, hC.image hψ, fun x hx => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz, c, hc, e⟩` from `hCv (φ x) hx`. Use `⟨ψ z, Subgroup.mem_center_iff.2 fun y => ?_, ψ c, ⟨c, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1 y, ← map_mul, ← map_mul, (Subgroup.mem_center_iff.1 hz (φ y))]`. Rewrite using `[← map_mul, ← e, h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSupercuspidal_comp [IsTopologicalGroup G] [IsTopologicalGroup H] (ρ : Representation ℂ H V) (φ : G →* H)
     (ψ : H →* G) (hφ : Continuous φ) (hψ : Continuous ψ) (h1 : ∀ x, ψ (φ x) = x) (h2 : ∀ y, φ (ψ y) = y)
@@ -69,14 +69,14 @@ variable {n : Type} [Fintype n] [DecidableEq n] {K₁ K₂ : Type} [Field K₁] 
   [TopologicalSpace K₂] [IsTopologicalRing K₁] [IsTopologicalRing K₂]
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (Continuous.matrix_map continuous_id hf)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_glMap (f : K₁ →+* K₂) (hf : Continuous f) :
     Continuous (Matrix.GeneralLinearGroup.map (n := n) f) :=
   Continuous.units_map _ (Continuous.matrix_map continuous_id hf)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem glMap_symm_apply (i : K₁ ≃+* K₂) (x : GL n K₁) :
     Matrix.GeneralLinearGroup.map i.symm.toRingHom (Matrix.GeneralLinearGroup.map i.toRingHom x) = x := by
@@ -84,7 +84,7 @@ theorem glMap_symm_apply (i : K₁ ≃+* K₂) (x : GL n K₁) :
   simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem glMap_apply_symm (i : K₁ ≃+* K₂) (y : GL n K₂) :
     Matrix.GeneralLinearGroup.map i.toRingHom (Matrix.GeneralLinearGroup.map i.symm.toRingHom y) = y := by
@@ -94,7 +94,7 @@ theorem glMap_apply_symm (i : K₁ ≃+* K₂) (y : GL n K₂) :
 end GLMap
 
 /- English proof (translation)
-Establish `ho : IsOpenMap i` using `AddMonoidHom.isOpenMap_of_sigmaCompact i.toRingHom.toAddMonoidHom i.surjective hi`. Conclude with `(i.toEquiv.toHomeomorphOfContinuousOpen hi ho).symm.continuous`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_symm {g : ℕ} [Fact g.Prime] {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) : Continuous i.symm := by
@@ -110,7 +110,7 @@ def transRep {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {n : ℕ} (π :
     isIrreducible_comp _ _ (fun y => ⟨_, glMap_apply_symm (I.i k v).symm y⟩) h⟩
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun x => by show π.ρ _ = π.ρ x rw [glMap_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem transRep_comp {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {n : ℕ}
     (π : Rep.{0} ℂ (GL (Fin n) ℚ_[D.host.g k])) (h : GlobalTheory.GLp.IsIrrRep π.ρ) (hs : GlobalTheory.PRep.IsSmooth π.ρ) :
@@ -120,7 +120,7 @@ theorem transRep_comp {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {n : �
     rw [glMap_symm_apply]
 
 /- English proof (translation)
-Establish `E : π.ρ.Equiv ((transRep I k v π h hs).ρ.comp (Matrix.GeneralLinearGroup.map (I.i k v).toRingHom))`. Rewrite using `[transRep_comp]`. Conclude with `Representation.Equiv.refl _`. Conclude with `⟨(Rep.mkIso E : Rep.of π.ρ ≅ _)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iso_pull {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {n : ℕ}
     (π : Rep.{0} ℂ (GL (Fin n) ℚ_[D.host.g k])) (h : GlobalTheory.GLp.IsIrrRep π.ρ) (hs : GlobalTheory.PRep.IsSmooth π.ρ) :
@@ -131,11 +131,9 @@ theorem iso_pull {D : D7} (I : Ident D) (k : Fin 2) (v : D.nd.PlG k) {n : ℕ}
     exact ⟨(Rep.mkIso E : Rep.of π.ρ ≅ _)⟩
 
 /- English proof (translation)
-Introduce `hDZ hL D T I rc hrc L k v κ hκ ρ hρ τ P hP hinf`. Take `⟨n, π⟩` from `ρ`. Establish `hs : GlobalTheory.PRep.IsSmooth π.ρ` using `hρ.2.2.1`. Use `set σ := transRep I k v π hρ.2.1 hs`. Establish `hsc : GlobalTheory.PRep.IsSupercuspidal σ.ρ` using `isSupercuspidal_comp π.ρ _ (Matrix.GeneralLinearGroup.map (I.i k v).toRingHom) (continuous_glMap _ (continuous_symm _ (I.i k v) (I.cont k v))) (continuous_glMap _ (I.cont k v)) (glMap_apply_symm (I.i k v)) (glMap_symm_apply (I.i k v)) hρ.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcusp : (GlobalTheory.LocLanglands.cls σ).IsCusp` using `GlobalTheory.LocGL.IrrGL.isCusp_of.2 ⟨hρ.1, GlobalTheory.SuperCusp.isCuspidal_of_isSupercuspidal _ n _ σ.ρ hsc⟩`. Establish `hinf' : GlobalTheory.SerSys.TameGen.Inflates (σ.ρ.comp (Matrix.GeneralLinearGroup.map (I.i k v).toRingHom)) τ`. Rewrite using `[transRep_comp]`. Conclude with `hinf`. Use `show D.naut.inePol (rc k v n π) (D.ntypes.tg k v) = _`.
-
-Rewrite using `[T.inePol _ _ _ (D.ntypes.tg_mem k v), hrc k v n σ π (iso_pull I k v π hρ.2.1 hs)]`. Conclude with `hDZ D.host.E D.nd.Om (D.host.g k) _ _ (D.nd.plOm.2 (D.naut.plGw k v)) _ (GlobalTheory.CuspRep.ParLaws.isRec_locRec hL _) (I.i k v) (I.cont k v) κ (L k) _ (D.ntypes.tg_mem k v) hκ n σ hcusp τ P hP hinf'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tameParam_record : GlobalTheory.Published.DepthZeroInertia → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (I : Ident D) (rc : GlobalTheory.SerSys.Corr D), IsRc hL T I rc → ∀ (L : ∀ k, LabelDatum (D.host.g k)) (k : Fin 2) (v : D.nd.PlG k) (κ : IsLocalRing.ResidueField (D.nd.plOm.1 (D.naut.plGw k v)) ≃+* Formalism.CyclotomicNorms.Fbar (D.host.g k)), TameCoupled (D.nd.plOm.1 (D.naut.plGw k v)) κ (D.ntypes.tg k v) (L k).gen → TameGen.TameParam (L k) (fun a => D.naut.inePol a (D.ntypes.tg k v)) (fun π : Supp.GLRep _ => rc k v π.1 π.2) := by
   intro hDZ hL D T I rc hrc L k v κ hκ ρ hρ τ P hP hinf

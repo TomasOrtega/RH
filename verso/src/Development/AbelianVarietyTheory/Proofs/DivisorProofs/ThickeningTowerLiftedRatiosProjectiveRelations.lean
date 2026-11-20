@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.FormalAlg.LiftRatios
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE hU).op ≫ f.appLE U' V' h').hom y = (f.appLE U V h ≫ X.presheaf.map (homOfLE hV).op).hom y`. Rewrite using `[Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_rs {X Y : Scheme.{0}} (f : X ⟶ Y) {U U' : Y.Opens} {V V' : X.Opens} (hU : U' ≤ U) (hV : V' ≤ V)
     (h : V ≤ f ⁻¹ᵁ U) (h' : V' ≤ f ⁻¹ᵁ U') (y : Γ(Y, U)) :
@@ -25,7 +25,7 @@ theorem appLE_rs {X Y : Scheme.{0}} (f : X ⟶ Y) {U U' : Y.Opens} {V V' : X.Ope
   rw [Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Establish `e` using `Scheme.Hom.appLE_comp_appLE φ f ⊤ V (φ ⁻¹ᵁ V) (by simp) le_rfl`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_cst_comp {R : Type} [CommRing R] {X X' : Scheme.{0}} (φ : X' ⟶ X) (f : X ⟶ Spec (CommRingCat.of R))
     (V : X.Opens) (r : R) : (φ.app V).hom (cst f V r) = cst (φ ≫ f) (φ ⁻¹ᵁ V) r := by
@@ -34,7 +34,7 @@ theorem app_cst_comp {R : Type} [CommRing R] {X X' : Scheme.{0}} (φ : X' ⟶ X)
   exact congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) e
 
 /- English proof (translation)
-Use `SetLike.ext fun y => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hf.surj y`. Rewrite using `[← Scheme.Hom.mem_preimage, ← Scheme.Hom.mem_preimage, h]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem preimage_injective {X Y : Scheme.{0}} (f : X ⟶ Y) (hf : Surjective f) {U U' : Y.Opens}
     (h : f ⁻¹ᵁ U = f ⁻¹ᵁ U') : U = U' := by
@@ -43,15 +43,13 @@ theorem preimage_injective {X Y : Scheme.{0}} (f : X ⟶ Y) (hf : Surjective f) 
   rw [← Scheme.Hom.mem_preimage, ← Scheme.Hom.mem_preimage, h]
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Rewrite `hx` using `[Scheme.Hom.appLE_eq_app]`. Take `⟨-, -, hk⟩` from `GlobalTheory.T.baseChange_quotient_closedImmersion_idealSheaf R (I ^ (e + 1)) _ _ ((Y (e + 1)).hom ≫ thick R I (e + 1)) (β e) (Y e).hom ((GlobalTheory.T.isPullback_thick_tower_squares R I Y β hβ).1 e)`. Take `⟨hs, hker⟩` from `hk V hV`. Establish `hc : β e ≫ (Y (e + 1)).hom ≫ thick R I (e + 1) = (Y e).hom ≫ thick R I e`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, (hβ e).w, Category.assoc, thickTrans_comp]`. Establish `hmap : Ideal.map ((β e).app V).hom (towerIdeal Y (e + 1) I V) = towerIdeal Y e I (β e ⁻¹ᵁ V)`. Unfold `towerIdeal`. Rewrite using `[Ideal.map_map]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `r`. Rewrite using `[RingHom.comp_apply, app_cst_comp, hc]`. Establish `hx' : x ∈ Ideal.comap ((β e).app V).hom (Ideal.map ((β e).app V).hom (towerIdeal Y (e + 1) I V))`. Rewrite using `[hmap]`. Conclude with `hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx'` using `[Ideal.comap_map_of_surjective _ hs]`. Establish `hle : Ideal.comap ((β e).app V).hom ⊥ ≤ towerIdeal Y (e + 1) I V`. Introduce `y hy`. Establish `hy' : y ∈ RingHom.ker ((β e).app V).hom` using `hy`. Rewrite `hy'` using `[hker]`.
-
-Conclude with `Ideal.map_mono (Ideal.pow_le_self (Nat.succ_ne_zero e)) hy'`. Conclude with `SetLike.le_def.1 (sup_le le_rfl hle) hx'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_appLE_mem (R : Type) [CommRing R] (I : Ideal R)
     (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))))
@@ -85,23 +83,21 @@ theorem mem_of_appLE_mem (R : Type) [CommRing R] (I : Ideal R)
   exact SetLike.le_def.1 (sup_le le_rfl hle) hx'
 
 /- English proof (translation)
-Introduce `R _ I Y β hβ n C`. Establish `hsur : ∀ e, Surjective (β e)` using `fun e => MorphismProperty.of_isPullback (P := @Surjective) (hβ e).flip (GlobalTheory.GenSystem.surjective_thickTrans R I e)`. Establish `h1 : ∀ e i j, (Y e).left.basicOpen (C.ρ e i j) = C.D e i ⊓ C.D e j`. Introduce `e`. Proceed by induction on `e with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact C.basic`. Consider the case `succ e ih`. Introduce `i j`. Use `preimage_injective (β e) (hsur e) ?_` and prove the remaining obligations. Establish `hb` using `Scheme.basicOpen_appLE (β e) (C.D e i) (C.D (e + 1) i) (C.pre e i).ge (C.ρ (e + 1) i j)`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hb` using `[C.ρ_pull, ih]`. Rewrite using `[Scheme.Hom.preimage_inf, C.pre, C.pre, hb]`. Conclude with `(inf_eq_right.2 ((Scheme.Hom.preimage_mono (β e) (Scheme.basicOpen_le _ _)).trans (C.pre e i).le)).symm`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Introduce `e`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `e with`. Consider the case `zero`. Introduce `i`. Rewrite using `[C.ρ_self, sub_self]`. Conclude with `Ideal.zero_mem _`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ e ih`. Introduce `i`. Use `mem_of_appLE_mem R I Y β hβ e _ (C.aff (e + 1) i) _ (C.pre e i) _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_one, C.ρ_pull]`. Conclude with `ih i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `e`. Proceed by induction on `e with`. Consider the case `zero`. Introduce `i j l`. Rewrite using `[C.cocycle, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Ideal.zero_mem _`. Consider the case `succ e ih`. Introduce `i j l`. Establish `hV : IsAffineOpen (C.D (e + 1) i ⊓ C.D (e + 1) j)`. Rewrite using `[← h1 (e + 1) i j]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(C.aff (e + 1) i).basicOpen _`. Establish `hW : β e ⁻¹ᵁ (C.D (e + 1) i ⊓ C.D (e + 1) j) = C.D e i ⊓ C.D e j`. Rewrite using `[Scheme.Hom.preimage_inf, C.pre, C.pre]`. Use `mem_of_appLE_mem R I Y β hβ e _ hV _ hW _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, appLE_rs (β e) _ inf_le_left (C.pre e i).ge, appLE_rs (β e) _ inf_le_left (C.pre e i).ge, appLE_rs (β e) _ inf_le_right (C.pre e j).ge, C.ρ_pull, C.ρ_pull, C.ρ_pull]`.
-
-Conclude with `ih i j l`.
+A detailed English derivation is pending.
 -/
 theorem lifted_ratios_mod : ∀ (R : Type) [CommRing R] (I : Ideal R), ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → ∀ (n : ℕ) (C : Charts I Y β n), (∀ e i j, (Y e).left.basicOpen (C.ρ e i j) = C.D e i ⊓ C.D e j) ∧ (∀ e i, C.ρ e i i - 1 ∈ towerIdeal Y e I (C.D e i)) ∧ ∀ e i j l, rs (Y e).left (inf_le_left : C.D e i ⊓ C.D e j ≤ C.D e i) (C.ρ e i l) - rs (Y e).left (inf_le_left : C.D e i ⊓ C.D e j ≤ C.D e i) (C.ρ e i j) * rs (Y e).left (inf_le_right : C.D e i ⊓ C.D e j ≤ C.D e j) (C.ρ e j l) ∈ towerIdeal Y e I (C.D e i ⊓ C.D e j) := by
   intro R _ I Y β hβ n C

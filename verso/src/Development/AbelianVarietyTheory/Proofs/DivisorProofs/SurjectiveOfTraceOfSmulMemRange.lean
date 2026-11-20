@@ -5,27 +5,27 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory.EtaleCoker
 
 /- English proof (translation)
-Establish `htf : ∀ b : B, s • b = 0 → b = 0`. Introduce `b hb`. Set `e` to `Module.Free.chooseBasis S B`. Apply `e.repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `congrArg (fun x => e.repr x i) hb` as an intermediate fact. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.zero_apply] at this`. Simplify using `using (mul_eq_zero.mp this).resolve_left hs`. Set `L : A →ₗ[S] B` to `φ.toLinearMap`. Establish `hL : Function.Injective L` using `hφ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `E : A ≃ₗ[S] LinearMap.range L` to `LinearEquiv.ofInjective L hL`. Set `g : B →ₗ[S] LinearMap.range L` to `{ toFun := fun b => ⟨s • b, by obtain ⟨a, ha⟩ := hcok b; exact ⟨a, ha⟩⟩ map_add' := fun x y => by ext; simp [smul_add] map_smul' := fun c x => by ext; simp [smul_comm s c] }`. Establish `hg : Function.Injective g`. Introduce `x y hxy`. Establish `: s • x = s • y` using `congrArg Subtype.val hxy`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : s • (x - y) = 0` using `by rw [smul_sub, this, sub_self]`. Conclude with `sub_eq_zero.mp (htf _ h0)`. Establish `h1 : Module.finrank S A ≤ Module.finrank S B` using `LinearMap.finrank_le_finrank_of_injective hL`. Establish `h2 : Module.finrank S B ≤ Module.finrank S A` using `LinearMap.finrank_le_finrank_of_injective (f := E.symm.toLinearMap ∘ₗ g) (E.symm.injective.comp hg)`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex S A) = Fintype.card (Module.Free.ChooseBasisIndex S B)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, ← Module.finrank_eq_card_chooseBasisIndex]`. Use linear arithmetic over natural numbers and integers. Set `eι` to `Fintype.equivOfCardEq hcard`. Set `a` to `(Module.Free.chooseBasis S A).reindex eι`. Set `bB` to `Module.Free.chooseBasis S B`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `v : Module.Free.ChooseBasisIndex S B → B` to `fun i => φ (a i)`. Establish `htm : Algebra.traceMatrix S v = Algebra.traceMatrix S a`. Use extensionality with `i j`. Simplify using `only [Algebra.traceMatrix_apply, Algebra.traceForm_apply, v, ← map_mul, htr]`. Establish `hdv : Algebra.discr S v = Algebra.discr S a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.discr_def, Algebra.discr_def, htm]`. Set `P` to `bB.toMatrix v`. Establish `hv : Matrix.vecMul (⇑bB) (P.map (algebraMap S B)) = v`. Use function extensionality and compare the values at `j`. Rewrite using `[← bB.sum_toMatrix_smul_self v j]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.vecMul, dotProduct, P, Algebra.smul_def, mul_comm]`. Establish `hdisc : Algebra.discr S v = P.det ^ 2 * Algebra.discr S bB`. Rewrite using `[← hv, Algebra.discr_of_matrix_vecMul]`. Establish `hu : IsUnit (P.det ^ 2 * Algebra.discr S bB)`. Rewrite using `[← hdisc, hdv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `discr_isUnit S A a`. Establish `hPu : IsUnit P.det` using `(isUnit_pow_iff two_ne_zero).mp (isUnit_of_mul_isUnit_left hu)`. Establish `hbd : IsUnit (bB.det v)` using `by rw [Module.Basis.det_apply]; exact hPu`. Establish `hspan` using `((Module.Basis.is_basis_iff_det bB).mpr hbd).2`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : y ∈ Submodule.span S (Set.range v)` using `by rw [hspan]; trivial`. Establish `hle : Submodule.span S (Set.range v) ≤ LinearMap.range L`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨a i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, hx⟩` from `hle hy`. Conclude with `⟨x, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem surjective_of_trace_of_smul_mem_range (S A B : Type) [CommRing S] [IsLocalRing S]
     [IsDomain S] [CommRing A] [Algebra S A] [Module.Free S A] [Module.Finite S A]

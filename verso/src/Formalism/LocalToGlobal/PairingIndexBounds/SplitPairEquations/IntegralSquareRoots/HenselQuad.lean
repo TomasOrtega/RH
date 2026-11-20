@@ -5,9 +5,9 @@ open Polynomial
 namespace Formalism.L2.PairingIndexBounds.Eq.J.Neg
 
 /- English proof (translation)
-Establish `h1 : aeval (t : ℤ_[p]) (C (a : ℤ_[p]) * X ^ 2 + C (b : ℤ_[p])) = ((a * t ^ 2 + b : ℤ) : ℤ_[p])`. Simplify using the standard rewrite rules. Establish `h2 : aeval (t : ℤ_[p]) (derivative (C (a : ℤ_[p]) * X ^ 2 + C (b : ℤ_[p]))) = ((2 * a * t : ℤ) : ℤ_[p])`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨z, hz, -⟩` from `hensels_lemma (F := C (a : ℤ_[p]) * X ^ 2 + C (b : ℤ_[p])) (a := (t : ℤ_[p])) (by rw [h1, h2]; exact h)`. Conclude with `⟨z, by simpa using hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hensel_quad (p : ℕ) [Fact p.Prime] (a b t : ℤ)
     (h : ‖((a * t ^ 2 + b : ℤ) : ℤ_[p])‖ < ‖((2 * a * t : ℤ) : ℤ_[p])‖ ^ 2) :
@@ -24,7 +24,7 @@ theorem hensel_quad (p : ℕ) [Fact p.Prime] (a b t : ℤ)
   exact ⟨z, by simpa using hz⟩
 
 /- English proof (translation)
-Use `le_antisymm (PadicInt.norm_le_one _) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `h ((PadicInt.norm_int_lt_one_iff_dvd (p := p) (k := k)).1 (not_le.1 hlt))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem norm_unit (p : ℕ) [Fact p.Prime] (k : ℤ) (h : ¬ (p : ℤ) ∣ k) : ‖(k : ℤ_[p])‖ = 1 := by
   refine le_antisymm (PadicInt.norm_le_one _) ?_
@@ -32,7 +32,7 @@ theorem norm_unit (p : ℕ) [Fact p.Prime] (k : ℤ) (h : ¬ (p : ℤ) ∣ k) : 
   exact h ((PadicInt.norm_int_lt_one_iff_dvd (p := p) (k := k)).1 (not_le.1 hlt))
 
 /- English proof (translation)
-Rewrite using `[norm_unit p v hv, one_pow]`. Conclude with `(PadicInt.norm_int_lt_one_iff_dvd (p := p) (k := u)).2 hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem padic_norm_lt_norm_sq_of_dvd_of_not_dvd (p : ℕ) [Fact p.Prime] (u v : ℤ) (hu : (p : ℤ) ∣ u)
     (hv : ¬ (p : ℤ) ∣ v) : ‖(u : ℤ_[p])‖ < ‖(v : ℤ_[p])‖ ^ 2 := by
@@ -40,19 +40,17 @@ private theorem padic_norm_lt_norm_sq_of_dvd_of_not_dvd (p : ℕ) [Fact p.Prime]
   exact (PadicInt.norm_int_lt_one_iff_dvd (p := p) (k := u)).2 hu
 
 /- English proof (translation)
-Establish `: NeZero p` using `⟨hp.out.ne_zero⟩`. Establish `hcp : (c : ZMod p) ≠ 0` using `fun h => hc ((CharP.cast_eq_zero_iff (ZMod p) p c).1 h)`. Establish `hodd : Fintype.card (ZMod p) % 2 = 1`. Rewrite using `[ZMod.card]`. Conclude with `Nat.odd_iff.1 (hp.out.odd_of_ne_two hp2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, v, huv⟩` from `FiniteField.exists_root_sum_quadratic (f := X ^ 2 + C (1 : ZMod p)) (g := C (c : ZMod p) * X ^ 2) (by simpa using degree_X_pow_add_C (R := ZMod p) (n := 2) (by norm_num) 1) (by simpa using degree_C_mul_X_pow 2 hcp) hodd`. Take `⟨x₀, rfl⟩` from `ZMod.intCast_surjective u`. Take `⟨y₀, rfl⟩` from `ZMod.intCast_surjective v`. Establish `hpz : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp.out`. Establish `h2 : ¬ (p : ℤ) ∣ 2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h' : p ∣ 2` using `by exact_mod_cast h`. Conclude with `hp2 ((Nat.prime_dvd_prime_iff_eq hp.out Nat.prime_two).1 h')`. Establish `hcz : ¬ (p : ℤ) ∣ (c : ℤ)` using `by exact_mod_cast hc`. Establish `hdiv : (p : ℤ) ∣ x₀ ^ 2 + (c : ℤ) * y₀ ^ 2 + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← CharP.intCast_eq_zero_iff (ZMod p) p]`. Simplify using `only [eval_add, eval_pow, eval_X, eval_C, eval_mul] at huv`. Use `push_cast`. Take the linear combination `huv`. Distinguish the cases in `hx : (p : ℤ) ∣ x₀`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : ¬ (p : ℤ) ∣ y₀`. Introduce `hy`. Establish `h1 : (p : ℤ) ∣ 1`. Establish `e : (1 : ℤ) = (x₀ ^ 2 + (c : ℤ) * y₀ ^ 2 + 1) - (x₀ ^ 2 + (c : ℤ) * y₀ ^ 2)` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `dvd_sub hdiv (dvd_add (dvd_pow hx two_ne_zero) (dvd_mul_of_dvd_right (dvd_pow hy two_ne_zero) (c : ℤ)))`. Conclude with `hpz.not_dvd_one h1`. Take `⟨z, hz⟩` from `hensel_quad p c (x₀ ^ 2 + 1) y₀ (padic_norm_lt_norm_sq_of_dvd_of_not_dvd p _ _ (by convert hdiv using 1; ring) (fun h => (hpz.dvd_or_dvd h).elim (fun h => (hpz.dvd_or_dvd h).elim h2 hcz) hy))`. Conclude with `⟨x₀, z, by push_cast at hz; linear_combination hz⟩`. Take `⟨z, hz⟩` from `hensel_quad p 1 (c * y₀ ^ 2 + 1) x₀ (padic_norm_lt_norm_sq_of_dvd_of_not_dvd p _ _ (by convert hdiv using 1; ring) (fun h => (hpz.dvd_or_dvd h).elim (fun h => (hpz.dvd_or_dvd h).elim h2 hpz.not_dvd_one) hx))`.
-
-Conclude with `⟨z, y₀, by push_cast at hz; linear_combination hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rep_odd (p : ℕ) [hp : Fact p.Prime] (hp2 : p ≠ 2) (c : ℕ) (hc : ¬ p ∣ c) :
     ∃ x y : ℤ_[p], x ^ 2 + (c : ℤ_[p]) * y ^ 2 = -1 := by
@@ -97,9 +95,9 @@ theorem rep_odd (p : ℕ) [hp : Fact p.Prime] (hp2 : p ≠ 2) (c : ℕ) (hc : ¬
     exact ⟨z, y₀, by push_cast at hz; linear_combination hz⟩
 
 /- English proof (translation)
-Establish `h8 : ((2 : ℕ) : ℤ) ^ 3 ∣ (c : ℤ) * 1 ^ 2 + 5` using `by norm_num; omega`. Establish `hc2 : ¬ ((2 : ℕ) : ℤ) ∣ (c : ℤ)` using `by push_cast; omega`. Establish `hB : ‖((2 * (c : ℤ) * 1 : ℤ) : ℤ_[2])‖ = 2⁻¹`. Rewrite using `[show (2 * (c : ℤ) * 1 : ℤ) = ((2 : ℕ) : ℤ) * c by push_cast; ring, Int.cast_mul, norm_mul, norm_unit 2 c hc2, Int.cast_natCast, PadicInt.norm_p]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Take `⟨z, hz⟩` from `hensel_quad 2 c 5 1 (by`. Rewrite using `[hB]`. Use `lt_of_le_of_lt ((PadicInt.norm_int_le_pow_iff_dvd (p := 2) (k := (c : ℤ) * 1 ^ 2 + 5) (n := 3)).2 h8) ?_` and prove the remaining obligations. Evaluate the numerical expressions using `[zpow_neg])`. Conclude with `⟨2, z, by push_cast at hz; linear_combination hz⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions. Supply the required witnesses or components.
 -/
 theorem rep_two (c : ℕ) (hc : c % 8 = 3) : ∃ x y : ℤ_[2], x ^ 2 + (c : ℤ_[2]) * y ^ 2 = -1 := by
   have h8 : ((2 : ℕ) : ℤ) ^ 3 ∣ (c : ℤ) * 1 ^ 2 + 5 := by
@@ -121,13 +119,13 @@ def Rep (q d m : ℕ) : Prop :=
   ∃ α β γ δ : ZMod m, (α ^ 2 + (q : ZMod m) * β ^ 2) * (γ ^ 2 + (d : ZMod m) * δ ^ 2) = -1
 
 /- English proof (translation)
-Use `Fact.mk hp` as an intermediate fact. Establish `key : ∀ c : ℕ, (∃ x y : ℤ_[p], x ^ 2 + (c : ℤ_[p]) * y ^ 2 = -1) → ∃ α β : ZMod (p ^ k), α ^ 2 + (c : ZMod (p ^ k)) * β ^ 2 = -1`. Introduce and unpack `c ⟨x, y, h⟩`. Use `⟨PadicInt.toZModPow k x, PadicInt.toZModPow k y, ?_⟩` and prove the remaining obligations. Simplify using `using congrArg (PadicInt.toZModPow (p := p) k) h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `eq_or_ne p q with hpq | hpq` into its components or cases. Establish `hp2 : p ≠ 2`. Introduce and unpack `rfl`. Rewrite `hq8` using `[← hpq]`. Evaluate the numerical expressions using `at hq8`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hpd : ¬ p ∣ d` using `fun h => hqd ((Nat.prime_dvd_prime_iff_eq hq hd).1 (by rwa [← hpq]))`. Take `⟨γ, δ, h⟩` from `key d (rep_odd p hp2 d hpd)`. Conclude with `⟨1, 0, γ, δ, by simp [h]⟩`. Break down `eq_or_ne p 2 with hp2 | hp2` into its components or cases. Substitute `hp2` using the available equality.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Take `⟨α, β, h⟩` from `key q (rep_two q hq8)`. Conclude with `⟨α, β, 1, 0, by simp [h]⟩`. Establish `hpq' : ¬ p ∣ q` using `fun h => hpq ((Nat.prime_dvd_prime_iff_eq hp hq).1 h)`. Take `⟨α, β, h⟩` from `key q (rep_odd p hp2 q hpq')`. Conclude with `⟨α, β, 1, 0, by simp [h]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rep_pp (q d : ℕ) (hq : q.Prime) (hd : d.Prime) (hq8 : q % 8 = 3) (hqd : q ≠ d) (p k : ℕ) (hp : p.Prime) :
     Rep q d (p ^ k) := by
@@ -153,9 +151,9 @@ theorem rep_pp (q d : ℕ) (hq : q.Prime) (hd : d.Prime) (hq8 : q % 8 = 3) (hqd 
       exact ⟨α, β, 1, 0, by simp [h]⟩
 
 /- English proof (translation)
-Take `⟨α₁, β₁, γ₁, δ₁, h₁⟩` from `ha`. Take `⟨α₂, β₂, γ₂, δ₂, h₂⟩` from `hb`. Set `e` to `ZMod.chineseRemainder hab`. Use `⟨e.symm (α₁, α₂), e.symm (β₁, β₂), e.symm (γ₁, γ₂), e.symm (δ₁, δ₂), e.injective ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_add, map_pow, map_natCast, map_neg, map_one, RingEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `ext <;> simp [h₁, h₂]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem rep_mul_of_coprime {q d a b : ℕ} (hab : Nat.Coprime a b)
     (ha : Rep q d a) (hb : Rep q d b) :
@@ -169,9 +167,9 @@ private theorem rep_mul_of_coprime {q d a b : ℕ} (hab : Nat.Coprime a b)
   ext <;> simp [h₁, h₂]
 
 /- English proof (translation)
-Proceed by induction on `m using Nat.recOnPosPrimePosCoprime with`. Consider the case `prime_pow p n hp _ => exact fun _ => rep_pp q d hq hd hq8 hqd p n hp`. Consider the case `zero => exact fun h => absurd h (lt_irrefl 0)`. Consider the case `one`. Introduce `_`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using rep_pp q d hq hd hq8 hqd 2 0 Nat.prime_two`. Consider the case `coprime a b ha1 hb1 hab ha hb`. Conclude with `fun _ => rep_mul_of_coprime hab (ha (by omega)) (hb (by omega))`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rep_all (q d : ℕ) (hq : q.Prime) (hd : d.Prime) (hq8 : q % 8 = 3) (hqd : q ≠ d) (m : ℕ) :
     0 < m → Rep q d m := by
@@ -185,11 +183,11 @@ theorem rep_all (q d : ℕ) (hq : q.Prime) (hd : d.Prime) (hq8 : q % 8 = 3) (hqd
     exact fun _ => rep_mul_of_coprime hab (ha (by omega)) (hb (by omega))
 
 /- English proof (translation)
-Take `⟨α, β, γ, δ, h⟩` from `rep_all q d hq hd hq8 hqd m hm`. Take `⟨a, rfl⟩` from `ZMod.intCast_surjective α`. Take `⟨b, rfl⟩` from `ZMod.intCast_surjective β`. Take `⟨c, rfl⟩` from `ZMod.intCast_surjective γ`. Take `⟨e, rfl⟩` from `ZMod.intCast_surjective δ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdvd : (m : ℤ) ∣ (a ^ 2 + q * b ^ 2) * (c ^ 2 + d * e ^ 2) + 1`. Rewrite using `[← CharP.intCast_eq_zero_iff (ZMod m) m]`. Use `push_cast`. Take the linear combination `h`. Take `⟨s, hs⟩` from `hdvd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, b, c, e, s, by linear_combination hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem rep_int (q d : ℕ) (hq : q.Prime) (hd : d.Prime) (hq8 : q % 8 = 3) (hqd : q ≠ d) (m : ℕ) (hm : 0 < m) :
     ∃ α β γ δ s : ℤ, (α ^ 2 + q * β ^ 2) * (γ ^ 2 + d * δ ^ 2) = -1 + m * s := by

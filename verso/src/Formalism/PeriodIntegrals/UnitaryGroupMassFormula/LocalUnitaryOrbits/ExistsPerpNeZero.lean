@@ -15,7 +15,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul (Fv F v ⊗[F] E) c w, hR_smul_right, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hR_smul_right_F (x w : Fin n → Fv F v ⊗[F] E) (c : Fv F v) :
     hR (Fv F v) σ J x (c • w) = c • hR (Fv F v) σ J x w := by
@@ -28,9 +28,9 @@ def perpMap {ι : Type} (X : ι → Fin n → Fv F v ⊗[F] E) :
   map_smul' c w := funext fun i => hR_smul_right_F σ J v (X i) w c
 
 /- English proof (translation)
-Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `h2 : Module.finrank F E = 2` using `hcm.2.2.1`. Establish `hlt : Module.finrank (Fv F v) (ι → Fv F v ⊗[F] E) < Module.finrank (Fv F v) (Fin n → Fv F v ⊗[F] E)`. Rewrite using `[Module.finrank_pi_fintype, Module.finrank_pi_fintype]`. Simplify using `only [Module.finrank_baseChange, h2, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hker` using `LinearMap.ker_ne_bot_of_finrank_lt (f := perpMap σ J v X) hlt`. Take `⟨w, hw, hne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hker`. Conclude with `⟨w, hne, fun i => congrFun (LinearMap.mem_ker.1 hw) i⟩`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_perp_ne_zero (hcm : IsCMExt F E σ) {ι : Type} [Fintype ι] (X : ι → Fin n → Fv F v ⊗[F] E)
     (hc : Fintype.card ι < n) : ∃ w : Fin n → Fv F v ⊗[F] E, w ≠ 0 ∧ ∀ i, hR (Fv F v) σ J (X i) w = 0 := by
@@ -45,29 +45,27 @@ theorem exists_perp_ne_zero (hcm : IsCMExt F E σ) {ι : Type} [Fintype ι] (X :
   exact ⟨w, hne, fun i => congrFun (LinearMap.mem_ker.1 hw) i⟩
 
 /- English proof (translation)
-Introduce `hstd hL hsd hun ι _ _ X hX hUX hc`. Take `⟨ϖ, hϖ⟩` from `unifEx_holds v`. Establish `hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Take `⟨L, hLat, rfl⟩` from `hL`. Take `⟨m, b, hli, hmem, hsp⟩` from `exists_basO v L hLat`. Set `B` to `Module.Basis.mk hli hsp`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : ∀ i, B i = b i` using `fun i => Module.Basis.mk_apply hli hsp i`. Establish `hsymm : ∀ c : Fin m → Fv F v, B.equivFun.symm c = ∑ i, c i • b i`. Introduce `c`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Simplify using `only [hB]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw0, hwp⟩` from `exists_perp_ne_zero σ J v hstd.1 X hc`. Use `set c := B.equivFun w with hcdef`. Establish `hcw : w = ∑ i, c i • b i` using `by rw [← hsymm, hcdef, LinearEquiv.symm_apply_apply]`. Establish `hcne : ∃ i, c i ≠ 0`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at h`. Apply `hw0` to reduce the goal to its premises. Rewrite using `[hcw]`. Simplify using `[h]`. Take `⟨i0, hi0⟩` from `hcne`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : (Finset.univ : Finset (Fin m)).Nonempty` using `⟨i0, Finset.mem_univ _⟩`. Take `⟨j, -, hj⟩` from `Finset.exists_max_image Finset.univ (fun i => Valued.v (c i)) hne`. Establish `hcj : c j ≠ 0`. Introduce `h`. Establish `h1` using `hj i0 (Finset.mem_univ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h, map_zero]`. Conclude with `hi0 ((Valuation.zero_iff _).1 (le_antisymm h1 zero_le'))`. Establish `hvj : Valued.v (c j) ≠ 0` using `(Valuation.ne_zero_iff _).2 hcj`. Use `set p := (c j)⁻¹ • w with hp`. Establish `hcp : B.equivFun p = (c j)⁻¹ • c` using `by rw [hp, map_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hpmem : p ∈ latLoc (E` using `E) v (L : Set (Fin n → E)) := by`. Use `(hmem p).2 ⟨fun i => ⟨(c j)⁻¹ * c i, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, map_inv₀]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hsymm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `p = B.equivFun.symm ((c j)⁻¹ • c)`. Rewrite using `[← hcp, LinearEquiv.symm_apply_apply]`. Use `⟨ϖ, hϖ, p, ⟨hpmem, fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hp, hR_smul_right_F, hwp i, smul_zero]`. Introduce `hin`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hin` using `[sc_eq, algebraMap_smul]`. Take `⟨d, hd⟩` from `(hmem _).1 hin`. Establish `hd' : ϖ⁻¹ • p = B.equivFun.symm (fun i => (d i : Fv F v))` using `by rw [hsymm]; exact hd`. Establish `hcoord` using `congrFun (congrArg B.equivFun hd') j`. Rewrite `hcoord` using `[LinearEquiv.apply_symm_apply, map_smul, hcp]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul] at hcoord`. Rewrite `hcoord` using `[inv_mul_cancel₀ hcj, mul_one]`. Establish `hint : ϖ⁻¹ ∈ v.adicCompletionIntegers F` using `by rw [hcoord]; exact (d j).2`. Rewrite `hint` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `h1 : Valued.v (ϖ * ϖ⁻¹) ≤ WithZero.exp (-1 : ℤ)`.
-
-Rewrite using `[map_mul, hv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[mul_inv_cancel₀ hϖ0, map_one]`. Conclude with `absurd h1 (by decide)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primPerp_holds : PrimPerp σ J ψ v Λ := by
   intro hstd hL hsd hun ι _ _ X hX hUX hc

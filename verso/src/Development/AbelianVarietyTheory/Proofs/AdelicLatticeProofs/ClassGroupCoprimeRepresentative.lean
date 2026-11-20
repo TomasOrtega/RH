@@ -5,15 +5,15 @@ open scoped ContDiff nonZeroDivisors
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ m hm c`. Take `⟨J, hJ⟩` from `ClassGroup.mk0_surjective c⁻¹`. Establish `hJ0 : (J : Ideal (𝓞 K)) ≠ 0` using `nonZeroDivisors.coe_ne_zero J`. Take `⟨a, ha⟩` from `IsDedekindDomain.exists_sup_span_eq (Ideal.mul_le_inf.trans inf_le_left : (J : Ideal (𝓞 K)) * m ≤ J) (mul_ne_zero hJ0 hm)`. Establish `haJ : a ∈ (J : Ideal (𝓞 K))` using `ha ▸ Ideal.mem_sup_right (Ideal.mem_span_singleton_self a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨L, hL⟩ : (J : Ideal (𝓞 K)) ∣ Ideal.span {a}` from `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr haJ)`. Establish `hcop : m ⊔ L = ⊤`. Establish `h1 : (J : Ideal (𝓞 K)) * (m ⊔ L) = J * ⊤`. Rewrite using `[Ideal.mul_sup, ← hL, ha, Ideal.mul_top]`. Conclude with `mul_left_cancel₀ hJ0 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hL0 : L = 0`. Establish `hmt : m = ⊤` using `by simpa [hL0] using hcop`. Take `⟨b, hb⟩` from `ClassGroup.mk0_surjective c`. Conclude with `⟨b, hb, by simp [hmt]⟩`. Use `⟨⟨L, mem_nonZeroDivisors_of_ne_zero hL0⟩, ?_, by rw [sup_comm]; exact hcop⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hprod : ClassGroup.mk0 J * ClassGroup.mk0 ⟨L, mem_nonZeroDivisors_of_ne_zero hL0⟩ = 1`. Rewrite using `[← map_mul, ClassGroup.mk0_eq_one_iff]`. Express the relevant statement in the definitionally equal form `((J : Ideal (𝓞 K)) * L).IsPrincipal`. Rewrite using `[← hL]`. Conclude with `⟨⟨a, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hprod` using `[hJ]`. Conclude with `(inv_mul_eq_one.mp hprod).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral_ideal_in_class_coprime :
     ∀ (K : Type) [Field K] [NumberField K] (m : Ideal (𝓞 K)), m ≠ ⊥ → ∀ c : ClassGroup (𝓞 K), ∃ b : (Ideal (𝓞 K))⁰, ClassGroup.mk0 b = c ∧ (b : Ideal (𝓞 K)) ⊔ m = ⊤ := by

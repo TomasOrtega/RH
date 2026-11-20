@@ -12,7 +12,7 @@ namespace UpperTheory.Cb.Mark
 variable {p : ℕ} [Fact p.Prime] {G : HTGroup p} {v : InfinitePlace G.F} {β : G.Cˣ}
 
 /- English proof (translation)
-Establish `hF : FixL G v β y z` using `⟨μ, h⟩`. Unfold `eigL`. Rewrite using `[dif_pos hF]`. Establish `hc : hF.choose • z = μ • z` using `hF.choose_spec.symm.trans h`. Conclude with `smul_left_injective ℂ hz hc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eigL_of_eq {y : grp G β} {z : Fin G.n → ℂ} {μ : ℂ} (hz : z ≠ 0)
     (h : (toV G v β y : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ z = μ • z) : eigL G v β y z = μ := by
@@ -23,11 +23,11 @@ theorem eigL_of_eq {y : grp G β} {z : Fin G.n → ℂ} {μ : ℂ} (hz : z ≠ 0
   exact smul_left_injective ℂ hz hc
 
 /- English proof (translation)
-Distinguish the cases in `hF : FixL G v β y z`. Take `⟨c, hc⟩` from `hF`. Establish `hc' : (toV G v β y : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ (u • z) = c • (u • z)`. Rewrite using `[Matrix.mulVec_smul, hc, smul_comm]`. Rewrite using `[eigL_of_eq hz hc, eigL_of_eq (smul_ne_zero hu hz) hc']`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hF' : ¬ FixL G v β y (u • z)`. Introduce and unpack `⟨c, hc⟩`. Apply `hF` to reduce the goal to its premises. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[Matrix.mulVec_smul, smul_comm c u z]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `smul_right_injective _ hu hc`. Simplify using `only [eigL, dif_neg hF, dif_neg hF']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eigL_smul (y : grp G β) {z : Fin G.n → ℂ} (hz : z ≠ 0) {u : ℂ} (hu : u ≠ 0) :
     eigL G v β y (u • z) = eigL G v β y z := by
@@ -45,7 +45,7 @@ theorem eigL_smul (y : grp G β) {z : Fin G.n → ℂ} (hz : z ≠ 0) {u : ℂ} 
     simp only [eigL, dif_neg hF, dif_neg hF']
 
 /- English proof (translation)
-Introduce `h0`. Apply `hz` to reduce the goal to its premises. Apply `toV_injective G v β η` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, h0, Matrix.mulVec_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem toV_ne_zero (η : grp G β) {z : Fin G.n → ℂ} (hz : z ≠ 0) :
     (toV G v β η : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ z ≠ 0 := by
@@ -55,13 +55,13 @@ theorem toV_ne_zero (η : grp G β) {z : Fin G.n → ℂ} (hz : z ≠ 0) :
   rw [Matrix.toLin'_apply, Matrix.toLin'_apply, h0, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Establish `conjFix : ∀ (g y' : grp G β) (z' : Fin G.n → ℂ) (c : ℂ), (toV G v β y' : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ z' = c • z' → (toV G v β (g * y' * g⁻¹) : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ ((toV G v β g : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ z') = c • ((toV G v β g : Matrix (Fin G.n) (Fin G. …`. Introduce `g y' z' c hc`. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul, Matrix.mulVec_mulVec]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.mul_one, ← Matrix.mulVec_mulVec, hc, Matrix.mulVec_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hF : FixL G v β y z`. Take `⟨c, hc⟩` from `hF`. Rewrite using `[eigL_of_eq hz hc, eigL_of_eq (toV_ne_zero η hz) (conjFix η y z c hc)]`. Establish `hF' : ¬ FixL G v β (η * y * η⁻¹) ((toV G v β η : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ z)`. Introduce and unpack `⟨c, hc⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hF` to reduce the goal to its premises. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h2` using `conjFix η⁻¹ (η * y * η⁻¹) _ c hc`. Establish `e1 : η⁻¹ * (η * y * η⁻¹) * η⁻¹⁻¹ = y` using `by group`. Establish `e2 : (toV G v β η⁻¹ : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ ((toV G v β η : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ z) = z`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Rewrite `h2` using `[e1, e2]`. Then use the resulting hypothesis. Simplify using `only [eigL, dif_neg hF, dif_neg hF']`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 -/
 theorem eigL_conj (η y : grp G β) {z : Fin G.n → ℂ} (hz : z ≠ 0) :
     eigL G v β (η * y * η⁻¹) ((toV G v β η : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ z) = eigL G v β y z := by
@@ -105,9 +105,9 @@ variable (w : Polynomial G.F → ℂ → ℂ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : 
 
 include hf hf' in
 /- English proof (translation)
-Establish `hr` using `Projectivization.rep_nonzero a.2`. Take `⟨c, hc0, hc⟩` from `rep_smul G v β η a.2`. Establish `he : eigL G v β (η * y * η⁻¹) (Projectivization.rep (η • a).2) = eigL G v β y (Projectivization.rep a.2)` using `by show eigL G v β (η * y * η⁻¹) (Projectivization.rep (η • a.2)) = _`. Rewrite using `[hc, eigL_smul _ (toV_ne_zero η hr) hc0, eigL_conj η y hr]`. Unfold `cxM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[he]`. Conclude with `GlobalTheory.T.pairWeight_invariant_form_group_conj p G v _ Kf f hf K' f' hf' β x t hx η a y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cxM_smul_conj (η : grp G β) (a : Ys G v β x t hx Kf K') (y : grp G β) :
     cxM w x t hx Kf f K' f' (η • a) (η * y * η⁻¹) = cxM w x t hx Kf f K' f' a y := by
@@ -122,9 +122,9 @@ theorem cxM_smul_conj (η : grp G β) (a : Ys G v β x t hx Kf K') (y : grp G β
   exact GlobalTheory.T.pairWeight_invariant_form_group_conj p G v _ Kf f hf K' f' hf' β x t hx η a y
 
 /- English proof (translation)
-Unfold `cxF at h ⊢`. Use `split_ifs at h ⊢ with hc`. Rewrite using `[_root_.mul_one]`. Introduce `h0`. Apply `h` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, zero_mul]`. Conclude with `absurd rfl h`.
+A detailed English derivation is pending.
 -/
 theorem cxF_one_ne (wt : Polynomial G.F → ℂ) (a : Ys G v β x t hx Kf K') (y : grp G β)
     (h : cxF G v wt β x t hx Kf f K' f' a y ≠ 0) :
@@ -139,9 +139,9 @@ theorem cxF_one_ne (wt : Polynomial G.F → ℂ) (a : Ys G v β x t hx Kf K') (y
 
 include hf hf' in
 /- English proof (translation)
-Establish `hz` using `OrbitSumGen.posV_ne_zero G v β d.2`. Take `⟨c, hc⟩` from `Projectivization.exists_smul_eq_mk_rep ℂ d.2.1 hz`. Establish `he : eigL G v β y (Projectivization.rep (OrbitSumGen.pairOfDat G v β x t hx Kf K' d).2) = eigL G v β y d.2.1` using `by show eigL G v β y (Projectivization.mk ℂ d.2.1 hz).rep = _`. Rewrite using `[← hc, Units.smul_def, eigL_smul y hz c.ne_zero]`. Unfold `cxM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[OrbitSumGen.cxF_pairOfDat G v β x t hx Kf K' _ f hf f' hf' d y, he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cxM_dat (d : Dat G v β) (y : grp G β) :
     cxM w x t hx Kf f K' f' (OrbitSumGen.pairOfDat G v β x t hx Kf K' d) y =
@@ -159,7 +159,7 @@ theorem cxM_dat (d : Dat G v β) (y : grp G β) :
   rw [OrbitSumGen.cxF_pairOfDat G v β x t hx Kf K' _ f hf f' hf' d y, he]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.univ_inter, Set.inter_eq_right.mpr hsub]`. Use `_ = ∑ᶠ i ∈ Set.range π, W i := finsum_mem_inter_support _ _`. Use `_ = ∑ᶠ a, W (π a) := finsum_mem_range hπ`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finsum_eq_finsum_comp_of_injective_support {α ι : Type} (W : ι → ℂ) (π : α → ι) (hπ : Function.Injective π)
     (hsub : Function.support W ⊆ Set.range π) : ∑ᶠ i, W i = ∑ᶠ a, W (π a) := by
@@ -172,23 +172,19 @@ private theorem finsum_eq_finsum_comp_of_injective_support {α ι : Type} (W : �
 
 include hf hf' in
 /- English proof (translation)
-Establish `hconj : ∀ (η : grp G β) (a : Ys G v β x t hx Kf K'), ∑ᶠ y : grp G β, cxM w x t hx Kf f K' f' (η • a) y = ∑ᶠ y : grp G β, cxM w x t hx Kf f K' f' a y`. Introduce `η a`. Rewrite using `[← finsum_comp_equiv (MulAut.conj η).toEquiv]`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `cxM_smul_conj w x t hx Kf f K' f' hf hf' η a y`. Establish `hcard : ∀ (η : grp G β) (a : Ys G v β x t hx Kf K'), Nat.card (MulAction.stabilizer (grp G β) (η • a)) = Nat.card (MulAction.stabilizer (grp G β) a)`. Introduce `η a`. Rewrite using `[MulAction.stabilizer_smul_eq_stabilizer_map_conj]`. Conclude with `Subgroup.card_map_of_injective (MulEquiv.injective _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `horb : ∀ a : Ys G v β x t hx Kf K', ((Nat.card (MulAction.stabilizer (grp G β) (Quotient.out (⟦a⟧ : MulAction.orbitRel.Quotient (grp G β) (Ys G v β x t hx Kf K')))) : ℕ) : ℂ)⁻¹ * ∑ᶠ y : grp G β, cxM w x t hx Kf f K' f' (Quotient.out (⟦a⟧ : MulAction.orbitRel.Quotient (grp G β) (Y …`. Introduce `a`. Take `⟨η, hη⟩ : ∃ η : grp G β, η • a = Quotient.out (⟦a⟧ : MulAction.orbitRel.Quotient (grp G β) (Ys G v β x t hx Kf K'))` from `Quotient.mk_out (s := MulAction.orbitRel (grp G β) (Ys G v β x t hx Kf K')) a`. Rewrite using `[← hη, hcard, hconj]`. Establish `hsub : Function.support (fun o : MulAction.orbitRel.Quotient (grp G β) (Ys G v β x t hx Kf K') => ((Nat.card (MulAction.stabilizer (grp G β) (Quotient.out o)) : ℕ) : ℂ)⁻¹ * ∑ᶠ y : grp G β, cxM w x t hx Kf f K' f' (Quotient.out o) y) ⊆ Set.range (OrbitSumGen.ptsToOrbit G v β x t h …`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `o ho`. Rewrite `ho` using `[Function.mem_support]`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, cxM w x t hx Kf f K' f' (Quotient.out o) y ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Apply `ho` to reduce the goal to its premises. Simplify using `[hne]`. Unfold `cxM cxF at hy`. Use `split_ifs at hy with hc`. Establish `hp : OrbitSumGen.pairOfDat G v β x t hx Kf K' ((LeftCosets.rep _ _ (Quotient.out o).1, ⟨Projectivization.rep (Quotient.out o).2, hc.1⟩) : Dat G v β) = Quotient.out o`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `OrbitSumGen.pairOfDat OrbitSumGen.lineOf`. Rewrite using `[LeftCosets.mk_rep]`. Conclude with `Prod.ext rfl (Projectivization.mk_rep _)`. Use `⟨Quot.mk _ ((LeftCosets.rep _ _ (Quotient.out o).1, ⟨Projectivization.rep (Quotient.out o).2, hc.1⟩) : Dat G v β), ?_⟩` and prove the remaining obligations. Use `show (⟦OrbitSumGen.pairOfDat G v β x t hx Kf K' _⟧ : MulAction.orbitRel.Quotient _ _) = o`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp]`. Conclude with `Quotient.out_eq o`. Conclude with `absurd rfl hy`. Unfold `cxSumAtM`. Rewrite using `[finsum_eq_finsum_comp_of_injective_support _ _ (OrbitSumGen.ptsToOrbit_injective G v β x t hx Kf K') hsub]`.
-
-Apply `finsum_congr` to reduce the goal to its premises. Introduce `q`. Use `beta_reduce`. Rewrite using `[OrbitSumGen.ptsToOrbit_eq, horb, ← OrbitSumGen.card_stab_eq]`. Use `congr 1`.
-
-Apply `finsum_congr` to reduce the goal to its premises. Introduce `y`. Rewrite using `[cxM_dat w x t hx Kf f K' f' hf hf']`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cxSumAtM_orbit :
     cxSumAtM G v w β x t hx Kf f K' f' =
@@ -268,7 +264,7 @@ def clsW (y : grp G β) : ℂ :=
   else 0
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Simplify using `at hz`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem posV_ne {z : Fin G.n → ℂ} (hz : 0 < (star z ⬝ᵥ (herm G v β *ᵥ z)).re) : z ≠ 0 := by
   rintro rfl
@@ -276,15 +272,15 @@ theorem posV_ne {z : Fin G.n → ℂ} (hz : 0 < (star z ⬝ᵥ (herm G v β *ᵥ
 
 include hf hf' in
 /- English proof (translation)
-Establish `hpt : ∀ a : Ys G v β x t hx Kf K', cxM w x t hx Kf f K' f' a y₀ = cxF G v (fun P => w P (muOf (v` using `v) y₀)) β x t hx Kf f K' f' a y₀ := by`. Introduce `a`. Unfold `cxM cxF`. Use `split_ifs with hc`. Distinguish the cases in `hfz : f ((LeftCosets.rep ((toAfF G β x t hx).prod (toP1 G β)) (Kf.prod K') a.1).1⁻¹ * toAfF G β x t hx y₀ * (LeftCosets.rep ((toAfF G β x t hx).prod (toP1 G β)) (Kf.prod K') a.1).1) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfz]`. Simplify using the standard rewrite rules. Establish `hex : ∃ z : Fin G.n → ℂ, 0 < (star z ⬝ᵥ (herm G v β *ᵥ z)).re ∧ FixL G v β y₀ z` using `⟨_, hc⟩`. Establish `hmu : muOf (v` using `v) y₀ = eigL G v β y₀ hex.choose := by`. Unfold `muOf`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hex]`. Take `⟨c, hcz⟩` from `hu y₀ _ hfz _ _ hc.1 hex.choose_spec.1 hc.2 hex.choose_spec.2`. Establish `hz0 : Projectivization.rep a.2 ≠ 0` using `Projectivization.rep_nonzero _`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcz` using `[zero_smul]`. Conclude with `posV_ne hex.choose_spec.1 hcz`. Rewrite using `[hmu, hcz, eigL_smul y₀ hz0 hc0]`. Both sides reduce to the same expression. Simplify using `only [hpt]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[GlobalTheory.T.conjugacyClassPart_eq_weight_mul_kottwitzPointSum p G v _ Kf f hf K' f' hf' β x t hx hu y₀]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cls_part
     (hu : ∀ (y₀ : grp G β) (h : G.GAf), f (h⁻¹ * toAfF G β x t hx y₀ * h) ≠ 0 → ∀ z z' : Fin G.n → ℂ,
@@ -322,13 +318,13 @@ theorem cls_part
 include hf hf' in
 
 /- English proof (translation)
-Rewrite using `[cxSumAtM_orbit w x t hx Kf f K' f' hf hf']`. Establish `hinv : ∀ (η : grp G β) (a : Ys G v β x t hx Kf K') (γ : grp G β), cxM w x t hx Kf f K' f' (η • a) (η * γ * η⁻¹) = cxM w x t hx Kf f K' f' a γ` using `fun η a γ => cxM_smul_conj w x t hx Kf f K' f' hf hf' η a γ`. Establish `hsupp : ∀ a : Ys G v β x t hx Kf K', (Function.support (cxM w x t hx Kf f K' f' a)).Finite`. Introduce `a`. Use `(GlobalTheory.T.pairWeight_support_finite_of_finite_fixing p G v (fun _ => 1) Kf f hf K' f' hf' β x t hx hA a).subset ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Conclude with `cxF_one_ne x t hx Kf f K' f' (fun P => w P (eigL G v β y (Projectivization.rep (a.2 : Projectivization ℂ (Fin G.n → ℂ))))) a y hy`. Establish `hfin : {o : MulAction.orbitRel.Quotient (grp G β) (Ys G v β x t hx Kf K') | ∃ γ, cxM w x t hx Kf f K' f' (Quotient.out o) γ ≠ 0}.Finite`. Use `(GlobalTheory.T.finite_weightedPairOrbits_of_finite_weightedFixedPoints p G v (fun _ => 1) Kf f hf K' f' hf' β x t hx hB).subset ?_` and prove the remaining obligations. Introduce and unpack `o ⟨γ, hγ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨γ, cxF_one_ne x t hx Kf f K' f' (fun P => w P (eigL G v β γ (Projectivization.rep ((Quotient.out o).2 : Projectivization ℂ (Fin G.n → ℂ))))) _ γ hγ⟩`. Rewrite using `[GlobalTheory.T.orbit_sum_conj_classes _ hinv hsupp hfin]`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `c`. Establish `hc : IsConj (Quotient.out c) (Classical.choose (ConjClasses.exists_rep c))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ConjClasses.mk_eq_mk_iff_isConj, Classical.choose_spec (ConjClasses.exists_rep c)]`. Conclude with `Quotient.out_eq c`. Take `⟨g, hg⟩` from `isConj_iff.mp hc`. Rewrite using `[GlobalTheory.T.centralizer_orbit_sum_conjugate _ hinv (Quotient.out c) g, hg]`. Conclude with `cls_part w x t hx Kf f K' f' hf hf' hu _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cxSumAtM_unfold
     (hA : ∀ (h : G.GAf × Gr G 1) (z : Fin G.n → ℂ), 0 < (star z ⬝ᵥ (herm G v β *ᵥ z)).re →
@@ -375,23 +371,21 @@ end Inv
 open GlobalTheory.LKCx.Regroup
 
 /- English proof (translation)
-The claim follows from `cent_sim_pos p G P μ ha h _ P.self.2`.
+A detailed English derivation is pending.
 -/
 theorem pair_sim_pos (ha : G.a = 1) (P : Pair G) {μ : ℂ} (h : P.Mark μ) : 0 < ((P.c : ℚˣ) : ℚ) :=
   cent_sim_pos p G P μ ha h _ P.self.2
 
 /- English proof (translation)
-Take `⟨v', hv', x, hx, hpos⟩` from `h`. Establish `hvv : v' = v`. Establish `hcard : Fintype.card {u : InfinitePlace G.F // sigPosH (G.gram_herm u) = 1} = 1` using `ha`. Take `⟨e, he⟩` from `Fintype.card_eq_one_iff.mp hcard`. Establish `h1` using `he ⟨v', hv'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `he ⟨v, hv⟩`. Conclude with `congrArg Subtype.val (h1.trans h2.symm)`. Rewrite `hx`, `hpos` using `[hvv]`. Establish `hr1 : (((r : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) = P.γ` using `by rw [hr]`. Establish `hxv : (toV G v P.β r : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ x = μ • x` using `by show (G.psi v (((r : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)) *ᵥ x = μ • x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr1]`. Conclude with `hx`. Establish `hpos' : 0 < (star x ⬝ᵥ (herm G v P.β *ᵥ x)).re` using `hpos`. Establish `hx0 : x ≠ 0` using `posV_ne hpos'`. Establish `hex : ∃ z : Fin G.n → ℂ, 0 < (star z ⬝ᵥ (herm G v P.β *ᵥ z)).re ∧ FixL G v P.β r z` using `⟨x, hpos', μ, hxv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `muOf`. Rewrite using `[dif_pos hex]`. Take `⟨hz1, hz2⟩` from `hex.choose_spec`. Establish `hreg : (minpoly G.F (((r : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)).natDegree = G.n ∧ (minpoly G.F (((r : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)).Separable`. Rewrite using `[hr1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `P.reg`. Take `⟨c, hc⟩` from `GlobalTheory.T.separable_formGroup_element_fixes_unique_positive_line p G v hv P.β P.sym P.trivR r hreg.1 hreg.2 x _ hpos' hz1 ⟨μ, hxv⟩ hz2`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[zero_smul]`.
-
-Conclude with `posV_ne hz1 hc`. Rewrite using `[hc, eigL_smul r hx0 hc0, eigL_of_eq hx0 hxv]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muOf_eq_mark (ha : G.a = 1) (hv : sigPosH (G.gram_herm v) = 1) (P : Pair G) (r : grp G P.β)
     (hr : (r : G.Cˣ × ℚˣ) = (P.γ, P.c)) {μ : ℂ} (h : P.Mark μ) : muOf (v := v) r = μ := by
@@ -427,7 +421,7 @@ theorem muOf_eq_mark (ha : G.a = 1) (hv : sigPosH (G.gram_herm v) = 1) (P : Pair
   rw [hc, eigL_smul r hx0 hc0, eigL_of_eq hx0 hxv]
 
 /- English proof (translation)
-Establish `hm : ((1 : G.Cˣ)⁻¹ * P.γ * 1, P.c) ∈ grp G P.β` using `GlobalTheory.T.conj_by_carrying_unit_mem_positiveSimilitudeFormGroup p G P P.β 1 1 one_pos (pair_sim_pos ha P h) (by simp [sh_one_eq])`. Simplify using `only [inv_one, _root_.one_mul, _root_.mul_one] at hm`. Rewrite using `[← muOf_eq_mark (v := v) ha hv P ⟨_, hm⟩ rfl h, muOf_eq_mark (v := v) ha hv P ⟨_, hm⟩ rfl h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mark_unique (ha : G.a = 1) (hv : sigPosH (G.gram_herm v) = 1) (P : Pair G) {μ μ' : ℂ}
     (h : P.Mark μ) (h' : P.Mark μ') : μ = μ' := by
@@ -448,9 +442,9 @@ variable (w : Polynomial G.F → ℂ → ℂ) (Kf : Subgroup G.GAf) (f : G.GAf �
 
 include hf hf' in
 /- English proof (translation)
-Unfold `markTerm`. Establish `hiff : (∃ μ, P.Mark μ) ↔ (∃ μ, P'.Mark μ)` using `⟨fun ⟨μ, hμ⟩ => ⟨μ, (Pair.mark_iff_of_rel p G P P' μ h).mp hμ⟩, fun ⟨μ, hμ⟩ => ⟨μ, (Pair.mark_iff_of_rel p G P P' μ h).mpr hμ⟩⟩`. Distinguish the cases in `hM : ∃ μ, P.Mark μ`. Establish `hM'` using `hiff.mp hM`. Rewrite using `[dif_pos hM, dif_pos hM', (Pair.rel_pol_c p G P P' h).1, GlobalTheory.T.term_eq_of_similitude_rel p G P P' Kf f 1 K' f' one_pos hf hf' h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `mark_unique ha hv P' hM'.choose_spec ((Pair.mark_iff_of_rel p G P P' _ h).mp hM.choose_spec)`. Rewrite using `[dif_neg hM, dif_neg (fun h' => hM (hiff.mpr h'))]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem markTerm_rel (ha : G.a = 1) (hv : sigPosH (G.gram_herm v) = 1) {P P' : Pair G} (h : P.Rel P') :
     markTerm w Kf f K' f' P' = markTerm w Kf f K' f' P := by
@@ -468,9 +462,9 @@ theorem markTerm_rel (ha : G.a = 1) (hv : sigPosH (G.gram_herm v) = 1) {P P' : P
 
 include hf hf' in
 /- English proof (translation)
-Establish `key` using `CxReg.class_summand_eq_term_of_a_one p G ha v hv (fun q => w q (muOf (v := v) r)) Kf f K' f' hf hf' P x t hx r hr`. Unfold `clsW markTerm`. Rewrite using `[key]`. Use `split_ifs with hM`. Rewrite using `[muOf_eq_mark ha hv P r hr hM.choose_spec]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem clsW_eq_markTerm (ha : G.a = 1) (hv : sigPosH (G.gram_herm v) = 1) (P : Pair G)
     (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) P.β x t) (r : grp G P.β)
@@ -489,7 +483,7 @@ end Terms
 def formCls (Q : Cls G) : FCls G := Quot.mk _ (formOf (Quot.out Q))
 
 /- English proof (translation)
-Establish `h1 : Quot.mk Form.Rel (Quot.out q) = Quot.mk Form.Rel (formOf (Quot.out Q))` using `(Quot.out_eq q).trans h.symm`. Take `⟨y, s, hs, he⟩` from `(GlobalTheory.T.quot_mk_eq_iff_positiveScalarFormIsomorphic p G _ _).mp h1`. Conclude with `⟨y, s, hs, he⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem carry_of_formCls {Q : Cls G} {q : FCls G} (h : formCls Q = q) :
     ∃ (y : G.Cˣ) (s : ℚ), 0 < s ∧
@@ -500,7 +494,7 @@ theorem carry_of_formCls {Q : Cls G} {q : FCls G} (h : formCls Q = q) :
   exact ⟨y, s, hs, he⟩
 
 /- English proof (translation)
-Take `⟨y, s, hs, hβ⟩` from `carry_of_formCls h`. Conclude with `phi_spec q Q y s hs hβ (GlobalTheory.T.conj_by_carrying_unit_mem_positiveSimilitudeFormGroup p G _ _ y s hs hc hβ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem phi_of_formCls {Q : Cls G} {q : FCls G} (h : formCls Q = q) (hc : 0 < (((Quot.out Q).c : ℚˣ) : ℚ)) :
     ∃ (y : G.Cˣ) (s : ℚ), 0 < s ∧
@@ -511,9 +505,9 @@ theorem phi_of_formCls {Q : Cls G} {q : FCls G} (h : formCls Q = q) (hc : 0 < ((
   exact phi_spec q Q y s hs hβ (GlobalTheory.T.conj_by_carrying_unit_mem_positiveSimilitudeFormGroup p G _ _ y s hs hc hβ)
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun u : G.Cˣ => minpoly G.F (u : G.C)) e`. Simplify using `only [Units.val_mul, minpoly_units_conj] at h1`. Establish `h2` using `minpoly_units_conj (F := G.F) y⁻¹ (P.γ : G.C)`. Rewrite `h2` using `[inv_inv]`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.reg`.
+A detailed English derivation is pending.
 -/
 theorem reg_of_conj {B : G.Cˣ} (r g : grp G B) (P : Pair G) (y : G.Cˣ)
     (e : (g : G.Cˣ × ℚˣ).1 * (r : G.Cˣ × ℚˣ).1 * (g : G.Cˣ × ℚˣ).1⁻¹ = y⁻¹ * P.γ * y) :
@@ -527,9 +521,7 @@ theorem reg_of_conj {B : G.Cˣ} (r g : grp G B) (P : Pair G) (y : G.Cˣ)
   exact P.reg
 
 /- English proof (translation)
-Take `⟨hg1, hg2⟩` from `g.2`. Use `GlobalTheory.T.rel_of_conj_in_group_of_common_form p G (ofGrp F r hrg) P F.β 1 y (g : G.Cˣ × ℚˣ).1 1 s ((g : G.Cˣ × ℚˣ).2 : ℚ) one_pos hs hg2 ?_ hβ hg1 ?_` and prove the remaining obligations. Use `show (F.β : G.C) = _`. Simplify using `[sh_one_eq]`. Use `show _ * (1⁻¹ * (r : G.Cˣ × ℚˣ).1 * 1) * _ = _`.
-
-Simplify using `using e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ofGrp_rel (F : Form G) (r g : grp G F.β)
     (hrg : (minpoly G.F (((r : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)).natDegree = G.n ∧
@@ -547,7 +539,7 @@ theorem ofGrp_rel (F : Form G) (r g : grp G F.β)
     simpa using e
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q : grp G B => (q : G.Cˣ × ℚˣ).1) h`. Simplify using `using e`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_comp {B : G.Cˣ} {a b g : grp G B} (h : g * a * g⁻¹ = b) :
     (g : G.Cˣ × ℚˣ).1 * (a : G.Cˣ × ℚˣ).1 * (g : G.Cˣ × ℚˣ).1⁻¹ = (b : G.Cˣ × ℚˣ).1 := by
@@ -555,9 +547,9 @@ theorem conj_comp {B : G.Cˣ} {a b g : grp G B} (h : g * a * g⁻¹ = b) :
   simpa using e
 
 /- English proof (translation)
-Take `⟨y, s, hs, hβ, hm, hphi⟩` from `phi_of_formCls h hc`. Rewrite `hr` using `[hphi, ConjClasses.mk_eq_mk_iff_isConj, isConj_iff]`. Take `⟨g, hg⟩` from `hr`. Establish `e : (g : G.Cˣ × ℚˣ).1 * (r : G.Cˣ × ℚˣ).1 * (g : G.Cˣ × ℚˣ).1⁻¹ = y⁻¹ * (Quot.out Q).γ * y` using `conj_comp hg`. Establish `hrg` using `reg_of_conj r g (Quot.out Q) y e`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(clsW_eq_markTerm w Kf f K' f' hf hf' ha hv (ofGrp (Quot.out q) r hrg) _ _ (Quot.out q).trivAf.choose_spec.choose_spec r rfl).trans ?_` and prove the remaining obligations. Conclude with `(markTerm_rel w Kf f K' f' hf hf' ha hv (ofGrp_rel (Quot.out q) r g hrg (Quot.out Q) y s hs hβ e)).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem clsW_regroup_of_conj_invariant (ha : G.a = 1) (hv : sigPosH (G.gram_herm v) = 1)
     (w : Polynomial G.F → ℂ → ℂ) (Kf : Subgroup G.GAf) (f : G.GAf → ℂ) (K' : Subgroup (Gr G 1))
@@ -579,37 +571,29 @@ private theorem clsW_regroup_of_conj_invariant (ha : G.a = 1) (hv : sigPosH (G.g
     (ofGrp_rel (Quot.out q) r g hrg (Quot.out Q) y s hs hβ e)).symm
 
 /- English proof (translation)
-Establish `hf0` using `hf.2.2.1`. Establish `hf'0` using `hf'.2.2.1`. Establish `hfK : ∀ k ∈ L.K.toSubgroup, ∀ g, f (k⁻¹ * g * k) = f g` using `fun k hk g => by simpa using hf0 k hk g`. Establish `hcpos : ∀ Q : Cls G, markTerm w L.K.toSubgroup f K' f' (Quot.out Q) ≠ 0 → 0 < (((Quot.out Q).c : ℚˣ) : ℚ)`. Introduce `Q hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `markTerm at hQ`. Use `split_ifs at hQ with hμ`. Conclude with `pair_sim_pos ha _ hμ.choose_spec`. Conclude with `absurd rfl hQ`. Use `show ∑ᶠ Q : Cls G, markTerm w L.K.toSubgroup f K' f' (Quot.out Q) = _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `GlobalTheory.T.finsum_eq_finsum_finsum_of_fibre_bij (κ := fun q : FCls G => ConjClasses (grp G (Quot.out q).β)) (fun Q : Cls G => markTerm w L.K.toSubgroup f K' f' (Quot.out Q)) (fun q c => clsW (v := v) w (Quot.out q).trivAf.choose (Quot.out q).trivAf.choose_spec.choose (Quot.ou …` and prove the remaining obligations. Apply `(GlobalTheory.T.finite_markedPairClasses_degreeOne_term_ne_zero p G ha L f hf hreg K' f' hf').subset` to reduce the goal to its premises. Introduce `Q hQ`. Rewrite `hQ` using `[Function.mem_support]`. Unfold `markTerm at hQ`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `split_ifs at hQ with hμ`. Conclude with `⟨hμ, right_ne_zero_of_mul hQ⟩`. Conclude with `absurd rfl hQ`. Introduce `Q hQ`. Conclude with `clsW_regroup_of_conj_invariant ha hv w _ f K' f' hfK hf'0 Q (formCls Q) rfl (hcpos Q hQ) _ (Classical.choose_spec (ConjClasses.exists_rep _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a a' ha0 ha'0 hπ hΦ`. Take `⟨y, s, hs, hβ, hm, hphi⟩` from `phi_of_formCls (rfl : formCls a = formCls a) (hcpos a ha0)`. Take `⟨y', s', hs', hβ', hm', hphi'⟩` from `phi_of_formCls hπ (hcpos a' ha'0)`. Establish `hΦ' : phi (formCls a) a = phi (formCls a) a'` using `hΦ`. Rewrite `hΦ'` using `[hphi, hphi', ConjClasses.mk_eq_mk_iff_isConj, isConj_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `hΦ'`. Establish `e : (g : G.Cˣ × ℚˣ).1 * (y⁻¹ * (Quot.out a).γ * y) * (g : G.Cˣ × ℚˣ).1⁻¹ = y'⁻¹ * (Quot.out a').γ * y'` using `conj_comp hg`. Take `⟨hg1, hg2⟩` from `g.2`. Establish `hrel` using `GlobalTheory.T.rel_of_conj_in_group_of_common_form p G (Quot.out a) (Quot.out a') _ y y' _ s s' _ hs hs' hg2 hβ hβ' hg1 e`. Establish `hq : Quot.mk Pair.Rel (Quot.out a) = Quot.mk Pair.Rel (Quot.out a')` using `((Pair.mk_eq_iff_rel_and_out_rel p G _ _).1).mpr hrel`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(Quot.out_eq a).symm.trans (hq.trans (Quot.out_eq a'))`. Introduce `i c hW`. Establish `hrc : ConjClasses.mk (Classical.choose (ConjClasses.exists_rep c)) = c` using `Classical.choose_spec (ConjClasses.exists_rep c)`. Use `set r := Classical.choose (ConjClasses.exists_rep c) with hr_def`. Establish `hW'` using `hW`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `clsW at hW'`. Use `split_ifs at hW' with hz`. Use `swap`. Conclude with `absurd rfl hW'`. Take `⟨z, hzpos, hzfix⟩` from `hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hps` using `right_ne_zero_of_mul hW'`. Unfold `pointSum at hps`. Establish `hps'` using `mt finsum_eq_zero_of_forall_eq_zero hps`. Use `push_neg at hps'`. Take `⟨qq, hqq⟩` from `hps'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hfne` using `left_ne_zero_of_mul (right_ne_zero_of_mul hqq)`. Establish `hrg` using `minpoly_of_regAf_of_fixL p G v hv (Quot.out i).β (Quot.out i).sym (Quot.out i).trivR _ _ (Quot.out i).trivAf.choose_spec.choose_spec r _ ⟨z, hzpos⟩ hzfix (hreg _ hfne)`. Use `set P := ofGrp (Quot.out i) r hrg with hP_def`. Establish `hrel0 : (Quot.out (Quot.mk Pair.Rel P : Cls G)).Rel P` using `(Pair.mk_eq_iff_rel_and_out_rel p G P P).2`. Use `set a : Cls G := Quot.mk Pair.Rel P with ha_def`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hform : formCls a = i`. Take `⟨y, s, hs, hβ, -⟩` from `hrel0`. Establish `hR : (formOf (Quot.out a)).Rel (Quot.out i)` using `⟨y, s, hs, hβ⟩`. Conclude with `((GlobalTheory.T.quot_mk_eq_iff_positiveScalarFormIsomorphic p G _ _).mpr hR).trans (Quot.out_eq i)`. Establish `hr2 : 0 < (((r : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ)` using `r.2.2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hPc : P.c = (Quot.out a).c` using `(Pair.rel_pol_c p G _ _ hrel0).2`. Establish `hca : 0 < (((Quot.out a).c : ℚˣ) : ℚ)`. Rewrite using `[← hPc]`. Conclude with `hr2`. Take `⟨y₁, s₁, hs₁, hβ₁, hm₁, hphi₁⟩` from `phi_of_formCls hform hca`.
-
-Take `⟨g, sg, hsg, hg, hγ⟩` from `GlobalTheory.T.exists_conj_of_rel_similitude_pairs_same_form p G (Quot.out a) P (Quot.out i).β y₁ 1 s₁ 1 hs₁ one_pos hβ₁ (by show ((Quot.out i).β : G.C) = _`. Simplify using `[sh_one_eq]) hrel0`. Establish `hmem : ((g, Units.mk0 sg (ne_of_gt hsg)) : G.Cˣ × ℚˣ) ∈ grp G (Quot.out i).β` using `⟨by simpa using hg, by simpa using hsg⟩`. Establish `hphi_r : phi i a = ConjClasses.mk r`. Rewrite using `[hphi₁, ConjClasses.mk_eq_mk_iff_isConj, isConj_iff]`.
-
-Use `⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Rewrite using `[← show P.γ = (r : G.Cˣ × ℚˣ).1 from rfl]`. Simplify using `using hγ`.
-
-Rewrite using `[← show P.c = (r : G.Cˣ × ℚˣ).2 from rfl, hPc]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Prod.snd_mul, Prod.snd_inv]`. Conclude with `mul_inv_cancel_comm _ _`. Use `⟨a, hform, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← clsW_regroup_of_conj_invariant ha hv w _ f K' f' hfK hf'0 a i hform hca r hphi_r.symm]`.
-
-Conclude with `hW`. Use `show phi i a = c`. Rewrite using `[hphi_r, hrc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem markSumC_regroup (ha : G.a = 1) (hv : sigPosH (G.gram_herm v) = 1) (w : Polynomial G.F → ℂ → ℂ)
     (L : G.Level) (f : G.GAf → ℂ) (hf : IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f)
@@ -718,11 +702,11 @@ end UpperTheory.Cb.Mark
 
 open UpperTheory.Cb.Mark in
 /- English proof (translation)
-Introduce `p _ G ha v hv c L f hf hreg K' f' hf'`. Unfold `cxTotalM`. Rewrite using `[markSumC_regroup (v := v) ha hv c L f hf hreg K' f' hf']`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfK : ∀ k ∈ (L.K : Subgroup G.GAf), ∀ g, f (k⁻¹ * g * k) = f g`. Introduce `k hk g`. Simplify using `using hf.2.2.1 k hk g`. Establish `hfK' : ∀ k ∈ K', ∀ g, f' (k⁻¹ * g * k) = f' g`. Introduce `k hk g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hf'.2.2.1 k hk g` using `[sigG_one]`. Unfold `cxSumM`. Conclude with `cxSumAtM_unfold c _ _ _ (L.K : Subgroup G.GAf) f K' f' hfK hfK' (fun h z hz => GlobalTheory.FinFix.finite_fix_core G ha v hv L f hf K' f' hf' _ _ _ _ (Quot.out q).sym (Quot.out q).trivR h z hz) (CxReg.finite_pts_reg G ha v hv L f hf hreg K' f' hf' _ _ _ _ (Quot.out q).sym (Quot.o …`. Take `⟨hd, hs⟩` from `CxReg.sep_of_regAf G v hv f hreg _ _ _ _ (Quot.out q).sym (Quot.out q).trivR y₀ h hne ⟨z, hz, hF⟩`. Conclude with `GlobalTheory.T.separable_formGroup_element_fixes_unique_positive_line p G v hv _ (Quot.out q).sym (Quot.out q).trivR y₀ hd hs z z' hz hz' hF hF')`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.complex_count_regular_marked_points :
     GlobalTheory.RootSumWeights.CxCountRegMark := by

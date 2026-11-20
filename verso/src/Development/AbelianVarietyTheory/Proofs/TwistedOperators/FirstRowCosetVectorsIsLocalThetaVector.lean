@@ -27,11 +27,11 @@ variable {D : D7}
 open GlobalTheory.HalfProd GlobalTheory.ExportSeries.RestrictHalfModel in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[prodHalf_apply]`. Distinguish the cases in `hx : IsHalf (a + b) x`. Establish `hx' : a • x + b • x = x` using `by rw [← add_smul]; exact (isHalf_iff' _ _).1 hx`. Rewrite using `[if_pos hx, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `halfInd`. Distinguish the cases in `hxΛ : x ∈ Λ`. Rewrite using `[if_pos ⟨hΛ a ha x hxΛ, isHalf_smul ha x⟩, if_pos ⟨hΛ b hb x hxΛ, isHalf_smul hb x⟩, if_pos ⟨hxΛ, hx⟩, one_mul]`. Rewrite using `[if_neg (show ¬ (x ∈ Λ ∧ IsHalf (a + b) x) from fun h => hxΛ h.1)]`. Distinguish the cases in `h1 : a • x ∈ Λ`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_neg (show ¬ (b • x ∈ Λ ∧ IsHalf b (b • x)) from fun h => hxΛ (hx' ▸ add_mem h1 h.1)), mul_zero]`. Rewrite using `[if_neg (show ¬ (a • x ∈ Λ ∧ IsHalf a (a • x)) from fun h => h1 h.1), zero_mul]`. Rewrite using `[if_neg hx, mul_zero]`. Unfold `halfInd`. Rewrite using `[if_neg (show ¬ (x ∈ Λ ∧ IsHalf (a + b) x) from fun h => hx h.2)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodHalf_halfInd {m n : ℕ} {a b : AE D} (ha : a * a = a) (hb : b * b = b) {Λ : AddSubgroup (Mx D m n)}
     (hΛ : ∀ e : AE D, e * e = e → ∀ u ∈ Λ, e • u ∈ Λ) :
@@ -54,9 +54,9 @@ theorem prodHalf_halfInd {m n : ℕ} {a b : AE D} (ha : a * a = a) (hb : b * b =
     rw [if_neg (show ¬ (x ∈ Λ ∧ IsHalf (a + b) x) from fun h => hx h.2)]
 
 /- English proof (translation)
-Take `⟨⟨es, h1, rfl⟩, -⟩` from `he`. Take `⟨⟨es₀, h1₀, rfl⟩, -⟩` from `he₀`. Establish `heq : ∑ Q ∈ P₀, es₀ Q = ∑ Q ∈ P₀, es Q` using `Finset.sum_congr rfl fun Q hQ => (GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D _ _ Q Q (h1₀ Q hQ) (h1 Q (hsub hQ))).1 rfl`. Establish `horth : ∀ Q ∈ P, ∀ Q' ∈ P, Q ≠ Q' → es Q * es Q' = 0` using `fun Q hQ Q' hQ' h => (GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D _ _ Q Q' (h1 Q hQ) (h1 Q' hQ')).2 h`. Use `⟨∑ Q ∈ P \ P₀, es Q, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[heq, ← Finset.sum_sdiff hsub, add_comm]`. Conclude with `(⟨_, P \ P₀, es, fun Q hQ => (h1 Q (Finset.sdiff_subset hQ)).1, fun Q hQ Q' hQ' hne => horth Q (Finset.sdiff_subset hQ) Q' (Finset.sdiff_subset hQ') (Ne.symm hne), rfl⟩ : GlobalTheory.PlaceModelSum.IsOrthSum _) |> GlobalTheory.PlaceModelSum.IsOrthSum.idem`. Rewrite using `[heq, Finset.sum_mul_sum]`. Conclude with `Finset.sum_eq_zero fun Q hQ => Finset.sum_eq_zero fun Q' hQ' => horth Q (hsub hQ) Q' (Finset.sdiff_subset hQ') fun h => (Finset.mem_sdiff.1 hQ').2 (h ▸ hQ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compl_idem {e e₀ : AE D} {P P₀ : Finset (Pl D.host.E)} (hsub : P₀ ⊆ P) (he : IsIdemSum e P)
     (he₀ : IsIdemSum e₀ P₀) : ∃ b, e = e₀ + b ∧ b * b = b ∧ e₀ * b = 0 := by
@@ -79,11 +79,9 @@ theorem exists_compl_idem {e e₀ : AE D} {P P₀ : Finset (Pl D.host.E)} (hsub 
 open GlobalTheory.HalfProd in
 
 /- English proof (translation)
-Use `set Λ := latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True with hΛdef`. Establish `hΛ : ∀ e : AE D, e * e = e → ∀ u ∈ Λ, e • u ∈ Λ` using `fun e he u hu => GlobalTheory.PlaceModelSum.idem_smul_latO he hu`. Establish `hΨ` using `GlobalTheory.isSBHalf_halfInd b Λ`. Use `⟨isSBHalf_prodHalf ha hb hΛ hΨ hΦ, (GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum hP).exists_model hψ hS hT hP.2 hvac, fun T₀ hT₀ => ?_⟩` and prove the remaining obligations. Establish `hm` using `isPlaceModel_prodHalf ha hb hab hΛ hΨ hT₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : T₀ (prodHalf a b (halfInd b Λ) (halfInd a Λ)) = f₀`. Rewrite using `[prodHalf_halfInd ha hb hΛ]`. Use `hT₀.vac` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Rewrite `hm` using `[key]`.
-
-Conclude with `hf.2 _ hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isThetaAt_extend {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
@@ -116,9 +114,9 @@ end GlobalTheory.RowLocVec
 namespace GlobalTheory.RowLocVec
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ t i κ => ?_⟩⟩` and prove the remaining obligations. Establish `hL` using `s.core.lev`. Take `⟨e₀, he₀, hcos⟩` from `ch.W.cosVec_is`. Take `⟨e, he⟩` from `GlobalTheory.FunObj.LocTensor.exists_idemSum_locPl hL ch.G t`. Take `⟨b, rfl, hb, hab⟩` from `exists_compl_idem (by unfold locPl; exact Finset.subset_union_left) he he₀`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hS : IsSelfDualC (ch.G.pS (.chi (i : ℕ) 0)) (ch.G.latS (.chi (i : ℕ) 0))` using `isSelfDualC_neg (node_isV ch.G hL (X := .grid ((i : ℕ) + 1) 0) ⟨i.2, Nat.zero_le _⟩).sd`. Establish `hT : IsSelfDualC (ch.G.pT (.chi (i : ℕ) 0)) (ch.G.latT (.chi (i : ℕ) 0))` using `(node_isV ch.G hL (X := .grid (i : ℕ) 0) ⟨i.2.le, Nat.zero_le _⟩).sd`. Establish `ha` using `GlobalTheory.PlaceDatum.idemSum_mul_self he₀`. Conclude with `⟨e₀ + b, he, _, isThetaAt_extend ch.W.ψ_std hS hT he ha hb hab (ch.W.vac_is i i.2).2.lat (GlobalTheory.GridWeil.isSBHalf_cosInd hS hT (ch.G.pl.modul_ne_bot ch.sc) ha (GlobalTheory.PlaceDatum.infPart_idemSum he₀) κ) (hcos i i.2 κ)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem cosVec_isLocVec : GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ {_} ch => ∀ (t : T) (i : Fin D.R.m) (κ : ch.G.CosAt i), ∃ e, IsIdemSum e (locPl ch.G t) ∧ ∃ φ, IsLocVec ch.W (.chi (i : ℕ) 0) e (ch.W.vac i) φ (ch.W.cosVec i κ) := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ t i κ => ?_⟩⟩

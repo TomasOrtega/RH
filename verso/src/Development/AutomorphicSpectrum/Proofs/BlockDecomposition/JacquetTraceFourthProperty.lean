@@ -12,9 +12,9 @@ def compan {F : Type} [CommRing F] {r : ℕ} (P : F[X]) : Matrix (Fin r) (Fin r)
   Matrix.of fun l j => if (j : ℕ) + 1 = r then -P.coeff l else if (l : ℕ) = (j : ℕ) + 1 then 1 else 0
 
 /- English proof (translation)
-Establish `hch : Polynomial.aeval y y.charpoly = 0` using `Matrix.aeval_self_charpoly y`. Establish `hdeg : y.charpoly.natDegree = r` using `by simpa using Matrix.charpoly_natDegree_eq_dim y`. Establish `hmon : y.charpoly.coeff r = 1`. Use `y.charpoly_monic.coeff_natDegree` as an intermediate fact. Rewrite `this` using `[hdeg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hch` using `[Polynomial.aeval_eq_sum_range, hdeg, Finset.sum_range_succ, hmon, one_smul]`. Establish `hy : y ^ r = -∑ l ∈ Finset.range r, y.charpoly.coeff l • y ^ l` using `eq_neg_of_add_eq_zero_right hch`. Rewrite using `[hy, Finset.sum_range (fun l => y.charpoly.coeff l • y ^ l), Matrix.neg_mulVec, Matrix.sum_mulVec, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mulVec, neg_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_mulVec_eq {F : Type} [CommRing F] [Nontrivial F] {r : ℕ} (y : Matrix (Fin r) (Fin r) F) (e : Fin r → F) :
     Matrix.mulVec (y ^ r) e = ∑ l : Fin r, (-y.charpoly.coeff l) • Matrix.mulVec (y ^ (l : ℕ)) e := by
@@ -31,13 +31,13 @@ theorem pow_mulVec_eq {F : Type} [CommRing F] [Nontrivial F] {r : ℕ} (y : Matr
   rw [Matrix.smul_mulVec, neg_smul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hl : (y * krylov y e) i j = Matrix.mulVec (y ^ ((j : ℕ) + 1)) e i`. Rewrite using `[pow_succ', ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Rewrite using `[hl, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hj : (j : ℕ) + 1 = r`. Simplify using `only [compan, Matrix.of_apply, if_pos hj, krylov_apply]`. Rewrite using `[hj, pow_mulVec_eq y e, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hlt : (j : ℕ) + 1 < r` using `lt_of_le_of_ne j.2 hj`. Simplify using `only [compan, Matrix.of_apply, if_neg hj, krylov_apply]`. Rewrite using `[Finset.sum_eq_single (⟨(j : ℕ) + 1, hlt⟩ : Fin r)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (b : ℕ) ≠ (j : ℕ) + 1` using `fun h => hb (Fin.ext h)`. Simplify using `[this]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_krylov {F : Type} [CommRing F] [Nontrivial F] {r : ℕ} (y : Matrix (Fin r) (Fin r) F) (e : Fin r → F) :
     y * krylov y e = krylov y e * compan y.charpoly := by
@@ -64,15 +64,13 @@ theorem mul_krylov {F : Type} [CommRing F] [Nontrivial F] {r : ℕ} (y : Matrix 
 end GlobalTheory.CompanionTheory.CharpolyConj
 
 /- English proof (translation)
-Introduce `K _ n γ γ' hs hc`. Take `⟨e, he⟩` from `exists_isUnit_det_krylov_of_separable (γ : Matrix (Fin n) (Fin n) K) hs`. Take `⟨e', he'⟩` from `exists_isUnit_det_krylov_of_separable (γ' : Matrix (Fin n) (Fin n) K) (hc ▸ hs)`. Establish `hu` using `(Matrix.isUnit_iff_isUnit_det _).2 he`. Establish `hu'` using `(Matrix.isUnit_iff_isUnit_det _).2 he'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.CompanionTheory.CharpolyConj.mul_krylov (γ : Matrix (Fin n) (Fin n) K) e`. Establish `h2` using `GlobalTheory.CompanionTheory.CharpolyConj.mul_krylov (γ' : Matrix (Fin n) (Fin n) K) e'`. Rewrite `h1` using `[hc]`. Use `⟨hu.unit * hu'.unit⁻¹, ?_⟩` and prove the remaining obligations. Use `set B := hu.unit with hB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set B' := hu'.unit with hB'`. Establish `hBv : (B : Matrix (Fin n) (Fin n) K) = krylov (γ : Matrix (Fin n) (Fin n) K) e` using `rfl`. Establish `hBv' : (B' : Matrix (Fin n) (Fin n) K) = krylov (γ' : Matrix (Fin n) (Fin n) K) e'` using `rfl`. Use `set C : Matrix (Fin n) (Fin n) K := GlobalTheory.CompanionTheory.CharpolyConj.compan (γ' : Matrix (Fin n) (Fin n) K).charpoly with hC`. Establish `key : ((B⁻¹ * γ * B : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = ((B'⁻¹ * γ' * B' : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1 : ((B⁻¹ * γ * B : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = C`. Rewrite using `[mul_assoc, Units.val_mul, Units.val_mul, hBv, h1, ← hBv, ← mul_assoc, Units.inv_mul, one_mul]`. Establish `a2 : ((B'⁻¹ * γ' * B' : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = C`. Rewrite using `[mul_assoc, Units.val_mul, Units.val_mul, hBv', h2, ← hBv', ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[a1, a2]`.
-
-Establish `key' : B⁻¹ * γ * B = B'⁻¹ * γ' * B'` using `Units.ext key`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.CharpolyConj.main : PositivityTheory.Rg.Tf.Loc.A4 := by
   intro K _ n γ γ' hs hc

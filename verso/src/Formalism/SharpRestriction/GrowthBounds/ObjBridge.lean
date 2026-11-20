@@ -37,7 +37,7 @@ def dvrOfStd {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscre
   complete := h.1.complete_O
 
 /- English proof (translation)
-The claim follows from `h.1.w_sq`.
+A detailed English derivation is pending.
 -/
 theorem dvrOfStd_sq {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq]
     [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]

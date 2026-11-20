@@ -10,7 +10,7 @@ open Classical
 open ReciprocityTheory.ChartRestriction.G.Out
 attribute [local instance] Over.cartesianMonoidalCategory
 /- English proof (citation)
-Apply `GlobalTheory.exists_torsion_lift_of_generic_rational` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsTorsionLiftSpecialFibreOfGenericRational.lean&line=27#L27)
 -/

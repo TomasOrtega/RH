@@ -11,7 +11,7 @@ namespace Formalism.L2.GlobalTheoryTheory.TraceIntegrality
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨clsLat_int X u i hi c, clsLat_index X u i hi c⟩`.
+Supply the required witnesses or components.
 -/
 theorem latT_step {D : D7} (X : Formalism.L2.Herm.FullTied D) (u : D.what₂.Word) (i : ℕ) (hi : i ≤ D.R.m)
     (c : (D.mem u).C.cls i) :
@@ -33,7 +33,7 @@ def ClauseP (D : D7) (u : D.what₂.Word) : Prop :=
         c = c'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i hi => ⟨fun c => latT_step X u i hi c, hF i hi⟩, hP⟩`.
+Supply the required witnesses or components.
 -/
 theorem clsTie_of {D : D7} (X : Formalism.L2.Herm.FullTied D) (u : D.what₂.Word)
     (hF : ∀ i ≤ D.R.m, FramesStep D u i) (hP : ClauseP D u) : Formalism.MainNotions.flipTwoThree.ClsTie D u :=

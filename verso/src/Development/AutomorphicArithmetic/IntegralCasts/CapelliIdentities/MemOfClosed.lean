@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K _ _ _ _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi13.aux1 :
     ∀ (K : Type) [inst : Field K]
@@ -1402,7 +1402,7 @@ theorem UpperTheory.Reformulated.B.Qi13.aux1 :
           (@UpperTheory.Reformulated.B.Qi13.algRes K inst inst_1 inst_2 inst_3 l inst_4 inst_5))
 
 /- English proof (translation)
-Introduce `K _ _ _ _ l _ _`. Use `letI := UpperTheory.Reformulated.B.Qi13.algRes K l`. Conclude with `Module.Free.of_divisionRing (ZMod l) _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi13.aux4 :
     ∀ (K : Type) [inst : Field K]
@@ -1723,7 +1723,7 @@ theorem UpperTheory.Reformulated.B.Qi13.aux4 :
   exact Module.Free.of_divisionRing (ZMod l) _
 
 /- English proof (translation)
-Introduce `l _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi13.aux5 :
     ∀ (l : Nat) [Fact (Nat.Prime l)],
@@ -1733,7 +1733,7 @@ theorem UpperTheory.Reformulated.B.Qi13.aux5 :
   infer_instance
 
 /- English proof (translation)
-Introduce `K _ _ _ _ l _ _`. Use `letI := UpperTheory.Reformulated.B.Qi13.algRes K l`. Use `haveI : Finite (IsLocalRing.ResidueField (ValuativeRel.valuation K).integer) := inferInstance`. Conclude with `Module.Finite.of_finite`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi13.aux6 :
     ∀ (K : Type) [inst : Field K]
@@ -3207,7 +3207,7 @@ noncomputable def UpperTheory.Reformulated.B.Qi13.bb :
         (@UpperTheory.Reformulated.B.Qi13.aux6 K inst inst_1 inst_2 inst_3 l inst_4 inst_5)
 
 /- English proof (translation)
-Introduce `K _ _ _ _ l _ _ i`. Conclude with `IsLocalRing.residue_surjective _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi13.aux8 :
     ∀ (K : Type) [inst : Field K]
@@ -5357,23 +5357,23 @@ noncomputable def UpperTheory.Reformulated.B.Qi13.blift :
         (@UpperTheory.Reformulated.B.Qi13.aux8 K inst inst_1 inst_2 inst_3 l inst_4 inst_5 i)
 
 /- English proof (translation)
-Set `φ : ℤ_[l] →+* O` to `((algebraMap ℚ_[l] K).comp PadicInt.Coe.ringHom).codRestrict O hO`. Establish `hφ : ∀ c : ℤ_[l], r (φ c) = algebraMap (ZMod l) k (PadicInt.toZMod c)`. Introduce `c`. Take `⟨n, hn⟩` from `ZMod.natCast_zmod_surjective (PadicInt.toZMod c)`. Establish `hker : c - (n : ℤ_[l]) ∈ RingHom.ker (PadicInt.toZMod : ℤ_[l] →+* ZMod l)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, hn, sub_self]`. Rewrite `hker` using `[PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Take `⟨d, hd⟩` from `hker`. Establish `hl : (l : k) = 0`. Rewrite using `[← map_natCast (algebraMap (ZMod l) k), ZMod.natCast_self, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : c = n + l * d` using `by rw [← hd]; ring`. Rewrite using `[← hn, hc]`. Simplify using `only [map_add, map_mul, map_natCast, hl, zero_mul, add_zero]`. Rewrite `h`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Take `⟨i₀, hi₀⟩` from `not_forall.mp hne`. Take `⟨m, -, hm⟩` from `Finset.exists_max_image Finset.univ (fun i => ‖g i‖) ⟨i₀, Finset.mem_univ _⟩`. Establish `hpos : 0 < ‖g m‖` using `(norm_pos_iff.mpr hi₀).trans_le (hm i₀ (Finset.mem_univ _))`. Establish `hgm : g m ≠ 0` using `norm_pos_iff.mp hpos`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c : ι → ℤ_[l]` to `fun i => ⟨g i / g m, by`. Rewrite using `[norm_div]`. Conclude with `(div_le_one hpos).mpr (hm i (Finset.mem_univ _))⟩`. Establish `hsum : ∑ i, φ (c i) * x i = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : ∀ i, ((φ (c i) * x i : O) : K) = (g m)⁻¹ • (g i • (x i : K))`. Introduce `i`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] K (g i / g m) * (x i : K) = _`. Rewrite using `[smul_smul, Algebra.smul_def, div_eq_inv_mul]`. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1]`. Rewrite using `[← Finset.smul_sum, hg, smul_zero]`. Both sides reduce to the same expression. Establish `hred : ∑ i, PadicInt.toZMod (c i) • r (x i) = 0`. Establish `h2` using `congrArg r hsum`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_sum, map_zero]`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hφ, Algebra.smul_def]`. Establish `h3` using `h _ hred m`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : c m = 1` using `Subtype.ext (div_self hgm)`. Rewrite `h3` using `[h4, map_one]`. Conclude with `one_ne_zero h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qi13.key {l : ℕ} [Fact l.Prime] {K : Type} [Field K] [Algebra ℚ_[l] K]
     (O : Subring K) {k : Type} [CommRing k] [Algebra (ZMod l) k] (r : O →+* k)
@@ -5427,7 +5427,7 @@ private theorem UpperTheory.Reformulated.B.Qi13.key {l : ℕ} [Fact l.Prime] {K 
   exact one_ne_zero h3
 
 /- English proof (translation)
-Use `PadicInt.denseRange_natCast.induction_on (p := fun c : ℤ_[l] => algebraMap ℚ_[l] K (c : ℚ_[l]) ∈ O) c ?_ ?_` and prove the remaining obligations. Conclude with `hO.preimage (hc.comp continuous_subtype_val)`. Introduce `n`. Rewrite using `[PadicInt.coe_natCast, map_natCast]`. Conclude with `natCast_mem O n`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qi13.mem_of_closed {l : ℕ} [Fact l.Prime] {K : Type} [Field K]
     [TopologicalSpace K] [Algebra ℚ_[l] K] (O : Subring K) (hO : IsClosed (O : Set K))
@@ -5441,9 +5441,9 @@ private theorem UpperTheory.Reformulated.B.Qi13.mem_of_closed {l : ℕ} [Fact l.
     exact natCast_mem O n
 
 /- English proof (translation)
-Introduce `K _ _ _ _ l _ _ _ hc`. Use `letI := UpperTheory.Reformulated.B.Qi13.algRes K l`. Use `UpperTheory.Reformulated.B.Qi13.key (ValuativeRel.valuation K).integer (IsLocalRing.residue (ValuativeRel.valuation K).integer) (UpperTheory.Reformulated.B.Qi13.mem_of_closed _ Valuation.isClosed_integer hc) (UpperTheory.Reformulated.B.Qi13.blift K l) ?_` and prove the remaining obligations. Establish `h : (fun i => IsLocalRing.residue (ValuativeRel.valuation K).integer (UpperTheory.Reformulated.B.Qi13.blift K l i)) = UpperTheory.Reformulated.B.Qi13.bb K l`. Use function extensionality and compare the values at `fun i => (UpperTheory.Reformulated.B.Qi13.aux8 K l i).choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[h]`. Conclude with `(UpperTheory.Reformulated.B.Qi13.bb K l).linearIndependent`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi13.linIndep :
     ∀ (K : Type) [inst : Field K]

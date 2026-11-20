@@ -11,39 +11,35 @@ namespace GlobalTheory
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 /- English proof (translation)
-Establish `hφne : ∀ β : 𝓞 K, β ≠ 0 → φ (mixedEmbedding K β) ≠ 0`. Introduce `β hβ h0`. Establish `h1` using `hφnorm (mixedEmbedding K β) (by`. Rewrite using `[mixedEmbedding.norm_eq_norm]`. Simplify `hβ)` using `[Algebra.norm_eq_zero_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h1` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1`. Establish `hinv : ∀ a : 𝓞 K, Ideal.span {a} ⊔ m = ⊤ → ∃ r : 𝓞 K, r * a - 1 ∈ m`. Introduce `a ha`. Establish `h1 : (1 : 𝓞 K) ∈ Ideal.span {a} ⊔ m` using `by rw [ha]; exact Submodule.mem_top`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 h1`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `: r * a - 1 = -z` using `by rw [← hyz]; ring`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `m.neg_mem hz`. Establish `hunit : ∀ c : 𝓞 K, c - 1 ∈ m → m ≠ ⊤ → c ≠ 0`. Introduce `c hc hm h0`. Apply `hm` to reduce the goal to its premises. Rewrite `hc` using `[h0, zero_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(Ideal.eq_top_iff_one _).2 (by simpa using m.neg_mem hc)`. Set `ψ : 𝓞 K → ℂ` to `fun β => if Ideal.span {β} ⊔ m = ⊤ ∧ β ≠ 0 then X (Ideal.span {β}) * (φ (mixedEmbedding K β))⁻¹ else if m = ⊤ then 1 else 0`. Establish `hψtop : m = ⊤ → ∀ a, ψ a = 1`. Introduce `hm a`. Distinguish the cases in `ha : a = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[ψ, ha, hm]`. Establish `h1 : Ideal.span {a} ⊔ m = ⊤` using `by rw [hm, sup_top_eq]`. Simplify using `only [ψ, h1, ne_eq, ha, not_false_eq_true, and_self, if_true]`. Rewrite using `[hXφ a ha (by rw [hm]; exact Submodule.mem_top)]`. Conclude with `mul_inv_cancel₀ (hφne a ha)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ψ, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Distinguish the cases in `hm : m = ⊤`. Rewrite using `[hψtop hm a, hψtop hm b]`. Establish `hsup : Ideal.span {a} ⊔ m = Ideal.span {b} ⊔ m`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Establish `: a = b + (a - b)` using `by ring`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self b)) (Ideal.mem_sup_right hab)`. Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Establish `: b = a - (a - b)` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self a)) (Ideal.mem_sup_right hab)`. Establish `hnz : ∀ c : 𝓞 K, Ideal.span {c} ⊔ m = ⊤ → c ≠ 0`. Introduce `c hc h0`. Apply `hm` to reduce the goal to its premises. Rewrite `hc` using `[h0, Ideal.span_singleton_eq_bot.2 rfl, bot_sup_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hc`. Distinguish the cases in `ha : Ideal.span {a} ⊔ m = ⊤`. Establish `hb : Ideal.span {b} ⊔ m = ⊤` using `hsup ▸ ha`. Establish `ha0` using `hnz a ha`. Establish `hb0` using `hnz b hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, hr⟩` from `hinv a ha`. Establish `hrb : r * b - 1 ∈ m`. Establish `: r * b - 1 = (r * a - 1) - r * (a - b)` using `by ring`. Rewrite using `[this]`. Conclude with `m.sub_mem hr (m.mul_mem_left r hab)`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `eA` using `hXφ (r * a) (hunit _ hr hm) hr`. Establish `eB` using `hXφ (r * b) (hunit _ hrb hm) hrb`. Rewrite `eA`, `eB` using `[← Ideal.span_singleton_mul_span_singleton, hXmul]`. Move the coercions through the operations in `at eA eB`. Rewrite `eA`, `eB` using `[map_mul, hφmul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hXr : X (Ideal.span {r}) ≠ 0`. Introduce `h0`. Rewrite `eA` using `[h0, zero_mul]`. Conclude with `mul_ne_zero (hφne r (fun h => by simp [h] at hr; exact hm ((Ideal.eq_top_iff_one _).2 (by simpa using m.neg_mem hr)))) (hφne a ha0) eA.symm`. Simplify using `only [ψ, ha, hb, ne_eq, ha0, hb0, not_false_eq_true, and_self, if_true]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hφa` using `hφne a ha0`. Establish `hφb` using `hφne b hb0`. Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv, div_eq_div_iff hφa hφb]`. Apply `mul_left_cancel₀ hXr` to reduce the goal to its premises. Take the linear combination `φ (mixedEmbedding K b) * eA - φ (mixedEmbedding K a) * eB`.
-
-Establish `hb : ¬ Ideal.span {b} ⊔ m = ⊤` using `hsup ▸ ha`. Simplify using `[ψ, ha, hb, hm]`. Introduce `β hβ`. Distinguish the cases in `hc : Ideal.span {β} ⊔ m = ⊤`. Simplify using `only [ψ, hc, ne_eq, hβ, not_false_eq_true, and_self, if_true]`.
-
-Rewrite using `[mul_assoc, inv_mul_cancel₀ (hφne β hβ), mul_one]`. Establish `hm : m ≠ ⊤` using `fun hm => hc (by rw [hm, sup_top_eq])`. Simplify using `[ψ, hc, hm, hXcop _ hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_periodic_mod_ideal_eq_character_div_infinity_type {K : Type} [Field K] [NumberField K]
     (m : Ideal (𝓞 K)) (X : Ideal (𝓞 K) → ℂ) (φ : mixedSpace K → ℂ)
@@ -146,19 +142,17 @@ private theorem exists_periodic_mod_ideal_eq_character_div_infinity_type {K : Ty
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 /- English proof (translation)
-Establish `hfun : (⇑(mixedEmbedding.norm (K` using `K)) : mixedSpace K → ℝ) = fun y => ∏ w, (normAtPlace w) y ^ w.mult := by`. Use function extensionality and compare the values at `y`. Conclude with `mixedEmbedding.norm_apply y`. Rewrite using `[hfun]`. Rewrite `hx` using `[mixedEmbedding.norm_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `contDiffAt_prod` to reduce the goal to its premises. Introduce `w _`. Establish `hw : (normAtPlace w) x ≠ 0`. Introduce `h0`. Conclude with `hx (Finset.prod_eq_zero (Finset.mem_univ w) (by rw [h0, zero_pow (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `unfold NumberField.InfinitePlace.mult; split_ifs <;> norm_num)]))`. Apply `ContDiffAt.pow` to reduce the goal to its premises. Distinguish the cases in `hr : w.IsReal`. Establish `e : (⇑(normAtPlace w) : mixedSpace K → ℝ) = fun y => ‖y.1 ⟨w, hr⟩‖`. Use function extensionality and compare the values at `y`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `normAtPlace_apply_of_isReal hr y`. Rewrite using `[e]`. Establish `hx' : x.1 ⟨w, hr⟩ ≠ 0`. Introduce `h0`. Apply `hw` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[normAtPlace_apply_of_isReal hr, h0, norm_zero]`. Conclude with `(contDiffAt_norm ℝ hx').comp x ((contDiff_apply ℝ ℝ (⟨w, hr⟩ : {w : InfinitePlace K // w.IsReal})).comp contDiff_fst).contDiffAt`. Establish `hc : w.IsComplex` using `InfinitePlace.not_isReal_iff_isComplex.1 hr`. Establish `e : (⇑(normAtPlace w) : mixedSpace K → ℝ) = fun y => ‖y.2 ⟨w, hc⟩‖`. Use function extensionality and compare the values at `y`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `normAtPlace_apply_of_isComplex hc y`. Rewrite using `[e]`. Establish `hx' : x.2 ⟨w, hc⟩ ≠ 0`. Introduce `h0`. Apply `hw` to reduce the goal to its premises.
-
-Rewrite using `[normAtPlace_apply_of_isComplex hc, h0, norm_zero]`. Conclude with `(contDiffAt_norm ℝ hx').comp x ((contDiff_apply ℝ ℂ (⟨w, hc⟩ : {w : InfinitePlace K // w.IsComplex})).comp contDiff_snd).contDiffAt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem contDiffAt_mixedEmbedding_norm_of_ne_zero {K : Type} [Field K] [NumberField K] {x : mixedSpace K}
     (hx : mixedEmbedding.norm x ≠ 0) : ContDiffAt ℝ ∞ (⇑(mixedEmbedding.norm (K := K))) x := by
@@ -194,13 +188,11 @@ private theorem contDiffAt_mixedEmbedding_norm_of_ne_zero {K : Type} [Field K] [
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 /- English proof (translation)
-Take `⟨C, hCc, hCn, hCmem⟩` from `hC a b ha`. Establish `hsupp : ∀ x, x ∉ C → (h x : ℂ) * φ x * wt (mixedEmbedding.norm x) = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Establish `hw : wt (mixedEmbedding.norm x) ≠ 0` using `right_ne_zero_of_mul hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hh0 : (h x : ℂ) ≠ 0` using `left_ne_zero_of_mul (left_ne_zero_of_mul hne)`. Conclude with `hx (hCmem x (by exact_mod_cast hh0) (hab _ hw).1 (hab _ hw).2)`. Use `⟨?_, HasCompactSupport.intro hCc hsupp⟩` and prove the remaining obligations. Establish `hU : IsOpen {x : mixedSpace K | mixedEmbedding.norm x ≠ 0}` using `isOpen_ne_fun (mixedEmbedding.continuous_norm K) continuous_const`. Use `contDiff_iff_contDiffAt.2 fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : mixedEmbedding.norm x ≠ 0`. Establish `hn : {x : mixedSpace K | mixedEmbedding.norm x ≠ 0} ∈ nhds x` using `hU.mem_nhds hx`. Use `ContDiffAt.mul (ContDiffAt.mul ?_ (hφ.contDiffAt hn)) ?_` and prove the remaining obligations. Conclude with `Complex.ofRealCLM.contDiff.contDiffAt.comp x (hh.contDiffAt hn)`. Conclude with `hwt.contDiffAt.comp x (contDiffAt_mixedEmbedding_norm_of_ne_zero hx)`.
-
-Establish `hxC : x ∉ C` using `fun hxC => hCn x hxC (not_not.1 hx ▸ by simpa using hx)`. Establish `hev : (fun x => (h x : ℂ) * φ x * wt (mixedEmbedding.norm x)) =ᶠ[nhds x] fun _ => (0 : ℂ)` using `by filter_upwards [hCc.isClosed.isOpen_compl.mem_nhds hxC] with y hy`. Conclude with `hsupp y hy`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem contDiff_and_hasCompactSupport_mul_weight_mixedNorm {K : Type} [Field K] [NumberField K]
     (h : mixedSpace K → ℝ) (hh : ContDiffOn ℝ ∞ h {x | mixedEmbedding.norm x ≠ 0})
@@ -238,9 +230,9 @@ private theorem contDiff_and_hasCompactSupport_mul_weight_mixedNorm {K : Type} [
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 /- English proof (translation)
-Use `haveI : DiscreteTopology (mixedEmbedding.integerLattice K).toAddSubgroup := (inferInstance : DiscreteTopology (mixedEmbedding.integerLattice K))`. Establish `hcl : IsClosed ((mixedEmbedding.integerLattice K : Submodule ℤ (mixedSpace K)) : Set (mixedSpace K))` using `AddSubgroup.isClosed_of_discrete (H := (mixedEmbedding.integerLattice K).toAddSubgroup)`. Establish `hc : IsCompact (((↑) : mixedEmbedding.integerLattice K → mixedSpace K) ⁻¹' C)` using `hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hC`. Establish `hfin2` using `hc.finite_of_discrete.image Subtype.val`. Use `(hfin2.preimage (f := fun β : 𝓞 K => mixedEmbedding K (β : K)) ?_).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _ y _ hxy`. Conclude with `RingOfIntegers.ext ((mixedEmbedding_injective K) hxy)`. Introduce `β hβ`. Conclude with `⟨⟨mixedEmbedding K (β : K), ⟨β, rfl⟩⟩, hβ, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem finite_setOf_ringOfIntegers_mixedEmbedding_mem_compact {K : Type} [Field K] [NumberField K]
     (C : Set (mixedSpace K)) (hC : IsCompact C) :
@@ -262,7 +254,7 @@ private theorem finite_setOf_ringOfIntegers_mixedEmbedding_mem_compact {K : Type
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 /- English proof (translation)
-Rewrite using `[mixedEmbedding.norm_eq_norm, Ideal.absNorm_span_singleton, ← Algebra.coe_norm_int]`. Use `push_cast`. Simplify using `[Nat.cast_natAbs]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 -/
 private theorem mixedEmbedding_norm_eq_absNorm_span_singleton {K : Type} [Field K] [NumberField K] (β : 𝓞 K) :
     mixedEmbedding.norm (mixedEmbedding K (β : K)) = (Ideal.absNorm (Ideal.span {β}) : ℝ) := by
@@ -274,29 +266,27 @@ open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Compl
 open scoped ContDiff nonZeroDivisors in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `set g : B → ℂ := fun β => (h (mixedEmbedding K ((β : 𝓞 K) : K)) : ℂ) * G (Ideal.span {(β : 𝓞 K)}) with hg`. Establish `hgsum : Summable g` using `summable_of_finite_support hfin`. Set `gen : {J : Ideal (𝓞 K) // J ≠ ⊥ ∧ J.IsPrincipal ∧ J ≤ B} → 𝓞 K` to `fun J => @Submodule.IsPrincipal.generator _ _ _ _ _ J.1 J.2.2.1`. Establish `hgen : ∀ J, Ideal.span {gen J} = J.1` using `fun J => @Ideal.span_singleton_generator _ _ J.1 J.2.2.1`. Establish `hgen0 : ∀ J, gen J ≠ 0` using `fun J h0 => J.2.1 (by rw [← hgen J, h0, Ideal.span_singleton_eq_bot])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgenB : ∀ J, gen J ∈ B` using `fun J => J.2.2.2 (by rw [← hgen J]; exact Ideal.mem_span_singleton_self _)`. Set `e : (Σ _J : {J : Ideal (𝓞 K) // J ≠ ⊥ ∧ J.IsPrincipal ∧ J ≤ B}, (𝓞 K)ˣ) → {β : B // (β : 𝓞 K) ≠ 0}` to `fun p => ⟨⟨(p.2 : 𝓞 K) * gen p.1, B.mul_mem_left _ (hgenB p.1)⟩, mul_ne_zero p.2.ne_zero (hgen0 p.1)⟩`. Establish `he : Function.Bijective e`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨J, u⟩ ⟨J', u'⟩ hJ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : (u : 𝓞 K) * gen J = (u' : 𝓞 K) * gen J'` using `congrArg (fun x => ((x.1 : B) : 𝓞 K)) hJ`. Establish `hJJ : J = J'`. Apply `Subtype.ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Substitute `hJJ` using the available equality.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hu : u = u'` using `Units.ext (mul_right_cancel₀ (hgen0 J) h1)`. Substitute `hu` using the available equality. Both sides reduce to the same expression. Introduce and unpack `⟨β, hβ⟩`. Establish `hβB : (β : 𝓞 K) ∈ B` using `β.2`.
+Substitute using the available equality. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `J : {J : Ideal (𝓞 K) // J ≠ ⊥ ∧ J.IsPrincipal ∧ J ≤ B}` to `⟨Ideal.span {(β : 𝓞 K)}, by simpa [Ideal.span_singleton_eq_bot] using hβ, ⟨⟨β, rfl⟩⟩, (Ideal.span_singleton_le_iff_mem _).2 hβB⟩`. Establish `hass : Associated (gen J) (β : 𝓞 K)` using `Ideal.span_singleton_eq_span_singleton.1 (hgen J)`. Take `⟨u, hu⟩` from `hass`. Use `⟨⟨J, u⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (u : 𝓞 K) * gen J = β`. Rewrite using `[mul_comm]`. Conclude with `hu`. Establish `hsub : ∑' β : B, g β = ∑' β : {β : B // (β : 𝓞 K) ≠ 0}, g β`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(tsum_subtype_eq_of_support_subset ?_).symm` and prove the remaining obligations. Introduce `β hβ h0`. Apply `hβ` to reduce the goal to its premises. Simplify using `only [hg]`. Establish `: (β : 𝓞 K) = 0` using `h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Ideal.span_singleton_eq_bot.2 rfl, hG0, mul_zero]`. Rewrite using `[hsub, ← (Equiv.ofBijective e he).tsum_eq]`. Establish `hfiber : ∀ J : {J : Ideal (𝓞 K) // J ≠ ⊥ ∧ J.IsPrincipal ∧ J ≤ B}, HasSum (fun u : (𝓞 K)ˣ => g (e ⟨J, u⟩)) (G J)`. Introduce `J`. Establish `hn : mixedEmbedding.norm (mixedEmbedding K ((gen J : 𝓞 K) : K)) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[mixedEmbedding.norm_eq_norm]`. Simplify `hgen0 J` using `[Algebra.norm_eq_zero_iff]`. Establish `h0` using `Complex.hasSum_ofReal.2 (hsum _ hn)`. Rewrite `h0` using `[Complex.ofReal_one]`. Establish `h1` using `h0.mul_right (G J)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h1` using `[one_mul]`. Establish `hfun : (fun u : (𝓞 K)ˣ => g (e ⟨J, u⟩)) = fun u => (h (u • mixedEmbedding K ((gen J : 𝓞 K) : K)) : ℂ) * G J`. Use function extensionality and compare the values at `u`. Use `show (h (mixedEmbedding K ((((u : 𝓞 K) * gen J : 𝓞 K)) : K)) : ℂ) * G (Ideal.span {(u : 𝓞 K) * gen J}) = _`. Rewrite using `[unitSMul_smul, Ideal.span_singleton_mul_left_unit u.isUnit, hgen J]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[map_mul]`. Rewrite using `[hfun]`. Conclude with `h1`. Establish `hsumm : Summable fun p => g (e p)` using `(Equiv.ofBijective e he).summable_iff.2 (hgsum.subtype _)`.
-
-Conclude with `((hsumm.tsum_sigma' (fun J => (hfiber J).summable)).trans (tsum_congr fun J => (hfiber J).tsum_eq)).symm`.
+A detailed English derivation is pending.
 -/
 private theorem tsum_principal_le_eq_tsum_mul_cutoff_span {K : Type} [Field K] [NumberField K]
     (B : Ideal (𝓞 K)) (G : Ideal (𝓞 K) → ℂ) (hG0 : G ⊥ = 0) (h : mixedSpace K → ℝ)
@@ -384,9 +374,9 @@ private theorem tsum_principal_le_eq_tsum_mul_cutoff_span {K : Type} [Field K] [
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 /- English proof (translation)
-Use `(Ideal.finite_setOfPred_absNorm_le (⌊b / t⌋₊)).subset ?_` and prove the remaining obligations. Introduce `I hI`. Establish `h1 : wt (t * (Ideal.absNorm I : ℝ)) ≠ 0` using `right_ne_zero_of_mul hI`. Establish `h2` using `(hw _ h1).2`. Use `show Ideal.absNorm I ≤ ⌊b / t⌋₊`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Nat.le_floor` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ ht]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem finite_support_mul_weight_absNorm_of_bounded_support {K : Type} [Field K] [NumberField K]
     (X : Ideal (𝓞 K) → ℂ) (wt : ℝ → ℂ) (a b : ℝ)
@@ -404,13 +394,13 @@ private theorem finite_support_mul_weight_absNorm_of_bounded_support {K : Type} 
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 /- English proof (translation)
-Establish `hsub : ∀ c, ∑' I : {I : Ideal (𝓞 K) // I ≠ ⊥ ∧ (I * (b c : Ideal (𝓞 K))).IsPrincipal}, F I = ∑' I, ({I : Ideal (𝓞 K) | I ≠ ⊥ ∧ (I * (b c : Ideal (𝓞 K))).IsPrincipal}).indicator F I` using `fun c => tsum_subtype {I : Ideal (𝓞 K) | I ≠ ⊥ ∧ (I * (b c : Ideal (𝓞 K))).IsPrincipal} F`. Repeatedly rewrite using `[hsub]`. Establish `hsum` using `hasSum_sum (s := Finset.univ) (L := SummationFilter.unconditional _) (f := fun (c : ClassGroup (𝓞 K)) (I : Ideal (𝓞 K)) => ({I : Ideal (𝓞 K) | I ≠ ⊥ ∧ (I * (b c : Ideal (𝓞 K))).IsPrincipal}).indicator F I) (fun c _ => (summable_of_finite_support (hfin.subset fun I hI h0 => hI (Se …`. Rewrite using `[← hsum.tsum_eq]`. Use `tsum_congr fun I => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hI : I = ⊥`. Substitute `hI` using the available equality. Simplify using `[hF0]`. Take `⟨c, hc, huniq⟩` from `_root_.GlobalTheory.existsUnique_isPrincipal_mul_classRep b hb I hI`. Rewrite using `[Finset.sum_eq_single c]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Set.indicator, hI, hc]`. Introduce `c' _ hc'`. Rewrite using `[Set.indicator_of_notMem]`. Introduce and unpack `⟨_, h⟩`. Conclude with `hc' (huniq c' h)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem tsum_ideal_eq_sum_classGroup_tsum_mul_isPrincipal {K : Type} [Field K] [NumberField K]
     (b : ClassGroup (𝓞 K) → (Ideal (𝓞 K))⁰)
@@ -445,39 +435,37 @@ open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Compl
 open scoped ContDiff nonZeroDivisors in
 
 /- English proof (translation)
-Introduce `K _ _ m X φ hm hX0 hXmul hXnorm hXcop hφmul hφhom hφsm hφnorm hXφ wt hwt hwtsupp`. Take `⟨a, b', ha, hab⟩` from `hwtsupp`. Take `⟨ψ, hψper, hψ⟩` from `exists_periodic_mod_ideal_eq_character_div_infinity_type m X φ hXmul hXcop hφmul hφnorm hXφ`. Take `⟨h, h1, h2, h3, h4⟩` from `_root_.GlobalTheory.exists_smooth_homogeneous_hasSum_unit_smul K`. Take `⟨hf1, hf2⟩` from `contDiff_and_hasCompactSupport_mul_weight_mixedNorm h h1 h4 φ hφsm wt hwt a b' ha hab`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ⟩` from `_root_.GlobalTheory.IdealSum.ideal_sum_periodic_dilate K m ψ _ hm hψper hf1 hf2`. Use `⟨κ, fun B hB hBm A => ?_⟩` and prove the remaining obligations. Use `set d := Module.finrank ℚ K with hd`. Establish `hd0 : d ≠ 0` using `Module.finrank_pos.ne'`. Establish `hwt0 : wt 0 = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Combine the linear relations using `[(hab 0 h0).1]`. Establish `hBne : ∀ c, (B c : Ideal (𝓞 K)) ≠ ⊥` using `fun c => nonZeroDivisors.coe_ne_zero (B c)`. Use `choose Cc hCc using fun c => hκ (B c) (hBne c) (hBm c) (A * d)`. Use `⟨∑ c, max (Cc c) 0, fun t ht ht1 => ?_⟩` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ∀ c, (1 : ℝ) ≤ (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ)` using `fun c => by`. Conclude with `Nat.one_le_iff_ne_zero.2 (by simpa [Ideal.absNorm_eq_zero_iff] using hBne c)` after adjusting the coercions. Use `set s : ClassGroup (𝓞 K) → ℝ := fun c => (t / (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ)) ^ ((d : ℝ)⁻¹) with hs`. Establish `hq : ∀ c, 0 < t / (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ)` using `fun c => div_pos ht (by linarith [hN c])`. Establish `hs0 : ∀ c, 0 < s c` using `fun c => Real.rpow_pos_of_pos (hq c) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsd : ∀ c, s c ^ d = t / (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ)` using `fun c => Real.rpow_inv_natCast_pow (hq c).le hd0`. Establish `hs1 : ∀ c, s c ≤ 1` using `fun c => Real.rpow_le_one (hq c).le ((div_le_one (by linarith [hN c])).2 (ht1.trans (hN c))) (by positivity)`. Establish `hXB : ∀ c, X (B c) ≠ 0` using `fun c h0 => by`. Establish `h'` using `hXnorm _ (hBne c) (hBm c)`. Rewrite `h'` using `[h0, norm_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_ne_one h'`. Establish `key : ∀ c, ∑' I : {I : Ideal (𝓞 K) // I ≠ ⊥ ∧ (I * (B c : Ideal (𝓞 K))).IsPrincipal}, X I * wt (t * (Ideal.absNorm (I : Ideal (𝓞 K)) : ℝ)) = (X (B c))⁻¹ * ∑' α : (B c : Ideal (𝓞 K)), ψ α * ((h (s c • mixedEmbedding K ((α : 𝓞 K) : K)) : ℂ) * φ (s c • mixedEmbedding K ((α : 𝓞 K) : …`. Introduce `c`. Establish `hNB : (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ) ≠ 0` using `by linarith [hN c]`. Use `set G : Ideal (𝓞 K) → ℂ := fun J => (X (B c))⁻¹ * (X J * wt (t * (Ideal.absNorm J : ℝ) / (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ))) with hG`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `stepA : ∀ I : {I : Ideal (𝓞 K) // I ≠ ⊥ ∧ (I * (B c : Ideal (𝓞 K))).IsPrincipal}, X I * wt (t * (Ideal.absNorm (I : Ideal (𝓞 K)) : ℝ)) = G (I * (B c : Ideal (𝓞 K)))`. Introduce `I`. Simplify using `only [hG, hXmul, map_mul, Nat.cast_mul]`. Establish `e : t * ((Ideal.absNorm (I : Ideal (𝓞 K)) : ℝ) * (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ)) / (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ) = t * (Ideal.absNorm (I : Ideal (𝓞 K)) : ℝ)` using `by field_simp`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Clear denominators, using `[hXB c]` for the nonvanishing conditions. Rewrite using `[tsum_congr stepA, _root_.GlobalTheory.tsum_isPrincipal_mul_eq _ (hBne c) G]`. Establish `hG0 : G ⊥ = 0` using `by simp [hG, hX0]`. Establish `hfin : (Function.support fun β : (B c : Ideal (𝓞 K)) => (h (mixedEmbedding K ((β : 𝓞 K) : K)) : ℂ) * G (Ideal.span {(β : 𝓞 K)})).Finite`. Take `⟨C, hC, -, hCmem⟩` from `h4 (a * (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ) / t) (b' * (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ) / t) (div_pos (mul_pos ha (by linarith [hN c])) ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `((finite_setOf_ringOfIntegers_mixedEmbedding_mem_compact C hC).preimage (f := fun β : (B c : Ideal (𝓞 K)) => (β : 𝓞 K)) Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations. Introduce `β hβ`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq]`. Establish `hh : h (mixedEmbedding K ((β : 𝓞 K) : K)) ≠ 0` using `fun h0 => hβ (by simp [h0])`. Establish `hw : wt (t * (Ideal.absNorm (Ideal.span {(β : 𝓞 K)}) : ℝ) / (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ)) ≠ 0` using `fun h0 => hβ (by show (h (mixedEmbedding K ((β : 𝓞 K) : K)) : ℂ) * G (Ideal.span {(β : 𝓞 K)}) = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [hG]`. Rewrite using `[h0]`. Use the proof step `simp)`. Take `⟨hl, hu⟩` from `hab _ hw`. Rewrite `hl` using `[le_div_iff₀ (by linarith [hN c])]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hu` using `[div_le_iff₀ (by linarith [hN c])]`. Apply `hCmem _ hh` to reduce the goal to its premises. Rewrite using `[mixedEmbedding_norm_eq_absNorm_span_singleton, div_le_iff₀ ht]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[mixedEmbedding_norm_eq_absNorm_span_singleton, le_div_iff₀ ht]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[tsum_principal_le_eq_tsum_mul_cutoff_span _ G hG0 h h3 hfin, ← tsum_mul_left]`. Use `tsum_congr fun β => ?_` and prove the remaining obligations. Rewrite using `[h2 _ _ (hs0 c), hφhom _ _ (hs0 c), mixedEmbedding.norm_smul, abs_of_pos (hs0 c), hsd c, mixedEmbedding_norm_eq_absNorm_span_singleton]`. Distinguish the cases in `hβ : (β : 𝓞 K) = 0`.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hG, hβ, hX0, hwt0]`. Simplify using `only [hG]`. Rewrite using `[hψ _ hβ]`. Put the polynomial expressions in normal form. Establish `hfinF` using `finite_support_mul_weight_absNorm_of_bounded_support X wt a b' hab t ht`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tsum_ideal_eq_sum_classGroup_tsum_mul_isPrincipal B hB _ (by simp [hX0]) hfinF, Finset.sum_congr rfl fun c _ => key c]`. Establish `hmain : (κ * ∑ c, (X (B c))⁻¹) / (t : ℂ) = ∑ c, (X (B c))⁻¹ * (κ / (((Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ) * s c ^ d : ℝ) : ℂ))`. Rewrite using `[Finset.mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `e : (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ) * (t / (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ)) = t`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Clear denominators, using `[(by linarith [hN c] : (Ideal.absNorm (B c : Ideal (𝓞 K)) : ℝ) ≠ 0)]` for the nonvanishing conditions. Rewrite using `[hsd c, e]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hmain, ← Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul, norm_inv, hXnorm _ (hBne c) (hBm c), inv_one, one_mul]`. Establish `hC'` using `hCc c (s c) (hs0 c) (hs1 c)`. Use `beta_reduce at hC'`. Use `hC'.trans ?_` and prove the remaining obligations.
-
-Establish `hpow : s c ^ (A * d) ≤ t ^ A`. Rewrite using `[pow_mul', hsd c]`. Conclude with `pow_le_pow_left₀ (hq c).le (div_le_self ht.le (hN c)) A`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.smoothedSum_main_term_representatives : ∀ (K : Type) [Field K] [NumberField K] (m : Ideal (𝓞 K)) (X : Ideal (𝓞 K) → ℂ) (φ : mixedSpace K → ℂ), m ≠ ⊥ → X ⊥ = 0 → (∀ I J, X (I * J) = X I * X J) → (∀ I, I ≠ ⊥ → I ⊔ m = ⊤ → ‖X I‖ = 1) → (∀ I, I ⊔ m ≠ ⊤ → X I = 0) → (∀ x y, φ (x * y) = φ x * φ y) → (∀ (t : ℝ) x, 0 < t → φ (t • x) = φ x) → ContDiffOn ℝ ∞ φ {x | mixedEmbedding.norm x ≠ 0} → (∀ x, mixedEmbedding.norm x ≠ 0 → ‖φ x‖ = 1) → (∀ β : 𝓞 K, β ≠ 0 → β - 1 ∈ m → X (Ideal.span {β}) = φ (mixedEmbedding K β)) → ∀ (wt : ℝ → ℂ), ContDiff ℝ ∞ wt → (∃ a b : ℝ, 0 < a ∧ ∀ y, wt y ≠ 0 → a ≤ y ∧ y ≤ b) → ∃ κ : ℂ, ∀ b : ClassGroup (𝓞 K) → (Ideal (𝓞 K))⁰, Function.Bijective (fun c => ClassGroup.mk0 (b c)) → (∀ c, (b c : Ideal (𝓞 K)) ⊔ m = ⊤) → ∀ A : ℕ, ∃ C : ℝ, ∀ t : ℝ, 0 < t → t ≤ 1 → ‖∑' I, X I * wt (t * (Ideal.absNorm I : ℝ)) - (κ * ∑ c, (X (b c))⁻¹) / (t : ℂ)‖ ≤ C * t ^ A := by
   intro K _ _ m X φ hm hX0 hXmul hXnorm hXcop hφmul hφhom hφsm hφnorm hXφ wt hwt hwtsupp

@@ -21,21 +21,19 @@ set_option genInjectivity false
 noncomputable section
 namespace GlobalTheory.MiTop
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hB`. Establish `hι : W.Q.ιS = (Formalism.L2.SG.RowsJoinPinned.iotaX W.S.X W.Q.instEq).toMulEquiv` using `(GlobalTheory.Mem.JIota.heq_iota_iff D W.S.X W.Q.instEq W.Q.ιS).1 W.Q.ιS_eq`. Establish `e : ∀ g, W.Q.ιS g = Formalism.L2.SG.RowsJoinPinned.iotaX W.S.X W.Q.instEq g` using `fun g => by rw [hι]; rfl`. Establish `hC` using `(hB.pins.tSpin hB.see.1).1`. Establish `key : ∀ k, (k ∈ _root_.GlobalTheory.MiTop.rJ_z W ↔ ((show GA D (D.sp.Y 0) from W.Q.tS)⁻¹)⁻¹ * k * (show GA D (D.sp.Y 0) from W.Q.tS)⁻¹ ∈ rowJ W.S.X W.Q.instEq) ∧ (k ∈ _root_.GlobalTheory.MiTop.rJ_z W → rowChi W.S.X W.Q.instEq (((show GA D (D.sp.Y 0) from W.Q.tS)⁻¹)⁻¹ * k * (show …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Take `⟨h1, h2⟩` from `hC k`. Use `⟨h1.trans ?_, fun hk => ?_⟩` and prove the remaining obligations. Conclude with `(show ∀ a b : W.S.X.B.I.GA, a = b → (a ∈ seeKS W.S.X ↔ b ∈ seeKS W.S.X) from fun a b h => h ▸ Iff.rfl) _ _ (e _)`. Conclude with `(congrArg (seeChiS W.S.X) (e _)).symm.trans (h2 hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK` using `Formalism.L2.SG.Closed.level_subgroup_is_group W.S.X`. Use `⟨W.Q.charW.base.models, W.Q.charW.base.models.inf, W.Q.stdChar, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz hzc`. Establish `hz'` using `Subgroup.mem_center_iff.1 hzc`. Establish `hconj : ∀ t k : GA D (D.sp.Y 0), ((z * t)⁻¹)⁻¹ * k * (z * t)⁻¹ = (t⁻¹)⁻¹ * k * t⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `t k`. Rewrite using `[inv_inv, inv_inv, mul_inv_rev]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨mul_mem hz hB.pins.tSfin, fun k => ?_⟩` and prove the remaining obligations. Establish `h4` using `key k`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h4` using `[← hconj _ k]`. Conclude with `h4`. Introduce `k hk`. Establish `hm` using `(key k).1.1 hk`. Rewrite using `[← (key k).2 hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [rowJ, Set.mem_preimage, Set.mem_setOf_eq] at hm`. Simplify using `only [rowChi]`. Introduce `h0`. Establish `hn` using `hK.2.2.2.2 _ hm.2`. Rewrite `h0` using `[star_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hn` using `[h0, norm_zero]`. Conclude with `zero_ne_one hn`. Introduce `x hx`. Use `(mem_multT _ _ _ _ _).2 ?_` and prove the remaining obligations. Simplify using `only [_root_.GlobalTheory.MiTop.rowFormOfVector, LinearEquiv.symm_apply_apply]`.
-
-Conclude with `goodPart_le _ _ _ _ _ hx`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem botHyp_match_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.MiTop.BottomHypotheses W → W.Q.Rl.toRealDat.IsModels ∧ IsInfFam W.Q.Rl.θ ∧ IsStdChar D W.Q.Rl.ψ (-1) ∧ (∀ z ∈ GfC (D.sp.Y 0), z ∈ Subgroup.center (GA D (D.sp.Y 0)) → Matches W.S.X W.Q.instEq (_root_.GlobalTheory.MiTop.rJ_z W) (_root_.GlobalTheory.MiTop.realCharacter W) (z * (show GA D (D.sp.Y 0) from W.Q.tS))) ∧ (∀ k ∈ _root_.GlobalTheory.MiTop.rJ_z W, _root_.GlobalTheory.MiTop.realCharacter W k ≠ 0) ∧ ∀ e : W.Q.Rl.HE.H, W.Q.Rl.HE.e e ∈ W.Q.Rl.toRealDat.EEat (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true) → _root_.GlobalTheory.MiTop.rowFormOfVector W e ∈ _root_.GlobalTheory.MiTop.BaseRowSpace W := by
   intro D L hT Gi Gl Kc Yd cX ex W hB

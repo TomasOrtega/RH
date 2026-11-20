@@ -7,9 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Establish `hS : S = Set.univ`. Use extensionality with `x`. Simplify using `only [Set.mem_univ, iff_true]`. Assume the negation of the conclusion as `hx'`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hx ⟨x, hx'⟩`. Rewrite `h` using `[hS, Set.ncard_univ]`. Conclude with `lt_irrefl _ h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_notMem_of_ncard_lt_card {H : Type} [Finite H] (S : Set H)
     (h : S.ncard < Nat.card H) : ∃ x : H, x ∉ S := by
@@ -23,9 +23,9 @@ theorem exists_notMem_of_ncard_lt_card {H : Type} [Finite H] (S : Set H)
   exact lt_irrefl _ h
 
 /- English proof (translation)
-Introduce `H _ _ B₀ B₁ h₀ h₁`. Rewrite `h₀`, `h₁` using `[Nat.card_coe_set_eq]`. Establish `hS : (B₀ ∪ B₁).ncard ≤ B₀.ncard + B₁.ncard` using `Set.ncard_union_le _ _`. Take `⟨b, hb⟩` from `exists_notMem_of_ncard_lt_card (B₀ ∪ B₁) (by omega)`. Establish `hT : ((fun x => b⁻¹ * x) '' (B₀ ∪ B₁)).ncard ≤ (B₀ ∪ B₁).ncard` using `Set.ncard_image_le (Set.toFinite _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : ((B₀ ∪ B₁) ∪ (fun x => b⁻¹ * x) '' (B₀ ∪ B₁)).ncard ≤ (B₀ ∪ B₁).ncard + ((fun x => b⁻¹ * x) '' (B₀ ∪ B₁)).ncard` using `Set.ncard_union_le _ _`. Take `⟨c, hc⟩` from `exists_notMem_of_ncard_lt_card ((B₀ ∪ B₁) ∪ (fun x => b⁻¹ * x) '' (B₀ ∪ B₁)) (by omega)`. Establish `hbc : b * c ∉ B₀ ∪ B₁` using `fun h => hc (Or.inr ⟨b * c, h, by simp⟩)`. Conclude with `⟨b, c, fun h => hb (Or.inl h), fun h => hc (Or.inl (Or.inl h)), fun h => hbc (Or.inl h), fun h => hb (Or.inr h), fun h => hc (Or.inl (Or.inr h)), fun h => hbc (Or.inr h)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_pair_avoiding_small_sets :
     ∀ (H : Type) [CommGroup H] [Finite H] (B₀ B₁ : Set H), 6 * Nat.card B₀ < Nat.card H →

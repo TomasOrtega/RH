@@ -23,14 +23,14 @@ def GenericityConstantDoubleCosets : Prop :=
       GenFun Λ (lf D F0) (PD D Λ (lf D F0) u') (gS D)
 
 /- English proof (translation)
-The claim follows from `gFun_all _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem termGFun_holds (D : D7) (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (_ : IsRowLat D F0 Λ) :
     GFun Λ (lf D F0) (PD D Λ (lf D F0) u') := gFun_all _ _ _
 
 /- English proof (translation)
-Introduce `F0 Λ hΛ`. Conclude with `⟨gFun_all _ _ _, cellFun_all _ _ _, relFun_all _ _ _ _, hG D u u' F0 Λ hΛ, feqFFun_all _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem termFun_of (hG : GenericityConstantDoubleCosets) (D : D7) (u u' : D.what₂.Word) : TermFun D u u' := by
   intro F0 Λ hΛ

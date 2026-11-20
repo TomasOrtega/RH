@@ -19,9 +19,9 @@ def twRel (ρ : Representation ℂ Γ V) (ψ : Γ →* ℂˣ) : Submodule ℂ V 
   Submodule.span ℂ {w | ∃ (γ : Γ) (v : V), w = ρ γ v - (ψ γ : ℂ) • v}
 
 /- English proof (translation)
-Establish `h : twRel (τ.comp (MonoidHom.inl Γ G)) ψ ≤ (twRel (τ.comp (MonoidHom.inl Γ G)) ψ).comap (τ (1, g))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, u, rfl⟩`. Use `Submodule.subset_span ⟨γ, τ (1, g) u, ?_⟩` and prove the remaining obligations. Establish `e : τ (1, g) (τ (γ, 1) u) = τ (γ, 1) (τ (1, g) u)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Simplify using the standard rewrite rules. Simplify using `[e]`. Conclude with `h hv`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twRel_stable (τ : Representation ℂ (Γ × G) V) (ψ : Γ →* ℂˣ) (g : G) (v : V)
     (hv : v ∈ twRel (τ.comp (MonoidHom.inl Γ G)) ψ) :

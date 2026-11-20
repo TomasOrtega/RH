@@ -20,19 +20,17 @@ variable {D : D7} {u : D.what₂.Word} {w : D.what₂.places.Pl}
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hκU` using `(S.U_eq κ.1).1 κ.2`. Take `⟨y, hy⟩ : ∃ y : UPts (sigD D) (gramN D (i + 1) hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F), y.1 = κ.1` from `⟨⟨κ.1, hκU.1⟩, rfl⟩`. Take `⟨y', hover, hoff⟩ : ∃ y' : UPts (sigD D) (gramN D (i + 1) hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F), (∀ v : HeightOneSpectrum (𝓞 D.host.F), ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal → bc (prV (E` from `D.host.E) v) y'.1 = 1) ∧ (∀ v : HeightOneSpectrum (𝓞 D.host.F), ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal → bc (prV (E := D.host.E) v) y'.1 = bc (prV (E := D.host.E) v) κ.1) := ⟨trivG (sigD D) (gramN D (i + 1) hi) (D.what₂.places.resChar w) y, fun v hv => trivG_ov …`. Establish `hy'U : y'.1 ∈ S.U` using `(S.U_eq _).2 ⟨y'.2, fun v => by`. Distinguish the cases in `hv : ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hover v hv]`. Conclude with `Subgroup.one_mem _`. Rewrite using `[hoff v hv]`. Conclude with `hκU.2 v⟩`. Establish `hchi : S.chi κ = S.chi ⟨y'.1, hy'U⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : S.chi (κ⁻¹ * ⟨y'.1, hy'U⟩) = 1` using `S.chi_triv _ (fun v hv => by show bc (prV (E := D.host.E) v) (κ.1⁻¹ * y'.1) = 1`. Rewrite using `[map_mul, map_inv, hoff v (hbad v hv)]`. Conclude with `inv_mul_cancel _)`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha : (reGL (rankN D (i + 1) hi) _).symm y'.1 ∈ awayG D.sp.cm.sig (D.sp.X (i + 1)).gram Uloc (D.what₂.places.resChar w)`. Use `(mem_awayG _ _ _ _ _).2 ⟨reGL_symm_mem_UPts (rankN D (i + 1) hi) D.sp.cm.sig (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) _ _ y'.2, fun v _ => ?_⟩` and prove the remaining obligations. Establish `h2 : bc (prV (E` using `D.host.E) v) y'.1 ∈ S.Uloc v := ((S.U_eq _).1 hy'U).2 v`. Rewrite `h2` using `[hU v]`. Take `⟨b, hb, hbe⟩` from `Subgroup.mem_map.1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : bc (prV (E` using `D.host.E) v) ((reGL (rankN D (i + 1) hi) _).symm y'.1) = b := by`. Apply `(reGL (rankN D (i + 1) hi) _).injective` to reduce the goal to its premises. Rewrite using `[← bc_reGL, MulEquiv.apply_symm_apply]`. Conclude with `hbe.symm`. Rewrite using `[e1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hb`. Take `⟨r, hr, hr1⟩` from `hψ ⟨_, ha⟩ ⟨y'.1, hy'U⟩ (fun v hv => hover v hv) (fun w' _ => by rw [MulEquiv.apply_symm_apply])`. Establish `h3 : algebraMap (D.gat u w hg).O (D.gat u w hg).Kf ((ψ ⟨_, ha⟩ : (D.gat u w hg).Oˣ) : (D.gat u w hg).O) * algebraMap (D.gat u w hg).O (D.gat u w hg).Kf (((ψ ⟨_, ha⟩)⁻¹ : (D.gat u w hg).Oˣ) : (D.gat u w hg).O) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hne` using `left_ne_zero_of_mul_eq_one hr1`.
-
-Establish `h4 : algebraMap (D.gat u w hg).O (D.gat u w hg).Kf ((ψ ⟨_, ha⟩ : (D.gat u w hg).Oˣ) : (D.gat u w hg).O) = e r⁻¹`. Rewrite using `[map_inv₀]`. Conclude with `(inv_eq_of_mul_eq_one_left hr1).symm`. Conclude with `⟨r, (hR0 r).2 ⟨_, (mul_left_cancel₀ hne (hr1.trans h3.symm)).symm⟩, (hR0 r⁻¹).2 ⟨_, h4⟩, by rw [hr, hchi]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chiUnit_of (hU : SameUlocJ hi S Uloc) (e : D.what₂.LL →+* (D.gat u w hg).Kf) (hψ : UnitCharacterChartCompatibility hi S e ψ)
     (hbad : ∀ w' ∈ bad, ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∉ w'.asIdeal)

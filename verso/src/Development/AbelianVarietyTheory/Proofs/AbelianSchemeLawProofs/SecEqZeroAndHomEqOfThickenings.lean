@@ -18,13 +18,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Car
 variable {X Y : Scheme.{0}} {N : LB X}
 
 /- English proof (translation)
-The claim follows from `Opens.mem_iSup.1 (hN.cover.ge (Set.mem_univ x))`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_chart (hN : N.IsLB) (x : X) : ∃ i, x ∈ N.U i :=
   Opens.mem_iSup.1 (hN.cover.ge (Set.mem_univ x))
 
 /- English proof (translation)
-Establish `hm : x ∈ N.U i ⊓ N.U j` using `⟨hi, hj⟩`. Establish `h0 : Associated (resG X (inf_le_left : N.U i ⊓ N.U j ≤ N.U i) (s.f i)) (resG X (inf_le_right : N.U i ⊓ N.U j ≤ N.U j) (s.f j))` using `(congrArg (Associated · _) (s.compat i j)).mpr (associated_unit_mul_left _ _ (N.g i j).isUnit)`. Use `h0.map (X.presheaf.germ _ x hm).hom` as an intermediate fact. Rewrite `this` using `[germ_resG, germ_resG]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem associated_germ_sec (s : N.Sec) (i j : N.ι) (x : X) (hi : x ∈ N.U i) (hj : x ∈ N.U j) :
     Associated ((X.presheaf.germ _ x hi).hom (s.f i)) ((X.presheaf.germ _ x hj).hom (s.f j)) := by
@@ -40,9 +40,9 @@ noncomputable def secIdeal (hN : N.IsLB) (s : N.Sec) : X.IdealSheafData :=
   locIdeal N.U s.f (exists_mem_chart hN) (associated_germ_sec s)
 
 /- English proof (translation)
-Establish `loc : ∀ x : X, ∃ (W : X.affineOpens) (i : N.ι), x ∈ W.1 ∧ W.1 ≤ N.U i` using `fun x ↦ by`. Take `⟨i, hi⟩` from `exists_mem_chart hN x`. Take `⟨W, hxW, hW⟩` from `exists_affine_le hi`. Conclude with `⟨W, i, hxW, hW⟩`. Use `choose W i hx hW using loc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Scheme.IdealSheafData.le_of_iSup_eq_top W (eq_top_iff.2 fun x _ ↦ Opens.mem_iSup.2 ⟨x, hx x⟩) fun x ↦ ?_` and prove the remaining obligations. Use `(ideal_locIdeal _ _ _ _ (W x) (i x) (hW x)).trans_le ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Scheme.Hom.ker_apply, RingHom.mem_ker, app_resG, h, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secIdeal_le_ker (hN : N.IsLB) (s : N.Sec) (φ : Y ⟶ X) [QuasiCompact φ]
     (h : ∀ j, (φ.app _).hom (s.f j) = 0) : secIdeal hN s ≤ φ.ker := by
@@ -58,9 +58,9 @@ theorem secIdeal_le_ker (hN : N.IsLB) (s : N.Sec) (φ : Y ⟶ X) [QuasiCompact �
     map_zero]
 
 /- English proof (translation)
-Use `X.IsSheaf.section_ext fun x hx ↦ ?_` and prove the remaining obligations. Take `⟨W, hxW, hW⟩` from `exists_affine_le (V := N.U j) hx`. Use `⟨W.1, hW, hxW, ?_⟩` and prove the remaining obligations. Establish `h1` using `ideal_locIdeal _ _ (exists_mem_chart hN) (associated_germ_sec s) W j hW`. Establish `h2 : (secIdeal hN s).ideal W = ⊥` using `by rw [h]; rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Ideal.span_singleton_eq_bot.1 (h1.symm.trans h2)`. Conclude with `h3.trans (map_zero _).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_secIdeal_eq_bot (hN : N.IsLB) (s : N.Sec) (h : secIdeal hN s = ⊥) (j : N.ι) :
     s.f j = 0 := by
@@ -77,13 +77,11 @@ end ThickeningDetermines
 open ThickeningDetermines in
 
 /- English proof (translation)
-Introduce `R _ _ I hI H _ _ _`. Use `grpObj_geometricallyIntegral_of_smooth _ H` as an intermediate fact. Establish `key` using `isIso_of_isClosedImmersion_of_thickenings R I hI H η[H] (fun p ↦ inferInstance)`. Use `⟨fun N hN s hs ↦ eq_zero_of_secIdeal_eq_bot hN s ?_, fun Y _ f g h ↦ ?_⟩` and prove the remaining obligations. Use `key _ (secIdeal hN s).subschemeι fun n ↦ by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: IsClosedImmersion (thick R I n)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `: QuasiCompact (fstG I n H).left` using `inferInstanceAs (QuasiCompact (pullback.fst H.hom (thick R I n)))`. Conclude with `⟨IsClosedImmersion.lift _ (fstG I n H).left (by`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι]`. Conclude with `secIdeal_le_ker hN s _ (hs n)), IsClosedImmersion.lift_fac _ _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.IdealSheafData.ker_subschemeι (secIdeal hN s)]`. Conclude with `IsClosedImmersion.isIso_iff_ker_eq_bot.1 this`. Use `key _ (equalizer.ι f g).left fun n ↦ ⟨(equalizer.lift (fstG I n H) (Over.OverMorphism.ext (h n))).left, by rw [← Over.comp_left, equalizer.lift_ι]⟩` as an intermediate fact. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[← cancel_epi (equalizer.ι f g).left]`.
-
-Conclude with `congrArg CommaMorphism.left (equalizer.condition f g)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_eq_zero_and_hom_eq_of_thickenings : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), I ≤ Ideal.jacobson ⊥ → ∀ (H : Over (Spec (CommRingCat.of R))) [GrpObj H] [Smooth H.hom] [GeometricallyConnected H.hom], (∀ (N : LB H.left), N.IsLB → ∀ s : LB.Sec N, (∀ (n : ℕ) j, ((fstG I n H).left.app _).hom (s.f j) = 0) → ∀ j, s.f j = 0) ∧ (∀ (Y : Over (Spec (CommRingCat.of R))) [IsSeparated Y.hom] (f g : H ⟶ Y), (∀ n : ℕ, (fstG I n H).left ≫ f.left = (fstG I n H).left ≫ g.left) → f = g) := by
   intro R _ _ I hI H _ _ _

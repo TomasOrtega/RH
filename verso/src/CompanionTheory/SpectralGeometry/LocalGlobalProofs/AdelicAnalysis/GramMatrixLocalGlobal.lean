@@ -17,13 +17,13 @@ abbrev bcE (E : Type) [Field E] [Algebra F E] (f : R →ₐ[F] S) : R ⊗[F] E �
   Algebra.TensorProduct.map f (AlgHom.id F E)
 
 /- English proof (translation)
-Simplify using `[inclR, bcE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bcE_inclR (f : R →ₐ[F] S) (e : E) : bcE E f (inclR R e) = inclR S e := by
   simp [inclR, bcE]
 
 /- English proof (translation)
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, bcE]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem bcE_sigR (f : R →ₐ[F] S) (σ : E →ₐ[F] E) (z : R ⊗[F] E) :
     bcE E f (sigR R σ z) = sigR S σ (bcE E f z) := by
@@ -33,7 +33,7 @@ theorem bcE_sigR (f : R →ₐ[F] S) (σ : E →ₐ[F] E) (z : R ⊗[F] E) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `only [hR, hform, map_sum, map_mul, bcE_sigR, JR, Matrix.map_apply, bcE_inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bcE_hR (f : R →ₐ[F] S) (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (x y : Fin M → R ⊗[F] E) :
@@ -41,7 +41,7 @@ theorem bcE_hR (f : R →ₐ[F] S) (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (F
   simp only [hR, hform, map_sum, map_mul, bcE_sigR, JR, Matrix.map_apply, bcE_inclR]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Simplify using `only [gramR, bcE_hR]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bcE_gramR (f : R →ₐ[F] S) (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (X : Fin n → Fin M → R ⊗[F] E) :
@@ -50,7 +50,7 @@ theorem bcE_gramR (f : R →ₐ[F] S) (σ : E →ₐ[F] E) {M n : ℕ} (J : Matr
   simp only [gramR, bcE_hR]
 
 /- English proof (translation)
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [bcE, Algebra.TensorProduct.basis_repr_tmul, Algebra.smul_def]`. Consider the case `add x y hx hy => simp [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem repr_bcE {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι F E) (f : R →ₐ[F] S)
     (z : R ⊗[F] E) (k : ι) :
@@ -62,7 +62,7 @@ theorem repr_bcE {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι 
   | add x y hx hy => simp [map_add, hx, hy]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Simplify using `[gramR, gramE, hR, hE, hform, ratTup, JR, sigR, inclR, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem gramR_ratTup (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (Y : Fin n → Fin M → E) :
@@ -77,7 +77,7 @@ section Adelic
 variable {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [Algebra F E]
 
 /- English proof (translation)
-Use `Prod.ext h1 ?_` and prove the remaining obligations. Conclude with `Subtype.ext (funext h2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem adele_ext (x y : AF F) (h1 : fstA F x = fstA F y)
     (h2 : ∀ v, evalV F v (sndA F x) = evalV F v (sndA F y)) : x = y := by
@@ -85,9 +85,9 @@ theorem adele_ext (x y : AF F) (h1 : fstA F x = fstA F y)
   exact Subtype.ext (funext h2)
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F E`. Apply `(Algebra.TensorProduct.basis (AF F) b).repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Apply `adele_ext` to reduce the goal to its premises. Rewrite using `[← repr_bcE, ← repr_bcE, h1]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Rewrite using `[← repr_bcE, ← repr_bcE, ← repr_bcE, ← repr_bcE, h2 v]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem tensor_ext [Module.Finite F E] (z w : AF F ⊗[F] E)
     (h1 : bcE E (fstA F) z = bcE E (fstA F) w)
@@ -105,15 +105,15 @@ theorem tensor_ext [Module.Finite F E] (z w : AF F ⊗[F] E)
 end Adelic
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J _ n X T`. Establish `hfin : Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hInf : gramR (Ainf F) σ J (projInf X) = fun a b => bcE E (fstA F) (gramR (AF F) σ J X a b)` using `bcE_gramR (fstA F) σ J X`. Establish `hFin : gramR (Af F) σ J (projFin X) = fun a b => bcE E (sndA F) (gramR (AF F) σ J X a b)` using `bcE_gramR (sndA F) σ J X`. Establish `hV : ∀ v, gramR (Fv F v) σ J (projV v (projFin X)) = fun a b => bcE E (evalV F v) (bcE E (sndA F) (gramR (AF F) σ J X a b))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v`. Use `bcE_gramR (evalV F v) σ J (projFin X : Fin n → Fin M → Af F ⊗[F] E)` as an intermediate fact. Rewrite `this` using `[hFin]`. Conclude with `this`. Use `⟨⟨fun h => ⟨?_, fun v => ?_⟩, fun h => ?_⟩, fun Y => gramR_ratTup σ J Y⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hInf, h]`. Use function extensionality and compare the values at `a b`. Simplify using `only [Matrix.map_apply, bcE_inclR]`. Rewrite using `[hV v, h]`. Use function extensionality and compare the values at `a b`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply, bcE_inclR]`. Use function extensionality and compare the values at `a b`. Apply `tensor_ext` to reduce the goal to its premises. Use `congrFun (congrFun (hInf.symm.trans h.1) a) b` as an intermediate fact. Simplify `this` using `only [Matrix.map_apply, bcE_inclR]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Use `congrFun (congrFun ((hV v).symm.trans (h.2 v)) a) b` as an intermediate fact. Simplify `this` using `only [Matrix.map_apply, bcE_inclR]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gram_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n : ℕ) (X : (Fin n → Fin M → AF F ⊗[F] E)) (T : Matrix (Fin n) (Fin n) E), (gramR (AF F) σ J X = T.map (inclR (AF F)) ↔ gramR (Ainf F) σ J (projInf X) = T.map (inclR (Ainf F)) ∧ ∀ v, gramR (Fv F v) σ J (projV v (projFin X)) = T.map (inclR (Fv F v))) ∧ ∀ Y : Fin n → Fin M → E, gramR (AF F) σ J (ratTup (AF F) Y) = (gramE σ J Y).map (inclR (AF F)) := by
   intro F E _ _ _ _ _ σ hCM M J _ n X T

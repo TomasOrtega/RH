@@ -5,7 +5,7 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_apply, LinearMap.trace_eq_matrix_trace C (Pi.basisFun C J), Matrix.trace]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Simplify using `[LinearMap.toMatrix_apply, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem trace_pi_eq_sum {C J : Type} [CommRing C] [Fintype J] (a : J → C) :
     Algebra.trace C (J → C) a = ∑ j, a j := by
@@ -16,11 +16,9 @@ private theorem trace_pi_eq_sum {C J : Type} [CommRing C] [Fintype J] (a : J →
   simp [LinearMap.toMatrix_apply, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `A A' C _ _ _ _ _ _ _ J _ τ e he b`. Use `letI : Algebra A' (C ⊗[A] A') := Algebra.TensorProduct.rightAlgebra`. Use `haveI : Module.Projective A A' := projective_of_etale A A'`. Use `haveI : Module.Free C (C ⊗[A] A') := Module.Free.of_equiv e.symm.toLinearEquiv`. Use `haveI : Module.Finite C (C ⊗[A] A') := Module.Finite.equiv e.symm.toLinearEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `algTrace_of_isPushout (B := A) (B' := A') (C := C) (C' := C ⊗[A] A') b`. Establish `h2 : (etTrace A A') b = (algTrace A A') b` using `rfl`. Rewrite using `[h2, ← h1, algTrace_eq_trace]`. Establish `h3 : algebraMap A' (C ⊗[A] A') b = e.symm (e (1 ⊗ₜ[A] b))`. Rewrite using `[AlgEquiv.symm_apply_apply]`.
-
-Both sides reduce to the same expression. Rewrite using `[h3, Algebra.trace_eq_of_algEquiv e.symm, trace_pi_eq_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => he b j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pAlgTr :
     AlgTr := by

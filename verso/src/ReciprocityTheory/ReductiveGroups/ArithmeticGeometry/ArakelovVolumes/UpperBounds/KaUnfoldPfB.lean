@@ -17,21 +17,21 @@ def untl (X : Data E r) (M : Matrix (Fin (r - X.p0) ⊕ Fin X.p0) (Fin (r - X.p0
     Matrix (Fin r) (Fin r) ℂ := M.submatrix (eT X).symm (eT X).symm
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[untl, tl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem untl_tl (X : Data E r) (M : Matrix (Fin r) (Fin r) ℂ) : untl X (tl X M) = M := by
   ext a b; simp [untl, tl]
 
 /- English proof (translation)
-Rewrite using `[tl, Matrix.submatrix_one_equiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tl_one (X : Data E r) : tl X (1 : Matrix (Fin r) (Fin r) ℂ) = 1 := by
   rw [tl, Matrix.submatrix_one_equiv]
 
 /- English proof (translation)
-Establish `hu : IsUnit (mat x0 τ).det` using `isUnit_iff_ne_zero.mpr (ExF.det_ne_of_orth X ho τ)`. Rewrite using `[gm, gm, gm, ← tl_mul]`. Use `congr 1`. Rewrite using `[Units.val_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc (mat x0 τ) (mat x0 τ)⁻¹, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gm_mul (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (γ γ' : GL (Fin r) E) (τ : X.Ψ) :
     gm X x0 (γ * γ') τ = gm X x0 γ τ * gm X x0 γ' τ := by
@@ -43,7 +43,7 @@ theorem gm_mul (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (γ γ' : G
   rw [← Matrix.mul_assoc (mat x0 τ) (mat x0 τ)⁻¹, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hu : IsUnit (mat x0 τ).det` using `isUnit_iff_ne_zero.mpr (ExF.det_ne_of_orth X ho τ)`. Rewrite using `[gm, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, Matrix.nonsing_inv_mul _ hu, tl_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gm_one (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (τ : X.Ψ) :
     gm X x0 1 τ = 1 := by
@@ -52,7 +52,7 @@ theorem gm_one (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (τ : X.Ψ)
     Matrix.nonsing_inv_mul _ hu, tl_one]
 
 /- English proof (translation)
-Establish `hu : IsUnit (mat x0 τ).det` using `isUnit_iff_ne_zero.mpr (ExF.det_ne_of_orth X ho τ)`. Rewrite using `[gm, untl_tl, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mat_lact_eq (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (γ : GL (Fin r) E) (τ : X.Ψ) :
     mat (lact γ x0) τ = mat x0 τ * untl X (gm X x0 γ τ) := by
@@ -60,9 +60,9 @@ theorem mat_lact_eq (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (γ : 
   rw [gm, untl_tl, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]; rfl
 
 /- English proof (translation)
-Use `ExF.mem_dom_of_gramPos X fun τ => ⟨ExF.det_ne_of_orth X ho τ, ?_⟩` and prove the remaining obligations. Establish `e : X.gramPos x0 τ = 1`. Use extensionality with `a b`. Simplify using `only [Data.gramPos, ho τ, Matrix.submatrix_apply, Matrix.diagonal_apply, Matrix.one_apply, Fin.castLE_inj]`. Apply the tactic sequence `split_ifs <;> simp [sgn]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e]`. Conclude with `Matrix.PosDef.one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth_dom (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) : x0 ∈ X.dom := by
   refine ExF.mem_dom_of_gramPos X fun τ => ⟨ExF.det_ne_of_orth X ho τ, ?_⟩
@@ -90,9 +90,9 @@ theorem rho_apply (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (γ : GL
       gm X x0 γ ((Fintype.equivFin X.Ψ).symm k) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hk` using `congrArg (fun g : Fin (Fintype.card X.Ψ) → GL (Fin (r - X.p0) ⊕ Fin X.p0) ℂ => (g (Fintype.equivFin X.Ψ τ)).val) h`. Simplify using `only [rho_apply, Equiv.symm_apply_apply] at hk`. Establish `e1` using `mat_lact_eq X ho γ τ`. Establish `e2` using `mat_lact_eq X ho γ' τ`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[hk, ← e2]`. Conclude with `e1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_eq_of_rho (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {γ γ' : GL (Fin r) E}
     (h : rho X ho γ = rho X ho γ') : lact γ x0 = lact γ' x0 := by
@@ -106,9 +106,9 @@ theorem lact_eq_of_rho (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {γ
   exact e1
 
 /- English proof (translation)
-Introduce `γ γ' h`. Establish `hl : lact γ.1 x0 = lact γ'.1 x0` using `lact_eq_of_rho X ho h`. Establish `hδ : (γ'.1)⁻¹ * γ.1 ∈ X.Γ` using `X.Γ.mul_mem (X.Γ.inv_mem γ'.2) γ.2`. Establish `h1 : lact ((γ'.1)⁻¹ * γ.1) x0 = rmul x0 (ExtFPf.oneF X)`. Rewrite using `[ExtFPf.rmul_oneF, ← lact_lact, hl, lact_lact, inv_mul_cancel, lact_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `X.Γ_free _ hδ x0 (orth_dom X ho) _ (ExtFPf.oneF_mem X) h1` as an intermediate fact. Conclude with `Subtype.ext (inv_mul_eq_one.mp this).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rho_inj (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) :
     Function.Injective ((rho X ho).comp X.Γ.subtype) := by
@@ -131,7 +131,7 @@ def Phi (X : Data E r) (x0 : Frame X.Ψ r)
   fun τ => (mat x0 τ * untl X (g (Fintype.equivFin X.Ψ τ)).val : Matrix (Fin r) (Fin r) ℂ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `mat_lact_eq X ho γ τ` as an intermediate fact. Rewrite `this` using `[show mat (lact γ x0) τ = lact γ x0 τ from rfl]`. Rewrite using `[this, Phi, rho_apply, Equiv.symm_apply_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Phi_rho (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (γ : GL (Fin r) E) :
     Phi X x0 (rho X ho γ) = lact γ x0 := by
@@ -141,7 +141,7 @@ theorem Phi_rho (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (γ : GL (
   rw [this, Phi, rho_apply, Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun g : Fin (Fintype.card X.Ψ) → GL (Fin (r - X.p0) ⊕ Fin X.p0) ℂ => ((g (Fintype.equivFin X.Ψ τ) : GL (Fin (r - X.p0) ⊕ Fin X.p0) ℂ) : Matrix (Fin (r - X.p0) ⊕ Fin X.p0) (Fin (r - X.p0) ⊕ Fin X.p0) ℂ)` using `Units.continuous_val.comp (continuous_apply _)`. Conclude with `Continuous.matrix_mul continuous_const (hc.matrix_submatrix _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Phi_cont (X : Data E r) (x0 : Frame X.Ψ r) : Continuous (Phi X x0) := by
   refine continuous_pi fun τ => ?_
@@ -152,15 +152,15 @@ theorem Phi_cont (X : Data E r) (x0 : Frame X.Ψ r) : Continuous (Phi X x0) := b
   exact Continuous.matrix_mul continuous_const (hc.matrix_submatrix _ _)
 
 /- English proof (translation)
-Apply `discreteTopology_of_isOpen_singleton_one` to reduce the goal to its premises. Take `⟨U, hU, U', hU', hfin⟩` from `hPD x0 (orth_dom X ho) x0 (orth_dom X ho)`. Establish `h1 : Phi X x0 ⁻¹' U' ∈ 𝓝 (1 : Fin (Fintype.card X.Ψ) → GL (Fin (r - X.p0) ⊕ Fin X.p0) ℂ)`. Use `(Phi_cont X x0).continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[← map_one (rho X ho), Phi_rho, lact_one]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU'`. Establish `hF : IsClosed ((rho X ho '' {γ : GL (Fin r) E | γ ∈ X.Γ ∧ ∃ u ∈ U, ∃ u' ∈ U', ∃ b ∈ Bor X.Ψ r, lact γ u = rmul u' b}) \ {1})` using `((hfin.image _).sdiff).isClosed`. Rewrite using `[isOpen_induced_iff]`. Use `⟨interior (Phi X x0 ⁻¹' U') \ _, isOpen_interior.sdiff hF, ?_⟩` and prove the remaining obligations. Use extensionality with `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_sdiff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg1, hg2⟩`. Take `⟨γ, hγ⟩` from `g.2`. Apply `Subtype.ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Apply `hg2` to reduce the goal to its premises. Establish `hU'γ : lact γ.1 x0 ∈ U'`. Use `interior_subset hg1` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, ← hγ]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[MonoidHom.comp_apply, Subgroup.subtype_apply, Phi_rho]`. Then use the resulting hypothesis. Conclude with `⟨⟨γ.1, ⟨γ.2, x0, mem_of_mem_nhds hU, lact γ.1 x0, hU'γ, ExtFPf.oneF X, ExtFPf.oneF_mem X, (ExtFPf.rmul_oneF X _).symm⟩, hγ⟩, hne⟩`. Introduce and unpack `rfl`. Conclude with `⟨mem_interior_iff_mem_nhds.2 h1, fun h => h.2 rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem disc (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (hPD : PropDisc X) :
     DiscreteTopology ((rho X ho).comp X.Γ.subtype).range := by
@@ -191,7 +191,7 @@ theorem disc (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (hPD : PropDi
     exact ⟨mem_interior_iff_mem_nhds.2 h1, fun h => h.2 rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `g ⟨γ, rfl⟩ k`. Rewrite using `[MonoidHom.comp_apply, Subgroup.subtype_apply, rho_apply]`. Conclude with `gm_upq X ho γ.2 _`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upq_range (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) :
     ∀ g ∈ ((rho X ho).comp X.Γ.subtype).range, ∀ k,
@@ -201,7 +201,7 @@ theorem upq_range (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) :
   exact gm_upq X ho γ.2 _
 
 /- English proof (translation)
-Rewrite using `[kap, ← Equiv.prod_comp (Fintype.equivFin X.Ψ).symm]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Mx_lact X ho, Mx_cpt X ho, Yb_mul _ _ (by rw [tl_nM₂₂, ExF.det_unipotentFrame_eq_one]; exact one_ne_zero), Yb_tl_nM]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_lact_cpt (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) (bb : ℝ) (γ : GL (Fin r) E)
     (z : V (nd X)) :
@@ -218,20 +218,20 @@ def vpt (X : Data E r) (z : V (nd X)) : V (nD (Fintype.card X.Ψ) (r - X.p0) X.p
       (finProdFinEquiv.symm (finProdFinEquiv.symm i).2).1 (finProdFinEquiv.symm (finProdFinEquiv.symm i).2).2
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Zof, vpt, -finProdFinEquiv_symm_apply, Equiv.symm_apply_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Zof_vpt (X : Data E r) (z : V (nd X)) (k : Fin (Fintype.card X.Ψ)) :
     Zof (vpt X z) k = (ExF.Zt X z ((Fintype.equivFin X.Ψ).symm k))ᵀ := by
   ext a b; simp [Zof, vpt, -finProdFinEquiv_symm_apply, Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Establish `hs : 2 * (Fintype.card X.Ψ : ℝ) * (((r - X.p0 + X.p0 : ℕ)) : ℝ) ^ 2 < bb`. Establish `e : r - X.p0 + X.p0 = r` using `by have := X.p0_le; omega`. Rewrite using `[e, Fintype.card_coe]`. Establish `: 0 ≤ (X.Ψ.card : ℝ) * (r : ℝ) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hdisc` using `disc X ho hPD`. Take `⟨C, hC, hCb⟩` from `hSB (Fintype.card X.Ψ) (r - X.p0) X.p0 bb hs _ hdisc (upq_range X ho)`. Use `⟨C, hC, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hv : vpt X z ∈ Dset (Fintype.card X.Ψ) (r - X.p0) X.p0` using `fun k => by`. Rewrite using `[Zof_vpt]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `posDef_Zt X ho hz _`. Use `le_trans (le_of_eq ?_) (hCb _ hv)` and prove the remaining obligations. Rewrite using `[← (MonoidHom.ofInjective (rho_inj X ho)).toEquiv.tsum_eq]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kap_lact_cpt X ho]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Zof_vpt]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_bound (hSB : SumBoundStatement) (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0)
     (hPD : PropDisc X) (bb : ℝ) (hbb : 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bb) :
@@ -263,7 +263,7 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Use `continuous_pi fun τ => continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [cpt, rmul, mat, Matrix.mul_apply, Matrix.of_apply, nmat]`. Use `continuous_finsetSum _ fun k _ => continuous_const.mul ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cont_cpt (X : Data E r) (x0 : Frame X.Ψ r) : Continuous (cpt X x0) := by
   refine continuous_pi fun τ => continuous_pi fun a => continuous_pi fun b => ?_
@@ -272,7 +272,7 @@ theorem cont_cpt (X : Data E r) (x0 : Frame X.Ψ r) : Continuous (cpt X x0) := b
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-Conclude with `Bl.general_b_fact_variant.goal1 hN hN' hd hd' hB hB' hBd h`.
+A detailed English derivation is pending.
 -/
 theorem lu_unique {n : ℕ} {N N' B B' : Matrix (Fin n) (Fin n) ℂ}
     (hN : N.BlockTriangular OrderDual.toDual) (hN' : N'.BlockTriangular OrderDual.toDual)
@@ -282,13 +282,13 @@ theorem lu_unique {n : ℕ} {N N' B B' : Matrix (Fin n) (Fin n) ℂ}
   exact Bl.general_b_fact_variant.goal1 hN hN' hd hd' hB hB' hBd h
 
 /- English proof (translation)
-Introduce `_ _ hca` and use `ExF.nM_upper X z τ hca`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nM_low (X : Data E r) (z : V (nd X)) (τ : X.Ψ) :
     (ExF.nM X z τ).BlockTriangular OrderDual.toDual := fun _ _ hca => ExF.nM_upper X z τ hca
 
 /- English proof (translation)
-Use extensionality with `i`. Take `⟨⟨τ, ⟨⟨a, b⟩, hab⟩⟩, rfl⟩` from `(Fintype.equivFin (Ent X)).surjective i`. Use `congrFun (congrFun (h τ) a) b` as an intermediate fact. Simplify `this` using `[ExF.nM, mat, nmat, hab]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nmat_inj (X : Data E r) {z z' : V (nd X)} (h : ∀ τ, ExF.nM X z τ = ExF.nM X z' τ) : z = z' := by
   ext i
@@ -297,11 +297,11 @@ theorem nmat_inj (X : Data E r) {z z' : V (nd X)} (h : ∀ τ, ExF.nM X z τ = E
   simpa [ExF.nM, mat, nmat, hab] using this
 
 /- English proof (translation)
-Establish `hN : ∀ τ, ExF.nM X z τ * mat b τ = ExF.nM X z' τ * mat b' τ`. Introduce `τ`. Establish `hu : IsUnit (mat x0 τ).det` using `isUnit_iff_ne_zero.mpr (ExF.det_ne_of_orth X ho τ)`. Use `congrArg (fun y : Frame X.Ψ r => (mat x0 τ)⁻¹ * mat y τ) h` as an intermediate fact. Rewrite `this` using `[show mat (rmul (cpt X x0 z) b) τ = mat x0 τ * (ExF.nM X z τ * mat b τ) by show (mat x0 τ * ExF.nM X z τ) * mat b τ = _; exact Matrix.mul_assoc _ _ _, show mat (rmul (cpt X x0 z') b') τ = mat x0 τ * (ExF.nM X z' τ * mat b' τ) by show (mat x0 τ * ExF.nM X z' τ) * mat b' τ = _; exa …`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hn : ∀ τ, ExF.nM X z τ = ExF.nM X z' τ` using `fun τ => lu_unique (nM_low X z τ) (nM_low X z' τ) (ExF.nM_diag X z τ) (ExF.nM_diag X z' τ) (FrameDegreeData.upper_of_bor X hb τ) (FrameDegreeData.upper_of_bor X hb' τ) (hb τ).1 (hN τ)`. Use `⟨nmat_inj X hn, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Establish `hu : IsUnit (ExF.nM X z τ).det` using `by rw [ExF.det_nM]; exact isUnit_one`. Use `hN τ` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hn τ]`. Rewrite `this` using `[← hn τ]`. Use `congrArg (fun M => (ExF.nM X z τ)⁻¹ * M) this` as an intermediate fact. Simplify using `only [Matrix.nonsing_inv_mul_cancel_left _ _ hu] at this`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cpt_inj (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {z z' : V (nd X)} {b b' : Frame X.Ψ r}
     (hb : b ∈ Bor X.Ψ r) (hb' : b' ∈ Bor X.Ψ r) (h : rmul (cpt X x0 z) b = rmul (cpt X x0 z') b') :

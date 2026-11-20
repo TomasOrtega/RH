@@ -45,7 +45,7 @@ section Inhabitants
 open ProjLine
 
 /- English proof (translation)
-The claim follows from `isSmallGeneratedDatum_fs.gen`.
+A detailed English derivation is pending.
 -/
 theorem SmallGenTwist.hyps_inhabited :
     ∃ (n : ℕ) (w : Fin n → FnField), (∀ j, w j ∈ chartLat (ι := GlobalTheory (Fin 2)) y fsLine1.a 1) ∧
@@ -54,14 +54,14 @@ theorem SmallGenTwist.hyps_inhabited :
   isSmallGeneratedDatum_fs.gen
 
 /- English proof (translation)
-The claim follows from `isSemipositiveRel_fs _ _`.
+A detailed English derivation is pending.
 -/
 theorem SemiposTwist.hyps_inhabited :
     IsSemipositiveRel (ι := GlobalTheory (Fin 2)) ⊥ (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) fsLine1 :=
   isSemipositiveRel_fs _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isArithVar_y', coord_mem_chartLat, generatesOn_coords, by rw [genDeg_fsLine1]; norm_num⟩`.
+Supply the required witnesses or components.
 -/
 theorem GenDegTwist.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧
@@ -71,7 +71,7 @@ theorem GenDegTwist.hyps_inhabited :
   ⟨isArithVar_y', coord_mem_chartLat, generatesOn_coords, by rw [genDeg_fsLine1]; norm_num⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨coord_mem_chartLat, generatesOn_coords⟩`.
+Supply the required witnesses or components.
 -/
 theorem GenOnFibres.hyps_inhabited :
     (∀ j : Fin 2, y ⟨(), j⟩ ∈ chartLat (ι := GlobalTheory (Fin 2)) y fsLine1.a 1) ∧
@@ -79,7 +79,7 @@ theorem GenOnFibres.hyps_inhabited :
   ⟨coord_mem_chartLat, generatesOn_coords⟩
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_one]`. Simplify using `[Finset.mem_singleton.mp hm, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_one_over (S : Type) [CommRing S] [Nontrivial S] (a : Unit → ℕ) (ha : ∀ k, a k = 0) :
     IsMultiHomog (1 : MRingOver S (GlobalTheory (Fin 2))) a := by
@@ -88,9 +88,7 @@ theorem isMultiHomog_one_over (S : Type) [CommRing S] [Nontrivial S] (a : Unit �
   simp [Finset.mem_singleton.mp hm, ha]
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Use `Submodule.subset_span ⟨1, 1, 0, isMultiHomog_one_over ℚ _ fun _ => rfl, ?_, by` and prove the remaining obligations. Rewrite using `[OreLocalization.one_def]`. Apply the tactic sequence `try rfl⟩`. Use `Submodule.subset_span ⟨1, ⟨fun k => by simp, ?_⟩, map_one _⟩` and prove the remaining obligations.
-
-Conclude with `isMultiHomog_one_over ℚ _ fun _ => by simp`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem one_mem_locPart (T : Submonoid (MRingOver ℚ (GlobalTheory (Fin 2)))) (c : Unit → ℤ) (hc : c = 0) :
     (1 : LocalizedModule T (MRingOver ℚ (GlobalTheory (Fin 2)) ⧸ (⊥ : Ideal (MRingOver ℚ (GlobalTheory (Fin 2)))))) ∈
@@ -102,27 +100,25 @@ theorem one_mem_locPart (T : Submonoid (MRingOver ℚ (GlobalTheory (Fin 2)))) (
   exact isMultiHomog_one_over ℚ _ fun _ => by simp
 
 /- English proof (translation)
-Use `⟨⟨∅, by simp, by simp⟩, fun I => ⟨1, fun _ _ => 1, fun _ => 1, fun _ => ⟨?_, ?_⟩, fun _ => ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `J _`. Conclude with `one_mem_locPart _ _ rfl`. Use `show _ ∈ (LinearMap.ker _).restrictScalars ℚ`. Rewrite using `[Submodule.restrictScalars_mem, LinearMap.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `J`. Take `⟨J, hJne, hJ⟩` from `J`. Establish `hJd : J default = Finset.univ`. Apply `Finset.eq_univ_of_card` to reduce the goal to its premises. Simplify using `only [Finset.univ_unique, Finset.sum_singleton] at hJ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Establish `hres : ∀ i : Fin 2, KH.cellRes ℚ (MRingOver ℚ (GlobalTheory (Fin 2)) ⧸ (⊥ : Ideal (MRingOver ℚ (GlobalTheory (Fin 2))))) (Function.update J default ((J default).erase i)) J 1 = 1`. Introduce `i`. Establish `hle : KH.cellMon ℚ (Function.update J default ((J default).erase i)) ≤ KH.cellMon ℚ J`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `Submonoid.closure_mono` to reduce the goal to its premises. Introduce and unpack `f ⟨k, j, hj, rfl⟩`. Use `⟨k, j, ?_, rfl⟩` and prove the remaining obligations. Consider the cases of `k`. Simplify using `only [Function.update_self] at hj`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_of_mem_erase hj`. Unfold `KH.cellRes`. Rewrite using `[dif_pos hle]`. Establish `h1 : (1 : LocalizedModule (KH.cellMon ℚ (Function.update J default ((J default).erase i))) (MRingOver ℚ (GlobalTheory (Fin 2)) ⧸ (⊥ : Ideal (MRingOver ℚ (GlobalTheory (Fin 2)))))) = LocalizedModule.mkLinearMap _ _ 1`. Rewrite using `[OreLocalization.one_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `try rfl`. Rewrite using `[h1, IsLocalizedModule.liftOfLE_apply]`. Rewrite using `[OreLocalization.one_def]`. Apply the tactic sequence `try rfl`. Establish `hcond : ∀ i : Fin 2, (∀ l, (Function.update J default ((J default).erase i) l).Nonempty) ∧ ∑ l, ((Function.update J default ((J default).erase i) l).card - 1) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `i`. Use `⟨fun l => ?_, ?_⟩` and prove the remaining obligations. Take `rfl : l = default` from `Subsingleton.elim _ _`. Rewrite using `[Function.update_self, hJd]`. Apply the tactic sequence `fin_cases i <;> decide`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.univ_unique, Finset.sum_singleton]`. Rewrite using `[Function.update_self, hJd]`. Apply the tactic sequence `fin_cases i <;> decide`. Use `show (KH.cechD ℚ (GlobalTheory (Fin 2)) (MRingOver ℚ (GlobalTheory (Fin 2)) ⧸ (⊥ : Ideal (MRingOver ℚ (GlobalTheory (Fin 2))))) 0 (fun _ => 1)) ⟨J, hJne, hJ⟩ = 0`. Rewrite using `[KH.cechD]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `erw [LinearMap.pi_apply]`. Simplify using `only [LinearMap.sum_apply, Finset.univ_unique, Finset.sum_singleton]`. Establish `hc' : ∀ i : Fin 2, (∀ l, (Function.update J default ((J default).erase i) l).Nonempty) ∧ (Function.update J default ((J default).erase i) default).card - 1 = 0` using `fun i => ⟨(hcond i).1, by simpa using (hcond i).2⟩`. Rewrite using `[Finset.sum_congr hJd (fun _ _ => rfl), Fin.sum_univ_two]`. Use `erw [dif_pos (hc' 0), dif_pos (hc' 1)]`.
+Simplify using the standard rewrite rules. Evaluate the decidable proposition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hs0 : KH.faceSign J default (0 : Fin 2) = 1`. Simplify using `[KH.faceSign, hJd]`. Establish `hs1 : KH.faceSign J default (1 : Fin 2) = -1`. Simplify using `[KH.faceSign, hJd]`. Evaluate the decidable proposition.
-
-Use `erw [hs0, hs1, one_smul ℤ, neg_smul, one_smul ℤ]`. Express the relevant statement in the definitionally equal form `(KH.cellRes ℚ (MRingOver ℚ (GlobalTheory (Fin 2)) ⧸ (⊥ : Ideal (MRingOver ℚ (GlobalTheory (Fin 2))))) (Function.update J default ((J default).erase 0)) J) 1 + -((KH.cellRes ℚ (MRingOver ℚ (GlobalTheory (Fin 2)) ⧸ (⊥ : Ideal (MRingOver ℚ (GlobalTheory (Fin 2))))) (Function.update …`. Rewrite using `[hres 0, hres 1, add_neg_cancel]`. Conclude with `one_mem_locPart _ _ (by simp)`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem AmpleOfGenTwist.hyps_inhabited :
     IsMultiHomogIdeal (⊥ : Ideal (MRingOver ℚ (GlobalTheory (Fin 2)))) ∧

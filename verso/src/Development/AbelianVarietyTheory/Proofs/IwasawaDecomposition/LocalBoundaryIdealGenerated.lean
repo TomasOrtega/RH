@@ -15,7 +15,7 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 namespace GlobalTheory.OrderElt
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.dvd) ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.symm.dvd)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_associated_pow {W : Type} [CommRing W] [IsDomain W] {ϖ : W} (hϖ : Irreducible ϖ) {a b : ℕ}
     (h : Associated (ϖ ^ a) (ϖ ^ b)) : a = b :=
@@ -23,9 +23,9 @@ theorem eq_of_associated_pow {W : Type} [CommRing W] [IsDomain W] {ϖ : W} (hϖ 
     ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.symm.dvd)
 
 /- English proof (translation)
-Rewrite using `[map_prod, ← Finset.prod_pow_eq_pow_sum]`. Use `Associated.prod _ _ _ fun i _ => ?_` and prove the remaining obligations. Take `⟨r', n, hr', hn, ha⟩` from `hF (y i)`. Take `⟨u, hu⟩` from `PsiCoordLocal.exists_unit_of_coord hr' (hr i)`. Establish `e : (be (y i) (y i) / 2).toNat = n` using `by rw [hn]; omega`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_pow, e, pow_mul', hu, map_mul]`. Use `Associated.pow_pow ?_` and prove the remaining obligations. Conclude with `(associated_unit_mul_left _ _ ((Units.isUnit u).map f)).trans ha`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem assoc_prod {R : Type} [CommRing R] [IsDomain R] (Dg : DegPre R) {W : Type} [CommRing W] (f : R →+* W) (ϖ : W)
     (be : LinearMap.BilinForm ℤ Dg.X) (hF : FormAt Dg f ϖ be) {m : ℕ} (y : Fin m → Dg.X) (r : Fin m → R)
@@ -41,7 +41,7 @@ theorem assoc_prod {R : Type} [CommRing R] [IsDomain R] (Dg : DegPre R) {W : Typ
   exact (associated_unit_mul_left _ _ ((Units.isUnit u).map f)).trans ha
 
 /- English proof (translation)
-Take `⟨r', n, -, hn, -⟩` from `hF y`. Rewrite using `[hn]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem diag_eq {R : Type} [CommRing R] [IsDomain R] {Dg : DegPre R} {W : Type} [CommRing W] {f : R →+* W} {ϖ : W}
     {be : LinearMap.BilinForm ℤ Dg.X} (hF : FormAt Dg f ϖ be) (y : Dg.X) :
@@ -50,7 +50,7 @@ theorem diag_eq {R : Type} [CommRing R] [IsDomain R] {Dg : DegPre R} {W : Type} 
   rw [hn]; omega
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `FlagMod.exists_chart_of_isLocalRing EX.cover ξ`. Use `⟨FlagMod.ev ξ (EX.U k) hk (EX.f k), fun W _ _ f => ?_⟩` and prove the remaining obligations. Rewrite using `[TraitOrder.idlAlong_comp, TraitGen.idlAlong_idealSheaf_eq EX ξ k hk, Ideal.map_span, Set.image_singleton]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_gen_along {X : Scheme.{0}} (EX : EffCartierData X) {R : Type} [CommRing R] [IsLocalRing R] (ξ : Sp R ⟶ X) :
     ∃ h : R, ∀ (W : Type) [CommRing W] [IsLocalRing W] (f : R →+* W),
@@ -60,7 +60,7 @@ theorem exists_gen_along {X : Scheme.{0}} (EX : EffCartierData X) {R : Type} [Co
   rw [TraitOrder.idlAlong_comp, TraitGen.idlAlong_idealSheaf_eq EX ξ k hk, Ideal.map_span, Set.image_singleton]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsLocalization.map _ f (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective f hf), fun r => IsLocalization.map_eq _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_gam {R W : Type} [CommRing R] [IsDomain R] [CommRing W] [IsDomain W] (f : R →+* W)
     (hf : Function.Injective f) :
@@ -69,43 +69,39 @@ theorem exists_gam {R W : Type} [CommRing R] [IsDomain R] [CommRing W] [IsDomain
     fun r => IsLocalization.map_eq _ _⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Z g φs 𝒩 φ EX N R _ _ _ ξ t hξ P m γ hg hφs hRef hN hEX hR hEt hFU hTors hCone hIn N' ℓ hN' hℓ`. Establish `hR'` using `hR`. Take `⟨hRn, hRic, -, hR0⟩` from `hR'`. Use `haveI := hRn`. Use `haveI := hRic`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hR0`. Use `haveI : Module.Finite ℤ P.D.toPre.X := Module.Finite.trans (𝓞 E) _`. Take `⟨k, y, a, hya⟩` from `GlobalTheory.T.symmetric_form_sum_of_squares _ ℓ`. Establish `hB` using `GlobalTheory.T.boundary_form_in_local_cone E H D l Xo c Z g φs 𝒩 φ EX N R ξ t hξ P m γ hg hφs hRef hN hEX hR hEt hFU hTors hCone hIn`. Take `⟨h, hh⟩` from `exists_gen_along EX ξ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `K` to `FractionRing R`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (IsFractionRing.injective R K)`. Set `g0 : R →+* PowerSeries K` to `(PowerSeries.C (R := K)).comp (algebraMap R K)`. Establish `hg0 : Function.Injective g0` using `PowerSeries.C_injective.comp (IsFractionRing.injective R K)`. Establish `hW0 : CDvr (PowerSeries K)` using `FrameCmp.cDvr_powerSeries K`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨gam0, hgam0⟩` from `exists_gam g0 hg0`. Take `⟨be0, hbe0, hF0⟩` from `GlobalTheory.T.exists_level_form_along_dvr E H R t P hR _ hW0 PowerSeries.X PowerSeries.X_irreducible g0 gam0 hgam0`. Establish `hco : ∀ j, ∃ r, PsiCoord P.D.toPre (y j) r` using `fun j => (hF0 (y j)).imp fun r h => h.choose_spec.1`. Use `choose r hr using hco`. Establish `hr0 : ∀ j, r j ≠ 0` using `fun j => PsiCoordLocal.ne_zero_of_coord (hr j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set num : R := ∏ j, r j ^ (N * (a j).toNat) with hnum`. Use `set den : R := ∏ j, r j ^ (N * (-a j).toNat) with hden`. Establish `hid : ∀ (W : Type) [CommRing W] (f : R →+* W) (ϖ : W) (be : LinearMap.BilinForm ℤ P.D.toPre.X), (∀ u v, be u v = be v u) → FormAt P.D.toPre f ϖ be → ((∑ j, N * (a j).toNat * (be (y j) (y j) / 2).toNat : ℕ) : ℤ) - ((∑ j, N * (-a j).toNat * (be (y j) (y j) / 2).toNat : ℕ) : ℤ) = N …`. Introduce `W _ f ϖ be hs hF`. Establish `h2` using `hya be hs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Move the embeddings inside the algebraic operations.
 
-Establish `hd` using `fun j => diag_eq hF (y j)`. Establish `hl : ℓ be = ∑ j, a j * ((be (y j) (y j) / 2).toNat : ℤ)`. Establish `: 2 * ℓ be = 2 * ∑ j, a j * ((be (y j) (y j) / 2).toNat : ℤ)`. Rewrite using `[h2, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(a j) * hd j`. Use linear arithmetic over natural numbers and integers. Use `push_cast`. Rewrite using `[hl, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Int.toNat_sub_toNat_neg (a j)` as an intermediate fact. Take the linear combination `(N : ℤ) * ((be (y j) (y j) / 2).toNat : ℤ) * this`. Establish `hh0 : h ≠ 0`. Introduce and unpack `rfl`. Take `⟨n0, -, e0⟩` from `hB _ hW0 _ PowerSeries.X_irreducible g0 hg0 be0 hbe0 hF0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `e0` using `[hh, map_zero, Ideal.span_singleton_eq_span_singleton]`. Conclude with `pow_ne_zero n0 PowerSeries.X_ne_zero ((associated_zero_iff_eq_zero _).1 e0.symm)`. Establish `hden0 : den ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => pow_ne_zero _ (hr0 j)`. Establish `ha0 : h ^ N' * den ≠ 0` using `mul_ne_zero (pow_ne_zero _ hh0) hden0`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : h ^ N' * den ∣ num := by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `PolDiv.dvd_of_traits ha0 fun W _ _ _ hW f hf => ?_` and prove the remaining obligations. Use `haveI : IsDiscreteValuationRing W := hW.1`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Take `⟨gam, hgam⟩` from `exists_gam f hf`. Take `⟨be, hbe, hF⟩` from `GlobalTheory.T.exists_level_form_along_dvr E H R t P hR W hW ϖ hϖ f gam hgam`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hnr, e⟩` from `hB W hW ϖ hϖ f hf be hbe hF`. Rewrite `e` using `[hh, Ideal.span_singleton_eq_span_singleton]`. Establish `hs : ∀ u v, be u v = be v u` using `hbe.1`. Establish `hA` using `assoc_prod P.D.toPre f ϖ be hF y r hr (fun j => N * (a j).toNat)`. Establish `hBd` using `assoc_prod P.D.toPre f ϖ be hF y r hr (fun j => N * (-a j).toNat)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hbal : be ∈ balForms H.bar P.D.toPre.X` using `(balForms_eq_levelForms H P.D.toPre.X).symm ▸ hbe`. Establish `hsd : ∀ v, 0 ≤ be v v` using `fun v => by have := diag_eq hF v; omega`. Establish `hle` using `hℓ be hbal hsd`. Establish `hI` using `hid W f ϖ be hs hF`. Establish `hineq : n * N' + ∑ j, N * (-a j).toNat * (be (y j) (y j) / 2).toNat ≤ ∑ j, N * (a j).toNat * (be (y j) (y j) / 2).toNat`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ((n * N' : ℕ) : ℝ) ≤ N * (ℓ be : ℝ)`. Use `push_cast`. Rewrite using `[hnr]`. Establish `: (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((n * N' : ℕ) : ℤ) ≤ N * ℓ be` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[map_mul, map_pow]`. Use `((e.pow_pow (n := N')).mul_mul hBd).dvd_iff_dvd_left.2 ?_` and prove the remaining obligations. Use `hA.dvd_iff_dvd_right.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← pow_mul, ← pow_add]`. Conclude with `pow_dvd_pow ϖ (by rw [mul_comm n N'] at hineq; linarith)`. Use `⟨1, u, one_pos, fun W _ _ _ hW ϖ hϖ f be hs hF => ?_⟩` and prove the remaining obligations. Use `haveI : IsDiscreteValuationRing W := hW.1`. Establish `hA` using `assoc_prod P.D.toPre f ϖ be hF y r hr (fun j => N * (a j).toNat)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hBd` using `assoc_prod P.D.toPre f ϖ be hF y r hr (fun j => N * (-a j).toNat)`. Establish `hI` using `hid W f ϖ be hs hF`. Establish `hnum0 : f num ≠ 0` using `fun e0 => pow_ne_zero _ hϖ.ne_zero ((associated_zero_iff_eq_zero _).1 (e0 ▸ hA).symm)`. Establish `hfe : f num = f h ^ N' * f den * f u` using `by rw [hu]; simp only [map_mul, map_pow]`. Establish `hfh : f h ≠ 0` using `fun e0 => hnum0 (by rw [hfe, e0, zero_pow (Nat.pos_iff_ne_zero.1 hN')]; ring)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hfu : f u ≠ 0` using `fun e0 => hnum0 (by rw [hfe, e0, mul_zero])`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hfh hϖ`. Take `⟨k', hk'⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hfu hϖ`. Use `⟨n, k', ?_, ?_, hk'⟩` and prove the remaining obligations. Rewrite using `[hh, Ideal.span_singleton_eq_span_singleton]`.
-
-Conclude with `hn`. Establish `hc : Associated (ϖ ^ (∑ j, N * (a j).toNat * (be (y j) (y j) / 2).toNat)) (ϖ ^ (n * N' + ∑ j, N * (-a j).toNat * (be (y j) (y j) / 2).toNat + k'))`. Use `hA.symm.trans ?_` and prove the remaining obligations. Rewrite using `[hfe, pow_add, pow_add, pow_mul]`. Conclude with `((hn.pow_pow).mul_mul hBd).mul_mul hk'`.
-
-Use `eq_of_associated_pow hϖ hc` as an intermediate fact. Establish `hI'` using `hI`. Rewrite `hI'` using `[this]`. Move the coercions through the operations in `at hI' ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_elt_order : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Z : GMod Xo c) (g : ℕ) (φs : InvFun ℤ) (𝒩 : Finset ℕ) (φ : InvFun (𝓞 E)) (EX : EffCartierData Z.X) (N : ℕ) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ Z.X) (t : SAB H (Sp R)), SABMap t Z.t ξ → ∀ (P : PELUnif (maximalIdeal R) t) (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), Module.finrank ℚ E * min D.p D.q ≤ g → IsPolFan id g φs → Refines H (min D.p D.q) φs 𝒩 φ → 0 < N → IsPhiDiv (comb 0 φ N φ) Z EX → IsCN R → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified → P.TorsionIso → ConeZ E φs P.D.toPre.X m γ → InCone P.D.toPre γ → ∀ (N' : ℕ) (ℓ : LinearMap.BilinForm ℤ P.D.toPre.X →ₗ[ℤ] ℤ), 0 < N' → (∀ β ∈ balForms H.bar P.D.toPre.X, (∀ y, 0 ≤ β y y) → (N' : ℝ) * φ.evalZ β ≤ (ℓ β : ℝ)) → ∃ (M : ℕ) (u : R), 0 < M ∧ ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ ϖ : W, Irreducible ϖ → ∀ (f : R →+* W) (be : LinearMap.BilinForm ℤ P.D.toPre.X), (∀ y z, be y z = be z y) → FormAt P.D.toPre f ϖ be → ∃ n k : ℕ, idlAlong EX.idealSheaf (spMap f ≫ ξ) = Ideal.span {ϖ ^ n} ∧ (M : ℤ) * N * ℓ be = M * N' * n + k ∧ Associated (f u) (ϖ ^ k) := by
   intro E _ _ _ H D l Xo c Z g φs 𝒩 φ EX N R _ _ _ ξ t hξ P m γ hg hφs hRef hN hEX hR hEt hFU hTors hCone hIn N' ℓ hN' hℓ

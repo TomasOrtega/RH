@@ -5,19 +5,17 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Po
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `hGF hGW F Ω _ _ _ _ _ l _ M _ _ _ _ _ hl S ρ hS hρ Av hA L`. Take `⟨μ, hμ⟩` from `GlobalTheory.Published.PoitouTate.exists_lift_cycMod (F := F) (Ω := Ω) (l := l) (r := 1) (S := S) hS`. Take `⟨c, hc⟩` from `UpperTheory.V.Ws.Gys.ccEx F Ω`. Establish `e` using `hGW F Ω l 1 M S ρ one_pos hl hS hρ μ hμ Av hA c hc L`. Use `haveI : NeZero (l ^ 1) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hfd : Finite (TDual (ZMod (l ^ 1)) M) := DFunLike.finite _`. Use `haveI hf1 : Finite (H1 ρ) := (hGF F Ω l 1 M S ρ one_pos hS hρ).2.1`. Establish `hM : 0 < Nat.card M` using `Nat.card_pos`. Establish `p1 : 0 < Nat.card (Sel ρ (locFam S Av) (continuous_locFam S Av) L)` using `Nat.card_pos`. Establish `p2 : 0 < Nat.card (H0 (twDual μ ρ))` using `Nat.card_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `p3 : 0 < ∏ v : S, Nat.card (H0 (ρ.comp (locFam S Av v)))` using `Finset.prod_pos fun v _ => Nat.card_pos`. Establish `p4 : 0 < archH0Card S ρ c`. Unfold `archH0Card`. Use `Nat.mul_pos (Finset.prod_pos fun w _ => ?_) (pow_pos hM _)` and prove the remaining obligations. Use `haveI : Nonempty {m : M // ρ (toGS Ω _ (c w)) m = m} := ⟨⟨0, map_zero _⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `Nat.card_pos`. Establish `b2 : Nat.card (H0 (twDual μ ρ)) ≤ Nat.card (TDual (ZMod (l ^ 1)) M)` using `Nat.card_le_card_of_injective _ Subtype.val_injective`. Establish `b4 : archH0Card S ρ c ≤ Nat.card M ^ Module.finrank ℚ F`. Unfold `archH0Card`. Establish `h1 : (∏ w ∈ Finset.univ.filter (fun w : InfinitePlace F => w.IsReal), Nat.card {m : M // ρ (toGS Ω _ (c w)) m = m}) ≤ Nat.card M ^ InfinitePlace.nrRealPlaces F`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `Finset.prod_le_pow_card (Finset.univ.filter (fun w : InfinitePlace F => w.IsReal)) (fun w => Nat.card {m : M // ρ (toGS Ω _ (c w)) m = m}) (Nat.card M) (fun w _ => Nat.card_le_card_of_injective _ Subtype.val_injective)`. Establish `h3 : (Finset.univ.filter (fun w : InfinitePlace F => w.IsReal)).card = InfinitePlace.nrRealPlaces F`. Rewrite using `[InfinitePlace.nrRealPlaces, Fintype.card_subtype]`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Use `(Nat.mul_le_mul_right _ h1).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[← pow_add]`. Use `Nat.pow_le_pow_right hM ?_` and prove the remaining obligations. Use `InfinitePlace.card_add_two_mul_card_eq_rank F` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hpos` using `Nat.mul_pos (Nat.mul_pos (Nat.mul_pos p1 p2) p3) p4`.
-
-Use `(Nat.le_of_dvd hpos (Dvd.intro_left _ e.symm)).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Gys.gwLower :
     GlobalFiniteness → GreenbergWiles → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module (ZMod (l ^ 1)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M], l ≠ 2 → ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (ρ : Representation (ZMod (l ^ 1)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M), ContainsAbove S l → ContAction ρ →

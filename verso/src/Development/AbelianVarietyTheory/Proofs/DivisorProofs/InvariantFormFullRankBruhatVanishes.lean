@@ -13,41 +13,33 @@ noncomputable section
 namespace GlobalTheory.RankStrata
 
 /- English proof (translation)
-Introduce `hKP k _ _ _ _ n l d ν ϖ hnd hsm hun hν Bf hGLn hGLd hlow`. Establish `piece : ∀ ρ < n, (∀ (Ψ₁ : fullRk k n d) (Ψ₂ : SB (Matrix (Fin l) (Fin d) k)), (∀ Y : Matrix (Fin l) (Fin d) k, Y.rank < ρ + 1 → Ψ₂.1 Y = 0) → Bf Ψ₁ Ψ₂ = 0) → ∀ (Ψ₁ : fullRk k n d) (f : Matrix (Fin l) (Fin d) k → ℂ) (hf : f ∈ SB (Matrix (Fin l) (Fin d) k)) (S : Fin ρ → Fin l) (τ : …`. Introduce `ρ hρ ih Ψ₁ f hf S τ hS`. Distinguish the cases in `h0 : ∀ Y, f Y = 0`. Establish `: (⟨f, hf⟩ : SB (Matrix (Fin l) (Fin d) k)) = 0` using `Subtype.ext (funext h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[this, map_zero]`. Use `push_neg at h0`. Take `⟨Y0, hY0⟩` from `h0`. Establish `hinj : Function.Injective S`. Introduce `i j hij`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hS Y0 hY0 (Matrix.det_zero_of_row_eq hne (by ext m; simp [hij]))`. Set `e' : Fin ρ ⊕ ↥(Set.range S)ᶜ ≃ Fin l` to `(Equiv.sumCongr (Equiv.ofInjective S hinj) (Equiv.refl _)).trans (Equiv.Set.sumCompl _)`. Establish `he' : ∀ i, e'.symm (S i) = Sum.inl i` using `fun i => by`. Rewrite using `[Equiv.symm_apply_eq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[e']`. Establish `hTo` using `(GlobalTheory.T.schwartzBruhat_reindex_rows k (Fin l) (Fin ρ ⊕ ↥(Set.range S)ᶜ) (Fin d) ν e'.symm).1`. Establish `hBack` using `(GlobalTheory.T.schwartzBruhat_reindex_rows k (Fin ρ ⊕ ↥(Set.range S)ᶜ) (Fin l) (Fin d) ν e').1`. Set `L : SB (Matrix (Fin ρ ⊕ ↥(Set.range S)ᶜ) (Fin d) k) →ₗ[ℂ] SB (Matrix (Fin l) (Fin d) k)` to `{ toFun := fun g => ⟨fun Y => g.1 (Y.submatrix e' id), by simpa using hTo g.1 g.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hL : ∀ g Y, (L g).1 Y = g.1 (Y.submatrix e' id)` using `fun _ _ => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Bf' : fullRk k n d →ₗ[ℂ] SB (Matrix (Fin ρ ⊕ ↥(Set.range S)ᶜ) (Fin d) k) →ₗ⋆[ℂ] ℂ` to `Bf.compl₂ L`. Establish `hBf' : ∀ Ψ g, Bf' Ψ g = Bf Ψ (L g)` using `fun _ _ => rfl`. Establish `hchart` using `GlobalTheory.T.invariant_form_full_rank_box_vanishes hKP k n ρ d (↥(Set.range S)ᶜ) ν ϖ hnd hρ hsm hun hν Bf' (fun g Ψ₁ Ψ₁' Ψ₂ h => by rw [hBf', hBf']; exact hGLn g Ψ₁ Ψ₁' (L Ψ₂) h) (fun h => by`. Take `⟨m, hm, H⟩` from `hGLd h`. Use `⟨m, hm, fun Ψ₁ Ψ₁' Ψ₂ Ψ₂' h1 h2 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hBf', hBf']`. Use `H Ψ₁ Ψ₁' (L Ψ₂) (L Ψ₂') h1 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `Y`. Rewrite using `[hL, hL, h2]`. Use `congr 1)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun Ψ₁ Ψ₂ hv => by`. Rewrite using `[hBf']`. Use `ih Ψ₁ (L Ψ₂) (fun Y hY => ?_)` and prove the remaining obligations. Rewrite using `[hL]`. Apply `hv` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[show (id : Fin d → Fin d) = ⇑(Equiv.refl (Fin d)) from rfl, Matrix.rank_submatrix]`. Use the proof step `omega)`. Use `τ Ψ₁ ⟨fun Z => f (Z.submatrix e'.symm id), hBack f hf⟩`. Use the proof step `(fun Z hZ => by`. Use `hS _ hZ` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.submatrix_submatrix, show (e'.symm ∘ S) = Sum.inl from funext he'] at this)` and apply the resulting hypothesis. Rewrite `hchart` using `[hBf']`. Use `hchart using 2` and compare the differences between its conclusion and the goal. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `Y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite using `[hL]`. Simplify using `[Matrix.submatrix_submatrix]`. Establish `step : ∀ ρ < n, (∀ (Ψ₁ : fullRk k n d) (Ψ₂ : SB (Matrix (Fin l) (Fin d) k)), (∀ Y : Matrix (Fin l) (Fin d) k, Y.rank < ρ + 1 → Ψ₂.1 Y = 0) → Bf Ψ₁ Ψ₂ = 0) → ∀ (Ψ₁ : fullRk k n d) (Ψ₂ : SB (Matrix (Fin l) (Fin d) k)), (∀ Y : Matrix (Fin l) (Fin d) k, Y.rank < ρ → Ψ₂.1 Y = 0) → Bf …`. Introduce `ρ hρ ih Ψ₁ Ψ₂ hv`. Use `haveI : T2Space k := by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `infer_instance`. Establish `hsp` using `GlobalTheory.T.schwartzBruhat_partition_of_unity k (Fin l) (Fin d) ((Fin ρ → Fin l) × (Fin ρ → Fin d)) (fun i => {Y : Matrix (Fin l) (Fin d) k | (Y.submatrix i.1 i.2).det ≠ 0}) (fun i => isOpen_ne_fun ((continuous_id.matrix_submatrix i.1 i.2).matrix_det) continuous_const) Ψ₂.1 Ψ₂ …`. Establish `: ρ ≤ Y.rank`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hY (hv Y (by omega))`. Take `⟨S, τ, h⟩` from `GlobalTheory.T.exists_nonzero_minor_of_rank k _ _ ρ Y this`. Conclude with `⟨(S, τ), h⟩)`. Establish `key` using `Submodule.span_induction (p := fun g _ => ∀ hg : g ∈ SB (Matrix (Fin l) (Fin d) k), Bf Ψ₁ ⟨g, hg⟩ = 0) (fun f hf hg => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_, i, hi⟩` from `hf`. Conclude with `piece ρ hρ ih Ψ₁ f hg i.1 i.2 hi)`. Use the proof step `(fun hg => by`. Establish `: (⟨0, hg⟩ : SB (Matrix (Fin l) (Fin d) k)) = 0` using `rfl`. Rewrite using `[this, map_zero])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun x y hx hy px py hg => by`. Establish `hxS : x ∈ SB (Matrix (Fin l) (Fin d) k)` using `Submodule.span_le.mpr (fun g hg => hg.1) hx`. Establish `hyS : y ∈ SB (Matrix (Fin l) (Fin d) k)` using `Submodule.span_le.mpr (fun g hg => hg.1) hy`. Establish `: (⟨x + y, hg⟩ : SB (Matrix (Fin l) (Fin d) k)) = ⟨x, hxS⟩ + ⟨y, hyS⟩` using `rfl`. Rewrite using `[this, map_add, px hxS, py hyS, add_zero])`.
-
-Use the proof step `(fun c x hx px hg => by`. Establish `hxS : x ∈ SB (Matrix (Fin l) (Fin d) k)` using `Submodule.span_le.mpr (fun g hg => hg.1) hx`. Establish `: (⟨c • x, hg⟩ : SB (Matrix (Fin l) (Fin d) k)) = c • ⟨x, hxS⟩` using `rfl`. Rewrite using `[this, map_smulₛₗ, px hxS, smul_zero])`. Use `hsp`.
-
-Conclude with `key Ψ₂.2`. Establish `ind : ∀ j ρ, ρ + j = n → ∀ (Ψ₁ : fullRk k n d) (Ψ₂ : SB (Matrix (Fin l) (Fin d) k)), (∀ Y : Matrix (Fin l) (Fin d) k, Y.rank < ρ → Ψ₂.1 Y = 0) → Bf Ψ₁ Ψ₂ = 0`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro ρ hρ`.
-
-Simplify using `at hρ`. Substitute `hρ` using the available equality. Conclude with `hlow`. Consider the case `succ j ihj`. Introduce `ρ hρ`.
-
-Conclude with `step ρ (by omega) (ihj (ρ + 1) (by omega))`. Introduce `Ψ₁ Ψ₂`. Conclude with `ind n 0 (by simp) Ψ₁ Ψ₂ (fun Y h => absurd h (Nat.not_lt_zero _))`.
+Substitute using the available equality. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pairing_eq_zero_of_kills_lowRank : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n l d : ℕ) (ν : kˣ →* ℂˣ) (ϖ : kˣ), n < d → GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν → (∀ m : ℕ, 0 < m → ∀ r : ℝ, ((ν ϖ : ℂ)) ^ m ≠ (r : ℂ)) →

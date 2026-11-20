@@ -5,11 +5,11 @@ namespace GlobalTheory.DenominatorExistence
 open NumberField
 
 /- English proof (translation)
-Establish `hc : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic c)`. Take `⟨y, hy, hint⟩` from `hc.exists_integral_multiple`. Use `⟨y.natAbs, Int.natAbs_pos.mpr hy, ?_⟩` and prove the remaining obligations. Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `h' : (y.natAbs : ℤ) = y` using `by omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h2 : ((y.natAbs : ℤ) : E) = (y : E)` using `congrArg _ h'`. Rewrite `h2` using `[Int.cast_natCast]`. Rewrite using `[h2, ← zsmul_eq_mul]`. Conclude with `hint`. Establish `h' : (y.natAbs : ℤ) = -y` using `by omega`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((y.natAbs : ℤ) : E) = ((-y : ℤ) : E)` using `congrArg _ h'`. Rewrite `h2` using `[Int.cast_natCast, Int.cast_neg]`. Rewrite using `[h2, neg_mul, ← zsmul_eq_mul]`. Conclude with `hint.neg`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem den_exists {E : Type} [Field E] [NumberField E] (c : E) :
     ∃ d : ℕ, 0 < d ∧ IsIntegral ℤ ((d : E) * c) := by
@@ -28,23 +28,21 @@ theorem den_exists {E : Type} [Field E] [NumberField E] (c : E) :
     rw [h2, neg_mul, ← zsmul_eq_mul]; exact hint.neg
 
 /- English proof (translation)
-Establish `key : ∀ v : Fin r → E, ∃ n : ℕ, 0 < n ∧ n • v ∈ Λ`. Introduce `v`. Establish `hv : v ∈ Submodule.span E (Λ : Set (Fin r → E))` using `by rw [hspan]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_pos, by simpa using hx⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨1, one_pos, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`. Use `⟨a * b, Nat.mul_pos ha hb, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_add]`. Use `Λ.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_nsmul]`. Conclude with `Λ.toAddSubmonoid.nsmul_mem hax b`. Rewrite using `[mul_comm, mul_nsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Λ.toAddSubmonoid.nsmul_mem hby a`. Consider the case `smul c x _ hx`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨d, hd, hdc⟩` from `den_exists c`. Use `⟨d * a, Nat.mul_pos hd ha, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (⟨(d : E) * c, hdc⟩ : RingOfIntegers E) • (a • x) = ((d : E) * c) • (a • x)`. Rewrite using `[← algebraMap_smul E]`. Both sides reduce to the same expression. Establish `e : (d * a) • (c • x) = (⟨(d : E) * c, hdc⟩ : RingOfIntegers E) • (a • x)`. Rewrite using `[e1, ← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E, smul_smul, smul_smul]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Λ.smul_mem _ hax`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs⟩` from `hfg`. Use `choose f hfpos hfmem using key`. Use `⟨∏ x ∈ s, f x, Finset.prod_pos (fun x _ => hfpos x), ?_⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hv` using `[← hs]`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Rewrite using `[← Finset.mul_prod_erase s f hx, mul_nsmul]`. Conclude with `Λ.toAddSubmonoid.nsmul_mem (hfmem x) _`.
-
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Λ.add_mem hx hy`. Consider the case `smul o x _ hx => rw [smul_comm]`. Conclude with `Λ.smul_mem o hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem main {E : Type} [Field E] [NumberField E] {r : ℕ}
     (Λ Λ' : Submodule (RingOfIntegers E) (Fin r → E)) (hfg : Λ'.FG)

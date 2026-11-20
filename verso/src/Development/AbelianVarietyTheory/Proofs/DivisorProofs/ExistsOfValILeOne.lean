@@ -14,35 +14,31 @@ variable (V) in
 abbrev valI : Valuation F (ValuationRing.ValueGroup V F) := ValuationRing.valuation V F
 
 /- English proof (translation)
-The claim follows from `(ValuationRing.mem_integer_iff V F x).1 h`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_valI_le_one {x : F} (h : valI V x ≤ 1) : ∃ a : V, algebraMap V F a = x :=
   (ValuationRing.mem_integer_iff V F x).1 h
 
 /- English proof (translation)
-Take `⟨p, -, hp⟩` from `Finset.exists_max_image Finset.univ (fun r => valI V (A r 0)) Finset.univ_nonempty`. Establish `hcol : ∃ r, A r 0 ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hA (Matrix.det_eq_zero_of_column_eq_zero 0 h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hp0 : A p 0 ≠ 0`. Take `⟨r, hr⟩` from `hcol`. Introduce `h0`. Use `hp r (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hr ((valI V).zero_iff.1 (le_antisymm this zero_le))`. Set `σ : Equiv.Perm (Fin (n + 1))` to `Equiv.swap 0 p`. Set `P : Matrix (Fin (n + 1)) (Fin (n + 1)) V` to `σ.toPEquiv.toMatrix`. Establish `hc : ∀ i, ∃ a : V, algebraMap V F a = A (σ i) 0 / A p 0`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `exists_of_valI_le_one` to reduce the goal to its premises. Rewrite using `[map_div₀]`. Establish `hpos : valI V (A p 0) ≠ 0` using `by simpa using hp0`. Rewrite using `[div_le_one₀ (zero_lt_iff.2 hpos)]`. Conclude with `hp _ (Finset.mem_univ _)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose c hc using hc`. Set `E : Matrix (Fin (n + 1)) (Fin (n + 1)) V` to `Matrix.of fun i j => if i = j then 1 else if j = 0 then -c i else 0`. Use `⟨E * P, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Use `IsUnit.mul ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hE : E.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular E]`. Simplify using `[E]`. Introduce `i j hij`. Establish `hij' : i < j` using `hij`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hj : j ≠ 0` using `fun h => by subst h; exact Fin.not_lt_zero _ hij'`. Simplify using `only [E, Matrix.of_apply, if_neg (ne_of_lt hij'), if_neg hj]`. Rewrite using `[hE]`. Conclude with `isUnit_one`. Simplify using `only [P, Matrix.det_permutation]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Introduce `i`. Rewrite using `[Matrix.map_mul, Matrix.mul_assoc, Matrix.mul_apply, Fin.sum_univ_succ]`. Establish `hPA : ∀ r, (P.map (algebraMap V F) * A) r 0 = A (σ r) 0`. Introduce `r`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[P, Matrix.mul_apply, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply]`. Simplify using `only [hPA, Matrix.map_apply, E, Matrix.of_apply]`. Rewrite using `[if_neg (Fin.succ_ne_zero i)]`. Simplify using `only [if_true, Fin.succ_ne_zero, map_neg, map_one, map_zero, zero_mul]`. Rewrite using `[Finset.sum_eq_single i]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [if_true, map_one, one_mul]`. Rewrite using `[hc]`. Establish `: σ 0 = p` using `by simp [σ]`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hji`. Rewrite using `[if_neg (fun h => hji (Fin.succ_injective _ h).symm)]`. Simplify using the standard rewrite rules. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_clear_col {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) F) (hA : A.det ≠ 0) :
     ∃ Q : Matrix (Fin (n + 1)) (Fin (n + 1)) V, IsUnit Q.det ∧
@@ -104,7 +100,7 @@ theorem exists_clear_col {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) F) (h
     · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-The claim follows from `| 0, A, _ => ⟨1, A, by simp, fun i => i.elim0, fun i => i.elim0, by ext i; exact i.elim0⟩ | n + 1, A, hA => by obtain ⟨Q, hQ, hQA⟩ := exists_clear_col (V := V) A hA set B := Q.map (algebraMap V F) * A with hB have hdetB : B.det = B 0 0 * (B.submatrix Fin.succ Fin.succ).det := by …`.
+A detailed English derivation is pending.
 -/
 theorem iwasawa_matrix : ∀ {n : ℕ} (A : Matrix (Fin n) (Fin n) F), A.det ≠ 0 →
     ∃ (k : Matrix (Fin n) (Fin n) V) (U : Matrix (Fin n) (Fin n) F), IsUnit k.det ∧ U.BlockTriangular id ∧
@@ -162,9 +158,9 @@ theorem iwasawa_matrix : ∀ {n : ℕ} (A : Matrix (Fin n) (Fin n) F), A.det ≠
         Matrix.nonsing_inv_mul Q hQ, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `V K _ _ _ _ _ _ N g`. Take `⟨k, U, hk, hU, -, hg⟩` from `iwasawa_matrix (V := V) g.1 (Matrix.GeneralLinearGroup.det_ne_zero g)`. Take `⟨u, rfl⟩` from `(Matrix.isUnit_iff_isUnit_det k).2 hk`. Use `⟨u, (GeneralLinearGroup.map (n := Fin N) (algebraMap V K) u)⁻¹ * g, ?_, by simp⟩` and prove the remaining obligations. Establish `: ((GeneralLinearGroup.map (n` using `Fin N) (algebraMap V K) u)⁻¹ * g).1 = U := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : g.1 = (GeneralLinearGroup.map (n` using `Fin N) (algebraMap V K) u).1 * U := hg`. Rewrite using `[Units.val_mul, h1, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[this]`. Conclude with `hU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawa : ∀ (V K : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] (N : ℕ) (g : GL (Fin N) K), ∃ (k : GL (Fin N) V) (b : GL (Fin N) K),

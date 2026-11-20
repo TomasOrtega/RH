@@ -9,7 +9,7 @@ open scoped BigOperators ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.Decomp
 
 /- English proof (translation)
-Establish `h : A.F 0 = ⊥` using `(Submodule.finrank_eq_zero (R := 𝓞 K) (S := A.F 0)).mp (A.rank 0)`. Rewrite using `[HermitianBundle.normDegree, h, HermitianBundle.degree_bot, zero_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem normDegree_step_zero {K : Type} [Field K] [NumberField K] {E : HermitianBundle.{0} K} {r : ℕ}
     (A : SatFlag E r) : E.normDegree (A.F 0) = 0 := by
@@ -17,9 +17,9 @@ theorem normDegree_step_zero {K : Type} [Field K] [NumberField K] {E : Hermitian
   rw [HermitianBundle.normDegree, h, HermitianBundle.degree_bot, zero_div]
 
 /- English proof (translation)
-Introduce `K _ _ E Ψ _ j k A lam`. Unfold `FlagPair.lamDeg`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hW` using `GlobalTheory.CompanionTheory.AbelFlag.abel_summation_flag j (fun i => lam τ (Fin.castAdd (k + 1) i)) (fun i => E.normDegree ((A.W τ).F i)) (normDegree_step_zero (A.W τ))`. Establish `hS` using `GlobalTheory.CompanionTheory.DualFlag.abel_sum_rev k (fun i => lam τ (Fin.natAdd (j + 1) i)) (fun i => E.normDegree ((A.S τ).F i)) (normDegree_step_zero (A.S τ))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [SatFlag.grDeg, FlagPair.flatDeg, SatFlag.top]`. Take the linear combination `hW + hS`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem lamDeg_eq : ∀ (K : Type) [Field K] [NumberField K] (E : HermitianBundle.{0} K) (Ψ : Type) [Fintype Ψ] (j k : ℕ) (A : FlagPair E Ψ (j + 1) (k + 1)) (lam : Ψ → Fin (j + 1 + (k + 1)) → ℝ), A.lamDeg lam = ∑ τ, ((∑ i : Fin j, (lam τ (Fin.castAdd (k + 1) i.castSucc) - lam τ (Fin.castAdd (k + 1) i.succ)) * (-E.normDegree ((A.W τ).F i.succ.castSucc))) + (lam τ (Fin.castAdd (k + 1) (Fin.last j)) - lam τ (Fin.natAdd (j + 1) 0)) * (-E.normDegree (A.W τ).top) + (∑ i : Fin k, (lam τ (Fin.natAdd (j + 1) i.castSucc) - lam τ (Fin.natAdd (j + 1) i.succ)) * (-E.normDegree ((A.S τ).F i.rev.succ.castSucc))) - lam τ (Fin.natAdd (j + 1) 0) * A.flatDeg τ) := by
   intro K _ _ E Ψ _ j k A lam

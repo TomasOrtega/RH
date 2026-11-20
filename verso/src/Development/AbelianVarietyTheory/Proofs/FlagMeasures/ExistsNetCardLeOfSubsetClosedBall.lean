@@ -6,17 +6,15 @@ open Metric
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ S R δ hδ hR hS`. Set `P : Finset E → Prop` to `fun T => (T : Set E) ⊆ S ∧ (T : Set E).Pairwise fun a b => δ ≤ dist a b`. Establish `hb : ∀ T, P T → (T.card : ℝ) ≤ (1 + 2 * R / δ) ^ Module.finrank ℝ E` using `fun T hT => finset_card_le_of_separated T hδ hR 0 (fun a ha => hS (hT.1 ha)) hT.2`. Take `⟨N, hN⟩` from `exists_nat_ge ((1 + 2 * R / δ) ^ Module.finrank ℝ E)`. Set `Q : ℕ → Prop` to `fun n => ∃ T, P T ∧ T.card = n`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hQ0 : Q 0` using `⟨∅, ⟨by simp, by simp⟩, rfl⟩`. Take `⟨T, hT, hTc⟩ : Q (Nat.findGreatest Q N)` from `Nat.findGreatest_spec (Nat.zero_le N) hQ0`. Use `⟨T, hT.1, hb T hT, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hxT : x ∉ T` using `fun h => by`. Use `hcon x h` as an intermediate fact. Rewrite `this` using `[dist_self]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hP : P (insert x T)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_insert]`. Conclude with `Set.insert_subset hx hT.1`. Rewrite using `[Finset.coe_insert]`. Use `hT.2.insert fun b hb' _ => ⟨(hcon b hb').le, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dist_comm]`. Conclude with `(hcon b hb').le`. Establish `hle : (insert x T).card ≤ N`. Conclude with `(hb _ hP).trans hN` after adjusting the coercions. Use `Nat.le_findGreatest (P := Q) hle ⟨_, hP, rfl⟩` as an intermediate fact.
-
-Rewrite `this` using `[Finset.card_insert_of_notMem hxT]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_net_card_le_of_subset_closedBall :
     ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] (S : Set E)

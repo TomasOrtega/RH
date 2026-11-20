@@ -10,7 +10,7 @@ open scoped ENNReal Pointwise
 namespace GlobalTheory.CompanionTheory.KernelColumns
 
 /- English proof (translation)
-Unfold `ker`. Conclude with `finsum_sub_distrib ((hK X φ h).1 x y) ((hK X φ' h').1 x y)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ker_sub_of_kerBasic (hK : KerBasic) (X : Ctx) {φ φ' : X.G → ℂ} (h : Tst φ) (h' : Tst φ')
     (x y : X.G) :
@@ -19,7 +19,7 @@ theorem ker_sub_of_kerBasic (hK : KerBasic) (X : Ctx) {φ φ' : X.G → ℂ} (h 
   exact finsum_sub_distrib ((hK X φ h).1 x y) ((hK X φ' h').1 x y)
 
 /- English proof (translation)
-Rewrite using `[Lp.enorm_def]`. Establish `h` using `eLpNorm_nnreal_pow_eq_lintegral (f := (f : α → ℂ)) (μ := ν) (p := 2) (by norm_num)`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem enorm_sq_Lp_two {α : Type*} [MeasurableSpace α] (ν : Measure α) (f : Lp ℂ 2 ν) :
     ‖f‖ₑ ^ 2 = ∫⁻ z, ‖(f : α → ℂ) z‖ₑ ^ 2 ∂ν := by
@@ -28,9 +28,9 @@ theorem enorm_sq_Lp_two {α : Type*} [MeasurableSpace α] (ν : Measure α) (f :
   simpa using h
 
 /- English proof (translation)
-Establish `h : ‖f‖₊ ^ 2 = ∑ l, ‖f l‖₊ ^ 2`. Apply `NNReal.coe_injective` to reduce the goal to its premises. Use `push_cast`. Simplify using `using PiLp.norm_sq_eq_of_L2 E f`. Simplify using `only [enorm_eq_nnnorm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (fun t : NNReal => (t : ℝ≥0∞)) h` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem enorm_sq_piLp_two {ι : Type*} [Fintype ι] {E : ι → Type*}
     [∀ i, NormedAddCommGroup (E i)] (f : PiLp 2 E) :
@@ -43,15 +43,15 @@ theorem enorm_sq_piLp_two {ι : Type*} [Fintype ι] {E : ι → Type*}
   exact_mod_cast congrArg (fun t : NNReal => (t : ℝ≥0∞)) h
 
 /- English proof (translation)
-Introduce `hK hC X ι _ Φ Φ' Ω ε y j k k' hΩ hΦ hk hk'`. Use `set R : ℝ≥0∞ := ENNReal.ofReal ε ^ 2 * X.μ Ω⁻¹ * cnt X.Γ (Ω⁻¹ * Ω) y with hR`. Establish `key : ∀ l, ‖(k - k') l‖ₑ ^ 2 ≤ R`. Introduce `l`. Take `⟨t, t', s, s', hd⟩` from `hΦ l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT : Tst (fun z => Φ l j z - Φ' l j z)` using `⟨t.1.sub t'.1, t.2.sub t'.2⟩`. Establish `hS : Function.support (fun z => Φ l j z - Φ' l j z) ⊆ Ω`. Introduce `z hz`. Assume the negation of the conclusion as `hn`. Establish `h1 : Φ l j z = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hn (s h0)`. Establish `h2 : Φ' l j z = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hn (s' h0)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz (by simp [h1, h2])`. Establish `hcol` using `hC X (fun z => Φ l j z - Φ' l j z) ε Ω hT hd hΩ hS y`. Establish `hae : ((k l - k' l : Lp ℂ 2 X.ν) : X.G → ℂ) =ᵐ[X.ν] fun z => ker X.Γ (fun w => Φ l j w - Φ' l j w) z y` using `by filter_upwards [Lp.coeFn_sub (k l) (k' l), hk l, hk' l] with z h1 h2 h3`. Rewrite using `[h1, Pi.sub_apply, h2, h3, ker_sub_of_kerBasic hK X t t']`. Establish `hsub : (k - k') l = k l - k' l` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hsub, enorm_sq_Lp_two]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[enorm_sq_piLp_two]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecClose_of_kerBasic_colSq : KerBasic → ColSq → VecClose := by
   intro hK hC X ι _ Φ Φ' Ω ε y j k k' hΩ hΦ hk hk'

@@ -15,9 +15,9 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 namespace GlobalTheory.CompanionTheory.Ar.SncRes.ProdChart
 
 /- English proof (translation)
-Use `haveI : IsAffine U.toScheme := hU`. Use `haveI : IsAffine V.toScheme := hV`. Set `m` to `pullback.map (U.ι ≫ f) (V.ι ≫ g) f g U.ι V.ι (𝟙 S) (by simp) (by simp)`. Use `haveI : IsOpenImmersion m := MorphismProperty.pullback_map (P := @IsOpenImmersion) inferInstance inferInstance rfl rfl`. Establish `e : m.opensRange = pullback.fst f g ⁻¹ᵁ U ⊓ pullback.snd f g ⁻¹ᵁ V` using `by ext1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(Scheme.Pullback.range_map _ _ _ _ _ _ _ _ _).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[← e]`. Conclude with `isAffineOpen_opensRange m`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_fst_inf_snd {S X Y : Scheme.{0}} [IsAffine S] (f : X ⟶ S) (g : Y ⟶ S) {U : X.Opens}
     {V : Y.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V) :
@@ -35,7 +35,7 @@ theorem isAffineOpen_fst_inf_snd {S X Y : Scheme.{0}} [IsAffine S] (f : X ⟶ S)
   exact isAffineOpen_opensRange m
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_preimage u, ← Spec.map_preimage v]`. Use `congr 1`. Use `ext1`. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem spec_rat_ext {C : Type} [CommRing C] (u v : Sp C ⟶ Sp ℚ) : u = v := by
   rw [← Spec.map_preimage u, ← Spec.map_preimage v]
@@ -47,17 +47,15 @@ variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {X Y : Scheme.{0}} (f : X ⟶ S
   {U : X.Opens} {V : Y.Opens}
 
 /- English proof (translation)
-Set `ι : CommRingCat.of C ⟶ CommRingCat.of Ω` to `CommRingCat.ofHom C.val.toRingHom`. Set `φA : Γ(X, U) ⟶ CommRingCat.of C` to `CommRingCat.ofHom ((valMap _ U hA).hom.codRestrict C mA)`. Set `φB : Γ(Y, V) ⟶ CommRingCat.of C` to `CommRingCat.ofHom ((valMap _ V hB).hom.codRestrict C mB)`. Establish `eA : φA ≫ ι = valMap _ U hA` using `rfl`. Establish `eB : φB ≫ ι = valMap _ V hB` using `rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfg : (Spec.map φA ≫ hU.fromSpec) ≫ f = (Spec.map φB ≫ hV.fromSpec) ≫ g` using `spec_rat_ext _ _`. Set `q : Sp C ⟶ pullback f g` to `pullback.lift _ _ hfg`. Establish `hq : Spec.map ι ≫ q = p`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.lift_fst, ← Category.assoc, ← Spec.map_comp, eA, specMap_valMap_fromSpec hU]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, ← Spec.map_comp, eB, specMap_valMap_fromSpec hV]`. Establish `h₃ : ⊤ ≤ (q ≫ pullback.fst f g) ⁻¹ᵁ U`. Rewrite using `[pullback.lift_fst]`. Conclude with `le_preimage_specMap_fromSpec hU φA`. Establish `h₄ : ⊤ ≤ (q ≫ pullback.snd f g) ⁻¹ᵁ V`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullback.lift_snd]`. Conclude with `le_preimage_specMap_fromSpec hV φB`. Establish `hqW : ⊤ ≤ q ⁻¹ᵁ (pullback.fst f g ⁻¹ᵁ U ⊓ pullback.snd f g ⁻¹ᵁ V)` using `fun y hy => ⟨h₃ hy, h₄ hy⟩`. Establish `key : ∀ h' : ⊤ ≤ (Spec.map ι ≫ q) ⁻¹ᵁ (pullback.fst f g ⁻¹ᵁ U ⊓ pullback.snd f g ⁻¹ᵁ V), valMap (Spec.map ι ≫ q) _ h' = valMap q _ hqW ≫ ι` using `fun h' => by`. Rewrite using `[← appLE_valMap (Spec.map ι) q hqW (le_preimage_top _) h', valMap_specMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [valMap, Category.assoc]`. Establish `h' : ⊤ ≤ (Spec.map ι ≫ q) ⁻¹ᵁ (pullback.fst f g ⁻¹ᵁ U ⊓ pullback.snd f g ⁻¹ᵁ V)`. Rewrite using `[hq]`. Conclude with `h`. Establish `e : (valMap p _ h).hom t = (valMap (Spec.map ι ≫ q) _ h').hom t`.
-
-Rewrite using `[← valR_eq, ← valR_eq, hq]`. Rewrite using `[e, key]`. Conclude with `((valMap q _ hqW).hom t).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_mem_of_components (hU : IsAffineOpen U) (hV : IsAffineOpen V) (C : Subalgebra ℚ Ω)
     (p : Sp Ω ⟶ pullback f g) (hA : ⊤ ≤ (p ≫ pullback.fst f g) ⁻¹ᵁ U) (hB : ⊤ ≤ (p ≫ pullback.snd f g) ⁻¹ᵁ V)
@@ -100,21 +98,19 @@ theorem val_mem_of_components (hU : IsAffineOpen U) (hV : IsAffineOpen V) (C : S
   exact ((valMap q _ hqW).hom t).2
 
 /- English proof (translation)
-Substitute `h₁ h₂` using the available equality. Establish `hW` using `isAffineOpen_fst_inf_snd f g hU hV`. Establish `hZ : ⊤ ≤ ζ ⁻¹ᵁ ((j ≫ pullback.fst f g) ⁻¹ᵁ U ⊓ (j ≫ pullback.snd f g) ⁻¹ᵁ V)` using `fun y hy => ⟨hA hy, hB hy⟩`. Establish `hp : ⊤ ≤ (ζ ≫ j) ⁻¹ᵁ (pullback.fst f g ⁻¹ᵁ U ⊓ pullback.snd f g ⁻¹ᵁ V)` using `hZ`. Establish `hA' : ⊤ ≤ ((ζ ≫ j) ≫ pullback.fst f g) ⁻¹ᵁ U` using `by rwa [Category.assoc]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB' : ⊤ ≤ ((ζ ≫ j) ≫ pullback.snd f g) ⁻¹ᵁ V` using `by rwa [Category.assoc]`. Establish `vA : ∀ s, (valMap ((ζ ≫ j) ≫ pullback.fst f g) U hA').hom s = (valMap (ζ ≫ j ≫ pullback.fst f g) U hA).hom s`. Introduce `s`. Rewrite using `[← valR_eq, ← valR_eq, Category.assoc]`. Establish `vB : ∀ s, (valMap ((ζ ≫ j) ≫ pullback.snd f g) V hB').hom s = (valMap (ζ ≫ j ≫ pullback.snd f g) V hB).hom s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `s`. Rewrite using `[← valR_eq, ← valR_eq, Category.assoc]`. Use `⟨hW.preimage j, hZ, Set.Subset.antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Take `⟨t, rfl⟩` from `j.app_surjective _ hW s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `e : (valMap (ζ ≫ j) _ hp).hom t = (valMap ζ _ hZ).hom ((j.app _).hom t)` using `(valR_eq _ _ hp t).symm.trans ((valR_comp ζ j _ t).trans (valR_eq ζ (j ⁻¹ᵁ (pullback.fst f g ⁻¹ᵁ U ⊓ pullback.snd f g ⁻¹ᵁ V)) hZ _))`. Rewrite using `[← e]`. Use `val_mem_of_components f g hU hV _ (ζ ≫ j) hA' hB' (fun s => ?_) (fun s => ?_) hp t` and prove the remaining obligations. Rewrite using `[vA]`. Establish `m : (valMap (ζ ≫ j ≫ pullback.fst f g) U hA).hom s ∈ (Algebra.adjoin ℚ R₁ : Set Ω)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e₁]`. Conclude with `Set.mem_range_self s`. Conclude with `Algebra.adjoin_mono Set.subset_union_left m`. Rewrite using `[vB]`. Establish `m : (valMap (ζ ≫ j ≫ pullback.snd f g) V hB).hom s ∈ (Algebra.adjoin ℚ R₂ : Set Ω)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← e₂]`. Conclude with `Set.mem_range_self s`. Conclude with `Algebra.adjoin_mono Set.subset_union_right m`. Set `F : Z ⟶ Sp ℚ` to `j ≫ pullback.fst f g ≫ f`. Set `S : Subalgebra ℚ Ω` to `{ (valMap ζ _ hZ).hom.range with algebraMap_mem' := fun c => ⟨(GlobalTheory.QCoh.Qcqs.baseRingHom F _).hom c, RingHom.congr_fun (Subsingleton.elim ((valMap ζ _ hZ).hom.comp (GlobalTheory.QCoh.Qcqs.baseRingHom F _).hom) (algebraMap ℚ Ω)) c⟩ }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hS : Algebra.adjoin ℚ (R₁ ∪ R₂) ≤ S`. Use `Algebra.adjoin_le (Set.union_subset ?_ ?_)` and prove the remaining obligations. Introduce `w hw`. Take `⟨s, rfl⟩ : w ∈ Set.range (valMap (ζ ≫ j ≫ pullback.fst f g) U hA).hom` from `e₁.symm ▸ (Algebra.subset_adjoin hw : w ∈ (Algebra.adjoin ℚ R₁ : Set Ω))`. Conclude with `⟨((j ≫ pullback.fst f g).appLE U _ inf_le_left).hom s, congrArg (fun φ => φ.hom s) (appLE_valMap ζ (j ≫ pullback.fst f g) inf_le_left hZ hA)⟩`.
-
-Introduce `w hw`. Take `⟨s, rfl⟩ : w ∈ Set.range (valMap (ζ ≫ j ≫ pullback.snd f g) V hB).hom` from `e₂.symm ▸ (Algebra.subset_adjoin hw : w ∈ (Algebra.adjoin ℚ R₂ : Set Ω))`. Conclude with `⟨((j ≫ pullback.snd f g).appLE V _ inf_le_right).hom s, congrArg (fun φ => φ.hom s) (appLE_valMap ζ (j ≫ pullback.snd f g) inf_le_right hZ hB)⟩`. Conclude with `hS`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem closed_prod_chart {Z : Scheme.{0}} (j : Z ⟶ pullback f g) [IsClosedImmersion j] (ζ : Sp Ω ⟶ Z)
     (pX : Sp Ω ⟶ X) (pY : Sp Ω ⟶ Y) (h₁ : ζ ≫ j ≫ pullback.fst f g = pX) (h₂ : ζ ≫ j ≫ pullback.snd f g = pY)
@@ -175,7 +171,7 @@ theorem closed_prod_chart {Z : Scheme.{0}} (j : Z ⟶ pullback f g) [IsClosedImm
     exact hS
 
 /- English proof (translation)
-The claim follows from `closed_prod_chart _ _ j ζ _ _ h₁ h₂ (isAffineOpen_chart ℚ N a) (isAffineOpen_chart ℚ r l) ((le_point_preimage_iff a).2 ha) ((le_point_preimage_iff l).2 hl) _ _ (range_valMap_point _) (range_valMap_point _)`.
+A detailed English derivation is pending.
 -/
 theorem prod_chart (Ω : Type) [Field Ω] [CharZero Ω] (N r : ℕ) (Z : Scheme.{0})
     (j : Z ⟶ pullback (PSpace.str ℚ N) (PSpace.str ℚ r)) [IsClosedImmersion j] (ζ : Sp Ω ⟶ Z)

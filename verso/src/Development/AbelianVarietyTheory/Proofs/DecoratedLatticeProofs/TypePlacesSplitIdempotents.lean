@@ -21,13 +21,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LevelPlaces
 
 /- English proof (translation)
-Introduce `hl`. Apply `h` to reduce the goal to its premises. Introduce `x y hxy`. Establish `hs : ∀ c c' : 𝓞 D.host.E, (c' : D.host.E) = star (c : D.host.E) → c' = GlobalTheory.IdemSupport.cO D c` using `fun c c' e => RingOfIntegers.ext (by rw [e, GlobalTheory.IdemSupport.cO_coe])`. Establish `hy : y = GlobalTheory.IdemSupport.cO D x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hxy, GlobalTheory.IdemSupport.cO_coe]`. Conclude with `(Formalism.BasicNotions.bridge_star_holds D.R D.host _).symm`. Substitute `hy` using the available equality. Prove the components needed by the constructor for the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Take `⟨c', hc', e⟩` from `hl x hx`. Rewrite `hc'` using `[hs _ _ e]`. Then use the resulting hypothesis. Introduce `hx`. Take `⟨c', hc', e⟩` from `hl _ hx`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hc'` using `[hs _ _ e, GlobalTheory.IdemSupport.cO_cO]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem not_isConjPl_lev {D : D7} {P : HeightOneSpectrum (𝓞 D.host.E)} (h : ¬ Formalism.BasicNotions.IsConjPl D.host P P) :
     ¬ Formalism.IndefR.Lev.IsConjPl (D := D) P P := by
@@ -54,21 +54,19 @@ end GlobalTheory.LevelPlaces
 namespace GlobalTheory.LevelPlaces
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hpk hTy PP hPP`. Establish `hg : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `hTy.1 PP hPP`. Rewrite `hg` using `[Nat.cast_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : Fin 2, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by`. Break down `PP.isPrime.mem_or_mem hg with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Establish `hgp : (D.host.g k).Prime` using `D.host.g_prime k`. Establish `hv : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (PP.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) _ ∈ PP.asIdeal`. Rewrite using `[map_natCast]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Take `⟨i, hi⟩` from `((GlobalTheory.PlacesOverG.places_over_g_k D k).2.1 PP).1 hk`. Establish `key : ∀ {v v' : HeightOneSpectrum (𝓞 D.host.F)}, v = v' → Nonempty (D.host.E →ₐ[D.host.F] Fv D.host.F v) → Nonempty (D.host.E →ₐ[D.host.F] Fv D.host.F v')`. Introduce and unpack `v _ rfl h`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hτ : Nonempty (D.host.E →ₐ[D.host.F] Fv D.host.F (PP.under (𝓞 D.host.F)))`. Break down `i with w | w` into its components or cases. Establish `hi' : D.naut.plGw k w = PP` using `hi`. Conclude with `key (congrArg (HeightOneSpectrum.under (𝓞 D.host.F)) hi') (GlobalTheory.LocPlSplit.nonempty_of_not_isConjPl (not_isConjPl_lev (D.naut.plGw_nconj k w w)))`. Establish `hi' : GlobalTheory.IdemSupport.cP (D.naut.plGw k w) = PP` using `hi`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key ((GlobalTheory.IdemSupport.under_cP _).symm.trans (congrArg (HeightOneSpectrum.under (𝓞 D.host.F)) hi')) (GlobalTheory.LocPlSplit.nonempty_of_not_isConjPl (not_isConjPl_lev (D.naut.plGw_nconj k w w)))`. Take `⟨τ⟩` from `hτ`. Establish `he` using `GlobalTheory.AdelicU.Supp.splitAt_splitIdemAd (D := D) τ`. Establish `hε` using `GlobalTheory.AdelicU.Supp.isPlaceIdem_placeIdem D (PP.under (𝓞 D.host.F))`. Establish `hs` using `he.2.2.trans (GlobalTheory.AdelicU.Supp.pl_eq D (PP.under (𝓞 D.host.F)))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : IsSplitIdem D (GlobalTheory.AdelicU.Supp.splitIdemAd _ τ)` using `⟨he.1, he.2.1, _, _, hε, hs⟩`. Take `⟨p, -, hpv⟩` from `GlobalTheory.FinPl.SplitPoint.exists_splitPt D _ _ _ hsplit hε hs`. Establish `hne : ∀ m ∈ D.host.condN.primeFactors, D.host.g k ≠ m` using `fun m hm e => by`. Use `GlobalTheory.RamValCheck.g_coprime D k m hm` as an intermediate fact. Rewrite `this` using `[e, Nat.coprime_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgp.one_lt.ne' (e ▸ this)`. Establish `hc : Nat.Coprime (Ideal.absNorm D.host.ccK) (D.host.g k)`. Use `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hgp).2 fun ⟨m, hm⟩ => ?_)` and prove the remaining obligations. Use `hpk.aa PP (Or.inr (Or.inl hPP)) ?_` and prove the remaining obligations. Rewrite using `[hm, Nat.cast_mul]`.
-
-Conclude with `PP.asIdeal.mul_mem_right _ hk`. Establish `hu` using `GlobalTheory.FinPl.UnitAt.unitAA_of_prime p hgp (by rw [hpv]; exact hv) (UpperTheory.Ram.g_notMem_small D k) (hne _ (Nat.mem_primeFactors.2 ⟨D.host.q_prime, D.host.q_dvd_condN, D.host.condN_ne_zero⟩)) (hne _ (Nat.mem_primeFactors.2 ⟨D.host.d_prime, D.host.d_dvd_condN, D.host.cond …`. Unfold `GlobalTheory.FinPl.SplitPt.UnitAA at hu`. Rewrite `hu` using `[hpv]`. Conclude with `⟨⟨_, _, hsplit, hε, hs⟩, hu.1, hu.2⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem split_unit : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → GlobalTheory.Core.Mi.IsTypePlaces (pk W).Pg → ∀ PP ∈ (pk W).Pg, ((∃ e ε, IsSplitIdem D e ∧ IsPlaceIdem D (PP.under (𝓞 D.host.F)) ε ∧ e + cA D e = algebraMap (AF D.host.F) (AE D) ε) ∧ (∀ a ∈ GlobalTheory.FinPl.intAt D (· = (PP.under (𝓞 D.host.F))), incA D D.host.xi0 * a ∈ GlobalTheory.FinPl.intAt D (· = (PP.under (𝓞 D.host.F))) ∧ incA D D.host.xi0⁻¹ * a ∈ GlobalTheory.FinPl.intAt D (· = (PP.under (𝓞 D.host.F)))) ∧ ∀ (V : HSp D) (Λ : GlobalTheory.FinPl.Lat V), GlobalTheory.FinPl.latA V Λ (· = (PP.under (𝓞 D.host.F))) = GlobalTheory.FinPl.latV V Λ (· = (PP.under (𝓞 D.host.F)))) := by
   intro D L hT Gi Gl Kc Yd cX ex W hpk hTy PP hPP

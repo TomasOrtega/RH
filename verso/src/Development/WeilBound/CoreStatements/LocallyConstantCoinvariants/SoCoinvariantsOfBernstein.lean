@@ -5,7 +5,7 @@ import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.FullOfSo
 namespace PositivityTheory.KCo
 
 /- English proof (translation)
-The claim follows from `soCoinv_of hB dictionary_statement hK`.
+A detailed English derivation is pending.
 -/
 theorem so_coinvariants_of_bernstein (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) (hK : GlobalTheory.ThK.KFin) : PositivityTheory.ThKF.SoCoinv :=
   soCoinv_of hB dictionary_statement hK

@@ -12,25 +12,21 @@ open scoped InnerProductSpace Topology
 namespace GlobalTheory.TypeSum
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ h a ha v hv`. Take `⟨a1, a2, a3, a4, a5⟩` from `isAvg_closure n ε H σ h.1`. Take `⟨c1, c2, c3, c4⟩` from `kCoef_kAvg n ε H σ h.1`. Set `A : Submodule ℂ H` to `{ carrier := {x | ∃ T : H → H, IsAvg ε σ T ∧ T a = x} add_mem' := by`. Introduce and unpack `_ _ ⟨T, hT, rfl⟩ ⟨T', hT', rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, (a2 T T' hT hT').1, rfl⟩`. Use the proof step `zero_mem' := ⟨_, a5, rfl⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨T, hT, rfl⟩`. Conclude with `⟨_, a3 c T hT, rfl⟩ }`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hA : ∀ T : H → H, IsAvg ε σ T → ∀ x ∈ A, T x ∈ A`. Introduce and unpack `T hT _ ⟨T', hT', rfl⟩`. Conclude with `⟨_, (a2 T T' hT hT').2, rfl⟩`. Establish `haA : a ∈ A` using `⟨_, a1 1 (one_mem_UJ ε), sigma_one h.1 a⟩`. Establish `hdense : Dense (A : Set H)` using `dense_of_irred h.2.1 (fun g hg x hx => hA _ (a1 g hg) x hx) ((Submodule.ne_bot_iff _).2 ⟨a, haA, ha⟩)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrange : ∀ e : KG ε → ℂ, KFinFun ε e → Continuous e → ∀ w, kAvg ε σ e w ∈ A`. Introduce `e he hc w`. Take `⟨m, b, c, -, -, -, hbc⟩` from `GlobalTheory.T.compactAverage_kFinite_finiteRank n ε H σ h e he`. Take `⟨Q, hQ⟩` from `c3 e hc`. Set `F : Submodule ℂ H` to `Submodule.span ℂ (Set.range b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ F := FiniteDimensional.span_of_finite ℂ (Set.finite_range b)`. Use `haveI : FiniteDimensional ℂ (A ⊓ F : Submodule ℂ H) := Submodule.finiteDimensional_inf_right A F`. Establish `hcl : IsClosed (Q ⁻¹' ((A ⊓ F : Submodule ℂ H) : Set H))` using `(Submodule.closed_of_finiteDimensional _).preimage Q.continuous`. Establish `hsub : (A : Set H) ⊆ Q ⁻¹' ((A ⊓ F : Submodule ℂ H) : Set H)`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hQ]`. Conclude with `hA _ (a4 e hc) x hx`. Rewrite using `[hQ, hbc]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `closure_minimal hsub hcl (hdense w)` as an intermediate fact. Rewrite using `[← hQ]`. Conclude with `(Submodule.mem_inf.1 this).1`. Take `⟨S, hS, hvS, hK⟩` from `hv`. Use `haveI : FiniteDimensional ℂ (S ⊓ A : Submodule ℂ H) := Submodule.finiteDimensional_inf_left S A`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw, y, hy, hvwy⟩` from `(S ⊓ A).exists_add_mem_mem_orthogonal v`. Establish `hyS : y ∈ S`. Use `S.sub_mem hvS (Submodule.mem_inf.1 hw).1` as an intermediate fact. Rewrite `this` using `[hvwy, add_sub_cancel_left]`. Then use the resulting hypothesis. Establish `hy0 : y = 0`.
-
-Assume the negation of the conclusion as `hy0`. Establish `hk` using `c1 y ⟨S, hS, hyS, hK⟩`. Establish `hc : Continuous fun k : KG ε => star ⟪y, σ (toMK k) y⟫_ℂ`. Take `⟨F, -, h1, h2, -⟩` from `hk`. Conclude with `h2 _ h1`.
-
-Conclude with `c2 y hy0 (Submodule.inner_left_of_mem_orthogonal (Submodule.mem_inf.2 ⟨c4 _ hc S hS hK y hyS, hrange _ hk hc y⟩) hy)`. Rewrite using `[hvwy, hy0, add_zero]`. Conclude with `(Submodule.mem_inf.1 hw).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isAvg_apply_eq : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ a : H, a ≠ 0 → ∀ v, IsKFin ε σ v → ∃ T : H → H, IsAvg ε σ T ∧ T a = v := by
   intro n ε H _ _ _ σ h a ha v hv

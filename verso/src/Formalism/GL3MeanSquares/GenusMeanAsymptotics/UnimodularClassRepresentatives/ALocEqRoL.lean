@@ -29,9 +29,9 @@ variable (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
 include hK hF hs hd hL hLi hS
 
 /- English proof (translation)
-Establish `hv : vd h L 𝔭.1 = 0`. Assume the negation of the conclusion as `hne`. Conclude with `h𝔭 (hS 𝔭 hne)`. Take `⟨hn', hvn'⟩` from `(exists_vF_eq 𝔭.2 (valF n 𝔭)).choose_spec`. Rewrite using `[roL, if_neg h𝔭]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `aLoc`. Rewrite using `[alphaN_eq_of_vF_eq hK hF hs hd hL hLi 𝔭.2 hv hn hn' (by rw [hvn', valF_apply hn])]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aLoc_eq_roL {𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}} (h𝔭 : 𝔭 ∉ S) {n : 𝓞 F} (hn : n ≠ 0) :
     aLoc h L 𝔭 n = roL h L S 𝔭 (valF n 𝔭) := by
@@ -46,13 +46,11 @@ theorem aLoc_eq_roL {𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}} (h𝔭 : 
 include hm
 
 /- English proof (translation)
-Distinguish the cases in `h𝔭 : 𝔭 ∈ S`. Rewrite using `[roL, if_pos h𝔭]`. Establish `hv : vd h L 𝔭.1 = 0`. Assume the negation of the conclusion as `hne`. Conclude with `h𝔭 (hS 𝔭 hne)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨hn', hvn'⟩` from `(exists_vF_eq 𝔭.2 0).choose_spec`. Establish `hn𝔭 : (exists_vF_eq 𝔭.2 0).choose ∉ 𝔭.1`. Introduce `hmem`. Use `(mem_pow_iff_le_vF 𝔭.2 hn' 1).mp (by rw [pow_one]; exact hmem)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[roL, if_neg h𝔭]`. Unfold `aLoc`. Rewrite using `[unitaryAbsoluteValueBounds.alphaN_unit hK hF hs hd hL hLi 𝔭.2 hv (by omega) hn𝔭]`. Establish `he` using `eFac_pos (K := K) 𝔭.2 (m := finrank K V) (by omega)`. Unfold `eFac at he ⊢`.
-
-Conclude with `div_self he.ne'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem roL_zero (𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}) : roL h L S 𝔭 0 = 1 := by
   by_cases h𝔭 : 𝔭 ∈ S
@@ -73,7 +71,7 @@ theorem roL_zero (𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}) : roL h L S 
     exact div_self he.ne'
 
 /- English proof (translation)
-The claim follows from `|roL h L S 𝔭 (j + 1) - roL h L S 𝔭 j| ≤ 8 * ((j : ℝ) + 2) ^ 2 / (Ideal.absNorm 𝔭.1 : ℝ) := by by_cases h𝔭 : 𝔭 ∈ S · have h1 : ∀ i, roL h L S 𝔭 i = 1 := fun i => by rw [roL, if_pos h𝔭] rw [h1, h1, sub_self, abs_zero] positivity · have hv : vd h L 𝔭.1 = 0 := by by_contra hne exact …`.
+A detailed English derivation is pending.
 -/
 theorem roL_diff (𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}) (j : ℕ) :
     |roL h L S 𝔭 (j + 1) - roL h L S 𝔭 j| ≤
@@ -111,7 +109,7 @@ theorem roL_diff (𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}) (j : ℕ) :
 
 omit hm in
 /- English proof (translation)
-Rewrite using `[← Finset.prod_sdiff hU (f := fun 𝔭 => aLoc h L 𝔭 n), ← Finset.prod_sdiff hU (f := fun 𝔭 => roL h L S 𝔭 (valF n 𝔭))]`. Establish `h1 : ∏ 𝔭 ∈ S, roL h L S 𝔭 (valF n 𝔭) = 1` using `Finset.prod_eq_one fun 𝔭 h𝔭 => by rw [roL, if_pos h𝔭]`. Establish `h2 : ∏ 𝔭 ∈ U \ S, aLoc h L 𝔭 n = ∏ 𝔭 ∈ U \ S, roL h L S 𝔭 (valF n 𝔭)` using `Finset.prod_congr rfl fun 𝔭 h𝔭 => aLoc_eq_roL (hK := hK) (hF := hF) (hs := hs) (hd := hd) (hL := hL) (hLi := hLi) (hS := hS) (Finset.mem_sdiff.mp h𝔭).2 hn`. Rewrite using `[h1, h2, mul_one, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_aLoc {U : Finset {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}} (hU : S ⊆ U) {n : 𝓞 F}
     (hn : n ≠ 0) :
@@ -126,9 +124,9 @@ theorem prod_aLoc {U : Finset {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}} (hU : S
   rw [h1, h2, mul_one, mul_comm]
 
 /- English proof (translation)
-Establish `hz : ∀ 𝔭, roL h L S 𝔭 0 = 1` using `fun 𝔭 => roL_zero (hK := hK) (hF := hF) (hs := hs) (hd := hd) (hL := hL) (hLi := hLi) (hm := hm) (hS := hS) 𝔭`. Establish `e1 : singS F h L n = ∏' 𝔭, aLoc h L 𝔭 n` using `rfl`. Establish `hsup : (valF n).support ⊆ S ∪ (valF n).support` using `Finset.subset_union_right`. Rewrite using `[e1, tprod_eq_prod (s := S ∪ (valF n).support) ?_, prod_aLoc (hK := hK) (hF := hF) (hs := hs) (hd := hd) (hL := hL) (hLi := hLi) (hS := hS) Finset.subset_union_left hn, Finsupp.prod_of_support_subset _ hsup _ (fun 𝔭 _ => hz 𝔭)]`. Introduce `𝔭 h𝔭`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h𝔭` using `[Finset.mem_union, not_or]`. Establish `h0 : valF n 𝔭 = 0`. Assume the negation of the conclusion as `hne`. Conclude with `h𝔭.2 (Finsupp.mem_support_iff.mpr hne)`. Rewrite using `[aLoc_eq_roL (hK := hK) (hF := hF) (hs := hs) (hd := hd) (hL := hL) (hLi := hLi) (hS := hS) h𝔭.1 hn, h0, hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem singS_eq {n : 𝓞 F} (hn : n ≠ 0) :
     singS F h L n = (∏ 𝔭 ∈ S, aLoc h L 𝔭 n) * (valF n).prod (roL h L S) := by
@@ -148,9 +146,9 @@ theorem singS_eq {n : 𝓞 F} (hn : n ≠ 0) :
 
 omit hS in
 /- English proof (translation)
-Establish `hm1 : 1 ≤ finrank K V` using `by omega`. Use `choose C hC using fun 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} => alphaN_bound hK hF hs hd hL hLi hm 𝔭.2`. Use `⟨∏ 𝔭 ∈ S, C 𝔭 / eFac K (finrank K V) 𝔭.1, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hpos : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, 0 < eFac K (finrank K V) 𝔭.1` using `fun 𝔭 => eFac_pos 𝔭.2 hm1`. Establish `h0 : ∀ 𝔭 ∈ S, 0 ≤ aLoc h L 𝔭 n` using `fun 𝔭 _ => div_nonneg (hC 𝔭 n hn).1 (hpos 𝔭).le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.prod_nonneg h0, Finset.prod_le_prod h0 fun 𝔭 _ => ?_⟩` and prove the remaining obligations. Conclude with `div_le_div_of_nonneg_right (hC 𝔭 n hn).2 (hpos 𝔭).le`.
+A detailed English derivation is pending.
 -/
 theorem prodS_bound (S : Finset {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}) :
     ∃ C : ℝ, ∀ n : 𝓞 F, n ≠ 0 →

@@ -26,7 +26,7 @@ namespace GlobalTheory.ZH.EndoExtend
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Rewrite `h₁`, `h₂` using `[← sub_eq_zero, ← map_sub]`. Rewrite using `[← sub_eq_zero]`. Take `⟨N, hN, hc⟩` from `cls_surj (a - b)`. Rewrite `h₁`, `h₂`, the goal using `[← hc]`. Conclude with `(cls_eq_zero_iff hN).2 (GenericExtend.exists_isGen_of_densePart X U j hn ‹_› ‹_› ‹_› ‹_› P e N he ‹_› ‹_› hN ((cls_eq_zero_iff (pull_isLB hN _)).1 h₁) ((cls_eq_zero_iff (pull_isLB hN _)).1 h₂))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pic_ext {X U : Scheme.{0}} [IsLocallyNoetherian X] (j : U ⟶ X) (hn : Geo.Tor.IsNormalScheme X)
     [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j] (P : Over X) [Smooth P.hom]
@@ -48,16 +48,16 @@ def cubeCls {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) (c : Pic G.left) : 
   ∑ I : ULift.{0} (Finset (Fin n)), ((-1 : ℤ) ^ (n - I.down.card)) • CechPic.pull (psum G x I.down).left c
 
 /- English proof (translation)
-The claim follows from `cls_linComb hL _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cls_cubeLB {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) {L : LB G.left} (hL : L.IsLB) :
     cls (cubeLB G x L) (LB.isLB_linComb hL _ _) = cubeCls G x (cls L hL) :=
   cls_linComb hL _ _ _
 
 /- English proof (translation)
-Take `rfl : x' = fun i => u ≫ x i` from `funext h`. Unfold `cubeCls`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← pull_comp, ← Over.comp_left]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun z : T' ⟶ G => _ • CechPic.pull z.left c) (psum_hom (preHom u) x I.down)`.
+A detailed English derivation is pending.
 -/
 theorem pull_cubeCls {T T' : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) (x' : Fin n → (T' ⟶ G)) (u : T' ⟶ T)
     (h : ∀ i, x' i = u ≫ x i) (c : Pic G.left) : CechPic.pull u.left (cubeCls G x c) = cubeCls G x' c := by
@@ -69,9 +69,9 @@ theorem pull_cubeCls {T T' : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) (x' : F
   exact congrArg (fun z : T' ⟶ G => _ • CechPic.pull z.left c) (psum_hom (preHom u) x I.down)
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun I _ => ?_` and prove the remaining obligations. Establish `e₁ : (1 : 𝟙_ (Over S) ⟶ G) = η[G]` using `by rw [Hom.one_def]; simp`. Establish `: psum G (fun _ : Fin n => (1 : 𝟙_ (Over S) ⟶ G)) I.down = 1`. Unfold `psum`. Proceed by induction on `(List.finRange n).filter (· ∈ I.down) with`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Proceed by induction.
 
-Consider the case `nil => rfl`. Consider the case `cons k l ih => exact (_root_.one_mul _).trans ih`. Rewrite `this` using `[e₁]`. Rewrite using `[this]`. Conclude with `(congrArg (_ • ·) hc).trans (smul_zero _)`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cubeCls_one {n : ℕ} (c : Pic G.left) (hc : CechPic.pull (eSec G) c = 0) :
     cubeCls G (fun _ : Fin n => (η[G] : 𝟙_ (Over S) ⟶ G)) c = 0 := by
@@ -88,7 +88,7 @@ theorem cubeCls_one {n : ℕ} (c : Pic G.left) (hc : CechPic.pull (eSec G) c = 0
 
 variable {G} in
 /- English proof (translation)
-Unfold `cubeCls`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← pull_comp, ← pull_comp, psum_push h x' x (Over.homMk u hu) (fun i => Over.OverMorphism.ext (hx i)) I.down]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_cubeCls {G' : Over S'} [GrpObj G'] [IsCommMonObj G'] {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
     (h : IsGrpPullback G' G f φ) {T' : Over S'} {T : Over S} {n : ℕ} (x' : Fin n → (T' ⟶ G'))
@@ -105,17 +105,17 @@ theorem push_cubeCls {G' : Over S'} [GrpObj G'] [IsCommMonObj G'] {f : S' ⟶ S}
 end Cube
 
 /- English proof (translation)
-Take `⟨w', wd', hw', hwd', hs, hp, ha⟩` from `h`. Take `⟨w, ⟨hw, rfl⟩, -⟩` from `hext w' hw'`. Take `⟨wd, ⟨hwd, rfl⟩, -⟩` from `hext wd' hwd'`. Establish `hL` using `L.isLB`. Establish `hL'` using `pull_isLB hL (pullback.fst G.hom j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `isGrpPullback_pullback G j`. Establish `A : ∀ {Y Z : Over X} (a : Y ⟶ Z), ((Over.pullback j).map a).left ≫ pullback.fst Z.hom j = pullback.fst Y.hom j ≫ a.left` using `fun a => pullback.lift_fst _ _ _`. Establish `h0 : CechPic.pull (eSec G) (cls L.L hL) = 0` using `(cls_eq_zero_iff (pull_isLB hL _)).2 ⟨L.rig, L.rigGen⟩`. Use `geometricallyIntegral_of_smooth G.hom` as an intermediate fact. Use `smooth_tensorObj_hom G G` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `geometricallyIntegral_tensorObj_hom G G` as an intermediate fact. Use `⟨w, wd, hw, hwd, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(hext (𝟙 _) inferInstance).unique ⟨Serre.isMonHom_mul w wd, ?_⟩ ⟨inferInstance, CategoryTheory.Functor.map_id _ _⟩` and prove the remaining obligations. Rewrite using `[Functor.map_mul, hs]`. Use `(cls_eq_iff hL (LB.isLB_linComb hL _ _)).1 (Eq.trans ?_ (cls_cubeLB G _ hL).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `pic_ext j hn G (eSec G) (Over.w η[G]) (h0.trans ?_) ?_` and prove the remaining obligations. Apply the tactic sequence `refine ((pull_cubeCls G _ (fun _ => η[G]) η[G] (fun i => ?_) _).trans (cubeCls_one G _ h0)).symm fin_cases i <;> simp`. Establish `e` using `((cls_eq_iff hL' (LB.isLB_linComb hL' _ _)).2 hp).trans (cls_cubeLB ((Over.pullback j).obj G) _ hL')`. Establish `e'` using `push_cubeCls hG (T' := (Over.pullback j).obj G) (T := G) ![𝟙 _, (Over.pullback j).map w] ![𝟙 G, w] (pullback.fst G.hom j) pullback.condition (fun i => by fin_cases i`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `A w) (cls L.L hL)`. Conclude with `e.trans e'.symm`. Use `(cls_eq_iff (LB.isLB_linComb hL _ _) (LB.isLB_linComb hL _ _)).1 ((cls_cubeLB G _ hL).trans (Eq.trans ?_ (cls_cubeLB G _ hL).symm))` and prove the remaining obligations. Use `pic_ext j hn (G ⊗ G) (lift η[G] η[G]).left (Over.w _) ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `refine (pull_cubeCls G _ (fun _ => η[G]) (lift η[G] η[G]) (fun i => ?_) _).trans (pull_cubeCls G _ (fun _ => η[G]) (lift η[G] η[G]) (fun i => ?_) _).symm <;> fin_cases i <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `δ` to `lift ((Over.pullback j).map (fst G G)) ((Over.pullback j).map (snd G G))`. Establish `e` using `congrArg (CechPic.pull δ.left) ((cls_cubeLB ((Over.pullback j).obj G) _ hL').symm.trans (((cls_eq_iff (LB.isLB_linComb hL' _ _) (LB.isLB_linComb hL' _ _)).2 ha).trans (cls_cubeLB ((Over.pullback j).obj G) _ hL')))`. Establish `e'` using `fun x : Fin 2 → (G ⊗ G ⟶ G) => push_cubeCls hG (T' := (Over.pullback j).obj (G ⊗ G)) (T := G ⊗ G) (fun i => (Over.pullback j).map (x i)) x (pullback.fst (G ⊗ G).hom j) pullback.condition (fun i => A _) (cls L.L hL)`. Apply the tactic sequence `rw [pull_cubeCls _ _ (fun i => (Over.pullback j).map (![fst G G ≫ w, snd G G] i)) δ (fun i => by fin_cases i <;> simp [δ]), pull_cubeCls _ _ (fun i => (Over.pullback j).map (![fst G G, snd G G ≫ wd] i)) δ (fun i => by fin_cases i <;> simp [δ])] at e`. Conclude with `(e' _).trans (e.trans (e' _).symm)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hypS_of_densePart {X U : Scheme.{0}} [IsLocallyNoetherian X] (j : U ⟶ X) (hn : Geo.Tor.IsNormalScheme X)
     [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j] (G : Over X) [GrpObj G] [IsCommMonObj G]
@@ -174,11 +174,11 @@ section Model
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
 
 /- English proof (translation)
-Establish `e : M.stalkHom (M.pt (IsLocalRing.closedPoint Ω)) = (Scheme.stalkClosedPointTo (R` using `CommRingCat.of Ω) M.pt).hom := by`. Unfold `RatModel.stalkHom`. Use `erw [TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp]`. Use `(ConcreteCategory.isIso_iff_bijective _).2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Function.Bijective (Scheme.stalkClosedPointTo (R := CommRingCat.of Ω) M.pt).hom`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Use `⟨M.stalkHom_injective _, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ M.O (M.pt (IsLocalRing.closedPoint Ω))`. Establish `h` using `M.O_genericPoint`. Rewrite `h` using `[← M.pt_apply (IsLocalRing.closedPoint Ω)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h.ge trivial`. Take `⟨a, ha⟩` from `(M.stalkEquiv _).surjective ⟨x, hx⟩`. Conclude with `⟨a, congrArg Subtype.val ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isIso_stalkClosedPointTo : IsIso (Scheme.stalkClosedPointTo (R := CommRingCat.of Ω) M.pt) := by
   have e : M.stalkHom (M.pt (IsLocalRing.closedPoint Ω)) =
@@ -197,7 +197,7 @@ theorem isIso_stalkClosedPointTo : IsIso (Scheme.stalkClosedPointTo (R := CommRi
   exact ⟨a, congrArg Subtype.val ha⟩
 
 /- English proof (translation)
-Use `isIso_stalkClosedPointTo M` as an intermediate fact. Rewrite using `[← Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of Ω) M.pt]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPreimmersion_pt : IsPreimmersion M.pt := by
   have := isIso_stalkClosedPointTo M
@@ -205,7 +205,7 @@ theorem isPreimmersion_pt : IsPreimmersion M.pt := by
   infer_instance
 
 /- English proof (translation)
-Use `isIso_stalkClosedPointTo M` as an intermediate fact. Use `GenericExt.flat_fromSpecStalk M.Z (M.pt (IsLocalRing.closedPoint Ω))` as an intermediate fact. Rewrite using `[← Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of Ω) M.pt]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_pt : Flat M.pt := by
   have := isIso_stalkClosedPointTo M
@@ -216,21 +216,19 @@ theorem flat_pt : Flat M.pt := by
 end Model
 
 /- English proof (translation)
-Introduce `hdvr o Ω _ _ _ hA S ρ M U₀ Q hO`. Use `hA.ded` as an intermediate fact. Use `hA.ft` as an intermediate fact. Use `hA.char` as an intermediate fact. Use `M.lft` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocallyNoetherian M.Z` using `LocallyOfFiniteType.isLocallyNoetherian M.s`. Establish `hX : Geo.Tor.IsNormalScheme M.Z ∧ ∃ z : M.Z ⟶ Sp ℤ, LocallyOfFiniteType z ∧ Flat z` using `⟨hO.normal, _, MinorModel.locallyOfFiniteType_int M, MinorModel.flat_int M _⟩`. Use `isPreimmersion_pt M` as an intermediate fact. Use `flat_pt M` as an intermediate fact. Use `Q.semi.smooth` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Q.semi.geomConnected` as an intermediate fact. Establish `hL` using `Q.L.isLB`. Use `⟨?_, GlobalTheory.existsUnique_hom_extension_semiAbelian_normal hdvr _ _ M.pt hX ‹_› ‹_› inferInstance inferInstance _ _ Q.semi Q.semi, ?_⟩` and prove the remaining obligations. Establish `: Nonempty U₀` using `hO.ne.to_subtype`. Establish `: IsDominant U₀.ι` using `⟨by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[DenseRange, Scheme.Opens.range_ι]`. Conclude with `U₀.isOpen.dense hO.ne⟩`. Use `ρ.P.isAb.comm` as an intermediate fact. Use `hypS_of_densePart U₀.ι hO.normal Q.G Q.L (GlobalTheory.existsUnique_hom_extension_semiAbelian_normal hdvr _ _ U₀.ι hX inferInstance inferInstance inferInstance inferInstance _ _ Q.semi Q.semi) ?_` and prove the remaining obligations. Establish `hP` using `ρ.P.isLB`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : HypS ((Over.pullback Q.u₀).obj ρ.P.A) (Q.L.L.pull Q.φ)` using `SymBaseChange.hypS_baseChange _ _ ρ.P.A ((Over.pullback Q.u₀).obj ρ.P.A) Q.u₀ (pullback.fst ρ.P.A.hom Q.u₀) _ _ hP (pull_isLB hL _) (isGrpPullback_pullback _ _) ⟨Q.w, Q.w_gen⟩ ρ.hypS`. Set `ψ` to `Q.cart.1.lift (pullback.fst Q.G.hom U₀.ι) (pullback.snd _ _) pullback.condition`. Establish `hψ : ψ ≫ Q.φ = pullback.fst Q.G.hom U₀.ι` using `Q.cart.1.lift_fst _ _ _`. Use `SymBaseChange.hypS_baseChange _ _ ((Over.pullback Q.u₀).obj ρ.P.A) ((Over.pullback U₀.ι).obj Q.G) (𝟙 _) ψ _ _ (pull_isLB hL _) (pull_isLB hL _) (Q.cart.cancel ((isGrpPullback_pullback Q.G U₀.ι).congr (Category.id_comp _).symm hψ.symm) ((Q.cart.1.lift_snd _ _ _).trans (Category.co …` and prove the remaining obligations. Use `(cls_eq_iff (pull_isLB hL _) (pull_isLB (pull_isLB hL _) _)).1 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(congrArg (CechPic.pull · (cls _ hL)) hψ.symm).trans (pull_comp ψ Q.φ (cls _ hL))`. Introduce `n x x' hx ε ε' _ _ h`. Use `smooth_tensorObj_hom Q.G Q.G` as an intermediate fact. Use `geometricallyIntegral_tensorObj_hom Q.G Q.G` as an intermediate fact. Establish `h0 : CechPic.pull (eSec Q.G) (cls Q.L.L hL) = 0` using `(cls_eq_zero_iff (pull_isLB hL _)).2 ⟨Q.L.rig, Q.L.rigGen⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ (y : Fin n → (Q.G ⊗ Q.G ⟶ Q.G)) (δ : Fin n → ℤ), (∀ i, IsMonHom (y i)) → CechPic.pull (η[Q.G ⊗ Q.G]).left (cls _ (LB.isLB_linComb hL (fun i => (y i).left) δ)) = 0`. Introduce `y δ hy`. Rewrite using `[cls_linComb hL, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← pull_comp, ← Over.comp_left, (hy i).one_hom]`.
-
-Conclude with `(congrArg (_ • ·) h0).trans (smul_zero _)`. Use `(cls_eq_iff (LB.isLB_linComb hL _ _) (LB.isLB_linComb hL _ _)).1 (pic_ext M.pt hO.normal (Q.G ⊗ Q.G) (η[Q.G ⊗ Q.G]).left (Over.w _) ((key x ε fun i => (hx i).1).trans (key x' ε' fun i => (hx i).2).symm) ?_)` and prove the remaining obligations. Conclude with `(cls_eq_iff (pull_isLB (LB.isLB_linComb hL _ _) _) (pull_isLB (LB.isLB_linComb hL _ _) _)).2 h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hypS_and_endo_and_iso_extend : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (Q : ZHPre ρ M U₀), S.Over₀ M U₀ → HypS Q.G Q.L.L ∧ (∀ f : (Over.pullback M.pt).obj Q.G ⟶ (Over.pullback M.pt).obj Q.G, IsMonHom f → ∃! F : Q.G ⟶ Q.G, IsMonHom F ∧ (Over.pullback M.pt).map F = f) ∧ (∀ (n : ℕ) (x x' : Fin n → (Q.G ⊗ Q.G ⟶ Q.G)), (∀ i, IsMonHom (x i) ∧ IsMonHom (x' i)) → ∀ ε ε' : Fin n → ℤ, ∑ i, ε i = 0 → ∑ i, ε' i = 0 → LBIso ((LB.LinComb Q.L.L (fun i => (x i).left) ε).pull (pullback.fst (Q.G ⊗ Q.G).hom M.pt)) ((LB.LinComb Q.L.L (fun i => (x' i).left) ε').pull (pullback.fst (Q.G ⊗ Q.G).hom M.pt)) → LBIso (LB.LinComb Q.L.L (fun i => (x i).left) ε) (LB.LinComb Q.L.L (fun i => (x' i).left) ε')) := by
   intro hdvr o Ω _ _ _ hA S ρ M U₀ Q hO

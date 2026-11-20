@@ -13,7 +13,7 @@ noncomputable def mu : KQ p Kw r →+* PadicAlgCl p :=
     Kw ⊗[ℚ_[p]] Qr p r →ₐ[ℚ_[p]] PadicAlgCl p).toRingHom
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.lift Kw.val (Qr p r).val (fun _ _ => Commute.all _ _)) (a ⊗ₜ[ℚ_[p]] (1 : Qr p r)) = _`. Rewrite using `[Algebra.TensorProduct.lift_tmul]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mu_inclK (a : Kw) : mu p Kw r (inclK p Kw r a) = (a : PadicAlgCl p) := by
   change (Algebra.TensorProduct.lift Kw.val (Qr p r).val (fun _ _ => Commute.all _ _)) (a ⊗ₜ[ℚ_[p]] (1 : Qr p r)) = _
@@ -21,7 +21,7 @@ theorem mu_inclK (a : Kw) : mu p Kw r (inclK p Kw r a) = (a : PadicAlgCl p) := b
   simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.lift Kw.val (Qr p r).val (fun _ _ => Commute.all _ _)) ((1 : Kw) ⊗ₜ[ℚ_[p]] b) = _`. Rewrite using `[Algebra.TensorProduct.lift_tmul]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mu_inclQ (b : Qr p r) : mu p Kw r (inclQ p Kw r b) = (b : PadicAlgCl p) := by
   change (Algebra.TensorProduct.lift Kw.val (Qr p r).val (fun _ _ => Commute.all _ _)) ((1 : Kw) ⊗ₜ[ℚ_[p]] b) = _
@@ -29,9 +29,9 @@ theorem mu_inclQ (b : Qr p r) : mu p Kw r (inclQ p Kw r b) = (b : PadicAlgCl p) 
   simp
 
 /- English proof (translation)
-Rewrite using `[intKQ, Subring.closure_le]`. Introduce and unpack `x (⟨a, rfl⟩ | ⟨b, rfl⟩)`. Express the relevant statement in the definitionally equal form `mu p Kw r (inclK p Kw r a) ∈ ReciprocityTheory.DiscreteGroups.LocalClassField.Obar p`. Rewrite using `[mu_inclK]`. Conclude with `a.2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `mu p Kw r (inclQ p Kw r b) ∈ ReciprocityTheory.DiscreteGroups.LocalClassField.Obar p`. Rewrite using `[mu_inclQ]`. Conclude with `b.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intKQ_le : intKQ p Kw r ≤ (ReciprocityTheory.DiscreteGroups.LocalClassField.Obar p).toSubring.comap (mu p Kw r) := by
   rw [intKQ, Subring.closure_le]
@@ -44,7 +44,7 @@ theorem intKQ_le : intKQ p Kw r ≤ (ReciprocityTheory.DiscreteGroups.LocalClass
     exact b.2
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.DiscreteGroups.LocalClassField.mem_Obar_iff.1 (intKQ_le p Kw r hx)`.
+A detailed English derivation is pending.
 -/
 theorem norm_mu_le_one (x : KQ p Kw r) (hx : x ∈ intKQ p Kw r) : ‖mu p Kw r x‖ ≤ 1 :=
   ReciprocityTheory.DiscreteGroups.LocalClassField.mem_Obar_iff.1 (intKQ_le p Kw r hx)
@@ -54,27 +54,23 @@ end GlobalTheory.StabFin.IntBound
 namespace GlobalTheory.StabFin
 
 /- English proof (translation)
-Introduce `p _ Kw n r N H k hk hN v c hv hev`. Use `set μ := IntBound.mu p Kw r`. Use `set A := μ.mapMatrix (H : Matrix (Fin n) (Fin n) (KQ p Kw r))`. Use `set Ai := μ.mapMatrix ((H⁻¹ : GL (Fin n) (KQ p Kw r)) : Matrix (Fin n) (Fin n) (KQ p Kw r))`. Use `set B := μ.mapMatrix (k : Matrix (Fin n) (Fin n) (KQ p Kw r))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAAi : A * Ai = 1`. Rewrite using `[← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]`. Establish `hAiA : Ai * A = 1`. Rewrite using `[← map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, map_one]`. Establish `hM : N.map (fun x => (x : PadicAlgCl p)) = A * B * Ai`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : N.map (fun x => (x : PadicAlgCl p)) = μ.mapMatrix (N.map (inclK p Kw r))`. Use extensionality with `i j`. Simplify using `[μ, IntBound.mu_inclK]`. Rewrite using `[h1, hN, Units.val_mul, Units.val_mul, map_mul, map_mul]`. Use `set v' := Ai *ᵥ v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv' : v' ≠ 0`. Introduce `h0`. Apply `hv` to reduce the goal to its premises. Establish `: A *ᵥ v' = v` using `by rw [mulVec_mulVec, hAAi, one_mulVec]`. Rewrite using `[← this, h0, mulVec_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hBv : B *ᵥ v' = c • v'`. Establish `e1 : Ai *ᵥ (N.map (fun x => (x : PadicAlgCl p)) *ᵥ v) = c • v'`. Rewrite using `[hev, mulVec_smul]`. Rewrite `e1` using `[hM, mulVec_mulVec, ← mul_assoc, ← mul_assoc, hAiA, one_mul, ← mulVec_mulVec]`. Conclude with `e1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hB : ∀ i j, ‖B i j‖ ≤ 1`. Take `⟨k0, rfl⟩` from `hk`. Introduce `i j`. Simplify using `only [B, RingHom.mapMatrix_apply, Matrix.map_apply, GeneralLinearGroup.map_apply]`. Conclude with `IntBound.norm_mu_le_one p Kw r _ (k0 i j).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : Nonempty (Fin n) := by`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Conclude with `hv' (Subsingleton.elim _ _)`. Take `⟨j, hj⟩` from `Finite.exists_max (fun l => ‖v' l‖)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < ‖v' j‖`. Break down `(norm_nonneg (v' j)).lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Apply `hv'` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `l`. Use `hj l` as an intermediate fact. Rewrite `this` using `[← h]`. Conclude with `norm_le_zero_iff.1 this`. Establish `key : ‖c‖ * ‖v' j‖ ≤ 1 * ‖v' j‖`.
-
-Establish `e : c * v' j = ∑ l, B j l * v' l`. Use `congrFun hBv j` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← this]`. Both sides reduce to the same expression.
-
-Rewrite using `[← norm_mul, e, one_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun l _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right key hpos`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_eigen_le_one_of_conj_Kres : ∀ (p : ℕ) [Fact p.Prime] (Kw : IntermediateField ℚ_[p] (PadicAlgCl p))
     (n r : ℕ) (N : Matrix (Fin n) (Fin n) Kw) (H k : GL (Fin n) (KQ p Kw r)), k ∈ Kres p Kw n r →

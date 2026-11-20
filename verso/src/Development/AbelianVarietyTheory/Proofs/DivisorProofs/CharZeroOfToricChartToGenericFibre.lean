@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LocReg
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y k _ m d ξ`. Establish `: CharZero (ChartRing k m d)` using `(Spec.preimage (ξ ≫ genStr Y)).hom.charZero_iff (RingHom.injective _) |>.1 inferInstance`. Conclude with `(algebraMap k (ChartRing k m d)).charZero_iff (RingHom.injective _) |>.2 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charZero_of_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (k : Type) [Field k] (m d : ℕ) (ξ : Sp (ChartRing k m d) ⟶ gen Y), CharZero k := by
   intro E _ _ _ H Dw l Xo c Y k _ m d ξ

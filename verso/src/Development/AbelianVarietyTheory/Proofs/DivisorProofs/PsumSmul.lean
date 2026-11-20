@@ -19,14 +19,14 @@ def DegData (j : ℕ) (q : ℝ) (r : ι → Fin N → ℝ) : Prop :=
 def ext (v : Fin N → ℝ) (k : ℕ) : ℝ := if h : k < N then v ⟨k, h⟩ else 0
 
 /- English proof (translation)
-Simplify using `[ext, k.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ext_fin (v : Fin N → ℝ) (k : Fin N) : ext v k = v k := by simp [ext, k.2]
 
 /- English proof (translation)
-Unfold `psum`. Rewrite using `[Finset.sum_filter]`. Establish `e1 : ∑ k : Fin N, (if k.val < m then r τ k else 0) = ∑ k : Fin N, (fun i => if i < m then ext (r τ) i else 0) k.val` using `Finset.sum_congr rfl fun k _ => by simp only [ext_fin]`. Rewrite using `[e1, Fin.sum_univ_eq_sum_range (fun i => if i < m then ext (r τ) i else 0) N, ← Finset.sum_filter]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `k`. Simplify using `only [mem_filter, mem_range]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem psum_eq (r : ι → Fin N → ℝ) (τ : ι) {m : ℕ} (hm : m ≤ N) :
     psum r τ m = ∑ k ∈ range m, ext (r τ) k := by
@@ -42,7 +42,7 @@ theorem psum_eq (r : ι → Fin N → ℝ) (τ : ι) {m : ℕ} (hm : m ≤ N) :
   omega
 
 /- English proof (translation)
-Unfold `psum`. Rewrite using `[Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psum_smul (r : ι → Fin N → ℝ) (c : ℝ) (τ : ι) (m : ℕ) :
     psum (fun τ i => c * r τ i) τ m = c * psum r τ m := by
@@ -50,9 +50,9 @@ theorem psum_smul (r : ι → Fin N → ℝ) (c : ℝ) (τ : ι) (m : ℕ) :
   rw [Finset.mul_sum]
 
 /- English proof (translation)
-Take `⟨P, e, hP, hPe, h1, h2, h3⟩` from `h`. Use `⟨c * P, c * e, mul_nonneg hc hP, ?_, fun τ m a b => ?_, fun τ => ?_, ?_⟩` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[psum_smul]`. Conclude with `mul_le_mul_of_nonneg_left (h1 τ m a b) hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[psum_smul, h2, mul_zero]`. Simplify using `only [psum_smul, ← Finset.mul_sum]`. Rewrite using `[← h3]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem DegData.smul {j : ℕ} {q : ℝ} {r : ι → Fin N → ℝ} (h : DegData j q r) {c : ℝ} (hc : 0 ≤ c) :
     DegData j q (fun τ i => c * r τ i) := by
@@ -64,15 +64,15 @@ theorem DegData.smul {j : ℕ} {q : ℝ} {r : ι → Fin N → ℝ} (h : DegData
   · simp only [psum_smul, ← Finset.mul_sum]; rw [← h3]; ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 0, le_rfl, by simp, fun _ _ _ _ => by simp [psum], fun _ => by simp [psum], by simp [psum]⟩`.
+Supply the required witnesses or components.
 -/
 theorem DegData.zero (j : ℕ) (q : ℝ) (hq : 2 ≤ q) : DegData j q (fun (_ : ι) (_ : Fin N) => (0 : ℝ)) :=
   ⟨0, 0, le_rfl, by simp, fun _ _ _ _ => by simp [psum], fun _ => by simp [psum], by simp [psum]⟩
 
 /- English proof (translation)
-Establish `e1 : ∑ i, -(w i) * r i = ∑ i ∈ range N, ext w i • (fun k => -ext r k) i`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun i => ext w i • (fun k => -ext r k) i) N]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [ext_fin, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, Finset.sum_range_by_parts]`. Simplify using `only [Finset.sum_neg_distrib, h0, neg_zero, smul_zero, zero_sub, smul_eq_mul, mul_neg, ← sub_eq_add_neg]`. Rewrite using `[← Finset.sum_neg_distrib]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem abel (w r : Fin N → ℝ) (h0 : ∑ k ∈ range N, ext r k = 0) :
     ∑ i, -(w i) * r i =
@@ -88,13 +88,13 @@ theorem abel (w r : Fin N → ℝ) (h0 : ∑ k ∈ range N, ext r k = 0) :
   simp
 
 /- English proof (translation)
-Rewrite using `[abel w r h0]`. Establish `hmono : ∀ i ∈ range (N - 1), ext w (i + 1) - ext w i ≤ 0` using `fun i hi => by`. Rewrite `hi` using `[mem_range]`. Establish `h1 : i + 1 < N` using `by omega`. Establish `h2 : i < N` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ext, h1, h2, dif_pos]`. Use `hdom ⟨i, h2⟩ ⟨i + 1, h1⟩ (by simp [Fin.le_iff_val_le_val])` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsplit : ∀ i ∈ range (N - 1), (ext w (i + 1) - ext w i) * ∑ k ∈ range (i + 1), ext r k = P * (ext w (i + 1) - ext w i) + (ext w (i + 1) - ext w i) * (∑ k ∈ range (i + 1), ext r k - P)` using `fun i _ => by ring`. Rewrite using `[Finset.sum_congr rfl hsplit, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_range_sub]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN1 : N - 1 = (N - 1 - 1) + 1` using `by omega`. Establish `hj' : j - 1 ∈ range (N - 1)` using `by rw [mem_range]; omega`. Establish `hnn : ∀ i ∈ range (N - 1), 0 ≤ (ext w (i + 1) - ext w i) * (∑ k ∈ range (i + 1), ext r k - P)` using `fun i hi => by`. Establish `h1` using `hmono i hi`. Establish `h2` using `hs (i + 1) (by omega) (by rw [mem_range] at hi; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hsingle` using `Finset.single_le_sum hnn hj'`. Establish `hj2 : j - 1 + 1 = j` using `by omega`. Rewrite `hsingle` using `[hj2]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem term_ge (j : ℕ) (hj1 : 1 ≤ j) (hjN : j < N) (w r : Fin N → ℝ) (P : ℝ)
     (hdom : ∀ a b : Fin N, a ≤ b → w b ≤ w a)
@@ -126,23 +126,23 @@ theorem term_ge (j : ℕ) (hj1 : 1 ≤ j) (hjN : j < N) (w r : Fin N → ℝ) (P
   nlinarith
 
 /- English proof (translation)
-Take `⟨P, e, hP, hPe, h1, h2, h3⟩` from `hD`. Break down `isEmpty_or_nonempty ι with hι | ⟨⟨τ₀⟩⟩` into its components or cases. Simplify using the standard rewrite rules. Establish `hS0 : 0 ≤ S` using `le_trans (abs_nonneg _) (hS τ₀ ⟨0, by omega⟩)`. Establish `hq2 : 0 < q - 2` using `by linarith`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf0 : 0 ≤ f` using `le_trans (Nat.cast_nonneg _) hf`. Use `set G0 : ℝ := 4 * f * S / (q - 2) with hG0`. Establish `hG0nn : 0 ≤ G0` using `div_nonneg (by positivity) hq2.le`. Establish `hT : ∀ τ, -2 * S * P + G0 * (P - psum r τ j) ≤ ∑ i, -(w τ i) * r τ i` using `fun τ => by`. Establish `ht` using `term_ge j hj1 hjN (w τ) (r τ) P (hdom τ) (fun m a b => (psum_eq r τ b.le).symm.trans_le (h1 τ m a b)) ((psum_eq r τ le_rfl).symm.trans (h2 τ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[← psum_eq r τ hjN.le]`. Establish `hN1 : N - 1 < N` using `by omega`. Establish `e0 : ext (w τ) (N - 1) = w τ ⟨N - 1, hN1⟩` using `by simp [ext, hN1]`. Establish `e00 : ext (w τ) 0 = w τ ⟨0, by omega⟩` using `by simp [ext, show 0 < N by omega]`. Establish `ej : ext (w τ) (j - 1) = w τ ⟨j - 1, by omega⟩` using `by simp [ext, show j - 1 < N by omega]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ej' : ext (w τ) j = w τ ⟨j, hjN⟩` using `by simp [ext, hjN]`. Rewrite `ht` using `[e0, e00, ej, ej']`. Establish `a1` using `abs_le.1 (hS τ ⟨N - 1, hN1⟩)`. Establish `a2` using `abs_le.1 (hS τ ⟨0, by omega⟩)`. Establish `hPs : 0 ≤ P - psum r τ j` using `by have := h1 τ j hj1 hjN; linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : G0 ≤ w τ ⟨j - 1, by omega⟩ - w τ ⟨j, hjN⟩`. Rewrite using `[hG0, div_le_iff₀ hq2]`. Combine the linear relations using `[hgap τ]`. Establish `b1 : -2 * S * P ≤ P * (w τ ⟨N - 1, hN1⟩ - w τ ⟨0, by omega⟩)` using `by nlinarith`. Establish `b2 : G0 * (P - psum r τ j) ≤ (w τ ⟨j - 1, by omega⟩ - w τ ⟨j, hjN⟩) * (P - psum r τ j)` using `mul_le_mul_of_nonneg_right hg hPs`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum` using `Finset.sum_le_sum fun τ (_ : τ ∈ (univ : Finset ι)) => hT τ`. Establish `hL : ∑ τ, (-2 * S * P + G0 * (P - psum r τ j)) = (Fintype.card ι : ℝ) * (-2 * S * P + G0 * P) + G0 * (e / 2)`. Rewrite using `[← h3]`. Simplify using `only [mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hsum` using `[hL]`. Establish `hkey : 0 ≤ G0 * (e / 2) - 2 * f * S * P`. Establish `: G0 * (e / 2) - 2 * f * S * P = (2 * f * S / (q - 2)) * (e - (q - 2) * P)`. Rewrite using `[hG0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `mul_nonneg (div_nonneg (by positivity) hq2.le) (by linarith)`. Establish `hc : (Fintype.card ι : ℝ) * (S * P) ≤ f * (S * P)` using `mul_le_mul_of_nonneg_right hf (mul_nonneg hS0 hP)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hc2 : 0 ≤ (Fintype.card ι : ℝ) * (G0 * P)` using `mul_nonneg (Nat.cast_nonneg _) (mul_nonneg hG0nn hP)`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem chain (j : ℕ) (hj1 : 1 ≤ j) (hjN : j < N) (q f S : ℝ) (hq : 2 < q) (hf : (Fintype.card ι : ℝ) ≤ f)
     (w r : ι → Fin N → ℝ) (hdom : ∀ τ (a b : Fin N), a ≤ b → w τ b ≤ w τ a) (hS : ∀ τ i, |w τ i| ≤ S)

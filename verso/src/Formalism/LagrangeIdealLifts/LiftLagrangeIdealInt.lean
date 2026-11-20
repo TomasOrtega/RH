@@ -9,19 +9,19 @@ import Formalism.LagrangeIdealLifts.CocyclePolynomialDivision.CoeffSumXPowMulExp
 namespace Formalism.LIFT
 
 /- English proof (translation)
-The claim follows from `lagrangian_ideal_holds`.
+A detailed English derivation is pending.
 -/
 theorem lift_LagrangeIdeal : LagrangeIdeal := lagrangian_ideal_holds
 /- English proof (translation)
-The claim follows from `lagrangian_ideal_integral_holds`.
+A detailed English derivation is pending.
 -/
 theorem lift_LagrangeIdealInt : LagrangeIdealInt := lagrangian_ideal_integral_holds
 /- English proof (translation)
-The claim follows from `wBTail_of gammaGradedStep_holds (lagrangeIdealCyc_of lagrangian_ideal_holds)`.
+A detailed English derivation is pending.
 -/
 theorem lift_WBTail : WBTail := wBTail_of gammaGradedStep_holds (lagrangeIdealCyc_of lagrangian_ideal_holds)
 /- English proof (translation)
-The claim follows from `lemmaU_of (uClaim_of (uGraded_of gammaGradedStep_holds) gammaGradedStep_holds) uChase_proof`.
+A detailed English derivation is pending.
 -/
 theorem lift_LemmaU : LemmaU := lemmaU_of (uClaim_of (uGraded_of gammaGradedStep_holds) gammaGradedStep_holds) uChase_proof
 

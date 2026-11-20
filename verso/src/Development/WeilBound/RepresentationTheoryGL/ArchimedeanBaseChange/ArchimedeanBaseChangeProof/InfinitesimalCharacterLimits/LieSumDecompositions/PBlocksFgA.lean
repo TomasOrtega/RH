@@ -16,7 +16,7 @@ set_option linter.unusedSectionVars false
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r s : ℕ}
 
 /- English proof (translation)
-The claim follows from `CapFactor.two_sum _`.
+A detailed English derivation is pending.
 -/
 theorem h2 (r s : ℕ) : ∑ i, (![r, s] : Fin 2 → ℕ) i = r + s := CapFactor.two_sum _
 
@@ -27,7 +27,7 @@ def sl1 (m₁ : GA E r) : Sm E (r + s) →ₗ[ℂ] Sm E s :=
   GlobalTheory.BlockCap.restrLin (stdBlocks ![r, s] (h2 r s)) (CapFactor.levPair (m₁, 1)) 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem update0 (m₁ : GA E r) (m₂ : GA E s) :
     Function.update (CapFactor.levPair (n := ![r, s]) (1, m₂)) 0 m₁ = CapFactor.levPair (m₁, m₂) := by
@@ -35,7 +35,7 @@ theorem update0 (m₁ : GA E r) (m₂ : GA E s) :
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem update1 (m₁ : GA E r) (m₂ : GA E s) :
     Function.update (CapFactor.levPair (n := ![r, s]) (m₁, 1)) 1 m₂ = CapFactor.levPair (m₁, m₂) := by
@@ -43,7 +43,7 @@ theorem update1 (m₁ : GA E r) (m₂ : GA E s) :
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Use `show F.1 (leviEmb (Ad E) (stdBlocks ![r, s] (h2 r s)) (Function.update (CapFactor.levPair (n := ![r, s]) (1, m₂)) 0 m₁)) = _`. Rewrite using `[update0]`. Conclude with `congrArg F.1 (CapFactor.lev_eq_leviEmb (R := Ad E) ![r, s] (h2 r s) (m₁, m₂)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem left_slice_apply (m₂ : GA E s) (F : Sm E (r + s)) (m₁ : GA E r) :
     (sl0 m₂ F).1 m₁ = F.1 (lev (Ad E) r s (m₁, m₂)) := by
@@ -53,7 +53,7 @@ theorem left_slice_apply (m₂ : GA E s) (F : Sm E (r + s)) (m₁ : GA E r) :
   exact congrArg F.1 (CapFactor.lev_eq_leviEmb (R := Ad E) ![r, s] (h2 r s) (m₁, m₂)).symm
 
 /- English proof (translation)
-Use `show F.1 (leviEmb (Ad E) (stdBlocks ![r, s] (h2 r s)) (Function.update (CapFactor.levPair (n := ![r, s]) (m₁, 1)) 1 m₂)) = _`. Rewrite using `[update1]`. Conclude with `congrArg F.1 (CapFactor.lev_eq_leviEmb (R := Ad E) ![r, s] (h2 r s) (m₁, m₂)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem right_slice_apply (m₁ : GA E r) (F : Sm E (r + s)) (m₂ : GA E s) :
     (sl1 m₁ F).1 m₂ = F.1 (lev (Ad E) r s (m₁, m₂)) := by
@@ -68,7 +68,7 @@ Both sides reduce to the same expression.
 example {a : ℕ} (A B : Matrix (Fin a) (Fin a) (Cinf E)) : toL (A + B) = toL A + toL B := rfl
 
 /- English proof (translation)
-Simplify using `[BlockDerivatives.yp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem yp_one {a : ℕ} : BlockDerivatives.yp (1 : Kinf E a) (1 : GL (Fin a) (Af E)) = 1 := by
   simp [BlockDerivatives.yp]
@@ -76,37 +76,37 @@ theorem yp_one {a : ℕ} : BlockDerivatives.yp (1 : Kinf E a) (1 : GL (Fin a) (A
 abbrev e2 (r s : ℕ) := stdBlocks ![r, s] (h2 r s)
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (GlobalTheory.BlockCap.restrLin_lie (e2 r s) (CapFactor.levPair (1, m₂)) 0 Y) F`.
+A detailed English derivation is pending.
 -/
 theorem left_slice_lie_first_block (m₂ : GA E s) (Y : Lie E r) (F : Sm E (r + s)) :
     sl0 m₂ (lie E (r + s) (GlobalTheory.BlockCap.blockCLM (e2 r s) 0 Y) F) = lie E r Y (sl0 m₂ F) :=
   LinearMap.congr_fun (GlobalTheory.BlockCap.restrLin_lie (e2 r s) (CapFactor.levPair (1, m₂)) 0 Y) F
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (GlobalTheory.BlockCap.restrLin_lie (e2 r s) (CapFactor.levPair (m₁, 1)) 1 Y) F`.
+A detailed English derivation is pending.
 -/
 theorem right_slice_lie_second_block (m₁ : GA E r) (Y : Lie E s) (F : Sm E (r + s)) :
     sl1 m₁ (lie E (r + s) (GlobalTheory.BlockCap.blockCLM (e2 r s) 1 Y) F) = lie E s Y (sl1 m₁ F) :=
   LinearMap.congr_fun (GlobalTheory.BlockCap.restrLin_lie (e2 r s) (CapFactor.levPair (m₁, 1)) 1 Y) F
 
 /- English proof (translation)
-The claim follows from `CapFactor.std_zero ![r, s] (h2 r s) p`.
+A detailed English derivation is pending.
 -/
 theorem std0 (p : Fin r) : (e2 r s) ⟨0, p⟩ = Fin.castAdd s p := CapFactor.std_zero ![r, s] (h2 r s) p
 
 /- English proof (translation)
-The claim follows from `CapFactor.std_one ![r, s] (h2 r s) q`.
+A detailed English derivation is pending.
 -/
 theorem std1 (q : Fin s) : (e2 r s) ⟨1, q⟩ = Fin.natAdd r q := CapFactor.std_one ![r, s] (h2 r s) q
 
 /- English proof (translation)
-The claim follows from `CapFactor.lev_eq_leviEmb ![r, s] (h2 r s) m`.
+A detailed English derivation is pending.
 -/
 theorem lev_eq (m : GA E r × GA E s) : lev (Ad E) r s m = leviEmb (Ad E) (e2 r s) (CapFactor.levPair m) :=
   CapFactor.lev_eq_leviEmb ![r, s] (h2 r s) m
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.BlockCap.blockLin_single (E := E) (e2 r s) 0 p q x`. Rewrite `h` using `[std0, std0]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toL_single_cc (p q : Fin r) (x : Cinf E) :
     (toL (Matrix.single (Fin.castAdd s p) (Fin.castAdd s q) x) : Lie E (r + s)) =
@@ -116,7 +116,7 @@ theorem toL_single_cc (p q : Fin r) (x : Cinf E) :
   exact h.symm
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.BlockCap.blockLin_single (E := E) (e2 r s) 1 p q x`. Rewrite `h` using `[std1, std1]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toL_single_nn (p q : Fin s) (x : Cinf E) :
     (toL (Matrix.single (Fin.natAdd r p) (Fin.natAdd r q) x) : Lie E (r + s)) =
@@ -126,7 +126,7 @@ theorem toL_single_nn (p q : Fin s) (x : Cinf E) :
   exact h.symm
 
 /- English proof (translation)
-Introduce `u hu g` and use `by obtain ⟨x, rfl⟩ := CapFactor.exists_unip_of_mem ![r, s] (h2 r s) hu exact hF x g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unipRad_inv (F : Sm E (r + s)) (hF : ∀ (x : BlockIx (r + s) r → Ad E) g, F.1 (unip x * g) = F.1 g) :
     ∀ u ∈ unipRad (Ad E) (e2 r s), ∀ g, F.1 (u * g) = F.1 g := fun u hu g => by
@@ -134,9 +134,9 @@ theorem unipRad_inv (F : Sm E (r + s)) (hF : ∀ (x : BlockIx (r + s) r → Ad E
   exact hF x g
 
 /- English proof (translation)
-Establish `hpq : blk (e2 r s) (Fin.castAdd s p) < blk (e2 r s) (Fin.natAdd r q)`. Establish `b0 : blk (e2 r s) ((e2 r s) ⟨0, p⟩) = 0` using `blk_apply (e2 r s) 0 p`. Establish `b1 : blk (e2 r s) ((e2 r s) ⟨1, q⟩) = 1` using `blk_apply (e2 r s) 1 q`. Rewrite `b0` using `[std0]`. Rewrite `b1` using `[std1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[b0, b1]`. Evaluate the decidable proposition. Use `GlobalTheory.UnipZero.lieD_single_leviEmb_eq_zero E ![r, s] (e2 r s) F (unipRad_inv F hF) _ _ hpq x (CapFactor.levPair m)` as an intermediate fact. Rewrite using `[lev_eq]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_upper_lev (F : Sm E (r + s)) (hF : ∀ (x : BlockIx (r + s) r → Ad E) g, F.1 (unip x * g) = F.1 g)
     (p : Fin r) (q : Fin s) (x : Cinf E) (m : GA E r × GA E s) :
@@ -154,7 +154,7 @@ theorem lie_upper_lev (F : Sm E (r + s)) (hF : ∀ (x : BlockIx (r + s) r → Ad
   exact this
 
 /- English proof (translation)
-Establish `hdec : X = ∑ p, ∑ q, (toL (Matrix.single p q (X p q)) : Lie E (r + s))` using `Matrix.matrix_eq_sum_single (Matrix.of X)`. Use `conv_lhs => rw [hdec]`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, LinearMap.sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_sum_single (X : Lie E (r + s)) (F : Sm E (r + s)) :
     lie E (r + s) X F = ∑ p, ∑ q, lie E (r + s) (toL (Matrix.single p q (X p q))) F := by
@@ -166,7 +166,7 @@ theorem lie_sum_single (X : Lie E (r + s)) (F : Sm E (r + s)) :
   rw [map_sum, LinearMap.sum_apply]
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun m₂ => ?_)` and prove the remaining obligations. Rewrite using `[right_slice_apply, hexp (m₁, m₂), Submodule.coe_sum, Finset.sum_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem right_slice_eq_sum (F : Sm E (r + s)) {n : ℕ} (b : Fin n → Sm E r) (q : Fin n → Sm E s)
     (hexp : ∀ m : GA E r × GA E s, F.1 (lev (Ad E) r s m) = ∑ i, (b i).1 m.1 * (q i).1 m.2) (m₁ : GA E r) :
@@ -176,7 +176,7 @@ theorem right_slice_eq_sum (F : Sm E (r + s)) {n : ℕ} (b : Fin n → Sm E r) (
   rfl
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun m₁ => ?_)` and prove the remaining obligations. Rewrite using `[left_slice_apply, hexp (m₁, m₂), Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (q i).1 m₂ * (b i).1 m₁`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem left_slice_eq_sum (F : Sm E (r + s)) {n : ℕ} (b : Fin n → Sm E r) (q : Fin n → Sm E s)
     (hexp : ∀ m : GA E r × GA E s, F.1 (lev (Ad E) r s m) = ∑ i, (b i).1 m.1 * (q i).1 m.2) (m₂ : GA E s) :
@@ -188,7 +188,7 @@ theorem left_slice_eq_sum (F : Sm E (r + s)) {n : ℕ} (b : Fin n → Sm E r) (q
   ring
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun m₁ => ?_)` and prove the remaining obligations. Rewrite using `[left_slice_apply, ← right_slice_apply, right_slice_lie_second_block, right_slice_eq_sum F b q hexp, map_sum, Submodule.coe_sum, Finset.sum_apply, Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Express the relevant statement in the definitionally equal form `(b i).1 m₁ * (lie E s Y (q i)).1 m₂ = (lie E s Y (q i)).1 m₂ * (b i).1 m₁`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -205,7 +205,7 @@ theorem left_slice_lie_second_block (F : Sm E (r + s)) {n : ℕ} (b : Fin n → 
   ring
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun m₂ => ?_)` and prove the remaining obligations. Rewrite using `[right_slice_apply, ← left_slice_apply, left_slice_lie_first_block, left_slice_eq_sum F b q hexp, map_sum, Submodule.coe_sum, Finset.sum_apply, Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Express the relevant statement in the definitionally equal form `(q i).1 m₂ * (lie E r Y (b i)).1 m₁ = (lie E r Y (b i)).1 m₁ * (q i).1 m₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -222,7 +222,7 @@ theorem right_slice_lie_first_block (F : Sm E (r + s)) {n : ℕ} (b : Fin n → 
   ring
 
 /- English proof (translation)
-Rewrite using `[toL_single_cc]`. Conclude with `left_slice_lie_first_block m₂ _ F`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem left_slice_single_first (m₂ : GA E s) (p q : Fin r) (x : Cinf E) (F : Sm E (r + s)) :
     sl0 m₂ (lie E (r + s) (toL (Matrix.single (Fin.castAdd s p) (Fin.castAdd s q) x)) F) =
@@ -231,7 +231,7 @@ theorem left_slice_single_first (m₂ : GA E s) (p q : Fin r) (x : Cinf E) (F : 
   exact left_slice_lie_first_block m₂ _ F
 
 /- English proof (translation)
-Rewrite using `[toL_single_nn]`. Conclude with `right_slice_lie_second_block m₁ _ F`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem right_slice_single_second (m₁ : GA E r) (p q : Fin s) (x : Cinf E) (F : Sm E (r + s)) :
     sl1 m₁ (lie E (r + s) (toL (Matrix.single (Fin.natAdd r p) (Fin.natAdd r q) x)) F) =
@@ -240,7 +240,7 @@ theorem right_slice_single_second (m₁ : GA E r) (p q : Fin s) (x : Cinf E) (F 
   exact right_slice_lie_second_block m₁ _ F
 
 /- English proof (translation)
-Rewrite using `[toL_single_nn]`. Conclude with `left_slice_lie_second_block F b q hexp _ m₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem left_slice_single_second (F : Sm E (r + s)) {n : ℕ} (b : Fin n → Sm E r) (q : Fin n → Sm E s)
     (hexp : ∀ m : GA E r × GA E s, F.1 (lev (Ad E) r s m) = ∑ i, (b i).1 m.1 * (q i).1 m.2) (p p' : Fin s)
@@ -251,7 +251,7 @@ theorem left_slice_single_second (F : Sm E (r + s)) {n : ℕ} (b : Fin n → Sm 
   exact left_slice_lie_second_block F b q hexp _ m₂
 
 /- English proof (translation)
-Rewrite using `[toL_single_cc]`. Conclude with `right_slice_lie_first_block F b q hexp _ m₁`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem right_slice_single_first (F : Sm E (r + s)) {n : ℕ} (b : Fin n → Sm E r) (q : Fin n → Sm E s)
     (hexp : ∀ m : GA E r × GA E s, F.1 (lev (Ad E) r s m) = ∑ i, (b i).1 m.1 * (q i).1 m.2) (p p' : Fin r)
@@ -262,15 +262,15 @@ theorem right_slice_single_first (F : Sm E (r + s)) {n : ℕ} (b : Fin n → Sm 
   exact right_slice_lie_first_block F b q hexp _ m₁
 
 /- English proof (translation)
-Rewrite using `[lie_sum_single, map_sum]`. Use `W.sum_mem fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `W.sum_mem fun q' _ => ?_` and prove the remaining obligations. Proceed by induction on `p using Fin.addCases with`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `left p`. Proceed by induction on `q' using Fin.addCases with`. Consider the case `left q'`. Rewrite using `[left_slice_single_first]`. Conclude with `hW (.lie _) _ (hP m₂)`.
+Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `right q'`. Establish `h0 : sl0 m₂ (lie E (r + s) (toL (Matrix.single (Fin.castAdd s p) (Fin.natAdd r q') (X (Fin.castAdd s p) (Fin.natAdd r q')))) F) = 0` using `Subtype.ext (funext fun m₁ => by rw [left_slice_apply]; exact lie_upper_lev F hu p q' _ (m₁, m₂))`. Rewrite using `[h0]`. Conclude with `W.zero_mem`. Consider the case `right p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `q' using Fin.addCases with`. Consider the case `left q'`. Rewrite using `[hX p q', Matrix.single_zero]`. Establish `: (toL (0 : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E)) : Lie E (r + s)) = 0` using `rfl`. Rewrite using `[this, map_zero, LinearMap.zero_apply, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.zero_mem`. Consider the case `right q'`. Rewrite using `[left_slice_single_second F b q hexp]`. Conclude with `W.sum_mem fun i _ => W.smul_mem _ (hb i)`.
+A detailed English derivation is pending.
 -/
 theorem key_left (W : Submodule ℂ (Sm E r)) (hW : IsStable W) (F : Sm E (r + s))
     (hu : ∀ (x : BlockIx (r + s) r → Ad E) g, F.1 (unip x * g) = F.1 g)
@@ -306,15 +306,15 @@ theorem key_left (W : Submodule ℂ (Sm E r)) (hW : IsStable W) (F : Sm E (r + s
       exact W.sum_mem fun i _ => W.smul_mem _ (hb i)
 
 /- English proof (translation)
-Rewrite using `[lie_sum_single, map_sum]`. Use `W.sum_mem fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `W.sum_mem fun q' _ => ?_` and prove the remaining obligations. Proceed by induction on `p using Fin.addCases with`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `left p`. Proceed by induction on `q' using Fin.addCases with`. Consider the case `left q'`. Rewrite using `[right_slice_single_first F b q hexp]`. Conclude with `W.sum_mem fun i _ => W.smul_mem _ (hq i)`.
+Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `right q'`. Establish `h0 : sl1 m₁ (lie E (r + s) (toL (Matrix.single (Fin.castAdd s p) (Fin.natAdd r q') (X (Fin.castAdd s p) (Fin.natAdd r q')))) F) = 0` using `Subtype.ext (funext fun m₂ => by rw [right_slice_apply]; exact lie_upper_lev F hu p q' _ (m₁, m₂))`. Rewrite using `[h0]`. Conclude with `W.zero_mem`. Consider the case `right p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `q' using Fin.addCases with`. Consider the case `left q'`. Rewrite using `[hX p q', Matrix.single_zero]`. Establish `: (toL (0 : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E)) : Lie E (r + s)) = 0` using `rfl`. Rewrite using `[this, map_zero, LinearMap.zero_apply, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.zero_mem`. Consider the case `right q'`. Rewrite using `[right_slice_single_second]`. Conclude with `hW (.lie _) _ (hP m₁)`.
+A detailed English derivation is pending.
 -/
 theorem key_right (W : Submodule ℂ (Sm E s)) (hW : IsStable W) (F : Sm E (r + s))
     (hu : ∀ (x : BlockIx (r + s) r → Ad E) g, F.1 (unip x * g) = F.1 g)

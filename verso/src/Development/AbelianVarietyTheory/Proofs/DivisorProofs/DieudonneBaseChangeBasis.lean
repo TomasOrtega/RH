@@ -12,13 +12,13 @@ namespace GlobalTheory.Dieu.Base
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `G.liftSemi_rig_bijective k' (CharP.cast_eq_zero k p) (.inl inferInstance) |>.2 z`. Proceed by induction on `x with`. Consider the case `zero`. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_zero, LinearMap.map_zero]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy`. Take `⟨n, hn, h1⟩` from `hx`. Take `⟨n', hn', h2⟩` from `hy`. Use `⟨n + n', add_mem hn hn', ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_add (B.red _ hG') n n', h1, h2, LinearMap.map_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul r y`. Take `⟨m, rfl⟩` from `B.red_surjective G hG y`. Take `⟨R, rfl⟩` from `(WittVector.constantCoeff_surjective p : Function.Surjective (WittVector.constantCoeff : WittVector p k' →+* k')) r`. Use `⟨R • B.smap hG' hG (G.toBase k') m, Submodule.smul_mem _ _ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← b.linearCombination_repr m, Finsupp.linearCombination_apply, Finsupp.sum, map_sum]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[B.smap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[LinearMap.map_smulₛₗ (B.red _ hG') R, B.red_smap, liftSemi_tmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_span_red_eq (p : ℕ) [Fact p.Prime] (P : ∀ (k : Type) [CommRing k], PDivGroup p k → Prop)
     (B : Base p P) (k k' : Type) [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p]
@@ -48,17 +48,15 @@ theorem exists_mem_span_red_eq (p : ℕ) [Fact p.Prime] (P : ∀ (k : Type) [Com
     · rw [LinearMap.map_smulₛₗ (B.red _ hG') R, B.red_smap, liftSemi_tmul]
 
 /- English proof (translation)
-Use `haveI := B.free G hG`. Use `haveI := B.finite G hG`. Use `haveI := B.free _ hG'`. Use `haveI := B.finite _ hG'`. Establish `hp : (p : k) = 0` using `CharP.cast_eq_zero k p`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp' : (p : k') = 0` using `CharP.cast_eq_zero k' p`. Take `⟨-, hr⟩` from `finrank_eq_of_semilinear_surjective (WittVector.constantCoeff_surjective p) hp (B.red G hG) (B.red_surjective G hG) fun m h => (B.red_eq_zero G hG m).1 h`. Take `⟨-, hr'⟩` from `finrank_eq_of_semilinear_surjective (WittVector.constantCoeff_surjective p) hp' (B.red _ hG') (B.red_surjective _ hG') fun m h => (B.red_eq_zero _ hG' m).1 h`. Establish `hrank : Module.finrank k' (G.baseChange k').RigExt = Module.finrank k G.RigExt`. Rewrite using `[← (LinearEquiv.ofBijective _ (G.liftSemi_rig_bijective k' hp (.inl inferInstance))).finrank_eq, Module.finrank_baseChange]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmax : (p : WittVector p k') ∈ IsLocalRing.maximalIdeal (WittVector p k')`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Use `hu.map (WittVector.constantCoeff : WittVector p k' →+* k')` as an intermediate fact. Rewrite `this` using `[map_natCast, hp']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `not_isUnit_zero this`. Establish `hspan : ⊤ ≤ Submodule.span (WittVector p k') (Set.range fun i => B.smap hG' hG (G.toBase k') (b i))`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := Ideal.span {(p : WittVector p k')}) Module.Finite.fg_top ((Ideal.span_le.2 (Set.singleton_subset_iff.2 hmax)).trans (IsLocalRing.maximalIdeal_le_jacobson _)) fun m _ => ?_` and prove the remaining obligations. Take `⟨n, hn, h1⟩` from `exists_mem_span_red_eq p P B k k' G hG hG' ι b (B.red _ hG' m)`. Take `⟨q, hq⟩` from `(B.red_eq_zero _ hG' (m - n)).1 (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.map_sub (B.red _ hG') m n, h1, sub_self])`. Establish `hm : m = n + (p : WittVector p k') • q`. Rewrite `hq` using `[← Nat.cast_smul_eq_nsmul (WittVector p k')]`. Rewrite using `[← hq, add_sub_cancel]`. Rewrite using `[hm]`.
-
-Conclude with `Submodule.add_mem_sup hn (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top)`. Establish `hcard : Fintype.card ι = Module.finrank (WittVector p k') (B.M (G.baseChange k') hG')`. Rewrite using `[← hr', hrank, hr, Module.finrank_eq_card_basis b]`. Conclude with `⟨Module.Basis.mk (linearIndependent_of_top_le_span_of_card_eq_finrank hspan hcard) hspan, fun i => Module.Basis.mk_apply _ _ i⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smap_toBase_basis (p : ℕ) [Fact p.Prime] (P : ∀ (k : Type) [CommRing k], PDivGroup p k → Prop)
     (B : Base p P) (k k' : Type) [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p]

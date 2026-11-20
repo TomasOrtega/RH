@@ -22,7 +22,7 @@ namespace GlobalTheory.KerTame
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
 
 /- English proof (translation)
-Take `⟨g, h⟩` from `p`. Rewrite using `[hom.om_heis g h u f hf]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem om_heis_apply (hom : IsWeilDatumO ψ S T χS χT om) (p : GA D S × GA D T) (u : WO S T) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (x : WO S T) :
@@ -31,7 +31,7 @@ theorem om_heis_apply (hom : IsWeilDatumO ψ S T χS χT om) (p : GA D S × GA D
   rw [hom.om_heis g h u f hf]; rfl
 
 /- English proof (translation)
-Take `⟨C, A, hC⟩` from `GlobalTheory.T.weilRepresentation_thetaFunction_sup_le_quotientHeight D ψ S T χS χT om hom f hf`. Use `⟨C, A, fun g h u x => ?_⟩` and prove the remaining obligations. Rewrite using `[om_heis_apply hom (g, h) u hf x, norm_mul, hom.std.1.2.1, one_mul]`. Conclude with `hC g h _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_heis_bound (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     ∃ (C : ℝ) (A : ℕ), ∀ g h u x, ‖om (g, h) (heisO ψ S T u f) x‖ ≤ C * (quotHeight S g * quotHeight T h) ^ A := by
@@ -41,7 +41,7 @@ theorem om_heis_bound (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ
   exact hC g h _
 
 /- English proof (translation)
-Establish `hmt : ∀ V : HSp D, Continuous (Formalism.L2.Theta.mt V)` using `fun V => Units.continuous_val.comp continuous_subtype_val`. Establish `hmti : ∀ V : HSp D, Continuous fun g : GA D V => Formalism.L2.Theta.mt V g⁻¹` using `fun V => Units.continuous_coe_inv.comp continuous_subtype_val`. Unfold `actO`. Conclude with `(((hmt T).comp hh).matrix_mul hu).matrix_mul ((hmti S).comp hg)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_actO_gen {X : Type} [TopologicalSpace X] {g : X → GA D S} {h : X → GA D T} {u : X → WO S T}
     (hg : Continuous g) (hh : Continuous h) (hu : Continuous u) : Continuous fun t => actO S T (g t) (h t) (u t) := by
@@ -53,9 +53,7 @@ theorem continuous_actO_gen {X : Type} [TopologicalSpace X] {g : X → GA D S} {
   exact (((hmt T).comp hh).matrix_mul hu).matrix_mul ((hmti S).comp hg)
 
 /- English proof (translation)
-Establish `hJ : Continuous fun p : (GA D S × GA D T) × WO S T => om p.1 f p.2` using `(@GlobalTheory.Unf.jointCont_all D) ψ S T χS χT om hom f hf`. Establish `hA : Continuous fun q : ((GA D S × GA D T) × WO S T) × WO S T => actO S T q.1.1.1 q.1.1.2 q.2`. Conclude with `continuous_actO_gen (continuous_fst.comp (continuous_fst.comp continuous_fst)) (continuous_snd.comp (continuous_fst.comp continuous_fst)) continuous_snd`. Establish `hB : Continuous fun q : ((GA D S × GA D T) × WO S T) × WO S T => ((q.1.1, q.1.2 + actO S T q.1.1.1 q.1.1.2 q.2) : (GA D S × GA D T) × WO S T)` using `(continuous_fst.comp continuous_fst).prodMk ((continuous_snd.comp continuous_fst).add hA)`. Establish `hc : Continuous fun q : ((GA D S × GA D T) × WO S T) × WO S T => ψ (symplOH S T q.1.2 (actO S T q.1.1.1 q.1.1.2 q.2)) * om q.1.1 f (q.1.2 + actO S T q.1.1.1 q.1.1.2 q.2)` using `(hom.std.1.1.comp (GlobalTheory.OrientedHeis.continuous_symplOH (continuous_snd.comp continuous_fst) hA)).mul (hJ.comp hB)`.
-
-Conclude with `hc.congr fun q => (om_heis_apply hom q.1.1 q.2 hf q.1.2).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_om_heis (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     Continuous fun q : ((GA D S × GA D T) × WO S T) × WO S T => om q.1.1 (heisO ψ S T q.2 f) q.1.2 := by
@@ -79,25 +77,21 @@ namespace GlobalTheory.KerTame
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
 
 /- English proof (translation)
-Take `⟨-, -, i3, -, -, -⟩` from `GlobalTheory.MixModel.lattice_Mx D T.rank S.rank`. Use `haveI : SecondCountableTopology (WO S T) := i3`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Establish `hφ : AEMeasurable (fun u : WO S T => (u, α u)) m'` using `measurable_id.aemeasurable.prodMk hα.aemeasurable`. Use `set ν : Measure (WO S T × ℂ) := m'.map (fun u => (u, α u)) with hν`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C1, hC1⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded S T ψ hom.std f hf`. Take `⟨C2, hC2⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded S T ψ hom.std _ (hom.om_pres p f hf)`. Use `set F : WO S T × ℂ → WO S T → ℂ := fun z => z.2 • heisO ψ S T z.1 f with hF`. Establish `hFth : ∀ z, IsThetaFunO ψ S T (F z)` using `fun z => GlobalTheory.WeilVacMove.isTheta_smul _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hom.std hf z.1)`. Establish `hc1 : Continuous (Function.uncurry F)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Function.uncurry F = fun q : (WO S T × ℂ) × WO S T => q.1.2 * (ψ (symplOH S T q.2 q.1.1) * f (q.2 + q.1.1))`. Use function extensionality and compare the values at `q`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(continuous_snd.comp continuous_fst).mul ((hom.std.1.1.comp (GlobalTheory.OrientedHeis.continuous_symplOH continuous_snd (continuous_fst.comp continuous_fst))).mul (hf.cont.comp (continuous_snd.add (continuous_fst.comp continuous_fst))))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc2 : Continuous fun q : (WO S T × ℂ) × WO S T => om p (F q.1) q.2`. Establish `e : (fun q : (WO S T × ℂ) × WO S T => om p (F q.1) q.2) = fun q => q.1.2 * om p (heisO ψ S T q.1.1 f) q.2`. Use function extensionality and compare the values at `q`. Simplify using `only [hF, map_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(continuous_snd.comp continuous_fst).mul ((continuous_om_heis hom hf).comp ((continuous_const.prodMk continuous_snd).prodMk (continuous_fst.comp continuous_fst)))`. Establish `hβ : Integrable (fun z : WO S T × ℂ => ‖z.2‖ * max C1 C2) ν`. Establish `hm : Continuous fun z : WO S T × ℂ => ‖z.2‖ * max C1 C2` using `(continuous_norm.comp continuous_snd).mul continuous_const`. Rewrite using `[hν, integrable_map_measure hm.measurable.aestronglyMeasurable hφ]`. Conclude with `hα.norm.mul_const _`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hdom : ∀ z y, ‖F z y‖ ≤ ‖z.2‖ * max C1 C2 ∧ ‖om p (F z) y‖ ≤ ‖z.2‖ * max C1 C2`. Introduce `z y`. Prove the components needed by the constructor for the conclusion. Use `show ‖z.2 * (ψ (symplOH S T y z.1) * f (y + z.1))‖ ≤ _`. Rewrite using `[norm_mul, norm_mul, hom.std.1.2.1, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left ((hC1 _).trans (le_max_left _ _)) (norm_nonneg _)`. Simplify using `only [hF, map_smul, Pi.smul_apply, smul_eq_mul]`. Take `⟨g, h⟩` from `p`. Rewrite using `[norm_mul, om_heis_apply hom (g, h) z.1 hf y, norm_mul, hom.std.1.2.1, one_mul]`. Conclude with `mul_le_mul_of_nonneg_left ((hC2 _).trans (le_max_right _ _)) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hint : ∀ y, ∫ z, F z y ∂ν = ∫ u, α u * heisO ψ S T u f y ∂m'`. Introduce `y`. Rewrite using `[hν, integral_map hφ]`. Both sides reduce to the same expression. Conclude with `(hc1.comp (continuous_id.prodMk continuous_const)).measurable.aestronglyMeasurable`.
-
-Establish `hint2 : ∫ z, om p (F z) x ∂ν = ∫ u, α u * om p (heisO ψ S T u f) x ∂m'`. Rewrite using `[hν, integral_map hφ]`. Simplify using `only [hF, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(hc2.comp (continuous_id.prodMk continuous_const)).measurable.aestronglyMeasurable`. Establish `hI' : IsThetaFunO ψ S T (fun y => ∫ z, F z y ∂ν)`.
-
-Simplify using `only [hint]`. Conclude with `hI`. Establish `key` using `GlobalTheory.CommIntBdd.om_integral_comm_dom D ψ S T χS χT om hom (WO S T × ℂ) ν F p (fun z => ‖z.2‖ * max C1 C2) hFth hc1 hc2 hβ hdom hI' x`. Establish `e : (fun w' => ∫ z, F z w' ∂ν) = fun y => ∫ u, α u * heisO ψ S T u f y ∂m'` using `funext hint`. Rewrite using `[← hint2, ← key, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_superpos (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (p : GA D S × GA D T) (m' : Measure (WO S T)) [SFinite m'] (α : WO S T → ℂ) (hα : Integrable α m')
@@ -161,29 +155,25 @@ end GlobalTheory.KerTame
 namespace GlobalTheory.KerTame
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hom Y _ _ _ _ m _ c g h w hc hg hh hw hint`. Take `⟨-, -, i3, -, -, -⟩` from `GlobalTheory.MixModel.lattice_Mx D T.rank S.rank`. Use `haveI : SecondCountableTopology (WO S T) := i3`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : FirstCountableTopology (WO S T) := @TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _ _ i3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgh : Continuous fun y => ((g y, h y) : GA D S × GA D T)` using `hg.prodMk hh`. Establish `hK : ∀ f, IsThetaFunO ψ S T f → Continuous fun q : Y × WO S T => om (g q.1, h q.1) (heisO ψ S T q.2 f) (w q.1)` using `fun f hf => (continuous_om_heis hom hf).comp (((hgh.comp continuous_fst).prodMk (hw.comp continuous_fst)).prodMk continuous_snd)`. Establish `hbd : ∀ f, IsThetaFunO ψ S T f → ∃ (C : ℝ) (A : ℕ), ∀ y u, ‖c y * om (g y, h y) (heisO ψ S T u f) (w y)‖ ≤ C * (‖c y‖ * (quotHeight S (g y) * quotHeight T (h y)) ^ A)`. Introduce `f hf`. Take `⟨C, A, hC⟩` from `om_heis_bound hom hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `⟨C, A, fun y u => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hintH : ∀ f, IsThetaFunO ψ S T f → ∀ u, Integrable (fun y => c y * om (g y, h y) (heisO ψ S T u f) (w y)) m`. Introduce `f hf u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C, A, hC⟩` from `hbd f hf`. Conclude with `Integrable.mono' ((hint A).const_mul C) (hc.aestronglyMeasurable.mul ((hK f hf).comp (continuous_id.prodMk continuous_const)).measurable.aestronglyMeasurable) (ae_of_all _ fun y => hC y u)`. Establish `hzero : ∀ f : WO S T → ℂ, heisO ψ S T 0 f = f`. Introduce `f`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[heisO, symplOH, symplO, hO]`. Establish `hintK : ∀ f, IsThetaFunO ψ S T f → Integrable (fun y => c y * om (g y, h y) f (w y)) m`. Introduce `f hf`. Simplify `hintH f hf 0` using `only [hzero]`. Use `⟨hintK, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `f f' hf hf'`. Simplify using `only [map_add, Pi.add_apply, mul_add]`. Conclude with `integral_add (hintK f hf) (hintK f' hf')`. Introduce `a f hf`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Introduce `f hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨C, A, hC⟩` from `hbd f hf`. Use `continuous_of_dominated (bound := fun y => C * (‖c y‖ * (quotHeight S (g y) * quotHeight T (h y)) ^ A)) (fun u => (hintH f hf u).aestronglyMeasurable) (fun u => ae_of_all _ fun y => hC y u) ((hint A).const_mul C) (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Conclude with `continuous_const.mul ((hK f hf).comp (continuous_const.prodMk continuous_id))`. Introduce `f hf`. Take `⟨C, A, hC⟩` from `hbd f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨∫ y, C * (‖c y‖ * (quotHeight S (g y) * quotHeight T (h y)) ^ A) ∂m, fun u => norm_integral_le_of_norm_le ((hint A).const_mul C) (ae_of_all _ fun y => hC y u)⟩`. Introduce `f hf m' _ α hα hI`. Establish `e1 : ∀ y, om (g y, h y) (fun x => ∫ u, α u * heisO ψ S T u f x ∂m') (w y) = ∫ u, α u * om (g y, h y) (heisO ψ S T u f) (w y) ∂m'` using `fun y => om_superpos hom hf (g y, h y) m' α hα hI (w y)`. Simplify using `only [e1]`. Simplify using `only [← integral_const_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite using `[integral_integral_swap]`. Use `integral_congr_ae (ae_of_all _ fun u => ?_)` and prove the remaining obligations. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
-
-Take `⟨C, A, hC⟩` from `hbd f hf`. Use `Integrable.mono' (((hint A).const_mul C).mul_prod hα.norm) ?_ (ae_of_all _ fun q => ?_)` and prove the remaining obligations. Conclude with `(hc.aestronglyMeasurable.comp_fst).mul (hα.aestronglyMeasurable.comp_snd.mul (hK f hf).measurable.aestronglyMeasurable)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [norm_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ C * (‖c q.1‖ * (quotHeight S (g q.1) * quotHeight T (h q.1)) ^ A) * ‖α q.2‖ := mul_le_mul_of_nonneg_right (hC _ _) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kernel_tame : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T),
     IsWeilDatumO ψ S T χS χT om → ∀ (Y : Type) [TopologicalSpace Y] [SecondCountableTopology Y] [MeasurableSpace Y]

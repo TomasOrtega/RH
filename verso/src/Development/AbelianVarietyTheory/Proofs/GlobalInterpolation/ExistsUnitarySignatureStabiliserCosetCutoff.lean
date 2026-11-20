@@ -19,7 +19,7 @@ namespace GlobalTheory.StabiliserCutoff
 variable {P Q : ℕ}
 
 /- English proof (translation)
-Establish `h : ActionCoordinates.herm x x = PerpendicularEmbedding.herm x x`. Simplify using `[ActionCoordinates.herm, PerpendicularEmbedding.herm, ActionCoordinates.sgn, Fintype.sum_sum_type, sub_eq_add_neg]`. Rewrite using `[ActionCoordinates.qf, h, PerpendicularEmbedding.herm_self, Complex.ofReal_re]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem qf_eq (x : ActionCoordinates.Wsp P Q) : ActionCoordinates.qf x = PerpendicularEmbedding.qf x := by
   have h : ActionCoordinates.herm x x = PerpendicularEmbedding.herm x x := by
@@ -27,7 +27,7 @@ theorem qf_eq (x : ActionCoordinates.Wsp P Q) : ActionCoordinates.qf x = Perpend
   rw [ActionCoordinates.qf, h, PerpendicularEmbedding.herm_self, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `h : (PerpendicularEmbedding.qf (ActionCoordinates.act g x) : ℂ) = PerpendicularEmbedding.qf x`. Rewrite using `[← GlobalTheory.QuadricSection.form_self, ← GlobalTheory.QuadricSection.form_self, ActionCoordinates.act, star_mulVec, mulVec_mulVec, ← dotProduct_mulVec, mulVec_mulVec, ← Matrix.mul_assoc, GlobalTheory.UpqTopology.mat_unitary]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qf_act (g : UpqT P Q) (x : PerpendicularEmbedding.Sp P Q) : PerpendicularEmbedding.qf (ActionCoordinates.act g x) = PerpendicularEmbedding.qf x := by
   have h : (PerpendicularEmbedding.qf (ActionCoordinates.act g x) : ℂ) = PerpendicularEmbedding.qf x := by
@@ -37,7 +37,7 @@ theorem qf_act (g : UpqT P Q) (x : PerpendicularEmbedding.Sp P Q) : Perpendicula
   exact_mod_cast h
 
 /- English proof (translation)
-Unfold `ActionCoordinates.act`. Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem act_mul (g h : UpqT P Q) (x : ActionCoordinates.Wsp P Q) :
     ActionCoordinates.act (g * h) x = ActionCoordinates.act g (ActionCoordinates.act h x) := by
@@ -45,18 +45,18 @@ theorem act_mul (g h : UpqT P Q) (x : ActionCoordinates.Wsp P Q) :
   rw [Matrix.mulVec_mulVec]; rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.one_mulVec x`.
+A detailed English derivation is pending.
 -/
 theorem act_one (x : ActionCoordinates.Wsp P Q) : ActionCoordinates.act (1 : UpqT P Q) x = x := Matrix.one_mulVec x
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.UpqTopology.continuous_mat.matrix_mulVec continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_act (x : ActionCoordinates.Wsp P Q) : Continuous fun g : UpqT P Q => ActionCoordinates.act g x :=
   GlobalTheory.UpqTopology.continuous_mat.matrix_mulVec continuous_const
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `h (Pi.single i 1)` as an intermediate fact. Apply the tactic sequence `rcases i with i | i <;>`. Simplify `this` using `[ActionCoordinates.herm, ActionCoordinates.sgn, Pi.single_apply, apply_ite]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_herm {v : ActionCoordinates.Wsp P Q} (h : ∀ w, ActionCoordinates.herm v w = 0) : v = 0 := by
   funext i
@@ -65,23 +65,23 @@ theorem eq_zero_of_herm {v : ActionCoordinates.Wsp P Q} (h : ∀ w, ActionCoordi
     simpa [ActionCoordinates.herm, ActionCoordinates.sgn, Pi.single_apply, apply_ite] using this
 
 /- English proof (translation)
-Introduce `c P Q P' Q' x₀ h0 j ι hι hr`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc P Q`. Take `⟨k1, k2, k3, k4, k5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc P' Q'`. Use `haveI := c.haar P' Q'`. Use `haveI := GlobalTheory.UpqUnimodular.isMulRightInvariant_of_isHaarMeasure P' Q' _ (c.haar P' Q')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hsm, hs⟩` from `GlobalTheory.QuadricSection.exists_isSection P Q _ x₀ (qf_eq x₀ ▸ h0) rfl`. Take `⟨L, hL⟩` from `j.exists_leftInverse_of_injective (LinearMap.ker_eq_bot'.2 fun v hv => eq_zero_of_herm fun w => by rw [← hι.1, hv]; simp [ActionCoordinates.herm])`. Establish `hL' : ∀ v, L (j v) = v` using `fun v => LinearMap.congr_fun hL v`. Set `Φ : UpqT P' Q' → (Fin P' ⊕ Fin Q') → ActionCoordinates.Wsp P' Q'` to `fun h b => ActionCoordinates.act h (Pi.single b 1)`. Set `π : UpqT P Q → (Fin P' ⊕ Fin Q') → ActionCoordinates.Wsp P' Q'` to `fun g b => L (ActionCoordinates.act g (j (Pi.single b 1)))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ : Continuous Φ` using `continuous_pi fun b => continuous_act _`. Establish `hπ : Continuous π` using `continuous_pi fun b => L.continuous_of_finiteDimensional.comp (continuous_act _)`. Establish `hΦi : Function.Injective Φ` using `fun a b hab => GlobalTheory.UpqTopology.isClosedEmbedding_mat.injective (by`. Use extensionality with `x y`. Simplify `congrFun (congrFun hab y) x)` using `[Φ, ActionCoordinates.act]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hπι : ∀ a b, π (ι a * ι b) = Φ (a * b)` using `fun a b => by`. Use function extensionality and compare the values at `x`. Simplify using `only [π, Φ, act_mul, (hι.2.2 _).2, hL']`. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : UpqT P' Q')`. Establish `hpos : c.cd P' Q' K ≠ 0` using `(Measure.measure_pos_of_mem_nhds _ hK1).ne'`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : c.cd P' Q' K ≠ ⊤` using `hK.measure_lt_top.ne`. Establish `hO : MeasurableSet (Φ '' K)` using `(hK.image hΦ).isClosed.measurableSet`. Set `F : ((Fin P' ⊕ Fin Q') → ActionCoordinates.Wsp P' Q') → ℝ≥0∞` to `(Φ '' K).indicator fun _ => (c.cd P' Q' K)⁻¹`. Establish `hF : Measurable F` using `measurable_const.indicator hO`. Establish `hFΦ : ∀ h, F (Φ h) = K.indicator (fun _ => (c.cd P' Q' K)⁻¹) h` using `fun h => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hh : h ∈ K`. Simplify using `only [F, Set.indicator_of_mem hh, Set.indicator_of_mem (Set.mem_image_of_mem Φ hh)]`. Simplify using `only [F, Set.indicator_of_notMem hh, Set.indicator_of_notMem (mt hΦi.mem_set_image.1 hh)]`. Use `⟨fun g => F (π (g * s (ActionCoordinates.act g⁻¹ x₀))), ?_, fun g => ?_⟩` and prove the remaining obligations. Conclude with `hF.comp (hπ.measurable.comp (measurable_id.mul (hsm.comp ((continuous_act x₀).comp continuous_inv).measurable)))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Choose the witnesses or unpack the hypotheses as in `⟨h₀, hh₀⟩ : g * s (ActionCoordinates.act g⁻¹ x₀) ∈ Set.range ι := by`. Rewrite using `[hr]`. Express the relevant statement in the definitionally equal form `ActionCoordinates.act (g * s (ActionCoordinates.act g⁻¹ x₀)) x₀ = x₀`. Establish `e : ActionCoordinates.act (s (ActionCoordinates.act g⁻¹ x₀)) x₀ = ActionCoordinates.act g⁻¹ x₀` using `hs _ (qf_act _ _)`. Rewrite using `[act_mul, e, ← act_mul, mul_inv_cancel, act_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ h, F (π (ι h * g * s (ActionCoordinates.act (ι h * g)⁻¹ x₀))) = F (Φ (h * h₀))` using `fun h => by`. Establish `e1 : ActionCoordinates.act (ι h)⁻¹ x₀ = x₀` using `by conv_lhs => rw [← (hι.2.2 h).1, ← act_mul, inv_mul_cancel, act_one]`. Rewrite using `[_root_.mul_inv_rev, act_mul, e1, mul_assoc, ← hh₀, hπι]`. Simplify using `only [e]`. Use `⟨hF.comp (hΦ.measurable.comp (measurable_mul_const h₀)), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_mul_right_eq_self (fun h => F (Φ h)) h₀]`. Simplify using `only [hFΦ]`. Rewrite using `[lintegral_indicator_const hK.isClosed.measurableSet, ENNReal.inv_mul_cancel hpos hfin]`.
+A detailed English derivation is pending.
 -/
 theorem exists_cutoff : ∀ (c : CDHaar) (P Q P' Q' : ℕ) (x₀ : ActionCoordinates.Wsp P Q), ActionCoordinates.qf x₀ ≠ 0 →
     ∀ (j : ActionCoordinates.Wsp P' Q' →ₗ[ℂ] ActionCoordinates.Wsp P Q) (ι : UpqT P' Q' → UpqT P Q),

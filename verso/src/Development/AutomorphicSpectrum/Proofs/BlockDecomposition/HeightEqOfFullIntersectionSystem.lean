@@ -21,7 +21,7 @@ namespace GlobalTheory.CompanionTheory.MixZ
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
 /- English proof (translation)
-Establish `hrange : Set.range j = closure {j (genericPoint Z)}`. Establish `h₁` using `(genericPoint_spec Z).image j.continuous`. Rewrite `h₁` using `[Set.image_univ, j.isClosedEmbedding.isClosed_range.closure_eq]`. Conclude with `h₁.def.symm`. Conclude with `topologicalKrullDim_eq_of_isEmbedding j.isClosedEmbedding.isEmbedding hrange`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_of_generic {X Z : Scheme.{0}} [IsIntegral Z] (j : Z ⟶ X) [IsClosedImmersion j] :
     topologicalKrullDim (closure ({j (genericPoint Z)} : Set X)) = topologicalKrullDim Z := by
@@ -32,7 +32,7 @@ theorem dim_of_generic {X Z : Scheme.{0}} [IsIntegral Z] (j : Z ⟶ X) [IsClosed
   exact topologicalKrullDim_eq_of_isEmbedding j.isClosedEmbedding.isEmbedding hrange
 
 /- English proof (translation)
-Take `⟨Z, k, _, _, rfl⟩` from `GlobalTheory.exists_isClosedImmersion_genericPoint z`. Conclude with `(dim_of_generic (k ≫ j)).trans (dim_of_generic k).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dim_closure_image {X Y : Scheme.{0}} (j : Y ⟶ X) [IsClosedImmersion j] (z : Y) :
     topologicalKrullDim (closure ({j z} : Set X)) = topologicalKrullDim (closure ({z} : Set Y)) := by
@@ -40,11 +40,11 @@ theorem dim_closure_image {X Y : Scheme.{0}} (j : Y ⟶ X) [IsClosedImmersion j]
   exact (dim_of_generic (k ≫ j)).trans (dim_of_generic k).symm
 
 /- English proof (translation)
-Establish `hm : ∀ (c : ((N.restr i).restr j).B.ι) (x : Z), x ∈ ((N.restr i).restr j).B.U c → x ∈ (N.pull (j ≫ i) (Category.assoc _ _ _)).B.U (fun _ => c PUnit.unit PUnit.unit)` using `fun c x h => (mem_pull (F := j ≫ i) (x := x)).2 ((mem_pull (F := i) (x := j x)).1 ((mem_pull (F := j) (x := x)).1 h))`. Use `HermLB.isometric_of_chart (fun c _ => c PUnit.unit PUnit.unit) (fun c x h => hm c x h) (fun x c c' h h' => ?_) fun σ c y hy => ?_` and prove the remaining obligations. Establish `h₁` using `(mem_pull (F := j) (x := x)).1 h`. Establish `h₁'` using `(mem_pull (F := j) (x := x)).1 h'`. Use `(gm_pull_g (N.B.pull i) j (𝟙 Z) x c c' h h').trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gm_pull_g N.B i (𝟙 Z ≫ j) x _ _ h₁ h₁').trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (gm_pull_g N.B (j ≫ i) (𝟙 Z) x _ _ (hm c x h) (hm c' x h')).symm` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Use `((N.φ σ).pull_φ (j ≫ i) (Category.assoc _ _ _) _ y).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((((N.φ σ).pull i rfl).pull_φ j rfl c y)).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ ((N.φ σ).pull_φ i rfl _ _).symm` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem isometric_restr_restr {X Z : Scheme.{0}} (N : HermLB (mpStr ℤ m n)) (i : X ⟶ MP ℤ m n) (j : Z ⟶ X) :
     ((N.restr i).restr j).Isometric (N.pull (j ≫ i) (Category.assoc _ _ _)) := by
@@ -65,7 +65,7 @@ theorem isometric_restr_restr {X Z : Scheme.{0}} (N : HermLB (mpStr ℤ m n)) (i
     congr 1
 
 /- English proof (translation)
-Take `⟨r', hr', h₁, h₂⟩` from `iso.exists_isRatSec hr`. Use `⟨r', hr', h₁, fun e => ?_, h₂⟩` and prove the remaining obligations. Simplify using `only [HermLB.archInt, h₁, iso.chernInt_eq]`. Conclude with `finsum_congr fun σ => Weight.chernInt_congr (isOpen_offSupp _).measurableSet (h₂ σ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem archInt_transport {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp ℤ} {L M : HermLB q} (iso : L.Isometric M)
     {r : L.B.ι → Z.functionFieldˣ} (hr : IsRatSec L.B r) :
@@ -78,9 +78,9 @@ theorem archInt_transport {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp ℤ} {L 
   exact finsum_congr fun σ => Weight.chernInt_congr (isOpen_offSupp _).measurableSet (h₂ σ)
 
 /- English proof (translation)
-Take `⟨f, g, hfg, hrat⟩` from `h₅ m n N A hN Z i r hr`. Establish `hcyc` using `h₆ m n N A hN Z i e hZ r hr f g hfg hrat (cycVal II A e)`. Establish `hint` using `h₇ m n N N A A hN hN Z i e hZ hA hA r hr f g hfg hrat`. Establish `hrr` using `hR _ _ (II _ (Bk n)) (hII.1 _ _) _ e (fun _ => A) A f g hP (fun _ => hA) hA hfg`. Establish `hs : (Fin.snoc (fun _ : Fin e => A) A : Fin (e + 1) → HermLine (Bk n)) = fun _ => A`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun j => ?_) j <;> simp`. Rewrite `hrr` using `[hs]`. Rewrite using `[hint, hcyc, cycVal, if_pos hP.2.2.1, hrr]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rec_eq (h₅ : ExistsRat) (h₆ : CycleOfRat) (h₇ : ArchIntEq) (hR : RatRStatement)
     (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) (N : HermLB (mpStr ℤ m n)) (A : HermLine (Bk n))
@@ -103,15 +103,15 @@ theorem rec_eq (h₅ : ExistsRat) (h₆ : CycleOfRat) (h₇ : ArchIntEq) (hR : R
   rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Amb.isArithVar_mp ℤ inferInstance m n`.
+A detailed English derivation is pending.
 -/
 theorem mp_var (m : ℕ) (n : Fin (m + 1) → ℕ) : GlobalTheory.IsArithVar (mpStr ℤ m n) (∑ i, n i) :=
   GlobalTheory.Amb.isArithVar_mp ℤ inferInstance m n
 
 /- English proof (translation)
-Take `⟨Z, k, _, _, rfl⟩` from `GlobalTheory.exists_isClosedImmersion_genericPoint z`. Establish `hd : topologicalKrullDim Z = (0 : ℕ)` using `(dim_of_generic k).symm.trans hz`. Take `⟨-, h2, -, -⟩` from `h₃ m n Z (k ≫ i) 0 hd`. Introduce `hh`. Establish `hc : CharZero Γ(Z, ⊤)` using `h2.1 hh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(mp_var m n).dim_ne_zero (k ≫ i) hc (by exact_mod_cast hd)`.
+A detailed English derivation is pending.
 -/
 theorem not_horizontal_of_dim_zero (h₃ : PtDict) {X : Scheme.{0}} (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (z : X)
     (hz : topologicalKrullDim (closure ({z} : Set X)) = (0 : ℕ)) : ¬ IsHorizontal (ptIdeal (i z)) := by
@@ -123,9 +123,9 @@ theorem not_horizontal_of_dim_zero (h₃ : PtDict) {X : Scheme.{0}} (i : X ⟶ M
   exact (mp_var m n).dim_ne_zero (k ≫ i) hc (by exact_mod_cast hd)
 
 /- English proof (translation)
-Rewrite using `[rec_eq h₅ h₆ h₇ hR II hII N A hN hA Z i 0 hZ hP r hr, (hC Z _ hZ (N.restr i) (N.restr i) r hr).2]`. Use `congrArg (· - _) (finsum_congr fun z => ?_)` and prove the remaining obligations. Distinguish the cases in `hz : ((N.restr i).div hr).mult z = 0`. Simplify using `[hz]`. Establish `hd` using `h₄ Z _ 0 hZ z (CartierDiv.coheight_eq_one_of_mult_ne_zero hz)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[cycVal, if_neg (not_horizontal_of_dim_zero h₃ i z hd), hPt m n Z i z hd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem curve_eq (h₃ : PtDict) (h₄ : CodimOne) (h₅ : ExistsRat) (h₆ : CycleOfRat) (h₇ : ArchIntEq) (hPt : PtLen)
     (hC : CurveInt) (hR : RatRStatement)
@@ -145,7 +145,7 @@ theorem curve_eq (h₃ : PtDict) (h₄ : CodimOne) (h₅ : ExistsRat) (h₆ : Cy
   rw [cycVal, if_neg (not_horizontal_of_dim_zero h₃ i z hd), hPt m n Z i z hd]
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Conclude with `rec_eq h₅ h₆ h₇ hR II hII N A hN hA Z i e hZ hP r hr`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem rec_eq' (h₅ : ExistsRat) (h₆ : CycleOfRat) (h₇ : ArchIntEq) (hR : RatRStatement)
     (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) (N : HermLB (mpStr ℤ m n)) (A : HermLine (Bk n))
@@ -160,7 +160,7 @@ theorem rec_eq' (h₅ : ExistsRat) (h₆ : CycleOfRat) (h₇ : ArchIntEq) (hR : 
   exact rec_eq h₅ h₆ h₇ hR II hII N A hN hA Z i e hZ hP r hr
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Conclude with `curve_eq h₃ h₄ h₅ h₆ h₇ hPt hC hR II hII N A hN hA Z i hZ hP r hr`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem curve_eq' (h₃ : PtDict) (h₄ : CodimOne) (h₅ : ExistsRat) (h₆ : CycleOfRat) (h₇ : ArchIntEq) (hPt : PtLen)
     (hC : CurveInt) (hR : RatRStatement)
@@ -176,7 +176,7 @@ theorem curve_eq' (h₃ : PtDict) (h₄ : CodimOne) (h₅ : ExistsRat) (h₆ : C
   exact curve_eq h₃ h₄ h₅ h₆ h₇ hPt hC hR II hII N A hN hA Z i hZ hP r hr
 
 /- English proof (translation)
-Take `⟨ℓ, hℓ⟩` from `CharP.exists R`. Break down `(Nat.dvd_prime hp).1 ((CharP.cast_eq_zero_iff R ℓ p).1 h) with rfl | rfl` into its components or cases. Conclude with `absurd ((Nat.cast_one (R := R)).symm.trans ((CharP.cast_eq_zero_iff R 1 1).2 dvd_rfl)) one_ne_zero`. Conclude with `hℓ`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem charP_of_cast {R : Type} [CommRing R] [IsDomain R] {p : ℕ} (hp : p.Prime) (h : (p : R) = 0) : CharP R p := by
   obtain ⟨ℓ, hℓ⟩ := CharP.exists R
@@ -185,25 +185,23 @@ theorem charP_of_cast {R : Type} [CommRing R] [IsDomain R] {p : ℕ} (hp : p.Pri
   · exact hℓ
 
 /- English proof (translation)
-Introduce `m n N A hN hA X _ _ i _ h H z d hd`. Proceed by induction on `d using Nat.strong_induction_on generalizing z with`. Consider the case `_ d ih`. Take `⟨Z, j, _, _, rfl⟩` from `GlobalTheory.exists_isClosedImmersion_genericPoint z`. Establish `hZd : topologicalKrullDim Z = d` using `(dim_of_generic j).symm.trans hd`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmp` using `mp_var m n`. Establish `hnoeth` using `hmp.isNoetherian_sub (j ≫ i)`. Establish `hln : IsLocallyNoetherian Z` using `hnoeth.toIsLocallyNoetherian`. Establish `hcomp : ∀ x, (j ≫ i) x = i (j x)` using `fun x => by simp`. Take `⟨-, hp₃, hp₄, hp₅⟩` from `h₃ m n Z (j ≫ i) d hZd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hcomp] at hp₃ hp₄ hp₅`. Distinguish the cases in `hW : IsHorizontal (ptIdeal (i (j (genericPoint Z))))`. Establish `hc : CharZero Γ(Z, ⊤)` using `hp₃.1 hW`. Establish `hP` using `hp₄ hW`. Take `⟨r₀, hr₀⟩` from `exists_isRatSec ((N.restr i).restr j).isLB`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, e₁, e₂, e₃⟩` from `archInt_transport (isometric_restr_restr N i j) hr₀`. Consider the cases of `d with`. Consider the case `zero => exact absurd (by exact_mod_cast hZd) (hmp.dim_ne_zero (j ≫ i) hc)`. Consider the case `succ e`. Establish `hZ₀ : GlobalTheory.IsArithVar ((j ≫ i) ≫ mpStr ℤ m n) e` using `hmp.of_isClosedImmersion (j ≫ i) hc hZd`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hZ : GlobalTheory.IsArithVar (j ≫ i ≫ mpStr ℤ m n) e`. Rewrite using `[← Category.assoc]`. Conclude with `hZ₀`. Break down `Nat.eq_zero_or_pos e with rfl | he` into its components or cases. Establish `hcv` using `curve_eq' h₃ h₄ h₅ h₆ h₇ hPt hC hR II hII N A hN hA Z (j ≫ i) (Category.assoc _ _ _) hZ (by simpa only [hcomp] using hP) r hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hcomp] at hcv`. Rewrite using `[H.point Z j hc hZd r₀ hr₀, hcv, HermLB.curveDeg, e₁]`. Use `congrArg _ (finsum_congr fun σ => finsum_congr fun y => (e₃ σ (mem_offSupp.2 ?_)).symm)` and prove the remaining obligations. Rewrite using `[hZ.under_eq_genericPoint]`. Conclude with `CartierDiv.genericPoint_notMem_supp _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrc` using `rec_eq' h₅ h₆ h₇ hR II hII N A hN hA Z (j ≫ i) (Category.assoc _ _ _) e hZ (by simpa only [hcomp] using hP) r hr`. Simplify using `only [hcomp] at hrc`. Rewrite using `[(H.recursion_one j hc he hZd hr₀).2, hrc, e₂, e₁]`. Use `congrArg (· - _) (finsum_congr fun z' => ?_)` and prove the remaining obligations. Distinguish the cases in `hz : (((N.restr i).restr j).div hr₀).mult z' = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hz]`. Establish `hdz` using `h₄ Z _ e hZ z' (CartierDiv.coheight_eq_one_of_mult_ne_zero hz)`. Rewrite using `[ih e (Nat.lt_succ_self e) (j z') ((dim_closure_image j z').trans hdz)]`. Take `⟨hpr, hz⟩` from `hp₅ hW`. Establish `key : ∀ p : ℕ, p.Prime → ((p : ℕ) : Γ(Z, ⊤)) = 0 → h (j (genericPoint Z)) = (geoNum d (ptIdeal (i (j (genericPoint Z)))) (fun _ => A.a) : ℝ) * Real.log p`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Introduce `p hp h0`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : CharP Γ(Z, ⊤) p := charP_of_cast hp h0`. Use `letI : Algebra (ZMod p) Γ(Z, ⊤) := ZMod.algebra _ p`. Establish `e₁` using `H.vertical Z j (ZMod p) d hZd`.
-
-Establish `e₂ : topSelfIntersection (ZMod p) ((N.restr i).B.pull j) d = _` using `hV m n N A hN X i Z j p d hZd`. Rewrite using `[e₁, e₂, Nat.card_zmod]`. Rewrite using `[key _ hpr hz, cycVal, if_neg hW]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heightEq_of (h₃ : PtDict) (h₄ : CodimOne) (h₅ : ExistsRat) (h₆ : CycleOfRat) (h₇ : ArchIntEq) (hV : VertEq)
     (hPt : PtLen) (hC : CurveInt) (hR : RatRStatement) (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) :
@@ -261,7 +259,7 @@ theorem heightEq_of (h₃ : PtDict) (h₄ : CodimOne) (h₅ : ExistsRat) (h₆ :
     rw [key _ hpr hz, cycVal, if_neg hW]
 
 /- English proof (translation)
-Introduce `h₃ h₄ h₅ h₆ h₇ hV hPt hC hR II hII` and use `heightEq_of h₃ h₄ h₅ h₆ h₇ hV hPt hC hR II hII`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem heightEq_holds : PtDict → CodimOne → ExistsRat → CycleOfRat → ArchIntEq → VertEq → PtLen → CurveInt →
     RatRStatement → ∀ II : IntersectionSystem, IsFullIntersectionSystem II → HeightEq II :=

@@ -7,9 +7,9 @@ namespace Formalism.FourierDecayAlt.P.CutSE
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D F hF`. Take `⟨ε, hε, hN⟩` from `hF`. Establish `h` using `Formalism.FourierDecayAlt.P.bessel_function_finite_class k r Wp Wq D F ε hε hN`. Use `⟨by rw [ffl_om_eq]; exact h, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, F', hU, hgU, hc, he⟩` from `h.1 g₀ ⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hg₀.1, hg₀.2⟩`. Conclude with `⟨U, F', hU, hgU, by exact_mod_cast hc, fun g hg hgG => he g hg (Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hgG)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem radial_orbital_niceness : RDJNice := by
   intro k r Wp Wq _ _ _ _ _ _ D F hF

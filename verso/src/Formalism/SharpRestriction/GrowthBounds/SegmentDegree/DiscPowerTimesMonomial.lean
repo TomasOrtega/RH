@@ -18,7 +18,7 @@ variable (D : Formalism.BasicNotions.D7) (hV : admB2 D) {R : Type} [CommRing R] 
 include hV
 
 /- English proof (translation)
-Establish `h` using `((hV R ℤ n LZ S).1 P Q).1`. Rewrite using `[h, WithTop.coe_add]`. Conclude with `add_le_add hP hQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_vg_mul {a b : ℤ} {P Q : MvPolynomial (ℤ × Fin n) R} (hP : (a : WithTop ℤ) ≤ valS LZ S P)
     (hQ : (b : WithTop ℤ) ≤ valS LZ S Q) : ((a + b : ℤ) : WithTop ℤ) ≤ valS LZ S (P * Q) := by
@@ -28,9 +28,9 @@ theorem mem_vg_mul {a b : ℤ} {P Q : MvPolynomial (ℤ × Fin n) R} (hP : (a : 
 
 omit hV [IsDomain R] [IsDiscreteValuationRing R] in
 /- English proof (translation)
-Unfold `valS`. Use `Finset.le_inf fun k hk => ?_` and prove the remaining obligations. Establish `h` using `sDegs_C (R := R) LZ S (lastIdx n) c k hk`. Rewrite `h` using `[Set.mem_singleton_iff]`. Substitute `h` using the available equality.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem mem_vg_C (c : R) : ((0 : ℤ) : WithTop ℤ) ≤ valS LZ S (C c : MvPolynomial (ℤ × Fin n) R) :=
   by
@@ -42,9 +42,9 @@ theorem mem_vg_C (c : R) : ((0 : ℤ) : WithTop ℤ) ≤ valS LZ S (C c : MvPoly
   exact le_rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using mem_vg_C (R := R) (n := n) S 1`. Consider the case `succ k ih`. Establish `e : (((k + 1 : ℕ) : ℤ) * a : ℤ) = (k : ℤ) * a + a` using `by push_cast; ring`. Rewrite using `[e, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_vg_mul D hV S ih hP`.
+A detailed English derivation is pending.
 -/
 theorem mem_vg_pow {a : ℤ} {P : MvPolynomial (ℤ × Fin n) R} (hP : (a : WithTop ℤ) ≤ valS LZ S P) (m : ℕ) :
     (((m : ℤ) * a : ℤ) : WithTop ℤ) ≤ valS LZ S (P ^ m) := by
@@ -56,9 +56,9 @@ theorem mem_vg_pow {a : ℤ} {P : MvPolynomial (ℤ × Fin n) R} (hP : (a : With
     exact mem_vg_mul D hV S ih hP
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `using mem_vg_C (R := R) (n := n) S 1`. Introduce `i s hi ih h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi]`. Conclude with `mem_vg_mul D hV S (h i (Finset.mem_insert_self i s)) (ih fun k hk => h k (Finset.mem_insert_of_mem hk))`.
+A detailed English derivation is pending.
 -/
 theorem mem_vg_prod {κ : Type} (s : Finset κ) (f : κ → MvPolynomial (ℤ × Fin n) R) (a : κ → ℤ)
     (h : ∀ i ∈ s, (a i : WithTop ℤ) ≤ valS LZ S (f i)) :
@@ -75,11 +75,11 @@ theorem mem_vg_prod {κ : Type} (s : Finset κ) (f : κ → MvPolynomial (ℤ ×
 
 omit hV [IsDomain R] [IsDiscreteValuationRing R] in
 /- English proof (translation)
-Unfold `valS`. Use `Finset.le_inf fun k hk => ?_` and prove the remaining obligations. Establish `hk0 : (0 : ℤ) ≤ k`. Distinguish the cases in `hS : v.1 ∈ S`. Establish `hv : LZ.vec v.1 = true` using `by simp [LZ, he]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h` using `sDegs_X_vec (R := R) LZ S (lastIdx n) v.1 v.2 hS hv k hk`. Establish `h01 : k = 0 ∨ k = 1` using `by simpa using h`. Apply the tactic sequence `rcases h01 with h | h <;> simp [h]`. Establish `h` using `sDegs_X_out (R := R) LZ S (lastIdx n) v hS k hk`. Rewrite `h` using `[Set.mem_singleton_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[h]`. Conclude with `WithTop.coe_le_coe.mpr hk0`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_vg_X (v : ℤ × Fin n) (he : Even v.1) :
     ((0 : ℤ) : WithTop ℤ) ≤ valS LZ S (X v : MvPolynomial (ℤ × Fin n) R) := by
@@ -97,7 +97,7 @@ theorem mem_vg_X (v : ℤ × Fin n) (he : Even v.1) :
   exact WithTop.coe_le_coe.mpr hk0
 
 /- English proof (translation)
-Establish `h0 : ∀ i ∈ s, (((fun _ => (0 : ℤ)) i : ℤ) : WithTop ℤ) ≤ valS LZ S ((X (v i) : MvPolynomial (ℤ × Fin n) R) ^ e i)`. Introduce `i hi`. Simplify using `using mem_vg_pow D hV S (mem_vg_X (R := R) S (v i) (he i hi)) (e i)`. Simplify using `using mem_vg_prod D hV S s (fun i => (X (v i) : MvPolynomial (ℤ × Fin n) R) ^ e i) (fun _ => 0) h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_vg_monom {κ : Type} (s : Finset κ) (v : κ → ℤ × Fin n) (e : κ → ℕ) (he : ∀ i ∈ s, Even (v i).1) :
     ((0 : ℤ) : WithTop ℤ) ≤ valS LZ S (∏ i ∈ s, (X (v i) : MvPolynomial (ℤ × Fin n) R) ^ e i) := by
@@ -142,7 +142,7 @@ def memM [NeZero K] (j : ℤ) (μ : Fin (segN X.F j + 1) → Fin (r + K) → ℤ
     (fun i => if Even (segE X.F j i) then tanPart μ i.succ 0 else tanPart μ i.castSucc 0) 0
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [famEl, memA, discPowerTimesMonomial, memMu, memPl, memG, PsiPl, PsiTan, segRen, plEmb, nmEmb, map_mul, rename_rename, Function.comp_def, plVar, tanVar] ring)`. Consider the case `(simp only [famEl, memA, discPowerTimesMonomial, memMu, memPl, memG, PsiPl, PsiTan, segRen, plEmb, nmEmb, map_mul, rename_rename, Function.comp_def] ring_nf)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem famEl_eq (O : Type) [CommRing O] (j : ℤ) (b : ℤ → ℕ)
     (q : (Fin (segN X.F j + 1) → Fin (r + K) → ℤ) × (ℤ → Finset (Fin K)) × (Fin r × Fin r → ℕ)) :
@@ -190,11 +190,11 @@ def RestMemD (C₀ : ℝ) : Prop :=
       plEmb O r K (X.memA p K O j b q.1) * nmEmb O r K (X.memG K O j q.1) ∈ restrictSupport O (X.resSet p K j)
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X O _ _ _ hS hX hCLa hCk j b hb q`. Establish `hA'` using `hA p n' r K X O hS hX hCLa hCk j b hb q`. Establish `hB'` using `hB p n' r K X O hS hX hCLa hCk j b hb q`. Establish `hC'` using `hC p n' r K X O hS hX hCLa hCk j b hb q`. Establish `hD'` using `hD p n' r K X O hS hX hCLa hCk j b hb q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[X.famEl_eq p K O j b q.1]`. Simplify using `only [Dat.Mj, XX', Submodule.mem_inf]`. Use `⟨⟨⟨Submodule.subset_span ⟨X.memA p K O j b q.1, X.memG K O j q.1, X.memM K j q.1.1, hA'.1, hA'.2.1, hA'.2.2, rfl⟩, ?_⟩, hC'⟩, hD'⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `mm hmm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hB' mm hmm`.
+A detailed English derivation is pending.
 -/
 theorem restMem_of_rests (C₀ : ℝ) (hA : RestMemA C₀) (hB : RestMemB C₀) (hC : RestMemC C₀) (hD : RestMemD C₀) :
     RestMem C₀ := by

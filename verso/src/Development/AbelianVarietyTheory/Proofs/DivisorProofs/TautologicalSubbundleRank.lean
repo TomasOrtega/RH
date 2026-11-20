@@ -23,7 +23,7 @@ open GlobalTheory.Twist (resM)
 namespace GlobalTheory.FlagZ.Univ
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `GlobalTheory.FlagZ.exists_mem_range_cell ι (ι × Fin (N + 1)) N Prod.fst Prod.snd y`. Conclude with `⟨w, (mem_cellOpen ι N).2 hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_cellOpen (ι : Type) [Fintype ι] (N : ℕ) (y : Fl ι N) :
     ∃ w : ι → Equiv.Perm (Fin N), y ∈ cellOpen ι N w := by
@@ -31,7 +31,7 @@ theorem exists_mem_cellOpen (ι : Type) [Fintype ι] (N : ℕ) (y : Fl ι N) :
   exact ⟨w, (mem_cellOpen ι N).2 hw⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.subbundle_frame_membership _ (GlobalTheory.T.cell_columns_frame ι N w τ) _ _ (fun y hy => (GlobalTheory.T.flag_stalk_column_span ι N τ l y _ (GlobalTheory.T.cell_flag_point_stalk ι N w y hy)).trans (GlobalTheory.T.cell_flag_stalk_span ι N w τ l y hy)) h a`.
+A detailed English derivation is pending.
 -/
 theorem mem_sub_iff_cellCol (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) (l : ℕ) (w : ι → Equiv.Perm (Fin N))
     (V : (Fl ι N).Opens) (h : V ≤ cellOpen ι N w) (a : Fin N → Γ(Fl ι N, V)) :
@@ -40,9 +40,9 @@ theorem mem_sub_iff_cellCol (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) (l : �
     (fun y hy => (GlobalTheory.T.flag_stalk_column_span ι N τ l y _ (GlobalTheory.T.cell_flag_point_stalk ι N w y hy)).trans (GlobalTheory.T.cell_flag_stalk_span ι N w τ l y hy)) h a
 
 /- English proof (translation)
-Introduce `ι _ N τ i`. Use `⟨fun y => ?_, ⟨?_, N - i, ?_⟩⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `exists_mem_cellOpen ι N y`. Take `⟨e, he⟩` from `GlobalTheory.T.subbundle_frame_exists (sub ι N τ i) _ (GlobalTheory.T.cell_columns_frame ι N w τ) i i.is_le (mem_sub_iff_cellCol ι N τ i w)`. Conclude with `⟨_, e, hw, he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `@mono_comp _ _ _ _ _ _ (VB.Sub.mono_incl _) _ inferInstance`. Use `(show VB.IsVB (cokernel (sub ι N τ i).incl) (N - i) from fun y => ?_).of_iso (cokernelCompIsIso _ _).symm` and prove the remaining obligations. Take `⟨w, hw⟩` from `exists_mem_cellOpen ι N y`. Take `⟨e, he⟩` from `GlobalTheory.T.quotient_bundle_frame_exists (sub ι N τ i) _ (GlobalTheory.T.cell_columns_frame ι N w τ) i i.is_le (mem_sub_iff_cellCol ι N τ i w)`. Conclude with `⟨_, e, hw, he⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isVB_F_and_isSubbundle_incl : ∀ (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) (i : Fin (N + 1)),
     VB.IsVB (F ι N τ i) i ∧ VB.IsSubbundle (incl ι N τ i) := by

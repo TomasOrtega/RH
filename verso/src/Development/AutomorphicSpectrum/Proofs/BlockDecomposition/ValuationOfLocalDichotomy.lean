@@ -8,31 +8,27 @@ open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison Crystallin
 namespace GlobalTheory.CompanionTheory.Idem
 
 /- English proof (translation)
-Introduce `S _ ϖ hD f g hfg`. Take `⟨N, hN⟩` from `hfg`. Set `Q : S → Prop` to `fun e => ∃ d, IsIdempotentElem d ∧ d * e = d ∧ d * f ∈ Ideal.span {g} ∧ (e - d) * g ∈ Ideal.span {f}`. Establish `hQ1 : Q 1`. Apply `GlobalTheory.CompanionTheory.Idem.glue_idempotent_property Q` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨0, IsIdempotentElem.zero, by simp, by simp, by simp⟩`. Introduce and unpack `e e' he he' ⟨d, hd, hde, hdf, hdg⟩`. Use `⟨d * e', hd.mul he', ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm d e', mul_assoc]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ hdf`. Establish `h3 : (e * e' - d * e') * g = e' * ((e - d) * g)` using `by ring`. Rewrite using `[h3]`. Conclude with `Ideal.mul_mem_left _ _ hdg`. Introduce and unpack `e e' he he' hee ⟨d, hd, hde, hdf, hdg⟩ ⟨d', hd', hde', hdf', hdg'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hdd : d * d' = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : d * e' = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : d' * e = 0`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨d + d', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (d + d') * (d + d') = d + d'`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_mul]`. Conclude with `Ideal.add_mem _ hdf hdf'`. Establish `h3 : (e + e' - (d + d')) * g = (e - d) * g + (e' - d') * g` using `by ring`. Rewrite using `[h3]`. Conclude with `Ideal.add_mem _ hdg hdg'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m hm`. Establish `hprime` using `hm.isPrime`. Establish `hspan : (Ideal.Quotient.mk (CrystallineSemistableComparison.R.compI m) ϖ) ^ N ∈ Ideal.span {Ideal.Quotient.mk (CrystallineSemistableComparison.R.compI m) f, Ideal.Quotient.mk (CrystallineSemistableComparison.R.compI m) g}`. Rewrite using `[← map_pow]`. Establish `h4` using `Ideal.mem_map_of_mem (Ideal.Quotient.mk (CrystallineSemistableComparison.R.compI m)) hN`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h4` using `[Ideal.map_span, Set.image_pair]`. Then use the resulting hypothesis. Break down `hD m hm _ _ ⟨N, hspan⟩ with hgf | hfg'` into its components or cases. Take `⟨c, hc⟩` from `hgf`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Establish `hmem : f - g * a ∈ CrystallineSemistableComparison.R.compI m`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, hc, sub_self]`. Take `⟨e, he, hem, hex⟩` from `(GlobalTheory.CompanionTheory.CompIdeal.mem_compI_iff m hprime _).1 hmem`. Establish `hef : e * f = e * (g * a)`. Rewrite `hex` using `[mul_sub]`. Conclude with `sub_eq_zero.1 hex`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e, he, hem, e, he, he.eq, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[hef]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self g))`. Take `⟨c, hc⟩` from `hfg'`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : g - f * a ∈ CrystallineSemistableComparison.R.compI m`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, hc, sub_self]`. Take `⟨e, he, hem, hex⟩` from `(GlobalTheory.CompanionTheory.CompIdeal.mem_compI_iff m hprime _).1 hmem`. Establish `heg : e * g = e * (f * a)`. Rewrite `hex` using `[mul_sub]`.
-
-Conclude with `sub_eq_zero.1 hex`. Use `⟨e, he, hem, 0, IsIdempotentElem.zero, by simp, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_zero, heg]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self f))`. Take `⟨d, hd, -, hdf, hdg⟩` from `hQ1`.
-
-Conclude with `⟨d, hd, hdf, hdg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem val_of_dich : ∀ {S : Type} [CommRing S] (ϖ : S),
     (∀ m : Ideal S, m.IsMaximal → Dich (Ideal.Quotient.mk (compI m) ϖ)) → Val ϖ := by

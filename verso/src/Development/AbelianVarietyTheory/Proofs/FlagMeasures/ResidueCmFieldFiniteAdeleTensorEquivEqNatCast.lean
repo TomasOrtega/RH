@@ -31,7 +31,7 @@ section Cast
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `(Algebra.TensorProduct.comm F₁ (FiniteAdeleRing (𝓞 F₁) F₁) E).apply_symm_apply _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem tensCastR_comm_symm_tmul_one {F₁ F₂ : Subfield E} (h : F₁ = F₂) (y : E) :
     GlobalTheory.StdFrame.tensCastR h ((Algebra.TensorProduct.comm F₁ (FiniteAdeleRing (𝓞 F₁) F₁) E).symm
@@ -40,7 +40,7 @@ theorem tensCastR_comm_symm_tmul_one {F₁ F₂ : Subfield E} (h : F₁ = F₂) 
   exact (Algebra.TensorProduct.comm F₁ (FiniteAdeleRing (𝓞 F₁) F₁) E).apply_symm_apply _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨c, hc, (Algebra.TensorProduct.comm F₁ (FiniteAdeleRing (𝓞 F₁) F₁) E).apply_symm_apply _⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem tensCastR_comm_symm_one_tmul {F₁ F₂ : Subfield E} (h : F₁ = F₂) (c : FiniteAdeleRing (𝓞 F₁) F₁)
     (hc : ∀ v, c v ∈ v.adicCompletionIntegers F₁) :
@@ -65,14 +65,14 @@ theorem projE_apply (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (s :
       ((Algebra.TensorProduct.comm (↥D.host.F) (FiniteAdeleRing (𝓞 ↥D.host.F) ↥D.host.F) D.host.E).symm x)) := rfl
 
 /- English proof (translation)
-Simplify using `[projE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem projE_adeleEquiv (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (s : ReciprocityTheory.Aut.SplitPlace D.host.E)
     (a : ReciprocityTheory.Aut.AL D.host.E) : projE D hF s (GlobalTheory.FixedConj.adeleEquiv D hF a) = s.proj a := by
   simp [projE]
 
 /- English proof (translation)
-Rewrite using `[projE_apply, tensCastR_comm_symm_tmul_one]`. Simplify using `[SplitPlace.proj, Algebra.TensorProduct.lift_tmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem projE_tmul_one (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (s : ReciprocityTheory.Aut.SplitPlace D.host.E)
     (y : D.host.E) : projE D hF s (y ⊗ₜ[↥D.host.F] (1 : Formalism.L2.Herm.Af ↥D.host.F)) = s.i y := by
@@ -80,11 +80,9 @@ theorem projE_tmul_one (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (
   simp [SplitPlace.proj, Algebra.TensorProduct.lift_tmul]
 
 /- English proof (translation)
-Establish `hle : Formalism.L2.Herm.intAf (↥D.host.F) D.host.E ≤ (s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)).toSubring.comap (projE D hF s)`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (⟨⟨_, y, rfl⟩, rfl⟩ | ⟨⟨c, hc⟩, rfl⟩)`. Use `show projE D hF s _ ∈ s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, projE_tmul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `s.split_le_one y`. Use `show projE D hF s _ ∈ s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)`. Take `⟨c', hc', e⟩` from `tensCastR_comm_symm_one_tmul hF c hc`. Rewrite using `[projE_apply, e]`. Simplify using `only [SplitPlace.proj, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.lift_tmul, map_one, one_mul]`.
-
-Conclude with `hc' s.v`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hle hz)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem projE_le_one (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (s : ReciprocityTheory.Aut.SplitPlace D.host.E)
     (z : Formalism.IndefR.Lev.EAf D) (hz : z ∈ Formalism.L2.Herm.intAf (↥D.host.F) D.host.E) : Valued.v (projE D hF s z) ≤ 1 := by
@@ -103,11 +101,11 @@ theorem projE_le_one (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (s 
   exact (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hle hz)
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Rewrite using `[Formalism.L2.DIV.oToS_coe, projE_tmul_one]`. Conclude with `hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Subring.coe_add, map_add]`. Conclude with `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt hx hy)`. Consider the case `smul c x _ hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[smul_eq_mul, Subring.coe_mul, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `projE_le_one D hF s _ c.2`. Use `_ < 1 := by rwa [one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem projE_lt_one (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (s : ReciprocityTheory.Aut.SplitPlace D.host.E)
     (z : Formalism.L2.Herm.intAf (↥D.host.F) D.host.E) (hz : z ∈ Formalism.L2.DIV.idS (↥D.host.F) s.w.asIdeal) :
@@ -130,13 +128,13 @@ theorem projE_lt_one (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (s 
       _ < 1 := by rwa [one_mul]
 
 /- English proof (translation)
-Introduce `D hF s a ha m _hA hm`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (Formalism.L2.DIV.resS (↥D.host.F) s.w ⟨_, ha⟩)`. Establish `e1 : Formalism.L2.DIV.cmpS (↥D.host.F) s.w.asIdeal (Formalism.L2.DIV.resS (↥D.host.F) s.w ⟨_, ha⟩) = Ideal.Quotient.mk (Formalism.L2.DIV.idS (↥D.host.F) s.w.asIdeal) ⟨_, ha⟩` using `(RingEquiv.ofBijective (Formalism.L2.DIV.cmpS (↥D.host.F) s.w.asIdeal) (Formalism.L2.DIV.cmpS_bij (F := ↥D.host.F) s.w.asIdeal s.w.ne_bot)).apply_symm_apply _`. Establish `e2 : Formalism.L2.DIV.cmpS (↥D.host.F) s.w.asIdeal (Ideal.Quotient.mk s.w.asIdeal b) = Ideal.Quotient.mk (Formalism.L2.DIV.idS (↥D.host.F) s.w.asIdeal) (Formalism.L2.DIV.oToS (↥D.host.F) D.host.E b)` using `Ideal.quotientMap_mk`. Establish `hmem : (⟨_, ha⟩ : Formalism.L2.Herm.intAf (↥D.host.F) D.host.E) - Formalism.L2.DIV.oToS (↥D.host.F) D.host.E b ∈ Formalism.L2.DIV.idS (↥D.host.F) s.w.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Conclude with `e1.symm.trans ((congrArg (Formalism.L2.DIV.cmpS (↥D.host.F) s.w.asIdeal) hb.symm).trans e2)`. Establish `h1 : Valued.v (s.proj a - s.i (algebraMap (𝓞 D.host.E) D.host.E b)) < 1`. Use `projE_lt_one D hF s _ hmem` as an intermediate fact. Rewrite `this` using `[AddSubgroupClass.coe_sub, map_sub, Formalism.L2.DIV.oToS_coe, projE_tmul_one, projE_adeleEquiv]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2 : b - (m : 𝓞 D.host.E) ∈ s.w.asIdeal` using `by show Valued.v (s.i ((b - (m : 𝓞 D.host.E) : 𝓞 D.host.E) : D.host.E)) < 1`. Establish `e : s.i ((b - (m : 𝓞 D.host.E) : 𝓞 D.host.E) : D.host.E) = (s.proj a - (m : s.v.adicCompletion (maximalRealSubfield D.host.E))) - (s.proj a - s.i (algebraMap (𝓞 D.host.E) D.host.E b))`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_sub, map_sub, map_natCast, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt hm h1)`. Rewrite using `[← hb, ← map_natCast (Ideal.Quotient.mk s.w.asIdeal) m, Ideal.Quotient.eq]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem resS_adeleEquiv_eq_natCast : ∀ (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (a : ReciprocityTheory.Aut.AL D.host.E) (ha : GlobalTheory.FixedConj.adeleEquiv D hF a ∈ Formalism.L2.Herm.intAf (↥D.host.F) D.host.E) (m : ℕ), a ∈ ReciprocityTheory.Aut.ALint D.host.E → Valued.v (s.proj a - (m : s.v.adicCompletion (maximalRealSubfield D.host.E))) < 1 → Formalism.L2.DIV.resS (↥D.host.F) s.w ⟨_, ha⟩ = (m : Formalism.L2.DIV.kP s.w) := by
   intro D hF s a ha m _hA hm

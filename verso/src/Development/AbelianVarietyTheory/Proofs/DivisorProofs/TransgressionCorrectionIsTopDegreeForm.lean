@@ -11,11 +11,11 @@ open scoped ContDiff Matrix
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Introduce `F _ σ X m E O H H₀ hM hM₀ ρ hρ`. Use `⟨fun i j y hy hi hj => ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.transgressionDensity_holomorphicChart_etale E O H H₀ hM hM₀ hρ i.holo j hy hi hj (E.nonempty (under y)).choose_spec`. Use `GlobalTheory.T.aemeasurable_chart_of_locally_continuous_density i.e (isOpen_ptsIn O) fun y hy hc => ?_ set A := (E.nonempty (under y)).choose with hAdef` and prove the remaining obligations. Establish `hA : A ∈ E.S (under y)` using `(E.nonempty (under y)).choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨corrTop (fun v => ρ (i.e.symm v)) (fun v => H₀ A (i.e.symm v) ()) (fun v => H A (i.e.symm v) ()), ?_, ?_⟩` and prove the remaining obligations. Establish `hs : i.e.target ∩ i.e.symm ⁻¹' Set.univ ∈ 𝓝 (i.e y)`. Simplify using `using i.e.open_target.mem_nhds (i.e.map_source hc)`. Establish `hρ1 : ContDiffAt ℝ 1 (fun v => ρ (i.e.symm v)) (i.e y)` using `((contDiffOn_chart (S := Set.univ) (fun z _ => hρ z) i).contDiffAt hs).of_le (by norm_cast)`. Establish `hc0` using `GlobalTheory.T.continuousAt_transgressionTopCoeffComplex hρ1 (hM₀.mContDiffAt_chart mem_ptsIn_top i hc hA ()) (hM₀.isUnit_det_chart mem_ptsIn_top i hc hA ()) (hM.mContDiffAt_chart hy i hc hA ()) (hM.isUnit_det_chart hy i hc hA ())`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `continuousAt_const.mul (Complex.continuous_re.continuousAt.comp hc0)`. Use `filter_upwards [(isOpen_ptsIn O).mem_nhds hy, i.e.open_source.mem_nhds hc, GlobalTheory.FrameLift.eventually_mem hA] with z hzO hzc hAz`. Establish `h` using `GlobalTheory.T.transgressionDensity_holomorphicChart_etale E O H H₀ hM hM₀ hρ i.holo i hzO hzc hzc hAz`. Rewrite `h` using `[AlgChart.transDet_self i hzc, norm_one, one_pow, one_mul]`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTopForm_corrDens : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {m : ℕ} (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens) (H H₀ : Mat (fun _ : Unit => m) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => m) ℂ), IsMetricOn E O H → IsMetricOn E ⊤ H₀ → ∀ {ρ : CxPts X.str σ → ℝ}, (∀ y, CInfAt ρ y) → IsTopForm (fun c : AlgChart X.str σ X.dim => c.e) (corrDens E H₀ H ρ) (ptsIn X.str σ O) := by
   intro F _ σ X m E O H H₀ hM hM₀ ρ hρ

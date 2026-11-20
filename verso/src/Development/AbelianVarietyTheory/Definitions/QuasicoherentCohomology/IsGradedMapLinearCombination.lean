@@ -15,7 +15,7 @@ section Internal
 variable {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Rewrite using `[map_sum, Finset.sum_eq_single n (fun j hj h => proj_of_mem_ne ℳ (hv j hj) h) (fun h => absurd hn h), proj_of_mem ℳ (hv n hn)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem grProj_sum (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (T : Finset ℤ) (v : ℤ → M)
     (hv : ∀ j ∈ T, v j ∈ ℳ j) {n : ℤ} (hn : n ∈ T) : proj ℳ n (∑ j ∈ T, v j) = v n := by
@@ -23,7 +23,7 @@ theorem grProj_sum (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (T : Finset
     (fun h => absurd hn h), proj_of_mem ℳ (hv n hn)]
 
 /- English proof (translation)
-Conclude with `⟨_, DirectSum.sum_support_decompose ℳ m⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_sum_grProj (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (m : M) :
     ∃ T : Finset ℤ, ∑ j ∈ T, proj ℳ j m = m := by
@@ -31,7 +31,7 @@ theorem exists_sum_grProj (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (m :
   exact ⟨_, DirectSum.sum_support_decompose ℳ m⟩
 
 /- English proof (translation)
-The claim follows from `(DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top ℳ).2 ⟨(iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero ℳ).2 h₁, eq_top_iff.2 fun m _ => h₂ m⟩`.
+A detailed English derivation is pending.
 -/
 theorem isInternal_of_sum_eq_zero (ℳ : ℤ → Submodule R M)
     (h₁ : ∀ (T : Finset ℤ) (v : ℤ → M), (∀ j ∈ T, v j ∈ ℳ j) → ∑ j ∈ T, v j = 0 →
@@ -54,21 +54,21 @@ instance polyGrading.gradedAlgebra : GradedAlgebra (polyGrading ι R) :=
 variable {ι R}
 
 /- English proof (translation)
-Simplify using `[Finsupp.weight_apply, Finsupp.degree_apply, Finsupp.sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weight_one_int (a : ι →₀ ℕ) :
     Finsupp.weight (fun _ : ι => (1 : ℤ)) a = (a.degree : ℤ) := by
   simp [Finsupp.weight_apply, Finsupp.degree_apply, Finsupp.sum]
 
 /- English proof (translation)
-Simplify using `only [polyGrading, mem_weightedHomogeneousSubmodule, IsWeightedHomogeneous, weight_one_int]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_polyGrading_iff {p : MvPolynomial ι R} {n : ℤ} :
     p ∈ polyGrading ι R n ↔ ∀ a, coeff a p ≠ 0 → (a.degree : ℤ) = n := by
   simp only [polyGrading, mem_weightedHomogeneousSubmodule, IsWeightedHomogeneous, weight_one_int]
 
 /- English proof (translation)
-Simplify using `only [mem_polyGrading_iff, IsHomogeneous, IsWeightedHomogeneous, Nat.cast_inj, Finsupp.degree_eq_weight_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_polyGrading_natCast {p : MvPolynomial ι R} {d : ℕ} :
     p ∈ polyGrading ι R d ↔ p.IsHomogeneous d := by
@@ -79,7 +79,7 @@ theorem mem_polyGrading_natCast {p : MvPolynomial ι R} {d : ℕ} :
 variable (ι R) in
 
 /- English proof (translation)
-The claim follows from `Submodule.ext fun _ => mem_polyGrading_natCast`.
+A detailed English derivation is pending.
 -/
 theorem polyGrading_natCast (d : ℕ) : polyGrading ι R d = homogeneousSubmodule ι R d :=
   Submodule.ext fun _ => mem_polyGrading_natCast
@@ -87,7 +87,7 @@ theorem polyGrading_natCast (d : ℕ) : polyGrading ι R d = homogeneousSubmodul
 variable (ι R) in
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `p hp`. Use extensionality with `a`. Assume the negation of the conclusion as `h`. Use `mem_polyGrading_iff.1 hp a h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -100,13 +100,13 @@ theorem polyGrading_of_neg {n : ℤ} (hn : n < 0) : polyGrading ι R n = ⊥ := 
   omega
 
 /- English proof (translation)
-The claim follows from `mem_polyGrading_natCast (d := 1).2 (isHomogeneous_X R i)`.
+A detailed English derivation is pending.
 -/
 theorem X_mem_polyGrading (i : ι) : (X i : MvPolynomial ι R) ∈ polyGrading ι R 1 :=
   mem_polyGrading_natCast (d := 1).2 (isHomogeneous_X R i)
 
 /- English proof (translation)
-The claim follows from `mem_polyGrading_natCast.2 (isHomogeneous_monomial r rfl)`.
+A detailed English derivation is pending.
 -/
 theorem monomial_mem_polyGrading (a : ι →₀ ℕ) (r : R) :
     monomial a r ∈ polyGrading ι R (a.degree : ℤ) :=
@@ -127,7 +127,7 @@ abbrev PolyGradedSMul (ℳ : ℤ → Submodule R M) : Prop :=
   SetLike.GradedSMul (polyGrading ι R) ℳ
 
 /- English proof (translation)
-Rewrite using `[add_comm]`. Conclude with `SetLike.GradedSMul.smul_mem hp hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grSMul_mem (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι ℳ] {p : MvPolynomial ι R} {d n : ℤ}
     {m : M} (hp : p ∈ polyGrading ι R d) (hm : m ∈ ℳ n) : p • m ∈ ℳ (n + d) := by
@@ -135,16 +135,14 @@ theorem grSMul_mem (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι ℳ] {p : Mv
   exact SetLike.GradedSMul.smul_mem hp hm
 
 /- English proof (translation)
-The claim follows from `grSMul_mem ℳ (X_mem_polyGrading i) hm`.
+A detailed English derivation is pending.
 -/
 theorem X_smul_mem_gr (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι ℳ] (i : ι) (n : ℤ) (m : M)
     (hm : m ∈ ℳ n) : (X i : MvPolynomial ι R) • m ∈ ℳ (n + 1) :=
   grSMul_mem ℳ (X_mem_polyGrading i) hm
 
 /- English proof (translation)
-Break down `lt_or_ge d 0 with hd | hd` into its components or cases. Rewrite `hp` using `[polyGrading_of_neg ι R hd, Submodule.mem_bot]`. Rewrite using `[hp, zero_smul]`. Conclude with `zero_mem _`. Use `lift d to ℕ using hd`.
-
-Rewrite using `[vadd_eq_add, add_comm]`. Conclude with `smul_mem_of_isHomogeneous ℳ hX (mem_polyGrading_natCast.1 hp) n m hm`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyGradedSMul_of_X_smul_mem [IsScalarTower R (MvPolynomial ι R) M]
     (ℳ : ℤ → Submodule R M)
@@ -160,7 +158,7 @@ theorem polyGradedSMul_of_X_smul_mem [IsScalarTower R (MvPolynomial ι R) M]
       exact smul_mem_of_isHomogeneous ℳ hX (mem_polyGrading_natCast.1 hp) n m hm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => X_smul_mem_gr ℳ, polyGradedSMul_of_X_smul_mem ℳ⟩`.
+Supply the required witnesses or components.
 -/
 theorem polyGradedSMul_iff [IsScalarTower R (MvPolynomial ι R) M] (ℳ : ℤ → Submodule R M) :
     PolyGradedSMul ι ℳ ↔
@@ -178,38 +176,38 @@ variable {ℳ : ℤ → Submodule R M} {𝒩 : ℤ → Submodule R N} {𝒬 : �
 variable (ι ℳ) in
 
 /- English proof (translation)
-Introduce `_ _ h` and use `h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem id : IsGradedMap ℳ ℳ (LinearMap.id : M →ₗ[MvPolynomial ι R] M) := fun _ _ h => h
 
 variable (ι ℳ 𝒩) in
 
 /- English proof (translation)
-Introduce `_ _ _` and use `zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zero : IsGradedMap ℳ 𝒩 (0 : M →ₗ[MvPolynomial ι R] N) := fun _ _ _ => zero_mem _
 
 /- English proof (translation)
-Introduce `_ _ h` and use `hg (hf h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem comp {g : N →ₗ[MvPolynomial ι R] P} {f : M →ₗ[MvPolynomial ι R] N}
     (hg : IsGradedMap 𝒩 𝒬 g) (hf : IsGradedMap ℳ 𝒩 f) : IsGradedMap ℳ 𝒬 (g ∘ₗ f) :=
   fun _ _ h => hg (hf h)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `add_mem (hf h) (hg h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem add {f g : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 𝒩 f) (hg : IsGradedMap ℳ 𝒩 g) :
     IsGradedMap ℳ 𝒩 (f + g) := fun _ _ h => add_mem (hf h) (hg h)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `neg_mem (hf h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem neg {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 𝒩 f) :
     IsGradedMap ℳ 𝒩 (-f) := fun _ _ h => neg_mem (hf h)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `by rw [LinearMap.sum_apply] exact Submodule.sum_mem _ fun k hk => hf k hk h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sum {κ : Type*} (T : Finset κ) {f : κ → M →ₗ[MvPolynomial ι R] N}
     (hf : ∀ k ∈ T, IsGradedMap ℳ 𝒩 (f k)) : IsGradedMap ℳ 𝒩 (∑ k ∈ T, f k) := fun _ _ h => by
@@ -232,14 +230,14 @@ theorem coe_piece {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 𝒩
 variable [Decomposition ℳ] [Decomposition 𝒩]
 
 /- English proof (translation)
-Simplify `hf hm) n m` using `using proj_map ℳ 𝒩 (f.restrictScalars R) 0 (fun n m hm => by simpa`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem proj_apply {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 𝒩 f) (n : ℤ) (m : M) :
     proj 𝒩 n (f m) = f (proj ℳ n m) := by
   simpa using proj_map ℳ 𝒩 (f.restrictScalars R) 0 (fun n m hm => by simpa using hf hm) n m
 
 /- English proof (translation)
-Introduce `n m hm` and use `by change f (proj ℳ n m) = 0 rw [← hf.proj_apply, LinearMap.mem_ker.1 hm, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_ker {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 𝒩 f) :
     (LinearMap.ker f).IsHomogeneous ℳ := fun n m hm => by
@@ -247,7 +245,7 @@ theorem isHomogeneous_ker {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap 
   rw [← hf.proj_apply, LinearMap.mem_ker.1 hm, map_zero]
 
 /- English proof (translation)
-Introduce and unpack `n _ ⟨m, rfl⟩`. Conclude with `⟨_, (hf.proj_apply n m).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isHomogeneous_range {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 𝒩 f) :
     (LinearMap.range f).IsHomogeneous 𝒩 := by
@@ -255,7 +253,7 @@ theorem isHomogeneous_range {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMa
   exact ⟨_, (hf.proj_apply n m).symm⟩
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `h`. Conclude with `⟨proj ℳ n m, proj_mem _ _ _, by rw [← hf.proj_apply, proj_of_mem _ hy]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_of_mem_range {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 𝒩 f) {n : ℤ}
     {y : N} (hy : y ∈ 𝒩 n) (h : y ∈ LinearMap.range f) : ∃ m ∈ ℳ n, f m = y := by
@@ -263,9 +261,9 @@ theorem exists_mem_of_mem_range {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGrad
   exact ⟨proj ℳ n m, proj_mem _ _ _, by rw [← hf.proj_apply, proj_of_mem _ hy]⟩
 
 /- English proof (translation)
-Use `⟨fun h n a b hab => Subtype.ext (h (congrArg Subtype.val hab)), fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `m hm`. Take `⟨T, hT⟩` from `exists_sum_grProj ℳ m`. Rewrite using `[← hT]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun n _ => congrArg Subtype.val ((injective_iff_map_eq_zero _).1 (h n) ⟨_, proj_mem ℳ n m⟩ (Subtype.ext ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (proj ℳ n m) = 0`. Rewrite using `[← hf.proj_apply, hm, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem injective_iff {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 𝒩 f) :
     Function.Injective f ↔ ∀ n, Function.Injective (hf.piece n) := by
@@ -280,9 +278,9 @@ theorem injective_iff {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 
   rw [← hf.proj_apply, hm, map_zero]
 
 /- English proof (translation)
-Use `⟨fun h n y => ?_, fun h y => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, e⟩` from `hf.exists_mem_of_mem_range y.2 (h y)`. Conclude with `⟨⟨m, hm⟩, Subtype.ext e⟩`. Take `⟨T, hT⟩` from `exists_sum_grProj 𝒩 y`. Rewrite using `[← hT]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `(LinearMap.range f).sum_mem fun n _ => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `h n ⟨_, proj_mem 𝒩 n y⟩`. Conclude with `⟨m, congrArg Subtype.val hm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surjective_iff {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 𝒩 f) :
     Function.Surjective f ↔ ∀ n, Function.Surjective (hf.piece n) := by
@@ -296,9 +294,9 @@ theorem surjective_iff {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ
     exact ⟨m, congrArg Subtype.val hm⟩
 
 /- English proof (translation)
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨m, hm, e⟩` from `hf.exists_mem_of_mem_range y.2 ((h y).1 (congrArg Subtype.val hy))`. Conclude with `⟨⟨m, hm⟩, Subtype.ext e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨m, rfl⟩`. Conclude with `Subtype.ext (h.apply_apply_eq_zero m)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exact_piece {f : M →ₗ[MvPolynomial ι R] N} {g : N →ₗ[MvPolynomial ι R] P}
     (hf : IsGradedMap ℳ 𝒩 f) (hg : IsGradedMap 𝒩 𝒬 g) (h : Function.Exact f g) (n : ℤ) :
@@ -312,11 +310,11 @@ theorem exact_piece {f : M →ₗ[MvPolynomial ι R] N} {g : N →ₗ[MvPolynomi
     exact Subtype.ext (h.apply_apply_eq_zero m)
 
 /- English proof (translation)
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨T, hT⟩` from `exists_sum_grProj 𝒩 y`. Rewrite using `[← hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `(LinearMap.range f).sum_mem fun n _ => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `(h n ⟨_, proj_mem 𝒩 n y⟩).1 (Subtype.ext (by`. Express the relevant statement in the definitionally equal form `g (proj 𝒩 n y) = 0`. Rewrite using `[← hg.proj_apply, hy, map_zero]))`. Conclude with `⟨m, congrArg Subtype.val hm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨m, rfl⟩`. Take `⟨T, hT⟩` from `exists_sum_grProj ℳ m`. Rewrite using `[← hT, map_sum, map_sum]`. Conclude with `Finset.sum_eq_zero fun n _ => congrArg Subtype.val ((h n).apply_apply_eq_zero ⟨_, proj_mem ℳ n m⟩)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exact_of_exact_piece [Decomposition 𝒬] {f : M →ₗ[MvPolynomial ι R] N}
     {g : N →ₗ[MvPolynomial ι R] P} (hf : IsGradedMap ℳ 𝒩 f) (hg : IsGradedMap 𝒩 𝒬 g)
@@ -338,7 +336,7 @@ theorem exact_of_exact_piece [Decomposition 𝒬] {f : M →ₗ[MvPolynomial ι 
       congrArg Subtype.val ((h n).apply_apply_eq_zero ⟨_, proj_mem ℳ n m⟩)
 
 /- English proof (translation)
-Introduce `n y hy` and use `by obtain ⟨m, hm, rfl⟩ := he.exists_mem_of_mem_range hy (e.surjective y) simpa using hm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem symm {e : M ≃ₗ[MvPolynomial ι R] N} (he : IsGradedMap ℳ 𝒩 e.toLinearMap) :
     IsGradedMap 𝒩 ℳ e.symm.toLinearMap := fun n y hy => by
@@ -351,19 +349,19 @@ def grShift (ℳ : ℤ → Submodule R M) (d : ℤ) : ℤ → Submodule R M := f
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem grShift_apply (ℳ : ℤ → Submodule R M) (d n : ℤ) : grShift ℳ d n = ℳ (n + d) := rfl
 
 @[simp]
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem grShift_zero (ℳ : ℤ → Submodule R M) : grShift ℳ 0 = ℳ := by
   funext n; simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `n`. Simplify using `only [grShift_apply]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem grShift_grShift (ℳ : ℤ → Submodule R M) (d e : ℤ) :
     grShift (grShift ℳ d) e = grShift ℳ (d + e) := by
@@ -390,21 +388,21 @@ instance grShift.decomposition (ℳ : ℤ → Submodule R M) [Decomposition ℳ]
       | add a b ha hb => exact add_mem ha hb
 
 /- English proof (translation)
-Simplify using `using (proj_map (grShift ℳ d) ℳ LinearMap.id d (fun n m hm => hm) n m).symm`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem proj_grShift (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (d n : ℤ) (m : M) :
     proj (grShift ℳ d) n m = proj ℳ (n + d) m := by
   simpa using (proj_map (grShift ℳ d) ℳ LinearMap.id d (fun n m hm => hm) n m).symm
 
 /- English proof (translation)
-Introduce `_ _ h` and use `hf h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsGradedMap.shift {ℳ : ℤ → Submodule R M} {𝒩 : ℤ → Submodule R N}
     {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 𝒩 f) (d : ℤ) :
     IsGradedMap (grShift ℳ d) (grShift 𝒩 d) f := fun _ _ h => hf h
 
 /- English proof (translation)
-Introduce `_ _ h` and use `grSMul_mem ℳ hp h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGradedMap_lsmul (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι ℳ] {p : MvPolynomial ι R}
     {d : ℤ} (hp : p ∈ polyGrading ι R d) :
@@ -412,7 +410,7 @@ theorem isGradedMap_lsmul (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι ℳ] 
   fun _ _ h => grSMul_mem ℳ hp h
 
 /- English proof (translation)
-Introduce `_ _ h` and use `by simpa using grSMul_mem ℳ hp h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGradedMap_lsmul' (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι ℳ] {p : MvPolynomial ι R}
     {d : ℤ} (hp : p ∈ polyGrading ι R d) :
@@ -420,7 +418,7 @@ theorem isGradedMap_lsmul' (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι ℳ]
   fun _ _ h => by simpa using grSMul_mem ℳ hp h
 
 /- English proof (translation)
-Introduce `_ _ h` and use `by simpa using grSMul_mem ℳ h hm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGradedMap_toSpanSingleton (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι ℳ] {m : M} {d : ℤ}
     (hm : m ∈ ℳ d) : IsGradedMap (grShift (polyGrading ι R) (-d)) ℳ
@@ -430,7 +428,7 @@ theorem isGradedMap_toSpanSingleton (ℳ : ℤ → Submodule R M) [PolyGradedSMu
 variable [IsScalarTower R (MvPolynomial ι R) M] [IsScalarTower R (MvPolynomial ι R) N]
 
 /- English proof (translation)
-Rewrite using `[← proj_grShift]`. Conclude with `(isGradedMap_lsmul ℳ hp).proj_apply n m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_smul_of_mem (ℳ : ℤ → Submodule R M) [Decomposition ℳ] [PolyGradedSMul ι ℳ]
     {p : MvPolynomial ι R} {d : ℤ} (hp : p ∈ polyGrading ι R d) (n : ℤ) (m : M) :
@@ -439,7 +437,7 @@ theorem proj_smul_of_mem (ℳ : ℤ → Submodule R M) [Decomposition ℳ] [Poly
   exact (isGradedMap_lsmul ℳ hp).proj_apply n m
 
 /- English proof (translation)
-Use `(isGradedMap_toSpanSingleton (ι := ι) ℳ hm).proj_apply n p` as an intermediate fact. Rewrite `this` using `[proj_grShift]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem proj_smul_of_mem_right (ℳ : ℤ → Submodule R M) [Decomposition ℳ] [PolyGradedSMul ι ℳ]
     (p : MvPolynomial ι R) {d : ℤ} {m : M} (hm : m ∈ ℳ d) (n : ℤ) :
@@ -452,7 +450,7 @@ def grSub (ℳ : ℤ → Submodule R M) (K : Submodule (MvPolynomial ι R) M) :
 
 @[simp]
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_grSub {ℳ : ℤ → Submodule R M} {K : Submodule (MvPolynomial ι R) M} {n : ℤ}
     {m : K} : m ∈ grSub ℳ K n ↔ (m : M) ∈ ℳ n := Iff.rfl
@@ -461,7 +459,7 @@ def grQuot (ℳ : ℤ → Submodule R M) (K : Submodule (MvPolynomial ι R) M) :
     ℤ → Submodule R (M ⧸ K) := fun n => (ℳ n).map (K.mkQ.restrictScalars R)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_grQuot {ℳ : ℤ → Submodule R M} {K : Submodule (MvPolynomial ι R) M} {n : ℤ}
     {y : M ⧸ K} : y ∈ grQuot ℳ K n ↔ ∃ m ∈ ℳ n, Submodule.Quotient.mk m = y := Iff.rfl
@@ -477,13 +475,13 @@ instance grQuot.polyGradedSMul (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι 
     exact ⟨p • m, SetLike.GradedSMul.smul_mem (B := ℳ) hp hm, rfl⟩
 
 /- English proof (translation)
-Introduce `_ _ h` and use `h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGradedMap_subtype (ℳ : ℤ → Submodule R M) (K : Submodule (MvPolynomial ι R) M) :
     IsGradedMap (grSub ℳ K) ℳ K.subtype := fun _ _ h => h
 
 /- English proof (translation)
-Introduce `_ m h` and use `⟨m, h, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isGradedMap_mkQ (ℳ : ℤ → Submodule R M) (K : Submodule (MvPolynomial ι R) M) :
     IsGradedMap ℳ (grQuot ℳ K) K.mkQ := fun _ m h => ⟨m, h, rfl⟩
@@ -491,7 +489,7 @@ theorem isGradedMap_mkQ (ℳ : ℤ → Submodule R M) (K : Submodule (MvPolynomi
 omit [IsScalarTower R (MvPolynomial ι R) M] in
 
 /- English proof (translation)
-Introduce `_ _ h` and use `hf h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsGradedMap.codRestrict {ℳ : ℤ → Submodule R M} {𝒩 : ℤ → Submodule R N}
     {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 𝒩 f) (K : Submodule (MvPolynomial ι R) N)
@@ -500,7 +498,7 @@ theorem IsGradedMap.codRestrict {ℳ : ℤ → Submodule R M} {𝒩 : ℤ → Su
 omit [IsScalarTower R (MvPolynomial ι R) N] in
 
 /- English proof (translation)
-Introduce and unpack `n _ ⟨m, hm, rfl⟩`. Conclude with `hf hm`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem IsGradedMap.liftQ {ℳ : ℤ → Submodule R M} {𝒩 : ℤ → Submodule R N}
     {f : M →ₗ[MvPolynomial ι R] N} (hf : IsGradedMap ℳ 𝒩 f) (K : Submodule (MvPolynomial ι R) M)
@@ -509,7 +507,7 @@ theorem IsGradedMap.liftQ {ℳ : ℤ → Submodule R M} {𝒩 : ℤ → Submodul
   exact hf hm
 
 /- English proof (translation)
-The claim follows from `isInternal_of_sum_eq_zero _ (fun T v hv h j hj => Subtype.ext <| by have e := grProj_sum ℳ T (fun i => (v i : M)) hv hj rw [← e, ← Submodule.coe_sum, h] simp) fun m => by obtain ⟨T, hT⟩ := exists_sum_grProj ℳ (m : M) have : m = ∑ j ∈ T, (⟨proj ℳ j m, hK j m.2⟩ : K) := Subtype.ext …`.
+A detailed English derivation is pending.
 -/
 theorem isInternal_grSub (ℳ : ℤ → Submodule R M) [Decomposition ℳ]
     {K : Submodule (MvPolynomial ι R) M} (hK : K.IsHomogeneous ℳ) :
@@ -526,7 +524,7 @@ theorem isInternal_grSub (ℳ : ℤ → Submodule R M) [Decomposition ℳ]
       exact Submodule.sum_mem _ fun j _ => Submodule.mem_iSup_of_mem j (proj_mem ℳ j m)
 
 /- English proof (translation)
-The claim follows from `isInternal_of_sum_eq_zero _ (fun T v hv h j hj => by choose! w hw e using fun i hi => mem_grQuot.1 (hv i hi) have h' : ∑ i ∈ T, w i ∈ K := by rw [← Submodule.Quotient.mk_eq_zero, ← h, ← Finset.sum_congr rfl e] exact map_sum K.mkQ _ _ have := hK j h' rw [← GradedHilbert.proj_apply …`.
+A detailed English derivation is pending.
 -/
 theorem isInternal_grQuot (ℳ : ℤ → Submodule R M) [Decomposition ℳ]
     {K : Submodule (MvPolynomial ι R) M} (hK : K.IsHomogeneous ℳ) :
@@ -569,9 +567,9 @@ instance grQuot.decomposition (ℳ : ℤ → Submodule R M) [Decomposition ℳ]
     Decomposition (grQuot ℳ K.toSubmodule) := grQuotDecomposition ℳ K.isHomogeneous
 
 /- English proof (translation)
-Introduce `n m hm`. Express the relevant statement in the definitionally equal form `proj ℳ n m ∈ _`. Take `⟨c, hc, rfl⟩` from `(Finsupp.mem_span_iff_linearCombination _ _ _).1 hm`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, map_sum]`. Use `Submodule.sum_mem _ fun g _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, hd⟩` from `hG g g.2`. Rewrite using `[proj_smul_of_mem_right ℳ _ hd]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span g.2)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_span_gr (ℳ : ℤ → Submodule R M) [Decomposition ℳ] [PolyGradedSMul ι ℳ]
     {G : Set M} (hG : ∀ g ∈ G, ∃ d, g ∈ ℳ d) :
@@ -599,7 +597,7 @@ def grPi (ℳ : ∀ k, ℤ → Submodule R (M k)) : ℤ → Submodule R (∀ k, 
 
 @[simp]
 /- English proof (translation)
-Simplify using `[grPi, Submodule.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_grPi {ℳ : ∀ k, ℤ → Submodule R (M k)} {n : ℤ} {m : ∀ k, M k} :
     m ∈ grPi ℳ n ↔ ∀ k, m k ∈ ℳ k n := by
@@ -634,7 +632,7 @@ instance grPi.decomposition [Finite κ] (ℳ : ∀ k, ℤ → Submodule R (M k))
 variable (ι) in
 
 /- English proof (translation)
-Introduce `_ _ h` and use `mem_grPi.1 h k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGradedMap_piProj (ℳ : ∀ k, ℤ → Submodule R (M k)) (k : κ) :
     IsGradedMap (grPi ℳ) (ℳ k) (LinearMap.proj (R := MvPolynomial ι R) k) :=
@@ -643,7 +641,7 @@ theorem isGradedMap_piProj (ℳ : ∀ k, ℤ → Submodule R (M k)) (k : κ) :
 variable (ι) in
 
 /- English proof (translation)
-Introduce `_ m hm` and use `mem_grPi.2 fun j => by by_cases h : j = k · subst h; simpa using hm · rw [LinearMap.coe_single, Pi.single_eq_of_ne h]; exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGradedMap_piSingle [DecidableEq κ] (ℳ : ∀ k, ℤ → Submodule R (M k)) (k : κ) :
     IsGradedMap (ℳ k) (grPi ℳ) (LinearMap.single (MvPolynomial ι R) M k) :=
@@ -653,7 +651,7 @@ theorem isGradedMap_piSingle [DecidableEq κ] (ℳ : ∀ k, ℤ → Submodule R 
     · rw [LinearMap.coe_single, Pi.single_eq_of_ne h]; exact zero_mem _
 
 /- English proof (translation)
-Introduce `_ _ h` and use `mem_grPi.2 fun k => hf k h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsGradedMap.pi {𝒩 : ℤ → Submodule R N} {ℳ : ∀ k, ℤ → Submodule R (M k)}
     {f : ∀ k, N →ₗ[MvPolynomial ι R] M k} (hf : ∀ k, IsGradedMap 𝒩 (ℳ k) (f k)) :
@@ -665,7 +663,7 @@ abbrev grFree (d : κ → ℤ) : ℤ → Submodule R (κ → MvPolynomial ι R) 
   grPi fun k => grShift (polyGrading ι R) (-d k)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `by rw [Fintype.linearCombination_apply] exact Submodule.sum_mem _ fun k _ => isGradedMap_toSpanSingleton 𝒩 (hg k) (mem_grPi.1 h k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGradedMap_linearCombination [Fintype κ] (𝒩 : ℤ → Submodule R N) [PolyGradedSMul ι 𝒩]
     {g : κ → N} {d : κ → ℤ} (hg : ∀ k, g k ∈ 𝒩 (d k)) :
@@ -676,9 +674,9 @@ theorem isGradedMap_linearCombination [Fintype κ] (𝒩 : ℤ → Submodule R N
       isGradedMap_toSpanSingleton 𝒩 (hg k) (mem_grPi.1 h k)
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `Module.Finite.fg_top (R := MvPolynomial ι R) (M := N)`. Use `choose T hT using exists_sum_grProj 𝒩`. Set `U : Finset (N × ℤ)` to `G ×ˢ G.biUnion T`. Set `e` to `U.equivFin.symm`. Use `⟨U.card, fun k => (e k).1.2, Fintype.linearCombination _ fun k => proj 𝒩 (e k).1.2 (e k).1.1, isGradedMap_linearCombination 𝒩 fun k => proj_mem _ _ _, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, eq_top_iff, ← hG, Submodule.span_le]`. Introduce `g hg`. Rewrite using `[← hT g]`. Use `Submodule.sum_mem _ fun j hj => Submodule.subset_span ⟨e.symm ⟨(g, j), Finset.mem_product.2 ⟨hg, Finset.mem_biUnion.2 ⟨g, hg, hj⟩⟩⟩, by simp⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_graded_surjection (𝒩 : ℤ → Submodule R N) [Decomposition 𝒩] [PolyGradedSMul ι 𝒩]
     [Module.Finite (MvPolynomial ι R) N] :
@@ -730,25 +728,25 @@ def component (n : ℤ) : GrSum hx →ₗ[R] A n := DirectSum.component R ℤ A 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `DirectSum.component.lof_self R n a`.
+A detailed English derivation is pending.
 -/
 theorem component_of (n : ℤ) (a : A n) : component hx n (of hx n a) = a :=
   DirectSum.component.lof_self R n a
 
 /- English proof (translation)
-The claim follows from `(DirectSum.component.of R n k a).trans (dif_neg h)`.
+A detailed English derivation is pending.
 -/
 theorem component_of_ne {n k : ℤ} (h : k ≠ n) (a : A k) : component hx n (of hx k a) = 0 :=
   (DirectSum.component.of R n k a).trans (dif_neg h)
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective (component_of hx n)`.
+A detailed English derivation is pending.
 -/
 theorem of_injective (n : ℤ) : Function.Injective (of hx n) :=
   Function.LeftInverse.injective (component_of hx n)
 
 /- English proof (translation)
-The claim follows from `DirectSum.linearMap_ext R fun n => LinearMap.ext (h n)`.
+A detailed English derivation is pending.
 -/
 theorem lhom_ext {N : Type*} [AddCommGroup N] [Module R N] {f g : GrSum hx →ₗ[R] N}
     (h : ∀ n a, f (of hx n a) = g (of hx n a)) : f = g :=
@@ -759,7 +757,7 @@ def desc {N : Type*} [AddCommGroup N] [Module R N] (φ : ∀ n, A n →ₗ[R] N)
 
 @[simp]
 /- English proof (translation)
-The claim follows from `DirectSum.toModule_lof R n a`.
+A detailed English derivation is pending.
 -/
 theorem desc_of {N : Type*} [AddCommGroup N] [Module R N] (φ : ∀ n, A n →ₗ[R] N) (n : ℤ)
     (a : A n) : desc hx φ (of hx n a) = φ n a :=
@@ -769,13 +767,13 @@ def op (i : ι) : Module.End R (GrSum hx) := desc hx fun n => of hx (n + 1) ∘�
 
 @[simp]
 /- English proof (translation)
-The claim follows from `desc_of hx _ n a`.
+A detailed English derivation is pending.
 -/
 theorem op_of (i : ι) (n : ℤ) (a : A n) : op hx i (of hx n a) = of hx (n + 1) (x i n a) :=
   desc_of hx _ n a
 
 /- English proof (translation)
-The claim follows from `lhom_ext hx fun n a => by simp [hx i j n a]`.
+A detailed English derivation is pending.
 -/
 theorem commute_op (i j : ι) : Commute (op hx i) (op hx j) :=
   lhom_ext hx fun n a => by simp [hx i j n a]
@@ -793,14 +791,14 @@ instance : IsScalarTower R (MvPolynomial ι R) (GrSum hx) where
   smul_assoc r p m := by rw [smul_def, smul_def, map_smul]; rfl
 
 /- English proof (translation)
-Rewrite using `[smul_def, Wick.commEval_X]`. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_smul (i : ι) (m : GrSum hx) : (X i : MvPolynomial ι R) • m = op hx i m := by
   rw [smul_def, Wick.commEval_X]
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[X_smul, op_of]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem X_smul_of (i : ι) (n : ℤ) (a : A n) :
     (X i : MvPolynomial ι R) • of hx n a = of hx (n + 1) (x i n a) := by
@@ -809,12 +807,12 @@ theorem X_smul_of (i : ι) (n : ℤ) (a : A n) :
 def grading : ℤ → Submodule R (GrSum hx) := fun n => LinearMap.range (of hx n)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_grading {n : ℤ} {m : GrSum hx} : m ∈ grading hx n ↔ ∃ a, of hx n a = m := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem of_mem_grading (n : ℤ) (a : A n) : of hx n a ∈ grading hx n := ⟨a, rfl⟩
 
@@ -847,9 +845,9 @@ instance : Decomposition (grading hx) :=
       | add a b ha hb => exact add_mem ha hb
 
 /- English proof (translation)
-Establish `: proj (grading hx) n = of hx n ∘ₗ component hx n` using `lhom_ext hx fun k a => by`. Distinguish the cases in `h : k = n`. Substitute `h` using the available equality. Simplify using `[proj_of_mem _ (of_mem_grading hx k a)]`. Simplify using `[proj_of_mem_ne _ (of_mem_grading hx k a) h, component_of_ne hx h]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `congr($this m)`.
+A detailed English derivation is pending.
 -/
 theorem proj_grading (n : ℤ) (m : GrSum hx) :
     proj (grading hx) n m = of hx n (component hx n m) := by
@@ -881,13 +879,13 @@ def lift (φ : ∀ n, A n →ₗ[R] N)
 
 @[simp]
 /- English proof (translation)
-The claim follows from `desc_of hx φ n a`.
+A detailed English derivation is pending.
 -/
 theorem lift_of (φ : ∀ n, A n →ₗ[R] N) (hφ) (n : ℤ) (a : A n) :
     lift hx φ hφ (of hx n a) = φ n a := desc_of hx φ n a
 
 /- English proof (translation)
-Introduce and unpack `n _ ⟨a, rfl⟩`. Rewrite using `[lift_of]`. Conclude with `h n a`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGradedMap_lift (φ : ∀ n, A n →ₗ[R] N) (hφ) (𝒩 : ℤ → Submodule R N)
     (h : ∀ n a, φ n a ∈ 𝒩 n) : IsGradedMap (grading hx) 𝒩 (lift hx φ hφ) := by
@@ -901,13 +899,13 @@ def map (φ : ∀ n, A n →ₗ[R] B n) (hφ : ∀ i n a, φ (n + 1) (x i n a) =
 
 @[simp]
 /- English proof (translation)
-The claim follows from `lift_of hx _ _ n a`.
+A detailed English derivation is pending.
 -/
 theorem map_of (φ : ∀ n, A n →ₗ[R] B n) (hφ) (n : ℤ) (a : A n) :
     map hx hy φ hφ (of hx n a) = of hy n (φ n a) := lift_of hx _ _ n a
 
 /- English proof (translation)
-The claim follows from `isGradedMap_lift hx _ _ _ fun n _ => of_mem_grading hy n _`.
+A detailed English derivation is pending.
 -/
 theorem isGradedMap_map (φ : ∀ n, A n →ₗ[R] B n) (hφ) :
     IsGradedMap (grading hx) (grading hy) (map hx hy φ hφ) :=

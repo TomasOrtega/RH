@@ -17,7 +17,7 @@ namespace GlobalTheory.HeckeTrace
 variable {Γ H V : Type} [Group Γ] [Group H] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `e : (k • h : H ⧸ K) = QuotientGroup.mk (k * h.out)` using `by conv_lhs => rw [← QuotientGroup.out_eq' h]`. Both sides reduce to the same expression. Take `⟨κ, hκ⟩` from `QuotientGroup.mk_out_eq_mul K (k * h.out)`. Conclude with `⟨κ, κ.2, by rw [e, hκ]⟩`.
+Establish an intermediate fact. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem out_smul (K : Subgroup H) (k : H) (h : H ⧸ K) : ∃ κ ∈ K, ((k • h : H ⧸ K).out : H) = k * h.out * κ := by
   have e : (k • h : H ⧸ K) = QuotientGroup.mk (k * h.out) := by
@@ -30,16 +30,16 @@ def heckeFun (K : Subgroup H) (F : H → ℂ) (φ : H → V) (g : H) : V :=
   ∑ᶠ h : H ⧸ K, F h.out • φ (g * h.out)
 
 /- English proof (translation)
-The claim follows from `Function.support_smul_subset_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem support_sub (K : Subgroup H) (F : H → ℂ) (v : H ⧸ K → V) :
     Function.support (fun h : H ⧸ K => F h.out • v h) ⊆ Function.support (fun h : H ⧸ K => F h.out) :=
   Function.support_smul_subset_left _ _
 
 /- English proof (translation)
-Unfold `heckeFun`. Rewrite using `[← finsum_comp_equiv (MulAction.toPerm (k⁻¹ : H) : Equiv.Perm (H ⧸ K)).symm.symm]`. Use `finsum_congr fun h => ?_` and prove the remaining obligations. Simplify using `only [Equiv.symm_symm, MulAction.toPerm_apply]`. Take `⟨κ, hκ, he⟩` from `out_smul K k⁻¹ h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[he]`. Establish `h1 : F (k⁻¹ * h.out * κ) = F h.out` using `hF _ (K.inv_mem hk) _ hκ _`. Establish `h2 : φ (g * k * (k⁻¹ * h.out * κ)) = φ (g * h.out)`. Rewrite using `[show g * k * (k⁻¹ * h.out * κ) = g * h.out * κ by group, hφ _ hκ]`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeFun_mul_right (K : Subgroup H) (F : H → ℂ) (hF : ∀ k ∈ K, ∀ k' ∈ K, ∀ g, F (k * g * k') = F g)
     (φ : H → V) (hφ : ∀ k ∈ K, ∀ g, φ (g * k) = φ g) (g k : H) (hk : k ∈ K) :
@@ -56,7 +56,7 @@ theorem heckeFun_mul_right (K : Subgroup H) (F : H → ℂ) (hF : ∀ k ∈ K, �
   rw [h1, h2]
 
 /- English proof (translation)
-Unfold `heckeFun`. Rewrite using `[map_finsum _ (hs.subset (support_sub K F _))]`. Use `finsum_congr fun h => ?_` and prove the remaining obligations. Rewrite using `[map_smul, mul_assoc, hφ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeFun_mul_left (ι : Γ →* H) (K : Subgroup H) (ξ : Representation ℂ Γ V) (F : H → ℂ)
     (hs : (Function.support (fun q : H ⧸ K => F q.out)).Finite)
@@ -88,7 +88,7 @@ def hecke (ι : Γ →* H) (K : Subgroup H) (ξ : Representation ℂ Γ V) (F : 
     rw [smul_comm]
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isHecke_hecke (ι : Γ →* H) (K : Subgroup H) (ξ : Representation ℂ Γ V) (F : H → ℂ)
     (hF : ∀ k ∈ K, ∀ k' ∈ K, ∀ g, F (k * g * k') = F g)
@@ -96,9 +96,9 @@ theorem isHecke_hecke (ι : Γ →* H) (K : Subgroup H) (ξ : Representation ℂ
     GlobalTheory.LKDef.HeckeTraceForms.IsHecke ι K ξ F (hecke ι K ξ F hF hs) := fun _ _ => rfl
 
 /- English proof (translation)
-Establish `h : ∃ T, GlobalTheory.LKDef.HeckeTraceForms.IsHecke ι K ξ F T` using `⟨_, isHecke_hecke ι K ξ F hF hs⟩`. Rewrite using `[GlobalTheory.LKDef.HeckeTraceForms.heckeTrace, dif_pos h]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[h.choose_spec φ g]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem heckeTrace_eq (ι : Γ →* H) (K : Subgroup H) (ξ : Representation ℂ Γ V) (F : H → ℂ)
     (hF : ∀ k ∈ K, ∀ k' ∈ K, ∀ g, F (k * g * k') = F g)
@@ -118,31 +118,31 @@ namespace GlobalTheory.HeckeTrace
 variable {Γ H V : Type} [Group Γ] [Group H] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `isConj_iff.1 h`. Conclude with `isConj_iff.2 ⟨e c, by rw [← map_inv, ← map_mul, ← map_mul, hc]⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isConj_map {A B : Type} [Group A] [Group B] (e : A ≃* B) {a b : A} (h : IsConj a b) : IsConj (e a) (e b) := by
   obtain ⟨c, hc⟩ := isConj_iff.1 h
   exact isConj_iff.2 ⟨e c, by rw [← map_inv, ← map_mul, ← map_mul, hc]⟩
 
 /- English proof (translation)
-The claim follows from `Quotient.out_eq c`.
+A detailed English derivation is pending.
 -/
 theorem mk_out_conj (c : ConjClasses Γ) : ConjClasses.mk (Quotient.out c) = c := Quotient.out_eq c
 
 /- English proof (translation)
-Set `e : Γ ≃* ι.range` to `MonoidHom.ofInjective hι`. Establish `he : ∀ γ : Γ, ((e γ : ι.range) : H) = ι γ` using `fun γ => MonoidHom.ofInjective_apply hι`. Set `ξ' : Representation ℂ ι.range V` to `ξ.comp e.symm.toMonoidHom`. Establish `hξ : ∀ γ : Γ, ξ' (e γ) = ξ γ` using `fun γ => by`. Simplify using `only [ξ', MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hM : ∀ φ : H → V, φ ∈ GlobalTheory.LKDef.HeckeTraceForms.forms ι K ξ ↔ (∀ γ : ι.range, ∀ g, φ ((γ : H) * g) = ξ' γ (φ g)) ∧ ∀ k ∈ K, ∀ g, φ (g * k) = φ g`. Introduce `φ`. Express the relevant statement in the definitionally equal form `((∀ γ g, φ (ι γ * g) = ξ γ (φ g)) ∧ ∀ k ∈ K, ∀ g, φ (g * k) = φ g) ↔ _`. Use `and_congr_left' ⟨fun h γ' g => ?_, fun h γ g => ?_⟩` and prove the remaining obligations. Take `⟨γ, rfl⟩` from `e.surjective γ'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[he, hξ, h]`. Rewrite using `[← he, h, hξ]`. Rewrite using `[heckeTrace_eq ι K ξ F hF hs, GlobalTheory.FinTF.finite_trace_formula H ι.range K V ξ' hQ hloc F hF hs _ hM _ (isHecke_hecke ι K ξ F hF hs)]`. Set `R : Set ι.range` to `Set.range (fun c : ConjClasses Γ => e (Quotient.out c))`. Establish `hcls : ∀ (c : ConjClasses Γ) (γ : Γ), IsConj (e γ) (e (Quotient.out c)) → c = ConjClasses.mk γ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `c γ h`. Establish `h' : IsConj γ (Quotient.out c)`. Simplify using `using isConj_map e.symm h`. Rewrite using `[← mk_out_conj c]`. Conclude with `(ConjClasses.mk_eq_mk_iff_isConj.2 h').symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR : ∀ γ' : ι.range, ∃! ρ, ρ ∈ R ∧ IsConj γ' ρ`. Introduce `γ'`. Take `⟨γ, rfl⟩` from `e.surjective γ'`. Use `⟨e (Quotient.out (ConjClasses.mk γ)), ⟨⟨_, rfl⟩, isConj_map e ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `ConjClasses.mk_eq_mk_iff_isConj.1 (mk_out_conj (ConjClasses.mk γ)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `ρ ⟨⟨c, rfl⟩, hρ⟩`. Rewrite using `[hcls c γ hρ]`. Establish `hinj : Function.Injective (fun c : ConjClasses Γ => e (Quotient.out c))` using `fun a b h => by`. Rewrite using `[← mk_out_conj a, ← mk_out_conj b, e.injective h]`. Rewrite using `[GlobalTheory.FinTrace.unfolded_eq_orbital_reps H ι.range K V ξ' hQ hloc F hF hs R hR, finsum_mem_range hinj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `finsum_congr fun c => ?_` and prove the remaining obligations. Simplify using `only [hξ, he]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem heckeTrace_eq_orbital [FiniteDimensional ℂ V] (ι : Γ →* H) (hι : Function.Injective ι) (K : Subgroup H)
     (ξ : Representation ℂ Γ V) (F : H → ℂ)
@@ -198,7 +198,7 @@ namespace GlobalTheory.HeckeTrace
 variable {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Simplify `hk` using `[mul_assoc]`. Introduce `h`. Conclude with `⟨_, h, by simp only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]; group⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_map_conj {H : Type} [Group H] (K : Subgroup H) (x g : H) :
     g ∈ K.map (MulAut.conj x).toMonoidHom ↔ x⁻¹ * g * x ∈ K := by
@@ -209,9 +209,9 @@ theorem mem_map_conj {H : Type} [Group H] (K : Subgroup H) (x g : H) :
     exact ⟨_, h, by simp only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]; group⟩
 
 /- English proof (translation)
-Use extensionality with `δ`. Rewrite using `[GlobalTheory.FinTF.mem_locPart_iff]`. Simplify using `only [Subgroup.mem_map, Subgroup.mem_inf, stab, Subgroup.mem_comap, mem_map_conj, Subgroup.mem_prod]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨w, hw, rfl⟩, h1, h2⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨w, ⟨⟨(mem_map_conj _ _ _).2 (by simpa using h1), (mem_map_conj _ _ _).2 (by simpa using h2)⟩, hw⟩, rfl⟩`. Introduce and unpack `⟨w, ⟨⟨h1, h2⟩, hw⟩, rfl⟩`. Conclude with `⟨⟨w, hw, rfl⟩, by simpa using (mem_map_conj _ _ _).1 h1, by simpa using (mem_map_conj _ _ _).1 h2⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem locPart_map_eq (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂)
     (C : Subgroup Γ) (x : G₁ × G₂) :
@@ -226,9 +226,9 @@ theorem locPart_map_eq (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (K₁ : Sub
     exact ⟨⟨w, hw, rfl⟩, by simpa using (mem_map_conj _ _ _).1 h1, by simpa using (mem_map_conj _ _ _).1 h2⟩
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_centralizer_singleton_iff, MonoidHom.mem_range, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hc, w, rfl⟩`. Use `⟨w, hι ?_, rfl⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_mul, hc]`. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `⟨by rw [← map_mul, ← map_mul, hw], w, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem cent_map_eq (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (hι : Function.Injective (ι₁.prod ι₂)) (γ : Γ) :
     Subgroup.centralizer {(ι₁.prod ι₂) γ} ⊓ (ι₁.prod ι₂).range =
@@ -243,7 +243,7 @@ theorem cent_map_eq (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (hι : Functio
     exact ⟨by rw [← map_mul, ← map_mul, hw], w, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[cent_map_eq ι₁ ι₂ hι γ, centSum]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[locPart_map_eq, Subgroup.card_map_of_injective hι, one_div]`. Simplify using `[term]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem orbital_eq_centSum (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (hι : Function.Injective (ι₁.prod ι₂))
     (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (f₁ : G₁ → ℂ) (f₂ : G₂ → ℂ) (γ : Γ) :
@@ -265,11 +265,11 @@ namespace GlobalTheory.HeckeTrace
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `haveI : Nontrivial (AfP p) := GlobalTheory.LKMid.finiteAdeleRingAway_nontrivial p`. Establish `hinj : Function.Injective (inC G (AfP p))` using `Algebra.TensorProduct.includeRight_injective (algebraMap ℚ (AfP p)).injective`. Establish `hq : Function.Injective (algebraMap ℚ (AfP p))` using `(algebraMap ℚ (AfP p)).injective`. Introduce `y z h`. Establish `h1` using `congrArg (fun w : G.GAf × Gr G 1 => ((w.1 : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ)) h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.LKDef.DForm.emb, GlobalTheory.LKDef.DForm.embAt, MonoidHom.prod_apply, GlobalTheory.LKCx.toAfF, MonoidHom.codRestrict_apply] at h1`. Take `⟨ha, hb⟩` from `Prod.ext_iff.1 h1`. Simplify using `at ha hb`. Establish `ha'` using `congrArg (fun u : (AfP p ⊗[ℚ] G.C)ˣ => (u : AfP p ⊗[ℚ] G.C)) ha`. Establish `hb'` using `congrArg (fun u : (AfP p)ˣ => (u : AfP p)) hb`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.coe_map, MonoidHom.coe_coe] at ha' hb'`. Conclude with `Subtype.ext (Prod.ext (Units.ext (hinj ha')) (Units.ext (hq hb')))`.
+A detailed English derivation is pending.
 -/
 theorem emb_injective {G : HTGroup p} (B : GlobalTheory.LKDef.DForm G) : Function.Injective B.emb := by
   haveI : Nontrivial (AfP p) := GlobalTheory.LKMid.finiteAdeleRingAway_nontrivial p
@@ -292,9 +292,9 @@ end GlobalTheory.HeckeTrace
 namespace GlobalTheory.HeckeTrace
 
 /- English proof (translation)
-Introduce `p _ G ha V _ _ _ ξ L f hfT hf K' f' hf'T hf' B`. Establish `hinj` using `emb_injective B`. Establish `hF : ∀ k ∈ L.K.toSubgroup.prod K', ∀ k' ∈ L.K.toSubgroup.prod K', ∀ g : G.GAf × Gr G 1, (fun h : G.GAf × Gr G 1 => f h.1 * f' h.2) (k * g * k') = (fun h : G.GAf × Gr G 1 => f h.1 * f' h.2) g`. Introduce `k hk k' hk' g`. Simplify using `only [Prod.fst_mul, Prod.snd_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf _ hk.1 _ hk'.1, hf' _ hk.2 _ hk'.2]`. Rewrite using `[GlobalTheory.LKDef.DForm.trace, heckeTrace_eq_orbital B.emb hinj _ _ _ hF (GlobalTheory.T.heckeTestProduct_support_finite_leftCosets p G L f hfT hf K' f' hf'T hf') (GlobalTheory.T.finite_doubleCoset_definiteHermitianForm_level p G ha L K' hf'T.1 B) (GlobalTheory.T.definiteForm_s …`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `orbital_eq_centSum _ _ hinj _ _ f f' _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem dform_trace_eq : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 →
   ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (ξ : Representation ℂ (G.Cˣ × ℚˣ) V)

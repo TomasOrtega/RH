@@ -22,19 +22,15 @@ private def stab {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (δ : F)
 end UpperTheory.ConvolutionTheory.R2.Fo
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D O`. Establish `hx : ∀ w i, O.x w i ∈ stab D.δ` using `fun w i => (fkLe F D.δ O).1 w i`. Establish `hd : ∀ w i, O.d w i ∈ stab D.δ`. Introduce `w i φ hφ`. Take `⟨Λ, m, h⟩` from `fockEx F E D O {φ} (Set.finite_singleton φ) (fun ψ hψ => (Set.mem_singleton_iff.1 hψ) ▸ hφ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(fkLe F D.δ O).2 _ inf_le_left (m + 1) (fkD F D.δ O _ inf_le_left m w i φ (h φ (Set.mem_singleton φ)))`. Establish `he : ∀ w, O.e D.δ w ∈ stab D.δ` using `fun w => Subalgebra.smul_mem _ (sub_mem (sub_mem (mul_mem (hx w 2) (hx w 2)) (Subalgebra.smul_mem _ (mul_mem (hx w 3) (hx w 3)) _)) (mul_mem (hx w 1) (hx w 0))) _`. Establish `hf : ∀ w, O.f D.δ w ∈ stab D.δ` using `fun w => Subalgebra.smul_mem _ (sub_mem (sub_mem (Subalgebra.smul_mem _ (mul_mem (hd w 2) (hd w 2)) _) (Subalgebra.smul_mem _ (mul_mem (hd w 3) (hd w 3)) _)) (mul_mem (hd w 1) (hd w 0))) _`. Establish `hh : ∀ w, O.h w ∈ stab D.δ` using `fun w => add_mem (sum_mem fun i _ => mul_mem (hx w i) (hd w i)) (ofNat_mem _ 2)`. Establish `hX : ∀ τ a b, O.X D τ a b ∈ stab D.δ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `hx _ 1`. Conclude with `add_mem (hx _ 2) (Subalgebra.smul_mem _ (hx _ 3) _)`. Conclude with `sub_mem (hx _ 2) (Subalgebra.smul_mem _ (hx _ 3) _)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `hx _ 0`. Establish `hDX : ∀ τ a b, O.DX D τ a b ∈ stab D.δ`. Introduce `τ a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `hd _ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `Subalgebra.smul_mem _ (add_mem (hd _ 2) (Subalgebra.smul_mem _ (hd _ 3) _)) _`. Conclude with `Subalgebra.smul_mem _ (sub_mem (hd _ 2) (Subalgebra.smul_mem _ (hd _ 3) _)) _`. Conclude with `hd _ 0`. Establish `hE : ∀ τ i j, O.dE D τ i j ∈ stab D.δ`. Introduce `τ i j`.
-
-Use `sub_mem (neg_mem ?_) (sum_mem fun b _ => mul_mem (hX τ j b) (hDX τ i b))` and prove the remaining obligations. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `hL : ∀ Y, O.dL D Y ∈ stab D.δ` using `fun Y => sum_mem fun τ _ => sum_mem fun i _ => sum_mem fun j _ => Subalgebra.smul_mem _ (hE τ i j) _`.
-
-Introduce `φ hφ`. Conclude with `⟨fun w i => hx w i φ hφ, fun w i => hd w i φ hφ, fun w => he w φ hφ, fun w => hf w φ hφ, fun w => hh w φ hφ, fun τ i j => hE τ i j φ hφ, fun Y => hL Y φ hφ⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.fockOps :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (O : Ops F), ∀ φ ∈ Fock D.δ, (∀ w i, O.x w i φ ∈ Fock D.δ) ∧ (∀ w i, O.d w i φ ∈ Fock D.δ) ∧ (∀ w, O.e D.δ w φ ∈ Fock D.δ) ∧

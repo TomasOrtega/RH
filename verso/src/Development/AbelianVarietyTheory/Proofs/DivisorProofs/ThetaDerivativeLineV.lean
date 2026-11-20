@@ -18,23 +18,21 @@ namespace GlobalTheory.ThKLieTriple
 open scoped Classical in
 
 /- English proof (translation)
-Establish `hsch` using `GlobalTheory.KDecayProof.so_le_schA hT.geo.hM' B.τ₁ (Submodule.mem_inf.1 hΦ).2`. Take `⟨n, c, s, hs⟩` from `Submodule.mem_span_set'.1 hsch`. Use `choose f0 φ hφ hfe using fun i => (s i).2`. Use `choose u u₁ hu hu₁ using fun i : Fin n => GlobalTheory.T.weil_line_good_model_polynomial hP.base G.M' B.ψ _ _ om' hT.base.std hT.geo.hM' hT.weil' γ hγ (c i • f0 i) _ (GlobalTheory.ThetaDerivFirst.rest_fin (c i • f0 i) (hφ i))`. Establish `hΦe : Φ = ∑ i, pureA F (c i • f0 i) (φ i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hs]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hfe i]`. Use function extensionality and compare the values at `x`. Simplify using `[pureA, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `horb : ∀ t : ℝ, om' (γ (Multiplicative.ofAdd t), 1) Φ = ∑ i, pureA F (u i t) (φ i)`. Introduce `t`. Rewrite using `[hΦe, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hu i t`. Establish `hΦ₁ : Φ₁ = ∑ i, pureA F (u₁ i) (φ i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `x`. Use `set y : Fin a' × Fin (a + a') → mixedEmbedding.mixedSpace F := fun j => InfiniteAdeleRing.ringEquiv_mixedSpace F (x j).1`. Use `set z : Fin a' × Fin (a + a') → Af F := fun j => (x j).2`. Establish `hder : ∀ i, HasDerivAt (fun t : ℝ => u i t y) (u₁ i y) 0`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Set `ev : SInf F (Fin a' × Fin (a + a')) →L[ℂ] ℂ` to `(BoundedContinuousFunction.evalCLM ℂ y).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (Fin a' × Fin (a + a') → mixedEmbedding.mixedSpace F) ℂ)`. Establish `h1` using `(ev.continuous.tendsto (u₁ i)).comp (hu₁ i)`. Establish `e2 : ev (u₁ i) = u₁ i y` using `rfl`. Rewrite `h1` using `[e2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `h1.congr' (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[ev, slope_def_module]`. Establish `hsum : HasDerivAt (fun t : ℝ => ∑ i, u i t y * φ i z) (∑ i, u₁ i y * φ i z) 0` using `HasDerivAt.fun_sum fun i _ => (hder i).mul_const _`. Establish `e1 : (fun t : ℝ => om' (γ (Multiplicative.ofAdd t), 1) Φ x) = fun t => ∑ i, u i t y * φ i z`. Use function extensionality and compare the values at `t`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[horb, Finset.sum_apply]`. Both sides reduce to the same expression. Establish `h3` using `hd x`. Rewrite `h3` using `[e1]`. Rewrite using `[h3.unique hsum, Finset.sum_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `key : ∀ k, theta om' Φ (g * k) h = theta om' (om' (k, 1) Φ) g h`. Introduce `k`. Unfold `theta`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
-
-Establish `h4` using `GlobalTheory.T.pair_theta_uniform_bound_family hP F E σ B _ _ _ _ _ _ _ om' _ _ _ _ (GlobalTheory.KDecayProof.isPair_small hT) n φ (fun t i => u i t) u₁ hφ hu₁ g h`. Rewrite `h4` using `[← hΦ₁]`. Simplify `h4` using `only [key, horb]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_theta_line (hP : GlobalTheory.ThK.KP) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
@@ -95,25 +93,21 @@ theorem hasDerivAt_theta_line (hP : GlobalTheory.ThK.KP) {F E : Type} [Field F] 
   simpa only [key, horb] using h4
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hP hT γ hγ Φ hΦ Φ₁ hΦ₁ hd`. Establish `hPair` using `GlobalTheory.ThKContSmall.isPair_small hT`. Establish `hSo : ∀ Ψ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, Ψ ∈ G.M'.So B.ψ B.τ₁` using `fun Ψ hΨ => (Submodule.mem_inf.1 hΨ).2`. Establish `hS : ∀ Ψ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, Ψ ∈ schA F (Fin a' × Fin (a + a'))` using `fun Ψ hΨ => GlobalTheory.ThKContSmall.so_le_schA hT.geo.hM' _ (hSo Ψ hΨ)`. Establish `hv` using `GlobalTheory.ThKContSmall.measure_dom_lt_top hP.siegelSetUnitary hT.base hT.geo.hV' hT.geo.hM'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsFiniteMeasure (G.M'.μ.restrict G.M'.dom) := ⟨by rw [Measure.restrict_apply_univ]; exact hv⟩`. Establish `hL1` using `hasDerivAt_theta_line hP hT γ hγ Φ hΦ Φ₁ hd`. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hconst : ∀ s : ℝ, ∫ g in G.M'.dom, theta om' Φ (g * γ (Multiplicative.ofAdd s)) h ∂G.M'.μ = G.M'.I om' Φ h`. Introduce `s`. Rewrite using `[← congrFun (GlobalTheory.ThetaIntegralInv.integral_translate hP.base hPair (γ (Multiplicative.ofAdd s)) Φ (hS Φ hΦ)) h]`. Unfold `Model.I theta`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Take `⟨C, k, hC⟩` from `GlobalTheory.T.schwartz_orbit_decay hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair Φ₁ (hSo _ hΦ₁) 0`. Take `⟨C0, k0, hC0⟩` from `GlobalTheory.T.schwartz_orbit_decay hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair Φ (hSo _ hΦ) 0`. Establish `hB1` using `((GlobalTheory.T.theta_basic_properties hP.base F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair).1 Φ₁ (hS _ hΦ₁)).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB0` using `((GlobalTheory.T.theta_basic_properties hP.base F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPair).1 Φ (hS _ hΦ)).1`. Establish `hcont : ∀ (Ψ : (Fin a' × Fin (a + a') → AF F) → ℂ), Continuous (fun x : UA σ G.V'.J × UA σ G.W.J => theta om' Ψ x.1 x.2) → ∀ c : UA σ G.V'.J, Continuous fun g : UA σ G.V'.J => theta om' Ψ (g * c) h`. Introduce `Ψ hΨ c`. Conclude with `hΨ.comp ((continuous_mul_const c).prodMk continuous_const)`. Establish `hder : ∀ (g : UA σ G.V'.J) (s : ℝ), HasDerivAt (fun t : ℝ => theta om' Φ (g * γ (Multiplicative.ofAdd t)) h) (theta om' Φ₁ (g * γ (Multiplicative.ofAdd s)) h) s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `g s`. Establish `h1` using `HasDerivAt.comp_sub_const (x := s) (a := s) (by rw [sub_self]; exact hL1 (g * γ (Multiplicative.ofAdd s)) h)`. Establish `e : (fun t : ℝ => theta om' Φ (g * γ (Multiplicative.ofAdd t)) h) = fun t => theta om' Φ (g * γ (Multiplicative.ofAdd s) * γ (Multiplicative.ofAdd (t - s))) h`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, ← map_mul, ← ofAdd_add, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h1`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := G.M'.μ.restrict G.M'.dom) (F := fun (s : ℝ) (g : UA σ G.V'.J) => theta om' Φ (g * γ (Multiplicative.ofAdd s)) h) (F' := fun (s : ℝ) (g : UA σ G.V'.J) => theta om' Φ₁ (g * γ (Multiplicative.ofAdd s)) h) (x₀ := 0) (s := Set.uni …`. Establish `e` using `hC0 (g * γ (Multiplicative.ofAdd 0)) h`. Rewrite `e` using `[pow_zero, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `e))`. Use the proof step `(hcont Φ₁ hB1 _).aestronglyMeasurable`. Use the proof step `(ae_of_all _ fun g s _ => by`. Establish `e` using `hC (g * γ (Multiplicative.ofAdd s)) h`. Rewrite `e` using `[pow_zero, mul_one]`.
-
-Conclude with `e)`. Use the proof step `(integrable_const _)`. Use the proof step `(ae_of_all _ fun g s _ => hder g s)`. Establish `key2` using `key.2`. Simplify using `only [hconst] at key2`.
-
-Establish `e0` using `key2.unique (hasDerivAt_const (0 : ℝ) (G.M'.I om' Φ h))`. Simplify using `only [ofAdd_zero, map_one, mul_one] at e0`. Conclude with `e0`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lie_kills : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

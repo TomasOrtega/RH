@@ -19,28 +19,28 @@ section
 variable (d : SD σ) (w : InfinitePlace F)
 
 /- English proof (translation)
-Establish `h` using `(Place.exists_sec d.cm d.B.emb).choose_spec`. Rewrite using `[insW, h.2.1, Pi.single_eq_same]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem insW_self (z : ℂ) : piInf (d.B.emb w) (insW d w z) = z := by
   have h := (Place.exists_sec d.cm d.B.emb).choose_spec
   rw [insW, h.2.1, Pi.single_eq_same]
 
 /- English proof (translation)
-Establish `h` using `(Place.exists_sec d.cm d.B.emb).choose_spec`. Rewrite using `[insW, h.2.1, Pi.single_eq_of_ne hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem insW_ne {w' : InfinitePlace F} (hw : w' ≠ w) (z : ℂ) : piInf (d.B.emb w') (insW d w z) = 0 := by
   have h := (Place.exists_sec d.cm d.B.emb).choose_spec
   rw [insW, h.2.1, Pi.single_eq_of_ne hw]
 
 /- English proof (translation)
-Establish `h` using `(Place.exists_sec d.cm d.B.emb).choose_spec`. Rewrite using `[insW, h.2.2.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem insW_fin (z : ℂ) : finOne F • insW d w z = 0 := by
   have h := (Place.exists_sec d.cm d.B.emb).choose_spec
   rw [insW, h.2.2.1]
 
 /- English proof (translation)
-Establish `h` using `(Place.exists_sec d.cm d.B.emb).choose_spec`. Rewrite using `[insW, insW, insW, Pi.single_add, h.2.2.2.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem insW_add (z z' : ℂ) : insW d w (z + z') = insW d w z + insW d w z' := by
   have h := (Place.exists_sec d.cm d.B.emb).choose_spec
@@ -58,14 +58,14 @@ variable {d : SD σ} (R : RD d) (w : InfinitePlace F)
 def Supp (Z : Mx F E d.m d.n) : Prop := (∀ w', w' ≠ w → d.cw w' Z = 0) ∧ finOne F • Z = 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [SD.cw, insL, Matrix.map_apply, insW_self]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cw_insL (v : Fin d.m → Fin d.n → ℂ) : d.cw w (insL R w v) = (R.fr w).1 * (Matrix.of v).map star := by
   ext i j
   simp only [SD.cw, insL, Matrix.map_apply, insW_self]
 
 /- English proof (translation)
-Use `⟨fun w' hw' => ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [SD.cw, insL, Matrix.map_apply, insW_ne d w hw', Matrix.zero_apply]`. Use extensionality with `i j`. Simplify using `only [insL, Matrix.smul_apply, Matrix.map_apply, insW_fin, Matrix.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem insL_supp (v : Fin d.m → Fin d.n → ℂ) : Supp w (insL R w v) := by
   refine ⟨fun w' hw' => ?_, ?_⟩
@@ -75,7 +75,7 @@ theorem insL_supp (v : Fin d.m → Fin d.n → ℂ) : Supp w (insL R w v) := by
     simp only [insL, Matrix.smul_apply, Matrix.map_apply, insW_fin, Matrix.zero_apply]
 
 /- English proof (translation)
-Unfold `RD.loc`. Rewrite using `[cw_insL, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem loc_insL (v : Fin d.m → Fin d.n → ℂ) : R.loc w (insL R w v) = v := by
   unfold RD.loc
@@ -84,9 +84,9 @@ theorem loc_insL (v : Fin d.m → Fin d.n → ℂ) : R.loc w (insL R w v) = v :=
   simp
 
 /- English proof (translation)
-Establish `e : (R.fr w).1 * (Matrix.of (v + v')).map star = (R.fr w).1 * (Matrix.of v).map star + (R.fr w).1 * (Matrix.of v').map star`. Rewrite using `[← Matrix.mul_add]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Unfold `insL`. Rewrite using `[e]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, insW_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem insL_add (v v' : Fin d.m → Fin d.n → ℂ) : insL R w (v + v') = insL R w v + insL R w v' := by
   have e : (R.fr w).1 * (Matrix.of (v + v')).map star =
@@ -101,7 +101,7 @@ theorem insL_add (v v' : Fin d.m → Fin d.n → ℂ) : insL R w (v + v') = insL
   simp only [Matrix.map_apply, Matrix.add_apply, insW_add]
 
 /- English proof (translation)
-Establish `h` using `insL_add R w 0 0`. Rewrite `h` using `[add_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem insL_zero : insL R w 0 = 0 := by
   have h := insL_add R w 0 0
@@ -111,11 +111,11 @@ theorem insL_zero : insL R w 0 = 0 := by
     _ = 0 := sub_self _
 
 /- English proof (translation)
-Use `Place.mat_ext d.cm d.B.emb (fun w' => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hw : w' = w`. Rewrite using `[hw]`. Express the relevant statement in the definitionally equal form `d.cw w (insL R w (R.loc w Z)) = d.cw w Z`. Rewrite using `[cw_insL]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (Matrix.of (R.loc w Z)).map star = ((R.fr w)⁻¹).1 * d.cw w Z`. Use extensionality with `i j`. Conclude with `star_star _`. Rewrite using `[h2, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `d.cw w' (insL R w (R.loc w Z)) = d.cw w' Z`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(insL_supp R w _).1 w' hw, hZ.1 w' hw]`. Rewrite using `[(insL_supp R w _).2, hZ.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem insL_loc {Z : Mx F E d.m d.n} (hZ : Supp w Z) : insL R w (R.loc w Z) = Z := by
   refine Place.mat_ext d.cm d.B.emb (fun w' => ?_) ?_
@@ -132,7 +132,7 @@ theorem insL_loc {Z : Mx F E d.m d.n} (hZ : Supp w Z) : insL R w (R.loc w Z) = Z
   · rw [(insL_supp R w _).2, hZ.2]
 
 /- English proof (translation)
-Rewrite using `[KFock.loc_add' d R w X Z, insL_add, insL_loc R w hZ]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem rest_inv (X Z : Mx F E d.m d.n) (hZ : Supp w Z) :
     (X + Z) - insL R w (R.loc w (X + Z)) = X - insL R w (R.loc w X) := by
@@ -146,7 +146,7 @@ section
 variable (d : SD σ)
 
 /- English proof (translation)
-Establish `e : d.gram X (Z + Z') = d.gram X Z + d.gram X Z'`. Unfold `SD.gram`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.mul_add]`. Rewrite using `[e, SD.tt, SD.tt, SD.tt, Matrix.trace_add, map_add, mul_add, AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_add_right (ε : ℤˣ) (X Z Z' : Mx F E d.m d.n) :
     d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X (Z + Z'))) =
@@ -157,7 +157,7 @@ theorem psi_add_right (ε : ℤˣ) (X Z Z' : Mx F E d.m d.n) :
   rw [e, SD.tt, SD.tt, SD.tt, Matrix.trace_add, map_add, mul_add, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Establish `e : d.gram (X + X') Z = d.gram X Z + d.gram X' Z`. Unfold `SD.gram`. Rewrite using `[Matrix.transpose_add, Matrix.add_mul, Matrix.add_mul]`. Rewrite using `[e, SD.tt, SD.tt, SD.tt, Matrix.trace_add, map_add, mul_add, AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_add_left (ε : ℤˣ) (X X' Z : Mx F E d.m d.n) :
     d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram (X + X') Z)) =
@@ -168,7 +168,7 @@ theorem psi_add_left (ε : ℤˣ) (X X' Z : Mx F E d.m d.n) :
   rw [e, SD.tt, SD.tt, SD.tt, Matrix.trace_add, map_add, mul_add, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Unfold `SD.gram SD.cw`. Establish `hJ : (incM F d.A.J).map (piInf (d.B.emb w)) = d.A.J.map (d.B.emb w).1`. Use extensionality with `i j`. Simplify using `[incM, PositivityTheory.ThKG.Tow.Levi.piInf_incl]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Place.map_cA d.cm (d.B.emb w) Z, hJ]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cw_gram (w : InfinitePlace F) (X Z : Mx F E d.m d.n) :
     d.cw w (d.gram X Z) = (d.cw w X)ᵀ * d.A.J.map (d.B.emb w).1 * (d.cw w Z).map star := by
@@ -179,11 +179,11 @@ theorem cw_gram (w : InfinitePlace F) (X Z : Mx F E d.m d.n) :
   rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Place.map_cA d.cm (d.B.emb w) Z, hJ]
 
 /- English proof (translation)
-Use `Place.mat_ext d.cm d.B.emb (fun w' => ?_) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `d.cw w' (d.gram Z' Z) = d.cw w' 0`. Rewrite using `[cw_gram]`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hZ, Matrix.map_zero _ (star_zero _), Matrix.mul_zero]`. Use extensionality with `i j`. Simplify using `[SD.cw]`. Rewrite using `[hZ'.1 w' hw, Matrix.transpose_zero, Matrix.zero_mul, Matrix.zero_mul]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[SD.cw]`. Unfold `SD.gram`. Rewrite using `[← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.transpose_smul, hZ'.2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_supp_cmp (w : InfinitePlace F) {Z' Z : Mx F E d.m d.n} (hZ' : Supp w Z') (hZ : d.cw w Z = 0) :
     d.gram Z' Z = 0 := by
@@ -203,7 +203,7 @@ theorem gram_supp_cmp (w : InfinitePlace F) {Z' Z : Mx F E d.m d.n} (hZ' : Supp 
     simp
 
 /- English proof (translation)
-Simplify using `[SD.tt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_zero_gram (ε : ℤˣ) : d.B.ψ (((ε : ℤ) : AF F) * d.tt (0 : Mx F E d.n d.n)) = 1 := by
   simp [SD.tt]
@@ -211,7 +211,7 @@ theorem psi_zero_gram (ε : ℤˣ) : d.B.ψ (((ε : ℤ) : AF F) * d.tt (0 : Mx 
 end
 
 /- English proof (translation)
-Apply the tactic sequence `rcases R.hζ with ⟨-, h⟩ | ⟨-, h⟩ <;> rw [h] <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zeta_ne {d : SD σ} (R : RD d) : R.ζ ≠ 0 := by
   rcases R.hζ with ⟨-, h⟩ | ⟨-, h⟩ <;> rw [h] <;> simp
@@ -221,7 +221,7 @@ section
 variable {d : SD σ} (R : RD d) (w : InfinitePlace F)
 
 /- English proof (translation)
-Establish `h2 : (Matrix.of (R.loc w X)).map star = ((R.fr w)⁻¹).1 * d.cw w X`. Use extensionality with `i j`. Conclude with `star_star _`. Rewrite using `[h2, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cw_loc (X : Mx F E d.m d.n) : d.cw w X = (R.fr w).1 * (Matrix.of (R.loc w X)).map star := by
   have h2 : (Matrix.of (R.loc w X)).map star = ((R.fr w)⁻¹).1 * d.cw w X := by
@@ -230,7 +230,7 @@ theorem cw_loc (X : Mx F E d.m d.n) : d.cw w X = (R.fr w).1 * (Matrix.of (R.loc 
   rw [h2, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h` using `R.hfr w`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ (zeta_ne R), one_smul]`. Use `_ = (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ)) • 1 := by rw [h, smul_smul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frJ : (R.fr w).1ᵀ * d.A.J.map (d.B.emb w).1 * (R.fr w).1.map star = (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ)) • 1 := by
   have h := R.hfr w
@@ -242,9 +242,9 @@ theorem frJ : (R.fr w).1ᵀ * d.A.J.map (d.B.emb w).1 * (R.fr w).1.map star = (R
 end
 
 /- English proof (translation)
-Establish `hz : ((ε : ℤ) : AF F) * d.tt M = Algebra.trace (AF F) (AE F E) ((ε : ℤ) • M.trace)`. Rewrite using `[map_zsmul, zsmul_eq_mul]`. Both sides reduce to the same expression. Establish `ptr : ∀ u, piInf (d.B.emb u) M.trace = (d.cw u M).trace` using `fun u => by`. Simplify using `[Matrix.trace, SD.cw, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz, Place.psi_trace_at d.std d.cm d.B.emb w _ ?_ ?_, map_zsmul, ptr, zsmul_eq_mul]`. Rewrite using `[smul_comm, ← Matrix.trace_smul, hM2, Matrix.trace_zero, smul_zero]`. Introduce `u hu`. Rewrite using `[map_zsmul, ptr, hM1 u hu, Matrix.trace_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_at_w (d : SD σ) (w : InfinitePlace F) (ε : ℤˣ) (M : Mx F E d.n d.n)
     (hM1 : ∀ w', w' ≠ w → d.cw w' M = 0) (hM2 : finOne F • M = 0) :
@@ -261,17 +261,17 @@ theorem psi_at_w (d : SD σ) (w : InfinitePlace F) (ε : ℤˣ) (M : Mx F E d.n 
     rw [map_zsmul, ptr, hM1 u hu, Matrix.trace_zero, smul_zero]
 
 /- English proof (translation)
-Establish `hM1 : ∀ w', w' ≠ w → d.cw w' (d.gram X (insL R w u)) = 0`. Introduce `w' hw`. Rewrite using `[cw_gram, (insL_supp R w u).1 w' hw, Matrix.map_zero _ (star_zero _), Matrix.mul_zero]`. Establish `hM2 : finOne F • d.gram X (insL R w u) = 0`. Unfold `SD.gram`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Matrix.mul_smul]`. Establish `: finOne F • (insL R w u).map (cA σ) = (finOne F • insL R w u).map (cA σ)`. Use extensionality with `i j`. Simplify using `[map_smul]`. Rewrite using `[this, (insL_supp R w u).2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `e1 : d.cw w (d.gram X (insL R w u)) = (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ)) • ((Matrix.of (R.loc w X))ᴴ * Matrix.of u)`. Rewrite using `[cw_gram, cw_loc R w X, cw_insL, Matrix.transpose_mul]`. Establish `h3 : ((R.fr w).1 * (Matrix.of u).map star).map star = (R.fr w).1.map star * Matrix.of u`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mul_apply]`. Establish `h4 : ((Matrix.of (R.loc w X)).map star)ᵀ = (Matrix.of (R.loc w X))ᴴ` using `rfl`. Rewrite using `[h3, h4]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [frJ, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`. Rewrite using `[psi_at_w d w ε _ hM1 hM2, e1, Matrix.trace_smul, smul_eq_mul]`. Use `congr 1`. Establish `e2 : -2 * ((ε : ℤ) : ℂ) * ((R.sg w : ℤ) : ℂ) / R.ζ * Matrix.trace ((Matrix.of (R.loc w X))ᴴ * Matrix.of u) = ((-2 : ℝ) : ℂ) * (((ε : ℤ) : ℂ) * (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ) * Matrix.trace ((Matrix.of (R.loc w X))ᴴ * Matrix.of u)))`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, Complex.re_ofReal_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kernel {d : SD σ} (R : RD d) (w : InfinitePlace F) (ε : ℤˣ) (X : Mx F E d.m d.n) (u : Fin d.m → Fin d.n → ℂ) :
     d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram X (insL R w u))) =
@@ -312,7 +312,7 @@ theorem kernel {d : SD σ} (R : RD d) (w : InfinitePlace F) (ε : ℤˣ) (X : Mx
   ring
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `hf`. Take `⟨ψ, hψ⟩` from `GlobalTheory.T.schwartz_fourier_transform_matrix m n C s hs φ`. Conclude with `⟨ψ, hψ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locFT_sw {m n : ℕ} (C s : ℂ) (hs : s ≠ 0) (f : (Fin m → Fin n → ℂ) → ℂ) (hf : IsSw f) :
     IsSw (fun u => C * ∫ v : Fin m → Fin n → ℂ,

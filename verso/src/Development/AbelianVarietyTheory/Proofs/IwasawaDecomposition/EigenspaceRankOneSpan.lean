@@ -6,7 +6,7 @@ open GlobalTheory.EigenSplit
 namespace GlobalTheory.EigenSplit
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r b => simp [Algebra.TensorProduct.tmul_mul_tmul, mul_comm]`. Consider the case `add s t hs ht => simp only [map_add, hs, ht, add_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem baseChangeAction_toModuleEnd_self_apply {O R : Type} [CommRing O] [CommRing R] (a : O)
     (t : R ⊗[ℤ] O) :
@@ -17,25 +17,23 @@ theorem baseChangeAction_toModuleEnd_self_apply {O R : Type} [CommRing O] [CommR
   | add s t hs ht => simp only [map_add, hs, ht, add_mul]
 
 /- English proof (translation)
-Use `set ρO := (Module.toModuleEnd ℤ O : O →+* Module.End ℤ O)`. Use `set ρ := (Module.toModuleEnd ℤ Λ : O →+* Module.End ℤ Λ)`. Establish `hact : ∀ a, baseChangeAction R ρ a = tensorAction (baseChangeAction R ρ) (1 ⊗ₜ a)`. Introduce `a`. Use extensionality with `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' O Λ`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π LinearMap.id hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `F : Fin n → R ⊗[ℤ] Λ →ₗ[R] R ⊗[ℤ] O` to `fun k => (((LinearMap.proj k : (Fin n → O) →ₗ[O] O) ∘ₗ s).restrictScalars ℤ).baseChange R`. Set `lam : Fin n → Λ` to `fun k => π (Pi.single k 1)`. Establish `hsum : ∀ l, ∑ k, s l k • lam k = l`. Introduce `l`. Establish `h1` using `LinearMap.congr_fun hs l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h1`. Use `conv_rhs => rw [← h1]`. Rewrite using `[← Finset.univ_sum_single (s l), map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [lam, ← map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congr 1`. Use extensionality with `j`. Apply the tactic sequence `by_cases hj : j = k <;> simp [Pi.single_apply, hj]`. Establish `hid : ∀ y, y = ∑ k, tensorAction (baseChangeAction R ρ) (F k y) (1 ⊗ₜ lam k)`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r l`. Simplify using `only [F, LinearMap.baseChange_tmul, tensorAction_tmul, baseChangeAction_apply, LinearMap.restrictScalars_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Simplify using `[ρ, ← TensorProduct.tmul_sum, hsum, TensorProduct.smul_tmul']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `add y z hy hz => conv_lhs => rw [hy, hz]`. Simplify using `only [map_add, LinearMap.add_apply, Finset.sum_add_distrib]`. Establish `hF : ∀ k, IsEquivariant (baseChangeAction R ρ) (baseChangeAction R ρO) (F k)`. Introduce `k a y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul r l => simp [F, ρ, ρO]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Establish `hc : ∀ k, ∃ c : R, c • e = F k x` using `fun k => Submodule.mem_span_singleton.1 (hspan ((hF k).map_mem hx))`. Use `choose c hc using hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ k, c k • (1 ⊗ₜ lam k), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `conv_rhs => rw [hid x]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hc k, map_smul, map_smul, LinearMap.smul_apply]`.
-
-Introduce and unpack `_ ⟨m, rfl⟩`. Use `mem_eigenSub.2 fun a => ?_` and prove the remaining obligations. Rewrite using `[hact a, ← Module.End.mul_apply, ← map_mul, mul_comm, ← baseChangeAction_toModuleEnd_self_apply, mem_eigenSub.1 he a, map_smul, LinearMap.smul_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigenSub_eq_range_tensorAction_of_le_span {O R Λ : Type} [CommRing O] [CommRing R]
     [AddCommGroup Λ] [Module O Λ] [Module.Finite O Λ] [Module.Projective O Λ] (χ : O →+* R)

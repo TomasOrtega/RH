@@ -25,11 +25,11 @@ def ReadsPeriods (t : SAB H S) {T : Over S} (c₀ : ℂˣ → Γ(T.left, ⊤)ˣ)
       Out.WeilIs t.G t.PP.L k (e ((k : ℂ)⁻¹ • P a)) (e ((k : ℂ)⁻¹ • P a₂)) (c₀ c)
 
 /- English proof (translation)
-Establish `hk : 0 < (n - m).natAbs + 1` using `Nat.succ_pos _`. Take `⟨j, hj⟩` from `Complex.exp_eq_exp_iff_exists_int.1 (h _ hk)`. Establish `h0 : (((n - m).natAbs + 1 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Establish `h1 : ((n - m : ℤ) : ℂ) = ((((n - m).natAbs + 1 : ℕ) : ℤ) * j : ℤ)`. Apply `mul_left_cancel₀ Complex.two_pi_I_ne_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Int.cast_mul, Int.cast_natCast, Int.cast_sub]`. Generalize the expression as in `(((n - m).natAbs + 1 : ℕ) : ℂ) = k at h0 hj`. Clear denominators, using `at hj` for the nonvanishing conditions. Take the linear combination `(2 * Real.pi * Complex.I) * hj`. Establish `h2 : n - m = 0` using `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs ⟨j, Int.cast_injective h1⟩ (by`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Int.natAbs_natCast]`. Conclude with `Nat.lt_succ_self _)`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem int_eq_of_exp_eq {m n : ℤ} (h : ∀ k : ℕ, 0 < k → Complex.exp (-(2 * Real.pi * Complex.I) * (m : ℂ) / k) =
     Complex.exp (-(2 * Real.pi * Complex.I) * (n : ℂ) / k)) : m = n := by
@@ -47,13 +47,13 @@ theorem int_eq_of_exp_eq {m n : ℤ} (h : ∀ k : ℕ, 0 < k → Complex.exp (-(
   omega
 
 /- English proof (translation)
-The claim follows from `hP.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem discrete_periods {D : Datum H} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty P) :
     DiscreteTopology P.range.toIntSubmodule := hP.2.2.1
 
 /- English proof (translation)
-The claim follows from `have := hP.2.2.1 countable_of_isDiscrete_finiteDimensional DiscreteTopology.isDiscrete`.
+A detailed English derivation is pending.
 -/
 theorem countable_periods {D : Datum H} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty P) :
     (P.range : Set (Fin g → ℂ)).Countable :=
@@ -61,7 +61,7 @@ theorem countable_periods {D : Datum H} {ty : Fin g → (E →+* ℂ)} {P : D.La
   countable_of_isDiscrete_finiteDimensional DiscreteTopology.isDiscrete
 
 /- English proof (translation)
-Use `t.semi.separated` as an intermediate fact. Use `discrete_periods hP` as an intermediate fact. Establish `: IsZLattice ℝ P.range.toIntSubmodule` using `⟨hP.2.2.2.1⟩`. Conclude with `he.exists_linearEquiv P.range.toIntSubmodule hk ha hs hh hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_linearEquiv_of_period {t : SAB H S} {y : Sp ℂ ⟶ S} {D : Datum H} {ty : Fin g → (E →+* ℂ)}
     {P : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty P) {e : (Fin g → ℂ) → (Over.mk y ⟶ t.G)} (he : IsExp e)
@@ -75,13 +75,13 @@ theorem exists_linearEquiv_of_period {t : SAB H S} {y : Sp ℂ ⟶ S} {D : Datum
   exact he.exists_linearEquiv P.range.toIntSubmodule hk ha hs hh hc
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `exists_linearEquiv_of_period hP' he' hr'.1 he.1 he.2.1 he.2.2.1 ((countable_periods hP).mono fun z hz => (hr.1 z).1 hz)`. Establish `hcomm : ∀ (a : 𝓞 E) z, h (fun k => ty k (a : E) * z k) = fun k => ty k (a : E) * h z k` using `fun a z => by`. Use `hP'.2.2.1` as an intermediate fact. Establish `k` using `realLinear_eq_of_sub_mem_discrete (Γ := P'.range) DiscreteTopology.isDiscrete (L := (h.toLinearMap.restrictScalars ℝ) ∘ₗ LinearMap.mulLeft ℝ (fun k => ty k (a : E))) (L' := LinearMap.mulLeft ℝ (fun k => ty k (a : E)) ∘ₗ (h.toLinearMap.restrictScalars ℝ)) fun x => (hr'.1 _).1 ((eq …`. Conclude with `DFunLike.congr_fun k z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ a, ∃ b, P' b = h (P a)` using `fun a => (hr'.1 _).1 ((hh _).trans ((hr.1 _).2 ⟨a, rfl⟩))`. Use `choose r₀ hr₀ using hmem`. Set `r₁ : D.La →ₗ[𝓞 E] D'.La` to `{ toFun := r₀ map_add' := fun a b => hP'.2.1 (by rw [map_add, hr₀, hr₀, hr₀, map_add, map_add]) map_smul' := fun c a => hP'.2.1 (by`. Rewrite using `[hr₀, show P (c • a) = fun k => ty k (c : E) * P a k from funext (hP.1 c a), hcomm, ← hr₀]`. Conclude with `(funext (hP'.1 c (r₀ a))).symm) }`.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hb : Function.Bijective r₁`. Use `⟨fun a b hab => hP.2.1 (h.injective (((hr₀ a).symm.trans (congrArg P' hab)).trans (hr₀ b))), fun b => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `(hr.1 (h.symm (P' b))).1 (by rw [← hh, h.apply_symm_apply]; exact (hr'.1 _).2 ⟨b, rfl⟩)`. Conclude with `⟨a, hP'.2.1 ((hr₀ a).trans (by rw [ha, h.apply_symm_apply]))⟩`. Use `⟨LinearEquiv.ofBijective r₁ hb, h, fun a b => int_eq_of_exp_eq fun k hk => ?_, hr₀, hh⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `w` using `hr.2.2 k a b (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`. Establish `w'` using `hr'.2.2 k (r₀ a) (r₀ b) (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`. Rewrite `w'` using `[hr₀, hr₀, ← map_smul h, ← map_smul h, hh, hh]`. Conclude with `congrArg Units.val (weilIs_unique_fieldPoint _ _ _ t.PP.isLB ℂ y k _ _ _ _ w' w)`.
+A detailed English derivation is pending.
 -/
 theorem exists_isometry {t : SAB H S} {y : Sp ℂ ⟶ S} {D D' : Datum H} {ty : Fin g → (E →+* ℂ)}
     {P : D.La →+ (Fin g → ℂ)} {P' : D'.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty P) (hP' : IsPeriod D' ty P')
@@ -118,7 +118,7 @@ theorem exists_isometry {t : SAB H S} {y : Sp ℂ ⟶ S} {D D' : Datum H} {ty : 
   exact congrArg Units.val (weilIs_unique_fieldPoint _ _ _ t.PP.isLB ℂ y k _ _ _ _ w' w)
 
 /- English proof (translation)
-Establish `h0 : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Rewrite using `[eq_iff_sub_of_add he, hk, ← smul_sub, ← map_sub]`. Use `exists_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[eq_inv_smul_iff₀ h0, Nat.cast_smul_eq_nsmul, ← map_nsmul, hP.eq_iff, eq_sub_iff_add_eq', eq_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem div_eq_iff {L Q : Type*} [AddCommGroup L] [Group Q] {P : L →+ (Fin g → ℂ)} (hP : Function.Injective P)
     {e : (Fin g → ℂ) → Q} (he : ∀ z w, e (z + w) = e z * e w) (hk : ∀ z, e z = 1 ↔ z ∈ P.range) {n : ℕ} (hn : 0 < n)
@@ -129,9 +129,9 @@ theorem div_eq_iff {L Q : Type*} [AddCommGroup L] [Group Q] {P : L →+ (Fin g �
   rw [eq_inv_smul_iff₀ h0, Nat.cast_smul_eq_nsmul, ← map_nsmul, hP.eq_iff, eq_sub_iff_add_eq', eq_comm]
 
 /- English proof (translation)
-Establish `h0 : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Take `⟨z, rfl⟩` from `hs x`. Establish `hp : ∀ m : ℕ, e (m • z) = e z ^ m` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => rw [zero_smul, pow_zero, map_zero_of_add he]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih => rw [succ_nsmul, he, ih, pow_succ]`. Take `⟨a, ha⟩` from `(hk _).1 ((hp n).trans hx)`. Conclude with `⟨a, by rw [ha, ← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ h0]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_div_of_pow {L Q : Type*} [AddCommGroup L] [Group Q] {P : L →+ (Fin g → ℂ)}
     {e : (Fin g → ℂ) → Q} (he : ∀ z w, e (z + w) = e z * e w) (hs : Function.Surjective e)
@@ -147,9 +147,9 @@ theorem exists_div_of_pow {L Q : Type*} [AddCommGroup L] [Group Q] {P : L →+ (
   exact ⟨a, by rw [ha, ← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ h0]⟩
 
 /- English proof (translation)
-Establish `w : ∀ x : 𝟙_ (Over S') ⟶ G', x.left ≫ G'.hom = 𝟙 S'` using `fun x => Over.w x`. Set `f : (𝟙_ (Over S') ⟶ G') → (Over.mk y ⟶ G)` to `fun x => Over.homMk (x.left ≫ φ) (by show (x.left ≫ φ) ≫ G.hom = y`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, w]`. Conclude with `Category.id_comp y)`. Establish `hb : Function.Bijective f`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a b hab => Over.OverMorphism.ext (h.1.hom_ext (congrArg (·.left) hab) ((w a).trans (w b).symm)), fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x.left ≫ G.hom = 𝟙 S' ≫ y` using `(Over.w x).trans (Category.id_comp y).symm`. Conclude with `⟨Over.homMk (h.1.lift x.left (𝟙 S') hx) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ hx)⟩`. Use `⟨⟨Equiv.ofBijective f hb, fun a b => Over.OverMorphism.ext ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `(h.2 _ a b (pushPt h.1.w a) (pushPt h.1.w b) rfl rfl).symm.trans (mul_left_congr (Category.id_comp y) _ _ _ _ rfl rfl)`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pointEquiv {S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {y : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G y φ) :
@@ -169,7 +169,7 @@ theorem exists_pointEquiv {S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj 
     (mul_left_congr (Category.id_comp y) _ _ _ _ rfl rfl)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[← Over.OverMorphism.ext hx, ← Over.OverMorphism.ext hy]` and apply the resulting hypothesis.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem weilIs_congr {X : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left} {a b : X ⟶ S} (h : a = b) {k : ℤ}
     {x y : Over.mk a ⟶ G} {x' y' : Over.mk b ⟶ G} (hx : x.left = x'.left) (hy : y.left = y'.left)
@@ -184,13 +184,13 @@ def WeilPull : Prop :=
       x₀.left = x.left ≫ φ → y₀.left = y.left ≫ φ → (Out.WeilIs G' L' k x y c ↔ Out.WeilIs G L k x₀ y₀ c)
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_pointEquiv m.cart`. Establish `h₁ : ∀ z, (β.symm (e z)).left ≫ m.φ = (e z).left` using `fun z => by rw [← hβ, β.apply_symm_apply]`. Use `⟨fun z => β.symm (e z), h₁, fun z w => by simp only [he.1, map_mul], β.symm.surjective.comp he.2.1, ⟨fun z => by rw [← hr.1, β.symm.map_eq_one_iff], fun a z => ?_, fun k a b c hk hc => ?_⟩, fun g₀ u => ?_⟩` and prove the remaining obligations. Apply `β.injective` to reduce the goal to its premises. Rewrite using `[β.apply_symm_apply, hr.2.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hβ, Over.comp_left, Over.comp_left, Category.assoc, m.act, ← Category.assoc, h₁]`. Take `⟨w, hw, -⟩` from `m.lin`. Use `(hW _ _ t.G t₁.G y m.φ _ _ t.PP.isLB t₁.PP.isLB m.cart ⟨w, hw⟩ _ k _ _ (pushPt m.cart.1.w _) (pushPt m.cart.1.w _) _ rfl rfl).2 ?_` and prove the remaining obligations. Conclude with `weilIs_congr (Category.id_comp y).symm (h₁ _).symm (h₁ _).symm (hr.2.2 k a b c hk hc)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `u.discrete` as an intermediate fact. Take `⟨h, hh⟩` from `exists_linearEquiv_of_period hP he hr.1 (e₀ := fun z => β (u.ex z)) (fun z w => by rw [u.ex_add, map_mul]) (β.surjective.comp u.ex_onto) (fun U f => by`. Establish `k` using `u.hol (m.φ ⁻¹ᵁ U) ((m.φ.app U).hom f)`. Simplify using `only [hβ, Set.mem_univ, true_and, Points.valAt'_eq_valR] at k ⊢`. Establish `k₂ : ∀ z, valR ((u.ex z).left ≫ m.φ) U f = valR (u.ex z).left (m.φ ⁻¹ᵁ U) ((m.φ.app U).hom f)` using `fun z => Points.valR_comp (C := ℂ) (u.ex z).left m.φ U f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨k.1, k.2.congr fun z _ => k₂ z⟩)`. Use the proof step `((countable_of_isDiscrete_finiteDimensional (s := (u.Λ : Set (Fin g₀ → ℂ))) DiscreteTopology.isDiscrete).mono fun z hz => (u.ker z).1 (β.map_eq_one_iff.1 hz))`. Conclude with `⟨h, fun z => by simp only [hh, β.symm_apply_apply]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fibre (hW : WeilPull) {t : SAB H S} {y : Sp ℂ ⟶ S} {t₁ : SAB H (Sp ℂ)} (m : SABMap t₁ t y)
     {D : Datum H} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty P)

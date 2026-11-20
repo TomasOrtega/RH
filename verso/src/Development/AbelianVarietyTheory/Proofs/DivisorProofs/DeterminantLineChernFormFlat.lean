@@ -17,9 +17,9 @@ open Filter Topology
 variable {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
 
 /- English proof (translation)
-Use `set x := (A.chart j).symm y with hx`. Establish `ho : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x)` using `(A.chart j).isOpen_inter_preimage_symm (P.isOpen_U x)`. Establish `hc : ContinuousOn (fun v => levi (P.φ x ∘ (A.chart j).symm) v w) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x)` using `(continuousOn_levi ho ((hP.1 x j).of_le (by norm_cast))).comp (f := fun v => (v, w)) (continuous_id.prodMk continuous_const).continuousOn fun v hv => ⟨hv, Set.mem_univ _⟩`. Establish `hae : (fun v => levi (P.φ x ∘ (A.chart j).symm) v w) =ᵐ[MeasureTheory.volume.restrict ((A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x)] fun _ => (0 : ℝ)`. Use `(MeasureTheory.ae_restrict_iff' ho.measurableSet).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [MeasureTheory.measure_eq_zero_iff_ae_notMem.1 (hZ j)] with v hv hvU`. Rewrite using `[GlobalTheory.LeviOnly.levi_base hP x j hvU.1 hvU.2]`. Conclude with `h j v hvU.1 (fun hz => hv ⟨hvU.1, hz⟩) w`. Conclude with `MeasureTheory.Measure.eqOn_open_of_ae_eq hae ho hc continuousOn_const ⟨hy, P.mem_U _⟩`.
+A detailed English derivation is pending.
 -/
 theorem leviAt_eq_zero_of_null {P : LocPot X} (hP : IsPotential A P) {Z : Set X}
     (hZ : ∀ j, MeasureTheory.volume ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Z) = 0)
@@ -41,7 +41,7 @@ theorem leviAt_eq_zero_of_null {P : LocPot X} (hP : IsPotential A P) {Z : Set X}
   exact MeasureTheory.Measure.eqOn_open_of_ae_eq hae ho hc continuousOn_const ⟨hy, P.mem_U _⟩
 
 /- English proof (translation)
-Use `levi_congr ?_ w` and prove the remaining obligations. Use `filter_upwards [((A.chart j).isOpen_inter_preimage_symm hZ.isOpen_compl).mem_nhds ⟨hy, hyZ⟩] with z hz`. Conclude with `congrArg (P.φ _ ((A.chart j).symm z) + ·) (h _ hz.2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem leviAt_add_congr (P : LocPot X) {Z : Set X} (hZ : IsClosed Z) {u v : X → ℝ} (h : ∀ x, x ∉ Z → u x = v x)
     (j : Fin A.n) {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) (hyZ : (A.chart j).symm y ∉ Z) (w : Fin e → ℂ) :
@@ -51,7 +51,7 @@ theorem leviAt_add_congr (P : LocPot X) {Z : Set X} (hZ : IsClosed Z) {u v : X �
   exact congrArg (P.φ _ ((A.chart j).symm z) + ·) (h _ hz.2)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => hu, fun _ _ _ _ => ⟨Set.univ, isOpen_univ, Set.mem_univ _, fun _ => 0, fun _ => analyticOnNhd_const, fun _ _ => by simp [LocPot.ofFun]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPotential_ofFun {u : X → ℝ} (hu : A.Smooth u) : IsPotential A (LocPot.ofFun u) :=
   ⟨fun _ => hu, fun _ _ _ _ => ⟨Set.univ, isOpen_univ, Set.mem_univ _, fun _ => 0,
@@ -60,11 +60,11 @@ theorem isPotential_ofFun {u : X → ℝ} (hu : A.Smooth u) : IsPotential A (Loc
 end Gen
 
 /- English proof (translation)
-Introduce `j y hy w`. Rewrite using `[Deg.leviAt_const]`. Establish `hZ` using `((T.M c).bd σ).1`. Use `leviAt_eq_zero_of_null ((T.K B c).firstChern_isPotential _ σ) ((T.M c).bd σ).2.1 (fun j y hy hyZ w => ?_) j hy w` and prove the remaining obligations. Establish `hgp : IsPotential ((T.M c).A σ) (LocPot.ofFun (g σ))` using `isPotential_ofFun (hg σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hgn : IsPotential ((T.M c).A σ) ((LocPot.ofFun (g σ)).rsmul (-1))` using `isPotentialRsmul _ _ _ hgp`. Establish `a₁` using `p₁ j y hy hyZ w`. Establish `a₂` using `p₂ j y hy hyZ w`. Rewrite `a₁` using `[← leviAt_add_congr _ hZ h₁ j hy hyZ, Deg.leviAt_add _ (T.th_pot c _ σ) hgp j hy]`. Rewrite `a₂` using `[leviAt_add_congr _ hZ (v := fun x => -1 * g σ x) (fun x hx => by rw [h₂ x hx, h₁ x hx, neg_one_mul]) j hy hyZ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `0 ≤ leviAt _ ((T.F c).th (-u) σ + (LocPot.ofFun (g σ)).rsmul (-1)) j y w at a₂`. Rewrite `a₂` using `[Deg.leviAt_add _ (T.th_pot c _ σ) hgn j hy, Deg.leviAt_rsmul, ← T.c1_L B c (-u) σ j y hy w, ← neg_one_smul ℝ u, map_smul, (T.K B c).firstChern_smul_leviEq _ _ σ j y hy w, Deg.leviAt_rsmul, T.c1_L B c u σ j y hy w]`. Rewrite using `[(T.K B c).isOneCochain_add _ _ σ j y hy w, Deg.leviAt_add _ ((T.K B c).firstChern_isPotential _ σ) ((T.K B c).firstChern_isPotential _ σ) j hy, T.c1_L B c u σ j y hy w, (T.K B c).c1_ar g hg σ j y hy w]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem leviEq_zero_of_pshOff {D : D7} {Y : DV.ShimX D.what₂.Tau} (T : Real0 Y) (B : ℝ) (c : Y.Comp) (u : Wt Y)
     (g : (T.M c).Fun) (hg : (T.M c).Smooth g) (σ : Fin ((T.M c).n + 1))
@@ -91,9 +91,9 @@ theorem leviEq_zero_of_pshOff {D : D7} {Y : DV.ShimX D.what₂.Tau} (T : Real0 Y
   linarith
 
 /- English proof (translation)
-Introduce `h1 h2 D O hC hf A T H h B τ c g hg hgZ σ`. Use `leviEq_zero_of_pshOff T B c _ g hg σ (hgZ σ) (fun x hx => ?_) (GlobalTheory.T.plurisubharmonic_off_boundary h1 h2 D O hC hf A T H h c _ (fun _ _ _ _ => le_rfl) σ) (GlobalTheory.T.plurisubharmonic_off_boundary h1 h2 D O hC hf A T H h c _ (fun _ _ _ _ => le_rfl) σ)` and prove the remaining obligations. Use `((h.an c).ph _ σ x hx).trans (Eq.trans ?_ (congrArg Neg.neg ((h.an c).ph _ σ x hx).symm))` and prove the remaining obligations. Simplify using `only [Setup.chg]`. Rewrite using `[← Finset.sum_neg_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => neg_mul _ _`.
+A detailed English derivation is pending.
 -/
 theorem first_chern_form_determinant_line_eq_zero : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ _ => ∀ (B : ℝ) (τ : D.what₂.Tau) c (g : (T.M c).Fun),
     (T.M c).Smooth g →

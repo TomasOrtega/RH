@@ -8,7 +8,7 @@ open MeasureTheory PositivityTheory.Rg.Tf.Geo
 namespace UpperTheory.Gal.InertialTypesAlt.L
 
 /- English proof (translation)
-Unfold `quotInt`. Use `split_ifs with h`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul _ _`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem quotInt_smul {G T X : Type*} [Group G] [MeasurableSpace G] [MeasurableSpace T] [MeasurableSpace X]
     (μ : Measure X) (u : X → G) (j : T → G) (ν : Measure T) (c : ℂ) (Φ : X → ℂ) :
@@ -20,7 +20,7 @@ private theorem quotInt_smul {G T X : Type*} [Group G] [MeasurableSpace G] [Meas
   · simp
 
 /- English proof (translation)
-Unfold `orb`. Conclude with `quotInt_smul μ id (fun t : Subgroup.centralizer {γ} => (t : GL (Fin n) R)) ν c (fun x => f (x⁻¹ * γ * x))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem orb_smul {n : ℕ} {R : Type*} [CommRing R] [TopologicalSpace R] [MeasurableSpace (GL (Fin n) R)]
     (μ : Measure (GL (Fin n) R)) (γ : GL (Fin n) R) (ν : Measure (Subgroup.centralizer {γ})) (c : ℂ)
@@ -30,9 +30,9 @@ private theorem orb_smul {n : ℕ} {R : Type*} [CommRing R] [TopologicalSpace R]
     (fun x => f (x⁻¹ * γ * x))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n v c hc φ f h`. Introduce `_ _ _ _ mE mF h1 h2 h3 h4 γ hγ ν hν`. Take `⟨hA, hB⟩` from `h mE mF h1 h2 h3 h4 γ hγ ν hν`. Use `⟨fun δ hδ => ?_, fun hn => ?_⟩` and prove the remaining obligations. Rewrite using `[hA δ hδ, one_mul, orb_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hB hn` as an intermediate fact. Rewrite `this` using `[orb_smul]`. Conclude with `(mul_eq_zero.1 this).resolve_left hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matchSmul : MatchSmul := by
   intro F E _ _ _ _ _ σ n v c hc φ f h

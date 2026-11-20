@@ -15,7 +15,7 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.GaugeEx
 
 /- English proof (translation)
-Unfold `tupMeas`. Use `haveI : (Measure.pi fun _ : Fin M => lam).IsAddHaarMeasure := inferInstance`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isAddHaarMeasure_tupMeas_of_lc {S : Type} [AddCommGroup S] [TopologicalSpace S]
     [IsTopologicalAddGroup S] [LocallyCompactSpace S] [SecondCountableTopology S]
@@ -26,7 +26,7 @@ theorem isAddHaarMeasure_tupMeas_of_lc {S : Type} [AddCommGroup S] [TopologicalS
   infer_instance
 
 /- English proof (translation)
-Use extensionality with `c`. Simplify using `only [Set.mem_setOf_eq]`. Use `(Pi.isUnit_iff (x := c)).trans (forall_congr' fun w => isUnit_iff_ne_zero)` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem setOf_isUnit_ainf (F : Type) [Field F] [NumberField F] :
     {c : Ainf F | IsUnit c} = {c : Ainf F | ∀ w, c w ≠ 0} := by
@@ -35,23 +35,21 @@ theorem setOf_isUnit_ainf (F : Type) [Field F] [NumberField F] :
   refine (Pi.isUnit_iff (x := c)).trans (forall_congr' fun w => isUnit_iff_ne_zero)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ d b s M J β hM hJ hβ`. Establish `hM1 : 1 ≤ M` using `by omega`. Take `⟨nI, nV⟩` from `GlobalTheory.GaugeEx.nice_ainf_fv F`. Establish `uI : IsUnit (algebraMap F (Ainf F) β)` using `(isUnit_iff_ne_zero.2 hβ).map _`. Establish `uV : ∀ v, IsUnit (algebraMap F (Fv F v) β)` using `fun v => (isUnit_iff_ne_zero.2 hβ).map _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bI` using `fun m => GlobalTheory.GaugeEx.FibBasic.fibAt_basic F E σ (Ainf F) nI M J (tupMeas s.lamI 1 M) s.nuI _ m s.haar_nuI uI`. Establish `bV` using `fun v m => GlobalTheory.GaugeEx.FibBasic.fibAt_basic F E σ (Fv F v) (nV v) M J (tupMeas (s.lamV v) 1 M) (s.nuV v) _ m (s.haar_nuV v) (uV v)`. Choose the witnesses or unpack the hypotheses as in `⟨mi, hmi⟩ : ∃ mi, FibAt (Ainf F) σ J (tupMeas s.lamI 1 M) s.nuI (algebraMap F _ β) mi := by`. Take `⟨fib, hfib⟩` from `GlobalTheory.T.exists_fibreFamily_hermitianLength_infiniteAdeles F E σ hσ M J (tupMeas s.lamI 1 M) s.nuI hM1 hJ (isAddHaarMeasure_tupMeas_of_lc _ s.haar_lamI 1 M) s.haar_nuI`. Conclude with `⟨_, fib, by rw [setOf_isUnit_ainf]; exact hfib, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hex : ∀ v, ∃ m, FibAt (Fv F v) σ J (tupMeas (s.lamV v) 1 M) (s.nuV v) (algebraMap F _ β) m`. Introduce `v`. Take `⟨-, fib, hfib⟩` from `GlobalTheory.LocalDensityCompare.null_and_exists v σ J hσ hM1 hJ (tupMeas (s.lamV v) 1 M) (isAddHaarMeasure_tupMeas_of_lc _ (s.haar_lamV v) 1 M) (s.nuV v) (s.haar_nuV v)`. Use `⟨_, fib, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [isUnit_iff_ne_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hfib`. Use `choose mv hmv using hex`. Establish `hconv : Conv b mi mv`. Use `⟨(bI mi hmi).2.1, fun v => (bV v _ (hmv v)).2.1, ?_⟩` and prove the remaining obligations. Establish `hs` using `((GlobalTheory.countable_ideal_and_summable_absNorm_rpow F).2 2 (by norm_num)).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Summable.of_norm_bounded_eventually hs ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.T.eventually_localDensity_standardLattice_bound F E σ hσ d b s M J β hM1 hJ hβ] with v hv`. Establish `h` using `hv _ (hmv v)`. Establish `hq : (1 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ)`. Establish `: Ideal.absNorm v.asIdeal ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Conclude with `Nat.one_le_iff_ne_zero.2 this` after adjusting the coercions. Use `set q : ℝ := (Ideal.absNorm v.asIdeal : ℝ)`. Use `set a : ℝ := |(mv v (latV b v)).toReal - 1|`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : 0 ≤ a` using `abs_nonneg _`. Establish `hq0 : 0 < q` using `by linarith`. Establish `h3 : a * q ^ 3 ≤ q` using `(mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hq hM) ha).trans h`. Establish `h2 : a * q ^ 2 ≤ 1`. Use `le_of_mul_le_mul_right ?_ hq0` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.norm_of_nonneg ha, Real.rpow_neg hq0.le, Real.rpow_two, ← one_div, le_div_iff₀ (by positivity)]`. Conclude with `h2`. Take `⟨ν, hν⟩` from `GlobalTheory.T.exists_isRestrictedProductTupleMeasure F E d b 1 M mi mv hconv`. Use `⟨ν, ⟨mi, mv, hmi, hmv, hν⟩, ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `ν' ⟨mi', mv', hmi', hmv', hν'⟩`. Take `rfl : mi' = mi` from `(bI mi hmi).2.2 _ hmi'`. Take `rfl : mv' = mv` from `funext fun v => (bV v _ (hmv v)).2.2 _ (hmv' v)`. Conclude with `(GlobalTheory.T.restrictedProductMeasure_basic_properties F E d b 1 M ν _ _ hν).2.2.1 _ hν'`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_isStdX : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (s : StdMeas b) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (β : F), 3 ≤ M → IsHermND σ J → β ≠ 0 → ∃! ν, IsStdX s σ J β ν := by
   intro F E _ _ _ _ _ σ hσ d b s M J β hM hJ hβ

@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RamifiedOnLargePlaces
 
 /- English proof (translation)
-Use `⟨⟨h.1.1.mul h'.1.1, fun x => ?_⟩, fun P e he k x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, h.1.2, h'.1.2, one_mul]`. Rewrite using `[MonoidHom.mul_apply, Circle.coe_mul, h.2 P e he k x hx, h'.2 P e he k x hx]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chrEq_mul' {D : D7} {c c' : (AE D)ˣ →* Circle} {χ χ' : Formalism.L2.Host.HChar D.host.E} (h : ChrEq c χ)
     (h' : ChrEq c' χ') : ChrEq (c * c') (χ * χ') := by
@@ -21,13 +21,13 @@ theorem chrEq_mul' {D : D7} {c c' : (AE D)ˣ →* Circle} {χ χ' : Formalism.L2
     rfl
 
 /- English proof (translation)
-Introduce `D T Lc sc G μ₀ hIs t v e he hv i j hU`. Establish `hi1 : 1 ≤ D.R.m - (i : ℕ)` using `by have := i.2; omega`. Establish `hi2 : D.R.m - (i : ℕ) ≤ D.R.m` using `Nat.sub_le _ _`. Use `set k := D.R.m - (i : ℕ) with hk`. Establish `hμ : ChrEq (Lc.mu t ((j : ℕ) + 1)) (Lc.C.mu0 j * Lc.xiH t)` using `chrEq_mul' (hIs.mu0 j) (hIs.xi t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν : ChrEq (Lc.mu t ((j : ℕ) + 1) / G.ch.chi k) (Lc.C.mu0 j * Lc.xiH t * (G.ch.chiH k)⁻¹)`. Rewrite using `[div_eq_mul_inv]`. Conclude with `GlobalTheory.ChartQuot.chrEq_div hμ (G.ch.chi_eq k hi1 hi2)`. Use `set P := G.pl.w v`. Establish `hP : P.under (𝓞 D.host.F) = v` using `G.pl.under_w (G.pl.mem_S0_of_sum_eq.2 (Or.inr hv))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hUnr` using `(GlobalTheory.LFun.unrAt_iff_of_chrEq hν P).1 (GlobalTheory.UnrOverPlace.unrAt_of_unramAt D _ v e he hU P hP)`. Apply `(G.ch.lev1 k hi1 hi2 P (by rw [hP]; exact hv)).2` to reduce the goal to its premises. Introduce `x hx hxv`. Establish `h1` using `hUnr x hx`. Establish `h2` using `(Lc.C.isMu0 j).tame P x hx hxv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hIs.xi_tame t P x hx hxv`. Establish `e1 : (Lc.C.mu0 j * Lc.xiH t * (G.ch.chiH k)⁻¹).loc P x = (Lc.C.mu0 j).loc P x * (Lc.xiH t).loc P x * ((G.ch.chiH k).loc P x)⁻¹` using `rfl`. Rewrite `h1` using `[e1, h2, h3, one_mul, one_mul, inv_eq_one]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem not_unramAt : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (μ₀ : T), Lc.Is μ₀ →
     ∀ (t : T) (v : HeightOneSpectrum (𝓞 D.host.F)) (e : AF D.host.F), IsPlaceIdem D v e → v ∈ S1 D →

@@ -32,7 +32,7 @@ section Inhabitant
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Nontrivial ℂ)`.
+A detailed English derivation is pending.
 -/
 example : Nontrivial (SmRep.ofIrr (IrrRep.ofChar (1 : GL (Fin 1) k →* ℂˣ) isSmoothChar_one)).V :=
   inferInstanceAs (Nontrivial ℂ)

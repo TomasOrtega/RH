@@ -14,7 +14,7 @@ variable {R O : Type} [CommRing R] [CommRing O] [IsLocalRing R] (ι : R →+* O)
 omit [IsLocalRing R] in
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h.exists_right_inv`. Use `IsUnit.of_mul_eq_one ((ι p - ι q * δ) * ι w) ?_` and prove the remaining obligations. Establish `h1 : ι (p ^ 2 - D * q ^ 2) * ι w = 1` using `by rw [← map_mul, hw, map_one]`. Simplify using `only [map_sub, map_mul, map_pow] at h1`. Take the linear combination `h1 - (ι q) ^ 2 * ι w * hδ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isUnit_of_norm (hδ : δ * δ = ι D) (p q : R) (h : IsUnit (p ^ 2 - D * q ^ 2)) :
     IsUnit (ι p + ι q * δ) := by
@@ -25,7 +25,7 @@ theorem isUnit_of_norm (hδ : δ * δ = ι D) (p q : R) (h : IsUnit (p ^ 2 - D *
   linear_combination h1 - (ι q) ^ 2 * ι w * hδ
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h1 : u + x ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).2 h`. Establish `h2 : u ∈ IsLocalRing.maximalIdeal R`. Simplify using `using Ideal.sub_mem _ h1 hx`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 h2 hu`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isUnit_add_mem {u x : R} (hu : IsUnit u) (hx : x ∈ IsLocalRing.maximalIdeal R) :
     IsUnit (u + x) := by
@@ -36,18 +36,18 @@ theorem isUnit_add_mem {u x : R} (hu : IsUnit u) (hx : x ∈ IsLocalRing.maximal
   exact (IsLocalRing.mem_maximalIdeal _).1 h2 hu
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `hx ((IsLocalRing.mem_maximalIdeal _).2 h)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isUnit_of_not_mem {x : R} (hx : x ∉ IsLocalRing.maximalIdeal R) : IsUnit x := by
   by_contra h
   exact hx ((IsLocalRing.mem_maximalIdeal _).2 h)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Take `⟨y, i, hi, e⟩` from `hP.exists_inv hn`. Take `⟨a, b, rfl⟩` from `hsp y`. Establish `hi' : i = ι (1 - a * r) + ι (-(b * r)) * δ`. Simplify using `only [map_sub, map_mul, map_neg, map_one]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `e`. Establish `hu : IsUnit ((1 - a * r) ^ 2 - D * (-(b * r)) ^ 2)`. Establish `e1 : (1 - a * r) ^ 2 - D * (-(b * r)) ^ 2 = 1 + r * (a ^ 2 * r - 2 * a - D * b ^ 2 * r)` using `by ring`. Rewrite using `[e1]`. Conclude with `isUnit_add_mem isUnit_one (Ideal.mul_mem_right _ _ hr)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hiu : IsUnit i`. Rewrite using `[hi']`. Conclude with `isUnit_of_norm ι δ D hδ _ _ hu`. Conclude with `hP.ne_top (Ideal.eq_top_of_isUnit_mem _ hi hiu)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem (hδ : δ * δ = ι D) (hsp : ∀ y : O, ∃ p q : R, y = ι p + ι q * δ)
     {P : Ideal O} (hP : P.IsMaximal) {r : R} (hr : r ∈ IsLocalRing.maximalIdeal R) :
@@ -69,13 +69,13 @@ theorem map_mem (hδ : δ * δ = ι D) (hsp : ∀ y : O, ∃ p q : R, y = ι p +
   exact hP.ne_top (Ideal.eq_top_of_isUnit_mem _ hi hiu)
 
 /- English proof (translation)
-Use `le_antisymm ?_ ((Ideal.span_singleton_le_iff_mem _).2 hπ)` and prove the remaining obligations. Introduce `y hy`. Take `⟨p, q, rfl⟩` from `hsp y`. Establish `hr : ι (p + q * s) ∈ P`. Establish `e : ι (p + q * s) = (ι p + ι q * δ) - ι q * (δ - ι s)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `P.sub_mem hy (P.mul_mem_left _ hπ)`. Establish `hm' : p + q * s ∈ IsLocalRing.maximalIdeal R`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Conclude with `hP.ne_top (Ideal.eq_top_of_isUnit_mem _ hr ((isUnit_of_not_mem hn).map ι))`. Rewrite `hm'` using `[hm, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `hm'`. Establish `h1 : ι a * ι c = ι p + ι q * ι s`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_mul, ha, map_add, map_mul]`. Use `Ideal.mem_span_singleton'.2 ⟨ι q + ι a * π', ?_⟩` and prove the remaining obligations. Take the linear combination `(ι a) * hfac + h1`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_span_of_factor (hδ : δ * δ = ι D) (hsp : ∀ y : O, ∃ p q : R, y = ι p + ι q * δ)
     (s c : R) (π' : O) (hm : IsLocalRing.maximalIdeal R = Ideal.span {c})
@@ -100,19 +100,17 @@ theorem eq_span_of_factor (hδ : δ * δ = ι D) (hsp : ∀ y : O, ∃ p q : R, 
   linear_combination (ι a) * hfac + h1
 
 /- English proof (translation)
-Establish `hϖm : ϖ ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[hϖ]`. Conclude with `Ideal.mem_span_singleton_self ϖ`. Use `le_antisymm ?_ ((Ideal.span_singleton_le_iff_mem _).2 (map_mem ι δ D hδ hsp hP hϖm))` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨p, q, rfl⟩` from `hsp y`. Establish `hN : p ^ 2 - D * q ^ 2 ∈ IsLocalRing.maximalIdeal R`. Assume the negation of the conclusion as `hn`. Conclude with `hP.ne_top (Ideal.eq_top_of_isUnit_mem _ hy (isUnit_of_norm ι δ D hδ p q (isUnit_of_not_mem hn)))`. Establish `hq : q ∈ IsLocalRing.maximalIdeal R`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hn`. Take `⟨w, hw⟩` from `(isUnit_of_not_mem hn).exists_right_inv`. Apply `hsq (p * w)` to reduce the goal to its premises. Establish `e : (p * w) ^ 2 - D = w ^ 2 * (p ^ 2 - D * q ^ 2)`. Take the linear combination `(D * (q * w + 1)) * hw`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ hN`. Establish `hp : p ∈ IsLocalRing.maximalIdeal R`. Establish `h1 : p ^ 2 ∈ IsLocalRing.maximalIdeal R`. Establish `e : p ^ 2 = (p ^ 2 - D * q ^ 2) + D * q ^ 2 * 1` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `Ideal.add_mem _ hN (Ideal.mul_mem_right _ _ ?_)` and prove the remaining obligations. Conclude with `Ideal.mul_mem_left _ _ (by`. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_left _ _ hq)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).isPrime.mem_of_pow_mem 2 h1`. Rewrite `hp`, `hq` using `[hϖ, Ideal.mem_span_singleton']`. Take `⟨a, rfl⟩` from `hp`. Take `⟨b, rfl⟩` from `hq`. Use `Ideal.mem_span_singleton'.2 ⟨ι a + ι b * δ, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eq_span_of_nonsquare (hδ : δ * δ = ι D) (hsp : ∀ y : O, ∃ p q : R, y = ι p + ι q * δ)
     (ϖ : R)
@@ -152,13 +150,13 @@ theorem eq_span_of_nonsquare (hδ : δ * δ = ι D) (hsp : ∀ y : O, ∃ p q : 
   ring
 
 /- English proof (translation)
-Establish `hϖm : ϖ ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[hϖ]`. Conclude with `Ideal.mem_span_singleton_self ϖ`. Establish `heu : IsUnit e`. Establish `h1 : IsUnit (D + (e ^ 2 - D))` using `isUnit_add_mem hD he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : IsUnit (e ^ 2)` using `by simpa using h1`. Conclude with `(isUnit_pow_iff two_ne_zero).1 h3`. Establish `he'` using `he`. Rewrite `he'` using `[hϖ, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `he'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hcu : IsUnit c`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, Ideal.span_singleton_mul_left_unit hcu, hϖ]`. Establish `hcm : c ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).2 hcu`. Establish `hu : IsUnit (2 * e + (c + ϖ))` using `isUnit_add_mem (h2.mul heu) (Ideal.add_mem _ hcm hϖm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨e + ϖ, ?_⟩` and prove the remaining obligations. Establish `e1 : (e + ϖ) ^ 2 - D = (2 * e + (c + ϖ)) * ϖ`. Take the linear combination `-hc`. Rewrite using `[e1, Ideal.span_singleton_mul_left_unit hu, hϖ]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root (hD : IsUnit D) (h2 : IsUnit (2 : R)) (ϖ : R)
     (hϖ : IsLocalRing.maximalIdeal R = Ideal.span {ϖ}) (e : R)
@@ -185,19 +183,17 @@ theorem exists_root (hD : IsUnit D) (h2 : IsUnit (2 : R)) (ϖ : R)
     rw [e1, Ideal.span_singleton_mul_left_unit hu, hϖ]
 
 /- English proof (translation)
-Distinguish the cases in `hsq : ∃ e : R, e ^ 2 - D ∈ IsLocalRing.maximalIdeal R`. Take `⟨e0, he0⟩` from `hsq`. Take `⟨e, hm⟩` from `exists_root D hD h2 ϖ hϖ e0 he0`. Establish `hc0 : e ^ 2 - D ≠ 0`. Introduce `h0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ϖ ∈ Ideal.span {e ^ 2 - D}`. Rewrite using `[← hm, hϖ]`. Conclude with `Ideal.mem_span_singleton_self ϖ`. Rewrite `h1` using `[h0]`. Conclude with `hϖ0 (by simpa using h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `f1 : (δ - ι e) * (-(δ - ι (-e))) = ι (e ^ 2 - D)`. Simplify using `only [map_sub, map_neg, map_pow]`. Take the linear combination `-hδ`. Establish `f2 : (δ - ι (-e)) * (-(δ - ι e)) = ι (e ^ 2 - D)`. Simplify using `only [map_sub, map_neg, map_pow]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `-hδ`. Use `⟨δ - ι e, δ - ι (-e), e ^ 2 - D, hc0, ⟨_, f1.symm⟩, ⟨_, f2.symm⟩, ?_⟩` and prove the remaining obligations. Introduce `P hP`. Establish `hcm : e ^ 2 - D ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Establish `hcP` using `map_mem ι δ D hδ hsp hP hcm`. Establish `hprod : (δ - ι e) * (δ - ι (-e)) ∈ P`. Establish `e1 : (δ - ι e) * (δ - ι (-e)) = -((δ - ι e) * (-(δ - ι (-e))))` using `by ring`. Rewrite using `[e1, f1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `P.neg_mem hcP`. Break down `hP.isPrime.mem_or_mem hprod with h | h` into its components or cases. Conclude with `Or.inl (eq_span_of_factor ι δ D hδ hsp e _ _ hm f1 hP h)`. Conclude with `Or.inr (eq_span_of_factor ι δ D hδ hsp (-e) _ _ hm f2 hP h)`. Use `push_neg at hsq`.
-
-Conclude with `⟨ι ϖ, ι ϖ, ϖ, hϖ0, dvd_rfl, dvd_rfl, fun P hP => Or.inl (eq_span_of_nonsquare ι δ D hδ hsp ϖ hϖ hsq hP)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gens (hδ : δ * δ = ι D) (hsp : ∀ y : O, ∃ p q : R, y = ι p + ι q * δ)
     (hD : IsUnit D) (h2 : IsUnit (2 : R)) (ϖ : R)
@@ -244,29 +240,27 @@ open GlobalTheory.CompanionTheory.SW.GoodRing
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Use `set K := Fv F v with hK`. Use `set B := Algebra.TensorProduct.basis K b₂ with hB`. Use `set C := Algebra.TensorProduct.basis K b with hC`. Set `Rs : Subring K` to `(v.adicCompletionIntegers F).toSubring`. Establish `hB0 : B 0 = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hB, Algebra.TensorProduct.basis_apply, hb0]`. Both sides reduce to the same expression. Establish `hB1 : B 1 = inclR K (b₂ 1)`. Rewrite using `[hB, Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hBD : B 1 * B 1 = algebraMap K (K ⊗[F] E) (algebraMap F K D)`. Rewrite using `[hB1, ← map_mul, hD]`. Use `show (1 : Fv F v) ⊗ₜ[F] algebraMap F E D = (algebraMap F (Fv F v) D) ⊗ₜ[F] (1 : E)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Establish `hDR : algebraMap F K D ∈ Rs` using `hD1.le`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨O', hOC, hOB'⟩` from `exists_subring Rs B C (algebraMap F K D) hB0 hBD hDR (fun k j => by`. Use `hBC k j` as an intermediate fact. Rewrite using `[show inclR K (b k) = C k by rw [hC, Algebra.TensorProduct.basis_apply]; rfl] at this)` and apply the resulting hypothesis. Use the proof step `(fun j k => by`. Use `hCB j k` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[show inclR K (b₂ j) = B j by rw [hB, Algebra.TensorProduct.basis_apply]; rfl] at this)` and apply the resulting hypothesis. Establish `hOB : ∀ y, y ∈ O ↔ ∀ j, B.repr y j ∈ Rs` using `fun y => (hO y).trans ((hOC y).symm.trans (hOB' y))`. Establish `hpq : ∀ p q : K, p ∈ Rs → q ∈ Rs → algebraMap K (K ⊗[F] E) p + algebraMap K (K ⊗[F] E) q * B 1 ∈ O`. Introduce `p q hp hq`. Establish `h` using `coord_two B hB0 p q`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hOB _).2 (Fin.forall_fin_two.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[h.1]`. Conclude with `hp`. Rewrite using `[h.2]`. Conclude with `hq`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Establish `hRmem : ∀ c ∈ Rs, algebraMap K (K ⊗[F] E) c ∈ O`. Introduce `c hc`. Simplify using `using hpq c 0 hc Rs.zero_mem`. Establish `hδO : B 1 ∈ O`. Use `hpq 0 1 Rs.zero_mem Rs.one_mem` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_zero, map_one, zero_add, one_mul]`. Then use the resulting hypothesis. Set `ι : (v.adicCompletionIntegers F) →+* O` to `((algebraMap K (K ⊗[F] E)).comp (v.adicCompletionIntegers F).subtype).codRestrict O (fun x => hRmem x x.2)`. Set `δ : O` to `⟨B 1, hδO⟩`. Set `D' : v.adicCompletionIntegers F` to `⟨algebraMap F K D, hDR⟩`. Establish `hδ : δ * δ = ι D'` using `Subtype.ext hBD`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsp : ∀ y : O, ∃ p q : v.adicCompletionIntegers F, y = ι p + ι q * δ` using `fun y => by`. Establish `hy` using `(hOB y).1 y.2`. Conclude with `⟨⟨_, hy 0⟩, ⟨_, hy 1⟩, Subtype.ext (eq_coord B hB0 y)⟩`. Establish `hunit : ∀ r : v.adicCompletionIntegers F, IsUnit r ↔ Valued.v (r : K) = 1` using `fun r => HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one`. Establish `hv2 : Valued.v (2 : K) = 1` using `by simpa [map_ofNat] using h21`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDu : IsUnit D'` using `(hunit D').2 hD1`. Establish `h2u : IsUnit (2 : v.adicCompletionIntegers F)` using `(hunit 2).2 (by`. Rewrite using `[show ((2 : v.adicCompletionIntegers F) : K) = 2 from map_ofNat (v.adicCompletionIntegers F).subtype 2]`. Conclude with `hv2)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (v.adicCompletionIntegers F)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨π₁, π₂, c, hc, d1, d2, hmax⟩` from `exists_gens ι δ D' hδ hsp hDu h2u ϖ hϖ.maximalIdeal_eq hϖ.ne_zero`. Establish `hcK : (c : K) ≠ 0` using `fun h0 => hc (Subtype.ext h0)`. Establish `hcu : IsUnit (((ι c : O)) : K ⊗[F] E)` using `(IsUnit.mk0 (c : K) hcK).map (algebraMap K (K ⊗[F] E))`. Establish `key : ∀ π : O, π ∣ ι c → IsUnit (π : K ⊗[F] E)`. Introduce and unpack `π ⟨w, hw⟩`.
-
-Establish `h1 : (((ι c : O)) : K ⊗[F] E) = (π : K ⊗[F] E) * (w : K ⊗[F] E)` using `congrArg Subtype.val hw`. Rewrite `hcu` using `[h1]`. Conclude with `isUnit_of_mul_isUnit_left hcu`. Conclude with `⟨π₁, π₂, hmax, key π₁ d1, key π₂ d2⟩`.
+A detailed English derivation is pending.
 -/
 theorem at_place {d : ℕ} (b : Module.Basis (Fin d) F E)
     (b₂ : Module.Basis (Fin 2) F E) (D : F) (hb0 : b₂ 0 = 1)
@@ -352,15 +346,13 @@ theorem at_place {d : ℕ} (b : Module.Basis (Fin d) F E)
 end Place
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h d b`. Establish `hinv : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ∃ x, σ x ≠ x`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨w⟩` from `(inferInstance : Nonempty (NumberField.InfinitePlace E))`. Establish `hreal : w.IsReal`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← NumberField.InfinitePlace.mk_embedding w, NumberField.InfinitePlace.isReal_mk_iff, NumberField.ComplexEmbedding.isReal_iff]`. Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Express the relevant statement in the definitionally equal form `star (w.embedding x) = w.embedding x`. Rewrite using `[← h.2.2.2, hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `NumberField.InfinitePlace.not_isReal_iff_isComplex.2 (h.2.1.isComplex w) hreal`. Take `⟨D, b₂, hsq, hb0, hσ1, hD⟩` from `GlobalTheory.QuadNormBase.exists_basis F E σ h.2.2.1 hinv hne`. Establish `hD0 : D ≠ 0` using `fun h0 => hsq (h0 ▸ IsSquare.zero)`. Establish `I` using `GlobalTheory.T.integral_almost_all_places F E σ h`. Use `filter_upwards [(I d b).2 D hD0, (I d b).2 2 two_ne_zero, Filter.eventually_all.2 fun k => (I 2 b₂).1 (b k), Filter.eventually_all.2 fun j => (I d b).1 (b₂ j)] with v hD1 h21 hBC hCB O hO`.
-
-Conclude with `at_place b b₂ D hb0 hD v hD1 h21 hBC hCB O hO`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem maximal_ideals : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ O : Subring (Fv F v ⊗[F] E), (∀ y, y ∈ O ↔ ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr y k ∈ v.adicCompletionIntegers F) → ∃ π₁ π₂ : O, (∀ P : Ideal O, P.IsMaximal → P = Ideal.span {π₁} ∨ P = Ideal.span {π₂}) ∧ IsUnit (π₁ : Fv F v ⊗[F] E) ∧ IsUnit (π₂ : Fv F v ⊗[F] E) := by
   intro F E _ _ _ _ _ σ h d b

@@ -18,13 +18,13 @@ open GlobalTheory.Dec (gelfVal)
 namespace GlobalTheory.CapelliNewton
 
 /- English proof (translation)
-Simplify using `[gelfVal, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gelfVal_zero (m : ℕ) (χ : Fin (m+1) → ℂ) : gelfVal χ 0 = (m:ℂ) + 1 := by
   simp [gelfVal, Matrix.one_apply]
 
 /- English proof (translation)
-Consider the cases of `k with`. Consider the case `zero => rw [gelfVal_zero]`. Simplify using `[etr, epow, add_smul]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Consider the case `succ k => exact hetr k w`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem etr_apply_all {V : Type} [AddCommGroup V] [Module ℂ V] (m : ℕ)
     (E : Fin (m+1) → Fin (m+1) → Module.End ℂ V) (χ : Fin (m+1) → ℂ)
@@ -39,7 +39,7 @@ noncomputable def polyOf {V : Type} [AddCommGroup V] [Module ℂ V] (d : ℕ) (c
   ∑ i ∈ range (d + 1), C (φ (c i v)) * X ^ i
 
 /- English proof (translation)
-Unfold `polyOf`. Rewrite using `[eval_finset_sum, LinearMap.sum_apply, map_sum]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[eval_mul, eval_C, eval_pow, eval_X, LinearMap.smul_apply, map_smul, smul_eq_mul, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem polyOf_eval {V : Type} [AddCommGroup V] [Module ℂ V] (d : ℕ) (c : ℕ → Module.End ℂ V)
     (φ : Module.Dual ℂ V) (v : V) (u : ℂ) :
@@ -50,7 +50,7 @@ theorem polyOf_eval {V : Type} [AddCommGroup V] [Module ℂ V] (d : ℕ) (c : �
   rw [eval_mul, eval_C, eval_pow, eval_X, LinearMap.smul_apply, map_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Unfold `polyOf`. Use `natDegree_sum_le_of_forall_le _ _ fun i hi => ?_` and prove the remaining obligations. Use `(natDegree_C_mul_X_pow_le _ _).trans ?_` and prove the remaining obligations. Conclude with `Nat.lt_succ_iff.mp (mem_range.mp hi)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem polyOf_natDegree {V : Type} [AddCommGroup V] [Module ℂ V] (d : ℕ) (c : ℕ → Module.End ℂ V)
     (φ : Module.Dual ℂ V) (v : V) : (polyOf d c φ v).natDegree ≤ d := by
@@ -60,9 +60,9 @@ theorem polyOf_natDegree {V : Type} [AddCommGroup V] [Module ℂ V] (d : ℕ) (c
   exact Nat.lt_succ_iff.mp (mem_range.mp hi)
 
 /- English proof (translation)
-Unfold `polyOf`. Rewrite using `[finset_sum_coeff, sum_eq_single d]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[coeff_C_mul_X_pow, hb.symm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (self_mem_range_succ d) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem polyOf_coeff {V : Type} [AddCommGroup V] [Module ℂ V] (d : ℕ) (c : ℕ → Module.End ℂ V)
     (φ : Module.Dual ℂ V) (v : V) : (polyOf d c φ v).coeff d = φ (c d v) := by
@@ -75,20 +75,20 @@ theorem polyOf_coeff {V : Type} [AddCommGroup V] [Module ℂ V] (d : ℕ) (c : �
 noncomputable def capQ (m : ℕ) (χ : Fin (m+1) → ℂ) : ℂ[X] := ∏ s, (X + C (χ s - (m : ℂ) / 2))
 
 /- English proof (translation)
-Simplify using `[capQ, eval_prod]; refine prod_congr rfl fun s _ => by ring`.
+Simplify using the standard rewrite rules.
 -/
 theorem capQ_eval (m : ℕ) (χ : Fin (m+1) → ℂ) (u : ℂ) :
     (capQ m χ).eval u = ∏ s, (u - (m : ℂ) / 2 + χ s) := by
   simp [capQ, eval_prod]; refine prod_congr rfl fun s _ => by ring
 
 /- English proof (translation)
-The claim follows from `monic_prod_of_monic _ _ fun s _ => monic_X_add_C _`.
+A detailed English derivation is pending.
 -/
 theorem capQ_monic (m : ℕ) (χ : Fin (m+1) → ℂ) : (capQ m χ).Monic :=
   monic_prod_of_monic _ _ fun s _ => monic_X_add_C _
 
 /- English proof (translation)
-Unfold `capQ`. Rewrite using `[natDegree_prod_of_monic _ _ fun s _ => monic_X_add_C _]`. Simplify using `only [natDegree_X_add_C, sum_const, card_univ, Fintype.card_fin, smul_eq_mul, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem capQ_natDegree (m : ℕ) (χ : Fin (m+1) → ℂ) : (capQ m χ).natDegree = m + 1 := by
   unfold capQ
@@ -96,29 +96,27 @@ theorem capQ_natDegree (m : ℕ) (χ : Fin (m+1) → ℂ) : (capQ m χ).natDegre
   simp only [natDegree_X_add_C, sum_const, card_univ, Fintype.card_fin, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).mp fun φ => ?_` and prove the remaining obligations. Take `⟨c, hc1, hc⟩` from `GlobalTheory.T.exists_monic_poly_eq_qdet (Module.End ℂ V) (m + 1) E`. Use `set P := polyOf (m + 1) c φ v with hPdef`. Establish `hP : ∀ w : ℂ, φ (qdet E w v) = P.eval w` using `fun w => by rw [polyOf_eval, hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin : ∀ i j : Fin (m + 1), ∃ c' : ℕ → Module.End ℂ V, ∀ w : ℂ, qminor E (Fin.succAbove j) (Fin.succAbove i) w = ∑ d ∈ range (m + 1), w ^ d • c' d`. Introduce `i j`. Take `⟨c', hc'⟩` from `GlobalTheory.qminor_polyMap (Module.End ℂ V) (m + 1) m E (Fin.succAbove j) (Fin.succAbove i) 0`. Conclude with `⟨c', fun w => by simpa using hc' w⟩`. Use `choose cm hcm using hmin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `N` to `m + 1`. Set `Rc : ℕ → Module.End ℂ V` to `fun d => ∑ i : Fin (m + 1), ∑ j : Fin (m + 1), (((-1 : ℤ) ^ ((i : ℕ) + (j : ℕ)) : ℤ) : Module.End ℂ V) * cm i j d * epow E (N + 1) j i`. Establish `hR : ∀ w : ℂ, ∑ i : Fin (m + 1), ∑ j : Fin (m + 1), (((-1 : ℤ) ^ ((i : ℕ) + (j : ℕ)) : ℤ) : Module.End ℂ V) * qminor E (Fin.succAbove j) (Fin.succAbove i) w * epow E (N + 1) j i = ∑ d ∈ range (m + 1), w ^ d • Rc d`. Introduce `w`. Simplify using `only [Rc, hcm, mul_sum, sum_mul, smul_sum, mul_smul_comm, smul_mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => enter [2, x]`. Rewrite using `[sum_comm]`. Rewrite using `[sum_comm]`. Use `set Rp := polyOf m Rc φ v`. Establish `hrec : ∀ w : ℂ, (w - m) ^ (N + 1) * (P.eval (w + 1) - P.eval w) - P.eval w * ∑ k ∈ range (N + 1), (-1) ^ k * (w - m) ^ (N - k) * gelfVal χ k = (C (-(-1) ^ N) * Rp).eval w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `w`. Establish `h1` using `congrArg (fun T : Module.End ℂ V => φ (T v)) (GlobalTheory.T.traced_qminor_comatrix_truncated_inverse (Module.End ℂ V) m E hE w N)`. Rewrite `h1` using `[← GlobalTheory.T.qdet_add_one_sub_eq_sum_qminor', hR]`. Establish `h2 : (qdet E w * ∑ k ∈ range (N + 1), algebraMap ℂ (Module.End ℂ V) ((-1) ^ k * (w - m) ^ (N - k)) * etr E k) v = (∑ k ∈ range (N + 1), (-1) ^ k * (w - m) ^ (N - k) * gelfVal χ k) • qdet E w v`. Rewrite using `[Module.End.mul_apply, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Module.End.mul_apply, Module.algebraMap_end_apply, etr_apply_all m E χ hetr, smul_smul]`. Rewrite using `[← sum_smul, map_smul]`. Rewrite `h1` using `[h2]`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Module.algebraMap_end_apply, map_add, map_smul, LinearMap.sub_apply, map_sub, smul_eq_mul] at h1`. Rewrite `h1` using `[← polyOf_eval]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hP] at h1`. Simplify using `only [eval_mul, eval_neg, eval_pow, eval_C]`. Take the linear combination `h1`. Take `⟨rs, hrs, hrsE⟩` from `GlobalTheory.T.scalar_capelli_truncated_perelomov_popov m N χ`. Establish `hf` using `GlobalTheory.T.poly_eq_zero_of_newton_recursion m N (gelfVal χ) (P - C (φ v) * capQ m χ) (C (-(-1) ^ N) * Rp - C (φ v) * rs) (Nat.lt_succ_self m) (gelfVal_zero m χ) ?_ ?_ ?_`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `congrArg (eval u) hf` as an intermediate fact. Simplify using `only [eval_sub, eval_mul, eval_C, eval_zero, capQ_eval] at this`. Rewrite using `[map_sub, map_smul, hP, smul_eq_mul]`. Take the linear combination `this`. Rewrite using `[natDegree_le_iff_coeff_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `k hk`. Rewrite using `[coeff_sub, coeff_C_mul]`. Break down `Nat.lt_or_ge (m + 1) k with h | h` into its components or cases. Rewrite using `[coeff_eq_zero_of_natDegree_lt ((polyOf_natDegree _ _ _ _).trans_lt h), coeff_eq_zero_of_natDegree_lt (by rw [capQ_natDegree]; exact h)]; simp`. Establish `hk' : k = m + 1` using `le_antisymm h hk`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `hk'` using the available equality. Use `(capQ_monic m χ).coeff_natDegree` as an intermediate fact. Rewrite `this` using `[capQ_natDegree]`. Rewrite using `[this, polyOf_coeff, hc1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(natDegree_sub_le _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `natDegree_C_mul_le _ _ |>.trans (polyOf_natDegree _ _ _ _)`. Conclude with `natDegree_C_mul_le _ _ |>.trans hrs`. Introduce `w`. Establish `h1` using `hrec w`.
-
-Establish `h2` using `hrsE w`. Rewrite `h2` using `[← capQ_eval m χ (w + 1), ← capQ_eval m χ w]`. Simplify using `only [eval_sub, eval_mul, eval_C] at h1 h2 ⊢`. Take the linear combination `h1 - φ v * h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem main_succ (V : Type) [AddCommGroup V] [Module ℂ V] (m : ℕ)
     (E : Fin (m+1) → Fin (m+1) → Module.End ℂ V) (χ : Fin (m+1) → ℂ) (hE : GlRel E)
@@ -193,9 +191,9 @@ end GlobalTheory.CapelliNewton
 namespace GlobalTheory.CapelliNewton
 
 /- English proof (translation)
-Introduce `V _ _ n E χ hE hetr Y v`. Consider the cases of `n with`. Consider the case `zero => simp [qdet, qminor]`. Consider the case `succ m`. Rewrite using `[main_succ V m E χ hE hetr]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem capelli_of_gelfand : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (n : ℕ) (E : Fin n → Fin n → Module.End ℂ V) (χ : Fin n → ℂ), GlRel E → (∀ (k : ℕ) (v : V), etr E (k + 1) v = gelfVal χ (k + 1) • v) → ∀ (Y : ℂ) (v : V), qdet E (Y + ((n : ℂ) - 1) / 2) v = (∏ s, (Y + χ s)) • v := by
   intro V _ _ n E χ hE hetr Y v

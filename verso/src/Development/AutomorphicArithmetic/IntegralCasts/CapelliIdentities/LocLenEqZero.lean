@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce and unpack `R _ W _ _ S L x y ⟨s, hs, hx⟩ ⟨t, ht, hy⟩`. Use `⟨s * t, S.mul_mem hs ht, ?_⟩` and prove the remaining obligations. Establish `e : (s * t) • (x + y) = t • (s • x) + s • (t • y)`. Rewrite using `[smul_add, mul_smul, smul_comm s t x, mul_smul]`. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `L.add_mem (L.smul_mem t hx) (L.smul_mem s hy)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yzb1.aux1.{u_1, u_2} :
     ∀ {R : Type u_2} [inst : CommRing R] {W : Type u_1} [inst_1 : AddCommGroup W] [inst_2 : _root_.Module R W]
@@ -17,7 +17,7 @@ theorem UpperTheory.Reformulated.B.Yzb1.aux1.{u_1, u_2} :
   exact L.add_mem (L.smul_mem t hx) (L.smul_mem s hy)
 
 /- English proof (translation)
-Introduce `R _ W _ _ S L`. Conclude with `⟨1, S.one_mem, by rw [smul_zero]; exact L.zero_mem⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.Yzb1.aux2.{u_1, u_2} :
     ∀ {R : Type u_1} [inst : CommRing R] {W : Type u_2} [inst_1 : AddCommGroup W] [inst_2 : _root_.Module R W]
@@ -26,7 +26,7 @@ theorem UpperTheory.Reformulated.B.Yzb1.aux2.{u_1, u_2} :
   exact ⟨1, S.one_mem, by rw [smul_zero]; exact L.zero_mem⟩
 
 /- English proof (translation)
-Introduce and unpack `R _ W _ _ S L r x ⟨s, hs, hx⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `L.smul_mem r hx`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yzb1.aux3.{u_1, u_2} :
     ∀ {R : Type u_2} [inst : CommRing R] {W : Type u_1} [inst_1 : AddCommGroup W] [inst_2 : _root_.Module R W]
@@ -80,9 +80,9 @@ noncomputable def UpperTheory.Reformulated.B.Yzb1.lidx.{u_1, u_3} :
       (↑(UpperTheory.Reformulated.B.Yzb1.locLen p A (A ⊓ B)) : ℤ) - (↑(UpperTheory.Reformulated.B.Yzb1.locLen p B (A ⊓ B)) : ℤ)
 
 /- English proof (translation)
-Establish `hs : Subsingleton (↥(UpperTheory.Reformulated.B.Yzb1.localization₂ p A) ⧸ Submodule.comap (UpperTheory.Reformulated.B.Yzb1.localization₂ p A).subtype (UpperTheory.Reformulated.B.Yzb1.localization₂ p C))`. Rewrite using `[Submodule.Quotient.subsingleton_iff, Submodule.comap_subtype_eq_top]`. Conclude with `h`. Establish `hl` using `(Module.length_eq_zero_iff (R := R)).mpr hs`. Use `show (Module.length R _).toNat = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hl]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private lemma UpperTheory.Reformulated.B.Yzb1.locLen_eq_zero {R V : Type*} [CommRing R] [AddCommGroup V]
     [_root_.Module R V] (p : Ideal R) [p.IsPrime] (A C : Submodule R V)
@@ -98,7 +98,7 @@ private lemma UpperTheory.Reformulated.B.Yzb1.locLen_eq_zero {R V : Type*} [Comm
   rfl
 
 /- English proof (translation)
-Introduce and unpack `x ⟨t, ht, hx⟩`. Use `⟨s * t, p.primeCompl.mul_mem hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `⟨A.smul_mem s hx, h _ hx⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private lemma UpperTheory.Reformulated.B.Yzb1.localization_le_localization_inf {R V : Type*} [CommRing R] [AddCommGroup V]
     [_root_.Module R V] (p : Ideal R) [p.IsPrime] (A B : Submodule R V) (s : R) (hs : s ∉ p)
@@ -110,11 +110,11 @@ private lemma UpperTheory.Reformulated.B.Yzb1.localization_le_localization_inf {
   exact ⟨A.smul_mem s hx, h _ hx⟩
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ A B s hs hAB hBA`. Establish `hI : Ideal.span {s} ≠ (0 : Ideal (NumberField.RingOfIntegers K))`. Simplify using `using hs`. Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hc`. Establish `hsw : s ∉ w.asIdeal` using `fun hm => hc (Ideal.dvd_span_singleton.mpr hm)`. Apply `hw` to reduce the goal to its premises. Establish `h1` using `UpperTheory.Reformulated.B.Yzb1.locLen_eq_zero w.asIdeal A (A ⊓ B) (UpperTheory.Reformulated.B.Yzb1.localization_le_localization_inf w.asIdeal A B s hsw hAB)`. Establish `h2` using `UpperTheory.Reformulated.B.Yzb1.locLen_eq_zero w.asIdeal B (A ⊓ B) (by rw [inf_comm]; exact UpperTheory.Reformulated.B.Yzb1.localization_le_localization_inf w.asIdeal B A s hsw hBA)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ((UpperTheory.Reformulated.B.Yzb1.locLen w.asIdeal A (A ⊓ B) : ℕ) : ℤ) - ((UpperTheory.Reformulated.B.Yzb1.locLen w.asIdeal B (A ⊓ B) : ℕ) : ℤ) = 0`. Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yzb1.lidx_finite :
     ∀ {K V : Type} [inst : Field K] [NumberField K] [inst_2 : AddCommGroup V]

@@ -11,11 +11,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ P f g a R hP hf hg hfP hgP hR hRu`. Establish `: P.IsPrime` using `hP.2.1.1`. Take `⟨x, hx⟩` from `exists_funField_mul_eq hf hg hgP`. Take `⟨e, he⟩` from `hE K ι P R hP hR hRu`. Rewrite using `[hV K ι P f g a x hP hf hg hfP hgP hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : IsSectionOn P (HermLine.ofMetrics (fun k => fsMetric (ι k)) (fun k => (a k : ℤ))) g` using `⟨a, fun _ => rfl, hg, hgP⟩`. Establish `key : ∀ t : R, Real.log ‖e t x‖ = Real.log (‖eval (t : (Σ k, ι k) → ℂ) (map (Int.castRingHom ℂ) f)‖ / ‖eval (t : (Σ k, ι k) → ℂ) (map (Int.castRingHom ℂ) g)‖)`. Introduce `t`. Establish `hg0` using `eval_ne_zero_of_dimOne arithVarZero hP hA (hR t t.2)`. Rewrite using `[← he t f g a hf hg hgP x hx, norm_mul, mul_div_cancel_right₀ _ (norm_ne_zero_iff.mpr hg0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← finsum_comp_equiv e, finsum_eq_sum_of_fintype, Fintype.sum_congr _ _ key]`. Conclude with `Finset.sum_coe_sort R (fun t => Real.log (‖eval t (map (Int.castRingHom ℂ) f)‖ / ‖eval t (map (Int.castRingHom ℂ) g)‖))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VerticalClosedPoints.proof (hE : regularityEmbedding_holds.Statement) (hV : VerticalEmbedding.Statement) : VerticalClosedPoints.Statement := by
   intro K _ ι _ P f g a R hP hf hg hfP hgP hR hRu

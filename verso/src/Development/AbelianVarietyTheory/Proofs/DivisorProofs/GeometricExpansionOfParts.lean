@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.TrMult
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, r = n + 1` from `⟨r - 1, by obtain ⟨k, hk⟩ := hr; omega⟩`. Rewrite using `[Fin.strictAnti_iff_succ_lt]`. Introduce `i`. Use `h i.castSucc i.succ (by simp)` as an intermediate fact. Move the coercions through the operations in `at this`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -27,11 +27,11 @@ theorem strictAnti_of_gap {r : ℕ} (hr : Odd r) {lam : Fin r → ℤ} (h : Gap 
   omega
 
 /- English proof (translation)
-Introduce `hE hP hR D V lam S M T U μa μf μ _ _ fa ff hT dta dtf dt hdt`. Take `⟨hOK, hfin, -, hint⟩` from `hP D V lam S M T U μa μf μ fa ff hT dta dtf dt hdt`. Establish `heq : ∀ P, GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.termOrb V μa μf fa ff P (dta P) (dtf P) (dt P) = GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.term V lam μf ff P (dta P) (dtf P) (dt P)`. Introduce `P`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.termOrb GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.term`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Rewrite using `[← (Equiv.ofBijective _ (GlobalTheory.AdelicU.placeOf_bijective D)).prod_comp]`. Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Conclude with `hR D V lam S M μa fa hT.1 (fun ρ => strictAnti_of_gap hT.1 (hT.2.1 ρ)) hT.2.2.1 hT.2.2.2.2.1.1 hT.2.2.2.2.2.1 P ρ (dta P (GlobalTheory.AdelicU.placeOf D ρ)) ((hdt P).1 _)`. Establish `hfun : (fun P => GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.termOrb V μa μf fa ff P (dta P) (dtf P) (dt P)) = fun P => GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.term V lam μf ff P (dta P) (dtf P) (dt P)` using `funext heq`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun P => (hOK P).1, hfun ▸ hfin, ?_⟩` and prove the remaining obligations. Establish `h1` using `hE D V lam S M T U μa μf μ fa ff hT`. Rewrite `h1` using `[hint, hfun]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geomExpansion_of_parts : EllTrace → EllipticPart → RealStable → GeomExpansion := by
   intro hE hP hR D V lam S M T U μa μf μ _ _ fa ff hT dta dtf dt hdt

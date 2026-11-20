@@ -19,7 +19,7 @@ section Abstract
 variable {F : Type*} [Field F]
 
 /- English proof (translation)
-Rewrite using `[← h, inv_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem eq_mul_inv_pow {x T L W : F} {n m : ℕ} (hT : T ≠ 0) (hL : L ≠ 0) (h : x * (T ^ n * L ^ m) = W) :
     x = W * T⁻¹ ^ n * L⁻¹ ^ m := by
@@ -34,7 +34,7 @@ local notation "ιB" => ACris.iotaB (untilt_epsilon (p := l)) untilt_frobeniusEq
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-The claim follows from `ACris.iotaB_algebraMap_padic_bdRPlus _ _ q`.
+A detailed English derivation is pending.
 -/
 theorem iotaB_padic (q : ℚ_[l]) :
     ιB (algebraMap ℚ_[l] (ACris.BCris (untilt_epsilon (p := l))) q) = qQ l q :=
@@ -42,14 +42,14 @@ theorem iotaB_padic (q : ℚ_[l]) :
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-The claim follows from `ACris.iotaB_periodTCris _ _`.
+A detailed English derivation is pending.
 -/
 theorem iotaB_periodTCris : ιB (ACris.periodTCris (untilt_epsilon (p := l))) = tQ l :=
   ACris.iotaB_periodTCris _ _
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-The claim follows from `(ACris.iotaB_galB _ _ (IntermediateField.fixingSubgroupEquiv K g) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem σD_iotaB (g : K.fixingSubgroup) (x : ACris.BCris (untilt_epsilon (p := l))) :
     σD g.1 (ιB x) = ιB (ACris.galB _ (IntermediateField.fixingSubgroupEquiv K g) x) :=
@@ -57,7 +57,7 @@ theorem σD_iotaB (g : K.fixingSubgroup) (x : ACris.BCris (untilt_epsilon (p := 
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-The claim follows from `(ACris.iotaB_algebraMap _ _ _).trans (congrArg _ (ACris.iotaPlus_algebraMap a))`.
+A detailed English derivation is pending.
 -/
 theorem iotaB_acris (a : ACris.ACris ℂ_[l] l) :
     ιB (algebraMap (ACris.BCrisPlus ℂ_[l] l) (ACris.BCris (untilt_epsilon (p := l)))
@@ -65,14 +65,14 @@ theorem iotaB_acris (a : ACris.ACris ℂ_[l] l) :
   (ACris.iotaB_algebraMap _ _ _).trans (congrArg _ (ACris.iotaPlus_algebraMap a))
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (qQ l)]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_ne : ((l : BdR l)) ≠ 0 := by
   rw [← map_natCast (qQ l)]
   exact (map_ne_zero _).2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `hu`. Conclude with `⟨↑v⁻¹, map_units_inv (f : R →* F) v⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inv_mem_range {R F : Type*} [CommRing R] [Field F] (f : R →+* F) {u : R} (hu : IsUnit u) :
     (f u)⁻¹ ∈ f.range := by
@@ -81,9 +81,9 @@ theorem inv_mem_range {R F : Type*} [CommRing R] [Field F] (f : R →+* F) {u : 
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Establish `hu : IsUnit ((l : ACris.BCris (untilt_epsilon (p` using `l)))) := by`. Use `(IsLocalization.Away.algebraMap_isUnit (S := ACris.BCrisPlus ℂ_[l] l) (l : ACris.ACris ℂ_[l] l)).map (algebraMap (ACris.BCrisPlus ℂ_[l] l) (ACris.BCris (untilt_epsilon (p := l))))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h` using `inv_mem_range ιB hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem linv_mem_range : ((l : BdR l))⁻¹ ∈ (ιB).range := by
   have hu : IsUnit ((l : ACris.BCris (untilt_epsilon (p := l)))) := by
@@ -97,33 +97,33 @@ theorem linv_mem_range : ((l : BdR l))⁻¹ ∈ (ιB).range := by
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Establish `h` using `inv_mem_range ιB (ACris.isUnit_periodTCris (untilt_epsilon (p := l)))`. Rewrite `h` using `[iotaB_periodTCris]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tinv_mem_range : (tQ l)⁻¹ ∈ (ιB).range := by
   have h := inv_mem_range ιB (ACris.isUnit_periodTCris (untilt_epsilon (p := l)))
   rwa [iotaB_periodTCris] at h
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inl ⟨a, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem iC_mem_bcr (a : ACris.ACris ℂ_[l] l) : iC l a ∈ Bcr l :=
   Subring.subset_closure (Or.inl ⟨a, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inr (Or.inl rfl))`.
+A detailed English derivation is pending.
 -/
 theorem linv_mem_bcr : ((l : BdR l))⁻¹ ∈ Bcr l := Subring.subset_closure (Or.inr (Or.inl rfl))
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inr (Or.inr rfl))`.
+A detailed English derivation is pending.
 -/
 theorem tinv_mem_bcr : (tQ l)⁻¹ ∈ Bcr l := Subring.subset_closure (Or.inr (Or.inr rfl))
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce and unpack `_ ⟨u, rfl⟩`. Take `⟨w, n, m, h⟩` from `exists_mul_eq_of_away_away (ACris.iota ℂ_[l] l) (ACris.iotaPlus ℂ_[l] l) (fun a => ACris.iotaPlus_algebraMap a) (algebraMap (BdRp l) (BdR l)) ιB (fun x => ACris.iotaB_algebraMap _ _ x) u`. Establish `e1 : algebraMap (BdRp l) (BdR l) (ACris.iotaPlus ℂ_[l] l (algebraMap (ACris.ACris ℂ_[l] l) (ACris.BCrisPlus ℂ_[l] l) (ACris.periodT (untilt_epsilon (p` using `l)))) ^ n * ACris.iota ℂ_[l] l (l : ACris.ACris ℂ_[l] l) ^ m) = tQ l ^ n * (l : BdR l) ^ m := by`. Rewrite using `[ACris.iotaPlus_algebraMap, map_mul, map_pow, map_pow, map_natCast, map_natCast]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h` using `[e1]`. Rewrite using `[eq_mul_inv_pow DeRhamTwist.Twist.tQ_ne l_ne h]`. Conclude with `mul_mem (mul_mem (iC_mem_bcr w) (pow_mem tinv_mem_bcr _)) (pow_mem linv_mem_bcr _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_le_bcr : (ιB).range ≤ Bcr l := by
   rintro _ ⟨u, rfl⟩
@@ -141,7 +141,7 @@ theorem range_le_bcr : (ιB).range ≤ Bcr l := by
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Use `le_antisymm (Subring.closure_le.2 ?_) range_le_bcr` and prove the remaining obligations. Introduce and unpack `x (⟨a, rfl⟩ | rfl | rfl)`. Conclude with `⟨_, iotaB_acris a⟩`. Conclude with `linv_mem_range`. Conclude with `tinv_mem_range`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bcr_eq : Bcr l = (ιB).range := by
   refine le_antisymm (Subring.closure_le.2 ?_) range_le_bcr
@@ -151,14 +151,14 @@ theorem bcr_eq : Bcr l = (ιB).range := by
   · exact tinv_mem_range
 
 /- English proof (translation)
-Rewrite using `[bcr_eq]`. Conclude with `⟨_, iotaB_padic z⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem q_mem_bcr (z : ℚ_[l]) : qQ l z ∈ Bcr l := by
   rw [bcr_eq]
   exact ⟨_, iotaB_padic z⟩
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[bcr_eq]`. Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨_, (σD_iotaB g y).symm⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bcr_stab (g : K.fixingSubgroup) (x : BdR l) (hx : x ∈ Bcr l) : σD g.1 x ∈ Bcr l := by
   rw [bcr_eq] at hx ⊢

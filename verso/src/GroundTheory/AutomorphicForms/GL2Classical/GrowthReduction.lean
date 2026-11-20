@@ -29,13 +29,13 @@ theorem height_eq_prod_locHeight (g : AdelicGLn.AdelicGL K n) :
   rfl
 
 /- English proof (translation)
-Use `set y' := ratVec x ᵥ* (g : Matrix (Fin n) (Fin n) 𝔸[K]) with hy'`. Establish `hy : ratVec x = y' ᵥ* ((g⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])`. Rewrite using `[hy', vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one]`. Establish `hfc : HasFiniteContent y'` using `hasFiniteContent_height g hx`. Establish `hinfb : ∀ w, euclidNorm (infComp w (ratVec x)) ≤ √(n : ℝ) * (n * locHeight (infAt w g⁻¹)) * euclidNorm (infComp w y')` using `fun w => by conv_lhs => rw [hy, infComp_vecMul_GL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `euclidNorm_vecMul_le (locHeight_pos _).le (fun i j => norm_apply_le_locHeight _ i j) _`. Establish `hfinb : ∀ v, ‖finComp v (ratVec x)‖ ≤ locHeight (finAt v g⁻¹) * ‖finComp v y'‖` using `fun v => by conv_lhs => rw [hy, finComp_vecMul_GL]`. Conclude with `norm_vecMul_le_of_norm_le v (locHeight_pos _).le (fun i j => norm_apply_le_locHeight _ i j) _`. Establish `hb1 : ∀ v, v ∉ (finite_mulSupport_locHeight_finAt g⁻¹).toFinset → locHeight (finAt v g⁻¹) = 1` using `fun v hv => by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv ((finite_mulSupport_locHeight_finAt g⁻¹).mem_toFinset.2 h)`. Establish `key` using `adelicNorm_le_of_local (hasFiniteContent_ratVec hx) hfc (fun w => √(n : ℝ) * (n * locHeight (infAt w g⁻¹))) (fun v => locHeight (finAt v g⁻¹)) (finite_mulSupport_locHeight_finAt g⁻¹).toFinset hinfb hb1 hfinb`. Establish `hinf : ∏ w : InfinitePlace K, (√(n : ℝ) * (n * locHeight (infAt w g⁻¹))) ^ w.mult = (∏ w : InfinitePlace K, (√(n : ℝ) * n) ^ w.mult) * ∏ w : InfinitePlace K, locHeight (infAt w g⁻¹) ^ w.mult`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_pow, mul_assoc]`. Rewrite `key` using `[hinf, ← finprod_eq_prod _ (finite_mulSupport_locHeight_finAt g⁻¹)]`. Establish `hH : Reduction.height g x = adelicNorm y'` using `rfl`. Rewrite using `[← height_inv g, height_eq_prod_locHeight g⁻¹, hH]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem one_le_const_mul_height_mul_vecHeight (g : AdelicGLn.AdelicGL K n) {x : Fin n → K}
     (hx : x ≠ 0) :
@@ -74,9 +74,7 @@ theorem one_le_const_mul_height_mul_vecHeight (g : AdelicGLn.AdelicGL K n) {x : 
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hm : 0 ≤ m` using `(norm_nonneg _).trans (hM 0 0)`. Rewrite using `[det_fin_two]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_mul]`. Conclude with `add_le_add (mul_le_mul (hM 0 0) (hM 1 1) (norm_nonneg _) hm) (mul_le_mul (hM 0 1) (hM 1 0) (norm_nonneg _) hm)`.
-
-Use `_ = 2 * m ^ 2 := by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_det_fin_two_le {E : Type*} [NormedField E] (M : Matrix (Fin 2) (Fin 2) E) {m : ℝ}
     (hM : ∀ i j, ‖M i j‖ ≤ m) : ‖M.det‖ ≤ 2 * m ^ 2 := by
@@ -90,9 +88,9 @@ theorem norm_det_fin_two_le {E : Type*} [NormedField E] (M : Matrix (Fin 2) (Fin
     _ = 2 * m ^ 2 := by ring
 
 /- English proof (translation)
-Establish `hm : 0 ≤ m` using `(norm_nonneg _).trans (hM 0 0)`. Rewrite using `[det_fin_two, sq, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hM 0 0) (hM 1 1) (norm_nonneg _) hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_neg, norm_mul]`. Conclude with `mul_le_mul (hM 0 1) (hM 1 0) (norm_nonneg _) hm`.
+A detailed English derivation is pending.
 -/
 theorem norm_det_fin_two_le_of_ultrametric {E : Type*} [NormedField E] [IsUltrametricDist E]
     (M : Matrix (Fin 2) (Fin 2) E) {m : ℝ} (hM : ∀ i j, ‖M i j‖ ≤ m) : ‖M.det‖ ≤ m ^ 2 := by
@@ -105,7 +103,7 @@ theorem norm_det_fin_two_le_of_ultrametric {E : Type*} [NormedField E] [IsUltram
     exact mul_le_mul (hM 0 1) (hM 1 0) (norm_nonneg _) hm
 
 /- English proof (translation)
-Rewrite using `[AdelicGLn.coe_det]`. Establish `: (infAt w g : Matrix (Fin 2) (Fin 2) w.Completion) = (infEval w).mapMatrix (g : Matrix (Fin 2) (Fin 2) 𝔸[K])`. Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[this, ← RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -119,7 +117,7 @@ theorem det_infAt_eq (w : InfinitePlace K) (g : AdelicGLn.AdelicGL K 2) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[AdelicGLn.coe_det]`. Establish `: (finAt v g : Matrix (Fin 2) (Fin 2) (v.adicCompletion K)) = (finEval v).mapMatrix (g : Matrix (Fin 2) (Fin 2) 𝔸[K])`. Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[this, ← RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -134,11 +132,11 @@ theorem det_finAt_eq (v : HeightOneSpectrum (𝓞 K)) (g : AdelicGLn.AdelicGL K 
   rfl
 
 /- English proof (translation)
-Rewrite using `[ideleModule_eq]`. Establish `hinf : ∏ w : InfinitePlace K, ‖((AdelicGLn.det K 2 g : IdeleGroup K) : 𝔸[K]).1 w‖ ^ w.mult ≤ (∏ w : InfinitePlace K, (2 : ℝ) ^ w.mult) * (∏ w : InfinitePlace K, locHeight (infAt w g) ^ w.mult) ^ 2`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun w _ => pow_nonneg (norm_nonneg _) _) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[det_infAt_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hf1 : (Function.mulSupport fun v : HeightOneSpectrum (𝓞 K) => ‖((AdelicGLn.det K 2 g : IdeleGroup K) : 𝔸[K]).2 v‖).Finite` using `GroundTheory.Global.IdeleGroup.finite_mulSupport_norm _`. Establish `hf2` using `finite_mulSupport_locHeight_finAt g`. Establish `hfin : ∏ᶠ v : HeightOneSpectrum (𝓞 K), ‖((AdelicGLn.det K 2 g : IdeleGroup K) : 𝔸[K]).2 v‖ ≤ (∏ᶠ v : HeightOneSpectrum (𝓞 K), locHeight (finAt v g)) ^ 2`. Rewrite using `[finprod_pow hf2]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `finprod_le_finprod_of_nonneg hf1 (hf2.subset (Function.mulSupport_pow _ 2)) (fun v => norm_nonneg _) fun v => ?_` and prove the remaining obligations. Rewrite using `[det_finAt_eq]`. Conclude with `norm_det_fin_two_le_of_ultrametric _ fun i j => norm_apply_le_locHeight (finAt v g) i j`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ideleModule_det_le_height_sq (g : AdelicGLn.AdelicGL K 2) :
     (ideleModule K (AdelicGLn.det K 2 g) : ℝ) ≤
@@ -182,9 +180,9 @@ section Rational
 open RationalIdeles
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mem_positiveSubgroup.1 hu`. Establish `hw` using `isReal_infinitePlace (default : InfinitePlace ℚ)`. Establish `hmult : (default : InfinitePlace ℚ).mult = 1`. Simplify using `[InfinitePlace.mult, hw]`. Establish `hn : ‖(u : 𝔸[ℚ]).1 default‖ = (RationalIdeles.realPart u : ℝ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _), ← realEquiv_apply, ← coe_realPart, Real.norm_eq_abs, abs_of_pos h2]`. Rewrite using `[ideleModule_apply, finiteModule_eq_one_of_mem h1, mul_one, IdeleGroup.infiniteModule, Fintype.prod_subsingleton _ (default : InfinitePlace ℚ), hmult, pow_one, hn]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ideleModule_eq_realPart_of_mem {u : IdeleGroup ℚ} (hu : u ∈ positiveSubgroup) :
     (ideleModule ℚ u : ℝ) = (RationalIdeles.realPart u : ℝ) := by
@@ -199,45 +197,37 @@ theorem ideleModule_eq_realPart_of_mem {u : IdeleGroup ℚ} (hu : u ∈ positive
     Fintype.prod_subsingleton _ (default : InfinitePlace ℚ), hmult, pow_one, hn]
 
 /- English proof (translation)
-Establish `hb10 : (b : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 1 0 = 0` using `hb (show (0 : Fin 2) < 1 by decide)`. Use `set A := (isUnit_apply_self_of_mem_adelicBorel hb 0).unit with hAdef`. Use `set D := (isUnit_apply_self_of_mem_adelicBorel hb 1).unit with hDdef`. Establish `hA0 : (A : 𝔸[ℚ]) = (b : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 0 0` using `IsUnit.unit_spec _`. Establish `hD0 : (D : 𝔸[ℚ]) = (b : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 1 1` using `IsUnit.unit_spec _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨qa, ua⟩, hA⟩` from `mulMap_bijective.2 A`. Take `⟨⟨qd, ud⟩, hD⟩` from `mulMap_bijective.2 D`. Rewrite `hA`, `hD` using `[mulMap_apply]`. Establish `hua` using `mem_positiveSubgroup.1 ua.2`. Establish `hud` using `mem_positiveSubgroup.1 ud.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set c : IdeleGroup ℚ := IdeleGroup.diagonal ℚ qa * (ud : IdeleGroup ℚ) with hc`. Use `set y : 𝔸[ℚ] := (b : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 0 1 * ((c⁻¹ : IdeleGroup ℚ) : 𝔸[ℚ]) with hy`. Take `⟨s, hs⟩` from `exists_sub_mem_integralFiniteAdeles y.2`. Use `set t : 𝔸[ℚ] := y - algebraMap ℚ 𝔸[ℚ] s with ht`. Establish `ht2 : t.2 ∈ integralFiniteAdeles (𝓞 ℚ) ℚ` using `hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set P : AdelicGL ℚ 2 := unipAdele t * diagUnits 2 ![(ua : IdeleGroup ℚ), (ud : IdeleGroup ℚ)] with hP`. Use `set δ : GL (Fin 2) ℚ := diagUnits 2 ![qa, qd] * unipGL (n := 2) (r := 1) (fun _ => s) with hδ`. Establish `hcc : (c : 𝔸[ℚ]) * ((c⁻¹ : IdeleGroup ℚ) : 𝔸[ℚ]) = 1` using `Units.mul_inv c`. Establish `hcv : (c : 𝔸[ℚ]) = algebraMap ℚ 𝔸[ℚ] qa * ((ud : IdeleGroup ℚ) : 𝔸[ℚ])`. Rewrite using `[hc, Units.val_mul, IdeleGroup.coe_diagonal]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hbP : b = diagonal ℚ 2 δ * P`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[hP, hδ, Matrix.mul_apply, Fin.sum_univ_two, AdelicGLn.diagonal_apply, unipAdele, unipGL, unipMatrix_apply]`. Rewrite using `[← hA0, ← hA, Units.val_mul, IdeleGroup.coe_diagonal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[ht, hy]`. Take the linear combination `(-((b : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 0 1)) * hcc + ((b : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 0 1 * ((c⁻¹ : IdeleGroup ℚ) : 𝔸[ℚ])) * hcv`. Conclude with `hb10`. Rewrite using `[← hD0, ← hD, Units.val_mul, IdeleGroup.coe_diagonal]`. Establish `hPe : (P : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) = !![((ua : IdeleGroup ℚ) : 𝔸[ℚ]), t * ((ud : IdeleGroup ℚ) : 𝔸[ℚ]); 0, ((ud : IdeleGroup ℚ) : 𝔸[ℚ])]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[hP, Matrix.mul_apply, Fin.sum_univ_two, unipAdele, unipGL, unipMatrix_apply]`. Establish `hPinv : P⁻¹ = diagUnits 2 ![(ua : IdeleGroup ℚ)⁻¹, (ud : IdeleGroup ℚ)⁻¹] * unipAdele (-t)`. Establish `hu : (unipAdele t)⁻¹ = unipAdele (-t)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← unipAdele_add, add_neg_cancel]`. Conclude with `unipGL_zero`. Establish `hd : (diagUnits 2 ![(ua : IdeleGroup ℚ), (ud : IdeleGroup ℚ)])⁻¹ = diagUnits 2 ![(ua : IdeleGroup ℚ)⁻¹, (ud : IdeleGroup ℚ)⁻¹]`. Rewrite using `[← map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[hP, _root_.mul_inv_rev, hu, hd]`. Establish `hPie : ((P⁻¹ : AdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) = !![(((ua : IdeleGroup ℚ)⁻¹ : IdeleGroup ℚ) : 𝔸[ℚ]), (((ua : IdeleGroup ℚ)⁻¹ : IdeleGroup ℚ) : 𝔸[ℚ]) * -t; 0, (((ud : IdeleGroup ℚ)⁻¹ : IdeleGroup ℚ) : 𝔸[ℚ])]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Rewrite using `[hPinv]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, unipAdele, unipGL, unipMatrix_apply]`. Use `set ra : ℝ := (RationalIdeles.realPart (ua : IdeleGroup ℚ) : ℝ) with hra`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `set rd : ℝ := (RationalIdeles.realPart (ud : IdeleGroup ℚ) : ℝ) with hrd`. Establish `hra0 : 0 < ra` using `hua.2`. Establish `hrd0 : 0 < rd` using `hud.2`. Use `set x : ℝ := realEquiv t.1 with hx`. Establish `hzpos : 0 < ((x : ℂ) + ((ra / rd : ℝ) : ℂ) * Complex.I).im`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Complex.add_im, Complex.ofReal_im, Complex.mul_im, Complex.ofReal_re, Complex.I_im, Complex.I_re, mul_zero, zero_add, mul_one]`. Check the signs of the components of the expression. Use `set z : ℍ := ⟨(x : ℂ) + ((ra / rd : ℝ) : ℂ) * Complex.I, hzpos⟩ with hz`. Establish `hzim : z.im = ra / rd`. Express the relevant statement in the definitionally equal form `((x : ℂ) + ((ra / rd : ℝ) : ℂ) * Complex.I).im = _`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hzre : z.re = x`. Express the relevant statement in the definitionally equal form `((x : ℂ) + ((ra / rd : ℝ) : ℂ) * Complex.I).re = _`. Simplify using the standard rewrite rules. Establish `hr : ((rd : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hrd0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hreal : realPart P = borelGL z * kGL (rd : ℂ) hr`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `e : ∀ i j, (realPart P : Matrix (Fin 2) (Fin 2) ℝ) i j = realEquiv (((P : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) i j).1)` using `fun _ _ => rfl`. Rewrite using `[e, hPe, Units.val_mul, coe_borelGL, coe_kGL, hzim, hzre]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hra, coe_realPart]`. Both sides reduce to the same expression. Rewrite using `[hrd, coe_realPart]`. Establish `hint : ∀ u : IdeleGroup ℚ, u ∈ standardOpenSubgroup ℚ → (u : 𝔸[ℚ]).2 ∈ integralFiniteAdeles (𝓞 ℚ) ℚ` using `fun u hu => mem_integralFiniteAdeles.2 fun v => ((mem_standardOpenSubgroup ℚ).1 hu v).1`. Establish `hw : (prodEquiv ℚ 2 P).2 ∈ integralFiniteGL ℚ 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_integralFiniteGL_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [AdelicGLn.prodEquiv_apply_snd, hPe] fin_cases i <;> fin_cases j`. Conclude with `hint _ hua.1`. Use `show t.2 * ((ud : IdeleGroup ℚ) : 𝔸[ℚ]).2 ∈ _`.
-
-Conclude with `Subring.mul_mem _ ht2 (hint _ hud.1)`. Use `show (0 : FiniteAdeleRing (𝓞 ℚ) ℚ) ∈ _`. Conclude with `Subring.zero_mem _`. Conclude with `hint _ hud.1`. Establish `h1 : ((((ua : IdeleGroup ℚ)⁻¹ : IdeleGroup ℚ) : 𝔸[ℚ])).2 ∈ integralFiniteAdeles (𝓞 ℚ) ℚ` using `hint _ (inv_mem hua.1)`.
-
-Establish `h2 : ((((ud : IdeleGroup ℚ)⁻¹ : IdeleGroup ℚ) : 𝔸[ℚ])).2 ∈ integralFiniteAdeles (𝓞 ℚ) ℚ` using `hint _ (inv_mem hud.1)`. Establish `h3 : ((((ua : IdeleGroup ℚ)⁻¹ : IdeleGroup ℚ) : 𝔸[ℚ]) * -t).2 ∈ integralFiniteAdeles (𝓞 ℚ) ℚ` using `Subring.mul_mem _ h1 (Subring.neg_mem _ ht2)`. Establish `h4 : (0 : 𝔸[ℚ]).2 ∈ integralFiniteAdeles (𝓞 ℚ) ℚ` using `Subring.zero_mem _`. Establish `e : ((prodEquiv ℚ 2 P).2)⁻¹ = (prodEquiv ℚ 2 P⁻¹).2`. Rewrite using `[map_inv, Prod.snd_inv]`.
-
-Rewrite using `[e, AdelicGLn.prodEquiv_apply_snd, hPie]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `h1`. Conclude with `h3`. Conclude with `h4`.
-
-Conclude with `h2`. Use `⟨δ, z, rd, hr, ?_, (prodEquiv ℚ 2 P).2, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[hzim, ← hA0, ← hD0, adeleAbs_units, adeleAbs_units, ← hA, ← hD, map_mul, map_mul, ideleModule_diagonal, ideleModule_diagonal, one_mul, one_mul, ideleModule_eq_realPart_of_mem ua.2, ideleModule_eq_realPart_of_mem ud.2]`. Rewrite using `[hbP, ← hreal, mul_assoc, realEmb_realPart_mul_finEmb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_diagonal_mul_borelGL_mul {b : AdelicGL ℚ 2} (hb : b ∈ adelicBorel) :
     ∃ (δ : GL (Fin 2) ℚ) (z : ℍ) (r : ℝ) (hr : (r : ℂ) ≠ 0),
@@ -371,9 +361,9 @@ section Ratio
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[AdelicGLn.coe_det, IdeleGroup.coe_diagonal]`. Establish `: ((diagonal K 2 γ : AdelicGLn.AdelicGL K 2) : Matrix (Fin 2) (Fin 2) 𝔸[K]) = (algebraMap K 𝔸[K]).mapMatrix (γ : Matrix (Fin 2) (Fin 2) K)`. Use extensionality with `a b`. Rewrite using `[AdelicGLn.diagonal_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, ← RingHom.map_det]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_diagonal_eq (γ : GL (Fin 2) K) :
     AdelicGLn.det K 2 (diagonal K 2 γ) = IdeleGroup.diagonal K (Matrix.GeneralLinearGroup.det γ) := by
@@ -388,23 +378,21 @@ theorem det_diagonal_eq (γ : GL (Fin 2) K) :
   rfl
 
 /- English proof (translation)
-Establish `hb10 : (b : Matrix (Fin 2) (Fin 2) 𝔸[K]) 1 0 = 0` using `hb (show (0 : Fin 2) < 1 by decide)`. Use `set A := (isUnit_apply_self_of_mem_adelicBorel hb 0).unit with hAdef`. Use `set D := (isUnit_apply_self_of_mem_adelicBorel hb 1).unit with hDdef`. Establish `hA0 : (A : 𝔸[K]) = (b : Matrix (Fin 2) (Fin 2) 𝔸[K]) 0 0` using `IsUnit.unit_spec _`. Establish `hD0 : (D : 𝔸[K]) = (b : Matrix (Fin 2) (Fin 2) 𝔸[K]) 1 1` using `IsUnit.unit_spec _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set e₁ : Fin 2 → K := Pi.single 1 1 with he₁`. Establish `he₁0 : e₁ ≠ 0`. Introduce `h0`. Use `congrFun h0 1` as an intermediate fact. Simplify using `[he₁] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hrow : ratVec e₁ ᵥ* (b : Matrix (Fin 2) (Fin 2) 𝔸[K]) = (D : 𝔸[K]) • ratVec e₁`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [he₁, vecMul, dotProduct, Fin.sum_univ_two, ratVec, hb10, hD0]`. Establish `hD : Reduction.height g (e₁ ᵥ* (γ : Matrix (Fin 2) (Fin 2) K)) = (ideleModule K D : ℝ)`. Rewrite using `[← height_diagonal_mul, h, height_mul_maxCompact _ hk, Reduction.height, hrow, adelicNorm_smul (hasFiniteContent_ratVec he₁0) D, adelicNorm_ratVec_single, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hne : e₁ ᵥ* (γ : Matrix (Fin 2) (Fin 2) K) ≠ 0`. Introduce `h0`. Apply `he₁0` to reduce the goal to its premises. Use `congrArg (fun v => v ᵥ* ((γ⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K)) h0` as an intermediate fact. Simplify `this` using `[vecMul_vecMul, ← Units.val_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hV` using `one_le_const_mul_height_mul_vecHeight g hne`. Rewrite `hV` using `[hD]`. Establish `hdetb : AdelicGLn.det K 2 b = A * D`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[AdelicGLn.coe_det, det_fin_two, hb10, mul_zero, sub_zero, Units.val_mul, hA0, hD0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hdet : (ideleModule K (AdelicGLn.det K 2 g) : ℝ) = (ideleModule K A : ℝ) * (ideleModule K D : ℝ)`. Establish `e` using `congrArg (fun x => (ideleModule K (AdelicGLn.det K 2 x) : ℝ)) h`. Simplify using `only [map_mul, Positive.val_mul, det_diagonal_eq, ideleModule_diagonal, hdetb] at e`. Rewrite `e` using `[mem_normOneGL.1 (maxCompact_le_normOneGL hk)]`. Simplify using `using e`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdetle` using `ideleModule_det_le_height_sq g`. Rewrite `hdetle` using `[hdet]`. Rewrite using `[← hA0, ← hD0, adeleAbs_units, adeleAbs_units]`. Use `set a := (ideleModule K A : ℝ)`. Use `set d := (ideleModule K D : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set H := AutomorphicForm.height g`. Use `set Cd := ∏ w : InfinitePlace K, (2 : ℝ) ^ w.mult`. Use `set Cv := ∏ w : InfinitePlace K, (√((2 : ℕ) : ℝ) * ((2 : ℕ) : ℝ)) ^ w.mult`. Establish `hd : 0 < d` using `(ideleModule K D).2`. Establish `ha : 0 < a` using `(ideleModule K A).2`.
-
-Establish `hCv : 0 ≤ Cv * H` using `by nlinarith [hV, hd]`. Establish `h1d : d⁻¹ ≤ Cv * H`. Rewrite using `[inv_le_iff_one_le_mul₀ hd]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem adeleAbs_div_le_height_pow_four {g b k : AdelicGLn.AdelicGL K 2} {γ : GL (Fin 2) K}
     (hb : b ∈ adelicBorel) (hk : k ∈ maxCompact) (h : diagonal K 2 γ * g = b * k) :

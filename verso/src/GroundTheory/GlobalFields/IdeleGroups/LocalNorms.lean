@@ -26,7 +26,7 @@ def finiteLocalNorm (v : HeightOneSpectrum (𝓞 K)) :
 variable {L} in
 
 /- English proof (translation)
-Simplify using `[finiteLocalNorm, Units.coe_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_finiteLocalNorm (v : HeightOneSpectrum (𝓞 K))
     (y : (w : PlacesOver L v) → (w.1.adicCompletion L)ˣ) :
@@ -42,7 +42,7 @@ omit [NumberField K] in
 variable {L} in
 
 /- English proof (translation)
-Simplify using `[integerUnitsOver, Subgroup.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_integerUnitsOver {v : HeightOneSpectrum (𝓞 K)}
     {y : (w : PlacesOver L v) → (w.1.adicCompletion L)ˣ} :
@@ -64,7 +64,7 @@ open scoped Classical in
 variable {L} in
 
 /- English proof (translation)
-Simplify using `[infiniteLocalNorm, Units.coe_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_infiniteLocalNorm (v : InfinitePlace K)
     (y : (w : v.placesOver L) → ((w : InfinitePlace L).Completion)ˣ) :
@@ -75,7 +75,7 @@ theorem coe_infiniteLocalNorm (v : InfinitePlace K)
 variable {L}
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[IdeleGroup.coe_finiteProj, coe_finiteLocalNorm, ideleNorm_snd]`. Simplify using `only [IdeleGroup.coe_finiteProj]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finiteProj_ideleNorm (y : IdeleGroup L) (v : HeightOneSpectrum (𝓞 K)) :
     IdeleGroup.finiteProj v (ideleNorm K L y) =
@@ -85,7 +85,7 @@ theorem finiteProj_ideleNorm (y : IdeleGroup L) (v : HeightOneSpectrum (𝓞 K))
   simp only [IdeleGroup.coe_finiteProj]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[IdeleGroup.coe_infiniteProj, coe_infiniteLocalNorm, ideleNorm_fst]`. Simplify using `only [IdeleGroup.coe_infiniteProj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem infiniteProj_ideleNorm (y : IdeleGroup L) (v : InfinitePlace K) :
     IdeleGroup.infiniteProj v (ideleNorm K L y) =
@@ -96,7 +96,7 @@ theorem infiniteProj_ideleNorm (y : IdeleGroup L) (v : InfinitePlace K) :
   simp only [IdeleGroup.coe_infiniteProj]
 
 /- English proof (translation)
-Use `(IdeleGroup.prodRestrictedEquiv L y).2.2.mono fun w hw ↦ ?_` and prove the remaining obligations. Establish `e : IdeleGroup.finiteProj w y = (IdeleGroup.prodRestrictedEquiv L y).2 w` using `Units.ext (by simp)`. Rewrite using `[e]`. Conclude with `hw`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_finiteProj_mem (y : IdeleGroup L) :
     ∀ᶠ w in cofinite,
@@ -111,7 +111,7 @@ omit [NumberField K] [NumberField L] in
 variable (K) in
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[eventually_cofinite]`. Use `(h.image (below K)).subset fun v hv ↦ ?_` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, not_forall] at hv`. Take `⟨w, hw⟩` from `hv`. Conclude with `⟨w.1, hw, (below_eq_iff w.1 v).2 w.2⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eventually_forall_placesOver {P : HeightOneSpectrum (𝓞 L) → Prop}
     (h : ∀ᶠ w in cofinite, P w) :
@@ -125,7 +125,7 @@ theorem eventually_forall_placesOver {P : HeightOneSpectrum (𝓞 L) → Prop}
 omit [NumberField K] in
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem placesOver_congr (yf : ∀ v : HeightOneSpectrum (𝓞 K),
       (w : PlacesOver L v) → (w.1.adicCompletion L)ˣ)
@@ -138,7 +138,7 @@ theorem placesOver_congr (yf : ∀ v : HeightOneSpectrum (𝓞 K),
 omit [NumberField K] [NumberField L] in
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem infinitePlacesOver_congr (yi : ∀ v : InfinitePlace K,
       (w : v.placesOver L) → ((w : InfinitePlace L).Completion)ˣ)
@@ -160,7 +160,7 @@ def glue (yf : ∀ v : HeightOneSpectrum (𝓞 K), (w : PlacesOver L v) → (w.1
           mem_integerUnitsOver.1 hw ⟨w, inferInstance⟩⟩)
 
 /- English proof (translation)
-Rewrite using `[← IdeleGroup.prodRestrictedEquiv_apply_snd, glue, ContinuousMulEquiv.apply_symm_apply]`. Conclude with `congrArg Units.val (placesOver_congr yf ((below_eq_iff w.1 v).2 w.2) w.1 w.2 _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_snd (yf : ∀ v : HeightOneSpectrum (𝓞 K),
       (w : PlacesOver L v) → (w.1.adicCompletion L)ˣ)
@@ -172,7 +172,7 @@ theorem glue_snd (yf : ∀ v : HeightOneSpectrum (𝓞 K),
   exact congrArg Units.val (placesOver_congr yf ((below_eq_iff w.1 v).2 w.2) w.1 w.2 _)
 
 /- English proof (translation)
-Rewrite using `[← IdeleGroup.prodRestrictedEquiv_apply_fst, glue, ContinuousMulEquiv.apply_symm_apply]`. Use `infinitePlacesOver_congr yi (InfinitePlace.LiesOver.comap_eq (w : InfinitePlace L) v) (w : InfinitePlace L) w.2 (inferInstance : (w : InfinitePlace L).LiesOver ((w : InfinitePlace L).comap (algebraMap K L)))` as an intermediate fact. Conclude with `congrArg Units.val this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem glue_fst (yf : ∀ v : HeightOneSpectrum (𝓞 K),
       (w : PlacesOver L v) → (w.1.adicCompletion L)ˣ)
@@ -187,9 +187,7 @@ theorem glue_fst (yf : ∀ v : HeightOneSpectrum (𝓞 K),
   exact congrArg Units.val this
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `Prod.ext (funext fun v ↦ ?_) (FiniteAdeleRing.ext (K := K) fun v ↦ ?_)` and prove the remaining obligations. Rewrite using `[ideleNorm_fst, ← IdeleGroup.coe_infiniteProj, ← hi v, coe_infiniteLocalNorm]`. Conclude with `Finset.prod_congr rfl fun w _ ↦ by rw [glue_fst]`. Rewrite using `[ideleNorm_snd, ← IdeleGroup.coe_finiteProj, ← hf v, coe_finiteLocalNorm]`.
-
-Conclude with `Finset.prod_congr rfl fun w _ ↦ by rw [glue_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleNorm_glue (yf : ∀ v : HeightOneSpectrum (𝓞 K),
       (w : PlacesOver L v) → (w.1.adicCompletion L)ˣ)
@@ -207,11 +205,9 @@ theorem ideleNorm_glue (yf : ∀ v : HeightOneSpectrum (𝓞 K),
     exact Finset.prod_congr rfl fun w _ ↦ by rw [glue_snd]
 
 /- English proof (translation)
-Set `yf : ∀ v : HeightOneSpectrum (𝓞 K), (w : PlacesOver L v) → (w.1.adicCompletion L)ˣ` to `fun v ↦ if h : IdeleGroup.finiteProj v x ∈ (integerUnitsOver L v).map (finiteLocalNorm L v) then (Subgroup.mem_map.1 h).choose else (MonoidHom.mem_range.1 (hfin v)).choose`. Establish `hyf_int : ∀ᶠ v in cofinite, yf v ∈ integerUnitsOver L v` using `hint.mono fun v h ↦ by`. Simplify using `only [yf, dif_pos h]`. Conclude with `(Subgroup.mem_map.1 h).choose_spec.1`. Establish `hyf : ∀ v, finiteLocalNorm L v (yf v) = IdeleGroup.finiteProj v x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Distinguish the cases in `h : IdeleGroup.finiteProj v x ∈ (integerUnitsOver L v).map (finiteLocalNorm L v)`. Simplify using `only [yf, dif_pos h]`. Conclude with `(Subgroup.mem_map.1 h).choose_spec.2`. Simplify using `only [yf, dif_neg h]`.
-
-Conclude with `(MonoidHom.mem_range.1 (hfin v)).choose_spec`. Conclude with `⟨glue yf hyf_int (fun v ↦ (MonoidHom.mem_range.1 (hinf v)).choose), ideleNorm_glue _ _ _ hyf fun v ↦ (MonoidHom.mem_range.1 (hinf v)).choose_spec⟩`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_ideleNorm (x : IdeleGroup K)
     (hfin : ∀ v, IdeleGroup.finiteProj v x ∈ (finiteLocalNorm L v).range)
@@ -237,7 +233,7 @@ theorem mem_range_ideleNorm (x : IdeleGroup K)
     ideleNorm_glue _ _ _ hyf fun v ↦ (MonoidHom.mem_range.1 (hinf v)).choose_spec⟩
 
 /- English proof (translation)
-Use `⟨?_, fun ⟨h1, h2, h3⟩ ↦ mem_range_ideleNorm x h1 h2 h3⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Use `⟨fun v ↦ ⟨_, (finiteProj_ideleNorm y v).symm⟩, fun v ↦ ⟨_, (infiniteProj_ideleNorm y v).symm⟩, ?_⟩` and prove the remaining obligations. Use `(eventually_forall_placesOver K (eventually_finiteProj_mem y)).mono fun v hv ↦ ?_` and prove the remaining obligations. Conclude with `⟨_, mem_integerUnitsOver.2 hv, (finiteProj_ideleNorm y v).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem mem_range_ideleNorm_iff (x : IdeleGroup K) :
     x ∈ (ideleNorm K L).range ↔

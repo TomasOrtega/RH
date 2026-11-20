@@ -17,7 +17,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
 
 /- English proof (translation)
-Introduce `y`. Establish `h1 : ∀ z, z ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) L' ↔ z ∈ latS (F := F) (v.adicCompletion F) (intV E v) L := fun z => by rw [h]`. Conclude with `(h1 y).trans ((hs y).trans ⟨fun H z hz => H z ((h1 z).1 hz), fun H z hz => H z ((h1 z).2 hz)⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem selfDual_congr (v : HeightOneSpectrum (𝓞 F)) {L L' : Submodule (𝓞 E) (Fin n → E)}
     (h : latS (F := F) (v.adicCompletion F) (intV E v) L = latS (F := F) (v.adicCompletion F) (intV E v) L')
@@ -28,11 +28,11 @@ theorem selfDual_congr (v : HeightOneSpectrum (𝓞 F)) {L L' : Submodule (𝓞 
   exact (h1 y).trans ((hs y).trans ⟨fun H z hz => H z ((h1 z).1 hz), fun H z hz => H z ((h1 z).2 hz)⟩)
 
 /- English proof (translation)
-Establish `hsdb : SelfDualAt σ J v S.Lb` using `self_dual_lattice_at F E n σ J v S.Lb T S.Lb_fin (fun x hx y hy => S.Lb_int y hy x hx) (fun y hy => S.Lb_dual y hy) (natCast_notMem v hp hv hT)`. Establish `hyl : ∀ x, x ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) Lc ↔ (((bc (prV (E := E) v) y.1)⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) *ᵥ x ∈ latS (F := F) (v.adicCompletion F) (intV E v) S.Lb := by`. Introduce `x`. Rewrite using `[← map_inv]`. Conclude with `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.rlv_yloc v y.1 hy x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsdc : SelfDualAt σ J v Lc` using `selfDual_move v (bc (prV (E := E) v) y.1) (Formalism.UG.P.afsplit_bc_mem σ J v _ y.2) hyl hsdb`. Establish `hLd : ((dualL (σ : E →+* E) J Lc : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E)) = dualSet (σ : E →+* E) J Lc` using `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwG_span_dualSet _ _ _`. Establish `e1` using `latS_dual_eq v hLd (fun x hx => Submodule.subset_span (hle x hx)) hsdc`. Establish `e2` using `latS_of_locBasis v hp hv (dualL (σ : E →+* E) J Lc) B' (by rw [hLd]; exact hB')`. Establish `e : latS (F` using `F) (v.adicCompletion F) (intV E v) Lc = latS (F := F) (v.adicCompletion F) (intV E v) (latB B') := e1.symm.trans e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨selfDual_congr v e hsdc, fun κ x => ?_⟩` and prove the remaining obligations. Establish `hκ : bc (prV (E` using `E) v) κ.1 ∈ stabGL (latS (F := F) (v.adicCompletion F) (intV E v) S.Lb) := (S.Uloc_lev v (((S.U_eq κ.1).1 κ.2).2 v)).2`. Establish `hκ'` using `(stabGL (latS (F := F) (v.adicCompletion F) (intV E v) S.Lb)).inv_mem hκ`. Rewrite using `[← e, hyl x, map_mul, _root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]`. Conclude with `hκ' _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_facts (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F)) {p : ℕ} (hp : p.Prime)
     (hv : (p : 𝓞 F) ∈ v.asIdeal) (hT : ¬ p ∣ T) (Lc : Submodule (𝓞 E) (Fin n → E))
@@ -70,7 +70,7 @@ theorem loc_facts (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 
 variable {p : ℕ} {G : GAtP p}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `int_of_move (A.pl v).1 (A.spl v) (halg v) A.B B' (hb v) (bc (prV (E := E) (A.pl v).1) (y.1 * κ.1)) ((loc_facts S (A.pl v).1 hp (A.pl v).2 hT Lc y hy hle B' hB').2 κ)`. Conclude with `lat_of_int A hW i g γ B' (y.1 * κ.1) (by rw [← mul_assoc]; exact hpt) v h1 h2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem latW_gen (S : StepLevel F E σ J T f bad) (A : LocAt F E n G) (hW : LocInt A) (hp : p.Prime) (hT : ¬ p ∣ T)
     (halg : ∀ v (a : (A.pl v).1.adicCompletion F), A.spl v ((1 : E) ⊗ₜ[F] a) = (a, a))
@@ -93,11 +93,11 @@ theorem latW_gen (S : StepLevel F E σ J T f bad) (A : LocAt F E n G) (hW : LocI
   exact lat_of_int A hW i g γ B' (y.1 * κ.1) (by rw [← mul_assoc]; exact hpt) v h1 h2
 
 /- English proof (translation)
-Establish `hsd` using `(loc_facts S (A.pl v).1 hp (A.pl v).2 hT Lc y hy hle B' hB').1`. Establish `hG : IsUnit (cT (σ : E →+* E) (B' : Matrix (Fin n) (Fin n) E) * J * (B' : Matrix (Fin n) (Fin n) E)).det`. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Use `(IsUnit.mul ?_ hJ).mul ((Matrix.isUnit_iff_isUnit_det _).1 B'.isUnit)` and prove the remaining obligations. Establish `h0` using `(Matrix.isUnit_iff_isUnit_det _).1 (bc (σ : E →+* E) B').isUnit`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show IsUnit (((bc (σ : E →+* E) B' : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)ᵀ).det`. Rewrite using `[Matrix.det_transpose]`. Conclude with `h0`. Establish `key : ∀ x : E, inclE (F` using `F) ((A.pl v).1.adicCompletion F) x ∈ intV E (A.pl v).1 → A.iw v x ∈ Set.range (algebraMap (G.P.W v) (G.P.Qq v)) := by`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hW v _).2 ?_` and prove the remaining obligations. Establish `e : A.eQ v (A.iw v x) = (A.spl v (inclE (F` using `F) ((A.pl v).1.adicCompletion F) x)).1 := (A.eQ v).apply_symm_apply _`. Rewrite using `[e]`. Conclude with `Formalism.MainNotions.Gaps.Loc.fst_int (A.pl v).1 (A.spl v) (halg v) _ hx`. Conclude with `⟨key _ (gram_intV (A.pl v).1 B' hsd a b), key _ (gramInv_intV (A.pl v).1 B' hsd hG a b)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gramW_gen (S : StepLevel F E σ J T f bad) (A : LocAt F E n G) (hW : LocInt A) (hp : p.Prime) (hT : ¬ p ∣ T)
     (halg : ∀ v (a : (A.pl v).1.adicCompletion F), A.spl v ((1 : E) ⊗ₜ[F] a) = (a, a)) (hJ : IsUnit J.det)
@@ -127,11 +127,11 @@ theorem gramW_gen (S : StepLevel F E σ J T f bad) (A : LocAt F E n G) (hW : Loc
   exact ⟨key _ (gram_intV (A.pl v).1 B' hsd a b), key _ (gramInv_intV (A.pl v).1 B' hsd hG a b)⟩
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Substitute `hfr` using the available equality. Substitute `hLb` using the available equality. Establish `e1 : reL (rfl : k = k) Lb0 = Lb0`. Use extensionality with `x`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, reGL_rfl]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem frlat_re {k : ℕ} (hk : k = n) (v : HeightOneSpectrum (𝓞 F))
     (φ : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F)
@@ -164,7 +164,7 @@ variable {D : D7} {X : Formalism.L2.Herm.Herm0 D}
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Conclude with `frlat_re (rank_eq_first_level D.R) ((X.g u w hg).pl v).1 ((X.g u w hg).spl _ ((X.g u w hg).pl v).2) (X.lev0 u).Lb I.B ((X.g u w hg).fr _ ((X.g u w hg).pl v).2) (I.fr_B u w hg _ ((X.g u w hg).pl v).2) ((X.g u w hg).fr_lat _ ((X.g u w hg).pl v).2) ((T u).cls0).lev.Lb (hJ u).Lb_eq t`.
+A detailed English derivation is pending.
 -/
 theorem hb_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (I : CmpIn D X) (hJ : ∀ u, Joint0 X.lev0 u (T u)) (u : D.what₂.Word)
     (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (v : Fin (D.gat u w hg).P.nV)
@@ -183,11 +183,11 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `x hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Introduce `x' hx'`. Establish `hglob : ∀ z ∈ clsCrd D u i hi c, z ∈ Formalism.UG.CS.globLat (K.y c).1 K.lev.Lb`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(K.y_lat c _).1 (Submodule.subset_span ⟨z, hz, rfl⟩)`. Establish `hm : ∀ a ∈ K.lev.Lb, ∀ b ∈ K.lev.Lb, IsIntegral ℤ (((1 : ℤ) : D.host.E) * Formalism.UG.hform (sigD D : D.host.E →+* D.host.E) (gramN D i hi) a b)`. Introduce `a ha b hb`. Take `⟨r, hr⟩` from `K.lev.Lb_int b hb a ha`. Rewrite using `[Int.cast_one, one_mul, ← hr]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `RingOfIntegers.isIntegral_coe r`. Establish `h` using `Formalism.UG.P.csScale_glob (sigD D) (gramN D i hi) K.lev.Lb 1 hm (K.y c).1 (K.y c).2 (hglob x' hx') (hglob x hx)`. Rewrite `h` using `[Int.cast_one, one_mul]`. Conclude with `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwL_descent _ _ _ h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lcInt_of_cls {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m} (K : ClsTied u i hi) (c : (D.mem u).C.cls i) :
     clsCrd D u i hi c ≤ Ld D u i hi c := by
@@ -210,7 +210,7 @@ theorem lcInt_of_cls {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m} (K : ClsT
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `x hx`. Establish `h` using `lcInt_of_cls (T u).cls0 c hx`. Rewrite `h` using `[← SetLike.mem_coe, Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwG_Ld_coe]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hle_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) (c : (D.mem u).C.cls 0) :
     ∀ x ∈ clsCrd D u 0 (Nat.zero_le _) c,
@@ -223,7 +223,7 @@ theorem hle_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) (c
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Introduce `u w hg i L c g γ κ hL _ hpt B' hB' v`. Rewrite using `[hL v]`. Conclude with `latW_gen ((T u).cls0).lev (locAt X u w hg I.B) (locInt_locAt X u w hg I.B) hg.1 hg.2.2.2.2.2 (fun v a => (X.g u w hg).spl_alg _ ((X.g u w hg).pl v).2 a) (hb_rec T I hJ u w hg) (clsCrd D u 0 (Nat.zero_le _) c) (((T u).cls0).y c) (((T u).cls0).y_lat c) (hle_rec T u c) B' hB' i g γ …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restLatW_of (T : ∀ u : D.what₂.Word, Forms0 D u) (I : CmpIn D X) (hJ : ∀ u, Joint0 X.lev0 u (T u)) :
     RestLatW T I := by
@@ -237,7 +237,7 @@ theorem restLatW_of (T : ∀ u : D.what₂.Word, Forms0 D u) (I : CmpIn D X) (hJ
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Introduce `u w hg c B' hB' v a b`. Conclude with `gramW_gen ((T u).cls0).lev (locAt X u w hg I.B) (locInt_locAt X u w hg I.B) hg.1 hg.2.2.2.2.2 (fun v a => (X.g u w hg).spl_alg _ ((X.g u w hg).pl v).2 a) (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D 0 (Nat.zero_le _)) (clsCrd D u 0 (Nat.zero_le _) c) (((T u) …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restGramW_of (T : ∀ u : D.what₂.Word, Forms0 D u) (I : CmpIn D X) : RestGramW I := by
   intro u w hg c B' hB' v a b

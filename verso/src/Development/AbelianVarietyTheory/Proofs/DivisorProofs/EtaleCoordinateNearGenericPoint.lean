@@ -14,9 +14,9 @@ open scoped TensorProduct
 namespace GlobalTheory.GenericEtale
 
 /- English proof (translation)
-Establish `: Nontrivial A` using `(algebraMap A B).domain_nontrivial`. Establish `: Algebra.IsAlgebraic k K` using `IsLocalization.isAlgebraic K (nonZeroDivisors k)`. Establish `h₁` using `trdeg_add_eq k K (A := B)`. Establish `h₂` using `trdeg_add_eq k A (A := B)`. Rewrite `h₁` using `[trdeg_eq_zero, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₂` using `[trdeg_eq_zero (R := A), add_zero]`. Rewrite using `[h₁, h₂]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trdeg_eq (k K A B : Type) [CommRing k] [IsDomain k] [Field K] [Algebra k K]
     [IsFractionRing k K] [CommRing A] [Algebra k A] [FaithfulSMul k A] [CommRing B] [IsDomain B]
@@ -31,13 +31,13 @@ theorem trdeg_eq (k K A B : Type) [CommRing k] [IsDomain k] [Field K] [Algebra k
   rw [h₁, h₂]
 
 /- English proof (translation)
-Set `K` to `FractionRing k`. Establish `hinj : Function.Injective (algebraMap k L)`. Rewrite using `[IsScalarTower.algebraMap_eq k A L]`. Conclude with `(IsFractionRing.injective A L).comp (FaithfulSMul.algebraMap_injective k A)`. Set `: Algebra K L` to `(IsFractionRing.lift (K := K) hinj).toAlgebra`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsScalarTower k K L` using `IsScalarTower.of_algebraMap_eq fun a => (IsFractionRing.lift_algebraMap (K := K) hinj a).symm`. Establish `: Algebra.EssFiniteType A L` using `.of_isLocalization L (nonZeroDivisors A)`. Establish `: Algebra.EssFiniteType k L` using `.comp k A L`. Establish `: Algebra.EssFiniteType K L` using `.of_comp k K L`. Establish `: Algebra.FormallySmooth K L` using `Algebra.FormallySmooth.of_perfectField`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.FormallyEtale k K` using `.of_isLocalization (nonZeroDivisors k)`. Establish `: Algebra.IsAlgebraic A L` using `IsLocalization.isAlgebraic L (nonZeroDivisors A)`. Use `⟨.comp k K L, ?_⟩` and prove the remaining obligations. Establish `hb : Function.Bijective (KaehlerDifferential.map k K L L)`. Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, KaehlerDifferential.map_surjective k K L⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `(KaehlerDifferential.exact_mapBaseChange_map k K L x).1 hx`. Rewrite using `[Subsingleton.elim y 0, map_zero]`. Rewrite using `[(LinearEquiv.ofBijective _ hb).rank_eq, rank_kaehler_eq_trdeg, trdeg_eq k K A L]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formallySmooth_fractionField (k A L : Type) [CommRing k] [IsDomain k] [CharZero k]
     [CommRing A] [IsDomain A] [Algebra k A] [FaithfulSMul k A] [Algebra.FiniteType k A] [Field L]
@@ -64,9 +64,9 @@ theorem formallySmooth_fractionField (k A L : Type) [CommRing k] [IsDomain k] [C
   rw [(LinearEquiv.ofBijective _ hb).rank_eq, rank_kaehler_eq_trdeg, trdeg_eq k K A L]
 
 /- English proof (translation)
-Establish `: Algebra.FinitePresentation k A` using `Algebra.FinitePresentation.of_finiteType.mp ‹_›`. Set `L` to `Localization.AtPrime (⊥ : Ideal A)`. Establish `: IsFractionRing A L` using `(congrArg (fun M : Submonoid A => IsLocalization M L) (Ideal.primeCompl_bot (α := A))).mp inferInstance`. Establish `hL : IsField L` using `(FractionRing.algEquiv A L).symm.toMulEquiv.isField (Field.toIsField (FractionRing A))`. Set `: Field L` to `hL.toField`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨h₁, h₂⟩` from `formallySmooth_fractionField k A L`. Establish `: Algebra.IsSmoothAt k (⊥ : Ideal A)` using `h₁`. Take `⟨f, hf, h⟩` from `exists_isStandardSmoothOfRelativeDimension_of_isSmoothAt k (⊥ : Ideal A) (d := D) (Module.finrank_eq_of_rank_eq (h₂.trans hd))`. Conclude with `⟨f, hf, h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_away (k A : Type) [CommRing k] [IsDomain k] [CharZero k] [IsNoetherianRing k]
     [CommRing A] [IsDomain A] [Algebra k A] [FaithfulSMul k A] [Algebra.FiniteType k A] {D : ℕ}
@@ -91,11 +91,11 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ}
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 
 /- English proof (translation)
-Use `h.isDomain` as an intermediate fact. Set `K` to `FractionRing k`. Take `⟨_, _, _⟩` from `RegGenSmooth.chart_props h i hi`. Take `⟨_, hd⟩` from `RegGenSmooth.ringKrullDim_chart h (IsPullback.of_hasPullback p (spMap (algebraMap k K))) i hi`. Use `IsLocalization.tensorRight (S := A) K (nonZeroDivisors k)` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : Algebra.algebraMapSubmonoid A (nonZeroDivisors k) ≤ nonZeroDivisors A` using `Submonoid.map_le_iff_le_comap.mpr fun x hx ↦ mem_nonZeroDivisors_of_ne_zero (by simpa using nonZeroDivisors.ne_zero hx)`. Establish `: FaithfulSMul A (K ⊗[k] A)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (IsLocalization.injective _ hle)`. Establish `: Algebra.IsAlgebraic A (K ⊗[k] A)` using `IsLocalization.isAlgebraic _ (Algebra.algebraMapSubmonoid A (nonZeroDivisors k))`. Take `⟨d, hd₁, hd₂⟩` from `GlobalTheory.exists_ringKrullDim_eq_and_trdeg_eq K (K ⊗[k] A)`. Establish `e : d = D` using `by exact_mod_cast hd₁.symm.trans hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← trdeg_eq k K A (K ⊗[k] A), hd₂, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trdeg_chart (h : IsArithVar p D) {A : Type} [CommRing A] [Algebra k A]
     (i : Sp A ⟶ X) [IsOpenImmersion i] (hi : i ≫ p = spMap (algebraMap k A)) [Nontrivial A] :
@@ -118,15 +118,15 @@ theorem trdeg_chart (h : IsArithVar p D) {A : Type} [CommRing A] [Algebra k A]
   rw [← trdeg_eq k K A (K ⊗[k] A), hd₂, e]
 
 /- English proof (translation)
-Use `h.isDomain` as an intermediate fact. Use `h.charZero_base` as an intermediate fact. Use `h.isNoetherianRing` as an intermediate fact. Take `⟨A, _, _, i, _, a, -, hi⟩` from `exists_affine_chart_over p (genericPoint X)`. Establish `: Nontrivial A` using `PrimeSpectrum.nonempty_iff_nontrivial.1 ⟨a⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, _, _⟩` from `RegGenSmooth.chart_props h i hi`. Take `⟨f, hf, hs⟩` from `exists_away k A (trdeg_chart h i hi)`. Set `B` to `Localization.Away f`. Establish `: IsDomain B` using `IsLocalization.isDomain_of_le_nonZeroDivisors (M := Submonoid.powers f) _ (powers_le_nonZeroDivisors_of_noZeroDivisors hf)`. Establish `: IsOpenImmersion (spMap (algebraMap A B))` using `IsOpenImmersion.of_isLocalization f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `j : Sp B ⟶ X` to `spMap (algebraMap A B) ≫ i`. Establish `hj : j ≫ p = spMap (algebraMap k B)`. Rewrite using `[Category.assoc, hi, IsScalarTower.algebraMap_eq k A B, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `h₁ : SmoothOfRelativeDimension D (j ≫ p)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hj]`. Use `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension D)).mpr ?_` and prove the remaining obligations. Conclude with `RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ((RingHom.isStandardSmoothOfRelativeDimension_algebraMap D).mpr hs)`. Establish `h₂ : SmoothOfRelativeDimension D (j.opensRange.ι ≫ p)`. Rewrite using `[← j.isoOpensRange_inv_comp, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: SmoothOfRelativeDimension (0 + D) (j.isoOpensRange.inv ≫ j ≫ p)` using `inferInstance`. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Use `ModelCharts.exists_etale_coords_of_opens p D j.opensRange ?_` and prove the remaining obligations. Conclude with `⟨genericPoint _, genericPoint_eq_of_isOpenImmersion j⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_etale_coords [IsIntegral X] (h : IsArithVar p D) :
     ∃ (U : X.Opens) (x : Fin D → Γ(X, U)), IsAffineOpen U ∧ genericPoint X ∈ U ∧
@@ -159,7 +159,7 @@ theorem exists_etale_coords [IsIntegral X] (h : IsArithVar p D) :
   exact ⟨genericPoint _, genericPoint_eq_of_isOpenImmersion j⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ h` and use `exists_etale_coords h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_etale_coord_surface : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     [IsIntegral X], IsArithVar p 1 → ∃ (U : X.Opens) (x : Fin 1 → Γ(X, U)), IsAffineOpen U ∧

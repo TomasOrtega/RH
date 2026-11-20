@@ -12,17 +12,17 @@ variable {A : Type u} {B : Type v} {C : Type w} [CommRing A] [CommRing B] [CommR
   [Algebra A B] [Algebra A C] [IsLocalRing C]
 
 /- English proof (translation)
-Set `q` to `RingHom.ker ((residue C).comp σ.toRingHom)`. Establish `: q.IsPrime` using `RingHom.ker_isPrime _`. Take `⟨f, hf, hstd⟩` from `Algebra.IsEtaleAt.exists_isStandardEtale (R := A) q`. Establish `hσ : IsUnit (σ f)` using `(residue_ne_zero_iff_isUnit _).1 (by simpa [q, RingHom.mem_ker] using hf)`. Establish `hτ : IsUnit (τ f)` using `(residue_ne_zero_iff_isUnit _).1 (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h f]`. Simplify `hf)` using `[q, RingHom.mem_ker]`. Set `σ' : Localization.Away f →ₐ[A] C` to `IsLocalization.Away.liftAlgHom f hσ`. Set `τ' : Localization.Away f →ₐ[A] C` to `IsLocalization.Away.liftAlgHom f hτ`. Establish `hσ' : ∀ b, σ' (algebraMap B _ b) = σ b` using `fun b ↦ IsLocalization.Away.lift_eq f hσ b`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτ' : ∀ b, τ' (algebraMap B _ b) = τ b` using `fun b ↦ IsLocalization.Away.lift_eq f hτ b`. It suffices to establish `e : σ' = τ' by`. Use extensionality with `b`. Rewrite using `[← hσ', ← hτ', e]`. Set `P : StandardEtalePresentation A (Localization.Away f)` to `hstd.nonempty_standardEtalePresentation.some`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Apply `P.hom_ext` to reduce the goal to its premises. Establish `hres : (residue C).comp σ'.toRingHom = (residue C).comp τ'.toRingHom`. Apply `IsLocalization.ringHom_ext (Submonoid.powers f)` to reduce the goal to its premises. Use extensionality with `b`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, hσ', hτ', h]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hx` using `congrArg (fun φ ↦ φ P.x) hres`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at hx`. Establish `h1` using `P.hasMap.map σ'`. Establish `h2` using `P.hasMap.map τ'`. Use `IsLocalRing.eq_of_eval_eq_zero_of_not_isUnit_sub (f := P.f.map (algebraMap A C)) (by rw [eval_map_algebraMap]; exact h1.1) (by rw [eval_map_algebraMap]; exact h2.1) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← residue_ne_zero_iff_isUnit, not_not, map_sub, hx, sub_self]`. Rewrite using `[derivative_map, eval_map_algebraMap]`. Conclude with `StandardEtalePair.HasMap.isUnit_derivative_f _ h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algHom_eq_of_residue_eq [Algebra.Etale A B] {σ τ : B →ₐ[A] C}
     (h : ∀ b, residue C (σ b) = residue C (τ b)) : σ = τ := by
@@ -67,17 +67,17 @@ variable {R : Type u} [CommRing R] {K : Type u} [Field K] [Algebra R K]
   {X Y : Type u} [CommRing X] [CommRing Y] [Algebra R X] [Algebra R Y] [Algebra.Etale R X]
 
 /- English proof (translation)
-Set `q` to `RingHom.ker ψ`. Establish `: q.IsPrime` using `RingHom.ker_isPrime _`. Set `Yq` to `Localization.AtPrime q`. Establish `e : (IsScalarTower.toAlgHom R Y Yq).comp f = (IsScalarTower.toAlgHom R Y Yq).comp g`. Use `algHom_eq_of_residue_eq fun x ↦ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Simplify using `only [AlgHom.comp_apply, IsScalarTower.coe_toAlgHom', ← map_sub]`. Rewrite using `[IsLocalization.AtPrime.to_map_mem_maximal_iff Yq q, RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `congr($h x)`. Take `⟨s, hs⟩` from `Algebra.FiniteType.out (R := R) (A := X)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : ∀ x : s, ∃ m ∈ q.primeCompl, m * (f x - g x) = 0`. Introduce `x`. Use `congr($e x)` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, IsScalarTower.coe_toAlgHom'] at this`. Rewrite `this` using `[← sub_eq_zero, ← map_sub, IsLocalization.map_eq_zero_iff q.primeCompl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨m, hm⟩, hm'⟩` from `this`. Conclude with `⟨m, hm, hm'⟩`. Use `choose c hc hc' using hc`. Use `⟨∏ x : s, c x, ?_, ?_⟩` and prove the remaining obligations. Establish `: ∏ x : s, c x ∈ q.primeCompl` using `Submonoid.prod_mem _ fun x _ ↦ hc x`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[q, Ideal.primeCompl, RingHom.mem_ker]`. Use `AlgHom.ext_of_adjoin_eq_top hs fun x hx ↦ ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, IsScalarTower.coe_toAlgHom']`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalization.map_eq_zero_iff (Submonoid.powers (∏ x : s, c x))]`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem c (Finset.mem_univ (⟨x, hx⟩ : s))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨⟨_, Submonoid.mem_powers _⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hk, mul_right_comm, hc' ⟨x, hx⟩, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_away_comp_eq (ψ : Y →ₐ[R] K) (f g : X →ₐ[R] Y) (h : ψ.comp f = ψ.comp g) :
     ∃ t : Y, ψ t ≠ 0 ∧ (IsScalarTower.toAlgHom R Y (Localization.Away t)).comp f =
@@ -146,14 +146,14 @@ instance : Category (PointedEtale R K) where
 
 @[ext]
 /- English proof (translation)
-The claim follows from `Hom.ext h @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext {X Y : PointedEtale R K} {f g : X ⟶ Y} (h : f.alg = g.alg) : f = g :=
   Hom.ext h
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem id_alg (X : PointedEtale R K) : (𝟙 X : X ⟶ X).alg = AlgHom.id R X := rfl
 
@@ -165,7 +165,7 @@ theorem comp_alg {X Y Z : PointedEtale R K} (f : X ⟶ Y) (g : Y ⟶ Z) :
     (f ≫ g).alg = g.alg.comp f.alg := rfl
 
 /- English proof (translation)
-The claim follows from `congr($(f.comm) x)`.
+A detailed English derivation is pending.
 -/
 theorem pt_alg {X Y : PointedEtale R K} (f : X ⟶ Y) (x : X) : Y.pt (f.alg x) = X.pt x :=
   congr($(f.comm) x)
@@ -208,7 +208,7 @@ theorem toAway_alg_apply (X : PointedEtale R K) (s : X) (hs : IsUnit (X.pt s)) (
     (X.toAway s hs).alg x = algebraMap X (Localization.Away s) x := rfl
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.algebraMap_isUnit s`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_toAway (X : PointedEtale R K) (s : X) (hs : IsUnit (X.pt s)) :
     IsUnit ((X.toAway s hs).alg s) :=
@@ -242,11 +242,11 @@ variable (R K) in
 noncomputable abbrev incl : Std R K ⥤ PointedEtale R K := inducedFunctor _
 
 /- English proof (translation)
-Set `q` to `RingHom.ker X.pt`. Establish `: q.IsPrime` using `RingHom.ker_isPrime _`. Take `⟨s, hs, hstd⟩` from `Algebra.IsEtaleAt.exists_isStandardEtale (R := R) q`. Establish `hu : IsUnit (X.pt s)` using `isUnit_iff_ne_zero.2 (by simpa [q, RingHom.mem_ker] using hs)`. Set `P : StandardEtalePresentation R (Localization.Away s)` to `hstd.nonempty_standardEtalePresentation.some`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Y` to `X.away s hu`. Set `j : Std R K` to `⟨P.P, Y.pt.comp P.equivRing.symm.toAlgHom⟩`. Establish `hc : (Y.pt.comp P.equivRing.symm.toAlgHom).comp P.equivRing.toAlgHom = Y.pt`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨j, ⟨X.toAway s hu ≫ (⟨P.equivRing.toAlgHom, hc⟩ : Y ⟶ (incl R K).obj j)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_hom_incl (X : PointedEtale R K) :
     ∃ j : Std R K, Nonempty (X ⟶ (incl R K).obj j) := by
@@ -264,11 +264,11 @@ theorem exists_hom_incl (X : PointedEtale R K) :
   exact ⟨j, ⟨X.toAway s hu ≫ (⟨P.equivRing.toAlgHom, hc⟩ : Y ⟶ (incl R K).obj j)⟩⟩
 
 /- English proof (translation)
-Set `Q : StandardEtalePair X` to `⟨q, hq, derivative q, 1, 0, 1, by ring⟩`. Set `: Algebra X K` to `X.pt.toRingHom.toAlgebra`. Set `: Algebra R Q.Ring` to `((algebraMap X Q.Ring).comp (algebraMap R X)).toAlgebra`. Establish `: IsScalarTower R X Q.Ring` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Establish `: IsScalarTower R X K` using `IsScalarTower.of_algebraMap_eq fun r ↦ (X.pt.commutes r).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.Etale R Q.Ring` using `Algebra.Etale.comp R X Q.Ring`. Establish `hmap : Q.HasMap a₀` using `⟨h₀, isUnit_iff_ne_zero.2 h₁⟩`. Set `ψ : Q.Ring →ₐ[X] K` to `Q.lift a₀ hmap`. Set `Y : PointedEtale R K` to `⟨Q.Ring, ψ.restrictScalars R⟩`. Use `⟨Y, ⟨IsScalarTower.toAlgHom R X Q.Ring, ?_⟩, Q.X, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Conclude with `ψ.commutes x`. Conclude with `Q.hasMap_X.1`. Conclude with `Q.lift_X a₀ hmap`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_hom_root (X : PointedEtale R K) (q : X[X]) (hq : q.Monic) (a₀ : K)
     (h₀ : q.eval₂ X.pt.toRingHom a₀ = 0) (h₁ : (derivative q).eval₂ X.pt.toRingHom a₀ ≠ 0) :
@@ -340,15 +340,15 @@ noncomputable def of (X : PointedEtale R K) : X →+* etaleColimit R K :=
   ((etaleCocone R K).ι.app X).hom
 
 /- English proof (translation)
-The claim follows from `congr($((etaleCocone R K).w f) x)`.
+A detailed English derivation is pending.
 -/
 theorem of_map {X Y : PointedEtale R K} (f : X ⟶ Y) (x : X) : of Y (f.alg x) = of X x :=
   congr($((etaleCocone R K).w f) x)
 
 /- English proof (translation)
-Take `⟨j, x, hx⟩` from `Concrete.colimit_exists_rep (incl R K ⋙ diagram R K) y`. Use `⟨(incl R K).obj j, x, ?_⟩` and prove the remaining obligations. Use `Functor.Final.extendCocone_obj_ι_app' (G := diagram R K) (colimit.cocone (incl R K ⋙ diagram R K)) (𝟙 ((incl R K).obj j))` as an intermediate fact. Rewrite using `[← hx]`. Express the relevant statement in the definitionally equal form `((etaleCocone R K).ι.app ((incl R K).obj j)).hom x = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [etaleCocone, this, CategoryTheory.Functor.map_id, Category.id_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem exists_of (y : etaleColimit R K) : ∃ (X : PointedEtale R K) (x : X), of X x = y := by
   obtain ⟨j, x, hx⟩ := Concrete.colimit_exists_rep (incl R K ⋙ diagram R K) y
@@ -361,9 +361,9 @@ theorem exists_of (y : etaleColimit R K) : ∃ (X : PointedEtale R K) (x : X), o
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨base, by simp⟩`. Consider the case `insert a s _ ih`. Take `⟨X, hX⟩` from `ih`. Take `⟨Y, y, rfl⟩` from `exists_of a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨IsFiltered.max X Y, fun z hz ↦ ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases. Conclude with `⟨(IsFiltered.rightToMax X Y).alg y, of_map _ _⟩`. Take `⟨x, rfl⟩` from `hX z hz`. Conclude with `⟨(IsFiltered.leftToMax X Y).alg x, of_map _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_finset (s : Finset (etaleColimit R K)) :
     ∃ X : PointedEtale R K, ∀ y ∈ s, y ∈ Set.range (of X) := by
@@ -389,7 +389,7 @@ noncomputable def toK : etaleColimit R K →+* K :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `congr($((etaleCoconeIsColimit R K).fac ptCocone X) x)`.
+A detailed English derivation is pending.
 -/
 theorem toK_of (X : PointedEtale R K) (x : X) : toK (of X x) = X.pt x :=
   congr($((etaleCoconeIsColimit R K).fac ptCocone X) x)
@@ -397,19 +397,19 @@ theorem toK_of (X : PointedEtale R K) (x : X) : toK (of X x) = X.pt x :=
 noncomputable instance : Algebra R (etaleColimit R K) := (of (base : PointedEtale R K)).toAlgebra
 
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_eq_of_base : algebraMap R (etaleColimit R K) = of base := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `toK_of base r`.
+A detailed English derivation is pending.
 -/
 theorem toK_algebraMap (r : R) : toK (algebraMap R (etaleColimit R K) r) = algebraMap R K r :=
   toK_of base r
 
 /- English proof (translation)
-The claim follows from `of_map (fromBase X) r`.
+A detailed English derivation is pending.
 -/
 theorem of_algebraMap (X : PointedEtale R K) (r : R) :
     of X (algebraMap R X r) = algebraMap R (etaleColimit R K) r :=
@@ -434,7 +434,7 @@ Both sides reduce to the same expression.
 theorem toKAlgHom_apply (y : etaleColimit R K) : toKAlgHom y = toK y := rfl
 
 /- English proof (translation)
-Take `⟨X, x, rfl⟩` from `exists_of y`. Rewrite `hy` using `[toK_of]`. Establish `hu : IsUnit (X.pt x)` using `isUnit_iff_ne_zero.2 hy`. Rewrite using `[← of_map (X.toAway x hu) x]`. Conclude with `(isUnit_toAway X x hu).map _`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_toK_ne_zero {y : etaleColimit R K} (hy : toK y ≠ 0) : IsUnit y := by
   obtain ⟨X, x, rfl⟩ := exists_of y
@@ -444,7 +444,7 @@ theorem isUnit_of_toK_ne_zero {y : etaleColimit R K} (hy : toK y ≠ 0) : IsUnit
   exact (isUnit_toAway X x hu).map _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h ↦ (h.map toK).ne_zero, isUnit_of_toK_ne_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnit_iff_toK_ne_zero (y : etaleColimit R K) : IsUnit y ↔ toK y ≠ 0 :=
   ⟨fun h ↦ (h.map toK).ne_zero, isUnit_of_toK_ne_zero⟩
@@ -459,22 +459,22 @@ instance isLocalRing : IsLocalRing (etaleColimit R K) :=
     rw [map_add, ha, hb, add_zero]
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_toK_ne_zero, not_not, RingHom.mem_ker]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem maximalIdeal_eq : maximalIdeal (etaleColimit R K) = RingHom.ker toK := by
   ext y
   rw [mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_toK_ne_zero, not_not, RingHom.mem_ker]
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, maximalIdeal_eq, RingHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem residue_eq_zero_iff_toK_eq_zero (y : etaleColimit R K) : residue _ y = 0 ↔ toK y = 0 := by
   rw [IsLocalRing.residue_eq_zero_iff, maximalIdeal_eq, RingHom.mem_ker]
 
 /- English proof (translation)
-Take `⟨X, hX⟩` from `exists_of_finset (F.support.image F.coeff)`. Establish `hl : F ∈ lifts (of X)`. Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `n`. Distinguish the cases in `hn : n ∈ F.support`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `hX _ (Finset.mem_image_of_mem _ hn)`. Rewrite using `[notMem_support_iff.1 hn]`. Conclude with `⟨0, map_zero _⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_degree_eq_and_monic hl hF`. Conclude with `⟨X, q, hqm, hq⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_monic_lift (F : (etaleColimit R K)[X]) (hF : F.Monic) :
     ∃ (X : PointedEtale R K) (q : X[X]), q.Monic ∧ q.map (of X) = F := by
@@ -491,15 +491,15 @@ theorem exists_monic_lift (F : (etaleColimit R K)[X]) (hF : F.Monic) :
   exact ⟨X, q, hqm, hq⟩
 
 /- English proof (translation)
-Use `((HenselianLocalRing.TFAE (etaleColimit R K)).out 0 2).2 ?_` and prove the remaining obligations. Introduce `K' _ φ hφ F hF a₀ h₁ h₂`. Establish `hker : RingHom.ker φ = RingHom.ker toK`. Rewrite using `[← maximalIdeal_eq, ← IsLocalRing.ker_eq_maximalIdeal φ hφ]`. Set `e : K' ≃+* K` to `(RingHom.quotientKerEquivOfSurjective hφ).symm.trans ((Ideal.quotEquivOfEq hker).trans (RingHom.quotientKerEquivOfSurjective hK))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `he : ∀ y, e (φ y) = toK y`. Introduce `y`. Simplify using `[e]`. Take `⟨X, q, hq, rfl⟩` from `exists_monic_lift F hF`. Establish `hc : (toK.comp (of X)) = X.pt.toRingHom` using `by ext x; simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφ' : (e : K' →+* K).comp φ = toK` using `RingHom.ext he`. Establish `key : ∀ p : X[X], p.eval₂ X.pt.toRingHom (e a₀) = e ((p.map (of X)).eval₂ φ a₀)`. Introduce `p`. Rewrite using `[← RingEquiv.coe_toRingHom, hom_eval₂, eval₂_map, hφ', hc]`. Take `⟨Y, f, b, hb, hbY⟩` from `X.exists_hom_root q hq (e a₀) (by rw [key, h₁, map_zero]) (by rw [key, ← derivative_map]; exact (map_ne_zero e).2 h₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hXY : of X = (of Y).comp f.alg.toRingHom`. Use extensionality with `x`. Conclude with `(of_map f x).symm`. Use `⟨of Y b, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsRoot, Polynomial.eval_map, hXY, ← hom_eval₂, hb, map_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, toK_of, hbY]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem henselianLocalRing (hK : Function.Surjective (toK : etaleColimit R K →+* K)) :
     HenselianLocalRing (etaleColimit R K) := by
@@ -531,7 +531,7 @@ theorem henselianLocalRing (hK : Function.Surjective (toK : etaleColimit R K →
     rw [he, toK_of, hbY]
 
 /- English proof (translation)
-Establish `h` using `Functor.Final.extendCocone_obj_ι_app' (colimit.cocone (incl R K ⋙ diagram R K)) (𝟙 ((incl R K).obj j))`. Express the relevant statement in the definitionally equal form `((Functor.Final.extendCocone.obj (colimit.cocone (incl R K ⋙ diagram R K))).ι.app ((incl R K).obj j)).hom a = _`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem of_incl_eq (j : Std R K) (a : (incl R K).obj j) :
     of ((incl R K).obj j) a = (colimit.ι (incl R K ⋙ diagram R K) j).hom a := by
@@ -543,9 +543,9 @@ theorem of_incl_eq (j : Std R K) (a : (incl R K).obj j) :
   rfl
 
 /- English proof (translation)
-Take `⟨j, ⟨e⟩⟩` from `exists_hom_incl X`. Rewrite `h` using `[← of_map e x, ← of_map e y, of_incl_eq, of_incl_eq]`. Take `⟨k, f, g, hfg⟩` from `Concrete.colimit_exists_of_rep_eq (incl R K ⋙ diagram R K) (e.alg x) (e.alg y) h`. Use `⟨(incl R K).obj (IsFiltered.coeq f g), e ≫ (incl R K).map (f ≫ IsFiltered.coeqHom f g), ?_⟩` and prove the remaining obligations. Establish `h2 : ((incl R K).map (IsFiltered.coeqHom f g)).alg (((incl R K).map f).alg (e.alg x)) = ((incl R K).map (IsFiltered.coeqHom f g)).alg (((incl R K).map g).alg (e.alg y))` using `congr_arg (fun z ↦ ((incl R K).map (IsFiltered.coeqHom f g)).alg z) hfg`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : (incl R K).map (f ≫ IsFiltered.coeqHom f g) = (incl R K).map (g ≫ IsFiltered.coeqHom f g)`. Rewrite using `[IsFiltered.coeq_condition f g]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_hom_eq_of_of_eq {X : PointedEtale R K} {x y : X} (h : of X x = of X y) :
     ∃ (Y : PointedEtale R K) (f : X ⟶ Y), f.alg x = f.alg y := by

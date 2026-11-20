@@ -23,7 +23,7 @@ def frob : B.X.Modules ⥤ B.X.Modules :=
 variable {p B} in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, e⟩ => e, fun e => ⟨FrobQuot.natCast_eq_zero_fibI p B, e⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFrob_iff {F F' : B.X.Modules} : IsFrob p F F' ↔ Nonempty (F' ≅ (frob p B).obj F) :=
   ⟨fun ⟨_, e⟩ => e, fun e => ⟨FrobQuot.natCast_eq_zero_fibI p B, e⟩⟩
@@ -39,7 +39,7 @@ instance : (frob p B).Additive := inferInstanceAs ((_ ⋙ _).Additive)
 variable {B}
 
 /- English proof (translation)
-Unfold `Kills at *`. Use `smulHom_comp e.hom g` as an intermediate fact. Rewrite `this` using `[h, zero_comp]`. Establish `h2 : e.inv ≫ e.hom ≫ smulHom G g = 0` using `by rw [← this, comp_zero]`. Simplify using `using h2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kills_of_iso {g : Γ(B.X, ⊤)} {F G : B.X.Modules} (h : Kills g F) (e : F ≅ G) : Kills g G := by
   unfold Kills at *
@@ -49,9 +49,9 @@ theorem kills_of_iso {g : Γ(B.X, ⊤)} {F G : B.X.Modules} (h : Kills g F) (e :
   simpa using h2
 
 /- English proof (translation)
-Introduce `U V hVU hV s t hst`. Establish `nat : ∀ u : Γ(G, U), (e.inv.app V) ((Scheme.Modules.presheaf G).map (homOfLE hVU).op u) = (Scheme.Modules.presheaf F).map (homOfLE hVU).op (e.inv.app U u)` using `fun u => ConcreteCategory.congr_hom (e.inv.mapPresheaf.naturality (homOfLE hVU).op) u`. Establish `h1 : e.inv.app U s = e.inv.app U t` using `h U V hVU hV (by rw [← nat, ← nat, hst])`. Establish `h2` using `congrArg (e.hom.app U) h1`. Establish `h3 : ∀ u : Γ(G, U), e.hom.app U (e.inv.app U u) = u` using `fun u => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, e.inv_hom_id, Scheme.Modules.Hom.id_app]`. Both sides reduce to the same expression. Rewrite `h2` using `[h3, h3]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem NoEmb.of_iso {F G : B.X.Modules} (h : NoEmb B F) (e : F ≅ G) : NoEmb B G := by
   intro U V hVU hV s t hst
@@ -67,7 +67,7 @@ theorem NoEmb.of_iso {F G : B.X.Modules} (h : NoEmb B F) (e : F ≅ G) : NoEmb B
   rwa [h3, h3] at h2
 
 /- English proof (translation)
-The claim follows from `Functor.map_isZero (Scheme.Modules.pushforward (fibI p B).subschemeι) (Functor.map_isZero (Scheme.Modules.pullback (GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out (FrobQuot.natCast_eq_zero_fibI p B) ≫ (fibI p B).subschemeι)) hF)`.
+A detailed English derivation is pending.
 -/
 theorem isZero_frob_obj (p : ℕ) [Fact p.Prime] {F : B.X.Modules} (hF : IsZero F) : IsZero ((frob p B).obj F) :=
   Functor.map_isZero (Scheme.Modules.pushforward (fibI p B).subschemeι)
@@ -86,7 +86,7 @@ def presZero : Pres B where
   iso := by rw [CategoryTheory.Functor.map_id]; infer_instance
 
 /- English proof (translation)
-The claim follows from `isZero_cokernel_of_epi (𝟙 (QCoh.structureModule B.X))`.
+A detailed English derivation is pending.
 -/
 theorem isZero_presZero_mod : IsZero (presZero B).mod :=
   isZero_cokernel_of_epi (𝟙 (QCoh.structureModule B.X))

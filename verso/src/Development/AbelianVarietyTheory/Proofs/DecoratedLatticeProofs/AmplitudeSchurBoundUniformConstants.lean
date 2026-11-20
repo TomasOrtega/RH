@@ -13,31 +13,29 @@ namespace GlobalTheory.Amp
 open SchurBound
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT C1`. Use `⟨2 * |CT| + 2 * C1, fun C hC => ⟨0, ?_⟩⟩` and prove the remaining obligations. Introduce `D large₂ C' Cl C0 hBig htie hB hL hZ τ w w' hTT θ hθ W hW A hA μsec hsec`. Take `⟨-, -, hb, hm, hr, -, -, hk, hv, -, -, -, -, -, -, -, hTb, -, -⟩` from `GlobalTheory.T.amplitudeSizeConsequences_of_wordIndependentHyps D large₂ C' Cl Cg cb Cu cT CT C0 hBig.1 hZ`. Establish `hb1 : 1 ≤ large₂.sc.b` using `by linarith [Real.add_one_le_exp 1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hθ0 : 0 < θ` using `lt_of_lt_of_le (Real.rpow_pos_of_pos (by linarith) _) hθ.1`. Establish `hv0 : 0 < D.host.v` using `by linarith`. Establish `hm1 : 1 ≤ D.R.m` using `by omega`. Establish `hk1 : 1 ≤ D.R.k` using `le_trans (Nat.one_le_pow _ _ hm1) hk`. Establish `hT : 0 < Tr D w` using `by unfold Tr; exact_mod_cast hTT.1.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT' : 0 < Tr D w'` using `by unfold Tr; exact_mod_cast hTT.2.1.pos`. Take `⟨hU, hI, -, hS, hS'⟩` from `GlobalTheory.T.local_data_both_amplitude_sides D τ w w' θ W _ A hθ0 hv0 hTT hW hA`. Take `⟨hM, hM', hDec⟩` from `hL hZ τ w w' θ W hTT hW A hA`. Establish `hBS` using `hB hZ τ w w' θ W hW A hA hT`. Establish `hBS'` using `hB hZ τ w' w θ (swapW W) (goodW_swap hW) (swapS A) (goodS_swap hA) hT'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, -, -, s13, s14, s15⟩` from `hS`. Take `⟨t1, t2, t3, t4, t5, -, t7, t8, -, t10, -, -, t13, -, t15⟩` from `hS'`. Take `⟨-, -, -, -, hz, hz', -, -, -, -, -, hN, -, -⟩` from `hW`. Take `⟨-, -, a3, a4, a5, a6, -, -, -, -, P, hP, hdeg⟩` from `hA`. Take `⟨c, hc, hdens, -⟩` from `GlobalTheory.T.exists_unique_haarDensity_at_identity _ (GG D.R.k D.R.rS) W.μG (PI.QuotSetU.UnitaryGroupMassFormula.unitary_hermitian_group _ _) s6`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hSch` using `GlobalTheory.T.besselModel_schur_of_formalDegree_density D.R.k D.R.rS A.σ (epsSH D.R) D.cd _ P A.deg c W.μG (htie _ _) hP hdeg hc s6 hdens`. Establish `hd : 0 < A.deg` using `hdeg.1`. Use `set κ : ℝ := (2 * D.host.v) ^ (-((D.R.rS : ℝ) * D.R.k)) * θ with hκ`. Establish `hκ0 : 0 < κ` using `mul_pos (Real.rpow_pos_of_pos (by linarith) _) hθ0`. Take `⟨hmeas, hdis⟩` from `GlobalTheory.T.besselDoubleCosetMeasure_bigCell_eq D.R.k D.R.rS W.z W.z' μsec W.μG W.μW W.μW' c κ hk1 s1 t1 s2 t2 hsec hc hκ0 s6 hdens s7 s8 t7 t8`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN' : haarLie (Nset D.R.k D.R.rS) (ENNReal.ofReal κ) = W.μN` using `hN.symm`. Rewrite `hdis` using `[hN']`. Establish `hnv : ‖A.v0‖ ≠ 0` using `norm_ne_zero_iff.2 a6`. Establish `hstd : StdSm A.σ (((‖A.v0‖ : ℝ) : ℂ)⁻¹ • A.v0) (2 * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 5) W.μG (A.deg / (c * volUn (2 * D.R.rS + D.R.k + 1)))`. Use `⟨⟨hk1, hU, hI, ?_, s6, hSch, le_rfl, hDec.mono (DD_smul_le _ _ _), inferInstance⟩, smooth_smul _ _ _ a5⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ hnv]`. Unfold `psiS at hM hM' a3 a4`. Rewrite `hM`, `hM'`, `a3`, `a4` using `[psi_eq_psiGen]`. Establish `hQ` using `GlobalTheory.T.lintegral_hilbertSchmidtNormSq_besselAmplitude_le D.R.k D.R.rS A.σ A.v0 _ _ A.cN W.μG _ _ W.νS W.νS' _ W.z W.z' _ _ W.π W.π' A.B A.B' a6 hstd ⟨⟨s1, s2, s4, GlobalTheory.T.isHaarOn_besselSubgroup_prod_map _ _ _ _ _ s1 s2 s7 s9, inferInstance⟩, s5, s3⟩ ⟨⟨t1, t2, t4, …`. Establish `hFm` using `GlobalTheory.T.measurable_hsNormSq_amplitude_besselUnitary D.R.k D.R.rS W.μG A.cN A.Φ A.Φ' s6 s13 t13`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvk` using `volUn_pos D.R.k`. Establish `hvk1` using `volUn_pos (D.R.k - 1)`. Establish `hvn` using `volUn_pos (2 * D.R.rS + D.R.k + 1)`. Use `set a : ℝ := c * 2 ^ (D.R.rS + 1) * volUn D.R.k ^ 2 / volUn (D.R.k - 1) / (Tz D.R.k D.R.rS W.z * Tz D.R.k D.R.rS W.z') ^ D.R.k / κ ^ 2 with ha`. Establish `ha0 : 0 < a` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcell` using `lintegral_cell volume _ (measurable_bcWeight D.R.k D.R.rS _ _) (bcWeight_nonneg _ _ _ _) _ _ _ a ha0 hmeas (measure_mono_null (fun x hx h => hx (Greg_subset _ _ h)) hdis.2.1) hFm`. Establish `hMM : ENNReal.ofReal a * MMv D w w' A μsec ≤ ENNReal.ofReal ((Module.finrank ℂ W.Wp : ℝ) * Module.finrank ℂ W.Wq / (A.deg / (c * volUn (2 * D.R.rS + D.R.k + 1))))`. Use `le_trans (le_of_eq ?_) hQ` and prove the remaining obligations. Unfold `MMv`. Rewrite using `[← hz, ← hz']`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcell.symm`. Establish `hMM2 : MMv D w w' A μsec ≤ ENNReal.ofReal (((Module.finrank ℂ W.Wp : ℝ) * Module.finrank ℂ W.Wq / (A.deg / (c * volUn (2 * D.R.rS + D.R.k + 1)))) / a)`. Rewrite using `[ENNReal.ofReal_div_of_pos ha0, ENNReal.le_div_iff_mul_le (Or.inl (by simpa using ha0)) (Or.inl ENNReal.ofReal_ne_top), mul_comm]`. Conclude with `hMM`. Use `hMM2.trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hf` using `factor_le large₂.sc.b D.R.m (Tr D w) (Tr D w') θ CT C1 C D.R.rS hb1 (by exact_mod_cast hm1) hT hT' hθ0 (hTb w) (hTb w') hθ.2 hC`. Establish `hκ2 : κ ^ 2 = θ ^ 2 / (2 * D.host.v) ^ (2 * D.R.rS * D.R.k)`. Rewrite using `[hκ, Real.rpow_neg (by linarith), ← Nat.cast_mul, Real.rpow_natCast, mul_assoc 2, mul_comm 2 (D.R.rS * D.R.k), pow_mul _ _ 2]`. Clear the denominators using the available nonvanishing facts. Establish `hpow : (Tr D w * Tr D w') ^ D.R.k = (Tr D w * Tr D w') ^ (D.R.k - 1) * (Tr D w * Tr D w')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← pow_succ, Nat.sub_add_cancel hk1]`. Use `le_trans (le_of_eq ?_) (mul_le_mul_of_nonneg_left hf ?_)` and prove the remaining obligations. Rewrite using `[ha, hz, hz', hκ2, hpow, hr]`. Clear the denominators using the available nonvanishing facts. Use `volUn_pos D.R.r` as an intermediate fact.
-
-Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem schurSt_of_big_tie_uniform : ∀ Cg cb Cu cT CT C1 : ℝ, ∃ C₀ : ℝ, ∀ C ≥ C₀, ∃ m₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl C0 : ℝ), Big D large₂ Cl m₀ → cdScaleTie D → BSch D large₂ C' Cl Cg cb Cu cT CT C0 → LocIn D large₂ C' Cl Cg cb Cu cT CT C0 → SchurSt D large₂ C' Cl Cg cb Cu cT CT C0 C1 C := by
   intro Cg cb Cu cT CT C1

@@ -16,9 +16,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {W : Wts X Pr.Word R} {Ch : Ch
   {u : Pr.Word} {A : Amb X}
 
 /- English proof (translation)
-Establish `hY' : (fun v => g.1.1 v) '' Y ∈ ybSet sel mu cst (g • p).deco.1.N` using `(ybSet_gmap sel mu cst _ g.1.1 Y).2 hY`. Establish `hd` using `(TopStep.tilOk_of_avoid (mu := mu) hPr hsel u hS).2.2`. Take `⟨κ, a, hκ, ha, ea⟩` from `TopLaw.exists_pass hd g p`. Take `⟨κ', a', hκ', ha', ea'⟩` from `TopLaw.exists_pass hd g' p'`. Establish `key` using `GlobalTheory.kerOf_gmap_frames T.top (Sall sel mu u) _ (cAof sel mu cst) (cBof sel mu cst u) _ _ _ _ hT.top g.1 g'.1 p.deco.1.N (frsF sel mu p) p'.deco.1.N (frsF sel mu p') κ⁻¹ κ'⁻¹ (TopStep.XiTop Ch sel mu cst m2 p Y p') (TopStep.XiTop Ch sel mu cst m2 (g • p) ((fun v => g.1.1 v …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[funext hκ, funext hκ']`. Use `key.trans ?_` and prove the remaining obligations. Establish `ei : (∏ P, a P)⁻¹ = (L.levG (m2 + 1) al).chr g.2.1⁻¹ * (L.levQ (m2 + 1) al).chr g.2.2⁻¹`. Rewrite using `[ea, mul_inv, map_inv, map_inv]`. Conclude with `(congrArg (fun z : X.Kˣ => (z : X.K) • _) (congrArg₂ (· * ·) ea' ei)).trans (TopLaw.smul_comp_smul _ _ _ _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerOf_xiTop (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ S ∧ ∀ i, Pr.g i ∈ S)
     (hL : L.Ok Ch sel mu cst G m2) (hs : cst.sharp = true) {T : ChTh W sel mu u m2} (hT : ChTh.Ok (Ch := Ch) cst T)
@@ -47,9 +47,9 @@ theorem kerOf_xiTop (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u 
   exact (congrArg (fun z : X.Kˣ => (z : X.K) • _) (congrArg₂ (· * ·) ea' ei)).trans (TopLaw.smul_comp_smul _ _ _ _ _)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl` from `hΛ.trans (topLev_levG_m_eq Ch sel mu cst _)`. Take `rfl` from `hΘ.trans (topLev_levQ_m_eq Ch sel mu cst _)`. Establish `e3 : (chTh W Ch sel mu cst A u m2).top = stepT W Ch sel mu cst A u (m2 + 1) (W.lamTrue u R.m)` using `stepC_eq_stepT W Ch sel mu cst (muqTie_of_ok Ch sel mu cst L hL) A u (m2 + 1) (by have := hL.hm; omega) (W.lamTrue u R.m)`. Establish `key` using `kerOf_xiTop hX hPr hsel hS hL hs hT al default g g' p hY p'`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `key` using `[e3]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_xiOver (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ S ∧ ∀ i, Pr.g i ∈ S)
     (hL : L.Ok Ch sel mu cst G m2) (hs : cst.sharp = true) (hT : ChTh.Ok (Ch := Ch) cst (chTh W Ch sel mu cst A u m2))
@@ -73,9 +73,9 @@ theorem ker_xiOver (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u �
   exact key
 
 /- English proof (translation)
-Take `rfl : i = m2 + 1` from `by have := hL.hm; omega`. Establish `hY` using `PtAt.mem_ybSet d hi`. Unfold `kAt`. Rewrite using `[xiAt_last Ch sel mu cst L hi, xiAt_last Ch sel mu cst L hi]`. Take `⟨_ | al, hb⟩` from `b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (hb.2 (by omega)) (by simp)`. Conclude with `ker_xiOver hX hPr hsel ⟨hTS, hg⟩ hL hs hT hi al (levGAt_of_le sel mu L _ hi.ge b') (levQAt_of_le sel mu L _ hi.ge b') g g' d.1.1 hY d'.1.1`.
+A detailed English derivation is pending.
 -/
 theorem kAt_top_equiv (X : Fields) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) (mu : Tup X.F X.E X.K S)

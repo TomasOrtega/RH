@@ -15,7 +15,7 @@ def ringOver (K' : IntermediateField X.functionField (Kbar X)) (U : AffOp X) : S
   K'.toSubalgebra.toSubring.comap (algebraMap U.Bp (Kbar X))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ringOver {K' : IntermediateField X.functionField (Kbar X)} {U : AffOp X} {x : U.Bp} :
     x ∈ ringOver K' U ↔ (x : Kbar X) ∈ K' := Iff.rfl
@@ -39,7 +39,7 @@ def descMod (K' : IntermediateField X.functionField (Kbar X)) (U : AffOp X) {h :
     rw [this]; exact L.smul_mem (c : U.Bp) ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_descMod {K' : IntermediateField X.functionField (Kbar X)} {U : AffOp X} {h : ℕ}
     {L : Submodule U.Bp (Fin h → U.Bp)} {a : Fin h → ringOver K' U} :

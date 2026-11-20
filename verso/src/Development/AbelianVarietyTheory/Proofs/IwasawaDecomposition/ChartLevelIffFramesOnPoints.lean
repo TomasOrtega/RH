@@ -13,15 +13,13 @@ section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `(h w).2 hw`. Introduce `hv`. Establish `e : g.1 ((g⁻¹).1 v) = v` using `LinearEquiv.apply_symm_apply g.1 v`. Use `⟨(g⁻¹).1 v, ?_, e⟩` and prove the remaining obligations. Establish `h'` using `h ((g⁻¹).1 v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[e]`. Conclude with `h'.1 hv`. Introduce `h v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hv` using `[← h]`. Take `⟨w, hw, e⟩` from `hv`. Rewrite using `[← g.1.injective e]` and apply the resulting hypothesis. Introduce `hv`. Rewrite using `[← h]`.
-
-Conclude with `⟨v, hv, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frStab_iff_image {P : HeightOneSpectrum (𝓞 E)} {C : Set (Sp E n)} (g : ↥(GLint E n P)) :
     g ∈ frStab P C ↔ (fun v => g.1 v) '' C = C := by
@@ -50,33 +48,29 @@ theorem frStab_iff_image {P : HeightOneSpectrum (𝓞 E)} {C : Set (Sp E n)} (g 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `X n ST SG Q y _ hc cq hact Λ Θ r C hC D hD q g s hg hgs p hr hp`. Establish `hmul : ∀ P : Q, q.at P (g * s) = q.at P g * q.at P s` using `fun P => by simp only [QLoc.at, map_mul]`. Establish `hat : ∀ P : Q, bc (q.phi P) (qGL n (r.1.1.fr P)) * q.at P s = bc (q.phi P) (qGL n (p.fr P))` using `fun P => by`. Rewrite using `[← hr.2 P, ← hp.2 P, hmul]`. Establish `hcq : ∀ κ : FrmG Λ Θ, (∀ P : Q, κ.2.2.1 P ∈ frStab P.1 (D P)) ↔ cq (ya Λ Θ κ r) = cq r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `κ`. Rewrite using `[funext_iff]`. Use `forall_congr' fun P => ?_` and prove the remaining obligations. Rewrite using `[hact Λ Θ κ r P, hD, frStab_iff_image]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hs`. Take `⟨hsU, hsQ⟩` from `(mem_levUQ q _).1 hs`. Establish `h1` using `act_of_mem hc n _ 1 hg ⟨s, hsU⟩`. Rewrite `h1` using `[DecoSet.dia_one, DecoSet.dia_one, hr.1, hp.1]`. Establish `h2` using `mem_chG.1 ((Formalism.L2.Col.levRed hc n ST SG _ ⟨s, hsU⟩)⁻¹).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : ∀ (P : Q) (x : Sp X.E n), x ∈ p.deco.1.at P.1 ↔ x ∈ r.1.1.deco.1.at P.1`. Introduce `P x`. Rewrite using `[h1]`. Conclude with `(mem_localization_gmap P.1 ((1 : UF X.E n) : Sp X.E n ≃ₗ[X.E] Sp X.E n) r.1.1.deco.1.N x).trans Iff.rfl`. Set `t : GLQ X.E n Q` to `fun P => ⟨(r.1.1.fr P)⁻¹ * p.fr P, by show ∀ x, _ ↔ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `A` using `r.1.1.2 P (((r.1.1.fr P)⁻¹ * p.fr P) x)`. Establish `e : r.1.1.1.2 P (((r.1.1.fr P)⁻¹ * p.fr P) x) = p.fr P x` using `LinearEquiv.apply_symm_apply _ _`. Rewrite `A` using `[e]`. Conclude with `A.symm.trans ((hN P _).symm.trans (p.2 P x))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs_at : ∀ P : Q, q.at P s = bc (q.phi P) (qGL n (t P).1)` using `fun P => by`. Rewrite using `[eq_inv_mul_of_mul_eq (hat P)]`. Use `show _ = bc (q.phi P) (qGL n ((r.1.1.fr P)⁻¹ * p.fr P))`. Simplify using `only [qGL, map_mul, map_inv]`. Establish `ht : ∀ P : Q, t P ∈ (cutQ Θ D P).H` using `fun P => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(q.U_rat P (t P)).1 ?_` and prove the remaining obligations. Establish `h'` using `hsQ P`. Rewrite `h'` using `[hs_at P]`. Conclude with `h'`. Establish `hθ : (fun P => (t P)⁻¹ : GLQ X.E n Q) ∈ Θ.grp` using `fun P _ => inv_mem (Subgroup.mem_inf.1 (ht P)).1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Set `κ : FrmG Λ Θ` to `(1, ⟨_, h2.1⟩, ⟨_, hθ⟩)`. Use `⟨κ, map_one _, ?_, (bar_ya_eq_iff _ _ _ _).2 ?_, (hcq κ).1 fun P => inv_mem (Subgroup.mem_inf.1 (ht P)).2⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Conclude with `h1.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `P show 1 * r.1.1.1.2 P * (((t P)⁻¹)⁻¹).1 = p.1.2 P`. Rewrite using `[inv_inv, one_mul]`. Conclude with `mul_inv_cancel_left (r.1.1.fr P) (p.fr P)`. Rewrite using `[hC]`. Conclude with `h2.2`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨⟨γ, h, θ⟩, h1, h2, h3, h4⟩`. Establish `: γ = 1` using `ufGL_inj hc n (h1.trans (map_one _).symm)`. Substitute `this` using the available equality. Establish `hdeco : p.deco = ((1 : UF X.E n), h.1) • r.1.1.deco`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Take `⟨hJ, hred⟩` from `red_of_act hc n 1 hg hgs h.1 (by rw [DecoSet.dia_one, DecoSet.dia_one, hr.1, hp.1, hdeco])`. Establish `hsU : s ∈ levU hc n ST SG (chG Λ C)` using `(mem_levU hc n ST SG _).2 ⟨hJ, by`. Rewrite using `[hred]`. Use `inv_mem (mem_chG.2 ⟨h.2, ?_⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← hC]`. Conclude with `(bar_ya_eq_iff _ _ _ _).1 h3⟩`. Use `(mem_levUQ q _).2 ⟨hsU, fun P => ?_⟩` and prove the remaining obligations. Establish `hfr : p.fr P = r.1.1.fr P * ((θ.1 P)⁻¹).1`. Rewrite using `[← h2]`.
-
-Use `show 1 * r.1.1.1.2 P * ((θ.1 P)⁻¹).1 = _`. Rewrite using `[one_mul]`. Both sides reduce to the same expression. Establish `hs_at : q.at P s = bc (q.phi P) (qGL n ((θ.1 P)⁻¹).1)`. Rewrite using `[eq_inv_mul_of_mul_eq (hat P), hfr]`.
-
-Simplify using `only [qGL, map_mul, map_inv, inv_mul_cancel_left]`. Rewrite using `[hs_at]`. Use `(q.U_rat P ((θ.1 P)⁻¹)).2 ?_` and prove the remaining obligations. Conclude with `inv_mem (Subgroup.mem_inf.2 ⟨θ.2 P trivial, (hcq (1, h, θ)).2 h4 P⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lev_iff_frames : ∀ {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))} {y : Ys X n} [NeZero n] (hc : Formalism.BasicNotions.CMData X.F X.E) (cq : PtY ST SG Q y → ∀ P : Q, Set (Sp X.E n)), GlobalTheory.Mem.Col2.ChEx.InvActs cq → ∀ (Λ : LevFam X.E X.K n SG) (Θ : LevQFam X.E X.K n Q) (r : PtY ST SG Q y) (C : ∀ w : SG, Set (Fin n → 𝓞 X.E ⧸ w.1.asIdeal)), bar r = C → ∀ (D : ∀ P : Q, Set (Sp X.E n)), cq r = D → ∀ (q : QLoc hc n Q (GlobalTheory.Mem.Col2.ChEx.cutQ Θ D)) {g s : GL (Fin n) (AfE X.F X.E)}, g ∈ UAd hc n → g * s ∈ UAd hc n → ∀ (p : DecoF X.E n ST SG Q), FrExact q g r.1.1 → FrExact q (g * s) p → (s ∈ levUQ hc n ST SG Q (chG Λ C) q ↔ ∃ κ : FrmG Λ Θ, ufGL X.E n κ.1 = 1 ∧ (ya Λ Θ κ r).1.1 = p ∧ bar (ya Λ Θ κ r) = bar r ∧ cq (ya Λ Θ κ r) = cq r) := by
   intro X n ST SG Q y _ hc cq hact Λ Θ r C hC D hD q g s hg hgs p hr hp

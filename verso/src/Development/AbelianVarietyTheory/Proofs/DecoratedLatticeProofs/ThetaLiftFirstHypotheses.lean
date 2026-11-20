@@ -35,9 +35,9 @@ open GlobalTheory.LiftRows
 namespace GlobalTheory.ThmAFinal
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hCh hEx hHost hLed hcc hQ hGT hInert`. Take `⟨hCore, hSF, hE, hW⟩` from `GlobalTheory.T.core_clauses_of_weak_characterisation R F hCh hEx`. Establish `hGiven` using `GlobalTheory.T.scalarHypotheses_of_topRows R F hOk hCh hEx hHost hLed hcc hQ hGT`. Establish `hFix` using `GlobalTheory.T.hyperspecial_fixes_vacua_good_inert_place R F hCh hEx`. Establish `hA` using `GlobalTheory.T.thetaInnerProduct_eq_const_mul_LValue hDS hHCM hCusp hWS hSE hUD hBZ R.toRealDat F.lv2 hGiven hcc R.SF hSF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `(GlobalTheory.T.thetaLift_adjoint_scalarFormula_injective hDS hHCF hHCM hCW hCusp hHowe hWS hHk hSE hUD R.toRealDat F.lv2 hGiven hcc hCh.allPl hFix R.SF hSF).2`. Establish `hC` using `GlobalTheory.T.finiteType_carriesOnePart hHowe hCusp R F hOk hCh hEx hInert hU`. Conclude with `GlobalTheory.T.thetaAdjoint_scalar_theorem_of_scalar_formula R F hOk hCh hEx hA hC`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pThmA_short
     (hDS : GlobalTheory.Published.DiscreteSeriesCover) (hHCF : GlobalTheory.Published.HarishChandraFinite)

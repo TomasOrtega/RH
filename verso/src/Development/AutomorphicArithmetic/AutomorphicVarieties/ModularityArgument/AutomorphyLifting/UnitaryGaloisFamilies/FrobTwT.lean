@@ -16,9 +16,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨α, hαB, hα⟩` from `(GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff _ _ _ σ.ρ B).1 (GlobalTheory.LFun.SatCompare.hasSatakeGL_iff.2 ⟨⟨σ.smooth, σ.irred⟩, hB⟩)`. Use `⟨α, hαB.symm, ?_⟩` and prove the remaining obligations. Establish `φ` using `IrrGL.equivOf σ.ρ σ.smooth σ.irred`. Take `⟨a, ha, ε, L⟩` from `X E Ω A w h rc H`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : rc (IrrGL.of σ.ρ σ.smooth σ.irred) = WD.mk (WDRep.diag h fun i => (α i)⁻¹)` using `L.sat (IrrGL.of σ.ρ σ.smooth σ.irred) α ⟨IrrRep.irr _, fixed_ne_bot_of_equiv φ hα.2.1, (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans hα.2.2⟩`. Rewrite using `[cl, e, WD.lpTw_mk]`. Use `WD.sound ⟨.refl _ _, fun g v => funext fun i => ?_, fun v => rfl⟩` and prove the remaining obligations. Simplify using `[mul_zpow, mul_comm, mul_left_comm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tw_diag (X : ExtraV) {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRecT h rc) {n : ℕ}
     (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (B : Multiset ℂˣ) (hB : GlobalTheory.LFun.HasSatGL w σ.ρ B) (t : ℝ) :
@@ -38,7 +38,7 @@ private theorem tw_diag (X : ExtraV) {rc : IrrGL (w.adicCompletion E) → WD h} 
   simp [mul_zpow, mul_comm, mul_left_comm, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[zpow_neg_one, Units.val_mul, mul_inv, Units.val_inv_eq_inv_val, inv_inv, coe_qPow, ← Complex.cpow_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem val_tw (t : ℝ) (x : ℂˣ) :
     (((x⁻¹ * qPow w t : ℂˣ) : ℂ)) ^ (-1 : ℤ) = (x : ℂ) * ((normV w : ℕ) : ℂ) ^ (-(t : ℂ)) := by
@@ -48,13 +48,13 @@ end UpperTheory.V.Z.Win.Gu.FrobTwTAux
 
 open UpperTheory.V.Z.Win.Gu.FrobTwTAux in
 /- English proof (translation)
-Introduce `X hG E Ω _ _ _ _ _ l _ ι a r w hl σ B hB t H A h`. Take `⟨rc, hrec⟩` from `UpperTheory.Zero.LLC.recTExists E Ω A w h`. Take `⟨α, rfl, e⟩` from `tw_diag X hrec σ B hB t`. Establish `hu : (WD.mk (WDRep.diag h fun i => (α i)⁻¹ * qPow w t)).unr` using `(WD.unr_mk _).2 (WDRep.unr_diag _)`. Establish `hg : UpperTheory.V.Z.Win.Gd ((rc (cl σ)).lpTw t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(hG E Ω A w h).2.2.2 _ hu`. Establish `hk : WDT ι r ((rc (cl σ)).lpTw t)` using `(H A h rc hrec).1 hl`. Establish `hx` using `hk.isWDOf hg`. Establish `hw` using `(hx.wdOf_eq hl).trans e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht, φ, hφ, N, b, hN, -⟩` from `hx`. Use `⟨(hN.unr_wdOf_iff hl ht ι).1 (by rw [hw]; exact hu), fun s hs => ?_⟩` and prove the remaining obligations. Establish `hd : deg (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h) = 1` using `deg_eq_one_iff.2 hs`. Use `hN.charPol_wdOf hl ht ι (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h)⁻¹` as an intermediate fact. Rewrite `this` using `[hw, WD.charPol_mk, WDRep.diag_ρ, charpoly_diagEnd, deg_inv, hd]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.symm.trans ?_` and prove the remaining obligations. Simplify using `only [val_tw, Multiset.map_map]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Win.Gu.frobTwT :
     ExtraV → GdLaws → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (r : G E Ω →* GL (Fin a) (Qbar l)) (w : HeightOneSpectrum (𝓞 E)), ((l : ℕ) : 𝓞 E) ∉ w.asIdeal → ∀ (σ : SmIrr (GL (Fin a) (w.adicCompletion E))) (B : Multiset ℂˣ), GlobalTheory.LFun.HasSatGL w σ.ρ B → ∀ t : ℝ, (ParAtT ι r w fun _ _ rc => (rc (cl σ)).lpTw t) → FrobEig ι r w (B.map fun α : ℂˣ => (α : ℂ) * ((normV w : ℕ) : ℂ) ^ (-(t : ℂ))) := by

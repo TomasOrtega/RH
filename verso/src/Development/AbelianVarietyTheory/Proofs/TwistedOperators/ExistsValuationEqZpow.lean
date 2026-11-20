@@ -19,19 +19,17 @@ open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Use `set φ := IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k`. Establish `hu0 : φ (uniformizer k) ≠ 0`. Rewrite using `[ne_eq, map_eq_zero]`. Conclude with `(uniformizer_pos).ne'`. Establish `hu1 : φ (uniformizer k) < 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_one φ]`. Conclude with `φ.strictMono uniformizer_lt_one`. Take `⟨a, ha⟩` from `WithZero.ne_zero_iff_exists.mp hu0`. Establish `ha1 : a.toAdd < 0`. Rewrite `hu1` using `[← ha]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu1` after adjusting the coercions. Establish `ha2 : -1 ≤ a.toAdd`. Establish `h1 : φ.symm ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) < 1`. Rewrite using `[← map_one φ.symm]`. Conclude with `φ.symm.strictMono (by exact_mod_cast (show (Multiplicative.ofAdd (-1 : ℤ)) < 1 by decide))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2` using `le_uniformizer_iff.mpr h1`. Establish `h3` using `φ.strictMono.monotone h2`. Simplify using `only [OrderMonoidIso.apply_symm_apply, ← ha] at h3`. Conclude with `h3` after adjusting the coercions. Establish `ha3 : a = Multiplicative.ofAdd (-1 : ℤ)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish `hd0 : φ (valuation k (d : k)) ≠ 0`. Rewrite using `[ne_eq, map_eq_zero, map_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `d.ne_zero`. Take `⟨b, hb⟩` from `WithZero.ne_zero_iff_exists.mp hd0`. Establish `hz : φ (uniformizer k ^ (-b.toAdd)) = φ (uniformizer k) ^ (-b.toAdd)` using `map_zpow₀ φ _ _`. Establish `key : φ (valuation k (d : k)) = φ (valuation k (ϖ : k) ^ (-b.toAdd))`. Rewrite using `[hϖ, hz, ← ha, ← hb, ha3, ← WithZero.coe_zpow]`.
-
-Use `congr 1`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Simplify using the standard rewrite rules. Conclude with `⟨-b.toAdd, φ.injective key⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.StepData.NormalForm.exists_valuation_eq_zpow {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k)
     (d : kˣ) : ∃ e : ℤ, valuation k (d : k) = valuation k (ϖ : k) ^ e := by
@@ -70,9 +68,9 @@ theorem _root_.GlobalTheory.StepData.NormalForm.exists_valuation_eq_zpow {ϖ : k
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite `hw` using `[_root_.GlobalTheory.StepData.mem_KO]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.StepData.latOf_le_iff]`. Simplify `hw.1` using `[← mul_assoc]`. Rewrite using `[_root_.GlobalTheory.StepData.latOf_le_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `hw.2` using `[mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma latOf_mul_of_mem_KO' {K : Type} [Field K] [ValuativeRel K]
     [TopologicalSpace K] [IsNonarchimedeanLocalField K] {Y : Type} [Fintype Y] [DecidableEq Y]
@@ -89,47 +87,43 @@ open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ϖ hϖ n _ _ c h`. Take `⟨b, hbT, w, hw, rfl⟩` from `_root_.GlobalTheory.SplitWeil.iwasawa_blockTriangular k (n ⊕ Fin c) (Sum.elim (fun _ => 0) (fun i => (i : ℕ) + 1)) h`. Establish `hbP : (b : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k).BlockTriangular (_root_.GlobalTheory.RootEx.lev 1)`. Introduce `i j hij`. Apply `hbT` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `_root_.GlobalTheory.RootEx.lev at hij`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp at hij ⊢ <;> omega`. Take `⟨u', hu', m, hm0, hmb, hbum⟩` from `_root_.GlobalTheory.RootEx.BlockLevi.exists_unip_mul_levi k n c 1 b hbP`. Establish `h21 : (b : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k).toBlocks₂₁ = 0`. Use extensionality with `i j`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hbT (by simp)`. Establish `hT : ((b : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k).toBlocks₂₂).BlockTriangular id`. Introduce `i j hij`. Conclude with `hbT (by simp only [Sum.elim_inr]; exact Nat.succ_lt_succ hij)`. Establish `hdet : (b : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k).det ≠ 0` using `b.det_ne_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hbB` using `fromBlocks_toBlocks (b : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)`. Rewrite `hdet` using `[← hbB, h21, det_fromBlocks_zero₂₁, det_of_upperTriangular hT]`. Establish `hG : (b : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k).toBlocks₁₁.det ≠ 0` using `left_ne_zero_of_mul hdet`. Establish `ht : ∀ i : Fin c, (b : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) (Sum.inr i) (Sum.inr i) ≠ 0` using `fun i => Finset.prod_ne_zero_iff.mp (right_ne_zero_of_mul hdet) i (Finset.mem_univ i)`. Use `set g : GL n k := Matrix.GeneralLinearGroup.mkOfDetNeZero _ hG with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgv : (g : Matrix n n k) = (b : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k).toBlocks₁₁` using `rfl`. Use `choose e he using fun i => _root_.GlobalTheory.StepData.NormalForm.exists_valuation_eq_zpow hϖ (Units.mk0 _ (ht i))`. Use `set z : n → k := fun r => if hc : 0 < c then (b : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) (Sum.inl r) (Sum.inr ⟨0, hc⟩) * ((b : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) (Sum.inr ⟨0, hc⟩) (Sum.inr ⟨0, hc⟩))⁻¹ else 0 with hz`. Use `set εv : n ⊕ Fin c → kˣ := Sum.elim (fun _ => 1) (fun i => Units.mk0 _ (ht i) * ϖ ^ (-e i)) with hεv`. Establish `hϖ0 : (ϖ : k) ≠ 0` using `ϖ.ne_zero`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : m = _root_.GlobalTheory.IndefiniteRowSideFullHecke.NormalRepresentationLattice.nfBasis ϖ g e z * _root_.GlobalTheory.SplitFlip.diagGL εv` using `by clear hbum hu' hbP hdet hbB hw hT h21 hϖ he`. Use extensionality with `r s`. Rewrite using `[Units.val_mul, _root_.GlobalTheory.IndefiniteRowSideFullHecke.NormalRepresentationLattice.nfBasis_val, _root_.GlobalTheory.SplitFlip.diagGL_val, mul_diagonal]`. Apply the tactic sequence `rcases r with r | i <;> rcases s with s | j`. Rewrite using `[hmb _ _ (by simp [_root_.GlobalTheory.RootEx.lev])]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `[hεv, hgv, toBlocks₁₁]`. Distinguish the cases in `hj : (j : ℕ) = 0`. Rewrite using `[hmb _ _ (by simp [_root_.GlobalTheory.RootEx.lev, hj])]`. Establish `hc : 0 < c` using `j.pos`. Establish `hj' : j = ⟨0, hc⟩` using `Fin.ext hj`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hj'` using the available equality. Simplify using `only [fromBlocks_apply₁₂, of_apply, hj, if_true, hz, dif_pos hc, hεv, Sum.elim_inr, Units.val_mul, Units.val_mk0, Units.val_zpow_eq_zpow_val, _root_.zpow_neg, Units.val_inv_eq_inv_val]`. Use `ht ⟨0, hc⟩` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[hm0 _ _ (by simp [_root_.GlobalTheory.RootEx.lev]; omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hj]`. Distinguish the cases in `hi : (i : ℕ) = 0`. Rewrite using `[hmb _ _ (by simp [_root_.GlobalTheory.RootEx.lev, hi])]`. Simplify using `only [fromBlocks_apply₂₁, Matrix.zero_apply, zero_mul]`. Conclude with `hbT (by simp)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hm0 _ _ (by simp [_root_.GlobalTheory.RootEx.lev]; omega)]`. Rewrite using `[fromBlocks_apply₂₁, Matrix.zero_apply, zero_mul]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Use `ht i` as an intermediate fact.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hmb _ _ rfl]`. Simplify using `only [fromBlocks_apply₂₂, diagonal_apply_eq, hεv, Sum.elim_inr, Units.val_mul, Units.val_mk0, Units.val_zpow_eq_zpow_val, _root_.zpow_neg, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hm0 _ _ (by simp [_root_.GlobalTheory.RootEx.lev]; omega)]`. Simplify using `[diagonal_apply_ne _ hij]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hεinv : (_root_.GlobalTheory.SplitFlip.diagGL εv)⁻¹ = _root_.GlobalTheory.SplitFlip.diagGL εv⁻¹`. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[Units.val_mul, _root_.GlobalTheory.SplitFlip.diagGL_val, _root_.GlobalTheory.SplitFlip.diagGL_val, diagonal_mul_diagonal, Units.val_one]`. Simplify using `[diagonal_apply, one_apply]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hv0 : valuation k (ϖ : k) ≠ 0` using `(map_ne_zero _).mpr hϖ0`. Establish `hval : ∀ i, valuation k (εv i : k) = 1`. Introduce and unpack `(i | i)`. Simplify using `[hεv]`. Establish `hei` using `he i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hei` using `[Units.val_mk0]`. Simplify using `only [hεv, Sum.elim_inr, Units.val_mul, Units.val_mk0, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀]`. Rewrite using `[hei, ← zpow_add₀ hv0, add_neg_cancel, zpow_zero]`. Establish `hε : _root_.GlobalTheory.SplitFlip.diagGL εv ∈ _root_.GlobalTheory.SplitWeil.KO k (n ⊕ Fin c)`. Rewrite using `[_root_.GlobalTheory.SplitFlip.mem_KO_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `i j`. Rewrite using `[_root_.GlobalTheory.SplitFlip.diagGL_val, diagonal_apply]`. Use `split_ifs`. Rewrite using `[Valuation.mem_integer_iff, hval]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Introduce `i j`. Rewrite using `[hεinv, _root_.GlobalTheory.SplitFlip.diagGL_val, diagonal_apply]`. Use `split_ifs`. Rewrite using `[Valuation.mem_integer_iff, Pi.inv_apply, Units.val_inv_eq_inv_val, map_inv₀, hval, inv_one]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Use `⟨u'⁻¹, inv_mem hu', g, e, z, ?_, ?_⟩` and prove the remaining obligations. Establish `hub : u'⁻¹ * (b * w) = _root_.GlobalTheory.IndefiniteRowSideFullHecke.NormalRepresentationLattice.nfBasis ϖ g e z * (_root_.GlobalTheory.SplitFlip.diagGL εv * w)`. Rewrite using `[hbum, key]`. Use `group`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hub, latOf_mul_of_mem_KO' _ _ (mul_mem hε hw)]`. Rewrite using `[latOf_mul_of_mem_KO' _ _ hw]`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.NormalRepresentationLattice.MeetsIn`. Introduce `y`. Rewrite using `[_root_.GlobalTheory.StepData.mem_latOf, _root_.GlobalTheory.StepData.mem_latOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `h1 : (b : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) *ᵥ Sum.elim ((↑g⁻¹ : Matrix n n k) *ᵥ y) 0 = Sum.elim y 0`. Rewrite using `[← hbB, h21, fromBlocks_mulVec]`. Simplify using `[← hgv, mulVec_mulVec]`. Establish `hv : (↑b⁻¹ : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) *ᵥ Sum.elim y 0 = Sum.elim ((↑g⁻¹ : Matrix n n k) *ᵥ y) 0`. Rewrite using `[← h1, mulVec_mulVec, Units.inv_mul, one_mulVec]`.
-
-Rewrite using `[hv]`. Prove the components needed by the constructor for the conclusion. Introduce `H i`. Simplify using `using H (Sum.inl i)`. Introduce and unpack `H (i | i)`.
-
-Simplify using `using H i`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.StepData.NormalForm.normalFormModN : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], _root_.GlobalTheory.IndefiniteRowSideFullHecke.NormalRepresentationLattice.NormalFormModN k := by

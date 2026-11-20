@@ -14,12 +14,12 @@ variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
   [NormedAddCommGroup X] [NormedSpace ℝ X] [FiniteDimensional ℝ X]
 
 /- English proof (translation)
-The claim follows from `WithTop.coe_le_coe.2 le_top`.
+A detailed English derivation is pending.
 -/
 theorem natCast_le_infty (m : ℕ) : (m : WithTop ℕ∞) ≤ ∞ := WithTop.coe_le_coe.2 le_top
 
 /- English proof (translation)
-The claim follows from `WithTop.coe_lt_coe.2 (ENat.natCast_lt_top m)`.
+A detailed English derivation is pending.
 -/
 theorem natCast_lt_infty (m : ℕ) : (m : WithTop ℕ∞) < ∞ := WithTop.coe_lt_coe.2 (ENat.natCast_lt_top m)
 
@@ -33,21 +33,21 @@ def bilD (Ψ : 𝓢(V, ℂ)) (B : V →L[ℝ] X →L[ℝ] V) (m : ℕ) (v : V) (
   iteratedFDeriv ℝ m (fun x => Ψ (B v x)) x
 
 /- English proof (translation)
-The claim follows from `(Ψ.smooth ⊤).comp (B v).contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_bil (Ψ : 𝓢(V, ℂ)) (B : V →L[ℝ] X →L[ℝ] V) (v : V) :
     ContDiff ℝ ∞ (fun x => Ψ (B v x)) :=
   (Ψ.smooth ⊤).comp (B v).contDiff
 
 /- English proof (translation)
-The claim follows from `(B v).iteratedFDeriv_comp_right (Ψ.smooth ⊤) x (natCast_le_infty m)`.
+A detailed English derivation is pending.
 -/
 theorem bilD_eq (Ψ : 𝓢(V, ℂ)) (B : V →L[ℝ] X →L[ℝ] V) (m : ℕ) (v : V) (x : X) :
     bilD Ψ B m v x = (iteratedFDeriv ℝ m Ψ (B v x)).compContinuousLinearMap fun _ => B v :=
   (B v).iteratedFDeriv_comp_right (Ψ.smooth ⊤) x (natCast_le_infty m)
 
 /- English proof (translation)
-The claim follows from `continuous_iff_continuousAt.2 fun fg => (ContinuousMultilinearMap.hasStrictFDerivAt_compContinuousLinearMap fg).hasFDerivAt.continuousAt`.
+A detailed English derivation is pending.
 -/
 theorem continuous_compCLM (m : ℕ) :
     Continuous (fun fg : ContinuousMultilinearMap ℝ (fun _ : Fin m => V) ℂ × (Fin m → X →L[ℝ] V) =>
@@ -56,9 +56,9 @@ theorem continuous_compCLM (m : ℕ) :
     (ContinuousMultilinearMap.hasStrictFDerivAt_compContinuousLinearMap fg).hasFDerivAt.continuousAt
 
 /- English proof (translation)
-Establish `h1 : Continuous fun v => B v x` using `B.continuous.clm_apply continuous_const`. Establish `h2 : Continuous fun v => iteratedFDeriv ℝ m Ψ (B v x)` using `((Ψ.smooth ⊤).continuous_iteratedFDeriv (natCast_le_infty m)).comp h1`. Establish `h3 : Continuous fun v => (fun _ : Fin m => B v)` using `continuous_pi fun _ => B.continuous`. Establish `h` using `(continuous_compCLM (V := V) (X := X) m).comp (h2.prodMk h3)`. Use `h.congr fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(bilD_eq Ψ B m v x).symm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_bilD_left (Ψ : 𝓢(V, ℂ)) (B : V →L[ℝ] X →L[ℝ] V) (m : ℕ) (x : X) :
     Continuous fun v => bilD Ψ B m v x := by
@@ -71,9 +71,9 @@ theorem continuous_bilD_left (Ψ : 𝓢(V, ℂ)) (B : V →L[ℝ] X →L[ℝ] V)
   exact (bilD_eq Ψ B m v x).symm
 
 /- English proof (translation)
-Establish `h1 : Continuous fun v => B v x` using `B.continuous.clm_apply continuous_const`. Establish `h2 : Continuous fun v => fderiv ℝ Ψ (B v x)` using `((Ψ.smooth ⊤).continuous_fderiv infty_ne_zero).comp h1`. Establish `h` using `h2.clm_comp B.continuous`. Use `h.congr fun v => ?_` and prove the remaining obligations. Establish `hd : HasFDerivAt (fun x => Ψ (B v x)) ((fderiv ℝ Ψ (B v x)).comp (B v)) x` using `(((Ψ.smooth ⊤).differentiable infty_ne_zero) (B v x)).hasFDerivAt.comp x (B v).hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hd.fderiv.symm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fderiv_bil_left (Ψ : 𝓢(V, ℂ)) (B : V →L[ℝ] X →L[ℝ] V) (x : X) :
     Continuous fun v => fderiv ℝ (fun x => Ψ (B v x)) x := by
@@ -87,15 +87,15 @@ theorem continuous_fderiv_bil_left (Ψ : 𝓢(V, ℂ)) (B : V →L[ℝ] X →L[�
   exact hd.fderiv.symm
 
 /- English proof (translation)
-Use `set S : ℝ := 2 ^ (k + m) * (Finset.Iic (k + m, m)).sup (fun p : ℕ × ℕ => SchwartzMap.seminorm ℝ p.1 p.2) Ψ with hSdef`. Establish `hS : 0 ≤ S` using `mul_nonneg (by positivity) (apply_nonneg _ _)`. Use `set c' := min 1 c`. Establish `hc' : 0 < c'` using `lt_min one_pos hc`. Use `⟨S * ‖B‖ ^ m / c' ^ (k + m), by positivity, fun x hx v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : 0 < 1 + ‖v‖` using `by positivity`. Establish `hq : c' * (1 + ‖v‖) ≤ 1 + ‖B v x‖`. Establish `h0` using `hB x hx v`. Establish `h1 : c' ≤ 1` using `min_le_left _ _`. Establish `h2 : c' ≤ c` using `min_le_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_nonneg v]`. Establish `hSch : (1 + ‖B v x‖) ^ (k + m) * ‖iteratedFDeriv ℝ m Ψ (B v x)‖ ≤ S` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (k + m, m)) le_rfl le_rfl Ψ (B v x)`. Establish `hBv : ‖B v‖ ≤ ‖B‖ * (1 + ‖v‖)` using `(B.le_opNorm v).trans (mul_le_mul_of_nonneg_left (by linarith [norm_nonneg v]) (norm_nonneg _))`. Establish `hcomp : ‖bilD Ψ B m v x‖ ≤ ‖iteratedFDeriv ℝ m Ψ (B v x)‖ * ‖B v‖ ^ m`. Rewrite using `[bilD_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Simplify using `[Finset.prod_const]`. Establish `hI : ‖iteratedFDeriv ℝ m Ψ (B v x)‖ ≤ S / (c' * (1 + ‖v‖)) ^ (k + m)`. Rewrite using `[le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp'` using `hp.ne'`. Establish `hc''` using `hc'.ne'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow, pow_add, pow_add]`. Clear the denominators using the available nonvanishing facts.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_bound_bilD (Ψ : 𝓢(V, ℂ)) (B : V →L[ℝ] X →L[ℝ] V) {U : Set X} {c : ℝ} (hc : 0 < c)
     (hB : ∀ x ∈ U, ∀ v, c * ‖v‖ ≤ ‖B v x‖) (m k : ℕ) :
@@ -142,9 +142,9 @@ variable (Ψ : 𝓢(V, ℂ)) (B : V →L[ℝ] X →L[ℝ] V) {U : Set X} (hU : I
 
 include hc hB hκ hw hint in
 /- English proof (translation)
-Take `⟨C, -, hC⟩` from `exists_bound_bilD Ψ B hc hB 0 k`. Establish `hm : AEStronglyMeasurable (fun a => κ a * Ψ (B (w a) x)) μ` using `hκ.mul ((Ψ.continuous.comp (B.continuous.clm_apply continuous_const)).comp_aestronglyMeasurable hw)`. Use `(hint.const_mul C).mono' hm (ae_of_all _ fun a => ?_)` and prove the remaining obligations. Establish `h` using `hC x hx (w a)`. Rewrite `h` using `[bilD, norm_iteratedFDeriv_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem integrable_schwartz_bilin {x : X} (hx : x ∈ U) :
     Integrable (fun a => κ a * Ψ (B (w a) x)) μ := by
@@ -161,11 +161,9 @@ theorem integrable_schwartz_bilin {x : X} (hx : x ∈ U) :
 
 include hU hc hB hκ hw hint in
 /- English proof (translation)
-Take `⟨C, -, hC⟩` from `exists_bound_bilD Ψ B hc hB 1 k`. Establish `hbd : ∀ y ∈ U, ∀ a, ‖κ a • fderiv ℝ (fun x => Ψ (B (w a) x)) y‖ ≤ C * (‖κ a‖ * ((1 + ‖w a‖) ^ k)⁻¹)`. Introduce `y hy a`. Establish `h` using `hC y hy (w a)`. Rewrite `h` using `[bilD, ← norm_iteratedFDeriv_fderiv, norm_iteratedFDeriv_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[norm_smul]`. Combine the equalities or inequalities in the displayed calculation. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun x a => κ a * Ψ (B (w a) x)) (F' := fun x a => κ a • fderiv ℝ (fun x => Ψ (B (w a) x)) x) (hU.mem_nhds hx) ?_ (integrable_schwartz_bilin Ψ B hc hB hκ hw hint hx) ?_ ?_ (hint.const_mul C) ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun y => hκ.mul ((Ψ.continuous.comp (B.continuous.clm_apply continuous_const)).comp_aestronglyMeasurable hw)`. Conclude with `hκ.smul ((continuous_fderiv_bil_left Ψ B x).comp_aestronglyMeasurable hw)`.
-
-Conclude with `ae_of_all _ fun a y hy => hbd y hy a`. Use `ae_of_all _ fun a y _ => ?_` and prove the remaining obligations. Conclude with `(((contDiff_bil Ψ B (w a)).differentiable infty_ne_zero) y).hasFDerivAt.const_mul (κ a)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_integral_schwartz_bilin {x : X} (hx : x ∈ U) :
     HasFDerivAt (fun x => ∫ a, κ a * Ψ (B (w a) x) ∂μ)
@@ -192,19 +190,15 @@ theorem hasFDerivAt_integral_schwartz_bilin {x : X} (hx : x ∈ U) :
 
 include hU hc hB hκ hw hint in
 /- English proof (translation)
-Use `choose C hC0 hC using fun m => exists_bound_bilD Ψ B hc hB m k`. Establish `hmeas : ∀ m x, AEStronglyMeasurable (fun a => κ a • bilD Ψ B m (w a) x) μ` using `fun m x => hκ.smul ((continuous_bilD_left Ψ B m x).comp_aestronglyMeasurable hw)`. Establish `hbd : ∀ m, ∀ x ∈ U, ∀ a, ‖κ a • bilD Ψ B m (w a) x‖ ≤ C m * (‖κ a‖ * ((1 + ‖w a‖) ^ k)⁻¹)`. Introduce `m x hx a`. Rewrite using `[norm_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hint' : ∀ m, ∀ x ∈ U, Integrable (fun a => κ a • bilD Ψ B m (w a) x) μ` using `fun m x hx => (hint.const_mul (C m)).mono' (hmeas m x) (ae_of_all _ (hbd m x hx))`. Set `p : X → FormalMultilinearSeries ℝ X ℂ` to `fun x m => ∫ a, κ a • bilD Ψ B m (w a) x ∂μ`. Establish `hTay : HasFTaylorSeriesUpToOn ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => ∫ a, κ a * Ψ (B (w a) x) ∂μ) p U`. Use `⟨fun x hx => ?_, fun m _ x hx => ?_, fun m _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (∫ a, κ a • bilD Ψ B 0 (w a) x ∂μ) 0 = _`. Rewrite using `[ContinuousMultilinearMap.integral_apply (hint' 0 x hx)]`. Simplify using `[bilD]`. Set `L` to `continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (m + 1) => X) ℂ`. Establish `hL : (p x m.succ).curryLeft = ∫ a, L (κ a • bilD Ψ B (m + 1) (w a) x) ∂μ` using `(L.toContinuousLinearEquiv.integral_comp_comm (μ := μ) (fun a => κ a • bilD Ψ B (m + 1) (w a) x)).symm`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL]`. Use `show HasFDerivWithinAt (fun y => ∫ a, κ a • bilD Ψ B m (w a) y ∂μ) _ U x`. Use `(hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun y a => κ a • bilD Ψ B m (w a) y) (F' := fun y a => L (κ a • bilD Ψ B (m + 1) (w a) y)) (hU.mem_nhds hx) (Filter.Eventually.of_forall fun y => hmeas m y) (hint' m x hx) (L.continuous.comp_aestronglyMeasurable (hmeas (m + 1) …` and prove the remaining obligations. Conclude with `ae_of_all _ fun a y hy => by rw [L.norm_map]; exact hbd (m + 1) y hy a`. Use `ae_of_all _ fun a y _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h` using `((contDiff_bil Ψ B (w a)).ftaylorSeries).fderiv m (natCast_lt_infty m) y`. Establish `h2` using `h.const_smul (κ a)`. Establish `e : L (κ a • bilD Ψ B (m + 1) (w a) y) = κ a • (ftaylorSeries ℝ (fun x => Ψ (B (w a) x)) y m.succ).curryLeft`. Use extensionality with `v u`. Simplify using `[L, bilD, ftaylorSeries]`.
-
-Rewrite using `[e]`. Conclude with `h2`. Conclude with `continuousOn_of_dominated (fun x _ => hmeas m x) (fun x hx => ae_of_all _ (hbd m x hx)) (hint.const_mul (C m)) (ae_of_all _ fun a => by`. Establish `hc1 : Continuous fun y => bilD Ψ B m (w a) y` using `(contDiff_bil Ψ B (w a)).continuous_iteratedFDeriv (natCast_le_infty m)`. Conclude with `(hc1.const_smul (κ a)).continuousOn)`.
-
-Conclude with `hTay.contDiffOn`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffOn_integral_schwartz_bilin :
     ContDiffOn ℝ ∞ (fun x => ∫ a, κ a * Ψ (B (w a) x) ∂μ) U := by

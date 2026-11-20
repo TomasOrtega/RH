@@ -11,16 +11,16 @@ open Classical
 variable {R : Type} [CommRing R] {I J K : Cx R}
 
 /- English proof (translation)
-Simplify using `[Pair.lift, lo]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lift_lo (μ : Pair I J K) (U : Scheme.{0}) (s t w : ℤ) (h : s + t = w) (a : Sec (I.X s) U) (b : Sec (J.X t) U) :
     μ.lift U w (lo I J ⟨(s, t), h⟩ (a ⊗ₜ b)) = μ.mul U s t w h a b := by
   simp [Pair.lift, lo]
 
 /- English proof (translation)
-Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨s, t⟩, h⟩`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [LinearMap.comp_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `e` using `tres_tmul I J g w ⟨(s, t), h⟩ a b`. Express the relevant statement in the definitionally equal form `Sec.res g (μ.lift U w (lo I J ⟨(s, t), h⟩ (a ⊗ₜ b))) = μ.lift V w (Tens.res g w (lo I J ⟨(s, t), h⟩ (a ⊗ₜ b)))`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `Sec.res g (μ.lift U w (lo I J ⟨(s, t), h⟩ (a ⊗ₜ b))) = μ.lift V w (lo I J ⟨(s, t), h⟩ (Sec.res g a ⊗ₜ Sec.res g b))`. Rewrite using `[lift_lo, lift_lo, μ.nat]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_nat (μ : Pair I J K) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) :
     ((K.X w).obj.map g.op).hom ∘ₗ μ.lift U w = μ.lift V w ∘ₗ Tens.res g w := by
@@ -34,9 +34,9 @@ theorem lift_nat (μ : Pair I J K) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) :
   rw [lift_lo, lift_lo, μ.nat]
 
 /- English proof (translation)
-Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨s, t⟩, h⟩`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [LinearMap.comp_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `Sec.map (K.d w (w + 1)) (μ.lift U w (lo I J ⟨(s, t), h⟩ (a ⊗ₜ b))) = μ.lift U (w + 1) (dT I J U w (lo I J ⟨(s, t), h⟩ (a ⊗ₜ b)))`. Rewrite using `[dT_tmul, map_add, map_zsmul, lift_lo, lift_lo, lift_lo, μ.leibniz, Units.smul_def]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_d (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) :
     ((K.d w (w + 1)).hom.app (op U)).hom ∘ₗ μ.lift U w = μ.lift U (w + 1) ∘ₗ dT I J U w := by
@@ -52,7 +52,7 @@ def liftP (μ : Pair I J K) (w : ℤ) : TP I J w ⟶ (K.X w).obj where
   naturality _ _ g := ModuleCat.hom_ext (lift_nat μ g.unop w).symm
 
 /- English proof (translation)
-Use extensionality with `U : 2`. Conclude with `ModuleCat.hom_ext (lift_d μ U.unop w)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem tensorPresheafLift_comm (μ : Pair I J K) (w : ℤ) :
     liftP μ w ≫ (K.d w (w + 1)).hom = dTP I J w ≫ liftP μ (w + 1) := by
@@ -60,13 +60,13 @@ theorem tensorPresheafLift_comm (μ : Pair I J K) (w : ℤ) :
   exact ModuleCat.hom_ext (lift_d μ U.unop w)
 
 /- English proof (translation)
-Establish `: Presheaf.IsLocallySurjective Scheme.etaleTopology.{0} (liftP τ w)` using `⟨fun {U} y => by`. Take `⟨S, hS, hP⟩` from `hτ.1 U w y`. Use `Scheme.etaleTopology.{0}.superset_covering ?_ hS` and prove the remaining obligations. Introduce `V g hg`. Take `⟨x, hx⟩` from `hP V g hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, hx⟩⟩`. Establish `: Presheaf.IsLocallyInjective Scheme.etaleTopology.{0} (liftP τ w)` using `⟨fun {X} x y hxy => by`. Set `x' : Tens I J X.unop w` to `x`. Set `y' : Tens I J X.unop w` to `y`. Establish `hxy' : τ.lift X.unop w x' = τ.lift X.unop w y'` using `hxy`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h0 : τ.lift X.unop w (x' - y') = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.mpr hxy'`. Take `⟨S, hS, hP⟩` from `hτ.2 X.unop w (x' - y') h0`. Use `Scheme.etaleTopology.{0}.superset_covering ?_ hS` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `V g hg`. Establish `h1 : Tens.res g w (x' - y') = 0` using `hP V g hg`. Rewrite `h1` using `[map_sub, sub_eq_zero]`. Conclude with `h1⟩`. Conclude with `GrothendieckTopology.W_of_isLocallyBijective _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_tensor_presheaf_lift_is_local_iso {T : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (w : ℤ) :
     Scheme.etaleTopology.{0}.W (liftP τ w) := by
@@ -91,13 +91,11 @@ theorem etale_tensor_presheaf_lift_is_local_iso {T : Cx R} (τ : Pair I J T) (h�
   exact GrothendieckTopology.W_of_isLocallyBijective _ _
 
 /- English proof (translation)
-Introduce `R _ I J T K τ hτ μ`. Establish `hb : ∀ w, Function.Bijective (fun g : (T.X w).obj ⟶ (K.X w).obj => liftP τ w ≫ g)` using `fun w => etale_tensor_presheaf_lift_is_local_iso τ hτ w _ (K.X w).property`. Use `choose u0 hu0' using fun w => (hb w).2 (liftP μ w)`. Establish `hu0 : ∀ w, liftP τ w ≫ u0 w = liftP μ w` using `hu0'`. Set `u : T ⟶ K` to `{ f := fun w => ⟨u0 w⟩ comm' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `i j rfl`. Apply `Sheaf.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `u0 i ≫ (K.d i (i + 1)).hom = (T.d i (i + 1)).hom ≫ u0 (i + 1)`. Establish `key : liftP τ i ≫ (u0 i ≫ (K.d i (i + 1)).hom) = liftP τ i ≫ ((T.d i (i + 1)).hom ≫ u0 (i + 1))`. Rewrite using `[← Category.assoc, ← Category.assoc, hu0, tensorPresheafLift_comm, tensorPresheafLift_comm, Category.assoc, hu0]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(etale_tensor_presheaf_lift_is_local_iso τ hτ i _ (K.X (i + 1)).property).1 key }`. Use `⟨u, fun U s t w h a b => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun f => (f.app (op U)).hom (lo I J ⟨(s, t), h⟩ (a ⊗ₜ b))) (hu0 w)`. Simplify using `only at e`. Rewrite using `[← lift_lo τ, ← lift_lo μ]`.
-
-Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_tensor_pairing_universal_property_holds : LateralTheory.E.LeafPairExtPf2.LeafTensUP := by
   intro R _ I J T K τ hτ μ

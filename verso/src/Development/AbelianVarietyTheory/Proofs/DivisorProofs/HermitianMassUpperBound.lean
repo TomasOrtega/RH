@@ -21,7 +21,7 @@ noncomputable def matEquiv (γ : Matrix (Fin n) (Fin n) E) (h : γ * γ.conjTran
     (by rw [← Matrix.mulVecLin_mul, mul_eq_one_comm.1 h, Matrix.mulVecLin_one])
 
 /- English proof (translation)
-Introduce `x y`. Express the relevant statement in the definitionally equal form `star (γ.mulVec x) ⬝ᵥ (γ.mulVec y) = star x ⬝ᵥ y`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, mul_eq_one_comm.1 h, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem matEquiv_mem (γ : Matrix (Fin n) (Fin n) E) (h : γ * γ.conjTranspose = 1) :
     matEquiv γ h ∈ isom (stdForm E n) := by
@@ -31,7 +31,7 @@ theorem matEquiv_mem (γ : Matrix (Fin n) (Fin n) E) (h : γ * γ.conjTranspose 
     Matrix.mulVec_mulVec, mul_eq_one_comm.1 h, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => LinearMap.ext fun y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ i, star (x i) * Examples₂.sgn false * y i = ∑ i, star (x i) * y i`. Simplify using `[Examples₂.sgn]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem diagForm_eq : Examples₂.diagForm (E := E) n (fun _ => false) = stdForm E n := by
   refine LinearMap.ext fun x => LinearMap.ext fun y => ?_
@@ -42,7 +42,7 @@ variable [NumberField E]
 
 omit [StarRing E] in
 /- English proof (translation)
-Unfold `Examples₂.stdLat stdLat`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem stdLat_eq : Examples₂.stdLat (E := E) n = stdLat E n := by
   unfold Examples₂.stdLat stdLat
@@ -52,9 +52,9 @@ theorem stdLat_eq : Examples₂.stdLat (E := E) n = stdLat E n := by
 
 omit [StarRing E] in
 /- English proof (translation)
-Rewrite using `[Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, rfl⟩`. Conclude with `r.isIntegral_coe`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨a, h⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_one_iff (a : E) : a ∈ (1 : Submodule (𝓞 E) E) ↔ IsIntegral ℤ a := by
   rw [Submodule.mem_one]
@@ -65,11 +65,9 @@ theorem mem_one_iff (a : E) : a ∈ (1 : Submodule (𝓞 E) E) ↔ IsIntegral �
     exact ⟨⟨a, h⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hsym : (stdForm E n).IsSymm` using `diagForm_eq (E := E) (n := n) ▸ Examples₂.diagForm_isSymm n _`. Take `⟨-, -, hinv⟩` from `Formalism.HermitianLatticesTheory.genusBasic (𝓞 E) E (Fin n → E) (stdForm E n) hsym (Examples₂.star_integral Examples₂.star_isIntegral)`. Establish `h0 : Formalism.HermitianLatticesTheory.IsUnimodular (stdForm E n) (stdLat E n)`. Rewrite using `[← diagForm_eq, ← stdLat_eq]`. Conclude with `Examples₂.stdLat_unimod Examples₂.star_isIntegral n _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfg : (stdLat E n).FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hu : Formalism.HermitianLatticesTheory.dual (stdForm E n) M = M` using `((hinv _ _ hfg hM.1.fg hM.2).1).1 h0`. Use `conv_lhs => rw [← hu]`. Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, mem_one_iff]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem selfDual_of_mem_genus {M : Submodule (𝓞 E) (Fin n → E)} (hM : M ∈ genus (stdForm E n) (stdLat E n))
     (y : Fin n → E) : y ∈ M ↔ ∀ x ∈ M, IsIntegral ℤ (∑ i, star (x i) * y i) := by
@@ -91,21 +89,21 @@ end StdMassBound
 open StdMassBound in
 
 /- English proof (translation)
-Introduce `E _ _ _ _ hs n`. Take `⟨R, hR, H⟩` from `GlobalTheory.exists_finset_selfDual_classes_rootDiscr E n`. Use `le_trans ?_ hR` and prove the remaining obligations. Unfold `Formalism.HermitianLatticesTheory.mass`. Use `split_ifs with hex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Use `swap`. Check the signs of the components of the expression. Take `⟨h1, h2⟩` from `hex.choose_spec`. Generalize the expression as in `hex.choose = s at h1 h2`. Establish `key : ∀ M ∈ s, ∃ L₀ ∈ R, ∃ g ∈ isom (stdForm E n), gmap g L₀ = M`.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `M hM`. Take `⟨L₀, hL₀, γ, hγ, hm⟩` from `H M (h1 M hM).1.fg (h1 M hM).1.span_eq_top (fun y => by`. Simplify `selfDual_of_mem_genus (h1 M hM) y)` using `only [hs]`. Establish `hγ' : γ * γ.conjTranspose = 1`. Rewrite using `[← hγ]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, hs]`. Use `⟨L₀, hL₀, matEquiv γ hγ', matEquiv_mem γ hγ', ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨x, rfl⟩` from `(matEquiv γ hγ').surjective x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, e⟩`. Rewrite using `[← e]`. Conclude with `(hm z).1 hz`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `hx`. Conclude with `⟨x, (hm x).2 hx, rfl⟩`. Use `choose! f hf g hg hfg using key`. Establish `hcard : s.card ≤ R.card`. Use `Finset.card_le_card_of_injOn f (fun M hM => hf M hM) fun M hM N hN e => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hM' : M ∈ s` using `hM`. Establish `hN' : N ∈ s` using `hN`. Use `(h2 M (h1 M hM')).unique ⟨hM', 1, one_mem _, Formalism.HermitianLatticesTheory.genusBasic_gmap_one _⟩ ⟨hN', g M * (g N)⁻¹, mul_mem (hg M hM') (inv_mem (hg N hN')), ?_⟩` and prove the remaining obligations. Establish `e1 : gmap (g N)⁻¹ N = f N` using `by conv_lhs => rw [← hfg N hN']`. Rewrite using `[hfg N hN']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `Formalism.HermitianLatticesTheory.genusBasic_gmap_inv (g N) (f N)` as an intermediate fact. Rewrite `this` using `[hfg N hN']`. Then use the resulting hypothesis. Rewrite using `[Formalism.HermitianLatticesTheory.genusBasic_gmap_mul, e1, ← e, hfg M hM']`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem mass_stdLat_le :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing E],

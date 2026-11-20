@@ -27,7 +27,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 omit [IsCMField E] in
 /- English proof (translation)
-Introduce `x hx` and use `by have h1 : (μ ^ k).loc w x = μ.loc w x ^ k := by induction k with | zero => rw [pow_zero, pow_zero]; rfl | succ k ih => rw [pow_succ, pow_succ, ← ih]; rfl rw [h1, h x hx, one_pow]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrAt_pow {μ : HChar E} {w : Pl E} (h : μ.UnrAt w) (k : ℕ) : (μ ^ k).UnrAt w := fun x hx => by
   have h1 : (μ ^ k).loc w x = μ.loc w x ^ k := by
@@ -37,14 +37,14 @@ theorem unrAt_pow {μ : HChar E} {w : Pl E} (h : μ.UnrAt w) (k : ℕ) : (μ ^ k
   rw [h1, h x hx, one_pow]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [actP, zero_mul, hint, finsum_zero, mul_zero, Pi.zero_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem actP_zero {a b : ℕ} (w : Pl E) (G : H E a b → ℂ) : actP w (fun _ => 0) G = 0 := by
   funext z
   simp only [actP, zero_mul, hint, finsum_zero, mul_zero, Pi.zero_apply]
 
 /- English proof (translation)
-Introduce `i j hij` and use `by have := hx _ _ ((S.orderEmbOfFin h).strictMono hij) simp only [PositivityTheory.Rg.Bc.ArchbcB.B.restr] omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gap_restr {n m : ℕ} {x : Fin n → ℤ} (hx : x ∈ coneGL n 2) (S : Finset (Fin n)) (h : S.card = m) : Gap (PositivityTheory.Rg.Bc.ArchbcB.B.restr x S h) :=
   fun i j hij => by
@@ -55,27 +55,23 @@ theorem gap_restr {n m : ℕ} {x : Fin n → ℤ} (hx : x ∈ coneGL n 2) (S : F
 set_option maxHeartbeats 1600000 in
 open PCandSa in
 /- English proof (translation)
-Establish `ha : F₀.C.a i ≤ n` using `F₀.C.le i`. Take `⟨hS0, hBad, hμ, hϖ, hK', hX, hL, hfix, hKB⟩` from `F.same`. Establish `hs : ¬ IsSplitAt w` using `(F.T_in w hwd).2.1`. Establish `hu : IsUnramU π w` using `(F.T_in w hwd).2.2.1`. Establish `hwP : w ∈ F.d.P` using `Finset.mem_union_left _ hwd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwSec : w ∈ F₀.Sec` using `(F.T_in w hwd).1`. Establish `hPS : (↑F.d.P : Set (Pl E)) ⊆ F₀.Sec`. Introduce `u hu`. Break down `Finset.mem_union.1 hu with h1 | h1` into its components or cases. Conclude with `(F.T_in u h1).1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `(F₀.S₀ u (hS0 ▸ h1)).1`. Take `⟨α, x₀, hx₀⟩` from `FA.fmPow_of intHint slots BlockFiniteConvolution.finConv' BlockFiniteConvolution.fmAlg' E F.d.kap F₀.Sec F.d.P (F.B i) (Equiv.refl _) F₀.hSec hPS (F.d.lev _) (F.d.lev₂ _) (F.d.betaL _ ha) A G F.m (isLev_lev F.d F.ok ha) (isLev_lev₂ F.d F.ok ha) ((BlockFiniteConvolution.locOk₀ E n …`. Establish `hGy : ∀ j, G j ∈ pairSpace s₁.space s₂.space ∧ G j ∈ fixed (pairRt _ _ w) (F.d.lev (F₀.C.a i) w)` using `fun j => ⟨hG j, ((hl j).2 w hwSec).1⟩`. Use `set G' : F.d.kap w → H E (F₀.C.a i) (n - F₀.C.a i) → ℂ := fun y => G (α, (Equiv.refl _).symm (Function.update x₀ ⟨w, hwP⟩ y)) with hG'def`. Establish `hG'p : ∀ y, G' y ∈ pairSpace s₁.space s₂.space ∧ G' y ∈ fixed (pairRt _ _ w) (F.d.lev (F₀.C.a i) w)` using `fun y => hGy _`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `(locM w ((F.d.betaL _ ha).m w))^[F.m] G' ≠ 0 at hx₀`. Use `clear_value G'`. Establish `hm : (F.d.betaL _ ha).m w = fun x y => @ite _ (x = y) (Classical.propDecidable _) (F.d.qT (F₀.C.a i) w x.1.1) 0`. Use function extensionality and compare the values at `x y`. Simplify using `only [LocData.betaL, if_pos hwd, LocData.diag]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Reduce the equality to equality of the corresponding arguments. Rewrite `hx₀` using `[hm]`. Take `⟨x, hx⟩` from `(Tail.locPow_holds E _ _ w (F.d.kap w) (F.d.lev _ w) G' F.m ((isLev_lev F.d F.ok ha).1 w).1 (fun y => (hG'p y).2)).2 (fun x => F.d.qT (F₀.C.a i) w x.1.1) hx₀`. Generalize the expression as in `x.1.1 = s at hx`. Establish `hfixI : G' x ∈ fixed (pairRt _ _ w) (I2 (F₀.C.a i) (n - F₀.C.a i) w)` using `LocOk.level_eq_iwahori_pair_at_bad_places F.d hwd ▸ (hG'p x).2`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : LocData.admitted n (F₀.C.a i) s`. Use `swap`. It suffices to derive a contradiction. Establish `e : F.d.qT (F₀.C.a i) w s = fun _ => 0` using `by funext y; simp only [LocData.qT, dif_neg h]`. Take `⟨k, hk⟩ : ∃ k, F.m = k + 1` from `⟨F.m - 1, by have := F.m_pos; omega⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[e, hk, Function.iterate_succ_apply', actP_zero]`. Conclude with `hx rfl`. Use `set V : ℂ := (((I2 (F₀.C.a i) (n - F₀.C.a i) w).relIndex (K2 (F₀.C.a i) (n - F₀.C.a i) w) : ℕ) : ℂ) with hV`. Establish `e : F.d.qT (F₀.C.a i) w s = fun g => ∑ j : (F.d.c w).support, (F.d.c w j * (-qh w) ^ (-vRes n (F₀.C.a i) (lOf j.1) s) * V) * dc2 w (F₀.d₀.ϖ w) (PositivityTheory.Rg.Bc.ArchbcB.B.restr j.1 _ h.2.1) (PositivityTheory.Rg.Bc.ArchbcB.B.restr j.1 _ h.2.2) g`. Use function extensionality and compare the values at `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [LocData.qT, dif_pos h, Finsupp.sum, hϖ]`. Conclude with `(Finset.sum_coe_sort _ _).symm`. Rewrite `hx` using `[e]`. Take `⟨ξa, ξb, hJ, hsum⟩` from `h1 E n _ _ F₀.μ s₁ s₂ Pa Pb D hc.ctx w (F₀.d₀.ϖ w) (F.d.c w).support _ _ _ F.m (G' x) (F₀.ok₀.unif w) (fun j => ⟨gap_restr (F.ok.cone w hwd j.2) _ _, gap_restr (F.ok.cone w hwd j.2) _ _⟩) ((F.choiceM i s₁ s₂ Pa Pb D hc).2 w hwd) (hG'p x).1 hfixI hx`. Establish `hsum' : ((F.d.c w).sum fun x t => t * (-qh w) ^ (-vRes n (F₀.C.a i) (lOf x) s) * ev2 w ξa ξb (PositivityTheory.Rg.Bc.ArchbcB.B.restr x _ h.2.1) (PositivityTheory.Rg.Bc.ArchbcB.B.restr x _ h.2.2)) ≠ 0`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hsum` to reduce the goal to its premises. Rewrite `h0` using `[Finsupp.sum, ← Finset.sum_coe_sort]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `_ = 0 := by rw [h0, mul_zero]`. Take `⟨m1, m2, hb⟩` from `F.choiceT i s₁ s₂ Pa Pb D hc w hwd s h ξa ξb hJ hsum'`. Take `⟨sa, sb⟩` from `h2 E _ _ Pa Pb w (F₀.d₀.ϖ w) ξa ξb (F₀.ok₀.unif w) m1 m2 hJ`. Establish `hun : F₀.μ.UnrAt w` using `(F₀.good w hwSec (fun a => hs (F₀.S₀ w a).2) fun a => (F₀.bad w a).2 hs hu).2`.
-
-Use `⟨_, h3 E n _ _ _ _ Pa Pb D w _ _ hc.ctx.join (unrAt_pow hun _) (unrAt_pow hun _) sa sb, fun s' ϖ q a1 a2 β hβ => ?_⟩` and prove the remaining obligations. Take `rfl : s' = cj w` from `((GlobalTheory.T.placeConjugation_properties_cmField E hE w).2.2.2.1 hs).2.2.2 s' a2.2.1 a1`. Conclude with `hb ϖ q a2 β hβ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inert_d (h1 : Tail.ReadT) (h2 : Tail.ExpRead) (h3 : RS.JoinSat) (hR : Rd.ReadLimit) (E : Type) [Field E] [NumberField E] [IsCMField E] (hE : GlobalTheory.BCT.Unr E) (n : ℕ)
     (π : Submodule ℂ (UA E n → ℂ)) (S T : Finset (Pl E)) (F₀ : Frame0 hR π S) (F : RunFrame F₀ T) (i : F₀.C.ι)
@@ -164,9 +160,9 @@ def stab {a b : ℕ} (w : Pl E) (G : H E a b → ℂ) : Subgroup (GLw a w × GLw
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Take `⟨U, hU, hG⟩` from `h`. Establish `c1 : Continuous (locGL E a w)` using `by apply GlobalTheory.EulerTw.continuous_locGL_spl`. Establish `c2 : Continuous (locGL E b w)` using `by apply GlobalTheory.EulerTw.continuous_locGL_spl`. Establish `hc : Continuous ((locGL E a w).prodMap (locGL E b w))` using `c1.prodMap c2`. Use `Subgroup.isOpen_mono (H₁ := U.comap ((locGL E a w).prodMap (locGL E b w))) (fun m hm => ?_) (hU.preimage hc)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `funext fun x => hG _ hm x`.
+A detailed English derivation is pending.
 -/
 theorem stab_open {a b : ℕ} (w : Pl E) {G : H E a b → ℂ} (h : HasLev G) : IsOpen (stab w G : Set (GLw a w × GLw b w)) := by
   obtain ⟨U, hU, hG⟩ := h
@@ -178,7 +174,7 @@ theorem stab_open {a b : ℕ} (w : Pl E) {G : H E a b → ℂ} (h : HasLev G) : 
 
 omit [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[map_mul, map_pow, map_pow, h _ (GlobalTheory.SphGal.isUnitAt_det_of_mem h1), h _ (GlobalTheory.SphGal.isUnitAt_det_of_mem h2), one_pow, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mu_one {a b : ℕ} {μ : HChar E} {w : Pl E} (h : μ.UnrAt w) (m : GLw a w × GLw b w) (h1 : m.1 ∈ GlobalTheory.LFun.KGL w a)
     (h2 : m.2 ∈ GlobalTheory.LFun.KGL w b) (k l : ℕ) : μ.loc w (GeneralLinearGroup.det m.1 ^ k * GeneralLinearGroup.det m.2 ^ l) = 1 := by
@@ -187,29 +183,27 @@ theorem mu_one {a b : ℕ} {μ : HChar E} {w : Pl E} (h : μ.UnrAt w) (m : GLw a
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Introduce `hR E _ _ _ hE n hn π hπ S T F₀ F hF i s₁ s₂ Pa Pb D A G hc hG hl hne w`. Establish `ha : F₀.C.a i ≤ n` using `F₀.C.le i`. Take `⟨hS0, hBad, hμ, hϖ, hK', hX, hL, hfix, hKB⟩` from `F.same`. Establish `hRS : ∀ u ∈ F₀.d₀.S₀ ∪ F₀.d₀.Bad, u ∈ F₀.Sec` using `fun u hu => (Finset.mem_union.1 hu).elim (fun a => (F₀.S₀ u a).1) fun a => (F₀.bad u a).1`. Establish `hgoodK : ∀ u ∈ F₀.Sec, u ∉ F₀.d₀.S₀ ∪ F₀.d₀.Bad → ∀ v : Pl E, v.under (𝓞 (maximalRealSubfield E)) = u.under (𝓞 (maximalRealSubfield E)) → F₀.K v = GlobalTheory.LFun.KGL v n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu hu' v hv`. Use `F₀.K_good v fun t ht e => hu' ?_` and prove the remaining obligations. Establish `: t = u` using `(F₀.hSec u).unique ⟨hRS t ht, e.trans hv⟩ ⟨hu, rfl⟩`. Conclude with `this ▸ ht`. Establish `hTR : ∀ u ∈ F.d.T, u ∉ F₀.d₀.S₀ ∪ F₀.d₀.Bad` using `fun u hu h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← hS0, ← hBad]`. Conclude with `(Finset.mem_union.1 h).elim (Finset.disjoint_left.1 F.ok.disj.1 hu) (Finset.disjoint_left.1 F.ok.disj.2.1 hu)`. Distinguish the cases in `hT : w ∈ F.d.T`. Take `⟨B, hB, -⟩` from `inert_d h1 h2 h3 hR E hE n π S T F₀ F i s₁ s₂ Pa Pb D A G hc hG hl hne w hT`. Rewrite using `[hgoodK w (F.T_in w hT).1 (hTR w hT) w rfl]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `satSph E n D w B hB`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, G j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Establish `e : G = 0` using `funext fun j => by_contra fun h' => h ⟨j, h'⟩`. Use `hne ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Use `Function.iterate_fixed ?_ _` and prove the remaining obligations. Use function extensionality and compare the values at `p x`. Simplify using `[convF]`. Use `h0 E n _ _ (Nat.add_sub_of_le ha) F₀.μ s₁ s₂ Pa Pb D hc.ctx w (F₀.K w) (stab w (G j)) (G j) (F₀.hK.1 w) (F₀.Kc w) (stab_open w (hl j).1) (fun m X hm => ?_) (hG j) hj (GlobalTheory.LGrp.mem_fixed.2 fun k hk => hk)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w ∈ F₀.Sec`. Establish `hf` using `GlobalTheory.LGrp.mem_fixed.1 ((hl j).2 w hw).1`. Distinguish the cases in `hR' : w ∈ F₀.d₀.S₀ ∪ F₀.d₀.Bad`. Take `⟨a1, a2⟩` from `F₀.K_bad _ ha w hR' m X hm`. Use `⟨hf m ?_, a2⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LocOk.lev_S F.d hT (by rw [hS0, hBad]; exact hR'), hL]`. Conclude with `a1`. Rewrite `hm` using `[hgoodK w hw hR' w rfl]`. Take `⟨b1, b2⟩` from `Tail.B.blocks_of_blk_mem _ w m X hm`. Rewrite `hR'` using `[Finset.mem_union, not_or]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨hf m ?_, mu_one (F₀.good w hw hR'.1 hR'.2).2 m b1 b2 _ _⟩` and prove the remaining obligations. Rewrite using `[LocOk.lev_out F.d hT (by rw [hS0, hBad, Finset.mem_union, not_or]; exact hR')]`. Conclude with `⟨b1, b2⟩`. Take `⟨u, ⟨hu, hu'⟩, -⟩` from `F₀.hSec w`. Establish `hne' : w ≠ u` using `fun e => hw (e ▸ hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hus : IsSplitAt u` using `⟨w, hne', hu'.symm⟩`. Establish `hcj : ConjPl u w` using `⟨hu'.symm, Or.inl hne'⟩`. Establish `hf` using `((hl j).2 u hu).2 hus`. Distinguish the cases in `hR' : u ∈ F₀.d₀.S₀ ∪ F₀.d₀.Bad`. Take `⟨a1, m', a2, a3, a4⟩` from `F₀.K_conj _ ha u hR' hus w hcj m X hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, a1⟩` and prove the remaining obligations. Establish `hm' : m' ∈ F.d.lev₂ (F₀.C.a i) u`. Rewrite using `[LocData.lev₂, if_pos (by rw [hS0, hBad]; exact hR'), hL]`. Conclude with `a2`. Establish `e` using `GlobalTheory.LGrp.mem_fixed.1 hf m' hm'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show (rightReg ℂ _ ℂ) (embW _ w m.1, embW _ w m.2) (G j) = G j`. Rewrite using `[a3, a4]`. Conclude with `e`. Rewrite `hm` using `[hgoodK u hu hR' w hu'.symm]`. Take `⟨b1, b2⟩` from `Tail.B.blocks_of_blk_mem _ w m X hm`.
-
-Rewrite `hf` using `[LocOk.lev₂_out F.d (by rw [hS0, hBad]; exact hR')]`. Rewrite `hR'` using `[Finset.mem_union, not_or]`. Establish `hun` using `((RS.muLoc_holds' E hE F₀.μ F₀.e u F₀.hμ (F₀.good u hu hR'.1 hR'.2).2).2.2 w hus hcj).1`. Conclude with `⟨GlobalTheory.LGrp.mem_fixed.1 ((FG.conjFix_holds E _ _).1 u w (G j) hus hcj hf) m ⟨b1, b2⟩, mu_one hun m b1 b2 _ _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem candLev_of (h0 : Tail.ReadLev) (h1 : Tail.ReadT) (h2 : Tail.ExpRead) (h3 : RS.JoinSat) : CandLev := by
   intro hR E _ _ _ hE n hn π hπ S T F₀ F hF i s₁ s₂ Pa Pb D A G hc hG hl hne w

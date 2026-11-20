@@ -7,9 +7,9 @@ open Filter Topology Asymptotics
 universe u
 
 /- English proof (translation)
-Unfold `polyAt`. Proceed by induction on `Δ using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_mul, Polynomial.eval_mul, hp, MvPolynomial.eval_mul, MvPolynomial.aeval_X, MvPolynomial.eval_X]`. Use `congr 1`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_line (n : ℕ) (Δ : MvPolynomial (Fin n) ℂ) (w : V n) (t : ℂ) :
     (MvPolynomial.aeval (fun i => Polynomial.C (w i) * Polynomial.X) Δ).eval t =
@@ -27,11 +27,11 @@ theorem eval_line (n : ℕ) (Δ : MvPolynomial (Fin n) ℂ) (w : V n) (t : ℂ) 
     ring
 
 /- English proof (translation)
-Introduce `n Δ w h0`. Establish `hne : MvPolynomial.aeval (fun i => Polynomial.C (w i) * Polynomial.X) Δ ≠ 0`. Introduce `hz`. Apply `h0` to reduce the goal to its premises. Use `eval_line n Δ w 0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[hz]`. Simplify using `using this.symm`. Use `(Polynomial.finite_setOfPred_isRoot hne).subset ?_` and prove the remaining obligations. Introduce `t ht`. Simplify using `only [Set.mem_ofPred_eq, Polynomial.IsRoot.def, eval_line]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `ht`.
+A detailed English derivation is pending.
 -/
 theorem lineFinite : lineFiniteStatement := by
   intro n Δ w h0

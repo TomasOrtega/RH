@@ -11,9 +11,9 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.Cyc.Decomp
 
 /- English proof (translation)
-Unfold `n0`. Apply `Nat.sInf_mem (s := {n | H ≤ l ^ n * (l - 1)})` to reduce the goal to its premises. Establish `h2 : 2 ≤ l` using `hl.out.two_le`. Use `⟨H, ?_⟩` and prove the remaining obligations. Use `show H ≤ l ^ H * (l - 1)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem le_pow_n0_mul (l : ℕ) [hl : Fact l.Prime] (H : ℕ) : H ≤ l ^ (n0 l H) * (l - 1) := by
   unfold n0
@@ -25,13 +25,13 @@ theorem le_pow_n0_mul (l : ℕ) [hl : Fact l.Prime] (H : ℕ) : H ≤ l ^ (n0 l 
     _ ≤ l ^ H * (l - 1) := Nat.le_mul_of_pos_right _ (by omega)
 
 /- English proof (translation)
-Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `hH : (H : ℝ) ≤ (l : ℝ) ^ (n0 l H) * ((l : ℝ) - 1)`. Establish `h` using `le_pow_n0_mul l H`. Establish `h1 : 1 ≤ l` using `hl.out.one_lt.le`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hDpos : 0 < (l : ℝ) ^ (n0 l H) * ((l : ℝ) - 1)`. Establish `: (0 : ℝ) < (l : ℝ) - 1` using `by linarith`. Check the signs of the components of the expression. Establish `hnorm` using `norm_primitiveRoot_sub_one l (1 + n0 l H) (by omega) ζ hζ`. Rewrite `hnorm` using `[Nat.add_sub_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < ‖ζ - 1‖` using `by rw [hnorm]; positivity`. Establish `hne : ζ - 1 ≠ 0` using `norm_pos_iff.mp hpos`. Use `⟨(l : PadicComplex l) / (ζ - 1) ^ H, ?_, (div_mul_cancel₀ _ (pow_ne_zero H hne)).symm⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_pow, norm_natCast_prime_padicComplex, div_le_one (pow_pos hpos H), hnorm, ← Real.rpow_mul_natCast (by positivity), ← Real.rpow_neg_one]`. Apply `Real.rpow_le_rpow_of_exponent_le hl1.le` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[neg_div, neg_mul, neg_le_neg_iff, div_mul_eq_mul_div, one_mul, div_le_one hDpos]`. Conclude with `hH`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_eq_mul_primitiveRoot_sub_one_pow (l : ℕ) [hl : Fact l.Prime] (H : ℕ)
     (ζ : PadicComplex l) (hζ : IsPrimitiveRoot ζ (l ^ (1 + n0 l H))) :

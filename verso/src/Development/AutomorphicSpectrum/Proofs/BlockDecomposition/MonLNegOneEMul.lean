@@ -13,14 +13,14 @@ namespace GlobalTheory.CompanionTheory.SurjectionOntoH4.OmBasis
 def allE {n d : ℕ} : Gam n d := ∑ e, oneE e
 
 /- English proof (translation)
-Unfold `allE`. Conclude with `AddSubmonoid.sum_mem _ (fun e _ => oneE_mem ∅ e)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem allE_mem {n d : ℕ} : (allE : Gam n d) ∈ (cone ∅ : AddSubmonoid (Gam n d)) := by
   unfold allE
   exact AddSubmonoid.sum_mem _ (fun e _ => oneE_mem ∅ e)
 
 /- English proof (translation)
-Unfold `allE`. Rewrite using `[Finset.sum_apply]`. Simplify using `[oneE, Pi.single_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem allE_apply {n d : ℕ} (e : E n d) : (allE : Gam n d) e = 1 := by
   unfold allE
@@ -28,13 +28,11 @@ theorem allE_apply {n d : ℕ} (e : E n d) : (allE : Gam n d) e = 1 := by
   simp [oneE, Pi.single_apply]
 
 /- English proof (translation)
-Use `⟨∑ e, (g e).natAbs, ?_⟩` and prove the remaining obligations. Establish `hnn : ∀ e, 0 ≤ (g + (∑ e, (g e).natAbs) • (allE : Gam n d)) e`. Introduce `e`. Establish `h1 : (g + (∑ e, (g e).natAbs) • (allE : Gam n d)) e = g e + ((∑ e, (g e).natAbs : ℕ) : ℤ)`. Express the relevant statement in the definitionally equal form `g e + (∑ e, (g e).natAbs) • (allE : Gam n d) e = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[allE_apply, nsmul_one]`. Establish `h2 : (g e).natAbs ≤ ∑ e, (g e).natAbs` using `Finset.single_le_sum (f := fun e => (g e).natAbs) (fun i _ => Nat.zero_le _) (Finset.mem_univ e)`. Establish `h3 : ((g e).natAbs : ℤ) ≤ ((∑ e, (g e).natAbs : ℕ) : ℤ)` using `by exact_mod_cast h2`. Rewrite using `[h1]`. Establish `h4` using `Int.natCast_natAbs (g e)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h5` using `neg_abs_le (g e)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `PolyBij.coe_mem_cone (n := n) (d := d) (Finsupp.equivFunOnFinite.symm fun e => ((g + (∑ e, (g e).natAbs) • (allE : Gam n d)) e).toNat)`. Use `key using 2` and compare the differences between its conclusion and the goal. Name the introduced variables `e`.
-
-Conclude with `(Int.toNat_of_nonneg (hnn e)).symm`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_add_mem {n d : ℕ} (g : Gam n d) :
     ∃ N : ℕ, g + N • allE ∈ (cone ∅ : AddSubmonoid (Gam n d)) := by
@@ -59,7 +57,7 @@ theorem exists_add_mem {n d : ℕ} (g : Gam n d) :
   exact (Int.toNat_of_nonneg (hnn e)).symm
 
 /- English proof (translation)
-Rewrite using `[monL, monL, mon_mul]`. Express the relevant statement in the definitionally equal form `AddMonoidAlgebra.single _ (1 : K) = AddMonoidAlgebra.single 0 1`. Use `congr 1`. Conclude with `Subtype.ext (neg_add_cancel (oneE e))`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem monL_neg_oneE_mul {K : Type} [Field K] {n d : ℕ} (e : E n d) : monL K (-oneE e) * monL K (oneE e) = 1 := by
   rw [monL, monL, mon_mul]
@@ -68,27 +66,25 @@ theorem monL_neg_oneE_mul {K : Type} [Field K] {n d : ℕ} (e : E n d) : monL K 
   exact Subtype.ext (neg_add_cancel (oneE e))
 
 /- English proof (translation)
-Introduce `K _ n d`. Establish `hle : (cone ∅ : AddSubmonoid (Gam n d)) ≤ ⊤` using `le_top`. Set `φ : MvPolynomial (E n d) K →ₐ[K] Lr K n d` to `(incl (K := K) hle).comp (poly n K ∅)`. Use `letI : Algebra (MvPolynomial (E n d) K) (Lr K n d) := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K (MvPolynomial (E n d) K) (Lr K n d) := IsScalarTower.of_algHom φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `s0 : MvPolynomial (E n d) K` to `(PolyBij.polyEquiv K).symm (mon K (allE : Gam n d) allE_mem)`. Establish `hpe : ∀ a, poly n K ∅ ((PolyBij.polyEquiv (n` using `n) (d := d) K).symm a) = a := by`. Introduce `a`. Rewrite using `[PolyBij.poly_eq_polyEquiv, AlgEquiv.coe_toAlgHom, AlgEquiv.apply_symm_apply]`. Establish `e1 : φ s0 = incl (K` using `K) hle (mon K (allE : Gam n d) allE_mem) := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `incl (K := K) hle (poly n K ∅ s0) = _`. Rewrite using `[hpe]`. Establish `hmul : φ s0 * mon K (-(allE : Gam n d)) (AddSubmonoid.mem_top _) = 1`. Rewrite using `[e1, incl_mon, mon_mul]`. Express the relevant statement in the definitionally equal form `AddMonoidAlgebra.single _ (1 : K) = AddMonoidAlgebra.single 0 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Subtype.ext (add_neg_cancel (allE : Gam n d))`. Establish `hunit : IsUnit (φ s0)` using `⟨⟨φ s0, _, hmul, by rw [mul_comm]; exact hmul⟩, rfl⟩`. Establish `hinj : Function.Injective φ` using `(Away.incl_injective (K := K) hle).comp (PolyBij.poly_bijective (K := K) (n := n) (d := d)).1`. Use `haveI : IsLocalization (Submonoid.powers s0) (Lr K n d) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Take `⟨k, hk⟩` from `(Submonoid.mem_powers_iff _ _).mp y.2`. Rewrite using `[← hk]`. Express the relevant statement in the definitionally equal form `IsUnit (φ (s0 ^ k))`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_pow]`. Conclude with `hunit.pow k`. Introduce `z`. Take `⟨N, a, ha⟩` from `Away.exists_mul_pow_eq_incl (K := K) hle (allE : Gam n d) allE_mem (fun g _ => exists_add_mem g) z`. Use `⟨((PolyBij.polyEquiv K).symm a, ⟨s0 ^ N, N, rfl⟩), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `z * φ (s0 ^ N) = φ ((PolyBij.polyEquiv K).symm a)`. Establish `e2 : φ ((PolyBij.polyEquiv K).symm a) = incl (K` using `K) hle a := by`. Express the relevant statement in the definitionally equal form `incl (K := K) hle (poly n K ∅ _) = _`. Rewrite using `[hpe]`. Rewrite using `[map_pow, e1, e2, ← map_pow]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `ha`. Introduce `x y hxy`. Establish `hxy' : φ x = φ y` using `hxy`. Conclude with `⟨1, by rw [hinj hxy']⟩`. Set `b0` to `(KaehlerDifferential.mvPolynomialBasis K (E n d)).ofIsLocalizedModule (Lr K n d) (Submonoid.powers s0) (KaehlerDifferential.map K K (MvPolynomial (E n d) K) (Lr K n d))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `w : E n d → (Lr K n d)ˣ` to `fun e => ⟨monL K (-oneE e), monL K (oneE e), monL_neg_oneE_mul e, by rw [mul_comm]; exact monL_neg_oneE_mul e⟩`. Use `⟨b0.unitsSMul w, fun e => ?_⟩` and prove the remaining obligations. Establish `e4 : KaehlerDifferential.mvPolynomialBasis K (E n d) e = KaehlerDifferential.D K (MvPolynomial (E n d) K) (MvPolynomial.X e)` using `Module.Basis.apply_eq_iff.mpr (by rw [KaehlerDifferential.mvPolynomialBasis_repr_D_X])`. Rewrite using `[Module.Basis.unitsSMul_apply, Module.Basis.ofIsLocalizedModule_apply, e4, KaehlerDifferential.map_D]`. Establish `e3 : φ (MvPolynomial.X e) = monL K (oneE e)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `incl (K := K) hle (poly n K ∅ (MvPolynomial.X e)) = _`. Rewrite using `[poly_X, incl_mon]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `monL K (-oneE e) • KaehlerDifferential.D K (Lr K n d) (φ (MvPolynomial.X e)) = dl e`. Rewrite using `[e3]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_basis_dl : ∀ {K : Type} [Field K] {n d : ℕ},
     ∃ b : Module.Basis (E n d) (Lr K n d) Ω[Lr K n d⁄K], ∀ e, b e = dl e := by

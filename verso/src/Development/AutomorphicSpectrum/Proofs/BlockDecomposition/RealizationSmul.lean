@@ -6,11 +6,11 @@ open CrystallineSemistableComparison.Pb.Kap
 namespace GlobalTheory.CompanionTheory.KapChain
 
 /- English proof (translation)
-Introduce `Λ A B K _ _ _ _ C j c x f hf`. Take `⟨h1, e, z, h2, h3⟩` from `hf`. Use `⟨?_, e, C.lam c • z, ?_, ?_⟩` and prove the remaining obligations. Introduce `k φ`. Simplify using `only [AddMonoidHom.comp_apply, AddMonoidHom.coe_mulLeft, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `n`. Rewrite using `[map_smul, h2 n, Pi.smul_apply, LinearMap.map_smulₛₗ, smul_comm]`. Introduce `m bs`. Rewrite using `[LinearMap.map_smulₛₗ, ← h3 bs]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AddMonoidHom.comp_apply, AddMonoidHom.coe_mulLeft, mul_smul]`. Rewrite using `[← Finset.smul_sum, smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_smul : ∀ {Λ A B K : Type} [CommRing Λ] [CommRing A] [CommRing B] [Field K] (C : Chain.{1} Λ A B K) {j : ℕ}
     (c : Λ) (x : ∀ n, C.S n j) (f : Module.Dual K (C.V j) →+ B), C.Rho x f →

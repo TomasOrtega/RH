@@ -17,17 +17,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.TypeSum.CoefClos
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ h d L hL x hx`. Establish `hd : ∀ (v : Fin d → H), (∀ a, Sm ε σ (v a)) → ∀ X ∈ lieSet ε, ∀ y ∈ UJset ε, HasDerivAt (fun t : ℝ => ∑ a, L a (σ (y * NormedSpace.exp (t • X)) (v a))) (∑ a, L a (σ y (dRep σ X (v a)))) 0`. Introduce `v hv X hX y hy`. Use `HasDerivAt.fun_sum fun a _ => ?_` and prove the remaining obligations. Simplify using `using CoefLow.hasDerivAt_coef h (hL a) (hv a) hX hy 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hw : ∀ (u : List (Ltr ε)) (a : Fin d), Sm ε σ (wordV σ u (x a))`. Introduce `u a`. Proceed by induction on `u with`. Consider the case `nil => exact hx a`. Consider the case `cons z u ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Break down `z with X | k` into its components or cases. Conclude with `Sm.word h.1 ih (l := [X.1]) (by simpa using X.2)`. Conclude with `Sm.translate h.1 ih (K_le_UJ k.2)`. Use `⟨⟨fun l y => ∑ a, L a (σ y (Dw σ l (x a))), fun _ _ => rfl, fun l hl X hX g hg => ?_, fun l hl => ?_⟩, fun u => ?_⟩` and prove the remaining obligations. Conclude with `hd _ (fun a => Sm.word h.1 (hx a) hl) X hX g hg`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `continuousOn_finset_sum _ fun a _ => h.continuousOn_coef (hL a) (Sm.word h.1 (hx a) hl)`. Proceed by induction on `u with`. Consider the case `nil => exact fun _ _ => rfl`. Consider the case `cons z u ih`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Break down `z with X | k` into its components or cases. Establish `e : (fun t : ℝ => wordF u (fun y => ∑ a, L a (σ y (x a))) (y * NormedSpace.exp (t • X.1))) = fun t : ℝ => ∑ a, L a (σ (y * NormedSpace.exp (t • X.1)) (wordV σ u (x a)))`. Use function extensionality and compare the values at `fun t => ih _ (mul_mem_UJ hy (exp_mem_UJ X.2 t))`. Conclude with `(congrArg (fun f => deriv f 0) e).trans (hd _ (hw u) X.1 X.2 y hy).deriv`. Use `(ih _ (mul_mem_UJ hy (K_le_UJ k.2))).trans (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[sigma_mul h.1 hy (K_le_UJ k.2)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TypeSum.CoefClos.coefSum_cSm_wordF : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ (d : ℕ) (L : Fin d → (H →ₗ[ℂ] ℂ)), (∀ a, Sobolev₂ (lieSet ε) σ (L a)) →

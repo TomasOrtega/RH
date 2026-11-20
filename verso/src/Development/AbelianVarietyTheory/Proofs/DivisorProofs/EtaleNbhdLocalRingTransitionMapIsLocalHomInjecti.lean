@@ -5,11 +5,9 @@ open IsLocalRing GlobalTheory.Henselisation
 namespace GlobalTheory.Henselisation
 
 /- English proof (translation)
-Establish `hloc : IsLocalHom (EtNbhd.trans h)`. Unfold `EtNbhd.trans`. Conclude with `Localization.isLocalHom_localRingHom _ _ _ _`. Use `⟨hloc, ?_⟩` and prove the remaining obligations. Use `set f : i.A →ₐ[R] j.A := h.choose with hfdef`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra i.A j.A := (f : i.A →+* j.A).toAlgebra`. Use `haveI : IsScalarTower R i.A j.A := IsScalarTower.of_algebraMap_eq (fun r => (f.commutes r).symm)`. Use `haveI : Algebra.Etale i.A j.A := Algebra.Etale.of_restrictScalars R i.A j.A`. Establish `hflat : (f : i.A →+* j.A).Flat` using `RingHom.flat_algebraMap_iff.mpr inferInstance`. Establish `hB : (EtNbhd.trans h).Flat` using `RingHom.Flat.localRingHom hflat j.q i.q _`.
-
-Use `letI : Algebra i.B j.B := (EtNbhd.trans h).toAlgebra`. Use `haveI : Module.Flat i.B j.B := RingHom.flat_algebraMap_iff.mp hB`. Use `haveI : IsLocalHom (algebraMap i.B j.B) := hloc`. Use `haveI hff : Module.FaithfullyFlat i.B j.B := Module.FaithfullyFlat.of_flat_of_isLocalHom`. Conclude with `RingHom.FaithfullyFlat.injective hff`.
+Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem EtNbhd.trans_isLocalHom_injective (R : Type) [CommRing R] [IsLocalRing R] (i j : EtNbhd R)
     (h : i ≤ j) : IsLocalHom (EtNbhd.trans h) ∧ Function.Injective (EtNbhd.trans h) := by

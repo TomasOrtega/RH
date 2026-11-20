@@ -68,7 +68,7 @@ variable {O : Type} [CommRing O] {G : Over (Sp O)} [GrpObj G] [IsCommMonObj G]
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-Rewrite using `[MonObj.comp_mul, x.2, y.2]`. Conclude with `mul_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_lie (x y : LieG G) : ptMap (TrivSqZeroExt.fstHom O O O) ≫ (x.1 * y.1) =
     toUnit (specO O O) ≫ η[G] := by
@@ -81,20 +81,20 @@ def lieZero (G : Over (Sp O)) [GrpObj G] : LieG G := ⟨1, MonObj.comp_one _⟩
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-The claim follows from `f.2.1 x y (mul_mem_lie x y)`.
+A detailed English derivation is pending.
 -/
 theorem omega_lieAdd (f : omega G) (x y : LieG G) : f.1 (lieAdd x y) = f.1 x + f.1 y := f.2.1 x y (mul_mem_lie x y)
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-The claim follows from `f.2.2 c x _`.
+A detailed English derivation is pending.
 -/
 theorem omega_lieScale (f : omega G) (c : O) (x : LieG G) :
     f.1 (AvDefs.lieScale G c x) = c * f.1 x := f.2.2 c x _
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-Establish `h` using `omega_lieAdd f (lieZero G) (lieZero G)`. Establish `e : lieAdd (lieZero G) (lieZero G) = lieZero G` using `Subtype.ext (mul_one _)`. Rewrite `h` using `[e]`. Take the linear combination `-h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem omega_lieZero (f : omega G) : f.1 (lieZero G) = 0 := by
   have h := omega_lieAdd f (lieZero G) (lieZero G)
@@ -135,9 +135,9 @@ theorem omegaAct_apply [StarRing Λ] (a : Λ) (f : omega G) (x : LieG G) :
     (omegaAct α a f).1 x = f.1 (AvDefs.lieAct G α (star a) x) := rfl
 
 /- English proof (translation)
-Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises. Use `α.hom a` as an intermediate fact. Establish `hx' : x.1 ≫ α.act a = ptMap (dualScale (τ a)) ≫ x.1` using `congrArg Subtype.val (hx a)`. Establish `hy' : y.1 ≫ α.act a = ptMap (dualScale (τ a)) ≫ y.1` using `congrArg Subtype.val (hy a)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (x.1 * y.1) ≫ α.act a = ptMap (dualScale (τ a)) ≫ (x.1 * y.1)`. Rewrite using `[MonObj.mul_comp, hx', hy', MonObj.comp_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEig_lieAdd {τ : Λ →+* O} {x y : LieG G} (hx : AvDefs.IsEig G α τ x)
     (hy : AvDefs.IsEig G α τ y) : AvDefs.IsEig G α τ (lieAdd x y) := by
@@ -150,7 +150,7 @@ theorem isEig_lieAdd {τ : Λ →+* O} {x y : LieG G} (hx : AvDefs.IsEig G α τ
   rw [MonObj.mul_comp, hx', hy', MonObj.comp_mul]
 
 /- English proof (translation)
-Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises. Use `α.hom a` as an intermediate fact. Use `show (1 : _ ⟶ G) ≫ α.act a = ptMap (dualScale (τ a)) ≫ 1`. Rewrite using `[MonObj.one_comp, MonObj.comp_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEig_lieZero (τ : Λ →+* O) : AvDefs.IsEig G α τ (lieZero G) := by
   intro a
@@ -160,11 +160,11 @@ theorem isEig_lieZero (τ : Λ →+* O) : AvDefs.IsEig G α τ (lieZero G) := by
   rw [MonObj.one_comp, MonObj.comp_one]
 
 /- English proof (translation)
-Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hx' : x.1 ≫ α.act a = ptMap (dualScale (τ a)) ≫ x.1` using `congrArg Subtype.val (hx a)`. Establish `e : (dualScale c).comp (dualScale (τ a)) = (dualScale (τ a)).comp (dualScale c)`. Apply `AlgHom.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y`. Unfold `dualScale`. Simplify using `only [AlgHom.comp_apply]`. Apply the tactic sequence `ext <;> simp only [TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map, LinearMap.smul_apply, LinearMap.id_apply, smul_eq_mul] <;> ring`. Use `show (ptMap (dualScale c) ≫ x.1) ≫ α.act a = ptMap (dualScale (τ a)) ≫ ptMap (dualScale c) ≫ x.1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hx', ← Category.assoc, ← Category.assoc, GlobalTheory.TangentPow.ptMap_comp_ptMap, GlobalTheory.TangentPow.ptMap_comp_ptMap, e]`.
+A detailed English derivation is pending.
 -/
 theorem isEig_lieScale {τ : Λ →+* O} (c : O) {x : LieG G} (hx : AvDefs.IsEig G α τ x) :
     AvDefs.IsEig G α τ (AvDefs.lieScale G c x) := by
@@ -191,21 +191,21 @@ def dlogTv (χ : Tv G p) : omega G :=
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-The claim follows from `(existsUnique_isAl χ).choose_spec.1.2`.
+A detailed English derivation is pending.
 -/
 theorem isAl_dlogTv (χ : Tv G p) : IsAl χ (dlogTv χ).1 := (existsUnique_isAl χ).choose_spec.1.2
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-The claim follows from `Subtype.ext ((existsUnique_isAl χ).choose_spec.2 f.1 ⟨f.2, h⟩)`.
+A detailed English derivation is pending.
 -/
 theorem eq_dlogTv {χ : Tv G p} {f : omega G} (h : IsAl χ f.1) : f = dlogTv χ := Subtype.ext ((existsUnique_isAl χ).choose_spec.2 f.1 ⟨f.2, h⟩)
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-Use `(eq_dlogTv ((GlobalTheory.HodgeTateImage.isAl_iff χ'' _).2 fun x n R _ _ hR => ?_)).symm` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.HodgeTateImage.isAl_iff χ _).1 (isAl_dlogTv χ) x n R hR`. Establish `h2` using `(GlobalTheory.HodgeTateImage.isAl_iff χ' _).1 (isAl_dlogTv χ') x n R hR`. Establish `h3 : GlobalTheory.HodgeTateImage.unitAt χ'' hR x = GlobalTheory.HodgeTateImage.unitAt χ hR x * GlobalTheory.HodgeTateImage.unitAt χ' hR x`. Unfold `GlobalTheory.HodgeTateImage.unitAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h n, MonObj.comp_mul, GlobalTheory.GmPoints.unitOf_mul, Units.val_mul]`. Rewrite using `[h3, TrivSqZeroExt.snd_mul, GlobalTheory.HodgeTateImage.unitAt_fst, GlobalTheory.HodgeTateImage.unitAt_fst, ← h1, ← h2, one_smul, MulOpposite.op_one, one_smul, add_comm]`. Conclude with `map_add (algebraMap O R) _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dlogTv_mul {χ χ' χ'' : Tv G p} (h : ∀ n, χ''.χ n = χ.χ n * χ'.χ n) :
     dlogTv χ'' = dlogTv χ + dlogTv χ' := by
@@ -223,9 +223,9 @@ theorem dlogTv_mul {χ χ' χ'' : Tv G p} (h : ∀ n, χ''.χ n = χ.χ n * χ'.
 omit [IsCommMonObj G] in
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_span]`. Unfold `htSpan`. Use `congr 1`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨χ, rfl⟩, rfl⟩`. Conclude with `⟨(dlogTv χ).2, χ, isAl_dlogTv χ⟩`. Introduce and unpack `⟨hf, χ, hχ⟩`. Conclude with `⟨dlogTv χ, ⟨χ, rfl⟩, (congrArg Subtype.val (eq_dlogTv (f := ⟨f, hf⟩) hχ)).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem map_span_dlogTv :
     (Submodule.span O (Set.range (dlogTv (G := G) (p := p)))).map (omega G).subtype = htSpan G p := by
@@ -256,16 +256,16 @@ abbrev red (m : ℕ) : O →ₐ[O] O ⧸ Ideal.span {(p : O) ^ m} := Ideal.Quoti
 
 omit [Fact p.Prime] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨m, GlobalTheory.HodgeTateImage.pow_quot m⟩`.
+Supply the required witnesses or components.
 -/
 theorem nilp (m : ℕ) : IsNilpotent (p : O ⧸ Ideal.span {(p : O) ^ m}) := ⟨m, GlobalTheory.HodgeTateImage.pow_quot m⟩
 
 omit [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] in
 include P in
 /- English proof (translation)
-Establish `hv` using `P.integers`. Establish `: Nontrivial O` using `⟨0, 1, fun h => by simpa using congrArg (algebraMap O C) h⟩`. Use `IsLocalRing.of_nonunits_add fun a b ha hb => ?_` and prove the remaining obligations. Rewrite `*` using `[mem_nonunits_iff, hv.isUnit_iff_valuation_eq_one]`. Establish `ha'` using `lt_of_le_of_ne (hv.map_le_one a) ha`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb'` using `lt_of_le_of_ne (hv.map_le_one b) hb`. Rewrite using `[map_add]`. Conclude with `ne_of_lt (lt_of_le_of_lt (v.map_add _ _) (max_lt ha' hb'))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalRing : IsLocalRing O := by
   have hv := P.integers
@@ -279,7 +279,7 @@ theorem isLocalRing : IsLocalRing O := by
 
 omit [Fact p.Prime] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] in
 /- English proof (translation)
-Rewrite using `[GlobalTheory.TangentPow.ptMap_comp_ptMap]`. Conclude with `congrArg (fun φ => ptMap φ) (AlgHom.ext fun _ => rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_red (m : ℕ) : ptMap (Ideal.Quotient.factorₐ O (Ideal.span_singleton_le_span_singleton.mpr
     (pow_dvd_pow (p : O) (Nat.le_succ m)))) ≫ ptMap (red p O (m + 1)) = ptMap (red p O m) := by
@@ -289,7 +289,7 @@ theorem factor_red (m : ℕ) : ptMap (Ideal.Quotient.factorₐ O (Ideal.span_sin
 include P in
 
 /- English proof (translation)
-Use `P.isLocalRing` as an intermediate fact. Establish `hp : ¬IsUnit (p : O)` using `Fact.out`. Take `⟨Q₀, -, hQ₀⟩` from `GlobalTheory.AdicPt.existsUnique_lim O O (p : O) hp inferInstance X (fun m => ptMap (red p O m) ≫ Q) (fun m => by`. Rewrite using `[← Category.assoc, factor_red])`. Conclude with `(hQ₀ Q fun _ => rfl).trans (hQ₀ Q' fun m => (h m).symm).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_ext_red {X : Over (Sp O)} {Q Q' : specO O O ⟶ X}
     (h : ∀ m, ptMap (red p O m) ≫ Q = ptMap (red p O m) ≫ Q') : Q = Q' := by
@@ -301,7 +301,7 @@ theorem hom_ext_red {X : Over (Sp O)} {Q Q' : specO O O ⟶ X}
   exact (hQ₀ Q fun _ => rfl).trans (hQ₀ Q' fun m => (h m).symm).symm
 
 /- English proof (translation)
-Use `P.isLocalRing` as an intermediate fact. Establish `hp : ¬IsUnit (p : O)` using `Fact.out`. Take `⟨Q, hQ, -⟩` from `GlobalTheory.AdicPt.existsUnique_lim O O (p : O) hp inferInstance P.G (fun m => P.cmp _ (nilp m) (ptMap (red p O m) ≫ x)) (fun m => by`. Rewrite using `[← P.cmp_nat _ _ (nilp (m + 1)) (nilp m), ← Category.assoc, factor_red])`. Conclude with `⟨Q, hQ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_toG (x : specO O O ⟶ P.Gt) : ∃ Q : specO O O ⟶ P.G,
     ∀ m, ptMap (red p O m) ≫ Q = P.cmp _ (nilp m) (ptMap (red p O m) ≫ x) := by
@@ -318,15 +318,15 @@ def toG : (specO O O ⟶ P.Gt) →* (specO O O ⟶ P.G) :=
       (P.exists_toG _).choose_spec, (P.exists_toG _).choose_spec]
 
 /- English proof (translation)
-The claim follows from `(P.exists_toG x).choose_spec m`.
+A detailed English derivation is pending.
 -/
 theorem red_toG (x : specO O O ⟶ P.Gt) (m : ℕ) :
     ptMap (red p O m) ≫ P.toG x = P.cmp _ (nilp m) (ptMap (red p O m) ≫ x) := (P.exists_toG x).choose_spec m
 
 /- English proof (translation)
-Use `P.isLocalRing` as an intermediate fact. Establish `hp : ¬IsUnit (p : O)` using `Fact.out`. Use `⟨fun x y hxy => P.hom_ext_red fun m => (P.cmp _ (nilp m)).injective ?_, fun Q => ?_⟩` and prove the remaining obligations. Rewrite using `[← P.red_toG, ← P.red_toG, hxy]`. Take `⟨x, hx, -⟩` from `GlobalTheory.AdicPt.existsUnique_lim O O (p : O) hp inferInstance P.Gt (fun m => (P.cmp _ (nilp m)).symm (ptMap (red p O m) ≫ Q)) (fun m => (P.cmp _ (nilp m)).injective (by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[P.cmp_nat _ _ (nilp (m + 1)) (nilp m), MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply, ← Category.assoc, factor_red]))`. Use `⟨x, P.hom_ext_red fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[P.red_toG, hx m]`. Rewrite using `[MulEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem toG_bijective : Function.Bijective P.toG := by
   have := P.isLocalRing
@@ -342,7 +342,7 @@ theorem toG_bijective : Function.Bijective P.toG := by
     rw [MulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `P.hom_ext_red fun m => ?_` and prove the remaining obligations. Rewrite using `[P.red_toG, ← Category.assoc (ptMap _) x, P.cmp_act, ← Category.assoc, P.red_toG]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem toG_act (a : Λ) (x : specO O O ⟶ P.Gt) :
     P.toG (x ≫ P.oGt.act a) = P.toG x ≫ P.oG.act a := by
@@ -351,7 +351,7 @@ theorem toG_act (a : Λ) (x : specO O O ⟶ P.Gt) :
 
 omit [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] in
 /- English proof (translation)
-The claim follows from `GlobalTheory.ChTor.exists_genericPoint_hom C O P.integers.hom_inj P.G P.semi.separated P.A.A P.gen P.gen_pull`.
+A detailed English derivation is pending.
 -/
 theorem exists_generic : ∃ j : (specO O O ⟶ P.G) →* Pts P.A.A, Function.Injective j ∧
     ∀ Q z, z.left ≫ P.gen = spMap (algebraMap O C) ≫ Q.left ↔ z = j Q := GlobalTheory.ChTor.exists_genericPoint_hom C O P.integers.hom_inj P.G P.semi.separated P.A.A P.gen P.gen_pull
@@ -359,18 +359,18 @@ theorem exists_generic : ∃ j : (specO O O ⟶ P.G) →* Pts P.A.A, Function.In
 def toA : (specO O O ⟶ P.Gt) →* Pts P.A.A := P.exists_generic.choose.comp P.toG
 
 /- English proof (translation)
-The claim follows from `(P.exists_generic.choose_spec.2 (P.toG x) z).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_toA_iff (x : specO O O ⟶ P.Gt) (z : Pts P.A.A) :
     z = P.toA x ↔ z.left ≫ P.gen = spMap (algebraMap O C) ≫ (P.toG x).left := (P.exists_generic.choose_spec.2 (P.toG x) z).symm
 
 /- English proof (translation)
-The claim follows from `P.exists_generic.choose_spec.1.comp P.toG_bijective.1`.
+A detailed English derivation is pending.
 -/
 theorem toA_injective : Function.Injective P.toA := P.exists_generic.choose_spec.1.comp P.toG_bijective.1
 
 /- English proof (translation)
-Establish `h0` using `(P.eq_toA_iff x (P.toA x)).1 rfl`. Use `((P.eq_toA_iff _ _).2 ?_).symm` and prove the remaining obligations. Rewrite using `[P.toG_act, Over.comp_left, Over.comp_left, Category.assoc, P.gen_act, reassoc_of% h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem toA_act (a : Λ) (x : specO O O ⟶ P.Gt) :
     P.toA (x ≫ P.oGt.act a) = P.toA x ≫ P.oA.act a := by
@@ -381,7 +381,7 @@ theorem toA_act (a : Λ) (x : specO O O ⟶ P.Gt) :
 end Points
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.isFinite_flat_torsion_of_isGt (Sp O) P.Ext P.Gt ⟨P.D⟩ N hN (GlobalTheory.AbTorsionAnyBase.isFinite_and_flat_torsion _ _ P.Ext.isAbelian N hN).1 (GlobalTheory.AbTorsionAnyBase.isFinite_and_flat_torsion _ _ P.Ext.isAbelian N hN).2`.
+A detailed English derivation is pending.
 -/
 theorem finite_flat (N : ℕ) (hN : 1 ≤ N) :
     IsFinite (torsion P.Gt N).hom ∧ Flat (torsion P.Gt N).hom := GlobalTheory.isFinite_flat_torsion_of_isGt (Sp O) P.Ext P.Gt ⟨P.D⟩ N hN
@@ -403,7 +403,7 @@ def torusPts : (specO O O ⟶ splitTorus (Sp O) P.Ext.X) →* (specO O O ⟶ P.G
 def tateTorus : Submodule ℤ_[p] P.T := LinearMap.range (Tate.map p (P.toA.comp P.torusPts))
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `⟨Tate.map p P.torusPts t, Tate.ext fun n => rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem tateTorus_le_tateGt : P.tateTorus ≤ P.tateGt := by
   rintro _ ⟨t, rfl⟩
@@ -417,7 +417,7 @@ def IsWeilChar (t : P.T) (χ : Tv P.Gt p) : Prop :=
 
 omit [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] in
 /- English proof (translation)
-Take `⟨hff, hfn⟩` from `P.finite_flat (p ^ n) (one_le_ppow p n)`. Use `(GlobalTheory.torsionCharacter_ext_and_exists_of_integral_points C v O P.integers P.Gt (p ^ n) (one_le_ppow p n) hff hfn).1 f f' fun w => ?_` and prove the remaining obligations. Apply `GlobalTheory.GmPoints.unitOf_bijective.1` to reduce the goal to its premises. Conclude with `Units.ext (P.integers.hom_inj (h w))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem char_ext {n : ℕ} {f f' : torsion P.Gt (p ^ n) ⟶ Gm (Sp O)}
     (h : ∀ w : specO O O ⟶ torsion P.Gt (p ^ n),
@@ -430,22 +430,22 @@ theorem char_ext {n : ℕ} {f f' : torsion P.Gt (p ^ n) ⟶ Gm (Sp O)}
 
 omit [IsAlgClosed C] [CharZero C] in
 /- English proof (translation)
-Rewrite using `[← map_pow, ← MonObj.comp_pow, torsionι_pow, MonObj.comp_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toA_pow {N : ℕ} (w : specO O O ⟶ torsion P.Gt N) :
     P.toA (w ≫ torsion.ι P.Gt N) ^ N = 1 := by
   rw [← map_pow, ← MonObj.comp_pow, torsionι_pow, MonObj.comp_one, map_one]
 
 /- English proof (translation)
-Establish `hN : ∀ n, 1 ≤ p ^ n` using `one_le_ppow p`. Establish `hk : ∀ n, ∃ f : torsion P.Gt (p ^ n) ⟶ Gm (Spec (CommRingCat.of O)), IsCharTors P.Gt (p ^ n) f ∧ ∀ w : specO O O ⟶ torsion P.Gt (p ^ n), algebraMap O C (unitOf (w ≫ f) : O) = (weil P.A (p ^ n) (P.toA (w ≫ torsion.ι P.Gt (p ^ n))) (t.lev n) : C)` using `fun n => (GlobalTheory.torsionCharacter_ext_and_exists_of_integral_points C v O P.integers P.Gt (p ^ n) (hN n) (P.finite_flat (p ^ n) (hN n)).1 (P.finite_flat (p ^ n) (hN n)).2).2 (fun x => weil P.A (p ^ n) (P.toA x) (t.lev n)) fun x y hx hy => by`. Rewrite using `[map_mul]`. Conclude with `weil_mul_left (hN n) (by rw [← map_pow, hx, map_one]) (by rw [← map_pow, hy, map_one]) (t.lev_pow n)`. Use `choose f hf hfw using hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨f, hf, fun n T x y hxy => ?_⟩, fun n w => hfw n w, fun χ hχ => ?_⟩` and prove the remaining obligations. Establish `hpow : torsion.ι P.Gt (p ^ n) ^ (p ^ (n + 1)) = 1`. Rewrite using `[pow_succ, pow_mul, torsionι_pow, one_pow]`. Establish `hi : torsionLift (torsion.ι P.Gt (p ^ n)) hpow ≫ torsion.ι P.Gt (p ^ (n + 1)) = torsion.ι P.Gt (p ^ n)` using `pullback.lift_fst _ _ _`. Establish `hy : y = x ≫ torsionLift (torsion.ι P.Gt (p ^ n)) hpow` using `pullback.hom_ext (show y ≫ torsion.ι P.Gt (p ^ (n + 1)) = (x ≫ torsionLift (torsion.ι P.Gt (p ^ n)) hpow) ≫ torsion.ι P.Gt (p ^ (n + 1)) by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hi, hxy]) (toUnit_unique _ _)`. Rewrite using `[hy, Category.assoc]`. Use `congr 1`. Apply `P.char_ext` to reduce the goal to its premises. Introduce `w`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc w, hfw, hfw, Category.assoc, hi]`. Establish `hl` using `weil_level (hN n) (Fact.out : p.Prime).one_lt.le (P.toA_pow w) (s := t.lev (n + 1)) (by rw [← pow_succ]; exact t.lev_pow (n + 1))`. Rewrite `hl` using `[← pow_succ]`. Rewrite using `[hl, t.lev_succ]`. Take `⟨g, hg, hgc⟩` from `χ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `: g = f` using `funext fun n => P.char_ext fun w => (hχ n w).trans (hfw n w).symm`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem existsUnique_isWeilChar (t : P.T) : ∃! χ : Tv P.Gt p, P.IsWeilChar t χ := by
   have hN : ∀ n, 1 ≤ p ^ n := one_le_ppow p
@@ -485,12 +485,12 @@ theorem existsUnique_isWeilChar (t : P.T) : ∃! χ : Tv P.Gt p, P.IsWeilChar t 
 def weilChar (t : P.T) : Tv P.Gt p := (P.existsUnique_isWeilChar t).choose
 
 /- English proof (translation)
-The claim follows from `(P.existsUnique_isWeilChar t).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem isWeilChar_weilChar (t : P.T) : P.IsWeilChar t (P.weilChar t) := (P.existsUnique_isWeilChar t).choose_spec.1
 
 /- English proof (translation)
-Apply `P.char_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[MonObj.comp_mul, GlobalTheory.GmPoints.unitOf_mul, Units.val_mul, map_mul, P.isWeilChar_weilChar (s + t) n w, P.isWeilChar_weilChar s n w, P.isWeilChar_weilChar t n w, Tate.lev_add, weil_mul_right (one_le_ppow p n) (s.lev_pow n) (t.lev_pow n) (P.toA_pow w), Units.val_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem weilChar_add (s t : P.T) (n : ℕ) :
     (P.weilChar (s + t)).χ n = (P.weilChar s).χ n * (P.weilChar t).χ n := by
@@ -501,13 +501,13 @@ theorem weilChar_add (s t : P.T) (n : ℕ) :
     weil_mul_right (one_le_ppow p n) (s.lev_pow n) (t.lev_pow n) (P.toA_pow w), Units.val_mul]
 
 /- English proof (translation)
-Use `P.oGt.hom (star a)` as an intermediate fact. Establish `hχ : ∀ n, (P.weilChar (P.actT a t)).χ n = GlobalTheory.ExtensionTorsion.torsionHom (P.oGt.act (star a)) (p ^ n) ≫ (P.weilChar t).χ n`. Introduce `n`. Apply `P.char_ext` to reduce the goal to its premises. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[P.isWeilChar_weilChar (P.actT a t) n w, ← Category.assoc, P.isWeilChar_weilChar t n (w ≫ GlobalTheory.ExtensionTorsion.torsionHom (P.oGt.act (star a)) (p ^ n)), Category.assoc, GlobalTheory.ExtensionTorsion.torsionHom_ι, ← Category.assoc, P.toA_act, weil_act P.oA (one_le_ppow p …`. Both sides reduce to the same expression. Use `(eq_dlogTv ((GlobalTheory.HodgeTateImage.isAl_iff _ _).2 fun x n R _ _ hR => ?_)).symm` and prove the remaining obligations. Rewrite using `[omegaAct_apply, (GlobalTheory.HodgeTateImage.isAl_iff _ _).1 (isAl_dlogTv (P.weilChar t)) _ n R hR]`. Establish `hl : GlobalTheory.HodgeTateImage.lift hR x ≫ GlobalTheory.ExtensionTorsion.torsionHom (P.oGt.act (star a)) (p ^ n) = GlobalTheory.HodgeTateImage.lift hR (AvDefs.lieAct P.Gt P.oGt (star a) x)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `GlobalTheory.HodgeTateImage.eq_lift` to reduce the goal to its premises. Rewrite using `[Category.assoc, GlobalTheory.ExtensionTorsion.torsionHom_ι, ← Category.assoc, GlobalTheory.HodgeTateImage.lift_ι]`. Unfold `GlobalTheory.HodgeTateImage.bc`. Rewrite using `[Category.assoc]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `GlobalTheory.HodgeTateImage.unitAt`. Rewrite using `[hχ n, ← Category.assoc, hl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dlogTv_weilChar_act (a : Λ) (t : P.T) :
     dlogTv (P.weilChar (P.actT a t)) = omegaAct P.oGt a (dlogTv (P.weilChar t)) := by
@@ -544,9 +544,9 @@ def al₀ : P.T →ₗ[ℤ_[p]] omega P.Gt where
       rw [dlogTv_mul (P.weilChar_add s t)]; rfl) a t)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨P.weilChar t, P.isWeilChar_weilChar t, isAl_dlogTv _⟩`. Introduce and unpack `⟨χ, hχ, hf⟩`. Rewrite `hf` using `[(P.existsUnique_isWeilChar t).unique hχ (P.isWeilChar_weilChar t)]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `eq_dlogTv hf`.
+A detailed English derivation is pending.
 -/
 theorem eq_al₀_iff (t : P.T) (f : omega P.Gt) :
     f = P.al₀ t ↔ ∃ χ : Tv P.Gt p, P.IsWeilChar t χ ∧ IsAl χ f.1 := by
@@ -558,7 +558,7 @@ theorem eq_al₀_iff (t : P.T) (f : omega P.Gt) :
     exact eq_dlogTv hf
 
 /- English proof (translation)
-The claim follows from `P.dlogTv_weilChar_act a t`.
+A detailed English derivation is pending.
 -/
 theorem al₀_act (a : Λ) (t : P.T) : P.al₀ (P.actT a t) = omegaAct P.oGt a (P.al₀ t) := P.dlogTv_weilChar_act a t
 
@@ -570,11 +570,9 @@ Both sides reduce to the same expression.
 theorem al_tmul (c : O) (t : P.T) : P.al (c ⊗ₜ t) = c • P.al₀ t := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_span_dlogTv]`. Apply `Submodule.map_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨u, rfl⟩`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul c t`. Rewrite using `[P.al_tmul]`. Conclude with `Submodule.smul_mem _ c (Submodule.subset_span ⟨P.weilChar t, rfl⟩)`. Consider the case `add u u' hu hu'`. Rewrite using `[map_add]`.
-
-Conclude with `Submodule.add_mem _ hu hu'`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_range_al_le : (LinearMap.range P.al).map (omega P.Gt).subtype ≤ htSpan P.Gt p := by
   rw [← map_span_dlogTv]

@@ -35,26 +35,26 @@ def EndSer (α : R) (N m : ℕ) (q : ℕ → R) (s : R) (A : R⟦X⟧) : Prop :=
   rescale α A ^ 2 * A ^ (2 * m) = A ^ (2 * N) * homSer m q s A
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[coeff_derivative]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma map_deriv (φ : R →+* S) (A : R⟦X⟧) : map φ (d⁄dX R A) = d⁄dX S (map φ A) := by
   ext n; simp [coeff_derivative]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[coeff_rescale]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma map_rescale (φ : R →+* S) (α : R) (A : R⟦X⟧) :
     map φ (rescale α A) = rescale (φ α) (map φ A) := by
   ext n; simp [coeff_rescale]
 
 /- English proof (translation)
-Simplify using `[wSer, map_deriv]`.
+Simplify using the standard rewrite rules.
 -/
 lemma map_wSer (φ : R →+* S) (s : R) (A : R⟦X⟧) : map φ (wSer s A) = wSer (φ s) (map φ A) := by
   simp [wSer, map_deriv]
 
 /- English proof (translation)
-Use `congrArg (PowerSeries.map φ) h` as an intermediate fact. Simplify `this` using `[OdeSer, map_deriv, map_wSer, map_ofNat]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma OdeSer.map (φ : R →+* S) {s a b : R} {A : R⟦X⟧} (h : OdeSer s a b A) :
     OdeSer (φ s) (φ a) (φ b) (map φ A) := by
@@ -62,7 +62,7 @@ lemma OdeSer.map (φ : R →+* S) {s a b : R} {A : R⟦X⟧} (h : OdeSer s a b A
   simpa [OdeSer, map_deriv, map_wSer, map_ofNat] using this
 
 /- English proof (translation)
-Apply `PowerSeries.map_injective φ hφ` to reduce the goal to its premises. Simplify `h` using `[OdeSer, map_deriv, map_wSer, map_ofNat]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma OdeSer.of_map (φ : R →+* S) (hφ : Function.Injective φ) {s a b : R} {A : R⟦X⟧}
     (h : OdeSer (φ s) (φ a) (φ b) (PowerSeries.map φ A)) : OdeSer s a b A := by
@@ -70,7 +70,7 @@ lemma OdeSer.of_map (φ : R →+* S) (hφ : Function.Injective φ) {s a b : R} {
   simpa [OdeSer, map_deriv, map_wSer, map_ofNat] using h
 
 /- English proof (translation)
-Use `congrArg (PowerSeries.map φ) h` as an intermediate fact. Simplify `this` using `[EndSer, homSer, map_rescale, map_wSer]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma EndSer.map (φ : R →+* S) {α s : R} {N m : ℕ} {q : ℕ → R} {A : R⟦X⟧}
     (h : EndSer α N m q s A) : EndSer (φ α) N m (fun k => φ (q k)) (φ s) (map φ A) := by
@@ -78,11 +78,11 @@ lemma EndSer.map (φ : R →+* S) {α s : R} {N m : ℕ} {q : ℕ → R} {A : R�
   simpa [EndSer, homSer, map_rescale, map_wSer] using this
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `(Algebra.linearMap M ℂ).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 (algebraMap M ℂ).injective)`. Establish `hr' : ∀ x : M, r (algebraMap M ℂ x) = x` using `fun x => LinearMap.congr_fun hr x`. Use `⟨fun k => r (q k), ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Establish `h1` using `congrArg (fun B => r (coeff n B)) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `c1 : ∀ (x y : ℂ⟦X⟧) (c : ℂ), x * (C c * y) = C c * (x * y)` using `fun x y c => by ring`. Establish `c2 : ∀ (x y : M⟦X⟧) (c : M), x * (C c * y) = C c * (x * y)` using `fun x y c => by ring`. Simplify using `only [homSer, Finset.mul_sum, c1, ← map_rescale, ← map_wSer, ← map_pow (PowerSeries.map (algebraMap M ℂ)), ← map_mul (PowerSeries.map (algebraMap M ℂ)), map_sum, coeff_C_mul, coeff_map, hr'] at h1`. Simplify using `only [homSer, Finset.mul_sum, c2, map_sum, coeff_C_mul]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (q k), ← Algebra.smul_def, r.map_smul, smul_eq_mul, mul_comm (r (q k))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma EndSer.descend {M : Type} [Field M] [Algebra M ℂ] {α s : M} {N m : ℕ} {q : ℕ → ℂ}
     {A : M⟦X⟧} (h : EndSer (algebraMap M ℂ α) N m q (algebraMap M ℂ s)
@@ -104,13 +104,13 @@ lemma EndSer.descend {M : Type} [Field M] [Algebra M ℂ] {α s : M} {N m : ℕ}
   rw [mul_comm (q k), ← Algebra.smul_def, r.map_smul, smul_eq_mul, mul_comm (r (q k))]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hD : P - Q ≠ 0` using `sub_ne_zero.2 hne`. Take `⟨n, E, hE, hE0⟩ : ∃ (n : ℕ) (E : ℂ⟦X⟧), P = Q + X ^ n * E ∧ constantCoeff E ≠ 0` from `⟨(P - Q).order.toNat, divXPowOrder (P - Q), by rw [X_pow_order_mul_divXPowOrder]; ring, by simpa [constantCoeff_divXPowOrder_eq_zero_iff] using hD⟩`. Establish `hx : (X : ℂ⟦X⟧) * d⁄dX ℂ (X ^ n : ℂ⟦X⟧) = (n : ℂ⟦X⟧) * X ^ n`. Consider the cases of `n with`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp`. Consider the case `succ n => simp [Derivation.leibniz_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : X * d⁄dX ℂ P = X * d⁄dX ℂ Q + X ^ n * ((n : ℂ⟦X⟧) * E + X * d⁄dX ℂ E)`. Rewrite using `[hE, map_add, Derivation.leibniz]`.
+Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul]`. Take the linear combination `E * hx`. Establish `key : X ^ n * ((((n : ℂ⟦X⟧) * E + X * d⁄dX ℂ E) - 2 * E) * (X * d⁄dX ℂ P - 2 * P + (X * d⁄dX ℂ Q - 2 * Q))) = X ^ n * (E * (4 * (P ^ 2 + P * Q + Q ^ 2) - C a * X ^ 4))`. Establish `e : X ^ n * E = P - Q` using `by rw [hE]; ring`. Take the linear combination `hP - hQ - (X * d⁄dX ℂ P - 2 * P + (X * d⁄dX ℂ Q - 2 * Q)) * hd - (2 * (X * d⁄dX ℂ P - 2 * P + (X * d⁄dX ℂ Q - 2 * Q)) + (4 * (P ^ 2 + P * Q + Q ^ 2) - C a * X ^ 4)) * e`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `k2` using `congrArg constantCoeff (mul_left_cancel₀ (pow_ne_zero n (X_ne_zero (R := ℂ))) key)`. Simplify using `[hP0, hQ0, map_ofNat] at k2`. Establish `: ((n : ℂ) + 1) * constantCoeff E = 0` using `by linear_combination (-1 / 4 : ℂ) * k2`. Conclude with `(mul_ne_zero (Nat.cast_add_one_ne_zero n) hE0) this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma ode_unique {a b : ℂ} {P Q : ℂ⟦X⟧} (hP0 : constantCoeff P = 1) (hQ0 : constantCoeff Q = 1)
     (hP : (X * d⁄dX ℂ P - 2 * P) ^ 2 = 4 * P ^ 3 - C a * X ^ 4 * P - C b * X ^ 6)
@@ -141,11 +141,11 @@ lemma ode_unique {a b : ℂ} {P Q : ℂ⟦X⟧} (hP0 : constantCoeff P = 1) (hQ0
   exact (mul_ne_zero (Nat.cast_add_one_ne_zero n) hE0) this
 
 /- English proof (translation)
-Unfold `OdeSer at h`. Use `set P := wSer s (X * U) * V ^ 2 with hP`. Establish `hW : wSer s (X * U) = P * U ^ 2`. Rewrite using `[hP, mul_assoc, ← mul_pow, mul_comm V, hUV]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hU : U ≠ 0` using `left_ne_zero_of_mul_eq_one hUV`. Rewrite `h` using `[hW]`. Simplify using `only [Derivation.leibniz, Derivation.leibniz_pow, derivative_X, smul_eq_mul, nsmul_eq_mul] at h`. Apply `mul_left_cancel₀ (pow_ne_zero 6 hU)` to reduce the goal to its premises. Move the coercions through the operations in `at h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h`.
+A detailed English derivation is pending.
 -/
 lemma ode_reduce {s a b : ℂ} {U V : ℂ⟦X⟧} (hUV : U * V = 1) (h : OdeSer s a b (X * U)) :
     (X * d⁄dX ℂ (wSer s (X * U) * V ^ 2) - 2 * (wSer s (X * U) * V ^ 2)) ^ 2 =
@@ -163,21 +163,21 @@ lemma ode_reduce {s a b : ℂ} {U V : ℂ⟦X⟧} (hUV : U * V = 1) (h : OdeSer 
   linear_combination h
 
 /- English proof (translation)
-Take `⟨U, rfl⟩ : X ∣ A` from `X_dvd_iff.2 (by simpa using hA0)`. Take `⟨T, rfl⟩ : X ∣ B` from `X_dvd_iff.2 (by simpa using hB0)`. Rewrite `hA1`, `hA2`, `hB1`, `hB2` using `[coeff_succ_X_mul]`. Simplify using `only [coeff_zero_eq_constantCoeff] at hA1 hB1`. Establish `hUV : U * U⁻¹ = 1` using `PowerSeries.mul_inv_cancel _ (by simp [hA1])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hTV : T * T⁻¹ = 1` using `PowerSeries.mul_inv_cancel _ (by simp [hB1])`. Establish `hV0 : constantCoeff U⁻¹ = 1` using `by simp [hA1]`. Establish `hV1 : constantCoeff T⁻¹ = 1` using `by simp [hB1]`. Generalize the expression as in `U⁻¹ = V at hUV hV0`. Generalize the expression as in `T⁻¹ = Y at hTV hV1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hPQ` using `ode_unique (by simp [wSer, Derivation.leibniz, hA1, hV0]) (by simp [wSer, Derivation.leibniz, hB1, hV1]) (ode_reduce hUV hA) (ode_reduce hTV hB)`. Establish `dV : d⁄dX ℂ V = -V ^ 2 * d⁄dX ℂ U`. Use `congrArg (d⁄dX ℂ) hUV` as an intermediate fact. Simplify using `only [Derivation.leibniz, smul_eq_mul, Derivation.map_one_eq_zero] at this`. Take the linear combination `V * this - d⁄dX ℂ V * hUV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `dY : d⁄dX ℂ Y = -Y ^ 2 * d⁄dX ℂ T`. Use `congrArg (d⁄dX ℂ) hTV` as an intermediate fact. Simplify using `only [Derivation.leibniz, smul_eq_mul, Derivation.map_one_eq_zero] at this`. Take the linear combination `Y * this - d⁄dX ℂ Y * hTV`. Establish `h1 : d⁄dX ℂ U * V = d⁄dX ℂ T * Y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `derivative.ext ?_ ?_` and prove the remaining obligations. Apply `mul_left_cancel₀ (pow_ne_zero 2 (X_ne_zero (R := ℂ)))` to reduce the goal to its premises. Simplify using `only [wSer, Derivation.leibniz, smul_eq_mul, derivative_X, map_add, mul_one] at hPQ ⊢`. Rewrite using `[dV, dY]`. Take the linear combination `-hPQ + ((U * V + 1) * (1 - C s * X ^ 2) - X ^ 2 * V * d⁄dX ℂ (d⁄dX ℂ U)) * hUV - ((T * Y + 1) * (1 - C s * X ^ 2) - X ^ 2 * Y * d⁄dX ℂ (d⁄dX ℂ T)) * hTV`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e : ∀ F : ℂ⟦X⟧, constantCoeff (d⁄dX ℂ F) = coeff 1 F` using `fun F => by`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_derivative]`. Simplify using the standard rewrite rules. Rewrite using `[map_mul, map_mul, e, e, hA2, hB2, zero_mul, zero_mul]`. Establish `h2 : U * Y = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `derivative.ext ?_ (by simp [hA1, hV1])` and prove the remaining obligations. Simplify using `only [Derivation.leibniz, smul_eq_mul, Derivation.map_one_eq_zero]`. Rewrite using `[dY]`. Take the linear combination `U * Y * h1 - Y * d⁄dX ℂ U * hUV`. Establish `: U = T` using `by linear_combination T * h2 - U * hTV`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma theta_unique {s a b : ℂ} {A B : ℂ⟦X⟧} (hA0 : coeff 0 A = 0) (hA1 : coeff 1 A = 1)
     (hA2 : coeff 2 A = 0) (hB0 : coeff 0 B = 0) (hB1 : coeff 1 B = 1) (hB2 : coeff 2 B = 0)
@@ -221,14 +221,14 @@ lemma theta_unique {s a b : ℂ} {A B : ℂ⟦X⟧} (hA0 : coeff 0 A = 0) (hA1 :
   rw [this]
 
 /- English proof (translation)
-Simplify using `[coeff_mul, Finset.Nat.antidiagonal_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma coeff_two_mul' (f g : R⟦X⟧) : coeff 2 (f * g) =
     coeff 0 f * coeff 2 g + coeff 1 f * coeff 1 g + coeff 2 f * coeff 0 g := by
   simp [coeff_mul, Finset.Nat.antidiagonal_succ]; ring
 
 /- English proof (translation)
-Simplify using `[coeff_mul, Finset.Nat.antidiagonal_succ]`.
+Simplify using the standard rewrite rules.
 -/
 lemma coeff_one_mul' (f g : R⟦X⟧) : coeff 1 (f * g) =
     coeff 0 f * coeff 1 g + coeff 1 f * coeff 0 g := by
@@ -241,13 +241,13 @@ lemma coeff_zero_mul' (f g : R⟦X⟧) : coeff 0 (f * g) = coeff 0 f * coeff 0 g
   simp
 
 /- English proof (translation)
-Establish `w0 : coeff 0 (wSer s A) = 1`. Simplify using `only [wSer, sq, map_sub, coeff_zero_mul', coeff_derivative, coeff_C_mul]`. Simplify using `[hA0, hA1]`. Establish `w1 : coeff 1 (wSer s A) = 0`. Simplify using `only [wSer, sq, map_sub, coeff_one_mul', coeff_derivative, coeff_C_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hA0, hA1, hA2]`. Establish `w2 : coeff 2 (wSer s A) = -s`. Simplify using `only [wSer, sq, map_sub, coeff_two_mul', coeff_derivative, coeff_C_mul]`. Simplify using `[hA0, hA1, hA2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h` using `congrArg (coeff 2) hA`. Generalize the expression as in `wSer s A = W at h w0 w1 w2`. Establish `e2 : (2 : ℂ⟦X⟧) = C 2` using `rfl`. Establish `e4 : (4 : ℂ⟦X⟧) = C 4` using `rfl`. Simplify using `only [pow_succ, pow_zero, one_mul, e2, e4, mul_assoc, map_sub, coeff_C_mul, coeff_two_mul', coeff_one_mul', coeff_zero_mul', coeff_derivative, Nat.reduceAdd, hA0, hA1, hA2, w0, w1, w2] at h`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `at h`. Take the linear combination `(1 / 12 : ℂ) * h`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma OdeSer.const_eq {s a b : ℂ} {A : ℂ⟦X⟧} (hA0 : coeff 0 A = 0) (hA1 : coeff 1 A = 1)
     (hA2 : coeff 2 A = 0) (hA : OdeSer s a b A) : s = -2 * coeff 3 A := by
@@ -284,12 +284,12 @@ def Ent : Subring (ℂ → ℂ) where
   neg_mem' := fun hf => hf.neg
 
 /- English proof (translation)
-The claim follows from `f.2`.
+A detailed English derivation is pending.
 -/
 lemma Ent.diff (f : Ent) : Differentiable ℂ f.1 := f.2
 
 /- English proof (translation)
-The claim follows from `(Ent.diff f).contDiff`.
+A detailed English derivation is pending.
 -/
 lemma Ent.contDiff (f : Ent) (n : ℕ) : ContDiff ℂ n f.1 := (Ent.diff f).contDiff
 
@@ -330,12 +330,12 @@ def tay : Ent →+* ℂ⟦X⟧ where
     field_simp
 
 /- English proof (translation)
-The claim follows from `coeff_mk n (coef1 f.1)`.
+A detailed English derivation is pending.
 -/
 lemma coeff_tay (f : Ent) (n : ℕ) : coeff n (tay f) = coef1 f.1 n := coeff_mk n (coef1 f.1)
 
 /- English proof (translation)
-Use extensionality with `n`. Establish `h3 : (n.factorial : ℂ) ≠ 0` using `by exact_mod_cast n.factorial_ne_zero`. Establish `h4 : ((n : ℂ) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero n`. Simplify using `only [coeff_derivative, coeff_tay, coef1, dE, iteratedDeriv_succ', Nat.factorial_succ]`. Use `push_cast`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -348,7 +348,7 @@ lemma tay_dE (f : Ent) : tay (dE f) = d⁄dX ℂ (tay f) := by
   field_simp
 
 /- English proof (translation)
-Use extensionality with `n`. Consider the cases of `n with`. Consider the case `zero => simp [coeff_tay, coef1, cE]`. Consider the case `succ n => simp [coeff_tay, coef1, cE, iteratedDeriv_const, coeff_C]`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 lemma tay_cE (c : ℂ) : tay (cE c) = C c := by
   ext n
@@ -357,7 +357,7 @@ lemma tay_cE (c : ℂ) : tay (cE c) = C c := by
   | succ n => simp [coeff_tay, coef1, cE, iteratedDeriv_const, coeff_C]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [coeff_rescale, coeff_tay, coef1, sE]`. Rewrite using `[iteratedDeriv_comp_const_mul (Ent.contDiff f n)]`. Simplify using `[mul_div_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma tay_sE (α : ℂ) (f : Ent) : tay (sE α f) = rescale α (tay f) := by
   ext n
@@ -366,9 +366,9 @@ lemma tay_sE (α : ℂ) (f : Ent) : tay (sE α f) = rescale α (tay f) := by
   simp [mul_div_assoc]
 
 /- English proof (translation)
-Introduce `f g h`. Use extensionality with `z`. Rewrite using `[← Complex.taylorSeries_eq_of_entire' 0 z (Ent.diff f), ← Complex.taylorSeries_eq_of_entire' 0 z (Ent.diff g)]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Use `congrArg (coeff n) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [coeff_tay, coef1, div_eq_inv_mul] at this`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma tay_injective : Function.Injective tay := by
   intro f g h
@@ -383,20 +383,20 @@ lemma tay_injective : Function.Injective tay := by
 def wE (s : ℂ) (f : Ent) : Ent := dE f ^ 2 - f * dE (dE f) - cE s * f ^ 2
 
 /- English proof (translation)
-Simplify using `[wE, wSer, tay_dE, tay_cE]`.
+Simplify using the standard rewrite rules.
 -/
 lemma tay_wE (s : ℂ) (f : Ent) : tay (wE s f) = wSer s (tay f) := by
   simp [wE, wSer, tay_dE, tay_cE]
 
 /- English proof (translation)
-Simplify using `[wE, dE, cE]`.
+Simplify using the standard rewrite rules.
 -/
 lemma wE_apply (s : ℂ) (f : Ent) (z : ℂ) :
     (wE s f).1 z = deriv f.1 z ^ 2 - f.1 z * deriv (deriv f.1) z - s * f.1 z ^ 2 := by
   simp [wE, dE, cE]
 
 /- English proof (translation)
-The claim follows from `tendsto_nhds_unique_of_eventuallyEq (l := 𝓝[≠] z) (hf.continuousAt.mono_left nhdsWithin_le_nhds) (hg.continuousAt.mono_left nhdsWithin_le_nhds) ((eventually_ne_notMem_periodLattice L z).mono h)`.
+A detailed English derivation is pending.
 -/
 lemma eq_of_eq_off (L : PeriodPair) {f g : ℂ → ℂ} (hf : Continuous f) (hg : Continuous g)
     (h : ∀ z ∉ L.lattice, f z = g z) (z : ℂ) : f z = g z :=
@@ -405,17 +405,17 @@ lemma eq_of_eq_off (L : PeriodPair) {f g : ℂ → ℂ} (hf : Continuous f) (hg 
     ((eventually_ne_notMem_periodLattice L z).mono h)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext (eq_of_eq_off L (Ent.diff f).continuous (Ent.diff g).continuous h))`.
+A detailed English derivation is pending.
 -/
 lemma Ent.ext_off (L : PeriodPair) {f g : Ent} (h : ∀ z ∉ L.lattice, f.1 z = g.1 z) : f = g :=
   Subtype.ext (funext (eq_of_eq_off L (Ent.diff f).continuous (Ent.diff g).continuous h))
 
 /- English proof (translation)
-Establish `key : (dE (wE s f) * f - 2 * wE s f * dE f) ^ 2 = 4 * wE s f ^ 3 - cE L.g₂ * wE s f * f ^ 4 - cE L.g₃ * f ^ 6`. Use `Ent.ext_off L fun z hz => ?_` and prove the remaining obligations. Establish `h1 : HasDerivAt (wE s f).1 (L.derivWeierstrassP z * f.1 z ^ 2 + L.weierstrassP z * (2 * f.1 z * deriv f.1 z)) z`. Use `(hasDerivAt_weierstrassP L hz).mul ((Ent.diff f z).hasDerivAt.pow 2)` as an intermediate fact. Use `HasDerivAt.congr_of_eventuallyEq (by simpa using this) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [eventually_notMem_periodLattice L hz] with w hw using h w hw`. Establish `h2` using `L.derivWeierstrassP_sq z hz`. Establish `e2 : ((2 : Ent) : ℂ → ℂ) z = 2` using `rfl`. Establish `e4 : ((4 : Ent) : ℂ → ℂ) z = 4` using `rfl`. Simplify using `only [dE, cE, Subring.coe_pow, AddSubgroupClass.coe_sub, Subring.coe_mul, Pi.pow_apply, Pi.sub_apply, Pi.mul_apply, e2, e4, h1.deriv, h z hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `f.1 z ^ 6 * h2`. Use `congrArg tay key` as an intermediate fact. Simplify `this` using `[OdeSer, tay_dE, tay_cE, tay_wE, map_ofNat]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma odeSer_tay (L : PeriodPair) {s : ℂ} {f : Ent}
     (h : ∀ z ∉ L.lattice, (wE s f).1 z = L.weierstrassP z * f.1 z ^ 2) :
@@ -438,13 +438,13 @@ lemma odeSer_tay (L : PeriodPair) {s : ℂ} {f : Ent}
   simpa [OdeSer, tay_dE, tay_cE, tay_wE, map_ofNat] using this
 
 /- English proof (translation)
-Establish `e : EndSer α N m q s (tay f) ↔ sE α f ^ 2 * f ^ (2 * m) = f ^ (2 * N) * ∑ k ∈ Finset.range (m + 1), cE (q k) * (wE s f ^ k * f ^ (2 * (m - k)))`. Rewrite using `[← tay_injective.eq_iff]`. Simplify using `[EndSer, homSer, tay_sE, tay_cE, tay_wE]`. Establish `e2 : ∀ z ∉ L.lattice, (∑ k ∈ Finset.range (m + 1), cE (q k) * (wE s f ^ k * f ^ (2 * (m - k))) : Ent).1 z = (∑ k ∈ Finset.range (m + 1), q k * L.weierstrassP z ^ k) * f.1 z ^ (2 * m)`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddSubmonoidClass.coe_finset_sum, Finset.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le (Nat.lt_succ_iff.1 (Finset.mem_range.1 hk))`. Simplify using `only [cE, Subring.coe_pow, Subring.coe_mul, Pi.pow_apply, Pi.mul_apply, h z hz, Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `H z hz`. Use `congrArg (fun g : Ent => g.1 z) H` as an intermediate fact. Simplify using `only [Subring.coe_pow, Subring.coe_mul, Pi.pow_apply, Pi.mul_apply, e2 z hz, sE] at this`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_right_cancel₀ (pow_ne_zero (2 * m) (h0 z hz)) (by rw [this]; ring)`. Introduce `H`. Use `Ent.ext_off L fun z hz => ?_` and prove the remaining obligations. Simplify using `only [Subring.coe_pow, Subring.coe_mul, Pi.pow_apply, Pi.mul_apply, e2 z hz, sE, H z hz]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma endSer_tay_iff (L : PeriodPair) {s α : ℂ} {f : Ent} {N m : ℕ} {q : ℕ → ℂ}
     (h : ∀ z ∉ L.lattice, (wE s f).1 z = L.weierstrassP z * f.1 z ^ 2)
@@ -483,7 +483,7 @@ def twist (c : ℂ) (f : Ent) : Ent :=
     fun_prop⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Use `(Ent.diff f z).hasDerivAt.mul (((hasDerivAt_pow 2 z).const_mul c).cexp)` as an intermediate fact. Use `(HasDerivAt.deriv this).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma deriv_twist (c : ℂ) (f : Ent) : deriv (twist c f).1 =
     fun z => (deriv f.1 z + 2 * c * z * f.1 z) * Complex.exp (c * z ^ 2) := by
@@ -493,7 +493,7 @@ lemma deriv_twist (c : ℂ) (f : Ent) : deriv (twist c f).1 =
   simp; ring
 
 /- English proof (translation)
-Use `((Ent.diff (dE f) z).hasDerivAt.add (((hasDerivAt_id z).const_mul (2 * c)).mul (Ent.diff f z).hasDerivAt)).mul (((hasDerivAt_pow 2 z).const_mul c).cexp)` as an intermediate fact. Establish `h2 : deriv (fun z => (deriv f.1 z + 2 * c * z * f.1 z) * Complex.exp (c * z ^ 2)) z = _` using `HasDerivAt.deriv this`. Rewrite using `[wE_apply, wE_apply, deriv_twist, h2]`. Simplify using `[twist, dE]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma wE_twist (s c : ℂ) (f : Ent) (z : ℂ) :
     (wE (s - 2 * c) (twist c f)).1 z = (wE s f).1 z * Complex.exp (c * z ^ 2) ^ 2 := by
@@ -506,9 +506,9 @@ lemma wE_twist (s c : ℂ) (f : Ent) (z : ℂ) :
   simp [twist, dE]; ring
 
 /- English proof (translation)
-Establish `e : sE (-1) f = -f` using `by ext z; simp [sE, ho]`. Use `congrArg tay e` as an intermediate fact. Rewrite `this` using `[tay_sE, map_neg]`. Establish `e0` using `congrArg (coeff 0) this`. Establish `e2` using `congrArg (coeff 2) this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [coeff_rescale, map_neg] at e0 e2`. Conclude with `⟨by linear_combination e0 / 2, by simp [coeff_tay, coef1, h1], by linear_combination e2 / 2⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 lemma coeff_tay_of_odd {f : Ent} (h1 : deriv f.1 0 = 1) (ho : ∀ z, f.1 (-z) = -f.1 z) :
     coeff 0 (tay f) = 0 ∧ coeff 1 (tay f) = 1 ∧ coeff 2 (tay f) = 0 := by
@@ -527,17 +527,17 @@ section Lattice
 variable (L : PeriodPair)
 
 /- English proof (translation)
-Establish `hf` using `Ent.diff f`. Establish `hfc` using `hf.continuous`. Establish `hf' : Differentiable ℂ (deriv f.1)` using `Ent.diff (dE f)`. Set `φ : ℂ → ℂ → ℂ` to `fun u v => f.1 (u + v) * f.1 (u - v) + L.weierstrassP u * f.1 u ^ 2 * f.1 v ^ 2`. Set `φ' : ℂ → ℂ → ℂ` to `fun u v => deriv f.1 (u + v) * f.1 (u - v) - f.1 (u + v) * deriv f.1 (u - v) + L.weierstrassP u * f.1 u ^ 2 * (2 * f.1 v * deriv f.1 v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `p : ∀ {g : ℂ → ℂ}, Differentiable ℂ g → ∀ u v, HasDerivAt (fun v => g (u + v)) (deriv g (u + v)) v` using `fun hg u v => (hg _).hasDerivAt.comp_const_add u v`. Establish `q : ∀ {g : ℂ → ℂ}, Differentiable ℂ g → ∀ u v, HasDerivAt (fun v => g (u - v)) (-deriv g (u - v)) v` using `fun hg u v => (hg _).hasDerivAt.comp_const_sub u v`. Establish `d1 : ∀ u v, HasDerivAt (φ u) (φ' u v) v` using `fun u v => by`. Use `((p hf u v).mul (q hf u v)).add (((hf v).hasDerivAt.pow 2).const_mul (L.weierstrassP u * f.1 u ^ 2))` as an intermediate fact. Use `HasDerivAt.congr_deriv this ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[φ']`. Expand and normalize the polynomial expressions, which then agree. Establish `d2 : ∀ u, HasDerivAt (φ' u) (2 * (f.1 u * deriv (deriv f.1) u - deriv f.1 u ^ 2 + L.weierstrassP u * f.1 u ^ 2)) 0` using `fun u => by`. Use `(((p hf' u 0).mul (q hf u 0)).sub ((p hf u 0).mul (q hf' u 0))).add ((((hf 0).hasDerivAt.const_mul 2).mul (hf' 0).hasDerivAt).const_mul (L.weierstrassP u * f.1 u ^ 2))` as an intermediate fact. Use `HasDerivAt.congr_deriv this ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[h00, h1]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨u₀, hu₀⟩` from `(eventually_ne_notMem_periodLattice L 0).exists`. Use `⟨-(f.1 u₀ * deriv (deriv f.1) u₀ - deriv f.1 u₀ ^ 2 + L.weierstrassP u₀ * f.1 u₀ ^ 2) / f.1 u₀ ^ 2, fun u hu => ?_⟩` and prove the remaining obligations. Establish `e0 : (fun v => f.1 u₀ ^ 2 * φ u v) = fun v => f.1 u ^ 2 * φ u₀ v`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `(eq_of_eq_off L (by simp only [φ]; fun_prop) (by simp only [φ]; fun_prop) fun v hv => by`. Simplify using `only [φ]`. Take the linear combination `f.1 u₀ ^ 2 * hadd u hu v hv - f.1 u ^ 2 * hadd u₀ hu₀ v hv)`. Establish `e1 : (fun v => f.1 u₀ ^ 2 * φ' u v) = fun v => f.1 u ^ 2 * φ' u₀ v`. Use function extensionality and compare the values at `fun v => ((d1 u v).const_mul _).unique (e0 ▸ (d1 u₀ v).const_mul _)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2` using `((d2 u).const_mul (f.1 u₀ ^ 2)).unique (e1 ▸ (d2 u₀).const_mul _)`. Use `h0 u₀ hu₀` as an intermediate fact. Rewrite using `[wE_apply]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-1 / 2 : ℂ) * e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma exists_wE {f : Ent} (h00 : f.1 0 = 0) (h1 : deriv f.1 0 = 1) (h0 : ∀ z ∉ L.lattice, f.1 z ≠ 0)
     (hadd : ∀ u ∉ L.lattice, ∀ v ∉ L.lattice, (L.weierstrassP u - L.weierstrassP v) *
@@ -586,7 +586,7 @@ lemma exists_wE {f : Ent} (h00 : f.1 0 = 0) (h1 : deriv f.1 0 = 1) (h0 : ∀ z �
 variable {L} {f : ℂ → ℂ} {k α : ℂ} {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Complex.exp_nat_mul, ← hα, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma exp_scale (hα : α * (starRingEnd ℂ) α = N) (z ω : ℂ) :
     Complex.exp (k * (2 * (α * z) + α * ω) * (starRingEnd ℂ) (α * ω)) =
@@ -595,11 +595,9 @@ lemma exp_scale (hα : α * (starRingEnd ℂ) α = N) (z ω : ℂ) :
   congr 1; ring
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `exists_eq_polynomial_weierstrassP L (g := fun z => f (α * z) ^ 2 / f z ^ (2 * N)) (by`. Establish `h1 : AnalyticAt ℂ (fun z => f (α * z) ^ 2) 0` using `(show Differentiable ℂ (fun z => f (α * z) ^ 2) by fun_prop).analyticAt 0`. Establish `h2 : AnalyticAt ℂ (fun z => f z ^ (2 * N)) 0` using `(show Differentiable ℂ (fun z => f z ^ (2 * N)) by fun_prop).analyticAt 0`. Conclude with `h1.meromorphicAt.div h2.meromorphicAt)`. Use the proof step `(fun z hz => DifferentiableAt.div (by fun_prop) (by fun_prop) (pow_ne_zero _ fun h => hz ((h0 z).1 h)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun z ω hω => by`. Simplify using `only [pow_mul]`. Rewrite using `[mul_add, hp _ (hL ω hω), hp ω hω, exp_scale hα, mul_pow, mul_div_mul_right _ _ (pow_ne_zero _ (Complex.exp_ne_zero _))])`. Use the proof step `(fun z => by simp [ho, pow_mul])`. Use `⟨A.natDegree, A.coeff, fun z hz => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Polynomial.eval_eq_sum_range, ← hA z hz, mul_div_cancel₀ _ (pow_ne_zero _ fun h => hz ((h0 z).1 h))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_poly (hf : Differentiable ℂ f) (h0 : ∀ z, f z = 0 ↔ z ∈ L.lattice)
     (ho : ∀ z, f (-z) = -f z)
@@ -628,19 +626,19 @@ lemma exists_poly (hf : Differentiable ℂ f) (h0 : ∀ z, f z = 0 ↔ z ∈ L.l
     mul_div_cancel₀ _ (pow_ne_zero _ fun h => hz ((h0 z).1 h))]
 
 /- English proof (translation)
-Establish `hfc` using `hf.continuous`. Use `set κ : ℂ := 2 * c * (α ^ 2 - N) with hκ`. Establish `h1 : ∀ z ∉ L.lattice, f (α * z) ^ 2 * Complex.exp (κ * z ^ 2) = (f z ^ 2) ^ N * R (L.weierstrassP z)` using `fun z hz => by`. Apply `mul_right_cancel₀ (pow_ne_zero (2 * N) (Complex.exp_ne_zero (c * z ^ 2)))` to reduce the goal to its premises. Establish `e : Complex.exp (κ * z ^ 2) * Complex.exp (c * z ^ 2) ^ (2 * N) = Complex.exp (c * (α * z) ^ 2) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Rewrite using `[hκ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `h z hz` as an intermediate fact. Rewrite `this` using `[mul_pow, ← e, mul_pow (f z)]`. Rewrite using `[← pow_mul]`. Take the linear combination `this`. Establish `h2 : ∀ ω ∈ L.lattice, ∀ z, f (α * (z + ω)) ^ 2 * Complex.exp (κ * (z + ω) ^ 2) = f (α * z) ^ 2 * Complex.exp (κ * z ^ 2) * Complex.exp (k * (2 * z + ω) * (starRingEnd ℂ) ω) ^ N` using `fun ω hω => eq_of_eq_off L (by fun_prop) (by fun_prop) fun z hz => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1 z hz, h1 _ (fun h => hz (by simpa using sub_mem h hω)), hp ω hω, L.weierstrassP_add_coe z ⟨ω, hω⟩]`. Expand and normalize the polynomial expressions, which then agree. Establish `hω` using `L.ω₁_mem_lattice`. Establish `hω0 : L.ω₁ ≠ 0` using `by simpa using L.indep.ne_zero 0`. Generalize the expression as in `L.ω₁ = ω at hω hω0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `h3 : α * ω ∈ L.lattice`. Use `h2 ω hω 0` as an intermediate fact. Simplify `this` using `[(h0 0).2 (zero_mem _), h0]`. Establish `h4 : ∀ w, Complex.exp (κ * (w / α + ω) ^ 2) = Complex.exp (κ * (w / α) ^ 2)` using `eq_of_eq_off L (by fun_prop) (by fun_prop) fun w hw => by`. Establish `e` using `h2 ω hω (w / α)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[mul_add, hp _ h3, exp_scale hα, mul_div_cancel₀ _ hα0]`. Apply `mul_left_cancel₀ (mul_ne_zero (pow_ne_zero 2 fun h => hw ((h0 w).1 h)) (pow_ne_zero N (Complex.exp_ne_zero (k * (2 * (w / α) + ω) * (starRingEnd ℂ) ω))))` to reduce the goal to its premises. Take the linear combination `e`. Assume the negation of the conclusion as `hc`. Establish `hκ0 : κ ≠ 0` using `mul_ne_zero (mul_ne_zero two_ne_zero hc) (sub_ne_zero.2 hαN)`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `h4 (α * ((Real.pi * Complex.I / (κ * ω) - ω) / 2))`. Rewrite `h5` using `[mul_div_cancel_left₀ _ hα0]`. Establish `e : κ * ((Real.pi * Complex.I / (κ * ω) - ω) / 2 + ω) ^ 2 = κ * ((Real.pi * Complex.I / (κ * ω) - ω) / 2) ^ 2 + Real.pi * Complex.I` using `by field_simp; ring`. Rewrite `h5` using `[e, Complex.exp_add_pi_mul_I]`. Conclude with `Complex.exp_ne_zero _ (CharZero.neg_eq_self_iff.1 h5)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma twist_eq_zero (hf : Differentiable ℂ f) (h0 : ∀ z, f z = 0 ↔ z ∈ L.lattice)
     (hp : ∀ ω ∈ L.lattice, ∀ z, f (z + ω) ^ 2 =
@@ -692,13 +690,13 @@ lemma twist_eq_zero (hf : Differentiable ℂ f) (h0 : ∀ z, f z = 0 ↔ z ∈ L
   exact Complex.exp_ne_zero _ (CharZero.neg_eq_self_iff.1 h5)
 
 /- English proof (translation)
-Take `⟨⟨hd, hd1, hodd, hU⟩, hzero, -, hwp, -⟩` from `GlobalTheory.OddTheta.sgStar_laws Λ ⟨L.ω₁, L.ω₂, L.indep, by`. Use extensionality with `z`. Rewrite using `[hL, PeriodPair.mem_lattice, AddSubgroup.mem_closure_pair]`. Use the proof step `simp⟩`. Take `⟨-, -, -, -, hw, -⟩` from `GlobalTheory.LatticeInvariants.invariants_dictionary L Λ hL`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `exists_wE L (f := ⟨sgStar Λ, hd⟩) ((hzero 0).2 Λ.zero_mem) hd1 (fun z hz h => hz ((hL z).1 ((hzero z).1 h))) (fun u hu v hv => by`. Establish `hu' : u ∉ Λ` using `fun h => hu ((hL u).1 h)`. Establish `hv' : v ∉ Λ` using `fun h => hv ((hL v).1 h)`. Rewrite using `[← (hw u hu').1, ← (hw v hv').1]`. Conclude with `hwp u v hu' hv')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨sgStar Λ, hd⟩, s, Real.pi / area Λ, rfl, hd1, hodd, fun z => (hzero z).trans (hL z), fun ω hω z => ?_, hs⟩` and prove the remaining obligations. Establish `e` using `congrArg (· ^ 2) (hU ω ((hL ω).2 hω) z)`. Apply the tactic sequence `have e1 : ((if ω / 2 ∈ Λ then 1 else -1 : ℂ)) ^ 2 = 1 := by split_ifs <;> norm_num`. Simplify using `only [U1, mul_pow, e1, one_mul] at e`. Express the relevant statement in the definitionally equal form `sgStar Λ (z + ω) ^ 2 = sgStar Λ z ^ 2 * _`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e, mul_assoc, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Establish `: ((2 : ℕ) : ℂ) * (-(Real.pi : ℂ) * z * (starRingEnd ℂ) ω / (area Λ : ℂ) - (Real.pi : ℂ) * ω * (starRingEnd ℂ) ω / (2 * (area Λ : ℂ))) + Real.pi / area Λ * (2 * z + ω) * (starRingEnd ℂ) ω = 0` using `by push_cast; ring`. Rewrite using `[this, Complex.exp_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sgStar_facts (L : PeriodPair) (Λ : AddSubgroup ℂ) (hL : ∀ z, z ∈ Λ ↔ z ∈ L.lattice) :
     ∃ (f : Ent) (s k : ℂ), f.1 = sgStar Λ ∧ deriv f.1 0 = 1 ∧ (∀ z, f.1 (-z) = -f.1 z) ∧
@@ -734,39 +732,39 @@ lemma sgStar_facts (L : PeriodPair) (Λ : AddSubgroup ℂ) (hL : ∀ z, z ∈ Λ
 end Lattice
 
 /- English proof (translation)
-Simplify using `[TaylorLogMetric.liftM]`.
+Simplify using the standard rewrite rules.
 -/
 lemma liftM_coe (M : IntermediateField ℚ ℂ) (x : M) : liftM M (x : ℂ) = x := by
   simp [TaylorLogMetric.liftM]
 
 /- English proof (translation)
-Simplify using `[TaylorLogMetric.liftM, hx]`.
+Simplify using the standard rewrite rules.
 -/
 lemma coe_liftM {M : IntermediateField ℚ ℂ} {x : ℂ} (hx : x ∈ M) : (liftM M x : ℂ) = x := by
   simp [TaylorLogMetric.liftM, hx]
 
 /- English proof (translation)
-Take `⟨e2, e3, hΔ, -, -, -, hex⟩` from `GlobalTheory.LatticeInvariants.invariants_dictionary L Λ hL`. Take `⟨L', a2, a3⟩` from `hex (ρ (liftM M (g2 Λ))) (ρ (liftM M (g3 Λ))) (by`. Establish `: (liftM M (g2 Λ)) ^ 3 - 27 * (liftM M (g3 Λ)) ^ 2 ≠ 0` using `fun h => hΔ (by`. Use `congrArg (algebraMap M ℂ) h` as an intermediate fact. Simplify using `only [map_sub, map_mul, map_pow, map_ofNat, map_zero] at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this)` using `[coe_liftM h2, coe_liftM h3, TaylorLogMetric.discr]`. Use `(map_ne_zero ρ).2 this` as an intermediate fact. Simplify `this)` using `[map_ofNat]`. Take `⟨b2, b3, -, -, -, huniq, -⟩` from `GlobalTheory.LatticeInvariants.invariants_dictionary L' L'.lattice.toAddSubgroup (fun _ => Iff.rfl)`. Establish `hspec : g2 (lamConj M ρ Λ) = ρ (liftM M (g2 Λ)) ∧ g3 (lamConj M ρ Λ) = ρ (liftM M (g3 Λ))` using `Classical.epsilon_spec (p := fun Λ' : AddSubgroup ℂ => g2 Λ' = ρ (liftM M (g2 Λ)) ∧ g3 Λ' = ρ (liftM M (g3 Λ))) ⟨L'.lattice.toAddSubgroup, b2.trans a2, b3.trans a3⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL' : ∀ z, z ∈ lamConj M ρ Λ ↔ z ∈ L'.lattice` using `fun z => by`. Rewrite using `[huniq _ (hspec.1.trans (b2.trans a2).symm) (hspec.2.trans (b3.trans a3).symm)]`. Both sides reduce to the same expression. Take `⟨f, s, k, hf, f1, fo, f0, fp, fw⟩` from `sgStar_facts L Λ hL`. Take `⟨g, s', k', hg, g1, go, g0, gp, gw⟩` from `sgStar_facts L' _ hL'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hc`, the goal using `[← hf]`. Rewrite using `[← hg]`. Set `A : PowerSeries M` to `PowerSeries.mk fun n => liftM M (coef1 f.1 n)`. Establish `hA : PowerSeries.map (algebraMap M ℂ) A = tay f`. Use extensionality with `n`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[A, coeff_tay, coe_liftM (hc n)]`. Take `⟨c0, c1, c2⟩` from `coeff_tay_of_odd f1 fo`. Establish `ode` using `odeSer_tay L fw`. Establish `hs : s ∈ M`. Rewrite using `[ode.const_eq c0 c1 c2, coeff_tay]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (neg_mem (ofNat_mem M 2)) (hc 3)`. Take `⟨m, q, hq⟩` from `exists_poly (Ent.diff f) f0 fo fp hα (fun ω hω => (hL _).1 (hαL ω ((hL _).2 hω)))`. Establish `en` using `(endSer_tay_iff L fw (fun z hz h => hz ((f0 z).1 h))).2 hq`. Establish `ι : ∀ {x : ℂ}, x ∈ M → algebraMap M ℂ (liftM M x) = x` using `fun hx => coe_liftM hx`. Rewrite `ode` using `[← hA, ← ι hs, ← e2, ← e3, ← ι h2, ← ι h3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `en` using `[← hA, ← ι hs, ← ι hαM]`. Take `⟨q', en'⟩` from `en.descend`. Establish `ode'` using `(ode.of_map _ (algebraMap M ℂ).injective).map (ρ : M →+* ℂ)`. Establish `en''` using `en'.map (ρ : M →+* ℂ)`. Simplify using `only [RingHom.coe_coe] at ode' en''`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ode'` using `[← a2, ← a3]`. Rewrite `en''` using `[show ρ (liftM M α) = α from hρ]`. Take `⟨c, hcs⟩ : ∃ c, ρ (liftM M s) = s' - 2 * c` from `⟨(s' - ρ (liftM M s)) / 2, by ring⟩`. Rewrite `ode'`, `en''` using `[hcs]`. Establish `tw : ∀ z ∉ L'.lattice, (wE (s' - 2 * c) (twist c g)).1 z = L'.weierstrassP z * (twist c g).1 z ^ 2` using `fun z hz => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wE_twist, gw z hz]`. Simplify using `only [twist]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨t0, t1, t2⟩` from `coeff_tay_of_odd (f := twist c g) (by simp [deriv_twist, g1]) (fun z => by simp [twist, go])`. Establish `cA : ∀ n, PowerSeries.coeff n (PowerSeries.map (ρ : M →+* ℂ) A) = cj M ρ (coef1 f.1 n)` using `fun n => by simp [A, cj]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l0 : liftM M 0 = 0` using `liftM_coe M 0`. Establish `l1 : liftM M 1 = 1` using `liftM_coe M 1`. Establish `eq` using `theta_unique (by rw [cA, ← coeff_tay, c0, cj, l0, map_zero]) (by rw [cA, ← coeff_tay, c1, cj, l1, map_one]) (by rw [cA, ← coeff_tay, c2, cj, l0, map_zero]) t0 t1 t2 ode' (odeSer_tay L' tw)`. Rewrite `en''` using `[eq, endSer_tay_iff L' tw (fun z hz => mul_ne_zero (fun h => hz ((g0 z).1 h)) (Complex.exp_ne_zero _))]`. Establish `hc0 : c = 0` using `twist_eq_zero (Ent.diff g) g0 gp hα hα0 hαN (R := fun x => ∑ j ∈ Finset.range (m + 1), ρ (q' j) * x ^ j) en''`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cA, eq, coeff_tay, hc0]`. Simplify using `[twist]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_sgStar (L : PeriodPair) (Λ : AddSubgroup ℂ) (hL : ∀ z, z ∈ Λ ↔ z ∈ L.lattice)
     (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) {α : ℂ} {N : ℕ} (hαM : α ∈ M)
@@ -837,15 +835,15 @@ theorem conj_sgStar (L : PeriodPair) (Λ : AddSubgroup ℂ) (hL : ∀ z, z ∈ �
   simp [twist]
 
 /- English proof (translation)
-Introduce `D cc δ h M ρ hK h2 h3 hc n`. Take `⟨⟨w₁, w₂, hw, he⟩, -, -, -, hcm⟩` from `GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc δ h`. Set `L : PeriodPair` to `⟨w₁, w₂, hw⟩`. Establish `hL : ∀ z, z ∈ lamOf D cc δ ↔ z ∈ L.lattice` using `fun z => by`. Rewrite using `[he, AddSubgroup.mem_closure_pair, PeriodPair.mem_lattice]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[L]`. Take `⟨b, hb⟩ : ∃ b : D.host.K, b ^ 2 = -(D.host.d : D.host.K)` from `⟨_, Formalism.FrobeniusOrbits.SplitK.bK_sq (D.host.sqd_sq)⟩`. Establish `hbi : IsIntegral ℤ b` using `IsIntegral.of_pow two_pos (by`. Rewrite using `[hb]`. Conclude with `(isIntegral_natCast _).neg)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : (D.host.d : ℝ) ≠ 0` using `by exact_mod_cast D.host.hyp.2.1.pos.ne'`. Establish `hsq : D.host.φ₀ (b : D.host.E) ^ 2 = -(D.host.d : ℂ)`. Use `congrArg (D.host.φ₀.comp (algebraMap D.host.K D.host.E)) hb` as an intermediate fact. Rewrite `this` using `[map_pow, map_neg, map_natCast]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcm'` using `hcm ⟨b, hbi⟩`. Establish `hK'` using `hK b`. Express the relevant statement in the definitionally equal form `∀ w ∈ _, D.host.φ₀ (b : D.host.E) * w ∈ _ at hcm'`. Generalize the expression as in `D.host.φ₀ (b : D.host.E) = α at hsq hcm' hK'`. Establish `hdc : (D.host.d : ℂ) ≠ 0` using `by exact_mod_cast hd`.
+Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : α * (starRingEnd ℂ) α = D.host.d`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, ← norm_pow, hsq]`. Simplify using the standard rewrite rules. Conclude with `conj_sgStar L _ hL M ρ hK'.1 hK'.2 hn (fun h0 => hdc (by simpa [h0] using hsq)) (fun h0 => hdc (by linear_combination (hsq - h0) / 2)) hcm' h2 h3 hc n`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem galSg_all : ∀ D : D7, galSg D := by
   intro D cc δ h M ρ hK h2 h3 hc n

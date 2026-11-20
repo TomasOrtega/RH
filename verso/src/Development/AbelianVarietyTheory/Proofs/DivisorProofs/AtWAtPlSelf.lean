@@ -25,23 +25,23 @@ Both sides reduce to the same expression.
 theorem atW_apply (w : Pl D.host.E) (a : AE D) : atW w a = cpt w (toEAf D a) := rfl
 
 /- English proof (translation)
-Rewrite using `[atW_apply, (atPl_spec w x).2 w, Pi.single_eq_same]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem atW_atPl_self (w : Pl D.host.E) (x : Kw w) : atW w (atPl w x) = x := by
   classical
   rw [atW_apply, (atPl_spec w x).2 w, Pi.single_eq_same]
 
 /- English proof (translation)
-Rewrite using `[atW_apply, (atPl_spec w' x).2 w, Pi.single_eq_of_ne h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem atW_atPl_ne {w w' : Pl D.host.E} (h : w ≠ w') (x : Kw w') : atW w (atPl w' x) = 0 := by
   classical
   rw [atW_apply, (atPl_spec w' x).2 w, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Use `ae_ext (by rw [map_mul, (atPl_spec w 1).1, zero_mul, (atPl_spec w z).1]) fun Q => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, (atPl_spec w 1).2 Q, (atPl_spec w z).2 Q]`. Distinguish the cases in `h : Q = w`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne h, Pi.single_eq_of_ne h, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem atPl_one_mul (w : Pl D.host.E) (z : Kw w) : atPl w 1 * atPl w z = atPl w z := by
   classical
@@ -57,7 +57,7 @@ variable (B : Frames G) (t : T) (w : Pl D.host.E) {X Y : ℕ × ℕ} (hX : X.1 �
   (hY : Y.1 ≤ D.R.m ∧ Y.2 ≤ D.R.m)
 
 /- English proof (translation)
-Unfold `Frames.coord`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coord_add (y y' : Matrix (Fin (G.V (.grid X.1 X.2)).rank) (Fin (G.V (.grid Y.1 Y.2)).rank) (Kw w)) :
     B.coord t w hX hY (y + y') = B.coord t w hX hY y + B.coord t w hX hY y' := by
@@ -66,7 +66,7 @@ theorem coord_add (y y' : Matrix (Fin (G.V (.grid X.1 X.2)).rank) (Fin (G.V (.gr
   rfl
 
 /- English proof (translation)
-Unfold `Frames.coord`. Rewrite using `[Matrix.mul_zero, Matrix.zero_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coord_zero : B.coord t w hX hY 0 = 0 := by
   unfold Frames.coord
@@ -74,7 +74,7 @@ theorem coord_zero : B.coord t w hX hY 0 = 0 := by
   rfl
 
 /- English proof (translation)
-Use `⟨(loc w (B.β X.1 X.2)).val * (zᵀ.submatrix (Fin.cast (rank_vertex G t w hX).symm) (Fin.cast (rank_vertex G t w hY).symm)) * ((loc w (B.β Y.1 Y.2))⁻¹).val, ?_⟩` and prove the remaining obligations. Unfold `Frames.coord`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Use extensionality with `a b`. Simplify using `only [transpose_apply, submatrix_apply, Fin.cast_cast, Fin.cast_eq_self]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coord_surj (z : Matrix (Fin ((locGrid G t w).rank Y)) (Fin ((locGrid G t w).rank X)) (Kw w)) :
     ∃ y, B.coord t w hX hY y = z := by
@@ -95,7 +95,7 @@ namespace GlobalTheory.BigDat
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[map_apply, map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, atW_atPl_self, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_atW_smul (w : Pl D.host.E) {m n : Type} (M : Matrix m n (AE D)) :
     (atPl w 1 • M).map (atW w) = M.map (atW w) := by
@@ -111,19 +111,17 @@ theorem mixCo_eq (B : Frames G) (t : T) {i j : Fin D.R.m} (e : Num G i j) (w : P
       (B.coord t w (X := (i + 1, j + 1)) (Y := (i + 1, j)) ⟨i.2, j.2⟩ ⟨i.2, j.2.le⟩ ((mapW e u).map (atW w)))ᵀ := rfl
 
 /- English proof (translation)
-Introduce `D T L sc G B t i j e w`. Use `⟨fun u x => ?_, fun z => ?_, fun u => ?_, fun w' hw x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[mixCo_eq, mixCo_eq, mixCo_eq, mapV_add, mapW_add, Matrix.map_add _ (map_add _), Matrix.map_add _ (map_add _), CoordinateMaps.coord_add, CoordinateMaps.coord_add, transpose_add]`. Apply the tactic sequence `exact Matrix.ext fun a b => by rcases b with b | b <;> rfl`. Take `⟨y₁, hy₁⟩` from `CoordinateMaps.coord_surj B t w (X := (i, j + 1)) (Y := (i + 1, j + 1)) ⟨i.2.le, j.2⟩ ⟨i.2, j.2⟩ z.toCols₁`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨y₂, hy₂⟩` from `CoordinateMaps.coord_surj B t w (X := (i + 1, j + 1)) (Y := (i + 1, j)) ⟨i.2, j.2⟩ ⟨i.2, j.2.le⟩ z.toCols₂ᵀ`. Set `x₁ : HomV G i j` to `y₁.map (atPl w)`. Set `x₂ : HomW G i j` to `y₂.map (atPl w)`. Establish `k₁ : mapV e (ofMaps e (x₁, x₂)) = x₁` using `mapV_ofMaps e _`. Establish `k₂ : mapW e (ofMaps e (x₁, x₂)) = x₂` using `mapW_ofMaps e _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m₁ : x₁.map (atW w) = y₁` using `Matrix.ext fun a b => atW_atPl_self w _`. Establish `m₂ : x₂.map (atW w) = y₂` using `Matrix.ext fun a b => atW_atPl_self w _`. Use `⟨ofMaps e (x₁, x₂), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show IsHalf _ (mapV e _)`. Rewrite using `[k₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Conclude with `atPl_one_mul w _`. Use `show IsHalf _ (mapW e _)`. Rewrite using `[k₂]`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `atPl_one_mul w _`. Rewrite using `[mixCo_eq, k₁, k₂, m₁, m₂, hy₁, hy₂, transpose_transpose, fromCols_toCols]`. Establish `k₁ : mapV e (ofMaps e (atPl w 1 • mapV e u, atPl w 1 • mapW e u)) = atPl w 1 • mapV e u` using `mapV_ofMaps e _`. Establish `k₂ : mapW e (ofMaps e (atPl w 1 • mapV e u, atPl w 1 • mapW e u)) = atPl w 1 • mapW e u` using `mapW_ofMaps e _`. Rewrite using `[mixCo_eq, mixCo_eq, k₁, k₂, map_atW_smul, map_atW_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h₁ : (mapV e x).map (atW w) = 0`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h₂ : (mapW e x).map (atW w) = 0`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mixCo_eq, h₁, h₂, CoordinateMaps.coord_zero, CoordinateMaps.coord_zero, transpose_zero, fromCols_zero]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixCo_spec : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (B : Frames G) (t : T)
     (i j : Fin D.R.m) (e : Num G i j) (w : Pl D.host.E),

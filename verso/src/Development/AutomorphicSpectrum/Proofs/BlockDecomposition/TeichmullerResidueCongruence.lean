@@ -15,9 +15,9 @@ namespace GlobalTheory.CompanionTheory.LTPer.Tilt
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `e : a ^ (n + 1) - b ^ (n + 1) = a ^ n * (a - b) + (a ^ n - b ^ n) * b` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha)`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) hb).trans ih`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_sub_pow_le {a b : ℂ_[l]} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) (n : ℕ) :
     ‖a ^ n - b ^ n‖ ≤ ‖a - b‖ := by
@@ -33,17 +33,15 @@ theorem norm_pow_sub_pow_le {a b : ℂ_[l]} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ �
       exact (mul_le_of_le_one_right (norm_nonneg _) hb).trans ih
 
 /- English proof (translation)
-Establish `hs0 : 0 ≤ s` using `(norm_nonneg _).trans hl`. Establish `hbp : ∀ n : ℕ, ‖b ^ n‖ ≤ 1` using `fun n => by`. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) hb`. Establish `hap : ∀ n : ℕ, ‖a ^ n‖ ≤ 1` using `fun n => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) ha`. Establish `e : a ^ l - b ^ l = (∑ i ∈ Finset.range l, a ^ i * b ^ (l - 1 - i)) * (a - b)` using `(geom_sum₂_mul a b l).symm`. Establish `e2 : (∑ i ∈ Finset.range l, a ^ i * b ^ (l - 1 - i)) = (∑ i ∈ Finset.range l, (a ^ i * b ^ (l - 1 - i) - b ^ (l - 1))) + (l : ℂ_[l]) * b ^ (l - 1)`. Simplify using `[Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ‖∑ i ∈ Finset.range l, (a ^ i * b ^ (l - 1 - i) - b ^ (l - 1))‖ ≤ s`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hs0 fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ l - 1`. Use `Finset.mem_range.1 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : a ^ i * b ^ (l - 1 - i) - b ^ (l - 1) = (a ^ i - b ^ i) * b ^ (l - 1 - i)`. Rewrite using `[sub_mul, ← pow_add, Nat.add_sub_cancel' hi']`. Rewrite using `[e3, norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (hbp _)).trans ((norm_pow_sub_pow_le ha hb i).trans hs)`. Establish `h2 : ‖(l : ℂ_[l]) * b ^ (l - 1)‖ ≤ s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (hbp _)).trans hl`. Rewrite using `[e, norm_mul]`. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[e2]`.
-
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 h2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_prime_sub_le {a b : ℂ_[l]} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) {s : ℝ}
     (hl : ‖(l : ℂ_[l])‖ ≤ s) (hs : ‖a - b‖ ≤ s) : ‖a ^ l - b ^ l‖ ≤ s * ‖a - b‖ := by
@@ -76,11 +74,11 @@ theorem norm_pow_prime_sub_le {a b : ℂ_[l]} (ha : ‖a‖ ≤ 1) (hb : ‖b‖
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 h2)
 
 /- English proof (translation)
-Establish `hs0 : 0 ≤ s` using `(norm_nonneg _).trans hl`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `ha' : ‖a ^ l ^ n‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hb' : ‖b ^ l ^ n‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hb`. Establish `hle : ‖a ^ l ^ n - b ^ l ^ n‖ ≤ s` using `ih.trans ((mul_le_of_le_one_left (norm_nonneg _) (pow_le_one₀ hs0 hs1)).trans hs)`. Establish `h` using `norm_pow_prime_sub_le ha' hb' hl hle`. Rewrite `h` using `[← pow_mul, ← pow_mul, ← pow_succ]`. Use `h.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ, mul_comm (s ^ n) s, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left ih hs0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_prime_pow_sub_le {a b : ℂ_[l]} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) {s : ℝ}
     (hs1 : s ≤ 1) (hl : ‖(l : ℂ_[l])‖ ≤ s) (hs : ‖a - b‖ ≤ s) (n : ℕ) :
@@ -100,9 +98,9 @@ theorem norm_pow_prime_pow_sub_le {a b : ℂ_[l]} (ha : ‖a‖ ≤ 1) (hb : ‖
     exact mul_le_mul_of_nonneg_left ih hs0
 
 /- English proof (translation)
-Use `haveI := K.2`. Set `L : ↥K.1 →ₗ[ℚ_[l]] ℂ_[l]` to `(IsScalarTower.toAlgHom ℚ_[l] (Om l) ℂ_[l]).toLinearMap ∘ₗ K.1.val.toLinearMap`. Establish `h` using `Submodule.closed_of_finiteDimensional (LinearMap.range L)`. Establish `e : (Set.range fun y : ↥K.1 => omC (l` using `l) (y : Om l)) = (LinearMap.range L : Set ℂ_[l]) := by`. Use extensionality with `z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_range_finExt (K : FinExt l) :
     IsClosed (Set.range fun y : ↥K.1 => omC (l := l) (y : Om l)) := by
@@ -117,7 +115,7 @@ theorem isClosed_range_finExt (K : FinExt l) :
   exact h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(GlobalTheory.CompanionTheory.LTHodge.CharEx.intEquiv K).symm ⟨y, (GlobalTheory.CompanionTheory.LTHodge.CharEx.mem_integer_iff K y).2 hy⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_int_of_norm_le (K : FinExt l) (y : ↥K.1) (hy : ‖(y : Om l)‖ ≤ 1) :
     ∃ c : ↥(OL K), (c : ↥K.1) = y :=
@@ -125,25 +123,23 @@ theorem exists_int_of_norm_le (K : FinExt l) (y : ↥K.1) (hy : ‖(y : Om l)‖
     ⟨y, (GlobalTheory.CompanionTheory.LTHodge.CharEx.mem_integer_iff K y).2 hy⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `l _ K π f hf _ hl hπ1 hπ0 x c hx hc`. Use `set s := ‖oc K π‖ with hsdef`. Establish `hs0 : 0 ≤ s` using `norm_nonneg _`. Establish `hζ1 : ‖sh x‖ ≤ 1` using `norm_sh_le_one x`. Establish `hc1 : ‖oc K c‖ ≤ 1` using `norm_oc_le_one K c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix1 : sh x ^ l ^ f = sh x` using `by rw [← sh_pow, hx]`. Establish `hfix : ∀ m : ℕ, sh x ^ (l ^ f) ^ m = sh x`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ m ih => rw [pow_succ, pow_mul, ih, hfix1]`. Establish `hdist : ‖oc K c - sh x‖ ≤ s` using `by rw [norm_sub_rev]; exact hc`. Establish `hbound : ∀ m : ℕ, ‖oc K (c ^ (l ^ f) ^ m) - sh x‖ ≤ s ^ m`. Introduce `m`. Establish `h` using `norm_pow_prime_pow_sub_le hc1 hζ1 hπ1.le hl hdist (f * m)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[pow_mul, hfix m, ← map_pow]`. Use `h.trans ?_` and prove the remaining obligations. Establish `h1 : s ^ (f * m) ≤ s ^ m` using `pow_le_pow_of_le_one hs0 hπ1.le (Nat.le_mul_of_pos_left m hf)`. Conclude with `(mul_le_of_le_one_right (pow_nonneg hs0 _) (hdist.trans hπ1.le)).trans h1`. Establish `hlim : Filter.Tendsto (fun m : ℕ => oc K (c ^ (l ^ f) ^ m)) Filter.atTop (nhds (sh x))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Conclude with `squeeze_zero (fun _ => norm_nonneg _) hbound (tendsto_pow_atTop_nhds_zero_of_lt_one hs0 hπ1)`. Establish `hmem : sh x ∈ Set.range fun y : ↥K.1 => omC (l` using `l) (y : Om l) := (isClosed_range_finExt K).mem_of_tendsto hlim (Filter.Eventually.of_forall fun m => ⟨((c ^ (l ^ f) ^ m : ↥(OL K)) : ↥K.1), rfl⟩)`. Take `⟨y, hy⟩` from `hmem`. Establish `hy : omC (l` using `l) (y : Om l) = sh x := hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcK : oc K c = omC (l` using `l) ((c : ↥K.1) : Om l) := rfl`. Establish `hπK : oc K π = omC (l` using `l) ((π : ↥K.1) : Om l) := rfl`. Establish `hπ0' : (π : ↥K.1) ≠ 0` using `fun h => hπ0 (Subtype.ext h)`. Establish `hπ0'' : ((π : ↥K.1) : Om l) ≠ 0` using `fun h => hπ0' (Subtype.ext h)`. Establish `hnum : ‖((y - (c : ↥K.1) : ↥K.1) : Om l)‖ ≤ ‖((π : ↥K.1) : Om l)‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `: ‖sh x - oc K c‖ = ‖((y - (c : ↥K.1) : ↥K.1) : Om l)‖`. Rewrite using `[← hy, hcK, ← map_sub, norm_omC]`. Both sides reduce to the same expression. Rewrite using `[← this, ← norm_omC, ← hπK]`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hq : ‖(((y - (c : ↥K.1)) / (π : ↥K.1) : ↥K.1) : Om l)‖ ≤ 1`. Establish `e : (((y - (c : ↥K.1)) / (π : ↥K.1) : ↥K.1) : Om l) = ((y - (c : ↥K.1) : ↥K.1) : Om l) / ((π : ↥K.1) : Om l)` using `rfl`. Rewrite using `[e, norm_div]`. Conclude with `div_le_one_of_le₀ hnum (norm_nonneg _)`. Take `⟨c', hc'⟩` from `exists_int_of_norm_le K _ hq`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨c', ?_⟩` and prove the remaining obligations. Establish `hsum : ((c + π * c' : ↥(OL K)) : ↥K.1) = y`. Establish `: ((c + π * c' : ↥(OL K)) : ↥K.1) = (c : ↥K.1) + (π : ↥K.1) * (c' : ↥K.1)` using `rfl`. Rewrite using `[this, hc']`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hy]`. Use `show _ = omC (l := l) (((c + π * c' : ↥(OL K)) : ↥K.1) : Om l)`. Rewrite using `[hsum]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sh_root_near_integer : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (f : ℕ), 0 < f → qOf π = l ^ f →
     ‖(l : ℂ_[l])‖ ≤ ‖oc K π‖ → ‖oc K π‖ < 1 → π ≠ 0 → ∀ (x : Tl l) (c : ↥(OL K)), x ^ l ^ f = x →

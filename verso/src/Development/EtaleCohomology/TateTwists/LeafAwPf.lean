@@ -14,9 +14,7 @@ Both sides reduce to the same expression.
     (((sb j l h).toOrderHom i : Fin (n + 1)) : ℕ) = i + j := rfl
 
 /- English proof (translation)
-Use extensionality with `i : 3`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[SimplexCategory.δ, Fin.succAbove, Fin.lt_def, sb_apply]`. Apply the tactic sequence `try split_ifs`. Apply the tactic sequence `all_goals (try simp_all [Fin.lt_def, sb_apply])`.
-
-Apply the tactic sequence `all_goals omega`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma m_last (p r : ℕ) (h1 : 0 + (p + 1) ≤ p + r + 1) (h2 : 0 + p ≤ p + r + 1) :
     SimplexCategory.δ (Fin.last (p + 1)) ≫ sb 0 (p + 1) h1 = sb 0 p h2 := by
@@ -28,9 +26,7 @@ lemma m_last (p r : ℕ) (h1 : 0 + (p + 1) ≤ p + r + 1) (h2 : 0 + p ≤ p + r 
   all_goals omega
 
 /- English proof (translation)
-Use extensionality with `i : 3`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[SimplexCategory.δ, Fin.succAbove, Fin.lt_def, sb_apply]`. Apply the tactic sequence `try split_ifs`. Apply the tactic sequence `all_goals (try simp_all [Fin.lt_def, sb_apply])`.
-
-Apply the tactic sequence `all_goals omega`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma m_zero (p r : ℕ) (h1 : p + (r + 1) ≤ p + r + 1) (h2 : (p + 1) + r ≤ p + r + 1) :
     SimplexCategory.δ 0 ≫ sb p (r + 1) h1 = sb (p + 1) r h2 := by
@@ -42,9 +38,7 @@ lemma m_zero (p r : ℕ) (h1 : p + (r + 1) ≤ p + r + 1) (h2 : (p + 1) + r ≤ 
   all_goals omega
 
 /- English proof (translation)
-Use extensionality with `i : 3`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[SimplexCategory.δ, Fin.succAbove, Fin.lt_def, sb_apply]`. Apply the tactic sequence `try split_ifs`. Apply the tactic sequence `all_goals (try simp_all [Fin.lt_def, sb_apply])`.
-
-Apply the tactic sequence `all_goals omega`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma m_lo (p r : ℕ) (k : Fin (p + r + 2)) (hk : (k : ℕ) ≤ p) (h1 : 0 + p ≤ p + r)
     (h2 : 0 + (p + 1) ≤ p + r + 1) :
@@ -57,9 +51,7 @@ lemma m_lo (p r : ℕ) (k : Fin (p + r + 2)) (hk : (k : ℕ) ≤ p) (h1 : 0 + p 
   all_goals omega
 
 /- English proof (translation)
-Use extensionality with `i : 3`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[SimplexCategory.δ, Fin.succAbove, Fin.lt_def, sb_apply]`. Apply the tactic sequence `try split_ifs`. Apply the tactic sequence `all_goals (try simp_all [Fin.lt_def, sb_apply])`.
-
-Apply the tactic sequence `all_goals omega`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma simplex_subinterval_back_comp_face_within_front (p r : ℕ) (k : Fin (p + r + 2)) (hk : (k : ℕ) ≤ p) (h1 : p + r ≤ p + r)
     (h2 : (p + 1) + r ≤ p + r + 1) :
@@ -72,9 +64,7 @@ lemma simplex_subinterval_back_comp_face_within_front (p r : ℕ) (k : Fin (p + 
   all_goals omega
 
 /- English proof (translation)
-Use extensionality with `i : 3`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[SimplexCategory.δ, Fin.succAbove, Fin.lt_def, sb_apply]`. Apply the tactic sequence `try split_ifs`. Apply the tactic sequence `all_goals (try simp_all [Fin.lt_def, sb_apply])`.
-
-Apply the tactic sequence `all_goals omega`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma m_hi (p r : ℕ) (k : Fin (p + r + 2)) (hk : p < (k : ℕ)) (h1 : 0 + p ≤ p + r)
     (h2 : 0 + p ≤ p + r + 1) :
@@ -87,9 +77,7 @@ lemma m_hi (p r : ℕ) (k : Fin (p + r + 2)) (hk : p < (k : ℕ)) (h1 : 0 + p �
   all_goals omega
 
 /- English proof (translation)
-Use extensionality with `i : 3`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[SimplexCategory.δ, Fin.succAbove, Fin.lt_def, sb_apply]`. Apply the tactic sequence `try split_ifs`. Apply the tactic sequence `all_goals (try simp_all [Fin.lt_def, sb_apply])`.
-
-Apply the tactic sequence `all_goals omega`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma simplex_subinterval_back_comp_face_above_front (p r : ℕ) (k : Fin (p + r + 2)) (hk : p < (k : ℕ)) (h1 : p + r ≤ p + r)
     (h2 : p + (r + 1) ≤ p + r + 1) :
@@ -113,9 +101,9 @@ noncomputable def g2 (n : ℕ) (x : ℕ × ℕ) : Pr n →₀ ℤ :=
   if h : x.1 + x.2 ≤ n then (-1 : ℤ) ^ x.1 • Pr.d₂ (T n x.1 x.2 h) else 0
 
 /- English proof (translation)
-Rewrite using `[Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, ← Fin.sum_univ_eq_sum_range (fun k => S n (k, n - k))]`. Unfold `Pr.aw`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `p.isLt` as an intermediate fact. Simplify using `only [S]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos (by omega)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma aw_eq (n : ℕ) : Pr.aw n = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal n, S n x := by
   rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, ← Fin.sum_univ_eq_sum_range (fun k => S n (k, n - k))]
@@ -127,7 +115,7 @@ lemma aw_eq (n : ℕ) : Pr.aw n = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal 
   rfl
 
 /- English proof (translation)
-Unfold `Pr.bd`. Simplify using `only [map_sum, Finset.smul_sum]`. Conclude with `Finset.sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma bd_sum {N : ℕ} {ι : Type*} (s : Finset ι) (g : ι → Pr N →₀ ℤ) :
     Pr.bd (∑ x ∈ s, g x) = ∑ x ∈ s, Pr.bd (g x) := by
@@ -136,7 +124,7 @@ lemma bd_sum {N : ℕ} {ι : Type*} (s : Finset ι) (g : ι → Pr N →₀ ℤ)
   exact Finset.sum_comm
 
 /- English proof (translation)
-Unfold `S g1 g2`. Use `split_ifs with h`. Simplify using `only [Pr.d, Finsupp.linearCombination_single, one_smul]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma d_S (n : ℕ) (x : ℕ × ℕ) : Pr.d n (S n x) = g1 n x + g2 n x := by
   unfold S g1 g2
@@ -146,7 +134,7 @@ lemma d_S (n : ℕ) (x : ℕ × ℕ) : Pr.d n (S n x) = g1 n x + g2 n x := by
   · simp
 
 /- English proof (translation)
-Rewrite using `[← (finCongr (by omega : (p + 1) + (r + 1) = p + r + 2)).sum_comp, Fin.sum_univ_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma split_sum {M : Type*} [AddCommMonoid M] (p r : ℕ) (f : Fin (p + r + 2) → M) :
     ∑ k, f k = ∑ i : Fin (p + 1), f ⟨i, by omega⟩ + ∑ j : Fin (r + 1), f ⟨p + 1 + j, by omega⟩ := by
@@ -154,7 +142,7 @@ lemma split_sum {M : Type*} [AddCommMonoid M] (p r : ℕ) (f : Fin (p + r + 2) �
   rfl
 
 /- English proof (translation)
-Unfold `Pr.bd`. Simplify using `[Pr.push]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma bd_single (n : ℕ) (z : Pr n) : Pr.bd (Finsupp.single z 1) =
     ∑ k : Fin (n + 2), (-1 : ℤ) ^ (k : ℕ) • Finsupp.single
@@ -163,15 +151,15 @@ lemma bd_single (n : ℕ) (z : Pr n) : Pr.bd (Finsupp.single z 1) =
   simp [Pr.push]
 
 /- English proof (translation)
-Establish `e1 : Pr.d₁ (T (p + r + 1) (p + 1) r (by omega)) = ∑ i : Fin (p + 2), Finsupp.single (⟨p, r, SimplexCategory.δ i ≫ sb 0 (p + 1) (by omega), sb (p + 1) r (by omega)⟩ : Pr (p + r + 1)) ((-1 : ℤ) ^ (i : ℕ))` using `rfl`. Establish `e2 : Pr.d₂ (T (p + r + 1) p (r + 1) (by omega)) = ∑ j : Fin (r + 2), Finsupp.single (⟨p, r, sb 0 p (by omega), SimplexCategory.δ j ≫ sb p (r + 1) (by omega)⟩ : Pr (p + r + 1)) ((-1 : ℤ) ^ (j : ℕ))` using `rfl`. Rewrite using `[e1, e2, bd_single, split_sum, Fin.sum_univ_castSucc (n := p + 1), Fin.sum_univ_succ (n := r + 1)]`. Establish `hlo : ∀ i : Fin (p + 1), (-1 : ℤ) ^ (i : ℕ) • Finsupp.single (⟨(T (p + r) p r le_rfl).1, (T (p + r) p r le_rfl).2.1, (T (p + r) p r le_rfl).2.2.1 ≫ SimplexCategory.δ (⟨i, by omega⟩ : Fin (p + r + 2)), (T (p + r) p r le_rfl).2.2.2 ≫ SimplexCategory.δ (⟨i, by omega⟩ : Fin (p + r + …`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi` using `i.isLt`. Simplify using `only [T]`. Rewrite using `[m_lo p r _ (by show (i : ℕ) ≤ p; omega) _ (by omega), simplex_subinterval_back_comp_face_within_front p r _ (by show (i : ℕ) ≤ p; omega) _ (by omega), Finsupp.smul_single, smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Establish `hhi : ∀ j : Fin (r + 1), (-1 : ℤ) ^ (p + 1 + (j : ℕ)) • Finsupp.single (⟨(T (p + r) p r le_rfl).1, (T (p + r) p r le_rfl).2.1, (T (p + r) p r le_rfl).2.2.1 ≫ SimplexCategory.δ (⟨p + 1 + j, by omega⟩ : Fin (p + r + 2)), (T (p + r) p r le_rfl).2.2.2 ≫ SimplexCategory.δ (⟨p + 1 + j, …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `j`. Establish `hj` using `j.isLt`. Simplify using `only [T]`. Rewrite using `[m_hi p r _ (by show p < p + 1 + (j : ℕ); omega) _ (by omega), simplex_subinterval_back_comp_face_above_front p r _ (by show p < p + 1 + (j : ℕ); omega) _ (by omega), Finsupp.smul_single, Finsupp.smul_single, smul_eq_mul, smul_eq_mul, mul_one]`. Establish `hf : (⟨p + 1 + (j : ℕ) - p, by omega⟩ : Fin (r + 2)) = j.succ` using `by ext; simp; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf, Fin.val_succ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun i _ => hlo i), Finset.sum_congr rfl (fun j _ => hhi j), ← Finset.smul_sum, m_last p r (by omega) (by omega), m_zero p r (by omega) (by omega), smul_add]`. Establish `hc : Finsupp.single (⟨p, r, sb 0 p (by omega), sb (p + 1) r (by omega)⟩ : Pr (p + r + 1)) ((-1 : ℤ) ^ ((Fin.last (p + 1) : Fin (p + 2)) : ℕ)) + (-1 : ℤ) ^ p • Finsupp.single (⟨p, r, sb 0 p (by omega), sb (p + 1) r (by omega)⟩ : Pr (p + r + 1)) ((-1 : ℤ) ^ ((0 : Fin (r + 2)) : ℕ)) …`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.smul_single, ← Finsupp.single_add]`. Simplify using `[pow_succ]`. Apply `eq_of_sub_eq_zero` to reduce the goal to its premises. Rewrite using `[← hc]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma key (p r : ℕ) :
     Pr.d₁ (T (p + r + 1) (p + 1) r (by omega)) + (-1 : ℤ) ^ p • Pr.d₂ (T (p + r + 1) p (r + 1) (by omega)) =
@@ -224,13 +212,13 @@ lemma key (p r : ℕ) :
   abel
 
 /- English proof (translation)
-Introduce `N`. Rewrite using `[aw_eq, aw_eq, map_sum, bd_sum]`. Simplify using `only [d_S]`. Rewrite using `[Finset.sum_add_distrib, Finset.Nat.sum_antidiagonal_succ, Finset.Nat.sum_antidiagonal_succ']`. Establish `z1 : g1 (N + 1) (0, N + 1) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `g1; rw [dif_pos (by simp)]; rfl`. Establish `z2 : g2 (N + 1) (N + 1, 0) = 0`. Unfold `g2; rw [dif_pos (by simp)]`. Use `show (-1 : ℤ) ^ (N + 1) • (0 : Pr (N + 1) →₀ ℤ) = 0`. Conclude with `smul_zero _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[z1, z2, zero_add, zero_add, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Take `⟨p, r⟩` from `x`. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Simplify using `only at hx`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Replace the relevant objects with their definitions.
 
-Substitute `hx` using the available equality. Unfold `g1 g2 S`. Rewrite using `[dif_pos (by simp; omega), dif_pos (by simp; omega), dif_pos (by simp)]`. Conclude with `key p r`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leaf_aw_of : LateralTheory.EtaleFoundations.SteenPf.leaf_aw := by
   intro N

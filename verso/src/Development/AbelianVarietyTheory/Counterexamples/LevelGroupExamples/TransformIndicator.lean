@@ -12,9 +12,9 @@ open NumberField MvPolynomial in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H}
   {l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} in
 /- English proof (translation)
-Introduce `h`. Establish `hM` using `l.prod`. Establish `h3` using `l.three_le`. Unfold `_root_.Formalism.L2.Pj.Mfr at h`. Rewrite `hM` using `[h, Ideal.mul_bot, eq_comm, Ideal.span_singleton_eq_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd (Nat.cast_eq_zero.mp hM) (by omega)`.
+A detailed English derivation is pending.
 -/
 private theorem mfr_ne_bot : _root_.Formalism.L2.Pj.Mfr l ≠ ⊥ := by
   intro h
@@ -30,7 +30,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.Reciproc
   {l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} in
 
 /- English proof (translation)
-Use `haveI := Dw.fin`. Use `haveI : Finite (𝓞 E ⧸ _root_.Formalism.L2.Pj.Mfr l) := Ideal.finiteQuotientOfFreeOfNeBot _ mfr_ne_bot`. Conclude with `Module.finite_of_finite (𝓞 E ⧸ _root_.Formalism.L2.Pj.Mfr l)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ClassSumProbe.finite_conj_half :
     Finite (Dw.La ⧸ (_root_.Formalism.L2.Pj.Mfr l • ⊤ : Submodule (𝓞 E) Dw.La)) := by

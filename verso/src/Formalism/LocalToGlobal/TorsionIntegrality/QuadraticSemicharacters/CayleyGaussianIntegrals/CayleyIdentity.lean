@@ -25,11 +25,11 @@ variable {V : Type*} [AddCommGroup V] [Module ℂ V]
     simp at this
 
 /- English proof (translation)
-Use `letI cd : InnerProductSpace.Core ℂ V := coreOf H hH hP`. Use `letI : NormedAddCommGroup V := @InnerProductSpace.Core.toNormedAddCommGroup ℂ V _ _ _ cd`. Use `letI : InnerProductSpace ℂ V := InnerProductSpace.ofCore cd.toCore`. Use `haveI : FiniteDimensional ℂ V := ‹FiniteDimensional ℂ V›`. Establish `hS : LinearMap.IsSymmetric T` using `fun x y => (hT y x).symm`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b` to `hS.eigenvectorBasis rfl`. Use `⟨b.toBasis, fun i => hS.eigenvalues rfl i, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[OrthonormalBasis.coe_toBasis]`. Establish `h` using `(orthonormal_iff_ite.mp b.orthonormal) j i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h.trans (if_congr eq_comm rfl rfl)`. Introduce `i`. Rewrite using `[OrthonormalBasis.coe_toBasis]`. Conclude with `hS.apply_eigenvectorBasis rfl i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_diag [FiniteDimensional ℂ V] (H : Sesq V) (hH : IsHerm H) (hP : IsPosDef H) (T : V →ₗ[ℂ] V)
     (hT : ∀ x y, H (T x) y = H x (T y)) :
@@ -51,23 +51,21 @@ theorem symm_diag [FiniteDimensional ℂ V] (H : Sesq V) (hH : IsHerm H) (hP : I
     exact hS.apply_eigenvectorBasis rfl i
 
 /- English proof (translation)
-Use `set B : V →ₗ[ℂ] V := (Ae.symm : V ≃ₗ[ℂ] V).toLinearMap with hBdef`. Establish `key : ∀ x y, H (B x) y + H x (B y) = H x y`. Introduce `x y`. Establish `h` using `hA (Ae.symm x) (Ae.symm y)`. Simplify using `only [LinearEquiv.apply_symm_apply] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[hBdef, add_comm]`. Use `set T : V →ₗ[ℂ] V := Complex.I • ((2 : ℂ) • B - LinearMap.id) with hTdef`. Establish `hTx : ∀ x, T x = Complex.I • ((2 : ℂ) • B x - x)`. Introduce `x`. Simplify using `[hTdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : ∀ x y, H (T x) y = H x (T y)`. Introduce `x y`. Rewrite using `[hTx, hTx]`. Simplify using `only [map_smul, map_sub, map_smulₛₗ, LinearMap.smul_apply, LinearMap.sub_apply, smul_eq_mul, Complex.conj_I, RingHom.id_apply, map_ofNat]`. Take the linear combination `(2 * Complex.I) * key x y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, t, hb, hbt⟩` from `symm_diag H hH hP T hT`. Establish `hne : ∀ i, (1 - Complex.I * (t i : ℂ)) ≠ 0`. Introduce `i h`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨b, fun i => 2 / (1 - Complex.I * (t i : ℂ)), hb, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Establish `h1` using `hbt i`. Rewrite `h1` using `[hTx]`. Establish `hw : B (b i) = ((1 - Complex.I * (t i : ℂ)) / 2) • b i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Take the linear combination `(norm := skip) (-Complex.I / 2) • h1`. Apply the tactic sequence `match_scalars <;> (ring_nf; simp only [Complex.I_sq]; ring)`. Apply `Ae.symm.injective` to reduce the goal to its premises. Establish `hB' : Ae.symm (b i) = B (b i)` using `rfl`. Rewrite using `[LinearEquiv.symm_apply_apply, map_smul, hB', hw, smul_smul, show 2 / (1 - Complex.I * (t i : ℂ)) * ((1 - Complex.I * (t i : ℂ)) / 2) = 1 by`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Clear denominators, using `[hne i], one_smul]` for the nonvanishing conditions. Introduce `i`. Establish `hre : (1 - Complex.I * (t i : ℂ)).re = 1` using `by simp`. Establish `him : (1 - Complex.I * (t i : ℂ)).im = -t i` using `by simp`. Establish `hns : Complex.normSq (1 - Complex.I * (t i : ℂ)) = 1 + t i ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Complex.normSq_apply, hre, him]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2r : (2 : ℂ).re = 2` using `by norm_num`. Establish `h2i : (2 : ℂ).im = 0` using `by norm_num`. Rewrite using `[Complex.div_re, hre, him, hns, h2r, h2i, zero_mul, zero_div, add_zero, mul_one]`.
-
-Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem cayley_diag [FiniteDimensional ℂ V] (H : Sesq V) (hH : IsHerm H) (hP : IsPosDef H) (Ae : V ≃ₗ[ℂ] V)
     (hA : ∀ u v, H (Ae u) v + H u (Ae v) = H (Ae u) (Ae v)) :
@@ -116,7 +114,7 @@ theorem cayley_diag [FiniteDimensional ℂ V] (H : Sesq V) (hH : IsHerm H) (hP :
     positivity
 
 /- English proof (translation)
-Establish `key : H (δ.symm u) (δ.symm v) = H u v`. Establish `h` using `hδ (δ.symm u) (δ.symm v)`. Simplify using `using h.symm`. Simplify using `only [hAe, map_sub, LinearMap.sub_apply]`. Rewrite using `[key]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -130,7 +128,7 @@ theorem cayley_identity (H : Sesq V) (δ Ae : V ≃ₗ[ℂ] V) (hδ : IsIsom H H
   ring
 
 /- English proof (translation)
-The claim follows from `cayley_diag H hH hP Ae (cayley_identity H δ Ae hδ hAe)`.
+A detailed English derivation is pending.
 -/
 theorem unitary_diag [FiniteDimensional ℂ V] (H : Sesq V) (hH : IsHerm H) (hP : IsPosDef H) (δ Ae : V ≃ₗ[ℂ] V)
     (hδ : IsIsom H H (δ : V →ₗ[ℂ] V)) (hAe : ∀ x, Ae x = x - δ.symm x) :
@@ -139,9 +137,9 @@ theorem unitary_diag [FiniteDimensional ℂ V] (H : Sesq V) (hH : IsHerm H) (hP 
   cayley_diag H hH hP Ae (cayley_identity H δ Ae hδ hAe)
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.det_toMatrix b]`. Establish `hM : LinearMap.toMatrix b b L = Matrix.diagonal l`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, hL, map_smul, b.repr_self, Finsupp.smul_apply]`. Break down `eq_or_ne i j with rfl | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply, Finsupp.single_apply, h, h.symm]`. Rewrite using `[hM, Matrix.det_diagonal]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_of_diag {n : Type*} [Fintype n] [DecidableEq n] (b : Module.Basis n ℂ V) (l : n → ℂ) (L : V →ₗ[ℂ] V)
     (hL : ∀ i, L (b i) = l i • b i) : LinearMap.det L = ∏ i, l i := by
@@ -155,9 +153,9 @@ theorem det_of_diag {n : Type*} [Fintype n] [DecidableEq n] (b : Module.Basis n 
   rw [hM, Matrix.det_diagonal]
 
 /- English proof (translation)
-Rewrite using `[Module.Basis.equivFun_symm_apply]`. Simplify using `only [map_sum, map_smul, hL, smul_smul, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, map_smulₛₗ, hb, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h` using `Complex.mul_conj (w i)`. Rewrite `h` using `[Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at h`. Take the linear combination `(l i) * h`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem form_of_diag {n : Type*} [Fintype n] [DecidableEq n] (H : Sesq V) (b : Module.Basis n ℂ V) (l : n → ℂ)
     (L : V →ₗ[ℂ] V) (hb : ∀ i j, H (b i) (b j) = if i = j then 1 else 0) (hL : ∀ i, L (b i) = l i • b i)

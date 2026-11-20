@@ -28,9 +28,9 @@ section Bundles
 variable {X Y : Scheme.{0}} {L : LB X}
 
 /- English proof (translation)
-Use `⟨⟨fun i => t.s i * res le_top b⟩, ?_, ?_⟩` and prove the remaining obligations. Unfold `LB.Gen.IsGen at ht ⊢`. Introduce `i j`. Simplify using `only [map_mul, LB.res_res]`. Rewrite using `[ht i j]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_assoc _ _ _`. Introduce `Z r z J hJ`. Use `(map_mul (gm r z _) _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `gm_res r z _ (hJ.mem φ r) b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_gen_scale {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (b : Γ(Y, ⊤)ˣ) :
@@ -48,13 +48,13 @@ theorem exists_gen_scale {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K �
     exact gm_res r z _ (hJ.mem φ r) b
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Establish `hF : FormEq (PEmpty.elim : PEmpty → (X ⟶ X)) PEmpty.elim ![𝟙 X, τ 0] ![(1 : ℤ), -1]`. Introduce `U _ h`. Simplify using `[Fin.prod_univ_two, h0]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨w, hw, hw'⟩` from `exists_gen hL hF (LB.oneGen L (Y := X)) (LB.isGen_oneGen L)`. Use `⟨w, hw, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hw' Z r z J hJ, val_one]`. Simplify using the standard rewrite rules. Consider the case `succ j ih`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨w, hw, hw'⟩` from `ih`. Establish `hp` using `LB.isGen_pullGen L _ _ v hv (τ j)`. Establish `hm` using `LB.isGen_mulGen L ![𝟙 X, τ j] ![1, -1] (fun k => τ j ≫ ![𝟙 X, τ 1] k) ![1, -1] w (L.pullGen ![𝟙 X, τ 1] ![1, -1] v (τ j)) hw hp`. Establish `hF : FormEq (Sum.elim ![𝟙 X, τ j] (fun k => τ j ≫ ![𝟙 X, τ 1] k)) (Sum.elim ![(1 : ℤ), -1] ![1, -1]) ![𝟙 X, τ (j + 1)] ![(1 : ℤ), -1]`. Introduce `U _ h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, ← hτ]`. Use `group`. Take `⟨w', hw'', hv'⟩` from `exists_gen hL hF _ hm`. Use `⟨w', hw'', fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv' Z r z J hJ, val_mul hJ, val_pull hJ, hw' Z r z J hJ, Finset.prod_range_succ]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_iterate (hL : L.IsLB) (τ : ℕ → (X ⟶ X)) (h0 : τ 0 = 𝟙 X) (hτ : ∀ i, τ (i + 1) = τ i ≫ τ 1)
     (v : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 X, τ 1] ![1, -1])) (hv : v.IsGen) (j : ℕ) :
@@ -92,15 +92,15 @@ section Group
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-Take `⟨p⟩` from `‹Nonempty S›`. Take `⟨V, hpV, c, hc⟩` from `hx p`. Establish `: Subsingleton ↥(𝟙_ (Over S)).left` using `‹Subsingleton ↥S›`. Establish `hW : ∀ y, y ∈ (fst (𝟙_ (Over S)) A).left ⁻¹ᵁ V` using `fun y => by show (fst (𝟙_ (Over S)) A).left y ∈ V`. Rewrite using `[Subsingleton.elim ((fst (𝟙_ (Over S)) A).left y) p]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨t, ht⟩` from `GlobalTheory.TwistTranslate.gen_of_pull_top hL _ hW c hc`. Establish `h1` using `LB.isGen_invGen L _ _ (LB.pullGen L _ _ t (lift (toUnit A) (𝟙 A)).left) (LB.isGen_pullGen L _ _ t ht (lift (toUnit A) (𝟙 A)).left)`. Establish `ea : (lift (toUnit A) (𝟙 A)).left ≫ (lift (fst (𝟙_ (Over S)) A ≫ x) (snd _ A) ≫ μ).left = ThetaSplit.transl x`. Rewrite using `[← Over.comp_left]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Category.assoc, comp_lift, lift_fst_assoc, lift_snd]`. Both sides reduce to the same expression. Establish `eb : (lift (toUnit A) (𝟙 A)).left ≫ (snd (𝟙_ (Over S)) A).left = 𝟙 A.left`. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hF : FormEq (fun k => (lift (toUnit A) (𝟙 A)).left ≫ ![(lift (fst (𝟙_ (Over S)) A ≫ x) (snd _ A) ≫ μ).left, (snd (𝟙_ (Over S)) A).left] k) (fun k => -![(1 : ℤ), -1] k) ![𝟙 A.left, ThetaSplit.transl x] ![(1 : ℤ), -1]`. Introduce `U _ h`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, ea, eb]`. Simplify using `[mul_comm]`. Take `⟨v, hv, -⟩` from `exists_gen hL hF _ h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v, hv⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_gen_of_memKL {L : LB A.left} (hL : L.IsLB) [Subsingleton S] [Nonempty S]
     {x : 𝟙_ (Over S) ⟶ A} (hx : MemKL A L x) :
@@ -133,25 +133,21 @@ theorem exists_gen_of_memKL {L : LB A.left} (hL : L.IsLB) [Subsingleton S] [None
   exact ⟨v, hv⟩
 
 /- English proof (translation)
-Establish `: IsCommMonObj A` using `hA.comm`. Establish `e1 : toUnit A ≫ (1 : 𝟙_ (Over S) ⟶ A) = 1` using `comp_one (toUnit A)`. Establish `h0 : ThetaSplit.transl (x ^ 0) = 𝟙 A.left`. Rewrite using `[pow_zero]`. Use `show ((toUnit A ≫ (1 : 𝟙_ (Over S) ⟶ A)) * 𝟙 A).left = 𝟙 A.left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, _root_.one_mul (𝟙 A : A ⟶ A)]`. Both sides reduce to the same expression. Establish `hτ : ∀ m : ℕ, ThetaSplit.transl (x ^ (m + 1)) = ThetaSplit.transl (x ^ m) ≫ ThetaSplit.transl (x ^ 1)`. Introduce `m`. Rewrite using `[pow_succ, pow_one, ThetaSplit.transl_mul]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩ : ∃ v : LB.Gen (LB.LinComb L (K` from `Fin 2) ![𝟙 A.left, ThetaSplit.transl (x ^ 1)] ![1, -1]), v.IsGen := by`. Rewrite using `[pow_one]`. Conclude with `exists_gen_of_memKL hL hx`. Use `choose j hj using hi`. Establish `hw : ∀ c, ∃ w : LB.Gen (LB.LinComb L (K` using `Fin 2) ![𝟙 A.left, ThetaSplit.transl (i c)] ![1, -1]), w.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ A.left) (z : Z) (J), Good L z J → val w r z J = ∏ m ∈ Finset.range (j c), val v (r ≫ ThetaSplit.transl (x ^ m)) z J := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c`. Rewrite using `[← hj c]`. Conclude with `exists_gen_iterate hL (fun m => ThetaSplit.transl (x ^ m)) h0 hτ v hv (j c)`. Use `choose w hwg hwv using hw`. Establish `key : ∀ {Z : Scheme.{0}} (r : Z ⟶ A.left) (a m : ℕ), (r ≫ ThetaSplit.transl (x ^ a)) ≫ ThetaSplit.transl (x ^ m) = r ≫ ThetaSplit.transl (x ^ (a + m))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Z r a m`. Rewrite using `[pow_add, ThetaSplit.transl_mul, Category.assoc]`. Establish `hc : ∀ c c' (Z : Scheme.{0}) (r : Z ⟶ A.left) (z : Z) (J), Good L z J → val (w c) r z J * val (w c') (r ≫ ThetaSplit.transl (i c)) z J = val (w c') r z J * val (w c) (r ≫ ThetaSplit.transl (i c')) z J`. Introduce `c c' Z r z J hJ`. Establish `hs : ∀ a b, ∏ m ∈ Finset.range (a + b), val v (r ≫ ThetaSplit.transl (x ^ m)) z J = (∏ m ∈ Finset.range a, val v (r ≫ ThetaSplit.transl (x ^ m)) z J) * ∏ m ∈ Finset.range b, val v ((r ≫ ThetaSplit.transl (x ^ a)) ≫ ThetaSplit.transl (x ^ m)) z J`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `a b`. Rewrite using `[Finset.prod_range_add]`. Simplify using `only [key]`. Rewrite using `[hwv c Z r z J hJ, hwv c' Z r z J hJ, hwv c' Z _ z J hJ, hwv c Z _ z J hJ, ← hj c, ← hj c', ← hs, ← hs, add_comm]`. Take `⟨b, hb⟩` from `ThetaSplit.exists_rescale hL A.hom η[A].left (Over.w η[A]) (hG S A hA).2 hU (fun c => ThetaSplit.transl (i c)) (fun c c' => by simp only [map_mul, ThetaSplit.transl_mul]) (fun c => ThetaSplit.transl_hom (i c)) 1 w hwg hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `gmtop_lemma : ∀ {Z : Scheme.{0}} (r : Z ⟶ A.left) (z : Z) (c : Γ(S, ⊤)ˣ), gm r z ⊤ (Units.map A.hom.appTop.hom c) = gm (r ≫ A.hom) z ⊤ c`. Introduce `Z r z c`. Unfold `gm`. Rewrite using `[dif_pos (show r z ∈ (⊤ : A.left.Opens) from trivial), dif_pos (show (r ≫ A.hom) z ∈ (⊤ : S.Opens) from trivial)]`. Use `ext`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, pullU]`. Both sides reduce to the same expression. Establish `hu : ∀ c, ∃ u : LB.Gen (LB.LinComb L (K` using `Fin 2) ![𝟙 A.left, ThetaSplit.transl (i c)] ![1, -1]), u.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ A.left) (z : Z) (J), Good L z J → val u r z J = val (w c) r z J * gm (r ≫ A.hom) z ⊤ (b c) := by`. Introduce `c`. Take `⟨u, hu, hsc⟩` from `exists_gen_scale (w c) (hwg c) (Units.map A.hom.appTop.hom (b c))`.
-
-Use `⟨u, hu, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hsc Z r z J hJ, gmtop_lemma]`. Use `choose u hug huv using hu`. Use `⟨u, hug, fun c c' => corr_of_val hL (fun y J hJ => ?_)⟩` and prove the remaining obligations. Rewrite using `[val_mul hJ, val_pull hJ, huv _ _ _ _ _ hJ, huv _ _ _ _ _ hJ, huv _ _ _ _ _ hJ, Category.assoc, ThetaSplit.transl_hom]`.
-
-Conclude with `hb c c' _ (𝟙 _) y J hJ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cocycle (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) {L : LB A.left} (hL : L.IsLB)
     [Subsingleton S] [Nonempty S] (hU : ∀ n : ℕ, 0 < n → ∀ y : Γ(S, ⊤)ˣ, ∃ x : Γ(S, ⊤)ˣ, x ^ n = y)
@@ -226,15 +222,15 @@ theorem exists_cocycle (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) {L : LB A
 end Group
 
 /- English proof (translation)
-Introduce `k _ _ A B _ _ hA L hL x n hn hord hx ψ hψ _ _ _ hker`. Establish `: IsCommMonObj A` using `hA.comm`. Establish `hfin : IsOfFinOrder x`. Rewrite using `[← orderOf_pos_iff, hord]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `: Finite (Subgroup.zpowers x)`. Conclude with `(finite_zpowers.mpr hfin).to_subtype`. Establish `hi : ∀ c : Subgroup.zpowers x, ∃ j : ℕ, x ^ j = (Subgroup.zpowers x).subtype c` using `fun c => (Submonoid.mem_powers_iff _ _).mp (hfin.mem_powers_iff_mem_zpowers.mpr c.2)`. Take `⟨u, hu, hcoc⟩` from `exists_cocycle globalFns_holds hA hL (ThetaSplit.units_divisible k) hx (Subgroup.zpowers x).subtype hi`. Use `GlobalTheory.LinDescent.exists_descent_of_isReduced (Sp k) A B ψ (Subgroup.zpowers x) (Subgroup.zpowers x).subtype L hL hψ ‹_› ‹_› ‹_› ?_ u hu hcoc` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k' _ _ t`. Use `⟨fun y => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[hker k' t y]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨c, hc⟩, rfl⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨c, c.2, rfl⟩`. Establish `e : (toUnit (Over.mk t)).left = t` using `by simp`. Establish `: Epi (toUnit (Over.mk t)).left` using `e ▸ ThetaSplit.epi_of_fields t`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Epi (toUnit (Over.mk t))` using `Over.epi_of_epi_left _`. Establish `hc' : toUnit (Over.mk t) ≫ (c : 𝟙_ (Over (Sp k)) ⟶ A) = 1` using `hc`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `(cancel_epi (toUnit (Over.mk t))).mp` to reduce the goal to its premises. Rewrite using `[hc', Subgroup.coe_one, comp_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_descent : ∀ (k : Type) [Field k] [IsAlgClosed k] (A B : Over (Sp k)) [GrpObj A] [GrpObj B], IsAbelianScheme A → ∀ (L : LB A.left), L.IsLB → ∀ (x : (𝟙_ (Over (Sp k)) ⟶ A)) (n : ℕ), 1 ≤ n → orderOf x = n → GlobalTheory.MemKL A L x → ∀ ψ : A ⟶ B, IsMonHom ψ → IsFinite ψ.left → Etale ψ.left → Surjective ψ.left → (∀ (k' : Type) [Field k'] [IsAlgClosed k'] (t : Sp k' ⟶ Sp k) (y : Over.mk t ⟶ A), y ≫ ψ = 1 ↔ ∃ c ∈ Subgroup.zpowers x, y = toUnit _ ≫ c) → ∃ M : LB B.left, M.IsLB ∧ LBIso L (M.pull ψ.left) := by
   intro k _ _ A B _ _ hA L hL x n hn hord hx ψ hψ _ _ _ hker

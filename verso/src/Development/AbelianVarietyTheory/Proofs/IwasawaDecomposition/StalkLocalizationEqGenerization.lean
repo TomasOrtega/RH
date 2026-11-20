@@ -4,21 +4,19 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X x q _`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Set `xU : U` to `⟨x, hxU⟩`. Set `algX : Algebra Γ(X, U) (X.presheaf.stalk x)` to `TopCat.Presheaf.algebra_section_stalk X.presheaf xU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hlocX : IsLocalization.AtPrime (X.presheaf.stalk x) (hU.primeIdealOf xU).asIdeal` using `hU.isLocalization_stalk xU`. Use `set Px := hU.primeIdealOf xU with hPx`. Set `P' : PrimeSpectrum Γ(X, U)` to `⟨q.comap (algebraMap Γ(X, U) (X.presheaf.stalk x)), inferInstance⟩`. Establish `hP'x : P' ≤ Px`. Introduce `a ha`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hna`. Establish `hu : IsUnit (algebraMap Γ(X, U) (X.presheaf.stalk x) a)` using `IsLocalization.map_units (X.presheaf.stalk x) (⟨a, hna⟩ : Px.asIdeal.primeCompl)`. Conclude with `(Ideal.IsPrime.ne_top inferInstance) (Ideal.eq_top_of_isUnit_mem q ha hu)`. Use `set y := hU.fromSpec P' with hy`. Establish `hyU : y ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: y ∈ (U : Set X)` using `by rw [← hU.range_fromSpec]; exact ⟨P', rfl⟩`. Conclude with `this`. Establish `hsp : y ⤳ x`. Establish `h1 : P' ⤳ Px` using `(PrimeSpectrum.le_iff_specializes P' Px).mp hP'x`. Establish `h2` using `h1.map hU.fromSpec.continuous`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h2` using `[hU.fromSpec_primeIdealOf xU]`. Then use the resulting hypothesis. Set `yU : U` to `⟨y, hyU⟩`. Set `algY : Algebra Γ(X, U) (X.presheaf.stalk y)` to `TopCat.Presheaf.algebra_section_stalk X.presheaf yU`. Establish `hlocY : IsLocalization.AtPrime (X.presheaf.stalk y) P'.asIdeal` using `hU.isLocalization_stalk' P' hyU`. Set `T` to `Localization.AtPrime q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : IsLocalization.AtPrime T P'.asIdeal` using `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (M := Px.asIdeal.primeCompl) (S := X.presheaf.stalk x) (T := T) q`. Set `φ : X.presheaf.stalk y ≃ₐ[Γ(X, U)] T` to `IsLocalization.algEquiv P'.asIdeal.primeCompl _ _`. Use `⟨y, hsp, φ.symm.toRingEquiv, ?_⟩` and prove the remaining obligations. Introduce `s`. Establish `key : (φ.symm.toRingEquiv.toRingHom.comp (algebraMap (X.presheaf.stalk x) T)) = (X.presheaf.stalkSpecializes hsp).hom`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `IsLocalization.ringHom_ext Px.asIdeal.primeCompl` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply Γ(X, U) (X.presheaf.stalk x) T]`. Establish `h1 : φ.symm.toRingEquiv.toRingHom (algebraMap Γ(X, U) T a) = algebraMap Γ(X, U) (X.presheaf.stalk y) a` using `φ.symm.commutes a`.
-
-Rewrite using `[h1]`. Use `show X.presheaf.germ U y hyU a = (X.presheaf.stalkSpecializes hsp).hom (X.presheaf.germ U x hxU a)`. Conclude with `(TopCat.Presheaf.germ_stalkSpecializes_apply X.presheaf hxU hsp a).symm`. Conclude with `congrArg (fun f => f s) key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalk_localization_atPrime_eq_stalk_generization :
     ∀ (X : Scheme.{0}) (x : X) (q : Ideal (X.presheaf.stalk x)) [q.IsPrime],

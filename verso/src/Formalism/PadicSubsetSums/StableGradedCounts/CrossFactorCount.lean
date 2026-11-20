@@ -9,9 +9,9 @@ section
 variable {K L : Type} [Field K] [Fintype K] [Field L] [Algebra K L] [IsAlgClosed L]
 
 /- English proof (translation)
-Establish `hf0 : f ≠ 0` using `hi.ne_zero`. Establish `hu : IsUnit (C f.leadingCoeff⁻¹ : K[X])` using `Polynomial.isUnit_C.mpr (IsUnit.mk0 _ (inv_ne_zero (leadingCoeff_ne_zero.mpr hf0)))`. Establish `hm : (f * C f.leadingCoeff⁻¹).Monic` using `monic_mul_leadingCoeff_inv hf0`. Establish `hi' : Irreducible (f * C f.leadingCoeff⁻¹)` using `(irreducible_mul_isUnit hu).mpr hi`. Establish `hx' : aeval x (f * C f.leadingCoeff⁻¹) = 0` using `by rw [map_mul, hx, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : aeval y (f * C f.leadingCoeff⁻¹) = 0` using `by rw [map_mul, hy, zero_mul]`. Conclude with `root_conj hm hi' hx' hy'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem root_conj' {f : K[X]} (hi : Irreducible f) {x y : L} (hx : aeval x f = 0)
     (hy : aeval y f = 0) : ∃ n : ℕ, y = x ^ Fintype.card K ^ n := by
@@ -25,13 +25,13 @@ theorem root_conj' {f : K[X]} (hi : Irreducible f) {x y : L} (hx : aeval x f = 0
   exact root_conj hm hi' hx' hy'
 
 /- English proof (translation)
-Break down `S.eq_empty_or_nonempty with hS0 | ⟨x0, hx0⟩` into its components or cases. Simplify using `[hS0]`. Take `⟨hx0n, hx0w⟩` from `hS x0 hx0`. Establish `hx0ne : x0 ≠ 0`. Introduce and unpack `rfl`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hx0n` using `[zero_pow hn]`. Conclude with `zero_ne_one hx0n`. Establish `hfin : ∀ x : L, x ^ n = 1 → IsOfFinOrder x` using `fun x hx => isOfFinOrder_iff_pow_eq_one.mpr ⟨n, Nat.pos_of_ne_zero hn, hx⟩`. Establish `hmap : ∀ x ∈ S, x * x0⁻¹ ∈ nthRootsFinset (l ^ padicValNat l n) (1 : L)`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hxn, hxw⟩` from `hS x hx`. Take `⟨a, ha⟩` from `(prime_to_part_eq_iff L l x x0 hl (hfin x hxn) (hfin x0 hx0n)).mp (hxw.trans hx0w.symm)`. Establish `hz : (x * x0⁻¹) ^ n = 1` using `by rw [mul_pow, inv_pow, hxn, hx0n, inv_one, mul_one]`. Establish `hza : (x * x0⁻¹) ^ (l ^ a) = 1`. Rewrite using `[mul_pow, inv_pow, ha, mul_inv_cancel₀ (pow_ne_zero _ hx0ne)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_nthRootsFinset (pow_pos hl.pos _)]`. Conclude with `(lpow_order_iff hl hn _ hz).mp ⟨a, hza⟩`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_samePart_le {l n : ℕ} (hl : l.Prime) (hn : n ≠ 0) (w : L) (S : Finset L)
     (hS : ∀ x ∈ S, x ^ n = 1 ∧ primeToPart l x = w) : S.card ≤ l ^ padicValNat l n := by
@@ -63,23 +63,21 @@ theorem card_samePart_le {l n : ℕ} (hl : l.Prime) (hn : n ≠ 0) (w : L) (S : 
 end
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ δ l P' hl hδ hP' hP'0 hBB`. Establish `hq : 1 < Fintype.card K` using `Fintype.one_lt_card`. Establish `hn : Fintype.card K ^ δ - 1 ≠ 0` using `Nat.sub_ne_zero_of_lt (Nat.one_lt_pow (by omega) hq)`. Establish `hfin : ∀ (z : L) (m : ℕ), 0 < m → z ^ m = 1 → IsOfFinOrder z` using `fun z m hm h => isOfFinOrder_iff_pow_eq_one.mpr ⟨m, hm, h⟩`. Break down `(P'.rootSet L).eq_empty_or_nonempty with h0 | ⟨y0, hy0⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `(by positivity : (0 : ℝ) ≤ (Fintype.card K : ℝ) ^ ((δ : ℝ) / 4))` and compare the differences between its conclusion and the goal. Use `norm_cast`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce and unpack `c - ⟨-, -, x, -, y, hy, -⟩`. Rewrite `hy` using `[h0]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hy`. Establish `hy0r : aeval y0 P' = 0` using `(mem_rootSet.mp hy0).2`. Establish `hm' : 0 < Fintype.card K ^ P'.natDegree - 1` using `Nat.sub_pos_of_lt (Nat.one_lt_pow (Irreducible.natDegree_pos hP').ne' hq)`. Set `S` to `(nthRootsFinset (Fintype.card K ^ δ - 1) (1 : L)).filter (fun x => primeToPart l x = primeToPart l y0)`. Establish `hSprop : ∀ x ∈ S, x ^ (Fintype.card K ^ δ - 1) = 1 ∧ primeToPart l x = primeToPart l y0`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite `hx` using `[Finset.mem_filter, mem_nthRootsFinset (Nat.pos_of_ne_zero hn)]`. Conclude with `hx`. Use `le_trans (Nat.cast_le.mpr (card_le_of_root_mem _ ?_ S ?_)) ?_` and prove the remaining obligations. Introduce `c hc`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(Finset.mem_filter.mp hc).2.1`. Introduce `c hc`. Take `⟨hirr, hc0, x, hx, y, hy, hxy⟩` from `(Finset.mem_filter.mp hc).2`. Establish `hxr : aeval x (monicOf c) = 0` using `(mem_rootSet.mp hx).2`. Establish `hyr : aeval y P' = 0` using `(mem_rootSet.mp hy).2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `root_conj' hP' hyr hy0r`. Establish `hx'r` using `root_frob (f := monicOf c) k hxr`. Use `⟨x ^ Fintype.card K ^ k, ?_, hx'r⟩` and prove the remaining obligations. Establish `hpow : ∀ {z : L}, aeval z (monicOf c) = 0 → z ^ (Fintype.card K ^ δ - 1) = 1`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `root_pow_sub_one hirr hc0 hz` as an intermediate fact. Rewrite `this` using `[monicOf_natDegree]`. Then use the resulting hypothesis. Establish `hyn : y ^ (Fintype.card K ^ P'.natDegree - 1) = 1` using `root_pow_sub_one hP' hP'0 hyr`. Establish `hyk : (y ^ Fintype.card K ^ k) ^ (Fintype.card K ^ P'.natDegree - 1) = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hyn, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.mem_filter, mem_nthRootsFinset (Nat.pos_of_ne_zero hn)]`. Use `⟨hpow hx'r, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `(prime_to_part_eq_iff L l x y hl (hfin x _ (Nat.pos_of_ne_zero hn) (hpow hxr)) (hfin y _ hm' hyn)).mp hxy`. Rewrite using `[hk]`. Use `(prime_to_part_eq_iff L l _ _ hl (hfin _ _ (Nat.pos_of_ne_zero hn) (hpow hx'r)) (hfin _ _ hm' hyk)).mpr ⟨a, ?_⟩` and prove the remaining obligations.
-
-Establish `hsw : ∀ z : L, (z ^ Fintype.card K ^ k) ^ l ^ a = (z ^ l ^ a) ^ Fintype.card K ^ k` using `fun z => by rw [← pow_mul, ← pow_mul, mul_comm]`. Rewrite using `[hsw, hsw, ha]`. Conclude with `le_trans (Nat.cast_le.mpr (card_samePart_le hl hn _ S hSprop)) (lpow_le_rpow_quarter hBB)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cross_factor_count : CrossFactorCount := by
   intro K L _ _ _ _ _ δ l P' hl hδ hP' hP'0 hBB

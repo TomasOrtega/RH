@@ -20,15 +20,15 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
 /- English proof (translation)
-Introduce `H k _ X _ _ p D hX ι _ M L Φ hΦ n h hh r hr`. Use `haveI := hX.finite`. Set `t : X ⟶ Sp ℤ` to `p ≫ spMap (Int.castRingHom k)`. Establish `hX' : IsArithVar t D` using `isArithVar_int k X p t D hX`. Establish `Hc : ∀ (N : HermLB p) (τ : ℤ →+* ℂ), (wZ N t τ).IsCInf` using `fun N τ => GlobalTheory.T.wZ_isCInf' k X p t N τ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ' : IsArFun (fun o : Option ι => o.elim (toZ M t (Hc M)) fun i => toZ (L i) t (Hc (L i))) D Φ`. Establish `e` using `(GlobalTheory.T.toZ_isArFun_iff k X p t D hX (Option ι) (fun o : Option ι => o.elim M L) (fun o => Hc _) Φ).2 hΦ`. Use `e using 2 with o` and compare the differences between its conclusion and the goal. Apply the tactic sequence `cases o <;> rfl`. Establish `iso : (toZ (comb L n) t (Hc _)).Isometric (comb (fun i => toZ (L i) t (Hc (L i))) n)` using `(GlobalTheory.T.toZ_pow_comb_isometric k X p t Hc).2 ι L n`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh' : (comb (fun i => toZ (L i) t (Hc (L i))) n).IsArithHeight h` using `iso.isArithHeight hX' ((GlobalTheory.T.toZ_isArithHeight_iff k X p t D hX (comb L n) (Hc _) h).2 hh)`. Take `⟨h₁, h₂⟩` from `H X t D hX' ι (toZ M t (Hc M)) (fun i => toZ (L i) t (Hc (L i))) Φ hΦ' n h hh' r hr`. Establish `hA : (toZ (comb L n) t (Hc _)).ArchIntegrable (toZ M t (Hc M)) D hr` using `fun τ => by`. Rewrite using `[iso.chernIntegrableOn_eq]`. Conclude with `h₁ τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hI : (comb (fun i => toZ (L i) t (Hc (L i))) n).archInt (toZ M t (Hc M)) D hr = (toZ (comb L n) t (Hc _)).archInt (toZ M t (Hc M)) D hr`. Simplify using `only [HermLB.archInt, iso.chernInt_eq]`. Take `⟨e₁, e₂⟩` from `GlobalTheory.T.archInt_toZ_eq k X p t D hX (comb L n) M (Hc _) (Hc _) D r hr`. Establish `hB` using `e₁.1 hA`. Use `⟨hB, h₂.trans ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hI, e₂ hB]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem arMix_of_base_int : (∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℤ) (D : ℕ), IsArithVar p D → ∀ (ι : Type) [Fintype ι] (M : HermLB p) (L : ι → HermLB p) (Φ : MvPolynomial (Option ι) ℝ →ₗ[ℝ] ℝ), IsArFun (fun o : Option ι => o.elim M L) D Φ → ∀ (n : ι → ℤ) (h : X → ℝ), (comb L n).IsArithHeight h → ∀ (r : M.B.ι → X.functionFieldˣ) (hr : IsRatSec M.B r), (comb L n).ArchIntegrable M D hr ∧ Φ (MvPolynomial.X none * MvPolynomial.rename some (lin fun i => (n i : ℝ)) ^ D) = ∑ᶠ z, ((M.div hr).mult z : ℝ) * h z - (comb L n).archInt M D hr) → GlobalTheory.Published.ArMix := by
   intro H k _ X _ _ p D hX ι _ M L Φ hΦ n h hh r hr

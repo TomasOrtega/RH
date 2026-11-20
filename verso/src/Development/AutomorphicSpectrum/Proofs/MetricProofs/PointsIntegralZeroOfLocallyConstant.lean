@@ -16,17 +16,15 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Establish `pair : ∀ T : Finset (Fin D), j ∉ T → (-1 : ℂ) ^ (D - T.card) * (∑ k ∈ T, A k).det + (-1 : ℂ) ^ (D - (insert j T).card) * (∑ k ∈ insert j T, A k).det = 0`. Introduce `T hj`. Rewrite using `[Finset.sum_insert hj, hA, zero_add, Finset.card_insert_of_notMem hj]`. Establish `hlt : T.card < D` using `by simpa using Finset.card_lt_univ_of_notMem hj`. Take `⟨m, hm⟩ : ∃ m, D - T.card = m + 1` from `⟨D - T.card - 1, by omega⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm' : D - (T.card + 1) = m` using `by omega`. Rewrite using `[hm, hm', pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Unfold `mixedDisc`. Rewrite using `[Finset.sum_involution (fun S _ => if j ∈ S then S.erase j else insert j S), mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `S _ split_ifs with h`. Use `pair (S.erase j) (Finset.notMem_erase j S)` as an intermediate fact. Rewrite `this` using `[Finset.insert_erase h]`. Rewrite using `[add_comm]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pair S h`. Introduce `S _ _ split_ifs with h`. Introduce `e`. Establish `hmem : j ∈ S.erase j`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h`. Conclude with `Finset.notMem_erase j S hmem`. Conclude with `fun e => h (e ▸ Finset.mem_insert_self j S)`. Introduce `S _`. Conclude with `Finset.mem_univ _`.
-
-Introduce `S _`. Distinguish the cases in `h : j ∈ S`. Simplify using `[h, Finset.insert_erase]`. Simplify using `[h, Finset.erase_insert]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mixedDisc_eq_zero_of_eq_zero {D : ℕ} (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (j : Fin D)
     (hA : A j = 0) : mixedDisc A = 0 := by
@@ -66,9 +64,9 @@ theorem mixedDisc_eq_zero_of_eq_zero {D : ℕ} (A : Fin D → Matrix (Fin D) (Fi
     · simp [h, Finset.erase_insert]
 
 /- English proof (translation)
-Establish `h : fderiv ℝ (fderiv ℝ (fun _ : Fin D → ℂ => (0 : ℝ))) z = 0`. Establish `h1 : fderiv ℝ (fun _ : Fin D → ℂ => (0 : ℝ)) = fun _ => 0`. Use function extensionality and compare the values at `x`. Conclude with `fderiv_const_apply 0`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `fderiv_const_apply 0`. Use extensionality with `a b`. Simplify using `[cxHessian, h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cxHessian_zero {D : ℕ} (z : Fin D → ℂ) : cxHessian (fun _ => (0 : ℝ)) z = 0 := by
   have h : fderiv ℝ (fderiv ℝ (fun _ : Fin D → ℂ => (0 : ℝ))) z = 0 := by
@@ -81,9 +79,9 @@ theorem cxHessian_zero {D : ℕ} (z : Fin D → ℂ) : cxHessian (fun _ => (0 : 
   simp [cxHessian, h]
 
 /- English proof (translation)
-Unfold `sheetDensity`. Use `split_ifs with hγ`. Establish `hm : mixedDisc (fun k => cxHessian (fun y' => Function.update φ j 0 k (hγ.choose y')) y) = 0`. Use `mixedDisc_eq_zero_of_eq_zero _ j ?_` and prove the remaining obligations. Simplify using `using cxHessian_zero y`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `[maDensity, hm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sheetDensity_update_zero {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (P : Ideal (MRing ι)) {e : ℕ} (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ) (j : Fin e)
@@ -100,11 +98,11 @@ theorem sheetDensity_update_zero {K : Type} [Fintype K] {ι : K → Type} [∀ k
   · rfl
 
 /- English proof (translation)
-Introduce `K _ ι _ P e φ g j hj`. Establish `hshift : ∀ i, ∀ z ∈ mcPts P, ∃ c : ℝ, ∀ᶠ u in 𝓝 z, φ i u = Function.update φ j 0 i u + c`. Introduce `i z hz`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `⟨c, hc⟩` from `hj z hz`. Use `⟨c, hc.mono fun u hu => ?_⟩` and prove the remaining obligations. Simplify using `using hu`. Conclude with `⟨0, Eventually.of_forall fun u => by simp [Function.update_of_ne hi]⟩`. Rewrite using `[GroundTheory.Heights₂.Heights.HilbertSamuel.TwistIntersection.ptsIntegral_add_locConst P hshift g]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Unfold `ptsIntegral`. Use `split_ifs`. Simplify using `[ptsIntegralAt, sheetDensity_update_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_eq_zero_of_locConst :
     ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (e : ℕ)

@@ -10,9 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.EigBaseChange
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, Matrix.mulVec_add]`. Consider the case `tmul o v`. Use extensionality with `i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mulVec, dotProduct, Algebra.smul_def, Finset.sum_mul, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piScalarRight_lTensor_mulVec {R O : Type} [CommRing R] [CommRing O] [Algebra R O]
     {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] (A : Matrix m n R)
@@ -27,11 +27,11 @@ theorem piScalarRight_lTensor_mulVec {R O : Type} [CommRing R] [CommRing O] [Alg
     simp [Matrix.mulVec, dotProduct, Algebra.smul_def, Finset.sum_mul, mul_assoc]
 
 /- English proof (translation)
-Establish `h' : Function.Exact A.mulVecLin B.mulVecLin` using `h`. Establish `h2` using `Module.Flat.lTensor_exact O h'`. Introduce `y`. Take `⟨y, rfl⟩` from `(TensorProduct.piScalarRight R O O m).surjective y`. Rewrite using `[← piScalarRight_lTensor_mulVec, LinearEquiv.map_eq_zero_iff, h2 y]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, (piScalarRight_lTensor_mulVec A x).symm⟩`. Introduce and unpack `⟨x, hx⟩`. Take `⟨x, rfl⟩` from `(TensorProduct.piScalarRight R O O n).surjective x`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[← piScalarRight_lTensor_mulVec]`. Conclude with `⟨x, (TensorProduct.piScalarRight R O O m).injective hx⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exact_mulVec_map {R O : Type} [CommRing R] [CommRing O] [Algebra R O] [Module.Flat R O]
     {k m n : Type} [Fintype k] [Fintype m] [Fintype n] (A : Matrix m n R) (B : Matrix k m R)
@@ -52,7 +52,7 @@ theorem exact_mulVec_map {R O : Type} [CommRing R] [CommRing O] [Algebra R O] [M
     exact ⟨x, (TensorProduct.piScalarRight R O O m).injective hx⟩
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem transpose_mulVec {R : Type} [CommRing R] {d s : ℕ} (w : Fin s → Fin d → R) (c : Fin s → R) :
     (Matrix.of w).transpose.mulVec c = ∑ i, c i • w i := by
@@ -64,11 +64,11 @@ def eigMat {R : Type} [CommRing R] {d N : ℕ} (L : Fin N → Matrix (Fin d) (Fi
   Matrix.of fun p j => (L p.1 - t p.1 • (1 : Matrix (Fin d) (Fin d) R)) p.2 j
 
 /- English proof (translation)
-Establish `key : ∀ k i, (eigMat L t).mulVec v (k, i) = ((L k).mulVec v - t k • v) i`. Introduce `k i`. Establish `: (eigMat L t).mulVec v (k, i) = (L k - t k • (1 : Matrix (Fin d) (Fin d) R)).mulVec v i` using `rfl`. Rewrite using `[this, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h k`. Rewrite using `[← sub_eq_zero]`. Use extensionality with `i`. Rewrite using `[← key, h]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `h`. Use extensionality with `⟨k, i⟩`. Rewrite using `[key, h k, sub_self]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eigMat_mulVec_eq_zero {R : Type} [CommRing R] {d N : ℕ}
     (L : Fin N → Matrix (Fin d) (Fin d) R) (t : Fin N → R) (v : Fin d → R) :
@@ -88,7 +88,7 @@ theorem eigMat_mulVec_eq_zero {R : Type} [CommRing R] {d N : ℕ}
     rw [key, h k, sub_self]; rfl
 
 /- English proof (translation)
-Use extensionality with `⟨k, i⟩ j`. Apply the tactic sequence `by_cases h : i = j <;> simp [eigMat, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eigMat_map {R O : Type} [CommRing R] [CommRing O] (f : R →+* O) {d N : ℕ}
     (L : Fin N → Matrix (Fin d) (Fin d) R) (t : Fin N → R) :
@@ -97,9 +97,9 @@ theorem eigMat_map {R O : Type} [CommRing R] [CommRing O] (f : R →+* O) {d N :
   by_cases h : i = j <;> simp [eigMat, Matrix.one_apply, h]
 
 /- English proof (translation)
-Set `L' : OE →+ Matrix (Fin d) (Fin d) R` to `AddMonoidHom.mk' L hL`. Express the relevant statement in the definitionally equal form `(L' a).mulVec v = _`. Establish `ha : a ∈ Submodule.span ℤ (Set.range g)` using `hg ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨k, rfl⟩ := hx`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `hv k`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [Matrix.add_mulVec, hx, hy, add_smul]`. Consider the case `smul z x _ hx => rw [map_zsmul, map_zsmul, Matrix.smul_mulVec, hx, smul_assoc]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eig_of_span {R OE : Type} [CommRing R] [CommRing OE] {d N : ℕ}
     (L : OE → Matrix (Fin d) (Fin d) R) (hL : ∀ a b, L (a + b) = L a + L b) (τ : OE →+* R)
@@ -115,7 +115,7 @@ theorem eig_of_span {R OE : Type} [CommRing R] [CommRing OE] {d N : ℕ}
   | smul z x _ hx => rw [map_zsmul, map_zsmul, Matrix.smul_mulVec, hx, smul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[linPart, MvPowerSeries.coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem linPart_map {R O : Type} [CommRing R] [CommRing O] (f : R →+* O) {d : ℕ}
     (φ : Fin d → PS R 1 d) :
@@ -124,25 +124,25 @@ theorem linPart_map {R O : Type} [CommRing R] [CommRing O] (f : R →+* O) {d : 
   simp [linPart, MvPowerSeries.coeff_map]
 
 /- English proof (translation)
-Introduce `R O _ _ _ _ OE _ _ d s act hadd τ w hw`. Take `⟨N, g, hg⟩` from `Module.Finite.exists_fin (R := ℤ) (M := OE)`. Establish `hadd' : ∀ a b, (linPart (act (a + b))).map (algebraMap R O) = (linPart (act a)).map (algebraMap R O) + (linPart (act b)).map (algebraMap R O)`. Introduce `a b`. Rewrite using `[hadd, Matrix.map_add _ (map_add _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hlin : ∀ (c : Fin s → R) a, (linPart (act a)).mulVec (∑ i, c i • w i) = τ a • ∑ i, c i • w i`. Introduce `c a`. Rewrite using `[Matrix.mulVec_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, hw.1, smul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `ex1 : Function.Exact (Matrix.of w).transpose.mulVec (eigMat (fun k => linPart (act (g k))) (fun k => τ (g k))).mulVec`. Introduce `v`. Rewrite using `[eigMat_mulVec_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc, -⟩` from `hw.2 v (eig_of_span (fun a => linPart (act a)) hadd τ g hg v h)`. Conclude with `⟨c, by rw [transpose_mulVec, hc]⟩`. Introduce and unpack `⟨c, rfl⟩ k`. Rewrite using `[transpose_mulVec]`. Conclude with `hlin c _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ex0 : Function.Exact (0 : Matrix (Fin s) (Fin 0) R).mulVec (Matrix.of w).transpose.mulVec`. Introduce `c`. Rewrite using `[transpose_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, -, hu⟩` from `hw.2 0 (by simp)`. Conclude with `⟨0, by rw [hu c h, ← hu 0 (by simp)]; simp⟩`. Introduce and unpack `⟨x, rfl⟩`. Simplify using the standard rewrite rules. Establish `ex1'` using `exact_mulVec_map (O := O) _ _ ex1`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ex0'` using `exact_mulVec_map (O := O) _ _ ex0`. Establish `hT : ((Matrix.of w).transpose.map (algebraMap R O)) = (Matrix.of fun i j => algebraMap R O (w i j)).transpose` using `rfl`. Rewrite `ex1'`, `ex0'` using `[hT]`. Rewrite `ex1'` using `[eigMat_map]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i a`. Rewrite using `[linPart_map]`. Use extensionality with `j`. Use `congrArg (algebraMap R O) (congrFun (hw.1 i a) j)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Simplify using `only [linPart_map] at hv`. Take `⟨c, hc⟩` from `(ex1' v).1 ((eigMat_mulVec_eq_zero _ _ _).2 fun k => hv (g k))`. Rewrite `hc` using `[transpose_mulVec]`. Use `⟨c, hc, fun c' hc' => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `(ex0' (c' - c)).1 (by`. Rewrite using `[Matrix.mulVec_sub, transpose_mulVec, transpose_mulVec]`. Conclude with `sub_eq_zero.2 (hc'.trans hc.symm))`. Rewrite using `[← sub_eq_zero, ← hx]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isEigBasis_map : ∀ (R O : Type) [CommRing R] [CommRing O] [Algebra R O] [Module.Flat R O] (OE : Type) [CommRing OE] [Module.Finite ℤ OE] (d s : ℕ) (act : OE → Fin d → PS R 1 d), (∀ a b, linPart (act (a + b)) = linPart (act a) + linPart (act b)) → ∀ (τ : OE →+* R) (w : Fin s → Fin d → R), IsEigBasis act τ w → IsEigBasis (fun a i => MvPowerSeries.map (algebraMap R O) (act a i)) ((algebraMap R O).comp τ) (fun i j => algebraMap R O (w i j)) := by
   intro R O _ _ _ _ OE _ _ d s act hadd τ w hw

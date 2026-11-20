@@ -6,13 +6,13 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.PSliceReducedAwa
 set_option maxSynthPendingDepth 1
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.PuncturedBranchInOneBranch.proof GroundTheory.Heights₂.Heights.AutoClose.BranchImageNhdOffCentre`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.PuncturedBranchInOneBranch : GroundTheory.Heights₂.Heights.PuncturedBranchInOneBranch.Statement :=
   @GroundTheory.Heights₂.Heights.PuncturedBranchInOneBranch.proof GroundTheory.Heights₂.Heights.AutoClose.BranchImageNhdOffCentre
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.PuncturedCurveDiscInverse.proof GroundTheory.Heights₂.Heights.AutoClose.CurveCoordinateGraph GroundTheory.Heights₂.Heights.InjectiveHolomorphicDerivNeZero.proof`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.PuncturedCurveDiscInverse : GroundTheory.Heights₂.Heights.PuncturedCurveDiscInverse.Statement :=
   @GroundTheory.Heights₂.Heights.PuncturedCurveDiscInverse.proof GroundTheory.Heights₂.Heights.AutoClose.CurveCoordinateGraph GroundTheory.Heights₂.Heights.InjectiveHolomorphicDerivNeZero.proof

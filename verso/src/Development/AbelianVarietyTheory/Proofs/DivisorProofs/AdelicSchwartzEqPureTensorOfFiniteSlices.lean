@@ -23,13 +23,13 @@ open scoped Classical
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ hΦ`. Take `⟨f, g, -, rfl⟩` from `hΦ`. Use `⟨g z • f, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h : (fun i => (a i).2) = z` using `funext ha`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show f _ * g (fun i => (a i).2) = _`. Rewrite using `[h, SchwartzMap.smul_apply, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, fun a _ => by simp⟩`. Consider the case `add Φ Ψ _ _ h1 h2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨f1, hf1⟩` from `h1`. Take `⟨f2, hf2⟩` from `h2`. Conclude with `⟨f1 + f2, fun a ha => by simp [hf1 a ha, hf2 a ha]⟩`. Consider the case `smul c Φ _ h`. Take `⟨f1, hf1⟩` from `h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c • f1, fun a ha => by simp [hf1 a ha]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_slice (Φ : (κ → AF F) → ℂ) (hΦ : Φ ∈ schA F κ) (z : κ → Af F) :
     ∃ f : SInf F κ, ∀ a : κ → AF F, (∀ i, (a i).2 = z i) → Φ a = f (fun i => evI F (a i)) := by
@@ -51,9 +51,9 @@ theorem exists_slice (Φ : (κ → AF F) → ℂ) (hΦ : Φ ∈ schA F κ) (z : 
     exact ⟨c • f1, fun a ha => by simp [hf1 a ha]⟩
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ hΦ`. Take `⟨f, g, hg, rfl⟩` from `hΦ`. Conclude with `(IsLocallyConstant.const (f fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (b i))).mul hg.1`. Consider the case `zero => exact IsLocallyConstant.const 0`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add Φ Ψ _ _ h1 h2 => exact h1.add h2`. Consider the case `smul c Φ _ h => exact h.comp (fun t => c • t)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_fin (Φ : (κ → AF F) → ℂ) (hΦ : Φ ∈ schA F κ) (b : κ → Ainf F) :
     IsLocallyConstant (fun z : κ → Af F => Φ (fun i => (b i, z i))) := by
@@ -69,9 +69,9 @@ def hyb (S : Finset (HeightOneSpectrum (𝓞 F))) (y g : Af F) : Af F :=
   g + ∑ v ∈ S, singleFin v (evalV F v y - evalV F v g)
 
 /- English proof (translation)
-Unfold `hyb`. Rewrite using `[map_add, map_sum]`. Use `split_ifs with hu`. Rewrite using `[Finset.sum_eq_single u (fun v _ hv => evalV_singleFin_ne (Ne.symm hv) _) (fun h => absurd hu h), evalV_singleFin_self]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero (fun v hv => evalV_singleFin_ne (by rintro rfl; exact hu hv) _), add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem evalV_hyb (S : Finset (HeightOneSpectrum (𝓞 F))) (y g : Af F) (u : HeightOneSpectrum (𝓞 F)) :
     evalV F u (hyb S y g) = if u ∈ S then evalV F u y else evalV F u g := by
@@ -84,7 +84,7 @@ theorem evalV_hyb (S : Finset (HeightOneSpectrum (𝓞 F))) (y g : Af F) (u : He
   · rw [Finset.sum_eq_zero (fun v hv => evalV_singleFin_ne (by rintro rfl; exact hu hv) _), add_zero]
 
 /- English proof (translation)
-Unfold `hyb`. Rewrite using `[Finset.sum_insert hv]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem hyb_insert {S : Finset (HeightOneSpectrum (𝓞 F))} {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) (y g : Af F) :
     hyb (insert v S) y g = hyb S y g + singleFin v (evalV F v y - evalV F v g) := by
@@ -93,12 +93,12 @@ theorem hyb_insert {S : Finset (HeightOneSpectrum (𝓞 F))} {v : HeightOneSpect
   abel
 
 /- English proof (translation)
-Simplify using `[hyb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hyb_empty (y g : Af F) : hyb ∅ y g = g := by simp [hyb]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdelicLimit.tendsto_finAdele _ y g (fun T v hv => by have h := evalV_hyb T y g v; rw [if_pos hv] at h; exact h) (fun T v hv => by have h := evalV_hyb T y g v; rw [if_neg hv] at h; exact h)`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_hyb (y g : Af F) : Tendsto (fun S => hyb S y g) atTop (𝓝 y) :=
   GlobalTheory.AdelicLimit.tendsto_finAdele _ y g
@@ -118,14 +118,14 @@ Both sides reduce to the same expression.
 -/
 theorem liftV_snd (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) : (GlobalTheory.LatVac.liftV v a).2 = singleFin v a := rfl
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `p.1 - (GlobalTheory.LatVac.liftV v a).1 + (GlobalTheory.LatVac.liftV v b).1 = p.1`. Rewrite using `[liftV_fst, liftV_fst, sub_zero, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem fst_sub_add (p : AF F) (v : HeightOneSpectrum (𝓞 F)) (a b : Fv F v) :
     (p - GlobalTheory.LatVac.liftV v a + GlobalTheory.LatVac.liftV v b).1 = p.1 := by
   change p.1 - (GlobalTheory.LatVac.liftV v a).1 + (GlobalTheory.LatVac.liftV v b).1 = p.1
   rw [liftV_fst, liftV_fst, sub_zero, add_zero]
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `p.2 - (GlobalTheory.LatVac.liftV v a).2 + (GlobalTheory.LatVac.liftV v b).2 = _`. Rewrite using `[liftV_snd, liftV_snd]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem snd_sub_add (p : AF F) (v : HeightOneSpectrum (𝓞 F)) (a b : Fv F v) :
     (p - GlobalTheory.LatVac.liftV v a + GlobalTheory.LatVac.liftV v b).2 = p.2 - singleFin v a + singleFin v b := by
@@ -138,45 +138,41 @@ namespace GlobalTheory.PureGlue
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ κ _ vac hvac hcof Φ hΦ hsl`. Use `set T0 : Set (HeightOneSpectrum (𝓞 F)) := {v | ¬ vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1} with hT0`. Establish `hT0f : T0.Finite` using `hcof`. Establish `hex : ∀ v, ∃ ζ : κ → Fv F v, vac v ζ ≠ 0` using `fun v => by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Use `push_neg at h`. Conclude with `hvac v (funext h)`. Set `ζ : ∀ v, κ → Fv F v` to `fun v => if v ∈ T0 then (hex v).choose else 0`. Establish `hζ1 : ∀ v, v ∉ T0 → vac v (ζ v) = 1`. Introduce `v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h : vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `not_not.1 hv`. Simplify using `only [ζ, if_neg hv]`. Rewrite using `[h, Set.indicator_of_mem (show (0 : κ → Fv F v) ∈ {x | ∀ i, x i ∈ v.adicCompletionIntegers F} from fun i => zero_mem _)]`. Both sides reduce to the same expression. Establish `hζ : ∀ v, vac v (ζ v) ≠ 0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `v`. Distinguish the cases in `hv : v ∈ T0`. Simplify using `only [ζ, if_pos hv]`. Conclude with `(hex v).choose_spec`. Rewrite using `[hζ1 v hv]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `one_ne_zero`. Set `ξ0 : κ → Af F` to `fun i => ∑ v ∈ hT0f.toFinset, singleFin v (ζ v i)`. Establish `hξ0 : ∀ v i, evalV F v (ξ0 i) = ζ v i`. Introduce `v i`. Simplify using `only [ξ0, map_sum]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hv : v ∈ T0`. Rewrite using `[Finset.sum_eq_single v (fun u _ hu => evalV_singleFin_ne (Ne.symm hu) _) (fun h => absurd (hT0f.mem_toFinset.2 hv) h), evalV_singleFin_self]`. Rewrite using `[Finset.sum_eq_zero (fun u hu => evalV_singleFin_ne (by rintro rfl; exact hv (hT0f.mem_toFinset.1 hu)) _)]`. Simplify using `[ζ, hv]`. Use `set c : ℂ := ∏ v ∈ hT0f.toFinset, vac v (ζ v) with hcdef`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc : c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => hζ v`. Take `⟨f0, hf0⟩` from `exists_slice Φ hΦ ξ0`. Use `⟨c⁻¹ • f0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `hev : ∀ (v : HeightOneSpectrum (𝓞 F)) (a : AF F), evFin F v a = evalV F v a.2` using `fun _ _ => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Set `P : Finset (HeightOneSpectrum (𝓞 F)) → κ → AF F` to `fun S i => ((x i).1, hyb S (x i).2 (ξ0 i))`. Establish `key : ∀ S, Φ (P S) * ∏ v ∈ S, vac v (ζ v) = Φ (P ∅) * ∏ v ∈ S, vac v (fun i => evFin F v (x i))`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `insert v S hv ih`. Set `y : κ → AF F` to `fun k => P S k - GlobalTheory.LatVac.liftV v (ζ v k)`. Establish `hy : ∀ k, evFin F v (y k) = 0`. Introduce `k`. Simplify using `only [y, map_sub, GlobalTheory.LatVac.evFin_liftV]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hev]`. Express the relevant statement in the definitionally equal form `evalV F v (hyb S (x k).2 (ξ0 k)) - ζ v k = 0`. Rewrite using `[evalV_hyb, if_neg hv, hξ0, sub_self]`. Take `⟨a, ha⟩` from `hsl v y hy`. Establish `e1 : P S = y + fun k => GlobalTheory.LatVac.liftV v (ζ v k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Simplify using `[y]`. Establish `e2 : P (insert v S) = y + fun k => GlobalTheory.LatVac.liftV v (evFin F v (x k))`. Use function extensionality and compare the values at `k`. Establish `hk : (y + fun k => GlobalTheory.LatVac.liftV v (evFin F v (x k))) k = P S k - GlobalTheory.LatVac.liftV v (ζ v k) + GlobalTheory.LatVac.liftV v (evFin F v (x k))` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hk]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[fst_sub_add]`. Rewrite using `[snd_sub_add] show hyb (insert v S) (x k).2 (ξ0 k) = hyb S (x k).2 (ξ0 k) - singleFin v (ζ v k) + singleFin v (evFin F v (x k))`. Rewrite using `[hyb_insert hv, hξ0, map_sub, hev]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `h1` using `ha (ζ v)`. Establish `h2` using `ha (fun i => evFin F v (x i))`. Rewrite `h1` using `[← e1]`. Rewrite `h2` using `[← e2]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_insert hv, Finset.prod_insert hv]`. Take the linear combination `(vac v (ζ v) * ∏ u ∈ S, vac u (ζ u)) * h2 - (vac v (fun i => evFin F v (x i)) * ∏ u ∈ S, vac u (ζ u)) * h1 + vac v (fun i => evFin F v (x i)) * ih`. Establish `hlc` using `isLocallyConstant_fin Φ hΦ (fun i => (x i).1)`. Establish `ht : Tendsto (fun S => fun i => hyb S (x i).2 (ξ0 i)) atTop (𝓝 (fun i => (x i).2))` using `tendsto_pi_nhds.2 fun i => tendsto_hyb (x i).2 (ξ0 i)`. Establish `hev1 : ∀ᶠ S in atTop, Φ (P S) = Φ x` using `ht ((hlc.isOpen_fiber (Φ x)).mem_nhds rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hxi : ∀ᶠ v in Filter.cofinite, ∀ i, evalV F v (x i).2 ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun i => (x i).2.2.mono fun v hv => hv`. Use `set S0 : Set (HeightOneSpectrum (𝓞 F)) := {v | ¬ (vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 ∧ ∀ i, evalV F v (x i).2 ∈ v.adicCompletionIntegers F)} with hS0`. Establish `hS0f : S0.Finite` using `hcof.and hxi`. Establish `hev2 : ∀ᶠ S in atTop, hS0f.toFinset ∪ hT0f.toFinset ≤ S` using `Filter.eventually_ge_atTop _`. Take `⟨S, hS1, hS2⟩` from `(hev1.and hev2).exists`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `k` using `key S`. Rewrite `k` using `[hS1]`. Establish `hcS : ∏ v ∈ S, vac v (ζ v) = c`. Use `symm`. Use `Finset.prod_subset (fun v hv => hS2 (Finset.mem_union_right _ hv)) ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `v _ hv`. Conclude with `hζ1 v (fun h => hv (hT0f.mem_toFinset.2 h))`. Establish `hfp : ∏ᶠ v, vac v (fun i => evFin F v (x i)) = ∏ v ∈ S, vac v (fun i => evFin F v (x i))`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hvS`. Apply `hv` to reduce the goal to its premises. Use `show vac v (fun i => evFin F v (x i)) = 1`. Establish `hn : v ∉ S0` using `fun h => hvS (hS2 (Finset.mem_union_left _ (hS0f.mem_toFinset.2 h)))`. Establish `h'` using `not_not.1 hn`.
-
-Rewrite using `[h'.1, Set.indicator_of_mem (show (fun i => evFin F v (x i)) ∈ {x | ∀ i, x i ∈ v.adicCompletionIntegers F} from h'.2)]`. Both sides reduce to the same expression. Establish `hP0 : Φ (P ∅) = f0 (fun i => evI F (x i))` using `hf0 (P ∅) (fun i => by simp [P, hyb_empty])`. Rewrite `k` using `[hcS]`. Use `show Φ x = (c⁻¹ • f0) (fun i => evI F (x i)) * ∏ᶠ v, vac v fun i => evFin F v (x i)`.
-
-Rewrite using `[SchwartzMap.smul_apply, smul_eq_mul, hfp, ← hP0, mul_assoc, ← k, mul_comm (Φ x), ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_pure_of_slices : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (vac : ∀ v : HeightOneSpectrum (𝓞 F), (κ → Fv F v) → ℂ), (∀ v, vac v ≠ 0) →
     (∀ᶠ v in Filter.cofinite, vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) →

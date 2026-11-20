@@ -12,9 +12,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hz : hA.fromSpec Q ∈ V`. Establish `h : hA.fromSpec Q ∈ Set.range hA.fromSpec` using `⟨Q, rfl⟩`. Rewrite `h` using `[hA.range_fromSpec]`. Conclude with `h`. Rewrite using `[unitAt_fnOf_iff hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hA.fromSpec_preimage_basicOpen r`. Express the relevant statement in the definitionally equal form `Q ∈ hA.fromSpec ⁻¹ᵁ X.basicOpen r ↔ _`. Rewrite using `[h]`. Conclude with `PrimeSpectrum.mem_basicOpen _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_fromSpec_fnOf_iff {X : Scheme.{0}} [IsIntegral X] {V : X.Opens} (hA : IsAffineOpen V)
     (hV : genericPoint X ∈ V) (Q : PrimeSpectrum Γ(X, V)) (r : Γ(X, V)) :
@@ -30,19 +30,19 @@ theorem unitAt_fromSpec_fnOf_iff {X : Scheme.{0}} [IsIntegral X] {V : X.Opens} (
   exact PrimeSpectrum.mem_basicOpen _ _
 
 /- English proof (translation)
-Introduce `X _ _ V hA hV a ha`. Establish `: Nonempty V` using `⟨⟨_, hV⟩⟩`. Establish `: IsNoetherianRing Γ(X, V)` using `IsLocallyNoetherian.component_noetherian ⟨V, hA⟩`. Establish `ha0 : a ≠ 0` using `fun h => ha (by rw [h, map_zero])`. Take `⟨S, hS, H⟩` from `exists_finite_primes_dvd_of_dvd_mul_localization Γ(X, V) a ha0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨(fun Q : PrimeSpectrum Γ(X, V) => hA.fromSpec Q) '' S, hS.image _, ?_⟩` and prove the remaining obligations. Introduce and unpack `x hx _ _ ⟨τ, rfl⟩ hτ ⟨g, rfl⟩ ⟨c, hc⟩`. Use `set P : PrimeSpectrum Γ(X, V) := hA.primeIdealOf ⟨x, hx⟩ with hP`. Use `letI : Algebra Γ(X, V) (X.presheaf.stalk x) := X.presheaf.algebra_section_stalk ⟨x, hx⟩`. Establish `hloc : IsLocalization.AtPrime (X.presheaf.stalk x) P.asIdeal` using `hA.isLocalization_stalk ⟨x, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgerm : ∀ r : Γ(X, V), algebraMap (X.presheaf.stalk x) X.functionField (algebraMap Γ(X, V) (X.presheaf.stalk x) r) = fnOf V hV r` using `fun r => algebraMap_germ hx r`. Set `e : Localization.AtPrime P.asIdeal ≃ₐ[Γ(X, V)] X.presheaf.stalk x` to `IsLocalization.algEquiv P.asIdeal.primeCompl _ _`. Establish `hd : algebraMap Γ(X, V) (X.presheaf.stalk x) a ∣ g * τ`. Use `⟨c, IsFractionRing.injective (X.presheaf.stalk x) X.functionField ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hgerm, hc, mul_div_cancel₀ _ ha]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `H P (e.symm τ) (e.symm g) ?_ ?_`. Take `⟨d, hd⟩` from `map_dvd e key`. Rewrite `hd` using `[e.commutes, e.apply_symm_apply]`. Conclude with `⟨d, by rw [hd, map_mul, hgerm, mul_div_cancel_left₀ _ ha]⟩`. Introduce `Q hQ hQP hm`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsp : hA.fromSpec Q ⤳ x`. Establish `h` using `((PrimeSpectrum.le_iff_specializes Q P).1 hQP).map hA.fromSpec.continuous`. Rewrite `h` using `[hP, hA.fromSpec_primeIdealOf]`. Then use the resulting hypothesis. Establish `hu` using `hτ _ ⟨Q, hQ, rfl⟩ hsp`. Take `⟨⟨q, t⟩, hqt⟩` from `(IsLocalization.mem_map_algebraMap_iff P.asIdeal.primeCompl _).1 hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun y => algebraMap (X.presheaf.stalk x) X.functionField (e y)) hqt`. Simplify using `only [map_mul, e.commutes, e.apply_symm_apply, hgerm] at h1`. Establish `ht` using `(unitAt_fromSpec_fnOf_iff hA hV Q t).2 fun h => t.2 (hQP h)`. Establish `h2` using `hu.mul ht`. Rewrite `h2` using `[h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(unitAt_fromSpec_fnOf_iff hA hV Q q).1 h2 q.2`. Establish `h` using `map_dvd e.symm hd`. Rewrite `h` using `[e.symm.commutes, map_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_finite_points_regAt_div_of_affine :
     ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (V : X.Opens), IsAffineOpen V → ∀ (hV : genericPoint X ∈ V) (a : Γ(X, V)), fnOf V hV a ≠ 0 → ∃ T : Set X, T.Finite ∧ ∀ x ∈ V, ∀ τ g : X.functionField, RegAt x τ → (∀ z ∈ T, z ⤳ x → UnitAt z τ) → RegAt x g → RegAt x (g * τ / fnOf V hV a) → RegAt x (g / fnOf V hV a) := by

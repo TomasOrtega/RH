@@ -9,19 +9,17 @@ open UpperTheory.Gal.ClosedPhiFromClosedTrace
 namespace UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 /- English proof (translation)
-Use `choose W hW using h3`. Use `choose r hr using h4`. Establish `hPb : Pm.map zb = (Pm.map zc).map f`. Use extensionality with `i j`. Simplify using `[hz]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hE : (fun j => zb (e' j)) = f ∘ (fun j => zc (e' j))`. Use extensionality with `j`. Simplify using `[hz]`. Establish `hD : V * Pm.map zc - Pm.map zc * V' = n • Matrix.of W`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hW]`. Establish `hM : V.map f * Pm.map zb - Pm.map zb * V'.map f = (n • Matrix.of W).map f`. Rewrite using `[← hD, hPb, Matrix.map_sub _ (map_sub f), Matrix.map_mul, Matrix.map_mul]`. Establish `hq : (fun i => zb ((Pm *ᵥ e' - e) i)) = f ∘ (fun i => n * zc (r i))`. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Function.comp, hr i, map_mul, hz, ← hn]`. Establish `h1 : ∀ i, (((V.map f * Pm.map zb - Pm.map zb * V'.map f) *ᵥ (fun j => zb (e' j))) - V.map f *ᵥ fun i => zb ((Pm *ᵥ e' - e) i)) i = f n * f ((Matrix.of W *ᵥ fun j => zc (e' j)) i - (V *ᵥ fun i => zc (r i)) i)`. Introduce `i`. Rewrite using `[hM, hE, hq, Pi.sub_apply, ← RingHom.map_mulVec, ← RingHom.map_mulVec, ← map_mul, ← map_sub]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Pi.sub_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, Finset.mul_sum, mul_sub]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun j _ => by ring`. Establish `h2 : ∀ j, (V'.map f *ᵥ fun i => zb (e' i)) j = f ((V' *ᵥ fun i => zc (e' i)) j)`. Introduce `j`. Rewrite using `[hE, ← RingHom.map_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨∑ i, ((Matrix.of W *ᵥ fun j => zc (e' j)) i - (V *ᵥ fun i => zc (r i)) i) * ai i + ∑ j, a * (V' *ᵥ fun i => zc (e' i)) j * bj j - a * s * g, ?_⟩` and prove the remaining obligations. Simplify using `only [h1, h2, hv, hw, map_mul, map_add, map_sub, map_sum, ha, Finset.mul_sum, mul_add, mul_sub]`. Use `congr 1`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem core {Z R B : Type} [CommRing Z] [CommRing R] [CommRing B] (f : R →+* B) (zc : Z →+* R) (zb : Z →+* B)
     (hz : ∀ x, f (zc x) = zb x) (n a s g : R) (nZ : Z) (hn : zc nZ = n) {d d' : ℕ}
@@ -66,7 +64,7 @@ private theorem core {Z R B : Type} [CommRing Z] [CommRing R] [CommRing B] (f : 
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `show T.eB (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (z : ℚ_[l]))) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `T.zB z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem u_alg {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) (z : ℤ_[l]) :
     uB T (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (z : ℚ_[l])) = Per.zB l z := by
@@ -80,9 +78,9 @@ Both sides reduce to the same expression.
 private theorem iB_zC (z : ℤ_[l]) : iB l (zC l z) = Per.zB l z := rfl
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `GlobalTheory.ExpImage.exists_lifts_of_norm_le_one l P AI T (adjExt (c : Om l)) ⟨c, mem_adjExt _, c.2⟩ hc`. Use `⟨iA l w, ?_⟩` and prove the remaining obligations. Establish `h : AI.ιA w = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c` using `hw`. Use `show _ = T.eB (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c)`. Rewrite using `[← h, T.ιA]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem exists_iB {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) (c : ↥(MaximalUnramifiedExtension l))
     (hc : ‖(c : Om l)‖ ≤ 1) : ∃ y : Per.Acris l, iB l y = uB T c := by
@@ -94,7 +92,7 @@ private theorem exists_iB {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P A
   rfl
 
 /- English proof (translation)
-Establish `h` using `PadicAlgCl.norm_extends l (l : ℚ_[l])`. Rewrite `h` using `[Padic.norm_p]`. Rewrite using `[← h]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem norm_l : ‖(l : Om l)‖ = (l : ℝ)⁻¹ := by
   have h := PadicAlgCl.norm_extends l (l : ℚ_[l])
@@ -103,7 +101,7 @@ private theorem norm_l : ‖(l : Om l)‖ = (l : ℝ)⁻¹ := by
   congr 1
 
 /- English proof (translation)
-Rewrite using `[← nsmul_eq_mul, map_nsmul, map_nsmul, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem scale {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI)
     (lam : Om l →ₗ[↥(MaximalUnramifiedExtension l)] ↥(MaximalUnramifiedExtension l)) (n : ℕ) (y : Om l) :
@@ -113,35 +111,29 @@ private theorem scale {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI)
 end UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 /- English proof (translation)
-Introduce `hF hI l _ P AI T s d d' m M c₁ c₂ t t' c pv p θ Pi e e' V V' h1 h2 h3 h4 h5 h6 h7 h8 h9`. Establish `hn : ‖(l : Om l)‖ = (l : ℝ)⁻¹` using `norm_l`. Establish `hlpos : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Establish `hl0 : (l : Om l) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[h0, norm_zero]`. Conclude with `(inv_pos.2 hlpos).ne hn`. Establish `hlK : (l : ↥(MaximalUnramifiedExtension l)) ≠ 0`. Introduce `h0`. Apply `hl0` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `congrArg (fun x : ↥(MaximalUnramifiedExtension l) => (x : Om l)) h0` as an intermediate fact. Simplify using `using this`. Establish `hsmall : ∀ y : Om l, ‖y‖ ≤ ((l : ℝ) ^ M)⁻¹ → ‖y / (l : Om l) ^ M‖ ≤ 1`. Introduce `y hy`. Rewrite using `[norm_div, norm_pow, hn, inv_pow]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `div_le_one_of_le₀ (by simpa using hy) (by positivity) |>.trans le_rfl`. Set `δ : Fin d' → Om l` to `fun j => ∑ i, zOm l (Pi i j) * t i - ∑ k, c k * t' j k`. Set `η : Om l` to `θ - ∑ k, c k * pv k`. Set `x : Fin d ⊕ Fin d' ⊕ Unit → Om l` to `Sum.elim (fun i => (l : Om l) ^ c₁ * t i) (Sum.elim (fun j => δ j / (l : Om l) ^ M) (fun _ => η / (l : Om l) ^ M))`. Establish `hx : ∀ i, ‖x i‖ ≤ 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `(i | j | _)`. Conclude with `h7 i`. Conclude with `hsmall _ (h5 j)`. Conclude with `hsmall _ h6`. Take `⟨lam, hl1, hl2, hl3⟩` from `hF l (MaximalUnramifiedExtension l) (Fin d ⊕ Fin d' ⊕ Unit) x ((l : Om l) ^ c₁ * (p - θ)) hx h8`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hid` using `hI l (Per.Bcris l) (uB T) (Per.zB l) (u_alg T) (iB l s) d d' m t t' c pv p θ Pi e e' (V.map (iB l)) (V'.map (iB l)) h1 h2 lam`. Use `choose ai hai using fun i => exists_iB T (lam (x (Sum.inl i))) (hl1 _)`. Use `choose bj hbj using fun j => exists_iB T (lam (x (Sum.inr (Sum.inl j)))) (hl1 _)`. Take `⟨g, hg⟩` from `exists_iB T (lam (x (Sum.inr (Sum.inr ())))) (hl1 _)`. Establish `hpow : ∀ (k : ℕ) (y : Om l), uB T (lam ((l : Om l) ^ k * y)) = (l : Per.Bcris l) ^ k * uB T (lam y)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `k y`. Use `scale T lam (l ^ k) y` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hdiv : ∀ y : Om l, uB T (lam y) = (l : Per.Bcris l) ^ M * uB T (lam (y / (l : Om l) ^ M))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Rewrite using `[← hpow, mul_div_cancel₀ _ (pow_ne_zero _ hl0)]`. Take `⟨Y, hY⟩` from `core (iB l) (zC l) (Per.zB l) iB_zC ((l : Per.Acris l) ^ M) ((l : Per.Acris l) ^ c₁) s g ((l : ℤ_[l]) ^ M) (by simp) V V' Pi e e' h3 h4 (fun i => uB T (lam (t i))) (fun j => uB T (lam (δ j))) (uB T (lam η)) ai bj (fun i => by`. Rewrite using `[hai i]`. Simplify using `only [map_pow, map_natCast]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hpow c₁ (t i))`. Use the proof step `(fun j => by`. Rewrite using `[hbj j]`. Simplify using `only [map_pow, map_natCast]`. Conclude with `hdiv (δ j))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use the proof step `(by`. Rewrite using `[hg]`. Simplify using `only [map_pow, map_natCast]`. Conclude with `hdiv η)`. Rewrite `hY` using `[← hid]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q : ↥(MaximalUnramifiedExtension l) := lam ((l : Om l) ^ c₁ * (p - θ)) with hq`. Establish `huq : uB T q = (l : Per.Bcris l) ^ c₁ * uB T (lam (p - θ))` using `hpow c₁ (p - θ)`. Establish `hqn : ((l : ℝ) ^ c₂)⁻¹ ≤ ‖(q : Om l)‖` using `h9.trans hl2`. Establish `hq0 : q ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h00 : (0 : ℝ) < ((l : ℝ) ^ c₂)⁻¹` using `by positivity`. Rewrite `hqn` using `[h0, ZeroMemClass.coe_zero, norm_zero]`. Conclude with `absurd hqn (not_le.2 h00)`. Establish `hq' : ‖(((l : ↥(MaximalUnramifiedExtension l)) ^ c₂ / q : ↥(MaximalUnramifiedExtension l)) : Om l)‖ ≤ 1`. Use `push_cast`.
-
-Rewrite using `[norm_div, norm_pow, hn, inv_pow]`. Conclude with `div_le_one_of_le₀ hqn (norm_nonneg _)`. Take `⟨y', hy'⟩` from `exists_iB T _ hq'`. Use `⟨Y * y', GlobalTheory.MemLoc.PhiInj.algebraMap_acris_bcris_injective l ?_⟩` and prove the remaining obligations. Establish `hqq : q * ((l : ↥(MaximalUnramifiedExtension l)) ^ c₂ / q) = (l : ↥(MaximalUnramifiedExtension l)) ^ c₂` using `mul_div_cancel₀ _ hq0`.
-
-Establish `hu : uB T q * iB l y' = (l : Per.Bcris l) ^ c₂`. Rewrite using `[hy', ← map_mul, hqq, map_pow, map_natCast]`. Use `show iB l _ = iB l _`. Rewrite using `[← mul_assoc, map_mul (iB l) _ y', ← hY]`. Simplify using `only [map_mul, map_pow, map_natCast]`.
-
-Rewrite using `[← hu, huq]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.trStep_holds :
     Func → TrId → TrStep := by

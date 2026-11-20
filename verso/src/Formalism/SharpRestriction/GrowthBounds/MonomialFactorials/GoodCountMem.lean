@@ -9,9 +9,7 @@ namespace Formalism.MainNotions.G.SymmetricFormBlocks
 open MvPolynomial Finset Formalism.GM Formalism.GM.M Formalism.GM.ProjS
 
 /- English proof (translation)
-Use `set S : Set ℕ := {n | ∃ x y : Fin n → Vs, (∀ i, x i ∈ L) ∧ (∀ i, y i ∈ L) ∧ ∀ i j, be (x i) (y j) = if i = j then (p : ℚ_[p]) ^ D else 0} with hS`. Establish `h0 : (0 : ℕ) ∈ S` using `⟨fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩`. Establish `hmem : sSup S ∈ S`. Distinguish the cases in `hb : BddAbove S`. Conclude with `Nat.sSup_mem ⟨0, h0⟩ hb`.
-
-Rewrite using `[Nat.sSup_of_not_bddAbove hb]`. Conclude with `h0`. Conclude with `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodCount_mem (p : ℕ) [Fact p.Prime] {Vs : Type} [AddCommGroup Vs] [Module ℤ_[p] Vs]
     (be : Vs → Vs → ℚ_[p]) (L : Submodule ℤ_[p] Vs) (D : ℤ) :
@@ -31,7 +29,7 @@ section Lin
 variable {k σ : Type} [Field k] {r : ℕ}
 
 /- English proof (translation)
-Unfold `tieP`. Simplify using `only [mul_add, map_add, smul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem harmonicProjection_add (w e : Fin r → σ) (zv sv : σ) (o n z : ℕ) (y y' : MvPolynomial σ k) :
     tieP w e zv sv o n z (y + y') = tieP w e zv sv o n z y + tieP w e zv sv o n z y' := by
@@ -39,7 +37,7 @@ theorem harmonicProjection_add (w e : Fin r → σ) (zv sv : σ) (o n z : ℕ) (
   simp only [mul_add, map_add, smul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `tieP`. Simplify using `only [mul_smul_comm, map_smul, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => smul_comm _ _ _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem harmonicProjection_smul (w e : Fin r → σ) (zv sv : σ) (o n z : ℕ) (c : k) (y : MvPolynomial σ k) :
     tieP w e zv sv o n z (c • y) = c • tieP w e zv sv o n z y := by
@@ -54,9 +52,9 @@ section Block
 variable (p : ℕ) [Fact p.Prime] {N r : ℕ} [NeZero r] (G : M.BlockData N)
 
 /- English proof (translation)
-Unfold `M.BlockData.Pall`. Rewrite using `[← harmonicProjection_add]`. Use `congr 1`. Proceed by induction on `(List.finRange G.T.t) with`. Consider the case `nil => rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately.
 
-Consider the case `cons i l ih => simp only [List.foldr_cons]`. Rewrite using `[ih, harmonicProjection_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem Pall_add (j : Fin G.T.t → ℕ) (jp : ℕ) (u v : MvPolynomial (M.BVar N r G.T.t) ℚ_[p]) :
     G.Pall p (r := r) j jp (u + v) = G.Pall p (r := r) j jp u + G.Pall p (r := r) j jp v := by
@@ -68,9 +66,9 @@ theorem Pall_add (j : Fin G.T.t → ℕ) (jp : ℕ) (u v : MvPolynomial (M.BVar 
   | cons i l ih => simp only [List.foldr_cons]; rw [ih, harmonicProjection_add]
 
 /- English proof (translation)
-Unfold `M.BlockData.Pall`. Rewrite using `[← harmonicProjection_smul]`. Use `congr 1`. Proceed by induction on `(List.finRange G.T.t) with`. Consider the case `nil => rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately.
 
-Consider the case `cons i l ih => simp only [List.foldr_cons]`. Rewrite using `[ih, harmonicProjection_smul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem Pall_smul (j : Fin G.T.t → ℕ) (jp : ℕ) (c : ℚ_[p]) (u : MvPolynomial (M.BVar N r G.T.t) ℚ_[p]) :
     G.Pall p (r := r) j jp (c • u) = c • G.Pall p (r := r) j jp u := by
@@ -85,38 +83,38 @@ def Th (j : Fin G.T.t → ℕ) (jp : ℕ) (u : MvPolynomial (M.BVar N r G.T.t) �
   (∏ i, G.Ehat p (r := r) i ^ j i) * G.Eplus p (r := r) ^ jp * G.Pall p (r := r) j jp u
 
 /- English proof (translation)
-Unfold `Th`. Rewrite using `[Pall_add, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Th_add (j : Fin G.T.t → ℕ) (jp : ℕ) (u v : MvPolynomial (M.BVar N r G.T.t) ℚ_[p]) :
     Th p G j jp (u + v) = Th p G j jp u + Th p G j jp v := by
   unfold Th; rw [Pall_add, mul_add]
 
 /- English proof (translation)
-Unfold `Th`. Rewrite using `[Pall_smul, mul_smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Th_smul (j : Fin G.T.t → ℕ) (jp : ℕ) (c : ℚ_[p]) (u : MvPolynomial (M.BVar N r G.T.t) ℚ_[p]) :
     Th p G j jp (c • u) = c • Th p G j jp u := by
   unfold Th; rw [Pall_smul, mul_smul_comm]
 
 /- English proof (translation)
-Use `Th_smul p (r := r) G j jp 0 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Th_zero (j : Fin G.T.t → ℕ) (jp : ℕ) : Th p (r := r) G j jp (0 : MvPolynomial (M.BVar N r G.T.t) ℚ_[p]) = 0 := by
   have := Th_smul p (r := r) G j jp 0 0
   simpa using this
 
 /- English proof (translation)
-The claim follows from `(algebraMap_smul ℚ_[p] c u).symm`.
+A detailed English derivation is pending.
 -/
 theorem zsmul_eq (c : ℤ_[p]) (u : MvPolynomial (M.BVar N r G.T.t) ℚ_[p]) : c • u = (c : ℚ_[p]) • u :=
   (algebraMap_smul ℚ_[p] c u).symm
 
 /- English proof (translation)
-Unfold `Ljj at hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, g, hg, rfl⟩` from `hx`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨j, jp, hl, y, hy, g, hg, rfl⟩`. Consider the case `zero => rw [Th_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Th_add]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [zsmul_eq, Th_smul, ← zsmul_eq]`. Conclude with `Submodule.smul_mem _ c hx`.
+A detailed English derivation is pending.
 -/
 theorem Th_mem_PSZ (j : Fin G.T.t → ℕ) (jp : ℕ) (hl : G.LevelOK j jp) (u : MvPolynomial (M.BVar N r G.T.t) ℚ_[p])
     (hu : u ∈ Ljj p (r := r) G j jp) : Th p G j jp u ∈ G.PSZ p (r := r) := by
@@ -139,17 +137,17 @@ def lvC (j : Fin G.T.t → ℕ) (jp : ℕ) : ℕ :=
     (((G.LL.deg G.uPos - jp) + (G.B - jp) + r + G.zPlus + 1 + jp - 1).choose jp * G.zPlus.factorial))
 
 /- English proof (translation)
-Unfold `Ljj at hu hv`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x' hx'`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Take `⟨y, hy, g, hg, rfl⟩` from `hx`. Take `⟨y', hy', g', hg', rfl⟩` from `hx'`. Establish `h` using `(fock_block_decomposition p N r G hB hr).2 j jp hl y hy.1 y' hy'.1 g hg g' hg'`. Rewrite `h` using `[fockK_smul_left, fockK_smul_right]`. Establish `hf : ((∏ i, ((j i).factorial : ℚ_[p])) * (jp.factorial : ℚ_[p])) ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun i _ => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)) (Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `Th lvC`. Use `push_cast`. Move the coercions through the operations in `at h`. Establish `hf2 : (∏ i, ((j i).factorial : ℚ_[p])) ^ 2 * (jp.factorial : ℚ_[p]) ^ 2 ≠ 0`. Rewrite using `[← mul_pow]`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_ne_zero 2 hf`. Clear denominators, using `at h` for the nonvanishing conditions. Rewrite `h` using `[div_eq_iff hf2]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `zero => rw [Th_zero, fockK_zero_right, map_zero, fockK_zero_right, mul_zero]`. Consider the case `add a b _ _ ha hb => rw [Th_add, fockK_add_right, ha, hb, map_add, fockK_add_right, mul_add]`. Consider the case `smul c a _ ha`. Rewrite using `[zsmul_eq, Th_smul, fockK_smul_right, ha, map_smul, fockK_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `zero => rw [Th_zero, fockK_zero_left, fockK_zero_left, mul_zero]`. Consider the case `add a b _ _ ha hb => rw [Th_add, fockK_add_left, ha, hb, fockK_add_left, mul_add]`. Consider the case `smul c a _ ha => rw [zsmul_eq, Th_smul, fockK_smul_left, ha, fockK_smul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Th_fock (hB : G.BlockOK) (hr : 1 ≤ r) (j : Fin G.T.t → ℕ) (jp : ℕ) (hl : G.LevelOK j jp)
     (u v : MvPolynomial (M.BVar N r G.T.t) ℚ_[p]) (hu : u ∈ Ljj p (r := r) G j jp) (hv : v ∈ Ljj p (r := r) G j jp) :
@@ -184,11 +182,11 @@ theorem Th_fock (hB : G.BlockOK) (hr : 1 ≤ r) (j : Fin G.T.t → ℕ) (jp : �
   | smul c a _ ha => rw [zsmul_eq, Th_smul, fockK_smul_left, ha, fockK_smul_left]; ring
 
 /- English proof (translation)
-Unfold `Ljj at hu hv`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x' hx'`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Take `⟨y, hy, g, hg, rfl⟩` from `hx`. Take `⟨y', hy', g', hg', rfl⟩` from `hx'`. Conclude with `(fock_block_decomposition p N r G hB hr).1 j j' jp jp' hl hl' hne y hy.1 y' hy'.1 g hg g' hg'`. Consider the case `zero => rw [Th_zero, fockK_zero_right]`. Consider the case `add a b _ _ ha hb => rw [Th_add, fockK_add_right, ha, hb, add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c a _ ha => rw [zsmul_eq, Th_smul, fockK_smul_right, ha, mul_zero]`. Consider the case `zero => rw [Th_zero, fockK_zero_left]`. Consider the case `add a b _ _ ha hb => rw [Th_add, fockK_add_left, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [zsmul_eq, Th_smul, fockK_smul_left, ha, mul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Th_orth (hB : G.BlockOK) (hr : 1 ≤ r) (j j' : Fin G.T.t → ℕ) (jp jp' : ℕ) (hl : G.LevelOK j jp)
     (hl' : G.LevelOK j' jp') (hne : (j, jp) ≠ (j', jp'))

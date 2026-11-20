@@ -25,7 +25,7 @@ theorem hR_apply (x y : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J x y = ∑ i, ∑ j, sigR (Fv F v) σ (x i) * inclR (Fv F v) (J i j) * y j := rfl
 
 /- English proof (translation)
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, hσ]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_sigR (hσ : ∀ e, σ (σ e) = e) (y : Fv F v ⊗[F] E) : sigR (Fv F v) σ (sigR (Fv F v) σ y) = y := by
   induction y with
@@ -34,7 +34,7 @@ theorem sigR_sigR (hσ : ∀ e, σ (σ e) = e) (y : Fv F v ⊗[F] E) : sigR (Fv 
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Rewrite using `[hR_apply, hR_apply, Finset.sum_comm]`. Simplify using `only [map_sum, map_mul, sigR_sigR hσ, sigR_inclR]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hJ i j]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sigR_hR (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → Fv F v ⊗[F] E) :
     sigR (Fv F v) σ (hR (Fv F v) σ J x y) = hR (Fv F v) σ J y x := by
@@ -45,7 +45,7 @@ theorem sigR_hR (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = J i j) 
   ring
 
 /- English proof (translation)
-Rewrite using `[hR_apply]`. Conclude with `sum_mem fun i _ => sum_mem fun j _ => mul_mem (mul_mem (sigR_mem_intLoc σ (hx i)) (hJv i j)) (hy j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hR_mem (hJv : ∀ i j, inclR (Fv F v) (J i j) ∈ intLoc F E v) {x y : Fin n → Fv F v ⊗[F] E}
     (hx : ∀ i, x i ∈ intLoc F E v) (hy : ∀ i, y i ∈ intLoc F E v) : hR (Fv F v) σ J x y ∈ intLoc F E v := by
@@ -53,7 +53,7 @@ theorem hR_mem (hJv : ∀ i j, inclR (Fv F v) (J i j) ∈ intLoc F E v) {x y : F
   exact sum_mem fun i _ => sum_mem fun j _ => mul_mem (mul_mem (sigR_mem_intLoc σ (hx i)) (hJv i j)) (hy j)
 
 /- English proof (translation)
-Rewrite using `[hR_apply, Finset.sum_eq_single i]`. Simplify using `[Matrix.mulVec, dotProduct]`. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hR_single (i : Fin n) (z : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (Pi.single i 1) z = (J.map (inclR (F := F) (Fv F v)) *ᵥ z) i := by
@@ -64,9 +64,9 @@ theorem hR_single (i : Fin n) (z : Fin n → Fv F v ⊗[F] E) :
   · simp
 
 /- English proof (translation)
-Establish `e : J⁻¹.map (inclR (F` using `F) (Fv F v)) * J.map (inclR (F := F) (Fv F v)) = 1 := by`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hdet), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hz' : z = J⁻¹.map (inclR (F` using `F) (Fv F v)) *ᵥ (J.map (inclR (F := F) (Fv F v)) *ᵥ z) := by`. Rewrite using `[Matrix.mulVec_mulVec, e, Matrix.one_mulVec]`. Take `⟨w, hw⟩ : ∃ w, w = J.map (inclR (F` from `F) (Fv F v)) *ᵥ z := ⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hw' : ∀ j, w j ∈ intLoc F E v` using `fun j => by rw [hw, ← hR_single (σ := σ)]; exact hz j`. Rewrite `hz'` using `[← hw]`. Rewrite using `[hz']`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `sum_mem fun j _ => mul_mem (hJi a j) (hw' j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_of_hR_single (hdet : J.det ≠ 0) (hJi : ∀ i j, inclR (Fv F v) (J⁻¹ i j) ∈ intLoc F E v)
     {z : Fin n → Fv F v ⊗[F] E} (hz : ∀ i, hR (Fv F v) σ J (Pi.single i 1) z ∈ intLoc F E v) (a : Fin n) :
@@ -90,9 +90,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Use `mem_latLoc_stdLattice.2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem single_mem_latLoc_std (i : Fin n) :
     (Pi.single i 1 : Fin n → Fv F v ⊗[F] E) ∈ latLoc F (stdLattice E n) v := by
@@ -102,20 +102,18 @@ theorem single_mem_latLoc_std (i : Fin n) :
   · rw [Pi.single_eq_of_ne h]; exact zero_mem _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_single_smul (y : Fin n → Fv F v ⊗[F] E) : ∑ i, y i • (Pi.single i 1 : Fin n → Fv F v ⊗[F] E) = y := by
   funext j
   simp [Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `Submodule.fg_def.2 ⟨Set.range fun i => (Pi.single i 1 : Fin n → Fv F v ⊗[F] E), Set.finite_range _, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨i, rfl⟩`. Conclude with `single_mem_latLoc_std i`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `h` using `mem_latLoc_stdLattice.1 hy`. Rewrite using `[← sum_single_smul y]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `: y i • (Pi.single i 1 : Fin n → Fv F v ⊗[F] E) = (⟨y i, h i⟩ : intLoc F E v) • (Pi.single i 1 : Fin n → Fv F v ⊗[F] E)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self i))`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Rewrite using `[← sum_single_smul y]`.
-
-Conclude with `sum_mem fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (single_mem_latLoc_std i))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLat_latLoc_std : IsLat (intLoc F E v) (latLoc F (stdLattice E n) v) := by
   constructor
@@ -145,7 +143,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Establish `hs : σ (2⁻¹ : E) = 2⁻¹` using `by rw [map_inv₀, map_ofNat]`. Rewrite using `[map_mul, sigR_hR hσ hJ, sigR_inclR, hs, ← add_mul, ← map_add]`. Establish `: (2⁻¹ : E) + 2⁻¹ = 1` using `by norm_num`. Rewrite using `[this, map_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hR_self_eq (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = J i j) (x : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J x x = inclR (Fv F v) (2⁻¹ : E) * hR (Fv F v) σ J x x +
@@ -156,15 +154,15 @@ theorem hR_self_eq (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = J i 
   rw [this, map_one, one_mul]
 
 /- English proof (translation)
-Establish `hint : ∀ a ∈ latLoc F (stdLattice E n) v, ∀ b ∈ latLoc F (stdLattice E n) v, hR (Fv F v) σ J a b ∈ intLoc F E v` using `fun a ha b hb => hR_mem hJv (mem_latLoc_stdLattice.1 ha) (mem_latLoc_stdLattice.1 hb)`. Use `⟨⟨isLat_latLoc_std, ⟨hint, fun a ha => ⟨_, mul_mem h2 (hint a ha a ha), hR_self_eq hσ hJ.1 a⟩⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `L' hL' hle z hz`. Use `mem_latLoc_stdLattice.2 (mem_of_hR_single (σ := σ) hJ.2 hJi fun i => ?_)` and prove the remaining obligations. Conclude with `hL'.1 _ (hle (single_mem_latLoc_std i)) _ hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Simplify using `only [mem_latLoc_stdLattice]`. Establish `hc : ∀ (c d : Fin r → Fv F v ⊗[F] E) (a : Fin n), (z - ∑ i, c i • x i - ∑ i, d i • y i) a = z a - ∑ i, c i * x i a - ∑ i, d i * y i a`. Introduce `c d a`. Simplify using `[Finset.sum_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `h1 : ∀ i, hR (Fv F v) σ J (x i) z ∈ intLoc F E v` using `fun i => hR_mem hJv (hx i) hz`. Establish `h3 : ∀ i, hR (Fv F v) σ J (y i) z ∈ intLoc F E v` using `fun i => hR_mem hJv (hy i) hz`. Use `⟨h1, h3, fun a => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `sub_mem (sub_mem (hz a) (sum_mem fun i _ => mul_mem (h3 i) (hx i a))) (sum_mem fun i _ => mul_mem (h1 i) (hy i a))`. Introduce and unpack `⟨h1, h3, hw⟩ a`. Use `hw a` as an intermediate fact. Rewrite `this` using `[hc]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : z a = (z a - ∑ i, hR (Fv F v) σ J (y i) z * x i a - ∑ i, hR (Fv F v) σ J (x i) z * y i a) + ∑ i, hR (Fv F v) σ J (y i) z * x i a + ∑ i, hR (Fv F v) σ J (x i) z * y i a` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem (add_mem this (sum_mem fun i _ => mul_mem (h3 i) (hx i a))) (sum_mem fun i _ => mul_mem (h1 i) (hy i a))`.
+A detailed English derivation is pending.
 -/
 theorem isMaxEven_isAdapted_std (hσ : ∀ e, σ (σ e) = e) (hJ : IsHermND σ J)
     (hJv : ∀ i j, inclR (Fv F v) (J i j) ∈ intLoc F E v) (hJi : ∀ i j, inclR (Fv F v) (J⁻¹ i j) ∈ intLoc F E v)
@@ -207,9 +205,7 @@ end GlobalTheory.CompanionTheory.KFin.AE
 namespace GlobalTheory.CompanionTheory.KFin.AE
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y hcm hJ _hW`. Establish `hσ : ∀ e, σ (σ e) = e` using `fun e => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [hcm.2.2.2, hcm.2.2.2, star_star])`. Use `⟨stdLattice E n, isLattice_stdLattice, ?_⟩` and prove the remaining obligations.
-
-Use `filter_upwards [Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => eventually_one_tmul_mem_intLoc (F := F) (J i j), Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => eventually_one_tmul_mem_intLoc (F := F) (J⁻¹ i j), eventually_one_tmul_mem_intLoc ( …`. Conclude with `isMaxEven_isAdapted_std hσ hJ h1 h2 h3 (colV v X) (colV v Y) h4 h5`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_lattice_maxEven_adapted : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}, IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → ∃ (L : Submodule (𝓞 E) (Fin n → E)) (_ : Submodule.IsLattice E L), ∀ᶠ v in Filter.cofinite, IsMaxEven (sigR (Fv F v) σ) (intLoc F E v) (hR (Fv F v) σ J) (latLoc F L v) ∧ IsAdapted (intLoc F E v) (hR (Fv F v) σ J) (colV v X) (colV v Y) (latLoc F L v) := by
   intro F E _ _ _ _ _ σ n J r X Y hcm hJ _hW

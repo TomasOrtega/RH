@@ -6,17 +6,15 @@ open NumberField IsDedekindDomain GlobalTheory.NT GlobalTheory.Mem.Fld GlobalThe
 namespace GlobalTheory.Mem.UnramTower
 
 /- English proof (translation)
-Introduce `K L N _ _ _ _ _ _ _ _ _ _ _ _ hL hN 𝔭 σ hσ`. Take `⟨Q, hQ, hQo, hσ⟩` from `hσ`. Establish `hσ' : ∀ x : 𝓞 N, σ • x - x ∈ Q` using `fun x => hσ x`. Establish `hPo : (Q.under (𝓞 L)).LiesOver 𝔭.asIdeal` using `inferInstance`. Establish `hP : (Q.under (𝓞 L)).IsPrime` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : σ.restrictNormal L = 1`. Use `hL 𝔭 _ ⟨Q.under (𝓞 L), hP, hPo, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `hx` using `hσ' (algebraMap (𝓞 L) (𝓞 N) x)`. Establish `e : algebraMap (𝓞 L) (𝓞 N) ((σ.restrictNormal L) • x) = σ • algebraMap (𝓞 L) (𝓞 N) x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `AlgEquiv.restrictNormal_commutes σ L (x : L)`. Use `show (σ.restrictNormal L) • x - x ∈ Ideal.comap (algebraMap (𝓞 L) (𝓞 N)) Q`. Rewrite using `[Ideal.mem_comap, map_sub, e]`. Conclude with `hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : ∀ y : L, σ (algebraMap L N y) = algebraMap L N y`. Introduce `y`. Rewrite using `[← AlgEquiv.restrictNormal_commutes σ L y, h1]`. Both sides reduce to the same expression. Set `τ : N ≃ₐ[L] N` to `{ σ.toRingEquiv with commutes' := hfix }`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `P : HeightOneSpectrum (𝓞 L)` to `⟨Q.under (𝓞 L), hP, Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot _⟩`. Establish `h2 : τ = 1`. Use `hN P τ ⟨Q, hQ, ⟨rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `x`. Conclude with `hσ' x`.
-
-Use extensionality with `y`. Conclude with `DFunLike.congr_fun h2 y`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem unramIn_trans : ∀ (K L N : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Field N] [NumberField N] [Algebra K L] [Algebra L N] [Algebra K N] [IsScalarTower K L N] [IsGalois K L] [IsGalois K N], (∀ 𝔭 : HeightOneSpectrum (𝓞 K), GlobalTheory.NT.UnramIn L 𝔭) → (∀ P : HeightOneSpectrum (𝓞 L), GlobalTheory.NT.UnramIn N P) → ∀ 𝔭 : HeightOneSpectrum (𝓞 K), GlobalTheory.NT.UnramIn N 𝔭 := by
   intro K L N _ _ _ _ _ _ _ _ _ _ _ _ hL hN 𝔭 σ hσ

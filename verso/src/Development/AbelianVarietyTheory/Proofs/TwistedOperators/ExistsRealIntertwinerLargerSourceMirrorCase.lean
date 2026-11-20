@@ -24,39 +24,37 @@ namespace GlobalTheory.Chain.RealItLarge
 open GlobalTheory.Chain GlobalTheory.Chain.RealIt
 
 /- English proof (translation)
-Set `A : R₁.U.H → F.H →L[ℂ] R₂.U.H` to `fun x => ContinuousLinearMap.adjoint (Tm x)`. Establish `hC : ∀ x φ y, inner ℂ y (A x φ) = inner ℂ (Tm x y) φ` using `fun x φ y => by`. Simplify using `only [A]`. Rewrite using `[ContinuousLinearMap.adjoint_inner_right]`. Establish `hn : ∀ x y, ‖Tm x y‖ = ‖x‖ * ‖y‖`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y`. Establish `h` using `hI x x y y`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, ← mul_pow]`. Establish `h2 : ‖Tm x y‖ ^ 2 = (‖x‖ * ‖y‖) ^ 2` using `by exact_mod_cast h`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : ∀ g h φ x, A (R₁.U.π g x) (F.π (g, h) φ) = R₂.U.π h (A x φ)`. Introduce `g h φ x`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `y`. Take `⟨y, rfl⟩ : ∃ y', R₂.U.π h y' = y` from `⟨R₂.U.π h⁻¹ y, by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(R₂.U.π h * R₂.U.π h⁻¹) y = y`. Rewrite using `[← map_mul]`. Use the proof step `simp⟩`. Rewrite using `[hC, ← hE, GlobalTheory.Chain.CoverContr.inner_map_of_norm _ (R₂.U.isom h), hC]`. Conclude with `GlobalTheory.Chain.CoverContr.inner_map_of_norm _ (F.isom _) _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `he : ∀ h φ x, A x (F.π (1, h) φ) = R₂.U.π h (A x φ)` using `fun h φ x => by`. Simplify using `using hall 1 h φ x`. Establish `hi : ∀ g φ x, A (R₁.U.π g x) (F.π (g, 1) φ) = A x φ` using `fun g φ x => by`. Simplify using `using hall g 1 φ x`. Set `sw : Pol r s p q →ₗ[ℂ] Pol p q r s` to `(MvPolynomial.rename Prod.swap).toLinearMap`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsw : ∀ P, sw P = MvPolynomial.rename Prod.swap P` using `fun _ => rfl`. Set `B : Pol r s p q →ₗ[ℂ] R₁.U.H →ₛₗ[starRingEnd ℂ] R₂.U.H` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun P x => A x (F.ι (sw P))) (fun P Q x => by simp only [map_add]) (fun c P x => by simp only [map_smul, RingHom.id_apply]) (fun P x x' => by simp only [A, map_add, ContinuousLinearMap.add_apply]) (fun c P x => by simp only [A, map …`. Establish `hB : ∀ P x, B P x = A x (F.ι (sw P))` using `fun _ _ => rfl`. Take `⟨-, hd1, hd2⟩` from `GlobalTheory.T.fock_derived_actions_tensor_members p q r s T₀ T₁ T₂ F`. Apply the tactic sequence `have hsym := GlobalTheory.FockSwap.swap_symmetry r s p q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P`. Use `⟨‖F.ι (sw P)‖, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hB]`. Use `set φ := F.ι (sw P)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hC x φ (A x φ)`. Establish `h1 : ‖A x φ‖ * ‖A x φ‖ ≤ ‖A x φ‖ * (‖φ‖ * ‖x‖)`. Use `norm_inner_le_norm (𝕜 := ℂ) (Tm x (A x φ)) φ` as an intermediate fact. Rewrite `this` using `[← h, hn, inner_self_eq_norm_sq_to_K]`. Simplify using `at this`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Use the polynomial consequences of the given equalities and inequalities. Break down `(norm_nonneg (A x φ)).eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Check the signs of the components of the expression. Conclude with `le_of_mul_le_mul_left h1 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce `P x`. Rewrite using `[R₂.ι_range, hB]`. Establish `hf` using `(GlobalTheory.FockKFin.kfin_fock p q r s T₀ T₁ T₂ F (GlobalTheory.FockDegree.Om_Kset_homog p q r s T₀ T₁ T₂ F) (sw P)).2`. Unfold `KFin at *`. Establish `: (Set.range fun k : T₂.Kset => R₂.U.π k (A x (F.ι (sw P)))) = (A x).toLinearMap '' Set.range fun k : T₂.Kset => F.π (1, k) (F.ι (sw P))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[he]`. Rewrite using `[this, ← Submodule.map_span]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `infer_instance`. Introduce `x hx`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hcon' : ∀ P : Pol p q r s, A x (F.ι P) = 0` using `fun P => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hcon (MvPolynomial.rename Prod.swap P)` as an intermediate fact. Rewrite `this` using `[hB, hsw, MvPolynomial.rename_rename, Prod.swap_swap_eq, MvPolynomial.rename_id_apply]`. Then use the resulting hypothesis. Establish `h0 : ∀ φ, A x φ = 0` using `fun φ => congrFun (Continuous.ext_on F.dense (A x).continuous (continuous_const (y := (0 : R₂.U.H))) (by rintro _ ⟨P, rfl⟩; exact hcon' P)) φ`. Use `R₂.nontriv` as an intermediate fact. Take `⟨y, hy⟩` from `exists_ne (0 : R₂.U.H)`.
+The claim follows by propositional logic. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `hC x (Tm x y) y`. Rewrite `h` using `[h0, inner_zero_right, eq_comm, inner_self_eq_zero, ← norm_eq_zero, hn, mul_eq_zero, norm_eq_zero, norm_eq_zero]`. The claim follows by propositional logic. Introduce `Z hZ P x`. Use `(((A x).restrictScalars ℝ).hasFDerivAt).comp_hasDerivAt (0 : ℝ) (hd2 Z hZ (sw P))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : sw (fockAct1 r s p q Z P) = fockAct2 p q r s Z (sw P)` using `hsym.1 Z P`. Simplify `this` using `[hB, Function.comp_def, he, e1]`. Introduce `Z hZ P x`. Establish `h1` using `(((A x).restrictScalars ℝ).hasFDerivAt).comp_hasDerivAt (0 : ℝ) (hd1 Z hZ (sw P))`. Establish `h2` using `h1.scomp_of_eq (0 : ℝ) (hasDerivAt_neg (0 : ℝ)) (by simp)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : sw (fockAct2 r s p q Z P) = fockAct1 p q r s Z (sw P)` using `hsym.2.1 Z P`. Establish `h3 : (fun t : ℝ => B P (R₁.U.π (T₁.expt (t • Z)) x)) = fun t : ℝ => A x (F.π (T₁.expt ((-t) • Z), 1) (F.ι (sw P)))`. Use function extensionality and compare the values at `t`. Rewrite using `[hB, ← hi (T₁.expt (t • Z)) (F.π (T₁.expt ((-t) • Z), 1) (F.ι (sw P))) x]`. Use `congr 1`.
-
-Express the relevant statement in the definitionally equal form `_ = (F.π (T₁.expt (t • Z), 1) * F.π (T₁.expt ((-t) • Z), 1)) _`. Rewrite using `[← map_mul, Prod.mk_mul_mk, ← T₁.expt_add Z hZ, add_neg_cancel, zero_smul, T₁.expt_zero, mul_one, Prod.mk_one_one, map_one, ContinuousLinearMap.one_apply]`. Rewrite using `[h3, hB, e2]`. Simplify `h2` using `[Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isCoverIt_swap (p q r s : ℕ) (T₀ : GrpData (p * r + q * s) (p * s + q * r)) (T₁ : GrpData p q)
     (T₂ : GrpData r s) (F : FockData T₀ T₁ T₂) (R₁ : DSRep T₁) (R₂ : DSRep T₂) (Tm : R₁.U.H →L[ℂ] R₂.U.H →L[ℂ] F.H)
@@ -164,17 +162,15 @@ open GlobalTheory.Chain GlobalTheory.Chain.RealIt Formalism.MainNotions.SchurIrr
 variable {D : D7} {V W : HSp D} {S S' : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩` from `h`. Establish `mem : ∀ e, e ∈ ga ++ de ++ al ++ be → e ∈ al ++ be ++ ga ++ de` using `fun e he => by`. Simplify using `only [List.mem_append] at he ⊢`. The claim follows by propositional logic. Establish `h' : HypA t ga de al be`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact.
 
-Use `⟨h1, by omega, h5, h6, h3, h4, ?_, fun e he => h8 e ?_, fun e he => h9 e ?_, fun e he => h10 e (mem e he), fun e he => h11 e (mem e he)⟩` and prove the remaining obligations. Use `(List.Perm.nodup_iff ?_).1 h7` and prove the remaining obligations. Rewrite using `[List.append_assoc (al ++ be), List.append_assoc (ga ++ de)]`. Conclude with `List.perm_append_comm`. Simplify using `only [List.mem_append] at he ⊢`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-The claim follows by propositional logic. Simplify using `only [List.mem_append] at he ⊢`. The claim follows by propositional logic. Take `⟨-, -, ⟨p1, p2, p3, p4⟩, -⟩` from `GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t ga de al be h'`. Set `σ : Ix (al.length + de.length) (ga.length + be.length + t) → Ix (ga.length + be.length + t) (al.length + de.length)` to `Sum.swap`.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have e : ∀ a, lamM' t al be ga de a = lamA' t ga de al be (σ a) := fun a => by rcases a with a | a <;> rfl`. Use `⟨fun a b hab => ?_, fun a b hab => ?_, fun a => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite `hab` using `[e, e]`. Conclude with `Sum.swap_leftInverse.injective (p1 hab)`. Rewrite using `[e, e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `p2 _ _ ?_` and prove the remaining obligations. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> exact hab`. Rewrite using `[e]`. Conclude with `p3 _`. Rewrite using `[e, e]`.
-
-Conclude with `p4 _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isParam_lamM' {t : ℕ} {al be ga de : List ℚ} (h : HypA t al be ga de) : IsParam (lamM' t al be ga de) := by
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11⟩ := h
@@ -205,13 +201,13 @@ theorem isParam_lamM' {t : ℕ} {al be ga de : List ℚ} (h : HypA t al be ga de
   · rw [e, e]; exact p4 _ _
 
 /- English proof (translation)
-Take `⟨-, p1, -⟩` from `GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t al be ga de hd.1`. Establish `p2` using `isParam_lamM' hd.1`. Establish `ht` using `hd.1.1`. Establish `hn` using `hd.1.2.1`. Take `⟨⟨e, he⟩, m, hm, hU⟩` from `hB.1 X V S M τ (al.length + de.length) (ga.length + be.length + t) _ _ aT ⟨by omega, by simp, by simp [block]; omega, p2, hX _ _ _ p2, hS⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨e', he'⟩, m', hm', hU'⟩` from `hB.2 X W S' M' τ (al.length + be.length) (ga.length + de.length) _ _ aS ⟨by omega, by simp, by simp, p1, hX _ _ _ p1, hS'⟩`. Take `⟨U, hU⟩` from `hU e he`. Take `⟨U', hU'⟩` from `hU' e' he'`. Take `⟨Φ, hΦ⟩` from `(h1.2 t al be ga de hd).1`. Take `⟨Tm, hi, hq, -⟩` from `h2.2 t al be ga de hd Φ hΦ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `exists_isCoverIt_swap _ _ _ _ _ _ _ _ _ _ Tm hi hq`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.exists_fockPolynomialIso_unitaryPair _ _ _ _ _ _ _ _ e e' he he'`. Take `⟨v, hv, -⟩` from `(hX _ _ _ p1).1`. Establish `c1` using `Fintype.card_congr e`. Establish `c2` using `Fintype.card_congr e'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fintype.card_sum, Fintype.card_fin] at c1 c2`. Conclude with `⟨⟨by omega, by omega⟩, GlobalTheory.T.exists_localFockIntertwiner_realPlace_of_coverContraction D V W S S' M M' τ _ _ _ _ _ _ _ _ e e' m m' aS aT U U' κ B hm hm' hU hU' ⟨v, 0, hv⟩ hκ hB⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_locIt_large {X : ProvA} (hX : ChosenSeries X) (h1 : ArchimedeanRallisFirst X) (h2 : ArchimedeanRallisSecond X)
     (hB : GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.ModelsAreCoverSeries D) (M : DSModel V S) (M' : DSModel W S') (τ : D.what₂.Tau) {t : ℕ}
@@ -243,9 +239,9 @@ theorem exists_locIt_large {X : ProvA} (hX : ChosenSeries X) (h1 : ArchimedeanRa
 end GlobalTheory.Chain.RealItLarge
 
 /- English proof (translation)
-Introduce `D V W S S' M M' θ ψ t aS aT hD hH hθ hP χS χT ω hω hexp f hf`. Take `⟨X, hX, h1, h2⟩` from `GlobalTheory.Chain.ItPairObj.exists_record hD hH`. Establish `hB` using `GlobalTheory.T.thetaModels_eq_coverDiscreteSeries hD hH D`. Establish `key : ∀ τ, (0 < V.rank ∧ 0 < W.rank) ∧ ∃ A, GlobalTheory.Chain.RealIt.LocIt M M' τ (aS τ) (aT τ) A` using `fun τ => by`. Take `⟨be, de, hd, e1, e2⟩` from `hP τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.Chain.RealItLarge.exists_locIt_large hX h1 h2 hB M M' τ (al := []) (ga := []) hd e1 e2`. Use `choose hr A hA using key`. Take `⟨It, I, hI⟩` from `GlobalTheory.T.exists_globalFockIntertwiner_tensor_realPlaces D V W _ _ M M' aS aT A GlobalTheory.Contr.contraction.2 (GlobalTheory.T.gluing_law_holds D _ _) hA`. Establish `hc` using `fun τ => GlobalTheory.T.thetaVacuumCharacters_atRealPlaces D V W _ _ M M' θ ψ χS χT ω f τ _ _ hθ hω (hexp τ).1 (hexp τ).2 hf`. Conclude with `⟨It, GlobalTheory.Chain.RealIt.isItW_of_globIt hθ hI hr (GlobalTheory.T.fockVectorsOverVacuumIsometry_of_skeletonDatum D V W _ _ M M' ψ θ hω.std hθ f hf).2.2.2.2 (fun τ => (hc τ).2.1) fun τ => (hc τ).2.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Chain.RealItLarge.itLarge : ∀ {D : D7} (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (t : ℕ) (aS aT : D.what₂.Tau → ℚ), GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → IsInfFam θ → (∀ τ, ∃ be de : List ℚ, Formalism.MainNotions.SchurIrreducible.DataARm t [] be [] de ∧ S τ = dualPar (GlobalTheory.Chain.signed de (Formalism.BasicNotions.TH.block t ++ be) (aT τ)) ∧ S' τ = dualPar (GlobalTheory.Chain.signed be de (aS τ))) → ∀ (χS χT : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χS χT ω → (∀ τ, HasInfExp D χS τ (aS τ) ∧ HasInfExp D χT τ (aT τ)) → ∀ f, GlobalTheory.Chain.IsVacVec ψ θ M M' f → ∃ It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M, IsItW θ M M' ω (GlobalTheory.Chain.ptOf ψ θ M M' f) It := by
   intro D V W S S' M M' θ ψ t aS aT hD hH hθ hP χS χT ω hω hexp f hf

@@ -11,9 +11,9 @@ namespace GlobalTheory.CompanionTheory.SwapRoot
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Establish `hw : (((wU L)⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) = w2 L` using `rfl`. Establish `hc : cT σ (w2 L) = w2 L` using `by delta cT w2`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Use `delta partner`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, hc, weyl_mul_weyl, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem partner_wU (σ : L →+* L) : partner σ (wU L) = w2 L := by
   have hw : (((wU L)⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) = w2 L := rfl
@@ -27,11 +27,9 @@ theorem partner_wU (σ : L →+* L) : partner σ (wU L) = w2 L := by
 variable [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Establish `hA : ∀ (x : Fin n) (p : Fin 2), Valued.v (cM L c x p) ≤ 1`. Introduce `x p`. Use `show Valued.v (if x = c p then (1 : L) else 0) ≤ 1`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Valuation.map_sum_le (Valued.v : Valuation L (WithZero (Multiplicative ℤ))) fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul, Matrix.transpose_apply, Matrix.mul_apply]`. Use `mul_le_one' ?_ (hA d r)` and prove the remaining obligations. Use `Valuation.map_sum_le (Valued.v : Valuation L (WithZero (Multiplicative ℤ))) fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`.
-
-Conclude with `mul_le_one' (hA b p) (hP p r)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cM_conj_int {n : ℕ} (c : Fin 2 → Fin n) (P : Matrix (Fin 2) (Fin 2) L)
     (hP : ∀ p r, Valued.v (P p r) ≤ 1) (b d : Fin n) :
@@ -49,16 +47,16 @@ theorem cM_conj_int {n : ℕ} (c : Fin 2 → Fin n) (P : Matrix (Fin 2) (Fin 2) 
   exact mul_le_one' (hA b p) (hP p r)
 
 /- English proof (translation)
-Use `delta w2`. Apply the tactic sequence `fin_cases p <;> fin_cases r <;> simp [Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem weyl_sub_one_entries_integral (p r : Fin 2) : Valued.v ((w2 L - 1) p r) ≤ 1 := by
   delta w2
   fin_cases p <;> fin_cases r <;> simp [Matrix.one_apply]
 
 /- English proof (translation)
-Use `delta blockM`. Introduce `i j`. Simplify using `only [Matrix.add_apply]`. Use `Valuation.map_add_le _ (Valuation.map_add_le _ ?_ (cM_conj_int _ _ weyl_sub_one_entries_integral i j)) (cM_conj_int _ _ weyl_sub_one_entries_integral i j)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem block_matrix_weyl_integral {n : ℕ} (a : ℕ) (h : 2 * (a + 2) ≤ n) :
     Formalism.UG.P.fIwasawaInt (blockM a h (w2 L) (w2 L)) := by
@@ -71,15 +69,15 @@ theorem block_matrix_weyl_integral {n : ℕ} (a : ℕ) (h : 2 * (a + 2) ≤ n) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q n hU a h`. Establish `hval : (((sR σ hU.1 a h : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = blockM a h (w2 L) (w2 L)` using `by show blockM a h (w2 L) (partner σ (wU L)) = _`. Rewrite using `[partner_wU]`. Establish `hwinv : (wU L)⁻¹ = wU L` using `Units.ext rfl`. Establish `hginv : (sR σ hU.1 a h)⁻¹ = sR σ hU.1 a h` using `by show ((rootHom σ hU.1 a h) (wU L))⁻¹ = (rootHom σ hU.1 a h) (wU L)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_inv, hwinv]`. Establish `hBB : blockM a h (w2 L) (w2 L) * blockM a h (w2 L) (w2 L) = 1`. Establish `h1` using `((sR σ hU.1 a h : GU σ n) : GL (Fin n) L).mul_inv`. Rewrite `h1` using `[← Subgroup.coe_inv, hginv, hval]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : ∀ i j, blockM a h (w2 L) (w2 L) i j ∈ intL L` using `fun i j => block_matrix_weyl_integral (L := L) a h i j`. Set `Bi : Matrix (Fin n) (Fin n) (intL L)` to `Matrix.of fun i j => ⟨blockM a h (w2 L) (w2 L) i j, hint i j⟩`. Establish `hBi : ∀ i j, ((Bi * Bi) i j : L) = (blockM a h (w2 L) (w2 L) * blockM a h (w2 L) (w2 L)) i j`. Introduce `i j`. Simplify using `[Bi, Matrix.mul_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hy : Bi * Bi = 1`. Use extensionality with `i j`. Rewrite using `[hBi, hBB, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `show ((sR σ hU.1 a h : GU σ n) : GL (Fin n) L) ∈ GU σ n ⊓ (bc (intL L).subtype).range`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Subgroup.mem_inf.2 ⟨(sR σ hU.1 a h).2, ⟨⟨Bi, Bi, hy, hy⟩, ?_⟩⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hval]`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sR_mem_KU : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L)
     (σ : L →+* L) (q n : ℕ) (hU : IsUnramInv ϖ σ q) (a : ℕ) (h : 2 * (a + 2) ≤ n),

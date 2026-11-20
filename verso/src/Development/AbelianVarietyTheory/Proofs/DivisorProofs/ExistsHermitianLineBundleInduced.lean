@@ -17,7 +17,7 @@ namespace GlobalTheory.Mean4O.HermCover
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `(RingHom.injective_iff_ker_eq_bot _).2 (Ideal.eq_bot_of_comap_eq_bot (R := ℤ) (eq_bot_iff.2 fun n hn => by simpa using hn))`.
+A detailed English derivation is pending.
 -/
 theorem injective_emb (σ : 𝓞 F →+* ℂ) : Function.Injective σ :=
   (RingHom.injective_iff_ker_eq_bot _).2
@@ -26,19 +26,19 @@ theorem injective_emb (σ : 𝓞 F →+* ℂ) : Function.Injective σ :=
 def extEmb (σ : 𝓞 F →+* ℂ) : F →+* ℂ := IsFractionRing.lift (K := F) (injective_emb σ)
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => by rw [RingHom.comp_apply, extEmb, IsFractionRing.lift_algebraMap]`.
+A detailed English derivation is pending.
 -/
 theorem extEmb_comp (σ : 𝓞 F →+* ℂ) : (extEmb σ).comp (algebraMap (𝓞 F) F) = σ :=
   RingHom.ext fun x => by rw [RingHom.comp_apply, extEmb, IsFractionRing.lift_algebraMap]
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) (extEmb_comp _)`.
+A detailed English derivation is pending.
 -/
 theorem extEmb_restrict (τ : F →+* ℂ) : extEmb (τ.comp (algebraMap (𝓞 F) F)) = τ :=
   IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F)) (extEmb_comp _)
 
 /- English proof (translation)
-The claim follows from `(congrArg spMap (extEmb_comp σ).symm).trans (Spec.map_comp (CommRingCat.ofHom _) (CommRingCat.ofHom _))`.
+A detailed English derivation is pending.
 -/
 theorem spMap_extEmb (σ : 𝓞 F →+* ℂ) : spMap σ = spMap (extEmb σ) ≫ spMap (algebraMap (𝓞 F) F) :=
   (congrArg spMap (extEmb_comp σ).symm).trans (Spec.map_comp (CommRingCat.ofHom _) (CommRingCat.ofHom _))
@@ -49,7 +49,7 @@ def liftPt (σ : 𝓞 F →+* ℂ) (y : CxPts V.p σ) : CxPts (V.π ≫ Y.str) (
   ⟨V.pb.lift y.1 (spMap (extEmb σ)) (y.2.trans (spMap_extEmb σ)), V.pb.lift_snd _ _ _⟩
 
 /- English proof (translation)
-The claim follows from `V.pb.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem liftPt_j (σ : 𝓞 F →+* ℂ) (y : CxPts V.p σ) : (liftPt V σ y).1 ≫ V.j = y.1 := V.pb.lift_fst _ _ _
 
@@ -64,7 +64,7 @@ def wgt (A : Adl C Y) (r : (B.pull V.j).ι → V.G.functionFieldˣ) (τ : F →+
       C.pn Y τ A.D (A.m τ) (C.cx Y τ (genAt A.D (under (down V τ z)))) (down V τ z))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : z = z'` from `Subtype.ext hz`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem wgt_congr (A : Adl C Y) (r : (B.pull V.j).ι → V.G.functionFieldˣ) (i : B.ι) {τ τ' : F →+* ℂ} (h : τ = τ')
     (z : CxPts (V.π ≫ Y.str) τ) (z' : CxPts (V.π ≫ Y.str) τ') (hz : z.1 = z'.1) : wgt A r τ i z = wgt A r τ' i z' := by
@@ -73,9 +73,7 @@ theorem wgt_congr (A : Adl C Y) (r : (B.pull V.j).ι → V.G.functionFieldˣ) (i
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_ptsIn]`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `show V.j.base _ ∈ B.U i`. Use `mem_ptsIn.1 h` as an intermediate fact. Rewrite `this` using `[← liftPt_j V σ y]`.
-
-Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftPt_mem {σ : 𝓞 F →+* ℂ} {y : CxPts V.p σ} {i : B.ι} (h : y ∈ ptsIn V.p σ (B.U i)) :
     liftPt V σ y ∈ ptsIn (V.π ≫ Y.str) (extEmb σ) ((B.pull V.j).U (fun _ => i)) := by
@@ -87,13 +85,13 @@ theorem liftPt_mem {σ : 𝓞 F →+* ℂ} {y : CxPts V.p σ} {i : B.ι} (h : y 
   exact this
 
 /- English proof (translation)
-Use `set z := liftPt V σ y`. Establish `hzi` using `liftPt_mem hi`. Establish `hzj` using `liftPt_mem hj`. Establish `hz` using `mem_ptsIn_inf.2 ⟨hzi, hzj⟩`. Establish `hg` using `gen_mem (mem_ptsIn.1 hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g := genAt A.D (under (down V (extEmb σ) z))`. Establish `hu : UnitAt (under z) (V.φ g * (r (fun _ => j) : V.G.functionField))` using `h.2.1 _ _ (mem_ptsIn.1 hzj)`. Establish `e₁ : V.φ g * (r (fun _ => i) : V.G.functionField) = fnOf _ hg ((B.pull V.j).g (fun _ => i) (fun _ => j) : Γ(V.G, _)) * (V.φ g * r (fun _ => j))`. Rewrite using `[h.1 _ _ hg]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : ratVal (fnOf _ hg ((B.pull V.j).g (fun _ => i) (fun _ => j) : Γ(V.G, _))) z = gv V.p σ B i j y`. Rewrite using `[ratVal_fnOf hz]`. Conclude with `(gv_linComb (m := fun _ => y) (fun _ => (liftPt_j V σ y).symm) hzi hzj).trans (by simp)`. Establish `hgv : gv V.p σ B i j y ≠ 0` using `gv_ne_zero hi hj`. Establish `hne : ratVal (V.φ g * (r (fun _ => j) : V.G.functionField)) z ≠ 0` using `ratVal_ne_zero hu`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [wgt]`. Rewrite using `[e₁, ratVal_mul (regAt_fnOf (mem_ptsIn.1 hz) hg _) hu.regAt, e₂, log_normSq_mul hgv hne]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem wgt_trans (A : Adl C Y) {r : (B.pull V.j).ι → V.G.functionFieldˣ} (h : V.FinInd A B r) (σ : 𝓞 F →+* ℂ)
     (i j : B.ι) (y : CxPts V.p σ) (hi : y ∈ ptsIn V.p σ (B.U i)) (hj : y ∈ ptsIn V.p σ (B.U j)) :
@@ -136,13 +134,13 @@ namespace GlobalTheory.Mean4O.HermCover
 variable {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} {V : Cover Y} {B : LB V.X}
 
 /- English proof (translation)
-Introduce `i y y' hy _`. Establish `hσ : σ' = (starRingEnd ℂ).comp σ` using `CxPts.eq_conj_of_conj hy`. Establish `hext : extEmb σ' = (starRingEnd ℂ).comp (extEmb σ)`. Rewrite using `[hσ, ← extEmb_restrict ((starRingEnd ℂ).comp (extEmb σ)), RingHom.comp_assoc, extEmb_comp]`. Establish `hz : (liftPt V σ' y').1 = spMap (starRingEnd ℂ) ≫ (liftPt V σ y).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `V.pb.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[liftPt_j, Category.assoc, liftPt_j, hy]`. Rewrite using `[(liftPt V σ' y').2, Category.assoc, (liftPt V σ y).2, hext]`. Conclude with `Spec.map_comp (CommRingCat.ofHom _) (CommRingCat.ofHom _)`. Establish `hd : (down V _ (liftPt V σ' y')).1 = spMap (starRingEnd ℂ) ≫ (down V _ (liftPt V σ y)).1` using `by show (liftPt V σ' y').1 ≫ V.π = spMap (starRingEnd ℂ) ≫ (liftPt V σ y).1 ≫ V.π`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, Category.assoc]`. Establish `hu : under (down V _ (liftPt V σ' y')) = under (down V _ (liftPt V σ y))` using `by show below (down V _ (liftPt V σ' y')).1 = below (down V _ (liftPt V σ y)).1`. Rewrite using `[hd]`. Conclude with `HtIndep.below_spMap_comp _ _`. Establish `hmk : InfinitePlace.mk (extEmb σ') = InfinitePlace.mk (extEmb σ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hext]`. Conclude with `InfinitePlace.mk_conjugate_eq _`. Use `show wgt A r (extEmb σ') i (liftPt V σ' y') = wgt A r (extEmb σ) i (liftPt V σ y)`. Simplify using `only [wgt]`. Rewrite using `[hc (extEmb σ) (extEmb σ') _ _ hd, hu, hmk, norm_ratVal_of_conj hz]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_conj (A : Adl C Y) {r : (B.pull V.j).ι → V.G.functionFieldˣ} (hB : B.IsLB) (h : V.FinInd A B r)
     (hc : ConjInv A) (σ σ' : 𝓞 F →+* ℂ) : (wt A hB h σ).IsConj (wt A hB h σ') := by
@@ -175,7 +173,7 @@ open scoped ContDiff
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} {V : Cover Y} {B : LB V.X}
 
 /- English proof (translation)
-Establish `hc : ContDiff ℝ ∞ fun v : Unit → ℂ => ‖v ()‖ ^ 2` using `(contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ ())`. Use `⟨W, Unit, inferInstance, fun _ => a.val, fun v => Real.log (‖v ()‖ ^ 2), {v | v () ≠ 0}, hz, isOpen_ne_fun (continuous_apply ()) continuous_const, ev_ne_zero hz a.isUnit, hc.contDiffOn.log fun v hv => pow_ne_zero 2 (norm_ne_zero_iff.2 hv), Filter.EventuallyEq.rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cInfAt_log_ev {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {W : X.Opens}
     (a : Γ(X, W)ˣ) {z : CxPts p σ} (hz : z ∈ ptsIn p σ W) :
@@ -187,23 +185,23 @@ theorem cInfAt_log_ev {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} 
     hc.contDiffOn.log fun v hv => pow_ne_zero 2 (norm_ne_zero_iff.2 hv), Filter.EventuallyEq.rfl⟩
 
 /- English proof (translation)
-Establish `hp` using `presents_toLB A.D`. Establish `hpos` using `Var.mSmooth.posSet_eq (hm τ)`. Use `set ψ := Var.Met.toWeight (A.m τ) hpos hp`. Establish `hψ : ψ.IsCInf` using `(Weight.isCInf_iff_isSmooth (Y.an τ)).2 (Var.mSmooth.isSmooth_toWeight (hm τ) hp)`. Establish `hpn` using `Var.pn_ofWeight_toWeight hpos hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_chart (isLB_toLB A.D) (under (down V τ z))`. Use `set W : V.G.Opens := (B.pull V.j).U (fun _ => i) ⊓ V.π ⁻¹ᵁ (toLB A.D).U c`. Establish `hzW : z ∈ ptsIn _ τ W` using `mem_ptsIn_inf.2 ⟨hz, mem_ptsIn.2 hc⟩`. Establish `hunit : ∀ x ∈ W, UnitAt x ((r (fun _ => i) : V.G.functionField) * (V.φ ((c.1.2 : Y.Fn)))⁻¹)`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : UnitAt x (V.φ (genAt A.D (V.π x)) * (r (fun _ => i) : V.G.functionField))` using `h.2.1 _ x hx.1`. Establish `h2 : UnitAt (V.π x) (genAt A.D (V.π x) * (c.1.2 : Y.Fn))` using `(hp.isEqn c (V.π x) hx.2).generatesAt_iff.1 (generatesAt_genAt _ _)`. Establish `h3` using `(V.unitAt_φ h2).inv`. Establish `h0 : V.φ (genAt A.D (V.π x)) ≠ 0` using `(map_ne_zero V.φ).2 (Units.ne_zero _)`. Establish `e : (r (fun _ => i) : V.G.functionField) * (V.φ ((c.1.2 : Y.Fn)))⁻¹ = (V.φ (genAt A.D (V.π x)) * (r (fun _ => i) : V.G.functionField)) * (V.φ (genAt A.D (V.π x) * (c.1.2 : Y.Fn)))⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `h1.mul h3`. Take `⟨a, ha⟩` from `exists_unit_fnOf_eq hunit`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hloc : ∀ w ∈ ptsIn _ τ W, wgt A r τ i w = Real.log (‖ev _ τ W a.val w‖ ^ 2) + 2 * ((A.n : ℕ) : ℝ) * A.ci (InfinitePlace.mk τ) + ψ.φ c (down V τ w)`. Introduce `w hw`. Establish `hw2 : w ∈ ptsIn _ τ (V.π ⁻¹ᵁ (toLB A.D).U c)` using `(mem_ptsIn_inf.1 hw).2`. Establish `hyc : under (down V τ w) ∈ (toLB A.D).U c` using `mem_ptsIn.1 hw2`. Establish `hgen : A.D.GeneratesAt (under (down V τ w)) (genAt A.D (under (down V τ w)))` using `generatesAt_genAt _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu2 : UnitAt (under (down V τ w)) (genAt A.D (under (down V τ w)) * (c.1.2 : Y.Fn))` using `(hp.isEqn c _ hyc).generatesAt_iff.1 hgen`. Establish `eP : (cxSt F).pn Y τ A.D (A.m τ) ((cxSt F).cx Y τ (genAt A.D (under (down V τ w)))) (down V τ w) = ‖ratVal (genAt A.D (under (down V τ w)) * (c.1.2 : Y.Fn)) (down V τ w)‖ ^ 2 * Real.exp (-ψ.φ c (down V τ w))` using `(congrFun (congrFun hpn _) _).symm.trans ((cxSt F).pn_ofWeight Y τ A.D _ _ hp ψ _ (down V τ w) c hyc hgen.regularAt)`. Establish `eR : ratVal (genAt A.D (under (down V τ w)) * (c.1.2 : Y.Fn)) (down V τ w) = ratVal (V.φ (genAt A.D (under (down V τ w)) * (c.1.2 : Y.Fn))) w` using `(V.ratVal_φ w _ rfl hu2.regAt).symm`. Establish `hφu : UnitAt (under w) (V.φ (genAt A.D (under (down V τ w)) * (c.1.2 : Y.Fn)))` using `V.unitAt_φ hu2`. Establish `hUu : UnitAt (under w) ((r (fun _ => i) : V.G.functionField) * (V.φ ((c.1.2 : Y.Fn)))⁻¹)` using `hunit _ (mem_ptsIn.1 hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eU : ratVal ((r (fun _ => i) : V.G.functionField) * (V.φ ((c.1.2 : Y.Fn)))⁻¹) w = ev _ τ W a.val w`. Rewrite using `[← ha (gen_mem (mem_ptsIn.1 hw)), ratVal_fnOf hw]`. Establish `hc0 : V.φ ((c.1.2 : Y.Fn)) ≠ 0` using `(map_ne_zero V.φ).2 (Units.ne_zero _)`. Establish `e1 : V.φ (genAt A.D (under (down V τ w))) * (r (fun _ => i) : V.G.functionField) = V.φ (genAt A.D (under (down V τ w)) * (c.1.2 : Y.Fn)) * ((r (fun _ => i) : V.G.functionField) * (V.φ ((c.1.2 : Y.Fn)))⁻¹)`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hA : ratVal (V.φ (genAt A.D (under (down V τ w)) * (c.1.2 : Y.Fn))) w ≠ 0` using `ratVal_ne_zero hφu`. Establish `hE : ev _ τ W a.val w ≠ 0` using `ev_ne_zero hw a.isUnit`. Simplify using `only [wgt]`. Rewrite using `[e1, ratVal_mul hφu.regAt hUu.regAt, eU, eP, eR, log_normSq_mul hA hE, Real.log_mul (Real.exp_pos _).ne' (mul_pos (pow_pos (norm_pos_iff.2 hA) 2) (Real.exp_pos _)).ne', Real.log_exp, Real.log_mul (pow_pos (norm_pos_iff.2 hA) 2).ne' (Real.exp_pos _).ne', Real.log_exp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hψc : CInfAt (ψ.φ c) (down V τ z)` using `hψ c _ (mem_ptsIn.2 hc)`. Use `(((cInfAt_log_ev a hzW).add (cInfAt_const (2 * ((A.n : ℕ) : ℝ) * A.ci (InfinitePlace.mk τ)) z)).add (CInfAt.pull V.π rfl hψc)).congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn W).mem_nhds hzW] with w hw using hloc w hw`.
+A detailed English derivation is pending.
 -/
 theorem cInfAt_wgt (A : Adl (cxSt F) Y) {r : (B.pull V.j).ι → V.G.functionFieldˣ} (h : V.FinInd A B r)
     (hm : ∀ σ, (cxSt F).mSmooth Y σ A.D (A.m σ)) (τ : F →+* ℂ) (i : B.ι) (z : CxPts (V.π ≫ Y.str) τ)
@@ -272,9 +270,9 @@ namespace GlobalTheory.Mean4O.HermCover
 variable {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} {V : Cover Y} {B : LB V.X}
 
 /- English proof (translation)
-Take `rfl : C = cxSt F` from `Subsingleton.elim _ _`. Introduce `i y hy`. Set `m : CxPts (V.π ≫ Y.str) (extEmb σ) → CxPts V.p σ` to `fun w => ⟨w.1 ≫ V.j, by rw [Category.assoc, V.pb.w, ← Category.assoc, w.2, ← spMap_extEmb]⟩`. Establish `hlm : ∀ w, liftPt V σ (m w) = w` using `fun w => Subtype.ext (V.pb.hom_ext (liftPt_j V σ (m w)) (by rw [(liftPt V σ (m w)).2, w.2]))`. Establish `hmz : m (liftPt V σ y) = y` using `Subtype.ext (liftPt_j V σ y)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hmz]`. Use `OnModelCInf.baseChange_cInfAt F V.X V.G V.p (V.π ≫ Y.str) V.j V.pb (extEmb σ) σ m (fun _ => rfl) _ _ ?_` and prove the remaining obligations. Use `(cInfAt_wgt A h hm (extEmb σ) i _ (liftPt_mem hy)).congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Use `show wgt A r (extEmb σ) i (liftPt V σ (m w)) = wgt A r (extEmb σ) i w`. Rewrite using `[hlm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_cInf (A : Adl C Y) {r : (B.pull V.j).ι → V.G.functionFieldˣ} (hB : B.IsLB) (h : V.FinInd A B r)
     (hm : ∀ σ, C.mSmooth Y σ A.D (A.m σ)) (σ : 𝓞 F →+* ℂ) : (wt A hB h σ).IsCInf := by
@@ -295,15 +293,15 @@ end GlobalTheory.Mean4O.HermCover
 namespace GlobalTheory.Mean4O.HermCover
 
 /- English proof (translation)
-Introduce `F _ _ C Y V A B r hB h hm hc`. Establish `hcinf : ∀ σ, (wt A hB h σ).IsCInf` using `wt_cInf A hB h hm`. Establish `hconj : ∀ σ σ', (wt A hB h σ).IsConj (wt A hB h σ')` using `wt_conj A hB h hc`. Establish `hpos : ∀ σ (y : Pts Y σ), 0 < C.pn Y σ A.D (A.m σ) (C.cx Y σ (genAt A.D (under y))) y`. Take `rfl : C = cxSt F` from `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `σ y`. Conclude with `CombForm.pn_pos_of_generatesAt (generatesAt_genAt _ _) (posAt_of_posSet (Var.mSmooth.posSet_eq (hm σ)) y)`. Use `⟨⟨B, hB, wt A hB h, hcinf, hconj⟩, r, h.1, fun i x hx => by simpa using h.2.1 i x hx, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ z y y' i e₁ e₂ hi`. Establish `hi' : i = fun _ => i PUnit.unit` using `funext fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : (liftPt V _ y').1 = z.1` using `V.pb.hom_ext ((liftPt_j V _ y').trans e₂) (by`. Rewrite using `[(liftPt V _ y').2, z.2, extEmb_restrict])`. Establish `hy : y = down V σ z` using `Subtype.ext e₁`. Use `show _ = _ * Real.exp (-(wgt A r (extEmb (σ.comp (algebraMap (𝓞 F) F))) (i PUnit.unit) (liftPt V _ y')))`. Rewrite using `[wgt_congr A r _ (extEmb_restrict σ) _ z hz, wgt, hy, pow_one, pow_one, ← hi']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : UnitAt (under z) (V.φ (genAt A.D (under (down V σ z))) * (r i : V.G.functionField))` using `h.2.1 i _ hi`. Establish `hR : 0 < ‖ratVal (V.φ (genAt A.D (under (down V σ z))) * (r i : V.G.functionField)) z‖ ^ 2` using `pow_pos (norm_pos_iff.2 (ratVal_ne_zero hu)) 2`. Establish `hQ` using `mul_pos (Real.exp_pos (-(2 * ((A.n : ℕ) : ℝ) * A.ci (InfinitePlace.mk σ)))) (hpos σ (down V σ z))`. Rewrite using `[neg_sub, Real.exp_sub, Real.exp_log hQ, Real.exp_log hR, ← mul_div_assoc, mul_div_cancel_left₀ _ hR.ne']`. Introduce `v e y z yt i e₁ e₂ hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h.2.2 v e y z yt i e₁ e₂ hi` as an intermediate fact. Rewrite using `[pow_one, Nat.cast_one, one_mul]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_hermLB_induces : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (V : Cover Y) (A : Adl C Y) (B : LB V.X) (r : (B.pull V.j).ι → V.G.functionFieldˣ), B.IsLB → V.FinInd A B r → (∀ σ, C.mSmooth Y σ A.D (A.m σ)) → ConjInv A → ∃ L : HermLB V.p, V.Induces A L 1 := by
   intro F _ _ C Y V A B r hB h hm hc

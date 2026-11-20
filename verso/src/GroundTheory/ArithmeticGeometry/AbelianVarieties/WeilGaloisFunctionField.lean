@@ -14,7 +14,7 @@ variable {K L : Type u} [Field K] [Field L] [Algebra K L] (W₀ : WeierstrassCur
 section Coord
 
 /- English proof (translation)
-Establish `h1 : (W₀.baseChange L).map (σ : L →+* L) = W₀.baseChange L` using `WeierstrassCurve.map_baseChange (R := K) (S := K) W₀ (σ : L →ₐ[K] L)`. Rewrite using `[← Affine.map_polynomial]`. Conclude with `congrArg (fun V : WeierstrassCurve L => V.toAffine.polynomial) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polynomial_map_galois (σ : L ≃ₐ[K] L) :
     (W₀.baseChange L).toAffine.polynomial.map (mapRingHom (σ : L →+* L)) =
@@ -50,7 +50,7 @@ noncomputable def galFF (σ : L ≃ₐ[K] L) :
   IsFractionRing.ringEquivOfRingEquiv (galCoord W₀ σ)
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.ringEquivOfRingEquiv_algebraMap _ a`.
+A detailed English derivation is pending.
 -/
 theorem galFF_algebraMap_coord (σ : L ≃ₐ[K] L) (a : (W₀.baseChange L).toAffine.CoordinateRing) :
     galFF W₀ σ (algebraMap _ (W₀.baseChange L).toAffine.FunctionField a) =
@@ -58,7 +58,7 @@ theorem galFF_algebraMap_coord (σ : L ≃ₐ[K] L) (a : (W₀.baseChange L).toA
   IsFractionRing.ringEquivOfRingEquiv_algebraMap _ a
 
 /- English proof (translation)
-Establish `e : ∀ a : L, algebraMap L (W₀.baseChange L).toAffine.FunctionField a = algebraMap (W₀.baseChange L).toAffine.CoordinateRing _ (CoordinateRing.mk _ (C (C a)))` using `fun a => rfl`. Rewrite using `[e, e, galFF_algebraMap_coord, galCoord_mk]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem galFF_algebraMap (σ : L ≃ₐ[K] L) (c : L) :
     galFF W₀ σ (algebraMap L (W₀.baseChange L).toAffine.FunctionField c) =
@@ -70,21 +70,21 @@ theorem galFF_algebraMap (σ : L ≃ₐ[K] L) (c : L) :
   simp
 
 /- English proof (translation)
-Rewrite using `[genX, galFF_algebraMap_coord, galCoord_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem galFF_genX (σ : L ≃ₐ[K] L) : galFF W₀ σ (genX (W₀.baseChange L)) = genX (W₀.baseChange L) := by
   rw [genX, galFF_algebraMap_coord, galCoord_mk]
   simp
 
 /- English proof (translation)
-Rewrite using `[genY, galFF_algebraMap_coord, galCoord_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem galFF_genY (σ : L ≃ₐ[K] L) : galFF W₀ σ (genY (W₀.baseChange L)) = genY (W₀.baseChange L) := by
   rw [genY, galFF_algebraMap_coord, galCoord_mk]
   simp
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply K L, galFF_algebraMap, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem galFF_algebraMap_base (σ : L ≃ₐ[K] L) (k : K) :
     galFF W₀ σ (algebraMap K (W₀.baseChange L).toAffine.FunctionField k) =
@@ -96,7 +96,7 @@ noncomputable def galFFAlg (σ : L ≃ₐ[K] L) :
   AlgEquiv.ofRingEquiv (f := galFF W₀ σ) (galFF_algebraMap_base W₀ σ)
 
 /- English proof (translation)
-Rewrite using `[RingEquiv.symm_apply_eq, galFF_algebraMap, AlgEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem galFF_symm_algebraMap (σ : L ≃ₐ[K] L) (c : L) :
     (galFF W₀ σ).symm (algebraMap L (W₀.baseChange L).toAffine.FunctionField c) =
@@ -104,21 +104,21 @@ theorem galFF_symm_algebraMap (σ : L ≃ₐ[K] L) (c : L) :
   rw [RingEquiv.symm_apply_eq, galFF_algebraMap, AlgEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[RingEquiv.symm_apply_eq, galFF_genX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem galFF_symm_genX (σ : L ≃ₐ[K] L) :
     (galFF W₀ σ).symm (genX (W₀.baseChange L)) = genX (W₀.baseChange L) := by
   rw [RingEquiv.symm_apply_eq, galFF_genX]
 
 /- English proof (translation)
-Rewrite using `[RingEquiv.symm_apply_eq, galFF_genY]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem galFF_symm_genY (σ : L ≃ₐ[K] L) :
     (galFF W₀ σ).symm (genY (W₀.baseChange L)) = genY (W₀.baseChange L) := by
   rw [RingEquiv.symm_apply_eq, galFF_genY]
 
 /- English proof (translation)
-Establish `e : ∀ a : K, galFF W₀ σ (algebraMap L (W₀.baseChange L).toAffine.FunctionField (algebraMap K L a)) = algebraMap L _ (algebraMap K L a)` using `fun a => by`. Rewrite using `[galFF_algebraMap, AlgEquiv.commutes]`. Apply the tactic sequence `ext <;> exact e _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_galFF_curve (σ : L ≃ₐ[K] L) :
     ((W₀.baseChange L).baseChange (W₀.baseChange L).toAffine.FunctionField).map
@@ -154,7 +154,7 @@ variable {Fd : Type*} [Field Fd] (V : WeierstrassCurve Fd) (τ : Fd ≃+* Fd)
 
 include hV in
 /- English proof (translation)
-Establish `h1` using `(Affine.map_nonsingular (W := V.toAffine) (f := (τ : Fd →+* Fd)) τ.injective x y).mpr h`. Establish `hV' : V.toAffine.map (τ : Fd →+* Fd) = V.toAffine` using `hV`. Rewrite `h1` using `[hV']`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonsingular_aut {x y : Fd} (h : V.toAffine.Nonsingular x y) :
     V.toAffine.Nonsingular (τ x) (τ y) := by
@@ -165,7 +165,7 @@ theorem nonsingular_aut {x y : Fd} (h : V.toAffine.Nonsingular x y) :
 
 include hV in
 /- English proof (translation)
-Establish `h1` using `Affine.map_negY (W' := V.toAffine) (τ : Fd →+* Fd) x y`. Establish `hV' : V.toAffine.map (τ : Fd →+* Fd) = V.toAffine` using `hV`. Rewrite `h1` using `[hV']`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem negY_aut (x y : Fd) : V.toAffine.negY (τ x) (τ y) = τ (V.toAffine.negY x y) := by
   have h1 := Affine.map_negY (W' := V.toAffine) (τ : Fd →+* Fd) x y
@@ -175,7 +175,7 @@ theorem negY_aut (x y : Fd) : V.toAffine.negY (τ x) (τ y) = τ (V.toAffine.neg
 
 include hV in
 /- English proof (translation)
-Establish `h1` using `Affine.map_addX (W' := V.toAffine) (τ : Fd →+* Fd) (x₁ := x₁) (x₂ := x₂) (ℓ := ℓ)`. Establish `hV' : V.toAffine.map (τ : Fd →+* Fd) = V.toAffine` using `hV`. Rewrite `h1` using `[hV']`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addX_aut (x₁ x₂ ℓ : Fd) :
     V.toAffine.addX (τ x₁) (τ x₂) (τ ℓ) = τ (V.toAffine.addX x₁ x₂ ℓ) := by
@@ -186,7 +186,7 @@ theorem addX_aut (x₁ x₂ ℓ : Fd) :
 
 include hV in
 /- English proof (translation)
-Establish `h1` using `Affine.map_addY (W' := V.toAffine) (τ : Fd →+* Fd) (x₁ := x₁) (x₂ := x₂) (y₁ := y₁) (ℓ := ℓ)`. Establish `hV' : V.toAffine.map (τ : Fd →+* Fd) = V.toAffine` using `hV`. Rewrite `h1` using `[hV']`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addY_aut (x₁ x₂ y₁ ℓ : Fd) :
     V.toAffine.addY (τ x₁) (τ x₂) (τ y₁) (τ ℓ) = τ (V.toAffine.addY x₁ x₂ y₁ ℓ) := by
@@ -199,7 +199,7 @@ variable [DecidableEq Fd]
 
 include hV in
 /- English proof (translation)
-Establish `h1` using `Affine.map_slope (W := V.toAffine) (τ : Fd →+* Fd) x₁ x₂ y₁ y₂`. Establish `hV' : V.toAffine.map (τ : Fd →+* Fd) = V.toAffine` using `hV`. Rewrite `h1` using `[hV']`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slope_aut (x₁ x₂ y₁ y₂ : Fd) :
     V.toAffine.slope (τ x₁) (τ x₂) (τ y₁) (τ y₂) = τ (V.toAffine.slope x₁ x₂ y₁ y₂) := by
@@ -247,7 +247,7 @@ noncomputable def galFFPoint (σ : L ≃ₐ[K] L) :
 omit [DecidableEq L] in
 
 /- English proof (translation)
-Rewrite using `[genericPoint, galFFPoint, autPoint_some]`. Simplify using `only [Affine.Point.some.injEq]`. Conclude with `⟨galFF_genX W₀ σ, galFF_genY W₀ σ⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem galFFPoint_genericPoint (σ : L ≃ₐ[K] L) :
     galFFPoint W₀ σ (genericPoint (W₀.baseChange L)) = genericPoint (W₀.baseChange L) := by
@@ -258,9 +258,9 @@ theorem galFFPoint_genericPoint (σ : L ≃ₐ[K] L) :
 omit [W₀.IsElliptic] in
 
 /- English proof (translation)
-Consider the cases of `R with`. Consider the case `zero`. Establish `h0 : (Affine.Point.zero : (W₀.baseChange L).toAffine.Point) = 0` using `rfl`. Rewrite using `[h0, map_zero, map_zero, map_zero, map_zero]`. Consider the case `some x y h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `autPoint _ _ _ (Affine.Point.some _ _ _) = Affine.Point.some _ _ _`. Rewrite using `[autPoint_some]`. Simplify using `only [Affine.Point.some.injEq]`. Conclude with `⟨galFF_algebraMap W₀ σ x, galFF_algebraMap W₀ σ y⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem galFFPoint_constPoint (σ : L ≃ₐ[K] L) (R : (W₀.baseChange L).toAffine.Point) :
     galFFPoint W₀ σ (constPoint (W₀.baseChange L) R) =
@@ -277,7 +277,7 @@ theorem galFFPoint_constPoint (σ : L ≃ₐ[K] L) (R : (W₀.baseChange L).toAf
 
 omit [DecidableEq L] in
 /- English proof (translation)
-Rewrite using `[genericPoint, Affine.Point.map_some, Affine.Point.map_some, galFFPoint, autPoint_some]`. Simplify using `only [Affine.Point.some.injEq]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[galConj_apply, galFF_symm_genX]`. Rewrite using `[galConj_apply, galFF_symm_genY]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_galConj_genericPoint (σ : L ≃ₐ[K] L)
     (ψ : (W₀.baseChange L).toAffine.FunctionField →ₐ[L] (W₀.baseChange L).toAffine.FunctionField) :
@@ -291,7 +291,7 @@ theorem map_galConj_genericPoint (σ : L ≃ₐ[K] L)
 variable [IsAlgClosed L]
 
 /- English proof (translation)
-Apply `algHom_eq_of_map_genericPoint` to reduce the goal to its premises. Rewrite using `[map_galConj_genericPoint, map_translate_genericPoint, map_add, galFFPoint_genericPoint, galFFPoint_constPoint, map_translate_genericPoint]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem galConj_translate (σ : L ≃ₐ[K] L) (R : (W₀.baseChange L).toAffine.Point) :
     galConj W₀ σ (translate (W₀.baseChange L) R) =
@@ -301,7 +301,7 @@ theorem galConj_translate (σ : L ≃ₐ[K] L) (R : (W₀.baseChange L).toAffine
     galFFPoint_constPoint, map_translate_genericPoint]
 
 /- English proof (translation)
-Rewrite using `[← galConj_translate, galConj_apply, RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem galFF_translate (σ : L ≃ₐ[K] L) (R : (W₀.baseChange L).toAffine.Point)
     (f : (W₀.baseChange L).toAffine.FunctionField) :

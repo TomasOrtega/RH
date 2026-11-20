@@ -23,7 +23,7 @@ abbrev PC (X : Type) [MulAction Γ X] : Rep.{0} ℂ Γ := Rep.of (permC Γ X)
 variable {Γ}
 
 /- English proof (translation)
-Simplify using `[permC]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem permC_single {X : Type} [MulAction Γ X] (g : Γ) (x : X) (c : ℂ) :
     permC Γ X g (Finsupp.single x c) = Finsupp.single (g • x) c := by
@@ -34,7 +34,7 @@ def pmap {X Y : Type} [MulAction Γ X] [MulAction Γ Y] (f : X → Y) (hf : ∀ 
   Rep.ofHom ⟨Finsupp.lmapDomain ℂ ℂ f, fun g => by ext x; simp [hf]⟩
 
 /- English proof (translation)
-The claim follows from `Finsupp.mapDomain_single`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem pmap_single {X Y : Type} [MulAction Γ X] [MulAction Γ Y] (f : X → Y)
     (hf : ∀ (g : Γ) x, f (g • x) = g • f x) (x : X) (c : ℂ) :
@@ -47,7 +47,7 @@ def augC (X : Type) [MulAction Γ X] : PC Γ X ⟶ Rep.trivial ℂ Γ ℂ :=
   Rep.ofHom ⟨Finsupp.linearCombination ℂ (fun _ : X => (1 : ℂ)), fun g => by ext x; simp⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Finsupp.linearCombination ℂ (fun _ : X => (1 : ℂ)) (Finsupp.single x c) = c`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem augC_single {X : Type} [MulAction Γ X] (x : X) (c : ℂ) :
     (augC Γ X).hom (Finsupp.single x c) = c := by
@@ -55,7 +55,7 @@ Express the relevant statement in the definitionally equal form `Finsupp.linearC
   simp
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `h x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem PC_ext {X : Type} [MulAction Γ X] {A : Rep.{0} ℂ Γ} {φ ψ : PC Γ X ⟶ A}
     (h : ∀ x, φ.hom (Finsupp.single x 1) = ψ.hom (Finsupp.single x 1)) : φ = ψ := by
@@ -104,13 +104,13 @@ def reC {p q : ℕ} (f : Fin (p + 1) → Fin (q + 1)) : PC Γ (K.Tup q) ⟶ PC �
   pmap (K.re f) (fun _ _ => rfl)
 
 /- English proof (translation)
-The claim follows from `pmap_single _ _ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem reC_single {p q : ℕ} (f : Fin (p + 1) → Fin (q + 1)) (t : K.Tup q) (c : ℂ) :
     (K.reC f).hom (Finsupp.single t c) = Finsupp.single (K.re f t) c := pmap_single _ _ _ _
 
 /- English proof (translation)
-The claim follows from `PC_ext fun t => by change (K.reC f).hom ((K.reC f').hom _) = _ rw [reC_single, reC_single, reC_single, re_re]`.
+A detailed English derivation is pending.
 -/
 theorem reC_comp {p q r : ℕ} (f : Fin (p + 1) → Fin (q + 1)) (f' : Fin (q + 1) → Fin (r + 1)) :
     K.reC f' ≫ K.reC f = K.reC (f' ∘ f) :=
@@ -250,12 +250,12 @@ variable (N) in
 def Fix (σ : 𝓞 L →+* 𝓞 L) : Subgroup (Gm L N) := (sGm N σ).eqLocus (MonoidHom.id _)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Fix {σ : 𝓞 L →+* 𝓞 L} {g : Gm L N} : g ∈ Fix N σ ↔ sGm N σ g = g := Iff.rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[sLat, sGm, smul_lat, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sLat_smul (σ : 𝓞 L →+* 𝓞 L) (g : Gm L N) (y : Lat L N) : sLat σ (g • y) = sGm N σ g • sLat σ y := by
   funext a

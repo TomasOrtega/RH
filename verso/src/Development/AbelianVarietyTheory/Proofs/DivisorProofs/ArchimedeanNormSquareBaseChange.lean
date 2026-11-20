@@ -12,9 +12,9 @@ open GlobalTheory GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.CM Global
 namespace GlobalTheory.FlatDegreeCompare
 
 /- English proof (translation)
-Introduce `E _ _ _ H k k' _ _ _ _ i t t' n m x x' σ N hx ⟨t'', p, g, u, Hm, α, y, W, h₁, h₂, h₃⟩`. Establish `key : ∀ (f : Sp ℂ ⟶ Sp k) (q : SABMap t'' t f), f = spMap σ ≫ spMap i → ∃ m' : SABMap t'' t' (spMap σ), q.φ = m'.φ ≫ n.φ`. Introduce and unpack `f q rfl`. Conclude with `ObjMaps.exists_sab_cancel n q`. Take `⟨m', hm'⟩` from `key _ p (spMap_comp_spMap i σ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t'', m', g, u, Hm, α, y, W, h₁, fun a => ?_, h₃⟩` and prove the remaining obligations. Use `EllComp.isVecOver_cancel (f := i) (g := σ) (φ := n.φ) (ψ := m'.φ) (v := x a) n.cart.1 m'.cart.1 (hx a) ?_` and prove the remaining obligations. Rewrite using `[← hm']`. Conclude with `h₂ a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isArchNormSq_up : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k k' : Type) [Field k] [NumberField k] [Field k'] [NumberField k'] (i : k →+* k') (t : SAB H (Sp k)) (t' : SAB H (Sp k')) (n : SABMap t' t (spMap i)) (m : ℕ) (x : Fin m → (epsR k ⟶ t.G)) (x' : Fin m → (epsR k' ⟶ t'.G)) (σ : k' →+* ℂ) (N : ℝ), (∀ a, IsVecOver i n.φ (x a) (x' a)) → AdelicDegreeTameRamification.IsArchNormSq t x (σ.comp i) N → AdelicDegreeTameRamification.IsArchNormSq t' x' σ N := by
   intro E _ _ _ H k k' _ _ _ _ i t t' n m x x' σ N hx ⟨t'', p, g, u, Hm, α, y, W, h₁, h₂, h₃⟩

@@ -25,7 +25,7 @@ def gpGen (g : ℕ) (F : LFlag S r T) (F' : LFlag S r T') (ξ : Matrix (Fin (r +
 def gpU (F : LFlag S r T) : Submodule E S.V := Xsp F ⊔ Submodule.span E {F.fl.z}
 
 /- English proof (translation)
-Unfold `Mplus gpMfix gpGen`. Rewrite using `[Submodule.span_union]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gp_mplus_eq (g : ℕ) (F : LFlag S r T) (F' : LFlag S r T')
     (ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E)) :
@@ -34,15 +34,13 @@ theorem gp_mplus_eq (g : ℕ) (F : LFlag S r T) (F' : LFlag S r T')
   rw [Submodule.span_union]
 
 /- English proof (translation)
-Establish `key : ∀ b, ∀ x ∈ Xsp F, S.hT x (F.fl.e b) = 0`. Introduce `b x hx`. Simplify using `only [Xsp, Formalism.MainNotions.S.FlagG.X] at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨a, rfl⟩` from `hy`. Conclude with `F.fl.e_iso a b`. Consider the case `zero => simp`. Consider the case `add y y' _ _ h1 h2 => rw [map_add, LinearMap.add_apply, h1, h2, add_zero]`. Consider the case `smul c y _ h => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, h, smul_zero]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Rewrite using `[mem_orth_iff]`. Introduce `x hx`. Simplify using `only [Xsp, Formalism.MainNotions.S.FlagG.X] at hv`. Proceed by induction on `hv using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy`. Take `⟨b, rfl⟩` from `hy`. Conclude with `key b x hx`. Consider the case `zero => simp`. Consider the case `add y y' _ _ h1 h2 => rw [map_add, h1, h2, add_zero]`.
-
-Consider the case `smul c y _ h => rw [map_smul, h, smul_zero]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gp_X_iso (F : LFlag S r T) : ∀ v ∈ Xsp F, v ∈ orth S (Xsp F) := by
   have key : ∀ b, ∀ x ∈ Xsp F, S.hT x (F.fl.e b) = 0 := by
@@ -68,9 +66,9 @@ theorem gp_X_iso (F : LFlag S r T) : ∀ v ∈ Xsp F, v ∈ orth S (Xsp F) := by
   | smul c y _ h => rw [map_smul, h, smul_zero]
 
 /- English proof (translation)
-Establish `h : gpMfix Λ F ≤ toO S (gpU F)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w (hw | hw)`. Conclude with `Submodule.mem_sup_left (mem_XLam.1 hw).2`. Rewrite `hw` using `[Set.mem_singleton_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, hl.2]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Conclude with `fun w hw => h hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem gp_Mfix_le_U (F : LFlag S r T) (hl : IsLift Λ F) : ∀ w ∈ gpMfix Λ F, w ∈ gpU F := by
   have h : gpMfix Λ F ≤ toO S (gpU F) := by
@@ -83,21 +81,19 @@ theorem gp_Mfix_le_U (F : LFlag S r T) (hl : IsLift Λ F) : ∀ w ∈ gpMfix Λ 
   exact fun w hw => h hw
 
 /- English proof (translation)
-Introduce `w hw hU`. Take `⟨s, hs, hsw⟩` from `(mem_localization_iff p Λ w).1 hw`. Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.1 hU`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hv`. Establish `hzΛ : F.fl.z ∈ Λ` using `hl.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `horth : s • (u + c • F.fl.z) ∈ orth S (Xsp F)`. Rewrite using `[gp_osmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.add_mem _ (gp_X_iso F u hu) (Submodule.smul_mem _ _ (z_mem_orth F)))`. Establish `hLsub : (algebraMap (𝓞 E) E s * c) • F.fl.z ∈ Lsub Λ F`. Unfold `Lsub Lrep`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_inf]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_sup]`. Use `⟨s • (u + c • F.fl.z), ?_, -((algebraMap (𝓞 E) E s) • u), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_inf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hsw, (Submodule.restrictScalars_mem _ _ _).2 horth⟩`. Rewrite using `[Submodule.restrictScalars_mem]`. Conclude with `Submodule.neg_mem _ (Submodule.smul_mem _ _ hu)`. Rewrite using `[gp_osmul, smul_add, smul_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.restrictScalars_mem]`. Conclude with `Submodule.smul_mem _ _ (z_mem_orth F)`. Take `⟨o, ho⟩` from `hprim _ hLsub`. Establish `heq : s • (u + c • F.fl.z) = (algebraMap (𝓞 E) E s) • u + o • F.fl.z`. Establish `: o • F.fl.z = (algebraMap (𝓞 E) E s * c) • F.fl.z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[gp_osmul]`. Conclude with `congrArg (· • F.fl.z) ho`. Rewrite using `[this, gp_osmul, smul_add, smul_smul]`. Establish `hoz : o • F.fl.z ∈ Λ` using `Submodule.smul_mem _ o hzΛ`. Establish `hsu : (algebraMap (𝓞 E) E s) • u ∈ XLam Λ F`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_XLam.2 ⟨?_, Submodule.smul_mem _ _ hu⟩` and prove the remaining obligations. Establish `: (algebraMap (𝓞 E) E s) • u = s • (u + c • F.fl.z) - o • F.fl.z` using `by rw [heq]; abel`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ hsw hoz`. Use `(mem_localization_iff p _ _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[heq]`. Use `Submodule.add_mem _ (Submodule.subset_span (Set.mem_union_left _ hsu)) ?_` and prove the remaining obligations. Use `Submodule.smul_mem _ o (Submodule.subset_span (Set.mem_union_right _ ?_))` and prove the remaining obligations. Rewrite using `[Set.mem_singleton_iff, hl.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_sat (p : Ideal (𝓞 E)) [p.IsPrime] (F : LFlag S r T) (hl : IsLift Λ F)
     (hprim : ∀ c : E, c • F.fl.z ∈ Lsub Λ F → ∃ o : 𝓞 E, (o : E) = c) :

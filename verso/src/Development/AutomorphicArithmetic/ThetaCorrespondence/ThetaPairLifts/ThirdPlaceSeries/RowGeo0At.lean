@@ -23,9 +23,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.RT Globa
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fc.GeoZeroAt
 /- English proof (translation)
-Introduce `hR hL N S Γ hNE hD hT`. Establish `hA` using `_root_.GlobalTheory.T.class_sum_divisor_all_alt hR hL N S Γ hNE hD`. Use `AllAtMember.eventually_coreProperty_mono (_root_.GlobalTheory.Fc.AllAtMember.forall_linked_bundles_and_alt hA hT) fun Q h => ?_` and prove the remaining obligations. Conclude with `Row.imp h fun 𝒜 σ _ H _ Fm hc x hx i =>`. Set `⟨t⟩` to `H.2 Fm hc x hx i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `⟨a, b, c, _, e⟩` to `H.1 Fm hc x hx i t`. Use the proof step `⟨t, a, b, c, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem geometricWeakTies_of_linked_ties : GlobalTheory.NT.RayField → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (N : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP), (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (_root_.GlobalTheory.HeightCounting.Up.extensionWithLaw hL K B f T w Z Wt p0 t nch n xd c)) → _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) _root_.GlobalTheory.Fc.R1.SlotDivisorCondition → _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) _root_.GlobalTheory.Fc.RL.Row_tie_alt → _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) _root_.GlobalTheory.Fc.S0.GeometricWeakCompatibility' := by
   intro hR hL N S Γ hNE hD hT

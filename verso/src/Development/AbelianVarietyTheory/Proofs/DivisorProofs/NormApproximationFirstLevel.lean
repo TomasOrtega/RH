@@ -10,7 +10,7 @@ open Polynomial Matrix Formalism.UG
 namespace GlobalTheory.NormEq
 
 /- English proof (translation)
-Apply `(IsArtinianRing.equivPi A).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `I`. Rewrite using `[IsArtinianRing.equivPi_apply]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (h I)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_mem_maxSpec {A : Type} [CommRing A] [IsArtinianRing A] [IsReduced A] {y : A}
     (h : ∀ I : MaximalSpectrum A, y ∈ I.asIdeal) : y = 0 := by
@@ -21,41 +21,35 @@ theorem eq_zero_of_forall_mem_maxSpec {A : Type} [CommRing A] [IsArtinianRing A]
   exact Ideal.Quotient.eq_zero_iff_mem.2 (h I)
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing R := inferInstance`. Establish `hsurj : Function.Surjective τ` using `fun a => ⟨τ a, hτ a⟩`. Choose the witnesses or unpack the hypotheses as in `⟨tI, hmem, htt⟩ : ∃ tI : MaximalSpectrum R → MaximalSpectrum R, (∀ I y, y ∈ (tI I).asIdeal ↔ τ y ∈ I.asIdeal) ∧ ∀ I, tI (tI I) = I := by`. Establish `hmax : ∀ I : MaximalSpectrum R, (I.asIdeal.comap τ).IsMaximal` using `fun I => by haveI := I.isMaximal`. Conclude with `Ideal.comap_isMaximal_of_surjective τ hsurj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨fun I => ⟨I.asIdeal.comap τ, hmax I⟩, fun I y => Iff.rfl, fun I => ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Express the relevant statement in the definitionally equal form `τ (τ y) ∈ I.asIdeal ↔ y ∈ I.asIdeal`. Rewrite using `[hτ]`. Establish `hnot : ∀ (I : MaximalSpectrum R) {u : R}, IsUnit u → u ∉ I.asIdeal` using `fun I u hu hI => I.isMaximal.ne_top (Ideal.eq_top_of_isUnit_mem _ hI hu)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfixed : ∀ I : MaximalSpectrum R, ∃ a : R, tI I = I → a * τ a - x ∈ I.asIdeal`. Introduce `I`. Distinguish the cases in `hI : tI I = I`. Establish `hle : I.asIdeal ≤ I.asIdeal.comap τ` using `fun y hy => by`. Rewrite using `[Ideal.mem_comap, ← hmem, hI]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Conclude with `hy`. Use `haveI := I.isMaximal`. Use `letI : Field (R ⧸ I.asIdeal) := Ideal.Quotient.field I.asIdeal`. Use `haveI : Finite (R ⧸ I.asIdeal) := Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Set `ρ` to `Ideal.quotientMap I.asIdeal τ hle`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hρ : ∀ y, ρ (Ideal.Quotient.mk I.asIdeal y) = Ideal.Quotient.mk I.asIdeal (τ y)` using `fun y => Ideal.quotientMap_mk`. Establish `hinv : Function.Involutive ρ` using `fun c => by`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Rewrite using `[hρ, hρ, hτ]`. Establish `hne : ∃ c, ρ c ≠ c` using `⟨Ideal.Quotient.mk I.asIdeal b, fun h => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hρ, ← sub_eq_zero, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hnot I hb h⟩`. Take `⟨a', ha'⟩` from `GlobalTheory.exists_mul_invol_eq_of_fixed (R ⧸ I.asIdeal) ρ hinv hne (Ideal.Quotient.mk I.asIdeal x) (by rw [hρ, hxτ])`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a'`. Use `⟨a, fun _ => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, ← hρ, ha', sub_self]`. Conclude with `⟨0, fun h => absurd h hI⟩`. Use `choose a ha using hfixed`. Set `r : MaximalSpectrum R → R` to `fun I => if WellOrderingRel I (tI I) then x else if WellOrderingRel (tI I) I then 1 else a I`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : R, ∀ I, z - r I ∈ I.asIdeal := by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(IsArtinianRing.equivPi R).symm (fun I => Ideal.Quotient.mk I.asIdeal (r I)), fun I => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun ((IsArtinianRing.equivPi R).apply_symm_apply (fun I => Ideal.Quotient.mk I.asIdeal (r I))) I`. Rewrite `h1` using `[IsArtinianRing.equivPi_apply]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, h1, sub_self]`. Establish `hτz : ∀ I, τ z - τ (r (tI I)) ∈ I.asIdeal` using `fun I => by`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_sub, ← hmem]`. Conclude with `hz (tI I)`. Establish `hfix_of : ∀ I, ¬ WellOrderingRel I (tI I) → ¬ WellOrderingRel (tI I) I → tI I = I` using `fun I h1 h2 => by`. Break down `trichotomous_of WellOrderingRel I (tI I) with h | h | h` into its components or cases. Conclude with `absurd h h1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.symm`. Conclude with `absurd h h2`. Establish `key : ∀ I : MaximalSpectrum R, z * τ z - x ∈ I.asIdeal ∧ z ∉ I.asIdeal`. Introduce `I`. Establish `hzI` using `hz I`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hτzI` using `hτz I`. Distinguish the cases in `h1 : WellOrderingRel I (tI I)`. Establish `e1 : r I = x` using `if_pos h1`. Establish `e2 : r (tI I) = 1`. Simplify using `only [r, htt]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (asymm_of WellOrderingRel h1), if_pos h1]`. Rewrite `hzI` using `[e1]`. Rewrite `hτzI` using `[e2, map_one]`. Use `⟨?_, fun hzm => hnot I hx (by simpa using I.asIdeal.sub_mem hzm hzI)⟩` and prove the remaining obligations. Establish `: z * τ z - x = (z - x) * τ z + x * (τ z - 1)` using `by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `I.asIdeal.add_mem (I.asIdeal.mul_mem_right _ hzI) (I.asIdeal.mul_mem_left _ hτzI)`. Distinguish the cases in `h2 : WellOrderingRel (tI I) I`. Establish `e1 : r I = 1` using `by simp only [r]; rw [if_neg h1, if_pos h2]`. Establish `e2 : r (tI I) = x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [r, htt]`. Rewrite using `[if_pos h2]`. Rewrite `hzI` using `[e1]`. Rewrite `hτzI` using `[e2, hxτ]`. Use `⟨?_, fun hzm => hnot I isUnit_one (by simpa using I.asIdeal.sub_mem hzm hzI)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: z * τ z - x = (z - 1) * τ z + (τ z - x)` using `by ring`. Rewrite using `[this]`. Conclude with `I.asIdeal.add_mem (I.asIdeal.mul_mem_right _ hzI) hτzI`. Establish `hI` using `hfix_of I h1 h2`. Establish `e1 : r I = a I` using `by simp only [r]; rw [if_neg h1, if_neg h2]`.
-
-Rewrite `hzI` using `[e1]`. Rewrite `hτzI` using `[hI, e1]`. Establish `haI` using `ha I hI`. Use `⟨?_, fun hzm => ?_⟩` and prove the remaining obligations. Establish `: z * τ z - x = (z - a I) * τ z + a I * (τ z - τ (a I)) + (a I * τ (a I) - x)` using `by ring`.
-
-Rewrite using `[this]`. Conclude with `I.asIdeal.add_mem (I.asIdeal.add_mem (I.asIdeal.mul_mem_right _ hzI) (I.asIdeal.mul_mem_left _ hτzI)) haI`. Establish `haM : a I ∈ I.asIdeal` using `by simpa using I.asIdeal.sub_mem hzm hzI`. Conclude with `hnot I hx (by simpa using I.asIdeal.sub_mem (I.asIdeal.mul_mem_right (τ (a I)) haM) haI)`. Use `⟨z, ?_, sub_eq_zero.1 (eq_zero_of_forall_mem_maxSpec fun I => (key I).1)⟩` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `hu`. Take `⟨M, hM, hzM⟩` from `exists_max_ideal_of_mem_nonunits (show z ∈ nonunits R from hu)`. Conclude with `(key ⟨M, hM⟩).2 hzM`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_mul_invol_eq_of_fixed_unit {R : Type} [CommRing R] [Finite R] [IsReduced R]
     (τ : R →+* R) (hτ : ∀ a, τ (τ a) = a) {b : R} (hb : IsUnit (τ b - b)) {x : R} (hx : IsUnit x)
@@ -164,9 +158,9 @@ namespace GlobalTheory.NormEq
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Proceed by induction on `a using WithZero.recZeroCoe with`. Consider the case `zero => simp`. Consider the case `coe m`. Rewrite `ha` using `[← WithZero.coe_one, WithZero.coe_lt_coe]`. Rewrite using `[← WithZero.coe_mul, ← WithZero.coe_one, WithZero.coe_le_coe]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ofAdd_toAdd m, ← ofAdd_add, ← ofAdd_zero, Multiplicative.ofAdd_le]`. Rewrite `ha` using `[← ofAdd_toAdd m, ← ofAdd_zero, Multiplicative.ofAdd_lt]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mul_ofAdd_one_le_of_lt_one {a : WithZero (Multiplicative ℤ)} (ha : a < 1) :
     a * ((Multiplicative.ofAdd (1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) ≤ 1 := by
@@ -180,11 +174,9 @@ theorem mul_ofAdd_one_le_of_lt_one {a : WithZero (Multiplicative ℤ)} (ha : a <
     omega
 
 /- English proof (translation)
-Establish `hϖ : ϖ ≠ 0`. Introduce `h0`. Use `h.2.2.2.1` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (y : L) / ϖ ∈ intL L`. Express the relevant statement in the definitionally equal form `Valued.v ((y : L) / ϖ) ≤ 1`. Rewrite using `[map_div₀, h.2.2.2.1, div_eq_mul_inv, ← WithZero.coe_inv, ← ofAdd_neg, neg_neg]`. Conclude with `mul_ofAdd_one_le_of_lt_one hy`. Rewrite using `[Ideal.mem_span_singleton']`.
-
-Conclude with `⟨⟨_, hc⟩, Subtype.ext (by simp [div_mul_cancel₀ _ hϖ])⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_span_piO_of_lt {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (y : intL L)
     (hy : Valued.v (y : L) < 1) : y ∈ Ideal.span {piO h} := by
@@ -201,9 +193,9 @@ theorem mem_span_piO_of_lt {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv �
   exact ⟨⟨_, hc⟩, Subtype.ext (by simp [div_mul_cancel₀ _ hϖ])⟩
 
 /- English proof (translation)
-Establish `hy0 : (y : L) ≠ 0`. Introduce `h0`. Rewrite `hy` using `[h0, map_zero]`. Conclude with `zero_ne_one hy`. Establish `hinv : (y : L)⁻¹ ∈ intL L`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Valued.v ((y : L)⁻¹) ≤ 1`. Rewrite using `[map_inv₀, hy, inv_one]`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨_, hinv⟩, Subtype.ext (by simp [hy0])⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_v_eq_one (y : intL L) (hy : Valued.v (y : L) = 1) : IsUnit y := by
   have hy0 : (y : L) ≠ 0 := by
@@ -214,13 +206,11 @@ theorem isUnit_of_v_eq_one (y : intL L) (hy : Valued.v (y : L) = 1) : IsUnit y :
   exact isUnit_iff_exists_inv.2 ⟨⟨_, hinv⟩, Subtype.ext (by simp [hy0])⟩
 
 /- English proof (translation)
-Rewrite using `[Ideal.isMaximal_iff]`. Use `⟨fun h1 => ?_, fun J y _ hy hyJ => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h1`. Establish `hv` using `congrArg (fun t : intL L => Valued.v (t : L)) hc`. Simplify using `only [Subring.coe_mul, coe_piO, map_mul, h.2.2.2.1, OneMemClass.coe_one, map_one] at hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc1 : Valued.v (c : L) ≤ 1` using `c.2`. Establish `hlt : Valued.v (c : L) * ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) < 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]`. Conclude with `(WithZero.coe_lt_coe.2 (by decide : (Multiplicative.ofAdd (-1 : ℤ)) < 1))` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd hv hlt.ne`. Establish `hv : Valued.v (y : L) = 1`. Break down `lt_or_eq_of_le (show Valued.v (y : L) ≤ 1 from y.2) with hl | he` into its components or cases. Conclude with `absurd (mem_span_piO_of_lt h y hl) hy`. Conclude with `he`.
-
-Rewrite using `[Ideal.eq_top_of_isUnit_mem J hyJ (isUnit_of_v_eq_one y hv)]`. Discharge the goal by the elementary cases of `trivial`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem span_piO_isMaximal {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) :
     (Ideal.span {piO h}).IsMaximal := by
@@ -245,17 +235,15 @@ theorem span_piO_isMaximal {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv �
     trivial
 
 /- English proof (translation)
-Set `V` to `(Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring`. Establish `hc` using `h.2.2.2.2.2.2`. Establish `hq` using `h.2.2.2.2.2.1`. Establish `hfin0` using `Nat.finite_of_card_ne_zero (hc.trans_ne (by positivity))`. Use `haveI : Finite (V ⧸ IsLocalRing.maximalIdeal V) := hfin0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : V →+* intL L` to `{ toFun := fun y => ⟨(y : L), (Valuation.mem_valuationSubring_iff _ _).1 y.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hker : ∀ y ∈ IsLocalRing.maximalIdeal V, (Ideal.Quotient.mk (Ideal.span {piO h})).comp f y = 0`. Introduce `y hy`. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hv : Valued.v (y : L) = 1`. Break down `lt_or_eq_of_le (show Valued.v (y : L) ≤ 1 from (f y).2) with hl | he` into its components or cases. Conclude with `absurd (mem_span_piO_of_lt h (f y) hl) hn`. Conclude with `he`. Apply `(IsLocalRing.mem_maximalIdeal _).1 hy` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy0 : (y : L) ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0, map_zero]`. Conclude with `zero_ne_one hv`. Establish `hinv : (y : L)⁻¹ ∈ V`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Valuation.mem_valuationSubring_iff, map_inv₀, hv, inv_one]`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨_, hinv⟩, Subtype.ext (show (y : L) * (y : L)⁻¹ = 1 from mul_inv_cancel₀ hy0)⟩`. Set `g` to `Ideal.Quotient.lift (IsLocalRing.maximalIdeal V) ((Ideal.Quotient.mk (Ideal.span {piO h})).comp f) hker`. Use `Finite.of_surjective g fun a => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
-
-Use `⟨Ideal.Quotient.mk _ ⟨(y : L), (Valuation.mem_valuationSubring_iff _ _).2 y.2⟩, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finite_quot_span_piO {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) :
     Finite (intL L ⧸ Ideal.span {piO h}) := by
@@ -291,9 +279,9 @@ theorem finite_quot_span_piO {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv
   rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ReducedAdjoinRootSeparable.isReduced_adjoinRoot_of_separable`. Consider the case `exact _root_.GlobalTheory.ReducedAdjoinRootSeparable.isReduced_adjoinRoot_of_separable`. Consider the case `(apply _root_.GlobalTheory.ReducedAdjoinRootSeparable.isReduced_adjoinRoot_of_separable <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ReducedAdjoinRootSeparable.isReduced_adjoinRoot_of_separable <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ReducedAdjoinRootSeparable.isReduced_adjoinRoot_of_separable <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ReducedAdjoinRootSeparable.isReduced_adjoinRoot_of_separable ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isReduced_adjoinRoot_of_separable {k : Type} [Field k] {f : k[X]} (hf : f.Separable) :
     IsReduced (AdjoinRoot f) := by
@@ -306,27 +294,23 @@ theorem isReduced_adjoinRoot_of_separable {k : Type} [Field k] {f : k[X]} (hf : 
   | (intros; exact _root_.GlobalTheory.ReducedAdjoinRootSeparable.isReduced_adjoinRoot_of_separable ..)
 
 /- English proof (translation)
-Introduce `L _ _ σ ϖ q h P hP x hx`. Set `I0 : Ideal (intL L)` to `Ideal.span {piO h}`. Use `haveI : I0.IsMaximal := span_piO_isMaximal h`. Use `letI : Field (intL L ⧸ I0) := Ideal.Quotient.field I0`. Use `haveI : Finite (intL L ⧸ I0) := finite_quot_span_piO h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `J` to `piPow h P 1`. Establish `hJ : J = (Ideal.map (AdjoinRoot.of P.1) I0 : Ideal (GlobalTheory.UTr.Alg P))`. Express the relevant statement in the definitionally equal form `Ideal.span {algebraMap (intL L) (GlobalTheory.UTr.Alg P) (piO h) ^ 1} = Ideal.map (AdjoinRoot.of P.1) (Ideal.span {piO h})`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Use `congr 2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `pow_one _`. Set `e1 : (GlobalTheory.UTr.Alg P ⧸ J) ≃+* (GlobalTheory.UTr.Alg P ⧸ (Ideal.map (AdjoinRoot.of P.1) I0 : Ideal (GlobalTheory.UTr.Alg P)))` to `Ideal.quotEquivOfEq hJ`. Set `e2 : (GlobalTheory.UTr.Alg P ⧸ (Ideal.map (AdjoinRoot.of P.1) I0 : Ideal (GlobalTheory.UTr.Alg P))) ≃+* AdjoinRoot (P.1.map (Ideal.Quotient.mk I0))` to `AdjoinRoot.quotAdjoinRootEquivQuotPolynomialQuot I0 P.1`. Set `e` to `e1.trans e2`. Use `haveI : IsReduced (AdjoinRoot (P.1.map (Ideal.Quotient.mk I0))) := isReduced_adjoinRoot_of_separable (hP.map)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : IsReduced (GlobalTheory.UTr.Alg P ⧸ J) := isReduced_of_injective e.toRingHom e.injective`. Use `haveI : Module.Finite (intL L ⧸ I0) (AdjoinRoot (P.1.map (Ideal.Quotient.mk I0))) := (AdjoinRoot.powerBasis' (P.2.1.map (Ideal.Quotient.mk I0))).finite`. Use `haveI : Finite (AdjoinRoot (P.1.map (Ideal.Quotient.mk I0))) := Module.finite_of_finite (intL L ⧸ I0)`. Use `haveI : Finite (GlobalTheory.UTr.Alg P ⧸ J) := Finite.of_equiv _ e.symm.toEquiv`. Establish `hsig : ∀ b, sigO σ h.2.1 (sigO σ h.2.1 b) = b` using `fun b => Subtype.ext (h.1 b)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsp : sigO σ h.2.1 (piO h) = piO h` using `Subtype.ext h.2.2.1`. Establish `hle : J ≤ J.comap (GlobalTheory.UTr.conj P)` using `Ideal.span_le.2 (Set.singleton_subset_iff.2 (by`. Express the relevant statement in the definitionally equal form `GlobalTheory.UTr.conj P _ ∈ J`. Rewrite using `[map_pow, GlobalTheory.UTr.conj_algebraMap, hsp]`. Conclude with `Ideal.subset_span rfl))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `τ` to `Ideal.quotientMap J (GlobalTheory.UTr.conj P) hle`. Establish `hτ' : ∀ y, τ (Ideal.Quotient.mk J y) = Ideal.Quotient.mk J (GlobalTheory.UTr.conj P y)` using `fun y => Ideal.quotientMap_mk`. Establish `hτ : ∀ a, τ (τ a) = a` using `fun a => by`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[hτ', hτ', GlobalTheory.UTr.conj_conj P hsig]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨x0, hx0, hv⟩` from `h.2.2.2.2.1`. Set `d : intL L` to `sigO σ h.2.1 ⟨x0, hx0⟩ - ⟨x0, hx0⟩`. Establish `hd : IsUnit d` using `isUnit_of_v_eq_one d (by simpa [d] using hv)`. Set `b : GlobalTheory.UTr.Alg P ⧸ J` to `Ideal.Quotient.mk J (algebraMap (intL L) _ ⟨x0, hx0⟩)`. Establish `hb : IsUnit (τ b - b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: τ b - b = Ideal.Quotient.mk J (algebraMap (intL L) (GlobalTheory.UTr.Alg P) d)`. Simplify using `only [b, hτ', GlobalTheory.UTr.conj_algebraMap, d, map_sub]`. Rewrite using `[this]`. Conclude with `(hd.map _).map _`. Establish `hxu : IsUnit (Ideal.Quotient.mk J (x : GlobalTheory.UTr.Alg P))` using `x.isUnit.map _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxτ : τ (Ideal.Quotient.mk J (x : GlobalTheory.UTr.Alg P)) = Ideal.Quotient.mk J (x : GlobalTheory.UTr.Alg P)`. Rewrite using `[hτ', GlobalTheory.UTr.mem_plus.1 hx]`. Take `⟨zb, hzb, hzz⟩` from `exists_mul_invol_eq_of_fixed_unit τ hτ hb hxu hxτ`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective zb`. Take `⟨wb, hw⟩` from `hzb.exists_right_inv`.
-
-Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective wb`. Establish `hzw : IsUnit (z * w)` using `isUnit_of_sub_one_mem h P le_rfl (by`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, hw, map_one, sub_self])`. Establish `hz : IsUnit z` using `isUnit_of_mul_isUnit_left hzw`. Use `⟨hz.unit, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[IsUnit.unit_spec]`. Express the relevant statement in the definitionally equal form `_ ∈ J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, ← hτ', hzz, sub_self]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_conj_sub_mem_piPow_one : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))]
     (σ : L →+* L) (ϖ : L) (q : ℕ) (h : IsUnramInv ϖ σ q) (P : GlobalTheory.UTr.Csr (GlobalTheory.NormEq.sigO σ h.2.1)),

@@ -15,27 +15,23 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.GrowthHaar
 
 /- English proof (translation)
-Use `haveI : T2Space (AdelicGLn.FiniteAdelicGL E a) := inferInstance`. Use `haveI : T2Space (AutomorphicForm.archGroup E a) := inferInstance`. Use `haveI : BorelSpace (GA E a) := inferInstance`. Use `set q : GA E a → AdelicGLn.FiniteAdelicGL E a := fun h => (AdelicGLn.prodEquiv E a h).2 with hq_def`. Use `set p : GA E a → AutomorphicForm.archGroup E a := fun h => AutomorphicForm.archEquiv E a (AdelicGLn.prodEquiv E a h).1 with hp_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ : Continuous (AdelicGLn.prodEquiv E a)` using `(AdelicGLn.prodEquiv E a).continuous`. Establish `hq : Continuous q` using `continuous_snd.comp hΦ`. Establish `hp : Continuous p` using `(AutomorphicForm.archEquiv E a).continuous.comp (continuous_fst.comp hΦ)`. Establish `hpm : Measurable p` using `hp.measurable`. Establish `hS : MeasurableSet (q ⁻¹' U)` using `(hUc.isClosed.preimage hq).measurableSet`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `happly : ∀ B : Set (AutomorphicForm.archGroup E a), MeasurableSet B → ((μ.restrict (q ⁻¹' U)).map p) B = μ (p ⁻¹' B ∩ q ⁻¹' U)` using `fun B hB => by`. Rewrite using `[Measure.map_apply hpm hB, Measure.restrict_apply (hpm hB)]`. Establish `h1 : IsFiniteMeasureOnCompacts ((μ.restrict (q ⁻¹' U)).map p)`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Rewrite using `[happly K hK.isClosed.measurableSet]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hK' : IsCompact ((AutomorphicForm.archEquiv E a).symm '' K)` using `hK.image (AutomorphicForm.archEquiv E a).symm.continuous`. Establish `hc : IsCompact (p ⁻¹' K ∩ q ⁻¹' U)`. Establish `: p ⁻¹' K ∩ q ⁻¹' U = (AdelicGLn.prodEquiv E a).symm '' (((AutomorphicForm.archEquiv E a).symm '' K) ×ˢ U)`. Use extensionality with `h`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨hk, hu⟩`. Conclude with `⟨AdelicGLn.prodEquiv E a h, ⟨⟨_, hk, (AutomorphicForm.archEquiv E a).symm_apply_apply _⟩, hu⟩, (AdelicGLn.prodEquiv E a).symm_apply_apply h⟩`. Introduce and unpack `⟨⟨x, y⟩, ⟨⟨k, hk, rfl⟩, hy⟩, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify `hk` using `[hp_def]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `hy` using `[hq_def]`. Rewrite using `[this]`. Conclude with `(hK'.prod hUc).image (AdelicGLn.prodEquiv E a).symm.continuous`. Conclude with `hc.measure_lt_top`. Establish `hpL : ∀ (s : AutomorphicForm.archGroup E a) (h : GA E a), p (AutomorphicForm.infEmb E a s * h) = s * p h` using `fun s h => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[hp_def, AutomorphicForm.prodEquiv_infEmb]`. Establish `hqL : ∀ (s : AutomorphicForm.archGroup E a) (h : GA E a), q (AutomorphicForm.infEmb E a s * h) = q h` using `fun s h => by`. Simplify using `[hq_def, AutomorphicForm.prodEquiv_infEmb]`. Establish `h2 : Measure.IsMulLeftInvariant ((μ.restrict (q ⁻¹' U)).map p)`. Use `⟨fun s => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hms : Measurable fun x : AutomorphicForm.archGroup E a => s * x` using `(continuous_const.mul continuous_id).measurable`. Use extensionality with `B hB`. Rewrite using `[Measure.map_apply hms hB, happly _ (hms hB), happly B hB, ← measure_preimage_mul μ (AutomorphicForm.infEmb E a s) (p ⁻¹' B ∩ q ⁻¹' U)]`. Use `congr 1`. Use extensionality with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, hpL, hqL]`. Establish `h3 : Measure.IsOpenPosMeasure ((μ.restrict (q ⁻¹' U)).map p)`. Use `⟨fun O hO ⟨s, hs⟩ => ?_⟩` and prove the remaining obligations. Rewrite using `[happly O hO.measurableSet]`. Establish `hV : IsOpen (p ⁻¹' O ∩ q ⁻¹' interior U)` using `(hO.preimage hp).inter (isOpen_interior.preimage hq)`.
-
-Establish `hne : (p ⁻¹' O ∩ q ⁻¹' interior U).Nonempty`. Use `⟨AutomorphicForm.infEmb E a s, ?_, ?_⟩` and prove the remaining obligations. Simplify `hs` using `[hp_def, AutomorphicForm.prodEquiv_infEmb]`. Simplify `mem_interior_iff_mem_nhds.2 hU1` using `[hq_def, AutomorphicForm.prodEquiv_infEmb]`. Use `fun h0 => hV.measure_ne_zero μ hne (measure_mono_null ?_ h0)` and prove the remaining obligations.
-
-Conclude with `Set.inter_subset_inter_right _ (Set.preimage_mono interior_subset)`. Conclude with `{ toIsFiniteMeasureOnCompacts := h1, toIsMulLeftInvariant := h2, toIsOpenPosMeasure := h3 }`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isHaarMeasure_map_restrict (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (μ : Measure (GA E a)) [μ.IsHaarMeasure] [MeasurableSpace (AutomorphicForm.archGroup E a)]

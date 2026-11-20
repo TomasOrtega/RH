@@ -12,11 +12,11 @@ namespace GlobalTheory.LatLevel
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 
 /- English proof (translation)
-Use `set f := RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite with hf`. Establish `hc : Continuous f` using `(RestrictedProduct.isOpenEmbedding_structureMap (fun v => Valued.isOpen_integer _)).continuous`. Establish `hO : IsOpen (f ⁻¹' V)` using `hV.preimage hc`. Establish `hz : (0 : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletionIntegers F) ∈ f ⁻¹' V` using `h0`. Take `⟨I, u, hu, hsub⟩` from `isOpen_pi_iff.mp hO _ hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨I, fun γ hγ hs => ?_⟩` and prove the remaining obligations. Set `x : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletionIntegers F` to `fun v => ⟨γ v, hγ v⟩`. Establish `hx : x ∈ (I : Set _).pi u`. Introduce `v hv`. Establish `h1 : x v = 0` using `Subtype.ext (hs v hv)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `(hu v hv).2`. Use `hsub hx` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_finset_of_nhds_zero {F : Type} [Field F] [NumberField F] (V : Set (Af F)) (hV : IsOpen V)
     (h0 : (0 : Af F) ∈ V) :
@@ -43,9 +43,9 @@ end GlobalTheory.LatLevel
 namespace GlobalTheory.LatLevel
 
 /- English proof (translation)
-Introduce `D S T LS LT P U hU u _hu`. Use `letI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Establish `hg : Continuous fun β : Af D.host.F => (pairA D.host.F 0 β) • u`. Establish `h1 : Continuous fun β : Af D.host.F => pairA D.host.F 0 β` using `continuous_const.prodMk continuous_id`. Conclude with `h1.smul continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `exists_finset_of_nhds_zero _ (hU.preimage hg) (by show pairA D.host.F 0 0 • u ∈ (U : Set (WO S T))`. Establish `: pairA D.host.F 0 0 = 0` using `rfl`. Rewrite using `[this, zero_smul]`. Conclude with `U.zero_mem)`. Conclude with `⟨s, fun γ hγ hv => hs γ hγ hv⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smul_mem_open_of_vanish : ∀ (D : D7) (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (P : Pl D → Prop) (U : AddSubgroup (WO S T)), IsOpen (U : Set (WO S T)) → ∀ u ∈ latO S T LS LT P, ∃ s : Finset (Pl D), ∀ γ ∈ intAf D.host.F, (∀ v ∈ s, evalV D.host.F v γ = 0) → pairA D.host.F 0 γ • u ∈ U := by
   intro D S T LS LT P U hU u _hu

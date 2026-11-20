@@ -41,7 +41,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions.S
   Formalism.L2.SG.Pf.ScalarFramePf
 
 /- English proof (translation)
-Introduce `D Z Λ T T' F F' F'' β Tn T'n hF hl' hl'' hc' hc'' ha' ha'' hP hg' hg'' hs hsc hG' hG'' hT hT' p`. Conclude with `isScalarPair_lt Z p Λ (frame F) (frameAct (frame F') (admXi D Λ F F')⁻¹) (frameAct (frame F'') (admXi D Λ F F'')⁻¹) β Tn T'n (gfacts_of Λ F F' F'' β hF hl' hl'' hc' hc'' hP hs hsc hG' hG'' hT hT') (hI D Z Λ F F' F'' β hF hl' hl'' hc' hc'' ha' ha'' hP hg' hg'' hs hsc hG' hG'' hT h …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem scalarFrameCT_of (hI : IotaStep) : ScalarFrameCT := by
   intro D Z Λ T T' F F' F'' β Tn T'n hF hl' hl'' hc' hc'' ha' ha'' hP hg' hg'' hs hsc hG' hG'' hT hT' p

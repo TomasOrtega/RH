@@ -4,15 +4,15 @@ open PowerSeries
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : ∀ p : ℕ, p.Prime → ∀ ε : ℤ_[l], ε ^ p = 1 → PadicInt.toZMod ε = 1 → ε = 1`. Introduce `p hp ε hε he1`. Assume the negation of the conclusion as `hne`. Establish `hsum : ∑ i ∈ Finset.range p, ε ^ i = 0`. Use `geom_sum_mul ε p` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hε, sub_self]`. Conclude with `(mul_eq_zero.mp this).resolve_right (sub_ne_zero.mpr hne)`. Establish `hp0 : (p : ZMod l) = 0`. Use `congrArg PadicInt.toZMod hsum` as an intermediate fact. Simplify `this` using `[map_sum, map_pow, he1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hpl : l = p` using `(Nat.prime_dvd_prime_iff_eq hl.out hp).mp ((ZMod.natCast_eq_zero_iff _ _).mp hp0)`. Substitute `hpl` using the available equality. Establish `hmem : ∀ z : ℤ_[l], (l : ℤ_[l]) ∣ z ↔ PadicInt.toZMod z = 0`. Introduce `z`. Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `emultiplicity_geom_sum₂_eq_one (p := l) (x := ε) (y := 1) PadicInt.prime_p (hl.out.odd_of_ne_two h2) ((hmem _).mpr (by simp [he1])) (by rw [hmem, he1]; exact one_ne_zero)`. Simplify using `[hsum] at h`. Proceed by induction on `n using Nat.recOnMul generalizing δ with`. Consider the case `zero => exact absurd rfl hn`. Consider the case `one => simpa using hδ`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `prime p hp => exact key p hp δ hδ h1`. Consider the case `mul a b iha ihb`. Establish `ha : a ≠ 0` using `left_ne_zero_of_mul hn`. Establish `hb : b ≠ 0` using `right_ne_zero_of_mul hn`. Use `iha δ ha (ihb (δ ^ a) hb (by rw [← pow_mul, hδ]) (by rw [map_pow, h1, one_pow])) h1` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem padicInt_eq_one_of_pow_eq_one_of_toZMod_eq_one {l : ℕ} [hl : Fact l.Prime] (h2 : l ≠ 2)
     (δ : ℤ_[l]) {n : ℕ} (hn : n ≠ 0) (hδ : δ ^ n = 1) (h1 : PadicInt.toZMod δ = 1) : δ = 1 := by
@@ -45,33 +45,31 @@ theorem padicInt_eq_one_of_pow_eq_one_of_toZMod_eq_one {l : ℕ} [hl : Fact l.Pr
     refine iha δ ha (ihb (δ ^ a) hb (by rw [← pow_mul, hδ]) (by rw [map_pow, h1, one_pow])) h1
 
 /- English proof (translation)
-Set `g : Δ →* (ZMod l)ˣ` to `(Units.map (PadicInt.toZMod (p := l) : ℤ_[l] →+* ZMod l).toMonoidHom).comp Δ.subtype`. Establish `hg : ∀ d : Δ, (g d : ZMod l) = PadicInt.toZMod ((d : ℤ_[l]ˣ) : ℤ_[l])` using `fun _ => rfl`. Establish `hs : Nat.card Δ ≠ 0` using `Nat.card_pos.ne'`. Establish `hinj : Function.Injective g`. Rewrite using `[injective_iff_map_eq_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `d hd`. Establish `h1 : PadicInt.toZMod ((d : ℤ_[l]ˣ) : ℤ_[l]) = 1` using `by rw [← hg, hd]; rfl`. Establish `hp : ((d : ℤ_[l]ˣ) : ℤ_[l]) ^ Nat.card Δ = 1`. Establish `: d ^ Nat.card Δ = 1` using `pow_card_eq_one'`. Use `congrArg (fun z : Δ => ((z : ℤ_[l]ˣ) : ℤ_[l])) this` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [SubgroupClass.coe_pow, Units.val_pow_eq_pow_val, OneMemClass.coe_one, Units.val_one]`. Conclude with `Subtype.ext (Units.ext (padicInt_eq_one_of_pow_eq_one_of_toZMod_eq_one h2 _ hs hp h1))`. Set `H : Subgroup (ZMod l)ˣ` to `g.range`. Establish `hH : Nat.card H = Nat.card Δ` using `(Nat.card_congr (MonoidHom.ofInjective hinj).toEquiv).symm`. Establish `hHmem : ∀ x : (ZMod l)ˣ, x ^ Nat.card Δ = 1 → x ∈ H`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hle : H ≤ (powMonoidHom (Nat.card Δ) : (ZMod l)ˣ →* (ZMod l)ˣ).ker`. Introduce `y hy`. Establish `: (⟨y, hy⟩ : H) ^ Nat.card H = 1` using `pow_card_eq_one'`. Rewrite `this` using `[hH]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrArg Subtype.val this`. Establish `hc : Nat.card (powMonoidHom (Nat.card Δ) : (ZMod l)ˣ →* (ZMod l)ˣ).ker ≤ Nat.card H`. Rewrite using `[IsCyclic.card_powMonoidHom_ker, hH]`. Conclude with `Nat.gcd_le_right _ (Nat.pos_of_ne_zero hs)`. Rewrite using `[Subgroup.eq_of_le_of_card_ge hle hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify using `using hx`. Set `φ : ((ZMod l)ˣ ⧸ H) ≃ Fin (Nat.card ((ZMod l)ˣ ⧸ H))` to `Finite.equivFin _`. Set `r : Fin (Nat.card ((ZMod l)ˣ ⧸ H)) → (ZMod l)ˣ` to `fun τ => (φ.symm τ).out`. Establish `hr : ∀ τ, ((r τ : (ZMod l)ˣ) : (ZMod l)ˣ ⧸ H) = φ.symm τ` using `fun τ => Quotient.out_eq _`. Establish `hcast : ∀ τ, (((r τ : ZMod l).val : ℕ) : ZMod l) = r τ` using `fun τ => ZMod.natCast_zmod_val _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hreq : ∀ τ τ', (r τ)⁻¹ * r τ' ∈ H → τ = τ'`. Introduce `τ τ' h`. Use `QuotientGroup.eq.mpr h` as an intermediate fact. Rewrite `this` using `[hr, hr]`. Conclude with `φ.symm.injective this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨_, fun τ => (r τ : ZMod l).val, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hH, ← Subgroup.card_eq_card_quotient_mul_card_subgroup, Nat.card_eq_fintype_card, ZMod.card_units]`. Introduce `τ h`. Use `(ZMod.natCast_eq_zero_iff _ _).mpr h` as an intermediate fact. Rewrite `this` using `[hcast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(r τ).ne_zero this`. Introduce `τ τ' hne h`. Simplify using `only [hcast] at h`. Establish `h' : r τ ^ Nat.card Δ = r τ' ^ Nat.card Δ` using `Units.ext (by simpa using h)`. Conclude with `hne (hreq _ _ (hHmem _ (by rw [mul_pow, inv_pow, h', inv_mul_cancel])))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Set `u : (ZMod l)ˣ` to `Units.mk0 x hx`. Establish `hu : (r (φ u))⁻¹ * u ∈ H`. Rewrite using `[← QuotientGroup.eq, hr, Equiv.symm_apply_apply]`. Take `⟨d, hd⟩` from `hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hform : ∀ p : Fin (Nat.card ((ZMod l)ˣ ⧸ H)) × Δ, x = (((r p.1 : ZMod l).val : ℕ) : ZMod l) * PadicInt.toZMod ((p.2 : ℤ_[l]ˣ) : ℤ_[l]) ↔ u = r p.1 * g p.2`. Introduce `p`. Rewrite using `[hcast, ← hg, Units.ext_iff]`. Both sides reduce to the same expression. Establish `hd' : u = r (φ u) * g d` using `by rw [hd, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(φ u, d), (hform _).mpr hd', ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨τ, d'⟩ hp`. Establish `hp' : u = r τ * g d'` using `(hform _).mp hp`. Establish `hτ : τ = φ u`. Apply `hreq` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨d' * d⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, eq_inv_mul_iff_mul_eq, ← mul_assoc, ← hp', mul_inv_eq_iff_eq_mul]`. Conclude with `hd'`. Rewrite `hp'` using `[hτ]`. Establish `: g d' = g d` using `mul_left_cancel (hp'.symm.trans hd')`.
-
-Rewrite using `[hτ, hinj this]`.
+A detailed English derivation is pending.
 -/
 theorem exists_coset_representatives_of_finite_subgroup_padicInt_units {l : ℕ} [hl : Fact l.Prime]
     (Δ : Subgroup ℤ_[l]ˣ) [Finite Δ] (h2 : l ≠ 2) :

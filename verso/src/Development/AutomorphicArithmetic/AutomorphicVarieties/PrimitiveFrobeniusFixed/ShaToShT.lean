@@ -10,7 +10,7 @@ section
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {O W : Type} [CommRing O] [AddCommGroup W] [Module O W]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `h`. Introduce and unpack `c ⟨h1, h2, h3, h4, h5⟩`. Use `⟨h1, h2, fun g => by rw [mul_comm, mul_smul, h3, smul_zero], h4, fun A hA => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, h⟩` from `h5 A hA`. Conclude with `⟨m, by rw [mul_comm, mul_smul, hm, smul_zero], h⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem shT_mono (α : G ℚ Ω →* Oˣ) (δ : G ℚ Ω) (F : ℕ) {a b : O} (h : a ∣ b) :
     ShT W α δ F a ≤ ShT W α δ F b := by
@@ -21,11 +21,11 @@ private theorem shT_mono (α : G ℚ Ω →* Oˣ) (δ : G ℚ Ω) (F : ℕ) {a b
   exact ⟨m, by rw [mul_comm, mul_smul, hm, smul_zero], h⟩
 
 /- English proof (translation)
-Use `set u := hδ.unit with hu0`. Establish `hu : (u : O) = (α δ : O) - 1` using `hδ.unit_spec`. Use `⟨((u⁻¹ : Oˣ) : O) • c δ, ⟨?_, fun g h => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hloc : IsLocallyConstant fun g : G ℚ Ω => c (g * δ)` using `hc.1.comp_continuous (continuous_mul_right δ)`. Establish `heq : (fun g => c g - ((α g : O) • ((u⁻¹ : Oˣ) : O) • c δ - ((u⁻¹ : Oˣ) : O) • c δ)) = fun g => c g - (((u⁻¹ : Oˣ) : O) • (c (g * δ) - c g) - ((u⁻¹ : Oˣ) : O) • c δ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[hc.2 g δ, add_sub_cancel_left, smul_comm (α g : O)]`. Rewrite using `[heq]`. Conclude with `hc.1.sub (((hloc.sub hc.1).comp fun v => ((u⁻¹ : Oˣ) : O) • v).sub (IsLocallyConstant.const _))`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc.2 g h, map_mul, Units.val_mul, mul_smul]`. Use `module`. Establish `e : (α δ : O) • (((u⁻¹ : Oˣ) : O) • c δ) - ((u⁻¹ : Oˣ) : O) • c δ = (u : O) • (((u⁻¹ : Oˣ) : O) • c δ)`. Rewrite using `[hu, sub_smul, one_smul]`. Rewrite using `[e, smul_smul, Units.mul_inv, one_smul, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_coc (α : G ℚ Ω →* Oˣ) (δ : G ℚ Ω) (hδ : IsUnit ((α δ : O) - 1)) (c : G ℚ Ω → W)
     (hc : IsCoc α c) : ∃ m : W, IsCoc α (fun g => c g - ((α g : O) • m - m)) ∧ c δ - ((α δ : O) • m - m) = 0 := by
@@ -50,7 +50,7 @@ private theorem norm_coc (α : G ℚ Ω →* Oˣ) (δ : G ℚ Ω) (hδ : IsUnit 
     rw [e, smul_smul, Units.mul_inv, one_smul, sub_self]
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hx`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_comm _ a]`. Simplify using `[smul_smul]`. Use `_ = 0 := by rw [h, smul_zero]`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem unit_kill {x : O} (hx : IsUnit x) {a : O} {w : W} (h : a • x • w = 0) : a • w = 0 := by
   obtain ⟨u, rfl⟩ := hx
@@ -60,13 +60,13 @@ private theorem unit_kill {x : O} (hx : IsUnit x) {a : O} {w : W} (h : a • x �
     _ = 0 := by rw [h, smul_zero]
 
 /- English proof (translation)
-Establish `hc1 : c 1 = 0`. Use `hc.2 1 1` as an intermediate fact. Simplify using `only [mul_one, map_one, Units.val_one, one_smul] at this`. Conclude with `left_eq_add.mp this`. Establish `e0 : c σ⁻¹ + (α σ⁻¹ : O) • c σ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc.2, inv_mul_cancel, hc1]`. Establish `e1 : c (σ⁻¹ * x * σ) = c σ⁻¹ + (α σ⁻¹ : O) • (c x + (α x : O) • c σ)`. Rewrite using `[mul_assoc, hc.2, hc.2]`. Establish `ea : (α (σ⁻¹ * x * σ) : O) = (α x : O)`. Rewrite using `[map_mul, map_mul, map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hs : (α σ : O) * (α σ⁻¹ : O) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Rewrite `h` using `[e1, ea]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(norm := module) (α σ : O) • h - (α σ : O) • e0 - hs • (c x + (α x : O) • c σ - c σ)`.
+A detailed English derivation is pending.
 -/
 private theorem conj_cob (α : G ℚ Ω →* Oˣ) {c : G ℚ Ω → W} (hc : IsCoc α c) (σ x : G ℚ Ω) (m : W)
     (h : c (σ⁻¹ * x * σ) = (α (σ⁻¹ * x * σ) : O) • m - m) :
@@ -90,9 +90,9 @@ private theorem conj_cob (α : G ℚ Ω →* Oˣ) {c : G ℚ Ω → W} (hc : IsC
   linear_combination (norm := module) (α σ : O) • h - (α σ : O) • e0 - hs • (c x + (α x : O) • c σ - c σ)
 
 /- English proof (translation)
-Establish `key` using `conj_cob α hc d g m h'`. Rewrite `key` using `[h]`. Establish `e : ((α g : O) - 1) • m = ((α g : O) - 1) • ((α d : O) • m - c d)`. Rewrite using `[sub_smul, one_smul, sub_smul, one_smul]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hg.smul_left_cancel]`. Take the linear combination `(norm := module) e`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem dec_of_ine (α : G ℚ Ω →* Oˣ) {c : G ℚ Ω → W} (hc : IsCoc α c) (g d : G ℚ Ω) (m : W)
     (hg : IsUnit ((α g : O) - 1)) (h : c g = (α g : O) • m - m)
@@ -108,17 +108,15 @@ private theorem dec_of_ine (α : G ℚ Ω →* Oˣ) {c : G ℚ Ω → W} (hc : I
 end
 
 /- English proof (translation)
-Take `⟨A0, hA0⟩` from `(placeBasic Ω).1 l (Fact.out : l.Prime)`. Take `⟨m0, hm0⟩` from `hs (Dec A0) (Or.inl ⟨A0, hA0, rfl⟩)`. Establish `hfin : (Set.range c).Finite` using `hc.1.range_finite`. Use `choose ann hann0 hann using (UpperTheory.V.ML.qoCyc l O).1`. Set `S : Finset (QO l O)` to `insert m0 hfin.toFinset`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∏ w ∈ S, ann w, Finset.prod_ne_zero_iff.mpr fun w _ => hann0 w, ?_⟩` and prove the remaining obligations. Establish `kill : ∀ w ∈ S, (∏ w ∈ S, ann w) • w = 0` using `fun w hw => (hann w _).mpr (Finset.dvd_prod_of_mem _ hw)`. Use `set a := ∏ w ∈ S, ann w`. Establish `killc : ∀ g, a • c g = 0` using `fun g => kill _ (Finset.mem_insert_of_mem (hfin.mem_toFinset.mpr ⟨g, rfl⟩))`. Establish `killm0 : a • m0 = 0` using `kill _ (Finset.mem_insert_self _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨hc, hδ, killc, fun A hA g hg => ?_, fun A hA => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hs (Ine A) (Or.inr ⟨A, rfl⟩)`. Rewrite using `[hm g hg, h1 A hA g hg, Units.val_one, one_smul, sub_self]`. Distinguish the cases in `hl : Over A l`. Take `⟨σ, rfl⟩` from `(placeBasic Ω).2.2.2.2.2.2.2.1 A0 A l (Fact.out : l.Prime) hA0 hl`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(α σ : O) • m0 - c σ, ?_, fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub, smul_comm a (α σ : O) m0, killm0, smul_zero, killc, sub_zero]`. Establish `hd' : σ⁻¹ * d * σ ∈ Dec A0` using `(((placeBasic Ω).2.2.2.2.2.2.2.2.2 A0 σ).1 d).mp hd`. Conclude with `conj_cob α hc σ d m0 (hm0 _ hd')`. Take `⟨g0, hg0, hu⟩` from `h2 A hA hl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `hs (Ine A) (Or.inr ⟨A, rfl⟩)`. Use `⟨m, ?_, fun d hd => ?_⟩` and prove the remaining obligations. Establish `e : ((α g0 : O) - 1) • m = c g0` using `by rw [hm g0 hg0, sub_smul, one_smul]`. Conclude with `unit_kill hu (by rw [e, killc])`. Establish `hdA : d • A = A` using `mem_Dec.mp hd`.
-
-Establish `hg' : d⁻¹ * g0 * d ∈ Ine A`. Establish `hh` using `((placeBasic Ω).2.2.2.2.2.2.2.2.2 A d).2.1 g0`. Rewrite `hh` using `[hdA]`. Conclude with `hh.mp hg0`. Conclude with `dec_of_ine α hc g0 d m hu (hm g0 hg0) (hm _ hg')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_shT (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (O : Type)
     [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O]
@@ -163,25 +161,23 @@ private theorem mem_shT (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
         exact dec_of_ine α hc g0 d m hu (hm g0 hg0) (hm _ hg')
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ O _ _ _ _ _ α δ hδ F hF h1 h2 n hn`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Set `T : Subgroup (G ℚ Ω)` to `⊤`. Set `ι : Z1U (twist₂ l α) T →ₗ[O] (G ℚ Ω → QO l O)` to `{ toFun := fun z g => (z : T → QO l O) ⟨g, Subgroup.mem_top g⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hι : Function.Injective ι`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z z' h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Conclude with `congrFun h u.1`. Set `Q : Z1U (twist₂ l α) T →ₗ[O] H1U (twist₂ l α) T` to `Submodule.mkQ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `P : ℕ → Submodule O (H1U (twist₂ l α) T)` to `fun k => ((ShT (QO l O) α δ F (ϖ ^ k)).comap ι).map Q`. Use `UpperTheory.V.Kum.lenDirected O (H1U (twist₂ l α) T) (ShaU (twist₂ l α) l T) P n ?_ ?_ ?_` and prove the remaining obligations. Introduce `i j hij`. Conclude with `Submodule.map_mono (Submodule.comap_mono (shT_mono α δ F (pow_dvd_pow ϖ hij)))`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hloc` using `UpperTheory.V.Base.mk_mem_locSel.mp hx`. Take `⟨hzc, hzco⟩` from `z.2`. Use `set c : G ℚ Ω → QO l O := ι z with hcE`. Establish `hcoc : IsCoc α c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨(IsLocallyConstant.iff_continuous _).mpr (hzc.comp (continuous_id.subtype_mk fun g => Subgroup.mem_top g)), fun g h => ?_⟩` and prove the remaining obligations. Conclude with `hzco ⟨g, Subgroup.mem_top g⟩ ⟨h, Subgroup.mem_top h⟩`. Take `⟨m, hc', hδ'⟩` from `norm_coc α δ hδ c hcoc`. Use `set c' : G ℚ Ω → QO l O := fun g => c g - ((α g : O) • m - m) with hcE'`. Establish `hs : ∀ D ∈ shaFam ℚ Ω l, ∃ m' : QO l O, ∀ g ∈ D, c' g = (α g : O) • m' - m'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `D hD`. Take `⟨mD, hmD⟩` from `hloc D hD`. Use `⟨mD - m, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e` using `hmD ⟨g, Subgroup.mem_top g⟩ hg`. Express the relevant statement in the definitionally equal form `c g = (α g : O) • mD - mD at e`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [hcE', e]`. Use `module`. Take `⟨a, ha0, hmem⟩` from `mem_shT Ω l O α δ F h1 h2 c' hc' hδ' hs`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 hϖ`. Establish `hmem' : c' ∈ ShT (QO l O) α δ F (ϖ ^ k)` using `shT_mono α δ F (Units.mul_left_dvd.mpr dvd_rfl) hmem`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Set `z' : Z1U (twist₂ l α) T` to `⟨fun v => c' v.1, (hc'.1.comp_continuous continuous_subtype_val).continuous, fun v w => hc'.2 v.1 w.1⟩`. Establish `hq : Q z = Q z'`. Simplify using `only [Q, Submodule.mkQ_apply]`. Rewrite using `[UpperTheory.V.Base.mk_eq_mk]`. Use `⟨m, fun v => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `c v.1 - c' v.1 = (α v.1 : O) • m - m`. Simplify using `only [hcE']`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `Q z ∈ _`. Rewrite using `[hq]`.
-
-Conclude with `Submodule.mem_iSup_of_mem k (Submodule.mem_map_of_mem (show z' ∈ _ from hmem'))`. Introduce `n₀`. Use `⟨n₀, le_rfl, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.shaToShT :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (α : G ℚ Ω →* Oˣ) (δ : G ℚ Ω), IsUnit ((α δ : O) - 1) → ∀ F : ℕ, F ≠ 0 →

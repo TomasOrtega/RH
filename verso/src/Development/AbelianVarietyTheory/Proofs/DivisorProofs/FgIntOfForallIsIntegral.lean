@@ -5,7 +5,7 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `f : 𝓞 K' →ₗ[ℤ] K'` to `(algebraMap (𝓞 K') K').toIntAlgHom.toLinearMap`. Establish `hle : M ≤ LinearMap.range f` using `fun y hy => ⟨⟨y, hM y hy⟩, rfl⟩`. Establish `hfg : (M.comap f).FG` using `IsNoetherian.noetherian _`. Establish `hmap` using `hfg.map f`. Rewrite `hmap` using `[Submodule.map_comap_eq, inf_eq_right.mpr hle]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fg_int_of_forall_isIntegral (K' : Type) [Field K'] [NumberField K']
     (M : Submodule ℤ K') (hM : ∀ y ∈ M, IsIntegral ℤ y) : M.FG := by
@@ -16,19 +16,17 @@ theorem fg_int_of_forall_isIntegral (K' : Type) [Field K'] [NumberField K']
   rwa [Submodule.map_comap_eq, inf_eq_right.mpr hle] at hmap
 
 /- English proof (translation)
-Apply `Submodule.FG.of_restrictScalars ℤ` to reduce the goal to its premises. It suffices to establish `H : ∀ W : Submodule K C, (L.restrictScalars ℤ ⊓ W.restrictScalars ℤ).FG by`. Simplify using `using H ⊤`. Introduce `W`. Proceed by induction on `W using WellFoundedLT.induction with`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the argument to an intermediate assertion. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `_ W ih`. Distinguish the cases in `hW : W = ⊥`. Substitute `hW` using the available equality. Establish `hbot : L.restrictScalars ℤ ⊓ (⊥ : Submodule K C).restrictScalars ℤ = ⊥`. Use extensionality with `y`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[hbot]`. Conclude with `Submodule.fg_bot`. Take `⟨x, hxW, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Take `⟨K', _, _, _, φ, hφx, hφL⟩` from `h x hx0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `f : C →ₗ[ℤ] K'` to `φ.toAddMonoidHom.toIntLinearMap`. Establish `hlt : W ⊓ LinearMap.ker φ < W`. Use `lt_of_le_of_ne inf_le_left fun heq => hφx ?_` and prove the remaining obligations. Establish `hx : x ∈ W ⊓ LinearMap.ker φ` using `by rw [heq]; exact hxW`. Conclude with `LinearMap.mem_ker.mp (Submodule.mem_inf.mp hx).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.fg_of_fg_map_of_fg_inf_ker f` to reduce the goal to its premises. Apply `fg_int_of_forall_isIntegral K'` to reduce the goal to its premises. Introduce `z hz`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hz`. Conclude with `hφL y (Submodule.mem_inf.mp hy).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `heq : L.restrictScalars ℤ ⊓ W.restrictScalars ℤ ⊓ LinearMap.ker f = L.restrictScalars ℤ ⊓ (W ⊓ LinearMap.ker φ).restrictScalars ℤ`. Use extensionality with `y`. Simplify using `[f, and_assoc]`. Conclude with `fun _ _ => Iff.rfl`. Rewrite using `[heq]`.
-
-Conclude with `ih _ hlt`.
+Fix the arbitrary inputs and assume any hypotheses. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_of_integral_functionals (K : Type) [Field K] [NumberField K] (C : Type)
     [AddCommGroup C] [Module K C] [FiniteDimensional K C] [Module (𝓞 K) C]

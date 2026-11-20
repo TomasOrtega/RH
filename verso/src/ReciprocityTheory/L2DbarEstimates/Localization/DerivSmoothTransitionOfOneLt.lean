@@ -9,7 +9,7 @@ open scoped ENNReal InnerProductSpace ComplexConjugate ContDiff
 noncomputable section
 
 /- English proof (translation)
-Establish `h : Real.smoothTransition =ᶠ[𝓝 t] fun _ => (0 : ℝ)` using `by filter_upwards [Iio_mem_nhds ht] with s hs`. Conclude with `Real.smoothTransition.zero_of_nonpos (le_of_lt hs)`. Rewrite using `[h.deriv_eq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deriv_smoothTransition_of_neg {t : ℝ} (ht : t < 0) : deriv Real.smoothTransition t = 0 := by
   have h : Real.smoothTransition =ᶠ[𝓝 t] fun _ => (0 : ℝ) := by
@@ -19,7 +19,7 @@ theorem deriv_smoothTransition_of_neg {t : ℝ} (ht : t < 0) : deriv Real.smooth
   simp
 
 /- English proof (translation)
-Establish `h : Real.smoothTransition =ᶠ[𝓝 t] fun _ => (1 : ℝ)` using `by filter_upwards [Ioi_mem_nhds ht] with s hs`. Conclude with `Real.smoothTransition.one_of_one_le (le_of_lt hs)`. Rewrite using `[h.deriv_eq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deriv_smoothTransition_of_one_lt {t : ℝ} (ht : 1 < t) : deriv Real.smoothTransition t = 0 := by
   have h : Real.smoothTransition =ᶠ[𝓝 t] fun _ => (1 : ℝ) := by
@@ -29,11 +29,11 @@ theorem deriv_smoothTransition_of_one_lt {t : ℝ} (ht : 1 < t) : deriv Real.smo
   simp
 
 /- English proof (translation)
-Establish `hd : Continuous (deriv Real.smoothTransition)` using `(Real.smoothTransition.contDiff (n := 1)).continuous_deriv le_rfl`. Take `⟨C, hC⟩` from `(isCompact_Icc (a := (0 : ℝ)) (b := 1)).exists_bound_of_continuousOn hd.continuousOn`. Use `⟨C, fun t => ?_⟩` and prove the remaining obligations. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 0 ⟨le_rfl, zero_le_one⟩)`. Break down `lt_or_ge t 0 with ht | ht` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[deriv_smoothTransition_of_neg ht]`. Simplify using `using hC0`. Break down `lt_or_ge 1 t with ht' | ht'` into its components or cases. Rewrite using `[deriv_smoothTransition_of_one_lt ht']`. Simplify using `using hC0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hC t ⟨ht, ht'⟩` using `[Real.norm_eq_abs]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem deriv_smoothTransition_bounded : ∃ C : ℝ, ∀ t, |deriv Real.smoothTransition t| ≤ C := by
   have hd : Continuous (deriv Real.smoothTransition) :=
@@ -48,21 +48,21 @@ theorem deriv_smoothTransition_bounded : ∃ C : ℝ, ∀ t, |deriv Real.smoothT
   · simpa [Real.norm_eq_abs] using hC t ⟨ht, ht'⟩
 
 /- English proof (translation)
-Unfold `SmoothR Smooth at *`. Introduce `c hc`. Establish `hG` using `he c hc`. Establish `hfd : ContDiffOn ℝ ∞ (fun y => fderiv ℝ ((fun x => (e x : ℂ)) ∘ c.symm) y) c.target` using `hG.fderiv_of_isOpen c.open_target (by simp)`. Establish `hw : ∀ j, ContDiffOn ℝ ∞ (fun y => wdb n j ((fun x => (e x : ℂ)) ∘ c.symm) y) c.target`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Unfold `wdb`. Conclude with `((hfd.clm_apply contDiffOn_const).add (contDiffOn_const.mul (hfd.clm_apply contDiffOn_const))).div_const 2`. Establish `hsum : ContDiffOn ℝ ∞ (fun y => ∑ j ∈ Finset.univ, ‖wdb n j ((fun x => (e x : ℂ)) ∘ c.symm) y‖ ^ 2) c.target` using `ContDiffOn.sum fun j _ => (contDiff_norm_sq ℝ).comp_contDiffOn (hw j)`. Establish `hΦ` using `Complex.ofRealCLM.contDiff.comp_contDiffOn hsum`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hΦ.congr fun y hy => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Complex.ofRealCLM_apply]`. Use `congr 1`. Unfold `dbarSq`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Establish `hx : c.symm y ∈ c.source` using `c.map_target hy`. Establish `hzx : z (c.symm y) = y` using `by rw [hc hx]; exact c.right_inv hy`. Establish `hex : ∃ e' : OpenPartialHomeomorph M (V n), IsChart n z e' ∧ c.symm y ∈ e'.source` using `⟨c, hc, hx⟩`. Unfold `db`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hex]`. Take `⟨hc1, hc2⟩` from `Classical.choose_spec hex`. Use `set c' := Classical.choose hex`. Rewrite using `[hzx]`. Establish `hcx : c' (c.symm y) = y` using `by rw [← hc1 hc2]; exact hzx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hsym : c'.symm y = c.symm y`. Combine the equalities or inequalities in the displayed calculation. Establish `hyt : y ∈ c'.target` using `hcx ▸ c'.map_source hc2`. Establish `hloc : (fun x => (e x : ℂ)) ∘ c'.symm =ᶠ[𝓝 y] (fun x => (e x : ℂ)) ∘ c.symm`. Establish `h1 : ∀ᶠ w in 𝓝 y, w ∈ c'.target` using `c'.open_target.mem_nhds hyt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ᶠ w in 𝓝 y, c'.symm w ∈ c.source` using `(c'.continuousAt_symm hyt).preimage_mem_nhds (c.open_source.mem_nhds (by rw [hsym]; exact hx))`. Use `filter_upwards [h1, h2] with w hw1 hw2`. Establish `hcw : c (c'.symm w) = w`. Rewrite using `[← hc hw2, hc1 (c'.map_target hw1), c'.right_inv hw1]`. Establish `hsw : c'.symm w = c.symm w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Function.comp_apply, hsw]`. Unfold `wdb`. Rewrite using `[hloc.fderiv_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothReal_dbar_sq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e : M → ℝ) (he : SmoothR n z e) : SmoothR n z (dbarSq n z (fun y => (e y : ℂ))) := by
@@ -115,7 +115,7 @@ theorem smoothReal_dbar_sq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M →
   rw [hloc.fderiv_eq]
 
 /- English proof (translation)
-Unfold `dbarSq`. Conclude with `Finset.sum_nonneg fun j _ => by positivity`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dbar_sq_nonneg {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (u : M → ℂ) (x : M) : 0 ≤ dbarSq n z u x := by
@@ -123,19 +123,17 @@ theorem dbar_sq_nonneg {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n
   exact Finset.sum_nonneg fun j _ => by positivity
 
 /- English proof (translation)
-Unfold `dbarSq`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Unfold `db`. Use `split_ifs with h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨hc1, hc2⟩` from `Classical.choose_spec h set c := Classical.choose h`. Establish `hy : z x ∈ c.target` using `by rw [hc1 hc2]; exact c.map_source hc2`. Establish `hE : DifferentiableAt ℝ ((fun y => (e y : ℂ)) ∘ c.symm) (z x)` using `((he c hc1).differentiableOn (by simp)).differentiableAt (c.open_target.mem_nhds hy)`. Take `⟨r, hr⟩ : ∃ r : V n → ℝ, r = fun y => (((fun y => (e y : ℂ)) ∘ c.symm) y).re` from `⟨_, rfl⟩`. Establish `hR : DifferentiableAt ℝ r (z x)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Conclude with `Complex.reCLM.differentiableAt.comp _ hE`. Establish `hK : (fun y => ((k (e y) : ℝ) : ℂ)) ∘ c.symm = Complex.ofRealCLM ∘ (k ∘ r)`. Use function extensionality and compare the values at `y`. Simplify using `[hr]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hG : (fun y => ((e y : ℝ) : ℂ)) ∘ c.symm = Complex.ofRealCLM ∘ r`. Use function extensionality and compare the values at `y`. Simplify using `[hr]`. Establish `hrx : r (z x) = e x` using `by simp [hr, hc1 hc2, c.left_inv hc2]`. Establish `hk' : HasDerivAt k (deriv k (e x)) (r (z x))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hrx]`. Conclude with `((hk.differentiable (by simp)) (e x)).hasDerivAt`. Establish `hd1` using `Complex.ofRealCLM.hasFDerivAt.comp (z x) (hk'.comp_hasFDerivAt (z x) hR.hasFDerivAt)`. Establish `hd2` using `Complex.ofRealCLM.hasFDerivAt.comp (z x) hR.hasFDerivAt`. Rewrite using `[hK, hG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `wdb`. Rewrite using `[hd1.fderiv, hd2.fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, Complex.ofRealCLM_apply]`. Rewrite using `[show ∀ a b c' : ℝ, (((a * b : ℝ) : ℂ) + Complex.I * ((a * c' : ℝ) : ℂ)) / 2 = (a : ℂ) * (((b : ℂ) + Complex.I * (c' : ℂ)) / 2) from fun a b c' => by push_cast; ring]`. Rewrite using `[norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dbar_sq_comp_eq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (k : ℝ → ℝ) (hk : ContDiff ℝ ∞ k) (e : M → ℝ) (he : SmoothR n z e) (x : M) :
@@ -175,9 +173,9 @@ theorem dbar_sq_comp_eq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V 
   · simp
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨c, hx, hzc⟩` from `hz x`. Establish `hc : IsChart n z c` using `fun y _ => by rw [hzc]`. Establish `hg` using `(he c hc).continuousOn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ContinuousAt (((fun y => (e y : ℂ)) ∘ c.symm) ∘ c) x` using `(hg.continuousAt (c.open_target.mem_nhds (c.map_source hx))).comp (c.continuousAt hx)`. Establish `h2 : ((fun y => (e y : ℂ)) ∘ c.symm) ∘ c =ᶠ[𝓝 x] fun y => (e y : ℂ)` using `by filter_upwards [c.open_source.mem_nhds hx] with y hy`. Simplify using `[c.left_inv hy]`. Establish `h3` using `Complex.continuous_re.continuousAt.comp (h1.congr h2)`. Simplify `h3` using `[Function.comp_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_of_smoothReal {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (e : M → ℝ) (he : SmoothR n z e) : Continuous e := by
@@ -195,27 +193,25 @@ theorem continuous_of_smoothReal {M : Type*} [TopologicalSpace M] (n : ℕ) (z :
   simpa [Function.comp_def] using h3
 
 /- English proof (translation)
-Introduce `z hz e a he hcomp`. Establish `hec : Continuous e` using `continuous_of_smoothReal n z hz e he`. Take `⟨C, hC⟩` from `deriv_smoothTransition_bounded`. Use `set D := dbarSq n z (fun y => (e y : ℂ)) with hD`. Establish `hDs : SmoothR n z D` using `smoothReal_dbar_sq n z e he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0 : ContDiff ℝ ∞ (fun t : ℝ => Real.smoothTransition (t - a - 2))` using `Real.smoothTransition.contDiff.comp ((contDiff_id.sub contDiff_const).sub contDiff_const)`. Use `⟨fun x => Real.smoothTransition (e x - a - 2) * (C ^ 2 * D x), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `SmoothR.mul n z _ _ (SmoothR.comp n z _ hk0 e he) (SmoothR.mul n z _ _ ?_ hDs) show Smooth n z (fun _ => ((C ^ 2 : ℝ) : ℂ))` and prove the remaining obligations. Conclude with `Smooth.const n z _`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∀ y, e y < a + 2 → Real.smoothTransition (e y - a - 2) * (C ^ 2 * D y) = 0`. Introduce `y hy`. Rewrite using `[Real.smoothTransition.zero_of_nonpos (by linarith), zero_mul]`. Use `⟨h0 x (by linarith), ?_⟩` and prove the remaining obligations. Unfold `dSqR`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `hnot : x ∉ tsupport (fun y => ((Real.smoothTransition (e y - a - 2) * (C ^ 2 * D y) : ℝ) : ℂ))`. Rewrite using `[notMem_tsupport_iff_eventuallyEq]`. Use `filter_upwards [(isOpen_lt hec continuous_const).mem_nhds (show e x < a + 2 by linarith)] with y hy`. Simplify using `[h0 y hy]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hnot2` using `fun h => hnot (tsupport_d_subset n z j _ h)`. Rewrite using `[image_eq_zero_of_notMem_tsupport hnot2]`. Simplify using the standard rewrite rules. Introduce `ν set N : ℝ := max (ν : ℝ) (a + 3) with hN`. Establish `hk : ContDiff ℝ ∞ (fun t : ℝ => 1 - Real.smoothTransition (t - N))` using `contDiff_const.sub (Real.smoothTransition.contDiff.comp (contDiff_id.sub contDiff_const))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨fun x => 1 - Real.smoothTransition (e x - N), ⟨?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `SmoothR.comp n z _ hk e he`. Use `HasCompactSupport.intro (hcomp (N + 1)) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, not_le] at hx`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Real.smoothTransition.one_of_one_le (show 1 ≤ e x - N by linarith)]`. Simplify using the standard rewrite rules. Introduce `x`. Conclude with `⟨by linarith [Real.smoothTransition.le_one (e x - N)], by linarith [Real.smoothTransition.nonneg (e x - N)]⟩`. Introduce `x hx beta_reduce`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.smoothTransition.zero_of_nonpos (show e x - N ≤ 0 by linarith [le_max_left (ν : ℝ) (a + 3)])]`. Simplify using the standard rewrite rules. Introduce `x`. Establish `hcomp' : dbarSq n z (fun y => ((1 - Real.smoothTransition (e y - N) : ℝ) : ℂ)) x = deriv (fun t : ℝ => 1 - Real.smoothTransition (t - N)) (e x) ^ 2 * D x` using `dbar_sq_comp_eq n z _ hk e he x`. Establish `hder : deriv (fun t : ℝ => 1 - Real.smoothTransition (t - N)) (e x) = -deriv Real.smoothTransition (e x - N)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[deriv_const_sub, deriv_comp_sub_const]`. Rewrite using `[hcomp', hder, neg_sq]`. Establish `hD0 : 0 ≤ D x` using `dbar_sq_nonneg n z _ x`. Distinguish the cases in `hlt : e x < N`. Rewrite using `[deriv_smoothTransition_of_neg (by linarith)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul]`. Conclude with `(Real.exp_pos _).le`. Establish `hge : a + 3 ≤ e x` using `le_trans (le_max_right _ _) (not_lt.1 hlt) beta_reduce`. Rewrite using `[Real.smoothTransition.one_of_one_le (show 1 ≤ e x - a - 2 by linarith), one_mul]`. Establish `h1 : deriv Real.smoothTransition (e x - N) ^ 2 ≤ C ^ 2`.
-
-Rewrite using `[← sq_abs]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) (hC _) 2`. Establish `h2` using `Real.add_one_le_exp (C ^ 2 * D x)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem psi (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] : PsiStatement n M := by

@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HeckeFinRam
 
 /- English proof (translation)
-Introduce `D χ hχ`. Take `⟨H, hH⟩` from `GlobalTheory.HeckeTensorRead.exists_hchar_chrEq D χ hχ`. Use `(GlobalTheory.Mem.UnrAe.finite_ramified H).subset fun w hw => ?_` and prove the remaining obligations. Conclude with `fun h => hw ((GlobalTheory.LFun.unrAt_iff_of_chrEq hH w).2 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_ramified : ∀ (D : D7) (χ : (AE D)ˣ →* Circle), IsHeckeChar D χ →
     {w : HeightOneSpectrum (𝓞 D.host.E) | ¬ GlobalTheory.LFun.UnrAt χ w}.Finite := by

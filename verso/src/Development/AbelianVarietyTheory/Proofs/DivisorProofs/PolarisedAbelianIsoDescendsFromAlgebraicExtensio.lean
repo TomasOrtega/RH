@@ -18,44 +18,38 @@ namespace GlobalTheory.PolIsoDescent
 open GlobalTheory.Spread GlobalTheory.HomPairDescent
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Introduce `k K _ _ σ hσ B₁ B₂ P₀ c₁ c₂ h₁ h₂ hL₁ hL₂`. Use `letI : Algebra k K := σ.toAlgebra`. Use `haveI := B₁.isAb.proper`. Use `haveI := B₂.isAb.proper`. Use `haveI := B₁.isAb.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := B₂.isAb.smooth`. Establish `g₁ : IsGrpPullback ((Over.pullback (spMap (algebraMap k K))).obj B₁.A) B₁.A (spMap σ) (pullback.fst _ _)` using `isGrpPullback_pullback B₁.A (spMap σ)`. Establish `g₂ : IsGrpPullback ((Over.pullback (spMap (algebraMap k K))).obj B₂.A) B₂.A (spMap σ) (pullback.fst _ _)` using `isGrpPullback_pullback B₂.A (spMap σ)`. Take `⟨e₁, m₁, he₁⟩` from `grpPullback_iso h₁ g₁`. Take `⟨e₂, m₂, he₂⟩` from `grpPullback_iso h₂ g₂`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `f` to `e₁.inv ≫ e₂.hom`. Set `r` to `e₂.inv ≫ e₁.hom`. Establish `mf : IsMonHom f` using `inferInstance`. Take `⟨sf, hsf⟩` from `exists_descend B₁.A B₂.A f`. Take `⟨sr, hsr⟩` from `exists_descend B₂.A B₁.A r`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `L₁ : IntermediateField k K` to `IntermediateField.adjoin k ((sf ∪ sr : Finset K) : Set K)`. Establish `hL : ((sf ∪ sr : Finset K) : Set K) ⊆ L₁` using `IntermediateField.subset_adjoin _ _`. Take `⟨θf, hθf⟩` from `hsf L₁ ((Finset.coe_subset.2 Finset.subset_union_left).trans hL)`. Take `⟨θr, hθr⟩` from `hsr L₁ ((Finset.coe_subset.2 Finset.subset_union_right).trans hL)`. Establish `gA` using `isGrpPullback_bcMap B₁.A L₁.val`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gB` using `isGrpPullback_bcMap B₂.A L₁.val`. Take `⟨hepi, hmon⟩` from `FieldBaseChange.epi_and_isMonHom_iff L₁ K L₁.val.toRingHom`. Use `haveI := (hepi _ _ _ _ _ gA.1).1`. Use `haveI := (hepi _ _ _ _ _ gB.1).1`. Use `haveI mθ : IsMonHom θf := (hmon _ _ _ _ _ _ θf f gA gB hθf).1 mf`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Establish `r1 : θf ≫ θr = 𝟙 _`. Use `comp_eq_pow_of_epi gA hθf hθr 1 (by rw [pow_one]; simp [f, r])` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Establish `r2 : θr ≫ θf = 𝟙 _`. Use `comp_eq_pow_of_epi gB hθr hθf 1 (by rw [pow_one]; simp [f, r])` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Set `θ : (Over.pullback (spMap (algebraMap k L₁))).obj B₁.A ≅ (Over.pullback (spMap (algebraMap k L₁))).obj B₂.A` to `⟨θf, θr, r1, r2⟩`. Use `haveI : IsMonHom θ.hom := mθ`. Use `haveI := m₁`. Set `φP : P₀.A.left ⟶ ((Over.pullback (spMap (algebraMap k L₁))).obj B₁.A).left` to `e₁.hom.left ≫ bcMap B₁.A.hom L₁.val`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφP : IsGrpPullback P₀.A ((Over.pullback (spMap (algebraMap k L₁))).obj B₁.A) (spMap L₁.val.toRingHom) φP` using `((isGrpPullback_of_iso e₁).comp gA).congr (Category.id_comp _) rfl`. Establish `hfst : φP ≫ pullback.fst _ _ = c₁`. Simplify using `only [φP, Category.assoc, bcMap_fst]`. Conclude with `he₁`. Establish `hc₂ : φP ≫ θf.left ≫ pullback.fst _ _ = c₂`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [φP, Category.assoc]`. Rewrite using `[reassoc_of% hθf, bcMap_fst]`. Use `show e₁.hom.left ≫ (e₁.inv ≫ e₂.hom).left ≫ _ = _`. Rewrite using `[← Category.assoc, ← Over.comp_left, Iso.hom_inv_id_assoc, he₂]`. Establish `HP : LBIso (B₁.L.pull c₁) (B₂.L.pull c₂)` using `LBIso.trans (pull_isLB B₁.isLB c₁) P₀.isLB (pull_isLB B₂.isLB c₂) hL₁.symm hL₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `HX` using `LBIso.chartPull (chartPullOut B₁.L (fun _ => pullback.fst B₁.A.hom (spMap (algebraMap k L₁))) (fun _ => 1) φP (fun _ => c₁) (fun _ => hfst.symm)) (chartPullOut B₂.L (fun _ => θf.left ≫ pullback.fst B₂.A.hom (spMap (algebraMap k L₁))) (fun _ => 1) φP (fun _ => c₂) (fun _ => hc₂.sy …`. Take `⟨s₂, hs₂⟩` from `lbIso_descends_to_subfield_containing_finset L₁ K L₁.val.toRingHom ((Over.pullback (spMap (algebraMap k L₁))).obj B₁.A) P₀.A φP (B₁.L.pull (pullback.fst B₁.A.hom (spMap (algebraMap k L₁)))) (B₂.L.pull (θf.left ≫ pullback.fst B₂.A.hom (spMap (algebraMap k L₁)))) hφP.1 (by change Q …`. Use `⟨sf ∪ sr ∪ s₂, ?_⟩` and prove the remaining obligations. Introduce `k₁ _ α β hαβ hs C χ hχ hCL`. Set `E : IntermediateField k K` to `{ β.fieldRange with algebraMap_mem' := fun r => RingHom.mem_fieldRange.2 ⟨α r, RingHom.congr_fun hαβ r⟩ }`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : L₁ ≤ E` using `IntermediateField.adjoin_le_iff.2 fun x hx => by`. Take `⟨y, hy⟩` from `hs (Finset.coe_subset.2 Finset.subset_union_left hx)`. Conclude with `RingHom.mem_fieldRange.2 ⟨y, hy⟩`. Establish `hran : ∀ x : L₁, ∃ y, β y = x` using `fun x => RingHom.mem_fieldRange.1 (hle x.2)`. Use `choose ρ₀ hρ₀ using hran`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `α₁ : L₁ →+* k₁` to `{ toFun := ρ₀ map_one' := β.injective (by simp [hρ₀]) map_mul' := fun x y ↦ β.injective (by simp [hρ₀]) map_zero' := β.injective (by simp [hρ₀]) map_add' := fun x y ↦ β.injective (by simp [hρ₀]) }`. Establish `hα₁β : β.comp α₁ = L₁.val.toRingHom` using `RingHom.ext fun x => hρ₀ x`. Establish `hα₁ : α₁.comp (algebraMap k L₁) = α` using `RingHom.ext fun r => β.injective ((hρ₀ _).trans (RingHom.congr_fun hαβ r).symm)`. Establish `hsp : spMap α₁ ≫ spMap (algebraMap k L₁) = spMap α` using `by rw [spMap_comp', hα₁]`. Establish `hw : χ ≫ B₁.A.hom = (C.A.hom ≫ spMap α₁) ≫ spMap (algebraMap k L₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hχ.1.w, Category.assoc, hsp]`. Set `j : C.A.left ⟶ ((Over.pullback (spMap (algebraMap k L₁))).obj B₁.A).left` to `pullback.lift χ (C.A.hom ≫ spMap α₁) hw`. Establish `hj₁ : j ≫ pullback.fst _ _ = χ` using `pullback.lift_fst _ _ _`. Establish `hj₂ : j ≫ pullback.snd _ _ = C.A.hom ≫ spMap α₁` using `pullback.lift_snd _ _ _`. Establish `hj : IsGrpPullback C.A ((Over.pullback (spMap (algebraMap k L₁))).obj B₁.A) (spMap α₁) j` using `(isGrpPullback_pullback B₁.A _).cancel (hχ.congr hsp.symm hj₁.symm) hj₂`.
-
-Use `⟨j ≫ θf.left ≫ pullback.fst _ _, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hj.comp ((isGrpPullback_of_iso θ).comp (isGrpPullback_pullback B₂.A _))).congr (by rw [Category.id_comp, hsp]) rfl`. Establish `H` using `hs₂ k₁ α₁ β hα₁β ((Finset.coe_subset.2 Finset.subset_union_right).trans hs) C.A j hj.1`. Establish `H' : LBIso (B₁.L.pull χ) (B₂.L.pull (j ≫ θf.left ≫ pullback.fst _ _))` using `LBIso.chartPull (chartPullSame B₁.L (fun _ => χ) (fun _ => j ≫ pullback.fst _ _) (fun _ => 1) (𝟙 _) (fun _ => by rw [Category.id_comp, hj₁])) (chartPullSame B₂.L (fun _ => j ≫ θf.left ≫ pullback.fst _ _) (fun _ => j ≫ θf.left ≫ pullback.fst _ _) (fun _ => 1) (𝟙 _) (fun _ => by rw …`. Conclude with `LBIso.trans C.isLB (pull_isLB B₁.isLB _) (pull_isLB B₂.isLB _) hCL H'`.
-
-Introduce `d hd₁ hd₂`. Establish `hdj : d ≫ j = φP`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hj₁, hd₁, hfst]`. Rewrite using `[Category.assoc, hj₂, ← Category.assoc, hd₂, Category.assoc, spMap_comp', hα₁β]`.
-
-Conclude with `hφP.1.w.symm`. Rewrite using `[reassoc_of% hdj]`. Conclude with `hc₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem model_descends : ∀ (k K : Type) [Field k] [Field K] (σ : k →+* K), (∀ z : K, ∃ f : Polynomial k, f ≠ 0 ∧ Polynomial.eval₂ σ z f = 0) → ∀ (B₁ B₂ : PolAV (Sp k)) (P₀ : PolAV (Sp K)) (c₁ : P₀.A.left ⟶ B₁.A.left) (c₂ : P₀.A.left ⟶ B₂.A.left), IsGrpPullback P₀.A B₁.A (spMap σ) c₁ → IsGrpPullback P₀.A B₂.A (spMap σ) c₂ → LBIso P₀.L (B₁.L.pull c₁) → LBIso P₀.L (B₂.L.pull c₂) → ∃ s : Finset K, ∀ (k₁ : Type) [Field k₁] (α : k →+* k₁) (β : k₁ →+* K), β.comp α = σ → (s : Set K) ⊆ Set.range β → ∀ (C : PolAV (Sp k₁)) (χ : C.A.left ⟶ B₁.A.left), IsGrpPullback C.A B₁.A (spMap α) χ → LBIso C.L (B₁.L.pull χ) → ∃ χ₂ : C.A.left ⟶ B₂.A.left, IsGrpPullback C.A B₂.A (spMap α) χ₂ ∧ LBIso C.L (B₂.L.pull χ₂) ∧ ∀ d : P₀.A.left ⟶ C.A.left, d ≫ χ = c₁ → d ≫ C.A.hom = P₀.A.hom ≫ spMap β → d ≫ χ₂ = c₂ := by
   classical

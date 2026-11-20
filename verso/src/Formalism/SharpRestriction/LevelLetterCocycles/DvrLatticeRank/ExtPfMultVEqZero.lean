@@ -20,7 +20,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (ρ : Representation LL G V)
 
 /- English proof (translation)
-Establish `hle : (PD.Fil (a + 1)).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp` using `fun x hx => PD.Fil_anti a hx`. Unfold `FilV`. Introduce and unpack `_ ⟨t, rfl⟩`. Use `⟨AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (Submodule.inclusion hle) t, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← AlgebraTensorModule.map_comp]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -35,14 +35,14 @@ theorem extPf_filV_succ_le (a : ℤ) :
   rfl
 
 /- English proof (translation)
-The claim follows from `inf_le_inf_left _ (extPf_filV_succ_le PD (LL := LL) (V := V) a)`.
+A detailed English derivation is pending.
 -/
 theorem extPf_fildR_succ_le (τ : K →ₐ[Qp] LL) (a : ℤ) :
     FildR PD ρ τ (a + 1) ≤ FildR PD ρ τ a :=
   inf_le_inf_left _ (extPf_filV_succ_le PD (LL := LL) (V := V) a)
 
 /- English proof (translation)
-Unfold `IsJumpV at h`. Unfold `multV`. Rewrite using `[not_not.1 h, sub_self]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem extPf_multV_eq_zero (τ : K →ₐ[Qp] LL) (a : ℤ) (h : ¬ IsJumpV PD ρ τ a) :
     multV PD ρ τ a = 0 := by
@@ -51,11 +51,9 @@ theorem extPf_multV_eq_zero (τ : K →ₐ[Qp] LL) (a : ℤ) (h : ¬ IsJumpV PD 
   rw [not_not.1 h, sub_self]
 
 /- English proof (translation)
-Introduce `hj`. Unfold `IsJumpV at hj`. Apply `hj` to reduce the goal to its premises. Use `haveI : FiniteDimensional LL ↥(DdRE PD ρ τ) := hfin`. Establish `hsub : FildR PD ρ τ a ≤ DdRE PD ρ τ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `FildR`. Conclude with `inf_le_left`. Use `haveI : FiniteDimensional LL ↥(FildR PD ρ τ a) := Submodule.finiteDimensional_of_le hsub`. Apply `Submodule.eq_of_le_of_finrank_eq (extPf_fildR_succ_le PD ρ τ a)` to reduce the goal to its premises. Unfold `multV at h`.
-
-Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem extPf_not_jump (τ : K →ₐ[Qp] LL) (hfin : Module.Finite LL ↥(DdRE PD ρ τ)) (a : ℤ)
     (h : multV PD ρ τ a = 0) : ¬ IsJumpV PD ρ τ a := by
@@ -74,11 +72,11 @@ theorem extPf_not_jump (τ : K →ₐ[Qp] LL) (hfin : Module.Finite LL ↥(DdRE 
 end Gen
 
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK hA l _ _ K LL hG T h' hh' hc hj κ hκ`. Take `⟨-, -, -, -, -, -, -, -, -, -, h8, h11, -⟩` from `hA`. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Take `⟨h1, hz⟩` from `Formalism.MainNotions.LiftingTheory.lone_HOne0 ((HW l).W K 1 LL hG)`. Take `⟨Tp, ι, π, hcp, hext⟩` from `Formalism.MainNotions.LiftingTheory.lext_HExt_D D HW F l K 1 LL hG h1 T κ hc hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Tp, ι, π, hext, hcp, h1, fun τ a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hout`. Take `⟨-, -, hadd⟩` from `h11 l K LL T Tp ((HW l).W K 1 LL hG).one ι π hext.1 hcp`. Establish `hfin` using `((h8 l K LL Tp).2 τ).1`. Establish `h0 : multV ((D.loc l).PD K) T.ρ τ a = 0` using `extPf_multV_eq_zero _ _ τ a fun hT => hout (hj τ a hT)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : multV ((D.loc l).PD K) ((HW l).W K 1 LL hG).one.ρ τ a = 0`. Use `extPf_multV_eq_zero _ _ τ a fun hO => hout ?_` and prove the remaining obligations. Rewrite using `[hz τ a hO]`. Conclude with `Set.mem_Icc.2 ⟨by omega, by omega⟩`. Conclude with `extPf_not_jump _ _ τ hfin a (by have := hadd τ a; omega) ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_pf : Formalism.MainNotions.N.Ln34.ExtStep := by
   intro D HW F Cm CA CB CK hA l _ _ K LL hG T h' hh' hc hj κ hκ

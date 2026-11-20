@@ -14,9 +14,9 @@ abbrev NC : Type := ↥(normInteger ℂ_[l])
 def iotaF : ACris.ACris ℂ_[l] l →+* Reformulated.AutPerF.BdRPlus l (NC l) := ACris.iota ℂ_[l] l
 
 /- English proof (translation)
-Use `⟨(n - 1).factorial.factorization l, fun x => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `ACris.pow_mul_mem_latticeQ n _ (ACris.embedding₂ ℂ_[l] l n x).2`. Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `h1 : Reformulated.AutPerF.BdRPlus.eval l (NC l) n (iotaF l x) = ((ACris.embedding₂ ℂ_[l] l n x : ACris.acrisQ ℂ_[l] l n) : Localization.Away ((l : ℕ) : AInf ℂ_[l] l) ⧸ ACris.kerAway ℂ_[l] l ^ n)`. Use `ACris.evalₐ_iota (K := ℂ_[l]) (p := l) n x` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[ACris.iotaQ.eq_1]`. Conclude with `this`. Rewrite using `[map_mul, map_pow, map_natCast, h1]`. Conclude with `hw.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_bounded (n : ℕ) : ∃ N : ℕ, ∀ x : ACris.ACris ℂ_[l] l, ∃ a : Reformulated.AutPerF.Ainf l (NC l),
     Reformulated.AutPerF.BdRPlus.eval l (NC l) n (((l : ℕ) : Reformulated.AutPerF.BdRPlus l (NC l)) ^ N * iotaF l x) =

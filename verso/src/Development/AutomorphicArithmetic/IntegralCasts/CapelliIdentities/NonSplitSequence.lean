@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Establish `e : (2 : ℝ) • (a - 1) = (a * a - 1) - (a - 1) * (a - 1)`. Rewrite using `[two_smul]`. Use `noncomm_ring`. Establish `h1 : ‖(2 : ℝ) • (a - 1)‖ = 2 * ‖a - 1‖`. Rewrite using `[norm_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h2 : ‖(a * a - 1) - (a - 1) * (a - 1)‖ ≤ ‖a * a - 1‖ + ‖a - 1‖ * ‖a - 1‖` using `(norm_sub_le _ _).trans (by gcongr; exact norm_mul_le _ _)`. Rewrite `h2` using `[← e, h1]`. Establish `h3 : ‖a - 1‖ * ‖a - 1‖ ≤ ‖a - 1‖ * (1 / 2)` using `mul_le_mul_of_nonneg_left h (norm_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.NoSmallSubgroupsNormedAlgebra.step {A : Type} [NormedRing A] [NormedAlgebra ℝ A] (a : A)
     (h : ‖a - 1‖ ≤ (1 / 2 : ℝ)) : ‖a - 1‖ ≤ (2 / 3 : ℝ) * ‖a * a - 1‖ := by
@@ -19,13 +19,13 @@ private theorem UpperTheory.Reformulated.B.NoSmallSubgroupsNormedAlgebra.step {A
   linarith
 
 /- English proof (translation)
-Introduce `G A _ _ _ ρ H h`. Establish `key : ∀ n : ℕ, ∀ g ∈ H, ‖ρ g - 1‖ ≤ (2 / 3 : ℝ) ^ n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `h g hg` as an intermediate fact. Rewrite using `[pow_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ n ih`. Introduce `g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `UpperTheory.Reformulated.B.NoSmallSubgroupsNormedAlgebra.step (ρ g) (h g hg)`. Establish `h2` using `ih (g * g) (H.mul_mem hg hg)`. Rewrite `h2` using `[map_mul]`. Rewrite using `[pow_succ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `g hg`. Establish `lim : Filter.Tendsto (fun n : ℕ => (2 / 3 : ℝ) ^ n) Filter.atTop (nhds 0)` using `tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)`. Establish `h0 : ‖ρ g - 1‖ ≤ 0` using `ge_of_tendsto' lim (fun n => key n g hg)`. Conclude with `sub_eq_zero.mp (norm_le_zero_iff.mp h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.NoSmallSubgroupsNormedAlgebra.nss :
     ∀ {G A : Type} [inst : Group G]

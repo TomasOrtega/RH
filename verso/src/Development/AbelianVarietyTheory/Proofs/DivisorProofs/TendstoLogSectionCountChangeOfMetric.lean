@@ -17,11 +17,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Use `haveI : Module.Finite ℤ Λ := Module.Finite.iff_addGroup_fg.2 ((AddGroup.fg_iff_addSubgroup_fg Λ).2 hΛ)`. Use `haveI : Module.Free ℤ Λ := Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.finBasis ℤ Λ`. Use `⟨fun i => (b i : K), ?_, le_antisymm ?_ ?_, fun i => (b i).2⟩` and prove the remaining obligations. Conclude with `b.linearIndependent.map' Λ.subtype.toIntLinearMap (LinearMap.ker_eq_bot.2 Subtype.val_injective)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(AddSubgroup.closure_le _).2 (Set.range_subset_iff.2 fun i => (b i).2)`. Introduce `x hx`. Establish `h` using `congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)`. Express the relevant statement in the definitionally equal form `_ = x at h`. Rewrite using `[← h, AddSubmonoidClass.coe_finsetSum]`.
-
-Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[AddSubgroupClass.coe_zsmul]`. Conclude with `AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (Set.mem_range_self (f := fun i => (b i : K)) i)) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intBasis {K : Type} [Field K] [CharZero K] (Λ : AddSubgroup K) (hΛ : Λ.FG) :
     ∃ f : Fin (Module.finrank ℤ Λ) → K, LinearIndependent ℤ f ∧ AddSubgroup.closure (Set.range f) = Λ ∧
@@ -41,23 +39,21 @@ theorem exists_intBasis {K : Type} [Field K] [CharZero K] (Λ : AddSubgroup K) (
     exact AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (Set.mem_range_self (f := fun i => (b i : K)) i)) _
 
 /- English proof (translation)
-Introduce `HA k _ X _ p D hX hS P a hP ha Λ hΛ`. Take `⟨C, hC1, hCs⟩` from `hΛ.small`. Use `⟨Real.log C + 1, ?_⟩` and prove the remaining obligations. Introduce `u B a' hB hu hup ha' t ht`. Use `hX.charZero` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : CharZero X.functionField := charZero_of_injective_ringHom (germ_injective_of_isIntegral X (U := ⊤) _ trivial)`. Use `choose f hli hcl hmemΛ using fun m => exists_intBasis (Λ m) (hΛ.fg m)`. Set `ω : ∀ σ, VolDens p σ D` to `fun σ => Classical.choice (GlobalTheory.T.exists_smoothVolumeDensityChart_projArith k X p D hX hS σ)`. Establish `hmem : ∀ (m : ℕ) i, f m i ∈ P.H m 1` using `fun m i => hΛ.le m (hmemΛ m i)`. Establish `hmem' : ∀ (m : ℕ) i, f m i ∈ (upperParabolic P u).H m 1` using `fun m i => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(GlobalTheory.T.raiseFirstWeight_sections_loci_values_norms k X p P u m 1).1]`. Conclude with `hmem m i`. Establish `hC1' : 1 ≤ C * Real.exp B` using `one_le_mul_of_one_le_of_one_le hC1 (Real.one_le_exp hB)`. Establish `hlog : Real.log (C * Real.exp B) = Real.log C + B`. Rewrite using `[Real.log_mul (by positivity) (Real.exp_pos B).ne', Real.log_exp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ m : ℕ, 1 ≤ m → AddSubgroup.closure (Set.range (f m)) ≤ AddSubgroup.closure (ballIn P (AddSubgroup.closure (Set.range (f m))) m 1 (C ^ m))`. Introduce `m hm`. Rewrite using `[hcl m]`. Conclude with `hCs m hm`. Establish `hs' : ∀ m : ℕ, 1 ≤ m → AddSubgroup.closure (Set.range (f m)) ≤ AddSubgroup.closure (ballIn (upperParabolic P u) (AddSubgroup.closure (Set.range (f m))) m 1 ((C * Real.exp B) ^ m))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `m hm`. Rewrite using `[hcl m]`. Use `(hCs m hm).trans (AddSubgroup.closure_mono ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hb⟩`. Use `⟨hx, fun σ y => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[((GlobalTheory.T.raiseFirstWeight_sections_loci_values_norms k X p P u m 1).2.2 σ y x).2]`. Establish `h0 : 0 ≤ P.nu m 1 σ y x` using `by rw [← norm_val]; exact norm_nonneg _`. Rewrite using `[mul_pow, ← Real.exp_nat_mul]`. Use `mul_le_mul (hb σ y) (Real.exp_le_exp.2 ?_) (Real.exp_pos _).le (by positivity)` and prove the remaining obligations. Establish `hu'` using `(abs_le.1 (hu σ y)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Use `push_cast`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (neg_le.1 hu') hm0, mul_nonneg hm0 hB]`. Establish `h1` using `GlobalTheory.T.supNormBall_count_asymptotic_gramDeterminant k X p D hX hS P hP ω _ f hmem hli _ hΛ.rank C hC1 hs t (by linarith)`. Establish `h2` using `GlobalTheory.T.supNormBall_count_asymptotic_gramDeterminant k X p D hX hS (upperParabolic P u) hup ω _ f hmem' hli _ hΛ.rank (C * Real.exp B) hC1' hs' t (by rw [hlog]; linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h3` using `GlobalTheory.T.tendsto_logDet_gram_change_semiPositive_metric HA k X p D hX hS P hP ω _ f hmem hli hΛ.rank u a a' hup ha ha'`. Simplify using `only [hcl] at h1 h2`. Establish `key` using `(h2.sub h1).add (h3.div_const 2)`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tendsto_logCount_sub_up : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ (P : Pair p) (a : ℝ), P.L.SemiPos D → P.L.IsSelfInter a → ∀ Λ : ℕ → AddSubgroup X.functionField, GoodFam P D (gdeg P.L D / D.factorial) Λ → ∃ t₀ : ℝ, ∀ (u : SmFn p) (B a' : ℝ), 0 ≤ B → (∀ σ y, |u.u σ y| ≤ B) → (up P.L u).SemiPos D → (up P.L u).IsSelfInter a' → ∀ t : ℝ, t₀ + B ≤ t → Tendsto (fun m : ℕ => (Real.log ((ballIn (upperParabolic P u) (Λ m) m 1 (Real.exp (t * m))).ncard : ℝ) - Real.log ((ballIn P (Λ m) m 1 (Real.exp (t * m))).ncard : ℝ)) / (m : ℝ) ^ (D + 1)) atTop (𝓝 ((a' - a) / (D + 1).factorial)) := by
   intro HA k _ X _ p D hX hS P a hP ha Λ hΛ

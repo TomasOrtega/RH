@@ -22,17 +22,17 @@ open GlobalTheory.CompanionTheory.PointSurjectivity
 namespace GlobalTheory.CompanionTheory.PointSurjectivity
 
 /- English proof (translation)
-Introduce `hac`. Take `⟨t, ht⟩` from `hT`. Set `σ : LB.Sec N` to `⟨fun i => (t.s i).val, fun i j => congrArg Units.val (ht i j)⟩`. Establish `h0` using `hac 0`. Rewrite `h0` using `[cochainComplex_exactAt_zero_iff, cechLB_d _ _ _ 0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `x : (secCube f N D).obj ∅` to `SecOnR.of f N _ (GlobalTheory.LB.ofSec σ _)`. Establish `hx : Cube.aug (secCube f N D) x = 0` using `h0 ((Cube.d_aug _ _).trans (map_zero _).symm)`. Take `⟨p⟩` from `‹Nonempty X›`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, p ∈ D i := by`. Establish `hp : p ∈ ⨆ i, D i` using `by rw [hc]; trivial`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.1 hp`. Choose the witnesses or unpack the hypotheses as in `⟨c, hcp⟩ : ∃ c, p ∈ N.U c := by`. Establish `hp : p ∈ ⨆ i, N.U i` using `by rw [hN.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hp`. Establish `e` using `congrFun hx ⟨{i}, Finset.card_singleton i⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `congrArg (fun y : SecOnR f N (⨅ j ∈ ({i} : Finset κ), D j) => SecOnR.coord y c) e`. Establish `hpW : p ∈ (⨅ j ∈ ({i} : Finset κ), D j) ⊓ N.U c`. Use `⟨?_, hcp⟩` and prove the remaining obligations. Simplify using `using hi`. Establish `hu : IsUnit (rs X (inf_le_right : (⨅ j ∈ ({i} : Finset κ), D j) ⊓ N.U c ≤ N.U c) (t.s c).val)` using `(t.s c).isUnit.map (rs X inf_le_right)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e₃ : rs X (inf_le_right : (⨅ j ∈ ({i} : Finset κ), D j) ⊓ N.U c ≤ N.U c) (t.s c).val = 0`. Set `y : SecOnR f N (⨅ j ∈ (∅ : Finset κ), D j)` to `x`. Establish `e₄ : rs X (inf_le_inf_right _ (iInf_le_iInf_of_subset D (Finset.empty_subset {i}))) (SecOnR.coord y c) = 0` using `e₂`. Establish `e₅ : SecOnR.coord y c = rs X inf_le_right (t.s c).val` using `GlobalTheory.LB.coord_ofSec _ _ _`. Rewrite `e₄` using `[e₅, rs_rs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e₄`. Rewrite `hu` using `[e₃]`. Establish `hu'` using `hu.map (X.presheaf.germ _ p hpW).hom`. Rewrite `hu'` using `[map_zero]`. Conclude with `not_isUnit_zero hu'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_acyclic_cechLB_of_triv {R : Type} [CommRing R] {X : Scheme.{0}} [Nonempty X]
     (f : X ⟶ Spec (CommRingCat.of R)) (N : LB X)

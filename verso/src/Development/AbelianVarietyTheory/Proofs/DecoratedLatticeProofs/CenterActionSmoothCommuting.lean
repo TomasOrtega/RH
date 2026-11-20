@@ -32,13 +32,13 @@ variable (θ V) in
 def CommOnSm (A B : (GA D V → ℂ) → (GA D V → ℂ)) : Prop := ∀ f ∈ SmFun θ V, A (B f) = B (A f)
 
 /- English proof (translation)
-Introduce `f hf` and use `(h f hf).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CommOnSm.symm {A B : (GA D V → ℂ) → (GA D V → ℂ)} (h : CommOnSm θ V A B) : CommOnSm θ V B A :=
   fun f hf => (h f hf).symm
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hT.smul 0 0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hT.add _ (hg a (by simp)) _ (Submodule.sum_mem _ fun b hb => hg b (by simp [hb])), ih fun b hb => hg b (by simp [hb])]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem lin_sum {T : (GA D V → ℂ) → (GA D V → ℂ)} (hT : LinOnSm θ V T) {α : Type} (s : Finset α)
     (g : α → GA D V → ℂ) (hg : ∀ a ∈ s, g a ∈ SmFun θ V) : T (∑ a ∈ s, g a) = ∑ a ∈ s, T (g a) := by
@@ -49,9 +49,9 @@ theorem lin_sum {T : (GA D V → ℂ) → (GA D V → ℂ)} (hT : LinOnSm θ V T
       (Submodule.sum_mem _ fun b hb => hg b (by simp [hb])), ih fun b hb => hg b (by simp [hb])]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact fun _ _ => rfl`. Consider the case `cons a l ih`. Introduce `f hf`. Establish `h2` using `linOnSm_foldr A l fun b hb => hl b (by simp [hb])`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [List.foldr_cons]`. Rewrite using `[hc a (by simp) _ (h2.mem f hf), ih (fun b hb => hl b (by simp [hb])) (fun b hb => hc b (by simp [hb])) f hf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_foldr {T : (GA D V → ℂ) → (GA D V → ℂ)} {α : Type} (A : α → (GA D V → ℂ) → (GA D V → ℂ))
     (l : List α) (hl : ∀ a ∈ l, LinOnSm θ V (A a)) (hc : ∀ a ∈ l, CommOnSm θ V T (A a)) :
@@ -65,16 +65,16 @@ theorem comm_foldr {T : (GA D V → ℂ) → (GA D V → ℂ)} {α : Type} (A : 
     rw [hc a (by simp) _ (h2.mem f hf), ih (fun b hb => hl b (by simp [hb])) (fun b hb => hc b (by simp [hb])) f hf]
 
 /- English proof (translation)
-The claim follows from `linOnSm_foldr A _ fun i _ => hA i`.
+A detailed English derivation is pending.
 -/
 theorem lin_opPow {ι : Type} {A : ι → (GA D V → ℂ) → (GA D V → ℂ)} (hA : ∀ i, LinOnSm θ V (A i)) (k : ι →₀ ℕ) :
     LinOnSm θ V (opPow A k) :=
   linOnSm_foldr A _ fun i _ => hA i
 
 /- English proof (translation)
-Use `⟨fun f hf => Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ((lin_opPow hA k).mem f hf), fun f hf g hg => ?_, fun c f => ?_⟩` and prove the remaining obligations. Simplify using `only [polyAct]`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [(lin_opPow hA k).add f hf g hg, smul_add]`. Simplify using `only [polyAct]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [(lin_opPow hA k).smul, smul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem lin_polyAct {ι : Type} {A : ι → (GA D V → ℂ) → (GA D V → ℂ)} (hA : ∀ i, LinOnSm θ V (A i))
     (p : MvPolynomial ι ℂ) : LinOnSm θ V (polyAct A p) := by
@@ -88,9 +88,9 @@ theorem lin_polyAct {ι : Type} {A : ι → (GA D V → ℂ) → (GA D V → ℂ
     exact Finset.sum_congr rfl fun k _ => by rw [(lin_opPow hA k).smul, smul_comm]
 
 /- English proof (translation)
-Introduce `f hf`. Simplify using `only [polyAct]`. Rewrite using `[lin_sum hT _ _ fun k _ => Submodule.smul_mem _ _ ((lin_opPow hA k).mem f hf)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hT.smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (comm_foldr A _ (fun i _ => hA i) (fun i _ => hc i) f hf)`.
+A detailed English derivation is pending.
 -/
 theorem comm_polyAct {T : (GA D V → ℂ) → (GA D V → ℂ)} (hT : LinOnSm θ V T) {ι : Type}
     {A : ι → (GA D V → ℂ) → (GA D V → ℂ)} (hA : ∀ i, LinOnSm θ V (A i)) (hc : ∀ i, CommOnSm θ V T (A i))
@@ -103,9 +103,9 @@ theorem comm_polyAct {T : (GA D V → ℂ) → (GA D V → ℂ)} (hT : LinOnSm �
   exact congrArg _ (comm_foldr A _ (fun i _ => hA i) (fun i _ => hc i) f hf)
 
 /- English proof (translation)
-Establish `hl : ∀ idx : Fin (k + 1) → Fin V.rank, ∀ S ∈ (List.ofFn fun a : Fin (k + 1) => RderC θ V τ (Matrix.single (idx a) (idx (a + 1)) 1)), LinOnSm θ V S ∧ CommOnSm θ V T S` using `fun idx S hS => by`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hS`. Conclude with `⟨linOnSm_RderC τ _, hc _⟩`. Introduce `f hf`. Simplify using `only [gelf]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[lin_sum hT _ _ fun idx _ => (linOnSm_foldr (fun S => S) _ fun S hS => (hl idx S hS).1).mem f hf]`. Conclude with `Finset.sum_congr rfl fun idx _ => comm_foldr (fun S => S) _ (fun S hS => (hl idx S hS).1) (fun S hS => (hl idx S hS).2) f hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_gelf {T : (GA D V → ℂ) → (GA D V → ℂ)} (hT : LinOnSm θ V T) {τ : D.what₂.Tau}
     (hc : ∀ Z, CommOnSm θ V T (RderC θ V τ Z)) (k : ℕ) : CommOnSm θ V T (gelf θ V τ k) := by
@@ -120,7 +120,7 @@ theorem comm_gelf {T : (GA D V → ℂ) → (GA D V → ℂ)} (hT : LinOnSm θ V
     comm_foldr (fun S => S) _ (fun S hS => (hl idx S hS).1) (fun S hS => (hl idx S hS).2) f hf
 
 /- English proof (translation)
-Introduce `f hf`. Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ' Z`. Simplify using `only [RderC]`. Rewrite using `[(linOnSm_gelf τ k).add _ (Rder_mem hf h1) _ (Submodule.smul_mem _ _ (Rder_mem hf h2)), (linOnSm_gelf τ k).smul, GlobalTheory.CuspLie.gelf_Rder hθ h1 hf, GlobalTheory.CuspLie.gelf_Rder hθ h2 hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gelf_RderC (hθ : IsInfFam θ) (τ τ' : D.what₂.Tau) (k : ℕ) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     CommOnSm θ V (gelf θ V τ k) (RderC θ V τ' Z) := by
@@ -131,20 +131,20 @@ theorem gelf_RderC (hθ : IsInfFam θ) (τ τ' : D.what₂.Tau) (k : ℕ) (Z : M
     GlobalTheory.CuspLie.gelf_Rder hθ h1 hf, GlobalTheory.CuspLie.gelf_Rder hθ h2 hf]
 
 /- English proof (translation)
-The claim follows from `lin_polyAct (linOnSm_gelf τ) p`.
+A detailed English derivation is pending.
 -/
 theorem lin_centreAct (τ : D.what₂.Tau) (p : MvPolynomial ℕ ℂ) : LinOnSm θ V (centreAct θ τ V p) :=
   lin_polyAct (linOnSm_gelf τ) p
 
 /- English proof (translation)
-The claim follows from `(comm_polyAct (linOnSm_RderC τ' Z) (linOnSm_gelf τ) (fun k => (gelf_RderC hθ τ τ' k Z).symm) p).symm`.
+A detailed English derivation is pending.
 -/
 theorem centreAct_RderC (hθ : IsInfFam θ) (τ τ' : D.what₂.Tau) (p : MvPolynomial ℕ ℂ)
     (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) : CommOnSm θ V (centreAct θ τ V p) (RderC θ V τ' Z) :=
   (comm_polyAct (linOnSm_RderC τ' Z) (linOnSm_gelf τ) (fun k => (gelf_RderC hθ τ τ' k Z).symm) p).symm
 
 /- English proof (translation)
-Introduce `D V θ hθ τ τ' p f hf`. Conclude with `⟨(lin_centreAct τ p).mem f hf, fun Z => centreAct_RderC hθ τ τ' p Z f hf, fun p' => comm_polyAct (lin_centreAct τ p) (linOnSm_gelf τ') (comm_gelf (lin_centreAct τ p) (centreAct_RderC hθ τ τ' p)) p' f hf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem centreAct_mem_comm : ∀ (D : D7) (V : HSp D), ∀ θ : InfFam D, IsInfFam θ → ∀ (τ τ' : D.what₂.Tau) (p : MvPolynomial ℕ ℂ) (f : GA D V → ℂ), f ∈ SmFun θ V → centreAct θ τ V p f ∈ SmFun θ V ∧ (∀ Z, centreAct θ τ V p (RderC θ V τ' Z f) = RderC θ V τ' Z (centreAct θ τ V p f)) ∧ ∀ p', centreAct θ τ V p (centreAct θ τ' V p' f) = centreAct θ τ' V p' (centreAct θ τ V p f) := by
   intro D V θ hθ τ τ' p f hf

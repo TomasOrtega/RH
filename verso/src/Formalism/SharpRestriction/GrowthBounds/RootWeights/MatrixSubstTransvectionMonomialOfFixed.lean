@@ -9,9 +9,9 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (monomial_sum_index s f c).symm`. Consider the case `classical`. Use `Finset.induction_on s (by simp) ?_` and prove the remaining obligations. Introduce `i s hi ih`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_insert hi, prod_insert hi, sum_insert hi, ih, monomial_mul]`.
+A detailed English derivation is pending.
 -/
 theorem prod_monomial_eq_monomial_sum_prod {B σ α : Type*} [CommRing B] (s : Finset α) (f : α → σ →₀ ℕ) (c : α → B) :
     ∏ i ∈ s, monomial (f i) (c i) = monomial (∑ i ∈ s, f i) (∏ i ∈ s, c i) := by
@@ -41,9 +41,9 @@ def rootShiftCoefficient (B : Type*) [CommRing B] {ι : Type*} [Fintype ι] {n :
   ∏ l : ι, (if LL.vec l then ((m (l, b)).choose (p l) : B) else (-1 : B) ^ (p l) * ((m (l, a)).choose (p l) : B))
 
 /- English proof (translation)
-Rewrite using `[Finsupp.le_def]`. Introduce `v`. Unfold `sourceVariableExponent`. Rewrite using `[sum_single_sourceVar_apply]`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `sourceExp split_ifs`. Conclude with `(congrArg m h.symm).le`. Conclude with `Nat.zero_le _`. Conclude with `Nat.zero_le _`.
+A detailed English derivation is pending.
 -/
 theorem sourcePart_le : sourceVariableExponent LL S a b m ≤ m := by
   classical
@@ -59,9 +59,9 @@ theorem sourcePart_le : sourceVariableExponent LL S a b m ≤ m := by
   · exact Nat.zero_le _
 
 /- English proof (translation)
-Rewrite using `[Finsupp.tsub_apply]`. Unfold `sourceVariableExponent`. Rewrite using `[sum_single_sourceVar_apply, sourceVar_fst, if_pos rfl]`. Unfold `sourceExp`. Rewrite using `[if_pos hl]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.sub_self _`.
+A detailed English derivation is pending.
 -/
 theorem sub_sourcePart_sourceVar (l : ι) (hl : l ∈ S) : (m - sourceVariableExponent LL S a b m) (sourceVar LL a b l) = 0 := by
   classical
@@ -75,9 +75,9 @@ theorem sub_sourcePart_sourceVar (l : ι) (hl : l ∈ S) : (m - sourceVariableEx
 variable {R : Type*} [CommRing R] (φ : R →+* B)
 
 /- English proof (translation)
-Simplify using `only [monomial_eq, map_one, one_mul, Finsupp.prod, map_prod, map_pow]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hv' : ¬ (v.1 ∈ S ∧ v = sourceVar LL a b v.1)`. Introduce and unpack `⟨hS, he⟩`. Conclude with `(Finsupp.mem_support_iff.1 hv) ((congrArg m0 he).trans (h0 _ hS))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[matrixSubst_transvection_X, if_neg hv']`.
+A detailed English derivation is pending.
 -/
 theorem matrixSubst_transvection_monomial_of_fixed (m0 : ι × Fin n →₀ ℕ) (h0 : ∀ l ∈ S, m0 (sourceVar LL a b l) = 0) :
     matrixSubst LL S φ (Matrix.transvection a b t) (Matrix.transvection a b (-t)) (monomial m0 1) = monomial m0 1 := by
@@ -90,13 +90,13 @@ theorem matrixSubst_transvection_monomial_of_fixed (m0 : ι × Fin n →₀ ℕ)
   rw [matrixSubst_transvection_X, if_neg hv']
 
 /- English proof (translation)
-Establish `hsplit : (monomial m (1 : R) : MvPolynomial (ι × Fin n) R) = monomial (m - sourceVariableExponent LL S a b m) 1 * monomial (sourceVariableExponent LL S a b m) 1`. Rewrite using `[monomial_mul, one_mul, tsub_add_cancel_of_le (sourcePart_le LL S a b m)]`. Establish `hprod : (monomial (sourceVariableExponent LL S a b m) (1 : R) : MvPolynomial (ι × Fin n) R) = ∏ l : ι, X (sourceVar LL a b l) ^ sourceExp LL S a b m l`. Unfold `sourceVariableExponent`. Simplify using `only [X_pow_eq_monomial]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[prod_monomial_eq_monomial_sum_prod, Finset.prod_const_one]`. Rewrite using `[hsplit, map_mul, matrixSubst_transvection_monomial_of_fixed (LL := LL) (S := S) (a := a) (b := b) (t := t) (φ := φ) (m0 := m - sourceVariableExponent LL S a b m) (h0 := sub_sourcePart_sourceVar LL S a b m)]`. Use `congr 1`. Rewrite using `[hprod, map_prod]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_pow]`. Distinguish the cases in `hl : l ∈ S`. Rewrite using `[matrixSubst_transvection_X, sourceVar_fst, if_pos ⟨hl, rfl⟩, add_comm]`. Establish `he : sourceExp LL S a b m l = 0`. Unfold `sourceExp`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg hl]`. Rewrite using `[he, pow_zero, pow_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem matrixSubst_transvection_monomial_prod :
     matrixSubst LL S φ (Matrix.transvection a b t) (Matrix.transvection a b (-t)) (monomial m 1) =
@@ -125,11 +125,11 @@ theorem matrixSubst_transvection_monomial_prod :
     rw [he, pow_zero, pow_zero]
 
 /- English proof (translation)
-Distinguish the cases in `hS : l ∈ S`. Establish `he : sourceExp LL S a b m l = m (sourceVar LL a b l)`. Unfold `sourceExp`. Rewrite using `[if_pos hS]`. Rewrite using `[he]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `sourceVar letterSign`. Apply the tactic sequence `cases LL.vec l <;> simp`. Establish `he : sourceExp LL S a b m l = 0`. Unfold `sourceExp`. Rewrite using `[if_neg hS]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hpl`, the goal using `[he]`. Establish `hp0 : p l = 0` using `by omega`. Rewrite using `[hp0]`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem letterSign_pow_mul_choose_sourceExp (p : ι → ℕ) (l : ι) (hpl : p l ≤ sourceExp LL S a b m l) :
     letterSign B LL l ^ p l * ((sourceExp LL S a b m l).choose (p l) : B) =
@@ -151,17 +151,15 @@ private theorem letterSign_pow_mul_choose_sourceExp (p : ι → ℕ) (l : ι) (h
     simp
 
 /- English proof (translation)
-Establish `hfac : ∀ l : ι, (C (letterSign B LL l * t) * X (targetVar LL a b l)) ^ (p l) * X (sourceVar LL a b l) ^ (sourceExp LL S a b m l - p l) * (((sourceExp LL S a b m l).choose (p l) : ℕ) : MvPolynomial (ι × Fin n) B) = monomial (Finsupp.single (targetVar LL a b l) (p l) + Finsupp.sing …`. Introduce `l`. Rewrite using `[← monomial_mul, ← C_mul_X_pow_eq_monomial, ← C_mul_X_pow_eq_monomial]`. Simplify using `only [mul_pow, map_pow, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Repeatedly rewrite using `[hfac]`. Rewrite using `[prod_monomial_eq_monomial_sum_prod, monomial_mul, C_mul_monomial, one_mul]`. Use `congrArg₂ (fun (s : ι × Fin n →₀ ℕ) (c : B) => (monomial s c : MvPolynomial (ι × Fin n) B)) ?_ ?_` and prove the remaining obligations. Establish `key : m - sourceVariableExponent LL S a b m + ∑ l : ι, Finsupp.single (sourceVar LL a b l) (sourceExp LL S a b m l - p l) = m - ∑ l : ι, Finsupp.single (sourceVar LL a b l) (p l)`. Unfold `sourceVariableExponent`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use extensionality with `v`. Rewrite using `[Finsupp.add_apply, Finsupp.tsub_apply, Finsupp.tsub_apply, sum_single_sourceVar_apply, sum_single_sourceVar_apply, sum_single_sourceVar_apply]`. Use `split_ifs with h`. Establish `h1` using `hp v.1`. Establish `h2 : sourceExp LL S a b m v.1 ≤ m v`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `sourceExp`. Use `split_ifs`. Conclude with `(congrArg m h.symm).le`. Conclude with `Nat.zero_le _`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_add_distrib, shiftedExponent, ← key, add_assoc, add_comm (∑ l : ι, Finsupp.single (targetVar LL a b l) (p l))]`. Unfold `rootShiftCoefficient`. Rewrite using `[← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← letterSign_pow_mul_choose_sourceExp (B := B) LL S a b m p l (hp l)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem monomial_mul_prod_binomial_term (p : ι → ℕ) (hp : ∀ l, p l ≤ sourceExp LL S a b m l) :
     monomial (m - sourceVariableExponent LL S a b m) (1 : B) *
@@ -210,9 +208,9 @@ theorem monomial_mul_prod_binomial_term (p : ι → ℕ) (hp : ∀ l, p l ≤ so
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[matrixSubst_transvection_monomial_prod]`. Repeatedly rewrite using `[add_pow]`. Rewrite using `[Finset.prod_univ_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Use `monomial_mul_prod_binomial_term LL S a b t m p fun l => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl` using `Fintype.mem_piFinset.1 hp l`. Rewrite `hl` using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem matrixSubst_transvection_monomial_sum :
     matrixSubst LL S φ (Matrix.transvection a b t) (Matrix.transvection a b (-t)) (monomial m 1) =

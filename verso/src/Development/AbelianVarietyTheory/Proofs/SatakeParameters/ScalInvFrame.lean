@@ -6,19 +6,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Introduce `p _ X D pos Kc _ _ _ ι ρ hT fd j La n h M hU hF`. Establish `hMu : IsUnit (M : Matrix (Fin n) (Fin n) D.host.E).det`. Simplify `(Matrix.GeneralLinearGroup.det M).isUnit` using `[Matrix.GeneralLinearGroup.val_det_apply]`. Establish `hdet : ∀ v, (fd.frM j La v).det = ρ v (M : Matrix (Fin n) (Fin n) D.host.E).det`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hF v, Matrix.det_submatrix_equiv_self, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hu : ∀ v, IsUnit (fd.frM j La v).det` using `fun v => by rw [hdet v]; exact hMu.map (ρ v)`. Establish `hfr : ∀ v, ((frGL fd j La v : GL _ _) : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) = fd.frM j La v`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `frGL`. Rewrite using `[dif_pos (hu v)]`. Both sides reduce to the same expression. Establish `hB : ∀ v s, tw X Kc v s ((BOf fd j La v : GL _ _) : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)).det = (tw X Kc v s (ρ v (M : Matrix (Fin n) (Fin n) D.host.E).det))⁻¹`. Introduce `v s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ((BOf fd j La v : GL _ _) : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)).det * (fd.frM j La v).det = 1`. Rewrite using `[← hfr v, ← Matrix.det_mul]`. Unfold `BOf`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.det_one]`. Establish `h2` using `congrArg (tw X Kc v s) h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_mul, map_one, hdet v]`. Conclude with `eq_inv_of_mul_eq_one_left h2`. Unfold `Formalism.L2.G.Pend.cA`. Establish `hterm : ∀ v s, (tw X Kc v s ((BOf fd j La v : GL _ _) : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)).det) ^ ((if IsOddPos s then -1 else 1) * X.w v (j + 1) s) = ι (embT D (pos ⟨v, s⟩) (M : Matrix (Fin n) (Fin n) D.host.E).det ^ (-(wT X D pos j (pos ⟨v, s⟩))) …`. Introduce `v s`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB v s, (GlobalTheory.TwV.DelA.blkC_atR_read X D pos Kc ι ρ hT M hU v s).2, map_zpow₀]`. Simplify using `only [wT]`. Rewrite using `[Equiv.symm_apply_apply]`. Apply the tactic sequence `split_ifs <;> simp [zpow_neg, inv_inv]`. Repeatedly rewrite using `[hterm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod]`. Conclude with `(Fintype.prod_sigma (fun x => ι (embT D (pos x) (M : Matrix (Fin n) (Fin n) D.host.E).det ^ (-(wT X D pos j (pos x)))))).symm.trans (Fintype.prod_equiv pos _ _ (fun _ => rfl))`.
+A detailed English derivation is pending.
 -/
 theorem scal_inv_frame : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (Kc : Type) [Field Kc] [Algebra (Formalism.MainNotions.FormalGroupSystem.K0 p) Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc) (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v), PosTie X D pos Kc ι ρ → ∀ (fd : FData X D) (j : ℕ) (La : X.Lt j) {n : ℕ} (h : (X.Pj j).m + 1 = n) (M : GL (Fin n) D.host.E), StdU D M → FrIs fd ρ j La h M → Formalism.L2.G.Pend.cA X Kc j (BOf fd j La) = ι (∏ τ, embT D τ (M : Matrix (Fin n) (Fin n) D.host.E).det ^ (-(wT X D pos j τ))) := by
   intro p _ X D pos Kc _ _ _ ι ρ hT fd j La n h M hU hF

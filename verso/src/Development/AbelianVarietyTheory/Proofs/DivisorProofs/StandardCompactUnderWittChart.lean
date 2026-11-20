@@ -21,9 +21,9 @@ namespace GlobalTheory.SWLink
 open GlobalTheory.AdelicU in
 
 /- English proof (translation)
-Rewrite using `[mem_stabArch, map_one, inv_one, one_mul, mul_one, Matrix.mem_unitaryGroup_iff']`. Generalize the expression as in `matHom _ σ J x = y`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ y.1 * 1 * y.1 = 1 ↔ _`. Rewrite using `[← (Matrix.map_injective (infEmb_bijective hc τ).1).eq_iff]`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one, Matrix.map_mul, Frames.map_cT_sigR hc, Matrix.map_one _ (map_zero _) (map_one _), Matrix.star_eq_conjTranspose]`.
+A detailed English derivation is pending.
 -/
 theorem mem_stabArch_one_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hc : IsCMExt F E σ) {k : ℕ} (J : Matrix (Fin k) (Fin k) E) (w : InfinitePlace F)
@@ -41,9 +41,9 @@ theorem mem_stabArch_one_iff {F E : Type} [Field F] [NumberField F] [Field E] [N
 open GlobalTheory.AdelicU in
 
 /- English proof (translation)
-Rewrite using `[mem_levelAll]`. Use `and_congr (forall_congr' fun v => ?_) (forall_congr' fun w => ?_)` and prove the remaining obligations. Rewrite using `[mem_stabLoc_stdLattice_iff, ← map_inv (proj σ J v)]`. Simplify using `only [forall_and]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 
-Establish `hm : ∀ τ : EmbOver E w, (matHom _ σ J x).1.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf τ) = (matHom _ σ J (projArch σ J w x)).1.map (infEmb τ)` using `fun τ => Matrix.ext fun _ _ => rfl`. Simplify using `only [hm, ← mem_stabArch_one_iff hc J w, forall_const]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mem_levelAll_std_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hc : IsCMExt F E σ) {k : ℕ} (J : Matrix (Fin k) (Fin k) E) (x : GAd σ J) :
@@ -62,7 +62,7 @@ theorem mem_levelAll_std_iff {F E : Type} [Field F] [NumberField F] [Field E] [N
     simp only [hm, ← mem_stabArch_one_iff hc J w, forall_const]
 
 /- English proof (translation)
-Introduce `D n J₂ T κ hκ K hK g`. Rewrite using `[hK g, ← hκ g, ← hκ g⁻¹, map_inv]`. Conclude with `(mem_levelAll_std_iff (GlobalTheory.AdelicU.isCMExt_host D) (GlobalTheory.StdUnn.Jst D n) (κ g)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdK_iff : ∀ (D : D7) (n : ℕ) (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E) (T : GL (Fin (n + n)) D.host.E) (κ : UD D J₂ ≃* GlobalTheory.StdUnn.G D n), IsChartW T κ → ∀ K : Subgroup (UD D J₂), IsStdK D.sp.cm.sig T K → ∀ g : UD D J₂, g ∈ K ↔ κ g ∈ GlobalTheory.StdUnn.K D n := by
   intro D n J₂ T κ hκ K hK g

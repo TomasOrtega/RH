@@ -8,11 +8,11 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl GlobalTh
 namespace GlobalTheory.CompanionTheory.Ar.Sl.Transl
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e3` using `congrArg Additive.ofMul h3`. Establish `e4` using `congrArg Additive.ofMul h4`. Establish `e5` using `congrArg Additive.ofMul h5`. Establish `e7` using `congrArg Additive.ofMul h7`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e8` using `congrArg Additive.ofMul h8`. Establish `e9` using `congrArg Additive.ofMul h9`. Establish `e10` using `congrArg Additive.ofMul h10`. Use `first`. Consider the case `(simp only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_one, ← natCast_zsmul, Nat.cast_pow, Nat.cast_mul] at e3 e4 e5 e7 e8 e9 e10 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(norm := module) e7 + (((m : ℤ) ^ 2) ^ 2) • e3 - (((m : ℤ) ^ 2) ^ 2) • e4 - ((N : ℤ) ^ 2 * ((m : ℤ) ^ 2) ^ 2) • e5 + ((N : ℤ) ^ 2 * (m : ℤ) ^ 2) • e9 + e8 + ((N : ℤ) ^ 2) • e10)`. Consider the case `(simp only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_one] at e3 e4 e5 e7 e8 e9 e10 ⊢`. Take the linear combination `(norm := module) e7 + (((m : ℤ) ^ 2) ^ 2) • e3 - (((m : ℤ) ^ 2) ^ 2) • e4 - ((N : ℤ) ^ 2 * ((m : ℤ) ^ 2) ^ 2) • e5 + ((N : ℤ) ^ 2 * (m : ℤ) ^ 2) • e9 + e8 + ((N : ℤ) ^ 2) • e10)`.
+Treat this case separately. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem values_units_identity {G : Type*} [CommGroup G] (m N : ℕ)
     (Wk1 Wkz Wkx Wm1 Wmx A B up u0 e0 R R' Wo Wy bo bz : G)
@@ -46,9 +46,9 @@ theorem values_units_identity {G : Type*} [CommGroup G] (m N : ℕ)
          + ((N : ℤ) ^ 2 * (m : ℤ) ^ 2) • e9 + e8 + ((N : ℤ) ^ 2) • e10)
 
 /- English proof (translation)
-Establish `hU' : (X : C) * (Z : C) = (c : C) * ((K⁻¹ : Cˣ) : C) * (V : C) * (Y : C)`. Simplify `congrArg Units.val hU` using `only [Units.val_mul]`. Establish `hK : ((K⁻¹ : Cˣ) : C) * (K : C) = 1` using `Units.inv_mul K`. Use `(Units.mul_left_inj (X * Z)).mp ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(Z : C) * a + (Y : C) * b - D * T' * hU' - D * (V : C) * (Y : C) * ((K⁻¹ : Cˣ) : C) * c1 - D * t * (V : C) * (Y : C) * hK`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem values_cancel_of_unit_identity {C : Type*} [CommRing C] (T2 T' s t D : C) (X Z Y V c K : Cˣ)
     (a : T2 * (X : C) = s * (Y : C)) (b : (Z : C) * s = D * (t * (V : C)))
@@ -63,11 +63,11 @@ theorem values_cancel_of_unit_identity {C : Type*} [CommRing C] (T2 T' s t D : C
     - D * (V : C) * (Y : C) * ((K⁻¹ : Cˣ) : C) * c1 - D * t * (V : C) * (Y : C) * hK
 
 /- English proof (translation)
-Introduce `C _ m N T T' th sv d Wk1 Wkz Wkx Wm1 Wmx A B up u0 e0 R R' Wo Wy bo bz e1 e2 h3 h4 h5 e6 h7 h8 h9 h10`. Establish `hU` using `GlobalTheory.CompanionTheory.Ar.Sl.Transl.values_units_identity m N Wk1 Wkz Wkx Wm1 Wmx A B up u0 e0 R R' Wo Wy bo bz h3 h4 h5 h7 h8 h9 h10`. Rewrite `hU` using `[← inv_pow]`. Establish `e2' : (T * ((Wo : C) * (R' : C) ^ (N ^ 2)) ^ (m ^ 2)) ^ (m ^ 2) = (sv ^ (N ^ 2) * (Wy : C) ^ (m ^ 2)) ^ (m ^ 2)` using `by rw [e2]`. Establish `e6' : (((bz ^ (m ^ 2) : Cˣ) : C) * sv) ^ ((N * m) ^ 2) = (d * (th * ((up⁻¹ : Cˣ) : C))) ^ ((N * m) ^ 2)` using `by rw [e6]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.CompanionTheory.Ar.Sl.Transl.values_cancel_of_unit_identity (T ^ (m ^ 2)) T' (sv ^ ((N * m) ^ 2)) (th ^ ((N * m) ^ 2)) (d ^ ((N * m) ^ 2)) ((Wo * R' ^ (N ^ 2)) ^ ((m ^ 2) ^ 2)) (bz ^ (m ^ 2 * (N * m) ^ 2)) (Wy ^ ((m ^ 2) ^ 2)) (up⁻¹ ^ ((N * m) ^ 2)) (Wk1 * R ^ ((N * …` and prove the remaining obligations. Move the coercions through the operations in `at e2' ⊢`. Take the linear combination `e2'`. Move the coercions through the operations in `at e6' ⊢`. Take the linear combination `e6'`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `push_cast`. Conclude with `e1`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem values_identity_units : ∀ {C : Type} [CommRing C] (m N : ℕ) (T T' th sv d : C) (Wk1 Wkz Wkx Wm1 Wmx A B up u0 e0 R R' Wo Wy bo bz : Cˣ), T' * ((Wk1 : C) * (R : C) ^ ((N * m) ^ 2)) = th ^ ((N * m) ^ 2) * (Wkz : C) → T * ((Wo : C) * (R' : C) ^ (N ^ 2)) ^ (m ^ 2) = sv ^ (N ^ 2) * (Wy : C) ^ (m ^ 2) → A = bo * (bz ^ (N ^ 2))⁻¹ * Wy → B = bo * (bo ^ (N ^ 2))⁻¹ * Wo → R = bo * R' → ((bz ^ (m ^ 2) : Cˣ) : C) * sv = d * (th * ((up⁻¹ : Cˣ) : C)) → Wkz * up ^ ((N * m) ^ 2) * (A ^ ((m ^ 2) ^ 2))⁻¹ = Wkx * u0 ^ ((N * m) ^ 2) * (B ^ ((m ^ 2) ^ 2))⁻¹ → Wkx * Wm1 ^ (N ^ 2) = Wk1 * Wmx ^ (N ^ 2) → u0 = e0 * (R ^ (m ^ 2))⁻¹ → e0 ^ (m ^ 2) * Wmx * Wm1⁻¹ * (R ^ (m ^ 2))⁻¹ = 1 → T ^ (m ^ 2) = d ^ ((N * m) ^ 2) * T' := by
   intro C _ m N T T' th sv d Wk1 Wkz Wkx Wm1 Wmx A B up u0 e0 R R' Wo Wy bo bz e1 e2 h3 h4 h5 e6 h7

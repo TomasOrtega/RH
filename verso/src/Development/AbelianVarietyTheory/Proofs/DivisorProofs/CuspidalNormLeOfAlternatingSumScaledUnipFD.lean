@@ -9,21 +9,17 @@ open scoped NumberField.AdeleRing
 namespace GlobalTheory.CuspTail
 
 /- English proof (translation)
-Introduce `E _ _ _ a r hr hra φ hinv hcusp hφ M hM x m B hB`. Use `haveI : Countable E := Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.toEquiv.symm`. Use `haveI : Countable (ratN E a r) := by`. Establish `: ((ratN E a r : AddSubgroup _) : Set (BlockIx a r → Ad E)) = Set.range (AddMonoidHom.compLeft (algebraMap E (Ad E)).toAddMonoidHom (BlockIx a r))` using `AddMonoidHom.coe_range _`. Express the relevant statement in the definitionally equal form `Countable (((ratN E a r : AddSubgroup _) : Set (BlockIx a r → Ad E)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(Set.countable_range _).to_subtype`. Use `set D := GroundTheory.Automorphic.scaledUnipFD E a r M with hDdef`. Use `set ν := GroundTheory.Automorphic.AutomorphicForm.unipMeasure E a r`. Establish `hD : IsAddFundamentalDomain (ratN E a r) D ν` using `GroundTheory.Automorphic.isAddFundamentalDomain_scaledUnipFD hM`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hD1 : ν D = 1` using `GroundTheory.Automorphic.unipMeasure_scaledUnipFD hM`. Use `set H : (BlockIx a r → Ad E) → ℂ := fun s => φ (unip s * x) with hH`. Establish `hunip : (unip : (BlockIx a r → Ad E) → GA E a) = (GroundTheory.Automorphic.AutomorphicForm.unipGL (n` using `a) (r := r) (R := Ad E)) :=`. Use function extensionality and compare the values at `fun X => Units.ext rfl`. Establish `hcont : Continuous H`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `hφ.comp (Continuous.mul ?_ continuous_const)` and prove the remaining obligations. Rewrite using `[hunip]`. Conclude with `GroundTheory.Automorphic.AutomorphicForm.continuous_unipGL`. Establish `hper : ∀ ξ ∈ ratN E a r, ∀ s, H (ξ + s) = H s`. Introduce and unpack `_ ⟨e, rfl⟩ s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `φ (unip ((fun p => algebraMap E (Ad E) (e p)) + s) * x) = φ (unip s * x)`. Rewrite using `[unip_add, unip_algebraMap, mul_assoc, hinv]`. Take `⟨C, hC, hDC⟩` from `GroundTheory.Automorphic.CuspidalSpectrum.exists_isCompact_superset_scaledUnipFD (K := E) (n := a) r hM`. Establish `hint : ∀ t, IntegrableOn (fun y => H (t + y)) D ν` using `fun t => ((hcont.comp (continuous_const.add continuous_id)).continuousOn.integrableOn_compact hC).mono_set hDC`. Establish `hmean : ∫ y in D, H y ∂ν = 0` using `hcusp r hr hra ν D inferInstance hD x`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB' : ∀ y : Fin m → BlockIx a r → Ad E, (∀ i, y i ∈ D) → ‖GroundTheory.Automorphic.altSum m H y 0‖ ≤ B`. Introduce `y hy`. Rewrite using `[GroundTheory.Automorphic.altSum_eq_sum]`. Simplify `hB y hy` using `[H, zero_add, zsmul_eq_mul]`. Establish `h0` using `GroundTheory.Automorphic.norm_le_of_forall_altSum_le hD hD1 m H hper hint hmean B hB'`.
-
-Establish `hu0 : (unip (0 : BlockIx a r → Ad E) : GA E a) = 1`. Establish `h` using `unip_add (0 : BlockIx a r → Ad E) 0`. Rewrite `h` using `[add_zero]`. Simplify using `using h`. Establish `hH0 : H 0 = φ x` using `by simp only [H, hu0, one_mul]`.
-
-Rewrite `h0` using `[hH0]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_le_of_altSum_scaledUnipFD : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ), 0 < r → r < a →
     ∀ φ : GA E a → ℂ, (∀ γ g, φ (ratGL E a γ * g) = φ g) → IsCuspidal φ → Continuous φ →

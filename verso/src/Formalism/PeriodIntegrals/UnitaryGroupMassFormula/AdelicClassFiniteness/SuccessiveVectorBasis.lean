@@ -7,31 +7,29 @@ namespace PIW.AdelClassFin
 open NumberField
 
 /- English proof (translation)
-Introduce `E _ _ m M hfg hspan`. Set `M' : Submodule ℤ (Fin m → E)` to `M.restrictScalars ℤ`. Establish `hfg' : M'.FG` using `hfg.restrictScalars`. Establish `: Module.Finite ℤ M'` using `Module.Finite.iff_fg.2 hfg'`. Establish `: Module.Free ℤ M'` using `Module.free_of_finite_type_torsion_free'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b` to `Module.Free.chooseBasis ℤ M'`. Set `e0 : Module.Free.ChooseBasisIndex ℤ M' → Fin m → E` to `fun i => (b i : Fin m → E)`. Establish `hli : LinearIndependent ℤ e0` using `b.linearIndependent.map' M'.subtype (Submodule.ker_subtype _)`. Establish `hliQ : LinearIndependent ℚ e0` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 hli`. Establish `hrep : ∀ x (hx : x ∈ M), x = ∑ i, (b.repr ⟨x, hx⟩ i) • e0 i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `h1` using `congrArg Subtype.val (b.sum_repr (⟨x, hx⟩ : M')).symm`. Rewrite `h1` using `[Submodule.coe_sum]`. Simplify `h1` using `only [Submodule.coe_smul]`. Establish `hmemM : ∀ x ∈ M, x ∈ Submodule.span ℚ (Set.range e0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[hrep x hx]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul ℚ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hstab : ∀ c : E, ∀ v ∈ Submodule.span ℚ (Set.range e0), c • v ∈ Submodule.span ℚ (Set.range e0)`. Introduce `c v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨i, rfl⟩` from `hv`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy0, hyi⟩` from `IsAlgebraic.exists_integral_multiple ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic c))`. Set `α : 𝓞 E` to `⟨y • c, hyi⟩`. Establish `hαv : α • e0 i ∈ M` using `M.smul_mem α (b i).2`. Establish `hyQ : (y : ℚ) ≠ 0` using `Int.cast_ne_zero.2 hy0`. Establish `: c • e0 i = ((y : ℚ)⁻¹) • (α • e0 i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hα : (α • e0 i) = ((y : E) * c) • e0 i`. Rewrite `*` using `[Algebra.smul_def (A := E)]`. Use `show ((y • c : E)) • e0 i = _`. Rewrite using `[zsmul_eq_mul]`. Rewrite using `[hα, mul_smul, ← smul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ((y : ℚ)⁻¹ • ((y : E))) = (1 : E) by`. Rewrite using `[Algebra.smul_def, map_inv₀, map_intCast, inv_mul_cancel₀ (Int.cast_ne_zero.2 hy0)]]`. Rewrite using `[one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (hmemM _ hαv)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul q x _ hx => rw [smul_comm]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hx`. Establish `hspanQ : Submodule.span ℚ (Set.range e0) = ⊤`. Set `W : Submodule E (Fin m → E)` to `{ toAddSubmonoid := (Submodule.span ℚ (Set.range e0)).toAddSubmonoid smul_mem' := fun c v hv => hstab c v hv }`. Establish `hle : Submodule.span E (M : Set (Fin m → E)) ≤ W` using `Submodule.span_le.2 fun x hx => hmemM x hx`. Rewrite `hle` using `[hspan]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[eq_top_iff]`. Introduce `v _`. Conclude with `hle (Submodule.mem_top)`. Set `B : Module.Basis (Module.Free.ChooseBasisIndex ℤ M') ℚ (Fin m → E)` to `Module.Basis.mk hliQ (by rw [hspanQ])`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ M') = m * Module.finrank ℚ E`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Module.finrank_eq_card_basis B, Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Set `σ : Fin (m * Module.finrank ℚ E) ≃ Module.Free.ChooseBasisIndex ℤ M'` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `⟨e0 ∘ σ, hliQ.comp σ σ.injective, fun i => (b (σ i)).2, fun x hx => ?_⟩` and prove the remaining obligations. Use `⟨fun i => b.repr ⟨x, hx⟩ (σ i), ?_⟩` and prove the remaining obligations.
-
-Use `conv_lhs => rw [hrep x hx]`. Rewrite using `[← Equiv.sum_comp σ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem successive_vector_basis : SvBasis := by
   intro E _ _ m M hfg hspan

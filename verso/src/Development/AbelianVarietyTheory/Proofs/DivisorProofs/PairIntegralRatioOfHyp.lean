@@ -11,21 +11,21 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `hP hI hD`. Take `⟨C1, hC1, hPL⟩` from `UpperTheory.WildA.ker`. Take `⟨C0, hC0, hS⟩` from `UpperTheory.WildA.lossOne C1 hC1`. Take `⟨CF2, hD⟩` from `hD`. Use `⟨CF2, fun CF hCF => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C02, hD⟩` from `hD CF hCF`. Use `⟨max C0 C02, fun ε C hC => ?_⟩` and prove the remaining obligations. Take `⟨x2, hD⟩` from `hD ε C (le_of_max_le_right hC)`. Use `⟨x2, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hs ch hch hsc hfo => ?_⟩` and prove the remaining obligations. Establish `dict : DictAt ch` using `hD D large₂ he hx Γ Pl0 T A Ks R F hs ch hch hsc hfo`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨S, δ, hL⟩` from `(GlobalTheory.NormSum.letters_and_sizes D (hI D).g1).1`. Establish `hgap : ch.sc.cGap = 1`. Establish `e : ch.sc = ⟨1, CF, large₂.sc.b⟩` using `hsc`. Rewrite using `[e]`. Take `⟨S', h, hE, hh⟩` from `hS (G := ch.G) large₂ hs.size hs.host hgap S δ hL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨l1, l2, l3⟩` from `UpperTheory.WildA.expLoss D S' h _ hE`. Take `⟨-, -, -, -, hm2, -, -, h12⟩` from `GlobalTheory.SizesOfRows.sizes_of_sizeRows large₂ hs.size`. Use `⟨_, ⟨l1, l2, fun s => (l3 s).trans ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hlog : 0 ≤ Real.log large₂.sc.b` using `Real.log_nonneg (by linarith)`. Establish `hsig : 0 ≤ sig ch.G` using `Finset.sum_nonneg fun v _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast (by omega : 1 ≤ D.R.m)`. Establish `hCC : C0 ≤ C` using `le_of_max_le_left hC`. Establish `h1 : C0 ≤ C * D.R.m` using `by nlinarith`. Establish `h2 : (0 : ℝ) ≤ D.R.f * (bigN D : ℝ) ^ 2 * (Real.log large₂.sc.b + sig ch.G) * large₂.sc.b`. Establish `: (0 : ℝ) ≤ large₂.sc.b` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Use `mul_le_mul_of_nonneg_right h1 h2` as an intermediate fact. Unfold `bOne`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `t p hp w hw k d hk hcos hz hPl hdep x y hr a v hv`.
+Check the signs of the components of the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `hPL D large₂ Γ Pl0 T A Ks R F hs ch CF hch hsc hfo hP (hI D) dict S δ hL t p hp k d hk hcos hz hPl x y hr w (primeUnder w) (primeUnder_prime w) (primeUnder_mem w) hw a v hv`. Use `inLat_mono key ?_` and prove the remaining obligations. Establish `h1` using `kerLoss_mono ch.G δ C1 large₂.sc.b p.small p.big (primeUnder w) (hdep _ (primeUnder_prime w) (primeUnder_mem w))`. Establish `h2` using `(mul_le_mul_of_nonneg_left h1 hC1.le).trans (hh p hp _ (primeUnder_prime w))`. Establish `h0 : (0 : ℝ) ≤ (vw w ((primeUnder w : ℕ) : D.what₂.LL) : ℝ)` using `by exact_mod_cast vw_natCast_nonneg w _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `mul_le_mul_of_nonneg_left h2 h0`. Rewrite using `[mul_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem _root_.GlobalTheory.T.pair_integral_ratio_of_norm_sums : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → GlobalTheory.SumSize.PairInt.PairIntRatK := by
   intro hP hI hD

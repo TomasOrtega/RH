@@ -10,7 +10,7 @@ open Ad3.K Ad3.K.LC Ad3.K.LC.C GlobalTheory.CompanionTheory.GodementFE
 namespace GlobalTheory.CompanionTheory.GodementFE
 
 /- English proof (translation)
-Simplify using `only [psiC, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [Complex.add_re]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psiC_add_tri (a b : ℂ) : psiC (a + b) = psiC a * psiC b := by
   simp only [psiC, ← Complex.exp_add]
@@ -20,7 +20,7 @@ theorem psiC_add_tri (a b : ℂ) : psiC (a + b) = psiC a * psiC b := by
   ring
 
 /- English proof (translation)
-Establish `h : ‖z / (‖z‖ : ℂ)‖ = 1`. Establish `h0 : ‖z‖ ≠ 0` using `norm_ne_zero_iff.2 hz`. Rewrite using `[norm_div, Complex.norm_real, norm_norm, div_self h0]`. Rewrite using `[ph, norm_zpow, h, _root_.one_zpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_ph_tri_of_ne (n : ℤ) {z : ℂ} (hz : z ≠ 0) : ‖ph n z‖ = 1 := by
   have h : ‖z / (‖z‖ : ℂ)‖ = 1 := by
@@ -29,9 +29,9 @@ theorem norm_ph_tri_of_ne (n : ℤ) {z : ℂ} (hz : z ≠ 0) : ‖ph n z‖ = 1 
   rw [ph, norm_zpow, h, _root_.one_zpow]
 
 /- English proof (translation)
-Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Distinguish the cases in `hn : n = 0`. Simplify using `[ph, hn]`. Simplify using `[ph, _root_.zero_zpow n hn]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(norm_ph_tri_of_ne n hz).le`.
+A detailed English derivation is pending.
 -/
 theorem norm_ph_tri_le (n : ℤ) (z : ℂ) : ‖ph n z‖ ≤ 1 := by
   by_cases hz : z = 0
@@ -42,11 +42,11 @@ theorem norm_ph_tri_le (n : ℤ) (z : ℂ) : ‖ph n z‖ ≤ 1 := by
   · exact (norm_ph_tri_of_ne n hz).le
 
 /- English proof (translation)
-Establish `h` using `integral_comp_mul d hd (fun u : ℂ => g ![a, b + u] * psiC (-(u * d⁻¹)))`. Establish `e2 : ∀ y : ℂ, d * y * d⁻¹ = y` using `fun y => by field_simp`. Simplify using `only [e2] at h`. Establish `h2 : ∫ u : ℂ, g ![a, b + u] * psiC (-(u * d⁻¹)) = psiC (b * d⁻¹) * sF g a d⁻¹`. Establish `h3` using `integral_add_left_eq_self (μ := (volume : Measure ℂ)) (fun u : ℂ => g ![a, u] * psiC (-((u - b) * d⁻¹))) b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [add_sub_cancel_left] at h3`. Rewrite using `[h3, sF, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e3 : -((u - b) * d⁻¹) = -(u * d⁻¹) + b * d⁻¹` using `by ring`. Simplify using `only [e3, psiC_add_tri]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, h2, norm_mul, norm_mul, norm_psiC, one_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_inner_tri (g : (Fin 2 → ℂ) → ℂ) (a b d : ℂ) (hd : d ≠ 0) :
     ‖∫ y : ℂ, g ![a, b + d * y] * psiC (-y)‖ = (‖d‖ ^ 2)⁻¹ * ‖sF g a d⁻¹‖ := by
@@ -66,17 +66,17 @@ theorem norm_inner_tri (g : (Fin 2 → ℂ) → ℂ) (a b d : ℂ) (hd : d ≠ 0
     Real.norm_of_nonneg (by positivity)]
 
 /- English proof (translation)
-Introduce `k f f' κ A B D _ hD hκ hf`. Establish `hn : ‖(!![A, B; 0, D] * κ).det‖ = ‖A‖ * ‖D‖`. Rewrite using `[Matrix.det_mul, Matrix.det_fin_two_of, norm_mul, hκ, mul_one]`. Simplify using the standard rewrite rules. Establish `hv : ∀ t y : ℂ, f (Matrix.vecMul ![t, t * y] (!![A, B; 0, D] * κ)) = f' ![t * A, t * B + t * D * y]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `t y`. Rewrite using `[hf, ← Matrix.vecMul_vecMul]`. Use `congr 2`. Use extensionality with `i`. Use `fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD0 : ‖D‖ ≠ 0` using `norm_ne_zero_iff.2 hD`. Establish `hI : ‖∫ t : ℂ, ph (4 * (k : ℤ) - 4) t * ∫ y : ℂ, f (Matrix.vecMul ![t, t * y] (!![A, B; 0, D] * κ)) * psiC (-y)‖ ≤ (‖D‖ ^ 2)⁻¹ * ∫ t : ℂ, (‖t‖ ^ 2)⁻¹ * ‖sF f' (t * A) (t * D)⁻¹‖`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [compl_mem_ae_iff.2 (measure_singleton (0 : ℂ))] with t ht`. Establish `ht0 : t ≠ 0` using `ht`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hv]`. Rewrite using `[norm_mul, norm_ph_tri_of_ne _ ht0, one_mul, norm_inner_tri _ _ _ _ (mul_ne_zero ht0 hD), norm_mul, mul_pow, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Use `set J : ℝ := ∫ t : ℂ, (‖t‖ ^ 2)⁻¹ * ‖sF f' (t * A) (t * D)⁻¹‖ with hJ`. Unfold `W2`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_mul, Complex.norm_real, norm_norm, hn]`. Establish `hp` using `norm_ph_tri_le (2 * (k : ℤ) - 2) (!![A, B; 0, D] * κ).det`. Establish `hAD : 0 ≤ ‖A‖ * ‖D‖` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem norm_whittakerGL2_triangular_le : ∀ (k : ℕ) (f f' : SchwartzMap (Fin 2 → ℂ) ℂ) (κ : Matrix (Fin 2) (Fin 2) ℂ) (A B D : ℂ),
     A ≠ 0 → D ≠ 0 → ‖κ.det‖ = 1 → (∀ v, f' v = f (Matrix.vecMul v κ)) →

@@ -18,7 +18,7 @@ namespace GlobalTheory.HtGen.FlagPoint
 open GlobalTheory.LineNorm.Chart GlobalTheory.LieMet
 
 /- English proof (translation)
-Use `(Nat.prime_dvd_prime_iff_eq (residueCharacteristic_prime v) hq).1 (ringChar.dvd ?_)` and prove the remaining obligations. Rewrite using `[← map_natCast (Ideal.Quotient.mk v.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residueCharacteristic_eq {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {q : ℕ} (hq : q.Prime)
     (hv : (q : 𝓞 F) ∈ v.asIdeal) : resP v = q := by
@@ -27,11 +27,11 @@ theorem residueCharacteristic_eq {F : Type} [Field F] [NumberField F] (v : Heigh
   exact hv
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_ringHom hU yt hin`. Take `⟨σ, hσ₀⟩ : ∃ σ : G.presheaf.stalk (below z) →+* K, σ = (Scheme.stalkClosedPointTo z).hom` from `⟨_, rfl⟩`. Establish `hσ : σ.comp α = O.subtype.comp β` using `ringHom_ext hU (by`. Rewrite using `[← spMap_comp', ← spMap_comp', Category.assoc, Category.assoc, hα, hβ, hyt, ← Category.assoc, hσ₀]`. Conclude with `congrArg (· ≫ j) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk z))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : spMap (ioO.comp β) ≫ hU.fromSpec = spMap ioO ≫ yt`. Rewrite using `[← spMap_comp', Category.assoc, hβ]`. Establish `h2 : ψ.comp α = (intO C).subtype.comp (ioO.comp β)`. Rewrite using `[hψ, ← hσ₀, RingHom.comp_assoc, hσ, ← RingHom.comp_assoc, ← hio, RingHom.comp_assoc]`. Use `⟨ioO.comp β, h1, fun r => congrArg (fun φ => φ r) h2, fun l => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `coord_map α ψ (ha l)` as an intermediate fact. Rewrite `this` using `[h2, ← spMap_comp', Category.assoc, ← Category.assoc (spMap (ioO.comp β)), h1]`. Simplify `this` using `only [dual_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem chart {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
     {t : SAB H X} {S G : Scheme.{0}} (j : G ⟶ S) (ρ' : S ⟶ X) {K : Type} [Field K] (O : ValuationSubring K)
@@ -62,25 +62,25 @@ theorem chart {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reciprocit
   simpa only [dual_comp] using this
 
 /- English proof (translation)
-Introduce `E _ _ _ H X _ t hX F _ _ Y V ρ' ρ hρ q hq m f d hf hind k hk N c hc U U' hU hU' g g' e e' h h' he he' hd hd' s s' hs hs' v ε y z yt hv hz hyt hin hin' hp`. Take `rfl : resP v = q` from `residueCharacteristic_eq v hq.out hv`. Take `rfl : hq = hp` from `rfl`. Take `⟨y, hy⟩` from `y`. Simplify using `only at hz ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `hz` using the available equality. Establish `h1` using `ioOf_le_one_iff (resP v) hv ε`. Generalize the expression as in `ioOf (resP v) ε = io at h1 ⊢`. Set `ioO : ε.O →+* intO ℂ_[resP v]` to `(io.comp ε.O.subtype).codRestrict _ fun b => (h1 b).2 b.2`. Establish `hio : (intO ℂ_[resP v]).subtype.comp ioO = io.comp ε.O.subtype` using `rfl`.
+Substitute using the available equality. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ∀ W : V.X.Opens, ⊤ ≤ yt ⁻¹ᵁ W → V.j (below z) ∈ W` using `fun W hW => by`. Establish `: (spMap ε.O.subtype ≫ yt) (IsLocalRing.closedPoint _) ∈ W` using `hW (Set.mem_univ _)`. Rewrite `this` using `[hyt]`. Then use the resulting hypothesis. Take `⟨α, a, hα, ha, hsα⟩` from `hs _ (hmem U hin)`. Take `⟨α', a', hα', ha', hsα'⟩` from `hs' _ (hmem U' hin')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ⟩ : ∃ ψ : V.G.presheaf.stalk (below z) →+* ℂ_[resP v], ψ = io.comp (Scheme.stalkClosedPointTo z).hom` from `⟨_, rfl⟩`. Take `⟨β, hβ, hβα, hb⟩` from `chart V.j ρ' ε.O io ioO hio z yt hyt hU hin e α hα a _ ha ψ hψ`. Take `⟨β', hβ', hβα', hb'⟩` from `chart V.j ρ' ε.O io ioO hio z yt hyt hU' hin' e' α' hα' a' _ ha' ψ hψ`. Take `⟨φ, hφ⟩ : ∃ φ : Y.X.presheaf.stalk (V.π (below z)) →+* ℂ_[resP v], φ = io.comp (Scheme.stalkClosedPointTo (z ≫ V.π)).hom` from `⟨_, rfl⟩`. Establish `hφψ : ψ.comp (V.π.stalkMap (below z)).hom = φ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hφ, hψ, Scheme.stalkClosedPointTo_comp]`. Both sides reduce to the same expression. Simplify using `only [dual_comp _ ψ, hφψ] at hb hb'`. Establish `hx : spMap φ ≫ GlobalTheory.ShFam.stalkPt Y (V.π (below z)) ≫ ρ = spMap (intO ℂ_[resP v]).subtype ≫ (spMap ioO ≫ yt) ≫ ρ'`. Establish `e1 : spMap (Scheme.stalkClosedPointTo z).hom ≫ V.G.fromSpecStalk (below z) = z` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk z`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : spMap (V.π.stalkMap (below z)).hom ≫ GlobalTheory.ShFam.stalkPt Y (V.π (below z)) = V.G.fromSpecStalk (below z) ≫ V.π` using `Scheme.SpecMap_stalkMap_fromSpecStalk V.π`. Rewrite using `[← hφψ, ← spMap_comp', Category.assoc, ← Category.assoc _ _ ρ, e2, Category.assoc, ← hρ, hψ, ← spMap_comp', Category.assoc, ← Category.assoc _ (V.G.fromSpecStalk _), e1, Category.assoc, ← Category.assoc (spMap (intO ℂ_[resP v]).subtype), spMap_comp', hio, ← spMap_comp', Category. …`. Establish `hB` using `GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t β he`. Establish `hB'` using `GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t β' he'`. Rewrite `hB` using `[← Category.assoc, hβ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hB'` using `[← Category.assoc, hβ']`. Establish `hli : LinearIndependent ℂ_[resP v] fun l i => ψ (a l i)` using `linInd (GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t _ hB).1 hb (hx ▸ hind _ _ φ)`. Take `⟨k1, k2, k3, k4⟩` from `GlobalTheory.T.pairDet_norm_le_attained_and_sub_norm_lt E H X t hX (resP v) _ g g' _ _ hB hB' N (fun j => c j (spMap ioO ≫ yt)) _ _ (hc _) (hd β _ hβ) (hd' β' _ hβ') m k hk _ _ _ hli hb hb' _ rfl`. Rewrite `k1`, `k2`, `k3`, `k4` using `[← hx]`. Establish `hval : ∀ r, io (TrueGeo.valAt z (algebraMap (V.G.presheaf.stalk (below z)) V.G.functionField r)) = ψ r` using `fun r => by rw [hψ, Base.valAt_stalk]; rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv1 : ∀ σ, ψ (pairDet (fun j i => α (h j i)) a hk σ) = pairDet (fun j i => (β (h j i) : ℂ_[resP v])) (fun l i => ψ (a l i)) hk σ` using `fun σ => by`. Simplify using `only [map_pairDet, hβα]`. Establish `hv2 : ∀ σ, ψ (pairDet (fun j i => α' (h' j i)) a' hk σ) = pairDet (fun j i => (β' (h' j i) : ℂ_[resP v])) (fun l i => ψ (a' l i)) hk σ` using `fun σ => by`. Simplify using `only [map_pairDet, hβα']`. Rewrite using `[decide_eq_true rfl]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `hφ` using the available equality. Use `⟨fun l => k1 _, fun σ => ?_, ?_, fun σ => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg norm (((congrArg (fun r => io (TrueGeo.valAt z r)) (hsα σ)).trans (hval _)).trans (hv1 σ))).trans_le (k2 σ)`. Take `⟨σ, hσ⟩` from `k3`. Conclude with `⟨σ, (congrArg norm (((congrArg (fun r => io (TrueGeo.valAt z r)) (hsα σ)).trans (hval _)).trans (hv1 σ))).trans hσ⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e1` using `(sub_div _ _ _).trans ((congrArg₂ (· - ·) (hsα σ) (hsα' σ)).trans (map_sub _ _ _).symm)`. Use `(congrArg norm (((congrArg (fun r => io (TrueGeo.valAt z r)) e1).trans (hval _)).trans ?_)).trans_lt (k4 σ)` and prove the remaining obligations. Rewrite using `[map_sub, hv1, hv2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairDet_values : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian

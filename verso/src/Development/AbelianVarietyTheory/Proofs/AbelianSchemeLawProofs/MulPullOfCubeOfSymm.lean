@@ -23,7 +23,7 @@ variable {X Y Z : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
   {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Take `⟨t', ht'⟩` from `h'`. Conclude with `⟨_, DVR.mulGen_isGen L _ _ _ _ t t' ht ht'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasGen.mul (h : HasGen L φ ε) (h' : HasGen L φ' ε') :
     HasGen L (Sum.elim φ φ') (Sum.elim ε ε') := by
@@ -32,21 +32,21 @@ theorem HasGen.mul (h : HasGen L φ ε) (h' : HasGen L φ' ε') :
   exact ⟨_, DVR.mulGen_isGen L _ _ _ _ t t' ht ht'⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Conclude with `⟨_, DVR.invGen_isGen L _ _ t ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasGen.inv (h : HasGen L φ ε) : HasGen L φ (fun k => -ε k) := by
   obtain ⟨t, ht⟩ := h
   exact ⟨_, DVR.invGen_isGen L _ _ t ht⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Conclude with `⟨_, DVR.pullGen_isGen L _ _ t ht f⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasGen.pull (h : HasGen L φ ε) (f : Z ⟶ Y) : HasGen L (fun k => f ≫ φ k) ε := by
   obtain ⟨t, ht⟩ := h
   exact ⟨_, DVR.pullGen_isGen L _ _ t ht f⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Take `⟨t', ht', -⟩` from `exists_gen hL e t ht`. Conclude with `⟨t', ht'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasGen.of_formEq (hL : L.IsLB) (h : HasGen L φ ε) (e : FormEq φ ε φ' ε') : HasGen L φ' ε' := by
   obtain ⟨t, ht⟩ := h
@@ -58,13 +58,11 @@ end
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {L : LB A.left}
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.twoStepInduction with`. Consider the case `zero`. Conclude with `hone.inv.of_formEq hL (fun U _ h => by simp [Fin.prod_univ_succ])`. Consider the case `one`. Conclude with `(hone.mul hone.inv).of_formEq hL (fun U _ h => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[Fin.prod_univ_succ, Fintype.prod_sum_type])`. Consider the case `more n ih₀ ih₁`. Use `((hcube.pull (lift (x ^ (n + 1)) (lift x x⁻¹)).left).mul ((ih₁.mul ih₁).mul (ih₀.inv.mul ((hone.mul hone).mul hsym)))).of_formEq hL (fun U _ h => ?_)` and prove the remaining obligations. Use `((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) (prod_cub (x ^ (n + 1)) x x⁻¹ h) rfl)).trans ?_` and prove the remaining obligations. Establish `e₁ : x ^ (n + 1) * x * x⁻¹ = x ^ (n + 1)` using `mul_inv_cancel_right _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : x ^ (n + 1) * x = x ^ (n + 2)` using `(pow_succ x (n + 1)).symm`. Establish `e₃ : x ^ (n + 1) * x⁻¹ = x ^ n` using `by rw [pow_succ, mul_inv_cancel_right]`. Rewrite using `[e₁, e₂, e₃, mul_inv_cancel]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_one]`.
-
-Use `push_cast`. Use `module`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem hasGen_pow (hL : L.IsLB) (hcube : HasGen L (thφ A (x3 A)) thε) {T : Over S} (x : T ⟶ A)
     (hone : HasGen L (K := Fin 1) ![(1 : T ⟶ A).left] ![1])
@@ -92,11 +90,11 @@ theorem hasGen_pow (hL : L.IsLB) (hcube : HasGen L (thφ A (x3 A)) thε) {T : Ov
     module
 
 /- English proof (translation)
-Introduce `hc hs`. Establish `main : ∀ (S : Scheme.{0}) (P : PolAV S) (n : ℕ), ∃ α : LB.Gen (LB.LinComb P.L (K` using `Fin 2) ![𝟙 P.A.left, (mulA P.A n).left] ![(n : ℤ) ^ 2, -1]), α.IsGen := by`. Introduce `S P n`. Establish `hcube : HasGen P.L (thφ P.A (x3 P.A)) thε` using `hc S P P.L P.isLB`. Establish `hrig : HasGen P.L (K` using `PUnit) (fun _ => eSec P.A) (fun _ => 1) := P.rigid`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hneg : HasGen P.L (K` using `Fin 2) ![(snd P.A P.A).left, (snd P.A P.A ≫ (GrpObj.inv : P.A ⟶ P.A)).left] ![1, -1] := hs S P 1 P.A`. Use `hasGen_pow P.isLB hcube (𝟙 P.A) ?_ ?_ n` and prove the remaining obligations. Use `(hrig.pull (toUnit P.A).left).of_formEq P.isLB (fun U _ h => ?_)` and prove the remaining obligations. Simplify using `only [Finset.univ_unique, Finset.prod_singleton, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, _root_.mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `(hneg.pull (lift (𝟙 P.A) (𝟙 P.A)).left).of_formEq P.isLB (fun U _ h => ?_)` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, ← Over.comp_left, lift_snd, lift_snd_assoc]`. Both sides reduce to the same expression. Conclude with `⟨main, fun S _ P n => main S P n⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 theorem mulPull_of_cube_of_symm :
     (∀ (S : Scheme.{0}) (P : PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) →

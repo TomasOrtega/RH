@@ -22,7 +22,7 @@ variable {K : Type} [Field K] {φ : K → ℝ} (hφ : ∀ x y, x ≠ 0 → y ≠
 include hφ
 
 /- English proof (translation)
-Use `hφ 1 1 one_ne_zero one_ne_zero` as an intermediate fact. Rewrite `this` using `[mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_one : φ 1 = 0 := by
   have := hφ 1 1 one_ne_zero one_ne_zero
@@ -30,7 +30,7 @@ theorem log_one : φ 1 = 0 := by
   linarith
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simpa using log_one hφ`. Consider the case `cons i s hi ih`. Rewrite using `[Finset.prod_cons, Finset.sum_cons, hφ _ _ (hf i) (Finset.prod_ne_zero_iff.2 fun j _ => hf j), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_prod {ι : Type} (s : Finset ι) (f : ι → K) (hf : ∀ i, f i ≠ 0) :
     φ (∏ i ∈ s, f i) = ∑ i ∈ s, φ (f i) := by
@@ -40,18 +40,18 @@ theorem log_prod {ι : Type} (s : Finset ι) (f : ι → K) (hf : ∀ i, f i ≠
     rw [Finset.prod_cons, Finset.sum_cons, hφ _ _ (hf i) (Finset.prod_ne_zero_iff.2 fun j _ => hf j), ih]
 
 /- English proof (translation)
-Use `log_prod hφ (Finset.range n) (fun _ => x) fun _ => hx` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem log_pow {x : K} (hx : x ≠ 0) (n : ℕ) : φ (x ^ n) = n * φ x := by
   have := log_prod hφ (Finset.range n) (fun _ => x) fun _ => hx
   simpa using this
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[Subsingleton.elim g 1, GlobalTheory.DefPt.Model.rhoMat_one, Matrix.det_one, log_one hφ]`. Simplify using the standard rewrite rules. Establish `h` using `det_rhoMat_pow K n la hla g`. Establish `h0 : (rhoMat la g).det ≠ 0` using `fun h0 => by`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[h0, zero_pow hn.ne']`. Conclude with `pow_ne_zero _ hg h.symm`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg φ h`. Rewrite `h1` using `[log_pow hφ h0, log_pow hφ hg]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hn' : (n : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Move the coercions through the operations in `at h1`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_det_rhoMat [CharZero K] {n : ℕ} {la : Fin n → ℕ} (hla : Antitone la) {g : Matrix (Fin n) (Fin n) K}
     (hg : g.det ≠ 0) : (rhoMat la g).det ≠ 0 ∧
@@ -72,9 +72,9 @@ theorem log_det_rhoMat [CharZero K] {n : ℕ} {la : Fin n → ℕ} (hla : Antito
     linarith
 
 /- English proof (translation)
-Establish `hk` using `(kronFamily_mul_one_det T J K M M).2.2`. Establish `hp : ∀ t, (M t).det ^ (∏ s ∈ Finset.univ.erase t, Fintype.card (J s)) ≠ 0` using `fun t => pow_ne_zero _ (hM t)`. Establish `h0 : (kron M).det ≠ 0` using `hk ▸ Finset.prod_ne_zero_iff.2 fun t _ => hp t`. Rewrite using `[Matrix.det_smul]`. Use `⟨mul_ne_zero (pow_ne_zero _ hc) h0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hφ _ _ (pow_ne_zero _ hc) h0, log_pow hφ hc, hk, log_prod hφ _ _ hp, mul_add, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[log_pow hφ (hM t), hr, ← mul_assoc, ← Nat.cast_mul, Finset.prod_erase_mul _ _ (Finset.mem_univ t), Fintype.card_pi]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_det_kron {T : Type} [Fintype T] [DecidableEq T] {J : T → Type} [∀ t, Fintype (J t)]
     [∀ t, DecidableEq (J t)] {c : K} (hc : c ≠ 0) (M : ∀ t, Matrix (J t) (J t) K) (hM : ∀ t, (M t).det ≠ 0)
@@ -98,7 +98,7 @@ section Val
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `h1 : w.valuation K x ≠ 0` using `by simpa using hx`. Establish `h2 : w.valuation K y ≠ 0` using `by simpa using hy`. Rewrite using `[← Int.cast_add, vAdd, vAdd, vAdd, map_mul, WithZero.log_mul h1 h2, neg_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem vAdd_mul_real (w : HeightOneSpectrum (𝓞 K)) (x y : K) (hx : x ≠ 0) (hy : y ≠ 0) :
     (vAdd w (x * y) : ℝ) = vAdd w x + vAdd w y := by
@@ -107,7 +107,7 @@ theorem vAdd_mul_real (w : HeightOneSpectrum (𝓞 K)) (x y : K) (hx : x ≠ 0) 
   rw [← Int.cast_add, vAdd, vAdd, vAdd, map_mul, WithZero.log_mul h1 h2, neg_add]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Use `Valuation.map_sum_le _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod]`. Use `mul_le_one' ?_ (Finset.prod_le_one' fun i _ => hM _ _)` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem valuation_det_le {ι : Type} [Fintype ι] [DecidableEq ι] (w : HeightOneSpectrum (𝓞 K)) {M : Matrix ι ι K}
     (hM : IntAt w M) : w.valuation K M.det ≤ 1 := by
@@ -118,9 +118,9 @@ theorem valuation_det_le {ι : Type} [Fintype ι] [DecidableEq ι] (w : HeightOn
   rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]
 
 /- English proof (translation)
-Use `hA.2.subset fun w hw h => hw ?_` and prove the remaining obligations. Establish `h1` using `valuation_det_le w h.1`. Establish `h2` using `valuation_det_le w h.2`. Rewrite `h2` using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv', map_inv₀]`. Establish `h0 : w.valuation K (A w).det ≠ 0` using `by simpa using hA.1 w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : w.valuation K (A w).det = 1` using `le_antisymm h1 ((inv_le_one₀ (zero_lt_iff.2 h0)).1 h2)`. Simplify using `[vAdd, h3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem finite_vAdd_det {ι : Type} [Fintype ι] [DecidableEq ι] {A : HeightOneSpectrum (𝓞 K) → Matrix ι ι K}
     (hA : IsAdelic A) : (Function.support fun w => (vAdd w (A w).det : ℝ)).Finite := by
@@ -136,7 +136,7 @@ theorem finite_vAdd_det {ι : Type} [Fintype ι] [DecidableEq ι] {A : HeightOne
 end Val
 
 /- English proof (translation)
-Rewrite using `[norm_mul, Real.log_mul (norm_ne_zero_iff.2 hx) (norm_ne_zero_iff.2 hy)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem log_norm_mul (x y : ℂ) (hx : x ≠ 0) (hy : y ≠ 0) : Real.log ‖x * y‖ = Real.log ‖x‖ + Real.log ‖y‖ := by
   rw [norm_mul, Real.log_mul (norm_ne_zero_iff.2 hx) (norm_ne_zero_iff.2 hy)]
@@ -144,7 +144,7 @@ theorem log_norm_mul (x y : ℂ) (hx : x ≠ 0) (hy : y ≠ 0) : Real.log ‖x *
 variable {T : Type} [Fintype T] [DecidableEq T] {N : T → ℕ} {la : ∀ t, Fin (N t) → ℕ}
 
 /- English proof (translation)
-The claim follows from `(log_det_kron (φ := fun x => (vAdd w x : ℝ)) (vAdd_mul_real w) ha _ (fun t => (log_det_rhoMat (φ := fun x => (vAdd w x : ℝ)) (vAdd_mul_real w) (hla t) (hB t)).1) _ (fun t => by rw [← dim_eq_card] exact (log_det_rhoMat (φ := fun x => (vAdd w x : ℝ)) (vAdd_mul_real w) (hla t) (hB t …`.
+A detailed English derivation is pending.
 -/
 theorem vAdd_det_fibA {K : Type} [Field K] [NumberField K] (hla : ∀ t, Antitone (la t)) (w : HeightOneSpectrum (𝓞 K))
     {a : K} (ha : a ≠ 0) {B : ∀ t, Matrix (Fin (N t)) (Fin (N t)) K} (hB : ∀ t, (B t).det ≠ 0) :
@@ -157,9 +157,9 @@ theorem vAdd_det_fibA {K : Type} [Field K] [NumberField K] (hla : ∀ t, Antiton
       exact (log_det_rhoMat (φ := fun x => (vAdd w x : ℝ)) (vAdd_mul_real w) (hla t) (hB t)).2)).2
 
 /- English proof (translation)
-Establish `hρ` using `fun t => log_det_rhoMat (φ := fun x : ℂ => Real.log ‖x‖) log_norm_mul (hla t) (hX t)`. Establish `ho` using `fun t => (GlobalTheory.T.dualWeyl_gramDeterminant_le_dim_pow_dim _ (la t) (hla t)).1`. Establish `h` using `log_det_kron (φ := fun x : ℂ => Real.log ‖x‖) log_norm_mul (c := (s : ℂ)) (Complex.ofReal_ne_zero.2 hs.ne') (fun t => onMat (la t) * rhoMat (la t) (X t)) (fun t => by rw [Matrix.det_mul]; exact mul_ne_zero (ho t) (hρ t).1) (fun t => Real.log ‖(onMat (la t)).det‖ / dim (la t) + (s …`. Establish `hd : (dim (la t) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (dim_pos (hla t)).ne'`. Establish `h2` using `(hρ t).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← dim_eq_card, Matrix.det_mul, log_norm_mul _ _ (ho t) (hρ t).1, h2, mul_add, mul_div_cancel₀ _ hd])`. Simplify using `only [Complex.norm_real, Real.norm_of_nonneg hs.le] at h`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem log_det_fibY (hla : ∀ t, Antitone (la t)) {s : ℝ} (hs : 0 < s) {X : ∀ t, Matrix (Fin (N t)) (Fin (N t)) ℂ}
     (hX : ∀ t, (X t).det ≠ 0) : (fibY la s X).det ≠ 0 ∧ Real.log ‖(fibY la s X).det‖ =
@@ -179,9 +179,9 @@ theorem log_det_fibY (hla : ∀ t, Antitone (la t)) {s : ℝ} (hs : 0 < s) {X : 
   exact h
 
 /- English proof (translation)
-Take `⟨h0, h⟩` from `GlobalTheory.T.dualWeyl_gramDeterminant_le_dim_pow_dim _ la hla`. Establish `hd : (0 : ℝ) < dim la` using `Nat.cast_pos.2 (dim_pos hla)`. Establish `h1` using `Real.log_le_log (pow_pos (norm_pos_iff.2 h0) 2) h`. Rewrite `h1` using `[Real.log_pow, Real.log_pow]`. Rewrite using `[div_le_iff₀ hd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_det_onMat_le {n : ℕ} {la : Fin n → ℕ} (hla : Antitone la) :
     Real.log ‖(onMat la).det‖ / dim la ≤ Real.log (dim la) / 2 := by
@@ -194,23 +194,21 @@ theorem log_det_onMat_le {n : ℕ} {la : Fin n → ℕ} (hla : Antitone la) :
   linarith
 
 /- English proof (translation)
-Introduce `K _ _ _ T _ _ N la hla a B s X ha hfa hB hs hX hsc hXc`. Establish `hY` using `fun σ => log_det_fibY hla (hs σ) (hX σ)`. Use `⟨fun σ => (hY σ).1, ?_⟩` and prove the remaining obligations. Establish `hD : 0 < Fintype.card (TIdx la)`. Rewrite using `[Fintype.card_pi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_pos fun t _ => dim_eq_card (la t) ▸ dim_pos (hla t)`. Use `haveI : Nonempty (TIdx la) := Fintype.card_pos_iff.1 hD`. Establish `hD' : (Fintype.card (TIdx la) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hD.ne'`. Establish `hK : (0 : ℝ) < finrank ℚ K` using `Nat.cast_pos.mpr finrank_pos`. Rewrite using `[GlobalTheory.T.latticeSlopeSq_localMatrices_eq_determinants K (TIdx la) _ _ (GlobalTheory.FibAdel.fibA_isAdelic K T N la a B ha hfa hB) (fun σ => (hY σ).1) (fun σ => Real.log_injOn_pos (norm_pos_iff.2 (hY _).1) (norm_pos_iff.2 (hY _).1) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[(hY _).2, (hY _).2]`. Simplify using `only [hsc, hXc]))]`. Establish `hfa' : (Function.support fun w => (vAdd w (a w) : ℝ)).Finite` using `hfa.subset fun w hw h => hw (by`. Simplify using `only at h ⊢`. Rewrite using `[h, Int.cast_zero])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfB` using `fun t => finite_vAdd_det (hB t)`. Establish `hfin : ∑ᶠ w, (vAdd w (fibA la (a w) (B w)).det : ℝ) * lw K w = Fintype.card (TIdx la) * (∑ᶠ w, (vAdd w (a w) : ℝ) * lw K w + ∑ t, (size (la t) : ℝ) / (N t : ℝ) * ∑ᶠ w, (vAdd w (B w t).det : ℝ) * lw K w)`. Establish `hsub : ∀ t, (Function.support fun w => (size (la t) : ℝ) / (N t : ℝ) * ((vAdd w (B w t).det : ℝ) * lw K w)).Finite` using `fun t => (fin_mul (hfB t) (lw K)).subset (Function.support_mul_subset_right _ _)`. Simplify using `only [mul_finsum]`. Rewrite using `[← finsum_sum_comm _ _ (fun t _ => hsub t), ← finsum_add_distrib (fin_mul hfa' _), mul_finsum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_congr fun w => ?_` and prove the remaining obligations. Rewrite using `[vAdd_det_fibA hla w (ha w) (fun t => (hB t).1 w), mul_assoc, add_mul, Finset.sum_mul]`. Simplify using `only [mul_assoc]`. Conclude with `(Set.finite_iUnion hsub).subset fun w hw => by`. Assume the negation of the conclusion as `hn`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_iUnion, Function.mem_support, not_exists, not_not] at hn`. Conclude with `hw (Finset.sum_eq_zero fun t _ => hn t)`. Establish `hinf : ∑ σ, Real.log ‖(fibY la (s σ) (X σ)).det‖ = Fintype.card (TIdx la) * (∑ σ, Real.log (s σ) + ∑ t, (finrank ℚ K * (Real.log ‖(onMat (la t)).det‖ / dim (la t)) + (size (la t) : ℝ) / (N t : ℝ) * ∑ σ, Real.log ‖(X σ t).det‖))`. Simplify using `only [(hY _).2]`. Rewrite using `[← Finset.mul_sum, Finset.sum_add_distrib, Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Embeddings.card, nsmul_eq_mul, Finset.mul_sum]`. Simplify using `only [detDeg, lineDeg]`. Rewrite using `[hfin, hinf]`. Establish `key : ∀ u v : ℝ, 2 * (Fintype.card (TIdx la) * u - Fintype.card (TIdx la) * v / finrank ℚ K) / (Fintype.card (TIdx la) : ℝ) / 2 = u - v / finrank ℚ K` using `fun u v => by field_simp`. Rewrite using `[key, add_div, Finset.sum_div (ι := T)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hle : ∑ t, ((size (la t) : ℝ) / (N t : ℝ) * ((∑ᶠ w, (vAdd w (B w t).det : ℝ) * lw K w) - (∑ σ, Real.log ‖(X σ t).det‖) / finrank ℚ K) - Real.log (dim (la t)) / 2) ≤ ∑ t, ((size (la t) : ℝ) / (N t : ℝ) * ∑ᶠ w, (vAdd w (B w t).det : ℝ) * lw K w - (finrank ℚ K * (Real.log ‖(onMat (l …` using `Finset.sum_le_sum fun t _ => by`. Use `log_det_onMat_le (hla t)` as an intermediate fact. Rewrite using `[add_div, mul_div_cancel_left₀ _ hK.ne', mul_sub, mul_div_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hle` using `[Finset.sum_sub_distrib (f := fun t => (size (la t) : ℝ) / (N t : ℝ) * ∑ᶠ w, (vAdd w (B w t).det : ℝ) * lw K w)]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem slope_fibre_ge : ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (T : Type) [Fintype T] [DecidableEq T] (N : T → ℕ) (la : ∀ t, Fin (N t) → ℕ), (∀ t, Antitone (la t)) → ∀ (a : HeightOneSpectrum (𝓞 K) → K) (B : HeightOneSpectrum (𝓞 K) → ∀ t, Matrix (Fin (N t)) (Fin (N t)) K) (s : (K →+* ℂ) → ℝ) (X : (K →+* ℂ) → ∀ t, Matrix (Fin (N t)) (Fin (N t)) ℂ), (∀ w, a w ≠ 0) → (Function.support fun w => vAdd w (a w)).Finite → (∀ t, IsAdelic fun w => B w t) → (∀ σ, 0 < s σ) → (∀ σ t, (X σ t).det ≠ 0) → (∀ σ, s ((starRingEnd ℂ).comp σ) = s σ) → (∀ σ t, ‖(X ((starRingEnd ℂ).comp σ) t).det‖ = ‖(X σ t).det‖) → (∀ σ, (fibY la (s σ) (X σ)).det ≠ 0) ∧ lineDeg s (fun w => (vAdd w (a w) : ℝ)) + ∑ t, ((size (la t) : ℝ) / (N t : ℝ) * detDeg (fun w => B w t) (fun σ => X σ t) - Real.log (dim (la t)) / 2) ≤ slope_sq (matNorm fun σ => fibY la (s σ) (X σ)) (locLat fun w => fibA la (a w) (B w)) / 2 := by
   intro K _ _ _ T _ _ N la hla a B s X ha hfa hB hs hX hsc hXc

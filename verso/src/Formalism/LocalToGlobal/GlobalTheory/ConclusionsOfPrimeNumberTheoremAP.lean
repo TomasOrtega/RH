@@ -116,7 +116,7 @@ end Proofs
 section Part5
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLattices.Ext.PrimesInProgressions.pnt_progressions_relative_weak`.
+A detailed English derivation is pending.
 -/
 example : PrimeNumberTheoremConsequences.PNTAPRelW := Formalism.HermitianLattices.Ext.PrimesInProgressions.pnt_progressions_relative_weak
 

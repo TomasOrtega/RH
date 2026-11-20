@@ -11,9 +11,7 @@ namespace GlobalTheory.CompanionTheory.KmPow
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hmax : IsLocalRing.maximalIdeal 𝒪[k] = Ideal.span {Zls.unif k}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 Zls.irreducible_unif`. Use `haveI : Finite (𝒪[k] ⧸ Ideal.span {Zls.unif k}) := by`. Rewrite using `[← hmax]`. Conclude with `(inferInstance : Finite 𝓀[k])`. Use `Ideal.finite_quotient_pow (I := Ideal.span {Zls.unif k}) ⟨{Zls.unif k}, by simp⟩ m` as an intermediate fact.
-
-Rewrite `this` using `[Ideal.span_singleton_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finite_quotient_unif_pow (m : ℕ) : Finite (𝒪[k] ⧸ Ideal.span {Zls.unif k ^ m}) := by
   have hmax : IsLocalRing.maximalIdeal 𝒪[k] = Ideal.span {Zls.unif k} :=
@@ -25,9 +23,9 @@ theorem finite_quotient_unif_pow (m : ℕ) : Finite (𝒪[k] ⧸ Ideal.span {Zls
   rwa [Ideal.span_singleton_pow] at this
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨g, hg, rfl⟩` from `Subgroup.mem_map.1 hx`. Use `Subgroup.mem_map.2 ⟨g, ?_, rfl⟩` and prove the remaining obligations. Establish `hle : Ideal.span {Zls.unif k ^ m'} ≤ Ideal.span {Zls.unif k ^ m}` using `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ h)`. Establish `key : Matrix.GeneralLinearGroup.map (n` using `Fin N) (Ideal.Quotient.mk (Ideal.span {Zls.unif k ^ m})) g = Matrix.GeneralLinearGroup.map (n := Fin N) (Ideal.Quotient.factor hle) (Matrix.GeneralLinearGroup.map (n := Fin N) (Ideal.Quotient.mk (Ideal.span {Zls.unif k ^ m'})) g) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[key, hg, map_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Km_anti (N : ℕ) {m m' : ℕ} (h : m ≤ m') : Zls.Km k N m' ≤ Zls.Km k N m := by
   intro x hx
@@ -44,9 +42,9 @@ theorem Km_anti (N : ℕ) {m m' : ℕ} (h : m ≤ m') : Zls.Km k N m' ≤ Zls.Km
   rw [key, hg, map_one]
 
 /- English proof (translation)
-Take `⟨g, -, rfl⟩` from `Subgroup.mem_map.1 hx`. Use `haveI := finite_quotient_unif_pow (k := k) m'`. Use `set f := Matrix.GeneralLinearGroup.map (n := Fin N) (Ideal.Quotient.mk (Ideal.span {Zls.unif k ^ m'})) with hf`. Use `⟨orderOf (f g), orderOf_pos _, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subgroup.mem_map.2 ⟨g ^ orderOf (f g), ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, map_pow, pow_orderOf_eq_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_mem_Km (N m' : ℕ) {m : ℕ} {x : GL (Fin N) k} (hx : x ∈ Zls.Km k N m) :
     ∃ M : ℕ, 0 < M ∧ x ^ M ∈ Zls.Km k N m' := by
@@ -60,9 +58,9 @@ theorem exists_pow_mem_Km (N m' : ℕ) {m : ℕ} {x : GL (Fin N) k} (hx : x ∈ 
   rw [MonoidHom.mem_ker, map_pow, pow_orderOf_eq_one]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n hd`. Use `⟨fun m m' h u hu => Km_anti n (Nat.succ_le_succ h) hu, fun m m' _ u hu => ?_⟩` and prove the remaining obligations. Take `⟨M, hM, hp⟩` from `exists_pow_mem_Km n (m' + 1) (show _ ∈ Zls.Km k n (m + 1) from hu)`. Use `⟨M, hM, ?_⟩` and prove the remaining obligations. Use `show _ ∈ Zls.Km k n (m' + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[map_pow]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem KM_antitone_and_pow : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (hd : ∑ _a : Fin n, 1 = n),

@@ -16,9 +16,9 @@ namespace GlobalTheory.SmallClosedField
 open Cardinal
 
 /- English proof (translation)
-Establish `h : ∀ x : C, ∃ s : ℕ → A, Filter.Tendsto (fun n => f (s n)) Filter.atTop (nhds x)`. Introduce `x`. Take `⟨u, hu, hx⟩` from `mem_closure_iff_seq_limit.1 (hf x)`. Use `choose s hs using hu`. Conclude with `⟨s, by simpa [hs] using hx⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose s hs using h`. Establish `hinj : Function.Injective s` using `fun x y hxy => tendsto_nhds_unique (hs x) (hxy ▸ hs y)`. Simplify using `using mk_le_of_injective hinj`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mk_le_of_denseRange {A C : Type} [MetricSpace C] (f : A → C) (hf : DenseRange f) :
     #C ≤ #A ^ ℵ₀ := by
@@ -33,11 +33,11 @@ theorem mk_le_of_denseRange {A C : Type} [MetricSpace C] (f : A → C) (hf : Den
   simpa using mk_le_of_injective hinj
 
 /- English proof (translation)
-Establish `hfin : ∀ n : ℕ, Finite (V ⧸ maximalIdeal V ^ n)` using `fun n => haveI : Finite (V ⧸ maximalIdeal V) := inferInstanceAs (Finite (ResidueField V)) Ideal.finite_quotient_pow (maximalIdeal V).fg_of_isNoetherianRing n`. Set `f : V → ∀ n : ℕ, V ⧸ maximalIdeal V ^ n` to `fun x n => Ideal.Quotient.mk _ x`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Establish `: x - y ∈ ⨅ n : ℕ, maximalIdeal V ^ n` using `Ideal.mem_iInf.2 fun n => Ideal.Quotient.eq.1 (congrFun hxy n)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal V).ne_top]`. Conclude with `sub_eq_zero.1 this`. Use `(mk_le_of_injective hinj).trans ?_` and prove the remaining obligations. Rewrite using `[mk_pi]`. Use `(prod_le_prod _ (fun _ => ℵ₀) fun n => mk_le_aleph0).trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem mk_le_continuum_of_finite_residueField (V : Type) [CommRing V] [IsLocalRing V]
     [IsNoetherianRing V] [Finite (ResidueField V)] : #V ≤ 𝔠 := by
@@ -57,11 +57,11 @@ theorem mk_le_continuum_of_finite_residueField (V : Type) [CommRing V] [IsLocalR
   simp
 
 /- English proof (translation)
-Set `A` to `algebraicClosure K C`. Set `L : Subfield C` to `A.toSubfield.topologicalClosure`. Establish `hAL : A.toSubfield ≤ L` using `A.toSubfield.le_topologicalClosure`. Establish `hKL : ∀ y : K, algebraMap K C y ∈ L` using `fun y => hAL (A.algebraMap_mem y)`. Establish `hcl : IsClosed (L : Set C)` using `A.toSubfield.isClosed_topologicalClosure`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI : NontriviallyNormedField L := { (inferInstance : NormedField L) with non_trivial := ⟨⟨_, hKL x⟩, hx⟩ }`. Use `haveI : CompleteSpace L := hcl.completeSpace_coe`. Use `letI : Algebra A L := (Subfield.inclusion hAL : A.toSubfield →+* L).toAlgebra`. Establish `hd : DenseRange (algebraMap A L)` using `(denseRange_inclusion_iff (s := (A.toSubfield : Set C)) (t := (L : Set C)) hAL).2 subset_rfl`. Use `haveI : IsAlgClosed A := IsAlgClosure.isAlgClosed K`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨L, hKL, hcl, isAlgClosed_of_denseRange hd, (mk_le_of_denseRange _ hd).trans ?_⟩` and prove the remaining obligations. Establish `hA : #A ≤ 𝔠` using `(Algebra.IsAlgebraic.cardinalMk_le_max K A).trans (max_le hK aleph0_le_continuum)`. Conclude with `(power_le_power_right hA).trans continuum_power_aleph0.le`.
+A detailed English derivation is pending.
 -/
 theorem exists_small_closed_subfield {K C : Type} [Field K] [NontriviallyNormedField C]
     [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [Algebra K C] (hK : #K ≤ 𝔠)
@@ -86,15 +86,13 @@ theorem exists_small_closed_subfield {K C : Type} [Field K] [NontriviallyNormedF
   exact (power_le_power_right hA).trans continuum_power_aleph0.le
 
 /- English proof (translation)
-Establish `hle : #C ≤ #BigT`. Use `hC.trans ?_` and prove the remaining obligations. Rewrite using `[mk_set, mk_set, mk_real]`. Conclude with `(cantor _).le.trans (cantor _).le`. Take `⟨j⟩` from `(Cardinal.le_def _ _).1 hle`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `S : Set BigT` to `Set.range j`. Set `e : S ≃ C` to `(Equiv.ofInjective j j.injective).symm`. Use `letI : Field S := e.field`. Set `r : S ≃+* C` to `e.ringEquiv`. Use `letI : NormedField S := NormedField.induced S C r r.injective`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hn : ∀ x : S, ‖x‖ = ‖r x‖` using `fun _ => rfl`. Establish `hn' : ∀ x : C, ‖r.symm x‖ = ‖x‖` using `fun x => by rw [hn, r.apply_symm_apply]`. Use `letI : NontriviallyNormedField S := { (inferInstance : NormedField S) with non_trivial := by`. Take `⟨x, hx⟩` from `NontriviallyNormedField.non_trivial (α := C)`. Conclude with `⟨r.symm x, (hn' x).symm ▸ hx⟩ }`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsUltrametricDist S := IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm fun x y => by`. Rewrite using `[hn, hn, hn, map_add]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`. Use `haveI : IsAlgClosed S := IsAlgClosed.of_ringEquiv C S r.symm`. Apply the tactic sequence `have hiso : Isometry r := AddMonoidHomClass.isometry_of_norm r fun x => (hn x).symm`.
-
-Use `haveI : CompleteSpace S := (hiso.isUniformInducing.completeSpace_congr r.surjective).2 inferInstance`. Use `haveI : CharZero S := charZero_of_injective_ringHom (f := r.symm.toRingHom) r.symm.injective`. Conclude with `⟨{ S := S, norm_p := by rw [hn, map_natCast, hp] }, r.symm.toRingHom, hn'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scf_isometry {p : ℕ} {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     [CompleteSpace C] [IsAlgClosed C] [CharZero C] (hp : ‖(p : C)‖ = (p : ℝ)⁻¹) (hC : #C ≤ 𝔠) :
@@ -127,15 +125,13 @@ theorem exists_scf_isometry {p : ℕ} {C : Type} [NontriviallyNormedField C] [Is
   exact ⟨{ S := S, norm_p := by rw [hn, map_natCast, hp] }, r.symm.toRingHom, hn'⟩
 
 /- English proof (translation)
-Use `letI : Algebra V W := φ.toAlgebra`. Use `letI : Algebra V C := ((intO C).subtype.comp g).toAlgebra`. Use `haveI : Module.Finite V W := hf`. Establish `hgC : Function.Injective (algebraMap V C)` using `Subtype.val_injective.comp hg`. Use `haveI : FaithfulSMul V W := (faithfulSMul_iff_algebraMap_injective V W).2 hφ`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : FaithfulSMul V C := (faithfulSMul_iff_algebraMap_injective V C).2 hgC`. Set `l : W →ₐ[V] C` to `IsAlgClosed.lift`. Establish `hl : Function.Injective l`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := V) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[eq_bot_iff]`. Introduce `a ha`. Rewrite `ha` using `[Ideal.mem_comap, RingHom.mem_ker, l.commutes]`. Conclude with `(map_eq_zero_iff _ hgC).1 ha`. Establish `hmem : ∀ a : W, l a ∈ intO C`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce `a`. Establish `hO` using `normIntegers_integers C`. Take `⟨q, hq, hqa⟩` from `(Algebra.IsIntegral.isIntegral (R := V) a).map l`. Set `g₀ : V →+* normIntegers C` to `(algebraMap V C).codRestrict (normIntegers C) fun v => mem_normIntegers_iff.2 (g v).2`. Establish `hint : IsIntegral (normIntegers C) (l a)` using `⟨q.map g₀, hq.map g₀, by rw [Polynomial.eval₂_map]; exact hqa⟩`.
-
-Conclude with `mem_normIntegers_iff.1 (hO.mem_of_integral hint)`. Use `⟨l.toRingHom.codRestrict (intO C) hmem, ?_, fun a b h => hl (congrArg Subtype.val h)⟩` and prove the remaining obligations. Use extensionality with `a`. Conclude with `l.commutes a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_extension_intO {V W C : Type} [CommRing V] [IsDomain V] [CommRing W] [IsDomain W]
     [NormedField C] [IsUltrametricDist C] [IsAlgClosed C] (g : V →+* intO C) (φ : V →+* W)
@@ -169,9 +165,9 @@ theorem exists_extension_intO {V W C : Type} [CommRing V] [IsDomain V] [CommRing
   exact l.commutes a
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hπ`. Rewrite `ha` using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩ : (u : W) * π ^ n ∣ a ^ n` from `Units.mul_left_dvd.2 (pow_dvd_pow_of_dvd ha n)`. Establish `h : ‖g a‖ ^ n < 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← norm_pow, ← map_pow, hc, map_mul, norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) hb (hg c)`. Conclude with `lt_of_not_ge fun h1 => absurd (one_le_pow₀ h1) (not_le.2 h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_lt_one_of_mem_maximalIdeal {W C : Type} [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] [NormedField C] (g : W →+* C) (hg : ∀ a, ‖g a‖ ≤ 1) {b : W}
@@ -186,19 +182,17 @@ theorem norm_lt_one_of_mem_maximalIdeal {W C : Type} [CommRing W] [IsDomain W]
   exact lt_of_not_ge fun h1 => absurd (one_le_pow₀ h1) (not_le.2 h)
 
 /- English proof (translation)
-Introduce `T p hp hfin hpm`. Establish `hp0 : (p : T.V) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `h1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Use `⟨?_, fun C g T' φ hg hgm hφ hf => ?_⟩` and prove the remaining obligations. Take `⟨C, _, _, _, _, _, hC, hCp⟩` from `exists_complete_isAlgClosed_of_isDiscreteValuationRing T.V T.Fr hp0 hpm (inv_pos.2 (zero_lt_one.trans h1)) (inv_lt_one_of_one_lt₀ h1) haveI : Finite (ResidueField T.V) := hfin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hK : #T.Fr ≤ 𝔠` using `(IsLocalization.cardinalMk_le (nonZeroDivisors T.V)).trans (mk_le_continuum_of_finite_residueField T.V)`. Establish `hx : 1 < ‖algebraMap T.Fr C (algebraMap T.V T.Fr p)⁻¹‖`. Rewrite using `[map_inv₀, norm_inv, hCp, inv_inv]`. Conclude with `h1`. Take `⟨L, hKL, hcl, hac, hL⟩` from `exists_small_closed_subfield hK hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI : NontriviallyNormedField L := { (inferInstance : NormedField L) with non_trivial := ⟨⟨_, hKL _⟩, hx⟩ }`. Use `haveI : CompleteSpace L := hcl.completeSpace_coe`. Use `haveI : CharZero T.Fr := charZero_of_injective_ringHom (IsFractionRing.injective T.V T.Fr)`. Set `i : T.Fr →+* L` to `(algebraMap T.Fr C).codRestrict L hKL`. Establish `hi : ∀ y, ‖i y‖ = ‖algebraMap T.Fr C y‖` using `fun _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : CharZero L := charZero_of_injective_ringHom i.injective`. Establish `hLp : ‖(p : L)‖ = (p : ℝ)⁻¹`. Rewrite using `[← map_natCast i, hi, ← map_natCast (algebraMap T.V T.Fr), hCp]`. Apply the tactic sequence `obtain ⟨D, e, he⟩ := exists_scf_isometry hLp hL`. Establish `hle : ∀ a : T.V, ‖(e.comp i) (algebraMap T.V T.Fr a)‖ ≤ 1` using `fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_apply, he, hi]`. Conclude with `(hC _).2 ⟨a, rfl⟩`. Use `⟨D, e.comp i, hle, fun a ha => ?_⟩` and prove the remaining obligations. Use `norm_lt_one_of_mem_maximalIdeal ((e.comp i).comp (algebraMap T.V T.Fr)) hle hp0 ?_ ha` and prove the remaining obligations. Rewrite using `[map_natCast, D.norm_p]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `inv_lt_one_of_one_lt₀ h1`. Take `⟨g', hc, hinj⟩` from `exists_extension_intO g φ hg hφ hf`. Use `⟨g', hc, hinj, fun a ha => ?_⟩` and prove the remaining obligations. Use `norm_lt_one_of_mem_maximalIdeal ((intO ↥C.S).subtype.comp g') (fun b => (g' b).2) ((map_ne_zero_iff φ hφ).2 hp0) ?_ ha` and prove the remaining obligations. Use `hgm p hpm` as an intermediate fact.
-
-Rewrite `this` using `[← hc]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_embedding_and_extension :
     ∀ (T : CDVR) (p : ℕ), p.Prime → T.FinRes → (p : T.V) ∈ maximalIdeal T.V → (∃ (C : SCF p) (eF : T.Fr →+* ↥C.S), (∀ a : T.V, ‖eF (algebraMap T.V T.Fr a)‖ ≤ 1) ∧ ∀ a ∈ maximalIdeal T.V, ‖eF (algebraMap T.V T.Fr a)‖ < 1) ∧ ∀ (C : SCF p) (g : T.V →+* intO ↥C.S) (T' : CDVR) (φ : T.V →+* T'.V), Function.Injective g → (∀ a ∈ maximalIdeal T.V, ‖((g a : intO ↥C.S) : ↥C.S)‖ < 1) → Function.Injective φ → φ.Finite → ∃ g' : T'.V →+* intO ↥C.S, g'.comp φ = g ∧ Function.Injective g' ∧ ∀ a ∈ maximalIdeal T'.V, ‖((g' a : intO ↥C.S) : ↥C.S)‖ < 1 := by

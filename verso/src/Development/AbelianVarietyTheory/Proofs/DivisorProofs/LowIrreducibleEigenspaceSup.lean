@@ -16,9 +16,9 @@ namespace GlobalTheory.FockLowWt
 open MvPolynomial Formalism.BasicNotions.TH
 
 /- English proof (translation)
-Use `Submodule.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff, cartan2]`. Use `congr 1`. Simplify using `only [Fintype.sum_sum_type, lineSign, h2, one_mul, neg_one_mul, Nat.cast_zero, zero_add, Finset.sum_add_distrib, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Module.End.mem_eigenspace_iff, cartan2]`. Use `congr 1`. Simplify using `only [Fintype.sum_sum_type, lineSign, h1, one_mul, neg_one_mul, Nat.cast_zero, zero_add, Finset.sum_add_distrib, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -47,25 +47,23 @@ theorem monomial_mem_eig {P Q R S : ℕ} (α : Ln P Q R S →₀ ℕ)
     ring
 
 /- English proof (translation)
-Rewrite `hf` using `[GlobalTheory.KFixIrr.mem_lowOne, GlobalTheory.KFixIrr.mem_chiOne]`. Take `⟨hf, hdeg⟩` from `hf`. Establish `hval : ∀ a : Ix P Q, GlobalTheory.FockLowDeg.cartanVal a α = (x : ℂ)`. Introduce `a`. Establish `h` using `congrArg (coeff α) (hf _ (GlobalTheory.FockLowDeg.isKC_Eab_diag a))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[GlobalTheory.FockLowDeg.coeff_cartan, GlobalTheory.FockLowDeg.trace_Eab_diag, mul_one, coeff_smul, smul_eq_mul]`. Conclude with `mul_right_cancel₀ hα h`. Establish `hkC : (x : ℂ) - ((R : ℂ) - S) / 2 = k`. Use `congrArg (fun t : ℚ => (t : ℂ)) hk` as an intermediate fact. Simplify `this` using `[cPair]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hk'C : (x : ℂ) + ((R : ℂ) - S) / 2 = k'`. Use `congrArg (fun t : ℚ => (t : ℂ)) hk'` as an intermediate fact. Simplify `this` using `[cPair]`. Establish `hP : ∀ i : Fin P, ∑ c : Fin R, α (Sum.inl i, Sum.inl c) = ∑ c : Fin S, α (Sum.inl i, Sum.inr c) + k`. Introduce `i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hval (Sum.inl i)`. Simplify using `only [GlobalTheory.FockLowDeg.cartanVal, Fintype.sum_sum_type, lineSign, one_mul, neg_one_mul, Finset.sum_add_distrib, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h`. Establish `e : ((∑ c : Fin R, α (Sum.inl i, Sum.inl c) : ℕ) : ℂ) = ((∑ c : Fin S, α (Sum.inl i, Sum.inr c) + k : ℕ) : ℂ)`. Use `push_cast`. Take the linear combination `h + hkC`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `Nat.cast_injective e`. Establish `hQ : ∀ j : Fin Q, ∑ c : Fin S, α (Sum.inr j, Sum.inr c) = ∑ c : Fin R, α (Sum.inr j, Sum.inl c) + k'`. Introduce `j`. Establish `h` using `hval (Sum.inr j)`. Simplify using `only [GlobalTheory.FockLowDeg.cartanVal, Fintype.sum_sum_type, lineSign, one_mul, neg_one_mul, Finset.sum_add_distrib, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `e : ((∑ c : Fin S, α (Sum.inr j, Sum.inr c) : ℕ) : ℂ) = ((∑ c : Fin R, α (Sum.inr j, Sum.inl c) + k' : ℕ) : ℂ)`. Use `push_cast`. Take the linear combination `h + hk'C`. Conclude with `Nat.cast_injective e`. Establish `hle` using `le_trans (MvPolynomial.le_totalDegree (mem_support_iff.mpr hα)) hdeg`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hle` using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_prod_type, Fintype.sum_sum_type]`. Simplify using `only [Fintype.sum_sum_type] at hle`. Establish `e1 : ∑ i : Fin P, (∑ c : Fin R, α (Sum.inl i, Sum.inl c) + ∑ c : Fin S, α (Sum.inl i, Sum.inr c)) = P * k + 2 * ∑ i : Fin P, ∑ c : Fin S, α (Sum.inl i, Sum.inr c)`. Rewrite using `[Finset.sum_congr rfl (fun i _ => by rw [hP i])]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∑ j : Fin Q, (∑ c : Fin R, α (Sum.inr j, Sum.inl c) + ∑ c : Fin S, α (Sum.inr j, Sum.inr c)) = Q * k' + 2 * ∑ j : Fin Q, ∑ c : Fin R, α (Sum.inr j, Sum.inl c)`. Rewrite using `[Finset.sum_congr rfl (fun j _ => by rw [hQ j])]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hle` using `[e1, e2]`. Establish `z1 : ∑ i : Fin P, ∑ c : Fin S, α (Sum.inl i, Sum.inr c) = 0` using `by omega`. Establish `z2 : ∑ j : Fin Q, ∑ c : Fin R, α (Sum.inr j, Sum.inl c) = 0` using `by omega`. Rewrite `z1`, `z2` using `[Finset.sum_eq_zero_iff]`. Use `⟨fun i c => ?_, fun j c => ?_⟩` and prove the remaining obligations.
-
-Conclude with `(Finset.sum_eq_zero_iff.mp (z1 i (Finset.mem_univ _))) c (Finset.mem_univ _)`. Conclude with `(Finset.sum_eq_zero_iff.mp (z2 j (Finset.mem_univ _))) c (Finset.mem_univ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem support_unmixed {P Q R S : ℕ} (x : ℚ) (k k' : ℕ) (hk : x - cPair R S = k)
     (hk' : x + cPair R S = k') (f : Pol P Q R S) (hf : f ∈ GlobalTheory.KFixIrr.lowOne P Q R S x (P * k + Q * k'))
@@ -132,9 +130,9 @@ theorem support_unmixed {P Q R S : ℕ} (x : ℚ) (k k' : ℕ) (hk : x - cPair R
   · exact (Finset.sum_eq_zero_iff.mp (z2 j (Finset.mem_univ _))) c (Finset.mem_univ _)
 
 /- English proof (translation)
-Introduce `P Q R S x k k' hk hk' r s f hf`. Rewrite using `[← MvPolynomial.support_sum_monomial_coeff f]`. Use `Submodule.sum_mem _ fun α hα => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `support_unmixed x k k' hk hk' f hf α (mem_support_iff.mp hα)`. Establish `e : (monomial α (coeff α f) : Pol P Q R S) = coeff α f • monomial α 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem ((∑ i : Fin P, α (Sum.inl i, Sum.inl r)), (∑ j : Fin Q, α (Sum.inr j, Sum.inr s))) (monomial_mem_eig α h1 h2 r s)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lowOne_le_wt : ∀ (P Q R S : ℕ) (x : ℚ) (k k' : ℕ), x - Formalism.BasicNotions.TH.cPair R S = k →
     x + Formalism.BasicNotions.TH.cPair R S = k' →

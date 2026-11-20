@@ -3,21 +3,17 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.P6.r08a
 
 /- English proof (translation)
-Introduce `K inst H T`. Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations. Use `⟨∅, Finset.Subset.refl _, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `absurd hx (Finset.notMem_empty x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr`. Conclude with `absurd hr (Finset.notMem_empty r)`. Introduce `a S _ha ih`. Take `⟨Rep, hsub, hcov, hsep⟩` from `ih`. Distinguish the cases in `h : ∃ r ∈ Rep, a - r ∈ H`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Rep, hsub.trans (Finset.subset_insert a S), ?_, hsep⟩` and prove the remaining obligations. Introduce `x hx`. Break down `Finset.mem_insert.mp hx with hxa | hx` into its components or cases. Rewrite using `[hxa]`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hcov x hx`. Establish `h' : ∀ r ∈ Rep, a - r ∉ H` using `fun r hr har => h ⟨r, hr, har⟩`. Use `⟨insert a Rep, Finset.insert_subset_insert a hsub, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Break down `Finset.mem_insert.mp hx with hxa | hx` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨a, Finset.mem_insert_self a Rep, ?_⟩` and prove the remaining obligations. Rewrite using `[hxa, sub_self]`. Conclude with `H.zero_mem`. Take `⟨r, hr, hxr⟩` from `hcov x hx`. Conclude with `⟨r, Finset.mem_insert_of_mem hr, hxr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `r hr r' hr' hrr`. Break down `Finset.mem_insert.mp hr with hra | hr` into its components or cases. Break down `Finset.mem_insert.mp hr' with hr'a | hr'` into its components or cases. Rewrite using `[hra, hr'a]`. Rewrite `hrr` using `[hra]`.
-
-Conclude with `absurd hrr (h' r' hr')`. Break down `Finset.mem_insert.mp hr' with hr'a | hr'` into its components or cases. Rewrite `hrr` using `[hr'a]`. Establish `hn` using `H.neg_mem hrr`. Rewrite `hn` using `[neg_sub]`.
-
-Conclude with `absurd hn (h' r hr)`. Conclude with `hsep r hr r' hr' hrr`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.AvgFree.Cov.exists_sep :
     ∀ {K : Type} [inst : AddCommGroup K] (H : AddSubgroup K) (T : Finset K), ∃ Rep ⊆ T, (∀ x ∈ T, ∃ r ∈ Rep, x - r ∈ H) ∧ ∀ r ∈ Rep, ∀ r' ∈ Rep, r - r' ∈ H → r = r' := by

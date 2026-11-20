@@ -10,47 +10,43 @@ namespace GlobalTheory.UsideLeaf.UnitaryLocalCharpoly
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Use `set sO := GlobalTheory.NormEq.sigO σ h.2.1 with hsO`. Set `Φ : Matrix (Fin n) (Fin n) (intL L) →+* Matrix (Fin n) (Fin n) L` to `(intL L).subtype.mapMatrix`. Establish `hΦinj : Function.Injective Φ` using `fun a b hab => by`. Use extensionality with `i j`. Conclude with `congrFun (congrFun hab i) j`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hΦcT : ∀ M, Φ (cT sO M) = cT σ (Φ M)` using `fun M => rfl`. Set `γO : Matrix (Fin n) (Fin n) (intL L)` to `fun i j => ⟨γ i j, hγ i j⟩`. Set `JO : Matrix (Fin n) (Fin n) (intL L)` to `fun i j => ⟨J i j, hJ i j⟩`. Set `JiO : Matrix (Fin n) (Fin n) (intL L)` to `fun i j => ⟨Ji i j, hJi i j⟩`. Set `HO : Matrix (Fin n) (Fin n) (intL L)` to `fun i j => ⟨Hn i j, hH i j⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `HiO : Matrix (Fin n) (Fin n) (intL L)` to `fun i j => ⟨Hi i j, hHi i j⟩`. Establish `eγ : Φ γO = γ` using `rfl`. Establish `eJ : Φ JO = J` using `rfl`. Establish `eJi : Φ JiO = Ji` using `rfl`. Establish `eH : Φ HO = Hn` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eHi : Φ HiO = Hi` using `rfl`. Establish `hJJO : JO * JiO = 1` using `hΦinj (by rw [map_mul, map_one, eJ, eJi, hJJ])`. Establish `hJJO' : JiO * JO = 1` using `mul_eq_one_comm.1 hJJO`. Establish `hHHO : HO * HiO = 1` using `hΦinj (by rw [map_mul, map_one, eH, eHi, hHH])`. Establish `hHHO' : HiO * HO = 1` using `mul_eq_one_comm.1 hHHO`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγJO : cT sO γO * JO * γO = JO` using `hΦinj (by rw [map_mul, map_mul, hΦcT, eγ, eJ, hγJ])`. Establish `hγHO : cT sO γO * HO * γO = HO` using `hΦinj (by rw [map_mul, map_mul, hΦcT, eγ, eH, hγH])`. Establish `hJhO : cT sO JO = JO` using `hΦinj (by rw [hΦcT, eJ, hJh])`. Establish `hHhO : cT sO HO = HO` using `hΦinj (by rw [hΦcT, eH, hHh])`. Establish `hchO : γO.charpoly = Q₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Polynomial.map_injective _ (intL L).subtype_injective` to reduce the goal to its premises. Rewrite using `[← hch, ← eγ]`. Conclude with `(Matrix.charpoly_map γO (intL L).subtype).symm`. Establish `hsepO : γO.charpoly.Separable` using `hchO ▸ hsep`. Establish `hcsr : GlobalTheory.UTr.IsCsr sO Q₀` using `hchO ▸ isCsr_charpoly sO γO JO JiO hJJO' hγJO`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `P : GlobalTheory.UTr.Csr sO` to `⟨Q₀, hcsr⟩`. Establish `hg : aeval γO P.1 = 0` using `by show aeval γO Q₀ = 0`. Rewrite using `[← hchO]`. Conclude with `Matrix.aeval_self_charpoly γO`. Set `ev` to `GlobalTheory.UTr.evalMat P γO hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hev : ∀ r : (intL L)[X], ev (aeval (GlobalTheory.UTr.root P) r) = aeval γO r` using `fun r => by`. Rewrite using `[← aeval_algHom_apply, GlobalTheory.UTr.evalMat_root]`. Establish `hevinj : Function.Injective ev`. Use `(injective_iff_map_eq_zero ev).2 fun z hz => ?_` and prove the remaining obligations. Take `⟨r, rfl⟩` from `GlobalTheory.UTr.exists_aeval_root P z`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `hz` using `[hev]`. Establish `hd` using `GlobalTheory.T.charpoly_dvd_of_aeval_eq_zero_alt (intL L) n γO r hsepO hz`. Rewrite `hd` using `[hchO]`. Conclude with `(GlobalTheory.UTr.aeval_root_eq_zero_iff P).2 hd`. Set `γiO` to `JiO * cT sO γO * JO`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγi : γiO * γO = 1` using `by show JiO * cT sO γO * JO * γO = 1`. Rewrite using `[Matrix.mul_assoc JiO, Matrix.mul_assoc JiO, hγJO, hJJO']`. Set `gU : UJ sO JO` to `⟨⟨γO, γiO, mul_eq_one_comm.1 hγi, hγi⟩, hγJO⟩`. Establish `hcT : ∀ z, cT sO (ev z) * JO = JO * ev (GlobalTheory.UTr.conj P z)` using `fun z => GlobalTheory.UTr.cT_evalMat P gU hg z`. Establish `hxc : (JiO * HO) * γO = γO * (JiO * HO)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `hA : cT sO γO * (JO * γO * JiO) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hγJO, hJJO]`. Establish `hA' : (JO * γO * JiO) * cT sO γO = 1` using `mul_eq_one_comm.1 hA`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[← Matrix.mul_assoc JiO JO, hJJO', Matrix.one_mul]`. Use `_ = γO * (JiO * HO) := by rw [hγHO, Matrix.mul_assoc]`. Take `⟨p, hp⟩` from `exists_poly_of_commute γO (JiO * HO) hsepO hxc`. Set `tz : GlobalTheory.UTr.Alg P` to `aeval (GlobalTheory.UTr.root P) p`. Establish `htO : ev tz = JiO * HO` using `by rw [hev, ← hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `tiO` to `HiO * JO`. Establish `htiO : (JiO * HO) * tiO = 1` using `by show JiO * HO * (HiO * JO) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc HO, hHHO, Matrix.one_mul, hJJO']`. Establish `hdet : IsUnit (ev tz).det`. Rewrite using `[htO]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_iff_exists_inv.2 ⟨tiO.det, by rw [← Matrix.det_mul, htiO, Matrix.det_one]⟩`. Establish `hunit : IsUnit tz`. Establish `h0 : aeval tz (ev tz).charpoly = 0` using `hevinj (by`. Rewrite using `[← aeval_algHom_apply, map_zero]`. Conclude with `Matrix.aeval_self_charpoly (ev tz))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hc0 : IsUnit ((ev tz).charpoly.coeff 0)`. Use `Matrix.det_eq_sign_charpoly_coeff (ev tz)` as an intermediate fact. Rewrite `hdet` using `[this]`. Conclude with `isUnit_of_mul_isUnit_right hdet`. Establish `e` using `congrArg (aeval tz) (X_mul_divX_add (ev tz).charpoly)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `e` using `[h0, map_add, map_mul, aeval_X, aeval_C]`. Establish `hu : IsUnit (tz * aeval tz (ev tz).charpoly.divX)`. Rewrite using `[eq_neg_of_add_eq_zero_left e]`. Conclude with `(hc0.map _).neg`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `T : (GlobalTheory.UTr.Alg P)ˣ` to `hunit.unit`. Establish `hcTJi : cT sO JiO = JiO`. Establish `h1 : cT sO JiO * JO = 1`. Rewrite using `[← hJhO, ← cT_mul, hJJO, cT_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconj : GlobalTheory.UTr.conj P tz = tz`. Apply `hevinj` to reduce the goal to its premises. Establish `h1 : JO * ev (GlobalTheory.UTr.conj P tz) = JO * ev tz`. Rewrite using `[← hcT, htO, cT_mul, hHhO, hcTJi, Matrix.mul_assoc, hJJO', Matrix.mul_one, ← Matrix.mul_assoc, hJJO, Matrix.one_mul]`. Establish `h2` using `congrArg (JiO * ·) h1`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify `h2` using `only [← Matrix.mul_assoc, hJJO', Matrix.one_mul]`. Establish `hT : T ∈ GlobalTheory.UTr.plus P` using `GlobalTheory.UTr.mem_plus.2 (by rw [IsUnit.unit_spec]; exact hconj)`. Establish `hsepP : (P : (intL L)[X]).Separable` using `hsep`. Take `⟨u, hu⟩` from `GlobalTheory.NormEq.normU_surj L σ ϖ q h P hsepP T hT`. Establish `hu' : (u : GlobalTheory.UTr.Alg P) * GlobalTheory.UTr.conj P u = tz`.
-
-Use `congrArg (fun z : (GlobalTheory.UTr.Alg P)ˣ => (z : GlobalTheory.UTr.Alg P)) hu` as an intermediate fact. Simplify `this` using `[GlobalTheory.UTr.normU, T]`. Set `Ψ : GlobalTheory.UTr.Alg P →* Matrix (Fin n) (Fin n) L` to `(Φ.comp ev.toRingHom : GlobalTheory.UTr.Alg P →+* _)`. Use `⟨Units.map Ψ u, ?_, ?_⟩` and prove the remaining obligations. Use `show Φ (ev u) * γ = γ * Φ (ev u)`.
-
-Rewrite using `[← eγ, ← map_mul, ← map_mul]`. Use `congr 1`. Rewrite using `[← GlobalTheory.UTr.evalMat_root P γO hg, ← map_mul, ← map_mul, mul_comm]`. Use `show cT σ (Φ (ev u)) * J * Φ (ev u) = Hn`. Rewrite using `[← hΦcT, ← eJ, ← map_mul, ← map_mul, hcT, Matrix.mul_assoc, ← map_mul, mul_comm (GlobalTheory.UTr.conj P _), hu', htO, ← Matrix.mul_assoc, hJJO, Matrix.one_mul, eH]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_step [CompleteSpace L] (σ : L →+* L) (ϖ : L) (q : ℕ) (h : IsUnramInv ϖ σ q) {n : ℕ}
     (γ J Ji Hn Hi : Matrix (Fin n) (Fin n) L) (Q₀ : (intL L)[X])

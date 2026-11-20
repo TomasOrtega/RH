@@ -45,14 +45,14 @@ def closureVarEquiv :
   right_inv := by rintro ⟨k | (_ | ⟨⟩), l⟩ <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `rcases v with ⟨_ | (_ | k), l⟩ <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem closureVarEquiv_fst (v : Σ o, bundleIdx (bundleIdx ι M) M' o) :
     (closureVarEquiv ι M M' v).1 = closureBlockEquiv K v.1 := by
   rcases v with ⟨_ | (_ | k), l⟩ <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `o`. Apply the tactic sequence `rcases o with _ | (_ | k) <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem joinDeg_comp_closureBlockEquiv (L : K → ℤ) :
     joinDeg (K' := Option Unit) L ∘ closureBlockEquiv K = liftPairDeg L := by
@@ -60,7 +60,7 @@ theorem joinDeg_comp_closureBlockEquiv (L : K → ℤ) :
   rcases o with _ | (_ | k) <;> rfl
 
 /- English proof (translation)
-Rewrite using `[liftPairForm, rename_rename]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rename_liftPairForm {R : Type*} [CommRing R] (F : MRing ι R) :
     rename (closureVarEquiv ι M M') (liftPairForm M M' F) = joinForm (ι' := lineBlocks M M') F := by
@@ -81,9 +81,9 @@ def joinClosureForm {R : Type*} [CommRing R] (M M' : ℕ) (h : MRing (Sum.elim �
   Fin.append (fun _ : Fin 1 => h) (fun j => joinForm (F j))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun i => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [joinClosureDeg, closureDeg, Fin.append_left]`. Use function extensionality and compare the values at `o`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [joinClosureDeg, closureDeg, Fin.append_right]`. Conclude with `joinDeg_comp_closureBlockEquiv _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem joinClosureDeg_comp (ζ : Option (Option K) → ℤ) (L : Fin m → K → ℤ) :
     (fun i => joinClosureDeg ζ L i ∘ closureBlockEquiv K) = closureDeg ζ L := by
@@ -96,7 +96,7 @@ theorem joinClosureDeg_comp (ζ : Option (Option K) → ℤ) (L : Fin m → K �
     exact joinDeg_comp_closureBlockEquiv _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[joinClosureDeg, Fin.append_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem joinClosureDeg_natAdd (ζ : Option (Option K) → ℤ) (L : Fin m → K → ℤ) :
     joinClosureDeg ζ L ∘ Fin.natAdd 1 = fun j => joinDeg (L j) := by
@@ -104,7 +104,7 @@ theorem joinClosureDeg_natAdd (ζ : Option (Option K) → ℤ) (L : Fin m → K 
   simp [joinClosureDeg, Fin.append_right]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun i => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [joinClosureForm, closureForm, Fin.append_left]`. Simplify using `only [joinClosureForm, closureForm, Fin.append_right]`. Conclude with `rename_liftPairForm ι M M' _`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_closureForm {R : Type*} [CommRing R] (M M' : ℕ) (h : MRing (bundleIdx (bundleIdx ι M) M') R)
     (F : Fin m → MRing ι R) :
@@ -117,7 +117,7 @@ theorem rename_closureForm {R : Type*} [CommRing R] (M M' : ℕ) (h : MRing (bun
     exact rename_liftPairForm ι M M' _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[joinClosureForm, Fin.append_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem joinClosureForm_natAdd {R : Type*} [CommRing R] (M M' : ℕ) (h : MRing (Sum.elim ι (lineBlocks M M')) R)
     (F : Fin m → MRing ι R) : joinClosureForm M M' h F ∘ Fin.natAdd 1 = fun j => joinForm (F j) := by
@@ -129,15 +129,15 @@ end Data
 section PointIdeal
 
 /- English proof (translation)
-Establish `key : ∀ f, pointConeMap R y (rename σ f) = rename e (pointConeMap R (y ∘ σ) f)`. Introduce `f`. Establish `h : (pointConeMap R y).toRingHom.comp (rename σ).toRingHom = (rename e).toRingHom.comp (pointConeMap R (y ∘ σ)).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[pointConeMap, MvPolynomial.algebraMap_eq]`. Introduce `v`. Simplify using `[pointConeMap, hσ]`. Use `RingHom.congr_fun h f` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `f hf`. Rewrite using `[Ideal.mem_comap]`. Simplify using `only [pointIdeal, RingHom.mem_ker] at hf ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, hf, map_zero]`. Introduce `f hf`. Establish `hf' : rename σ (rename σ.symm f) = f`. Rewrite using `[rename_rename]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hf']`. Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises. Simplify using `only [pointIdeal, RingHom.mem_ker] at hf ⊢`. Apply `rename_injective _ e.injective` to reduce the goal to its premises. Rewrite using `[map_zero, ← key, hf', hf]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pointIdeal_map_rename {K₁ K₂ : Type*} {ι₁ : K₁ → Type*} {ι₂ : K₂ → Type*} {R Φ : Type*} [CommRing R]
     [Field Φ] [Algebra R Φ] (e : K₁ ≃ K₂) (σ : (Σ k, ι₁ k) ≃ (Σ k, ι₂ k)) (hσ : ∀ v, (σ v).1 = e v.1)
@@ -170,11 +170,11 @@ theorem pointIdeal_map_rename {K₁ K₂ : Type*} {ι₁ : K₁ → Type*} {ι�
     rw [map_zero, ← key, hf', hf]
 
 /- English proof (translation)
-Establish `key : ∀ f, pointConeMap O (fun p => algebraMap Ω Φ (y p)) f = MvPolynomial.map (algebraMap Ω Φ) (pointConeMap O y f)`. Introduce `f`. Establish `h : (pointConeMap O (fun p => algebraMap Ω Φ (y p))).toRingHom = (MvPolynomial.map (algebraMap Ω Φ)).comp (pointConeMap O y).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[pointConeMap, IsScalarTower.algebraMap_apply O Ω Φ]`. Introduce `v`. Simplify using `[pointConeMap]`. Use `RingHom.congr_fun h f` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `f`. Simplify using `only [pointIdeal, RingHom.mem_ker, key]`. Conclude with `⟨fun h => map_injective _ (algebraMap Ω Φ).injective (by rw [h, map_zero]), fun h => by rw [h, map_zero]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem pointIdeal_algebraMap {K : Type*} {ι : K → Type*} {O Ω Φ : Type*} [CommRing O] [Field Ω] [Field Φ]
     [Algebra O Ω] [Algebra Ω Φ] [Algebra O Φ] [IsScalarTower O Ω Φ] (y : (Σ k, ι k) → Ω) :
@@ -199,23 +199,21 @@ theorem pointIdeal_algebraMap {K : Type*} {ι : K → Type*} {O Ω Φ : Type*} [
 end PointIdeal
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hBB' w w' x x' f g hF M M' a₀ a₀' φ φ' hφ hφ' Φ _ _ _ _ e t ht k hk1 hkN f₁ g₁ hD₁ _ n z z' fz gz hz r Bf hBf As Bs hAs hBs Q hQ`. Use `letI : ∀ s, Fintype (Sum.elim ι (lineBlocks M M') s) := fun s => match s with`. Consider the case `Sum.inl k => inferInstanceAs (Fintype (ι k))`. Consider the case `Sum.inr o => inferInstanceAs (Fintype (lineBlocks M M' o))`. Establish `hpt : joinCoords (fun p => algebraMap Ω Φ (y p)) (flagLinePt w e φ φ' t k) ∘ closureVarEquiv ι M M' = flagClosurePt y w e φ φ' t k`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Apply the tactic sequence `rcases p with ⟨_ | (_ | o), l⟩ <;> rfl`. Establish `hPJ : (pointIdeal O (flagClosurePt y w e φ φ' t k)).map (rename (closureVarEquiv ι M M')) = pointIdeal O (joinCoords (fun p => algebraMap Ω Φ (y p)) (flagLinePt w e φ φ' t k))`. Rewrite using `[← hpt]`. Conclude with `pointIdeal_map_rename (closureBlockEquiv K) _ (closureVarEquiv_fst ι M M') _`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPV : pointIdeal O (fun p => algebraMap Ω Φ (y p)) = pointIdeal O y` using `pointIdeal_algebraMap y`. Take `⟨hRmod, hRvert, hRnum⟩` from `hRel O ϖ (Option (Option K)) (bundleIdx (bundleIdx ι M) M') (K ⊕ Option Unit) (Sum.elim ι (lineBlocks M M')) (closureBlockEquiv K) (closureVarEquiv ι M M') (closureVarEquiv_fst ι M M') (pointIdeal O (flagClosurePt y w e φ φ' t k))`. Rewrite `hRmod`, `hRvert`, `hRnum` using `[hPJ]`. Establish `hJmod : IsModelOver (pointIdeal O (joinCoords (fun p => algebraMap Ω Φ (y p)) (flagLinePt w e φ φ' t k))) (d + (k - 1))` using `hRmod _ (hMod O ϖ hϖ Ω K ι y d hV N E B B' hBB' w w' x x' f g hF M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht k hk1 hkN).1`. Establish `hvert : ∀ i, IsVerticalDivisor (pointIdeal O (fun p => algebraMap Ω Φ (y p))) ϖ (Fin.append x z i - Fin.append x' z' i) (Fin.append f fz i) (Fin.append g gz i)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPV]`. Conclude with `fun i => Fin.addCases (fun i => by simpa only [Fin.append_left] using hF.vertical i) (fun j => by simpa only [Fin.append_right] using hz j) i`. Establish `hT` using `hRnum (1 + (N + n)) (joinClosureDeg (zetaFirst a₀) (Fin.append x z)) (joinClosureDeg (zetaSecond a₀') (Fin.append x' z')) (closureForm M M' f₁ (Fin.append f fz)) (closureForm M M' g₁ (Fin.append g gz)) As (Q.map joinDeg)`. Establish `hQ' : (Q.map joinDeg).map (· ∘ closureBlockEquiv K) = Q.map liftPairDeg`. Rewrite using `[List.map_map]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `List.map_congr_left fun L _ => joinDeg_comp_closureBlockEquiv L`. Rewrite `hT` using `[rename_closureForm, rename_closureForm, joinClosureDeg_comp, joinClosureDeg_comp, hQ']`. Rewrite using `[← hT]`. Establish `hvJ : ∀ i, IsVerticalDivisor (pointIdeal O (joinCoords (fun p => algebraMap Ω Φ (y p)) (flagLinePt w e φ φ' t k))) ϖ (joinClosureDeg (zetaFirst a₀) (Fin.append x z) i - joinClosureDeg (zetaSecond a₀') (Fin.append x' z') i) (joinClosureForm M M' (rename (closureVarEquiv ι M M') f₁ …`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Fin.addCases (fun i => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [joinClosureDeg, joinClosureForm, Fin.append_left]`. Apply `hRvert` to reduce the goal to its premises. Establish `hζ : (zetaFirst a₀ ∘ (closureBlockEquiv K).symm - zetaSecond a₀' ∘ (closureBlockEquiv K).symm) ∘ closureBlockEquiv K = zetaFirst a₀ - zetaSecond a₀'`. Use function extensionality and compare the values at `o`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hζ]`. Conclude with `hD₁`. Simplify using `only [joinClosureDeg, joinClosureForm, Fin.append_right]`. Establish `hd : joinDeg (K'` using `Option Unit) (Fin.append x z j) - joinDeg (Fin.append x' z' j) = joinDeg (Fin.append x z j - Fin.append x' z' j) := by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Apply the tactic sequence `rcases s with s | s <;> simp [joinDeg]`. Rewrite using `[hd]`. Conclude with `hVJ O ϖ Φ K ι (Option Unit) (lineBlocks M M') _ _ _ _ _ (hvert j)`. Rewrite using `[hExp O ϖ hϖ (K ⊕ Option Unit) (Sum.elim ι (lineBlocks M M')) _ (d + (k - 1)) hJmod (1 + (N + n)) _ _ _ _ hvJ r (rename (Fin.natAdd 1) Bf) (hBf.rename_isHomogeneous) As (pushExpansion (Fin.natAdd 1) Bs) hAs (isPairExpansion_push _ hBs) (Q.map joinDeg) (by rw [List.length_map]; om …`.
-
-Establish `hPB` using `hPull O ϖ hϖ Φ K ι (Option Unit) (lineBlocks M M') (fun p => algebraMap Ω Φ (y p)) (flagLinePt w e φ φ' t k) d (k - 1) (by rw [hPV]; exact hV) hJmod (N + n) (Fin.append x z) (Fin.append x' z') (Fin.append f fz) (Fin.append g gz) hvert r Bf hBf Bs hBs Q (by omega)`. Use `split_ifs with hk`. Take `rfl` from `hk`. Rewrite using `[hPB.2 (hBir O ϖ hϖ Ω K ι y d hV N E B B' hBB' w w' x x' f g hF M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht hkN), hPV]`. Conclude with `hPB.1 (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SegreFlagClosurePullback.proof (hPull : PairNumberPullback.Statement)
     (hExp : PairNumberExpansionIndependence.Statement) (hMod : SegreFlagClosureModel.Statement)

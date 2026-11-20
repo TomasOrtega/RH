@@ -7,39 +7,37 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ L hτ γ j hγ hj`. Take `⟨φ, h1, h2, -, h4⟩` from `dIso O K Δ L`. Take `⟨j', hj'γ, hj'tr, hj'⟩` from `h4 τ γ j hγ hj`. Establish `hZD : ∀ g : DX Δ, g ∈ ZD Δ ↔ ∃ z, IsScal z g`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [ZD, Subgroup.mem_subgroupOf, MonoidHom.mem_range, MonoidHom.comp_apply, IsScal]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Use `show ((g : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = _`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hz]`. Apply the tactic sequence `first | rfl | simp [Matrix.GeneralLinearGroup.scalar]`. Introduce and unpack `⟨z, hz⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show ((g : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = Glob.mt g from rfl, hz]`. Apply the tactic sequence `first | rfl | simp [Matrix.GeneralLinearGroup.scalar]`. Establish `hmap : (ZD Δ ⊔ KD Δ O).map φ.toMonoidHom = ZK O K`. Rewrite using `[Subgroup.map_sup]`. Unfold `ZK`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Rewrite using `[Subgroup.mem_map_equiv, hZD, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨z, by rw [← (h2 z _).1 hz]; simp⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, (h2 z _).2 (by simp)⟩`. Use extensionality with `x`. Rewrite using `[Subgroup.mem_map_equiv, ← h1]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `hmem : ∀ g, g ∈ ZD Δ ⊔ KD Δ O ↔ φ g ∈ ZK O K`. Introduce `g`. Rewrite using `[← hmap, Subgroup.mem_map_equiv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hgen : ∀ z : (Etau K τ)ˣ, (z : Etau K τ).im ≠ 0 → ∃ S : Finset (DX Δ), ∀ y : DX Δ, y⁻¹ * j z * y ∈ ZD Δ ⊔ KD Δ O → ∃ t, ∃ s ∈ S, ∃ u ∈ ZD Δ ⊔ KD Δ O, y = j t * s * u`. Introduce `z hz`. Take `⟨s, hs⟩` from `finG O K Δ τ L hτ j' hj'tr z hz`. Use `⟨s.image φ.symm, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite `hy` using `[hmem]`. Simplify using `only [map_mul, map_inv, hj'] at hy`. Take `⟨t, x, hx, k, hk, hyk⟩` from `hs (φ y) hy`. Use `⟨t, φ.symm x, Finset.mem_image_of_mem _ hx, φ.symm k, by rw [hmem]; simp [hk], ?_⟩` and prove the remaining obligations. Apply `φ.injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[map_mul, hj', hyk]`. Take `⟨a, ha⟩` from `exists_a (K := K) (τ := τ)`. Establish `hγa : γ = j a`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[hj']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← hj'γ]`. Simplify using `[ha]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hgen a (by rw [ha]; simp)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨S, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Apply `hS y` to reduce the goal to its premises. Establish `hK : y⁻¹ * γ * y ∈ KD Δ O`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `hy` to reduce the goal to its premises. Simplify using `[one, hn]`. Rewrite using `[← hγa]`. Conclude with `Subgroup.mem_sup_right hK`. Introduce `z hz χ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨S, hS⟩` from `hgen z (by rw [hz]; simp)`. Use `⟨S, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Apply `hS y` to reduce the goal to its premises. Unfold `fZD at hy`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `split_ifs at hy with hh`. Take `⟨z0, s0, hsc, hk⟩` from `hh`. Establish `hs0 : s0 ∈ ZD Δ` using `(hZD s0).2 ⟨z0, hsc⟩`. Use `(ZD Δ ⊔ KD Δ O).mul_mem (Subgroup.mem_sup_left hs0) (Subgroup.mem_sup_right hk)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `absurd rfl hy`. Introduce `y`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective y`. Establish `hst : Subgroup.comap j (MulAction.stabilizer (DX Δ) (g : DX Δ ⧸ ZD Δ ⊔ KD Δ O)) = Subgroup.comap (jU j') (Subgroup.comap (MulAut.conj (φ g)⁻¹).toMonoidHom (ZK O K))`. Use extensionality with `t`.
-
-Simplify using `only [Subgroup.mem_comap, MulAction.mem_stabilizer_iff, MulAction.Quotient.smul_mk, smul_eq_mul, QuotientGroup.eq, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`. Rewrite using `[← Subgroup.inv_mem_iff, show ((j t * g)⁻¹ * g)⁻¹ = g⁻¹ * j t * g by group, hmem]`. Simplify using `[hj']`. Rewrite using `[hst]`. Conclude with `stabG O K Δ τ L hτ j' hj'tr (φ g)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.finD : UpperTheory.V.Z.Sym.Loc.FinD := by
   classical

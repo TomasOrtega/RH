@@ -21,7 +21,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {π : A.left ⟶ Xo.univ.t.G.left}
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom hπ (𝟙_ (Over (Sp K)))))`. Establish `e₁ : (1 : 𝟙_ (Over (Sp K)) ⟶ A) = η[A]` using `by rw [Hom.one_def]; simp`. Rewrite `e` using `[e₁]`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ArcQ.NormalForm.one_left_eq, GlobalTheory.ArcQ.NormalForm.one_left_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -35,20 +35,18 @@ theorem one_comp (hπ : IsGrpPullback A Xo.univ.t.G x π) :
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Over.homMk (hπ.1.lift v T.hom hv) (hπ.1.lift_snd _ _ _), hπ.1.lift_fst _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift (hπ : IsGrpPullback A Xo.univ.t.G x π) {T : Over (Sp K)} (v : T.left ⟶ Xo.univ.t.G.left)
     (hv : v ≫ Xo.univ.t.G.hom = T.hom ≫ x) : ∃ w : T ⟶ A, w.left ≫ π = v :=
   ⟨Over.homMk (hπ.1.lift v T.hom hv) (hπ.1.lift_snd _ _ _), hπ.1.lift_fst _ _ _⟩
 
 /- English proof (translation)
-Establish `hw : w.left ≫ A.hom = spMap (algebraMap K (DualNumber K))` using `Over.w w`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `hπ.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.2.trans (one_comp hπ).symm`. Establish `a : η[A].left ≫ A.hom = 𝟙 _` using `Over.w η[A]`. Rewrite using `[Category.assoc, hw, a, ← Geo.Tor.spMap_comp]`. Establish `: (TrivSqZeroExt.fstHom K K K).toRingHom.comp (algebraMap K (DualNumber K)) = RingHom.id K`. Use extensionality with `r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`. Introduce `h`. Use `⟨by rw [Category.assoc, hπ.1.w, ← Category.assoc, hw], ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Category.assoc]`. Conclude with `(congrArg (· ≫ π) h).trans (one_comp hπ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tan_iff (hπ : IsGrpPullback A Xo.univ.t.G x π) (w : epsR K ⟶ A) : IsTanAt x (w.left ≫ π) ↔ IsTangent w := by
   have hw : w.left ≫ A.hom = spMap (algebraMap K (DualNumber K)) := Over.w w
@@ -68,11 +66,11 @@ theorem tan_iff (hπ : IsGrpPullback A Xo.univ.t.G x π) (w : epsR K ⟶ A) : Is
     exact (congrArg (· ≫ π) h).trans (one_comp hπ)
 
 /- English proof (translation)
-Establish `hw : w.left ≫ A.hom = spMap (algebraMap K (DualNumber K))` using `Over.w w`. Establish `e : (w.left ≫ π) ≫ g.left = (w ≫ f).left ≫ π`. Rewrite using `[Over.comp_left, Category.assoc, Category.assoc, hf]`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hπ.1.hom_ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, GlobalTheory.GrpTangent.epsScale_left, Category.assoc] at h ⊢`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.w, Over.w]`. Introduce `h`. Rewrite using `[h, Over.comp_left, GlobalTheory.GrpTangent.epsScale_left, Category.assoc]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eig_iff (hπ : IsGrpPullback A Xo.univ.t.G x π) {f : A ⟶ A} {g : Xo.univ.t.G ⟶ Xo.univ.t.G}
     (hf : f.left ≫ π = π ≫ g.left) (w : epsR K ⟶ A) (s : K) :
@@ -94,7 +92,7 @@ theorem eig_iff (hπ : IsGrpPullback A Xo.univ.t.G x π) {f : A ⟶ A} {g : Xo.u
     rfl
 
 /- English proof (translation)
-Use `map_list_prod (pushHom hπ (epsR K)) (List.ofFn u)` as an intermediate fact. Rewrite `this` using `[List.map_ofFn]`. Conclude with `congrArg (fun q => q.left) this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_prod (hπ : IsGrpPullback A Xo.univ.t.G x π) {n : ℕ} (u : Fin n → (epsR K ⟶ A)) :
     ((List.ofFn u).prod).left ≫ π = ((List.ofFn fun i => pushHom hπ (epsR K) (u i)).prod).left := by
@@ -103,11 +101,11 @@ theorem push_prod (hπ : IsGrpPullback A Xo.univ.t.G x π) {n : ℕ} (u : Fin n 
   exact congrArg (fun q => q.left) this
 
 /- English proof (translation)
-Take `⟨u, hu, hw⟩` from `h`. Use `choose u' hu' using fun i => exists_lift hπ (T := epsR K) (u i).left (Over.w (u i))`. Establish `e : u = fun i => pushHom hπ (epsR K) (u' i)` using `funext fun i => Over.OverMorphism.ext (hu' i).symm`. Use `⟨u', fun i => ?_, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Apply `hπ.1.hom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc]`. Conclude with `(hu' i).trans (hu i)`. Establish `hv : (v i).left ≫ A.hom = spMap (algebraMap K (DualNumber K))` using `Over.w (v i)`. Rewrite using `[Over.w, Category.assoc, hv, ArcQ.NormalForm.ExFr.scale_over]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hπ.1.hom_ext` to reduce the goal to its premises. Rewrite `hw` using `[e]`. Conclude with `hw.symm.trans (push_prod hπ u').symm`. Rewrite using `[Over.w, Over.w]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLieComb_of_isCombAt (hπ : IsGrpPullback A Xo.univ.t.G x π) {n : ℕ} (v : Fin n → (epsR K ⟶ A))
     (cf : Fin n → K) (w : epsR K ⟶ A)
@@ -132,9 +130,9 @@ namespace GlobalTheory.KSExist
 open FrameLift
 
 /- English proof (translation)
-Use `choose ub hub using fun σ k => exists_lift hπ (T := epsR K) (y.u σ k) (y.tan σ k).1`. Use `⟨ub, hub, fun σ k => (tan_iff hπ _).1 (by rw [hub]; exact y.tan σ k), fun σ k z => ?_, fun σ w ht he => ?_⟩` and prove the remaining obligations. Use `(eig_iff hπ (ha z) _ _).1 ?_` and prove the remaining obligations. Rewrite using `[hub]`. Conclude with `y.eig σ k z`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e : y.u σ = fun i => (ub σ i).left ≫ π` using `funext fun i => (hub σ i).symm`. Take `⟨cf, hcf, -⟩` from `y.basis σ (w.left ≫ π) ((tan_iff hπ w).2 ht) (fun z => (eig_iff hπ (ha z) w _).2 (he z))`. Rewrite `hcf` using `[e]`. Conclude with `⟨cf, isLieComb_of_isCombAt hπ _ cf w hcf⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frame_of_isGrpPullback {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {K : Type} [Field K] [Algebra c.F K] (y : FrPt Xo c K)

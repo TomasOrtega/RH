@@ -10,9 +10,9 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsValLineLogNormAtIf
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.CompHt GlobalTheory.FlatCore GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.FlatDegreeCompare
 
 /- English proof (translation)
-Introduce and unpack `K _ _ A _ 𝓛 m v - ht σ N ⟨A', _, φ, g, u, Hm, χ, v', W, hφ, hA, hv, h0, hN⟩`. Take `⟨A'', _, ψ, hc⟩ : ∃ (A'' : Over (Sp ℂ)) (_ : GrpObj A'') (ψ : A''.left ⟶ A'.left), IsGrpPullback A'' A' GlobalTheory.ArchMetricCompare.cj ψ` from `⟨_, _, _, isGrpPullback_pullback A' GlobalTheory.ArchMetricCompare.cj⟩`. Use `choose v'' hv'' using fun k => (GlobalTheory.existsUnique_isVecOver (f := starRingEnd ℂ) hc.1 (v' k)).exists`. Use `⟨A'', inferInstance, ψ ≫ φ, g, GlobalTheory.ArchMetricCompare.cjUnif hc u, Hm.map star, _, v'', fun i => star (W i), (hc.comp hφ).congr (GlobalTheory.spMap_comp_spMap σ (starRingEnd ℂ)) rfl, GlobalTheory.ArchMetricCompare.cj_isAH hc u hA, fun i => ⟨GlobalTheory.CM.EllComp.isVecOv …` and prove the remaining obligations. Rewrite using `[← Complex.conj_ofReal N, hN, RingHom.map_det]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i k`. Simplify using `[dotProduct, Matrix.mulVec, map_sum, Complex.star_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.archimedean_square_conj_invariant :
     ∀ (K : Type) [Field K] [NumberField K] (A : Over (Sp K)) [GrpObj A] (𝓛 : LB A.left) (m : ℕ) (v : Fin m → (epsR K ⟶ A)), 𝓛.IsLB → (∀ i, IsTangent (v i)) → ∀ (σ : K →+* ℂ) (N : ℝ), EigenvectorLieDegree.IsArchSq A 𝓛 v σ N → EigenvectorLieDegree.IsArchSq A 𝓛 v ((starRingEnd ℂ).comp σ) N := by

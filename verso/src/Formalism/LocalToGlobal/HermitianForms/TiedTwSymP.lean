@@ -75,11 +75,11 @@ structure TwPEvzS {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {H : F
       ∀ w G, (D.PTw u μ).period w G = (Tw.fm u μ).ipP (jM u μ G) w
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hw : ((Tw.fm u μ).sg τ).w = ((D.fm u).sg τ).w`. Use function extensionality and compare the values at `i`. Establish `h1` using `(P.val u μ hμ).sg τ i`. Establish `h2` using `(F u).valP.sg τ i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.trans h2.symm` after adjusting the coercions. Use `revert hw`. Generalize the expression as in `(Tw.fm u μ).sg τ = a`. Generalize the expression as in `(D.fm u).sg τ = b`. Introduce `hw`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `a`. Consider the cases of `b`. Consider the cases of `hw`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem TwPTiedS.sg_eq {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {H : Formalism.L2.Herm.HermColsCh D} {J : Formalism.L2.Herm.TwChJointS T H}
     {F : ∀ u, FormsTiedSym D u (H.Ch u) (H.chOf u)} {W : TwFormsTiedS D Tw T J F} {Lv : SymmetricTwistedLevelData W} (P : TwPTiedS Lv)

@@ -20,31 +20,25 @@ open GlobalTheory.Mem.R3.HasLabelling
 namespace GlobalTheory.Mem.R3.RatSpan
 
 /- English proof (translation)
-Introduce `_ _ _ _ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH _ i p`. Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hH.ok hH.sep hP.char hH.prim`. Establish `hpt : ∀ y : Fin (((R.toCx3 F).data F.cr false).dW i) → D.what₂.LL, (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y) = Tw.mk (twAt D.what₂.embLL A3.A.v0) (Y.mj.eW i (Z.jW i y))`. Introduce `y`. Rewrite using `[Z.jW_read]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.Mem.LiftTheta.liftWeight_complexPoint_eq_twist R.toRealDat F.lv2 false i y).trans ?_` and prove the remaining obligations. Use `congr 1`. Establish `hmem : ∀ y, y ∈ (s0Of R F).Wp i p ↔ Z.jW i y ∈ (R.Wp3 i p).comap (Y.mj.eW i)`. Introduce `y`. Use `show (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y) ∈ (R.toCx3 F).Wp i p ↔ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(Iff.of_eq (congrArg (· ∈ (R.toCx3 F).Wp i p) (hpt y))).trans Iff.rfl`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(hmem y).1 hy`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hnP : 0 < RealDat.nP F.lv2 false` using `RealDat.nP_pos (F := F.lv2) false`. Establish `hinj : Function.Injective (Y.mj.eW i)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `d hd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1 : RealDat.nP F.lv2 false * ‖d‖ ^ 2 = 0` using `by rw [← Y.mj.eW_norm i d, hd]; simp`. Establish `h2 : ‖d‖ ^ 2 = 0`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `absurd h hnP.ne'`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `norm_eq_zero.1 (pow_eq_zero_iff (n := 2) (by norm_num) |>.1 h2)`. Establish `hw` using `(R.toCx3 F).principal_form_injective false hR.kForm hR.ewNorm (hR.h4pos.2.2 false) i`. Use `set U : Submodule ℂ ((R.toCx3 F).W i) := Submodule.span ℂ ((fun y => (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y)) '' ((R.toCx3 F).WpK false i p : Set _)) with hU`. Establish `hUT : U = (R.toCx3 F).Wp i p ⊓ LinearMap.range ((R.toCx3 F).w0C false i)`. Apply `Submodule.eq_of_le_of_finrank_le` to reduce the goal to its premises.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hU, Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨hy, LinearMap.mem_range_self _ _⟩`. Rewrite using `[← (R.toCx3 F).finrank_WpK F.cr false hR.h4pos hR.kForm hR.ewNorm hR.types0 hR.lifts0.1 hR.ratTh hR.liftHyp0.h3W hR.partsW i p]`. Conclude with `(finrank_le_cpt A3.A.v0.embedding ((R.toCx3 F).w0C false i) hw U ((R.toCx3 F).WpK false i p) (fun y hy => Submodule.subset_span ⟨y, hy, rfl⟩)).trans (Submodule.finrank_mono inf_le_left)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hWS : Y.mj.eW i x ∈ R.toRealDat.WS F.lv2 false i (sg0 D A3.A)`. Rewrite using `[hH.aux.levelW false i (sg0 D A3.A), ← Y.mj.eW_range i]`. Conclude with `LinearMap.mem_range_self _ _`. Rewrite `hWS` using `[← GlobalTheory.Mem.LiftTheta.goodForm_span]`. Establish `h1 : Tw.mk (twAt D.what₂.embLL A3.A.v0) (Y.mj.eW i x) ∈ U`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[hUT]`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `h2` using `Submodule.mem_map_of_mem (f := Tw.mkL (twAt D.what₂.embLL A3.A.v0) (R.HW i (sg0 D A3.A)).H) hWS`. Rewrite `h2` using `[Submodule.map_span]`. Use `(Submodule.span_le.2 ?_) h2` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`. Use `⟨Pi.single k 1, ?_⟩` and prove the remaining obligations. Establish `h3` using `GlobalTheory.Mem.LiftTheta.liftWeight_complexPoint_eq_twist R.toRealDat F.lv2 false i (Pi.single k 1)`. Conclude with `(congrArg ((R.toCx3 F).w0C false i) (cpt_single A3.A.v0.embedding k).symm).trans h3`. Set `outL : (R.toCx3 F).W i →ₛₗ[cj (twAt D.what₂.embLL A3.A.v0)] (R.HW i (sg0 D A3.A)).H` to `{ toFun := fun z => Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H) z map_add' := fun a b => Tw.out_add (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H) a b map_smul' := fun c a => Tw.out_smul (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i …`.
-
-Establish `h4 : Y.mj.eW i x ∈ U.map outL` using `Submodule.mem_map_of_mem (f := outL) h1`. Rewrite `h4` using `[hU, Submodule.map_span, ← Set.image_comp]`. Establish `h5 : Submodule.span ℂ ((outL ∘ fun y => (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y)) '' ((R.toCx3 F).WpK false i p : Set _)) ≤ (Submodule.span ℂ ((Z.jW i) '' (((R.toCx3 F).WpK false i p : Set (Fin ((R.toCx3 F).dW false i) → D.what₂.LL)) : Set (Fin (((R.toCx3 F).data F.cr fa …`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
-
-Use `⟨Z.jW i y, Submodule.subset_span ⟨y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show Y.mj.eW i (Z.jW i y) = Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H) ((R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y))`. Conclude with `(congrArg (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H)) (hpt y)).symm`. Take `⟨x', hx', hxx⟩` from `h5 h4`. Rewrite using `[← hinj hxx]`.
-
-Conclude with `hx'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_jW_wp : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ (i : Fin D.R.m) (p : A3.fam3.base3.Ix), Submodule.span ℂ ((Z.jW i) '' ((s0Of R F).Wp i p : Set (Fin ((s0Of R F).dW i) → D.what₂.LL))) = (R.Wp3 i p).comap (Y.mj.eW i) := by
   intro _ _ _ _ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH _ i p

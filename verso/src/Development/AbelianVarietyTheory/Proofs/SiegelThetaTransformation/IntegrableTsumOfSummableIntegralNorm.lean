@@ -7,11 +7,9 @@ open scoped ComplexConjugate ComplexOrder Real Classical
 namespace GlobalTheory.SW
 
 /- English proof (translation)
-Establish `hmeas : ∀ i, AEMeasurable (fun y => ‖F i y‖ₑ) μ` using `fun i => (hF i).1.enorm`. Establish `htot : ∫⁻ y, ∑' i, ‖F i y‖ₑ ∂μ ≠ ⊤`. Rewrite using `[lintegral_tsum hmeas]`. Establish `h : ∀ i, ∫⁻ y, ‖F i y‖ₑ ∂μ = ENNReal.ofReal (∫ y, ‖F i y‖ ∂μ)` using `fun i => (ofReal_integral_norm_eq_lintegral_enorm (hF i)).symm`. Repeatedly rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun i => integral_nonneg fun y => norm_nonneg _) hs]`. Conclude with `ENNReal.ofReal_ne_top`. Establish `hsum : ∀ᵐ y ∂μ, Summable fun i => ‖F i y‖` using `by filter_upwards [ae_lt_top' (AEMeasurable.tsum hmeas) htot] with y hy`. Conclude with `tsum_enorm_ne_top_iff_summable_norm.1 hy.ne`. Use `⟨⟨?_, ?_⟩, hsum⟩` and prove the remaining obligations.
-
-Use `aestronglyMeasurable_of_tendsto_ae (Filter.atTop : Filter (Finset ι)) (f := fun s y => ∑ i ∈ s, F i y) (fun s => ?_) ?_` and prove the remaining obligations. Conclude with `Finset.aestronglyMeasurable_fun_sum s fun i _ => (hF i).1`. Use `filter_upwards [hsum] with y hy`. Conclude with `hy.of_norm.hasSum`. Conclude with `lt_of_le_of_lt (lintegral_mono fun y => enorm_tsum_le_tsum_enorm) htot.lt_top`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem integrable_tsum_of_summable_integral_norm' {ι Y E : Type} [Countable ι] [MeasurableSpace Y]
     [NormedAddCommGroup E] [CompleteSpace E]
@@ -40,9 +38,9 @@ private theorem integrable_tsum_of_summable_integral_norm' {ι Y E : Type} [Coun
   · exact lt_of_le_of_lt (lintegral_mono fun y => enorm_tsum_le_tsum_enorm) htot.lt_top
 
 /- English proof (translation)
-Take `⟨hint, hsum⟩` from `integrable_tsum_of_summable_integral_norm' μ F hF hs`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `hnorm : ∀ i, Integrable (fun y => ‖F i y‖) μ` using `fun i => (hF i).norm`. Establish `hs' : Summable fun i => ∫ y, ‖‖F i y‖‖ ∂μ` using `by simpa only [norm_norm] using hs`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `integral_mono_ae hint.norm (integrable_tsum_of_summable_integral_norm' μ _ hnorm hs').1 ?_` and prove the remaining obligations. Use `filter_upwards [hsum] with y hy`. Conclude with `norm_tsum_le_tsum_norm hy`. Use `_ = ∑' i, ∫ y, ‖F i y‖ ∂μ := (integral_tsum_of_summable_integral_norm hnorm hs').symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_tsum_of_summable_integral_norm {ι Y : Type} [Countable ι] [MeasurableSpace Y]
     (μ : Measure Y) (F : ι → Y → ℂ) (hF : ∀ i, Integrable (F i) μ)
@@ -59,9 +57,9 @@ theorem integrable_tsum_of_summable_integral_norm {ι Y : Type} [Countable ι] [
     _ = ∑' i, ∫ y, ‖F i y‖ ∂μ := (integral_tsum_of_summable_integral_norm hnorm hs').symm
 
 /- English proof (translation)
-Establish `hdisj : Pairwise fun i j => AEDisjoint μ (S i) (S j)`. Introduce `i j hij`. Use `measure_mono_null (t := {y | ¬ ∃! k, y ∈ S k}) ?_ (ae_iff.1 hu)` and prove the remaining obligations. Introduce `y hy h`. Conclude with `hij (ExistsUnique.unique h hy.1 hy.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcover : (⋃ i, S i : Set Y) =ᵐ[μ] (Set.univ : Set Y)` using `by filter_upwards [hu] with y ⟨i, hi, _⟩`. Conclude with `propext ⟨fun _ => trivial, fun _ => Set.mem_iUnion.2 ⟨i, hi⟩⟩`. Establish `h` using `hasSum_integral_iUnion_ae (fun i => (hS i).nullMeasurableSet) hdisj hf.integrableOn`. Rewrite `h` using `[setIntegral_congr_set hcover, setIntegral_univ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hasSum_setIntegral_of_ae_existsUnique {ι Y E : Type} [Countable ι] [MeasurableSpace Y]
     [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -82,9 +80,9 @@ theorem hasSum_setIntegral_of_ae_existsUnique {ι Y E : Type} [Countable ι] [Me
   rwa [setIntegral_congr_set hcover, setIntegral_univ] at h
 
 /- English proof (translation)
-Set `φ : Y ≃ᵐ Y` to `{ toEquiv := MulAction.toPerm γ measurable_toFun := (hν γ).measurable measurable_invFun := (hν γ⁻¹).measurable }`. Establish `hemb : MeasurableEmbedding (fun y : Y => γ • y)` using `φ.measurableEmbedding`. Establish `hD : D = (fun y : Y => γ • y) ⁻¹' ((fun y : Y => γ⁻¹ • y) ⁻¹' D)`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `key` using `(hν γ).setIntegral_preimage_emb hemb g ((fun y : Y => γ⁻¹ • y) ⁻¹' D)`. Rewrite `key` using `[← hD]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_smul_of_measurePreserving {Γ Y E : Type} [Group Γ] [MeasurableSpace Y]
     [MulAction Γ Y] [NormedAddCommGroup E] [NormedSpace ℝ E] (ν : Measure Y)
@@ -103,27 +101,25 @@ theorem setIntegral_smul_of_measurePreserving {Γ Y E : Type} [Group Γ] [Measur
   exact key
 
 /- English proof (translation)
-Introduce `Γ I Y _ _ _ _ _ _ ν _ hν D hD hcov f hf hs`. Establish `hSm : ∀ (j : I) (δ : Γ), MeasurableSet ((fun y : Y => δ • y) ⁻¹' D (δ • j))` using `fun j δ => (hν δ).measurable (hD _)`. Establish `hP : ∀ (j : I) {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (g : Y → E), Integrable g ν → HasSum (fun δ : Γ => ∫ y in (fun y : Y => δ • y) ⁻¹' D (δ • j), g y ∂ν) (∫ y, g y ∂ν)` using `fun j E _ _ g hg => hasSum_setIntegral_of_ae_existsUnique ν (fun δ : Γ => (fun y : Y => δ • y) ⁻¹' D (δ • j)) (hSm j) (hcov j) g hg`. Establish `hmove : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (j : I) (δ : Γ) (g : Y → E), ∫ y in D (δ • j), g (δ⁻¹ • y) ∂ν = ∫ y in (fun y : Y => δ • y) ⁻¹' D (δ • j), g y ∂ν`. Introduce `E _ _ j δ g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[setIntegral_smul_of_measurePreserving ν hν δ⁻¹ (D (δ • j)) g]`. Simplify using `only [inv_inv]`. Set `e : I × Γ ≃ I × Γ` to `{ toFun := fun p => (p.2 • p.1, p.2⁻¹) invFun := fun p => (p.2 • p.1, p.2⁻¹) left_inv := fun p => by simp right_inv := fun p => by simp }`. Establish `he : ∀ p : I × Γ, e p = (p.2 • p.1, p.2⁻¹)` using `fun p => rfl`. Take `⟨c, hc⟩ : ∃ c : I × Γ → ℂ, ∀ p, c p = ∫ y in D p.1, f (p.2 • p.1) (p.2 • y) ∂ν` from `⟨_, fun _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩ : ∃ a : I × Γ → ℝ, ∀ p, a p = ∫ y in D p.1, ‖f (p.2 • p.1) (p.2 • y)‖ ∂ν` from `⟨_, fun _ => rfl⟩`. Establish `hce : ∀ p : I × Γ, c (e p) = ∫ y in (fun y : Y => p.2 • y) ⁻¹' D (p.2 • p.1), f p.1 y ∂ν`. Introduce and unpack `⟨j, δ⟩`. Rewrite using `[he, hc]`. Simplify using `only`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only [inv_smul_smul]`. Conclude with `hmove j δ (f j)`. Establish `hae : ∀ p : I × Γ, a (e p) = ∫ y in (fun y : Y => p.2 • y) ⁻¹' D (p.2 • p.1), ‖f p.1 y‖ ∂ν`. Introduce and unpack `⟨j, δ⟩`. Rewrite using `[he, ha]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only`. Simplify using `only [inv_smul_smul]`. Conclude with `hmove j δ (fun y => ‖f j y‖)`. Establish `hnorm_int : ∀ j, Integrable (fun y => ‖f j y‖) ν` using `fun j => (hf j).norm`. Establish `ha0 : 0 ≤ a` using `fun p => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.zero_apply, ha]`. Conclude with `integral_nonneg fun _ => norm_nonneg _`. Establish `hb_sum : Summable (a ∘ e)`. Establish `h0 : 0 ≤ a ∘ e` using `fun p => ha0 (e p)`. Use `(summable_prod_of_nonneg h0).2 ⟨fun j => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, hae]`. Conclude with `(hP j _ (hnorm_int j)).summable`. Simplify using `only [Function.comp_apply, hae]`. Establish `h1 : ∀ j : I, ∑' δ : Γ, ∫ y in (fun y : Y => δ • y) ⁻¹' D (δ • j), ‖f j y‖ ∂ν = ∫ y, ‖f j y‖ ∂ν` using `fun j => (hP j _ (hnorm_int j)).tsum_eq`. Simplify `hs` using `only [h1]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha_sum : Summable a` using `e.summable_iff.1 hb_sum`. Establish `hc_sum : Summable c` using `ha_sum.of_norm_bounded fun p => by`. Rewrite using `[hc, ha]`. Conclude with `norm_integral_le_integral_norm _`. Establish `hFint : ∀ (i : I) (γ : Γ), Integrable (fun y => f (γ • i) (γ • y)) (ν.restrict (D i))` using `fun i γ => ((hν γ).integrable_comp_of_integrable (hf (γ • i))).restrict`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hFsum : ∀ i, Summable fun γ : Γ => ∫ y in D i, ‖f (γ • i) (γ • y)‖ ∂ν` using `fun i => by`. Simplify `ha_sum.prod_factor i` using `only [ha]`. Establish `hmain` using `fun i => integrable_tsum_of_summable_integral_norm (ν.restrict (D i)) (fun (γ : Γ) (y : Y) => f (γ • i) (γ • y)) (hFint i) (hFsum i)`. Use `⟨fun i => (hmain i).1, ?_, ?_⟩` and prove the remaining obligations. Use `Summable.of_nonneg_of_le (fun i => integral_nonneg fun y => norm_nonneg _) (fun i => (hmain i).2) ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `((summable_prod_of_nonneg ha0).1 ha_sum).2` using `only [ha]`. Establish `hrow : ∀ i, ∫ y in D i, ∑' γ : Γ, f (γ • i) (γ • y) ∂ν = ∑' γ : Γ, c (i, γ)` using `fun i => (integral_tsum_of_summable_integral_norm (hFint i) (hFsum i)).symm.trans (tsum_congr fun γ => (hc (i, γ)).symm)`. Establish `hd : Summable fun p : I × Γ => ∫ y in (fun y : Y => p.2 • y) ⁻¹' D (p.2 • p.1), f p.1 y ∂ν`. Establish `h1` using `e.summable_iff.2 hc_sum`. Simplify `h1` using `only [Function.comp_def, hce]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem unfolding_abstract : ∀ (Γ I Y : Type) [Group Γ] [Countable Γ] [Countable I] [MeasurableSpace Y] [MulAction Γ I] [MulAction Γ Y] (ν : Measure Y) [SFinite ν], (∀ γ : Γ, MeasurePreserving (fun y : Y => γ • y) ν ν) → ∀ D : I → Set Y, (∀ i, MeasurableSet (D i)) → (∀ i, ∀ᵐ y ∂ν, ∃! γ : Γ, γ • y ∈ D (γ • i)) → ∀ f : I → Y → ℂ, (∀ i, Integrable (f i) ν) → Summable (fun i => ∫ y, ‖f i y‖ ∂ν) → (∀ i, IntegrableOn (fun y => ∑' γ : Γ, f (γ • i) (γ • y)) (D i) ν) ∧ Summable (fun i => ∫ y in D i, ‖∑' γ : Γ, f (γ • i) (γ • y)‖ ∂ν) ∧ ∑' i, ∫ y in D i, ∑' γ : Γ, f (γ • i) (γ • y) ∂ν = ∑' i, ∫ y, f i y ∂ν := by
   intro Γ I Y _ _ _ _ _ _ ν _ hν D hD hcov f hf hs

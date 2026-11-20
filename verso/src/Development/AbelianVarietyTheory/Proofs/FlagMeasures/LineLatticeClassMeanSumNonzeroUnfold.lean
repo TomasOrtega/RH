@@ -10,9 +10,9 @@ namespace GlobalTheory.FlagBase.SiegelUnfold
 open Filter Topology in
 
 /- English proof (translation)
-Use `LSeriesSummable_of_sum_norm_bigO_and_nonneg (r := 1) ?_ (fun _ => Nat.cast_nonneg _) zero_le_one hs` and prove the remaining obligations. Establish `h : Tendsto (fun n : ℕ => (∑ k ∈ Finset.Icc 1 n, (Nat.card {I : Ideal (𝓞 K) // Ideal.absNorm I = k} : ℝ)) / (n : ℝ)) atTop (𝓝 (dedekindZeta_residue K))`. Use `((Ideal.tendsto_norm_le_div_atTop₀ K).comp tendsto_natCast_atTop_atTop).congr fun n ↦ ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Nat.cast_le, ← Nat.cast_sum]`. Reduce the equality to equality of the corresponding arguments.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← add_left_inj 1, ← Ideal.card_norm_le_eq_card_norm_le_add_one, show Finset.Icc 1 n = Finset.Ioc 0 n from Finset.Icc_succ_left_eq_Ioc _ _, show 1 = Nat.card {I : Ideal (𝓞 K) // Ideal.absNorm I = 0} by simp [Ideal.absNorm_eq_zero_iff], Finset.sum_Ioc_add_eq_sum_Icc (n.zero_le), ← …`. Simplify using `[Set.coe_eq_subtype]`. Simplify using `only [Real.rpow_one]`. Conclude with `Asymptotics.isBigO_of_div_tendsto_nhds (by filter_upwards [eventually_gt_atTop 0] with n hn h0`. Conclude with `absurd (Nat.cast_eq_zero.1 h0) hn.ne') _ h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lseriesSummable_idealCount (K : Type) [Field K] [NumberField K] {s : ℂ} (hs : 1 < s.re) :
     LSeriesSummable (fun n => ((Nat.card {I : Ideal (𝓞 K) // Ideal.absNorm I = n} : ℝ) : ℂ)) s := by
@@ -36,11 +36,11 @@ theorem lseriesSummable_idealCount (K : Type) [Field K] [NumberField K] {s : ℂ
     exact absurd (Nat.cast_eq_zero.1 h0) hn.ne') _ h
 
 /- English proof (translation)
-Establish `hs : 1 < ((l : ℂ)).re`. Rewrite using `[Complex.natCast_re]`. Conclude with `hl` after adjusting the coercions. Establish `h` using `Complex.hasSum_re (lseriesSummable_idealCount K hs).hasSum`. Unfold `zetaE dedekindZeta LSeries`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.ofReal_natCast] at h`. Use `h using 2 with n` and compare the differences between its conclusion and the goal. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Establish `: l ≠ 0` using `by omega`. Simplify using `[this]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LSeries.term_of_ne_zero hn, Complex.cpow_natCast, div_eq_mul_inv, ← Complex.ofReal_natCast, ← Complex.ofReal_natCast n, ← Complex.ofReal_pow, ← Complex.ofReal_inv, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_zetaE (K : Type) [Field K] [NumberField K] {l : ℕ} (hl : 2 ≤ l) :
     HasSum (fun n : ℕ => (Nat.card {I : Ideal (𝓞 K) // Ideal.absNorm I = n} : ℝ) * ((n : ℝ) ^ l)⁻¹)
@@ -59,11 +59,11 @@ theorem hasSum_zetaE (K : Type) [Field K] [NumberField K] {l : ℕ} (hl : 2 ≤ 
       Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `hl0 : l ≠ 0` using `by omega`. Establish `h1 : ∑' 𝔞 : {𝔞 : Ideal (𝓞 K) // 𝔞 ≠ ⊥}, ENNReal.ofReal (((Ideal.absNorm 𝔞.1 : ℝ) ^ l)⁻¹) = ∑' 𝔞 : Ideal (𝓞 K), ENNReal.ofReal (((Ideal.absNorm 𝔞 : ℝ) ^ l)⁻¹)`. Use `tsum_subtype_eq_of_support_subset (s := {𝔞 : Ideal (𝓞 K) | 𝔞 ≠ ⊥}) (f := fun 𝔞 : Ideal (𝓞 K) => ENNReal.ofReal (((Ideal.absNorm 𝔞 : ℝ) ^ l)⁻¹)) ?_` and prove the remaining obligations. Introduce and unpack `𝔞 h rfl`. Conclude with `h (by simp [hl0])`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h` using `hasSum_zetaE K hl`. Rewrite using `[h1, ← h.tsum_eq, ENNReal.ofReal_tsum_of_nonneg (fun n => by positivity) h.summable, ← (Equiv.sigmaFiberEquiv (fun I : Ideal (𝓞 K) => Ideal.absNorm I)).tsum_eq, ENNReal.tsum_sigma']`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Establish `key : ∀ I : {I : Ideal (𝓞 K) // Ideal.absNorm I = n}, ENNReal.ofReal (((Ideal.absNorm (Equiv.sigmaFiberEquiv (fun I : Ideal (𝓞 K) => Ideal.absNorm I) ⟨n, I⟩) : ℝ) ^ l)⁻¹) = ENNReal.ofReal (((n : ℝ) ^ l)⁻¹)`. Introduce and unpack `⟨I, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `haveI : Finite {I : Ideal (𝓞 K) // Ideal.absNorm I = n} := (Ideal.finite_setOfPred_absNorm_eq n).to_subtype`. Use `haveI := Fintype.ofFinite {I : Ideal (𝓞 K) // Ideal.absNorm I = n}`. Rewrite using `[tsum_congr key, tsum_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_natCast, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_absNorm_pow_inv (K : Type) [Field K] [NumberField K] {l : ℕ} (hl : 2 ≤ l) :
     ∑' 𝔞 : {𝔞 : Ideal (𝓞 K) // 𝔞 ≠ ⊥}, ENNReal.ofReal (((Ideal.absNorm 𝔞.1 : ℝ) ^ l)⁻¹) =
@@ -106,9 +106,9 @@ def sumLat (E : Type) [Field E] [NumberField E] (k : ℕ) (𝔞 : Ideal (𝓞 E)
     simpa [Algebra.smul_def, mul_assoc] using this
 
 /- English proof (translation)
-Introduce `E _ _ hE j hj w Φ hw hΦ`. Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Establish `hv : 0 ≤ Formalism.HermitianLatticesTheory.vInv E ^ (Formalism.HermitianLatticesTheory.fDeg E * (2 * k + 1))`. Unfold `Formalism.HermitianLatticesTheory.vInv`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Rewrite using `[GlobalTheory.T.lineLatticeMean_sum_eq_tsum_pair_orbits E hE k (sumLat E k) (fun _ _ _ => Iff.rfl) w Φ hw hΦ]`. Simplify using `only [fun (𝔞 : {𝔞 : Ideal (𝓞 E) // 𝔞 ≠ ⊥}) (Λ' : {Λ : Submodule (𝓞 E) (Fin k → E) // Submodule.IsLattice E Λ}) => GlobalTheory.T.lineLatticeMean_single_pair_orbit_contribution E hE k (by omega) (sumLat E k) (fun _ _ _ => Iff.rfl) w Φ hw hΦ 𝔞.1 Λ'.1 𝔞.2 Λ'.2]`. Simplify using `only [ENNReal.tsum_mul_right, ENNReal.tsum_mul_left, ENNReal.ofReal_mul hv, Nat.add_sub_cancel, show 2 * (k + 1) - 1 = 2 * k + 1 by omega]`. Rewrite using `[tsum_absNorm_pow_inv E hj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem latMean_sum_ne_zero : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ j : ℕ, 2 ≤ j → ∀ (w : ℝ → ENNReal) (Φ : VecInf E j → ENNReal), Measurable w → Measurable Φ → latMean E j (fun L => w (covAt E j L) * ∑' x : {x : VecInf E j // x ∈ L ∧ x ≠ 0}, Φ x.1) = glVol E (j - 1) * ENNReal.ofReal (Formalism.HermitianLatticesTheory.vInv E ^ (Formalism.HermitianLatticesTheory.fDeg E * (2 * j - 1)) * zetaE E j) * (∫⁻ x, Φ x) * ∫⁻ t in Set.Ioi (0 : ℝ), w t / ENNReal.ofReal (t ^ 2) := by
   intro E _ _ hE j hj w Φ hw hΦ

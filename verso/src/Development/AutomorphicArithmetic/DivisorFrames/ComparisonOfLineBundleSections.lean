@@ -10,7 +10,7 @@ open scoped Classical
 namespace UpperTheory.SpecialPointValuations
 
 /- English proof (translation)
-Take `⟨U, hx, s, rfl⟩` from `h.regAt.exists_fnOf`. Establish `hy : z ∈ g ⁻¹ᵁ U` using `hx`. Rewrite using `[SmallSec.fnMap_fnOf g hη _ (gen_mem hy), unitAt_fnOf_iff hy, ← Scheme.preimage_basicOpen]`. Conclude with `(unitAt_fnOf_iff hx _ s).1 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unitAt_fnMap {X Z : Scheme.{0}} [IsIntegral X] [IsIntegral Z] (g : Z ⟶ X)
     (hη : g (genericPoint Z) ⤳ genericPoint X) {z : Z} {t : X.functionField} (h : UnitAt (g z) t) :
@@ -21,14 +21,14 @@ private theorem unitAt_fnMap {X Z : Scheme.{0}} [IsIntegral X] [IsIntegral Z] (g
   exact (unitAt_fnOf_iff hx _ s).1 h
 
 /- English proof (translation)
-The claim follows from `have ⟨a, ha, e⟩ := h; ⟨a ^ m, ha.pow m, by rw [map_pow, e]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem unitAt_pow {X : Scheme.{0}} [IsIntegral X] {x : X} {f : X.functionField} (h : UnitAt x f) (m : ℕ) :
     UnitAt x (f ^ m) :=
   have ⟨a, ha, e⟩ := h; ⟨a ^ m, ha.pow m, by rw [map_pow, e]⟩
 
 /- English proof (translation)
-Establish `hx : x ∈ L.U i ⊓ L.U j` using `⟨hi, hj⟩`. Rewrite using `[hs i j (gen_mem hx), mul_div_cancel_right₀ _ (s j).ne_zero]`. Conclude with `unitAt_fnOf hx _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unitAt_div {X : Scheme.{0}} [IsIntegral X] {L : LB X} {s : L.ι → X.functionFieldˣ} (hs : IsRatSec L s)
     {x : X} {i j : L.ι} (hi : x ∈ L.U i) (hj : x ∈ L.U j) : UnitAt x ((s i : X.functionField) / s j) := by
@@ -37,14 +37,14 @@ private theorem unitAt_div {X : Scheme.{0}} [IsIntegral X] {L : LB X} {s : L.ι 
   exact unitAt_fnOf hx _ _
 
 /- English proof (translation)
-Simplify using `using (Base.valAt_zpow y h).2 (-1)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem valAt_inv {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] {y : Sp K ⟶ Z} {f : Z.functionField}
     (h : UnitAt (below y) f) : valAt y f⁻¹ = (valAt y f)⁻¹ := by
   simpa using (Base.valAt_zpow y h).2 (-1)
 
 /- English proof (translation)
-Establish `h : UnitAt (genericPoint X) (f : X.functionField)` using `GlobalTheory.Cartier.unitAt_genericPoint f.ne_zero`. Conclude with `h.exists_nhds`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_unit_open {X : Scheme.{0}} [IsIntegral X] (f : X.functionFieldˣ) :
     ∃ U : X.Opens, genericPoint X ∈ U ∧ ∀ y ∈ U, UnitAt y (f : X.functionField) := by
@@ -54,11 +54,11 @@ private theorem exists_unit_open {X : Scheme.{0}} [IsIntegral X] (f : X.function
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Establish `: IsProper V.p`. Take `⟨n, c, hc, h⟩` from `V.ar.isProjOver`. Use `isProper_str (𝓞 F) n` as an intermediate fact. Rewrite using `[← h]`. Use `infer_instance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : IsClosed (V.p '' closure {x})` using `V.p.isClosedMap _ isClosed_closure`. Establish `h₁ : V.p x ∈ V.p '' closure {x}` using `⟨x, subset_closure rfl, rfl⟩`. Take `⟨𝔪, h𝔪, hle⟩` from `Ideal.exists_le_maximal _ (V.p x).isPrime.ne_top`. Establish `hsp : V.p x ⤳ (⟨𝔪, h𝔪.isPrime⟩ : PrimeSpectrum (𝓞 F))` using `(PrimeSpectrum.le_iff_specializes _ _).1 hle`. Take `⟨x₀, h, e⟩` from `hsp.mem_closed hc h₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x₀, ⟨𝔪, h𝔪.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField h𝔪 (RingOfIntegers.not_isField F)⟩, specializes_iff_mem_closure.2 h, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_special (V : Mean4O.Cover Y) (x : V.X) :
     ∃ (x₀ : V.X) (v : HeightOneSpectrum (𝓞 F)), x ⤳ x₀ ∧ (V.p x₀).asIdeal = v.asIdeal := by
@@ -78,11 +78,11 @@ private theorem exists_special (V : Mean4O.Cover Y) (x : V.X) :
   rw [e]
 
 /- English proof (translation)
-Establish `hj : IsPreimmersion V.j` using `MorphismProperty.of_isPullback V.pb.flip (IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F)) (S := F))`. Take `⟨t, ht, htW⟩` from `V.j.isEmbedding.isInducing.isOpen_iff.1 (V.π ⁻¹ᵁ W).isOpen`. Take `⟨w, hw⟩` from `V.π.surjective (genericPoint Y.X)`. Establish `hwt : V.j w ∈ t`. Establish `: w ∈ (V.π ⁻¹ᵁ W : Set V.G)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `V.π w ∈ W`. Rewrite using `[hw]`. Conclude with `hW`. Rewrite `this` using `[← htW]`. Conclude with `this`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨t, ht⟩, ((genericPoint_spec V.X).mem_open_set_iff ht).2 ⟨_, trivial, hwt⟩, fun w hw => ?_⟩` and prove the remaining obligations. Establish `: w ∈ (V.π ⁻¹ᵁ W : Set V.G)`. Rewrite using `[← htW]`. Conclude with `hw`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_over (V : Mean4O.Cover Y) (W : Y.X.Opens) (hW : genericPoint Y.X ∈ W) :
     ∃ t : V.X.Opens, genericPoint V.X ∈ t ∧ ∀ w : V.G, V.j w ∈ t → V.π w ∈ W := by
@@ -102,11 +102,11 @@ private theorem exists_over (V : Mean4O.Cover Y) (W : Y.X.Opens) (hW : genericPo
   exact this
 
 /- English proof (translation)
-Take `⟨g, hg₁, hg₂⟩` from `hl`. Take `⟨-, W, hW, hR⟩` from `h`. Take `⟨t, ht, htW⟩` from `exists_over V W hW`. Take `⟨U, hU, hUu⟩` from `exists_unit_open (s i)`. Use `⟨t ⊓ π₁ ⁻¹ᵁ U, ⟨ht, h₁.mem_open U.isOpen hU⟩, fun e y z yt hz hyt hV hb => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj : (z ≫ g) ≫ V₁.j = (z ≫ V.j) ≫ π₁` using `by rw [Category.assoc, hg₁, Category.assoc]`. Establish `hu : UnitAt (below ((z ≫ V.j) ≫ π₁)) (s i : V₁.X.functionField)` using `hUu _ hb.2`. Establish `hy : below y.1 ∈ W`. Rewrite using `[← hz]`. Conclude with `htW (below z) hb.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a` using `hR e y (z ≫ g) (yt ≫ π₁) i hy (by rw [Category.assoc, hg₂, hz]) (by rw [hj, ← Category.assoc, hyt]) (fun q hq => hV hq) (by rw [hj]; exact hu)`. Rewrite `a` using `[hj]`. Use `⟨unitAt_fnMap π₁ h₁ (z := below (z ≫ V.j)) hu, ?_⟩` and prove the remaining obligations. Rewrite using `[SmallSec.valAt_fnMap π₁ h₁ _ hu.regAt]`. Conclude with `a`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem read_up {V V₁ : Mean4O.Cover Y} {π₁ : V.X ⟶ V₁.X} (hl : Lies V V₁ π₁)
     (h₁ : π₁ (genericPoint V.X) ⤳ genericPoint V₁.X) {L : LB V₁.X} {s : L.ι → V₁.X.functionFieldˣ}
@@ -137,23 +137,23 @@ end UpperTheory.SpecialPointValuations
 
 open UpperTheory.SpecialPointValuations in
 /- English proof (translation)
-Introduce `F _ _ Y V V₁ V₂ π₁ π₂ hl₁ hl₂ h₁ h₂ L₁ hL₁ s₁ L₂ hL₂ s₂ l m₁ m₂ hR₁ hR₂`. Establish `key : ∀ (v : HeightOneSpectrum (𝓞 F)) (x : V.X) (i₁ : L₁.ι) (i₂ : L₂.ι), (V.p x).asIdeal = v.asIdeal → π₁ x ∈ L₁.U i₁ → π₂ x ∈ L₂.U i₂ → UnitAt x (SmallSec.fnMap π₁ h₁ (s₁ i₁ : V₁.X.functionField) ^ m₂ / SmallSec.fnMap π₂ h₂ (s₂ i₂ : V₂.X.functionField) ^ m₁)`. Introduce `v x i₁ i₂ hx hi₁ hi₂`. Use `set u := SmallSec.fnMap π₁ h₁ (s₁ i₁ : V₁.X.functionField) ^ m₂ / SmallSec.fnMap π₂ h₂ (s₂ i₂ : V₂.X.functionField) ^ m₁ with hu`. Establish `hu0 : u ≠ 0` using `div_ne_zero (pow_ne_zero _ ((map_ne_zero _).2 (s₁ i₁).ne_zero)) (pow_ne_zero _ ((map_ne_zero _).2 (s₂ i₂).ne_zero))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t₁, ht₁, H₁⟩` from `read_up hl₁ h₁ (hR₁ v) i₁`. Take `⟨t₂, ht₂, H₂⟩` from `read_up hl₂ h₂ (hR₂ v) i₂`. Establish `main : ∀ (e : TrueGeo.Ext v) (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp e.O ⟶ V.X), z ≫ V.π ≫ Y.str = spMap (algebraMap F (AlgebraicClosure F)) → spMap e.O.subtype ≫ yt = z ≫ V.j → ⊤ ≤ yt ⁻¹ᵁ (π₁ ⁻¹ᵁ L₁.U i₁ ⊓ π₂ ⁻¹ᵁ L₂.U i₂) → below (z ≫ V.j) ∈ t₁ ⊓ t₂ → UnitAt (below (z ≫ V.j …`. Introduce `e z yt hz hyt hV hb`. Set `y : AlgPt Y` to `⟨z ≫ V.π, by rw [Category.assoc]; exact hz⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, a₂⟩` from `H₁ e y z yt rfl hyt (fun q hq => (hV hq).1) hb.1`. Take `⟨b₁, b₂⟩` from `H₂ e y z yt rfl hyt (fun q hq => (hV hq).2) hb.2`. Establish `c₁` using `unitAt_pow a₁ m₂`. Establish `c₂` using `unitAt_pow b₁ m₁`. Use `⟨by rw [hu, div_eq_mul_inv]; exact c₁.mul c₂.inv, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, div_eq_mul_inv, SmallSec.valAt_mul c₁.regAt c₂.inv.regAt, valAt_inv c₂, SmallSec.valAt_pow a₁.regAt, SmallSec.valAt_pow b₁.regAt, map_mul, map_inv₀, map_pow, map_pow]`. Establish `p₁` using `e.w.pos (SmallSec.valAt_ne_zero a₁)`. Establish `p₂` using `e.w.pos (SmallSec.valAt_ne_zero b₁)`. Rewrite using `[mul_inv_eq_one₀ (pow_pos p₂ m₁).ne']`. Use `Real.log_injOn_pos (pow_pos p₁ m₂) (pow_pos p₂ m₁) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.log_pow, Real.log_pow, a₂, b₂]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : ((t₁ ⊓ t₂ : V.X.Opens) : Set V.X).Nonempty` using `⟨genericPoint V.X, ht₁, ht₂⟩`. Use `(GlobalTheory.Cartier.unitAt_iff hu0).2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.RegularLocalStatement F Y V (π₁ ⁻¹ᵁ L₁.U i₁ ⊓ π₂ ⁻¹ᵁ L₂.U i₂) (t₁ ⊓ t₂) hne v u (fun e z yt a b c d => (main e z yt a b c d).2.le) x ⟨hi₁, hi₂⟩ hx`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.RegularLocalStatement F Y V (π₁ ⁻¹ᵁ L₁.U i₁ ⊓ π₂ ⁻¹ᵁ L₂.U i₂) (t₁ ⊓ t₂) hne v u⁻¹ (fun e z yt a b c d => ?_) x ⟨hi₁, hi₂⟩ hx` and prove the remaining obligations. Take `⟨k₁, k₂⟩` from `main e z yt a b c d`. Rewrite using `[valAt_inv k₁, map_inv₀, k₂, inv_one]`. Introduce `x i₁ i₂ hi₁ hi₂`. Take `⟨x₀, v, hx, hx₀⟩` from `exists_special V x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j₁, hj₁⟩` from `exists_chart hL₁ (π₁ x₀)`. Take `⟨j₂, hj₂⟩` from `exists_chart hL₂ (π₂ x₀)`. Take `⟨U, hU, hUu⟩` from `(key v x₀ j₁ j₂ hx₀ hj₁ hj₂).exists_nhds`. Establish `k₁` using `hUu x (hx.mem_open U.isOpen hU)`. Establish `k₂` using `unitAt_pow (unitAt_fnMap π₁ h₁ (unitAt_div (hR₁ v).1 hi₁ ((hx.map π₁.continuous).mem_open (L₁.U j₁).isOpen hj₁))) m₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₃` using `unitAt_pow (unitAt_fnMap π₂ h₂ (unitAt_div (hR₂ v).1 ((hx.map π₂.continuous).mem_open (L₂.U j₂).isOpen hj₂) hi₂)) m₁`. Establish `k₄` using `(k₁.mul k₂).mul k₃`. Establish `n₁ : SmallSec.fnMap π₁ h₁ (s₁ j₁ : V₁.X.functionField) ≠ 0` using `(map_ne_zero _).2 (s₁ j₁).ne_zero`. Establish `n₂ : SmallSec.fnMap π₂ h₂ (s₂ j₂ : V₂.X.functionField) ≠ 0` using `(map_ne_zero _).2 (s₂ j₂).ne_zero`. Establish `n₃ : SmallSec.fnMap π₂ h₂ (s₂ i₂ : V₂.X.functionField) ≠ 0` using `(map_ne_zero _).2 (s₂ i₂).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `k₄ using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_div₀, map_div₀, div_pow, div_pow]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.comparison_of_line_bundle_sections :
     ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V V₁ V₂ : Mean4O.Cover Y) (π₁ : V.X ⟶ V₁.X) (π₂ : V.X ⟶ V₂.X), Lies V V₁ π₁ → Lies V V₂ π₂ → ∀ (h₁ : π₁ (genericPoint V.X) ⤳ genericPoint V₁.X) (h₂ : π₂ (genericPoint V.X) ⤳ genericPoint V₂.X) (L₁ : LB V₁.X), L₁.IsLB → ∀ (s₁ : L₁.ι → V₁.X.functionFieldˣ) (L₂ : LB V₂.X), L₂.IsLB → ∀ (s₂ : L₂.ι → V₂.X.functionFieldˣ) (l : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ) (m₁ m₂ : ℕ), (∀ v, CRead V₁ v L₁ s₁ fun e y => (m₁ : ℝ) * l v e y) → (∀ v, CRead V₂ v L₂ s₂ fun e y => (m₂ : ℝ) * l v e y) → ∀ (x : V.X) (i₁ : L₁.ι) (i₂ : L₂.ι), π₁ x ∈ L₁.U i₁ → π₂ x ∈ L₂.U i₂ → UnitAt x (SmallSec.fnMap π₁ h₁ (s₁ i₁ : V₁.X.functionField) ^ m₂ / SmallSec.fnMap π₂ h₂ (s₂ i₂ : V₂.X.functionField) ^ m₁) := by

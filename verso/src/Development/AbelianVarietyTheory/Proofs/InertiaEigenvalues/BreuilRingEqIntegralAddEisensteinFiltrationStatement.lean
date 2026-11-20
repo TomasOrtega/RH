@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ImagePolynomi
 open PowerSeries GlobalTheory.BK
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BK.SDec.S_eq_A_add_Fil` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FBreuilRingEqIntegralAddEisensteinFiltration.lean&line=146#L146)
 -/

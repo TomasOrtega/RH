@@ -19,7 +19,7 @@ def levelZeroRadialIntegral (p : KB.Pl P Wp Wq) (w : List C.Letter) (H : B.Mat P
         (bigCell P.k P.r q.1 (p.T.base.μsec q.2))))
 
 /- English proof (translation)
-Unfold `KB.Pl.RR`. Rewrite using `[Formalism.FourierDecayAlt.P.level_zero_holds _ _ _ _ _ _ _ _ _ _ _ hH (good_positioned_of_cut hw)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem residual_pairing_eq_integral (p : KB.Pl P Wp Wq) {H : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (hH : B.CkOn ⊤ (B.GV P.k P.r) H)
     {w : List C.Letter} (hw : KB.CutWord P p.l0 w) : p.RR H 0 w [] [] = ∫ q, levelZeroRadialIntegral p w H q := by
@@ -36,9 +36,9 @@ def DomCut (p : KB.Pl P Wp Wq) (χ : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →
     ∀ᶠ ε in 𝓝[>] (0 : ℝ), ∀ᵐ q : (Fin P.r → ℂ) × ℂ, ‖levelZeroRadialIntegral p w (D.cutF p.T.base χ F ε) q‖ ≤ h q
 
 /- English proof (translation)
-Introduce `w hw hN`. Establish `e : (fun ε : ℝ => (p.RR (D.cutF p.T.base χ F ε) 0 w [] []).re) = fun ε => (∫ q, levelZeroRadialIntegral p w (D.cutF p.T.base χ F ε) q).re`. Use function extensionality and compare the values at `fun ε => by rw [residual_pairing_eq_integral p (Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_cutF p.T.base hχ hF ε) hw.1]`. Rewrite using `[e, residual_pairing_eq_integral p hF hw.1]`. Take `⟨hmeas, h, hint, hb⟩` from `hD w hw hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hlim : ∀ᵐ q : (Fin P.r → ℂ) × ℂ, Tendsto (fun ε : ℝ => levelZeroRadialIntegral p w (D.cutF p.T.base χ F ε) q) (𝓝[>] 0) (𝓝 (levelZeroRadialIntegral p w F q))` using `by filter_upwards [hP w hw hN] with q hq`. Conclude with `tendsto_const_nhds.congr' (hq.mono fun ε h => h.symm)`. Conclude with `(Complex.continuous_re.tendsto _).comp (tendsto_integral_filter_of_dominated_convergence h hmeas hb hint hlim)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem limEvT_of_cut (p : KB.Pl P Wp Wq) {χ : ℝ → ℝ} (hχ : C6.IsCut0 χ) {F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)}
     (hF : B.CkOn ⊤ (B.GV P.k P.r) F) (Y : Finset ℝ) (N : ℕ)

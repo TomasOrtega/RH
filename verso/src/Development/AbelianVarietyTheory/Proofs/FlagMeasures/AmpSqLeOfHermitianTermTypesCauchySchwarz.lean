@@ -12,7 +12,7 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.TypesCS
 
 /- English proof (translation)
-Establish `hnat : a + a * (r * a) ≤ 2 ^ (a * (r + 2))`. Establish `h1 : a < 2 ^ a` using `Nat.lt_two_pow_self`. Establish `h2 : r * a < 2 ^ (r * a)` using `Nat.lt_two_pow_self`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem count_le (r a : ℕ) (H : ℝ) (ha : 1 ≤ a) (hH : (2 : ℝ) ^ a ≤ H) :
     ((a + a * (r * a) : ℕ) : ℝ) ≤ H ^ (r + 2) := by
@@ -28,39 +28,35 @@ theorem count_le (r a : ℕ) (H : ℝ) (ha : 1 ≤ a) (hH : (2 : ℝ) ^ a ≤ H)
     _ ≤ H ^ (r + 2) := by gcongr
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S hk B hB1 hB2`. Establish `hk1 : 1 ≤ k` using `by omega`. Establish `hq2 : 2 ≤ S.q` using `GlobalTheory.HL.LevelFamilies.two_le_resQ S.ϖ S.ϖ_irr`. Distinguish the cases in `hex : ∃ (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ`. Use `swap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [not_exists] at hex`. Establish `h0` using `GlobalTheory.AmpCS.ampSq_le_card_mul_sum L r k S hk1 (∅ : Finset ℕ) (fun _ _ _ => False) (fun d Λ => ¬ S.BBzero d Λ) (fun d Λ ht => absurd ht (hex d Λ)) (fun d Λ ht => absurd ht (hex d Λ))`. Simplify using `only [Finset.card_empty, Nat.cast_zero, zero_mul] at h0`. Conclude with `h0.trans zero_le`. Take `⟨d₀, Λ₀, ht₀⟩` from `hex`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ha0, -, -, hqa, hHp1, -⟩` from `GlobalTheory.HL.Defect.exponents_and_defect L r k S d₀ Λ₀ ht₀`. Take `⟨A, hAa⟩ : ∃ A : ℕ, (A : ℤ) = S.a` from `⟨_, Int.toNat_of_nonneg ha0⟩`. Set `s : Finset (ℕ ⊕ (ℕ × ℕ × ℕ))` to `(Finset.Icc 1 A).disjSum ((Finset.Icc 1 A ×ˢ Finset.Icc 1 r ×ˢ Finset.range A).filter fun t => t.2.2 < t.1)`. Set `P : ℕ ⊕ (ℕ × ℕ × ℕ) → S.Datum → Submodule L.O S.V → Prop` to `fun x => Sum.elim (fun i d Λ => ¬ S.BBzero d Λ ∧ ¬ S.TypeBe d Λ ∧ S.be d Λ = S.q ^ i) (fun t => S.InFF (S.q ^ t.1) t.2.1 (S.q ^ t.1 - S.q ^ t.2.2)) x`. Establish `hinj : ∀ m n : ℕ, S.q ^ m = S.q ^ n → m = n` using `fun m n h => Nat.pow_right_injective hq2 h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcover : ∀ d Λ, S.IsTerm d Λ → ((¬ S.BBzero d Λ) ↔ ∃ x ∈ s, P x d Λ)`. Introduce `d Λ ht`. Take `⟨-, -, -, -, -, ⟨i, hia, hbe⟩, hBB, -⟩` from `GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ ht`. Prove the components needed by the constructor for the conclusion. Introduce `hnz`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hi1 : 1 ≤ i`. Break down `Nat.eq_zero_or_pos i with h | h` into its components or cases. Conclude with `absurd (hBB.mpr (by rw [hbe, h, pow_zero])) hnz`. Conclude with `h`. Distinguish the cases in `hT : S.TypeBe d Λ`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨i₁, J, i', h1, h1a, hJ1, hJr, hi', hF⟩` from `GlobalTheory.HL.LevelFamilies.exists_family L r k S d Λ ht hT`. Use `⟨Sum.inr (i₁, J, i'), ?_, hF⟩` and prove the remaining obligations. Simplify using `only [s, Finset.inr_mem_disjSum, Finset.mem_filter, Finset.mem_product, Finset.mem_Icc, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Use `⟨Sum.inl i, ?_, hnz, hT, hbe⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [s, Finset.inl_mem_disjSum, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨x, -, hx⟩`. Break down `x with i | ⟨i, J, i'⟩` into its components or cases. Conclude with `hx.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify by unfolding definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `hx.1.1`. Establish `hdisj : ∀ d Λ, S.IsTerm d Λ → ∀ x ∈ s, ∀ y ∈ s, P x d Λ → P y d Λ → x = y`. Introduce `d Λ _ x hx y hy hPx hPy`. Apply the tactic sequence `rcases x with i | ⟨i, J, i'⟩ <;> rcases y with j | ⟨j, J', j'⟩ <;> dsimp only [P, Sum.elim_inl, Sum.elim_inr] at hPx hPy`. Conclude with `congrArg Sum.inl (hinj _ _ (hPx.2.2.symm.trans hPy.2.2))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `absurd hPy.1 hPx.2.1`. Conclude with `absurd hPx.1 hPy.2.1`. Take `⟨-, hb, hle, ⟨y₀, hy₀, hlev⟩, hn⟩` from `hPx`. Take `⟨-, hb', hle', ⟨y₁, hy₁, hlev'⟩, hn'⟩` from `hPy`. Establish `hij : i = j` using `hinj _ _ (hb.symm.trans hb')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Substitute `hij` using the available equality. Establish `hJJ : J = J'` using `le_antisymm (hlev ▸ hle' y₀ hy₀) (hlev' ▸ hle y₁ hy₁)`. Substitute `hJJ` using the available equality. Simplify using `only [s, Finset.inr_mem_disjSum, Finset.mem_filter, Finset.mem_product, Finset.mem_Icc, Finset.mem_range] at hx hy`. Establish `hlt1 : S.q ^ i' ≤ S.q ^ i` using `Nat.pow_le_pow_right (by omega) hx.2.le`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt2 : S.q ^ j' ≤ S.q ^ i` using `Nat.pow_le_pow_right (by omega) hy.2.le`. Establish `hpow : S.q ^ i' = S.q ^ j'`. Generalize the expression as in `S.q ^ i' = u at hn hlt1`. Generalize the expression as in `S.q ^ j' = v at hn' hlt2`. Generalize the expression as in `S.q ^ i = w at hn hn' hlt1 hlt2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hinj _ _ hpow]`. Establish `hmain` using `GlobalTheory.AmpCS.ampSq_le_card_mul_sum L r k S hk1 s P (fun d Λ => ¬ S.BBzero d Λ) hcover hdisj`. Establish `hsumB : ∑ x ∈ s, S.ampSq (P x) ≤ s.card * B`. Establish `hle : ∀ x ∈ s, S.ampSq (P x) ≤ B`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `x _`. Break down `x with i | ⟨i, J, i'⟩` into its components or cases. Conclude with `hB1 _`. Conclude with `hB2 _ _ _`. Simplify `Finset.sum_le_card_nsmul s (fun x => S.ampSq (P x)) B hle` using `[nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : s.card ≤ A + A * (r * A)`. Simplify using `only [s, Finset.card_disjSum, Nat.card_Icc, Nat.add_sub_cancel]`. Establish `h` using `Finset.card_filter_le (Finset.Icc 1 A ×ˢ Finset.Icc 1 r ×ˢ Finset.range A) (fun t => t.2.2 < t.1)`. Simplify using `only [Finset.card_product, Nat.card_Icc, Nat.add_sub_cancel, Finset.card_range] at h`. Use linear arithmetic over natural numbers and integers.
+Check the signs of the components of the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hHp0 : 0 ≤ S.Hp` using `le_trans zero_le_one hHp1`. Establish `hreal : ((s.card : ℕ) : ℝ) ≤ S.Hp ^ (r + 2)`. Break down `Nat.eq_zero_or_pos A with hA | hA` into its components or cases. Establish `: s.card = 0` using `by rw [hA] at hcard; simpa using hcard`. Rewrite using `[this, Nat.cast_zero]`.
-
-Check the signs of the components of the expression. Establish `h2A : (2 : ℝ) ^ A ≤ S.Hp`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hN : ((s.card : ℝ≥0∞) * s.card) ≤ ENNReal.ofReal (S.Hp ^ (2 * (r + 2)))`.
-
-Rewrite using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (Nat.cast_nonneg _)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[pow_mul', sq]`. Conclude with `mul_le_mul hreal hreal (Nat.cast_nonneg _) (le_trans (Nat.cast_nonneg _) hreal)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ampSq_le_of_types : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 4 * r + 7 ≤ k → ∀ B : ℝ≥0∞, (∀ β, (S.ampSq fun d Λ => ¬ S.BBzero d Λ ∧ ¬ S.TypeBe d Λ ∧ S.be d Λ = β) ≤ B) → (∀ β J βJ, S.ampSq (S.InFF β J βJ) ≤ B) → (S.ampSq fun d Λ => ¬ S.BBzero d Λ) ≤ ENNReal.ofReal (S.Hp ^ (2 * (r + 2))) * B := by
   intro F _ _ _ _ _ E _ _ _ L r k S hk B hB1 hB2

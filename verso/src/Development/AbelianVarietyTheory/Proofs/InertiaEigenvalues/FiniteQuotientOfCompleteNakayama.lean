@@ -3,23 +3,21 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ ϖ hR T Z _ _ _ _ hT hZ d N hdN s hs`. Use `choose A C X hACX using hs`. Use `choose limR hlimR using hR`. Use `choose limT hlimT using hT`. Establish `key : ∀ c : Z, ∀ n : ℕ, c = ∑ i ∈ s, (∑ j ∈ Finset.range n, ϖ ^ j * A (C^[j] c) i) • i + ϖ ^ n • C^[n] c + d (∑ j ∈ Finset.range n, ϖ ^ j • X (C^[j] c))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `c n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Use `ih.trans ?_` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_range_succ, Function.iterate_succ_apply']`. Simplify using `only [Finset.sum_range_succ]`. Use `set e := C^[n] c with he`. Use `conv_lhs => rw [hACX e]`. Simplify using `only [add_smul, Finset.sum_add_distrib, smul_add, map_add, map_smul, Finset.smul_sum, mul_smul, pow_succ]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Establish `hfin : ∀ c : Z, c - (∑ i ∈ s, limR (fun j => A (C^[j] c) i) • i + d (limT (fun j => X (C^[j] c)))) = 0`. Introduce `c`. Apply `hZ` to reduce the goal to its premises. Introduce `n`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `key c n`. Use `choose b hb using fun i => hlimR (fun j => A (C^[j] c) i) n`. Take `⟨z, hz⟩` from `hlimT (fun j => X (C^[j] c)) n`. Use `⟨C^[n] c - ∑ i ∈ s, b i • i - d z, ?_⟩` and prove the remaining obligations. Establish `hα : ∀ i, limR (fun j => A (C^[j] c) i) = (∑ j ∈ Finset.range n, ϖ ^ j * A (C^[j] c) i) + ϖ ^ n * b i` using `fun i => sub_eq_iff_eq_add'.mp (hb i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `hY` using `sub_eq_iff_eq_add'.mp hz`. Simplify using `only [hα, hY]`. Rewrite using `[sub_eq_iff_eq_add]`. Use `hk.trans ?_` and prove the remaining obligations. Simplify using `only [add_smul, Finset.sum_add_distrib, smul_sub, map_add, map_smul, Finset.smul_sum, mul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `h0 : ∀ y : T, N.mkQ (d y) = 0`. Introduce `y`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hdN ⟨y, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨s.image N.mkQ, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `q -`. Take `⟨c, rfl⟩` from `N.mkQ_surjective q`. Establish `hc` using `sub_eq_zero.mp (hfin c)`.
-
-Rewrite using `[hc, map_add, h0, add_zero, map_sum]`. Use `Submodule.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hi)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_quotient_of_complete_nakayama : ∀ {R : Type} [CommRing R] (ϖ : R), (∀ x : ℕ → R, ∃ a : R, ∀ n : ℕ, ∃ b : R, a - ∑ j ∈ Finset.range n, ϖ ^ j * x j = ϖ ^ n * b) → ∀ {T Z : Type} [AddCommGroup T] [Module R T] [AddCommGroup Z] [Module R Z], (∀ x : ℕ → T, ∃ y : T, ∀ n : ℕ, ∃ z : T, y - ∑ j ∈ Finset.range n, ϖ ^ j • x j = ϖ ^ n • z) → (∀ c : Z, (∀ n : ℕ, ∃ z : Z, c = ϖ ^ n • z) → c = 0) → ∀ (d : T →ₗ[R] Z) (N : Submodule R Z), LinearMap.range d ≤ N → ∀ s : Finset Z, (∀ c : Z, ∃ (a : Z → R) (c' : Z) (x : T), c = ∑ i ∈ s, a i • i + ϖ • c' + d x) → Module.Finite R (Z ⧸ N) := by
   intro R _ ϖ hR T Z _ _ _ _ hT hZ d N hdN s hs

@@ -20,11 +20,11 @@ open GlobalTheory.Mem.RealTranslate GlobalTheory.PointAtPlaceHom GlobalTheory.Me
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℝ S`. Use `choose c hc using fun j => LinearMap.exists_extend (b.coord j)`. Use `⟨_, fun j => b j, fun j => LinearMap.toContinuousLinearMap (c j), fun j => (b j).2, fun L hL Y hY x => ?_⟩` and prove the remaining obligations. Establish `h0 : L 0 = 0`. Use `hL 1 0 S.zero_mem 0 S.zero_mem` as an intermediate fact.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Set `l : S →ₗ[ℝ] ℂ` to `{ toFun := fun Z => L Z x map_add' := fun Z Z' => by simpa using congrFun (hL 1 Z Z.2 Z' Z'.2) x map_smul' := fun a Z => by simpa [h0] using congrFun (hL a Z Z.2 0 S.zero_mem) x }`. Establish `h1 : L Y x = l ⟨Y, hY⟩` using `rfl`. Rewrite using `[h1, ← b.sum_repr ⟨Y, hY⟩, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : c j Y = b.repr ⟨Y, hY⟩ j` using `LinearMap.congr_fun (hc j) ⟨Y, hY⟩`. Rewrite using `[map_smul, LinearMap.coe_toContinuousLinearMap', h2, Complex.real_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_coords {n : ℕ} (S : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) :
     ∃ (m : ℕ) (e : Fin m → Matrix (Fin n) (Fin n) ℂ) (c : Fin m → Matrix (Fin n) (Fin n) ℂ →L[ℝ] ℝ), (∀ j, e j ∈ S) ∧
@@ -62,7 +62,7 @@ def SmFam {k : ℕ} (B : (Fin k → ℝ) → GA D V) : Prop :=
     ContDiff ℝ ∞ fun t => infMat D.sp.cm.sig V.gram (θ τ) (B t)⁻¹
 
 /- English proof (translation)
-Introduce `τ` and use `by simp only [_root_.mul_inv_rev, infMat_mul] exact ⟨(hA τ).1.mul (hB τ).1, (hB τ).2.mul (hA τ).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SmFam.mul {k : ℕ} {A B : (Fin k → ℝ) → GA D V} (hA : SmFam θ A) (hB : SmFam θ B) :
     SmFam θ fun t => A t * B t := fun τ => by
@@ -70,7 +70,7 @@ theorem SmFam.mul {k : ℕ} {A B : (Fin k → ℝ) → GA D V} (hA : SmFam θ A)
   exact ⟨(hA τ).1.mul (hB τ).1, (hB τ).2.mul (hA τ).2⟩
 
 /- English proof (translation)
-Introduce `τ` and use `by have h : ContDiff ℝ ∞ fun t : Fin (k + 1) → ℝ => Fin.tail t := contDiff_pi.2 fun i => contDiff_apply ℝ ℝ i.succ exact ⟨(hA τ).1.comp h, (hA τ).2.comp h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SmFam.tail {k : ℕ} {A : (Fin k → ℝ) → GA D V} (hA : SmFam θ A) :
     SmFam θ fun t : Fin (k + 1) → ℝ => A (Fin.tail t) := fun τ => by
@@ -78,9 +78,9 @@ theorem SmFam.tail {k : ℕ} {A : (Fin k → ℝ) → GA D V} (hA : SmFam θ A) 
   exact ⟨(hA τ).1.comp h, (hA τ).2.comp h⟩
 
 /- English proof (translation)
-Distinguish the cases in `c : τ' = τ`. Substitute `c` using the available equality. Simplify using `only [(isAtTau_oneP hθ hX _).2.1]`. Establish `h2 : ContDiff ℝ ∞ fun t : ℝ => fun _ : Fin 1 => t` using `contDiff_pi.2 fun _ => contDiff_id`. Simplify `(GlobalTheory.GardingVec.contDiff_expProd fun _ : Fin 1 => X).comp h2` using `[Function.comp_def]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [(isAtTau_oneP hθ hX _).2.2 τ' c]`. Conclude with `contDiff_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_oneP (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (τ' : D.what₂.Tau) :
@@ -94,7 +94,7 @@ theorem contDiff_oneP (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin 
     exact contDiff_const
 
 /- English proof (translation)
-Introduce `τ'` and use `by have hi : ∀ t, (oneP θ V τ X t)⁻¹ = oneP θ V τ X (-t) := fun t => inv_eq_of_mul_eq_one_right (by rw [← oneP_add hθ hX, add_neg_cancel, oneP_zero hθ]) simp only [hi] exact ⟨(contDiff_oneP hθ hX τ').comp (contDiff_apply ℝ ℝ i), (contDiff_oneP hθ hX τ').comp (contDiff_apply ℝ ℝ i …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smFam_oneP (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) {k : ℕ} (i : Fin k) : SmFam θ fun t : Fin k → ℝ => oneP θ V τ X (t i) := fun τ' => by
@@ -110,7 +110,7 @@ def prodP {k : ℕ} (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin 
     GA D V := (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod
 
 /- English proof (translation)
-Unfold `prodP`. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prodP_succ {k : ℕ} (τs : Fin (k + 1) → D.what₂.Tau) (Xs : Fin (k + 1) → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (t : Fin (k + 1) → ℝ) : prodP θ τs Xs t =
@@ -120,13 +120,13 @@ theorem prodP_succ {k : ℕ} (τs : Fin (k + 1) → D.what₂.Tau) (Xs : Fin (k 
   rfl
 
 /- English proof (translation)
-Establish `: IsTopologicalGroup (GA D V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Proceed by induction on `k with`. Consider the case `zero`. Establish `e : prodP θ τs Xs = fun _ => 1` using `funext fun t => by simp [prodP]`. Rewrite using `[e]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun _ => ⟨contDiff_const, contDiff_const⟩, continuous_const, fun i => i.elim0⟩`. Consider the case `succ k ih`. Take `⟨h1, h2, h3⟩` from `ih (Fin.tail τs) (Fin.tail Xs) fun i => hX i.succ`. Rewrite using `[funext (prodP_succ (θ := θ) τs Xs)]`. Use `⟨(smFam_oneP hθ (hX 0) 0).mul h1.tail, ((continuous_oneP hθ (hX 0)).comp (continuous_apply 0)).mul (h2.comp (continuous_pi fun i => continuous_apply i.succ)), fun i => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ⟨_, h1.tail, fun t s => ?_⟩ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Function.update_self, Fin.tail_update_zero]`. Rewrite using `[oneP_add hθ (hX 0), mul_assoc, GlobalTheory.Size.oneP_mul_adelic hθ _ (hX 0) s, mul_assoc]`. Take `⟨B, hB, h⟩` from `h3 j`. Use `⟨_, hB.tail, fun t s => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.tail_update_succ, Function.update_of_ne (Fin.succ_ne_zero j).symm]`. Rewrite using `[mul_assoc]`. Conclude with `congrArg _ (h (Fin.tail t) s)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodP_laws (hθ : IsInfFam θ) {k : ℕ} (τs : Fin k → D.what₂.Tau)
     (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ) (hX : ∀ i, Xs i ∈ lieAt V (τs i)) :
@@ -154,17 +154,15 @@ theorem prodP_laws (hθ : IsInfFam θ) {k : ℕ} (τs : Fin k → D.what₂.Tau)
       exact congrArg _ (h (Fin.tail t) s)
 
 /- English proof (translation)
-Introduce `D θ V hθ W hW f hf k τs Xs hX g`. Establish `: IsTopologicalGroup (GA D V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Take `⟨-, hc, hP⟩` from `prodP_laws hθ τs Xs hX`. Use `choose B hB hP using hP`. It suffices to establish `h : ∀ n : ℕ, ∀ f ∈ W, ContDiff ℝ n fun t => f (g * prodP θ τs Xs t) from contDiff_infty.2 fun n => h n f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact fun f hf => contDiff_zero.2 ((hW f hf).1.comp (continuous_const.mul hc))`. Consider the case `succ n ih`. Introduce `f hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `choose L hL hlin using (hW f hf).2`. Set `d : Fin k → (Fin k → ℝ) → ℂ` to `fun i t => L (τs i) (adAt θ (B i t) (τs i) (Xs i)) (g * prodP θ τs Xs t)`. Establish `hm : ∀ i t, adAt θ (B i t) (τs i) (Xs i) ∈ lieAt V (τs i)` using `fun i t => GlobalTheory.Size.adAt_mem_lieAt hθ _ (hX i)`. Establish `hd : ∀ i, ContDiff ℝ n (d i)` using `fun i => by`. Take `⟨m, e, c, he, hs⟩` from `exists_coords (lieSub V (τs i))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1 : d i = fun t => ∑ j, (c j (adAt θ (B i t) (τs i) (Xs i)) : ℂ) * L (τs i) (e j) (g * prodP θ τs Xs t)`. Use function extensionality and compare the values at `fun t => hs _ (hlin (τs i)) _ (hm i t) _`. Establish `e2 : ContDiff ℝ n fun t => adAt θ (B i t) (τs i) (Xs i)` using `(((hB i (τs i)).2.mul contDiff_const).mul (hB i (τs i)).1).of_le (by exact_mod_cast le_top)`. Rewrite using `[e1]`. Conclude with `ContDiff.sum fun j _ => (Complex.ofRealCLM.contDiff.comp ((c j).contDiff.comp e2)).mul (ih _ (hL _ _ (he j)).1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hder` using `GlobalTheory.T.hasFDerivAt_of_continuous_coordinate_derivs k (fun t => f (g * prodP θ τs Xs t)) d (fun i t => by`. Establish `h1` using `HasDerivAt.comp_sub_const (t i) (t i) (by rw [sub_self]; exact (hL _ _ (hm i t)).2 (g * prodP θ τs Xs t))`. Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc, ← hP, add_sub_cancel]) fun i => (hd i).continuous`. Rewrite using `[Nat.cast_succ, contDiff_succ_iff_hasFDerivAt]`.
-
-Conclude with `⟨_, ContDiff.sum fun i _ => contDiff_const.smulRight (hd i), hder⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smooth_of_closed : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D), IsInfFam θ → ∀ W : Set (GA D V → ℂ), (∀ f ∈ W, Continuous f ∧ ∀ τ, ∃ L : Matrix (Fin V.rank) (Fin V.rank) ℂ → GA D V → ℂ, (∀ X ∈ lieAt V τ, L X ∈ W ∧ ∀ x, HasDerivAt (fun t : ℝ => f (x * oneP θ V τ X t)) (L X x) 0) ∧ ∀ (a : ℝ), ∀ X ∈ lieAt V τ, ∀ Y ∈ lieAt V τ, L (a • X + Y) = (a : ℂ) • L X + L Y) → ∀ f ∈ W, ∀ (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g, ContDiff ℝ ∞ fun t : Fin k → ℝ => f (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod) := by
   intro D θ V hθ W hW f hf k τs Xs hX g

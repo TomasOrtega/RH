@@ -7,17 +7,15 @@ open ReciprocityTheory.ChartRestriction.G.FD NumberField GlobalTheory.UnipKill
 namespace GlobalTheory.UnipKill
 
 /- English proof (translation)
-Establish `hG` using `X.Gm_herm`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, herm X.Gm ξ y ≠ 0 := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Conclude with `hξ (eq_zero_of_herm X.Gm X.Gm_det ξ hno)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : herm X.Gm ξ ((cc (herm X.Gm ξ y))⁻¹ • y) = 1`. Rewrite using `[herm_smul_right, cc_inv, cc_cc]`. Conclude with `inv_mul_cancel₀ hy`. Take `⟨y1, hy1⟩ : ∃ y1, y1 = (cc (herm X.Gm ξ y))⁻¹ • y` from `⟨_, rfl⟩`. Rewrite `h1` using `[← hy1]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1' : herm X.Gm y1 ξ = 1`. Rewrite using `[← cc_herm X.Gm hG, h1, cc_one]`. Establish `hhc : cc (herm X.Gm y1 y1) = herm X.Gm y1 y1` using `cc_herm X.Gm hG y1 y1`. Establish `hhalf : cc (herm X.Gm y1 y1 / 2) = herm X.Gm y1 y1 / 2`. Rewrite using `[div_eq_mul_inv, cc_mul, cc_inv, cc_two, hhc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : herm X.Gm ξ (y1 - (herm X.Gm y1 y1 / 2) • ξ) = 1`. Rewrite using `[herm_sub_right, herm_smul_right, h1, hξξ]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : herm X.Gm (y1 - (herm X.Gm y1 y1 / 2) • ξ) (y1 - (herm X.Gm y1 y1 / 2) • ξ) = 0`. Rewrite using `[herm_sub_left, herm_sub_right, herm_sub_right, herm_smul_right, herm_smul_right, herm_smul_left, herm_smul_left, h1, h1', hξξ, hhalf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd, hdΛ⟩` from `GlobalTheory.T.exists_nat_smul_mem_lattice' E N X (y1 - (herm X.Gm y1 y1 / 2) • ξ)`. Use `⟨(d : E) • (y1 - (herm X.Gm y1 y1 / 2) • ξ), d, hd, hdΛ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[herm_smul_right, cc_natCast, e1, mul_one]`. Rewrite using `[herm_smul_left, herm_smul_right, e2]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_isotropic_partner (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ)
     (X : Data E N) (ξ : Fin N → E) (hξΛ : ξ ∈ X.Λ) (hξ : ξ ≠ 0) (hξξ : herm X.Gm ξ ξ = 0) :

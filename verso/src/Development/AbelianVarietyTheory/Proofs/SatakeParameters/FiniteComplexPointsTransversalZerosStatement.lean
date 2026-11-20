@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsAffCoverSpec
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.TransvZeros.finite_transv_zeros) | (exact GlobalTheory.TransvZeros.finite_transv_zeros) | (intros; apply GlobalTheory.TransvZeros.finite_transv_zeros <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.finite_complexPoints_transversal_zeros : ∀ (X : Scheme.{0}) (p : X ⟶ Sp ℂ) [LocallyOfFiniteType p] (U : X.Opens), IsAffineOpen U →
     ∀ (k : ℕ) (φ : Fin k → Γ(X, U)), {z : CxPts p (RingHom.id ℂ) | ∃ hz : z ∈ CxPts.ptsIn p (RingHom.id ℂ) U,

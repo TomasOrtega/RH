@@ -8,13 +8,13 @@ namespace GlobalTheory.CompanionTheory.UGeo
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Establish `hmul : S7.toM g * S7.toM g⁻¹ = 1` using `by show ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) * ((g⁻¹ : S7.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) = 1`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective (S7.toM g⁻¹).mulVec`. Introduce `x y hxy`. Establish `h` using `congrArg (S7.toM g).mulVec hxy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h` using `[Matrix.mulVec_mulVec, hmul]`. Establish `hpd : ((S7.toM g⁻¹)ᴴ * S7.toM g⁻¹).PosDef` using `Matrix.PosDef.conjTranspose_mul_self _ hinj`. Use `⟨fun i => hpd.eigenvalues_pos i, ?_⟩` and prove the remaining obligations. Establish `htr` using `hT.trace_eq_sum_eigenvalues`. Establish `hre : ∑ i, hT.eigenvalues i = (Matrix.trace ((S7.toM g⁻¹)ᴴ * S7.toM g⁻¹)).re`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[htr]`. Simplify using the standard rewrite rules. Establish `hhs : Formalism.REAL.hs (S7.toM g⁻¹) = Formalism.REAL.hs (S7.toM g)`. Rewrite using `[S7.toM_inv]`. Use `show Formalism.REAL.hs (Formalism.REAL.Jm ε * (S7.toM g)ᴴ * Formalism.REAL.Jm ε) = _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs_mul_J, hs_J_mul, hs_conjTranspose]`. Rewrite using `[hre, ← hhs, ← hs_conjTranspose, hs_eq_trace, conjTranspose_conjTranspose]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specpos_inv_eigenvalues (n : ℕ) (ε : Fin n → Bool) (g : S7.UJ ε)
     (hT : ((S7.toM g⁻¹)ᴴ * S7.toM g⁻¹).IsHermitian) :

@@ -10,23 +10,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R K Ω _ _ _ _ _ _ _ _ _ _ V hV π hπ x hx`. Use `letI : Algebra R Ω := ((algebraMap K Ω).comp (algebraMap R K)).toAlgebra`. Use `haveI : IsScalarTower R K Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Algebra.IsSeparable K Ω := IsSepClosure.separable`. Establish `hRV : ∀ r : R, algebraMap R Ω r ∈ V`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `r`. Establish `: algebraMap R K r ∈ V.toSubring.comap (algebraMap K Ω)`. Rewrite using `[hV]`. Conclude with `⟨r, rfl⟩`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hKV : ∀ c : K, algebraMap K Ω c ∈ V → ∃ r : R, algebraMap R K r = c`. Introduce `c hc`. Establish `: c ∈ V.toSubring.comap (algebraMap K Ω)` using `hc`. Rewrite `this` using `[hV]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `halgK : IsAlgebraic K x⁻¹` using `Algebra.IsAlgebraic.isAlgebraic _`. Establish `halgR : IsAlgebraic R x⁻¹` using `(IsFractionRing.isAlgebraic_iff R K Ω).2 halgK`. Take `⟨d, hd0, hint⟩` from `halgR.exists_integral_multiple`. Set `f : R →+* V` to `(algebraMap R Ω).codRestrict V.toSubring hRV`. Use `letI : Algebra R V := f.toAlgebra`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower R V Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hintV : IsIntegral V (d • x⁻¹)` using `hint.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hintV`. Establish `hyV : d • x⁻¹ ∈ V` using `by rw [← hy]; exact y.2`. Establish `hfin : FiniteMultiplicity π d` using `FiniteMultiplicity.of_not_isUnit hπ.not_isUnit hd0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℕ, ¬ π ^ n ∣ d := by`. Take `⟨m, hm⟩` from `hfin`. Conclude with `⟨m + 1, hm⟩`. Use `⟨n, fun hmem => hn ?_⟩` and prove the remaining obligations. Establish `hprod : d • x⁻¹ * (x / algebraMap K Ω (algebraMap R K π) ^ n) ∈ V` using `V.mul_mem _ _ hyV hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hπ0 : algebraMap R K π ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `hπ.ne_zero`. Establish `heq : d • x⁻¹ * (x / algebraMap K Ω (algebraMap R K π) ^ n) = algebraMap K Ω (algebraMap R K d / algebraMap R K π ^ n)`. Rewrite using `[Algebra.smul_def, map_div₀, map_pow]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `(algebraMap K Ω) (algebraMap R K d) * x⁻¹ * _ = _`. Clear the denominators using the available nonvanishing facts. Rewrite `hprod` using `[heq]`. Take `⟨r, hr⟩` from `hKV _ hprod`. Use `⟨r, ?_⟩` and prove the remaining obligations.
-
-Apply `IsFractionRing.injective R K` to reduce the goal to its premises. Rewrite using `[map_mul, map_pow, hr]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem not_mem_div_uniformizer_pow : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [PerfectField (ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (V : ValuationSubring Ω), IsAbove R K V.toSubring → ∀ π : R, Irreducible π → ∀ x : Ω, x ≠ 0 → ∃ n : ℕ, x / algebraMap K Ω (algebraMap R K π) ^ n ∉ V := by
   intro R K Ω _ _ _ _ _ _ _ _ _ _ V hV π hπ x hx

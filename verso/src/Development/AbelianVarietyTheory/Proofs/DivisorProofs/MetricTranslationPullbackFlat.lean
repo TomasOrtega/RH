@@ -14,11 +14,11 @@ open Filter Topology
 variable {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Establish `hev : (fun Q => fderiv ℝ T Q (Complex.I • c)) =ᶠ[𝓝 P] fun Q => Complex.I • fderiv ℝ T Q c` using `by filter_upwards [hU.mem_nhds hP] with Q hQ`. Establish `hQd : DifferentiableAt ℂ T Q` using `(hTd Q hQ).differentiableAt (hU.mem_nhds hQ)`. Rewrite using `[hQd.fderiv_restrictScalars ℝ]`. Simplify using the standard rewrite rules. Establish `h1 : HasFDerivAt (fun Q => fderiv ℝ T Q (Complex.I • c)) ((fderiv ℝ (fderiv ℝ T) P).flip (Complex.I • c)) P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `using hD.hasFDerivAt.clm_apply (hasFDerivAt_const (Complex.I • c) P)`. Establish `h2 : HasFDerivAt (fun Q => Complex.I • fderiv ℝ T Q c) (Complex.I • (fderiv ℝ (fderiv ℝ T) P).flip c) P`. Use `hD.hasFDerivAt.clm_apply (hasFDerivAt_const c P)` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_zero, zero_add] at this`. Conclude with `this.const_smul Complex.I`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(h1.congr_of_eventuallyEq hev.symm).unique h2` as an intermediate fact. Simplify using `using congrArg (fun L => L w) this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fderiv_fderiv_I_smul {U : Set (Pt E g)} (hU : IsOpen U) {T : Pt E g → Pt E g}
     (hTd : DifferentiableOn ℂ T U) {P : Pt E g} (hP : P ∈ U)
@@ -42,19 +42,19 @@ theorem fderiv_fderiv_I_smul {U : Set (Pt E g)} (hU : IsOpen U) {T : Pt E g → 
   simpa using congrArg (fun L => L w) this
 
 /- English proof (translation)
-Establish `hTP : T P ∈ U` using `hTU hP`. Establish `hTat : ContDiffAt ℝ 2 T P` using `hTs.contDiffAt (hU.mem_nhds hP)`. Establish `huat : ContDiffAt ℝ 2 u (T P)` using `hu.contDiffAt (hU.mem_nhds hTP)`. Establish `hDT : DifferentiableAt ℝ (fderiv ℝ T) P` using `(hTat.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hDU : DifferentiableAt ℝ (fderiv ℝ u) (T P)` using `(huat.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT1 : HasFDerivAt T (fderiv ℝ T P) P` using `(hTat.differentiableAt (by norm_num)).hasFDerivAt`. Establish `hev : ∀ c, (fun Q => fderiv ℝ (u ∘ T) Q c) =ᶠ[𝓝 P] fun Q => fderiv ℝ u (T Q) (fderiv ℝ T Q c)`. Introduce `c`. Use `filter_upwards [hU.mem_nhds hP] with Q hQ`. Establish `hTQ : DifferentiableAt ℝ T Q` using `((hTd Q hQ).differentiableAt (hU.mem_nhds hQ)).restrictScalars ℝ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huQ : DifferentiableAt ℝ u (T Q)` using `(hu.differentiableOn (by norm_num)).differentiableAt (hU.mem_nhds (hTU hQ))`. Rewrite using `[fderiv_comp Q huQ hTQ]`. Both sides reduce to the same expression. Establish `hA : HasFDerivAt (fun Q => fderiv ℝ u (T Q)) ((fderiv ℝ (fderiv ℝ u) (T P)).comp (fderiv ℝ T P)) P` using `hDU.hasFDerivAt.comp P hT1`. Establish `hB : ∀ c, HasFDerivAt (fun Q => fderiv ℝ T Q c) ((fderiv ℝ (fderiv ℝ T) P).flip c) P` using `fun c => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hDT.hasFDerivAt.clm_apply (hasFDerivAt_const c P)`. Establish `hphi : ∀ c x, fderiv ℝ (fun Q => fderiv ℝ (u ∘ T) Q c) P x = fderiv ℝ u (T P) (fderiv ℝ (fderiv ℝ T) P x c) + fderiv ℝ (fderiv ℝ u) (T P) (fderiv ℝ T P x) (fderiv ℝ T P c)`. Introduce `c x`. Rewrite using `[(hev c).fderiv_eq, (hA.clm_apply (hB c)).fderiv]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpsi : ∀ c x, fderiv ℝ (fun Q => fderiv ℝ u Q c) (T P) x = fderiv ℝ (fderiv ℝ u) (T P) x c`. Introduce `c x`. Rewrite using `[(hDU.hasFDerivAt.clm_apply (hasFDerivAt_const c (T P))).fderiv]`. Simplify using the standard rewrite rules. Establish `hhol : ∀ c, fderiv ℝ T P (Complex.I • c) = Complex.I • fderiv ℝ T P c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Rewrite using `[((hTd P hP).differentiableAt (hU.mem_nhds hP)).fderiv_restrictScalars ℝ]`. Simplify using the standard rewrite rules. Establish `hsym` using `hTat.isSymmSndFDerivAt (by simp [minSmoothness_of_isRCLikeNormedField])`. Establish `key : fderiv ℝ (fderiv ℝ T) P w (Complex.I • v) = fderiv ℝ (fderiv ℝ T) P v (Complex.I • w)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fderiv_fderiv_I_smul hU hTd hP hDT, fderiv_fderiv_I_smul hU hTd hP hDT, hsym w v]`. Unfold `ddc`. Rewrite using `[hphi, hphi, hpsi, hpsi, key, ← hhol, ← hhol]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ddc_comp {U : Set (Pt E g)} (hU : IsOpen U) {T : Pt E g → Pt E g}
     (hTd : DifferentiableOn ℂ T U) (hTs : ContDiffOn ℝ 2 T U) (hTU : Set.MapsTo T U U)
@@ -112,13 +112,13 @@ end GlobalTheory.FlatTransl
 namespace GlobalTheory.FlatTransl
 
 /- English proof (translation)
-Introduce `g E _ _ _ B τ hτ M j h hM hC x`. Take `⟨hTd, hpull⟩` from `GlobalTheory.T.translation_preserves_flat_form hτ x`. Establish `hU : IsOpen (cov B g)` using `hτ.1.prod isOpen_univ`. Establish `hmaps : Set.MapsTo (transl τ x) (cov B g) (cov B g)` using `fun P hP => ⟨hP.1, trivial⟩`. Establish `hTs : ContDiffOn ℝ ∞ (transl τ x) (cov B g)` using `(GlobalTheory.SCV.contDiffOn_of_differentiableOn hU hTd ∞).restrict_scalars ℝ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨hM.1.comp hTs hmaps, fun P hP => hM.2.1 _ (hmaps hP), fun l hl P hP => ?_⟩, fun P hP v w => ?_⟩` and prove the remaining obligations. Establish `hc : transl τ x (transl τ l P) = transl τ l (transl τ x P)` using `Prod.ext rfl (add_right_comm _ _ _)`. Simplify using `only [translPullFactor]`. Rewrite using `[hc]`. Conclude with `hM.2.2 l hl _ (hmaps hP)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : ContDiffOn ℝ 2 (fun Q => Real.log (h Q)) (cov B g)` using `(hM.1.log fun Q hQ => (hM.2.1 Q hQ).ne').of_le (show ((2 : ℕ∞) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) from WithTop.coe_le_coe.2 le_top)`. Establish `e` using `ddc_comp hU hTd (hTs.of_le (show ((2 : ℕ∞) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) from WithTop.coe_le_coe.2 le_top)) hmaps hu hP v w`. Express the relevant statement in the definitionally equal form `-ddc ((fun Q => Real.log (h Q)) ∘ transl τ x) P v w = _`. Rewrite using `[e, hC _ (hmaps hP), ← hpull P hP]`. Simplify using `only [pull, ContinuousAlternatingMap.compContinuousLinearMap_apply]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem translate_isMetric_chernIsFlat : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ},

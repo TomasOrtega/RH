@@ -11,17 +11,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbDivLocal
 
 /- English proof (translation)
-Establish `hn' : IsUnit (n : Γ(Sp V, ⊤))`. Simplify using `using hn.map (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom`. Take `⟨-, hfin, het, hsurj⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective (Sp V) B n hB hn'`. Use `set m : B ⟶ B := (𝟙 B) ^ n with hm`. Set `U : Over (Sp V)` to `Over.mk (pullback.snd m.left P.left)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hU : Smooth U.hom` using `by dsimp [U]; infer_instance`. Set `r : Sp (ResidueField V) ⟶ Sp V` to `spMap (residue V)`. Set `P₀ : Sp (ResidueField V) ⟶ B.left` to `r ≫ P.left`. Establish `: CompactSpace ↥(pullback m.left P₀)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd m.left P₀)`. Take `⟨p, -⟩` from `(pullback.snd m.left P₀).surjective (default : PrimeSpectrum (ResidueField V))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, -, hz⟩` from `isClosed_univ.exists_closed_singleton (X := ↥(pullback m.left P₀)) ⟨p, trivial⟩`. Establish `hw` using `pointOfClosedPoint_comp (pullback.snd m.left P₀) z hz`. Set `x₀ : Sp (ResidueField V) ⟶ U.left` to `pullback.lift (pointOfClosedPoint (pullback.snd m.left P₀) z hz ≫ pullback.fst _ _) r (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hw, Category.id_comp])`. Establish `hx₀ : x₀ ≫ U.hom = spMap ((residue V).comp (RingHom.id V))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_id]`. Conclude with `pullback.lift_snd _ _ _`. Take `⟨a, ha, -⟩` from `GlobalTheory.HenselLift.exists_lift_mem_open V V hc (RingHom.id V) U hU x₀ hx₀ ⊤ (by simp)`. Establish `ha' : a ≫ pullback.snd m.left P.left = 𝟙 _`. Use `ha.trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[spMap, show CommRingCat.ofHom (RingHom.id V) = 𝟙 (CommRingCat.of V) from rfl, Spec.map_id]`. Establish `key : (a ≫ pullback.fst m.left P.left) ≫ m.left = P.left`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, ha', Category.id_comp]`. Use `⟨Over.homMk (a ≫ pullback.fst m.left P.left) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.w m, ← Category.assoc, key]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Over.w P`. Establish `e : ∀ Q : 𝟙_ (Over (Sp V)) ⟶ B, Q ^ n = Q ≫ m` using `fun Q => by`. Rewrite using `[hm, comp_pow, Category.comp_id]`. Rewrite using `[e]`. Conclude with `Over.OverMorphism.ext key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq {V : Type} [CommRing V] [IsLocalRing V] [IsNoetherianRing V]
     (hc : IsAdicComplete (maximalIdeal V) V) (hk : IsAlgClosed (ResidueField V))
@@ -99,15 +99,15 @@ abbrev ptsModule {S : Scheme.{0}} (T : Over S) (B : Over S) [GrpObj B] [IsCommMo
     rw [h0, comp_one]
 
 /- English proof (translation)
-Introduce `V _ _ _ _ hc hk B _ hB O _ _ _ a X _ _ _ _ x hadd hsmul n hn`. Use `haveI := hB.comm`. Use `letI := ptsModule (𝟙_ (Over (Sp V))) B O a`. Set `g : X →ₗ[O] Additive (𝟙_ (Over (Sp V)) ⟶ B)` to `{ toFun := fun y => Additive.ofMul (x y) map_add' := fun y z => by rw [hadd]; rfl map_smul' := fun o y => by rw [hsmul]; rfl }`. Set `f : Additive (𝟙_ (Over (Sp V)) ⟶ B) →ₗ[O] Additive (𝟙_ (Over (Sp V)) ⟶ B)` to `n • LinearMap.id`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : Function.Surjective f`. Introduce `p`. Take `⟨Q, hQ⟩` from `exists_pow_eq hc hk B hB n hn p.toMul`. Use `⟨Additive.ofMul Q, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `n • Additive.ofMul Q = p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ofMul_pow, hQ]`. Both sides reduce to the same expression. Take `⟨h, hh⟩` from `Module.projective_lifting_property f g hf`. Use `⟨fun y => (h y).toMul, fun y z => by` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(h (y + z)).toMul = (h y).toMul * (h z).toMul`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Use the proof step `rfl,`. Use `fun o y => by`. Express the relevant statement in the definitionally equal form `(h (o • y)).toMul = (h y).toMul ≫ a.act o`. Rewrite using `[map_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl, fun y => ?_⟩`. Establish `e : n • h y = Additive.ofMul (x y)` using `LinearMap.congr_fun hh y`. Express the relevant statement in the definitionally equal form `(h (n • y)).toMul = x y`. Rewrite using `[map_nsmul, e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_divided_linear : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] [IsNoetherianRing V], IsAdicComplete (maximalIdeal V) V → IsAlgClosed (ResidueField V) → ∀ (B : Over (Sp V)) [GrpObj B], IsAbelianScheme B → ∀ (O : Type) [CommRing O] [IsDomain O] [Module.Finite ℤ O] (a : OAct O B) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X] (x : X → (𝟙_ (Over (Sp V)) ⟶ B)), (∀ y z, x (y + z) = x y * x z) → (∀ (o : O) y, x (o • y) = x y ≫ a.act o) → ∀ n : ℕ, IsUnit (n : V) → ∃ x' : X → (𝟙_ (Over (Sp V)) ⟶ B), (∀ y z, x' (y + z) = x' y * x' z) ∧ (∀ (o : O) y, x' (o • y) = x' y ≫ a.act o) ∧ ∀ y, x' (n • y) = x y := by
   intro V _ _ _ _ hc hk B _ hB O _ _ _ a X _ _ _ _ x hadd hsmul n hn

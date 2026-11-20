@@ -22,11 +22,9 @@ noncomputable section
 namespace GlobalTheory.KFourier
 
 /- English proof (translation)
-Use `set c := ∫ s in (0:ℝ)..1, h s with hcdef`. Establish `hnn : 0 ≤ ∫ s in (0:ℝ)..1, (h s - c) ^ 2` using `intervalIntegral.integral_nonneg zero_le_one (fun s _ => sq_nonneg _)`. Establish `hexp : ∫ s in (0:ℝ)..1, (h s - c) ^ 2 = (∫ s in (0:ℝ)..1, h s ^ 2) - 2 * c * c + c ^ 2`. Establish `e1 : (fun s => (h s - c) ^ 2) = fun s => (h s ^ 2 - (2 * c) * h s) + c ^ 2`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, intervalIntegral.integral_add, intervalIntegral.integral_sub, intervalIntegral.integral_const_mul, intervalIntegral.integral_const]`. Simplify using the standard rewrite rules. Conclude with `Or.inl rfl`. Conclude with `(hc.pow 2).intervalIntegrable _ _`.
-
-Conclude with `(continuous_const.mul hc).intervalIntegrable _ _`. Conclude with `((hc.pow 2).sub (continuous_const.mul hc)).intervalIntegrable _ _`. Conclude with `continuous_const.intervalIntegrable _ _`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the first alternative. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sq_intervalIntegral_unit_le (h : ℝ → ℝ) (hc : Continuous h) :
     (∫ s in (0:ℝ)..1, h s) ^ 2 ≤ ∫ s in (0:ℝ)..1, h s ^ 2 := by
@@ -47,33 +45,27 @@ theorem sq_intervalIntegral_unit_le (h : ℝ → ℝ) (hc : Continuous h) :
   nlinarith
 
 /- English proof (translation)
-Introduce `n ε d φ hφ Y hY`. Take `⟨hRmem, hRder⟩` from `rder_mem_and_hasDerivAt ε d φ hφ Y hY`. Use `set R := rder ε [Y] φ with hRdef`. Establish `hRc : Continuous R` using `continuous_of_mem hRmem`. Establish `hφc : Continuous φ` using `continuous_of_mem hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Measure.IsMulRightInvariant (muK ε) := ⟨(compact_haar_holds n ε).2.2.1⟩`. Use `haveI : IsProbabilityMeasure (muK ε) := (compact_haar_holds n ε).1`. Establish `hEG` using `group_exponential_facts n ε Y hY.1`. Establish `hEK` using `hEG.2.2.2 hY`. Set `e : ℝ → KG ε` to `fun t => expK ε Y t`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `he_add : ∀ s t, e (s + t) = e s * e t` using `fun s t => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((expK ε Y (s + t) : KG ε) : UJ ε) = (expK ε Y s : UJ ε) * (expK ε Y t : UJ ε)`. Rewrite using `[hEK.1, hEK.1, hEK.1]`. Conclude with `hEG.2.1 s t`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he0 : e 0 = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((expK ε Y 0 : KG ε) : UJ ε) = 1`. Rewrite using `[hEK.1]`. Conclude with `hEG.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `he_cont : Continuous e` using `hEK.2`. Establish `hder' : ∀ k s, HasDerivAt (fun t => φ (k * e t)) (R (k * e s)) s`. Introduce `k s`. Establish `h1` using `hRder (k * e s)`. Establish `h2 : HasDerivAt (fun t => φ (k * e s * expK ε Y (t - s))) (R (k * e s)) s` using `HasDerivAt.comp_sub_const (f := fun t => φ (k * e s * expK ε Y t)) s s (by rw [sub_self]; exact h1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfun : (fun t => φ (k * e s * expK ε Y (t - s))) = fun t => φ (k * e t)`. Use function extensionality and compare the values at `t`. Use `show φ (k * e s * e (t - s)) = φ (k * e t)`. Rewrite using `[mul_assoc, ← he_add, add_sub_cancel]`. Rewrite `h2` using `[hfun]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Establish `hgc : ∀ k, Continuous (fun s => R (k * e s))` using `fun k => hRc.comp (continuous_const.mul he_cont)`. Establish `hftc : ∀ k, ∫ s in (0:ℝ)..1, R (k * e s) = φ (k * e 1) - φ k`. Introduce `k`. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt (fun s _ => hder' k s) ((hgc k).intervalIntegrable 0 1), he0, mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpt : ∀ k, ‖φ k - φ (k * e 1)‖ ^ 2 ≤ ∫ s in (0:ℝ)..1, ‖R (k * e s)‖ ^ 2`. Introduce `k`. Establish `h1 : ‖φ k - φ (k * e 1)‖ ≤ ∫ s in (0:ℝ)..1, ‖R (k * e s)‖`. Rewrite using `[norm_sub_rev, ← hftc k]`. Conclude with `intervalIntegral.norm_integral_le_integral_norm zero_le_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `sq_intervalIntegral_unit_le (fun s => ‖R (k * e s)‖) ((hgc k).norm)`. Combine the equalities or inequalities in the displayed calculation. Establish `hRsc : Continuous (fun x => ‖R x‖ ^ 2)` using `hRc.norm.pow 2`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hRsc.continuousOn`. Establish `hcont2 : Continuous (Function.uncurry fun (k : KG ε) (s : ℝ) => ‖R (k * e s)‖ ^ 2)` using `hRsc.comp (continuous_fst.mul (he_cont.comp continuous_snd))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : Integrable (Function.uncurry fun (k : KG ε) (s : ℝ) => ‖R (k * e s)‖ ^ 2) ((muK ε).prod (volume.restrict (Set.Ioc (0:ℝ) 1)))` using `by haveI : IsFiniteMeasure (volume.restrict (Set.Ioc (0:ℝ) 1)) := by`. Rewrite using `[isFiniteMeasure_restrict]`. Simplify using the standard rewrite rules. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Establish `hemb : Topology.IsEmbedding (fun k : KG ε => toMK k)` using `(isClosedEmbeddingMatrix n ε).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `haveI : SecondCountableTopology (KG ε) := hemb.isInducing.secondCountableTopology`. Use `haveI : SecondCountableTopology (KG ε × ℝ) := inferInstance`. Conclude with `Integrable.of_bound hcont2.aestronglyMeasurable C (Filter.Eventually.of_forall fun p => hC _ (Set.mem_univ _))`. Establish `hswap` using `integral_integral_swap hI`. Establish `hrhs : ∫ x, (∫ s in (0:ℝ)..1, ‖R (x * e s)‖ ^ 2) ∂(muK ε) = ∫ x, ‖R x‖ ^ 2 ∂(muK ε)`.
-
-Simplify using `only [intervalIntegral.integral_of_le zero_le_one]`. Rewrite using `[hswap]`. Repeatedly rewrite using `[integral_mul_right_eq_self (μ := muK ε) (fun x => ‖R x‖ ^ 2)]`. Rewrite using `[setIntegral_const]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[← hrhs]`. Apply `integral_mono_of_nonneg` to reduce the goal to its premises. Conclude with `Filter.Eventually.of_forall fun x => by positivity`. Use `hI.integral_prod_left` as an intermediate fact. Simplify using `only [Function.uncurry_apply_pair] at this`.
-
-Use `this.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [intervalIntegral.integral_of_le zero_le_one]`. Conclude with `Filter.Eventually.of_forall fun x => hpt x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_sub_expK_sq_le : ∀ {n : ℕ} (ε : Fin n → Bool) (d : ℕ) (φ : KG ε → ℂ), φ ∈ polyV ε d → ∀ Y : Mx n, inK ε Y → ∫ x, ‖φ x - φ (x * expK ε Y 1)‖ ^ 2 ∂(muK ε) ≤ ∫ x, ‖rder ε [Y] φ x‖ ^ 2 ∂(muK ε) := by
   intro n ε d φ hφ Y hY

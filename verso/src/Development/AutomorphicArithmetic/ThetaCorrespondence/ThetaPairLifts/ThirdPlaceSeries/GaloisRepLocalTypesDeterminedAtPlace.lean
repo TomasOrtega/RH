@@ -20,19 +20,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.TypesAtPin
 /- English proof (translation)
-Introduce `pr hL D P hrow rA`. Take `⟨S, hTrue, hLaws, hSupp⟩` from `_root_.GlobalTheory.T.exists_true_reading_with_laws_suppLaws pr.fin hL D P hrow`. Establish `hTS : TameSplitAll D.host.E` using `fun w => GlobalTheory.T.tameParahoricRep_splits_as_product pr.bz pr.geo pr.unl pr.mp _`. Establish `hBS : BlockSplitAll D.host.E` using `fun w => GlobalTheory.T.blockTypeVector_irreducible_splits_as_product pr.bz pr.geo pr.unl pr.mp _`. Establish `hchi : ChiIne D.nd D.naut` using `_root_.GlobalTheory.SplitRead.chiIne_main_alt D rA.tie0 rA.a2 rA.a5 (GlobalTheory.MuIntegral.muInt_of_charTied D P.cf P.C P.tp P.chr)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTT : ∀ i w hw, (w ∈ D.nd.Q i ∨ (w ∈ D.nd.S i ∧ ∀ k, w ∉ placesOver D.host.E (D.host.g k))) → TypeTame S i w hw`. Introduce `i w hw h`. Establish `hng : ∀ k, w ∉ placesOver D.host.E (D.host.g k)`. Break down `h with hQ | ⟨-, hg⟩` into its components or cases. Conclude with `not_over_g_of_mem_Q D i w hQ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hg`. Establish `hSQ : w ∈ D.nd.S i ∨ w ∈ D.nd.Q i`. Break down `h with hQ | ⟨hS, -⟩` into its components or cases. Conclude with `Or.inr hQ`. Conclude with `Or.inl hS`.
+Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `_root_.GlobalTheory.MuTameQS.main_alt_alt hL D P S hTrue i w hw hSQ`. Conclude with `_root_.GlobalTheory.T.type_tame_of_tame_not_unram hL D P S hTrue i w hw hng ht.1 (ht.2 hng)`. Establish `hTB : ∀ i w hw, (w ∈ D.nd.S i ∨ w ∈ D.nd.Q i) → TypeBlock S i w hw`. Introduce `i w hw hSQ`. Establish `ht` using `_root_.GlobalTheory.MuTameQS.main_alt_alt hL D P S hTrue i w hw hSQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hg : ∃ k, w ∈ placesOver D.host.E (D.host.g k)`. Conclude with `_root_.GlobalTheory.T.type_block_of_tame_at_split_place hL D P S hTrue i w hw hg ht.1`. Establish `hng : ∀ k, w ∉ placesOver D.host.E (D.host.g k)` using `fun k hk => hg ⟨k, hk⟩`. Establish `hT : TypeTame S i w hw` using `hTT i w hw (by`. Break down `hSQ with hS | hQ` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inr ⟨hS, hng⟩`. Conclude with `Or.inl hQ)`. Use `⟨hT.1, fun Q => ?_⟩` and prove the remaining obligations. Take `⟨v, hv0, hv⟩` from `hT.2.2 Q`. Conclude with `⟨v, hv0, fun h hK h1 _ u hu => hv h hK h1 u hu⟩`.
-
-Conclude with `_root_.GlobalTheory.InertialTypes.main_alt_alt D P.T S hTS hBS hLaws hSupp hchi hTT hTB`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locComp_of_isRc_classMapD_cenLoc : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) → _root_.GlobalTheory.NRows.RowsAAlt D → Formalism.MainNotions.SumRepresentations.ArchimedeanSignatureMatching D := by
   intro pr hL D P hrow rA
@@ -75,7 +73,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TypesAtPin.locComp_of_isRc_classMapD_cenLoc | exact _root_.GlobalTheory.TypesAtPin.locComp_of_isRc_classMapD_cenLoc | (intros; apply _root_.GlobalTheory.TypesAtPin.locComp_of_isRc_classMapD_cenLoc <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.archimedeanSignatureMatching_of_modules : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) → _root_.GlobalTheory.NRows.RowsAAlt D → Formalism.MainNotions.SumRepresentations.ArchimedeanSignatureMatching D := by
   first | exact @_root_.GlobalTheory.TypesAtPin.locComp_of_isRc_classMapD_cenLoc | exact _root_.GlobalTheory.TypesAtPin.locComp_of_isRc_classMapD_cenLoc | (intros; apply _root_.GlobalTheory.TypesAtPin.locComp_of_isRc_classMapD_cenLoc <;> assumption)

@@ -5,15 +5,13 @@ open MeasureTheory
 namespace GlobalTheory.LatticeAut
 
 /- English proof (translation)
-Introduce `N _ _ _ _ _ _ _ _ Λ _ ν _ 𝓕 h𝓕 h0 htop φ hφ hφ' hΛ hΛ'`. Use `letI : MeasurableSpace Λ := ⊤`. Use `haveI : MeasurableSMul Λ N := { measurable_const_smul := fun γ => measurable_const_mul (γ : N) measurable_smul_const := fun _ => measurable_from_top }`. Use `haveI : (Measure.map φ ν).IsHaarMeasure := MulEquiv.isHaarMeasure_map ν φ hφ hφ'`. Establish `hs` using `Measure.isMulLeftInvariant_eq_smul (Measure.map φ ν) ν`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hq : Measure.QuasiMeasurePreserving φ ν ν` using `⟨hφ.measurable, by rw [hs]; exact Measure.AbsolutelyContinuous.rfl.smul_left _⟩`. Set `e : Λ → Λ` to `fun l => ⟨φ.symm l, hΛ' l l.2⟩`. Establish `he : Function.Bijective e`. Use `⟨fun a b hab => ?_, fun b => ⟨⟨φ b, hΛ b b.2⟩, ?_⟩⟩` and prove the remaining obligations. Conclude with `Subtype.ext (φ.symm.injective (congrArg Subtype.val hab))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (φ.symm_apply_apply b)`. Establish `hA : IsFundamentalDomain Λ (φ ⁻¹' 𝓕) ν`. Use `h𝓕.preimage_of_equiv hq he fun g x => ?_` and prove the remaining obligations. Use `show φ (φ.symm g * x) = (g : N) * φ x`. Rewrite using `[map_mul, MulEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ν (φ ⁻¹' 𝓕) = ν 𝓕` using `hA.measure_eq h𝓕`. Set `ψ : N ≃ₜ N` to `{ toEquiv := φ.toEquiv, continuous_toFun := hφ, continuous_invFun := hφ' }`. Establish `hmap : Measure.map φ ν 𝓕 = ν (φ ⁻¹' 𝓕)` using `ψ.toMeasurableEquiv.map_apply 𝓕`. Establish `hc1 : Measure.haarScalarFactor (Measure.map φ ν) ν = 1`. Establish `h2 : ((Measure.haarScalarFactor (Measure.map φ ν) ν : NNReal) : ENNReal) * ν 𝓕 = 1 * ν 𝓕`.
-
-Rewrite using `[one_mul]`. Use `conv_rhs => rw [← hm, ← hmap, hs]`. Both sides reduce to the same expression. Conclude with `(ENNReal.mul_left_inj h0 htop).1 h2` after adjusting the coercions. Rewrite using `[hs, hc1, one_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_haar_eq_of_lattice : ∀ (N : Type) [Group N] [TopologicalSpace N] [IsTopologicalGroup N] [LocallyCompactSpace N] [SecondCountableTopology N]
     [T2Space N] [MeasurableSpace N] [BorelSpace N] (Λ : Subgroup N) [Countable Λ] (ν : MeasureTheory.Measure N) [ν.IsHaarMeasure]

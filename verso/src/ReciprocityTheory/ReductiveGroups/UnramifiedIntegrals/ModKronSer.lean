@@ -14,7 +14,7 @@ def Cg (p : ℕ) (f g : PowerSeries ℂ) : Prop :=
   CoeffIn (Rm p) g ∧ ∃ w : PowerSeries ℂ, CoeffIn (Rm p) w ∧ f = g + PowerSeries.C (1 - zetaC p) * w
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[PowerSeries.coeff_C]`. Use `split_ifs`. Conclude with `hc`. Conclude with `R.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffIn.ksC {R : Subring ℂ} {c : ℂ} (hc : c ∈ R) : CoeffIn R (PowerSeries.C c) := by
   intro n
@@ -24,7 +24,7 @@ theorem CoeffIn.ksC {R : Subring ℂ} {c : ℂ} (hc : c ∈ R) : CoeffIn R (Powe
   · exact R.zero_mem
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[map_zero]`. Conclude with `R.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffIn.ksZero (R : Subring ℂ) : CoeffIn R 0 := by
   intro n
@@ -32,7 +32,7 @@ theorem CoeffIn.ksZero (R : Subring ℂ) : CoeffIn R 0 := by
   exact R.zero_mem
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[map_neg]`. Conclude with `R.neg_mem (hf n)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffIn.ksNeg {R : Subring ℂ} {f : PowerSeries ℂ} (hf : CoeffIn R f) : CoeffIn R (-f) := by
   intro n
@@ -40,33 +40,33 @@ theorem CoeffIn.ksNeg {R : Subring ℂ} {f : PowerSeries ℂ} (hf : CoeffIn R f)
   exact R.neg_mem (hf n)
 
 /- English proof (translation)
-Conclude with `(Rm p).sub_mem (Rm p).one_mem (zetaC_mem p)`.
+A detailed English derivation is pending.
 -/
 theorem ks_one_sub_zetaC_mem (p : ℕ) : 1 - zetaC p ∈ Rm p := by
   exact (Rm p).sub_mem (Rm p).one_mem (zetaC_mem p)
 
 /- English proof (translation)
-Take `⟨hg, w, hw, rfl⟩` from `h`. Conclude with `hg.add ((CoeffIn.ksC (ks_one_sub_zetaC_mem p)).mul hw)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Cg.left {p : ℕ} {f g : PowerSeries ℂ} (h : Cg p f g) : CoeffIn (Rm p) f := by
   obtain ⟨hg, w, hw, rfl⟩ := h
   exact hg.add ((CoeffIn.ksC (ks_one_sub_zetaC_mem p)).mul hw)
 
 /- English proof (translation)
-Conclude with `⟨hf, 0, CoeffIn.ksZero _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem Cg.refl {p : ℕ} {f : PowerSeries ℂ} (hf : CoeffIn (Rm p) f) : Cg p f f := by
   exact ⟨hf, 0, CoeffIn.ksZero _, by simp⟩
 
 /- English proof (translation)
-Take `⟨hg, w, hw, rfl⟩` from `h`. Conclude with `⟨hg.add ((CoeffIn.ksC (ks_one_sub_zetaC_mem p)).mul hw), -w, hw.ksNeg, by ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Cg.symm {p : ℕ} {f g : PowerSeries ℂ} (h : Cg p f g) : Cg p g f := by
   obtain ⟨hg, w, hw, rfl⟩ := h
   exact ⟨hg.add ((CoeffIn.ksC (ks_one_sub_zetaC_mem p)).mul hw), -w, hw.ksNeg, by ring⟩
 
 /- English proof (translation)
-Take `⟨hg, w₁, hw₁, rfl⟩` from `h1`. Take `⟨hh, w₂, hw₂, rfl⟩` from `h2`. Conclude with `⟨hh, w₂ + w₁, hw₂.add hw₁, by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Cg.trans {p : ℕ} {f g h : PowerSeries ℂ} (h1 : Cg p f g) (h2 : Cg p g h) : Cg p f h := by
   obtain ⟨hg, w₁, hw₁, rfl⟩ := h1
@@ -74,7 +74,7 @@ theorem Cg.trans {p : ℕ} {f g h : PowerSeries ℂ} (h1 : Cg p f g) (h2 : Cg p 
   exact ⟨hh, w₂ + w₁, hw₂.add hw₁, by ring⟩
 
 /- English proof (translation)
-Take `⟨hg, w, hw, rfl⟩` from `h1`. Take `⟨hg', w', hw', rfl⟩` from `h2`. Establish `hε` using `CoeffIn.ksC (ks_one_sub_zetaC_mem p)`. Use `⟨hg.mul hg', w * g' + g * w' + PowerSeries.C (1 - zetaC p) * w * w', ?_, by ring⟩` and prove the remaining obligations. Conclude with `((hw.mul hg').add (hg.mul hw')).add ((hε.mul hw).mul hw')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Cg.mul {p : ℕ} {f g f' g' : PowerSeries ℂ} (h1 : Cg p f g) (h2 : Cg p f' g') :
     Cg p (f * f') (g * g') := by
@@ -85,7 +85,7 @@ theorem Cg.mul {p : ℕ} {f g f' g' : PowerSeries ℂ} (h1 : Cg p f g) (h2 : Cg 
   exact ((hw.mul hg').add (hg.mul hw')).add ((hε.mul hw).mul hw')
 
 /- English proof (translation)
-Take `⟨hg, w, hw, rfl⟩` from `h1`. Take `⟨hg', w', hw', rfl⟩` from `h2`. Conclude with `⟨hg.sub hg', w - w', hw.sub hw', by ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Cg.sub {p : ℕ} {f g f' g' : PowerSeries ℂ} (h1 : Cg p f g) (h2 : Cg p f' g') :
     Cg p (f - f') (g - g') := by
@@ -94,23 +94,23 @@ theorem Cg.sub {p : ℕ} {f g f' g' : PowerSeries ℂ} (h1 : Cg p f g) (h2 : Cg 
   exact ⟨hg.sub hg', w - w', hw.sub hw', by ring⟩
 
 /- English proof (translation)
-Take `⟨hg, w, hw, rfl⟩` from `h1`. Conclude with `⟨hg.ksNeg, -w, hw.ksNeg, by ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Cg.neg {p : ℕ} {f g : PowerSeries ℂ} (h1 : Cg p f g) : Cg p (-f) (-g) := by
   obtain ⟨hg, w, hw, rfl⟩ := h1
   exact ⟨hg.ksNeg, -w, hw.ksNeg, by ring⟩
 
 /- English proof (translation)
-Take `⟨hg, w, hw, rfl⟩` from `h1`. Conclude with `⟨hg.xp k, ReciprocityTheory.ChartRestriction.L1.xp k w, hw.xp k, by rw [xp_add, xp_C_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Cg.xp {p : ℕ} {f g : PowerSeries ℂ} (h1 : Cg p f g) (k : ℕ) : Cg p (xp k f) (xp k g) := by
   obtain ⟨hg, w, hw, rfl⟩ := h1
   exact ⟨hg.xp k, ReciprocityTheory.ChartRestriction.L1.xp k w, hw.xp k, by rw [xp_add, xp_C_mul]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty]`. Conclude with `Cg.refl (CoeffIn.one _)`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih fun t ht => h t (Finset.mem_insert_of_mem ht))`.
+A detailed English derivation is pending.
 -/
 theorem Cg.prod {p : ℕ} {α : Type*} (s : Finset α) (f g : α → PowerSeries ℂ)
     (h : ∀ t ∈ s, Cg p (f t) (g t)) : Cg p (∏ t ∈ s, f t) (∏ t ∈ s, g t) := by
@@ -124,9 +124,9 @@ theorem Cg.prod {p : ℕ} {α : Type*} (s : Finset α) (f g : α → PowerSeries
     exact (h a (Finset.mem_insert_self a s)).mul (ih fun t ht => h t (Finset.mem_insert_of_mem ht))
 
 /- English proof (translation)
-Take `⟨r, hr, hpr⟩` from `p_mem_span hp`. Use `⟨CoeffIn.map_int _ G, PowerSeries.C r * W.map (Int.castRingHom ℂ), (CoeffIn.ksC hr).mul (CoeffIn.map_int _ W), ?_⟩` and prove the remaining obligations. Rewrite using `[h, map_add, map_mul, PowerSeries.map_C]`. Establish `hc : (Int.castRingHom ℂ) (p : ℤ) = (1 - zetaC p) * r`. Rewrite using `[eq_intCast, Int.cast_natCast, hpr]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Cg.of_int {p : ℕ} (hp : p.Prime) {F G W : PowerSeries ℤ} (h : F = G + PowerSeries.C (p : ℤ) * W) :
     Cg p (F.map (Int.castRingHom ℂ)) (G.map (Int.castRingHom ℂ)) := by
@@ -140,17 +140,17 @@ theorem Cg.of_int {p : ℕ} (hp : p.Prime) {F G W : PowerSeries ℤ} (h : F = G 
   ring
 
 /- English proof (translation)
-The claim follows from `CoeffIn.map_int R aZ`.
+A detailed English derivation is pending.
 -/
 theorem ks_coeffIn_aC (R : Subring ℂ) : CoeffIn R aC := CoeffIn.map_int R aZ
 
 /- English proof (translation)
-The claim follows from `CoeffIn.map_int R dZ`.
+A detailed English derivation is pending.
 -/
 theorem ks_coeffIn_dC (R : Subring ℂ) : CoeffIn R dC := CoeffIn.map_int R dZ
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `xp_congr hp F`. Establish `h` using `Cg.of_int hp hg`. Rewrite `h` using `[← xp_map, map_pow]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Cg.xp_map_int {p : ℕ} (hp : p.Prime) (F : PowerSeries ℤ) :
     Cg p (ReciprocityTheory.ChartRestriction.L1.xp p (F.map (Int.castRingHom ℂ))) (F.map (Int.castRingHom ℂ) ^ p) := by
@@ -159,7 +159,7 @@ theorem Cg.xp_map_int {p : ℕ} (hp : p.Prime) (F : PowerSeries ℤ) :
   rwa [← xp_map, map_pow] at h
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_xp]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ks_xp_one {R : Type*} [CommRing R] (f : PowerSeries R) : xp 1 f = f := by
   ext n
@@ -167,11 +167,11 @@ theorem ks_xp_one {R : Type*} [CommRing R] (f : PowerSeries R) : xp 1 f = f := b
   simp
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_xp, coeff_xp, coeff_xp]`. Establish `hk0 : 0 < k` using `Nat.pos_of_ne_zero hk`. Distinguish the cases in `h1 : k ∣ n`. Take `⟨m, rfl⟩` from `h1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos (dvd_mul_right k m), Nat.mul_div_cancel_left m hk0]`. Distinguish the cases in `h2 : k ∣ m`. Take `⟨j, rfl⟩` from `h2`. Rewrite using `[if_pos (dvd_mul_right k j), if_pos ⟨j, by ring⟩, Nat.mul_div_cancel_left j hk0, show k * (k * j) = k ^ 2 * j by ring, Nat.mul_div_cancel_left j (by positivity)]`. Rewrite using `[if_neg h2, if_neg]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨j, hj⟩`. Conclude with `h2 ⟨j, Nat.eq_of_mul_eq_mul_left hk0 (by rw [hj]; ring)⟩`. Rewrite using `[if_neg h1, if_neg]`. Conclude with `fun h => h1 (dvd_trans (dvd_pow_self k two_ne_zero) h)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem ks_xp_xp {R : Type*} [CommRing R] {k : ℕ} (hk : k ≠ 0) (f : PowerSeries R) :
     xp (k ^ 2) f = xp k (xp k f) := by
@@ -192,13 +192,11 @@ theorem ks_xp_xp {R : Type*} [CommRing R] {k : ℕ} (hk : k ≠ 0) (f : PowerSer
     exact fun h => h1 (dvd_trans (dvd_pow_self k two_ne_zero) h)
 
 /- English proof (translation)
-Use extensionality with `⟨a, b, e⟩`. Rewrite using `[mem_Tm hp.pos, Finset.mem_insert, Finset.mem_image]`. Simplify using `only [Finset.mem_range, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hae, hbe⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `ha : a ∣ p` using `⟨e, hae.symm⟩`. Break down `hp.eq_one_or_self_of_dvd a ha with rfl | rfl` into its components or cases. Use `right`. Conclude with `⟨b, by omega, rfl, rfl, by omega⟩`. Use `left`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `he : e = 1` using `Nat.eq_of_mul_eq_mul_left hp.pos (hae.trans (mul_one a).symm)`. Substitute `he` using the available equality. Conclude with `⟨rfl, by omega, rfl⟩`. Introduce and unpack `(⟨rfl, rfl, rfl⟩ | ⟨c, hc, rfl, rfl, rfl⟩)`. Conclude with `⟨mul_one _, Nat.zero_lt_one⟩`.
-
-Conclude with `⟨one_mul _, hc⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Tm_prime {p : ℕ} (hp : p.Prime) :
     Tm p = insert (p, 0, 1) ((Finset.range p).image fun b => (1, b, p)) := by
@@ -220,7 +218,7 @@ theorem Tm_prime {p : ℕ} (hp : p.Prime) :
     · exact ⟨one_mul _, hc⟩
 
 /- English proof (translation)
-Introduce `h`. Take `⟨b, _, hb⟩` from `Finset.mem_image.mp h`. Simplify using `only [Prod.mk.injEq] at hb`. Conclude with `hp.one_lt.ne hb.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Tm_prime_notMem {p : ℕ} (hp : p.Prime) :
     ((p, 0, 1) : ℕ × ℕ × ℕ) ∉ (Finset.range p).image fun b => ((1, b, p) : ℕ × ℕ × ℕ) := by
@@ -230,7 +228,7 @@ theorem Tm_prime_notMem {p : ℕ} (hp : p.Prime) :
   exact hp.one_lt.ne hb.1
 
 /- English proof (translation)
-Introduce `b b' h`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `h.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Tm_prime_inj (p : ℕ) : Function.Injective fun b : ℕ => ((1, b, p) : ℕ × ℕ × ℕ) := by
   intro b b' h
@@ -238,18 +236,16 @@ theorem Tm_prime_inj (p : ℕ) : Function.Injective fun b : ℕ => ((1, b, p) : 
   exact h.2.1
 
 /- English proof (translation)
-Rewrite using `[Tm_prime hp, Finset.card_insert_of_notMem (Tm_prime_notMem hp), Finset.card_image_of_injective _ (Tm_prime_inj p), Finset.card_range]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_Tm_prime {p : ℕ} (hp : p.Prime) : (Tm p).card = p + 1 := by
   rw [Tm_prime hp, Finset.card_insert_of_notMem (Tm_prime_notMem hp),
     Finset.card_image_of_injective _ (Tm_prime_inj p), Finset.card_range]
 
 /- English proof (translation)
-Establish `hp0 : p ≠ 0` using `hp.ne_zero`. Establish `hsub : ∀ f : PowerSeries ℂ, sub1 (zetaC ((p, 0, 1) : ℕ × ℕ × ℕ).2.2 ^ ((p, 0, 1) : ℕ × ℕ × ℕ).2.1) (((p, 0, 1) : ℕ × ℕ × ℕ).1 ^ 2) f = xp p (xp p f)`. Introduce `f`. Simplify using `only [sub1, pow_zero, PowerSeries.rescale_one, RingHom.id_apply]`. Conclude with `ks_xp_xp hp0 f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfac : facSer p (p, 0, 1) = xp p (aC * xp p dC - xp p aC * dC)`. Rewrite using `[facSer, hsub, hsub, xp_sub, xp_mul hp0, xp_mul hp0]`. Rewrite using `[hfac]`. Establish `hd : Cg p (xp p dC) (dC ^ p)` using `Cg.xp_map_int hp dZ`. Establish `ha : Cg p (xp p aC) (aC ^ p)` using `Cg.xp_map_int hp aZ`.
-
-Conclude with `(((Cg.refl (ks_coeffIn_aC _)).mul hd).sub (ha.mul (Cg.refl (ks_coeffIn_dC _)))).xp p`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem facSer_Cg_a {p : ℕ} (hp : p.Prime) :
     Cg p (facSer p (p, 0, 1)) (xp p (aC * dC ^ p - aC ^ p * dC)) := by
@@ -268,15 +264,15 @@ theorem facSer_Cg_a {p : ℕ} (hp : p.Prime) :
   exact (((Cg.refl (ks_coeffIn_aC _)).mul hd).sub (ha.mul (Cg.refl (ks_coeffIn_dC _)))).xp p
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨CoeffIn.map_int _ F, rescale_congr hp b F⟩`.
+Supply the required witnesses or components.
 -/
 theorem Cg.rescale_map_int {p : ℕ} (hp : 0 < p) (b : ℕ) (F : PowerSeries ℤ) :
     Cg p (PowerSeries.rescale (zetaC p ^ b) (F.map (Int.castRingHom ℂ))) (F.map (Int.castRingHom ℂ)) := ⟨CoeffIn.map_int _ F, rescale_congr hp b F⟩
 
 /- English proof (translation)
-Establish `hsub : ∀ f : PowerSeries ℂ, sub1 (zetaC ((1, b, p) : ℕ × ℕ × ℕ).2.2 ^ ((1, b, p) : ℕ × ℕ × ℕ).2.1) (((1, b, p) : ℕ × ℕ × ℕ).1 ^ 2) f = PowerSeries.rescale (zetaC p ^ b) f`. Introduce `f`. Simplify using `only [sub1, one_pow]`. Conclude with `ks_xp_one _`. Rewrite using `[facSer, hsub, hsub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : Cg p (PowerSeries.rescale (zetaC p ^ b) dC) dC` using `Cg.rescale_map_int hp.pos b dZ`. Establish `ha : Cg p (PowerSeries.rescale (zetaC p ^ b) aC) aC` using `Cg.rescale_map_int hp.pos b aZ`. Conclude with `((Cg.refl ((ks_coeffIn_aC _).xp p)).mul hd).sub (ha.mul (Cg.refl ((ks_coeffIn_dC _).xp p)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem facSer_Cg_b {p : ℕ} (hp : p.Prime) (b : ℕ) :
     Cg p (facSer p (1, b, p)) (xp p aC * dC - aC * xp p dC) := by
@@ -292,13 +288,11 @@ theorem facSer_Cg_b {p : ℕ} (hp : p.Prime) (b : ℕ) :
   exact ((Cg.refl ((ks_coeffIn_aC _).xp p)).mul hd).sub (ha.mul (Cg.refl ((ks_coeffIn_dC _).xp p)))
 
 /- English proof (translation)
-Establish `hp0 : p ≠ 0` using `hp.ne_zero`. Establish `haR : CoeffIn (Rm p) aC` using `ks_coeffIn_aC _`. Establish `hdR : CoeffIn (Rm p) dC` using `ks_coeffIn_dC _`. Take `⟨w, hw⟩` from `sub_pow_congr hp (xp p aZ * dZ) (aZ * xp p dZ)`. Establish `h1` using `Cg.of_int hp hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [map_pow, map_sub, map_mul, ← xp_map] at h1`. Establish `ha : Cg p (xp p aC) (aC ^ p)` using `Cg.xp_map_int hp aZ`. Establish `hd : Cg p (xp p dC) (dC ^ p)` using `Cg.xp_map_int hp dZ`. Establish `h2 : Cg p ((xp p aC * dC) ^ p - (aC * xp p dC) ^ p) (xp p (aC ^ p * dC) - xp p (aC * dC ^ p))`. Rewrite using `[mul_pow, mul_pow, xp_mul hp0, xp_mul hp0, xp_pow hp0, xp_pow hp0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Cg.refl ((haR.xp p).pow p)).mul hd.symm).sub (ha.symm.mul (Cg.refl ((hdR.xp p).pow p)))`. Establish `h3 : xp p (aC ^ p * dC) - xp p (aC * dC ^ p) = - xp p (aC * dC ^ p - aC ^ p * dC)`. Rewrite using `[xp_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h3]`.
-
-Conclude with `h1.trans h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_Cg {p : ℕ} (hp : p.Prime) :
     Cg p ((xp p aC * dC - aC * xp p dC) ^ p) (- xp p (aC * dC ^ p - aC ^ p * dC)) := by
@@ -321,9 +315,9 @@ theorem pow_Cg {p : ℕ} (hp : p.Prime) :
   exact h1.trans h2
 
 /- English proof (translation)
-Establish `hp0 : p ≠ 0` using `hp.ne_zero`. Establish `hprod : prodSer p = facSer p (p, 0, 1) * ∏ b ∈ Finset.range p, facSer p (1, b, p)`. Rewrite using `[prodSer, Tm_prime hp, Finset.prod_insert (Tm_prime_notMem hp), Finset.prod_image (fun b _ b' _ h => Tm_prime_inj p h)]`. Establish `hB : Cg p (∏ b ∈ Finset.range p, facSer p (1, b, p)) (∏ _b ∈ Finset.range p, (xp p aC * dC - aC * xp p dC))` using `Cg.prod _ _ _ fun b _ => facSer_Cg_b hp b`. Rewrite `hB` using `[Finset.prod_const, Finset.card_range]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hC` using `(facSer_Cg_a hp).mul (hB.trans (pow_Cg hp))`. Rewrite `hC` using `[← hprod]`. Take `⟨-, w, hw, hwe⟩` from `hC`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[hwe, xp_pow hp0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

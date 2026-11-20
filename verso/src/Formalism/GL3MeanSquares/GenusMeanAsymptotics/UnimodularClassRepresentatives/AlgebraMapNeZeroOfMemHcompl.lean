@@ -17,20 +17,20 @@ theorem algebraMap_conjO (r : 𝓞 K) :
     algebraMap (𝓞 K) K (conjO K r) = star (algebraMap (𝓞 K) K r) := rfl
 
 /- English proof (translation)
-The claim follows from `_root_.Formalism.HermitianLattices.Ext.L3.conjO_conjO r`.
+A detailed English derivation is pending.
 -/
 theorem conjO_conjO (r : 𝓞 K) : conjO K (conjO K r) = r :=
   _root_.Formalism.HermitianLattices.Ext.L3.conjO_conjO r
 
 /- English proof (translation)
-Rewrite using `[conjIdeal_eq_comap, Ideal.mem_comap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_conjIdeal_iff (p : Ideal (𝓞 K)) (r : 𝓞 K) :
     r ∈ Formalism.HermitianLatticesTheory.conjIdeal (K := K) p ↔ conjO K r ∈ p := by
   rw [conjIdeal_eq_comap, Ideal.mem_comap]
 
 /- English proof (translation)
-Rewrite using `[conjIdeal_eq_comap]`. Conclude with `Ideal.comap_isPrime (conjO K) p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjIdeal_isPrime {p : Ideal (𝓞 K)} (hp : p.IsPrime) :
     (Formalism.HermitianLatticesTheory.conjIdeal (K := K) p).IsPrime := by
@@ -38,9 +38,9 @@ theorem conjIdeal_isPrime {p : Ideal (𝓞 K)} (hp : p.IsPrime) :
   exact Ideal.comap_isPrime (conjO K) p
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.hcompl`. Use `congr 1`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1, h2 _ (algebraMap_conjO s)⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun t ht => ?_⟩` and prove the remaining obligations. Establish `: t = conjO K s` using `RingOfIntegers.ext ht`. Rewrite using `[this]` and apply the resulting hypothesis.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem hcompl_eq_closure (p : Ideal (𝓞 K)) :
     Formalism.HermitianLatticesTheory.hcompl (K := K) p = Submonoid.closure {s : 𝓞 K | s ∉ p ∧ conjO K s ∉ p} := by
@@ -56,11 +56,11 @@ theorem hcompl_eq_closure (p : Ideal (𝓞 K)) :
     rwa [this]
 
 /- English proof (translation)
-Rewrite using `[hcompl_eq_closure, mem_conjIdeal_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx => exact hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `one`. Establish `h1 : (1 : 𝓞 K) ∉ p` using `(Ideal.ne_top_iff_one p).mp hp.ne_top`. Conclude with `⟨h1, by rwa [map_one]⟩`. Consider the case `mul x y _ _ ihx ihy`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hp.mem_or_mem h).elim ihx.1 ihy.1`. Rewrite `h` using `[map_mul]`. Conclude with `(hp.mem_or_mem h).elim ihx.2 ihy.2`. Introduce `hs`. Conclude with `Submonoid.subset_closure hs`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_hcompl_iff {p : Ideal (𝓞 K)} (hp : p.IsPrime) (s : 𝓞 K) :
     s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p ↔ s ∉ p ∧ s ∉ Formalism.HermitianLatticesTheory.conjIdeal (K := K) p := by
@@ -81,9 +81,9 @@ theorem mem_hcompl_iff {p : Ideal (𝓞 K)} (hp : p.IsPrime) (s : 𝓞 K) :
     exact Submonoid.subset_closure hs
 
 /- English proof (translation)
-Rewrite `hs`, the goal using `[hcompl_eq_closure]`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx`. Apply `Submonoid.subset_closure` to reduce the goal to its premises. Conclude with `⟨hx.2, by rw [conjO_conjO]; exact hx.1⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Consider the case `one => rw [map_one]`. Conclude with `one_mem _`. Consider the case `mul x y _ _ ihx ihy => rw [map_mul]`. Conclude with `mul_mem ihx ihy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem conjO_mem_hcompl {p : Ideal (𝓞 K)} {s : 𝓞 K} (hs : s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p) :
     conjO K s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p := by
@@ -96,7 +96,7 @@ theorem conjO_mem_hcompl {p : Ideal (𝓞 K)} {s : 𝓞 K} (hs : s ∈ Formalism
   | mul x y _ _ ihx ihy => rw [map_mul]; exact mul_mem ihx ihy
 
 /- English proof (translation)
-Introduce `h0`. Establish `hs0 : s = 0` using `RingOfIntegers.ext (h0.trans (map_zero (algebraMap (𝓞 K) K)).symm)`. Conclude with `((mem_hcompl_iff hp s).mp hs).1 (hs0 ▸ p.zero_mem)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraMap_ne_zero_of_mem_hcompl {p : Ideal (𝓞 K)} (hp : p.IsPrime) {s : 𝓞 K}
     (hs : s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p) : algebraMap (𝓞 K) K s ≠ 0 := by
@@ -105,9 +105,9 @@ theorem algebraMap_ne_zero_of_mem_hcompl {p : Ideal (𝓞 K)} (hp : p.IsPrime) {
   exact ((mem_hcompl_iff hp s).mp hs).1 (hs0 ▸ p.zero_mem)
 
 /- English proof (translation)
-Rewrite using `[Formalism.HermitianLatticesTheory.locDual_mem_locR]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h1⟩`. Take `⟨r, hr⟩` from `Submodule.mem_one.mp h1`. Use `⟨r, s, hs, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_div_iff (algebraMap_ne_zero_of_mem_hcompl hp hs), hr, mul_comm]`. Introduce and unpack `⟨r, s, hs, rfl⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_cancel₀ _ (algebraMap_ne_zero_of_mem_hcompl hp hs)]`. Conclude with `Formalism.HermitianLatticesTheory.locDual_alg_mem r`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_locR_iff {p : Ideal (𝓞 K)} (hp : p.IsPrime) (a : K) :
     a ∈ Formalism.HermitianLatticesTheory.locR (K := K) p ↔
@@ -149,13 +149,13 @@ def locRing (p : Ideal (𝓞 K)) : Subring K where
   neg_mem' := fun ha => (Formalism.HermitianLatticesTheory.locR (K := K) p).neg_mem ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_locRing (p : Ideal (𝓞 K)) (a : K) :
     a ∈ locRing p ↔ a ∈ Formalism.HermitianLatticesTheory.locR (K := K) p := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_locRing, Formalism.HermitianLatticesTheory.locDual_mem_locR]`. Conclude with `⟨1, one_mem _, by rw [map_one, one_mul]; exact Formalism.HermitianLatticesTheory.locDual_alg_mem r⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem algebraMap_mem_locRing (p : Ideal (𝓞 K)) (r : 𝓞 K) :
     algebraMap (𝓞 K) K r ∈ locRing p := by
@@ -163,9 +163,9 @@ theorem algebraMap_mem_locRing (p : Ideal (𝓞 K)) (r : 𝓞 K) :
   exact ⟨1, one_mem _, by rw [map_one, one_mul]; exact Formalism.HermitianLatticesTheory.locDual_alg_mem r⟩
 
 /- English proof (translation)
-Take `⟨⟨r, s⟩, hrs⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 K)) a`. Use `⟨algebraMap (𝓞 K) K s, algebraMap_mem_locRing p _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Rewrite using `[mul_comm]`. Express the relevant statement in the definitionally equal form `a * algebraMap (𝓞 K) K s = algebraMap (𝓞 K) K r at hrs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrs]`. Conclude with `algebraMap_mem_locRing p r`.
+A detailed English derivation is pending.
 -/
 theorem frac_locRing (p : Ideal (𝓞 K)) (a : K) : ∃ t ∈ locRing p, t ≠ 0 ∧ t * a ∈ locRing p := by
   obtain ⟨⟨r, s⟩, hrs⟩ := IsLocalization.surj (nonZeroDivisors (𝓞 K)) a
@@ -177,7 +177,7 @@ theorem frac_locRing (p : Ideal (𝓞 K)) (a : K) : ∃ t ∈ locRing p, t ≠ 0
     exact algebraMap_mem_locRing p r
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[mem_locRing, mem_locR_iff hp]`. Take `⟨r, s, hs, rfl⟩` from `ha`. Use `⟨conjO K r, conjO K s, conjO_mem_hcompl hs, ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_conjO, algebraMap_conjO, star_div₀]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_mem_locRing {p : Ideal (𝓞 K)} (hp : p.IsPrime) {a : K} (ha : a ∈ locRing p) :
     star a ∈ locRing p := by
@@ -187,15 +187,15 @@ theorem star_mem_locRing {p : Ideal (𝓞 K)} (hp : p.IsPrime) {a : K} (ha : a �
   rw [algebraMap_conjO, algebraMap_conjO, star_div₀]
 
 /- English proof (translation)
-Establish `hs0` using `algebraMap_ne_zero_of_mem_hcompl hp hs`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, -, hinv⟩`. Establish `hr0 : algebraMap (𝓞 K) K r ≠ 0` using `fun h => h0 (by rw [h, zero_div])`. Rewrite `hinv` using `[mem_locRing, Formalism.HermitianLatticesTheory.locDual_mem_locR]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu, h1⟩` from `hinv`. Take `⟨v, hv⟩` from `Submodule.mem_one.mp h1`. Establish `e : u * s = v * r`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 K) K (u * s) = algebraMap (𝓞 K) K (v * r)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, map_mul, hv, inv_div]`. Clear the denominators using the available nonvanishing facts. Establish `hus` using `(mem_hcompl_iff hp _).mp (mul_mem hu hs)`. Rewrite `hus` using `[e]`. Rewrite using `[mem_hcompl_iff hp]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => hus.1 (p.mul_mem_left v h), fun h => hus.2 (Ideal.mul_mem_left _ v h)⟩`. Introduce `hr`. Establish `hr0` using `algebraMap_ne_zero_of_mem_hcompl hp hr`. Use `⟨div_ne_zero hr0 hs0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_locRing, mem_locR_iff hp]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨r, s, hs, rfl⟩`. Rewrite using `[mem_locRing, mem_locR_iff hp]`. Conclude with `⟨s, r, hr, inv_div _ _⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isUnitIn_div_iff {p : Ideal (𝓞 K)} (hp : p.IsPrime) (r : 𝓞 K) {s : 𝓞 K}
     (hs : s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p) :
@@ -226,9 +226,9 @@ theorem isUnitIn_div_iff {p : Ideal (𝓞 K)} (hp : p.IsPrime) (r : 𝓞 K) {s :
       exact ⟨s, r, hr, inv_div _ _⟩
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `exists_sub_conjO_notMem hK hp`. Use `⟨algebraMap (𝓞 K) K θ, algebraMap_mem_locRing p θ, ?_⟩` and prove the remaining obligations. Establish `hmem : θ - conjO K θ ∈ Formalism.HermitianLatticesTheory.hcompl (K` using `K) p := by`. Rewrite using `[mem_hcompl_iff hp.isPrime, mem_conjIdeal_iff]`. Use `⟨hθ, fun h => hθ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[map_sub, conjO_conjO]`. Use `p.neg_mem h` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis. Establish `h` using `(isUnitIn_div_iff hp.isPrime (θ - conjO K θ) (one_mem (Formalism.HermitianLatticesTheory.hcompl (K := K) p))).mpr hmem`. Rewrite `h` using `[map_one, div_one, map_sub, algebraMap_conjO]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unram_locRing (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {p : Ideal (𝓞 K)} (hp : p.IsMaximal) :
     ∃ θ ∈ locRing p, IsUnitIn (locRing p) (θ - star θ) := by

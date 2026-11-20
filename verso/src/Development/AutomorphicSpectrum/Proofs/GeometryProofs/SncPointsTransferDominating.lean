@@ -21,7 +21,7 @@ namespace GlobalTheory.CompanionTheory.Ar.PatchIso
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Unfold `unitAt`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitAt_congr {X' : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω) ⟶ X'}
     {p : Cpt ξ} {p' : Cpt ξ'} (h : regAt ξ' p' = regAt ξ p) (a : Ω) : unitAt ξ' p' a ↔ unitAt ξ p a := by
@@ -29,18 +29,18 @@ theorem unitAt_congr {X' : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ
   rw [h]
 
 /- English proof (translation)
-Introduce `r hr hf` and use `hp r hr fun hu => hf ((unitAt_congr h _).2 hu)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem char_zero_congr {X' : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω) ⟶ X'}
     {p : Cpt ξ} {p' : Cpt ξ'} (h : regAt ξ' p' = regAt ξ p) (hp : Char0 ξ p) : Char0 ξ' p' := fun r hr hf =>
   hp r hr fun hu => hf ((unitAt_congr h _).2 hu)
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, 0 < n → ((n : Ω))⁻¹ ∈ regAt ξ p`. Introduce `n`. Proceed by induction on `n using induction_on_primes with`. Consider the case `zero => exact fun h => absurd h (lt_irrefl 0)`. Consider the case `one => intro _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `using (regAt ξ p).one_mem`. Consider the case `prime_mul r a hr ih`. Introduce `h`. Establish `ha : 0 < a` using `Nat.pos_of_mul_pos_left h`. Establish `hu : unitAt ξ p (r : Ω)` using `not_not.1 (hp r hr)`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_mul, mul_inv]`. Conclude with `mul_mem hu.2.2 (ih ha)`. Conclude with `fun n hn => ⟨Nat.cast_ne_zero.2 hn.ne', natCast_mem _ n, key n hn⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_genFib_of_char0 [CharZero Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {p : Cpt ξ} (hp : Char0 ξ p) :
     p ∈ genFib ξ := by
@@ -58,7 +58,7 @@ theorem mem_genFib_of_char0 [CharZero Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} 
   exact fun n hn => ⟨Nat.cast_ne_zero.2 hn.ne', natCast_mem _ n, key n hn⟩
 
 /- English proof (translation)
-Take `⟨h, -, hu⟩` from `RegAtDom.regAt_dominates X₁ Ω ξ₁ X₂ Ω ξ₂ g (RingHom.id Ω) hd p`. Establish `c : Char0 ξ₁ ⟨g p.1, h⟩` using `fun r hr hf => hf (hu hg (r : Ω) (natCast_mem _ r) (not_not.1 (hp r hr)))`. Use `⟨⟨g p.1, h⟩, rfl, c, ?_⟩` and prove the remaining obligations. Rewrite using `[(hi _ (mem_genFib_of_char0 c)).regAt_eq p rfl, Subring.map_id]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_below [CharZero Ω] {X₁ X₂ : Scheme.{0}} {ξ₁ : Spec (CommRingCat.of Ω) ⟶ X₁}
     {ξ₂ : Spec (CommRingCat.of Ω) ⟶ X₂} {g : X₂ ⟶ X₁} (hg : IsCptGen ξ₂)
@@ -72,7 +72,7 @@ theorem exists_below [CharZero Ω] {X₁ X₂ : Scheme.{0}} {ξ₁ : Spec (CommR
   rw [(hi _ (mem_genFib_of_char0 c)).regAt_eq p rfl, Subring.map_id]
 
 /- English proof (translation)
-Establish `I` using `hi p₁ (mem_genFib_of_char0 hp)`. Take `⟨p, hp', -⟩` from `I.existsUnique`. Establish `e : regAt ξ₂ p = regAt ξ₁ p₁` using `by rw [I.regAt_eq p hp', Subring.map_id]`. Conclude with `⟨p, hp', char_zero_congr e hp, e⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_above [CharZero Ω] {X₁ X₂ : Scheme.{0}} {ξ₁ : Spec (CommRingCat.of Ω) ⟶ X₁}
     {ξ₂ : Spec (CommRingCat.of Ω) ⟶ X₂} {g : X₂ ⟶ X₁}
@@ -84,17 +84,15 @@ theorem exists_above [CharZero Ω] {X₁ X₂ : Scheme.{0}} {ξ₁ : Spec (CommR
   exact ⟨p, hp', char_zero_congr e hp, e⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ κ₁ κ₂ x₁ x₂ X₁ X₂ ξ₁ ξ₂ g e Ab _ _ _ t₂ hd hi hs p hp`. Establish `ePts : Pts ξ₂ = Pts ξ₁`. Use extensionality with `R`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p₂, c, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨p₁, -, c₁, r⟩` from `exists_below t₂.gen hd hi p₂ c`. Conclude with `⟨p₁, c₁, r⟩`. Introduce and unpack `⟨p₁, c, rfl⟩`. Take `⟨p₂, -, c₂, r⟩` from `exists_above hi p₁ c`. Conclude with `⟨p₂, c₂, r.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `eB : regAt ξ₂ '' {p | Char0 ξ₂ p ∧ g p.1 ∉ Ab} = regAt ξ₁ '' {p | Char0 ξ₁ p ∧ p.1 ∉ Ab}`. Use extensionality with `R`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p₂, ⟨c, ha⟩, rfl⟩`. Take `⟨p₁, e₁, c₁, r⟩` from `exists_below t₂.gen hd hi p₂ c`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p₁, ⟨c₁, e₁ ▸ ha⟩, r.symm⟩`. Introduce and unpack `⟨p₁, ⟨c, ha⟩, rfl⟩`. Take `⟨p₂, e₂, c₂, r⟩` from `exists_above hi p₁ c`. Conclude with `⟨p₂, ⟨c₂, by rwa [e₂]⟩, r⟩`. Take `⟨p₁, -, c₁, r⟩` from `exists_below t₂.gen hd hi p hp`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨A, z, n, q, hP, hq, hl⟩` from `hs p₁ c₁`. Use `⟨A, z, n, q, ?_, hq, ?_⟩` and prove the remaining obligations. Rewrite using `[ePts, eB]`. Conclude with `hP`. Rewrite using `[r]`.
-
-Conclude with `hl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sncPts_of_isoAt :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] (κ₁ κ₂ : Type) (x₁ : κ₁ → Ω) (x₂ : κ₂ → Ω) (X₁ X₂ : Scheme.{0}) (ξ₁ : Sp Ω ⟶ X₁) (ξ₂ : Sp Ω ⟶ X₂) (g : X₂ ⟶ X₁) (e : ℕ) (Ab : Set X₁), (∀ q : X₁, genPt ξ₁ ⤳ q) → (∀ q : X₂, genPt ξ₂ ⤳ q) → CoordTie ℤ ξ₁ x₁ → CoordTie ℤ ξ₂ x₂ → GlobalTheory.CompanionTheory.Ar.Dominates ξ₂ ξ₁ g (RingHom.id Ω) → (∀ q ∈ genFib ξ₁, IsoAt ξ₂ g (RingHom.id Ω) q) → SncPts ξ₁ e {p | Char0 ξ₁ p ∧ p.1 ∉ Ab} → SncPts ξ₂ e {p | Char0 ξ₂ p ∧ g p.1 ∉ Ab} := by

@@ -7,17 +7,17 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.ValThree
 
 /- English proof (translation)
-Introduce `B _ π hV f g M`. Establish `hpair : ∀ x : B, π ^ M ∈ Ideal.span {x, π ^ M}` using `fun x => Ideal.subset_span (by simp)`. Take `⟨e₁, he₁, h1a, h1b⟩` from `hV f (π ^ M) ⟨M, hpair f⟩`. Take `⟨e₂, he₂, h2a, h2b⟩` from `hV g (π ^ M) ⟨M, hpair g⟩`. Establish `i₁ : e₁ * e₁ = e₁` using `he₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `i₂ : e₂ * e₂ = e₂` using `he₂`. Establish `he₃1 : (1 - e₁) * (1 - e₂) * (1 - e₁) = (1 - e₁) * (1 - e₂)`. Take the linear combination `(1 - e₂) * i₁`. Establish `he₃2 : (1 - e₁) * (1 - e₂) * (1 - e₂) = (1 - e₁) * (1 - e₂)`. Take the linear combination `(1 - e₁) * i₂`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `he₃ : (1 - e₁) * (1 - e₂) * ((1 - e₁) * (1 - e₂)) = (1 - e₁) * (1 - e₂)`. Take the linear combination `(1 - e₂) * he₃1 + he₃2`. Generalize the expression as in `hE : (1 - e₁) * (1 - e₂) = E at he₃1 he₃2 he₃ ⊢`. Take `⟨h, hh⟩` from `Ideal.mem_span_singleton'.mp h1b`. Establish `hM : π ^ M ∈ Ideal.span {E * f + (1 - E), E * g + (1 - E)}`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_span_pair]`. Use `⟨E * h + (1 - E) * π ^ M, 0, ?_⟩` and prove the remaining obligations. Take the linear combination `(h * f - h - π ^ M * f + π ^ M) * he₃ + E * hh + π ^ M * he₃1`. Take `⟨e, he, ha, hb⟩` from `hV (E * f + (1 - E)) (E * g + (1 - E)) ⟨M, hM⟩`. Take `⟨a, ha'⟩` from `Ideal.mem_span_singleton'.mp ha`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb'⟩` from `Ideal.mem_span_singleton'.mp hb`. Use `⟨e₁, e₂, e, he₁, he₂, he, h1a, h1b, h2a, h2b, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hE]`. Use `Ideal.mem_span_singleton'.mpr ⟨a * E, ?_⟩` and prove the remaining obligations. Take the linear combination `E * ha' - (a * (g - 1) - e * (f - 1)) * he₃`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hE]`. Use `Ideal.mem_span_singleton'.mpr ⟨b * E, ?_⟩` and prove the remaining obligations. Take the linear combination `E * hb' - (b * (f - 1) - (1 - e) * (g - 1)) * he₃`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem val_three : ∀ (B : Type) [CommRing B] (π : B), VAL π → ∀ (f g : B) (M : ℕ), ∃ e₁ e₂ e : B, IsIdempotentElem e₁ ∧ IsIdempotentElem e₂ ∧ IsIdempotentElem e ∧ e₁ * f ∈ Ideal.span {π ^ M} ∧ (1 - e₁) * π ^ M ∈ Ideal.span {f} ∧ e₂ * g ∈ Ideal.span {π ^ M} ∧ (1 - e₂) * π ^ M ∈ Ideal.span {g} ∧ (1 - e₁) * (1 - e₂) * e * f ∈ Ideal.span {g} ∧ (1 - e₁) * (1 - e₂) * (1 - e) * g ∈ Ideal.span {f} := by
   intro B _ π hV f g M

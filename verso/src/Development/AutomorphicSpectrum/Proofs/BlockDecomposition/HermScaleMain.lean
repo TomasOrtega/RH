@@ -19,21 +19,15 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hid htop D t S e he lam hlam g hg`. Take `⟨hee, hce⟩` from `(hid D S).2 e he`. Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D t t`. Use `haveI : IsTopologicalAddGroup (Mx D t t) := i1`. Use `haveI : LocallyCompactSpace (Mx D t t) := i2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (Mx D t t) := i3`. Use `haveI : T2Space (Mx D t t) := i4`. Use `haveI : BorelSpace (Mx D t t) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (hermA D t) := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : T2Space (hermA D t) := Topology.IsEmbedding.subtypeVal.t2Space`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace (hermA D t) := (isClosed_hermA (D := D) (r := t)).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Take `⟨-, -, -, -, -, -, hb, hs2, hlc⟩` from `htop D 0 0 t e`. Use `haveI : BorelSpace (hermS D t e) := hb`. Use `haveI : SecondCountableTopology (hermS D t e) := hs2`. Use `haveI : LocallyCompactSpace (hermS D t e) := hlc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : T2Space (hermS D t e) := Topology.IsEmbedding.subtypeVal.t2Space`. Use `haveI : lam.IsAddHaarMeasure := hlam`. Use `set U := restr (hermA D t) (GlobalTheory.ModuLR.lrCE g (ad g)⁻¹) (lr_herm g) (lr_herm_symm g) with hUdef`. Establish `hU : ∀ s ∈ hermS D t e, U s ∈ hermS D t e` using `fun s hs => smul_sandwich e _ _ s.1 hs`. Establish `hU' : ∀ s ∈ hermS D t e, U.symm s ∈ hermS D t e` using `fun s hs => smul_sandwich e _ _ s.1 hs`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hPm : ∀ x, smulH (n` using `t) e hce x ∈ hermS D t e := fun x => by`. Express the relevant statement in the definitionally equal form `e • e • x.1 = e • x.1`. Rewrite using `[smul_smul, hee]`. Establish `hPs : ∀ s ∈ hermS D t e, smulH (n` using `t) e hce s = s := fun s hs => Subtype.ext hs`. Establish `hfix : ∀ x, smulH (n` using `t) e hce x = 0 → U x = x := fun x hx => Subtype.ext (sandwich_fix g hg x (congrArg Subtype.val hx))`.
-
-Establish `hchar` using `char_restr (hermS D t e) (smulH e hce) (continuous_smulH e hce) hPm hPs U hU hU' hfix`. Rewrite `hchar` using `[char_herm g]`. Use `set c := restr (hermS D t e) U hU hU' with hc`. Use `⟨c, fun x => rfl, ?_⟩` and prove the remaining obligations. Establish `key` using `addEquivAddHaarChar_smul_map lam c`.
-
-Establish `hne : addEquivAddHaarChar c ≠ 0` using `(addEquivAddHaarChar_pos c).ne'`. Establish `hmap : lam.map c = (addEquivAddHaarChar c)⁻¹ • lam`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel₀ hne, one_smul]`. Use `_ = (addEquivAddHaarChar c)⁻¹ • lam := by rw [mul_smul, key]`.
-
-Rewrite using `[hmap, hchar, inv_pow]`.
+A detailed English derivation is pending.
 -/
 theorem hermScale_main : PositivityTheory.Rg.Rsw.L.IdemEx → PositivityTheory.Rg.Rsw.Em.TopX → PositivityTheory.Rg.Rsw.Em.HermScale := by
   intro hid htop D t S e he lam hlam g hg

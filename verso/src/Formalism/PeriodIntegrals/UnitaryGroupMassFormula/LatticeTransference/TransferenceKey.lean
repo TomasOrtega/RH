@@ -13,9 +13,9 @@ def TransferenceKey : Prop :=
     ∃ l ∈ Λ, ‖u - l‖ * lam ≤ (finrank ℝ E : ℝ) / 2
 
 /- English proof (translation)
-Introduce `E _ _ _ Λ _ _ lam hlam hmin x`. Use `h E Λ lam x hlam ?_` and prove the remaining obligations. Introduce `y hy hlt`. Distinguish the cases in `hy0 : y = 0`. Conclude with `⟨0, by simp [hy0]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `absurd (hmin y hy0 hy) (not_le.mpr hlt)`.
+A detailed English derivation is pending.
 -/
 theorem cover_of_key (h : TransferenceKey) : TransferenceCover := by
   intro E _ _ _ Λ _ _ lam hlam hmin x

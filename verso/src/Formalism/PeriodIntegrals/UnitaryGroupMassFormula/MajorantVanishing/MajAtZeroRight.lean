@@ -22,9 +22,9 @@ theorem realize_apply (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix 
       else (Formalism.HermitianLatticesTheory.fcoord b X p.1 x p.2.1).im := rfl
 
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, Formalism.HermitianLatticesTheory.majAt, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [realize_apply]`. Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_realize (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (x y : V) :
     inner ℝ (Formalism.HermitianLatticesTheory.realize b X x) (Formalism.HermitianLatticesTheory.realize b X y) =
@@ -39,7 +39,7 @@ theorem inner_realize (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix 
   ring
 
 /- English proof (translation)
-Simplify using `[Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem majAt_zero_right (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) (x : V) : Formalism.HermitianLatticesTheory.majAt b X v x 0 = 0 := by
@@ -53,7 +53,7 @@ variable {R V E : Type*} [Ring R] [AddCommGroup V] [Module R V] [NormedAddCommGr
   [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_zl (ρ : V →+ E) (N : Submodule R V) (u : E) : u ∈ zl ρ N ↔ ∃ z ∈ N, ρ z = u := Iff.rfl
 
@@ -64,7 +64,7 @@ section Main
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[← Module.End.mul_apply, he]`. Introduce `h`. Conclude with `⟨x, h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_range_iff {V : Type} [AddCommGroup V] [Module K V] (e : Module.End K V) (he : e * e = e) (x : V) :
     x ∈ LinearMap.range e ↔ e x = x := by
@@ -75,13 +75,13 @@ theorem mem_range_iff {V : Type} [AddCommGroup V] [Module K V] (e : Module.End K
     exact ⟨x, h⟩
 
 /- English proof (translation)
-Take `⟨hlat, hrk, -⟩` from `plLat K A.V A.ι A.b A.X hX M hM`. Establish `hr : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Establish `hsat` using `satBasic (𝓞 K) A.V (EuclideanSpace ℝ (InfinitePlace K × A.ι × Fin 2)) (Formalism.HermitianLatticesTheory.realize A.b A.X) M hlat`. Establish `hs : Formalism.HN.slope (Formalism.HermitianLatticesTheory.realize A.b A.X) M = deg (Formalism.HermitianLatticesTheory.realize A.b A.X) M / ((Module.finrank ℚ K : ℝ) * (rkK M : ℝ))`. Establish `h1 : Formalism.F.rk (zl (Formalism.HermitianLatticesTheory.realize A.b A.X) M) = Module.finrank ℚ K * rkK M` using `hrk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.HN.slope Formalism.F.slope`. Rewrite using `[h1]`. Use `push_cast`. Both sides reduce to the same expression. Unfold `PI.Dv.degL muDef`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h0 : rkK M = 0`. Establish `hb : M = ⊥` using `(hsat.2.2.2.1 M le_rfl).1 (by rw [hrk, h0, mul_zero])`. Establish `hd : deg (Formalism.HermitianLatticesTheory.realize A.b A.X) M = 0` using `by rw [hb]; exact hsat.2.2.2.2.1`. Rewrite using `[hs, h0, hd]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0' : (rkK M : ℝ) ≠ 0` using `by exact_mod_cast h0`. Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem degL_eq (A : Formalism.BasicNotions.HLat K) (hX : ∀ v, IsUnit (A.X v).det) (M : Submodule (𝓞 K) A.V) (hM : M.FG) :
     PI.Dv.degL A M = 2 * deg (Formalism.HermitianLatticesTheory.realize A.b A.X) M / (Module.finrank ℚ K : ℝ) +
@@ -109,57 +109,53 @@ theorem degL_eq (A : Formalism.BasicNotions.HLat K) (hX : ∀ v, IsUnit (A.X v).
     ring
 
 /- English proof (translation)
-Introduce `K _ _ _ _ A e n hP`. Take `⟨hG, hn, hee, hnL, hsa⟩` from `hP`. Take `⟨hX, hFG, hspan⟩` from `hG`. Use `set ρ := Formalism.HermitianLatticesTheory.realize A.b A.X with hρ`. Use `set L0 := PI.Dv.cutE A e A.L with hL0def`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set I := PI.Dv.imgE A (1 - e) A.L with hIdef`. Establish `hee' : ∀ y, e (e y) = e y` using `fun y => by rw [← Module.End.mul_apply, hee]`. Establish `hr : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Establish `hrN : 0 < Module.finrank ℚ K` using `Module.finrank_pos`. Establish `hnR : (0 : ℝ) < n` using `by exact_mod_cast hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnoeth : IsNoetherian (𝓞 K) A.L` using `isNoetherian_of_fg_of_noetherian _ hFG`. Establish `hL0le : L0 ≤ A.L` using `inf_le_left`. Establish `hfg0 : L0.FG`. Establish `h1` using `(IsNoetherian.noetherian (L0.comap A.L.subtype)).map A.L.subtype`. Rewrite `h1` using `[Submodule.map_comap_subtype, inf_eq_right.2 hL0le]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfgI : I.FG` using `hFG.map _`. Take `⟨hlatL, hrkL, -⟩` from `plLat K A.V A.ι A.b A.X hX A.L hFG`. Take `⟨hlat0, hrk0, -⟩` from `plLat K A.V A.ι A.b A.X hX L0 hfg0`. Take `⟨hlatI, hrkI, -⟩` from `plLat K A.V A.ι A.b A.X hX I hfgI`. Establish `hL0eq : L0 = A.L ⊓ (LinearMap.ker (1 - e)).restrictScalars (𝓞 K)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `x`. Simplify using `only [hL0def, PI.Dv.cutE, Submodule.mem_inf, Submodule.restrictScalars_mem, LinearMap.mem_ker, mem_range_iff e hee, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Apply the tactic sequence `constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1, h2.symm⟩`. Establish `hsat0 : IsSat ρ A.L L0`. Rewrite using `[hL0eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `(htImage K A.V A.ι A.V A.ι A.b A.X A.b A.X hX hX (1 - e) A.L hFG).1`. Establish `hrkKI : rkK I = PI.Dv.dimE A (1 - e)`. Unfold `rkK PI.Dv.dimE`. Establish `hIset : (I : Set A.V) = ((1 - e : Module.End K A.V) : A.V → A.V) '' (A.L : Set A.V)`. Rewrite using `[hIdef, PI.Dv.imgE, Submodule.map_coe, LinearMap.coe_restrictScalars]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hIset, Submodule.span_image, hspan, Submodule.map_top]`. Use `set S : Submodule ℝ (EuclideanSpace ℝ (InfinitePlace K × A.ι × Fin 2)) := Submodule.span ℝ ((zl ρ L0 : Submodule ℤ _) : Set (EuclideanSpace ℝ (InfinitePlace K × A.ι × Fin 2))) with hSdef`. Establish `hA : ∀ x ∈ A.L, ρ (e x) ∈ S`. Introduce `x hx`. Establish `hm : ((n : 𝓞 K)) • e x ∈ L0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hnL x hx, ?_⟩` and prove the remaining obligations. Use `show ((n : 𝓞 K)) • e x ∈ LinearMap.range e`. Rewrite using `[mem_range_iff e hee, LinearMap.map_smul_of_tower, hee']`. Establish `h1 : ρ (((n : 𝓞 K)) • e x) ∈ S` using `Submodule.subset_span ⟨_, hm, rfl⟩`. Rewrite `h1` using `[Nat.cast_smul_eq_nsmul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `S.smul_mem ((n : ℝ)⁻¹) h1`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hnR.ne', one_smul]`. Then use the resulting hypothesis. Establish `hB : ∀ x : A.V, ρ ((1 - e) x) ∈ Sᗮ`. Introduce `x`. Establish `hle : S ≤ (ℝ ∙ ρ ((1 - e) x))ᗮ`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hSdef, Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_right]`. Establish `hz' : e z = z` using `(mem_range_iff e hee z).1 hz.2`. Rewrite using `[real_inner_comm, inner_realize]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← hz', hsa, LinearMap.sub_apply, Module.End.one_apply, map_sub, hee', sub_self, majAt_zero_right]`. Simplify using the standard rewrite rules. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `u hu`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hle hu` as an intermediate fact. Rewrite `this` using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`. Rewrite using `[real_inner_comm]` and apply the resulting hypothesis. Establish `hproj : ∀ x ∈ A.L, Sᗮ.starProjection (ρ x) = ρ ((1 - e) x)`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : ρ x = ρ (e x) + ρ ((1 - e) x)`. Rewrite using `[← map_add]`. Use `congr 1`. Simplify using `[LinearMap.sub_apply]`. Rewrite using `[hsplit, map_add, (Submodule.starProjection_apply_eq_zero_iff _).2 (Submodule.le_orthogonal_orthogonal S (hA x hx)), zero_add, Submodule.starProjection_eq_self_iff.2 (hB x)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq : Formalism.F.quot (zl ρ A.L) (zl ρ L0) = zl ρ I`. Use extensionality with `w`. Simplify using `only [Formalism.F.quot, Submodule.mem_map, mem_zl]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨(1 - e) x, ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `(hproj x hx).symm`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨ρ x, ⟨x, hx, rfl⟩, hproj x hx⟩`. Establish `hsatL` using `satBasic (𝓞 K) A.V (EuclideanSpace ℝ (InfinitePlace K × A.ι × Fin 2)) ρ A.L hlatL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq3` using `hsatL.2.2.2.2.2.2.2 L0 hsat0`. Rewrite `hq3` using `[hq]`. Take `⟨hrkq, hrkle, hdegq⟩` from `hq3`. Establish `hdeg : deg ρ I = deg ρ A.L - deg ρ L0` using `hdegq`. Establish `hrkq' : rk ρ I = rk ρ A.L - rk ρ L0` using `hrkq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hrkle' : rk ρ L0 ≤ rk ρ A.L` using `hrkle`. Establish `hsumZ : rk ρ I + rk ρ L0 = rk ρ A.L` using `by omega`. Establish `hsum : rkK I + rkK L0 = rkK A.L`. Rewrite `hsumZ` using `[hrkI, hrk0, hrkL, ← mul_add]`. Conclude with `Nat.eq_of_mul_eq_mul_left hrN hsumZ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hbound : deg ρ I ≤ (muMax ρ A.L + Real.log n) * ((Module.finrank ℚ K : ℝ) * (rkK I : ℝ))`. Distinguish the cases in `hI : I = ⊥`. Establish `h0 : rk ρ I = 0` using `(hsatL.2.2.2.1 I (by rw [hI]; exact bot_le)).2 hI`. Rewrite `h0` using `[hrkI]`. Establish `h0' : rkK I = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Break down `Nat.mul_eq_zero.1 h0 with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hd : deg ρ I = 0` using `by rw [hI]; exact hsatL.2.2.2.2.1`. Rewrite using `[hd, h0']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `hmem : ∀ x ∈ I, ((n : 𝓞 K) • (LinearMap.id : A.V →ₗ[𝓞 K] A.V)) x ∈ A.L`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, LinearMap.coe_restrictScalars, LinearMap.sub_apply, Module.End.one_apply, smul_sub]`. Conclude with `A.L.sub_mem (A.L.smul_mem _ hy) (hnL y hy)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `φ : I →ₗ[𝓞 K] A.L` to `((n : 𝓞 K) • (LinearMap.id : A.V →ₗ[𝓞 K] A.V)).restrict hmem`. Establish `hφ : ∀ x : I, ((φ x : A.L) : A.V) = ((n : 𝓞 K)) • (x : A.V)` using `fun x => rfl`. Establish `hnorm : ∀ x : I, ‖ρ ((φ x : A.L) : A.V)‖ ≤ (n : ℝ) * ‖ρ (x : A.V)‖`. Introduce `x`. Use `le_of_eq ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, Nat.cast_smul_eq_nsmul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ, norm_smul, Real.norm_natCast]`. Establish `hinj : Function.Injective φ`. Introduce `x y hxy`. Establish `h1` using `congrArg (fun z : A.L => (z : A.V)) hxy`. Simplify using `only [hφ] at h1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h1` using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul K, ← Nat.cast_smul_eq_nsmul K]`. Conclude with `Subtype.ext ((smul_right_inj (Nat.cast_ne_zero.2 hn.ne')).1 h1)`. Establish `hmu` using `(slopeIneq (𝓞 K) A.V A.V (EuclideanSpace ℝ (InfinitePlace K × A.ι × Fin 2)) (EuclideanSpace ℝ (InfinitePlace K × A.ι × Fin 2)) ρ ρ I A.L hlatI hlatL φ (n : ℝ) hnR hnorm).2 hinj hI`. Establish `hdI` using `((muChar (𝓞 K) A.V (EuclideanSpace ℝ (InfinitePlace K × A.ι × Fin 2)) ρ I hlatI hI).1 (muMax ρ I)).1 le_rfl I le_rfl`. Establish `hrkIR : (rk ρ I : ℝ) = (Module.finrank ℚ K : ℝ) * (rkK I : ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hrkI]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hdI` using `[hrkIR]`. Establish `hpos : (0 : ℝ) ≤ (Module.finrank ℚ K : ℝ) * (rkK I : ℝ)` using `by positivity`.
-
-Conclude with `hdI.trans (mul_le_mul_of_nonneg_right hmu hpos)`. Unfold `PI.Dv.DegreeKernelLowerBound`. Rewrite using `[degL_eq A hX A.L hFG, degL_eq A hX L0 hfg0, ← hrkKI]`. Establish `hsumR : (rkK A.L : ℝ) = (rkK I : ℝ) + (rkK L0 : ℝ)` using `by exact_mod_cast hsum.symm`. Establish `key : 2 * deg ρ A.L / (Module.finrank ℚ K : ℝ) - 2 * deg ρ L0 / (Module.finrank ℚ K : ℝ) ≤ 2 * (rkK I : ℝ) * (muMax ρ A.L + Real.log n)`.
-
-Rewrite using `[← sub_div, div_le_iff₀ hr]`. Use polynomial arithmetic with `[hbound, hdeg]`. Unfold `PI.Dv.muMaxL muMaxDef`. Rewrite using `[hsumR]`. Use polynomial arithmetic with `[key]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem projB : PI.Dv.ProjB := by
   intro K _ _ _ _ A e n hP

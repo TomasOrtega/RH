@@ -7,11 +7,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D O W M π f hf φ hφ Y hY Φ hΦ`. Use function extensionality and compare the values at `g`. Establish `hE` using `(exPar E Y)`. Establish `h0 : ex Y 0 = 1`. Use `Units.ext ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show NormedSpace.exp ((0 : ℝ) • Matrix.of Y) = 1`. Rewrite using `[zero_smul, NormedSpace.exp_zero]`. Establish `h1` using `GlobalTheory.CuspRep.hasDerivAt_curve Φ g (ex Y) Y h0 hE.2.2.1`. Establish `h2` using `derL F E D O W M π f hf φ hφ Y hY g`. Rewrite `h1` using `[hΦ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CuspRep.lie_apply, hΦ]`. Conclude with `h1.unique h2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.lieL :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (O : Fo.Ops F) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), LieL O W M π := by

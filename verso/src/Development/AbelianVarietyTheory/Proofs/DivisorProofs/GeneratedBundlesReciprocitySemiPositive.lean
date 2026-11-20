@@ -23,9 +23,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.Mix
 
 /- English proof (translation)
-Introduce `i c y hy ξ`. Establish `ho` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U i))`. Establish `hm` using `ChartGlue.mem_over c.e hy.1 hy.2`. Establish `ee : (fun v => (ψ.φ i (c.e.symm v) : ℂ)) =ᶠ[𝓝 (c.e y)] (fun v => (φ.φ i (c.e.symm v) : ℂ))` using `Filter.eventually_of_mem (ho.mem_nhds hm) fun v hv => by simp only [e i _ hv.2]`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.leviV_congr ee]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h i c y hy ξ`.
+A detailed English derivation is pending.
 -/
 theorem semiPosReg_of_eqOn {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {B : LB X}
     {φ ψ : Weight p σ B} {D : ℕ} (h : φ.SemiPosReg D)
@@ -39,7 +39,7 @@ theorem semiPosReg_of_eqOn {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ S
   exact h i c y hy ξ
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hψp⟩` from `GlobalTheory.T.exists_smooth_semipositive_weight_of_generated k X p σ M.B M.φ.isLB hg`. Take `⟨u, hu, he⟩` from `GlobalTheory.T.smooth_weights_differ_by_smooth_function k X p σ M.B M.φ ψ M.cInf hψ`. Conclude with `⟨u, hu, semiPosReg_of_eqOn (hψp D) fun i y hy => (he i y hy).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_addFn_semiPosReg {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
     (M : MLine p σ) (D : ℕ) (hg : ∃ (n : ℕ) (u : Fin n → M.B.Sec), ⨆ i, nonzeroLocus (u i) = ⊤) :
@@ -51,11 +51,11 @@ theorem exists_addFn_semiPosReg {k : Type} [CommRing k] {X : Scheme.{0}} {p : X 
 end GlobalTheory.Mix
 
 /- English proof (translation)
-Introduce `hP F _ X _ _ p σ e hproj hdim L M N s hs t ht hz hL hgM hgN`. Take `⟨u, hu, hMu⟩` from `GlobalTheory.Mix.exists_addFn_semiPosReg M (e + 1) hgM`. Take `⟨v, hv, hNv⟩` from `GlobalTheory.Mix.exists_addFn_semiPosReg N (e + 1) hgN`. Establish `hz' : ∀ z : X, Order.coheight z = 1 → z ∈ nonzeroLocus t ∨ z ∈ nonzeroLocus s` using `fun z h => (hz z h).symm`. Establish `h1` using `GlobalTheory.T.reciprocityDefect_independent_firstMetric hP F X p σ e hproj hdim L M N s hs t ht hz u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.T.reciprocityDefect_independent_firstMetric hP F X p σ e hproj hdim L N (M.addFn u hu) t ht s hs hz' v hv`. Establish `h3` using `GlobalTheory.T.reciprocityFormula_le_semipositive hP F X p σ e hproj hdim L (M.addFn u hu) (N.addFn v hv) s hs t ht hz hL hNv`. Establish `h4` using `GlobalTheory.T.reciprocityFormula_le_semipositive hP F X p σ e hproj hdim L (N.addFn v hv) (M.addFn u hu) t ht s hs hz' hL hMu`. Establish `d1 : divOfSec (M.addFn u hu).φ.isLB s hs = divOfSec M.φ.isLB s hs` using `rfl`. Establish `d2 : divOfSec (N.addFn v hv).φ.isLB t ht = divOfSec N.φ.isLB t ht` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3`, `h4` using `[d1, d2]`. Rewrite `h2` using `[d1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem GlobalTheory.Mix.side_eq_of_generated : GlobalTheory.Published.Principalisation → ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp F) (σ : F →+* ℂ) (e : ℕ), IsProjOver p → topologicalKrullDim X = (e + 1 : ℕ) → ∀ (L : Fin e → MLine p σ) (M N : MLine p σ) (s : M.B.Sec) (hs : genericPoint X ∈ nonzeroLocus s) (t : N.B.Sec) (ht : genericPoint X ∈ nonzeroLocus t), (∀ z : X, Order.coheight z = 1 → z ∈ nonzeroLocus s ∨ z ∈ nonzeroLocus t) → (∀ i, (L i).φ.SemiPosReg (e + 1)) → (∃ (n : ℕ) (u : Fin n → M.B.Sec), ⨆ i, nonzeroLocus (u i) = ⊤) → (∃ (n : ℕ) (u : Fin n → N.B.Sec), ⨆ i, nonzeroLocus (u i) = ⊤) → side N L (M.logSec s) (N.logSec t) (divOfSec M.φ.isLB s hs) = side M L (N.logSec t) (M.logSec s) (divOfSec N.φ.isLB t ht) := by
   intro hP F _ X _ _ p σ e hproj hdim L M N s hs t ht hz hL hgM hgN

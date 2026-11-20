@@ -15,9 +15,9 @@ section
 variable {k F E : Type} [Field k] [Field F] [Field E] [Algebra k F] [Algebra k E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `[map_inv₀, h]`. Introduce and unpack `⟨h1, h2⟩`. Rewrite `h2` using `[map_inv₀]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : w z ≠ 0` using `(Valuation.ne_zero_iff w).2 hz`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem val_eq_one_iff {K : Type} [Field K] (w : Valuation K (WithZero (Multiplicative ℤ))) {z : K}
     (hz : z ≠ 0) : w z = 1 ↔ w z ≤ 1 ∧ w z⁻¹ ≤ 1 := by
@@ -32,18 +32,18 @@ theorem val_eq_one_iff {K : Type} [Field K] (w : Valuation K (WithZero (Multipli
       _ = w z := mul_one _
 
 /- English proof (translation)
-Rewrite using `[val_eq_one_iff _ hx, val_eq_one_iff _ ((map_ne_zero _).2 hx), ← map_inv₀, hρ, hρ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_eq_one {ρ : Place k E → Place k F} (hρ : IsRes ρ) (p : Place k E) {x : F} (hx : x ≠ 0) :
     p.1 (algebraMap F E x) = 1 ↔ (ρ p).1 x = 1 := by
   rw [val_eq_one_iff _ hx, val_eq_one_iff _ ((map_ne_zero _).2 hx), ← map_inv₀, hρ, hρ]
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Establish `h0 : (ρ p).1 x = 0` using `le_antisymm (by simpa using h) zero_le'`. Establish `hx : x = 0` using `(Valuation.zero_iff _).1 h0`. Simplify using `[hx]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : (ρ p).1 (x * y⁻¹) ≤ 1`. Establish `h0 : (ρ p).1 y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Rewrite using `[map_mul, map_inv₀]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `(hρ p (x * y⁻¹)).2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e : algebraMap F E x = algebraMap F E (x * y⁻¹) * algebraMap F E y`. Rewrite using `[← map_mul, inv_mul_cancel_right₀ hy]`. Rewrite using `[e, map_mul]`. Conclude with `mul_le_of_le_one_left' h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_mono {ρ : Place k E → Place k F} (hρ : IsRes ρ) (p : Place k E) {x y : F}
     (h : (ρ p).1 x ≤ (ρ p).1 y) : p.1 (algebraMap F E x) ≤ p.1 (algebraMap F E y) := by
@@ -64,14 +64,14 @@ theorem res_mono {ρ : Place k E → Place k F} (hρ : IsRes ρ) (p : Place k E)
     exact mul_le_of_le_one_left' h2
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_map (M : Matrix (Fin n) (Fin n) F) :
     (M.map (algebraMap F E)).det = algebraMap F E M.det := by
   rw [RingHom.map_det]; rfl
 
 /- English proof (translation)
-Unfold `Unimod`. Rewrite using `[det_map, res_eq_one hρ p hM]`. Simplify using `only [Matrix.map_apply]`. Conclude with `and_congr_left fun _ => forall_congr' fun i => forall_congr' fun j => hρ p _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unimod_map {ρ : Place k E → Place k F} (hρ : IsRes ρ) (p : Place k E)
     (M : Matrix (Fin n) (Fin n) F) (hM : M.det ≠ 0) :
@@ -82,7 +82,7 @@ theorem unimod_map {ρ : Place k E → Place k F} (hρ : IsRes ρ) (p : Place k 
   exact and_congr_left fun _ => forall_congr' fun i => forall_congr' fun j => hρ p _
 
 /- English proof (translation)
-The claim follows from `le_antisymm (Finset.sup_le fun j _ => h j) (Finset.le_sup (f := fun j => v.1 (x j)) (Finset.mem_univ i))`.
+A detailed English derivation is pending.
 -/
 theorem nrm_of_max (v : Place k F) (x : Fin n → F) (i : Fin n) (h : ∀ j, v.1 (x j) ≤ v.1 (x i)) :
     nrm v x = v.1 (x i) :=
@@ -91,37 +91,33 @@ theorem nrm_of_max (v : Place k F) (x : Fin n → F) (i : Fin n) (h : ∀ j, v.1
 end
 
 /- English proof (translation)
-Introduce `k F E _ _ _ _ _ _ _ _ _ _ hFF ρ hρ n g hg`. Establish `hP` using `GlobalTheory.T.finsum_order_placesAbove_eq_finrank_mul k F E hFF ρ hρ`. Establish `hdet : ∀ p, (pullAd ρ g p).det = algebraMap F E (g (ρ p)).det` using `fun p => det_map _`. Establish `hadm : admitted (pullAd ρ g)`. Use `⟨fun p => by rw [hdet]; exact (map_ne_zero _).2 (hg.1 _), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hP.1 _ hg.2).subset fun p hp => ?_` and prove the remaining obligations. Conclude with `fun h => hp ((unimod_map hρ p (g (ρ p)) (hg.1 _)).2 h)`. Establish `hdeg : deg (pullAd ρ g) = Module.finrank F E * deg g`. Establish `hfin : {v | ord v (g v).det ≠ 0}.Finite` using `hg.2.subset fun v hv hu => hv (by simp [ord, hu.2])`. Unfold `deg`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hP.2 (fun v => (g v).det) hfin]`. Conclude with `finsum_congr fun p => by rw [hdet]`. Establish `hline : ∀ w : Fin n → F, w ≠ 0 → degLine (pullAd ρ g) (fun i => algebraMap F E (w i)) = Module.finrank F E * degLine g w`. Introduce `w hw`. Establish `hne : (Finset.univ : Finset (Fin n)).Nonempty`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, -⟩` from `Function.ne_iff.1 hw`. Conclude with `⟨i, Finset.mem_univ _⟩`. Establish `hmax : ∀ v : Place k F, ∃ i, ∀ j, v.1 ((g v).mulVec w j) ≤ v.1 ((g v).mulVec w i)` using `fun v => by`. Take `⟨i, -, hi⟩` from `Finset.exists_max_image Finset.univ (fun i => v.1 ((g v).mulVec w i)) hne`. Conclude with `⟨i, fun j => hi j (Finset.mem_univ _)⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `choose idx hidx using hmax`. Set `φ : Place k F → F` to `fun v => (g v).mulVec w (idx v)`. Establish `hvo : ∀ v, ordVec v ((g v).mulVec w) = ord v (φ v)` using `fun v => by`. Simplify using `only [ordVec, ord, φ, nrm_of_max v _ _ (hidx v)]`. Establish `hpo : ∀ p, ordVec p ((pullAd ρ g p).mulVec (fun i => algebraMap F E (w i))) = ord p (algebraMap F E (φ (ρ p)))` using `fun p => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (pullAd ρ g p).mulVec (fun i => algebraMap F E (w i)) = fun i => algebraMap F E ((g (ρ p)).mulVec w i)`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec _ _ _ _).symm`. Rewrite using `[e]`. Simplify using `only [ordVec, ord, φ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[nrm_of_max p _ (idx (ρ p)) fun j => res_mono hρ p (hidx (ρ p) j)]`. Establish `hfin : {v | ord v (φ v) ≠ 0}.Finite`. Establish `hS : ({v | ¬ Unimod v (g v)} ∪ ⋃ i, {v : Place k F | w i ≠ 0 ∧ v.1 (w i) ≠ 1}).Finite`. Use `hg.2.union (Set.finite_iUnion fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : w i = 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `[hi]`. Conclude with `(GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k F hFF (w i) hi).1.subset fun v hv => hv.2`. Use `hS.subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_iUnion, Set.mem_setOf_eq, not_or, not_exists, not_and, not_not] at hc`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hu, hw1⟩` from `hc`. Apply `hv` to reduce the goal to its premises. Rewrite using `[← hvo v]`. Establish `h1 : nrm v w = 1`. Take `⟨i0, hi0⟩` from `Function.ne_iff.1 hw`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `replace hi0 : w i0 ≠ 0 := hi0`. Apply `le_antisymm` to reduce the goal to its premises. Use `Finset.sup_le fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : w j = 0`. Simplify using `[hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Conclude with `(hw1 j hj).le`. Rewrite using `[← hw1 i0 hi0]`. Conclude with `Finset.le_sup (f := fun j => v.1 (w j)) (Finset.mem_univ i0)`. Simplify using `only [ordVec]`. Rewrite using `[(GlobalTheory.T.functionFieldPlaceOrder_calculus k F v).2.2.2.2.2.2.2.2.1 n (g v) w hu, h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Unfold `degLine`. Rewrite using `[finsum_congr hpo, hP.2 φ hfin, finsum_congr hvo]`. Establish `hlines : ∀ b : ℝ, LinesLE g b → LinesLE (pullAd ρ g) (b * Module.finrank F E)`. Introduce `b hb E' _ _ _ _ _ ρ' hρ' w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use `letI : Algebra F E' := ((algebraMap E E').comp (algebraMap F E)).toAlgebra`. Use `haveI : IsScalarTower F E E' := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower k F E' := IsScalarTower.of_algebraMap_eq fun x => by`. Rewrite using `[RingHom.algebraMap_toAlgebra, RingHom.comp_apply, ← IsScalarTower.algebraMap_apply k F E, ← IsScalarTower.algebraMap_apply k E E']`. Use `haveI : FiniteDimensional F E' := Module.Finite.trans E E'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hres : IsRes (fun p => ρ (ρ' p))` using `fun p x => (hρ' p (algebraMap F E x)).trans (hρ (ρ' p) x)`. Establish `heq : pullAd ρ' (pullAd ρ g) = pullAd (fun p => ρ (ρ' p)) g`. Use function extensionality and compare the values at `p`. Use extensionality with `i j`. Both sides reduce to the same expression.
-
-Establish `hb'` using `hb E' (fun p => ρ (ρ' p)) hres w hw`. Rewrite using `[heq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Module.finrank_mul_finrank F E E']`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨hadm, hdeg, hline, hlines⟩`.
+Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem adm_pullAd_and_deg_mul_finrank : ∀ (k F E : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Field E] [Algebra k F] [Algebra k E] [Algebra F E] [IsScalarTower k F E] [FiniteDimensional F E], IsFF k F →
   ∀ ρ : Place k E → Place k F, IsRes ρ → ∀ (n : ℕ) (g : Place k F → Matrix (Fin n) (Fin n) F), admitted g → admitted (pullAd ρ g) ∧ deg (pullAd ρ g) = Module.finrank F E * deg g ∧ (∀ w : Fin n → F, w ≠ 0 → degLine (pullAd ρ g) (fun i => algebraMap F E (w i)) = Module.finrank F E * degLine g w) ∧ ∀ b : ℝ, LinesLE g b → LinesLE (pullAd ρ g) (b * Module.finrank F E) := by

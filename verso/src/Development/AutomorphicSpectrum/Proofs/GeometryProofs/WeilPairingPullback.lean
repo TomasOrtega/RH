@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.HtTorPull
 
 /- English proof (translation)
-Simplify using `only [spMap]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_comp_fields {A B C : Type} [Field A] [Field B] [Field C] (i : A →+* B) (τ : B →+* C) :
     spMap (τ.comp i) = spMap τ ≫ spMap i := by
@@ -24,9 +24,9 @@ theorem spMap_comp_fields {A B C : Type} [Field A] [Field B] [Field C] (i : A �
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Establish `hd : IsSchemeTheoreticallyDominant (spMap τ)` using `LieEx.std_of_inj (CommRingCat.ofHom τ) τ.injective`. Establish `hs : Function.Surjective (spMap τ)`. Introduce `p`. Take `⟨x⟩ : Nonempty (Spec (CommRingCat.of K'))` from `inferInstance`. Conclude with `⟨x, Subsingleton.elim (α := PrimeSpectrum K) _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `LieEx.epi_of_surj (spMap τ) hs a b h`.
+A detailed English derivation is pending.
 -/
 theorem cancel_spMap {K K' : Type} [Field K] [Field K'] (τ : K →+* K') {Z : Scheme.{0}}
     (a b : Spec (CommRingCat.of K) ⟶ Z) (h : spMap τ ≫ a = spMap τ ≫ b) : a = b := by
@@ -39,7 +39,7 @@ theorem cancel_spMap {K K' : Type} [Field K] [Field K'] (τ : K →+* K') {Z : S
   exact LieEx.epi_of_surj (spMap τ) hs a b h
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem secVal_eq_of_eq {B : Type} [CommRing B] {Z : Scheme.{0}} {x x' : Spec (CommRingCat.of B) ⟶ Z} (e : x = x')
     (W : Z.Opens) (h : ⊤ ≤ x ⁻¹ᵁ W) (h' : ⊤ ≤ x' ⁻¹ᵁ W) (s : Γ(Z, W)) : secVal x W h s = secVal x' W h' s := by
@@ -47,17 +47,17 @@ theorem secVal_eq_of_eq {B : Type} [CommRing B] {Z : Scheme.{0}} {x x' : Spec (C
   rfl
 
 /- English proof (translation)
-Introduce `X X' Ω Ω' _ _ ξ ξ' f i hD G _ _ L n e hGW hFT G' _ _ φ hP hFT' L' e' hGW' y y' hy hy' hcomp hlift hdown W s hW k _ _ τ xk g c h hxk hgn hWeil`. Take `⟨x', hx⟩` from `hFT' k τ g hgn`. Set `U : Over.mk (spMap τ ≫ ξ') ⟶ Over.mk ξ'` to `Over.homMk (spMap τ) rfl`. Establish `hgU : g = U ≫ x'` using `Over.OverMorphism.ext hx`. Establish `hx'n : x' ^ n = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : preHom (G` using `G') U (x' ^ n) = preHom (G := G') U 1 := by`. Rewrite using `[map_pow, map_one]`. Use `show (U ≫ x') ^ n = 1`. Rewrite using `[← hgU]`. Conclude with `hgn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `cancel_spMap τ` to reduce the goal to its premises. Conclude with `congrArg (fun z => z.left) e1`. Take `⟨g₀, hg₀, hxg⟩` from `hdown x' hx'n`. Establish `hc' : (c : k) = τ (e' y' x')` using `(hGW'.weil y' x' hy' hx'n k τ xk g c hxk hx).1 hWeil`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hc : (c : k) = (τ.comp i) (e y g₀)`. Rewrite using `[hc', hcomp g₀ x' hg₀ hx'n hxg]`. Both sides reduce to the same expression. Set `U₀ : Over.mk (spMap (τ.comp i) ≫ ξ) ⟶ Over.mk ξ` to `Over.homMk (spMap (τ.comp i)) rfl`. Establish `hW1 : Out.WeilIs G L n (U₀ ≫ y) (U₀ ≫ g₀) (unitOn c)` using `(hGW.weil y g₀ hy hg₀ k (τ.comp i) (U₀ ≫ y) (U₀ ≫ g₀) c rfl rfl).2 hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg₁ : (U₀ ≫ g₀) ^ n = 1`. Establish `e1 : preHom (G` using `G) U₀ (g₀ ^ n) = (U₀ ≫ g₀) ^ n := map_pow _ _ _`. Rewrite using `[← e1, hg₀, map_one]`. Establish `hl : g.left ≫ φ = (U₀ ≫ g₀).left` using `by show g.left ≫ φ = spMap (τ.comp i) ≫ g₀.left`. Rewrite using `[hx, Category.assoc, hxg, spMap_comp_fields, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : ⊤ ≤ (g.left ≫ φ) ⁻¹ᵁ W` using `h`. Establish `h₁ : ⊤ ≤ (U₀ ≫ g₀).left ⁻¹ᵁ W` using `hl ▸ h'`. Rewrite using `[HtPull.seccomp k _ _ g.left φ W h h' s, secVal_eq_of_eq hl W h' h₁ s]`. Conclude with `hW k (τ.comp i) (U₀ ≫ y) (U₀ ≫ g₀) c h₁ rfl hg₁ hW1`.
+A detailed English derivation is pending.
 -/
 theorem torsion_clause : ∀ (X X' : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Field Ω'] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (f : X' ⟶ X) (i : Ω →+* Ω'), GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i → ∀ (G : Over X) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (n : ℕ) (e : (Over.mk ξ ⟶ G) → (Over.mk ξ ⟶ G) → Ωˣ), GenWeil G L ξ n e → FullTorsion G ξ n → ∀ (G' : Over X') [GrpObj G'] [IsCommMonObj G'] (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → FullTorsion G' ξ' n → ∀ (L' : LB G'.left) (e' : (Over.mk ξ' ⟶ G') → (Over.mk ξ' ⟶ G') → Ω'ˣ), GenWeil G' L' ξ' n e' → ∀ (y : Over.mk ξ ⟶ G) (y' : Over.mk ξ' ⟶ G'), y ^ n = 1 → y' ^ n = 1 → (∀ (g : Over.mk ξ ⟶ G) (g' : Over.mk ξ' ⟶ G'), g ^ n = 1 → g' ^ n = 1 → g'.left ≫ φ = spMap i ≫ g.left → (e' y' g' : Ω') = i (e y g)) → (∀ (g : Over.mk ξ ⟶ G), g ^ n = 1 → ∃ g' : Over.mk ξ' ⟶ G', g' ^ n = 1 ∧ g'.left ≫ φ = spMap i ≫ g.left) → (∀ (g' : Over.mk ξ' ⟶ G'), g' ^ n = 1 → ∃ g : Over.mk ξ ⟶ G, g ^ n = 1 ∧ g'.left ≫ φ = spMap i ≫ g.left) → ∀ (W : G.left.Opens) (s : Γ(G.left, W)),
   (∀ (k : Type) [Field k] [IsAlgClosed k] (τ : Ω →+* k) (xk g : Over.mk (spMap τ ≫ ξ) ⟶ G) (c : kˣ) (h : ⊤ ≤ g.left ⁻¹ᵁ W), xk.left = spMap τ ≫ y.left → g ^ n = 1 → Out.WeilIs G L n xk g (unitOn c) → secVal (B := k) g.left W h s = c) →

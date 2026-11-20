@@ -5,9 +5,7 @@ open NumberField MeasureTheory GlobalTheory.AutomorphicL2Unitary
 open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ μ₁ _ hp φ hφ`. Establish `h` using `UpperTheory.V.KernelIndexFullLattice.liftCmp_holds E a μ μ₁ hp (cuspVecL μ₁ φ) (cuspQuot φ.2.1.isLeftInvariant) (by rw [toLp_cuspVecL]; exact coeFn_cuspToL2 μ₁ φ)`. Use `h.trans (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show cuspQuot φ.2.1.isLeftInvariant (RightCosetSpace.mk _ (retractOne g)) = φ.1 g`. Rewrite using `[cuspQuot_mk, coe_retractOne, ← map_inv]`.
-
-Conclude with `apply_mul_centralSection_of_mem hφ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KernelIndexFullLattice.cmpForm_holds :
     UpperTheory.V.KernelIndexFullLattice.CmpForm := by

@@ -19,7 +19,7 @@ namespace GlobalTheory.CuspGeo.RedBasisPf
 variable (I : AutInst)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [vec, Pi.add_apply]`. Rewrite using `[← Matrix.mulVec_add, ← Matrix.mulVec_add]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Simplify using the standard rewrite rules.
 -/
@@ -35,14 +35,14 @@ def vecHom (y : I.Ginf) : (Fin I.n → I.E) →+ (InfinitePlace I.F → Fin I.n 
   AddMonoidHom.mk' (vec I y) (vec_add I y)
 
 /- English proof (translation)
-Conclude with `MulCoord.vec_sum_zsmul I y e z`.
+A detailed English derivation is pending.
 -/
 theorem vec_sum_zsmul (y : I.Ginf) {N : ℕ} (z : Fin N → ℤ) (e : Fin N → Fin I.n → I.E) :
     vec I y (∑ j, z j • e j) = ∑ j, z j • vec I y (e j) := by
   exact MulCoord.vec_sum_zsmul I y e z
 
 /- English proof (translation)
-Rewrite using `[vec_sum_zsmul, map_sum]`. Use function extensionality and compare the values at `i`. Simplify using `only [map_zsmul]`. Simplify using `only [gm, mulVec, dotProduct, of_apply, Finset.sum_apply, Pi.smul_apply, zsmul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gm_mulVec {N : ℕ} (ρ : (InfinitePlace I.F → Fin I.n → ℂ) ≃ₗ[ℝ] (Fin N → ℝ)) (y : I.Ginf)
     (e : Fin N → Fin I.n → I.E) (z : Fin N → ℤ) :
@@ -54,9 +54,9 @@ theorem gm_mulVec {N : ℕ} (ρ : (InfinitePlace I.F → Fin I.n → ℂ) ≃ₗ
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gm, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply]`. Rewrite using `[vec_sum_zsmul I y (fun k => M k j) e, map_sum]`. Simplify using `only [map_zsmul]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, zsmul_eq_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem gm_change {N : ℕ} (ρ : (InfinitePlace I.F → Fin I.n → ℂ) ≃ₗ[ℝ] (Fin N → ℝ)) (y : I.Ginf)
     (e : Fin N → Fin I.n → I.E) (M : Matrix (Fin N) (Fin N) ℤ) :
@@ -69,7 +69,7 @@ theorem gm_change {N : ℕ} (ρ : (InfinitePlace I.F → Fin I.n → ℂ) ≃ₗ
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
 /- English proof (translation)
-Simplify using `only [Finset.smul_sum, smul_smul, mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_change {N : ℕ} (M : Matrix (Fin N) (Fin N) ℤ) (e : Fin N → Fin I.n → I.E) (w : Fin N → ℤ) :
     ∑ j, w j • (∑ i, M i j • e i) = ∑ i, (M *ᵥ w) i • e i := by
@@ -79,13 +79,13 @@ theorem sum_change {N : ℕ} (M : Matrix (Fin N) (Fin N) ℤ) (e : Fin N → Fin
   rw [mul_comm]
 
 /- English proof (translation)
-Take `⟨hli, hspan⟩` from `he`. Establish `hinv : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv M hM`. Establish `hinv' : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul M hM`. Use `⟨?_, fun u => ?_⟩` and prove the remaining obligations. Rewrite `hli`, the goal using `[Fintype.linearIndependent_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `g hg i`. Rewrite `hg` using `[sum_change]`. Establish `hMg : M *ᵥ g = 0` using `funext (hli _ hg)`. Establish `hg' : g = M⁻¹ *ᵥ (M *ᵥ g)` using `by rw [Matrix.mulVec_mulVec, hinv', Matrix.one_mulVec]`. Rewrite using `[hg', hMg, Matrix.mulVec_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hspan u]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Use `⟨M⁻¹ *ᵥ z, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sum_change, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨M *ᵥ w, sum_change I M e w⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isZBasis_change {N : ℕ} (e : Fin N → Fin I.n → I.E) (he : IsZBasis I e)
     (M : Matrix (Fin N) (Fin N) ℤ) (hM : IsUnit M.det) : IsZBasis I (fun j => ∑ i, M i j • e i) := by
@@ -109,15 +109,15 @@ theorem isZBasis_change {N : ℕ} (e : Fin N → Fin I.n → I.E) (he : IsZBasis
       exact ⟨M *ᵥ w, sum_change I M e w⟩
 
 /- English proof (translation)
-Establish `hre : ∀ z : ℂ, (star z * z).re = ‖z‖ ^ 2`. Introduce `z`. Rewrite using `[Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Establish `hsq : ∀ v i, ‖x v i‖ ^ 2 ≤ N * ‖ρ x‖ ^ 2`. Introduce `v i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ‖x v i‖ ^ 2 ≤ ∑ w, ∑ k, (star (x w k) * x w k).re`. Simplify using `only [hre]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[← hρ x x]`. Use `h1.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `dotProduct`. Combine the equalities or inequalities in the displayed calculation. Establish `hk` using `norm_le_pi_norm (ρ x) k`. Rewrite `hk` using `[Real.norm_eq_abs]`. Establish `h` using `mul_self_le_mul_self (abs_nonneg _) hk`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[abs_mul_abs_self]`. Use polynomial arithmetic with `[h]`. Use `_ = N * ‖ρ x‖ ^ 2 := by simp`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun v => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `Real.sqrt_le_sqrt (hsq v i)`. Rewrite `h` using `[Real.sqrt_mul' _ (sq_nonneg _), Real.sqrt_sq (norm_nonneg _), Real.sqrt_sq (norm_nonneg _)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_le_sqrt {N : ℕ} {ρ : (InfinitePlace I.F → Fin I.n → ℂ) ≃ₗ[ℝ] (Fin N → ℝ)}
     (hρ : IsRealCoord I ρ) (x : InfinitePlace I.F → Fin I.n → ℂ) : ‖x‖ ≤ Real.sqrt N * ‖ρ x‖ := by
@@ -151,7 +151,7 @@ theorem norm_le_sqrt {N : ℕ} {ρ : (InfinitePlace I.F → Fin I.n → ℂ) ≃
 def entSum {N : ℕ} (X : Matrix (Fin N) (Fin N) ℝ) : ℝ := ∑ i, ∑ j, |X i j|
 
 /- English proof (translation)
-Unfold `entSum`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem abs_le_entSum {N : ℕ} (X : Matrix (Fin N) (Fin N) ℝ) (i j : Fin N) : |X i j| ≤ entSum X := by
   unfold entSum
@@ -170,7 +170,7 @@ noncomputable section
 namespace GlobalTheory.CuspGeo.RedBasisPf
 
 /- English proof (translation)
-Simplify using `only [Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 theorem smul_conj {N : ℕ} (l c : ℝ) (A X : Matrix (Fin N) (Fin N) ℝ) :
     (l • A)ᵀ * (c • X) * (l • A) = (l * c * l) • (Aᵀ * X * A) := by
@@ -178,7 +178,7 @@ theorem smul_conj {N : ℕ} (l c : ℝ) (A X : Matrix (Fin N) (Fin N) ℝ) :
   ring_nf
 
 /- English proof (translation)
-Simplify using `only [transpose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_conj' {N : ℕ} (l : ℝ) (A B : Matrix (Fin N) (Fin N) ℝ) :
     (l • A) * B * (l • A)ᵀ = (l * l) • (A * B * Aᵀ) := by
@@ -189,45 +189,43 @@ end GlobalTheory.CuspGeo.RedBasisPf
 open GlobalTheory.CuspGeo.RedBasisPf in
 
 /- English proof (translation)
-Introduce `I`. Take `⟨N, e0, ρ, d, hd, he0, hρ, hdet⟩` from `covolume_const I`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases. Substitute `hN` using the available equality. Conclude with `⟨0, 0, 0, fun y => ⟨e0, he0, ⟨fun k j => j.elim0, fun i => i.elim0⟩, fun t _ _ _ j => j.elim0⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Supply the required witnesses or components.
 
-Establish `hNr : (0 : ℝ) < N` using `by exact_mod_cast hN`. Choose the witnesses or unpack the hypotheses as in `⟨lam, hlam0, hlamN⟩ : ∃ lam : ℝ, 0 < lam ∧ lam ^ N * d = 1 := by`. Use `⟨(d⁻¹) ^ ((N : ℝ)⁻¹), Real.rpow_pos_of_pos (inv_pos.2 hd) _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (inv_pos.2 hd).le, inv_mul_cancel₀ hNr.ne', Real.rpow_one, inv_mul_cancel₀ hd.ne']`. Take `⟨c', hc'0, hc'1, hc'2⟩ : ∃ c' : ℝ, 0 < c' ∧ c' ≤ 1 ∧ c' ≤ lam / Real.sqrt N` from `⟨min 1 (lam / Real.sqrt N), lt_min one_pos (div_pos hlam0 (Real.sqrt_pos.2 hNr)), min_le_left _ _, min_le_right _ _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨C0, hC0⟩` from `siegel_cover (Fin N)`. Take `⟨C1, hC1⟩` from `siegel_entry_bound N C0`. Establish `hint : ∀ k, IsIntegral ℤ (integralBasis I.E k)`. Introduce `k`. Rewrite using `[integralBasis_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingOfIntegers.isIntegral_coe _`. Use `choose X hX using fun k => MulCoord.mul_conj_coord I N ρ hρ _ (hint k)`. Use `choose C2 hC2 using fun k => GlobalTheory.T.reducedBasis_integral_conj_entries_bounded N C0 (entSum (X k))`. Take `⟨Xt, μ, c, hμ, hc, hXt⟩` from `GlobalTheory.T.traceForm_real_coordinates_integral_gram I N ρ hρ`. Take `⟨s, hs⟩ : ∃ s : ℝ, lam * s * lam = 1` from `⟨lam⁻¹ * lam⁻¹, by field_simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨μ', hμ'0, hμ'⟩ : ∃ μ' : ℝ, μ' ≠ 0 ∧ lam * lam * μ = μ' * s := by`. Use `⟨lam * lam * μ * lam * lam, by positivity, ?_⟩` and prove the remaining obligations. Establish `hs' : s = lam⁻¹ * lam⁻¹`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hs']`. Clear the denominators using the available nonvanishing facts. Take `⟨C3, hC3⟩` from `GlobalTheory.T.siegelReduced_integral_form_bounded_entries N C0 (max |μ'| (entSum (s • Xt)))`. Use `⟨N, max (∑ k, |C2 k|) C3, Real.sqrt N * (lam⁻¹ * C1 / c' ^ N), fun y => ?_⟩` and prove the remaining obligations. Establish `hdy` using `hdet y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨S, hSu, hSd⟩ : ∃ S : Matrix (Fin N) (Fin N) ℤ, IsUnit S.det ∧ (gm I ρ y e0 * S.map (Int.cast : ℤ → ℝ)).det = d := by`. Break down `le_or_gt 0 (gm I ρ y e0).det with hpos | hneg` into its components or cases. Use `⟨1, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Simplify using `only [Matrix.map_one Int.cast Int.cast_zero Int.cast_one, Matrix.det_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hdy, abs_of_nonneg hpos]`. Set `f : Fin N → ℤ` to `fun i => if i = ⟨0, hN⟩ then -1 else 1`. Establish `hf : ∏ i, f i = -1`. Simplify using `[f, Finset.prod_ite_eq']`. Use `⟨Matrix.diagonal f, by rw [Matrix.det_diagonal, hf]; exact isUnit_one.neg, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_mul, Matrix.diagonal_map Int.cast_zero, Matrix.det_diagonal]`. Establish `hf' : ∏ i, ((f i : ℤ) : ℝ) = -1`. Rewrite using `[← Int.cast_prod, hf]`. Simplify using the standard rewrite rules. Rewrite using `[hf', ← hdy, abs_of_neg hneg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Set `e1 : Fin N → Fin I.n → I.E` to `fun j => ∑ i, S i j • e0 i`. Establish `he1 : IsZBasis I e1` using `isZBasis_change I e0 he0 S hSu`. Establish `hg1 : gm I ρ y e1 = gm I ρ y e0 * S.map Int.cast` using `gm_change I ρ y e0 S`. Establish `hdet1 : (lam • gm I ρ y e1).det = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[Matrix.det_smul, Fintype.card_fin, hg1, hSd, hlamN]`. Take `⟨γ, hγ, k, a, n, hsieg, hfac⟩` from `hC0 _ hdet1`. Set `e : Fin N → Fin I.n → I.E` to `fun j => ∑ i, γ i j • e1 i`. Establish `he : IsZBasis I e` using `isZBasis_change I e1 he1 γ (by rw [hγ]; exact isUnit_one)`. Establish `hK : k * Matrix.diagonal a * n = lam • gm I ρ y e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hfac, gm_change I ρ y e1 γ, Matrix.smul_mul]`. Use `⟨e, he, ⟨fun kk j => ?_, fun i j => ?_⟩, fun t ht0 ht1 hns j => ?_⟩` and prove the remaining obligations. Take `⟨M, M', h1, h2, h3⟩` from `hX kk y e he`. Use `⟨fun i => M i j, h3 j, fun i => ?_⟩` and prove the remaining obligations. Establish `hb` using `hC2 kk k a n hsieg (X kk) M M' (fun i j => abs_le_entSum (X kk) i j) (by rw [hK, Matrix.smul_mul, h1, Matrix.mul_smul]) (by rw [hK, Matrix.smul_mul, h2, Matrix.mul_smul]) i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨B, B', hB1, hB2, hB3⟩` from `hXt y e he`. Establish `hb` using `hC3 k a n hsieg (s • Xt) B B' μ' hμ'0 (le_max_left _ _) (fun i j => (abs_le_entSum (s • Xt) i j).trans (le_max_right _ _)) (by rw [hK, smul_conj, hs, one_smul, hB1]) (by rw [hK, smul_conj', hB2, smul_smul, smul_smul, hμ']) i j`. Establish `hcast : ((B i j : ℤ) : ℝ) = (c : ℝ) * ((trForm I (e i) (e j) : ℚ) : ℝ)`. Conclude with `hB3 i j` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hc1 : (1 : ℝ) ≤ c` using `by exact_mod_cast hc`. Establish `htr : |((trForm I (e i) (e j) : ℚ) : ℝ)| ≤ |((B i j : ℤ) : ℝ)|`. Rewrite using `[hcast, abs_mul, abs_of_nonneg (by positivity : (0 : ℝ) ≤ c)]`. Use polynomial arithmetic with `[abs_nonneg ((trForm I (e i) (e j) : ℚ) : ℝ)]`. Conclude with `htr.trans (hb.trans (le_max_right _ _))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : ∀ z : Fin N → ℤ, z ≠ 0 → c' * t ≤ ‖(k * Matrix.diagonal a * n) *ᵥ fun i => (z i : ℝ)‖`. Introduce `z hz`. Rewrite using `[hK, Matrix.smul_mulVec, gm_mulVec, norm_smul, Real.norm_eq_abs, abs_of_pos hlam0]`. Establish `hu : (∑ j, z j • e j) ≠ 0`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hz` to reduce the goal to its premises. Conclude with `funext (Fintype.linearIndependent_iff.1 he.1 z h)`. Establish `hiv : IntVec I (∑ j, z j • e j)` using `(he.2 _).2 ⟨z, rfl⟩`. Establish `h1 : t ≤ ‖vec I y (∑ j, z j • e j)‖` using `hns _ hiv hu`. Establish `h2` using `norm_le_sqrt I hρ (vec I y (∑ j, z j • e j))`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsq : 0 < Real.sqrt N` using `Real.sqrt_pos.2 hNr`. Combine the equalities or inequalities in the displayed calculation. Establish `hbound` using `hC1 k a n hsieg (c' * t) (mul_pos hc'0 ht0) (by nlinarith) hz`. Establish `hcol : ∀ i, |ρ (vec I y (e j)) i| * t ^ N ≤ lam⁻¹ * C1 / c' ^ N`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hij` using `hbound i j`. Establish `hKij : (k * Matrix.diagonal a * n) i j = lam * ρ (vec I y (e j)) i`. Rewrite using `[hK]`. Simplify using `[gm]`. Rewrite `hij` using `[hKij, abs_mul, abs_of_pos hlam0, mul_pow]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_div_iff₀ (pow_pos hc'0 N)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hD : 0 ≤ lam⁻¹ * C1 / c' ^ N` using `(by positivity : (0 : ℝ) ≤ |ρ (vec I y (e j)) j| * t ^ N).trans (hcol j)`. Establish `hρn : ‖ρ (vec I y (e j))‖ ≤ lam⁻¹ * C1 / c' ^ N / t ^ N`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations.
-
-Rewrite using `[Real.norm_eq_abs, le_div_iff₀ (pow_pos ht0 N)]`. Conclude with `hcol i`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CuspGeo.redBasis_holds : ∀ I : AutInst, RedBasis I := by
   intro I

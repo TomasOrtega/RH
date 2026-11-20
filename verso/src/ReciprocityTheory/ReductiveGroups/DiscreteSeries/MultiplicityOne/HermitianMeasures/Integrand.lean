@@ -12,9 +12,9 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ} {Vp : Type*} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [CompleteSpace Vp]
 
 /- English proof (translation)
-Use `hW.1` as an intermediate fact. Use `hN.1` as an intermediate fact. Establish `h1 : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r z` using `by rw [ae_iff]; simpa using hW.2.2.1`. Establish `h2 : ∀ᵐ x ∂μN, Matrix.of x ∈ Nset k r` using `by rw [ae_iff]; simpa using hN.2.2.1`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae h1, Measure.quasiMeasurePreserving_snd.ae h2] with p hp1 hp2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨hp1, hp2⟩`.
+A detailed English derivation is pending.
 -/
 theorem ig_ae_mem {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Mt k r)}
     (hW : Formalism.MainNotions.S.IsHaarOn (UWset k r z) μW) (hN : Formalism.MainNotions.S.IsHaarOn (Nset k r) μN) :
@@ -27,15 +27,13 @@ theorem ig_ae_mem {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Mt k r)}
   exact ⟨hp1, hp2⟩
 
 /- English proof (translation)
-Use `set S : Set (Mt k r × Mt k r) := {p | Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r} with hS`. Establish `hc1 : Continuous fun p : Mt k r × Mt k r => (Matrix.of p.1 : Lap.Mat k r)` using `continuous_fst`. Establish `hc2 : Continuous fun p : Mt k r × Mt k r => (Matrix.of p.2 : Lap.Mat k r)` using `continuous_snd`. Establish `hSc : IsClosed S` using `((hCW k r z).closed.preimage hc1).inter ((hCN k r).closed.preimage hc2)`. Establish `hae : ∀ᵐ p ∂(μW.prod μN), p ∈ S` using `ig_ae_mem hW hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Measure.restrict_eq_self_of_ae_mem hae]`. Apply `ContinuousOn.aestronglyMeasurable _ hSc.measurableSet` to reduce the goal to its premises. Apply `ContinuousOn.smul` to reduce the goal to its premises. Use `hf.comp ((hc1.mul hc2).mul continuous_const).continuousOn ?_` and prove the remaining obligations. Introduce `p hp`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Conclude with `ig_uh_mul (ig_uh_mul hp.1.1 hp.2.1) hx`. Unfold `Lap.chiInv`. Apply `ContinuousOn.smul` to reduce the goal to its premises. Conclude with `(continuous_star.comp ((ig_psiGen_continuous k r z c).comp hc2)).continuousOn`. Establish `hinv : ContinuousOn (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Lap.Mat k r)⁻¹) S`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Use `(continuousAt_matrix_inv _ ?_).comp hc1.continuousAt` and prove the remaining obligations. Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ ((hCW k r z).unit _ hp.1).ne_zero`.
-
-Conclude with `(hπ.2.2 ξ).comp hinv (fun p hp => (hCW k r z).inv_mem _ hp.1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrand_aesm (hCW : ClosedW) (hCN : ClosedN) {z : Fin (2 * r + k + 1) → ℂ} (c : Fin r → ℂ)
     {π : Lap.Mat k r → (Vp →L[ℂ] Vp)} (hπ : Formalism.MainNotions.S.IsURepOn (UWset k r z) π)

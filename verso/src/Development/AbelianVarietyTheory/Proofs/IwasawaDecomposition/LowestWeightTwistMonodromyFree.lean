@@ -8,9 +8,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.WeilDeligne.LowTempered
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hind` using `(iSupIndep_absSpace f (r := id) Function.injective_id).pairwiseDisjoint hne`. Establish `h1 : v ∈ absSpace f ‖β‖`. Establish `: v ∈ f.eigenspace β` using `Module.End.mem_eigenspace_iff.2 hβ`. Conclude with `(le_iSup₂ (f := fun (α : ℂ) (_ : ‖α‖ = ‖β‖) => f.eigenspace α) β rfl) this`.
-
-Conclude with `hv0 ((Submodule.disjoint_def.1 hind) v h1 hr)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_eq_of_mem_absSpace {V : Type} [AddCommGroup V] [Module ℂ V]
     (f : Module.End ℂ V) (r : ℝ) (β : ℂ) (v : V) (hv0 : v ≠ 0)
@@ -23,21 +21,21 @@ theorem norm_eq_of_mem_absSpace {V : Type} [AddCommGroup V] [Module ℂ V]
   exact hv0 ((Submodule.disjoint_def.1 hind) v h1 hr)
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h V _ _ _ a m hS`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[WD.lpTw_mk, WD.monodromyZero_ofWeilDeligneRepClass_iff]`. Simplify using `[WDRep.tw, WDRep.twist_N, restrictρ_N]`. Introduce `φ hφ α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hα` using `[WD.lpTw_mk, WD.eig_mk]`. Use `set b := restrictρ a _ hS with hb`. Establish `hroot : Module.End.HasEigenvalue ((b.tw ((m : ℝ) / 2)).ρ φ) α` using `(Module.End.hasEigenvalue_iff_isRoot_charpoly _ _).2 (Polynomial.isRoot_of_mem_roots hα)`. Take `⟨v, hv⟩` from `hroot.exists_hasEigenvector`. Establish `hfv` using `Module.End.mem_eigenspace_iff.1 hv.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c : ℂ := (normV w : ℂ) ^ (((m : ℝ) / 2 : ℝ) : ℂ) with hc`. Establish `hq : (0 : ℕ) < normV w` using `lt_trans one_pos (one_lt_normV w)`. Establish `hcn : ‖c‖ = (normV w : ℝ) ^ ((m : ℝ) / 2)`. Rewrite using `[hc, Complex.norm_natCast_cpow_of_pos hq]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc0 : c ≠ 0`. Introduce `h0`. Rewrite `hcn` using `[h0, norm_zero]`. Conclude with `(Real.rpow_pos_of_pos (by exact_mod_cast hq) _).ne' hcn.symm`. Establish `htw : (b.tw ((m : ℝ) / 2)).ρ φ = c • b.ρ φ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [WDRep.tw, WDRep.twist_ρ]`. Use `congr 1`. Simplify using `[unrChar, qPow, hφ, hc]`. Rewrite `hfv` using `[htw]`. Establish `hfv' : a.ρ φ (v : V) = (α / c) • (v : V)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun x : (wtSpace a (-(m : ℤ))) => (x : V)) hfv` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, Submodule.coe_smul, hb, restrictρ_ρ_apply] at this`. Rewrite using `[div_eq_inv_mul, mul_smul, ← this, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Establish `hmem : (v : V) ∈ absSpace (a.ρ φ) ((normV w : ℝ) ^ (((-(m : ℤ) : ℤ) : ℝ) / 2))`. Rewrite using `[absSpace_eq_of_deg_eq E Ω A w h V a φ (frob h) (hφ.trans deg_frob.symm)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `v.2`. Establish `hv0 : (v : V) ≠ 0`. Introduce `h0`. Conclude with `hv.2 (Subtype.ext h0)`. Establish `hn` using `norm_eq_of_mem_absSpace _ _ _ _ hv0 hmem hfv'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 
-Establish `hα' : α = (α / c) * c` using `by field_simp`. Rewrite using `[hα', norm_mul, hn, hcn, ← Real.rpow_add (by exact_mod_cast hq)]`. Use `push_cast`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (a : WDRep h V) (m : ℕ) (hS : ∀ σ, ∀ v ∈ wtSpace a (-(m : ℤ)), a.ρ σ v ∈ wtSpace a (-(m : ℤ))), ((WD.mk (restrictρ a _ hS)).lpTw ((m : ℝ) / 2)).mono0 ∧ ∀ φ : Weil h, deg φ = 1 → ∀ α ∈ ((WD.mk (restrictρ a _ hS)).lpTw ((m : ℝ) / 2)).eig φ, ‖α‖ = 1 := by
   intro E Ω _ _ _ _ _ A w h V _ _ _ a m hS

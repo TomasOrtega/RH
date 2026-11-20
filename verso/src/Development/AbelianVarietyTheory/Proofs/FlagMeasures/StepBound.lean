@@ -12,17 +12,17 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.DeepStep
 
 /- English proof (translation)
-Introduce `y hy u hu`. Establish `hvv : ∀ z : B.I.GA, ‖vv B Fr u z‖ = Real.sqrt (∑ i, ‖Fr i u z‖ ^ 2)`. Introduce `z`. Simplify using `[vv, EuclideanSpace.norm_eq]`. Establish `hvvs : ∀ z : B.I.GA, ‖vv B Fr u z - vv B Fr u x‖ = Real.sqrt (∑ i, ‖Fr i u z - Fr i u x‖ ^ 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `z`. Simplify using `[vv, EuclideanSpace.norm_eq]`. Establish `hnear` using `GlobalTheory.T.representativeValuesVector_variation_unipotentOrbit B b ρ M P D T Fr x W hS hR hM hb`. Establish `hcusp` using `GlobalTheory.T.cuspidalSubspace_closed_rightTranslation_stable B`. Take `⟨L, hL, -, -, hLf⟩` from `hcusp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hrep : ∀ i, GlobalTheory.Dec.IsContRep B (T i u) (Fr i u)` using `fun i => (hR i P u hu).1`. Establish `hx : ‖vv B Fr u x‖ ≤ ρ * Real.sqrt B.I.f * beP B.I.n b P * M * ‖u‖`. Rewrite using `[hvv]`. Use `GlobalTheory.MeanZero.norm_le_of_cusp B.I B.μf B.g W D (fun i => Fr i u) x (fun i => Fr i u x) _ hg hW ?_ ?_` and prove the remaining obligations. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hc, hl, hae⟩` from `hrep i`. Use `⟨hc, hl, (hR i P u hu).2.1, ?_⟩` and prove the remaining obligations. Establish `h1` using `((GlobalTheory.T.continuous_representative_properties B).2.2.2 _ _ (hrep i)).1`. Conclude with `(hLf (T i u) (Fr i u) hl hc h1).1 ((hL _).2 (hC i u))`. Introduce `ν hν`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, k, hk, z, hz, he⟩` from `hcov ν hν`. Establish `hval : ∀ i, Fr i u (((ν, 1) : B.I.GA) * x) = Fr i u z`. Introduce `i`. Rewrite using `[he, (hR i P u hu).2.1 k hk, (hrep i).2.1 γ hγ]`. Simplify using `only [hval]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hvvs]`. Conclude with `hnear z hz u hu`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem step_bound (B : RowsAut) (b ρ M : ℝ) (P : ℕ) (D : ℕ)
     (T : Fin D → (B.Hs →L[ℂ] B.I.L2 B.μf B.fund)) (Fr : Fin D → B.Hs → B.I.GA → ℂ) (x : B.I.GA)

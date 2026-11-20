@@ -11,7 +11,7 @@ namespace GlobalTheory.LocMod.TensorModel
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[show cA D (cA D (a ⊗ₜ[D.host.F] x)) = a ⊗ₜ[D.host.F] star (star x) from rfl, star_star]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem cA_invol (z : AE D) : cA D (cA D z) = z := by
   induction z using TensorProduct.induction_on with
@@ -21,7 +21,7 @@ theorem cA_invol (z : AE D) : cA D (cA D z) = z := by
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Unfold `symplO hO`. Simplify using `only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem symplO_add_left' (S T : HSp D) (x x' y : WO S T) :
     symplO S T (x + x') y = symplO S T x y + symplO S T x' y := by
@@ -29,7 +29,7 @@ theorem symplO_add_left' (S T : HSp D) (x x' y : WO S T) :
   simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]
 
 /- English proof (translation)
-Introduce `i j` and use `by have h0 : e * u i j = 0 := by calc e * u i j = e * (e' * u i j) := by rw [hu i j] _ = 0 := by rw [← mul_assoc, he, zero_mul] rw [add_mul, h0, zero_add, hu i j]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem half_sum {m n : ℕ} {e e' : AE D} (he : e * e' = 0) {u : Mx D m n} (hu : IsHalf e' u) : IsHalf (e + e') u :=
   fun i j => by
@@ -39,7 +39,7 @@ theorem half_sum {m n : ℕ} {e e' : AE D} (he : e * e' = 0) {u : Mx D m n} (hu 
     rw [add_mul, h0, zero_add, hu i j]
 
 /- English proof (translation)
-Rewrite using `[map_add]`. Use `half_sum ?_ hu` and prove the remaining obligations. Rewrite using `[← map_mul, he, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem half_sum_cA {m n : ℕ} {e e' : AE D} (he : e * e' = 0) {u : Mx D m n} (hu : IsHalf (cA D e') u) :
     IsHalf (cA D (e + e')) u := by
@@ -48,9 +48,9 @@ theorem half_sum_cA {m n : ℕ} {e e' : AE D} (he : e * e' = 0) {u : Mx D m n} (
   rw [← map_mul, he, map_zero]
 
 /- English proof (translation)
-Establish `h0 : hO S T s y = 0`. Unfold `hO`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Establish `h1 : cA D (y c b) = e' * cA D (y c b)` using `by conv_lhs => rw [← hy c b]`. Rewrite using `[map_mul, cA_invol]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : s d a = e * s d a` using `(hs d a).symm`. Rewrite using `[h1, h2]`. Take the linear combination `(incA D (S.gram⁻¹ a b) * cA D (y c b) * incA D (T.gram c d) * s d a) * he`. Unfold `symplO`. Rewrite using `[h0, mul_zero, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_half_zero {S T : HSp D} {e e' : AE D} (he : e * e' = 0) {s y : WO S T} (hs : IsHalf e s)
     (hy : IsHalf (cA D e') y) : symplO S T s y = 0 := by
@@ -68,15 +68,15 @@ theorem symplO_half_zero {S T : HSp D} {e e' : AE D} (he : e * e' = 0) {s y : WO
   rw [h0, mul_zero, map_zero]
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p ψ S T Y Y' _ _ _ _ FS FT e he Φ hΦ f₀ T' hP hθ hSB`. Establish `hup : ∀ x, IsHalf (e + p.e) (p.up FS FT x)` using `fun x => half_sum he (Witness.up_half p FS FT x)`. Use `⟨fun Ψ => ?_, fun x Ψ Ψ' h => ?_, fun y hy Ψ Ψ' h => ?_⟩` and prove the remaining obligations. Conclude with `hθ _ (hSB Ψ.1 Ψ.2)`. Establish `key : p.tensorAt FS FT Φ Ψ'.1 = fun t => p.tensorAt FS FT Φ Ψ.1 (t + p.up FS FT x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [Place.tensorAt]`. Rewrite using `[Witness.down_add, Witness.down_up, Witness.up_add, h, add_sub_add_right_eq_sub]`. Simplify using `only [LinearMap.comp_apply, Place.tensorL_apply]`. Rewrite using `[key]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hP.trans _ (hSB Ψ.1 Ψ.2) _ (hup x)`. Establish `key : p.tensorAt FS FT Φ Ψ'.1 = fun t => ψ (symplO S T t y) * p.tensorAt FS FT Φ Ψ.1 t`. Use function extensionality and compare the values at `t`. Simplify using `only [Place.tensorAt]`. Rewrite using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : Φ (t - p.up FS FT (p.down FS FT t)) = 0`. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : symplO S T t y = symplO S T (t - p.up FS FT (p.down FS FT t)) y + symplO S T (p.up FS FT (p.down FS FT t)) y`. Rewrite using `[← symplO_add_left', sub_add_cancel]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, symplO_half_zero he (hΦ _ h0) hy, zero_add]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.comp_apply, Place.tensorL_apply]`. Rewrite using `[key]`. Conclude with `hP.modul _ (hSB Ψ.1 Ψ.2) _ (half_sum_cA he hy)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isModel_tensor : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (e : AE D), e * p.e = 0 → ∀ Φ : WO S T → ℂ, (∀ t, Φ t ≠ 0 → IsHalf e t) → ∀ (f₀ : WO S T → ℂ) (T' : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)), IsPlaceModel ψ (symplO S T) (heisO ψ S T) (e + p.e) (stdHom S T) 1 f₀ T' → (∀ Φ', IsSBHalf (e + p.e) (stdHom S T) Φ' → IsThetaFunO ψ S T (T' Φ')) → (∀ Ψ ∈ SB (Matrix Y Y' k), IsSBHalf (e + p.e) (stdHom S T) (p.tensorAt FS FT Φ Ψ)) → p.IsModel ψ FS FT (T' ∘ₗ p.tensorL FS FT Φ) := by
   intro D k _ _ _ _ p ψ S T Y Y' _ _ _ _ FS FT e he Φ hΦ f₀ T' hP hθ hSB

@@ -14,9 +14,9 @@ namespace GlobalTheory.MtIn.UniMem
 open ReciprocityTheory.Aut
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.MemGlintOfEntries.mem_glint_of_entries`. Consider the case `exact _root_.GlobalTheory.MemGlintOfEntries.mem_glint_of_entries`. Consider the case `(apply _root_.GlobalTheory.MemGlintOfEntries.mem_glint_of_entries <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MemGlintOfEntries.mem_glint_of_entries <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.MemGlintOfEntries.mem_glint_of_entries <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MemGlintOfEntries.mem_glint_of_entries ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_GLint_of_entries {K : Type} [Field K] {n : ℕ} (O : Subring K) (g : GL (Fin n) K)
     (h1 : ∀ i j, (g : Matrix (Fin n) (Fin n) K) i j ∈ O)
@@ -31,11 +31,11 @@ theorem mem_GLint_of_entries {K : Type} [Field K] {n : ℕ} (O : Subring K) (g :
   | (intros; exact _root_.GlobalTheory.MemGlintOfEntries.mem_glint_of_entries ..)
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Establish `hj` using `j.2`. Unfold `blkOf`. Apply the tactic sequence `by_cases hj' : j.val < r <;> by_cases hi' : i.val < r`. Simplify using `[hj', hi']`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[hj', hi']`. Use linear arithmetic over natural numbers and integers. Simplify using `[hj', hi']`. Establish `e1 : (j.val - r) / t = 0` using `Nat.div_eq_of_lt (by omega)`. Establish `e2 : (i.val - r) / t = 0` using `Nat.div_eq_of_lt (by omega)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hj', hi', e1, e2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkOf_lt_iff {n r t : ℕ} (hn : n = r + t) (i j : Fin n) :
     blkOf r t j < blkOf r t i ↔ j.val < r ∧ r ≤ i.val := by
@@ -51,7 +51,7 @@ theorem blkOf_lt_iff {n r t : ℕ} (hn : n = r + t) (i j : Fin n) :
     simp [hj', hi', e1, e2]
 
 /- English proof (translation)
-Use `(GlobalTheory.T.stdMaximalCompact_reduction_properties D D.R.nV).2.2.1 κ hU {s.v} (PP.under (𝓞 (maximalRealSubfield D.host.E))) PP hκ rfl ?_` and prove the remaining obligations. Introduce `h`. Apply `hP` to reduce the goal to its premises. Rewrite `h` using `[Set.mem_singleton_iff]`. Rewrite using `[← h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -66,39 +66,35 @@ theorem redFn_eq_one (D : D7) (s : SplitPlace D.host.E) (κ : Formalism.AUTREP.G
   rfl
 
 /- English proof (translation)
-Introduce `D hr Pg Q ψ chi xi s φ hφ0 hred hsw hPg hQ κ hκ`. Establish `hUA` using `(GlobalTheory.T.stdMaximalCompact_reduction_properties D D.R.nV).1`. Establish `hSt` using `(GlobalTheory.T.stdMaximalCompact_reduction_properties D D.R.nV).2.1`. Establish `hn : D.R.nV = D.R.r + D.R.t` using `rfl`. Establish `hent : ∀ κ' ∈ Umax D.host.E D.R.nV, ∀ a b (x : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)), (x : s.v.adicCompletion (maximalRealSubfield D.host.E)) = (s.loc D.R.nV κ').val a b → (redFn (1 : GL (Fin D.R.nV) (EAf D)) s.w (km D D.R.nV κ')).val a b = φ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `κ' hU' a b x hx`. Take `⟨h, e⟩` from `hred κ' hU' a b`. Rewrite using `[e]`. Use `congr 1`. Conclude with `Subtype.ext hx.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hint : ∀ κ' ∈ Umax D.host.E D.R.nV, ∀ a b, (s.loc D.R.nV κ').val a b ∈ s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)` using `fun κ' hU' a b => (hred κ' hU' a b).1`. Establish `hzero : ∀ x : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E), φ x = 0 ↔ Valued.v (x : s.v.adicCompletion (maximalRealSubfield D.host.E)) < 1` using `hφ0`. Establish `hone : ∀ x : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E), φ x = 1 ↔ Valued.v ((x : s.v.adicCompletion (maximalRealSubfield D.host.E)) - 1) < 1`. Introduce `x`. Rewrite using `[← sub_eq_zero, ← map_one φ, ← map_sub, hφ0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `hJ`. Rewrite `hJ` using `[stdJ, Subgroup.mem_comap, mem_lev, mem_parLev]`. Take `⟨⟨-, hS, hg, -⟩, hT⟩` from `hJ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : κ ∈ Umax D.host.E D.R.nV` using `(hSt κ).1 hS`. Establish `hgw : redFn (1 : GL (Fin D.R.nV) (EAf D)) s.w (km D D.R.nV κ) ∈ blockTri (blkOf D.R.r D.R.t)` using `hg s.w hsw`. Establish `hT' : upperLeftBlock hr (redFn (1 : GL (Fin D.R.nV) (EAf D)) s.w (km D D.R.nV κ)) ∈ unip (kP s.w) D.R.r` using `hT ⟨s.w, hsw⟩ (Set.mem_univ _)`. Establish `hb2 : redFn (1 : GL (Fin D.R.nV) (EAf D)) s.w (km D D.R.nV κ) ∈ blockTri (blk2 D.R.r)` using `blockTri_blkOf_le _ _ hgw`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_GLint_of_entries _ _ (fun a b => hint κ hU a b) (fun a b => ?_)` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `hint κ⁻¹ (inv_mem hU) a b`. Introduce `a b ha hb`. Establish `e : (redFn (1 : GL (Fin D.R.nV) (EAf D)) s.w (km D D.R.nV κ)).val a b = φ ⟨_, hint κ hU a b⟩` using `hent κ hU a b ⟨_, hint κ hU a b⟩ rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : (redFn (1 : GL (Fin D.R.nV) (EAf D)) s.w (km D D.R.nV κ)).val a b = 0` using `(mem_blockTri.1 hgw) a b ((blkOf_lt_iff hn a b).2 ⟨hb, ha⟩)`. Rewrite `e` using `[h0]`. Conclude with `(hzero ⟨_, hint κ hU a b⟩).1 e.symm`. Introduce `a b ha hb`. Establish `hR` using `upper_block_val_submatrix hr hb2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ i j : Fin D.R.r, ((upperLeftBlock hr (redFn (1 : GL (Fin D.R.nV) (EAf D)) s.w (km D D.R.nV κ)) : GL (Fin D.R.r) (kP s.w)) : Matrix (Fin D.R.r) (Fin D.R.r) (kP s.w)) i j = (redFn (1 : GL (Fin D.R.nV) (EAf D)) s.w (km D D.R.nV κ)).val (Fin.castLE hr i) (Fin.castLE hr j)`. Introduce `i j`. Rewrite using `[hR]`. Both sides reduce to the same expression. Establish `ea : Fin.castLE hr (⟨a.val, ha⟩ : Fin D.R.r) = a` using `Fin.ext rfl`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `eb : Fin.castLE hr (⟨b.val, hb⟩ : Fin D.R.r) = b` using `Fin.ext rfl`. Use `⟨fun hba => ?_, fun hab => ?_⟩` and prove the remaining obligations. Establish `h0` using `unip_lower hT' (i := ⟨a.val, ha⟩) (j := ⟨b.val, hb⟩) hba`. Rewrite `h0` using `[key, ea, eb, hent κ hU a b ⟨_, hint κ hU a b⟩ rfl]`. Conclude with `(hzero ⟨_, hint κ hU a b⟩).1 h0`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hab` using the available equality. Establish `h1` using `unip_diag hT' ⟨a.val, ha⟩`. Rewrite `h1` using `[key, ea, hent κ hU a a ⟨_, hint κ hU a a⟩ rfl]`. Conclude with `(hone ⟨_, hint κ hU a a⟩).1 h1`. Introduce `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgl` using `hu.1.1`. Establish `hU : κ ∈ Umax D.host.E D.R.nV` using `GlobalTheory.SplitHeckeComm.mem_Umax_of_loc s κ hκ hgl`. Establish `hw : ∀ a b, (redFn (1 : GL (Fin D.R.nV) (EAf D)) s.w (km D D.R.nV κ)).val a b = φ ⟨_, hint κ hU a b⟩` using `fun a b => hent κ hU a b _ rfl`. Establish `hgw : redFn (1 : GL (Fin D.R.nV) (EAf D)) s.w (km D D.R.nV κ) ∈ blockTri (blkOf D.R.r D.R.t)`. Rewrite using `[mem_blockTri]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j hij`. Take `⟨hj, hi⟩` from `(blkOf_lt_iff hn i j).1 hij`. Rewrite using `[hw]`. Conclude with `(hzero ⟨_, hint κ hU i j⟩).2 (hu.1.2 i j hi hj)`. Rewrite using `[stdJ, Subgroup.mem_comap, mem_lev, mem_parLev]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨hUA κ, (hSt κ).2 hU, fun PP hP => ?_, fun PP hP => ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hPw : PP = s.w`. Rewrite using `[hPw]`. Conclude with `hgw`. Rewrite using `[redFn_eq_one D s κ hU hκ PP (hPg PP hP hPw)]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `Subgroup.one_mem _`. Rewrite using `[redFn_eq_one D s κ hU hκ PP (hQ PP hP)]`. Conclude with `Subgroup.one_mem _`. Introduce `PP _ show upperLeftBlock hr (redFn (1 : GL (Fin D.R.nV) (EAf D)) PP.1 (km D D.R.nV κ)) ∈ unip (kP PP.1) D.R.r`. Distinguish the cases in `hPw : PP.1 = s.w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨PP, hPP⟩` from `PP`. Simplify using `only at hPw`. Substitute `hPw` using the available equality. Establish `hR` using `upper_block_val_submatrix hr (blockTri_blkOf_le _ _ hgw)`. Use `⟨fun i j (hij : j.val < i.val) => ?_, fun i => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hR, Matrix.submatrix_apply, hw]`. Conclude with `(hzero ⟨_, hint κ hU (Fin.castLE hr i) (Fin.castLE hr j)⟩).2 ((hu.2 (Fin.castLE hr i) (Fin.castLE hr j) i.2 j.2).1 hij)`. Rewrite using `[hR, Matrix.submatrix_apply, hw]`. Conclude with `(hone ⟨_, hint κ hU (Fin.castLE hr i) (Fin.castLE hr i)⟩).2 ((hu.2 (Fin.castLE hr i) (Fin.castLE hr i) i.2 i.2).2 rfl)`. Rewrite using `[redFn_eq_one D s κ hU hκ PP.1 (hPg PP.1 PP.2 hPw)]`.
-
-Establish `e1 : upperLeftBlock hr (1 : GL (Fin D.R.nV) (kP PP.1)) = 1` using `blockDiagonalExtendByOnePrimeField_one _ (blkR hr)`. Rewrite using `[e1]`. Conclude with `Subgroup.one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff : ∀ (D : D7) (hr : D.R.r ≤ D.R.nV) (Pg Q : Finset (Pl D.host.E)) (ψ : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ) (chi xi : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (φ : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E) →+* kP s.w), (∀ x, φ x = 0 ↔ Valued.v (x : s.v.adicCompletion (maximalRealSubfield D.host.E)) < 1) → (∀ κ ∈ ReciprocityTheory.Aut.Umax D.host.E D.R.nV, ∀ a b, ∃ h : (s.loc D.R.nV κ).val a b ∈ s.v.adicCompletionIntegers (maximalRealSubfield D.host.E), (redFn (1 : GL (Fin D.R.nV) (EAf D)) s.w (km D D.R.nV κ)).val a b = φ ⟨_, h⟩) → s.w ∈ Pg → (∀ PP ∈ Pg, PP ≠ s.w → ¬ NG.OverPl PP s.v) → (∀ PP ∈ Q, ¬ NG.OverPl PP s.v) → ∀ κ, ReciprocityTheory.Aut.TrivOutside {s.v} κ → (κ ∈ stdJ (datV D D.R.nV hr Pg Q (P0 Pg D.R.r ψ) chi xi) ↔ NG.UniRT s D.R.r (s.loc D.R.nV κ)) := by
   intro D hr Pg Q ψ chi xi s φ hφ0 hred hsw hPg hQ κ hκ

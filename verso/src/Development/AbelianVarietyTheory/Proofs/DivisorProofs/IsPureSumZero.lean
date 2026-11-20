@@ -22,16 +22,16 @@ def IsPureSum {κ : Type} [Fintype κ] (vac : ∀ v : GlobalTheory.IndefiniteRow
       ∀ k, φ k v₁ = φ₀
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, Fin.elim0, Fin.elim0, by simp, fun k => k.elim0, fun k => k.elim0, fun k => k.elim0⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPureSum_zero {κ : Type} [Fintype κ] (vac : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ)
     (v₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (φ₀ : (κ → Fv F v₁) → ℂ) : IsPureSum vac v₁ φ₀ 0 :=
   ⟨0, Fin.elim0, Fin.elim0, by simp, fun k => k.elim0, fun k => k.elim0, fun k => k.elim0⟩
 
 /- English proof (translation)
-Take `⟨m, f, φ, rfl, h1, h2, h3⟩` from `h`. Use `⟨m, fun k => c • f k, φ, ?_, h1, h2, h3⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Pi.smul_apply, smul_eq_mul, SchwartzMap.smul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsPureSum.smul {κ : Type} [Fintype κ] {vac : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ}
     {v₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} {φ₀ : (κ → Fv F v₁) → ℂ} {Φ : (κ → AF F) → ℂ} (h : IsPureSum vac v₁ φ₀ Φ) (c : ℂ) :
@@ -45,9 +45,9 @@ theorem IsPureSum.smul {κ : Type} [Fintype κ] {vac : ∀ v : GlobalTheory.Inde
   ring
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ClosingLemmaThird.main`. Consider the case `exact _root_.GlobalTheory.ClosingLemmaThird.main`. Consider the case `(apply _root_.GlobalTheory.ClosingLemmaThird.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ClosingLemmaThird.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ClosingLemmaThird.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ClosingLemmaThird.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsPureSum.add {κ : Type} [Fintype κ] {vac : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ}
     {v₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} {φ₀ : (κ → Fv F v₁) → ℂ} {Φ Ψ : (κ → AF F) → ℂ} (h : IsPureSum vac v₁ φ₀ Φ)
@@ -61,7 +61,7 @@ theorem IsPureSum.add {κ : Type} [Fintype κ] {vac : ∀ v : GlobalTheory.Indef
   | (intros; exact _root_.GlobalTheory.ClosingLemmaThird.main ..)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isPureSum_zero vac v₁ φ₀`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun k hk => h k (Finset.mem_insert_of_mem hk))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsPureSum.sum {κ : Type} [Fintype κ] {vac : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ}
     {v₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} {φ₀ : (κ → Fv F v₁) → ℂ} {ι : Type} (s : Finset ι) (Φ : ι → (κ → AF F) → ℂ)
@@ -79,7 +79,7 @@ variable {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F} {�
   (co : Darboux B κ) (ψ : AddChar (AF F) ℂ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_smul (x : W) (c : ℂ) (Φ : (κ → AF F) → ℂ) : co.rho ψ x (c • Φ) = c • co.rho ψ x Φ := by
   funext y
@@ -87,7 +87,7 @@ theorem rho_smul (x : W) (c : ℂ) (Φ : (κ → AF F) → ℂ) : co.rho ψ x (c
   ring
 
 /- English proof (translation)
-Introduce `x` and use `by have : co.rho ψ x 0 = 0 := by simpa using rho_smul co ψ x 0 0 simpa [this] using (hasSum_zero : HasSum (fun _ : κ → F => (0 : ℂ)) 0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasTheta_zero : HasTheta co ψ 0 0 := fun x => by
   have : co.rho ψ x 0 = 0 := by simpa using rho_smul co ψ x 0 0
@@ -96,7 +96,7 @@ theorem hasTheta_zero : HasTheta co ψ 0 0 := fun x => by
 variable {co ψ}
 
 /- English proof (translation)
-Introduce `x` and use `by rw [rho_smul] exact (h x).mul_left c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasTheta.smul {Φ : (κ → AF F) → ℂ} {f : W → ℂ} (h : HasTheta co ψ Φ f) (c : ℂ) :
     HasTheta co ψ (c • Φ) (c • f) := fun x => by
@@ -104,7 +104,7 @@ theorem HasTheta.smul {Φ : (κ → AF F) → ℂ} {f : W → ℂ} (h : HasTheta
   exact (h x).mul_left c
 
 /- English proof (translation)
-Introduce `x`. Establish `h0` using `(h x).add (h' x)`. Simplify `h0` using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.add_apply, mul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem HasTheta.add {Φ Ψ : (κ → AF F) → ℂ} {f g : W → ℂ} (h : HasTheta co ψ Φ f) (h' : HasTheta co ψ Ψ g) :
     HasTheta co ψ (Φ + Ψ) (f + g) := by
@@ -113,7 +113,7 @@ theorem HasTheta.add {Φ Ψ : (κ → AF F) → ℂ} {f g : W → ℂ} (h : HasT
   simpa only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.add_apply, mul_add] using h0
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hasTheta_zero co ψ`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun k hk => h k (Finset.mem_insert_of_mem hk))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasTheta.sum {ι : Type} (s : Finset ι) {Φ : ι → (κ → AF F) → ℂ} {f : ι → W → ℂ}
     (h : ∀ k ∈ s, HasTheta co ψ (Φ k) (f k)) : HasTheta co ψ (∑ k ∈ s, Φ k) (∑ k ∈ s, f k) := by
@@ -125,7 +125,7 @@ theorem HasTheta.sum {ι : Type} (s : Finset ι) {Φ : ι → (κ → AF F) → 
     exact (h a (Finset.mem_insert_self a s)).add (ih fun k hk => h k (Finset.mem_insert_of_mem hk))
 
 /- English proof (translation)
-The claim follows from `(h x).tsum_eq`.
+A detailed English derivation is pending.
 -/
 theorem HasTheta.thetaSum_eq {Φ : (κ → AF F) → ℂ} {f : W → ℂ} (h : HasTheta co ψ Φ f) (x : W) :
     thetaSum F (co.rho ψ x Φ) = f x :=

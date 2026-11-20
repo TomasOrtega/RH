@@ -10,7 +10,7 @@ section General
 variable {A : Type*} [CommRing A]
 
 /- English proof (translation)
-Use `⟨⟨‹Q.IsPrime›, hJQ⟩, fun W hW hWQ q hq => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hsq⟩` from `hsat q hq`. Conclude with `(hW.1.mem_or_mem (hW.2 hsq)).resolve_left (fun h => hs (hWQ h))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_minimalPrimes_of_saturated (J Q : Ideal A) [Q.IsPrime] (hJQ : J ≤ Q)
     (hsat : ∀ q ∈ Q, ∃ s ∉ Q, s * q ∈ J) : Q ∈ J.minimalPrimes := by
@@ -19,11 +19,11 @@ theorem mem_minimalPrimes_of_saturated (J Q : Ideal A) [Q.IsPrime] (hJQ : J ≤ 
   exact (hW.1.mem_or_mem (hW.2 hsq)).resolve_left (fun h => hs (hWQ h))
 
 /- English proof (translation)
-Use `⟨?_, LocalizedModule.map_surjective _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Proceed by induction on `x using LocalizedModule.induction_on with | h m s => ?_`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[LinearMap.mem_ker, LocalizedModule.map_mk]`. Establish `haQ : a ∈ Q` using `localizedQuotient_mk_eq_zero Q a s hx`. Take `⟨t, ht, hta⟩` from `hsat a haQ`. Rewrite using `[Submodule.mem_bot, ← LocalizedModule.zero_mk (1 : Q.primeCompl), LocalizedModule.mk_eq]`. Use `⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_zero, smul_zero, one_smul, Submonoid.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hta`. Introduce `z`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Conclude with `⟨Ideal.Quotient.mk J a, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem localizedQuot_map_bijective_of_saturated (J Q : Ideal A) [Q.IsPrime] (hJQ : J ≤ Q)
     (hsat : ∀ q ∈ Q, ∃ s ∉ Q, s * q ∈ J) :
@@ -51,7 +51,7 @@ end General
 universe u
 
 /- English proof (translation)
-Introduce `R _ K ι J Q _ hJQ hsat`. Use `⟨mem_minimalPrimes_of_saturated J Q hJQ hsat, ?_⟩` and prove the remaining obligations. Unfold `multAt`. Rewrite using `[(LinearEquiv.ofBijective _ (localizedQuot_map_bijective_of_saturated J Q hJQ hsat)).length_eq, Module.length_eq_one_iff]`. Conclude with `localizedQuotient_isSimpleModule Q`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MultAtOfSaturated.proof : MultAtOfSaturated.Statement.{u} := by
   intro R _ K ι J Q _ hJQ hsat

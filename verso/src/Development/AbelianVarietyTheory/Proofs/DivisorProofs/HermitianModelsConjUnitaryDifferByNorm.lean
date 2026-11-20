@@ -7,11 +7,11 @@ open scoped Classical
 namespace GlobalTheory.KapLat
 
 /- English proof (translation)
-Establish `h1 : (cT (cj w) y.val) * 1 * y.val = 1` using `hy`. Establish `h2 : (y.val)ᵀ * y.val.map (cj w) = 1`. Use `congrArg Matrix.transpose h1` as an intermediate fact. Simplify `this` using `[cT, Matrix.transpose_mul]`. Establish `hs : ∀ z : Fin n → w.adicCompletion E, ∀ z', stdH w z z' = z ⬝ᵥ (fun k => cj w (z' k))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `z z'`. Both sides reduce to the same expression. Establish `hc : (fun k => cj w ((y.val *ᵥ v') k)) = y.val.map (cj w) *ᵥ (fun k => cj w (v' k))`. Use function extensionality and compare the values at `k`. Conclude with `RingHom.map_mulVec (cj w) y.val v' k`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, hs, hc, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, h2, Matrix.vecMul_one]`.
+A detailed English derivation is pending.
 -/
 theorem stdH_mulVec_of_mem {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Pl E) (n : ℕ)
     (y : GLw n w) (hy : y ∈ UJ (cj w) 1) (v v' : Fin n → w.adicCompletion E) :
@@ -28,11 +28,11 @@ theorem stdH_mulVec_of_mem {E : Type} [Field E] [NumberField E] [IsCMField E] (w
     Matrix.vecMul_one]
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `ha`. Establish `hmem : a ∈ Algebra.adjoin F {u}` using `by rw [hu]; trivial`. Rewrite `hmem` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, rfl⟩` from `hmem`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsq : Squarefree (minpoly F u)` using `hP.squarefree_of_dvd (minpoly.dvd F u hPu)`. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Establish `h10 : (1 : A) = 0` using `by simpa using hk`. Conclude with `(subsingleton_of_zero_eq_one h10.symm).elim _ _`. Establish `hd : minpoly F u ∣ p ^ k` using `minpoly.dvd F u (by rw [map_pow]; exact hk)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : minpoly F u ∣ p` using `(hsq.dvd_pow_iff_dvd hk0.ne').1 hd`. Take `⟨r, hr⟩` from `hd'`. Express the relevant statement in the definitionally equal form `aeval u p = 0`. Rewrite using `[hr, map_mul, minpoly.aeval, zero_mul]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isReduced_of_adjoin_squarefree {F A : Type} [Field F] [CommRing A] [Algebra F A] [Module.Finite F A]
     (u : A) (hu : Algebra.adjoin F {u} = ⊤) (P : F[X]) (hP : Squarefree P) (hPu : aeval u P = 0) :
@@ -54,35 +54,35 @@ theorem isReduced_of_adjoin_squarefree {F A : Type} [Field F] [CommRing A] [Alge
   rw [hr, map_mul, minpoly.aeval, zero_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ w hw K e n Q B u x x' hQ hF γ y hy hM hM'`. Take `⟨hadj, hroot, -, -⟩` from `hF`. Establish `hyU : y ∈ UJ (cj w) 1` using `by simpa [UL, hw] using hy`. Take `⟨ψ, hψs, hψu, hψh⟩` from `hM`. Take `⟨ψ', hψs', hψu', hψh'⟩` from `hM'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `ψ₃ : B.A → (Fin n → w.adicCompletion E)` to `fun a => y.val *ᵥ ψ' a`. Establish `h3s : ∀ (c : K.E) (a : B.A), ψ₃ (c • a) = e c • ψ₃ a`. Introduce `c a`. Simplify using `only [ψ₃, hψs', Matrix.mulVec_smul]`. Establish `h3u : ∀ a, ψ₃ (u * a) = γ.val *ᵥ ψ₃ a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a`. Simplify using `only [ψ₃, hψu', Matrix.mulVec_mulVec, Units.val_mul]`. Use `congr 1`. Rewrite using `[← mul_assoc, ← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]`. Establish `h3h : ∀ a b, stdH w (ψ₃ a) (ψ₃ b) = e (B.herm x' a b)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b`. Simplify using `only [ψ₃]`. Rewrite using `[stdH_mulVec_of_mem w n y hyU, hψh']`. Set `φ : B.A → B.A` to `fun a => ψ.symm (ψ₃ a)`. Establish `hφψ : ∀ a, ψ (φ a) = ψ₃ a` using `fun a => ψ.apply_symm_apply _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφs : ∀ (c : K.E) (a : B.A), φ (c • a) = c • φ a`. Introduce `c a`. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[hψs, hφψ, hφψ, h3s]`. Establish `hφu : ∀ a, φ (u * a) = u * φ a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[hψu, hφψ, hφψ, h3u]`. Establish `hφadd : ∀ a b, φ (a + b) = φ a + φ b`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[map_add, hφψ, hφψ, hφψ]`. Simplify using `[ψ₃, Matrix.mulVec_add]`. Establish `hφmul : ∀ a b, φ (a * b) = a * φ b`. Introduce `a`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha : a ∈ Algebra.adjoin K.E {u}` using `by rw [hadj]; trivial`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem z hz`. Rewrite `hz` using `[Set.mem_singleton_iff]`. Substitute `hz` using the available equality.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `hφu`. Consider the case `algebraMap r`. Introduce `b`. Rewrite using `[← Algebra.smul_def, ← Algebra.smul_def, hφs]`. Consider the case `add a₁ a₂ _ _ h₁ h₂`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Rewrite using `[add_mul, hφadd, h₁, h₂, add_mul]`. Consider the case `mul a₁ a₂ _ _ h₁ h₂`. Introduce `b`. Rewrite using `[mul_assoc, h₁, h₂, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφ : ∀ a, φ a = a * φ 1` using `fun a => by rw [← hφmul, mul_one]`. Choose the witnesses or unpack the hypotheses as in `⟨a₀, ha₀⟩ : ∃ a₀, φ a₀ = 1 := by`. Use `⟨ψ'.symm ((y⁻¹ : GLw n w).val *ᵥ ψ 1), ?_⟩` and prove the remaining obligations. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[hφψ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ψ₃, AddEquiv.apply_symm_apply, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Set `c : B.Aˣ` to `⟨φ 1, a₀, by rw [mul_comm, ← hφ, ha₀], by rw [← hφ, ha₀]⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hh : ∀ a b, B.herm x' a b = B.herm x (φ a) (φ b)`. Introduce `a b`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← h3h, ← hψh, hφψ, hφψ]`. Establish `htr : ∀ z : B.A, Algebra.trace K.E B.A ((x * ((c : B.A) * B.σ (c : B.A)) - x') * z) = 0`. Introduce `z`. Use `hh z 1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.UnitLemma.InvAlg.herm, map_one, mul_one] at this`. Rewrite `this` using `[hφ z]`. Establish `hc : (c : B.A) = φ 1` using `rfl`. Rewrite using `[hc, sub_mul, map_sub, sub_eq_zero, this]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `haveI : IsReduced B.A := isReduced_of_adjoin_squarefree u hadj _ (hQ.map.squarefree) hroot`. Conclude with `(sub_eq_zero.1 (GlobalTheory.RegSS.eq_zero_of_trace_mul_eq_zero _ htr)).symm`.
+A detailed English derivation is pending.
 -/
 theorem model_conj_norm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E), ¬ IsSplitAt w →
     ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E) (n : ℕ) (Q : (w.adicCompletion E)[X])

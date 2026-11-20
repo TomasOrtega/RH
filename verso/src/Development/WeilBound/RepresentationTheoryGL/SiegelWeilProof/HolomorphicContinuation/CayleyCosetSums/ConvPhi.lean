@@ -33,9 +33,9 @@ Both sides reduce to the same expression.
 theorem mR_mul (g h : GR n) : mR (g * h) = mR g * mR h := rfl
 
 /- English proof (translation)
-Establish `h` using `integral_mul_left_eq_self (μ := μK) (fun k : KR n => (F0 m 0 e (k : GR n))⁻¹ * (β ((mR (k : GR n))ᴴ * (mR (k₀ : GR n) * X)) : ℂ)) k₀`. Rewrite using `[tw, ← h, tw, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Establish `hk0 : (mR (k₀ : GR n))ᴴ * mR (k₀ : GR n) = 1` using `k₀.2.2`. Establish `hmul` using `((mult n m 0 e).1 (k₀ : GR n) (k : GR n) k.2).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Subgroup.coe_mul, mR_mul]`. Rewrite using `[hmul, Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (mR (k₀ : GR n))ᴴ, hk0, Matrix.one_mul, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tw_left (m : ℕ) (e : ℤ) (μK : Measure (KR n)) [μK.IsMulLeftInvariant] (β : M2 n → ℝ) (k₀ : KR n) (X : M2 n) :
     tw m e μK β (mR (k₀ : GR n) * X) = (F0 m 0 e (k₀ : GR n))⁻¹ * tw m e μK β X := by
@@ -51,21 +51,21 @@ theorem tw_left (m : ℕ) (e : ℤ) (μK : Measure (KR n)) [μK.IsMulLeftInvaria
   ring
 
 /- English proof (translation)
-Take `⟨p, k, hp, hk, rfl⟩` from `iwa n y`. Establish `hnn : ∀ g : GR n, 0 ≤ hLoc g` using `fun g => by unfold hLoc; positivity`. Establish `hphi : ∀ g : GR n, phi m e w (p * g) = phi m e w p * phi m e w g`. Introduce `g`. Take `⟨h1, h2⟩` from `(mult n m 0 e).2 p g hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [phi, h1, h2, Complex.ofReal_mul]`. Rewrite using `[Complex.mul_cpow_ofReal_nonneg (hnn p) (hnn g)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hK : phi m e w (p * k) = phi m e w p * F0 m 0 e k`. Take `⟨h1, h2⟩` from `(mult n m 0 e).1 p k hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [phi, h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hone : F0 m 0 e (1 : GR n) = 1`. Establish `h1 : toBlocks₂₁ (1 : M2 n) = 0`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.toBlocks₂₁, Matrix.one_apply]`. Establish `h2 : toBlocks₂₂ (1 : M2 n) = 1`. Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.one_apply]`. Simplify using `[F0, mR, f0, u1, u2, h1, h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hF : F0 m 0 e k * F0 m 0 e k⁻¹ = 1`. Rewrite using `[← ((mult n m 0 e).1 k k⁻¹ (inv_mem hk)).1, mul_inv_cancel, hone]`. Establish `htw : ∀ u : GR n, tw m e μK β (mR (k⁻¹ * u)) = F0 m 0 e k * tw m e μK β (mR u)`. Introduce `u`. Rewrite using `[mR_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `tw_left m e μK β (⟨k⁻¹, inv_mem hk⟩ : KR n) (mR u)`. Simplify using `only at h`. Rewrite using `[h, inv_eq_of_mul_eq_one_left hF]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `u`. Rewrite using `[show p * k * (k⁻¹ * u) = p * u by group, hphi, htw]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = cw m e ν μK β w * phi m e w (p * k) := by`. Rewrite using `[integral_const_mul, hK]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `cw`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem conv_phi (m : ℕ) (e : ℤ) (ν : Measure (GR n)) [ν.IsMulLeftInvariant] (μK : Measure (KR n)) [μK.IsMulLeftInvariant]
     (β : M2 n → ℝ) (w : ℂ) (y : GR n) :

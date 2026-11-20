@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.SameKindIsom
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FlagMeas.iwasawaFormula` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FUnitaryIwasawaIntegrationFormulaRealPlace.lean&line=10#L10)
 -/

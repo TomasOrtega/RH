@@ -22,11 +22,11 @@ namespace FrameOk
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hex : ∃ r, 0 ≤ r ∧ ∀ x y g, ψ x y g ≠ 0 → logSize (finGL E a g.1) ≤ r ∧ logSize (finGL E b g.2) ≤ r` using `(BlockFiniteConvolution.rtAlg' E (A.blk κ) 1 1).2.2 ψ hψ`. Establish `hs : PositivityTheory.Rg.BcB.F.sizeOf ψ = hex.choose`. Unfold `PositivityTheory.Rg.BcB.F.sizeOf`. Rewrite using `[dif_pos hex]`. Use `⟨A.T_nonneg, ?_, fun v => ?_, fun v => ?_, hψ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show 0 ≤ PositivityTheory.Rg.BcB.F.sizeOf ψ`. Rewrite using `[hs]`. Conclude with `hex.choose_spec.1`. Conclude with `⟨1, fun _ => 1, fun _ => wa v, fun _ => A.bump, fun _ => A.ka (wa v) v, fun _ => ⟨A.isBump, A.kera _ _⟩, fun y _ => by simp [Arch.pt], fun χ => by simp [Arch.pt, Arch.valW]⟩`. Conclude with `⟨1, fun _ => 1, fun _ => wb v, fun _ => A.bump, fun _ => A.kb (wb v) v, fun _ => ⟨A.isBump, A.kerb _ _⟩, fun y _ => by simp [Arch.pt], fun χ => by simp [Arch.pt, Arch.valW]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y g hg show logSize (finGL E a g.1) ≤ PositivityTheory.Rg.BcB.F.sizeOf ψ ∧ logSize (finGL E b g.2) ≤ PositivityTheory.Rg.BcB.F.sizeOf ψ`. Rewrite using `[hs]`. Conclude with `hex.choose_spec.2 x y g hg`.
+A detailed English derivation is pending.
 -/
 theorem pt_ok {a b : ℕ} {l₁ : InfinitePlace E → DomWeight a} {l₂ : InfinitePlace E → DomWeight b}
     {μ₁ : Measure (GA E a)} {μ₂ : Measure (GA E b)} {μa : Measure (G a)} {μb : Measure (G b)}
@@ -49,7 +49,7 @@ theorem pt_ok {a b : ℕ} {l₁ : InfinitePlace E → DomWeight a} {l₂ : Infin
     rw [hs]; exact hex.choose_spec.2 x y g hg
 
 /- English proof (translation)
-The claim follows from `hsComplete _`.
+A detailed English derivation is pending.
 -/
 theorem blk_complete {a b : ℕ} {l₁ : InfinitePlace E → DomWeight a} {l₂ : InfinitePlace E → DomWeight b}
     {μ₁ : Measure (GA E a)} {μ₂ : Measure (GA E b)} {μa : Measure (G a)} {μb : Measure (G b)}
@@ -59,9 +59,9 @@ theorem blk_complete {a b : ℕ} {l₁ : InfinitePlace E → DomWeight a} {l₂ 
 attribute [local instance] blk_complete
 
 /- English proof (translation)
-Establish `hent : ∀ x y, L.ent P x y = L'.ent P x y`. Introduce `x y`. Use function extensionality and compare the values at `w`. Unfold `LM.ent`. Use `split_ifs with hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.1 w hw]`. Rewrite using `[h.2.1 w hw]`. Use function extensionality and compare the values at `x y g`. Simplify using `only [fm, hent, h.2.2]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fm_eqv {κ : Pl E → Type} [∀ w, Fintype (κ w)] (S : Set (Pl E)) (P : Finset (Pl E)) (B : Block E)
     (e : B.κ ≃ ∀ w : P, κ w) {L L' : LM κ B.a B.b} (h : LM.Eqv P L L') : fm S P B e L = fm S P B e L' := by
@@ -90,41 +90,41 @@ abbrev ptW (wa wb : InfinitePlace E → List (Bool × ℕ)) (L : LM d.kap a (n -
 variable {A d Sec}
 
 /- English proof (translation)
-The claim follows from `(BlockFiniteConvolution.fmAlg' E d.kap Sec d.P (A.blk (∀ w : d.P, d.kap w)) (Equiv.refl _) hS hP L L hL hL).1`.
+A detailed English derivation is pending.
 -/
 theorem ψL_fin (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec) {L : LM d.kap a (n - a)} (hL : L.Ok d.P) :
     IsFinM (ψL A d Sec L) :=
   (BlockFiniteConvolution.fmAlg' E d.kap Sec d.P (A.blk (∀ w : d.P, d.kap w)) (Equiv.refl _) hS hP L L hL hL).1
 
 /- English proof (translation)
-The claim follows from `(BlockFiniteConvolution.fmAlg' E d.kap Sec d.P (A.blk (∀ w : d.P, d.kap w)) (Equiv.refl _) hS hP L L' hL hL').2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem ψL_mul (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec) {L L' : LM d.kap a (n - a)} (hL : L.Ok d.P)
     (hL' : L'.Ok d.P) : mulF (A.blk (∀ w : d.P, d.kap w)).ν (ψL A d Sec L) (ψL A d Sec L') = ψL A d Sec (L.mul L') :=
   (BlockFiniteConvolution.fmAlg' E d.kap Sec d.P (A.blk (∀ w : d.P, d.kap w)) (Equiv.refl _) hS hP L L' hL hL').2.2.1
 
 /- English proof (translation)
-The claim follows from `(BlockFiniteConvolution.fmAlg' E d.kap Sec d.P (A.blk (∀ w : d.P, d.kap w)) (Equiv.refl _) hS hP L L hL hL).2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem ψL_adj (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec) {L : LM d.kap a (n - a)} (hL : L.Ok d.P) :
     L.adj.Ok d.P ∧ adjF (ψL A d Sec L) = ψL A d Sec L.adj :=
   (BlockFiniteConvolution.fmAlg' E d.kap Sec d.P (A.blk (∀ w : d.P, d.kap w)) (Equiv.refl _) hS hP L L hL hL).2.2.2
 
 /- English proof (translation)
-The claim follows from `fm_eqv Sec d.P (A.blk (∀ w : d.P, d.kap w)) (Equiv.refl _) h`.
+A detailed English derivation is pending.
 -/
 theorem ψL_eqv {L L' : LM d.kap a (n - a)} (h : L.Eqv d.P L') : ψL A d Sec L = ψL A d Sec L' :=
   fm_eqv Sec d.P (A.blk (∀ w : d.P, d.kap w)) (Equiv.refl _) h
 
 /- English proof (translation)
-The claim follows from `pt_ok A wa wb _ (ψL_fin hS hP hL)`.
+A detailed English derivation is pending.
 -/
 theorem ptW_ok (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec) (wa wb : InfinitePlace E → List (Bool × ℕ))
     {L : LM d.kap a (n - a)} (hL : L.Ok d.P) : (ptW A d Sec wa wb L).Ok :=
   pt_ok A wa wb _ (ψL_fin hS hP hL)
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `(BlockFiniteConvolution.rtAlg' E (A.blk (∀ w : d.P, d.kap w)) u₁ u₂).2.1 _ (ptW_ok hS hP wa wb hL)`. Conclude with `pt_ok A wa wb _ hr.ψ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ptRt_ok (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec) (wa wb : InfinitePlace E → List (Bool × ℕ))
     {L : LM d.kap a (n - a)} (hL : L.Ok d.P) (u₁ : GL (Fin a) E) (u₂ : GL (Fin (n - a)) E) :
@@ -133,7 +133,7 @@ theorem ptRt_ok (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec) (wa wb
   exact pt_ok A wa wb _ hr.ψ
 
 /- English proof (translation)
-The claim follows from `BlockFiniteConvolution.blkComm₀ E _ t t' ht ht' (by rw [e, e', ψL_mul hS hP hL hL', ψL_mul hS hP hL' hL, ψL_eqv hq])`.
+A detailed English derivation is pending.
 -/
 theorem comm_pt (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec) {t t' : PT (A.blk (∀ w : d.P, d.kap w))}
     (ht : t.Ok) (ht' : t'.Ok) {L L' : LM d.kap a (n - a)} (hL : L.Ok d.P) (hL' : L'.Ok d.P)
@@ -141,9 +141,9 @@ theorem comm_pt (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec) {t t' 
   BlockFiniteConvolution.blkComm₀ E _ t t' ht ht' (by rw [e, e', ψL_mul hS hP hL hL', ψL_mul hS hP hL' hL, ψL_eqv hq])
 
 /- English proof (translation)
-Establish `hb` using `BlockFiniteConvolution.blkOp₀ E _ t' t' ht' ht'`. Establish `hA` using `ψL_adj (A := A) hS hP hL'`. Rewrite using `[← hb.2.2.2.2.2.1]`. Establish `e'' : t'.adj.ψ = ψL A d Sec L'.adj` using `by show adjF t'.ψ = _`. Rewrite using `[e']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA.2`. Conclude with `BlockFiniteConvolution.blkComm₀ E _ t t'.adj ht hb.2.2.2.2.1 (by rw [e, e'', ψL_mul hS hP hL hA.1, ψL_mul hS hP hA.1 hL, ψL_eqv hq])`.
+A detailed English derivation is pending.
 -/
 theorem commStar_pt (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec) {t t' : PT (A.blk (∀ w : d.P, d.kap w))}
     (ht : t.Ok) (ht' : t'.Ok) {L L' : LM d.kap a (n - a)} (hL : L.Ok d.P) (hL' : L'.Ok d.P)
@@ -160,14 +160,14 @@ theorem commStar_pt (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec) {t
     (by rw [e, e'', ψL_mul hS hP hL hA.1, ψL_mul hS hP hA.1 hL, ψL_eqv hq])
 
 /- English proof (translation)
-The claim follows from `(BlockFiniteConvolution.locOk₀ E n d hd a ha).2.2.2 L hL`.
+A detailed English derivation is pending.
 -/
 theorem gen_ok (hd : d.Ok) (ha : a ≤ n) {L : LM d.kap a (n - a)}
     (hL : d.IsGen a ha L) : L.Ok d.P :=
   (BlockFiniteConvolution.locOk₀ E n d hd a ha).2.2.2 L hL
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun L hL => ptW_ok hS hP wa wb (gen_ok hd ha hL), ptW_ok hS hP wa wb (BlockFiniteConvolution.locOk₀ E n d hd a ha).2.1, ptW_ok hS hP wa wb (BlockFiniteConvolution.locOk₀ E n d hd a ha).2.2.1, fun u₁ u₂ => ptRt_ok hS hP wa wb (gen_ok hd ha (L := d.eL a) (Or.inl rfl)) u₁ u₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem oks (hd : d.Ok) (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec) (ha : a ≤ n)
     (wa wb : InfinitePlace E → List (Bool × ℕ)) :
@@ -179,7 +179,7 @@ theorem oks (hd : d.Ok) (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec
     fun u₁ u₂ => ptRt_ok hS hP wa wb (gen_ok hd ha (L := d.eL a) (Or.inl rfl)) u₁ u₂⟩
 
 /- English proof (translation)
-Establish `h₁` using `gen_ok hd ha hL`. Establish `h₂` using `gen_ok hd ha hL'`. Establish `hq` using `BlockFiniteConvolution.locComm₀ E n d hd a ha L L' hL hL'`. Conclude with `⟨comm_pt hS hP (ptW_ok hS hP wa wb h₁) (ptW_ok hS hP wa' wb' h₂) h₁ h₂ rfl rfl hq.1, commStar_pt hS hP (ptW_ok hS hP wa wb h₁) (ptW_ok hS hP wa' wb' h₂) h₁ h₂ rfl rfl hq.2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem comm_gen (hd : d.Ok) (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec) (ha : a ≤ n)
     {L L' : LM d.kap a (n - a)} (hL : d.IsGen a ha L) (hL' : d.IsGen a ha L') (wa wb wa' wb' : InfinitePlace E → List (Bool × ℕ)) :
@@ -192,7 +192,7 @@ theorem comm_gen (hd : d.Ok) (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) �
     commStar_pt hS hP (ptW_ok hS hP wa wb h₁) (ptW_ok hS hP wa' wb' h₂) h₁ h₂ rfl rfl hq.2.1⟩
 
 /- English proof (translation)
-Establish `h₁` using `(BlockFiniteConvolution.locOk₀ E n d hd a ha).2.1`. Establish `h₂` using `gen_ok hd ha hL`. Establish `hq` using `BlockFiniteConvolution.locComm₀ E n d hd a ha L L hL hL`. Conclude with `⟨comm_pt hS hP (ptW_ok hS hP wa wb h₁) (ptW_ok hS hP wa' wb' h₂) h₁ h₂ rfl rfl hq.2.2.1, commStar_pt hS hP (ptW_ok hS hP wa wb h₁) (ptW_ok hS hP wa' wb' h₂) h₁ h₂ rfl rfl hq.2.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem comm_beta (hd : d.Ok) (hS : IsSection Sec) (hP : (↑d.P : Set (Pl E)) ⊆ Sec) (ha : a ≤ n)
     {L : LM d.kap a (n - a)} (hL : d.IsGen a ha L) (wa wb wa' wb' : InfinitePlace E → List (Bool × ℕ)) :

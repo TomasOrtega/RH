@@ -31,9 +31,9 @@ section Gen
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K}
 
 /- English proof (translation)
-Substitute `hDf` using the available equality. Take `rfl` from `eq_of_heq hD`. Take `rfl` from `eq_of_heq hm`. Use `⟨rfl, fun v => HEq.rfl, fun t x x' F F' hx hF => ?_⟩` and prove the remaining obligations. Take `rfl` from `eq_of_heq hx`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_of_heq hF`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem cols_heq {Df Df' : DefSide Bs} (hDf : Df = Df') {Dc : DefCols Df} {Dc' : DefCols Df'} (hD : HEq Dc Dc')
     {m : Dc.Mem} {m' : Dc'.Mem} (hm : HEq m m') :
@@ -49,7 +49,7 @@ theorem cols_heq {Df Df' : DefSide Bs} (hDf : Df = Df') {Dc : DefCols Df} {Dc' :
   rfl
 
 /- English proof (translation)
-Substitute `hDf` using the available equality. Take `rfl` from `eq_of_heq hD`. Conclude with `⟨m, HEq.rfl⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cols_mem {Df Df' : DefSide Bs} (hDf : Df = Df') {Dc : DefCols Df} {Dc' : DefCols Df'} (hD : HEq Dc Dc')
     (m : Dc.Mem) : ∃ m' : Dc'.Mem, HEq m m' := by
@@ -60,47 +60,47 @@ theorem cols_mem {Df Df' : DefSide Bs} (hDf : Df = Df') {Dc : DefCols Df} {Dc' :
 end Gen
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨x, HEq.rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem heq_fin {α : Type} {n n' : ℕ} (h : n = n') (x : Fin n → α) : ∃ x' : Fin n' → α, HEq x x' := by
   subst h; exact ⟨x, HEq.rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨x', HEq.rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem heq_fin' {α : Type} {n n' : ℕ} (h : n = n') (x' : Fin n' → α) : ∃ x : Fin n → α, HEq x x' := by
   subst h; exact ⟨x', HEq.rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨M', HEq.rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem heq_mat {n n' : ℕ} (h : n = n') (M' : Matrix (Fin n') (Fin n') ℂ) :
     ∃ M : Matrix (Fin n) (Fin n) ℂ, HEq M M' := by
   subst h; exact ⟨M', HEq.rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl` from `eq_of_heq hM`. Take `rfl` from `eq_of_heq hx`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem heq_mulVec {n n' : ℕ} (h : n = n') {M : Matrix (Fin n) (Fin n) ℂ} {M' : Matrix (Fin n') (Fin n') ℂ}
     (hM : HEq M M') {x : Fin n → ℂ} {x' : Fin n' → ℂ} (hx : HEq x x') : HEq (M.mulVec x) (M'.mulVec x') := by
   subst h; obtain rfl := eq_of_heq hM; obtain rfl := eq_of_heq hx; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl` from `eq_of_heq hY`. Take `rfl` from `eq_of_heq hx`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem heq_fnorm {n n' : ℕ} (h : n = n') {Y : Matrix (Fin n) (Fin n) ℂ} {Y' : Matrix (Fin n') (Fin n') ℂ}
     (hY : HEq Y Y') {x : Fin n → ℂ} {x' : Fin n' → ℂ} (hx : HEq x x') : fnorm Y x = fnorm Y' x' := by
   subst h; obtain rfl := eq_of_heq hY; obtain rfl := eq_of_heq hx; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl` from `eq_of_heq hx`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem heq_cpt {K : Type} [Field K] (σ : K →+* ℂ) {n n' : ℕ} (h : n = n') {x : Fin n → K} {x' : Fin n' → K}
     (hx : HEq x x') : HEq (cpt σ x) (cpt σ x') := by
   subst h; obtain rfl := eq_of_heq hx; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl` from `eq_of_heq hx`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem heq_cjv (s : Bool) {n n' : ℕ} (h : n = n') {x : Fin n → ℂ} {x' : Fin n' → ℂ}
     (hx : HEq x x') : HEq (Formalism.L2.SG.JoinSI.cjv s x) (Formalism.L2.SG.JoinSI.cjv s x') := by
@@ -110,19 +110,19 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 
 /- English proof (translation)
-The claim follows from `(congr_arg_heq W.Dcf W.Q.zs).trans (heq_of_eq W.Q.dc)`.
+A detailed English derivation is pending.
 -/
 theorem dc_heq (W : RealPack ex) : HEq (W.Q.F.fc (cxW W).zs).Dc W.P.Dc :=
   (congr_arg_heq W.Dcf W.Q.zs).trans (heq_of_eq W.Q.dc)
 
 /- English proof (translation)
-The claim follows from `congrArg (W.P.A3.side3 W.P.Ps W.P.ψs) W.Q.zs`.
+A detailed English derivation is pending.
 -/
 theorem df_eq (W : RealPack ex) : (W.Q.F.fc (cxW W).zs).Df1 = W.P.A3.side3 W.P.Ps W.P.ψs W.P.Zs :=
   congrArg (W.P.A3.side3 W.P.Ps W.P.ψs) W.Q.zs
 
 /- English proof (translation)
-Take `⟨m', hm⟩` from `cols_mem (df_eq W) (dc_heq W) m`. Use `⟨W.Q.wdD m', ?_⟩` and prove the remaining obligations. Rewrite using `[W.Q.wU_wdD]`. Conclude with `hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_word (W : RealPack ex) (m : (W.Q.F.fc (cxW W).zs).Dc.Mem) : ∃ u, HEq m (W.P.I.wU u) := by
   obtain ⟨m', hm⟩ := cols_mem (df_eq W) (dc_heq W) m
@@ -137,13 +137,13 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hR`. Take `⟨-, -, φ₁, C₀, b₀, T₀, hT₀, hC₀, hP₀, hb₀⟩` from `hA`. Establish `hinj : Function.Injective U`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `φ h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hU φ`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `norm_eq_zero.1 ((mul_eq_zero.1 h1.symm).resolve_left hr.ne')`. Take `⟨φ₀, hφ₀⟩` from `LinearMap.injective_iff_surjective.1 hinj (R.symm φ₁)`. Establish `hC₁ : IsCol W u C₀ (R (U φ₀))` using `by rw [hφ₀, LinearIsometryEquiv.apply_symm_apply]; exact hC₀`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `hRel T₀ hT₀`. Use `⟨R, p φ₀, b₀, fun h0 => hb₀ ?_, hb₀, fun t φ F F' hF C b hC hb => ?_⟩` and prove the remaining obligations. Take `⟨F, hF⟩` from `heq_fin' (α := D.what₂.LL) (congrArg (fun Df => DefSide.nV Df W.P.A3.A.μ0) (df_eq W)).symm (fun _ => 0)`. Establish `h1` using `hp φ₀ φ₀ W.P.A3.A.μ0 F _ hF 1 0 (by rw [h0, mul_zero, zero_mul, add_zero])`. Establish `h2` using `hR (U φ₀) (U φ₀) T₀ hT₀ T₀ hT₀ 1 0 (fun y w => by have h3 := h1 y w; rw [zero_mul] at h3 ⊢; exact h3) _ C₀ C₀ b₀ b₀ hC₁ hC₁ hP₀ hP₀`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[one_mul, zero_mul, add_zero]`. Then use the resulting hypothesis. Establish `h1` using `hp φ₀ φ t F F' hF (c t * D.what₂.perCol u (W.P.I.tup t) φ (W.P.I.jA t ((rV0 D W.P.A3.A W.P.Ps W.P.ψs t).mulVec F))) (-p φ₀) (by ring)`. Establish `h2` using `hR (U φ₀) (U φ) T₀ hT₀ _ (hrow t F') _ _ h1 _ C₀ C b₀ b hC₁ hC hP₀ hb`. Take the linear combination `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem anchor_word (W : RealPack ex) (z : GA D (D.sp.Y 0)) (u : D.what₂.Word) (d : BotDat W u) (v : (W.Q.Rl.MY 0).Vec)
     (U : D.what₂.Mu u →ₗ[ℂ] D.what₂.Mu u) (r : ℝ) (c : W.P.T → ℂ) (hR : BotRel W z d)
@@ -187,41 +187,37 @@ open Formalism.IndefR.Links GlobalTheory.MiTop.AtReal
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hDS hCR D L hT Gi Gl Kc Yd cX ex W hB hΘ hJ hPu`. Take `⟨z, hzf, hzc, hw⟩` from `hJ`. Use `choose d U r c hpin hr hUn hUC hRel using hw`. Take `⟨V₀, hV₀⟩` from `GlobalTheory.MiTop.exists_isShift_of_center W hB z hzf hzc`. Establish `hMt` using `GlobalTheory.MiTop.botHyp_match W hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : parB (Ptw D) (min 0 D.R.m) = parB (Ptw D) 0` using `by simp`. Take `⟨v, hv⟩` from `GlobalTheory.Core.Mi.exists_conjVec hDS D W.S.X W.Q.instEq W.Q.Rl.θ _ (W.Q.Rl.MY 0) hS hMt.2.1 hB.gap hB.idE`. Take `⟨κ, hκ, hPF⟩` from `GlobalTheory.T.conjugate_vector_pair_form hDS hCR W hB v hv`. Establish `hCC` using `GlobalTheory.MiTop.colCrd_holds W`. Establish `hrow : ∀ t (F : Fin ((W.Q.F.fc (cxW W).zs).Df1.nV t) → D.what₂.LL), rowAt W t F ∈ ThetaLiftSpaceZero W` using `fun t F => hMt.2.2.2.2.2 _ (hΘ t F)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hanc` using `fun u => GlobalTheory.T.conjugate_vector_central_twist hDS hCR W hB hPu z hzf hzc v hv u`. Establish `hword` using `fun u => anchor_word W z u (d u) v (U u) (r u) (c u) (GlobalTheory.T.bottom_relation_of_pin hDS hCR W hB z hzf hzc u (d u) (hpin u)) (hanc u) (hr u) (hUn u) (hRel u) hrow`. Use `choose R p b₀ hp hb₀ hid using hword`. Establish `key : ∀ m : (W.Q.F.fc (cxW W).zs).Dc.Mem, ∃ (Um : Matrix (Fin ((W.Q.F.fc (cxW W).zs).Dc.a m)) (Fin ((W.Q.F.fc (cxW W).zs).Dc.a m)) ℂ) (cm : W.P.A3.fam3.base3.Tup → ℂ), (∀ x, fnorm ((W.Q.F.fc (cxW W).zs).Dc.Xc m W.P.A3.fam3.base3.v0) (Um.mulVec x) = fnorm ((W.Q.F.fc (cxW W).zs).Dc …`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hm⟩` from `mem_word W m`. Take `⟨ha, hXc, hPt⟩` from `cols_heq (df_eq W) (dc_heq W) hm`. Take `⟨hbij, hrat, r', hr', hnorm⟩` from `hCC u`. Set `s` to `Formalism.L2.SG.JoinSI.twQ W.P`. Set `cL : (Fin (W.P.Dc.a (W.P.I.wU u)) → ℂ) →ₗ[ℂ] D.what₂.Mu u` to `{ toFun := colC W u map_add' := fun x y => by simp only [colC, Pi.add_apply, add_smul, Finset.sum_add_distrib] map_smul' := fun a x => by simp only [colC, Pi.smul_apply, smul_eq_mul, Finset.smul_sum, smul_smul, RingHom.id_apply] }`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `eC : (Fin (W.P.Dc.a (W.P.I.wU u)) → ℂ) ≃ₗ[ℂ] D.what₂.Mu u` to `LinearEquiv.ofBijective cL hbij`. Establish `heC : ∀ x, eC x = colC W u x` using `fun x => rfl`. Set `A : D.what₂.Mu u →ₗ[ℂ] D.what₂.Mu u` to `((r u : ℂ))⁻¹ • (((R u).toLinearEquiv : D.what₂.Mu u →ₗ[ℂ] D.what₂.Mu u) ∘ₗ U u)`. Establish `hAap : ∀ φ, A φ = R u (U u (((r u : ℂ))⁻¹ • φ))` using `fun φ => by show ((r u : ℂ))⁻¹ • R u (U u φ) = _`. Rewrite using `[map_smul, map_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : ∀ φ, ‖A φ‖ = ‖φ‖` using `fun φ => by show ‖((r u : ℂ))⁻¹ • R u (U u φ)‖ = ‖φ‖`. Rewrite using `[norm_smul, LinearIsometryEquiv.norm_map, hUn u, norm_inv, Complex.norm_real, Real.norm_of_nonneg (hr u).le, ← mul_assoc, inv_mul_cancel₀ (hr u).ne', one_mul]`. Set `f' : (Fin (W.P.Dc.a (W.P.I.wU u)) → ℂ) →ₗ[ℂ] (Fin (W.P.Dc.a (W.P.I.wU u)) → ℂ)` to `{ toFun := fun y => Formalism.L2.SG.JoinSI.cjv s (eC.symm (A (eC (Formalism.L2.SG.JoinSI.cjv s y)))) map_add' := fun x y => by simp only [Formalism.L2.SG.JoinSI.cjv_add, map_add] map_smul' := fun a x => by`. Simplify using `only [Formalism.L2.SG.JoinSI.cjv_smul, map_smul, Formalism.IndefR.Links.cj_cj, RingHom.id_apply] }`. Take `⟨M, hM⟩` from `heq_mat ha (LinearMap.toMatrix' f')`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcj : ∀ a : D.what₂.LL, W.P.A3.fam3.base3.v0.embedding a = Formalism.IndefR.Links.cj s (D.what₂.embLL a)` using `Formalism.L2.SG.JoinSI.twist_of_realT W.Q`. Establish `hr0 : ((r u : ℂ))⁻¹ ≠ 0` using `inv_ne_zero (Complex.ofReal_ne_zero.2 (hr u).ne')`. Use `⟨M, fun t => Formalism.IndefR.Links.cj s (c u t), ?_, fun t => (map_ne_zero _).2 ((hUC u).1 t), ?_, Formalism.IndefR.Links.cj s (p u), Formalism.IndefR.Links.cj s (κ * ((r u : ℂ))⁻¹ * b₀ u), (map_ne_zero _).2 (hp u), (map_ne_zero _).2 (mul_ne_zero (mul_ne_zero hκ hr0) (hb₀ u)), ? …` and prove the remaining obligations. Introduce `x`. Take `⟨x', hx⟩` from `heq_fin ha x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq_fnorm ha (hXc _) (heq_mulVec ha hM hx), heq_fnorm ha (hXc _) hx, LinearMap.toMatrix'_mulVec]`. Use `show fnorm _ (Formalism.L2.SG.JoinSI.cjv s (eC.symm (A (eC (Formalism.L2.SG.JoinSI.cjv s x'))))) = _`. Use `conv_rhs => rw [← Formalism.L2.SG.JoinSI.cjv_cjv s x']`. Rewrite using `[hnorm, hnorm, ← heC, ← heC, LinearEquiv.apply_symm_apply, hA]`. Introduce `w k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `(hUC u).2 w k` to reduce the goal to its premises. Rewrite `hk` using `[hcj, ← map_div₀]`. Conclude with `(Formalism.IndefR.Links.cj s).injective hk`. Introduce `t φ F`. Take `⟨φ', hφ⟩` from `heq_fin ha φ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hnV : (W.Q.F.fc (cxW W).zs).Df1.nV t = (W.P.A3.side3 W.P.Ps W.P.ψs W.P.Zs).nV t` using `congrArg (fun Df => DefSide.nV Df t) (df_eq W)`. Take `⟨F'', hF⟩` from `heq_fin hnV F`. Rewrite using `[hPt t φ φ' F F'' hφ hF, hcj, hB.hyp.2.2.1 u t (hB.used t) φ' F'']`. Use `set ψ := D.jN u (W.P.I.eNu u φ') with hψ`. Establish `hvec : HEq (M.mulVec (cpt W.P.A3.fam3.base3.v0.embedding φ)) (Formalism.L2.SG.JoinSI.cjv s (eC.symm (A ψ)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(heq_mulVec ha hM (heq_cpt _ ha hφ)).trans (heq_of_eq ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Use `show Formalism.L2.SG.JoinSI.cjv s (eC.symm (A (eC (Formalism.L2.SG.JoinSI.cjv s (cpt W.P.A3.fam3.base3.v0.embedding φ'))))) = _`. Establish `e1 : Formalism.L2.SG.JoinSI.cjv s (cpt W.P.A3.fam3.base3.v0.embedding φ') = cpt D.what₂.embLL φ'`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show Formalism.IndefR.Links.cj s (W.P.A3.fam3.base3.v0.embedding (φ' i)) = D.what₂.embLL (φ' i)`. Rewrite using `[hcj, Formalism.IndefR.Links.cj_cj]`. Rewrite using `[e1, heC, hrat]`. Establish `hx' : HEq (eC.symm (A ψ)) (Formalism.L2.SG.JoinSI.cjv s (M.mulVec (cpt W.P.A3.fam3.base3.v0.embedding φ)))`. Establish `h2` using `heq_cjv s ha hvec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[Formalism.L2.SG.JoinSI.cjv_cjv]`. Conclude with `h2.symm`. Rewrite using `[← Formalism.L2.SG.JoinSI.cjv_cjv s (M.mulVec _)]`. Take `⟨T, hTc⟩` from `(hanc u).1 (colC W u (eC.symm (A ψ)))`. Take `⟨b, hb⟩` from `(hanc u).2.1 (rowAt W t F) (hrow t F) T`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE` using `(hV₀.2.2 _ (hΘ t F))`. Establish `hPair : IsPair W u (show GA D (D.sp.Y 0) from W.Q.tS) (rowOf W (Tw.out (s` using `Formalism.L2.SG.JoinSI.twQ W.P) (E := W.Q.Rl.HE.H) (Tw.map (E := W.Q.Rl.HE.H) (F := W.Q.Rl.HE.H) s V₀ ((cxW W).Θ t ((cxW W).jR t (W.Q.F.eV (cxW W).zs t F))))) (PiTensorProduct.tprod ℂ v)) T b := by`. Take `⟨φL, hφL, hbL⟩` from `hb`. Use `⟨φL, hφL.trans (Filter.EventuallyEq.of_eq ?_), hbL⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (congrFun (hV₀.1 (W.Q.Rl.Th t (W.Q.Rl.jX t (W.Q.F.eV (cxW W).zs t F))) (PiTensorProduct.tprod ℂ v)) ((iotaX W.S.X W.Q.instEq).symm x * (show GA D (D.sp.Y 0) from W.Q.tS))).symm` and prove the remaining obligations. Use `congrArg (rowAt W t F (PiTensorProduct.tprod ℂ v)) ?_` and prove the remaining obligations. Use `show (iotaX W.S.X W.Q.instEq).symm x * (z * (show GA D (D.sp.Y 0) from W.Q.tS)) = (iotaX W.S.X W.Q.instEq).symm x * (show GA D (D.sp.Y 0) from W.Q.tS) * z`. Rewrite using `[mul_assoc, Subgroup.mem_center_iff.1 hzc]`. Establish `hpair` using `hPF (Tw.map (E := W.Q.Rl.HE.H) (F := W.Q.Rl.HE.H) s V₀ ((cxW W).Θ t ((cxW W).jR t (W.Q.F.eV (cxW W).zs t F)))) hE u m hm _ _ hx' T b hTc hPair`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `Eq.trans ?_ (congrArg (fun a => Formalism.IndefR.Links.cj s (p u) * a) hpair.symm)` and prove the remaining obligations. Use `show Formalism.IndefR.Links.cj s (c u t) * _ * _ = Formalism.IndefR.Links.cj s (p u) * Formalism.IndefR.Links.cj s (κ * b)`. Establish `hcolR : IsCol W u T (R u (U u (((r u : ℂ))⁻¹ • ψ)))`. Rewrite using `[← hAap]`. Unfold `IsCol at hTc ⊢`.
-
-Rewrite using `[hTc, ← heC, LinearEquiv.apply_symm_apply]`. Establish `hid'` using `hid u t (((r u : ℂ))⁻¹ • ψ) F'' F hF.symm T b hcolR hb`. Rewrite `hid'` using `[GlobalTheory.ExpAtTypePrimes.perCol_smul]`. Rewrite using `[← map_mul, ← map_mul, ← map_mul]`. Use `congr 1`.
-
-Take the linear combination `κ * hid'`. Use `choose Um cm hUm hc0 hcU hAn using key`. Conclude with `GlobalTheory.MiTop.miStar2_of_anchored (cxW W) (W.Q.F.eV (cxW W).zs) W.Q.sEE (Tw.map (E := W.Q.Rl.HE.H) (F := W.Q.Rl.HE.H) (Formalism.L2.SG.JoinSI.twQ W.P) V₀) Um cm ⟨fun e he => ⟨hV₀.2.2 (Tw.out (s := Formalism.L2.SG.JoinSI.twQ W.P) (E := W.Q.Rl.HE.H) e) he, hV₀.2.1 (Tw.out (s : …`.
+A detailed English derivation is pending.
 -/
 theorem miStar2_at_realisation : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), BotHyp W → (∀ t F, (cxW W).Θ t ((cxW W).jR t (W.Q.F.eV (cxW W).zs t F)) ∈ (cxW W).EEl true) → Joint W → PuNZ D → (cxW W).MIstar2 (W.Q.F.eV (cxW W).zs) W.Q.sEE := by
   intro hDS hCR D L hT Gi Gl Kc Yd cX ex W hB hΘ hJ hPu

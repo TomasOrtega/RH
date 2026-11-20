@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.NullFr.Coeff
 variable {A : Type} [CommRing A]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Take the linear combination `(-y) * hf`.
+Extract witnesses or component facts from the available result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mul_eq_zero_of_mem {f : A} (hf : f * f = f) {x : A}
     (hx : x ∈ Ideal.span ({1 - f} : Set A)) : f * x = 0 := by
@@ -16,16 +16,16 @@ theorem mul_eq_zero_of_mem {f : A} (hf : f * f = f) {x : A}
   linear_combination (-y) * hf
 
 /- English proof (translation)
-The claim follows from `Ideal.mem_span_singleton'.2 ⟨x, by linear_combination (-1 : A) * hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_mul_eq_zero {f x : A} (hx : f * x = 0) :
     x ∈ Ideal.span ({1 - f} : Set A) :=
   Ideal.mem_span_singleton'.2 ⟨x, by linear_combination (-1 : A) * hx⟩
 
 /- English proof (translation)
-Use `Ideal.isMaximal_iff.2 ⟨fun h => hf.ne ?_, fun J x hJ hx hxJ => ?_⟩` and prove the remaining obligations. Simplify using `using mul_eq_zero_of_mem hf.idem h`. Establish `hne : f * x ≠ 0` using `fun h => hx (mem_of_mul_eq_zero h)`. Take `⟨y, hy⟩` from `hf.inv x hne`. Establish `h1 : (1 - f) ∈ J` using `hJ (Ideal.subset_span rfl)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : x * (f * y) ∈ J` using `J.mul_mem_right _ hxJ`. Establish `: (1 : A) = (1 - f) + x * (f * y)` using `by linear_combination (-1 : A) * hy`. Rewrite using `[this]`. Conclude with `J.add_mem h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMaximal_span {f : A} (hf : IsFieldIdem f) :
     (Ideal.span ({1 - f} : Set A)).IsMaximal := by
@@ -40,31 +40,29 @@ theorem isMaximal_span {f : A} (hf : IsFieldIdem f) :
     exact J.add_mem h1 h2
 
 /- English proof (translation)
-Use `set w : Matrix (Fin a) (Fin t) K := v.map π with hw`. Distinguish the cases in `hli : LinearIndependent K w.col`. Use `left`. Establish `hinj : Function.Injective w.mulVecLin` using `Matrix.mulVec_injective_iff.2 hli`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective w.mulVecLin (LinearMap.ker_eq_bot.2 hinj)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N : Matrix (Fin t) (Fin a) K := LinearMap.toMatrix' g with hN`. Establish `hNw : N * w = 1`. Establish `: LinearMap.toMatrix' (g ∘ₗ w.mulVecLin) = N * w`. Rewrite using `[LinearMap.toMatrix'_comp, hN]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`. Rewrite using `[← this, hg, LinearMap.toMatrix'_id]`. Use `choose l hl using hs`. Use `⟨Matrix.of fun p q => l (N p q), ?_⟩` and prove the remaining obligations. Establish `hmap : ((Matrix.of fun p q => l (N p q) : Fx A t a) * v).map π = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.map_mul, ← hNw]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `[hl]`. Use extensionality with `p q`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpq` using `congrFun (congrFun hmap p) q`. Establish `hz : π (((Matrix.of fun p q => l (N p q) : Fx A t a) * v) p q - (1 : Fx A t t) p q) = 0`. Rewrite using `[map_sub, sub_eq_zero]`. Establish `hpq' : π (((Matrix.of fun p q => l (N p q) : Fx A t a) * v) p q) = (1 : Matrix (Fin t) (Fin t) K) p q` using `hpq`. Rewrite using `[hpq']`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : p = q`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, map_one]`. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne h, map_zero]`. Use `h0 _ hz` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `this`. Use `right`. Take `⟨g, hg, i, hi⟩` from `Fintype.not_linearIndependent_iff.1 hli`. Use `set b : Fin t → K := fun k => if k = i then 0 else -(g k / g i) with hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose l hl using hs`. Use `⟨i, fun k => f * l (b k), ?_, fun k => ?_, fun p => ?_⟩` and prove the remaining obligations. Establish `: π (l (b i)) = 0` using `by simp [hl, hb]`. Conclude with `h0 _ this`. Rewrite using `[← mul_assoc, hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrow : ∑ k, g k * w p k = 0`. Use `congrFun hg p` as an intermediate fact. Simplify `this` using `[Matrix.col_apply, Finset.sum_apply]`. Establish `hz : π (v p i - ∑ k, l (b k) * v p k) = 0`. Establish `hw' : ∀ k, π (v p k) = w p k` using `fun k => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, map_sum]`. Simplify using `only [map_mul, hl, hw']`. Establish `hsum : ∑ k, b k * w p k = w p i`. Establish `hsplit : ∀ k, b k * w p k = -(g i)⁻¹ * (g k * w p k) + (if k = i then w p i else 0)`. Introduce `k`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `only [hb, if_true]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hb, if_neg h]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun k _ => hsplit k, Finset.sum_add_distrib, ← Finset.mul_sum, hrow]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hsum, sub_self]`. Use `h0 _ hz` as an intermediate fact. Rewrite `this` using `[mul_sub, Finset.mul_sum, sub_eq_zero]`. Rewrite using `[this]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alt_of_field {K : Type} [Field K] (π : A →+* K) (hs : Function.Surjective π) {f : A}
     (hf : f * f = f) (h1 : π f = 1) (h0 : ∀ x, π x = 0 → f * x = 0) {a t : ℕ} (v : Fx A a t) :
@@ -142,13 +140,11 @@ theorem alt_of_field {K : Type} [Field K] (π : A →+* K) (hs : Function.Surjec
       exact Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Establish `key : ∀ j, (∃ M : Fx A t a, f j • (M * v) = f j • (1 : Fx A t t)) ∨ ∃ (i : Fin t) (c : Fin t → A), c i = 0 ∧ (∀ k, f j * c k = c k) ∧ ∀ p, f j * v p i = ∑ k, c k * v p k`. Introduce `j`. Establish `hj` using `hd.field j`. Use `haveI := isMaximal_span hj`. Use `letI : Field (A ⧸ Ideal.span ({1 - f j} : Set A)) := Ideal.Quotient.field _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `alt_of_field (Ideal.Quotient.mk (Ideal.span ({1 - f j} : Set A))) Ideal.Quotient.mk_surjective hj.idem ?_ ?_ v` and prove the remaining obligations. Rewrite using `[← map_one (Ideal.Quotient.mk (Ideal.span ({1 - f j} : Set A)))]`. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Establish `: f j - 1 = (-1 : A) * (1 - f j)` using `by ring`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span rfl)`. Introduce `x hx`. Conclude with `mul_eq_zero_of_mem hj.idem (Ideal.Quotient.eq_zero_iff_mem.1 hx)`. Assume the negation of the conclusion as `hno`. Establish `hall : ∀ j, ∃ M : Fx A t a, f j • (M * v) = f j • (1 : Fx A t t)` using `fun j => (key j).resolve_right fun ⟨i, c, h⟩ => hno ⟨j, i, c, h⟩`.
-
-Use `choose M hM using hall`. Use `hv ⟨∑ j, f j • M j, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sum_mul, ← hd.sum, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [Matrix.smul_mul, hM j]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dependent_column {A : Type} [CommRing A] {ι : Type} [Fintype ι] (e : A) (f : ι → A)
     (hd : IsFieldDec e f) {a t : ℕ} (v : Fx A a t)

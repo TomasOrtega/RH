@@ -9,15 +9,13 @@ namespace Formalism.FourierDecayAlt.P.CutSE
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.P5
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 hD`. Take `⟨-, -, hL, hQ, -⟩` from `hD`. Take `⟨hp, hpb, hc, hci, hcb, hcbi, -⟩` from `hL`. Establish `ht : ∀ Y (a b : Fin 2) l (i : Fin 6), Commute (X.t Y a b) (X.op l i)` using `fun Y a b l i => Formalism.FourierDecayAlt.P.NFx1.TC.t_op_comm X Y a b l i`. Introduce `Y a b l x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : Commute (X.QQ Y a b) x`. Rewrite using `[Formalism.FourierDecayAlt.P.NFx3.QQ_apply]`. Simplify using `only [coordOps, Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Break down `hx with rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases. Rewrite using `[hp l]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (ht Y a b l 0) (ht (star Y) b a l 3).neg_right`. Rewrite using `[hpb l]`. Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (ht Y a b l 3) (ht (star Y) b a l 0).neg_right`. Rewrite using `[hc l]`. Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (ht Y a b l 1) (ht (star Y) b a l 4)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hci l]`. Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (ht Y a b l 2) (ht (star Y) b a l 5)`. Rewrite using `[hcb l]`. Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (ht Y a b l 4) (ht (star Y) b a l 1)`. Rewrite using `[hcbi l]`.
-
-Conclude with `Formalism.FourierDecayAlt.P.NFx3.mkPair_commute (ht Y a b l 5) (ht (star Y) b a l 2)`. Rewrite using `[hQ Y, Matrix.smul_apply]`. Conclude with `hm.smul_left _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radial_start_coordinates : RDStartCoord := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 hD

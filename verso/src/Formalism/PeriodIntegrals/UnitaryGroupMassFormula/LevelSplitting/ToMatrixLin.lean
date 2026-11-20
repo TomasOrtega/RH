@@ -14,13 +14,13 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] 
   {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} {r : ℕ} {P : Frame E M r} {T : F}
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `hcol : ∀ c, Mx.mulVec (Pi.single c (1 : A)) = fun i => Mx i c`. Introduce `c`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_single]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h1` using `h (Pi.single a 1) (Pi.single b 1)`. Rewrite `h1` using `[hcol, hcol]`. Simplify using `only [Formalism.UG.hform] at h1`. Rewrite using `[show (Formalism.UG.cT σA Mx * JA * Mx) a b = ∑ i, ∑ j, σA (Mx i a) * JA i j * Mx j b by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm], h1]`. Establish `hs : ∀ i, σA ((Pi.single a (1 : A) : n → A) i) = (Pi.single a (1 : A) : n → A) i`. Introduce `i`. Distinguish the cases in `hi : i = a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hi]`. Simplify using `only [hs]`. Simplify using `[Pi.single_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem uj_of_uni {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (σA : A →+* A)
     (JA : Matrix n n A) (Mx : Matrix n n A)
@@ -50,7 +50,7 @@ theorem uj_of_uni {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
   simp [Pi.single_apply]
 
 /- English proof (translation)
-Unfold `lin HA.mat`. Conclude with `LinearMap.toMatrix'_toLin' _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem toMatrix'_lin (g : HA R σ J) :
     LinearMap.toMatrix' (lin R σ J g) =
@@ -59,9 +59,9 @@ theorem toMatrix'_lin (g : HA R σ J) :
   exact LinearMap.toMatrix'_toLin' _
 
 /- English proof (translation)
-Establish `hl : lin R σ J g = lin R σ J g'` using `LinearMap.ext h`. Establish `hm` using `congrArg LinearMap.toMatrix' hl`. Rewrite `hm` using `[toMatrix'_lin, toMatrix'_lin]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem ext_lin {g g' : HA R σ J} (h : ∀ v, lin R σ J g v = lin R σ J g' v) : g = g' := by
   have hl : lin R σ J g = lin R σ J g' := LinearMap.ext h
@@ -75,7 +75,7 @@ def piMat (g : HA R σ J) : Matrix (Fin M) (Fin M) (R ⊗[F] E) :=
   LinearMap.toMatrix' ((datR R σ J P T).Pi (lin R σ J g))
 
 /- English proof (translation)
-Unfold `piMat`. Conclude with `LinearMap.toMatrix'_mulVec _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem piMat_mulVec (g : HA R σ J) (v : Fin M → R ⊗[F] E) :
     Matrix.mulVec (piMat (P := P) (T := T) g) v = (datR R σ J P T).Pi (lin R σ J g) v := by
@@ -83,15 +83,15 @@ theorem piMat_mulVec (g : HA R σ J) (v : Fin M → R ⊗[F] E) :
   exact LinearMap.toMatrix'_mulVec _ _
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨h1, h2⟩` from `hg`. Establish `hz : ∀ a : Fin r, hR R σ J (ratV (F` using `F) R (P.e a)) (ratV (F := F) R P.z) = 0 := by`. Introduce `a`. Use `hP.2.2.2.1 a` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `hR ratV hE at *`. Unfold `Formalism.UG.hform sigR JR inclR at *`. Establish `h3` using `congrArg (Algebra.TensorProduct.includeRight (R := F) (A := R) (B := E)) this`. Simplify `h3` using `[Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul, map_sum, map_mul]`. Unfold `Ssub uniFlag F0`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Introduce `b`. Use `Fin.lastCases ?_ (fun b' => ?_) b` and prove the remaining obligations. Establish `key` using `h2 (ratV (F := F) R P.z) hz`. Simplify using `only [Fin.snoc_last]`. Unfold `spanR at key ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `Submodule.span_mono ?_ key` and prove the remaining obligations. Introduce and unpack `x ⟨a, -, rfl⟩`. Conclude with `⟨Fin.castSucc a, Fin.castSucc_lt_last a, by simp⟩`. Simplify using `only [Fin.snoc_castSucc]`. Unfold `UniC at h1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Establish `key` using `h1 b'`. Unfold `spanR at key ⊢`. Use `Submodule.span_mono ?_ key` and prove the remaining obligations. Introduce and unpack `x ⟨a, ha, rfl⟩`. Conclude with `⟨Fin.castSucc a, Fin.castSucc_lt_castSucc_iff.mpr ha, by simp⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem N_le_S' (hP : P.IsStd σ J T) : Nsub R σ J P ≤ Ssub R σ J P := by
   intro g hg
@@ -122,11 +122,11 @@ theorem N_le_S' (hP : P.IsStd σ J T) : Nsub R σ J P ≤ Ssub R σ J P := by
     exact ⟨Fin.castSucc a, Fin.castSucc_lt_castSucc_iff.mpr ha, by simp⟩
 
 /- English proof (translation)
-Introduce `g hg`. Unfold `Hsub stabT tupH at hg`. Rewrite `hg` using `[MulAction.mem_stabilizer_iff]`. Unfold `Ssub uniFlag F0 UniC`. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun hg (Fin.castAdd r b)` as an intermediate fact. Unfold `ratTup at this`. Express the relevant statement in the definitionally equal form `lin R σ J g (ratV (F := F) R (Fin.append (F0 P) P.f (Fin.castAdd r b))) = ratV (F := F) R (Fin.append (F0 P) P.f (Fin.castAdd r b)) at this`. Rewrite `this` using `[Fin.append_left]`. Use `show lin R σ J g (ratV (F := F) R (F0 P b)) - ratV (F := F) R (F0 P b) ∈ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, sub_self]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem H_le_S : Hsub R σ J P ≤ Ssub R σ J P := by
   intro g hg
@@ -144,17 +144,15 @@ theorem H_le_S : Hsub R σ J P ≤ Ssub R σ J P := by
   exact Submodule.zero_mem _
 
 /- English proof (translation)
-Establish `hfix : ∀ b, lin R σ J h (ratV (F` using `F) R (P.e b)) = ratV (F := F) R (P.e b) := by`. Introduce `b`. Establish `hh'` using `hh`. Unfold `Hsub stabT tupH at hh'`. Rewrite `hh'` using `[MulAction.mem_stabilizer_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun hh' (Fin.castAdd r (Fin.castSucc b))` as an intermediate fact. Unfold `ratTup at this`. Express the relevant statement in the definitionally equal form `lin R σ J h (ratV (F := F) R (Fin.append (F0 P) P.f (Fin.castAdd r (Fin.castSucc b)))) = ratV (F := F) R (Fin.append (F0 P) P.f (Fin.castAdd r (Fin.castSucc b))) at this`. Rewrite `this` using `[Fin.append_left]`. Simplify `this` using `[F0, Fin.snoc_castSucc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `huni : h ∈ uniFlag R σ J P.e` using `by show UniC R σ J P.e h`. Introduce `b`. Rewrite using `[hfix b, sub_self]`. Conclude with `Submodule.zero_mem _`. Take `⟨hn1, hn2⟩` from `hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun v hv => ?_⟩` and prove the remaining obligations. Conclude with `(uniFlag R σ J P.e).mul_mem ((uniFlag R σ J P.e).mul_mem huni hn1) ((uniFlag R σ J P.e).inv_mem huni)`. Establish `hu : InXperp R σ J P (lin R σ J h⁻¹ v)`. Introduce `a`. Rewrite using `[← hR_lin h, lin_lin_inv, hfix a]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hv a`. Establish `h1` using `hn2 _ hu`. Establish `h2 : lin R σ J h (lin R σ J n (lin R σ J h⁻¹ v) - lin R σ J h⁻¹ v) ∈ spanR (F` using `F) R P.e Set.univ := uni_map_le huni Set.univ (fun _ _ _ _ => Set.mem_univ _) (Submodule.mem_map_of_mem h1)`. Rewrite `h2` using `[map_sub, lin_lin_inv]`. Rewrite using `[lin_mul, lin_mul]`.
-
-Simplify using `using h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_N {h n : HA R σ J} (hh : h ∈ Hsub R σ J P) (hn : n ∈ Nsub R σ J P) :
     h * n * h⁻¹ ∈ Nsub R σ J P := by
@@ -194,9 +192,9 @@ variable (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (hP : P.IsStd σ J 
 include hσσ hJ hP
 
 /- English proof (translation)
-Unfold `spanR`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨b, hb, rfl⟩`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Proceed by induction on `b using Fin.lastCases with`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `last => exact absurd hb hs`. Consider the case `cast b' => exact ⟨b', by simp [F0, datR]⟩`.
+Treat this case separately. Treat this case separately.
 -/
 private theorem spanR_of_last_not_mem (s : Set (Fin (r + 1))) (hs : Fin.last r ∉ s) :
     spanR (F := F) R (F0 P) s ≤ Submodule.span (R ⊗[F] E) (Set.range (datR R σ J P T).e) := by
@@ -209,9 +207,9 @@ private theorem spanR_of_last_not_mem (s : Set (Fin (r + 1))) (hs : Fin.last r �
   | cast b' => exact ⟨b', by simp [F0, datR]⟩
 
 /- English proof (translation)
-Introduce `a`. Establish `key` using `(show UniC R σ J (F0 P) g from hg) (Fin.castSucc a)`. Establish `hle` using `spanR_of_last_not_mem (R := R) (σ := σ) (J := J) (P := P) (T := T) hσσ hJ hP {b | b < Fin.castSucc a} (fun h => lt_asymm h (Fin.castSucc_lt_last a))`. Establish `h2` using `Submodule.add_mem _ (hle key) (Submodule.subset_span (⟨a, rfl⟩ : (datR R σ J P T).e a ∈ Set.range (datR R σ J P T).e))`. Establish `hF : ratV (F` using `F) R (F0 P (Fin.castSucc a)) = (datR R σ J P T).e a := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[F0, datR]`. Rewrite `h2` using `[hF, sub_add_cancel]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mapX_lin_of_mem_Ssub {g : HA R σ J} (hg : g ∈ Ssub R σ J P) :
     (datR R σ J P T).MapX (lin R σ J g) := by
@@ -227,9 +225,9 @@ private theorem mapX_lin_of_mem_Ssub {g : HA R σ J} (hg : g ∈ Ssub R σ J P) 
   exact h2
 
 /- English proof (translation)
-Establish `hgi : g⁻¹ ∈ Ssub R σ J P` using `(Ssub R σ J P).inv_mem hg`. Use `SemiG.Dat.mapW_of_inv (D := datR R σ J P T) (Si := lin R σ J g⁻¹) (fun v => by rw [lin_lin_inv]) (fun x y => by show hR R σ J (lin R σ J g x) (lin R σ J g y) = hR R σ J x y` and prove the remaining obligations. Rewrite using `[hR_lin]) (mapX_lin_of_mem_Ssub hσσ hJ hP hgi) ?_`. Establish `key` using `(show UniC R σ J (F0 P) g⁻¹ from hgi) (Fin.last r)`. Establish `hle` using `spanR_of_last_not_mem (R := R) (σ := σ) (J := J) (P := P) (T := T) hσσ hJ hP {b | b < Fin.last r} (fun h => lt_irrefl (Fin.last r) h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : ratV (F` using `F) R (F0 P (Fin.last r)) = (datR R σ J P T).z := by`. Simplify using `[F0, datR]`. Rewrite `key` using `[hF]`. Conclude with `hle key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mapW_lin_of_mem_Ssub {g : HA R σ J} (hg : g ∈ Ssub R σ J P) :
     (datR R σ J P T).MapW (lin R σ J g) := by
@@ -247,7 +245,7 @@ private theorem mapW_lin_of_mem_Ssub {g : HA R σ J} (hg : g ∈ Ssub R σ J P) 
   exact hle key
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[LinearMap.comp_apply, SemiG.Dat.Pi_comp (D := datR R σ J P T) (datR_hyp hσσ hJ hP) (mapX_lin_of_mem_Ssub hσσ hJ hP hg) (mapW_lin_of_mem_Ssub hσσ hJ hP hg')]`. Establish `hl : lin R σ J (g * g') = lin R σ J g ∘ₗ lin R σ J g'` using `LinearMap.ext fun x => by rw [lin_mul]; rfl`. Rewrite using `[hl]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Pi_lin_mul {g g' : HA R σ J} (hg : g ∈ Ssub R σ J P) (hg' : g' ∈ Ssub R σ J P) :
     (datR R σ J P T).Pi (lin R σ J (g * g')) =
@@ -261,41 +259,37 @@ theorem Pi_lin_mul {g g' : HA R σ J} (hg : g ∈ Ssub R σ J P) (hg' : g' ∈ S
   rw [hl]
 
 /- English proof (translation)
-Establish `hsym : ∀ x y : Fin M → E, hE σ J y x = σ (hE σ J x y)`. Introduce `x y`. Unfold `hE Formalism.UG.hform`. Simplify using `only [map_sum, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe, hσσ, hJ.1]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hRrat : ∀ x y : Fin M → E, (datR R σ J P T).hL (ratV (F` using `F) R x) (ratV (F := F) R y) = inclR (F := F) R (hE σ J x y) := by`. Introduce `x y`. Use `show (datR R σ J P T).h (ratV (F := F) R x) (ratV (F := F) R y) = _`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `SemiG.Dat.h datR ratV hE Formalism.UG.hform sigR JR inclR`. Simplify using `[Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul, map_sum, map_mul]`. Establish `hee : ∀ b a, (datR R σ J P T).hL ((datR R σ J P T).e b) ((datR R σ J P T).e a) = 0`. Introduce `b a`. Use `show (datR R σ J P T).hL (ratV (F := F) R (P.e b)) (ratV (F := F) R (P.e a)) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hRrat, hP.1 b a, map_zero]`. Establish `hff : ∀ b a, (datR R σ J P T).hL ((datR R σ J P T).f b) ((datR R σ J P T).f a) = 0`. Introduce `b a`. Use `show (datR R σ J P T).hL (ratV (F := F) R (P.f b)) (ratV (F := F) R (P.f a)) = 0`. Rewrite using `[hRrat, hP.2.1 b a, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hef : ∀ b a, (datR R σ J P T).hL ((datR R σ J P T).e b) ((datR R σ J P T).f a) = if b = a then 1 else 0`. Introduce `b a`. Use `show (datR R σ J P T).hL (ratV (F := F) R (P.e b)) (ratV (F := F) R (P.f a)) = _`. Rewrite using `[hRrat, hP.2.2.1 b a]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hfe : ∀ b a, (datR R σ J P T).hL ((datR R σ J P T).f b) ((datR R σ J P T).e a) = if b = a then 1 else 0`. Introduce `b a`. Use `show (datR R σ J P T).hL (ratV (F := F) R (P.f b)) (ratV (F := F) R (P.e a)) = _`. Rewrite using `[hRrat, hsym, hP.2.2.1 a b]`. Distinguish the cases in `h : b = a`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm h), if_neg h]`. Simplify using the standard rewrite rules. Establish `hez : ∀ b, (datR R σ J P T).hL ((datR R σ J P T).e b) (datR R σ J P T).z = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Use `show (datR R σ J P T).hL (ratV (F := F) R (P.e b)) (ratV (F := F) R P.z) = 0`. Rewrite using `[hRrat, hP.2.2.2.1 b, map_zero]`. Establish `hfz : ∀ b, (datR R σ J P T).hL ((datR R σ J P T).f b) (datR R σ J P T).z = 0`. Introduce `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (datR R σ J P T).hL (ratV (F := F) R (P.f b)) (ratV (F := F) R P.z) = 0`. Rewrite using `[hRrat, hP.2.2.2.2.1 b, map_zero]`. Establish `hze : ∀ a, (datR R σ J P T).hL (datR R σ J P T).z ((datR R σ J P T).e a) = 0`. Introduce `a`. Use `show (datR R σ J P T).hL (ratV (F := F) R P.z) (ratV (F := F) R (P.e a)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hRrat, hsym, hP.2.2.2.1 a, map_zero, map_zero]`. Establish `hzf : ∀ a, (datR R σ J P T).hL (datR R σ J P T).z ((datR R σ J P T).f a) = 0`. Introduce `a`. Use `show (datR R σ J P T).hL (ratV (F := F) R P.z) (ratV (F := F) R (P.f a)) = 0`. Rewrite using `[hRrat, hsym, hP.2.2.2.2.1 a, map_zero, map_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzz : (datR R σ J P T).tz * (datR R σ J P T).hL (datR R σ J P T).z (datR R σ J P T).z = 1` using `by show inclR (F := F) R ((algebraMap F E (-T))⁻¹) * (datR R σ J P T).hL (ratV (F := F) R P.z) (ratV (F := F) R P.z) = 1`. Rewrite using `[hRrat, hP.2.2.2.2.2.1, ← map_mul, inv_mul_cancel₀, map_one]`. Conclude with `(map_ne_zero _).mpr (neg_ne_zero.mpr hP.2.2.2.2.2.2)`. Establish `hpU : ∀ u, (datR R σ J P T).pU u = ∑ a, (datR R σ J P T).hL ((datR R σ J P T).f a) u • (datR R σ J P T).e a + ∑ a, (datR R σ J P T).hL ((datR R σ J P T).e a) u • (datR R σ J P T).f a + ((datR R σ J P T).tz * (datR R σ J P T).hL (datR R σ J P T).z u) • (datR R σ J P T).z`. Introduce `u`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [SemiG.Dat.pU, SemiG.Dat.pX, SemiG.Dat.pXv, SemiG.Dat.pz, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.smul_apply, smul_eq_mul]`. Establish `key : ∀ v, (datR R σ J P T).pU ((datR R σ J P T).pU v) = (datR R σ J P T).pU v`. Introduce `v`. Establish `c1 : ∀ b, (datR R σ J P T).hL ((datR R σ J P T).f b) ((datR R σ J P T).pU v) = (datR R σ J P T).hL ((datR R σ J P T).f b) v`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpU v]`. Simplify using `only [map_add, map_sum, map_smul, smul_eq_mul, hfe b, hff b, hfz b]`. Simplify using the standard rewrite rules. Establish `c2 : ∀ b, (datR R σ J P T).hL ((datR R σ J P T).e b) ((datR R σ J P T).pU v) = (datR R σ J P T).hL ((datR R σ J P T).e b) v`. Introduce `b`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hpU v]`. Simplify using `only [map_add, map_sum, map_smul, smul_eq_mul, hee b, hef b, hez b]`. Simplify using the standard rewrite rules. Establish `c3 : (datR R σ J P T).tz * (datR R σ J P T).hL (datR R σ J P T).z ((datR R σ J P T).pU v) = (datR R σ J P T).tz * (datR R σ J P T).hL (datR R σ J P T).z v`. Rewrite using `[hpU v]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [map_add, map_sum, map_smul, smul_eq_mul, hze, hzf, mul_zero, Finset.sum_const_zero, zero_add]`. Take the linear combination `((datR R σ J P T).tz * (datR R σ J P T).hL (datR R σ J P T).z v) * hzz`. Rewrite using `[hpU ((datR R σ J P T).pU v), c3]`. Simplify using `only [c1, c2]`. Conclude with `(hpU v).symm`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hid : lin R σ J 1 = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Unfold `lin`. Use `show (1 : Matrix (Fin M) (Fin M) (R ⊗[F] E)).mulVecLin v = v`.
-
-Rewrite using `[Matrix.mulVecLin_apply, Matrix.one_mulVec]`. Unfold `SemiG.Dat.Pi`. Rewrite using `[hid, LinearMap.id_comp]`. Unfold `SemiG.Dat.pW`. Apply `LinearMap.ext` to reduce the goal to its premises.
-
-Introduce `v`. Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply, map_sub, key]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem Pi_lin_one : (datR R σ J P T).Pi (lin R σ J 1) = LinearMap.id := by
   classical
@@ -410,7 +404,7 @@ def piU (g : HA R σ J) (hg : g ∈ Ssub R σ J P) : GL (Fin M) (R ⊗[F] E) whe
       Pi_lin_one hσσ hJ hP, LinearMap.toMatrix'_id]
 
 /- English proof (translation)
-Introduce `x y`. Use `show hR R σ J (lin R σ J g x) (lin R σ J g y) = hR R σ J x y`. Rewrite using `[hR_lin]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem uni_lin' (g : HA R σ J) : (datR R σ J P T).Uni (lin R σ J g) := by
   intro x y
@@ -418,7 +412,7 @@ private theorem uni_lin' (g : HA R σ J) : (datR R σ J P T).Uni (lin R σ J g) 
   rw [hR_lin]
 
 /- English proof (translation)
-Establish `hU` using `SemiG.Dat.Pi_uni (D := datR R σ J P T) (datR_hyp hσσ hJ hP) (mapW_lin_of_mem_Ssub hσσ hJ hP hg) (uni_lin' hσσ hJ hP g)`. Establish `hm` using `uj_of_uni (sigR R σ) (JR R J) (piMat (P := P) (T := T) g) (fun x y => by`. Rewrite using `[piMat_mulVec, piMat_mulVec]`. Conclude with `hU x y)`. Conclude with `hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piU_mem (g : HA R σ J) (hg : g ∈ Ssub R σ J P) : piU hσσ hJ hP g hg ∈ HR R σ J := by
   have hU := SemiG.Dat.Pi_uni (D := datR R σ J P T) (datR_hyp hσσ hJ hP)
@@ -432,7 +426,7 @@ def piG (g : HA R σ J) (hg : g ∈ Ssub R σ J P) : HA R σ J :=
   ⟨piU hσσ hJ hP g hg, piU_mem hσσ hJ hP g hg⟩
 
 /- English proof (translation)
-Unfold `lin`. Conclude with `Matrix.toLin'_toMatrix' _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lin_piG (g : HA R σ J) (hg : g ∈ Ssub R σ J P) :
     lin R σ J (piG hσσ hJ hP g hg) = (datR R σ J P T).Pi (lin R σ J g) := by

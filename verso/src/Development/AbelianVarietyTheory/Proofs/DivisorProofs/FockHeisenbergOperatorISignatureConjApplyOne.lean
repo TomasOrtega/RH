@@ -7,7 +7,7 @@ noncomputable section
 namespace GlobalTheory.HeisTwist
 
 /- English proof (translation)
-Rewrite using `[Jm, Formalism.UG.Jpq, ← Matrix.fromBlocks_diagonal]`. Simplify using `[Matrix.diagonal_neg]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.diagonal_apply, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_eq_diagonal (p q : ℕ) :
     Jm p q = Matrix.diagonal (Sum.elim (fun _ : Fin p => (1 : ℂ)) (fun _ : Fin q => (-1 : ℂ))) := by
@@ -17,7 +17,7 @@ theorem jm_eq_diagonal (p q : ℕ) :
   by_cases h : i = j <;> simp [Matrix.diagonal_apply, h]
 
 /- English proof (translation)
-Rewrite using `[jm_eq_diagonal, jm_eq_diagonal, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_mul_mul_jm_apply {P Q R S : ℕ} (c : Matrix (Ix P Q) (Ix R S) ℂ) (a : Ix P Q) (b : Ix R S) :
     (Jm P Q * c * Jm R S) a b = lineSign a b * c a b := by
@@ -25,7 +25,7 @@ theorem jm_mul_mul_jm_apply {P Q R S : ℕ} (c : Matrix (Ix P Q) (Ix R S) ℂ) (
   rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases l with ⟨a | a, b | b⟩ <;>`. Apply the tactic sequence `simp [raiB, lowB, linePos, lineSign, smul_sub, smul_smul] <;> ring_nf <;> simp [Complex.conj_I] <;> module`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem term_one {P Q R S : ℕ} (c : Matrix (Ix P Q) (Ix R S) ℂ) (l : Ln P Q R S) :
     (Complex.I * lineSign l.1 l.2 * c l.1 l.2) • raiB l (1 : Pol P Q R S)
@@ -39,9 +39,9 @@ end GlobalTheory.HeisTwist
 namespace GlobalTheory.RealLift
 
 /- English proof (translation)
-Simplify using `only [heisOp, LinearMap.smul_apply, LinearMap.sum_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm Complex.I]`. Use `congr 1`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Matrix.smul_apply, GlobalTheory.HeisTwist.jm_mul_mul_jm_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[← GlobalTheory.HeisTwist.term_one c l, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heisOp_twist_one {P Q R S : ℕ} (c : Matrix (Ix P Q) (Ix R S) ℂ) :
     heisOp (Complex.I • (Jm P Q * c * Jm R S)) 1 = Complex.I • heisOp c 1 := by

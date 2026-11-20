@@ -16,7 +16,7 @@ variable {K : Type*} [Field K] {r : ℕ}
 def Sg (r : ℕ) : Matrix (Fin (r + 1)) (Fin (r + 1)) K := Matrix.diagonal fun b => (-1) ^ (r - b.val)
 
 /- English proof (translation)
-Rewrite using `[Sg, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Sg_mul_Sg : (Sg r : Matrix (Fin (r + 1)) (Fin (r + 1)) K) * Sg r = 1 := by
   rw [Sg, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -26,7 +26,7 @@ theorem Sg_mul_Sg : (Sg r : Matrix (Fin (r + 1)) (Fin (r + 1)) K) * Sg r = 1 := 
   simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Sg, Matrix.mul_diagonal]`. Use `show (-1) ^ (r - b.val) * Z a b = _`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem zhatOM_eq (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) : ZhatOM Z = Z * Sg r := by
   ext a b
@@ -35,7 +35,7 @@ theorem zhatOM_eq (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) : ZhatOM Z = Z * Sg
   ring
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Sg, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Use `⟨fun hji => by rw [(h i j).1 hji]; ring, fun hij => ?_⟩` and prove the remaining obligations. Substitute `hij` using the available equality. Rewrite using `[(h i i).2 rfl, mul_one, ← pow_add, ← two_mul, pow_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -52,15 +52,15 @@ end Sg
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
 /- English proof (translation)
-Take `⟨L1, U1, hL1, hU1, e1⟩` from `h1`. Take `⟨L2, U2, hL2, hU2, e2⟩` from `h2`. Rewrite `e1`, `e2` using `[zhatOM_eq]`. Establish `hL1d : IsUnit L1.det` using `by rw [loUni_det hL1]; exact isUnit_one`. Establish `hU1d : IsUnit U1.det` using `by rw [upUni_det hU1]; exact isUnit_one`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L := L2 * L1⁻¹ with hL`. Use `set U := Sg r * (U1⁻¹ * U2) * Sg r with hU`. Establish `hLl : IsLoUni L` using `loUni_mul hL2 (loUni_inv hL1)`. Establish `hUu : IsUpUni U` using `upUni_Sg (upUni_mul (upUni_inv hU1) hU2)`. Establish `hZ : Zhat F F2 = L * Zhat F F1 * U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `z1 : Zhat F F1 = L1 * ptMat w * U1 * Sg r`. Rewrite using `[← e1, Matrix.mul_assoc, Sg_mul_Sg, Matrix.mul_one]`. Establish `z2 : Zhat F F2 = L2 * ptMat w * U2 * Sg r`. Rewrite using `[← e2, Matrix.mul_assoc, Sg_mul_Sg, Matrix.mul_one]`. Rewrite using `[z2, z1, hL, hU]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Sg r) (Sg r), Sg_mul_Sg, Matrix.one_mul, ← Matrix.mul_assoc U1 U1⁻¹, Matrix.mul_nonsing_inv _ hU1d, Matrix.one_mul, ← Matrix.mul_assoc L1⁻¹ L1, Matrix.nonsing_inv_mul _ hL1d, Matrix.one_mul]`. Use `set M := Lᴴ with hM`. Establish `hMu : IsUpUni M` using `loUni_iff_ct.1 hLl`. Establish `hZ' : Zhat F F2 = Mᴴ * Zhat F F1 * U` using `by rw [hM, conjTranspose_conjTranspose]; exact hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨g, hg, hgx⟩` from `witt_tuple (tupMU F F1 M U) (Sum.elim F.fvec F2.fvec) (tupMU_indep F F1 M U hMu hUu hG1) (PI.PairCorankPos.W.linIndep F F2 hG2) (gram_moved F F1 F2 M U hMu hUu hZ')`. Use `⟨g, hg, ⟨M, hMu, fun b => ?_⟩, U, hUu, fun b => hgx (Sum.inr b)⟩` and prove the remaining obligations. Use `hgx (Sum.inl b)` as an intermediate fact. Simplify using `only [tupMU, Sum.elim_inl] at this`. Rewrite using `[← this, LinearEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem same_cell (F : FlagG S r T) (F1 F2 : FlagG S r T') (hG1 : Gflag F F1 ≠ 0) (hG2 : Gflag F F2 ≠ 0)
     (w : Point E (r + 1)) (h1 : IsInCell (ZhatOM (Zhat F F1)) w) (h2 : IsInCell (ZhatOM (Zhat F F2)) w) :

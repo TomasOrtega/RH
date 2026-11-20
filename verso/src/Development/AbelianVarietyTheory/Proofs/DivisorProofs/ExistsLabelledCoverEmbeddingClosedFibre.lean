@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D C`. Take `⟨R₁, i₁, i₂, i₃, ρ, D₁, C₁, hρ, hD, hS⟩` from `GlobalTheory.T.exists_sections_prescribed_reduction_finite_ext R hR D C`. Use `hR.2` as an intermediate fact. Establish `h₁ : Base R₁` using `⟨hρ.1, (RingHom.charZero_iff hρ.2.1).1 this⟩`. Take `⟨C', E, hE⟩` from `GlobalTheory.T.exists_closedFibre_theta_embedding_of_sections R₁ h₁ D₁ C₁ hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨R₁, i₁, i₂, i₃, ρ, D₁, C', E, hρ, hD, hE⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Mum.exists_emb_of_labCover : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D), ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (ρ : R →+* R') (D' : DegData R' (maximalIdeal R')) (C' : LabCover D') (E : Emb C'.π C'.G), FinExt ρ ∧ Nonempty (IsPullDeg ρ D.toPre D'.toPre) ∧ E.Theta C'.P.L.L := by
   intro R _ _ _ hR D C

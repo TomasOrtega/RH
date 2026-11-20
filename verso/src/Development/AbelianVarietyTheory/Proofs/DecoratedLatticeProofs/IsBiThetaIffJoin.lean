@@ -34,7 +34,7 @@ def sumDec (A B : HSp D) : OrthDec (GlobalTheory.Doubling.hsum A B) A B where
   rank_add := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem finPart_conj (z : AE D) : finPart D (cA D z) = sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig (finPart D z) := by
   induction z using TensorProduct.induction_on with
@@ -43,7 +43,7 @@ theorem finPart_conj (z : AE D) : finPart D (cA D z) = sigR (Formalism.MainNotio
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem infPart_conj (z : AE D) : infPart D (cA D z) = sigR (Ainf D.host.F) D.sp.cm.sig (infPart D z) := by
   induction z using TensorProduct.induction_on with
@@ -52,9 +52,9 @@ theorem infPart_conj (z : AE D) : infPart D (cA D z) = sigR (Ainf D.host.F) D.sp
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `map_mul_eq_zero_right _ _ (map_mul_eq_zero_left _ ?_ _)` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Use `congrFun (congrFun hx j) i` as an intermediate fact. Express the relevant statement in the definitionally equal form `finPart D (x j i) = 0 at this`. Express the relevant statement in the definitionally equal form `finPart D (cA D (x j i)) = 0`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[finPart_conj, this, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_dagger (S T : HSp D) {x : WO S T} (hx : x.map (finPart D) = 0) : (dagger S T x).map (finPart D) = 0 := by
   refine map_mul_eq_zero_right _ _ (map_mul_eq_zero_left _ ?_ _)
@@ -65,9 +65,9 @@ theorem fin_dagger (S T : HSp D) {x : WO S T} (hx : x.map (finPart D) = 0) : (da
   rw [finPart_conj, this, map_zero]
 
 /- English proof (translation)
-Use `map_mul_eq_zero_right _ _ (map_mul_eq_zero_left _ ?_ _)` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Use `congrFun (congrFun hx j) i` as an intermediate fact. Express the relevant statement in the definitionally equal form `infPart D (x j i) = 0 at this`. Express the relevant statement in the definitionally equal form `infPart D (cA D (x j i)) = 0`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[infPart_conj, this, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inf_dagger (S T : HSp D) {x : WO S T} (hx : x.map (infPart D) = 0) : (dagger S T x).map (infPart D) = 0 := by
   refine map_mul_eq_zero_right _ _ (map_mul_eq_zero_left _ ?_ _)
@@ -83,31 +83,31 @@ def daggerHom (S T : HSp D) : WO S T →+ WO T S where
   map_add' x y := by simp only [dagger, adj_add, Matrix.add_mul, Matrix.mul_add]
 
 /- English proof (translation)
-The claim follows from `(daggerHom S T).map_add x y`.
+A detailed English derivation is pending.
 -/
 theorem dagger_add (S T : HSp D) (x y : WO S T) : dagger S T (x + y) = dagger S T x + dagger S T y :=
   (daggerHom S T).map_add x y
 
 /- English proof (translation)
-The claim follows from `(daggerHom S T).map_zero`.
+A detailed English derivation is pending.
 -/
 theorem dagger_zero (S T : HSp D) : dagger S T 0 = 0 := (daggerHom S T).map_zero
 
 /- English proof (translation)
-The claim follows from `continuous_const.matrix_mul (continuous_adj.matrix_mul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_dagger (S T : HSp D) : Continuous (dagger S T) :=
   continuous_const.matrix_mul (continuous_adj.matrix_mul continuous_const)
 
 /- English proof (translation)
-Rewrite using `[rat_mul, rat_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dagger_rat (S T : HSp D) (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     dagger S T (rat γ) = rat (S.gram⁻¹ * (γᴴ * T.gram)) := by
   rw [rat_mul, rat_mul]; rfl
 
 /- English proof (translation)
-Establish `: (negSp S).gram⁻¹ = -S.gram⁻¹`. Use `Matrix.inv_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[negSp_gram, Matrix.neg_mul, Matrix.mul_neg, neg_neg, Matrix.mul_nonsing_inv _ (gram_isUnit_det S)]`. Rewrite using `[giA, this, rat_neg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem giA_negSp (S : HSp D) : giA (negSp S) = -giA S := by
   have : (negSp S).gram⁻¹ = -S.gram⁻¹ := by
@@ -116,9 +116,9 @@ theorem giA_negSp (S : HSp D) : giA (negSp S) = -giA S := by
   rw [giA, this, rat_neg]; rfl
 
 /- English proof (translation)
-Establish `h1 : hO S T (dagger T S x) (dagger T S y) = hO T S y x`. Simplify using `only [hO_eq_trace, dagger, adj_mul, adj_adj, adj_gA, adj_giA, Matrix.mul_assoc, giA_gA_cancel, gA_giA_cancel]`. Rewrite using `[trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Establish `h2 : hO (negSp T) S x y = -hO T S x y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hO_eq_trace, hO_eq_trace, giA_negSp, Matrix.neg_mul, trace_neg]`. Rewrite using `[symplOH_eq, h1, ← symplOH_eq, symplOH_skew, symplOH_eq, symplOH_eq, h2, map_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_dagger (S T : HSp D) (x y : WO T S) :
     symplOH S T (dagger T S x) (dagger T S y) = symplOH (negSp T) S x y := by
@@ -159,74 +159,74 @@ Both sides reduce to the same expression.
 theorem inrH_apply (v : WO S A') : inrH d S v = (d.resS S).symm (0, dagger S A' v) := rfl
 
 /- English proof (translation)
-Rewrite using `[fstH_apply, inlH_apply, AddEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fst_inl (u : WO A S) : fstH d S (inlH d S u) = u := by
   rw [fstH_apply, inlH_apply, AddEquiv.apply_symm_apply]
 /- English proof (translation)
-Rewrite using `[fstH_apply, inrH_apply, AddEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fst_inr (v : WO S A') : fstH d S (inrH d S v) = 0 := by
   rw [fstH_apply, inrH_apply, AddEquiv.apply_symm_apply]
 /- English proof (translation)
-Rewrite using `[sndH_apply, inlH_apply, AddEquiv.apply_symm_apply]`. Conclude with `dagger_zero A' S`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snd_inl (u : WO A S) : sndH d S (inlH d S u) = 0 := by
   rw [sndH_apply, inlH_apply, AddEquiv.apply_symm_apply]; exact dagger_zero A' S
 /- English proof (translation)
-Rewrite using `[sndH_apply, inrH_apply, AddEquiv.apply_symm_apply]`. Conclude with `dagger_dagger S A' v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snd_inr (v : WO S A') : sndH d S (inrH d S v) = v := by
   rw [sndH_apply, inrH_apply, AddEquiv.apply_symm_apply]; exact dagger_dagger S A' v
 
 /- English proof (translation)
-The claim follows from `continuous_fst.comp (d.continuous_resS S)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fstH : Continuous (fstH d S) := continuous_fst.comp (d.continuous_resS S)
 /- English proof (translation)
-The claim follows from `(continuous_dagger A' S).comp (continuous_snd.comp (d.continuous_resS S))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sndH : Continuous (sndH d S) :=
   (continuous_dagger A' S).comp (continuous_snd.comp (d.continuous_resS S))
 /- English proof (translation)
-The claim follows from `(d.continuous_resS_symm S).comp (continuous_id.prodMk continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_inlH : Continuous (inlH d S) :=
   (d.continuous_resS_symm S).comp (continuous_id.prodMk continuous_const)
 /- English proof (translation)
-The claim follows from `(d.continuous_resS_symm S).comp (continuous_const.prodMk (continuous_dagger S A'))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_inrH : Continuous (inrH d S) :=
   (d.continuous_resS_symm S).comp (continuous_const.prodMk (continuous_dagger S A'))
 
 /- English proof (translation)
-Rewrite using `[d.symplOH_resS, sndH_apply, sndH_apply, symplOH_dagger]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem symplOH_split (x y : WO W S) :
     symplOH W S x y = symplOH A S (fstH d S x) (fstH d S y) + symplOH S A' (sndH d S x) (sndH d S y) := by
   rw [d.symplOH_resS, sndH_apply, sndH_apply, symplOH_dagger]; rfl
 
 /- English proof (translation)
-Rewrite using `[d.resS_symm_apply, Matrix.map_add _ (map_add φ), map_mul_eq_zero_left φ hu, map_mul_eq_zero_left φ hv, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_resS_symm {B : Type} [CommRing B] (φ : AE D →+* B) {u : WO A S} {v : WO (negSp A') S}
     (hu : u.map φ = 0) (hv : v.map φ = 0) : ((d.resS S).symm (u, v)).map φ = 0 := by
   rw [d.resS_symm_apply, Matrix.map_add _ (map_add φ), map_mul_eq_zero_left φ hu, map_mul_eq_zero_left φ hv, add_zero]
 
 /- English proof (translation)
-The claim follows from `map_resS_symm d S φ hu (Matrix.map_zero _ φ.map_zero)`.
+A detailed English derivation is pending.
 -/
 theorem map_inlH {B : Type} [CommRing B] (φ : AE D →+* B) {u : WO A S} (hu : u.map φ = 0) : (inlH d S u).map φ = 0 :=
   map_resS_symm d S φ hu (Matrix.map_zero _ φ.map_zero)
 
 /- English proof (translation)
-The claim follows from `map_resS_symm d S _ (Matrix.map_zero _ (finPart D).map_zero) (fin_dagger S A' hv)`.
+A detailed English derivation is pending.
 -/
 theorem fin_inrH {v : WO S A'} (hv : v.map (finPart D) = 0) : (inrH d S v).map (finPart D) = 0 :=
   map_resS_symm d S _ (Matrix.map_zero _ (finPart D).map_zero) (fin_dagger S A' hv)
 
 /- English proof (translation)
-The claim follows from `map_resS_symm d S _ (Matrix.map_zero _ (infPart D).map_zero) (inf_dagger S A' hv)`.
+A detailed English derivation is pending.
 -/
 theorem inf_inrH {v : WO S A'} (hv : v.map (infPart D) = 0) : (inrH d S v).map (infPart D) = 0 :=
   map_resS_symm d S _ (Matrix.map_zero _ (infPart D).map_zero) (inf_dagger S A' hv)
@@ -239,14 +239,14 @@ Both sides reduce to the same expression.
 theorem join_apply (C : WO A S → WO S A' → ℂ) (x : WO W S) : join d S C x = C (fstH d S x) (sndH d S x) := rfl
 
 /- English proof (translation)
-Rewrite using `[join, AddEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem join_symm (C : WO A S → WO S A' → ℂ) (u : WO A S) (y : WO (negSp A') S) :
     join d S C ((d.resS S).symm (u, y)) = C u (dagger A' S y) := by
   rw [join, AddEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[join_apply, map_add, map_add, fst_inl, fst_inr, snd_inl, snd_inr, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem join_inl_inr (C : WO A S → WO S A' → ℂ) (u : WO A S) (v : WO S A') :
     join d S C (inlH d S u + inrH d S v) = C u v := by
@@ -255,13 +255,13 @@ theorem join_inl_inr (C : WO A S → WO S A' → ℂ) (u : WO A S) (v : WO S A')
 variable {S} {ψ : AddChar (AF D.host.F) ℂ} {C : WO A S → WO S A' → ℂ}
 
 /- English proof (translation)
-Establish `e₁ : fstH d S (ratW S W γ) = ratW S A (γ * d.iA)` using `(rat_mul γ d.iA).symm`. Establish `e₂ : sndH d S (ratW S W γ) = ratW A' S (A'.gram⁻¹ * ((γ * d.iB)ᴴ * S.gram))`. Rewrite using `[ratW_eq A' S, ← dagger_rat A' S, rat_mul]`. Both sides reduce to the same expression. Rewrite using `[join_apply, join_apply, map_add, map_add, symplOH_split d, e₁, e₂, h.quasiL, h.quasiR, neg_add, AddChar.map_add_eq_mul, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `level := by`. Take `⟨U₁, hU₁, k₁⟩` from `h.levL`. Take `⟨U₂, hU₂, k₂⟩` from `h.levR`. Use `⟨U₁.comap (fstH d S) ⊓ U₂.comap (sndH d S), (hU₁.preimage (continuous_fstH d S)).inter (hU₂.preimage (continuous_sndH d S)), fun u hu h0 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e₁` using `congrFun (k₁ _ hu.1 (map_mul_eq_zero_left _ h0 _) (sndH d S w + sndH d S u)) (fstH d S w)`. Establish `e₂` using `congrFun (k₂ _ hu.2 (inf_dagger A' S (map_mul_eq_zero_left _ h0 _)) (fstH d S w)) (sndH d S w)`. Simplify using `only [heisO] at e₁ e₂ ⊢`. Rewrite using `[join_apply, join_apply, ← e₂, ← e₁, symplOH_split d, AddChar.map_add_eq_mul, map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `cont := h.cont.comp ((continuous_fstH d S).prodMk (continuous_sndH d S))`. Use `smooth k L hL h0 w := by`. Simplify using `only [join_apply, map_add]`. Conclude with `h.smooth k ((fstH d S).comp L) ((sndH d S).comp L) ((continuous_fstH d S).comp hL) ((continuous_sndH d S).comp hL) (fun t => map_mul_eq_zero_left _ (h0 t) _) (fun t => fin_dagger A' S (map_mul_eq_zero_left _ (h0 t) _)) _ _`.
+A detailed English derivation is pending.
 -/
 theorem isThetaFunO_join (h : IsBiTheta ψ A S A' C) : IsThetaFunO ψ W S (join d S C) where
   quasi γ w := by
@@ -289,14 +289,14 @@ theorem isThetaFunO_join (h : IsBiTheta ψ A S A' C) : IsThetaFunO ψ W S (join 
       (fun t => fin_dagger A' S (map_mul_eq_zero_left _ (h0 t) _)) _ _
 
 /- English proof (translation)
-Use `h.cont.comp (((continuous_inlH d S).comp continuous_fst).add ((continuous_inrH d S).comp continuous_snd))` as an intermediate fact. Conclude with `this.congr fun p => join_inl_inr d S C p.1 p.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_of_join (h : IsThetaFunO ψ W S (join d S C)) : Continuous fun p : WO A S × WO S A' => C p.1 p.2 := by
     have := h.cont.comp (((continuous_inlH d S).comp continuous_fst).add ((continuous_inrH d S).comp continuous_snd))
     exact this.congr fun p => join_inl_inr d S C p.1 p.2
 
 /- English proof (translation)
-Introduce `n L L' hL hL' h0 h0' u v` and use `by have := h.smooth n ((inlH d S).comp L + (inrH d S).comp L') (((continuous_inlH d S).comp hL).add ((continuous_inrH d S).comp hL')) (fun t => by change (inlH d S (L t) + inrH d S (L' t)).map _ = 0 rw [Matrix.map_add _ (finPart D).map_add, map_inlH d S _ (h0 t), fin_inrH d S (h0 …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_of_join (h : IsThetaFunO ψ W S (join d S C)) : IsBiSmooth C := fun n L L' hL hL' h0 h0' u v => by
     have := h.smooth n ((inlH d S).comp L + (inrH d S).comp L')
@@ -308,9 +308,9 @@ theorem smooth_of_join (h : IsThetaFunO ψ W S (join d S C)) : IsBiSmooth C := f
     rw [← join_inl_inr d S C, (inlH d S).map_add, (inrH d S).map_add, add_add_add_comm]; rfl
 
 /- English proof (translation)
-Establish `e : inlH d S (ratW S A γ) = ratW S W (γ * d.qA)`. Rewrite using `[inlH_apply, d.resS_symm_apply, Matrix.zero_mul, add_zero, ratW_eq S W, rat_mul]`. Both sides reduce to the same expression. Use `h.quasi (γ * d.qA) (inlH d S u + inrH d S v)` as an intermediate fact. Rewrite `this` using `[← e, ← add_assoc, ← (inlH d S).map_add, join_inl_inr, join_inl_inr, symplOH_split d, (fstH d S).map_add, fst_inl, fst_inl, fst_inr, snd_inl, symplOH_zero_left, add_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem quasiL_of_join (h : IsThetaFunO ψ W S (join d S C)) (γ) (u : WO A S) (v : WO S A') :
     C (ratW S A γ + u) v = ψ (-(symplOH A S (ratW S A γ) u)) * C u v := by
@@ -322,9 +322,9 @@ theorem quasiL_of_join (h : IsThetaFunO ψ W S (join d S C)) (γ) (u : WO A S) (
     exact this
 
 /- English proof (translation)
-Establish `e : inrH d S (ratW A' S γ) = ratW S W (S.gram⁻¹ * (γᴴ * A'.gram) * d.qB)`. Rewrite using `[inrH_apply, d.resS_symm_apply, Matrix.zero_mul, zero_add, ratW_eq S W, rat_mul, ← dagger_rat S A']`. Both sides reduce to the same expression. Use `h.quasi (S.gram⁻¹ * (γᴴ * A'.gram) * d.qB) (inlH d S u + inrH d S v)` as an intermediate fact. Rewrite `this` using `[← e, add_left_comm, ← (inrH d S).map_add, join_inl_inr, join_inl_inr, symplOH_split d, (sndH d S).map_add, fst_inr, snd_inr, snd_inl, snd_inr, symplOH_zero_left, zero_add, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem quasiR_of_join (h : IsThetaFunO ψ W S (join d S C)) (γ) (u : WO A S) (v : WO S A') :
     C u (ratW A' S γ + v) = ψ (-(symplOH S A' (ratW A' S γ) v)) * C u v := by
@@ -336,9 +336,9 @@ theorem quasiR_of_join (h : IsThetaFunO ψ W S (join d S C)) (γ) (u : WO A S) (
     exact this
 
 /- English proof (translation)
-Take `⟨U, hU, k⟩` from `h.level`. Use `⟨U.comap (inlH d S), hU.preimage (continuous_inlH d S), fun a ha h0 v => funext fun u => ?_⟩` and prove the remaining obligations. Use `congrFun (k _ ha (map_inlH d S _ h0)) (inlH d S u + inrH d S v)` as an intermediate fact. Simplify using `only [heisO] at this ⊢`. Rewrite `this` using `[add_right_comm, ← (inlH d S).map_add, join_inl_inr, join_inl_inr, symplOH_split d, (fstH d S).map_add, fst_inl, fst_inl, fst_inr, snd_inl d S a, symplOH_zero_right, add_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem levL_of_join (h : IsThetaFunO ψ W S (join d S C)) : ∃ U : AddSubgroup (WO A S), IsOpen (U : Set (WO A S)) ∧
     ∀ a ∈ U, a.map (infPart D) = 0 → ∀ v, heisO ψ A S a (fun u => C u v) = fun u => C u v := by
@@ -351,9 +351,9 @@ theorem levL_of_join (h : IsThetaFunO ψ W S (join d S C)) : ∃ U : AddSubgroup
     exact this
 
 /- English proof (translation)
-Take `⟨U, hU, k⟩` from `h.level`. Use `⟨U.comap (inrH d S), hU.preimage (continuous_inrH d S), fun a ha h0 u => funext fun v => ?_⟩` and prove the remaining obligations. Use `congrFun (k _ ha (inf_inrH d S h0)) (inlH d S u + inrH d S v)` as an intermediate fact. Simplify using `only [heisO] at this ⊢`. Rewrite `this` using `[add_assoc, ← (inrH d S).map_add, join_inl_inr, join_inl_inr, symplOH_split d, (sndH d S).map_add, fst_inr d S a, snd_inl, snd_inr, snd_inr, symplOH_zero_right, zero_add, zero_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem levR_of_join (h : IsThetaFunO ψ W S (join d S C)) : ∃ U : AddSubgroup (WO S A'), IsOpen (U : Set (WO S A')) ∧
     ∀ a ∈ U, a.map (infPart D) = 0 → ∀ u, heisO ψ S A' a (C u) = C u := by
@@ -367,13 +367,13 @@ theorem levR_of_join (h : IsThetaFunO ψ W S (join d S C)) : ∃ U : AddSubgroup
     exact this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cont_of_join d h, smooth_of_join d h, quasiL_of_join d h, quasiR_of_join d h, levL_of_join d h, levR_of_join d h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isBiTheta_of_join (h : IsThetaFunO ψ W S (join d S C)) : IsBiTheta ψ A S A' C :=
   ⟨cont_of_join d h, smooth_of_join d h, quasiL_of_join d h, quasiR_of_join d h, levL_of_join d h, levR_of_join d h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isThetaFunO_join d, isBiTheta_of_join d⟩`.
+Supply the required witnesses or components.
 -/
 theorem isBiTheta_iff_join : IsBiTheta ψ A S A' C ↔ IsThetaFunO ψ W S (join d S C) :=
   ⟨isThetaFunO_join d, isBiTheta_of_join d⟩

@@ -13,9 +13,9 @@ section Alg
 variable {Γ : Type} [Group Γ] {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `: Infinite K` using `Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, rfl⟩ : ∃ y, x = c * y` from `⟨c⁻¹ * x, by rw [← mul_assoc, mul_inv_cancel₀ hc, one_mul]⟩`. Rewrite using `[scaleRoots_eval_mul, Matrix.charpoly_natDegree_eq_dim, Matrix.eval_charpoly, Matrix.eval_charpoly, ← Matrix.det_smul, smul_sub]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `a b`. Simplify using `only [Matrix.smul_apply, Matrix.scalar_apply, Matrix.diagonal_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem charpoly_smul [CharZero K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {c : K} (hc : c ≠ 0) :
     (c • M).charpoly = M.charpoly.scaleRoots c := by
@@ -31,7 +31,7 @@ theorem charpoly_smul [CharZero K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {c :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `show algebraMap K (Matrix (Fin a) (Fin a) K) (χ g : K) * ((ρ g : GL _ K) : Matrix (Fin a) (Fin a) K) = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twGL_val {a : ℕ} (ρ : Γ →* GL (Fin a) K) (χ : Γ →* Kˣ) (g : Γ) :
     ((Formalism.MainNotions.SumRepresentations.At.twGL ρ χ g : GL _ K) : Matrix (Fin a) (Fin a) K) =
@@ -40,9 +40,9 @@ theorem twGL_val {a : ℕ} (ρ : Γ →* GL (Fin a) K) (χ : Γ →* Kˣ) (g : �
   rw [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h g v hv`. Use `W.smul_mem ((χ g : K)⁻¹) (h g v hv)` as an intermediate fact. Rewrite `this` using `[twGL_val, Matrix.smul_mulVec, smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul]`. Then use the resulting hypothesis. Introduce `h g v hv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[twGL_val, Matrix.smul_mulVec]`. Conclude with `W.smul_mem _ (h g v hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInv_twGL {a : ℕ} (ρ : Γ →* GL (Fin a) K) (χ : Γ →* Kˣ) (W : Submodule K (Fin a → K)) :
     IsInv (Formalism.MainNotions.SumRepresentations.At.twGL ρ χ) W ↔ IsInv ρ W := by
@@ -55,7 +55,7 @@ theorem isInv_twGL {a : ℕ} (ρ : Γ →* GL (Fin a) K) (χ : Γ →* Kˣ) (W :
     exact W.smul_mem _ (h g v hv)
 
 /- English proof (translation)
-Introduce `W hW` and use `by obtain ⟨W', hW', hc⟩ := h W ((isInv_twGL ρ χ W).1 hW) exact ⟨W', (isInv_twGL ρ χ W').2 hW', hc⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ss_twGL {a : ℕ} (ρ : Γ →* GL (Fin a) K) (χ : Γ →* Kˣ) (h : IsSSRep ρ) :
     IsSSRep (Formalism.MainNotions.SumRepresentations.At.twGL ρ χ) := fun W hW => by
@@ -65,9 +65,9 @@ theorem ss_twGL {a : ℕ} (ρ : Γ →* GL (Fin a) K) (χ : Γ →* Kˣ) (h : Is
 end Alg
 
 /- English proof (translation)
-Establish `hne : s ≠ 0` using `by rintro rfl; simp at h`. Establish `hc` using `Multiset.card_nsmul_le_sum h1`. Establish `hp` using `Multiset.card_pos.2 hne`. Rewrite `hc` using `[smul_eq_mul, mul_one, h]`. Establish `hc1 : Multiset.card s = 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `Multiset.card_eq_one.1 hc1`. Simplify using `only [Multiset.sum_singleton] at h`. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ms_one {s : Multiset ℕ} (h : s.sum = 1) (h1 : ∀ a ∈ s, 1 ≤ a) : s = {1} := by
   have hne : s ≠ 0 := by rintro rfl; simp at h
@@ -80,7 +80,7 @@ theorem ms_one {s : Multiset ℕ} (h : s.sum = 1) (h1 : ∀ a ∈ s, 1 ≤ a) : 
   rw [h]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `[Fin.sum_univ_castSucc]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem sum_split {M : Type} [AddCommMonoid M] {n m : ℕ} (h : n = m + 1) (f : Fin n → M) :
     ∑ k, f k = ∑ k : Fin m, f (Fin.cast h.symm k.castSucc) + f (Fin.cast h.symm (Fin.last m)) := by
@@ -88,7 +88,7 @@ theorem sum_split {M : Type} [AddCommMonoid M] {n m : ℕ} (h : n = m + 1) (f : 
   simp [Fin.sum_univ_castSucc]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp [List.flatMap_cons, List.prod_append, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_flatMap' {α M : Type} [CommMonoid M] (l : List α) (f : α → List M) :
     (l.flatMap f).prod = (l.map fun a => (f a).prod).prod := by
@@ -97,7 +97,7 @@ theorem prod_flatMap' {α M : Type} [CommMonoid M] (l : List α) (f : α → Lis
   | cons a l ih => simp [List.flatMap_cons, List.prod_append, ih]
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_def]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem prod_flat {M : Type} [CommMonoid M] (n : ℕ) (d : Fin n → ℕ) (f : Fin n → ℕ → M) :
     (((List.finRange n).map fun k => ((List.range (d k)).map (f k)).prod)).prod =
@@ -114,7 +114,7 @@ def cU : G D.host.E D.nd.Om →* (Qbar (D.nd.l i))ˣ :=
   (Units.map (iotaOQ D.nd D.naut i).toMonoidHom).comp (D.nd.chi i 1)
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.pow_apply, MonoidHom.inv_apply, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eU_pow (g : G D.host.E D.nd.Om) (a : ℕ) :
     ((((eU D i)⁻¹ ^ a) g : (Qbar (D.nd.l i))ˣ) : Qbar (D.nd.l i)) = (epsQ D i g)⁻¹ ^ a := by
@@ -128,7 +128,7 @@ def twList (Pa : List (Part D.naut.CG))
     (List.range (Pa.get k).d).map fun a => ⟨(Pa.get k).a, Formalism.MainNotions.SumRepresentations.At.twGL (R k) ((eU D i)⁻¹ ^ a)⟩
 
 /- English proof (translation)
-Take `⟨k, -, hk⟩` from `List.mem_flatMap.1 hp`. Take `⟨a, ha, rfl⟩` from `List.mem_map.1 hk`. Conclude with `⟨k, a, List.mem_range.1 ha, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_twList {Pa : List (Part D.naut.CG)}
     {R : ∀ k : Fin Pa.length, G D.host.E D.nd.Om →* GL (Fin (Pa.get k).a) (Qbar (D.nd.l i))}
@@ -140,7 +140,7 @@ theorem mem_twList {Pa : List (Part D.naut.CG)}
   exact ⟨k, a, List.mem_range.1 ha, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[twList, List.map_flatMap, prod_flatMap']`. Simplify using `only [List.map_map, Function.comp_def]`. Rewrite using `[prod_flat]`. Use `Finset.prod_congr rfl fun k _ => Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[twGL_val, charpoly_smul _ (Units.ne_zero _), eU_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem twList_cp (Pa : List (Part D.naut.CG))
     (R : ∀ k : Fin Pa.length, G D.host.E D.nd.Om →* GL (Fin (Pa.get k).a) (Qbar (D.nd.l i)))
@@ -156,7 +156,7 @@ theorem twList_cp (Pa : List (Part D.naut.CG))
   rw [twGL_val, charpoly_smul _ (Units.ne_zero _), eU_pow]
 
 /- English proof (translation)
-Introduce `p hp`. Take `⟨k, a, -, rfl⟩` from `mem_twList D i hp`. Conclude with `ss_twGL _ _ (hR k).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem twList_ss (Pa : List (Part D.naut.CG))
     (R : ∀ k : Fin Pa.length, G D.host.E D.nd.Om →* GL (Fin (Pa.get k).a) (Qbar (D.nd.l i)))
@@ -173,9 +173,9 @@ theorem mapRep_val {Γ A B : Type} [Group Γ] [CommRing A] [CommRing B] {a : ℕ
     ((mapRep f ρ g : GL _ _) : Matrix (Fin a) (Fin a) B) = ((ρ g : GL _ _) : Matrix (Fin a) (Fin a) A).map f := rfl
 
 /- English proof (translation)
-Use `⟨fun j => D.naut.iotaQ i (v j), fun h => hv0 (funext fun j => ?_), fun g => funext fun j => ?_⟩` and prove the remaining obligations. Use `congrFun h j` as an intermediate fact. Conclude with `(D.naut.iotaQ i).injective (by simpa using this)`. Establish `e1` using `congrArg (D.naut.iotaQ i) (congrFun (hv g) j)`. Rewrite `e1` using `[RingHom.map_mulVec, mapRep_val]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mapRep_val]`. Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, Pi.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eig_map (r : G D.host.E D.nd.Om →* GL (Fin D.R.nV) (D.nd.O i)) (v : Fin D.R.nV → Kf D.nd i)
     (hv0 : v ≠ 0) (hv : ∀ g, ((mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) r g : GL _ _) :
@@ -195,11 +195,11 @@ theorem eig_map (r : G D.host.E D.nd.Om →* GL (Fin D.R.nV) (D.nd.O i)) (v : Fi
     rfl
 
 /- English proof (translation)
-Break down `p with ⟨a, π, d⟩` into its components or cases. Simplify using `only at ha hd`. Substitute `ha hd` using the available equality. Establish `hu00 : u 0 ≠ 0` using `fun h => hu0 (funext fun j => by rw [Fin.fin_one_eq_zero j]; exact h)`. Establish `h00 : ∀ g, ((Rk g : GL _ _) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0 = iotaOQ D.nd D.naut i (chi1 D.nd i g)` using `fun g => by`.
+Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun (hu g) 0` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_one, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `mul_right_cancel₀ hu00 this`. Establish `hπ` using `h3 D hA i π (D.naut.tw (D.naut.muC i) D.naut.etaTinv) _ Rk hR.2.2 (h4 D hA i hg Rk h00)`. Substitute `hπ` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem part_eq (h3 : HeckeCharEqOfLAdicRealisation) (h4 : MuChar) (hA : Formalism.MainNotions.SumRepresentations.admitted D) (hg : HG D.nd D.naut i)
     (p : Part D.naut.CG) (Rk : G D.host.E D.nd.Om →* GL (Fin p.a) (Qbar (D.nd.l i)))
@@ -221,19 +221,17 @@ theorem part_eq (h3 : HeckeCharEqOfLAdicRealisation) (h4 : MuChar) (hA : Formali
   rfl
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `D.naut.pt_surj i x`. Take `⟨Pa, hBC⟩` from `hA.1.1.2.2.1 i P`. Take `⟨R, hR, hcp⟩` from `h1 D hA i x P Pa hP hBC r hr`. Take `⟨Ak, hAk, hsum⟩` from `hrc D hA hRb i hg r hr x Pa R hR hcp`. Establish `hss : IsSSRep (mapRep (iotaOQ D.nd D.naut i) (r x))` using `(GlobalTheory.NRows.isHeckeGaloisQ_of_isHeckeGalois D i x (r x) (hr x)).2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hpL, u, hu0, hu⟩` from `h8 (Qbar (D.nd.l i)) (G D.host.E D.nd.Om) D.R.nV (mapRep (iotaOQ D.nd D.naut i) (r x)) (twList D i Pa R) (cU D i) hss (twList_ss D i Pa R hR) (fun g => (hcp g).trans (twList_cp D i Pa R g).symm) (eig_map D i (r x) v hv0 hv)`. Take `⟨k, a, ha, rfl⟩` from `mem_twList D i hpL`. Establish `hW : ∀ g, ((epsQ D i g)⁻¹ ^ a) • ((R k g : GL _ _) : Matrix (Fin (Pa.get k).a) (Fin (Pa.get k).a) (Qbar (D.nd.l i))).mulVec u = iotaOQ D.nd D.naut i (chi1 D.nd i g) • u` using `fun g => by`. Establish `e` using `hu g`. Rewrite `e` using `[twGL_val, Matrix.smul_mulVec, eU_pow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`. Establish `hwt` using `h2 D hA i x P Pa hP hBC k (R k) (hR k) a ha ⟨u, hu0, hW⟩`. Establish `hmem : Pa.get k ∈ Pa` using `List.get_mem Pa k`. Establish `ha1 : 1 ≤ (Pa.get k).a` using `(hBC.1 _ hmem).1`. Establish `hr1 : 1 < D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `show 1 < D.R.k + D.R.m - 1`. Use linear arithmetic over natural numbers and integers. Establish `ht2 : 2 ≤ D.R.t`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.rank_add_five_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hle : (Pa.get k).d • Ak k ≤ D.R.r ::ₘ Multiset.replicate D.R.t 1`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hsum, ← Finset.add_sum_erase _ _ (Finset.mem_univ k)]`. Conclude with `Multiset.le_add_right _ _`. Establish `hnum` using `h11 D.R.r D.R.t (Pa.get k).d (Pa.get k).a a (Ak k) hr1 ht2 ha hwt (hAk k).1 (hAk k).2 ha1 hle`. Establish `ha0 : a = 0` using `by rw [hnum.2] at hwt; omega`. Substitute `ha0` using the available equality.
-
-Establish `hpart` using `part_eq D i h3 h4 hA hg (Pa.get k) (R k) (hR k) hnum.1 hnum.2 u hu0 (fun g => by simpa using hW g)`. Conclude with `⟨P, hP, Pa, hBC, hpart ▸ hmem⟩`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_ZN (h1 : CentredStringDecomposition) (h2 : PurityStringWeight) (h3 : HeckeCharEqOfLAdicRealisation) (h4 : MuChar) (h8 : EigenCharTwist)
     (hrc : ResCount) (h11 : Numerics) (hA : Formalism.MainNotions.SumRepresentations.admitted D) (hRb : RbEx D) (hg : HG D.nd D.naut i) (r : D.nd.X i → (G D.host.E D.nd.Om →* GL (Fin D.R.nV) (D.nd.O i)))
@@ -278,21 +276,19 @@ theorem mem_ZN (h1 : CentredStringDecomposition) (h2 : PurityStringWeight) (h3 :
   exact ⟨P, hP, Pa, hBC, hpart ▸ hmem⟩
 
 /- English proof (translation)
-Take `⟨P, hP, hBC⟩` from `hSig`. Establish `hlen : (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv).length = Sig.length + 1`. Simplify using `[twistIso]`. Establish `hlast : (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv).get (Fin.cast hlen.symm (Fin.last _)) = ⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R.t⟩`. Simplify using `only [List.get_eq_getElem, Fin.val_cast, Fin.val_last]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[twistIso, muPart, List.getElem_append_right]`. Generalize the expression as in `hPa : twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv = Pa at hBC hlen hlast`. Take `⟨R, hR, hcp⟩` from `h1 D hA i x P Pa hP hBC r hr`. Take `⟨Ak, hAk, hsum⟩` from `hrc D hA hRb i hg r hr x Pa R hR hcp`. Rewrite `hsum` using `[sum_split hlen]`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hAl : Ak (Fin.cast hlen.symm (Fin.last _)) = {1}` using `ms_one ((hAk _).1.trans (by rw [hlast])) (hAk _).2`. Establish `hlt : (Pa.get (Fin.cast hlen.symm (Fin.last _))).d • Ak (Fin.cast hlen.symm (Fin.last _)) = Multiset.replicate D.R.t 1`. Rewrite using `[hAl, hlast]`. Conclude with `Multiset.nsmul_singleton _ _`. Rewrite `hsum` using `[hlt, ← Multiset.singleton_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hS` using `add_right_cancel hsum`. Establish `hmem : ∀ k : Fin Sig.length, Pa.get (Fin.cast hlen.symm k.castSucc) ∈ Pa` using `fun k => List.get_mem _ _`. Establish `hG` using `h12 (Fin Sig.length) (fun k => (Pa.get (Fin.cast hlen.symm k.castSucc)).d) (fun k => Ak (Fin.cast hlen.symm k.castSucc)) D.R.r (fun k => (hBC.1 _ (hmem k)).2.1) (fun k h => by`. Establish `e` using `(hAk (Fin.cast hlen.symm k.castSucc)).1`. Rewrite `e` using `[h, Multiset.sum_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(hBC.1 _ (hmem k)).1` as an intermediate fact. Use the proof step `omega) hS`. Establish `hl1 : Sig.length = 1` using `by simpa using hG.1`. Take `⟨p, rfl⟩` from `List.length_eq_one_iff.1 hl1`. Establish `h0` using `hG.2 ⟨0, by simp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hget : Pa.get (Fin.cast hlen.symm (Fin.castSucc (⟨0, by simp⟩ : Fin [p].length))) = ⟨p.a, D.naut.tw p.π D.naut.etaTinv, p.d⟩`. Substitute `hPa` using the available equality. Simplify using `[twistIso]`. Establish `hd : p.d = 1` using `by have := h0.1; rw [hget] at this; exact this`. Establish `ha : p.a = D.R.r`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `(hAk (Fin.cast hlen.symm (Fin.castSucc (⟨0, by simp⟩ : Fin [p].length)))).1`. Rewrite `e` using `[h0.2, hget, Multiset.sum_singleton]`. Conclude with `e.symm`. Break down `p with ⟨a, π, d⟩` into its components or cases. Simplify using `only at hd ha`.
-
-Substitute `hd ha` using the available equality. Conclude with `⟨π, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cusp_of (h1 : CentredStringDecomposition) (hrc : ResCount)
     (h12 : Rest) (hA : Formalism.MainNotions.SumRepresentations.admitted D) (hRb : RbEx D) (hg : HG D.nd D.naut i)
@@ -343,7 +339,7 @@ theorem cusp_of (h1 : CentredStringDecomposition) (hrc : ResCount)
   exact ⟨π, rfl⟩
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h8 hrc h11 h12 D hA hRb i hg r hr x hx` and use `⟨hx.elim fun v hv => mem_ZN D i h1 h2 h3 h4 h8 hrc h11 hA hRb hg r hr x v hv.1 hv.2, fun Sig hSig => cusp_of D i h1 hrc h12 hA hRb hg r hr x Sig hSig⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_Z_and_cusp_of_steps : CentredStringDecomposition → PurityStringWeight → HeckeCharEqOfLAdicRealisation → MuChar → EigenCharTwist → ResCount → Numerics → Rest →
     ∀ D : D7, SumRepresentations.admitted D → RbEx D → SumRepresentations.ConclusionG6 D :=

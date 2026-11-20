@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `h : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl.out`. Establish `e : Rat.ringOfIntegersEquiv.symm (l : ℤ) = ((l : ℕ) : 𝓞 ℚ)` using `by simp`. Rewrite using `[← e]`. Conclude with `(MulEquiv.prime_iff (Rat.ringOfIntegersEquiv.symm : ℤ ≃* 𝓞 ℚ)).mpr h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prime_p (l : ℕ) [hl : Fact l.Prime] : Prime ((l : ℕ) : 𝓞 ℚ) := by
   have h : Prime (l : ℤ) := Nat.prime_iff_prime_int.mp hl.out
@@ -14,21 +14,21 @@ private theorem prime_p (l : ℕ) [hl : Fact l.Prime] : Prime ((l : ℕ) : 𝓞 
   exact (MulEquiv.prime_iff (Rat.ringOfIntegersEquiv.symm : ℤ ≃* 𝓞 ℚ)).mpr h
 
 /- English proof (translation)
-Establish `hpr : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp (Fact.out : l.Prime)`. Establish `key : ∀ B : ValuationSubring Ω, B.valuation ((l : ℕ) : Ω) < 1 → ∀ n : ℤ, B.valuation (n : Ω) < 1 ↔ (l : ℤ) ∣ n`. Introduce `B hB n`. Establish `hle : ∀ m : ℤ, B.valuation (m : Ω) ≤ 1`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `B.valuation_le_one (m : B)` as an intermediate fact. Simplify using `using this`. Establish `hB' : B.valuation ((l : ℤ) : Ω) < 1` using `by simpa using hB`. Prove the components needed by the constructor for the conclusion. Introduce `hn`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hd`. Take `⟨a, b, hab⟩` from `hpr.irreducible.coprime_iff_not_dvd.mpr hd`. Establish `h1 : B.valuation ((a : Ω) * (l : ℤ)) < 1`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : B.valuation ((b : Ω) * n) < 1`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `Valuation.map_add_lt _ h1 h2`. Establish `e : ((a : Ω) * (l : ℤ) + (b : Ω) * n) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (fun z : ℤ => (z : Ω)) hab` after adjusting the coercions. Rewrite `h3` using `[e, map_one]`. Conclude with `lt_irrefl _ h3`. Introduce and unpack `⟨m, rfl⟩`. Rewrite using `[Int.cast_mul, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hne : ((l : ℕ) : 𝓞 ℚ) ≠ 0` using `(prime_p l).ne_zero`. Set `v : HeightOneSpectrum (𝓞 ℚ)` to `⟨Ideal.span {((l : ℕ) : 𝓞 ℚ)}, (Ideal.span_singleton_prime hne).mpr (prime_p l), by simpa [Ideal.span_singleton_eq_bot] using hne⟩`. Establish `hpl : ∀ B : ValuationSubring Ω, B.valuation ((l : ℕ) : Ω) < 1 → IsPlaceOver B v`. Introduce `B hB x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : algebraMap ℚ Ω (x : ℚ) = ((Rat.ringOfIntegersEquiv x : ℤ) : Ω)`. Rewrite using `[← map_intCast (algebraMap ℚ Ω), Rat.ringOfIntegersEquiv_apply_coe]`. Rewrite using `[hx, key B hB]`. Express the relevant statement in the definitionally equal form `_ ↔ x ∈ Ideal.span {((l : ℕ) : 𝓞 ℚ)}`. Rewrite using `[Ideal.mem_span_singleton, ← map_dvd_iff Rat.ringOfIntegersEquiv, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver (hpl A' hA') (hpl A hA)`. Use `⟨σ, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hσ, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_move {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime]
     (A A' : ValuationSubring Ω) (hA : A.valuation ((l : ℕ) : Ω) < 1) (hA' : A'.valuation ((l : ℕ) : Ω) < 1) :
@@ -83,17 +83,17 @@ private theorem exists_move {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosur
     ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ F _ p hp A A' hA hA'`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨g, hg⟩` from `exists_move p A A' hA hA'`. Establish `hL : UpperTheory.V.IsLift (RingEquiv.refl ℚ) (g : Ω ≃+* Ω)` using `fun x => by simp`. Establish `hc : ∀ t : G ℚ Ω, UpperTheory.V.conjGal hL t = g⁻¹ * t * g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Use extensionality with `x`. Rewrite using `[UpperTheory.V.conjGal_apply]`. Both sides reduce to the same expression. Establish `hsm : ∀ s : G F Ω, resQ F s • A = s • A`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Use extensionality with `x`. Simplify using `only [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Both sides reduce to the same expression. Use `⟨g, hg, fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc]`. Apply `UpperTheory.V.conjGal_mem_Dec hL hg` to reduce the goal to its premises. Rewrite `hs`, the goal using `[mem_Dec]`. Rewrite using `[hsm, hs]`. Rewrite using `[← hc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `UpperTheory.V.conjGal_mem_Ine hL hg` to reduce the goal to its premises. Rewrite `hs`, the goal using `[mem_Ine]`. Take `⟨h1, h2⟩` from `hs`. Use `⟨?_, h2⟩` and prove the remaining obligations. Rewrite `h1`, the goal using `[MulAction.mem_stabilizer_iff]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsm, h1]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Rq.placeMove :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (F : IntermediateField ℚ Ω) [NumberField F] (p : ℕ), p.Prime →

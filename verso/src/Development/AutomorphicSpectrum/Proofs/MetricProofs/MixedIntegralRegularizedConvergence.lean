@@ -14,7 +14,7 @@ open MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.An
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Establish `h` using `(Real.isLittleO_pow_log_id_atTop (n := e + 1)).tendsto_div_nhds_zero`. Establish `h2 : Tendsto (fun n : ℕ => Real.exp 1 + (n : ℝ)) atTop atTop` using `tendsto_atTop_add_const_left _ _ tendsto_natCast_atTop_atTop`. Establish `h3` using `(h.comp h2).const_mul CE`. Simplify `h3` using `[mul_div_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tendsto_logPow_div_exp_add (CE : ℝ) (e : ℕ) :
     Tendsto (fun n : ℕ => CE * Real.log (Real.exp 1 + n) ^ (e + 1) / (Real.exp 1 + n)) atTop (𝓝 0) := by
@@ -25,9 +25,9 @@ theorem tendsto_logPow_div_exp_add (CE : ℝ) (e : ℕ) :
   simpa [mul_div_assoc] using h3
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`. Use `filter_upwards [h ε hε] with t ht y hy`. Establish `h1` using `ht (σ y) (hE y hy)`. Rewrite `h1`, the goal using `[Real.dist_eq]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_sub, abs_mul, abs_of_nonneg (hc _).1]`. Use `_ ≤ 1 * |f (σ y) - F t (σ y)| := mul_le_mul_of_nonneg_right (hc _).2 (abs_nonneg _)`. Use `_ < ε := by simpa using h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendstoUniformlyOn_cutoff_comp {β X : Type*} (σ : β → X) (c : X → ℝ)
     (hc : ∀ x, 0 ≤ c x ∧ c x ≤ 1) (F : ℝ → X → ℝ) (f : X → ℝ) (l : Filter ℝ) (K : Set X)
@@ -45,9 +45,7 @@ theorem tendstoUniformlyOn_cutoff_comp {β X : Type*} (σ : β → X) (c : X →
     _ < ε := by simpa using h1
 
 /- English proof (translation)
-Establish `h : f =ᵐ[μ.restrict Eᶜ] T`. Rewrite using `[Filter.EventuallyEq, ae_restrict_iff' hE.compl]`. Use `filter_upwards [heq] with y hy hyE using hy hyE`. Use `⟨(hT.integrableOn (s := Eᶜ)).congr h.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_congr_ae h]`.
-
-Conclude with `(setIntegral_le_integral hT hT0).trans hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_compl_of_ae_eq_nonneg {α : Type*} [MeasurableSpace α] (μ : Measure α)
     (E : Set α) (hE : MeasurableSet E) (f T : α → ℝ) (b : ℝ) (hT : Integrable T μ)
@@ -61,49 +59,43 @@ theorem integrableOn_compl_of_ae_eq_nonneg {α : Type*} [MeasurableSpace α] (μ
   exact (setIntegral_le_integral hT hT0).trans hb
 
 /- English proof (translation)
-Introduce `e X _ _ _ A R Θ th ph phT G GT C CE hΘ hth hph hev hconv hGev hGconv j S c hST hS hcm hc01 hc0`. Take `⟨hYo, hnull, -, hKc⟩` from `GlobalTheory.T.regular_chart_data_properties e X A R`. Establish `hsymmS : ContinuousOn (A.chart j).symm S` using `(A.chart j).continuousOn_symm.mono hST`. Establish `hSm : MeasurableSet S` using `hS.measurableSet`. Establish `hTm : MeasurableSet (A.chart j).target` using `(A.chart j).open_target.measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨E, hEdef⟩ : ∃ E : ℕ → Set (Fin e → ℂ), ∀ n, E n = S ∩ (A.chart j).symm ⁻¹' {x | x ∈ R.Yo ∧ R.r x ≤ Real.exp 1 + n}` from `⟨_, fun _ => rfl⟩`. Establish `hEmem : ∀ n y, y ∈ E n ↔ y ∈ S ∧ (A.chart j).symm y ∈ R.Yo ∧ R.r ((A.chart j).symm y) ≤ Real.exp 1 + n`. Introduce `n y`. Rewrite using `[hEdef]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hEc : ∀ n, IsCompact (E n)`. Introduce `n`. Rewrite using `[hEdef]`. Conclude with `hS.of_isClosed_subset (hsymmS.preimage_isClosed_of_isClosed hS.isClosed (hKc _).isClosed) Set.inter_subset_left`. Establish `hEsub : ∀ n, E n ⊆ (A.chart j).target ∩ (A.chart j).symm ⁻¹' R.Yo` using `fun n y hy => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hEmem n y).1 hy` as an intermediate fact. Conclude with `⟨hST this.1, this.2.1⟩`. Establish `hEm : ∀ n, MeasurableSet (E n)` using `fun n => (hEc n).measurableSet`. Establish `hEmono : Monotone E`. Introduce `m n hmn y hy`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3⟩` from `(hEmem m y).1 hy`. Use `(hEmem n y).2 ⟨h1, h2, h3.trans ?_⟩` and prove the remaining obligations. Establish `: (m : ℝ) ≤ n` using `by exact_mod_cast hmn`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hEfin : ∀ n, (volume.restrict S) (E n) < ⊤` using `fun n => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.restrict_apply (hEm n)]`. Conclude with `lt_of_le_of_lt (measure_mono Set.inter_subset_left) (hEc n).measure_lt_top`. Establish `hae : ∀ᵐ y ∂(volume.restrict S), y ∈ S ∧ (A.chart j).symm y ∈ R.Yo`. Rewrite using `[ae_restrict_iff' hSm]`. Use `filter_upwards [compl_mem_ae_iff.2 (hnull j)] with y hy hyS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `⟨hyS, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hy ⟨hST hyS, h⟩`. Establish `hex : ∀ᵐ y ∂(volume.restrict S), ∃ n, y ∈ E n` using `by filter_upwards [hae] with y hy`. Take `⟨n, hn⟩` from `exists_nat_ge (R.r ((A.chart j).symm y))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `⟨n, (hEmem n y).2 ⟨hy.1, hy.2, ?_⟩⟩` and prove the remaining obligations. Use `Real.exp_pos 1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog : ∀ x ∈ R.Yo, 0 ≤ Real.log (R.r x)` using `fun x hx => Real.log_nonneg (R.one_le_r x hx)`. Establish `hL : ∀ᵐ y ∂(volume.restrict S), 0 ≤ Real.log (R.r ((A.chart j).symm y))` using `by filter_upwards [hae] with y hy using hlog _ hy.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGbd : ∀ n : ℕ, ∃ M : ℝ, ∀ x, x ∈ R.Yo → R.r x ≤ Real.exp 1 + n → |G x| ≤ M`. Introduce `n`. Establish `hu` using `hGconv _ (fun x hx => hx.1) (hKc (Real.exp 1 + n))`. Establish `h1` using `Metric.tendstoUniformlyOn_iff.1 hu 1 one_pos`. Take `⟨t, ht1, ht2⟩` from `(h1.and hGev).exists`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨1 + (|C| + |C| * Real.log (Real.exp 1 + n)), fun x hx hxr => ?_⟩` and prove the remaining obligations. Establish `a1` using `ht1 x ⟨hx, hxr⟩`. Establish `a2` using `ht2.2 x hx`. Establish `a3 : Real.log (R.r x) ≤ Real.log (Real.exp 1 + n)` using `Real.log_le_log (by linarith [R.one_le_r x hx]) hxr`. Establish `a4` using `hlog x hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a1` using `[Real.dist_eq]`. Establish `a5` using `abs_sub_abs_le_abs_sub (G x) (GT t x)`. Establish `a6 : C * Real.log (R.r x) ≤ |C| * Real.log (R.r x)` using `mul_le_mul_of_nonneg_right (le_abs_self C) a4`. Establish `a7 : |C| * Real.log (R.r x) ≤ |C| * Real.log (Real.exp 1 + n)` using `mul_le_mul_of_nonneg_left a3 (abs_nonneg C)`. Establish `a8` using `le_abs_self C`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hρ : ∀ n, TendstoUniformlyOn (fun t => locDens A (fun i => th i + LocPot.ofFun (phT i t) + Θ) j) (locDens A (fun i => th i + LocPot.ofFun (ph i) + Θ) j) (𝓝[>] 0) (E n)` using `fun n => GlobalTheory.CompanionTheory.Ar.Giv.conv_dens_of_open A Θ R.Yo th ph phT hYo hΘ hth hph (hev.mono fun t h => h.1) hconv j (E n) (hEsub n) (hEc n)`. Establish `hΓ : ∀ n, TendstoUniformlyOn (fun t y => c ((A.chart j).symm y) * GT t ((A.chart j).symm y)) (fun y => c ((A.chart j).symm y) * G ((A.chart j).symm y)) (𝓝[>] 0) (E n)` using `fun n => tendstoUniformlyOn_cutoff_comp (A.chart j).symm c hc01 GT G _ {x | x ∈ R.Yo ∧ R.r x ≤ Real.exp 1 + n} (E n) (fun y hy => ⟨((hEmem n y).1 hy).2.1, ((hEmem n y).1 hy).2.2⟩) (hGconv _ (fun x hx => hx.1) (hKc (Real.exp 1 + n)))`. Establish `hM : ∀ n, ∃ M : ℝ, ∀ y ∈ E n, |locDens A (fun i => th i + LocPot.ofFun (ph i) + Θ) j y| ≤ M ∧ |c ((A.chart j).symm y) * G ((A.chart j).symm y)| ≤ M`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨M1, h1⟩` from `(hEc n).exists_bound_of_continuousOn ((GlobalTheory.CompanionTheory.Ar.Giv.locDens_add_ofFun_continuousOn A R.Yo th ph Θ hYo hth hΘ hph j).mono (hEsub n))`. Take `⟨M2, h2⟩` from `hGbd n`. Use `⟨max M1 M2, fun y hy => ⟨(h1 y hy).trans (le_max_left _ _), ?_⟩⟩` and prove the remaining obligations. Take `⟨-, b2, b3⟩` from `(hEmem n y).1 hy`. Rewrite using `[abs_mul, abs_of_nonneg (hc01 _).1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_le_of_le_one_left (abs_nonneg _) (hc01 _).2).trans ((h2 _ b2 b3).trans (le_max_right _ _))`. Establish `hEv : ∀ᶠ t in 𝓝[>] (0 : ℝ), AEStronglyMeasurable (locDens A (fun i => th i + LocPot.ofFun (phT i t) + Θ) j) (volume.restrict S) ∧ AEStronglyMeasurable (fun y => c ((A.chart j).symm y) * GT t ((A.chart j).symm y)) (volume.restrict S) ∧ (∀ᵐ y ∂(volume.restrict S), 0 ≤ locDens A (fu …` using `by filter_upwards [hev, hGev] with t ⟨hs, hp, ht⟩ ⟨hm, hb⟩`. Establish `hpot : ∀ i, IsPotential A (th i + LocPot.ofFun (phT i t) + Θ)` using `fun i => isPotentialAdd A _ _ (isPotentialAdd A _ _ (hth i) (isPotential_ofFun A _ (hs i))) hΘ`. Establish `hnn : ∀ y ∈ (A.chart j).target, 0 ≤ locDens A (fun i => th i + LocPot.ofFun (phT i t) + Θ) j y` using `fun y hy => locDens_nonneg_of_psh A _ hpot hp j hy`. Establish `htail` using `fun n : ℕ => GlobalTheory.T.tail_log_bound_local_integrable A R.Yo R.r _ CE hpot R.one_le_r (fun j' y hy _ => locDens_nonneg_of_psh A _ hpot hp j' hy) ht j S hST hS (Real.exp 1 + n) (by have : (0 : ℝ) ≤ n := Nat.cast_nonneg n linarith)`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((locDensCont A _ hpot j).mono hST).aestronglyMeasurable hSm, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `letI : MeasurableSpace X := borel X haveI : BorelSpace X := ⟨rfl⟩`. Establish `h1 : AEMeasurable (A.chart j).symm (volume.restrict S)` using `hsymmS.aemeasurable hSm`. Establish `h2 : AEMeasurable (fun y => c ((A.chart j).symm y) * R.Yo.indicator (GT t) ((A.chart j).symm y)) (volume.restrict S)` using `(hcm.comp_aemeasurable h1).mul (hm.comp_aemeasurable h1)`. Use `h2.aestronglyMeasurable.congr ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hae] with y hy`. Rewrite using `[Set.indicator_of_mem hy.2]`. Use `filter_upwards [hae] with y hy using hnn y (hST hy.1)`. Use `filter_upwards [hae] with y hy hyE`. Establish `hr : Real.exp 1 < R.r ((A.chart j).symm y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hyE ((hEmem 0 y).2 ⟨hy.1, hy.2, by simpa using not_lt.1 h⟩)`. Establish `hl : 1 ≤ Real.log (R.r ((A.chart j).symm y))`. Rewrite using `[Real.le_log_iff_exp_le (lt_trans (Real.exp_pos 1) hr)]`. Conclude with `hr.le`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `b1` using `hb _ hy.2`. Establish `b2 : C * Real.log (R.r ((A.chart j).symm y)) ≤ |C| * Real.log (R.r ((A.chart j).symm y))` using `mul_le_mul_of_nonneg_right (le_abs_self C) (by linarith)`. Establish `b3 : |C| * 1 ≤ |C| * Real.log (R.r ((A.chart j).symm y))` using `mul_le_mul_of_nonneg_left hl (abs_nonneg C)`. Establish `b4` using `le_abs_self C`. Rewrite using `[abs_mul, abs_of_nonneg (hc01 _).1]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `b5` using `mul_le_of_le_one_left (abs_nonneg (GT t ((A.chart j).symm y))) (hc01 ((A.chart j).symm y)).2`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `n`. Use `integrableOn_compl_of_ae_eq_nonneg _ (E n) (hEm n) _ _ _ (htail n).1 ?_ (htail n).2 ?_` and prove the remaining obligations. Use `filter_upwards [hae] with y hy`.
-
-Conclude with `mul_nonneg (Set.indicator_nonneg (fun x hx => hlog x hx.1) _) (hnn y (hST hy.1))`. Use `filter_upwards [hae] with y hy hyE`. Establish `hmem : (A.chart j).symm y ∈ GroundTheory.Heights₂.Heights.AnalyticLimit.tail R.Yo R.r (Real.exp 1 + n)`. Use `⟨hy.2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
-
-Conclude with `hyE ((hEmem n y).2 ⟨hy.1, hy.2, (not_le.1 h).le⟩)`. Rewrite using `[Set.indicator_of_mem hmem]`. Take `⟨i1, i2, i3⟩` from `GlobalTheory.T.dominated_convergence_exhaustion (volume.restrict S) (𝓝[>] (0 : ℝ)) E (fun y => Real.log (R.r ((A.chart j).symm y))) (fun t => locDens A (fun i => th i + LocPot.ofFun (phT i t) + Θ) j) (fun t y => c ((A.chart j).symm y) * GT t ((A.chart j).symm y)) (locDens A (fun …`. Establish `e1 : ∀ (g : X → ℝ) (d : (Fin e → ℂ) → ℝ), ∫ y in (A.chart j).target, c ((A.chart j).symm y) * g ((A.chart j).symm y) * d y = ∫ y in S, c ((A.chart j).symm y) * g ((A.chart j).symm y) * d y` using `fun g d => setIntegral_eq_of_subset_of_forall_diff_eq_zero hTm hST (fun y hy => by simp [hc0 y hy.1 hy.2])`. Establish `e2 : ∀ (g : X → ℝ) (d : (Fin e → ℂ) → ℝ), Integrable (fun y => c ((A.chart j).symm y) * g ((A.chart j).symm y) * d y) (volume.restrict S) → IntegrableOn (fun y => c ((A.chart j).symm y) * g ((A.chart j).symm y) * d y) (A.chart j).target` using `fun g d h => IntegrableOn.of_forall_diff_eq_zero h hTm (fun y hy => by simp [hc0 y hy.1 hy.2])`.
-
-Use `⟨e2 _ _ i1, i2.mono fun t h => e2 _ _ h, ?_⟩` and prove the remaining obligations. Rewrite using `[e1 G]`. Conclude with `Tendsto.congr (fun t => (e1 (GT t) _).symm) i3`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_chart_integral : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (R : GroundTheory.Heights₂.Heights.Regular.RegChartData A) (Θ : LocPot X) (th : Fin e → LocPot X) (ph : Fin e → X → ℝ) (phT : Fin e → ℝ → X → ℝ) (G : X → ℝ) (GT : ℝ → X → ℝ) (C CE : ℝ), IsPotential A Θ → (∀ i, IsPotential A (th i)) → (∀ i, A.SmoothOn R.Yo (ph i)) → (∀ᶠ t in 𝓝[>] (0 : ℝ), (∀ i, A.Smooth (phT i t)) ∧ (∀ i, IsPsh A (th i + LocPot.ofFun (phT i t) + Θ)) ∧ GroundTheory.Heights₂.Heights.AnalyticLimit.TailLogBound A R.Yo R.r (fun i => th i + LocPot.ofFun (phT i t) + Θ) CE) → (∀ i, ∀ j, ∀ K' ⊆ (A.chart j).target ∩ (A.chart j).symm ⁻¹' R.Yo, IsCompact K' → TendstoUniformlyOn (fun t => fderiv ℝ (fderiv ℝ (phT i t ∘ (A.chart j).symm))) (fderiv ℝ (fderiv ℝ (ph i ∘ (A.chart j).symm))) (𝓝[>] 0) K') → (∀ᶠ t in 𝓝[>] (0 : ℝ), @Measurable X ℝ (borel X) _ (R.Yo.indicator (GT t)) ∧ ∀ x ∈ R.Yo, |GT t x| ≤ C + C * Real.log (R.r x)) → (∀ K' ⊆ R.Yo, IsCompact K' → TendstoUniformlyOn GT G (𝓝[>] 0) K') → ∀ (j : Fin A.n) (S : Set (Fin e → ℂ)) (c : X → ℝ), S ⊆ (A.chart j).target → IsCompact S → @Measurable X ℝ (borel X) _ c → (∀ x, 0 ≤ c x ∧ c x ≤ 1) → (∀ y ∈ (A.chart j).target, y ∉ S → c ((A.chart j).symm y) = 0) → IntegrableOn (fun y => c ((A.chart j).symm y) * G ((A.chart j).symm y) * locDens A (fun i => th i + LocPot.ofFun (ph i) + Θ) j y) (A.chart j).target ∧ (∀ᶠ t in 𝓝[>] (0 : ℝ), IntegrableOn (fun y => c ((A.chart j).symm y) * GT t ((A.chart j).symm y) * locDens A (fun i => th i + LocPot.ofFun (phT i t) + Θ) j y) (A.chart j).target) ∧ Tendsto (fun t => ∫ y in (A.chart j).target, c ((A.chart j).symm y) * GT t ((A.chart j).symm y) * locDens A (fun i => th i + LocPot.ofFun (phT i t) + Θ) j y) (𝓝[>] 0) (𝓝 (∫ y in (A.chart j).target, c ((A.chart j).symm y) * G ((A.chart j).symm y) * locDens A (fun i => th i + LocPot.ofFun (ph i) + Θ) j y)) := by
   intro e X _ _ _ A R Θ th ph phT G GT C CE hΘ hth hph hev hconv hGev hGconv j S c hST hS hcm hc01 hc0

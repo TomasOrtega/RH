@@ -17,7 +17,7 @@ namespace GlobalTheory.CM.PairingIso
 open GlobalTheory.KerPow
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h.chartPull (chartPullId P) (chartPullPull Q (𝟙 X) (𝟙 X) rfl)`. Take `⟨t, ht⟩` from `H`. Take `⟨a, ha⟩` from `gen_chartPull (chartPullPull P (𝟙 X) (𝟙 X) rfl) t ht`. Take `⟨c, hc, -⟩` from `exists_up ((isGen_iff w).1 hw) hQ hP a ha`. Conclude with `gen_chartPull (chartPullUnpull Q _ (Category.id_comp _)) c hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_lbIso {X : Scheme.{0}} {P Q : LB X} (hP : P.IsLB) (hQ : Q.IsLB) (h : LBIso P Q)
     (H : ∃ t : LB.Gen P, t.IsGen) : ∃ t : LB.Gen Q, t.IsGen := by
@@ -28,7 +28,7 @@ theorem exists_gen_of_lbIso {X : Scheme.{0}} {P Q : LB X} (hP : P.IsLB) (hQ : Q.
   exact gen_chartPull (chartPullUnpull Q _ (Category.id_comp _)) c hc
 
 /- English proof (translation)
-Substitute `e` using the available equality. Introduce `p`. Take `⟨i, hi⟩` from `exists_chart hL (a p)`. Conclude with `⟨a ⁻¹ᵁ L.U i, hi, ChartRig.exists_gen_pull L _ i hL fun y _ => y.2⟩`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locGen_base {X Y B : Scheme.{0}} {L : LB X} (hL : L.IsLB) (π : Y ⟶ B) (a : B ⟶ X) {b : Y ⟶ X}
     (e : b = π ≫ a) : LocGen L π (fun _ : PUnit => b) (fun _ => 1) := by
@@ -38,11 +38,11 @@ theorem locGen_base {X Y B : Scheme.{0}} {L : LB X} (hL : L.IsLB) (π : Y ⟶ B)
   exact ⟨a ⁻¹ᵁ L.U i, hi, ChartRig.exists_gen_pull L _ i hL fun y _ => y.2⟩
 
 /- English proof (translation)
-Establish `h' : LBIso (cubeLB B ![1, snd T A ≫ Φ] M) (cubeLB A ![fst T A ≫ x, snd T A] L)` using `LBIso.chartPull (PrimNorm.chartSquare M (lift (fst T A ≫ x) (snd T A)) (by rw [lift_fst_assoc, Category.assoc, hx, MonObj.comp_one]) (by rw [lift_snd_assoc])) (PrimNorm.chartSquare L (lift (fst T A ≫ x) (snd T A)) (by simp) (by simp)) h`. Establish `g₁ : ∃ t : LB.Gen (cubeLB B ![1, snd T A ≫ Φ] M), t.IsGen` using `hasGen_of_trivial hM fun U _ k => (PrimNorm.prod_square_id _ _ k).trans (by simp [PrimNorm.diff₂])`. Establish `g₂ : HasGen L _ _` using `exists_gen_of_lbIso (DVR.linComb_isLB _ hM _ _) (DVR.linComb_isLB _ hL _ _) h' g₁`. Establish `g₃ : LocGen L (fst T A).left (fun I : ULift.{0} (Finset (Fin 2)) => (psum A ![fst T A ≫ x, snd T A] I.down).left) (fun I => (-1) ^ (2 - I.down.card))` using `fun _ => ⟨⊤, trivial, g₂.pull _ fun _ => rfl⟩`. Establish `b₁` using `locGen_base hL (fst T A).left x.left (b := (fst T A ≫ x).left) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₀` using `locGen_base hL (fst T A).left (1 : T ⟶ A).left (b := (1 : T ⊗ A ⟶ A).left) (congrArg (fun q : T ⊗ A ⟶ A => q.left) (MonObj.comp_one (fst T A) : fst T A ≫ (1 : T ⟶ A) = 1).symm)`. Establish `b` using `b₀.comb hL b₁ (φ'' := ![(1 : T ⊗ A ⟶ A).left, (fst T A ≫ x).left]) (ε'' := ![1, -1]) fun U _ k => by simp [Fin.prod_univ_two]`. Use `eq_one_of_locGen hK x (g₃.comb hL b fun U _ k => ?_)` and prove the remaining obligations. Rewrite using `[PrimNorm.prod_square_id, Fin.prod_univ_two, Fin.prod_univ_two]`. Use `show k ((fst T A ≫ x) * snd T A).left * (k (fst T A ≫ x).left)⁻¹ * (k (snd T A).left)⁻¹ * k (1 : T ⊗ A ⟶ A).left * (k (1 : T ⊗ A ⟶ A).left ^ (1 : ℤ) * k (fst T A ≫ x).left ^ (-1 : ℤ))⁻¹ = k ((fst T A ≫ x) * snd T A).left ^ (1 : ℤ) * k (snd T A).left ^ (-1 : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_one_of_comp_eq_one {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B]
     {L : LB A.left} {M : LB B.left} {Φ : A ⟶ B} (hL : L.IsLB) (hM : M.IsLB) (hK : Out.KTriv A L)
@@ -74,13 +74,13 @@ theorem eq_one_of_comp_eq_one {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj
   module
 
 /- English proof (translation)
-Introduce `S _ A B _ _ L M Φ hA hB hL hM hΦ hK h hs`. Use `hA.comm` as an intermediate fact. Use `hB.comm` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hB.proper` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hB.smooth` as an intermediate fact. Establish `: Mono Φ` using `⟨fun {T} x y e => mul_inv_eq_one.1 (eq_one_of_comp_eq_one hL hM hK h (x * y⁻¹) (by`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, e, mul_inv_cancel]))⟩`. Establish `: Mono Φ.left` using `inferInstanceAs (Mono ((Over.forget S).map Φ))`. Establish `: IsReduced B.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced B.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper (Φ.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsProper Φ.left` using `IsProper.of_comp Φ.left B.hom`. Establish `: IsClosedImmersion Φ.left` using `(IsClosedImmersion.iff_isProper_and_mono _).2 ⟨‹_›, ‹_›⟩`. Establish `: IsIso Φ.left` using `isIso_of_isClosedImmersion_of_surjective _`. Establish `: IsIso ((Over.forget _).map Φ)` using `‹_›`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isIso_of_reflects_iso Φ (Over.forget _)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_of_lamEq : ∀ (S : Scheme.{0}) [IsReduced S] (A B : Over S) [GrpObj A] [GrpObj B] (L : LB A.left) (M : LB B.left) (Φ : A ⟶ B), IsAbelianScheme A → IsAbelianScheme B → L.IsLB → M.IsLB → IsMonHom Φ → Out.KTriv A L → LamEq M Φ Φ L (𝟙 A) (𝟙 A) → Surjective Φ.left → IsIso Φ := by
   intro S _ A B _ _ L M Φ hA hB hL hM hΦ hK h hs

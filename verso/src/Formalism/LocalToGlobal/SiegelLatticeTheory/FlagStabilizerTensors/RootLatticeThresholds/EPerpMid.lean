@@ -20,13 +20,13 @@ variable {n : ℕ} {ε : Fin n → Bool} {r k : ℕ} {F : PtRepPf.Fr ε r k}
   {Qm : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ} {Qim : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ} {c : Fin r → ℂ}
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Introduce `i hi`. Rewrite using `[Qi_e hT b]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : i ≠ Formalism.QuantumDeterminants.eI k r b` using `fun h => by`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Formalism.QuantumDeterminants.eI] at this`. Simplify using `only [Set.mem_setOf_eq] at hb`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `[Formalism.QuantumDeterminants.bvec, Pi.single_apply, hne]`. Consider the case `zero => intro i _`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro i hi`. Rewrite using `[Matrix.mulVec_add, Pi.add_apply, hx i hi, hy i hi, add_zero]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul d x _ hx => intro i hi`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, hx i hi, smul_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem Qi_spanLt (hT : TrHyp F Qm Qim c) {a : ℕ} {v : Fin n → ℂ} (hv : v ∈ spanLt F.e a) :
     ∀ i : Fin (2 * r + k + 1), a ≤ i.val → (Qim *ᵥ v) i = 0 := by
@@ -43,9 +43,9 @@ theorem Qi_spanLt (hT : TrHyp F Qm Qim c) {a : ℕ} {v : Fin n → ℂ} (hv : v 
   | smul d x _ hx => intro i hi; rw [Matrix.mulVec_smul, Pi.smul_apply, hx i hi, smul_zero]
 
 /- English proof (translation)
-Establish `he : F.e a = (c a)⁻¹ • (Qm *ᵥ Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a))`. Rewrite using `[hT.he, smul_smul, inv_mul_cancel₀ (c_ne hT a), one_smul]`. Rewrite using `[he, PtRepPf.hJ_smul_left, ← herm_Q hT, Formalism.L2.SG.Pf.CarrierBase.herm_bvec]`. Establish `h0 : (Formalism.QuantumDeterminants.Hpk k r *ᵥ Formalism.QuantumDeterminants.bvec j) (Formalism.QuantumDeterminants.eI k r a) = 0`. Simplify using `only [Formalism.QuantumDeterminants.bvec, Matrix.mulVec_single_one, Matrix.col_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `Formalism.QuantumDeterminants.Hpk`. Establish `ha` using `a.2`. Establish `hv : (Formalism.QuantumDeterminants.eI k r a).val = a.val` using `rfl`. Rewrite using `[if_neg (fun h => by have h' := h.2; rw [hv] at h'; omega), if_neg (fun h => by have h' := h.1; omega), if_neg (fun h => by have h' := h.1; rw [hv] at h'; omega)]`. Rewrite using `[h0, mul_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem e_perp_mid (hT : TrHyp F Qm Qim c) (a : Fin r) (j : Fin (2 * r + k + 1)) (hj1 : r ≤ j.val)
     (hj2 : j.val ≤ r + k) : hJ ε (F.e a) (Qm *ᵥ Formalism.QuantumDeterminants.bvec j) = 0 := by
@@ -63,17 +63,15 @@ theorem e_perp_mid (hT : TrHyp F Qm Qim c) (a : Fin r) (j : Fin (2 * r + k + 1))
   rw [h0, mul_zero]
 
 /- English proof (translation)
-Establish `hQQ : Qimᴴ * Qmᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hT.h2, Matrix.conjTranspose_one]`. Establish `hcol : ∀ (j i : Fin (2 * r + k + 1)), (Qim * g * Qm) i j = (Qim *ᵥ (g *ᵥ (Qm *ᵥ Formalism.QuantumDeterminants.bvec j))) i`. Introduce `j i`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Simplify using `[Formalism.QuantumDeterminants.bvec, Matrix.mulVec_single_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨?_, fun a i hi => ?_, fun i j hj1 hj2 hi => ?_⟩` and prove the remaining obligations. Use `show (Qim * g * Qm)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (Qim * g * Qm) = Formalism.QuantumDeterminants.Hpk k r`. Rewrite using `[← hT.hH]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Qmᴴ * (gᴴ * Formalism.REAL.Jm ε * g) * Qm := by`. Rewrite using `[hQQ, hT.h2]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = _ := by rw [hgU]`. Rewrite using `[hcol, hT.he, Matrix.mulVec_smul, Matrix.mulVec_smul, Pi.smul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hsplit : g *ᵥ F.e a = F.e a + (g - 1) *ᵥ F.e a`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, Matrix.mulVec_add, Pi.add_apply, Qi_spanLt hT (hg.1.1 a) i hi, add_zero, Qi_e hT a, Pi.smul_apply, smul_smul, mul_inv_cancel₀ (c_ne hT a), one_smul]`. Simplify using `[Formalism.QuantumDeterminants.bvec, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcol]`. Establish `hw : ∀ a, hJ ε (F.e a) (Qm *ᵥ Formalism.QuantumDeterminants.bvec j) = 0` using `fun a => e_perp_mid hT a j hj1 hj2`. Establish `hsplit : g *ᵥ (Qm *ᵥ Formalism.QuantumDeterminants.bvec j) = Qm *ᵥ Formalism.QuantumDeterminants.bvec j + (g - 1) *ᵥ (Qm *ᵥ Formalism.QuantumDeterminants.bvec j)`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[hsplit, Matrix.mulVec_add, Pi.add_apply, Qi_spanLt hT (hg.2 _ hw) i hi, add_zero, Matrix.mulVec_mulVec, hT.h1, Matrix.one_mulVec]`. Simplify using `[Formalism.QuantumDeterminants.bvec, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fwd_N (hT : TrHyp F Qm Qim c) {g : Matrix (Fin n) (Fin n) ℂ} {z : Fin n → ℂ}
     (hgU : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε) (hg : InN ε F.e z g) :

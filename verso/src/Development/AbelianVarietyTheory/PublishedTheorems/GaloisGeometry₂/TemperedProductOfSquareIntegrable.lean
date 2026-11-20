@@ -20,11 +20,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Introduce `_ _ μ hμ w l hl`. Establish `hφ : ∀ g v, φ.toLinearEquiv (π g v) = σ g (φ.toLinearEquiv v)` using `fun g v => φ.toIntertwiningMap.isIntertwining _ _ g v`. Establish `hs : {g : GL (Fin N) k | (l ∘ₗ φ.toLinearEquiv.toLinearMap) ∘ₗ π g = l ∘ₗ φ.toLinearEquiv.toLinearMap} = {g : GL (Fin N) k | l ∘ₗ σ g = l}`. Use extensionality with `g`. Use `⟨fun H => LinearMap.ext fun x => ?_, fun H => LinearMap.ext fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : l (φ.toLinearEquiv (π g (φ.toLinearEquiv.symm x))) = l (φ.toLinearEquiv (φ.toLinearEquiv.symm x))` using `LinearMap.congr_fun H (φ.toLinearEquiv.symm x)`. Rewrite `h1` using `[hφ, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Use `show l (φ.toLinearEquiv (π g x)) = l (φ.toLinearEquiv x)`. Rewrite using `[hφ]`. Conclude with `LinearMap.congr_fun H _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨F, hF, hF'⟩` from `h μ hμ (φ.toLinearEquiv.symm w) (l ∘ₗ φ.toLinearEquiv.toLinearMap) (hs ▸ hl)`. Use `⟨F, fun g => ?_, hF'⟩` and prove the remaining obligations. Rewrite using `[hF, LinearMap.comp_apply, LinearEquiv.coe_coe, hφ, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffLp_of_equiv {N : ℕ} {p : ℝ} {π : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) W}
     (φ : π.Equiv σ) (h : CoeffLp p π) : CoeffLp p σ := by
@@ -48,9 +48,9 @@ theorem coeffLp_of_equiv {N : ℕ} {p : ℝ} {π : Representation ℂ (GL (Fin N
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using QuotientGroup.induction_on`. Proceed by induction on `b using QuotientGroup.induction_on`. Use `QuotientGroup.eq.2 (Subgroup.mem_center_iff.2 fun g => ?_)` and prove the remaining obligations. Generalize the expression as in `(_⁻¹ * _ : GL (Fin 1) k) = c`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Proceed by induction. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Subsingleton.elim i 0, Subsingleton.elim j 0, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem subsingleton_adGL_one : Subsingleton (AdGL k 1) := by
   refine ⟨fun a b => ?_⟩
@@ -62,13 +62,13 @@ theorem subsingleton_adGL_one : Subsingleton (AdGL k 1) := by
   simp [Matrix.mul_apply, Subsingleton.elim i 0, Subsingleton.elim j 0, mul_comm]
 
 /- English proof (translation)
-Use `haveI : Subsingleton (AdGL k 1) := subsingleton_adGL_one`. Establish `key : ∀ g v, detRep (Fin 1) χ g v = (χ (Matrix.GeneralLinearGroup.det g) : ℂ) • v` using `fun _ _ => rfl`. Prove the components needed by the constructor for the conclusion. Introduce `h x borelize (AdGL k 1)`. Establish `ho : IsOpen {g : GL (Fin 1) k | (LinearMap.id : Module.Dual ℂ ℂ) ∘ₗ detRep (Fin 1) χ g = LinearMap.id}`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `(isSmooth_ofChar_iff _).2 (hχ.detChar (n := Fin 1)) 1 using 2` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `⟨fun H => LinearMap.congr_fun H 1, fun H => LinearMap.ext_ring H⟩`. Take `⟨F, hF, -⟩` from `h Measure.haar inferInstance 1 LinearMap.id ho`. Establish `h1` using `hF (Matrix.GeneralLinearGroup.scalar (Fin 1) x)`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 1) x) = x` using `by ext; simp [Matrix.GeneralLinearGroup.scalar]`. Rewrite `h1` using `[Subsingleton.elim (QuotientGroup.mk _ : AdGL k 1) (QuotientGroup.mk 1), hF, key, key, h2]`. Simplify using `using h1.symm`. Introduce `hu _ _ μ hμ v l _`. Use `⟨fun _ => ‖l v‖, fun g => ?_, memLp_const _⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, map_smul, norm_smul, hu, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem coeffLp_detRep_one_iff (p : ℝ) {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     CoeffLp p (detRep (Fin 1) χ) ↔ ∀ x, ‖(χ x : ℂ)‖ = 1 := by
@@ -92,11 +92,11 @@ theorem coeffLp_detRep_one_iff (p : ℝ) {χ : kˣ →* ℂˣ} (hχ : IsSmoothCh
     rw [key, map_smul, norm_smul, hu, one_mul]
 
 /- English proof (translation)
-Establish `hs : IsSmooth (detRep (Fin 1) χ)` using `(isSmooth_ofChar_iff _).2 hχ.detChar`. Establish `hi : (detRep (Fin 1) χ).IsIrreducible` using `isIrreducible_ofChar _`. Set `x` to `IrrGL.of _ hs hi`. Set `φ : (detRep (Fin 1) χ).Equiv x.rep` to `IrrGL.equivOf _ _ _`. Establish `hd : ∑ _ : Fin 1, x.1 = x.1` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨ψ⟩` from `nonempty_equiv_prodIrr_one x hd`. Establish `ht : IsTemperedCoeff (detRep (Fin 1) χ)`. Introduce `ε _`. Conclude with `@Iff.mpr _ _ (coeffLp_detRep_one_iff (2 + ε) hχ) hu`. Establish `h2 : IsSqIntCoeff x.rep`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `@coeffLp_of_equiv k _ _ _ _ _ _ _ _ 1 2 _ _ φ (@Iff.mpr _ _ (coeffLp_detRep_one_iff 2 hχ) hu)`. Conclude with `⟨hs, hi, ht, 1, fun _ => x, hd, fun _ => ⟨le_rfl, h2⟩, ⟨φ.trans ψ⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem unitary_char {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (hu : ∀ x, ‖(χ x : ℂ)‖ = 1) :
     IsSmooth (detRep (Fin 1) χ) ∧ (detRep (Fin 1) χ).IsIrreducible ∧ IsTemperedCoeff (detRep (Fin 1) χ) ∧
@@ -117,7 +117,7 @@ theorem unitary_char {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (hu : ∀ x, 
     fun _ => ⟨le_rfl, h2⟩, ⟨φ.trans ψ⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isSmooth_ofChar_iff _).2 hχ.detChar, isIrreducible_ofChar _, fun h => hu ((coeffLp_detRep_one_iff _ hχ).1 (h 1 one_pos))⟩`.
+Supply the required witnesses or components.
 -/
 theorem not_tempered_char {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (hu : ¬ ∀ x, ‖(χ x : ℂ)‖ = 1) :
     IsSmooth (detRep (Fin 1) χ) ∧ (detRep (Fin 1) χ).IsIrreducible ∧ ¬ IsTemperedCoeff (detRep (Fin 1) χ) :=

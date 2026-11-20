@@ -15,12 +15,12 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E) {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `(S.herm.eq x y).symm`.
+A detailed English derivation is pending.
 -/
 theorem hsw (x y : S.V) : S.hT y x = star (S.hT x y) := (S.herm.eq x y).symm
 
 /- English proof (translation)
-Rewrite using `[hsw, h, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hsw0 {x y : S.V} (h : S.hT x y = 0) : S.hT y x = 0 := by rw [hsw, h, star_zero]
 
@@ -40,13 +40,13 @@ def IsW (w : S.V) : Prop := (∀ a, S.hT (e a) w = 0) ∧ (∀ a, S.hT (y a) w =
 variable {e y z N}
 
 /- English proof (translation)
-Apply the tactic sequence `rw [hsw, h.ey]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Dual.ye (h : Dual e y z N) (a b) : S.hT (y a) (e b) = if b = a then 1 else 0 := by
   rw [hsw, h.ey]; split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h1 : starRingEnd ℂ (τ (S.hT w w)) = τ (S.hT w w)`. Rewrite using `[← hτc, ← hsw]`. Establish `him : (τ (S.hT w w)).im = 0` using `Complex.conj_eq_iff_im.1 h1`. Conclude with `Complex.ext (by simp) (by simp [him])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem real_of (τ : E →+* ℂ) (hτc : ∀ a, τ (star a) = starRingEnd ℂ (τ a)) (w : S.V) :
     τ (S.hT w w) = ((τ (S.hT w w)).re : ℂ) := by
@@ -56,25 +56,23 @@ theorem real_of (τ : E →+* ℂ) (hτc : ∀ a, τ (star a) = starRingEnd ℂ 
   exact Complex.ext (by simp) (by simp [him])
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Take `⟨hE, hF, hz⟩` from `hw`. Establish `hT0 : (0 : ℝ) < N` using `by exact_mod_cast hN`. Set `wv : Fin r ⊕ Bool → S.V` to `Sum.elim (fun a => e a - y a) (fun b => if b then w else z)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `d : Fin r ⊕ Bool → ℝ` to `Sum.elim (fun _ => -2) (fun b => if b then (τ (S.hT w w)).re else -(N : ℝ))`. Establish `hoff : ∀ i j, i ≠ j → S.hT (wv i) (wv j) = 0`. Introduce `i j hij`. Apply the tactic sequence `rcases i with a | b <;> rcases j with a' | b'`. Establish `ha : a ≠ a'` using `fun h => hij (by rw [h])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `ha' : a' ≠ a` using `fun h => ha h.symm`. Simplify using `only [wv, Sum.elim_inl, map_sub, LinearMap.sub_apply, h.ee, h.yy, h.ey, h.ye, if_neg ha, if_neg ha']`. Simplify using the standard rewrite rules. Consider the cases of `b'`. Simplify using `only [wv, Sum.elim_inl, Sum.elim_inr, Bool.false_eq_true, if_false, map_sub, LinearMap.sub_apply, h.ez, h.yz, sub_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Simplify using `only [wv, Sum.elim_inl, Sum.elim_inr, if_true, map_sub, LinearMap.sub_apply, hE, hF, sub_zero]`. Consider the cases of `b`. Simplify using `only [wv, Sum.elim_inl, Sum.elim_inr, Bool.false_eq_true, if_false, map_sub, hsw0 S (h.ez a'), hsw0 S (h.yz a'), sub_zero]`. Simplify using `only [wv, Sum.elim_inl, Sum.elim_inr, if_true, map_sub, hsw0 S (hE a'), hsw0 S (hF a'), sub_zero]`. Apply the tactic sequence `cases b <;> cases b'`.
+Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd rfl hij`. Simplify `hz` using `[wv]`. Simplify `hsw0 S hz` using `[wv]`. Conclude with `absurd rfl hij`. Establish `hdiag : ∀ i, τ (S.hT (wv i) (wv i)) = (d i : ℂ)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `i`. Break down `i with a | b` into its components or cases. Simplify using `only [wv, d, Sum.elim_inl, map_sub, LinearMap.sub_apply, h.ee, h.yy, h.ey, h.ye, if_true]`. Simplify using `only [map_zero, map_one]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Split into cases according to the possible forms of the given data.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the cases of `b`. Simplify using `only [wv, d, Sum.elim_inr, Bool.false_eq_true, if_false, h.zz, map_neg, map_natCast] push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [wv, d, Sum.elim_inr, if_true]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `real_of τ hτ w`. Establish `hneg : ∀ i, d i < 0`. Introduce `i`. Break down `i with a | b` into its components or cases. Simplify using `[d]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Consider the cases of `b`. Simplify using `only [d, Sum.elim_inr, Bool.false_eq_true, if_false]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify `hlt` using `[d]`. Establish `hc` using `PI.CntNotPosW.card_le_of_negFamily S τ hτ hsig wv d hoff hdiag hneg`.
-
-Simplify using `only [Fintype.card_sum, Fintype.card_fin, Fintype.card_bool] at hc`. Use linear arithmetic over natural numbers and integers.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem semidefG (h : Dual e y z N) (hN : 0 < N) (τ : E →+* ℂ) (hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a))
     {p' : ℕ} (hsig : Formalism.UG.HasSignature (S.gram.map τ) p' (r + 1)) (w : S.V) (hw : IsW e y z w) :
@@ -128,27 +126,25 @@ theorem semidefG (h : Dual e y z N) (hN : 0 < N) (τ : E →+* ℂ) (hτ : ∀ a
   omega
 
 /- English proof (translation)
-Take `⟨hE, hF, hz⟩` from `hw`. Establish `orthW : ∀ v : S.V, IsW e y z v → S.hT w v = 0`. Introduce and unpack `v ⟨hvE, hvF, hvz⟩`. Assume the negation of the conclusion as `hx`. Use `set x := S.hT w v with hxdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hτx : τ x ≠ 0` using `(map_ne_zero τ).2 hx`. Establish `hNq : 0 < Complex.normSq (τ x)` using `Complex.normSq_pos.2 hτx`. Use `set v' : S.V := star x • v with hv'`. Establish `hxx : τ (x * star x) = ((Complex.normSq (τ x) : ℝ) : ℂ)`. Rewrite using `[map_mul, hτ, Complex.mul_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ n : ℕ, 2 * n * Complex.normSq (τ x) ≤ (τ (S.hT v' v')).re`. Introduce `n`. Use `set u : S.V := (n : E) • w - v' with hu`. Establish `huW : IsW e y z u`. Use `⟨fun a => ?_, fun a => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hu, hv', map_sub, map_smul, hE a, hvE a]`. Simplify using `[hu, hv', map_sub, map_smul, hF a, hvF a]`. Simplify using `[hu, hv', map_sub, map_smul, hz, hvz]`. Establish `hs` using `hsemi u huW`. Establish `hyw : S.hT v w = star x` using `by rw [hsw]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : S.hT u u = -(2 * (n : E)) * (x * star x) + S.hT v' v'`. Simplify using `only [hu, map_sub, LinearMap.sub_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_natCast, h0, hv', star_star, hyw, ← hxdef, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (τ (S.hT u u)).re = -(2 * n * Complex.normSq (τ x)) + (τ (S.hT v' v')).re`. Rewrite using `[e1, map_add, map_mul, hxx, map_neg, map_mul, map_ofNat, map_natCast, Complex.add_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `: -(2 * (n : ℂ)) * ((Complex.normSq (τ x) : ℝ) : ℂ) = ((-(2 * n * Complex.normSq (τ x)) : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.ofReal_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨n, hn⟩` from `exists_nat_gt ((τ (S.hT v' v')).re / (2 * Complex.normSq (τ x)))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2` using `key n`. Rewrite `hn` using `[div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hzz : S.hT z z ≠ 0`. Rewrite using `[h.zz, neg_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hN.ne'` after adjusting the coercions. Apply `S.nondeg.1 w` to reduce the goal to its premises. Introduce `x`. Use `set xW : S.V := x - ∑ a, (S.hT (y a) x • e a + S.hT (e a) x • y a) - (S.hT z x / S.hT z z) • z with hxW`. Establish `hzE : ∀ a, S.hT z (e a) = 0` using `fun a => hsw0 S (h.ez a)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hzF : ∀ a, S.hT z (y a) = 0` using `fun a => hsw0 S (h.yz a)`. Establish `hWE : ∀ b, S.hT (e b) xW = 0`. Introduce `b`. Simplify using `[hxW, map_sub, map_sum, map_add, map_smul, h.ee, h.ey, h.ez]`. Establish `hWF : ∀ b, S.hT (y b) xW = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `b`. Simplify using `[hxW, map_sub, map_sum, map_add, map_smul, h.yy, h.ye, h.yz]`. Establish `hWz : S.hT z xW = 0`. Simplify using `[hxW, map_sub, map_sum, map_add, map_smul, hzE, hzF, hzz]`. Establish `h1` using `orthW xW ⟨hWE, hWF, hWz⟩`.
-
-Establish `hwE : ∀ a, S.hT w (e a) = 0` using `fun a => hsw0 S (hE a)`. Establish `hwF : ∀ a, S.hT w (y a) = 0` using `fun a => hsw0 S (hF a)`. Establish `hwz : S.hT w z = 0` using `hsw0 S hz`. Simplify `h1` using `[hxW, map_sub, map_sum, map_add, map_smul, hwE, hwF, hwz]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isoZeroG (h : Dual e y z N) (hN : 0 < N) (τ : E →+* ℂ) (hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a))
     (hsemi : ∀ w, IsW e y z w → 0 ≤ (τ (S.hT w w)).re) (w : S.V) (hw : IsW e y z w) (h0 : S.hT w w = 0) :

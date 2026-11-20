@@ -11,7 +11,7 @@ namespace GlobalTheory.EisM.HeckeRel
 variable {k N : ℕ} {χ : DirichletCharacter ℂ N} {g : ℕ → ℂ}
 
 /- English proof (translation)
-Use `congrFun (h.eig q hq hqN) n` as an intermediate fact. Simplify using `only [To, Vo, ch, Int.cast_natCast] at this`. Take the linear combination `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eig_at (h : Prim k N χ g) {q : ℕ} (hq : q.Prime) (hqN : ¬ q ∣ N) (n : ℕ) :
     g (q * n) = g q * g n - χ q * (q : ℂ) ^ (k - 1) * (if q ∣ n then g (n / q) else 0) := by
@@ -20,7 +20,7 @@ theorem eig_at (h : Prim k N χ g) {q : ℕ} (hq : q.Prime) (hqN : ¬ q ∣ N) (
   linear_combination this
 
 /- English proof (translation)
-Establish `e` using `eig_at h hp hpN (p ^ (r + 1))`. Rewrite `e` using `[if_pos (dvd_pow_self p (Nat.succ_ne_zero r)), pow_succ' p r, Nat.mul_div_cancel_left _ hp.pos, ← pow_succ', ← pow_succ']`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_rec (h : Prim k N χ g) {p : ℕ} (hp : p.Prime) (hpN : ¬ p ∣ N) (r : ℕ) :
     g (p ^ (r + 2)) = g p * g (p ^ (r + 1)) - χ p * (p : ℂ) ^ (k - 1) * g (p ^ r) := by
@@ -30,15 +30,15 @@ theorem pow_rec (h : Prim k N χ g) {p : ℕ} (hp : p.Prime) (hpN : ¬ p ∣ N) 
   exact e
 
 /- English proof (translation)
-Distinguish the cases in `hpN : p ∣ N`. Break down `r with _ | r` into its components or cases. Simplify using `[h.one]`. Establish `h1 : g (p ^ (r + 1) * n) = 0` using `h.zero _ (Nat.not_coprime_of_dvd_of_dvd hp.one_lt (dvd_mul_of_dvd_left (dvd_pow_self p (Nat.succ_ne_zero r)) n) hpN)`. Establish `h2 : g (p ^ (r + 1)) = 0` using `h.zero _ (Nat.not_coprime_of_dvd_of_dvd hp.one_lt (dvd_pow_self p (Nat.succ_ne_zero r)) hpN)`.
+Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, zero_mul]`. It suffices to establish `H : ∀ r, g (p ^ r * n) = g (p ^ r) * g n ∧ g (p ^ (r + 1) * n) = g (p ^ (r + 1)) * g n from (H r).1`. Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `⟨by simp [h.one], ?_⟩` and prove the remaining obligations. Rewrite using `[zero_add, pow_one, eig_at h hp hpN n, if_neg hn, mul_zero, sub_zero]`. Consider the case `succ r ih`. Use `⟨ih.2, ?_⟩` and prove the remaining obligations. Establish `hd : p ∣ p ^ (r + 1) * n` using `dvd_mul_of_dvd_left (dvd_pow_self p (Nat.succ_ne_zero r)) n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `eig_at h hp hpN (p ^ (r + 1) * n)`. Establish `hq : p ^ (r + 1) * n / p = p ^ r * n`. Rewrite using `[pow_succ', mul_assoc, Nat.mul_div_cancel_left _ hp.pos]`. Establish `hy : p ^ (r + 1 + 1) * n = p * (p ^ (r + 1) * n)` using `by ring`. Rewrite `e` using `[if_pos hd, hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hy, e, pow_rec h hp hpN r, ih.1, ih.2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ppow_mul (h : Prim k N χ g) {p : ℕ} (hp : p.Prime) {n : ℕ} (hn : ¬ p ∣ n) (r : ℕ) :
     g (p ^ r * n) = g (p ^ r) * g n := by
@@ -68,17 +68,17 @@ theorem ppow_mul (h : Prim k N χ g) {p : ℕ} (hp : p.Prime) {n : ℕ} (hn : ¬
       ring
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `n hmn`. Break down `Nat.lt_or_ge m 2 with hm | hm` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `interval_cases m`. Rewrite `hmn` using `[Nat.coprime_zero_left]`. Substitute `hmn` using the available equality. Simplify using `[h.one]`. Simplify using `[h.one]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp : m.minFac.Prime` using `Nat.minFac_prime (by omega)`. Establish `hpm0 : m.minFac ∣ m` using `Nat.minFac_dvd _`. Generalize the expression as in `m.minFac = p at hp hpm0`. Take `⟨e, m', hm', rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (by omega : m ≠ 0) p hp.ne_one`. Establish `hpm : p ∣ p ^ e * m'` using `hpm0`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : e ≠ 0`. Introduce and unpack `rfl`. Simplify using `only [pow_zero, one_mul] at hpm`. Conclude with `hm' hpm`. Establish `hm'0 : 0 < m'` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hm)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : m' < p ^ e * m'`. Establish `: 2 ≤ p ^ e` using `le_trans hp.two_le (Nat.le_self_pow he p)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hpn : ¬ p ∣ n` using `fun hd => Nat.not_coprime_of_dvd_of_dvd hp.one_lt hpm hd hmn`. Establish `hcop : m'.Coprime n` using `Nat.Coprime.coprime_dvd_left (dvd_mul_left m' _) hmn`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_assoc, ppow_mul h hp (fun hd => (Nat.Prime.dvd_mul hp).1 hd |>.elim hm' hpn), ih m' hlt n hcop, ppow_mul h hp hm']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem mul_coprime (h : Prim k N χ g) : ∀ m n : ℕ, m.Coprime n → g (m * n) = g m * g n := by
   intro m
@@ -116,19 +116,19 @@ namespace GlobalTheory.EisM.HeckeRel
 variable {k N : ℕ} {χ : DirichletCharacter ℂ N} {g : ℕ → ℂ}
 
 /- English proof (translation)
-Use `set F : ℂ := χ p * (p : ℂ) ^ (k - 1) with hF`. Establish `hrec : ∀ e : ℕ, g p * g (p ^ (e + 1)) = g (p ^ (e + 2)) + F * g (p ^ e)`. Introduce `e`. Rewrite using `[pow_rec h hp hpN e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the argument to an intermediate assertion.
 
-It suffices to establish `H : ∀ a, (∀ d, g (p ^ a) * g (p ^ (a + d)) = ∑ i ∈ Finset.range (a + 1), F ^ i * g (p ^ (2 * a + d - 2 * i))) ∧ (∀ d, g (p ^ (a + 1)) * g (p ^ (a + 1 + d)) = ∑ i ∈ Finset.range (a + 1 + 1), F ^ i * g (p ^ (2 * (a + 1) + d - 2 * i))) from fun a => (H a).1`. Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`. Use `⟨fun d => by simp [h.one], fun d => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_range_succ, Finset.sum_range_one]`. Establish `e1 : 2 * (0 + 1) + d - 2 * 0 = d + 2` using `by omega`. Establish `e2 : 2 * (0 + 1) + d - 2 * 1 = d` using `by omega`. Establish `e3 : 0 + 1 + d = d + 1` using `by omega`. Rewrite using `[e1, e2, e3, zero_add, pow_one, hrec d]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `succ a ih`. Use `⟨ih.2, fun d => ?_⟩` and prove the remaining obligations. Establish `hl : g (p ^ (a + 1 + 1)) * g (p ^ (a + 1 + 1 + d)) = g p * (g (p ^ (a + 1)) * g (p ^ (a + 1 + (d + 1)))) - F * (g (p ^ a) * g (p ^ (a + (d + 2))))`. Establish `e1 : a + 1 + 1 + d = a + 1 + (d + 1)` using `by omega`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : a + 1 + 1 + d = a + (d + 2)` using `by omega`. Rewrite using `[pow_rec h hp hpN a]`. Rewrite using `[show a + 1 + 1 + d = a + 1 + (d + 1) by omega]`. Rewrite using `[show a + 1 + (d + 1) = a + (d + 2) by omega]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl, ih.2 (d + 1), ih.1 (d + 2), Finset.mul_sum, Finset.mul_sum]`. Establish `key : ∀ i ∈ Finset.range (a + 1 + 1), g p * (F ^ i * g (p ^ (2 * (a + 1) + (d + 1) - 2 * i))) = F ^ i * g (p ^ (2 * (a + 1 + 1) + d - 2 * i)) + F * (F ^ i * g (p ^ (2 * a + (d + 2) - 2 * i)))`. Introduce `i hi`. Establish `hi'` using `Finset.mem_range.1 hi`. Rewrite using `[show 2 * (a + 1) + (d + 1) - 2 * i = (2 * a + (d + 2) - 2 * i) + 1 by omega, show 2 * (a + 1 + 1) + d - 2 * i = (2 * a + (d + 2) - 2 * i) + 2 by omega]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(F ^ i) * hrec (2 * a + (d + 2) - 2 * i)`. Rewrite using `[Finset.sum_congr rfl key, Finset.sum_add_distrib, Finset.sum_range_succ (n := a + 1 + 1), Finset.sum_range_succ (fun i => F * (F ^ i * g (p ^ (2 * a + (d + 2) - 2 * i)))) (a + 1)]`. Rewrite using `[show 2 * (a + 1 + 1) + d - 2 * (a + 1 + 1) = d by omega, show 2 * a + (d + 2) - 2 * (a + 1) = d by omega]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem depletedCuspEigenform_primePow_mul_shift (h : Prim k N χ g) {p : ℕ} (hp : p.Prime) (hpN : ¬ p ∣ N) :
     ∀ a d : ℕ, g (p ^ a) * g (p ^ (a + d)) =
@@ -174,19 +174,19 @@ theorem depletedCuspEigenform_primePow_mul_shift (h : Prim k N χ g) {p : ℕ} (
     ring
 
 /- English proof (translation)
-Introduce `p a b hp`. Distinguish the cases in `hpN : p ∣ N`. Establish `hz : ∀ e, e ≠ 0 → g (p ^ e) = 0` using `fun e he => h.zero _ (Nat.not_coprime_of_dvd_of_dvd hp.one_lt (dvd_pow_self p he) hpN)`. Establish `hχ : ∀ i, i ≠ 0 → χ ((p ^ i : ℕ) : ZMod N) = 0`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `MulChar.map_nonunit` to reduce the goal to its premises. Rewrite using `[ZMod.isUnit_iff_coprime]`. Conclude with `Nat.not_coprime_of_dvd_of_dvd hp.one_lt (dvd_pow_self p hi) hpN`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Simplify using `[h.one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos b with rfl | hb` into its components or cases. Simplify using `[h.one]`. Rewrite using `[hz a ha.ne', zero_mul]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Break down `Nat.eq_zero_or_pos i with rfl | hi` into its components or cases. Rewrite using `[hz (a + b - 2 * 0) (by omega), mul_zero]`. Rewrite using `[hχ i hi.ne', zero_mul, zero_mul]`. Establish `hF : ∀ i, χ ((p ^ i : ℕ) : ZMod N) * ((p ^ i : ℕ) : ℂ) ^ (k - 1) = (χ p * (p : ℂ) ^ (k - 1)) ^ i`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[Nat.cast_pow, Nat.cast_pow, map_pow, ← pow_mul, mul_comm i, pow_mul, mul_pow]`. Simplify using `only [hF]`. Break down `le_total a b with hab | hab` into its components or cases. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hab`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[min_eq_left hab, depletedCuspEigenform_primePow_mul_shift h hp hpN a d]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show a + (a + d) - 2 * i = 2 * a + d - 2 * i by omega]`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Rewrite using `[min_eq_right hab, mul_comm, depletedCuspEigenform_primePow_mul_shift h hp hpN b d]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show b + d + b - 2 * i = 2 * b + d - 2 * i by omega]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pp (h : Prim k N χ g) : ∀ p a b : ℕ, p.Prime → g (p ^ a) * g (p ^ b) = ∑ i ∈ Finset.range (min a b + 1), χ ((p ^ i : ℕ) : ZMod N) * ((p ^ i : ℕ) : ℂ) ^ (k - 1) * g (p ^ (a + b - 2 * i)) := by
   intro p a b hp
@@ -228,7 +228,7 @@ end GlobalTheory.EisM.HeckeRel
 namespace GlobalTheory.EisM.HeckeRel
 
 /- English proof (translation)
-Establish `cop : ∀ e x, ¬ p ∣ x → (p ^ e).Coprime x` using `fun e x hx => Nat.Coprime.pow_left e ((Nat.Prime.coprime_iff_not_dvd hp).2 hx)`. Rewrite using `[Nat.Coprime.gcd_mul _ (cop b n' hn'), Nat.gcd_comm (p ^ a * m') (p ^ b), Nat.Coprime.gcd_mul _ (cop a m' hm'), Nat.gcd_comm (p ^ a * m') n', Nat.Coprime.gcd_mul _ (cop a m' hm'), Nat.Coprime.gcd_eq_one (cop b m' hm'), Nat.Coprime.gcd_eq_one (cop a n' hn').symm, Nat.gcd_comm n' m …`. Break down `le_total a b with hab | hab` into its components or cases. Rewrite using `[min_eq_left hab, Nat.gcd_eq_right (Nat.pow_dvd_pow p hab)]`. Rewrite using `[min_eq_right hab, Nat.gcd_eq_left (Nat.pow_dvd_pow p hab)]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gcd_pow_mul {p a b m' n' : ℕ} (hp : p.Prime) (hm' : ¬ p ∣ m') (hn' : ¬ p ∣ n') :
     Nat.gcd (p ^ a * m') (p ^ b * n') = p ^ min a b * Nat.gcd m' n' := by
@@ -243,7 +243,7 @@ theorem gcd_pow_mul {p a b m' n' : ℕ} (hp : p.Prime) (hm' : ¬ p ∣ m') (hn' 
   · rw [min_eq_right hab, Nat.gcd_eq_left (Nat.pow_dvd_pow p hab)]
 
 /- English proof (translation)
-Rewrite using `[Nat.Coprime.divisors_mul hAB, Finset.sum_map]`. Conclude with `(Finset.sum_attach _ (fun q : ℕ × ℕ => F (q.1 * q.2))).trans (Finset.sum_product _ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_divisors_mul_coprime {A B : ℕ} (hAB : A.Coprime B) (F : ℕ → ℂ) :
     ∑ x ∈ (A * B).divisors, F x = ∑ x ∈ A.divisors, ∑ y ∈ B.divisors, F (x * y) := by
@@ -251,27 +251,27 @@ theorem sum_divisors_mul_coprime {A B : ℕ} (hAB : A.Coprime B) (F : ℕ → �
   exact (Finset.sum_attach _ (fun q : ℕ × ℕ => F (q.1 * q.2))).trans (Finset.sum_product _ _ _)
 
 /- English proof (translation)
-It suffices to establish `H : ∀ s m n, m * n = s → 0 < m → 0 < n → g m * g n = ∑ δ ∈ (Nat.gcd m n).divisors, f δ * g (m * n / δ ^ 2) from fun m n hm hn => H _ m n rfl hm hn`. Introduce `s`. Proceed by induction on `s using Nat.strong_induction_on with`. Consider the case `_ s ih`. Introduce `m n hs hm hn`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h1 : m * n = 1`. Establish `hm1 : m = 1` using `Nat.eq_one_of_mul_eq_one_right h1`. Establish `hn1 : n = 1` using `Nat.eq_one_of_mul_eq_one_left h1`. Substitute `hm1 hn1` using the available equality. Use `hpp 2 0 0 Nat.prime_two` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hp : (m * n).minFac.Prime` using `Nat.minFac_prime h1`. Establish `hpd : (m * n).minFac ∣ m * n` using `Nat.minFac_dvd _`. Generalize the expression as in `(m * n).minFac = p at hp hpd`. Take `⟨a, m', hm', rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hm.ne' p hp.ne_one`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨b, n', hn', rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn.ne' p hp.ne_one`. Establish `hm'0 : 0 < m'` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hm)`. Establish `hn'0 : 0 < n'` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hn)`. Establish `hpmn : ¬ p ∣ m' * n'` using `fun hd => (hp.dvd_mul.1 hd).elim hm' hn'`. Establish `hab : a + b ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hab`. Establish `ha : a = 0` using `by omega`. Establish `hb : b = 0` using `by omega`. Substitute `ha hb` using the available equality. Simplify using `only [pow_zero, one_mul] at hpd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `hpmn hpd`. Establish `hmn : p ^ a * m' * (p ^ b * n') = p ^ (a + b) * (m' * n')` using `by ring`. Establish `hlt : m' * n' < s`. Rewrite using `[← hs, hmn]`. Establish `h2 : 2 ≤ p ^ (a + b)` using `le_trans hp.two_le (Nat.le_self_pow hab p)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 < m' * n'` using `Nat.mul_pos hm'0 hn'0`. Use the polynomial consequences of the given equalities and inequalities. Establish `IH` using `ih _ hlt m' n' rfl hm'0 hn'0`. Establish `cop : ∀ e x, ¬ p ∣ x → (p ^ e).Coprime x` using `fun e x hx => Nat.Coprime.pow_left e ((Nat.Prime.coprime_iff_not_dvd hp).2 hx)`. Establish `hGp : ¬ p ∣ Nat.gcd m' n'` using `fun hd => hm' (hd.trans (Nat.gcd_dvd_left _ _))`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg _ _ (cop a m' hm'), hg _ _ (cop b n' hn'), gcd_pow_mul hp hm' hn', sum_divisors_mul_coprime (cop _ _ hGp), Nat.sum_divisors_prime_pow hp]`. Establish `e1 : g (p ^ a) * g m' * (g (p ^ b) * g n') = (g (p ^ a) * g (p ^ b)) * (g m' * g n')` using `by ring`. Rewrite using `[e1, hpp p a b hp, IH, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i hi => Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Establish `hi' : i ≤ min a b` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyG : y ∣ Nat.gcd m' n'` using `Nat.dvd_of_mem_divisors hy`. Take `⟨u, hu⟩` from `hyG.trans (Nat.gcd_dvd_left m' n')`. Take `⟨v, hv⟩` from `hyG.trans (Nat.gcd_dvd_right m' n')`. Establish `hy0 : 0 < y` using `Nat.pos_of_mem_divisors hy`. Establish `hq1 : m' * n' / y ^ 2 = u * v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hu, hv, show y * u * (y * v) = y ^ 2 * (u * v) by ring, Nat.mul_div_cancel_left _ (by positivity)]`. Establish `hq2 : p ^ a * m' * (p ^ b * n') / (p ^ i * y) ^ 2 = p ^ (a + b - 2 * i) * (u * v)`. Establish `hexp : p ^ (a + b) = p ^ (2 * i) * p ^ (a + b - 2 * i)`. Rewrite using `[← pow_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hmn, hexp, hu, hv, show p ^ (2 * i) * p ^ (a + b - 2 * i) * (y * u * (y * v)) = (p ^ i * y) ^ 2 * (p ^ (a + b - 2 * i) * (u * v)) by ring, Nat.mul_div_cancel_left _ (by have := hp.pos; positivity)]`. Establish `huv : ¬ p ∣ u * v` using `fun hd => hpmn (hd.trans ⟨y * y, by rw [hu, hv]; ring⟩)`. Rewrite using `[hq1, hq2, hf, hg _ _ (cop _ _ huv)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gen (f g : ℕ → ℂ) (hf : ∀ a b : ℕ, f (a * b) = f a * f b)
     (hg : ∀ m n : ℕ, m.Coprime n → g (m * n) = g m * g n)
@@ -341,9 +341,9 @@ theorem gen (f g : ℕ → ℂ) (hf : ∀ a b : ℕ, f (a * b) = f a * f b)
 end GlobalTheory.EisM.HeckeRel
 
 /- English proof (translation)
-Introduce `k N χ g _ _ h`. Use `⟨GlobalTheory.EisM.HeckeRel.mul_coprime h, fun p r hp hpN => GlobalTheory.EisM.HeckeRel.pow_rec h hp hpN r, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.EisM.HeckeRel.gen (fun δ : ℕ => χ δ * (δ : ℂ) ^ (k - 1)) g ?_ (GlobalTheory.EisM.HeckeRel.mul_coprime h) ?_` and prove the remaining obligations. Introduce `a b`. Simplify using `only [Nat.cast_mul, map_mul, mul_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `p a b hp`. Conclude with `GlobalTheory.EisM.HeckeRel.pp h p a b hp`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EisM.hecke_relations : ∀ (k N : ℕ) (χ : DirichletCharacter ℂ N) (g : ℕ → ℂ), 1 ≤ k → 0 < N → Prim k N χ g → (∀ m n : ℕ, m.Coprime n → g (m * n) = g m * g n) ∧ (∀ p r : ℕ, p.Prime → ¬ p ∣ N → g (p ^ (r + 2)) = g p * g (p ^ (r + 1)) - χ p * (p : ℂ) ^ (k - 1) * g (p ^ r)) ∧ ∀ m n : ℕ, 0 < m → 0 < n → g m * g n = ∑ δ ∈ (Nat.gcd m n).divisors, χ δ * (δ : ℂ) ^ (k - 1) * g (m * n / δ ^ 2) := by
   intro k N χ g _ _ h

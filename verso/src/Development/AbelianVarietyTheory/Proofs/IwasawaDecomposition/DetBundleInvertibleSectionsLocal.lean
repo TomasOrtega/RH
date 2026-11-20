@@ -22,7 +22,7 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections (TanM tv mkT tanM_ext
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `congrArg T (b.sum_repr (b' j))`. Simplify using `only [map_sum, map_smulₛₗ, hb, hb'] at h`. Rewrite using `[Matrix.map_apply, Module.Basis.toMatrix_apply, Module.Basis.toMatrix_apply, ← h, Module.Basis.repr_sum_self]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem toMatrix_map_of_semilinear {R R' N N' : Type} [CommRing R] [CommRing R'] [AddCommGroup N] [Module R N]
     [AddCommGroup N'] [Module R' N'] {κ κ' : Type} [Fintype κ] [DecidableEq κ] [Fintype κ'] (φ : R →+* R')
@@ -46,15 +46,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : S
 include hv in
 
 /- English proof (translation)
-Establish `key : ∀ (f : Γ(X0, U) →+* S) (x : Sp S ⟶ X0), spMap f ≫ hU.fromSpec = x → ∃ b : Module.Basis (Fin n) S (TanM x t.G), ∀ j, (tv (b j)).left = spMap (dualMap f) ≫ v₀ j`. Introduce and unpack `f _ rfl`. Establish `hp : ∃ t' : SAB H (Sp S), Nonempty (SABMap t' t (spMap f ≫ hU.fromSpec))`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull (spMap f ≫ hU.fromSpec) t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t', ⟨m⟩⟩` from `hp`. Take `⟨v', hv', hb⟩` from `hv S f t'.G m.φ m.cart`. Set `u : Fin n → TanM (spMap f ≫ hU.fromSpec) t.G` to `fun j => mkT (pushHom m.cart (epsR S) (v' j)) ((PullbackSections.isTangent_iff m.cart _).1 (hb.1 j))`. Establish `hcomb : ∀ (a : Fin n → S) (w : epsR S ⟶ t'.G), IsLieComb a v' w ↔ pushHom m.cart (epsR S) w = tv (∑ i, a i • u i)` using `fun a w => by`. Rewrite using `[PullbackSections.isLieComb_iff m.cart, tv_sum']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hbij : Function.Bijective (Fintype.linearCombination S u)`. Rewrite using `[Function.bijective_iff_existsUnique]`. Introduce `W`. Take `⟨p, hp⟩` from `PullbackSections.push_surj m.cart (tv W)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `ht : IsTangent p` using `(PullbackSections.isTangent_iff m.cart p).2 (by rw [hp]; exact tv_mem W)`. Use `(existsUnique_congr fun a => ?_).1 (hb.2 p ht)` and prove the remaining obligations. Rewrite using `[hcomb, hp, Fintype.linearCombination_apply]`. Conclude with `⟨fun e => (tanM_ext e).symm, fun e => by rw [e]⟩`. Set `e` to `LinearEquiv.ofBijective _ hbij`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `he : ∀ j, (Pi.basisFun S (Fin n)).map e j = u j` using `fun j => by`. Simplify using `[e, Fintype.linearCombination_apply_single]`. Conclude with `⟨(Pi.basisFun S (Fin n)).map e, fun j => by rw [he]; exact hv' j⟩`. Conclude with `key _ x (spMap_ev x hU h)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_vecBasis (x : Sp S ⟶ X0) (h : ⊤ ≤ x ⁻¹ᵁ U) :
     ∃ b : Module.Basis (Fin n) S (TanM x t.G), ∀ j, (tv (b j)).left = spMap (dualMap (ev x U h)) ≫ v₀ j := by
@@ -91,14 +91,14 @@ def vecBasis (x : Sp S ⟶ X0) (h : ⊤ ≤ x ⁻¹ᵁ U) : Module.Basis (Fin n)
   (exists_vecBasis t hU v₀ hv x h).choose
 
 /- English proof (translation)
-The claim follows from `(exists_vecBasis t hU v₀ hv x h).choose_spec j`.
+A detailed English derivation is pending.
 -/
 theorem vecBasis_left (x : Sp S ⟶ X0) (h : ⊤ ≤ x ⁻¹ᵁ U) (j : Fin n) :
     (tv (vecBasis t hU v₀ hv x h j)).left = spMap (dualMap (ev x U h)) ≫ v₀ j :=
   (exists_vecBasis t hU v₀ hv x h).choose_spec j
 
 /- English proof (translation)
-Substitute `e` using the available equality. Apply `tan_ext_left` to reduce the goal to its premises. Rewrite using `[tanPull_left, vecBasis_left, vecBasis_left, ev_spMap φ x U h, GlobalTheory.FlagMod.dualMap_comp, ← spMap_comp', Category.assoc]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tanPull_vecBasis (φ : S →+* S') {x : Sp S ⟶ X0} {x' : Sp S' ⟶ X0} (e : spMap φ ≫ x = x')
     (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ x' ⁻¹ᵁ U) (j : Fin n) :
@@ -126,7 +126,7 @@ def frameFn (M : MChart Y) : Γ(Zs, p ⁻¹ᵁ M.U ⊓ V) :=
 
 include hB in
 /- English proof (translation)
-Establish `e0 : spMap (ev z _ hz) ≫ tau (hA M) = z` using `spMap_ev z (hA M) hz`. Establish `e1 : spMap (ev z _ hz) ≫ tau (hA M) ≫ p = z ≫ p` using `by rw [← Category.assoc, e0]`. Rewrite using `[frameFn, map_rdet, toMatrix_map_of_semilinear _ (tanPull (G := Y.t.G) _ e1) _ _ _ _ (hB _ _ _ _ _ _ _ e0 e1) (tanPull_lieBasis M _ e1 _ hM)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_frameFn (M : MChart Y) {S : Type} [CommRing S] (z : Sp S ⟶ Zs) (hz : ⊤ ≤ z ⁻¹ᵁ (p ⁻¹ᵁ M.U ⊓ V))
     (h : ⊤ ≤ z ⁻¹ᵁ V) (hM : ⊤ ≤ (z ≫ p) ⁻¹ᵁ M.U) :
@@ -142,27 +142,27 @@ def frame (J : ((detOm Y).pull p).ι) : Γ(Zs, V ⊓ ((detOm Y).pull p).U J) :=
     (frameFn B hA (J PUnit.unit))
 
 /- English proof (translation)
-The claim follows from `isUnit_rdet_toMatrix _ _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_frameFn (M : MChart Y) : IsUnit (frameFn B hA M) := isUnit_rdet_toMatrix _ _
 
 /- English proof (translation)
-The claim follows from `(isUnit_frameFn B hA _).map _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_frame (J : ((detOm Y).pull p).ι) : IsUnit (frame B hA J) :=
   (isUnit_frameFn B hA _).map _
 
 include hB in
 /- English proof (translation)
-Introduce `J J'`. Apply `ext_ev` to reduce the goal to its premises. Introduce `S _ z hz`. Establish `hV : ⊤ ≤ z ⁻¹ᵁ V` using `le_preimage_mono (inf_le_left.trans inf_le_left) hz`. Establish `hJ : ⊤ ≤ z ⁻¹ᵁ ((detOm Y).pull p).U J` using `le_preimage_mono (inf_le_left.trans inf_le_right) hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ' : ⊤ ≤ z ⁻¹ᵁ ((detOm Y).pull p).U J'` using `le_preimage_mono inf_le_right hz`. Establish `hM0 : ⊤ ≤ (z ≫ p) ⁻¹ᵁ (detOm Y).U (J PUnit.unit)` using `le_preimage_map p (LB.wchart_le (detOm Y) (fun _ : PUnit => p) J PUnit.unit) hJ`. Establish `hM : ⊤ ≤ (z ≫ p) ⁻¹ᵁ (J PUnit.unit).U` using `hM0`. Establish `hM0' : ⊤ ≤ (z ≫ p) ⁻¹ᵁ (detOm Y).U (J' PUnit.unit)` using `le_preimage_map p (LB.wchart_le (detOm Y) (fun _ : PUnit => p) J' PUnit.unit) hJ'`. Establish `hM' : ⊤ ≤ (z ≫ p) ⁻¹ᵁ (J' PUnit.unit).U` using `hM0'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : ∀ W : Y.X.Opens, ⊤ ≤ (z ≫ p) ⁻¹ᵁ W → ⊤ ≤ z ⁻¹ᵁ (p ⁻¹ᵁ W)`. Introduce `W h`. Rewrite using `[← Scheme.Hom.comp_preimage]` and apply the resulting hypothesis. Establish `hW : ⊤ ≤ z ⁻¹ᵁ (p ⁻¹ᵁ (J PUnit.unit).U ⊓ V)` using `le_preimage_inf (hpre _ hM) hV`. Establish `hW' : ⊤ ≤ z ⁻¹ᵁ (p ⁻¹ᵁ (J' PUnit.unit).U ⊓ V)` using `le_preimage_inf (hpre _ hM') hV`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMM : ⊤ ≤ (z ≫ p) ⁻¹ᵁ ((J PUnit.unit).U ⊓ (J' PUnit.unit).U)` using `le_preimage_inf hM hM'`. Rewrite using `[map_mul, ev_res z _ hz (le_preimage_inf hV hJ), ev_res z _ hz (le_preimage_inf hV hJ'), ev_res z _ hz (le_preimage_inf hJ hJ')]`. Rewrite using `[frame, frame, ev_res z _ _ hW, ev_res z _ _ hW']`. Rewrite using `[ev_frameFn B hB hA _ z hW hV hM, ev_frameFn B hB hA _ z hW' hV hM']`. Rewrite using `[GlobalTheory.FlagMod.ev_pull_g (detOm Y) p J J' z (le_preimage_inf hJ hJ') hMM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = ev (z ≫ p) _ hMM ((detChg (J PUnit.unit) (J' PUnit.unit))⁻¹).val * _`. Rewrite using `[ev_unit_inv]`. Establish `hu : ((Units.map (ev (z ≫ p) _ hMM).toMonoidHom (detChg (J PUnit.unit) (J' PUnit.unit)) : Sˣ) : S) = rdet ((lieBasis (J PUnit.unit) (z ≫ p) hM).toMatrix (lieBasis (J' PUnit.unit) (z ≫ p) hM'))` using `ev_detChg _ _ (z ≫ p) hM hM' hMM`. Rewrite using `[← rdet_toMatrix_mul (B S z hV) (lieBasis (J PUnit.unit) (z ≫ p) hM) (lieBasis (J' PUnit.unit) (z ≫ p) hM'), ← hu, mul_left_comm, Units.inv_mul, _root_.mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_mem : frame B hA ∈ secOn ((detOm Y).pull p) V := by
   intro J J'
@@ -213,9 +213,9 @@ def genB (S : Type) [CommRing S] (z : Sp S ⟶ Zs) (h : ⊤ ≤ z ⁻¹ᵁ V) : 
     ((tanEquiv n₂.cart z).symm.trans (tanEquiv n₁.cart z))
 
 /- English proof (translation)
-Establish `e2 : spMap φ ≫ z ≫ q = z' ≫ q` using `by rw [← e0, Category.assoc]`. Simplify using `only [genB, Module.Basis.map_apply, LinearEquiv.trans_apply]`. Rewrite using `[tanPull_tanEquiv n₁.cart φ e0 e]`. Use `congr 1`. Apply `(tanEquiv n₂.cart z').injective` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[LinearEquiv.apply_symm_apply, ← tanPull_tanEquiv n₂.cart φ e0 e2, LinearEquiv.apply_symm_apply, tanPull_vecBasis tX hU' v₀ hv φ e2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tanPull_genB (S S' : Type) [CommRing S] [CommRing S'] (φ : S →+* S') (z : Sp S ⟶ Zs) (z' : Sp S' ⟶ Zs)
     (h : ⊤ ≤ z ⁻¹ᵁ V) (h' : ⊤ ≤ z' ⁻¹ᵁ V) (e0 : spMap φ ≫ z = z') (e : spMap φ ≫ z ≫ p = z' ≫ p) (j : Fin n) :
@@ -231,9 +231,9 @@ theorem tanPull_genB (S S' : Type) [CommRing S] [CommRing S'] (φ : S →+* S') 
 end Transport
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c X Y ρ hρ _ y`. Establish `hN` using `(GlobalTheory.GenFibre.gen_normal_reduced_noetherian E H D l Xo c Y).1`. Take `⟨t₀, n₁, n₂, -⟩` from `cmpSt_of_sabExtNormalSt (sabExtNormalSt_of_homExtNormalSt GlobalTheory.homExtNormal) E H D l Xo c _ _ _ _ X Y ρ hρ hN`. Use `haveI : Smooth X.t.G.hom := X.t.semi.smooth`. Take `⟨U', hU', hyU', -, n, v₀, hv⟩` from `GlobalTheory.exists_affine_lieBasis_baseChange X.X X.t.G (genι X (ρ y)) ⊤ trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨U, hU, rfl⟩, hyU, hUU'⟩` from `(gen X).isBasis_affineOpens.exists_subset_of_mem_open (show ρ y ∈ ((genι X ⁻¹ᵁ U' : (gen X).Opens) : Set (gen X)) from hyU') (genι X ⁻¹ᵁ U').isOpen`. Establish `hVU : ρ ⁻¹ᵁ U ≤ (ρ ≫ genι X) ⁻¹ᵁ U'` using `fun r hr => hUU' hr`. Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver X.proj` as an intermediate fact. Establish `hA : ∀ M : MChart Y, IsAffineOpen (genι Y ⁻¹ᵁ M.U ⊓ ρ ⁻¹ᵁ U)` using `fun M => GlobalTheory.PolFin.isAffineOpen_inf_preimage (genStr X) ρ hU (M.hU.preimage (genι Y))`. Conclude with `⟨⟨U, hU⟩, hyU, frame (genB n₁ n₂ hU' v₀ hv hVU) hA, frame_mem _ (tanPull_genB n₁ n₂ hU' v₀ hv hVU) hA, isUnit_frame _ hA⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem detOm_frame_gen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (ρ : gen Y ⟶ gen X),

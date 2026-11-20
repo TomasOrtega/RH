@@ -22,7 +22,7 @@ open Classical
 namespace GlobalTheory.BaseVacuum
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Unfold `inter`. Use `congr 1`. Conclude with `finsum_congr fun c => by rw [h _ (Quotient.out c : Λ₂).2]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem inter_congr_al {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α α' : V → ℂ) (Λ₁ Λ₂ : AddSubgroup V)
     (F : V → ℂ) (h : ∀ x ∈ Λ₂, α x = α' x) : inter H α Λ₁ Λ₂ F = inter H α' Λ₁ Λ₂ F := by
@@ -32,15 +32,15 @@ theorem inter_congr_al {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (
   exact finsum_congr fun c => by rw [h _ (Quotient.out c : Λ₂).2]
 
 /- English proof (translation)
-Introduce `D cc δ B _ _ hcc hδ _ N N' hN hN'`. Take `⟨n, hn⟩` from `hN`. Take `⟨n', hn'⟩` from `hN'`. Take `rfl : N = n * 2` from `by omega`. Take `rfl : N' = n' * 2` from `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hS : B.StdOK` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.stdOK B hcc hδ`. Use `⟨bas B n n', B.kappa ^ (n' * n), GlobalTheory.T.orthonormalBasis_blockVacuumLatticeBasisFamily D cc δ B n n', GlobalTheory.T.kappaProduct_pow_algebraicModulusOneAll D cc δ B _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Take `⟨hsc', hF0', hidx', hprod⟩` from `GlobalTheory.T.latticeIntertwiner_prod_orthogonal_blocks B.L B.ω₀ B.cq (Fin n' × Fin n) (Fin 4 × D.what₂.Tau) (imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM)) hS.betaSemi (product_theta_mem B.L B.ω₀ _ hS.per hS.half _ hS.betaStd).1.2 hS.id …`. Establish `hH : IsHerm (stdH B.L (Ix D n n'))` using `(standardFormBasic B.L _).2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `have hnat := GlobalTheory.T.latticeIntertwiner_comap_linear_isometry _ _ (formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau (n * 2) (n' * 2)) (stdH B.L (Ix D n n')) (phi B n n') (fun x y => GlobalTheory.T.blockVacuumCoordinateEquiv_isometry D cc δ B …`. Rewrite using `[GlobalTheory.T.thetaVacuum_eq_kappa_pow_mul_block_kernels D cc δ B hS n n' z]`. Use `congr 1`. Rewrite using `[Iop_eq, GlobalTheory.T.blockVacuumLattice_eq_comap_standardLattice, GlobalTheory.T.la_tor0_stdL_eq_blkLat, show StandardLatticesGL3.pullB D (TaylorLogMetric.tor0 D cc δ) (bas B n n') (GL3Theta.th0 (TaylorLogMetric.tor0 D cc δ).abelian₂ (B.ω₀ / 2)) = fun v => F0 B.L B.ω₀ (Ix D n …`. Rewrite using `[inter_congr_al _ _ (fun v => alphaQ B.cq (stdH B.L (Ix D n n')) (phi B n n' v)) _ _ _ ?_, hnat, hprod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `x hx`. Establish `hx' : x ∈ TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (StandardLatticesGL3.stdL D (n * 2)) (StandardLatticesGL3.stdL D (n' * 2))`. Rewrite using `[GlobalTheory.T.la_tor0_stdL_eq_blkLat D cc δ B n n']`. Conclude with `hx`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `B.qInt0 hS (n * 2) (n' * 2) x hx'`. Rewrite using `[al_eq D _ x m hm]`. Unfold `alphaQ qOf`. Apply the tactic sequence `rw [← GlobalTheory.T.blockVacuumCoordinateEquiv_isometry D cc δ B n n' x x]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thetaVectorUpToUnits_thZero_of_even : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ), TaylorLogMetric.adm1 D → GL3Theta.InducedCMType D →
     TaylorLogMetric.IsCurveIdeal D cc → TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → B.kc.YFinite → ∀ N N' : ℕ, Even N → Even N' →

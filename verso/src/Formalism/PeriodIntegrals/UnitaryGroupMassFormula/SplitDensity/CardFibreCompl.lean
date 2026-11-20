@@ -5,7 +5,7 @@ open Module Submodule
 namespace FibreCount
 
 /- English proof (translation)
-Establish `e : {x : V // φ x = a} ≃ LinearMap.ker φ` using `{ toFun := fun x => ⟨x.1 - x0, by rw [LinearMap.mem_ker, map_sub, x.2, hx0, sub_self]⟩ invFun := fun y => ⟨y.1 + x0, by rw [map_add, LinearMap.mem_ker.mp y.2, zero_add, hx0]⟩ left_inv := fun x => Subtype.ext (sub_add_cancel _ _) right_inv := fun y => Subtype.ext (add_sub_cancel_r …`. Use `haveI : Finite V := Module.finite_of_finite K`. Rewrite using `[Nat.card_congr e, Module.natCard_eq_pow_finrank (K := K), Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_fibre {K V U : Type} [Field K] [Fintype K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] [AddCommGroup U] [Module K U] (φ : V →ₗ[K] U) (a : U) (x0 : V)
@@ -22,27 +22,23 @@ theorem card_fibre {K V U : Type} [Field K] [Fintype K] [AddCommGroup V] [Module
 open Classical in
 
 /- English proof (translation)
-Use `haveI : Finite V := Module.finite_of_finite K`. Use `haveI : Fintype V := Fintype.ofFinite V`. Set `ψ : (Fin k → K) →ₗ[K] U` to `{ toFun := fun c => φ (∑ j, c j • z j) map_add' := fun c d => by`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib, map_add]`. Use the proof step `map_smul' := fun t c => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul, ← Finset.smul_sum, map_smul, RingHom.id_apply] }`. Establish `hψ : LinearMap.range ψ = span K (Set.range (fun j => φ (z j)))`. Use extensionality with `u`. Rewrite using `[LinearMap.mem_range, Submodule.mem_span_range_iff_exists_fun]`. Use `exists_congr fun c => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show φ (∑ j, c j • z j) = u ↔ _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Establish `hin : Nat.card {x : V // x ∈ span K (Set.range z) ∧ φ x = a} = Nat.card {c : Fin k → K // ψ c = a}`. Use `symm`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Nat.card_congr` to reduce the goal to its premises. Use `Equiv.ofBijective (fun c => ⟨∑ j, c.1 j • z j, ?_, c.2⟩) ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.mem_span_range_iff_exists_fun K).mpr ⟨c.1, rfl⟩`. Introduce `c d hcd`. Establish `h` using `congrArg Subtype.val hcd`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only at h`. Establish `h0 : ∑ j, (c.1 j - d.1 j) • z j = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, h, sub_self]`. Conclude with `Subtype.ext (funext fun j => sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hz _ h0 j))`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun K).mp x.2.1`. Use `⟨⟨c, ?_⟩, Subtype.ext hc⟩` and prove the remaining obligations. Use `show φ (∑ j, c j • z j) = a`. Rewrite using `[hc]`. Conclude with `x.2.2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hsplit : Nat.card {x : V // x ∉ span K (Set.range z) ∧ φ x = a} = Nat.card {x : V // φ x = a} - Nat.card {x : V // x ∈ span K (Set.range z) ∧ φ x = a}`. Establish `e : {x : V // φ x = a} ≃ {x : V // x ∈ span K (Set.range z) ∧ φ x = a} ⊕ {x : V // x ∉ span K (Set.range z) ∧ φ x = a}` using `{ toFun := fun x => if h : x.1 ∈ span K (Set.range z) then Sum.inl ⟨x.1, h, x.2⟩ else Sum.inr ⟨x.1, h, x.2⟩ invFun := fun s => Sum.elim (fun y => ⟨y.1, y.2.2⟩) (fun y => ⟨y.1, y.2.2⟩) s left_inv := fun x => by`. Apply the tactic sequence `by_cases h : x.1 ∈ span K (Set.range z) <;> simp [h]`. Use `right_inv := fun s => by`. Apply the tactic sequence `rcases s with y | y <;> simp [y.2.1] }`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h` using `Nat.card_congr e`. Rewrite `h` using `[Nat.card_sum]`. Use linear arithmetic over natural numbers and integers. Take `⟨x0, hx0⟩` from `hφ a`. Rewrite using `[hsplit, card_fibre φ a x0 hx0, hin]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with ha`. Rewrite `ha` using `[← hψ]`. Take `⟨c0, hc0⟩` from `ha`. Rewrite using `[card_fibre ψ a c0 hc0]`. Use `congr 2`.
-
-Establish `hrk` using `LinearMap.finrank_range_add_finrank_ker ψ`. Rewrite `hrk` using `[Module.finrank_fin_fun, hψ]`. Use linear arithmetic over natural numbers and integers. Establish `h0 : Nat.card {c : Fin k → K // ψ c = a} = 0`. Rewrite using `[Nat.card_eq_zero]`.
-
-Use `left`. Use `⟨fun c => ha ?_⟩` and prove the remaining obligations. Rewrite using `[← hψ]`. Conclude with `⟨c.1, c.2⟩`. Rewrite using `[h0, Nat.sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_fibre_compl {K V U : Type} [Field K] [Fintype K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] [AddCommGroup U] [Module K U] (φ : V →ₗ[K] U)
@@ -121,29 +117,25 @@ theorem card_fibre_compl {K V U : Type} [Field K] [Fintype K] [AddCommGroup V] [
     rw [h0, Nat.sub_zero]
 
 /- English proof (translation)
-Use `haveI : Finite V := Module.finite_of_finite K`. Use `haveI : Fintype V := Fintype.ofFinite V`. Proceed by induction on `k with`. Consider the case `zero`. Establish `h1 : Nat.card {z : Fin 0 → V // LinearIndependent K z ∧ ∀ j, φ (z j) = g j} = 1`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Nat.card_eq_one_iff_unique]`. Conclude with `⟨⟨fun a b => Subtype.ext (funext fun i => i.elim0)⟩, ⟨⟨Fin.elim0, linearIndependent_empty_type, fun j => j.elim0⟩⟩⟩`. Rewrite using `[h1, Set.range_eq_empty, Submodule.span_empty, finrank_bot]`. Simplify using the standard rewrite rules. Consider the case `succ k ih => set gk : Fin k → U := fun j => g (Fin.castSucc j) with hgk set e := Module.finrank K (LinearMap.ker φ) with he set r := Module.finrank K (span K (Set.range gk)) with hr set q := Fintype.card K with hq`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hstep : ∀ z' : {z' : Fin k → V // LinearIndependent K z' ∧ ∀ j, φ (z' j) = gk j}, Nat.card {x : V // x ∉ span K (Set.range z'.1) ∧ φ x = g (Fin.last k)} = if g (Fin.last k) ∈ span K (Set.range gk) then q ^ e - q ^ (k - r) else q ^ e`. Introduce `z'`. Establish `h` using `card_fibre_compl φ hφ z'.1 z'.2.1 (g (Fin.last k))`. Establish `hfz : (fun j => φ (z'.1 j)) = gk` using `funext z'.2.2`. Rewrite `h` using `[hfz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hequiv : {z : Fin (k + 1) → V // LinearIndependent K z ∧ ∀ j, φ (z j) = g j} ≃ Σ z' : {z' : Fin k → V // LinearIndependent K z' ∧ ∀ j, φ (z' j) = gk j}, {x : V // x ∉ span K (Set.range z'.1) ∧ φ x = g (Fin.last k)}` using `{ toFun := fun z =>`. Establish `hs` using `linearIndependent_fin_snoc.mp (by rw [Fin.snoc_init_self]; exact z.2.1)`. Use the proof step `⟨⟨Fin.init z.1, hs.1, fun j => z.2.2 _⟩, ⟨z.1 (Fin.last k), hs.2, z.2.2 _⟩⟩`. Use `invFun := fun p => ⟨Fin.snoc p.1.1 p.2.1, linearIndependent_fin_snoc.mpr ⟨p.1.2.1, p.2.2.1⟩, fun j => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.snoc_last]`. Conclude with `p.2.2.2`. Rewrite using `[Fin.snoc_castSucc]`. Conclude with `p.1.2.2 i⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `left_inv := fun z => Subtype.ext (Fin.snoc_init_self z.1)`. Use `right_inv := fun p => by`. Break down `p with ⟨⟨z', h1, h2⟩, ⟨x, h3, h4⟩⟩` into its components or cases. Simplify using `[Fin.init_snoc, Fin.snoc_last]`. Conclude with `(Subtype.heq_iff_coe_eq (fun y => by simp [Fin.init_snoc])).mpr rfl }`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Rewrite using `[Nat.card_congr hequiv, Nat.card_sigma, Finset.sum_congr rfl (fun z' _ => hstep z'), Finset.sum_const, Finset.card_univ, smul_eq_mul, ← Nat.card_eq_fintype_card, ih gk]`. Establish `hrange : Set.range g = insert (g (Fin.last k)) (Set.range gk)`. Use extensionality with `u`. Simplify using `only [Set.mem_range, Set.mem_insert_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨j, rfl⟩`. Use `Fin.lastCases (Or.inl rfl) (fun i => Or.inr ⟨i, rfl⟩) j` and prove the remaining obligations. Introduce and unpack `(rfl | ⟨i, rfl⟩)`. Conclude with `⟨_, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : r ≤ k`. Rewrite using `[hr]`. Conclude with `(finrank_span_le_card (Set.range gk)).trans (by simp only [Set.toFinset_range]; exact Finset.card_image_le.trans (by simp))`. Use `split_ifs with hmem`. Establish `hspan : span K (Set.range g) = span K (Set.range gk)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrange, Submodule.span_insert_eq_span hmem]`. Rewrite using `[hspan, ← hr, show k + 1 - r = (k - r) + 1 by omega, Finset.prod_range_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hspan : Module.finrank K (span K (Set.range g)) = r + 1`. Rewrite using `[hrange, Submodule.span_insert]`.
-
-Use `haveI : FiniteDimensional K (span K (Set.range gk)) := FiniteDimensional.span_of_finite K (Set.finite_range _)`. Establish `hx0 : g (Fin.last k) ≠ 0` using `fun h0 => hmem (h0 ▸ Submodule.zero_mem _)`. Establish `hdis : span K {g (Fin.last k)} ⊓ span K (Set.range gk) = ⊥`. Rewrite using `[inf_comm, ← disjoint_iff]`. Conclude with `(Submodule.disjoint_span_singleton' hx0).mpr hmem`.
-
-Establish `h` using `Submodule.finrank_sup_add_finrank_inf_eq (span K {g (Fin.last k)}) (span K (Set.range gk))`. Rewrite `h` using `[hdis, finrank_bot, finrank_span_singleton hx0]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hspan, show k + 1 - (r + 1) = k - r by omega, ← hr]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fiber_card {K V U : Type} [Field K] [Fintype K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] [AddCommGroup U] [Module K U] (φ : V →ₗ[K] U)

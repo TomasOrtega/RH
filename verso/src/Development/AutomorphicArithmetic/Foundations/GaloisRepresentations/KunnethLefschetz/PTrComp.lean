@@ -9,7 +9,7 @@ open scoped TensorProduct DirectSum
 namespace UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-Use `show pullHQ l (sch.map (𝟙 X)) n 0 = _`. Rewrite using `[sch.map_id]`. Unfold `pullHQ`. Rewrite using `[pullHl_id, LinearMap.baseChange_id]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pb_id (l : ℕ) [Fact l.Prime] (X : Scheme.{0}) (n : ℤ) : pb l (𝟙 X) n = LinearMap.id := by
   show pullHQ l (sch.map (𝟙 X)) n 0 = _
@@ -18,13 +18,13 @@ private theorem pb_id (l : ℕ) [Fact l.Prime] (X : Scheme.{0}) (n : ℤ) : pb l
   rw [pullHl_id, LinearMap.baseChange_id]
 
 /- English proof (translation)
-The claim follows from `(IsPullback.of_horiz_isIso_mono ⟨by simp [h]⟩ : IsPullback (𝟙 B) y' y i).flip`.
+A detailed English derivation is pending.
 -/
 private theorem lift_square {A B C : Scheme.{0}} (i : A ⟶ C) [IsOpenImmersion i] (y : B ⟶ C) (y' : B ⟶ A)
     (h : y' ≫ i = y) : IsPullback y' (𝟙 B) i y := (IsPullback.of_horiz_isIso_mono ⟨by simp [h]⟩ : IsPullback (𝟙 B) y' y i).flip
 
 /- English proof (translation)
-Use `show pb l U.ι _ (G.cls d 0 p y.1) = G.cls d 0 (U.ι ≫ p) y'.1`. Unfold `GysQ.cls`. Rewrite using `[dif_pos h, dif_pos h', G.nat h' h U.ι (𝟙 _) rfl (lift_square U.ι y.1 y'.1 hy), pb_id]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem pt_restrict {k : Type} [Field k] {l : ℕ} [Fact l.Prime] (G : GysQ k l) (d : ℕ) {X : Scheme.{0}} {p : X ⟶ S k}
     (U : X.Opens) (y : Pt p) (y' : Pt (U.ι ≫ p)) (hy : y'.1 ≫ U.ι = y.1)
@@ -36,23 +36,21 @@ private theorem pt_restrict {k : Type} [Field k] {l : ℕ} [Fact l.Prime] (G : G
   rfl
 
 /- English proof (translation)
-Introduce `hC hO hP l _ k _ _ hl R G d hint X p hsp hpj`. Take `⟨m, U, hU, hcov, hdisj⟩` from `hC k d p hsp hpj`. Establish `hex : ∀ j, ∃ lam : V l (U j : Scheme) (2 * d) →ₗ[ℚ_[l]] ℚ_[l], ∀ y : Pt ((U j).ι ≫ p), lam (G.pt d y) = 1` using `fun j => hint _ (hU j).1 (hU j).2.1 (hU j).2.2`. Use `choose lamj hlamj using hex`. Use `⟨∑ j, (lamj j).comp (pb l (U j).ι (2 * d)), fun y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsep : IsSeparated p` using `by haveI := hsp.1 infer_instance`. Take `⟨hy, -⟩` from `(hP k d p hsep hsp.2).2 y`. Take `⟨s⟩ : Nonempty (S k)` from `inferInstance`. Establish `hrange : Set.range y.1 = {y.1 s}`. Use extensionality with `t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t', rfl⟩`. Rewrite using `[Subsingleton.elim t' s]`. Both sides reduce to the same expression. Introduce `ht`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨s, ht.symm⟩`. Take `⟨j, hj⟩` from `hcov (y.1 s)`. Establish `hsub : Set.range y.1 ⊆ Set.range (U j).ι`. Rewrite using `[Scheme.Opens.range_ι, hrange]`. Simplify using `using hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `y' : Pt ((U j).ι ≫ p)` to `⟨IsOpenImmersion.lift (U j).ι y.1 hsub, by`. Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac]`. Conclude with `y.2⟩`. Establish `hfac : y'.1 ≫ (U j).ι = y.1` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hsep' : IsSeparated ((U j).ι ≫ p)` using `by haveI := (hU j).1.1 infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : IsPair d 0 ((U j).ι ≫ p) y'.1` using `((hP k d ((U j).ι ≫ p) hsep' (hU j).1.2).2 y').1`. Rewrite using `[LinearMap.sum_apply, Finset.sum_eq_single j]`. Rewrite using `[LinearMap.comp_apply, pt_restrict G d (U j) y y' hfac hy hy', hlamj]`. Introduce `j' _ hj'`. Take `⟨W, hW⟩` from `hO.1 y.1 hy.cl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : U j' ≤ W`. Introduce `t ht`. Use `show t ∈ (W : Set X)`. Rewrite using `[hW, hrange]`. Introduce and unpack `(rfl : t = y.1 s)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hdisj j' j hj').le_bot (show y.1 s ∈ U j' ⊓ U j from ⟨ht, hj⟩)`. Rewrite using `[LinearMap.comp_apply, ← Scheme.homOfLE_ι X hle, pb_comp, LinearMap.comp_apply]`. Unfold `GysQ.pt GysQ.cls`. Rewrite using `[dif_pos hy, G.off hy _ W hW, map_zero, map_zero]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ j) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem trComp_holds : TrComp := by
   intro hC hO hP l _ k _ _ hl R G d hint X p hsp hpj

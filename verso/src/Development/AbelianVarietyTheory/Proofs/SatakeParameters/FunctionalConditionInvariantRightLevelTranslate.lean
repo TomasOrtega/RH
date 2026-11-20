@@ -10,15 +10,15 @@ namespace GlobalTheory
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D X s i hi T bad lev ST SG P v h ι x κ d`. Unfold `FunMoved`. Introduce `H w hw z hz`. Establish `hU` using `(lev.U_eq κ.1).1 κ.2`. Establish `hk : bc (prV (E` using `D.host.E) v) κ.1 ∈ lev.Uloc v := hU.2 v`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hk` using `[lev.UlocAlt v h]`. Establish `hk2` using `(Subgroup.mem_inf.1 hk).2`. Express the relevant statement in the definitionally equal form `∃ _, _ at hk2`. Take `⟨hst, hf⟩` from `hk2`. Establish `hp : pullV (F` using `D.host.F) (x * κ.1) (fun a => s.iE (w a)) = (κ.1⁻¹).val *ᵥ pullV (F := D.host.F) x (fun a => s.iE (w a)) := by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `pullV`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]`. Establish `hz1 : z.1 = (bc (prV (E` using `D.host.E) v) κ.1⁻¹).val *ᵥ (fun l => prV (E := D.host.E) v (pullV (F := D.host.F) x (fun a => s.iE (w a)) l)) := by`. Rewrite using `[hz, hp]`. Use function extensionality and compare the values at `l`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `RingHom.map_mulVec _ _ _ l`. Establish `hz0 : (bc (prV (E` using `D.host.E) v) κ.1).val *ᵥ z.1 = fun l => prV (E := D.host.E) v (pullV (F := D.host.F) x (fun a => s.iE (w a)) l) := by`. Establish `e : (bc (prV (E` using `D.host.E) v) κ.1).val * (bc (prV (E := D.host.E) v) κ.1⁻¹).val = 1 := by`. Rewrite using `[← Units.val_mul (bc (prV (E := D.host.E) v) κ.1), ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Use `(congrArg (fun y => (bc (prV (E := D.host.E) v) κ.1).val *ᵥ y) hz1).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec_mulVec, e, Matrix.one_mulVec]`. Rewrite using `[H w hw ⟨_, (hst z.1).1 z.2⟩ hz0]`. Conclude with `congrArg ι (hf z)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem funMoved_mul_level : ∀ {D : Formalism.BasicNotions.D7} {X : Fields} (s : Seam D X) {i : ℕ} {hi : i ≤ D.R.m} {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} (lev : StepLevel D.host.F D.host.E (sigD D) (gramN D i hi) T D.R.f bad) {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (P : ST) (v : HeightOneSpectrum (𝓞 D.host.F)) (h : (T : 𝓞 D.host.F) ∈ v.asIdeal) (ι : lev.fM v h →+ 𝓞 X.E ⧸ P.1.asIdeal) (y : GL (Fin (D.R.N i)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (κ : lev.U) (d : Deco X.E (D.R.N i) ST SG), FunMoved s lev P v h ι y d → FunMoved s lev P v h ι (y * κ.1) d := by
   intro D X s i hi T bad lev ST SG P v h ι x κ d

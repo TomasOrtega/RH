@@ -19,9 +19,9 @@ open GlobalTheory.FinPl.LatMem
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, rat, Matrix.map_apply]`. Rewrite using `[TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show ((1 : AF D.host.F) ⊗ₜ[D.host.F] M k j) * (c ⊗ₜ[D.host.F] z j) = c ⊗ₜ[D.host.F] (M k j * z j)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem rat_mulVec_tmul {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (c : AF D.host.F) (z : Fin n → D.host.E) :
     rat M *ᵥ (fun i => c ⊗ₜ[D.host.F] z i) = fun k => c ⊗ₜ[D.host.F] (M *ᵥ z) k := by
@@ -33,17 +33,15 @@ theorem rat_mulVec_tmul {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (c : A
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hX : d.qX * d.i₀ = 0` using `rat_injective (by rw [rat_mul, rat_zero]; exact d.pX_j0)`. Establish `hY : d.qY * d.i₀ = 0` using `rat_injective (by rw [rat_mul, rat_zero]; exact d.pY_j0)`. Establish `h0 : d.q0 * d.i₀ = 1` using `rat_injective (by rw [rat_mul, rat_one]; exact d.p0_j0)`. Use `hL _ fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set c : AF D.host.F := pairA D.host.F 0 (indP D.host.F (· = v))`. Use `(hmono v _).2 ⟨fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `: d.pX *ᵥ (fun i => c ⊗ₜ[D.host.F] (d.i₀ *ᵥ y) i) = 0`. Rewrite using `[HypDec.pX, rat_mulVec_tmul, Matrix.mulVec_mulVec, hX, Matrix.zero_mulVec]`. Use function extensionality and compare the values at `k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `TensorProduct.tmul_zero _ _`. Rewrite using `[this]`. Establish `h' : GlobalTheory.FinPl.colMul d.jX i ((0 : Fin ρ → AE D) i) = 0`. Use function extensionality and compare the values at `k`. Simplify using `[GlobalTheory.FinPl.colMul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h']`. Conclude with `zero_mem _`. Establish `: d.pY *ᵥ (fun i => c ⊗ₜ[D.host.F] (d.i₀ *ᵥ y) i) = 0`. Rewrite using `[HypDec.pY, rat_mulVec_tmul, Matrix.mulVec_mulVec, hY, Matrix.zero_mulVec]`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `TensorProduct.tmul_zero _ _`. Rewrite using `[this]`. Establish `h' : GlobalTheory.FinPl.colMul d.jY i ((0 : Fin ρ → AE D) i) = 0`. Use function extensionality and compare the values at `k`. Simplify using `[GlobalTheory.FinPl.colMul]`.
-
-Rewrite using `[h']`. Conclude with `zero_mem _`. Rewrite using `[HypDec.p0, rat_mulVec_tmul, Matrix.mulVec_mulVec, h0, Matrix.one_mulVec]`. Conclude with `AddSubgroup.subset_closure ⟨indP D.host.F (· = v), indicatorAdele_mem_integralAdeles' _ _, indicatorAdele_supported _ _, 1, rfl, y, hy, by funext k; rw [one_mul]⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem i₀_mulVec_mem {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {L₀ : Lat S₀}
     (hL : ∀ z : Fin S.rank → D.host.E, (∀ v : GlobalTheory.FinPl.Pl D, (fun i => pairA D.host.F 0 (GlobalTheory.FinPl.LatMem.indP D.host.F (· = v)) ⊗ₜ[D.host.F] z i) ∈ latV S L (· = v)) → z ∈ L)

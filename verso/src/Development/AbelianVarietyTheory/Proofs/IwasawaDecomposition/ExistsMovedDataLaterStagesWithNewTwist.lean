@@ -39,7 +39,7 @@ def thruY : letI := alg c iK; type_of% (once c R).ioY := letI := alg c iK; (by w
 def thruX : letI := alg c iK; type_of% (once c R).ioX := letI := alg c iK; (by with_unfolding_all exact ((thru b c R).ioX :))
 
 /- English proof (translation)
-The claim follows from `letI := alg c iK eq_of_heq (HEq.trans ((by with_unfolding_all exact ((real_ioY c R.toRealDat).symm :)) : HEq (once c R).ioY R.ioY) ((by with_unfolding_all exact ((HEq.trans (real_ioY b R.toRealDat) ((by with_unfolding_all exact ((real_ioY (a := b) c (iK := alg b iK) (real b R.toR …`.
+A detailed English derivation is pending.
 -/
 theorem thruY_eq : letI := alg c iK; (once c R).ioY = thruY b c R :=
   letI := alg c iK
@@ -48,7 +48,7 @@ theorem thruY_eq : letI := alg c iK; (once c R).ioY = thruY b c R :=
     HEq _ (thruY b c R)) :))))
 
 /- English proof (translation)
-The claim follows from `letI := alg c iK eq_of_heq (HEq.trans ((by with_unfolding_all exact ((real_ioX c R.toRealDat).symm :)) : HEq (once c R).ioX R.ioX) ((by with_unfolding_all exact ((HEq.trans (real_ioX b R.toRealDat) ((by with_unfolding_all exact ((real_ioX (a := b) c (iK := alg b iK) (real b R.toR …`.
+A detailed English derivation is pending.
 -/
 theorem thruX_eq : letI := alg c iK; (once c R).ioX = thruX b c R :=
   letI := alg c iK
@@ -57,7 +57,7 @@ theorem thruX_eq : letI := alg c iK; (once c R).ioX = thruX b c R :=
     HEq _ (thruX b c R)) :))))
 
 /- English proof (translation)
-The claim follows from `letI := alg c iK (by with_unfolding_all exact ((congrArg₂ (DatCopy.setIo (once c R)) (thruY_eq b c R) (thruX_eq b c R)) :))`.
+A detailed English derivation is pending.
 -/
 theorem thru_eq : once c R = thru b c R :=
   letI := alg c iK
@@ -70,11 +70,9 @@ variable {R : RealDat3 a.D A3 Ks} (F : Face3 a.D A3) (y : Hd R.toRealDat) (y' : 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `letI := alg b iK`. Establish `hs'` using `fixTup_same b hs`. Establish `h1` using `(GlobalTheory.Mem.R3.Tr.reps_parts_tr B C a b G Pl0 T₀ Ks A3.A R.toRealDat F.lv2 y _ hs').1 p.Φ t.rep t.reps`. Establish `h2` using `fun c => GlobalTheory.Mem.R3.Rw.chT_tr B C a b G Pl0 T₀ Ks A3.A R.toRealDat F.lv2 y _ hs' c p.Φ t.rep ((by with_unfolding_all exact ((fun μ => (p.sA c μ).A) :))) ((by with_unfolding_all exact ((p.ch c) :))) ((by with_unfolding_all exact ((fun u x => ((t.tA c (y.tup u)).cast (t.hA …`. Take `⟨l, hl1, hl2⟩` from `GlobalTheory.Mem.R3.Rw.lfT_of_same B C a b G Pl0 T₀ Ks A3.A R.toRealDat F.lv2 y _ hs' p.Φ t.rep ((by with_unfolding_all exact ((fun μ j => (p.sL μ j).A) :))) ((by with_unfolding_all exact (p.lf :))) ((by with_unfolding_all exact ((fun (i : Fin a.D.R.m) u x => ((p.tL (y.tup u) ((i …`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h4` using `(GlobalTheory.Mem.R3.Rw.rr_eta_tr B C a b G Pl0 I0 T₀ Ks A3 R F).2 y (hd3 b y y') true (p.ch true).EE (t.ch true).jE ((by with_unfolding_all exact ((h2 true).choose.jE :))) p.nR p.cR p.Xo ((by with_unfolding_all exact ((h2 true).choose_spec.1 :))) t.rr`. Use `⟨{ rep := (by with_unfolding_all exact (t.rep :)) reps := (by with_unfolding_all exact (h1 :)) tA := (by with_unfolding_all exact (t.tA :)) lawsA := (by with_unfolding_all exact (t.lawsA :)) lawsL := (by with_unfolding_all exact (t.lawsL :)) hA := (by with_unfolding_all exact (t. …` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact ((HEq.refl t.tA) :))`. Conclude with `(by with_unfolding_all exact ((HEq.refl t.rep) :))`. Conclude with `(by with_unfolding_all exact ((h2 c).choose_spec.1 :))`.
-
-Conclude with `(by with_unfolding_all exact ((h2 c).choose_spec.2.1 :))`. Conclude with `(by with_unfolding_all exact ((h2 c).choose_spec.2.2 :))`. Conclude with `(by with_unfolding_all exact (hl1 :))`. Conclude with `(by with_unfolding_all exact (hl2 :))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pkT_move (hs : Same b y y') {mA : Bool → a.D.what₂.Tup → Mat1 a.D.what₂.LL G} {p : PkD a.D G} (t : PkT F y mA p) :
     letI := alg b iK
@@ -124,11 +122,9 @@ variable {B : Base} {C : Cols B} {a : Late B C} (b c : Late B C) {px : PreX B.to
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hc'` using `eq_of_heq hc`. Substitute `hXg htr hc'` using the available equality. Establish `e : al = ((by with_unfolding_all exact ((alg (a` using `a) b z₀.alg) :))) := by`. Use `Algebra.algebra_ext _ _ fun y => B.embLL.injective ?_` and prove the remaining obligations. Use `Eq.trans (ale y) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(by with_unfolding_all exact ((z₀.alg_eq ((by with_unfolding_all exact (y :)))).symm :))`. Substitute `e` using the available equality. Establish `hR' : R = ((by with_unfolding_all exact ((real3 (a` using `a) b (iK := z₀.alg) z₀.R) :))) := eq_of_heq ((by with_unfolding_all exact (hR :)))`. Substitute `hR'` using the available equality. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(by with_unfolding_all exact ((HEq.refl (coreJ (a := a) c z₀.core)) :))`. Conclude with `(by with_unfolding_all exact ((heq_of_eq (thru_eq (a := a) b c (iK := z₀.alg) z₀.R).symm) :))`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem transportModuliCoreWithConstants_comp (z₀ : Dat a.st I hX T Wt) (Xg : Finset (Gc b.st.B px → b.st.B.LL)) (tr : TrI b.st.B px)
     (co : Formalism.L2.Pj.CoreJ b.st.toD7) (al : Algebra co.Q.c.F b.st.toD7.what₂.LL)
@@ -154,7 +150,7 @@ theorem transportModuliCoreWithConstants_comp (z₀ : Dat a.st I hX T Wt) (Xg : 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((transportModuliCoreWithConstants_comp b c z₀ z.Xg z.tr z.core z.alg z.alg_eq z.R hXg htr hc hR) :))`.
+A detailed English derivation is pending.
 -/
 theorem copy_comp (z₀ : Dat a.st I hX T Wt) (z : Dat b.st I hX T Wt) (hXg : z.Xg = z₀.Xg) (htr : z.tr = z₀.tr)
     (hc : HEq z.core (coreJ (a := a) b z₀.core)) (hR : HEq z.R (real3 (a := a) b (iK := z₀.alg) z₀.R)) :
@@ -172,13 +168,9 @@ variable {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z₀ : w.Lt
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Take `⟨y', hy⟩` from `@GlobalTheory.Mem.R3.Rw.hd_tr B w.C o.Z o'.Z _ _ _ _ _ _ _ _ m.z.alg _ m.z.R.toRealDat m.y`. Take `⟨t, a1, a2, a3, a4, a5, a6, a7⟩` from `pkT_move (a := o.Z) o'.Z (iK := m.z.alg) m.z.F m.y y' hy m.t`. Establish `he` using `(@GlobalTheory.Mem.R3.Rw.rr_eta_tr B w.C o.Z o'.Z _ _ _ _ _ _ _ _ _ m.z.alg _ m.z.R m.z.F).1`. Use `letI : Algebra m.z.core.Q.c.F (Late.D o'.Z).what₂.LL := alg (a := o.Z) o'.Z m.z.alg`. Establish `hA : ((by with_unfolding_all exact (t.tA :)) : type_of% m.t.tA) = m.t.tA` using `eq_of_heq ((by with_unfolding_all exact (a1 :)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hk` using `copy_comp (a := Z₀) o.Z o'.Z z₀ m.z m.Xg m.tr ((by with_unfolding_all exact (hc.core :))) ((by with_unfolding_all exact (hc.R :)))`. Establish `hW` using `forcedContentPlaces_eq_transport_sameFiniteGroup (a := o.Z) o'.Z s m.z`. Use `⟨{ z := DatCopy.copy (a := o.Z) o'.Z s m.z intersectionNumber_baseChange := (by with_unfolding_all exact ((cp_holds (a := o.Z) o'.Z s m.z m.intersectionNumber_baseChange) :)) exAt := DatCopy.copy_exAt (a := o.Z) o'.Z s m.exAt inGeo := (by with_unfolding_all exact ((cp_inGeo (a := …` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (hk.1 :))`. Conclude with `(by with_unfolding_all exact (hk.2 :))`.
-
-Conclude with `(by with_unfolding_all exact (hh.tupT :))`. Conclude with `(by with_unfolding_all exact ((HEq.trans ((by with_unfolding_all exact (hy.PY :)) : HEq (fixTup (a := o.Z) o'.Z (iK := m.z.alg) m.y y').PY.ψ m.y.PY.ψ) hh.PY) :))`. Conclude with `(by with_unfolding_all exact ((HEq.trans ((by with_unfolding_all exact (hy.PW :)) : HEq (fun i => ((fixTup (a := o.Z) o'.Z (iK := m.z.alg) m.y y').PW i).ψ) (fun i => (m.y.PW i).ψ)) hh.PW) :))`. Conclude with `(by with_unfolding_all exact ((a2.trans hh.rep) :))`. Conclude with `(by with_unfolding_all exact ((fun c => (a3 c).trans (hh.jE c)) :))`.
-
-Conclude with `(by with_unfolding_all exact ((fun c => (a4 c).trans (hh.jM c)) :))`. Conclude with `(by with_unfolding_all exact ((fun c => (a5 c).trans (hh.jX c)) :))`. Conclude with `(by with_unfolding_all exact ((a6.trans hh.eW) :))`. Conclude with `(by with_unfolding_all exact ((a7.trans hh.jMt) :))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem moved_again (o o' : q.Over) (s : SameGrp (B := B) (C := w.C) o.Z o'.Z) (m : Moved o) (hc : m.Copy) (hh : m.Coh) :
     ∃ m' : Moved o', m'.z = DatCopy.copy (a := o.Z) o'.Z s m.z ∧ m'.Copy ∧ m'.Coh := by
@@ -220,7 +212,7 @@ theorem moved_again (o o' : q.Over) (s : SameGrp (B := B) (C := w.C) o.Z o'.Z) (
 end Main
 
 /- English proof (translation)
-The claim follows from `moved_again x.o (oTw x N) (sgTw x N) x.m x.copy x.coh`.
+A detailed English derivation is pending.
 -/
 theorem moved_tw {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} (x : St P)
     (N : TwNew (Dof x)) : ∃ m : Moved (oTw x N), m.z = datTw x N ∧ m.Copy ∧ m.Coh :=

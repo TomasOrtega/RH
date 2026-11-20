@@ -27,7 +27,7 @@ def GLaw {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (a : ℕ) (μ : Measure (Fin
           ∫⁻ g, Φ (Matrix.of.symm (Matrix.of g * Matrix.of (s t))) ∂μ
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem gDef_iff {k r a : ℕ} (X : Tup k r a) : GDef (Hpk k r) X ↔ DefPerp X := Iff.rfl
 
@@ -37,7 +37,7 @@ Both sides reduce to the same expression.
 theorem gGram_eq (k r a : ℕ) : GGram (Hpk k r) a = DefGram k r a := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem gLaw_iff (k r a : ℕ) (μ : Measure (Mt k r)) (C : ℝ) : GLaw (Hpk k r) a μ C ↔ IsGramConst k r a μ C :=
   Iff.rfl
@@ -77,7 +77,7 @@ def phiG {a : ℕ} (d : Fin a → ℂ) (m : ℕ) (p : MP a m × HCo m) : Matrix 
   NormedSpace.exp (Ym d m p.1) * embB a (psiB m p.2)
 
 /- English proof (translation)
-Introduce `i`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hd j`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem sgn_append {a : ℕ} {d : Fin a → ℂ} (hd : Sgn d) (m : ℕ) : Sgn (Fin.append d fun _ : Fin m => (1 : ℂ)) := by
   intro i
@@ -88,7 +88,7 @@ theorem sgn_append {a : ℕ} {d : Fin a → ℂ} (hd : Sgn d) (m : ℕ) : Sgn (F
 open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases hd i with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.GramExp.diag_sq {a : ℕ} {d : Fin a → ℂ}
     (hd : _root_.GlobalTheory.GramExp.Sgn d) : Matrix.diagonal d * Matrix.diagonal d = 1 := by
@@ -98,19 +98,19 @@ theorem _root_.GlobalTheory.GramExp.diag_sq {a : ℕ} {d : Fin a → ℂ}
   rcases hd i with h | h <;> simp [h]
 
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_conjTranspose]`. Apply the tactic sequence `congr 1; funext i; rcases hd i with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diag_herm {a : ℕ} {d : Fin a → ℂ} (hd : Sgn d) : (Matrix.diagonal d)ᴴ = Matrix.diagonal d := by
   rw [Matrix.diagonal_conjTranspose]
   congr 1; funext i; rcases hd i with h | h <;> simp [h]
 
 /- English proof (translation)
-The claim follows from `diag_sq (sgn_append hd m)`.
+A detailed English derivation is pending.
 -/
 theorem Dg_sq {a : ℕ} {d : Fin a → ℂ} (hd : Sgn d) (m : ℕ) : Dg d m * Dg d m = 1 := diag_sq (sgn_append hd m)
 
 /- English proof (translation)
-The claim follows from `diag_herm (sgn_append hd m)`.
+A detailed English derivation is pending.
 -/
 theorem Dg_herm {a : ℕ} {d : Fin a → ℂ} (hd : Sgn d) (m : ℕ) : (Dg d m)ᴴ = Dg d m := diag_herm (sgn_append hd m)
 
@@ -118,19 +118,17 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 
 /- English proof (translation)
-Unfold `_root_.PI.IsMatGroup _root_.Formalism.QuantumDeterminants.UH`. Establish `hdetH : H.det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det hH` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`. Establish `hunit : ∀ a : Matrix (Fin N) (Fin N) ℂ, aᴴ * H * a = H → IsUnit a.det`. Introduce `a ha`. Use `congrArg Matrix.det ha` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : aᴴ.det * a.det = 1`. Establish `: (aᴴ.det * a.det) * H.det = 1 * H.det` using `by linear_combination this`. Conclude with `mul_right_cancel₀ hdetH this`. Conclude with `isUnit_iff_ne_zero.mpr fun h0 => by rw [h0, mul_zero] at h1; exact zero_ne_one h1`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Simplify using the standard rewrite rules. Introduce `a ha b hb`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[Matrix.conjTranspose_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by rw [ha, hb]`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu` using `hunit a ha`. Establish `hr : a * a⁻¹ = 1` using `Matrix.mul_nonsing_inv a hu`. Use `⟨?_, hr⟩` and prove the remaining obligations. Establish `hc : (a⁻¹)ᴴ * aᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hr, Matrix.conjTranspose_one]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GramExp.isMatGroup_UH {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ)
     (hH : H * H = 1) : _root_.PI.IsMatGroup (_root_.Formalism.QuantumDeterminants.UH H) := by
@@ -173,7 +171,7 @@ theorem _root_.GlobalTheory.GramExp.isMatGroup_UH {N : ℕ} (H : Matrix (Fin N) 
 open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℚ (Matrix (Fin n) (Fin n) ℂ) := NormedAlgebra.restrictScalars ℚ ℂ _`. Conclude with `NormedSpace.exp_continuous`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GramExp.exp_cont {n : ℕ} :
     Continuous (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) := by
@@ -183,7 +181,7 @@ theorem _root_.GlobalTheory.GramExp.exp_cont {n : ℕ} :
   exact NormedSpace.exp_continuous
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Unfold `hOf`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hOf_cont {a : ℕ} : Continuous (hOf : HCo a → Matrix (Fin a) (Fin a) ℂ) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -191,21 +189,21 @@ theorem hOf_cont {a : ℕ} : Continuous (hOf : HCo a → Matrix (Fin a) (Fin a) 
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; unfold hOf; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hOf_zero {a : ℕ} : hOf (0 : HCo a) = 0 := by
   ext i j; unfold hOf; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; simp only [hOf, Matrix.neg_apply]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hOf_neg {a : ℕ} (v : HCo a) : hOf (-v) = -hOf v := by
   ext i j; simp only [hOf, Matrix.neg_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hT i) j`. Rewrite `h` using `[Matrix.conjTranspose_apply]`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Simplify using `[hOf, coOf, hij]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [hOf, coOf, lt_irrefl, dite_false]`. Conclude with `Complex.conj_eq_iff_re.1 h`. Simplify using `only [hOf, coOf, hij, hij.not_gt, dite_false, dite_true]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hOf_coOf {a : ℕ} {T : Matrix (Fin a) (Fin a) ℂ} (hT : Tᴴ = T) : hOf (coOf T) = T := by
   ext i j
@@ -219,7 +217,7 @@ theorem hOf_coOf {a : ℕ} {T : Matrix (Fin a) (Fin a) ℂ} (hT : Tᴴ = T) : hO
     exact h
 
 /- English proof (translation)
-Use `Prod.ext (funext fun i => ?_) (funext fun p => ?_)` and prove the remaining obligations. Simplify using `[coOf, hOf]`. Simplify using `[coOf, hOf, p.2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coOf_hOf {a : ℕ} (t : HCo a) : coOf (hOf t) = t := by
   refine Prod.ext (funext fun i => ?_) (funext fun p => ?_)
@@ -227,7 +225,7 @@ theorem coOf_hOf {a : ℕ} (t : HCo a) : coOf (hOf t) = t := by
   · simp [coOf, hOf, p.2]
 
 /- English proof (translation)
-The claim follows from `(hP.matrix_fromBlocks hQ hR hS).matrix_reindex _ _`.
+A detailed English derivation is pending.
 -/
 theorem blockM_cont {X : Type} [TopologicalSpace X] {a b : ℕ} {P : X → Matrix (Fin a) (Fin a) ℂ}
     {Q : X → Matrix (Fin a) (Fin b) ℂ} {R : X → Matrix (Fin b) (Fin a) ℂ} {S : X → Matrix (Fin b) (Fin b) ℂ}
@@ -236,7 +234,7 @@ theorem blockM_cont {X : Type} [TopologicalSpace X] {a b : ℕ} {P : X → Matri
   (hP.matrix_fromBlocks hQ hR hS).matrix_reindex _ _
 
 /- English proof (translation)
-Establish `h1 : Continuous fun y : MP a m => (Matrix.of y.1 : Matrix (Fin m) (Fin a) ℂ)` using `continuous_fst`. Conclude with `continuous_const.matrix_mul (Continuous.fun_const_smul (blockM_cont (hOf_cont.comp continuous_snd) h1.matrix_conjTranspose h1 continuous_const) _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Ym_cont {a : ℕ} (d : Fin a → ℂ) (m : ℕ) : Continuous (Ym d m) := by
   have h1 : Continuous fun y : MP a m => (Matrix.of y.1 : Matrix (Fin m) (Fin a) ℂ) := continuous_fst
@@ -244,13 +242,13 @@ theorem Ym_cont {a : ℕ} (d : Fin a → ℂ) (m : ℕ) : Continuous (Ym d m) :=
     (blockM_cont (hOf_cont.comp continuous_snd) h1.matrix_conjTranspose h1 continuous_const) _)
 
 /- English proof (translation)
-The claim follows from `continuous_const.add (Continuous.fun_const_smul (continuous_const.matrix_mul hOf_cont) _)`.
+A detailed English derivation is pending.
 -/
 theorem xu_cont {a : ℕ} (d : Fin a → ℂ) : Continuous (xu d) :=
   continuous_const.add (Continuous.fun_const_smul (continuous_const.matrix_mul hOf_cont) _)
 
 /- English proof (translation)
-Use `Continuous.prodMk (continuous_pi fun i => ?_) (continuous_pi fun p => ?_)` and prove the remaining obligations. Conclude with `Complex.continuous_re.comp (continuous_id.matrix_elem i i)`. Conclude with `continuous_id.matrix_elem _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coOf_cont {a : ℕ} : Continuous (coOf : Matrix (Fin a) (Fin a) ℂ → HCo a) := by
   refine Continuous.prodMk (continuous_pi fun i => ?_) (continuous_pi fun p => ?_)
@@ -258,13 +256,13 @@ theorem coOf_cont {a : ℕ} : Continuous (coOf : Matrix (Fin a) (Fin a) ℂ → 
   · exact continuous_id.matrix_elem _ _
 
 /- English proof (translation)
-The claim follows from `coOf_cont.comp (((xu_cont d).matrix_conjTranspose.matrix_mul continuous_const).matrix_mul (xu_cont d))`.
+A detailed English derivation is pending.
 -/
 theorem tau_cont {a : ℕ} (d : Fin a → ℂ) : Continuous (tau d) :=
   coOf_cont.comp (((xu_cont d).matrix_conjTranspose.matrix_mul continuous_const).matrix_mul (xu_cont d))
 
 /- English proof (translation)
-Establish `: Continuous fun p : MP a m × HCo a => NormedSpace.exp (Ym d m p.1) * E0 a m * xu d p.2` using `((exp_cont.comp ((Ym_cont d m).comp continuous_fst)).matrix_mul continuous_const).matrix_mul ((xu_cont d).comp continuous_snd)`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chi_cont {a : ℕ} (d : Fin a → ℂ) (m : ℕ) : Continuous (chi d m) := by
   have : Continuous fun p : MP a m × HCo a => NormedSpace.exp (Ym d m p.1) * E0 a m * xu d p.2 :=
@@ -273,17 +271,17 @@ theorem chi_cont {a : ℕ} (d : Fin a → ℂ) (m : ℕ) : Continuous (chi d m) 
   exact this
 
 /- English proof (translation)
-The claim follows from `exp_cont.comp (hOf_cont.fun_const_smul _)`.
+A detailed English derivation is pending.
 -/
 theorem psiB_cont (m : ℕ) : Continuous (psiB m) := exp_cont.comp (hOf_cont.fun_const_smul _)
 
 /- English proof (translation)
-Simplify using `[xu, hOf_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xu_zero {a : ℕ} (d : Fin a → ℂ) : xu d 0 = 1 := by simp [xu, hOf_zero]
 
 /- English proof (translation)
-The claim follows from `hOf_coOf (by simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, diag_herm hd, Matrix.mul_assoc])`.
+A detailed English derivation is pending.
 -/
 theorem hOf_tau {a : ℕ} {d : Fin a → ℂ} (hd : Sgn d) (u : HCo a) :
     hOf (tau d u) = (xu d u)ᴴ * Matrix.diagonal d * xu d u :=
@@ -291,7 +289,7 @@ theorem hOf_tau {a : ℕ} {d : Fin a → ℂ} (hd : Sgn d) (u : HCo a) :
     Matrix.mul_assoc])
 
 /- English proof (translation)
-Simplify using `only [blockM, Matrix.conjTranspose_reindex, Matrix.fromBlocks_conjTranspose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockM_herm {a b : ℕ} (P : Matrix (Fin a) (Fin a) ℂ) (Q : Matrix (Fin a) (Fin b) ℂ)
     (R : Matrix (Fin b) (Fin a) ℂ) (S : Matrix (Fin b) (Fin b) ℂ) :
@@ -299,7 +297,7 @@ theorem blockM_herm {a b : ℕ} (P : Matrix (Fin a) (Fin a) ℂ) (Q : Matrix (Fi
   simp only [blockM, Matrix.conjTranspose_reindex, Matrix.fromBlocks_conjTranspose]
 
 /- English proof (translation)
-Simplify using `only [blockM, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockM_mul {a b : ℕ} (P P' : Matrix (Fin a) (Fin a) ℂ) (Q Q' : Matrix (Fin a) (Fin b) ℂ)
     (R R' : Matrix (Fin b) (Fin a) ℂ) (S S' : Matrix (Fin b) (Fin b) ℂ) :
@@ -308,7 +306,7 @@ theorem blockM_mul {a b : ℕ} (P P' : Matrix (Fin a) (Fin a) ℂ) (Q Q' : Matri
   simp only [blockM, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j <;>`. Apply the tactic sequence `simp [Dg, blockM, Matrix.diagonal_apply, Matrix.one_apply, Fin.ext_iff] <;> omega`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Dg_eq {a : ℕ} (d : Fin a → ℂ) (m : ℕ) : Dg d m = blockM (Matrix.diagonal d) 0 0 1 := by
   ext i j
@@ -316,7 +314,7 @@ theorem Dg_eq {a : ℕ} (d : Fin a → ℂ) (m : ℕ) : Dg d m = blockM (Matrix.
     simp [Dg, blockM, Matrix.diagonal_apply, Matrix.one_apply, Fin.ext_iff] <;> omega
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_mul, h1, Matrix.mul_assoc, h2, ← Matrix.mul_assoc, h2, Matrix.conjTranspose_smul, hA]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lie_of_herm {N : ℕ} {H A : Matrix (Fin N) (Fin N) ℂ} (h1 : Hᴴ = H) (h2 : H * H = 1) (hA : Aᴴ = A) :
     (H * (Complex.I • A))ᴴ * H + H * (H * (Complex.I • A)) = 0 := by
@@ -324,7 +322,7 @@ theorem lie_of_herm {N : ℕ} {H A : Matrix (Fin N) (Fin N) ℂ} (h1 : Hᴴ = H)
   simp
 
 /- English proof (translation)
-The claim follows from `CCRuleCW.exp_mem_UH _ _ (lie_of_herm (Dg_herm hd m) (Dg_sq hd m) (by rw [blockM_herm, (hOf_isHermitian y.2).eq]; simp))`.
+A detailed English derivation is pending.
 -/
 theorem exp_Ym_mem {a : ℕ} {d : Fin a → ℂ} (hd : Sgn d) (m : ℕ) (y : MP a m) :
     NormedSpace.exp (Ym d m y) ∈ UH (Dg d m) :=
@@ -332,7 +330,7 @@ theorem exp_Ym_mem {a : ℕ} {d : Fin a → ℂ} (hd : Sgn d) (m : ℕ) (y : MP 
     rw [blockM_herm, (hOf_isHermitian y.2).eq]; simp))
 
 /- English proof (translation)
-Use `lie_of_herm (H := (1 : Matrix (Fin m) (Fin m) ℂ)) (by simp) (by simp) (hOf_isHermitian v).eq` as an intermediate fact. Rewrite `this` using `[Matrix.one_mul (Complex.I • hOf v)]`. Conclude with `CCRuleCW.exp_mem_UH _ _ this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiB_mem (m : ℕ) (v : HCo m) : psiB m v ∈ UH (1 : Matrix (Fin m) (Fin m) ℂ) := by
   have := lie_of_herm (H := (1 : Matrix (Fin m) (Fin m) ℂ)) (by simp) (by simp) (hOf_isHermitian v).eq
@@ -340,14 +338,14 @@ theorem psiB_mem (m : ℕ) (v : HCo m) : psiB m v ∈ UH (1 : Matrix (Fin m) (Fi
   exact CCRuleCW.exp_mem_UH _ _ this
 
 /- English proof (translation)
-Rewrite using `[psiB, psiB, ← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, (hOf_isHermitian v).eq, hOf_neg]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psiB_neg (m : ℕ) (v : HCo m) : psiB m (-v) = (psiB m v)ᴴ := by
   rw [psiB, psiB, ← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, (hOf_isHermitian v).eq, hOf_neg]
   simp
 
 /- English proof (translation)
-Establish `hb' : bᴴ * 1 * b = 1` using `hb`. Use `show (embB a b)ᴴ * Dg d m * embB a b = Dg d m`. Rewrite using `[Dg_eq, embB, blockM_herm, blockM_mul, blockM_mul]`. Simplify using `only [Matrix.mul_one] at hb'`. Simplify using `[hb']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem embB_mem {a : ℕ} (d : Fin a → ℂ) {m : ℕ} {b : Matrix (Fin m) (Fin m) ℂ}
     (hb : b ∈ UH (1 : Matrix (Fin m) (Fin m) ℂ)) : embB a b ∈ UH (Dg d m) := by
@@ -358,39 +356,39 @@ theorem embB_mem {a : ℕ} (d : Fin a → ℂ) {m : ℕ} {b : Matrix (Fin m) (Fi
   simp [hb']
 
 /- English proof (translation)
-The claim follows from `CCRuleCW.UH_mul _ _ _ (exp_Ym_mem hd m _) (embB_mem d (psiB_mem m _))`.
+A detailed English derivation is pending.
 -/
 theorem phiG_mem {a : ℕ} {d : Fin a → ℂ} (hd : Sgn d) (m : ℕ) (p : MP a m × HCo m) : phiG d m p ∈ UH (Dg d m) :=
   CCRuleCW.UH_mul _ _ _ (exp_Ym_mem hd m _) (embB_mem d (psiB_mem m _))
 
 /- English proof (translation)
-Simplify using `[embB, blockM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embB_one (a m : ℕ) : embB a (1 : Matrix (Fin m) (Fin m) ℂ) = 1 := by
   simp [embB, blockM]
 
 /- English proof (translation)
-Establish `: (Matrix.of (0 : Fin m → Fin a → ℂ) : Matrix (Fin m) (Fin a) ℂ) = 0` using `rfl`. Simplify using `[Ym, blockM, hOf_zero, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem Ym_zero {a : ℕ} (d : Fin a → ℂ) (m : ℕ) : Ym d m 0 = 0 := by
   have : (Matrix.of (0 : Fin m → Fin a → ℂ) : Matrix (Fin m) (Fin a) ℂ) = 0 := rfl
   simp [Ym, blockM, hOf_zero, this]
 
 /- English proof (translation)
-Simplify using `[psiB, hOf_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psiB_zero (m : ℕ) : psiB m 0 = 1 := by simp [psiB, hOf_zero]
 
 /- English proof (translation)
-Simplify using `[phiG, Ym_zero, psiB_zero, embB_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phiG_zero {a : ℕ} (d : Fin a → ℂ) (m : ℕ) : phiG d m 0 = 1 := by
   simp [phiG, Ym_zero, psiB_zero, embB_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.castAdd m j)]`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;>`. Simplify using `[E0, embB, blockM, Matrix.one_apply, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `l _ hl`. Simplify using `[E0, hl]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem block_embed_mul_E0 (a : ℕ) {m : ℕ} (b : Matrix (Fin m) (Fin m) ℂ) : embB a b * E0 a m = E0 a m := by
   ext i j
@@ -402,9 +400,9 @@ theorem block_embed_mul_E0 (a : ℕ) {m : ℕ} (b : Matrix (Fin m) (Fin m) ℂ) 
   · simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.castAdd m j)]`. Rewrite using `[Dg, Matrix.mul_diagonal]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[E0]`. Establish `: ¬ j = i` using `fun e => h e.symm`. Simplify using `[E0, h, this]`. Introduce `l _ hl`. Simplify using `[E0, hl]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -423,11 +421,11 @@ open MeasureTheory Matrix Filter Topology in
 open scoped ENNReal in
 
 /- English proof (translation)
-Establish `hb : Metric.ball x ρ = ⋃ k : ℕ, Metric.closedBall x (ρ - 1 / ((k : ℝ) + 1))`. Use extensionality with `y`. Simplify using `only [Metric.mem_ball, Set.mem_iUnion, Metric.mem_closedBall]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk⟩` from `exists_nat_one_div_lt (sub_pos.mpr h)`. Conclude with `⟨k, by linarith⟩`. Introduce and unpack `⟨k, hk⟩`. Establish `: 0 < 1 / ((k : ℝ) + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hb, Set.image_iUnion]`. Conclude with `MeasurableSet.iUnion fun k => ((isCompact_closedBall x _).image hf).isClosed.measurableSet`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GramExp.measurableSet_image_ball {X Y : Type} [PseudoMetricSpace X] [ProperSpace X]
     [TopologicalSpace Y] [T2Space Y] [MeasurableSpace Y] [OpensMeasurableSpace Y] {f : X → Y}

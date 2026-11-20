@@ -26,7 +26,7 @@ noncomputable section
 namespace GlobalTheory.Proof.integralJets_normalisedThetaCombinations_away_d
 
 /- English proof (translation)
-Use `(Formalism.L2.Th1.G.jets_in_norm_holds K X _).2 ?_` and prove the remaining obligations. Use `Formalism.L2.Th1.G.jetsIn_sum _ _ fun k _ => ?_` and prove the remaining obligations. Conclude with `Formalism.L2.Th1.G.jetsIn_mul (Formalism.L2.Th1.G.jetsIn_C (hr k)) ((Formalism.L2.Th1.G.jets_in_norm_holds K X _).1 (hsg k))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jets_comb {K : Type} [NormedField K] [IsUltrametricDist K] {X κ : Type} [Fintype κ] (r : κ → K)
     (sg : κ → MvPowerSeries X K) (hr : ∀ k, ‖r k‖ ≤ 1) (hsg : ∀ k, JetsIntegral (sg k)) :
@@ -37,7 +37,7 @@ theorem jets_comb {K : Type} [NormedField K] [IsUltrametricDist K] {X κ : Type}
     ((Formalism.L2.Th1.G.jets_in_norm_holds K X _).1 (hsg k))
 
 /- English proof (translation)
-Establish `hx : IsAlgebraic ℚ x` using `Algebra.IsAlgebraic.isAlgebraic x`. Establish `: IsAlgebraic ℚ ((TaylorLogMetric.embT D τ).toRatAlgHom x)` using `hx.algHom _`. Conclude with `(mem_algebraicClosure_iff).2 this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem embT_mem (D : D7) (τ : D.what₂.Tau) (x : D.host.E) : TaylorLogMetric.embT D τ x ∈ TaylorLogMetric.Qbar := by
   have hx : IsAlgebraic ℚ x := Algebra.IsAlgebraic.isAlgebraic x
@@ -45,7 +45,7 @@ theorem embT_mem (D : D7) (τ : D.what₂.Tau) (x : D.host.E) : TaylorLogMetric.
   exact (mem_algebraicClosure_iff).2 this
 
 /- English proof (translation)
-Establish `e : (n : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (n : ℚ_[p])` using `(map_natCast _ n).symm`. Rewrite using `[e, norm_algebraMap', Padic.norm_natCast_eq_one_iff]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_coprime {p : ℕ} [Fact p.Prime] {n : ℕ} (h : Nat.Coprime n p) : ‖(n : ℂ_[p])‖ = 1 := by
   have e : (n : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (n : ℚ_[p]) := (map_natCast _ n).symm
@@ -59,7 +59,7 @@ theorem atLin_X {σ κ : Type} [Fintype κ] {p : ℕ} [Fact p.Prime] (c : σ →
     TaylorLogMetric.atLin c (fun j => MvPowerSeries.X j) F = Formalism.L2.Th1.G.linSub c F := rfl
 
 /- English proof (translation)
-Establish `h` using `embT_mem D τ x`. Use `show TaylorLogMetric.lamC lm (TaylorLogMetric.embT D τ x) = _`. Rewrite using `[TaylorLogMetric.lamC, dif_pos h]`. Conclude with `(hι ⟨_, h⟩).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauEmb_eq {D : D7} {p : ℕ} [Fact p.Prime] {lm : TaylorLogMetric.Qbar →+* ℂ_[p]} {ι : ℂ ≃+* ℂ_[p]}
     (hι : Formalism.L2.KerInert.IotaExt lm ι) (τ : D.what₂.Tau) (x : D.host.E) :
@@ -76,13 +76,13 @@ namespace GlobalTheory.Proof.integralJets_normalisedThetaCombinations_away_d
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {N N' : ℕ}
 
 /- English proof (translation)
-Establish `hadd : AnalyticOnNhd ℂ (fun z : TaylorLogMetric.VC D N N' => z + t) Set.univ` using `fun z _ => by fun_prop`. Establish `h1 : AnalyticOnNhd ℂ (fun z : TaylorLogMetric.VC D N N' => G (z + t)) Set.univ` using `hG.comp hadd (fun _ _ => Set.mem_univ _)`. Set `ℓ : TaylorLogMetric.VC D N N' →ₗ[ℂ] ℂ` to `(formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N').flip t`. Establish `h2 : AnalyticOnNhd ℂ (fun z : TaylorLogMetric.VC D N N' => ℓ z) Set.univ` using `(LinearMap.toContinuousLinearMap ℓ).analyticOnNhd _`. Establish `h3 : ∀ z : TaylorLogMetric.VC D N N', TaylorLogMetric.Hf D B.tor z t = ℓ z` using `fun z => by show _ = formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N' z t`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[formV_apply]`. Both sides reduce to the same expression. Introduce `z hz`. Establish `h4 : AnalyticAt ℂ (fun z : TaylorLogMetric.VC D N N' => Complex.exp (-(Real.pi : ℂ) * ℓ z - (Real.pi : ℂ) * TaylorLogMetric.Hf D B.tor t t / 2)) z`. Use `h2 z hz` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fun_prop`. Establish `h5` using `(h1 z hz).mul h4`. Establish `e : TaylorLogMetric.U D B.tor t G = (fun z => G (z + t)) * (fun z : TaylorLogMetric.VC D N N' => Complex.exp (-(Real.pi : ℂ) * ℓ z - (Real.pi : ℂ) * TaylorLogMetric.Hf D B.tor t t / 2))`. Use function extensionality and compare the values at `z`. Simplify using `only [TaylorLogMetric.U, h3, Pi.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h5`.
+A detailed English derivation is pending.
 -/
 theorem analytic_U (B : Base D cc δ) (t : TaylorLogMetric.VC D N N') {G : TaylorLogMetric.VC D N N' → ℂ} (hG : AnalyticOnNhd ℂ G Set.univ) :
     AnalyticOnNhd ℂ (TaylorLogMetric.U D B.tor t G) Set.univ := by
@@ -115,27 +115,25 @@ namespace GlobalTheory.Proof.integralJets_normalisedThetaCombinations_away_d
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {N N' : ℕ}
 
 /- English proof (translation)
-Take `⟨s₁, hs₁, e1, e2⟩` from `id hE`. Take `⟨s₂, hs₂, e3, e4⟩` from `id hE'`. Establish `hS : Nat.Coprime (s₁ * s₂) p` using `Nat.Coprime.mul_left hs₁ hs₂`. Take `⟨M, hM0, hMc, hMm⟩` from `(Formalism.L2.KerInert.pairing_fact D cc δ p N N' L L₁ L' L₁' hE hE').2 t ht`. Establish `hLat` using `GlobalTheory.T.normalisedThetaFamily_normalised_all_places D cc δ hcc hδ B χ hχ X s hs a₀ b₀ c₀ ha hd lam hlam hcm hlat N N' L₁ L₁' hA₁ p ι`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hθ` using `hLat.mem_th.1`. Establish `hEan : AnalyticOnNhd ℂ (B.eNat χ N N' L₁ L₁') Set.univ`. Establish `h1 : AnalyticOnNhd ℂ (fun w : TaylorLogMetric.VC D N N' => (s.flatV N N').symm w) Set.univ` using `(LinearMap.toContinuousLinearMap (s.flatV N N').symm.toLinearMap).analyticOnNhd _`. Establish `h2` using `hθ.comp h1 (fun _ _ => Set.mem_univ _)`. Establish `e : (B.eNat χ N N' L₁ L₁') = (fun z => B.eNat χ N N' L₁ L₁' (s.flatV N N' z)) ∘ (fun w : TaylorLogMetric.VC D N N' => (s.flatV N N').symm w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `h2`. Establish `hGan` using `analytic_U B t hEan`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCo : TaylorLogMetric.CoefIn D (TaylorLogMetric.U D B.tor t (B.eNat χ N N' L₁ L₁')) TaylorLogMetric.Qbar` using `hIn.algT D cc δ B χ hcc hδ hχ N N' L₁ L₁' hA₁ t ⟨M, hM0, hMm⟩`. Establish `hU : (fun z => TaylorLogMetric.U D B.tor t (B.eNat χ N N' L₁ L₁') (s.flatV N N' z)) = Formalism.L2.Th1.H.opU (matH (Formalism.L2.AlgTh.hSc X.Tau N N' (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))⁻¹)) ((s.flatV N N').symm t) (fun z => B.eNat χ N N' L₁ L₁' (s.flatV N N' z))`. Use function extensionality and compare the values at `z`. Rewrite using `[KS.opU_pb (s.flatV N N') _ _ (KS.form_flat s (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))), LinearEquiv.apply_symm_apply]`. Simplify using `only [Formalism.L2.Th1.H.opU, formV_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Set `v : Fin n → DVar X.Tau N N' → ℂ` to `fun j => (s.flatV N N').symm (TaylorLogMetric.embV D B.tor (((s₁ * s₂ : ℕ) : D.host.E) • y j))`. Set `A : Fin n → Fin n → ℂ_[p]` to `fun j x => if j = x then (((s₁ * s₂ : ℕ) : ℂ_[p]))⁻¹ else 0`. Establish `hn1 : ‖(((s₁ * s₂ : ℕ) : ℂ_[p]))‖ = 1` using `norm_natCast_coprime hS`. Establish `hn0 : (((s₁ * s₂ : ℕ) : ℂ_[p])) ≠ 0` using `fun h => by rw [h, norm_zero] at hn1; exact zero_ne_one hn1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ j, InMul (cmL a₀ b₀ D.host.d ha hd lam hlam) (s.laF B.tor L₁ L₁') (v j)`. Introduce `j ω hω`. Use `show s.flatV N N' (ω • v j) ∈ TaylorLogMetric.La D B.tor L₁ L₁'`. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply]`. Use `AddSubgroup.subset_closure ⟨ω, ?_, _, Formalism.L2.KerInert.ie_yy_scale s₁ s₂ e2 e3 (hy j), rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ω ∈ TaylorLogMetric.lamOf D cc δ`. Rewrite using `[← hlat]`. Conclude with `hω`. Establish `hA : ∀ j x, ‖A j x‖ ≤ 1`. Introduce `j x`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `h : j = x`. Simplify using `only [A, if_pos h, norm_inv, hn1, inv_one, le_refl]`. Simplify using `only [A, if_neg h, norm_zero, zero_le_one]`. Establish `hfr : (fun (i : DVar X.Tau N N') x => (fun (k : D.what₂.Tau × Fin N' × Fin N) (j : Fin n) => TaylorLogMetric.tauEmb D lm k.1 (y j k.2.1 k.2.2)) (s.iT i.1, i.2) x) = frameM (ι : ℂ →+* ℂ_[p]) v A`. Use function extensionality and compare the values at `i x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : v x i = ((s₁ * s₂ : ℕ) : ℂ) * TaylorLogMetric.embT D (s.iT i.1) (y x i.2.1 i.2.2)` using `by show TaylorLogMetric.embT D (s.iT i.1) ((((s₁ * s₂ : ℕ) : D.host.E) • y x) i.2.1 i.2.2) = _`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, map_natCast]`. Simplify using `only [frameM, A, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[tauEmb_eq hι, e]`. Simplify using `only [RingHom.coe_coe, map_mul, map_natCast]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `key` using `GlobalTheory.T.integralJets_normalisedTheta_translates_away_disc hIn D cc δ hcc hδ a₀ b₀ c₀ ha hd lam hlam hcm hlat (DVar X.Tau N N') (Formalism.L2.AlgTh.hSc X.Tau N N' (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))⁻¹) (s.laF B.tor L₁ L₁') (fun z => B.eNat χ N N' L₁ L₁' (s …`. Use `Nat.Coprime.eq_one_of_dvd hMc.symm h` as an intermediate fact. Conclude with `(Fact.out : p.Prime).one_lt.ne' this)`. Use the proof step `(fun _ => by show s.flatV N N' ((M : ℂ) • (s.flatV N N').symm t) ∈ TaylorLogMetric.La D B.tor L₁ L₁'`.
-
-Rewrite using `[map_smul, LinearEquiv.apply_symm_apply, Nat.cast_smul_eq_nsmul]`. Conclude with `hMm)`. Use the proof step `(Fin n) v hv (Fin n) A hA`. Rewrite using `[GlobalTheory.T.padicSeries_linearCoords_eq_flatTaylor D X s N N' p lm ι hι _ hGan hCo (Fin n), hfr, hU]`. Simplify `key` using `[thetaLin]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem term_jets (hIn : GlobalTheory.ThLoc.Inputs) (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ)
     (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {X : Fields} (s : Seam D X) (hs : s.Ok)
@@ -223,15 +221,13 @@ theorem term_jets (hIn : GlobalTheory.ThLoc.Inputs) (hcc : TaylorLogMetric.IsCur
 end GlobalTheory.Proof.integralJets_normalisedThetaCombinations_away_d
 
 /- English proof (translation)
-Introduce `hIn D cc δ hcc hδ B χ hχ X s hs N N' L L' hA p _ lm hpd h3 F hF`. Take `⟨ι, hι⟩` from `hIn.lamExt p lm`. Establish `hdp : D.host.d.Prime` using `D.host.hyp.2.1`. Establish `hd : 0 < D.host.d` using `hdp.pos`. Establish `hd8 : D.host.d % 8 = 7`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.host.hyp.2.2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨a₀, b₀, c₀, ha, lam, hlam, hcm, hL⟩` from `KS.exists_cmOK D.host.d hd hd8 hdp B.L (GlobalTheory.FourthRootStd.hst B)`. Establish `hlat : (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ`. Rewrite using `[hL]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `B.lat`. Take `⟨m, r, t, L₁, L₁', hr, ht, hL1, rfl⟩` from `hF`. Use `(GlobalTheory.T.latticeJetsIntegral_iff_integralFrames D N N' p lm _ _).1.2 fun n y hy => ?_` and prove the remaining obligations. Establish `e : ∀ (c : D.what₂.Tau × Fin N' × Fin N → Fin n → ℂ_[p]) (G : Fin m → MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]), TaylorLogMetric.atLin c (fun j => MvPowerSeries.X j) (∑ k, algebraMap ℂ_[p] (MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) (r k) * G k) = ∑ k, MvPowerS …`. Introduce `c G`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Proof.integralJets_normalisedThetaCombinations_away_d.atLin_X, ← Formalism.L2.Th1.G.linSubHom_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, AlgHom.commutes, Formalism.L2.Th1.G.linSubHom_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`.
-
-Conclude with `GlobalTheory.Proof.integralJets_normalisedThetaCombinations_away_d.jets_comb r _ hr fun k => GlobalTheory.Proof.integralJets_normalisedThetaCombinations_away_d.term_jets hIn hcc hδ B χ hχ s hs a₀ b₀ c₀ ha hd lam hlam hcm hlat (hL1 k).1 (hL1 k).2.1 (hL1 k).2.2 lm ι hι hpd h3 (t k) …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Proof.integralJets_normalisedThetaCombinations_away_d.jetsAll : GlobalTheory.ThLoc.Inputs → ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), TaylorLogMetric.IsCurveIdeal D cc → TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → ∀ (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ), TaylorLogMetric.IsChi D χ → ∀ (X : Fields) (s : Seam D X), s.Ok → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), TaylorLogMetric.admitted D N N' L L' → ∀ (p : ℕ) [Fact p.Prime] (lm : TaylorLogMetric.Qbar →+* ℂ_[p]), p ≠ D.host.d → (p = 3 → D.host.d % 3 = 2) → ∀ F : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p], TaylorLogMetric.IsComb D B.tor (B.eNat χ) lm L L' F → TaylorLogMetric.JetsInt D lm (TaylorLogMetric.YYl D L L') F := by
   intro hIn D cc δ hcc hδ B χ hχ X s hs N N' L L' hA p _ lm hpd h3 F hF

@@ -25,9 +25,9 @@ open Matrix GlobalTheory.BCT.GlobLev GroundTheory.Automorphic
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
 
 /- English proof (translation)
-Use `Subtype.ext (ga_ext ?_ ?_)` and prove the remaining obligations. Conclude with `(MonoidHom.mem_ker.1 hx).trans (map_one _).symm`. Rewrite using `[Subgroup.coe_one, map_one]`. Use `Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext (R := 𝓞 E) E fun u => ?_)` and prove the remaining obligations. Use `congrArg (fun g : GL (Fin a) (u.adicCompletion E) => g.val i j) (h u)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_one, Matrix.one_apply] at this`. Use `this.trans ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs with hij <;> simp [hij]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eq_one_of_forall_cLoc {x : UA E a} (hx : x ∈ finU E a) (h : ∀ u, cLoc u x = 1) : x = 1 := by
   refine Subtype.ext (ga_ext ?_ ?_)
@@ -40,7 +40,7 @@ theorem eq_one_of_forall_cLoc {x : UA E a} (hx : x ∈ finU E a) (h : ∀ u, cLo
     split_ifs with hij <;> simp [hij]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_comap, AdelicGLn.mem_integralFiniteGL_iff, ← map_inv]`. Simplify using `only [mem_KGL_iff_val, ← map_inv, GroundTheory.Global.mem_integralFiniteAdeles]`. Conclude with `⟨fun h u => ⟨fun i j => h.1 i j u, fun i j => h.2 i j u⟩, fun h => ⟨fun i j u => (h u).1 i j, fun i j u => (h u).2 i j⟩⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_integral_iff (k : finU E a) :
     k ∈ (AdelicGLn.integralFiniteGL E a).comap (finPart E a) ↔ ∀ u, cLoc u k.1 ∈ GlobalTheory.LFun.KGL u a := by
@@ -50,7 +50,7 @@ theorem mem_integral_iff (k : finU E a) :
     fun h => ⟨fun i j u => (h u).1 i j, fun i j u => (h u).2 i j⟩⟩
 
 /- English proof (translation)
-Establish `hO : IsOpen (((AdelicGLn.integralFiniteGL E a).comap (finPart E a) : Subgroup (finU E a)) : Set (finU E a))` using `(AdelicGLn.isOpen_integralFiniteGL E a).preimage continuous_finPart`. Use `IsCompact.of_isClosed_subset (isClosedEmbedding_finU.isCompact_preimage ((AdelicGLn.isCompact_integralFiniteGL E a).image continuous_finGL_ad)) (Subgroup.isClosed_of_isOpen _ hO) fun x hx => ⟨finPart E a x, hx, ?_⟩` and prove the remaining obligations. Establish `h1 : GeneralLinearGroup.map (pInf E) ((x : UA E a) : GA E a) = 1` using `x.2`. Conclude with `ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL]; rfl)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_integral :
     IsCompact (((AdelicGLn.integralFiniteGL E a).comap (finPart E a) : Subgroup (finU E a)) : Set (finU E a)) := by
@@ -69,29 +69,25 @@ namespace GlobalTheory.Cong.AutFormFix
 open Matrix GlobalTheory.BCT.GlobLev GroundTheory.Automorphic
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ hφ`. Use `set St : Set (finU E a) := {k : finU E a | RU E a k φ = φ} with hSt`. Use `set K₀ : Set (finU E a) := (((AdelicGLn.integralFiniteGL E a).comap (finPart E a) : Subgroup (finU E a)) : Set (finU E a))`. Set `t : Finset (HeightOneSpectrum (𝓞 E)) → Set (finU E a)` to `fun S => {k : finU E a | ∀ u ∈ S, cLoc u k.1 = 1} ∩ Stᶜ`. Establish `htc : ∀ S, IsClosed (t S)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S`. Use `IsClosed.inter ?_ hφ.level.isClosed_compl` and prove the remaining obligations. Establish `: {k : finU E a | ∀ u ∈ S, cLoc u k.1 = 1} = ⋂ u ∈ S, {k : finU E a | cLoc u k.1 = 1}`. Use extensionality with `k`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Use `isClosed_biInter fun u _ => ?_` and prove the remaining obligations. Use `haveI : T2Space (GL (Fin a) (u.adicCompletion E)) := Units.isEmbedding_embedProduct.t2Space`. Conclude with `isClosed_eq ((continuous_cLoc u).comp continuous_subtype_val) continuous_const`. Establish `hst : K₀ ∩ ⋂ S, t S = ∅`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Set.eq_empty_of_forall_notMem fun k hk => ?_` and prove the remaining obligations. Establish `hall : ∀ u, cLoc u k.1 = 1` using `fun u => (Set.mem_iInter.1 hk.2 {u}).1 u (Finset.mem_singleton_self u)`. Establish `h1 : k = 1` using `Subtype.ext (eq_one_of_forall_cLoc k.2 hall)`. Establish `hnot` using `(Set.mem_iInter.1 hk.2 ∅).2`. Apply `hnot` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Use `show RU E a ((1 : finU E a) : UA E a) φ = φ`. Rewrite using `[Subgroup.coe_one, map_one]`. Both sides reduce to the same expression. Establish `hdt : Directed (· ⊇ ·) t`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S₁ S₂`. Apply the tactic sequence `refine ⟨S₁ ∪ S₂, ?_, ?_⟩ <;> rintro k ⟨hk, hk'⟩ <;> refine ⟨fun u hu => hk u ?_, hk'⟩ <;> simp [hu]`. Take `⟨S, hS⟩` from `isCompact_integral.elim_directed_family_closed t htc hst hdt`. Establish `hfin : {w : HeightOneSpectrum (𝓞 E) | ¬ ∀ u ∈ S, Apart u w}.Finite`. Use `((S.finite_toSet.biUnion fun u _ => (Set.toFinite ({u, conjSrc (GlobalTheory.SplitPts.conjE E) u} : Set _)))).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq, not_forall, Apart, not_not] at hw`. Take `⟨u, hu, he⟩` from `hw`. Use `Set.mem_biUnion hu ?_` and prove the remaining obligations. Break down `eq_or_eq_conjSrc he.symm with rfl | rfl` into its components or cases.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use `Filter.eventually_cofinite.2 (hfin.subset fun w hw => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hw ⊢`. Introduce `hS'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hw` to reduce the goal to its premises. Introduce `x hx`. Take `⟨hxl, hxi⟩` from `GlobalTheory.Cong.AdaptLev.mem_intU.1 hx`. Establish `hxf : x ∈ finU E a` using `(Subgroup.mem_inf.1 hxl).1`. Establish `hcomp : ∀ u, Apart u w → cLoc u x = 1` using `fun u hu => MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hxl).2 u) hu)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hK : (⟨x, hxf⟩ : finU E a) ∈ K₀`. Use `(mem_integral_iff _).2 fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : Apart u w`. Use `show cLoc u x ∈ _`. Rewrite using `[hcomp u hu]`.
-
-Conclude with `one_mem _`. Conclude with `hxi u hu`. Assume the negation of the conclusion as `hne`. Establish `: (⟨x, hxf⟩ : finU E a) ∈ K₀ ∩ t S` using `⟨hK, fun u hu => hcomp u (hS' u hu), hne⟩`. Rewrite `this` using `[hS]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_intU_eventually : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (φ : UA E a → ℂ),
     IsAutFormU φ → ∀ᶠ w in Filter.cofinite, ∀ x ∈ GlobalTheory.Cong.AdaptLev.intU a w, RU E a x φ = φ := by

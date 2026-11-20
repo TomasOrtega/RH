@@ -15,13 +15,13 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 open scoped Formalism.Per
 
 /- English proof (translation)
-Set `J : ThetaL P AI` to `GlobalTheory.ThetaTie.thetaL T`. Take `⟨a, ha⟩` from `hz`. Establish `hq : ∀ c : ℚ_[l], ‖J.θ (qB P c)‖ = ‖c‖`. Introduce `c`. Establish `e : qB P c = algebraMap (Om l) P.R.BdR (algebraMap ℚ_[l] (Om l) c)` using `IsScalarTower.algebraMap_apply _ _ _ c`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e, J.θ_Om]`. Conclude with `(PadicComplex.norm_extends _ _).trans (PadicAlgCl.norm_extends _ _)`. Establish `h1` using `FilB_anti (P := P) (a := 1) (b := (M : ℤ)) (by exact_mod_cast hM) ha`. Establish `h0` using `FilB_anti (P := P) (a := 0) (b := 1) (by norm_num) h1`. Establish `hk` using `(J.θ_ker _ h0).2 h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd` using `J.θ_add _ h0 _ (io_mem AI (((l : ℕ) : Ainf l) ^ n * a))`. Rewrite `hadd` using `[sub_add_cancel, hk, zero_add]`. Establish `e2 : io AI (((l : ℕ) : Ainf l) ^ n * a) = qB P ((l : ℚ_[l]) ^ n) * io AI a`. Simplify using `only [map_mul, map_pow, map_natCast]`. Rewrite `hadd` using `[e2, J.θ_mul _ (qB_mem _) _ (io_mem AI a)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hq z, hadd, norm_mul, hq, Padic.norm_p_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) (J.θ_int a)`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_of_qB_mem_Lat (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     (T : LocTied l P AI) (M n : ℕ) (hM : 1 ≤ M) (z : ℚ_[l]) (hz : qB P z ∈ Lat AI M n) :

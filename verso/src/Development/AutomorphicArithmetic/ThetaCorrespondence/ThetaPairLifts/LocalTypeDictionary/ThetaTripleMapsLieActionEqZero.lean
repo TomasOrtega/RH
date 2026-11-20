@@ -28,21 +28,19 @@ end GlobalTheory.TripleAssembly.LieInv
 namespace GlobalTheory.TripleAssembly.LieInv
 variable {D : D7}
 /- English proof (translation)
-Take `⟨γ, hγ, hγt⟩` from `exists_line_conjU θ M τ Y hθ hY Yv c hc`. Take `⟨Dop, hDpol, hDiff⟩` from `hDer γ hγ`. Take `⟨m, f, φ, hf, rfl⟩` from `exists_sum_pure Mo ψ emb hΨ`. Set `f₁ : Fin m → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin M.rank × Fin k)` to `fun i => Dop (f i)`. Establish `hA : ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ActsD (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (fun t => om (γ (Multiplicative.ofAdd t), 1)) (f i) (f₁ i)` using `fun i => (hDiff (f i) (hf i).1 (f₁ i)).2 rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hstdv : ∀ i, ∀ᶠ v in Filter.cofinite, φ i v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers D.host.F} 1`. Introduce `i`. Use `filter_upwards [hM.std, (hf i).2.2] with v hv hv' using hv'.trans hv`. Establish `hsch : ∀ g : Fin m → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin M.rank × Fin k), ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (g i) (φ i) ∈ GlobalTheory.WeilM.schA D.host.F (Fin M.rank × Fin k)` using `fun g => Submodule.sum_mem _ fun i _ => GlobalTheory.TensUniq.pure_mem_schA _ _ (hf i).2.1 (hstdv i)`. Establish `hΨ₁ : ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f₁ i) (φ i) ∈ darbAlg Mo ψ emb` using `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f₁ i, φ i, hDpol _ (hf i).1, (hf i).2.1, (hf i).2.2, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hder` using `_root_.GlobalTheory.ThetaLineDerFirst.hasDerivAt_thetaSum_along_line hP Mo ψ χX χW om hstd hM hW γ hγ m f f₁ φ (fun i => ⟨(hf i).2.1, (hf i).2.2⟩) hA`. Establish `hΦ' : Φ' = GlobalTheory.TripleRead.thO Mo ψ (sgn ε M).gram e (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f₁ i) (φ i))`. Use function extensionality and compare the values at `z`. Establish `h1` using `hD z`. Establish `h2` using `hder (GlobalTheory.TripleRead.ptO (sgn ε M).gram e z)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.unique (h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_))` and prove the remaining obligations. Establish `h3` using `htr _ (hsch f) (oneP θ M τ Y t) 1`. Rewrite `h3` using `[toUX_one, ← hγt t]`. Use `show ω (oneP θ M τ Y t, 1) (T _) z = GlobalTheory.TripleRead.thO Mo ψ (sgn ε M).gram e _ z`. Rewrite using `[hT _ (hsch f), ← h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub` using `GlobalTheory.TripleAssembly.darbAlg_le_schA _ _ _ Mo ψ emb hM`. Establish `H : ∃ q : (Matrix (Fin X.rank) (Fin M.rank) (AE D) → ℂ) →ₗ[ℂ] P ⊗[ℂ] GlobalTheory.SmallThetaModules.RTens s, ∀ Ψ ∈ darbAlg Mo ψ emb, q (GlobalTheory.TripleRead.thO Mo ψ (sgn ε M).gram e Ψ) = liftPure Mo pr pv s Ψ`. Take `⟨q, hq⟩` from `exists_factor T (darbAlg Mo ψ emb) (fun x hx => hinj x (hsub hx)) (liftPure Mo pr pv s)`. Conclude with `⟨q, fun Ψ hΨ => by rw [← hT Ψ (hsub hΨ)]; exact hq Ψ hΨ⟩`. Establish `e1 : thetaLift Mo ψ (sgn ε M).gram e (darbAlg Mo ψ emb) (liftPure Mo pr pv s) Φ' = liftPure Mo pr pv s (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f₁ i) (φ i))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hΦ']`. Unfold `thetaLift`. Rewrite using `[dif_pos H]`. Conclude with `H.choose_spec _ hΨ₁`. Establish `HL` using `GlobalTheory.PureLift.exists_pureLift D.sp.cm.sig Yv Z Mo ψ hM P pr N pv s hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `e2 : ∀ i, liftPure Mo pr pv s (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f₁ i) (φ i)) = 0`. Introduce `i`. Unfold `liftPure`. Rewrite using `[dif_pos HL, HL.choose_spec _ _ (hf i).2.1 (hf i).2.2, hlie γ hγ (f i) (hf i).1 (f₁ i) (hA i), TensorProduct.zero_tmul]`. Rewrite using `[e1, map_sum]`.
-
-Conclude with `Finset.sum_eq_zero fun i _ => e2 i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaLift_lie_derivative_eq_zero (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) {k : ℕ} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (ε : Bool) {M X : HSp D}
     {Yv : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E M.rank} {Z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E k}
@@ -118,19 +116,19 @@ theorem thetaLift_lie_derivative_eq_zero (hP : _root_.GlobalTheory.FunPr.ThetaLo
 end GlobalTheory.TripleAssembly.LieInv
 open GlobalTheory.TripleAssembly.LieInv in
 /- English proof (translation)
-Introduce `hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm`. Take `⟨iA, iB⟩` from `_root_.GlobalTheory.T.theta_image_eq_span_darboux hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm`. Establish `hg` using `hm.triple.geo`. Establish `hψ' : Bs.ψ = ψ` using `h.ψ`. Substitute `hψ'` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd Bs.ψ` using `hm.triple.base.std`. Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`. Establish `dV : Γ.V.J.det ≠ 0` using `det_ne_of_hasSig_map (Bs.emb w).1 1 (by rw [one_smul]; exact hg.hV.sig w)`. Establish `dV' : Γ.V'.J.det ≠ 0` using `det_ne_of_hasSig_map (Bs.emb w).1 1 (by rw [one_smul]; exact hg.hV'.sig w)`. Establish `dW : Γ.W.J.det ≠ 0` using `det_ne_of_hasSig_map (Bs.emb w).1 Complex.I (hg.hW.sig w)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gA : (sgn true W).gram.det ≠ 0`. Establish `e1 : (sgn true W).gram = -W.gram` using `rfl`. Rewrite `dV` using `[h.JW, one_smul]`. Rewrite using `[e1, Matrix.det_neg]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) dV`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `gB : (sgn false W₁).gram.det ≠ 0`. Establish `e1 : (sgn false W₁).gram = W₁.gram` using `rfl`. Rewrite `dV'` using `[h.JW₁, Matrix.det_smul]`. Rewrite using `[e1]`. Conclude with `right_ne_zero_of_mul dV'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `PA` using `_root_.GlobalTheory.T.dualPair_preserves_polarization hP _ _ D.sp.cm.sig Bs _ _ Γ.V Γ.W Γ.M _ _ om _ _ _ _ (GlobalTheory.ThK.Inhab.pairV hm.triple)`. Establish `PB` using `_root_.GlobalTheory.T.dualPair_preserves_polarization hP _ _ D.sp.cm.sig Bs _ _ Γ.V' Γ.W Γ.M' _ _ om' _ _ _ _ (GlobalTheory.ThK.Inhab.pairV' hm.triple)`. Prove the components needed by the constructor for the conclusion. Introduce `τ Y hY Φ hΦ Φ' _ hD`. Take `⟨T, hT, hinj⟩` from `GlobalTheory.ThetaTransformInj.linear_injective D Γ.M Bs.ψ (sgn true W).gram e hg.hM hstd dV dW gA`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hΦ2 : Φ ∈ (darbAlg Γ.M Bs.ψ Bs.emb).map T` using `by rw [iA T hT]; exact hΦ`. Take `⟨Ψ, hΨ, rfl⟩` from `hΦ2`. Conclude with `_root_.GlobalTheory.TripleAssembly.LieInv.thetaLift_lie_derivative_eq_zero hP Bs.ψ θ true Γ.M om ωA e 1 h.JW h.JX Bs.emb Xc.β (Xc.β / Xc.α) R.p Rf.p (vacIm Γ Rf) (Filter.Eventually.of_forall fun _ => rfl) hstd hg.hM hm.triple.weil PA.1 hm.real.quot.lie T hT hinj tA hθ τ Y hY Ψ hΨ …`. Introduce `τ Y hY Φ hΦ Φ' _ hD`. Take `⟨T, hT, hinj⟩` from `GlobalTheory.ThetaTransformInj.linear_injective D Γ.M' Bs.ψ (sgn false W₁).gram e hg.hM' hstd dV' dW gB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΦ2 : Φ ∈ (darbAlg Γ.M' Bs.ψ Bs.emb).map T` using `by rw [iB T hT]; exact hΦ`. Take `⟨Ψ, hΨ, rfl⟩` from `hΦ2`. Use `_root_.GlobalTheory.TripleAssembly.LieInv.thetaLift_lie_derivative_eq_zero hP Bs.ψ θ false Γ.M' om' ωB e (-1) h.JW₁ h.JX Bs.emb Xc.α (Xc.α / Xc.β) R.p' Rf.p' (vacIm Γ Rf) ?_ hstd hg.hM' hm.triple.weil' PB.1 hm.real.quot'.lie T hT hinj tB hθ τ Y hY Ψ hΨ Φ' hD` and prove the remaining obligations. Use `filter_upwards [Xc.T.eventually_cofinite_notMem] with v hv using (hm.fin.sph v hv).1.symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TripleAssembly.LieInv.theta_triple_maps_lie_action_eq_zero : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -196,7 +194,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TripleAssembly.LieInv.theta_triple_maps_lie_action_eq_zero | exact _root_.GlobalTheory.TripleAssembly.LieInv.theta_triple_maps_lie_action_eq_zero | (intros; apply _root_.GlobalTheory.TripleAssembly.LieInv.theta_triple_maps_lie_action_eq_zero <;> …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_triple_lift_lie_invariant : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

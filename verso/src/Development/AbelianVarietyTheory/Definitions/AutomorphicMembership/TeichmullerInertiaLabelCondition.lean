@@ -54,7 +54,7 @@ def Wild (A : ValuationSubring Ω) : Subgroup (G E Ω) where
 omit [NumberField E] in
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Wild {σ : G E Ω} :
     σ ∈ Wild E A ↔ ∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1 := Iff.rfl
@@ -62,13 +62,11 @@ theorem mem_Wild {σ : G E Ω} :
 open Pointwise in
 
 /- English proof (translation)
-Introduce `σ h`. Establish `h1 : ∀ x : Ω, x ≠ 0 → A.valuation (σ x - x) < A.valuation x` using `fun x hx => by`. Establish `e : σ x - x = (σ x / x - 1) * x` using `by field_simp`. Establish `h0 : 0 < A.valuation x` using `zero_lt_iff.mpr (by simpa using hx)`. Rewrite using `[e, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_lt_of_lt_one_left h0 (h x hx)`. Establish `h2 : ∀ x : Ω, A.valuation (σ x) = A.valuation x` using `fun x => by`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Conclude with `Valuation.map_eq_of_sub_lt _ (h1 x hx)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ • A = A`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← A.valuation_le_one_iff, ← A.valuation_le_one_iff, ← h2, AlgEquiv.smul_def, mul_inv_apply]`. Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases.
-
-Simplify using the standard rewrite rules. Conclude with `(h1 x hx0).trans_le hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Wild_le_Ine : Wild E A ≤ Ine (F := E) A := by
   intro σ h
@@ -91,7 +89,7 @@ theorem Wild_le_Ine : Wild E A ≤ Ine (F := E) A := by
     · exact (h1 x hx0).trans_le hx
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h` using `hσ ((φ⁻¹ : G E Ω) y) ((_root_.map_ne_zero _).2 hy)`. Rewrite `h` using `[← valuation_apply_lt_one_iff hφ, map_sub, map_div₀, mul_inv_apply, map_one]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_Wild {φ σ : G E Ω} (hφ : φ ∈ Dec (F := E) A) (hσ : σ ∈ Wild E A) :
     φ * σ * φ⁻¹ ∈ Wild E A := by
@@ -101,7 +99,7 @@ theorem conj_mem_Wild {φ σ : G E Ω} (hφ : φ ∈ Dec (F := E) A) (hσ : σ �
   exact h
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem tameGenAt_iff {γ : G E Ω} : TameGenAt A γ ↔ γ ∈ Ine (F := E) A ∧
     ((Ine (F := E) A : Subgroup (G E Ω)) : Set (G E Ω)) ⊆
@@ -111,7 +109,7 @@ theorem tameGenAt_iff {γ : G E Ω} : TameGenAt A γ ↔ γ ∈ Ine (F := E) A �
 variable [IsAlgClosure E Ω]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TameLabels.wild_of_frob hγ hφ`.
+A detailed English derivation is pending.
 -/
 theorem tame_relation {γ φ : G E Ω} {q : ℕ} (hγ : γ ∈ Ine (F := E) A) (hφ : IsFrob A q φ) :
     (γ ^ q)⁻¹ * (φ * γ * φ⁻¹) ∈ Wild E A := GlobalTheory.TameLabels.wild_of_frob hγ hφ
@@ -126,16 +124,16 @@ def tameSpace (a : WDRep h V) : Submodule ℂ V :=
   Representation.invariants (a.ρ.comp ((Wild E A).subgroupOf (Weil h)).subtype)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hv σ hσ => hv ⟨σ, hσ⟩, fun hv σ => hv σ.1 σ.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_tameSpace (a : WDRep h V) {v : V} :
     v ∈ a.tameSpace ↔ ∀ σ : Weil h, (σ : G E Ω) ∈ Wild E A → a.ρ σ v = v :=
   ⟨fun hv σ hσ => hv ⟨σ, hσ⟩, fun hv σ => hv σ.1 σ.2⟩
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite `hv`, the goal using `[mem_tameSpace]`. Introduce `u hu`. Establish `h1` using `hv (σ⁻¹ * u * σ⁻¹⁻¹) (conj_mem_Wild (Weil_le_Dec h σ⁻¹.2) hu)`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← End.mul_apply, ← End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`. Use `group`. Use `_ = a.ρ σ v := by rw [h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ρ_mem_tameSpace (a : WDRep h V) (σ : Weil h) : ∀ v ∈ a.tameSpace, a.ρ σ v ∈ a.tameSpace := by
   intro v hv
@@ -147,7 +145,7 @@ theorem ρ_mem_tameSpace (a : WDRep h V) (σ : Weil h) : ∀ v ∈ a.tameSpace, 
     _ = a.ρ σ v := by rw [h1]
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite `hv`, the goal using `[mem_tameSpace]`. Introduce `u hu`. Rewrite using `[a.comm_apply, deg_eq_zero_iff.mpr (Wild_le_Ine hu), hv u hu, zpow_zero, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem N_mem_tameSpace (a : WDRep h V) : ∀ v ∈ a.tameSpace, a.N v ∈ a.tameSpace := by
   intro v hv
@@ -178,7 +176,7 @@ Both sides reduce to the same expression.
     (a.tamePart.N v : V) = a.N v := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun v => Subtype.ext (a.mem_tameSpace.mp v.2 σ hσ)`.
+A detailed English derivation is pending.
 -/
 theorem tamePart_ρ_of_wild (a : WDRep h V) {σ : Weil h} (hσ : (σ : G E Ω) ∈ Wild E A) :
     a.tamePart.ρ σ = 1 :=
@@ -187,12 +185,12 @@ theorem tamePart_ρ_of_wild (a : WDRep h V) {σ : Weil h} (hσ : (σ : G E Ω) �
 def Tame (a : WDRep h V) : Prop := ∀ σ : Weil h, (σ : G E Ω) ∈ Wild E A → a.ρ σ = 1
 
 /- English proof (translation)
-Introduce `_ hσ` and use `a.tamePart_ρ_of_wild hσ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tame_tamePart (a : WDRep h V) : a.tamePart.Tame := fun _ hσ => a.tamePart_ρ_of_wild hσ
 
 /- English proof (translation)
-Rewrite using `[Submodule.eq_top_iff']`. Conclude with `⟨fun ha v => a.mem_tameSpace.mpr fun σ hσ => by rw [ha σ hσ]; rfl, fun ha σ hσ => LinearMap.ext fun v => a.mem_tameSpace.mp (ha v) σ hσ⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem tame_iff (a : WDRep h V) : a.Tame ↔ a.tameSpace = ⊤ := by
   rw [Submodule.eq_top_iff']
@@ -216,7 +214,7 @@ Both sides reduce to the same expression.
     (v : a.tameSpace) : (tameEquiv (a := a) (b := b) e he v : V') = e v := rfl
 
 /- English proof (translation)
-Take `⟨e, h1, h2⟩` from `hab`. Conclude with `⟨tameEquiv e fun σ _ => h1 σ, fun σ v => Subtype.ext (h1 σ v), fun v => Subtype.ext (h2 v)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Iso.tamePart {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) :
     a.tamePart.Iso b.tamePart := by
@@ -224,13 +222,13 @@ theorem Iso.tamePart {a : WDRep h V} {b : WDRep h V'} (hab : a.Iso b) :
   exact ⟨tameEquiv e fun σ _ => h1 σ, fun σ v => Subtype.ext (h1 σ v), fun v => Subtype.ext (h2 v)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearEquiv.ofTop _ (a.tame_iff.mp ha), fun _ _ => rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem Tame.iso_tamePart {a : WDRep h V} (ha : a.Tame) : a.tamePart.Iso a :=
   ⟨LinearEquiv.ofTop _ (a.tame_iff.mp ha), fun _ _ => rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ toFun := fun v => (⟨v.1.1, a.mem_tameSpace.mpr fun σ hσ => congrArg Prod.fst ((a.sum b).mem_tameSpace.mp v.2 σ hσ)⟩, ⟨v.1.2, b.mem_tameSpace.mpr fun σ hσ => congrArg Prod.snd ((a.sum b).mem_tameSpace.mp v.2 σ hσ)⟩) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl invFun …`.
+Supply the required witnesses or components.
 -/
 theorem tamePart_sum (a : WDRep h V) (b : WDRep h V') :
     (a.sum b).tamePart.Iso (a.tamePart.sum b.tamePart) :=
@@ -246,9 +244,9 @@ theorem tamePart_sum (a : WDRep h V) (b : WDRep h V') :
      right_inv := fun _ => rfl }, fun _ _ => rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← LinearEquiv.charpoly_conj (tameEquiv e he)]`. Use `congr 1`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `(tameEquiv e he).surjective v`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (he σ hσ v)`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_tamePart_congr {a : WDRep h V} {b : WDRep h V'} (e : V ≃ₗ[ℂ] V')
     (he : ∀ σ : Weil h, (σ : G E Ω) ∈ Ine (F := E) A → ∀ v, e (a.ρ σ v) = b.ρ σ (e v))
@@ -262,7 +260,7 @@ theorem charpoly_tamePart_congr {a : WDRep h V} {b : WDRep h V'} (e : V ≃ₗ[�
   exact Subtype.ext (he σ hσ v)
 
 /- English proof (translation)
-Establish `h1` using `ha ((γ ^ normV w)⁻¹ * (φ * γ * φ⁻¹)) (tame_relation hγ (deg_eq_one_iff.mp hφ))`. Rewrite using `[← mul_inv_cancel_left (γ ^ normV w) (φ * γ * φ⁻¹), map_mul, h1, mul_one, map_pow]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem Tame.conj_eq_pow {a : WDRep h V} (ha : a.Tame) {γ φ : Weil h}
     (hγ : (γ : G E Ω) ∈ Ine (F := E) A) (hφ : deg φ = 1) :
@@ -271,13 +269,11 @@ theorem Tame.conj_eq_pow {a : WDRep h V} (ha : a.Tame) {γ φ : Weil h}
   rw [← mul_inv_cancel_left (γ ^ normV w) (φ * γ * φ⁻¹), map_mul, h1, mul_one, map_pow]
 
 /- English proof (translation)
-Set `r` to `a.ρ.toHomUnits`. Establish `hfin : IsOfFinOrder (r γ)`. Rewrite using `[← finite_powers]`. Use `Set.Finite.of_finite_image (f := Units.val) (a.smooth.finite_range.subset ?_) Units.val_injective.injOn` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨n, rfl⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨γ, hγ⟩ ^ n, by`. Simplify using `only [map_pow, Units.val_pow_eq_pow_val]`. Use the proof step `rfl⟩`. Establish `h1 : r (frob h) * r γ * (r (frob h))⁻¹ = r γ ^ normV w`. Rewrite using `[← map_inv, ← map_mul, ← map_mul]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Units.ext ((ha.conj_eq_pow hγ deg_frob).trans (Units.val_pow_eq_pow_val (r γ) _).symm)`. Establish `h2 : orderOf (r γ ^ normV w) = orderOf (r γ)`. Rewrite using `[← h1]`. Conclude with `MulEquiv.orderOf_eq (MulAut.conj (r (frob h))) (r γ)`. Establish `hpos` using `hfin.orderOf_pos`.
-
-Use `⟨orderOf (r γ), hpos, ?_, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[hfin.orderOf_pow]`. Conclude with `(Nat.div_eq_self.mp h2).resolve_left hpos.ne'`. Conclude with `(Units.val_pow_eq_pow_val (r γ) _).symm.trans (congrArg Units.val (pow_orderOf_eq_one (r γ)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tame.exists_pow_eq_one {a : WDRep h V} (ha : a.Tame) {γ : Weil h}
     (hγ : (γ : G E Ω) ∈ Ine (F := E) A) :
@@ -304,9 +300,9 @@ theorem Tame.exists_pow_eq_one {a : WDRep h V} (ha : a.Tame) {γ : Weil h}
       (congrArg Units.val (pow_orderOf_eq_one (r γ)))
 
 /- English proof (translation)
-Establish `h1 : (a.ρ γ ^ normV w).charpoly = (a.ρ γ).charpoly`. Rewrite using `[← ha.conj_eq_pow hγ deg_frob, ← LinearEquiv.charpoly_conj (LinearMap.GeneralLinearGroup.toLinearEquiv (a.ρ.asGroupHom (frob h))) (a.ρ γ)]`. Use `congr 1`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.conj_apply_apply, map_mul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2` using `GlobalTheory.CharpolyPow.roots_charpoly_pow ℂ _ (normV w) (LinearMap.toMatrix (finBasis ℂ V) (finBasis ℂ V) (a.ρ γ))`. Rewrite `h2` using `[LinearMap.toMatrix_pow, LinearMap.charpoly_toMatrix, LinearMap.charpoly_toMatrix, h1]`. Conclude with `h2.symm`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tame.roots_map_pow {a : WDRep h V} (ha : a.Tame) {γ : Weil h}
     (hγ : (γ : G E Ω) ∈ Ine (F := E) A) :
@@ -333,19 +329,19 @@ variable {g : ℕ} [Fact g.Prime]
 def IsTeich (τ : Fbar g →* ℂ) : Prop := ∀ x y, x ≠ 0 → y ≠ 0 → τ x = τ y → x = y
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TameLabels.teich_injective τ hτ`.
+A detailed English derivation is pending.
 -/
 theorem IsTeich.injective {τ : Fbar g →* ℂ} (hτ : IsTeich τ) : Function.Injective τ :=
   GlobalTheory.TameLabels.teich_injective τ hτ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TameLabels.teich_zero τ hτ`.
+A detailed English derivation is pending.
 -/
 theorem IsTeich.map_zero {τ : Fbar g →* ℂ} (hτ : IsTeich τ) : τ 0 = 0 :=
   GlobalTheory.TameLabels.teich_zero τ hτ
 
 /- English proof (translation)
-Establish `: NeZero n` using `⟨hn.ne'⟩`. Establish `: NeZero (n : Fbar g)` using `⟨fun h0 => (Nat.Prime.coprime_iff_not_dvd Fact.out).mp hc.symm ((CharP.cast_eq_zero_iff (Fbar g) g n).mp h0)⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Fbar g) n`. Take `⟨i, -, hi⟩` from `(hζ.map_of_injective hτ.injective).eq_pow_of_pow_eq_one hz`. Conclude with `⟨ζ ^ i, by rw [map_pow, hi]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsTeich.exists_eq {τ : Fbar g →* ℂ} (hτ : IsTeich τ) {n : ℕ} (hn : 0 < n)
     (hc : n.Coprime g) {z : ℂ} (hz : z ^ n = 1) : ∃ x, τ x = z := by
@@ -357,7 +353,7 @@ theorem IsTeich.exists_eq {τ : Fbar g →* ℂ} (hτ : IsTeich τ) {n : ℕ} (h
   exact ⟨ζ ^ i, by rw [map_pow, hi]⟩
 
 /- English proof (translation)
-Use `Polynomial.map_injective (algebraMap (ZMod g) (Fbar g)) (RingHom.injective _) ?_` and prove the remaining obligations. Rewrite using `[(IsAlgClosed.splits _).eq_prod_roots_of_monic (hf.map (algebraMap (ZMod g) (Fbar g))), (IsAlgClosed.splits _).eq_prod_roots_of_monic (hf'.map (algebraMap (ZMod g) (Fbar g)))]`. Conclude with `congrArg (fun m : Multiset (Fbar g) => (m.map fun x => X - C x).prod) e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_rootsBar_eq {f f' : (ZMod g)[X]} (hf : f.Monic) (hf' : f'.Monic)
     (e : rootsBar f = rootsBar f') : f = f' := by
@@ -367,9 +363,9 @@ theorem eq_of_rootsBar_eq {f f' : (ZMod g)[X]} (hf : f.Monic) (hf' : f'.Monic)
   exact congrArg (fun m : Multiset (Fbar g) => (m.map fun x => X - C x).prod) e
 
 /- English proof (translation)
-Establish `h3 : (m.map (Function.invFun τ)).map τ = m`. Rewrite using `[Multiset.map_map]`. Conclude with `(Multiset.map_congr rfl fun z hz => Function.invFun_eq (h1 z hz)).trans (Multiset.map_id' m)`. Take `⟨f, hf, hr⟩` from `GlobalTheory.Compare.TeichmullerRoots.exists_monic_of_stable (m.map (Function.invFun τ)) (by`. Use `Multiset.map_injective hτ.injective ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, Multiset.map_map]`. Use `conv_rhs => rw [← h2, ← h3, Multiset.map_map]`. Conclude with `Multiset.map_congr rfl fun x _ => map_pow τ x g)`. Use `⟨f, ⟨hf, by rw [hr, h3]⟩, fun f' hf' => eq_of_rootsBar_eq hf'.1 hf ?_⟩` and prove the remaining obligations. Conclude with `Multiset.map_injective hτ.injective (by rw [hf'.2, hr, h3])`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsTeich.existsUnique_monic {τ : Fbar g →* ℂ} (hτ : IsTeich τ) {m : Multiset ℂ}
     (h1 : ∀ z ∈ m, ∃ x, τ x = z) (h2 : m.map (· ^ g) = m) :
@@ -398,13 +394,13 @@ def lpTame (x : WD h) : WD h :=
     (fun _ _ hab => sound (WDRep.Iso.tamePart hab)) x
 
 /- English proof (translation)
-The claim follows from `sound (iso_std a).tamePart.symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lpTame_mk (a : WDRep h V) : lpTame (mk a) = mk a.tamePart :=
   sound (iso_std a).tamePart.symm
 
 /- English proof (translation)
-Proceed by induction on `x using ind with`. Consider the case `hP n a => rw [lpTame_mk, lpDim_mk, lpDim_mk]`. Conclude with `Submodule.finrank_le _`.
+Proceed by induction. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lpDim_lpTame_le (x : WD h) : lpDim (lpTame x) ≤ lpDim x := by
   induction x using ind with
@@ -413,9 +409,9 @@ theorem lpDim_lpTame_le (x : WD h) : lpDim (lpTame x) ≤ lpDim x := by
 def tame (x : WD h) : Prop := lpTame x = x
 
 /- English proof (translation)
-Use `⟨fun hx => congrArg lpDim hx, fun hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using ind with`. Consider the case `hP n a`. Rewrite `hx` using `[lpTame_mk, lpDim_mk, lpDim_mk]`. Rewrite using `[tame, lpTame_mk]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sound (a.tame_iff.mpr (Submodule.eq_top_of_finrank_eq hx)).iso_tamePart`.
+A detailed English derivation is pending.
 -/
 theorem tame_iff_lpDim (x : WD h) : tame x ↔ lpDim (lpTame x) = lpDim x := by
   refine ⟨fun hx => congrArg lpDim hx, fun hx => ?_⟩
@@ -426,18 +422,18 @@ theorem tame_iff_lpDim (x : WD h) : tame x ↔ lpDim (lpTame x) = lpDim x := by
     exact sound (a.tame_iff.mpr (Submodule.eq_top_of_finrank_eq hx)).iso_tamePart
 
 /- English proof (translation)
-Rewrite using `[tame_iff_lpDim, lpTame_mk, lpDim_mk, lpDim_mk, a.tame_iff]`. Conclude with `⟨Submodule.eq_top_of_finrank_eq, fun e => by rw [e, finrank_top]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 @[simp] theorem tame_mk (a : WDRep h V) : tame (mk a) ↔ a.Tame := by
   rw [tame_iff_lpDim, lpTame_mk, lpDim_mk, lpDim_mk, a.tame_iff]
   exact ⟨Submodule.eq_top_of_finrank_eq, fun e => by rw [e, finrank_top]⟩
 
 /- English proof (translation)
-Proceed by induction on `x using ind with`. Consider the case `hP n a`. Rewrite using `[tame_mk, lpDim_mk]`. Prove the components needed by the constructor for the conclusion. Introduce `ha σ hσ`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[inePol_of_mem_Ine _ (Wild_le_Ine hσ), charPol_mk, ha _ hσ, LinearMap.charpoly_one]`. Introduce `ha σ hσ`. Establish `h1` using `ha σ hσ`. Rewrite `h1` using `[inePol_of_mem _ σ.2, charPol_mk]`. Establish `h2 : IsNilpotent (a.ρ σ - 1)` using `⟨finrank ℂ (Fin n → ℂ), by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `LinearMap.aeval_self_charpoly (a.ρ σ)` as an intermediate fact. Rewrite `this` using `[h1]`. Simplify using `using this⟩`. Establish `h3 : End.IsSemisimple (a.ρ σ - 1)` using `End.IsSemisimple.sub_of_commute (Commute.one_right _) (a.semisimple σ) End.isSemisimple_id`. Conclude with `sub_eq_zero.mp (End.eq_zero_of_isNilpotent_isSemisimple h2 h3)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tame_iff_inePol (x : WD h) :
     tame x ↔ ∀ σ ∈ Wild E A, inePol x σ = (X - 1) ^ lpDim x := by
@@ -459,7 +455,7 @@ theorem tame_iff_inePol (x : WD h) :
       exact sub_eq_zero.mp (End.eq_zero_of_isNilpotent_isSemisimple h2 h3)
 
 /- English proof (translation)
-Proceed by induction on `x using ind with`. Consider the case `hP n a => exact (tame_mk a).mpr fun σ hσ => ((unr_mk a).mp hx).2 ⟨σ, Wild_le_Ine hσ⟩`.
+Proceed by induction. Treat this case separately.
 -/
 theorem tame_of_unr {x : WD h} (hx : unr x) : tame x := by
   induction x using ind with
@@ -468,21 +464,21 @@ theorem tame_of_unr {x : WD h} (hx : unr x) : tame x := by
 def tameEig (x : WD h) (γ : G E Ω) : Multiset ℂ := (inePol (lpTame x) γ).roots
 
 /- English proof (translation)
-Rewrite using `[tameEig, lpTame_mk, inePol_of_mem _ hγ, charPol_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tameEig_mk (a : WDRep h V) {γ : G E Ω} (hγ : γ ∈ Weil h) :
     tameEig (mk a) γ = (a.tamePart.ρ ⟨γ, hγ⟩).charpoly.roots := by
   rw [tameEig, lpTame_mk, inePol_of_mem _ hγ, charPol_mk]
 
 /- English proof (translation)
-Rewrite using `[tameEig, inePol_of_mem _ hγ]`. Conclude with `card_eig _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_tameEig (x : WD h) {γ : G E Ω} (hγ : γ ∈ Weil h) :
     Multiset.card (tameEig x γ) = lpDim (lpTame x) := by
   rw [tameEig, inePol_of_mem _ hγ]; exact card_eig _ _
 
 /- English proof (translation)
-Proceed by induction on `x using ind with`. Consider the case `hP n a`. Proceed by induction on `y using ind with`. Consider the case `hP m b`. Rewrite using `[lpSum_mk, tameEig_mk _ hγ, tameEig_mk _ hγ, tameEig_mk _ hγ, (a.tamePart_sum b).charpoly_eq, WDRep.sum_ρ, LinearMap.charpoly_prodMap, roots_mul ((LinearMap.charpoly_monic _).mul (LinearMap.charpoly_monic _)).ne_zero]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem tameEig_lpSum (x y : WD h) {γ : G E Ω} (hγ : γ ∈ Weil h) :
     tameEig (lpSum x y) γ = tameEig x γ + tameEig y γ := by
@@ -495,9 +491,9 @@ theorem tameEig_lpSum (x y : WD h) {γ : G E Ω} (hγ : γ ∈ Weil h) :
         roots_mul ((LinearMap.charpoly_monic _).mul (LinearMap.charpoly_monic _)).ne_zero]
 
 /- English proof (translation)
-Proceed by induction on `x using ind with`. Consider the case `hP m a`. Take `⟨n, h0, hc, hn⟩` from `a.tame_tamePart.exists_pow_eq_one (γ := ⟨γ, Ine_le_Weil h hγ⟩) hγ`. Use `⟨n, h0, hc, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[tameEig_mk _ (Ine_le_Weil h hγ), mem_roots (LinearMap.charpoly_monic _).ne_zero, ← End.hasEigenvalue_iff_isRoot_charpoly]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, hv⟩` from `hz.exists_hasEigenvector`. Establish `h1` using `hv.pow_apply n`. Rewrite `h1` using `[hn, End.one_apply]`. Conclude with `smul_left_injective ℂ hv.2 (h1.symm.trans (one_smul ℂ v).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_tameEig (x : WD h) {γ : G E Ω} (hγ : γ ∈ Ine (F := E) A) :
     ∃ n : ℕ, 0 < n ∧ n.Coprime (normV w) ∧ ∀ z ∈ tameEig x γ, z ^ n = 1 := by
@@ -513,7 +509,7 @@ theorem exists_pow_tameEig (x : WD h) {γ : G E Ω} (hγ : γ ∈ Ine (F := E) A
     exact smul_left_injective ℂ hv.2 (h1.symm.trans (one_smul ℂ v).symm)
 
 /- English proof (translation)
-Proceed by induction on `x using ind with`. Consider the case `hP m a`. Rewrite using `[tameEig_mk _ (Ine_le_Weil h hγ)]`. Conclude with `a.tame_tamePart.roots_map_pow hγ`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tameEig_map_pow (x : WD h) {γ : G E Ω} (hγ : γ ∈ Ine (F := E) A) :
     (tameEig x γ).map (· ^ normV w) = tameEig x γ := by
@@ -534,7 +530,7 @@ def TeichmullerInertiaLabelCondition (τ : Fbar g →* ℂ) (γ : G E Ω) : Prop
 omit [IsAlgClosure E Ω] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hw, hγ.1, hτ⟩`.
+Supply the required witnesses or components.
 -/
 theorem TeichmullerInertiaLabelCondition.of_tameGenAt {τ : Fbar g →* ℂ} {γ : G E Ω} (hw : normV w = g)
     (hγ : TameGenAt A γ) (hτ : ∀ x y, x ≠ 0 → y ≠ 0 → τ x = τ y → x = y) : TeichmullerInertiaLabelCondition A w τ γ :=
@@ -547,7 +543,7 @@ variable {V V' : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V
   [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V']
 
 /- English proof (translation)
-Take `⟨n, h0, hc, hn⟩` from `exists_pow_tameEig x H.2.1`. Establish `h2` using `tameEig_map_pow x H.2.1`. Rewrite `hc`, `h2` using `[H.1]`. Conclude with `H.2.2.existsUnique_monic (fun z hz => H.2.2.exists_eq h0 hc (hn z hz)) h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_lab (H : TeichmullerInertiaLabelCondition A w τ γ) (x : WD h) :
     ∃! f : (ZMod g)[X], f.Monic ∧ (rootsBar f).map τ = tameEig x γ := by
@@ -562,12 +558,12 @@ def lab (τ : Fbar g →* ℂ) (γ : G E Ω) (x : WD h) : (ZMod g)[X] :=
   if H : TeichmullerInertiaLabelCondition A w τ γ then (existsUnique_lab H x).choose else 1
 
 /- English proof (translation)
-The claim follows from `dif_neg H`.
+A detailed English derivation is pending.
 -/
 theorem lab_of_not (H : ¬ TeichmullerInertiaLabelCondition A w τ γ) (x : WD h) : lab τ γ x = 1 := dif_neg H
 
 /- English proof (translation)
-Unfold `lab`. Use `split_ifs with H`. Conclude with `(existsUnique_lab H x).choose_spec.1.1`. Conclude with `monic_one`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lab_monic (τ : Fbar g →* ℂ) (γ : G E Ω) (x : WD h) : (lab τ γ x).Monic := by
   unfold lab
@@ -576,7 +572,7 @@ theorem lab_monic (τ : Fbar g →* ℂ) (γ : G E Ω) (x : WD h) : (lab τ γ x
   · exact monic_one
 
 /- English proof (translation)
-Rewrite using `[lab, dif_pos H]`. Conclude with `(existsUnique_lab H x).choose_spec.1.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_rootsBar_lab (H : TeichmullerInertiaLabelCondition A w τ γ) (x : WD h) :
     (rootsBar (lab τ γ x)).map τ = tameEig x γ := by
@@ -584,7 +580,7 @@ theorem map_rootsBar_lab (H : TeichmullerInertiaLabelCondition A w τ γ) (x : W
   exact (existsUnique_lab H x).choose_spec.1.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e => e ▸ ⟨lab_monic τ γ x, map_rootsBar_lab H x⟩, fun hf => (existsUnique_lab H x).unique ⟨lab_monic τ γ x, map_rootsBar_lab H x⟩ hf⟩`.
+Supply the required witnesses or components.
 -/
 theorem lab_eq_iff (H : TeichmullerInertiaLabelCondition A w τ γ) (x : WD h) {f : (ZMod g)[X]} :
     lab τ γ x = f ↔ f.Monic ∧ (rootsBar f).map τ = tameEig x γ :=
@@ -592,7 +588,7 @@ theorem lab_eq_iff (H : TeichmullerInertiaLabelCondition A w τ γ) (x : WD h) {
     fun hf => (existsUnique_lab H x).unique ⟨lab_monic τ γ x, map_rootsBar_lab H x⟩ hf⟩
 
 /- English proof (translation)
-Distinguish the cases in `H : TeichmullerInertiaLabelCondition A w τ γ`. Rewrite using `[lab_eq_iff H, e H.2.1]`. Conclude with `⟨lab_monic τ γ y, map_rootsBar_lab H y⟩`. Rewrite using `[lab_of_not H, lab_of_not H]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem lab_congr {x y : WD h} (e : γ ∈ Ine (F := E) A → tameEig x γ = tameEig y γ) :
     lab τ γ x = lab τ γ y := by
@@ -601,7 +597,7 @@ theorem lab_congr {x y : WD h} (e : γ ∈ Ine (F := E) A → tameEig x γ = tam
   · rw [lab_of_not H, lab_of_not H]
 
 /- English proof (translation)
-Establish `h1` using `map_rootsBar_lab H x`. Rewrite `h1` using `[tameEig, inePol_of_mem _ (Ine_le_Weil h H.2.1)]`. Rewrite using `[inePol_of_mem _ (Ine_le_Weil h H.2.1), charPol_eq_prod, eig, ← h1, Multiset.map_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inePol_lpTame (H : TeichmullerInertiaLabelCondition A w τ γ) (x : WD h) :
     inePol (lpTame x) γ = ((rootsBar (lab τ γ x)).map fun y => X - C (τ y)).prod := by
@@ -611,7 +607,7 @@ theorem inePol_lpTame (H : TeichmullerInertiaLabelCondition A w τ γ) (x : WD h
   rfl
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.TameLabels.card_rootsBar, ← card_tameEig x (Ine_le_Weil h H.2.1), ← map_rootsBar_lab H x, Multiset.card_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natDegree_lab (H : TeichmullerInertiaLabelCondition A w τ γ) (x : WD h) :
     (lab τ γ x).natDegree = lpDim (lpTame x) := by
@@ -619,7 +615,7 @@ theorem natDegree_lab (H : TeichmullerInertiaLabelCondition A w τ γ) (x : WD h
     ← map_rootsBar_lab H x, Multiset.card_map]
 
 /- English proof (translation)
-Distinguish the cases in `H : TeichmullerInertiaLabelCondition A w τ γ`. Rewrite using `[natDegree_lab H]`. Conclude with `lpDim_lpTame_le x`. Rewrite using `[lab_of_not H, natDegree_one]`. Conclude with `Nat.zero_le _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natDegree_lab_le (τ : Fbar g →* ℂ) (γ : G E Ω) (x : WD h) :
     (lab τ γ x).natDegree ≤ lpDim x := by
@@ -628,16 +624,16 @@ theorem natDegree_lab_le (τ : Fbar g →* ℂ) (γ : G E Ω) (x : WD h) :
   · rw [lab_of_not H, natDegree_one]; exact Nat.zero_le _
 
 /- English proof (translation)
-Rewrite using `[natDegree_lab H, tame_iff_lpDim]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natDegree_lab_eq_iff (H : TeichmullerInertiaLabelCondition A w τ γ) (x : WD h) :
     (lab τ γ x).natDegree = lpDim x ↔ tame x := by
   rw [natDegree_lab H, tame_iff_lpDim]
 
 /- English proof (translation)
-Distinguish the cases in `H : TeichmullerInertiaLabelCondition A w τ γ`. Conclude with `(natDegree_lab_eq_iff H x).mp hx`. Rewrite `hx` using `[lab_of_not H, natDegree_one]`. Use `lpDim_lpTame_le x` as an intermediate fact. Rewrite using `[tame_iff_lpDim]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem tame_of_natDegree_lab {x : WD h} (hx : (lab τ γ x).natDegree = lpDim x) : tame x := by
   by_cases H : TeichmullerInertiaLabelCondition A w τ γ
@@ -647,7 +643,7 @@ theorem tame_of_natDegree_lab {x : WD h} (hx : (lab τ γ x).natDegree = lpDim x
     rw [tame_iff_lpDim]; omega
 
 /- English proof (translation)
-The claim follows from `(tame_iff_inePol x).mp (tame_of_natDegree_lab hx) σ hσ`.
+A detailed English derivation is pending.
 -/
 theorem inePol_wild_of_natDegree_lab {x : WD h} (hx : (lab τ γ x).natDegree = lpDim x)
     {σ : G E Ω} (hσ : ∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1) :
@@ -655,9 +651,9 @@ theorem inePol_wild_of_natDegree_lab {x : WD h} (hx : (lab τ γ x).natDegree = 
   (tame_iff_inePol x).mp (tame_of_natDegree_lab hx) σ hσ
 
 /- English proof (translation)
-Distinguish the cases in `H : TeichmullerInertiaLabelCondition A w τ γ`. Rewrite using `[Ne, ← GlobalTheory.Compare.TeichmullerRoots.zero_mem_rootsBar (lab_monic τ γ x)]`. Introduce `h0`. Take `⟨n, hn, -, h1⟩` from `exists_pow_tameEig x H.2.1`. Establish `h2` using `h1 (τ 0) (map_rootsBar_lab H x ▸ Multiset.mem_map_of_mem τ h0)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h2` using `[H.2.2.map_zero, zero_pow hn.ne']`. Conclude with `zero_ne_one h2`. Simplify using `[lab_of_not H]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lab_coeff_zero_ne_zero (τ : Fbar g →* ℂ) (γ : G E Ω) (x : WD h) :
     (lab τ γ x).coeff 0 ≠ 0 := by
@@ -671,9 +667,9 @@ theorem lab_coeff_zero_ne_zero (τ : Fbar g →* ℂ) (γ : G E Ω) (x : WD h) :
   · simp [lab_of_not H]
 
 /- English proof (translation)
-Distinguish the cases in `H : TeichmullerInertiaLabelCondition A w τ γ`. Rewrite using `[← inePol_lpTame H x, show lpTame x = x from tame_of_natDegree_lab hx]`. Rewrite `hx` using `[lab_of_not H, natDegree_one]`. Establish `h1 : rootsBar (1 : (ZMod g)[X]) = 0` using `by simp [rootsBar]`. Rewrite using `[lab_of_not H, h1, Multiset.map_zero, Multiset.prod_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hγ : γ ∈ Weil h`. Rewrite using `[inePol_of_mem _ hγ]`. Conclude with `(charPol_monic x _).natDegree_eq_zero.mp ((charPol_natDegree x _).trans hx.symm)`. Conclude with `inePol_of_not_mem x hγ`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inePol_eq_of_natDegree_lab (τ : Fbar g →* ℂ) (γ : G E Ω) (x : WD h)
     (hx : (lab τ γ x).natDegree = lpDim x) :
@@ -689,20 +685,20 @@ theorem inePol_eq_of_natDegree_lab (τ : Fbar g →* ℂ) (γ : G E Ω) (x : WD 
     · exact inePol_of_not_mem x hγ
 
 /- English proof (translation)
-The claim follows from `(lab_monic τ γ x).natDegree_eq_zero.mp (Nat.le_zero.mp (hx ▸ natDegree_lab_le τ γ x))`.
+A detailed English derivation is pending.
 -/
 theorem lab_of_lpDim_eq_zero (τ : Fbar g →* ℂ) (γ : G E Ω) {x : WD h} (hx : lpDim x = 0) :
     lab τ γ x = 1 :=
   (lab_monic τ γ x).natDegree_eq_zero.mp (Nat.le_zero.mp (hx ▸ natDegree_lab_le τ γ x))
 
 /- English proof (translation)
-The claim follows from `lab_of_lpDim_eq_zero τ γ (by simp [lpZero])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lab_lpZero (τ : Fbar g →* ℂ) (γ : G E Ω) : lab τ γ (lpZero h) = 1 :=
   lab_of_lpDim_eq_zero τ γ (by simp [lpZero])
 
 /- English proof (translation)
-Distinguish the cases in `H : TeichmullerInertiaLabelCondition A w τ γ`. Establish `hm` using `(lab_monic τ γ x).mul (lab_monic τ γ y)`. Rewrite using `[lab_eq_iff H, GlobalTheory.TameLabels.rootsBar_mul hm.ne_zero, Multiset.map_add, map_rootsBar_lab H, map_rootsBar_lab H, tameEig_lpSum _ _ (Ine_le_Weil h H.2.1)]`. Conclude with `⟨hm, rfl⟩`. Simplify using `[lab_of_not H]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem lab_lpSum (τ : Fbar g →* ℂ) (γ : G E Ω) (x y : WD h) :
     lab τ γ (lpSum x y) = lab τ γ x * lab τ γ y := by
@@ -714,7 +710,7 @@ theorem lab_lpSum (τ : Fbar g →* ℂ) (γ : G E Ω) (x y : WD h) :
   · simp [lab_of_not H]
 
 /- English proof (translation)
-The claim follows from `lab_congr fun hγ => by rw [tameEig_mk _ (Ine_le_Weil h hγ), tameEig_mk _ (Ine_le_Weil h hγ), WDRep.charpoly_tamePart_congr e he hγ]`.
+A detailed English derivation is pending.
 -/
 theorem lab_mk_congr {a : WDRep h V} {b : WDRep h V'} (e : V ≃ₗ[ℂ] V')
     (he : ∀ σ : Weil h, (σ : G E Ω) ∈ Ine (F := E) A → ∀ v, e (a.ρ σ v) = b.ρ σ (e v))
@@ -724,9 +720,9 @@ theorem lab_mk_congr {a : WDRep h V} {b : WDRep h V'} (e : V ≃ₗ[ℂ] V')
       WDRep.charpoly_tamePart_congr e he hγ]
 
 /- English proof (translation)
-Proceed by induction on `x using ind with`. Consider the case `hP n a`. Rewrite using `[lpTwist_mk]`. Use `lab_mk_congr (.refl _ _) (fun σ hσ v => ?_) τ γ` and prove the remaining obligations. Establish `: χ σ = 1` using `h1 ⟨σ, hσ⟩`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lab_lpTwist (τ : Fbar g →* ℂ) (γ : G E Ω) (x : WD h) {χ : Weil h →* ℂˣ} (hχ : IsSmooth χ)
     (h1 : ∀ σ : Ine (F := E) A, χ (ineIncl h σ) = 1) : lab τ γ (lpTwist x χ hχ) = lab τ γ x := by
@@ -738,28 +734,28 @@ theorem lab_lpTwist (τ : Fbar g →* ℂ) (γ : G E Ω) (x : WD h) {χ : Weil h
     simp [this]
 
 /- English proof (translation)
-The claim follows from `lab_lpTwist τ γ x _ fun σ => by simp`.
+A detailed English derivation is pending.
 -/
 theorem lab_lpTw (τ : Fbar g →* ℂ) (γ : G E Ω) (x : WD h) (s : ℝ) :
     lab τ γ (lpTw x s) = lab τ γ x :=
   lab_lpTwist τ γ x _ fun σ => by simp
 
 /- English proof (translation)
-Rewrite using `[lab_eq_iff H, tameEig, show lpTame x = x from hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lab_eq_iff_of_tame (H : TeichmullerInertiaLabelCondition A w τ γ) {x : WD h} (hx : tame x) {f : (ZMod g)[X]} :
     lab τ γ x = f ↔ f.Monic ∧ (rootsBar f).map τ = (inePol x γ).roots := by
   rw [lab_eq_iff H, tameEig, show lpTame x = x from hx]
 
 /- English proof (translation)
-Rewrite using `[rootsBar, Polynomial.map_pow, Polynomial.map_sub, map_X, map_C, roots_pow, roots_X_sub_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rootsBar_X_sub_C_pow (c : ZMod g) (n : ℕ) :
     rootsBar ((X - C c) ^ n) = n • {algebraMap (ZMod g) (Fbar g) c} := by
   rw [rootsBar, Polynomial.map_pow, Polynomial.map_sub, map_X, map_C, roots_pow, roots_X_sub_C]
 
 /- English proof (translation)
-Rewrite using `[lab_eq_iff_of_tame H ((tame_mk a).mpr fun σ hσ => ha ⟨σ, Wild_le_Ine hσ⟩), ← C_1, rootsBar_X_sub_C_pow, inePol_of_mem_Ine _ H.2.1, charPol_mk, ha, LinearMap.charpoly_one, ← C_1, roots_pow, roots_X_sub_C]`. Conclude with `⟨(monic_X_sub_C _).pow _, by simp [Multiset.map_nsmul]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem lab_mk_of_trivial (H : TeichmullerInertiaLabelCondition A w τ γ) (a : WDRep h V)
     (ha : ∀ σ : Ine (F := E) A, a.ρ (ineIncl h σ) = 1) :
@@ -770,14 +766,14 @@ theorem lab_mk_of_trivial (H : TeichmullerInertiaLabelCondition A w τ γ) (a : 
   exact ⟨(monic_X_sub_C _).pow _, by simp [Multiset.map_nsmul]⟩
 
 /- English proof (translation)
-Rewrite using `[lpSp, lab_mk_of_trivial H (WDRep.sp h n) (WDRep.unr_diag (WDRep.spEig w n)).2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lab_lpSp (H : TeichmullerInertiaLabelCondition A w τ γ) (n : ℕ) : lab τ γ (lpSp h n) = (X - 1) ^ n := by
   rw [lpSp, lab_mk_of_trivial H (WDRep.sp h n) (WDRep.unr_diag (WDRep.spEig w n)).2]
   simp
 
 /- English proof (translation)
-Establish `h1 : tame (lpOfChar h χ hχ)` using `(tame_mk _).mpr fun σ hσ => LinearMap.ext fun v => funext fun i => by simp [ht σ hσ]`. Establish `h2` using `rootsBar_X_sub_C_pow c 1`. Rewrite `h2` using `[pow_one, one_nsmul]`. Rewrite using `[lab_eq_iff_of_tame H h1, h2, inePol_of_mem _ (Ine_le_Weil h H.2.1), lpOfChar, charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd, Fin.prod_univ_one, roots_X_sub_C, Multiset.map_singleton, Multiset.singleton_inj]`. Conclude with `and_iff_right (monic_X_sub_C c)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lab_lpOfChar_eq_iff (H : TeichmullerInertiaLabelCondition A w τ γ) {χ : Weil h →* ℂˣ} (hχ : IsSmooth χ)
     (ht : ∀ σ : Weil h, (σ : G E Ω) ∈ Wild E A → χ σ = 1) (c : ZMod g) :
@@ -793,9 +789,7 @@ theorem lab_lpOfChar_eq_iff (H : TeichmullerInertiaLabelCondition A w τ γ) {χ
   exact and_iff_right (monic_X_sub_C c)
 
 /- English proof (translation)
-Establish `hd : lpDim (lpOfChar h χ hχ) = 1` using `by simp [lpOfChar]`. Establish `h2` using `natDegree_lab_le τ γ (lpOfChar h χ hχ)`. Establish `h3 : (lab τ γ (lpOfChar h χ hχ)).natDegree ≠ lpDim (lpOfChar h χ hχ)` using `fun e => by`. Use `congrFun (LinearMap.congr_fun ((tame_mk _).mp (tame_of_natDegree_lab e) σ hσ) fun _ => 1) 0` as an intermediate fact. Conclude with `h1 (Units.ext (by simpa using this))`.
-
-Conclude with `(lab_monic τ γ _).natDegree_eq_zero.mp (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lab_lpOfChar_of_wild (τ : Fbar g →* ℂ) (γ : G E Ω) {χ : Weil h →* ℂˣ} (hχ : IsSmooth χ)
     {σ : Weil h} (hσ : (σ : G E Ω) ∈ Wild E A) (h1 : χ σ ≠ 1) : lab τ γ (lpOfChar h χ hχ) = 1 := by
@@ -810,9 +804,9 @@ theorem lab_lpOfChar_of_wild (τ : Fbar g →* ℂ) (γ : G E Ω) {χ : Weil h �
 end WD
 
 /- English proof (translation)
-Set `K : Subgroup (Ine (F` to `E) A) := (f.comp (ineIncl h)).ker`. Establish `hK : IsClosed ((K.map (Ine (F` using `E) A).subtype : Subgroup (G E Ω)) : Set (G E Ω)) := (isClosed_Ine A).isClosedEmbedding_subtypeVal.isClosedMap _ (K.isClosed_of_isOpen hf)`. Establish `hle : Subgroup.closure (insert γ (Wild E A : Set (G E Ω))) ≤ K.map (Ine (F` using `E) A).subtype := by`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `u (rfl | hu)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨u, hγ.1⟩, h1, rfl⟩`. Conclude with `⟨⟨u, Wild_le_Ine hu⟩, h2 _ hu, rfl⟩`. Take `⟨u, hu, e⟩` from `closure_minimal (SetLike.coe_subset_coe.mpr hle) hK (hγ.2 σ.2)`. Rewrite using `[← Subtype.ext (a1 := u) (a2 := σ) e]` and apply the resulting hypothesis.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem IsSmooth.eq_one_of_tameGenAt {h : IsPlaceOver A w} {M : Type*} [Monoid M]
     {f : Weil h →* M} (hf : IsSmooth f) {γ : G E Ω} (hγ : TameGenAt A γ)
@@ -831,7 +825,7 @@ theorem IsSmooth.eq_one_of_tameGenAt {h : IsPlaceOver A w} {M : Type*} [Monoid M
   rwa [← Subtype.ext (a1 := u) (a2 := σ) e]
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `GlobalTheory.MemTame.exists_tameGenAt E Ω w A h`. Take `⟨τ, hτ⟩` from `(GlobalTheory.MemN.exists_teichmuller_maps g Fact.out).1`. Conclude with `⟨τ, γ, hγ, .of_tameGenAt hw hγ hτ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_tameInertiaSetting (h : IsPlaceOver A w) (hw : normV w = g) :
     ∃ (τ : Fbar g →* ℂ) (γ : G E Ω), TameGenAt A γ ∧ TeichmullerInertiaLabelCondition A w τ γ := by
@@ -840,9 +834,9 @@ theorem exists_tameInertiaSetting (h : IsPlaceOver A w) (hw : normV w = g) :
   exact ⟨τ, γ, hγ, .of_tameGenAt hw hγ hτ⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `(Rat.HeightOneSpectrum.primesEquiv (R := 𝓞 ℚ)).surjective ⟨g, hg⟩`. Establish `hp' : Rat.HeightOneSpectrum.natGenerator p = g` using `congrArg Subtype.val hp`. Establish `e` using `Ideal.quotientEquiv p.asIdeal _ (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)) (Rat.HeightOneSpectrum.span_natGenerator p)`. Use `⟨p, ?_⟩` and prove the remaining obligations. Rewrite using `[normV, Nat.card_congr e.toEquiv, hp']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using Nat.card_congr (Int.quotientSpanNatEquivZMod g).toEquiv`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_normV_eq (g : ℕ) (hg : g.Prime) : ∃ v : HeightOneSpectrum (𝓞 ℚ), normV v = g := by
   obtain ⟨p, hp⟩ := (Rat.HeightOneSpectrum.primesEquiv (R := 𝓞 ℚ)).surjective ⟨g, hg⟩
@@ -869,7 +863,7 @@ def sqrtChar (h : IsPlaceOver A w) {x : Ω} {a : E} (hx : x ^ 2 = algebraMap E �
 omit [IsAlgClosure E Ω] in
 
 /- English proof (translation)
-Simplify using `only [sqrtChar, MonoidHom.mk'_apply, ite_eq_left_iff]`. Use `⟨fun e => by_contra fun hc => ?_, fun e hc => absurd e hc⟩` and prove the remaining obligations. Use `congrArg Units.val (e hc)` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Evaluate the numerical expressions.
 -/
 theorem sqrtChar_eq_one_iff (h : IsPlaceOver A w) {x : Ω} {a : E} (hx : x ^ 2 = algebraMap E Ω a)
     (σ : Weil h) : sqrtChar h hx σ = 1 ↔ (σ : G E Ω) x = x := by
@@ -879,7 +873,7 @@ theorem sqrtChar_eq_one_iff (h : IsPlaceOver A w) {x : Ω} {a : E} (hx : x ^ 2 =
   norm_num at this
 
 /- English proof (translation)
-The claim follows from `.of_open ((isOpen_setOf_apply (F := E) x fun t => t = x).preimage continuous_subtype_val) rfl fun _ hσ => (sqrtChar_eq_one_iff h hx _).mpr hσ`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_sqrtChar (h : IsPlaceOver A w) {x : Ω} {a : E} (hx : x ^ 2 = algebraMap E Ω a) :
     IsSmooth (sqrtChar h hx) :=
@@ -887,7 +881,7 @@ theorem isSmooth_sqrtChar (h : IsPlaceOver A w) {x : Ω} {a : E} (hx : x ^ 2 = a
     fun _ hσ => (sqrtChar_eq_one_iff h hx _).mpr hσ
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_normV_eq g Fact.out`. Establish `hB` using `isPlaceOver_placeOf K v`. Take `⟨τ, γ, hγ, H⟩` from `exists_tameInertiaSetting hB hv`. Conclude with `⟨v, _, hB, τ, γ, hγ, by rw [WD.lab_lpSum, WD.lab_lpSp H, WD.lab_lpSp H, ← pow_add]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (K : Type) [Field K] [Algebra ℚ K] [IsAlgClosure ℚ K] :
     ∃ (v : HeightOneSpectrum (𝓞 ℚ)) (B : ValuationSubring K)
@@ -899,7 +893,7 @@ example (K : Type) [Field K] [Algebra ℚ K] [IsAlgClosure ℚ K] :
   exact ⟨v, _, hB, τ, γ, hγ, by rw [WD.lab_lpSum, WD.lab_lpSp H, WD.lab_lpSp H, ← pow_add]⟩
 
 /- English proof (translation)
-The claim follows from `(WD.lab_lpOfChar_eq_iff H hχ ht c).mpr hc.symm`.
+A detailed English derivation is pending.
 -/
 example {h : IsPlaceOver A w} {τ : Fbar g →* ℂ} {γ : G E Ω} (H : TeichmullerInertiaLabelCondition A w τ γ)
     {χ : Weil h →* ℂˣ} (hχ : IsSmooth χ) (ht : ∀ σ : Weil h, (σ : G E Ω) ∈ Wild E A → χ σ = 1)
@@ -908,7 +902,7 @@ example {h : IsPlaceOver A w} {τ : Fbar g →* ℂ} {γ : G E Ω} (H : Teichmul
   (WD.lab_lpOfChar_eq_iff H hχ ht c).mpr hc.symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hp⟩ (WD.lab τ γ x).natDegree = x.lpDim → x.inePol γ = ((rootsBar (WD.lab τ γ x)).map fun y => X - C (τ y)).prod := haveI : Fact p.Prime := ⟨hp⟩ WD.inePol_eq_of_natDegree_lab τ γ x`.
+Supply the required witnesses or components.
 -/
 example (p : ℕ) (hp : p.Prime) (h : IsPlaceOver A w) (τ : Fb p hp →* ℂ) (γ : G E Ω) (x : WD h) :
     haveI : Fact p.Prime := ⟨hp⟩

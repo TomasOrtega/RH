@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `F _ n k m Z f hZ`. Take `⟨c, hc, g, hg, hf⟩` from `hZ`. Use `⟨c ^ m, pow_ne_zero _ hc, g, fun W hW => hg W (Finsupp.support_smul hW), ?_⟩` and prove the remaining obligations. Establish `hsub : (m • Z).support ⊆ Z.support` using `Finsupp.support_smul`. Rewrite using `[Finset.prod_subset hsub (fun W _ hW => by rw [Finsupp.notMem_support_iff.mp hW, pow_zero]), hf, mul_pow, ← map_pow, ← Finset.prod_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun W _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.smul_apply, smul_eq_mul, ← pow_mul, mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ChowFormCycleSmul.proof : ChowFormCycleSmul.Statement := by
   intro F _ n k m Z f hZ

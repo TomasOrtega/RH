@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.StrongMultiplicityOne.Strong
 
 /- English proof (translation)
-Introduce `E _ _ _ a π π' h`. Establish `hi : π.Iso π'` using `Quotient.exact h`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Use `UpperTheory.V.Af.strongMultOneC E a π π' ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.CuspRep.AeFix.eventually_mem_fixed E a π ⟨φ, hφ⟩] with w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `GlobalTheory.CuspRep.UnrSat.exists_hasSatGL_locRep UpperTheory.V.Af.formsFiniteGL E a π w ((Submodule.ne_bot_iff _).2 ⟨_, hw, fun e => h0 (congrArg Subtype.val e)⟩)`. Conclude with `⟨B, hB, hi.hasSatGL hB⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.cuspMultOneGL :
     GlobalTheory.Published.CuspidalMultiplicityOne := by

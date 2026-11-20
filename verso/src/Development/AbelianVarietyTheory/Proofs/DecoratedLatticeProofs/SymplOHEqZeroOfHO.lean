@@ -24,19 +24,17 @@ namespace GlobalTheory.IdemSumVac
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[symplOH, symplO, h, mul_zero, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_eq_zero_of_hO {S T : HSp D} {u u' : WO S T} (h : hO S T u u' = 0) : symplOH S T u u' = 0 := by
   rw [symplOH, symplO, h, mul_zero, map_zero, mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, zero_smul]`. Conclude with `GlobalTheory.LatVac.heisO_zero ψ f`. Consider the case `insert a s ha ih`. Establish `hsa` using `hs a (Finset.mem_insert_self _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ih'` using `ih (fun i hi => hs i (Finset.mem_insert_of_mem hi)) (fun i hi j hj => hc i (Finset.mem_insert_of_mem hi) j (Finset.mem_insert_of_mem hj))`. Establish `hmem : p a • x ∈ Λ` using `hΛ _ (GlobalTheory.SplitHomLattice.idem_int hsa) x hx`. Establish `hhalf : IsHalf (p a) (p a • x)` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hsa.1]`. Establish `h1 : heisO ψ S T (p a • x) f = f` using `hf.2 (p a) hsa _ hmem hhalf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : hO S T (p a • x) ((∑ i ∈ s, p i) • x) = 0`. Rewrite using `[GlobalTheory.LatVacSign.hO_smul_smul, map_sum, Finset.mul_sum, Finset.sum_eq_zero (fun j hj => hc a (Finset.mem_insert_self _ _) j (Finset.mem_insert_of_mem hj)), zero_mul]`. Establish `key` using `GlobalTheory.LatVac.heisO_heisO ψ (p a • x) ((∑ i ∈ s, p i) • x) f`. Rewrite `key` using `[ih', h1, symplOH_eq_zero_of_hO hz, ψ.map_zero_eq_one, one_smul, ← add_smul]`. Rewrite using `[Finset.sum_insert ha]`.
-
-Conclude with `key.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisO_sum_smul (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgroup (WO S T)) (f : WO S T → ℂ)
     (hf : IsLatVac (heisO ψ S T) Λ f) (hΛ : ∀ w : AE D, finPart D w ∈ intAE D → ∀ u ∈ Λ, w • u ∈ Λ)
@@ -64,7 +62,7 @@ theorem heisO_sum_smul (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddS
     exact key.symm
 
 /- English proof (translation)
-Take `⟨he1, he2, v, ε, hpl, he3⟩` from `he`. Conclude with `⟨by rw [← RingHom.map_mul, he1], by rw [GlobalTheory.LatVac.cA_cA, mul_comm, he2], v, ε, hpl, by rw [GlobalTheory.LatVac.cA_cA, add_comm, he3]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSplitIdem_cA {e : AE D} (he : IsSplitIdem D e) : IsSplitIdem D (cA D e) := by
   obtain ⟨he1, he2, v, ε, hpl, he3⟩ := he
@@ -72,9 +70,9 @@ theorem isSplitIdem_cA {e : AE D} (he : IsSplitIdem D e) : IsSplitIdem D (cA D e
     by rw [GlobalTheory.LatVac.cA_cA, add_comm, he3]⟩
 
 /- English proof (translation)
-Introduce `D ψ S T Λ f hf hΛ e SS he x hx`. Take `⟨⟨es, hes, rfl⟩, hce⟩` from `he`. Establish `h1 : ∀ i ∈ SS, es i * es i = es i` using `fun i hi => (hes i hi).1.1`. Establish `hcross : ∀ i ∈ SS, ∀ j ∈ SS, es i * cA D (es j) = 0` using `GlobalTheory.PlaceDatum.cross_eq_zero (R := AE D) GlobalTheory.PlaceDatum.isUnit_natCast (cA D) es SS h1 hce`. Use `⟨heisO_sum_smul ψ S T Λ f hf hΛ es SS (fun i hi => (hes i hi).1) hcross x hx, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Use `heisO_sum_smul ψ S T Λ f hf hΛ (fun i => cA D (es i)) SS (fun i hi => isSplitIdem_cA (hes i hi).1) (fun i hi j hj => ?_) x hx` and prove the remaining obligations. Rewrite using `[← RingHom.map_mul, hcross i hi j hj, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_idemSum_fix : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgroup (WO S T))
     (f : WO S T → ℂ), IsLatVac (heisO ψ S T) Λ f → (∀ w : AE D, finPart D w ∈ intAE D → ∀ u ∈ Λ, w • u ∈ Λ) →

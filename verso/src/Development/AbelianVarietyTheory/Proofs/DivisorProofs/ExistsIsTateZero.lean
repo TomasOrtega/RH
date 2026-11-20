@@ -21,7 +21,7 @@ def IsTate (f : X ⟶ X) (hf : f ≫ p = p) (L : HermLB p) (w : LB.Iso (L.pull f
         Real.log (‖ev p σ _ (w.s (a, b)).val y‖ ^ 2)
 
 /- English proof (translation)
-Take `⟨w, hw, h⟩` from `h`. Conclude with `⟨w, hw, fun σ a b y ha hb => by simpa using h σ a b y ha hb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isTate_zero {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     (h : (L.pull f hf).Isometric (L.pow 4)) : ∃ w, w.IsGen ∧ IsTate f hf L w fun _ _ => 0 := by
@@ -29,11 +29,11 @@ theorem exists_isTate_zero {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
   exact ⟨w, hw, fun σ a b y ha hb => by simpa using h σ a b y ha hb⟩
 
 /- English proof (translation)
-Use `⟨w, hw, fun σ a b y ha hb => ?_⟩` and prove the remaining obligations. Establish `e` using `h σ a b y ha hb`. Establish `e₁ : (((L.raise u hu hc).pow 4).φ σ).φ a y = ((L.pow 4).φ σ).φ a y + 4 * u σ y`. Use `(((L.raise u hu hc).φ σ).zpow_φ _ a y).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (· + 4 * u σ y) ((L.φ σ).zpow_φ _ a y).symm)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ * (_ + _) = _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e₂ : (((L.raise u hu hc).pull f hf).φ σ).φ b y = ((L.pull f hf).φ σ).φ b y + u σ (PtsOver.map f hf _ y)` using `(((L.raise u hu hc).φ σ).pull_φ f hf b y).trans (congrArg (· + u σ (PtsOver.map f hf _ y)) ((L.φ σ).pull_φ f hf b y).symm)`. Rewrite using `[e₁, e₂]`.
+Express the relevant assertion in an equivalent form by its definition. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem IsTate.isometric {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) {u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ}

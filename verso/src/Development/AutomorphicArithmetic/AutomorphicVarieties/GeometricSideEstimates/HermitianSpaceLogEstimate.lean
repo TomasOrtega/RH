@@ -10,13 +10,13 @@ open UpperTheory.V.Lit.Geo
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.UnitaryBC GroundTheory.Automorphic
 
 /- English proof (translation)
-Establish `hC0 : 0 < C` using `one_pos.trans_le hC`. Establish `hH0 : 0 < H` using `one_pos.trans_le hH`. Establish `hq0 : 0 < q` using `one_pos.trans_le hq`. Rewrite `h` using `[inv_pow, div_inv_eq_mul]`. Establish `hp : 0 < (C * H ^ N) ^ M` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hD : 0 < D` using `(mul_pos_iff_of_pos_right hp).1 (one_pos.trans_le (hT.trans h))`. Establish `h1 : Real.log T ≤ Real.log D + M * (Real.log C + N * Real.log H)`. Use `Real.log_le_log (one_pos.trans_le hT) h` as an intermediate fact. Rewrite `this` using `[Real.log_mul hD.ne' hp.ne', Real.log_pow, Real.log_mul hC0.ne' (by positivity), Real.log_pow]`. Then use the resulting hypothesis. Establish `h2 : Real.log H ≤ 1 + Real.log q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `Real.log_le_log hH0 hHq` as an intermediate fact. Rewrite `this` using `[Real.log_mul two_ne_zero hq0.ne']`. Establish `h3` using `Real.log_le_sub_one_of_pos (two_pos (α := ℝ))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlq : 0 ≤ Real.log q` using `Real.log_nonneg hq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hlC : 0 ≤ Real.log C` using `Real.log_nonneg hC`. Establish `h4 : (M : ℝ) * N * Real.log H ≤ M * N * (1 + Real.log q)` using `mul_le_mul_of_nonneg_left h2 (by positivity)`. Establish `h5 : 0 ≤ (|Real.log D| + M * Real.log C) * Real.log q` using `by positivity`. Establish `h6` using `le_abs_self (Real.log D)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem log_bound {T D C H q : ℝ} {N M : ℕ} (hT : 1 ≤ T) (hC : 1 ≤ C) (hH : 1 ≤ H) (hq : 1 ≤ q)
     (hHq : H ≤ 2 * q) (h : T ≤ D / ((C * H ^ N)⁻¹) ^ M) :
@@ -44,17 +44,15 @@ private theorem log_bound {T D C H q : ℝ} {N M : ℕ} (hT : 1 ≤ T) (hC : 1 �
   nlinarith
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha L hL`. Take `⟨C, N, hC, hmin⟩` from `UpperTheory.global_geometric_estimate_of_local E a ha L hL`. Take `⟨M, hsc⟩` from `UpperTheory.geometry_of_numbers_lattice_estimate E a ha L hL`. Take `⟨D, -, hup⟩` from `UpperTheory.geometric_side_upper_bound M`. Take `⟨-, hrt, hγ, -⟩` from `UpperTheory.rationalPoint_retraction_exists_cmDatum E a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hTh, -⟩` from `UpperTheory.hermitian_space_geometric_estimate E a ha L hL`. Use `⟨|Real.log D| + M * Real.log C + M * N, fun g => ?_⟩` and prove the remaining obligations. Establish `hq : 1 ≤ qht g` using `(UpperTheory.V.Lit.Geo.qhtFacts E a).1 g`. Take `⟨γ, hlt⟩` from `exists_lt_of_ciInf_lt (show qht g < 2 * qht g by linarith)`. Express the relevant statement in the definitionally equal form `AutomorphicForm.height (K := E) (ratGL E a γ * rt g) < _ at hlt`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hH` using `AutomorphicForm.one_le_height (K := E) (ratGL E a γ * rt g)`. Establish `hCH : 1 ≤ C * AutomorphicForm.height (K` using `E) (ratGL E a γ * rt g) ^ N := one_le_mul_of_one_le_of_one_le hC (one_le_pow₀ hH)`. Use `log_bound (hTh g).1 hC hH hq hlt.le ?_` and prove the remaining obligations. Use `hup _ _ (0 : lat L g) _ (hsc g) (inv_pos.2 (one_pos.trans_le hCH)) (inv_le_one_of_one_le₀ hCH) fun v hv => ?_` and prove the remaining obligations. Establish `e : (v.1 ᵥ* (γ⁻¹).val) ᵥ* γ.val = v.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.vecMul_vecMul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.vecMul_one]`. Establish `hw` using `hγ γ (rt g) (v.1 ᵥ* (γ⁻¹).val)`. Rewrite `hw` using `[e, (hrt g).2.2]`. Establish `h1` using `hmin (ratGL E a γ * rt g) (v.1 ᵥ* (γ⁻¹).val) (by`. Express the relevant statement in the definitionally equal form `ptF _ _ ∈ L`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hw.1]`. Conclude with `v.2)`. Use the proof step `(fun h0 => hv (Subtype.ext (by`. Rewrite using `[← e, h0, Matrix.zero_vecMul]`. Use the proof step `rfl)))`.
-
-Rewrite `h1` using `[hw.2]`. Rewrite using `[inv_le_iff_one_le_mul₀' (one_pos.trans_le hCH)]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hermitian_space_log_estimate :
     FnLe := by

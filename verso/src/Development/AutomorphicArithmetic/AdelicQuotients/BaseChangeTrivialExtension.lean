@@ -4,7 +4,7 @@ open NumberField IsDedekindDomain GroundTheory.Global GroundTheory.Global.SemiLo
 open scoped TensorProduct
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `h : Algebra.TensorProduct.map (((1 : E ≃ₐ[F] E) : E →ₐ[F] E)) (AlgHom.id F A) = AlgHom.id F _`. Apply the tactic sequence `ext <;> simp`. Simplify using `only [galOf, RingHom.comp_apply, h]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem galOf_one' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {A B : Type*} [CommRing A] [Algebra F A] [CommRing B] [Algebra E B] (e : E ⊗[F] A ≃ₐ[E] B) :
@@ -16,7 +16,7 @@ private theorem galOf_one' {F E : Type} [Field F] [NumberField F] [Field E] [Num
   simp
 
 /- English proof (translation)
-Establish `hd` using `InfiniteAdeleRing.denseRange_algebraMap F`. Establish `h1 : Continuous (infMap F F)` using `InfinitePlace.continuous_infiniteAdeleRingMap`. Use `hd.equalizer h1 continuous_id (funext fun k => by` as an intermediate fact. Simplify using `using InfinitePlace.infiniteAdeleRingMap_algebraMap (K := F) (L := F) k)`. Conclude with `RingHom.ext fun x => congrFun this x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem infMap_self (F : Type) [Field F] [NumberField F] : infMap F F = RingHom.id _ := by
   have hd := InfiniteAdeleRing.denseRange_algebraMap F
@@ -26,9 +26,9 @@ private theorem infMap_self (F : Type) [Field F] [NumberField F] : infMap F F = 
   exact RingHom.ext fun x => congrFun this x
 
 /- English proof (translation)
-Establish `h : ∀ x, incFin F v x = tensorEquiv' F v ((1 : F) ⊗ₜ[F] x)`. Introduce `x`. Rewrite using `[tensorEquiv'_tmul, map_one, one_mul]`. Both sides reduce to the same expression. Establish `hb : Function.Bijective (fun x : v.adicCompletion F => (1 : F) ⊗ₜ[F] x)` using `(TensorProduct.lid F (v.adicCompletion F)).symm.bijective`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `: (incFin F v : _ → _) = tensorEquiv' F v ∘ (fun x : v.adicCompletion F => (1 : F) ⊗ₜ[F] x)` using `funext h`. Rewrite using `[this]`. Conclude with `(tensorEquiv' F v).bijective.comp hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem incFin_bij (F : Type) [Field F] [NumberField F] (v : Pl F) : Function.Bijective (incFin F v) := by
   have h : ∀ x, incFin F v x = tensorEquiv' F v ((1 : F) ⊗ₜ[F] x) := by
@@ -42,7 +42,7 @@ private theorem incFin_bij (F : Type) [Field F] [NumberField F] (v : Pl F) : Fun
   exact (tensorEquiv' F v).bijective.comp hb
 
 /- English proof (translation)
-Introduce `F _ _`. Use `⟨galOf_one' _, infMap_self F, fun v => ⟨galOf_one' _, incFin_bij F v⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem UpperTheory.baseChange_trivial_extension :
     Triv := by

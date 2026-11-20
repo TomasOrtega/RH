@@ -13,13 +13,11 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Use `letI : Algebra R R' := ρ.toAlgebra`. Use `haveI : Module.Finite R R' := hρ`. Use `haveI : Algebra.IsIntegral R R' := inferInstance`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (y.asIdeal.comap (algebraMap R R')).IsMaximal`. Establish `: (spMap ρ y).asIdeal = y.asIdeal.comap ρ` using `rfl`. Rewrite `this` using `[h]`. Express the relevant statement in the definitionally equal form `(y.asIdeal.comap ρ).IsMaximal`. Rewrite using `[← this]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `IsLocalRing.maximalIdeal.isMaximal R`. Use `haveI : y.asIdeal.IsPrime := PrimeSpectrum.isPrime (y : PrimeSpectrum R')`. Establish `hm : y.asIdeal.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap _ hc`. Conclude with `PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal hm)`. Introduce and unpack `rfl`.
-
-Establish `hc : ((maximalIdeal R').comap (algebraMap R R')).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal _`. Conclude with `PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal hc)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spMap_eq_closedPoint_iff {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R']
     (ρ : R →+* R') (hρ : ρ.Finite) (y : Sp R') : spMap ρ y = closedPoint R ↔ y = closedPoint R' := by
@@ -42,19 +40,15 @@ theorem spMap_eq_closedPoint_iff {R R' : Type} [CommRing R] [IsLocalRing R] [Com
     exact PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal hc)
 
 /- English proof (translation)
-Introduce `R _ _ _ hB R' _ _ _ ρ hF hG D D' hD A' G' _ _ hS' U' a G _ _ β hS hβ hact θ ⟨g0, hg0c, hg0⟩`. Establish `hfin : IsFinite (spMap ρ)` using `by rw [IsFinite.SpecMap_iff]; exact hF.2.2`. Use `haveI hβfin : IsFinite β := MorphismProperty.of_isPullback hβ.1.flip hfin`. Establish `hcl : IsClosedMap β` using `β.isClosedMap`. Establish `hsq : ∀ g' : G'.left, G.hom (β g') = spMap ρ (G'.hom g')` using `fun g' => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(β ≫ G.hom) g' = (G'.hom ≫ spMap ρ) g'`. Rewrite using `[hβ.1.w]`. Take `⟨s, hs⟩ : ∃ s : (Sp R' : Scheme.{0}), s = closedPoint R'` from `⟨_, rfl⟩`. Rewrite `hg0c` using `[← hs]`. Use `haveI hirr : IrreducibleSpace (G'.hom.fiber s) := GlobalTheory.SemiAbFibre.irreducibleSpace_fibre _ G' hS' _ ((Sp R').fromSpecResidueField s)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨η', hη'⟩ : ∃ η' : G'.left, η' = G'.hom.fiberι s (genericPoint (G'.hom.fiber s))` from `⟨_, rfl⟩`. Establish `hspec : ∀ g' : G'.left, G'.hom g' = s → η' ⤳ g'`. Introduce `g' hg'`. Take `⟨z, hz⟩ : g' ∈ Set.range (G'.hom.fiberι s)` from `(Scheme.Hom.range_fiberι G'.hom s).ge hg'`. Rewrite using `[← hz, hη']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((genericPoint_spec (G'.hom.fiber s)).specializes trivial).map (G'.hom.fiberι s).continuous`. Establish `hηs : G'.hom η' = s`. Rewrite using `[hη']`. Conclude with `(Scheme.Hom.range_fiberι G'.hom s).le ⟨_, rfl⟩`. Establish `hηnz : η' ∈ secNz θ` using `(hspec g0 hg0c).mem_open (secNz θ).isOpen hg0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨farSet β θ, isOpen_farSet β hcl θ⟩, ⟨β η', ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show ∀ g', β g' = β η' → g' ∈ secNz θ`. Introduce `g' hg'`. Establish `hg's : G'.hom g' = s`. Rewrite using `[hs, ← spMap_eq_closedPoint_iff ρ hF.2.2, ← hsq, hg', hsq, hηs]`.
-
-Conclude with `(spMap_eq_closedPoint_iff ρ hF.2.2 s).2 hs`. Use `GlobalTheory.eq_of_specializes_of_isIntegralHom β (hspec g' hg's) hg'.symm` as an intermediate fact. Rewrite using `[← this]`. Conclude with `hηnz`. Rewrite using `[hsq, hηs]`.
-
-Conclude with `(spMap_eq_closedPoint_iff ρ hF.2.2 s).2 hs`. Introduce `g' hg' _`. Conclude with `hg' g' rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_open_secNz_closedFibre : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hB : Base R) (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R') (hF : FinExt ρ) (hG : IsGal ρ) (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'] (hS' : IsSemiAbelian G') (U' : Unif (maximalIdeal R') D' A' G') (a : GalAct ρ hD U') (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left) (hS : IsSemiAbelian G) (hβ : IsGrpPullback G' G (spMap ρ) β) (hact : ∀ σ, a.act σ ≫ β = β), ∀ θ : U'.LG.L.Sec, (∃ g' : G'.left, G'.hom g' = closedPoint R' ∧ g' ∈ secNz θ) → ∃ O : G.left.Opens, (∃ g ∈ O, G.hom g = closedPoint R) ∧ ∀ g' : G'.left, β g' ∈ O → G.hom (β g') = closedPoint R → g' ∈ secNz θ := by
   intro R _ _ _ hB R' _ _ _ ρ hF hG D D' hD A' G' _ _ hS' U' a G _ _ β hS hβ hact θ ⟨g0, hg0c, hg0⟩

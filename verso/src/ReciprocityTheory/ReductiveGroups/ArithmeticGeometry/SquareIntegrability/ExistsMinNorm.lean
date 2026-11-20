@@ -7,15 +7,15 @@ noncomputable section
 namespace ChA
 
 /- English proof (translation)
-Establish `hcpt : IsCompact (Metric.closedBall (0 : V) R)` using `isCompact_closedBall 0 R`. Take `⟨t, htfin, hcov⟩` from `(Metric.totallyBounded_iff.mp hcpt.totallyBounded) (1 / 2) (by norm_num)`. Establish `hT : ∀ x ∈ {x | x ∈ S ∧ ‖x‖ ≤ R}, ∃ y ∈ t, dist x y < 1 / 2`. Introduce `x hx`. Establish `hx' : x ∈ Metric.closedBall (0 : V) R`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mem_closedBall_zero_iff]`. Conclude with `hx.2`. Use `hcov hx'` as an intermediate fact. Simplify using `only [Set.mem_iUnion, Metric.mem_ball, exists_prop] at this`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `choose! f hf hfx using hT`. Use `Set.Finite.of_finite_image (f := f) (htfin.subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hf x hx`. Introduce `x hx y hy hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hsep` using `hS x hx.1 y hy.1 hne`. Establish `h1` using `hfx x hx`. Establish `h2` using `hfx y hy`. Rewrite `h1` using `[hxy]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hlt : dist x y < 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hlt` using `[dist_eq_norm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma finite_sep {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (S : Set V) (hS : ∀ x ∈ S, ∀ y ∈ S, x ≠ y → 1 ≤ ‖x - y‖) (R : ℝ) :
@@ -49,7 +49,7 @@ lemma finite_sep {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDi
     linarith
 
 /- English proof (translation)
-Introduce `x hx y hy hne`. Conclude with `hG (x - y) (G.sub_mem (hS hx) (hS hy)) (sub_ne_zero.mpr hne)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma sep_of_group {V : Type} [NormedAddCommGroup V] (G : AddSubgroup V)
     (hG : ∀ g ∈ G, g ≠ 0 → 1 ≤ ‖g‖) (S : Set V) (hS : S ⊆ G) :
@@ -58,11 +58,11 @@ lemma sep_of_group {V : Type} [NormedAddCommGroup V] (G : AddSubgroup V)
   exact hG (x - y) (G.sub_mem (hS hx) (hS hy)) (sub_ne_zero.mpr hne)
 
 /- English proof (translation)
-Establish `hsep` using `sep_of_group G hG (G : Set V) subset_rfl`. Establish `hfin : {x | x ∈ (G : Set V) ∧ ‖x‖ ≤ 2 * ‖p‖}.Finite` using `finite_sep _ hsep _`. Establish `hne : ({x | x ∈ (G : Set V) ∧ ‖x‖ ≤ 2 * ‖p‖} : Set V).Nonempty` using `⟨0, G.zero_mem, by simp⟩`. Take `⟨w, hw, hmin⟩` from `Set.exists_min_image _ (fun w => ‖p - w‖) hfin hne`. Use `⟨w, hw.1, fun w' hw' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : ‖w'‖ ≤ 2 * ‖p‖`. Conclude with `hmin w' ⟨hw', h⟩`. Use `push Not at h`. Establish `h0` using `hmin 0 ⟨G.zero_mem, by simp⟩`. Simplify using `only [sub_zero] at h0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ‖w'‖ - ‖p‖ ≤ ‖p - w'‖`. Rewrite using `[norm_sub_rev]`. Conclude with `norm_sub_norm_le w' p`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma exists_closest {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (G : AddSubgroup V) (hG : ∀ g ∈ G, g ≠ 0 → 1 ≤ ‖g‖) (p : V) :
@@ -84,19 +84,17 @@ lemma exists_closest {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [Fini
     linarith
 
 /- English proof (translation)
-Take `⟨b, hbG, hbspan, hbli⟩` from `exists_linearIndependent ℝ G`. Establish `hbfin : b.Finite` using `LinearIndependent.setFinite hbli`. Set `_ : Fintype b` to `hbfin.fintype`. Set `e` to `Fintype.equivFin b`. Set `v : Fin (Fintype.card b) → V` to `fun i => (e.symm i : V)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hv : LinearIndependent ℝ v` using `hbli.comp _ e.symm.injective`. Establish `hvG : ∀ i, v i ∈ G` using `fun i => hbG (e.symm i).2`. Establish `hrange : Set.range v = b`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨i, rfl⟩`. Conclude with `(e.symm i).2`. Introduce `hx`. Conclude with `⟨e ⟨x, hx⟩, by simp [v]⟩`. Establish `hn : Fintype.card b ≤ D`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `finrank_span_set_eq_card (R := ℝ) hbli`. Rewrite `h` using `[hbspan, Set.toFinset_card]`. Use linear arithmetic over natural numbers and integers. Establish `hz' : z ∈ Submodule.span ℝ (Set.range v)`. Rewrite using `[hrange, hbspan]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hz`. Take `⟨c, hc⟩` from `hNP V (Fintype.card b) v hv z hz'`. Use `⟨∑ i, (c i : ℝ) • v i, ?_, ?_⟩` and prove the remaining obligations. Use `AddSubgroup.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (hvG i)) _`. Establish `hsum : ∑ i, ‖v i‖ ^ 2 ≤ (Fintype.card b : ℝ) * ℓ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `hG (v i) (hvG i)`. Use the proof step `gcongr)`.
-
-Use `_ = (Fintype.card b : ℝ) * ℓ ^ 2 := by simp`. Establish `hnD : (Fintype.card b : ℝ) ≤ D` using `by exact_mod_cast hn`. Establish `hl : 0 ≤ ℓ ^ 2` using `sq_nonneg ℓ`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma cover (hNP : Ext.NearestPlane) {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     [FiniteDimensional ℝ V] (G : Set V) (ℓ : ℝ) (hG : ∀ g ∈ G, ‖g‖ ≤ ℓ) (D : ℕ)

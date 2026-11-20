@@ -9,7 +9,7 @@ open MeasureTheory Set Metric Real
 noncomputable section
 
 /- English proof (translation)
-Establish `h` using `volume_preserving_pi (fun _ : Fin D => (rotation u).measurePreserving)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z j`. Simplify using `[rotation_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem measurePreserving_circle_smul {D : ℕ} (u : Circle) :
     MeasurePreserving (fun z : Fin D → ℂ => (u : ℂ) • z) := by
@@ -19,9 +19,9 @@ theorem measurePreserving_circle_smul {D : ℕ} (u : Circle) :
   simp [rotation_apply]
 
 /- English proof (translation)
-Establish `he : MeasurableEmbedding (fun z : Fin D → ℂ => (u : ℂ) • z)` using `(Homeomorph.smulOfNeZero (u : ℂ) (Circle.coe_ne_zero u)).measurableEmbedding`. Rewrite using `[← (measurePreserving_circle_smul u).setIntegral_preimage_emb he F]`. Establish `hpre : (fun z : Fin D → ℂ => (u : ℂ) • z) ⁻¹' closedBall 0 ρ = closedBall 0 ρ`. Use extensionality with `z`. Simplify using `[norm_smul, Circle.norm_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hpre]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem setIntegral_circle_smul {D : ℕ} (u : Circle) (ρ : ℝ) (F : (Fin D → ℂ) → ℂ) :
     ∫ z in closedBall (0 : Fin D → ℂ) ρ, F ((u : ℂ) • z) =
@@ -35,29 +35,23 @@ theorem setIntegral_circle_smul {D : ℕ} (u : Circle) (ρ : ℝ) (F : (Fin D �
   rw [hpre]
 
 /- English proof (translation)
-Use `set B := closedBall (0 : Fin D → ℂ) ρ with hBdef`. Use `set F : ℝ → (Fin D → ℂ) → ℂ := fun θ z => g (Complex.exp (θ * Complex.I) • z) * (w z : ℂ) with hFdef`. Establish `hnorm : ∀ (θ : ℝ) (z : Fin D → ℂ), ‖Complex.exp (θ * Complex.I) • z‖ = ‖z‖`. Introduce `θ z`. Rewrite using `[norm_smul, Complex.norm_exp_ofReal_mul_I, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrotI : ∀ θ : ℝ, ∫ z in B, F θ z = ∫ z in B, g z * (w z : ℂ)`. Introduce `θ`. Use `setIntegral_circle_smul (Circle.exp θ) ρ (fun z => g z * (w z : ℂ))` as an intermediate fact. Simplify using `only [hrot] at this`. Simplify using `only [Circle.coe_exp] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Establish `hmean : ∀ z ∈ B, ∫ θ in (0 : ℝ)..2 * π, g (Complex.exp (θ * Complex.I) • z) = (2 * π) • g 0`. Introduce `z hz`. Use `set h : ℂ → ℂ := fun ζ => g (ζ • z) with hhdef`. Establish `hh : AnalyticOnNhd ℂ h (closedBall 0 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `ζ hζ`. Establish `hmem : ζ • z ∈ B`. Rewrite `hz`, `hζ`, the goal using `[mem_closedBall_zero_iff]`. Rewrite using `[norm_smul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hζ).trans hz`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : AnalyticAt ℂ (fun ζ : ℂ => ζ • z) ζ` using `((ContinuousLinearMap.id ℂ ℂ).smulRight z).analyticAt ζ`. Conclude with `(hg (ζ • z) hmem).comp_of_eq hA rfl`. Establish `hc : circleAverage h 0 1 = h 0`. Apply `DiffContOnCl.circleAverage` to reduce the goal to its premises. Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[closure_ball _ (by norm_num : |(1:ℝ)| ≠ 0), abs_one]`. Conclude with `hh.differentiableOn`. Establish `e : ∀ θ : ℝ, circleMap 0 1 θ = Complex.exp (θ * Complex.I)`. Introduce `θ`. Simplify using `[circleMap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite `hc` using `[circleAverage_def]`. Simplify using `only [hhdef, e, zero_smul] at hc`. Rewrite using `[← hc, smul_smul, mul_inv_cancel₀ (by positivity), one_smul]`. Establish `hcont : ContinuousOn (Function.uncurry F) (Icc 0 (2 * π) ×ˢ B)`. Establish `hmaps : MapsTo (fun p : ℝ × (Fin D → ℂ) => Complex.exp (p.1 * Complex.I) • p.2) (Icc 0 (2 * π) ×ˢ B) B`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p hp`. Simplify using `only [hBdef, mem_closedBall_zero_iff, hnorm]`. Conclude with `mem_closedBall_zero_iff.mp hp.2`. Conclude with `(hg.continuousOn.comp (by fun_prop) hmaps).mul (by fun_prop)`. Establish `hint : Integrable (Function.uncurry F) ((volume.restrict (Ioc 0 (2 * π))).prod (volume.restrict B))`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Measure.prod_restrict]`. Conclude with `(hcont.integrableOn_compact (μ := volume.prod volume) (isCompact_Icc.prod (isCompact_closedBall 0 ρ))).mono_set (prod_mono Ioc_subset_Icc_self subset_rfl)`. Establish `hswap` using `integral_integral_swap hint`. Establish `h2pi : (2 * π : ℝ) ≠ 0` using `by positivity`. Apply `smul_right_injective ℂ h2pi` to reduce the goal to its premises.
-
-Simplify using `only`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[hrotI]`. Rewrite using `[setIntegral_const, measureReal_def, Real.volume_Ioc, sub_zero, ENNReal.toReal_ofReal (by positivity)]`. Use `_ = ∫ z in B, ∫ θ in Ioc 0 (2 * π), F θ z := hswap`.
-
-Use `_ = ∫ z in B, ((2 * π) • g 0) * (w z : ℂ) := by`. Use `setIntegral_congr_fun measurableSet_closedBall (fun z hz => ?_)` and prove the remaining obligations. Simplify using `only [hFdef]`. Rewrite using `[integral_mul_const, ← intervalIntegral.integral_of_le (by positivity), hmean z hz]`. Use `_ = (2 * π) • (g 0 * ∫ z in B, (w z : ℂ)) := by`.
-
-Rewrite using `[integral_const_mul, smul_mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_mul_weight_eq {D : ℕ} {ρ : ℝ} {g : (Fin D → ℂ) → ℂ}
     (hg : AnalyticOnNhd ℂ g (closedBall 0 ρ)) {w : (Fin D → ℂ) → ℝ} (hw : Continuous w)
@@ -134,13 +128,13 @@ theorem setIntegral_mul_weight_eq {D : ℕ} {ρ : ℝ} {g : (Fin D → ℂ) → 
         rw [integral_const_mul, smul_mul_assoc]
 
 /- English proof (translation)
-Establish `hmean` using `setIntegral_mul_weight_eq hg hw hrot`. Use `set B := closedBall (0 : Fin D → ℂ) ρ`. Establish `hB : IsCompact B` using `isCompact_closedBall 0 ρ`. Establish `hgc : ContinuousOn g B` using `hg.continuousOn`. Establish `i1 : Integrable (fun z => ‖g z‖ ^ 2 * w z) (volume.restrict B)` using `((hgc.norm.pow 2).mul hw.continuousOn).integrableOn_compact hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2 : Integrable w (volume.restrict B)` using `hw.continuousOn.integrableOn_compact hB`. Establish `i3 : Integrable (fun z => g z * (w z : ℂ)) (volume.restrict B)` using `(hgc.mul (Complex.continuous_ofReal.comp hw).continuousOn).integrableOn_compact hB`. Establish `key : 0 ≤ ∫ z in B, ‖g z - g 0‖ ^ 2 * w z` using `setIntegral_nonneg measurableSet_closedBall (fun z _ => mul_nonneg (sq_nonneg _) (hw0 z))`. Establish `expand : ∀ z, ‖g z - g 0‖ ^ 2 * w z = (‖g z‖ ^ 2 * w z + ‖g 0‖ ^ 2 * w z) - 2 * Complex.reCLM (g z * (w z : ℂ) * (starRingEnd ℂ) (g 0))`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.sq_norm, Complex.sq_norm, Complex.sq_norm, Complex.normSq_sub]`. Simplify using `only [Complex.reCLM_apply, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[expand]`. Establish `i4 : Integrable (fun z => g z * (w z : ℂ) * (starRingEnd ℂ) (g 0)) (volume.restrict B)` using `i3.mul_const _`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[integral_sub (f := fun z => ‖g z‖ ^ 2 * w z + ‖g 0‖ ^ 2 * w z) (g := fun z => 2 * Complex.reCLM (g z * (w z : ℂ) * (starRingEnd ℂ) (g 0))) (i1.add (i2.const_mul _)) ((Complex.reCLM.integrable_comp i4).const_mul 2), integral_add (f := fun z => ‖g z‖ ^ 2 * w z) (g := fun z => ‖g 0 …`. Establish `hre : Complex.reCLM (g 0 * ((∫ z in B, w z : ℝ) : ℂ) * (starRingEnd ℂ) (g 0)) = ‖g 0‖ ^ 2 * ∫ z in B, w z`. Rewrite using `[mul_comm (g 0), mul_assoc, Complex.mul_conj, Complex.reCLM_apply, ← Complex.ofReal_mul, Complex.ofReal_re, Complex.sq_norm, mul_comm]`. Rewrite `key` using `[hre]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sq_norm_mul_setIntegral_le {D : ℕ} {ρ : ℝ} {g : (Fin D → ℂ) → ℂ}
     (hg : AnalyticOnNhd ℂ g (closedBall 0 ρ)) {w : (Fin D → ℂ) → ℝ} (hw : Continuous w)
@@ -182,19 +176,19 @@ theorem sq_norm_mul_setIntegral_le {D : ℕ} {ρ : ℝ} {g : (Fin D → ℂ) →
   linarith
 
 /- English proof (translation)
-Establish `h0 : ∫ z in closedBall (0 : ℂ) ρ, Real.exp (-c * ‖z‖ ^ 2) = ∫ z : ℂ, (Iic ρ).indicator (fun r => Real.exp (-c * r ^ 2)) ‖z‖`. Rewrite using `[← integral_indicator measurableSet_closedBall]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Apply the tactic sequence `by_cases hz : ‖z‖ ≤ ρ <;> simp [indicator, hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h0, integral_fun_norm_addHaar volume (fun r => (Iic ρ).indicator (fun r => Real.exp (-c * r ^ 2)) r), Complex.finrank_real_complex, measureReal_def, Complex.volume_ball]`. Establish `h1 : ∫ y in Ioi (0 : ℝ), y ^ (2 - 1) • (Iic ρ).indicator (fun r => Real.exp (-c * r ^ 2)) y = ∫ y in (0 : ℝ)..ρ, y * Real.exp (-c * y ^ 2)`. Establish `: (fun y : ℝ => y ^ (2 - 1) • (Iic ρ).indicator (fun r => Real.exp (-c * r ^ 2)) y) = (Iic ρ).indicator (fun y => y * Real.exp (-c * y ^ 2))`. Use function extensionality and compare the values at `y`. Apply the tactic sequence `by_cases hy : y ≤ ρ <;> simp [indicator, hy]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, setIntegral_indicator measurableSet_Iic, Ioi_inter_Iic, intervalIntegral.integral_of_le hρ]`. Rewrite using `[h1]`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using `only [if_true]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: ∫ y in (0 : ℝ)..ρ, y * Real.exp (-0 * y ^ 2) = ρ ^ 2 / 2`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using `[nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hc, if_false]`. Establish `hd : ∀ y ∈ uIcc 0 ρ, HasDerivAt (fun y : ℝ => -Real.exp (-c * y ^ 2) / (2 * c)) (y * Real.exp (-c * y ^ 2)) y`. Introduce `y _`. Use `(((hasDerivAt_pow 2 y).const_mul (-c)).exp.neg).div_const (2 * c)` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (2:ℕ) - 1 = 1 from rfl, pow_one]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt hd (by`. Apply `Continuous.intervalIntegrable` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `fun_prop)]`. Simplify using `[nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_closedBall_gauss (c ρ : ℝ) (hρ : 0 ≤ ρ) :
     ∫ z in closedBall (0 : ℂ) ρ, Real.exp (-c * ‖z‖ ^ 2) =

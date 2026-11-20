@@ -9,11 +9,11 @@ section SlopeTestRemainingChoices
 open Polynomial
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Prove the components needed by the constructor for the conclusion. Introduce `h n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, coeff_map]`. Conclude with `PadicInt.norm_le_one _`. Introduce `h`. Establish `hl' : minpoly ℚ_[l] x ∈ lifts (algebraMap ℤ_[l] ℚ_[l])` using `(lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exPt_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
@@ -32,9 +32,9 @@ private theorem exPt_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsInte
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨c, le_rfl, by simp⟩`. Consider the case `insert a s _ ih`. Take `⟨d, hd, hd'⟩` from `ih fun x hx => hs x (Finset.mem_insert_of_mem hx)`. Take `⟨e, he, he'⟩` from `(coefSup l).2.2.1 d a (hs a (Finset.mem_insert_self _ _))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨e, hd.trans he, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `he'`. Conclude with `he (hd' x hx)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem exPt_coef {l : ℕ} [Fact l.Prime] (c : Coef l) (s : Finset (PadicAlgCl l))
     (hs : ∀ x ∈ s, IsIntegral ℤ_[l] x) : ∃ c' : Coef l, c.O ≤ c'.O ∧ ∀ x ∈ s, x ∈ c'.O := by
@@ -50,9 +50,9 @@ private theorem exPt_coef {l : ℕ} [Fact l.Prime] (c : Coef l) (s : Finset (Pad
     · exact he (hd' x hx)
 
 /- English proof (translation)
-Introduce `hu`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `hi : IsIntegral ℤ_[l] (w : PadicAlgCl l)` using `(Algebra.IsIntegral.isIntegral (R := ℤ_[l]) w).map c.O.val`. Establish `h1` using `(exPt_intIff _).1 hi`. Establish `h2 : (x : PadicAlgCl l) * w = 1` using `congrArg Subtype.val hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg norm h2`. Rewrite `h3` using `[norm_mul, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (x : PadicAlgCl l), norm_nonneg (w : PadicAlgCl l)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem exPt_nonunit {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) (hx : ‖(x : PadicAlgCl l)‖ < 1) :
     ¬ IsUnit x := by
@@ -67,9 +67,9 @@ private theorem exPt_nonunit {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) (hx
   nlinarith [norm_nonneg (x : PadicAlgCl l), norm_nonneg (w : PadicAlgCl l)]
 
 /- English proof (translation)
-Use `haveI : IsAdicComplete (maximalIdeal O) O := (UpperTheory.V.abelian₂.dvr_finite l O).1`. Take `⟨F, ⟨hC, hX⟩, -⟩` from `co_ev O O O σ (AlgHom.id _ _) a ha`. Use `⟨(F : MvPowerSeries σ O →+* O).comp (MvPowerSeries.map f), fun r => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, MvPowerSeries.map_C, RingHom.coe_coe, hC]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_apply, MvPowerSeries.map_X, RingHom.coe_coe, hX]`.
+A detailed English derivation is pending.
 -/
 private theorem exPt_ev (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] {R σ : Type} [CommRing R] [Finite σ] (f : R →+* O)
@@ -83,9 +83,9 @@ private theorem exPt_ev (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDoma
   · rw [RingHom.comp_apply, MvPowerSeries.map_X, RingHom.coe_coe, hX]
 
 /- English proof (translation)
-Introduce `l _ c σ _ z hz`. Use `haveI := Fintype.ofFinite σ`. Take `⟨c', hc, hm⟩` from `exPt_coef c (Finset.univ.image z) fun x hx => by`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `(exPt_intIff _).2 (hz i).le`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm' : ∀ i, z i ∈ c'.O` using `fun i => hm _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Take `⟨G, hC, hX⟩` from `exPt_ev l c'.O (Subalgebra.inclusion hc).toRingHom (fun i => ⟨z i, hm' i⟩) fun i => exPt_nonunit c' _ (hz i)`. Use `⟨c', ⟨c'.O.val.toRingHom.comp G, fun r => ?_⟩, hc, fun f => (G f).2, fun i => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (hC r)`. Conclude with `congrArg Subtype.val (hX i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.existsPt :
     ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (σ : Type) [Finite σ] (z : σ → PadicAlgCl l), (∀ i, ‖z i‖ < 1) → ∃ (c' : Coef l) (y : MvPowerSeries σ c.O →ₐ[c.O] PadicAlgCl l), c.O ≤ c'.O ∧ (∀ f, y f ∈ c'.O) ∧ ∀ i, y (MvPowerSeries.X i) = z i := by

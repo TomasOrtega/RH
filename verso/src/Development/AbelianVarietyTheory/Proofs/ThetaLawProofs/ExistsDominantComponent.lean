@@ -18,13 +18,13 @@ namespace GlobalTheory.KeyCx
 open TensorProduct in
 
 /- English proof (translation)
-Introduce `R _ _ _ g`. Use `letI : Algebra R (ℂ ⊗[ℤ] R) := Algebra.TensorProduct.rightAlgebra`. Use `haveI : Module.Flat R (ℂ ⊗[ℤ] R) := Module.Flat.of_linearEquiv (Algebra.TensorProduct.commRight ℤ R ℂ).symm.toLinearEquiv`. Set `e₀ : (ℂ ⊗[ℤ] R) →ₐ[ℂ] ℂ` to `Algebra.TensorProduct.lift (AlgHom.id ℂ ℂ) g.toIntAlgHom (fun _ _ => Commute.all _ _)`. Establish `he : ∀ r : R, e₀ (algebraMap R (ℂ ⊗[ℤ] R) r) = g r`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Express the relevant statement in the definitionally equal form `e₀ (1 ⊗ₜ r) = g r`. Simplify using `[e₀]`. Set `Q : Ideal (ℂ ⊗[ℤ] R)` to `RingHom.ker e₀.toRingHom`. Use `haveI : Q.IsPrime := RingHom.ker_isPrime _`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, hqQ, hq, hlo⟩` from `Ideal.exists_ideal_le_liesOver_of_le (p := (⊥ : Ideal R)) (q := Q.under R) Q bot_le`. Use `⟨(ℂ ⊗[ℤ] R) ⧸ q, inferInstance, inferInstance, inferInstance, (Ideal.Quotient.mk q).comp (algebraMap R _), Ideal.Quotient.liftₐ q e₀ (fun a ha => hqQ ha), inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Establish `h1 : r ∈ q.under R` using `Ideal.mem_comap.mpr (Ideal.Quotient.eq_zero_iff_mem.mp hr)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite `h1` using `[← hlo.over]`. Conclude with `h1`. Use extensionality with `r`. Conclude with `he r`.
+A detailed English derivation is pending.
 -/
 theorem exists_dominant_component :
     ∀ (R : Type) [CommRing R] [IsDomain R] [Algebra.FiniteType ℤ R] (g : R →+* ℂ), ∃ (E : Type) (_ : CommRing E) (_ : IsDomain E) (_ : Algebra ℂ E) (ρ : R →+* E) (e : E →ₐ[ℂ] ℂ), Algebra.FiniteType ℂ E ∧ Function.Injective ρ ∧ e.toRingHom.comp ρ = g := by

@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.DualCon.FieldRep
 
 /- English proof (translation)
-Introduce `S A _ hA g hg K _ s`. Establish `hA' : IsAbelianScheme ((Over.pullback s).obj A)` using `GlobalTheory.isAbelianScheme_pullback_obj s A hA`. Establish `hg' : SmoothOfRelativeDimension g ((Over.pullback s).obj A).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) hg`. Take `⟨L, hL, hamp⟩` from `GlobalTheory.ProjFinite.exists_relAmple_of_isProjBy (GlobalTheory.T.abelianVariety_isProjectiveOverRingByCharts K _ hA')`. Establish `hAF : HasRepAF ((Over.pullback s).obj A) g (𝟙_ _)` using `GlobalTheory.T.hasDualRepresentative_of_relAmple_noetherian K _ g hA' hg' L hL hamp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `(GlobalTheory.DualCon.hasRep_baseChange_iff S (Sp K) s A ((Over.pullback s).obj A) (pullback.fst A.hom s) (isGrpPullback_pullback A s) g (𝟙_ _)).1.1`. Take `⟨B, b, P, hR, hG, -⟩` from `hAF`. Establish `h2` using `h ⟨B, b, P, hR, hG⟩`. Establish `e : (𝟙_ (Over (Sp K))).hom ≫ s = s` using `Category.id_comp s`. Rewrite `h2` using `[e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem hasRep_field : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ g : ℕ,
     SmoothOfRelativeDimension g A.hom → ∀ (K : Type) [Field K] (s : Sp K ⟶ S), HasRep A g (Over.mk s) := by

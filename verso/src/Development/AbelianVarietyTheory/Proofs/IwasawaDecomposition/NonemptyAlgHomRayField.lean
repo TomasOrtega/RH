@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain GlobalTheory.NT GlobalTheory.Published GlobalT
 namespace GlobalTheory.UnramInRay
 
 /- English proof (translation)
-Use `⟨hm, fun 𝔭 _ => h.2.1 𝔭 fun hd => 𝔭.isPrime.ne_top (top_le_iff.1 (Ideal.le_of_dvd hd)), ?_⟩` and prove the remaining obligations. Introduce and unpack `α β ⟨ha, hb, -, -, -, hpos⟩`. Establish `hc : ∀ I : Ideal (𝓞 K), IsCoprime I ⊤` using `fun I => Ideal.isCoprime_iff_sup_eq.2 (sup_top_eq I)`. Conclude with `h.2.2 α β ⟨ha, hb, hc _, hc _, Submodule.mem_top, hpos⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isModulus_of_top {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     {χ : (L ≃ₐ[K] L) →* ℂˣ} (h : IsModulus L χ ⊤) {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) : IsModulus L χ 𝔪 := by
@@ -22,7 +22,7 @@ theorem isModulus_of_top {K L : Type} [Field K] [NumberField K] [Field L] [Numbe
   exact h.2.2 α β ⟨ha, hb, hc _, hc _, Submodule.mem_top, hpos⟩
 
 /- English proof (translation)
-Introduce `H K L R _ _ _ _ _ _ _ _ _ _ 𝔪 hm hR hL`. Use `hR.1` as an intermediate fact. Conclude with `rayClassFieldMaximalSt_holds K R L 𝔪 hm hR.2 fun χ => isModulus_of_top (GlobalTheory.UnramModulus.isModulus_top H K L hL χ) hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonempty_algHom_rayField : GlobalArtinReciprocity → ∀ (K L R : Type) [Field K] [NumberField K]
     [IsTotallyComplex K] [Field L] [NumberField L] [Algebra K L] [IsAbelianGalois K L] [Field R] [NumberField R]

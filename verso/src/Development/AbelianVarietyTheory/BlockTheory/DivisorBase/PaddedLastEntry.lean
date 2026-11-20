@@ -46,12 +46,12 @@ def BlockBound : Prop :=
     OpNormSqLe lam lam' (jetOp lam lam' (jetC cD G) fun τ => lastEntry (nu τ)) (tmax b nu S Om)
 
 /- English proof (translation)
-Simplify using `[ph]`.
+Simplify using the standard rewrite rules.
 -/
 example : ph 0 = 0 ∧ ph 1 = -1 := by simp [ph]
 
 /- English proof (translation)
-Use `⟨fun _ => by norm_num, ⟨3, fun _ => by norm_num⟩, ⟨1, fun j => ?_⟩⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases j <;> simp [padZero]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : StepWeights (a := 1) (b := 2) ⟨fun _ => 0, fun _ _ _ => le_rfl⟩ ⟨fun _ => 3, fun _ _ _ => le_rfl⟩
     ⟨![2, -1], by intro i j h; fin_cases i <;> fin_cases j <;> simp_all⟩ := by
@@ -59,7 +59,7 @@ example : StepWeights (a := 1) (b := 2) ⟨fun _ => 0, fun _ _ _ => le_rfl⟩ �
   fin_cases j <;> simp [padZero]
 
 /- English proof (translation)
-Establish `h : 0 ≤ unitSq r z` using `by unfold unitSq; positivity`. Simplify using `only [norm_one, one_mul]`. Conclude with `Real.one_le_exp (by positivity)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example {ι : Type} [Fintype ι] {a b : ℕ} (r : ι → ℝ) (z : VCx ι a b) :
     ‖(fun _ : VCx ι a b => (1 : ℂ)) z‖ ≤ 1 * Real.exp (unitSq r z / 2) := by

@@ -7,14 +7,14 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.Closed
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.VolPinAsm.volume_generic_odd_of_rep Formalism.L2.SG.Pf.VolPinAsm.dictC_holds (Formalism.L2.SG.NGCut.StabilizerCovolume.covolOne3C_of hC (Formalism.L2.SG.NGCut.StabilizerCovolume.stabilizerLatticeCoordinates_of Formalism.L2.SG.LatBAsm.stabilizer_lattice_twisted_ …`.
+A detailed English derivation is pending.
 -/
 theorem volume_determined_of_chart (hC : Formalism.L2.SG.NGCut.StabilizerCovolume.ChartC) : Formalism.L2.SG.VolPin.VolumeOddGeneric :=
   Formalism.L2.SG.Pf.VolPinAsm.volume_generic_odd_of_rep Formalism.L2.SG.Pf.VolPinAsm.dictC_holds
     (Formalism.L2.SG.NGCut.StabilizerCovolume.covolOne3C_of hC (Formalism.L2.SG.NGCut.StabilizerCovolume.stabilizerLatticeCoordinates_of Formalism.L2.SG.LatBAsm.stabilizer_lattice_twisted_prod))
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.VolPinAsm.volume_generic_odd_of_rep Formalism.L2.SG.Pf.VolPinAsm.dictC_holds Formalism.L2.SG.NGCut.StabilizerCovolume.covolOne3C_holds`.
+A detailed English derivation is pending.
 -/
 theorem volume_determined : Formalism.L2.SG.VolPin.VolumeOddGeneric :=
   Formalism.L2.SG.Pf.VolPinAsm.volume_generic_odd_of_rep Formalism.L2.SG.Pf.VolPinAsm.dictC_holds Formalism.L2.SG.NGCut.StabilizerCovolume.covolOne3C_holds

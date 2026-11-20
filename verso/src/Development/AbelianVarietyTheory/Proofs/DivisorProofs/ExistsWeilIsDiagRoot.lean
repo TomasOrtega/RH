@@ -32,9 +32,9 @@ variable (hB : ∀ (T : Over S) (x x' y : T ⟶ A), pc hP (x * x') y = pc hP x y
 
 include hB in
 /- English proof (translation)
-Establish `one : pc hP (1 : T ⟶ A) y = 0`. Use `hB T 1 1 y` as an intermediate fact. Rewrite `this` using `[_root_.mul_one, left_eq_add]`. Then use the resulting hypothesis. Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, one, zero_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih => rw [pow_succ, hB, ih, succ_nsmul]`.
+Treat this case separately.
 -/
 theorem pc_pow_left {T : Over S} (x y : T ⟶ A) (k : ℕ) : pc hP (x ^ k) y = k • pc hP x y := by
   have one : pc hP (1 : T ⟶ A) y = 0 := by
@@ -46,9 +46,9 @@ theorem pc_pow_left {T : Over S} (x y : T ⟶ A) (k : ℕ) : pc hP (x ^ k) y = k
 
 include hB' in
 /- English proof (translation)
-Establish `one : pc hP x (1 : T ⟶ A) = 0`. Use `hB' T x 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one, left_eq_add]`. Then use the resulting hypothesis. Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, one, zero_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih => rw [pow_succ, hB', ih, succ_nsmul]`.
+Treat this case separately.
 -/
 theorem pc_pow_right {T : Over S} (x y : T ⟶ A) (k : ℕ) : pc hP x (y ^ k) = k • pc hP x y := by
   have one : pc hP x (1 : T ⟶ A) = 0 := by
@@ -61,15 +61,15 @@ theorem pc_pow_right {T : Over S} (x y : T ⟶ A) (k : ℕ) : pc hP x (y ^ k) = 
 include hB hB' in
 
 /- English proof (translation)
-Establish `hD : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `e : ∀ g : T ⊗ A ⟶ A, pull g.left (cls _ hD) = pc hP g g` using `fun g => by`. Rewrite using `[cls_pull hP, ← pull_comp, ← Over.comp_left, comp_lift, Category.comp_id]`. Both sides reduce to the same expression. Establish `ha : (fst T A ≫ x) ^ k = 1` using `by rw [← MonObj.comp_pow, hx, MonObj.comp_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1 : k • pc hP (fst T A ≫ x) (fst T A ≫ x) = 0`. Rewrite using `[← pc_pow_left hP hB, ha]`. Use `hB (T ⊗ A) 1 1 (fst T A ≫ x)` as an intermediate fact. Rewrite `this` using `[_root_.mul_one, left_eq_add]`. Then use the resulting hypothesis. Establish `h2 : k • pc hP (fst T A ≫ x) (snd T A) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← pc_pow_left hP hB, ha]`. Use `hB (T ⊗ A) 1 1 (snd T A)` as an intermediate fact. Rewrite `this` using `[_root_.mul_one, left_eq_add]`. Then use the resulting hypothesis. Establish `h3 : k • pc hP (snd T A) (fst T A ≫ x) = 0`. Rewrite using `[← pc_pow_right hP hB', ha]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hB' (T ⊗ A) (snd T A) 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one, left_eq_add]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : LB.Gen (Out.thetaLB A (P.pull (lift (𝟙 A) (𝟙 A)).left) k x), t.IsGen := by`. Use `(cls_eq_zero_iff (LB.isLB_linComb hD _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_linComb hD, Fin.sum_univ_two]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (k : ℤ) • pull (snd T A).left _ + (-(k : ℤ)) • pull ((fst T A ≫ x) * snd T A).left _ = 0`. Rewrite using `[e, e, hB, hB', hB']`. Simplify using `only [natCast_zsmul, neg_smul, smul_add, h1, h2, h3]`. Normalize the expressions using the abelian group laws. Conclude with `⟨⟨x, t, ht⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_theta_diag {k : ℕ} {T : Over S} (x : T ⟶ A) (hx : x ^ k = 1) :
     ∃ θ : Out.ThetaGrp A (P.pull (lift (𝟙 A) (𝟙 A)).left) k T, θ.pt = x := by
@@ -108,9 +108,9 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
 open WeilMul in
 
 /- English proof (translation)
-Introduce `p`. Take `⟨V, hV, a₁, a₂⟩` from `h p`. Take `⟨V', hV', b₁, b₂⟩` from `h' p`. Take `⟨θx, θy, px, py, hc⟩` from `exists_commV_of_le hL (inf_le_left : V ⊓ V' ≤ V) a₁ a₂`. Take `⟨θx', θy', px', py', hc'⟩` from `exists_commV_of_le hL (inf_le_right : V ⊓ V' ≤ V') b₁ b₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, pθ, hθ⟩` from `hc.mul hL (hc'.congr hG hA hL rfl (py.trans py'.symm))`. Establish `q : θ.pt = Out.overResι (V ⊓ V') ≫ (x * x')` using `by rw [pθ, px, px', MonObj.comp_mul]`. Use `⟨V ⊓ V', ⟨hV, hV'⟩, ⟨θ, θy, q, py⟩, fun θ₁ θ₂ p₁ p₂ => ?_⟩` and prove the remaining obligations. Conclude with `(commIs_iff hL _ _ _ _).2 (hθ.congr hG hA hL (p₁.trans q.symm) (p₂.trans py.symm))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem weilIs_mul_left (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) {L : LB A.left} (hL : L.IsLB) {k : ℤ}
     {T : Over S} {x x' y : T ⟶ A} {c c' : Γ(T.left, ⊤)ˣ} (h : Out.WeilIs A L k x y c)
@@ -134,21 +134,21 @@ namespace GlobalTheory.DiagPairing
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Introduce `h n B _ ζ S s c N T x y hamp hN _ hx hy`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hD : c.diag.IsLB` using `pull_isLB c.isLB _`. Establish `hB : ∀ (T : Over S) (x x' y : T ⟶ c.A), pc c.isLB (x * x') y = pc c.isLB x y + pc c.isLB x' y` using `fun T x x' y => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S c.A c.diag c.ab hD hamp c.P c.isLB c.rig₁ c.rig₂ T x x' y).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb c.isLB _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb c.isLB, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hB' : ∀ (T : Over S) (x y y' : T ⟶ c.A), pc c.isLB x (y * y') = pc c.isLB x y + pc c.isLB x y'` using `fun T x y y' => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S c.A c.diag c.ab hD hamp c.P c.isLB c.rig₁ c.rig₂ T y y' x).2`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb c.isLB _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb c.isLB, Fin.sum_univ_three]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `lifts : ∀ z : T ⟶ c.A, z ^ N = 1 → ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧ ∃ θ : Out.ThetaGrp c.A c.diag N (Out.overRes V), θ.pt = Out.overResι V ≫ z` using `fun z hz p => by`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Take `⟨θ, hθ⟩` from `exists_theta_diag c.isLB hB hB' (k := N) (Out.overResι ⊤ ≫ z) (by rw [← MonObj.comp_pow, hz, MonObj.comp_one])`. Conclude with `⟨⊤, trivial, θ, hθ⟩`. Take `⟨c₀, hc₀⟩` from `CommutatorPairing.exists_weilIs hG c.ab hD (lifts x hx) (lifts y hy)`. Take `⟨c₁, hc₁⟩` from `CommutatorPairing.exists_weilIs hG c.ab hD (lifts 1 (one_pow N)) (lifts y hy)`. Establish `h11` using `weilIs_mul_left hG c.ab hD hc₁ hc₁`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h11` using `[_root_.mul_one]`. Establish `e₁ : c₁ * c₁ = c₁` using `CommutatorPairing.weilIs_unique hG c.ab hD h11 hc₁`. Establish `e₁' : c₁ = 1` using `mul_eq_left.1 e₁`. Establish `pw : ∀ m : ℕ, Out.WeilIs c.A c.diag N (x ^ (m + 1)) y (c₀ ^ (m + 1))`. Introduce `m`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => simpa using hc₀`. Consider the case `succ m ih`. Rewrite using `[pow_succ x (m + 1), pow_succ c₀ (m + 1)]`. Conclude with `weilIs_mul_left hG c.ab hD ih hc₀`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp` using `pw (N - 1)`. Rewrite `hp` using `[Nat.sub_add_cancel hN, hx]`. Conclude with `⟨c₀, CommutatorPairing.weilIs_unique hG c.ab hD hp (e₁' ▸ hc₁), hc₀⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_weilIs_diag_root : ∀ (h n : ℕ) (B : Type) [CommRing B] (ζ : B) (S : Scheme.{0}) (s : S ⟶ Sp B)
     (c : SiegPre h n ζ s) (N : ℕ) (T : Over S) (x y : T ⟶ c.A), Out.RelAmple c.A c.diag → 0 < N →

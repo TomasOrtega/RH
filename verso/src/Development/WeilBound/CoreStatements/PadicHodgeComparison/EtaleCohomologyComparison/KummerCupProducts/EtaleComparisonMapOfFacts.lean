@@ -23,7 +23,7 @@ def twUg (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) : (PAlg.tw σ A).Ug →+* A.Ug 
     exact IsLocalization.Away.algebraMap_isUnit (l : A.U))
 
 /- English proof (translation)
-Unfold `twUg`. Rewrite using `[Localization.awayLift, IsLocalization.Away.lift_eq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twUg_algebraMap (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) (x : (PAlg.tw σ A).U) :
     twUg σ A (algebraMap _ _ x) = algebraMap _ _ (PAlg.twU σ A x) := by
@@ -98,7 +98,7 @@ def FirstChernClassFamily : Prop := EtIn → ∀ (hN : LcNat) (l : ℕ) [Fact l.
   (eFam hN H r K).C1
 
 /- English proof (translation)
-Introduce `hE l _ H K`. Take `⟨r⟩` from `h0 l`. Use `show ∃ e : EtFam l K, e.Good`. Conclude with `⟨eFam hN H r K, ⟨h1 hE hN l H r K, h2 hE hN l H r K, h3 hN l H r K, h4 hE hN l H r K, fun M n i j x y => h5 hE hN l H r K M n 0 0 0 rfl i j (i + j) rfl x y, fun M => h6 hE hN l H r K M 0, h7 hE hN l H r K⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem etale_comparison_map_of_facts (h0 : RootsEx) (hN : LcNat) (h1 : FRed) (h2 : FEqui) (h3 : FPhi) (h4 : FNat) (h5 : FCup) (h6 : FRoot)
     (h7 : FirstChernClassFamily) : EtaleComparisonMapExists := by

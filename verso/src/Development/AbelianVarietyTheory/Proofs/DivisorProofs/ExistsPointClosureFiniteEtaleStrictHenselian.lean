@@ -13,23 +13,19 @@ open IsLocalRing Polynomial in
 open scoped TensorProduct in
 
 /- English proof (translation)
-Introduce `A R O B _ _ _ _ _ _ _ _ _ _ j β ψ hψ D _ _ hfin hE`. Use `letI : Algebra R D := (_root_.GlobalTheory.KeyOriginNoeth.baseHom A R D).toAlgebra`. Use `letI : Algebra R (_root_.GlobalTheory.KeyOriginNoeth.closure A R D) := _root_.GlobalTheory.KeyOriginNoeth.closureAlg A R D`. Take `⟨hEfin, hEet, hEnt⟩` from `hE`. Use `haveI := hEfin`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI := hEet`. Use `haveI := hEnt`. Use `haveI := hfin`. Use `letI : Algebra R O := j.toAlgebra`. Use `haveI : Module.Free R (_root_.GlobalTheory.KeyOriginNoeth.closure A R D) := Module.free_of_flat_of_isLocalRing`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Take `⟨q, hq⟩` from `PrimeSpectrum.comap_surjective_of_faithfullyFlat (A := R) (B := _root_.GlobalTheory.KeyOriginNoeth.closure A R D) ⟨RingHom.ker (algebraMap R (ResidueField O)), RingHom.ker_isPrime _⟩`. Establish `hq' : Ideal.comap (algebraMap R (_root_.GlobalTheory.KeyOriginNoeth.closure A R D)) q.asIdeal = RingHom.ker (algebraMap R (ResidueField O))` using `congrArg PrimeSpectrum.asIdeal hq`. Take `⟨φ₀⟩` from `_root_.GlobalTheory.nonempty_algHom_of_etale_of_isSepClosed q.asIdeal hq'`. Take `⟨φ, -⟩` from `(_root_.GlobalTheory.EtaleHensel.bijective_residue_comp R (_root_.GlobalTheory.KeyOriginNoeth.closure A R D) O).2 φ₀`. Use `letI : Algebra (_root_.GlobalTheory.KeyOriginNoeth.closure A R D) D := (_root_.GlobalTheory.KeyOriginNoeth.closure A R D).subtype.toAlgebra`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsScalarTower R (_root_.GlobalTheory.LocAcyc.GenFib A R) D := IsScalarTower.of_algebraMap_eq' rfl`. Establish `hloc : IsLocalization ((Algebra.algebraMapSubmonoid R (nonZeroDivisors A)).map (algebraMap R (_root_.GlobalTheory.KeyOriginNoeth.closure A R D))) D`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, ⟨s, hs, rfl⟩⟩`. Conclude with `(IsLocalization.map_units (_root_.GlobalTheory.LocAcyc.GenFib A R) ⟨s, hs⟩).map (algebraMap (_root_.GlobalTheory.LocAcyc.GenFib A R) D)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `d`. Take `⟨⟨m, hm⟩, hmint⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (Algebra.algebraMapSubmonoid R (nonZeroDivisors A)) d (Algebra.IsIntegral.isIntegral (R := _root_.GlobalTheory.LocAcyc.GenFib A R) d)`. Use `⟨⟨⟨m • d, hmint⟩, ⟨algebraMap R _ m, m, hm, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Use `show d * algebraMap R D m = m • d`. Rewrite using `[Algebra.smul_def, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y hxy`. Conclude with `⟨1, by rw [Subtype.ext hxy]⟩`. Establish `hσ : ∀ r : R, β (φ (algebraMap R (_root_.GlobalTheory.KeyOriginNoeth.closure A R D) r)) = ψ (algebraMap R (_root_.GlobalTheory.LocAcyc.GenFib A R) r)`. Introduce `r`. Rewrite using `[φ.commutes]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(RingHom.congr_fun hψ r).symm`. Establish `hunits : ∀ y : (Algebra.algebraMapSubmonoid R (nonZeroDivisors A)).map (algebraMap R (_root_.GlobalTheory.KeyOriginNoeth.closure A R D)), IsUnit ((β.comp φ.toRingHom) y)`. Introduce and unpack `⟨_, ⟨s, hs, rfl⟩⟩`. Use `show IsUnit (β (φ (algebraMap R (_root_.GlobalTheory.KeyOriginNoeth.closure A R D) s)))`. Rewrite using `[hσ]`.
-
-Conclude with `(IsLocalization.map_units (_root_.GlobalTheory.LocAcyc.GenFib A R) ⟨s, hs⟩).map ψ`. Use `⟨IsLocalization.lift (S := D) hunits, ?_⟩` and prove the remaining obligations. Apply `IsLocalization.ringHom_ext (Algebra.algebraMapSubmonoid R (nonZeroDivisors A))` to reduce the goal to its premises. Use extensionality with `r`. Establish `hr : algebraMap (_root_.GlobalTheory.LocAcyc.GenFib A R) D (algebraMap R _ r) = algebraMap (_root_.GlobalTheory.KeyOriginNoeth.closure A R D) D (algebraMap R (_root_.GlobalTheory.KeyOriginNoeth.closure A R D) r)` using `rfl`.
-
-Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hr, IsLocalization.lift_eq]`. Conclude with `hσ r`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KeyOriginNoeth.exists_point_of_closureFiniteEtale :
     ∀ (A R O B : Type) [CommRing A] [IsDomain A] [CommRing R] [IsLocalRing R] [Algebra A R]

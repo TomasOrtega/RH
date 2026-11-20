@@ -7,7 +7,7 @@ open Matrix MeasureTheory GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe 
 open scoped Real ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.coef_mul_ch_sub_one_eq_of_translate_diff` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FQuasiperiodicDifferenceHolomorphic.lean&line=44#L44)
 -/

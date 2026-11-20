@@ -11,19 +11,19 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.ResSel.BaseChange
 
 /- English proof (translation)
-Set `b` to `Module.finBasis k S`. Set `w : Fin (Module.finrank k S) → T` to `fun i => ⟨J (b i), hS _ (b i).2⟩`. Establish `hli : LinearIndependent K w`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Module.forall_dual_apply_eq_zero_iff k]`. Introduce `lam`. Establish `h1 : ∑ i, a i • J (b i) = 0`. Use `congrArg Subtype.val ha` as an intermediate fact. Simplify `this` using `[w]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ∑ i, lam (a i) • b i = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (L lam) h1` as an intermediate fact. Simplify `this` using `[map_sum, hL]`. Conclude with `Fintype.linearIndependent_iff.1 b.linearIndependent _ h2 i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hJs : ∀ v : S, (⟨J v, hS _ v.2⟩ : T) ∈ Submodule.span K (Set.range w)`. Introduce `v`. Establish `: (⟨J v, hS _ v.2⟩ : T) = ∑ i, algebraMap k K (b.repr v i) • w i`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e` using `congrArg (fun x : S => J x) (b.sum_repr v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul, map_sum, hJ] at e`. Simplify using `[w, e]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hsp : ⊤ ≤ Submodule.span K (Set.range w)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x _`. Take `⟨n, s, e, lam, h⟩` from `hW x.1`. Establish `: x = ∑ j ∈ s, e j • (⟨J (L (lam j) x.1), hS _ (hT _ _ x.2)⟩ : T)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hJs ⟨_, hT _ _ x.2⟩)`. Set `B` to `Module.Basis.mk hli hsp`. Conclude with `⟨Module.Finite.of_basis B, by rw [Module.finrank_eq_card_basis B, Fintype.card_fin]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_eq_of_coord {k K V W : Type} [Field k] [Field K] [Algebra k K] [AddCommGroup V] [Module k V]
     [AddCommGroup W] [Module K W] (S : Submodule k V) (T : Submodule K W) (J : V →+ W) (L : (K →ₗ[k] k) → W →+ V)
@@ -96,7 +96,7 @@ theorem h1MapOfAdditive_mk (z : Z1 rho) :
     h1MapOfAdditive rho rho' u hu he (Submodule.Quotient.mk z) = Submodule.Quotient.mk (cocycleMapOfEquivariant rho rho' u hu he z) := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => rfl`.
+Proceed by induction. Treat this case separately.
 -/
 theorem res_addH1 {H : Type} [Group H] [TopologicalSpace H] (phi : H →* Γ) (hphi : Continuous phi) (x : H1 rho) :
     resH1 rho' phi hphi (h1MapOfAdditive rho rho' u hu he x) =
@@ -105,7 +105,7 @@ theorem res_addH1 {H : Type} [Group H] [TopologicalSpace H] (phi : H →* Γ) (h
   | H z => rfl
 
 /- English proof (translation)
-Establish `h0 : resH1 rho J.subtype continuous_subtype_val x = 0` using `hx`. Conclude with `(res_addH1 rho rho' u hu he J.subtype continuous_subtype_val x).trans ((congrArg _ h0).trans (map_zero _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem addH1_ur (J : Subgroup Γ) (x : H1 rho) (hx : x ∈ H1ur rho J) :
     h1MapOfAdditive rho rho' u hu he x ∈ H1ur rho' J := by
@@ -125,7 +125,7 @@ def vecAdd : (Fin r → K) →+ (Fin r → K') where
   map_zero' := funext fun a => map_zero f
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[vecAdd, repOn, matAct, map_sum, ← Algebra.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vecAdd_repOn {Γ : Type} [Group Γ] {r : ℕ} (ρ : Γ →* GL (Fin r) O) (g : Γ) (m : Fin r → K) :
     vecAdd f r (repOn ρ (1 : Γ →* Kˣ) K g m) = repOn ρ (1 : Γ →* K'ˣ) K' g (vecAdd f r m) := by
@@ -142,13 +142,11 @@ variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : N
   [CommRing K'] [Algebra (X.O0 i) K'] [TopologicalSpace K'] [DiscreteTopology K'] (f : K →ₗ[X.O0 i] K')
 
 /- English proof (translation)
-Unfold `bkOn at hx ⊢`. Use `split_ifs at hx ⊢ with hv`. Rewrite using `[← one_smul K x]`. Generalize the expression as in `(1 : K) = t`. Proceed by induction on `hx using Submodule.span_induction generalizing t with`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨z, c, y, b, hc, hy, hz, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨cocycleMapOfEquivariant _ _ (vecAdd f r) continuous_of_discreteTopology (fun g m => vecAdd_repOn f ρ g.1 m) (t • z), c, y, f (t * b), hc, hy, fun g a => ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (t * (z : ↥(DecV N v) → Fin r → K) g a) = _`. Rewrite using `[hz, algebraMap_smul, algebraMap_smul, mul_smul_comm, map_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add, map_add]`. Conclude with `Submodule.add_mem _ (hx t) (hy t)`. Consider the case `smul a x _ hx => rw [smul_smul]`.
-
-Conclude with `hx _`. Rewrite `hx`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hx, map_zero]`.
+Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addH1_mem_bkOn (v : PlE D.host) (x : H1 ((repOn ρ (1 : GE N →* Kˣ) K).comp (DecV N v).subtype))
     (hx : x ∈ bkOn bkP i ρ (1 : GE N →* Kˣ) K v) :
@@ -177,9 +175,7 @@ def coefH1 : H1 (repOn ρ (1 : GE N →* Kˣ) K) →+ H1 (repOn ρ (1 : GE N →
     (vecAdd_repOn f ρ)
 
 /- English proof (translation)
-Use `(mem_Sel _ _ _ _ _).2 fun v => ?_` and prove the remaining obligations. Establish `hv` using `(mem_Sel _ _ _ _ _).1 hx v`. Use `(res_addH1 (repOn ρ (1 : GE N →* Kˣ) K) (repOn ρ (1 : GE N →* K'ˣ) K') (vecAdd f r) continuous_of_discreteTopology (vecAdd_repOn f ρ) (Dec (F := D.host.E) (N.plOm.1 v)).subtype continuous_subtype_val x) ▸ ?_` and prove the remaining obligations. Unfold `Formalism.GaloisCohomology.bkCond at hv ⊢`. Use `split_ifs at hv ⊢ with h1 h2`.
-
-Conclude with `addH1_mem_bkOn bkP i ρ f v _ hv`. Conclude with `Submodule.mem_top`. Conclude with `addH1_ur _ _ _ _ _ _ _ hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem coefH1_mem_selOn (Q : Finset (PlE D.host)) (x : H1 (repOn ρ (1 : GE N →* Kˣ) K))
     (hx : x ∈ selOn bkP i ρ (1 : GE N →* Kˣ) K Q) : coefH1 i ρ f x ∈ selOn bkP i ρ (1 : GE N →* K'ˣ) K' Q := by
@@ -196,19 +192,17 @@ theorem coefH1_mem_selOn (Q : Finset (PlE D.host)) (x : H1 (repOn ρ (1 : GE N �
 end Sel
 
 /- English proof (translation)
-Establish `hker : RingHom.ker (algebraMap (X.O0 i) k) ≤ RingHom.ker (algebraMap (X.O0 i) K)` using `fun x hx => hK x (IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top _) hx)`. Set `ι : k →+* K` to `(algebraMap (X.O0 i) k).liftOfSurjective hs ⟨algebraMap (X.O0 i) K, hker⟩`. Use `letI : Algebra k K := ι.toAlgebra`. Use `haveI : IsScalarTower (X.O0 i) k K := IsScalarTower.of_algebraMap_eq fun x => ((algebraMap (X.O0 i) k).liftOfRightInverse_comp_apply _ _ ⟨algebraMap (X.O0 i) K, hker⟩ x).symm`. Use `haveI : CompactSpace (GE N) := inferInstance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `finrank_eq_of_coord _ _ (coefH1 i ρ ((Algebra.linearMap k K).restrictScalars (X.O0 i))) (fun lam => coefH1 i ρ (lam.restrictScalars (X.O0 i))) ?_ ?_ ?_ (fun v hv => coefH1_mem_selOn bkP i ρ _ Q v hv) (fun lam v hv => coefH1_mem_selOn bkP i ρ _ Q v hv)` and prove the remaining obligations. Introduce `c v`. Proceed by induction on `v using Submodule.Quotient.induction_on with`. Consider the case `H z`. Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => funext fun a => ?_))` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `map_mul (algebraMap k K) c (z.1 g a)`. Introduce `lam t v`. Proceed by induction on `v using Submodule.Quotient.induction_on with`. Consider the case `H z`. Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => funext fun a => ?_))` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `lam (t * algebraMap k K (z.1 g a)) = lam t * z.1 g a`. Rewrite using `[mul_comm t, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`. Introduce `w`. Proceed by induction on `w using Submodule.Quotient.induction_on with`. Consider the case `H z`.
+Proceed by induction. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b` to `Module.Basis.ofVectorSpace k K`. Establish `hf : (Set.range z.1).Finite` using `(isCompact_range z.2.1).finite_of_discrete`. Set `s` to `hf.toFinset.biUnion fun m => Finset.univ.biUnion fun a => (b.repr (m a)).support`. Use `⟨_, s, b, b.coord, ?_⟩` and prove the remaining obligations. Establish `key : z = ∑ j ∈ s, b j • cocycleMapOfEquivariant _ _ (vecAdd ((Algebra.linearMap k K).restrictScalars (X.O0 i)) _) continuous_of_discreteTopology (vecAdd_repOn _ ρ) (cocycleMapOfEquivariant _ _ (vecAdd ((b.coord j).restrictScalars (X.O0 i)) _) continuous_of_discreteTopology (vecA …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Subtype.ext (funext fun g => funext fun a => ?_)` and prove the remaining obligations. Rewrite using `[AddSubmonoidClass.coe_finset_sum, Finset.sum_apply, Finset.sum_apply]`. Express the relevant statement in the definitionally equal form `_ = ∑ j ∈ s, b j * algebraMap k K (b.repr (z.1 g a) j)`. Establish `hsub : (b.repr (z.1 g a)).support ⊆ s` using `fun j hj => Finset.mem_biUnion.2 ⟨z.1 g, by simp, Finset.mem_biUnion.2 ⟨a, Finset.mem_univ _, hj⟩⟩`. Use `conv_lhs => rw [← b.linearCombination_repr (z.1 g a), Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ hsub (fun j c => c • b j) (fun j _ => zero_smul _ _)]`.
-
-Conclude with `Finset.sum_congr rfl fun j _ => by rw [Algebra.smul_def, mul_comm]`. Use `(congrArg (Submodule.mkQ _) key).trans ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem selOn_baseChange (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X)
     (i : X.Tw) (ρ : GE N →* GL (Fin D.R.r) (X.O0 i)) (k : Type) [Field k] [Algebra (X.O0 i) k] [TopologicalSpace k]

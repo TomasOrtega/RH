@@ -19,13 +19,13 @@ def kloostermanDiagonalThreshold (hC : Formalism.L2.SG.RowsPos.KppDiagP) (l : Li
     (hC (l.getD 6 0 + 1) (1 / 4) 3 (1 / 2) (l.getD 13 0) C0 (by norm_num) (by norm_num)).choose_spec.choose)
 
 /- English proof (translation)
-Use `closed_with hE (fun _ => 0) (kloostermanDiagonalThreshold C0 hC) fun Fm CH _ hE' _ h1 h2 => ?_` and prove the remaining obligations. Take `⟨x0, H⟩` from `hE'`. Use `⟨x0, fun x hx i hH => ?_⟩` and prove the remaining obligations. Take `⟨c⟩` from `H x hx i hH`. Establish `hs` using `(hC (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0 (by norm_num) (by norm_num)).choose_spec.choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : kloostermanDiagonalThreshold C0 hC (Fm.cOut ++ Fm.cMid CH) = max 3 (max (hC (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0 (by norm_num) (by norm_num)).choose (hC (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu C0 (by norm_num) (by norm_num)).choose_spec.choose)` using `rfl`. Rewrite `h1`, `h2` using `[e]`. Establish `hC' : 1 ≤ sC' Fm` using `le_trans (by norm_num) (le_trans (le_max_left _ _) h1)`. Establish `hK2` using `Formalism.MainNotions.NonGenericAndKTwoTheorems.Hyp_of _ _ _ _ _ _ _ _ _ _ hH.1 hH.2.1 hH.2.2 hC'`. Introduce `u`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA` using `hAbs _ c.X c.Y u u c.tie`. Establish `hd` using `(hs _ _ (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) h1)) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) h2)) _ _ c.X c.Y u (Fm.ties x i) hK2 c.tie hA).2`. Unfold `Formalism.L2.SG.RowsOther.KppDiag at hd`. Rewrite `hd` using `[c.tie.2.2.1 u]`. Rewrite using `[hsNormSq_Kpp c.hI hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `AdmissibleBoundsFromSource.du AdmissibleBoundsFromSource.xK`. Conclude with `hd`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hypOwnE_kppDiagP (hC : Formalism.L2.SG.RowsPos.KppDiagP) (hAbs : Formalism.L2.SG.RowsConc.AbsConvTied) {𝒞 : FamClass}
     (hE : Closed 𝒞 fun Fm _ => ConcEv C0 Fm) :
@@ -64,19 +64,19 @@ def thDLP (hC : Formalism.L2.SG.RowsPos.DiagLP) (l : List ℝ) : ℝ :=
   else 3
 
 /- English proof (translation)
-Use `closed_with (hOK.and (hLp fun _ => 1)) (thmDLP C0 hC) (thDLP C0 hC) fun Fm CH hc hQ hm h1 h2 => ?_` and prove the remaining obligations. Take `⟨x2, H2⟩` from `hQ.1 hc`. Take `⟨x3, H3⟩` from `hQ.2 hc`. Use `⟨max x2 (max x3 (max (sel Fm hc).1 (Fm.x1 + 1))), fun x hx i hH => ?_⟩` and prove the remaining obligations. Establish `hxa` using `le_trans (le_max_right _ _) hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx'` using `le_trans (le_max_right _ _) hxa`. Establish `hx1 : Fm.x1 < x` using `by have := le_trans (le_max_right _ _) hx'; linarith`. Establish `h0 : (sel Fm hc).1 ≤ x` using `le_trans (le_max_left _ _) hx'`. Set `c` to `concKOf ((sel Fm hc).2 x hx1 h0 i) (H2 x (le_trans (le_max_left _ _) hx) i hH hx1 h0)`. Establish `e0 : (Fm.cOut ++ Fm.cMid CH).take 16 = Fm.cOut` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e17 : (Fm.cOut ++ Fm.cMid CH).getD 17 0 = Fm.CGam` using `rfl`. Establish `hm' : thmDLP C0 hC ((Fm.cOut ++ Fm.cMid CH).take 16) ≤ (Fm.cOut ++ Fm.cMid CH).getD 17 0`. Rewrite using `[e0, e17]`. Conclude with `hm`. Establish `e1 : thDLP C0 hC (Fm.cOut ++ Fm.cMid CH) = max 3 (max ((cDiagLP C0 hC ((Fm.cOut ++ Fm.cMid CH).take 16)).choose_spec.choose_spec.2.2 _ hm').choose ((cDiagLP C0 hC ((Fm.cOut ++ Fm.cMid CH).take 16)).choose_spec.choose_spec.2.2 _ hm').choose_spec.choose)` using `dif_pos hm'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `((cDiagLP C0 hC ((Fm.cOut ++ Fm.cMid CH).take 16)).choose_spec.choose_spec.2.2 _ hm').choose_spec.choose_spec`. Rewrite `h1`, `h2` using `[e1]`. Establish `hC' : 1 ≤ sC' Fm` using `le_trans (by norm_num) (le_trans (le_max_left _ _) h1)`. Establish `hCl : 2 < sCl Fm` using `lt_of_lt_of_le (by norm_num) (le_trans (le_max_left _ _) h2)`. Establish `hK2` using `Formalism.MainNotions.NonGenericAndKTwoTheorems.Hyp_of _ _ _ _ _ _ _ _ _ _ hH.1 hH.2.1 hH.2.2 hC'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Establish `hH5` using `Formalism.MainNotions.count_hypotheses_diagonal_words _ _ _ _ _ _ _ _ _ _ 1 hH.1 hH.2.1 hH.2.2 hCl hC' le_rfl u`. Establish `hA` using `hAbs _ c.X c.Y u u c.tie`. Take `⟨hRB, hRNS⟩` from `H3 x (le_trans (le_max_left _ _) hxa) i hx1 h0 u u hH5 c.tie hA`. Establish `hG : (Fm.L x i).CGam = (Fm.cOut ++ Fm.cMid CH).getD 17 0` using `by rw [e17]; exact Fm.CGam_eq x i`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `hs _ _ (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) h1)) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) h2)) _ _ c.X c.Y u (Fm.ties x i) hH5 hK2.2 c.tie hA hG hRB hRNS`. Unfold `Formalism.L2.SG.RowsOther.DiagRow Formalism.L2.SG.RowsConc.ddC at hd`. Rewrite `hd` using `[c.tie.2.2.1 u, c.tie.2.2.2.1, (Fm.D x i).GamP_eq u]`. Rewrite using `[hsNormSq_diag c.hI (hExp _ c.X c.Y u u c.tie) hA (Formalism.L2.SG.Pf.SatGram.idDegenerate_tO c.Y u u)]`. Unfold `AdmissibleBoundsFromSource.Gam AdmissibleBoundsFromSource.du AdmissibleBoundsFromSource.Dst`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem hypOwnL_diagP (hC : Formalism.L2.SG.RowsPos.DiagLP) (hExp : KExpTied) (hAbs : Formalism.L2.SG.RowsConc.AbsConvTied)
     {𝒞 : FamClass} (sel : SSel 𝒞)
@@ -119,7 +119,7 @@ theorem hypOwnL_diagP (hC : Formalism.L2.SG.RowsPos.DiagLP) (hExp : KExpTied) (h
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `h30R : CountE.CountRowsClassFamily P Fm n0 A C c7 cb7` using `⟨h30.1, h30.2.1, fun x i => CountE.count_rows_class_of_count_class P n0 A C c7 cb7 (h30.2.2 x i)⟩`. Conclude with `linkS_of_standing_hypotheses Fm Cg cb Cu cT CT C0 c7 h1 h30.1 hS0 hT (countOwn_of_rowsPEv P Fm Cg cb Cu cT CT C0 n0 A C c7 cb7 hC hA hCl2 hCl3 hR h30R)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theoremS_link_of_evaluation (P : ∀ I : AutInst, Measure I.Gf → ℕ → (I.Gf → ℂ) → Prop) {eps : ℝ} (Fm : FamP eps)
     (Cg cb Cu cT CT C0 : ℝ) (n0 : ℕ) (A C c7 cb7 : ℝ) (h1 : 1 ≤ C0) (hC : 0 ≤ C)
@@ -133,7 +133,7 @@ theorem theoremS_link_of_evaluation (P : ∀ I : AutInst, Measure I.Gf → ℕ �
     (countOwn_of_rowsPEv P Fm Cg cb Cu cT CT C0 n0 A C c7 cb7 hC hA hCl2 hCl3 hR h30R)
 
 /- English proof (translation)
-The claim follows from `closed_of_large (linkThresholds (fun _ => caZero) c30) (hRes.and (hRows.and (hK1.and (hK2.and (hK3.and (hK4.and h30)))))) fun Fm CH hL h a0 => by obtain ⟨-, g2, g3, g4⟩ := link_thresholds_spec Fm CH (fun _ => caZero) c30 hL obtain ⟨a1, a2, k1, k2, k3, k4, a6⟩ := h exact theoremS_ …`.
+A detailed English derivation is pending.
 -/
 theorem theoremS_link_concrete (P : ∀ I : AutInst, Measure I.Gf → ℕ → (I.Gf → ℂ) → Prop)
     (𝒞 : FamClass) (C0 : ℝ) (c30 : List ℝ → CountingConstants) (h1 : 1 ≤ C0)
@@ -159,7 +159,7 @@ theorem theoremS_link_concrete (P : ∀ I : AutInst, Measure I.Gf → ℕ → (I
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
 
 /- English proof (translation)
-The claim follows from `have hFX := Formalism.L2.SG.Pf.finXC_of hWu hRF have hOK := selOK_of C0 hFX hWu sel hLoc hTF have hE : Closed 𝒞 fun Fm _ => ConcEv C0 Fm := closed_with hOK (fun _ => 0) (fun _ => 0) fun Fm _ hc h _ _ _ => concEv_of_sel C0 (h hc) have hRows : Closed 𝒞 fun Fm _ => ∃ xR : ℝ, ∀ x ≥ x …`.
+A detailed English derivation is pending.
 -/
 theorem theoremS_transport_link_zero (𝒞 : FamClass) (sel : SSel 𝒞)
     (hWu : Formalism.L2.SG.Pf.WuDecayOfGap) (hRF : Formalism.L2.SG.RowsDef.RowsFinDim)

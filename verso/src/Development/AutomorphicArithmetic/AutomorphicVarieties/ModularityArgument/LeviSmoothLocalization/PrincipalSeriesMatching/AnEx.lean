@@ -7,9 +7,9 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.Arch
 namespace UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 
 /- English proof (translation)
-Introduce `hp k N _ hk χ hχ g`. Take `⟨hf, he⟩` from `Ad3P.sEig k N hk χ g`. Take `⟨D, rfl, hs, hfe⟩` from `Ad3.R.rs_of Ad3.loc2 k N hk χ hχ g.f g.a hf he (hp k N hk χ hχ g)`. Break down `Ad3.S.anOf g.a D hfe (Ad3.S.eulOf Ad3.S.shim N χ D g.f g.a hf he hs) with h | h` into its components or cases. Conclude with `Or.inl h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr ⟨D, rfl, hs, h⟩`.
+Prove the second alternative.
 -/
 theorem anEx : AnEx := by
   intro hp k N _ hk χ hχ g

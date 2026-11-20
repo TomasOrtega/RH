@@ -22,11 +22,11 @@ variable {K F V V' : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Num
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
 
 /- English proof (translation)
-Establish `hne : ∀ v : V, v ≠ 0 → h v v ≠ 0`. Introduce `v hv e`. Take `⟨φ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Use `hd v hv φ` as an intermediate fact. Rewrite `this` using `[e, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ this`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Conclude with `hne x h0 (hx x)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `x hx`. Assume the negation of the conclusion as `h0`. Conclude with `hne x h0 (hx x)`.
+A detailed English derivation is pending.
 -/
 theorem nondegenerate (hd : IsTotPosDef h) : h.Nondegenerate := by
   have hne : ∀ v : V, v ≠ 0 → h v v ≠ 0 := by
@@ -44,17 +44,17 @@ theorem nondegenerate (hd : IsTotPosDef h) : h.Nondegenerate := by
     exact hne x h0 (hx x)
 
 /- English proof (translation)
-Take `⟨hloc, -⟩` from `Formalism.HermitianLatticesTheory.locBasic (𝓞 K) K V Formalism.HermitianLatticesTheory.genusCovol_hinj`. Establish `hidem : Formalism.HermitianLatticesTheory.loc (K` using `K) P (Formalism.HermitianLatticesTheory.loc (K := K) P B) = Formalism.HermitianLatticesTheory.loc (K := K) P B := (hloc P hP B B).2.2.1`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `b hb`. Take `⟨c, a, rfl⟩` from `S.cover b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc : c ∈ Formalism.HermitianLatticesTheory.locR (K` using `K) P := by`. Establish `h1` using `LocalizedFibreSets.form_mem_locR hBi P hx hb`. Rewrite `h1` using `[S.h_x₀_comb]`. Use `mul_mem_locR P h1 hn'` as an intermediate fact. Rewrite `this` using `[mul_assoc, mul_inv_cancel₀ S.hx₀, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[S.comb_mem_loc_adjoin_iff]`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Establish `h2 : S.ι a ∈ Formalism.HermitianLatticesTheory.loc (K` using `K) P B := by`. Establish `h3` using `Submodule.sub_mem _ hb (LocalizedFibreSets.smul_mem_of_loc_eq hidem hc hx)`. Rewrite `h3` using `[add_sub_cancel_left]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨s, hs', h4⟩` from `h2`. Use `⟨s, hs', ?_⟩` and prove the remaining obligations. Rewrite using `[VecSplit.mem_cut_iff, LinearMap.map_smul_of_tower]`. Conclude with `h4`. Rewrite using `[← hidem]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(hloc P hP _ _).2.1` to reduce the goal to its premises. Unfold `VecSplit.adjoin`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `a ha`. Conclude with `(hloc P hP B B).1 ha`.
+A detailed English derivation is pending.
 -/
 theorem loc_eq_loc_adjoin_cut (S : VecSplit h h') {P : Ideal (𝓞 K)} (hP : P.IsPrime)
     {B : Submodule (𝓞 K) V} (hBi : Formalism.HermitianLatticesTheory.IsIntegralLat h B)
@@ -91,9 +91,9 @@ theorem loc_eq_loc_adjoin_cut (S : VecSplit h h') {P : Ideal (𝓞 K)} (hP : P.I
       exact (hloc P hP B B).1 ha
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.IsUnimodularAt at hU ⊢`. Use extensionality with `a`. Establish `h1` using `LocalizedFibreSets.comb_mem_dualAt_iff hs S p L' 0 a`. Rewrite `h1` using `[hU, S.comb_mem_loc_adjoin_iff, zero_mul]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `ha`. Conclude with `(h1.mpr ⟨Submodule.zero_mem _, ha⟩).2`. Introduce `ha`. Conclude with `(h1.mp ⟨Submodule.zero_mem _, ha⟩).2`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unimod_of_unimod_adjoin (hs : h.IsSymm) (S : VecSplit h h') {p : Ideal (𝓞 K)}
     {L' : Submodule (𝓞 K) V'} (hU : Formalism.HermitianLatticesTheory.IsUnimodularAt h p (S.adjoin L')) :
@@ -109,7 +109,7 @@ theorem unimod_of_unimod_adjoin (hs : h.IsSymm) (S : VecSplit h h') {p : Ideal (
     exact (h1.mp ⟨Submodule.zero_mem _, ha⟩).2
 
 /- English proof (translation)
-Introduce `x hx y hy`. Rewrite using `[← S.isom]`. Conclude with `hBi _ hx _ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegralLat_cut (S : VecSplit h h') {B : Submodule (𝓞 K) V}
     (hBi : Formalism.HermitianLatticesTheory.IsIntegralLat h B) : Formalism.HermitianLatticesTheory.IsIntegralLat h' (S.cut B) := by
@@ -118,7 +118,7 @@ theorem isIntegralLat_cut (S : VecSplit h h') {B : Submodule (𝓞 K) V}
   exact hBi _ hx _ hy
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_smul_K (t : 𝓞 F) (c : K) :
     algebraMap (𝓞 F) (𝓞 K) t • c = algebraMap F K (t : F) * c := by
@@ -126,7 +126,7 @@ theorem algebraMap_smul_K (t : 𝓞 F) (c : K) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(locF_eq_loc hK hF hP (1 : Submodule (𝓞 K) K)).symm`.
+A detailed English derivation is pending.
 -/
 theorem locR_eq_locF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {P : Ideal (𝓞 K)}
     (hP : P.IsMaximal) :
@@ -135,9 +135,9 @@ theorem locR_eq_locF (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
   (locF_eq_loc hK hF hP (1 : Submodule (𝓞 K) K)).symm
 
 /- English proof (translation)
-Rewrite using `[LocF.mem_locF_iff h𝔭.isPrime]`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_smul_K, mul_inv_cancel₀]`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Rewrite using `[map_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun e => hn0 (RingOfIntegers.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem_locF_one {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {n : 𝓞 F} (hn0 : n ≠ 0)
     (hn : n ∉ 𝔭) : (algebraMap F K (n : F))⁻¹ ∈ locF 𝔭 (1 : Submodule (𝓞 K) K) := by
@@ -149,11 +149,11 @@ theorem inv_mem_locF_one {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {n : �
     exact fun e => hn0 (RingOfIntegers.ext e)
 
 /- English proof (translation)
-Take `⟨P, hP, rfl⟩` from `LocalizedFibreSets.exists_max_over (K := K) h𝔭`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `S.hx₀ (by rw [hn]; simp)`. Rewrite `hvB` using `[← isUnimodularAt_iff_vd hK hF hs hd hB hBi hP]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← isUnimodularAt_iff_vd hK hF (S.isSymm hs) (S.isTotPosDef hd) (StabilizerLattices.isLattice_cut S hB) (isIntegralLat_cut S hBi) hP]`. Apply `unimod_of_unimod_adjoin hs S` to reduce the goal to its premises. Rewrite `hx` using `[locF_eq_loc hK hF hP]`. Establish `hn' : (h S.x₀ S.x₀)⁻¹ ∈ Formalism.HermitianLatticesTheory.locR (K` using `K) P := by`. Rewrite using `[locR_eq_locF hK hF hP, hn]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Conclude with `inv_mem_locF_one h𝔭 hn0 (LocalizedFibreSets.notMem_of_vF_zero h𝔭 hn0 hvn)`. Rewrite using `[← isUnimodularAt_of_loc_eq P (loc_eq_loc_adjoin_cut S hP.isPrime hBi hx hn')]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem vd_cut_eq_zero (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm)
     (hd : IsTotPosDef h) (S : VecSplit h h') {B : Submodule (𝓞 K) V}
@@ -176,29 +176,27 @@ theorem vd_cut_eq_zero (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF 
   rwa [← isUnimodularAt_of_loc_eq P (loc_eq_loc_adjoin_cut S hP.isPrime hBi hx hn')]
 
 /- English proof (translation)
-Take `⟨hanti, hbi, hsup, hint, -⟩` from `Formalism.HermitianLatticesTheory.dualBasic (𝓞 K) K V h hs Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range`. Establish `DL` using `Formalism.HermitianLatticesTheory.dualLattice (𝓞 K) K V h hs (nondegenerate hd) Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range`. Take `⟨hloc, -⟩` from `Formalism.HermitianLatticesTheory.locBasic (𝓞 K) K V Formalism.HermitianLatticesTheory.genusCovol_hinj`. Use `set X : Submodule (𝓞 K) V := Submodule.span (𝓞 K) {x₀} with hX`. Establish `hxX : x₀ ∈ X` using `Submodule.mem_span_singleton_self x₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXX : X ≤ Formalism.HermitianLatticesTheory.dual h X`. Introduce `y hy`. Rewrite using `[Formalism.HermitianLatticesTheory.isomAct_mem_dual]`. Introduce `z hz`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.mp hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.mp hz`. Rewrite using `[LocalizedFibreSets.form_smul_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hLd : L ≤ Formalism.HermitianLatticesTheory.dual h L` using `(hint L).mp hLi`. Use `set B : Submodule (𝓞 K) V := (L ⊓ Formalism.HermitianLatticesTheory.dual h X) ⊔ X with hB`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hBfg : B.FG` using `(hL.fg.of_le inf_le_left).sup (Submodule.fg_span_singleton x₀)`. Establish `hBl : Submodule.IsLattice K B`. Use `⟨hBfg, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hL.span_eq_top, Submodule.span_le]`. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, hb, e⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) (h x₀ v)`. Establish `hb0 : algebraMap (𝓞 K) K b ≠ 0`. Rewrite using `[map_ne_zero_iff _ Formalism.HermitianLatticesTheory.genusCovol_hinj]`. Conclude with `nonZeroDivisors.ne_zero hb`. Establish `h1 : b • v ∈ B`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Use `⟨L.smul_mem b hv, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b • v ∈ Formalism.HermitianLatticesTheory.dual h X`. Rewrite using `[Formalism.HermitianLatticesTheory.isomAct_mem_dual]`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.mp hz`. Rewrite using `[LocalizedFibreSets.form_smul_smul, mul_smul]`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Rewrite using `[← e, Algebra.smul_def, mul_div_cancel₀ _ hb0]`. Conclude with `Submodule.mem_one.mpr ⟨a, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (algebraMap (𝓞 K) K b)⁻¹ • (b • v) ∈ Submodule.span K (B : Set V)` using `Submodule.smul_mem _ _ (Submodule.subset_span h1)`. Rewrite `h2` using `[← algebraMap_smul K b v, smul_smul, inv_mul_cancel₀ hb0, one_smul]`. Then use the resulting hypothesis. Establish `lat2 : Submodule.IsLattice K (Formalism.HermitianLatticesTheory.dual h L ⊔ X)`. Use `⟨(DL L hL).1.fg.sup (Submodule.fg_span_singleton x₀), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← (DL L hL).1.span_eq_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.span_mono (show Formalism.HermitianLatticesTheory.dual h L ≤ Formalism.HermitianLatticesTheory.dual h L ⊔ X from le_sup_left)`. Establish `e1 : L ⊓ Formalism.HermitianLatticesTheory.dual h X = Formalism.HermitianLatticesTheory.dual h (Formalism.HermitianLatticesTheory.dual h L ⊔ X)`. Rewrite using `[hsup, (DL L hL).2.1]`. Establish `e2 : Formalism.HermitianLatticesTheory.dual h (L ⊓ Formalism.HermitianLatticesTheory.dual h X) = Formalism.HermitianLatticesTheory.dual h L ⊔ X`. Rewrite using `[e1, (DL _ lat2).2.1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e3 : Formalism.HermitianLatticesTheory.dual h B = (Formalism.HermitianLatticesTheory.dual h L ⊔ X) ⊓ Formalism.HermitianLatticesTheory.dual h X`. Rewrite using `[hB, hsup, e2]`. Use `⟨B, hBl, ?_, ?_, Submodule.mem_sup_right hxX⟩` and prove the remaining obligations. Rewrite using `[hint, e3]`. Use `sup_le (le_inf (inf_le_left.trans (hLd.trans le_sup_left)) inf_le_right) (le_inf le_sup_right hXX)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `LDB` using `(Formalism.HermitianLatticesTheory.locDual (𝓞 K) K V h hs Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range B hBfg).1 P hP`. Establish `LDL` using `(Formalism.HermitianLatticesTheory.locDual (𝓞 K) K V h hs Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range L hL.fg).1 P hP`. Establish `e4 : Formalism.HermitianLatticesTheory.loc (K` using `K) P (Formalism.HermitianLatticesTheory.dual h L) = Formalism.HermitianLatticesTheory.loc (K := K) P L := by`. Rewrite using `[LDL.1, ← LDL.2]`. Conclude with `hU`.
-
-Unfold `Formalism.HermitianLatticesTheory.IsUnimodularAt`. Rewrite using `[LDB.2, ← LDB.1, e3, (hloc P hP _ _).2.2.2.1, (hloc P hP _ _).2.2.2.2, e4, hB, (hloc P hP _ _).2.2.2.2, (hloc P hP _ _).2.2.2.1, sup_comm, sup_inf_assoc_of_le, sup_comm]`. Conclude with `(hloc P hP _ _).2.1 hXX`.
+A detailed English derivation is pending.
 -/
 theorem exists_unimod_through (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {P : Ideal (𝓞 K)}
@@ -269,13 +267,13 @@ theorem exists_unimod_through (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodul
     exact (hloc P hP _ _).2.1 hXX
 
 /- English proof (translation)
-Establish `e : discrIdeal h (Formalism.HermitianLatticesTheory.gmap g L) = discrIdeal h L`. Unfold `discrIdeal`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, e⟩`. Use `⟨fun i => g.symm (x i), fun i => (Formalism.HermitianLatticesTheory.isomAct_mem_gmap g L _).mp (hx i), ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `congr 1`. Use extensionality with `i j`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `(SplitBAux.isom_apply (SplitBAux.symm_mem_isom hg) _ _).symm`. Introduce and unpack `⟨x, hx, e⟩`. Use `⟨fun i => g (x i), fun i => StabilizerLattices.apply_mem_gmap g (hx i), ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `congr 1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `(SplitBAux.isom_apply hg _ _).symm`. Unfold `vd`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vd_gmap {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h) (L : Submodule (𝓞 K) V)
     (𝔭 : Ideal (𝓞 F)) : vd h (Formalism.HermitianLatticesTheory.gmap g L) 𝔭 = vd h L 𝔭 := by
@@ -300,16 +298,16 @@ theorem vd_gmap {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheor
   rw [e]
 
 /- English proof (translation)
-The claim follows from `((Formalism.HermitianLatticesTheory.isomAct (𝓞 K) K V h g hg L).2.2.1).mpr hLi`.
+A detailed English derivation is pending.
 -/
 theorem isIntegralLat_gmap {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h) {L : Submodule (𝓞 K) V}
     (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) : Formalism.HermitianLatticesTheory.IsIntegralLat h (Formalism.HermitianLatticesTheory.gmap g L) :=
   ((Formalism.HermitianLatticesTheory.isomAct (𝓞 K) K V h g hg L).2.2.1).mpr hLi
 
 /- English proof (translation)
-Establish `hne : Nonempty {Λ : Submodule (𝓞 K) V // locF 𝔭 Λ = Λ ∧ (∃ g ∈ Formalism.HermitianLatticesTheory.isom h, Formalism.HermitianLatticesTheory.gmap g (locF 𝔭 L) = Λ) ∧ S.x₀ ∈ Λ ∧ S.cut Λ = locF 𝔭 T}`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_nonempty_iff]`. Conclude with `hT Nat.card_of_isEmpty`. Take `⟨Λ, -, ⟨g, hg, rfl⟩, hx, hc⟩` from `hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx`, `hc` using `[LocalizedFibreSets.gmap_locF]`. Conclude with `⟨g, hg, hx, by rw [← LocalizedFibreSets.cut_locF, hc]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_of_fibLoc_ne_zero (S : VecSplit h h') {L : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)}
     {T : Submodule (𝓞 K) V'} (hT : fibLoc S L 𝔭 T ≠ 0) :
@@ -326,7 +324,7 @@ theorem exists_of_fibLoc_ne_zero (S : VecSplit h h') {L : Submodule (𝓞 K) V} 
   exact ⟨g, hg, hx, by rw [← LocalizedFibreSets.cut_locF, hc]⟩
 
 /- English proof (translation)
-Unfold `fibLoc`. Rewrite using `[LocF.locF_idem]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibLoc_locF (S : VecSplit h h') (L : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F))
     (T : Submodule (𝓞 K) V') : fibLoc S L 𝔭 (locF 𝔭 T) = fibLoc S L 𝔭 T := by
@@ -334,7 +332,7 @@ theorem fibLoc_locF (S : VecSplit h h') (L : Submodule (𝓞 K) V) (𝔭 : Ideal
   rw [LocF.locF_idem]
 
 /- English proof (translation)
-Rewrite using `[← fibLoc_locF S L 𝔭 T, e, fibLoc_locF]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fibLoc_congr (S : VecSplit h h') (L : Submodule (𝓞 K) V) {𝔭 : Ideal (𝓞 F)}
     {T T' : Submodule (𝓞 K) V'} (e : locF 𝔭 T = locF 𝔭 T') :
@@ -342,9 +340,9 @@ theorem fibLoc_congr (S : VecSplit h h') (L : Submodule (𝓞 K) V) {𝔭 : Idea
   rw [← fibLoc_locF S L 𝔭 T, e, fibLoc_locF]
 
 /- English proof (translation)
-Establish `e : alphaL h (locF 𝔭 L) 𝔭 = alphaL h L 𝔭`. Unfold `alphaL`. Use `congr 1`. Use extensionality with `k`. Rewrite using `[akCount_locF hF h L 𝔭 h𝔭]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Unfold `lamP`. Rewrite using `[vd_locF hK hF hs hd hL hLi h𝔭, e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem localFactor_localField (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm)
     (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V} (hL : Submodule.IsLattice K L)
@@ -359,7 +357,7 @@ theorem localFactor_localField (hK : Formalism.HermitianLatticesTheory.IsCMUnram
   rw [vd_locF hK hF hs hd hL hLi h𝔭, e]
 
 /- English proof (translation)
-Take `⟨g, hg, -, e⟩` from `exists_of_fibLoc_ne_zero S hT`. Conclude with `⟨_, StabilizerLattices.isLattice_cut S (LocalizedFibreSets.isLattice_gmap g hL), isIntegralLat_cut S (isIntegralLat_gmap hg hLi), e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lattice_of_fibLoc_ne_zero (S : VecSplit h h') {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {𝔭 : Ideal (𝓞 F)}
@@ -371,7 +369,7 @@ theorem exists_lattice_of_fibLoc_ne_zero (S : VecSplit h h') {L : Submodule (�
     isIntegralLat_cut S (isIntegralLat_gmap hg hLi), e⟩
 
 /- English proof (translation)
-Take `⟨g, hg, hx, e⟩` from `exists_of_fibLoc_ne_zero S hT`. Conclude with `⟨_, StabilizerLattices.isLattice_cut S (LocalizedFibreSets.isLattice_gmap g hL), isIntegralLat_cut S (isIntegralLat_gmap hg hLi), vd_cut_eq_zero hK hF hs hd S (LocalizedFibreSets.isLattice_gmap g hL) (isIntegralLat_gmap hg hLi) h𝔭 hn (by rw [vd_gmap hg, hvL]) hvn hx, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lattice_of_fibLoc_ne_zero_good (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     (hs : h.IsSymm) (hd : IsTotPosDef h) (S : VecSplit h h') {L : Submodule (𝓞 K) V}
@@ -388,9 +386,9 @@ theorem exists_lattice_of_fibLoc_ne_zero_good (hK : Formalism.HermitianLatticesT
       (by rw [vd_gmap hg, hvL]) hvn hx, e⟩
 
 /- English proof (translation)
-Take `⟨P, hP, rfl⟩` from `LocalizedFibreSets.exists_max_over (K := K) h𝔭`. Establish `hU` using `(isUnimodularAt_iff_vd hK hF hs hd hL hLi hP).mpr hvL`. Establish `hx : h S.x₀ S.x₀ ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[hn]`. Conclude with `Submodule.mem_one.mpr ⟨algebraMap (𝓞 F) (𝓞 K) n, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB, hBi, hBU, hxB⟩` from `exists_unimod_through hs hd hL hLi hP.isPrime hU hx`. Conclude with `⟨_, StabilizerLattices.isLattice_cut S hB, isIntegralLat_cut S hBi, vd_cut_eq_zero hK hF hs hd S hB hBi h𝔭 hn ((isUnimodularAt_iff_vd hK hF hs hd hB hBi hP).mp hBU) hvn (LocF.le_locF _ _ hxB)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unimod_lattice_good (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     (hs : h.IsSymm) (hd : IsTotPosDef h) (S : VecSplit h h') {L : Submodule (𝓞 K) V}

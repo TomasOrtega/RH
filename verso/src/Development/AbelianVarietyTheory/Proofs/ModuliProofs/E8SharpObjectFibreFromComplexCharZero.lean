@@ -20,7 +20,7 @@ open GlobalTheory.ZM
 namespace GlobalTheory.SharpFrom
 
 /- English proof (translation)
-Establish `hs' : Cardinal.mk s ≤ Cardinal.aleph0` using `Cardinal.mk_le_aleph0_iff.2 hs.to_subtype`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Conclude with `(Subfield.cardinalMk_closure_le_max s).trans (max_le hs' le_rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem countable_closure {K : Type} [Field K] (s : Set K) (hs : s.Countable) :
     Countable (Subfield.closure s) := by
@@ -29,7 +29,7 @@ private theorem countable_closure {K : Type} [Field K] (s : Set K) (hs : s.Count
   exact (Subfield.cardinalMk_closure_le_max s).trans (max_le hs' le_rfl)
 
 /- English proof (translation)
-Establish `h₀ : (K₀ : Set K).Countable` using `Set.countable_coe_iff.1 ‹Countable K₀›`. Conclude with `countable_closure _ (h₀.union F.countable_toSet)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem countable_closure_union {K : Type} [Field K] (K₀ : Subfield K) [Countable K₀] (F : Finset K) :
     Countable (Subfield.closure ((K₀ : Set K) ∪ F)) := by
@@ -37,7 +37,7 @@ private theorem countable_closure_union {K : Type} [Field K] (K₀ : Subfield K)
   exact countable_closure _ (h₀.union F.countable_toSet)
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 h`. Establish `hP : Countable (MvPolynomial (Fin n) ℤ)`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Conclude with `MvPolynomial.cardinalMk_le_max.trans (sup_le (sup_le Cardinal.mk_le_aleph0 Cardinal.mk_le_aleph0) le_rfl)`. Conclude with `hf.countable`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem countable_of_finiteType (o : Type) [CommRing o] (h : Algebra.FiniteType ℤ o) : Countable o := by
   obtain ⟨n, f, hf⟩ := Algebra.FiniteType.iff_quotient_mvPolynomial''.1 h
@@ -48,7 +48,7 @@ private theorem countable_of_finiteType (o : Type) [CommRing o] (h : Algebra.Fin
   exact hf.countable
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem sp_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (f' : R' →+* R'') :
     spMap f' ≫ spMap f = spMap (f'.comp f) := by
@@ -56,26 +56,26 @@ private theorem sp_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Spec.preimage y |>.hom, by simp [spMap]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_sp {R R' : Type} [CommRing R] [CommRing R'] (y : Sp R' ⟶ Sp R) : ∃ f : R →+* R', y = spMap f := ⟨Spec.preimage y |>.hom, by simp [spMap]⟩
 
 /- English proof (translation)
-Introduce `_ _ h g W J _ a _ _ bas _ _ _ _ _ N' o _ b em hem S s t c hc hsh K _ _ x`. Take `⟨hded, hft, hinj⟩` from `hem`. Establish `: Countable o` using `countable_of_finiteType o hft`. Take `⟨βK, hβK⟩` from `exists_sp (x ≫ s)`. Take `⟨tK, htK⟩` from `GlobalTheory.T.exists_thetaLevelAbelianScheme_pullback o g (N' ^ 2) J b S (Sp K) s (spMap βK) x t hβK`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨cK, hcK, hshK⟩` from `GlobalTheory.SharpPull.sharp_pull h g (N' ^ 2) W J a bas o b S (Sp K) s (spMap βK) x t tK c hβK htK hc hsh`. Take `⟨K₀, β₀, t₀, hβ₀, hcount, -, ht₀⟩` from `GlobalTheory.T.thetaLevel_object_descends_fg_subfield o g (N' ^ 2) J b K βK tK`. Substitute `hβ₀` using the available equality. Establish `: Countable K₀` using `hcount ‹_›`. Take `⟨F, hF⟩` from `GlobalTheory.T.siegel_principal_object_descends_large_subfield h (N' ^ 2) o (b.ζ : o) K K₀ (spMap β₀) (spMap (K₀.subtype.comp β₀)) cK (sp_comp _ _).symm hcK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hK : K₀ ≤ Subfield.closure ((K₀ : Set K) ∪ F)` using `fun z hz => Subfield.subset_closure (Or.inl hz)`. Establish `hFK : (F : Set K) ⊆ Subfield.closure ((K₀ : Set K) ∪ F)` using `fun z hz => Subfield.subset_closure (Or.inr hz)`. Take `⟨c₁, hc₁, hpb₁⟩` from `hF _ hK hFK`. Establish `: Countable (Subfield.closure ((K₀ : Set K) ∪ F))` using `countable_closure_union K₀ F`. Establish `move : ∀ s₁ : Sp (Subfield.closure ((K₀ : Set K) ∪ F)) ⟶ Sp o, s₁ = spMap ((Subfield.inclusion hK).comp β₀) → ∀ c₁ : SiegPre h (N' ^ 2) (b.ζ : o) s₁, c₁.Principal → SiegPB cK c₁ (spMap (Subfield.closure ((K₀ : Set K) ∪ F)).subtype) → ∃ c₂ : SiegPre h (N' ^ 2) (b.ζ : o) (spMap ((S …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `s₁ rfl c₂ h₁ h₂`. Conclude with `⟨c₂, h₁, h₂⟩`. Take `⟨c₁', hc₁', hpb₁'⟩` from `move _ (sp_comp _ _) c₁ hc₁ hpb₁`. Take `⟨t₁, ht₁⟩` from `GlobalTheory.T.exists_thetaLevelAbelianScheme_pullback o g (N' ^ 2) J b (Sp K₀) (Sp (Subfield.closure ((K₀ : Set K) ∪ F))) (spMap β₀) (spMap ((Subfield.inclusion hK).comp β₀)) (spMap (Subfield.inclusion hK)) t₀ (sp_comp _ _)`. Establish `hsub : (Subfield.closure ((K₀ : Set K) ∪ F)).subtype.comp (Subfield.inclusion hK) = K₀.subtype` using `RingHom.ext fun _ => rfl`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htK₁ : TMap tK t₁ (spMap (Subfield.closure ((K₀ : Set K) ∪ F)).subtype)`. Use `((GlobalTheory.T.thetaLevelPullback_id_comp_cancel o g (N' ^ 2) J b (Sp K₀) _ (Sp K) (spMap β₀) _ (spMap (K₀.subtype.comp β₀)) t₀ t₁ tK).2 _ _ ht₁).2 ?_` and prove the remaining obligations. Rewrite using `[sp_comp, hsub]`. Conclude with `ht₀`. Establish `e₁ : spMap (K₀.subtype.comp β₀) = spMap (Subfield.closure ((K₀ : Set K) ∪ F)).subtype ≫ spMap ((Subfield.inclusion hK).comp β₀)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sp_comp]`. Conclude with `congrArg spMap (RingHom.ext fun _ => rfl)`. Take `⟨F₂, β₂, t₂, c₂, e₂, ht₂, hc₂, hsh₂⟩` from `GlobalTheory.SharpDescent.isSharp_descends h g (N' ^ 2) W J a bas o b K (Subfield.closure ((K₀ : Set K) ∪ F)) ((Subfield.inclusion hK).comp β₀) (spMap (K₀.subtype.comp β₀)) tK cK t₁ c₁' e₁ htK₁ hpb₁' hc₁' hshK`. Establish `: Countable (Subfield.closure ((Subfield.closure ((K₀ : Set K) ∪ F) : Set K) ∪ F₂))` using `countable_closure_union _ F₂`. Take `⟨-, j, hj⟩` from `GlobalTheory.T.exists_ringHom_complex_comp_eq_of_countable_field o em _ β₂ hded hft hinj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ej : spMap j ≫ spMap β₂ = spMap em` using `by rw [sp_comp, hj]`. Take `⟨tc, htc⟩` from `GlobalTheory.T.exists_thetaLevelAbelianScheme_pullback o g (N' ^ 2) J b _ (Sp ℂ) (spMap β₂) (spMap em) (spMap j) t₂ ej`. Take `⟨cc, hcc, hshc⟩` from `GlobalTheory.SharpPull.sharp_pull h g (N' ^ 2) W J a bas o b _ (Sp ℂ) (spMap β₂) (spMap em) (spMap j) t₂ tc c₂ ej htc hc₂ hsh₂`. Take `⟨tx, htx⟩` from `GlobalTheory.T.exists_thetaLevelAbelianScheme_pullback o g (N' ^ 2) J b S (Sp K) s (x ≫ s) x t rfl`. Establish `htxK : TMap tx tK (𝟙 _)` using `((GlobalTheory.T.thetaLevelPullback_id_comp_cancel o g (N' ^ 2) J b S (Sp K) (Sp K) s _ _ t tK tx).2 x (𝟙 _) htK).2 (by rwa [Category.id_comp])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htx₂ : TMap tx t₂ (spMap (Subfield.subtype _))`. Use `((GlobalTheory.T.thetaLevelPullback_id_comp_cancel o g (N' ^ 2) J b _ (Sp K) (Sp K) (spMap β₂) _ (x ≫ s) t₂ tK tx).2 _ (𝟙 _) ht₂).1 htxK` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Conclude with `⟨_, inferInstance, β₂, Subfield.subtype _, j, t₂, tx, tc, hj, hβK.trans e₂, htx, htx₂, htc, cc, hcc, hshc⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fromC_sharpClass : Out.Laws → Out.Laws2 → ∀ (h g : ℕ) (W : Matrix (Fin 8) (Fin 8) ℤ) (J : Type) [Finite J] (a : J → Matrix (Fin 8) (Fin 8) ℤ) (w w' : J) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ))), IsE8 W → IsSharpBasis W bas → (W + W.transpose) * a w = W → (W + W.transpose) * a w' = W.transpose → (∀ u v, ∃ j, a j = Matrix.single u v 1) → ∀ (N' : ℕ) (o : Type) [CommRing o] (b : TBase o (N' ^ 2)) (em : o →+* ℂ), ArBase em → ∀ (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s) (c : SiegPre h (N' ^ 2) (b.ζ : o) s), c.Principal → IsSharp W a bas t c → ∀ (K : Type) [Field K] [CharZero K] (x : Sp K ⟶ S), FromC em (SharpClass (b := b) W a bas em) t x := by
   intro _ _ h g W J _ a _ _ bas _ _ _ _ _ N' o _ b em hem S s t c hc hsh K _ _ x

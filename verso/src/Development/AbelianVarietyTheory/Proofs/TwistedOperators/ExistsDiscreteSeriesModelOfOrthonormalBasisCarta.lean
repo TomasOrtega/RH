@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, Matrix.one_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_mul_self {n : ℕ} (e : Fin n → Bool) : Formalism.REAL.Jm e * Formalism.REAL.Jm e = 1 := by
   ext a b
@@ -24,7 +24,7 @@ theorem jm_mul_self {n : ℕ} (e : Fin n → Bool) : Formalism.REAL.Jm e * Forma
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Use `congrFun (congrFun h a) a` as an intermediate fact. Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_apply_eq] at this`. Apply the tactic sequence `cases he : e a <;> cases he' : e' a <;> simp_all <;> norm_num at this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_injective {n : ℕ} {e e' : Fin n → Bool} (h : Formalism.REAL.Jm e = Formalism.REAL.Jm e') : e = e' := by
   funext a
@@ -33,15 +33,13 @@ theorem jm_injective {n : ℕ} {e e' : Fin n → Bool} (h : Formalism.REAL.Jm e 
   cases he : e a <;> cases he' : e' a <;> simp_all <;> norm_num at this
 
 /- English proof (translation)
-Introduce `D hDS V S O C h1 h2`. Use `choose lam ε hE hP hG using h1`. Use `choose H i1 i2 σ hσ using fun τ => (GlobalTheory.Published.discreteSeriesExists_iff.1 hDS) V.rank (ε τ) (lam τ) (hP τ)`. Establish `hdet : ∀ τ, IsUnit (O τ).det` using `fun τ => by`. Use `Matrix.isUnit_det_of_left_inverse (B := Formalism.REAL.Jm (ε τ) * ((O τ)ᴴ * gramAt D V τ)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, hG τ, jm_mul_self]`. Establish `hr : ∀ τ, O τ * (O τ)⁻¹ = 1` using `fun τ => Matrix.mul_nonsing_inv _ (hdet τ)`. Establish `hl : ∀ τ, (O τ)⁻¹ * O τ = 1` using `fun τ => Matrix.nonsing_inv_mul _ (hdet τ)`. Establish `hii : ∀ τ, ((O τ)⁻¹)⁻¹ = O τ` using `fun τ => Matrix.nonsing_inv_nonsing_inv _ (hdet τ)`. Set `M : DSModel V S` to `{ H := H, nacg := i1, ips := i2, σ := σ, lam := lam, ε := ε, fr := fun τ => (O τ)⁻¹, enum := hE, ds := hσ, fr_unit := fun τ => (Matrix.isUnit_nonsing_inv_iff).2 ((Matrix.isUnit_iff_isUnit_det _).2 (hdet τ)) fr_gram := fun τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hG τ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = gramAt D V τ := by rw [hr τ]; simp }`. Use `⟨M, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Take `⟨e', hG', hC⟩` from `h2 τ`. Establish `he : e' = ε τ` using `jm_injective (by rw [← hG', hG τ])`. Rewrite `hC` using `[he]`. Use `show ((O τ)⁻¹)⁻¹ * Formalism.REAL.Jm (ε τ) * (O τ)⁻¹ = C τ`.
-
-Rewrite using `[hii, ← hC, Matrix.mul_assoc, hr, Matrix.mul_one]`. Use function extensionality and compare the values at `τ`. Conclude with `hii τ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem dsModel_of_onb_cart : ∀ (D : D7), GlobalTheory.Published.DiscreteSeriesUpqExists → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (O C : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ τ, ∃ (lam : Fin V.rank → ℝ) (ε : Fin V.rank → Bool), IsEnum (S τ) lam ε ∧ Formalism.QuantumDeterminants.IsHCParam lam ∧ (O τ)ᴴ * gramAt D V τ * O τ = Formalism.REAL.Jm ε) → (∀ τ, ∃ ε : Fin V.rank → Bool, (O τ)ᴴ * gramAt D V τ * O τ = Formalism.REAL.Jm ε ∧ C τ * O τ = O τ * Formalism.REAL.Jm ε) → ∃ M : DSModel V S, cart M = C ∧ onb M = O := by
   intro D hDS V S O C h1 h2

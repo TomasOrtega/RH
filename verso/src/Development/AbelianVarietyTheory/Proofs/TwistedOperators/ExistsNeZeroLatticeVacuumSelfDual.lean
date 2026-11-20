@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.AscFin.VacSub
 
 /- English proof (translation)
-Introduce `D ψ hψ S T LS LT dS dT Γ hΓ`. Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Establish `hc : ∀ (V : HSp D) τ, ∃ s, IsCartanInv (gramAt D V τ) s` using `fun V τ => GlobalTheory.Mem.ThetaNonzero.exists_isCartanInv (GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ)`. Use `choose s hs using hc`. Take `⟨f, f0, hf⟩` from `GlobalTheory.VacuumO.exists_ne_zero ψ θ hψ hθ S T (s S) (s T) (hs S) (hs T) LS LT dS dT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, -⟩` from `hf 1`. Simplify using `only [one_mul] at h1 h2`. Conclude with `⟨f, ⟨h1, fun u hu => h2.1 u (hΓ hu), fun e he u hu hh => h2.2 e he u (hΓ hu) hh⟩, f0⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_vacG_ne_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT → ∀ Γ ≤ latO S T (LS : Set _) (LT : Set _) (fun _ => True), ∃ f, VacG ψ S T Γ f ∧ f ≠ 0 := by
   intro D ψ hψ S T LS LT dS dT Γ hΓ

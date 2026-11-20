@@ -28,7 +28,7 @@ def padInt {m n : ℕ} (_h : m ≤ n) (v : Fin m → ℤ) : Fin n → ℤ :=
   fun i => if hi : (i : ℕ) < m then v ⟨i, hi⟩ else 0
 
 /- English proof (translation)
-Introduce `v w hvw`. Use function extensionality and compare the values at `j`. Use `congrFun hvw ⟨j, lt_of_lt_of_le j.2 h⟩` as an intermediate fact. Simplify `this` using `[padInt, j.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem padInt_injective {m n : ℕ} (h : m ≤ n) : Function.Injective (padInt h) := by
   intro v w hvw
@@ -37,17 +37,15 @@ theorem padInt_injective {m n : ℕ} (h : m ≤ n) : Function.Injective (padInt 
   simpa [padInt, j.2] using this
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; simp only [padInt, Pi.zero_apply]; split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem padInt_zero {m n : ℕ} (h : m ≤ n) : padInt h (0 : Fin m → ℤ) = 0 := by
   funext i; simp only [padInt, Pi.zero_apply]; split_ifs <;> rfl
 
 /- English proof (translation)
-Establish `hnn : ∀ i, 0 ≤ padInt h v i`. Introduce `i`. Unfold `padInt`. Use `split_ifs`. Conclude with `hv.1 _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `le_rfl`. Use `⟨hnn, fun a b hab => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : (b : ℕ) < m`. Establish `ha : (a : ℕ) < m` using `lt_of_le_of_lt hab hb`. Simplify using `only [padInt, ha, hb, dite_true]`.
-
-Conclude with `hv.2 (show (⟨a, ha⟩ : Fin m) ≤ ⟨b, hb⟩ from hab)`. Establish `: padInt h v b = 0` using `by simp [padInt, hb]`. Rewrite using `[this]`. Conclude with `hnn a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padInt_valid {m n : ℕ} (h : m ≤ n) {v : Fin m → ℤ} (hv : (∀ i, 0 ≤ v i) ∧ Antitone v) :
     (∀ i, 0 ≤ padInt h v i) ∧ Antitone (padInt h v) := by
@@ -64,16 +62,16 @@ theorem padInt_valid {m n : ℕ} (h : m ≤ n) {v : Fin m → ℤ} (hv : (∀ i,
     rw [this]; exact hnn a
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; simp only [padInt, padNat]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem toNat_padInt {m n : ℕ} (h : m ≤ n) (v : Fin m → ℤ) :
     (fun i => (padInt h v i).toNat) = padNat (n := n) (fun i => (v i).toNat) := by
   funext i; simp only [padInt, padNat]; split_ifs <;> simp
 
 /- English proof (translation)
-Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE h) (Fin.castLE_injective h) _ _ ?_ ?_` and prove the remaining obligations. Introduce `c hc`. Establish `: ¬ (c : ℕ) < m` using `fun hcm => hc ⟨⟨c, hcm⟩, Fin.ext rfl⟩`. Simplify using `[padNat, this]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `i`. Simplify using `[padNat, i.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem sum_padNat {m n : ℕ} (h : m ≤ n) (l : Fin m → ℕ) : ∑ i, padNat (n := n) l i = ∑ i, l i := by
   symm
@@ -84,9 +82,9 @@ theorem sum_padNat {m n : ℕ} (h : m ≤ n) (l : Fin m → ℕ) : ∑ i, padNat
   · intro i; simp [padNat, i.2]
 
 /- English proof (translation)
-Distinguish the cases in `hv : (∀ i, 0 ≤ v i) ∧ Antitone v`. Rewrite using `[rsTermNM, if_pos hv, sqTerm, if_pos (padInt_valid h hv), sqTerm, if_pos hv, toNat_padInt h v, sum_padNat h, norm_mul, norm_mul, Complex.norm_conj, norm_cpow_pow q hq]`. Establish `hw : 0 ≤ (q : ℝ) ^ (-(((∑ i, (v i).toNat : ℕ) : ℝ) * x))` using `Real.rpow_nonneg (Nat.cast_nonneg _) _`. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg (‖schurAt (padNat (n := n) fun i => (v i).toNat) α‖ - ‖schurAt (fun i => (v i).toNat) β‖)) hw]`. Rewrite using `[rsTermNM, if_neg hv, norm_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_nonneg (add_nonneg (sqTerm_nonneg _ _ _ _) (sqTerm_nonneg _ _ _ _)) zero_le_two`.
+A detailed English derivation is pending.
 -/
 theorem norm_rsTermNM_le (q : ℕ) (hq : 0 < q) {m n : ℕ} (h : m ≤ n) (α : Fin n → ℂ) (β : Fin m → ℂ) (x : ℝ)
     (v : Fin m → ℤ) :
@@ -101,9 +99,9 @@ theorem norm_rsTermNM_le (q : ℕ) (hq : 0 < q) {m n : ℕ} (h : m ≤ n) (α : 
     exact div_nonneg (add_nonneg (sqTerm_nonneg _ _ _ _) (sqTerm_nonneg _ _ _ _)) zero_le_two
 
 /- English proof (translation)
-Establish `h : (fun _ : Fin m => (0 : ℕ)) = fun i => ((0 : Fin m → ℤ) i).toNat` using `by funext i; simp`. Establish `hs : schurAt (padNat (n` using `n) fun i => ((0 : Fin m → ℤ) i).toNat) α = 1 := by`. Rewrite using `[← h]`. Establish `: (padNat (n` using `n) fun _ : Fin m => (0 : ℕ)) = fun _ => 0 := padNat_zero`. Rewrite using `[this, schurAt, schur_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hs' : schurAt (fun i => ((0 : Fin m → ℤ) i).toNat) β = 1`. Rewrite using `[← h, schurAt, schur_zero]`. Simplify using the standard rewrite rules. Rewrite using `[rsTermNM, if_pos ⟨fun i => le_rfl, antitone_const⟩, hs, hs']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -119,7 +117,7 @@ theorem rsTermNM_zero (q : ℕ) {m n : ℕ} (α : Fin n → ℂ) (β : Fin m →
   simp
 
 /- English proof (translation)
-Rewrite using `[rsTermNM, if_pos (partVec_valid l)]`. Simplify using `[partVec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rsTermNM_partVec (q : ℕ) {m n : ℕ} (α : Fin n → ℂ) (β : Fin m → ℂ) (x : ℝ)
     (l : {l : Fin m → ℕ // Antitone l}) :
@@ -135,13 +133,13 @@ namespace GlobalTheory.RSnmEul
 open GlobalTheory.ZEul GlobalTheory.RSnmUnf
 
 /- English proof (translation)
-Use `set β' : Fin m → ℂˣ := fun j => Units.map (starRingEnd ℂ).toMonoidHom (β j) with hβ'`. Establish `hconj : ∀ l : Fin m → ℕ, schurAt l (fun j => (β' j : ℂ)) = conj (schurAt l fun j => (β j : ℂ))`. Introduce `l`. Rewrite using `[schurAt, schurAt, MvPolynomial.eval₂_comp_left, RingHom.ext_int ((starRingEnd ℂ).comp (Int.castRingHom ℂ)) (Int.castRingHom ℂ)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hpad : ∀ l : Fin m → ℕ, padTo hmn l = padNat (n` using `n) l := fun l => rfl`. Establish `hm : (Finset.univ.val.map β).map (Units.map (starRingEnd ℂ).toMonoidHom) = Finset.univ.val.map β'` using `Multiset.map_map _ _ _`. Rewrite using `[hm]`. Establish `hs' : Summable fun l : {l : Fin m → ℕ // Antitone l} => ‖schurAt (padTo hmn l.1) (fun i => (α i : ℂ)) * schurAt l.1 (fun j => (β' j : ℂ))‖ * ‖(q : ℂ) ^ (-(x : ℂ))‖ ^ (∑ i, l.1 i)`. Use `(hs.comp_injective partVec_injective).congr fun l => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp, rsTermNM_partVec, hpad, hconj, norm_mul, norm_pow, Complex.norm_conj]`. Establish `hc` using `cauchy_locL hmn α β' q (x : ℂ) hs'`. Rewrite using `[← (partVec_injective (n := m)).hasSum_iff]`. Use `hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp, rsTermNM_partVec, hpad, hconj]`. Introduce `v hv`. Distinguish the cases in `hval : (∀ j, 0 ≤ v j) ∧ Antitone v`. Conclude with `absurd (mem_range_partVec hval) hv`. Rewrite using `[rsTermNM, if_neg hval]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_rsTermNM_local (q : ℕ) {m n : ℕ} (hmn : m ≤ n) (α : Fin n → ℂˣ) (β : Fin m → ℂˣ) (x : ℝ)
     (hs : Summable fun v : Fin m → ℤ => ‖rsTermNM q (fun j => (α j : ℂ)) (fun j => (β j : ℂ)) x v‖) :
@@ -174,13 +172,11 @@ theorem hasSum_rsTermNM_local (q : ℕ) {m n : ℕ} (hmn : m ≤ n) (α : Fin n 
     · rw [rsTermNM, if_neg hval]
 
 /- English proof (translation)
-Introduce `I q n m hmn α β x _ hq hα hβ`. Use `set f : I → (Fin m → ℤ) → ℂ := fun i v => rsTermNM (q i) (fun j => (α i j : ℂ)) (fun j => (β i j : ℂ)) x v with hfdef`. Establish `hf0 : ∀ i, f i 0 = 1` using `fun i => rsTermNM_zero _ _ _ _`. Establish `hA` using `summable_sqTerm q (fun i j => (α i j : ℂ)) x hα`. Establish `hB` using `summable_sqTerm q (fun i j => (β i j : ℂ)) x hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective fun p : I × {v : Fin m → ℤ // v ≠ 0} => ((p.1, ⟨padInt hmn p.2.1, fun h0 => p.2.2 (padInt_injective hmn (h0.trans (padInt_zero hmn).symm))⟩) : I × {v : Fin n → ℤ // v ≠ 0})`. Introduce `p p' hp`. Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at hp`. Conclude with `Prod.ext hp.1 (Subtype.ext (padInt_injective hmn hp.2))`. Establish `hA'` using `hA.comp_injective hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsum : Summable fun p : I × {v : Fin m → ℤ // v ≠ 0} => ‖f p.1 p.2‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun p => by`. Simplify `norm_rsTermNM_le (q p.1) (by have := hq p.1; omega) hmn (fun j => (α p.1 j : ℂ)) (fun j => (β p.1 j : ℂ)) x p.2.1) ((hA'.add hB).div_const 2)` using `only [hfdef, Function.comp_apply]`. Take `⟨hN, hP, -⟩` from `GlobalTheory.EulerSum.euler_product_intVec m f hf0 hsum`. Establish `hloc : ∀ i, ∑' v, f i v = locL (q i) (Finset.univ.val.map (α i)) ((Finset.univ.val.map (β i)).map (Units.map (starRingEnd ℂ).toMonoidHom)) (x : ℂ)` using `fun i => (hasSum_rsTermNM_local (q i) hmn (α i) (β i) x (GlobalTheory.EulerSum.summable_norm_local f hsum i)).tsum_eq`. Use `⟨∑' l : I →₀ (Fin m → ℤ), l.prod f, ?_, hN.of_norm.hasSum⟩` and prove the remaining obligations.
-
-Simplify `hP` using `only [hloc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem euler_rsTermNM : ∀ {I : Type} (q : I → ℕ) {n m : ℕ}, m ≤ n → ∀ (α : I → Fin n → ℂˣ) (β : I → Fin m → ℂˣ) (x : ℝ), 1 < x →
     (∀ i, 2 ≤ q i) → GlobalTheory.RSPole.eulD q (fun i j => (α i j : ℂ)) x ≠ ⊤ → GlobalTheory.RSPole.eulD q (fun i j => (β i j : ℂ)) x ≠ ⊤ →

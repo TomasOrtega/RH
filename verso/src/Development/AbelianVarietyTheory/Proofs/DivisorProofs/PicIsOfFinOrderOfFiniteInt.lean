@@ -7,7 +7,7 @@ open NumberField
 namespace GlobalTheory.PicDom
 
 /- English proof (translation)
-Establish `h` using `Ideal.comap_ne_bot_of_integral_mem hd (Ideal.mem_span_singleton_self d) (Algebra.IsIntegral.isIntegral (R := ℤ) d)`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Conclude with `⟨a, ha0, by simpa using ha⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_mem_span {B : Type} [CommRing B] [IsDomain B] [Algebra.IsIntegral ℤ B] {d : B} (hd : d ≠ 0) :
     ∃ a : ℤ, a ≠ 0 ∧ (a : B) ∈ Ideal.span {d} := by
@@ -17,9 +17,9 @@ theorem exists_int_mem_span {B : Type} [CommRing B] [IsDomain B] [Algebra.IsInte
   exact ⟨a, ha0, by simpa using ha⟩
 
 /- English proof (translation)
-Establish `hp : ringChar B ≠ 0`. Introduce `h`. Apply `hc` to reduce the goal to its premises. Establish `: CharP B 0` using `h ▸ ringChar.charP B`. Conclude with `CharP.charP_to_charZero B`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : Finite B` using `Module.finite_of_fg_torsion B fun x => ⟨⟨(ringChar B : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hp)⟩, by`. Express the relevant statement in the definitionally equal form `((ringChar B : ℤ)) • x = 0`. Rewrite using `[zsmul_eq_mul, Int.cast_natCast, ringChar.Nat.cast_ringChar, zero_mul]⟩`. Conclude with `isOfFinOrder_of_finite M`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOfFinOrder_of_not_charZero (B : Type) [CommRing B] [IsDomain B] [Module.Finite ℤ B]
     (hc : ¬ CharZero B) (M : CommRing.Pic B) : IsOfFinOrder M := by
@@ -37,19 +37,17 @@ theorem isOfFinOrder_of_not_charZero (B : Type) [CommRing B] [IsDomain B] [Modul
 variable (B : Type) [CommRing B] [IsDomain B] [Module.Finite ℤ B] [CharZero B]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ) (M := B)`. Establish `key : ∀ y : B, algebraMap B K y ∈ Submodule.span ℚ (algebraMap B K '' (s : Set B))` using `fun y => by`. Establish `hy : y ∈ Submodule.span ℤ (s : Set B)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_zsmul]`. Conclude with `zsmul_mem hx a`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Module.finite_def.2 ⟨s.image (algebraMap B K), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image, eq_top_iff]`. Introduce `x _`. Take `⟨b, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := B) x`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha0, ha⟩` from `exists_int_mem_span hd0`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 ha`. Establish `hdK : algebraMap B K d ≠ 0`. Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective B K)]` and apply the resulting hypothesis. Establish `haK : (a : K) ≠ 0` using `by exact_mod_cast ha0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: algebraMap B K b / algebraMap B K d = ((a : ℚ)⁻¹) • algebraMap B K (c * b)`. Rewrite using `[Rat.smul_def, map_mul, Rat.cast_inv, Rat.cast_intCast]`. Establish `h2 : (a : K) = algebraMap B K c * algebraMap B K d`. Rewrite using `[← map_mul, hc, map_intCast]`. Establish `hcK : algebraMap B K c ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `haK` to reduce the goal to its premises. Rewrite using `[h2, h, zero_mul]`. Rewrite using `[h2]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (key _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_of_isFractionRing (K : Type) [Field K] [Algebra B K] [IsFractionRing B K] [CharZero K] :
     FiniteDimensional ℚ K := by
@@ -92,23 +90,21 @@ namespace GlobalTheory.PicDom
 variable (B : Type) [CommRing B] [IsDomain B] [Module.Finite ℤ B] [CharZero B]
 
 /- English proof (translation)
-Set `φ : B →+* 𝓞 K` to `{ toFun := fun b => ⟨algebraMap B K b, (Algebra.IsIntegral.isIntegral (R := ℤ) b).algebraMap⟩ map_zero' := by ext; simp only [RingOfIntegers.map_mk, map_zero] map_one' := by ext; simp only [RingOfIntegers.map_mk, map_one] map_add' := fun x y => by ext; simp only [RingOfIntegers.m …`. Establish `hφ : ∀ b, ((φ b : 𝓞 K) : K) = algebraMap B K b` using `fun b => rfl`. Establish `hinj : Function.Injective φ` using `fun x y h => IsFractionRing.injective B K (by`. Rewrite using `[← hφ, ← hφ, h])`. Establish `hmul : ∀ ω : 𝓞 K, ∃ a : ℤ, a ≠ 0 ∧ (a : 𝓞 K) * ω ∈ φ.range` using `fun ω => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨b, d, hd, hbd⟩` from `IsFractionRing.div_surjective (A := B) (ω : K)`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Take `⟨a, ha0, ha⟩` from `exists_int_mem_span hd0`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 ha`. Establish `hdK : algebraMap B K d ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective B K)]` and apply the resulting hypothesis. Use `⟨a, ha0, c * b, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hφ, RingOfIntegers.coe_eq_algebraMap, map_mul, map_mul, map_intCast, ← RingOfIntegers.coe_eq_algebraMap, ← hbd]`. Establish `h2 : (a : K) = algebraMap B K c * algebraMap B K d`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, hc, map_intCast]`. Rewrite using `[h2, mul_assoc]`. Use `congr 1`. Conclude with `(mul_div_cancel₀ _ hdK).symm`. Use `choose a ha0 ha using hmul`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `Module.Finite.fg_top (R := ℤ) (M := 𝓞 K)`. Use `set N : ℤ := ∏ ω ∈ t, a ω`. Establish `hN0 : N ≠ 0` using `Finset.prod_ne_zero_iff.2 fun ω _ => ha0 ω`. Establish `hNmem : ∀ x : 𝓞 K, (N : 𝓞 K) * x ∈ φ.range` using `fun x => by`. Establish `hx : x ∈ Submodule.span ℤ (t : Set (𝓞 K))` using `ht ▸ Submodule.mem_top`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem ω hω => show ((∏ ω ∈ t, a ω : ℤ) : 𝓞 K) * ω ∈ φ.range`. Rewrite using `[← Finset.mul_prod_erase t a (Finset.mem_coe.1 hω), Int.cast_mul, mul_comm (a ω : 𝓞 K), mul_assoc]`. Conclude with `mul_mem (intCast_mem _ _) (ha ω)`. Consider the case `zero => rw [mul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul k x _ hx => rw [mul_smul_comm]`. Conclude with `zsmul_mem hx k`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hn0 : N.natAbs ≠ 0` using `Int.natAbs_ne_zero.2 hN0`. Establish `hcond : ∀ x : 𝓞 K, ((N.natAbs : ℕ) : 𝓞 K) * x ∈ φ.range` using `fun x => by`. Break down `Int.natAbs_eq N with h | h` into its components or cases. Use `hNmem x` as an intermediate fact. Rewrite `this` using `[h, Int.cast_natCast]`. Then use the resulting hypothesis.
-
-Use `neg_mem (hNmem x)` as an intermediate fact. Rewrite `this` using `[h, Int.cast_neg, Int.cast_natCast, neg_mul, neg_neg]`. Then use the resulting hypothesis. Use `haveI : Finite (CommRing.Pic (𝓞 K)) := Finite.of_equiv _ (ClassGroup.equivPic (𝓞 K)).toEquiv`. Conclude with `GlobalTheory.T.isOfFinOrder_of_isOfFinOrder_pic_mapRingHom B (𝓞 K) φ N.natAbs hinj hn0 hcond M (isOfFinOrder_of_finite _)`.
+A detailed English derivation is pending.
 -/
 theorem isOfFinOrder_of_numberField (K : Type) [Field K] [Algebra B K] [IsFractionRing B K] [NumberField K]
     (M : CommRing.Pic B) : IsOfFinOrder M := by
@@ -163,7 +159,7 @@ theorem isOfFinOrder_of_numberField (K : Type) [Field K] [Algebra B K] [IsFracti
   exact GlobalTheory.T.isOfFinOrder_of_isOfFinOrder_pic_mapRingHom B (𝓞 K) φ N.natAbs hinj hn0 hcond M (isOfFinOrder_of_finite _)
 
 /- English proof (translation)
-Use `haveI : CharZero (FractionRing B) := IsFractionRing.charZero_of_isFractionRing B`. Use `haveI : FiniteDimensional ℚ (FractionRing B) := finiteDimensional_of_isFractionRing B (FractionRing B)`. Use `haveI : NumberField (FractionRing B) := ⟨⟩`. Conclude with `isOfFinOrder_of_numberField B (FractionRing B) M`.
+A detailed English derivation is pending.
 -/
 theorem isOfFinOrder_of_charZero (M : CommRing.Pic B) : IsOfFinOrder M := by
   haveI : CharZero (FractionRing B) := IsFractionRing.charZero_of_isFractionRing B
@@ -174,7 +170,7 @@ theorem isOfFinOrder_of_charZero (M : CommRing.Pic B) : IsOfFinOrder M := by
 end GlobalTheory.PicDom
 
 /- English proof (translation)
-Introduce `B _ _ _ M`. Distinguish the cases in `hc : CharZero B`. Conclude with `GlobalTheory.PicDom.isOfFinOrder_of_charZero B M`. Conclude with `GlobalTheory.PicDom.isOfFinOrder_of_not_charZero B hc M`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.pic_isOfFinOrder_of_finite_int : ∀ (B : Type) [CommRing B] [IsDomain B] [Module.Finite ℤ B]
     (M : CommRing.Pic B), IsOfFinOrder M := by

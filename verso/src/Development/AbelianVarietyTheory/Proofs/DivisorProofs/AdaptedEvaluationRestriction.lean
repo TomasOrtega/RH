@@ -17,11 +17,11 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ThKExpandX
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ hev n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' hev' hB hXW`. Take `⟨r, s, r', s', hX, hW⟩` from `hXW`. Establish `hW₁` using `GlobalTheory.ThK.KernelZero.isSkew_complement F E σ B hB d d₁ W W₁ H' i₀ i₁ r' s' hW hH'`. Establish `hXW₁ : ∃ r s r' s' : ℕ, X.IsHerm σ B r s ∧ W₁.IsSkew σ B r' s'` using `⟨r, s, r' - 1, s' - 1, hX, hW₁⟩`. Establish `hl` using `GlobalTheory.T.adapted_mixed_model_intertwines hKP F E σ B n d₁ X W₁ M₁ hM₁ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' hev' hB hXW₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `GlobalTheory.T.additive_homogeneous_functional_linear hKP F E σ B n d₁ X W₁ M₁ hB hM₁ hXW₁ (fun φ => (∑' w : Fin d₁ → E, thetaSum F (e' (M₁.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (φ))))) hl.1 hl.2 (GlobalTheory.T.adapted_mixed_model_support hKP F E σ B n d₁ X W₁ M₁ …`. Take `⟨φ₀, hφ₀, hne⟩` from `GlobalTheory.T.adapted_mixed_model_vanishing hKP F E σ B n d₁ X W₁ M₁ hM₁ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' hev' hB hXW₁`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (by simpa using hc φ₀ hφ₀)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c⁻¹, inv_ne_zero hc0, fun φ hφ => ⟨GlobalTheory.T.adapted_mixed_model_evaluation hKP F E σ B n d₁ X W₁ M₁ hM₁ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' hev' hB hXW₁ φ hφ, ?_⟩⟩` and prove the remaining obligations. Use `hc φ hφ` as an intermediate fact. Use `beta_reduce at this`. Rewrite using `[this, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaSum_eq_mixedX : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

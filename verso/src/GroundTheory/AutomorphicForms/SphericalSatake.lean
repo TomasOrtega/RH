@@ -15,7 +15,7 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[torusPow, torusPow, torusPow, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[_root_.zpow_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem torusPow_add (l l' : Fin n → ℤ) :
     torusPow F n (l + l') = torusPow F n l * torusPow F n l' := by
@@ -25,7 +25,7 @@ theorem torusPow_add (l l' : Fin n → ℤ) :
   simp [_root_.zpow_add]
 
 /- English proof (translation)
-Rewrite using `[torusPow, ← map_one (diagGL F n)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem torusPow_zero : torusPow F n 0 = 1 := by
   rw [torusPow, ← map_one (diagGL F n)]
@@ -34,22 +34,22 @@ theorem torusPow_zero : torusPow F n 0 = 1 := by
   simp
 
 /- English proof (translation)
-Rewrite using `[← map_mul, ← map_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem diagGL_mul_comm (a b : Fin n → Fˣ) : diagGL F n a * diagGL F n b = diagGL F n b * diagGL F n a := by
   rw [← map_mul, ← map_mul, mul_comm]
 
 /- English proof (translation)
-Simplify `iwasawaExponent_eq F n (unipotent F n).one_mem (integralGL F n).one_mem (l := (0 : Fin n → ℤ))` using `[torusPow_zero]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem iwasawaExponent_one : iwasawaExponent F n (1 : GL (Fin n) F) = 0 := by
   simpa [torusPow_zero] using
     iwasawaExponent_eq F n (unipotent F n).one_mem (integralGL F n).one_mem (l := (0 : Fin n → ℤ))
 
 /- English proof (translation)
-Use `choose l e he using fun i => exists_zpow_mul_unit F (d i).ne_zero`. Use `⟨l, e, ?_⟩` and prove the remaining obligations. Rewrite using `[torusPow, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using `[he i, Units.val_zpow_eq_zpow_val, Units.coe_map]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_diagGL_eq_torusPow_mul (d : Fin n → Fˣ) :
     ∃ l : Fin n → ℤ, ∃ e : Fin n → (𝒪[F])ˣ,
@@ -66,7 +66,7 @@ def diagUnits {b : GL (Fin n) F} (hb : b ∈ borel F n) : Fin n → Fˣ :=
   fun i => Units.mk0 (b i i) (apply_self_ne_zero_of_mem_borel F n hb i)
 
 /- English proof (translation)
-Establish `hDinv : (diagGL F n (diagUnits hb))⁻¹ ∈ borel F n` using `(borel F n).inv_mem (diagGL_mem_borel F n _)`. Use `⟨(borel F n).mul_mem hb hDinv, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_apply_self_of_mem_borel F n hb hDinv, ← map_inv, coe_diagGL, diagonal_apply_eq]`. Simplify using `[diagUnits, apply_self_ne_zero_of_mem_borel F n hb i]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_inv_diagUnits_mem_unipotent {b : GL (Fin n) F} (hb : b ∈ borel F n) :
     b * (diagGL F n (diagUnits hb))⁻¹ ∈ unipotent F n := by
@@ -77,15 +77,13 @@ theorem mul_inv_diagUnits_mem_unipotent {b : GL (Fin n) F} (hb : b ∈ borel F n
   simp [diagUnits, apply_self_ne_zero_of_mem_borel F n hb i]
 
 /- English proof (translation)
-Take `⟨l, e, hde⟩` from `exists_diagGL_eq_torusPow_mul (diagUnits hb)`. Use `set D := diagGL F n (diagUnits hb)`. Use `set E : GL (Fin n) F := diagGL F n fun i => Units.map (𝒪[F]).subtype.toMonoidHom (e i)`. Establish `hE : E ∈ integralGL F n` using `diagGL_map_mem_integralGL F n e`. Establish `hu` using `mul_inv_diagUnits_mem_unipotent hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ g : GL (Fin n) F, iwasawaExponent F n (b * g) = l + iwasawaExponent F n g`. Introduce `g`. Take `⟨u', hu', k', hk', hg⟩` from `exists_eq_mul_torusPow_iwasawaExponent F n g`. Use `set lg := iwasawaExponent F n g with hlg`. Establish `hcomm : E * torusPow F n lg = torusPow F n lg * E` using `diagGL_mul_comm _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD : D⁻¹ * torusPow F n l = E⁻¹`. Rewrite using `[hde, _root_.mul_inv_rev, inv_mul_cancel_right]`. Establish `: b * g = (b * D⁻¹ * (D * u' * D⁻¹)) * torusPow F n (l + lg) * (E * k')`. Rewrite using `[torusPow_add]`. Use `conv_lhs => rw [hg]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hD]`. Use `_ = _ := by group`. Rewrite using `[this]`. Use `iwasawaExponent_eq F n ((unipotent F n).mul_mem hu ?_) ((integralGL F n).mul_mem hE hk')` and prove the remaining obligations.
-
-Conclude with `diagGL_mul_mul_inv_mem_unipotent F n hu' _`. Establish `hb1` using `key 1`. Rewrite `hb1` using `[mul_one, iwasawaExponent_one, add_zero]`. Rewrite using `[key, hb1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawaExponent_mul_of_mem_borel {b : GL (Fin n) F} (hb : b ∈ borel F n)
     (g : GL (Fin n) F) :
@@ -128,7 +126,7 @@ def unramifiedChar (w : Fin n → ℂˣ) : levi F n (id : Fin n → Fin n) →* 
     ring
 
 /- English proof (translation)
-Establish `h` using `sqrtModular_mul_invSqrtModular p`. Establish `hs : sqrtModular F n id p = 1` using `by show ((NNReal.sqrt (Measure.modularCharacter p) : ℝ) : ℂ) = 1`. Rewrite using `[Measures.modularCharacter_eq_one_of_mem_integralGL p hp]`. Simplify using the standard rewrite rules. Rewrite `h` using `[hs, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem invSqrtModular_eq_one {p : blockUpper F n (id : Fin n → Fin n)}
     (hp : (p : GL (Fin n) F) ∈ integralGL F n) : invSqrtModular F n id p = 1 := by
@@ -140,7 +138,7 @@ theorem invSqrtModular_eq_one {p : blockUpper F n (id : Fin n → Fin n)}
   rwa [hs, one_mul] at h
 
 /- English proof (translation)
-Introduce `t ht`. Use `show monomialChar (iwasawaExponent F n t) w * invSqrtModular F n id (leviIncl t) = 1`. Establish `h0 : iwasawaExponent F n (t : GL (Fin n) F) = 0`. Simplify `iwasawaExponent_mul_of_mem_integralGL F n 1 ht` using `[iwasawaExponent_one]`. Rewrite using `[h0, monomialChar_zero, invSqrtModular_eq_one ht, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnramified_unramifiedChar (w : Fin n → ℂˣ) : IsUnramified (unramifiedChar (F := F) w) := by
   intro t ht
@@ -150,11 +148,11 @@ theorem isUnramified_unramifiedChar (w : Fin n → ℂˣ) : IsUnramified (unrami
   rw [h0, monomialChar_zero, invSqrtModular_eq_one ht, one_mul]
 
 /- English proof (translation)
-Establish `hb : (b : GL (Fin n) F) ∈ borel F n` using `b.2`. Establish `hD : ((leviProj F n id b : levi F n (id : Fin n → Fin n)) : GL (Fin n) F) = diagGL F n (diagUnits hb)`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[coe_diagGL, leviProj_apply]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using `[diagUnits]`. Simplify using `[hij, diagonal_apply_ne _ hij]`. Rewrite using `[hD]`. Use `conv_rhs => rw [show (b : GL (Fin n) F) = (b * (diagGL F n (diagUnits hb))⁻¹) * diagGL F n (diagUnits hb) by group]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iwasawaExponent_mul_of_mem_unipotent F n (mul_inv_diagUnits_mem_unipotent hb)]`.
+A detailed English derivation is pending.
 -/
 theorem iwasawaExponent_leviProj (b : blockUpper F n (id : Fin n → Fin n)) :
     iwasawaExponent F n ((leviProj F n id b : levi F n (id : Fin n → Fin n)) : GL (Fin n) F) =
@@ -174,9 +172,9 @@ theorem iwasawaExponent_leviProj (b : blockUpper F n (id : Fin n → Fin n)) :
   rw [iwasawaExponent_mul_of_mem_unipotent F n (mul_inv_diagUnits_mem_unipotent hb)]
 
 /- English proof (translation)
-Rewrite using `[borelChar_apply]`. Express the relevant statement in the definitionally equal form `sqrtModular F n id b * (monomialChar (iwasawaExponent F n ((leviProj F n id b : levi F n (id : Fin n → Fin n)) : GL (Fin n) F)) w * invSqrtModular F n id (leviIncl (leviProj F n id b))) = _`. Rewrite using `[iwasawaExponent_leviProj]`. Establish `: invSqrtModular F n id (leviIncl (leviProj F n id b)) = invSqrtModular F n id b` using `by show (sqrtModular F n id (leviIncl (leviProj F n id b)))⁻¹ = (sqrtModular F n id b)⁻¹`. Rewrite using `[sqrtModular_leviProj]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mul_left_comm, sqrtModular_mul_invSqrtModular, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem borelChar_unramifiedChar (w : Fin n → ℂˣ) (b : blockUpper F n (id : Fin n → Fin n)) :
     borelChar (unramifiedChar w) b = monomialChar (iwasawaExponent F n (b : GL (Fin n) F)) w := by
@@ -191,7 +189,7 @@ theorem borelChar_unramifiedChar (w : Fin n → ℂˣ) (b : blockUpper F n (id :
   rw [this, mul_left_comm, sqrtModular_mul_invSqrtModular, mul_one]
 
 /- English proof (translation)
-Take `⟨b, k, hk, rfl⟩` from `exists_borel_mul g`. Rewrite using `[sphericalFun_mul (isUnramified_unramifiedChar w) b hk, borelChar_unramifiedChar, iwasawaExponent_mul_of_mem_integralGL F n _ hk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sphericalFun_unramifiedChar (w : Fin n → ℂˣ) (g : GL (Fin n) F) :
     sphericalFun (unramifiedChar w) g = monomialChar (iwasawaExponent F n g) w := by
@@ -211,7 +209,7 @@ def cosetSupport (h : SphericalHecke μ (F := F) (n := n)) :
   (finite_image_mk_tsupport (integralOpen F n) (h : HeckeAlgebra μ).mem.2).toFinset
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Conclude with `hx ((Set.Finite.mem_toFinset _).mpr ⟨x.out, subset_tsupport _ h0, QuotientGroup.out_eq' x⟩)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem apply_out_eq_zero {h : SphericalHecke μ (F := F) (n := n)}
     {x : GL (Fin n) F ⧸ integralGL F n} (hx : x ∉ cosetSupport h) :
@@ -220,11 +218,11 @@ theorem apply_out_eq_zero {h : SphericalHecke μ (F := F) (n := n)}
   exact hx ((Set.Finite.mem_toFinset _).mpr ⟨x.out, subset_tsupport _ h0, QuotientGroup.out_eq' x⟩)
 
 /- English proof (translation)
-Establish `hf : HasCompactSupport fun g => (h : HeckeAlgebra μ) g * sphericalFun (unramifiedChar w) g` using `(h : HeckeAlgebra μ).mem.2.mul_right`. Establish `hK : ∀ g, ∀ k ∈ integralOpen F n, (fun g => (h : HeckeAlgebra μ) g * sphericalFun (unramifiedChar w) g) (g * k) = (fun g => (h : HeckeAlgebra μ) g * sphericalFun (unramifiedChar w) g) g`. Introduce `g k hk`. Simplify using `only [sphericalFun_unramifiedChar, iwasawaExponent_mul_of_mem_integralGL F n g hk]`. Rewrite using `[(HeckeAlgebraLevel.val_mem _ _ h k hk g).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sphericalEigen, integral_eq_smul_finsum_coset μ (integralOpen F n) (isCompact_integralGL F n) hf hK, Complex.real_smul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(∑ᶠ x : GL (Fin n) F ⧸ integralGL F n, (h : HeckeAlgebra μ) x.out * sphericalFun (unramifiedChar w) x.out) = _`. Rewrite using `[finsum_eq_sum_of_support_subset (s := cosetSupport h)]`. Simplify using `only [sphericalFun_unramifiedChar]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hxs`. Conclude with `hx (by simp [apply_out_eq_zero hxs])`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem sphericalEigen_unramifiedChar (w : Fin n → ℂˣ) (h : SphericalHecke μ (F := F) (n := n)) :
     sphericalEigen (unramifiedChar w) μ h = (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) *
@@ -256,9 +254,9 @@ def satake (h : SphericalHecke μ (F := F) (n := n)) : LaurentRing n :=
     ∑ x ∈ cosetSupport h, single (iwasawaExponent F n x.out) ((h : HeckeAlgebra μ) x.out)
 
 /- English proof (translation)
-Rewrite using `[satake]`. Use `congr 1`. Rewrite using `[Finset.sum_subset (Finset.subset_union_left (s₂ := S)) fun x _ hx => by`. Rewrite using `[apply_out_eq_zero hx, AddMonoidAlgebra.single_zero]]`. Conclude with `(Finset.sum_subset (Finset.subset_union_right (s₁ := cosetSupport h)) fun x _ hx => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS x hx, AddMonoidAlgebra.single_zero]).symm`.
+A detailed English derivation is pending.
 -/
 theorem satake_eq_sum (h : SphericalHecke μ (F := F) (n := n))
     (S : Finset (GL (Fin n) F ⧸ integralGL F n)) (hS : ∀ x ∉ S, (h : HeckeAlgebra μ) x.out = 0) :
@@ -273,7 +271,7 @@ theorem satake_eq_sum (h : SphericalHecke μ (F := F) (n := n))
       rw [hS x hx, AddMonoidAlgebra.single_zero]).symm
 
 /- English proof (translation)
-Rewrite using `[sphericalCharacter_apply, satake, map_smul, map_sum, sphericalEigen_unramifiedChar, smul_eq_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[evalAt_single]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalAt_satake (w : Fin n → ℂˣ) (h : SphericalHecke μ (F := F) (n := n)) :
     evalAt w (satake μ h) = sphericalCharacter μ (isUnramified_unramifiedChar w) h := by
@@ -299,7 +297,7 @@ Both sides reduce to the same expression.
 theorem satakeHom_apply (h : SphericalHecke μ (F := F) (n := n)) : satakeHom μ h = satake μ h := rfl
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun h => evalAt_satake w h`.
+A detailed English derivation is pending.
 -/
 theorem evalAt_comp_satakeHom (w : Fin n → ℂˣ) :
     (evalAt w).comp (satakeHom μ) = sphericalCharacter μ (isUnramified_unramifiedChar (F := F) w) :=

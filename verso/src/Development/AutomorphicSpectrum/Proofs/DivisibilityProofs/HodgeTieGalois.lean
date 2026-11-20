@@ -36,15 +36,15 @@ end GlobalTheory.CompanionTheory.Ar.Cmp.HodgeA
 
 open GlobalTheory.CompanionTheory.Ar.Cmp.HodgeA in
 /- English proof (translation)
-Introduce `hCmp hTw II hII E _ _ _ H D l Xo c O _ β Y _ T S n tie hGal hMono hConv hR hPerm`. Use `GlobalTheory.T.tower_symmetry_limit_compat (CMType H) (D.p + D.q) T II (relabGroup H) hConv ?_ ?_ hII.1` and prove the remaining obligations. Introduce `τ τ'`. Take `⟨g, hg, -⟩` from `GlobalTheory.T.existsUnique_host_aut_embedding E H τ.1 τ'.1 τ.2 τ'.2`. Take `⟨π, hπ, -⟩` from `GlobalTheory.T.cm_type_host_aut_permutation E H l c g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨π, ⟨g, hπ⟩, Subtype.ext ((hπ τ).trans hg.symm)⟩`. Introduce `s hs B _`. Take `⟨g₀, hg₀⟩` from `hs`. Establish `hinv : ∀ τ, (s⁻¹ τ).1 = τ.1.comp g₀.symm.σ.toRingHom`. Introduce `τ`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `hg₀ (s⁻¹ τ)`. Rewrite `e` using `[show s (s⁻¹ τ) = τ from Equiv.apply_symm_apply s τ]`. Rewrite using `[e]`. Use extensionality with `x`. Use `show _ = (s⁻¹ τ).1 (g₀.σ (g₀.σ.symm x))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingEquiv.apply_symm_apply]`. Take `⟨⟨a⟩, hA⟩` from `hTw E H D l Xo g₀.symm`. Take `⟨h, Φ, hΦ, ⟨m⟩⟩` from `hA a`. Take `⟨πc, himg⟩` from `hPerm B Φ hΦ`. Use `⟨πc, fun k w => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key` using `hCmp II hII E H D l Xo c O β Y g₀.symm Φ m.toSABMap s⁻¹ (S B) n (T.M B k) (T.M B (πc k)) (tie B k) (tie B (πc k)) hMono hΦ hinv (himg k) (fun p hp => hR B k (πc k) p hp) (fun j => (s (w j).1, (w j).2))`. Establish `e2 : ∀ x, s⁻¹ (s x) = x` using `fun x => Equiv.symm_apply_apply s x`. Simplify `key` using `only [e2, Prod.mk.eta]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Cmp.HodgeA.propA_of_hodgeTower : CmpPair → TwistAut → ∀ (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (D.p + D.q)) (S : ℕ → Finset ℕ) (n : ℕ) (tie : ∀ B k, HodgeTie Y (S B) n (T.M B k)), IsGalois ℚ E → Mono (spMap β) → T.Conv II → (∀ B k k', ∀ p ∈ S B, (tie B k').A.R p = (tie B k).A.R p) → (∀ (B : ℕ) (Φ : Xo.X ≅ Xo.X), Φ.hom ≫ Xo.s = Xo.s → ∃ π : Equiv.Perm T.Comp, ∀ k, IsImageCpt Φ (tie B k).A (tie B (π k)).A) → T.PropA II := by
   intro hCmp hTw II hII E _ _ _ H D l Xo c O _ β Y _ T S n tie hGal hMono hConv hR hPerm

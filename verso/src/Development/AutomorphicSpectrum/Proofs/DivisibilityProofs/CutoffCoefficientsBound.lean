@@ -13,7 +13,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Rewrite using `[← Fintype.card_subtype]`. Rewrite using `[Fintype.card_congr (show {i : Fin N // (i : ℕ) < j} ≃ Fin j from { toFun := fun x => ⟨x.1, x.2⟩ invFun := fun y => ⟨⟨y.1, lt_of_lt_of_le y.2 hj⟩, y.2⟩ left_inv := fun x => rfl right_inv := fun y => rfl })]`. Conclude with `Fintype.card_fin j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_lt_lemma {N j : ℕ} (hj : j ≤ N) :
     (Finset.univ.filter fun i : Fin N => (i : ℕ) < j).card = j := by
@@ -26,9 +26,9 @@ private theorem card_lt_lemma {N j : ℕ} (hj : j ≤ N) :
   exact Fintype.card_fin j
 
 /- English proof (translation)
-Establish `hp : (pkLow j τ 0 : RP Ψ N) = C (j : ℝ)`. Unfold `pkLow`. Simplify using `only [pow_zero, Finset.sum_const, card_lt_lemma hj, nsmul_eq_mul, mul_one]`. Conclude with `(map_natCast C j).symm`. Rewrite using `[hp]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `degFl`. Simplify using `only [coeff_C_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem flag_degree_low_zero {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (j : ℕ) (hj : j ≤ N) (τ : Ψ) (Q : RP Ψ N) :
     degFl (pkLow j τ 0 * Q) = j * degFl Q := by
@@ -43,23 +43,21 @@ theorem flag_degree_low_zero {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
   ring
 
 /- English proof (translation)
-Introduce `II Ψ _ _ N T _ hh frob C rd Lval B₀ A₀ b₀ hP hI9 hF hB hbad hId`. Unfold `RootTower.Proportional at hP`. Unfold `I9 at hI9`. Take `⟨τ⟩` from `‹Nonempty Ψ›`. Take `⟨⟨Q, hQ, hdeg⟩, -⟩` from `testForms_sh_tot Ψ N T.j τ T.j_pos T.j_lt`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hPP, hbd⟩` from `hF`. Establish `hN : 1 ≤ N` using `le_trans T.j_pos T.j_lt.le`. Establish `hQ' : Q.IsHomogeneous (dimFl Ψ N + 1 - 1)` using `by simpa using hQ`. Establish `hid` using `hId τ 1 le_rfl hN Q hQ'`. Establish `hhh : hh (pk τ 1 * Q) = 0` using `hI9.2.2 τ Q hQ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSh : ∀ σ, Sh T.j σ (pk τ 1 * Q) = if σ = τ then (T.j : ℝ) else 0`. Introduce `σ`. Rewrite using `[(RootFieldNumerics.shift_power_sum_mul Ψ N T.j τ σ 1 Q le_rfl).1]`. Simplify using `[flag_degree_low_zero T.j T.j_lt.le τ Q, hdeg]`. Establish `hTot : ∀ σ, Tot σ (pk τ 1 * Q) = if σ = τ then (N : ℝ) else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `σ`. Rewrite using `[(RootFieldNumerics.shift_power_sum_mul Ψ N T.j τ σ 1 Q le_rfl).2]`. Simplify using `[hdeg]`. Establish `hrest : restSum T.j T.bad frob B₀ τ 1 Q = 0`. Simplify using `[restSum, restTerm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hL : T.PPt II B₀ (pk τ 1 * Q) = ∑ c, h B₀ c τ * T.vol c`. Unfold `RootTower.PPt`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hPP B₀ (by omega) c τ Q hQ, hdeg, mul_one]`. Rewrite `hid` using `[hL, hhh, hrest]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hSh, hTot, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true] at hid`. Establish `hvol : 0 < T.volT` using `Finset.sum_pos (fun c _ => hP.1 c) Finset.univ_nonempty`. Establish `hv0 : T.volT ≠ 0` using `hvol.ne'`. Establish `key : (T.j : ℝ) * A₀ + N * b₀ = -(∑ c, h B₀ c τ * T.vol c) / T.volT`. Rewrite using `[hid]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, abs_div, abs_neg, abs_of_pos hvol, div_le_iff₀ hvol]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[abs_mul, abs_of_pos (hP.1 c)]`. Use `_ ≤ ∑ c, C * N * bigLam B₀ rd Lval * T.vol c := by`. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (hbd B₀ hB hbad c τ) (hP.1 c).le`. Use `_ = C * N * bigLam B₀ rd Lval * T.volT := by`.
-
-Rewrite using `[← Finset.mul_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem flat_85_bound : ∀ II : IntersectionSystem, ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N) [Nonempty Ψ] (hh : RP Ψ N →ₗ[ℝ] ℝ) (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (C rd Lval : ℝ) (B₀ : ℕ) (A₀ b₀ : ℝ), T.Proportional → I9 (Ψ := Ψ) (N := N) hh → T.PropF II C rd Lval → 128 ≤ B₀ → T.bad.card ≤ B₀ → T.IdentAt II hh frob B₀ A₀ b₀ → |T.j * A₀ + N * b₀| ≤ C * N * bigLam B₀ rd Lval := by
   intro II Ψ _ _ N T _ hh frob C rd Lval B₀ A₀ b₀ hP hI9 hF hB hbad hId

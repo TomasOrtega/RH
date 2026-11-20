@@ -27,7 +27,7 @@ def trivialGeoX {D : D7} {r j p : ℕ} (Lc : ModuliIntegralCharts.Loc D r j p) :
   isHT _ _ _ _ _ := False
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨trivialGeoX Lc⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_geometric_data (D : D7) {r j p : ℕ} (Lc : ModuliIntegralCharts.Loc D r j p) : Nonempty (LiftErrorLocal.GeoX Lc) := ⟨trivialGeoX Lc⟩
 
@@ -44,13 +44,13 @@ def trivialRun (D : D7) (B : WeightFamilies.Prov D) (j : ℕ) (ka : WeightFamili
   nus _ := 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨trivialRun D B j ⟨fun _ _ => 0, fun _ _ => 0, fun _ => antitone_const, fun _ => antitone_const, 0, ⟨0, rfl⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_run_data (D : D7) (B : WeightFamilies.Prov D) (j : ℕ) : Nonempty (LiftErrorLocal.Run D B j) :=
   ⟨trivialRun D B j ⟨fun _ _ => 0, fun _ _ => 0, fun _ => antitone_const, fun _ => antitone_const, 0, ⟨0, rfl⟩⟩⟩
 
 /- English proof (translation)
-Rewrite using `[D.val_nonneg_iff]`. Establish `h : D.what₂.OtoLL y ∈ integralClosure ℤ D.what₂.LL` using `(mem_integralClosure_iff _ _).2 (D.O_int y)`. Establish `e` using `(D.plEq w).valuation_of_algebraMap (K := D.what₂.LL) (⟨_, h⟩ : 𝓞 D.what₂.LL)`. Conclude with `e.le.trans (HeightOneSpectrum.intValuation_le_one _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_O_nonneg (D : D7) (w : D.what₂.places.Pl) (y : D.what₂.O) :
     0 ≤ D.what₂.places.val w (D.what₂.OtoLL y) := by
@@ -72,7 +72,7 @@ def laKIdeal {D : D7} (B : WeightFamilies.Prov D) (w : D.what₂.places.Pl) : Id
     exact hx.trans_le (le_add_of_nonneg_left (val_O_nonneg D w _))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_laKIdeal {D : D7} (B : WeightFamilies.Prov D) (w : D.what₂.places.Pl) (x : 𝓞 B.KO) :
     x ∈ laKIdeal B w ↔ 0 < D.what₂.places.val w (D.what₂.OtoLL (B.eO x)) := Iff.rfl
@@ -100,14 +100,14 @@ def laKOf {D : D7} (B : WeightFamilies.Prov D) (w : D.what₂.places.Pl) : Heigh
     exact (D.what₂.places.resChar_prime w).ne_zero hm
 
 /- English proof (translation)
-The claim follows from `mem_laKIdeal B w x`.
+A detailed English derivation is pending.
 -/
 theorem laKOf_def {D : D7} (B : WeightFamilies.Prov D) (w : D.what₂.places.Pl) (x : 𝓞 B.KO) :
     x ∈ (laKOf B w).asIdeal ↔ 0 < D.what₂.places.val w (D.what₂.OtoLL (B.eO x)) :=
   mem_laKIdeal B w x
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Conclude with `HeightOneSpectrum.ext (Ideal.ext fun x => (h w x).trans (laKOf_def B w x).symm)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem laK_unique {D : D7} (B : WeightFamilies.Prov D) (laK : D.what₂.places.Pl → HeightOneSpectrum (𝓞 B.KO))
     (h : ∀ w (x : 𝓞 B.KO), x ∈ (laK w).asIdeal ↔ 0 < D.what₂.places.val w (D.what₂.OtoLL (B.eO x))) :
@@ -180,7 +180,7 @@ def coreOfLoc {D : D7} {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) : Core D
   toFm_sup := X.toFm_sup
 
 /- English proof (translation)
-Take `⟨C⟩` from `(h : Nonempty (Core D nch))`. Conclude with `⟨locOfCore C fun N i => (h66 N i).some⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_local_data (D : D7) (nch : NChoice D) (h66 : ∀ (N : ℕ) (i : Fin 2), Nonempty (ModuliIntegralCharts.Loc D N N (D.host.g i)))
     (h : CoreHyp D nch) : Nonempty (LiftErrorLocal.Loc D nch) := by
@@ -188,7 +188,7 @@ theorem nonempty_local_data (D : D7) (nch : NChoice D) (h66 : ∀ (N : ℕ) (i :
   exact ⟨locOfCore C fun N i => (h66 N i).some⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨X⟩ => (⟨coreOfLoc X⟩ : Nonempty (Core D nch)), nonempty_local_data D nch h66⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_local_data_iff (D : D7) (nch : NChoice D)
     (h66 : ∀ (N : ℕ) (i : Fin 2), Nonempty (ModuliIntegralCharts.Loc D N N (D.host.g i))) :
@@ -196,9 +196,9 @@ theorem nonempty_local_data_iff (D : D7) (nch : NChoice D)
   ⟨fun ⟨X⟩ => (⟨coreOfLoc X⟩ : Nonempty (Core D nch)), nonempty_local_data D nch h66⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Take `⟨c, rfl⟩` from `hw`. Establish `h1' : (a : ℚ) < ((b + 1 : ℤ) : ℚ)` using `by push_cast; linarith`. Establish `h2' : (b : ℚ) < (c : ℚ)` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1'' : a < b + 1` using `by exact_mod_cast h1'`. Establish `h2'' : b < c` using `by exact_mod_cast h2'`. Establish `h3 : a + 1 ≤ c` using `by omega`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eventually_abs_le_half_add_of_doubling_bounds (x y w : ℚ) (hx : ∃ z : ℤ, x = z) (hy : ∃ z : ℤ, y = z + 1 / 2)
     (hw : ∃ z : ℤ, w = z) (h1 : x < y) (h2 : y < w) : x + 1 ≤ w := by
@@ -213,17 +213,17 @@ private theorem eventually_abs_le_half_add_of_doubling_bounds (x y w : ℚ) (hx 
   exact_mod_cast h3
 
 /- English proof (translation)
-Unfold `DV.sigPar`. Distinguish the cases in `h1 : i + 1 < D.R.k - 1`. Establish `h0 : i < D.R.k - 1` using `by omega`. Rewrite using `[dif_pos h1, dif_pos h0]`. Conclude with `eventually_abs_le_half_add_of_doubling_bounds ((D.hc τ).v ⟨i + 1, h1⟩) ((D.hc τ).u ⟨i + 1, by omega⟩) ((D.hc τ).v ⟨i, h0⟩) ((D.hc τ).v_int ⟨i + 1, h1⟩) ((D.hc τ).u_half ⟨i + 1, by omega⟩) ((D.hc τ).v_int ⟨i, h0⟩) ((D.hc τ).u_gt_v ⟨i + 1, h1⟩) ((D.hc τ).v_gt_u ⟨i, h0⟩)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : i < D.R.k - 1`. Establish `hb : i + 1 - (D.R.k - 1) < D.R.m` using `by omega`. Establish `hk : 0 < D.R.k` using `by omega`. Establish `hm : 0 < D.R.m` using `by omega`. Rewrite using `[dif_neg h1, dif_pos hb, dif_pos h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (⟨i + 1 - (D.R.k - 1), hb⟩ : Fin D.R.m) = ⟨0, hm⟩` using `Fin.ext (show i + 1 - (D.R.k - 1) = 0 by omega)`. Rewrite using `[e1]`. Establish `hu2 : (D.hc τ).u ⟨D.R.k - 1, by omega⟩ < (D.hc τ).v ⟨i, h0⟩`. Establish `h5` using `(D.hc τ).v_gt_u ⟨i, h0⟩`. Establish `e2 : (⟨D.R.k - 1, by omega⟩ : Fin D.R.k) = ⟨i + 1, by omega⟩` using `Fin.ext (show D.R.k - 1 = i + 1 by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `h5`. Take `⟨zb, hzb⟩` from `(D.hc τ).b_int ⟨0, hm⟩`. Conclude with `eventually_abs_le_half_add_of_doubling_bounds (-(D.hc τ).b ⟨0, hm⟩) ((D.hc τ).u ⟨D.R.k - 1, by omega⟩) ((D.hc τ).v ⟨i, h0⟩) ⟨-zb, by rw [hzb, Int.cast_neg]⟩ ((D.hc τ).u_half ⟨D.R.k - 1, by omega⟩) ((D.hc τ).v_int ⟨i, h0⟩) ((D.hc τ).u_last_gt hk hm) hu2`. Establish `hb1 : i + 1 - (D.R.k - 1) < D.R.m` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb0 : i - (D.R.k - 1) < D.R.m` using `by omega`. Rewrite using `[dif_neg h1, dif_pos hb1, dif_neg h0, dif_pos hb0]`. Establish `g1` using `(D.hc τ).gap_be ⟨i - (D.R.k - 1), hb0⟩`. Establish `g2 : ((D.R.t : ℚ) + 3) / 2 ≤ (D.hc τ).b ⟨i - (D.R.k - 1) + 1, by omega⟩ - (D.hc τ).e ⟨i - (D.R.k - 1), hb0⟩` using `(D.hc τ).gap_eb ⟨i - (D.R.k - 1), hb0⟩ (show i - (D.R.k - 1) + 1 < D.R.m by omega)`. Establish `e : (⟨i + 1 - (D.R.k - 1), hb1⟩ : Fin D.R.m) = ⟨i - (D.R.k - 1) + 1, by omega⟩` using `Fin.ext (show i + 1 - (D.R.k - 1) = i - (D.R.k - 1) + 1 by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[e]`. Establish `ht : (0 : ℚ) ≤ D.R.t` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem sigPar_step (D : D7) (τ : D.what₂.Tau) (i : ℕ) (hi : i + 1 < D.R.k - 1 + D.R.m) :
     DV.sigPar D τ (i + 1) + 1 ≤ DV.sigPar D τ i := by
@@ -266,7 +266,7 @@ theorem sigPar_step (D : D7) (τ : D.what₂.Tau) (i : ℕ) (hi : i + 1 < D.R.k 
       linarith
 
 /- English proof (translation)
-Establish `h` using `sigPar_step D τ i hi`. Unfold `DV.aPlusQ`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem aPlusQ_step (D : D7) (j : ℕ) (τ : D.what₂.Tau) (i : ℕ) (hi : i + 1 < D.R.k - 1 + D.R.m) :
     DV.aPlusQ D j τ (i + 1) ≤ DV.aPlusQ D j τ i := by
@@ -276,9 +276,7 @@ theorem aPlusQ_step (D : D7) (j : ℕ) (τ : D.what₂.Tau) (i : ℕ) (hi : i + 
   linarith
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Use `clear hab`. Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`.
-
-Conclude with `(aPlusQ_step D j τ (a + d) (by omega)).trans (ih (by omega))`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem aPlusQ_anti (D : D7) (j : ℕ) (τ : D.what₂.Tau) {a b : ℕ} (hab : a ≤ b) (hb : b < D.R.k - 1 + D.R.m) :
     DV.aPlusQ D j τ b ≤ DV.aPlusQ D j τ a := by
@@ -290,9 +288,9 @@ theorem aPlusQ_anti (D : D7) (j : ℕ) (τ : D.what₂.Tau) {a b : ℕ} (hab : a
     exact (aPlusQ_step D j τ (a + d) (by omega)).trans (ih (by omega))
 
 /- English proof (translation)
-Establish `h0 : j + c < D.R.m` using `by omega`. Unfold `DV.aMinusQ`. Rewrite using `[dif_pos h0, dif_pos hc]`. Establish `g1` using `(D.hc τ).gap_be ⟨j + c, h0⟩`. Establish `g2 : ((D.R.t : ℚ) + 3) / 2 ≤ (D.hc τ).b ⟨j + (c + 1), hc⟩ - (D.hc τ).e ⟨j + c, h0⟩` using `(D.hc τ).gap_eb ⟨j + c, h0⟩ (show j + c + 1 < D.R.m by omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : (0 : ℚ) ≤ D.R.t` using `Nat.cast_nonneg _`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem aMinusQ_step (D : D7) (j : ℕ) (τ : D.what₂.Tau) (c : ℕ) (hc : j + (c + 1) < D.R.m) :
     DV.aMinusQ D j τ c ≤ DV.aMinusQ D j τ (c + 1) := by
@@ -307,9 +305,7 @@ theorem aMinusQ_step (D : D7) (j : ℕ) (τ : D.what₂.Tau) (c : ℕ) (hc : j +
   linarith
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Use `clear hab`. Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`.
-
-Conclude with `(ih (by omega)).trans (aMinusQ_step D j τ (a + d) (by omega))`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem aMinusQ_mono (D : D7) (j : ℕ) (τ : D.what₂.Tau) {a b : ℕ} (hab : a ≤ b) (hb : j + b < D.R.m) :
     DV.aMinusQ D j τ a ≤ DV.aMinusQ D j τ b := by
@@ -321,39 +317,35 @@ theorem aMinusQ_mono (D : D7) (j : ℕ) (τ : D.what₂.Tau) {a b : ℕ} (hab : 
     exact (ih (by omega)).trans (aMinusQ_step D j τ (a + d) (by omega))
 
 /- English proof (translation)
-Establish `hk3` using `D.R.m_add_three_le_k`. Establish `hm2` using `D.R.two_le_m`. Establish `hKbig : ∀ j (h : 1 ≤ j ∧ j ≤ D.R.m) τ (i : Fin (D.R.sigW j).1), (D.what₂.kaBig j τ i : ℚ) = DV.aPlusQ D j τ i` using `fun j h τ i => (hK j h.1 h.2 τ).1 i`. Establish `hKsmall : ∀ j (h : 1 ≤ j ∧ j ≤ D.R.m) τ (c : Fin (D.R.sigW j).2), (D.what₂.kaSmall j τ c : ℚ) = -DV.aMinusQ D j τ c` using `fun j h τ c => (hK j h.1 h.2 τ).2 c`. Establish `lastBig : ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ τ, (1 : ℚ) ≤ DV.aPlusQ D j τ (D.R.k + j - 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j h1 h2 τ`. Unfold `DV.aPlusQ DV.sigPar DV.eQ`. Establish `c1 : ¬ (D.R.k + j - 2 < D.R.k - 1)` using `by omega`. Establish `c2 : D.R.k + j - 2 - (D.R.k - 1) < D.R.m` using `by omega`. Rewrite using `[dif_neg c1, dif_pos c2, dif_pos (show 1 ≤ j ∧ j ≤ D.R.m from ⟨h1, h2⟩)]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : (⟨D.R.k + j - 2 - (D.R.k - 1), c2⟩ : Fin D.R.m) = ⟨j - 1, by omega⟩` using `Fin.ext (show D.R.k + j - 2 - (D.R.k - 1) = j - 1 by omega)`. Rewrite using `[e0]`. Establish `g` using `(D.hc τ).gap_be ⟨j - 1, by omega⟩`. Establish `hnV : (D.R.nV : ℚ) = D.R.k + D.R.m - 1 + D.R.t`. Rewrite using `[show D.R.nV = D.R.k + D.R.m - 1 + D.R.t from rfl, Nat.cast_add, Nat.cast_sub (show 1 ≤ D.R.k + D.R.m by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hcast : ((D.R.k + j - 2 : ℕ) : ℚ) = D.R.k + j - 2`. Rewrite using `[Nat.cast_sub (show 2 ≤ D.R.k + j by omega)]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hnV, hcast]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `firstSmall : ∀ j, 1 ≤ j → j < D.R.m → ∀ τ, (1 : ℚ) ≤ DV.aMinusQ D j τ 0`. Introduce `j h1 h2 τ`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `DV.aMinusQ DV.eQ`. Establish `c0 : j + 0 < D.R.m` using `by omega`. Rewrite using `[dif_pos c0, dif_pos (show 1 ≤ j ∧ j ≤ D.R.m from ⟨h1, h2.le⟩)]`. Establish `e0 : (⟨j + 0, c0⟩ : Fin D.R.m) = ⟨j - 1 + 1, by omega⟩` using `Fin.ext (show j + 0 = j - 1 + 1 by omega)`. Rewrite using `[e0]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `g : ((D.R.t : ℚ) + 3) / 2 ≤ (D.hc τ).b ⟨j - 1 + 1, by omega⟩ - (D.hc τ).e ⟨j - 1, by omega⟩` using `(D.hc τ).gap_eb ⟨j - 1, by omega⟩ (show j - 1 + 1 < D.R.m by omega)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `posBig : ∀ j (h : 1 ≤ j ∧ j ≤ D.R.m) τ (i : Fin (D.R.sigW j).1), (0 : ℤ) ≤ D.what₂.kaBig j τ i`. Introduce `j h τ i`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi` using `i.2`. Establish `hs : (D.R.sigW j).1 = D.R.k + j - 1` using `rfl`. Establish `ha` using `aPlusQ_anti D j τ (a := (i : ℕ)) (b := D.R.k + j - 2) (by omega) (by omega)`. Establish `l` using `lastBig j h.1 h.2 τ`. Establish `q : (0 : ℚ) ≤ D.what₂.kaBig j τ i` using `by rw [hKbig j h τ i]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `q` after adjusting the coercions. Establish `posSmall : ∀ j (h : 1 ≤ j ∧ j ≤ D.R.m) τ (c : Fin (D.R.sigW j).2), (0 : ℤ) ≤ -D.what₂.kaSmall j τ c`. Introduce `j h τ c`. Establish `hc` using `c.2`. Establish `hs : (D.R.sigW j).2 = D.R.m - j` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `aMinusQ_mono D j τ (a := 0) (b := (c : ℕ)) (Nat.zero_le _) (by omega)`. Establish `l` using `firstSmall j h.1 (by omega) τ`. Establish `q : (0 : ℚ) ≤ -(D.what₂.kaSmall j τ c : ℚ)` using `by rw [hKsmall j h τ c]; linarith`. Conclude with `q` after adjusting the coercions. Establish `antiBig : ∀ j (h : 1 ≤ j ∧ j ≤ D.R.m) τ, Antitone (fun i : Fin (D.R.sigW j).1 => D.what₂.kaBig j τ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j h τ a b hab`. Use `show D.what₂.kaBig j τ b ≤ D.what₂.kaBig j τ a`. Establish `hb` using `b.2`. Establish `hs : (D.R.sigW j).1 = D.R.k + j - 1` using `rfl`. Establish `ha` using `aPlusQ_anti D j τ (a := (a : ℕ)) (b := (b : ℕ)) hab (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `q : (D.what₂.kaBig j τ b : ℚ) ≤ D.what₂.kaBig j τ a`. Rewrite using `[hKbig j h τ a, hKbig j h τ b]`. Conclude with `ha`. Conclude with `q` after adjusting the coercions. Establish `antiSmall : ∀ j (h : 1 ≤ j ∧ j ≤ D.R.m) τ, Antitone (fun c : Fin (D.R.sigW j).2 => -D.what₂.kaSmall j τ (Fin.rev c))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j h τ a b hab`. Use `show -D.what₂.kaSmall j τ (Fin.rev b) ≤ -D.what₂.kaSmall j τ (Fin.rev a)`. Establish `hr : Fin.rev b ≤ Fin.rev a` using `Fin.rev_le_rev.mpr hab`. Establish `hb` using `(Fin.rev a).2`. Establish `hs : (D.R.sigW j).2 = D.R.m - j` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha` using `aMinusQ_mono D j τ (a := ((Fin.rev b : Fin _) : ℕ)) (b := ((Fin.rev a : Fin _) : ℕ)) hr (by omega)`. Establish `q : -(D.what₂.kaSmall j τ (Fin.rev b) : ℚ) ≤ -(D.what₂.kaSmall j τ (Fin.rev a) : ℚ)`. Rewrite using `[hKsmall j h τ (Fin.rev a), hKsmall j h τ (Fin.rev b)]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `q` after adjusting the coercions.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `⟨fun j => if h : 1 ≤ j ∧ j ≤ D.R.m then { aP := fun τ i => (D.what₂.kaBig j τ i).toNat aM := fun τ c => (-D.what₂.kaSmall j τ (Fin.rev c)).toNat aPlus_antitone := fun τ _ _ hab => Int.toNat_le_toNat (antiBig j h τ hab) aM_anti := fun τ _ _ hab => Int.toNat_le_toNat (antiSmall j h …` and prove the remaining obligations. Introduce `j h1 h2 τ i`. Simplify using `only [dif_pos (show 1 ≤ j ∧ j ≤ D.R.m from ⟨h1, h2⟩)]`. Conclude with `Int.toNat_of_nonneg (posBig j ⟨h1, h2⟩ τ i)`. Introduce `j h1 h2 τ c`.
-
-Simplify using `only [dif_pos (show 1 ≤ j ∧ j ≤ D.R.m from ⟨h1, h2⟩)]`. Conclude with `Int.toNat_of_nonneg (posSmall j ⟨h1, h2⟩ τ (Fin.rev c))`. Introduce `j`. Distinguish the cases in `h : 1 ≤ j ∧ j ≤ D.R.m`. Simplify using `only [dif_pos h]`.
-
-Simplify using `only [dif_neg h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ka_of_KapDef (D : D7) (hK : DV.KapDef D) (n : ℕ) (hn : Even n) :
     ∃ ka : ∀ j, WeightFamilies.Wt D j,

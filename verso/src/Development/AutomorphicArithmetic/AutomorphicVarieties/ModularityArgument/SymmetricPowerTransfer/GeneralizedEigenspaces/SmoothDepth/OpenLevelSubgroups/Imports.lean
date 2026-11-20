@@ -11,33 +11,31 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Z.Sym.Al
 
 /- English proof (translation)
-Introduce `L _ _ _ n V _ _ _ R hR U hU φ hφ hAF`. Set `C : (V →ₗ[ℂ] ℂ) →ₗ[ℂ] GlobalTheory.DefU.autU L n` to `{ toFun := fun f => ⟨f ∘ φ, coefAut L n V R hR U hU φ hAF f⟩ map_add' := fun f f' => Subtype.ext rfl map_smul' := fun c f => Subtype.ext rfl }`. Take `⟨κ, _, σ, P, hσ, hPσ, hPe, hPs⟩` from `autProj L n (LinearMap.range C) inferInstance`. Set `b` to `Module.finBasis ℂ V`. Set `F : κ → UA L n → V` to `fun k g => ∑ i, (P k (C (b.coord i))).1 g • b i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hF : ∀ k (f : V →ₗ[ℂ] ℂ) g, f (F k g) = (P k (C f)).1 g`. Introduce `k f g`. Use `conv_rhs => rw [← b.sum_dual_apply_smul_coord f]`. Simplify using `only [F, map_sum, map_smul, smul_eq_mul, Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, AddSubmonoidClass.coe_finset_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hext : ∀ {v v' : V}, (∀ f : V →ₗ[ℂ] ℂ, f v = f v') → v = v'` using `fun h => b.ext_elem fun i => h (b.coord i)`. Establish `hsum : ∀ f, ∑ k, P k (C f) = C f` using `fun f => hPs _ ⟨f, rfl⟩`. Establish `hne : ∃ k, F k ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hφ (funext fun g => hext fun f => ?_)` and prove the remaining obligations. Establish `e` using `congrArg (fun x : GlobalTheory.DefU.autU L n => x.1 g) (hsum f)`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, Finset.sum_apply] at e`. Establish `e' : (C f).1 g = f (φ g)` using `rfl`. Rewrite using `[Pi.zero_apply, map_zero, ← e', ← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hF, h k]`. Simplify using the standard rewrite rules. Take `⟨k, hk⟩` from `hne`. Establish `htr : ∀ x (f : V →ₗ[ℂ] ℂ) g, (P k (C f)).1 (g * x) = (P k (GlobalTheory.DefU.autRep L n x (C f))).1 g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `x f g`. Rewrite using `[hPe]`. Both sides reduce to the same expression. Establish `hcoef : ∀ f : V →ₗ[ℂ] ℂ, f ∘ F k = (P k (C f)).1` using `fun f => funext (hF k f)`. Use `⟨σ k, F k, hσ k, hk, ⟨?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun γ hγ g => hext fun f => by`. Rewrite using `[hF, hF]`. Conclude with `(P k (C f)).2.left γ hγ g`. Use `fun x hx g => hext fun f => ?_` and prove the remaining obligations. Establish `e : GlobalTheory.DefU.autRep L n x (C f) = C (f ∘ₗ R (infC L n x⁻¹))` using `Subtype.ext (funext fun g => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `f (φ (g * x)) = f (R _ (φ g))`. Rewrite using `[hAF.inf x hx])`. Rewrite using `[hF, htr, e, ← hF]`. Both sides reduce to the same expression. Use `fun u hu g => hext fun f => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : GlobalTheory.DefU.autRep L n u (C f) = C f` using `Subtype.ext (funext fun g => by`. Express the relevant statement in the definitionally equal form `f (φ (g * u)) = f (φ g)`. Rewrite using `[hAF.level u hu])`. Rewrite using `[hF, hF, htr, e]`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hcoef]`. Conclude with `hPσ k _`. Introduce `w W d c h`. Set `ρV` to `(rightReg ℂ (UA L n) V).comp (secW n w)`. Set `ρC` to `(rightReg ℂ (UA L n) ℂ).comp (secW n w)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Set `ρA` to `(GlobalTheory.DefU.autRep L n).comp (secW n w)`. Establish `e1 : ∀ (f : V →ₗ[ℂ] ℂ) (ψ : UA L n → V) a, f ∘ (Hi.dc ρV (W.J n) (W.J n) a ψ) = Hi.dc ρC (W.J n) (W.J n) a (f ∘ ψ)` using `fun f ψ a => dcMap W ρV ρC (f.compLeft (UA L n)) (fun _ _ => rfl) a ψ`. Establish `e2 : ∀ (x : GlobalTheory.DefU.autU L n) a, (Hi.dc ρA (W.J n) (W.J n) a x).1 = Hi.dc ρC (W.J n) (W.J n) a x.1` using `fun x a => dcMap W ρA ρC (GlobalTheory.DefU.autU L n).subtype (fun _ _ => rfl) a x`. Establish `e3 : ∀ (x : GlobalTheory.DefU.autU L n) a, P k (Hi.dc ρA (W.J n) (W.J n) a x) = Hi.dc ρA (W.J n) (W.J n) a (P k x)` using `fun x a => dcMap W ρA ρA (P k) (fun _ _ => hPe k _ _) a x`. Express the relevant statement in the definitionally equal form `Hi.dc ρV (W.J n) (W.J n) (Sig.dg d) φ = c • φ at h`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Hi.dc ρV (W.J n) (W.J n) (Sig.dg d) (F k) = c • F k`. Use `funext fun g => hext fun f => ?_` and prove the remaining obligations. Establish `hC : Hi.dc ρA (W.J n) (W.J n) (Sig.dg d) (C f) = c • C f` using `Subtype.ext (by`. Rewrite using `[e2]`. Express the relevant statement in the definitionally equal form `Hi.dc ρC (W.J n) (W.J n) (Sig.dg d) (f ∘ φ) = c • (f ∘ φ)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e1, h]`. Use function extensionality and compare the values at `g`. Use the proof step `simp)`. Establish `e4 : f ∘ (Hi.dc ρV (W.J n) (W.J n) (Sig.dg d) (F k)) = (Hi.dc ρA (W.J n) (W.J n) (Sig.dg d) (P k (C f))).1`. Rewrite using `[e1, e2, hcoef]`.
-
-Establish `e5` using `congrFun e4 g`. Rewrite `e5` using `[← e3, hC, map_smul]`. Simplify using `only [Function.comp_apply] at e5`. Rewrite using `[e5]`. Simplify using `[hF]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Al.proj :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (R : Representation ℂ (InfinitePlace L → GL (Fin n) ℂ) V), ContCoef R → ∀ U, IsLevel U → ∀ φ : UA L n → V, φ ≠ 0 → IsAF R U φ →

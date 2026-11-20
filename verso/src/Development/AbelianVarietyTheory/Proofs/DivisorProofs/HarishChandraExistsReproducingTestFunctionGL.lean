@@ -12,15 +12,15 @@ namespace GlobalTheory.HCAlphaGL
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨continuous_subtype_val, continuous_star.comp continuous_subtype_val⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toUnits_Kinf : Continuous (Unitary.toUnits : Kinf E a → GL (Fin a) (Cinf E)) :=
   Units.continuous_iff.2 ⟨continuous_subtype_val, continuous_star.comp continuous_subtype_val⟩
 
 /- English proof (translation)
-Establish `h1 : ContinuousOn (chart φ.1 g) (invSet E a)` using `(φ.2 g).continuousOn`. Establish `h2 : Continuous fun y : GL (Fin a) (Cinf E) => toL y.val` using `by show Continuous fun y : GL (Fin a) (Cinf E) => (y : Matrix (Fin a) (Fin a) (Cinf E))`. Conclude with `Units.continuous_val`. Establish `e : (fun y : GL (Fin a) (Cinf E) => φ.1 (g * infGL E a y)) = fun y => chart φ.1 g (toL y.val)`. Use function extensionality and compare the values at `fun y => (chart_val φ.1 g y).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h1.comp_continuous h2 fun y => val_mem_invSet y`.
+A detailed English derivation is pending.
 -/
 theorem continuous_translate (φ : Sm E a) (g : GA E a) :
     Continuous fun y : GL (Fin a) (Cinf E) => φ.1 (g * infGL E a y) := by
@@ -34,7 +34,7 @@ theorem continuous_translate (φ : Sm E a) (g : GA E a) :
   exact h1.comp_continuous h2 fun y => val_mem_invSet y
 
 /- English proof (translation)
-Establish `hc : Continuous (Function.uncurry fun (y : GL (Fin a) (Cinf E)) (k : Kinf E a) => F (Unitary.toUnits k * y * (Unitary.toUnits k)⁻¹))` using `hF.comp (((continuous_toUnits_Kinf.comp continuous_snd).mul continuous_fst).mul (continuous_toUnits_Kinf.comp continuous_snd).inv)`. Use `continuous_parametric_integral_of_continuous (μ := ν) hc (s := Set.univ) isCompact_univ` as an intermediate fact. Use `show Continuous fun y => ∫ k, F (Unitary.toUnits k * y * (Unitary.toUnits k)⁻¹) ∂ν`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_kavg [FirstCountableTopology (GL (Fin a) (Cinf E))] [LocallyCompactSpace (GL (Fin a) (Cinf E))]
     [MeasurableSpace (Kinf E a)] [BorelSpace (Kinf E a)] [CompactSpace (Kinf E a)]
@@ -49,14 +49,14 @@ theorem continuous_kavg [FirstCountableTopology (GL (Fin a) (Cinf E))] [LocallyC
   simpa using this
 
 /- English proof (translation)
-Simplify using `[kavg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kavg_one [MeasurableSpace (Kinf E a)] (ν : Measure (Kinf E a)) [IsProbabilityMeasure ν]
     (F : GL (Fin a) (Cinf E) → ℂ) : kavg ν F 1 = F 1 := by
   simp [kavg]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_harishChandra_reproducing_function_GLinfinity`.
+A detailed English derivation is pending.
 -/
 theorem exists_alpha : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ),
     ∀ (L : Subgroup (GL (Fin a) (Af E))), IsOpen (L : Set (GL (Fin a) (Af E))) →

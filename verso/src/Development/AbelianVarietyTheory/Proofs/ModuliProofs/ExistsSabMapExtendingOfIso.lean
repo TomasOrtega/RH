@@ -19,13 +19,11 @@ open GlobalTheory.Models
 namespace GlobalTheory.Models
 
 /- English proof (translation)
-Take `⟨⟨hdom, hded⟩, hchar, hfr⟩` from `hβ`. Set `_ : Algebra O F` to `β.toAlgebra`. Establish `h` using `GlobalTheory.genericPart_dense_proOpen O F C.X U C.s C.jQ C.flat C.proj C.jQ_open C.jQ_dense`. Use `⟨⟨C.s ≫ spMap (algebraMap ℤ O), ?_, ?_⟩, h.2.2.2⟩` and prove the remaining obligations. Establish `hprop : IsProper C.s`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨N, i, hi, e⟩` from `C.proj`. Use `isProper_str O N` as an intermediate fact. Rewrite using `[← e]`. Use `infer_instance`. Establish `: LocallyOfFiniteType (spMap (algebraMap ℤ O))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Conclude with `RingHom.finiteType_algebraMap.mpr hO`. Use `infer_instance`. Use `C.flat` as an intermediate fact. Establish `: Flat (spMap (algebraMap ℤ O))`.
-
-Rewrite using `[Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.mpr inferInstance`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cpt.arith_and_proOpen {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {U : Scheme.{0}}
     {F O : Type} [Field F] [CommRing O] {c : U ⟶ Sp F} {t : SAB H U} {β : O →+* F} (C : Cpt c t β)
@@ -51,11 +49,11 @@ theorem Cpt.arith_and_proOpen {E : Type} [Field E] [NumberField E] [IsCMField E]
     infer_instance
 
 /- English proof (translation)
-Introduce `hS hT E _ _ _ H U F O _ _ c t β U' F' O' _ _ c' t' β' C C' r ν f hβ hO hp hj`. Take `⟨hz, h1, h2, h3, h4⟩` from `C'.arith_and_proOpen hβ hO`. Take `⟨PP', cub, sym, adj, prim, p, -⟩` from `sabPull Out.CubePf.cubePull f C.t`. Take `⟨n, hn⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ C.m ν`. Take `⟨n', hn'⟩` from `GlobalTheory.exists_sabMap_of_base_eq n (g := C'.j ≫ f) hj.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha'⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ p n'`. Take `⟨b, hb⟩` from `hS hT E H C'.X U' C'.j ⟨C'.normal, hz⟩ h1 h2 h3 h4 t' C'.t _ C'.m a' hp`. Take `⟨m, hm⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ p b`. Take `⟨mu, hmu⟩` from `GlobalTheory.exists_sabMap_of_base_eq m (Category.id_comp f)`. Use `⟨mu, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (C'.m.φ ≫ ·) (hmu.trans hm)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ p.φ) hb).trans (ha'.symm.trans (hn'.trans hn))))`.
+A detailed English derivation is pending.
 -/
 theorem exists_sabMap_extending_of_iso : ((∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X U : Scheme.{0}) (j : U ⟶ X), (IsNormalScheme X ∧ ∃ z : X ⟶ Sp ℤ, LocallyOfFiniteType z ∧ Flat z) → IsPreimmersion j → Flat j → IsDominant j → QuasiCompact j → ∀ (t₀ : SAB H U) (t t' : SAB H X) (a : SABMap t₀ t j) (a' : SABMap t₀ t' j), IsProper t₀.G.hom → ∃ b : SABMap t t' (𝟙 X), a.φ ≫ b.φ = a'.φ) → (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (U : Scheme.{0}) (F O : Type) [Field F] [CommRing O] (c : U ⟶ Sp F) (t : SAB H U) (β : O →+* F) (U' : Scheme.{0}) (F' O' : Type) [Field F'] [CommRing O'] (c' : U' ⟶ Sp F') (t' : SAB H U') (β' : O' →+* F') (C : Cpt c t β) (C' : Cpt c' t' β') (r : U' ⟶ U) (ν : SABMap t' t r) (f : C'.X ⟶ C.X), IsDedFrac β' → Algebra.FiniteType ℤ O' → IsProper t'.G.hom → C'.j ≫ f = r ≫ C.j → ∃ mu : SABMap C'.t C.t f, C'.m.φ ≫ mu.φ = ν.φ ≫ C.m.φ := by
   intro hS hT E _ _ _ H U F O _ _ c t β U' F' O' _ _ c' t' β' C C' r ν f hβ hO hp hj

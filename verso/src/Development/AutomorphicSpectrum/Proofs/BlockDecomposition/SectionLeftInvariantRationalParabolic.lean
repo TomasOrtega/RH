@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.FJE
 
 /- English proof (translation)
-Introduce `D n χ s f hχ hf γ hγ g`. Take `⟨a, ha⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_blkA hγ.1`. Take `⟨u, hu⟩` from `GlobalTheory.StdUnn.LeftInvSect.det_rat hγ.2 a ha`. Establish `h1 : absA D (Units.map (incA D).toMonoidHom u) = 1` using `absE_inclR u`. Rewrite using `[hf γ hγ.1 a ha g, hu, hχ.2 u, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

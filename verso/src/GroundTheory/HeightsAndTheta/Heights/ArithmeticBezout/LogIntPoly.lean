@@ -21,7 +21,7 @@ def scaleP (p : ι → Prop) [DecidablePred p] (a : ℂ) (u : ι → ℂ) : ι �
 def polydisc (ι : Type*) (r : ℝ) : Set (ι → ℂ) := Set.univ.pi fun _ => Metric.closedBall 0 r
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[indW]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem weight_indW (p : ι → Prop) [DecidablePred p] (m : ι →₀ ℕ) :
     Finsupp.weight (indW p) m = ∑ i ∈ m.support, if p i then m i else 0 := by
@@ -30,7 +30,7 @@ theorem weight_indW (p : ι → Prop) [DecidablePred p] (m : ι →₀ ℕ) :
   simp [indW]
 
 /- English proof (translation)
-Rewrite using `[weight_indW, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : p i <;> simp [scaleP, h, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prod_scaleP (p : ι → Prop) [DecidablePred p] (a : ℂ) (u : ι → ℂ) (m : ι →₀ ℕ) :
     ∏ i ∈ m.support, scaleP p a u i ^ m i =
@@ -40,15 +40,15 @@ theorem prod_scaleP (p : ι → Prop) [DecidablePred p] (a : ℂ) (u : ι → �
   by_cases h : p i <;> simp [scaleP, h, mul_pow]
 
 /- English proof (translation)
-Establish `hc : ∀ d, eval u (weightedHomogeneousComponent (indW p) d g) = ∑ m ∈ g.support, (if Finsupp.weight (indW p) m = d then coeff m g else 0) * ∏ i ∈ m.support, u i ^ m i`. Introduce `d`. Rewrite using `[eval_eq]`. Establish `hsub : (weightedHomogeneousComponent (indW p) d g).support ⊆ g.support`. Introduce `m hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hm` using `[mem_support_iff, coeff_weightedHomogeneousComponent]`. Rewrite using `[mem_support_iff]; intro h; exact hm (by simp [h])`. Rewrite using `[Finset.sum_subset hsub (fun m _ hm => by rw [mem_support_iff, not_not] at hm; rw [hm, zero_mul])]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_eq]`. Repeatedly rewrite using `[hc, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[prod_scaleP]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single (Finsupp.weight (indW p) m)]`. Simplify using `only [if_true]`. Expand and normalize the polynomial expressions, which then agree. Introduce `d _ hd`. Simplify using `[Ne.symm hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_range.mpr (Nat.lt_succ_of_le (hD m hm))) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eval_scaleP (p : ι → Prop) [DecidablePred p] (a : ℂ) (u : ι → ℂ) (g : MvPolynomial ι ℂ)
     (D : ℕ) (hD : ∀ m ∈ g.support, Finsupp.weight (indW p) m ≤ D) :
@@ -78,9 +78,9 @@ theorem eval_scaleP (p : ι → Prop) [DecidablePred p] (a : ℂ) (u : ι → �
   · intro h; exact absurd (Finset.mem_range.mpr (Nat.lt_succ_of_le (hD m hm))) h
 
 /- English proof (translation)
-Establish `h` using `(rotation (Circle.exp θ)).measurePreserving`. Establish `e : (fun z : ℂ => circleMap 0 1 θ * z) = rotation (Circle.exp θ)`. Use function extensionality and compare the values at `z`. Simplify using `[rotation_apply, Circle.coe_exp, circleMap_zero]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_mul_circleMap (θ : ℝ) :
     MeasurePreserving (fun z : ℂ => circleMap 0 1 θ * z) volume volume := by
@@ -92,11 +92,9 @@ theorem measurePreserving_mul_circleMap (θ : ℝ) :
   exact h
 
 /- English proof (translation)
-Use `measurePreserving_pi (fun _ : ι => (volume : Measure ℂ)) (fun _ : ι => (volume : Measure ℂ)) (f := fun x => if p x then (fun z : ℂ => circleMap 0 1 θ * z) else id) (fun x => by` as an intermediate fact. Distinguish the cases in `h : p x`. Simplify using `only [h, if_true]`. Conclude with `measurePreserving_mul_circleMap θ`. Simplify using `only [h, if_false]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `MeasurePreserving.id _)`. Establish `e : scaleP p (circleMap 0 1 θ) = fun a x => (if p x then (fun z : ℂ => circleMap 0 1 θ * z) else id) (a x)`. Use function extensionality and compare the values at `u x`. Apply the tactic sequence `by_cases h : p x <;> simp [scaleP, h]`. Rewrite using `[e]`.
-
-Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_scaleP [Fintype ι] (p : ι → Prop) [DecidablePred p] (θ : ℝ) :
     MeasurePreserving (scaleP p (circleMap 0 1 θ)) volume volume := by
@@ -114,9 +112,9 @@ theorem measurePreserving_scaleP [Fintype ι] (p : ι → Prop) [DecidablePred p
   exact this
 
 /- English proof (translation)
-Apply `Continuous.measurable` to reduce the goal to its premises. Use `continuous_pi fun x => ?_` and prove the remaining obligations. Distinguish the cases in `h : p x`. Simplify using `only [Function.uncurry, scaleP, h, if_true]`. Conclude with `((continuous_circleMap 0 1).comp continuous_fst).mul ((continuous_apply x).comp continuous_snd)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.uncurry, scaleP, h, if_false]`. Conclude with `(continuous_apply x).comp continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem measurable_scaleP [Fintype ι] (p : ι → Prop) [DecidablePred p] :
     Measurable (Function.uncurry fun θ : ℝ => scaleP p (circleMap 0 1 θ) : ℝ × (ι → ℂ) → ι → ℂ) := by
@@ -129,14 +127,14 @@ theorem measurable_scaleP [Fintype ι] (p : ι → Prop) [DecidablePred p] :
     exact (continuous_apply x).comp continuous_snd
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases h : p x <;> simp [scaleP, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_scaleP_circleMap (p : ι → Prop) [DecidablePred p] (θ : ℝ) (u : ι → ℂ) (x : ι) :
     ‖scaleP p (circleMap 0 1 θ) u x‖ = ‖u x‖ := by
   by_cases h : p x <;> simp [scaleP, h]
 
 /- English proof (translation)
-Use extensionality with `u`. Simplify using `[polydisc, norm_scaleP_circleMap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem scale_preimage_polydisc (p : ι → Prop) [DecidablePred p] (θ : ℝ) (r : ℝ) :
     scaleP p (circleMap 0 1 θ) ⁻¹' polydisc ι r = polydisc ι r := by
@@ -144,27 +142,27 @@ theorem scale_preimage_polydisc (p : ι → Prop) [DecidablePred p] (θ : ℝ) (
   simp [polydisc, norm_scaleP_circleMap]
 
 /- English proof (translation)
-The claim follows from `MeasurableSet.univ_pi fun _ => Metric.isClosed_closedBall.measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_polydisc [Fintype ι] (r : ℝ) : MeasurableSet (polydisc ι r) :=
   MeasurableSet.univ_pi fun _ => Metric.isClosed_closedBall.measurableSet
 
 /- English proof (translation)
-The claim follows from `isCompact_univ_pi fun _ => isCompact_closedBall 0 r`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_polydisc (r : ℝ) : IsCompact (polydisc ι r) :=
   isCompact_univ_pi fun _ => isCompact_closedBall 0 r
 
 /- English proof (translation)
-The claim follows from `(isCompact_polydisc r).measure_lt_top.ne`.
+A detailed English derivation is pending.
 -/
 theorem volume_polydisc_ne_top [Fintype ι] (r : ℝ) : volume (polydisc ι r) ≠ ⊤ :=
   (isCompact_polydisc r).measure_lt_top.ne
 
 /- English proof (translation)
-Rewrite using `[← integrable_indicator_iff Metric.isClosed_closedBall.measurableSet]`. Establish `e : (Metric.closedBall (0 : ℂ) r).indicator (fun z : ℂ => Real.log ‖z‖) = fun z => (Iic r).indicator Real.log ‖z‖`. Use function extensionality and compare the values at `z`. Simplify using `[Set.indicator, Metric.mem_closedBall, dist_zero_right]`. Rewrite using `[e, integrable_fun_norm_addHaar volume, Complex.finrank_real_complex]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (fun y : ℝ => y ^ (2 - 1) • (Iic r).indicator Real.log y) = (Iic r).indicator (fun y => y * Real.log y)`. Use function extensionality and compare the values at `y`. Apply the tactic sequence `by_cases h : y ∈ Iic r <;> simp [Set.indicator, h]`. Rewrite using `[e2, IntegrableOn, integrable_indicator_iff measurableSet_Iic, IntegrableOn, Measure.restrict_restrict measurableSet_Iic]`. Conclude with `(Real.continuous_mul_log.integrableOn_Icc (a := 0) (b := r)).mono_set (fun y hy => ⟨le_of_lt hy.2, hy.1⟩)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_log_norm_closedBall (r : ℝ) :
     IntegrableOn (fun z : ℂ => Real.log ‖z‖) (Metric.closedBall 0 r) := by
@@ -184,7 +182,7 @@ theorem integrableOn_log_norm_closedBall (r : ℝ) :
     (fun y hy => ⟨le_of_lt hy.2, hy.1⟩)
 
 /- English proof (translation)
-Establish `: IsFiniteMeasure ((volume : Measure ℂ).restrict (Metric.closedBall 0 r))` using `isFiniteMeasure_restrict.mpr (measure_closedBall_lt_top).ne`. Rewrite using `[IntegrableOn, polydisc, volume_pi, Measure.restrict_pi_pi]`. Conclude with `integrable_comp_eval (μ := fun _ : ι => (volume : Measure ℂ).restrict (Metric.closedBall 0 r)) (i := x) (integrableOn_log_norm_closedBall r)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_log_norm_coord [Fintype ι] (r : ℝ) (x : ι) :
     IntegrableOn (fun u : ι → ℂ => Real.log ‖u x‖) (polydisc ι r) := by
@@ -195,7 +193,7 @@ theorem integrableOn_log_norm_coord [Fintype ι] (r : ℝ) (x : ι) :
     (i := x) (integrableOn_log_norm_closedBall r)
 
 /- English proof (translation)
-The claim follows from `|Real.log ‖eval u (monomial m c)‖| ≤ |Real.log ‖c‖| + ∑ i ∈ m.support, (m i : ℝ) * |Real.log ‖u i‖| := by have hnn : 0 ≤ |Real.log ‖c‖| + ∑ i ∈ m.support, (m i : ℝ) * |Real.log ‖u i‖| := by positivity rw [eval_monomial, Finsupp.prod] by_cases h : ∀ i ∈ m.support, u i ≠ 0 · by_cas …`.
+A detailed English derivation is pending.
 -/
 theorem abs_log_eval_monomial_le (m : ι →₀ ℕ) (c : ℂ) (u : ι → ℂ) :
     |Real.log ‖eval u (monomial m c)‖| ≤
@@ -221,7 +219,7 @@ theorem abs_log_eval_monomial_le (m : ι →₀ ℕ) (c : ℂ) (u : ι → ℂ) 
     simpa [this] using hnn
 
 /- English proof (translation)
-Rewrite using `[weight_indW, Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(Finsupp.notMem_support_iff.mp h).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem weight_indW_eq (x : ι) [DecidableEq ι] (m : ι →₀ ℕ) :
     Finsupp.weight (indW (· = x)) m = m x := by
@@ -231,7 +229,7 @@ theorem weight_indW_eq (x : ι) [DecidableEq ι] (m : ι →₀ ℕ) :
   · exact (Finsupp.notMem_support_iff.mp h).symm
 
 /- English proof (translation)
-Rewrite using `[weight_indW, Finsupp.sum]`. Apply the tactic sequence `exact Finset.sum_le_sum fun i _ => by split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weight_indW_le (p : ι → Prop) [DecidablePred p] (m : ι →₀ ℕ) :
     Finsupp.weight (indW p) m ≤ m.sum fun _ e => e := by
@@ -239,11 +237,11 @@ theorem weight_indW_le (p : ι → Prop) [DecidablePred p] (m : ι →₀ ℕ) :
   exact Finset.sum_le_sum fun i _ => by split_ifs <;> simp
 
 /- English proof (translation)
-Use `choose d hd using h`. Establish `key : ∀ m ∈ g.support, ∀ x, m x = d x`. Introduce `m hm x`. Use `hd x (mem_support_iff.mp hm)` as an intermediate fact. Rewrite `this` using `[weight_indW_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `MvPolynomial.support_nonempty.mpr hg`. Use `⟨m, ?_, mem_support_iff.mp hm⟩` and prove the remaining obligations. Use extensionality with `n`. Rewrite using `[coeff_monomial]`. Use `split_ifs with hmn`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hmn]`. Assume the negation of the conclusion as `hne`. Establish `hn : n ∈ g.support` using `mem_support_iff.mpr hne`. Conclude with `hmn (Finsupp.ext fun x => (key m hm x).trans (key n hn x).symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_monomial_of_homog [DecidableEq ι] (g : MvPolynomial ι ℂ) (hg : g ≠ 0)
     (h : ∀ x, ∃ d, IsWeightedHomogeneous (indW (· = x)) g d) :
@@ -267,7 +265,7 @@ def nonHomog [Fintype ι] [DecidableEq ι] (g : MvPolynomial ι ℂ) : Finset ι
   by classical exact Finset.univ.filter fun x => ¬ ∃ d, IsWeightedHomogeneous (indW (· = x)) g d
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs at hm`. Conclude with `h hm`. Conclude with `absurd rfl hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_component_of (w w' : ι → ℕ) (g : MvPolynomial ι ℂ) (d e : ℕ)
     (h : IsWeightedHomogeneous w g e) :
@@ -279,27 +277,21 @@ theorem isWeightedHomogeneous_component_of (w w' : ι → ℕ) (g : MvPolynomial
   · exact absurd rfl hm
 
 /- English proof (translation)
-Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `g hN hg`. Distinguish the cases in `h0 : ∀ x, ∃ d, IsWeightedHomogeneous (indW (· = x)) g d`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨m, hgm, hc⟩` from `eq_monomial_of_homog g hg h0`. Rewrite using `[hgm]`. Establish `hmeas : Measurable fun u : ι → ℂ => Real.log ‖eval u (monomial m (coeff m g))‖` using `Real.measurable_log.comp (continuous_eval _).measurable.norm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Integrable.mono' (g := fun u => |Real.log ‖coeff m g‖| + ∑ i ∈ m.support, (m i : ℝ) * |Real.log ‖u i‖|) ?_ hmeas.aestronglyMeasurable (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: IsFiniteMeasure (volume.restrict (polydisc ι r))` using `isFiniteMeasure_restrict.mpr (volume_polydisc_ne_top r)`. Conclude with `(integrable_const _).add (integrable_finsetSum _ fun i _ => ((integrableOn_log_norm_coord r i).abs.const_mul _))`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `abs_log_eval_monomial_le m _ u`. Establish `hnull : volume (⋃ i ∈ m.support, {u : ι → ℂ | u i = 0}) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(measure_biUnion_null_iff (Finset.countable_toSet _)).mpr fun i _ => ?_` and prove the remaining obligations. Rewrite using `[volume_pi]`. Conclude with `Measure.pi_hyperplane _ i 0`. Establish `hae : ∀ᵐ u ∂(volume : Measure (ι → ℂ)), u ∉ ⋃ i ∈ m.support, {u : ι → ℂ | u i = 0}` using `measure_eq_zero_iff_ae_notMem.mp hnull`. Use `ae_restrict_of_ae ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [hae] with u hu`. Simplify using `only [mem_iUnion, mem_ofPred_eq, not_exists] at hu`. Rewrite using `[eval_monomial, Finsupp.prod]`. Conclude with `mul_ne_zero hc (Finset.prod_ne_zero_iff.mpr fun i hi => pow_ne_zero _ (hu i hi))`. Use `push Not at h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `h0`. Establish `hxN : x ∈ nonHomog g`. Simplify using `only [nonHomog, Finset.mem_filter, Finset.mem_univ, true_and, not_exists]`. Conclude with `hx`. Take `⟨m0, hm0⟩` from `MvPolynomial.support_nonempty.mpr hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `set w := indW (· = x) with hw`. Use `set d0 := Finsupp.weight w m0 with hd0`. Use `set g' := weightedHomogeneousComponent w d0 g with hg'`. Establish `hg'0 : g' ≠ 0`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (coeff m0) h` as an intermediate fact. Rewrite `this` using `[hg', coeff_weightedHomogeneousComponent, if_pos rfl, coeff_zero]`. Conclude with `mem_support_iff.mp hm0 this`. Establish `hsub : nonHomog g' ⊆ (nonHomog g).erase x`. Introduce `y hy`.
-
-Simplify using `only [nonHomog, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase] at hy ⊢`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hy ⟨d0, weightedHomogeneousComponent_isWeightedHomogeneous _ _⟩`. Introduce and unpack `⟨e, he⟩`.
-
-Conclude with `hy ⟨e, isWeightedHomogeneous_component_of _ _ g d0 e he⟩`. Establish `hlt : (nonHomog g').card < N`. Rewrite using `[← hN]`. Conclude with `(Finset.card_le_card hsub).trans_lt (Finset.card_erase_lt_of_mem hxN)`. Take `⟨ih1, ih2⟩` from `ih _ hlt g' rfl hg'0`.
-
-Take `⟨M, hM⟩` from `(isCompact_polydisc (ι := ι) r).exists_bound_of_continuousOn (continuous_eval g).continuousOn`. Establish `hD : ∀ m ∈ g.support, Finsupp.weight w m ≤ g.totalDegree` using `fun m hm => (weight_indW_le _ m).trans (le_totalDegree hm)`. Conclude with `circle_lemma volume (polydisc ι r) (measurableSet_polydisc r) (volume_polydisc_ne_top r) (fun θ => scaleP (· = x) (circleMap 0 1 θ)) (measurable_scaleP _) (fun θ => measurePreserving_scaleP _ θ) (fun θ => scale_preimage_polydisc _ θ r) (fun u => eval u g) (continuous_eval g).meas …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem logPoly [Fintype ι] [DecidableEq ι] (r : ℝ) :
     ∀ (N : ℕ) (g : MvPolynomial ι ℂ), (nonHomog g).card = N → g ≠ 0 →
@@ -374,7 +366,7 @@ theorem logPoly [Fintype ι] [DecidableEq ι] (r : ℝ) :
       (hD m0 hm0) (fun θ u => eval_scaleP _ _ u g _ hD) ih1 ih2 M hM
 
 /- English proof (translation)
-Conclude with `(logPoly r _ g rfl hg).1`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_log_norm_eval [Fintype ι] (g : MvPolynomial ι ℂ) (hg : g ≠ 0) (r : ℝ) :
     IntegrableOn (fun u => Real.log ‖eval u g‖) (polydisc ι r) := by
@@ -382,7 +374,7 @@ theorem integrableOn_log_norm_eval [Fintype ι] (g : MvPolynomial ι ℂ) (hg : 
   exact (logPoly r _ g rfl hg).1
 
 /- English proof (translation)
-Conclude with `(logPoly r _ g rfl hg).2`.
+A detailed English derivation is pending.
 -/
 theorem ae_eval_ne_zero [Fintype ι] (g : MvPolynomial ι ℂ) (hg : g ≠ 0) (r : ℝ) :
     ∀ᵐ u ∂(volume.restrict (polydisc ι r)), eval u g ≠ 0 := by

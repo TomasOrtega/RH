@@ -18,7 +18,7 @@ namespace GlobalTheory.SeeSaw.LiftSumProof
 variable {D : D7}
 
 /- English proof (translation)
-Establish `e : ((γ * g, γ' * h) : GA D S × GA D T) = (γ, γ') * (g, h)` using `rfl`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hω.om_aut γ hγ γ' hγ' _ (hω.om_pres _ _ hf)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_zero_rat {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hω : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {γ : GA D S} (hγ : γ ∈ GQ S)
@@ -28,19 +28,17 @@ theorem om_zero_rat {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (A
   exact hω.om_aut γ hγ γ' hγ' _ (hω.om_pres _ _ hf)
 
 /- English proof (translation)
-Introduce `D ψ θ hθ S T x y hx hy k hk P`. Take `⟨χS, χT, hω⟩` from `hk.weil`. Establish `hψ : IsStdChar D ψ (-1)` using `hk.vac.1`. Establish `hvac : IsThetaFunO ψ S T k.vac` using `hk.vac.2.theta`. Establish `hcomb : IsThetaFunO ψ S T (comb ψ S T k.c k.vac)` using `GlobalTheory.FinTranslate.isTheta_sum_heisO_fin D ψ S T hψ.1 k.vac hvac (WO S T) k.c.support id k.c (fun u hu => hk.fin u hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : IsThetaFunO ψ S T (k.pt ψ θ x y P)` using `GlobalTheory.FockTheta.ptStable D ψ θ hψ hθ S T x.s y.s x.B y.B _ P hcomb`. Establish `key : ∀ φ : GA D S → ℂ, IsContAut S φ → (∀ h, IntegrableOn (fun g => k.om (g, h) (k.pt ψ θ x y P) 0 * φ g) x.vol.𝓕 x.vol.μ) ∧ Continuous fun h => ∫ g in x.vol.𝓕, k.om (g, h) (k.pt ψ θ x y P) 0 * φ g ∂x.vol.μ`. Introduce `φ hφ`. Establish `hc : Continuous (Function.uncurry fun (g : GA D S) (h : GA D T) => k.om (g, h) (k.pt ψ θ x y P) 0 * φ g)` using `(hω.om_cont _ hpt 0).mul (hφ.2.comp continuous_fst)`. Establish `hinv : ∀ γ ∈ GQ S, ∀ (g : GA D S) (h : GA D T), k.om (γ * g, h) (k.pt ψ θ x y P) 0 * φ (γ * g) = k.om (g, h) (k.pt ψ θ x y P) 0 * φ g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `γ hγ g h`. Establish `e` using `om_zero_rat hω hpt hγ (one_mem (GQ T)) g h`. Rewrite `e` using `[one_mul]`. Rewrite using `[e, hφ.1 γ hγ g]`. Take `⟨h1, h2, -⟩` from `GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D S hx.cpt x.vol (GA D T) _ hc hinv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, h2⟩`. Use `⟨hpt, fun φ hφ => ⟨fun γ' hγ' h => ?_, ?_⟩, fun I s a φ hφ => ?_⟩` and prove the remaining obligations. Use `show ∫ g in x.vol.𝓕, k.om (g, γ' * h) (k.pt ψ θ x y P) 0 * φ g ∂x.vol.μ = ∫ g in x.vol.𝓕, k.om (g, h) (k.pt ψ θ x y P) 0 * φ g ∂x.vol.μ`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e` using `om_zero_rat hω hpt (one_mem (GQ S)) hγ' g h`. Rewrite `e` using `[one_mul]`. Rewrite using `[e]`. Conclude with `(key φ hφ).2`. Use function extensionality and compare the values at `h show ∫ g in x.vol.𝓕, k.om (g, h) (k.pt ψ θ x y P) 0 * (∑ i ∈ s, a i • φ i) g ∂x.vol.μ = (∑ i ∈ s, a i • fun h' => ∫ g in x.vol.𝓕, k.om (g, h') (k.pt ψ θ x y P) 0 * φ i g ∂x.vol.μ) h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_apply]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Establish `e : (fun g => ∑ i ∈ s, k.om (g, h) (k.pt ψ θ x y P) 0 * (a i * φ i g)) = fun g => ∑ i ∈ s, a i * (k.om (g, h) (k.pt ψ θ x y P) 0 * φ i g)`. Use function extensionality and compare the values at `g`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
-
-Rewrite using `[e, integral_finset_sum s (fun i hi => ((key (φ i) (hφ i hi)).1 h).const_mul (a i))]`. Conclude with `Finset.sum_congr rfl fun i _ => integral_const_mul (a i) _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftSum : ∀ D : D7, LiftSum D := by
   intro D ψ θ hθ S T x y hx hy k hk P

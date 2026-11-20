@@ -22,19 +22,17 @@ abbrev MultP : Submodule ℂ (MMap M) := Mult θ M (levS V β (flag1L L)) (levCh
 variable {θ M β L}
 
 /- English proof (translation)
-Introduce `κ hκ y` and use `((GlobalTheory.MultMem.mem_mult_iff D θ V S M _ _ U).1 hU).lev v κ hκ y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasType {U : MMap M} (hU : U ∈ MultP θ M β L) (v : M.Vec) : HasType V β (flag1L L) (U v) :=
   fun κ hκ y => ((GlobalTheory.MultMem.mem_mult_iff D θ V S M _ _ U).1 hU).lev v κ hκ y
 
 /- English proof (translation)
-Establish `e : ∀ v, heckeOn M {k} T v = rTr V k (T v)` using `fun v => by`. Use function extensionality and compare the values at `g`. Simplify using `[heckeOn, postOn_apply, heckeLin_apply, rTr]`. Use `⟨fun v => ?_, fun v => ?_, fun v k hk => hk.elim, fun τ g hg v w hw => ?_, fun τ v x => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.FinTranslate.isAutFunSm_rTr θ V k hk _ (h.aut v)`. Rewrite using `[e]`. Introduce `r C hC μ 𝓕 hμ h𝓕 g`. Simplify using `only [rTr, mul_assoc]`. Conclude with `h.cusp v r C hC μ 𝓕 hμ h𝓕 (g * k)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e, e, h.equiv τ g hg v w hw]`. Use function extensionality and compare the values at `x`. Unfold `rTr`. Rewrite using `[mul_assoc, mul_assoc, GlobalTheory.FinTranslate.comm_fin_real V hk (GlobalTheory.FinTranslate.atTau_mem θ V τ g)]`. Take `⟨ℓ, s, e'⟩` from `h.cont τ v (x * k)`.
-
-Conclude with `⟨ℓ, s, fun w => by rw [e, e']; rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isMultMap_translate {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M} (h : IsMultMap θ M J χ T) {k : GA D V}
     (hk : k ∈ GfC V) : IsMultMap θ M ∅ χ (heckeOn M {k} T) := by
@@ -56,13 +54,13 @@ theorem isMultMap_translate {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M
     exact ⟨ℓ, s, fun w => by rw [e, e']; rfl⟩
 
 /- English proof (translation)
-Distinguish the cases in `hk : ∃ κ, IsLevelLift V β L g0 κ`. Establish `hκ` using `hk.choose_spec`. Rewrite `hT` using `[GlobalTheory.MultMem.mem_mult_iff]`. Establish `hact : ∀ v, ((levChi V β (flagL L) hk.choose)⁻¹ • heckeOn M {hk.choose} T) v = actG0 V β L g0 (T v)`. Introduce `v`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `actG0`. Rewrite using `[dif_pos hk]`. Use function extensionality and compare the values at `g`. Simplify using `[heckeOn, postOn_apply, heckeLin_apply]`. Establish `h0 : IsMultMap θ M ∅ (levChi V β (flag1L L)) ((levChi V β (flagL L) hk.choose)⁻¹ • heckeOn M {hk.choose} T)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.MultMem.mem_mult_iff]`. Conclude with `Submodule.smul_mem _ _ ((GlobalTheory.MultMem.mem_mult_iff ..).2 (isMultMap_translate hT hκ.1))`. Use `⟨_, Submodule.subset_span ⟨h0.aut, h0.cusp, fun v k hk' g => ?_, h0.equiv, h0.cont⟩, hact⟩` and prove the remaining obligations. Rewrite using `[hact]`. Conclude with `GlobalTheory.FlagAction.act_hasType (fun k hk => hT.lev v k hk) hk k hk' g`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨0, Submodule.zero_mem _, fun v => ?_⟩` and prove the remaining obligations. Unfold `actG0`. Rewrite using `[dif_neg hk]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_principalLevelMultiplicity_finiteGroup_image (g0 : G0 L.Pg L.r) (T : MMap M) (hT : T ∈ MultP θ M β L) :
     ∃ T' ∈ MultP θ M β L, ∀ v, T' v = actG0 V β L g0 (T v) := by
@@ -90,7 +88,7 @@ theorem exists_principalLevelMultiplicity_finiteGroup_image (g0 : G0 L.Pg L.r) (
     rfl
 
 /- English proof (translation)
-Take `⟨U', h1, h2⟩` from `exists_principalLevelMultiplicity_finiteGroup_image g U hU`. Establish `h : postOn M (actL V β L g) U = U'` using `MultilinearMap.ext fun v => (h2 v).symm`. Rewrite using `[h]`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_mem (g : G0 L.Pg L.r) {U : MMap M} (hU : U ∈ MultP θ M β L) : postOn M (actL V β L g) U ∈ MultP θ M β L := by
   obtain ⟨U', h1, h2⟩ := exists_principalLevelMultiplicity_finiteGroup_image g U hU
@@ -99,13 +97,13 @@ theorem act_mem (g : G0 L.Pg L.r) {U : MMap M} (hU : U ∈ MultP θ M β L) : po
   exact h1
 
 /- English proof (translation)
-The claim follows from `MultilinearMap.ext fun v => GlobalTheory.FlagAction.act_one (hasType hU v)`.
+A detailed English derivation is pending.
 -/
 theorem act_one {U : MMap M} (hU : U ∈ MultP θ M β L) : postOn M (actL V β L 1) U = U :=
   MultilinearMap.ext fun v => GlobalTheory.FlagAction.act_one (hasType hU v)
 
 /- English proof (translation)
-The claim follows from `MultilinearMap.ext fun v => GlobalTheory.FlagAction.act_mul (hasType hU v) (hl g) (hl g')`.
+A detailed English derivation is pending.
 -/
 theorem act_mul (hl : LiftsExist V β L) (g g' : G0 L.Pg L.r) {U : MMap M} (hU : U ∈ MultP θ M β L) :
     postOn M (actL V β L (g * g')) U = postOn M (actL V β L g) (postOn M (actL V β L g') U) :=
@@ -114,7 +112,7 @@ theorem act_mul (hl : LiftsExist V β L) (g g' : G0 L.Pg L.r) {U : MMap M} (hU :
 variable {G : Type} [Group G] [Fintype G] (eG : G ≃* G0 L.Pg L.r)
 
 /- English proof (translation)
-Use `MultilinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [gaL, postOn, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.compMultilinearMap_apply, LinearMap.sum_apply, LinearMap.smul_apply, MultilinearMap.sum_apply, MultilinearMap.smul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem postOn_gaL (c : G → ℂ) (U : MMap M) :
     postOn M (gaL V β L eG c) U = ∑ g, c g • postOn M (actL V β L (eG g)) U := by
@@ -123,9 +121,9 @@ theorem postOn_gaL (c : G → ℂ) (U : MMap M) :
     LinearMap.sum_apply, LinearMap.smul_apply, MultilinearMap.sum_apply, MultilinearMap.smul_apply]
 
 /- English proof (translation)
-Establish `hm : ∀ a b : G, postOn M (actL V β L (eG a)) (postOn M (actL V β L (eG b)) U) = postOn M (actL V β L (eG (a * b))) U` using `fun a b => by`. Rewrite using `[map_mul]`. Conclude with `(act_mul hl _ _ hU).symm`. Rewrite using `[postOn_gaL, postOn_gaL, map_sum]`. Simplify using `only [map_smul, hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Fintype.sum_equiv (MulAut.conj g).toEquiv _ _ fun a => ?_).symm` and prove the remaining obligations. Use `show _ = c (g * a * g⁻¹) • postOn M (actL V β L (eG (g * a * g⁻¹ * g))) U`. Rewrite using `[hc, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaL_act (hl : LiftsExist V β L) {c : G → ℂ} (hc : ∀ g a, c (g * a * g⁻¹) = c a) (g : G) {U : MMap M}
     (hU : U ∈ MultP θ M β L) :

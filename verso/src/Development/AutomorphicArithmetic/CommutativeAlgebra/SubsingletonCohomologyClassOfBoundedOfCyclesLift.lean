@@ -6,11 +6,11 @@ namespace UpperTheory
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `hf : z.v p₀ (p₀ + n) rfl ≫ D.d (p₀ + n) (p₀ + n + 1) = 0`. Establish `h0` using `congrArg (fun c => Cochain.v c p₀ (p₀ + n + 1) (by omega)) hz`. Simplify using `only [Cochain.zero_v] at h0`. Rewrite `h0` using `[δ_v n (n + 1) rfl z p₀ (p₀ + n + 1) (by omega) (p₀ + n) (p₀ + 1) (by omega) rfl, hv (p₀ + 1) (p₀ + n + 1) (by omega) (by omega), comp_zero, smul_zero, add_zero]`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `H p₀ (p₀ + n) (z.v p₀ (p₀ + n) rfl) hf`. Use `⟨Cochain.single g (n - 1), ?_⟩` and prove the remaining obligations. Introduce `p q hpq hp`. Rewrite using `[Cochain.sub_v, δ_v (n - 1) n (by omega) _ p q hpq (q - 1) (p + 1) rfl rfl, Cochain.single_v_eq_zero g (n - 1) (p + 1) q (by omega) (by omega), comp_zero, smul_zero, add_zero]`. Break down `hp.lt_or_eq with hlt | rfl` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv p q hpq hlt, Cochain.single_v_eq_zero g (n - 1) p (q - 1) (by omega) (by omega), zero_comp, sub_zero]`. Substitute `hpq` using the available equality. Rewrite using `[Cochain.single_v, hg, sub_self]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hb_step {C : Type*} [Category C] [Preadditive C] (K D : CochainComplex C ℤ)
     (H : ∀ (p j : ℤ) (f : K.X p ⟶ D.X j), f ≫ D.d j (j + 1) = 0 →
@@ -39,19 +39,17 @@ private theorem hb_step {C : Type*} [Category C] [Preadditive C] (K D : CochainC
 end UpperTheory
 
 /- English proof (translation)
-Introduce `K D _ a _ H n`. Establish `hz0 : ∀ (z : Cocycle K D n) (k : ℕ), ∃ γ : Cochain K D (n - 1), ∀ (p q : ℤ) (hpq : p + n = q), -(k : ℤ) < p → ((z : Cochain K D n) - δ (n - 1) n γ).v p q hpq = 0`. Introduce `z k`. Proceed by induction on `k with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `⟨0, fun p q hpq hp => ?_⟩` and prove the remaining obligations. Conclude with `(K.isZero_of_isStrictlyLE 0 p (by simpa using hp)).eq_of_src _ _`. Consider the case `succ k ih`. Take `⟨γ, hγ⟩` from `ih`. Take `⟨γ', hγ'⟩` from `UpperTheory.hb_step K D H n (-(k : ℤ)) ((z : Cochain K D n) - δ (n - 1) n γ) (by rw [δ_sub, z.δ_eq_zero, δ_δ, sub_zero]) (fun p q hpq hp => hγ p q hpq hp)`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨γ + γ', fun p q hpq hp => ?_⟩` and prove the remaining obligations. Rewrite using `[δ_add, ← sub_sub]`. Conclude with `hγ' p q hpq (by push_cast at hp; omega)`. Establish `all : ∀ z : Cocycle K D n, CohomologyClass.mk z = 0`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γ, hγ⟩` from `hz0 z (n - a + 1).toNat`. Establish `hk` using `Int.self_le_toNat (n - a + 1)`. Establish `hzero : (z : Cochain K D n) - δ (n - 1) n γ = 0`. Apply `Cochain.ext` to reduce the goal to its premises. Introduce `p q hpq`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Cochain.zero_v]`. Distinguish the cases in `hp : -((n - a + 1).toNat : ℤ) < p`. Conclude with `hγ p q hpq hp`. Conclude with `(D.isZero_of_isStrictlyGE a q (by omega)).eq_of_tgt _ _`. Rewrite using `[CohomologyClass.mk_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n - 1, by omega, γ, (sub_eq_zero.mp hzero).symm⟩`. Prove the components needed by the constructor for the conclusion. Introduce `x y`. Take `⟨x, rfl⟩` from `CohomologyClass.mk_surjective x`. Take `⟨y, rfl⟩` from `CohomologyClass.mk_surjective y`.
-
-Rewrite using `[all x, all y]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.subsingleton_cohomologyClass_of_bounded_of_cycles_lift :
     ∀ (K D : Cx ℤ) [K.IsStrictlyLE 0] (a : ℤ) [D.IsStrictlyGE a], (∀ (p j : ℤ) (f : K.X p ⟶ D.X j), f ≫ D.d j (j + 1) = 0 → ∃ g : K.X p ⟶ D.X (j - 1), g ≫ D.d (j - 1) j = f) → ∀ n : ℤ, Subsingleton (CohomologyClass K D n) := by

@@ -14,14 +14,14 @@ def lm {D : J ⥤ Scheme.{0}} (c : Cone D) {j0 : J} {X : Scheme.{0}} (e : D.obj 
   (c.π.app j0 ≫ e.hom) ⁻¹ᵁ U
 
 /- English proof (translation)
-Rewrite using `[lm, lv, ← Scheme.Hom.comp_preimage, ← Category.assoc, c.w f]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lm_le {D : J ⥤ Scheme.{0}} (c : Cone D) {j0 : J} {X : Scheme.{0}} (e : D.obj j0 ≅ X) (U : X.Opens) {k : J}
     (f : k ⟶ j0) : lm c e U ≤ (c.π.app k) ⁻¹ᵁ lv D e U f := by
   rw [lm, lv, ← Scheme.Hom.comp_preimage, ← Category.assoc, c.w f]
 
 /- English proof (translation)
-Rewrite using `[lv, lv, ← Scheme.Hom.comp_preimage, ← Category.assoc, ← D.map_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lv_le (D : J ⥤ Scheme.{0}) {j0 : J} {X : Scheme.{0}} (e : D.obj j0 ≅ X) (U : X.Opens) {k l : J}
     (f : k ⟶ j0) (g : l ⟶ k) : lv D e U (g ≫ f) ≤ (D.map g) ⁻¹ᵁ lv D e U f := by
@@ -54,20 +54,20 @@ def DiagramChase₂ : Prop := Hyp → MV → ∀ (q : ℕ) {J : Type} [SmallCate
     ∃ (l : J) (g : l ⟶ k), pull _ (sch.map (D.map g)) _ _ y = 0
 
 /- English proof (translation)
-The claim follows from `(TopCat.homeoOfIso (Scheme.forgetToTop.mapIso e)).isCompact_preimage.mpr hU`.
+A detailed English derivation is pending.
 -/
 theorem cpt_pre {Y X : Scheme.{0}} (e : Y ≅ X) (U : X.Opens) (hU : IsCompact (U : Set X)) :
     IsCompact ((e.hom ⁻¹ᵁ U : Y.Opens) : Set Y) :=
   (TopCat.homeoOfIso (Scheme.forgetToTop.mapIso e)).isCompact_preimage.mpr hU
 
 /- English proof (translation)
-Introduce `h hmv X U V hU hV hUV pU pV pW q J _ _ D c hc ha hcs hqs hu j0 ⟨e⟩ n i j y hy`. Use `hqs j0` as an intermediate fact. Establish `hU'` using `cpt_pre e U hU`. Establish `hV'` using `cpt_pre e V hV`. Establish `hW' : IsCompact ((e.hom ⁻¹ᵁ (U ⊓ V) : (D.obj j0).Opens) : Set (D.obj j0))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.preimage_inf]`. Conclude with `QuasiSeparatedSpace.inter_isCompact _ _ (e.hom ⁻¹ᵁ U).isOpen hU' (e.hom ⁻¹ᵁ V).isOpen hV'`. Establish `rU` using `hR h q D c hc ha hcs hqs hu j0 X e U hU' pU`. Establish `rV` using `hR h q D c hc ha hcs hqs hu j0 X e V hV' pV`. Establish `rW` using `hR h q D c hc ha hcs hqs hu j0 X e (U ⊓ V) hW' pW`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `k` to `IsCofiltered.min j j0`. Establish `hy' : pull _ (sch.map (c.π.app k)) _ _ (pull _ (sch.map (D.map (IsCofiltered.minToLeft j j0))) _ _ y) = 0`. Rewrite using `[← pull_comp, ← Functor.map_comp, c.w]`. Conclude with `hy`. Take `⟨l, g, hg⟩` from `hC h hmv q D c hc j0 X e U V hUV rU rV rW n i k (IsCofiltered.minToRight j j0) _ hy'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨l, g ≫ IsCofiltered.minToLeft j j0, ?_⟩` and prove the remaining obligations. Rewrite using `[D.map_comp, Functor.map_comp, pull_comp]`. Conclude with `hg`.
+A detailed English derivation is pending.
 -/
 theorem StepK_of (hR : Restr) (hC : DiagramChase₂) : StepK := by
   intro h hmv X U V hU hV hUV pU pV pW q J _ _ D c hc ha hcs hqs hu j0 ⟨e⟩ n i j y hy

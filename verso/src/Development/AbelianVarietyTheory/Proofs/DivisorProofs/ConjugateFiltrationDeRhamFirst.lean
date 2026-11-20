@@ -12,15 +12,13 @@ open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.
 namespace GlobalTheory.ConjSeq
 
 /- English proof (translation)
-Introduce `p _ T _ A _ g _ _ H e _ C hC Ψ hΨ`. Use `set f := GlobalTheory.VB.frob T p (GlobalTheory.VB.natCast_eq_zero T p (ZMod p)) with hf`. Establish `key : ∀ (U : T.Opens) (s : Γ(H, U)), Ψ.app U (GlobalTheory.QCoh.pullbackSections f H (le_refl U) s) ∈ C.sec U`. Introduce `U s`. Use `C.mem_of_local fun x hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWU⟩` from `T.isBasis_affineOpens.exists_subset_of_mem_open hx U.2`. Establish `hWU' : W ≤ U` using `hWU`. Use `⟨W, hWU', hxW, ?_⟩` and prove the remaining obligations. Establish `h1 : GlobalTheory.Twist.resM H hWU' (Ψ.app U (GlobalTheory.QCoh.pullbackSections f H (le_refl U) s)) = Ψ.app W (GlobalTheory.QCoh.pullbackSections f H (le_refl W) (GlobalTheory.Twist.resM H hWU' s))`. Rewrite using `[← GlobalTheory.Twist.app_resM]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `(GlobalTheory.QCoh.res_pullbackSections f H (le_refl U) hWU' s).trans (GlobalTheory.QCoh.pullbackSections_res f H (le_refl W) hWU' s).symm`. Rewrite using `[h1, hC W hW, hΨ W hW]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Establish `hu : ∀ (U : T.Opens) (s : Γ(H, U)), ((Scheme.Modules.pullbackPushforwardAdjunction f).unit.app H).app U s = GlobalTheory.QCoh.pullbackSections f H (le_refl U) s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `U s`. Conclude with `(GlobalTheory.Twist.resM_self _ _).symm`. Apply `((Scheme.Modules.pullbackPushforwardAdjunction f).homEquiv _ _).injective` to reduce the goal to its premises. Use `Scheme.Modules.hom_ext _ _ fun U => ?_` and prove the remaining obligations. Use extensionality with `s`.
-
-Simplify using `only [Adjunction.homEquiv_unit, Scheme.Modules.Hom.comp_app, Scheme.Modules.pushforward_map_app, Scheme.Modules.Hom.zero_app, Limits.comp_zero]`. Use `show (cokernel.π C.incl).app U (Ψ.app U (((Scheme.Modules.pullbackPushforwardAdjunction f).unit.app H).app U s)) = 0`. Rewrite using `[hu]`. Conclude with `C.cokernel_π_app_eq_zero_iff.2 (key U s)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobLin_comp_cokernel_π_eq_zero : ∀ (p : ℕ) [Fact p.Prime] {T : Scheme.{0}} [Algebra (ZMod p) Γ(T, ⊤)] (A : Over T) [GrpObj A]
     (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (H : T.Modules)

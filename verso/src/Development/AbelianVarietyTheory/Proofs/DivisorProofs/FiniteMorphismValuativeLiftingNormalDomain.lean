@@ -10,9 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.RetractionLiftSection.lift_finite`. Consider the case `exact _root_.GlobalTheory.RetractionLiftSection.lift_finite`. Consider the case `(apply _root_.GlobalTheory.RetractionLiftSection.lift_finite <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RetractionLiftSection.lift_finite <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.RetractionLiftSection.lift_finite <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RetractionLiftSection.lift_finite ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finite_lift_fractionField (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R]
     (Z P : Scheme.{0}) (p : Z ⟶ P) (ξ₀ : Sp R ⟶ P) (y : Sp (FractionRing R) ⟶ Z)

@@ -32,7 +32,7 @@ def rationalCosetEquiv (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) : 
   left_inv _ := rfl
   right_inv _ := rfl
 /- English proof (translation)
-Establish `: Countable E` using `(Module.finBasis ℚ E).equivFun.injective.countable`. Use `Function.Surjective.countable (f := fun v : Fin L.n → E => (⟨GlobalTheory.ThK.incV F v, AddSubgroup.subset_closure ⟨v, rfl⟩⟩ : L.ratV)) fun u => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C1.ratV_inc_k u.2`. Conclude with `⟨v, Subtype.ext hv.symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem countable_rational_vectors (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) : Countable L.ratV := by
   have : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable
@@ -41,9 +41,9 @@ theorem countable_rational_vectors (L : _root_.PositivityTheory.SiegelWeilFormul
   obtain ⟨v, hv⟩ := _root_.PositivityTheory.SiegelWeilFormula.Act.C1.ratV_inc_k u.2
   exact ⟨v, Subtype.ext hv.symm⟩
 /- English proof (translation)
-Take `⟨u₀, a₀⟩` from `c₀`. Take `⟨u, b, a⟩` from `p`. Establish `e1 : L.j γ' * (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L b * (cM (u, a) * Y)) = (L.j γ' * (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L b * cM (u, a))) * Y` using `by simp only [mul_assoc]`. Establish `e2 : ∀ c', cM (u₀, a₀) * (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L (Λ (b, u)).1 * cM c' * L.j γ' * Y) = (cM (u₀, a₀) * (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L (Λ (b, u)).1 * cM c')) * (L.j γ' * Y)` using `by intro c'; simp only [mul_assoc]`. Rewrite using `[e1, hΛ, e2, hZ, mul_assoc, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.section_unipotent_invariant h hf z]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [UnfoldingIntegralSum.sh, add_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coset_point_decomposition (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) {s₁ : ℂ} {f : d.G → ℂ} (hf : IsSec d.K d.χ s₁ f) (z : ℂ) {γ' : G2 σ L.Y}
     {Λ : ((Fin L.n → AE F E) × (Fin L.n → AE F E)) ≃ₜ+ ((Fin L.n → AE F E) × (Fin L.n → AE F E))}
@@ -62,9 +62,9 @@ theorem coset_point_decomposition (h : _root_.PositivityTheory.SiegelWeilFormula
   rw [e1, hΛ, e2, hZ, mul_assoc, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.section_unipotent_invariant h hf z]
   simp only [UnfoldingIntegralSum.sh, add_assoc]
 /- English proof (translation)
-Take `⟨-, hν, hU0, hU1⟩` from `hU`. Use `haveI := hν`. Use `haveI := _root_.PositivityTheory.SiegelWeilFormula.Act.C5.countable_rational_vectors L`. Take `⟨Λ, Q, hQ, hΛeq, hΛrat⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.j_conj_k (R := R) h γ'`. Take `⟨Z, hZ, -, hheis⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.heis_k (R := R) h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : Continuous fun c => _root_.PositivityTheory.SiegelWeilFormula.Act.phz_k d f s₁ z (w₁ * (cM c * (L.j γ' * Y)))` using `(_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.continuous_phz_k d hf.cont s₁ z).comp (continuous_const.mul ((_root_.PositivityTheory.SiegelWeilFormula.Act.C5.continuous_cM_k h).mul continuous_const))`. Rewrite using `[← UnfoldingIntegralSum.unf_lint hU0 hU1 (fd_prod hU0 hU0) h𝓐 Λ (hΛrat hγ) hQ.measurable hZ.measurable hg.measurable.enorm]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[← (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.rationalCosetEquiv L).symm.tsum_eq]`. Conclude with `tsum_congr fun c => by rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.coset_point_decomposition h hf z hΛeq hheis]; rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfqE_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) {s₁ : ℂ} {f : d.G → ℂ} (hf : IsSec d.K d.χ s₁ f) (z : ℂ)
     {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)} (hU : L.UData uM ν 𝓤)
@@ -84,11 +84,9 @@ theorem unfqE_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb
   rw [← (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.rationalCosetEquiv L).symm.tsum_eq]
   exact tsum_congr fun c => by rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.coset_point_decomposition h hf z hΛeq hheis]; rfl
 /- English proof (translation)
-Take `⟨-, hν, hU0, hU1⟩` from `hU`. Use `haveI := hν`. Use `haveI := _root_.PositivityTheory.SiegelWeilFormula.Act.C5.countable_rational_vectors L`. Take `⟨Λ, Q, hQ, hΛeq, hΛrat⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.j_conj_k (R := R) h γ'`. Take `⟨Z, hZ, -, hheis⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.heis_k (R := R) h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : Continuous fun c => _root_.PositivityTheory.SiegelWeilFormula.Act.phz_k d f s₁ z (w₁ * (cM c * (L.j γ' * Y)))` using `(_root_.PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity.continuous_phz_k d hf.cont s₁ z).comp (continuous_const.mul ((_root_.PositivityTheory.SiegelWeilFormula.Act.C5.continuous_cM_k h).mul continuous_const))`. Rewrite using `[← UnfoldingIntegralSum.unf_int hU0 hU1 (fd_prod hU0 hU0) h𝓐 Λ (hΛrat hγ) hQ.measurable hZ.measurable hg.measurable hfin]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.rationalCosetEquiv L).symm.tsum_eq]`.
-
-Conclude with `tsum_congr fun c => by rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.coset_point_decomposition h hf z hΛeq hheis]; rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfqC_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) {s₁ : ℂ} {f : d.G → ℂ} (hf : IsSec d.K d.χ s₁ f) (z : ℂ)
     {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)} (hU : L.UData uM ν 𝓤)

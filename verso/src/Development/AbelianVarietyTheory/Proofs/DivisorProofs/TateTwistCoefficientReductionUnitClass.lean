@@ -14,7 +14,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC.RedUnit
 
 /- English proof (translation)
-Use `congrArg (fun f => f.hom y) (φ.hom.naturality g.op)` as an intermediate fact. Conclude with `this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_map {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (y : Sec F U) :
     Sec.res g (Sec.map φ y) = Sec.map φ (Sec.res g y) := by
@@ -22,7 +22,7 @@ theorem res_map {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Sche
   exact this.symm
 
 /- English proof (translation)
-Unfold `resGen`. Rewrite using `[res_map, (GlobalTheory.T.tateTwist_sections_locally_generated q i).2.2.2.1 V U g ζ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_resGen {q : ℕ} [NeZero q] (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (resGen i ζ) = resGen i (ζ.map g.appTop.hom) := by
@@ -30,9 +30,7 @@ theorem res_resGen {q : ℕ} [NeZero q] (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ 
   rw [res_map, (GlobalTheory.T.tateTwist_sections_locally_generated q i).2.2.2.1 V U g ζ]
 
 /- English proof (translation)
-Distinguish the cases in `hq : q = 1`. Substitute `hq` using the available equality. Establish `: Subsingleton M` using `Module.subsingleton (ULift.{1} (ZMod 1)) M`. Conclude with `Subsingleton.elim _ _`. Use `haveI : Fact (1 < q) := ⟨by have := NeZero.ne q; omega⟩`.
-
-Rewrite using `[ZMod.val_one, one_smul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_one_smul {q : ℕ} [NeZero q] {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M] (y : M) :
     (1 : ZMod q).val • y = y := by
@@ -44,9 +42,9 @@ theorem val_one_smul {q : ℕ} [NeZero q] {M : Type*} [AddCommGroup M] [Module (
     rw [ZMod.val_one, one_smul]
 
 /- English proof (translation)
-Apply `(GlobalTheory.T.etaleSheafSections_ext_and_glue _ _ U).1` to reduce the goal to its premises. Take `⟨S, hS, hP⟩` from `(GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q U).2.1 ζ ξ`. Use `⟨S, hS, fun W h hh => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hP W h hh`. Rewrite using `[res_resGen, res_resGen]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.T.tateTwist_sections_locally_generated q 0).2.2.2.2.1 W (ζ.map h.appTop.hom) (ξ.map h.appTop.hom) a ha` as an intermediate fact. Unfold `resGen`. Rewrite using `[this, zpow_zero, Units.val_one, val_one_smul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem resGen_zero_eq {q : ℕ} [NeZero q] {U : Scheme.{0}} (ζ ξ : Prim q Γ(U, ⊤)) : resGen 0 ζ = resGen 0 ξ := by
   apply (GlobalTheory.T.etaleSheafSections_ext_and_glue _ _ U).1
@@ -61,15 +59,13 @@ theorem resGen_zero_eq {q : ℕ} [NeZero q] {U : Scheme.{0}} (ζ ξ : Prim q Γ(
 end GlobalTheory.EtC.RedUnit
 
 /- English proof (translation)
-Introduce `Q q _ hqQ E hE`. Use `haveI : NeZero q := ⟨fun h => by subst h; exact NeZero.ne Q (Nat.eq_zero_of_zero_dvd hqQ)⟩`. Establish `hEq : Inv q E` using `fun U hU => by`. Take `⟨k, hk⟩` from `hqQ`. Use `hE U hU` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hk, Nat.cast_mul]`. Conclude with `isUnit_of_mul_isUnit_left this`. Take `⟨α, hα1, hα2⟩` from `(GlobalTheory.T.tateTwistUnitClass_rootClass_spec Q).1 E hE`. Take `⟨β, hβ⟩` from `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap _ _ (redMap Q q 0)).1 E 0 α`. Establish `hred : red Q q E 0 0 (one Q E) = CohomologyClass.mk β`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hα1]`. Conclude with `(GlobalTheory.T.exists_image_cocycle_semilinearSheafComplexMap _ _ (redMap Q q 0)).2 E 0 α β hβ`. Rewrite using `[hred]`. Use `(GlobalTheory.T.tateTwistUnitClass_rootClass_spec q).2.1 E hEq β fun U x ξ => ?_` and prove the remaining obligations. Apply `(GlobalTheory.T.etaleSheafSections_ext_and_glue _ _ U).1` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, hP⟩` from `(GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity Q U).1 (hE U ⟨x⟩)`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨ζ⟩` from `hP V g hg`. Take `⟨ξ', hξ'⟩` from `(GlobalTheory.T.primitiveRoot_pow_unit_sub_prod_properties Q Γ(V, ⊤)).2.2.2.2.2 q hqQ ζ`. Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 β.1 0 0 _ V U g x, hβ 0 0 _ V (x.res g), hα2 V (x.res g) ζ, GlobalTheory.T.tateTwistReductionResolutionMap_generator Q q hqQ 0 V ζ ξ' hξ', RedUnit.res_resGen]`.
-
-Conclude with `RedUnit.resGen_zero_eq _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.red_one : ∀ (Q q : ℕ) [NeZero Q], q ∣ Q → ∀ E : Spc, Inv Q E → red Q q E 0 0 (one Q E) = one q E := by
   intro Q q _ hqQ E hE

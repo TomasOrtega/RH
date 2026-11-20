@@ -17,9 +17,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 section Average
 
 /- English proof (translation)
-Take `⟨U, hU, hUf⟩` from `exists_rightStab_parabolicInd σ f`. Establish `hfin : AvgFinite K (f : GL (Fin n) F → W)` using `avgFinite_of_isOpen hK hU fun k hk => (mem_rightStab).2 fun x => hUf k hk x`. Establish `hmem : avgOver K (f : GL (Fin n) F → W) ∈ parabolicIndSpace F n β σ` using `avgOver_mem hfin fun k _ => (parabolicInd F n β σ k f).2`. Use `⟨⟨_, hmem⟩, rfl, fun g hg => ?_⟩` and prove the remaining obligations. Use `show avgOver K (f : GL (Fin n) F → W) g = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `avgOver_eq_zero_of_forall fun k hk => hf _ fun hgk => hg ?_` and prove the remaining obligations. Simplify using `using hYQ _ hgk _ ((blockUpper F n γ).inv_mem (hKQ hk))`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem avgOver_mem_supportedIn {Y : Set (GL (Fin n) F)}
     (hYQ : ∀ g ∈ Y, ∀ q ∈ blockUpper F n γ, g * q ∈ Y) {K : Subgroup (GL (Fin n) F)}
@@ -37,17 +37,15 @@ theorem avgOver_mem_supportedIn {Y : Set (GL (Fin n) F)}
   simpa using hYQ _ hgk _ ((blockUpper F n γ).inv_mem (hKQ hk))
 
 /- English proof (translation)
-Take `⟨e, hfe, hge⟩` from `exists_cellSupp_pair σ hYo hCY hf hg hm`. Establish `hmK : IsCompact ((K.map (MulAut.conj m).toMonoidHom : Subgroup (GL (Fin n) F)) : Set (GL (Fin n) F))`. Rewrite using `[Subgroup.coe_map]`. Conclude with `hK.image (conjHomeomorph m).continuous`. Take `⟨e₂, he₂⟩` from `exists_unipotentCompactG_of_isCompact (γ := γ) hmK (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `conj_mem_unipotentRadical (levi_le_blockUpper hm) (hKN hk))`. Use `set E := max e e₂`. Establish `hE` using `isCellCompact_unipotentCompactG (F := F) (γ := γ) E`. Rewrite using `[cellJacquet_eq_cellEv σ hYo hCY hg hm hE (hge.mono (unipotentCompactG_mono (le_max_left _ _))), cellJacquet_eq_cellEv σ hYo hCY hf hm hE (hfe.mono (unipotentCompactG_mono (le_max_left _ _)))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `cellEv`. Take `⟨U, hU, hUf⟩` from `exists_rightStab_parabolicInd σ f`. Establish `hfinF : AvgFinite K (fun z => (f : GL (Fin n) F → W) (permGL F w * m * z))`. Use `avgFinite_of_isOpen hK hU fun k hk => (mem_rightStab).2 fun x => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hUf k hk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hcf : cellFun w σ g m = avgOver (K.map (MulAut.conj m).toMonoidHom) (cellFun w σ f m)`. Use function extensionality and compare the values at `y`. Establish `h1 : cellFun w σ f m = fun y => (fun z => (f : GL (Fin n) F → W) (permGL F w * m * z)) ((MulAut.conj m).symm y)`. Use function extensionality and compare the values at `y`. Unfold `cellFun`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[MulAut.conj_symm_apply]`. Use `group`. Rewrite using `[h1, avgOver_map_mulEquiv (MulAut.conj m) hfinF, avgOver_comp_mul_left]`. Unfold `cellFun`. Rewrite using `[hgf, MulAut.conj_symm_apply]`.
-
-Use `congr 1`. Use `group`. Establish `hfinC : AvgFinite (K.map (MulAut.conj m).toMonoidHom) (cellFun w σ f m)` using `avgFinite_cellFun σ f m hmK`. Rewrite using `[hcf, avgOver_avgOver (he₂.trans fun x hx => unipotentCompactG_mono (le_max_right _ _) hx) (avgFinite_cellFun σ f m hE.2.1)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellJacquet_avgOver {Y : Set (GL (Fin n) F)} (hYo : IsOpen Y)
     (hCY : closure (doubleCoset (permGL F w) (blockUpper F n β : Set (GL (Fin n) F))
@@ -106,21 +104,17 @@ variable {Y : Set (GL (Fin n) F)} (hYo : IsOpen Y)
 include hYo hCY hYQ in
 
 /- English proof (translation)
-Establish `hx` using `(Representation.Coinvariants.mk_eq_zero _).1 h0`. Take `⟨K', hK'c, -, hK'⟩` from `exists_mem_coinvariantsKer _ exists_compactOpen_unipotentRadical hx`. Use `set K : Subgroup (GL (Fin n) F) := K'.map (unipotentRadical F n γ).subtype`. Establish `hKc : IsCompact (K : Set (GL (Fin n) F))`. Rewrite using `[Subgroup.coe_map]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hK'c.image continuous_subtype_val`. Establish `hKN : K ≤ unipotentRadical F n γ`. Introduce and unpack `_ ⟨k, -, rfl⟩`. Conclude with `k.2`. Establish `hfinI : ∀ v : parabolicIndSpace F n β σ, AvgFinite K (v : GL (Fin n) F → W)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce `v`. Take `⟨U, hU, hUv⟩` from `exists_rightStab_parabolicInd σ v`. Conclude with `avgFinite_of_isOpen hKc hU fun k hk => (mem_rightStab).2 fun x => hUv k hk x`. Set `L : parabolicIndSpace F n β σ →ₗ[ℂ] (GL (Fin n) F → W)` to `{ toFun := fun v => avgOver K (v : GL (Fin n) F → W) map_add' := fun v v' => by`. Rewrite using `[Submodule.coe_add, avgOver_add (hfinI v) (hfinI v')]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `map_smul' := fun c v => by`. Rewrite using `[Submodule.coe_smul, avgOver_smul c (hfinI v)]`. Use `rfl }`. Establish `hL : L f = 0`. Establish `: coinvariantsKer ((parabolicInd F n β σ).comp (unipotentRadical F n γ).subtype) K' ≤ LinearMap.ker L`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, v⟩, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, sub_eq_zero]`. Use `show avgOver K (((parabolicInd F n β σ ((k : unipotentRadical F n γ) : GL (Fin n) F) v : parabolicIndSpace F n β σ)) : GL (Fin n) F → W) = avgOver K (v : GL (Fin n) F → W)`. Establish `: ((parabolicInd F n β σ ((k : unipotentRadical F n γ) : GL (Fin n) F) v : parabolicIndSpace F n β σ) : GL (Fin n) F → W) = fun y => (v : GL (Fin n) F → W) (y * ((k : unipotentRadical F n γ) : GL (Fin n) F))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[coe_indRep_apply]`. Rewrite using `[this]`. Conclude with `avgOver_comp_mul_right (hfinI v) (Subgroup.mem_map_of_mem _ k.2)`. Conclude with `this hK'`.
-
-Take `⟨g, hg, hgY⟩` from `avgOver_mem_supportedIn σ hYQ hKc (hKN.trans unipotentRadical_le_blockUpper) hf`. Rewrite using `[← cellJacquet_avgOver σ hYo hCY hKc hKN hf hgY hg hm]`. Establish `hg0 : (g : GL (Fin n) F → W) = 0` using `hg.trans hL`. Take `⟨e, he⟩` from `exists_cellSupp σ hYo hCY hgY hm`. Rewrite using `[cellJacquet_eq_cellEv σ hYo hCY hgY hm (isCellCompact_unipotentCompactG e) he]`.
-
-Unfold `cellEv`. Rewrite using `[avgOver_eq_zero_of_forall (fun k _ => by unfold cellFun; rw [hg0]; rfl), map_zero, smul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellJacquet_eq_zero_of_mk_eq_zero {f : parabolicIndSpace F n β σ}
     (hf : f ∈ supportedIn σ Y)
@@ -181,7 +175,7 @@ def jacquetSupported (Y : Set (GL (Fin n) F)) :
     fun f => ⟨f, f.2, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨_, f, hf, rfl⟩`. Conclude with `⟨⟨f, hf⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem jacquetSupported_surjective (Y : Set (GL (Fin n) F)) :
     Function.Surjective (jacquetSupported γ σ Y) := by
@@ -190,9 +184,9 @@ theorem jacquetSupported_surjective (Y : Set (GL (Fin n) F)) :
 
 include hYo hCY hYQ in
 /- English proof (translation)
-Introduce `f hf`. Rewrite `hf`, the goal using `[LinearMap.mem_ker]`. Establish `h0 : Representation.Coinvariants.mk ((parabolicInd F n β σ).comp (unipotentRadical F n γ).subtype) (f : parabolicIndSpace F n β σ) = 0` using `congrArg Subtype.val hf`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `cellJacquet_eq_zero_of_mk_eq_zero σ hYo hCY hYQ f.2 h0 m.2`.
+A detailed English derivation is pending.
 -/
 theorem ker_jacquetSupported_le :
     LinearMap.ker (jacquetSupported γ σ Y) ≤ LinearMap.ker (cellJacquetMap γ w σ hYo hCY) := by
@@ -207,7 +201,7 @@ theorem ker_jacquetSupported_le :
 
 include hYo hCY hYQ in
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub]`. Apply `ker_jacquetSupported_le σ hYo hCY hYQ` to reduce the goal to its premises. Rewrite using `[LinearMap.mem_ker, map_sub, h, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cellJacquetMap_eq_of_jacquetSupported_eq {f f' : supportedIn σ Y}
     (h : jacquetSupported γ σ Y f = jacquetSupported γ σ Y f') :
@@ -234,7 +228,7 @@ def gradedJacquetMap :
     rw [map_smul, Function.surjInv_eq hs x, Function.surjInv_eq hs (c • x)]
 
 /- English proof (translation)
-The claim follows from `cellJacquetMap_eq_of_jacquetSupported_eq σ hYo hCY hYQ (Function.surjInv_eq (jacquetSupported_surjective σ Y) _)`.
+A detailed English derivation is pending.
 -/
 theorem gradedJacquetMap_apply (f : supportedIn σ Y) :
     gradedJacquetMap γ w σ hYo hCY hYQ (jacquetSupported γ σ Y f) =
@@ -253,11 +247,9 @@ variable {Y : Set (GL (Fin n) F)} (hYo : IsOpen Y)
   (hYQ : ∀ g ∈ Y, ∀ q ∈ blockUpper F n γ, g * q ∈ Y)
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `jacquetSupported_surjective (γ := γ) σ Y x`. Establish `hmf : parabolicInd F n β σ (m : GL (Fin n) F) (f : parabolicIndSpace F n β σ) ∈ supportedIn σ Y` using `supportedIn_le_comap γ hYQ (levi_le_blockUpper m.2) f.2`. Establish `hx : (⟨jacquetRep F n γ (parabolicInd F n β σ) m (jacquetSupported γ σ Y f), jacquetFiltration_le_comap γ hYQ m (jacquetSupported γ σ Y f).2⟩ : jacquetFiltration γ (σ` using `σ) Y) = invSqrtModular F n γ (leviIncl m) • jacquetSupported γ σ Y ⟨_, hmf⟩ := by`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `jacquetRep_mk _ m _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, map_smul, gradedJacquetMap_apply, gradedJacquetMap_apply]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `m'`. Rewrite using `[coe_cellJacquetMap_apply, coe_indRep_apply, coe_cellJacquetMap_apply]`.
-
-Conclude with `cellJacquet_parabolicInd σ _ _ _`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gradedJacquetMap_jacquetRep (m : levi F n γ) (x : jacquetFiltration γ (σ := σ) Y) :
     gradedJacquetMap γ w σ hYo hCY hYQ
@@ -281,9 +273,9 @@ theorem gradedJacquetMap_jacquetRep (m : levi F n γ) (x : jacquetFiltration γ 
   exact cellJacquet_parabolicInd σ _ _ _
 
 /- English proof (translation)
-Take `⟨g, hg, hgx⟩` from `hx`. Establish `hgY : g ∈ supportedIn σ Y` using `supportedIn_mono sdiff_subset hg`. Establish `: x = jacquetSupported γ σ Y ⟨g, hgY⟩` using `Subtype.ext hgx.symm`. Rewrite using `[this, gradedJacquetMap_apply]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `m`. Rewrite using `[coe_cellJacquetMap_apply]`. Conclude with `cellJacquet_eq_zero σ hYo hCY hgY (fun c hc => hg c fun h => h.2 hc) m.2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gradedJacquetMap_eq_zero_of_mem (x : jacquetFiltration γ (σ := σ) Y)
     (hx : (x : JacquetModule F n γ (parabolicInd F n β σ)) ∈ jacquetFiltration γ (σ := σ)
@@ -299,11 +291,11 @@ theorem gradedJacquetMap_eq_zero_of_mem (x : jacquetFiltration γ (σ := σ) Y)
   exact cellJacquet_eq_zero σ hYo hCY hgY (fun c hc => hg c fun h => h.2 hc) m.2
 
 /- English proof (translation)
-Use `⟨fun h0 => ?_, gradedJacquetMap_eq_zero_of_mem σ hYo hCY hYQ x⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `jacquetSupported_surjective (γ := γ) σ Y x`. Rewrite `h0` using `[gradedJacquetMap_apply]`. Establish `hz : ∀ m ∈ levi F n γ, cellJacquet γ w σ (f : parabolicIndSpace F n β σ) m = 0`. Introduce `m hm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun φ : indSpace (cellLeviSub F β γ w) (cellInducing β γ w σ) => φ.1 ⟨m, hm⟩) h0` as an intermediate fact. Simplify `this` using `only [coe_cellJacquetMap_apply, ZeroMemClass.coe_zero, Pi.zero_apply]`. Take `⟨g, hg, hfg⟩` from `hker f f.2 hz`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use `show Representation.Coinvariants.mk _ g = Representation.Coinvariants.mk _ (f : parabolicIndSpace F n β σ)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_comm, ← sub_eq_zero, ← map_sub]`. Conclude with `(Representation.Coinvariants.mk_eq_zero _).2 hfg`.
+A detailed English derivation is pending.
 -/
 theorem gradedJacquetMap_eq_zero_iff
     (hker : ∀ f : parabolicIndSpace F n β σ, f ∈ supportedIn σ Y →
@@ -331,7 +323,7 @@ theorem gradedJacquetMap_eq_zero_iff
   exact (Representation.Coinvariants.mk_eq_zero _).2 hfg
 
 /- English proof (translation)
-Introduce `φ`. Take `⟨f, rfl⟩` from `hsurj φ`. Conclude with `⟨jacquetSupported γ σ Y f, gradedJacquetMap_apply σ hYo hCY hYQ f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gradedJacquetMap_surjective (hsurj : Function.Surjective (cellJacquetMap γ w σ hYo hCY)) :
     Function.Surjective (gradedJacquetMap γ w σ hYo hCY hYQ) := by

@@ -7,9 +7,9 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.T2
 
 /- English proof (translation)
-Establish `hprim` using `Complex.isPrimitiveRoot_exp N (by omega)`. Use `split_ifs with ht0`. Substitute `ht0` using the available equality. Simplify using the standard rewrite rules. Establish `hx : cexp (2 * Real.pi * I / N) ^ t ≠ 1` using `hprim.pow_ne_one_of_pos_of_lt (by omega) ht`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ k, (cexp (2 * Real.pi * I / N) ^ k) ^ t = (cexp (2 * Real.pi * I / N) ^ t) ^ k` using `fun k => pow_right_comm _ _ _`. Repeatedly rewrite using `[h1]`. Establish `hxN : (cexp (2 * Real.pi * I / N) ^ t) ^ N = 1` using `by rw [pow_right_comm, hprim.pow_eq_one, one_pow]`. Rewrite using `[geom_sum_eq hx, hxN, sub_self, zero_div]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootSum (N : ℕ) (hN : 0 < N) (t : ℕ) (ht : t < N) :
     ∑ k ∈ range N, (cexp (2 * Real.pi * I / N) ^ k) ^ t = if t = 0 then (N : ℂ) else 0 := by
@@ -25,39 +25,37 @@ theorem rootSum (N : ℕ) (hN : 0 < N) (t : ℕ) (ht : t < N) :
     rw [geom_sum_eq hx, hxN, sub_self, zero_div]
 
 /- English proof (translation)
-Rewrite using `[norm_pow, (Complex.isPrimitiveRoot_exp N (by omega)).norm'_eq_one (by omega), one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rootNorm (N : ℕ) (_hN : 0 < N) (k : ℕ) : ‖cexp (2 * Real.pi * I / N) ^ k‖ = 1 := by
 
   rw [norm_pow, (Complex.isPrimitiveRoot_exp N (by omega)).norm'_eq_one (by omega), one_pow]
 
 /- English proof (translation)
-Rewrite using `[pow_right_comm, (Complex.isPrimitiveRoot_exp N (by omega)).pow_eq_one, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rootPowN (N : ℕ) (hN : 0 < N) (k : ℕ) : (cexp (2 * Real.pi * I / N) ^ k) ^ N = 1 := by
 
   rw [pow_right_comm, (Complex.isPrimitiveRoot_exp N (by omega)).pow_eq_one, one_pow]
 
 /- English proof (translation)
-Establish `hN : 0 < N` using `by omega`. Establish `hyN : 1 - y ^ N ≠ 0`. Introduce `h`. Establish `h2 : y ^ N = 1` using `by linear_combination -h`. Establish `h3 : ‖y‖ ^ N = 1` using `by rw [← norm_pow, h2, norm_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hy ((pow_eq_one_iff_of_nonneg (norm_nonneg _) (by omega)).mp h3)`. Establish `hxk : ∀ k, 1 - y * cexp (2 * Real.pi * I / N) ^ k ≠ 0`. Introduce `k h`. Establish `h2 : y * cexp (2 * Real.pi * I / N) ^ k = 1` using `by linear_combination -h`. Apply `hy` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h3` using `congrArg norm h2`. Rewrite `h3` using `[norm_mul, rootNorm N hN k, mul_one, norm_one]`. Then use the resulting hypothesis. Establish `hS : ∀ s : ℕ, ∑ k ∈ range N, (cexp (2 * Real.pi * I / N) ^ k) ^ s = if s % N = 0 then (N : ℂ) else 0`. Introduce `s`. Establish `h1 : ∀ k, (cexp (2 * Real.pi * I / N) ^ k) ^ s = (cexp (2 * Real.pi * I / N) ^ k) ^ (s % N)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Use `conv_lhs => rw [← Nat.div_add_mod s N, pow_add, pow_mul, rootPowN N hN k, one_pow, one_mul]`. Repeatedly rewrite using `[h1]`. Rewrite using `[rootSum N hN _ (Nat.mod_lt _ hN)]`. Establish `hterm : ∀ k, (y * cexp (2 * Real.pi * I / N) ^ k) ^ j / (1 - y * cexp (2 * Real.pi * I / N) ^ k) = (∑ m ∈ range N, y ^ (j + m) * (cexp (2 * Real.pi * I / N) ^ k) ^ (j + m)) / (1 - y ^ N)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Rewrite using `[div_eq_div_iff (hxk k) hyN]`. Establish `hg` using `mul_neg_geom_sum (y * cexp (2 * Real.pi * I / N) ^ k) N`. Establish `hxN : (y * cexp (2 * Real.pi * I / N) ^ k) ^ N = y ^ N` using `by rw [mul_pow, rootPowN N hN k, mul_one]`. Rewrite `hg` using `[hxN]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∑ m ∈ range N, y ^ (j + m) * (cexp (2 * Real.pi * I / N) ^ k) ^ (j + m) = (y * cexp (2 * Real.pi * I / N) ^ k) ^ j * ∑ i ∈ range N, (y * cexp (2 * Real.pi * I / N) ^ k) ^ i`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun m _ => by ring)`. Rewrite using `[h1, ← hg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun k _ => hterm k), ← Finset.sum_div, Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.mul_sum, hS]`. Rewrite using `[Finset.sum_eq_single (N - j)]`. Rewrite using `[if_pos (by rw [Nat.add_sub_cancel' hjN.le, Nat.mod_self]), Nat.add_sub_cancel' hjN.le]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm hne`. Rewrite `hm` using `[Finset.mem_range]`. Rewrite using `[if_neg, mul_zero]`. Distinguish the cases in `hlt : j + m < N`. Rewrite using `[Nat.mod_eq_of_lt hlt]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Nat.mod_eq_sub_mod (by omega), Nat.mod_eq_of_lt (by omega)]`. Use linear arithmetic over natural numbers and integers. Introduce `h`. It suffices to derive a contradiction.
-
-Simplify using `at h`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rootAvg (N : ℕ) (j : ℕ) (hj : 1 ≤ j) (hjN : j < N) (y : ℂ) (hy : ‖y‖ ≠ 1) :
     ∑ k ∈ range N, (y * cexp (2 * Real.pi * I / N) ^ k) ^ j / (1 - y * cexp (2 * Real.pi * I / N) ^ k)
@@ -114,15 +112,13 @@ theorem rootAvg (N : ℕ) (j : ℕ) (hj : 1 ≤ j) (hjN : j < N) (y : ℂ) (hy :
     omega
 
 /- English proof (translation)
-Use `split_ifs with h`. Establish `hz : ‖y⁻¹‖ < 1`. Rewrite using `[norm_inv]`. Conclude with `inv_lt_one_of_one_lt₀ h`. Establish `h1` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Tendsto (fun N : ℕ => 1 / (y⁻¹ ^ N - 1)) atTop (𝓝 (1 / (0 - 1)))` using `tendsto_const_nhds.div (h1.sub tendsto_const_nhds) (by norm_num)`. Establish `hy0 : y ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h3 : (fun N : ℕ => y ^ N / (1 - y ^ N)) = (fun N : ℕ => 1 / (y⁻¹ ^ N - 1))`. Use function extensionality and compare the values at `N`. Establish `hyN : y ^ N ≠ 0` using `pow_ne_zero _ hy0`. Rewrite using `[inv_pow, show (y ^ N)⁻¹ - 1 = (1 - y ^ N) / y ^ N by field_simp, one_div_div]`. Establish `h4 : (-1 : ℂ) = 1 / (0 - 1)` using `by norm_num`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3, h4]`. Conclude with `h2`. Establish `hlt : ‖y‖ < 1` using `lt_of_le_of_ne (not_lt.mp h) hy`. Establish `h1` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one hlt`. Establish `h2 : Tendsto (fun N : ℕ => y ^ N / (1 - y ^ N)) atTop (𝓝 (0 / (1 - 0)))` using `h1.div (tendsto_const_nhds.sub h1) (by norm_num)`.
-
-Rewrite `h2` using `[show (0 : ℂ) / (1 - 0) = 0 by norm_num]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratioLim (y : ℂ) (hy : ‖y‖ ≠ 1) :
     Tendsto (fun N : ℕ => y ^ N / (1 - y ^ N)) atTop (𝓝 (if 1 < ‖y‖ then (-1 : ℂ) else 0)) := by
@@ -153,13 +149,13 @@ theorem ratioLim (y : ℂ) (hy : ‖y‖ ≠ 1) :
     exact h2
 
 /- English proof (translation)
-Establish `hbound : ∀ N : ℕ, j < N → ‖∑ i, y i ^ N / (1 - y i ^ N)‖ ≤ K`. Introduce `N hjN`. Establish `hN : 0 < N` using `by omega`. Establish `h1 : ∑ k ∈ range N, ∑ i, (y i * cexp (2 * Real.pi * I / N) ^ k) ^ j / (1 - y i * cexp (2 * Real.pi * I / N) ^ k) = N * ∑ i, y i ^ N / (1 - y i ^ N)`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun i _ => rootAvg N j hj hjN (y i) (hy i))`. Establish `h2 : ‖∑ k ∈ range N, ∑ i, (y i * cexp (2 * Real.pi * I / N) ^ k) ^ j / (1 - y i * cexp (2 * Real.pi * I / N) ^ k)‖ ≤ N * K`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[h1, norm_mul, Complex.norm_natCast]`. Establish `hNpos : (0 : ℝ) < N` using `by exact_mod_cast hN`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_of_mul_le_mul_left h2 hNpos`. Establish `hlim : Tendsto (fun N : ℕ => ∑ i, y i ^ N / (1 - y i ^ N)) atTop (𝓝 (∑ i, if 1 < ‖y i‖ then (-1 : ℂ) else 0))` using `tendsto_finset_sum _ (fun i _ => ratioLim (y i) (hy i))`. Establish `hle : ‖∑ i, if 1 < ‖y i‖ then (-1 : ℂ) else 0‖ ≤ K`. Apply `le_of_tendsto hlim.norm` to reduce the goal to its premises. Rewrite using `[Filter.eventually_atTop]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨j + 1, fun N hN => hbound N (by omega)⟩`. Establish `hval : ‖∑ i, if 1 < ‖y i‖ then (-1 : ℂ) else 0‖ = ((univ.filter (fun i => 1 < ‖y i‖)).card : ℝ)`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul, norm_mul, norm_neg, norm_one, mul_one, Complex.norm_natCast]`. Rewrite using `[← hval]`. Conclude with `hle`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avgLimit {n : ℕ} (y : Fin n → ℂ) (hy : ∀ i, ‖y i‖ ≠ 1) (j : ℕ) (hj : 1 ≤ j) (K : ℝ)
     (hK : ∀ ζ : ℂ, ‖ζ‖ = 1 → ‖∑ i, (y i * ζ) ^ j / (1 - y i * ζ)‖ ≤ K) :

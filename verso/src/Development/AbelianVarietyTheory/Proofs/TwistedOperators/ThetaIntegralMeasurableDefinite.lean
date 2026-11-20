@@ -14,13 +14,13 @@ namespace GlobalTheory.DefiniteLiftZfin
 open Matrix
 
 /- English proof (translation)
-Introduce `r C ⟨hr, hli, h0⟩`. It suffices to derive a contradiction. Take `⟨τ0⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm (Classical.arbitrary _)⟩`. Establish `hτ : ∀ a, tauE D τ0 (star a) = starRingEnd ℂ (tauE D τ0 a)` using `D.sp.cm.cmUnram.2.1 (tauE D τ0)`. Establish `h1` using `congrArg (tauE D τ0) (congrFun (congrFun h0 ⟨0, hr⟩) ⟨0, hr⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : star (fun i => tauE D τ0 (C i ⟨0, hr⟩)) ⬝ᵥ (gramAt D V τ0 *ᵥ fun i => tauE D τ0 (C i ⟨0, hr⟩)) = 0`. Rewrite `h1` using `[Matrix.zero_apply, map_zero]`. Rewrite using `[← h1, Matrix.mul_assoc]`. Simplify using `only [gramAt, Matrix.mul_apply, map_sum, map_mul, dotProduct, Matrix.mulVec, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Conclude with `(hτ _).symm`. Establish `h2 : (fun i => tauE D τ0 (C i ⟨0, hr⟩)) = 0`. Assume the negation of the conclusion as `hne`. Use `(hV τ0).dotProduct_mulVec_pos hne` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hx]`. Conclude with `lt_irrefl _ this`. Use `hli.ne_zero ⟨0, hr⟩ (funext fun i => ?_)` and prove the remaining obligations. Conclude with `(tauE D τ0).injective ((congrFun h2 i).trans (map_zero (tauE D τ0)).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCuspFun_of_posDef {D : D7} {V : HSp D} (hV : ∀ τ, (gramAt D V τ).PosDef) (φ : GA D V → ℂ) :
     IsCuspFun V φ := by
@@ -45,7 +45,7 @@ theorem isCuspFun_of_posDef {D : D7} {V : HSp D} (hV : ∀ τ, (gramAt D V τ).P
   exact (tauE D τ0).injective ((congrFun h2 i).trans (map_zero (tauE D τ0)).symm)
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om Φ φ ν 𝓕 hP hω hθ hΦ hS _ hH hF hφ`. Establish `hK` using `GlobalTheory.Mem.Lift.isKerSys_thKer (θ := θ) hθ hω.std (GlobalTheory.Ker.isWeak_of_datum hω) hω.om_cont`. Conclude with `(hK.lift hP.cuspRapidDecay hθ ⟨hH, hF⟩ ⟨hφ, isCuspFun_of_posDef hS φ⟩ ⟨Φ, hΦ⟩).2.zfin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_zfin : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (Φ : WO S T → ℂ) (φ : GA D S → ℂ) (ν : Measure (GA D S))

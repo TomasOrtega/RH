@@ -7,17 +7,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Monom
 open IsLocalRing Polynomial Matrix UpperTheory.V
 
 /- English proof (translation)
-Introduce `K k B G _ _ _ _ _ r j φ χ hj hpoly hspan hst Z _ u huZ hsep N hN hfi`. Use `haveI := hN`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hd0 : 0 < N.index` using `Nat.pos_of_ne_zero Subgroup.FiniteIndex.index_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `N' : Subgroup G` to `N.map Z.subtype`. Establish `hcore : u ^ N.index ∈ N'.normalCore` using `by show ∀ c : G, c * u ^ N.index * c⁻¹ ∈ N'`. Introduce `c`. Establish `hz : c * u * c⁻¹ ∈ Z` using `‹Z.Normal›.conj_mem u huZ c`. Establish `hp` using `N.pow_index_mem ⟨c * u * c⁻¹, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨_, hp, ?_⟩` and prove the remaining obligations. Simplify using `[conj_pow]`. Establish `hcomm : ∀ g ∈ N'.normalCore, ∀ h ∈ N'.normalCore, r g * r h = r h * r g`. Introduce `g hg h hh`. Take `⟨g', hg', rfl⟩` from `N'.normalCore_le hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h', hh', rfl⟩` from `N'.normalCore_le hh`. Conclude with `hcon g' hg' h' hh'`. Take `⟨b, π, _, hmono, htrans⟩` from `AlgebraTools.monomialOfComm K G 4 r hspan N'.normalCore hcomm ⟨u ^ N.index, hcore, by rw [map_pow]; exact hsep _ hd0⟩`. Establish `hred` using `AlgebraTools.monomialRed K k B G 4 r j φ χ hj hpoly b π hmono htrans`. Take `⟨s, t, hst'⟩` from `hst`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : π.ker ≤ (χ s / χ t).ker`. Introduce `g hg`. Rewrite using `[MonoidHom.mem_ker]`. Simplify using `[hred g hg s t]`. Take `⟨h1, h2⟩` from `AlgebraTools.permChar G k π (χ s / χ t) hle`.
-
-Conclude with `hst' _ h1 h2 (pow_orderOf_eq_one _)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.exists_noncommuting_images_in_finiteIndex_normal_subgroup :
     ∀ (K k B G : Type) [Field K] [IsAlgClosed K] [Field k] [CommRing B] [Group G] (r : G →* Matrix (Fin 4) (Fin 4) K)

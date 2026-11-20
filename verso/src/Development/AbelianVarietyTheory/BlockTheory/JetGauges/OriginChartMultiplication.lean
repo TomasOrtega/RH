@@ -47,7 +47,7 @@ theorem mulSeries_succ {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d) (n : �
     mulSeries F (n + 1) = F.add (mulSeries F n) (pt R d 0) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `F.unit i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mulSeries_one {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d) :
     mulSeries F 1 = pt R d 0 := by
@@ -55,9 +55,9 @@ theorem mulSeries_one {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d) :
   exact F.unit i
 
 /- English proof (translation)
-Proceed by induction on `n generalizing i with`. Consider the case `zero => simp [mulSeries_zero]`. Consider the case `succ n ih`. Establish `h : ∀ q : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![mulSeries F n, pt R d 0] : Fin 2 → Pt R 1 d) q.1 q.2) = 0`. Introduce and unpack `⟨a, j⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `fin_cases a`. Conclude with `ih j`. Simplify using `[pt]`. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero h) h (F.const i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_mulSeries {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d) (n : ℕ)
     (i : Fin d) : MvPowerSeries.constantCoeff (mulSeries F n i) = 0 := by
@@ -118,7 +118,7 @@ def TorsionFiniteFree : Prop :=
   ∀ m : ℕ, FiniteFreeReducedSeparated O C (TorsionRing f F (p ^ m))
 
 /- English proof (translation)
-Unfold `torsionIdeal`. Rewrite using `[mulSeries_one]`. Unfold `pt`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 example {T O : Type} [CommRing T] [CommRing O] (f : T →+* O) {d : ℕ} (F : FGLaw T d) :
     torsionIdeal f F 1 = Ideal.span (Set.range (pt O d (0 : Fin 1))) := by

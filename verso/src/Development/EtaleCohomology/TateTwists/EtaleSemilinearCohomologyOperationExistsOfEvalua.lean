@@ -17,7 +17,7 @@ namespace LateralTheory.EtaleFoundations.OpPf
 variable {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R}
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `hM R (E := E) (I := J) (n := n) (fun p s h U x => ρ.app U s (ev α p s h U x)) (by`. Introduce `p s h V U g x`. Rewrite using `[ρ.nat, (hB S).2.1])`. Conclude with `⟨β, fun p s h U x => hβ p s h U x⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem img_ex (hB : LateralTheory.EtaleFoundations.pp_ev_basic) (hM : LateralTheory.EtaleFoundations.pp_ev_mk) (ρ : SemiMap I J) {E : Spc} {n : ℤ}
     (α : Cochain ((chains S).obj E) I n) : ∃ β, ρ.IsImage α β := by
@@ -27,7 +27,7 @@ theorem img_ex (hB : LateralTheory.EtaleFoundations.pp_ev_basic) (hM : LateralTh
   exact ⟨β, fun p s h U x => hβ p s h U x⟩
 
 /- English proof (translation)
-The claim follows from `(hB R).2.2.1 β β' (fun p s hh U x => by rw [h, h'])`.
+A detailed English derivation is pending.
 -/
 theorem img_unique (hB : LateralTheory.EtaleFoundations.pp_ev_basic) (ρ : SemiMap I J) {E : Spc} {n : ℤ}
     {α : Cochain ((chains S).obj E) I n} {β β' : Cochain ((chains R).obj E) J n}
@@ -35,11 +35,11 @@ theorem img_unique (hB : LateralTheory.EtaleFoundations.pp_ev_basic) (ρ : SemiM
   (hB R).2.2.1 β β' (fun p s hh U x => by rw [h, h'])
 
 /- English proof (translation)
-Introduce `p t ht U x`. Consider the cases of `p with`. Consider the case `zero`. Take `rfl : t = m` from `by omega`. Rewrite using `[(hD R hm β U).1 x, (hD S hm α U).1 x, h, ρ.comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ p`. Rewrite using `[(hD R hm β U).2 p _ t rfl ht x, (hD S hm α U).2 p _ t rfl ht x]`. Rewrite using `[map_add, ← ρ.comm, ← h]`. Use `congr 1`. Rewrite using `[Units.smul_def, Units.smul_def, map_zsmul, map_sum]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← h]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem img_delta (hD : LateralTheory.EtaleFoundations.pp_ev_delta) (ρ : SemiMap I J) {E : Spc} {n m : ℤ} (hm : n + 1 = m)
     {α : Cochain ((chains S).obj E) I n} {β : Cochain ((chains R).obj E) J n}
@@ -59,9 +59,9 @@ theorem img_delta (hD : LateralTheory.EtaleFoundations.pp_ev_delta) (ρ : SemiMa
     rw [map_zsmul, ← h]
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `img_ex hB hM ρ α.1`. Use `⟨Cocycle.mk β (n + 1) rfl ?_, hβ⟩` and prove the remaining obligations. Establish `h1` using `img_delta hD ρ rfl hβ`. Rewrite `h1` using `[Cocycle.δ_eq_zero]`. Establish `h0 : ρ.IsImage (0 : Cochain ((chains S).obj E) I (n + 1)) (0 : Cochain ((chains R).obj E) J (n + 1))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `p s h U x`. Rewrite using `[((hB R).1 0 0 p s h U x).2.2.1, ((hB S).1 0 0 p s h U x).2.2.1, map_zero]`. Conclude with `img_unique hB ρ h1 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem img_cocycle (hB : LateralTheory.EtaleFoundations.pp_ev_basic) (hM : LateralTheory.EtaleFoundations.pp_ev_mk) (hD : LateralTheory.EtaleFoundations.pp_ev_delta)
     (ρ : SemiMap I J) {E : Spc} {n : ℤ} (α : Cocycle ((chains S).obj E) I n) :
@@ -80,14 +80,14 @@ noncomputable def img (hB : LateralTheory.EtaleFoundations.pp_ev_basic) (hM : La
   (img_cocycle hB hM hD ρ α).choose
 
 /- English proof (translation)
-The claim follows from `(img_cocycle hB hM hD ρ α).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem img_spec (hB : LateralTheory.EtaleFoundations.pp_ev_basic) (hM : LateralTheory.EtaleFoundations.pp_ev_mk) (hD : LateralTheory.EtaleFoundations.pp_ev_delta)
     (ρ : SemiMap I J) {E : Spc} {n : ℤ} (α : Cocycle ((chains S).obj E) I n) : ρ.IsImage α.1 (img hB hM hD ρ α).1 :=
   (img_cocycle hB hM hD ρ α).choose_spec
 
 /- English proof (translation)
-The claim follows from `Cocycle.ext (img_unique hB ρ (img_spec hB hM hD ρ α) h)`.
+A detailed English derivation is pending.
 -/
 theorem img_eq (hB : LateralTheory.EtaleFoundations.pp_ev_basic) (hM : LateralTheory.EtaleFoundations.pp_ev_mk) (hD : LateralTheory.EtaleFoundations.pp_ev_delta)
     (ρ : SemiMap I J) {E : Spc} {n : ℤ} (α : Cocycle ((chains S).obj E) I n) (β : Cocycle ((chains R).obj E) J n)
@@ -135,9 +135,9 @@ end LateralTheory.EtaleFoundations.OpPf
 
 open LateralTheory.EtaleFoundations.OpPf in
 /- English proof (translation)
-Introduce `S R _ _ I J ρ`. Use `⟨fun E n α => img_cocycle hB hM hD ρ α, fun E n α β h => ?_⟩` and prove the remaining obligations. Establish `hc : ∃ c : NatOp I J, ∀ (E : Spc) (n : ℤ) (α : Cocycle ((chains S).obj E) I n) (β : Cocycle ((chains R).obj E) J n), (∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U), ev β.1 p s h U x = ρ.app U s (ev α.1 p s h U x)) → c.app E n (CohomologyClass.mk α) = Co …`. Use `⟨theOp hB hM hD ρ, fun E n α β h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (img hB hM hD ρ α) = CohomologyClass.mk β`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[img_eq hB hM hD ρ α β h]`. Conclude with `pick_spec hc E n α β h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_semilinear_cohomology_operation_exists_of_evaluation (hB : LateralTheory.EtaleFoundations.pp_ev_basic) (hM : LateralTheory.EtaleFoundations.pp_ev_mk)
     (hD : LateralTheory.EtaleFoundations.pp_ev_delta) : LateralTheory.EtaleFoundations.EtaleCochainSemilinearMapOnClasses := by

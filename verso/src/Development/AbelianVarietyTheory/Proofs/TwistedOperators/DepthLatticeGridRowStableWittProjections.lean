@@ -17,14 +17,14 @@ namespace GlobalTheory.ProjLat
 variable {D : D7}
 
 /- English proof (translation)
-Use `show (x ⊗ₜ[D.host.F] y) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] z) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_mul_incA (x : AF D.host.F) (y z : D.host.E) : (x ⊗ₜ[D.host.F] y) * incA D z = x ⊗ₜ[D.host.F] (y * z) := by
   show (x ⊗ₜ[D.host.F] y) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] z) = _
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, rat, Matrix.map_apply, tmul_mul_incA, TensorProduct.tmul_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem of_tmul_mul_rat {m n k : ℕ} (x : AF D.host.F) (X : Matrix (Fin m) (Fin n) D.host.E) (M : Matrix (Fin n) (Fin k) D.host.E) :
     HMul.hMul (Matrix.of fun i j => x ⊗ₜ[D.host.F] X i j : Mx D m n) (rat M : Mx D n k) =
@@ -33,15 +33,13 @@ theorem of_tmul_mul_rat {m n k : ℕ} (x : AF D.host.F) (X : Matrix (Fin m) (Fin
   simp only [Matrix.mul_apply, Matrix.of_apply, rat, Matrix.map_apply, tmul_mul_incA, TensorProduct.tmul_sum]
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨α, hα, hP, a, ha, M' *ᵥ s, hL s hs, t, ht, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : ∀ l j, ∑ k, star (M' k l) * S.gram k j = ∑ k, S.gram l k * M k j` using `fun l j => by`. Use `congrFun (congrFun hadj l) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.conjTranspose_apply]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, rat, Matrix.map_apply, tmul_mul_incA, ← TensorProduct.tmul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [Matrix.mulVec, dotProduct, star_sum, star_mul', Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[mul_left_comm (star (M' _ y)) (star (s y))]`. Rewrite using `[← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, h y j]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.add_mul]`. Conclude with `add_mem hx hy`.
-
-Consider the case `neg x _ hx => rw [Matrix.neg_mul]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem latO_mul_rat {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {P : HeightOneSpectrum (𝓞 D.host.F) → Prop} (M M' : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
@@ -69,9 +67,9 @@ theorem latO_mul_rat {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Se
   | neg x _ hx => rw [Matrix.neg_mul]; exact neg_mem hx
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, x, hx, rfl⟩` from `hw`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Conclude with `⟨α, hα, x * M, hN x hx, of_tmul_mul_rat _ _ _⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.add_mul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.neg_mul]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hatMx_mul_rat {m n : ℕ} (N : Submodule (𝓞 D.host.E) (Matrix (Fin m) (Fin n) D.host.E))
     (M : Matrix (Fin n) (Fin n) D.host.E) (hN : ∀ x ∈ N, x * M ∈ N) {w : Mx D m n} (hw : w ∈ hatMx N) :
@@ -86,9 +84,9 @@ theorem hatMx_mul_rat {m n : ℕ} (N : Submodule (𝓞 D.host.E) (Matrix (Fin m)
   | neg x _ hx => rw [Matrix.neg_mul]; exact neg_mem hx
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on (p := fun x => x * M ∈ I • homLat Λ Λ') hx ?_ ?_` and prove the remaining obligations. Introduce `r hr n hn show (r • n) * M ∈ _`. Rewrite using `[Matrix.smul_mul]`. Conclude with `Submodule.smul_mem_smul hr (fun y hy => by rw [← Matrix.mulVec_mulVec]; exact hn _ (hM y hy))`. Introduce `x y hx hy show (x + y) * M ∈ _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.add_mul]`. Conclude with `add_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem smul_homLat_mul {m n : ℕ} (I : Ideal (𝓞 D.host.E)) (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     (Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)) (M : Matrix (Fin n) (Fin n) D.host.E) (hM : ∀ y ∈ Λ, M *ᵥ y ∈ Λ)
@@ -103,23 +101,23 @@ theorem smul_homLat_mul {m n : ℕ} (I : Ideal (𝓞 D.host.E)) (Λ : Submodule 
     rw [Matrix.add_mul]; exact add_mem hx hy
 
 /- English proof (translation)
-Simplify using `only [HypDec.qX, HypDec.qY, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem proj_adj {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : (d.e' * d.qY)ᴴ * S.gram = S.gram * (d.e * d.qX) := by
   simp only [HypDec.qX, HypDec.qY, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [HypDec.qX, HypDec.qY, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem proj_adj' {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : (d.e * d.qX)ᴴ * S.gram = S.gram * (d.e' * d.qY) := by
   simp only [HypDec.qX, HypDec.qY, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨hu1, hu2⟩` from `hu`. Establish `hadj' : Mx₂ᴴ * (G.pS (.chi i 0)).gram = (G.pS (.chi i 0)).gram * Mx₁` using `by show Mx₂ᴴ * (-(G.V (.grid (i + 1) 0)).gram) = (-(G.V (.grid (i + 1) 0)).gram) * Mx₁`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, hadj]`. Establish `hu1' : u ∈ latO (G.pS (.chi i 0)) (G.pT (.chi i 0)) (G.latS (.chi i 0) : Set _) (G.latT (.chi i 0) : Set _) (fun _ => True)` using `hu1`. Establish `L1` using `@latO_mul_rat D (G.pS (.chi i 0)) (G.pT (.chi i 0)) (G.latS (.chi i 0) : Set _) (G.latT (.chi i 0) : Set _) (fun _ => True) Mx₁ Mx₂ hadj' h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1` using `L1 hu1'`. Establish `t2 : ∀ e : AE D, IsIdemSum e G.pl.W0 → e • HMul.hMul u (rat Mx₁ : Mx D _ _) ∈ hatMx (G.modul • homLat (G.latS (.chi i 0)) (G.latT (.chi i 0)))`. Introduce `e he`. Rewrite using `[← Matrix.smul_mul]`. Conclude with `hatMx_mul_rat _ _ (fun x hx => smul_homLat_mul _ _ _ _ h1 hx) (hu2 e he)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨t1, t2⟩`.
+A detailed English derivation is pending.
 -/
 theorem latRow_mul_rat {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (i : ℕ)
     (Mx₁ Mx₂ : Matrix (Fin (G.V (.grid (i + 1) 0)).rank) (Fin (G.V (.grid (i + 1) 0)).rank) D.host.E)
@@ -142,11 +140,11 @@ theorem latRow_mul_rat {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L 
   exact ⟨t1, t2⟩
 
 /- English proof (translation)
-Introduce `D hD T L μ0 hL sc G W M hM F hF σ h h' u hu`. Establish `hA` using `hF.hJ (σ + 1) h`. Establish `e : G.Λ (.grid (2 * σ + 2 + 1) 0) = _` using `G.sp.colLat (2 * (σ + 1) + 1) (by omega) (by omega)`. Establish `hX : ∀ v ∈ G.Λ (.grid (2 * σ + 2 + 1) 0), ((F.dJ (σ + 1) h).e * (F.dJ (σ + 1) h).qX) *ᵥ v ∈ G.Λ (.grid (2 * σ + 2 + 1) 0)`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv`, the goal using `[e]`. Conclude with `GlobalTheory.T.proj_X_preserves_embedding_lattice _ _ hA _ _ _ hv`. Establish `hY : ∀ v ∈ G.Λ (.grid (2 * σ + 2 + 1) 0), ((F.dJ (σ + 1) h).e' * (F.dJ (σ + 1) h).qY) *ᵥ v ∈ G.Λ (.grid (2 * σ + 2 + 1) 0)`. Introduce `v hv`. Rewrite `hv`, the goal using `[e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.proj_Y_preserves_embedding_lattice _ _ hA _ _ _ hv`. Rewrite using `[show (F.dJ (σ + 1) h).jX * (F.dJ (σ + 1) h).pX = rat ((F.dJ (σ + 1) h).e * (F.dJ (σ + 1) h).qX) from (rat_mul _ _).symm, show (F.dJ (σ + 1) h).jY * (F.dJ (σ + 1) h).pY = rat ((F.dJ (σ + 1) h).e' * (F.dJ (σ + 1) h).qY) from (rat_mul _ _).symm]`. Conclude with `⟨latRow_mul_rat G (2 * σ + 2) _ _ (proj_adj _) hX hY hu, latRow_mul_rat G (2 * σ + 2) _ _ (proj_adj' _) hY hX hu⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latRow_proj : OnStd fun {D} _ _ {sc} {G} _ F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (_ : 2 * σ + 2 ≤ D.R.m), ∀ u ∈ latRow G (2 * σ + 2), u * ((F.dJ (σ + 1) h).jX * (F.dJ (σ + 1) h).pX) ∈ latRow G (2 * σ + 2) ∧ u * ((F.dJ (σ + 1) h).jY * (F.dJ (σ + 1) h).pY) ∈ latRow G (2 * σ + 2) := by
   intro D hD T L μ0 hL sc G W M hM F hF σ h h' u hu

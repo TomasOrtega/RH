@@ -16,7 +16,7 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.TContInj
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `GlobalTheory.MemLoc.exists_isCrisP l`. Take `⟨ι, -, -⟩` from `GlobalTheory.MemLoc.exists_iota_cris_dR l j hj`. Use `haveI : Nontrivial (Per.BdR l) := ⟨(GlobalTheory.T.bdRPlus_isDomain_bdR_isField l).2.2.1.exists_pair_ne⟩`. Conclude with `ι.domain_nontrivial`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bcris_nontrivial (l : ℕ) [Fact l.Prime] : Nontrivial (Per.Bcris l) := by
   obtain ⟨j, hj⟩ := GlobalTheory.MemLoc.exists_isCrisP l
@@ -25,9 +25,9 @@ theorem bcris_nontrivial (l : ℕ) [Fact l.Prime] : Nontrivial (Per.Bcris l) := 
   exact ι.domain_nontrivial
 
 /- English proof (translation)
-Use `haveI := bcris_nontrivial l`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Assume the negation of the conclusion as `h0`. Establish `hu : IsUnit (algebraMap ℤ_[l] (Per.Bcris l) z)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PadicInt.unitCoeff_spec h0, map_mul, map_pow, map_natCast]`. Conclude with `((PadicInt.unitCoeff h0).isUnit.map _).mul ((GlobalTheory.MemLoc.isUnit_l_Bcris l).pow _)`. Conclude with `hu.ne_zero hz`.
+A detailed English derivation is pending.
 -/
 theorem zl_bcris_injective (l : ℕ) [Fact l.Prime] : Function.Injective (algebraMap ℤ_[l] (Per.Bcris l)) := by
   haveI := bcris_nontrivial l
@@ -40,7 +40,7 @@ theorem zl_bcris_injective (l : ℕ) [Fact l.Prime] : Function.Injective (algebr
   exact hu.ne_zero hz
 
 /- English proof (translation)
-Establish `h` using `Module.Flat.lTensor_preserves_injective_linearMap (M := O) (Algebra.linearMap ℤ_[l] (Per.Bcris l)) (zl_bcris_injective l)`. Introduce `x y hxy`. Apply `(TensorProduct.rid ℤ_[l] O).symm.injective` to reduce the goal to its premises. Apply `h` to reduce the goal to its premises. Simplify `hxy` using `[Algebra.TensorProduct.algebraMap_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem includeLeft_injective (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     [Module.Flat ℤ_[l] O] : Function.Injective (algebraMap O (OB l O)) := by
@@ -52,7 +52,7 @@ theorem includeLeft_injective (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [
   simpa [Algebra.TensorProduct.algebraMap_apply] using hxy
 
 /- English proof (translation)
-Establish `h` using `Module.Flat.rTensor_preserves_injective_linearMap (M := M) (Algebra.linearMap O (OB l O)) (includeLeft_injective l O)`. Introduce `x y hxy`. Apply `(TensorProduct.lid O M).symm.injective` to reduce the goal to its premises. Apply `h` to reduce the goal to its premises. Simplify `hxy` using `[← Algebra.TensorProduct.one_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_tmul_injective (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     [Module.Flat ℤ_[l] O] (M : Type) [AddCommGroup M] [Module O M] [Module.Flat O M] :
@@ -67,7 +67,7 @@ theorem one_tmul_injective (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Alg
 end GlobalTheory.TContInj
 
 /- English proof (translation)
-Introduce `l _ LL T`. Use `haveI : Module.Free (↥(OL LL)) ↥T.L.T := T.L.free`. Conclude with `GlobalTheory.TContInj.one_tmul_injective l ↥(OL LL) ↥T.L.T`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TContInj.main : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL), Function.Injective (fun x : ↥T.L.T => (1 : OB l ↥(OL LL)) ⊗ₜ[↥(OL LL)] x) := by
   intro l _ LL T

@@ -24,7 +24,7 @@ def levelAd {V : HSp D} (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) :
 def level {V : HSp D} (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) : Subgroup (GfC V) := (levelAd T U).subgroupOf (GfC V)
 
 /- English proof (translation)
-Simplify using `[levelAd, mem_levelOpen, Subgroup.mem_iInf, and_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_levelAd {V : HSp D} {T : TypeDataG V} {U : AuxiliaryPlaceHermitianSpace V} {g : GA D V} :
     g ∈ levelAd T U ↔ (∀ v, proj D.sp.cm.sig V.gram v g ∈ Kv V v) ∧
@@ -33,7 +33,7 @@ theorem mem_levelAd {V : HSp D} {T : TypeDataG V} {U : AuxiliaryPlaceHermitianSp
   simp [levelAd, mem_levelOpen, Subgroup.mem_iInf, and_assoc]
 
 /- English proof (translation)
-Simplify using `only [levelAd, Subgroup.coe_inf, Subgroup.coe_iInf, Subgroup.coe_comap]`. Use `((isOpen_levelOpen _ _ _).inter (isOpen_iInter_of_finite fun v => ?_)).inter (U.frame.isOpen_iwahori.preimage (continuous_proj _ _ _))` and prove the remaining obligations. Conclude with `(isOpen_stabLocOne _ _ _ (isCMExt_host D)).preimage (continuous_proj _ _ _)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_levelAd {V : HSp D} (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) : IsOpen (levelAd T U : Set (GA D V)) := by
   simp only [levelAd, Subgroup.coe_inf, Subgroup.coe_iInf, Subgroup.coe_comap]
@@ -42,24 +42,24 @@ theorem isOpen_levelAd {V : HSp D} (T : TypeDataG V) (U : AuxiliaryPlaceHermitia
   exact (isOpen_stabLocOne _ _ _ (isCMExt_host D)).preimage (continuous_proj _ _ _)
 
 /- English proof (translation)
-The claim follows from `Subgroup.isClosed_of_isOpen _ (isOpen_levelAd T U)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_levelAd {V : HSp D} (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) : IsClosed (levelAd T U : Set (GA D V)) :=
   Subgroup.isClosed_of_isOpen _ (isOpen_levelAd T U)
 
 /- English proof (translation)
-Rewrite using `[level, Subgroup.coe_subgroupOf]`. Conclude with `(isOpen_levelAd T U).preimage continuous_subtype_val`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_level {V : HSp D} (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) : IsOpen (level T U : Set (GfC V)) := by
   rw [level, Subgroup.coe_subgroupOf]
   exact (isOpen_levelAd T U).preimage continuous_subtype_val
 
 /- English proof (translation)
-Rewrite using `[Subtype.isCompact_iff]`. Establish `e : ((↑) : GfC V → GA D V) '' (level T U : Set (GfC V)) = (levelFin D.sp.cm.sig V.gram (frameLat V) : Set (GA D V)) ∩ levelAd T U`. Use extensionality with `g`. Simplify using `only [level, Set.mem_image, SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_inter_iff, mem_levelFin]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨⟨x.2, (mem_levelAd.1 hx).1⟩, hx⟩`. Introduce and unpack `⟨⟨hf, -⟩, hg⟩`. Conclude with `⟨⟨g, hf⟩, hg, rfl⟩`. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isCompact_levelFin _ _ _).inter_right (isClosed_levelAd T U)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_level {V : HSp D} (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) : IsCompact (level T U : Set (GfC V)) := by
   rw [Subtype.isCompact_iff]
@@ -76,7 +76,7 @@ theorem isCompact_level {V : HSp D} (T : TypeDataG V) (U : AuxiliaryPlaceHermiti
   exact (isCompact_levelFin _ _ _).inter_right (isClosed_levelAd T U)
 
 /- English proof (translation)
-Simplify using `only [conv]`. Rewrite using `[← integral_mul_left_eq_self _ a]`. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [ha, mul_inv_rev, mul_assoc, inv_mul_cancel_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem conv_mul_left {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant]
     {f f' : G → ℂ} {a : G} (ha : ∀ y, f (a * y) = f y) (x : G) : conv μ f f' (a * x) = conv μ f f' x := by
@@ -90,17 +90,17 @@ end GlobalTheory.TrMult.OneLevel
 open GlobalTheory.TrMult.OneLevel in
 
 /- English proof (translation)
-Introduce `D V T U`. Use `⟨level T U, isOpen_level T U, isCompact_level T U, fun μf hμ ff hT hS => ⟨hT.isFinFamily, fun k hk g => ?_⟩⟩` and prove the remaining obligations. Take `⟨hK, hOne, hI⟩` from `mem_levelAd.1 (Subgroup.mem_subgroupOf.1 hk)`. Simplify using `only [finFn]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subgroup.coe_mul, map_mul]`. Generalize the expression as in `proj D.sp.cm.sig V.gram v (g : GA D V) = x`. Distinguish the cases in `hv : v ∈ T.S`. Take `⟨h, -, e⟩` from `hT.2.1 ⟨v, hv⟩`. Establish `he : ∀ y, T.idem μf ⟨v, hv⟩ (proj D.sp.cm.sig V.gram v (k : GA D V) * y) = T.idem μf ⟨v, hv⟩ y` using `fun y => (typeIdem_mul_ker (μf v) (T.frame ⟨v, hv⟩).red (T.τ ⟨v, hv⟩) (k := ⟨_, hK v⟩) (((T.frame ⟨v, hv⟩).red_eq_one_iff _).2 (hOne ⟨v, hv⟩)) y).1`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only at e`. Rewrite using `[e]`. Conclude with `conv_mul_left _ (conv_mul_left _ he) x`. Distinguish the cases in `hu : v = U.u`. Substitute `hu` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨t, -, e⟩` from `hT.2.2.1`. Rewrite using `[e]`. Simplify using `only [SplitAt.cosetFn, SplitAt.iwahoriCoset, Set.indicator]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DoubleCoset.mem_doubleCoset, DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Use `⟨(proj D.sp.cm.sig V.gram U.u (k : GA D V))⁻¹ * a, mul_mem (inv_mem hI) ha, b, hb, ?_⟩` and prove the remaining obligations. Simplify using `only [mul_assoc]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_inv_mul_iff_mul_eq]`. Simplify `e` using `only [mul_assoc]`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨_ * a, mul_mem hI ha, b, hb, by group⟩`. Simplify using `using hS v hv hu _ (hK v) 1 (one_mem _) x`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TrMult.oneLevel : ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V), ∃ K : Subgroup (GfC V), IsOpen (K : Set (GfC V)) ∧ IsCompact (K : Set (GfC V)) ∧ ∀ (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)), (∀ v, (μf v).IsHaarMeasure) → ∀ ff, IsTestFin T U μf ff → SphRest T U ff → IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff ∧ ∀ k ∈ K, ∀ g, finFn V ff (k * g) = finFn V ff g := by
   intro D V T U

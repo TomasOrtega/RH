@@ -29,9 +29,9 @@ def HasTypeAll (Lie Gs : Set (Mx n)) (σ : Mx n → (H →L[ℂ] H)) (f : Mx n �
   ∃ S, Words Lie S ∧ Ctrl Lie Gs σ S ∧ ∃ v ℓ C, IsExpnAll Lie Gs σ S v ℓ C f
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, hS, hc, v, ℓ, C, e, eS⟩`. Conclude with `⟨v, e.1, ℓ, e.sobCont hS, ⟨S, C, hS, e.2.2.1, eS, hc⟩, e.2.2.2.2⟩`. Introduce and unpack `⟨v, h1, ℓ, -, ⟨S, C, hS, h2, h3, hc⟩, h4⟩`. Establish `hab : ∀ S', Words Lie S' → Summable (fun i => |C i| * sobNorm σ S' (v i))` using `fun S' hS' => (h3 S' hS').abs.congr fun i => by`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[abs_mul]`. Conclude with `congrArg _ (abs_of_nonneg (sobNorm_nonneg σ S' (v i)))`. Use `⟨S, hS, hc, v, ℓ, fun i => |C i|, ⟨h1, fun _ => abs_nonneg _, fun i w hw => (h2 i w hw).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (sobNorm_nonneg σ S w)), hab S hS, h4⟩, hab⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasTypeAll_iff {Lie Gs : Set (Mx n)} {f : Mx n → ℂ} : HasTypeAll Lie Gs σ f ↔
     ∃ v : ℕ → H, (∀ i, SmoothVec Lie σ (v i)) ∧ ∃ ℓ : ℕ → (H →ₗ[ℂ] ℂ), (∀ i, Sobolev₂ Lie σ (ℓ i)) ∧
@@ -54,21 +54,17 @@ theorem hasTypeAll_iff {Lie Gs : Set (Mx n)} {f : Mx n → ℂ} : HasTypeAll Lie
       (mul_le_mul_of_nonneg_right (le_abs_self _) (sobNorm_nonneg σ S w)), hab S hS, h4⟩, hab⟩
 
 /- English proof (translation)
-Take `⟨S₀, hS₀, ⟨B₀, hB₀, hc₀⟩, v, ℓ, C, ⟨a1, a2, a3, -, a5⟩, a6⟩` from `h`. Take `⟨S₁, hS₁, ⟨B₁, hB₁, hc₁⟩, v', ℓ', C', ⟨b1, b2, b3, -, b5⟩, b6⟩` from `h'`. Establish `e1 : ∀ k : ℕ, 2 * k / 2 = k` using `fun k => by omega`. Establish `e2 : ∀ k : ℕ, (2 * k + 1) / 2 = k` using `fun k => by omega`. Establish `e3 : ∀ k : ℕ, 2 * k % 2 = 0` using `fun k => by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : ∀ k : ℕ, ¬ (2 * k + 1) % 2 = 0` using `fun k => by omega`. Establish `hS` using `words_append hS₀ hS₁`. Establish `sumAll : ∀ S', Words Lie S' → Summable (fun i => (if i % 2 = 0 then C (i / 2) else C' (i / 2)) * sobNorm σ S' (if i % 2 = 0 then v (i / 2) else v' (i / 2)))` using `fun S' hS' => by`. Use `Summable.even_add_odd ?_ ?_` and prove the remaining obligations. Simplify `a6 S' hS'` using `only [e1, e3, if_true]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `b6 S' hS'` using `only [e2, e4, if_false]`. Use `⟨S₀ ++ S₁, hS, ⟨fun g => |B₀ g| + |B₁ g|, (continuous_abs.comp hB₀).add (continuous_abs.comp hB₁), fun g hg w hw => ?_⟩, fun i => if i % 2 = 0 then v (i / 2) else v' (i / 2), fun i => if i % 2 = 0 then ℓ (i / 2) else ℓ' (i / 2), fun i => if i % 2 = 0 then C (i / 2) else C' (i / 2 …` and prove the remaining obligations. Rewrite using `[sobNorm_append, sobNorm_append]`. Establish `p0` using `sobNorm_nonneg σ S₀ w`. Establish `p1` using `sobNorm_nonneg σ S₁ w`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q0` using `hc₀ g hg w hw`. Establish `q1` using `hc₁ g hg w hw`. Establish `r0 : B₀ g * sobNorm σ S₀ w ≤ |B₀ g| * sobNorm σ S₀ w` using `mul_le_mul_of_nonneg_right (le_abs_self _) p0`. Establish `r1 : B₁ g * sobNorm σ S₁ w ≤ |B₁ g| * sobNorm σ S₁ w` using `mul_le_mul_of_nonneg_right (le_abs_self _) p1`. Establish `s0` using `abs_nonneg (B₀ g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1` using `abs_nonneg (B₁ g)`. Use polynomial arithmetic with `[mul_nonneg s0 p1, mul_nonneg s1 p0]`. Use `beta_reduce`. Use `split_ifs exacts [a1 _, b1 _]`. Use `beta_reduce`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs exacts [a2 _, b2 _]`. Use `beta_reduce`. Rewrite using `[sobNorm_append]`. Establish `p0` using `sobNorm_nonneg σ S₀ w`. Establish `p1` using `sobNorm_nonneg σ S₁ w`.
-
-Use `split_ifs`. Conclude with `(a3 _ w hw).trans (mul_le_mul_of_nonneg_left (by linarith) (a2 _))`. Conclude with `(b3 _ w hw).trans (mul_le_mul_of_nonneg_left (by linarith) (b2 _))`. Use `HasSum.even_add_odd ?_ ?_` and prove the remaining obligations. Simplify `a5 g hg` using `only [e1, e3, if_true]`.
-
-Simplify `b5 g hg` using `only [e2, e4, if_false]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem HasTypeAll.add {Lie Gs : Set (Mx n)} {f f' : Mx n → ℂ} (h : HasTypeAll Lie Gs σ f)
     (h' : HasTypeAll Lie Gs σ f') : HasTypeAll Lie Gs σ fun g => f g + f' g := by
@@ -116,41 +112,37 @@ theorem HasTypeAll.add {Lie Gs : Set (Mx n)} {f f' : Mx n → ℂ} (h : HasTypeA
 open GlobalTheory.TypeSum.Transport in
 
 /- English proof (translation)
-Introduce `n H H' _ _ _ _ σ₁ σ₂ G₁ G₂ Q hG hQ hGG U hU f hf`. Establish `h1 : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 hQ)`. Establish `h2 : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((isUnit_iff_isUnit_det _).1 hQ)`. Establish `hGG' : (Q⁻¹)ᴴ * G₁ * Q⁻¹ = G₂`. Rewrite using `[← hGG]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h2]; simp`. Establish `cd : ∀ Y : Mx n, Q * (Q⁻¹ * Y * Q) * Q⁻¹ = Y` using `fun Y => by`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression.
 
-Set `Ur : H ≃L[ℝ] H'` to `{ U.toLinearEquiv.restrictScalars ℝ with continuous_toFun := U.continuous continuous_invFun := U.symm.continuous }`. Establish `hUr : ∀ x, Ur x = U x` using `fun _ => rfl`. Establish `key : ∀ (k : ℕ) (Xs : Fin k → Mx n), (∀ i, Xs i ∈ lieOf G₁) → ∀ w : H, (fun t : Fin k → ℝ => σ₂ (List.ofFn fun i => NormedSpace.exp (t i • (Q * Xs i * Q⁻¹))).prod (U w)) = Ur ∘ fun t : Fin k → ℝ => σ₁ (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod w`. Introduce `k Xs hX w`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hm : (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod ∈ Formalism.QuantumDeterminants.UH G₁` using `GlobalTheory.GardingVec.list_prod_mem _ (by`. Introduce `g hg`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hg`. Conclude with `GlobalTheory.GardingVec.exp_mem hG (hX i) _)`. Rewrite using `[Function.comp_apply, hUr, hU _ hm, ← prod_conj h1 h2, List.map_ofFn]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [exp_smul_conj hQ, Function.comp_def]`. Establish `smF : ∀ w, SmoothVec (lieOf G₁) σ₁ w → SmoothVec (lieOf G₂) σ₂ (U w)`. Introduce `w hw k Ys hY`. Establish `hX : ∀ i, Q⁻¹ * Ys i * Q ∈ lieOf G₁` using `fun i => conj_lie h2 hGG (hY i)`. Use `key k _ hX w` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cd] at this`. Rewrite using `[this]`. Conclude with `Ur.contDiff.comp (hw k _ hX)`. Establish `smB : ∀ w, SmoothVec (lieOf G₂) σ₂ (U w) → SmoothVec (lieOf G₁) σ₁ w`. Introduce `w hw k Xs hX`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hw k _ fun i => conj_lie h1 hGG' (hX i)` as an intermediate fact. Rewrite `this` using `[key k Xs hX w]`. Conclude with `Ur.comp_contDiff_iff.1 this`. Establish `hd : ∀ X ∈ lieOf G₁, ∀ w, dRep σ₂ (Q * X * Q⁻¹) (U w) = U (dRep σ₁ X w)`. Introduce `X hX w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `e : (fun t : ℝ => σ₂ (NormedSpace.exp (t • (Q * X * Q⁻¹))) (U w)) = Ur ∘ fun t : ℝ => σ₁ (NormedSpace.exp (t • X)) w`. Use function extensionality and compare the values at `t`. Rewrite using `[Function.comp_apply, hUr, hU _ (GlobalTheory.GardingVec.exp_mem hG hX t), exp_smul_conj hQ]`. Unfold `dRep`. Rewrite using `[e, deriv, deriv, Ur.comp_fderiv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Both sides reduce to the same expression. Establish `hw : ∀ l : List (Mx n), (∀ X ∈ l, X ∈ lieOf G₁) → ∀ w, (l.map fun X => Q * X * Q⁻¹).foldr (dRep σ₂) (U w) = U (l.foldr (dRep σ₁) w)`. Introduce `l hl w`. Proceed by induction on `l with`. Consider the case `nil => rfl`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `cons X l ih`. Rewrite using `[List.map_cons, List.foldr_cons, List.foldr_cons, ih fun Y hY => hl Y (List.mem_cons_of_mem _ hY), hd X (hl X List.mem_cons_self)]`. Establish `hsT : ∀ T : List (List (Mx n)), Words (lieOf G₁) T → ∀ w, sobNorm σ₂ (T.map fun l => l.map fun X => Q * X * Q⁻¹) (U w) = sobNorm σ₁ T w`. Introduce `T hT w`. Unfold `sobNorm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun l hl => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[hw l (hT l hl), U.norm_map]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨S, hS, ⟨B, hB, hBc⟩, v, ℓ, C, ⟨e1, e2, e3, e4, e5⟩, e6⟩` from `hf`. Establish `hs` using `hsT S hS`. Establish `hσ : ∀ g ∈ Formalism.QuantumDeterminants.UH G₂, ∀ w, σ₂ g (U w) = U (σ₁ (Q⁻¹ * g * Q) w)` using `fun g hg w => by`. Rewrite using `[hU _ (conj_UH h2 hGG hg), cd]`. Use `⟨S.map fun l => l.map fun X => Q * X * Q⁻¹, ?_, ⟨fun y => B (Q⁻¹ * y * Q), hB.comp (by fun_prop), ?_⟩, fun i => U (v i), fun i => ℓ i ∘ₗ (U.symm.toLinearEquiv : H' →ₗ[ℂ] H), C, ⟨fun i => smF _ (e1 i), e2, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl X hX`. Take `⟨l', hl', rfl⟩` from `List.mem_map.1 hl`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Conclude with `conj_lie h1 hGG' (hS l' hl' Y hY)`. Introduce `g hg w hw'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, rfl⟩` from `U.surjective w`. Rewrite using `[hσ g hg, hs, hs]`. Conclude with `hBc _ (conj_UH h2 hGG hg) w (smB w hw')`. Introduce `i w hw'`. Take `⟨w, rfl⟩` from `U.surjective w`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hs]`. Simplify using `using e3 i w (smB w hw')`. Simplify `e4` using `only [hs]`. Introduce `g hg`. Simplify `e5 _ (conj_UH h2 hGG hg)` using `[hσ g hg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `S' hS'`. Establish `hT : Words (lieOf G₁) (S'.map fun l => l.map fun X => Q⁻¹ * X * Q)`. Introduce `l hl X hX`. Take `⟨l', hl', rfl⟩` from `List.mem_map.1 hl`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`.
-
-Conclude with `conj_lie h2 hGG (hS' l' hl' Y hY)`. Establish `eS : ((S'.map fun l => l.map fun X => Q⁻¹ * X * Q).map fun l => l.map fun X => Q * X * Q⁻¹) = S'`. Simplify using `[List.map_map, Function.comp_def, cd]`. Use `e6 _ hT` as an intermediate fact. Use `this.congr fun i => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hsT _ hT, eS]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasTypeAll_transport : ∀ (n : ℕ) (H H' : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] (σ₁ : Mx n → (H →L[ℂ] H)) (σ₂ : Mx n → (H' →L[ℂ] H')) (G₁ G₂ Q : Mx n), IsUnit G₁ → IsUnit Q → Qᴴ * G₂ * Q = G₁ → ∀ U : H ≃ₗᵢ[ℂ] H', (∀ g ∈ Formalism.QuantumDeterminants.UH G₁, ∀ v, U (σ₁ g v) = σ₂ (Q * g * Q⁻¹) (U v)) → ∀ f : Mx n → ℂ, HasTypeAll (lieOf G₁) (Formalism.QuantumDeterminants.UH G₁) σ₁ f → HasTypeAll (lieOf G₂) (Formalism.QuantumDeterminants.UH G₂) σ₂ (fun y => f (Q⁻¹ * y * Q)) := by
   intro n H H' _ _ _ _ σ₁ σ₂ G₁ G₂ Q hG hQ hGG U hU f hf
@@ -259,19 +251,17 @@ def opEquiv {ε : Fin n → Bool} (hσ : IsURepOn (UJset ε) σ) {g : Mx n} (hg 
     rw [← sigma_mul hσ hg (inv_mem_UJ hg), mul_inv_UJ hg, sigma_one hσ]⟩
 
 /- English proof (translation)
-Establish `hGu` using `isUnit_gram hP hG`. Establish `hd` using `(isUnit_iff_isUnit_det _).1 hP`. Establish `hd'` using `(isUnit_iff_isUnit_det _).1 hP'`. Establish `a1` using `Matrix.mul_nonsing_inv _ hd`. Establish `a2` using `Matrix.nonsing_inv_mul _ hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `Matrix.mul_nonsing_inv _ hd'`. Establish `a4` using `Matrix.nonsing_inv_mul _ hd'`. Establish `hm : P * P'⁻¹ ∈ UJset ε` using `by show (P * P'⁻¹)ᴴ * Jm ε * (P * P'⁻¹) = Jm ε`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hG, ← hG']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [a3]; simp`. Establish `t1` using `hasTypeAll_transport n H H _ σ G (Jm ε) P hGu hP hG (LinearIsometryEquiv.refl ℂ H) (fun _ _ _ => rfl) f h`. Establish `t2` using `hasTypeAll_transport n H' H _ σ G (Jm ε) P hGu hP hG (U.trans (opEquiv hσ hm)) (fun g hg v => by`. Establish `m1` using `GlobalTheory.GardingVec.conj_mem hP hG hg`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m2` using `GlobalTheory.GardingVec.conj_mem hP' hG' hg`. Use `show σ (P * P'⁻¹) (U (σ' (P' * g * P'⁻¹) v)) = σ (P * g * P⁻¹) (σ (P * P'⁻¹) (U v))`. Rewrite using `[hU _ m2, ← sigma_mul hσ hm m2, ← sigma_mul hσ m1 hm]`. Use `congr 2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s` using `t1.add t2`. Establish `hi : P⁻¹⁻¹ = P` using `Matrix.nonsing_inv_nonsing_inv _ hd`. Establish `t3` using `hasTypeAll_transport n H H σ (fun g => σ (P * g * P⁻¹)) (Jm ε) G P⁻¹ (isUnit_Jm ε) (IsUnit.of_mul_eq_one _ a2) (by`. Rewrite using `[← hG]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hi, conj_conj hP]`. Use the proof step `rfl) _ s`. Establish `e : ∀ g : Mx n, P⁻¹ * (P⁻¹⁻¹ * g * P⁻¹) * P = g` using `fun g => by`. Rewrite using `[hi]`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify `t3` using `only [e]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasTypeAll_add_of_equiv {H' : Type} [NormedAddCommGroup H'] [InnerProductSpace ℂ H']
     {σ' : Mx n → (H' →L[ℂ] H')} {ε : Fin n → Bool} (hσ : IsURepOn (UJset ε) σ)

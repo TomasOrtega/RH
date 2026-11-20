@@ -6,23 +6,21 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨_, ⟨hsecH, hsecG⟩, hsnc, _⟩` from `hB i`. Use `set x := ψ.symm z with hx`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `A.cover x`. Establish `h1 : AnalyticAt ℂ (s i x ∘ (A.chart j).symm) (A.chart j x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hsecH x j` to reduce the goal to its premises. Use `⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm (A.chart j x) ∈ (L i).U x`. Rewrite using `[(A.chart j).left_inv hj]`. Conclude with `(L i).mem_U x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : AnalyticAt ℂ (A.chart j ∘ ψ.symm) z` using `(hψ j).2 z ⟨hz, hj⟩`. Establish `h3 : AnalyticAt ℂ ((s i x ∘ (A.chart j).symm) ∘ (A.chart j ∘ ψ.symm)) z` using `AnalyticAt.comp h1 h2`. Use `h3.congr ?_` and prove the remaining obligations. Establish `hO : IsOpen (ψ.target ∩ ψ.symm ⁻¹' (A.chart j).source)` using `ψ.isOpen_inter_preimage_symm (A.chart j).open_source`. Use `filter_upwards [hO.mem_nhds ⟨hz, hj⟩] with y hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp]`. Rewrite using `[(A.chart j).left_inv hy.2]`. Take `⟨ψ', _, hxψ', _, σ, _, hDσ, u, _, hu0, hs⟩` from `hsnc x`. Rewrite using `[hs x hxψ']`. Use `mul_ne_zero (hu0 x hxψ') ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `k _`. Consider the cases of `hk : σ k with`. Consider the case `none => simp`. Consider the case `some a`.
+Treat this case separately. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Rewrite using `[Pi.single_eq_same, pow_one]`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hD` to reduce the goal to its premises. Establish `: x ∈ {y ∈ ψ'.source | ∃ a, σ k = some a ∧ ψ' y a = 0}` using `⟨hxψ', a, hk, h0⟩`. Rewrite `this` using `[← hDσ k]`. Conclude with `this.1`. Rewrite using `[Pi.single_eq_of_ne hki, pow_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero`. Establish `hO : IsOpen (ψ.target ∩ ψ.symm ⁻¹' (L i).U x)` using `ψ.isOpen_inter_preimage_symm ((L i).isOpen_U x)`. Establish `hzO : z ∈ ψ.target ∩ ψ.symm ⁻¹' (L i).U x` using `⟨hz, (L i).mem_U x⟩`. Use `filter_upwards [hO.mem_nhds hzO] with y hy`. Establish `hg` using `hsecG (ψ.symm y) x (ψ.symm y) ⟨(L i).mem_U _, hy.2⟩`.
-
-Simplify using `only [normSec, Function.comp]`. Rewrite using `[hg, mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem boundary_chart_facts {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {m : ℕ}
     (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (D : Fin m → Set X)

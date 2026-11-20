@@ -5,7 +5,7 @@ namespace GlobalTheory.LogSubst
 open MvPowerSeries
 
 /- English proof (translation)
-Apply `coeff_of_lt_order` to reduce the goal to its premises. Use `lt_of_lt_of_le ?_ (le_order_pow_of_constantCoeff_eq_zero _ hu)` and prove the remaining obligations. Establish `: s < l ^ s` using `Nat.lt_pow_self (by omega)`. Conclude with `lt_of_le_of_lt h this` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coeff_pow_pow_eq_zero {C σ : Type} [CommRing C] {l : ℕ} (hl : 2 ≤ l)
     {u : MvPowerSeries σ C} (hu : constantCoeff u = 0) {μ : σ →₀ ℕ} {s : ℕ}
@@ -16,15 +16,15 @@ theorem coeff_pow_pow_eq_zero {C σ : Type} [CommRing C] {l : ℕ} (hl : 2 ≤ l
   exact_mod_cast lt_of_le_of_lt h this
 
 /- English proof (translation)
-Introduce `C _ σ τ I _ _ _ l hl co t F f hf ht hF ν`. Establish `hs : HasSubst f` using `hasSubst_of_constantCoeff_zero hf`. Use `set G : MvPowerSeries σ C := ∑ s ∈ Finset.range (ν.degree + 1), ∑ c, co c s • t c ^ (l ^ s) with hG`. Establish `hord : ((ν.degree + 1 : ℕ) : ℕ∞) ≤ (F - G).order`. Apply `nat_le_order` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `μ hμ`. Rewrite using `[map_sub, hF μ, hG, sub_eq_zero]`. Simplify using `only [map_sum, coeff_smul]`. Use `Finset.sum_subset (Finset.range_subset_range.2 (by omega)) ?_` and prove the remaining obligations. Introduce `s _ hs'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs'` using `[Finset.mem_range]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_pow_pow_eq_zero hl (ht c) (by omega), mul_zero]`. Establish `h1 : (1 : ℕ∞) ≤ ⨅ i, (f i).order` using `le_iInf fun i => one_le_order_iff_constCoeff_eq_zero.2 (hf i)`. Establish `h2 : ((ν.degree + 1 : ℕ) : ℕ∞) ≤ (subst f (F - G) : MvPowerSeries τ C).order`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (le_order_subst hs (F - G))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : coeff ν (subst f (F - G) : MvPowerSeries τ C) = 0`. Apply `coeff_of_lt_order` to reduce the goal to its premises. Use `lt_of_lt_of_le ?_ h2` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Nat.lt_succ_self _` after adjusting the coercions. Rewrite `h3` using `[← substAlgHom_apply hs, map_sub, map_sub, sub_eq_zero, substAlgHom_apply]`. Rewrite using `[h3, hG]`. Simplify using `only [map_sum, map_smul, map_pow, substAlgHom_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_subst_sum_pow_pow : ∀ (C : Type) [Field C] (σ τ I : Type) [Fintype σ] [Fintype τ] [Fintype I] (l : ℕ), 2 ≤ l → ∀ (co : I → ℕ → C) (t : I → MvPowerSeries σ C) (F : MvPowerSeries σ C) (f : σ → MvPowerSeries τ C), (∀ x, MvPowerSeries.constantCoeff (f x) = 0) → (∀ c, MvPowerSeries.constantCoeff (t c) = 0) → (∀ μ : σ →₀ ℕ, MvPowerSeries.coeff μ F = ∑ s ∈ Finset.range (μ.degree + 1), ∑ c, co c s * MvPowerSeries.coeff μ (t c ^ (l ^ s))) → ∀ ν : τ →₀ ℕ, MvPowerSeries.coeff ν (MvPowerSeries.subst f F) = ∑ s ∈ Finset.range (ν.degree + 1), ∑ c, co c s * MvPowerSeries.coeff ν ((MvPowerSeries.subst f (t c) : MvPowerSeries τ C) ^ (l ^ s)) := by
   intro C _ σ τ I _ _ _ l hl co t F f hf ht hF ν

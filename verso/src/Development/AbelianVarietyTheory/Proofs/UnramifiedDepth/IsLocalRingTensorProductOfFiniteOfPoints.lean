@@ -5,7 +5,7 @@ open TensorProduct IsLocalRing Matrix ReciprocityTheory.PGsh ReciprocityTheory.P
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Introduce `h`. Establish `h2` using `h.map φ`. Simplify using `at h2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem tenLocal_sub_mem {O A : Type} [CommRing O] [CommRing A] [IsLocalRing O]
     [IsLocalRing A] [Algebra O A] (φ : A →ₐ[O] O) (a : A) :
@@ -16,23 +16,23 @@ private theorem tenLocal_sub_mem {O A : Type} [CommRing O] [CommRing A] [IsLocal
   simp at h2
 
 /- English proof (translation)
-Introduce `O A A' _ _ _ _ _ _ _ _ _ _ φ φ'`. Set `Φ : A ⊗[O] A' →ₐ[O] O` to `Algebra.TensorProduct.productMap φ φ'`. Establish `hsurj : Function.Surjective Φ` using `fun o => ⟨algebraMap _ _ o, Φ.commutes o⟩`. Establish `hM0 : ((maximalIdeal O).comap Φ).IsMaximal` using `Ideal.comap_isMaximal_of_surjective Φ hsurj`. Use `IsLocalRing.of_unique_max_ideal ⟨(maximalIdeal O).comap Φ, hM0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `M hM`. Establish `hint : Algebra.IsIntegral O (A ⊗[O] A')` using `Algebra.IsIntegral.of_finite _ _`. Establish `key : ∀ {B : Type} [CommRing B] [IsLocalRing B] [Algebra O B] (f : B →ₐ[O] A ⊗[O] A'), M.comap f = maximalIdeal B`. Introduce `B _ _ _ f`. Establish `hf : (f : B →+* A ⊗[O] A').IsIntegral`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `RingHom.IsIntegral.tower_top (algebraMap O B) _ ?_` and prove the remaining obligations. Rewrite using `[f.comp_algebraMap]`. Conclude with `fun x => hint.isIntegral x`. Use `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' (f : B →+* A ⊗[O] A') hf M` as an intermediate fact. Conclude with `IsLocalRing.eq_maximalIdeal this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `key (Algebra.TensorProduct.includeLeft : A →ₐ[O] A ⊗[O] A')`. Establish `hA'` using `key (Algebra.TensorProduct.includeRight : A' →ₐ[O] A ⊗[O] A')`. Establish `hO` using `key (Algebra.ofId O (A ⊗[O] A'))`. Establish `hx : ∀ x : A ⊗[O] A', x - algebraMap O _ (Φ x) ∈ M`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Use `M.add_mem hx hy` as an intermediate fact. Rewrite using `[map_add, map_add]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul a a'`. Establish `h1` using `tenLocal_sub_mem φ a`. Establish `h2` using `tenLocal_sub_mem φ' a'`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← hA, Ideal.mem_comap, map_sub, AlgHom.commutes]`. Rewrite `h2` using `[← hA', Ideal.mem_comap, map_sub, AlgHom.commutes]`. Establish `h3` using `M.add_mem (M.mul_mem_right ((Algebra.TensorProduct.includeRight : A' →ₐ[O] A ⊗[O] A') a') h1) (M.mul_mem_left (algebraMap O (A ⊗[O] A') (φ a)) h2)`. Establish `e1 : a ⊗ₜ[O] a' = (Algebra.TensorProduct.includeLeft : A →ₐ[O] A ⊗[O] A') a * (Algebra.TensorProduct.includeRight : A' →ₐ[O] A ⊗[O] A') a'` using `by simp`. Establish `e2 : Φ (a ⊗ₜ[O] a') = φ a * φ' a'` using `by simp [Φ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, map_mul, e1]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `hM.eq_of_le hM0.ne_top ?_` and prove the remaining obligations. Introduce `x hxM`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, ← hO, Ideal.mem_comap]`. Use `M.sub_mem hxM (hx x)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isLocalRing_tensorProduct_of_finite_of_points :
   (∀ (O A A' : Type) [CommRing O] [CommRing A] [CommRing A'] [IsLocalRing O] [IsLocalRing A] [IsLocalRing A'] [Algebra O A] [Algebra O A']

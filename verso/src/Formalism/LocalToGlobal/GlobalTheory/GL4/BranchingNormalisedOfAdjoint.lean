@@ -14,7 +14,7 @@ def lamNat {n : ℕ} (lt : DomWeight (n + 1)) : Fin n → ℕ := fun s => lt.nat
 def sgNat {n : ℕ} (sg : DomWeight n) : Fin n → ℕ := fun i => (sg.w i).toNat
 
 /- English proof (translation)
-Introduce `i j h`. Use `lam.anti h` as an intermediate fact. Unfold `DomWeight.natW`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem natW_anti {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   intro i j h
@@ -23,7 +23,7 @@ theorem natW_anti {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   omega
 
 /- English proof (translation)
-Unfold `DomWeight.detShift`. Rewrite using `[dif_pos (Nat.succ_pos n)]`. Establish `: (⟨n + 1 - 1, by omega⟩ : Fin (n + 1)) = Fin.last n` using `Fin.ext (by simp)`. Rewrite using `[this, h0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem detShift_last {n : ℕ} (lt : DomWeight (n + 1)) (h0 : lt.w (Fin.last n) = 0) : lt.detShift = 0 := by
   unfold DomWeight.detShift
@@ -32,16 +32,16 @@ theorem detShift_last {n : ℕ} (lt : DomWeight (n + 1)) (h0 : lt.w (Fin.last n)
   rw [this, h0]
 
 /- English proof (translation)
-Use `lt.anti (Fin.le_last i)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lt_nonneg {n : ℕ} (lt : DomWeight (n + 1)) (h0 : lt.w (Fin.last n) = 0) (i : Fin (n + 1)) : 0 ≤ lt.w i := by
   have := lt.anti (Fin.le_last i)
   omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Unfold `Formalism.BranchingDeterminantCap.lamZ lamNat DomWeight.natW`. Rewrite using `[detShift_last lt h0]`. Use `split_ifs with h`. Establish `hc : (Fin.castSucc ⟨a.val, h⟩ : Fin (n + 1)) = a` using `Fin.ext rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Use `lt_nonneg lt h0 a` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `ha : a = Fin.last n` using `Fin.ext (by have := a.isLt; simp; omega)`. Rewrite using `[ha, h0]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamZ_lamNat {n : ℕ} (lt : DomWeight (n + 1)) (h0 : lt.w (Fin.last n) = 0) :
     Formalism.BranchingDeterminantCap.lamZ (lamNat lt) = lt.w := by
@@ -57,7 +57,7 @@ theorem lamZ_lamNat {n : ℕ} (lt : DomWeight (n + 1)) (h0 : lt.w (Fin.last n) =
     rw [ha, h0]
 
 /- English proof (translation)
-Establish `h1` using `(hI i).1`. Establish `h2` using `lt_nonneg lt h0 i.succ`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sg_nonneg {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg) (i : Fin n) : 0 ≤ sg.w i := by
@@ -66,7 +66,7 @@ theorem sg_nonneg {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt
   omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `sgNat`. Use `sg_nonneg lt sg h0 hI i` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sgNat_cast {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg) : (fun i => (sgNat sg i : ℤ)) = sg.w := by
@@ -76,7 +76,7 @@ theorem sgNat_cast {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : l
   omega
 
 /- English proof (translation)
-Rewrite using `[lamZ_lamNat lt h0, sgNat_cast lt sg h0 hI]`. Conclude with `fun i => ⟨(hI i).2, (hI i).1⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem interlace_nat {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg) : Formalism.BranchingDeterminantCap.Interlace (Formalism.BranchingDeterminantCap.lamZ (lamNat lt)) (fun i => (sgNat sg i : ℤ)) := by
@@ -84,7 +84,7 @@ theorem interlace_nat {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 
   exact fun i => ⟨(hI i).2, (hI i).1⟩
 
 /- English proof (translation)
-Unfold `DomWeight.detShift`. Use `split_ifs with h`. Conclude with `sg_nonneg lt sg h0 hI _`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem detShift_nonneg {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg) : 0 ≤ sg.detShift := by
@@ -94,9 +94,9 @@ theorem detShift_nonneg {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h
   · exact le_rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h1` using `sg_nonneg lt sg h0 hI i`. Establish `h2` using `detShift_nonneg lt sg h0 hI`. Establish `h3 : sg.detShift ≤ sg.w i`. Unfold `DomWeight.detShift`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos (Fin.pos i)]`. Conclude with `sg.anti (by rw [Fin.le_def]; simp; omega)`. Unfold `sgNat DomWeight.natW`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sgNat_eq {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg) : sgNat sg = fun i => sg.natW i + sg.detShift.toNat := by
@@ -111,11 +111,11 @@ theorem sgNat_eq {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.
   omega
 
 /- English proof (translation)
-Rewrite using `[sgNat_eq lt sg h0 hI]`. Consider the cases of `n with`. Consider the case `zero`. Establish `hc : sg.detShift.toNat = 0` using `by unfold DomWeight.detShift; simp`. Establish `hf : (fun i : Fin 0 => sg.natW i + 0) = sg.natW` using `funext fun i => i.elim0`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hc, hf]`. Simplify using `[dpow]`. Consider the case `succ m`. Use `⟨fun v hv => det_mul_mem_weyl ℂ sg.natW _ v hv, ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hw_add_const, dpow, mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fock_ratio_det_pow sg.natW (natW_anti sg) _ v hv`.
+A detailed English derivation is pending.
 -/
 theorem twist_facts {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg) :
@@ -138,9 +138,9 @@ theorem twist_facts {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : 
     · exact fock_ratio_det_pow sg.natW (natW_anti sg) _ v hv
 
 /- English proof (translation)
-Unfold `lpMinor`. Rewrite using `[AlgHom.map_det]`. Establish `h : (rowAct ℂ (n` using `n) A).mapMatrix (Matrix.of fun p q : Fin n => (X (Fin.castLE le_rfl p, Fin.castLE le_rfl q) : MvPolynomial (Fin n × Fin n) ℂ)) = (A.map C) * Matrix.of fun p q : Fin n => (X (Fin.castLE le_rfl p, Fin.castLE le_rfl q) : MvPolynomial (Fin n × Fin n) ℂ) := by`. Use extensionality with `p q`. Simplify using `[rowAct, Matrix.mul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, Matrix.det_mul, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rowAct_lpMinor_full (n : ℕ) (A : Matrix (Fin n) (Fin n) ℂ) :
     rowAct ℂ A (lpMinor ℂ (r := n) (n := n) n le_rfl le_rfl) =
@@ -155,7 +155,7 @@ theorem rowAct_lpMinor_full (n : ℕ) (A : Matrix (Fin n) (Fin n) ℂ) :
   rw [h, Matrix.det_mul, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
 
 /- English proof (translation)
-Unfold `dpow`. Rewrite using `[map_pow, rowAct_lpMinor_full, mul_pow, C_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowAct_dpow (n c : ℕ) (A : Matrix (Fin n) (Fin n) ℂ) :
     rowAct ℂ A (dpow n c) = C (A.det ^ c) * dpow n c := by
@@ -163,16 +163,16 @@ theorem rowAct_dpow (n c : ℕ) (A : Matrix (Fin n) (Fin n) ℂ) :
   rw [map_pow, rowAct_lpMinor_full, mul_pow, C_pow]
 
 /- English proof (translation)
-The claim follows from `le_antisymm (Formalism.GradedWeylDivisibility.weylLeDual ℂ r n hn ν hν) (Formalism.BranchingDeterminantCap.bs_dual_le_weyl hn ν hν)`.
+A detailed English derivation is pending.
 -/
 theorem weyl_eq_dual (r n : ℕ) (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Antitone ν) :
     weyl ℂ r n hn ν = dualWeyl ℂ r n ν :=
   le_antisymm (Formalism.GradedWeylDivisibility.weylLeDual ℂ r n hn ν hν) (Formalism.BranchingDeterminantCap.bs_dual_le_weyl hn ν hν)
 
 /- English proof (translation)
-Establish `hle : dualWeyl ℂ r n ν ≤ homogeneousSubmodule (Fin r × Fin n) ℂ (∑ s, ν s)`. Introduce `f hf`. Establish `h1 : f ∈ weightedHomogeneousSubmodule ℂ (colW r n) ν` using `(Submodule.mem_inf.mp hf).1`. Rewrite `h1` using `[mem_weightedHomogeneousSubmodule]`. Rewrite using `[mem_homogeneousSubmodule]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Rewrite using `[← Formalism.GradedWeylDivisibility.lclosedeq_weight_sum, h1 hm]`. Establish `: FiniteDimensional ℂ (homogeneousSubmodule (Fin r × Fin n) ℂ (∑ s, ν s))` using `Module.Finite.iff_fg.mpr (homogeneousSubmodule_fg _ _ _)`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dualWeyl_fd (r n : ℕ) (ν : Fin n → ℕ) : FiniteDimensional ℂ (dualWeyl ℂ r n ν) := by
   have hle : dualWeyl ℂ r n ν ≤ homogeneousSubmodule (Fin r × Fin n) ℂ (∑ s, ν s) := by
@@ -187,7 +187,7 @@ theorem dualWeyl_fd (r n : ℕ) (ν : Fin n → ℕ) : FiniteDimensional ℂ (du
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Establish `e` using `fockF_add_left_g_l4 (f - g) g h`. Rewrite `e` using `[sub_add_cancel]`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockF_sub_left {κ : Type} (f g h : MvPolynomial κ ℂ) : fockF (f - g) h = fockF f h - fockF g h := by
   have e := fockF_add_left_g_l4 (f - g) g h
@@ -196,9 +196,9 @@ theorem fockF_sub_left {κ : Type} (f g h : MvPolynomial κ ℂ) : fockF (f - g)
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hpos` using `(Formalism.GradedWeylDivisibility.fockPos κ (a - b) (sub_ne_zero.mpr hne)).1`. Establish `e : fockF (a - b) (a - b) = 0`. Rewrite using `[fockF_sub_left, h (a - b) (V.sub_mem ha hb), sub_self]`. Rewrite `hpos` using `[e, Complex.zero_re]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ hpos`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_fock {κ : Type} (V : Submodule ℂ (MvPolynomial κ ℂ)) (a b : MvPolynomial κ ℂ) (ha : a ∈ V) (hb : b ∈ V)
     (h : ∀ v ∈ V, fockF a v = fockF b v) : a = b := by
@@ -210,13 +210,13 @@ theorem eq_of_fock {κ : Type} (V : Submodule ℂ (MvPolynomial κ ℂ)) (a b : 
   exact lt_irrefl _ hpos
 
 /- English proof (translation)
-Introduce `h`. Set `e : Fin r × Fin n → ℂ` to `fun v => if h : v.2.val < s then (if I ⟨v.2.val, h⟩ = v.1 then 1 else 0) else 0`. Establish `h1` using `congrArg (eval e) h`. Unfold `initMinor at h1`. Rewrite `h1` using `[RingHom.map_det, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hM : (eval e).mapMatrix (Matrix.of fun p q : Fin s => (X (I p, Fin.castLE hs q) : MvPolynomial (Fin r × Fin n) ℂ)) = 1`. Use extensionality with `p q`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, eval_X, e, Fin.coe_castLE, Matrix.one_apply]`. Rewrite using `[dif_pos q.isLt]`. Distinguish the cases in `hpq : p = q`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hpq` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hpq, if_neg]`. Introduce `h'`. Apply `hpq` to reduce the goal to its premises.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: (⟨q.val, q.isLt⟩ : Fin s) = p` using `hI h'`. Rewrite using `[← this]`. Rewrite `h1` using `[hM, Matrix.det_one]`. Conclude with `one_ne_zero h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem initMinor_ne_zero {r n s : ℕ} (I : Fin s → Fin r) (hI : Function.Injective I) (hs : s ≤ n) :
     initMinor ℂ (n := n) I hs ≠ 0 := by
@@ -244,13 +244,13 @@ theorem initMinor_ne_zero {r n s : ℕ} (I : Fin s → Fin r) (hI : Function.Inj
   exact one_ne_zero h1
 
 /- English proof (translation)
-Unfold `Formalism.BranchingDeterminantCap.xiB`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i _`. Establish `hA : Function.Injective (Formalism.BranchingDeterminantCap.rowsA i)`. Introduce `a b h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact. Simplify `this` using `[Formalism.BranchingDeterminantCap.rowsA]`. Establish `hB : Function.Injective (Formalism.BranchingDeterminantCap.rowsB i)`. Introduce `a b h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Establish `hi` using `i.isLt`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.BranchingDeterminantCap.rowsB at this`. Apply the tactic sequence `split_ifs at this with h1 h2 h2 <;> simp only [Fin.val_last, Fin.val_mk] at this <;> omega`. Conclude with `mul_ne_zero (pow_ne_zero _ (initMinor_ne_zero _ hA _)) (pow_ne_zero _ (initMinor_ne_zero _ hB _))`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem xiB_ne_zero {n : ℕ} (lam sg : Fin n → ℕ) : Formalism.BranchingDeterminantCap.xiB ℂ lam sg ≠ 0 := by
   unfold Formalism.BranchingDeterminantCap.xiB
@@ -273,9 +273,9 @@ theorem xiB_ne_zero {n : ℕ} (lam sg : Fin n → ℕ) : Formalism.BranchingDete
   exact mul_ne_zero (pow_ne_zero _ (initMinor_ne_zero _ hA _)) (pow_ne_zero _ (initMinor_ne_zero _ hB _))
 
 /- English proof (translation)
-Unfold `Formalism.BranchingDeterminantCap.weylProd dimV`. Rewrite using `[Finset.prod_filter, ← Finset.univ_product_univ, Finset.prod_product]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_filter]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem weylProd_eq_dimV {N : ℕ} (nu : Fin (N + 1) → ℤ) : Formalism.BranchingDeterminantCap.weylProd nu = dimV nu := by
   unfold Formalism.BranchingDeterminantCap.weylProd dimV
@@ -289,7 +289,7 @@ theorem weylProd_eq_dimV {N : ℕ} (nu : Fin (N + 1) → ℤ) : Formalism.Branch
   · rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Formalism.BranchingDeterminantCap.extM, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem extM_map_star {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     (Formalism.BranchingDeterminantCap.extM ℂ g).map star = Formalism.BranchingDeterminantCap.extM ℂ (g.map star) := by
@@ -298,7 +298,7 @@ theorem extM_map_star {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h` using `RingHom.map_det (starRingEnd ℂ) g`. Rewrite `h` using `[starRingEnd_apply]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_map_star {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : (g.map star).det = star g.det := by
   have h := RingHom.map_det (starRingEnd ℂ) g
@@ -307,7 +307,7 @@ theorem det_map_star {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : (g.map star).d
   rfl
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le hc`. Unfold `detPow`. Rewrite using `[Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, zpow_natCast, Int.toNat_natCast]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem detPow_eq {n : ℕ} (g : GL (Fin n) ℂ) (c : ℤ) (hc : 0 ≤ c) :
     detPow ℂ n g c = (g : Matrix (Fin n) (Fin n) ℂ).det ^ c.toNat := by
@@ -316,7 +316,7 @@ theorem detPow_eq {n : ℕ} (g : GL (Fin n) ℂ) (c : ℤ) (hc : 0 ≤ c) :
   rw [Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, zpow_natCast, Int.toNat_natCast]
 
 /- English proof (translation)
-Unfold `sqAct`. Rewrite using `[map_smul, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqAct_smul {N : ℕ} (lam : DomWeight N) (g : GL (Fin N) ℂ) (a : ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ) :
     sqAct ℂ N lam g (a • f) = a • sqAct ℂ N lam g f := by
@@ -324,7 +324,7 @@ theorem sqAct_smul {N : ℕ} (lam : DomWeight N) (g : GL (Fin N) ℂ) (a : ℂ) 
   rw [map_smul, smul_comm]
 
 /- English proof (translation)
-Unfold `delSq at hv ⊢`. Rewrite `hv`, the goal using `[weyl_eq_dual n n le_rfl _ (natW_anti sg)]`. Conclude with `Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ n n _ A v hv`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delSq_rowAct {n : ℕ} (sg : DomWeight n) (A : Matrix (Fin n) (Fin n) ℂ) (v : MvPolynomial (Fin n × Fin n) ℂ)
     (hv : v ∈ delSq ℂ n sg) : rowAct ℂ A v ∈ delSq ℂ n sg := by
@@ -333,7 +333,7 @@ theorem delSq_rowAct {n : ℕ} (sg : DomWeight n) (A : Matrix (Fin n) (Fin n) �
   exact Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ n n _ A v hv
 
 /- English proof (translation)
-Unfold `delSq`. Rewrite using `[weyl_eq_dual n n le_rfl _ (natW_anti sg)]`. Conclude with `dualWeyl_fd n n _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delSq_fd {n : ℕ} (sg : DomWeight n) : FiniteDimensional ℂ (delSq ℂ n sg) := by
   unfold delSq
@@ -341,17 +341,15 @@ theorem delSq_fd {n : ℕ} (sg : DomWeight n) : FiniteDimensional ℂ (delSq ℂ
   exact dualWeyl_fd n n _
 
 /- English proof (translation)
-Use `set c0 := sg.detShift.toNat with hc0`. Establish `tw1` using `(twist_facts lt sg h0 hI).1`. Establish `hmem : ∀ v ∈ delSq ℂ n sg, dpow n c0 * v ∈ dualWeyl ℂ n n (sgNat sg)` using `fun v hv => Formalism.GradedWeylDivisibility.weylLeDual ℂ n n le_rfl _ (fun a b h => by`. Rewrite using `[sgNat_eq lt sg h0 hI]`. Conclude with `Nat.add_le_add_right (natW_anti sg h) _) (tw1 v hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hsq : sqAct ℂ n sg g (P0 F) ∈ delSq ℂ n sg`. Unfold `sqAct`. Conclude with `Submodule.smul_mem _ _ (delSq_rowAct sg _ _ (hP0V F))`. Use `eq_of_fock _ _ _ (hP0V _) hsq fun v hv => ?_` and prove the remaining obligations. Use `set gb : Matrix (Fin n) (Fin n) ℂ := (g : Matrix (Fin n) (Fin n) ℂ).map star with hgb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv' : rowAct ℂ gb v ∈ delSq ℂ n sg` using `delSq_rowAct sg gb v hv`. Rewrite using `[hP0 _ v hv (hmem v hv), sqAct_of_last_zero ℂ lt h0 H F, Formalism.GradedWeylDivisibility.fockRowAdj]`. Establish `hHc : (H : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ).transpose.conjTranspose = Formalism.BranchingDeterminantCap.extM ℂ gb`. Rewrite using `[Matrix.conjTranspose, Matrix.transpose_transpose, hH, blockMat_eq_extM, extM_map_star]`. Rewrite using `[hHc, rowAct_rename]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : rowAct ℂ gb (dpow n c0 * v) = (gb.det ^ c0) • (dpow n c0 * rowAct ℂ gb v)`. Rewrite using `[map_mul, rowAct_dpow, smul_eq_C_mul, mul_assoc]`. Establish `hmem' : rowAct ℂ gb (dpow n c0 * v) ∈ dualWeyl ℂ n n (sgNat sg)` using `Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ n n _ gb _ (hmem v hv)`. Rewrite using `[← hio2 gb ⟨_, hmem v hv⟩ ⟨_, hmem'⟩ rfl]`. Establish `hsub : (⟨_, hmem'⟩ : ↥(dualWeyl ℂ n n (sgNat sg))) = (gb.det ^ c0) • ⟨_, hmem _ hv'⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul]`. Conclude with `hy'`. Rewrite using `[hsub, map_smul, map_smul, fockF_smul_right_eq_star_mul, ← hP0 F _ hv' (hmem _ hv')]`. Unfold `sqAct`.
-
-Rewrite using `[fockF_smul_left', Formalism.GradedWeylDivisibility.fockRowAdj]`. Establish `hgc : ((g : Matrix (Fin n) (Fin n) ℂ).transpose).conjTranspose = gb`. Rewrite using `[Matrix.conjTranspose, Matrix.transpose_transpose]`. Rewrite using `[hgc, detPow_eq g _ (detShift_nonneg lt sg h0 hI), ← hc0, hgb, det_map_star, star_pow, star_star]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_equiv {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg)
@@ -401,9 +399,9 @@ theorem adj_equiv {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt
   rw [hgc, detPow_eq g _ (detShift_nonneg lt sg h0 hI), ← hc0, hgb, det_map_star, star_pow, star_star]
 
 /- English proof (translation)
-Unfold `scaleMat`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.star_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scaleMat_conjTranspose (n : ℕ) (T : ℝ) : (scaleMat n T).conjTranspose = scaleMat n T := by
   unfold scaleMat
@@ -414,7 +412,7 @@ theorem scaleMat_conjTranspose (n : ℕ) (T : ℝ) : (scaleMat n T).conjTranspos
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[(Formalism.BranchingDeterminantCap.branch_scale_formula n n d (1 / Real.sqrt T) x hx).1, map_smul, scaleMat_eq_zScale, (Formalism.BranchingDeterminantCap.branch_scale_formula n n d (Real.sqrt T) x hx).1, smul_smul, ← mul_pow]`. Establish `hs : (0 : ℝ) < Real.sqrt T` using `Real.sqrt_pos.mpr (by exact_mod_cast hT)`. Establish `: ((1 / Real.sqrt T : ℝ) : ℂ) * ((Real.sqrt T : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, one_div, inv_mul_cancel₀ hs.ne', Complex.ofReal_one]`. Rewrite using `[this, one_pow, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_cancel (n d T : ℕ) (hT : 0 < T) (x : MvPolynomial (Fin (n + 1) × Fin n) ℂ)
     (hx : ∀ m ∈ x.support, rowDeg m (Fin.last n) = d) :
@@ -427,29 +425,23 @@ theorem scale_cancel (n d T : ℕ) (hT : 0 < T) (x : MvPolynomial (Fin (n + 1) �
   rw [this, one_pow, one_smul]
 
 /- English proof (translation)
-The claim follows from `(Formalism.GradedWeylDivisibility.fockPos _ _ (Formalism.GradedWeylDivisibility.hwNe ℂ r n hn ν)).1`.
+A detailed English derivation is pending.
 -/
 theorem fock_hw_pos {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) : 0 < (fockF (hw ℂ hn ν) (hw ℂ hn ν)).re :=
   (Formalism.GradedWeylDivisibility.fockPos _ _ (Formalism.GradedWeylDivisibility.hwNe ℂ r n hn ν)).1
 
 /- English proof (translation)
-Use `set d := ∑ i, (lamNat lt i - sgNat sg i) with hd`. Use `set t : ℝ := 1 / Real.sqrt T with ht`. Use `set c := Formalism.BranchingDeterminantCap.cCap (Formalism.BranchingDeterminantCap.lamZ (lamNat lt)) (fun i => (sgNat sg i : ℤ)) with hc`. Use `set ξ := Formalism.BranchingDeterminantCap.xiB ℂ (lamNat lt) (sgNat sg) with hξ`. Take `⟨tw1, -, tw3⟩` from `twist_facts lt sg h0 hI`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : dpow n sg.detShift.toNat * P0 F ∈ dualWeyl ℂ n n (sgNat sg)` using `Formalism.GradedWeylDivisibility.weylLeDual ℂ n n le_rfl _ (fun a b h => by`. Rewrite using `[sgNat_eq lt sg h0 hI]`. Conclude with `Nat.add_le_add_right (natW_anti sg h) _) (tw1 _ (hP0V F))`. Use `set y : ↥(dualWeyl ℂ n n (sgNat sg)) := ⟨_, hmem⟩ with hy`. Establish `hNT` using `(Formalism.BranchingDeterminantCap.branch_norm_trace n (lamNat lt) (sgNat sg) t (interlace_nat lt sg h0 hI) io hio2 hio3 hio4).2 y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrat` using `tw3 (P0 F) (hP0V F)`. Use `set Z := rowAct ℂ (Formalism.BranchingDeterminantCap.zScale n t) (io y) with hZ`. Use `set J := rename (colEmb (n + 1) n) Z with hJ`. Establish `hr : ∀ {σ : Type} (f : MvPolynomial σ ℂ), fockF f f = (((fockF f f).re : ℝ) : ℂ)` using `fun f => fock_self_eq_re f`. Use `set a := (fockF Z Z).re`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set hn := (fockF (hw ℂ le_rfl (sgNat sg)) (hw ℂ le_rfl (sgNat sg))).re`. Use `set x := (fockF ξ ξ).re`. Use `set yy := (fockF (y : MvPolynomial (Fin n × Fin n) ℂ) y).re`. Use `set p := (fockF (P0 F) (P0 F)).re`. Use `set hs := (fockF (hw ℂ le_rfl sg.natW) (hw ℂ le_rfl sg.natW)).re`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hn0 : 0 < hn` using `fock_hw_pos le_rfl _`. Establish `hs0 : 0 < hs` using `fock_hw_pos le_rfl _`. Establish `e1 : a * hn = t ^ (2 * d) * (c : ℝ) ^ 2 * x * yy`. Rewrite `hNT` using `[hr Z, hr (hw ℂ le_rfl (sgNat sg)), hr ξ, hr (y : MvPolynomial (Fin n × Fin n) ℂ)]`. Conclude with `hNT` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e2 : yy * hs = p * hn`. Rewrite `hrat` using `[hr (dpow n sg.detShift.toNat * P0 F), hr (hw ℂ le_rfl (sgNat sg)), hr (P0 F), hr (hw ℂ le_rfl sg.natW)]`. Establish `h' : yy / hn = p / hs` using `by exact_mod_cast hrat`. Rewrite `h'` using `[div_eq_div_iff hn0.ne' hs0.ne']`. Conclude with `h'`.
-
-Establish `hx0 : 0 ≤ x` using `fock_self_re_nonneg ξ`. Establish `hK : 0 ≤ t ^ (2 * d) * (c : ℝ) ^ 2 * x / hs`. Establish `: 0 ≤ t` using `by rw [ht]; positivity`. Check the signs of the components of the expression. Apply `fock_adjoint_bound (P0 F) (sqAct ℂ (n + 1) lt G F) J _ hK` to reduce the goal to its premises.
-
-Rewrite using `[hP0 F (P0 F) (hP0V F) hmem, sqAct_of_last_zero ℂ lt h0 G F, hG, scaleMat_transpose, Formalism.GradedWeylDivisibility.fockRowAdj, scaleMat_conjTranspose, hJ, rowAct_rename, hZ, scale_cancel n d T hT _ (hio4 y)]`. Rewrite using `[hJ, fockF_rename _ (colEmb_inj _ _)]`. Apply `le_of_eq` to reduce the goal to its premises. Establish `e3 : (a * hs) * hn = (t ^ (2 * d) * (c : ℝ) ^ 2 * x * p) * hn`. Take the linear combination `hs * e1 + (t ^ (2 * d) * (c : ℝ) ^ 2 * x) * e2`.
-
-Establish `e4` using `mul_right_cancel₀ hn0.ne' e3`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem adj_norm {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg) (T : ℕ) (hT : 0 < T) (G : GL (Fin (n + 1)) ℂ)
@@ -522,19 +514,17 @@ theorem adj_norm {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.
     linarith
 
 /- English proof (translation)
-Use `set c := Formalism.BranchingDeterminantCap.cCap (Formalism.BranchingDeterminantCap.lamZ (lamNat lt)) (fun i => (sgNat sg i : ℤ)) with hc`. Use `set ξ := Formalism.BranchingDeterminantCap.xiB ℂ (lamNat lt) (sgNat sg) with hξ`. Take `⟨-, tw2, -⟩` from `twist_facts lt sg h0 hI`. Establish `hc0 : (c : ℂ) ≠ 0`. Use `(Formalism.BranchingDeterminantCap.capacity_constant_bound n _ _ (interlace_nat lt sg h0 hI)).1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Establish `hsgN : Antitone (sgNat sg)`. Rewrite using `[sgNat_eq lt sg h0 hI]`. Conclude with `fun a b h => Nat.add_le_add_right (natW_anti sg h) _`. Establish `hhw : hw ℂ le_rfl (sgNat sg) ∈ dualWeyl ℂ n n (sgNat sg)` using `Formalism.GradedWeylDivisibility.weylLeDual ℂ n n le_rfl _ hsgN (Submodule.subset_span ⟨[], rfl⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hio_hw` using `hio3 ⟨_, hhw⟩ rfl`. Establish `hξmem : ξ ∈ dualWeyl ℂ (n + 1) n (lamNat lt)`. Establish `h1` using `hio1 ⟨_, hhw⟩`. Rewrite `h1` using `[hio_hw]`. Establish `h2` using `(dualWeyl ℂ (n + 1) n (lamNat lt)).smul_mem (c : ℂ)⁻¹ h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Then use the resulting hypothesis. Establish `hlam : Antitone (lamNat lt)` using `fun a b h => natW_anti lt (Fin.castSucc_le_castSucc_iff.mpr h)`. Establish `hξw : ξ ∈ weyl ℂ (n + 1) n (Nat.le_succ n) (lamNat lt)` using `Formalism.BranchingDeterminantCap.bs_dual_le_weyl _ _ hlam hξmem`. Use `⟨rename (colEmb (n + 1) n) ξ, ?_, fun hP => ?_⟩` and prove the remaining obligations. Rewrite using `[delSq_eq_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem hξw`. Establish `hv : hw ℂ le_rfl sg.natW ∈ delSq ℂ n sg` using `Submodule.subset_span ⟨[], rfl⟩`. Establish `hy : dpow n sg.detShift.toNat * hw ℂ le_rfl sg.natW ∈ dualWeyl ℂ n n (sgNat sg)`. Rewrite using `[tw2]`. Conclude with `hhw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hP0 (rename (colEmb (n + 1) n) ξ) _ hv hy`. Establish `hsub : (⟨_, hy⟩ : ↥(dualWeyl ℂ n n (sgNat sg))) = ⟨_, hhw⟩` using `Subtype.ext tw2`. Rewrite `h1` using `[hP, hsub, hio_hw, map_smul, fockF_smul_right_eq_star_mul, fockF_rename _ (colEmb_inj _ _)]`. Establish `h2 : fockF (0 : MvPolynomial (Fin n × Fin n) ℂ) (hw ℂ le_rfl sg.natW) = 0`. Rewrite using `[← fockLin_apply, map_zero]`.
-
-Rewrite `h1` using `[h2]`. Establish `hpos` using `(Formalism.GradedWeylDivisibility.fockPos _ ξ (xiB_ne_zero _ _)).1`. Establish `h3 : fockF ξ ξ ≠ 0` using `fun h => by rw [h, Complex.zero_re] at hpos; exact lt_irrefl _ hpos`. Conclude with `mul_ne_zero (star_ne_zero.mpr hc0) h3 h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adj_ne {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg)
@@ -601,9 +591,9 @@ def AdjointIntegrality : Prop :=
         P (MvPolynomial.map (Int.castRingHom ℂ) F) = MvPolynomial.map (Int.castRingHom ℂ) g
 
 /- English proof (translation)
-Unfold `degP`. Rewrite using `[Fin.sum_univ_castSucc (f := lt.w), h0, add_zero, Nat.cast_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `(hI i).2`. Establish `h2` using `sg_nonneg lt sg h0 hI i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `lt_nonneg lt h0 i.castSucc`. Unfold `lamNat sgNat DomWeight.natW`. Rewrite using `[detShift_last lt h0]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem branchingDegree_eq_sum {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg) : degP lt sg = ((∑ i, (lamNat lt i - sgNat sg i) : ℕ) : ℤ) := by
@@ -618,7 +608,7 @@ theorem branchingDegree_eq_sum {n : ℕ} (lt : DomWeight (n + 1)) (sg : DomWeigh
   omega
 
 /- English proof (translation)
-Establish `hT' : (0 : ℝ) < T` using `by exact_mod_cast hT`. Rewrite using `[pow_mul, div_pow, one_pow, Real.sq_sqrt hT'.le, neg_mul, Real.exp_neg, Int.cast_natCast, Real.exp_nat_mul, Real.exp_log hT', one_div_pow, one_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_eq_pow (T d : ℕ) (hT : 0 < T) :
     Real.exp (-((d : ℤ) : ℝ) * Real.log T) = (1 / Real.sqrt T) ^ (2 * d) := by
@@ -627,39 +617,33 @@ theorem exp_eq_pow (T d : ℕ) (hT : 0 < T) :
     Real.exp_nat_mul, Real.exp_log hT', one_div_pow, one_div]
 
 /- English proof (translation)
-Introduce `n lt sg h0 hI T hT G hG`. Establish `hInter` using `interlace_nat lt sg h0 hI`. Take `⟨io, hio1, hio2, hio3, hio4⟩` from `Formalism.BranchingDeterminantCap.branch_map_formula ℂ n (lamNat lt) (sgNat sg) hInter`. Use `set V := delSq ℂ n sg with hV`. Take `⟨tw1, -, -⟩` from `twist_facts lt sg h0 hI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ v ∈ V, dpow n sg.detShift.toNat * v ∈ dualWeyl ℂ n n (sgNat sg)` using `fun v hv => Formalism.GradedWeylDivisibility.weylLeDual ℂ n n le_rfl _ (fun a b h => by`. Rewrite using `[sgNat_eq lt sg h0 hI]`. Conclude with `Nat.add_le_add_right (natW_anti sg h) _) (tw1 v hv)`. Use `haveI : FiniteDimensional ℂ V := delSq_fd sg`. Set `tw : V →ₗ[ℂ] ↥(dualWeyl ℂ n n (sgNat sg))` to `LinearMap.codRestrict _ ((LinearMap.mulLeft ℂ (dpow n sg.detShift.toNat)).comp V.subtype) (fun v => hmem v v.2)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `jl : V →ₗ[ℂ] MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ` to `(rename (colEmb (n + 1) n) : MvPolynomial (Fin (n + 1) × Fin n) ℂ →ₐ[ℂ] _).toLinearMap ∘ₗ io ∘ₗ tw`. Take `⟨P0, hP0V, hP0'⟩` from `fock_adjoint_exists V jl`. Establish `hP0 : ∀ F v (hv : v ∈ delSq ℂ n sg) (hy : dpow n sg.detShift.toNat * v ∈ dualWeyl ℂ n n (sgNat sg)), fockF (P0 F) v = fockF F (rename (colEmb (n + 1) n) (io ⟨_, hy⟩))` using `fun F v hv hy => hP0' F ⟨v, hv⟩`. Establish `hr : ∀ {σ : Type} (f : MvPolynomial σ ℂ), fockF f f = (((fockF f f).re : ℝ) : ℂ)` using `fun f => fock_self_eq_re f`. Use `set hsr := (fockF (extremal ℂ n sg) (extremal ℂ n sg)).re with hhsr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set hlr := (fockF (extremal ℂ (n + 1) lt) (extremal ℂ (n + 1) lt)).re with hhlr`. Establish `hs0 : 0 < hsr` using `fock_hw_pos le_rfl _`. Establish `hl0 : 0 < hlr` using `fock_hw_pos le_rfl _`. Establish `hlr_eq : hlr = (fockF (hw ℂ (Nat.le_succ n) (lamNat lt)) (hw ℂ (Nat.le_succ n) (lamNat lt))).re`. Rewrite using `[hhlr]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `extremal`. Rewrite using `[hw_rename ℂ lt.natW (natW_last lt), fockF_rename _ (colEmb_inj _ _)]`. Both sides reduce to the same expression. Use `set α : ℂ := ((hsr / hlr : ℝ) : ℂ) with hα`. Establish `hsC : fockF (extremal ℂ n sg) (extremal ℂ n sg) = (hsr : ℂ)` using `hr _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hlC : fockF (extremal ℂ (n + 1) lt) (extremal ℂ (n + 1) lt) = (hlr : ℂ)` using `hr _`. Establish `hsne : (hsr : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hs0.ne'`. Establish `hlne : (hlr : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hl0.ne'`. Establish `hadjN : ∀ F v (hv : v ∈ delSq ℂ n sg) (hy : dpow n sg.detShift.toNat * v ∈ dualWeyl ℂ n n (sgNat sg)), normFock sg ((α • P0) F) v = normFock lt F (rename (colEmb (n + 1) n) (io ⟨_, hy⟩))`. Introduce `F v hv hy`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `normFock`. Rewrite using `[LinearMap.smul_apply, fockF_smul_left', hP0 F v hv hy, hsC, hlC, hα, Complex.ofReal_div]`. Clear the denominators using the available nonvanishing facts. Use `⟨α • P0, fun f _ => Submodule.smul_mem _ _ (hP0V f), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨F, hF, hne⟩` from `adj_ne lt sg h0 hI io hio1 hio3 P0 hP0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨F, hF, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`. Conclude with `smul_ne_zero (Complex.ofReal_ne_zero.mpr (div_pos hs0 hl0).ne') hne`. Conclude with `hInt n lt sg h0 hI io hio1 hio2 hio3 hio4 (α • P0) (fun f => Submodule.smul_mem _ _ (hP0V f)) hadjN`. Introduce `g H hH f _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, adj_equiv lt sg h0 hI io hio2 P0 hP0V hP0 g H hH f, sqAct_smul]`. Introduce `f _`. Establish `hb` using `adj_norm lt sg h0 hI T hT G hG io hio2 hio3 hio4 P0 hP0V hP0 f`. Establish `hxi` using `Formalism.BranchingDeterminantCap.xi_norm_bound n (lamNat lt) (sgNat sg) hInter`. Rewrite `hxi` using `[weylProd_eq_dimV, lamZ_lamNat lt h0, ← hlr_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `set p := (fockF (P0 f) (P0 f)).re`. Use `set s := (fockF (sqAct ℂ (n + 1) lt G f) (sqAct ℂ (n + 1) lt G f)).re`. Use `set x := (fockF (Formalism.BranchingDeterminantCap.xiB ℂ (lamNat lt) (sgNat sg)) (Formalism.BranchingDeterminantCap.xiB ℂ (lamNat lt) (sgNat sg))).re`. Use `set t2 := (1 / Real.sqrt T) ^ (2 * ∑ i, (lamNat lt i - sgNat sg i))`. Establish `hcc : Formalism.BranchingDeterminantCap.cCap (Formalism.BranchingDeterminantCap.lamZ (lamNat lt)) (fun i => (sgNat sg i : ℤ)) = Formalism.BranchingDeterminantCap.cCap lt.w sg.w`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lamZ_lamNat lt h0, sgNat_cast lt sg h0 hI]`. Rewrite `hb` using `[hcc]`. Use `set cc := (((Formalism.BranchingDeterminantCap.cCap lt.w sg.w : ℤ) : ℝ)) ^ 2`. Establish `hs_eq : (fockF (hw ℂ le_rfl sg.natW) (hw ℂ le_rfl sg.natW)).re = hsr` using `rfl`. Rewrite `hb` using `[hs_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : (normFock sg ((α • P0) f) ((α • P0) f)).re = (hsr / hlr) ^ 2 * p / hsr`. Unfold `normFock`. Rewrite using `[LinearMap.smul_apply, fockF_smul_left', fockF_smul_right_eq_star_mul, hr (P0 f), hsC, hα, Complex.star_def, Complex.conj_ofReal]`. Rewrite using `[← Complex.ofReal_mul, ← Complex.ofReal_mul, ← Complex.ofReal_div, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hR : normTil lt G f = s / hlr`. Unfold `normTil normFock`. Rewrite using `[hr (sqAct ℂ (n + 1) lt G f), hlC, ← Complex.ofReal_div, Complex.ofReal_re]`. Rewrite using `[hL, hR, branchingDegree_eq_sum lt sg h0 hI, exp_eq_pow T _ hT]`. Establish `hx0 : 0 ≤ x` using `fock_self_re_nonneg _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hs0' : 0 ≤ s` using `fock_self_re_nonneg _`. Establish `ht0 : 0 ≤ t2` using `by positivity`. Establish `hcc0 : 0 ≤ cc` using `by positivity`. Establish `hdim` using `dimV_pos lt`. Establish `h1 : (hsr / hlr) ^ 2 * p / hsr ≤ t2 * cc * x * s / hlr ^ 2`.
-
-Rewrite using `[div_le_div_iff₀ hs0 (by positivity)]`. Use `mul_le_mul_of_nonneg_left hb (by positivity : (0 : ℝ) ≤ (hsr / hlr) ^ 2 * hlr ^ 2)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left hb (by positivity)` to reduce the goal to its premises. Use `_ = t2 * cc * x * s * hsr := by field_simp`.
-
-Establish `h2 : t2 * cc * x * s / hlr ^ 2 ≤ t2 * (cc * dimV lt.w) * (s / hlr)`. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `: t2 * cc * x * s ≤ t2 * cc * (dimV lt.w * hlr) * s`. Apply `mul_le_mul_of_nonneg_right _ hs0'` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hxi (by positivity)`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `h1.trans h2`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem branching_normalised_of_adjoint (hInt : AdjointIntegrality) : BranchingIntegralNormalised := by
   intro n lt sg h0 hI T hT G hG
@@ -763,29 +747,25 @@ theorem branching_normalised_of_adjoint (hInt : AdjointIntegrality) : BranchingI
     exact h1.trans h2
 
 /- English proof (translation)
-The claim follows from `branching_link_of_normalised (branching_normalised_of_adjoint h)`.
+A detailed English derivation is pending.
 -/
 theorem branching_link_of_adjoint (h : AdjointIntegrality) : Link3 := branching_link_of_normalised (branching_normalised_of_adjoint h)
 
 /- English proof (translation)
-The claim follows from `branching_link_family_normalised (branching_normalised_of_adjoint h)`.
+A detailed English derivation is pending.
 -/
 theorem branching_family_of_adjoint (h : AdjointIntegrality) : Link3F := branching_link_family_normalised (branching_normalised_of_adjoint h)
 
 /- English proof (translation)
-Establish `hInter` using `interlace_nat lt sg h0 hI`. Take `⟨io, hio1, hio2, hio3, hio4⟩` from `Formalism.BranchingDeterminantCap.branch_map_formula ℂ n (lamNat lt) (sgNat sg) hInter`. Use `set V := delSq ℂ n sg with hV`. Take `⟨tw1, -, -⟩` from `twist_facts lt sg h0 hI`. Establish `hmem : ∀ v ∈ V, dpow n sg.detShift.toNat * v ∈ dualWeyl ℂ n n (sgNat sg)` using `fun v hv => Formalism.GradedWeylDivisibility.weylLeDual ℂ n n le_rfl _ (fun a b h => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sgNat_eq lt sg h0 hI]`. Conclude with `Nat.add_le_add_right (natW_anti sg h) _) (tw1 v hv)`. Use `haveI : FiniteDimensional ℂ V := delSq_fd sg`. Set `tw : V →ₗ[ℂ] ↥(dualWeyl ℂ n n (sgNat sg))` to `LinearMap.codRestrict _ ((LinearMap.mulLeft ℂ (dpow n sg.detShift.toNat)).comp V.subtype) (fun v => hmem v v.2)`. Set `jl : V →ₗ[ℂ] MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ` to `(rename (colEmb (n + 1) n) : MvPolynomial (Fin (n + 1) × Fin n) ℂ →ₐ[ℂ] _).toLinearMap ∘ₗ io ∘ₗ tw`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P0, hP0V, hP0'⟩` from `fock_adjoint_exists V jl`. Establish `hP0 : ∀ F v (hv : v ∈ delSq ℂ n sg) (hy : dpow n sg.detShift.toNat * v ∈ dualWeyl ℂ n n (sgNat sg)), fockF (P0 F) v = fockF F (rename (colEmb (n + 1) n) (io ⟨_, hy⟩))` using `fun F v hv hy => hP0' F ⟨v, hv⟩`. Establish `hr : ∀ {σ : Type} (f : MvPolynomial σ ℂ), fockF f f = (((fockF f f).re : ℝ) : ℂ)` using `fun f => fock_self_eq_re f`. Use `set hsr := (fockF (extremal ℂ n sg) (extremal ℂ n sg)).re with hhsr`. Use `set hlr := (fockF (extremal ℂ (n + 1) lt) (extremal ℂ (n + 1) lt)).re with hhlr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 < hsr` using `fock_hw_pos le_rfl _`. Establish `hl0 : 0 < hlr` using `fock_hw_pos le_rfl _`. Use `set α : ℂ := ((hsr / hlr : ℝ) : ℂ) with hα`. Establish `hsC : fockF (extremal ℂ n sg) (extremal ℂ n sg) = (hsr : ℂ)` using `hr _`. Establish `hlC : fockF (extremal ℂ (n + 1) lt) (extremal ℂ (n + 1) lt) = (hlr : ℂ)` using `hr _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hsne : (hsr : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hs0.ne'`. Establish `hlne : (hlr : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hl0.ne'`. Use `⟨io, hio1, hio2, hio3, hio4, α • P0, fun f => Submodule.smul_mem _ _ (hP0V f), ?_, ?_⟩` and prove the remaining obligations. Introduce `F v hv hy`. Unfold `normFock`.
-
-Rewrite using `[LinearMap.smul_apply, fockF_smul_left', hP0 F v hv hy, hsC, hlC, hα, Complex.ofReal_div]`. Clear the denominators using the available nonvanishing facts. Take `⟨F, hF, hne⟩` from `adj_ne lt sg h0 hI io hio1 hio3 P0 hP0`. Use `⟨F, hF, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`.
-
-Conclude with `smul_ne_zero (Complex.ofReal_ne_zero.mpr (div_pos hs0 hl0).ne') hne`.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjInt_hyps_inhabited (n : ℕ) (lt : DomWeight (n + 1)) (sg : DomWeight n) (h0 : lt.w (Fin.last n) = 0)
     (hI : Interlace lt sg) :

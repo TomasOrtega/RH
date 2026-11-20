@@ -12,7 +12,7 @@ def killB (T : Finset K) : MRing ι →ₐ[ℤ] MRing ι :=
   aeval (fun p => if p.1 ∈ T then 0 else X p)
 
 /- English proof (translation)
-Unfold `killB`. Rewrite using `[MvPolynomial.aeval_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem killB_X (T : Finset K) (p : Σ k, ι k) :
     killB T (X p : MRing ι) = if p.1 ∈ T then 0 else X p := by
@@ -21,13 +21,11 @@ theorem killB_X (T : Finset K) (p : Σ k, ι k) :
 
 open Classical in
 /- English proof (translation)
-Unfold `killB`. Rewrite using `[MvPolynomial.aeval_monomial]`. Use `split_ifs with h`. Take `⟨p, hpT, hp⟩` from `h`. Apply `mul_eq_zero_of_right` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.prod]`. Apply `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hp)` to reduce the goal to its premises. Simplify using `[hpT, hp]`. Use `push_neg at h`. Rewrite using `[Finsupp.prod]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ p ∈ m.support, (if p.1 ∈ T then (0 : MRing ι) else X p) ^ m p = X p ^ m p`. Introduce `p hp`. Rewrite using `[if_neg]`. Introduce `hT`. Conclude with `(Finsupp.mem_support_iff.mp hp) (h p hT)`.
-
-Rewrite using `[Finset.prod_congr rfl hc, ← Finsupp.prod, MvPolynomial.monomial_eq, MvPolynomial.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killB_monomial (T : Finset K) (m : (Σ k, ι k) →₀ ℕ) (c : ℤ) :
     killB T (monomial m c : MRing ι) = if (∃ p, p.1 ∈ T ∧ m p ≠ 0) then 0 else monomial m c := by
@@ -49,13 +47,13 @@ theorem killB_monomial (T : Finset K) (m : (Σ k, ι k) →₀ ℕ) (c : ℤ) :
     rw [Finset.prod_congr rfl hc, ← Finsupp.prod, MvPolynomial.monomial_eq, MvPolynomial.algebraMap_eq]
 
 /- English proof (translation)
-Distinguish the cases in `hT : ∃ k ∈ T, c k ≠ 0`. Use `left`. Take `⟨k, hkT, hck⟩` from `hT`. Rewrite using `[s.as_sum, map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Establish `h` using `hs m hm k`. Rewrite `hck` using `[← h]`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hck`. Rewrite using `[killB_monomial, if_pos ⟨⟨k, i⟩, hkT, hi⟩]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `right push_neg at hT`. Establish `key : ∀ m ∈ s.support, killB T (monomial m (coeff m s)) = monomial m (coeff m s)`. Introduce `m hm`. Rewrite using `[killB_monomial, if_neg]`. Introduce and unpack `⟨p, hpT, hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hs m hm p.1`. Rewrite `h` using `[hT p.1 hpT]`. Conclude with `hp ((Finset.sum_eq_zero_iff.mp h) p.2 (Finset.mem_univ _))`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem killB_multiHomog (T : Finset K) {s : MRing ι} {c : K → ℕ} (hs : IsMultiHomog s c) :
     killB T s = 0 ∨ killB T s = s := by
@@ -85,9 +83,9 @@ theorem killB_multiHomog (T : Finset K) {s : MRing ι} {c : K → ℕ} (hs : IsM
       _ = s := s.as_sum.symm
 
 /- English proof (translation)
-Take `⟨S, hS, rfl⟩` from `hP`. Rewrite using `[Ideal.span_le]`. Introduce `f hf`. Take `⟨a, ha⟩` from `hS f hf`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Break down `killB_multiHomog T ha with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `Ideal.zero_mem _`. Rewrite using `[h]`. Conclude with `Ideal.subset_span hf`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_comap_killB {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) (T : Finset K) :
     P ≤ P.comap (killB T) := by
@@ -101,9 +99,9 @@ theorem le_comap_killB {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) (T : Fi
   · rw [h]; exact Ideal.subset_span hf
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Rewrite using `[AlgHom.comp_apply, killB_X]`. Use `split_ifs with hp`. Rewrite using `[map_zero, killB_X, if_pos (h hp)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem killB_comp {T T' : Finset K} (h : T ⊆ T') :
     (killB T' : MRing ι →ₐ[ℤ] MRing ι).comp (killB T) = killB T' := by
@@ -115,7 +113,7 @@ theorem killB_comp {T T' : Finset K} (h : T ⊆ T') :
   · rfl
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[Ideal.mem_comap]`. Rewrite using `[← killB_comp h, AlgHom.comp_apply]`. Conclude with `Ideal.mem_comap.mp (le_comap_killB hP T' hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_killB_mono {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) {T T' : Finset K}
     (h : T ⊆ T') : P.comap (killB T) ≤ P.comap (killB T') := by
@@ -125,19 +123,17 @@ theorem comap_killB_mono {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) {T T'
   exact Ideal.mem_comap.mp (le_comap_killB hP T' hx)
 
 /- English proof (translation)
-Use `haveI := hPp`. Set `T : ℕ → Finset K` to `fun j => Finset.univ.filter fun k => ((Fintype.equivFin K k : ℕ) < j)`. Set `Q : ℕ → Ideal (MRing ι)` to `fun j => P.comap (killB (T j))`. Establish `hQp : ∀ j, (Q j).IsPrime` using `fun j => Ideal.comap_isPrime _ _`. Establish `hPQ : ∀ j, P ≤ Q j` using `fun j => le_comap_killB hPm (T j)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ j, T j ⊆ T (j + 1)`. Introduce `j k hk`. Simplify using `only [T, Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hlt : ∀ j < Fintype.card K, Q j < Q (j + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Use `lt_of_le_of_ne (comap_killB_mono hPm (hT j)) ?_` and prove the remaining obligations. Introduce `heq`. Use `set k := (Fintype.equivFin K).symm ⟨j, hj⟩ with hk`. Establish `hkv : ((Fintype.equivFin K k : Fin _) : ℕ) = j` using `by simp [hk]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hi⟩` from `hrel k`. Establish `hin : k ∈ T (j + 1)`. Simplify using `only [T, Finset.mem_filter, Finset.mem_univ, true_and]`. Use linear arithmetic over natural numbers and integers. Establish `hout : k ∉ T j`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [T, Finset.mem_filter, Finset.mem_univ, true_and]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : (X ⟨k, i⟩ : MRing ι) ∈ Q (j + 1)`. Rewrite using `[Ideal.mem_comap, killB_X, if_pos hin]`. Conclude with `P.zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h2 : (X ⟨k, i⟩ : MRing ι) ∉ Q j`. Rewrite using `[Ideal.mem_comap, killB_X, if_neg hout]`. Conclude with `hi`. Conclude with `h2 (heq ▸ h1)`. Set `f : Fin (Fintype.card K + 1) → PrimeSpectrum.zeroLocus (P : Set (MRing ι))` to `fun j => ⟨⟨Q j, hQp j⟩, fun x hx => hPQ j hx⟩`.
-
-Set `s : LTSeries (PrimeSpectrum.zeroLocus (P : Set (MRing ι)))` to `⟨Fintype.card K, f, fun j => by first`. Consider the case `exact Subtype.mk_lt_mk.mpr (PrimeSpectrum.asIdeal_lt_asIdeal.mp (hlt j j.isLt))`. Consider the case `exact (hlt j j.isLt)⟩`. Rewrite using `[ringKrullDim_quotient]`. Conclude with `Order.LTSeries.length_le_krullDim s`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_le_dim {P : Ideal (MRing ι)} (hPp : P.IsPrime) (hPm : IsMultiHomogIdeal P)
     (hrel : IsRelevant P) : ((Fintype.card K : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (MRing ι ⧸ P) := by
@@ -180,25 +176,21 @@ theorem card_le_dim {P : Ideal (MRing ι)} (hPp : P.IsPrime) (hPm : IsMultiHomog
   exact Order.LTSeries.length_le_krullDim s
 
 /- English proof (translation)
-Introduce `hrel`. Establish `hW'p : W'.IsPrime` using `hW'.1.1`. Establish `hJ : IsMultiHomogIdeal (W ⊔ Ideal.span {s})` using `isMultiHomogIdeal_sup_span hWm hs`. Establish `hW'm : IsMultiHomogIdeal W'`. Set `e` to `Fintype.equivFin K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `letI : DecidableEq (Lex (Fin (Fintype.card K) → ℕ)) := lexDecEq (Fintype.card K)`. Use `letI : GradedAlgebra (weightedHomogeneousSubmodule ℤ (lexW (ι := ι) e)) := MvPolynomial.weightedGradedAlgebra ℤ (lexW (ι := ι) e)`. Rewrite `hJ`, the goal using `[← isHomogeneous_lex_iff e]`. Establish `hcore` using `hW'p.homogeneousCore (𝒜 := weightedHomogeneousSubmodule ℤ (lexW (ι := ι) e))`. Establish `hle : W ⊔ Ideal.span {s} ≤ (W'.homogeneousCore (weightedHomogeneousSubmodule ℤ (lexW (ι` using `ι) e))).toIdeal := by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hJ.toIdeal_homogeneousCore_eq_self]`. Conclude with `Ideal.homogeneousCore_mono _ hW'.1.2`. Establish `hge` using `hW'.2 ⟨hcore, hle⟩ (Ideal.toIdeal_homogeneousCore_le _ _)`. Establish `heq : (W'.homogeneousCore (weightedHomogeneousSubmodule ℤ (lexW (ι` using `ι) e))).toIdeal = W' := le_antisymm (Ideal.toIdeal_homogeneousCore_le _ _) hge`. Rewrite using `[← heq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(W'.homogeneousCore (weightedHomogeneousSubmodule ℤ (lexW (ι := ι) e))).isHomogeneous`. Establish `h1` using `card_le_dim hW'p hW'm hrel`. Establish `hWW' : W ≤ W'` using `le_trans le_sup_left hW'.1.2`. Establish `hsW' : s ∈ W'` using `hW'.1.2 ((le_sup_right : Ideal.span {s} ≤ W ⊔ Ideal.span {s}) (Ideal.mem_span_singleton_self s))`. Set `g : MRing ι ⧸ W →+* MRing ι ⧸ W'` to `Ideal.Quotient.factor hWW'`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : ∀ a ∈ Ideal.span {Ideal.Quotient.mk W s}, g a = 0`. Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Rewrite using `[map_mul]`. Establish `: g (Ideal.Quotient.mk W s) = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [g, Ideal.Quotient.factor_mk]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hsW'`. Rewrite using `[this, mul_zero]`. Set `f : (MRing ι ⧸ W) ⧸ Ideal.span {Ideal.Quotient.mk W s} →+* MRing ι ⧸ W'` to `Ideal.Quotient.lift _ g hg`. Establish `hf : Function.Surjective f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨Ideal.Quotient.mk _ (Ideal.Quotient.mk W x), rfl⟩`. Establish `hnz : Ideal.Quotient.mk W s ∈ nonZeroDivisors (MRing ι ⧸ W)`. Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `h0`. Conclude with `hsW (Ideal.Quotient.eq_zero_iff_mem.mp h0)`. Establish `h2 : ((Fintype.card K : ℕ) : WithBot ℕ∞) + 1 ≤ ((0 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `ringKrullDim_le_of_surjective f hf`.
-
-Use `_ ≤ ringKrullDim (MRing ι ⧸ W) := ringKrullDim_quotient_succ_le_of_nonZeroDivisor hnz`. Use `_ = _ := hd`. Rewrite `h2` using `[zero_add]`. Establish `h3 : (((Fintype.card K + 1 : ℕ)) : WithBot ℕ∞) ≤ ((Fintype.card K : ℕ) : WithBot ℕ∞)`. Conclude with `h2` after adjusting the coercions.
-
-Establish `h4` using `WithBot.coe_le_coe.mp h3`. Establish `h5 : ((Fintype.card K + 1 : ℕ) : ℕ∞) ≤ ((Fintype.card K : ℕ) : ℕ∞)` using `h4`. Conclude with `absurd (Nat.cast_le.mp h5) (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_relevant_of_dim_zero {W : Ideal (MRing ι)} [W.IsPrime] (hWm : IsMultiHomogIdeal W)
     (hd : ringKrullDim (MRing ι ⧸ W) = ((0 + Fintype.card K : ℕ) : WithBot ℕ∞))

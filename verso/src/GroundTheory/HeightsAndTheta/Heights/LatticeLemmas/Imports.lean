@@ -8,40 +8,40 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `SphereLawBasic.proof`.
+A detailed English derivation is pending.
 -/
 theorem SphereLawBasic.full : SphereLawBasic.Statement := SphereLawBasic.proof
 
 /- English proof (translation)
-The claim follows from `SphereLawFirstCoord.proof`.
+A detailed English derivation is pending.
 -/
 theorem SphereLawFirstCoord.full : SphereLawFirstCoord.Statement := SphereLawFirstCoord.proof
 
 /- English proof (translation)
-The claim follows from `FibreMahlerForms.proof`.
+A detailed English derivation is pending.
 -/
 theorem FibreMahlerForms.full : FibreMahlerForms.Statement := FibreMahlerForms.proof
 
 /- English proof (translation)
-The claim follows from `SpherePhase.full_of_sphereLawBasic SphereLawBasic.full`.
+A detailed English derivation is pending.
 -/
 theorem SpherePhase.full : SpherePhase.Statement :=
   SpherePhase.full_of_sphereLawBasic SphereLawBasic.full
 
 /- English proof (translation)
-The claim follows from `SphereProjectionLaw.full_of SphereLawBasic.full SphereLawFirstCoord.full`.
+A detailed English derivation is pending.
 -/
 theorem SphereProjectionLaw.full : SphereProjectionLaw.Statement :=
   SphereProjectionLaw.full_of SphereLawBasic.full SphereLawFirstCoord.full
 
 /- English proof (translation)
-The claim follows from `PointwiseLelong.full_of SphereLawBasic.full SphereLawFirstCoord.full`.
+A detailed English derivation is pending.
 -/
 theorem PointwiseLelong.full : PointwiseLelong.Statement :=
   PointwiseLelong.full_of SphereLawBasic.full SphereLawFirstCoord.full
 
 /- English proof (translation)
-The claim follows from `HeightOfCycle.full_of_fibreMahlerForms FibreMahlerForms.full`.
+A detailed English derivation is pending.
 -/
 theorem HeightOfCycle.full : HeightOfCycle.Statement :=
   HeightOfCycle.full_of_fibreMahlerForms FibreMahlerForms.full

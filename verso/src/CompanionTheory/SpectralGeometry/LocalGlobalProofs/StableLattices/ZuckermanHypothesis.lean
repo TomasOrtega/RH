@@ -12,14 +12,14 @@ namespace GlobalTheory.CompanionTheory.ZuckTransport
 open PI.UpqRep CompanionTheory.LimBd.SchurHpk
 
 /- English proof (translation)
-Rewrite using `[← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_conj {n : ℕ} (P a Q : Matrix (Fin n) (Fin n) ℂ) (u x : Fin n → ℂ) :
     u ⬝ᵥ ((P * a * Q) *ᵥ x) = (u ᵥ* P) ⬝ᵥ (a *ᵥ (Q *ᵥ x)) := by
   rw [← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dot_expand {n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) (u x : Fin n → ℂ) :
     u ⬝ᵥ (a *ᵥ x) = ∑ p : Fin n × Fin n, u p.1 * x p.2 * a p.1 p.2 := by
@@ -30,7 +30,7 @@ theorem dot_expand {n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) (u x : Fin n → �
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 
 /- English proof (translation)
-Take `⟨S, h1, h2, h3⟩` from `hv`. Conclude with `⟨S, h1, S.smul_mem c h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem kfin_smul {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)} {v : H} (c : ℂ)
@@ -39,15 +39,15 @@ theorem kfin_smul {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   exact ⟨S, h1, S.smul_mem c h2, h3⟩
 
 /- English proof (translation)
-Establish `hk` using `fun v => CompanionTheory.CapEig.kfin_iff k r ε P U.R.H U.R.σ v hP`. Establish `hds : ∀ s : {s // IsHCParam (ν s)}, IsDSHpk k r ε (ν s) (fun x => σs s (P * x * P⁻¹))` using `fun s => ⟨P, hP, by`. Establish `e : (fun g => (fun x => σs s (P * x * P⁻¹)) (P⁻¹ * g * P)) = σs s` using `funext fun g => by`. Simplify using `only [forth_back hP.1]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ds s ((hSm s).2 s.2)).2⟩`. Use `⟨fun s => ⟨⟨Hs s, fun x => σs s (P * x * P⁻¹)⟩, isURepOn_of_ds (hds s)⟩, fun s => ⟨s.2, hds s⟩, fun v w hv hw c d => ?_, fun s => ?_⟩` and prove the remaining obligations. Take `⟨ι, _, sI, vI, wI, hI, hsum⟩` from `toSum v w (P *ᵥ Pi.single d 1) (star (Pi.single c 1 ᵥ* P⁻¹)) ((hk v).1 hv) ((hk w).1 hw)`. Use `⟨ι, inferInstance, fun i => ⟨sI i, (hSm _).1 (hI i).1⟩, vI, wI, fun g hg => ?_⟩` and prove the remaining obligations. Use `hsum _ (forth_mem hP.1 hg)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[back_forth hP.1, hq, star_star, dot_conj, Matrix.vecMul_vecMul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc (q g), inv_mul_P hP.1, Matrix.mul_one, Matrix.vecMul_one, single_one_dotProduct, Matrix.mulVec_single_one]`. Conclude with `this`. Establish `hs` using `(hSm s).2 s.2`. Take `⟨S, hS, hSK, -, ⟨y, hyS, hy0, -⟩, -⟩` from `(ds s hs).2.2.2.2.2.2.1`. Establish `hy : IsKFin ε (σs s) y` using `⟨S, hS, hyS, hSK⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ι, _, vI, wI, xI, yI, hI, hsum⟩` from `ofSum s hs y y hy hy`. Use `⟨y, hy0, ι × Fin (2 * r + k + 1) × Fin (2 * r + k + 1), inferInstance, fun p => ((star (yI p.1) ᵥ* P) p.2.1 * (P⁻¹ *ᵥ xI p.1) p.2.2) • vI p.1, fun p => wI p.1, fun p => p.2.1, fun p => p.2.2, fun p => ⟨kfin_smul _ ((hk _).2 (hI p.1).1), (hk _).2 (hI p.1).2⟩, fun g hg => ?_⟩` and prove the remaining obligations. Use `hsum _ (forth_mem hP.1 hg)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[back_forth hP.1, hq, dot_conj, dot_expand, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem transport (U : URep k r) {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : IsCayleyU k r ε P)
@@ -112,11 +112,11 @@ theorem transport (U : URep k r) {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r +
     ring
 
 /- English proof (translation)
-Introduce `t hZ k r ε μ U b h hU hg hlt`. Take `⟨hμ, P, hP, hτ⟩` from `hU`. Take `⟨⟨X, hX⟩, ⟨Y, hY⟩⟩` from `hZ _ ε μ U.R.H _ hμ hτ h hg hlt`. Consider the cases of `b`. Conclude with `transport U hP (fun g => g) (fun _ => rfl) (shift false μ) X.Sm X.Hs X.σs hX X.ds X.toSum X.ofSum`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Establish `hi : ∀ g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, (P * g * P⁻¹)⁻¹ = P * g⁻¹ * P⁻¹` using `fun g => by`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hP.1.1), Matrix.mul_assoc]`. Take `⟨T, h1, h2, h3⟩` from `transport U hP (fun g => g⁻¹) hi (shift true μ) Y.Sm Y.Hs Y.σs hY Y.ds Y.toSum Y.ofSum`. Use `⟨T, h1, fun v w hv hw c d => h2 v w hv hw d c, fun s => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, I, _, v, w, c, d, hk, he⟩` from `h3 s`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, hy, I, inferInstance, v, w, d, c, hk, he⟩`.
+A detailed English derivation is pending.
 -/
 theorem zuckerman_hypothesis_holds : ZuckH := by
   intro t hZ k r ε μ U b h hU hg hlt

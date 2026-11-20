@@ -4,23 +4,23 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeTransference.Poi
 open UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Unfold `ScaleFull Scale`. Introduce `V _ _ _ Λ _ _`. Take `⟨hsum1, hsum2, c, hc, hP⟩` from `PI.Tr.poissonGauss V Λ`. Take `⟨α, hα⟩ : ∃ α : ℝ, α = (Module.finrank ℝ V : ℝ) / 2` from `⟨_, rfl⟩`. Establish `e1 : -(Module.finrank ℝ V : ℝ) / 2 = -α` using `by rw [hα]; ring`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ r : ℝ, 0 < r → ∑' x : Λ, Real.exp (-Real.pi * (r * ‖(x : V)‖ ^ 2)) = c * r ^ (-α) * ∑' y : PI.Tr.dualLat Λ, Real.exp (-Real.pi * ‖(y : V)‖ ^ 2 / r)`. Introduce `r hr`. Establish `h` using `hP r hr 0`. Simplify using `only [add_zero, inner_zero_right, mul_zero, Real.cos_zero, mul_one] at h`. Rewrite using `[← e1, ← h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr (fun x => ?_)` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun x => sq_nonneg _, fun s t hs hst => ?_⟩` and prove the remaining obligations. Establish `ht : 0 < t` using `lt_of_lt_of_le hs hst`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨by simpa [mul_assoc] using hsum1 s hs 0, ?_⟩` and prove the remaining obligations. Rewrite using `[key s hs, key t ht]`. Establish `hD : ∑' y : PI.Tr.dualLat Λ, Real.exp (-Real.pi * ‖(y : V)‖ ^ 2 / s) ≤ ∑' y : PI.Tr.dualLat Λ, Real.exp (-Real.pi * ‖(y : V)‖ ^ 2 / t)`. Use `Summable.tsum_le_tsum (fun y => Real.exp_le_exp.mpr ?_) (hsum2 s hs) (hsum2 t ht)` and prove the remaining obligations. Establish `h0 : 0 ≤ Real.pi * ‖(y : V)‖ ^ 2` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : Real.pi * ‖(y : V)‖ ^ 2 / t ≤ Real.pi * ‖(y : V)‖ ^ 2 / s` using `div_le_div_of_nonneg_left h0 hs hst`. Rewrite using `[neg_mul, neg_div, neg_div]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD0 : 0 ≤ ∑' y : PI.Tr.dualLat Λ, Real.exp (-Real.pi * ‖(y : V)‖ ^ 2 / t)` using `tsum_nonneg (fun y => (Real.exp_pos _).le)`. Establish `hα0 : 0 ≤ α` using `by rw [hα]; positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : s ^ α ≤ t ^ α` using `Real.rpow_le_rpow hs.le hst hα0`. Establish `hSpos : 0 < s ^ α` using `Real.rpow_pos_of_pos hs α`. Establish `hTpos : 0 < t ^ α` using `Real.rpow_pos_of_pos ht α`. Establish `hpow : (t / s) ^ Module.finrank ℝ V = (t ^ α) ^ 2 / (s ^ α) ^ 2`. Rewrite using `[← div_pow, ← Real.div_rpow ht.le hs.le, ← Real.rpow_mul_natCast (div_nonneg ht.le hs.le), ← Real.rpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[hα]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hcD : 0 ≤ c * ∑' y : PI.Tr.dualLat Λ, Real.exp (-Real.pi * ‖(y : V)‖ ^ 2 / t)` using `mul_nonneg hc.le hD0`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h1 : (s ^ α)⁻¹ ≤ (t ^ α) ^ 2 / (s ^ α) ^ 2 * (t ^ α)⁻¹`. Rewrite using `[show (t ^ α) ^ 2 / (s ^ α) ^ 2 * (t ^ α)⁻¹ = t ^ α / (s ^ α) ^ 2 by field_simp]`. Rewrite using `[inv_eq_one_div, div_le_div_iff₀ hSpos (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[Real.rpow_neg hs.le, Real.rpow_neg ht.le, hpow]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.geometric_side_estimate :
     ScaleFull := by

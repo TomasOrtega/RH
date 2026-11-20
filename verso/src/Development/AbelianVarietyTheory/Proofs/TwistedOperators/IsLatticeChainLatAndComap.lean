@@ -10,9 +10,9 @@ open GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.IndefiniteRowSideFu
 namespace GlobalTheory.RootEx.ChainLattice
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_3 h_4 h_5 h_6 h_7 h_8 h_9 h_10 h_11; revert R K V h_3 h_4 h_5 h_6 h_7 h_8 h_9 h_10 h_11 M v hv; exact @_root_.GlobalTheory.SmulMemOfMemSpan.main)`. Consider the case `exact @_root_.GlobalTheory.SmulMemOfMemSpan.main`. Consider the case `exact _root_.GlobalTheory.SmulMemOfMemSpan.main`. Consider the case `(apply _root_.GlobalTheory.SmulMemOfMemSpan.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.SmulMemOfMemSpan.main <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.SmulMemOfMemSpan.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SmulMemOfMemSpan.main ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {R K V : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] [AddCommGroup V] [Module R V] [Module K V] [IsScalarTower R K V]
@@ -28,9 +28,9 @@ theorem exists_smul_mem {R K V : Type} [CommRing R] [IsDomain R] [Field K] [Alge
   | (intros; exact _root_.GlobalTheory.SmulMemOfMemSpan.main ..)
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_3 h_4 h_5 h_6 h_7 h_8 h_9 h_10 h_11; revert R K V h_3 h_4 h_5 h_6 h_7 h_8 h_9 h_10 h_11 M h; exact @_root_.GlobalTheory.LemmaTwoFortyThirteen.main)`. Consider the case `exact @_root_.GlobalTheory.LemmaTwoFortyThirteen.main`. Consider the case `exact _root_.GlobalTheory.LemmaTwoFortyThirteen.main`. Consider the case `(apply _root_.GlobalTheory.LemmaTwoFortyThirteen.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.LemmaTwoFortyThirteen.main <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.LemmaTwoFortyThirteen.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LemmaTwoFortyThirteen.main ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_smul_mem {R K V : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] [AddCommGroup V] [Module R V] [Module K V] [IsScalarTower R K V]
@@ -46,17 +46,17 @@ theorem span_eq_top_of_smul_mem {R K V : Type} [CommRing R] [IsDomain R] [Field 
   | (intros; exact _root_.GlobalTheory.LemmaTwoFortyThirteen.main ..)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ _ c`. Use `⟨fun ϖ hϖ L hL => ⟨?_, ?_⟩, fun Λ hΛ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(hL.fg.map _).sup (Submodule.fg_span (Set.finite_range _))`. Rewrite using `[eq_top_iff]`. Introduce `v _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv : v = inX k n c (fun r => v (Sum.inl r)) + ∑ i : Fin c, (v (Sum.inr i) / (ϖ : k) ^ ((i : ℕ) + 1)) • ((ϖ : k) ^ ((i : ℕ) + 1) • aux k n i)`. Establish `h : ∀ i : Fin c, (v (Sum.inr i) / (ϖ : k) ^ ((i : ℕ) + 1)) • ((ϖ : k) ^ ((i : ℕ) + 1) • aux k n i) = v (Sum.inr i) • aux k n i`. Introduce `i`. Rewrite using `[smul_smul, div_mul_cancel₀ _ (pow_ne_zero _ hϖ)]`. Simplify using `only [h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Break down `j with r | j` into its components or cases. Simplify using `[inX_apply, aux, Finset.sum_apply]`. Simplify using `[inX_apply, aux, Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hv]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem _ ?_ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (scaled_basis_mem_chainLattice ϖ L i)))` and prove the remaining obligations. Take `⟨a, ha, hav⟩` from `exists_smul_mem (K := k) L (v := fun r => v (Sum.inl r)) (by rw [hL.span_eq_top]; trivial)`. Establish `h1 : algebraMap 𝒪[k] k a ≠ 0` using `by simpa using ha`. Establish `: inX k n c (fun r => v (Sum.inl r)) = (algebraMap 𝒪[k] k a)⁻¹ • inX k n c (a • fun r => v (Sum.inl r))`. Rewrite using `[map_smul, ← algebraMap_smul k a, smul_smul, inv_mul_cancel₀ h1, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (inX_mem_chainLat.2 hav))`. Use `Submodule.fg_of_fg_map_injective (inX k n c) ?_ (hΛ.fg.of_le (Submodule.map_comap_le _ _))` and prove the remaining obligations. Introduce `x y hxy`. Use function extensionality and compare the values at `r`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun hxy (Sum.inl r)` as an intermediate fact. Simplify `this` using `[inX_apply]`. Use `span_eq_top_of_smul_mem _ fun v => ?_` and prove the remaining obligations. Take `⟨a, ha, hav⟩` from `exists_smul_mem (K := k) Λ (v := inX k n c v) (by rw [hΛ.span_eq_top]; trivial)`. Conclude with `⟨a, ha, by rw [Submodule.mem_comap, map_smul]; exact hav⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isLattice_chainLat_and_comap :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

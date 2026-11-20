@@ -12,7 +12,7 @@ open CategoryTheory AlgebraicGeometry CategoryTheory.Limits Opposite
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Use `h1` as an intermediate fact. Use `h2` as an intermediate fact. Establish `h : IsIso (f ∣_ (g ⁻¹ᵁ V) ≫ g ∣_ V)` using `inferInstance`. Rewrite using `[morphismRestrict_comp]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIso_restrict_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) (V : Z.Opens)
     (h1 : IsIso (f ∣_ (g ⁻¹ᵁ V))) (h2 : IsIso (g ∣_ V)) : IsIso ((f ≫ g) ∣_ V) := by
@@ -23,19 +23,15 @@ private theorem isIso_restrict_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y �
   exact h
 
 /- English proof (translation)
-Use `revert hi`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Use `show IsIso (s.projectionToBase 0 ∣_ U)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (homOfLE (Nat.zero_le 0) : (0 : ℕ) ⟶ 0).op = 𝟙 (op (0 : ℕ))` using `rfl`. Establish `: IsIso (s.projectionToBase 0)`. Rewrite using `[SequenceOfBlowups.projectionToBase_def, SequenceOfBlowups.transitionMap_def, h0, CategoryTheory.Functor.map_id, Category.id_comp]`. Use `infer_instance`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `succ i ih`. Introduce `hi`. Establish `hi' : i < s.length` using `hi`. Establish `h2 : IsIso (s.projectionToBase i ∣_ U)` using `ih (Nat.le_of_succ_le hi)`. Establish `hcomp : s.transitionMapSucc i ≫ s.projectionToBase i = s.projectionToBase (i + 1)` using `s.transitionMap_comp_projectionToBase (Nat.le_succ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hb : Blowup.IsBlowupAlongIdealSheaf (s.transitionMapSucc i) (s.center i)` using `s.isBlowupAlongIdealSheaf_blowupMorphism i hi'`. Establish `hres` using `hb.restrict (s.projectionToBase i ⁻¹ᵁ U)`. Establish `htop : (s.center i).comap (s.projectionToBase i ⁻¹ᵁ U).ι = ⊤`. Apply `Blowup.comap_eq_top_of_notMem_support` to reduce the goal to its premises. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hs i hi' ((s.projectionToBase i ⁻¹ᵁ U).ι.base x) hx`. Establish `hxV : (s.projectionToBase i ⁻¹ᵁ U).ι.base x ∈ ((s.projectionToBase i ⁻¹ᵁ U : (s.schemeAt i).Opens) : Set (s.schemeAt i))`. Rewrite using `[← Scheme.Opens.range_ι]`. Conclude with `Set.mem_range_self x`. Establish `h2' : (s.projectionToBase i).base ((s.projectionToBase i ⁻¹ᵁ U).ι.base x) ∈ (U : Set X)` using `hxV`.
-
-Conclude with `Set.disjoint_left.mp hU h2' h1`. Rewrite `hres` using `[htop]`. Establish `h1 : IsIso (s.transitionMapSucc i ∣_ (s.projectionToBase i ⁻¹ᵁ U))` using `hres.isIso_of_top`. Establish `key : IsIso ((s.transitionMapSucc i ≫ s.projectionToBase i) ∣_ U)` using `isIso_restrict_comp (s.transitionMapSucc i) (s.projectionToBase i) U h1 h2`. Rewrite `key` using `[hcomp]`.
-
-Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIso_restrict_projectionToBase_of_centersLieOver {X : Scheme.{u}} (s : SequenceOfBlowups X)
     (S : Set X) (U : X.Opens) (hU : Disjoint (U : Set X) S) (hs : s.CentersLieOver S)
@@ -78,7 +74,7 @@ private theorem isIso_restrict_projectionToBase_of_centersLieOver {X : Scheme.{u
     exact key
 
 /- English proof (translation)
-Rewrite using `[SequenceOfBlowups.lastStructMap_eq_projectionToBase]`. Conclude with `isIso_restrict_projectionToBase_of_centersLieOver s S U hU hs s.length le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_restrict_lastStructMap_of_centersLieOver {X : Scheme.{u}} (s : SequenceOfBlowups X)
     (S : Set X) (U : X.Opens) (hU : Disjoint (U : Set X) S) (hs : s.CentersLieOver S) :
@@ -87,7 +83,7 @@ theorem isIso_restrict_lastStructMap_of_centersLieOver {X : Scheme.{u}} (s : Seq
   exact isIso_restrict_projectionToBase_of_centersLieOver s S U hU hs s.length le_rfl
 
 /- English proof (translation)
-Use `isIso_restrict_lastStructMap_of_centersLieOver s _ f.smoothLocus ?_ hs` and prove the remaining obligations. Use `show Disjoint (f.smoothLocus : Set X) ((f.smoothLocus : Set X)ᶜ)`. Conclude with `disjoint_compl_right`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isIso_restrict_lastStructMap_smoothLocus {k : Type u} [Field k] {X : Scheme.{u}}
     (f : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFinitePresentation f] (s : SequenceOfBlowups X)

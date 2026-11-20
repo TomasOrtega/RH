@@ -13,11 +13,9 @@ open Finset Formalism.MainNotions.G
 namespace Formalism.MainNotions.G.Joints.Lit
 
 /- English proof (translation)
-Introduce `a b hab`. Take `⟨a, ha⟩` from `a`. Take `⟨b, hb⟩` from `b`. Establish `hab' : a ≤ b` using `hab`. Use `clear hab`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction.
 
-Use `revert hb`. Proceed by induction on `b, hab' using Nat.le_induction with`. Consider the case `base => intro hb`. Conclude with `le_rfl`. Consider the case `succ k hak ih`.
-
-Introduce `hb`. Conclude with `(h ⟨k, by omega⟩ hb).trans (ih (by omega))`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem antitone_of_succ {n : ℕ} (μ : Fin n → ℤ) (h : ∀ (a : Fin n) (ha : a.1 + 1 < n), μ ⟨a.1 + 1, ha⟩ ≤ μ a) :
     Antitone μ := by
@@ -34,7 +32,7 @@ theorem antitone_of_succ {n : ℕ} (μ : Fin n → ℤ) (h : ∀ (a : Fin n) (ha
     exact (h ⟨k, by omega⟩ hb).trans (ih (by omega))
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.SelectionLemmas.stCount`. Rewrite using `[← (Formalism.InvariantFactorPaths.GelfandTsetlinBases.Top.stdCountGT n μ hμ).2]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun I => Formalism.MainNotions.G.ColumnFamilies.restStd n 0 (fun _ => μ) I)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stCount_eq_dGT (n : ℕ) (μ : Fin n → ℤ) (hμ : Antitone μ) :
     Formalism.MainNotions.SelectionLemmas.stCount n μ = Formalism.InvariantFactorPaths.GelfandTsetlinBases.dGT n μ := by
@@ -43,7 +41,7 @@ theorem stCount_eq_dGT (n : ℕ) (μ : Fin n → ℤ) (hμ : Antitone μ) :
   exact Nat.card_congr (Equiv.subtypeEquivRight fun I => Formalism.MainNotions.G.ColumnFamilies.restStd n 0 (fun _ => μ) I)
 
 /- English proof (translation)
-Introduce `n N mu hdom`. Establish `e : Nat.card {I : ℤ → Finset (Fin n) // IsSt mu I} = Nat.card {I : ℤ → Finset (Fin n) // Formalism.InvariantFactorPaths.GelfandTsetlinBases.IsStd (pEnd mu) I}` using `Nat.card_congr (Equiv.subtypeEquivRight fun I => Formalism.MainNotions.G.ColumnFamilies.restStd n N mu I)`. Rewrite using `[e, (Formalism.InvariantFactorPaths.GelfandTsetlinBases.Top.stdCountGT n (pEnd mu) hdom).2]`. Conclude with `Formalism.L2.G.Model.weylQ n (pEnd mu) hdom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weyl_dimension_formula_index_sets (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.SelectionLemmas.admB3 D := by
   intro n N mu hdom
@@ -54,11 +52,11 @@ theorem weyl_dimension_formula_index_sets (D : Formalism.BasicNotions.D7) : Form
   exact Formalism.L2.G.Model.weylQ n (pEnd mu) hdom
 
 /- English proof (translation)
-Introduce `m ν hν`. Rewrite using `[stCount_eq_dGT (m + 1) ν hν]`. Simplify using `only [Formalism.InvariantFactorPaths.GelfandTsetlinBases.dGT, Formalism.InvariantFactorPaths.GelfandTsetlinBases.gtBox]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Rewrite `hμ` using `[Fintype.mem_piFinset]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(stCount_eq_dGT m μ (antitone_of_succ μ fun a ha => ?_)).symm` and prove the remaining obligations. Establish `h1` using `(Finset.mem_Icc.mp (hμ ⟨a.1 + 1, ha⟩)).2`. Establish `h2` using `(Finset.mem_Icc.mp (hμ a)).1`. Establish `e : (Fin.castSucc (⟨a.1 + 1, ha⟩ : Fin m)) = a.succ` using `by ext; simp`. Rewrite `h1` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.trans h2`.
+A detailed English derivation is pending.
 -/
 theorem branching_rule_count_form (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.SelectionLemmas.ColumnFamilyLowerSet D := by
   intro m ν hν
@@ -74,7 +72,7 @@ theorem branching_rule_count_form (D : Formalism.BasicNotions.D7) : Formalism.Ma
   exact h1.trans h2
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `h`. Conclude with `antitone_of_succ μ fun a ha => (h2 a ha).trans (h1 a)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem strip_up_antitone {n : ℕ} {ν μ : Fin n → ℤ} {b : ℕ} (hν : Antitone ν) (h : HStrip ν μ b) : Antitone μ :=
   by
@@ -82,7 +80,7 @@ theorem strip_up_antitone {n : ℕ} {ν μ : Fin n → ℤ} {b : ℕ} (hν : Ant
     exact antitone_of_succ μ fun a ha => (h2 a ha).trans (h1 a)
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `h`. Conclude with `antitone_of_succ μ fun a ha => (h1 ⟨a.1 + 1, ha⟩).trans (h2 a ha)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem strip_down_antitone {n : ℕ} {ν μ : Fin n → ℤ} {b : ℕ} (hν : Antitone ν) (h : HStrip μ ν b) : Antitone μ :=
   by
@@ -92,15 +90,15 @@ theorem strip_down_antitone {n : ℕ} {ν μ : Fin n → ℤ} {b : ℕ} (hν : A
 open Classical in
 
 /- English proof (translation)
-Introduce `m ν b hν`. Take `⟨hup, hdown⟩` from `Formalism.InvariantFactorPaths.GelfandTsetlinBases.Top.gtPieri (m + 1) ν b hν`. Establish `hc : (m + 1 + b - 1).choose b = (b + m).choose m`. Rewrite using `[show m + 1 + b - 1 = b + m by omega, Nat.choose_symm_add]`. Rewrite using `[stCount_eq_dGT (m + 1) ν hν]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← hc, ← hup]`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.stripsUp`. Use `symm`. Use `Finset.sum_congr ?_ fun μ hμ => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `μ`. Simplify using `only [Finset.mem_filter]`. Conclude with `and_congr Iff.rfl (Formalism.MainNotions.G.ColumnFamilies.hstrip_iff ν μ b).symm`. Establish `hs` using `(Finset.mem_filter.1 hμ).2`. Conclude with `stCount_eq_dGT (m + 1) μ (strip_up_antitone hν ((Formalism.MainNotions.G.ColumnFamilies.hstrip_iff ν μ b).1 hs))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hc, ← hdown]`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.stripsDown`. Use `symm`. Use `Finset.sum_congr ?_ fun μ hμ => ?_` and prove the remaining obligations. Use extensionality with `μ`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_filter]`. Conclude with `and_congr Iff.rfl (Formalism.MainNotions.G.ColumnFamilies.hstrip_iff μ ν b).symm`. Establish `hs` using `(Finset.mem_filter.1 hμ).2`. Conclude with `stCount_eq_dGT (m + 1) μ (strip_down_antitone hν ((Formalism.MainNotions.G.ColumnFamilies.hstrip_iff μ ν b).1 hs))`.
+A detailed English derivation is pending.
 -/
 theorem pieri_rule_count_form (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.SelectionLemmas.GenericProjectionCriterion D := by
   intro m ν b hν
@@ -135,29 +133,27 @@ namespace Formalism.MainNotions.G.Joints.Lit
 open IsDedekindDomain Formalism.BasicNotions
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `swap`. Conclude with `le_inf (Submodule.span_mono (Set.image_mono inf_le_left)) (Submodule.span_mono (Set.image_mono inf_le_right))`. Introduce and unpack `z ⟨hz1, hz2⟩`. Set `φ' : V × V →+ W × W` to `φ.prodMap φ`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφ' : ∀ (a : K) (x : V × V), φ' (a • x) = σ a • φ' x` using `fun a x => Prod.ext (hφ a x.1) (hφ a x.2)`. Set `b'` to `b.prod b`. Establish `hb' : LinearIndependent Kf (φ' ∘ b')`. Establish `h` using `linearIndependent_inl_union_inr' (R := Kf) hb hb`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Apply the tactic sequence `ext <;> simp [φ', b', Module.Basis.prod_apply_inl_fst, Module.Basis.prod_apply_inl_snd]`. Apply the tactic sequence `ext <;> simp [φ', b', Module.Basis.prod_apply_inr_fst, Module.Basis.prod_apply_inr_snd]`. Set `U : Submodule K (V × V)` to `LinearMap.range ((LinearMap.id : V →ₗ[K] V).prod LinearMap.id)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `(FBC.flat_ext (V := V × V) (W := W × W) w σ hσ φ' hφ' b' hb').2 (L1.prod L2) U`. Establish `hL : ∀ y ∈ Submodule.span O (φ '' (L1 : Set V)), (y, (0 : W)) ∈ Submodule.span O (φ' '' ((L1.prod L2 : Submodule A (V × V)) : Set (V × V)))`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨v, hv, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨(v, 0), ⟨hv, L2.zero_mem⟩, by simp [φ']⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => simpa using Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => simpa using Submodule.smul_mem _ c hx`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hR : ∀ y ∈ Submodule.span O (φ '' (L2 : Set V)), ((0 : W), y) ∈ Submodule.span O (φ' '' ((L1.prod L2 : Submodule A (V × V)) : Set (V × V)))`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨(0, v), ⟨L1.zero_mem, hv⟩, by simp [φ']⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => simpa using Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => simpa using Submodule.smul_mem _ c hx`. Establish `hD : ∀ y ∈ Submodule.span O (φ '' (L1 : Set V)), (y, y) ∈ Submodule.span Kf (φ' '' (U : Set (V × V)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, _, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨(v, v), ⟨v, rfl⟩, by simp [φ']⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => simpa using Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Use `Submodule.smul_mem _ (algebraMap O Kf c) hx` as an intermediate fact. Simplify `this` using `[algebraMap_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hzz : (z, z) ∈ Submodule.span O (φ' '' ((L1.prod L2 : Submodule A (V × V)) : Set (V × V))) ⊓ (Submodule.span Kf (φ' '' (U : Set (V × V)))).restrictScalars O`. Use `⟨?_, hD z hz1⟩` and prove the remaining obligations. Use `Submodule.add_mem _ (hL z hz1) (hR z hz2)` as an intermediate fact. Simplify using `using this`. Rewrite `hzz` using `[key]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hmap` using `Submodule.mem_map_of_mem (f := LinearMap.fst O W W) hzz`. Rewrite `hmap` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ hmap` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨x, ⟨hx1, hx2⟩, rfl⟩, rfl⟩`. Take `⟨v, hv⟩` from `hx2`.
-
-Establish `hxv : x = (v, v)` using `hv.symm`. Substitute `hxv` using the available equality. Conclude with `⟨v, ⟨hx1.1, hx1.2⟩, by simp [φ']⟩`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_inf_span {A K : Type*} [CommRing A] [IsDedekindDomain A] [Field K] [Algebra A K] [IsFractionRing A K]
     (w : HeightOneSpectrum A) {O Kf : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf]
@@ -244,7 +240,7 @@ def YvRat (c : LatCmp D) : Prop :=
       ∀ x, (D.gat u w hg).yv v (c.cmp u w hg x) = c.cmp u w hg (yL x)
 
 /- English proof (translation)
-Proceed by induction on `k generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ k ih => simp only [Function.iterate_succ_apply', ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iter_rat {α β : Type*} (f : α → α) (g : β → β) (φ : β → α) (h : ∀ x, f (φ x) = φ (g x)) (k : ℕ) (x : β) :
     f^[k] (φ x) = φ (g^[k] x) := by
@@ -253,7 +249,7 @@ theorem iter_rat {α β : Type*} (f : α → α) (g : β → β) (φ : β → α
   | succ k ih => simp only [Function.iterate_succ_apply', ih, h]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => simp only [List.map_cons, List.foldr_cons, Function.comp_apply, ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_rat {α β ι : Type*} (F : ι → α → α) (G : ι → β → β) (φ : β → α) (h : ∀ i x, F i (φ x) = φ (G i x))
     (l : List ι) (x : β) :
@@ -263,11 +259,11 @@ theorem foldr_rat {α β ι : Type*} (F : ι → α → α) (G : ι → β → �
   | cons i l ih => simp only [List.map_cons, List.foldr_cons, Function.comp_apply, ih, h]
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Submodule.span_mono (Set.image_mono Submodule.subset_span))` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : a • x = (algebraMap (𝓞 D.what₂.LL) D.what₂.LL a) • x` using `(algebraMap_smul D.what₂.LL a x).symm`. Rewrite using `[e, c.cmp_smul]`. Establish `e2 : c.embW u w hg (algebraMap (𝓞 D.what₂.LL) D.what₂.LL a) = algebraMap (D.gat u w hg).O (D.gat u w hg).Kf (FBC.toO (D.plEq w) (c.embW u w hg) (c.embW_val u w hg) a)` using `(FBC.toO_spec (D.plEq w) (c.embW u w hg) (c.embW_val u w hg) a).symm`. Rewrite using `[e2, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_image_spanA (c : LatCmp D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
@@ -295,11 +291,11 @@ def yProdL {p : ℕ} (G : GAtP p) (vs : List (Fin G.P.nV)) (m : ℕ) : Module.En
   (vs.map (fun v => yEnd G v ^ m)).prod
 
 /- English proof (translation)
-Establish `hp : ∀ (v : Fin G.P.nV) (k : ℕ) (F : G.Fn), (yEnd G v ^ k) F = (G.yv v)^[k] F`. Introduce `v k`. Proceed by induction on `k with`. Consider the case `zero => intro F`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `succ k ih`. Introduce `F`. Rewrite using `[pow_succ', Function.iterate_succ_apply', ← ih]`. Both sides reduce to the same expression. Unfold `yProdL`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Proceed by induction on `vs with`. Consider the case `nil => rfl`. Consider the case `cons v vs ih`. Simplify using `only [List.map_cons, List.prod_cons, List.foldr_cons, Function.comp_apply, ← ih, ← hp]`. Apply the tactic sequence `all_goals rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem yProdL_apply {p : ℕ} (G : GAtP p) (vs : List (Fin G.P.nV)) (m : ℕ) (F : G.Fn) :
     yProdL G vs m F = (vs.map (fun v => (G.yv v)^[m])).foldr (fun f g => f ∘ g) id F := by
@@ -319,7 +315,7 @@ theorem yProdL_apply {p : ℕ} (G : GAtP p) (vs : List (Fin G.P.nV)) (m : ℕ) (
     all_goals rfl
 
 /- English proof (translation)
-Proceed by induction on `k generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ k ih => simp only [Function.iterate_succ_apply', ih, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iter_smul {R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M] (f : M →ₗ[R] M) (k : ℕ) (a : R) (x : M) :
     (⇑f)^[k] (a • x) = a • (⇑f)^[k] x := by
@@ -328,7 +324,7 @@ theorem iter_smul {R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M] (f :
   | succ k ih => simp only [Function.iterate_succ_apply', ih, map_smul]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => simp only [List.map_cons, List.foldr_cons, Function.comp_apply, ih, iter_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_smul {R M ι : Type*} [Semiring R] [AddCommMonoid M] [Module R M] (f : ι → M →ₗ[R] M) (k : ℕ)
     (l : List ι) (a : R) (x : M) :
@@ -342,33 +338,31 @@ set_option maxHeartbeats 1000000 in
 open Classical in
 
 /- English proof (translation)
-Introduce `u w hg _`. Use `haveI := LatCmp.frac_of_ties hT u w hg`. Use `choose yL hyL using hy u w hg`. Establish `hpow : ∀ (k : ℕ) (x : ((D.fm u).lat 0).V), c.cmp u w hg (((D.what₂.places.resChar w : D.what₂.LL) ^ k) • x) = (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ k)) • c.cmp u w hg x`. Introduce `k x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[c.cmp_smul, ← algebraMap_smul (D.gat u w hg).Kf ((D.what₂.places.resChar w : (D.gat u w hg).O) ^ k)]`. Use `congr 1`. Simplify using the standard rewrite rules. Set `yLP : Finset (HH D) → ((D.fm u).lat 0).V → ((D.fm u).lat 0).V` to `fun VV' => (VV'.toList.map (fun t0 => (⇑(yL (Y.vOf u w hg t0)))^[D.R.m])).foldr (fun f g => f ∘ g) id`. Establish `hrat : ∀ VV' x, yProd Y u w hg VV' (c.cmp u w hg x) = c.cmp u w hg (yLP VV' x)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `VV' x`. Unfold `yProd`. Conclude with `foldr_rat _ _ (c.cmp u w hg) (fun t0 x => iter_rat _ _ _ (hyL (Y.vOf u w hg t0)) D.R.m x) VV'.toList x`. Establish `hyLsmul : ∀ VV' (a : D.what₂.LL) x, yLP VV' (a • x) = a • yLP VV' x` using `fun VV' a x => foldr_smul (fun t0 => yL (Y.vOf u w hg t0)) D.R.m VV'.toList a x`. Establish `hyP : ∀ VV' F, yProd Y u w hg VV' F = yProdL (D.gat u w hg) (VV'.toList.map (Y.vOf u w hg)) D.R.m F`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `VV' F`. Rewrite using `[yProdL_apply, List.map_map]`. Both sides reduce to the same expression. Establish `hM : (D.gat u w hg).M = Submodule.span (D.gat u w hg).O (c.cmp u w hg '' (((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V))` using `(c.cmp_M u w hg).symm`. Set `s : Finset (HH D) → ℕ` to `fun VV' => ∑ t0 ∈ VV X K (aL L) (bL L) (D.what₂.places.resChar w) \ VV', ⌈Sv X K (aL L) (bL L) (D.what₂.places.resChar w) t0⌉.toNat`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `τ : ℕ` to `⌈tauP X K (aL L) (bL L) (D.what₂.places.resChar w)⌉.toNat`. Set `T1 : Set ((D.fm u).lat 0).V` to `{z | ∃ VV' ⊆ VV X K (aL L) (bL L) (D.what₂.places.resChar w), ∃ x ∈ ((D.fm u).lat 0).L, z = yLP VV' (((D.what₂.places.resChar w : D.what₂.LL) ^ s VV') • x)}`. Set `T2 : Set ((D.fm u).lat 0).V` to `{z | ∃ x ∈ ((D.fm u).lat 0).L, z = ((D.what₂.places.resChar w : D.what₂.LL) ^ τ) • x}`. Establish `hS1 : Submodule.span (D.gat u w hg).O {F' | ∃ VV' ⊆ VV X K (aL L) (bL L) (D.what₂.places.resChar w), ∃ F ∈ (D.gat u w hg).M, F' = yProd Y u w hg VV' (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • F)} = Submodule.span (D.gat u w hg).O (c.cmp u w hg '' T1)`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨VV', hVV', F, hF, rfl⟩`. Set `Q : Module.End (D.gat u w hg).O (D.gat u w hg).Fn` to `((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • yProdL (D.gat u w hg) (VV'.toList.map (Y.vOf u w hg)) D.R.m`. Establish `hQ : yProd Y u w hg VV' (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • F) = Q F`. Rewrite using `[hyP, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[SetLike.mem_coe, hQ]`. Rewrite `hF` using `[hM]`. Use `Submodule.mem_map_of_mem (f := Q) hF` as an intermediate fact. Rewrite `this` using `[Submodule.map_span]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Use `⟨yLP VV' (((D.what₂.places.resChar w : D.what₂.LL) ^ s VV') • x), ⟨VV', hVV', x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show c.cmp u w hg _ = Q (c.cmp u w hg x)`. Rewrite using `[hyLsmul, hpow, ← hrat, hyP]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, ⟨VV', hVV', x, hx, rfl⟩, rfl⟩`. Use `Submodule.subset_span ⟨VV', hVV', c.cmp u w hg x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hM]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Rewrite using `[hyLsmul, hpow, ← hrat, hyP, hyP, map_smul]`. Establish `hS2 : (D.gat u w hg).M.map (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ τ) • LinearMap.id) = Submodule.span (D.gat u w hg).O (c.cmp u w hg '' T2)`. Rewrite using `[hM, Submodule.map_span]`. Use `congr 1`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use extensionality with `F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨x, hx, rfl⟩, by rw [hpow]; rfl⟩`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨_, ⟨x, hx, rfl⟩, by rw [hpow]; rfl⟩`. Establish `hVr : Y.Vram u w hg = (Submodule.span (D.gat u w hg).Kf (c.cmp u w hg '' ((D.fm u).ramSub : Set ((D.fm u).lat 0).V))).restrictScalars (D.gat u w hg).O` using `SetLike.coe_injective (hv u w hg)`. Establish `hflat` using `FBC.flat_ext (D.plEq w) (c.embW u w hg) (c.embW_val u w hg) (c.cmp u w hg) (c.cmp_smul u w hg) ((D.fm u).lat 0).b (c.cmp_li u w hg)`. Establish `hinf` using `span_inf_span (D.plEq w) (c.embW u w hg) (c.embW_val u w hg) (c.cmp u w hg) (c.cmp_smul u w hg) ((D.fm u).lat 0).b (c.cmp_li u w hg) (Submodule.span (𝓞 D.what₂.LL) T1) (Submodule.span (𝓞 D.what₂.LL) T2)`. Establish `hNP : NP X Y K u w hg = Submodule.span (D.gat u w hg).O (c.cmp u w hg '' (((Submodule.span (𝓞 D.what₂.LL) T1 ⊓ Submodule.span (𝓞 D.what₂.LL) T2) ⊓ (D.fm u).ramSub.restrictScalars (𝓞 D.what₂.LL) : Submodule (𝓞 D.what₂.LL) ((D.fm u).lat 0).V) : Set ((D.fm u).lat 0).V))` using `by show Submodule.span (D.gat u w hg).O _ ⊓ _ ⊓ _ = _`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hS1, hS2, hVr, ← span_image_spanA c u w hg T1, ← span_image_spanA c u w hg T2, hinf]`. Conclude with `hflat.2 _ _`. Combine the equalities or inequalities in the displayed calculation. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
-
-Use `⟨y, ⟨hy.2, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[hNP]`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NPDesc_of (c : LatCmp D) {L : SizeData₂ D} (hT : GatTies D) (X : Inst D L) (Y : LatInst D) (K : Consts)
     (hv : c.VramDef Y) (hy : YvRat c) : c.NPDesc X Y K := by
@@ -469,13 +463,13 @@ def YvRatU (c : LatCmp D) : Prop :=
       ∀ x, (D.gat u w hg).yv v (c.cmp u w hg x) = (ε : (D.gat u w hg).O) • c.cmp u w hg (yL x)
 
 /- English proof (translation)
-Establish `hstep : ∀ (v : Fin G.P.nV) (k : ℕ) (y : V), (G.yv v)^[k] (φ y) = (((ε v ^ k : G.Oˣ)) : G.O) • φ ((yL v)^[k] y)`. Introduce `v k`. Establish `hlin : ∀ (c : G.O) (F : G.Fn), G.yv v (c • F) = c • G.yv v F` using `fun c F => map_smul (yEnd G v) c F`. Proceed by induction on `k with`. Consider the case `zero => intro y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `y`. Rewrite using `[Function.iterate_succ_apply', ih, Function.iterate_succ_apply', hlin, h, smul_smul, pow_succ, Units.val_mul]`. Rewrite using `[yProdL_apply]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `vs with`. Consider the case `nil => simp`. Consider the case `cons v vs ih`. Simplify using `only [List.map_cons, List.foldr_cons, Function.comp_apply, List.prod_cons]`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : ∀ (c : G.O) (F : G.Fn), (G.yv v)^[m] (c • F) = c • (G.yv v)^[m] F` using `fun c F => iter_smul (yEnd G v) m c F`. Rewrite using `[hi, hstep, smul_smul, Units.val_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem yProdL_ratU {p : ℕ} (G : GAtP p) {V : Type*} (φ : V → G.Fn) (yL : Fin G.P.nV → V → V)
     (ε : Fin G.P.nV → G.Oˣ) (h : ∀ v x, G.yv v (φ x) = (ε v : G.O) • φ (yL v x)) (m : ℕ) (vs : List (Fin G.P.nV))
@@ -506,35 +500,33 @@ set_option maxHeartbeats 1000000 in
 open Classical in
 
 /- English proof (translation)
-Introduce `u w hg _`. Use `haveI := LatCmp.frac_of_ties hT u w hg`. Use `choose yL ε hyL using hy u w hg`. Establish `hpow : ∀ (k : ℕ) (x : ((D.fm u).lat 0).V), c.cmp u w hg (((D.what₂.places.resChar w : D.what₂.LL) ^ k) • x) = (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ k)) • c.cmp u w hg x`. Introduce `k x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[c.cmp_smul, ← algebraMap_smul (D.gat u w hg).Kf ((D.what₂.places.resChar w : (D.gat u w hg).O) ^ k)]`. Use `congr 1`. Simplify using the standard rewrite rules. Set `yLP : Finset (HH D) → ((D.fm u).lat 0).V → ((D.fm u).lat 0).V` to `fun VV' => (VV'.toList.map (fun t0 => (⇑(yL (Y.vOf u w hg t0)))^[D.R.m])).foldr (fun f g => f ∘ g) id`. Establish `hyLsmul : ∀ VV' (a : D.what₂.LL) x, yLP VV' (a • x) = a • yLP VV' x` using `fun VV' a x => foldr_smul (fun t0 => yL (Y.vOf u w hg t0)) D.R.m VV'.toList a x`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyP : ∀ VV' F, yProd Y u w hg VV' F = yProdL (D.gat u w hg) (VV'.toList.map (Y.vOf u w hg)) D.R.m F`. Introduce `VV' F`. Rewrite using `[yProdL_apply, List.map_map]`. Both sides reduce to the same expression. Set `E : Finset (HH D) → (D.gat u w hg).Oˣ` to `fun VV' => ((VV'.toList.map (Y.vOf u w hg)).map (fun v => ε v ^ D.R.m)).prod`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrat : ∀ VV' x, yProd Y u w hg VV' (c.cmp u w hg x) = ((E VV' : (D.gat u w hg).Oˣ) : (D.gat u w hg).O) • c.cmp u w hg (yLP VV' x)`. Introduce `VV' x`. Rewrite using `[hyP, yProdL_ratU (D.gat u w hg) (c.cmp u w hg) (fun v => ⇑(yL v)) ε hyL D.R.m]`. Simplify using `only [E, yLP, List.map_map, Function.comp_def]`. Establish `hM : (D.gat u w hg).M = Submodule.span (D.gat u w hg).O (c.cmp u w hg '' (((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V))` using `(c.cmp_M u w hg).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `s : Finset (HH D) → ℕ` to `fun VV' => ∑ t0 ∈ VV X K (aL L) (bL L) (D.what₂.places.resChar w) \ VV', ⌈Sv X K (aL L) (bL L) (D.what₂.places.resChar w) t0⌉.toNat`. Set `τ : ℕ` to `⌈tauP X K (aL L) (bL L) (D.what₂.places.resChar w)⌉.toNat`. Set `T1 : Set ((D.fm u).lat 0).V` to `{z | ∃ VV' ⊆ VV X K (aL L) (bL L) (D.what₂.places.resChar w), ∃ x ∈ ((D.fm u).lat 0).L, z = yLP VV' (((D.what₂.places.resChar w : D.what₂.LL) ^ s VV') • x)}`. Set `T2 : Set ((D.fm u).lat 0).V` to `{z | ∃ x ∈ ((D.fm u).lat 0).L, z = ((D.what₂.places.resChar w : D.what₂.LL) ^ τ) • x}`. Establish `hS1 : Submodule.span (D.gat u w hg).O {F' | ∃ VV' ⊆ VV X K (aL L) (bL L) (D.what₂.places.resChar w), ∃ F ∈ (D.gat u w hg).M, F' = yProd Y u w hg VV' (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • F)} = Submodule.span (D.gat u w hg).O (c.cmp u w hg '' T1)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨VV', hVV', F, hF, rfl⟩`. Set `Q : Module.End (D.gat u w hg).O (D.gat u w hg).Fn` to `((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • yProdL (D.gat u w hg) (VV'.toList.map (Y.vOf u w hg)) D.R.m`. Establish `hQ : yProd Y u w hg VV' (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • F) = Q F`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hyP, map_smul]`. Both sides reduce to the same expression. Rewrite using `[SetLike.mem_coe, hQ]`. Rewrite `hF` using `[hM]`. Use `Submodule.mem_map_of_mem (f := Q) hF` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[Submodule.map_span]`. Use `(Submodule.span_le.2 ?_) this` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Establish `hQx : Q (c.cmp u w hg x) = ((E VV' : (D.gat u w hg).Oˣ) : (D.gat u w hg).O) • c.cmp u w hg (yLP VV' (((D.what₂.places.resChar w : D.what₂.LL) ^ s VV') • x))` using `by show ((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • yProdL (D.gat u w hg) (VV'.toList.map (Y.vOf u w hg)) D.R.m (c.cmp u w hg x) = _`. Rewrite using `[← hyP, hrat, hyLsmul, hpow, smul_comm]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, hQx]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨VV', hVV', x, hx, rfl⟩, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, ⟨VV', hVV', x, hx, rfl⟩, rfl⟩`. Establish `hx' : c.cmp u w hg x ∈ (D.gat u w hg).M` using `by rw [hM]; exact Submodule.subset_span ⟨x, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : yProd Y u w hg VV' (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • c.cmp u w hg x) ∈ Submodule.span (D.gat u w hg).O {F' | ∃ VV' ⊆ VV X K (aL L) (bL L) (D.what₂.places.resChar w), ∃ F ∈ (D.gat u w hg).M, F' = yProd Y u w hg VV' (((D.what₂.places.resChar w : (D.g …` using `Submodule.subset_span ⟨VV', hVV', c.cmp u w hg x, hx', rfl⟩`. Establish `he : yProd Y u w hg VV' (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ s VV') • c.cmp u w hg x) = ((E VV' : (D.gat u w hg).Oˣ) : (D.gat u w hg).O) • c.cmp u w hg (yLP VV' (((D.what₂.places.resChar w : D.what₂.LL) ^ s VV') • x))`. Rewrite using `[hyP, map_smul, ← hyP, hrat, hyLsmul, hpow, smul_comm]`. Rewrite `hmem` using `[he]`. Use `Submodule.smul_mem _ (((E VV')⁻¹ : (D.gat u w hg).Oˣ) : (D.gat u w hg).O) hmem` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Then use the resulting hypothesis. Establish `hS2 : (D.gat u w hg).M.map (((D.what₂.places.resChar w : (D.gat u w hg).O) ^ τ) • LinearMap.id) = Submodule.span (D.gat u w hg).O (c.cmp u w hg '' T2)`. Rewrite using `[hM, Submodule.map_span]`. Use `congr 1`. Use extensionality with `F`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨x, hx, rfl⟩, by rw [hpow]; rfl⟩`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨x, hx, rfl⟩, by rw [hpow]; rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVr : Y.Vram u w hg = (Submodule.span (D.gat u w hg).Kf (c.cmp u w hg '' ((D.fm u).ramSub : Set ((D.fm u).lat 0).V))).restrictScalars (D.gat u w hg).O` using `SetLike.coe_injective (hv u w hg)`. Establish `hflat` using `FBC.flat_ext (D.plEq w) (c.embW u w hg) (c.embW_val u w hg) (c.cmp u w hg) (c.cmp_smul u w hg) ((D.fm u).lat 0).b (c.cmp_li u w hg)`. Establish `hinf` using `span_inf_span (D.plEq w) (c.embW u w hg) (c.embW_val u w hg) (c.cmp u w hg) (c.cmp_smul u w hg) ((D.fm u).lat 0).b (c.cmp_li u w hg) (Submodule.span (𝓞 D.what₂.LL) T1) (Submodule.span (𝓞 D.what₂.LL) T2)`. Establish `hNP : NP X Y K u w hg = Submodule.span (D.gat u w hg).O (c.cmp u w hg '' (((Submodule.span (𝓞 D.what₂.LL) T1 ⊓ Submodule.span (𝓞 D.what₂.LL) T2) ⊓ (D.fm u).ramSub.restrictScalars (𝓞 D.what₂.LL) : Submodule (𝓞 D.what₂.LL) ((D.fm u).lat 0).V) : Set ((D.fm u).lat 0).V))` using `by show Submodule.span (D.gat u w hg).O _ ⊓ _ ⊓ _ = _`. Rewrite using `[hS1, hS2, hVr, ← span_image_spanA c u w hg T1, ← span_image_spanA c u w hg T2, hinf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Conclude with `hflat.2 _ _`. Combine the equalities or inequalities in the displayed calculation. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `⟨y, ⟨hy.2, ?_⟩, rfl⟩` and prove the remaining obligations.
-
-Rewrite using `[hNP]`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NPDesc_ofU (c : LatCmp D) {L : SizeData₂ D} (hT : GatTies D) (X : Inst D L) (Y : LatInst D) (K : Consts)
     (hv : c.VramDef Y) (hy : YvRatU c) : c.NPDesc X Y K := by
@@ -649,11 +641,11 @@ end Formalism.MainNotions.G.Joints.Lit
 namespace Formalism.MainNotions.G.Joints.Lit
 
 /- English proof (translation)
-Introduce and unpack `⟨t, ht⟩`. Establish `hp0 : ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.mpr (D.what₂.places.resChar_prime w).ne_zero`. Establish `hmem : c.embW u w hg ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)⁻¹ ∈ Set.range (algebraMap (D.gat u w hg).O (D.gat u w hg).Kf)`. Use `⟨((t⁻¹ : (D.gat u w hg).Oˣ) : (D.gat u w hg).O), ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, map_natCast]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_natCast (algebraMap (D.gat u w hg).O (D.gat u w hg).Kf), ← ht, ← map_mul, Units.inv_mul, map_one]`. Establish `h0` using `(c.embW_int u w hg _).mpr hmem`. Establish `h2 : D.what₂.places.val w (((D.what₂.places.resChar w : ℕ) : D.what₂.LL) * ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)⁻¹) = 0`. Rewrite using `[mul_inv_cancel₀ hp0, AddValuation.map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[AddValuation.map_mul, D.what₂.places.val_resChar w]`. Establish `h3 : ((((D.what₂.places.ramIdx w : ℕ) : ℤ)) : WithTop ℤ) ≤ 0`. Combine the equalities or inequalities in the displayed calculation. Establish `h4` using `D.what₂.places.ramIdx_pos w`. Establish `h5 : ((D.what₂.places.ramIdx w : ℕ) : ℤ) ≤ 0` using `by exact_mod_cast h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -689,23 +681,19 @@ end Formalism.MainNotions.G.Joints.Lit
 namespace Formalism.MainNotions.G.Joints.Lit
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hly : 0 ≤ Real.log y` using `Real.log_nonneg hy`. Establish `hterm : ∀ p ∈ (Finset.range ⌈y⌉₊).filter Nat.Prime, Real.log p / p ≤ Real.log y / p`. Introduce `p hp`. Take `⟨hp1, hp2⟩` from `Finset.mem_filter.1 hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hpy : (p : ℝ) < y` using `Nat.lt_ceil.1 (Finset.mem_range.1 hp1)`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp2.pos`. Conclude with `div_le_div_of_nonneg_right (Real.log_le_log hp0 hpy.le) hp0.le`. Distinguish the cases in `h4 : (4 : ℝ) ≤ y`. Establish `hc : (4 : ℕ) ≤ ⌈y⌉₊`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (4 : ℝ) ≤ (⌈y⌉₊ : ℝ)` using `h4.trans (Nat.le_ceil y)`. Conclude with `this` after adjusting the coercions. Use `set n := ⌈y⌉₊ - 1 with hndef`. Establish `hn : ⌈y⌉₊ = n + 1` using `by omega`. Establish `hS : (Finset.range ⌈y⌉₊).filter Nat.Prime = Nat.primesLE n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn]`. Both sides reduce to the same expression. Rewrite using `[hS]`. Establish `h1` using `Formalism.MainNotions.WeilJacquetShalikaLaw.Proof.sz_mertens n (by omega)`. Establish `hny : (n : ℝ) ≤ y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h` using `Nat.ceil_lt_add_one (show (0 : ℝ) ≤ y by linarith)`. Rewrite `h` using `[hn]`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn0 : (0 : ℝ) < n`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < n` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `h2 : Real.log n ≤ Real.log y` using `Real.log_le_log hn0 hny`. Establish `h3 : Real.log 4 ≤ Real.log y` using `Real.log_le_log (by norm_num) h4`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : ⌈y⌉₊ ≤ 4` using `Nat.ceil_le.2 (by push_cast; linarith)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun p hp => (hterm p hp).trans ?_` and prove the remaining obligations. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast (Finset.mem_filter.1 hp).2.two_le`. Conclude with `div_le_div_of_nonneg_left hly (by norm_num) hp2`.
-
-Use `_ = ((Finset.range ⌈y⌉₊).filter Nat.Prime).card * (Real.log y / 2) := by rw [Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ 4 * (Real.log y / 2) := by`. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Establish `hcard : ((Finset.range ⌈y⌉₊).filter Nat.Prime).card ≤ 4` using `le_trans (Finset.card_filter_le _ _) (by simpa using hc)`. Conclude with `hcard` after adjusting the coercions.
-
-Use `_ = 2 * Real.log y := by ring`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mertens_bound (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CornerGLContinuity.MertensBound D := by
   intro y hy
@@ -752,7 +740,7 @@ theorem mertens_bound (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.Co
       _ = 2 * Real.log y := by ring
 
 /- English proof (translation)
-Introduce `x i`. Conclude with `mertens_bound _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mertens_bound_family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Formalism.MainNotions.CornerGLContinuity.FamilyMertensBound Fm :=
   by

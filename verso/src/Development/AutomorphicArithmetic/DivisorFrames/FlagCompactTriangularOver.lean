@@ -11,13 +11,13 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroid
 open scoped ComplexOrder
 
 /- English proof (translation)
-Consider the cases of `d`. Conclude with `⟨T, hT, h⟩`. Establish `h₁ : lieMat true P = lieMat true Q * T.submatrix Fin.revPerm Fin.revPerm`. Use extensionality with `a i`. Use `congrFun (congrFun h a) i.rev` as an intermediate fact.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [submatrix_apply, pos, cond_true, id, Fin.rev_rev, mul_apply] at this`. Rewrite using `[this, mul_apply, ← Equiv.sum_comp Fin.revPerm]`. Simplify using the standard rewrite rules. Establish `hu : IsUnit T.det`. Use `isUnit_det_lieMat true hP` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h₁, det_mul, det_submatrix_equiv_self]`. Conclude with `isUnit_of_mul_isUnit_right this`. Use `⟨lieMat true (T.submatrix Fin.revPerm Fin.revPerm), fun a i hi => ?_, ?_⟩` and prove the remaining obligations. Use `invertibleOfIsUnitDet T hu` as an intermediate fact. Establish `hi' : T⁻¹.BlockTriangular id` using `blockTriangular_inv_of_blockTriangular fun _ _ h => hT _ _ h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [lieMat, cond_true, transpose_apply, inv_submatrix_equiv, submatrix_apply]`. Conclude with `hi' (Fin.rev_lt_rev.2 hi)`. Rewrite using `[← lieMat_lieMat true hP, h₁, lieMat_mul, lieMat_lieMat true hQ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.exists_triangular_of_lie_submatrix {K : Type} [Field K] {r : ℕ} (d : Bool) {P Q T : Matrix (Fin r) (Fin r) K}
     (hP : IsUnit P.det) (hQ : IsUnit Q.det) (hT : IsTri T)
@@ -42,9 +42,7 @@ private theorem UpperTheory.exists_triangular_of_lie_submatrix {K : Type} [Field
     · rw [← lieMat_lieMat true hP, h₁, lieMat_mul, lieMat_lieMat true hQ]
 
 /- English proof (translation)
-Consider the cases of `d`. Conclude with `hP`. Use `det_permute' (Fin.revPerm : Equiv.Perm (Fin r)) P` as an intermediate fact. Establish `h₂ : P.submatrix id (pos true) = P.submatrix id (Fin.revPerm : Equiv.Perm (Fin r))` using `rfl`. Rewrite using `[h₂, this]`.
-
-Conclude with `((Equiv.Perm.sign _).isUnit.map (Int.castRingHom K)).mul hP`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.det_submatrix_pos_unit {K : Type} [Field K] {r : ℕ} (d : Bool) {P : Matrix (Fin r) (Fin r) K}
     (hP : IsUnit P.det) : IsUnit (P.submatrix id (pos d)).det := by
@@ -56,7 +54,7 @@ private theorem UpperTheory.det_submatrix_pos_unit {K : Type} [Field K] {r : ℕ
     exact ((Equiv.Perm.sign _).isUnit.map (Int.castRingHom K)).mul hP
 
 /- English proof (translation)
-Introduce `q _` and use `by rw [show q = IsLocalRing.closedPoint K from Subsingleton.elim (α := PrimeSpectrum K) _ _] exact h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.preimage_open_point_top {X : Scheme.{0}} {K : Type} [Field K] (x : Sp K ⟶ X) {U : X.Opens} (h : below x ∈ U) :
     ⊤ ≤ x ⁻¹ᵁ U := fun q _ => by
@@ -64,11 +62,11 @@ private theorem UpperTheory.preimage_open_point_top {X : Scheme.{0}} {K : Type} 
   exact h
 
 /- English proof (translation)
-Set `φ : c.F →+* Y.X.presheaf.stalk y` to `(Spec.preimage ((stalkPt Y y ≫ ρ) ≫ genStr Z)).hom`. Establish `hφ : (stalkPt Y y ≫ ρ) ≫ genStr Z = spMap φ` using `(Spec.map_preimage _).symm`. Establish `h : constF e Y = (toFn y).comp φ` using `EigLoc.spMap_inj (by`. Establish `h1 : genericPt Y ≫ Y.str = spMap (algebraMap F Y.Fn)` using `(GlobalTheory.FlagBundle.ratOf Y).pt_s`. Establish `h2 : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))` and prove the remaining obligations. Conclude with `CommRingCat.hom_ext (RingHom.ext fun a => e.apply_symm_apply a)`. Establish `h3 : spMap ((toFn y).comp φ) = spMap (toFn y) ≫ spMap φ` using `by rw [← Spec.map_comp]; rfl`. Establish `h4 : spMap (constF e Y) = spMap (algebraMap F Y.Fn) ≫ spMap e.symm.toRingHom` using `by rw [← Spec.map_comp]; rfl`. Rewrite using `[h3, h4, ← hφ, ← h1, ← hρ, ← spMap_toFn y]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, h2, Category.comp_id])`. Take `rfl : φ₀ = φ` from `RingHom.ext fun a => toFn_injective y ((RingHom.congr_fun h₀ a).symm.trans (RingHom.congr_fun h a))`. Rewrite using `[← hφ, Category.assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.stalk_structure_frame {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
@@ -91,23 +89,21 @@ private theorem UpperTheory.stalk_structure_frame {E : Type} [Field E] [NumberFi
   rw [← hφ, Category.assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e C B ρB f φ hov hρ g g' hg ι emb hemb dual N X j π hj M hM A A' fl hA hA' hP hF hFB hlift K _ _ q ψ hq`. Use `haveI := GlobalTheory.ModelBirational.isPreimmersion_j N`. Set `x : Sp K ⟶ B.X` to `N.pb.lift (q ≫ π) (spMap ψ) (by rw [Category.assoc, hq])`. Establish `hx : x ≫ N.j = q ≫ π` using `N.pb.lift_fst _ _ _`. Use `clear_value x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `χ : c.F →+* K` to `(Spec.preimage (x ≫ ρB ≫ genStr Z)).hom`. Establish `hχ : x ≫ ρB ≫ genStr Z = spMap χ` using `(Spec.map_preimage _).symm`. Use `clear_value χ`. Establish `hs : spMap (Scheme.stalkClosedPointTo x).hom ≫ stalkPt B (below x) = x` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk x`. Establish `key (a : ι) : ∃ (b : Chart (M a) (Dw.mult (emb a))) (gb : EigFrame Z χ (x ≫ ρB ≫ genι Z)), ⊤ ≤ (x ≫ N.j) ⁻¹ᵁ b.U ∧ ValAt g (emb a) x (lieMat (dual a) (A a b)) gb`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨U, s, hU, hs'⟩` from `hM a (N.j (below x))`. Set `b : Chart (M a) (Dw.mult (emb a))` to `⟨U, s, hs'⟩`. Take `⟨φ₀, k₀, hk₀⟩` from `(hA a).2 b (below x) hU`. Establish `hc : χ = (Scheme.stalkClosedPointTo x).hom.comp φ₀` using `EigLoc.spMap_inj (by`. Establish `h3 : spMap ((Scheme.stalkClosedPointTo x).hom.comp φ₀) = spMap (Scheme.stalkClosedPointTo x).hom ≫ spMap φ₀` using `by rw [← Spec.map_comp]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[h3, ← UpperTheory.stalk_structure_frame hρ _ φ₀ hk₀.1, ← Category.assoc, hs, hχ])`. Take `⟨gb, hgb⟩` from `k₀.exists_isMap (Scheme.stalkClosedPointTo x).hom (x' := x ≫ ρB ≫ genι Z) hc (by rw [← Category.assoc (spMap _), hs])`. Conclude with `⟨b, gb, UpperTheory.preimage_open_point_top _ hU, rfl, φ₀, k₀, hk₀, hc, hgb⟩`. Use `choose b gb hb hgb using key`. Establish `adp (q' : Sp K ⟶ X) (a : ι) : ∃ ch : Chart ((Scheme.Modules.pullback π).obj (M a)) (Dw.mult (emb a)), ⊤ ≤ q' ⁻¹ᵁ ch.U ∧ IsAdapted (fl a) ch`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ch, h₁, h₂⟩` from `(UpperTheory.exists_adapted_flag_charts _ _ _ (fl a)).1 (below q')`. Conclude with `⟨ch, UpperTheory.preimage_open_point_top _ h₁, h₂⟩`. Use `choose ch hch using adp`. Establish `hu (q' : Sp K ⟶ X) (h : q' ≫ π = x ≫ N.j) (a : ι) : IsUnit (trAt q' ((b a).pull (hM a) π) (ch q' a)).det` using `isUnit_det_trAt _ _ (by have := hb a; rw [← h] at this; exact this) (hch q' a).1`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : EigFrame Z χ (x ≫ ρB ≫ genι Z), ∀ a, (gb a).co k (emb a) = (lieMat (dual a) (trAt q ((b a).pull (hM a) π) (ch q a))).submatrix id (pos (dual a)) := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ex (τ : E →+* ℂ) : ∃ (u : EigFrame Z χ (x ≫ ρB ≫ genι Z)) (T : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K), IsUnit T.det ∧ ∀ k : EigFrame Z χ (x ≫ ρB ≫ genι Z), u.co k τ = T → ∀ a, emb a = τ → (gb a).co k (emb a) = (lieMat (dual a) (trAt q ((b a).pull (hM a) π) (ch q a))).subma …`. Take `⟨a, rfl⟩` from `hemb.2 τ`. Use `⟨gb a, _, UpperTheory.det_submatrix_pos_unit (dual a) (isUnit_det_lieMat (dual a) (hu q hx.symm a)), fun k h a' ha => ?_⟩` and prove the remaining obligations. Take `rfl` from `hemb.1 ha`. Conclude with `h`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose u T h₁ h₂ using ex`. Take `⟨k, hk⟩` from `exists_co_eq u T h₁`. Conclude with `⟨k, fun a => h₂ _ k (hk _) a rfl⟩`. Establish `car (p : Sp K ⟶ C.Y.X) (hp : p ≫ f = x)` using `UpperTheory.flag_compact_over_base E H Dw l Xo c O β Z F e C B ρB f φ hov hρ g g' hg ι emb hemb.2 dual N.X N.j X j π hj M hM A A' fl hA hA' hP hF K p b (ch (p ≫ j)) (fun a => by rw [← Category.assoc, hp]; exact hb a) (hch (p ≫ j)) χ _ gb k (fun a => by rw [hp]; exact hgb a)`. Take `⟨p, ⟨hp, hc⟩, hun⟩` from `hlift K χ x hχ k`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hpj : (p ≫ j) ≫ π = x ≫ N.j` using `by rw [Category.assoc, hj, ← Category.assoc, hp]`. Use `⟨p, ?_, fun p' hp' => ?_⟩` and prove the remaining obligations. Use `UpperTheory.flag_bundle_chart_points N.X X π ι M _ hM fl hFB K (p ≫ j) q (hpj.trans hx) b (ch (p ≫ j)) (ch q) (fun a => by rw [hpj]; exact hb a) (hch _) (hch _) fun a => ?_` and prove the remaining obligations. Take `⟨T, hT, h⟩` from `(car p hp).1 hc a`. Conclude with `UpperTheory.exists_triangular_of_lie_submatrix (dual a) (hu q hx.symm a) (hu _ hpj a) hT ((hk a).symm.trans h)`.
-
-Establish `hp'' : p' ≫ f = x` using `(cancel_mono N.j).1 (by rw [Category.assoc, ← hj, ← Category.assoc, hp', hx])`. Use `hun p' ⟨hp'', (car p' hp'').2 fun a => ⟨1, fun a i h => one_apply_ne h.ne', ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hp', hk a, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.flag_compact_triangular_over :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (C : FlagCpt Z e) (B : Var F) (ρB : B.X ⟶ gen Z) (f : C.Y.X ⟶ B.X) (φ : B.Fn →+* C.Y.Fn), IsOver e ρB C.π f φ → ρB ≫ genStr Z ≫ spMap e.toRingHom = B.str → ∀ (g : GenFrame e ρB) (g' : GenFrame e C.π), g.IsMap φ g' → ∀ (ι : Type) (emb : ι → (E →+* ℂ)), Function.Bijective emb → ∀ (dual : ι → Bool) (N : GlobalTheory.TrueGeo.Model B) (X : Scheme.{0}) (j : C.Y.X ⟶ X) (π : X ⟶ N.X), j ≫ π = f ≫ N.j → ∀ (M : ι → N.X.Modules) (hM : ∀ a, IsVB (M a) (Dw.mult (emb a))) (A : ∀ a, Chart (M a) (Dw.mult (emb a)) → Matrix (Fin (Dw.mult (emb a))) (Fin (Dw.mult (emb a))) B.Fn) (A' : ∀ a, Chart ((Scheme.Modules.pullback π).obj (M a)) (Dw.mult (emb a)) → Matrix (Fin (Dw.mult (emb a))) (Fin (Dw.mult (emb a))) C.Y.Fn) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (M a)) (Dw.mult (emb a))), (∀ a, IsLie g (emb a) N.j (dual a) (A a)) → (∀ a, IsLie C.f0 (emb a) j (dual a) (A' a)) → (∀ a, IsPullCo N.j π (hM a) (dual a) φ g' C.f0 (A a) (A' a)) → (∀ a, IsFlag (genericPt C.Y ≫ j) (dual a) (A' a) (fl a)) → IsFlagBundle π M (fun a => Dw.mult (emb a)) fl → (∀ (K : Type) [Field K] [IsAlgClosed K] (χ : c.F →+* K) (x : Sp K ⟶ B.X), x ≫ ρB ≫ genStr Z = spMap χ → ∀ k : EigFrame Z χ (x ≫ ρB ≫ genι Z), ∃! p : Sp K ⟶ C.Y.X, p ≫ f = x ∧ C.Carries p k) → ∀ (K : Type) [Field K] [IsAlgClosed K] (q : Sp K ⟶ X) (ψ : F →+* K), q ≫ π ≫ N.p = spMap ψ ≫ spMap (algebraMap (𝓞 F) F) → ∃! p : Sp K ⟶ C.Y.X, p ≫ j = q := by

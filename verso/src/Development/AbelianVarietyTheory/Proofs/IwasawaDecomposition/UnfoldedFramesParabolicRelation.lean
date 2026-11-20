@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.FramePairGram.Comb
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Rewrite using `[Fin.sum_univ_add, Finset.sum_eq_zero (fun c _ => h _ (by simp)), zero_add]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_shift {r p m : ℕ} (hm : p + m = r) (f : Fin r → ℂ) (h : ∀ c : Fin r, (c : ℕ) < p → f c = 0) :
     ∑ c, f c = ∑ i : Fin m, f ⟨p + i, by omega⟩ := by
@@ -24,9 +24,9 @@ theorem sum_shift {r p m : ℕ} (hm : p + m = r) (f : Fin r → ℂ) (h : ∀ c 
   rfl
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hp`. Rewrite using `[Fin.sum_univ_add, Finset.sum_eq_zero (s := Finset.univ) (f := fun i : Fin m => f (Fin.natAdd p i)) (fun c _ => h _ (by simp)), add_zero, ← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_rev {r p : ℕ} (hp : p ≤ r) (f : Fin r → ℂ) (h : ∀ c : Fin r, p ≤ (c : ℕ) → f c = 0) :
     ∑ c, f c = ∑ i : Fin p, f ⟨p - 1 - i, by omega⟩ := by
@@ -42,23 +42,23 @@ theorem sum_rev {r p : ℕ} (hp : p ≤ r) (f : Fin r → ℂ) (h : ∀ c : Fin 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `hp` using `X.p0_le`. Distinguish the cases in `h : ρ ∈ X.Ψ`. Establish `hm` using `hm h`. Establish `hd : IsUnit (mat x ⟨ρ, h⟩).det` using `(hx _).1.isUnit`. Establish `hb' : X.p0 + b < r` using `by omega`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Formalism.L2.PjFree.perFr X x' v ρ b = ∑ c : Fin r, ((mat x' ⟨ρ, h⟩)⁻¹ * mat x ⟨ρ, h⟩) ⟨_, hb'⟩ c * ((mat x ⟨ρ, h⟩)⁻¹.mulVec (Data.emb ρ v)) c`. Unfold `Formalism.L2.PjFree.perFr`. Rewrite using `[dif_pos h, dif_pos hb']`. Use `conv_lhs => rw [← mul_nonsing_inv_cancel_right (mat x ⟨ρ, h⟩) (mat x' ⟨ρ, h⟩)⁻¹ hd, ← mulVec_mulVec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, sum_shift (p := X.p0) (m := m) (by omega) _ (fun c hc => by rw [h2 _ _ _ (Nat.le_add_right _ _) hc, zero_mul])]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi : X.p0 + (i : ℕ) < r` using `by have := i.2; omega`. Use `congr 1`. Simplify using `only [coef, dif_pos h, ent]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos (And.intro hb' hi)]`. Unfold `Formalism.L2.PjFree.perFr`. Rewrite using `[dif_pos h, dif_pos hi]`. Take `rfl` from `hm' h`. Establish `h' : conjEmb ρ ∈ X.Ψ` using `by_contra fun h' => h ((X.cmType ρ).2 h')`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : IsUnit (mat x ⟨_, h'⟩).det` using `(hx _).1.isUnit`. Establish `hb' : X.p0 - 1 - b < r` using `by omega`. Establish `e1 : Formalism.L2.PjFree.perFr X x' v ρ b = ∑ c : Fin r, ((mat x ⟨_, h'⟩)⁻¹ * mat x' ⟨_, h'⟩) c ⟨_, hb'⟩ * hermC (conjEmb ρ) X.Gm (ReciprocityTheory.ChartRestriction.G.FD.col (mat x ⟨_, h'⟩) c) (Data.emb (conjEmb ρ) v)`. Unfold `Formalism.L2.PjFree.perFr`. Rewrite using `[dif_neg h, dif_pos h', dif_pos hb']`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use `conv_lhs => rw [← mul_nonsing_inv_cancel_left (mat x ⟨_, h'⟩) (mat x' ⟨_, h'⟩) hd]`. Generalize the expression as in `(mat x ⟨_, h'⟩)⁻¹ * mat x' ⟨_, h'⟩ = n`. Simplify using `only [hermC, ReciprocityTheory.ChartRestriction.G.FD.col, mul_apply, Finset.sum_mul, Finset.mul_sum]`. Use `symm`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun d _ => by ring`. Rewrite using `[e1]`. Use `Eq.trans (sum_rev hp _ fun c hc => ?_) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h1 _ _ _ hc (by simp only; omega), zero_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi : X.p0 - 1 - (i : ℕ) < r` using `by omega`. Establish `hi2 : (i : ℕ) < X.p0` using `by have := i.2; omega`. Use `congr 1`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [coef, dif_neg h, dif_pos h', ent]`. Rewrite using `[dif_pos (And.intro hi hb')]`. Unfold `Formalism.L2.PjFree.perFr`. Rewrite using `[dif_neg h, dif_pos h', dif_pos hi]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perFr_comb (X : Data E r) {x x' : Frame X.Ψ r} (hx : x ∈ X.dom)
     (h1 : ∀ τ (a b : Fin r), X.p0 ≤ a → (b : ℕ) < X.p0 → ((mat x τ)⁻¹ * mat x' τ) a b = 0)
@@ -125,7 +125,7 @@ def hmap {T : Type} {μ : T → ℕ} {g : ℕ} (e : Fin g ≃ Σ τ : T, Fin (μ
     simp [Finset.mul_sum, mul_left_comm]
 
 /- English proof (translation)
-Establish `key : ∀ s : Σ τ : T, Fin (μ τ), s = ⟨τ, b⟩ → ∑ i : Fin (μ s.1), C s.1 s.2 i * z (e.symm ⟨s.1, i⟩) = ∑ i : Fin (μ τ), C τ b i * z (e.symm ⟨τ, i⟩)`. Introduce and unpack `_ rfl`. Both sides reduce to the same expression. Conclude with `key _ (e.apply_symm_apply _)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hmap_apply {T : Type} {μ : T → ℕ} {g : ℕ} (e : Fin g ≃ Σ τ : T, Fin (μ τ)) (C : T → ℕ → ℕ → ℂ) (z : Fin g → ℂ)
     (τ : T) (b : Fin (μ τ)) : hmap e C z (e.symm ⟨τ, b⟩) = ∑ i : Fin (μ τ), C τ b i * z (e.symm ⟨τ, i⟩) := by
@@ -136,13 +136,13 @@ theorem hmap_apply {T : Type} {μ : T → ℕ} {g : ℕ} (e : Fin g ≃ Σ τ : 
   exact key _ (e.apply_symm_apply _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Take `⟨⟨τ', b'⟩, rfl⟩` from `e.symm.surjective j`. Rewrite using `[hmap_apply]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hτ : τ' = τ`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hτ` using the available equality. Establish `hs : ∀ a b : Fin (μ τ'), (Pi.single (e.symm ⟨τ', a⟩) (1 : ℂ) : Fin g → ℂ) (e.symm ⟨τ', b⟩) = if a = b then 1 else 0`. Introduce `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hab, Pi.single_eq_of_ne (fun h => hab (by simpa using h.symm))]`. Simplify using `only [hs, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero]`. Introduce `c _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_eq_of_ne (fun h => hτ (by simpa using congrArg Sigma.fst (e.symm.injective h))), mul_zero]`. Introduce `c _`. Rewrite using `[Pi.single_eq_of_ne (fun h => hτ (by simpa using congrArg Sigma.fst (e.symm.injective h))), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hmap_single {T : Type} {μ : T → ℕ} {g : ℕ} (e : Fin g ≃ Σ τ : T, Fin (μ τ)) (C : T → ℕ → ℕ → ℂ) (τ : T)
     (i : Fin (μ τ)) : hmap e C (Pi.single (e.symm ⟨τ, i⟩) 1) =
@@ -168,9 +168,9 @@ theorem hmap_single {T : Type} {μ : T → ℕ} {g : ℕ} (e : Fin g ≃ Σ τ :
       rw [Pi.single_eq_of_ne (fun h => hτ (by simpa using congrArg Sigma.fst (e.symm.injective h))), mul_zero]
 
 /- English proof (translation)
-Use `⟨?_, fun U hU f => ?_⟩` and prove the remaining obligations. Rewrite using `[hd.1, ← he 0, map_zero]`. Rewrite using `[hd.2 U hU f]`. Set `hc : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ)` to `h.toContinuousLinearEquiv`. Establish `e1 : (fun z => valAt' (e z) U f) = (fun z => valAt' (e' z) U f) ∘ hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp, hc, LinearEquiv.coe_toContinuousLinearEquiv', he]`. Rewrite using `[e1, hc.comp_right_fderiv]`. Simplify using `[hc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isDerivAt0_comp {g : ℕ} {X : Scheme.{0}} (e e' : (Fin g → ℂ) → (Sp ℂ ⟶ X))
     (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (he : ∀ z, e' (h z) = e z) {w : Fin g → ℂ}
@@ -190,17 +190,17 @@ end GlobalTheory.FramePairGram.Comb
 open GlobalTheory.FramePairGram.Comb in
 
 /- English proof (translation)
-Introduce `E _ _ _ r H Dw l Xo c σ U hU hσ k x x' h1 h2 τ i`. Take `⟨hr, hty, -, -, -, g, e, F, ik, φ, -, hF⟩` from `hU`. Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨hp0, hty⟩` from `hty k`. Take `⟨P, hP, hper, hx, hu, -⟩` from `hF k x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P', hP', hper', hx', hu', -⟩` from `hF k x'`. Take `⟨hEU, hEL, -, -⟩` from `GlobalTheory.exp_four_clauses E H Dw l Xo c σ hσ g e F`. Set `C : (E →+* ℂ) → ℕ → ℕ → ℂ` to `fun τ b i => coef (U.X k) x.1 x'.1 (Formalism.L2.PjFree.relab c σ τ) b i`. Establish `hL : ∀ a, P' a = hmap e C (P a)` using `fun a => funext fun j => by`. Rewrite using `[hP', perFr_comb (U.X k) x.2 h1 h2 _ (Dw.mult (e j).1) (fun h => (if_pos ((hrt _).1 ((hty _).1 h))).trans (by omega)) (fun h => (if_neg (fun h' => h ((hty _).2 ((hrt _).2 h')))).trans hp0.symm) _ _ (e j).2.2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hmap, LinearMap.coe_mk, AddHom.coe_mk]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hP, Equiv.apply_symm_apply]`. Establish `hsurj : Function.Surjective (hmap e C)`. Introduce `y`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : y ∈ Submodule.span ℝ (Set.range P')` using `by rw [hper'.2.2.2.1]; trivial`. Use `(Submodule.span_le (p := (LinearMap.range (hmap e C)).restrictScalars ℝ)).2 ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨P a, (hL a).symm⟩`. Set `hE : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `LinearEquiv.ofBijective (hmap e C) ⟨LinearMap.injective_iff_surjective.2 hsurj, hsurj⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hex : ∀ z, (F.ex (ik k) P' (hE z)).left = (F.ex (ik k) P z).left` using `hEU (ik k) P P' hper hper' (LinearEquiv.refl _ _) hE (fun _ _ => rfl) (fun a _ => ⟨0, by simp⟩) (fun a => ⟨0, by simp⟩) hL`. Establish `hd` using `isDerivAt0_comp (fun z => (F.ex (ik k) P z).left) (fun z => (F.ex (ik k) P' z).left) hE hex (hu τ i)`. Establish `hs : hE (Pi.single (e.symm ⟨τ, i⟩) 1) = ∑ b : Fin (Dw.mult τ), C τ b i • (Pi.single (e.symm ⟨τ, b⟩) 1 : Fin g → ℂ)` using `hmap_single e C τ i`. Rewrite `hd` using `[hs]`. Rewrite using `[hx']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hEL (ik k) P' hper' _ (fun b => Pi.single (e.symm ⟨τ, b⟩) 1) ((U.un k x').u τ) _ _ (fun b => hu' τ b) hd`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FramePairGram.lie_comb_of_block : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {U : Formalism.L2.PjFree.Unf Xo c σ r}, Formalism.L2.PjFree.IsUnf U → Formalism.L2.PjFree.GoodEmb c σ → ∀ (k : U.Comp) (x x' : (U.X k).dom), (∀ τ (a b : Fin r), (U.X k).p0 ≤ a → (b : ℕ) < (U.X k).p0 → ((mat x.1 τ)⁻¹ * mat x'.1 τ) a b = 0) → (∀ τ (a b : Fin r), (U.X k).p0 ≤ a → (b : ℕ) < (U.X k).p0 → ((mat x'.1 τ)⁻¹ * mat x.1 τ) a b = 0) → ∀ (τ : E →+* ℂ) (i : Fin (Dw.mult τ)), Formalism.L2.Pj.IsCombAt (U.un k x').x ((U.un k x').u τ) (fun b => (coef (U.X k) x.1 x'.1 (Formalism.L2.PjFree.relab c σ τ) b i : CAt σ)) ((U.un k x).u τ i) := by
   intro E _ _ _ r H Dw l Xo c σ U hU hσ k x x' h1 h2 τ i

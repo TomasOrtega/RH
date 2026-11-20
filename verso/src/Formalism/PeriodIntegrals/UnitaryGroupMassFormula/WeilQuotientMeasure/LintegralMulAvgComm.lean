@@ -15,18 +15,18 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {H : Subgroup G}
 
 /- English proof (translation)
-The claim follows from `measurable_fst.mul (measurable_subtype_coe.comp measurable_snd)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_mul_coe : Measurable (fun p : G × H => p.1 * (p.2 : G)) := measurable_fst.mul (measurable_subtype_coe.comp measurable_snd)
 
 /- English proof (translation)
-The claim follows from `(hf.comp measurable_mul_coe).lintegral_prod_right'`.
+A detailed English derivation is pending.
 -/
 theorem measurable_avg (ν : Measure H) [SFinite ν] {f : G → ℝ≥0∞} (hf : Measurable f) :
     Measurable (fun g : G => ∫⁻ h, f (g * (h : G)) ∂ν) := (hf.comp measurable_mul_coe).lintegral_prod_right'
 
 /- English proof (translation)
-Establish `e` using `lintegral_mul_left_eq_self (μ := ν) (fun h : H => f (g * (h : G))) k`. Simplify `e` using `[mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem avg_mul_right (ν : Measure H) [ν.IsMulLeftInvariant] (f : G → ℝ≥0∞) (g : G) (k : H) :
     ∫⁻ h, f (g * (k : G) * (h : G)) ∂ν = ∫⁻ h, f (g * (h : G)) ∂ν := by
@@ -34,13 +34,11 @@ theorem avg_mul_right (ν : Measure H) [ν.IsMulLeftInvariant] (f : G → ℝ≥
   simpa [mul_assoc] using e
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul]`. Conclude with `hβ.comp (measurable_const.mul measurable_subtype_coe)`. Use `_ = ∫⁻ h, ∫⁻ g, f g * β (g * (h : G)) ∂μ ∂ν := lintegral_lintegral_swap ((hf.comp measurable_fst).mul (hβ.comp measurable_mul_coe)).aemeasurable`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ = ∫⁻ h, ∫⁻ g, f (g * ((h : G))⁻¹) * β g ∂μ ∂ν := by`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Establish `e` using `lintegral_mul_right_eq_self (μ := μ) (fun x => f (x * ((h : G))⁻¹) * β x) (h : G)`. Simplify using `only [mul_inv_cancel_right] at e`. Conclude with `e`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∫⁻ g, ∫⁻ h, f (g * ((h : G))⁻¹) * β g ∂ν ∂μ := lintegral_lintegral_swap ((hf.comp (measurable_snd.mul (measurable_subtype_coe.comp measurable_fst).inv)).mul (hβ.comp measurable_snd)).aemeasurable`. Use `_ = ∫⁻ g, β g * ∫⁻ h, f (g * (h : G)) ∂ν ∂μ := by`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Establish `e` using `lintegral_inv_eq_self (μ := ν) (fun h : H => f (g * (h : G)))`. Simplify using `only [InvMemClass.coe_inv] at e`.
-
-Rewrite using `[lintegral_mul_const, e]`. Conclude with `mul_comm _ _`. Conclude with `hf.comp (measurable_const.mul measurable_subtype_coe.inv)`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_mul_avg_comm (μ : Measure G) (ν : Measure H) [SFinite μ] [SFinite ν]
     [μ.IsMulRightInvariant] [ν.IsInvInvariant] {f β : G → ℝ≥0∞} (hf : Measurable f)
@@ -70,11 +68,11 @@ theorem lintegral_mul_avg_comm (μ : Measure G) (ν : Measure H) [SFinite μ] [S
         · exact hf.comp (measurable_const.mul measurable_subtype_coe.inv)
 
 /- English proof (translation)
-Establish `hopen : IsOpenMap (QuotientGroup.mk : G → G ⧸ H)` using `QuotientGroup.isOpenMap_coe`. Use `choose V hVc hxV using fun x : G => exists_compact_mem_nhds x`. Establish `hcov : K ⊆ ⋃ x : G, (QuotientGroup.mk : G → G ⧸ H) '' interior (V x)`. Introduce `y _`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mem_iUnion.2 ⟨x, x, mem_interior_iff_mem_nhds.2 (hxV x), rfl⟩`. Take `⟨s, hs⟩` from `hK.elim_finite_subcover _ (fun x => hopen _ isOpen_interior) hcov`. Use `⟨⋃ x ∈ s, V x, s.isCompact_biUnion fun x _ => hVc x, hs.trans ?_⟩` and prove the remaining obligations. Simplify using `only [Set.iUnion_subset_iff]`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Set.image_mono (interior_subset.trans ?_)` and prove the remaining obligations. Introduce `z hz`. Conclude with `Set.mem_iUnion₂.2 ⟨x, hx, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_lift (K : Set (G ⧸ H)) (hK : IsCompact K) :
     ∃ C : Set G, IsCompact C ∧ K ⊆ (QuotientGroup.mk : G → G ⧸ H) '' C := by
@@ -95,43 +93,37 @@ theorem exists_compact_lift (K : Set (G ⧸ H)) (hK : IsCompact K) :
 end Lemmas
 
 /- English proof (translation)
-Unfold `StepBruhat StepInvInv WqUnique at *`. Unfold `WeilQuotient`. Introduce `G _ _ _ _ _ _ _ _ H hH μ ν hμ hμr hν hνr`. Use `haveI : LocallyCompactSpace H := hH.locallyCompactSpace`. Use `haveI : SecondCountableTopology H := TopologicalSpace.Subtype.secondCountableTopology (H : Set G)`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI hνi : ν.IsInvInvariant := hi H ν hν hνr`. Take `⟨β, hβm, hβ1⟩` from `hb G H hH ν hν`. Establish `hmk : Measurable (QuotientGroup.mk : G → G ⧸ H)` using `QuotientGroup.measurable_coe`. Take `⟨ρ, hρdef⟩ : ∃ ρ : Measure (G ⧸ H), ρ = Measure.map QuotientGroup.mk (μ.withDensity β)` from `⟨_, rfl⟩`. Establish `hρ : ∀ F : G ⧸ H → ℝ≥0∞, Measurable F → ∫⁻ y, F y ∂ρ = ∫⁻ g, β g * F (g : G ⧸ H) ∂μ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `F hF`. Rewrite using `[hρdef, lintegral_map hF hmk]`. Conclude with `lintegral_withDensity_eq_lintegral_mul _ hβm (hF.comp hmk)`. Establish `hout : ∀ (f : G → ℝ≥0∞) (g : G), ∫⁻ h, f (Quotient.out (g : G ⧸ H) * (h : G)) ∂ν = ∫⁻ h, f (g * (h : G)) ∂ν`. Introduce `f g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((Quotient.out (g : G ⧸ H) : G) : G ⧸ H) = (g : G ⧸ H)` using `Quotient.out_eq _`. Rewrite `e` using `[QuotientGroup.eq]`. Establish `hk : Quotient.out (g : G ⧸ H) = g * ((Quotient.out (g : G ⧸ H))⁻¹ * g)⁻¹` using `by group`. Rewrite using `[hk]`. Conclude with `avg_mul_right ν f g ⟨_, H.inv_mem e⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hΦm : ∀ f : G → ℝ≥0∞, Measurable f → Measurable (fun y : G ⧸ H => ∫⁻ h, f (Quotient.out y * (h : G)) ∂ν)`. Introduce `f hf`. Use `measurable_from_quotient.2 ?_` and prove the remaining obligations. Use `measurable_avg ν hf using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hout f g`. Establish `hunf : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ g, f g ∂μ = ∫⁻ y, ∫⁻ h, f (Quotient.out y * (h : G)) ∂ν ∂ρ`. Introduce `f hf`. Rewrite using `[hρ _ (hΦm f hf)]`. Repeatedly rewrite using `[hout f]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[lintegral_mul_avg_comm μ ν hβm hf]`. Simplify using `[hβ1]`. Establish `hne : ρ ≠ 0`. Introduce `h0`. Establish `e` using `hunf (fun _ => 1) measurable_const`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [h0, lintegral_zero_measure, lintegral_const, one_mul, Measure.measure_univ_eq_zero] at e`. Simplify using `at e`. Conclude with `NeZero.ne μ e`. Establish `hfin : ∀ K : Set (G ⧸ H), IsCompact K → ρ K < ∞`. Introduce `K hK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C, hC, hKC⟩` from `exists_compact_lift K hK`. Take `⟨U, hUc, hU1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hD : IsCompact (C * U)` using `hC.mul hUc`. Establish `hf : Measurable ((C * U).indicator (1 : G → ℝ≥0∞))` using `measurable_one.indicator hD.measurableSet`. Establish `hUm : MeasurableSet (Subtype.val ⁻¹' U : Set H)` using `measurable_subtype_coe hUc.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hδ : ν (Subtype.val ⁻¹' U : Set H) ≠ 0`. Establish `ho : IsOpen (Subtype.val ⁻¹' interior U : Set H)` using `isOpen_interior.preimage continuous_subtype_val`. Establish `hne' : (Subtype.val ⁻¹' interior U : Set H).Nonempty` using `⟨1, mem_interior_iff_mem_nhds.2 hU1⟩`. Conclude with `((ho.measure_pos ν hne').trans_le (measure_mono (Set.preimage_mono interior_subset))).ne'`. Establish `key : ∀ y ∈ K, ν (Subtype.val ⁻¹' U : Set H) ≤ ∫⁻ h, (C * U).indicator (1 : G → ℝ≥0∞) (Quotient.out y * (h : G)) ∂ν`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Take `⟨c, hc, rfl⟩` from `hKC hy`. Rewrite using `[hout _ c, ← lintegral_indicator_one hUm]`. Use `lintegral_mono fun h => ?_` and prove the remaining obligations. Distinguish the cases in `hh : (h : G) ∈ U`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : c * (h : G) ∈ C * U` using `Set.mul_mem_mul hc hh`. Rewrite using `[Set.indicator_of_mem (show h ∈ (Subtype.val ⁻¹' U : Set H) from hh), Set.indicator_of_mem hm]`. Conclude with `le_rfl`. Rewrite using `[Set.indicator_of_notMem (show h ∉ (Subtype.val ⁻¹' U : Set H) from hh)]`. Conclude with `zero_le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hle : ν (Subtype.val ⁻¹' U : Set H) * ρ K ≤ μ (C * U)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lt_top_iff_ne_top]`. Introduce `htop`. Rewrite `hle` using `[htop, ENNReal.mul_top hδ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `hD.measure_lt_top.ne (top_le_iff.1 hle)`. Establish `hswap : ∀ β₁ β₂ : G → ℝ≥0∞, Measurable β₁ → Measurable β₂ → (∀ x, ∫⁻ h, β₁ (x * (h : G)) ∂ν = 1) → (∀ x, ∫⁻ h, β₂ (x * (h : G)) ∂ν = 1) → ∀ ψ : G ⧸ H → ℝ≥0∞, Measurable ψ → ∫⁻ x, β₁ x * ψ (x : G ⧸ H) ∂μ = ∫⁻ x, β₂ x * ψ (x : G ⧸ H) ∂μ`. Introduce `β₁ β₂ m1 m2 n1 n2 ψ hψ`. Establish `hf : Measurable (fun x => β₁ x * ψ (x : G ⧸ H))` using `m1.mul (hψ.comp hmk)`. Establish `e` using `lintegral_mul_avg_comm μ ν hf m2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [n2, mul_one] at e`. Rewrite using `[e]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `hc : ∀ h : H, ψ ((x * (h : G) : G) : G ⧸ H) = ψ (x : G ⧸ H)` using `fun h => by`. Rewrite using `[QuotientGroup.mk_mul_of_mem x h.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[hc]`. Rewrite using `[lintegral_mul_const, n1, one_mul]`. Conclude with `m1.comp (measurable_const.mul measurable_subtype_coe)`. Establish `hinv : ∀ (g : G) (s : Set (G ⧸ H)), MeasurableSet s → ρ ((fun y => g • y) ⁻¹' s) = ρ s`. Introduce `g s hs`.
-
-Establish `hsm : Measurable (fun y : G ⧸ H => g • y)` using `measurable_from_quotient.2 (hmk.comp (measurable_const_mul g))`. Establish `hpre : MeasurableSet ((fun y : G ⧸ H => g • y) ⁻¹' s)` using `hsm hs`. Establish `hψ : Measurable (s.indicator (1 : G ⧸ H → ℝ≥0∞))` using `measurable_one.indicator hs`. Rewrite using `[← lintegral_indicator_one hpre, ← lintegral_indicator_one hs, hρ _ (measurable_one.indicator hpre), hρ _ hψ]`. Establish `e1 : ∀ x : G, ((fun y : G ⧸ H => g • y) ⁻¹' s).indicator (1 : G ⧸ H → ℝ≥0∞) (x : G ⧸ H) = s.indicator 1 ((g * x : G) : G ⧸ H)` using `fun x => rfl`.
-
-Repeatedly rewrite using `[e1]`. Establish `e2` using `lintegral_mul_left_eq_self (μ := μ) (fun x => β (g⁻¹ * x) * s.indicator (1 : G ⧸ H → ℝ≥0∞) (x : G ⧸ H)) g`. Simplify using `only [inv_mul_cancel_left] at e2`. Rewrite using `[e2]`. Conclude with `hswap (fun x => β (g⁻¹ * x)) β (hβm.comp (measurable_const_mul _)) hβm (fun x => by simpa [mul_assoc] using hβ1 (g⁻¹ * x)) hβ1 _ hψ`.
-
-Conclude with `⟨ρ, hne, hfin, hinv, hunf, fun ρ' a b => h2 G H hH ρ ρ' hne hfin hinv a b⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem weilQuotient_of_parts (hb : StepBruhat) (hi : StepInvInv) (h2 : WqUnique) :
     WeilQuotient := by

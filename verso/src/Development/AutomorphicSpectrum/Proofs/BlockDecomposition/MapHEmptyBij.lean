@@ -26,11 +26,11 @@ def prodHom {I : Type} {K : I → Cx.{w} R} {L : I → Cx.{w'} R}
   comm n x := funext fun i => (φ i).comm n (x i)
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Establish `h0 : a = 0` using `h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Introduce `h`. Conclude with `funext fun i => h i`. Consider the case `succ n`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩ i`. Conclude with `⟨b i, rfl⟩`. Introduce `h choose b hb using h`. Conclude with `⟨b, funext hb⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_B_prod {I : Type} (K : I → Cx.{w} R) (n : ℕ) (a : (prodCx K).X n) :
     a ∈ (prodCx K).B n ↔ ∀ i, a i ∈ (K i).B n := by
@@ -52,17 +52,17 @@ theorem mem_B_prod {I : Type} (K : I → Cx.{w} R) (n : ℕ) (a : (prodCx K).X n
       exact ⟨b, funext hb⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (prodCx K) n).1 x`. Establish `hb : (prodCx L).d n ((prodHom φ).f n a) = 0` using `by rw [(prodHom φ).comm, ha, map_zero]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hx` using `[CrystallineSemistableComparison.P.mapH_cls _ n a ha hb, (CrystallineSemistableComparison.P.cls_surj _ n).2.1 _ hb, mem_B_prod]`. Rewrite using `[(CrystallineSemistableComparison.P.cls_surj _ n).2.1, mem_B_prod]`. Introduce `i`. Establish `hai : (K i).d n (a i) = 0` using `congrFun ha i`. Establish `hbi : (L i).d n ((φ i).f n (a i)) = 0` using `by rw [(φ i).comm, hai, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← (CrystallineSemistableComparison.P.cls_surj _ n).2.1 _ hai]`. Apply `(injective_iff_map_eq_zero _).1 (h i n).1` to reduce the goal to its premises. Rewrite using `[CrystallineSemistableComparison.P.mapH_cls _ n _ hai hbi, (CrystallineSemistableComparison.P.cls_surj _ n).2.1]`. Conclude with `hx i`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (prodCx L) n).1 y`. Establish `hbi : ∀ i, (L i).d n (b i) = 0` using `fun i => congrFun hb i`. Establish `key : ∀ i, ∃ a, ∃ ha : (K i).d n a = 0, (φ i).f n a - b i ∈ (L i).B n`. Introduce `i`. Take `⟨x, hx⟩` from `(h i n).2 ((L i).cls (b i) (hbi i))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (K i) n).1 x`. Establish `hc : (L i).d n ((φ i).f n a) = 0` using `by rw [(φ i).comm, ha, map_zero]`. Rewrite `hx` using `[CrystallineSemistableComparison.P.mapH_cls _ n a ha hc]`. Conclude with `⟨a, ha, ((CrystallineSemistableComparison.P.cls_surj _ n).2.2.1 _ _ hc (hbi i)).1 hx⟩`. Use `choose a ha hab using key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : (prodCx K).d n a = 0` using `funext ha`. Establish `hc : (prodCx L).d n ((prodHom φ).f n a) = 0` using `by rw [(prodHom φ).comm, ha', map_zero]`. Use `⟨(prodCx K).cls a ha', ?_⟩` and prove the remaining obligations. Rewrite using `[CrystallineSemistableComparison.P.mapH_cls (prodHom φ) n a ha' hc, (CrystallineSemistableComparison.P.cls_surj _ n).2.2.1 _ _ hc hb, mem_B_prod]`. Conclude with `hab`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_bij {I : Type} {K : I → Cx.{w} R} {L : I → Cx.{w'} R}
     (φ : ∀ i, Cx.Hom (K i) (L i) (RingHom.id R))
@@ -114,7 +114,7 @@ def cechAug (A : Sy.{w} R ι) (hA : A.Desc) : DCx.AugRow (A.K ∅) (cechCos A).d
   comm q x := funext fun t => (A.res (Finset.empty_subset (ent t))).comm q x
 
 /- English proof (translation)
-The claim follows from `hA q`.
+A detailed English derivation is pending.
 -/
 theorem cechAug_row (A : Sy.{w} R ι) (hA : A.Desc) (q : ℕ) :
     ((cechCos A).dcx.row q).ResUpTo 1 ((cechAug A hA).ε q) := hA q
@@ -131,7 +131,7 @@ def cechHom {A B : Sy.{w} R ι} (m : A.Hom B) :
   cv p q x := (prodHom fun i : Fin (p + 1) → ι => m.φ (ent i)).comm q x
 
 /- English proof (translation)
-The claim follows from `prod_bij (fun i : Fin (p + 1) → ι => m.φ (ent i)) (fun i n => h _ ⟨i 0, Finset.mem_image_of_mem _ (Finset.mem_univ _)⟩ n) q`.
+A detailed English derivation is pending.
 -/
 theorem cechHom_col {A B : Sy.{w} R ι} (m : A.Hom B)
     (h : ∀ S : Finset ι, S.Nonempty → ∀ n, Function.Bijective ((m.φ S).mapH n)) (p q : ℕ) :
@@ -140,9 +140,9 @@ theorem cechHom_col {A B : Sy.{w} R ι} (m : A.Hom B)
     (fun i n => h _ ⟨i 0, Finset.mem_image_of_mem _ (Finset.mem_univ _)⟩ n) q
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨(injective_iff_map_eq_zero f).2 fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Simplify using `using h1 x hx`. Simplify using `using h2 y`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Use `⟨fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Conclude with `(injective_iff_map_eq_zero f).1 h.1 x hx`. Simplify using `using h.2 y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem upTo_one {M : Type w} {N : Type w'} [AddCommGroup M] [AddCommGroup N] [Module R M] [Module R N]
     (f : M →ₗ[R] N) : UpTo (1 : R) f ↔ Function.Bijective f := by
@@ -158,18 +158,18 @@ theorem upTo_one {M : Type w} {N : Type w'} [AddCommGroup M] [AddCommGroup N] [M
     · simpa using h.2 y
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cls_congr {K : Cx.{w} R} {n : ℕ} {a b : K.X n} (h : a = b) (ha : K.d n a = 0) (hb : K.d n b = 0) :
     K.cls a ha = K.cls b hb := by
   subst h; rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p q`. Distinguish the cases in `h : p = 0 ∧ q = n`. Take `⟨rfl, rfl⟩` from `h`. Express the relevant statement in the definitionally equal form `(cechHom m).f 0 q ((cechCos A).dcx.sgl 0 q ((cechAug A hA).ε q a) 0 q) = (cechCos B).dcx.sgl 0 q ((cechAug B hB).ε q ((m.φ ∅).f q a)) 0 q`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[DCx.sgl_self, DCx.sgl_self]`. Use function extensionality and compare the values at `t`. Conclude with `m.nat (Finset.empty_subset (ent t)) q a`. Establish `h' : p ≠ 0 ∨ q ≠ n` using `by omega`. Express the relevant statement in the definitionally equal form `(cechHom m).f p q ((cechCos A).dcx.sgl 0 n ((cechAug A hA).ε n a) p q) = (cechCos B).dcx.sgl 0 n ((cechAug B hB).ε n ((m.φ ∅).f n a)) p q`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DCx.sgl_ne _ _ h', DCx.sgl_ne _ _ h', map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem edge_square {A B : Sy.{w} R ι} (m : A.Hom B) (hA : A.Desc) (hB : B.Desc) (n : ℕ) (a : (A.K ∅).X n) :
     (cechHom m).tot.f n ((cechAug A hA).edge.f n a) = (cechAug B hB).edge.f n ((m.φ ∅).f n a) := by
@@ -188,19 +188,19 @@ theorem edge_square {A B : Sy.{w} R ι} (m : A.Hom B) (hA : A.Desc) (hB : B.Desc
     rw [DCx.sgl_ne _ _ h', DCx.sgl_ne _ _ h', map_zero]
 
 /- English proof (translation)
-Establish `eA : Function.Bijective ((cechAug A hA).edge.mapH n)`. Use `CrystallineSemistableComparison.P.dc_row (cechAug A hA) 1 (cechAug_row A hA) n` as an intermediate fact. Rewrite `this` using `[one_pow]`. Conclude with `(upTo_one _).1 this`. Establish `eB : Function.Bijective ((cechAug B hB).edge.mapH n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `CrystallineSemistableComparison.P.dc_row (cechAug B hB) 1 (cechAug_row B hB) n` as an intermediate fact. Rewrite `this` using `[one_pow]`. Conclude with `(upTo_one _).1 this`. Establish `eT : Function.Bijective ((cechHom m).tot.mapH n)`. Use `CrystallineSemistableComparison.P.dc_map_col (cechHom m) 1 n fun p q _ => (upTo_one _).2 (cechHom_col m h p q)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[one_pow]`. Conclude with `(upTo_one _).1 this`. Establish `sq : ∀ x, (cechAug B hB).edge.mapH n ((m.φ ∅).mapH n x) = (cechHom m).tot.mapH n ((cechAug A hA).edge.mapH n x)`. Introduce `x`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (A.K ∅) n).1 x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c1 : (B.K ∅).d n ((m.φ ∅).f n a) = 0` using `by rw [(m.φ ∅).comm, ha, map_zero]`. Establish `c2 : (cechCos B).dcx.tot.d n ((cechAug B hB).edge.f n ((m.φ ∅).f n a)) = 0`. Rewrite using `[(cechAug B hB).edge.comm, c1, map_zero]`. Establish `c3 : (cechCos A).dcx.tot.d n ((cechAug A hA).edge.f n a) = 0`. Rewrite using `[(cechAug A hA).edge.comm, ha, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `c4 : (cechCos B).dcx.tot.d n ((cechHom m).tot.f n ((cechAug A hA).edge.f n a)) = 0`. Rewrite using `[(cechHom m).tot.comm, c3, map_zero]`. Rewrite using `[CrystallineSemistableComparison.P.mapH_cls (m.φ ∅) n a ha c1, CrystallineSemistableComparison.P.mapH_cls (cechAug B hB).edge n _ c1 c2, CrystallineSemistableComparison.P.mapH_cls (cechAug A hA).edge n a ha c3, CrystallineSemistableComparison.P.mapH_cls (cechHom m).tot n _ c3 c4]`. Conclude with `cls_congr (edge_square m hA hB n a).symm c2 c4`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y hxy`. Apply `eA.1` to reduce the goal to its premises. Apply `eT.1` to reduce the goal to its premises. Rewrite using `[← sq, ← sq, hxy]`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `eT.2 ((cechAug B hB).edge.mapH n y)`. Take `⟨x, rfl⟩` from `eA.2 u`. Use `⟨x, eB.1 ?_⟩` and prove the remaining obligations. Rewrite using `[sq, hu]`.
+A detailed English derivation is pending.
 -/
 theorem mapH_empty_bij {A B : Sy.{w} R ι} (m : A.Hom B) (hA : A.Desc) (hB : B.Desc)
     (h : ∀ S : Finset ι, S.Nonempty → ∀ n, Function.Bijective ((m.φ S).mapH n)) (n : ℕ) :
@@ -243,7 +243,7 @@ theorem mapH_empty_bij {A B : Sy.{w} R ι} (m : A.Hom B) (hA : A.Desc) (hB : B.D
     rw [sq, hu]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ m hA hB h n` and use `mapH_empty_bij m hA hB h n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mvBij : CrystallineSemistableComparison.Onto.MVBij := fun _ _ _ _ _ _ m hA hB h n => mapH_empty_bij m hA hB h n
 

@@ -9,7 +9,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 /- English proof (translation)
-Introduce `n d J W u p m γ ord hJ hdim hu hW hp hcov hsl hdisj hord`. Take `⟨q, π, U, V, ρ, hg⟩` from `hB n d J W u p m γ ord hJ hdim hu hW hp hcov hsl hdisj hord`. Conclude with `h n d J W u q π U V ρ _ ⟨hJ, hdim⟩ hu hW hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem LocalOrder.unfolding_form_of_matrix (hB : BranchesToGoodPosition.Statement)
     (h : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.LocalOrder.Statement) :
@@ -19,7 +19,7 @@ theorem LocalOrder.unfolding_form_of_matrix (hB : BranchesToGoodPosition.Stateme
   exact h n d J W u q π U V ρ _ ⟨hJ, hdim⟩ hu hW hg
 
 /- English proof (translation)
-Introduce `n e J W u p π U V ρ N hJ hu hW hg`. Take `⟨q, m, γ, ord, hq, hcov, hsl, hdisj, hord, hsum⟩` from `hG n e J W u p π U V ρ N hJ hu hW hg`. Rewrite using `[← hsum]`. Conclude with `h n e J W u q m γ ord hJ.isPrime hJ.dim hu hW hq hcov hsl hdisj hord`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocalOrder.unfolding_matrix_of_form (hG : GoodPositionToBranches.Statement)
     (h : GroundTheory.Heights₂.Heights.LocalOrder.Statement) :
@@ -31,7 +31,7 @@ theorem LocalOrder.unfolding_matrix_of_form (hG : GoodPositionToBranches.Stateme
   exact h n e J W u q m γ ord hJ.isPrime hJ.dim hu hW hq hcov hsl hdisj hord
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LocalOrder.unfolding_matrix_of_form hG, LocalOrder.unfolding_form_of_matrix hB⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocalOrder.equiv_of (hB : BranchesToGoodPosition.Statement)
     (hG : GoodPositionToBranches.Statement) :

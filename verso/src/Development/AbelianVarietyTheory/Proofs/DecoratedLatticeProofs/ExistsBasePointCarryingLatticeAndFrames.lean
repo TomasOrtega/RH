@@ -24,7 +24,7 @@ namespace GlobalTheory.FinPl.BasePoint
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨α, rfl, -, h0⟩` from `hε`. Take `⟨hinf, hcomp⟩` from `placeIdempotent_infinite_and_finite_components D v _ α rfl`. Rewrite using `[mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere]`. Use `⟨hinf, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hcomp, h0 w hw, TensorProduct.zero_tmul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_placeIdem_mem {v : Pl D} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) :
     algebraMap (AF D.host.F) (AE D) ε ∈ idAt D (· = v) := by
@@ -35,14 +35,14 @@ theorem algebraMap_placeIdem_mem {v : Pl D} {ε : AF D.host.F} (hε : IsPlaceIde
   rw [hcomp, h0 w hw, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere]`. Conclude with `⟨ha.1, fun w hw => ha.2 w (fun hp => hw (h w hp))⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem idAt_mono {P Q : Pl D → Prop} (h : ∀ v, P v → Q v) {a : AE D} (ha : a ∈ idAt D P) : a ∈ idAt D Q := by
   rw [mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere] at ha ⊢
   exact ⟨ha.1, fun w hw => ha.2 w (fun hp => hw (h w hp))⟩
 
 /- English proof (translation)
-Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => I.mul_mem_left _ (hy j)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem' {I : Ideal (AE D)} {m n : ℕ} (A : Matrix (Fin m) (Fin n) (AE D)) {y : Fin n → AE D}
     (hy : ∀ i, y i ∈ I) : ∀ i, (A *ᵥ y) i ∈ I := by
@@ -51,9 +51,9 @@ theorem mulVec_mem' {I : Ideal (AE D)} {m n : ℕ} (A : Matrix (Fin m) (Fin n) (
   exact Ideal.sum_mem _ fun j _ => I.mul_mem_left _ (hy j)
 
 /- English proof (translation)
-Establish `hz : ∀ l, algebraMap (AF D.host.F) (AE D) ε * y l = 0` using `fun l => (placeIdem_acts D u ε hε).2 _ (idAt_mono (fun w hw => by rw [hw]; exact huv) (hy l))`. Establish `h1 : (mt V h - 1) *ᵥ y = 0`. Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← he, hs i j]`. Use `_ = (mt V h - 1) i j * (algebraMap (AF D.host.F) (AE D) ε * y j) := by ring`. Use `_ = 0 := by rw [hz j, mul_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mulVec_fix {V : HSp D} {e : AE D} {ε : AF D.host.F} {u v : Pl D} (hε : IsPlaceIdem D u ε)
     (he : e + cA D e = algebraMap (AF D.host.F) (AE D) ε) {h : GA D V} (hs : SuppAt e V h) (huv : v ≠ u)
@@ -75,24 +75,24 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
   [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
 
 /- English proof (translation)
-Rewrite using `[← q.sec_pr a, q.pr_sec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pr_e_mul (q : SplitPt D k) (a : AE D) : q.pr (q.e * a) = q.pr a := by
   rw [← q.sec_pr a, q.pr_sec]
 
 /- English proof (translation)
-Rewrite using `[← he, mul_add, q.split.1, q.split.2.1, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem e_mul_eps (q : SplitPt D k) {ε : AF D.host.F} (he : q.e + cA D q.e = algebraMap (AF D.host.F) (AE D) ε) :
     q.e * algebraMap (AF D.host.F) (AE D) ε = q.e := by
   rw [← he, mul_add, q.split.1, q.split.2.1, add_zero]
 
 /- English proof (translation)
-Use `show (mt V h).map q.pr = 1`. Take `⟨ε, hε, he⟩` from `q.above`. Take `⟨ε', hε', he'⟩` from `q'.above`. Establish `h0 : q.pr (algebraMap (AF D.host.F) (AE D) ε') = 0`. Rewrite using `[← pr_e_mul, ← e_mul_eps q he, mul_assoc, (placeIdem_acts D q.v ε hε).2 _ (idAt_mono (fun w hw => by rw [hw]; exact Ne.symm hne) (algebraMap_placeIdem_mem hε')), mul_zero, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `hij` using `hs i j`. Rewrite `hij` using `[he']`. Establish `h1 : q.pr ((mt V h - 1) i j) = 0` using `by rw [← hij, map_mul, h0, zero_mul]`. Establish `e2 : (mt V h) i j = (mt V h - 1) i j + (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j` using `by simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_apply, e2, map_add, h1, zero_add]`. Apply the tactic sequence `by_cases hij' : i = j <;> simp [Matrix.one_apply, hij']`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem map_mt_eq_one (q : SplitPt D k) (q' : SplitPt D k') (hne : q.v ≠ q'.v) {V : HSp D} {h : GA D V}
     (hs : SuppAt q'.e V h) : (mt V h).map (GlobalTheory.LocMod.ofSplit q).π = 1 := by
@@ -112,9 +112,9 @@ theorem map_mt_eq_one (q : SplitPt D k) (q' : SplitPt D k') (hne : q.v ≠ q'.v)
   by_cases hij' : i = j <;> simp [Matrix.one_apply, hij']
 
 /- English proof (translation)
-Unfold `GlobalTheory.LocMod.Place.xi GlobalTheory.LocMod.Place.pr`. Introduce `h0`. Establish `h1 : (GlobalTheory.LocMod.ofSplit q).π (incA D D.host.xi0) * (GlobalTheory.LocMod.ofSplit q).π (incA D D.host.xi0⁻¹) = 1`. Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one, map_one]`. Rewrite `h1` using `[h0, zero_mul]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h1`.
+A detailed English derivation is pending.
 -/
 theorem xi_ne (q : SplitPt D k) : (GlobalTheory.LocMod.ofSplit q).xi ≠ 0 := by
   unfold GlobalTheory.LocMod.Place.xi GlobalTheory.LocMod.Place.pr
@@ -125,16 +125,16 @@ theorem xi_ne (q : SplitPt D k) : (GlobalTheory.LocMod.ofSplit q).xi ≠ 0 := by
   exact zero_ne_one h1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.T.latticeCompletionAtPlaces_mem_completedHermitianLattice D S L P y, GlobalTheory.T.mem_latticeCompletionAtPlaces_of_finPart_mem_hatLattice D S L P y hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem latV_iff_hat' (S : HSp D) (L : Lat S) (P : Pl D → Prop) (y : Fin S.rank → AE D) (hy : ∀ i, y i ∈ idAt D P) :
     y ∈ latV S L P ↔ (fun i => Formalism.IndefR.Lev.swapAE D (finPart D (y i))) ∈ GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.hat L :=
   ⟨GlobalTheory.T.latticeCompletionAtPlaces_mem_completedHermitianLattice D S L P y, GlobalTheory.T.mem_latticeCompletionAtPlaces_of_finPart_mem_hatLattice D S L P y hy⟩
 
 /- English proof (translation)
-Establish `h : ((Formalism.IndefR.Lev.finE S x).val) = (mt S x).map ((Formalism.IndefR.Lev.swapAE D).comp (finPart D))`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[h]`. Use extensionality with `i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `RingHom.map_mulVec ((Formalism.IndefR.Lev.swapAE D).comp (finPart D)) (mt S x) y i`.
+A detailed English derivation is pending.
 -/
 theorem finE_mulVec' (S : HSp D) (x : GA D S) (y : Fin S.rank → AE D) :
     (fun i => Formalism.IndefR.Lev.swapAE D (finPart D ((mt S x *ᵥ y) i))) =
@@ -147,7 +147,7 @@ theorem finE_mulVec' (S : HSp D) (x : GA D S) (y : Fin S.rank → AE D) :
   exact RingHom.map_mulVec ((Formalism.IndefR.Lev.swapAE D).comp (finPart D)) (mt S x) y i
 
 /- English proof (translation)
-Take `⟨t₀, ht₀, htr⟩` from `(GlobalTheory.AdIsom.adelicIsometries D).2.2.1 V V (LinearEquiv.refl _ _) (fun _ _ => rfl) Λ L₀ hΛ hL₀ ∅ (by intro w hw; simp at hw) 0 (fun _ => 0) (fun _ => 0) (by simp) (by simp)`. Rewrite `htr` using `[LinearEquiv.refl_toLinearMap, GlobalTheory.AdIsomCorrection.mA_id, Matrix.mul_one]`. Use `⟨t₀, ht₀, fun P y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[latV_iff_hat' V Λ P y hy, latV_iff_hat' V L₀ P _ (mulVec_mem' _ hy), finE_mulVec']`. Conclude with `htr.2.1 _`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_base (V : HSp D) (Λ L₀ : Lat V) (hΛ : IsSelfDualC V Λ) (hL₀ : IsSelfDualC V L₀) :
     ∃ t₀ ∈ GfC V, ∀ P, Moves V t₀ Λ L₀ P := by
@@ -162,13 +162,13 @@ variable {J : Type} [Fintype J] {kk : J → Type} [∀ i, Field (kk i)] [∀ i, 
   [∀ i, TopologicalSpace (kk i)] [∀ i, IsNonarchimedeanLocalField (kk i)]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Conclude with `⟨1, one_mem _, fun v _ y _ => by rw [mt_one, Matrix.one_mulVec], fun i hi => by simp at hi⟩`. Consider the case `insert j s hj ih`. Take `⟨g, hg, hfix, hmv⟩` from `ih`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hsupp, hmove⟩` from `(GlobalTheory.T.exists_normal_frames_and_base_point_split_place D (kk j) (GlobalTheory.LocMod.ofSplit (q j)) (xi_ne (q j))).2.2 V β (M j) (g * t₀)`. Use `⟨h * g, mul_mem (GlobalTheory.WeilProduct.mem_GfC_of_suppAt (q j).split hsupp) hg, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv y hy`. Rewrite using `[mt_mul, ← Matrix.mulVec_mulVec, hfix v hv y hy]`. Take `⟨ε, hε, he⟩` from `(q j).above`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mulVec_fix hε he hsupp (hv j) hy`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_insert]`. Break down `hi with rfl | hi` into its components or cases. Rewrite using `[mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hmove`. Introduce `b hb`. Establish `hij : (q i).v ≠ (q j).v` using `fun h' => hj (by rw [← (hinj h' : i = j)]; exact hi)`. Rewrite using `[mul_assoc, mt_mul, Matrix.mul_assoc, Matrix.map_mul, map_mt_eq_one (q i) (q j) hij hsupp, Matrix.one_mul]`. Conclude with `hmv i hi b hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_corr (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (q : ∀ i, SplitPt D (kk i))
     (hinj : Function.Injective (fun i => (q i).v)) (M : ∀ i, GL (Fin V.rank) (kk i)) (t₀ : GA D V) (s : Finset J) :
@@ -201,13 +201,13 @@ end GlobalTheory.FinPl.BasePoint
 open GlobalTheory.FinPl.BasePoint in
 
 /- English proof (translation)
-Introduce `D V Λ L₀ β hΛ hL₀ J _ kk _ _ _ _ q hinj M`. Take `⟨t₀, ht₀, hmv₀⟩` from `exists_base V Λ L₀ hΛ hL₀`. Take `⟨g, hg, hfix, hmv⟩` from `exists_corr V β q hinj M t₀ Finset.univ`. Take `⟨L, hL, hmoves⟩` from `(GlobalTheory.T.selfDual_image_adelicPoint_wittCore D V Λ hΛ).1 (g * t₀)`. Use `⟨g * t₀, mul_mem hg ht₀, L, hL, hmoves, ?_, fun i => hmv i (Finset.mem_univ i)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Use extensionality with `y`. Distinguish the cases in `hy : ∀ l, y l ∈ idAt D (· = v)`. Establish `hz : ∀ l, (mt V t₀⁻¹ *ᵥ y) l ∈ idAt D (· = v)` using `mulVec_mem' _ hy`. Establish `h1 : mt V t₀ *ᵥ (mt V t₀⁻¹ *ᵥ y) = y`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← mt_mul, mul_inv_cancel, mt_one, Matrix.one_mulVec]`. Establish `h2 : mt V (g * t₀) *ᵥ (mt V t₀⁻¹ *ᵥ y) = y`. Rewrite using `[mt_mul, ← Matrix.mulVec_mulVec, h1, hfix v hv y hy]`. Establish `a1` using `hmoves (· = v) _ hz`. Establish `a2` using `hmv₀ (· = v) _ hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a1` using `[h2]`. Rewrite `a2` using `[h1]`. Conclude with `a1.symm.trans a2`. Establish `hsupp : ∀ (N : Lat V), IsSelfDualC V N → y ∉ latV V N (· = v)` using `fun N hN hyN => hy (((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)).2 V).2.2.2 N y hN.1 |>.1 hyN).1`. Conclude with `iff_of_false (hsupp L hL) (hsupp L₀ hL₀)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinPl.BasePoint.exists_move : ∀ (D : D7) (V : HSp D) (Λ L₀ : Lat V) (β : GL (Fin V.rank) (Lev.EAf D)), IsSelfDualC V Λ → IsSelfDualC V L₀ → ∀ (J : Type) [Fintype J] (k : J → Type) [∀ i, Field (k i)] [∀ i, ValuativeRel (k i)] [∀ i, TopologicalSpace (k i)] [∀ i, IsNonarchimedeanLocalField (k i)] (q : ∀ i, SplitPt D (k i)), Function.Injective (fun i => (q i).v) → ∀ M : ∀ i, GL (Fin V.rank) (k i), ∃ t ∈ GfC V, ∃ L : Lat V, IsSelfDualC V L ∧ (∀ P, Moves V t Λ L P) ∧ (∀ v, (∀ i, v ≠ (q i).v) → latV V L (· = v) = latV V L₀ (· = v)) ∧ ∀ i, GlobalTheory.LocMod.MovedTo (GlobalTheory.LocMod.ofSplit (q i)) V t β (M i).val := by
   intro D V Λ L₀ β hΛ hL₀ J _ kk _ _ _ _ q hinj M

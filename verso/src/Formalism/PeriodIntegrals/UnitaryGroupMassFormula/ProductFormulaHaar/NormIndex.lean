@@ -14,54 +14,54 @@ variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchim
   [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-Conclude with `Valuation.isOpen_integer`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_integers : IsOpen ((𝒪[K] : Subring K) : Set K) := by
   exact Valuation.isOpen_integer
 
 /- English proof (translation)
-Conclude with `isCompact_iff_compactSpace.mpr (inferInstanceAs (CompactSpace 𝒪[K]))`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_integers : IsCompact ((𝒪[K] : Subring K) : Set K) := by
   exact isCompact_iff_compactSpace.mpr (inferInstanceAs (CompactSpace 𝒪[K]))
 
 /- English proof (translation)
-The claim follows from `MeasurableEmbedding.subtype_coe isOpen_integers.measurableSet`.
+A detailed English derivation is pending.
 -/
 private theorem measurableEmbedding_coe_integers :
     MeasurableEmbedding (Subtype.val : 𝒪[K] → K) :=
   MeasurableEmbedding.subtype_coe isOpen_integers.measurableSet
 
 /- English proof (translation)
-Conclude with `Measurable.subtype_mk ((measurable_const_add (c : K)).comp measurable_subtype_coe)`.
+A detailed English derivation is pending.
 -/
 private theorem measurable_integers_const_add (c : 𝒪[K]) :
     Measurable (fun x : 𝒪[K] => c + x) := by
   exact Measurable.subtype_mk ((measurable_const_add (c : K)).comp measurable_subtype_coe)
 
 /- English proof (translation)
-Conclude with `Measurable.subtype_mk ((measurable_add_const (c : K)).comp measurable_subtype_coe)`.
+A detailed English derivation is pending.
 -/
 private theorem measurable_integers_add_const (c : 𝒪[K]) :
     Measurable (fun x : 𝒪[K] => x + c) := by
   exact Measurable.subtype_mk ((measurable_add_const (c : K)).comp measurable_subtype_coe)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c => measurable_integers_const_add c, fun c => measurable_integers_add_const c⟩`.
+Supply the required witnesses or components.
 -/
 private theorem measurableAdd_integers : MeasurableAdd 𝒪[K] :=
   ⟨fun c => measurable_integers_const_add c, fun c => measurable_integers_add_const c⟩
 
 /- English proof (translation)
-Establish `he : MeasurableEmbedding (Subtype.val : 𝒪[K] → K)` using `measurableEmbedding_coe_integers`. Prove the components needed by the constructor for the conclusion. Introduce `g`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply (measurable_integers_const_add g) hs, he.comap_apply, he.comap_apply]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hset : Subtype.val '' ((fun x : 𝒪[K] => g + x) ⁻¹' s) = (fun y : K => (g : K) + y) ⁻¹' (Subtype.val '' s)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ show (g : K) + x ∈ Subtype.val '' s`. Conclude with `⟨g + x, hx, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, hz, hzy⟩`. Establish `hy : y ∈ 𝒪[K]`. Establish `hyz : y = (z : K) - g` using `by rw [hzy]; ring`. Rewrite using `[hyz]`. Conclude with `sub_mem z.2 g.2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨y, hy⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show g + ⟨y, hy⟩ ∈ s`. Establish `hgz : g + ⟨y, hy⟩ = z`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hzy]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try rfl`. Rewrite using `[hgz]`. Conclude with `hz`. Rewrite using `[hset, measure_preimage_add]`.
+A detailed English derivation is pending.
 -/
 theorem comap_isAddLeftInvariant (μ : Measure K) [μ.IsAddLeftInvariant] :
     (μ.comap (Subtype.val : 𝒪[K] → K)).IsAddLeftInvariant := by
@@ -95,29 +95,27 @@ theorem comap_isAddLeftInvariant (μ : Measure K) [μ.IsAddLeftInvariant] :
 end
 
 /- English proof (translation)
-Take `⟨u, hu⟩ : ∃ u : Kˣ, u = Units.mk0 (t : K) htK` from `⟨_, rfl⟩`. Rewrite using `[← hu]`. Establish `hut : (u : K) = t` using `by rw [hu, Units.val_mk0]`. Establish `hsmul : ∀ x : K, u • x = (t : K) * x` using `fun x => by`. Rewrite using `[Units.smul_def, hut, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hSo : IsOpen ((𝒪[K] : Subring K) : Set K)` using `isOpen_integers`. Establish `hSc : IsCompact ((𝒪[K] : Subring K) : Set K)` using `isCompact_integers`. Establish `huS : IsOpen (u • ((𝒪[K] : Subring K) : Set K))` using `hSo.smul u`. Establish `hsub : u • ((𝒪[K] : Subring K) : Set K) ⊆ ((𝒪[K] : Subring K) : Set K)`. Introduce and unpack `x ⟨s, hs, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h1 : (t : K) * s ∈ ((𝒪[K] : Subring K) : Set K)` using `(𝒪[K]).mul_mem t.2 hs`. Rewrite `h1` using `[← hsmul]`. Conclude with `h1`. Establish `hrange : u • ((𝒪[K] : Subring K) : Set K) ⊆ Set.range (Subtype.val : 𝒪[K] → K)`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨x, hsub hx⟩, rfl⟩`. Establish `hR : Set.range (Subtype.val : 𝒪[K] → K) = ((𝒪[K] : Subring K) : Set K)`. Conclude with `Subtype.range_coe`. Establish `hmem : ∀ y : 𝒪[K], y ∈ Ideal.span {t} ↔ (y : K) ∈ u • ((𝒪[K] : Subring K) : Set K)`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Ideal.mem_span_singleton', Set.mem_smul_set]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Use `⟨(a : K), a.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hsmul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Introduce and unpack `⟨s, hs, hy⟩`. Use `⟨⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hy, hsmul]`. Use `show s * (t : K) = (t : K) * s`. Expand and normalize the polynomial expressions, which then agree. Take `⟨H, hHdef⟩ : ∃ H : AddSubgroup 𝒪[K], H = (Ideal.span {t}).toAddSubgroup` from `⟨_, rfl⟩`. Rewrite using `[← hHdef]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hH : (H : Set 𝒪[K]) = Subtype.val ⁻¹' (u • ((𝒪[K] : Subring K) : Set K))`. Use extensionality with `y`. Rewrite using `[hHdef]`. Conclude with `hmem y`. Establish `hHo : IsOpen (H : Set 𝒪[K])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hH]`. Conclude with `huS.preimage continuous_subtype_val`. Establish `hHm : MeasurableSet (H : Set 𝒪[K])`. Rewrite using `[hH]`. Conclude with `measurable_subtype_coe huS.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (𝒪[K] ⧸ H)` using `AddSubgroup.quotient_finite_of_isOpen H hHo`. Establish `: H.FiniteIndex` using `AddSubgroup.finiteIndex_of_finite_quotient`. Establish `: MeasurableAdd 𝒪[K]` using `measurableAdd_integers`. Use `comap_isAddLeftInvariant (K := K) μ` as an intermediate fact. Establish `he : MeasurableEmbedding (Subtype.val : 𝒪[K] → K)` using `measurableEmbedding_coe_integers`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `AddSubgroup.index_mul_measure H hHm (μ.comap (Subtype.val : 𝒪[K] → K))`. Rewrite `key` using `[he.comap_apply, he.comap_apply, hH, Set.image_preimage_eq_inter_range, Set.inter_eq_left.mpr hrange, Set.image_univ, hR, ← distribHaarChar_mul μ u ((𝒪[K] : Subring K) : Set K), ← mul_assoc]`. Establish `hpos : μ ((𝒪[K] : Subring K) : Set K) ≠ 0` using `(hSo.measure_pos μ ⟨0, (𝒪[K]).zero_mem⟩).ne'`. Establish `hfin : μ ((𝒪[K] : Subring K) : Set K) ≠ ∞` using `(hSc.measure_lt_top (μ := μ)).ne`. Establish `hdiv` using `ENNReal.mul_div_cancel_right (a := (H.index : ℝ≥0∞) * (distribHaarChar K u : ℝ≥0∞)) hpos hfin`.
-
-Rewrite `hdiv` using `[key, ENNReal.div_self hpos hfin]`. Conclude with `hdiv.symm`.
+A detailed English derivation is pending.
 -/
 private theorem index_span_mul_distribHaarChar_eq_one {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [μ.IsAddHaarMeasure] [μ.Regular]
     (t : 𝒪[K]) (htK : (t : K) ≠ 0) :
@@ -186,11 +184,9 @@ private theorem index_span_mul_distribHaarChar_eq_one {K : Type} [Field K] [Valu
   exact hdiv.symm
 
 /- English proof (translation)
-Unfold `IndexFormula`. Introduce `K _ _ _ _ t ht`. Set `_ : MeasurableSpace K` to `borel K`. Establish `: BorelSpace K` using `⟨rfl⟩`. Establish `htK : (t : K) ≠ 0` using `by simpa using ht`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `index_span_mul_distribHaarChar_eq_one (K := K) (Measure.addHaar : Measure K) t htK`. Rewrite using `[modF_of_ne htK]`. Use `show ((distribHaarChar K (Units.mk0 (t : K) htK) : ℝ≥0) : ℝ) * ((Ideal.span {t}).toAddSubgroup.index : ℝ) = 1`. Establish `key' : ((Ideal.span {t}).toAddSubgroup.index : ℝ≥0) * distribHaarChar K (Units.mk0 (t : K) htK) = 1`. Conclude with `key` after adjusting the coercions.
-
-Rewrite using `[mul_comm]`. Conclude with `key'` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modulus_mul_card_quotient : IndexFormula := by
   unfold IndexFormula

@@ -24,19 +24,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.LossSum
 
 /- English proof (translation)
-Introduce `D w`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `ι s z a h classical`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp, Or.inl rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj]`. Take `⟨y1, e1, h1⟩` from `h j (Finset.mem_insert_self _ _)`. Take `⟨y2, e2, h2⟩` from `ih fun i hi => h i (Finset.mem_insert_of_mem hi)`. Use `⟨y1 + y2, by rw [map_add, e1, e2], ?_⟩` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hy1 : y1 = 0`. Substitute `hy1` using the available equality. Simplify using `using h2`. Distinguish the cases in `hy2 : y2 = 0`. Substitute `hy2` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using h1`. Establish `h1'` using `h1.resolve_left hy1`. Establish `h2'` using `h2.resolve_left hy2`. Distinguish the cases in `h3 : y1 + y2 = 0`. Conclude with `Or.inl h3`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `right`. Establish `h4` using `Formalism.AtG.ValuationJets.vw_add w y1 y2 hy1 hy2 h3`. Establish `h5 : ((min (vw w y1) (vw w y2) : ℤ) : ℝ) ≤ (vw w (y1 + y2) : ℝ)` using `by exact_mod_cast h4`. Move the coercions through the operations in `at h5`. Conclude with `le_trans (le_min h1' h2') h5`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q M hq`. Use `⟨((q : D.what₂.LL)⁻¹) ^ M, by push_cast; simp, Or.inr ?_⟩` and prove the remaining obligations. Establish `hq0 : ((q : D.what₂.LL)⁻¹) ≠ 0` using `inv_ne_zero (by exact_mod_cast hq.ne')`. Rewrite using `[GlobalTheory.ScalAA.vw_pow' w hq0, GlobalTheory.ScalAA.vw_inv']`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Both sides reduce to the same expression.
 
-Put the polynomial expressions in normal form. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem lossLe_sum_and_pow : ∀ {D : D7} (w : PlL D),
     (∀ {ι : Type} (s : Finset ι) (z : ι → ℂ) (a : ℝ), (∀ i ∈ s, LossLe w (z i) a) → LossLe w (∑ i ∈ s, z i) a) ∧

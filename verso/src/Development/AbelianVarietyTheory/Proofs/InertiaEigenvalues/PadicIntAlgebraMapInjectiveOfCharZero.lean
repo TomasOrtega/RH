@@ -6,9 +6,9 @@ open PowerSeries GlobalTheory.CycFr
 namespace GlobalTheory.CycFr
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `hx0`. Rewrite `hx` using `[PadicInt.unitCoeff_spec hx0, map_mul, map_pow, map_natCast]`. Establish `hu : IsUnit (algebraMap ℤ_[l] O (PadicInt.unitCoeff hx0 : ℤ_[l]))` using `(PadicInt.unitCoeff hx0).isUnit.map _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : (l : O) ^ x.valuation = 0` using `(mul_eq_zero.1 hx).resolve_left hu.ne_zero`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) (pow_eq_zero_iff'.1 hp).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem padicInt_algebraMap_injective_of_charZero {l : ℕ} [Fact l.Prime] (O : Type) [CommRing O]
     [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] : Function.Injective (algebraMap ℤ_[l] O) := by
@@ -22,7 +22,7 @@ theorem padicInt_algebraMap_injective_of_charZero {l : ℕ} [Fact l.Prime] (O : 
   exact (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) (pow_eq_zero_iff'.1 hp).1
 
 /- English proof (translation)
-Use `⟨a.order.toNat, a.divXPowOrder, X_pow_order_mul_divXPowOrder.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[constantCoeff_divXPowOrder]`. Conclude with `coeff_order ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_X_pow_mul_of_ne_zero {O : Type} [CommRing O] {a : O⟦X⟧} (ha : a ≠ 0) :
     ∃ (m : ℕ) (w : O⟦X⟧), a = X ^ m * w ∧ constantCoeff w ≠ 0 := by
@@ -31,17 +31,17 @@ theorem exists_eq_X_pow_mul_of_ne_zero {O : Type} [CommRing O] {a : O⟦X⟧} (h
   exact coeff_order ha
 
 /- English proof (translation)
-Distinguish the cases in `ha0 : a = 0`. Rewrite using `[ha0]`. Conclude with `dvd_zero _`. Take `⟨m, w, rfl, hw⟩` from `exists_eq_X_pow_mul_of_ne_zero ha0`. Establish `hm : 0 < m`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos m with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `only [pow_zero, one_mul] at h0`. Conclude with `absurd h0 hw`. Conclude with `h`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hpow : ∀ δ ∈ Δ, (δ : ℤ_[l]) ^ m = 1`. Introduce `δ hδ`. Take `⟨v, hv, hv0⟩` from `exists_act_X (O := O) (δ : ℤ_[l])`. Establish `e` using `ha δ hδ`. Rewrite `e` using `[map_mul, map_pow, hv, mul_pow, mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e'` using `mul_left_cancel₀ (pow_ne_zero m X_ne_zero) e`. Establish `e''` using `congrArg constantCoeff e'`. Rewrite `e''` using `[map_mul, map_pow, hv0, constantCoeff_act]`. Establish `h1 : (algebraMap ℤ_[l] O (δ : ℤ_[l])) ^ m = 1`. Establish `h2 : ((algebraMap ℤ_[l] O (δ : ℤ_[l])) ^ m - 1) * constantCoeff w = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_mul, one_mul, e'', sub_self]`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h2).resolve_right hw)`. Apply `padicInt_algebraMap_injective_of_charZero O` to reduce the goal to its premises. Rewrite using `[map_pow, h1, map_one]`. Establish `hexp : Monoid.exponent Δ ∣ m` using `Monoid.exponent_dvd_of_forall_pow_eq_one fun g => by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[hpow g g.2]`. Rewrite `hexp` using `[IsCyclic.exponent_eq_card]`. Conclude with `(pow_dvd_pow X (Nat.le_of_dvd hm hexp)).trans (dvd_mul_right _ _)`.
+A detailed English derivation is pending.
 -/
 theorem X_pow_card_dvd_of_invariant {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O]
     [CharZero O] [Algebra ℤ_[l] O] (Δ : Subgroup ℤ_[l]ˣ) [Finite Δ] (a : O⟦X⟧)
@@ -79,7 +79,7 @@ theorem X_pow_card_dvd_of_invariant {l : ℕ} [Fact l.Prime] {O : Type} [CommRin
   exact (pow_dvd_pow X (Nat.le_of_dvd hm hexp)).trans (dvd_mul_right _ _)
 
 /- English proof (translation)
-Rewrite using `[X_pow_dvd_iff]`. Introduce `m hm`. Simplify using `[map_sum, hm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem X_pow_dvd_mk_sub_sum {O : Type} [CommRing O] (c : ℕ → O) (N : ℕ) :
     (X : O⟦X⟧) ^ N ∣ PowerSeries.mk c - ∑ k ∈ Finset.range N, C (c k) * X ^ k := by
@@ -88,35 +88,31 @@ theorem X_pow_dvd_mk_sub_sum {O : Type} [CommRing O] (c : ℕ → O) (N : ℕ) :
   simp [map_sum, hm]
 
 /- English proof (translation)
-Establish `hd : 0 < Nat.card Δ` using `Nat.card_pos`. Take `⟨u, hu⟩` from `hj`. Establish `hjX0 : j X ≠ 0`. Introduce `h`. Rewrite `hu` using `[h, zero_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero _ X_ne_zero hu.symm`. Establish `hXj : (X : O⟦X⟧) ∣ j X`. Establish `e : j X = X ^ Nat.card Δ * ((u⁻¹ : O⟦X⟧ˣ) : O⟦X⟧)` using `by rw [← hu, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[e]`. Conclude with `(dvd_pow_self (X : O⟦X⟧) hd.ne').mul_right _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective j`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `b hb`. Assume the negation of the conclusion as `hb0`. Take `⟨m, w, rfl, hw⟩` from `exists_eq_X_pow_mul_of_ne_zero hb0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hb` using `[map_mul, map_pow]`. Break down `mul_eq_zero.1 hb with h | h` into its components or cases. Conclude with `pow_ne_zero m hjX0 h`. Apply `hw` to reduce the goal to its premises. Rewrite using `[← constantCoeff_algHom j hXj w, h, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hact : ∀ δ ∈ Δ, (act O (δ : ℤ_[l])).comp j = j` using `fun δ hδ => algHom_ext_X _ _ (by rw [AlgHom.comp_apply, hinv δ hδ]; exact hXj) (by rw [AlgHom.comp_apply, hinv δ hδ])`. Establish `hstep : ∀ q : O⟦X⟧, (∀ δ ∈ Δ, act O (δ : ℤ_[l]) q = q) → ∃ q' : O⟦X⟧, (∀ δ ∈ Δ, act O (δ : ℤ_[l]) q' = q') ∧ q = C (constantCoeff q) + j X * q'`. Introduce `q hq`. Establish `h0 : constantCoeff (q - C (constantCoeff q)) = 0` using `by simp`. Establish `hi : ∀ δ ∈ Δ, act O (δ : ℤ_[l]) (q - C (constantCoeff q)) = q - C (constantCoeff q)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `δ hδ`. Rewrite using `[map_sub, hq δ hδ, act_C]`. Take `⟨r, hr⟩` from `X_pow_card_dvd_of_invariant Δ _ h0 hi`. Establish `hq' : q - C (constantCoeff q) = j X * (↑u * r)` using `by rw [hr, ← mul_assoc, hu]`. Use `⟨↑u * r, fun δ hδ => ?_, by rw [← hq']; ring⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `mul_left_cancel₀ hjX0` to reduce the goal to its premises. Rewrite using `[← hq', ← hinv δ hδ, ← map_mul, ← hq', hi δ hδ]`. Use `choose f hf1 hf2 using hstep`. Use `⟨hinj, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨b, rfl⟩ δ hδ`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `DFunLike.congr_fun (hact δ hδ) b`. Introduce `ha`. Set `S` to `{q : O⟦X⟧ // ∀ δ ∈ Δ, act O (δ : ℤ_[l]) q = q}`. Set `nxt : S → S` to `fun q => ⟨f q.1 q.2, hf1 q.1 q.2⟩`. Set `sq : ℕ → S` to `fun n => nxt^[n] ⟨a, ha⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Set `c : ℕ → O` to `fun k => constantCoeff (sq k).1`. Establish `hexp : ∀ N, a = ∑ k ∈ Finset.range N, C (c k) * j X ^ k + j X ^ N * (sq N).1`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => simp [sq]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Consider the case `succ N ih`. Establish `e1 : (sq (N + 1)).1 = f (sq N).1 (sq N).2`. Simplify using `only [sq, Function.iterate_succ_apply']`. Both sides reduce to the same expression. Establish `e2 : (sq N).1 = C (c N) + j X * (sq (N + 1)).1`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Conclude with `hf2 _ _`. Combine the equalities or inequalities in the displayed calculation. Establish `hjsum : ∀ N, j (∑ k ∈ Finset.range N, C (c k) * X ^ k) = ∑ k ∈ Finset.range N, C (c k) * j X ^ k`. Introduce `N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[map_sum, algHom_C]`. Establish `hdvd : ∀ N, (X : O⟦X⟧) ^ N ∣ j (PowerSeries.mk c) - a`. Introduce `N`. Take `⟨r, hr⟩` from `X_pow_dvd_mk_sub_sum c N`. Establish `e3 : PowerSeries.mk c = ∑ k ∈ Finset.range N, C (c k) * X ^ k + X ^ N * r`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hr]`. Expand and normalize the polynomial expressions, which then agree. Establish `e4 : j (PowerSeries.mk c) - a = j X ^ N * (j r - (sq N).1)` using `by conv_lhs => rw [e3, map_add, map_mul, map_pow, hjsum, hexp N]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e4]`.
-
-Conclude with `(pow_dvd_pow_of_dvd hXj N).trans (dvd_mul_right _ _)`. Use `⟨PowerSeries.mk c, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Establish `h'` using `(X_pow_dvd_iff.1 (hdvd (n + 1))) n (Nat.lt_succ_self n)`. Rewrite `h'` using `[map_sub, sub_eq_zero]`.
-
-Conclude with `h'`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_and_range_eq_invariants {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O]
     [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] (Δ : Subgroup ℤ_[l]ˣ) [Finite Δ]

@@ -19,7 +19,7 @@ open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 open GlobalTheory.LeviShift
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LeviVec.exists_levi_vec` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLeviLogModulusVector.lean&line=318#L318)
 -/

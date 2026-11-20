@@ -16,11 +16,11 @@ variable {K V W : Type*} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensio
   [AddCommGroup W] [Module K W] [FiniteDimensional K W]
 
 /- English proof (translation)
-Substitute `hP` using the available equality. Rewrite using `[LinearMap.det_eq_det_mul_det (LinearMap.ker L) f hf]`. Use `congr 1`. Use `set e := L.quotKerEquivOfSurjective hL`. Establish `key : (e : (V ⧸ LinearMap.ker L) →ₗ[K] W) ∘ₗ (LinearMap.ker L).mapQ (LinearMap.ker L) f hf = F ∘ₗ (e : (V ⧸ LinearMap.ker L) →ₗ[K] W)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `[e, h]`. Establish `hF : F = (e : (V ⧸ LinearMap.ker L) →ₗ[K] W) ∘ₗ (LinearMap.ker L).mapQ (LinearMap.ker L) f hf ∘ₗ (e.symm : W →ₗ[K] (V ⧸ LinearMap.ker L))`. Rewrite using `[← LinearMap.comp_assoc, key, LinearMap.comp_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `w`. Simplify using the standard rewrite rules. Rewrite using `[hF, LinearMap.det_conj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_surj (f : V →ₗ[K] V) (F : W →ₗ[K] W) (L : V →ₗ[K] W)
     (hL : Function.Surjective L) (h : ∀ v, L (f v) = F (L v)) (P : Submodule K V) (hP : P = LinearMap.ker L)
@@ -46,27 +46,25 @@ end Surj
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Establish `hu : IsUnit F` using `(LinearMap.isUnit_iff_isUnit_det F).mpr (by rw [hdet]; exact isUnit_one)`. Establish `hFinj : Function.Injective F` using `((Module.End.isUnit_iff F).mp hu).1`. Establish `hFKinj : Function.Injective (F.restrict hK)`. Introduce `a b hab`. Conclude with `Subtype.ext (hFinj (congrArg Subtype.val hab))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set eK := LinearEquiv.ofInjectiveEndo (F.restrict hK) hFKinj with heK`. Establish `hI : ∀ y ∈ LinearMap.range D, F y ∈ LinearMap.range D`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `⟨t • F w, by rw [map_smul, hFD]⟩`. Establish `htK : ∀ y ∈ LinearMap.ker D, (t • F) y ∈ LinearMap.ker D` using `fun y hy => Submodule.smul_mem _ t (hK y hy)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `det_surj (t • F) (F.restrict hI) D.rangeRestrict D.surjective_rangeRestrict (fun v => Subtype.ext (by show D ((t • F) v) = F (D v)`. Rewrite using `[LinearMap.smul_apply, map_smul, hFD])) (LinearMap.ker D)`. Use the proof step `(LinearMap.ker_rangeRestrict D).symm htK`. Establish `hres : (t • F).restrict htK = t • F.restrict hK` using `LinearMap.ext fun y => rfl`. Rewrite `h3` using `[hres, LinearMap.det_smul, LinearMap.det_smul, hdet]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `ψ' : ↥(LinearMap.ker D) →ₗ[K] Module.Dual K W` to `B.flip ∘ₗ (LinearMap.ker D).subtype`. Establish `hψ'inj : Function.Injective ψ'`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `b hb`. Conclude with `Subtype.ext (hnd b (fun a => LinearMap.congr_fun hb a))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ : W →ₗ[K] Module.Dual K ↥(LinearMap.ker D)` to `ψ'.dualMap ∘ₗ (Module.evalEquiv K W).toLinearMap`. Establish `hψ : ∀ w b, ψ w b = B w b` using `fun w b => rfl`. Establish `hψsurj : Function.Surjective ψ` using `(LinearMap.dualMap_surjective_of_injective hψ'inj).comp (Module.evalEquiv K W).surjective`. Establish `hfψ : ∀ w, ψ (F w) = (eK.symm : ↥(LinearMap.ker D) →ₗ[K] ↥(LinearMap.ker D)).dualMap (ψ w)`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `b`. Rewrite using `[LinearMap.dualMap_apply, hψ, hψ]`. Establish `hb : (b : W) = F ((eK.symm b : ↥(LinearMap.ker D)) : W)` using `congrArg Subtype.val (eK.apply_symm_apply b).symm`. Rewrite using `[hb]`. Conclude with `hB w _`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : LinearMap.ker ψ = LinearMap.range D`. Use `symm`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `b`. Rewrite using `[hψ, LinearMap.zero_apply]`. Conclude with `hBD a b (LinearMap.mem_ker.mp b.2)`. Establish `e1` using `LinearMap.finrank_range_add_finrank_ker ψ`. Establish `e2` using `LinearMap.finrank_range_add_finrank_ker D`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1` using `[LinearMap.range_eq_top.mpr hψsurj, finrank_top, Subspace.dual_finrank_eq]`. Use linear arithmetic over natural numbers and integers. Establish `h4` using `det_surj F ((eK.symm : ↥(LinearMap.ker D) →ₗ[K] ↥(LinearMap.ker D)).dualMap) ψ hψsurj hfψ (LinearMap.range D) hker.symm hI`. Rewrite `h4` using `[LinearMap.det_dualMap, hdet]`. Establish `hs : LinearMap.det (eK.symm : ↥(LinearMap.ker D) →ₗ[K] ↥(LinearMap.ker D)) * LinearMap.det (F.restrict hK) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← LinearMap.det_comp]`. Establish `hid : (eK.symm : ↥(LinearMap.ker D) →ₗ[K] ↥(LinearMap.ker D)) ∘ₗ F.restrict hK = LinearMap.id` using `LinearMap.ext fun y => eK.symm_apply_apply y`. Rewrite using `[hid, LinearMap.det_id]`. Establish `hdI : LinearMap.det (F.restrict hI) = LinearMap.det (F.restrict hK)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite `h3` using `[hdI]`. Rewrite using `[pow_sub₀ t ht (Submodule.finrank_le _), eq_mul_inv_iff_mul_eq₀ (pow_ne_zero _ ht)]`. Take the linear combination `-h3`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem det_sq_lemma {K W : Type*} [Field K] [AddCommGroup W] [Module K W]
     [FiniteDimensional K W] (F D : W →ₗ[K] W) (B : W →ₗ[K] W →ₗ[K] K) (t : K) (ht : t ≠ 0)
@@ -143,15 +141,13 @@ private theorem det_sq_lemma {K W : Type*} [Field K] [AddCommGroup W] [Module K 
   linear_combination -h3
 
 /- English proof (translation)
-Set `φ : Matrix (Fin n) (Fin n) k →ₐ[k] Module.End k (Fin n → k)` to `(Matrix.toLinAlgEquiv' : Matrix (Fin n) (Fin n) k ≃ₐ[k] Module.End k (Fin n → k)).toAlgHom`. Set `Z'` to `Z.map φ`. Establish `hcomm : ∀ a c : Z', a * c = c * a`. Introduce and unpack `⟨_, z1, hz1, rfl⟩ ⟨_, z2, hz2, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show φ z1 * φ z2 = φ z2 * φ z1`. Rewrite using `[← map_mul, ← map_mul, hZ.1 z1 hz1 z2 hz2]`. Use `letI : CommRing Z' := { (inferInstance : Ring Z') with mul_comm := hcomm }`. Use `haveI : IsReduced Z' := by`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨_, z, hz, rfl⟩ ⟨m, hm⟩`. Establish `hzm : (⟨z, hz⟩ : Z) ^ m = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `(Matrix.toLinAlgEquiv' : Matrix (Fin n) (Fin n) k ≃ₐ[k] Module.End k (Fin n → k)).injective` to reduce the goal to its premises. Establish `h1` using `congrArg Subtype.val hm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h1` using `[φ]`. Establish `h2` using `hZ.2.eq_zero _ ⟨m, hzm⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h3 : z = 0` using `congrArg Subtype.val h2`. Simplify using `[h3]`.
-
-Use `haveI : IsArtinianRing Z' := IsArtinianRing.of_finite k Z'`. Use `haveI : IsSemisimpleRing Z' := IsArtinianRing.isSemisimpleRing_of_isReduced Z'`. Conclude with `inferInstance`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem det_sq_lemma_3 (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) :
     IsSemisimpleModule ↥(Z.map (Matrix.toLinAlgEquiv' : Matrix (Fin n) (Fin n) k ≃ₐ[k]
@@ -182,41 +178,37 @@ private theorem det_sq_lemma_3 (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ
   exact inferInstance
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hb0`. Set `φ : Matrix (Fin n) (Fin n) k →ₐ[k] Module.End k (Fin n → k)` to `(Matrix.toLinAlgEquiv' : Matrix (Fin n) (Fin n) k ≃ₐ[k] Module.End k (Fin n → k)).toAlgHom`. Establish `hφ : ∀ z v, φ z v = z *ᵥ v` using `fun z v => rfl`. Set `Z'` to `Z.map φ`. Use `haveI : IsSemisimpleModule Z' (Fin n → k) := det_sq_lemma_3 Z hZ`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hzb : ∀ z ∈ Z, z * b = b * z` using `fun z hz => (Subalgebra.mem_centralizer_iff k).mp hb z hz`. Set `β : (Fin n → k) →ₗ[Z'] (Fin n → k)` to `{ toFun := fun v => b *ᵥ v map_add' := fun u v => Matrix.mulVec_add b u v map_smul' := by`. Introduce and unpack `⟨_, z, hz, rfl⟩ v`. Use `show b *ᵥ (φ z v) = φ z (b *ᵥ v)`. Rewrite using `[hφ, hφ, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hzb z hz] }`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ : ∀ v, β v = b *ᵥ v` using `fun v => rfl`. Establish `hβ0 : β ≠ 0`. Introduce `h0`. Apply `hb0` to reduce the goal to its premises. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use `LinearMap.congr_fun h0 v` as an intermediate fact. Rewrite `this` using `[hβ]`. Simplify `this` using `[Matrix.toLin'_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Wc, hWc⟩` from `exists_isCompl (LinearMap.ker β)`. Take `⟨U, hU⟩` from `exists_isCompl (LinearMap.range β)`. Set `σ : ↥Wc ≃ₗ[Z'] ↥(LinearMap.range β)` to `(Submodule.quotientEquivOfIsCompl _ _ hWc).symm.trans β.quotKerEquivRange`. Establish `hσ : ∀ w : ↥Wc, ((σ w : ↥(LinearMap.range β)) : Fin n → k) = β w`. Introduce `w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[σ, Submodule.quotientEquivOfIsCompl_symm_apply, LinearMap.quotKerEquivRange_apply_mk]`. Set `π` to `(LinearMap.range β).projectionOnto U hU`. Set `pW` to `Wc.projectionOnto (LinearMap.ker β) hWc.symm`. Set `A : (Fin n → k) →ₗ[Z'] (Fin n → k)` to `Wc.subtype ∘ₗ (σ.symm : _ →ₗ[Z'] _) ∘ₗ π`. Set `P : (Fin n → k) →ₗ[Z'] (Fin n → k)` to `Wc.subtype ∘ₗ pW`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hAP : A ∘ₗ β = P`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use `show ((σ.symm (π (β v)) : ↥Wc) : Fin n → k) = (pW v : Fin n → k)`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : ((π (β v) : ↥(LinearMap.range β)) : Fin n → k) = β v` using `congrArg Subtype.val (Submodule.projectionOnto_apply_left hU ⟨β v, LinearMap.mem_range_self β v⟩)`. Rewrite using `[h1, hσ]`. Establish `hsplit` using `Submodule.projection_add_projection_eq_self hWc.symm v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hk : β ((LinearMap.ker β).projection Wc hWc.symm.symm v) = 0` using `LinearMap.mem_ker.mp (Submodule.projection_apply_mem _ v)`. Use `conv_lhs => rw [← hsplit]`. Rewrite using `[map_add, hk, add_zero]`. Both sides reduce to the same expression. Set `Pk : (Fin n → k) →ₗ[k] (Fin n → k)` to `P.restrictScalars k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPk : ∀ v, Pk v = P v` using `fun v => rfl`. Establish `hPidem : IsIdempotentElem Pk`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Conclude with `congrArg Subtype.val (Submodule.projectionOnto_apply_left hWc.symm (pW v))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hWc0 : Wc ≠ ⊥`. Introduce `hW`. Apply `hβ0` to reduce the goal to its premises. Establish `htop` using `hWc.sup_eq_top`. Rewrite `htop` using `[hW, sup_bot_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `LinearMap.ker_eq_top.mp htop`. Establish `hP0 : Pk ≠ 0`. Introduce `hP`. Take `⟨w, hw, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hWc0`. Apply `hw0` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h1` using `LinearMap.congr_fun hP w`. Establish `h2 : ((pW w : ↥Wc) : Fin n → k) = w` using `congrArg Subtype.val (Submodule.projectionOnto_apply_left hWc.symm ⟨w, hw⟩)`. Rewrite using `[← h2]`. Conclude with `h1`. Establish `htrP : LinearMap.trace k (Fin n → k) Pk ≠ 0` using `fun ht0 => hP0 ((LinearMap.IsIdempotentElem.trace_eq_zero_iff hPidem).mp ht0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `Ak : (Fin n → k) →ₗ[k] (Fin n → k)` to `A.restrictScalars k`. Set `a` to `LinearMap.toMatrix' Ak`. Establish `ha : a ∈ Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `z hz`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_mul, Matrix.toLin'_toMatrix']`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Establish `hs` using `A.map_smul (⟨φ z, Subalgebra.mem_map.mpr ⟨z, hz, rfl⟩⟩ : Z') v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `A (φ z v) = φ z (A v) at hs`. Use `show Matrix.toLin' z (A v) = A (Matrix.toLin' z v)`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← hφ, ← hφ, hs]`. Establish `htr : Matrix.trace (a * b) = LinearMap.trace k (Fin n → k) Pk`. Rewrite using `[LinearMap.trace_eq_matrix_trace k (Pi.basisFun k (Fin n)), LinearMap.toMatrix_eq_toMatrix']`.
-
-Use `congr 1`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_toMatrix', Matrix.toLin'_toMatrix']`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
-
-Use `show A (β v) = P v`. Rewrite using `[← hAP]`. Both sides reduce to the same expression. Conclude with `htrP (htr ▸ h a ha)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem det_sq_lemma_2 [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z)
     (b : Matrix (Fin n) (Fin n) k) (hb : b ∈ Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)))
@@ -323,33 +315,29 @@ private theorem det_sq_lemma_2 [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (F
   exact htrP (htr ▸ h a ha)
 
 /- English proof (translation)
-Establish `hxC : x ∈ Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))` using `(Subalgebra.mem_centralizer_iff k).mpr (fun a ha => hx a ha)`. Use `set S := Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)) with hS`. Use `set C := Subalgebra.toSubmodule S with hC`. Set `Dx : Matrix (Fin n) (Fin n) k →ₗ[k] Matrix (Fin n) (Fin n) k` to `LinearMap.mulRight k x - LinearMap.mulLeft k x`. Establish `hDx : ∀ y, Dx y = y * x - x * y` using `fun y => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hDC : ∀ y ∈ C, Dx y ∈ C` using `fun y hy => by`. Rewrite using `[hDx]`. Conclude with `S.sub_mem (S.mul_mem hy hxC) (S.mul_mem hxC hy)`. Set `F` to `(adL g).restrict (cC_inv Z g hg)`. Set `D` to `Dx.restrict hDC`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `B : ↥C →ₗ[k] ↥C →ₗ[k] k` to `((LinearMap.mul k (Matrix (Fin n) (Fin n) k)).compr₂ (Matrix.traceLinearMap (Fin n) k k)).compl₁₂ C.subtype C.subtype`. Establish `hBapp : ∀ a b : ↥C, B a b = Matrix.trace ((a : Matrix (Fin n) (Fin n) k) * (b : Matrix (Fin n) (Fin n) k))` using `fun a b => rfl`. Establish `hFD : ∀ w, F (D w) = t • D (F w)`. Introduce `w`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show adL g ((w : Matrix (Fin n) (Fin n) k) * x - x * (w : Matrix (Fin n) (Fin n) k)) = t • (adL g (w : Matrix (Fin n) (Fin n) k) * x - x * adL g (w : Matrix (Fin n) (Fin n) k))`. Rewrite using `[adL_apply, adL_apply]`. Establish `e2 : ∀ P : Matrix (Fin n) (Fin n) k, t • (P * x - x * P) = P * (t • x) - (t • x) * P`. Introduce `P`. Rewrite using `[smul_sub, mul_smul_comm, smul_mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e2, ← hgx]`. Simplify using `only [mul_assoc, mul_sub, sub_mul, Units.inv_mul_cancel_left]`. Establish `hB : ∀ a b, B (F a) (F b) = B a b`. Introduce `a b`. Rewrite using `[hBapp, hBapp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show Matrix.trace (adL g (a : Matrix (Fin n) (Fin n) k) * adL g (b : Matrix (Fin n) (Fin n) k)) = Matrix.trace ((a : Matrix (Fin n) (Fin n) k) * (b : Matrix (Fin n) (Fin n) k))`. Rewrite using `[adL_apply, adL_apply]`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Rewrite using `[Matrix.trace_mul_comm]`. Simplify using `only [mul_assoc, Units.inv_mul, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hBD : ∀ a b, D b = 0 → B (D a) b = 0`. Introduce `a b hb`. Establish `h0 : (b : Matrix (Fin n) (Fin n) k) * x - x * (b : Matrix (Fin n) (Fin n) k) = 0` using `congrArg Subtype.val hb`. Establish `hb' : (b : Matrix (Fin n) (Fin n) k) * x = x * (b : Matrix (Fin n) (Fin n) k)` using `sub_eq_zero.mp h0`. Rewrite using `[hBapp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `show Matrix.trace (((a : Matrix (Fin n) (Fin n) k) * x - x * (a : Matrix (Fin n) (Fin n) k)) * (b : Matrix (Fin n) (Fin n) k)) = 0`. Rewrite using `[sub_mul, Matrix.trace_sub, sub_eq_zero, mul_assoc x, Matrix.trace_mul_comm x, mul_assoc (a : Matrix (Fin n) (Fin n) k) (b : Matrix (Fin n) (Fin n) k), hb', ← mul_assoc]`. Establish `hnd : ∀ b, (∀ a, B a b = 0) → b = 0`. Introduce `b h`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `det_sq_lemma_2 Z hZ b b.2 (fun a ha => h ⟨a, ha⟩)`. Establish `hK : ∀ y ∈ LinearMap.ker D, F y ∈ LinearMap.ker D`. Introduce `y hy`. Rewrite `hy`, the goal using `[LinearMap.mem_ker]`. Use `hFD y` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `this` using `[hy, map_zero]`. Conclude with `(smul_eq_zero.mp this.symm).resolve_left ht`. Establish `key` using `det_sq_lemma F D B t ht hFD hB hBD hnd (det_C Z hZ g hg) hK`. Establish `hmap : (LinearMap.ker D).map C.subtype = cA Z x`. Use extensionality with `y`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Simplify using `only [Submodule.mem_map, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Establish `h0 : (z : Matrix (Fin n) (Fin n) k) * x - x * (z : Matrix (Fin n) (Fin n) k) = 0` using `congrArg Subtype.val hz`. Conclude with `⟨fun a ha => (Subalgebra.mem_centralizer_iff k).mp z.2 a ha, sub_eq_zero.mp h0⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨hyB, hyx⟩`. Establish `hyC : y ∈ C` using `(Subalgebra.mem_centralizer_iff k).mpr (fun a ha => hyB a ha)`. Conclude with `⟨⟨y, hyC⟩, Subtype.ext (sub_eq_zero.mpr hyx), rfl⟩`. Set `e : ↥(LinearMap.ker D) ≃ₗ[k] ↥(cA Z x)` to `(Submodule.equivMapOfInjective C.subtype C.injective_subtype (LinearMap.ker D)).trans (LinearEquiv.ofEq _ _ hmap)`. Establish `hG : (adL g).restrict (cA_inv Z x g hg t ht hgx) = (e : ↥(LinearMap.ker D) →ₗ[k] ↥(cA Z x)) ∘ₗ F.restrict hK ∘ₗ (e.symm : ↥(cA Z x) →ₗ[k] ↥(LinearMap.ker D))`.
-
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Take `⟨z, rfl⟩` from `e.surjective y`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
-
-Establish `hfr : finrank k ↥S = finrank k ↥C` using `rfl`. Rewrite using `[hG, LinearMap.det_conj, ← LinearEquiv.finrank_eq e, hfr]`. Conclude with `key`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_sq [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (x : Matrix (Fin n) (Fin n) k)
     (hx : x ∈ Bz Z) (g : GL (Fin n) k) (hg : g ∈ Gz Z) (t : k) (ht : t ≠ 0) (hgx : g.val * x * g⁻¹.val = t • x) :

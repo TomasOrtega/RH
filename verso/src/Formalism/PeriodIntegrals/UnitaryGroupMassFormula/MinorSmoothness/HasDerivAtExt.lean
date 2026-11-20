@@ -17,22 +17,22 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv (Hpk_sq k r)`.
+A detailed English derivation is pending.
 -/
 lemma hpk_inv : (Hpk k r)⁻¹ = Hpk k r := Matrix.inv_eq_right_inv (Hpk_sq k r)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨Hpk k r, Hpk k r, Hpk_sq k r, Hpk_sq k r⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 lemma hpk_unit : IsUnit (Hpk k r) := ⟨⟨Hpk k r, Hpk k r, Hpk_sq k r, Hpk_sq k r⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, Hpk_sq, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma hpk_hh (A : Mx k r) : Hpk k r * (Hpk k r * A) = A := by rw [← mul_assoc, Hpk_sq, one_mul]
 
 /- English proof (translation)
-Unfold `hpart1`. Rewrite using `[hpk_inv]`. Establish `hs : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Simplify using `only [conjTranspose_smul, conjTranspose_sub, conjTranspose_mul, conjTranspose_conjTranspose, Hpk_herm, hs, mul_smul_comm, smul_mul_assoc, mul_sub, sub_mul, mul_assoc, hpk_hh, Hpk_sq, mul_one]`. Rewrite using `[← smul_neg, neg_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma hpart1_skew (Z : Mx k r) :
     (hpart1 (Hpk k r) Z)ᴴ = -(Hpk k r * hpart1 (Hpk k r) Z * Hpk k r) := by
@@ -44,7 +44,7 @@ lemma hpart1_skew (Z : Mx k r) :
   rw [← smul_neg, neg_sub]
 
 /- English proof (translation)
-Unfold `hpart2`. Rewrite using `[hpk_inv]`. Establish `hs : star (1 / (2 * Complex.I) : ℂ) = -(1 / (2 * Complex.I))` using `by simp`. Simplify using `only [conjTranspose_smul, conjTranspose_add, conjTranspose_mul, conjTranspose_conjTranspose, Hpk_herm, hs, mul_smul_comm, smul_mul_assoc, mul_add, add_mul, mul_assoc, hpk_hh, Hpk_sq, mul_one]`. Rewrite using `[neg_smul, add_comm Zᴴ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma hpart2_skew (Z : Mx k r) :
     (hpart2 (Hpk k r) Z)ᴴ = -(Hpk k r * hpart2 (Hpk k r) Z * Hpk k r) := by
@@ -56,7 +56,7 @@ lemma hpart2_skew (Z : Mx k r) :
   rw [neg_smul, add_comm Zᴴ]
 
 /- English proof (translation)
-Rewrite using `[conjTranspose_smul, hX]`. Simplify using `[Complex.star_def, Complex.conj_ofReal, mul_smul_comm, smul_mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma skew_real (X : Mx k r) (hX : Xᴴ = -(Hpk k r * X * Hpk k r)) (t : ℝ) :
     ((t : ℂ) • X)ᴴ = -(Hpk k r * ((t : ℂ) • X) * Hpk k r) := by
@@ -64,9 +64,9 @@ lemma skew_real (X : Mx k r) (hX : Xᴴ = -(Hpk k r * X * Hpk k r)) (t : ℝ) :
   simp [Complex.star_def, Complex.conj_ofReal, mul_smul_comm, smul_mul_assoc]
 
 /- English proof (translation)
-Use `show (NormedSpace.exp Y)ᴴ * Hpk k r * NormedSpace.exp Y = Hpk k r`. Establish `e1 : Yᴴ = Hpk k r * (-Y) * (Hpk k r)⁻¹`. Rewrite using `[hY, hpk_inv, mul_neg, neg_mul]`. Rewrite using `[← Matrix.exp_conjTranspose, e1, Matrix.exp_conj _ _ hpk_unit, hpk_inv]`. Simplify using `only [mul_assoc, hpk_hh]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.refl Y).neg_left, neg_add_cancel, NormedSpace.exp_zero, mul_one]`.
+A detailed English derivation is pending.
 -/
 lemma exp_mem_UH (Y : Mx k r) (hY : Yᴴ = -(Hpk k r * Y * Hpk k r)) :
     NormedSpace.exp Y ∈ UH (Hpk k r) := by
@@ -78,21 +78,19 @@ lemma exp_mem_UH (Y : Mx k r) (hY : Yᴴ = -(Hpk k r * Y * Hpk k r)) :
   rw [← Matrix.exp_add_of_commute _ _ (Commute.refl Y).neg_left, neg_add_cancel, NormedSpace.exp_zero, mul_one]
 
 /- English proof (translation)
-Use `set P : Mx k r := Matrix.single c c 1 with hPdef`. Establish `hYP : Y * P = 0`. Use extensionality with `x y`. Simplify using `only [hPdef, Matrix.mul_apply, Matrix.single_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero (fun j _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[← h.1, hY, mul_one]`. Conclude with `mul_zero _`. Establish `hne : NormedSpace.exp Y ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : NormedSpace.exp (-Y) * NormedSpace.exp Y = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl Y)), neg_add_cancel, NormedSpace.exp_zero]`. Rewrite `hc` using `[h0, Matrix.mul_zero]`. Use `congrFun (congrFun hc ⟨0, by omega⟩) ⟨0, by omega⟩` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsum : Summable (fun n : ℕ => ((n.factorial : ℂ)⁻¹) • Y ^ n)`. Assume the negation of the conclusion as `hns`. Apply `hne` to reduce the goal to its premises. Rewrite using `[congrFun (NormedSpace.exp_eq_tsum ℂ) Y]`. Conclude with `tsum_eq_zero_of_not_summable hns`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hhas : HasSum (fun n : ℕ => ((n.factorial : ℂ)⁻¹) • Y ^ n) (NormedSpace.exp Y)`. Use `hsum.hasSum` as an intermediate fact. Rewrite `this` using `[← congrFun (NormedSpace.exp_eq_tsum ℂ) Y]`. Then use the resulting hypothesis. Establish `h1` using `hhas.mul_right P`. Establish `h2 : HasSum (fun n : ℕ => ((n.factorial : ℂ)⁻¹) • Y ^ n * P) P`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `hasSum_single (f := fun n : ℕ => ((n.factorial : ℂ)⁻¹) • Y ^ n * P) 0 (by` as an intermediate fact. Introduce `m hm`. Take `⟨m', rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hm`. Rewrite using `[Matrix.smul_mul, pow_succ, Matrix.mul_assoc, hYP, Matrix.mul_zero, smul_zero])`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Establish `hEP : NormedSpace.exp Y * P = P` using `h1.unique h2`. Establish `hPv : P *ᵥ bvec c = bvec c`. Use extensionality with `x`. Distinguish the cases in `h : x = c`. Substitute `h` using the available equality.
-
-Simplify using `[hPdef, bvec, Matrix.mulVec, dotProduct, Matrix.single_apply, Pi.single_apply]`. Simplify using `[hPdef, bvec, Matrix.mulVec, dotProduct, Pi.single_apply, h, Ne.symm h]`. Rewrite using `[← hPv, Matrix.mulVec_mulVec, hEP]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exp_fix (Y : Mx k r) (c : Fin (2 * r + k + 1)) (hY : ∀ x, Y x c = 0) :
     NormedSpace.exp Y *ᵥ bvec c = bvec c := by
@@ -136,9 +134,9 @@ lemma exp_fix (Y : Mx k r) (c : Fin (2 * r + k + 1)) (hY : ∀ x, Y x c = 0) :
   rw [← hPv, Matrix.mulVec_mulVec, hEP]
 
 /- English proof (translation)
-Simplify using `only [Glev, UH, Set.mem_setOf_eq] at hg hh ⊢`. Take `⟨hgU, hgF⟩` from `hg`. Take `⟨hhU, hhF⟩` from `hh`. Use `⟨?_, fun a ha => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_mul, show hᴴ * gᴴ * Hpk k r * (g * h) = hᴴ * (gᴴ * Hpk k r * g) * h by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc], hgU, hhU]`. Rewrite using `[← Matrix.mulVec_mulVec, (hhF a ha).1, (hgF a ha).1]`. Rewrite using `[← Matrix.mulVec_mulVec, (hhF a ha).2, (hgF a ha).2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma glev_mul {i : Fin (r + 1)} {g h : Mx k r} (hg : g ∈ Glev k r i) (hh : h ∈ Glev k r i) :
     g * h ∈ Glev k r i := by
@@ -152,7 +150,7 @@ lemma glev_mul {i : Fin (r + 1)} {g h : Mx k r} (hg : g ∈ Glev k r i) (hh : h 
   · rw [← Matrix.mulVec_mulVec, (hhF a ha).2, (hgF a ha).2]
 
 /- English proof (translation)
-Simplify using `only [Glev, Set.mem_setOf_eq]`. Use `⟨exp_mem_UH _ (skew_real X hX t), fun a ha => ⟨exp_fix _ _ fun x => ?_, exp_fix _ _ fun x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, (hc a ha x).1, smul_zero]`. Rewrite using `[Matrix.smul_apply, (hc a ha x).2, smul_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma exp_mem_glev (i : Fin (r + 1)) (X : Mx k r) (hX : Xᴴ = -(Hpk k r * X * Hpk k r))
     (hc : ∀ a : Fin r, a.val < i.val → ∀ x, X x (eI k r a) = 0 ∧ X x (esI k r a) = 0) (t : ℝ) :
@@ -163,9 +161,9 @@ lemma exp_mem_glev (i : Fin (r + 1)) (X : Mx k r) (hX : Xᴴ = -(Hpk k r * X * H
   · rw [Matrix.smul_apply, (hc a ha x).2, smul_zero]
 
 /- English proof (translation)
-Establish `hp` using `p.isLt`. Establish `ha'` using `a.isLt`. Establish `hi` using `i.isLt`. Unfold `mdim at hp`. Simplify using `only [Hpk, posL, eI, esI, Fin.mk.injEq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `constructor <;> split_ifs <;> first | rfl | (exfalso; omega)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma hpk_zero (i : Fin (r + 1)) (p : Fin (mdim k r i)) (a : Fin r) (ha : a.val < i.val) :
     Hpk k r (posL k r i p) (eI k r a) = 0 ∧ Hpk k r (posL k r i p) (esI k r a) = 0 := by
@@ -177,11 +175,11 @@ lemma hpk_zero (i : Fin (r + 1)) (p : Fin (mdim k r i)) (a : Fin r) (ha : a.val 
   constructor <;> split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Simplify using `[Matrix.single_apply, hcq, Ne.symm hcq]`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l = posL k r i p`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hl, hHc, mul_zero]`. Establish `h0 : (Hpk k r * (Matrix.single (posL k r i p) (posL k r i q) (1 : ℂ))ᴴ) x l = 0`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.conjTranspose_apply, Matrix.single_apply, hl, Ne.symm hl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma unit_col (i : Fin (r + 1)) (p q : Fin (mdim k r i)) (c : Fin (2 * r + k + 1))
     (hcq : c ≠ posL k r i q) (hHc : Hpk k r (posL k r i p) c = 0) (x : Fin (2 * r + k + 1)) :
@@ -200,9 +198,9 @@ lemma unit_col (i : Fin (r + 1)) (p q : Fin (mdim k r i)) (c : Fin (2 * r + k + 
       rw [h0, zero_mul]
 
 /- English proof (translation)
-Establish `hq` using `q.isLt`. Establish `ha'` using `a.isLt`. Unfold `mdim at hq`. Apply the tactic sequence `refine ⟨fun h => ?_, fun h => ?_⟩ <;>`. Establish `h2` using `congrArg Fin.val h`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [eI, esI, posL] at h2`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma posL_ne (i : Fin (r + 1)) (q : Fin (mdim k r i)) (a : Fin r) (ha : a.val < i.val) :
     eI k r a ≠ posL k r i q ∧ esI k r a ≠ posL k r i q := by
@@ -215,13 +213,11 @@ lemma posL_ne (i : Fin (r + 1)) (q : Fin (mdim k r i)) (a : Fin r) (ha : a.val <
     omega
 
 /- English proof (translation)
-Establish `key : ∀ a : Fin r, a.val < i.val → ∀ x c, (c = eI k r a ∨ c = esI k r a) → (Matrix.single (posL k r i p) (posL k r i q) (1 : ℂ)) x c = 0 ∧ (Hpk k r * (Matrix.single (posL k r i p) (posL k r i q) (1 : ℂ))ᴴ * Hpk k r) x c = 0`. Introduce `a ha x c hc`. Take `⟨n1, n2⟩` from `posL_ne i q a ha`. Take `⟨z1, z2⟩` from `hpk_zero i p a ha`. Break down `hc with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `unit_col i p q _ n1 z1 x`. Conclude with `unit_col i p q _ n2 z2 x`. Apply the tactic sequence `refine ⟨fun a ha x => ?_, fun a ha x => ?_⟩ <;>`. Take `⟨e1, e2⟩` from `key a ha x _ (Or.inl rfl)`. Take `⟨e3, e4⟩` from `key a ha x _ (Or.inr rfl)`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hpart1, hpart2]`. Rewrite using `[hpk_inv]`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;>`. Use `first`. Consider the case `rw [Matrix.smul_apply, Matrix.sub_apply]`.
-
-Consider the case `rw [Matrix.smul_apply, Matrix.add_apply]`. Simplify using `only [e1, e2, e3, e4, sub_zero, add_zero, smul_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma hpart_cols (i : Fin (r + 1)) (p q : Fin (mdim k r i)) :
     (∀ a : Fin r, a.val < i.val → ∀ x,
@@ -251,23 +247,23 @@ lemma hpart_cols (i : Fin (r + 1)) (p q : Fin (mdim k r i)) :
       simp only [e1, e2, e3, e4, sub_zero, add_zero, smul_zero]
 
 /- English proof (translation)
-The claim follows from `exp_mem_glev i _ (hpart1_skew _) (hpart_cols i p q).1 t`.
+A detailed English derivation is pending.
 -/
 theorem exp_hpart1_mem (i : Fin (r + 1)) (p q : Fin (mdim k r i)) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • hpart1 (Hpk k r) (Matrix.single (posL k r i p) (posL k r i q) 1))
       ∈ Glev k r i := exp_mem_glev i _ (hpart1_skew _) (hpart_cols i p q).1 t
 
 /- English proof (translation)
-The claim follows from `exp_mem_glev i _ (hpart2_skew _) (hpart_cols i p q).2 t`.
+A detailed English derivation is pending.
 -/
 theorem exp_hpart2_mem (i : Fin (r + 1)) (p q : Fin (mdim k r i)) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • hpart2 (Hpk k r) (Matrix.single (posL k r i p) (posL k r i q) 1))
       ∈ Glev k r i := exp_mem_glev i _ (hpart2_skew _) (hpart_cols i p q).2 t
 
 /- English proof (translation)
-Establish `hγ` using `hasDerivAt_mul_exp_smul_zero g X`. Establish `hγ0 : g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) = g`. Simplify using `[NormedSpace.exp_zero]`. Establish `hFd : DifferentiableAt ℝ F g` using `(hF.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hg)`. Establish `hcomp : HasDerivAt (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X))) (fderiv ℝ F g (g * X)) 0` using `hFd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ hγ0.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[𝓝 0] (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X)))`. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 0, g * NormedSpace.exp ((t : ℂ) • X) ∈ U` using `hγ.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hU.mem_nhds hg)`. Use `filter_upwards [hmem] with t ht`. Conclude with `hfF _ ht (glev_mul hgG (hX t))`. Conclude with `hcomp.congr_of_eventuallyEq hev`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_ext {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (i : Fin (r + 1)) (X : Mx k r) (hX : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) ∈ Glev k r i)
@@ -292,7 +288,7 @@ theorem hasDerivAt_ext {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
   exact hcomp.congr_of_eventuallyEq hev
 
 /- English proof (translation)
-The claim follows from `(hasDerivAt_ext i X hX f F U g hU hg hgG hF hfF).deriv`.
+A detailed English derivation is pending.
 -/
 theorem rdV_ext {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (i : Fin (r + 1)) (X : Mx k r) (hX : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) ∈ Glev k r i)

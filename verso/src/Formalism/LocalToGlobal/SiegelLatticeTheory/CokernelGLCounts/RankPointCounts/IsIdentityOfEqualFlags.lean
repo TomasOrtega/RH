@@ -18,21 +18,19 @@ section ZsC1c
 variable {D : D7} {X : HidaSetting D}
 
 /- English proof (translation)
-Establish `hT0 : ((Tu D u : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (tie_Tu_pos D u).ne'`. Establish `hrow : IsRowLat D (X.Fu u) t.lam` using `(Y.rowsOK u).1 t.lam t.mem`. Establish `hfix : FixedHyp D t.lam (lf D (X.Fu u))` using `hrow.2.1`. Establish `hPD : TermDef.PD D t.lam (lf D (X.Fu u)) u (frq X t.rep)` using `t.rep.2.2.2.2`. Establish `hlift : IsLift t.lam (frq X t.rep)` using `hPD.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadm : IsAdmissible t.lam (gS D) (lf D (X.Fu u)) (frq X t.rep)` using `hPD.2.1`. Establish `hconv : IsFixedConv t.lam (gS D) (frq X t.rep)` using `hPD.2.2.1`. Take `⟨c, hcc, he, hz⟩` from `id_scal D.host.F D.host.E (hS D) D.R.rS _ (lf D (X.Fu u)).fl (frq X t.rep).fl hT0 (tie_trace D.sp.cm) hXa hXp hrel`. Establish `hX : (frq X t.rep).fl.X = (lf D (X.Fu u)).fl.X` using `by rw [tie_X_eq_Xa, tie_X_eq_Xa]; exact hXa _`. Take `⟨o, ho, N, hN, hoN⟩` from `id_unit D.host.E (hS D) D.R.rS _ t.lam (lf D (X.Fu u)) (frq X t.rep) c (p_starConj D) hlift.1 hfix.2.2.2.2 hcc hz hX`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcong : ∀ i : Fin 2, ∀ P : HeightOneSpectrum (𝓞 D.host.E), ((D.host.g i : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → o - 1 ∈ P.asIdeal`. Introduce `i P hP`. Use `id_cong D.host.E (hS D) D.R.rS (Tu D u) t.lam (gS D) (lf D (X.Fu u)) (frq X t.rep) o hfix.2.1 hfix.2.2.1.1 hadm (by rw [ho]; exact hz) P ?_ ?_` and prove the remaining obligations. Unfold `gS`. Rewrite using `[Nat.cast_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases i`. Conclude with `P.asIdeal.mul_mem_right _ hP`. Conclude with `P.asIdeal.mul_mem_left _ hP`. Use `id_coprime_notMem P.asIdeal P.isPrime.ne_top _ _ ?_ hP` and prove the remaining obligations. Use `(Nat.coprime_primes (D.host.g_prime i) (D.mem u).A.T_prime).2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `fin_cases i`. Conclude with `(hTg u).1.symm`. Conclude with `(hTg u).2.symm`. Take `⟨P1, hP1⟩` from `id_over D.host.E _ (D.host.g_prime 0)`. Take `⟨P2, hP2⟩` from `id_over D.host.E _ (D.host.g_prime 1)`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ho1 : o = 1` using `id_root (𝓞 D.host.E) o N _ _ P1.asIdeal P2.asIdeal hN hoN (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne P1.isPrime.ne_top P2.isPrime.ne_top hP1 hP2 (hcong 0 P1 hP1) (hcong 1 P2 hP2)`. Establish `hc1 : c = 1` using `by rw [← ho, ho1]; rfl`. Substitute `hc1` using the available equality. Simplify using `only [one_smul] at he hz`. Take `⟨n, hn, hne⟩` from `id_lift D _ t.lam (lf D (X.Fu u)) (frq X t.rep) hfix hlift hconv he hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hzo : (lf D (X.Fu u)).fl.z ∈ orth (hS D) (Xsp (lf D (X.Fu u)))`. Rewrite using `[p_mem_orth]`. Conclude with `tie_X_le_ker _ _ (lf D (X.Fu u)).fl.z_orth`. Establish `h3'` using `hn.2.2 _ hzo`. Establish `hzz : n (lf D (X.Fu u)).fl.z - (frq X t.rep).fl.z = (n (lf D (X.Fu u)).fl.z - (lf D (X.Fu u)).fl.z) - ((frq X t.rep).fl.z - (lf D (X.Fu u)).fl.z)` using `by abel`.
-
-Use `⟨frq X t.rep, TermDef.rep_mk (⟨frq X t.rep, hPD⟩ : TermDef.Carrier (TermDef.PD D t.lam (lf D (X.Fu u)) u)), n, hn, hne, ?_⟩` and prove the remaining obligations. Rewrite using `[hzz]`. Conclude with `Submodule.sub_mem _ h3' hz`.
+A detailed English derivation is pending.
 -/
 theorem isIdentity_of_equal_flags (hTg : ∀ u : D.what₂.Word, (D.mem u).A.T ≠ D.host.g 0 ∧ (D.mem u).A.T ≠ D.host.g 1)
     (Y : Full X) {u : D.what₂.Word} (t : GTu Y u)
@@ -86,11 +84,11 @@ theorem isIdentity_of_equal_flags (hTg : ∀ u : D.what₂.Word, (D.mem u).A.T �
   exact Submodule.sub_mem _ h3' hz
 
 /- English proof (translation)
-Take `⟨hr, hG, hid⟩` from `relevantSet_zeroG_not_identity ht`. Take `⟨j, hj, c, hN⟩` from `exists_nfFull_of_relevant_of_G_eq_zero Y t hr hG`. Rewrite using `[index_eq_normalForm t hN]`. Assume the negation of the conclusion as `hj0`. Establish `hj0 : j = 0` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Substitute `hj0` using the available equality. Take `⟨k1, -, k3⟩` from `Formalism.HermitianLatticeCounting.Final.S6.nFJZero _ _ _ _ _ _ c hN.1`. Establish `hXa : ∀ a, (frq X t.rep).fl.Xa a = (lf D (X.Fu u)).fl.Xa a` using `fun a => by`. Establish `h` using `k1 a`. Rewrite `h` using `[nf_Xa, nf_Xa]`. Then use the resulting hypothesis.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `k3` using `[nf_X, normal_form_z_eq, normal_form_z_eq]`. Establish `hXp : (frq X t.rep).fl.Xplus = (lf D (X.Fu u)).fl.Xplus` using `nf_Xplus_eq _ _ (by rw [nf_X_eq, nf_X_eq]; exact hXa _) c hN.1.1 k3`. Conclude with `hid (isIdentity_of_equal_flags hTg Y t hXa hXp (relRepC D X Y u u t hr hG).1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_index_of_relevant (hTg : ∀ u : D.what₂.Word, (D.mem u).A.T ≠ D.host.g 0 ∧ (D.mem u).A.T ≠ D.host.g 1)
     (Y : Full X) {u : D.what₂.Word} (t : GTu Y u) (ht : t ∈ relSet Y u) : 1 ≤ jT t := by
@@ -112,9 +110,9 @@ theorem one_le_index_of_relevant (hTg : ∀ u : D.what₂.Word, (D.mem u).A.T �
 end ZsC1c
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0 C' Cl D large₂ X Y u hK _ t ht`. Use `one_le_index_of_relevant (fun w => ?_) Y t ht` and prove the remaining obligations. Establish `hc : Nat.Coprime (D.mem w).A.T (D.host.g 0 * D.host.g 1)` using `(hK.2.2.2.2.2.2.1 w).2`. Establish `key : ∀ i : Fin 2, D.host.g i ∣ D.host.g 0 * D.host.g 1 → (D.mem w).A.T ≠ D.host.g i`. Introduce `i hd h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc` using `[h]`. Establish `h1 : Nat.Coprime (D.host.g i) (D.host.g i)` using `Nat.Coprime.coprime_dvd_right hd hc`. Conclude with `(D.host.g_prime i).one_lt.ne' (by simpa [Nat.coprime_self] using h1)`. Conclude with `⟨key 0 (dvd_mul_right _ _), key 1 (dvd_mul_left _ _)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem JPosC_holds : JPosC := by
   intro Cg cb Cw cT CT C0 C' Cl D large₂ X Y u hK _ t ht

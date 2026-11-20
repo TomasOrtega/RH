@@ -14,9 +14,9 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Substitute `hD2 hP hχ` using the available equality. Prove the components needed by the constructor for the conclusion. Establish `h : R * (D * cT - q * (R * T)) = 0` using `by linear_combination h1`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `absurd h hR`.
+Substitute using the available equality. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h`. Establish `h : D * (D * c₁ - q * (R * (D * R * (χ * χ)))) = 0` using `by linear_combination h2`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `absurd h hD`. Take the linear combination `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem lefschetz_form_identities {A : Type*} [CommRing A] [NoZeroDivisors A]
     (D R D2 P q L T χ c₁ cT : A) (hR : R ≠ 0) (hD : D ≠ 0) (hD2 : D2 = D * R)
@@ -36,15 +36,15 @@ private theorem lefschetz_form_identities {A : Type*} [CommRing A] [NoZeroDiviso
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `n lam c₁ cT χ hχ hev`. Take `⟨hD2, hD, hR, -, -, -, hP, -⟩` from `chRF n`. Establish `hP' : (∏ a, ∏ b, (1 + ex (rt a b)) : FR n) = ((2:ℂ) ^ n • (1 : FR n)) * (chR n * chR n)`. Rewrite using `[hP, smul_mul_assoc, one_mul]`. Establish `h1 : alt ((2:ℝ) • rhoV n) * cT - (∏ a, ∏ b, (1 + ex (rt a b))) * alt (twoL lam) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `evInj` to reduce the goal to its premises. Introduce `θ hinj`. Take `⟨-, hw2, hw3, -⟩` from `weylEv n lam θ (fun a => Complex.exp (Complex.I * θ a)) (fun a => rfl)`. Take `⟨-, hc⟩` from `hev θ (fun a => Complex.exp (Complex.I * θ a)) (fun a => rfl) hinj`. Rewrite using `[map_sub, map_mul, map_mul, hc, ← hw2 hinj, ← hw3, sub_eq_zero, mul_comm, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : alt (rhoV n) * alt (rhoV n) * c₁ - (∏ a, ∏ b, (1 + ex (rt a b))) * (alt ((fun a => (lam a : ℝ)) + rhoV n) * alt ((fun a => (lam a : ℝ)) + rhoV n)) = 0`. Apply `evInj` to reduce the goal to its premises. Introduce `θ hinj`. Establish `hz : Function.Injective (fun a => Complex.exp (Complex.I * θ a))` using `fun a b h => hinj (by simp only [h])`. Take `⟨hw1, -, hw3, -⟩` from `weylEv n lam θ (fun a => Complex.exp (Complex.I * θ a)) (fun a => rfl)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hc, -⟩` from `hev θ (fun a => Complex.exp (Complex.I * θ a)) (fun a => rfl) hinj`. Rewrite using `[map_sub, map_mul, map_mul, map_mul, map_mul, hc, ← hw1 hz, ← hw3]`. Generalize the expression as in `(evT θ) (alt (rhoV n)) = A`. Generalize the expression as in `(∏ a, ∏ b, (1 + Complex.exp (Complex.I * θ a) / Complex.exp (Complex.I * θ b))) = B`. Generalize the expression as in `weylChar lam (fun a => Complex.exp (Complex.I * θ a)) = W`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨k1, k2⟩` from `lefschetz_form_identities (alt (rhoV n)) (chR n) (alt ((2:ℝ) • rhoV n)) (∏ a, ∏ b, (1 + ex (rt a b))) ((2:ℂ) ^ n • (1 : FR n)) (alt ((fun a => (lam a : ℝ)) + rhoV n)) (alt (twoL lam)) χ c₁ cT hR hD hD2 hP' hχ h1 h2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[k1, smul_mul_assoc, one_mul]`. Rewrite using `[k2, smul_mul_assoc, one_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.RealTr.lefForm :
     ∀ (n : ℕ) (lam : Fin n → ℤ) (c₁ cT χ : FR n), alt (rhoV n) * χ = alt ((fun a => (lam a : ℝ)) + rhoV n) →

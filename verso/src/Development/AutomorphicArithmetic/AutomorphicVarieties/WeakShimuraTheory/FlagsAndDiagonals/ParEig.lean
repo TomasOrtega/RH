@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `ha`. Establish `hu : (↑u⁻¹ : R) * ↑u = 1` using `Units.inv_mul u`. Establish `hx : x = -(↑u⁻¹ * b * y)` using `by linear_combination (↑u⁻¹ : R) * h1 - x * hu`. Establish `hy' : (e - c * ↑u⁻¹ * b) * y = 0`. Rewrite `h2` using `[hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `h2`. Establish `hm : c * ↑u⁻¹ * b ∈ maximalIdeal R` using `Ideal.mul_mem_left _ _ hb`. Establish `hunit : IsUnit (e - c * ↑u⁻¹ * b)`. Assume the negation of the conclusion as `hn`. Establish `h3 : e - c * ↑u⁻¹ * b ∈ maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).2 hn`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h4 : e ∈ maximalIdeal R`. Use `Ideal.add_mem _ h3 hm` as an intermediate fact. Simplify using `using this`. Conclude with `((IsLocalRing.mem_maximalIdeal _).1 h4) he`. Establish `hy : y = 0` using `hunit.mul_right_eq_zero.1 hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hy⟩` and prove the remaining obligations. Rewrite using `[hx, hy]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem two_by_two {R : Type} [CommRing R] [IsLocalRing R] {a b c e x y : R} (ha : IsUnit a) (he : IsUnit e)
     (hb : b ∈ maximalIdeal R) (h1 : a * x + b * y = 0) (h2 : c * x + e * y = 0) : x = 0 ∧ y = 0 := by
@@ -33,7 +33,7 @@ private theorem two_by_two {R : Type} [CommRing R] [IsLocalRing R] {a b c e x y 
   ring
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `hu`. Use `Ideal.mul_mem_right (↑w⁻¹ : R) _ h` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mem_maxIdeal_of_mul_unit_mem {R : Type} [CommRing R] [IsLocalRing R] {z u : R} (hu : IsUnit u)
     (h : z * u ∈ maximalIdeal R) : z ∈ maximalIdeal R := by
@@ -42,21 +42,21 @@ private theorem mem_maxIdeal_of_mul_unit_mem {R : Type} [CommRing R] [IsLocalRin
   simpa [mul_assoc] using this
 
 /- English proof (translation)
-Introduce `R _ _ X v d hoff hdiag hv hXv hX`. Establish `hunit : ∀ i, IsUnit (v i i)` using `fun i => unit_of_sub_mem isUnit_one (by simpa using hv i i)`. Establish `hE : ∀ i j, ∑ k, X i k * v k j = v i j * d j` using `fun i j => by`. Use `congrFun (congrFun hXv i) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.mul_diagonal]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hd : ∀ j, X j j - d j ∈ maximalIdeal R` using `fun j => by`. Apply `mem_maxIdeal_of_mul_unit_mem (hunit j)` to reduce the goal to its premises. Establish `e` using `hE j j`. Rewrite `e` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ j)]`. Establish `hs : (X j j - d j) * v j j = -∑ k ∈ Finset.univ.erase j, X j k * v k j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `e`. Rewrite using `[hs, Ideal.neg_mem_iff]`. Conclude with `Ideal.sum_mem _ fun k hk => Ideal.mul_mem_right _ _ (hoff j k (Finset.ne_of_mem_erase hk).symm)`. Establish `z01 : X 0 1 = 0` using `hX 0 1 (by simp [lamW])`. Establish `z03 : X 0 3 = 0` using `hX 0 3 (by simp [lamW])`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z21 : X 2 1 = 0` using `hX 2 1 (by simp [lamW])`. Establish `z23 : X 2 3 = 0` using `hX 2 3 (by simp [lamW])`. Establish `key : ∀ j, (0 : Fin 4) ≠ j → (2 : Fin 4) ≠ j → v 0 j = 0 ∧ v 2 j = 0`. Introduce `j h0 h2`. Establish `e0` using `hE 0 j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hE 2 j`. Rewrite `e0`, `e2` using `[Fin.sum_univ_four]`. Use `two_by_two (a := X 0 0 - d j) (b := X 0 2) (c := X 2 0) (e := X 2 2 - d j) ?_ ?_ (hoff 0 2 (by decide)) ?_ ?_` and prove the remaining obligations. Use `unit_of_sub_mem (hdiag 0 j h0) ?_` and prove the remaining obligations. Establish `: X 0 0 - d j - (X 0 0 - X j j) = X j j - d j` using `by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hd j`. Use `unit_of_sub_mem (hdiag 2 j h2) ?_` and prove the remaining obligations. Establish `: X 2 2 - d j - (X 2 2 - X j j) = X j j - d j` using `by ring`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `hd j`. Take the linear combination `e0 - v 1 j * z01 - v 3 j * z03`. Take the linear combination `e2 - v 1 j * z21 - v 3 j * z23`. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> (try simp [lamW] at hij)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Apply the tactic sequence `all_goals first`. Consider the case `exact (key 1 (by decide) (by decide)).1`. Consider the case `exact (key 1 (by decide) (by decide)).2`. Consider the case `exact (key 3 (by decide) (by decide)).1`. Consider the case `exact (key 3 (by decide) (by decide)).2`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lab.parEig :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (X v : M4 R) (d : Fin 4 → R), (∀ i j, i ≠ j → X i j ∈ maximalIdeal R) →

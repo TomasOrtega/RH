@@ -9,15 +9,15 @@ open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison Crys
 namespace GlobalTheory.CompanionTheory.Untilt
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `y`. Take `⟨u, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Conclude with `⟨x.coeff 0, A.sharpMap_coeff x⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use extensionality with `a`. Rewrite using `[RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[A.sharpMap_eq, Ideal.Quotient.eq_zero_iff_mem, pow_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu⟩` from `Ideal.mem_span_singleton'.1 h`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Establish `h0 : A.th (WittVector.teichmuller l a - y * (l : A.W)) = 0`. Rewrite using `[map_sub, map_mul, map_natCast]`. Conclude with `sub_eq_zero.2 hu.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq_zero_iff_mem.1 h0)`. Establish `h1` using `congrArg (WittVector.constantCoeff : A.W →+* A.A) hc`. Rewrite `h1` using `[map_mul, map_sub, map_mul, map_natCast, A.natCast_l, mul_zero, sub_zero, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero, A.xi_coeff_zero]`. Conclude with `Ideal.mem_span_singleton'.2 ⟨-c.coeff 0, by rw [← h1, neg_mul, mul_neg]⟩`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 h`. Rewrite using `[map_mul, A.sharpMap_eq A.pi, A.sharp_pi, Ideal.Quotient.eq_zero_iff_mem.2 (by`. Rewrite using `[pow_one]`. Conclude with `Ideal.mem_span_singleton_self _), mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharp_map_surjective_ker {l : ℕ} [Fact l.Prime] (A : PAlg l) :
     Function.Surjective A.aToU1 ∧ RingHom.ker A.aToU1 = Ideal.span {A.pi} := by

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsBasisOfBot
 open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps GlobalTheory.DetInv Matrix TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.DetInv.span_wedge_lie_fil_eq_smul_detLattice` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDvrAlphaDeterminantOrder.lean&line=307#L307)
 -/

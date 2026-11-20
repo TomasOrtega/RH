@@ -53,15 +53,15 @@ def omTwo {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (
   (((μS * μT⁻¹) (GeneralLinearGroup.det h) : ℂˣ) : ℂ) • om μT⁻¹ g h u
 
 /- English proof (translation)
-Introduce `R d _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (A ⊕ D) k) V) (ξ : kˣ →* ℂˣ) (g : GL (A ⊕ D) k) :
     IsTOp π ξ g 0 0 := fun R d _ => by simp
 
 /- English proof (translation)
-Use `⟨fun j hj => ?_, fun j hj => ⟨1, ⟨by simp, by simpa using hj⟩, fun y hy => by simpa using hy.1⟩⟩` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_singleton]`. Substitute `hj` using the available equality. Use `⟨one_mem _, ?_⟩` and prove the remaining obligations. Establish `: (1 : GL (A ⊕ D) k).1.toBlocks₂₂ = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[toBlocks₂₂, Matrix.one_apply]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : IsReps (1 : GL (A ⊕ D) k) {1} (fun _ => 1) := by
   refine ⟨fun j hj => ?_, fun j hj => ⟨1, ⟨by simp, by simpa using hj⟩, fun y hy => by simpa using hy.1⟩⟩

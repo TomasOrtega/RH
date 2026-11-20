@@ -24,7 +24,7 @@ namespace GlobalTheory.VacRebase
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `⟨fun _ _ _ _ => ?_, fun _ _ _ _ => ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Simplify using `[heisO]`. Use function extensionality and compare the values at `w`. Simplify using `[heisO]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -36,21 +36,19 @@ theorem zero_placeModel {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) 
   · simp
 
 /- English proof (translation)
-Take `⟨e, ε, he, hε, hs⟩` from `hsp`. Take `⟨q, -, hq⟩` from `GlobalTheory.FinPl.SplitPoint.exists_splitPt D p e ε he hε hs`. Establish `hU : q.UnitAA`. Unfold `GlobalTheory.FinPl.SplitPt.UnitAA`. Rewrite using `[hq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hu1, hu2⟩`. Rewrite using `[← hq]`. Take `⟨glS, hS1, hS2⟩` from `GlobalTheory.T.exists_GL_embedding_unitaryAdelic_splitPlace_basis D _ q S (Fin S.rank) 1 1 (Matrix.mul_one 1) (Matrix.mul_one 1)`. Take `⟨glT, hT1, hT2⟩` from `GlobalTheory.T.exists_GL_embedding_unitaryAdelic_splitPlace_basis D _ q T (Fin T.rank) 1 1 (Matrix.mul_one 1) (Matrix.mul_one 1)`. Set `α : GlobalTheory.FinPl.Frame q S (Fin S.rank)` to `⟨1, 1, Matrix.mul_one 1, Matrix.mul_one 1, glS, hS1, hS2⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `β : GlobalTheory.FinPl.Frame q T (Fin T.rank)` to `⟨1, 1, Matrix.mul_one 1, Matrix.mul_one 1, glT, hT1, hT2⟩`. Take `⟨ΛS, hl1, hαN, -⟩` from `GlobalTheory.FinPl.FrameLat.exists_lat D _ q S _ α N hN`. Take `⟨ΛT, hl2, hβN, -⟩` from `GlobalTheory.FinPl.FrameLat.exists_lat D _ q T _ β N' hN'`. Take `⟨ΛSm, hl3, hαM, -⟩` from `GlobalTheory.FinPl.FrameLat.exists_lat D _ q S _ α M hM`. Take `⟨ΛTm, hl4, hβM, -⟩` from `GlobalTheory.FinPl.FrameLat.exists_lat D _ q T _ β M' hM'`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hl1`. Use `haveI := hl2`. Use `haveI := hl3`. Use `haveI := hl4`. Establish `R` using `GlobalTheory.T.splitPlace_changeBaseVacuum_heisenbergCombination D _ q (Fin T.rank) (Fin S.rank) ψ hψ hU S T α β M N M' N' hM hM' hN hN'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc, hov⟩` from `R.2 (GlobalTheory.LatPair.latInd ΛS ΛT) (GlobalTheory.LatPair.latInd_mem_SB ΛS ΛT)`. Use `⟨c, hc, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hO` using `hov f hf`. Establish `h1` using `R.1 ΛS ΛT hαN hβN f _ hO`. Use `⟨h1.1, fun hf0 hg => hf0 ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨Tm, hTm⟩, -⟩` from `hO.2.2.2.2`. Establish `hOf : GlobalTheory.FinPl.Over ψ α β M M' f (GlobalTheory.LatPair.latInd ΛSm ΛTm) f`. Use `⟨hM, hM', hf, GlobalTheory.LatPair.latInd_mem_SB _ _, ⟨Tm, hTm⟩, fun T' hT' => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FinPl.LatIndHalf.extFun_latInd_eq_halfInd D _ q _ _ S T α β M M' hM hM' hU ΛSm ΛTm hαM hβM]`. Establish `hv` using `hT'.vac`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hv` using `[one_smul]`. Conclude with `hv.symm`. Establish `hN0` using `h1.2 _ _ hOf`. Rewrite `hN0` using `[hg]`. Use `hN0.2.2.2.2.2 0 (zero_placeModel ψ S T _ _)` as an intermediate fact.
-
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem local_step {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     {M N : GlobalTheory.FinPl.Lat S} {M' N' : GlobalTheory.FinPl.Lat T} (hM : IsSelfDualC S M) (hN : IsSelfDualC S N)
@@ -103,7 +101,7 @@ end GlobalTheory.VacRebase
 namespace GlobalTheory.VacRebase
 
 /- English proof (translation)
-Unfold `GlobalTheory.FinPl.idAt`. Conclude with `inf_le_inf_left _ (le_iInf fun w => iInf_le_of_le ⟨w.1, fun hp => w.2 (h _ hp)⟩ le_rfl)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem idAt_mono' {D : D7} {P P' : GlobalTheory.FinPl.Pl D → Prop} (h : ∀ v, P v → P' v) :
     GlobalTheory.FinPl.idAt D P ≤ GlobalTheory.FinPl.idAt D P' := by
@@ -111,9 +109,9 @@ theorem idAt_mono' {D : D7} {P P' : GlobalTheory.FinPl.Pl D → Prop} (h : ∀ v
   exact inf_le_inf_left _ (le_iInf fun w => iInf_le_of_le ⟨w.1, fun hp => w.2 (h _ hp)⟩ le_rfl)
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _ _ f hf`. Conclude with `hf`. Consider the case `cons p l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hc hX f hf`. Rewrite using `[List.foldr_cons]`. Establish `hd : ∀ x, x = p → ¬ X x` using `fun x hx => hx ▸ hX p List.mem_cons_self`. Conclude with `((GlobalTheory.DisjComb.main D ψ hψ S T (· = p) X hd).2.1 (c p) (hc p List.mem_cons_self)).2 LS LT _ (ih (fun x hx => hc x (List.mem_cons_of_mem _ hx)) (fun x hx => hX x (List.mem_cons_of_mem _ hx)) f hf)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem foldr_vac_off {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     (c : GlobalTheory.FinPl.Pl D → WO S T →₀ ℂ) (X : GlobalTheory.FinPl.Pl D → Prop) (LS : GlobalTheory.FinPl.Lat S) (LT : GlobalTheory.FinPl.Lat T) :
@@ -130,15 +128,15 @@ theorem foldr_vac_off {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar
       (ih (fun x hx => hc x (List.mem_cons_of_mem _ hx)) (fun x hx => hX x (List.mem_cons_of_mem _ hx)) f hf)
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ _ f hf`. Use `⟨⟨hf.1, ?_⟩, fun h => h⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.T.homLatticeAtPlaces_congr_localLattices D S T N M N' M' hN hM hN' hM' _ (fun x hx => absurd hx List.not_mem_nil)]`. Conclude with `hf.2`. Consider the case `cons p l ih`. Introduce `hnd hc f hf`. Establish `hpl : p ∉ l` using `(List.nodup_cons.1 hnd).1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ x, x = p → ¬ x ∈ l` using `fun x hx => hx ▸ hpl`. Establish `DC` using `GlobalTheory.DisjComb.main D ψ hψ S T (· = p) (· ∈ l) hd`. Establish `hfun : (fun x => x ∈ p :: l) = fun x => x = p ∨ x ∈ l`. Use function extensionality and compare the values at `x`. Conclude with `propext List.mem_cons`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hf`, the goal using `[hfun]`. Establish `hf2` using `(DC.2.2.2.2 M M' f hM hM').1 hf`. Take `⟨ihv, ihn⟩` from `ih (List.nodup_cons.1 hnd).2 (fun x hx => hc x (List.mem_cons_of_mem _ hx)) f hf2.2`. Establish `hgp` using `foldr_vac_off hψ c (· = p) M M' l (fun x hx => (hc x (List.mem_cons_of_mem _ hx)).1) (fun x hx hxp => hpl (hxp ▸ hx)) f hf2.1`. Take `⟨hcp, hloc⟩` from `hc p List.mem_cons_self`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hv1, hn1⟩` from `hloc _ hgp`. Rewrite using `[List.foldr_cons]`. Use `⟨(DC.2.2.2.2 N N' _ hN hN').2 ⟨hv1, (DC.2.1 (c p) hcp).2 N N' _ ihv⟩, fun h0 => hn1 (ihn h0)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem foldr_vac_on {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     {M N : GlobalTheory.FinPl.Lat S} {M' N' : GlobalTheory.FinPl.Lat T} (hM : IsSelfDualC S M) (hN : IsSelfDualC S N)
@@ -175,19 +173,17 @@ theorem foldr_vac_on {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar 
 end GlobalTheory.VacRebase
 
 /- English proof (translation)
-Introduce `D ψ hψ S T M N M' N' Q hM hN hM' hN' hQ hoff`. Establish `hc : ∀ p : GlobalTheory.FinPl.Pl D, ∃ c : WO S T →₀ ℂ, GlobalTheory.FinPl.CombAt (· = p) c ∧ (p ∈ Q → ∀ f, GlobalTheory.FinPl.Vac ψ S T M M' (· = p) f → GlobalTheory.FinPl.Vac ψ S T N N' (· = p) (comb ψ S T c f) ∧ (f ≠ 0 → comb ψ S T c f ≠ 0))`. Introduce `p`. Distinguish the cases in `hp : p ∈ Q`. Take `⟨h1, h2, h3⟩` from `hQ p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc1, hc2⟩` from `GlobalTheory.VacRebase.local_step hψ hM hN hM' hN' p h1 h2 h3`. Conclude with `⟨c, hc1, fun _ => hc2⟩`. Conclude with `⟨0, fun u hu => by simp at hu, fun h => absurd h hp⟩`. Use `choose c hc1 hc2 using hc`. Set `l` to `Q.toList`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ∀ p, p ∈ l ↔ p ∈ Q` using `fun p => Finset.mem_toList`. Use `⟨convList ψ S T (l.map c), ?_, fun f hf => ?_⟩` and prove the remaining obligations. Use `support_convList (p := GlobalTheory.FinPl.MxAt (· ∈ Q)) (fun i j => Ideal.zero_mem _) (fun x y hx hy i j => by rw [Matrix.add_apply]; exact Ideal.add_mem _ (hx i j) (hy i j)) ?_` and prove the remaining obligations. Introduce `c' hc' x hx i j`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hc'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.VacRebase.idAt_mono' (fun v hv => hv ▸ (hmem p).1 hp) (hc1 p x hx i j)`. Rewrite using `[comb_convList]`. Establish `DC` using `GlobalTheory.DisjComb.main D ψ hψ S T (· ∈ l) (· ∉ l) (fun x h1 h2 => h2 h1)`. Establish `hfun : (fun x => x ∈ l ∨ x ∉ l) = fun _ => True`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `propext ⟨fun _ => trivial, fun _ => em _⟩`. Establish `hf' : GlobalTheory.FinPl.Vac ψ S T M M' (fun x => x ∈ l ∨ x ∉ l) f` using `by rw [hfun]; exact hf`. Take `⟨hin, hout⟩` from `(DC.2.2.2.2 M M' f hM hM').1 hf'`. Take `⟨v1, n1⟩` from `GlobalTheory.VacRebase.foldr_vac_on hψ hM hN hM' hN' c l (Finset.nodup_toList Q) (fun p hp => ⟨hc1 p, hc2 p ((hmem p).1 hp)⟩) f hin`. Establish `hout' : GlobalTheory.FinPl.Vac ψ S T N N' (· ∉ l) f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨hout.1, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.homLatticeAtPlaces_congr_localLattices D S T N M N' M' hN hM hN' hM' _ (fun x hx => by`. Take `⟨a, b⟩` from `hoff x (fun h => hx ((hmem x).2 h))`. Conclude with `⟨a.symm, b.symm⟩)]`. Conclude with `hout.2`.
-
-Establish `v2` using `GlobalTheory.VacRebase.foldr_vac_off hψ c (· ∉ l) N N' l (fun p _ => hc1 p) (fun p hp h => h hp) f hout'`. Use `⟨?_, n1⟩` and prove the remaining obligations. Rewrite using `[← hfun]`. Conclude with `(DC.2.2.2.2 N N' _ hN hN').2 ⟨v1, v2⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.VacRebase.rebase_vac : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (M N : GlobalTheory.FinPl.Lat S) (M' N' : GlobalTheory.FinPl.Lat T) (Q : Finset (GlobalTheory.FinPl.Pl D)), IsSelfDualC S M → IsSelfDualC S N → IsSelfDualC T M' → IsSelfDualC T N' → (∀ p ∈ Q, ((∃ e ε, IsSplitIdem D e ∧ IsPlaceIdem D p ε ∧ e + cA D e = algebraMap (AF D.host.F) (AE D) ε) ∧ (∀ a ∈ GlobalTheory.FinPl.intAt D (· = p), incA D D.host.xi0 * a ∈ GlobalTheory.FinPl.intAt D (· = p) ∧ incA D D.host.xi0⁻¹ * a ∈ GlobalTheory.FinPl.intAt D (· = p)) ∧ ∀ (V : HSp D) (Λ : GlobalTheory.FinPl.Lat V), GlobalTheory.FinPl.latA V Λ (· = p) = GlobalTheory.FinPl.latV V Λ (· = p))) → (∀ p, p ∉ Q → GlobalTheory.FinPl.latV S M (· = p) = GlobalTheory.FinPl.latV S N (· = p) ∧ GlobalTheory.FinPl.latV T M' (· = p) = GlobalTheory.FinPl.latV T N' (· = p)) → ∃ o : WO S T →₀ ℂ, GlobalTheory.FinPl.CombAt (· ∈ Q) o ∧ ∀ f, GlobalTheory.FinPl.Vac ψ S T M M' (fun _ => True) f → GlobalTheory.FinPl.Vac ψ S T N N' (fun _ => True) (comb ψ S T o f) ∧ (f ≠ 0 → comb ψ S T o f ≠ 0) := by
   intro D ψ hψ S T M N M' N' Q hM hN hM' hN' hQ hoff

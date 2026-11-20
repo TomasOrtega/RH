@@ -18,15 +18,15 @@ noncomputable section
 namespace GlobalTheory.PtDegArch
 
 /- English proof (translation)
-Use `set σ₀ := σ.comp (algebraMap c.F K) with hσ₀`. Set `φ : K →ₐ[c.F] CAt σ₀` to `{ σ with commutes' := fun a => rfl }`. Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c K (CAt σ₀) φ y`. Take `⟨k, w, t, ho, hb⟩` from `GlobalTheory.LamT.exists_ortho_frBor E H Dw l Xo c σ₀ r (U σ₀) (hL.unf σ₀ hσ) z`. Establish `hon : (⟨k, w.1⟩ : Σ k, Frame ((U σ₀).X k).Ψ r) ∈ framesOn (U σ₀) Z` using `⟨w.2, liesOn_frBor hb (liesOn_frMap hz hy)⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgood : goodOf c σ₀ = σ₀` using `if_pos hσ`. Establish `hinf` using `s.norm_inf σ₀`. Rewrite `hinf` using `[hgood]`. Establish `h1 : homN (U σ₀) x (wtOf Dw (flatWt Dw τ) 0) s.sig ⟨k, w.1⟩ = s.cInf σ₀`. Establish `: homN (U σ₀) x (wtOf Dw (flatWt Dw τ) 0) s.sig ⟨k, w.1⟩ ∈ homN (U σ₀) x (wtOf Dw (flatWt Dw τ) 0) s.sig '' framesOn (U σ₀) Z` using `⟨_, hon, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hinf]`. Conclude with `this`. Rewrite `h1` using `[GlobalTheory.CompHS.homN_eq_homFac]`. Establish `h2` using `GlobalTheory.evR_frBor_of_mem_secZ GlobalTheory.lawsFieldsSeparately.2.1 Xo c _ s.sig_mem (CAt σ₀) t _ _ hb`. Establish `h3` using `GlobalTheory.FrameEval.evR_frMap_of_isReduced E H Dw l Xo c s.sig s.sig_mem.1 φ y z hz`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `GlobalTheory.T.normFactor_flatLine_eq_gram_orthonormal_frame E H Dw l Xo c r U x hL τ K y B t₀ m1 m2 F h hh u u' hu hu' σ hσ φ (fun _ => rfl) z hz k w t ho hb`. Rewrite using `[← h1, h4]`. Establish `h5 : ‖σ (evR Xo c s.sig y)‖ = ‖GlobalTheory.CompHS.diagChar (exOf Dw (flatWt Dw τ) 0) t‖ * ‖toC (evR Xo c s.sig ((U σ₀).un k w))‖`. Rewrite using `[← norm_mul]`. Use `show ‖toC (φ (evR Xo c s.sig y))‖ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3, h2]`. Both sides reduce to the same expression. Rewrite using `[h5]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem good_case (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (hL : Laws U x) (Z : Comp Xo c) (τ : Psi H) (s : ArchSec U x Z (flatWt Dw τ)) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K) (hy : LiesOn Z y) (B : GlobalTheory.CM.PAT H (Sp (𝓞 K))) (t₀ : SAB H (Sp K)) (m1 : SABMap t₀ Xo.univ.t y.x) (m2 : SABMap t₀ B.t (spMap (algebraMap (𝓞 K) K))) (F : GlobalTheory.CM.GenFib B.pol) (h : ReciprocityTheory.GeometryOfNumbersTheory.HermFam K (Fin F.P₀.g → K)) (hh : F.IsHerm h) (u : Fin (Dw.mult τ.1) → Fin F.P₀.g → K) (u' : Fin (Dw.mult (conjEmb τ.1)) → Fin F.P₀.g → K) (hu : GlobalTheory.PtDeg.FrameCoord y m1 m2 F τ.1 u) (hu' : GlobalTheory.PtDeg.FrameCoord y m1 m2 F (conjEmb τ.1) u') (σ : K →+* ℂ) (hσ : GoodEmb c (σ.comp (algebraMap c.F K))) :
     s.cInf (σ.comp (algebraMap c.F K)) = ‖σ (evR Xo c s.sig y)‖ * Real.sqrt (h.gram σ u).det.re / Real.sqrt (h.gram σ u').det.re := by
@@ -58,17 +58,15 @@ theorem good_case (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Recipr
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x hL Z τ s K _ _ _ y hy B t₀ m1 m2 F h hh u u' hu hu' σ`. Distinguish the cases in `hσ : GoodEmb c (σ.comp (algebraMap c.F K))`. Conclude with `good_case E H Dw l Xo c r U x hL Z τ s K y hy B t₀ m1 m2 F h hh u u' hu hu' σ hσ`. Use `set σ' := (starRingEnd ℂ).comp σ`. Establish `e0 : σ'.comp (algebraMap c.F K) = (starRingEnd ℂ).comp (σ.comp (algebraMap c.F K))` using `RingHom.comp_assoc _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ' : GoodEmb c (σ'.comp (algebraMap c.F K))`. Use `goodEmb_goodOf c (σ.comp (algebraMap c.F K))` as an intermediate fact. Rewrite `this` using `[goodOf, if_neg hσ]`. Rewrite using `[e0]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `good_case E H Dw l Xo c r U x hL Z τ s K y hy B t₀ m1 m2 F h hh u u' hu hu' σ' hσ'`. Establish `hc : s.cInf (σ'.comp (algebraMap c.F K)) = s.cInf (σ.comp (algebraMap c.F K))`. Establish `i1` using `s.norm_inf (σ.comp (algebraMap c.F K))`. Establish `i2` using `s.norm_inf (σ'.comp (algebraMap c.F K))`. Rewrite `i2` using `[e0, goodOf_conj, i1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `(Set.singleton_eq_singleton_iff.1 i2).symm`. Establish `hgr : ∀ {n : ℕ} (v : Fin n → Fin F.P₀.g → K), (h.gram σ' v).det.re = (h.gram σ v).det.re` using `fun v => by`. Establish `: h.gram σ' v = (h.gram σ v).map (starRingEnd ℂ)`. Use extensionality with `i j`. Simplify using `only [ReciprocityTheory.GeometryOfNumbersTheory.HermFam.gram, Matrix.of_apply, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.lieAlgebraMetric_conjEmbedding_eq_conj K B.pol F h hh σ (v i) (v j)`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `((starRingEnd ℂ).mapMatrix (h.gram σ v)).det.re = _`. Rewrite using `[← RingHom.map_det, Complex.conj_re]`. Rewrite using `[← hc, hg, hgr, hgr]`.
-
-Simplify using `only [σ', RingHom.comp_apply, Complex.norm_conj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cInf_eq_frame_norm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), Laws U x → ∀ (Z : Comp Xo c) (τ : Psi H) (s : ArchSec U x Z (flatWt Dw τ)) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K), LiesOn Z y → ∀ (B : GlobalTheory.CM.PAT H (Sp (𝓞 K))) (t₀ : SAB H (Sp K)) (m1 : SABMap t₀ Xo.univ.t y.x) (m2 : SABMap t₀ B.t (spMap (algebraMap (𝓞 K) K))) (F : GlobalTheory.CM.GenFib B.pol) (h : ReciprocityTheory.GeometryOfNumbersTheory.HermFam K (Fin F.P₀.g → K)), F.IsHerm h → ∀ (u : Fin (Dw.mult τ.1) → Fin F.P₀.g → K) (u' : Fin (Dw.mult (conjEmb τ.1)) → Fin F.P₀.g → K), GlobalTheory.PtDeg.FrameCoord y m1 m2 F τ.1 u → GlobalTheory.PtDeg.FrameCoord y m1 m2 F (conjEmb τ.1) u' → ∀ σ : K →+* ℂ, s.cInf (σ.comp (algebraMap c.F K)) = ‖σ (evR Xo c s.sig y)‖ * Real.sqrt (h.gram σ u).det.re / Real.sqrt (h.gram σ u').det.re := by
   intro E _ _ _ H Dw l Xo c r U x hL Z τ s K _ _ _ y hy B t₀ m1 m2 F h hh u u' hu hu' σ

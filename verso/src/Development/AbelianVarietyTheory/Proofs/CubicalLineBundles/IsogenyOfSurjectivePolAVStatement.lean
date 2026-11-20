@@ -7,7 +7,7 @@ open scoped CategoryTheory.Obj
 open GlobalTheory GlobalTheory.CM
 
 /- English proof (citation)
-Apply `GlobalTheory.isogeny_of_surjective_polAV` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCubicalLineBundles%2FIsogenyOfSurjectivePolAV.lean&line=165#L165)
 -/

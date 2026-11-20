@@ -26,9 +26,9 @@ attribute [local instance] SplitExt.free SplitExt.finite
 variable {S S' : Scheme.{0}} (f : S' ⟶ S) (E : SplitExt S)
 
 /- English proof (translation)
-Use `show (X.presheaf.map (homOfLE h₁).op).hom u.val = (X.presheaf.map (homOfLE h).op).hom ((X.presheaf.map (homOfLE h₂).op).hom u.val)`. Establish `e : (homOfLE h₁).op = (homOfLE h₂).op ≫ (homOfLE h).op` using `by first`. Consider the case `rfl`. Consider the case `exact Quiver.Hom.unop_inj (Subsingleton.elim _ _)`. Rewrite using `[e, Functor.map_comp]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 lemma res_val_res {X : Scheme.{0}} {U V₁ V₂ : X.Opens} (h₁ : V₁ ≤ U) (h₂ : V₂ ≤ U) (h : V₁ ≤ V₂)
     (u : Γ(X, U)ˣ) :
@@ -47,9 +47,9 @@ section Datum
 variable {G : Over S} [GrpObj G] (d : E.GtDatum G)
 
 /- English proof (translation)
-Establish `key : ((qB f d.q).left ≫ pullback.fst E.B.hom f) ⁻¹ᵁ V = (pullback.fst G.hom f ≫ d.q.left) ⁻¹ᵁ V` using `by first`. Consider the case `rw [qB_h]`. Consider the case `exact congrArg (fun g => g ⁻¹ᵁ V) (qB_h f d.q)`. Combine the equalities or inequalities in the displayed calculation. Consider the case `rfl`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Treat this case separately.
 
-Consider the case `exact (Scheme.preimage_comp _ _ _).symm`. Use `_ = (pullback.fst G.hom f ≫ d.q.left) ⁻¹ᵁ V := key`. Use `_ = pullback.fst G.hom f ⁻¹ᵁ (d.q.left ⁻¹ᵁ V) := by first`. Consider the case `rfl`. Consider the case `exact Scheme.preimage_comp _ _ _`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma hleG (j : (pullExt f E).ChartIdx) {V : E.B.left.Opens} {V₁ : ((Over.pullback f).obj E.B).left.Opens}
     (h₁ : V₁ ≤ pullback.fst E.B.hom f ⁻¹ᵁ V) :
@@ -115,7 +115,7 @@ def datum : (pullExt f E).GtDatum ((Over.pullback f).obj G) where
 end Datum
 
 /- English proof (translation)
-Use `ext`. Conclude with `(res_val_res (h'.trans h) h h' u).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private lemma res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V)
     (u : Γ(X, U)ˣ) : res h' (res h u) = res (h'.trans h) u := by
@@ -123,9 +123,9 @@ private lemma res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h'
   exact (res_val_res (h'.trans h) h h' u).symm
 
 /- English proof (translation)
-Use `⟨⟨fun p => M.g p.1 p.2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ ⟨c, d⟩`. Apply the tactic sequence `try dsimp only [LB.div]`. Establish `e1` using `congrArg (res (show M.U a ⊓ M.U b ⊓ (M.U c ⊓ M.U d) ≤ M.U a ⊓ M.U c ⊓ M.U d from le_inf (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)) (inf_le_right.trans inf_le_right))) (hM.cocycle a c d)`. Establish `e2` using `congrArg (res (show M.U a ⊓ M.U b ⊓ (M.U c ⊓ M.U d) ≤ M.U a ⊓ M.U b ⊓ M.U d from le_inf inf_le_left (inf_le_right.trans inf_le_right))) (hM.cocycle a b d)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, res_res_lemma] at e1 e2`. Establish `e3` using `eq_mul_inv_of_mul_eq e2`. Rewrite `e3` using `[← e1]`. Conclude with `e3.trans (mul_right_comm _ _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma gen_div_self_lemma_2 {X : Scheme.{0}} (M : LB X) (hM : M.IsLB) :
     ∃ t : LB.Gen (LB.div M M), t.IsGen := by
@@ -143,9 +143,9 @@ private lemma gen_div_self_lemma_2 {X : Scheme.{0}} (M : LB X) (hM : M.IsLB) :
   exact e3.trans (mul_right_comm _ _ _)
 
 /- English proof (translation)
-Introduce `S S' f E G _ hG`. Take `⟨d⟩` from `hG`. Use `⟨pullExt f E, AddEquiv.refl _, Iso.refl _, ?_, fun χ => ?_, Nonempty.intro (datum f E d)⟩` and prove the remaining obligations. Use `first`. Consider the case `exact (inferInstance : IsMonHom (𝟙 ((Over.pullback f).obj E.B)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [Iso.refl_hom]; infer_instance)`. Consider the case `(constructor <;> simp <;> rfl)`. Use `show ∃ w : LB.Iso ((E.O χ).L.pull (𝟙 (pullback E.B.hom f) ≫ pullback.fst E.B.hom f)) ((E.O χ).L.pull (mB f E).F), w.IsGen`. Rewrite using `[mB_F, Category.id_comp]`. Conclude with `gen_div_self_lemma_2 _ (LB.isLB_pull (E.O χ).isLB _)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtBaseChange : GtBaseChangeSt := by
   intro S S' f E G _ hG

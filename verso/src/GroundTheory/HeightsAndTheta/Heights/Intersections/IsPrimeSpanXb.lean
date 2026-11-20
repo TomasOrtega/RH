@@ -22,7 +22,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use extensionality with `f`. Simplify using `[imageZ, rename_id]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem imageZ_id (W : Ideal (MRing ι)) : imageZ (ι := ι) (ι' := ι) id W = W := by
   ext f

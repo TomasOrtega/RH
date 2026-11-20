@@ -9,11 +9,11 @@ namespace GlobalTheory.TameRel
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `y hy`. Use `set z := (s⁻¹ : G E Ω) y with hz`. Establish `hsz : s z = y` using `mul_inv_apply y`. Establish `hz0 : z ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hy` to reduce the goal to its premises. Rewrite using `[← hsz, h, map_zero]`. Establish `e : (s * u * s⁻¹) y / y - 1 = s (u z / z - 1)`. Rewrite using `[map_sub, map_div₀, map_one, hsz]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, GlobalTheory.TameLabels.valuation_apply_of_mem_Dec hs]`. Conclude with `hu z hz0`.
+A detailed English derivation is pending.
 -/
 theorem wild_conj {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {s u : G E Ω} (hs : s ∈ Dec (F := E) A)
@@ -35,11 +35,9 @@ end GlobalTheory.TameRel
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `R H what₂ N A k v γ hγ`. Take `⟨φ, hφ⟩` from `exists_isFrob (N.plOm.2 (A.plGw k v))`. Rewrite `hφ` using `[GlobalTheory.TameLabels.normV_eq_of_split (H.g_prime k) (N.g_split k) (A.plGw_over k v)]`. Use `⟨φ, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mul_mem _ (conj_mem_Ine hφ.1 hγ) (Subgroup.inv_mem _ (Subgroup.pow_mem _ hγ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu` using `GlobalTheory.TameLabels.wild_of_frob hγ hφ`. Establish `hs : γ ^ H.g k ∈ Dec (F` using `H.E) (N.plOm.1 (A.plGw k v)) := (Dec (F := H.E) _).pow_mem (Ine_le_Dec _ hγ) _`. Establish `h` using `GlobalTheory.TameRel.wild_conj hs hu`. Establish `e : γ ^ H.g k * ((γ ^ H.g k)⁻¹ * (φ * γ * φ⁻¹)) * (γ ^ H.g k)⁻¹ = φ * γ * φ⁻¹ * (γ ^ H.g k)⁻¹` using `by group`. Rewrite `h` using `[e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TameRel.main : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N) (k : Fin 2) (v : N.PlG k), ∀ γ ∈ Ine (F := H.E) (N.plOm.1 (A.plGw k v)), ∃ φ : G H.E N.Om, φ * γ * φ⁻¹ * (γ ^ H.g k)⁻¹ ∈ Ine (F := H.E) (N.plOm.1 (A.plGw k v)) ∧ φ * γ * φ⁻¹ * (γ ^ H.g k)⁻¹ ∈ wildSet N (N.plOm.1 (A.plGw k v)) := by
   intro R H what₂ N A k v γ hγ

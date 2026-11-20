@@ -12,9 +12,9 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.PsRoot
 
 /- English proof (translation)
-Establish `hi : IsIntegral E x` using `hx.isIntegral`. Establish `h1 : (minpoly E x).natDegree = 1`. Use `IsAlgClosed.degree_eq_one_of_irreducible E (minpoly.irreducible hi)` as an intermediate fact. Conclude with `Polynomial.natDegree_eq_of_degree_eq_some this`. Take `⟨y, hy⟩` from `(minpoly.natDegree_eq_one_iff).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Conclude with `y.2`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_isAlgebraic_of_isAlgClosed (E : Subfield ℂ) [IsAlgClosed E] {x : ℂ}
     (hx : IsAlgebraic E x) : x ∈ E := by
@@ -27,15 +27,15 @@ theorem mem_of_isAlgebraic_of_isAlgClosed (E : Subfield ℂ) [IsAlgClosed E] {x 
   exact y.2
 
 /- English proof (translation)
-Introduce `Ω _ _ ε b Q hQ hcoef hb k`. Set `E : Subfield ℂ` to `ε.fieldRange`. Use `haveI : IsAlgClosed E := IsAlgClosed.of_ringEquiv Ω E ε.rangeRestrictFieldEquiv`. Establish `hE : ∀ z : ℂ, z ∈ ε.range → z ∈ E` using `fun z hz => by`. Take `⟨y, rfl⟩` from `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, rfl⟩`. Establish `hroot : ∀ g : ℂ ≃ₐ[E] ℂ, Q.IsRoot (PowerSeries.map (g : ℂ →+* ℂ) b)`. Introduce `g`. Establish `hfix : Q.map (PowerSeries.map (g : ℂ →+* ℂ)) = Q`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.coeff_map, PowerSeries.coeff_map]`. Take `⟨y, hy⟩` from `hE _ (hcoef i j)`. Rewrite using `[← hy]`. Conclude with `g.commutes ⟨_, ⟨y, rfl⟩⟩`. Establish `h2` using `Polynomial.eval_map_apply (PowerSeries.map (g : ℂ →+* ℂ)) (p := Q) b`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show Q.eval _ = 0`. Rewrite `h2` using `[hfix, hb, map_zero]`. Conclude with `h2`. Establish `hfin : (Set.range fun g : ℂ ≃ₐ[E] ℂ => g (PowerSeries.coeff k b)).Finite`. Use `((Polynomial.finite_setOf_isRoot hQ).image (PowerSeries.coeff k)).subset ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨g, rfl⟩`. Use `⟨PowerSeries.map (g : ℂ →+* ℂ) b, hroot g, ?_⟩` and prove the remaining obligations. Simplify using `[PowerSeries.coeff_map]`. Take `⟨y, hy⟩` from `mem_of_isAlgebraic_of_isAlgClosed E (GlobalTheory.T.isAlgebraic_of_finite_complex_automorphism_orbit E _ hfin)`. Conclude with `⟨y, hy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coeff_mem_range_of_isRoot : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ)
     (b : PowerSeries ℂ) (Q : Polynomial (PowerSeries ℂ)), Q ≠ 0 →

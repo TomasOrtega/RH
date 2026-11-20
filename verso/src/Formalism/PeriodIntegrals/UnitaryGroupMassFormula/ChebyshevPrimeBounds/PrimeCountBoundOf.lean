@@ -35,7 +35,7 @@ def PCLarge (x₀ : ℝ) : Prop := ∀ y : ℝ, x₀ ≤ y → ((pr y).card : �
 def PCSmall (x₀ : ℝ) : Prop := ∀ y : ℝ, 1 < y → y < x₀ → ((pr y).card : ℝ) < 1.26 * y / log y
 
 /- English proof (translation)
-Introduce `y hy`. Distinguish the cases in `h : x₀ ≤ y`. Conclude with `hL y h`. Conclude with `hS y hy (lt_of_not_ge h)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem primeCountBound_of (x₀ : ℝ) (hL : PCLarge x₀) (hS : PCSmall x₀) : PI.PrimeCountBound := by
   intro y hy
@@ -44,7 +44,7 @@ theorem primeCountBound_of (x₀ : ℝ) (hL : PCLarge x₀) (hS : PCSmall x₀) 
   · exact hS y hy (lt_of_not_ge h)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h1` using `hD x hx`. Establish `h2` using `(hS x (by linarith)).2`. Establish `h3` using `mul_le_mul_of_nonneg_right hA.1 (by linarith : (0 : ℝ) ≤ x)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem chLower_of (hA : ANum) (hD : DLower) (hS : Sandwich) : CHLower := by
   intro x hx

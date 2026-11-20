@@ -22,7 +22,7 @@ def gramE (J₁ : Matrix M M K) (η : K) : Matrix (Fin 1 ⊕ M ⊕ Fin 1) (Fin 1
   fromBlocks 0 (fromCols 0 1) (fromRows 0 (of fun _ _ => η)) (fromBlocks J₁ 0 0 0)
 
 /- English proof (translation)
-Establish `e : ∀ i j, ∑ l, J₁' i l * J₁ l j = (1 : Matrix M M K) i j` using `fun i j => by`. Rewrite using `[← h]`. Both sides reduce to the same expression. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp [gramE, Matrix.mul_apply, Fintype.sum_sum_type, e, Matrix.one_apply, Fin.fin_one_eq_zero, hη]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramE_inv {J₁ J₁' : Matrix M M K} (h : J₁' * J₁ = 1) {η η' : K} (hη : η' * η = 1) :
     fromBlocks 0 (fromCols 0 (of fun _ _ => η')) (fromRows 0 1) (fromBlocks J₁' 0 0 0) * gramE J₁ η = 1 := by
@@ -33,7 +33,7 @@ theorem gramE_inv {J₁ J₁' : Matrix M M K} (h : J₁' * J₁ = 1) {η η' : K
 
 omit [DecidableEq M] in
 /- English proof (translation)
-Establish `e : ∀ i j, ∑ k, (∑ l, g l i * J₁ l k) * g' k j = J₁ i j` using `fun i j => by`. Simplify `congrFun (congrFun h i) j` using `[Matrix.mul_apply]`. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp [gramE, Matrix.mul_apply, Fintype.sum_sum_type, e, Matrix.one_apply, Fin.fin_one_eq_zero, mul_comm (y : K), mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramE_levi {J₁ g g' : Matrix M M K} (h : gᵀ * J₁ * g' = J₁) (η : K) (x y : Kˣ) :
     (fromBlocks (of fun _ _ => (x : K)) 0 0 (fromBlocks g 0 0 (of fun _ _ => (y : K))))ᵀ * gramE J₁ η *
@@ -44,13 +44,11 @@ theorem gramE_levi {J₁ g g' : Matrix M M K} (h : gᵀ * J₁ * g' = J₁) (η 
     Fin.fin_one_eq_zero, mul_comm (y : K), mul_assoc]
 
 /- English proof (translation)
-Take `⟨X₁, X₂, rfl⟩ : ∃ X₁ X₂, X = fromCols X₁ X₂` from `⟨_, _, (fromCols_toCols X).symm⟩`. Use `⟨fromCols (-(η' • (Yᵀ * J₁))) (-(η' • (X₂ᵀ - Yᵀ * X₁ᵀ))), -(J₁' * X₁ᵀ), ?_⟩` and prove the remaining obligations. Establish `hη' : ∀ a : K, η * (η' * a) = a` using `fun a => by rw [← mul_assoc, mul_comm η, hη, one_mul]`. Establish `k0 : J₁ * (J₁' * X₁ᵀ) = X₁ᵀ` using `by rw [← Matrix.mul_assoc, h, Matrix.one_mul]`. Establish `k1 : ∀ i, ∑ x, ∑ i1, J₁ i x * (J₁' x i1 * X₁ 0 i1) = X₁ 0 i` using `fun i => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `congrFun (congrFun k0 i) 0` using `[Matrix.mul_apply, Finset.mul_sum]`. Establish `k2 : ∑ x, ∑ x1, ∑ i, Y i 0 * J₁ i x * (J₁' x x1 * X₁ 0 x1) = ∑ i, Y i 0 * X₁ 0 i`. Establish `e : ∀ i, Y i 0 * X₁ 0 i = ∑ x, ∑ x1, Y i 0 * J₁ i x * (J₁' x x1 * X₁ 0 x1)` using `fun i => by`. Rewrite using `[← k1 i, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun x1 _ => by ring`. Rewrite using `[Finset.sum_congr rfl fun i _ => e i]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun x _ => Finset.sum_comm`.
-
-Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp [gramE, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, Fin.fin_one_eq_zero, fromCols, fromBlocks, Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_mul, hη', k1, k2]`. Apply the tactic sequence `all_goals done`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem gramE_unip {J₁ J₁' : Matrix M M K} (h : J₁ * J₁' = 1) {η η' : K} (hη : η' * η = 1)
     (X : Matrix (Fin 1) (M ⊕ Fin 1) K) (Y : Matrix M (Fin 1) K) :
@@ -83,7 +81,7 @@ open GlobalTheory.JacGeom
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_swap (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : F}
     (hJ : ∀ i j, σ (J j i) = algebraMap F E ε * J i j) (x y : Fin n → E) :
@@ -94,17 +92,13 @@ theorem form_swap (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fi
   ring
 
 /- English proof (translation)
-Establish `hη : algebraMap F E ε * form σ W.J H.y H.x = 1`. Rewrite using `[← form_swap hσ hJ, hxy, map_one]`. Establish `hε : algebraMap F E ε ≠ 0` using `left_ne_zero_of_mul_eq_one hη`. Establish `o : ∀ j, form σ W.J (fun r => H.ι r j) H.x = 0 ∧ form σ W.J (fun r => H.ι r j) H.y = 0` using `fun j => by`. Use `horth (Pi.single j 1)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis. Establish `o' : ∀ j, form σ W.J H.x (fun r => H.ι r j) = 0 ∧ form σ W.J H.y (fun r => H.ι r j) = 0` using `fun j => by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `form_swap hσ hJ (fun r => H.ι r j) H.x` as an intermediate fact. Rewrite `this` using `[(o j).1, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 this.symm).resolve_left hε`. Use `form_swap hσ hJ (fun r => H.ι r j) H.y` as an intermediate fact. Rewrite `this` using `[(o j).2, map_zero]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left hε`. Use `⟨?_, hη⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `g` using `hgram`. Rewrite `g`, the goal using `[Matrix.mul_assoc]`. Use extensionality with `(i | i | i) (j | j | j)`. Conclude with `hxx`. Conclude with `(o' j).1.trans (by simp [gramE])`.
-
-Conclude with `hxy.trans (by simp [gramE, Subsingleton.elim i j])`. Conclude with `(o i).1.trans (by simp [gramE])`. Conclude with `(congrFun (congrFun g i) j).trans (by simp [gramE])`. Conclude with `(o i).2.trans (by simp [gramE])`. Use `first`.
-
-Consider the case `(simp [gramE]; done)`. Consider the case `(simp [gramE]; rfl)`. Consider the case `rfl`. Conclude with `(o' j).2.trans (by simp [gramE])`. Conclude with `hyy.trans (by simp [gramE])`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gram_frameE (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁} {ε : F}
     (hJ : ∀ i j, σ (W.J j i) = algebraMap F E ε * W.J i j) (hxx : form σ W.J H.x H.x = 0)
@@ -162,11 +156,9 @@ def threeBlockSumEquiv (m : ℕ) : Fin 1 ⊕ Fin m ⊕ Fin 1 ≃ (Σ i : Fin 3, 
       · exact ⟨Sum.inr (Sum.inr j), rfl⟩, by simp [Fin.sum_univ_three, add_assoc]⟩)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mem_unipRad.1 hu`. Establish `h3` using `mem_parab_iff.1 h1`. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> rw [submatrix_apply]`. Conclude with `h2 0 i j`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `h3 1 0 i j (by decide)`. Conclude with `h2 1 i j`. Both sides reduce to the same expression. Conclude with `h3 2 0 i j (by decide)`.
-
-Conclude with `h3 2 1 i j (by decide)`. Conclude with `h2 2 i j`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unip_blocks {n m : ℕ} {e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n} {u : GL (Fin n) k}
     (hu : u ∈ unipRad k e) :
@@ -188,9 +180,7 @@ theorem unip_blocks {n m : ℕ} {e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n} {
   · exact h2 2 i j
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> rw [submatrix_apply]`. Conclude with `(leviEmb_apply_same k e l 0 i j).trans (h0 i j)`. Conclude with `leviEmb_apply_ne k e l (by decide) _ _`. Conclude with `leviEmb_apply_ne k e l (by decide) _ _`. Conclude with `leviEmb_apply_ne k e l (by decide) _ _`.
-
-Conclude with `(leviEmb_apply_same k e l 1 i j).trans (h1 i j)`. Conclude with `leviEmb_apply_ne k e l (by decide) _ _`. Conclude with `leviEmb_apply_ne k e l (by decide) _ _`. Conclude with `leviEmb_apply_ne k e l (by decide) _ _`. Conclude with `(leviEmb_apply_same k e l 2 i j).trans (h2 i j)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem levi_blocks {n m : ℕ} (e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n)
     (l : Levi k (fun i : Fin 3 => Fin (blk3 m i))) (x y : kˣ) (g : GL (Fin m) k)
@@ -209,9 +199,9 @@ theorem levi_blocks {n m : ℕ} (e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n)
   · exact (leviEmb_apply_same k e l 2 i j).trans (h2 i j)
 
 /- English proof (translation)
-Use `levi_blocks e _ 1 1 g (fun i j => ?_) (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Take `rfl : i = j` from `Subsingleton.elim (α := Fin 1) i j show ((Pi.mulSingle (M := fun i : Fin 3 => GL (Fin (blk3 m i)) k) (1 : Fin 3) (show GL (Fin (blk3 m 1)) k from g)) 0).val i i = _`. Rewrite using `[Pi.mulSingle_eq_of_ne (by decide : (0 : Fin 3) ≠ 1)]`. Simplify using the standard rewrite rules. Use `show ((Pi.mulSingle (M := fun i : Fin 3 => GL (Fin (blk3 m i)) k) (1 : Fin 3) (show GL (Fin (blk3 m 1)) k from g)) 1).val i j = _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mulSingle_eq_same]`. Take `rfl : i = j` from `Subsingleton.elim (α := Fin 1) i j show ((Pi.mulSingle (M := fun i : Fin 3 => GL (Fin (blk3 m i)) k) (1 : Fin 3) (show GL (Fin (blk3 m 1)) k from g)) 2).val i i = _`. Rewrite using `[Pi.mulSingle_eq_of_ne (by decide : (2 : Fin 3) ≠ 1)]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem midIncl_blocks {n m : ℕ} (e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n) (g : GL (Fin m) k) :
     (leviEmb k e (midIncl k m g)).val.submatrix ((threeBlockSumEquiv m).trans e) ((threeBlockSumEquiv m).trans e) =
@@ -233,9 +223,9 @@ end Shapes
 section TorusShape
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp [Matrix.GeneralLinearGroup.scalar]; done)`. Consider the case `(simp only [Matrix.GeneralLinearGroup.scalar, Units.coe_map, MonoidHom.coe_coe]; simp; done)`. Consider the case `(rw [Matrix.GeneralLinearGroup.scalar, Units.coe_map]; simp; done)`. Consider the case `(simp [Matrix.GeneralLinearGroup.scalar, Units.coe_map, Matrix.scalar_apply]; done)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `rfl`.
+A detailed English derivation is pending.
 -/
 theorem scalar_fin_one_apply {k : Type} [Field k] (t : kˣ) (i : Fin 1) :
     (Matrix.GeneralLinearGroup.scalar (Fin 1) t).val i i = t := by
@@ -251,9 +241,9 @@ open GlobalTheory.SmGL GlobalTheory.IndLineGL
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `levi_blocks e _ t₁ t₂ 1 (fun i j => ?_) (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Take `rfl : i = j` from `Subsingleton.elim (α := Fin 1) i j`. Rewrite using `[torusPt_zero]`. Conclude with `scalar_fin_one_apply t₁ i`. Rewrite using `[torusPt_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `rfl : i = j` from `Subsingleton.elim (α := Fin 1) i j`. Rewrite using `[torusPt_two]`. Conclude with `scalar_fin_one_apply t₂ i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torus_blocks {n m : ℕ} (e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n) (t₁ t₂ : kˣ) :
     (leviEmb k e (torusPt k m t₁ t₂)).val.submatrix ((threeBlockSumEquiv m).trans e) ((threeBlockSumEquiv m).trans e) =
@@ -278,17 +268,17 @@ open GlobalTheory.Div.CoordOpp (unit_map)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {v : Pl F}
 
 /- English proof (translation)
-Use `set P := frame H.x H.ι H.y with hP`. Establish `hGτ : (P.map τ)ᵀ * W.J.map τ * P.map (τ.comp σ) = gramE (W₁.J.map τ) (τ η)`. Use `congrArg (fun Z => Z.map (τ : E →+* Fv F v)) hG` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.transpose_map] at this`. Use `this.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp [gramE, Matrix.one_apply, Fin.fin_one_eq_zero]`. Establish `hη' : algebraMap F (Fv F v) εW * τ η = 1`. Use `congrArg τ hη` as an intermediate fact. Rewrite `this` using `[map_mul, AlgHom.commutes, map_one]`. Then use the resulting hypothesis. Establish `hΓ` using `gramE_inv (Matrix.nonsing_inv_mul _ hJ₁) hη'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `fromBlocks _ _ _ _ = Γ' at hΓ`. Establish `hc : IsUnit ((P.map τ).submatrix id e.symm)`. Rewrite using `[← Matrix.isUnit_transpose]`. Use `IsUnit.of_mul_eq_one ((W.J.map τ * P.map (τ.comp σ) * Γ').submatrix id e.symm) ?_` and prove the remaining obligations. Rewrite using `[Matrix.transpose_submatrix, ← Matrix.submatrix_mul _ _ _ id _ Function.bijective_id, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hGτ, mul_eq_one_comm.1 hΓ, Matrix.submatrix_one_equiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hcv⟩ : ∃ c : GL (Fin n) (Fv F v), c.val = (P.map τ).submatrix id e.symm` from `⟨hc.unit, rfl⟩`. Use `⟨c, fun g N hN h1 h2 => ?_⟩` and prove the remaining obligations. Establish `a1 : (mat (liftU hcm τ W.J εW hermW hJW (c * g * c⁻¹))).map (piW τ) * P.map τ = P.map τ * g.val.submatrix e e`. Establish `b1 : (mat (liftU hcm τ W.J εW hermW hJW (c * g * c⁻¹))).map (piW τ) * c.val = c.val * g.val`. Rewrite using `[liftU_piW, ← Units.val_mul, inv_mul_cancel_right, Units.val_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `b2 : P.map τ = c.val.submatrix id e` using `by rw [hcv]; simp`. Rewrite using `[b2, Matrix.submatrix_mul_equiv, ← b1]`. Both sides reduce to the same expression. Establish `a2` using `adj_intertwine e hGτ hΓ (N₀ := (g⁻¹).val.submatrix e e) (by rw [Matrix.submatrix_mul_equiv, Units.mul_inv, Matrix.submatrix_one_equiv]) (unit_map σ (liftU hcm τ W.J εW hermW hJW (c * g * c⁻¹)) τ) a1 h2`. Establish `a3 : frame (incV F H.x) (incM F H.ι) (incV F H.y) = incM F P`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext r (j | j | j) <;> rfl`. Rewrite using `[a3]`. Conclude with `adelic_intertwine hcm τ (liftU_mem_UAt hcm τ W εW hermW hJW _) hN (by rw [h1]; exact a1) a2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_frame (hcm : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁}
     {H : Plane E n n₁} {εW : F} (hermW : ∀ i j, σ (W.J j i) = algebraMap F E εW * W.J i j)
@@ -343,23 +333,23 @@ open GlobalTheory.SplitLiftCoord GlobalTheory.SplitGLLift GlobalTheory.KSplit Gl
 open GlobalTheory.Div.CoordOpp (unit_map) in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm v τ n n₁ W W₁ H _ hxx hyy hxy horth hgram εW hermW hJW ε₁ herm₁ hJ₁ e`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.OppLagr.conj_conj hcm`. Take `⟨hG, hη⟩` from `gram_frameE hσ hermW hxx hyy hxy horth hgram`. Establish `hη' : algebraMap F (Fv F v) εW * τ (form σ W.J H.y H.x) = 1`. Use `congrArg τ hη` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, AlgHom.commutes, map_one]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `exists_lift_frame hcm τ hermW hJW hJ₁ hη hG ((threeBlockSumEquiv n₁).trans e)`. Establish `lev : ∀ (l : GlobalTheory.SmGL.Levi (Fv F v) fun i : Fin 3 => Fin (GlobalTheory.IndLineGL.blk3 n₁ i)) (x y : (Fv F v)ˣ) (g : GL (Fin n₁) (Fv F v)), (GlobalTheory.SmGL.leviEmb (Fv F v) e l).val.submatrix ((threeBlockSumEquiv n₁).trans e) ((threeBlockSumEquiv n₁).trans e) = Matrix. …` using `W₁) H (idl hcm τ (x, y⁻¹)) (liftU hcm τ W₁.J ε₁ herm₁ hJ₁ g) (liftU hcm τ W.J εW hermW hJW (c * GlobalTheory.SmGL.leviEmb (Fv F v) e l * c⁻¹)) := by`. Introduce `l x y g hu`. Establish `hh₁` using `liftU_mem_UAt hcm τ W₁ ε₁ herm₁ hJ₁ g`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `g2 : (mat (liftU hcm τ W₁.J ε₁ herm₁ hJ₁ g)).map (piW τ) = g.val` using `liftU_piW hcm τ W₁.J ε₁ herm₁ hJ₁ g`. Establish `si : cA σ ((idl hcm τ (x, y⁻¹))⁻¹ : (AE F E)ˣ).val = idl hcm τ (y, x⁻¹)`. Rewrite using `[← map_inv, Prod.inv_mk, inv_inv, cA_idl]`. Rewrite using `[IsLevi, si]`. Use `cols_levi (hc _ _ (fun a ha => ?_) ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `b1` using `at_idl hcm τ x y⁻¹ a ha`. Establish `b2` using `at_idl hcm τ y x⁻¹ a ha`. Establish `b3` using `fun i j => congrFun (congrFun (hh₁ a ha) i) j`. Use extensionality with `(i | i | i) (j | j | j)`. Apply the tactic sequence `all_goals first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Treat this case separately.
 
-Consider the case `(simp [Matrix.one_apply, Fin.fin_one_eq_zero, b1, b2]; done)`. Consider the case `simpa [Matrix.one_apply] using b3 i j`. Rewrite using `[hu, ← g2]`. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp [piW_idl]`. Rewrite using `[hu]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (gramE_levi (g' := (mat (liftU hcm τ W₁.J ε₁ herm₁ hJ₁ g)).map (piW (τ.comp σ))) (g2 ▸ unit_map σ (liftU hcm τ W₁.J ε₁ herm₁ hJ₁ g) τ) (τ (form σ W.J H.y H.x)) x y)` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp [piW_comp_idl]`. Use `⟨c, fun u hu => ?_, fun g => ?_, fun t₁ t₂ => ?_⟩` and prove the remaining obligations. Take `⟨X, Y, hs⟩ : ∃ X Y, u.val.submatrix ((threeBlockSumEquiv n₁).trans e) ((threeBlockSumEquiv n₁).trans e) = Matrix.fromBlocks 1 X 0 (Matrix.fromBlocks 1 Y 0 1)` from `⟨_, _, unip_blocks hu⟩`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨X', Y', hX⟩` from `gramE_unip (Matrix.mul_nonsing_inv _ hJ₁) hη' X Y`. Use `Subgroup.subset_closure (cols_unip (X := Matrix.of fun i j => liftPair hcm τ (X i j, X' i j)) (Y := Matrix.of fun i j => liftPair hcm τ (Y i j, Y' i j)) (hc u _ (fun a ha => ?_) ?_ ?_))` and prove the remaining obligations. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp [Matrix.one_apply, at_liftPair hcm τ _ a ha]`. Rewrite using `[hs]`. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp [Matrix.one_apply, piW_liftPair, apply_ite (piW τ)]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Use `Eq.trans ?_ hX` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp [Matrix.one_apply, piW_comp_liftPair, apply_ite (piW (τ.comp σ))]`. Use `lev _ 1 1 g (midIncl_blocks e g)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : idl hcm τ (1, 1⁻¹) = 1` using `by rw [inv_one]; exact map_one (idl hcm τ)`. Rewrite `this` using `[h1]`. Then use the resulting hypothesis. Use `lev _ t₁ t₂ 1 (torus_blocks e t₁ t₂)` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SplitLiftCoord.exists_lift_coords : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hcm : IsCMExt F E σ) (v : Pl F) (τ : E →ₐ[F] Fv F v)

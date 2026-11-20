@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.UTau0
 
 /- English proof (translation)
-Introduce `U _ h`. Substitute `hx` using the available equality. Establish `m₁ : x ≫ padd D₀.P.A (𝟙 _) f = x * (x ≫ f)` using `(MonObj.comp_mul _ _ _).trans (by simp)`. Establish `m₃ : x ≫ (toUnit D₀.P.A ≫ η[D₀.P.A]) = 1`. Rewrite using `[← Category.assoc, toUnit_unique (x ≫ toUnit _) (toUnit _), ← Hom.one_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `m₄ : (1 : 𝟙_ (Over (Sp R)) ⟶ D₀.P.A) = η[D₀.P.A]`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `e₁ : x.left ≫ (padd D₀.P.A (𝟙 _) f).left = (x * (x ≫ f)).left` using `by rw [← Over.comp_left, m₁]`. Establish `e₂ : x.left ≫ f.left = (x ≫ f).left` using `(Over.comp_left _ _ _ _ _).symm`. Establish `e₃ : x.left ≫ (toUnit D₀.P.A ≫ η[D₀.P.A]).left = (1 : 𝟙_ (Over (Sp R)) ⟶ D₀.P.A).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, m₃]`. Establish `e₄ : eSec D₀.P.A = (1 : 𝟙_ (Over (Sp R)) ⟶ D₀.P.A).left` using `by rw [m₄]; rfl`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_four, Fintype.prod_unique, Sum.elim_inl, Sum.elim_inr, PolDeg.lamPts, PolDeg.negε, w0φ, w0ε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, Category.comp_id, e₁, …`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -46,35 +46,33 @@ theorem formEq_psi {R : Type} [CommRing R] [IsDomain R] (D₀ : DegPre R) (f : D
   abel
 
 /- English proof (translation)
-Introduce `R _ _ _ D₀ O _ _ _ onB hc w0 hw uw huw uw0 τ' hbal hsym`. Use `haveI := onB.hom w0`. Use `haveI := onB.hom (star w0)`. Take `⟨u, hu, hu0⟩` from `exists_ros GlobalTheory.globalFns_holds D₀.P.isAb D₀.P.isLB (onB.act w0) (onB.act (star w0)) (onB.rosati w0)`. Establish `hfg : padd D₀.P.A (onB.act w0) (onB.act (star w0)) = 𝟙 _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← onB.map_add, hw, onB.map_one]`. Establish `cadd : ∀ a b, D₀.c (a + b) = D₀.c a * D₀.c b` using `fun a b => D₀.c_add a b`. Establish `c0 : D₀.c 0 = 1`. Use `cadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `mul_left_cancel (this.symm.trans (_root_.mul_one _).symm)`. Establish `cneg : ∀ a, D₀.c (-a) = (D₀.c a)⁻¹` using `fun a => eq_inv_of_mul_eq_one_left (by rw [← cadd, neg_add_cancel, c0])`. Set `t` to `fun y : D₀.X => LB.mulGen D₀.P.L _ _ _ _ (LB.mulGen D₀.P.L _ _ _ _ (τ' y (w0 • y)) (LB.pullGen D₀.P.L _ _ uw (D₀.c y).left)) (LB.invGen D₀.P.L (fun _ : PUnit => eSec D₀.P.A) (fun _ => 1) D₀.rig)`. Establish `ht : ∀ y, (t y).IsGen` using `fun y => DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (hbal.1 y _) (DVR.pullGen_isGen _ _ _ _ huw _)) (DVR.invGen_isGen _ _ _ _ D₀.rig_gen)`. Use `choose ψ hψ hψv using fun y => exists_gen D₀.P.isLB (formEq_psi D₀ (onB.act w0) (D₀.c y) _ (hc w0 y)) (t y) (ht y)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `Vψ : ∀ y p J, Good D₀.P.L p J → val (ψ y) (𝟙 _) p J = val (τ' y (w0 • y)) (𝟙 _) p J * val uw (D₀.c y).left p J * (rigV D₀ p J)⁻¹`. Introduce `y p J hJ`. Rewrite using `[hψv y _ _ p J hJ, val_mul hJ, val_mul hJ, val_inv, val_pull hJ, Category.id_comp]`. Both sides reduce to the same expression. Establish `key : ∀ y z p J, Good D₀.P.L p J → tauV D₀ ψ p J y z = val (τ' y z) (𝟙 _) p J`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y z p J hJ`. Establish `e1` using `hbal.2.1 y z (w0 • y + w0 • z) p J hJ`. Establish `e2` using `hbal.2.2.1 y (w0 • y) (w0 • z) p J hJ`. Establish `e3` using `hbal.2.2.1 z (w0 • y) (w0 • z) p J hJ`. Establish `e4` using `hsym z (w0 • y) p J hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e5` using `hbal.2.2.2 w0 u hu hu0 y z p J hJ`. Establish `e6` using `hbal.2.2.1 y (w0 • z) (star w0 • z) p J hJ`. Rewrite `e6` using `[← add_smul, hw, one_smul]`. Establish `g` using `GlobalTheory.T.symmetricPullbackGenerator_second_difference R D₀ (onB.act w0) (onB.act (star w0)) hfg uw huw uw0 u hu hu0 _ (D₀.c y) (D₀.c z) p J hJ`. Simplify using `only [cadd, hc] at e1 e2 e3 e6`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `tauV`. Rewrite using `[Vψ _ p J hJ, Vψ _ p J hJ, Vψ _ p J hJ, smul_add]`. Simplify using `only [cadd]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `E` using `fun {a b : ((𝟙_ (Over (Sp R))).left.presheaf.stalk p)ˣ} (e : a = b) => congrArg Additive.ofMul e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `E e1`. Establish `a2` using `E e2`. Establish `a3` using `E e3`. Establish `a4` using `E e4`. Establish `a5` using `E e5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `a6` using `E e6`. Establish `b1` using `E g`. Simplify using `only [ofMul_mul, ofMul_inv] at a1 a2 a3 a4 a5 a6 b1 ⊢`. Take the linear combination `(norm := abel) a1 + a2 + a3 + b1 + a4 + a5 - a6`. Use `⟨ψ, hψ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y y' z p J hJ`. Rewrite using `[key _ _ p J hJ, key _ _ p J hJ, key _ _ p J hJ]`. Conclude with `hbal.2.1 y y' z p J hJ`. Introduce `y p J hJ`. Establish `C` using `isCub_cubV D₀.cub hJ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Vψ _ p J hJ, Vψ _ p J hJ, smul_neg]`. Establish `f1` using `hbal.2.1 y (-y) (w0 • y) p J hJ`. Establish `z1` using `hbal.2.1 0 0 (w0 • y) p J hJ`. Establish `f2` using `hbal.2.2.1 (-y) (w0 • y) (-(w0 • y)) p J hJ`. Establish `z2` using `hbal.2.2.1 (-y) 0 0 p J hJ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `f1`, `f2` using `[add_neg_cancel]`. Rewrite `z1`, `z2` using `[add_zero]`. Establish `g` using `GlobalTheory.T.symmetricPullbackGenerator_even_value R D₀ (onB.act w0) uw huw uw0 _ (D₀.c y) p J hJ`. Simplify using `only [cneg, hc, c0] at f1 z1 f2 z2 ⊢`. Rewrite `z1`, `z2` using `[C.face]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `E` using `fun {a b : ((𝟙_ (Over (Sp R))).left.presheaf.stalk p)ˣ} (e : a = b) => congrArg Additive.ofMul e`. Establish `a1` using `E f1`. Establish `a2` using `E f2`. Establish `a3` using `E z1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `a4` using `E z2`. Establish `b1` using `E g`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one] at a1 a2 a3 a4 b1 ⊢`. Take the linear combination `(norm := abel) b1 + a1 - a2 + a3 - a4`. Introduce `a u' hu' hu0' y z p J hJ`.
-
-Rewrite using `[key _ _ p J hJ, key _ _ p J hJ]`. Conclude with `hbal.2.2.2 a u' hu' hu0' y z p J hJ`. Introduce `y p J hJ`. Rewrite using `[key _ _ p J hJ, Vψ _ p J hJ, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_psi_rLaws : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D₀ : DegPre R) (O : Type) [CommRing O] [StarRing O]
     [Module O D₀.X] (onB : D₀.P.OAct O), (∀ (a : O) (y : D₀.X), D₀.c (a • y) = D₀.c y ≫ onB.act a) →

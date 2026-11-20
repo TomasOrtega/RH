@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.FrameAgree
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.GL_inv_mul_congr_one_mod_uniformizer π hπ0 hπ a a₁ ha ha₁`.
+A detailed English derivation is pending.
 -/
 theorem inv_mul_cong {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] {N : ℕ} (π : K) (hπ0 : π ≠ 0)
     (hπ : Valued.v π < 1) (a a₁ : GL (Fin N) K)
@@ -26,7 +26,7 @@ theorem inv_mul_cong {K : Type} [Field K] [Valued K (WithZero (Multiplicative �
   GlobalTheory.T.GL_inv_mul_congr_one_mod_uniformizer π hπ0 hπ a a₁ ha ha₁
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mem_integralGLAtPrime_of_congruent_one_mod_pow P d g hg hg'`.
+A detailed English derivation is pending.
 -/
 theorem glint_of_cong {E : Type} [Field E] [NumberField E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (d : ℕ)
     (g : Sp E n ≃ₗ[E] Sp E n)
@@ -43,11 +43,11 @@ abbrev locM (Q : HeightOneSpectrum (𝓞 E)) : GL (Fin N) (E ⊗[F] FiniteAdeleR
   bc (GlobalTheory.Mem.Col2.adAt F Q)
 
 /- English proof (translation)
-Establish `hι : IsAdIso (GlobalTheory.Mem.Col2.afIso F E)` using `⟨GlobalTheory.Mem.Col2.afIso_tmul_one F E, GlobalTheory.Mem.Col2.mem_rInt_iff F E⟩`. Introduce `a b`. Establish `h1` using `hι.val_le (h a b)`. Establish `e1 : ∀ z, GlobalTheory.Mem.Col2.afIso F E z Q = GlobalTheory.Mem.Col2.adAt F Q z` using `fun z => rfl`. Rewrite `h1` using `[e1, map_mul, GlobalTheory.Mem.Col2.adAt_inclE, map_inv₀, Matrix.sub_apply, map_sub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : GlobalTheory.Mem.Col2.adAt F Q ((1 : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) a b) = (1 : Matrix (Fin N) (Fin N) (Q.adicCompletion E)) a b`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h1` using `[e2]`. Rewrite using `[Matrix.sub_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem congAt_loc (Q : HeightOneSpectrum (𝓞 E)) (n : ℕ) (k : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (h : CongAt (F := F) Q n k) : ∀ a b, Valued.v ((algebraMap E (Q.adicCompletion E) (((qOf Q : ℕ) : E) ^ n))⁻¹ *
@@ -66,9 +66,9 @@ theorem congAt_loc (Q : HeightOneSpectrum (𝓞 E)) (n : ℕ) (k : GL (Fin N) (E
   exact h1
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun g : GL (Fin N) (E ⊗[F] (Q.under (𝓞 F)).adicCompletion F) => Units.val g a b) h`. Express the relevant statement in the definitionally equal form `prV (E := E) (Q.under (𝓞 F)) ((x₁ : Matrix (Fin N) (Fin N) _) a b) = prV (E := E) (Q.under (𝓞 F)) ((x : Matrix (Fin N) (Fin N) _) a b) at h1`. Establish `h0 : prV (E` using `E) (Q.under (𝓞 F)) ((x₁ : Matrix (Fin N) (Fin N) _) a b - (x : Matrix (Fin N) (Fin N) _) a b) = 0 := by`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `h1`. Establish `h2` using `(GlobalTheory.Mem.Col2.AdComp.prV_zero_int_iff F E _ _).1.1 h0 Q rfl`. Rewrite `h2` using `[map_sub, sub_eq_zero]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_agree (Q : HeightOneSpectrum (𝓞 E)) {x x₁ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)}
     (h : bc (prV (E := E) (Q.under (𝓞 F))) x₁ = bc (prV (E := E) (Q.under (𝓞 F))) x) : locM Q x₁ = locM Q x := by
@@ -84,14 +84,14 @@ theorem loc_agree (Q : HeightOneSpectrum (𝓞 E)) {x x₁ : GL (Fin N) (E ⊗[F
   exact h2
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' Q e`.
+A detailed English derivation is pending.
 -/
 theorem val_alg (Q : HeightOneSpectrum (𝓞 E)) (e : E) :
     Valued.v (algebraMap E (Q.adicCompletion E) e) = Q.valuation E e :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' Q e
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Proof.IntegralPowerExpansion.intAt_iff_val, ← val_alg, map_mul, map_inv₀, map_sub]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_of_val (Q : HeightOneSpectrum (𝓞 E)) (c m o : E)
     (h : Valued.v ((algebraMap E (Q.adicCompletion E) c)⁻¹ * (algebraMap E (Q.adicCompletion E) m - algebraMap E (Q.adicCompletion E) o)) ≤ 1) :
@@ -100,7 +100,7 @@ theorem intAt_of_val (Q : HeightOneSpectrum (𝓞 E)) (c m o : E)
   exact h
 
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem one_entry {E₀ : Type} [Field E₀] (Q : HeightOneSpectrum (𝓞 E)) (ψ : E₀ ≃+* E) (a b : Fin N) :
     (1 : Matrix (Fin N) (Fin N) (Q.adicCompletion E)) a b = algebraMap E (Q.adicCompletion E) (ψ ((1 : Matrix (Fin N) (Fin N) E₀) a b)) := by
@@ -110,18 +110,18 @@ theorem one_entry {E₀ : Type} [Field E₀] (Q : HeightOneSpectrum (𝓞 E)) (�
 end Loc
 
 /- English proof (translation)
-Simplify using `[map_mul, map_inv₀, map_pow, map_natCast, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_expr {E₀ E : Type} [Field E₀] [Field E] (σ : E₀ ≃+* E) (q d : ℕ) (m o : E₀) :
     ((q : E) ^ d)⁻¹ * (σ m - σ o) = σ (((q : E₀) ^ d)⁻¹ * (m - o)) := by
   simp [map_mul, map_inv₀, map_pow, map_natCast, map_sub]
 
 /- English proof (translation)
-Establish `hI : (seamP s P).asIdeal = P.asIdeal.map (RingOfIntegers.mapRingEquiv s.iE)`. Use extensionality with `y`. Rewrite using `[← (RingOfIntegers.mapRingEquiv s.iE).apply_symm_apply y, mem_seamP, Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, hy, rfl⟩`. Introduce and unpack `⟨z, hz, e⟩`. Rewrite `hz` using `[(RingOfIntegers.mapRingEquiv s.iE).injective e]`. Conclude with `hz`. Unfold `qOf`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv P.asIdeal (seamP s P).asIdeal (RingOfIntegers.mapRingEquiv s.iE) hI).toEquiv).symm`.
+A detailed English derivation is pending.
 -/
 theorem qOf_seamP {D : D7} {X : Fields} (s : Seam D X) (P : HeightOneSpectrum (𝓞 X.E)) : qOf (seamP s P) = qOf P := by
   have hI : (seamP s P).asIdeal = P.asIdeal.map (RingOfIntegers.mapRingEquiv s.iE) := by
@@ -137,11 +137,11 @@ theorem qOf_seamP {D : D7} {X : Fields} (s : Seam D X) (P : HeightOneSpectrum (�
   exact (Nat.card_congr (Ideal.quotientEquiv P.asIdeal (seamP s P).asIdeal (RingOfIntegers.mapRingEquiv s.iE) hI).toEquiv).symm
 
 /- English proof (translation)
-Establish `hc : ∀ y : 𝓞 X.E, algebraMap (𝓞 D.host.E) D.host.E (RingOfIntegers.mapRingEquiv s.iE y) = s.iE (algebraMap (𝓞 X.E) X.E y)` using `fun y => rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, c, hc', h⟩`. Use `⟨(RingOfIntegers.mapRingEquiv s.iE).symm r, (RingOfIntegers.mapRingEquiv s.iE).symm c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mem_seamP s, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc'`. Apply `s.iE.injective` to reduce the goal to its premises. Rewrite using `[map_mul, ← hc, ← hc, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Conclude with `h`. Introduce and unpack `⟨r, c, hc', h⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨RingOfIntegers.mapRingEquiv s.iE r, RingOfIntegers.mapRingEquiv s.iE c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_seamP s]`. Conclude with `hc'`. Rewrite using `[hc, hc, ← map_mul, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_seamP {D : D7} {X : Fields} (s : Seam D X) (P : HeightOneSpectrum (𝓞 X.E)) (e : X.E) :
     IntAt (seamP s P) (s.iE e) ↔ IntAt P e := by
@@ -168,21 +168,19 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G
   {A : AdData t u μ St} {dtU : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm →* D.Dt} {a : 𝓞 D.host.E}
 
 /- English proof (translation)
-Use `set Q := seamP t.seam P.1 with hQdef`. Establish `hQ : Q ∈ ssRec t u μ` using `(mem_ssRec t u μ P.1).2 (by rw [hTie.isChainTop.1]; classical exact Finset.mem_union.2 (Or.inr P.2))`. Establish `hv : Q.under (𝓞 D.host.F) ∈ plUnder D.host.F (ssRec t u μ)` using `⟨Q, hQ, rfl⟩`. Establish `hag` using `loc_agree Q (hx _ hv)`. Establish `c0` using `congAt_loc Q _ _ (hp.frame P)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1` using `congAt_loc Q _ _ (hp₁.frame P)`. Establish `hD : 1 ≤ (t.cst μ).D P` using `(t.idx_ok μ).cst_ok.D_pos P`. Establish `hq0 : qOf Q ≠ 0` using `fun h0 => Q.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Establish `hπ0 : algebraMap D.host.E (Q.adicCompletion D.host.E) (((qOf Q : ℕ) : D.host.E) ^ (t.cst μ).D P) ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (algebraMap D.host.E _).injective]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pow_ne_zero _ (by exact_mod_cast hq0)`. Establish `hπ : Valued.v (algebraMap D.host.E (Q.adicCompletion D.host.E) (((qOf Q : ℕ) : D.host.E) ^ (t.cst μ).D P)) < 1`. Rewrite using `[val_alg, map_pow]`. Use `pow_lt_one₀ zero_le' ?_ (by omega)` and prove the remaining obligations. Establish `e : ((qOf Q : ℕ) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E (qOf Q : 𝓞 D.host.E)` using `by rw [map_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(Q.intValuation_lt_one_iff_mem _).2 (Ideal.absNorm_mem _)`. Establish `key` using `inv_mul_cong _ hπ0 hπ _ _ c0 c1`. Establish `hs : (frsF t.sel (t.tup μ) p₁ P).trans (frsF t.sel (t.tup μ) p P).symm = (frsF t.sel (t.tup μ) p P)⁻¹ * frsF t.sel (t.tup μ) p₁ P`. Use extensionality with `w`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e : (locM Q (((ratA D.host.F) (A.crd j hj) * x.1 * (ratA D.host.F) (A.fb j hj β P))⁻¹ * (ratA D.host.F) ((seamGL t.seam) (frsF t.sel (t.tup μ) p P))))⁻¹ * locM Q (((ratA D.host.F) (A.crd j hj) * x₁.1 * (ratA D.host.F) (A.fb j hj β P))⁻¹ * (ratA D.host.F) ((seamGL t.seam) (frsF t. …`. Rewrite using `[hs]`. Simplify using `only [map_mul, map_inv]`. Rewrite using `[hag]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `group`. Rewrite `key` using `[e]`. Introduce `a b`. Establish `k` using `key a b`. Take `⟨g, hg⟩ : ∃ g, g = (frsF t.sel (t.tup μ) p₁ P).trans (frsF t.sel (t.tup μ) p P).symm` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `k`, the goal using `[← hg]`. Establish `ent : ((locM Q (ratA D.host.F (seamGL t.seam g)) : GL (Fin (D.R.N j)) (Q.adicCompletion D.host.E)) : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) (Q.adicCompletion D.host.E)) a b = algebraMap D.host.E _ (t.seam.iE (LinearMap.toMatrix' g.toLinearMap a b))` using `by show GlobalTheory.Mem.Col2.adAt D.host.F Q (inclE (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (((seamGL t.seam g : GL (Fin (D.R.N j)) D.host.E) : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) D.host.E) a b)) = _`. Rewrite using `[GlobalTheory.Mem.Col2.adAt_inclE]`. Both sides reduce to the same expression. Establish `one : (1 : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) (Q.adicCompletion D.host.E)) a b = algebraMap D.host.E _ (t.seam.iE ((1 : Matrix (Fin (D.R.N j)) (Fin (D.R.N j)) t.X.E) a b))`.
-
-Apply the tactic sequence `exact one_entry Q t.seam.iE a b`. Rewrite `k` using `[Matrix.sub_apply, ent, one]`. Establish `k2` using `intAt_of_val Q _ _ _ k`. Rewrite `k2` using `[hQdef, qOf_seamP, map_expr]`. Conclude with `(intAt_seamP t.seam P.1 _).1 k2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (hTie : AdTie A dtU a) (j : ℕ) (hj : j ≤ D.R.m) (β : (St j hj).Ch) (x x₁ : UA D j hj)
     (p p₁ : ChPt (R := D.R) t.sel (t.tup μ) (t.word u) j) (hp : IsPtAd A a j hj β x p) (hp₁ : IsPtAd A a j hj β x₁ p₁)
@@ -245,9 +243,9 @@ end GlobalTheory.FrameAgree
 namespace GlobalTheory.FrameAgree
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a _ hTie j hj β x x₁ p p₁ hp hp₁ hx P`. Establish `h1` using `core hTie j hj β x x₁ p p₁ hp hp₁ hx P`. Establish `h2` using `core hTie j hj β x₁ x p₁ p hp₁ hp (fun v hv => (hx v hv).symm) P`. Establish `hsymm : ((frsF t.sel (t.tup μ) p₁ P).trans (frsF t.sel (t.tup μ) p P).symm).symm = (frsF t.sel (t.tup μ) p P).trans (frsF t.sel (t.tup μ) p₁ P).symm`. Use extensionality with `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Conclude with `glint_of_cong P.1 ((t.cst μ).D P) _ h1 (by rw [hsymm]; exact h2)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem frame_away : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ (j : ℕ) (hj : j ≤ D.R.m) (β : (St j hj).Ch) (x x₁ : UA D j hj)
   (p p₁ : ChPt (R := D.R) t.sel (t.tup μ) (t.word u) j), IsPtAd A a j hj β x p → IsPtAd A a j hj β x₁ p₁ →

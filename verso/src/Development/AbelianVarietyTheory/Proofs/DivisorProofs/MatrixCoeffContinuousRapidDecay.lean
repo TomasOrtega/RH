@@ -10,9 +10,9 @@ namespace GlobalTheory
 namespace MatrixCoeff
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Break down `i with j | j` into its components or cases. Conclude with `le_max_of_le_left (by`. Use `PiLp.norm_apply_le (pPart w) j` as an intermediate fact. Simplify `this)` using `[pPart]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `le_max_of_le_right (by`. Use `PiLp.norm_apply_le (qPart w) j` as an intermediate fact. Simplify `this)` using `[qPart]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_le_max_parts (n : ℕ) (w : Fin n ⊕ Fin n → ℝ) : ‖w‖ ≤ max ‖pPart w‖ ‖qPart w‖ := by
   refine (pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_
@@ -25,9 +25,9 @@ theorem norm_le_max_parts (n : ℕ) (w : Fin n ⊕ Fin n → ℝ) : ‖w‖ ≤ 
       simpa [qPart] using this)
 
 /- English proof (translation)
-Establish `h` using `norm_le_max_parts n w`. Break down `le_total ‖pPart w‖ ‖qPart w‖ with h' | h'` into its components or cases. Rewrite `h` using `[max_eq_right h']`. Establish `: (1 + ‖w‖) ^ N ≤ (1 + ‖qPart w‖) ^ N` using `by gcongr`. Combine the linear relations using `[pow_nonneg (by positivity : (0:ℝ) ≤ 1 + ‖pPart w‖) N]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h` using `[max_eq_left h']`. Establish `: (1 + ‖w‖) ^ N ≤ (1 + ‖pPart w‖) ^ N` using `by gcongr`. Combine the linear relations using `[pow_nonneg (by positivity : (0:ℝ) ≤ 1 + ‖qPart w‖) N]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_add_norm_pow_le_parts (n N : ℕ) (w : Fin n ⊕ Fin n → ℝ) :
     (1 + ‖w‖) ^ N ≤ (1 + ‖pPart w‖) ^ N + (1 + ‖qPart w‖) ^ N := by
@@ -45,9 +45,9 @@ end MatrixCoeff
 open MatrixCoeff
 
 /- English proof (translation)
-Introduce `n g g'`. Use `⟨GlobalTheory.T.continuous_matrix_coefficient n g g', fun N => ?_⟩` and prove the remaining obligations. Take `⟨C1, h1⟩` from `GlobalTheory.T.matrix_coeff_decay_first_part n g g' N`. Take `⟨C2, h2⟩` from `GlobalTheory.T.matrix_coeff_decay_second_part n g g' N`. Use `⟨C1 + C2, fun w => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `one_add_norm_pow_le_parts n N w` as an intermediate fact. Establish `hn : 0 ≤ ‖∫ x, rhoFun w ⇑g x * starRingEnd ℂ (g' x)‖` using `norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem matrixCoeff_continuous_rapidDecay : ∀ (n : ℕ) (g g' : Sch (Fin n)),
     Continuous (fun w : Fin n ⊕ Fin n → ℝ => ∫ x, rhoFun w ⇑g x * starRingEnd ℂ (g' x)) ∧

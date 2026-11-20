@@ -14,7 +14,7 @@ def HasCoord (V : Type) [AddCommGroup V] [TopologicalSpace V] : Prop :=
   ∃ (N : ℕ) (e : V ≃+ (Fin N → ℝ)), Continuous e ∧ Continuous e.symm
 
 /- English proof (translation)
-Take `⟨N, f, g1, g2⟩` from `h`. Conclude with `⟨N, e.trans f, g1.comp h1, h2.comp g2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasCoord.of_equiv {V W : Type} [AddCommGroup V] [TopologicalSpace V] [AddCommGroup W]
     [TopologicalSpace W] (e : V ≃+ W) (h1 : Continuous e) (h2 : Continuous e.symm)
@@ -23,7 +23,7 @@ theorem HasCoord.of_equiv {V W : Type} [AddCommGroup V] [TopologicalSpace V] [Ad
   exact ⟨N, e.trans f, g1.comp h1, h2.comp g2⟩
 
 /- English proof (translation)
-Set `T` to `(Module.finBasis ℝ W).equivFunL`. Conclude with `⟨_, T.toLinearEquiv.toAddEquiv, T.continuous, T.symm.continuous⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem hasCoord_of_finiteDimensional (W : Type) [NormedAddCommGroup W] [NormedSpace ℝ W]
     [FiniteDimensional ℝ W] : HasCoord W := by
@@ -31,7 +31,7 @@ theorem hasCoord_of_finiteDimensional (W : Type) [NormedAddCommGroup W] [NormedS
   exact ⟨_, T.toLinearEquiv.toAddEquiv, T.continuous, T.symm.continuous⟩
 
 /- English proof (translation)
-Take `⟨N, f, g1, g2⟩` from `h`. Use `HasCoord.of_equiv (AddEquiv.piCongrRight fun _ : ι => f) ?_ ?_ (hasCoord_of_finiteDimensional (ι → Fin N → ℝ))` and prove the remaining obligations. Conclude with `continuous_pi fun i => g1.comp (continuous_apply i)`. Conclude with `continuous_pi fun i => g2.comp (continuous_apply i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem HasCoord.pi {V : Type} [AddCommGroup V] [TopologicalSpace V] (h : HasCoord V)
     (ι : Type) [Fintype ι] : HasCoord (ι → V) := by
@@ -42,11 +42,9 @@ theorem HasCoord.pi {V : Type} [AddCommGroup V] [TopologicalSpace V] (h : HasCoo
   · exact continuous_pi fun i => g2.comp (continuous_apply i)
 
 /- English proof (translation)
-Take `⟨N, e, g1, g2⟩` from `h`. Set `f' : (Fin N → ℝ) →+ (Fin N → ℝ)` to `(e.toAddMonoidHom.comp f).comp e.symm.toAddMonoidHom`. Establish `hf' : Continuous f'` using `g1.comp (hf.comp g2)`. Set `K : Submodule ℝ (Fin N → ℝ)` to `LinearMap.eqLocus (f'.toRealLinearMap hf' : (Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ)) LinearMap.id`. Establish `hK : ∀ u, u ∈ K ↔ e (f (e.symm u)) = u` using `fun u => Iff.rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T : H ≃+ K` to `{ toFun := fun x => ⟨e x, (hK _).2 (by rw [e.symm_apply_apply, (hH _).1 x.2])⟩ invFun := fun u => ⟨e.symm u, (hH _).2 (by`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[(hK _).1 u.2, e.apply_symm_apply])⟩`. Use `left_inv := fun x => Subtype.ext (e.symm_apply_apply _)`. Use `right_inv := fun u => Subtype.ext (e.apply_symm_apply _)`.
-
-Use the proof step `map_add' := fun x y => Subtype.ext (e.map_add _ _) }`. Use `HasCoord.of_equiv T ?_ ?_ (hasCoord_of_finiteDimensional K)` and prove the remaining obligations. Conclude with `(g1.comp continuous_subtype_val).subtype_mk _`. Conclude with `(g2.comp continuous_subtype_val).subtype_mk _`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem HasCoord.fixed {V : Type} [AddCommGroup V] [TopologicalSpace V] (h : HasCoord V)
     (f : V →+ V) (hf : Continuous f) (H : AddSubgroup V) (hH : ∀ x, x ∈ H ↔ f x = x) :
@@ -70,7 +68,7 @@ theorem HasCoord.fixed {V : Type} [AddCommGroup V] [TopologicalSpace V] (h : Has
   · exact (g2.comp continuous_subtype_val).subtype_mk _
 
 /- English proof (translation)
-Take `⟨N, e, g1, g2⟩` from `h`. Conclude with `(Homeomorph.mk e.toEquiv g1 g2).secondCountableTopology`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem HasCoord.secondCountable {V : Type} [AddCommGroup V] [TopologicalSpace V]
     (h : HasCoord V) : SecondCountableTopology V := by
@@ -78,15 +76,13 @@ theorem HasCoord.secondCountable {V : Type} [AddCommGroup V] [TopologicalSpace V
   exact (Homeomorph.mk e.toEquiv g1 g2).secondCountableTopology
 
 /- English proof (translation)
-Take `⟨N, e, g1, g2⟩` from `h`. Set `f : C((Fin N → ℝ), Circle)` to `⟨fun u => ⟨χ (e.symm u), mem_sphere_zero_iff_norm.2 (hn _)⟩, (hc.comp g2).subtype_mk fun u => mem_sphere_zero_iff_norm.2 (hn _)⟩`. Establish `hfa : ∀ u v, f (u + v) = f u * f v` using `fun u v => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show χ (e.symm (u + v)) = χ (e.symm u) * χ (e.symm v)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, ha]`. Establish `hf0 : f 0 = 1`. Use `hfa 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_left_cancel (a := f 0) (by rw [mul_one]; exact this.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨G, ⟨hG0, hG⟩, -⟩` from `Circle.isCoveringMap_exp.existsUnique_continuousMap_lifts f 0 0 (by rw [hf0]; exact Circle.exp_zero)`. Establish `hGx : ∀ u, Circle.exp (G u) = f u` using `fun u => congrFun hG u`. Establish `hadd : ∀ u v, G (u + v) = G u + G v`. Introduce `u v`. Use `Circle.isCoveringMap_exp.eq_of_comp_eq (g₁ := fun u => G (u + v)) (g₂ := fun u => G u + G v) (by fun_prop) (by fun_prop) (by funext u; simp only [Function.comp, Circle.exp_add, hGx, hfa]) 0 (by simp [hG0])` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `congrFun this u`. Use `⟨(AddMonoidHom.mk' G hadd).comp e.toAddMonoidHom, G.continuous.comp g1, fun x => ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : Circle => (z : ℂ)) (hGx (e x))` as an intermediate fact. Simplify using `only [Circle.coe_exp] at this`. Use `show χ x = Complex.exp ((G (e x) : ℂ) * Complex.I)`.
-
-Rewrite using `[this]`. Use `show χ x = χ (e.symm (e x))`. Rewrite using `[e.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasCoord.char_eq_exp {V : Type} [AddCommGroup V] [TopologicalSpace V] (h : HasCoord V)
     (χ : V → ℂ) (hc : Continuous χ) (ha : ∀ x y, χ (x + y) = χ x * χ y) (hn : ∀ x, ‖χ x‖ = 1) :
@@ -121,17 +117,17 @@ theorem HasCoord.char_eq_exp {V : Type} [AddCommGroup V] [TopologicalSpace V] (h
   rw [e.symm_apply_apply]
 
 /- English proof (translation)
-Take `⟨N, e, g1, g2⟩` from `h`. Set `l : V → (Fin N → ℝ) →L[ℝ] ℝ` to `fun x => ((AddMonoidHom.mk' (β x) (ha x)).comp e.symm.toAddMonoidHom).toRealLinearMap ((hc x).comp g2)`. Establish `hl : ∀ x u, l x u = β x (e.symm u)` using `fun x u => rfl`. Establish `hexp : ∀ x y, β x y = ∑ j, e y j * β x (e.symm (Pi.single j 1))`. Introduce `x y`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : e y = ∑ j, e y j • (Pi.single j 1 : Fin N → ℝ)`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `h2 : β x y = l x (e y)` using `by rw [hl, e.symm_apply_apply]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [h1]`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Both sides reduce to the same expression. Set `A : Matrix (Fin N) (Fin N) ℝ` to `fun i j => β (e.symm (Pi.single i 1)) (e.symm (Pi.single j 1))`. Establish `hA : ∀ x y, β x y = dotProduct (e x) (A.mulVec (e y))`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Rewrite using `[hs, hexp]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hs, hexp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Use `GlobalTheory.CompanionTheory.SelfDualReal.exists_selfDual V N e A χ g1 g2 ?_ ?_ fun x y => by rw [hχ, hA]` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `hs _ _`. Introduce `hd`.
+By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hd`. Apply `hv0` to reduce the goal to its premises. Establish `: e.symm v = 0` using `hn _ fun y => by`. Rewrite using `[hs, hA, e.apply_symm_apply, hv, dotProduct_zero]`. Simplify using `using congrArg e this`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem HasCoord.exists_selfDual {V : Type} [AddCommGroup V] [TopologicalSpace V]
     [MeasurableSpace V] [BorelSpace V] (h : HasCoord V) (β : V → V → ℝ)
@@ -176,7 +172,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
   (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E)
 
 /- English proof (translation)
-Establish `h : Algebra.lmul R (R ⊗[F] E) (r ⊗ₜ[F] x) = r • (Algebra.lmul F E x).baseChange R`. Use `TensorProduct.AlgebraTensorModule.curry_injective ?_` and prove the remaining obligations. Use extensionality with `y`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.smul_tmul', mul_comm]`. Rewrite using `[Algebra.trace_apply, h, map_smul, LinearMap.trace_baseChange, smul_eq_mul, Algebra.trace_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_tmul (r : R) (x : E) : Algebra.trace R (R ⊗[F] E) (r ⊗ₜ[F] x) =
     r * algebraMap F R (Algebra.trace F E x) := by
@@ -193,7 +189,7 @@ Both sides reduce to the same expression.
 theorem sigR_tmul (r : R) (x : E) : sigR R σ (r ⊗ₜ[F] x) = r ⊗ₜ[F] σ x := rfl
 
 /- English proof (translation)
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul r x => rw [sigR_tmul, sigR_tmul, hσ]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_invol (hσ : ∀ x, σ (σ x) = x) (z : R ⊗[F] E) : sigR R σ (sigR R σ z) = z := by
   induction z with
@@ -202,7 +198,7 @@ theorem sigR_invol (hσ : ∀ x, σ (σ x) = x) (z : R ⊗[F] E) : sigR R σ (si
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul s x => simp [TensorProduct.smul_tmul', sigR_tmul]`. Consider the case `add a b ha hb => rw [smul_add, map_add, ha, hb, map_add, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_smul (r : R) (z : R ⊗[F] E) : sigR R σ (r • z) = r • sigR R σ z := by
   induction z with
@@ -216,9 +212,9 @@ def sigLin : R ⊗[F] E →ₗ[R] R ⊗[F] E where
   map_smul' := sigR_smul R σ
 
 /- English proof (translation)
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul r x`. Rewrite using `[sigR_tmul, trace_tmul, trace_tmul]`. Use `congr 2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofAlgHom σ σ (AlgHom.ext hσ) (AlgHom.ext hσ)) x`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem trace_sigR (hσ : ∀ x, σ (σ x) = x) (z : R ⊗[F] E) :
     Algebra.trace R (R ⊗[F] E) (sigR R σ z) = Algebra.trace R (R ⊗[F] E) z := by
@@ -231,17 +227,17 @@ theorem trace_sigR (hσ : ∀ x, σ (σ x) = x) (z : R ⊗[F] E) :
   | add a b ha hb => rw [map_add, map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F E`. Set `B` to `Algebra.traceForm F E`. Establish `hB : B.Nondegenerate` using `traceForm_nondegenerate F E`. Set `b'` to `B.dualBasis hB b`. Set `c` to `Algebra.TensorProduct.basis R b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hz : z = ∑ i, c.repr z i ⊗ₜ[F] b i` using `by conv_lhs => rw [← c.sum_repr z]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[c, TensorProduct.smul_tmul']`. Establish `hc : ∀ j, c.repr z j = 0`. Introduce `j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `h ((1 : R) ⊗ₜ[F] b' j)`. Rewrite `h1` using `[hz, Finset.sum_mul, map_sum]`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, mul_one, trace_tmul] at h1`. Rewrite `h1` using `[Finset.sum_eq_single j]`. Establish `h2 : Algebra.trace F E (b j * b' j) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `LinearMap.BilinForm.apply_dualBasis_right hB (Algebra.traceForm_isSymm F) b j j` as an intermediate fact. Simplify `this` using `[B, b', Algebra.traceForm_apply]`. Rewrite `h1` using `[h2, map_one, mul_one]`. Conclude with `h1`. Introduce `i _ hij`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : Algebra.trace F E (b i * b' j) = 0`. Use `LinearMap.BilinForm.apply_dualBasis_right hB (Algebra.traceForm_isSymm F) b i j` as an intermediate fact. Simplify `this` using `[B, b', Algebra.traceForm_apply, hij]`. Rewrite using `[h2, map_zero, mul_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← c.sum_repr z]`. Simplify using `[hc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_nondeg [Algebra.IsSeparable F E] (z : R ⊗[F] E)
     (h : ∀ u, Algebra.trace R (R ⊗[F] E) (z * u) = 0) : z = 0 := by
@@ -283,7 +279,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
   (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E)
 
 /- English proof (translation)
-Use `show sigR R σ ((1 : R) ⊗ₜ[F] J i j) = (1 : R) ⊗ₜ[F] J j i`. Rewrite using `[sigR_tmul, hJ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigR_JR {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : ∀ i j, σ (J j i) = J i j)
     (i j : Fin M) : sigR R σ (JR R J i j) = JR R J j i := by
@@ -291,7 +287,7 @@ theorem sigR_JR {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : ∀ i j, σ (J j 
   rw [sigR_tmul, hJ]
 
 /- English proof (translation)
-Simplify using `only [hR, hform, map_sum, map_mul, sigR_invol R σ hσ, sigR_JR R σ hJ]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigR_hR (hσ : ∀ x, σ (σ x) = x) {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin M → R ⊗[F] E) :
@@ -301,7 +297,7 @@ theorem sigR_hR (hσ : ∀ x, σ (σ x) = x) {M : ℕ} {J : Matrix (Fin M) (Fin 
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun a _ => by rw [← sigR_hR R σ hσ hJ (Y a) (X a), trace_sigR R σ hσ]`.
+A detailed English derivation is pending.
 -/
 theorem BR_comm (hσ : ∀ x, σ (σ x) = x) {M n : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (X Y : Fin n → Fin M → R ⊗[F] E) :
@@ -309,7 +305,7 @@ theorem BR_comm (hσ : ∀ x, σ (σ x) = x) {M n : ℕ} {J : Matrix (Fin M) (Fi
   Finset.sum_congr rfl fun a _ => by rw [← sigR_hR R σ hσ hJ (Y a) (X a), trace_sigR R σ hσ]
 
 /- English proof (translation)
-Simplify using `only [BR, hR, hform, Pi.add_apply, mul_add, Finset.sum_add_distrib, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem BR_add_right {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (X Y Y' : Fin n → Fin M → R ⊗[F] E) :
@@ -317,7 +313,7 @@ theorem BR_add_right {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
   simp only [BR, hR, hform, Pi.add_apply, mul_add, Finset.sum_add_distrib, map_add]
 
 /- English proof (translation)
-The claim follows from `trace_nondeg R z fun u => hL _ fun r => by have := h (r • u) rwa [mul_smul_comm, map_smul, smul_eq_mul] at this`.
+A detailed English derivation is pending.
 -/
 theorem trace_nondeg_of [Algebra.IsSeparable F E] (L : R →+ ℝ)
     (hL : ∀ t, (∀ r, L (r * t) = 0) → t = 0) (z : R ⊗[F] E)
@@ -327,15 +323,15 @@ theorem trace_nondeg_of [Algebra.IsSeparable F E] (L : R →+ ℝ)
     rwa [mul_smul_comm, map_smul, smul_eq_mul] at this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Set `v : Fin M → R ⊗[F] E` to `fun i => sigR R σ (X a i)`. Establish `hv : ∀ j, ∑ i, v i * JR R J i j = 0`. Introduce `j`. Use `trace_nondeg_of R L hL _ fun u => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : BR R σ J X (Pi.single a (Pi.single j u)) = Algebra.trace R (R ⊗[F] E) ((∑ i, v i * JR R J i j) * u)`. Unfold `BR`. Rewrite using `[Finset.sum_eq_single a]`. Use `congr 1`. Simplify using `[hR, hform, v, Pi.single_apply, Finset.sum_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Introduce `c _ hc`. Simplify using `[hR, hform, Pi.single_apply, hc]`. Simplify using the standard rewrite rules. Rewrite using `[← e]`. Conclude with `h _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : JR (F` using `F) R J * JR (F := F) R J⁻¹ = 1 := by`. Unfold `JR`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv J (isUnit_iff_ne_zero.2 hdet), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hv0 : Matrix.vecMul v (JR R J) = 0` using `funext fun j => by`. Simplify `hv j` using `[Matrix.vecMul, dotProduct]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hz : v = 0`. Combine the equalities or inequalities in the displayed calculation. Use function extensionality and compare the values at `i`. Use `congrArg (sigR R σ) (congrFun hz i)` as an intermediate fact. Simplify `this` using `[v, sigR_invol R σ hσ]`.
+Chain the equalities or inequalities of the calculation. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem BR_nondeg [Algebra.IsSeparable F E] (L : R →+ ℝ)
     (hL : ∀ t, (∀ r, L (r * t) = 0) → t = 0) (hσ : ∀ x, σ (σ x) = x) {M n : ℕ}
@@ -373,7 +369,7 @@ theorem BR_nondeg [Algebra.IsSeparable F E] (L : R →+ ℝ)
   simpa [v, sigR_invol R σ hσ] using this
 
 /- English proof (translation)
-Unfold `pairHerm`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pairHerm_comm (n : ℕ) (S T : HermR R σ n) : pairHerm R σ n S T = pairHerm R σ n T S := by
   unfold pairHerm
@@ -381,7 +377,7 @@ theorem pairHerm_comm (n : ℕ) (S T : HermR R σ n) : pairHerm R σ n S T = pai
   simp only [mul_comm]
 
 /- English proof (translation)
-Simplify using `only [pairHerm, AddSubgroup.coe_add, Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairHerm_add_right (n : ℕ) (S T T' : HermR R σ n) :
     pairHerm R σ n S (T + T') = pairHerm R σ n S T + pairHerm R σ n S T' := by
@@ -397,9 +393,9 @@ def hermUnit (hσ : ∀ x, σ (σ x) = x) (n : ℕ) (a b : Fin n) (u : R ⊗[F] 
     rw [add_comm]⟩
 
 /- English proof (translation)
-Use `set w := (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) a b * u with hw`. Establish `hs : sigR R σ w = (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) b a * sigR R σ u`. Rewrite using `[hw, map_mul, S.2 b a]`. Establish `hsum : (∑ c, ∑ d, (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) c d * (hermUnit R σ hσ n a b u : Matrix (Fin n) (Fin n) (R ⊗[F] E)) d c) = w + sigR R σ w`. Rewrite using `[hs, hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hermUnit, mul_add, Finset.sum_add_distrib, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Establish `h2 : algebraMap F R (1 / 2) * 2 = 1`. Rewrite using `[show (2 : R) = algebraMap F R 2 from (map_ofNat _ 2).symm, ← map_mul, one_div_mul_cancel (two_ne_zero), map_one]`. Unfold `pairHerm`. Rewrite using `[hsum, map_add, trace_sigR R σ hσ, ← two_mul, ← mul_assoc, h2, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairHerm_hermUnit [CharZero F] (hσ : ∀ x, σ (σ x) = x) (n : ℕ) (S : HermR R σ n)
     (a b : Fin n) (u : R ⊗[F] E) :
@@ -419,7 +415,7 @@ theorem pairHerm_hermUnit [CharZero F] (hσ : ∀ x, σ (σ x) = x) (n : ℕ) (S
   rw [hsum, map_add, trace_sigR R σ hσ, ← two_mul, ← mul_assoc, h2, one_mul]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a b`. Use `trace_nondeg_of R L hL _ fun u => ?_` and prove the remaining obligations. Rewrite using `[← pairHerm_hermUnit R σ hσ n S a b u]`. Conclude with `h _`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairHerm_nondeg [CharZero F] [Algebra.IsSeparable F E] (L : R →+ ℝ)
     (hL : ∀ t, (∀ r, L (r * t) = 0) → t = 0) (hσ : ∀ x, σ (σ x) = x) (n : ℕ) (S : HermR R σ n)
@@ -439,19 +435,19 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
   (σ : E →ₐ[F] E)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isModuleTopology_tens : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `have := isModuleTopology_tens (F := F) (E := E) R IsModuleTopology.isTopologicalRing R (R ⊗[F] E)`.
+A detailed English derivation is pending.
 -/
 theorem isTopologicalRing_tens : IsTopologicalRing (R ⊗[F] E) :=
   have := isModuleTopology_tens (F := F) (E := E) R
   IsModuleTopology.isTopologicalRing R (R ⊗[F] E)
 
 /- English proof (translation)
-The claim follows from `have := isModuleTopology_tens (F := F) (E := E) R have := isTopologicalRing_tens (F := F) (E := E) R IsModuleTopology.continuous_of_linearMap _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_trace : Continuous (Algebra.trace R (R ⊗[F] E)) :=
   have := isModuleTopology_tens (F := F) (E := E) R
@@ -459,7 +455,7 @@ theorem continuous_trace : Continuous (Algebra.trace R (R ⊗[F] E)) :=
   IsModuleTopology.continuous_of_linearMap _
 
 /- English proof (translation)
-The claim follows from `have := isModuleTopology_tens (F := F) (E := E) R have := isTopologicalRing_tens (F := F) (E := E) R IsModuleTopology.continuous_of_linearMap (sigLin R σ)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sigR : Continuous (sigR R σ) :=
   have := isModuleTopology_tens (F := F) (E := E) R
@@ -467,7 +463,7 @@ theorem continuous_sigR : Continuous (sigR R σ) :=
   IsModuleTopology.continuous_of_linearMap (sigLin R σ)
 
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := F) (E := E) R` as an intermediate fact. Use `show Continuous fun Y : Fin n → Fin M → R ⊗[F] E => ∑ a, Algebra.trace R (R ⊗[F] E) (∑ i, ∑ j, sigR R σ (X a i) * JR R J i j * Y a j)`. Conclude with `continuous_finset_sum _ fun a _ => (continuous_trace R).comp (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply a)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_BR {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (X : Fin n → Fin M → R ⊗[F] E) : Continuous (BR R σ J X) := by
@@ -479,7 +475,7 @@ theorem continuous_BR {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
       continuous_const.mul ((continuous_apply j).comp (continuous_apply a)))
 
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := F) (E := E) R` as an intermediate fact. Use `show Continuous fun T : HermR R σ n => algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (∑ a, ∑ b, (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) a b * (T : Matrix (Fin n) (Fin n) _) b a)`. Conclude with `continuous_const.mul ((continuous_trace R).comp (continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => continuous_const.mul (continuous_subtype_val.matrix_elem b a)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_pairHerm (n : ℕ) (S : HermR R σ n) : Continuous (pairHerm R σ n S) := by
   have := isTopologicalRing_tens (F := F) (E := E) R
@@ -490,7 +486,7 @@ theorem continuous_pairHerm (n : ℕ) (S : HermR R σ n) : Continuous (pairHerm 
       continuous_const.mul (continuous_subtype_val.matrix_elem b a)))
 
 /- English proof (translation)
-Use `isModuleTopology_tens (F := F) (E := E) R` as an intermediate fact. Use `isTopologicalRing_tens (F := F) (E := E) R` as an intermediate fact. Set `e` to `(Algebra.TensorProduct.basis R (Module.finBasis F E)).equivFun`. Conclude with `HasCoord.of_equiv e.toAddEquiv (IsModuleTopology.continuous_of_linearMap e.toLinearMap) (IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap) (h.pi _)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem hasCoord_tens (h : HasCoord R) : HasCoord (R ⊗[F] E) := by
   have := isModuleTopology_tens (F := F) (E := E) R
@@ -500,9 +496,9 @@ theorem hasCoord_tens (h : HasCoord R) : HasCoord (R ⊗[F] E) := by
     (IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap) (h.pi _)
 
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := F) (E := E) R` as an intermediate fact. Establish `hm : HasCoord (Matrix (Fin n) (Fin n) (R ⊗[F] E))` using `((hasCoord_tens R h).pi (Fin n)).pi (Fin n)`. Set `f : Matrix (Fin n) (Fin n) (R ⊗[F] E) →+ Matrix (Fin n) (Fin n) (R ⊗[F] E)` to `AddMonoidHom.mk' (fun S => (S.map (sigR R σ)).transpose) fun S T => by`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hf : Continuous f` using `((continuous_id.matrix_map (continuous_sigR R σ))).matrix_transpose`. Use `hm.fixed f hf _ fun S => ⟨fun hS => ?_, fun hS a b => ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Conclude with `hS a b`. Conclude with `congrFun (congrFun hS a) b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem hasCoord_herm (h : HasCoord R) (n : ℕ) (hσ : ∀ x, σ (σ x) = x) :
     HasCoord (HermR R σ n) := by
@@ -524,7 +520,7 @@ section Arch
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Set `ρ` to `fun w : InfinitePlace F => InfinitePlace.Completion.ringEquivRealOfIsReal (hF.isReal w)`. Establish `h1 : ∀ w, Continuous (ρ w)` using `fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (hF.isReal w)).continuous`. Establish `h2 : ∀ w, Continuous (ρ w).symm` using `fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (hF.isReal w)).symm.continuous`. Conclude with `HasCoord.of_equiv (AddEquiv.piCongrRight fun w => (ρ w).toAddEquiv) (continuous_pi fun w => (h1 w).comp (continuous_apply w)) (continuous_pi fun w => (h2 w).comp (continuous_apply w)) (hasCoord_of_finiteDimensional (InfinitePlace F → ℝ))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasCoord_ainf (hF : IsTotallyReal F) : HasCoord (Ainf F) := by
   let ρ := fun w : InfinitePlace F => InfinitePlace.Completion.ringEquivRealOfIsReal (hF.isReal w)
@@ -538,7 +534,7 @@ theorem hasCoord_ainf (hF : IsTotallyReal F) : HasCoord (Ainf F) := by
     (hasCoord_of_finiteDimensional (InfinitePlace F → ℝ))
 
 /- English proof (translation)
-Unfold `psiInf`. Rewrite using `[← AddChar.map_add_eq_mul]`. Use `congr 1`. Conclude with `Prod.ext rfl (add_zero _).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem psiInf_add (ψ : AddChar (AF F) ℂ) (x y : Ainf F) :
     psiInf F ψ (x + y) = psiInf F ψ x * psiInf F ψ y := by
@@ -548,13 +544,13 @@ theorem psiInf_add (ψ : AddChar (AF F) ℂ) (x y : Ainf F) :
   exact Prod.ext rfl (add_zero _).symm
 
 /- English proof (translation)
-Take `⟨-, hc, hw⟩` from `GlobalTheory.CompanionTheory.AdeleCharLocal.char_nontrivial_at_every_place F ψ hψ`. Take `⟨L, hL, hx⟩` from `(hasCoord_ainf hF).char_eq_exp _ hc (psiInf_add ψ) fun x => hψ.2.1 _`. Use `⟨L, hL, hx, fun t ht => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Assume the negation of the conclusion as `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨x, hx0, hx1⟩` from `hw w`. Set `r : Ainf F` to `fun u => x u * (t u)⁻¹`. Establish `hr : r * t = x`. Use function extensionality and compare the values at `u`. Use `show x u * (t u)⁻¹ * t u = x u`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality. Conclude with `inv_mul_cancel_right₀ h0 _`. Rewrite using `[hx0 u hu, zero_mul, zero_mul]`. Apply `hx1` to reduce the goal to its premises.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ht r` as an intermediate fact. Rewrite `this` using `[hr]`. Rewrite using `[hx, this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_functional (hF : IsTotallyReal F) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) :
     ∃ L : Ainf F →+ ℝ, Continuous L ∧
@@ -583,13 +579,11 @@ theorem exists_functional (hF : IsTotallyReal F) (ψ : AddChar (AF F) ℂ) (hψ 
 end Arch
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ n ψ hψ`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hσ : ∀ x, σ (σ x) = x`. Introduce `x`. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (S := E) (M := ℂ) : E →ₐ[ℚ] ℂ).toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hCM.2.2.2, hCM.2.2.2, star_star]`. Take `⟨L, hLc, hLx, hLn⟩` from `exists_functional hCM.1 ψ hψ`. Establish `hA` using `hasCoord_ainf hCM.1`. Establish `hT` using `hasCoord_tens (F := F) (E := E) (Ainf F) hA`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hT.secondCountable` as an intermediate fact. Establish `: BorelSpace (Ainf F ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (HermR (Ainf F) σ n)` using `⟨rfl⟩`. Prove the components needed by the constructor for the conclusion. Conclude with `((hT.pi (Fin M)).pi (Fin n)).exists_selfDual (fun X Y => L (BR (Ainf F) σ J X Y)) (fun X Y Y' => by rw [BR_add_right, map_add]) (fun X => hLc.comp (continuous_BR (Ainf F) σ J X)) (fun X Y => by rw [BR_comm (Ainf F) σ hσ hJ.1]) (fun X h => BR_nondeg (Ainf F) σ L hLn hσ hJ.2 X h) _ …`.
-
-Conclude with `(hasCoord_herm (Ainf F) σ hA n hσ).exists_selfDual (fun S T => L (pairHerm (Ainf F) σ n S T)) (fun S T T' => by rw [pairHerm_add_right, map_add]) (fun S => hLc.comp (continuous_pairHerm (Ainf F) σ n S)) (fun S T => by rw [pairHerm_comm]) (fun S h => pairHerm_nondeg (Ainf F) σ L h …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_sdW_sdHerm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n : ℕ) (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → (∃ μ, SdW F E σ M J (Ainf F) (psiInf F ψ) n μ) ∧ ∃ ν, SdHerm F E σ (Ainf F) (psiInf F ψ) n ν := by
   intro F E _ _ _ _ _ σ hCM M J hJ n ψ hψ

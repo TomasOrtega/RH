@@ -18,11 +18,11 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Use `conv_lhs => rw [q.as_sum]`. Rewrite using `[map_sum]`. Use `conv_rhs => rw [q.as_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `h0 : ∀ j, s (0, j) = 0` using `fun j => (Finset.sum_eq_zero_iff.mp (hq s hs)) j (Finset.mem_univ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[MvPolynomial.aeval_monomial, MvPolynomial.monomial_eq, MvPolynomial.algebraMap_eq]`. Use `congr 1`. Use `Finsupp.prod_congr fun v hv => ?_` and prove the remaining obligations. Establish `hv0 : v.1 ≠ 0`. Introduce `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Finsupp.mem_support_iff.mp hv` to reduce the goal to its premises. Establish `e : ((0 : Fin (d.D + 1)), v.2) = v` using `Prod.ext h1.symm rfl`. Rewrite using `[← e]`. Conclude with `h0 v.2`. Simplify using `[hv0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem substRowZero_fix_of_degree_zero (x : Fin (d.N + 1) → K) (q : KTp K d.D d.N)
     (hq : ∀ s ∈ q.support, ∑ j, s (0, j) = 0) : d.sub0 x q = q := by
@@ -44,21 +44,19 @@ theorem substRowZero_fix_of_degree_zero (x : Fin (d.N + 1) → K) (q : KTp K d.D
   simp [hv0]
 
 /- English proof (translation)
-Establish `hfix : ∀ p ∈ d.HtOne, d.nPMM h c f p ≠ 0 → ∀ x, d.sub0 x (d.gen p) = d.gen p`. Introduce `p hp hn x`. Establish `hw : ∃ w, w ∈ d.GoodP c p`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hn (by simp [Data.nPMM, hno])`. Establish `hm` using `d.GeneratorMultiHomogeneous hd h c p hp hw`. Use `d.substRowZero_fix_of_degree_zero x (d.gen p) fun s hs => ?_` and prove the remaining obligations. Simplify using `using hm s hs 0`. Rewrite using `[finprod_mem_def, finprod_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with hfin`. Use `set T := hfin.toFinset with hT`. Establish `hTmem : ∀ p ∈ T, p ∈ d.HtOne ∧ d.nPMM h c f p ≠ 0`. Introduce `p hpT`. Establish `hpT' : p ∈ Function.mulSupport (d.HtOne.mulIndicator fun p => (algebraMap (KTp K d.D d.N) (KTf K d.D d.N)) (d.gen p) ^ d.nPMM h c f p)` using `(Set.Finite.mem_toFinset (hs := hfin)).mp hpT`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `hpT'` using `[Function.mem_mulSupport]`. Distinguish the cases in `hp : p ∈ d.HtOne`. Use `⟨hp, fun h0 => hpT' ?_⟩` and prove the remaining obligations. Simplify using `[Set.mulIndicator_of_mem hp, h0]`. Simplify using `[hp] at hpT'`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∏ p ∈ T, d.gen p ^ (d.nPMM h c f p).toNat, ∏ p ∈ T, d.gen p ^ (-d.nPMM h c f p).toNat, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.mpr fun p hp => pow_ne_zero _ (d.generator_ne_zero_of_height p (hTmem p hp).1)`. Introduce `x`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun p hp => by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_pow, hfix p (hTmem p hp).1 (hTmem p hp).2 x]`. Introduce `x`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun p hp => by`. Rewrite using `[map_pow, hfix p (hTmem p hp).1 (hTmem p hp).2 x]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_prod, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[Set.mulIndicator_of_mem (hTmem p hp).1]`. Establish `ha : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ≠ 0`. Rewrite using `[Ne, ← map_zero (algebraMap (KTp K d.D d.N) (KTf K d.D d.N)), (IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N)).eq_iff]`.
-
-Conclude with `d.generator_ne_zero_of_height p (hTmem p hp).1`. Rewrite using `[map_pow, map_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_add₀ ha]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨1, 1, one_ne_zero, fun x => map_one _, fun x => map_one _, by simp⟩`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pi_free (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (f : A c) :
     ∃ Pp Pm : KTp K d.D d.N, Pm ≠ 0 ∧ (∀ x, d.sub0 x Pp = Pp) ∧ (∀ x, d.sub0 x Pm = Pm) ∧

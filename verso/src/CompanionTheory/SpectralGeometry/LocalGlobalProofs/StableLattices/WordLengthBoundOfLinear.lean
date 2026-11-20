@@ -25,11 +25,11 @@ def lieSub {n : ℕ} (Hm : Mat n) : Submodule ℝ (Mat n) where
     rw [conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, ha, smul_zero]
 
 /- English proof (translation)
-Set `bS` to `Module.finBasis ℝ S`. Set `L : Fin (Module.finrank ℝ S) → (S →L[ℝ] ℝ)` to `fun i => LinearMap.toContinuousLinearMap (bS.coord i)`. Use `⟨Module.finrank ℝ S, fun i => (bS i : E), ∑ i, ‖L i‖, Finset.sum_nonneg (fun i _ => norm_nonneg _), fun i => (bS i).2, ?_⟩` and prove the remaining obligations. Introduce `X hX`. Use `⟨fun i => bS.repr ⟨X, hX⟩ i, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `i`. Establish `h1 : |bS.repr ⟨X, hX⟩ i| ≤ ‖L i‖ * ‖X‖`. Use `(L i).le_opNorm ⟨X, hX⟩` as an intermediate fact. Simplify `this` using `[L, Real.norm_eq_abs]`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ‖L i‖ ≤ ∑ j, ‖L j‖` using `Finset.single_le_sum (fun j _ => norm_nonneg (L j)) (Finset.mem_univ i)`. Conclude with `h1.trans (mul_le_mul_of_nonneg_right h2 (norm_nonneg _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_basis_sub {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (S : Submodule ℝ E) :
@@ -52,7 +52,7 @@ theorem exists_basis_sub {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] 
     exact h1.trans (mul_le_mul_of_nonneg_right h2 (norm_nonneg _))
 
 /- English proof (translation)
-Take `⟨N, b, κ, hκ, hb, hX⟩` from `exists_basis_sub (lieSub Hm)`. Conclude with `⟨N, b, κ, hκ, hb, fun X hXL => hX X hXL⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_basis {n : ℕ} (Hm : Mat n) :
     ∃ (N : ℕ) (b : Fin N → Mat n) (κ : ℝ), 0 ≤ κ ∧ (∀ i, Lie Hm (b i)) ∧
@@ -61,9 +61,9 @@ theorem exists_basis {n : ℕ} (Hm : Mat n) :
   exact ⟨N, b, κ, hκ, hb, fun X hXL => hX X hXL⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `⟨IsSm.zero, by simpa using dsW_smul h (IsSm.zero (G := G) (σ := σ)) (0 : ℂ) hW⟩`. Consider the case `@insert a s ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `⟨(hv a).add ih.1, by rw [dsW_add h (hv a) ih.1 hW, ih.2]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem dsW_sum {n : ℕ} {H : Type*} [NormedAddCommGroup H] [NormedSpace ℂ H] {G : Set (Mat n)}
     {σ : Mat n → (H →L[ℂ] H)} (h : RepOn G σ) {ι : Type*} (s : Finset ι) (v : ι → H)
@@ -79,9 +79,9 @@ theorem dsW_sum {n : ℕ} {H : Type*} [NormedAddCommGroup H] [NormedSpace ℂ H]
     exact ⟨(hv a).add ih.1, by rw [dsW_add h (hv a) ih.1 hW, ih.2]⟩
 
 /- English proof (translation)
-Establish `hinv : Hm⁻¹ = Hm` using `Matrix.inv_eq_right_inv hsq`. Establish `hU : IsUnit Hm` using `⟨⟨Hm, Hm, hsq, hsq⟩, rfl⟩`. Establish `h1 : Xᴴ * Hm = -(Hm * X)` using `eq_neg_of_add_eq_zero_left hX`. Establish `hXH : Xᴴ = Hm * (-X) * Hm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hconj : ((t : ℂ) • X)ᴴ = Hm * (-((t : ℂ) • X)) * Hm⁻¹`. Rewrite using `[Matrix.conjTranspose_smul, hXH, hinv]`. Simplify using `[Matrix.mul_smul, Matrix.smul_mul, Complex.conj_ofReal]`. Use `show (NormedSpace.exp ((t : ℂ) • X))ᴴ * Hm * NormedSpace.exp ((t : ℂ) • X) = Hm`. Rewrite using `[← Matrix.exp_conjTranspose, hconj, Matrix.exp_conj _ _ hU, hinv, mul_assoc (Hm * _) Hm Hm, hsq, mul_one, mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl ((t : ℂ) • X))), neg_add_cancel, NormedSpace.exp_zero, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ex_mem_UH_of_lie {n : ℕ} {Hm X : Mat n} (hsq : Hm * Hm = 1) (hX : Lie Hm X) (t : ℝ) :
     ex X t ∈ Formalism.QuantumDeterminants.UH Hm := by
@@ -100,7 +100,7 @@ private theorem ex_mem_UH_of_lie {n : ℕ} {Hm X : Mat n} (hsq : Hm * Hm = 1) (h
     neg_add_cancel, NormedSpace.exp_zero, mul_one]
 
 /- English proof (translation)
-Use `show List.foldr (ds σ) v (P ++ W) = List.foldr (ds σ) (List.foldr (ds σ) v W) P`. Conclude with `List.foldr_append`.
+A detailed English derivation is pending.
 -/
 private theorem dsW_append' {n : ℕ} {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H]
     (σ : Mat n → (H →L[ℂ] H)) (P W : List (Mat n)) (v : H) :
@@ -109,35 +109,31 @@ private theorem dsW_append' {n : ℕ} {H : Type} [NormedAddCommGroup H] [NormedS
   exact List.foldr_append
 
 /- English proof (translation)
-Introduce `hD`. Unfold `WordBd`. Introduce `n Hm H _ _ _ σ hU w hw m`. Establish `hrep : RepOn (Formalism.QuantumDeterminants.UH Hm) σ` using `hU.rep`. Establish `hsq : Hm * Hm = 1` using `hU.sq`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlie : ∀ W : List (Mat n), LieWd Hm W → LieW (Formalism.QuantumDeterminants.UH Hm) W` using `fun W hW X hX t => ex_mem_UH_of_lie hsq (hW X hX) t`. Take `⟨N, b, κ, hκ, hb, hc⟩` from `exists_basis Hm`. Establish `hexp : ∀ v, IsSm (Formalism.QuantumDeterminants.UH Hm) σ v → ∀ X, Lie Hm X → ∃ c : Fin N → ℝ, (∀ i, |c i| ≤ κ * ‖X‖) ∧ ds σ X v = ∑ i, (c i : ℂ) • ds σ (b i) v`. Introduce `v hv X hX`. Take `⟨Λ, hΛ⟩` from `hD n Hm H σ hU v hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hXc, hcb⟩` from `hc X hX`. Use `⟨c, hcb, ?_⟩` and prove the remaining obligations. Rewrite using `[hΛ X hX, hXc, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← hΛ (b i) (hb i), Complex.coe_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hlb : ∀ i, LieWd Hm [b i]`. Introduce `i Y hY`. Rewrite `hY` using `[List.mem_singleton]`. Substitute `hY` using the available equality. Conclude with `hb i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `key : ∀ k : ℕ, ∀ P : List (Mat n), LieWd Hm P → ∃ C : ℝ, 0 ≤ C ∧ ∀ W : List (Mat n), LieWd Hm W → W.length ≤ k → ‖dsW σ (P ++ W) w‖ ≤ C * (W.map (fun X => ‖X‖)).prod`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `P _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨‖dsW σ P w‖, norm_nonneg _, fun W _ hW => ?_⟩` and prove the remaining obligations. Establish `hW0 : W = []` using `List.eq_nil_of_length_eq_zero (Nat.le_zero.mp hW)`. Substitute `hW0` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Establish `hPb : ∀ i, LieWd Hm (P ++ [b i])`. Introduce `i Y hY`. Break down `List.mem_append.1 hY with h | h` into its components or cases. Conclude with `hP Y h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hlb i Y h`. Use `choose C hC0 hC using fun i : Fin N => ih (P ++ [b i]) (hPb i)`. Use `⟨max ‖dsW σ P w‖ (κ * ∑ i, C i), le_max_of_le_left (norm_nonneg _), ?_⟩` and prove the remaining obligations. Introduce `W hW hlen`. Consider the cases of `W with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `nil`. Simplify using `only [List.append_nil, List.map_nil, List.prod_nil, mul_one]`. Conclude with `le_max_left _ _`. Consider the case `cons X W'`. Establish `hX : Lie Hm X` using `hW X List.mem_cons_self`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hW' : LieWd Hm W'` using `fun Y hY => hW Y (List.mem_cons_of_mem _ hY)`. Establish `hlen' : W'.length ≤ k` using `by simpa using hlen`. Establish `hv : IsSm (Formalism.QuantumDeterminants.UH Hm) σ (dsW σ W' w)` using `hw.dsW hrep (hlie W' hW')`. Take `⟨c, hcb, hds⟩` from `hexp _ hv X hX`. Establish `hsm : ∀ i, IsSm (Formalism.QuantumDeterminants.UH Hm) σ (ds σ (b i) (dsW σ W' w))` using `fun i => hv.dsW hrep (hlie [b i] (hlb i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `heq : dsW σ (P ++ X :: W') w = ∑ i, (c i : ℂ) • dsW σ ((P ++ [b i]) ++ W') w`. Rewrite using `[dsW_append', dsW_cons, hds, (dsW_sum hrep Finset.univ _ (fun i => (hsm i).smul (c i : ℂ)) (hlie P hP)).2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dsW_smul hrep (hsm i) _ (hlie P hP), dsW_append', dsW_append']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hprod : 0 ≤ (W'.map (fun X => ‖X‖)).prod` using `List.prod_nonneg (fun a ha => by`. Take `⟨Y, _, rfl⟩` from `List.mem_map.1 ha`. Conclude with `norm_nonneg _)`. Simplify using `only [List.map_cons, List.prod_cons]`. Rewrite using `[heq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `mul_le_mul (hcb i) (hC i W' hW' hlen') (norm_nonneg _) (mul_nonneg hκ (norm_nonneg _))`. Use `_ = (κ * ∑ i, C i) * (‖X‖ * (W'.map (fun X => ‖X‖)).prod) := by`.
-
-Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ max ‖dsW σ P w‖ (κ * ∑ i, C i) * (‖X‖ * (W'.map (fun X => ‖X‖)).prod) := mul_le_mul_of_nonneg_right (le_max_right _ _) (mul_nonneg (norm_nonneg _) hprod)`. Take `⟨C, hC0, hC⟩` from `key m [] (fun X hX => absurd hX List.not_mem_nil)`.
-
-Conclude with `⟨C, hC0, fun W hW hlen => by simpa using hC W hW hlen⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wordBd_of_dsLin : DsLin → WordBd := by
   intro hD

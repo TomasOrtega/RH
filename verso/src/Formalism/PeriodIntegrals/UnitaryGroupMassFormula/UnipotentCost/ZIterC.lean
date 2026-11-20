@@ -9,9 +9,9 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.UsCost
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons x l ih`. Establish `hx` using `h x (by simp)`. Establish `ih'` using `ih (fun y hy => h y (List.mem_cons_of_mem x hy))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : 0 ≤ l.prod` using `List.prod_nonneg (fun y hy => (h y (List.mem_cons_of_mem x hy)).1)`. Rewrite using `[List.prod_cons, List.length_cons, pow_succ']`. Conclude with `mul_le_mul hx.2 ih' hp (hx.1.trans hx.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem list_prod_le_pow (l : List ℝ) (lam : ℝ) (h : ∀ x ∈ l, 0 ≤ x ∧ x ≤ lam) :
     l.prod ≤ lam ^ l.length := by
@@ -25,7 +25,7 @@ theorem list_prod_le_pow (l : List ℝ) (lam : ℝ) (h : ∀ x ∈ l, 0 ≤ x �
     exact mul_le_mul hx.2 ih' hp (hx.1.trans hx.2)
 
 /- English proof (translation)
-Establish `ht0 : 0 ≤ t` using `by linarith`. Establish `h1 : c * t ≤ |c| * t` using `mul_le_mul_of_nonneg_right (le_abs_self c) ht0`. Establish `h2 : 0 ≤ |c| * t` using `mul_nonneg (abs_nonneg c) ht0`. Apply the tactic sequence `refine max_le ?_ ?_ <;> nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem max_one_le (c t : ℝ) (ht : 1 ≤ t) (x : ℝ) (hx : x ≤ c * t) : max 1 x ≤ (1 + |c|) * t := by
   have ht0 : 0 ≤ t := by linarith
@@ -34,35 +34,31 @@ theorem max_one_le (c t : ℝ) (ht : 1 ≤ t) (x : ℝ) (hx : x ≤ c * t) : max
   refine max_le ?_ ?_ <;> nlinarith
 
 /- English proof (translation)
-Introduce `hSM hRP hSZ hDP hS21 k p s ρ σ d hd hs K hK hK0 q`. Take `⟨C₁, hC₁⟩` from `hDS hDP k p s ρ σ`. Take `⟨C₂, hC₂⟩` from `hS21 k p s ρ σ d hd hs K hK hK0`. Take `⟨Kc, hKc0, hKc⟩` from `ZI.cF_bound s q`. Take `⟨C, hC1, hC⟩` from `ZI.iter_words (V := G.Mat s) (I := Fin s × Fin s × Bool) q Kc hKc0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hE'0 : (0 : ℝ) ≤ max 1 ‖ZI.eA s‖` using `zero_le_one.trans (le_max_left _ _)`. Use `set A : ℝ := (1 + |(|C₁| * C₂ ^ 4)|) * (max 1 ‖ZI.eA s‖ * (1 + |‖ZI.eA s‖ * C₂|)) with hA`. Establish `hA0 : 0 ≤ A` using `mul_nonneg (by positivity) (mul_nonneg hE'0 (by positivity))`. Use `⟨C * A ^ q, ?_⟩` and prove the remaining obligations. Introduce `E _ _ H β hH ξ Z γ hZ hγ hKg hw`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hZ' : (Matrix.of Z).det ≠ 0` using `hZ`. Use `⟨(hS hSM hRP k p s ρ σ d hd E H q hH ξ Z γ hZ hγ).2.2, ?_⟩` and prove the remaining obligations. Take `⟨hg1, -, hRn, -, -, -, hb, -, -, -, -, hinv⟩` from `hC₂ ξ Z γ hγ hKg`. Use `set g := gaXi k ρ σ d ξ Z γ with hg`. Use `set lam := max 1 (C₁ * B.gN (Rn k (p + s) ρ ξ.1.2) ^ 2 * (1 + ‖ξ.2.1.2‖) ^ 2) with hlam`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M := max 1 ‖ZI.eA s‖ * max 1 ‖Ring.inverse (ZI.eA s Z)‖ with hM`. Establish `hlam1 : 1 ≤ lam` using `le_max_left _ _`. Establish `hM1 : 1 ≤ M` using `one_le_mul_of_one_le_of_one_le (le_max_left _ _) (le_max_left _ _)`. Establish `hβ : 0 ≤ β`. Use `hw [] (by simp) (by simp)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [List.map_nil, List.prod_nil, mul_one] at this`. Conclude with `(norm_nonneg _).trans this`. Establish `hlet : ∀ i, inLieP k (p + s) ρ (dirZ k ρ ξ i) ∧ lsz (dirZ k ρ ξ i) ≤ lam` using `fun i => ⟨(hC₁ ξ i).1, (hC₁ ξ i).2.trans (le_max_right _ _)⟩`. Establish `key` using `hC (α := B.Mat k (p + s + ρ)) (E := E) (fun b H' => B.CkOn (b : ℕ∞) (B.GV k (p + s + ρ)) H') (fun i H' => RdV (dirZ k ρ ξ i) H') (fun Z' => gaXi k ρ σ d ξ Z' γ) {Z' : G.Mat s | (Matrix.of Z').det ≠ 0} (fun i => ZI.cF s i) Z M lam (ZI.isOpen_det s) hZ' hM1 hlam1 (fun b H' h => P.B …`. Establish `h' : B.CkOn ((b : ℕ∞) + 1) (B.GV k (p + s + ρ)) H'` using `by simpa using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `P.BetaSesquilinearity.CkOn_Dx (x := (false, dirZ k ρ ξ i)) (hlet i).1.1 h'` as an intermediate fact. Simplify `this)` using `[P.BetaSesquilinearity.Dx]`. Use the proof step `(fun b H' h z hz => (hS hSM hRP k p s ρ σ d hd E H' b h ξ z γ hz hγ).2.2)`. Use the proof step `(fun b H' h z hz => by ext1 W`. Rewrite using `[hD hSM hRP hSZ k p s ρ σ d hd E H' (P.BetaSesquilinearity.CkOn_mono (by exact_mod_cast Nat.le_add_left 1 b) h) ξ z γ hz hγ W]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.smulRight_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ZI.cF_apply s i hz]`. Use the proof step `rfl)`. Use the proof step `(fun i n => ZI.contDiffOn_cF s i n)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun i a ha => hKc Z hZ' i a ha)`. Use `q le_rfl H β hH (fun w hwl => by`. Establish `e : w.foldr (fun i H' => RdV (dirZ k ρ ξ i) H') H = B.Rw (w.map (dirZ k ρ ξ)) H`. Simplify using `[B.Rw, List.foldr_map]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hw (w.map (dirZ k ρ ξ)) (fun X hX => by` and prove the remaining obligations. Take `⟨i, _, rfl⟩` from `List.mem_map.mp hX`. Conclude with `(hlet i).1) (by rw [List.length_map]; exact hwl)).trans ?_`. Use `mul_le_mul_of_nonneg_left ?_ hβ` and prove the remaining obligations. Use `list_prod_le_pow ((w.map (dirZ k ρ ξ)).map lsz) lam (by` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨X, hX, rfl⟩` from `List.mem_map.mp hx`. Take `⟨i, _, rfl⟩` from `List.mem_map.mp hX`. Conclude with `⟨zero_le_one.trans (le_max_left _ _), (hlet i).2⟩)`. Simplify using `using this)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hg0 : 0 ≤ B.gN g` using `by linarith`. Establish `hR0 : 0 ≤ B.gN (Rn k (p + s) ρ ξ.1.2)` using `Real.sqrt_nonneg _`. Establish `hlamb : lam ≤ (1 + |(|C₁| * C₂ ^ 4)|) * B.gN g ^ (2 * (p + s) + 2 * p)`. Use `max_one_le _ _ (one_le_pow₀ hg1) _ ?_` and prove the remaining obligations. Establish `h1 : B.gN (Rn k (p + s) ρ ξ.1.2) ^ 2 ≤ (C₂ * B.gN g ^ (p + s)) ^ 2` using `pow_le_pow_left₀ hR0 hRn 2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : (1 + ‖ξ.2.1.2‖) ^ 2 ≤ (C₂ * B.gN g ^ p) ^ 2` using `pow_le_pow_left₀ (by positivity) hb 2`. Establish `hpow : B.gN g ^ (2 * (p + s) + 2 * p) = (B.gN g ^ (p + s)) ^ 2 * (B.gN g ^ p) ^ 2`. Rewrite using `[← pow_mul, ← pow_mul, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hMb : M ≤ max 1 ‖ZI.eA s‖ * ((1 + |‖ZI.eA s‖ * C₂|) * B.gN g ^ (p + s - 1))`. Use `mul_le_mul_of_nonneg_left ?_ hE'0` and prove the remaining obligations. Use `max_one_le _ _ (one_le_pow₀ hg1) _ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hLM : lam * M ≤ A * B.gN g ^ (2 * (p + s) + 2 * p + (p + s - 1))`. Combine the equalities or inequalities in the displayed calculation. Establish `hexp : (2 * (p + s) + 2 * p + (p + s - 1)) * q ≤ 5 * (p + s + ρ) * q` using `Nat.mul_le_mul_right q (by omega)`. Establish `hrp : B.gN g ^ (5 * ((p + s + ρ : ℕ) : ℝ) * (q : ℝ)) = B.gN g ^ (5 * (p + s + ρ) * q)`. Rewrite using `[← Real.rpow_natCast]`.
-
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hrp]`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem zeta_cost_of_smooth_deriv (hS : ZSmooth) (hD : ZDeriv) (hDS : DirSize) : ZCost := by
   intro hSM hRP hSZ hDP hS21 k p s ρ σ d hd hs K hK hK0 q

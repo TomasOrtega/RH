@@ -10,7 +10,7 @@ def RFinMax : Prop :=
     (M : Formalism.MainNotions.S.Loc.Model F E), M.OK → {m : Ideal M.R | m.IsMaximal}.Finite
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hOK n A K hA hK`. Conclude with `Formalism.L2.SG.Pf.SRL.srLift_of_finite (h M hOK) A K hA hK`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem srLift_of_finMax (h : RFinMax) : SRLift := by
   intro F _ _ _ E _ _ _ _ M hOK n A K hA hK

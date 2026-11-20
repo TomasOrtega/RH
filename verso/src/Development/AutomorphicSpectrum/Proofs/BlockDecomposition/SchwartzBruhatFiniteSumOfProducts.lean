@@ -10,15 +10,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SiegelND.Coef
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ M J _ n _ d b Φ hΦ`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨k, Φinf, Φf, hinf, hf, hsum⟩` from `hΦ`. Use `choose s A S hA hAS hdec using fun i => GlobalTheory.CompanionTheory.WhitFree.DecN.exists_box_combN b (Φf i) (hf i)`. Set `e` to `Fintype.equivFin (Σ i : Fin k, (s i))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Fintype.card (Σ i : Fin k, (s i)), fun j Z => Φinf (e.symm j).1 Z * Φf (e.symm j).1 (e.symm j).2, fun j => A (e.symm j).1 (e.symm j).2, Finset.univ.biUnion S, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Conclude with `GlobalTheory.CompanionTheory.WhitFree.DecN.isSchwartzArch_const_mulN (hinf _) _`. Introduce `j v`. Conclude with `hA _ _ v`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Introduce `j v hv`. Conclude with `hAS _ _ (e.symm j).2.2 v (fun h => hv (Finset.mem_biUnion.2 ⟨_, Finset.mem_univ _, h⟩))`. Introduce `X`. Rewrite using `[hsum X]`. Use `symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Equiv.sum_comp e.symm (fun p : (Σ i : Fin k, (s i)) => pureN (fun Z => Φinf p.1 Z * Φf p.1 p.2) (A p.1 p.2) X)).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_sigma]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hdec i (projFin X), Finset.mul_sum, ← Finset.sum_coe_sort (s i)]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations.
-
-Unfold `GlobalTheory.CompanionTheory.SiegelND.Coef.pureN`. Conclude with `mul_assoc _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem schwartzBruhat_eq_sum_pureTuples : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (n : ℕ), 2 * n < M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ), IsSchwartzBruhat Φ → ∃ (N : ℕ) (φ : Fin N → (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ) (A : Fin N → (∀ v : HeightOneSpectrum (𝓞 F), Set (Fin n → Fin M → Fv F v ⊗[F] E))) (S : Finset (HeightOneSpectrum (𝓞 F))), (∀ i, IsSchwartzArch (φ i)) ∧ (∀ i v, IsCompact (A i v) ∧ IsOpen (A i v)) ∧ (∀ i v, v ∉ S → A i v = latV b v) ∧ ∀ X, Φ X = ∑ i, pureN (φ i) (A i) X := by
   intro F E _ _ _ _ _ σ _ M J _ n _ d b Φ hΦ

@@ -47,7 +47,7 @@ def ofK : Additive Kˣ →+ KbarMult p :=
   MonoidHom.toAdditive (Units.map (algebraMap K (PadicAlgCl p) : K →* PadicAlgCl p))
 
 /- English proof (translation)
-The claim follows from `(Additive.toMul x : Kˣ).1.2`.
+A detailed English derivation is pending.
 -/
 theorem ofK_mem (x : Additive Kˣ) : ofK p K x ∈ multOf p K := (Additive.toMul x : Kˣ).1.2
 
@@ -56,7 +56,7 @@ def valueGroup : AddSubgroup ℝ := (multOf p K).map (vbar p)
 def eK : ℕ := (AddSubgroup.zmultiples (1 : ℝ)).relIndex (valueGroup p K)
 
 /- English proof (translation)
-Establish `h : eK p K • vbar p x ∈ AddSubgroup.zmultiples (1 : ℝ)` using `AddSubgroup.nsmul_relIndex_mem _ (AddSubgroup.mem_map_of_mem _ hx)`. Take `⟨k, hk⟩` from `AddSubgroup.mem_zmultiples_iff.1 h`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hk' : (k : ℝ) = (eK p K) • vbar p x` using `by simpa using hk`. Rewrite using `[hk', nsmul_eq_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_int_eK_mul_vbar (x : KbarMult p) (hx : x ∈ multOf p K) :
     ∃ n : ℤ, (n : ℝ) = eK p K * vbar p x := by
@@ -70,7 +70,7 @@ theorem exists_int_eK_mul_vbar (x : KbarMult p) (hx : x ∈ multOf p K) :
 def vOnFun (x : multOf p K) : ℤ := (exists_int_eK_mul_vbar p K x.1 x.2).choose
 
 /- English proof (translation)
-The claim follows from `(exists_int_eK_mul_vbar p K x.1 x.2).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem vOnFun_spec (x : multOf p K) : (vOnFun p K x : ℝ) = eK p K * vbar p x.1 :=
   (exists_int_eK_mul_vbar p K x.1 x.2).choose_spec
@@ -85,7 +85,7 @@ def vOn : multOf p K →+ ℤ where
     rw [Int.cast_add, vOnFun_spec, vOnFun_spec, vOnFun_spec, AddSubgroup.coe_add, map_add, mul_add]
 
 /- English proof (translation)
-The claim follows from `vOnFun_spec p K x`.
+A detailed English derivation is pending.
 -/
 theorem vOn_spec (x : multOf p K) : (vOn p K x : ℝ) = eK p K * vbar p x.1 := vOnFun_spec p K x
 
@@ -94,7 +94,7 @@ def vK (x : Kˣ) : ℤ := vOn p K ⟨ofK p K (Additive.ofMul x), ofK_mem p K _�
 def Ubar : Submodule ℤ (KbarMult p) := AddSubgroup.toIntSubmodule (vbar p).ker
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Ubar_iff (x : KbarMult p) : x ∈ Ubar p ↔ vbar p x = 0 := Iff.rfl
 
@@ -123,7 +123,7 @@ def subG : Subgroup (GK p K) where
     rw [AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]; exact (hσ x hx).symm
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_subG_iff (σ : GK p K) : σ ∈ subG p K L ↔ ∀ x ∈ L, σ x = x := Iff.rfl
 
@@ -146,15 +146,13 @@ theorem resGK_apply (h : K ≤ L) (σ : GK p L) (x : PadicAlgCl p) : resGK h σ 
 
 variable {p K L} in
 /- English proof (translation)
-Establish `hint : Algebra.IsIntegral L (PadicAlgCl p)` using `Algebra.IsIntegral.tower_top (R := ℚ_[p])`. Apply `continuous_of_continuousAt_one` to reduce the goal to its premises. Rewrite using `[ContinuousAt, map_one]`. Use `Filter.tendsto_def.2 fun s hs => ?_` and prove the remaining obligations. Rewrite `hs` using `[krullTopology_mem_nhds_one_iff]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨E, hE, hEs⟩` from `hs`. Set `b` to `Module.finBasis K E`. Establish `hopen : IsOpen (⋂ i, {σ : GK p L | σ (b i : PadicAlgCl p) = b i})` using `isOpen_iInter_of_finite fun i => stabilizer_isOpen_of_isIntegral (K := L) (b i : PadicAlgCl p)`. Use `Filter.mem_of_superset (hopen.mem_nhds (Set.mem_iInter.2 fun i => rfl)) fun σ hσ => hEs ?_` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `hx' : x = ∑ i, b.repr ⟨x, hx⟩ i • (b i : PadicAlgCl p)`. Use `congrArg E.val (b.sum_repr ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[map_sum]`. Conclude with `this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx']`. Use `show resGK h σ _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, AlgEquiv.commutes]`.
-
-Conclude with `congrArg _ (Set.mem_iInter.1 hσ i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resGK_continuous (h : K ≤ L) : Continuous (resGK h) := by
   have hint : Algebra.IsIntegral L (PadicAlgCl p) := Algebra.IsIntegral.tower_top (R := ℚ_[p])
@@ -183,9 +181,7 @@ theorem resGK_continuous (h : K ≤ L) : Continuous (resGK h) := by
 variable {p K L} in
 
 /- English proof (translation)
-Use `⟨fun n hn g x hx => ?_⟩` and prove the remaining obligations. Use `show g (n (g⁻¹ x)) = x`. Rewrite using `[hn _ (h g⁻¹ x hx)]`. Use `show (g * g⁻¹) x = x`. Rewrite using `[mul_inv_cancel]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem subG_normal_of_stable (h : ∀ (σ : GK p K), ∀ x ∈ L, σ x ∈ L) : (subG p K L).Normal := by
   refine ⟨fun n hn g x hx => ?_⟩
@@ -195,13 +191,13 @@ theorem subG_normal_of_stable (h : ∀ (σ : GK p K), ∀ x ∈ L, σ x ∈ L) :
   rw [mul_inv_cancel]; rfl
 
 /- English proof (translation)
-The claim follows from `(spectralNorm_eq_of_equiv (σ.restrictScalars ℚ_[p]) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem norm_map_GK (σ : GK p K) (x : PadicAlgCl p) : ‖σ x‖ = ‖x‖ :=
   (spectralNorm_eq_of_equiv (σ.restrictScalars ℚ_[p]) x).symm
 
 /- English proof (translation)
-Rewrite using `[vbar_apply, vbar_apply]`. Use `show - Real.logb p ‖σ ((Additive.toMul x : (PadicAlgCl p)ˣ) : PadicAlgCl p)‖ = _`. Rewrite using `[norm_map_GK]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vbar_kbarRep (σ : GK p K) (x : KbarMult p) : vbar p (kbarRep p K σ x) = vbar p x := by
   rw [vbar_apply, vbar_apply]
@@ -211,9 +207,9 @@ theorem vbar_kbarRep (σ : GK p K) (x : KbarMult p) : vbar p (kbarRep p K σ x) 
 def MaximalUnramifiedExtension : IntermediateField ℚ_[p] (PadicAlgCl p) := ⨆ n : ℕ, Kn p K (n + 1)
 
 /- English proof (translation)
-Establish `h : Kn p K n ≤ (Kn p K n).comap ((σ.restrictScalars ℚ_[p] : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) : PadicAlgCl p →ₐ[ℚ_[p]] PadicAlgCl p)`. Use `sup_le (fun y hy => ?_) (IntermediateField.adjoin_le_iff.2 fun ζ hζ => ?_)` and prove the remaining obligations. Use `show σ y ∈ Kn p K n`. Rewrite using `[show σ y = y from σ.commutes ⟨y, hy⟩]`. Conclude with `(le_sup_left : K ≤ Kn p K n) hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show σ ζ ∈ Kn p K n`. Use `(le_sup_right : _ ≤ Kn p K n) (IntermediateField.subset_adjoin _ _ ?_)` and prove the remaining obligations. Use `show (σ ζ) ^ (qK p K ^ n - 1) = 1`. Rewrite using `[← map_pow, show ζ ^ (qK p K ^ n - 1) = 1 from hζ, map_one]`. Conclude with `h hx`.
+A detailed English derivation is pending.
 -/
 theorem Kn_stable (n : ℕ) (σ : GK p K) (x : PadicAlgCl p) (hx : x ∈ Kn p K n) : σ x ∈ Kn p K n := by
   have h : Kn p K n ≤ (Kn p K n).comap ((σ.restrictScalars ℚ_[p] : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) :
@@ -229,7 +225,7 @@ theorem Kn_stable (n : ℕ) (σ : GK p K) (x : PadicAlgCl p) (hx : x ∈ Kn p K 
   exact h hx
 
 /- English proof (translation)
-Establish `h : MaximalUnramifiedExtension p K ≤ (MaximalUnramifiedExtension p K).comap ((σ.restrictScalars ℚ_[p] : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) : PadicAlgCl p →ₐ[ℚ_[p]] PadicAlgCl p)` using `iSup_le fun n y hy => (le_iSup (fun n : ℕ => Kn p K (n + 1)) n) (Kn_stable p K (n + 1) σ y hy)`. Conclude with `h hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Kur_stable (σ : GK p K) (x : PadicAlgCl p) (hx : x ∈ MaximalUnramifiedExtension p K) : σ x ∈ MaximalUnramifiedExtension p K := by
   have h : MaximalUnramifiedExtension p K ≤ (MaximalUnramifiedExtension p K).comap ((σ.restrictScalars ℚ_[p] : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) :
@@ -325,9 +321,9 @@ def vLayerMap [(subG p K L).Normal] : (layer p K L).V →+ ℤ :=
   if h : ∃ f : (layer p K L).V →+ ℤ, ∀ x, (f x : ℝ) = eK p L * vbar p x.1 then h.choose else 0
 
 /- English proof (translation)
-Proceed by induction on `g using QuotientGroup.induction_on with`. Consider the case `H σ`. Unfold `vLayerMap`. Use `split_ifs with h`. Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.choose_spec, h.choose_spec]`. Conclude with `congrArg _ (vbar_kbarRep p K σ x.1)`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vLayerMap_rho [(subG p K L).Normal] (g : GalLK p K L) (x : (layer p K L).V) :
     vLayerMap p K L ((layer p K L).rho g x) = vLayerMap p K L x := by

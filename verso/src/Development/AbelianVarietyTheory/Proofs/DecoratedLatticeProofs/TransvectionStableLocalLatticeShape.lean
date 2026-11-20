@@ -9,47 +9,41 @@ open GlobalTheory.Core.Mi.LatMatch
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ _ i L c hcard hc hcl hbd hex`. Take `⟨x₀, hx₀, j, hj⟩` from `hex`. Choose the witnesses or unpack the hypotheses as in `⟨a, hai, haj⟩ : ∃ a, a ≠ i ∧ a ≠ j := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hsub : (Finset.univ : Finset n) ⊆ {i, j}` using `fun b _ => by`. Distinguish the cases in `hbi : b = i`. Simplify using `[hbi]`. Simplify using `[h b hbi]`. Establish `h1` using `Finset.card_le_card hsub`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ({i, j} : Finset n).card ≤ 2` using `Finset.card_le_two`. Rewrite `h1` using `[Finset.card_univ]`. Use linear arithmetic over natural numbers and integers. Establish `hsm : ∀ (s : 𝒪[k]) (b : n) (y : k), (s • (Pi.single b y : n → k) : n → k) = (Pi.single b ((s : k) * y) : n → k)`. Introduce `s b y`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Distinguish the cases in `hm : m = b`. Substitute `hm` using the available equality. Simplify using `[Subring.smul_def]`. Simplify using `[hm, Subring.smul_def]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ha : ∀ t : 𝒪[k], Pi.single a ((t : k) * c) ∈ L`. Introduce `t`. Establish `h` using `L.sub_mem (hcl x₀ hx₀ a j t haj (Or.inl hai)) hx₀`. Simplify `h` using `[hj]`. Establish `hca : Pi.single a c ∈ L` using `by simpa using ha 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsing : ∀ b, b ≠ i → ∀ t : 𝒪[k], Pi.single b ((t : k) * c) ∈ L`. Introduce `b hbi t`. Distinguish the cases in `hba : b = a`. Substitute `hba` using the available equality. Conclude with `ha t`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `L.sub_mem (hcl (Pi.single a c) hca b a t hba (Or.inl hbi)) hca`. Simplify using `using h`. Establish `hi : ∀ t : 𝒪[k], t ∈ IsLocalRing.maximalIdeal 𝒪[k] → Pi.single i ((t : k) * c) ∈ L`. Introduce `t ht`. Establish `h` using `L.sub_mem (hcl (Pi.single a c) hca i a t (Ne.symm hai) (Or.inr ht)) hca`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h` using `[Ne.symm hai]`. Establish `hsum : ∀ x : n → k, (∀ b, Pi.single b (x b) ∈ L) → x ∈ L`. Introduce `x h`. Rewrite using `[← Finset.univ_sum_single x]`. Conclude with `L.sum_mem (fun b _ => h b)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hoff : ∀ x : n → k, (∀ j, c⁻¹ * x j ∈ 𝒪[k]) → ∀ b, b ≠ i → Pi.single b (x b) ∈ L`. Introduce `x hx b hb`. Establish `e : x b = (c⁻¹ * x b) * c` using `by field_simp`. Rewrite using `[e]`. Conclude with `hsing b hb ⟨_, hx b⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hci : Pi.single i c ∈ L`. Use `left`. Introduce `x`. Use `⟨hbd x, fun hx => hsum x fun b => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : b = i`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Substitute `hb` using the available equality. Establish `e : Pi.single b (x b) = ((⟨c⁻¹ * x b, hx b⟩ : 𝒪[k]) • (Pi.single b c : n → k) : n → k)`. Rewrite using `[hsm]`. Use `congr 1`. Use `show x b = (c⁻¹ * x b) * c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `L.smul_mem _ hci`. Conclude with `hoff x hx b hb`. Use `right`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hm : ∀ x (hx : x ∈ L), (⟨c⁻¹ * x i, hbd x hx i⟩ : 𝒪[k]) ∈ IsLocalRing.maximalIdeal 𝒪[k]`. Introduce `x hx`. Assume the negation of the conclusion as `hu`. Rewrite `hu` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Take `⟨v, hv⟩` from `hu`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hy : x - Pi.single i (x i) ∈ L`. Apply `hsum` to reduce the goal to its premises. Introduce `b`. Distinguish the cases in `hb : b = i`. Substitute `hb` using the available equality.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `hoff x (hbd x hx) b hb` as an intermediate fact. Simplify `this` using `[hb]`. Establish `hxi : Pi.single i (x i) ∈ L`. Use `L.sub_mem hx hy` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Apply `hci` to reduce the goal to its premises. Establish `h1 : ((↑(v⁻¹) : 𝒪[k]) * (v : 𝒪[k])) = 1` using `Units.inv_mul v`. Rewrite `h1` using `[hv]`. Establish `h2` using `congrArg (fun z : 𝒪[k] => (z : k)) h1`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Subring.coe_mul, OneMemClass.coe_one] at h2`. Use `set w : k := ((↑(v⁻¹) : 𝒪[k]) : k)`. Establish `hcc : c * c⁻¹ = 1` using `mul_inv_cancel₀ hc`. Establish `e : Pi.single i c = ((↑(v⁻¹) : 𝒪[k]) • (Pi.single i (x i) : n → k) : n → k)`. Rewrite using `[hsm]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `congr 1`. Use `show c = w * x i`. Take the linear combination `-(c * h2) + (w * x i) * hcc`. Rewrite using `[e]`. Conclude with `L.smul_mem _ hxi`.
-
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨hbd x hx, ⟨c⁻¹ * x i, hbd x hx i⟩, hm x hx, rfl⟩`. Introduce and unpack `⟨hx, s, hs, hsx⟩`.
-
-Use `hsum x fun b => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b = i`. Substitute `hb` using the available equality. Establish `e : x b = (s : k) * c` using `by rw [hsx]; field_simp`. Rewrite using `[e]`.
-
-Conclude with `hi s hs`. Conclude with `hoff x hx b hb`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LatPairStab.stable_lattice_shape : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (i : n) (L : Submodule 𝒪[k] (n → k)) (c : k), 3 ≤ Fintype.card n → c ≠ 0 → (∀ x ∈ L, ∀ (b d : n) (t : 𝒪[k]), b ≠ d → (b ≠ i ∨ t ∈ IsLocalRing.maximalIdeal 𝒪[k]) → x + Pi.single b ((t : k) * x d) ∈ L) → (∀ x ∈ L, ∀ j, c⁻¹ * x j ∈ 𝒪[k]) → (∃ x ∈ L, ∃ j, x j = c) → (∀ x : n → k, x ∈ L ↔ ∀ j, c⁻¹ * x j ∈ 𝒪[k]) ∨ (∀ x : n → k, x ∈ L ↔ (∀ j, c⁻¹ * x j ∈ 𝒪[k]) ∧ ∃ s : 𝒪[k], s ∈ IsLocalRing.maximalIdeal 𝒪[k] ∧ (s : k) = c⁻¹ * x i) := by
   intro k _ _ _ _ n _ _ i L c hcard hc hcl hbd hex

@@ -15,7 +15,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-The claim follows from `coreStar_of polynomial_bound determinant_derivative_polynomial determinant_curve_derivative`.
+A detailed English derivation is pending.
 -/
 theorem star_estimate_unitary : CoreStar :=
   coreStar_of polynomial_bound determinant_derivative_polynomial determinant_curve_derivative

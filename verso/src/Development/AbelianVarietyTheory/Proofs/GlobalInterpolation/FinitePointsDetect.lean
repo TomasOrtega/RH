@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory.FinitePointsDetect
 
 /- English proof (translation)
-Introduce `X W _`. Set `ev : X → (W →ₗ[ℂ] ℂ)` to `fun x => (LinearMap.proj x).comp W.subtype`. Set `K : Finset X → Submodule ℂ W` to `fun s => ⨅ x ∈ s, LinearMap.ker (ev x)`. Take `⟨_, ⟨s, rfl⟩, hs⟩` from `(wellFounded_lt (α := Submodule ℂ W)).has_min (Set.range K) ⟨K ∅, ∅, rfl⟩`. Establish `key : ∀ v ∈ K s, ∀ y : X, (↑v : X → ℂ) y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `v hv y`. Establish `hle : K (insert y s) ≤ K s`. Introduce `w hw`. Simplify using `only [K, Submodule.mem_iInf] at hw ⊢`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hw x (Finset.mem_insert_of_mem hx)`. Establish `heq : K (insert y s) = K s` using `eq_of_le_of_not_lt hle (hs _ ⟨_, rfl⟩)`. Rewrite `hv` using `[← heq]`. Simplify using `only [K, Submodule.mem_iInf] at hv`. Use `hv y (Finset.mem_insert_self y s)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[ev]`. Use `⟨s, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hvK : v ∈ K s`. Simplify using `only [K, Submodule.mem_iInf]`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hv x hx` using `[ev]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Simplify using `using key v hvK y`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_points_detect : ∀ {X : Type} (W : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ ↥W],
     ∃ (s : Finset X), ∀ (v : ↥W), (∀ x ∈ s, (↑v : X → ℂ) x = (0 : ℂ)) → v = (0 : ↥W) := by

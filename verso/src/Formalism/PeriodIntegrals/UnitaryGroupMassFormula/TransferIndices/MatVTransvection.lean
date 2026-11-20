@@ -16,14 +16,14 @@ def matV {n : Type} [Fintype n] (Γ : Matrix n n K) : (n → V) →ₗ[K] (n →
   LinearMap.pi fun k => ∑ l, Γ k l • LinearMap.proj l
 
 /- English proof (translation)
-Simplify using `[matV, LinearMap.pi_apply, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matV_apply {n : Type} [Fintype n] (Γ : Matrix n n K) (x : n → V) (k : n) :
     matV Γ x k = ∑ l, Γ k l • x l := by
   simp [matV, LinearMap.pi_apply, LinearMap.sum_apply]
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Use function extensionality and compare the values at `k`. Simplify using `only [matV_apply, LinearMap.comp_apply, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem matV_mul {n : Type} [Fintype n] (A B : Matrix n n K) :
     (matV (A * B) : (n → V) →ₗ[K] (n → V)) = matV A ∘ₗ matV B := by
@@ -32,7 +32,7 @@ theorem matV_mul {n : Type} [Fintype n] (A B : Matrix n n K) :
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Use function extensionality and compare the values at `k`. Simplify using `[matV_apply, Matrix.one_apply, ite_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matV_one {n : Type} [Fintype n] [DecidableEq n] :
     (matV (1 : Matrix n n K) : (n → V) →ₗ[K] (n → V)) = LinearMap.id := by
@@ -40,7 +40,7 @@ theorem matV_one {n : Type} [Fintype n] [DecidableEq n] :
   simp [matV_apply, Matrix.one_apply, ite_smul]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.comp_apply, ← matV_mul, Matrix.mul_nonsing_inv A (isUnit_iff_ne_zero.mpr hA), matV_one, LinearMap.id_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matV_inv_cancel {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n K) (hA : A.det ≠ 0) (x : n → V) :
     matV A (matV A⁻¹ x) = x := by
@@ -48,7 +48,7 @@ theorem matV_inv_cancel {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n K
     LinearMap.id_apply]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.comp_apply, ← matV_mul, Matrix.nonsing_inv_mul A (isUnit_iff_ne_zero.mpr hA), matV_one, LinearMap.id_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matV_inv_cancel' {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n K) (hA : A.det ≠ 0) (x : n → V) :
     matV A⁻¹ (matV A x) = x := by
@@ -56,9 +56,9 @@ theorem matV_inv_cancel' {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n 
     LinearMap.id_apply]
 
 /- English proof (translation)
-Establish `hsub : ∀ B : Matrix n n K, ∀ x ∈ (Submodule.pi Set.univ fun _ : n => S), matV B x ∈ (Submodule.pi Set.univ fun _ : n => S)`. Introduce `B x hx k _`. Rewrite using `[matV_apply]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (hx l (Set.mem_univ l))`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hsub A x hx`. Introduce `x hx`. Conclude with `⟨matV A⁻¹ x, hsub _ x hx, matV_inv_cancel A hA x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_matV_pi {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n K) (hA : A.det ≠ 0) (S : Submodule K V) :
     (Submodule.pi Set.univ fun _ : n => S).map (matV A) = Submodule.pi Set.univ fun _ : n => S := by
@@ -75,7 +75,7 @@ theorem map_matV_pi {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n K) (h
 def latPow (n : Type) (M : Submodule (𝓞 K) V) : Submodule (𝓞 K) (n → V) := Submodule.pi Set.univ fun _ : n => M
 
 /- English proof (translation)
-The claim follows from `span_pi_eq _`.
+A detailed English derivation is pending.
 -/
 theorem span_latPow {n : Type} [Fintype n] [DecidableEq n] (M : Submodule (𝓞 K) V) :
     Submodule.span K ((latPow n M : Submodule (𝓞 K) (n → V)) : Set (n → V)) =
@@ -83,7 +83,7 @@ theorem span_latPow {n : Type} [Fintype n] [DecidableEq n] (M : Submodule (𝓞 
   span_pi_eq _
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hL, map_matV_pi A hA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem span_map_matV {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n K) (hA : A.det ≠ 0)
     (L : Submodule (𝓞 K) (n → V)) (S : Submodule K V)
@@ -93,9 +93,9 @@ theorem span_map_matV {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n K) 
   rw [Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hL, map_matV_pi A hA]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[matV_apply]`. Simplify using `only [Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, add_smul, Finset.sum_add_distrib, ite_smul, one_smul, zero_smul, Pi.add_apply]`. Distinguish the cases in `hk : i = k`. Substitute `hk` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hk, Pi.single_apply, Ne.symm hk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem matV_transvection {n : Type} [Fintype n] [DecidableEq n] (i j : n) (c : K) (x : n → V) :
     matV (Matrix.transvection i j c) x = x + Pi.single i (c • x j) := by
@@ -108,37 +108,35 @@ theorem matV_transvection {n : Type} [Fintype n] [DecidableEq n] (i j : n) (c : 
   · simp [hk, Pi.single_apply, Ne.symm hk]
 
 /- English proof (translation)
-Establish `hLfg : (latPow n M).FG` using `Submodule.fg_pi fun _ => hM`. Establish `hsp` using `span_latPow (n := n) M`. Use `Matrix.diagonal_transvection_induction_of_det_ne_zero (fun A => idxAt w (latPow n M) ((latPow n M).map ((matV A).restrictScalars (𝓞 K))) = (Formalism.HN.rkK M : ℤ) * vAdd w A.det) A hA ?_ ?_ ?_` and prove the remaining obligations. Introduce `D hD`. Establish `hDk : ∀ k, D k ≠ 0` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hD` using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.mp hD k (Finset.mem_univ k)`. Establish `hmap : (latPow n M).map ((matV (Matrix.diagonal D)).restrictScalars (𝓞 K)) = Submodule.pi Set.univ fun k => smulSub (D k) M`. Use extensionality with `x`. Simplify using `only [Submodule.mem_map, LinearMap.coe_restrictScalars, Submodule.mem_pi, Set.mem_univ, true_implies, latPow, mem_smulSub]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ k`. Conclude with `⟨y k, hy k, by rw [matV_apply]; simp [Matrix.diagonal_apply, ite_smul]⟩`. Introduce `h choose y hy hyx using h`. Conclude with `⟨y, hy, by funext k; rw [matV_apply]; simp [Matrix.diagonal_apply, ite_smul, hyx]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmap, latPow, idx_pi hI w _ _ (fun _ => hM) (fun k => fg_smulSub _ M hM) (fun k => (span_smulSub _ (hDk k) M).symm), Matrix.det_diagonal, vAdd_prod w _ _ (fun k _ => hDk k), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => idx_smulSub hI w (D k) (hDk k) M hM`. Introduce `t`. Rewrite using `[Matrix.TransvectionStruct.toMatrix, Matrix.det_transvection_of_ne _ _ t.hij]`. Establish `hv1 : vAdd w (1 : K) = 0` using `by simp [vAdd]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hv1, mul_zero]`. Use `set φ : (n → V) →ₗ[K] (n → V) := LinearMap.id - (LinearMap.single K (fun _ => V) t.i) ∘ₗ LinearMap.proj t.i with hφ`. Establish `hφapp : ∀ x : n → V, φ x = x - Pi.single t.i (x t.i)` using `fun x => by simp [hφ]`. Establish `hφT : φ ∘ₗ matV (Matrix.transvection t.i t.j t.c) = φ`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `x`. Rewrite using `[LinearMap.comp_apply, hφapp, hφapp, matV_transvection]`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = t.i`. Substitute `hk` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Establish `hker0 : ∀ z : n → V, φ z = 0 ↔ ∀ k, k ≠ t.i → z k = 0`. Introduce `z`. Rewrite using `[hφapp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h k hk`. Use `congrFun h k` as an intermediate fact. Simplify `this` using `[Pi.single_apply, hk]`. Introduce `h`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = t.i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk, h k hk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : ∀ z : n → V, φ z = 0 → matV (Matrix.transvection t.i t.j t.c) z = z`. Introduce `z hz`. Rewrite using `[matV_transvection, (hker0 z).mp hz t.j (Ne.symm t.hij), smul_zero, Pi.single_zero, add_zero]`. Establish `hT` using `span_map_matV (Matrix.transvection t.i t.j t.c) (by rw [Matrix.det_transvection_of_ne _ _ t.hij]; exact one_ne_zero) (latPow n M) _ hsp`. Rewrite using `[idx_map hI w φ _ _ hLfg (hLfg.map _) (by rw [hT, hsp])]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.map_comp]`. Establish `: ((φ.restrictScalars (𝓞 K)).comp ((matV (Matrix.transvection t.i t.j t.c)).restrictScalars (𝓞 K))) = φ.restrictScalars (𝓞 K)`. Rewrite using `[← LinearMap.restrictScalars_comp, hφT]`. Rewrite using `[this, idx_self]`. Use extensionality with `z`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Submodule.mem_inf, Submodule.restrictScalars_mem, LinearMap.mem_ker, Submodule.mem_map, LinearMap.coe_restrictScalars]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hz0⟩`. Conclude with `⟨⟨z, hz, hfix z hz0⟩, hz0⟩`. Introduce and unpack `⟨⟨x, hx, rfl⟩, hz0⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : φ x = 0`. Rewrite using `[← hz0, ← LinearMap.comp_apply, hφT]`. Rewrite using `[hfix x hx0]`. Conclude with `⟨hx, by rw [hfix x hx0] at hz0; exact hz0⟩`. Introduce `A B hA hB hPA hPB`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsB` using `span_map_matV B hB (latPow n M) _ hsp`. Establish `hsA` using `span_map_matV A hA (latPow n M) _ hsp`. Establish `hsAB` using `span_map_matV A hA _ _ hsB`. Establish `hcomp : (latPow n M).map ((matV (A * B)).restrictScalars (𝓞 K)) = ((latPow n M).map ((matV B).restrictScalars (𝓞 K))).map ((matV A).restrictScalars (𝓞 K))`. Rewrite using `[← Submodule.map_comp, matV_mul, LinearMap.restrictScalars_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hcomp, idx_chain hI w (latPow n M) ((latPow n M).map ((matV A).restrictScalars (𝓞 K))) _ hLfg (hLfg.map _) ((hLfg.map _).map _) (by rw [hsA, hsp]) (by rw [hsAB, hsA])]`. Establish `hinj : ∀ P : Submodule (𝓞 K) (n → V), ∀ x ∈ P, matV A x = 0 → x = 0`. Introduce `P x _ hx`. Rewrite using `[← matV_inv_cancel' A hA x, hx, map_zero]`. Rewrite using `[← idx_map_inj hI w (matV A) (latPow n M) _ hLfg (hLfg.map _) (by rw [hsB, hsp]) (hinj _) (hinj _), hPA, hPB, Matrix.det_mul, vAdd_mul w _ _ hA hB]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem idx_matV (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) {n : Type} [Fintype n] [DecidableEq n]
     (M : Submodule (𝓞 K) V) (hM : M.FG) (A : Matrix n n K) (hA : A.det ≠ 0) :

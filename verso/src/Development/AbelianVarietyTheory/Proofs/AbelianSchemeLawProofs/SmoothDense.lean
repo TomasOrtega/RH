@@ -8,7 +8,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.smoothLocus_eq_top_iff, ← Scheme.Hom.preimage_smoothLocus_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smooth_smoothLocus_ι_comp {X Y : Scheme.{0}} (f : X ⟶ Y)
     [LocallyOfFinitePresentation f] : Smooth (f.smoothLocus.ι ≫ f) := by
@@ -16,7 +16,7 @@ theorem smooth_smoothLocus_ι_comp {X Y : Scheme.{0}} (f : X ⟶ Y)
   simp
 
 /- English proof (translation)
-Introduce `K _ _ X f hX hf`. Establish `: LocallyOfFinitePresentation f` using `inferInstance`. Conclude with `f.dense_smoothLocus_of_perfectField.mono fun x hx => ⟨f.smoothLocus, hx, smooth_smoothLocus_ι_comp f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothDense : SmoothDenseSt := by
   intro K _ _ X f hX hf

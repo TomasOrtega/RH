@@ -7,25 +7,23 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 universe u
 
 /- English proof (translation)
-Introduce `R _ P U _ f g`. Use `set S := Localization.AtPrime U`. Use `set I := P.map (algebraMap R S)`. Establish `hφ : ∀ x : R, localQuotMap P U x = Ideal.Quotient.mk I (algebraMap R S x)` using `fun _ => rfl`. Apply `le_antisymm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Submodule.mem_colon_singleton, smul_eq_mul]`. Rewrite `hx` using `[Submodule.mem_colon_singleton, smul_eq_mul]`. Take `⟨p, hp, z, hz, hpz⟩` from `Submodule.mem_sup.mp hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hz`. Establish `hp0 : localQuotMap P U p = 0`. Rewrite using `[hφ, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ hp`. Use `Ideal.mem_span_singleton'.mpr ⟨localQuotMap P U a, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← map_mul, ← map_mul, ← hpz, map_add, hp0, zero_add, map_mul]`. Introduce `y hy`. Rewrite `hy` using `[Submodule.mem_colon_singleton, smul_eq_mul]`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp hy`. Take `⟨y0, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b0, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Take `⟨⟨r, t⟩, rfl⟩` from `IsLocalization.mk'_surjective U.primeCompl y0`. Take `⟨⟨r', t'⟩, rfl⟩` from `IsLocalization.mk'_surjective U.primeCompl b0`. Simplify using `only [hφ] at hb`. Establish `hI` using `Ideal.Quotient.eq.mp hb`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `IsLocalization.mk'_spec S r t`. Establish `e2` using `IsLocalization.mk'_spec S r' t'`. Establish `hw : algebraMap R S ((t : R) * r' * f - (t' : R) * r * g) ∈ I`. Use `I.mul_mem_left (algebraMap R S ((t : R) * t')) hI` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_mul, map_sub]`. Take the linear combination `(algebraMap R S t' * algebraMap R S g) * e1 - (algebraMap R S t * algebraMap R S f) * e2`. Take `⟨⟨p, s⟩, hps⟩` from `(IsLocalization.mem_map_algebraMap_iff U.primeCompl S).mp hw`. Rewrite `hps` using `[← map_mul]`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists U.primeCompl S).mp hps`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : (c : R) * s * t' * r ∈ (P ⊔ Ideal.span {f}).colon {g}`. Rewrite using `[Submodule.mem_colon_singleton, smul_eq_mul]`. Use `Submodule.mem_sup.mpr ⟨-((c : R) * p), P.neg_mem (P.mul_mem_left _ p.2), (c : R) * s * t * r' * f, Ideal.mem_span_singleton'.mpr ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Take the linear combination `hc`. Establish `hy' : Ideal.Quotient.mk I (IsLocalization.mk' S r t) = localQuotMap P U ((c : R) * s * t' * r) * Ideal.Quotient.mk I (IsLocalization.mk' S (1 : R) (c * s * t' * t))`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, ← map_mul, IsLocalization.mul_mk'_eq_mk'_of_mul, mul_one]`. Use `congr 1`. Rewrite using `[IsLocalization.mk'_eq_iff_eq]`. Use `congr 1`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hy']`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hx)`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocalQuotColon.proof : LocalQuotColon.Statement.{u} := by
   intro R _ P U _ f g

@@ -22,9 +22,9 @@ noncomputable section
 namespace GlobalTheory.TruncKer.RadInv
 
 /- English proof (translation)
-Distinguish the cases in `hg : ∃ p' : P, ∃ k ∈ K, g = p' * k`. Take `⟨p', k, hk, rfl⟩` from `hg`. Rewrite using `[← mul_assoc, ← Subgroup.coe_mul, Doubling.iwAbs_mul_of_triv h _ hk, Doubling.iwAbs_mul_of_triv h _ hk, map_mul, hp, one_mul]`. Establish `hg' : ¬ ∃ p' : P, ∃ k ∈ K, (p : G) * g = p' * k`. Introduce and unpack `⟨p', k, hk, e⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hg ⟨p⁻¹ * p', k, hk, by rw [Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc, ← e, inv_mul_cancel_left]⟩`. Unfold `Doubling.iwAbs`. Rewrite using `[dif_neg hg, dif_neg hg']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwAbs_mul_left_of_eq_one {G : Type} [Group G] {P : Subgroup G} {δ : P →* ℝ≥0} {K : Subgroup G}
     (h : ∀ p : P, (p : G) ∈ K → δ p = 1) (p : P) (hp : δ p = 1) (g : G) :
@@ -40,13 +40,13 @@ theorem iwAbs_mul_left_of_eq_one {G : Type} [Group G] {P : Subgroup G} {δ : P �
     rw [dif_neg hg, dif_neg hg']
 
 /- English proof (translation)
-Introduce `i hi` and use `congrArg _ (h _ (right_ne_zero_of_mul hi))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem below_invSV {k : ℕ} (π : Equiv.Perm (Fin k)) (ε : Fin k → SignTypeˣ) {a b : SV k} (h : Below a b) :
     Below (invSV π ε a) (invSV π ε b) := fun i hi => congrArg _ (h _ (right_ne_zero_of_mul hi))
 
 /- English proof (translation)
-Introduce `t ht` and use `by by_cases e : t = i · subst e; simp [stdVec, h] · exact absurd (Pi.single_eq_of_ne e _) ht`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem below_single_stdVec {k : ℕ} {i j : Fin k} (h : i ≤ j) : Below (Pi.single i 1) (stdVec j) := fun t ht => by
   by_cases e : t = i
@@ -56,7 +56,7 @@ theorem below_single_stdVec {k : ℕ} {i j : Fin k} (h : i ≤ j) : Below (Pi.si
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.union_subset_union (Set.image_mono fun i (hi : a i = 1) => show b i = 1 from (h i (by rw [hi]; decide)).trans hi) (Set.image_mono fun i (hi : a i = -1) => show b i = -1 from (h i (by rw [hi]; decide)).trans hi))`.
+A detailed English derivation is pending.
 -/
 theorem sub_mono (Φ : WittFrame V) {a b : SV (wittIndex V)} (h : Below a b) : Φ.sub a ≤ Φ.sub b :=
   Submodule.span_mono (Set.union_subset_union
@@ -64,11 +64,11 @@ theorem sub_mono (Φ : WittFrame V) {a b : SV (wittIndex V)} (h : Below a b) : �
     (Set.image_mono fun i (hi : a i = -1) => show b i = -1 from (h i (by rw [hi]; decide)).trans hi))
 
 /- English proof (translation)
-Use `Submodule.span_le.2 (Set.union_subset ?_ ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `rfl : t = i := by`. Assume the negation of the conclusion as `e`. Simplify using `[Pi.single_eq_of_ne e] at ht`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.mem_span_singleton_self _`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. It suffices to derive a contradiction. Distinguish the cases in `e : t = i`. Substitute `e` using the available equality.
+Assume the hypotheses and unpack their components. It suffices to derive a contradiction. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `at ht`. Simplify using `[Pi.single_eq_of_ne e] at ht`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub_single_le (Φ : WittFrame V) (i : Fin (wittIndex V)) :
     Φ.sub (Pi.single i 1) ≤ Submodule.span D.host.E {Φ.e i} := by
@@ -85,11 +85,11 @@ theorem sub_single_le (Φ : WittFrame V) (i : Fin (wittIndex V)) :
     · simp [Pi.single_eq_of_ne e] at ht
 
 /- English proof (translation)
-Establish `hv : invSV π ε (Pi.single i 1) (π.symm i) = ε (π.symm i)` using `by simp [invSV]`. Establish `h0` using `Units.ne_zero (ε (π.symm i))`. Generalize the expression as in `((ε (π.symm i) : SignTypeˣ) : SignType) = s at hv h0`. Consider the cases of `s with`. Consider the case `zero => exact absurd rfl h0`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `pos => exact ⟨Φ.e (π.symm i), Submodule.subset_span (Or.inl ⟨_, hv, rfl⟩), Φ.linearIndependent_e.ne_zero _⟩`. Consider the case `neg`. Use `⟨Φ.f (π.symm i), Submodule.subset_span (Or.inr ⟨_, hv, rfl⟩), fun h => ?_⟩` and prove the remaining obligations. Use `Φ.ef (π.symm i) (π.symm i)` as an intermediate fact. Rewrite `this` using `[if_pos rfl, h]`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[HSpace.hD] at this`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_ne_zero_mem_sub (Φ : WittFrame V) (π : Equiv.Perm (Fin (wittIndex V)))
     (ε : Fin (wittIndex V) → SignTypeˣ) (i : Fin (wittIndex V)) :
@@ -107,7 +107,7 @@ theorem exists_ne_zero_mem_sub (Φ : WittFrame V) (π : Equiv.Perm (Fin (wittInd
     simp [HSpace.hD] at this
 
 /- English proof (translation)
-Establish `e : γ⁻¹.1.1 * γ.1.1 = 1` using `congrArg (fun g : GF V => g.1.1) (inv_mul_cancel γ)`. Rewrite using `[ratAct, ratAct, ← LinearMap.comp_apply, ← Matrix.toLin_mul, e, Matrix.toLin_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ratAct_inv_apply (γ : GF V) (x : V.V) : ratAct D.sp.cm V γ⁻¹ (ratAct D.sp.cm V γ x) = x := by
   have e : γ⁻¹.1.1 * γ.1.1 = 1 := congrArg (fun g : GF V => g.1.1) (inv_mul_cancel γ)
@@ -115,7 +115,7 @@ theorem ratAct_inv_apply (γ : GF V) (x : V.V) : ratAct D.sp.cm V γ⁻¹ (ratAc
   rfl
 
 /- English proof (translation)
-The claim follows from `(Submodule.span_le (p := (extSub (F := D.host.F) V (AF D.host.F) B).comap (HA.mat (AF D.host.F) D.sp.cm.sig V.gram (rat V γ)).1.mulVecLin)).2 (by rintro _ ⟨x, hx, rfl⟩ show act D.sp.cm V (diagH D.sp.cm.sig V.gram (AF D.host.F) γ) (coordR V (AF D.host.F) x) ∈ extSub (F := D.host.F …`.
+A detailed English derivation is pending.
 -/
 theorem act_rat_mem {γ : GF V} {A B : Submodule D.host.E V.V} (h : ∀ x ∈ A, ratAct D.sp.cm V γ x ∈ B)
     {y : Fin V.rank → AF D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ extSub (F := D.host.F) V (AF D.host.F) A) :
@@ -136,11 +136,11 @@ namespace GlobalTheory.TruncKer.RadInv
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-Establish `hi : (rat V γ)⁻¹ = rat V γ⁻¹` using `(map_inv _ _).symm`. Establish `hc : ∀ y, act D.sp.cm V (rat V γ) (act D.sp.cm V (rat V γ⁻¹) y) = y` using `fun y => by`. Rewrite using `[← GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_mul, ← map_mul, mul_inv_cancel, map_one, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_one]`. Establish `hc' : ∀ y, act D.sp.cm V (rat V γ⁻¹) (act D.sp.cm V (rat V γ) y) = y` using `fun y => by`. Rewrite using `[← GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_mul, ← map_mul, inv_mul_cancel, map_one, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hi, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_mul, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_mul, hn.1 _ (act_rat_mem h2 hy), hc]`. Establish `hz : act D.sp.cm V (rat V γ⁻¹) y ∈ extSub (F` using `D.host.F) V (AF D.host.F) (perp V A) := (mem_extSub_perp D.sp.cm V).2 fun x hx => by`. Use `(hR_act D.sp.cm V (rat V γ⁻¹) (act D.sp.cm V (rat V γ) x) y).trans ((mem_extSub_perp D.sp.cm V).1 hy _ (act_rat_mem h1 hx))` as an intermediate fact. Rewrite `this` using `[hc']`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `act_rat_mem h1 (hn.2 _ hz)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_sub, hc]`. Rewrite using `[hi, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_mul, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_mul]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem conj_mem_unipRad {γ : GF V} {A B : Submodule D.host.E V.V}
     (h1 : ∀ x ∈ A, ratAct D.sp.cm V γ x ∈ B) (h2 : ∀ x ∈ B, ratAct D.sp.cm V γ⁻¹ x ∈ A)
@@ -163,9 +163,9 @@ theorem conj_mem_unipRad {γ : GF V} {A B : Submodule D.host.E V.V}
     rwa [hi, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_mul, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_mul]
 
 /- English proof (translation)
-Establish `he : Φ.e i ∈ Φ.flag0.X i.succ` using `Submodule.subset_span ⟨i, Nat.lt_succ_self _, rfl⟩`. Establish `h1` using `Φ.coef_eq_zero D.sp.cm (AF D.host.F) i ((IsoFlag.mem_unip_iff.1 hp).1 i _ he)`. Rewrite `h1` using `[map_sub, sub_eq_zero, WittFrame.coef_coordR, Φ.ef, if_pos rfl, map_one]`. Establish `h2 : Φ.chi D.sp.cm (AF D.host.F) i p = 1` using `h1`. Establish `h3 : (Φ.chi D.sp.cm (AF D.host.F) i).toHomUnits p = 1` using `Units.ext h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [absChi, MonoidHom.comp_apply, h3, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem absChi_eq_one_of_mem_unip (Φ : WittFrame V) (p : PA Φ.flag0)
     (hp : (p : GA D V) ∈ Φ.flag0.unip D.sp.cm (AF D.host.F)) (i : Fin (wittIndex V)) : absChi Φ i p = 1 := by
@@ -177,9 +177,9 @@ theorem absChi_eq_one_of_mem_unip (Φ : WittFrame V) (p : PA Φ.flag0)
   simp only [absChi, MonoidHom.comp_apply, h3, map_one]
 
 /- English proof (translation)
-Take `⟨y, hy, hy0⟩` from `exists_ne_zero_mem_sub Φ π ε i`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (sub_single_le Φ i (hw _ y hy))`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[zero_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hy0 (by rw [← ratAct_inv_apply w y, ← hc, map_zero])`. Establish `e : Φ.e i = ratAct D.sp.cm V w (c⁻¹ • y)`. Rewrite using `[map_smul, ← hc, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Rewrite using `[e, ratAct_inv_apply]`. Conclude with `sub_mono Φ (below_invSV π ε (below_single_stdVec hij)) (Submodule.smul_mem _ _ hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratAct_inv_e_mem (Φ : WittFrame V) {π : Equiv.Perm (Fin (wittIndex V))} {ε : Fin (wittIndex V) → SignTypeˣ}
     {w : GF V} (hw : Φ.IsWeylRep D.sp.cm π ε w) {i j : Fin (wittIndex V)} (hij : i ≤ j) :
@@ -202,17 +202,15 @@ namespace GlobalTheory.TruncKer
 open RadInv in
 
 /- English proof (translation)
-Introduce `D V Φ L a hg Q hQ u hu hW n hn x Tr`. Take `⟨π, ε, w, hw, hsub, hY⟩` from `exists_Yfam_eq (Φ := Φ) (K := levelAll D.sp.cm.sig V.gram L a) hQ`. Rewrite using `[hY, hY]`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 (hsub hu)`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hX : IsIsotropic V (Φ.flag0.X j.succ)` using `Φ.flag0.isIsotropic (Fin.succ_ne_zero j)`. Establish `h1 : ∀ y ∈ Φ.sub (invSV π ε (stdVec j)), ratAct D.sp.cm V w y ∈ Φ.flag0.X j.succ` using `fun y hy => Φ.sub_stdVec j ▸ hw _ y hy`. Establish `h2 : ∀ y ∈ Φ.flag0.X j.succ, ratAct D.sp.cm V w⁻¹ y ∈ Φ.sub (invSV π ε (stdVec j))`. Introduce `y hy`. Use `(Submodule.span_le (p := (Φ.sub (invSV π ε (stdVec j))).comap (ratAct D.sp.cm V w⁻¹))).2 ?_ hy` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `ratAct_inv_e_mem Φ hw (show i ≤ j from Nat.lt_succ_iff.1 hi)`. Establish `hN : rat V w * n * (rat V w)⁻¹ ∈ (IsoFlag.single hX).unip D.sp.cm (AF D.host.F)`. Rewrite using `[IsoFlag.unip_single]`. Conclude with `conj_mem_unipRad h1 h2 (by rw [← IsoFlag.unip_single]; exact hn)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hU` using `Φ.flag0.unip_single_le D.sp.cm (AF D.host.F) (Fin.succ_ne_zero j) hN`. Set `p : PA Φ.flag0` to `⟨_, Φ.flag0.unip_le_par _ _ hU⟩`. Establish `hK` using `hg.isCompact`. Use `Doubling.t2Space_adeleRing' (F := D.host.F)` as an intermediate fact. Establish `e : rat V w * (n * x) = (p : GA D V) * (rat V w * x)` using `by simp [p, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : H0 Φ (levelAll D.sp.cm.sig V.gram L a) (rat V w * (n * x)) = H0 Φ (levelAll D.sp.cm.sig V.gram L a) (rat V w * x)`. Simplify using `only [H0, e]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[iwAbs_mul_left_of_eq_one (Doubling.triv_of_isCompact (Φ.flag0.isClosed_par _ _) (continuous_absChi i) hK) p (absChi_eq_one_of_mem_unip Φ p hU i)]`.
-
-Simplify using `only [Ys, key]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem yfam_unipRad_mul : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a →
     ∀ Q, IsPar Q → ∀ u ∈ Q, ∀ hW : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.IsIsotropic V (Φ.sub u), ∀ n ∈ NA (IsoFlag.single hW), ∀ x Tr,

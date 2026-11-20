@@ -15,7 +15,7 @@ noncomputable def sectionValue [IsIntegral X] (V : X.Opens) (y : V) :
   (algebraMap (X.presheaf.stalk y) X.functionField).comp (X.presheaf.germ V y y.2).hom
 
 /- English proof (translation)
-Establish `: Nonempty V` using `⟨y⟩`. Conclude with `Scheme.algebraMap_germ_eq_germToFunctionField X y.2 r`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma sectionValue_eq [IsIntegral X] (V : X.Opens) (y : V) (r : Γ(X, V)) :
     sectionValue V y r = (haveI : Nonempty V := ⟨y⟩; X.germToFunctionField V r) := by
@@ -23,7 +23,7 @@ lemma sectionValue_eq [IsIntegral X] (V : X.Opens) (y : V) (r : Γ(X, V)) :
   exact Scheme.algebraMap_germ_eq_germToFunctionField X y.2 r
 
 /- English proof (translation)
-Simplify using `only [sectionValue, RingHom.comp_apply]`. Use `congr 1`. Conclude with `TopCat.Presheaf.germ_res_apply _ _ _ _ _`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma sectionValue_res [IsIntegral X] {V W : X.Opens} (h : W ≤ V) (y : W) (r : Γ(X, V)) :
     sectionValue W y (X.presheaf.map (homOfLE h).op r) = sectionValue V ⟨y.1, h y.2⟩ r := by
@@ -32,7 +32,7 @@ lemma sectionValue_res [IsIntegral X] {V W : X.Opens} (h : W ≤ V) (y : W) (r :
   exact TopCat.Presheaf.germ_res_apply _ _ _ _ _
 
 /- English proof (translation)
-Rewrite using `[sectionValue_eq, sectionValue_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sectionValue_const [IsIntegral X] (V : X.Opens) (y z : V) (r : Γ(X, V)) :
     sectionValue V y r = sectionValue V z r := by
@@ -70,7 +70,7 @@ def divisorPredicate (D : WeilDivisor X) :
       exact hW.2 ⟨y.1, hyW⟩ hy
 
 /- English proof (translation)
-Use `Z.isDedekindDomain_stalk` as an intermediate fact. Simplify using `only [PrimeDivisor.valuation]`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.intValuation_le_one _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma PrimeDivisor.valuation_algebraMap_le_one (Z : PrimeDivisor X)
     (a : X.presheaf.stalk Z.point) : Z.valuation (algebraMap _ X.functionField a) ≤ 1 := by
@@ -97,7 +97,7 @@ def divisorSections (D : WeilDivisor X) (V : X.Opens) : AddSubgroup (V → X.fun
       exact hf.2 y hy
 
 /- English proof (translation)
-Use `⟨fun y => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨W, hyW, h⟩` from `hf.1 y`. Conclude with `⟨W, hyW, fun z hz => by simp only [h z hz, sectionValue_const V z y r]⟩`. Simplify using `only [map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 lemma smul_mem_divisorSections (D : WeilDivisor X) (V : X.Opens) (r : Γ(X, V))
     {f : V → X.functionField} (hf : f ∈ divisorSections D V) :
@@ -166,7 +166,7 @@ noncomputable def divisorPresheafOfModules (D : WeilDivisor X) :
       (sectionValue_res i.unop.le y (show Γ(X, V.unop) from r)).symm)
 
 /- English proof (translation)
-Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheaf_comp (forget AddCommGrpCat)]`. Use `TopCat.Presheaf.isSheaf_of_iso ?_ (TopCat.subpresheafToTypes.isSheaf (divisorPredicate D))` and prove the remaining obligations. Use `NatIso.ofComponents (fun V => Equiv.toIso { toFun := fun f => ⟨f.1, f.2⟩ invFun := fun f => ⟨f.1, f.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }) ?_` and prove the remaining obligations. Introduce `V W i`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem divisorPresheaf_isSheaf (D : WeilDivisor X) :
     TopCat.Presheaf.IsSheaf (X := X.carrier) (divisorPresheaf D) := by
@@ -185,7 +185,7 @@ noncomputable def divisorSheaf (D : WeilDivisor X) : X.Modules :=
   SheafOfModules.mk (divisorPresheafOfModules D) (divisorPresheaf_isSheaf D)
 
 /- English proof (translation)
-Establish `hv0 : Z.valuation f ≠ 0` using `(Valuation.ne_zero_iff _).mpr hf`. Rewrite using `[← WithZero.log_le_iff_le_exp hv0, PrimeDivisor.ord]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 lemma PrimeDivisor.valuation_le_exp_iff (Z : PrimeDivisor X) {f : X.functionField} (hf : f ≠ 0)
     (n : ℤ) : Z.valuation f ≤ WithZero.exp n ↔ -n ≤ Z.ord f := by
@@ -194,7 +194,7 @@ lemma PrimeDivisor.valuation_le_exp_iff (Z : PrimeDivisor X) {f : X.functionFiel
   omega
 
 /- English proof (translation)
-Take `⟨Wy, hyW, hy⟩` from `t.2.1 y`. Take `⟨Wz, hzW, hz⟩` from `t.2.1 z`. Take `⟨w, hw⟩` from `nonempty_preirreducible_inter (Wy ⊓ V).isOpen (Wz ⊓ V).isOpen ⟨y.1, hyW, y.2⟩ ⟨z.1, hzW, z.2⟩`. Rewrite using `[← hy ⟨w, hw.1.2⟩ hw.1.1, hz ⟨w, hw.1.2⟩ hw.2.1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma divisorSections_apply_eq (D : WeilDivisor X) {V : X.Opens} (t : divisorSections D V)
     (y z : V) : t.1 y = t.1 z := by

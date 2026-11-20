@@ -5,21 +5,19 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Introduce `N l d σ τ _ hσ hτ`. Take `⟨hσc, hσd⟩` from `hσ`. Take `⟨hτc, hτd⟩` from `hτ`. Establish `detσ` using `Matrix.SpecialLinearGroup.det_coe σ`. Establish `detτ` using `Matrix.SpecialLinearGroup.det_coe τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `detσ`, `detτ` using `[Matrix.det_fin_two]`. Establish `e00 : ((τ * σ⁻¹) 0 0 : ℤ) = τ 0 0 * σ 1 1 - τ 0 1 * σ 1 0`. Simplify using `[Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Establish `e10 : ((τ * σ⁻¹) 1 0 : ℤ) = τ 1 0 * σ 1 1 - τ 1 1 * σ 1 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `[Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Establish `e11 : ((τ * σ⁻¹) 1 1 : ℤ) = τ 1 1 * σ 0 0 - τ 1 0 * σ 0 1`. Simplify using `[Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hσc`, `hτc` using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at hσc hτc`. Establish `hNl : (N : ℤ) * l ∣ (τ * σ⁻¹) 1 0`. Rewrite using `[e10]`. Conclude with `dvd_sub (dvd_mul_of_dvd_left hτc _) (dvd_mul_of_dvd_right hσc _)`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hσN : ((σ 1 0 : ℤ) : ZMod N) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans (dvd_mul_right _ _) hσc)`. Establish `hτN : ((τ 1 0 : ℤ) : ZMod N) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans (dvd_mul_right _ _) hτc)`. Establish `dσ : ((σ 0 0 : ℤ) : ZMod N) * (σ 1 1 : ℤ) - (σ 0 1 : ℤ) * (σ 1 0 : ℤ) = 1`. Conclude with `congrArg (Int.cast : ℤ → ZMod N) detσ` after adjusting the coercions. Establish `dτ : ((τ 0 0 : ℤ) : ZMod N) * (τ 1 1 : ℤ) - (τ 0 1 : ℤ) * (τ 1 0 : ℤ) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (Int.cast : ℤ → ZMod N) detτ` after adjusting the coercions. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Gamma1_mem]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e00]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Take the linear combination `(τ 0 0 : ZMod N) * hσd - (τ 0 0 : ZMod N) * hτd + dτ + (τ 0 1 : ZMod N) * hτN - (τ 0 1 : ZMod N) * hσN`. Rewrite using `[e11]`. Use `push_cast`. Take the linear combination `(σ 0 0 : ZMod N) * hτd - (σ 0 0 : ZMod N) * hσd + dσ + (σ 0 1 : ZMod N) * hσN - (σ 0 1 : ZMod N) * hτN`.
-
-Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans (dvd_mul_right _ _) hNl)`. Rewrite using `[Gamma0_mem]`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans (dvd_mul_left _ _) hNl)`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dia_mul_inv_mem_lev : ∀ (N l : ℕ) (d : ℤ) (σ τ : SL(2, ℤ)), 0 < N →
     GlobalTheory.Hk.IsDia N l d σ → GlobalTheory.Hk.IsDia N l d τ → τ * σ⁻¹ ∈ GlobalTheory.Hk.lev N l := by

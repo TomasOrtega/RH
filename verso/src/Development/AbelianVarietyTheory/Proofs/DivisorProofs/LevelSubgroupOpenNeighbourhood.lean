@@ -15,7 +15,7 @@ section Alg
 variable {R : Type} [CommRing R] {B : Type} [Ring B] [Algebra R B]
 
 /- English proof (translation)
-Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, he, one_mul, mul_one, sub_mul, mul_sub, smul_add, smul_sub]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem comp_mul_mid {e : R} (he : e * e = e) (X J Y : B) :
     (e • (X - 1) + 1) * J * (e • (Y - 1) + 1) = e • (X * J * Y - J) + J := by
@@ -24,14 +24,14 @@ theorem comp_mul_mid {e : R} (he : e * e = e) (X J Y : B) :
   abel
 
 /- English proof (translation)
-Simplify `comp_mul_mid he X 1 Y` using `only [mul_one]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem comp_mul {e : R} (he : e * e = e) (X Y : B) :
     (e • (X - 1) + 1) * (e • (Y - 1) + 1) = e • (X * Y - 1) + 1 := by
   simpa only [mul_one] using comp_mul_mid he X 1 Y
 
 /- English proof (translation)
-Establish `h : e * (1 - e) = 0` using `by rw [mul_sub, mul_one, he, sub_self]`. Rewrite using `[add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, h, zero_smul, zero_add, mul_one, one_mul, ← add_assoc, ← add_smul, add_sub_cancel, one_smul, sub_add_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_split {e : R} (he : e * e = e) (X : B) : (e • (X - 1) + 1) * ((1 - e) • (X - 1) + 1) = X := by
   have h : e * (1 - e) = 0 := by rw [mul_sub, mul_one, he, sub_self]
@@ -39,9 +39,9 @@ theorem comp_split {e : R} (he : e * e = e) (X : B) : (e • (X - 1) + 1) * ((1 
     ← add_assoc, ← add_smul, add_sub_cancel, one_smul, sub_add_cancel]
 
 /- English proof (translation)
-Establish `h : (1 - e) * e = 0` using `by rw [sub_mul, one_mul, he, sub_self]`. Establish `h' : e * (1 - e) = 0` using `by rw [mul_comm, h]`. Establish `h1 : ((1 - e) • (X - 1)) * (Y - 1) = 0`. Rewrite using `[← hY, smul_mul_assoc, mul_smul_comm, smul_smul, h, zero_smul]`. Establish `h2 : (Y - 1) * ((1 - e) • (X - 1)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hY, smul_mul_assoc, mul_smul_comm, smul_smul, h', zero_smul]`. Rewrite `h1` using `[mul_sub, mul_one, sub_eq_zero]`. Rewrite `h2` using `[sub_mul, one_mul, sub_eq_zero]`. Rewrite using `[add_mul, mul_add, h1, h2, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_comm {e : R} (he : e * e = e) (X Y : B) (hY : e • (Y - 1) = Y - 1) :
     ((1 - e) • (X - 1) + 1) * Y = Y * ((1 - e) • (X - 1) + 1) := by
@@ -75,13 +75,13 @@ def comp {e : R} (he : e * e = e) (g : UG c J) : UG c J :=
       comp_mul_mid he, hg, sub_self, smul_zero, zero_add]⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext (show e • ((1 : Matrix ι ι A) - 1) + 1 = 1 by rw [sub_self, smul_zero, zero_add]))`.
+A detailed English derivation is pending.
 -/
 theorem comp_one {e : R} (he : e * e = e) : comp he (1 : UG c J) = 1 :=
   Subtype.ext (Units.ext (show e • ((1 : Matrix ι ι A) - 1) + 1 = 1 by rw [sub_self, smul_zero, zero_add]))
 
 /- English proof (translation)
-Use `haveI : ContinuousConstSMul R A := ⟨fun r => by`. Simplify `continuous_const_mul (algebraMap R A r)⟩` using `only [Algebra.smul_def]`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `(((Units.continuous_val.comp continuous_subtype_val).sub continuous_const).const_smul e).add continuous_const`. Conclude with `(((Units.continuous_coe_inv.comp continuous_subtype_val).sub continuous_const).const_smul e).add continuous_const`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_comp [TopologicalSpace A] [IsTopologicalRing A] {e : R} (he : e * e = e) :
     Continuous (comp (c := c) (J := J) he) := by
@@ -102,19 +102,15 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Topology
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d W v L K hL hK ⟨O, hO, hO1, hOK⟩`. Take `⟨hLf, U, hU, hU1, hUL⟩` from `hL`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `set e : AF F := GlobalTheory.LatVac.liftV v 1 with he_def`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `he : e * e = e`. Establish `h` using `partFin_of_at (at_partFin v (1 : AF F))`. Simplify `h` using `only [partFin, smul_eq_mul, mul_one]`. Establish `he' : (1 - e) * (1 - e) = 1 - e`. Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, he, sub_self, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨?_, LevelSplit.comp he ⁻¹' O ∩ LevelSplit.comp he' ⁻¹' U, ?_, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(Subgroup.closure_le (UAtSub σ W (fun a : AF F => a.2))).2 ?_` and prove the remaining obligations. Introduce and unpack `g (hg | hg)`. Introduce `u hu`. Use `hK g hg u ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `show evalV F v u.2 = 0`. Rewrite using `[show u.2 = 0 from hu, map_zero]`. Conclude with `hLf hg.1`. Conclude with `(hO.preimage (LevelSplit.continuous_comp he)).inter (hU.preimage (LevelSplit.continuous_comp he'))`. Use `show LevelSplit.comp he 1 ∈ O`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LevelSplit.comp_one]` and apply the resulting hypothesis. Use `show LevelSplit.comp he' 1 ∈ U`. Rewrite using `[LevelSplit.comp_one]` and apply the resulting hypothesis. Introduce and unpack `g ⟨⟨hg1, hg2⟩, hg⟩`. Establish `m1 : mat (LevelSplit.comp he g) = e • (mat g - 1) + 1` using `rfl`.
-
-Establish `m2 : mat (LevelSplit.comp he' g) = (1 - e) • (mat g - 1) + 1` using `rfl`. Establish `hs : g = LevelSplit.comp he g * LevelSplit.comp he' g` using `Subtype.ext (Units.ext (LevelSplit.comp_split he (mat g)).symm)`. Rewrite using `[hs]`. Use `mul_mem (Subgroup.subset_closure (Or.inl (hOK _ hg1 ?_))) (Subgroup.subset_closure (Or.inr ⟨hUL ⟨hg2, ?_⟩, fun h hh => ?_⟩))` and prove the remaining obligations. Use `show At (evFin F v) (mat (LevelSplit.comp he g) - 1)`.
-
-Rewrite using `[m1, add_sub_cancel_right]`. Conclude with `at_partFin v _`. Introduce `u hu`. Rewrite using `[m2, add_sub_cancel_right, smul_comm, hg u hu, smul_zero]`. Conclude with `Subtype.ext (Units.ext (LevelSplit.comp_comm he (mat g) (mat h) (partFin_of_at hh)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLevel_closure_at_place : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : ℕ) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (L K : Subgroup (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ W.J)), GlobalTheory.ThKAdm.IsLevel W L → (∀ g ∈ K, g ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt σ W (GlobalTheory.AdelicU.evFin F v)) → (∃ O : Set (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ W.J), IsOpen O ∧ (1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ W.J) ∈ O ∧ ∀ g ∈ O, g ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt σ W (GlobalTheory.AdelicU.evFin F v) → g ∈ K) → GlobalTheory.ThKAdm.IsLevel W (Subgroup.closure ((K : Set (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ W.J)) ∪ {l | l ∈ L ∧ ∀ h ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt σ W (GlobalTheory.AdelicU.evFin F v), l * h = h * l})) := by
   intro F E _ _ _ _ _ σ d W v L K hL hK ⟨O, hO, hO1, hOK⟩

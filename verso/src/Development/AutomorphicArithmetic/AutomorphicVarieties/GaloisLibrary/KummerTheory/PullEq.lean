@@ -5,13 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ _ U hU N R M _ _ _ ρ hN hU' hM`. Establish `hO` using `pullOnto F Ω K U hU N R M hN hU' hM`. Establish `hL : ∀ g : G F Ω, IsLift (AlgEquiv.restrictNormal g K).toRingEquiv g.toRingEquiv` using `fun g x => (AlgEquiv.restrictNormal_commutes g K x).symm`. Establish `hC : ∀ (g : G F Ω) (θ : ClassGroup (𝓞 K) → M), θ ∈ clCond K g.toRingEquiv (ρ g) ↔ clPull K hU R M θ ∈ conjCond U g.toRingEquiv (ρ g)` using `fun g θ => pullCond F Ω K U hU R M _ _ (ρ g) θ hU' (hL g)`. Establish `h1 : (ClEq K N ρ).map (clPull K hU R M) = EqHom N U ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨θ, ⟨hθ, hθ'⟩, rfl⟩`. Use `⟨hO ▸ Submodule.mem_map_of_mem hθ, (Submodule.mem_iInf _).2 fun g => (hC g θ).1 ((Submodule.mem_iInf _).1 hθ' g)⟩` and prove the remaining obligations. Introduce and unpack `φ ⟨hφ, hφ'⟩`. Establish `hφ2 : φ ∈ (ClDual K N R M).map (clPull K hU R M)` using `by rw [hO]; exact hφ`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨θ, hθ, rfl⟩` from `hφ2`. Conclude with `⟨θ, ⟨hθ, (Submodule.mem_iInf _).2 fun g => (hC g θ).2 ((Submodule.mem_iInf _).1 hφ' g)⟩, rfl⟩`. Use `⟨h1, fun τ σ s h => le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨θ, ⟨hθ, hθ'⟩, rfl⟩`. Establish `h2 : clPull K hU R M θ ∈ EqHom N U ρ` using `by rw [← h1]; exact Submodule.mem_map_of_mem hθ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨h2, (pullCond F Ω K U hU R M τ σ _ θ hU' h).1 hθ'⟩`. Introduce and unpack `φ ⟨hφ, hφ'⟩`. Establish `hφ2 : φ ∈ (ClEq K N ρ).map (clPull K hU R M)` using `by rw [h1]; exact hφ`. Take `⟨θ, hθ, rfl⟩` from `hφ2`. Conclude with `⟨θ, ⟨hθ, (pullCond F Ω K U hU R M τ σ _ θ hU' h).2 hφ'⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Kum.pullEq :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] [Normal F K] (U : Subgroup (G F Ω)) (hU : U ≤ galOf F K Ω) (N : ℕ) (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] (ρ : Representation R (G F Ω) M), N ≠ 0 → galOf F K Ω ≤ U → (IsTotallyComplex K ∨ ∀ m : M, 2 • m = 0 → m = 0) →

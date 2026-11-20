@@ -14,26 +14,26 @@ variable {n : ℕ} {J : Matrix (Fin n) (Fin n) ℂ}
 noncomputable def cj (J Z : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ := -(J⁻¹ * Zᴴ * J)
 
 /- English proof (translation)
-Simplify using `only [cj, conjTranspose_add, mul_add, add_mul, neg_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cj_add (Z W : Matrix (Fin n) (Fin n) ℂ) : cj J (Z + W) = cj J Z + cj J W := by
   simp only [cj, conjTranspose_add, mul_add, add_mul, neg_add]
 
 /- English proof (translation)
-Simplify using `only [cj, conjTranspose_sub, mul_sub, sub_mul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem cj_sub (Z W : Matrix (Fin n) (Fin n) ℂ) : cj J (Z - W) = cj J Z - cj J W := by
   simp only [cj, conjTranspose_sub, mul_sub, sub_mul]
   abel
 
 /- English proof (translation)
-Simplify using `only [cj, conjTranspose_smul, mul_smul_comm, smul_mul_assoc, smul_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cj_smul (c : ℂ) (Z : Matrix (Fin n) (Fin n) ℂ) : cj J (c • Z) = star c • cj J Z := by
   simp only [cj, conjTranspose_smul, mul_smul_comm, smul_mul_assoc, smul_neg]
 
 /- English proof (translation)
-Simplify using `only [cj, conjTranspose_neg, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hJ, mul_neg, neg_mul, neg_neg, Matrix.mul_assoc, Matrix.nonsing_inv_mul J hu, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul J hu, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_cj (hJ : Jᴴ = J) (hu : IsUnit J.det) (Z : Matrix (Fin n) (Fin n) ℂ) : cj J (cj J Z) = Z := by
   simp only [cj, conjTranspose_neg, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hJ,
@@ -41,9 +41,9 @@ theorem cj_cj (hJ : Jᴴ = J) (hu : IsUnit J.det) (Z : Matrix (Fin n) (Fin n) �
   rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul J hu, Matrix.one_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Xᴴ * J + J * X = 0 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[cj, Matrix.mul_assoc, eq_neg_of_add_eq_zero_left h, mul_neg, neg_neg, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul J hu, Matrix.one_mul]`. Introduce `h`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: J * X = -(Xᴴ * J)` using `by conv_lhs => rw [← h]`. Rewrite using `[cj, mul_neg, Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv J hu, Matrix.one_mul]`. Rewrite using `[this, add_neg_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_iff_cj (hu : IsUnit J.det) (X : Matrix (Fin n) (Fin n) ℂ) : X ∈ lieU J ↔ cj J X = X := by
   change Xᴴ * J + J * X = 0 ↔ _
@@ -69,7 +69,7 @@ noncomputable def imPart (hJ : Jᴴ = J) (hu : IsUnit J.det) (Z : Matrix (Fin n)
     simp⟩
 
 /- English proof (translation)
-Establish `h : Complex.I * (1 / (2 * Complex.I)) = 1 / 2` using `by field_simp`. Simplify using `only [rePart, imPart, smul_smul, h]`. Use `module`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem re_add_im (hJ : Jᴴ = J) (hu : IsUnit J.det) (Z : Matrix (Fin n) (Fin n) ℂ) :
     (rePart hJ hu Z).1 + Complex.I • (imPart hJ hu Z).1 = Z := by
@@ -78,7 +78,7 @@ theorem re_add_im (hJ : Jᴴ = J) (hu : IsUnit J.det) (Z : Matrix (Fin n) (Fin n
   module
 
 /- English proof (translation)
-Rewrite using `[cj_add, cj_smul, (mem_iff_cj hu _).1 X.2, (mem_iff_cj hu _).1 Y.2]`. Simplify using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cj_mk (hu : IsUnit J.det) (X Y : lieU J) :
     cj J (X.1 + Complex.I • Y.1) = X.1 - Complex.I • Y.1 := by
@@ -86,7 +86,7 @@ theorem cj_mk (hu : IsUnit J.det) (X Y : lieU J) :
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [rePart, cj_mk hu]`. Use `module`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rePart_mk (hJ : Jᴴ = J) (hu : IsUnit J.det) (X Y : lieU J) :
     rePart hJ hu (X.1 + Complex.I • Y.1) = X := by
@@ -95,7 +95,7 @@ theorem rePart_mk (hJ : Jᴴ = J) (hu : IsUnit J.det) (X Y : lieU J) :
   module
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [imPart, cj_mk hu]`. Establish `h : (1 / (2 * Complex.I)) * (2 * Complex.I) = 1` using `by field_simp`. Establish `h2 : X.1 + Complex.I • Y.1 - (X.1 - Complex.I • Y.1) = (2 * Complex.I) • Y.1` using `by module`. Rewrite using `[h2, smul_smul, h, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem imPart_mk (hJ : Jᴴ = J) (hu : IsUnit J.det) (X Y : lieU J) :
     imPart hJ hu (X.1 + Complex.I • Y.1) = Y := by
@@ -106,33 +106,31 @@ theorem imPart_mk (hJ : Jᴴ = J) (hu : IsUnit J.det) (X Y : lieU J) :
   rw [h2, smul_smul, h, one_smul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, (re_add_im hJ hu Z).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_mk (hJ : Jᴴ = J) (hu : IsUnit J.det) (Z : Matrix (Fin n) (Fin n) ℂ) :
     ∃ X Y : lieU J, Z = X.1 + Complex.I • Y.1 := ⟨_, _, (re_add_im hJ hu Z).symm⟩
 
 /- English proof (translation)
-Establish `hsub : ∀ X Y, ρ (X - Y) = ρ X - ρ Y`. Introduce `X Y`. Use `hadd (X - Y) Y` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, add_sub_cancel_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ρ 0 = 0`. Use `hsub 0 0` as an intermediate fact. Rewrite `this` using `[sub_self, sub_self]`. Then use the resulting hypothesis. Set `r : Matrix (Fin n) (Fin n) ℂ → A` to `fun Z => ρ (rePart hJ hu Z) + Complex.I • ρ (imPart hJ hu Z)`. Establish `key : ∀ X Y : lieU J, r (X.1 + Complex.I • Y.1) = ρ X + Complex.I • ρ Y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `X Y`. Simplify using `only [r, rePart_mk, imPart_mk]`. Establish `hII : ∀ {M : Type} [AddCommGroup M] [Module ℂ M] (m : M), Complex.I • Complex.I • m = -m`. Introduce `M _ _ m`. Rewrite using `[smul_smul, Complex.I_mul_I, neg_one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hbr : ∀ X Y : lieU J, ρ ⁅X, Y⁆ = ρ X * ρ Y - ρ Y * ρ X` using `fun X Y => hlie X Y _ rfl`. Establish `hbc : ∀ X Y : lieU J, (⁅X, Y⁆ : lieU J).1 = X.1 * Y.1 - Y.1 * X.1` using `fun X Y => rfl`. Use `⟨{ toFun := r, map_add' := ?_, map_smul' := ?_ }, fun Z => rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `Z W`. Take `⟨X, Y, rfl⟩` from `exists_mk hJ hu Z`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨X', Y', rfl⟩` from `exists_mk hJ hu W`. Establish `: X.1 + Complex.I • Y.1 + (X'.1 + Complex.I • Y'.1) = (X + X').1 + Complex.I • (Y + Y').1`. Express the relevant statement in the definitionally equal form `_ = (X.1 + X'.1) + Complex.I • (Y.1 + Y'.1)`. Use `module`. Rewrite using `[this, key, key, key, hadd, hadd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `module`. Introduce `c Z`. Take `⟨X, Y, rfl⟩` from `exists_mk hJ hu Z`. Establish `hc : c = (c.re : ℂ) + (c.im : ℂ) * Complex.I` using `(Complex.re_add_im c).symm`. Generalize the expression as in `c.re = a at hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality.
 
-Generalize the expression as in `c.im = b at hc`. Substitute `hc` using the available equality. Establish `: ((a : ℂ) + (b : ℂ) * Complex.I) • (X.1 + Complex.I • Y.1) = (a • X - b • Y).1 + Complex.I • (b • X + a • Y).1`. Express the relevant statement in the definitionally equal form `_ = ((a : ℂ) • X.1 - (b : ℂ) • Y.1) + Complex.I • ((b : ℂ) • X.1 + (a : ℂ) • Y.1)`. Simplify using `only [add_smul, smul_add, mul_smul, hII]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `module`. Rewrite using `[this, key, key, hsub, hadd, hsm, hsm, hsm, hsm]`. Simplify using `only [RingHom.id_apply, add_smul, smul_add, mul_smul, hII]`. Use `module`. Introduce `X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `key X 0` as an intermediate fact. Simplify `this` using `[h0]`. Introduce `Z W`. Take `⟨X, Y, rfl⟩` from `exists_mk hJ hu Z`. Take `⟨X', Y', rfl⟩` from `exists_mk hJ hu W`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: (X.1 + Complex.I • Y.1) * (X'.1 + Complex.I • Y'.1) - (X'.1 + Complex.I • Y'.1) * (X.1 + Complex.I • Y.1) = (⁅X, X'⁆ - ⁅Y, Y'⁆ : lieU J).1 + Complex.I • (⁅X, Y'⁆ + ⁅Y, X'⁆ : lieU J).1`. Express the relevant statement in the definitionally equal form `_ = ((X.1 * X'.1 - X'.1 * X.1) - (Y.1 * Y'.1 - Y'.1 * Y.1)) + Complex.I • ((X.1 * Y'.1 - Y'.1 * X.1) + (Y.1 * X'.1 - X'.1 * Y.1))`. Simplify using `only [add_mul, mul_add, mul_smul_comm, smul_mul_assoc, smul_add, hII]`. Use `module`. Express the relevant statement in the definitionally equal form `r _ = r _ * r _ - r _ * r _`.
-
-Rewrite using `[this, key, key, key, hsub, hadd, hbr, hbr, hbr, hbr]`. Simplify using `only [add_mul, mul_add, mul_smul_comm, smul_mul_assoc, smul_add, hII]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_extension (hJ : Jᴴ = J) (hu : IsUnit J.det) {A : Type} [Ring A] [Algebra ℂ A] (ρ : lieU J → A)
     (hadd : ∀ X Y, ρ (X + Y) = ρ X + ρ Y) (hsm : ∀ (c : ℝ) X, ρ (c • X) = (c : ℂ) • ρ X)
@@ -198,17 +196,15 @@ theorem exists_extension (hJ : Jᴴ = J) (hu : IsUnit J.det) {A : Type} [Ring A]
     module
 
 /- English proof (translation)
-Introduce `n J hJ hu`. Use `⟨fun a b => rePart hJ hu (Matrix.single a b 1), fun a b => imPart hJ hu (Matrix.single a b 1), fun a b => ⟨rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `A _ _ ρ hadd hsm hlie`. Take `⟨R, hR, hX, hc⟩` from `exists_extension hJ hu ρ hadd hsm hlie`. Simplify using `only [← hR]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `a b c d`. Simplify using `only`. Rewrite using `[← hc, map_sub]`. Use `congr 1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same, one_mul]`. Rewrite using `[Matrix.single_mul_single_of_ne (h := h), map_zero]`. Use `split_ifs with h`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same, one_mul]`. Rewrite using `[Matrix.single_mul_single_of_ne (h := h), map_zero]`. Introduce `X`. Rewrite using `[← hX, Matrix.matrix_eq_sum_single X.1, map_sum]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Establish `: Matrix.single a b (X.1 a b) = X.1 a b • Matrix.single a b (1 : ℂ)`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
-
-Rewrite using `[this, map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(a, b), rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glRel_and_span : ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) ℂ), Jᴴ = J → IsUnit J.det → ∃ P Q : Fin n → Fin n → GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU J, (∀ a b, (P a b).1 = (1 / 2 : ℂ) • (Matrix.single a b 1 + -(J⁻¹ * (Matrix.single a b (1 : ℂ))ᴴ * J)) ∧ (Q a b).1 = (1 / (2 * Complex.I)) • (Matrix.single a b 1 - -(J⁻¹ * (Matrix.single a b (1 : ℂ))ᴴ * J))) ∧ ∀ (A : Type) [Ring A] [Algebra ℂ A] (ρ : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU J → A), (∀ X Y, ρ (X + Y) = ρ X + ρ Y) → (∀ (c : ℝ) X, ρ (c • X) = (c : ℂ) • ρ X) → (∀ X Y Z : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU J, Z.1 = X.1 * Y.1 - Y.1 * X.1 → ρ Z = ρ X * ρ Y - ρ Y * ρ X) → Formalism.REAL.GlRel (fun a b => ρ (P a b) + Complex.I • ρ (Q a b)) ∧ ∀ X, ρ X ∈ Submodule.span ℂ (Set.range fun p : Fin n × Fin n => ρ (P p.1 p.2) + Complex.I • ρ (Q p.1 p.2)) := by
   intro n J hJ hu

@@ -12,11 +12,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices GlobalTheo
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : (IsLocalRing.maximalIdeal O).IsMaximal := IsLocalRing.maximalIdeal.isMaximal O`. Use `letI : Field (O ⧸ IsLocalRing.maximalIdeal O) := Ideal.Quotient.field _`. Set `ψ : X → (T →+* O ⧸ IsLocalRing.maximalIdeal O)` to `fun z => (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O)).comp ((Pi.evalRingHom (fun _ : X => O) z).comp (T.val : T →+* (X → O)))`. Establish `hψ : ∀ z (g : T), ψ z g = Ideal.Quotient.mk (IsLocalRing.maximalIdeal O) ((g : X → O) z)` using `fun _ _ => rfl`. Establish `hsurj : ∀ z, Function.Surjective (ψ z)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z q`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Conclude with `⟨algebraMap O T a, by rw [hψ]; rfl⟩`. Establish `hker : ∀ z, RingHom.ker (ψ z) = IsLocalRing.maximalIdeal T` using `fun z => IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective _ (hsurj z))`. Establish `hg : (⟨f, hf⟩ - algebraMap O T (f y) : T) ∈ RingHom.ker (ψ y)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker, hψ, Ideal.Quotient.eq_zero_iff_mem]`. Simplify using the standard rewrite rules. Rewrite `hg` using `[hker y, ← hker x, RingHom.mem_ker, hψ, Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using hg`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem localSubalgebra_eval_sub_mem_maximalIdeal {X O : Type} [CommRing O] [IsLocalRing O]
     (T : Subalgebra O (X → O)) [IsLocalRing T] {f : X → O} (hf : f ∈ T) (x y : X) :
@@ -42,23 +42,21 @@ theorem localSubalgebra_eval_sub_mem_maximalIdeal {X O : Type} [CommRing O] [IsL
   simpa using hg
 
 /- English proof (translation)
-Introduce `X O _ _ _ _ t T hT P hcoeff hdeg π d hd hπ x`. Establish `hmap : (P x).map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O)) = (P π).map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O))`. Use extensionality with `j`. Simplify using `only [Polynomial.coeff_map]`. Rewrite using `[Ideal.Quotient.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `localSubalgebra_eval_sub_mem_maximalIdeal T (hcoeff j) x π`. Establish `hroot : ∀ c, ∃ b, (P x).IsRoot b ∧ b - d c ∈ IsLocalRing.maximalIdeal O`. Introduce `c`. Apply `HenselianRing.is_henselian (P x) (hdeg x).1 (d c)` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Polynomial.eval₂_at_apply, ← Polynomial.eval_map, hmap, hπ, Polynomial.eval_map, Polynomial.eval₂_at_apply, Polynomial.eval_prod, Finset.prod_eq_zero (Finset.mem_univ c) (by simp), map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Polynomial.eval₂_at_apply, ← Polynomial.eval_map, ← Polynomial.derivative_map, hmap, Polynomial.derivative_map, Polynomial.eval_map, Polynomial.eval₂_at_apply]`. Apply `IsUnit.map` to reduce the goal to its premises. Rewrite using `[hπ, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ c)]`. Simplify using `only [Polynomial.derivative_mul, Polynomial.derivative_sub, Polynomial.derivative_X, Polynomial.derivative_C, sub_zero, one_mul, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, sub_self, zero_mul, add_zero, Polynomial.eval_prod …`. Establish `: ∀ a ∈ Finset.univ.erase c, IsUnit (d c - d a)` using `fun a ha => hd c a (Finset.ne_of_mem_erase ha).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsUnit.prod_iff.2 this`. Use `choose β hβ hβm using hroot`. Establish `hinj : Function.Injective β`. Introduce `a b hab`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : d b - d a ∈ IsLocalRing.maximalIdeal O`. Use `Ideal.sub_mem _ (hβm a) (hβm b)` as an intermediate fact. Rewrite `this` using `[hab]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).mp hmem (hd b a (Ne.symm hne))`. Use `⟨β, hinj, ?_⟩` and prove the remaining obligations. Establish `hx0 : P x ≠ 0` using `(hdeg x).1.ne_zero`. Establish `hle : (Finset.univ.val.map β) ≤ (P x).roots`. Rewrite using `[Multiset.le_iff_subset (Multiset.Nodup.map hinj Finset.univ.nodup)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `r hr`. Take `⟨c, -, rfl⟩` from `Multiset.mem_map.mp hr`. Conclude with `(Polynomial.mem_roots hx0).mpr (hβ c)`. Establish `hcard : (P x).roots.card ≤ (Finset.univ.val.map β).card`. Rewrite using `[Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin, ← (hdeg x).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Polynomial.card_roots' _`. Establish `heq : Finset.univ.val.map β = (P x).roots` using `Multiset.eq_of_le_of_card_le hle hcard`. Establish `hrc : (P x).roots.card = (P x).natDegree`. Rewrite using `[← heq, Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin, (hdeg x).2]`. Rewrite using `[← Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq (hdeg x).1 hrc, ← heq, Multiset.map_map]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem hensel_roots_of_local_family : ∀ {X O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [HenselianRing O (IsLocalRing.maximalIdeal O)] {t : ℕ} (T : Subalgebra O (X → O)), IsLocalRing T → ∀ (P : X → Polynomial O), (∀ j, (fun x => (P x).coeff j) ∈ T) → (∀ x, (P x).Monic ∧ (P x).natDegree = t) → ∀ (π : X) (d : Fin t → O), (∀ a b, a ≠ b → IsUnit (d a - d b)) → P π = ∏ c, (Polynomial.X - Polynomial.C (d c)) → ∀ x, ∃ β : Fin t → O, Function.Injective β ∧ P x = ∏ c, (Polynomial.X - Polynomial.C (β c)) := by
   classical

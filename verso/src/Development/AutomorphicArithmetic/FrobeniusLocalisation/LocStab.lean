@@ -9,13 +9,13 @@ open Polynomial
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Set `A` to `Localization.AtPrime v.asIdeal`. Use `haveI : IsDiscreteValuationRing A := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 E) v.ne_bot A`. Establish `hinj : Function.Injective (algebraMap (𝓞 E) A)` using `IsLocalization.injective A v.asIdeal.primeCompl_le_nonZeroDivisors`. Take `⟨z, hz⟩` from `ValuationRing.cond (algebraMap (𝓞 E) A a) (algebraMap (𝓞 E) A b)`. Take `⟨⟨t, d⟩, rfl⟩` from `IsLocalization.mk'_surjective v.asIdeal.primeCompl z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d, t, d.2, ?_⟩` and prove the remaining obligations. Establish `hs` using `IsLocalization.mk'_spec A t d`. Break down `hz with hz | hz` into its components or cases. Use `left`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul]`. Rewrite using `[← hz, ← hs]`. Expand and normalize the polynomial expressions, which then agree. Use `right`. Apply `hinj` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_mul]`. Rewrite using `[← hz, ← hs]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_compare (v : HeightOneSpectrum (𝓞 E)) (a b : 𝓞 E) :
     ∃ d t : 𝓞 E, d ∉ v.asIdeal ∧ (d * b = t * a ∨ d * a = t * b) := by
@@ -43,9 +43,7 @@ theorem exists_compare (v : HeightOneSpectrum (𝓞 E)) (a b : 𝓞 E) :
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hx : IsIntegral ℤ (c (x : E))`. Establish `h : IsIntegral ℤ (x : E)` using `x.2`. Conclude with `h.map (c.toIntAlgHom)`. Establish `h : c (x : E) ∈ (NormedField.valuation (K` using `PadicAlgCl l)).integer := (Valuation.integer.integers (NormedField.valuation (K := PadicAlgCl l))).mem_of_integral hx.tower_top`. Rewrite `h` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`.
-
-Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_int_le (c : E →+* PadicAlgCl l) (x : 𝓞 E) : ‖c (x : E)‖ ≤ 1 := by
   have hx : IsIntegral ℤ (c (x : E)) := by
@@ -58,7 +56,7 @@ theorem norm_int_le (c : E →+* PadicAlgCl l) (x : 𝓞 E) : ‖c (x : E)‖ �
   exact_mod_cast h
 
 /- English proof (translation)
-The claim follows from `le_antisymm (norm_int_le c d) (not_lt.1 fun h => hd ((hc d).2 h))`.
+A detailed English derivation is pending.
 -/
 theorem norm_unit (c : E →+* PadicAlgCl l) (v : HeightOneSpectrum (𝓞 E))
     (hc : ∀ x : 𝓞 E, x ∈ v.asIdeal ↔ ‖c (x : E)‖ < 1) {d : 𝓞 E} (hd : d ∉ v.asIdeal) :
@@ -66,23 +64,23 @@ theorem norm_unit (c : E →+* PadicAlgCl l) (v : HeightOneSpectrum (𝓞 E))
   le_antisymm (norm_int_le c d) (not_lt.1 fun h => hd ((hc d).2 h))
 
 /- English proof (translation)
-Distinguish the cases in `hx0 : x = 0`. Simplify using `[hx0]`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (𝓞 E) x`. Establish `hb0 : (b : 𝓞 E) ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbE : ((b : 𝓞 E) : E) ≠ 0` using `by exact_mod_cast hb0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : ((a : 𝓞 E) : E) ≠ 0`. Introduce `h`. Apply `hx0` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((a : 𝓞 E) : E) / ((b : 𝓞 E) : E) = 0`. Simplify using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Take `⟨d, t, hd, h | h⟩` from `exists_compare v a b`. It suffices to derive a contradiction. Establish `hdE : ((d : 𝓞 E) : E) ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. It suffices to derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: d = 0` using `by exact_mod_cast h0`. Simplify using `[this]`. Establish `hE : ((d : 𝓞 E) : E) * (b : E) = (t : E) * (a : E)` using `by exact_mod_cast congrArg (fun y : 𝓞 E => (y : E)) h`. Establish `htE : ((t : 𝓞 E) : E) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hE` using `[h0, zero_mul]`. Conclude with `(mul_ne_zero hdE hbE) hE`. Establish `hxe : (algebraMap (𝓞 E) E a) / (algebraMap (𝓞 E) E b) = (d : E) / (t : E)`. Express the relevant statement in the definitionally equal form `((a : 𝓞 E) : E) / ((b : 𝓞 E) : E) = _`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-hE`. Rewrite `hx` using `[hxe, map_div₀, norm_div, norm_unit c v hc hd]`. Establish `ht` using `norm_int_le c t`. Establish `ht0 : 0 < ‖c (t : E)‖` using `norm_pos_iff.2 (by simpa using htE)`. Rewrite `hx` using `[div_lt_one ht0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdE : ((d : 𝓞 E) : E) ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Establish `: d = 0` using `by exact_mod_cast h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Establish `hE : ((d : 𝓞 E) : E) * (a : E) = (t : E) * (b : E)` using `by exact_mod_cast congrArg (fun y : 𝓞 E => (y : E)) h`. Establish `hxe : (algebraMap (𝓞 E) E a) / (algebraMap (𝓞 E) E b) = (t : E) / (d : E)`. Express the relevant statement in the definitionally equal form `((a : 𝓞 E) : E) / ((b : 𝓞 E) : E) = _`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hE`. Rewrite `hx`, the goal using `[hxe]`. Rewrite `hx` using `[map_div₀, norm_div, norm_unit c v hc hd, div_one]`. Rewrite using `[map_div₀, norm_div, norm_unit c' v hc' hd, div_one]`. Conclude with `(hc' t).1 ((hc t).2 hx)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lt_one_of_lt_one (c c' : E →+* PadicAlgCl l) (v : HeightOneSpectrum (𝓞 E))
     (hc : ∀ x : 𝓞 E, x ∈ v.asIdeal ↔ ‖c (x : E)‖ < 1)
@@ -135,17 +133,17 @@ theorem lt_one_of_lt_one (c c' : E →+* PadicAlgCl l) (v : HeightOneSpectrum (�
     exact (hc' t).1 ((hc t).2 hx)
 
 /- English proof (translation)
-Proceed by induction on `f using Polynomial.induction_on' generalizing ε with`. Consider the case `add p q hp hq`. Take `⟨G, h1, h2⟩` from `hp (half_pos hε)`. Take `⟨H, h3, h4⟩` from `hq (half_pos hε)`. Use `⟨G + H, ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_add]`. Rewrite using `[add_sub_add_comm]`. Conclude with `(norm_add_le _ _).trans_lt (by linarith)`. Simplify using `only [map_add]`. Rewrite using `[add_sub_add_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `(norm_add_le _ _).trans_lt (by linarith)`. Consider the case `monomial n a => set M : ℝ := ‖β‖ ^ n + ‖γ‖ ^ n + 1 with hM`. Establish `hMpos : 0 < M` using `by positivity`. Take `⟨r, hr⟩` from `Padic.rat_dense l a (div_pos hε hMpos)`. Establish `key : ∀ δ : PadicAlgCl l, ‖δ‖ ^ n ≤ M → ‖aeval δ (monomial n r : ℚ[X]) - aeval δ (monomial n a : ℚ_[l][X])‖ < ε`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `δ hδ`. Establish `e1 : aeval δ (monomial n r : ℚ[X]) = algebraMap ℚ_[l] (PadicAlgCl l) (r : ℚ_[l]) * δ ^ n`. Rewrite using `[aeval_monomial]`. Simplify using the standard rewrite rules. Establish `e2 : aeval δ (monomial n a : ℚ_[l][X]) = algebraMap ℚ_[l] (PadicAlgCl l) a * δ ^ n`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_monomial]`. Rewrite using `[e1, e2, ← sub_mul, ← map_sub, norm_mul, norm_pow, PadicAlgCl.norm_extends, norm_sub_rev]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨monomial n r, key β ?_, key γ ?_⟩` and prove the remaining obligations. Use `pow_nonneg (norm_nonneg γ) n` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `pow_nonneg (norm_nonneg β) n` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem approx (β γ : PadicAlgCl l) (f : ℚ_[l][X]) {ε : ℝ} (hε : 0 < ε) :
     ∃ G : ℚ[X], ‖aeval β G - aeval β f‖ < ε ∧ ‖aeval γ G - aeval γ f‖ < ε := by
@@ -182,7 +180,7 @@ theorem approx (β γ : PadicAlgCl l) (f : ℚ_[l][X]) {ε : ℝ} (hε : 0 < ε)
       linarith
 
 /- English proof (translation)
-Establish `h` using `IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) α)`. Rewrite using `[← h, hα, IntermediateField.top_toSubalgebra]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjoin_eq_top {α : E} (hα : IntermediateField.adjoin ℚ {α} = ⊤) :
     Algebra.adjoin ℚ {α} = ⊤ := by
@@ -191,7 +189,7 @@ theorem adjoin_eq_top {α : E} (hα : IntermediateField.adjoin ℚ {α} = ⊤) :
   rw [← h, hα, IntermediateField.top_toSubalgebra]
 
 /- English proof (translation)
-Use `AlgHom.ext_of_adjoin_eq_top (adjoin_eq_top hα) (φ₁ := f.toRatAlgHom) (φ₂ := g.toRatAlgHom) (by rintro _ rfl; exact h)` as an intermediate fact. Use extensionality with `x`. Conclude with `DFunLike.congr_fun this x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ringHom_ext {α : E} (hα : IntermediateField.adjoin ℚ {α} = ⊤) {B : Type} [Field B]
     [CharZero B] (f g : E →+* B) (h : f α = g α) : f = g := by
@@ -201,7 +199,7 @@ theorem ringHom_ext {α : E} (hα : IntermediateField.adjoin ℚ {α} = ⊤) {B 
   exact DFunLike.congr_fun this x
 
 /- English proof (translation)
-Rewrite using `[map_pow, map_natCast, norm_pow]`. Use `congr 1`. Establish `h : ((l : ℕ) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends, Padic.norm_p]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_natCast_pow (c : E →+* PadicAlgCl l) (m : ℕ) :
     ‖c ((l : E) ^ m)‖ = ((l : ℝ)⁻¹) ^ m := by
@@ -211,19 +209,17 @@ theorem norm_natCast_pow (c : E →+* PadicAlgCl l) (m : ℕ) :
   rw [h, PadicAlgCl.norm_extends, Padic.norm_p]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Set `c' : E →+* PadicAlgCl l` to `c.comp (s : E →+* E)`. Establish `hc' : ∀ x : 𝓞 E, x ∈ v.asIdeal ↔ ‖c' (x : E)‖ < 1` using `fun x => by`. Establish `h1 : s • x ∈ v.asIdeal ↔ x ∈ v.asIdeal`. Use `Ideal.smul_mem_pointwise_smul_iff (a := s) (S := v.asIdeal) (x := x)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hs]`. Then use the resulting hypothesis. Rewrite using `[← h1, hc (s • x)]`. Both sides reduce to the same expression. Use `set β := c α with hβ`. Use `set γ := c (s α) with hγ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g := minpoly ℚ_[l] β with hgdef`. Establish `ha : 0 < ‖aeval γ g‖` using `norm_pos_iff.2 hne`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hlinv : ((l : ℝ)⁻¹) < 1` using `inv_lt_one_of_one_lt₀ hl1`. Take `⟨m, hm⟩` from `exists_pow_lt_of_lt_one (half_pos ha) hlinv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hδ : 0 < ((l : ℝ)⁻¹) ^ m` using `by positivity`. Take `⟨G, h1, h2⟩` from `approx β γ g hδ`. Establish `hg : aeval β g = 0` using `minpoly.aeval _ _`. Rewrite `h1` using `[hg, sub_zero]`. Establish `hy1 : c (aeval α G) = aeval β G` using `(aeval_algHom_apply c.toRatAlgHom α G).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy2 : c' (aeval α G) = aeval γ G` using `(aeval_algHom_apply c'.toRatAlgHom α G).symm`. Establish `hlE : ((l : E) ^ m) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Establish `hx : ‖c (aeval α G / (l : E) ^ m)‖ < 1`. Rewrite using `[map_div₀, norm_div, norm_natCast_pow, hy1, div_lt_one hδ]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx'` using `lt_one_of_lt_one c c' v hc hc' _ hx`. Rewrite `hx'` using `[map_div₀, norm_div, norm_natCast_pow, hy2, div_lt_one hδ]`. Establish `h3 : ‖aeval γ g‖ ≤ ‖aeval γ G‖ + ‖aeval γ G - aeval γ g‖`. Use `norm_sub_le (aeval γ G) (aeval γ G - aeval γ g)` as an intermediate fact. Simplify using `using this`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify to obtain the desired conclusion from the available facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem root_of_stab (c : E →+* PadicAlgCl l) (α : E) (s : E ≃ₐ[ℚ] E)
     (v : HeightOneSpectrum (𝓞 E)) (hc : ∀ x : 𝓞 E, x ∈ v.asIdeal ↔ ‖c (x : E)‖ < 1)
@@ -262,11 +258,11 @@ theorem root_of_stab (c : E →+* PadicAlgCl l) (α : E) (s : E ≃ₐ[ℚ] E)
   linarith
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `minpoly.exists_algEquiv_of_root' (K := ℚ_[l]) (L := PadicAlgCl l) (Algebra.IsAlgebraic.isAlgebraic (c α)) hroot`. Establish `hcomp : ((σ : PadicAlgCl l →+* PadicAlgCl l).comp c) = c.comp (s : E →+* E)` using `ringHom_ext hα _ _ hσ`. Establish `hn : ∀ x : E, ‖c (s x)‖ = ‖c x‖` using `fun x => by`. Establish `h` using `DFunLike.congr_fun hcomp x`. Express the relevant statement in the definitionally equal form `σ (c x) = c (s x) at h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← h]`. Conclude with `(spectralNorm_eq_of_equiv σ (c x)).symm`. Establish `hmem : ∀ x : 𝓞 E, s • x ∈ v.asIdeal ↔ x ∈ v.asIdeal` using `fun x => by`. Rewrite using `[hc, hc]`. Conclude with `iff_of_eq (congrArg (· < (1 : ℝ)) (hn x))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `y`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, ← hmem (s⁻¹ • y), smul_inv_smul]`.
+A detailed English derivation is pending.
 -/
 theorem stab_of_root (c : E →+* PadicAlgCl l) {α : E}
     (hα : IntermediateField.adjoin ℚ {α} = ⊤) (s : E ≃ₐ[ℚ] E)
@@ -289,11 +285,9 @@ theorem stab_of_root (c : E →+* PadicAlgCl l) {α : E}
   rw [Ideal.mem_pointwise_smul_iff_inv_smul_mem, ← hmem (s⁻¹ • y), smul_inv_smul]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hle : Algebra.adjoin ℚ {α} ≤ (((IntermediateField.adjoin ℚ_[l] {c α}).toSubalgebra.restrictScalars ℚ).comap c.toRatAlgHom)`. Apply `Algebra.adjoin_le` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Set.singleton_subset_iff]`. Conclude with `IntermediateField.mem_adjoin_simple_self ℚ_[l] (c α)`. Establish `hx : x ∈ Algebra.adjoin ℚ {α}`. Rewrite using `[adjoin_eq_top hα]`. Conclude with `Algebra.mem_top`.
-
-Conclude with `hle hx`. Conclude with `IntermediateField.adjoin.mono _ _ _ (by rintro _ rfl; exact ⟨α, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_range_eq (c : E →+* PadicAlgCl l) {α : E}
     (hα : IntermediateField.adjoin ℚ {α} = ⊤) :
@@ -314,11 +308,11 @@ theorem adjoin_range_eq (c : E →+* PadicAlgCl l) {α : E}
   · exact IntermediateField.adjoin.mono _ _ _ (by rintro _ rfl; exact ⟨α, rfl⟩)
 
 /- English proof (translation)
-Establish `hmin : minpoly ℚ (c α) = minpoly ℚ α` using `minpoly.algHom_eq c.toRatAlgHom c.injective α`. Establish `hdvd` using `minpoly.dvd_map_of_isScalarTower ℚ ℚ_[l] (c α)`. Establish `hr' : aeval r (minpoly ℚ α) = 0`. Take `⟨q, hq⟩` from `hdvd`. Establish `: aeval r (map (algebraMap ℚ ℚ_[l]) (minpoly ℚ (c α))) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hq, map_mul, hr, zero_mul]`. Rewrite `this` using `[aeval_map_algebraMap, hmin]`. Then use the resulting hypothesis. Establish `hsplit : (map (algebraMap ℚ E) (minpoly ℚ α)).Splits` using `Normal.splits inferInstance α`. Establish `hne : minpoly ℚ α ≠ 0` using `minpoly.ne_zero (Algebra.IsIntegral.isIntegral α)`. Establish `hmem : r ∈ (minpoly ℚ α).rootSet (PadicAlgCl l)` using `mem_rootSet.2 ⟨hne, hr'⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmem` using `[← hsplit.image_rootSet c.toRatAlgHom]`. Take `⟨e, he, rfl⟩` from `hmem`. Take `⟨s, hs⟩` from `minpoly.exists_algEquiv_of_root' (K := ℚ) (L := E) (Algebra.IsAlgebraic.isAlgebraic α) (mem_rootSet.1 he).2`. Conclude with `⟨s, by rw [hs]; rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_aut_of_root (c : E →+* PadicAlgCl l) [IsGalois ℚ E] (α : E)
     {r : PadicAlgCl l} (hr : aeval r (minpoly ℚ_[l] (c α)) = 0) :
@@ -341,15 +335,13 @@ theorem exists_aut_of_root (c : E →+* PadicAlgCl l) [IsGalois ℚ E] (α : E)
   exact ⟨s, by rw [hs]; rfl⟩
 
 /- English proof (translation)
-Introduce `l _ E _ _ c _ v hc`. Take `⟨α, hα⟩` from `Field.exists_primitive_element ℚ E`. Establish `hint : IsIntegral ℚ_[l] (c α)` using `Algebra.IsIntegral.isIntegral _`. Rewrite using `[adjoin_range_eq c hα, IntermediateField.adjoin.finrank hint]`. Use `set g := minpoly ℚ_[l] (c α) with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg0 : g ≠ 0` using `minpoly.ne_zero hint`. Establish `hsep : g.Separable` using `(minpoly.irreducible hint).separable`. Establish `hcard : Fintype.card (g.rootSet (PadicAlgCl l)) = g.natDegree` using `card_rootSet_eq_natDegree hsep (IsAlgClosed.splits _)`. Rewrite using `[← hcard, ← Nat.card_eq_fintype_card]`. Use `symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nat.card_congr (Equiv.ofBijective (fun s => ⟨c (s.1 α), mem_rootSet.2 ⟨hg0, root_of_stab c α s.1 v hc s.2⟩⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨s, hs⟩ ⟨t, ht⟩ h`. Establish `h1 : c (s α) = c (t α)` using `congrArg Subtype.val h`. Establish `h2 : s α = t α` using `c.injective h1`. Establish `h3` using `ringHom_ext hα (s : E →+* E) (t : E →+* E) h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `DFunLike.congr_fun h3 x`. Introduce and unpack `⟨r, hr⟩`. Take `⟨s, rfl⟩` from `exists_aut_of_root c α (mem_rootSet.1 hr).2`.
-
-Conclude with `⟨⟨s, stab_of_root c hα s v hc (mem_rootSet.1 hr).2⟩, rfl⟩`.
+By extensionality, compare the relevant components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_adjoin_range_eq_card_stabilizer :
     ∀ (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberField E] (c : E →+* PadicAlgCl l)

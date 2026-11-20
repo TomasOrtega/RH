@@ -9,17 +9,17 @@ open scoped BigOperators Pointwise
 namespace GlobalTheory.TypeNormProduct
 
 /- English proof (translation)
-Introduce `D y`. Establish `hc : ∀ (φ : D.host.E →+* ℂ) (x : D.host.E), φ (D.host.conj x) = starRingEnd ℂ (φ x)` using `fun φ x => D.host.conjE_apply φ x`. Establish `hcc : ∀ x : D.host.E, D.host.conj (D.host.conj x) = x` using `fun x => D.host.φ₀.injective (by rw [hc, hc, Complex.conj_conj])`. Use `set x : D.host.E := (y : D.host.E) with hx`. Establish `ht : D.host.conj (x * D.host.conj x) = x * D.host.conj x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hcc, mul_comm]`. Establish `h1` using `GlobalTheory.NormSign.prod_embT D (x * D.host.conj x)`. Establish `h2` using `congrArg D.host.φ₀ (GlobalTheory.NormSign.norm_eq D.host ht)`. Rewrite `h2` using `[map_pow, ← h1, map_ratCast, map_mul, Algebra.norm_eq_of_algEquiv]`. Establish `h3 : ∏ τ, embT D τ (x * D.host.conj x) = ((∏ τ, ‖embT D τ x‖ ^ 2 : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h3]`. Establish `h4 : ((Algebra.norm ℚ x : ℚ) : ℝ) ^ 2 = (∏ τ, ‖embT D τ x‖ ^ 2) ^ 2`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_pow, Complex.ofReal_pow, ← h2]`. Use `push_cast`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h5 : 0 ≤ ∏ τ, ‖embT D τ x‖ ^ 2` using `Finset.prod_nonneg fun _ _ => by positivity`. Rewrite `h4` using `[← sq_abs]`. Establish `h6` using `(pow_left_inj₀ (abs_nonneg _) h5 two_ne_zero).1 h4`. Rewrite using `[← h6, Ideal.absNorm_span_singleton, hx, ← Algebra.coe_norm_int, Nat.cast_natAbs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prod_sq_norm_embT : ∀ (D : D7) (y : 𝓞 D.host.E),
     ∏ τ, ‖embT D τ (y : D.host.E)‖ ^ 2 = (Ideal.absNorm (Ideal.span {y}) : ℝ) := by

@@ -25,9 +25,9 @@ def monoInner (n : ℕ) (a b : Fin (N + 1) →₀ ℕ) (v : Fin (N + 1) → ℂ)
     ((norm2 v ^ (2 * n) : ℝ) : ℂ)
 
 /- English proof (translation)
-Establish `hea : eval (t • v) (monomial a (1 : ℂ)) = t ^ n * eval v (monomial a 1)` using `evalAt_smul (RingHom.id ℂ) (isHomogeneous_monomial 1 ha) t v`. Establish `heb : eval (t • v) (monomial b (1 : ℂ)) = t ^ n * eval v (monomial b 1)` using `evalAt_smul (RingHom.id ℂ) (isHomogeneous_monomial 1 hb) t v`. Establish `htn : (‖t‖ : ℂ) ≠ 0` using `by exact_mod_cast (norm_pos_iff.mpr ht).ne'`. Establish `e : starRingEnd ℂ t ^ n * t ^ n = ((‖t‖ : ℂ) ^ 2) ^ n`. Rewrite using `[← mul_pow, Complex.conj_mul']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `monoInner`. Rewrite using `[hea, heb, euclideanNorm_smul, map_mul, map_pow]`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 -/
 lemma monoInner_smul {n : ℕ} {a b : Fin (N + 1) →₀ ℕ} (ha : a.degree = n) (hb : b.degree = n)
     (t : ℂ) (ht : t ≠ 0) (v : Fin (N + 1) → ℂ) :
@@ -47,7 +47,7 @@ lemma monoInner_smul {n : ℕ} {a b : Fin (N + 1) →₀ ℕ} (ha : a.degree = n
     _ = _ := by rw [e, mul_div_mul_left _ _ (pow_ne_zero _ (pow_ne_zero _ htn))]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `Projectivization.exists_smul_eq_mk_rep ℂ v hv`. Rewrite using `[← ht, Units.smul_def]`. Conclude with `monoInner_smul ha hb t t.ne_zero v`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma monoInner_mk {n : ℕ} {a b : Fin (N + 1) →₀ ℕ} (ha : a.degree = n) (hb : b.degree = n)
     (v : Fin (N + 1) → ℂ) (hv : v ≠ 0) :
@@ -57,11 +57,9 @@ lemma monoInner_mk {n : ℕ} {a b : Fin (N + 1) →₀ ℕ} (ha : a.degree = n) 
   exact monoInner_smul ha hb t t.ne_zero v
 
 /- English proof (translation)
-Rewrite using `[ProjTopology.continuous_iff]`. Establish `: (fun x : CP N => monoInner n a b x.rep) ∘ Projectivization.mk' ℂ = fun v : {v : Fin (N + 1) → ℂ // v ≠ 0} => monoInner n a b v.1`. Use function extensionality and compare the values at `⟨v, hv⟩`. Conclude with `monoInner_mk ha hb v hv`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : Continuous fun v : Fin (N + 1) → ℂ => norm2 v` using `Real.continuous_sqrt.comp (continuous_finsetSum _ fun j _ => (continuous_norm.comp (continuous_apply j)).pow 2)`. Unfold `monoInner`. Use `Continuous.div ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(Complex.continuous_conj.comp ((continuous_eval _).comp continuous_subtype_val)).mul ((continuous_eval _).comp continuous_subtype_val)`. Conclude with `Complex.continuous_ofReal.comp ((hc.comp continuous_subtype_val).pow _)`.
-
-Introduce `v`. Conclude with `(pow_pos (euclideanNorm_pos v.2) _).ne'` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma continuous_monoInner_rep {n : ℕ} {a b : Fin (N + 1) →₀ ℕ} (ha : a.degree = n)
     (hb : b.degree = n) : Continuous fun x : CP N => monoInner n a b x.rep := by
@@ -83,7 +81,7 @@ lemma continuous_monoInner_rep {n : ℕ} {a b : Fin (N + 1) →₀ ℕ} (ha : a.
     exact_mod_cast (pow_pos (euclideanNorm_pos v.2) _).ne'
 
 /- English proof (translation)
-Rewrite using `[CP.fsMeasure, integral_map (CP.measurable_chartInv 0).aemeasurable hf.aestronglyMeasurable, CP.fsChartMeasure]`. Establish `hd : (fun z => ENNReal.ofReal (CP.fsVolumeDensity (N` using `N) 0 z)) = fun z => (((CP.fsVolumeDensity (N := N) 0 z).toNNReal : NNReal) : ENNReal) := rfl`. Rewrite using `[hd, integral_withDensity_eq_integral_smul (CP.measurable_fsVolumeDensity 0).real_toNNReal]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [NNReal.smul_def, Real.coe_toNNReal _ (CP.fsVolumeDensity_pos 0 z).le, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma integral_fsMeasure_eq (f : CP N → ℂ) (hf : Continuous f) :
     ∫ x, f x ∂CP.fsMeasure N = ∫ z, (CP.fsVolumeDensity 0 z : ℂ) * f (CP.chartInv 0 z) := by
@@ -96,7 +94,7 @@ lemma integral_fsMeasure_eq (f : CP N → ℂ) (hf : Continuous f) :
   simp only [NNReal.smul_def, Real.coe_toNNReal _ (CP.fsVolumeDensity_pos 0 z).le, Complex.real_smul]
 
 /- English proof (translation)
-Rewrite using `[eval_monomial, one_mul, Finsupp.prod_fintype _ _ (fun i => pow_zero _), Fin.prod_univ_succ, CP.chartVec_self, one_pow, one_mul]`. Simplify using `only [CP.chartVec_zero_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma eval_chartVec_monomial (a : Fin (N + 1) →₀ ℕ) (w : Fin N → ℂ) :
     eval (CP.chartVec 0 w) (monomial a (1 : ℂ)) = ∏ j, w j ^ a j.succ := by
@@ -105,29 +103,27 @@ lemma eval_chartVec_monomial (a : Fin (N + 1) →₀ ℕ) (w : Fin N → ℂ) :
   simp only [CP.chartVec_zero_succ]
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k : Fin N, a k.succ ≠ b k.succ` from `by by_contra! h`. Apply `hab` to reduce the goal to its premises. Establish `hdeg : ∀ c : Fin (N + 1) →₀ ℕ, c.degree = c 0 + ∑ j : Fin N, c j.succ` using `fun c => by`. Rewrite using `[Finsupp.degree_eq_sum, Fin.sum_univ_succ]`. Establish `h0 : a 0 = b 0`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hdeg a`. Establish `h2` using `hdeg b`. Simplify using `only [h] at h1`. Use linear arithmetic over natural numbers and integers. Use extensionality with `i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components.
 
-Conclude with `Fin.cases h0 (fun j => h j) i`. Use `set p := a k.succ with hp`. Use `set q := b k.succ with hq`. Use `set θ : ℝ := Real.pi / ((q : ℝ) - p) with hθ`. Use `set u : Circle := Circle.exp θ with hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlam : starRingEnd ℂ (u : ℂ) ^ p * (u : ℂ) ^ q = -1`. Establish `hqp : ((q : ℂ) - p) ≠ 0` using `sub_ne_zero.mpr (by exact_mod_cast (Ne.symm hk))`. Rewrite using `[hu, Circle.coe_exp, ← Complex.exp_conj, ← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Establish `h1 : (θ : ℂ) * ((q : ℂ) - p) = Real.pi`. Rewrite using `[hθ]`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `h2 : (p : ℂ) * (starRingEnd ℂ) (↑θ * Complex.I) + (q : ℂ) * (↑θ * Complex.I) = Real.pi * Complex.I`. Simplify using `only [map_mul, Complex.conj_ofReal, Complex.conj_I]`. Take the linear combination `Complex.I * h1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Rewrite using `[h2, Complex.exp_pi_mul_I]`. Set `c : Fin N → Circle` to `fun j => if j = k then u else 1`. Establish `hc : ∀ j, (c j : ℂ) = if j = k then (u : ℂ) else 1` using `fun j => by`. Apply the tactic sequence `by_cases hj : j = k <;> simp [c, hj]`. Set `T : (Fin N → ℂ) ≃ₜ (Fin N → ℂ)` to `Homeomorph.piCongrRight fun j => (rotation (c j)).toHomeomorph`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : ∀ z j, T z j = c j * z j` using `fun z j => rfl`. Establish `hTm : MeasurePreserving T volume volume` using `measurePreserving_pi (fun _ => volume) (fun _ => volume) fun j => (rotation (c j)).measurePreserving`. Establish `hnorm : ∀ z j, ‖T z j‖ = ‖z j‖` using `fun z j => by`. Rewrite using `[hT, norm_mul, Circle.norm_coe, one_mul]`. Establish `hprod : ∀ (m : Fin (N + 1) →₀ ℕ) (z : Fin N → ℂ), eval (CP.chartVec 0 (T z)) (monomial m (1 : ℂ)) = (u : ℂ) ^ m k.succ * eval (CP.chartVec 0 z) (monomial m (1 : ℂ))` using `fun m z => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_chartVec_monomial, eval_chartVec_monomial]`. Simplify using `only [hT, mul_pow, Finset.prod_mul_distrib, hc, ite_pow, one_pow, Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Use `set G : (Fin N → ℂ) → ℂ := fun z => (CP.fsVolumeDensity 0 z : ℂ) * monoInner a.degree a b (CP.chartVec 0 z) with hG`. Establish `hGT : ∀ z, G (T z) = -G z` using `fun z => by`. Establish `hdens : CP.fsVolumeDensity (N` using `N) 0 (T z) = CP.fsVolumeDensity 0 z := by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[CP.fsVolumeDensity_eq, CP.fsVolumeDensity_eq, normSqSum, normSqSum]`. Simplify using `only [hnorm]`. Establish `hn2 : norm2 (CP.chartVec 0 (T z)) = norm2 (CP.chartVec 0 z)`. Rewrite using `[norm2, norm2, CP.normSq2_chartVec, CP.normSq2_chartVec]`. Simplify using `only [hnorm]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hG, hdens, monoInner, hn2, hprod, map_mul, map_pow]`. Rewrite using `[← hp, ← hq]`. Take the linear combination `(CP.fsVolumeDensity 0 z : ℂ) * (starRingEnd ℂ (eval (CP.chartVec 0 z) (monomial a (1 : ℂ))) * eval (CP.chartVec 0 z) (monomial b (1 : ℂ)) / ((norm2 (CP.chartVec 0 z) ^ (2 * a.degree) : ℝ) : ℂ)) * hlam`. Establish `hint : ∫ x, monoInner a.degree a b x.rep ∂CP.fsMeasure N = ∫ z, G z`. Rewrite using `[integral_fsMeasure_eq _ (continuous_monoInner_rep rfl hb)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [hG, CP.chartInv, monoInner_mk rfl hb]`. Establish `hinv : ∫ z, G z = -∫ z, G z`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hint]`.
-
-Take the linear combination `hinv / 2`.
+A detailed English derivation is pending.
 -/
 theorem integral_monoInner_eq_zero {a b : Fin (N + 1) →₀ ℕ} (hab : a ≠ b)
     (hb : b.degree = a.degree) :
@@ -208,9 +204,9 @@ theorem integral_monoInner_eq_zero {a b : Fin (N + 1) →₀ ℕ} (hab : a ≠ b
   linear_combination hinv / 2
 
 /- English proof (translation)
-Establish `hpt : ∀ v : CP N, monoInner a.degree a a v.rep = ((CP.fsNormPoly a.degree (monomial a (1 : ℂ)) v ^ 2 : ℝ) : ℂ)` using `fun v => by`. Establish `e` using `Complex.conj_mul' (eval v.rep (monomial a (1 : ℂ)))`. Unfold `monoInner CP.fsNormPoly`. Use `push_cast`. Rewrite using `[div_pow, ← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt), integral_complex_ofReal]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `CP.sectionL2NormSq (N := N) a.degree (monomial a (1 : ℂ)) = _`. Rewrite using `[← CP.fubiniStudy_l2Norm_sq_eq, CP.fubiniStudy_l2Norm_monomial_sq]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_monoInner_self (a : Fin (N + 1) →₀ ℕ) :
     ∫ x, monoInner a.degree a a x.rep ∂CP.fsMeasure N =
@@ -230,9 +226,9 @@ theorem integral_monoInner_self (a : Fin (N + 1) →₀ ℕ) :
 end L2MonomialOrthogonality
 
 /- English proof (translation)
-Use `set κ := ‖x.1.rep (CP.chartIndex x.1)‖ ^ n / norm2 x.1.rep ^ n with hκ`. Establish `hN : ∀ w, fsFibreNorm n ρ x w = ‖fsFrameCoord n ρ x w‖ * κ` using `fun w => by`. Rewrite using `[fsFibreNorm, hκ, mul_div_assoc]`. Unfold `fsFibreInner`. Simplify using `only [hN, map_add, map_sub, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `set p := fsFrameCoord n ρ x s`. Use `set q := fsFrameCoord n ρ x t`. Use `push_cast`. Simplify using `only [mul_pow, ← Complex.conj_mul', map_add, map_sub, map_mul, Complex.conj_I]`. Take the linear combination `((κ : ℂ) ^ 2 * (starRingEnd ℂ q * p - starRingEnd ℂ p * q) / 2) * Complex.I_sq`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma fsFibreInner_eq {K : Type} [Field K] [NumberField K] {N : ℕ} (n : ℕ) {ρ : 𝓞 K →+* ℂ}
     (x : (self (𝓞 K) N).complexPoints ρ) (s t : (self (𝓞 K) N).Fibre (twistN (𝓞 K) N n) x) :
@@ -250,11 +246,11 @@ lemma fsFibreInner_eq {K : Type} [Field K] [NumberField K] {N : ℕ} (n : ℕ) {
   linear_combination ((κ : ℂ) ^ 2 * (starRingEnd ℂ q * p - starRingEnd ℂ p * q) / 2) * Complex.I_sq
 
 /- English proof (translation)
-Rewrite using `[evalFibre_tmul, evalFibre_tmul, map_one, one_smul, one_smul, fsFibreInner_eq]`. Establish `hca` using `h (𝓞 K) N a.degree (intEmb σ) _ (monomial_mem_grading (A := 𝓞 K) a rfl) x (CP.chartIndex x.1) (rep_chartIndex_ne_zero x.1)`. Establish `hcb` using `h (𝓞 K) N a.degree (intEmb σ) _ (monomial_mem_grading (A := 𝓞 K) b hb) x (CP.chartIndex x.1) (rep_chartIndex_ne_zero x.1)`. Express the relevant statement in the definitionally equal form `fsFrameCoord _ _ x _ * _ = _ at hca hcb`. Establish `ev : ∀ m : Fin (N + 1) →₀ ℕ, evalAt (intEmb σ) x.1.rep (monomial m (1 : 𝓞 K)) = eval x.1.rep (monomial m (1 : ℂ))` using `fun m => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Simplify using `[evalAt, eval₂_monomial, eval_monomial]`. Rewrite `hca`, `hcb` using `[ev]`. Use `set vj := x.1.rep (CP.chartIndex x.1)`. Establish `hn : (norm2 x.1.rep : ℂ) ≠ 0` using `by exact_mod_cast (euclideanNorm_pos x.1.rep_nonzero).ne'`. Establish `e : starRingEnd ℂ vj ^ a.degree * vj ^ a.degree = ((‖vj‖ : ℂ) ^ 2) ^ a.degree`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_pow, Complex.conj_mul']`. Rewrite using `[L2MonomialOrthogonality.monoInner, ← hca, ← hcb]`. Use `push_cast`. Rewrite using `[map_mul, map_pow]`. Take the linear combination `(-(starRingEnd ℂ (fsFrameCoord a.degree (intEmb σ) x ((self (𝓞 K) N).evalGlobalSection (twistN (𝓞 K) N a.degree) x (polySection (monomial_mem_grading (A := 𝓞 K) a rfl)))) * fsFrameCoord a.degree (intEmb σ) x ((self (𝓞 K) N).evalGlobalSection (twistN (𝓞 K) N a.degree) x (polySecti …`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem fsFibreInner_monomial (h : FSCoord.Statement.{0}) {K : Type} [Field K] [NumberField K]
     {N : ℕ} (σ : K →+* ℂ) (a b : Fin (N + 1) →₀ ℕ) (hb : b.degree = a.degree)
@@ -290,11 +286,9 @@ theorem fsFibreInner_monomial (h : FSCoord.Statement.{0}) {K : Type} [Field K] [
       (norm2 x.1.rep : ℂ) ^ (2 * a.degree))) * e
 
 /- English proof (translation)
-Introduce `K _ _ N σ a b hb`. Unfold `fubiniStudyL2Inner`. Use `(integral_congr_ae (g := fun v : CP N => L2MonomialOrthogonality.monoInner a.degree a b v.rep) (Filter.Eventually.of_forall fun v => ?_)).trans ?_` and prove the remaining obligations. Establish `hv : v ∈ (self (𝓞 K) N).complexPoints (intEmb σ)`. Rewrite using `[complexPoints_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Simplify using `only [dif_pos hv]`. Conclude with `fsFibreInner_monomial h σ a b hb ⟨v, hv⟩`. Use `split_ifs with hab`. Substitute `hab` using the available equality.
-
-Conclude with `L2MonomialOrthogonality.integral_monoInner_self a`. Conclude with `L2MonomialOrthogonality.integral_monoInner_eq_zero hab hb`.
+Check the elementary cases of the proposition. Simplify using the standard rewrite rules. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem L2MonomialOrthogonality.proof (h : FSCoord.Statement.{0}) (_h' : FSIndex.Statement.{0}) :
     L2MonomialOrthogonality.Statement := by

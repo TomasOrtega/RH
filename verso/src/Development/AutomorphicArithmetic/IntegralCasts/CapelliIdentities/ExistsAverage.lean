@@ -3,19 +3,19 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.ExistsAverage
 
 /- English proof (translation)
-Use `haveI : Fintype (K ⧸ H) := Fintype.ofFinite _`. Establish `hc : ((Fintype.card (K ⧸ H) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Establish `key : ∀ m, (∀ h ∈ H, ρ h m = m) → ∀ g : K, ρ g m = ρ ((g : K ⧸ H).out) m`. Introduce `m hm g`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul H g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh, map_mul, Module.End.mul_apply, hm h h.2]`. Establish `hA : ∀ m, (((Fintype.card (K ⧸ H) : ℕ) : ℂ)⁻¹ • ∑ q : K ⧸ H, (ρ q.out : M →ₗ[ℂ] M)) m = ((Fintype.card (K ⧸ H) : ℕ) : ℂ)⁻¹ • ∑ q : K ⧸ H, ρ q.out m`. Introduce `m`. Rewrite using `[LinearMap.smul_apply, LinearMap.sum_apply]`. Establish `hconst : ∀ m : M, ((Fintype.card (K ⧸ H) : ℕ) : ℂ)⁻¹ • ∑ _q : K ⧸ H, m = m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Use `⟨((Fintype.card (K ⧸ H) : ℕ) : ℂ)⁻¹ • ∑ q : K ⧸ H, (ρ q.out : M →ₗ[ℂ] M), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m hm k`. Rewrite using `[hA, map_smul, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Fintype.sum_equiv (Equiv.mulLeft (k : K ⧸ H)) _ _ fun q => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, key m hm]`. Simplify using the standard rewrite rules. Introduce `m hm k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA, hA]`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.mulRight (k : K ⧸ H)) _ _ fun q => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, key m hm]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Rewrite using `[hA]`. Simplify using `only [hm]`. Conclude with `hconst m`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA]`. Use `nth_rewrite 1 [← hconst m]`. Rewrite using `[← smul_sub, ← Finset.sum_sub_distrib]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun q _ => Submodule.subset_span ⟨_, _, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem exists_op {K : Type*} {M : Type*} [Group K] [AddCommGroup M] [Module ℂ M]
     (ρ : K →* Module.End ℂ M) (H : Subgroup K) [H.Normal] [H.FiniteIndex] :
@@ -65,11 +65,9 @@ private theorem exists_op {K : Type*} {M : Type*} [Group K] [AddCommGroup M] [Mo
       (Submodule.sum_mem _ fun q _ => Submodule.subset_span ⟨_, _, rfl⟩)
 
 /- English proof (translation)
-Set `S : Subgroup K` to `{ carrier := {k : K | ρ k m = m} mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `nth_rewrite 1 [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`.
-
-Use `haveI : Finite (K ⧸ S) := Subgroup.quotient_finite_of_isOpen S (hs m)`. Use `haveI : S.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Conclude with `⟨S.normalCore, inferInstance, inferInstance, fun h hh => S.normalCore_le hh⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_sub {K : Type*} {M : Type*} [Group K] [AddCommGroup M] [Module ℂ M]
     [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K]
@@ -92,27 +90,25 @@ private theorem exists_sub {K : Type*} {M : Type*} [Group K] [AddCommGroup M] [M
   exact ⟨S.normalCore, inferInstance, inferInstance, fun h hh => S.normalCore_le hh⟩
 
 /- English proof (translation)
-Use `set N : Submodule ℂ M := Submodule.span ℂ {x : M | ∃ k y, x = y - ρ k y} with hN`. Establish `hdis : ∀ x ∈ N, (∀ k, ρ k x = x) → x = 0`. Introduce `x hx hfix`. Establish `: ∃ H : Subgroup K, H.Normal ∧ H.FiniteIndex ∧ ∀ A : M →ₗ[ℂ] M, (∀ m, (∀ h ∈ H, ρ h m = m) → ∀ k, A (ρ k m) = A m) → A x = 0` using `by clear hfix`. Proceed by induction on `hx using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨k, y, rfl⟩` from `hx`. Take `⟨H, h1, h2, h3⟩` from `exists_sub ρ hs y`. Conclude with `⟨H, h1, h2, fun A hA => by rw [map_sub, hA y h3, sub_self]⟩`. Consider the case `zero => exact ⟨⊤, inferInstance, inferInstance, fun A _ => map_zero A⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨H, h1, h2, h3⟩` from `hx`. Take `⟨H', h1', h2', h3'⟩` from `hy`. Use `⟨H ⊓ H', inferInstance, inferInstance, fun A hA => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, h3 A fun m hm => hA m fun h hh => hm h hh.1, h3' A fun m hm => hA m fun h hh => hm h hh.2, add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul c x _ hx`. Take `⟨H, h1, h2, h3⟩` from `hx`. Conclude with `⟨H, h1, h2, fun A hA => by rw [map_smul, h3 A hA, smul_zero]⟩`. Take `⟨H, h1, h2, h3⟩` from `this`. Take `⟨A, -, a2, a3, -⟩` from `exists_op ρ H`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← a3 x hfix]`. Conclude with `h3 A a2`. Establish `hex : ∀ m : M, ∃ p : M, (∀ k, ρ k p = p) ∧ m - p ∈ N`. Introduce `m`. Take `⟨H, h1, h2, h3⟩` from `exists_sub ρ hs m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨A, a1, -, -, a4⟩` from `exists_op ρ H`. Conclude with `⟨A m, a1 m h3, a4 m⟩`. Use `choose f hf1 hf2 using hex`. Establish `huniq : ∀ m p : M, (∀ k, ρ k p = p) → m - p ∈ N → f m = p`. Introduce `m p hp hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero]`. Use `hdis _ ?_ fun k => by rw [map_sub, hf1, hp]` and prove the remaining obligations. Use `N.sub_mem hm (hf2 m)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis. Use `⟨{ toFun := f, map_add' := ?_, map_smul' := ?_ }, hf1, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Use `huniq _ _ (fun k => by rw [map_add, hf1, hf1]) ?_` and prove the remaining obligations. Rewrite using `[add_sub_add_comm]`. Conclude with `N.add_mem (hf2 x) (hf2 y)`. Introduce `c x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `huniq _ _ (fun k => by rw [map_smul, hf1]) ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, ← smul_sub]`. Conclude with `N.smul_mem c (hf2 x)`. Introduce `m hm`. Conclude with `huniq m m hm (by rw [sub_self]; exact N.zero_mem)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `T hT m`. Use `(huniq (T m) (T (f m)) (fun k => by rw [← hT, hf1]) ?_).symm` and prove the remaining obligations. Rewrite using `[← map_sub]`. Establish `hle : N ≤ N.comap T`. Rewrite using `[hN, Submodule.span_le]`.
-
-Introduce and unpack `_ ⟨k, y, rfl⟩`. Conclude with `Submodule.subset_span ⟨k, T y, by rw [map_sub, hT]⟩`. Conclude with `hle (hf2 m)`.
+A detailed English derivation is pending.
 -/
 theorem exists_avg {K : Type*} {M : Type*} [Group K] [AddCommGroup M] [Module ℂ M]
     [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K]

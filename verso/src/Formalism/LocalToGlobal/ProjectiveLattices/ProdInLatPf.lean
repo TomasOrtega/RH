@@ -10,23 +10,19 @@ open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain ReciprocityTh
 variable {D : D7} {Tc : Core D} (hL : LawsCore Tc) (j : ℕ)
 
 /- English proof (translation)
-Establish `hV : ∀ la, ∀ v ∈ Tc.Vs j la, IsVal la v` using `fun la => isVal_valSet la`. Establish `hw1 : ∀ k, wR k ∈ Tc.C j wL ∧ ∀ la, ∀ v ∈ Tc.Vs j la, 0 ≤ v (wR k)`. Introduce `k`. Take `⟨F, hF, hFk⟩` from `hw k`. Rewrite using `[← hFk]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨cutR_le Tc.C j wL F.2, hF⟩`. Establish `key : ∀ m (s : Fin (m + 1) → Fin (N + 1)), ∃ W : WeightFamilies.Wt D j, (∀ x, wtA W x = (m + 1) * wtA wL x) ∧ W.n = (m + 1) * wL.n ∧ ∏ k, wR (s k) ∈ Tc.C j W ∧ ∀ la, ∀ v ∈ Tc.Vs j la, 0 ≤ v (∏ k, wR (s k))`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `s`. Use `⟨wL, fun x => by ring, by ring, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_one]`. Conclude with `(hw1 _).1`. Rewrite using `[Fin.prod_univ_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `(hw1 _).2`. Consider the case `succ m ih`. Introduce `s`. Take `⟨W, hW1, hW2, hWm, hWv⟩` from `ih (fun k => s k.succ)`. Use `⟨WeightAlgebra.wadd wL W, fun x => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[wtA_wadd, Pi.add_apply, hW1 x]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[n_wadd, hW2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Fin.prod_univ_succ]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL.mul j hj wL W _ (hw1 _).1 _ hWm`. Introduce `la v hv`. Rewrite using `[Fin.prod_univ_succ, (hV la v hv).mul]`. Conclude with `add_nonneg ((hw1 _).2 la v hv) (hWv la v hv)`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Take `⟨W, hW1, hW2, hWm, hWv⟩` from `key m s`. Establish `hmem : ∏ k, wR (s k) ∈ Tc.C j ka`. Establish `hC : Tc.C j ka = Tc.C j W` using `by show Tc.cuspA j (wtA ka) ka.n = Tc.cuspA j (wtA W) W.n`. Rewrite using `[hkn, hW2, show wtA ka = wtA W from funext fun x => by rw [hka x, hW1 x]]`.
-
-Rewrite using `[hC]`. Conclude with `hWm`. Use `⟨⟨∏ k, wR (s k), ?_⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show _ ∈ cutR Tc.C j ka`. Rewrite using `[cutR_eq Tc.C hj]`.
-
-Conclude with `hmem`. Conclude with `hWv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodInLat_of (hj : InR D j) {N : ℕ} (wR : Fin (N + 1) → Tc.R j) (wL ka : WeightFamilies.Wt D j) (n : ℕ)
     (hw : ∀ k, ∃ F : (recB hL).Cusp j wL, F ∈ (recB hL).Mlat j wL ∧ (F : Tc.R j) = wR k)
@@ -70,9 +66,9 @@ theorem prodInLat_of (hj : InR D j) {N : ℕ} (wR : Fin (N + 1) → Tc.R j) (wL 
   · exact hWv
 
 /- English proof (translation)
-Use `prodInLat_of hL j hj wR wL ka n hw hn (fun x => ?_) ?_` and prove the remaining obligations. Establish `h1` using `congrFun (congrArg Prod.fst hkaZ) x`. Simplify using `only [wtZ, Prod.smul_fst, Pi.smul_apply] at h1`. Rewrite `h1` using `[nsmul_eq_mul]`. Conclude with `h1` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Prod.snd hkaZ`. Simplify using `only [wtZ, Prod.smul_snd] at h2`. Rewrite `h2` using `[nsmul_eq_mul]`. Conclude with `h2` after adjusting the coercions.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodInLat_of_wtZ (hj : InR D j) {N : ℕ} (wR : Fin (N + 1) → Tc.R j) (wL ka : WeightFamilies.Wt D j) (n : ℕ)
     (hw : ∀ k, ∃ F : (recB hL).Cusp j wL, F ∈ (recB hL).Mlat j wL ∧ (F : Tc.R j) = wR k)

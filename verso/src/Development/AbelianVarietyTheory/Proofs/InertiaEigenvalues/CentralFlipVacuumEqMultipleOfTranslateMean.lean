@@ -28,25 +28,23 @@ set_option maxHeartbeats 1600000 in
 open MeasureTheory GlobalTheory.VacUnique GlobalTheory.FockCompare in
 
 /- English proof (translation)
-Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.self_dual_lattice_pairing_dual D ψ S T ΛS ΛT hψ hΛS hΛT`. Establish `hden` using `GlobalTheory.T.scaled_finite_matrix_mem_lattice D S T ΛS ΛT hΛS.1 hΛT.1`. Establish `hlat` using `hf.2.lat`. Establish `hinf` using `fun u => latO_inf (u := u) S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True) = Λ at h1 h2 h3 hden hlat hlat' hinf`. Use `choose ε hε1 hε2 using h3 f hlat`. Establish `det : ∀ (g g' : WO S T → ℂ) (c : ℂ), IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → IsLatVac (heisO ψ S T) Λ g → IsLatVac (heisO ψ S T) Λ g' → (∀ z, g' (iotaW σ T S z) = c * g (iotaW σ T S z)) → g' = c • g`. Introduce `g g' c hg hg' hl hl' hz`. Use function extensionality and compare the values at `w`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, z, u, hu, rfl⟩` from `exists_decomp h h2 w`. Rewrite using `[Pi.smul_apply, smul_eq_mul, hg.quasi, hg'.quasi, apply_real_add h hψ (hinf u hu) (hε2 u hu g hl), apply_real_add h hψ (hinf u hu) (hε2 u hu g' hl'), hz]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨⟨p, hp⟩, hn⟩` from `hf.2.norm`. Establish `n1 : nrm2 p.1 p.2 f = 1` using `hn p hp`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (fun z : RW T S => f (iotaW σ T S z)) ≠ 0`. Introduce `h0`. Establish `e` using `det f f 0 hf.2.theta hf.2.theta hlat hlat fun z => by rw [zero_mul]; exact congrFun h0 z`. Rewrite `n1` using `[e]`. Simplify using `[nrm2] at n1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨j1, j2, j3, j4⟩` from `GlobalTheory.T.realSymplecticForm_alternating_invariant_definite D S T sS sT hS hT`. Establish `hsp : Submodule.span ℝ (Set.range (infRat S T)) = ⊤`. Use `span_piW_ratW_eq_top D θ σ h T S` as an intermediate fact. Simplify `this` using `only [piW_ratW hθ]`. Establish `a1` using `GlobalTheory.T.fockVacuum_annihilation_equation_real_coordinates D θ σ h ψ hψ S T sS sT f hf.2.theta hf.2.fock`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `GlobalTheory.T.fockVacuum_annihilation_equation_real_coordinates D θ σ h ψ hψ S T sS sT f' hth hfock`. Set `c : Matrix (Fin T.rank) (Fin S.rank) D.host.E → ℂ` to `fun v => if hv : finRat S T (-v) ∈ Λ then ψ (-symplOH S T (ratW T S v) (finRat S T (-v))) * ε _ hv else 1`. Establish `hc : ∀ v, ‖c v‖ = 1` using `fun v => by`. Simplify using `only [c]`. Use `split_ifs with hv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[norm_mul, hψ.1.2.1]`. Apply the tactic sequence `rcases hε1 _ hv with e | e <;> rw [e] <;> simp`. Conclude with `norm_one`. Establish `law : ∀ g : WO S T → ℂ, IsThetaFunO ψ S T g → IsLatVac (heisO ψ S T) Λ g → ∀ v ∈ Λ.comap (finRat S T), ∀ z, g (iotaW σ T S (z + infRat S T v)) = c v * Complex.exp (-(Real.pi * Complex.I) * (omO S T z (infRat S T v) : ℂ)) * g (iotaW σ T S z)`. Introduce `g hg hl v hv z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hv' : finRat S T (-v) ∈ Λ` using `(Λ.comap (finRat S T)).neg_mem hv`. Rewrite using `[apply_add_infRat h hψ hg v (hε2 _ hv' g hl) z, ← j2]`. Simplify using `only [c, dif_pos hv']`. Establish `hli` using `GlobalTheory.T.not_linearIndependent_alt (RW T S) (jO S T sS sT) (omO S T) j1 j2 j3 j4 (Matrix (Fin T.rank) (Fin S.rank) D.host.E) (infRat S T) (infRat_injective S T) hsp (Λ.comap (finRat S T)) (fun x => by`. Take `⟨N, hN, hx⟩` from `hden x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, hN, by rwa [AddSubgroup.mem_comap, AddMonoidHom.map_nsmul]⟩)`. Use the proof step `(GlobalTheory.T.rationalPoints_finitePart_selfDual_lattice_iff D S T ψ Λ hψ hinf h1 h2 hden) c hc`. Use the proof step `![fun z => f (iotaW σ T S z), fun z => f' (iotaW σ T S z)]`. Use the proof step `(fun k => by fin_cases k; exacts [a1.1, a2.1]) (fun k => by fin_cases k; exacts [a1.2, a2.2])`. Use the proof step `(fun k => by fin_cases k; exacts [law f hf.2.theta hlat, law f' hth hlat'])`.
-
-Rewrite `hli` using `[LinearIndependent.pair_iff' hne]`. Use `push_neg at hli`. Take `⟨a, ha⟩` from `hli`. Conclude with `⟨a, det f f' a hf.2.theta hth hlat hlat' fun z => (congrFun ha z).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_smul_vacuum {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {S T : HSp D} {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ}
@@ -124,25 +122,25 @@ end GlobalTheory.LevelSeries
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT z hT hm hcop hmT hz hmt`. Take `⟨Y, hY1, hY2, hY3, hYc⟩` from `GlobalTheory.T.exists_levelPoint_reps_conjugate_half_mod_lattice D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT hT hm hcop hmT`. Use `set G := ∑ y ∈ Y, heisO ψ V W y f₀ with hG`. Take `⟨hGth, hGf⟩` from `GlobalTheory.T.conjugateHalf_vacuum_translate_sum_isThetaFockVacuum D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT hT hm hcop hmT Y fun y hy => (hY1 y hy).1`. Take `⟨hfix2, hfixh⟩` from `GlobalTheory.T.vacuum_translate_sum_fixed_by_flipped_lattice D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT hT hm hcop hmT Y hY1 hY2 hY3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne` using `GlobalTheory.T.vacuum_translate_sum_conjugateHalf_ne_zero D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT hT hm hcop hmT Y hY1 hY2 hY3`. Establish `hW` using `hP.1.weil`. Establish `hmove : ∀ u : WO V W, actO V W z 1 (flipElt eT m • u) = u`. Introduce `u`. Establish `e` using `GlobalTheory.AdelicLatMove.actO_actO_inv V W z 1 u`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : actO V W z⁻¹ 1⁻¹ u = flipElt eT m • u`. Simplify using `only [actO, inv_inv, hmt]`. Establish `h1 : Formalism.L2.Theta.mt W (1 : GA D W)⁻¹ = 1`. Rewrite using `[inv_one]`. Unfold `Formalism.L2.Theta.mt`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one]`. Both sides reduce to the same expression. Rewrite using `[h1, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one]`. Rewrite using `[← e2]`. Conclude with `e`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set H := om (z, 1) G with hH`. Establish `hHth : IsThetaFunO ψ V W H` using `hW.om_pres _ _ hGth`. Establish `hHh : ∀ u, heisO ψ V W u H = om (z, 1) (heisO ψ V W (flipElt eT m • u) G)`. Introduce `u`. Rewrite using `[hW.om_heis z 1 _ G hGth, hmove]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzf : z ∈ GfC V` using `hz`. Establish `hHf : ∀ τ, IsFockVacAt (heisO ψ V W) θ τ (cplxO (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) (sW τ)) H`. Introduce `τ z'`. Establish `c1 : compAt θ τ (Formalism.L2.Theta.mt W (1 : GA D W)) = 1` using `GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ W (one_mem _) τ`. Establish `c2 : compAt θ τ (Formalism.L2.Theta.mt V z⁻¹) = 1` using `GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ V (inv_mem hzf) τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `GlobalTheory.OrientedHeis.om_dRho hW hP.1.inf z 1 τ z' hGth`. Establish `e2` using `GlobalTheory.OrientedHeis.om_dRho hW hP.1.inf z 1 τ (cplxO (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) (sW τ) z') hGth`. Rewrite `e1`, `e2` using `[c1, c2, Matrix.one_mul, Matrix.mul_one]`. Establish `h0` using `hGf τ z'`. Unfold `annih at h0 ⊢`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hH, ← e1, ← e2, ← map_smul, ← map_add, h0, map_zero]`. Establish `hHl : IsLatVac (heisO ψ V W) (latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) (fun _ => True)) H`. Use `⟨fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations. Rewrite using `[hHh, hfix2 u hu]`. Rewrite using `[hHh, hfixh e he u hu hh]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `eq_smul_vacuum hP.2.2.2.2.2.2.2.2.1 hP.1.inf (fun τ => GlobalTheory.SmoothVac.isCartanInv_one V hP.1.std τ) hP.2.2.2.2.2.2.2.1 hP.2.2.2.2.1 hP.2.2.2.2.2.1 hP.2.2.2.2.2.2.2.2 hHth hHl hHf`. Establish `hback : om (z⁻¹, 1) H = G`. Rewrite using `[hH, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, inv_mul_cancel, one_mul, ← Prod.one_eq_mk, map_one, Module.End.one_apply]`. Establish `hGc : G = c • om (z⁻¹, 1) f₀` using `by rw [← hback, hc, map_smul]`. Establish `hc0 : c ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `hne (by rw [← hG, hGc, zero_smul])`. Use `⟨c⁻¹, Y, hY1, hY2, hYc, ?_⟩` and prove the remaining obligations. Rewrite using `[← hG, hGc, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem moved_vacuum_eq_mean : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW sW f₀ → ∀ (T : Finset (Formalism.L2.DIV.Pl D.host.E)) (m : ℕ) (eT : AE D) (z : GA D V), IsIdemSum eT T → Odd m → Nat.Coprime m (GlobalTheory.Tow.badN D) → (∀ PP ∈ T, ((m : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) → z ∈ GfC V → Formalism.L2.Theta.mt V z = flipElt eT m • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) → ∃ (lam : ℂ) (Y : Finset (WO V W)), (∀ y ∈ Y, IsHalf (cA D eT) y ∧ m • y ∈ latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) (fun _ => True)) ∧ (∀ y ∈ Y, ∀ y' ∈ Y, y - y' ∈ latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) (fun _ => True) → y = y') ∧ Y.card = flipIdx V W T m ∧ om (z⁻¹, 1) f₀ = lam • ∑ y ∈ Y, heisO ψ V W y f₀ := by
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hP T m eT z hT hm hcop hmT hz hmt

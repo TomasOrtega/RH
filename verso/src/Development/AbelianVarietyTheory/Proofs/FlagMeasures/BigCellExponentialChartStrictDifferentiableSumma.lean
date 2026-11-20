@@ -14,7 +14,7 @@ def dg (k r : ℕ) (c : Fin r → ℂ) (j : Fin (2 * r + k + 1)) : ℂ :=
   else (star (c ⟨2 * r + k - j.val, by omega⟩))⁻¹
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal]`. Simplify using `only [wC, bigCell, dg]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bigCell_eq (k r : ℕ) (c : Fin r → ℂ) :
     bigCell k r c 1 = wC k r * Matrix.diagonal (dg k r c) := by
@@ -27,9 +27,9 @@ def sg (k r : ℕ) (j : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
   if j.val < r ∨ r + k < j.val then ⟨2 * r + k - j.val, by omega⟩ else j
 
 /- English proof (translation)
-Use `j.isLt` as an intermediate fact. Establish `hv : ∀ i : Fin (2 * r + k + 1), (sg k r i).val = if i.val < r ∨ r + k < i.val then 2 * r + k - i.val else i.val`. Apply the tactic sequence `intro i; simp only [sg]; split_ifs <;> rfl`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[hv, hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_sg (k r : ℕ) (j : Fin (2 * r + k + 1)) : sg k r (sg k r j) = j := by
   have := j.isLt
@@ -41,9 +41,9 @@ theorem sg_sg (k r : ℕ) (j : Fin (2 * r + k + 1)) : sg k r (sg k r j) = j := b
   split_ifs <;> omega
 
 /- English proof (translation)
-Use `j.isLt` as an intermediate fact. Use `i.isLt` as an intermediate fact. Establish `hv : (sg k r j).val = if j.val < r ∨ r + k < j.val then 2 * r + k - j.val else j.val`. Apply the tactic sequence `simp only [sg]; split_ifs <;> rfl`. Simplify using `only [wC, bigCell, esI, Matrix.one_apply, Fin.ext_iff, hv, star_one, inv_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wC_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     wC k r i j = if i = sg k r j then 1 else 0 := by
@@ -56,9 +56,9 @@ theorem wC_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, wC_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single (sg k r j)]`. Simplify using `[sg_sg]`. Introduce `b _ hb`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem wC_mul_wC (k r : ℕ) : wC k r * wC k r = 1 := by
   ext i j
@@ -74,17 +74,17 @@ def umL {m : ℕ} (S : Set (Matrix (Fin m) (Fin m) ℂ)) : lieE S →ₗ[ℝ] Ma
   map_smul' a X := by ext i j; apply Complex.ext <;> simp [um, unrealify]
 
 /- English proof (translation)
-Apply the tactic sequence `funext j; simp only [dg]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_one (k r : ℕ) : dg k r (fun a => 1 + (0 : Fin r → ℂ) a) = fun _ => 1 := by
   funext j; simp only [dg]; split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [dg]`. Use `split_ifs with h1 h2`. Use `fun_prop`. Use `fun_prop`. Apply `ContinuousOn.inv₀ (by fun_prop)` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite `hx` using `[mem_ball_zero_iff]`. Establish `h3` using `(norm_le_pi_norm x ⟨2 * r + k - j.val, by omega⟩).trans_lt hx`. Rewrite using `[star_ne_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: x ⟨2 * r + k - j.val, by omega⟩ = -1` using `by linear_combination h`. Rewrite `h3` using `[this]`. Simplify using `at h3`.
+A detailed English derivation is pending.
 -/
 theorem dg_contOn (k r : ℕ) (j : Fin (2 * r + k + 1)) :
     ContinuousOn (fun x : Fin r → ℂ => dg k r (fun a => 1 + x a) j) (Metric.ball 0 1) := by
@@ -103,11 +103,11 @@ theorem dg_contOn (k r : ℕ) (j : Fin (2 * r + k + 1)) :
     simp at h3
 
 /- English proof (translation)
-Simplify using `only [dg, torD, Matrix.diagonal_apply_eq]`. Distinguish the cases in `h1 : j.val < r`. Simplify using `only [dif_pos h1]`. Conclude with `⟨_, (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin r => ℂ) ⟨j.val, h1⟩).hasStrictFDerivAt.const_add 1, fun x => rfl⟩`. Distinguish the cases in `h2 : j.val ≤ r + k`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [dif_neg h1, dif_pos h2, dif_neg (not_lt.2 h2)]`. Conclude with `⟨0, hasStrictFDerivAt_const _ _, fun x => rfl⟩`. Simplify using `only [dif_neg h1, dif_neg h2, dif_pos (not_le.1 h2)] set a : Fin r := ⟨2 * r + k - j.val, by omega⟩`. Set `L : (Fin r → ℂ) →L[ℝ] ℂ` to `(Complex.conjCLE : ℂ →L[ℝ] ℂ).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin r => ℂ) a)`. Establish `hL : HasStrictFDerivAt (fun x : Fin r → ℂ => 1 + L x) L 0` using `L.hasStrictFDerivAt.const_add 1`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hi : HasStrictDerivAt (fun z : ℂ => z⁻¹) (-((1 + L 0) ^ 2)⁻¹) (1 + L 0)` using `hasStrictDerivAt_inv (by simp)`. Use `(hi.hasStrictFDerivAt.restrictScalars ℝ).comp (0 : Fin r → ℂ) hL` as an intermediate fact. Use `⟨_, this.congr_of_eventuallyEq (Filter.Eventually.of_forall fun x => ?_), fun x => ?_⟩` and prove the remaining obligations. Simplify using `[L]`. Simplify using `[L]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dg_deriv (k r : ℕ) (j : Fin (2 * r + k + 1)) :
     ∃ D : (Fin r → ℂ) →L[ℝ] ℂ,
@@ -134,13 +134,13 @@ theorem dg_deriv (k r : ℕ) (j : Fin (2 * r + k + 1)) :
       · simp [L]
 
 /- English proof (translation)
-Simplify using `only [torD, Matrix.diagonal_apply_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem torD_eq (k r : ℕ) (x : Fin r → ℂ) : torD k r x = Matrix.diagonal fun j => torD k r x j j := by
   simp only [torD, Matrix.diagonal_apply_eq]
 
 /- English proof (translation)
-The claim follows from `(umL S).map_zero`.
+A detailed English derivation is pending.
 -/
 theorem um_zero {m : ℕ} (S : Set (Matrix (Fin m) (Fin m) ℂ)) : um (0 : lieE S) = 0 := (umL S).map_zero
 
@@ -148,7 +148,7 @@ section
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Establish `h1 : HasStrictFDerivAt (NormedSpace.exp : Matrix (Fin m) (Fin m) ℂ → _) (1 : Matrix (Fin m) (Fin m) ℂ →L[ℝ] Matrix (Fin m) (Fin m) ℂ) (LinearMap.toContinuousLinearMap L 0)`. Rewrite using `[map_zero]`. Conclude with `hasStrictFDerivAt_exp_zero`. Conclude with `h1.comp 0 (LinearMap.toContinuousLinearMap L).hasStrictFDerivAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_um_deriv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {m : ℕ}
     (L : E →ₗ[ℝ] Matrix (Fin m) (Fin m) ℂ) :
@@ -160,7 +160,7 @@ theorem exp_um_deriv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [Fin
   exact h1.comp 0 (LinearMap.toContinuousLinearMap L).hasStrictFDerivAt
 
 /- English proof (translation)
-The claim follows from `NormedSpace.exp_continuous.comp (LinearMap.toContinuousLinearMap L).continuous`.
+A detailed English derivation is pending.
 -/
 theorem exp_um_cont {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {m : ℕ}
     (L : E →ₗ[ℝ] Matrix (Fin m) (Fin m) ℂ) :
@@ -168,9 +168,9 @@ theorem exp_um_cont {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [Fini
   NormedSpace.exp_continuous.comp (LinearMap.toContinuousLinearMap L).continuous
 
 /- English proof (translation)
-Use `choose D hD hD' using dg_deriv k r`. Establish `h1 : HasStrictFDerivAt (fun x : Fin r → ℂ => dg k r (fun a => 1 + x a)) (ContinuousLinearMap.pi D) 0` using `hasStrictFDerivAt_pi.2 hD`. Set `L : (Fin (2 * r + k + 1) → ℂ) →L[ℝ] Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ` to `LinearMap.toContinuousLinearMap (Matrix.diagonalLinearMap (Fin (2 * r + k + 1)) ℝ ℂ)`. Use `⟨_, L.hasStrictFDerivAt.comp 0 h1, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[torD_eq]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Matrix.diagonal (fun j => D j x) = _`. Simplify using `only [hD']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diag_deriv (k r : ℕ) :
     ∃ D : (Fin r → ℂ) →L[ℝ] Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ,
@@ -187,11 +187,11 @@ theorem diag_deriv (k r : ℕ) :
   simp only [hD']
 
 /- English proof (translation)
-Take `⟨D, hD, hD'⟩` from `diag_deriv k r`. Set `P : EE k r →L[ℝ] (Fin r → ℂ)` to `(ContinuousLinearMap.fst ℝ _ _).comp (ContinuousLinearMap.snd ℝ _ _)`. Establish `h2 : HasStrictFDerivAt (fun v : EE k r => Matrix.diagonal (dg k r (fun a => 1 + v.2.1 a))) (D.comp P) 0` using `HasStrictFDerivAt.comp (0 : EE k r) (f := P) (by rw [map_zero]; exact hD) P.hasStrictFDerivAt`. Establish `h1` using `exp_um_deriv (E := EE k r) (-((umL (Nset k r)).comp ((LinearMap.fst ℝ _ _).comp (LinearMap.fst ℝ _ _))))`. Establish `h3` using `exp_um_deriv (E := EE k r) ((umL (Formalism.FourierDecayAlt.B2.UWb k r)).comp ((LinearMap.snd ℝ _ _).comp (LinearMap.snd ℝ _ _)))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `exp_um_deriv (E := EE k r) ((umL (Nset k r)).comp ((LinearMap.snd ℝ _ _).comp (LinearMap.fst ℝ _ _)))`. Establish `h` using `(((h1.mul' (h2.const_mul (wC k r))).mul' h3).mul' h4).const_mul (wC k r)`. Use `⟨_, h.congr_of_eventuallyEq (Filter.Eventually.of_forall fun v => ?_), fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [chart, bigCell_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `e : dg k r (fun _ => 1) = fun _ => 1` using `by simpa using dg_one k r`. Simplify using `[e, P, dchart, umL, um_zero]`. Express the relevant statement in the definitionally equal form `wC k r * (wC k r * um v.1.2) + (wC k r * (wC k r * um v.2.2) + (wC k r * (wC k r * D v.2.1) + wC k r * (-um v.1.1 * wC k r))) = _`. Simplify using `only [hD', ← mul_assoc, wC_mul_wC, one_mul, mul_neg, neg_mul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem chart_deriv_mat (k r : ℕ) :
     ∃ D : EE k r →L[ℝ] Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ,
@@ -219,7 +219,7 @@ theorem chart_deriv_mat (k r : ℕ) :
     abel
 
 /- English proof (translation)
-Take `⟨D, hD, hD'⟩` from `chart_deriv_mat k r`. Set `L : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Use `⟨_, L.hasStrictFDerivAt.comp 0 hD, fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `D v i j = _`. Rewrite using `[hD']`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_deriv (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     ∃ D : EE k r →L[ℝ] ℂ, HasStrictFDerivAt (fun v => chart k r v i j) D 0 ∧
@@ -232,11 +232,11 @@ theorem chart_deriv (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
   rw [hD']
 
 /- English proof (translation)
-Establish `h1` using `exp_um_cont (E := EE k r) (-((umL (Nset k r)).comp ((LinearMap.fst ℝ _ _).comp (LinearMap.fst ℝ _ _))))`. Establish `h3` using `exp_um_cont (E := EE k r) ((umL (Formalism.FourierDecayAlt.B2.UWb k r)).comp ((LinearMap.snd ℝ _ _).comp (LinearMap.snd ℝ _ _)))`. Establish `h4` using `exp_um_cont (E := EE k r) ((umL (Nset k r)).comp ((LinearMap.snd ℝ _ _).comp (LinearMap.fst ℝ _ _)))`. Establish `h5 : ContinuousOn (fun x : Fin r → ℂ => dg k r (fun a => 1 + x a)) (Metric.ball 0 1)` using `continuousOn_pi.2 (dg_contOn k r)`. Establish `h6 : ContinuousOn (fun v : EE k r => dg k r (fun a => 1 + v.2.1 a)) (Metric.ball 0 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h5.comp (f := fun v : EE k r => v.2.1) (by fun_prop) fun v hv => ?_` and prove the remaining obligations. Rewrite `hv`, the goal using `[mem_ball_zero_iff]`. Conclude with `((norm_fst_le v.2).trans (norm_snd_le v)).trans_lt hv`. Establish `h2 : ContinuousOn (fun v : EE k r => Matrix.diagonal (dg k r (fun a => 1 + v.2.1 a))) (Metric.ball 0 1)` using `(Continuous.matrix_diagonal continuous_id).comp_continuousOn h6`. Establish `h` using `(continuousOn_const (c := wC k r)).mul (((h1.continuousOn.mul ((continuousOn_const (c := wC k r)).mul h2)).mul h3.continuousOn).mul h4.continuousOn)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.congr fun v _ => ?_` and prove the remaining obligations. Simplify using `only [chart, bigCell_eq]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chart_contOn (k r : ℕ) : ContinuousOn (chart k r) (Metric.ball 0 1) := by
   have h1 := exp_um_cont (E := EE k r)
@@ -264,14 +264,14 @@ theorem chart_contOn (k r : ℕ) : ContinuousOn (chart k r) (Metric.ball 0 1) :=
 end
 
 /- English proof (translation)
-Establish `e : dg k r (fun _ => 1) = fun _ => 1` using `by simpa using dg_one k r`. Simplify using `[chart, bigCell_eq, um_zero, e, wC_mul_wC]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem chart_zero (k r : ℕ) : chart k r 0 = 1 := by
   have e : dg k r (fun _ => 1) = fun _ => 1 := by simpa using dg_one k r
   simp [chart, bigCell_eq, um_zero, e, wC_mul_wC]
 
 /- English proof (translation)
-Introduce `k r` and use `⟨chart_zero k r, chart_contOn k r, chart_deriv k r⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem chart_strict : ∀ (k r : ℕ), chart k r 0 = 1 ∧ ContinuousOn (chart k r) (Metric.ball 0 1) ∧
     ∀ i j, ∃ D : EE k r →L[ℝ] ℂ, HasStrictFDerivAt (fun v => chart k r v i j) D 0 ∧

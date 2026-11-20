@@ -15,13 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HeckePairCount
 
 /- English proof (translation)
-Take `⟨θ, hL, hm, hi, hK, hdc⟩` from `hθ`. Distinguish the cases in `hc : ∃ z ∈ L, (z : G ⧸ J) = c`. Take `⟨z, hz, rfl⟩` from `hc`. Establish `key : ∀ C E : Finset G, (∀ a ∈ C, a ∈ L) → (∀ a ∈ E, a ∈ L) → (C ×ˢ E).filter (fun p => ((p.1 * p.2 : G) : G ⧸ J) = (z : G ⧸ J)) = (C ×ˢ E).filter (fun p => (z : G ⧸ (J ⊓ L)) = ((p.1 * p.2 : G) : G ⧸ (J ⊓ L)))`. Introduce `C E hC hE`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.filter_congr fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.mem_product]`. Rewrite using `[eq_comm, QuotientGroup.eq, QuotientGroup.eq]`. Conclude with `⟨fun h => ⟨h, L.mul_mem (L.inv_mem hz) (L.mul_mem (hC _ hp.1) (hE _ hp.2))⟩, fun h => h.1⟩`. Rewrite using `[key A B hAL hBL, key B A hBL hAL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `GlobalTheory.DoubleCosetComm.card_pairs (A := A) hB hAL hBL hz`. Establish `e2` using `GlobalTheory.DoubleCosetComm.card_pairs (A := B) hA hBL hAL hz`. Establish `e3` using `le_antisymm (GlobalTheory.DoubleCosetComm.card_conv_le hm hi hK hL hdc hA hB hAL hz) (GlobalTheory.DoubleCosetComm.card_conv_le hm hi hK hL hdc hB hA hBL hz)`. Conclude with `e1.trans (e3.trans e2.symm)`. Establish `key : ∀ C E : Finset G, (∀ a ∈ C, a ∈ L) → (∀ a ∈ E, a ∈ L) → (C ×ˢ E).filter (fun p => ((p.1 * p.2 : G) : G ⧸ J) = c) = ∅`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `C E hC hE`. Use `Finset.filter_eq_empty_iff.2 fun p hp h => hc ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.mem_product]`. Conclude with `⟨_, L.mul_mem (hC _ hp.1) (hE _ hp.2), h⟩`. Rewrite using `[key A B hAL hBL, key B A hBL hAL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_pairs_eq {G : Type} [Group G] (J L : Subgroup G) (x y : G) (A B : Finset G)
     (hθ : ∃ θ : G → G, (∀ g ∈ L, θ g ∈ L) ∧ (∀ x ∈ L, ∀ y ∈ L, θ (x * y) = θ y * θ x) ∧ (∀ x ∈ L, θ (θ x) = x) ∧
@@ -57,13 +57,11 @@ theorem card_pairs_eq {G : Type} [Group G] (J L : Subgroup G) (x y : G) (A B : F
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use `(hx hi).elim fun α h0 => h0.1.elim fun e h1 => h1.elim fun ϖ h2 => ?_` and prove the remaining obligations. Establish `he` using `h2.1`. Establish `hsp` using `(hok _).1 i.1.2`. Establish `hl` using `GlobalTheory.SplitHeckeAdj.local_group V β Λ L hβ (pl i.1) e he fun PP h => GlobalTheory.SplitHeckeAdj.off_of_splitOff hsp PP (hS PP h)`. Use `hl.elim fun Lc hl => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `l1` using `hl.1`. Establish `l4` using `hl.2.2.2.1`. Establish `hm : ∀ x, isLocEnv V pl ok i x → x ∈ Lc` using `fun x hx => by`. Use `(GlobalTheory.SplitHeckeAdj.loc_supp V hx he).elim fun g hg => ?_` and prove the remaining obligations. Rewrite using `[← hg.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `l1 g hg.1`. Establish `hm' : ∀ x, isLocEnv V pl ok i' x → x ∈ Lc` using `fun x hx => by`. Use `hm x (GlobalTheory.FrameProdLoc.isLocEnv_of_mem V pl ok i x e he ?_)` and prove the remaining obligations. Rewrite using `[hv]`. Conclude with `GlobalTheory.FrameProdLoc.mem_locGrp_of_isLocEnv V pl ok i' x hx`.
-
-Conclude with `card_pairs_eq (levEnv V β L).J Lc x y A B l4 (fun a ha => hm a (hA a ha)) (fun a ha => hm' a (hB a ha)) dA dB c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem side_count {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))
     (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
@@ -98,9 +96,9 @@ theorem side_count {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (β : GL (Fin 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p j t i i' h1 h2 h1' h2' hv c`. Establish `hb` using `p.charW.base`. Use `hb.fam.tie.elim fun gramR h3 => h3.elim fun c0R h4 => h4.elim fun c0L tie => ?_` and prove the remaining obligations. Use `(hb.lev.βV j).elim fun c' hc => ?_` and prove the remaining obligations. Rewrite `hc` using `[one_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `main` using `side_count (Vc D j) (p.R.βV j) (p.R.ΛV j) (p.R.datVt j t) hc p.R.pl (p.P.A3.A.ok t) _ (tie.ok t) (fun PP hP => hP.elim (fun h1 => Or.inl (hb.fam.Sb h1)) Or.inr) i i' hv h2 ((p.R.B.L j t).hecke.hx i) ((p.R.B.L j t).hecke.hx i') (hkA p j t i) (hkA p j t i') ((p.R.B.L j t).hecke.hx_ …`. Conclude with `main`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_pairs_comm : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T) (i i' : (blk p j t).Pl × ℕ), 1 ≤ i.2 → i.2 ≤ (Vc D j).rank → 1 ≤ i'.2 → i'.2 ≤ (Vc D j).rank → (plOf p j t i.1).under (𝓞 D.host.F) = (plOf p j t i'.1).under (𝓞 D.host.F) → ∀ c : Bridge.Gf (Vc D j) ⧸ levJ p j t, ((hkA p j t i ×ˢ hkA p j t i').filter (fun x => ((x.1 * x.2 : Bridge.Gf (Vc D j)) : Bridge.Gf (Vc D j) ⧸ levJ p j t) = c)).card = ((hkA p j t i' ×ˢ hkA p j t i).filter (fun x => ((x.1 * x.2 : Bridge.Gf (Vc D j)) : Bridge.Gf (Vc D j) ⧸ levJ p j t) = c)).card := by
   intro D L hT Gi Gl Kc Y cX ex Csz p j t i i' h1 h2 h1' h2' hv c

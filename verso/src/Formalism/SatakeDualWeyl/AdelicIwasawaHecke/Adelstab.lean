@@ -22,7 +22,7 @@ def adelstabT : E ⊗[F] FiniteAdeleRing (𝓞 F) F →ₗ[F] FiniteAdeleRing (�
   (TensorProduct.lid F _).toLinearMap ∘ₗ (Algebra.trace F E).rTensor _
 
 /- English proof (translation)
-Simplify using `only [adelstabT, LinearMap.comp_apply, LinearMap.rTensor_tmul, LinearEquiv.coe_coe, TensorProduct.lid_tmul, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adelstabT_tmul (e : E) (a : FiniteAdeleRing (𝓞 F) F) :
     adelstabT F E (e ⊗ₜ a) = algebraMap F _ (Algebra.trace F E e) * a := by
@@ -30,16 +30,16 @@ theorem adelstabT_tmul (e : E) (a : FiniteAdeleRing (𝓞 F) F) :
     TensorProduct.lid_tmul, Algebra.smul_def]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨_, Algebra.isIntegral_trace (R := ℤ) (RingOfIntegers.isIntegral_coe b)⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem adelstab_trace_int (b : 𝓞 E) :
     ∃ t : 𝓞 F, algebraMap (𝓞 F) F t = Algebra.trace F E (algebraMap (𝓞 E) E b) :=
   ⟨⟨_, Algebra.isIntegral_trace (R := ℤ) (RingOfIntegers.isIntegral_coe b)⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨r, hr, rfl⟩` from `levelaf_decomp (fun j => Module.finBasis ℤ (𝓞 E) j) (Module.Basis.span_eq _) hs`. Rewrite using `[map_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[adelstabT_tmul]`. Take `⟨t, ht⟩` from `adelstab_trace_int (F := F) (Module.finBasis ℤ (𝓞 E) j)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← ht, ← IsScalarTower.algebraMap_apply]`. Conclude with `mul_mem (levelaf_int_mem t) (hr j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelstabT_mem {s : 𝒜} (hs : s ∈ 𝒮) : adelstabT F E s ∈ intAd F := by
   obtain ⟨r, hr, rfl⟩ := levelaf_decomp (fun j => Module.finBasis ℤ (𝓞 E) j)
@@ -52,7 +52,7 @@ theorem adelstabT_mem {s : 𝒜} (hs : s ∈ 𝒮) : adelstabT F E s ∈ intAd F
   exact mul_mem (levelaf_int_mem t) (hr j)
 
 /- English proof (translation)
-Use `HeightOneSpectrum.mem_integers_of_valuation_le_one F k fun v => ?_` and prove the remaining obligations. Establish `hv : algebraMap F (v.adicCompletion F) k ∈ v.adicCompletionIntegers F` using `h v`. Rewrite `hv` using `[HeightOneSpectrum.mem_adicCompletionIntegers, levelaf_valued_algebraMap]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem adelstab_F_int (k : F) (h : algebraMap F (FiniteAdeleRing (𝓞 F) F) k ∈ intAd F) :
     k ∈ (algebraMap (𝓞 F) F).range := by
@@ -61,16 +61,16 @@ theorem adelstab_F_int (k : F) (h : algebraMap F (FiniteAdeleRing (𝓞 F) F) k 
   rwa [HeightOneSpectrum.mem_adicCompletionIntegers, levelaf_valued_algebraMap] at hv
 
 /- English proof (translation)
-The claim follows from `levelaf_tmul_mem b (one_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem adelstab_incl_int (b : 𝓞 E) :
     inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E b) ∈ 𝒮 :=
   levelaf_tmul_mem b (one_mem _)
 
 /- English proof (translation)
-Apply `adelstab_F_int` to reduce the goal to its premises. Establish `h1 : inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (e * algebraMap (𝓞 E) E b) ∈ 𝒮 := by`. Rewrite using `[map_mul]`. Conclude with `mul_mem he (adelstab_incl_int b)`. Use `adelstabT_mem h1` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[inclE, adelstabT_tmul]`.
+A detailed English derivation is pending.
 -/
 theorem adelstab_tr_mem (e : E) (he : inclE (F := F) (FiniteAdeleRing (𝓞 F) F) e ∈ 𝒮) (b : 𝓞 E) :
     Algebra.trace F E (e * algebraMap (𝓞 E) E b) ∈ (algebraMap (𝓞 F) F).range := by
@@ -81,11 +81,9 @@ theorem adelstab_tr_mem (e : E) (he : inclE (F := F) (FiniteAdeleRing (𝓞 F) F
   simpa [inclE, adelstabT_tmul] using this
 
 /- English proof (translation)
-Use `set β' := (Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) β`. Rewrite using `[← β'.sum_repr (d * e)]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply]`. Take `⟨t, ht⟩` from `he ⟨d * β i, hd i⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Algebra.trace F E (d * e * β i) = algebraMap (𝓞 F) F t`. Rewrite using `[ht]`. Use `congr 1`. Use `show _ = e * (d * β i)`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelstab_dual {ι : Type} [Fintype ι] [DecidableEq ι] (β : Module.Basis ι F E) (d : E)
     (hd : ∀ i, IsIntegral ℤ (d * β i)) (e : E)
@@ -114,7 +112,7 @@ local notation "𝒮" => tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E)
 local notation "ι" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-Simplify using `only [levelafC, inclE]`. Use `first`. Consider the case `(rw [Algebra.TensorProduct.includeLeftRingHom_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E, IsScalarTower.algebraMap_apply (𝓞 F) F (FiniteAdeleRing (𝓞 F) F), Algebra.algebraMap_eq_smul_one (A := E), Algebra.algebraMap_eq_smul_one (A := FiniteAdeleRing (𝓞 F) F), TensorProduct.s …`. Consider the case `simp [Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem adelstab_incl_C (d : 𝓞 F) : ι (algebraMap (𝓞 F) E d) = levelafC E d := by
   simp only [levelafC, inclE]
@@ -127,9 +125,9 @@ theorem adelstab_incl_C (d : 𝓞 F) : ι (algebraMap (𝓞 F) E d) = levelafC E
       TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Introduce `h`. Apply `hd` to reduce the goal to its premises. Use `first`. Consider the case `exact (FaithfulSMul.algebraMap_injective (𝓞 F) E) (h.trans (map_zero _).symm)`. Consider the case `(rw [IsScalarTower.algebraMap_apply (𝓞 F) F E, map_eq_zero_iff _ (algebraMap F E).injective] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `IsFractionRing.injective (𝓞 F) F (h.trans (map_zero _).symm))`. Consider the case `simpa using h`.
+A detailed English derivation is pending.
 -/
 theorem adelstab_algebraMap_ne_zero (d : 𝓞 F) (hd : d ≠ 0) : algebraMap (𝓞 F) E d ≠ 0 := by
   intro h
@@ -164,15 +162,15 @@ def adelstabLam (G : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (L : Submodule 
     exact L.smul_mem ⟨_, adelstab_incl_int a⟩ hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem adelstab_mem_iff (G : GL n 𝒜) (L : Submodule 𝒮 (n → 𝒜)) (x : n → E) :
     x ∈ adelstabLam F E G L ↔ ((G⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ (fun i => ι (x i)) ∈ L := Iff.rfl
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[adelstab_mem_iff, adelstab_mem_iff]`. Establish `key : (fun i => ι (((γ₀ : Matrix n n E) *ᵥ x) i)) = ((bc ι γ₀ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ (fun i => ι (x i))`. Use extensionality with `i`. Rewrite using `[RingHom.map_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[key, hM (((G⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ (fun i => ι (x i))), mulVec_mulVec, mulVec_mulVec]`. Simplify using `only [Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[← Units.val_mul G G⁻¹, mul_inv_cancel, Units.val_one, Matrix.mul_one]`.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem adelstab_stab (G : GL n 𝒜) (L : Submodule 𝒮 (n → 𝒜)) (γ₀ : GL n E)
     (hM : G⁻¹ * bc ι γ₀ * G ∈ stabGL L) : γ₀ ∈ stabGL (adelstabLam F E G L) := by
@@ -186,15 +184,15 @@ theorem adelstab_stab (G : GL n 𝒜) (L : Submodule 𝒮 (n → 𝒜)) (γ₀ :
   rw [← Units.val_mul G G⁻¹, mul_inv_cancel, Units.val_one, Matrix.mul_one]
 
 /- English proof (translation)
-Use `set u : E := algebraMap (𝓞 F) E (c₁ * d)`. Establish `hu : u ≠ 0` using `adelstab_algebraMap_ne_zero _ (mul_ne_zero hc₁ hd)`. Establish `hk : ∀ k, Pi.single k u ∈ adelstabLam F E G L`. Introduce `k`. Rewrite using `[adelstab_mem_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (fun i => ι ((Pi.single k u : n → E) i)) = Pi.single k (ι u)`. Use extensionality with `i`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Rewrite using `[this, mulVec_single]`. Use `hL (fun i => levelafC E d * ((G⁻¹ : GL n 𝒜) : Matrix n n 𝒜) i k) (fun i => hG i k) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Simplify using `only [u, adelstab_incl_C, levelafC_mul, Pi.smul_apply, op_smul_eq_mul, Matrix.col_apply]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq_top_iff, ← (Pi.basisFun E n).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `: (Pi.basisFun E n) k = u⁻¹ • Pi.single k u`. Rewrite using `[Pi.basisFun_apply, ← Pi.single_smul', smul_eq_mul, inv_mul_cancel₀ hu]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (hk k))`.
+A detailed English derivation is pending.
 -/
 theorem adelstab_span (G : GL n 𝒜) (L : Submodule 𝒮 (n → 𝒜)) (c₁ d : 𝓞 F) (hc₁ : c₁ ≠ 0)
     (hd : d ≠ 0) (hL : ∀ v : n → 𝒜, (∀ i, v i ∈ 𝒮) → (fun i => levelafC E c₁ * v i) ∈ L)
@@ -234,23 +232,19 @@ local notation "𝒮" => tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E)
 local notation "ι" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-Use `set β := Module.finBasis F E`. Take `⟨d₀, hd₀, -, hd₀i⟩` from `sf_den (fun i => β i)`. Use `set β' := (Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) β`. Use `set u : E := algebraMap (𝓞 F) E (d * c₂)`. Establish `hu : u ≠ 0` using `adelstab_algebraMap_ne_zero _ (mul_ne_zero hd hc₂)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set q : E := (d₀ * u)⁻¹`. Use `set W : Submodule (𝓞 F) (n → E) := Submodule.span (𝓞 F) (Set.range fun p : n × Fin (Module.finrank F E) => (Pi.single p.1 (q * β' p.2) : n → E))`. Establish `hle : (adelstabLam F E G L).restrictScalars (𝓞 F) ≤ W`. Introduce `x hx`. Establish `hw` using `hL _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set w := ((G⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ (fun i => ι (x i))`. Establish `hx' : (fun i => ι (x i)) = (G : Matrix n n 𝒜) *ᵥ w`. Rewrite using `[mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]`. Establish `hj : ∀ j, ι (u * x j) ∈ 𝒮`. Introduce `j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, adelstab_incl_C, levelafC_mul, congrFun hx' j]`. Simplify using `only [mulVec, dotProduct, Finset.mul_sum]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Establish `: levelafC E d * levelafC E c₂ * ((G : Matrix n n 𝒜) j k * w k) = (levelafC E d * (G : Matrix n n 𝒜) j k) * (levelafC E c₂ * w k)` using `by ring`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_mem (hG j k) (hw k)`. Establish `hmem : ∀ j, d₀ * (u * x j) ∈ Submodule.span (𝓞 F) (Set.range β')` using `fun j => adelstab_dual β d₀ hd₀i _ (adelstab_tr_mem _ (hj j))`. Rewrite using `[← Finset.univ_sum_single x]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Set `Lj : E →ₗ[𝓞 F] (n → E)` to `(LinearMap.single (𝓞 F) (fun _ => E) j) ∘ₗ ((LinearMap.mulLeft F q).restrictScalars (𝓞 F))`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Lj (d₀ * (u * x j)) = Pi.single j (x j)`. Establish `hd0 : d₀ * u ≠ 0` using `mul_ne_zero hd₀ hu`. Simplify using `only [Lj, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_restrictScalars, LinearMap.mulLeft_apply, LinearMap.coe_single, q]`. Use `congr 1`. Rewrite using `[← mul_assoc, ← mul_assoc, mul_assoc _ d₀ u, inv_mul_cancel₀ hd0, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Establish `h2` using `Submodule.mem_map_of_mem (f := Lj) (hmem j)`. Rewrite `h2` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`.
-
-Conclude with `⟨(j, i), by simp [Lj]⟩`. Establish `: Module.Finite (𝓞 F) W` using `Module.Finite.span_of_finite _ (Set.finite_range _)`. Establish `: IsNoetherian (𝓞 F) W` using `inferInstance`. Establish `: IsNoetherian (𝓞 F) ((adelstabLam F E G L).restrictScalars (𝓞 F))` using `isNoetherian_of_le hle`. Establish `: Module.Finite (𝓞 F) (adelstabLam F E G L)` using `inferInstanceAs (Module.Finite (𝓞 F) ((adelstabLam F E G L).restrictScalars (𝓞 F)))`.
-
-Conclude with `Module.Finite.of_restrictScalars_finite (𝓞 F) (𝓞 E) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adelstab_finite (G : GL n 𝒜) (L : Submodule 𝒮 (n → 𝒜)) (c₂ d : 𝓞 F) (hc₂ : c₂ ≠ 0)
     (hd : d ≠ 0) (hL : ∀ v ∈ L, ∀ i, levelafC E c₂ * v i ∈ 𝒮)
@@ -317,9 +311,9 @@ local notation "𝒮" => tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E)
 local notation "ι" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-Introduce `i j`. Take `⟨M, hM⟩` from `h`. Establish `h'` using `congrFun (congrFun hM i) j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul] at h'`. Rewrite using `[← hc, ← h']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(M i j).2`.
+A detailed English derivation is pending.
 -/
 theorem adelstab_entries (G : GL n 𝒜) (d : 𝓞 F) (c : 𝒮) (hc : (c : 𝒜) = levelafC E d)
     (h : (c : 𝒜) • (G : Matrix n n 𝒜) ∈ (RingHom.mapMatrix (m := n) (𝒮).subtype).range) :
@@ -332,15 +326,15 @@ theorem adelstab_entries (G : GL n 𝒜) (d : 𝓞 F) (c : 𝒮) (hc : (c : 𝒜
   exact (M i j).2
 
 /- English proof (translation)
-Use `set G : GL n 𝒜 := (g : GL n 𝒜)`. Take `⟨d, hd, c, hc, hcg, hcgi⟩` from `levelaf_exists_denom (E := E) G`. Establish `hG` using `adelstab_entries G d c hc hcg`. Establish `hGi` using `adelstab_entries G⁻¹ d c hc hcgi`. Establish `hF : Finite (level (σ : E →+* E) J (adelstabLam F E G L))` using `UG_stabilizer_finite F E n σ J hτ hH hdet hdef _ (adelstab_finite G L c₂ d hc₂ hd hL₂ hG) (adelstab_span G L c₁ d hc₁ hd hL₁ hGi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrat : ∀ γ : stabAt ((ratPts σ J (FiniteAdeleRing (𝓞 F) F)).subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F))) (K.subgroupOf (UPts σ J (FiniteAdeleRing (𝓞 F) F))) g, ∃ γ₀ : GL n E, γ₀ ∈ UJ (σ : E →+* E) J ∧ bc ι γ₀ = (((γ : _) : _) : GL n 𝒜)`. Introduce `γ`. Establish `h1` using `Subgroup.mem_subgroupOf.1 γ.1.2`. Take `⟨γ₀, h2, h3⟩` from `Subgroup.mem_map.1 h1`. Conclude with `⟨γ₀, h2, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose f hfU hfeq using hrat`. Establish `hmem : ∀ γ, f γ ∈ level (σ : E →+* E) J (adelstabLam F E G L)`. Introduce `γ`. Use `Subgroup.mem_inf.2 ⟨hfU γ, adelstab_stab G L (f γ) (hK ?_)⟩` and prove the remaining obligations. Establish `h1` using `Subgroup.mem_subgroupOf.1 γ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv] at h1`. Rewrite using `[hfeq γ]`. Conclude with `h1`. Use `Finite.of_injective (fun γ => (⟨f γ, hmem γ⟩ : level (σ : E →+* E) J (adelstabLam F E G L))) ?_` and prove the remaining obligations. Introduce `γ γ' h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h' : bc ι (f γ) = bc ι (f γ')`. Use `congrArg (fun z : level (σ : E →+* E) J (adelstabLam F E G L) => bc ι (z : GL n E)) h` as an intermediate fact. Simplify using `using this`. Rewrite `h'` using `[hfeq, hfeq]`. Conclude with `Subtype.ext (Subtype.ext (Subtype.ext h'))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelstab_core (σ : E →ₐ[F] E) (J : Matrix n n E)
     (hτ : ∀ τ : E →+* ℂ, τ.comp (σ : E →+* E) = (starRingEnd ℂ).comp τ)
@@ -384,7 +378,7 @@ theorem adelstab_core (σ : E →ₐ[F] E) (J : Matrix n n E)
   exact Subtype.ext (Subtype.ext (Subtype.ext h'))
 
 /- English proof (translation)
-Simplify using `[levelafC]`. Use `first`. Consider the case `rfl`. Consider the case `exact Algebra.TensorProduct.one_def.symm`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem adelstab_levelafC_one : levelafC (F := F) E 1 = 1 := by
   simp [levelafC]
@@ -393,7 +387,7 @@ theorem adelstab_levelafC_one : levelafC (F := F) E 1 = 1 := by
   | exact Algebra.TensorProduct.one_def.symm
 
 /- English proof (translation)
-Simplify using `only [stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, LinearMap.mem_range]`. Use `forall_congr' fun i => ⟨?_, fun h => ⟨⟨v i, h⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelstab_mem_stdLat (v : n → 𝒜) : v ∈ stdLat (n := n) (A := 𝒜) ↥𝒮 ↔ ∀ i, v i ∈ 𝒮 := by
   simp only [stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, LinearMap.mem_range]
@@ -405,9 +399,9 @@ theorem adelstab_mem_stdLat (v : n → 𝒜) : v ∈ stdLat (n := n) (A := 𝒜)
 end Main
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n _ _ σ J hτ hH hdet hdef g`. Use `adelstab_core σ J hτ hH hdet hdef _ (levelAf σ J) inf_le_right 1 1 one_ne_zero one_ne_zero ?_ ?_ g` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[adelstab_mem_stdLat]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[adelstab_levelafC_one, one_mul]`. Conclude with `hv i`. Introduce `v hv i`. Rewrite using `[adelstab_levelafC_one, one_mul]`. Conclude with `(adelstab_mem_stdLat v).1 hv i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelic_stabilizer_finite_holds : Formalism.UG.AdelicStabFinite := by
   intro F E _ _ _ _ _ n _ _ σ J hτ hH hdet hdef g

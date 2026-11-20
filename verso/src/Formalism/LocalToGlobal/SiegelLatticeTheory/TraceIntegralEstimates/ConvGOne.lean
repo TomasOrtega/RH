@@ -32,11 +32,11 @@ variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
   ‖⟪X.B.σ v (uMat a) (X.B.w v), X.B.σ v (uMat b) (X.B.w v)⟫_ℂ‖ₑ * ‖X.Wloc w v b‖ₑ
 
 /- English proof (translation)
-Establish `hU` using `(X.ds v).2.2.1`. Establish `hcont : Continuous (fun a : Formalism.REAL.UJ (X.B.I.ε v) => X.B.σ v (uMat a) (X.B.w v))`. Use `(hU.2.2 (X.B.w v)).comp_continuous ?_ ?_` and prove the remaining obligations. Conclude with `Units.continuous_val.comp continuous_subtype_val`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `a.2`. Establish `hW : Continuous (X.Wloc w v)` using `X.Wloc_cont w v`. Establish `heq : (fun p : Formalism.REAL.UJ (X.B.I.ε v) × Formalism.REAL.UJ (X.B.I.ε v) => hv X v p.1 p.2 w) = fun p => ‖⟪X.B.σ v (uMat p.1) (X.B.w v), X.B.σ v (uMat p.2) (X.B.w v)⟫_ℂ‖ₑ * ‖X.Wloc w v p.2‖ₑ`. Use function extensionality and compare the values at `p`. Unfold `hv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[heq]`. Conclude with `((hcont.comp continuous_fst).inner (hcont.comp continuous_snd)).enorm.measurable.mul (hW.comp continuous_snd).enorm.measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_hv (w : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     Measurable (fun p : Formalism.REAL.UJ (X.B.I.ε v) × Formalism.REAL.UJ (X.B.I.ε v) => hv X v p.1 p.2 w) := by
@@ -56,16 +56,16 @@ theorem measurable_hv (w : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     (hW.comp continuous_snd).enorm.measurable
 
 /- English proof (translation)
-Simplify using `only [Kv, hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Kv_eq (w : D.what₂.Word) (v : InfinitePlace X.B.I.F) (a : Formalism.REAL.UJ (X.B.I.ε v)) :
     Kv X w v a = ‖X.Wloc w v a‖ₑ * ∫⁻ b, hv X v a b w ∂(Formalism.REAL.muG (X.B.I.ε v)) := by
   simp only [Kv, hv]
 
 /- English proof (translation)
-Establish `h1 : Measurable (fun a => ∫⁻ b, hv X v a b w ∂(Formalism.REAL.muG (X.B.I.ε v)))` using `(measurable_hv X w v).lintegral_prod_right'`. Establish `h2 : Measurable (fun a => ‖X.Wloc w v a‖ₑ)` using `(X.Wloc_cont w v).enorm.measurable`. Establish `heq : Kv X w v = fun a => ‖X.Wloc w v a‖ₑ * ∫⁻ b, hv X v a b w ∂(Formalism.REAL.muG (X.B.I.ε v))`. Use function extensionality and compare the values at `(Kv_eq X w v)`. Rewrite using `[heq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.mul h1`.
+A detailed English derivation is pending.
 -/
 theorem measurable_Kv (w : D.what₂.Word) (v : InfinitePlace X.B.I.F) : Measurable (Kv X w v) := by
   have h1 : Measurable (fun a => ∫⁻ b, hv X v a b w ∂(Formalism.REAL.muG (X.B.I.ε v))) :=
@@ -77,9 +77,9 @@ theorem measurable_Kv (w : D.what₂.Word) (v : InfinitePlace X.B.I.F) : Measura
   exact h2.mul h1
 
 /- English proof (translation)
-Take `⟨hi, hσ, -⟩` from `X.B.tens_spec`. Rewrite using `[hσ, hσ, hi, Formalism.L2.SG.Pf.WuDec.enorm_Wu]`. Establish `hprod : ‖∏ v, ⟪X.B.σ v (uMat (z v)) (X.B.w v), X.B.σ v (uMat (y v)) (X.B.w v)⟫_ℂ‖ₑ = ∏ v, ‖⟪X.B.σ v (uMat (z v)) (X.B.w v), X.B.σ v (uMat (y v)) (X.B.w v)⟫_ℂ‖ₑ`. Simplify using `only [enorm_eq_nnnorm, nnnorm_prod, ENNReal.coe_finset_prod]`. Rewrite using `[hprod, ← Finset.prod_mul_distrib]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Unfold `hv`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem H_eq (w : D.what₂.Word) (z y : X.B.I.Ginf) :
     ‖⟪X.B.σs z (X.B.tens X.B.w), X.B.σs y (X.B.tens X.B.w)⟫_ℂ‖ₑ * ‖X.Wu w y‖ₑ = ∏ v, hv X v (z v) (y v) w := by
@@ -94,9 +94,9 @@ theorem H_eq (w : D.what₂.Word) (z y : X.B.I.Ginf) :
   rfl
 
 /- English proof (translation)
-Establish `hmu : Formalism.L2.SG.ProjRows.muInf X.B.I = Measure.pi fun v => Formalism.REAL.muG (X.B.I.ε v)` using `rfl`. Establish `hm : ∀ v, Measurable (fun b => hv X v (z v) b w)`. Introduce `v`. Establish `h` using `measurable_hv X w v`. Conclude with `h.comp (measurable_const.prodMk measurable_id)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[H_eq X w z]`. Rewrite using `[hmu, Formalism.L2.SG.RealObj.InfCut.ProductExactness.PiM.lintegral_pi_prod _ (fun v b => hv X v (z v) b w) hm, Formalism.L2.SG.Pf.WuDec.enorm_Wu, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun v _ => (Kv_eq X w v (z v)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem K_eq (w : D.what₂.Word) (z : X.B.I.Ginf) :
     ‖X.Wu w z‖ₑ * ∫⁻ y, ‖⟪X.B.σs z (X.B.tens X.B.w), X.B.σs y (X.B.tens X.B.w)⟫_ℂ‖ₑ * ‖X.Wu w y‖ₑ
@@ -112,15 +112,13 @@ theorem K_eq (w : D.what₂.Word) (z : X.B.I.Ginf) :
   exact Finset.prod_congr rfl fun v _ => (Kv_eq X w v (z v)).symm
 
 /- English proof (translation)
-Establish `hg : m * h ∈ Formalism.L2.SG.Pf.WuDec.Sloc X w v` using `Formalism.L2.SG.Pf.WuDec.mul_mem_Sloc (X := X) (u := w) v (Formalism.L2.SG.Pf.WuDec.Nloc_sub (X := X) (u := w) v hm) (Formalism.L2.SG.Pf.WuDec.Hloc_sub (X := X) (u := w) v hh)`. Use `set g := m * h with hgdef`. Establish `hn : ∀ y, ‖X.Wloc w v (g * y)‖ₑ = ‖X.Wloc w v y‖ₑ` using `fun y => by`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, Formalism.L2.SG.Pf.WuDec.norm_Wloc_inv (X := X) (u := w) v hg y]`. Establish `hinv : ∀ f : Formalism.REAL.UJ (X.B.I.ε v) → ℝ≥0∞, ∫⁻ b, f (g * b) ∂(Formalism.REAL.muG (X.B.I.ε v)) = ∫⁻ b, f b ∂(Formalism.REAL.muG (X.B.I.ε v))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f`. Unfold `Formalism.REAL.muG`. Conclude with `lintegral_mul_left_eq_self f g`. Establish `hU` using `(X.ds v).2.2.1`. Establish `hσmul : ∀ a b : Formalism.REAL.UJ (X.B.I.ε v), X.B.σ v (uMat (a * b)) = (X.B.σ v (uMat a)).comp (X.B.σ v (uMat b))` using `fun a b => hU.1.2 _ a.2 _ b.2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hiso : ∀ p q, ⟪X.B.σ v (uMat g) p, X.B.σ v (uMat g) q⟫_ℂ = ⟪p, q⟫_ℂ`. Introduce `p q`. Set `L : X.B.H v →ₗᵢ[ℂ] X.B.H v` to `⟨(X.B.σ v (uMat g) : X.B.H v →ₗ[ℂ] X.B.H v), fun y => hU.2.1 _ g.2 y⟩`. Conclude with `L.inner_map_map p q`. Rewrite using `[Kv_eq, Kv_eq, hn x]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use `((hinv (fun b => hv X v (g * x) b w)).symm).trans (lintegral_congr fun b => ?_)` and prove the remaining obligations. Unfold `hv`. Rewrite using `[hn b]`. Use `congr 2`.
-
-Rewrite using `[hσmul g x, hσmul g b, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, hiso]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Kv_inv (w : D.what₂.Word) (v : InfinitePlace X.B.I.F) (m : Formalism.REAL.UJ (X.B.I.ε v))
     (hm : m ∈ Formalism.L2.SG.Pf.WuDec.Nloc X w v) (h : Formalism.REAL.UJ (X.B.I.ε v)) (hh : h ∈ Formalism.L2.SG.Pf.WuDec.Hloc X w v)
@@ -156,17 +154,17 @@ theorem Kv_inv (w : D.what₂.Word) (v : InfinitePlace X.B.I.F) (m : Formalism.R
   rw [hσmul g x, hσmul g b, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, hiso]
 
 /- English proof (translation)
-Take `⟨-, hσt, -⟩` from `X.B.tens_spec`. Use `set G : X.B.I.Ginf → ℝ≥0∞ := fun y => ‖⟪X.B.σs z (X.B.tens X.B.w), X.B.σs y (X.B.tens X.B.w)⟫_ℂ‖ₑ * ‖X.Wu w y‖ₑ with hGdef`. Establish `hGm : Measurable G`. Establish `hG : G = fun y => ∏ v, hv X v (z v) (y v) w` using `funext (H_eq X w z)`. Rewrite using `[hG]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.measurable_prod _ fun v _ => (measurable_hv X w v).comp (measurable_const.prodMk (measurable_pi_apply v))`. Establish `hmul : ∀ s z' : X.B.I.Ginf, X.B.σs s (X.B.σs z' (X.B.tens X.B.w)) = X.B.σs (s * z') (X.B.tens X.B.w)`. Introduce `s z'`. Rewrite using `[hσt, hσt, hσt]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v`. Establish `hU` using `(X.ds v).2.2.1`. Rewrite using `[show uMat ((s * z') v) = uMat (s v) * uMat (z' v) from rfl, hU.1.2 _ (s v).2 _ (z' v).2]`. Both sides reduce to the same expression. Establish `hS` using `Formalism.L2.SG.WuDecayPf.muSOn X w`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinner : ∀ z', ∫⁻ s, ‖⟪X.B.σs z (X.B.tens X.B.w), X.B.σs s (X.B.σs z' (X.B.tens X.B.w))⟫_ℂ‖ₑ * ‖X.Wu w z‖ₑ * ‖X.Wu w z'‖ₑ ∂(muS X w) = ‖X.Wu w z‖ₑ * ∫⁻ s, G (s * z') ∂(muS X w)`. Introduce `z'`. Rewrite using `[← lintegral_const_mul' _ _ enorm_ne_top]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hS] with s hs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ‖X.Wu w (s * z')‖ₑ = ‖X.Wu w z'‖ₑ`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, norm_Wu_S X w s hs z']`. Rewrite using `[hmul, hGdef]`. Simplify using `only [hn]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Repeatedly rewrite using `[hinner]`. Rewrite using `[lintegral_const_mul' _ _ enorm_ne_top]`. Use `congr 1`. Establish `hq` using `X.nuQ_weil w`. Conclude with `(hq G hGm).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inner_weil (w : D.what₂.Word) (z : X.B.I.Ginf) :
     ∫⁻ z', ∫⁻ s, ‖⟪X.B.σs z (X.B.tens X.B.w), X.B.σs s (X.B.σs z' (X.B.tens X.B.w))⟫_ℂ‖ₑ *

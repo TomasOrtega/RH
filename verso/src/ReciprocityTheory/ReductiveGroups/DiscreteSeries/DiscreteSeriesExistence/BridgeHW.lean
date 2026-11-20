@@ -13,11 +13,11 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
 /- English proof (translation)
-Establish `h : E c c (E a b v) - E a b (E c c v) = (if c = a then E c b else 0) v - (if b = c then E a c else 0) v` using `LinearMap.congr_fun (hE c c a b) v`. Rewrite using `[sub_eq_iff_eq_add.mp h, hv c, map_smul]`. Apply the tactic sequence `rcases eq_or_ne c a with h1 | h1 <;> rcases eq_or_ne c b with h2 | h2`. Substitute `h1` using the available equality. Substitute `h2` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality.
 
-Simplify using `[root]`. Substitute `h1` using the available equality. Simplify using `[root, Pi.single_apply, Ne.symm h2, h2, add_smul, add_comm]`. Substitute `h2` using the available equality. Simplify using `[root, Pi.single_apply, h1, sub_smul, add_smul]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `add_comm _ _`. Simplify using `[root, Pi.single_apply, h1, h2, Ne.symm h2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bhw_Ecc_Eab (hE : IsGlRep E) {μ : Fin n → ℝ} {v : D} (hv : ∀ c, E c c v = ((μ c : ℝ) : ℂ) • v)
     (a b : Fin n) (c : Fin n) : E c c (E a b v) = (((μ + root a b) c : ℝ) : ℂ) • E a b v := by
@@ -32,7 +32,7 @@ theorem bhw_Ecc_Eab (hE : IsGlRep E) {μ : Fin n → ℝ} {v : D} (hv : ∀ c, E
   · simp [root, Pi.single_apply, h1, h2, Ne.symm h2]
 
 /- English proof (translation)
-Establish `hc : IsClosed (S : Set H)` using `Submodule.closed_of_finiteDimensional S`. Use `hc.mem_of_tendsto hf.tendsto_slope_zero (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[zero_add]`. Conclude with `Submodule.smul_of_tower_mem S t⁻¹ (S.sub_mem (hS t) (hS 0))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasDerivAt_zero_mem_of_forall_mem_finiteDim {S : Submodule ℂ H} [FiniteDimensional ℂ S] {f : ℝ → H} {L : H}
     (hf : HasDerivAt f L 0) (hS : ∀ t, f t ∈ S) : L ∈ S := by
@@ -42,9 +42,9 @@ private theorem hasDerivAt_zero_mem_of_forall_mem_finiteDim {S : Submodule ℂ H
   exact Submodule.smul_of_tower_mem S t⁻¹ (S.sub_mem (hS t) (hS 0))
 
 /- English proof (translation)
-Establish `hsk : ((t : ℂ) • X)ᴴ = -((t : ℂ) • X)`. Rewrite using `[Matrix.conjTranspose_smul, hX]`. Simplify using the standard rewrite rules. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, hsk, ← Matrix.exp_add_of_commute _ _ (Commute.neg_right (Commute.refl ((t : ℂ) • X)))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `(Commute.exp_left (Commute.smul_left hJ (t : ℂ))).eq`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exp_real_smul_mem_Kset_of_skewHermitian_commute_Jm (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X)
     (hJ : X * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * X) (t : ℝ) :
@@ -58,7 +58,7 @@ private theorem exp_real_smul_mem_Kset_of_skewHermitian_commute_Jm (ε : Fin n �
   · exact (Commute.exp_left (Commute.smul_left hJ (t : ℂ))).eq
 
 /- English proof (translation)
-Establish `hJJ : Jm ε = Formalism.REAL.Jm ε` using `rfl`. Use `show Xᴴ * Jm ε + Jm ε * X = 0`. Rewrite using `[hJJ, hX, neg_mul, hJ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem inG_of_conjTranspose_eq_neg_commute_Jm (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ = -X)
     (hJ : X * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * X) : inG ε X := by
@@ -68,7 +68,7 @@ private theorem inG_of_conjTranspose_eq_neg_commute_Jm (ε : Fin n → Bool) (X 
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `h : X i j = 0`. Simplify using `[h]`. Rewrite using `[hX i j h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -81,17 +81,17 @@ private theorem commute_Jm_of_support_same_sign (ε : Fin n → Bool) (X : Matri
   · rw [hX i j h]; ring
 
 /- English proof (translation)
-Establish `gen : ∀ c : ℂ, (((c • E a b - star c • E b a) w : D) : H) ∈ S`. Introduce `c`. Establish `hsk : (Matrix.of fun i j => (if i = a then (if j = b then c else 0) else 0) - (if i = b then (if j = a then star c else 0) else 0) : Matrix (Fin n) (Fin n) ℂ)ᴴ = -(Matrix.of fun i j => (if i = a then (if j = b then c else 0) else 0) - (if i = b then (if j = a then star c else 0) …`. Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.of_apply, Matrix.neg_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hcm` using `commute_Jm_of_support_same_sign ε (Matrix.of fun i j => (if i = a then (if j = b then c else 0) else 0) - (if i = b then (if j = a then star c else 0) else 0)) (by`. Introduce `i j h`. Simplify using `only [Matrix.of_apply] at h`. Apply the tactic sequence `split_ifs at h <;> simp_all)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hact : actM E (Matrix.of fun i j => (if i = a then (if j = b then c else 0) else 0) - (if i = b then (if j = a then star c else 0) else 0)) = c • E a b - star c • E b a`. Establish `key : ∀ (p q : Fin n) (d : ℂ), (∑ i, ∑ j, (if i = p then (if j = q then d else 0) else 0) • E i j) = d • E p q`. Introduce `p q d`. Rewrite using `[Finset.sum_eq_single p (fun i _ hi => by simp [hi]) (by simp), Finset.sum_eq_single q (fun j _ hj => by simp [hj]) (by simp)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [actM, Matrix.of_apply, sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[key, key]`. Rewrite using `[← hact]`. Conclude with `hasDerivAt_zero_mem_of_forall_mem_finiteDim (hD.deriv _ (inG_of_conjTranspose_eq_neg_commute_Jm ε _ hsk hcm) w) (fun t => hS _ (exp_real_smul_mem_Kset_of_skewHermitian_commute_Jm ε _ hsk hcm t) _ hw)`. Establish `h1` using `gen 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI` using `gen Complex.I`. Establish `h2 : ((((2 * Complex.I) • E a b w : D)) : H) ∈ S`. Establish `: (2 * Complex.I) • E a b w = Complex.I • ((((1 : ℂ) • E a b - star (1 : ℂ) • E b a) w)) + (Complex.I • E a b - star Complex.I • E b a) w`. Simplify using `only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.smul_apply, star_one, one_smul, Complex.star_def, Complex.conj_I, neg_smul, sub_neg_eq_add, smul_sub]`. Rewrite using `[two_mul, add_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this, Submodule.coe_add, Submodule.coe_smul]`. Conclude with `S.add_mem (S.smul_mem _ h1) hI`. Rewrite `h2` using `[Submodule.coe_smul]`. Conclude with `(Submodule.smul_mem_iff S (by simp [Complex.I_ne_zero])).1 h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem E_mem_of_isKStableOn_of_same_sign (hD : IsDerivedOn ε σ D E) {S : Submodule ℂ H} [FiniteDimensional ℂ S]
     (hS : Formalism.MainNotions.S.IsKStableOn ε σ S) (a b : Fin n) (he : ε a = ε b) (w : D) (hw : (w : H) ∈ S) :
@@ -139,17 +139,17 @@ private theorem E_mem_of_isKStableOn_of_same_sign (hD : IsDerivedOn ε σ D E) {
   exact (Submodule.smul_mem_iff S (by simp [Complex.I_ne_zero])).1 h2
 
 /- English proof (translation)
-Take `⟨c, hc, hsum⟩` from `h`. Rewrite `hsum` using `[sub_add_cancel_left]`. Establish `hr : ∀ i j : Fin n, ∑ k : Fin n, ((k : ℕ) : ℝ) * (Formalism.REAL.root i j) k = ((i : ℕ) : ℝ) - ((j : ℕ) : ℝ)`. Introduce `i j`. Simplify using `[Formalism.REAL.root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hL : ∑ k : Fin n, ((k : ℕ) : ℝ) * (-(root a b)) k = ((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)`. Simplify using `[root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`. Establish `hR : ∑ k : Fin n, ((k : ℕ) : ℝ) * (∑ i, ∑ j, (c i j : ℝ) • Formalism.REAL.root i j) k = ∑ i, ∑ j, (c i j : ℝ) * (((i : ℕ) : ℝ) - ((j : ℕ) : ℝ))`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hr i j, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∑ k : Fin n, ((k : ℕ) : ℝ) * (-(root a b)) k = ∑ k : Fin n, ((k : ℕ) : ℝ) * (∑ i, ∑ j, (c i j : ℝ) • Formalism.REAL.root i j) k`. Rewrite using `[hsum]`. Rewrite `h1` using `[hL, hR]`. Establish `hle : ∑ i, ∑ j, (c i j : ℝ) * (((i : ℕ) : ℝ) - ((j : ℕ) : ℝ)) ≤ 0`. Use `Finset.sum_nonpos fun i _ => Finset.sum_nonpos fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : c i j = 0`. Simplify using `[h0]`. Establish `hij : ((i : ℕ) : ℝ) < ((j : ℕ) : ℝ)` using `by exact_mod_cast (hc i j h0).1`. Establish `hcn : (0 : ℝ) ≤ (c i j : ℝ)` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hab' : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem not_CDom_add_root_of_lt (ε : Fin n → Bool) (μ : Fin n → ℝ) (a b : Fin n) (hab : a < b)
     (h : Formalism.MainNotions.S.CDom ε (μ + root a b) μ) : False := by
@@ -185,11 +185,11 @@ private theorem not_CDom_add_root_of_lt (ε : Fin n → Bool) (μ : Fin n → �
   linarith
 
 /- English proof (translation)
-Take `⟨hfd, hst, -, ⟨v, hvS, hv0, hvw⟩, hdom⟩` from `hS`. Use `haveI : FiniteDimensional ℂ S := hfd`. Establish `hwt` using `(isWtOn_iff hσ hD ⟨v, hSD hvS⟩ μ).1 hvw`. Use `⟨⟨v, hSD hvS⟩, hvS, ?_, fun a => hwt a, fun a b hab he => ?_⟩` and prove the remaining obligations. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv0` to reduce the goal to its premises. Simplify using `using congrArg (fun x : D => (x : H)) h`. Assume the negation of the conclusion as `hne`. Establish `huS : ((E a b ⟨v, hSD hvS⟩ : D) : H) ∈ S` using `E_mem_of_isKStableOn_of_same_sign hD hst a b he _ hvS`. Establish `hu0 : ((E a b ⟨v, hSD hvS⟩ : D) : H) ≠ 0` using `fun h => hne (by simpa using h)`.
+Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huw : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ (μ + root a b) ((E a b ⟨v, hSD hvS⟩ : D) : H)` using `(isWtOn_iff hσ hD _ (μ + root a b)).2 (fun c => bhw_Ecc_Eab hD.glRep hwt a b c)`. Conclude with `not_CDom_add_root_of_lt ε μ a b hab (hdom _ _ huS hu0 huw)`.
+A detailed English derivation is pending.
 -/
 theorem exists_isKHWVec_of_isKTypeOf (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {μ : Fin n → ℝ} {S : Submodule ℂ H} (hS : Formalism.MainNotions.S.IsKTypeOf ε σ μ S) (hSD : S ≤ D) :

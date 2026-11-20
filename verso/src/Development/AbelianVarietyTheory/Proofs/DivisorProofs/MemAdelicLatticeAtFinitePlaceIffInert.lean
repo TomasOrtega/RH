@@ -18,13 +18,13 @@ open GlobalTheory.InertLocField InertChart
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[show inclR (F := F) (AF F) e = (1 : AF F) ⊗ₜ[F] e from rfl, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_inclR (a : AF F) (e : E) : a • inclR (F := F) (AF F) e = a ⊗ₜ[F] e := by
   rw [show inclR (F := F) (AF F) e = (1 : AF F) ⊗ₜ[F] e from rfl, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Use `show liftT E v ((complEquiv hw (under_eq_of_isInertAt hw)).symm (complEquiv hw (under_eq_of_isInertAt hw) y)) = liftT E v y`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaW_toCompl {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w)
     (y : Fv F v ⊗[F] E) :
@@ -34,7 +34,7 @@ theorem iotaW_toCompl {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : Formalis
   rw [RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨GlobalTheory.LatVac.liftV v t, GlobalTheory.LatVac.at_liftV v t, by rw [GlobalTheory.LatVac.evFin_liftV]; exact ht, y, hy, by funext i; rw [Pi.smul_apply, smul_inclR]⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem {v : Pl F} {d : ℕ} (W : Spc F E d) {t : Fv F v} (ht : t ∈ v.adicCompletionIntegers F)
     {y : Fin d → E} (hy : y ∈ W.L) :
@@ -43,29 +43,27 @@ theorem gen_mem {v : Pl F} {d : ℕ} (W : Spc F E d) {t : Fv F v} (ht : t ∈ v.
     by rw [GlobalTheory.LatVac.evFin_liftV]; exact ht, y, hy, by funext i; rw [Pi.smul_apply, smul_inclR]⟩
 
 /- English proof (translation)
-Establish `h` using `under_eq_of_isInertAt hw`. Set `f : (Fin d → w.adicCompletion E) →+ (Fin d → AE F E)` to `AddMonoidHom.compLeft (GlobalTheory.InertBigCell.iotaW hw) (Fin d)`. Establish `hf : ∀ u, f u = fun i => GlobalTheory.InertBigCell.iotaW hw (u i)` using `fun _ => rfl`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : GlobalTheory.InertSph.latAt W v ≤ (GlobalTheory.LFun.latAt w W.L).toAddSubgroup.map f`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, haO, y, hy, rfl⟩`. Use `⟨fun i => complMap h (evFin F v a) * algebraMap E _ (y i), ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : (fun i => complMap h (evFin F v a) * algebraMap E (w.adicCompletion E) (y i)) = (⟨complMap h (evFin F v a), complMap_mem h haO⟩ : Formalism.UG.Ov E w) • (fun i => algebraMap E (w.adicCompletion E) (y i))` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Submodule.coe_toAddSubgroup, SetLike.mem_coe, e1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, hy, rfl⟩)`. Use function extensionality and compare the values at `i`. Rewrite using `[hf]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← toCompl_tmul, iotaW_toCompl, liftT_tmul, ← eq_liftV_of_at v ha, Pi.smul_apply, smul_inclR]`. Take `⟨u, hu, e⟩` from `AddSubgroup.mem_map.1 (hle hz)`. Conclude with `⟨u, hu, e.symm⟩`. Introduce and unpack `⟨u, hu, rfl⟩`. Establish `key : ∀ u ∈ GlobalTheory.LFun.latAt w W.L, ∀ o : Formalism.UG.Ov E w, f (o • u) ∈ GlobalTheory.InertSph.latAt W v`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Introduce `o`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `toCompl_surjective h (o : w.adicCompletion E)`. Establish `htI : t ∈ intLoc F E v` using `(mem_intLoc_iff hw h t).2 (ht ▸ o.2)`. Establish `e1 : f (o • fun i => algebraMap E (w.adicCompletion E) (y i)) = fun i => liftT E v (t * ((1 : Fv F v) ⊗ₜ[F] y i))`. Use function extensionality and compare the values at `i`. Rewrite using `[hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only`. Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul, ← ht, show algebraMap E (w.adicCompletion E) (y i) = toCompl h ((1 : Fv F v) ⊗ₜ[F] y i) by`. Rewrite using `[toCompl_tmul, map_one, one_mul], ← map_mul, iotaW_toCompl]`. Rewrite using `[e1]`. Use `intLoc_induction (p := fun t => (fun i => liftT E v (t * ((1 : Fv F v) ⊗ₜ[F] y i))) ∈ GlobalTheory.InertSph.latAt W v) (fun a ha x => ?_) ?_ (fun p q hp hq => ?_) (fun p hp => ?_) htI` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `gen_mem W ha (W.L.smul_mem x hy) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, liftT_tmul, Pi.smul_apply, Algebra.smul_def]`. Use `(zero_mem (GlobalTheory.InertSph.latAt W v)) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `add_mem hp hq using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[add_mul, map_add]`. Use `neg_mem hp using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[neg_mul, map_neg]`. Consider the case `zero => intro o`. Rewrite using `[smul_zero, map_zero]`. Conclude with `zero_mem _`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy => intro o`. Rewrite using `[smul_add, map_add]`. Conclude with `add_mem (hx o) (hy o)`. Consider the case `smul a x _ hx => intro o`. Rewrite using `[smul_smul]`.
-
-Conclude with `hx (o * a)`. Use `key u hu 1` as an intermediate fact. Rewrite `this` using `[one_smul]`. Conclude with `this`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latAt_iff {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w) {d : ℕ}
     (W : Spc F E d) (z : Fin d → AE F E) :

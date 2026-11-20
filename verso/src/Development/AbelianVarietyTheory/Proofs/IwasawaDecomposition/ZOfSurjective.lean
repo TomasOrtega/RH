@@ -34,14 +34,14 @@ abbrev formK (x : Fin (dimP W Ch sel mu P hX) → X.K) : (csdK W Ch sel mu hX).F
   LiftForms.lvlForm (csdK W Ch sel mu hX) (actK W Ch sel mu hX) P.grp P.chr x
 
 /- English proof (translation)
-The claim follows from `LinearEquiv.symm_apply_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem resK_symm_act (a : G0 X.E Pr.vGs R.r) (f : (csdK W Ch sel mu hX).Forms) :
     (resK W Ch sel mu hX).symm (actK W Ch sel mu hX a f) = g0HatRepEqFunX W Ch sel mu a ((resK W Ch sel mu hX).symm f) :=
   LinearEquiv.symm_apply_apply _ _
 
 /- English proof (translation)
-Use `show resK W Ch sel mu hX (g0HatRepEqFunX W Ch sel mu a ((resK W Ch sel mu hX).symm (resK W Ch sel mu hX φ))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resK_act (a : G0 X.E Pr.vGs R.r) (φ : (mtildeKGSD W Ch sel mu).EqFun) :
     actK W Ch sel mu hX a (resK W Ch sel mu hX φ) = resK W Ch sel mu hX (g0HatRepEqFunX W Ch sel mu a φ) := by
@@ -49,7 +49,7 @@ theorem resK_act (a : G0 X.E Pr.vGs R.r) (φ : (mtildeKGSD W Ch sel mu).EqFun) :
   rw [LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[← LiftForms.range_lvlForm]`. Conclude with `⟨x, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem formK_mem (x : Fin (dimP W Ch sel mu P hX) → X.K) :
     formK W Ch sel mu P hX x ∈ lvlForms (csdK W Ch sel mu hX) (actK W Ch sel mu hX) P.grp P.chr := by
@@ -57,7 +57,7 @@ theorem formK_mem (x : Fin (dimP W Ch sel mu P hX) → X.K) :
   exact ⟨x, rfl⟩
 
 /- English proof (translation)
-Use `(mem_MtildeV_iff W Ch sel mu P _).2 ⟨Subtype.prop _, fun a => ?_⟩` and prove the remaining obligations. Use `(resK_symm_act W Ch sel mu hX a.1 _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[formK_mem W Ch sel mu P hX x a, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem zOf_mem (x : Fin (dimP W Ch sel mu P hX) → X.K) :
     ((resK W Ch sel mu hX).symm (formK W Ch sel mu P hX x)).1 ∈ (mtildeGSD W Ch sel mu P).EqFun := by
@@ -77,7 +77,7 @@ theorem zOf_val (x : Fin (dimP W Ch sel mu P hX) → X.K) :
     (zOf W Ch sel mu P hX x).1 = ((resK W Ch sel mu hX).symm (formK W Ch sel mu P hX x)).1 := rfl
 
 /- English proof (translation)
-Introduce `x y h`. Apply `LiftForms.lvlForm_injective (csdK W Ch sel mu hX) (actK W Ch sel mu hX) P.grp P.chr` to reduce the goal to its premises. Apply `(resK W Ch sel mu hX).symm.injective` to reduce the goal to its premises. Establish `h1 : (zOf W Ch sel mu P hX x).1 = (zOf W Ch sel mu P hX y).1` using `congrArg Subtype.val h`. Conclude with `Subtype.ext h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem zOf_injective : Function.Injective (zOf W Ch sel mu P hX) := by
   intro x y h
@@ -87,11 +87,11 @@ theorem zOf_injective : Function.Injective (zOf W Ch sel mu P hX) := by
   exact Subtype.ext h1
 
 /- English proof (translation)
-Introduce `φ`. Take `⟨hφ, hact⟩` from `(mem_MtildeV_iff W Ch sel mu P φ.1).1 φ.2`. Establish `hf : resK W Ch sel mu hX ⟨φ.1, hφ⟩ ∈ lvlForms (csdK W Ch sel mu hX) (actK W Ch sel mu hX) P.grp P.chr`. Introduce `a`. Rewrite using `[resK_act, hact a, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hf` using `[← LiftForms.range_lvlForm]`. Take `⟨x, hx⟩` from `hf`. Use `⟨x, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[zOf_val]`. Use `show ((resK W Ch sel mu hX).symm (LiftForms.lvlForm _ _ P.grp P.chr x)).1 = φ.1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, LinearEquiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem zOf_surjective : Function.Surjective (zOf W Ch sel mu P hX) := by
   intro φ

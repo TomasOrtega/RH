@@ -14,7 +14,7 @@ variable {k : Type*} [Field k] {p : ℕ} [hp : Fact p.Prime] [CharP k p]
 include hp in
 
 /- English proof (translation)
-Establish `: ExpChar k p` using `ExpChar.prime hp.out`. Rewrite using `[← map_iterateFrobenius_expand p f e, coeff_map, coeff_expand (pow_pos hp.out.pos e)]`. Apply the tactic sequence `split_ifs <;> simp [iterateFrobenius_def, hp.out.ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_pow_prime_pow (f : k[X]) (e n : ℕ) :
     (f ^ p ^ e).coeff n = if p ^ e ∣ n then f.coeff (n / p ^ e) ^ p ^ e else 0 := by
@@ -29,7 +29,7 @@ noncomputable def recPoly (q : ℕ) (c : ℕ → k) (ε : k) : ℕ → k[X]
 omit [CharP k p] in
 include hp in
 /- English proof (translation)
-Combine the equalities or inequalities in the calculation `calc 2 ≤ p := hp.out.two_le _ = p ^ 1 := (pow_one p).symm _ ≤ p ^ e := Nat.pow_le_pow_right hp.out.pos he`.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem two_le_pow {e : ℕ} (he : 0 < e) : 2 ≤ p ^ e :=
   calc 2 ≤ p := hp.out.two_le
@@ -39,9 +39,9 @@ theorem two_le_pow {e : ℕ} (he : 0 < e) : 2 ≤ p ^ e :=
 variable {e : ℕ}
 
 /- English proof (translation)
-Establish `h2` using `two_le_pow (p := p) he`. Establish `hq1 : (1 : ℕ) ≠ p ^ e` using `by omega`. Establish `hnd : ¬ p ^ e ∣ 1` using `fun h => by have := Nat.le_of_dvd one_pos h; omega`. Introduce `i`. Consider the cases of `i with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp [recPoly, coeff_C_mul, coeff_X_pow, hq1]`. Consider the case `succ i => simp [recPoly, coeff_C_mul, coeff_pow_prime_pow, hnd]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem recPoly_coeff_one (he : 0 < e) (c : ℕ → k) (ε : k) :
     ∀ i, (recPoly (p ^ e) c ε i).coeff 1 = 0 := by
@@ -54,9 +54,9 @@ theorem recPoly_coeff_one (he : 0 < e) (c : ℕ → k) (ε : k) :
   | succ i => simp [recPoly, coeff_C_mul, coeff_pow_prime_pow, hnd]
 
 /- English proof (translation)
-Establish `hq0 : (0 : ℕ) ≠ p ^ e` using `(pow_pos hp.out.pos e).ne`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => simp [recPoly, coeff_X_pow, hq0]`. Consider the case `succ i ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `[recPoly, coeff_pow_prime_pow, ih, hp.out.ne_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem recPoly_coeff_zero (c : ℕ → k) : ∀ i, (recPoly (p ^ e) c 0 i).coeff 0 = 0 := by
   have hq0 : (0 : ℕ) ≠ p ^ e := (pow_pos hp.out.pos e).ne
@@ -67,9 +67,9 @@ theorem recPoly_coeff_zero (c : ℕ → k) : ∀ i, (recPoly (p ^ e) c 0 i).coef
     simp [recPoly, coeff_pow_prime_pow, ih, hp.out.ne_zero]
 
 /- English proof (translation)
-Establish `h2` using `two_le_pow (p := p) he`. Establish `hq0 : p ^ e ≠ 0` using `by omega`. Introduce `j`. Consider the cases of `j with`. Consider the case `zero => simp [recPoly, coeff_C_mul, coeff_X_pow, coeff_C, hp.out.ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ j`. Simplify using `[recPoly, coeff_C_mul, coeff_pow_prime_pow, Nat.div_self (by omega : 0 < p ^ e), recPoly_coeff_one he, hp.out.ne_zero]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem recPoly_coeff_q (he : 0 < e) (c : ℕ → k) (ε : k) :
     ∀ j, (recPoly (p ^ e) c ε j).coeff (p ^ e) = c j := by
@@ -83,11 +83,11 @@ theorem recPoly_coeff_q (he : 0 < e) (c : ℕ → k) (ε : k) :
       recPoly_coeff_one he, hp.out.ne_zero]
 
 /- English proof (translation)
-Establish `h2` using `two_le_pow (p := p) he`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simpa using recPoly_coeff_q he c ε j`. Consider the case `succ t ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hne : (p ^ e) ^ (t + 1 + 1) ≠ p ^ e`. Introduce `h`. Establish `: (p ^ e) ^ (t + 1 + 1) = p ^ e * (p ^ e) ^ (t + 1)` using `by ring`. Establish `h3 : 2 ≤ (p ^ e) ^ (t + 1)` using `le_trans h2 (Nat.le_self_pow (by omega) _)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hdvd : p ^ e ∣ (p ^ e) ^ (t + 1 + 1)` using `dvd_pow_self _ (by omega)`. Establish `hdiv : (p ^ e) ^ (t + 1 + 1) / p ^ e = (p ^ e) ^ (t + 1)`. Rewrite using `[pow_succ, Nat.mul_div_cancel _ (by omega)]`. Rewrite using `[show j + (t + 1) = (j + t) + 1 by ring, recPoly, coeff_add, coeff_pow_prime_pow, if_pos hdvd, hdiv, ih, coeff_C_mul, coeff_X_pow, if_neg hne, mul_zero, add_zero, ← pow_mul, pow_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem recPoly_coeff_lead (he : 0 < e) (c : ℕ → k) (ε : k) (j : ℕ) :
     ∀ t, (recPoly (p ^ e) c ε (j + t)).coeff ((p ^ e) ^ (t + 1)) = c j ^ (p ^ e) ^ t := by
@@ -115,7 +115,7 @@ section Vec
 variable {k : Type*} [Field k] {V : Type*} [AddCommGroup V] [Module k V]
 
 /- English proof (translation)
-The claim follows from `| 0, _ => linearIndependent_empty_type | m + 1, h => by have ih := linearIndependent_of_notMem_span v m (fun j hj => h j (by omega)) have : (fun i : Fin (m + 1) => v i) = Fin.snoc (fun i : Fin m => v i) (v m) := by funext i refine Fin.lastCases ?_ (fun i => ?_) i <;> simp rw [thi …`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_notMem_span (v : ℕ → V) : ∀ m : ℕ,
     (∀ j < m, v j ∉ Submodule.span k (Set.range (fun i : Fin j => v i))) →
@@ -132,11 +132,11 @@ theorem linearIndependent_of_notMem_span (v : ℕ → V) : ∀ m : ℕ,
 variable (k) in
 
 /- English proof (translation)
-Set `P : ℕ → Prop` to `fun j => v j ∈ Submodule.span k (Set.range (fun i : Fin j => v i))`. Establish `hex : ∃ j, P j`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `li` using `linearIndependent_of_notMem_span v (finrank k V + 1) (fun j _ => hcon j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `li.fintype_card_le_finrank` as an intermediate fact. Simplify using `at this`. Use `⟨Nat.find hex, ?_, linearIndependent_of_notMem_span v _ (fun j hj => Nat.find_min hex hj)⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun k).mp (Nat.find_spec hex)`. Use `⟨fun i => if h : i < Nat.find hex then c ⟨i, h⟩ else 0, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc, Finset.sum_range]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `[i.2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_rel [FiniteDimensional k V] (v : ℕ → V) :
     ∃ m, (∃ c : ℕ → k, v m = ∑ i ∈ range m, c i • v i) ∧
@@ -160,9 +160,9 @@ variable {p : ℕ} [hp : Fact p.Prime] [CharP k p] {e : ℕ} {φ : V →+ V}
 
 omit hp [CharP k p] in
 /- English proof (translation)
-Establish `hit : ∀ i, φ ((⇑φ)^[i] z) = (⇑φ)^[i + 1] z` using `fun i => (Function.iterate_succ_apply' _ _ _).symm`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[hφ, hit]`. Rewrite using `[Finset.sum_range_succ, hy, hrel, Finset.smul_sum, Finset.sum_range_succ' _ n, Finset.sum_range_succ' (fun i => (recPoly (p ^ e) c ε i).eval y • (⇑φ)^[i] z) n]`. Simplify using `only [recPoly, eval_add, eval_pow, eval_mul, eval_C, eval_X, eval_sub, Function.iterate_zero, id, smul_smul, add_smul, sub_smul, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_comm (y ^ p ^ e)]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem solve_of_root (hφ : ∀ (c : k) (x : V), φ (c • x) = c ^ p ^ e • φ x) (z : V) (n : ℕ)
     (c : ℕ → k) (hrel : (⇑φ)^[n + 1] z = ∑ i ∈ range (n + 1), c i • (⇑φ)^[i] z) (ε y : k)
@@ -181,13 +181,13 @@ theorem solve_of_root (hφ : ∀ (c : k) (x : V), φ (c • x) = c ^ p ^ e • �
   abel
 
 /- English proof (translation)
-Take `⟨m, ⟨c, hrel⟩, -⟩` from `exists_rel k (fun i => (⇑φ)^[i] z)`. Consider the cases of `m with`. Consider the case `zero => exact ⟨0, by simpa using hrel.symm⟩`. Consider the case `succ n => set P : k[X] := recPoly (p ^ e) c 1 n - X with hP`. Establish `hc1 : P.coeff 1 = -1` using `by simp [hP, recPoly_coeff_one he]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hdeg : P.degree ≠ 0`. Introduce `h`. Rewrite `hc1` using `[Polynomial.eq_C_of_degree_eq_zero h]`. Simplify using `at hc1`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_root P hdeg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hy' : (recPoly (p ^ e) c 1 n).eval y = y`. Use `hy.eq_zero` as an intermediate fact. Simplify using `[hP] at this`. Conclude with `sub_eq_zero.mp this`. Use `⟨∑ i ∈ range (n + 1), (recPoly (p ^ e) c 1 i).eval y • (⇑φ)^[i] z, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[solve_of_root hφ z n c hrel 1 y hy', one_smul, add_sub_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub_eq [IsAlgClosed k] [FiniteDimensional k V] (he : 0 < e)
     (hφ : ∀ (c : k) (x : V), φ (c • x) = c ^ p ^ e • φ x) (z : V) : ∃ x, φ x - x = z := by
@@ -210,25 +210,21 @@ theorem exists_sub_eq [IsAlgClosed k] [FiniteDimensional k V] (he : 0 < e)
     rw [solve_of_root hφ z n c hrel 1 y hy', one_smul, add_sub_cancel_left]
 
 /- English proof (translation)
-Take `⟨m, ⟨c, hrel⟩, hli⟩` from `exists_rel k (fun i => (⇑φ)^[i] z)`. Consider the cases of `m with`. Consider the case `zero => exact absurd (by simpa using hrel) (hz 0)`. Consider the case `succ n`. Establish `h2` using `two_le_pow (p := p) he`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨j, hj, hcj⟩ : ∃ j ∈ range (n + 1), c j ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hz (n + 1)` to reduce the goal to its premises. Rewrite using `[hrel]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.sum_eq_zero (fun i hi => by rw [hcon i hi, zero_smul])`. Take `⟨t, rfl⟩ : ∃ t, n = j + t` from `⟨n - j, by simp at hj; omega⟩`. Use `set N := (p ^ e) ^ (t + 1) with hN`. Establish `hN2 : 2 ≤ N` using `le_trans h2 (Nat.le_self_pow (by omega) _)`. Use `set P : k[X] := recPoly (p ^ e) c 0 (j + t) - X with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : P.coeff 0 = 0` using `by simp [hP, recPoly_coeff_zero]`. Establish `hP1 : P.coeff 1 = -1` using `by simp [hP, recPoly_coeff_one he]`. Establish `hPN : P.coeff N ≠ 0`. Establish `hN1 : N ≠ 1` using `by omega`. Simplify using `only [hP, coeff_sub, coeff_X, hN, recPoly_coeff_lead he c 0 j t]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by omega), sub_zero]`. Conclude with `pow_ne_zero _ hcj`. Take `⟨Q, hQ⟩` from `X_dvd_iff.mpr hP0`. Establish `hQ0 : Q.coeff 0 = -1`. Rewrite using `[← hP1, hQ, show (1 : ℕ) = 0 + 1 from rfl, coeff_X_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hQN : Q.coeff (N - 1) ≠ 0`. Rewrite using `[← coeff_X_mul, show N - 1 + 1 = N by omega, ← hQ]`. Conclude with `hPN`. Establish `hdeg : Q.degree ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hQN` using `[Polynomial.eq_C_of_degree_eq_zero h, coeff_C, if_neg (by omega)]`. Conclude with `hQN rfl`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_root Q hdeg`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[IsRoot, ← coeff_zero_eq_eval_zero, hQ0]`. Conclude with `one_ne_zero (neg_eq_zero.mp hy)`. Establish `hy' : (recPoly (p ^ e) c 0 (j + t)).eval y = y`. Establish `: P.eval y = 0` using `by rw [hQ, eval_mul, hy.eq_zero, mul_zero]`. Simplify using `only [hP, eval_sub, eval_X] at this`.
-
-Conclude with `sub_eq_zero.mp this`. Use `⟨_, ?_, by rw [solve_of_root hφ z (j + t) c hrel 0 y hy', zero_smul, add_zero]⟩` and prove the remaining obligations. Introduce `hx`. Rewrite `hx` using `[Finset.sum_range]`. Use `Fintype.linearIndependent_iff.mp hli (fun i : Fin (j + t + 1) => (recPoly (p ^ e) c 0 i).eval y) hx ⟨j + t, by omega⟩` as an intermediate fact.
-
-Conclude with `hy0 (by simpa [hy'] using this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_fixed_ne_zero [IsAlgClosed k] [FiniteDimensional k V] (he : 0 < e)
     (hφ : ∀ (c : k) (x : V), φ (c • x) = c ^ p ^ e • φ x) (z : V)

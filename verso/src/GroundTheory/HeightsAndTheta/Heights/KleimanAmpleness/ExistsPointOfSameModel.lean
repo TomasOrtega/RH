@@ -12,16 +12,14 @@ noncomputable section
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω]
 
 /- English proof (translation)
-The claim follows from `mem_locIn.mpr ⟨⟨a, ha⟩, 1, one_not_mem_of_prime hp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem subset_locIn_of_prime {A : Subalgebra S Ω} {p : Ideal A} [hp : p.IsPrime] {a : Ω} (ha : a ∈ A) :
     a ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A p :=
   mem_locIn.mpr ⟨⟨a, ha⟩, 1, one_not_mem_of_prime hp, by simp⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Subfield.closure_le]`. Introduce `u hu`. Take `⟨a, b, _, rfl⟩` from `mem_locIn.mp hu`. Conclude with `div_mem (Subfield.subset_closure a.2) (Subfield.subset_closure b.2)`.
-
-Conclude with `Subfield.closure_mono (fun a ha => subset_locIn_of_prime ha)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem closure_locIn (A : Subalgebra S Ω) (p : Ideal A) [p.IsPrime] :
     Subfield.closure (IndefiniteRowSideFullHecke.Kleiman2.locIn A p : Set Ω) = Subfield.closure (A : Set Ω) := by
@@ -36,13 +34,13 @@ def toLocIn (A : Subalgebra S Ω) (p : Ideal A) [p.IsPrime] : A →+* Indefinite
   (algebraMap A Ω).codRestrict _ (fun a => subset_locIn_of_prime a.2)
 
 /- English proof (translation)
-Set `_` to `(toLocIn A p).toAlgebra`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, hb⟩`. Establish `hb' : b ∉ p` using `Ideal.mem_primeCompl_iff.mp hb`. Use `IsUnit.of_mul_eq_one ⟨(b : Ω)⁻¹, mem_locIn.mpr ⟨1, b, hb', by simp⟩⟩ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (b : Ω) * (b : Ω)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ (coe_ne_zero_of_not_mem hb')`. Introduce and unpack `⟨u, hu⟩`. Take `⟨a, b, hb, rfl⟩` from `mem_locIn.mp hu`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(a, ⟨b, Ideal.mem_primeCompl_iff.mpr hb⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (a : Ω) / b * b = a`. Conclude with `div_mul_cancel₀ _ (coe_ne_zero_of_not_mem hb)`. Introduce `x y h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `h2 : ((algebraMap A (IndefiniteRowSideFullHecke.Kleiman2.locIn A p) x : IndefiniteRowSideFullHecke.Kleiman2.locIn A p) : Ω) = ((algebraMap A (IndefiniteRowSideFullHecke.Kleiman2.locIn A p) y : IndefiniteRowSideFullHecke.Kleiman2.locIn A p) : Ω)` using `by rw [h]`. Establish `hxy : x = y` using `Subtype.ext h2`. Rewrite using `[hxy]`.
+A detailed English derivation is pending.
 -/
 theorem isLocalization_locIn (A : Subalgebra S Ω) (p : Ideal A) [p.IsPrime] :
     letI := (toLocIn A p).toAlgebra
@@ -69,9 +67,9 @@ theorem isLocalization_locIn (A : Subalgebra S Ω) (p : Ideal A) [p.IsPrime] :
     rw [hxy]
 
 /- English proof (translation)
-Establish `h' : IndefiniteRowSideFullHecke.Kleiman2.modelPts S y = IndefiniteRowSideFullHecke.Kleiman2.modelPts S y'` using `h`. Establish `hz : IndefiniteRowSideFullHecke.Kleiman2.locIn (chartRingOver S y c) P ∈ IndefiniteRowSideFullHecke.Kleiman2.modelPts S y'`. Rewrite using `[← h']`. Conclude with `⟨c, hc, P, hP, rfl⟩`. Take `⟨c', hc', P', hP', hzz⟩` from `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c', hc', P', hP', hzz⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_point_of_sameModel {K : Type} {ι : K → Type} {K' : Type} {ι' : K' → Type}
     {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι' k) → Ω} (h : IndefiniteRowSideFullHecke.Kleiman2.SameModel S y y')
@@ -86,9 +84,9 @@ theorem exists_point_of_sameModel {K : Type} {ι : K → Type} {K' : Type} {ι' 
   exact ⟨c', hc', P', hP', hzz⟩
 
 /- English proof (translation)
-Introduce `c hc`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (chartRingOver S y c)`. Use `hP.isPrime` as an intermediate fact. Take `⟨c', hc', P', hP', hzz⟩` from `exists_point_of_sameModel h hc P`. Use `hP'` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← closure_locIn _ P, hzz, closure_locIn]`. Conclude with `hb c' hc'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem birational_of_sameModel {K : Type} {ι : K → Type} {K' : Type} {ι' : K' → Type}
     {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι' k) → Ω} (h : IndefiniteRowSideFullHecke.Kleiman2.SameModel S y y')
@@ -102,9 +100,9 @@ theorem birational_of_sameModel {K : Type} {ι : K → Type} {K' : Type} {ι' : 
   exact hb c' hc'
 
 /- English proof (translation)
-Introduce `c hc`. Use `@IsIntegrallyClosed.of_isLocalization_maximal _ _ (fun P _ => IndefiniteRowSideFullHecke.Kleiman2.locIn (chartRingOver S y c) P) (fun _ _ => inferInstance) (fun P _ => (toLocIn _ P).toAlgebra) (fun P _ => isLocalization_locIn _ P) inferInstance (fun P _ => ?_)` and prove the remaining obligations. Take `⟨c', hc', P', hP', hzz⟩` from `exists_point_of_sameModel h hc P`. Use `hP'` as an intermediate fact. Use `hn c' hc'` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `_` to `(toLocIn (chartRingOver S y' c') P').toAlgebra`. Use `isLocalization_locIn (chartRingOver S y' c') P'` as an intermediate fact. Use `show IsIntegrallyClosed (IndefiniteRowSideFullHecke.Kleiman2.locIn (chartRingOver S y c) P)`. Rewrite using `[hzz]`. Conclude with `isIntegrallyClosed_of_isLocalization _ P'.primeCompl P'.primeCompl_le_nonZeroDivisors`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normal_of_sameModel {K : Type} {ι : K → Type} {K' : Type} {ι' : K' → Type}
     {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι' k) → Ω} (h : IndefiniteRowSideFullHecke.Kleiman2.SameModel S y y')
@@ -124,7 +122,7 @@ theorem normal_of_sameModel {K : Type} {ι : K → Type} {K' : Type} {ι' : K' �
   exact isIntegrallyClosed_of_isLocalization _ P'.primeCompl P'.primeCompl_le_nonZeroDivisors
 
 /- English proof (translation)
-Introduce `S _ Ω _ _ K _ ι _ K' _ ι' _ y y' _ _ h`. Establish `hs : IndefiniteRowSideFullHecke.Kleiman2.SameModel S y' y` using `Eq.symm h`. Conclude with `⟨⟨birational_of_sameModel hs, birational_of_sameModel h⟩, ⟨normal_of_sameModel hs, normal_of_sameModel h⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ModelInvariants.full : ModelInvariants.Statement := by
   intro S _ Ω _ _ K _ ι _ K' _ ι' _ y y' _ _ h

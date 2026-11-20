@@ -17,46 +17,46 @@ namespace PositivityTheory.Rg.Sw.Glob.DA
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [mat, map_mul, Units.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mat_mul (g h : G D n) : mat (g * h) = mat g * mat h := by
   simp only [mat, map_mul, Units.val_mul]
 
 /- English proof (translation)
-Simplify using `only [mat, map_one, Units.val_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mat_one : mat (1 : G D n) = 1 := by
   simp only [mat, map_one, Units.val_one]
 
 /- English proof (translation)
-Apply `GlobalTheory.AdelicU.matHom_injective` to reduce the goal to its premises. Conclude with `Units.ext e`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem mat_inj {g h : G D n} (e : mat g = mat h) : g = h := by
   apply GlobalTheory.AdelicU.matHom_injective
   exact Units.ext e
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (θ τ).comp (infPart D))`.
+A detailed English derivation is pending.
 -/
 theorem compAt_mul (θ : InfFam D) (τ : D.what₂.Tau) {k : ℕ} (A B : Mx D k k) :
     compAt θ τ (A * B) = compAt θ τ A * compAt θ τ B :=
   Matrix.map_mul (f := (θ τ).comp (infPart D))
 
 /- English proof (translation)
-Unfold `compAt`. Conclude with `Matrix.map_one _ (by simp) (by simp)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem compAt_one (θ : InfFam D) (τ : D.what₂.Tau) {k : ℕ} : compAt θ τ (1 : Mx D k k) = 1 := by
   unfold compAt
   exact Matrix.map_one _ (by simp) (by simp)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := finPart D)`.
+A detailed English derivation is pending.
 -/
 theorem finMap_mul {k : ℕ} (A B : Mx D k k) : (A * B).map (finPart D) = A.map (finPart D) * B.map (finPart D) :=
   Matrix.map_mul (f := finPart D)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [compAt, Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply]`. Conclude with `(GlobalTheory.StdUnn.RealComp.real_components D θ hθ).2.1 _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem compAt_conjT (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) {k : ℕ} (A : Mx D k k) :
     compAt θ τ (Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) A) = (compAt θ τ A)ᴴ := by
@@ -65,9 +65,9 @@ theorem compAt_conjT (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) {k
   exact (GlobalTheory.StdUnn.RealComp.real_components D θ hθ).2.1 _ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [compAt, Matrix.map_apply]`. Rewrite using `[(GlobalTheory.StdUnn.RealComp.real_components D θ hθ).2.2.1]`. Simplify using `only [Jst, blk4, reidx, JJ, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases h1 : finSumFinEquiv.symm i with a | a <;> rcases h2 : finSumFinEquiv.symm j with b | b <;>`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[Matrix.one_apply, apply_ite]`.
+Simplify using the standard rewrite rules.
 -/
 theorem compAt_Jst (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) :
     compAt θ τ ((Jst D n).map (incA D)) = reidx (JJ n) := by

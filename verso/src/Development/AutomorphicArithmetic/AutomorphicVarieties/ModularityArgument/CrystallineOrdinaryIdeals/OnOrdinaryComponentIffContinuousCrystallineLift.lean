@@ -16,7 +16,7 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscre
 
 omit [IsAdicComplete (maximalIdeal O) O] [IsDiscreteValuationRing O] [CharZero O] in
 /- English proof (translation)
-Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ_[l]) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comap_ker, ← IsScalarTower.algebraMap_eq, ← RingHom.injective_iff_ker_eq_bot, IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] E]`. Conclude with `(algebraMap ℚ_[l] E).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj_OE (E : Type) [Field E] [Algebra ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E]
     [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] : Function.Injective (algebraMap O E) := by
@@ -28,9 +28,9 @@ theorem inj_OE (E : Type) [Field E] [Algebra ℚ_[l] E] [Algebra O E] [Algebra �
 
 omit [IsAdicComplete (maximalIdeal O) O] [CharZero O] in
 /- English proof (translation)
-Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Assume the negation of the conclusion as `h`. Establish `hp : (Ideal.comap (algebraMap ℤ_[l] O) ⊥).IsPrime` using `inferInstance`. Establish `hm : (Ideal.comap (algebraMap ℤ_[l] O) ⊥).IsMaximal` using `hp.isMaximal h`. Establish `h2 : (⊥ : Ideal O).IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := ℤ_[l]) _ hm`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsDiscreteValuationRing.not_a_field O (IsLocalRing.eq_maximalIdeal h2).symm`.
+A detailed English derivation is pending.
 -/
 theorem inj_ZO : Function.Injective (algebraMap ℤ_[l] O) := by
   rw [RingHom.injective_iff_ker_eq_bot]
@@ -41,7 +41,7 @@ theorem inj_ZO : Function.Injective (algebraMap ℤ_[l] O) := by
   exact IsDiscreteValuationRing.not_a_field O (IsLocalRing.eq_maximalIdeal h2).symm
 
 /- English proof (translation)
-The claim follows from `(ptCont (l := l) U.R B f).1 (GQ l) (fun g => (U.r.hom g).mat a b) (U.r.cont a b)`.
+A detailed English derivation is pending.
 -/
 theorem cont_push (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra O B]
     [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] O B] [IsScalarTower ℤ_[l] ℚ_[l] B] (f : U.R →ₐ[O] B) (a b : Fin 3) :
@@ -50,7 +50,7 @@ theorem cont_push (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ
 
 omit [CharZero O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] in
 /- English proof (translation)
-Unfold `Dat3.rz`. Rewrite using `[← show push x U.r.hom = r0 D.η D.Ψ from hx]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem push_base (E : Type) [Field E] [Algebra O E] {x : U.R →ₐ[O] O} (hx : IsBase D.η D.Ψ U.r.hom x) :
     push ((Algebra.ofId O E).comp x) U.r.hom = D.rz E := by
@@ -61,17 +61,15 @@ theorem push_base (E : Type) [Field E] [Algebra O E] {x : U.R →ₐ[O] O} (hx :
 omit [CharZero O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] in
 
 /- English proof (translation)
-The claim follows from `Ideal.le_radical.trans (le_sInf fun _ hP => hP.1.1.2)`.
+A detailed English derivation is pending.
 -/
 theorem IY_le_It : GlobalTheory.OrdLoc.IY D U ≤ GlobalTheory.OrdLoc.It D U :=
   Ideal.le_radical.trans (le_sInf fun _ hP => hP.1.1.2)
 
 /- English proof (translation)
-Establish `hi` using `inj_ZO (l := l) (O := O)`. Use `haveI : FaithfulSMul ℤ_[l] O := (faithfulSMul_iff_algebraMap_injective _ _).2 hi`. Establish `hi2 : Function.Injective (algebraMap ℤ_[l] (FractionRing O))`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] O (FractionRing O)]`. Conclude with `(IsFractionRing.injective O _).comp hi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI : Algebra ℚ_[l] (FractionRing O) := (IsFractionRing.lift hi2).toAlgebra`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] (FractionRing O) := IsScalarTower.of_algebraMap_eq fun x => (IsFractionRing.lift_algebraMap hi2 x).symm`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid O ℤ_[l]⁰) (FractionRing O) := inferInstance`. Use `haveI : Module.Finite ℚ_[l] (FractionRing O) := Module.Finite.of_isLocalization ℤ_[l] O ℤ_[l]⁰`. Take `⟨-, n, P, φ, -, -, ⟨y, hy, hyP⟩, hPt, -⟩` from `GlobalTheory.T.exists_unique_ordinaryPrime_dim_succ_near_base hP D U (FractionRing O) x hx`.
-
-Conclude with `⟨y, hy, fun a ha => hyP a (hPt ▸ ha)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem reg (hP : LocalPublishedTheorems) {x : U.R →ₐ[O] O} (hx : IsBase D.η D.Ψ U.r.hom x) :
     ∃ y, x y ≠ 0 ∧ ∀ a ∈ GlobalTheory.OrdLoc.It D U, y * a ∈ GlobalTheory.OrdLoc.IY D U := by
@@ -93,17 +91,17 @@ end GlobalTheory.OrdLoc.OrdinaryEmbeddings
 open GlobalTheory.OrdLoc.OrdinaryEmbeddings in
 
 /- English proof (translation)
-Introduce `hP l _ O _ _ _ _ _ _ _ D U E _ _ _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ r hr`. Take `⟨hPts, hCr⟩` from `GlobalTheory.T.saturatedOrdinaryIdeal_cuts_out_crystalline_locus hP D U`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, rfl, hf⟩`. Conclude with `⟨fun g => U.r.hasMult g, hr, cont_push D U B f, hPts B f ((IY_le_It D U).trans hf)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `hd`. Take `⟨x, hx, -⟩` from `univEx D U`. Take `⟨f, hf, -⟩` from `unramified_lift_deformation D U E B π hπ ((Algebra.ofId O E).comp x) r hd.mult (hd.red.trans (push_base D U E hx).symm) hd.cont`. Establish `hfY : GlobalTheory.OrdLoc.IY D U ≤ RingHom.ker f` using `hCr E B π hπ f (hf ▸ hd)`. Establish `hfx : ∀ a, π (f a) = algebraMap O E (x a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Take `⟨g, -, hu⟩` from `unramified_lift_deformation D U E E (AlgHom.id E E) (fun a ha => by simpa using ha) ((π.restrictScalars O).comp f) (push ((π.restrictScalars O).comp f) U.r.hom) (fun g => U.r.hasMult g) rfl (cont_push D U E _)`. Establish `h1 : push ((π.restrictScalars O).comp f) U.r.hom = D.rz E`. Rewrite using `[← hd.red, ← hf]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h` using `(hu ((π.restrictScalars O).comp f) rfl).trans (hu ((Algebra.ofId O E).comp x) ((push_base D U E hx).trans h1.symm)).symm`. Conclude with `congrArg (fun φ : U.R →ₐ[O] E => φ a) h`. Take `⟨y, hy, hya⟩` from `reg D U hP hx`. Use `⟨f, hf, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hne : algebraMap O E (x y) ≠ 0` using `(map_ne_zero_iff _ (inj_OE (l := l) E)).2 hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnil : IsNilpotent (f y - algebraMap E B (algebraMap O E (x y)))` using `hπ _ (by`. Rewrite using `[map_sub, hfx, AlgHom.commutes]`. Conclude with `sub_self _)`. Establish `hu : IsUnit (f y)`. Use `hnil.isUnit_add_right_of_commute (hne.isUnit.map (algebraMap E B)) (Commute.all _ _)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h0 : f y * f a = 0`. Rewrite using `[← map_mul]`. Conclude with `hfY (hya a ha)`. Conclude with `(hu.mul_right_eq_zero).1 h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.OrdLoc.on_iff_inDcr : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (U : D.Univ) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra O B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] O B] [IsScalarTower ℤ_[l] ℚ_[l] B] [Algebra E B] [IsScalarTower O E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a) (r : GQ l →* GG 3 B), (GG.map (π : B →+* E)).comp r = D.rz E → (GlobalTheory.OrdLoc.On D U r ↔ D.InDcr (π : B →+* E) r) := by
   intro hP l _ O _ _ _ _ _ _ _ D U E _ _ _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ r hr

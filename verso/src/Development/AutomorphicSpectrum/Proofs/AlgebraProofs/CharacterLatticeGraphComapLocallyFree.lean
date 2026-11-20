@@ -14,11 +14,11 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F
   {Sg : Type} {r s : Sg → ℕ}
 
 /- English proof (translation)
-Unfold `LieLatticeData.stepGraph`. Rewrite using `[AddSubgroup.mem_comap, AddSubgroup.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨g, m'⟩, hy, ⟨u, m''⟩, hz, he⟩`. Take `⟨hu, hm⟩` from `AddSubgroup.mem_prod.1 hz`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hm0 : m'' = 0` using `hm`. Substitute `hm0` using the available equality. Establish `h1 : g + u = c • (fun x : Fin n → F => χ (x i))` using `congrArg Prod.fst he`. Establish `h2 : m' + 0 = m` using `congrArg Prod.snd he`. Rewrite `h2` using `[add_zero]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `h2` using the available equality. Conclude with `⟨g, u, hy, hu, h1.symm⟩`. Introduce and unpack `⟨g, u, hg, hu, he⟩`. Use `⟨(g, m), hg, (u, 0), AddSubgroup.mem_prod.2 ⟨hu, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `Prod.ext he.symm (add_zero m)`.
+Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_stepGraph_iff (D : LieLatticeData Ω F n Sg r s) (τ : Sg) (χ : F → Ω) (i : Fin n) (c : Ω)
     (m : Fin (r τ) → Ω) :
@@ -42,14 +42,14 @@ theorem mem_stepGraph_iff (D : LieLatticeData Ω F n Sg r s) (τ : Sg) (χ : F �
     exact Prod.ext he.symm (add_zero m)
 
 /- English proof (translation)
-Establish `h` using `(Submodule.mem_pi.1 hu) (0 : Fin n → F) (fun _ _ => rfl)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vanSub_apply_zero {i : ℕ} {u : (Fin n → F) → Ω} (hu : u ∈ vanSub Ω F n i) : u 0 = 0 := by
   have h := (Submodule.mem_pi.1 hu) (0 : Fin n → F) (fun _ _ => rfl)
   simpa using h
 
 /- English proof (translation)
-Introduce and unpack `a ha ⟨c, m⟩ h`. Take `⟨g, u, hg, hu, he⟩` from `(mem_stepGraph_iff D τ χ i c m).1 h`. Use `(mem_stepGraph_iff D τ χ i (a • c) (a • m)).2 ⟨a • g, a • u, (hB.stable τ a ha).2.2 (g, m) hg, Submodule.smul_mem _ _ hu, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_assoc, he, smul_add]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem stepGraph_stable [Fintype F] (D : LieLatticeData Ω F n Sg r s) {R : Subalgebra o Ω} {p : ℕ} {w : Ω}
     (hB : D.Base R p w) (τ : Sg) (χ : F → Ω) (i : Fin n) :
@@ -61,7 +61,7 @@ theorem stepGraph_stable [Fintype F] (D : LieLatticeData Ω F n Sg r s) {R : Sub
   rw [smul_assoc, he, smul_add]
 
 /- English proof (translation)
-Take `⟨g, u, hg, hu, he⟩` from `(mem_stepGraph_iff D τ χ i c m).1 h`. Establish `hgM : g ∈ D.M` using `(((hB.th τ).1 g).1 ⟨m, hg⟩).1`. Use `AddSubgroup.mem_comap.2 (AddSubgroup.mem_sup.2 ⟨g, hgM, u, hu, ?_⟩)` and prove the remaining obligations. Conclude with `he.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fst_mem_xId_of_mem_stepGraph [Fintype F] (D : LieLatticeData Ω F n Sg r s) {R : Subalgebra o Ω}
     {p : ℕ} {w : Ω} (hB : D.Base R p w) (τ : Sg) (χ : F → Ω) (i : Fin n) {c : Ω}
@@ -72,9 +72,9 @@ theorem fst_mem_xId_of_mem_stepGraph [Fintype F] (D : LieLatticeData Ω F n Sg r
   exact he.symm
 
 /- English proof (translation)
-Take `⟨g, hg, u, hu, he⟩` from `AddSubgroup.mem_sup.1 (AddSubgroup.mem_comap.1 h)`. Establish `he' : g + u = c • (fun x : Fin n → F => χ (x i))` using `he`. Establish `hu0 : u 0 = 0` using `vanSub_apply_zero hu`. Establish `hg0 : g 0 = 0`. Use `congrFun he' 0` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[h0, hu0]`. Take `⟨m, hm⟩` from `((hB.th τ).1 g).2 ⟨hg, hg0⟩`. Conclude with `⟨m, (mem_stepGraph_iff D τ χ i c m).2 ⟨g, u, hm, hu, he'.symm⟩⟩`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_stepGraph_of_mem_xId [Fintype F] (D : LieLatticeData Ω F n Sg r s) {R : Subalgebra o Ω}
     {p : ℕ} {w : Ω} (hB : D.Base R p w) (τ : Sg) (χ : F → Ω) (h0 : χ 0 = 0) (i : Fin n) {c : Ω}
@@ -89,11 +89,11 @@ theorem exists_mem_stepGraph_of_mem_xId [Fintype F] (D : LieLatticeData Ω F n S
   exact ⟨m, (mem_stepGraph_iff D τ χ i c m).2 ⟨g, u, hm, hu, he'.symm⟩⟩
 
 /- English proof (translation)
-Rewrite using `[mem_stepGraph_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, u, hg, hu, he⟩`. Rewrite `he` using `[zero_smul]`. Establish `hgu : g = -u` using `eq_neg_of_add_eq_zero_left he.symm`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(g, m), ⟨hg, AddSubgroup.mem_prod.2 ⟨?_, trivial⟩⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[hgu]`. Conclude with `neg_mem hu`. Introduce and unpack `⟨⟨g, m'⟩, ⟨hg, hp⟩, rfl⟩`. Establish `hv : g ∈ vanSub Ω F n ((i : ℕ) + 1)` using `(AddSubgroup.mem_prod.1 hp).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, -g, hg, neg_mem hv, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zero_mem_stepGraph_iff (D : LieLatticeData Ω F n Sg r s) (τ : Sg) (χ : F → Ω) (i : Fin n)
     (m : Fin (r τ) → Ω) : (0, m) ∈ D.stepGraph τ χ i ↔ m ∈ D.kk τ ((i : ℕ) + 1) := by
@@ -111,23 +111,23 @@ theorem zero_mem_stepGraph_iff (D : LieLatticeData Ω F n Sg r s) (τ : Sg) (χ 
     simp
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hχ hB hG1 hG2`. Use `⟨fun τ i => ?_, fun C _ _ _ _ RC hRC τ i => ?_⟩` and prove the remaining obligations. Establish `h0 : χ τ 0 = 0` using `(hχ.2.2.2.2 τ).1`. Conclude with `(LocFreeSchanuel.main R 1 (r τ) (D.xId (χ τ) i) ((D.stepGraph τ (χ τ) i).map (AddMonoidHom.snd _ _)) (D.kk τ ((i : ℕ) + 1)) (D.stepGraph τ (χ τ) i) (((GlobalTheory.T.lattice_good_base_change D R p w χ hχ hB hG1).1 τ).2.2.2 i) (hG2.step τ i) (hG2.kk τ _) (stepGraph_stable D hB τ ( …`. Introduce and unpack `_ ⟨⟨c, m⟩, h, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨c, h⟩)).2`. Establish `hst` using `stepGraph_stable D hB τ (χ τ) i`. Rewrite using `[(GlobalTheory.T.kernel_graph_base_change_holds D R p w χ hχ hB hG1 C RC hRC τ).2 i]`. Set `sw` to `(AddEquiv.prodComm (M := Ω) (N := Fin (r τ) → Ω)).toAddMonoidHom`. Set `Δ' : AddSubgroup ((Fin (r τ) → Ω) × Ω)` to `(D.stepGraph τ (χ τ) i).map sw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hst' : ∀ a ∈ R, ∀ v ∈ Δ', a • v ∈ Δ'`. Introduce and unpack `a ha _ ⟨x, hx, rfl⟩`. Conclude with `⟨a • x, hst a ha x hx, rfl⟩`. Establish `hfst : Δ'.map (AddMonoidHom.fst _ _) = (D.stepGraph τ (χ τ) i).map (AddMonoidHom.snd _ _)`. Rewrite using `[AddSubgroup.map_map]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `key` using `(GlobalTheory.T.locally_free_base_change_quotient R RC hRC (bcMap Ω C (Fin (r τ))) (Algebra.linearMap Ω C) (isBaseChange_bcMap Ω C _) (IsBaseChange.linearMap Ω C) Δ' ⊥ (r τ) hst' (hfst ▸ hG2.step τ i) bot_le (by`. Introduce `a _ v hv`. Rewrite `hv`, the goal using `[AddSubgroup.mem_bot]`. Rewrite using `[hv, smul_zero])).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsw` using `spanOver_swap RC (bcMap Ω C (Fin (r τ))) (Algebra.linearMap Ω C) (D.stepGraph τ (χ τ) i)`. Establish `e1 : Δ'.comap (AddMonoidHom.inr _ _) = (D.stepGraph τ (χ τ) i).comap (AddMonoidHom.inl _ _)`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨c', m⟩, h, he⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : m = 0` using `congrArg Prod.fst he`. Establish `h2 : c' = c` using `congrArg Prod.snd he`. Substitute `h1 h2` using the available equality. Conclude with `h`. Introduce `h`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨_, h, rfl⟩`. Establish `e2 : ∀ X : AddSubgroup (C × (Fin (r τ) → C)), (X.map (AddEquiv.prodComm (M` using `C) (N := Fin (r τ) → C)).toAddMonoidHom).comap (AddMonoidHom.inr _ _) = X.comap (AddMonoidHom.inl _ _) := by`. Introduce `X`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨c', m⟩, h, he⟩`. Establish `h1 : m = 0` using `congrArg Prod.fst he`. Establish `h2 : c' = c` using `congrArg Prod.snd he`. Substitute `h1 h2` using the available equality. Conclude with `h`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Conclude with `⟨_, h, rfl⟩`. Rewrite `key` using `[hsw, e2, e1]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem stepKer : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (R : Subalgebra o Ω) (p : ℕ) (w : Ω) (χ : Sg → F → Ω), CharData R p w χ → D.Base R p w → D.Good₁ R p χ → D.Good₂ R p χ → (∀ τ i, LocFree R 1 ((D.stepGraph τ (χ τ) i).comap (AddMonoidHom.inl _ _))) ∧ ∀ (C : Type) [Field C] [Algebra o C] [Algebra Ω C] [IsScalarTower o Ω C] (RC : Subalgebra o C), (∀ a ∈ R, algebraMap Ω C a ∈ RC) → ∀ τ i, ((D.bc RC).stepGraph τ (fun a => algebraMap Ω C (χ τ a)) i).comap (AddMonoidHom.inl _ _) = spanOver RC (algebraMap Ω C '' (D.stepGraph τ (χ τ) i).comap (AddMonoidHom.inl _ _)) := by
   intro o Ω _ _ _ F _ _ _ n Sg r s D R p w χ hχ hB hG1 hG2

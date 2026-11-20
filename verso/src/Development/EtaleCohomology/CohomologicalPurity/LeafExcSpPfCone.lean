@@ -7,19 +7,17 @@ namespace LateralTheory.CohomologicalPurity.Thom.ExcSp
 
 open GlobalTheory.EtC in
 /- English proof (translation)
-Introduce `R _ K L K' L' f f' a b comm hf hf' hi`. Establish `hm : Mono f` using `HomologicalComplex.mono_of_mono_f _ hf`. Establish `hm' : Mono f'` using `HomologicalComplex.mono_of_mono_f _ hf'`. Set `S₁` to `ShortComplex.mk f (cokernel.π f) (cokernel.condition f)`. Set `S₂` to `ShortComplex.mk f' (cokernel.π f') (cokernel.condition f')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h₁ : S₁.ShortExact` using `ShortComplex.ShortExact.mk' (ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel f)) hm inferInstance`. Establish `h₂ : S₂.ShortExact` using `ShortComplex.ShortExact.mk' (ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel f')) hm' inferInstance`. Set `τ : S₁ ⟶ S₂` to `{ τ₁ := a, τ₂ := b, τ₃ := cokernel.map f f' a b comm, comm₁₂ := comm.symm, comm₂₃ := by simp [S₁, S₂] }`. Establish `iso3 : IsIso (cokernel.map f f' a b comm)`. Establish `: ∀ n, IsIso ((cokernel.map f f' a b comm).f n)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n`. Establish `e₁` using `(h₁.map_of_exact (HomologicalComplex.eval _ _ n)).gIsCokernel`. Establish `e₂` using `(h₂.map_of_exact (HomologicalComplex.eval _ _ n)).gIsCokernel`. Set `i₁ : cokernel (f.f n) ≅ (cokernel f).X n` to `(colimit.isColimit _).coconePointUniqueUpToIso e₁`. Set `i₂ : cokernel (f'.f n) ≅ (cokernel f').X n` to `(colimit.isColimit _).coconePointUniqueUpToIso e₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `key : (cokernel.map f f' a b comm).f n = i₁.inv ≫ cokernel.map _ _ _ _ (sqw comm n) ≫ i₂.hom`. Rewrite using `[Iso.eq_inv_comp]`. Use `(cancel_epi (cokernel.π (f.f n))).1 ?_` and prove the remaining obligations. Establish `p₁ : cokernel.π (f.f n) ≫ i₁.hom = (cokernel.π f).f n` using `(colimit.isColimit _).comp_coconePointUniqueUpToIso_hom e₁ WalkingParallelPair.one`. Establish `p₂ : cokernel.π (f'.f n) ≫ i₂.hom = (cokernel.π f').f n` using `(colimit.isColimit _).comp_coconePointUniqueUpToIso_hom e₂ WalkingParallelPair.one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, p₁, cokernel.π_desc_assoc, Category.assoc, p₂, ← HomologicalComplex.comp_f, ← HomologicalComplex.comp_f, cokernel.π_desc]`. Rewrite using `[key]`. Use `infer_instance`. Conclude with `HomologicalComplex.Hom.isIso_of_components _`. Establish `q1` using `CochainComplex.mappingCone.quasiIso_descShortComplex h₁`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q2` using `CochainComplex.mappingCone.quasiIso_descShortComplex h₂`. Establish `e` using `CochainComplex.mappingCone.map_descShortComplex S₁ S₂ τ`. Establish `: QuasiIso (CochainComplex.mappingCone.map f f' a b comm ≫ CochainComplex.mappingCone.descShortComplex S₂)`. Rewrite using `[show CochainComplex.mappingCone.map f f' a b comm = CochainComplex.mappingCone.map S₁.f S₂.f τ.τ₁ τ.τ₂ τ.comm₁₂.symm from rfl, e]`. Use `infer_instance`.
-
-Conclude with `(quasiIso_iff_comp_right _ (CochainComplex.mappingCone.descShortComplex S₂)).1 this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leafConeCok : LeafConeCok := by
   intro R _ K L K' L' f f' a b comm hf hf' hi
@@ -57,7 +55,7 @@ theorem leafConeCok : LeafConeCok := by
   exact (quasiIso_iff_comp_right _ (CochainComplex.mappingCone.descShortComplex S₂)).1 this
 
 /- English proof (translation)
-The claim follows from `leafExcSp_of' hM hK leafConeCok hR`.
+A detailed English derivation is pending.
 -/
 theorem etaleSplitExcision_of_mono_cokernel_relative (hM : LeafChainsMono) (hK : LeafCokIso) (hR : LeafHsRel) : LateralTheory.CohomologicalPurity.Thom.LeafExcSp :=
   leafExcSp_of' hM hK leafConeCok hR

@@ -15,7 +15,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.TensExist
 
 /- English proof (translation)
-Introduce `R _ _ _ hA D r W hpos hdet`. Take `⟨D', T, hrig⟩` from `GlobalTheory.T.exists_tensorPreData_rigidification_inv_psi_zero R hA D W hpos hdet`. Take `⟨hp, ht⟩` from `GlobalTheory.T.tensorData_psi_mem_maximalIdeal_tendsto_zero R hA D D' W hpos T`. Conclude with `⟨⟨D', GlobalTheory.T.tensorData_psi_isEven R hA D D' W T, GlobalTheory.T.tensorData_tau_bimultiplicative R hA D D' W T hrig, hp, ht⟩, ⟨T⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_tens : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ), ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → IsUnit (W + W.transpose).det → ∃ D' : DegData R (maximalIdeal R), Nonempty (Tens D.toPre D'.toPre W) := by
   intro R _ _ _ hA D r W hpos hdet

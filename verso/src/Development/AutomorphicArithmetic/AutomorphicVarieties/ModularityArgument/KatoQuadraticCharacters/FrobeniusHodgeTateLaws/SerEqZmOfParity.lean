@@ -10,7 +10,7 @@ def twb (N : ℕ) (s : ℂ) (b : ℤ) : ℤ → ℂ := fun B =>
   (if (B : ZMod N) = b then 1 else 0) - s * (if (B : ZMod N) = -b then 1 else 0)
 
 /- English proof (translation)
-Proceed by induction on `m generalizing f with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [Function.iterate_succ_apply, ih, Uo, pow_succ', mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem Uo_iterate {R : Type*} [CommRing R] (l m : ℕ) (f : ℕ → R) (i : ℕ) : (Uo l)^[m] f i = f (l ^ m * i) := by
   induction m generalizing f with
@@ -21,7 +21,7 @@ private def hz {N : ℕ} [NeZero N] (θ : DirichletCharacter ℂ N) (z : ZMod N)
   ∑ y : ZMod N, θ y * ZMod.stdAddChar (y * z)
 
 /- English proof (translation)
-Unfold `hat hz`. Use `Finset.sum_nbij' (fun i => (i : ZMod N)) (fun y => y.val) (fun _ _ => Finset.mem_univ _) (fun y _ => Finset.mem_range.mpr (ZMod.val_lt y)) (fun i hi => ZMod.val_cast_of_lt (Finset.mem_range.mp hi)) (fun y _ => ZMod.natCast_zmod_val y) (fun i _ => ?_)` and prove the remaining obligations. Establish `h : ((i : ZMod N)) * (d : ZMod N) = (((i : ℤ) * d : ℤ) : ZMod N)` using `by push_cast; rfl`. Rewrite using `[h, ZMod.stdAddChar_coe]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -36,9 +36,9 @@ private theorem hat_hz {N : ℕ} [NeZero N] (θ : DirichletCharacter ℂ N) (d :
   rfl
 
 /- English proof (translation)
-Unfold `hz`. Rewrite using `[Finset.mul_sum, ← Equiv.sum_comp (Units.mulLeft u)]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `h : (u : ZMod N) * y * (z * (u⁻¹ : (ZMod N)ˣ)) = y * z`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Units.mulLeft_apply, h, map_mul, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hz_unit {N : ℕ} [NeZero N] (θ : DirichletCharacter ℂ N) (z : ZMod N) (u : (ZMod N)ˣ) :
     hz θ (z * (u⁻¹ : (ZMod N)ˣ)) = θ u * hz θ z := by
@@ -51,14 +51,14 @@ private theorem hz_unit {N : ℕ} [NeZero N] (θ : DirichletCharacter ℂ N) (z 
   simp only [Units.mulLeft_apply, h, map_mul, mul_assoc]
 
 /- English proof (translation)
-Simplify using `using hz_unit θ z (-1)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem hz_neg {N : ℕ} [NeZero N] (θ : DirichletCharacter ℂ N) (z : ZMod N) :
     hz θ (-z) = θ (-1) * hz θ z := by
   simpa using hz_unit θ z (-1)
 
 /- English proof (translation)
-Establish `h : ∀ (A x : ZMod N), A = x * u ↔ A * (u⁻¹ : (ZMod N)ˣ) = x` using `fun A x => (Units.mul_inv_eq_iff_eq_mul u).symm`. Simplify using `only [h, mul_add, Finset.sum_add_distrib, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[hz_unit, hz_unit, hz_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem wsum {N : ℕ} [NeZero N] (θ : DirichletCharacter ℂ N) (u : (ZMod N)ˣ) (A : ZMod N) (s c : ℂ) :
     ∑ x : ZMod N, hz θ x / 2 * ((if A = x * u then c else 0) + (if -A = x * u then s * c else 0)) =
@@ -69,9 +69,9 @@ private theorem wsum {N : ℕ} [NeZero N] (θ : DirichletCharacter ℂ N) (u : (
   ring
 
 /- English proof (translation)
-Establish `ho' : Odd (k - 2)` using `Nat.Odd.sub_even (by omega) ho (by decide)`. Rewrite using `[Nat.sum_divisorsAntidiagonal' (fun A _ => if l ∣ s then 0 else ((if (A : ZMod N) = a then ι (ψ A) * (A : ℂ) ^ (k - 2) else 0) + (if -(A : ZMod N) = a then ι (ψ (-1)) * (ι (ψ A) * (A : ℂ) ^ (k - 2)) else 0))), ffMu, map_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hs : l ∣ s ↔ ¬ (¬ l ∣ d ∧ ¬ l ∣ s / d)` using `by conv_lhs => rw [← Nat.mul_div_cancel' (Nat.dvd_of_mem_divisors hd)]`. Rewrite using `[hl.out.dvd_mul]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-The claim follows by propositional logic. Generalize the expression as in `s / d = A at hs ⊢`. Simplify using `only [← ZMod.intCast_eq_intCast_iff, hs, ite_not, Int.cast_neg, Int.cast_natCast]`. Rewrite using `[← neg_one_mul (A : ZMod (l ^ m)), map_mul, ho'.neg_pow]`. Apply the tactic sequence `split_ifs <;> simp [mul_assoc]`.
+The claim follows by propositional logic. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ff_eq {l : ℕ} [hl : Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) (N m k : ℕ)
     (ψ : DirichletCharacter (PadicAlgCl l) (l ^ m)) (a : ℤ) (hk : 3 ≤ k) (ho : Odd k) (s : ℕ) :
@@ -92,15 +92,15 @@ private theorem ff_eq {l : ℕ} [hl : Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ
   split_ifs <;> simp [mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Nat.sum_divisorsAntidiagonal' (fun B d => if l ∣ s then 0 else twb N (ι (ψ (-1))) b B * ι (ψ ((d : ZMod (l ^ m))⁻¹))), eeMu, map_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hs : l ∣ s ↔ ¬ (¬ l ∣ d ∧ ¬ l ∣ s / d)` using `by conv_lhs => rw [← Nat.mul_div_cancel' (Nat.dvd_of_mem_divisors hd)]`. Rewrite using `[hl.out.dvd_mul]`. The claim follows by propositional logic.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 
-Generalize the expression as in `s / d = B at hs ⊢`. Simplify using `only [← ZMod.intCast_eq_intCast_iff, hs, ite_not, Int.cast_neg, Int.cast_natCast, twb, neg_eq_iff_eq_neg]`. Distinguish the cases in `h : ¬ l ∣ d ∧ ¬ l ∣ B`. Rewrite using `[if_pos h, if_pos h]`. Establish `hu : IsUnit (d : ZMod (l ^ m))` using `(ZMod.isUnit_iff_coprime d (l ^ m)).mpr (Nat.Coprime.pow_right m ((hl.out.coprime_iff_not_dvd.mpr h.1).symm))`.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ψ⁻¹ (d : ZMod (l ^ m)) = ψ ((d : ZMod (l ^ m))⁻¹)`. Rewrite using `[MulChar.inv_apply_eq_inv']`. Use `(eq_inv_of_mul_eq_one_right ?_).symm` and prove the remaining obligations. Rewrite using `[← map_mul, ZMod.mul_inv_of_unit _ hu, map_one]`. Establish `h2 : ψ⁻¹ (-1) = ψ (-1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MulChar.inv_apply_eq_inv']`. Use `(eq_inv_of_mul_eq_one_right ?_).symm` and prove the remaining obligations. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[← neg_one_mul (d : ZMod (l ^ m)), map_mul, h1, h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [sub_mul]`. Rewrite using `[if_neg h, if_neg h, map_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ee_eq {l : ℕ} [hl : Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) (N m : ℕ)
     (ψ : DirichletCharacter (PadicAlgCl l) (l ^ m)) (b : ℤ) (s : ℕ) :
@@ -131,15 +131,15 @@ private theorem ee_eq {l : ℕ} [hl : Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ
   · rw [if_neg h, if_neg h, map_zero]
 
 /- English proof (translation)
-Take `⟨u, hu⟩ : IsUnit (a : ZMod N)` from `(ZMod.coe_int_isUnit_iff_isCoprime a N).mpr ha.symm`. Establish `hff : ∀ s : ℕ, ∑ x : ZMod N, hat θ (x.val : ℤ) / 2 * ι (ffMu N l m k ψ ((x.val : ℤ) * a) s) = θ (a : ZMod N) * ((1 + ι (ψ (-1)) * θ (-1)) / 2) * ∑ p ∈ s.divisorsAntidiagonal, if l ∣ s then 0 else hat θ p.1 * (ι (ψ p.1) * (p.1 : ℂ) ^ (k - 2))`. Introduce `s`. Simplify using `only [ff_eq ι N m k ψ _ hk ho, Finset.mul_sum, hat_hz]`. Rewrite using `[Finset.sum_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : l ∣ s`. Simplify using `[h]`. Simplify using `only [h, if_false, Int.cast_mul, Int.cast_natCast, ZMod.natCast_zmod_val, ← hu]`. Conclude with `wsum θ u _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Uo_iterate, ser, up]`. Generalize the expression as in `l ^ m * i = n`. Simplify using `only [coPtMu, ← mul_eq_cmul, mul, map_sum, map_mul, RingEquiv.apply_symm_apply, Finset.mul_sum, Zm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [← mul_assoc]`. Rewrite using `[← Finset.sum_mul, hff, ee_eq, mul_assoc, Finset.sum_mul_sum]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h1 : l ∣ p.1 <;> by_cases h2 : l ∣ p.2 <;> simp [h1, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree.
 
-Use `left`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ser_eq_Zm {l : ℕ} [hl : Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) (N : ℕ) [NeZero N] (θ : DirichletCharacter ℂ N) (m k : ℕ)
     (ψ : DirichletCharacter (PadicAlgCl l) (l ^ m)) (a b : ℤ) (hk : 3 ≤ k) (ho : Odd k) (ha : IsCoprime a N) (i : ℕ) :
@@ -171,7 +171,7 @@ theorem ser_eq_Zm {l : ℕ} [hl : Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) (N
   left; ring
 
 /- English proof (translation)
-Rewrite using `[ser_eq_Zm ι N θ m k ψ a b hk ho ha, hs, ← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ser_eq_Zm_of_parity {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) (N : ℕ) [NeZero N] (θ : DirichletCharacter ℂ N)
     (m k : ℕ) (ψ : DirichletCharacter (PadicAlgCl l) (l ^ m)) (a b : ℤ) (hk : 3 ≤ k) (ho : Odd k) (ha : IsCoprime a N)

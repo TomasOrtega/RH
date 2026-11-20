@@ -13,11 +13,11 @@ section Algebra
 variable {A B : Type} [CommRing A] [CommRing B]
 
 /- English proof (translation)
-Use `algebraize [φ]`. Establish `: Module.FinitePresentation A B` using `Module.FinitePresentation.of_finite_of_finitePresentation A B`. Establish `: Module.Free (Localization p.asIdeal.primeCompl) (LocalizedModule p.asIdeal.primeCompl B)` using `Module.free_of_flat_of_isLocalRing`. Take `⟨r, hr, hfree, -⟩` from `Module.FinitePresentation.exists_free_localizedModule_powers p.asIdeal.primeCompl (LocalizedModule.mkLinearMap p.asIdeal.primeCompl B) (Localization p.asIdeal.primeCompl)`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A' B' _ _ α β φ' H hu`. Use `algebraize [α, β, φ', φ'.comp α]`. Establish `: IsScalarTower A B B'` using `IsScalarTower.of_algebraMap_eq' (congrArg CommRingCat.Hom.hom H.w).symm`. Establish `P : Algebra.IsPushout A B A' B'` using `CommRingCat.isPushout_iff_isPushout.1 H`. Establish `hb : IsBaseChange A' (IsScalarTower.toAlgHom A B B').toLinearMap` using `P.symm.out`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `⟨Module.Finite.equiv hb.equiv, ?_⟩` and prove the remaining obligations. Use `letI : Algebra (Localization.Away r) A' := (IsLocalization.Away.lift r (g := α) hu).toAlgebra`. Establish `: IsScalarTower A (Localization.Away r) A'` using `IsScalarTower.of_algebraMap_eq fun x => (IsLocalization.Away.lift_eq r hu x).symm`. Establish `h₁ : Module.Free (Localization.Away r) (TensorProduct A (Localization.Away r) B)` using `Module.Free.of_equiv (IsLocalizedModule.isBaseChange (.powers r) (Localization.Away r) (LocalizedModule.mkLinearMap (.powers r) B)).equiv.symm`. Conclude with `Module.Free.of_equiv ((TensorProduct.AlgebraTensorModule.cancelBaseChange A (Localization.Away r) A' A' B).trans hb.equiv)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_finFree_away_fp {φ : A →+* B} (hf : φ.Finite) (hfl : φ.Flat) (hfp : φ.FinitePresentation)
     (p : PrimeSpectrum A) :
@@ -56,11 +56,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {X Y : Scheme.{0}} (f : Y ⟶ X)
 
 /- English proof (translation)
-Take `⟨V, hV, hxV, hle⟩` from `exists_isAffineOpen_mem_and_subset hx`. Establish `hfl : (f.app V).hom.Flat`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `f.flat_appLE hV (hV.preimage f) _`. Establish `hfp : (f.app V).hom.FinitePresentation`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `HasRingHomProperty.appLE @LocallyOfFinitePresentation f ‹_› ⟨V, hV⟩ ⟨_, hV.preimage f⟩ _`. Take `⟨r, hr, H⟩` from `exists_finFree_away_fp (f.finite_app V hV) hfl hfp (hV.primeIdealOf ⟨x, hxV⟩)`. Use `⟨X.basicOpen r, hV.basicOpen r, ?_, (X.basicOpen_le r).trans hle, H (isPushout_app f hV (hV.basicOpen r) (X.basicOpen_le r)) (X.toRingedSpace.isUnit_res_basicOpen r)⟩` and prove the remaining obligations. Establish `e` using `hV.fromSpec_primeIdealOf ⟨x, hxV⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₁ : hV.primeIdealOf ⟨x, hxV⟩ ∈ hV.fromSpec ⁻¹ᵁ X.basicOpen r`. Rewrite using `[hV.fromSpec_preimage_basicOpen]`. Conclude with `hr`. Conclude with `(congrArg (· ∈ X.basicOpen r) e).mp h₁`.
+A detailed English derivation is pending.
 -/
 theorem exists_finFree_app_fp [IsFinite f] [Flat f] [LocallyOfFinitePresentation f] {x : X} {U : X.Opens} (hx : x ∈ U) :
     ∃ V : X.Opens, IsAffineOpen V ∧ x ∈ V ∧ V ≤ U ∧ FinFree (f.app V).hom := by
@@ -81,23 +81,21 @@ theorem exists_finFree_app_fp [IsFinite f] [Flat f] [LocallyOfFinitePresentation
   exact (congrArg (· ∈ X.basicOpen r) e).mp h₁
 
 /- English proof (translation)
-Set `α : Type` to `{p : X.Opens × M.ι // IsAffineOpen p.1 ∧ p.1 ≤ M.U p.2 ∧ FinFree (f.app p.1).hom}`. Establish `cov : ∀ x : X, ∃ a : α, x ∈ a.1.1` using `fun x => by`. Take `⟨i, hi⟩` from `exists_chart hM x`. Take `⟨V, hV, hx, hle, hF⟩` from `exists_finFree_app_fp f hi`. Conclude with `⟨⟨(V, i), hV, hle, hF⟩, hx⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `le : ∀ a : α, f ⁻¹ᵁ a.1.1 ≤ (M.pull f).U fun _ => a.1.2` using `fun a y hy => mem_pull.2 (a.2.2.1 hy)`. Set `τ : ∀ a : α, Γ(Y, f ⁻¹ᵁ a.1.1)` to `fun a => resG Y (le a) (t.f fun _ => a.1.2)`. Set `c : ∀ (k : ℕ) (a : α), Γ(X, a.1.1)` to `fun k a => (revChar _ a.2.2.2 (τ a)).coeff k`. Establish `key : ∀ k (x : X) (a b : α), x ∈ a.1.1 → x ∈ b.1.1 → gs (𝟙 X) x _ (c k a) = (gm (𝟙 X) x (M.U a.1.2 ⊓ M.U b.1.2) (M.g a.1.2 b.1.2)).val ^ k * gs (𝟙 X) x _ (c k b)`. Introduce `k x a b ha hb`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨W, hW, hx, hle⟩` from `exists_isAffineOpen_mem_and_subset (U := a.1.1 ⊓ b.1.1) (x := x) ⟨ha, hb⟩`. Establish `hle : W ≤ a.1.1 ⊓ b.1.1` using `hle`. Establish `la : W ≤ a.1.1` using `hle.trans inf_le_left`. Establish `lb : W ≤ b.1.1` using `hle.trans inf_le_right`. Establish `lg : W ≤ M.U a.1.2 ⊓ M.U b.1.2` using `le_inf (la.trans a.2.2.1) (lb.trans b.2.2.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty W` using `⟨⟨x, hx⟩⟩`. Take `⟨hF, ea⟩` from `finFree_revChar_of_isPushout (isPushout_app f a.2.1 hW la) a.2.2.2`. Establish `ea` using `congrArg (coeff · k) (ea hF (τ a))`. Establish `eb` using `congrArg (coeff · k) ((finFree_revChar_of_isPushout (isPushout_app f b.2.1 hW lb) b.2.2.2).2 hF (τ b))`. Simplify using `only [coeff_map] at ea eb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `eτ : resG Y (show f ⁻¹ᵁ W ≤ f ⁻¹ᵁ a.1.1 from fun _ hy => la hy) (τ a) = (f.app W).hom (resG X lg (M.g a.1.2 b.1.2).val) * resG Y (show f ⁻¹ᵁ W ≤ f ⁻¹ᵁ b.1.1 from fun _ hy => lb hy) (τ b)` using `fn_ext fun y hy => by`. Establish `hy' : (𝟙 Y ≫ f) y ∈ W` using `hy`. Rewrite using `[gs_mul (𝟙 Y) y _ hy, gs_res (𝟙 Y) y _ hy, gs_res (𝟙 Y) y _ hy, gs_res (𝟙 Y) y (le a) (la hy), gs_res (𝟙 Y) y (le b) (lb hy), gs_pull (𝟙 Y) f y W hy, gs_res (𝟙 Y ≫ f) y _ hy', gs_unit (𝟙 Y ≫ f) y _ (lg hy'), ← gm_pull_g M f (𝟙 Y) y (fun _ => a.1.2) (fun _ => b.1.2) (le a (la hy)) …`. Conclude with `gs_compat t (𝟙 Y) y (le a (la hy)) (le b (lb hy))`. Establish `e : resG X la (c k a) = resG X lg (M.g a.1.2 b.1.2).val ^ k * resG X lb (c k b)` using `ea.symm.trans ((congrArg (fun z => (revChar _ hF z).coeff k) eτ).trans ((coeff_revChar_mul _ hF _ _ k).trans (congrArg (_ * ·) eb)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'` using `congrArg (gs (𝟙 X) x W) e`. Rewrite `e'` using `[gs_mul _ x _ hx, gs_pow _ x _ hx, gs_res _ x _ hx, gs_res _ x _ hx, gs_res _ x _ hx, gs_unit _ x _ (lg hx)]`. Then use the resulting hypothesis. Use `choose u hu using fun k => exists_sec_of_refinement (isLB_lbPow hM k) (fun a : α => a.1.1) (fun a _ => a.1.2) (fun a x hx => mem_powChart.2 (a.2.2.1 hx)) cov (c k) fun x a b ha hb => by`. Rewrite using `[gm_lbPow_g k (𝟙 X) x _ _ (mem_powChart.2 (a.2.2.1 ha)) (mem_powChart.2 (b.2.2.1 hb)), Units.val_pow_eq_pow_val]`. Conclude with `key k x a b ha hb`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨u, fun x => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `cov x`. Establish `loc : ∀ k, x ∈ nonzeroLocus (u k) ↔ x ∈ X.basicOpen (c k a)` using `fun k => by`. Establish `hJ : x ∈ (lbPow M k).U fun _ => a.1.2` using `mem_powChart.2 (a.2.2.1 ha)`. Rewrite using `[mem_nonzeroLocus_iff_isUnit (u k) hJ, hu k x _ a hJ ha, Units.isUnit_units_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isUnit_gs_iff (𝟙 X) x _ ha _`. Simplify using `only [loc]`. Rewrite using `[← mem_image_basicOpen_app f a.2.1 a.2.2.2 (τ a) ha]`. Use `exists_congr fun y => and_congr_left fun e => ?_` and prove the remaining obligations. Establish `hy : y ∈ f ⁻¹ᵁ a.1.1` using `show f y ∈ a.1.1 from e ▸ ha`.
-
-Rewrite using `[mem_nonzeroLocus_iff_isUnit t (le a hy), ← gs_res (𝟙 Y) y (le a) hy]`. Conclude with `isUnit_gs_iff (𝟙 Y) y _ hy _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_image_nonzeroLocus_fp [IsFinite f] [Flat f] [LocallyOfFinitePresentation f] {M : LB X} (hM : M.IsLB)
     (t : (M.pull f).Sec) : ∃ u : ∀ k, (lbPow M k).Sec, ∀ x : X,
@@ -158,11 +156,11 @@ theorem exists_sec_image_nonzeroLocus_fp [IsFinite f] [Flat f] [LocallyOfFiniteP
   exact isUnit_gs_iff (𝟙 Y) y _ hy _
 
 /- English proof (translation)
-Use `h.compactSpace` as an intermediate fact. Establish `: CompactSpace X` using `f.surjective.compactSpace f.continuous`. Use `isAmpleLB_of_forall_le hL fun x U hx => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `f.surjective x`. Take `⟨n, hn, s, hs, hle, -⟩` from `h.exists_affine_le (x := y) (U := f ⁻¹ᵁ U) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso (LB.isLB_pull (isLB_lbPow hL n) f) (isLB_lbPow h.isLB n) (lbIso_lbPow_pull hL f n).symm s`. Take `⟨u, hu⟩` from `exists_sec_image_nonzeroLocus_fp f (isLB_lbPow hL n) t`. Take `⟨k, hk, hy⟩` from `(hu (f y)).1 ⟨y, ht.ge hs, rfl⟩`. Establish `e` using `nonzeroLocus_secOfPowPow (u k)`. Use `⟨n * k, Nat.mul_pos hn hk, secOfPowPow (u k), e.ge hy, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hw, rfl⟩` from `(hu z).2 ⟨k, hk, e.le hz⟩`. Conclude with `hle (ht.le hw)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isAmpleLB_of_pull_fp [IsFinite f] [Flat f] [Surjective f] [LocallyOfFinitePresentation f] {L : LB X} (hL : L.IsLB)
     (h : IsAmpleLB (L.pull f)) : IsAmpleLB L := by
@@ -190,11 +188,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory
 
 /- English proof (translation)
-Use `relAmple_of_isAbelianScheme B hB hM fun U hU => ?_` and prove the remaining obligations. Establish `h₁` using `isAmpleLB_of_relAmple A (LB.isLB_pull hM _) hA U hU`. Establish `pre : A.hom ⁻¹ᵁ U = ψ.left ⁻¹ᵁ (B.hom ⁻¹ᵁ U)`. Rewrite using `[← Scheme.Hom.comp_preimage, Over.w ψ]`. Rewrite `h₁` using `[pre]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₃ : IsAmpleLB ((M.pull (B.hom ⁻¹ᵁ U).ι).pull (ψ.left ∣_ (B.hom ⁻¹ᵁ U)))` using `(isAmpleLB_congr (LB.isLB_pull (LB.isLB_pull hM _) _) (LB.isLB_pull (LB.isLB_pull hM _) _) (FiniteAmple.lbIso_pull_pull _ hM (morphismRestrict_ι ψ.left _).symm)).1 h₁`. Establish `: Surjective (ψ.left ∣_ B.hom ⁻¹ᵁ U)` using `MorphismProperty.of_isPullback (P := @Surjective) (isPullback_morphismRestrict ψ.left _).flip inferInstance`. Establish `: IsFinite (ψ.left ∣_ B.hom ⁻¹ᵁ U)` using `MorphismProperty.of_isPullback (P := @IsFinite) (isPullback_morphismRestrict ψ.left _).flip inferInstance`. Establish `: Flat (ψ.left ∣_ B.hom ⁻¹ᵁ U)` using `MorphismProperty.of_isPullback (P := @Flat) (isPullback_morphismRestrict ψ.left _).flip inferInstance`. Establish `: LocallyOfFinitePresentation (ψ.left ∣_ B.hom ⁻¹ᵁ U)` using `MorphismProperty.of_isPullback (P := @LocallyOfFinitePresentation) (isPullback_morphismRestrict ψ.left _).flip inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `FiniteAmpleFP.isAmpleLB_of_pull_fp _ (LB.isLB_pull hM _) h₃`.
+A detailed English derivation is pending.
 -/
 theorem relAmple_of_pull_hom {S : Scheme.{0}} {A B : Over S} [GrpObj B] (hB : IsAbelianScheme B) (ψ : A ⟶ B)
     [IsFinite ψ.left] [Flat ψ.left] [Surjective ψ.left] [LocallyOfFinitePresentation ψ.left]
@@ -215,17 +213,17 @@ theorem relAmple_of_pull_hom {S : Scheme.{0}} {A B : Over S} [GrpObj B] (hB : Is
   exact FiniteAmpleFP.isAmpleLB_of_pull_fp _ (LB.isLB_pull hM _) h₃
 
 /- English proof (translation)
-Introduce `p _ D R _ b M S s o A' _ _ ψ G hA' _ hG m hm P' hP' hw`. Use `hG.fin` as an intermediate fact. Use `hG.etale` as an intermediate fact. Use `hG.onto` as an intermediate fact. Establish `: Flat ψ.left` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyOfFinitePresentation ψ.left` using `inferInstance`. Establish `hP` using `o.isLB`. Establish `e : ψ.left ≫ (lift (𝟙 A') (𝟙 A')).left = (lift (𝟙 o.A) (𝟙 o.A)).left ≫ Hecke.sq2 ψ`. Simplify using `only [Hecke.sq2, ← Over.comp_left]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `ext <;> simp`. Establish `hL' : (P'.pull (lift (𝟙 A') (𝟙 A')).left).IsLB` using `LB.isLB_pull hP' _`. Use `relAmple_of_pull_hom hA' ψ hL' ?_` and prove the remaining obligations. Establish `hLd : (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).IsLB` using `LB.isLB_pull hP _`. Establish `H₁` using `FiniteAmple.lbIso_pull_pull (lift (𝟙 A') (𝟙 A')).left hP' e`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H₂ : LBIso ((P'.pull (Hecke.sq2 ψ)).pull (lift (𝟙 o.A) (𝟙 o.A)).left) ((Hecke.lbPow o.P m).pull (lift (𝟙 o.A) (𝟙 o.A)).left)` using `LBIso.chartPull (GlobalTheory.chartPullPull _ _) (GlobalTheory.chartPullPull _ _) hw.symm`. Establish `H₃ : LBIso ((Hecke.lbPow o.P m).pull (lift (𝟙 o.A) (𝟙 o.A)).left) (LB.LinComb o.P (K` using `Fin m) (fun _ => (lift (𝟙 o.A) (𝟙 o.A)).left) (fun _ => 1)) := lbIso_of_chartPull (chartPullOut o.P (fun _ => 𝟙 _) (fun _ => 1) (lift (𝟙 o.A) (𝟙 o.A)).left (fun _ => (lift (𝟙 o.A) (𝟙 o.A)).left) fun _ => (Category.comp_id _).symm) (LB.isLB_linComb hP _ _)`. Establish `H₄` using `(lbIso_lbPow_finPow hP (lift (𝟙 o.A) (𝟙 o.A)).left m).symm`. Establish `hLB₁` using `LB.isLB_pull hL' ψ.left`. Establish `hLB₂ : ((P'.pull (Hecke.sq2 ψ)).pull (lift (𝟙 o.A) (𝟙 o.A)).left).IsLB` using `LB.isLB_pull (LB.isLB_pull hP' _) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLB₃ : ((Hecke.lbPow o.P m).pull (lift (𝟙 o.A) (𝟙 o.A)).left).IsLB` using `LB.isLB_pull (LB.isLB_linComb hP _ _) _`. Establish `hLB₄` using `LB.isLB_linComb hP (K := Fin m) (fun _ => (lift (𝟙 o.A) (𝟙 o.A)).left) (fun _ => 1)`. Establish `hLB₅` using `isLB_lbPow hLd m`. Establish `H : LBIso ((P'.pull (lift (𝟙 A') (𝟙 A')).left).pull ψ.left) (lbPow (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) m)` using `LBIso.trans hLB₁ hLB₄ hLB₅ (LBIso.trans hLB₁ hLB₃ hLB₄ (LBIso.trans hLB₁ hLB₂ hLB₃ H₁ H₂) H₃) H₄`. Use `relAmple_of_isAbelianScheme o.A o.ab hLB₁ fun U hU => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₁` using `isAmpleLB_of_relAmple o.A hLd o.ample U hU`. Establish `h₂` using `(isAmpleLB_pow_iff (LB.isLB_pull hLd (o.A.hom ⁻¹ᵁ U).ι) hm).2 h₁`. Establish `h₃` using `h₂.of_lbIso (LB.isLB_pull hLB₅ _) (lbIso_lbPow_pull hLd (o.A.hom ⁻¹ᵁ U).ι m).symm`. Conclude with `h₃.of_lbIso (LB.isLB_pull hLB₁ _) (LBIso.chartPull (GlobalTheory.chartPullPull _ _) (GlobalTheory.chartPullPull _ _) H)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_diag_of_galois : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : Base D R) (M : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b M s) (A' : Over S) [GrpObj A'] [IsCommMonObj A'] (ψ : o.A ⟶ A') (G : Subgroup (𝟙_ (Over S) ⟶ o.A)), IsAbelianScheme A' → IsMonHom ψ → GlobalTheory.ZM.IsGaloisCover G (fun h => (GlobalTheory.UPel.HT.Hecke.transl h.1).left) ψ.left → ∀ (m : ℕ), 1 ≤ m → ∀ (P' : LB (G2 A').left), P'.IsLB → LBIso (GlobalTheory.UPel.HT.Hecke.lbPow o.P m) (P'.pull (GlobalTheory.UPel.HT.Hecke.sq2 ψ)) → Out.RelAmple A' (P'.pull (lift (𝟙 A') (𝟙 A')).left) := by
   intro p _ D R _ b M S s o A' _ _ ψ G hA' _ hG m hm P' hP' hw

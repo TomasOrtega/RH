@@ -10,7 +10,7 @@ namespace Formalism.FourierDecayAlt.P.NormalFormRelations
 noncomputable section
 
 /- English proof (translation)
-Proceed by induction on `Dop with`. Consider the case `nil => exact Nat.zero_le _`. Consider the case `cons T l ih => exact max_le (h T List.mem_cons_self) (ih fun T' hT' => h T' (List.mem_cons_of_mem _ hT'))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem opOrder_le {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {o : ℕ} (Dop : B.DiffOp k r Wp Wq)
@@ -20,15 +20,15 @@ theorem opOrder_le {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProd
   | cons T l ih => exact max_le (h T List.mem_cons_self) (ih fun T' hT' => h T' (List.mem_cons_of_mem _ hT'))
 
 /- English proof (translation)
-Establish `h1 : 1 ≤ R + 1` using `by linarith`. Establish `h4 : R + 1 ≤ (R + 1) ^ 4` using `by simpa using pow_le_pow_right₀ h1 (show 1 ≤ 4 by norm_num)`. Establish `hx2 : x ≤ x ^ 2` using `by simpa using pow_le_pow_right₀ hx (show 1 ≤ 2 by norm_num)`. Establish `hx3 : x ^ 2 ≤ x ^ 3` using `pow_le_pow_right₀ hx (show 2 ≤ 3 by norm_num)`. Establish `hx0 : 0 ≤ x` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWx : 0 ≤ W * x` using `mul_nonneg hW hx0`. Establish `hT0 : 0 ≤ (R + 1) ^ 4 * (W * x ^ 2 + x ^ 3)` using `by positivity`. Establish `t1 : (R + 1) * x ^ 2 ≤ (R + 1) ^ 4 * (W * x ^ 2 + x ^ 3)` using `mul_le_mul h4 (by nlinarith [mul_nonneg hW (sq_nonneg x)]) (by positivity) (by positivity)`. Establish `t2 : (R + 1) * (W * x) ≤ (R + 1) ^ 4 * (W * x ^ 2 + x ^ 3)` using `mul_le_mul h4 (by nlinarith [mul_le_mul_of_nonneg_left hx2 hW, pow_nonneg hx0 3]) hWx (by positivity)`. Establish `ho' : o ≤ |Cb| * (W * x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ho` using `[mul_assoc]`. Conclude with `le_trans ho (mul_le_mul_of_nonneg_right (le_abs_self _) hWx)`. Establish `hob : 0 ≤ |Cb| * (W * x)` using `by positivity`. Establish `t3 : (R + 1) * (|Cb| * (W * x)) ≤ |Cb| * ((R + 1) ^ 4 * (W * x ^ 2 + x ^ 3))`. Rewrite using `[mul_left_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left t2 (abs_nonneg _)`. Establish `u1 : R * d ≤ (R + 1) * (|Cb| * (W * x))` using `le_trans (mul_le_mul_of_nonneg_left (le_trans hd ho') hR) (mul_le_mul_of_nonneg_right (by linarith) hob)`. Establish `u2 : (R + 1) * s ≤ (R + 1) * (|Cb| * (W * x))` using `mul_le_mul_of_nonneg_left (le_trans hs ho') (by linarith)`. Establish `v1 : CcL * ((R + 1) ^ 4 * (W * x ^ 2 + x ^ 3)) ≤ |CcL| * ((R + 1) ^ 4 * (W * x ^ 2 + x ^ 3))` using `mul_le_mul_of_nonneg_right (le_abs_self _) hT0`. Establish `v2 : 0 ≤ |CcL| * ((R + 1) ^ 4 * (W * x ^ 2 + x ^ 3))` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `v3 : 0 ≤ |Cb| * ((R + 1) ^ 4 * (W * x ^ 2 + x ^ 3))` using `by positivity`. Apply the tactic sequence `constructor <;> nlinarith`.
+A detailed English derivation is pending.
 -/
 theorem thr_arith (CcL Cb R x W o s d A : ℝ) (hR : 0 ≤ R) (hx : 1 ≤ x) (hW : 0 ≤ W) (ho : o ≤ Cb * W * x)
     (hs : s ≤ o) (hd : d ≤ o) (hA : (|CcL| + 12 + 8 * |Cb|) * (R + 1) ^ 4 * (W * x ^ 2 + x ^ 3) ≤ A) :
@@ -60,9 +60,9 @@ theorem thr_arith (CcL Cb R x W o s d A : ℝ) (hR : 0 ≤ R) (hx : 1 ≤ x) (hW
   constructor <;> nlinarith
 
 /- English proof (translation)
-Rewrite using `[← nf_sum_pad (M := Q + 1 + (o + 1)) (by omega) x v, ← nf_sum_pad (M := Q + 1 + (o + 1)) (by omega) x fun j : Fin (o + 1) => if h : (j : ℕ) < Q + 1 then v ⟨j, h⟩ else 0]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Distinguish the cases in `h1 : i < o + 1`. Rewrite using `[dif_pos h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h1] split_ifs with h2`. Conclude with `hv ⟨i, h2⟩ (by simp only; omega)`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_trunc {E : Type} [AddCommGroup E] [Module ℂ E] {Q o : ℕ} (x : ℂ) (v : Fin (Q + 1) → E)
     (hv : ∀ q : Fin (Q + 1), o < q → v q = 0) :
@@ -104,63 +104,55 @@ def NFTieGen : Prop :=
                 ∑ j, ∑ ρ' : M.Ty P, ‖MA.evQ P (MA.actA P (b j * (u j).prod) (trJKB p e (B.JF p.T.base F)) ρ') q‖ ^ 2
 
 /- English proof (translation)
-Introduce `Cb`. Take `⟨CcL, HL⟩` from `leibniz_vector_estimate_holds Cb`. Use `⟨|CcL| + 12 + 8 * |Cb|, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p hInD`. Take `⟨hl1, hlk, hk⟩` from `p.hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨fr, hfr, hga⟩` from `hK Wp Wq P p.T.base p.hP hk`. Take `⟨Lv, hml, -⟩` from `model_frame_analytic P p.hP.1 p.l0 hl1 hlk`. Use `⟨fr, Lv, hfr, hga, hml, fun Y w hw a Q Lq hSq => ?_⟩` and prove the remaining obligations. Take `⟨nf, fib, o, κ, Dop, -, hIn, ho, -, hΘ⟩` from `hInD w hw.1 a`. Establish `hwo : ∀ T ∈ Dop, T.word.length ≤ o` using `fun T hT => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨_, _, _, _, _, -, -, h, -⟩` from `hIn.2.2 T hT`. Use linear arithmetic over natural numbers and integers. Establish `hSm : B.SmoothCoef (B.GPos p.T.base) Dop` using `by rw [← nfLeib_domL_eq]; exact hIn.1`. Establish `hCm : B.Commutes p.T.base (B.GPos p.T.base) Dop` using `by rw [← nfLeib_domL_eq]; exact hIn.2.1`. Take `⟨Q', L', -, hS', hLe⟩` from `HL Wp Wq P p hInD w hw.1 a`.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hloc : Loc (gM P p.l0 Lv (D.positionted w) a)` using `loc_nfs hml (model_nf p.hP.1 hml hl1 hlk hw.1 a).2`. Use `choose m b u Ct hCt hb hu hpt using fun s : Fin (o + 1) => normal_form_model_point P Lv p.hP.1 hml p.l0 hl1 hlk w hw.1 a s`. Take `⟨lam, hlam⟩` from `vander' o`. Set `ι` to `Σ s : Fin (o + 1), Fin (m s)`. Set `σ : Fin (Fintype.card ι) ≃ ι` to `(Fintype.equivFin ι).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set Λ : ℝ := ∑ q, ∑ s, ‖lam q s‖ ^ 2 with hΛ`. Establish `hΛ0 : 0 ≤ Λ` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _`. Use `set Cs : ℝ := ∑ s, Ct s with hCs`. Establish `hCs0 : 0 ≤ Cs` using `Finset.sum_nonneg fun s _ => hCt s`. Use `set Cw : ℝ := ∑ ρ' : M.Ty P, |(Top.cW P p.l0 w a ρ').re| with hCw`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hCw0 : 0 ≤ Cw` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Use `⟨Fintype.card ι, fun t => b (σ t).1 (σ t).2, fun t => u (σ t).1 (σ t).2, Cw * (Λ * Cs), fun t => hb _ _, fun t => hu _ _, ?_⟩` and prove the remaining obligations. Introduce `F A hF hcc hA hOr hJ qq ρ c q hq hl hG`. Use `set γ := TBB.bigPt P.r c with hγ`. Establish `hGq : TBB.Gp p γ = MA.Gq P q` using `gp_eq p c q hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ a, c a ≠ 0` using `fun a => (hl.1 (1, c a) (by rw [hγ]; unfold TBB.bigPt; exact List.mem_ofFn.2 ⟨a, rfl⟩)).2`. Use `set X : ℝ := ∏ l : Fin P.r, Complex.normSq (c l.castSucc) with hXdef`. Use `set S : ℝ := Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) γ) * Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) γ) with hSdef`. Establish `hXS : 0 ≤ X * S` using `mul_nonneg (Finset.prod_nonneg fun _ _ => Complex.normSq_nonneg _) (mul_self_nonneg _)`. Use `set Dn : ℝ := Complex.normSq ((∏ l : Fin P.r, c l.castSucc) * c (Fin.last P.r)) with hDn`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDn0 : 0 < Dn` using `Complex.normSq_pos.2 (mul_ne_zero (Finset.prod_ne_zero_iff.2 fun _ _ => hd _) (hd _))`. Use `set Rs : Fin (o + 1) → ℝ := fun s => ∑ j, ∑ ρ', ‖MA.evQ P (MA.actA P (b s j * (u s j).prod) (trJKB p fr (B.JF p.T.base F)) ρ') q‖ ^ 2 with hRs`. Establish `hRs0 : ∀ s, 0 ≤ Rs s` using `fun s => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `hsum : ∑ t, ∑ ρ', ‖MA.evQ P (MA.actA P (b (σ t).1 (σ t).2 * (u (σ t).1 (σ t).2).prod) (trJKB p fr (B.JF p.T.base F)) ρ') q‖ ^ 2 = ∑ s, Rs s`. Rewrite using `[Equiv.sum_comp σ (fun x : ι => ∑ ρ', ‖MA.evQ P (MA.actA P (b x.1 x.2 * (u x.1 x.2).prod) (trJKB p fr (B.JF p.T.base F)) ρ') q‖ ^ 2), Fintype.sum_sigma]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsum]`. Establish `hn1 : (1 : ℝ) ≤ 2 * (P.r : ℝ) + P.k + 1`. Use `Nat.cast_nonneg (α := ℝ) P.r` as an intermediate fact. Use `Nat.cast_nonneg (α := ℝ) P.k` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Establish `hthr` using `fun s : Fin (o + 1) => thr_arith CcL Cb P.r (2 * (P.r : ℝ) + P.k + 1) w.length o s (B.opOrder Dop) A (Nat.cast_nonneg _) hn1 (Nat.cast_nonneg _) (by push_cast at ho; exact ho) (by exact_mod_cast Nat.lt_succ_iff.1 s.2) (by exact_mod_cast opOrder_le Dop hwo) hA`. Use `set Vs : Fin (o + 1) → (Wq →L[ℂ] Wp) := fun s => p.V (p.Θ.Θ w a fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ (s : ℕ) : ℝ) : ℂ) • F g) γ with hVs`. Establish `hG0 : 0 < MA.Gq P q` using `MA.Gq_pos P q`. Establish `key : ∀ s : Fin (o + 1), X * S * ‖B.hsVec (Vs s)‖ ^ 2 ≤ Ct s * MA.Gq P q ^ (2 * (s : ℕ)) * Dn⁻¹ ^ w.length * Rs s`. Introduce `s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Fs : B.Mat P.k P.r → (Wq →L[ℂ] Wp) := fun g => ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ (s : ℕ) : ℝ) : ℂ) • F g with hFs`. Establish `hJs : B.JF p.T.base Fs ∈ FFKB p` using `jf_Gpow p s hJ`. Establish `hT : WeakThresholdClauses.WeakDominationThreshold P.k P.r (A - (((2 * P.r + 2) * (s : ℕ) : ℕ) : ℝ)) (B.opOrder Dop)`. Use `jdc_thrW _ _ 0 le_rfl ?_` and prove the remaining obligations. Unfold `nDim`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Conclude with `(hthr s).2`. Establish `hH : ∀ g ∈ JF.Om P.k P.r p.T.base.z p.T.base.z', B.opApply Dop (B.JF p.T.base Fs) g = B.JF p.T.base (p.Θ.Θ w a Fs) g` using `fun g hg => by`. Rewrite using `[PBN.jf_congr_pos p.T.base (hΘ Fs) (by rw [nfLeib_domL_eq]; exact jdc_om_sub_gpos _ hg)]`. Conclude with `orbital_commutes_on_open_set _ _ _ _ p.T.base _ (B.opOrder Dop) Fs Dop _ subset_rfl le_rfl hT (inCC_Gpow_smul _ _ s hcc _) (fun p' hp' f' hf' g hg => hCm p' hp' f' hf' g (jdc_om_sub_gpos _ hg)) g hg`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `sxV p (p.Θ.Θ w a Fs) c hd hG q hq`. Establish `hR0 : 0 ≤ Ct s * MA.Gq P q ^ (2 * (s : ℕ)) * Dn⁻¹ ^ w.length * Rs s` using `mul_nonneg (mul_nonneg (mul_nonneg (hCt s) (by positivity)) (by positivity)) (hRs0 s)`. Rewrite using `[mul_assoc X]`. Use `le_of_eq_of_le e1 ?_` and prove the remaining obligations. Distinguish the cases in `h0 : B.JF p.T.base (p.Θ.Θ w a Fs) (B.gq p.T.base q.1) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h0, VLem.hsV_zero, norm_zero]`. Simplify using `using hR0`. Rewrite using `[← parseval hfr]`. Establish `ht : ∀ ρ', rawJ P p.T.base fr (B.JF p.T.base (p.Θ.Θ w a Fs)) ρ' q = MA.evQ P (MA.actA P (gM P p.l0 Lv (D.positionted w) a) (trJB P p.T.base fr (B.JF p.T.base Fs)) ρ') q`. Break down `hOr with hLL | hFc` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `tie_FF hLL p hfr hga hml hw.1 a hloc hSm hCm hΘ hJs hH q h0`. Take `⟨⟨Φ, hΦ⟩, ht⟩` from `tie_cpt p hfr hga hml hw.1 a (cpt_Gpow p s hFc)`. Introduce `ρ'`. Rewrite using `[← ht, evQ_trJB p.hP hk hfr hΦ]`. Simplify using `only [ht]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hpt s (trJB P p.T.base fr (B.JF p.T.base F)) (trJB P p.T.base fr (B.JF p.T.base Fs)) (fun ρ' q' => by`. Rewrite using `[evQ_trJB_FF p hfr hJs, evQ_trJB_FF p hfr hJ]`. Conclude with `rawJ_Gpow p.hP s F ρ' q') q`. Establish `e2 : Complex.normSq ((∏ l, q.1.1 l) * q.1.2) = Dn` using `by rw [hDn, hq]`. Rewrite `h2` using `[e2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `h2`. Use `set v : Fin (Q' + 1) → (Wq →L[ℂ] Wp) := fun j => p.V (B.opApply (L' j) F) γ with hv`. Establish `hz : p.V (fun _ => 0) γ = 0`. Use `vector_multiplication_holds Wp Wq P p (fun _ => 0) F γ hl hG` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv0 : ∀ j : Fin (Q' + 1), o < j → v j = 0` using `fun j hj => by`. Rewrite using `[← hz]`. Conclude with `PBE.vecV_congrGPos _ _ _ _ fun g hg => scoef_zero p hS' hwo hΘ hF (by rw [nfLeib_domL_eq]; exact hg) j hj`. Establish `hVv : ∀ s : Fin (o + 1), ∑ j : Fin (o + 1), (((s : ℕ) : ℂ) ^ (j : ℕ)) • (if h : (j : ℕ) < Q' + 1 then v ⟨j, h⟩ else 0) = ((MA.Gq P q ^ (s : ℕ) : ℝ) : ℂ)⁻¹ • Vs s`. Introduce `s`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hLe (fun x => x ^ (s : ℕ)) (contDiff_id.pow _) F A hF hcc (hthr s).1 γ hl hG`. Establish `hne : ((MA.Gq P q ^ (s : ℕ) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (pow_pos hG0 _).ne'`. Rewrite using `[← sum_trunc _ v hv0, eq_inv_smul_iff₀ hne, Finset.smul_sum]`. Use `Eq.trans (Finset.sum_congr rfl fun j _ => ?_) h1.symm` and prove the remaining obligations. Rewrite using `[nf_xD_iter_pow, hGq, smul_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hbd : ‖B.hsVec (p.V (B.opApply (Lq qq) F) γ)‖ ^ 2 ≤ Λ * ∑ s : Fin (o + 1), (MA.Gq P q ^ (2 * (s : ℕ)))⁻¹ * ‖B.hsVec (Vs s)‖ ^ 2`. Establish `hS0 : 0 ≤ ∑ s : Fin (o + 1), (MA.Gq P q ^ (2 * (s : ℕ)))⁻¹ * ‖B.hsVec (Vs s)‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hqo : (qq : ℕ) < o + 1`. Establish `e1 : p.V (B.opApply (Lq qq) F) γ = if h : (qq : ℕ) < Q' + 1 then v ⟨qq, h⟩ else 0` using `by split_ifs with h`. Conclude with `PBE.vecV_congrGPos _ _ _ _ fun g hg => by`. Rewrite using `[nf_scoef_unique p w a hSq hS' F hF g (by rw [nfLeib_domL_eq]; exact hg) qq, dif_pos (by omega)]`. Rewrite using `[← hz]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PBE.vecV_congrGPos _ _ _ _ fun g hg => by`. Rewrite using `[nf_scoef_unique p w a hSq hS' F hF g (by rw [nfLeib_domL_eq]; exact hg) qq, dif_neg (by omega)]`. Establish `e2` using `hlam _ (fun j : Fin (o + 1) => if h : (j : ℕ) < Q' + 1 then v ⟨j, h⟩ else 0) ⟨qq, hqo⟩`. Simplify using `only [hVv] at e2`. Rewrite using `[e1, e2, tc_hsVec_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [tc_hsVec_smul]`. Use `le_trans (pow_le_pow_left₀ (norm_nonneg _) (norm_sum_le _ _) 2) ?_` and prove the remaining obligations. Simplify using `only [norm_smul]`. Use `le_trans (Finset.sum_mul_sq_le_sq_mul_sq _ _ _) (mul_le_mul ?_ (le_of_eq ?_) ?_ hΛ0)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun q => ∑ s, ‖lam q s‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _) (Finset.mem_univ _)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, norm_inv, Complex.norm_real, Real.norm_of_nonneg (pow_nonneg hG0.le _), inv_pow, ← pow_mul, mul_comm (s : ℕ) 2]`. Conclude with `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `e1 : p.V (B.opApply (Lq qq) F) γ = 0`. Rewrite using `[← hz]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `PBE.vecV_congrGPos _ _ _ _ fun g hg => scoef_zero p hSq hwo hΘ hF (by rw [nfLeib_domL_eq]; exact hg) qq (by omega)`. Rewrite using `[e1, VLem.hsV_zero, norm_zero]`. Simplify using `using mul_nonneg hΛ0 hS0`. Establish `h3 : X * S * ‖B.hsVec (p.V (B.opApply (Lq qq) F) γ)‖ ^ 2 ≤ Λ * Cs * Dn⁻¹ ^ w.length * ∑ s, Rs s`. Use `le_trans (mul_le_mul_of_nonneg_left hbd hXS) ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_left_comm, mul_assoc Λ, mul_assoc Λ]`. Use `mul_le_mul_of_nonneg_left ?_ hΛ0` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Establish `hp : 0 < MA.Gq P q ^ (2 * (s : ℕ))` using `pow_pos hG0 _`.
-
-Rewrite using `[mul_left_comm, inv_mul_le_iff₀ hp]`. Use `le_trans (key s) ?_` and prove the remaining obligations. Establish `: Ct s ≤ Cs` using `Finset.single_le_sum (f := Ct) (fun s _ => hCt s) (Finset.mem_univ s)`. Establish `h4 : 0 ≤ MA.Gq P q ^ (2 * (s : ℕ)) * Dn⁻¹ ^ w.length * Rs s` using `mul_nonneg (by positivity) (hRs0 s)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right this h4]`.
-
-Establish `h5` using `dH_sq_le p w a ρ c hG`. Establish `h6` using `hsVec_proj_le (p.TP.E ρ) (p.TP.idem ρ) (p.TP.selfAdj ρ) (p.V (B.opApply (Lq qq) F) γ)`. Establish `hW0 : 0 ≤ Cw * (Dn / TBB.Gp p γ) ^ w.length` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[zpow_neg, zpow_natCast, div_pow, inv_pow]`.
-
-Use `(pow_pos hDn0 w.length).ne'` as an intermediate fact. Use `(pow_pos hG w.length).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem nfTieGen_of (hK : GCore) : NFTieGen := by
   intro Cb

@@ -6,15 +6,15 @@ universe u v w
 namespace Bl.general_b_fact_left_form
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hsub : Finset.Iic j ⊆ Finset.univ.filter (fun i => θ ≤ f i)`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Iic]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, le_trans h (hf hi)⟩`. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[Fin.card_Iic]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h`. Assume the negation of the conclusion as `hn0`. Establish `hn` using `not_le.mp hn0`. Establish `hsub : Finset.univ.filter (fun i => θ ≤ f i) ⊆ Finset.Iio j`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hi` using `[Finset.mem_filter]`. Rewrite using `[Finset.mem_Iio]`. Assume the negation of the conclusion as `hji0`. Establish `hji` using `not_lt.mp hji0`. Conclude with `absurd (lt_of_le_of_lt (hf hji) hn) (not_lt.mpr hi.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[Fin.card_Iio]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem goal1 {n : ℕ} (f : Fin n → ℝ) (hf : Antitone f) (θ : ℝ) (j : Fin n) :
     θ ≤ f j ↔ (j : ℕ) < (Finset.univ.filter (fun i => θ ≤ f i)).card := by

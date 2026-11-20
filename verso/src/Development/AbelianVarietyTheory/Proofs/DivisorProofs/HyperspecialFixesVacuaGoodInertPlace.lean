@@ -17,21 +17,21 @@ namespace GlobalTheory.FixAllGood
 open GlobalTheory.Hk3 (UnrPl VacFix)
 
 /- English proof (translation)
-Introduce `e f hP x a b c` and use `by rw [MonoidHom.mul_apply, h e f hP x a b c, h' e f hP x a b c, mul_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrPl_mul {D : D7} {P : Pl D.host.E} {χ χ' : (AE D)ˣ →* Circle} (h : UnrPl P χ) (h' : UnrPl P χ') :
     UnrPl P (χ * χ') := fun e f hP x a b c => by
   rw [MonoidHom.mul_apply, h e f hP x a b c, h' e f hP x a b c, mul_one]
 
 /- English proof (translation)
-Introduce `e f hP x a b c` and use `by rw [MonoidHom.inv_apply, h e f hP x a b c, inv_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrPl_inv {D : D7} {P : Pl D.host.E} {χ : (AE D)ˣ →* Circle} (h : UnrPl P χ) :
     UnrPl P χ⁻¹ := fun e f hP x a b c => by
   rw [MonoidHom.inv_apply, h e f hP x a b c, inv_one]
 
 /- English proof (translation)
-Unfold `Lift.chrStep`. Use `split_ifs`. Conclude with `⟨unrPl_mul hμ (unrPl_inv hη), hμ⟩`. Conclude with `⟨hμ, unrPl_mul hμ (unrPl_inv hη)⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unrPl_chrStep {D : D7} {P : Pl D.host.E} {μ : ℕ → (AE D)ˣ →* Circle} {η : (AE D)ˣ →* Circle} {j : ℕ}
     (hμ : UnrPl P (μ j)) (hη : UnrPl P η) :
@@ -42,7 +42,7 @@ theorem unrPl_chrStep {D : D7} {P : Pl D.host.E} {μ : ℕ → (AE D)ˣ →* Cir
   · exact ⟨hμ, unrPl_mul hμ (unrPl_inv hη)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hμ, unrPl_mul hμ (unrPl_inv hη)⟩`.
+Supply the required witnesses or components.
 -/
 theorem unrPl_chrTh {D : D7} {P : Pl D.host.E} {μ : ℕ → (AE D)ˣ →* Circle} {η : (AE D)ˣ →* Circle} {j : ℕ}
     (hμ : UnrPl P (μ j)) (hη : UnrPl P η) :
@@ -50,9 +50,9 @@ theorem unrPl_chrTh {D : D7} {P : Pl D.host.E} {μ : ℕ → (AE D)ˣ →* Circl
   ⟨hμ, unrPl_mul hμ (unrPl_inv hη)⟩
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F h _ t P hP _`. Establish `hu` using `GlobalTheory.T.splittingCharacters_unramified_offLevels R.toRealDat F.lv2 h.base.lev t P hP`. Establish `hm` using `D.R.two_le_m`. Use `⟨fun k hk => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hc` using `unrPl_chrStep (hu.2 (k + 1) (Nat.le_add_left _ _) hk.le) hu.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.ConjVacFix.vacFix_of_unrPl _ _ _ _ _ _ P (h.fullY t k hk).datum hc.1 hc.2`. Establish `hc` using `unrPl_chrStep (hu.2 D.R.m (by omega) le_rfl) hu.1`. Conclude with `GlobalTheory.ConjVacFix.vacFix_of_unrPl _ _ _ _ _ _ P (h.fullX t).datum hc.1 hc.2`. Establish `hc` using `unrPl_chrTh (hu.2 ((i : ℕ) + 1) (Nat.le_add_left _ _) i.2) hu.1`. Conclude with `GlobalTheory.ConjVacFix.vacFix_of_unrPl _ _ _ _ _ _ P (h.fullP i t).datum hc.1 hc.2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fixAll_of_good : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → R.toRealDat.ExAt → ∀ t P, Good R.toRealDat t P → conjPl P = P → FixAll R.toRealDat t P := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F h _ t P hP _

@@ -36,7 +36,7 @@ theorem idCov_ratForms (nab : NabV (T.Q.Xo j) T.Q.c) (a : (D.host.E →+* ℂ) �
     (idCov T j σ nab).ratForms a n = baseForms T j σ a n := rfl
 
 /- English proof (translation)
-Unfold `Cover.intForms baseInt`. Use `congr 1`. Use extensionality with `f`. Conclude with `and_assoc`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem idCov_intForms (nab : NabV (T.Q.Xo j) T.Q.c) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     (S : Set (HeightOneSpectrum (𝓞 T.Q.c.F))) :
@@ -47,7 +47,7 @@ theorem idCov_intForms (nab : NabV (T.Q.Xo j) T.Q.c) (a : (D.host.E →+* ℂ) �
   exact and_assoc
 
 /- English proof (translation)
-Take `⟨hr, g, e, F, ik, φ, th, -, -, h1, h2⟩` from `h.adPin j hj σ hσ`. Take `⟨hr', hm⟩` from `h.modelW j hj σ hσ`. Take `⟨_, _, -, hd⟩` from `h.dictU j hj σ hσ`. Conclude with `⟨GlobalTheory.RawSpan.idCover_isLev nab 0, h.pins.2.1.2, RingHom.ext fun _ => rfl, h.unf j hj σ hσ, hd.2.2.2.1, hr, g, e, F, ik, φ, th, hm, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem idCov_isUnif (h : LawsJ T) (hj : Formalism.L2.Pj.InR D j) (hσ : GoodEmb T.Q.c σ) (nab : NabV (T.Q.Xo j) T.Q.c) :
     (idCov T j σ nab).IsUnif := by
@@ -58,9 +58,9 @@ theorem idCov_isUnif (h : LawsJ T) (hj : Formalism.L2.Pj.InR D j) (hσ : GoodEmb
     hr, g, e, F, ik, φ, th, hm, h1, h2⟩
 
 /- English proof (translation)
-Use `⟨h.cUnit j hj σ hσ, fun f _ f₂ _ hp => ?_⟩` and prove the remaining obligations. Establish `key : rdU (T.U j σ) f₂ = rdU (T.U j σ) f`. Use function extensionality and compare the values at `k x`. Distinguish the cases in `hx : x ∈ ((T.U j σ).X k).dom`. Establish `e` using `@hp ℂ _ σ.toAlgebra σ.toAlgebra σ.toAlgebra (fun _ => rfl) (fun _ => rfl) ((T.U j σ).un k ⟨x, hx⟩) ((T.U j σ).un k ⟨x, hx⟩) (GlobalTheory.RawSpan.frOver_self nab 0 ((T.U j σ).un k ⟨x, hx⟩))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `r : ∀ u : T.R j, rdU (T.U j σ) u k x = toC (evR (T.Q.Xo j) T.Q.c u ((T.U j σ).un k ⟨x, hx⟩))` using `fun u => dif_pos hx`. Conclude with `(r f₂).trans (Eq.trans e (r f).symm)`. Conclude with `(rdU_mem_offZero _ f₂ k x hx).trans (rdU_mem_offZero _ f k x hx).symm`. Conclude with `congrArg (fun P => (lieFac (T.Q.Dw j) (xiR D) a : ℂ) • adel (T.V j σ) (T.dict j σ) (muPin (T.V j σ) (T.dict j σ) (T.mu j σ) (T.cE j σ)) P) key`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idCov_isPinned (h : LawsJ T) (hj : Formalism.L2.Pj.InR D j) (hσ : GoodEmb T.Q.c σ) (nab : NabV (T.Q.Xo j) T.Q.c)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) : (idCov T j σ nab).IsPinned a n := by
@@ -78,7 +78,7 @@ theorem idCov_isPinned (h : LawsJ T) (hj : Formalism.L2.Pj.InR D j) (hσ : GoodE
     adel (T.V j σ) (T.dict j σ) (muPin (T.V j σ) (T.dict j σ) (T.mu j σ) (T.cE j σ)) P) key
 
 /- English proof (translation)
-Simplify using `only [Cover.rd, Pi.smul_apply, smul_eq_mul, adel_muPin]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rd_apply (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f₂ : Rul C.d.Xo₂ C.d.c₂) (g : GA D (T.V j σ)) :
     C.rd a f₂ g = C.cc₂ (C.dict₂ g).1 * ((lieFac (T.Q.Dw j) (xiR D) a : ℂ) * T.mu j σ g *
@@ -89,16 +89,16 @@ theorem rd_apply (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f
 abbrev withC (C : Cover T j σ) (cc : C.U₂.Comp → ℂ) : Cover T j σ := { C with cc₂ := cc }
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isUnif_withC (C : Cover T j σ) (cc : C.U₂.Comp → ℂ) : (withC C cc).IsUnif ↔ C.IsUnif := Iff.rfl
 
 /- English proof (translation)
-Use `⟨hc, fun f hf f₂ hf₂ hp => ?_⟩` and prove the remaining obligations. Establish `e` using `h.2 f hf f₂ hf₂ hp`. Use function extensionality and compare the values at `g`. Establish `e1` using `congrFun e g`. Rewrite `e1` using `[rd_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[rd_apply]`. Distinguish the cases in `h0 : T.phiJ j σ a f g = 0`. Rewrite `e1`, the goal using `[h0]`. Establish `hne : C.cc₂ (C.dict₂ g).1 ≠ 0` using `fun hz => by simpa [hz] using h.1 (C.dict₂ g).1`. Use `(mul_eq_zero.1 e1).resolve_left hne` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_eq_zero_of_right _ this`. Rewrite using `[← e1]`. Conclude with `congrArg (· * _) (hag g ⟨f, hf, h0⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pinned_withC (C : Cover T j σ) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} (h : C.IsPinned a n)
     (cc : C.U₂.Comp → ℂ) (hc : CUnit cc)
@@ -119,7 +119,7 @@ theorem pinned_withC (C : Cover T j σ) {a : (D.host.E →+* ℂ) × ℕ → ℕ
     exact congrArg (· * _) (hag g ⟨f, hf, h0⟩)
 
 /- English proof (translation)
-Establish `e1` using `congrFun (h.2 f hf f₂ hf₂ hp) g`. Establish `e2` using `congrFun (h'.2 f hf f₂ hf₂ hp) g`. Rewrite `e1`, `e2` using `[rd_apply]`. Establish `hne : (lieFac (T.Q.Dw j) (xiR D) a : ℂ) * T.mu j σ g * rdU C.U₂ f₂ (C.dict₂ g).1 (C.dict₂ g).2 ≠ 0` using `fun hz => hg (by rw [← e1, hz, mul_zero])`. Conclude with `mul_right_cancel₀ hne (e2.trans e1.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pinned_unique (C : Cover T j σ) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} (h : C.IsPinned a n)
     (cc : C.U₂.Comp → ℂ) (h' : (withC C cc).IsPinned a n) {f : T.R j} (hf : f ∈ sec (T.Q.Xo j) T.Q.c a n)
@@ -133,14 +133,14 @@ theorem pinned_unique (C : Cover T j σ) {a : (D.host.E →+* ℂ) × ℕ → �
   exact mul_right_cancel₀ hne (e2.trans e1.symm)
 
 /- English proof (translation)
-The claim follows from `Set.image_mono fun f hf => ⟨((mem_cusp _ _ _ a n f).1 hf).1, ((mem_cusp _ _ _ a n f).1 hf).2 σ hσ, rdU_mem_offZero _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem cusp_subset_baseForms (hσ : GoodEmb T.Q.c σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     T.phiJ j σ a '' (T.cuspA j a n : Set (T.R j)) ⊆ baseForms T j σ a n :=
   Set.image_mono fun f hf => ⟨((mem_cusp _ _ _ a n f).1 hf).1, ((mem_cusp _ _ _ a n f).1 hf).2 σ hσ, rdU_mem_offZero _ _⟩
 
 /- English proof (translation)
-Use `⟨0, ⟨Submodule.zero_mem _, by rw [map_zero]; exact Submodule.zero_mem _⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Rewrite using `[rd_apply, map_zero]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zero_mem_ratForms (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) : 0 ∈ C.ratForms a n := by
   refine ⟨0, ⟨Submodule.zero_mem _, by rw [map_zero]; exact Submodule.zero_mem _⟩, ?_⟩
@@ -149,7 +149,7 @@ theorem zero_mem_ratForms (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ �
   simp
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `hφ`. Take `⟨f', hf', rfl⟩` from `hψ`. Use `⟨f + f', ⟨Submodule.add_mem _ hf.1 hf'.1, by rw [map_add]; exact Submodule.add_mem _ hf.2 hf'.2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.add_apply, rd_apply, map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -163,7 +163,7 @@ theorem add_mem_ratForms (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ →
   ring
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `hφ`. Use `⟨x • f, ⟨Submodule.smul_mem _ _ hf.1, by rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ hf.2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.smul_apply, rd_apply, map_smulₛₗ, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem smul_mem_ratForms (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (x : C.d.c₂.F)
     {φ : GA D (T.V j σ) → ℂ} (hφ : φ ∈ C.ratForms a n) : C.σ₂ x • φ ∈ C.ratForms a n := by

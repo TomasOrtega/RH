@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.DoublingFirstFactor
 
 /- English proof (translation)
-Introduce `D ψ _ S T χS χT ω hω ωd hωd g f₁ f₂ h₁ h₂`. Establish `key` using `((GlobalTheory.DoublingTheta.thetaClause D ψ S T χS χT ω ωd hω hωd f₁ f₂ h₁ h₂).2 g 1 1).1`. Establish `e : ω ((1 : GA D S), (1 : GA D T)) = 1` using `map_one ω`. Rewrite using `[key, e, map_one, map_one, inv_one, Circle.coe_one, one_smul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem doubled_first_factor : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : GA D S × GA D T →* Module.End ℂ (Formalism.IndefR.Datum.WO S T → ℂ)),
@@ -42,7 +42,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @DoublingFirstFactorDivisor.GlobalTheory.CompanionTheory.DoublingFirstFactor.doubled_first_factor | exact DoublingFirstFactorDivisor.GlobalTheory.CompanionTheory.DoublingFirstFactor.doubled_first_factor | (intros; apply DoublingFirstFactorDivisor.GlobalTheory.Compan …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.Adopt.doubledWeilDatum_firstFactor_on_doublingTensor : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : GA D S × GA D T →* Module.End ℂ (Formalism.IndefR.Datum.WO S T → ℂ)),

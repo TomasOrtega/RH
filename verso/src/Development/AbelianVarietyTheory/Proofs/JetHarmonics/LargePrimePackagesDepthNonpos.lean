@@ -9,11 +9,9 @@ open scoped BigOperators
 namespace GlobalTheory.GoodDepth.Zero
 
 /- English proof (translation)
-Distinguish the cases in `h : ∑ k ∈ Finset.Icc 1 K, e k ≤ s * B`. Take `⟨pc, h1, h2, h3⟩` from `GlobalTheory.exists_cut_columns_bounded_width K s B e h`. Use `⟨pc, h2, fun _ hsupp k => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : k ∈ Finset.Icc 1 K`. Conclude with `h1 k hk`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hek : e k = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hk (Finset.mem_Icc.mpr (hsupp k hne))`. Rewrite using `[hek]`. Conclude with `Finset.sum_eq_zero fun u _ => h3 u k hk`.
-
-Conclude with `⟨fun _ _ => 0, fun _ => by simp, fun h' => absurd h' h⟩`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cut (K s B : ℕ) (e : ℕ → ℕ) : ∃ pc : Fin s → ℕ → ℕ,
     (∀ u, ∑ k ∈ Finset.Icc 1 K, pc u k ≤ B) ∧
@@ -31,7 +29,7 @@ theorem cut (K s B : ℕ) (e : ℕ → ℕ) : ∃ pc : Fin s → ℕ → ℕ,
   · exact ⟨fun _ _ => 0, fun _ => by simp, fun h' => absurd h' h⟩
 
 /- English proof (translation)
-Unfold `monAl`. Apply `Finset.sum_le_sum_of_subset` to reduce the goal to its premises. Introduce `k hk`. Simplify using `only [Finset.mem_Icc] at hk ⊢`. Conclude with `⟨by omega, hk.2.trans (min_le_left _ _)⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem monAl_le_first (K rk : ℕ) (e : ℕ → ℕ) (ρ : ℕ) :
     monAl K rk e ρ ≤ ∑ k ∈ Finset.Icc 1 K, e k := by
@@ -42,31 +40,29 @@ theorem monAl_le_first (K rk : ℕ) (e : ℕ → ℕ) (ρ : ℕ) :
   exact ⟨by omega, hk.2.trans (min_le_left _ _)⟩
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos l with hl | hl` into its components or cases. Establish `hz : ∀ z ∈ Pk.Z, ∀ g a k, Pk.ga z g a k = 0`. Introduce `z hz g a k`. Assume the negation of the conclusion as `hne`. Establish `hs` using `Pk.supp z hz g a k hne`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : Pk.s * (l - 1) = 0` using `by simp [hl]`. Establish `hf` using `(Pk.first z hz g a).trans h0.le`. Conclude with `hne ((Finset.sum_eq_zero_iff.mp (Nat.le_zero.mp hf)) k (Finset.mem_Icc.mpr ⟨hs.1, hs.2.2⟩))`. Establish `h` using `Pk.val (fun _ => []) (by simp) (by simp) (by intro o ho g a k; simp [hz o ho g a k])`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hcut : ∀ z g a, ∃ pc : Fin Pk.s → ℕ → ℕ, (∀ u, ∑ k ∈ Finset.Icc 1 Pk.K, pc u k ≤ l - 1) ∧ (z ∈ Pk.Z → ∀ k, ∑ u, pc u k = Pk.ga z g a k)`. Introduce `z g a`. Take `⟨pc, h1, h2⟩` from `cut Pk.K Pk.s (l - 1) (Pk.ga z g a)`. Conclude with `⟨pc, h1, fun hz => h2 (Pk.first z hz g a) fun k hk => ⟨(Pk.supp z hz g a k hk).1, (Pk.supp z hz g a k hk).2.2⟩⟩`. Use `choose pc hpc1 hpc2 using hcut`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `blk : P.Pl → Fin 2 × Fin Pk.s → RF.GlobalTheory P.d × ℝ` to `fun z q => (RF.GlobalTheory.mon q.1 (fun a => pc z q.1 a q.2) Pk.K, 0)`. Set `L : P.Pl → List (RF.GlobalTheory P.d × ℝ)` to `fun z => (Finset.univ : Finset (Fin 2 × Fin Pk.s)).toList.map (blk z)`. Establish `hsum0 : ∑ o ∈ Pk.Z, ((L o).map Prod.snd).sum = 0`. Simplify using `[L, blk]`. Use `(Pk.val L ?_ ?_ ?_).trans hsum0.le` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `o _ p hp`. Simplify using `only [L, List.mem_map, Finset.mem_toList] at hp`. Take `⟨q, -, rfl⟩` from `hp`. Use `(hM Pk.R.C Pk.R.V P.d (Pk.R.I o) (Pk.R.J o) (Pk.R.X o) (Pk.R.F o) q.1 (fun a => pc o q.1 a q.2) Pk.K).2 ?_` and prove the remaining obligations. Introduce `a ρ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pk.R.hVl]`. Establish `h1` using `(monAl_le_first Pk.K ((Pk.R.X o).rkF q.1 a) (pc o q.1 a q.2) ρ).trans (hpc1 o q.1 a q.2)`. Use linear arithmetic over natural numbers and integers. Establish `hrow : ∀ o, ((L o).map fun p => p.1.what₂ (Pk.R.X o).n).sum = 2 * Pk.s * Pk.K`. Introduce `o`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [L, List.map_map]`. Rewrite using `[Finset.sum_map_toList]`. Simplify using `[blk, RF.GlobalTheory.what₂]`. Rewrite using `[Finset.sum_congr rfl fun o _ => hrow o, Finset.sum_const, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `o ho g a k`. Establish `hw : ∀ q : Fin 2 × Fin Pk.s, (blk o q).1.wt (Pk.R.X o) g a k = if q.1 = g then (if 1 ≤ k ∧ k ≤ min Pk.K ((Pk.R.X o).rkF g a) then pc o g a q.2 k else 0) else 0`. Introduce and unpack `⟨g', u⟩`. Distinguish the cases in `hg : g' = g`. Substitute `hg` using the available equality.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[blk, RF.GlobalTheory.wt]`. Simplify using `[blk, RF.GlobalTheory.wt, hg, Ne.symm hg]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [L, List.map_map]`. Rewrite using `[Finset.sum_map_toList]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `_ = ∑ q : Fin 2 × Fin Pk.s, if q.1 = g then (if 1 ≤ k ∧ k ≤ min Pk.K ((Pk.R.X o).rkF g a) then pc o g a q.2 k else 0) else 0 := Finset.sum_congr rfl fun q _ => hw q`. Use `_ = ∑ u : Fin Pk.s, (if 1 ≤ k ∧ k ≤ min Pk.K ((Pk.R.X o).rkF g a) then pc o g a u k else 0) := by`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single g]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Use `_ = Pk.ga o g a k := by`. Distinguish the cases in `hk : 1 ≤ k ∧ k ≤ min Pk.K ((Pk.R.X o).rkF g a)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using `only [if_pos hk]`. Conclude with `hpc2 o g a ho k`. Simplify using `only [if_neg hk, Finset.sum_const_zero]`. Use `symm`. Assume the negation of the conclusion as `hne`.
-
-Establish `hs` using `Pk.supp o ho g a k hne`. Conclude with `hk ⟨hs.1, le_min hs.2.2 hs.2.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem zero_of_pkg (hM : RF.MONSupply) (P : RF.Par) (l : ℕ) (Pk : RF.PkgZero P l) : Pk.ν ≤ 0 := by
   classical
@@ -149,35 +145,33 @@ theorem zero_of_pkg (hM : RF.MONSupply) (P : RF.Par) (l : ℕ) (Pk : RF.PkgZero 
               exact hk ⟨hs.1, le_min hs.2.2 hs.2.1⟩
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos l with hl | hl` into its components or cases. Establish `hz : ∀ z σ k, Pk.gaC z σ k = 0`. Introduce `z σ k`. Assume the negation of the conclusion as `hne`. Establish `hs` using `Pk.supp z σ k hne`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : Pk.s * (l - 1) = 0` using `by simp [hl]`. Establish `hf` using `(Pk.first z σ).trans h0.le`. Conclude with `hne ((Finset.sum_eq_zero_iff.mp (Nat.le_zero.mp hf)) k (Finset.mem_Icc.mpr ⟨hs.1, hs.2.2⟩))`. Establish `h` using `Pk.val (fun _ => []) (by simp) (by simp) (by simp) (by intro o σ k; simp [hz o σ k])`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hcut : ∀ z σ, ∃ pc : Fin Pk.s → ℕ → ℕ, (∀ u, ∑ k ∈ Finset.Icc 1 Pk.K, pc u k ≤ l - 1) ∧ (∀ k, ∑ u, pc u k = Pk.gaC z σ k)`. Introduce `z σ`. Take `⟨pc, h1, h2⟩` from `cut Pk.K Pk.s (l - 1) (Pk.gaC z σ)`. Conclude with `⟨pc, h1, h2 (Pk.first z σ) fun k hk => ⟨(Pk.supp z σ k hk).1, (Pk.supp z σ k hk).2.2⟩⟩`. Use `choose pc hpc1 hpc2 using hcut`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ee : P.Pl → ZMod 2 × Fin Pk.s → ZMod 2 → ℕ → ℕ` to `fun z q a k => if a = q.1 then pc z q.1 q.2 k else 0`. Set `blk : P.Pl → ZMod 2 × Fin Pk.s → RF.GlobalTheory 2 × ℝ` to `fun z q => (RF.GlobalTheory.mon 0 (ee z q) Pk.K, 0)`. Set `L : P.Pl → List (RF.GlobalTheory 2 × ℝ)` to `fun z => (Finset.univ : Finset (ZMod 2 × Fin Pk.s)).toList.map (blk z)`. Establish `hsum0 : ∑ o, ((L o).map Prod.snd).sum = 0`. Simplify using `[L, blk]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Pk.val L ?_ ?_ ?_ ?_).trans hsum0.le` and prove the remaining obligations. Introduce `o p hp`. Simplify using `only [L, List.mem_map, Finset.mem_toList] at hp`. Take `⟨q, -, rfl⟩` from `hp`. Use `(hM Pk.R.C Pk.R.V 2 (Pk.R.I o) (Pk.R.J o) (Pk.R.X o) (Pk.R.F o) 0 (ee o q) Pk.K).2 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ρ`. Rewrite using `[Pk.R.hVl]`. Establish `h1 : ∑ k ∈ Finset.Icc 1 Pk.K, ee o q a k ≤ l - 1`. Distinguish the cases in `ha : a = q.1`. Simplify `hpc1 o q.1 q.2` using `[ee, ha]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[ee, ha]`. Establish `h2` using `(monAl_le_first Pk.K ((Pk.R.X o).rkF 0 a) (ee o q a) ρ).trans h1`. Use linear arithmetic over natural numbers and integers. Introduce `o p hp g e N hpe`. Simplify using `only [L, List.mem_map, Finset.mem_toList] at hp`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, -, rfl⟩` from `hp`. Take `⟨-, rfl, -⟩` from `RF.GlobalTheory.mon.inj hpe`. Conclude with `⟨q.1, fun a k ha => by simp [ee, ha]⟩`. Establish `hrow : ∀ o, ((L o).map fun p => p.1.what₂ (Pk.R.X o).n).sum = 2 * Pk.s * Pk.K`. Introduce `o`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [L, List.map_map]`. Rewrite using `[Finset.sum_map_toList]`. Simplify using `[blk, RF.GlobalTheory.what₂]`. Rewrite using `[Finset.sum_congr rfl fun o _ => hrow o, Finset.sum_const, smul_eq_mul, Finset.card_univ]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `o σ k`. Establish `hw : ∀ q : ZMod 2 × Fin Pk.s, (blk o q).1.wt (Pk.R.X o) 0 σ k + (blk o q).1.wt (Pk.R.X o) 1 (σ + 1) k = if q.1 = σ then (if 1 ≤ k ∧ k ≤ min Pk.K ((Pk.R.X o).rkF 0 σ) then pc o σ q.2 k else 0) else 0`. Introduce and unpack `⟨a, u⟩`. Distinguish the cases in `ha : a = σ`. Substitute `ha` using the available equality.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[blk, ee, RF.GlobalTheory.wt]`. Simplify using `[blk, ee, RF.GlobalTheory.wt, ha, Ne.symm ha]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [L, List.map_map]`. Rewrite using `[Finset.sum_map_toList]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `_ = ∑ q : ZMod 2 × Fin Pk.s, if q.1 = σ then (if 1 ≤ k ∧ k ≤ min Pk.K ((Pk.R.X o).rkF 0 σ) then pc o σ q.2 k else 0) else 0 := Finset.sum_congr rfl fun q _ => hw q`. Use `_ = ∑ u : Fin Pk.s, (if 1 ≤ k ∧ k ≤ min Pk.K ((Pk.R.X o).rkF 0 σ) then pc o σ u k else 0) := by`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single σ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Use `_ = Pk.gaC o σ k := by`. Distinguish the cases in `hk : 1 ≤ k ∧ k ≤ min Pk.K ((Pk.R.X o).rkF 0 σ)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using `only [if_pos hk]`. Conclude with `hpc2 o σ k`. Simplify using `only [if_neg hk, Finset.sum_const_zero]`. Use `symm`. Assume the negation of the conclusion as `hne`.
-
-Establish `hs` using `Pk.supp o σ k hne`. Conclude with `hk ⟨hs.1, le_min hs.2.2 hs.2.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem zero_of_pkgC (hM : RF.MONSupply) (P : RF.Par) (l : ℕ) (Pk : RF.PkgZeroC P l) : Pk.ν ≤ 0 := by
   classical
@@ -273,7 +267,7 @@ theorem zero_of_pkgC (hM : RF.MONSupply) (P : RF.Par) (l : ℕ) (Pk : RF.PkgZero
 end GlobalTheory.GoodDepth.Zero
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun P l Pk => GlobalTheory.GoodDepth.Zero.zero_of_pkg GlobalTheory.T.monomialBlock_supply_both_typings.2 P l Pk, fun P l Pk => GlobalTheory.GoodDepth.Zero.zero_of_pkgC GlobalTheory.T.monomialBlock_supply_both_typings.2 P l Pk⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.GoodDepth.zeroBd : GlobalTheory.GoodDepth.ZeroBd :=
   ⟨fun P l Pk => GlobalTheory.GoodDepth.Zero.zero_of_pkg GlobalTheory.T.monomialBlock_supply_both_typings.2 P l Pk,

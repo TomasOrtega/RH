@@ -24,9 +24,9 @@ open MvPolynomial
 variable {X X' Z : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R']
 
 /- English proof (translation)
-Rewrite using `[eval₂_eq, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `hd : ∑ j ∈ a.support, a j = e`. Use `hF (mem_support_iff.1 ha)` as an intermediate fact. Rewrite using `[← this, Finsupp.weight_apply, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval₂_scale {σ A : Type} [CommRing A] (φ : R →+* A) (c : A) (x : σ → A) {F : MvPolynomial σ R}
     {e : ℕ} (hF : F.IsHomogeneous e) : eval₂ φ (fun j => c * x j) F = c ^ e * eval₂ φ x F := by
@@ -43,7 +43,7 @@ def gsHom (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) : Γ(X, U) →+* Z
   (Z.presheaf.germ (r ⁻¹ᵁ U) z h).hom.comp (r.app U).hom
 
 /- English proof (translation)
-The claim follows from `(gs_eq r z U h a).symm`.
+A detailed English derivation is pending.
 -/
 theorem gsHom_apply (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a : Γ(X, U)) :
     gsHom r z U h a = gs r z U a := (gs_eq r z U h a).symm
@@ -52,9 +52,7 @@ def cstGerm (p : Z ⟶ Spec (CommRingCat.of R)) (z : Z) : R →+* Z.presheaf.sta
   (gsHom p z ⊤ trivial).comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom
 
 /- English proof (translation)
-Rewrite using `[← gsHom_apply r z U h, coe_eval₂Hom, eval₂_comp_left]`. Use `congr 1`. Use extensionality with `a`. Conclude with `(gsHom_apply r z U h _).trans (((gs_res r z le_top h _).trans (gs_pull r p z ⊤ trivial _)).trans (gsHom_apply (r ≫ p) z ⊤ trivial _).symm)`. Use extensionality with `j`.
-
-Conclude with `gsHom_apply r z U h _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gs_eval {σ : Type} (p : X ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U)
     (x : σ → Γ(X, U)) (F : MvPolynomial σ R) :
@@ -68,7 +66,7 @@ theorem gs_eval {σ : Type} (p : X ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ X) (z
     exact gsHom_apply r z U h _
 
 /- English proof (translation)
-Use extensionality with `a`. Use `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom g))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Simplify using `only [AbLaw.cst, RingHom.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`. Rewrite using `[this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem const_comp (p : X ⟶ Spec (CommRingCat.of R')) (g : R →+* R') (U : X.Opens) :
     AbLaw.cst (p ≫ Spec.map (CommRingCat.ofHom g)) U = (AbLaw.cst p U).comp g := by
@@ -79,7 +77,7 @@ theorem const_comp (p : X ⟶ Spec (CommRingCat.of R')) (g : R →+* R') (U : X.
   rw [this]
 
 /- English proof (translation)
-Establish `hm : r z ∈ H.U i ⊓ H.U j` using `⟨hi, hj⟩`. Establish `e` using `congrArg (gs r z _) (s.compat i j)`. Rewrite `e` using `[gs_res _ z _ hm, gs_mul _ z _ hm, gs_res _ z _ hm, gs_unit _ z _ hm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gs_sec {H : LB X} (s : LB.Sec H) (r : Z ⟶ X) (z : Z) {i j : H.ι} (hi : r z ∈ H.U i) (hj : r z ∈ H.U j) :
     gs r z _ (s.f i) = (gm r z _ (H.g i j)).val * gs r z _ (s.f j) := by
@@ -104,16 +102,14 @@ def pwIso {H : LB X} {H' : LB X'} {β : X' ⟶ X} (w : LB.Iso H' (H.pull β)) (t
     LB.Iso (AbLaw.pw H' t) ((AbLaw.pw H t).pull β) := ⟨fun p => w.s p ^ t⟩
 
 /- English proof (translation)
-The claim follows from `map_zpow (gm r z ((H.pull β).U (fun _ => j) ⊓ H'.U k)) (w.s (fun _ => j, k)) t`.
+A detailed English derivation is pending.
 -/
 theorem gw_pwIso {H : LB X} {H' : LB X'} {β : X' ⟶ X} (w : LB.Iso H' (H.pull β)) (t : ℤ) (r : Z ⟶ X') (z : Z)
     (j : H.ι) (k : H'.ι) : gw (pwIso w t) r z j k = gw w r z j k ^ t :=
   map_zpow (gm r z ((H.pull β).U (fun _ => j) ⊓ H'.U k)) (w.s (fun _ => j, k)) t
 
 /- English proof (translation)
-Introduce `Y f y j j' k k' hj hj' hk hk'`. Establish `e` using `congrArg (· ^ t) (hw Y f y j j' k k' hj hj' hk hk')`. Simplify using `only [mul_zpow, inv_zpow] at e`. Use `(gw_pwIso w t f y j k).trans (e.trans (congrArg₂ (· * ·) (congrArg₂ (· * ·) ?_ (congrArg (·⁻¹) ?_)) (gw_pwIso w t f y j' k').symm))` and prove the remaining obligations. Conclude with `(map_zpow _ _ _).symm`.
-
-Conclude with `(map_zpow _ _ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pgen_pwIso {H : LB X} {H' : LB X'} {β : X' ⟶ X} {w : LB.Iso H' (H.pull β)} (hw : PGen w) (t : ℤ) :
     PGen (pwIso w t) := by
@@ -130,7 +126,7 @@ def Rel {H : LB X} {H' : LB X'} (β : X' ⟶ X) (w : LB.Iso H' (H.pull β)) (s :
     gs β z _ (s.f k) = (gw w (𝟙 _) z k k').val * gs (𝟙 _) z _ (s'.f k')
 
 /- English proof (translation)
-Rewrite using `[gs_eval p β z _ hk, gs_eval (β ≫ p) (𝟙 _) z _ hk', Category.id_comp, zpow_natCast, Units.val_pow_eq_pow_val, ← eval₂_scale _ _ _ hF]`. Use `congr 1`. Conclude with `funext fun j => h j z k k' hk hk'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem Rel.form {σ : Type} {H : LB X} {H' : LB X'} {β : X' ⟶ X} {w : LB.Iso H' (H.pull β)} {s : σ → LB.Sec H}
     {s' : σ → LB.Sec H'} (h : ∀ j, Rel β w (s j) (s' j)) (p : X ⟶ Spec (CommRingCat.of R))
@@ -144,7 +140,7 @@ theorem Rel.form {σ : Type} {H : LB X} {H' : LB X'} {β : X' ⟶ X} {w : LB.Iso
   exact funext fun j => h j z k k' hk hk'
 
 /- English proof (translation)
-Establish `e` using `gs_eval (σ := Empty) p r z U h Empty.elim (MvPolynomial.C a)`. Rewrite `e` using `[MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂_C]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gs_cst (p : X ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a : R) :
     gs r z U (AbLaw.cst p U a) = cstGerm (r ≫ p) z a := by
@@ -152,7 +148,7 @@ theorem gs_cst (p : X ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ X) (z : Z) (U : X.
   rwa [MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂_C] at e
 
 /- English proof (translation)
-Rewrite using `[← gsHom_apply r z _ h, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, gsHom_apply, gsHom_apply, gs_cst p r z _ h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_lin {n : ℕ} (p : X ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U)
     (c : Fin n → R) (x : Fin n → Γ(X, U)) :
@@ -162,9 +158,9 @@ theorem gs_lin {n : ℕ} (p : X ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ X) (z : 
   rw [map_mul, gsHom_apply, gsHom_apply, gs_cst p r z _ h]
 
 /- English proof (translation)
-Establish `e : gs β z _ (∑ i, AbLaw.cst p (M.U k) (c i) * (τ i).f k) = (gw w (𝟙 _) z k k').val * gs (𝟙 _) z _ (∑ i, AbLaw.cst (β ≫ p) (M'.U k') (c i) * (τ' i).f k')`. Rewrite using `[gs_lin p β z _ hk, gs_lin (β ≫ p) (𝟙 _) z _ hk', Category.id_comp, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hτ i z k k' hk hk']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, hσ z k k' hk hk', Units.mul_right_inj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem germ_rel {n : ℕ} {M : LB X} {M' : LB X'} {β : X' ⟶ X} {w : LB.Iso M' (M.pull β)} {σ : LB.Sec M}
     {σ' : LB.Sec M'} {τ : Fin n → LB.Sec M} {τ' : Fin n → LB.Sec M'} (hσ : Rel β w σ σ')
@@ -183,19 +179,17 @@ theorem germ_rel {n : ℕ} {M : LB X} {M' : LB X'} {β : X' ⟶ X} {w : LB.Iso M
 end
 
 /- English proof (translation)
-Introduce `A _ _ _ X f hf H n s hH hva K _ g₀ hg₀ X₀ π f₀ hπ H₀ w₀ s₀ hH₀ hw₀ hs₀ t h1 hsurj A' _ g X' β f' hβ H' w s' hH' hw hs' F hF hF0`. Establish `hM` using `isLB_pw hH (t : ℤ)`. Establish `hM'` using `isLB_pw hH' (t : ℤ)`. Take `⟨m, τ, hτ⟩` from `GlobalTheory.T.exists_sections_basis_baseChange_h1Vanishing A X f hf ⟨H, hH, n, s, hva⟩ (AbLaw.pw H t) hM K g₀ hg₀ X₀ π f₀ hπ (AbLaw.pw H₀ t) (pwIso w₀ t) (isLB_pw hH₀ _) ((isGen_iff _).2 (pgen_pwIso ((isGen_iff _).1 hw₀) t)) h1`. Use `choose Q hQ hτQ using fun i => GlobalTheory.T.sections_pow_veryAmple_are_forms_of_closedFibre A X f hf H n s hH hva K g₀ hg₀ X₀ π f₀ hπ H₀ w₀ s₀ hH₀ hw₀ hs₀ t h1 hsurj (τ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL` using `LB.isLB_pull hM (𝟙 X)`. Establish `hu` using `CubePf.idIsoL_isGen hL`. Use `choose P hP using fun σ => GlobalTheory.SecPullIso.exists_pull (𝟙 X) (AbLaw.pw H t) _ _ hM hL hu σ`. Establish `hid : IsPullback (𝟙 X) f f (Spec.map (CommRingCat.ofHom (RingHom.id A)))`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`. Take `⟨c, hc, -⟩` from `hτ A (RingHom.id A) X (𝟙 X) f hid _ _ (fun i => P (τ i)) hL hu (fun i => hP (τ i)) (P (formSec f s hF))`. Establish `hc' : ∀ k, (formSec f s hF).f k = ∑ i, AbLaw.cst f ((AbLaw.pw H t).U k) (c i) * (τ i).f k` using `fun k => fn_ext fun z hz => by`. Take `⟨k', hk'⟩` from `exists_chart hL z`. Use `(germ_rel (hP _) (fun i => hP (τ i)) f c z k k' hz hk').2 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.id_comp]`. Conclude with `congrArg _ (hc k')`. Establish `hw'` using `(isGen_iff _).2 (pgen_pwIso ((isGen_iff _).1 hw) (t : ℤ))`. Use `choose τ' hτ' using fun i => GlobalTheory.SecPullIso.exists_pull β (AbLaw.pw H t) _ _ hM hM' hw' (τ i)`. Establish `hrel : Rel β (pwIso w t) (formSec f s hF) (formSec (β ≫ f) s' hF)` using `fun z k k' hk hk' => (Rel.form hs' f hF z k k' hk hk').trans (congrArg (· * _) (congrArg Units.val (gw_pwIso w t (𝟙 _) z k k').symm))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc'' : ∀ k', (formSec (β ≫ f) s' hF).f k' = ∑ i, AbLaw.cst f' ((AbLaw.pw H' t).U k') (g (c i)) * (τ' i).f k'` using `fun k' => Eq.trans (fn_ext fun z hz => by`. Take `⟨k, hk⟩` from `exists_chart hM (β z)`. Conclude with `(germ_rel hrel hτ' f c z k k' hk hz).1 (congrArg _ (hc' k))) (by`. Rewrite using `[hβ.w, const_comp]`. Use the proof step `rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgc : (fun i => g (c i)) = 0` using `(hτ A' g X' β f' hβ _ _ τ' hM' hw' hτ' (formSec (β ≫ f) s' hF)).unique hc'' fun k' => (hF0 k').trans (Finset.sum_eq_zero fun i _ => (congrArg (· * (τ' i).f k') (map_zero (AbLaw.cst f' ((AbLaw.pw H' t).U k')))).trans (zero_mul _)).symm`. Use `⟨∑ i, MvPolynomial.C (c i) * Q i, MvPolynomial.IsHomogeneous.sum _ _ _ fun i _ => (hQ i).C_mul _, fun d => ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_sum, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_C_mul, map_mul, congrFun hgc i, Pi.zero_apply, zero_mul]`.
-
-Rewrite using `[map_sub, sub_eq_zero, map_sum]`. Use `(hc' k).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, MvPolynomial.eval₂Hom_C, hτQ i k]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_form_correction : ∀ (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of A)), Flat f → ∀ (H : LB X) (n : ℕ) (s : Fin (n + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → ∀ (K : Type) [Field K] (g₀ : A →+* K), Function.Surjective g₀ → ∀ (X₀ : Scheme.{0}) (π : X₀ ⟶ X) (f₀ : X₀ ⟶ Spec (CommRingCat.of K)), IsPullback π f₀ f (Spec.map (CommRingCat.ofHom g₀)) → ∀ (H₀ : LB X₀) (w₀ : LB.Iso H₀ (H.pull π)) (s₀ : Fin (n + 1) → LB.Sec H₀), H₀.IsLB → w₀.IsGen → (∀ j, (∀ z (k : (H).ι) (k' : (H₀).ι), (π) z ∈ (H).U k → z ∈ (H₀).U k' → gs (π) z _ ((s j).f k) = (Geo.Tor.gw (w₀) (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s₀ j).f k'))) → ∀ t : ℕ, FirstCohomologyVanishes (pw H₀ t) → (∀ σ : LB.Sec (pw H₀ t), ∃ P : MvPolynomial (Fin (n + 1)) K, P.IsHomogeneous t ∧ ∀ k : H₀.ι, σ.f k = MvPolynomial.eval₂Hom (cst (f₀) ((H₀).U k)) (fun j => (s₀ j).f k) (P)) → ∀ (A' : Type) [CommRing A'] (g : A →+* A') (X' : Scheme.{0}) (β : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of A')), IsPullback β f' f (Spec.map (CommRingCat.ofHom g)) → ∀ (H' : LB X') (w : LB.Iso H' (H.pull β)) (s' : Fin (n + 1) → LB.Sec H'), H'.IsLB → w.IsGen → (∀ j, (∀ z (k : (H).ι) (k' : (H').ι), (β) z ∈ (H).U k → z ∈ (H').U k' → gs (β) z _ ((s j).f k) = (Geo.Tor.gw (w) (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s' j).f k'))) → ∀ F : MvPolynomial (Fin (n + 1)) A, F.IsHomogeneous t → (∀ k : (H').ι, MvPolynomial.eval₂Hom (cst (β ≫ f) ((H').U k)) (fun j => (s' j).f k) (F) = 0) → ∃ G : MvPolynomial (Fin (n + 1)) A, G.IsHomogeneous t ∧ (∀ d, g (MvPolynomial.coeff d G) = 0) ∧ (∀ k : (H).ι, MvPolynomial.eval₂Hom (cst (f) ((H).U k)) (fun j => (s j).f k) (F - G) = 0) := by
   intro A _ _ _ X f hf H n s hH hva K _ g₀ hg₀ X₀ π f₀ hπ H₀ w₀ s₀ hH₀ hw₀ hs₀ t h1 hsurj A' _ g X' β f' hβ H' w s'

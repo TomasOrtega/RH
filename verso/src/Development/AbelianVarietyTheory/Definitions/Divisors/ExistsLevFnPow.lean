@@ -16,11 +16,11 @@ namespace GlobalTheory.AdeleEv
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `GlobalTheory.LadicPlace.exists_place_of_embedding E l τ`. Assume the negation of the conclusion as `h`. Establish `h0 : (x : E) ≠ 0`. Introduce and unpack `h0`. Rewrite `h` using `[h0, map_zero, norm_zero]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h zero_le_one`. Establish `h1 : ‖τ (x : E)⁻¹‖ < 1`. Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_lt_one_of_one_lt₀ (not_le.1 h)`. Establish `h2` using `(hv _).2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_inv₀]`. Establish `h3 : v.valuation E (x : E) ≤ 1` using `v.valuation_le_one x`. Establish `h4 : v.valuation E (x : E) ≠ 0` using `(map_ne_zero _).2 h0`. Conclude with `absurd ((inv_lt_one₀ (zero_lt_iff.2 h4)).1 h2) (not_lt.2 h3)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_int_le {E : Type} [Field E] [NumberField E] (τ : E →+* PadicAlgCl l) (x : 𝓞 E) : ‖τ x‖ ≤ 1 := by
   obtain ⟨v, hv⟩ := GlobalTheory.LadicPlace.exists_place_of_embedding E l τ
@@ -39,17 +39,15 @@ theorem norm_int_le {E : Type} [Field E] [NumberField E] (τ : E →+* PadicAlgC
   exact absurd ((inv_lt_one₀ (zero_lt_iff.2 h4)).1 h2) (not_lt.2 h3)
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `GlobalTheory.LadicPlace.exists_place_of_embedding F l τ`. Take `⟨j, hj, e⟩` from `GlobalTheory.exists_continuous_extension_adicCompletion F l τ v hv`. Establish `e' : ∀ x, j (algebraMap F (v.adicCompletion F) x) = τ x` using `fun x => DFunLike.congr_fun e x`. Establish `hd` using `HeightOneSpectrum.denseRange_algebraMap F v`. Set `pr : FiniteAdeleRing (𝓞 F) F →+* v.adicCompletion F` to `{ toFun := fun a => a v, map_one' := rfl, map_mul' := fun _ _ => rfl, map_zero' := rfl, map_add' := fun _ _ => rfl }`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨j.comp pr, fun x => e' x, fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hc : IsClosed (K : Set (PadicAlgCl l))` using `K.toSubmodule.closed_of_finiteDimensional`. Conclude with `hd.induction_on (p := fun y => j y ∈ K) (a v) (hc.preimage hj) fun x => by rw [e']; exact hK x`. Establish `hc : IsClosed {y : v.adicCompletion F | ‖j y‖ ≤ 1}` using `isClosed_le hj.norm continuous_const`. Establish `ho : IsOpen (v.adicCompletionIntegers F : Set (v.adicCompletion F))` using `Valued.isOpen_valuationSubring _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hc.closure_subset_iff.2 ?_ (hd.open_subset_closure_inter ho (ha v))` and prove the remaining obligations. Introduce and unpack `_ ⟨h1, x, rfl⟩`. Establish `h2 : v.valuation F x ≤ 1`. Use `(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 F) (K := F) v).1 h1` as an intermediate fact. Rewrite `this` using `[show algebraMap F (v.adicCompletion F) x = (x : v.adicCompletion F) from rfl, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `show ‖j _‖ ≤ 1`. Rewrite using `[e']`. Assume the negation of the conclusion as `h`. Establish `h0 : x ≠ 0`. Introduce and unpack `rfl`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[map_zero, norm_zero]`. Conclude with `h zero_le_one`. Establish `h3 : ‖τ x⁻¹‖ < 1`. Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_lt_one_of_one_lt₀ (not_le.1 h)`.
-
-Establish `h4` using `(hv _).2 h3`. Rewrite `h4` using `[map_inv₀]`. Conclude with `absurd ((inv_lt_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0))).1 h4) (not_lt.2 h2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adele (F : Type) [Field F] [NumberField F] (τ : F →+* PadicAlgCl l) (K : IntermediateField ℚ_[l] (PadicAlgCl l))
     [FiniteDimensional ℚ_[l] K] (hK : ∀ x, τ x ∈ K) :
@@ -87,17 +85,15 @@ theorem exists_adele (F : Type) [Field F] [NumberField F] (τ : F →+* PadicAlg
     exact absurd ((inv_lt_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0))).1 h4) (not_lt.2 h2)
 
 /- English proof (translation)
-Take `⟨ev, h1, h2, h3⟩` from `exists_adele F (τ.comp (algebraMap F E)) K fun x => hK _`. Use `letI : Algebra F (PadicAlgCl l) := (τ.comp (algebraMap F E)).toAlgebra`. Set `τ' : E →ₐ[F] PadicAlgCl l` to `{ τ with commutes' := fun _ => rfl }`. Set `ev' : FiniteAdeleRing (𝓞 F) F →ₐ[F] PadicAlgCl l` to `{ ev with commutes' := h1 }`. Set `φ` to `(Algebra.TensorProduct.productMap τ' ev').toRingHom`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hφ : ∀ x a, φ (x ⊗ₜ[F] a) = τ x * ev a` using `fun x a => rfl`. Use `⟨φ, fun x => by rw [hφ, map_one, mul_one], fun z => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul x a => rw [hφ]`. Conclude with `mul_mem (hK x) (h2 a)`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Proceed by induction on `hz using Subring.closure_induction with`.
+Treat this case separately. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem x hx`. Break down `hx with ⟨⟨_, b, rfl⟩, rfl⟩ | ⟨y, rfl⟩` into its components or cases. Use `show ‖φ (_ ⊗ₜ[F] _)‖ ≤ 1`. Rewrite using `[hφ, map_one, mul_one]`. Conclude with `norm_int_le τ b`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `show ‖φ (_ ⊗ₜ[F] _)‖ ≤ 1`. Rewrite using `[hφ, map_one, one_mul]`. Conclude with `h3 _ y.2`. Consider the case `zero => simp`. Consider the case `one => simp`.
-
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`. Consider the case `neg x _ hx => rwa [map_neg, norm_neg]`. Consider the case `mul x y _ _ hx hy => rw [map_mul, norm_mul]`. Conclude with `mul_le_one₀ hx (norm_nonneg _) hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_ev (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (τ : E →+* PadicAlgCl l)
     (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] (hK : ∀ x, τ x ∈ K) :
@@ -130,13 +126,11 @@ theorem exists_ev (F E : Type) [Field F] [NumberField F] [Field E] [NumberField 
     | mul x y _ _ hx hy => rw [map_mul, norm_mul]; exact mul_le_one₀ hx (norm_nonneg _) hy
 
 /- English proof (translation)
-Use `haveI : ∀ PP : Pl E, Finite (kP PP) := fun PP => Ideal.finiteQuotientOfFreeOfNeBot _ PP.ne_bot`. Establish `key : ∀ {G : Type} [Group G] (f : G →* LLˣ) (g : G) (M : ℕ), Nat.card G ∣ M → f g ^ M = 1`. Introduce and unpack `G _ f g _ ⟨c, rfl⟩`. Rewrite using `[← map_pow, pow_mul, pow_card_eq_one', one_pow, map_one]`. Establish `hP : ∀ PP ∈ D.Pg ∪ D.Q, Nat.card (kP PP)ˣ ∣ Nat.card D.P.H * ∏ PP ∈ D.Pg ∪ D.Q, Nat.card (kP PP)ˣ` using `fun PP h => (Finset.dvd_prod_of_mem (fun PP : Pl E => Nat.card (kP PP)ˣ) h).mul_left _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Nat.card D.P.H * ∏ PP ∈ D.Pg ∪ D.Q, Nat.card (kP PP)ˣ, Nat.mul_pos Nat.card_pos (Finset.prod_pos fun _ _ => Nat.card_pos), fun x => ?_⟩` and prove the remaining obligations. Establish `hH : Nat.card D.P.H ∣ Nat.card D.P.H * ∏ PP ∈ D.Pg ∪ D.Q, Nat.card (kP PP)ˣ` using `dvd_mul_right _ _`. Generalize the expression as in `Nat.card D.P.H * ∏ PP ∈ D.Pg ∪ D.Q, Nat.card (kP PP)ˣ = M at hP hH`. Unfold `levFn`. Rewrite using `[mul_pow, mul_pow, ← Finset.prod_pow, ← Finset.prod_pow, Finset.prod_eq_one, Finset.prod_eq_one, mul_one, mul_one]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `ext1 split_ifs`. Conclude with `key _ _ _ hH`. Conclude with `one_pow _`. Conclude with `fun PP h => key _ _ _ (hP PP (Finset.mem_union_right _ h))`. Introduce `PP h`.
-
-Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_eq_one fun c _ => key _ _ _ (hP PP (Finset.mem_union_left _ h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_levFn_pow {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ} {LL : Type} [CommRing LL]
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (D : LevDat E LL n) : ∃ M : ℕ, 0 < M ∧ ∀ x, levFn β D x ^ M = 1 := by
@@ -163,9 +157,7 @@ theorem exists_levFn_pow {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     exact Finset.prod_eq_one fun c _ => key _ _ _ (hP PP (Finset.mem_union_left _ h))
 
 /- English proof (translation)
-Take `⟨K₁, h₁, h₂⟩` from `GlobalTheory.exists_finite_intermediateField_range_le L l e`. Set `S : Set (PadicAlgCl l)` to `(Polynomial.nthRoots M (1 : PadicAlgCl l)).toFinset`. Use `haveI : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] S) := IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Use `⟨K₁ ⊔ IntermediateField.adjoin ℚ_[l] S, inferInstance, fun x => (le_sup_left : K₁ ≤ _) (h₂ x), fun z hz => ?_⟩` and prove the remaining obligations. Use `(le_sup_right : IntermediateField.adjoin ℚ_[l] S ≤ _) (IntermediateField.subset_adjoin _ _ ?_)` and prove the remaining obligations.
-
-Conclude with `Finset.mem_coe.2 (Multiset.mem_toFinset.2 ((Polynomial.mem_nthRoots hM).2 hz))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_field (L : Type) [Field L] [NumberField L] (e : L →+* PadicAlgCl l) {M : ℕ} (hM : 0 < M) :
     ∃ K : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] K ∧ (∀ x, e x ∈ K) ∧ ∀ z, z ^ M = 1 → z ∈ K := by
@@ -182,15 +174,15 @@ def embInt (K : IntermediateField ℚ_[l] (PadicAlgCl l)) : integralClosure ℤ_
   K.val.toRingHom.comp (integralClosure ℤ_[l] K).val.toRingHom
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (Subtype.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem embInt_injective (K : IntermediateField ℚ_[l] (PadicAlgCl l)) : Function.Injective (embInt K) :=
   fun _ _ h => Subtype.ext (Subtype.ext h)
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y.1.2, (GlobalTheory.mem_integralClosure_padicInt_iff K _).1 y.2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨⟨x, h1⟩, (GlobalTheory.mem_integralClosure_padicInt_iff K _).2 h2⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem range_embInt (K : IntermediateField ℚ_[l] (PadicAlgCl l)) : Set.range (embInt K) = {x | x ∈ K ∧ ‖x‖ ≤ 1} := by
   ext x

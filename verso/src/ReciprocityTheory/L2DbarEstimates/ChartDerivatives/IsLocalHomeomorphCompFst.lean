@@ -31,7 +31,7 @@ theorem chartSlice_symm_apply {M : Type*} [TopologicalSpace M] {n : ℕ}
     (chartSlice e i).symm y = (e.symm y, i) := rfl
 
 /- English proof (translation)
-Introduce `q hq`. Conclude with `he hq.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isChart_chartSlice {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (p : ℕ) (i : Fin p) :
@@ -40,7 +40,7 @@ theorem isChart_chartSlice {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M →
   exact he hq.1
 
 /- English proof (translation)
-Introduce `q`. Take `⟨e, hx, he⟩` from `hz q.1`. Use `⟨chartSlice e q.2, ⟨hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `r`. Rewrite using `[he]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -54,13 +54,13 @@ theorem isLocalHomeomorph_comp_fst {M : Type*} [TopologicalSpace M] (n : ℕ) (z
   rfl
 
 /- English proof (translation)
-Use `set q := E.symm y with hq`. Establish `hqs : q ∈ E.source` using `E.map_target hy`. Take `⟨e, he, hxe⟩` from `exists_chart n z hz q.1`. Establish `hcont : ContinuousAt E.symm y` using `E.continuousAt_symm hy`. Establish `hzq : z q.1 = y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : z q.1 = E q` using `hE hqs`. Rewrite using `[h1]`. Conclude with `E.right_inv hy`. Use `⟨e, q.2, he, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hzq, he hxe]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.map_source hxe`. Establish `t1 : ∀ᶠ w in 𝓝 y, (E.symm w).1 ∈ e.source` using `(continuous_fst.continuousAt.comp hcont).preimage_mem_nhds (e.open_source.mem_nhds hxe)`. Establish `t2 : ∀ᶠ w in 𝓝 y, (E.symm w).2 = q.2` using `(continuous_snd.continuousAt.comp hcont).preimage_mem_nhds ((isOpen_discrete {q.2}).mem_nhds rfl)`. Establish `t3 : ∀ᶠ w in 𝓝 y, w ∈ E.target` using `E.open_target.mem_nhds hy`. Use `filter_upwards [t1, t2, t3] with w h1 h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz1 : z (E.symm w).1 = w`. Establish `h4 : z (E.symm w).1 = E (E.symm w)` using `hE (E.map_target h3)`. Rewrite using `[h4, E.right_inv h3]`. Use `Prod.ext ?_ h2` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem chart_prodFin_local {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p : ℕ)
     (E : OpenPartialHomeomorph (M × Fin p) (V n)) (hE : IsChart n (fun q : M × Fin p => z q.1) E)
@@ -90,9 +90,9 @@ theorem chart_prodFin_local {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M �
       _ = e.symm w := by rw [← he h1, hz1]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i e he`. Conclude with `h (chartSlice e i) (isChart_chartSlice n z e he p i)`. Introduce `h E hE y hy`. Take `⟨e, i, he, hye, hev⟩` from `chart_prodFin_local n z hz p E hE y hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ContDiffAt ℝ ∞ ((fun x => F (x, i)) ∘ e.symm) y` using `(h i e he).contDiffAt (e.open_target.mem_nhds hye)`. Conclude with `(h1.congr_of_eventuallyEq (hev.fun_comp F)).contDiffWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem smooth_prodFin_iff {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p : ℕ) (F : M × Fin p → ℂ) :
     Smooth n (fun q : M × Fin p => z q.1) F ↔ ∀ i, Smooth n z (fun x => F (x, i)) := by
@@ -106,9 +106,9 @@ theorem smooth_prodFin_iff {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M →
     exact (h1.congr_of_eventuallyEq (hev.fun_comp F)).contDiffWithinAt
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i e he`. Conclude with `h (chartSlice e i) (isChart_chartSlice n z e he p i)`. Introduce `h E hE y hy`. Take `⟨e, i, he, hye, hev⟩` from `chart_prodFin_local n z hz p E hE y hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ContDiffAt ℝ k ((fun x => F (x, i)) ∘ e.symm) y` using `(h i e he).contDiffAt (e.open_target.mem_nhds hye)`. Conclude with `(h1.congr_of_eventuallyEq (hev.fun_comp F)).contDiffWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem ck_prodFin_iff {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p k : ℕ) (F : M × Fin p → ℂ) :
     Ck n (fun q : M × Fin p => z q.1) k F ↔ ∀ i, Ck n z k (fun x => F (x, i)) := by
@@ -122,9 +122,9 @@ theorem ck_prodFin_iff {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n
     exact (h1.congr_of_eventuallyEq (hev.fun_comp F)).contDiffWithinAt
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i e he`. Conclude with `h (chartSlice e i) (isChart_chartSlice n z e he p i)`. Introduce `h E hE y hy`. Take `⟨e, i, he, hye, hev⟩` from `chart_prodFin_local n z hz p E hE y hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : DifferentiableAt ℂ ((fun x => F (x, i)) ∘ e.symm) y` using `(h i e he).differentiableAt (e.open_target.mem_nhds hye)`. Conclude with `(h1.congr_of_eventuallyEq (hev.fun_comp F)).differentiableWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem holo_prodFin_iff {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p : ℕ) (F : M × Fin p → ℂ) :
     Holo n (fun q : M × Fin p => z q.1) F ↔ ∀ i, Holo n z (fun x => F (x, i)) := by
@@ -138,7 +138,7 @@ theorem holo_prodFin_iff {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V
     exact (h1.congr_of_eventuallyEq (hev.fun_comp F)).differentiableWithinAt
 
 /- English proof (translation)
-Take `⟨e, he, hx⟩` from `exists_chart n z hz x`. Rewrite using `[d_eq_wd n _ (chartSlice e i) (isChart_chartSlice n z e he p i) j F (x, i) ⟨hx, rfl⟩, d_eq_wd n z e he j _ x hx]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem d_prodFin {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p : ℕ) (j : Fin n) (F : M × Fin p → ℂ) (x : M) (i : Fin p) :
     d n (fun q : M × Fin p => z q.1) j F (x, i) = d n z j (fun y => F (y, i)) x := by
@@ -148,7 +148,7 @@ theorem d_prodFin {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (hz
   rfl
 
 /- English proof (translation)
-Take `⟨e, he, hx⟩` from `exists_chart n z hz x`. Rewrite using `[db_eq_wdb n _ (chartSlice e i) (isChart_chartSlice n z e he p i) j F (x, i) ⟨hx, rfl⟩, db_eq_wdb n z e he j _ x hx]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem db_prodFin {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p : ℕ) (j : Fin n) (F : M × Fin p → ℂ) (x : M) (i : Fin p) :
     db n (fun q : M × Fin p => z q.1) j F (x, i) = db n z j (fun y => F (y, i)) x := by
@@ -158,7 +158,7 @@ theorem db_prodFin {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (h
   rfl
 
 /- English proof (translation)
-Take `⟨e, he, hx⟩` from `exists_chart n z hz x`. Rewrite using `[levi_eq_leviV n _ (chartSlice e i) (isChart_chartSlice n z e he p i) ph (x, i) ⟨hx, rfl⟩ ξ, levi_eq_leviV n z e he _ x hx ξ]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem levi_prodFin {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p : ℕ) (ph : M × Fin p → ℝ) (x : M) (i : Fin p) (ξ : Fin n → ℂ) :
     Levi n (fun q : M × Fin p => z q.1) ph (x, i) ξ = Levi n z (fun y => ph (y, i)) x ξ := by
@@ -168,11 +168,11 @@ theorem levi_prodFin {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) 
   rfl
 
 /- English proof (translation)
-Unfold `volFun`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Establish `h : (B ×ˢ {i}) ∩ (fun q : M × Fin p => z q.1) ⁻¹' {y} = (fun x => (x, i)) '' (B ∩ z ⁻¹' {y})`. Use extensionality with `⟨x, j⟩`. Simplify using `only [Set.mem_inter_iff, Set.mem_prod, Set.mem_singleton_iff, Set.mem_preimage, Set.mem_image, Prod.mk.injEq]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hx, rfl⟩, hy⟩`. Conclude with `⟨x, ⟨hx, hy⟩, rfl, rfl⟩`. Introduce and unpack `⟨x', ⟨hx, hy⟩, rfl, rfl⟩`. Conclude with `⟨⟨hx, rfl⟩, hy⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[h, (Prod.mk_left_injective i).encard_image]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem volFun_prod_singleton {M : Type*} (n : ℕ) (z : M → V n) (p : ℕ) (B : Set M) (i : Fin p) :
     volFun n (fun q : M × Fin p => z q.1) (B ×ˢ {i}) = volFun n z B := by
@@ -190,11 +190,11 @@ theorem volFun_prod_singleton {M : Type*} (n : ℕ) (z : M → V n) (p : ℕ) (B
   rw [h, (Prod.mk_left_injective i).encard_image]
 
 /- English proof (translation)
-Use extensionality with `A hA`. Establish `hz'` using `isLocalHomeomorph_comp_fst n z hz p`. Establish `hS : ∀ i : Fin p, MeasurableSet ((fun x => (x, i)) ⁻¹' A)` using `fun i => (measurable_id.prodMk measurable_const) hA`. Establish `hA' : A = ⋃ i : Fin p, ((fun x => (x, i)) ⁻¹' A) ×ˢ {i}`. Use extensionality with `⟨x, j⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[Measure.coe_finset_sum, Finset.sum_apply]`. Use `conv_lhs => rw [hA']`. Rewrite using `[measure_iUnion (fun i j hij => Set.disjoint_left.2 fun q hq1 hq2 => hij (hq1.2.symm.trans hq2.2)) (fun i => (hS i).prod (measurableSet_singleton i)), tsum_fintype]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_apply (f := fun x => (x, i)) (measurable_id.prodMk measurable_const) hA, vol_apply n _ hz' _ ((hS i).prod (measurableSet_singleton i)), volFun_prod_singleton, vol_apply n z hz _ (hS i)]`.
+A detailed English derivation is pending.
 -/
 theorem vol_prodFin_eq {M : Type*} [TopologicalSpace M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p : ℕ) :
     vol n (fun q : M × Fin p => z q.1) = ∑ i, (vol n z).map (fun x => (x, i)) := by
@@ -215,7 +215,7 @@ theorem vol_prodFin_eq {M : Type*} [TopologicalSpace M] [SecondCountableTopology
     vol_apply n z hz _ (hS i)]
 
 /- English proof (translation)
-Rewrite using `[vol_prodFin_eq n z hz p, lintegral_finset_sum_measure]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `lintegral_map hf (measurable_id.prodMk measurable_const)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lintegral_vol_prodFin {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p : ℕ) (f : M × Fin p → ℝ≥0∞) (hf : Measurable f) :
     ∫⁻ q, f q ∂vol n (fun q : M × Fin p => z q.1) = ∑ i, ∫⁻ x, f (x, i) ∂vol n z := by
@@ -224,7 +224,7 @@ theorem lintegral_vol_prodFin {M : Type*} [TopologicalSpace M] [T2Space M] [Seco
   exact lintegral_map hf (measurable_id.prodMk measurable_const)
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[vol_prodFin_eq n z hz p]`. Rewrite using `[integral_finset_sum_measure (integrable_finset_sum_measure.1 hf)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `integral_map (measurable_id.prodMk measurable_const).aemeasurable (integrable_finset_sum_measure.1 hf i (Finset.mem_univ _)).aestronglyMeasurable`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_vol_prodFin {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (p : ℕ) (f : M × Fin p → ℂ) (hf : Integrable f (vol n (fun q : M × Fin p => z q.1))) :
     ∫ q, f q ∂vol n (fun q : M × Fin p => z q.1) = ∑ i, ∫ x, f (x, i) ∂vol n z := by

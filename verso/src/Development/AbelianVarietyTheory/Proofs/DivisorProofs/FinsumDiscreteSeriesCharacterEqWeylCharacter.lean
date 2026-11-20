@@ -18,11 +18,11 @@ noncomputable section
 namespace GlobalTheory.WeylPacket
 
 /- English proof (translation)
-Establish `h2 : (Matrix.of fun i j : Fin r => a i ^ (j.rev : ℕ)) = (Matrix.vandermonde (a ∘ Fin.revPerm)).submatrix Fin.revPerm Fin.revPerm`. Use extensionality with `i j`. Simplify using `[Matrix.vandermonde_apply, Fin.rev_rev]`. Establish `key : ∀ f : Fin r → Fin r → ℂ, ∏ i, ∏ j ∈ Finset.Ioi i, f i j = ∏ i, ∏ j, if i < j then f i j else 1`. Introduce `f`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Use `congr 1`. Use extensionality with `j`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `key2 : ∀ f : Fin r → Fin r → ℂ, ∏ i, ∏ j ∈ Finset.univ.filter (fun j => i < j), f i j = ∏ i, ∏ j, if i < j then f i j else 1` using `fun f => Finset.prod_congr rfl fun i _ => Finset.prod_filter _ _`. Rewrite using `[h2, Matrix.det_submatrix_equiv_self, Matrix.det_vandermonde, Formalism.PacketSums.vdm, key, key2, Finset.prod_comm]`. Use `Fintype.prod_equiv Fin.revPerm _ _ fun j => ?_` and prove the remaining obligations. Use `Fintype.prod_equiv Fin.revPerm _ _ fun i => ?_` and prove the remaining obligations. Simplify using `[Fin.rev_lt_rev]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem det_rev_pow_eq_vdm {r : ℕ} (a : Fin r → ℂ) :
     (Matrix.of fun i j : Fin r => a i ^ (j.rev : ℕ)).det = Formalism.PacketSums.vdm a := by
@@ -47,7 +47,7 @@ theorem det_rev_pow_eq_vdm {r : ℕ} (a : Fin r → ℂ) :
   simp [Fin.rev_lt_rev]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Fintype.prod_equiv w _ _ fun i => by simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem det_zpow_eq_sum {r : ℕ} (a : Fin r → ℂ) (m : Fin r → ℤ) :
     (Matrix.of fun i j : Fin r => a i ^ m j).det =
@@ -62,37 +62,31 @@ end GlobalTheory.WeylPacket
 open GlobalTheory.WeylPacket in
 
 /- English proof (translation)
-Introduce `n ε lam α ι _ y θ hn hα hb hθ`. Use `haveI : Fintype ι := Fintype.ofFinite ι`. Take `⟨k, hk⟩` from `id hn`. Use `set m : Fin n → ℤ := fun a => lam a + (((n - 1) / 2 : ℕ) : ℤ) with hmdef`. Establish `hk2 : (n - 1) / 2 = k` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : ∀ a, ((fun a => (lam a : ℝ)) a) + ((n : ℝ) - 1) / 2 = (m a : ℝ)`. Introduce `a`. Establish `hn' : (n : ℝ) = 2 * k + 1` using `by exact_mod_cast hk`. Simplify using `only [hmdef, hk2, hn']`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Expand and normalize the polynomial expressions, which then agree. Set `WK : Subgroup (Equiv.Perm (Fin n))` to `{ carrier := {w | ε ∘ w = ε} mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at *`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha'` using `congrFun ha (b x)`. Establish `hb'` using `congrFun hb x`. Simplify using `only [Function.comp_apply] at ha' hb' ⊢`. Rewrite using `[Equiv.Perm.mul_apply, ha', hb']`. Use the proof step `one_mem' := by simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at *`. Use function extensionality and compare the values at `x`. Use `congrFun ha (a⁻¹ x)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.comp_apply] at this ⊢`. Rewrite `this` using `[show a (a⁻¹ x) = x from by simp]`. Conclude with `this.symm }`. Use `haveI : Fintype WK := Fintype.ofFinite _`. Establish `hmem : ∀ w, w ∈ WK ↔ w ∈ compactWeyl ε`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w`. Use `show ε ∘ w = ε ↔ _`. Simplify using `[compactWeyl]`. Establish `h1 : (1 : Equiv.Perm (Fin n)) ∈ compactWeyl ε` using `by simp [compactWeyl]`. Establish `hy : Function.Injective y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `q q' h`. Use `hb.1 (a₁ := (⟨1, h1⟩, q)) (a₂ := (⟨1, h1⟩, q')) (by simp [h])` as an intermediate fact. Conclude with `congrArg Prod.snd this`. Establish `hα0 : ∀ i, α i ≠ 0`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Take `⟨⟨w, q⟩, -⟩` from `hb.2 1`. Use `hθ q (y q i)` as an intermediate fact. Rewrite `this` using `[show (y q)⁻¹ (y q i) = i from by simp]`. Rewrite using `[← this]`. Conclude with `Complex.exp_ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set T : Finset (Equiv.Perm (Fin n)) := Finset.univ.image y with hT`. Set `eT : ι ≃ T` to `Equiv.ofBijective (fun q => ⟨y q, Finset.mem_image_of_mem _ (Finset.mem_univ q)⟩) ⟨fun q q' h => hy (congrArg Subtype.val h), fun ⟨g, hg⟩ => by`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hg`. Conclude with `⟨q, rfl⟩⟩`. Set `e : compactWeyl ε × ι ≃ WK × T` to `Equiv.prodCongr (Equiv.subtypeEquivRight fun w => (hmem w).symm) eT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hbij : Function.Bijective (fun p : WK × T => ((p.2 : Equiv.Perm (Fin n)))⁻¹ * (p.1 : Equiv.Perm (Fin n)))` using `(Equiv.bijective_comp e _).1 hb`. Establish `hPS` using `GlobalTheory.packetSum n WK T hbij m α hα0 hα`. Establish `hsign : (-1 : ℂ) ^ halfDim ε = 1`. Establish `hpq` using `Finset.card_filter_add_card_filter_not (s := Finset.univ) (fun a : Fin n => ε a = true)`. Simplify using `only [Bool.not_eq_true, Finset.card_univ, Fintype.card_fin] at hpq`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.signEven _ _ (by rw [hpq]; exact hn)` as an intermediate fact. Rewrite using `[halfDim]`. Conclude with `this` after adjusting the coercions. Establish `hterm : ∀ q, dsChar ε (fun a => (lam a : ℝ)) (θ q) = Formalism.PacketSums.numK WK m (fun i => α ((y q)⁻¹ i)) / Formalism.PacketSums.vdm (fun i => α ((y q)⁻¹ i))`. Introduce `q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[dsChar_eq ε hm (θ q), hsign, one_mul]`. Simplify using `only [hθ q]`. Use `congr 1`. Rewrite using `[Formalism.PacketSums.numK, Finset.sum_subtype (compactWeyl ε) (fun w => (hmem w).symm)]`. Both sides reduce to the same expression.
-
-Rewrite using `[Formalism.PacketSums.vdm]`. Conclude with `Finset.prod_congr rfl fun i _ => Finset.prod_congr (by ext j; simp) fun _ _ => rfl`. Establish `hexp : ∀ j : Fin n, hiWt lam j + ((j.rev : ℕ) : ℤ) = m j`. Introduce `j`. Use `j.isLt` as an intermediate fact.
-
-Simplify using `only [hiWt, hmdef, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_congr rfl fun q _ => hterm q, ← Finset.sum_image (f := fun g : Equiv.Perm (Fin n) => Formalism.PacketSums.numK WK m (fun i => α (g⁻¹ i)) / Formalism.PacketSums.vdm (fun i => α (g⁻¹ i))) (fun q _ q' _ h => hy h), ← hT, hPS, glChar, det_rev_pow …`. Use `congr 2`. Use extensionality with `i j`.
-
-Simplify using `only [Matrix.of_apply, hexp j]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.dsChar_finsum_eq_glChar : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℤ) (α : Fin n → ℂ) (ι : Type) [Finite ι]
     (y : ι → Equiv.Perm (Fin n)) (θ : ι → Fin n → ℝ), Odd n → Function.Injective α →

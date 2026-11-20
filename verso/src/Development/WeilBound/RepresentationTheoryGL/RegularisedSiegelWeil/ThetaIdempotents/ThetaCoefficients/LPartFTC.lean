@@ -17,7 +17,7 @@ namespace PositivityTheory.Rg.Rsw.L.LPartFT
 variable {n r t : ℕ}
 
 /- English proof (translation)
-Simplify using `only [PositivityTheory.Rg.Rsw.bl, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_mul₂ {R : Type} [CommRing R] (hn : r + t = n) (a a' : Matrix (Fin r) (Fin r) R) (b b' : Matrix (Fin r) (Fin t) R)
     (c c' : Matrix (Fin t) (Fin r) R) (d d' : Matrix (Fin t) (Fin t) R) :
@@ -25,7 +25,7 @@ theorem block_mul₂ {R : Type} [CommRing R] (hn : r + t = n) (a a' : Matrix (Fi
   simp only [PositivityTheory.Rg.Rsw.bl, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Unfold `PositivityTheory.GramSchwartzFunctions.EC.cT`. Rewrite using `[block_map]`. Simplify using `only [PositivityTheory.Rg.Rsw.bl, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cT_bl {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) (a : Matrix (Fin r) (Fin r) K) (b : Matrix (Fin r) (Fin t) K)
     (c : Matrix (Fin t) (Fin r) K) (d : Matrix (Fin t) (Fin t) K) :
@@ -35,13 +35,13 @@ theorem cT_bl {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) (a : Matrix
   simp only [PositivityTheory.Rg.Rsw.bl, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose]
 
 /- English proof (translation)
-Simplify using `[cT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_zero {K : Type} [Field K] (σ : K →+* K) {a b : ℕ} : cT σ (0 : Matrix (Fin a) (Fin b) K) = 0 := by
   simp [cT]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[block_mul₂]`. Simplify using the standard rewrite rules. Simplify using `only [cT_bl, cT_one, cT_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem first_block_hermitian_idempotent {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) :
     bl hn (1 : Matrix (Fin r) (Fin r) K) 0 0 0 * bl hn 1 0 0 0 = bl hn 1 0 0 0 ∧
@@ -52,7 +52,7 @@ theorem first_block_hermitian_idempotent {K : Type} [Field K] (σ : K →+* K) (
   · simp only [cT_bl, cT_one, cT_zero]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[block_mul₂]`. Simplify using the standard rewrite rules. Simplify using `only [cT_bl, cT_one, cT_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem second_block_hermitian_idempotent {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) :
     bl hn (0 : Matrix (Fin r) (Fin r) K) 0 0 1 * bl hn 0 0 0 1 = bl hn 0 0 0 1 ∧
@@ -63,25 +63,25 @@ theorem second_block_hermitian_idempotent {K : Type} [Field K] (σ : K →+* K) 
   · simp only [cT_bl, cT_one, cT_zero]
 
 /- English proof (translation)
-Rewrite using `[Pm, ← Matrix.submatrix_map, Matrix.map_one _ (map_zero σ) (map_one σ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Pm_map {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) : (Pm K hn).map σ = Pm K hn := by
   rw [Pm, ← Matrix.submatrix_map, Matrix.map_one _ (map_zero σ) (map_one σ)]
 
 /- English proof (translation)
-Rewrite using `[cT, Pm_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_Pm {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) : cT σ (Pm K hn) = (Pm K hn)ᵀ := by
   rw [cT, Pm_map]
 
 /- English proof (translation)
-Rewrite using `[cT, Matrix.transpose_map, Pm_map, Matrix.transpose_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_PmT {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) : cT σ (Pm K hn)ᵀ = Pm K hn := by
   rw [cT, Matrix.transpose_map, Pm_map, Matrix.transpose_transpose]
 
 /- English proof (translation)
-Establish `h0 : (PositivityTheory.GramSchwartzFunctions.EC.extB (n` using `n) (0 : Matrix (Fin p) (Fin p) K)) = 0 := by`. Use extensionality with `i j`. Simplify using `[PositivityTheory.GramSchwartzFunctions.EC.extB]`. Simplify using `only [PositivityTheory.GramSchwartzFunctions.EC.repMat, h0, PositivityTheory.GramSchwartzFunctions.EC.nB, GlobalTheory.CompanionTheory.EisCovar.block_matrix_one, Matrix.mul_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem repMat_zero {K : Type} [Field K] (σ : K →+* K) {p : ℕ} (a : Matrix (Fin n) (Fin n) K) :
     repMat σ (0 : Matrix (Fin p) (Fin p) K) a = wr K n p * mA σ a := by
@@ -91,21 +91,21 @@ theorem repMat_zero {K : Type} [Field K] (σ : K →+* K) {p : ℕ} (a : Matrix 
   simp only [PositivityTheory.GramSchwartzFunctions.EC.repMat, h0, PositivityTheory.GramSchwartzFunctions.EC.nB, GlobalTheory.CompanionTheory.EisCovar.block_matrix_one, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `only [PositivityTheory.GramSchwartzFunctions.EC.mA, cT_one, inv_one, GlobalTheory.CompanionTheory.EisCovar.block_matrix_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mA_one {K : Type} [Field K] (σ : K →+* K) : mA σ (1 : Matrix (Fin n) (Fin n) K) = 1 := by
   simp only [PositivityTheory.GramSchwartzFunctions.EC.mA, cT_one, inv_one, GlobalTheory.CompanionTheory.EisCovar.block_matrix_one]
 
 /- English proof (translation)
-Simplify using `only [PositivityTheory.GramSchwartzFunctions.EC.mA, cT_Pm, Matrix.inv_eq_left_inv (Pm_mul_alt (K := K) hn)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mA_Pm {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) : mA σ (Pm K hn) = blk4 (Pm K hn) 0 0 (Pm K hn) := by
   simp only [PositivityTheory.GramSchwartzFunctions.EC.mA, cT_Pm, Matrix.inv_eq_left_inv (Pm_mul_alt (K := K) hn)]
 
 /- English proof (translation)
-Establish `hc` using `eId_conj (K := K) hn`. Establish `h1 : (Pm K hn)ᵀ * (1 - PositivityTheory.GramSchwartzFunctions.EC.eId K n t) * Pm K hn = 1 - bl hn 0 0 0 1`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, T_mul_Pm, hc]`. Establish `h2 : (Pm K hn)ᵀ * (-PositivityTheory.GramSchwartzFunctions.EC.eId K n t) * Pm K hn = -bl hn 0 0 0 1`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[repMat_zero, mA_Pm, ← Matrix.mul_assoc]`. Simplify using `only [PositivityTheory.GramSchwartzFunctions.EC.wr, GlobalTheory.CompanionTheory.EisCovar.submatrix_fromBlocks_mul, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]`. Rewrite using `[h1, h2, hc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem key3 {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) :
     blk4 (Pm K hn)ᵀ 0 0 (Pm K hn)ᵀ * repMat σ (0 : Matrix (Fin t) (Fin t) K) (Pm K hn) = wE (bl hn 0 0 0 1) := by
@@ -120,9 +120,9 @@ theorem key3 {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) :
   rfl
 
 /- English proof (translation)
-Establish `hinv : blk4 (Pm K hn)ᵀ 0 0 (Pm K hn)ᵀ * blk4 (Pm K hn) 0 0 (Pm K hn) = 1`. Rewrite using `[GlobalTheory.CompanionTheory.EisCovar.submatrix_fromBlocks_mul]`. Simplify using `only [T_mul_Pm, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, GlobalTheory.CompanionTheory.EisCovar.block_matrix_one]`. Use `⟨Matrix.isUnit_det_of_right_inverse hinv, ?_⟩` and prove the remaining obligations. Unfold `PositivityTheory.GramSchwartzFunctions.EC.IsUnitary PositivityTheory.GramSchwartzFunctions.EC.Jm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[cT_blk4, cT_PmT, cT_zero]`. Simplify using `only [GlobalTheory.CompanionTheory.EisCovar.submatrix_fromBlocks_mul, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, Pm_mul_alt, Matrix.one_mul, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gQ_unit {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) :
     IsUnit (blk4 (Pm K hn)ᵀ 0 0 (Pm K hn)ᵀ).det ∧ IsUnitary σ (PositivityTheory.GramSchwartzFunctions.EC.Jm K n) (blk4 (Pm K hn)ᵀ 0 0 (Pm K hn)ᵀ) := by
@@ -136,7 +136,7 @@ theorem gQ_unit {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) :
     Matrix.mul_neg, Matrix.neg_mul, Pm_mul_alt, Matrix.one_mul, neg_zero]
 
 /- English proof (translation)
-Establish `h : PositivityTheory.GramSchwartzFunctions.EC.wr K n r = wE (bl hn (1 : Matrix (Fin r) (Fin r) K) 0 0 0)`. Rewrite using `[← eId_eq hn]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `wE_unit σ _ (first_block_hermitian_idempotent σ hn).1 (first_block_hermitian_idempotent σ hn).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wr_unit {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) :
     IsUnit (wr K n r).det ∧ IsUnitary σ (PositivityTheory.GramSchwartzFunctions.EC.Jm K n) (wr K n r) := by
@@ -147,7 +147,7 @@ theorem wr_unit {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) :
   exact wE_unit σ _ (first_block_hermitian_idempotent σ hn).1 (first_block_hermitian_idempotent σ hn).2
 
 /- English proof (translation)
-The claim follows from `wE_unit σ _ (second_block_hermitian_idempotent σ hn).1 (second_block_hermitian_idempotent σ hn).2`.
+A detailed English derivation is pending.
 -/
 theorem second_block_weyl_unitary {K : Type} [Field K] (σ : K →+* K) (hn : r + t = n) :
     IsUnit (wE (bl hn (0 : Matrix (Fin r) (Fin r) K) 0 0 1)).det ∧

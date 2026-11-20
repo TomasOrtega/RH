@@ -10,9 +10,9 @@ import Development.AutomorphicArithmetic.PrimeDiscriminants.ExistsPrimitiveRootT
 open NumberField IsDedekindDomain Formalism.BasicNotions
 
 /- English proof (translation)
-Establish `hfix : (H.gal.symm (g : R.GG)) H.sqd = H.sqd`. Use `(Formalism.HC.HostAx.galE_mem_Psi_iff H.toHostAx (H.gal.symm (g : R.GG))).1` as an intermediate fact. Apply `this` to reduce the goal to its premises. Simplify using `[Formalism.HC.HostRaw.galE]`. Establish `h0` using `H.φ₀_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Formalism.HC.HostRaw.cmType, Set.mem_setOf_eq] at h0`. Simplify using `only [Formalism.BasicNotions.Host.emb, Formalism.BasicNotions.Host.sigmaOf, RingHom.comp_apply]`. Express the relevant statement in the definitionally equal form `H.φ₀ ((H.gal.symm (g : R.GG)) H.sqd) = _`. Rewrite using `[hfix, h0]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem emb_sqd {R : Ranks} (H : Host R) (g : R.Psi) :
     H.emb (g : R.GG) H.sqd = Complex.I * (Real.sqrt H.d : ℂ) := by
@@ -27,9 +27,7 @@ private theorem emb_sqd {R : Ranks} (H : Host R) (g : R.Psi) :
   rw [hfix, h0]
 
 /- English proof (translation)
-Rewrite using `[Formalism.HC.Frame.natCard_Psi]`. Establish `h1 : 4 ∣ 2 ^ φ.e`. Establish `: (4 : ℕ) = 2 ^ 2` using `by norm_num`. Rewrite using `[this]`. Conclude with `Nat.pow_dvd_pow 2 H.two_le_e`.
-
-Conclude with `Dvd.dvd.mul_left (h1.trans φ.two_pow_dvd_ord) 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem four_dvd {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ) : 4 ∣ Nat.card φ.Psi := by
   rw [Formalism.HC.Frame.natCard_Psi]
@@ -40,9 +38,7 @@ private theorem four_dvd {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ)
   exact Dvd.dvd.mul_left (h1.trans φ.two_pow_dvd_ord) 2
 
 /- English proof (translation)
-Establish `hd : P.valuation L (d : L) = 1`. Rewrite using `[← map_natCast (algebraMap (𝓞 L) L) d, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl]`. Conclude with `hP`. Establish `h2 : P.valuation L δ ^ 2 = 1`. Rewrite using `[← map_pow, h, Valuation.map_neg, hd]`.
-
-Conclude with `sq_eq_one.mp h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_sqrt {L : Type} [Field L] [NumberField L] (d : ℕ) (δ : L) (h : δ ^ 2 = -(d : L))
     (P : HeightOneSpectrum (𝓞 L)) (hP : ((d : ℕ) : 𝓞 L) ∉ P.asIdeal) : P.valuation L δ = 1 := by
@@ -55,15 +51,13 @@ private theorem val_sqrt {L : Type} [Field L] [NumberField L] (d : ℕ) (δ : L)
   exact sq_eq_one.mp h2
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℤ z`. Use `⟨Polynomial.X ^ N - 1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.monic_X_pow_sub_C 1 hN0.ne'`. Simplify using `[hz]`. Use `set zi : 𝓞 L := ⟨z, hint⟩ with hzi`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcoe : algebraMap (𝓞 L) L zi = z` using `rfl`. Establish `hzi1 : zi ^ N = 1`. Apply `FaithfulSMul.algebraMap_injective (𝓞 L) L` to reduce the goal to its premises. Rewrite using `[map_pow, hcoe, hz, map_one]`. Establish `hm1 : (-1 : 𝓞 L) ^ N = 1` using `hN.neg_one_pow`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : (1 + zi) ∉ P.asIdeal`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Establish `: zi = -1`. Use `Formalism.HC.Der.kc_eq_of_pow_eq_one P.asIdeal hP hzi1 hm1 ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h` using `[sub_neg_eq_add, add_comm]`. Use `congrArg (algebraMap (𝓞 L) L) this` as an intermediate fact. Rewrite `this` using `[hcoe, map_neg, map_one]`. Then use the resulting hypothesis. Establish `: (1 + z : L) = algebraMap (𝓞 L) L (1 + zi)`. Rewrite using `[map_add, map_one, hcoe]`.
-
-Rewrite using `[this, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl]`. Conclude with `hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_one_add {L : Type} [Field L] [NumberField L] (N : ℕ) (hN : Even N) (hN0 : 0 < N) (z : L)
     (hz : z ^ N = 1) (hne : z ≠ -1) (P : HeightOneSpectrum (𝓞 L)) (hP : ((N : ℕ) : 𝓞 L) ∉ P.asIdeal) :
@@ -93,19 +87,19 @@ private theorem val_one_add {L : Type} [Field L] [NumberField L] (N : ℕ) (hN :
   exact hmem
 
 /- English proof (translation)
-Introduce `R H ι _ eT z hz`. Distinguish the cases in `hne : z = -1`. Substitute `hne` using the available equality. Establish `hs : H.sqd ≠ 0` using `H.sqd_ne_zero`. Use `⟨Units.mk0 H.sqd hs, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : H.conj H.sqd = -H.sqd` using `H.conj_sqd`. Rewrite using `[Units.val_mk0, hc]`. Expand and normalize the polynomial expressions, which then agree. Introduce `P hP`. Use `val_sqrt H.d _ H.sqd_sq P fun hm => hP ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `H.d_dvd_condN`. Rewrite using `[hk, Nat.cast_mul]`. Conclude with `P.asIdeal.mul_mem_right _ hm`. Establish `hd : 0 < H.d` using `H.hyp.2.1.pos`. Establish `hr : (0 : ℝ) < Real.sqrt H.d` using `Real.sqrt_pos.2 (by exact_mod_cast hd)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : ∀ g : R.Psi, H.emb (g : R.GG) H.sqd / ((‖H.emb (g : R.GG) H.sqd‖ : ℝ) : ℂ) = Complex.I` using `fun g => by`. Rewrite using `[emb_sqd H g, norm_mul, Complex.norm_I, one_mul, Complex.norm_real, Real.norm_of_nonneg hr.le, mul_div_assoc, div_self (by exact_mod_cast hr.ne'), mul_one]`. Simplify using `only [Units.val_mk0, ht]`. Rewrite using `[Finset.prod_const, Finset.card_univ, ← Nat.card_eq_fintype_card, Nat.card_congr eT]`. Take `⟨k, hk⟩ : 4 ∣ Nat.card R.Psi` from `four_dvd H.toHostRaw`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, pow_mul, Complex.I_pow_four, one_pow]`. Establish `hδ : 1 + z ≠ 0` using `fun h0 => hne (by linear_combination h0)`. Establish `hconj : H.conj z = z⁻¹` using `(UpperTheory.rootOfUnity_galois_action_CMDatum _ H.toHostAx z hz).2.1`. Establish `hz0 : z ≠ 0` using `UpperTheory.root_ne_zero hz`. Use `⟨Units.mk0 (1 + z) hδ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mk0, map_add, map_one, hconj]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `P hP`. Establish `hw : z ^ H.toHostRaw.w = 1` using `(H.toHostRaw.isMu_iff z).1 hz`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `H.toHostRaw.w_dvd_condN`. Establish `hN : z ^ H.condN = 1` using `by rw [hk, pow_mul, hw, one_pow]`. Conclude with `val_one_add H.condN (even_iff_two_dvd.2 H.two_dvd_condN) (Nat.pos_of_ne_zero H.condN_ne_zero) z hN hne P hP`. Conclude with `UpperTheory.prod_cmType_phase_one_add_rootOfUnity R H ι eT z hz hne`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_unit_eq_rootOfUnity_mul_conj_phase_one :
     ∀ (R : Ranks) (H : Host R) (ι : Type) [Fintype ι] (eT : ι ≃ R.Psi) (z : H.E), (∃ m : ℕ, 0 < m ∧ z ^ m = 1) →

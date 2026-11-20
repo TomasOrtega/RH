@@ -18,9 +18,9 @@ namespace UpperTheory.BaseChangeIdentities.FrameWordIdentity
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `h1 : Valued.v (u : w.adicCompletion E) ≠ 0` using `(Valuation.ne_zero_iff _).mpr u.ne_zero`. Unfold `ordL at hu`. Rewrite `hu` using `[dif_neg h1]`. Rewrite using `[← WithZero.coe_unzero h1]`. Establish `e : Multiplicative.toAdd (WithZero.unzero h1) = 0` using `by omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e' : WithZero.unzero h1 = 1`. Rewrite using `[← ofAdd_toAdd (WithZero.unzero h1), e]`. Both sides reduce to the same expression. Rewrite using `[e']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem val_one_of_ordL {E : Type} [Field E] [NumberField E] {w : Pl E} (u : (w.adicCompletion E)ˣ)
     (hu : ordL (u : w.adicCompletion E) = 0) : Valued.v (u : w.adicCompletion E) = 1 := by
@@ -34,13 +34,13 @@ private theorem val_one_of_ordL {E : Type} [Field E] [NumberField E] {w : Pl E} 
   rw [e']; rfl
 
 /- English proof (translation)
-Introduce `hR E _ _ _ n π S T F₀ F`. Establish `hsame` using `F.same`. Unfold `RF_same at hsame`. Take `⟨hS₀, hBad, hμ, -⟩` from `hsame`. Establish `hloc : ∀ w, F.d.μ w = F₀.μ.loc w` using `fun w => by rw [hμ]; exact F₀.μloc w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hloc, fun w u => ?_, fun w hw hB hs => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hloc]`. Conclude with `F₀.hμ.1 _`. Establish `hT : w ∉ F.d.T` using `fun h => hB (by simp [LocData.B, h])`. Establish `hS : w ∉ F.d.S₀` using `fun h => hB (by simp [LocData.B, h])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : w ∉ F.d.Bad` using `fun h => hB (by simp [LocData.B, h])`. Use `⟨hs, hT, hS, hb, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hloc]`. Conclude with `(F₀.good w hw (hS₀ ▸ hS) (hBad ▸ hb)).2 u (val_one_of_ordL u hu)`. Introduce `w hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hw' : w ∈ F.d.T ∪ F.d.S₀` using `by simpa [LocData.P] using hw`. Break down `Finset.mem_union.mp hw' with h | h` into its components or cases. Conclude with `(F.T_in w h).1`. Conclude with `(F₀.S₀ w (hS₀ ▸ h)).1`.
+A detailed English derivation is pending.
 -/
 theorem frfacts_pf : FrFacts := by
   intro hR E _ _ _ n π S T F₀ F

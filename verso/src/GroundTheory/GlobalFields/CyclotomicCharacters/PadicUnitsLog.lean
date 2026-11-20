@@ -17,15 +17,15 @@ def torsionExponent : ℕ := if ℓ = 2 then 2 else ℓ - 1
 
 omit hℓ in
 /- English proof (translation)
-Apply the tactic sequence `unfold unitsLevel; split_ifs <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unitsLevel_ne_zero : unitsLevel ℓ ≠ 0 := by
   unfold unitsLevel; split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `unitsLevel`. Use `split_ifs with h`. Substitute `h` using the available equality. Evaluate the numerical expressions. Use `hℓ.out.two_le` as an intermediate fact.
+Replace the relevant objects with their definitions. Substitute using the available equality. Evaluate the numerical expressions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem unitsLevel_add_two_le : unitsLevel ℓ + 2 ≤ ℓ * unitsLevel ℓ := by
   unfold unitsLevel
@@ -35,7 +35,7 @@ theorem unitsLevel_add_two_le : unitsLevel ℓ + 2 ≤ ℓ * unitsLevel ℓ := b
     omega
 
 /- English proof (translation)
-Unfold `torsionExponent`. Use `split_ifs`. Evaluate the numerical expressions. Use `hℓ.out.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Evaluate the numerical expressions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem torsionExponent_pos : 0 < torsionExponent ℓ := by
   unfold torsionExponent
@@ -45,11 +45,11 @@ theorem torsionExponent_pos : 0 < torsionExponent ℓ := by
     omega
 
 /- English proof (translation)
-Distinguish the cases in `h : ℓ = 2`. Substitute `h` using the available equality. Establish `key : ∀ y : ZMod 8, (∃ z : ZMod 8, y * z = 1) → y ^ 2 = 1` using `by decide`. Establish `h8 : (2 : ℕ) ^ unitsLevel 2 = 8` using `by simp [unitsLevel]`. Rewrite using `[torsionExponent, if_pos rfl]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_one]`. Use `revert x`. Rewrite using `[h8]`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `key _ ⟨_, x.mul_inv⟩`. Establish `: NeZero ℓ` using `⟨hℓ.out.ne_zero⟩`. Establish `hc : Fintype.card (ZMod (ℓ ^ unitsLevel ℓ))ˣ = ℓ - 1`. Rewrite using `[ZMod.card_units_eq_totient, unitsLevel, if_neg h, pow_one, Nat.totient_prime hℓ.out]`. Rewrite using `[torsionExponent, if_neg h, ← hc, pow_card_eq_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_torsionExponent (x : (ZMod (ℓ ^ unitsLevel ℓ))ˣ) : x ^ torsionExponent ℓ = 1 := by
   by_cases h : ℓ = 2
@@ -72,11 +72,11 @@ def unitsKer (n : ℕ) : Subgroup (ZMod (ℓ ^ (n + unitsLevel ℓ)))ˣ :=
   (ZMod.unitsMap (pow_dvd_pow ℓ (Nat.le_add_left (unitsLevel ℓ) n))).ker
 
 /- English proof (translation)
-Establish `: NeZero ℓ` using `⟨hℓ.out.ne_zero⟩`. Establish `h1` using `Subgroup.card_mul_index (unitsKer ℓ n)`. Rewrite using `[unitsKer, Subgroup.index_ker, MonoidHom.range_eq_top.2 (ZMod.unitsMap_surjective _), Subgroup.card_top, Nat.card_eq_fintype_card (α := (ZMod (ℓ ^ unitsLevel ℓ))ˣ), Nat.card_eq_fintype_card (α := (ZMod (ℓ ^ (n + unitsLevel ℓ)))ˣ), ZMod.card_units_eq_totient, ZMod.card_units_eq_to …`. Use `unitsLevel_ne_zero ℓ` as an intermediate fact. Use the proof step `omega)] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : n + unitsLevel ℓ - 1 = n + (unitsLevel ℓ - 1)`. Use `unitsLevel_ne_zero ℓ` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hpos : 0 < ℓ ^ (unitsLevel ℓ - 1) * (ℓ - 1)` using `Nat.mul_pos (pow_pos hℓ.out.pos _) (by have := hℓ.out.two_le; omega)`. Establish `h2 : Nat.card (unitsKer ℓ n) * (ℓ ^ (unitsLevel ℓ - 1) * (ℓ - 1)) = ℓ ^ n * (ℓ ^ (unitsLevel ℓ - 1) * (ℓ - 1))`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc (ℓ ^ n), ← pow_add, ← hr]`. Conclude with `h1`. Conclude with `Nat.eq_of_mul_eq_mul_right hpos h2`.
+A detailed English derivation is pending.
 -/
 theorem card_unitsKer (n : ℕ) : Nat.card (unitsKer ℓ n) = ℓ ^ n := by
   have : NeZero ℓ := ⟨hℓ.out.ne_zero⟩
@@ -98,7 +98,7 @@ theorem card_unitsKer (n : ℕ) : Nat.card (unitsKer ℓ n) = ℓ ^ n := by
   exact Nat.eq_of_mul_eq_mul_right hpos h2
 
 /- English proof (translation)
-Use `Nat.Coprime.pow_right _ ?_` and prove the remaining obligations. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hℓ.out]`. Introduce `h`. Rewrite `h` using `[add_comm]`. Conclude with `hℓ.out.not_dvd_one ((Nat.dvd_add_right (dvd_pow_self ℓ (unitsLevel_ne_zero ℓ))).1 h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coprime_one_add_pow (k : ℕ) : Nat.Coprime (1 + ℓ ^ unitsLevel ℓ) (ℓ ^ k) := by
   refine Nat.Coprime.pow_right _ ?_
@@ -112,14 +112,14 @@ def genUnit (n : ℕ) : (ZMod (ℓ ^ (n + unitsLevel ℓ)))ˣ :=
   ZMod.unitOfCoprime (1 + ℓ ^ unitsLevel ℓ) (coprime_one_add_pow ℓ _)
 
 /- English proof (translation)
-Simplify using `[genUnit]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem coe_genUnit (n : ℕ) :
     (genUnit ℓ n : ZMod (ℓ ^ (n + unitsLevel ℓ))) = 1 + (ℓ : ZMod _) ^ unitsLevel ℓ := by
   simp [genUnit]
 
 /- English proof (translation)
-Rewrite using `[← orderOf_units, coe_genUnit]`. Use `ZMod.orderOf_one_add_mul_prime_pow hℓ.out (unitsLevel ℓ) (unitsLevel_ne_zero ℓ) (unitsLevel_add_two_le ℓ) 1 (by norm_cast; exact hℓ.out.not_dvd_one) n` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem orderOf_genUnit (n : ℕ) : orderOf (genUnit ℓ n) = ℓ ^ n := by
   rw [← orderOf_units, coe_genUnit]
@@ -128,14 +128,14 @@ theorem orderOf_genUnit (n : ℕ) : orderOf (genUnit ℓ n) = ℓ ^ n := by
   simpa using this
 
 /- English proof (translation)
-Use `pow_orderOf_eq_one (genUnit ℓ n)` as an intermediate fact. Rewrite `this` using `[orderOf_genUnit]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem genUnit_pow_eq_one (n : ℕ) : genUnit ℓ n ^ (ℓ ^ n) = 1 := by
   have := pow_orderOf_eq_one (genUnit ℓ n)
   rwa [orderOf_genUnit] at this
 
 /- English proof (translation)
-Rewrite using `[unitsKer, MonoidHom.mem_ker]`. Use `Units.ext ?_` and prove the remaining obligations. Simplify using `only [ZMod.unitsMap_def, Units.coe_map, MonoidHom.coe_coe, coe_genUnit, map_add, map_one, map_pow, map_natCast, Units.val_one]`. Rewrite using `[← Nat.cast_pow, ZMod.natCast_self, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem genUnit_mem_unitsKer (n : ℕ) : genUnit ℓ n ∈ unitsKer ℓ n := by
   rw [unitsKer, MonoidHom.mem_ker]
@@ -145,14 +145,14 @@ theorem genUnit_mem_unitsKer (n : ℕ) : genUnit ℓ n ∈ unitsKer ℓ n := by
   rw [← Nat.cast_pow, ZMod.natCast_self, add_zero]
 
 /- English proof (translation)
-The claim follows from `Subgroup.eq_of_le_of_card_ge (Subgroup.zpowers_le.2 (genUnit_mem_unitsKer ℓ n)) (by rw [card_unitsKer, Nat.card_zpowers, orderOf_genUnit])`.
+A detailed English derivation is pending.
 -/
 theorem zpowers_genUnit (n : ℕ) : Subgroup.zpowers (genUnit ℓ n) = unitsKer ℓ n :=
   Subgroup.eq_of_le_of_card_ge (Subgroup.zpowers_le.2 (genUnit_mem_unitsKer ℓ n))
     (by rw [card_unitsKer, Nat.card_zpowers, orderOf_genUnit])
 
 /- English proof (translation)
-Rewrite using `[pow_eq_pow_iff_modEq, orderOf_genUnit]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genUnit_pow_val_eq (n : ℕ) {a b : ℕ} (h : a ≡ b [MOD ℓ ^ n]) :
     genUnit ℓ n ^ a = genUnit ℓ n ^ b := by
@@ -175,9 +175,9 @@ theorem expHom_apply (n : ℕ) (a : Multiplicative (ZMod (ℓ ^ n))) :
   rfl
 
 /- English proof (translation)
-Establish `: NeZero ℓ` using `⟨hℓ.out.ne_zero⟩`. Use `(injective_iff_map_eq_one _).2 fun a ha => ?_` and prove the remaining obligations. Rewrite `ha` using `[expHom_apply]`. Establish `h1 : ℓ ^ n ∣ (Multiplicative.toAdd a).val`. Use `orderOf_dvd_of_pow_eq_one ha` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[orderOf_genUnit]`. Then use the resulting hypothesis. Establish `h2` using `Nat.eq_zero_of_dvd_of_lt h1 (ZMod.val_lt _)`. Rewrite `h2` using `[ZMod.val_eq_zero]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expHom_injective (n : ℕ) : Function.Injective (expHom ℓ n) := by
   have : NeZero ℓ := ⟨hℓ.out.ne_zero⟩
@@ -191,9 +191,7 @@ theorem expHom_injective (n : ℕ) : Function.Injective (expHom ℓ n) := by
   exact h2
 
 /- English proof (translation)
-Apply `Subgroup.eq_of_le_of_card_ge` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[← zpowers_genUnit]`. Conclude with `Subgroup.npow_mem_zpowers _ _`. Rewrite using `[card_unitsKer, ← Nat.card_congr (MonoidHom.ofInjective (expHom_injective ℓ n)).toEquiv]`.
-
-Conclude with `(Nat.card_zmod _).ge`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_expHom (n : ℕ) : (expHom ℓ n).range = unitsKer ℓ n := by
   apply Subgroup.eq_of_le_of_card_ge
@@ -221,7 +219,7 @@ noncomputable def logMod (n : ℕ) : (ZMod (ℓ ^ (n + unitsLevel ℓ)))ˣ →* 
   (expEquiv ℓ n).symm.toMonoidHom.comp (powKer ℓ n)
 
 /- English proof (translation)
-Use `congrArg Subtype.val ((expEquiv ℓ n).apply_symm_apply (powKer ℓ n x))` as an intermediate fact. Rewrite `this` using `[coe_expEquiv]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expHom_logMod (n : ℕ) (x : (ZMod (ℓ ^ (n + unitsLevel ℓ)))ˣ) :
     expHom ℓ n (logMod ℓ n x) = x ^ torsionExponent ℓ := by
@@ -230,7 +228,7 @@ theorem expHom_logMod (n : ℕ) (x : (ZMod (ℓ ^ (n + unitsLevel ℓ)))ˣ) :
   exact this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h ▸ expHom_logMod ℓ n x, fun h => expHom_injective ℓ n (by rw [expHom_logMod, h])⟩`.
+Supply the required witnesses or components.
 -/
 theorem logMod_eq_iff (n : ℕ) (x : (ZMod (ℓ ^ (n + unitsLevel ℓ)))ˣ)
     (a : Multiplicative (ZMod (ℓ ^ n))) :
@@ -239,7 +237,7 @@ theorem logMod_eq_iff (n : ℕ) (x : (ZMod (ℓ ^ (n + unitsLevel ℓ)))ˣ)
     fun h => expHom_injective ℓ n (by rw [expHom_logMod, h])⟩
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Simplify using `only [ZMod.unitsMap_def, Units.coe_map, MonoidHom.coe_coe, coe_genUnit, map_add, map_one, map_pow, map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem unitsMap_genUnit {m n : ℕ} (h : m ≤ n) :
     ZMod.unitsMap (pow_dvd_pow ℓ (by omega : m + unitsLevel ℓ ≤ n + unitsLevel ℓ)) (genUnit ℓ n) =
@@ -249,9 +247,9 @@ theorem unitsMap_genUnit {m n : ℕ} (h : m ≤ n) :
     map_pow, map_natCast]
 
 /- English proof (translation)
-Establish `: NeZero ℓ` using `⟨hℓ.out.ne_zero⟩`. Use `set a := Multiplicative.toAdd (logMod ℓ n x) with ha`. Establish `key : logMod ℓ m (ZMod.unitsMap (pow_dvd_pow ℓ (by omega : m + unitsLevel ℓ ≤ n + unitsLevel ℓ)) x) = Multiplicative.ofAdd (ZMod.castHom (pow_dvd_pow ℓ h) (ZMod (ℓ ^ m)) a)`. Rewrite using `[logMod_eq_iff, expHom_apply, toAdd_ofAdd, ← map_pow, ← expHom_logMod ℓ n x, expHom_apply, map_pow, unitsMap_genUnit ℓ h, ← ha]`. Use `genUnit_pow_val_eq ℓ m ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast]`. Conclude with `Nat.mod_modEq _ _`. Rewrite using `[key, toAdd_ofAdd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem castHom_logMod {m n : ℕ} (h : m ≤ n) (x : (ZMod (ℓ ^ (n + unitsLevel ℓ)))ˣ) :
     ZMod.castHom (pow_dvd_pow ℓ h) (ZMod (ℓ ^ m)) (Multiplicative.toAdd (logMod ℓ n x)) =
@@ -282,7 +280,7 @@ def compatibleFamilies : Subring (∀ n : ℕ, ZMod (ℓ ^ n)) :=
 
 omit hℓ in
 /- English proof (translation)
-Simplify using `[compatibleFamilies, Subring.mem_iInf, RingHom.mem_eqLocus]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_compatibleFamilies {x : ∀ n : ℕ, ZMod (ℓ ^ n)} :
     x ∈ compatibleFamilies ℓ ↔
@@ -296,7 +294,7 @@ noncomputable def limFamilies : compatibleFamilies ℓ →+* ℤ_[ℓ] :=
       exact (mem_compatibleFamilies ℓ).1 x.2 m n h
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (PadicInt.lift_spec _ n) x`.
+A detailed English derivation is pending.
 -/
 theorem toZModPow_limFamilies (x : compatibleFamilies ℓ) (n : ℕ) :
     PadicInt.toZModPow n (limFamilies ℓ x) = (x : ∀ n : ℕ, ZMod (ℓ ^ n)) n :=
@@ -313,7 +311,7 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Simplify using `only [ZMod.unitsMap_def, Units.coe_map, MonoidHom.coe_coe, coe_redUnits, ZMod.castHom_apply]`. Conclude with `PadicInt.cast_toZModPow _ _ h _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitsMap_redUnits {k k' : ℕ} (h : k ≤ k') (u : ℤ_[ℓ]ˣ) :
     ZMod.unitsMap (pow_dvd_pow ℓ h) (redUnits ℓ k' u) = redUnits ℓ k u := by
@@ -323,7 +321,7 @@ theorem unitsMap_redUnits {k k' : ℕ} (h : k ≤ k') (u : ℤ_[ℓ]ˣ) :
   exact PadicInt.cast_toZModPow _ _ h _
 
 /- English proof (translation)
-Rewrite using `[mem_compatibleFamilies]`. Introduce `m n h`. Rewrite using `[castHom_logMod ℓ h, unitsMap_redUnits ℓ (k := m + unitsLevel ℓ) (k' := n + unitsLevel ℓ) (by omega)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem logFamily_mem (u : ℤ_[ℓ]ˣ) :
     (fun n => Multiplicative.toAdd (logMod ℓ n (redUnits ℓ (n + unitsLevel ℓ) u))) ∈
@@ -346,7 +344,7 @@ noncomputable def padicUnitsLog : ℤ_[ℓ]ˣ →* Multiplicative ℤ_[ℓ] wher
     simp
 
 /- English proof (translation)
-The claim follows from `toZModPow_limFamilies ℓ _ n`.
+A detailed English derivation is pending.
 -/
 theorem toZModPow_padicUnitsLog (u : ℤ_[ℓ]ˣ) (n : ℕ) :
     PadicInt.toZModPow n (Multiplicative.toAdd (padicUnitsLog ℓ u)) =
@@ -354,9 +352,9 @@ theorem toZModPow_padicUnitsLog (u : ℤ_[ℓ]ˣ) (n : ℕ) :
   toZModPow_limFamilies ℓ _ n
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Use `⟨(continuous_toZModPow k).comp Units.continuous_val, ?_⟩` and prove the remaining obligations. Establish `: (fun u : ℤ_[ℓ]ˣ => ((redUnits ℓ k u)⁻¹ : (ZMod (ℓ ^ k))ˣ).val) = fun u => PadicInt.toZModPow k ((u⁻¹ : ℤ_[ℓ]ˣ) : ℤ_[ℓ])`. Use function extensionality and compare the values at `u`. Rewrite using `[← map_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(continuous_toZModPow k).comp (Units.continuous_val.comp continuous_inv)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_redUnits (k : ℕ) : Continuous (redUnits ℓ k) := by
   rw [Units.continuous_iff]
@@ -368,7 +366,7 @@ theorem continuous_redUnits (k : ℕ) : Continuous (redUnits ℓ k) := by
   exact (continuous_toZModPow k).comp (Units.continuous_val.comp continuous_inv)
 
 /- English proof (translation)
-Establish `hc : Continuous fun u : ℤ_[ℓ]ˣ => Multiplicative.toAdd (padicUnitsLog ℓ u)` using `continuous_of_continuous_toZModPow fun n => ((continuous_of_discreteTopology (f := fun v : (ZMod (ℓ ^ (n + unitsLevel ℓ)))ˣ => Multiplicative.toAdd (logMod ℓ n v))).comp (continuous_redUnits ℓ _)).congr fun u => (toZModPow_padicUnitsLog ℓ u n).symm`. Conclude with `continuous_ofAdd.comp hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_padicUnitsLog : Continuous (padicUnitsLog ℓ) := by
   have hc : Continuous fun u : ℤ_[ℓ]ˣ => Multiplicative.toAdd (padicUnitsLog ℓ u) :=
@@ -383,7 +381,7 @@ def genNat : ℕ := if ℓ = 2 then 3 else ℓ + 1
 def genLog : ℕ := if ℓ = 2 then 1 else ℓ - 1
 
 /- English proof (translation)
-Unfold `genNat torsionExponent unitsLevel genLog`. Use `split_ifs with h`. Substitute `h` using the available equality. Evaluate the numerical expressions. Rewrite using `[pow_one, add_comm]`.
+Replace the relevant objects with their definitions. Substitute using the available equality. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genNat_pow : genNat ℓ ^ torsionExponent ℓ = (1 + ℓ ^ unitsLevel ℓ) ^ genLog ℓ := by
   unfold genNat torsionExponent unitsLevel genLog
@@ -392,9 +390,9 @@ theorem genNat_pow : genNat ℓ ^ torsionExponent ℓ = (1 + ℓ ^ unitsLevel �
   · rw [pow_one, add_comm]
 
 /- English proof (translation)
-Rewrite using `[Nat.Prime.coprime_iff_not_dvd hℓ.out]`. Unfold `genNat`. Use `split_ifs with h`. Substitute `h` using the available equality. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Substitute using the available equality. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hd`. Conclude with `hℓ.out.not_dvd_one ((Nat.dvd_add_right (dvd_refl ℓ)).1 hd)`.
+A detailed English derivation is pending.
 -/
 theorem coprime_genNat : Nat.Coprime ℓ (genNat ℓ) := by
   rw [Nat.Prime.coprime_iff_not_dvd hℓ.out]
@@ -405,9 +403,9 @@ theorem coprime_genNat : Nat.Coprime ℓ (genNat ℓ) := by
     exact hℓ.out.not_dvd_one ((Nat.dvd_add_right (dvd_refl ℓ)).1 hd)
 
 /- English proof (translation)
-Rewrite using `[Nat.Prime.coprime_iff_not_dvd hℓ.out]`. Unfold `genLog`. Use `split_ifs with h`. Substitute `h` using the available equality. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Substitute using the available equality. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Use `hℓ.out.two_le` as an intermediate fact. Conclude with `Nat.not_dvd_of_pos_of_lt (by omega) (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem coprime_genLog : Nat.Coprime ℓ (genLog ℓ) := by
   rw [Nat.Prime.coprime_iff_not_dvd hℓ.out]
@@ -418,7 +416,7 @@ theorem coprime_genLog : Nat.Coprime ℓ (genLog ℓ) := by
     exact Nat.not_dvd_of_pos_of_lt (by omega) (by omega)
 
 /- English proof (translation)
-The claim follows from `PadicInt.isUnit_iff.2 (PadicInt.norm_natCast_eq_one_iff.2 hk)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_natCast_of_coprime {k : ℕ} (hk : Nat.Coprime ℓ k) : IsUnit (k : ℤ_[ℓ]) :=
   PadicInt.isUnit_iff.2 (PadicInt.norm_natCast_eq_one_iff.2 hk)
@@ -426,9 +424,9 @@ theorem isUnit_natCast_of_coprime {k : ℕ} (hk : Nat.Coprime ℓ k) : IsUnit (k
 noncomputable def genPadicUnit : ℤ_[ℓ]ˣ := (isUnit_natCast_of_coprime ℓ (coprime_genNat ℓ)).unit
 
 /- English proof (translation)
-Use `PadicInt.ext_of_toZModPow.mp fun n => ?_` and prove the remaining obligations. Rewrite using `[toZModPow_padicUnitsLog, map_natCast]`. Establish `: logMod ℓ n (redUnits ℓ (n + unitsLevel ℓ) (genPadicUnit ℓ)) = Multiplicative.ofAdd ((genLog ℓ : ℕ) : ZMod (ℓ ^ n))`. Rewrite using `[logMod_eq_iff, expHom_apply, toAdd_ofAdd, pow_val_natCast (genUnit_pow_eq_one ℓ n)]`. Use `Units.ext ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Units.val_pow_eq_pow_val, coe_genUnit, coe_redUnits, genPadicUnit, IsUnit.unit_spec, map_natCast]`. Rewrite using `[← Nat.cast_pow (genNat ℓ), genNat_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, toAdd_ofAdd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem padicUnitsLog_genPadicUnit :
     Multiplicative.toAdd (padicUnitsLog ℓ (genPadicUnit ℓ)) = (genLog ℓ : ℤ_[ℓ]) := by
@@ -446,11 +444,11 @@ theorem padicUnitsLog_genPadicUnit :
   rw [this, toAdd_ofAdd]
 
 /- English proof (translation)
-Establish `hc : Continuous fun u : ℤ_[ℓ]ˣ => Multiplicative.toAdd (padicUnitsLog ℓ u)` using `continuous_toAdd.comp (continuous_padicUnitsLog ℓ)`. Use `set s : ℤ_[ℓ] := (genLog ℓ : ℤ_[ℓ])`. Establish `hs : IsUnit s` using `isUnit_natCast_of_coprime ℓ (coprime_genLog ℓ)`. Use `set R : Set ℤ_[ℓ] := Set.range fun u : ℤ_[ℓ]ˣ => Multiplicative.toAdd (padicUnitsLog ℓ u)`. Establish `hR : IsClosed R` using `(isCompact_range hc).isClosed`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ t : ℤ_[ℓ], s * t ∈ R` using `fun t => PadicInt.denseRange_natCast.induction_on t (hR.preimage (continuous_const.mul continuous_id)) fun k => ⟨genPadicUnit ℓ ^ k, by show Multiplicative.toAdd (padicUnitsLog ℓ (genPadicUnit ℓ ^ k)) = s * k`. Rewrite using `[map_pow, toAdd_pow, padicUnitsLog_genPadicUnit, nsmul_eq_mul, mul_comm]⟩`. Introduce `y`. Take `⟨u, hu⟩` from `hmem (↑hs.unit⁻¹ * Multiplicative.toAdd y)`. Establish `hu : Multiplicative.toAdd (padicUnitsLog ℓ u) = s * (↑hs.unit⁻¹ * Multiplicative.toAdd y)` using `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨u, ?_⟩` and prove the remaining obligations. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[hu, ← mul_assoc, IsUnit.mul_val_inv, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicUnitsLog_surjective : Function.Surjective (padicUnitsLog ℓ) := by
   have hc : Continuous fun u : ℤ_[ℓ]ˣ => Multiplicative.toAdd (padicUnitsLog ℓ u) :=
@@ -474,7 +472,7 @@ theorem padicUnitsLog_surjective : Function.Surjective (padicUnitsLog ℓ) := by
   rw [hu, ← mul_assoc, IsUnit.mul_val_inv, one_mul]
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun v => Multiplicative.toAdd (padicUnitsLog ℓ v)) h`. Simplify using `only [map_pow, toAdd_pow, map_one, toAdd_one, nsmul_eq_mul] at h1`. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 (Nat.cast_ne_zero.2 hk.ne')`. Conclude with `congrArg Multiplicative.ofAdd h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem padicUnitsLog_eq_one_of_pow_eq_one {u : ℤ_[ℓ]ˣ} {k : ℕ} (hk : 0 < k) (h : u ^ k = 1) :
     padicUnitsLog ℓ u = 1 := by
@@ -485,11 +483,11 @@ theorem padicUnitsLog_eq_one_of_pow_eq_one {u : ℤ_[ℓ]ˣ} {k : ℕ} (hk : 0 <
   · exact congrArg Multiplicative.ofAdd h2
 
 /- English proof (translation)
-Use `⟨fun h => ?_, padicUnitsLog_eq_one_of_pow_eq_one ℓ (torsionExponent_pos ℓ)⟩` and prove the remaining obligations. Establish `hk : ∀ k, PadicInt.toZModPow (k + unitsLevel ℓ) ((u ^ torsionExponent ℓ : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) = 1` using `fun k => by`. Establish `h1` using `toZModPow_padicUnitsLog ℓ u k`. Rewrite `h1` using `[h, toAdd_one, map_zero]`. Establish `h2 : logMod ℓ k (redUnits ℓ (k + unitsLevel ℓ) u) = 1` using `congrArg Multiplicative.ofAdd h1.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[logMod_eq_iff, map_one]`. Establish `h3` using `congrArg Units.val h2`. Rewrite `h3` using `[Units.val_one, Units.val_pow_eq_pow_val, coe_redUnits, ← map_pow]`. Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `h3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun k => ?_)` and prove the remaining obligations. Rewrite using `[← PadicInt.zmod_cast_comp_toZModPow k (k + unitsLevel ℓ) (Nat.le_add_right _ _), RingHom.comp_apply, RingHom.comp_apply, hk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem padicUnitsLog_eq_one_iff (u : ℤ_[ℓ]ˣ) :
     padicUnitsLog ℓ u = 1 ↔ u ^ torsionExponent ℓ = 1 := by
@@ -511,9 +509,9 @@ theorem padicUnitsLog_eq_one_iff (u : ℤ_[ℓ]ˣ) :
   simp
 
 /- English proof (translation)
-Use extensionality with `u`. Rewrite using `[MonoidHom.mem_ker, CommGroup.mem_torsion, isOfFinOrder_iff_pow_eq_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, torsionExponent_pos ℓ, (padicUnitsLog_eq_one_iff ℓ u).1 h⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨k, hk, h⟩`. Conclude with `padicUnitsLog_eq_one_of_pow_eq_one ℓ hk h`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ker_padicUnitsLog : (padicUnitsLog ℓ).ker = CommGroup.torsion ℤ_[ℓ]ˣ := by
   ext u
@@ -525,16 +523,16 @@ theorem ker_padicUnitsLog : (padicUnitsLog ℓ).ker = CommGroup.torsion ℤ_[ℓ
     exact padicUnitsLog_eq_one_of_pow_eq_one ℓ hk h
 
 /- English proof (translation)
-Rewrite using `[← ker_padicUnitsLog, MonoidHom.mem_ker, padicUnitsLog_eq_one_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_torsion_iff (u : ℤ_[ℓ]ˣ) :
     u ∈ CommGroup.torsion ℤ_[ℓ]ˣ ↔ u ^ torsionExponent ℓ = 1 := by
   rw [← ker_padicUnitsLog, MonoidHom.mem_ker, padicUnitsLog_eq_one_iff]
 
 /- English proof (translation)
-Rewrite using `[mem_torsion_iff, torsionExponent, if_pos rfl]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `congrArg Units.val h`. Rewrite `h1` using `[Units.val_pow_eq_pow_val, Units.val_one, sq, mul_self_eq_one_iff]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `h1 with h1 | h1` into its components or cases. Conclude with `Or.inl (Units.ext h1)`. Conclude with `Or.inr (Units.ext (by rw [h1, Units.val_neg, Units.val_one]))`. Apply the tactic sequence `rintro (rfl | rfl) <;> simp`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_torsion_two_iff (u : ℤ_[2]ˣ) :
     u ∈ CommGroup.torsion ℤ_[2]ˣ ↔ u = 1 ∨ u = -1 := by

@@ -10,7 +10,7 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 namespace UpperTheory.Gal.FixZ
 
 /- English proof (translation)
-Introduce `p _ D G L gb k T N' N h b`. Take `⟨π, o, ψ, φ, hw, hs, htr, he⟩` from `T.tr_eq N' N h b.1 b.2`. Use `⟨W2.Leg.mk π o ψ φ hs ⟨htr.1, htr.2.1, htr.2.2.1, htr.2.2.2.2⟩, he, fun α => ?_⟩` and prove the remaining obligations. Simplify using `only [LocalSmoothExtension.leg, LocalSmoothExtension.al, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Rewrite using `[← Category.assoc, he, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

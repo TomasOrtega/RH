@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.LowRow.CompactDualScale
 
 /- English proof (translation)
-Take `⟨lam, hlam, hl⟩` from `h`. Use `⟨lam, hlam, ?_⟩` and prove the remaining obligations. Use `(ENNReal.Tendsto.const_mul hl (Or.inr ha)).congr fun r => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, mul_div_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem omegaDensity_smul {P Q : ℕ} {μ : Measure (UpqT P Q)} {c : ENNReal} (a : ENNReal) (ha : a ≠ ⊤)
     (h : OmegaDensity μ c) : OmegaDensity (a • μ) (a * c) := by
@@ -23,7 +23,7 @@ theorem omegaDensity_smul {P Q : ℕ} {μ : Measure (UpqT P Q)} {c : ENNReal} (a
   rw [Measure.smul_apply, smul_eq_mul, mul_div_assoc]
 
 /- English proof (translation)
-Take `⟨lam, hlam, hl⟩` from `h`. Take `⟨lam', hlam', hl'⟩` from `h'`. Rewrite `hl'` using `[Formalism.IndefR.Eqv.MU.omegaLeb_unique hlam hlam']`. Conclude with `tendsto_nhds_unique hl hl'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omegaDensity_unique {P Q : ℕ} {μ : Measure (UpqT P Q)} {c c' : ENNReal}
     (h : OmegaDensity μ c) (h' : OmegaDensity μ c') : c = c' := by
@@ -33,13 +33,13 @@ theorem omegaDensity_unique {P Q : ℕ} {μ : Measure (UpqT P Q)} {c c' : ENNRea
   exact tendsto_nhds_unique hl hl'
 
 /- English proof (translation)
-Introduce `cd p q m hm`. Take `⟨c, hc0, hctop, hpq, hN⟩` from `cd.trick p q`. Use `haveI := cd.haar (p + q) 0`. Use `haveI := cd.prob (p + q)`. Use `haveI := cd.haar p q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmain` using `ReciprocityTheory.ChartRestriction.DS.PolarCoordinateComparison.omegaDensity_main (N := p + q) (cd.cd (p + q) 0)`. Establish `hc` using `omegaDensity_unique hN hmain`. Establish `hV : 0 < ReciprocityTheory.ChartRestriction.DS.volU (p + q)` using `ReciprocityTheory.ChartRestriction.DS.PolarCoordinateComparison.volU_pos (p + q)`. Establish `hκ : (0 : ℝ) < 2 ^ ((p + q) * (p + q - 1) / 2)` using `by positivity`. Establish `hmul : ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU (p + q)) * c = Formalism.L2.Theta.minfDensity (p + q)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hc, ← ENNReal.ofReal_mul hV.le, Formalism.L2.Theta.minfDensity]`. Establish `e : ReciprocityTheory.ChartRestriction.DS.volU (p + q) * (1 / (2 ^ ((p + q) * (p + q - 1) / 2) * ReciprocityTheory.ChartRestriction.DS.volU (p + q))) = ((2 : ℝ) ^ ((p + q) * (p + q - 1) / 2))⁻¹`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, ENNReal.ofReal_inv_of_pos hκ, ENNReal.ofReal_pow (by norm_num), ENNReal.ofReal_ofNat]`. Establish `hV0 : ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU (p + q)) ≠ 0` using `(ENNReal.ofReal_pos.2 hV).ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hm' : Lev.IsMinf (ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU (p + q)) • cd.cd p q)`. Use `⟨Measure.IsHaarMeasure.smul _ hV0 ENNReal.ofReal_ne_top, ?_⟩` and prove the remaining obligations. Rewrite using `[← hmul]`. Conclude with `omegaDensity_smul _ ENNReal.ofReal_ne_top hpq`. Conclude with `Formalism.IndefR.Eqv.MU.isMinf_unique hm' hm`.
+A detailed English derivation is pending.
 -/
 theorem isMinf_eq_volU_smul_cd : ∀ (cd : CDHaar) (p q : ℕ) (m : Measure (UpqT p q)), Lev.IsMinf m →
     m = ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU (p + q)) • cd.cd p q := by

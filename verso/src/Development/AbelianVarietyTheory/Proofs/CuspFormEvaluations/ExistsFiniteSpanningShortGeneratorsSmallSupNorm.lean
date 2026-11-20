@@ -15,17 +15,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.RunIn
 
 /- English proof (translation)
-Use `set A' : Set C := {x | (x : R) ∈ A} with hA'`. Establish `hsub : ∀ x : C, (x : R) ∈ Submodule.span K A → x ∈ Submodule.span K A'`. Introduce `x hx`. Establish `himg : (C.subtype '' A') = A`. Use extensionality with `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `hz`. Introduce `hy`. Conclude with `⟨⟨y, hA hy⟩, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[← himg, ← Submodule.map_span]`. Take `⟨y, hy, hyx⟩` from `hx`. Establish `hyx' : y = x` using `Subtype.ext hyx`. Rewrite using `[← hyx']` and apply the resulting hypothesis. Establish `htop' : Submodule.span K A' = ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff, ← htop, Submodule.span_le]`. Introduce `x hx`. Apply `hsub` to reduce the goal to its premises. Establish `hx' : (x : R) ∈ Submodule.span O s` using `hx`. Conclude with `(Submodule.span_le.mpr hs) (Submodule.span_le_restrictScalars O K s hx')`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hbA, hbspan, hbli⟩` from `exists_linearIndependent K A'`. Establish `hbfin : b.Finite` using `hbli.setFinite`. Use `⟨hbfin.toFinset, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Conclude with `hbA (hbfin.mem_toFinset.mp hg)`.
-
-Rewrite using `[hbfin.coe_toFinset, hbspan, htop']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_span_top_of_span {O K R : Type} [CommRing O] [Field K] [Algebra O K] [AddCommGroup R]
     [Module K R] [Module O R] [IsScalarTower O K R] (C : Submodule K R) [FiniteDimensional K C] (s A : Set R)
@@ -64,15 +62,15 @@ theorem exists_finset_span_top_of_span {O K R : Type} [CommRing O] [Field K] [Al
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hC D T h hG large₂ j hj w hP hL hn hw hS hA hsp`. Establish `hlp` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.lastPos_wtA h hj w hw`. Establish `hdom` using `dom_wtA w`. Establish `hshC : T.sh j w ⊆ T.C j w` using `hS.shCusp j hj (wtA w) w.n hdom hlp hdom hlp`. Establish `hsmall` using `GlobalTheory.T.shortGenerator_mem_span_small_supNorm_shortGenerators hC D T h hG large₂ j hj w hP hL hn hw hS hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ReciprocityTheory.ChartRestriction.G.PullbackSections.SpanAt at hsp`. Simplify using `only [recPJ, recB, mkX, mkB] at hsp ⊢`. Unfold `spanIn cutN cutR at *`. Establish `hmemC : ∀ x, x ∈ T.C j w → x ∈ (T.C j w ⊓ ⨅ (_ : ¬InR D j), ⊥ : Submodule T.Q.c.F (T.R j))`. Introduce `x hx`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hx, hj]`. Establish `: FiniteDimensional T.Q.c.F (T.C j w)` using `h.toLawsCore.fd j hj w`. Establish `: FiniteDimensional T.Q.c.F (T.C j w ⊓ ⨅ (_ : ¬InR D j), ⊥ : Submodule T.Q.c.F (T.R j))` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `hs : ∀ g ∈ T.sh j w, g ∈ Submodule.span T.Q.c.F {g' | g' ∈ (T.C j w ⊓ ⨅ (_ : ¬InR D j), ⊥ : Submodule T.Q.c.F (T.R j)) ∧ g' ∈ T.sh j w ∧ ∀ σ, Real.log (T.Ns j w σ g') ≤ 400 * Zb D large₂ * w.size}`. Introduce `g hg`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.span_mono ?_ (hsmall g hg)` and prove the remaining obligations. Introduce and unpack `x ⟨hx1, hx2⟩`. Conclude with `⟨hmemC x (hshC hx1), hx1, hx2⟩`. Take `⟨Sh, hShA, hShspan⟩` from `exists_finset_span_top_of_span (O := 𝓞 T.Q.c.F) _ _ _ (fun x hx => hx.1) hs hsp`. Use `⟨Sh, fun g hg => ?_, hShspan⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨_, hgs, hgb⟩` from `hShA g hg`. Use `⟨Submodule.subset_span hgs, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos hj]`. Conclude with `hgb σ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_short_family_small : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (h : LawsP T), GamAt T.toCore → ∀ (large₂ : SizeData₂ D) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j), ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → 2 ≤ large₂.sc.L → D.R.r ≤ w.n → w.LastPos → LawsSh T → (T.dδ j w.n).l₂.A = 1 → ReciprocityTheory.ChartRestriction.G.PullbackSections.SpanAt (recPJ h j hj) w → ∃ Sh : Finset ((recB h.toLawsCore).Cusp j w), (∀ g ∈ Sh, g ∈ (recPJ h j hj).shortTh w ∧ ∀ σ, Real.log ((recB h.toLawsCore).supN j w σ g) ≤ 400 * Zb D large₂ * w.size) ∧ Submodule.span (recB h.toLawsCore).KO (Sh : Set ((recB h.toLawsCore).Cusp j w)) = ⊤ := by
   intro hC D T h hG large₂ j hj w hP hL hn hw hS hA hsp

@@ -20,9 +20,9 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.Amp.FibreNormal
 
 /- English proof (translation)
-Establish `h : {x : ι → ℂ | ∀ p, ‖x p‖ ≤ M} = Set.pi Set.univ fun _ => Metric.closedBall (0 : ℂ) M`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h, volume_pi_pi, Finset.prod_const, Finset.card_univ, Complex.volume_closedBall, ENNReal.ofReal_pow (by positivity), ENNReal.ofReal_mul Real.pi_pos.le, ENNReal.ofReal_pow hM, mul_comm]`. Use `congr 2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(ENNReal.ofReal_coe_nnreal (p := NNReal.pi)).symm`.
+A detailed English derivation is pending.
 -/
 theorem vol_discs (ι : Type) [Fintype ι] {M : ℝ} (hM : 0 ≤ M) :
     volume {x : ι → ℂ | ∀ p, ‖x p‖ ≤ M} = ENNReal.ofReal ((Real.pi * M ^ 2) ^ Fintype.card ι) := by
@@ -34,7 +34,7 @@ theorem vol_discs (ι : Type) [Fintype ι] {M : ℝ} (hM : 0 ≤ M) :
   exact (ENNReal.ofReal_coe_nnreal (p := NNReal.pi)).symm
 
 /- English proof (translation)
-Establish `h : {x : ι → ℝ | ∀ p, |x p| ≤ M} = Set.pi Set.univ fun _ => Metric.closedBall (0 : ℝ) M`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h, volume_pi_pi, Finset.prod_const, Finset.card_univ, Real.volume_closedBall, ENNReal.ofReal_pow (by positivity)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem vol_ints (ι : Type) [Fintype ι] {M : ℝ} (hM : 0 ≤ M) :
     volume {x : ι → ℝ | ∀ p, |x p| ≤ M} = ENNReal.ofReal ((2 * M) ^ Fintype.card ι) := by
@@ -50,7 +50,7 @@ def lowEquiv {r j : ℕ} (hj : j ≤ r) : Fin j ≃ {a : Fin r // a.val < j} whe
   right_inv _ := rfl
 
 /- English proof (translation)
-Establish `h` using `(volume_measurePreserving_piCongrLeft (fun _ : {a : Fin r // a.val < j} => Fin (k + 1) → ℂ) (lowEquiv hj)).symm`. Rewrite using `[← h.measure_preimage_equiv T]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vol_reindex {k r j : ℕ} (hj : j ≤ r) (T : Set (Fin j → Fin (k + 1) → ℂ)) :
     volume {B : {a : Fin r // a.val < j} → Fin (k + 1) → ℂ | (fun b : Fin j => B ⟨Fin.castLE hj b, b.2⟩) ∈ T} =
@@ -61,7 +61,7 @@ theorem vol_reindex {k r j : ℕ} (hj : j ≤ r) (T : Set (Fin j → Fin (k + 1)
   rfl
 
 /- English proof (translation)
-Establish `h : Fintype.card (UT r) = r.choose 2`. Rewrite using `[Fintype.card_subtype, ← Finset.univ_product_univ, Finset.card_product_filter_lt]`. Simplify using the standard rewrite rules. Rewrite using `[h, Nat.choose_two_right]`. Conclude with `Nat.mul_div_le _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_UT (r : ℕ) : 2 * Fintype.card (UT r) ≤ r * (r - 1) := by
   have h : Fintype.card (UT r) = r.choose 2 := by
@@ -71,7 +71,7 @@ theorem card_UT (r : ℕ) : 2 * Fintype.card (UT r) ≤ r * (r - 1) := by
   exact Nat.mul_div_le _ _
 
 /- English proof (translation)
-Rewrite using `[Measure.volume_eq_prod, Measure.prod_prod, Measure.volume_eq_prod, Measure.prod_prod, Measure.volume_eq_prod, Measure.prod_prod]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vol_box {k r j : ℕ} (β : Fin r → ℕ) (A : Set ({a : Fin r // a.val < j} → Fin (k + 1) → ℂ))
     (B : Set ({p : UT r // p.1.1.val < j} → ℂ)) (C : Set ({a : Fin r // a.val < j} → ℝ)) (D : Set (UToff β → ℂ)) :
@@ -81,15 +81,15 @@ theorem vol_box {k r j : ℕ} (β : Fin r → ℕ) (A : Set ({a : Fin r // a.val
     Measure.volume_eq_prod, Measure.prod_prod]
 
 /- English proof (translation)
-The claim follows from `isClosedSub_Nset.2.2.2.1 _ ((((Rad.radical k r).1 _ _).2.2.2 (Rad.skewM_skew _ _)).1) _ (UEmb.upper_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem sEl_mem {k r j : ℕ} (β : Fin r → ℕ) (q : PSec k r j × (UToff β → ℂ)) : sEl k r j β q ∈ Nset k r :=
   isClosedSub_Nset.2.2.2.1 _ ((((Rad.radical k r).1 _ _).2.2.2 (Rad.skewM_skew _ _)).1) _ (UEmb.upper_mem _)
 
 /- English proof (translation)
-Unfold `lebR0`. Establish `hS' : IsClosed {x : Mt k r | Matrix.of x ∈ S}` using `hS`. Distinguish the cases in `hm : AEMeasurable (fun q => (Matrix.of.symm (rEl k r j β q) : Mt k r)) (volume : Measure ((UTin β → ℂ) × PTop k r j))`. Rewrite using `[ae_map_iff hm hS'.measurableSet]`. Conclude with `Filter.Eventually.of_forall fun q => h ⟨q, rfl⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_of_not_aemeasurable hm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ae_mem_range {k r j : ℕ} (β : Fin r → ℕ) {S : Set (Mat k r)} (hS : IsClosed S)
     (h : Set.range (rEl k r j β) ⊆ S) : ∀ᵐ ρ ∂(lebR0 k r j β), Matrix.of ρ ∈ S := by
@@ -102,13 +102,13 @@ theorem ae_mem_range {k r j : ℕ} (β : Fin r → ℕ) {S : Set (Mat k r)} (hS 
   · rw [Measure.map_of_not_aemeasurable hm]; simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, (isClosedSub_UWset z).2.2.1, n, hn, (Matrix.one_mul n).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem N_sub_S {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) {n : Mat k r} (hn : n ∈ Nset k r) : n ∈ Sset k r z :=
   ⟨1, (isClosedSub_UWset z).2.2.1, n, hn, (Matrix.one_mul n).symm⟩
 
 /- English proof (translation)
-Use `(TwoSided.Sg2_invariant_continuousOn_one_le_bounds k r z hz hT).2.1 x hx n (N_sub_S z hn) 1 ⟨isClosedSub_GG.2.2.1, (Matrix.unitaryGroup _ ℂ).one_mem⟩` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Sg2_N {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) {n x : Mat k r}
     (hn : n ∈ Nset k r) (hx : x ∈ GG k r) : Sg2 k r z (n * x) = Sg2 k r z x := by
@@ -117,35 +117,33 @@ theorem Sg2_N {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (h
   rwa [Matrix.mul_one] at this
 
 /- English proof (translation)
-Introduce `k r j hj z z' g₀ β c hz hz' hT hN h1j hjk De hDe m hm a ha`. Establish `hT' : 0 < Tz k r z'` using `by rw [(GlobalTheory.Amp.NfMid.normal0_middle k r j hj z z' g₀ β c hz hz' hT hN).1]; exact hT`. Take `⟨hR, hRc⟩` from `GlobalTheory.T.commonStabilizerSet_eq_range_normalForm k r j hj z z' g₀ β c hz hz' hT hN`. Take `⟨P₀, hP₀, hY⟩` from `GlobalTheory.T.flagGram_eq_gramDetProjection_normalForm k r j hj z z' g₀ β c hz hz' hT hN m hm`. Take `⟨hnull, hvol⟩` from `GlobalTheory.Amp.GramVol.vol_gram k j h1j hjk m hm P₀ hP₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hYm, hEm⟩` from `GlobalTheory.T.measurable_flagGramNumberNormalized_indicator k r j hj z z' g₀ hz hz' hT hT' hN.1`. Establish `hsplit` using `GlobalTheory.T.lintegral_flagUnipotent_eq_stabilizer_times_section k r j β hN.2.2.2.1 hN.2.2.2.2.1`. Establish `hB` using `fun R₀ hR₀ q => GlobalTheory.T.siegel_height_bound_section k r j hj z z' g₀ β c hz hz' hT hN De R₀ hDe hR₀ m hm q a ha`. Establish `hY'` using `fun q => hY q a ha`. Establish `hmul` using `(isClosedSub_GG (k := k) (r := r)).2.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m ∈ GG k r`. Use `hmul _ (UEmb.uEmb_mem _ ?_) _ (Rad.mEmb_mem m hm)` and prove the remaining obligations. Rewrite using `[Matrix.det_diagonal, isUnit_iff_ne_zero, Finset.prod_ne_zero_iff]`. Conclude with `fun b _ => Complex.ofReal_ne_zero.2 (ha b).ne'`. Generalize the expression as in `uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m = t at *`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Replace the chosen expression with an arbitrary variable.
 
-Establish `hae : ∀ᵐ ρ ∂(lebR0 k r j β), Matrix.of ρ ∈ Rset k r g₀` using `ae_mem_range β hRc.2.1 hR.ge`. Establish `hst : ∀ q : PSec k r j × (UToff β → ℂ), sEl k r j β q * t ∈ GG k r` using `fun q => hmul _ (sEl_mem β q).1 _ ht`. Establish `hassoc : ∀ (q : PSec k r j × (UToff β → ℂ)) (ρ : Mt k r), (Matrix.of (rmulM t (rmulM (sEl k r j β q) ρ)) : Mat k r) = Matrix.of ρ * (sEl k r j β q * t)` using `fun q ρ => by rw [of_rmulM, of_rmulM, Matrix.mul_assoc]`. Establish `hYρ : ∀ (q : PSec k r j × (UToff β → ℂ)) (ρ : Mt k r), Matrix.of ρ ∈ Rset k r g₀ → Yj k r hj z z' g₀ (Matrix.of ρ * (sEl k r j β q * t)) = gramProj P₀ fun b : Fin j => m⁻¹ *ᵥ q.1.1 ⟨Fin.castLE hj b, b.2⟩` using `fun q ρ hρ => by`. Rewrite using `[(GlobalTheory.Amp.YjInv.yj_invariant k r j hj z z' g₀ hz hz' hN.1 _ (hst q)).2.2 _ hρ, hY' q]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htm : Measurable (rmulM t : Mt k r → Mt k r)` using `(continuous_rmulM t).measurable`. Prove the components needed by the constructor for the conclusion. Use `set S : Set (Mt k r) := {n | Set.indicator {x : Mt k r | Matrix.of x ∈ GG k r} (fun x => Yj k r hj z z' g₀ (Matrix.of x)) (rmulM t n) = 0} with hS`. Establish `hSm : MeasurableSet S` using `(hYm.comp htm) (measurableSet_singleton 0)`. Use `measure_mono_null (t := S) (fun n hn => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.indicator_apply_eq_zero.2 fun _ => hn`. Rewrite using `[← lintegral_indicator_one hSm, hsplit _ (measurable_one.indicator hSm)]`. Use `lintegral_eq_zero_of_ae_eq_zero ?_` and prove the remaining obligations. Establish `h0 : (volume : Measure (PSec k r j × (UToff β → ℂ))) (({B | (fun b : Fin j => B ⟨Fin.castLE hj b, b.2⟩) ∈ {B : Fin j → Fin (k + 1) → ℂ | gramProj P₀ (fun b => m⁻¹ *ᵥ B b) = 0}} ×ˢ Set.univ ×ˢ Set.univ) ×ˢ Set.univ) = 0`. Rewrite using `[vol_box, vol_reindex hj, hnull, zero_mul, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 h0] with q hq`. Use `lintegral_eq_zero_of_ae_eq_zero ?_` and prove the remaining obligations. Use `filter_upwards [hae] with ρ hρ`. Use `Set.indicator_of_notMem (fun hmem => hq ⟨⟨?_, trivial, trivial⟩, trivial⟩) _` and prove the remaining obligations. Establish `hG : rmulM t (rmulM (sEl k r j β q) ρ) ∈ {x : Mt k r | Matrix.of x ∈ GG k r}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.mem_setOf_eq, hassoc]`. Conclude with `hmul _ hρ.1.1 _ (hst q)`. Establish `h2 : Set.indicator {x : Mt k r | Matrix.of x ∈ GG k r} (fun x => Yj k r hj z z' g₀ (Matrix.of x)) (rmulM t (rmulM (sEl k r j β q) ρ)) = 0` using `hmem`. Rewrite `h2` using `[Set.indicator_of_mem hG, hassoc, hYρ q ρ hρ]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Introduce `φ hφ R₀ y hR₀ hy`. Establish `hM : 1 ≤ R₀ ^ (2 * r) * De` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ hR₀) hDe.1`. Establish `hB'` using `hB R₀ hR₀`. Unfold `fibVol0`. Generalize the expression as in `R₀ ^ (2 * r) * De = M at *`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM0 : 0 ≤ M` using `zero_le_one.trans hM`. Rewrite using `[hsplit (fun n => φ n * (Eset0 k r hj z z' g₀ R₀ y).indicator 1 (rmulM t n)) (hφ.1.mul ((measurable_one.indicator (hEm R₀ y)).comp htm))]`. Use `set Box : Set (PSec k r j × (UToff β → ℂ)) := ({B | (fun b : Fin j => B ⟨Fin.castLE hj b, b.2⟩) ∈ {B : Fin j → Fin (k + 1) → ℂ | (∀ b, eucl (m⁻¹ *ᵥ B b) ≤ M) ∧ gramProj P₀ (fun b => m⁻¹ *ᵥ B b) ≤ 2 * y}} ×ˢ {x | ∀ p, ‖x p‖ ≤ 2 * r * M ^ 2} ×ˢ {x | ∀ p, |x p| ≤ 2 * r * M ^ 2}) ×ˢ …`. Use `(lintegral_mono (g := Box.indicator 1) fun q => ?_).trans ((lintegral_indicator_one_le Box).trans ?_)` and prove the remaining obligations. Distinguish the cases in `hq : q ∈ Box`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hq]`. Use `le_trans (lintegral_mono fun ρ => ?_) (hφ.2 (Matrix.of.symm (sEl k r j β q)) (sEl_mem β q))` and prove the remaining obligations. Conclude with `mul_le_of_le_one_right' (Set.indicator_le_self' (fun _ _ => zero_le_one) _)`. Rewrite using `[Set.indicator_of_notMem hq]`. Use `(lintegral_eq_zero_of_ae_eq_zero ?_).le` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `filter_upwards [hae] with ρ hρ`. Use `mul_eq_zero_of_right _ (Set.indicator_of_notMem (fun hmem => hq ?_) _)` and prove the remaining obligations. Take `⟨-, h1, h2, -, h3⟩` from `hmem`. Rewrite `h1`, `h2`, `h3` using `[hassoc]`. Rewrite `h3` using `[hYρ q ρ hρ]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[Sg2_N hz' hT' hρ.1 (hst q)]`. Establish `he : g₀ * (Matrix.of ρ * (sEl k r j β q * t)) = (g₀ * Matrix.of ρ * g₀⁻¹) * (g₀ * (sEl k r j β q * t))`. Rewrite using `[Matrix.mul_assoc (g₀ * Matrix.of ρ), Matrix.nonsing_inv_mul_cancel_left _ _ (isUnit_det_of_mem_GG hN.1), Matrix.mul_assoc]`. Rewrite `h2` using `[he, Sg2_N hz hT hρ.2 (hmul _ hN.1 _ (hst q))]`. Take `⟨b1, b2, b3, b4⟩` from `hB' q h1 (((TwoSided.Sg2_invariant_continuousOn_one_le_bounds k r z hz hT).2.2.2 _).2.1.trans h2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Conclude with `⟨⟨⟨fun b => b2 _, h3⟩, b3, b4⟩, b1⟩`. Establish `hr : (0 : ℝ) ≤ 2 * r * M ^ 2` using `by positivity`. Rewrite using `[hBox, vol_box, vol_reindex hj, vol_discs _ hr, vol_ints _ hr, vol_discs _ hM0]`. Use `(mul_le_mul_left (mul_le_mul_left (hvol M y hM hy) _) _).trans ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`.
-
-Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `har` using `box_volume_arith r j (Fintype.card (UToff β)) (Fintype.card {p : UT r // p.1.1.val < j}) (Fintype.card {a : Fin r // a.val < j}) M h1j hj ((Nat.mul_le_mul_left 2 (Fintype.card_subtype_le _)).trans (card_UT r)) ((Nat.mul_le_mul_left 2 (Fintype.card_subtype_le _)).trans (card_UT r) …`. Establish `hK : (0 : ℝ) ≤ (Real.pi * Real.exp 1 / ((k - 1 - j : ℕ) : ℝ)) ^ (j * (k - 1 - j)) * (2 * y) ^ (2 * (k - 1 - j))`. Check the signs of the components of the expression. Apply the tactic sequence `refine le_trans (le_of_eq ?_) ((mul_le_mul_of_nonneg_right har hK).trans (le_of_eq ?_)) <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem fibre_volume : ∀ (k r j : ℕ) (hj : j ≤ r) (z z' : (Fin (2 * r + k + 1) → ℂ)), ∀ (g₀ : Mat k r) (β : Fin r → ℕ) (c : ℂ), inWb k r z → inWb k r z' → 0 < Tz k r z → IsNormal0 k r hj β c z z' g₀ → 1 ≤ j → j + 2 ≤ k → ∀ De : ℝ, DeOK k r z z' g₀ De → ∀ m ∈ UH (Hb k), ∀ a : Fin r → ℝ, (∀ b, 0 < a b) → lebN k r {n | Yj k r hj z z' g₀ (Matrix.of n * (uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m)) = 0} = 0 ∧ ∀ φ, SubCut (Nset k r) (lebR0 k r j β) φ → ∀ R₀ y : ℝ, 1 ≤ R₀ → 0 < y → ∫⁻ n, φ n * (Eset0 k r hj z z' g₀ R₀ y).indicator 1 (rmulM (uEmb k r (Matrix.diagonal fun b => (a b : ℂ)) * mEmb k r m) n) ∂(lebN k r) ≤ ENNReal.ofReal (fibVol0 k r j R₀ De y) := by
   intro k r j hj z z' g₀ β c hz hz' hT hN h1j hjk De hDe m hm a ha

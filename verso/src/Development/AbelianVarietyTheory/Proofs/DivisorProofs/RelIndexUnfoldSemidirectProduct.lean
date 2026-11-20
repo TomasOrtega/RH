@@ -7,7 +7,7 @@ open Subgroup
 namespace UnfoldSemidirect
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_map_equiv]`. Simplify using `[MulAut.conj_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_map_conj_iff {G : Type} [Group G] (K : Subgroup G) (g p : G) :
     p ∈ K.map (MulAut.conj g).toMonoidHom ↔ g⁻¹ * p * g ∈ K := by
@@ -19,25 +19,23 @@ end UnfoldSemidirect
 open UnfoldSemidirect in
 
 /- English proof (translation)
-Introduce `P M N _ _ _ s π u hsec hu hker KP KM L hsK hπK huK TM CM TP CP hCT hTP hCP hcond q X`. Establish `hπu : ∀ Y, π (u Y) = 1` using `fun Y => (hker _).2 ⟨Y, rfl⟩`. Establish `hsinj : Function.Injective s` using `fun a b h => by`. Use `congrArg π h` as an intermediate fact. Rewrite `this` using `[hsec, hsec]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `key : ∀ r : M, (s q * u X)⁻¹ * s (q * r * q⁻¹) * (s q * u X) = (u X)⁻¹ * s r * u X`. Introduce `r`. Simplify using `only [map_mul, map_inv]`. Use `group`. Establish `hπc : ∀ r : M, π ((u X)⁻¹ * s r * u X) = r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Simplify using `[map_mul, map_inv, hπu, hsec]`. Establish `hCP' : CP = CM.map s`. Use extensionality with `p`. Rewrite using `[hCP p, Subgroup.mem_map]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hH : TP ⊓ KP.map (MulAut.conj (s q * u X)).toMonoidHom = ((TM.map (MulAut.conj q⁻¹).toMonoidHom ⊓ KM ⊓ KP.comap ((MulAut.conj (u X)⁻¹).toMonoidHom.comp s)).map (MulAut.conj q).toMonoidHom).map s`. Use extensionality with `p`. Rewrite using `[Subgroup.mem_inf, mem_map_conj_iff, hTP p, Subgroup.mem_map]`. Simplify using `only [mem_map_conj_iff, Subgroup.mem_inf, Subgroup.mem_comap, MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨t, ht, rfl⟩, hk⟩`. Establish `hk' : (u X)⁻¹ * s (q⁻¹ * t * q) * u X ∈ KP`. Rewrite using `[← key]`. Simplify `hk` using `[mul_assoc]`. Use `⟨t, ⟨⟨?_, ?_⟩, ?_⟩, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `ht` using `[mul_assoc]`. Establish `h1` using `hπK _ hk'`. Rewrite `h1` using `[hπc]`. Then use the resulting hypothesis. Simplify using `using hk'`. Introduce and unpack `⟨t, ⟨⟨hr1, hr2⟩, hr3⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨t, by simpa [mul_assoc] using hr1, rfl⟩, ?_⟩` and prove the remaining obligations. Use `key (q⁻¹ * t * q)` as an intermediate fact. Establish `e : q * (q⁻¹ * t * q) * q⁻¹ = t` using `by group`. Rewrite `this` using `[e]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hr3`. Establish `hSq : TM ⊓ KM.map (MulAut.conj q).toMonoidHom = (TM.map (MulAut.conj q⁻¹).toMonoidHom ⊓ KM).map (MulAut.conj q).toMonoidHom`. Use extensionality with `p`. Simplify using `only [Subgroup.mem_inf, mem_map_conj_iff, inv_inv]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩; exact ⟨by simpa [mul_assoc] using h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩; exact ⟨by simpa [mul_assoc] using h1, h2⟩`. Establish `hle1 : (TM.map (MulAut.conj q⁻¹).toMonoidHom ⊓ KM ⊓ KP.comap ((MulAut.conj (u X)⁻¹).toMonoidHom.comp s)).map (MulAut.conj q).toMonoidHom ≤ (TM.map (MulAut.conj q⁻¹).toMonoidHom ⊓ KM).map (MulAut.conj q).toMonoidHom` using `Subgroup.map_mono inf_le_left`. Establish `hle2 : (TM.map (MulAut.conj q⁻¹).toMonoidHom ⊓ KM).map (MulAut.conj q).toMonoidHom ≤ CM`. Rewrite using `[← hSq]`.
-
-Conclude with `hcond q`. Rewrite using `[hH, hCP', Subgroup.relIndex_map_map_of_injective _ _ hsinj, ← Subgroup.relIndex_mul_relIndex _ _ _ hle1 hle2, Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj q).injective, ← hSq, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_unfold_semidirect : ∀ (P M N : Type) [Group P] [Group M] [Group N] (s : M →* P) (π : P →* M) (u : N →* P), (∀ m, π (s m) = m) → Function.Injective u → (∀ p, π p = 1 ↔ ∃ X, u X = p) → ∀ (KP : Subgroup P) (KM : Subgroup M) (L : Subgroup N), (∀ k ∈ KM, s k ∈ KP) → (∀ k ∈ KP, π k ∈ KM) → (∀ X, u X ∈ KP ↔ X ∈ L) → ∀ (TM CM : Subgroup M) (TP CP : Subgroup P), CM ≤ TM → (∀ p, p ∈ TP ↔ ∃ t ∈ TM, s t = p) → (∀ p, p ∈ CP ↔ ∃ t ∈ CM, s t = p) → (∀ q : M, TM ⊓ KM.map (MulAut.conj q).toMonoidHom ≤ CM) → ∀ (q : M) (X : N), (TP ⊓ KP.map (MulAut.conj (s q * u X)).toMonoidHom).relIndex CP = (TM ⊓ KM.map (MulAut.conj q).toMonoidHom).relIndex CM * (TM.map (MulAut.conj q⁻¹).toMonoidHom ⊓ KM ⊓ KP.comap ((MulAut.conj (u X)⁻¹).toMonoidHom.comp s)).relIndex (TM.map (MulAut.conj q⁻¹).toMonoidHom ⊓ KM) := by
   intro P M N _ _ _ s π u hsec hu hker KP KM L hsK hπK huK TM CM TP CP hCT hTP hCP hcond q X

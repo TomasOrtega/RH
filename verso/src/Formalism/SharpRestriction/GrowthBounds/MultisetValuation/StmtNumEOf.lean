@@ -62,57 +62,45 @@ def nc_Need (C₀ : ℝ) : Prop :=
 
 open Classical in
 /- English proof (translation)
-Establish `two_le : ∀ (p : ℕ) (x : ℝ), 1 ≤ Real.logb (p : ℝ) x → 2 ≤ p`. Introduce `p x hx`. Assume the negation of the conclusion as `hc`. Establish `hp2 : p < 2` using `by omega`. Apply the tactic sequence `interval_cases p <;> simp [Real.logb] at hx <;> linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `geom : ∀ p : ℕ, 2 ≤ p → HasSum (fun e : ℕ => 1 / (p : ℝ) ^ (2 * e + 1)) (Formalism.MainNotions.FormalGroupSystem.gam p)`. Introduce `p hp`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (show 1 < p by omega)`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hr0 : 0 ≤ (1 / (p : ℝ)) ^ 2` using `by positivity`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : (1 / (p : ℝ)) ^ 2 < 1`. Rewrite using `[div_pow, one_pow, div_lt_one (pow_pos hp0 2)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hh` using `(hasSum_geometric_of_lt_one hr0 hr1).mul_left (1 / (p : ℝ))`. Establish `hf : (fun e : ℕ => 1 / (p : ℝ) ^ (2 * e + 1)) = fun i : ℕ => 1 / (p : ℝ) * ((1 / (p : ℝ)) ^ 2) ^ i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `e`. Rewrite using `[← pow_mul, ← pow_succ', one_div_pow]`. Establish `hv : Formalism.MainNotions.FormalGroupSystem.gam p = 1 / (p : ℝ) * (1 - (1 / (p : ℝ)) ^ 2)⁻¹`. Rewrite using `[show (1 : ℝ) - (1 / (p : ℝ)) ^ 2 = ((p : ℝ) ^ 2 - 1) / (p : ℝ) ^ 2 by`. Rewrite using `[div_pow, one_pow, sub_div, div_self (pow_ne_zero 2 hp0.ne')], inv_div]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.MainNotions.FormalGroupSystem.gam`. Rewrite using `[← mul_div_assoc, pow_two, ← mul_assoc, one_div_mul_cancel hp0.ne', one_mul]`. Rewrite using `[hf, hv]`. Conclude with `hh`. Establish `minsum : ∀ (p : ℕ), 2 ≤ p → ∀ (a b : ℝ) (C Z : ℕ → ℝ), b ≤ a → 0 ≤ a → (∀ e, 0 ≤ C e) → (∀ e, C e ≤ Z e) → ∑' e : ℕ, min (a / (p : ℝ) ^ (2 * e + 1)) (C e) - ∑' e : ℕ, min (b / (p : ℝ) ^ (2 * e + 1)) (Z e) ≤ Formalism.MainNotions.FormalGroupSystem.gam p * (a - b)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp a b C Z hba ha hC0 hCZ`. Establish `hg` using `geom p hp`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast (show 0 < p by omega)`. Establish `hq : ∀ e : ℕ, (0 : ℝ) < (p : ℝ) ^ (2 * e + 1)` using `fun e => pow_pos hp0 _`. Establish `hsa : Summable (fun e : ℕ => a / (p : ℝ) ^ (2 * e + 1))` using `(hg.summable.mul_left a).congr (fun e => mul_one_div a _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsb : Summable (fun e : ℕ => b / (p : ℝ) ^ (2 * e + 1))` using `(hg.summable.mul_left b).congr (fun e => mul_one_div b _)`. Establish `hf1 : Summable (fun e : ℕ => min (a / (p : ℝ) ^ (2 * e + 1)) (C e))` using `Summable.of_nonneg_of_le (fun e => le_min (div_nonneg ha (hq e).le) (hC0 e)) (fun e => min_le_left _ _) hsa`. Establish `hf2 : Summable (fun e : ℕ => min (b / (p : ℝ) ^ (2 * e + 1)) (Z e))`. Break down `le_or_gt 0 b with hb | hb` into its components or cases. Conclude with `Summable.of_nonneg_of_le (fun e => le_min (div_nonneg hb (hq e).le) ((hC0 e).trans (hCZ e))) (fun e => min_le_left _ _) hsb`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hsb.congr (fun e => ?_)` and prove the remaining obligations. Establish `hneg : b / (p : ℝ) ^ (2 * e + 1) < 0` using `div_neg_of_neg_of_pos hb (hq e)`. Conclude with `(min_eq_left (by linarith [hC0 e, hCZ e])).symm`. Establish `hm` using `hg.mul_left (a - b)`. Rewrite using `[mul_comm (Formalism.MainNotions.FormalGroupSystem.gam p)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `hasSum_le (fun e => ?_) (hf1.hasSum.sub hf2.hasSum) hm` and prove the remaining obligations. Use `show min (a / (p : ℝ) ^ (2 * e + 1)) (C e) - min (b / (p : ℝ) ^ (2 * e + 1)) (Z e) ≤ (a - b) * (1 / (p : ℝ) ^ (2 * e + 1))`. Apply the tactic sequence `have hbq : b / (p : ℝ) ^ (2 * e + 1) ≤ a / (p : ℝ) ^ (2 * e + 1) := by gcongr <;> exact hba`. Establish `h1 : min (b / (p : ℝ) ^ (2 * e + 1)) (C e) ≤ min (b / (p : ℝ) ^ (2 * e + 1)) (Z e)` using `min_le_min_left _ (hCZ e)`. Establish `h2 : min (a / (p : ℝ) ^ (2 * e + 1)) (C e) - min (b / (p : ℝ) ^ (2 * e + 1)) (C e) ≤ a / (p : ℝ) ^ (2 * e + 1) - b / (p : ℝ) ^ (2 * e + 1)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Break down `le_total (b / (p : ℝ) ^ (2 * e + 1)) (C e) with hh | hh` into its components or cases. Rewrite using `[min_eq_left hh]`. Combine the linear relations using `[min_le_left (a / (p : ℝ) ^ (2 * e + 1)) (C e)]`. Rewrite using `[min_eq_right hh, min_eq_right (hh.trans hbq)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : a / (p : ℝ) ^ (2 * e + 1) - b / (p : ℝ) ^ (2 * e + 1) = (a - b) * (1 / (p : ℝ) ^ (2 * e + 1))` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `gBcmp : ∀ {n : ℕ} (p : ℕ), 2 ≤ p → ∀ (TT S1 S2 : Finset (Fin n)), S1 ⊆ TT → S2 = S1 → ∀ (A B : Fin n → ℝ) (C Z : Fin n → ℕ → ℝ) (dl de : ℝ), (∀ s ∈ TT, B s ≤ A s) → (∀ s, 0 ≤ A s) → (∀ s e, 0 ≤ C s e) → (∀ s e, C s e ≤ Z s e) → de ≤ dl → Formalism.MainNotions.FormalGroupSystem.ga …`. Introduce `n p hp TT S1 S2 hS hS21 A B C Z dl de hBA hA0 hC0 hCZ hde`. Rewrite using `[hS21]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hg0 : 0 ≤ Formalism.MainNotions.FormalGroupSystem.gam p` using `hasSum_le (fun e => div_nonneg zero_le_one (pow_nonneg (Nat.cast_nonneg p) _)) hasSum_zero (geom p hp)`. Establish `key : ∑ s ∈ S1, (∑' e : ℕ, min (A s / (p : ℝ) ^ (2 * e + 1)) (C s e) - ∑' e : ℕ, min (B s / (p : ℝ) ^ (2 * e + 1)) (Z s e)) ≤ ∑ s ∈ TT, Formalism.MainNotions.FormalGroupSystem.gam p * (A s - B s)` using `(Finset.sum_le_sum (fun s hs => minsum p hp (A s) (B s) (C s) (Z s) (hBA s (hS hs)) (hA0 s) (hC0 s) (hCZ s))).trans (Finset.sum_le_sum_of_subset_of_nonneg hS (fun s hs _ => mul_nonneg hg0 (sub_nonneg.2 (hBA s hs))))`. Rewrite `key` using `[Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_sub_distrib, mul_sub]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `gAcmp : ∀ {n : ℕ} (p : ℕ), 2 ≤ p → ∀ (TT : Finset (Fin n)) (A B : Fin n → ℝ) (C Z : Fin n → ℕ → ℝ) (E F : Fin n → ℕ → Prop) (iE : ∀ s e, Decidable (E s e)) (iF : ∀ s e, Decidable (F s e)) (dl de : ℝ), (∀ s ∈ TT, B s ≤ A s) → (∀ s, 0 ≤ A s) → (∀ s e, 0 ≤ C s e) → (∀ s e, C s e ≤ Z …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n p hp TT A B C Z E F iE iF dl de hBA hA0 hC0 hCZ hFE hde`. Establish `hg` using `geom p hp`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast (show 0 < p by omega)`. Establish `hq : ∀ e : ℕ, (0 : ℝ) < (p : ℝ) ^ (2 * e + 1)` using `fun e => pow_pos hp0 _`. Establish `hsum : ∑ s ∈ TT, ∑' e : ℕ, @ite ℝ (E s e) (iE s e) 0 (max 0 (B s / (p : ℝ) ^ (2 * e + 1) - Z s e)) ≤ ∑ s ∈ TT, ∑' e : ℕ, @ite ℝ (F s e) (iF s e) 0 (max (A s / (p : ℝ) ^ (2 * e + 1) - C s e) 0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Finset.sum_le_sum (fun s hs => ?_)` and prove the remaining obligations. Establish `hle : ∀ e : ℕ, @ite ℝ (E s e) (iE s e) 0 (max 0 (B s / (p : ℝ) ^ (2 * e + 1) - Z s e)) ≤ @ite ℝ (F s e) (iF s e) 0 (max (A s / (p : ℝ) ^ (2 * e + 1) - C s e) 0)`. Introduce `e`. Apply the tactic sequence `have hbq : B s / (p : ℝ) ^ (2 * e + 1) ≤ A s / (p : ℝ) ^ (2 * e + 1) := by gcongr <;> exact hBA s hs`. Distinguish the cases in `hF : F s e`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [if_pos (hFE s hs e hF), if_pos hF, le_refl]`. Rewrite using `[if_neg hF] split_ifs`. Conclude with `le_max_right _ _`. Conclude with `max_le (le_max_right _ _) (le_trans (by linarith [hCZ s e]) (le_max_left _ _))`. Establish `h0 : ∀ e : ℕ, 0 ≤ @ite ℝ (E s e) (iE s e) 0 (max 0 (B s / (p : ℝ) ^ (2 * e + 1) - Z s e))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Use `split_ifs`. Conclude with `le_refl 0`. Conclude with `le_max_left _ _`. Establish `hR : Summable (fun e : ℕ => @ite ℝ (F s e) (iF s e) 0 (max (A s / (p : ℝ) ^ (2 * e + 1) - C s e) 0))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Summable.of_nonneg_of_le (fun e => ?_) (fun e => ?_) ((hg.summable.mul_left (A s)).congr (fun e => mul_one_div (A s) _))` and prove the remaining obligations. Use `split_ifs`. Conclude with `le_refl 0`. Conclude with `le_max_right _ _`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `div_nonneg (hA0 s) (hq e).le`. Conclude with `max_le (by linarith [hC0 s e]) (div_nonneg (hA0 s) (hq e).le)`. Conclude with `hasSum_le hle (Summable.of_nonneg_of_le h0 hle hR).hasSum hR.hasSum`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨C₀, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `D L X Y K h1 h2 h3 hr hx hS hT hTied u w hg hlog t0 ht0 j hj`. Take `⟨hLoc, hDe, hPr⟩` from `h D L X Y K h1 h2 h3 ⟨hr, hx⟩ hS hT hTied u w hg hlog t0 ht0 j hj`. Establish `hp` using `two_le _ _ hlog`. Simplify using `only [nc_Loc] at hLoc`. Take `⟨hgU, hg0, hya, hal0, hcap, hcap0, hEx⟩` from `hLoc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_, hPr⟩` and prove the remaining obligations. Rewrite using `[hgU]`. Unfold `Formalism.MainNotions.FormalGroupSystem.gB`. Use `gBcmp _ hp _ _ _ ?_ ?_ _ _ _ _ _ _ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`.
-
-Simplify using `only [Finset.mem_filter] at hx`. Conclude with `hx.1`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter]`. Introduce `s hs`.
-
-Conclude with `hya s hs`. Introduce `s`. Conclude with `hal0 s` after adjusting the coercions. Introduce `s e`. Conclude with `hcap0 _` after adjusting the coercions.
-
-Introduce `s e`. Conclude with `hcap _`. Conclude with `hDe`. Rewrite using `[hg0]`. Unfold `Formalism.MainNotions.FormalGroupSystem.gA`.
-
-Use `gAcmp _ hp _ _ _ _ _ _ _ _ _ _ _ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `s hs`. Conclude with `hya s hs`. Introduce `s`. Conclude with `hal0 s` after adjusting the coercions.
-
-Introduce `s e`. Conclude with `hcap0 _` after adjusting the coercions. Introduce `s e`. Conclude with `hcap _`. Introduce `s hs e he`.
-
-Conclude with `hEx s hs e he`. Conclude with `hDe`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stmtNumE_of (C₀ : ℝ) (h : nc_Need C₀) : Formalism.MainNotions.FormalGroupSystem.NumericalComparisonUniform := by
   have two_le : ∀ (p : ℕ) (x : ℝ), 1 ≤ Real.logb (p : ℝ) x → 2 ≤ p := by
@@ -290,7 +278,7 @@ theorem stmtNumE_of (C₀ : ℝ) (h : nc_Need C₀) : Formalism.MainNotions.Form
     · exact hDe
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `stmtNumE_of C₀ h`. Conclude with `⟨C, hC D L X Y⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stmtNum_of (C₀ : ℝ) (h : nc_Need C₀) (D : Formalism.BasicNotions.D7) (L : SizeData₂ D) (X : Formalism.MainNotions.G.Inst D L)
     (Y : Formalism.MainNotions.G.LatInst D) : Formalism.MainNotions.FormalGroupSystem.NumericalComparison D L X Y := by

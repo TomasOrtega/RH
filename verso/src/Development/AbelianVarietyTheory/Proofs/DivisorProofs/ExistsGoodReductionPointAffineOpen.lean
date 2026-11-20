@@ -14,21 +14,21 @@ namespace GlobalTheory.ArLieBase.CentrePt
 open GlobalTheory.TrueGeo.HorizPt in
 
 /- English proof (translation)
-Introduce `F _ _ X W q s jB d hq pb U hU z hzU`. Use `hq.isIntegral` as an intermediate fact. Use `hq.flat` as an intermediate fact. Establish `: IsProper q`. Take `⟨n, c, hc, h⟩` from `hq.isProjOver`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `isProper_str (𝓞 F) n` as an intermediate fact. Rewrite using `[← h]`. Use `infer_instance`. Establish `: Nonempty U` using `⟨⟨z, hzU⟩⟩`. Establish `: CharZero Γ(X, U)` using `charZero (q ≫ spMap (Int.castRingHom (𝓞 F))) hU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `_ : Algebra (𝓞 F) Γ(X, U)` to `(GlobalTheory.TrueGeo.HorizPt.strHom q U).hom.toAlgebra`. Establish `: Algebra.FiniteType (𝓞 F) Γ(X, U)` using `RingHom.FiniteType.comp (q.finiteType_appLE (isAffineOpen_top _) hU le_top) (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (𝓞 F))).inv).2)`. Take `⟨𝔪, h𝔪, hle'⟩` from `Ideal.exists_le_maximal _ (hU.primeIdealOf ⟨z, hzU⟩).isPrime.ne_top`. Take `⟨v, e, φ, h₁, h₂, -⟩` from `GlobalTheory.T.exists_ext_place_of_ne_zero_maximal F Γ(X, U) 𝔪 h𝔪 1 one_ne_zero`. Set `yt : Sp e.O ⟶ X` to `Spec.map (CommRingCat.ofHom φ) ≫ hU.fromSpec`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hw : (spMap e.O.subtype ≫ yt) ≫ q = spMap (algebraMap F (AlgebraicClosure F)) ≫ spMap (algebraMap (𝓞 F) F)`. Simplify using `only [yt, Category.assoc]`. Rewrite using `[fromSpec_str, ← Spec.map_comp, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `h₁ a`. Establish `hy` using `pb.lift_fst _ _ hw`. Establish `ht : ⊤ ≤ yt ⁻¹ᵁ U` using `fun x _ => (Set.ext_iff.1 hU.range_fromSpec _).1 ⟨_, rfl⟩`. Establish `hev : TangentOrigin.evalPt yt U ht = φ`. Use `TangentOrigin.eq_spec_fromSpec hU yt ht` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [yt] at this`. Rewrite `this` using `[cancel_mono]`. Use `Spec.map_injective this` as an intermediate fact. Conclude with `(congrArg CommRingCat.Hom.hom this).symm`. Use `⟨v, e, pb.lift _ _ hw, yt, ht, pb.lift_snd _ _ hw, hy.symm, fun f hf => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hf` using `[hev]`. Establish `hn : f ∉ (hU.primeIdealOf ⟨z, hzU⟩).asIdeal` using `fun h => by`. Use `hle' h` as an intermediate fact. Rewrite `this` using `[← h₂]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 this hf`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h₃ : hU.fromSpec (hU.primeIdealOf ⟨z, hzU⟩) ∈ X.basicOpen f`. Express the relevant statement in the definitionally equal form `_ ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen f`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Conclude with `hn`. Rewrite `h₃` using `[hU.fromSpec_primeIdealOf]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_centre_pt : ∀ {F : Type} [Field F] [NumberField F] {X W : Scheme.{0}} {q : X ⟶ Sp (𝓞 F)} {s : W ⟶ Sp F} {jB : W ⟶ X} {d : ℕ},
     IsArithVar q d → IsPullback jB s q (spMap (algebraMap (𝓞 F) F)) → ∀ (V : X.Opens), IsAffineOpen V → ∀ x₀ ∈ V,

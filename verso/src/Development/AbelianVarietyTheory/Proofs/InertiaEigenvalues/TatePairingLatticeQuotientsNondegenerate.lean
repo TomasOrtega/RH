@@ -20,9 +20,9 @@ open GlobalTheory.TateTop GlobalTheory.Cyc GlobalTheory.Cyc.TwistLift Reciprocit
 variable {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G]
 
 /- English proof (translation)
-Take `⟨x, b', hb', hx⟩` from `(h n W hW).2.1 z hz`. Establish `hb2 : IsLocallyConstant fun g => b g - (b' g : D)` using `hb.sub (hb'.comp _)`. Take `⟨r, hf, hM⟩` from `finite_span htor (hb2.range_finite.insert (x : D))`. Establish `h3` using `(h r _ hM).2.2 ⟨x, Submodule.subset_span (Set.mem_insert _ _)⟩ (fun g => ⟨b g - (b' g : D), Submodule.subset_span (Set.mem_insert_of_mem _ ⟨g, rfl⟩)⟩) (IsLocallyConstant.desc _ Subtype.val hb2 Subtype.val_injective) fun p => Subtype.ext (by`. Establish `e` using `congrArg Subtype.val (hx p)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[hzb p]`. Simplify using `only [cob, Submodule.coe_add, Submodule.coe_sub, Submodule.coe_smul] at e ⊢`. Take the linear combination `(norm := module) -e)`. Establish `h4 : x = 0` using `Subtype.ext (by have h5 := congrArg Subtype.val h3; exact h5)`. Conclude with `⟨b', hb', fun p => by rw [hx p, h4, smul_zero, zero_add]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem cob_of_cob_ambient [CompactSpace G] {χ : G →* ℤ_[l]ˣ} {c : G × G → ℤ_[l]}
     (h : ∀ r, Gen χ r c) {D : Type} [AddCommGroup D] [Module ℤ_[l] D]
@@ -45,23 +45,21 @@ theorem cob_of_cob_ambient [CompactSpace G] {χ : G →* ℤ_[l]ˣ} {c : G × G 
   exact ⟨b', hb', fun p => by rw [hx p, h4, smul_zero, zero_add]⟩
 
 /- English proof (translation)
-Use `finite_dual (n := q) (M := X)` as an intermediate fact. Use `finite_dual (n := q) (M := N)` as an intermediate fact. Establish `hbij : Function.Bijective β` using `h1.bijective_of_nat_card_le ((card_dual_le (n := q) (M := N)).trans ((Nat.card_le_card_of_injective _ h2).trans (card_dual_le (n := q) (M := X))))`. Set `e : X ≃ₗ[ZMod q] TDual (ZMod q) N` to `LinearEquiv.ofBijective β hbij`. Establish `hea : ∀ g x, e (a g x) = twDual χ rho g (e x)` using `fun g x => TDual.ext fun m => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `β (a g x) m = (χ g : ZMod q) * β x (rho g⁻¹ m)`. Rewrite using `[← he, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hcup : ∀ (y : Z1 ((twDual χ rho).comp (MonoidHom.id G))) (x : Z1 (rho.comp (MonoidHom.id G))), (∃ b : G → ZMod q, IsLocallyConstant b ∧ ∀ g h, y.1 g (rho g (x.1 h)) = (χ g : ZMod q) * b h - b (g * h) + b g) → cupH1H1TwistedDual χ rho (MonoidHom.id G) (hrho.comp' continuous_id) (S …`. Introduce and unpack `y x ⟨b, hb, hbe⟩`. Use `(Submodule.Quotient.mk_eq_zero _).2 ⟨b, hb.continuous, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `p`. Conclude with `(hbe p.1 p.2).symm`. Use `⟨fun c hc hcc H => ?_, fun c' hc' hcc' H => ?_⟩` and prove the remaining obligations. Set `y : Z1 ((twDual χ rho).comp (MonoidHom.id G))` to `⟨fun g => e (c g), (hc.comp e).continuous, fun g h => by beta_reduce`. Rewrite using `[hcc, map_add, hea]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `rfl⟩`. Establish `h0 : (Submodule.Quotient.mk y : H1 ((twDual χ rho).comp (MonoidHom.id G))) = 0`. Apply `hD.2.2.1.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `hcup y x (H x.1 ((IsLocallyConstant.iff_continuous _).2 x.2.1) x.2.2)`. Take `⟨φ, hφ⟩` from `(mem_coboundaries1 _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 h0)`. Take `⟨x, rfl⟩` from `e.surjective φ`. Use `⟨x, fun g => e.injective ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[map_sub, hea]`. Conclude with `hφ g`. Set `x : Z1 (rho.comp (MonoidHom.id G))` to `⟨c', hc'.continuous, hcc'⟩`. Establish `h0 : (Submodule.Quotient.mk x : H1 (rho.comp (MonoidHom.id G))) = 0`. Apply `hD.2.2.2.1.1` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero]`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `hcup y x ?_` and prove the remaining obligations. Establish `hy : ∀ g, β (e.symm (y.1 g)) = y.1 g` using `fun g => e.apply_symm_apply (y.1 g)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb, hbe⟩` from `H (fun g => e.symm (y.1 g)) (((IsLocallyConstant.iff_continuous _).2 y.2.1).comp e.symm) fun g h => e.injective (by`. Rewrite using `[map_add, hea, e.apply_symm_apply, e.apply_symm_apply, e.apply_symm_apply]`. Conclude with `y.2.2 g h)`. Use `⟨b, hb, fun g h => ?_⟩` and prove the remaining obligations. Rewrite using `[← hbe, hy]`.
-
-Both sides reduce to the same expression. Establish `h3` using `(Submodule.Quotient.mk_eq_zero _).1 h0`. Conclude with `(mem_coboundaries1 _ _).1 h3`.
+Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nondeg_of_perfect {q : ℕ} [NeZero q] (χ : G →* (ZMod q)ˣ) {X N : Type} [AddCommGroup X]
     [AddCommGroup N] [Module (ZMod q) X] [Module (ZMod q) N] [Finite X] [Finite N]
@@ -133,31 +131,25 @@ theorem nondeg_of_perfect {q : ℕ} [NeZero q] (χ : G →* (ZMod q)ˣ) {X N : T
     exact (mem_coboundaries1 _ _).1 h3
 
 /- English proof (translation)
-Take `⟨c₀, hc₀⟩` from `exists_gen_all hχ fun r => by`. Establish `: NeZero (l ^ (r + 1))` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Conclude with `exists_gen hχ (hT r (ZMod (l ^ (r + 1))) (ReciprocityTheory.Gal.charRep (redChar χ (r + 1))) (contAction_charRep _ ((continuous_toZModPow _).comp hχ))).1 fun M _ _ _ _ _ rho hrho => (hT r M rho hrho).2.2.2.2`. Take `⟨m, hWf, hWm⟩` from `finite_span htor ((Set.finite_range fun p : X × N => β p.1 p.2).insert s)`. Use `set W := Submodule.span ℤ_[l] (insert s (Set.range fun p : X × N => β p.1 p.2)) with hWdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsW : s ∈ W` using `Submodule.subset_span (Set.mem_insert _ _)`. Establish `hβW : ∀ x y, β x y ∈ W` using `fun x y => Submodule.subset_span (Set.mem_insert_of_mem _ ⟨(x, y), rfl⟩)`. Establish `hW : ∀ w : W, (l : ℤ_[l]) ^ (n + m + 1) • w = 0` using `fun w => by`. Rewrite using `[show n + m + 1 = (n + 1) + m by ring, pow_add, mul_smul, hWm, smul_zero]`. Establish `: NeZero (l ^ (n + m + 1))` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_⟩ : Nonempty (Module (ZMod (l ^ (n + m + 1))) X)` from `⟨AddCommGroup.zmodModule fun x => by`. Rewrite using `[show n + m + 1 = (m + 1) + n by ring, pow_add, mul_smul, hX, smul_zero]⟩`. Take `⟨_⟩ : Nonempty (Module (ZMod (l ^ (n + m + 1))) N)` from `⟨AddCommGroup.zmodModule fun x => by`. Rewrite using `[show n + m + 1 = (m + 1) + n by ring, pow_add, mul_smul, hN, smul_zero]⟩`. Take `⟨_⟩ : Nonempty (Module (ZMod (l ^ (n + m + 1))) W)` from `⟨AddCommGroup.zmodModule fun x => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ_[l], Nat.cast_pow, hW]⟩`. Take `⟨ψ, hψ⟩` from `exists_dual_ne_zero (n := l ^ (n + m + 1)) (x := (⟨s, hsW⟩ : W)) fun h => hs (congrArg Subtype.val h)`. Establish `hψs : ∀ (u : ℤ_[l]) (w : W), ψ (u • w) = PadicInt.toZModPow (n + m + 1) u * ψ w` using `fun u w => by`. Rewrite using `[smul_eq_val hW, map_nsmul, nsmul_eq_mul, ZMod.natCast_zmod_val]`. Set `: TopologicalSpace N` to `⊥`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: DiscreteTopology N` using `⟨rfl⟩`. Set `rho : Representation (ZMod (l ^ (n + m + 1))) G N` to `{ toFun := fun g => (a' g).toZModLinearMap _ map_one' := LinearMap.ext h1 map_mul' := fun g h => LinearMap.ext (hm g h) }`. Establish `hcont : Continuous fun p : G × N => a' p.1 p.2` using `continuous_prod_of_discrete_right.2 fun y => (hlc y).continuous`. Set `β' : X →ₗ[ZMod (l ^ (n + m + 1))] N →ₗ[ZMod (l ^ (n + m + 1))] ZMod (l ^ (n + m + 1))` to `(AddMonoidHom.mk' (fun x => (AddMonoidHom.mk' (fun y => ψ ⟨β x y, hβW x y⟩) fun y y' => by`. Rewrite using `[← map_add]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg ψ (Subtype.ext (map_add _ _ _))).toZModLinearMap _)`. Use `fun x x' => LinearMap.ext fun y => by`. Express the relevant statement in the definitionally equal form `ψ ⟨β (x + x') y, _⟩ = ψ ⟨β x y, _⟩ + ψ ⟨β x' y, _⟩`. Rewrite using `[← map_add]`. Conclude with `congrArg ψ (Subtype.ext (by simp))).toZModLinearMap _`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hβ' : ∀ x y, β' x y = ψ ⟨β x y, hβW x y⟩` using `fun _ _ => rfl`. Establish `key : ∀ (c : G → X) (c' : G → N), IsLocallyConstant c → (∀ g h, c (g * h) = c g + a g (c h)) → IsLocallyConstant c' → (∀ g h, c' (g * h) = c' g + a' g (c' h)) → (∃ b : G → D, IsLocallyConstant b ∧ ∀ p : G × G, β (c p.1) (a' p.1 (c' p.2)) = cob χ b p) → ∃ b : G → ZMod (l ^ (n + m …`. Introduce and unpack `c c' hc hcc hc' hcc' ⟨b, hb, hbe⟩`. Establish `hl : IsLocallyConstant fun p : G × G => a' p.1 (c' p.2)` using `(IsLocallyConstant.iff_continuous _).2 (hcont.comp (continuous_fst.prodMk (hc'.continuous.comp continuous_snd)))`. Take `⟨b', hb', hbe'⟩` from `cob_of_cob_ambient hc₀ htor W hW (z := fun p => ⟨β (c p.1) (a' p.1 (c' p.2)), hβW _ _⟩) ⟨(hc.comp_continuous continuous_fst).comp₂ hl fun x y => (⟨β x y, hβW x y⟩ : W), fun g h k => Subtype.ext (by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(χ g : ℤ_[l]) • β (c h) (a' h (c' k)) - β (c (g * h)) (a' (g * h) (c' k)) + β (c g) (a' g (c' (h * k))) - β (c g) (a' g (c' h)) = 0`. Rewrite using `[← he, hcc, hcc', hm]`. Simplify using `only [map_add, AddMonoidHom.add_apply]`. Use the proof step `abel)⟩ hb hbe`. Use `⟨fun g => ψ (b' g), hb'.comp ψ, fun g h => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `e` using `congrArg ψ (hbe' (g, h))`. Rewrite `e` using `[cob, map_add, map_sub, hψs]`. Conclude with `e`. Take `⟨H1, H2⟩` from `nondeg_of_perfect (redChar χ (n + m + 1)) a rho hcont (hT (n + m) N rho hcont) β' (fun g x y => by`. Rewrite using `[hβ', hβ']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `(congrArg ψ (Subtype.ext (he g x y))).trans (hψs _ ⟨_, hβW x y⟩))`. Use the proof step `((injective_iff_map_eq_zero _).2 fun x hx => by`. Assume the negation of the conclusion as `h0`. Take `⟨y, hy⟩` from `hβ1 x h0`. Establish `e` using `LinearMap.congr_fun hx y`.
-
-Rewrite `e` using `[hβ']`. Simplify using `only [hy] at e`. Conclude with `hψ e)`. Use the proof step `((injective_iff_map_eq_zero _).2 fun y hy => by`. Assume the negation of the conclusion as `h0`.
-
-Take `⟨x, hx⟩` from `hβ2 y h0`. Establish `e` using `LinearMap.congr_fun hy x`. Rewrite `e` using `[LinearMap.flip_apply, hβ']`. Simplify using `only [hx] at e`. Conclude with `hψ e)`.
-
-Conclude with `⟨fun c hc hcc H => H1 c hc hcc fun c' hc' hcc' => key c c' hc hcc hc' hcc' (H c' hc' hcc'), fun c' hc' hcc' H => H2 c' hc' hcc' fun c hc hcc => key c c' hc hcc hc' hcc' (H c hc hcc)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nondeg_torsion [CompactSpace G] [ContinuousMul G] {χ : G →* ℤ_[l]ˣ}
     (hχ : Continuous fun g => (χ g : ℤ_[l]))
@@ -276,9 +268,9 @@ variable {LL : Type} [Field LL] {O : Type} [CommRing O] [IsDomain O] [IsDiscrete
 
 omit [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Establish `hπ : algebraMap O LL ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O LL)).2 hϖ`. Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, rfl⟩`. Rewrite using `[Submodule.coe_smul, ← algebraMap_smul LL (ϖ ^ r), smul_smul, map_pow, ← mul_pow, inv_mul_cancel₀ hπ, one_pow, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `y.2`. Introduce `h`. Use `⟨⟨_, h⟩, trivial, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, ← algebraMap_smul LL, smul_smul, map_pow, ← mul_pow, mul_inv_cancel₀ hπ, one_pow, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_pow_smul_top (T : Submodule O V) {ϖ : O} (hϖ : ϖ ≠ 0) (r : ℕ) (t : T) :
     t ∈ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O T) ↔ (algebraMap O LL ϖ)⁻¹ ^ r • (t : V) ∈ T := by
@@ -295,15 +287,13 @@ theorem mem_pow_smul_top (T : Submodule O V) {ϖ : O} (hϖ : ϖ ≠ 0) (r : ℕ)
       one_pow, one_smul]
 
 /- English proof (translation)
-Rewrite `ht` using `[mem_pow_smul_top (LL := LL) T hϖ.ne_zero]`. Establish `h1` using `mt (h _) ht`. Use `push_neg at h1`. Take `⟨y, hy, hu⟩` from `h1`. Rewrite `hu` using `[map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set u := (algebraMap O LL ϖ)⁻¹ ^ r * m t y with hudef`. Establish `hu0 : u ≠ 0` using `fun h0 => hu 0 (by rw [h0, map_zero])`. Take `⟨w, hw⟩` from `(ValuationRing.isInteger_or_isInteger O u).resolve_left fun ⟨b, hb⟩ => hu b hb.symm`. Establish `hwu : ¬ IsUnit w`. Introduce and unpack `⟨v, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hu (↑v⁻¹) ?_` and prove the remaining obligations. Rewrite using `[← inv_inv u, ← hw]`. Conclude with `(eq_inv_of_mul_eq_one_left (by rw [← map_mul, Units.inv_mul, map_one])).symm`. Establish `hd : ϖ ∣ w`. Rewrite using `[← Ideal.mem_span_singleton, ← hϖ.maximalIdeal_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hwu`. Take `⟨o, rfl⟩` from `hd`. Use `⟨o • ⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, ← algebraMap_smul LL, map_smul, smul_eq_mul, mul_left_comm, ← hudef]`. Rewrite `hw` using `[map_mul]`.
-
-Use `eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hw, inv_mul_cancel₀ hu0]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pair (T : Submodule O V) (T' : Submodule O V') (m : V →ₗ[LL] V' →ₗ[LL] LL)
     (h : ∀ x, (∀ y ∈ T', ∃ a : O, m x y = algebraMap O LL a) → x ∈ T) {ϖ : O} (hϖ : Irreducible ϖ)
@@ -335,13 +325,13 @@ theorem exists_pair (T : Submodule O V) (T' : Submodule O V') (m : V →ₗ[LL] 
 omit [IsDiscreteValuationRing O] in
 
 /- English proof (translation)
-Set `B : T →ₗ[O] T' →ₗ[O] LL ⧸ S` to `LinearMap.mk₂ O (fun t t' => Submodule.Quotient.mk ((algebraMap O LL ϖ)⁻¹ ^ r * m t t')) (fun t u t' => by`. Rewrite using `[Submodule.coe_add, map_add, LinearMap.add_apply, mul_add, Submodule.Quotient.mk_add])`. Use the proof step `(fun c t t' => by`. Rewrite using `[Submodule.coe_smul, ← algebraMap_smul LL c (t : V), map_smul, LinearMap.smul_apply, algebraMap_smul, mul_smul_comm, Submodule.Quotient.mk_smul])`. Use the proof step `(fun t t' u' => by rw [Submodule.coe_add, map_add, mul_add, Submodule.Quotient.mk_add])`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use the proof step `(fun c t t' => by`. Rewrite using `[Submodule.coe_smul, ← algebraMap_smul LL c (t' : V'), map_smul, algebraMap_smul, mul_smul_comm, Submodule.Quotient.mk_smul])`. Set `β` to `LinearMap.liftQ₂ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O T) (Ideal.span {ϖ ^ r} • ⊤ : Submodule O T') B (fun t ht => LinearMap.ext fun t' => by`. Take `⟨a, ha⟩` from `h _ ((mem_pow_smul_top (LL := LL) T hϖ r t).1 ht) t' t'.2`. Rewrite `ha` using `[map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations. Rewrite using `[hS, ha]`. Conclude with `⟨a, rfl⟩)`. Use the proof step `(fun t' ht' => LinearMap.ext fun t => by`. Take `⟨a, ha⟩` from `h t t.2 _ ((mem_pow_smul_top (LL := LL) T' hϖ r t').1 ht')`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `ha` using `[map_smul, smul_eq_mul]`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations. Rewrite using `[hS, ha]`. Conclude with `⟨a, rfl⟩)`. Conclude with `⟨AddMonoidHom.mk' (fun x => (β x).toAddMonoidHom) fun x y => by rw [map_add]; rfl, fun _ _ => rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_quot_pairing (T : Submodule O V) (T' : Submodule O V') (m : V →ₗ[LL] V' →ₗ[LL] LL)
     (h : ∀ x ∈ T, ∀ y ∈ T', ∃ a : O, m x y = algebraMap O LL a) {ϖ : O} (hϖ : ϖ ≠ 0) (r : ℕ)
@@ -380,7 +370,7 @@ theorem exists_quot_pairing (T : Submodule O V) (T' : Submodule O V') (m : V →
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Establish `: Module.Finite O T` using `Module.Finite.iff_fg.2 hT`. Establish `: Module.Finite (O ⧸ J) (T ⧸ (J • ⊤ : Submodule O T))` using `Module.Finite.of_restrictScalars_finite O _ _`. Conclude with `Module.finite_of_finite (O ⧸ J)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_quot (T : Submodule O V) (hT : T.FG) (J : Ideal O) [Finite (O ⧸ J)] :
     Finite (T ⧸ (J • ⊤ : Submodule O T)) := by
@@ -391,7 +381,7 @@ theorem finite_quot (T : Submodule O V) (hT : T.FG) (J : Ideal O) [Finite (O ⧸
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL] in
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `h : actT L 1 y = y` using `Subtype.ext (LinearMap.congr_fun (map_one ρ) (y : V))`. Conclude with `congrArg Submodule.Quotient.mk h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem actQ_one {G : Type} [Group G] {ρ : Representation LL G V} (L : Lattice (O := O) ρ)
     (I : Submodule O L.T) (hI : StableSub L I) (y : L.T ⧸ I) : actQ L I hI 1 y = y := by
@@ -401,7 +391,7 @@ theorem actQ_one {G : Type} [Group G] {ρ : Representation LL G V} (L : Lattice 
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL] in
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `h : actT L (g * h) y = actT L g (actT L h y)` using `Subtype.ext (LinearMap.congr_fun (map_mul ρ g h) (y : V))`. Conclude with `congrArg Submodule.Quotient.mk h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem actQ_mul {G : Type} [Group G] {ρ : Representation LL G V} (L : Lattice (O := O) ρ)
     (I : Submodule O L.T) (hI : StableSub L I) (g h : G) (y : L.T ⧸ I) :
@@ -412,9 +402,9 @@ theorem actQ_mul {G : Type} [Group G] {ρ : Representation LL G V} (L : Lattice 
   exact congrArg Submodule.Quotient.mk h
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `: IsTopologicalAddGroup A.V` using `IsModuleTopology.topologicalAddGroup LL A.V`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g₀`. Use `⟨(fun g => (algebraMap O LL ϖ)⁻¹ ^ r • (A.ρ g y - A.ρ g₀ y)) ⁻¹' (L.T : Set A.V), (Formalism.MainNotions.BlochKatoDuality.Br.lat_open hopen L.T L.fg L.span).preimage (((A.cont _).sub continuous_const).const_smul _), by simp, fun g hg => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Submodule.Quotient.eq _).2 ((mem_pow_smul_top (LL := LL) L.T hϖ r (actT L g y - actT L g₀ y)).2 hg)`.
+A detailed English derivation is pending.
 -/
 theorem actQ_locallyConstant {G Qp : Type} [Group G] [TopologicalSpace G] [Field Qp] [Algebra Qp LL]
     [TopologicalSpace LL] [IsTopologicalRing LL] (hopen : IsOpen (Set.range (algebraMap O LL)))
@@ -438,45 +428,41 @@ set_option maxHeartbeats 6400000 in
 open Formalism.MainNotions.LocalSituation GlobalTheory.Cyc GlobalTheory.Cyc.TwistLift GlobalTheory.TateTop Formalism.MainNotions.BlochKatoDuality.Br in
 
 /- English proof (translation)
-Introduce `hT l _ P K LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' m hm ϖ hϖ r hI hI'`. Take `⟨hΦ1, hΦ2⟩` from `continuous_fixingSubgroupEquiv K.1`. Use `set Φ := K.1.fixingSubgroupEquiv with hΦ`. Establish `hcyc : IsCyc P.χQ` using `P.χQ_cyc`. Set `χZ : Formalism.GaloisCohomology.GK l K.1 →* ℤ_[l]ˣ` to `(cyclotomicCharacter (PadicAlgCl l) l).comp (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK l K.1) (PadicAlgCl l))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hχZ : ∀ g, ((χZ g : ℤ_[l]) : ℚ_[l]) = (P.χQ (Φ.symm g : GQ l) : ℚ_[l])` using `fun g => by`. Rewrite using `[isCyc_unique hcyc (isCyc_cycChar l)]`. Both sides reduce to the same expression. Establish `hχc : Continuous fun g => (χZ g : ℤ_[l])`. Rewrite using `[continuous_iff_coe]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hχZ]`. Conclude with `hcyc.continuous.comp (continuous_subtype_val.comp hΦ1)`. Establish `hcpt : CompactSpace (GK K)` using `Φ.symm.surjective.compactSpace hΦ1`. Set `χ : ↥(GK K) →* ℤ_[l]ˣ` to `χZ.comp Φ.toMonoidHom`. Set `e : Formalism.GaloisCohomology.GK l K.1 ≃ₜ* ↥(GK K)` to `{ Φ.symm with continuous_toFun := hΦ1, continuous_invFun := hΦ2 }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hD : ∀ (k : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod (l ^ (k + 1))) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (rho : Representation (ZMod (l ^ (k + 1))) ↥(GK K) M) (hrho : ReciprocityTheory.Gal.ContAction rho), ReciprocityTheory.Neutral.Bridge.DualityFor (redCha …`. Introduce `k M _ _ _ _ _ rho hrho`. Use `ReciprocityTheory.Neutral.Bridge.DualityFor.of_comp e _ hrho ?_` and prove the remaining obligations. Establish `h1 : (redChar χ (k + 1)).comp (e : Formalism.GaloisCohomology.GK l K.1 →* ↥(GK K)) = Formalism.GaloisCohomology.cycK l K.1 (k + 1)` using `MonoidHom.ext fun g => congrArg (Formalism.GaloisCohomology.cycK l K.1 (k + 1)) (Φ.apply_symm_apply g)`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `hT l K.1 K.2 (k + 1) M _ (Nat.succ_pos _) (ReciprocityTheory.Neutral.Bridge.contAction_comp e hrho)`. Take `⟨ι, hι⟩` from `exists_ringHom hO`. Set `: Module ℤ_[l] (LL ⧸ L1.T)` to `Module.compHom _ ι`. Establish `hs : ∀ (a : ℤ_[l]) (x : LL), a • (Submodule.Quotient.mk x : LL ⧸ L1.T) = Submodule.Quotient.mk (algebraMap ℚ_[l] LL a * x)` using `fun a x => by`. Rewrite using `[← hι, ← Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Establish `htor : ∀ x : LL ⧸ L1.T, ∃ n : ℕ, (l : ℤ_[l]) ^ n • x = 0` using `fun x => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨n, hn⟩` from `exists_pow_smul_mem hO x`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hs, Submodule.Quotient.mk_eq_zero, hL1]`. Simplify using `using hn 1`. Establish `hχL : ∀ g, ((cycLL (P.PD K) LL g : LLˣ) : LL) = algebraMap ℚ_[l] LL (χ g : ℤ_[l])` using `fun g => by`. Establish `h1` using `hχZ (Φ g)`. Rewrite `h1` using `[show Φ.symm (Φ g) = g from Φ.symm_apply_apply g, ← P.PD_χ K g]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] LL ((P.PD K).χ g : ℚ_[l]) = _`. Rewrite using `[← h1]`. Both sides reduce to the same expression. Establish `hact : ∀ g (x : LL ⧸ L1.T), repD L1 g x = (χ g : ℤ_[l]) • x` using `fun g x => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hs, ← hχL]`. Both sides reduce to the same expression. Take `⟨n, hn⟩` from `exists_pow_smul_mem hO ((algebraMap O LL ϖ)⁻¹ ^ r)`. Establish `hfin` using `(GlobalTheory.GoodCoeff.good_coeff_integers l LL O hO).2.2.1 n`. Take `⟨⟨hDom, hDVR, hFr⟩, -, -, htr, hopen⟩` from `hO`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `IsFractionRing.injective O LL`. Establish `hπ : algebraMap O LL ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`. Establish `hln : ((l : ℕ) : O) ^ n ∈ Ideal.span {ϖ ^ r}`. Take `⟨o, ho⟩` from `hn 1`. Use `Ideal.mem_span_singleton'.2 ⟨o, hinj ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_mul, ho, mul_assoc, map_pow (algebraMap O LL), ← mul_pow, inv_mul_cancel₀ hπ]`. Simplify using the standard rewrite rules. Establish `: Finite (O ⧸ Ideal.span {ϖ ^ r})` using `Finite.of_surjective _ (Ideal.Quotient.factor_surjective ((Ideal.span_singleton_le_iff_mem _).2 hln))`. Use `finite_quot LA.T LA.fg (Ideal.span {ϖ ^ r})` as an intermediate fact. Use `finite_quot LA'.T LA'.fg (Ideal.span {ϖ ^ r})` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hkill : ∀ (B : GRep ↥(GK K) ℚ_[l] LL O) (L : Lattice (O` using `O) B.ρ) (x : L.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O L.T)), l ^ n • x = 0 := fun B L x => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← Nat.cast_smul_eq_nsmul O, Nat.cast_pow, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_smul hln trivial`. Take `⟨β, hβ⟩` from `exists_quot_pairing LA.T LA'.T m (fun x hx y hy => (hm.2 y).1 hy x hx) hϖ.ne_zero r L1.T hL1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hcup : ∀ (g : ↥(GK K)) x y, (Submodule.Quotient.mk ((algebraMap O LL ϖ)⁻¹ ^ r * m (liftQ LA _ x) (A'.ρ g (liftQ LA' _ y))) : LL ⧸ L1.T) = β x (actQ LA' _ hI' g y)`. Introduce `g x y`. Use `conv_rhs => rw [← (Submodule.Quotient.mk_surjective _ x).choose_spec, ← (Submodule.Quotient.mk_surjective _ y).choose_spec]`. Conclude with `(hβ _ (actT LA' g _)).symm`. Establish `hcob : ∀ (c : ↥(GK K) → _) (c' : ↥(GK K) → _), CobO (P.PD K) L1 (fun x => (algebraMap O LL ϖ)⁻¹ ^ r * m (liftQ LA _ (c x.1)) (A'.ρ x.1 (liftQ LA' _ (c' x.2)))) → ∃ b : ↥(GK K) → LL ⧸ L1.T, IsLocallyConstant b ∧ ∀ p : ↥(GK K) × ↥(GK K), β (c p.1) (actQ LA' _ hI' p.1 (c' p.2)) = Gl …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `c c' ⟨b, hb, hbe⟩`. Use `⟨b, hb.1, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[← hcup, GlobalTheory.TateTop.cob, ← hact]`. Conclude with `(congrFun hbe p).symm`. Establish `he : ∀ g x y, β (actQ LA _ hI g x) (actQ LA' _ hI' g y) = (χ g : ℤ_[l]) • β x y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `g x y`. Take `⟨t, ht⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨t', ht'⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[← ht, ← ht']`. Use `(hβ (actT LA g t) (actT LA' g t')).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβ, hs, ← hχL, mul_left_comm, ← hm.1.1]`. Both sides reduce to the same expression. Establish `hs0 : (Submodule.Quotient.mk (algebraMap O LL ϖ)⁻¹ : LL ⧸ L1.T) ≠ 0` using `fun h => by`. Rewrite `h` using `[Submodule.Quotient.mk_eq_zero, hL1]`. Take `⟨o, ho⟩` from `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `hϖ.not_isUnit (IsUnit.of_mul_eq_one o (hinj ?_))` and prove the remaining obligations. Rewrite using `[map_mul, map_one, show algebraMap O LL o = _ from ho, mul_inv_cancel₀ hπ]`. Establish `hβ1 : ∀ x, x ≠ 0 → ∃ y, β x y = Submodule.Quotient.mk (algebraMap O LL ϖ)⁻¹` using `fun x hx => by`. Take `⟨t, ht⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, hy⟩` from `exists_pair LA.T LA'.T m (fun v hv => ((isDualLat1_flip (P.PD K) hm).2 v).2 hv) hϖ r t fun h => hx (ht.symm.trans ((Submodule.Quotient.mk_eq_zero _).2 h))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨Submodule.Quotient.mk y, by rw [← ht, hβ, hy]⟩`. Establish `hβ2 : ∀ y, y ≠ 0 → ∃ x, β x y = Submodule.Quotient.mk (algebraMap O LL ϖ)⁻¹` using `fun y hy => by`. Take `⟨t, ht⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨x, hx⟩` from `exists_pair LA'.T LA.T m.flip (fun v hv => (hm.2 v).2 hv) hϖ r t fun h => hy (ht.symm.trans ((Submodule.Quotient.mk_eq_zero _).2 h))`. Conclude with `⟨Submodule.Quotient.mk x, by rw [← ht, hβ]; exact congrArg _ hx⟩`.
-
-Take `⟨H1, H2⟩` from `@nondeg_torsion l _ (GK K) _ _ hcpt _ χ (hχc.comp hΦ2) hD _ _ _ _ _ _ _ _ _ htor n (hkill A LA) (hkill A' LA') (fun g => actQ LA _ hI g) (fun g => (actQ LA' _ hI' g).toAddMonoidHom) (actQ_one LA' _ hI') (actQ_mul LA' _ hI') (actQ_locallyConstant hopen A' LA' hϖ.ne_zero r hI') β h …`. Use `⟨fun c hc H => ?_, fun c' hc' H => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `H1 c hc.1 hc.2 fun c' h1 h2 => hcob c c' (H c' ⟨h1, h2⟩)`. Conclude with `⟨x, funext fun g => (hx g).symm⟩`. Take `⟨y, hy⟩` from `H2 c' hc'.1 hc'.2 fun c h1 h2 => hcob c c' (H c ⟨h1, h2⟩)`.
-
-Conclude with `⟨y, funext fun g => (hy g).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tate_pairing_nondegenerate : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ L1 : Lattice (O := O) (charRep (cycLL (P.PD K) LL)), L1.T = LinearMap.range (Algebra.linearMap O LL) → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDualLat1 (P.PD K) LA LA' m → ∀ (ϖ : O), Irreducible ϖ → ∀ (r : ℕ) (hI : StableSub LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)) (hI' : StableSub LA' (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA'.T)), (∀ c ∈ quotientCocycles LA _ hI, (∀ c' ∈ quotientCocycles LA' _ hI', CobO (P.PD K) L1 (fun x => (algebraMap O LL ϖ)⁻¹ ^ r * m (Formalism.MainNotions.LocalSituation.liftQ LA _ (c x.1)) (A'.ρ x.1 (Formalism.MainNotions.LocalSituation.liftQ LA' _ (c' x.2))))) → c ∈ BQ LA _ hI) ∧ (∀ c' ∈ quotientCocycles LA' _ hI', (∀ c ∈ quotientCocycles LA _ hI, CobO (P.PD K) L1 (fun x => (algebraMap O LL ϖ)⁻¹ ^ r * m (Formalism.MainNotions.LocalSituation.liftQ LA _ (c x.1)) (A'.ρ x.1 (Formalism.MainNotions.LocalSituation.liftQ LA' _ (c' x.2))))) → c' ∈ BQ LA' _ hI') := by
   intro hT l _ P K LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' m hm ϖ hϖ r hI hI'

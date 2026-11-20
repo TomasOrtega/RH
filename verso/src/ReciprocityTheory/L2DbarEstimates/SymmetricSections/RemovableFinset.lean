@@ -7,25 +7,21 @@ open Filter Topology Asymptotics
 universe u
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `f hd _`. Use `⟨f, ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Conclude with `differentiableOn_univ.mp (by simpa using hd)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `insert c S hc ih`. Introduce `f hd hb`. Take `⟨M, hM⟩` from `hb c (Finset.mem_insert_self c S)`. Establish `hSc : ∀ᶠ t in 𝓝 c, t ∉ (S : Set ℂ)` using `(S.finite_toSet.isClosed.isOpen_compl).mem_nhds (by simpa using hc)`. Rewrite `hM` using `[eventually_nhdsWithin_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff.mp (hM.and hSc)`. Use `set g := Function.update f c (limUnder (𝓝[≠] c) f) with hg`. Establish `hsub : Metric.ball c ε \ {c} ⊆ (↑(insert c S) : Set ℂ)ᶜ`. Introduce `t ht`. Simplify using `only [Finset.coe_insert, Set.mem_compl_iff, Set.mem_insert_iff, not_or]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨ht.2, (hball ht.1).2⟩`. Establish `hgc : DifferentiableOn ℂ g (Metric.ball c ε)`. Apply `Complex.differentiableOn_update_limUnder_of_bddAbove (Metric.ball_mem_nhds c hε) (hd.mono hsub)` to reduce the goal to its premises. Use `⟨M, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hball ht.1).1 ht.2`. Establish `hgS : DifferentiableOn ℂ g (↑S)ᶜ`. Introduce `t ht`. Distinguish the cases in `htc : t = c`. Substitute `htc` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `(hgc.differentiableAt (Metric.ball_mem_nhds _ hε)).differentiableWithinAt`. Establish `hmem : t ∈ (↑(insert c S) : Set ℂ)ᶜ`. Simplify using `only [Finset.coe_insert, Set.mem_compl_iff, Set.mem_insert_iff, not_or]`. Conclude with `⟨htc, ht⟩`. Establish `hft : DifferentiableAt ℂ f t` using `hd.differentiableAt ((Finset.finite_toSet _).isClosed.isOpen_compl.mem_nhds hmem)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `heq : g =ᶠ[𝓝 t] f` using `by filter_upwards [isOpen_compl_singleton.mem_nhds htc] with y hy`. Conclude with `Function.update_of_ne hy _ _`. Conclude with `(hft.congr_of_eventuallyEq heq).differentiableWithinAt`. Establish `hgb : ∀ c' ∈ S, ∃ M : ℝ, ∀ᶠ t in 𝓝[≠] c', ‖g t‖ ≤ M`. Introduce `c' hc'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨M', hM'⟩` from `hb c' (Finset.mem_insert_of_mem hc')`. Use `⟨M', ?_⟩` and prove the remaining obligations. Establish `hne : c' ≠ c` using `fun h => hc (h ▸ hc')`. Establish `hnc : ∀ᶠ t in 𝓝[≠] c', t ≠ c` using `nhdsWithin_le_nhds (isOpen_compl_singleton.mem_nhds hne)`. Use `filter_upwards [hM', hnc] with t h1 h2`.
-
-Rewrite using `[hg, Function.update_of_ne h2]` and apply the resulting hypothesis. Take `⟨F, hF, hFg⟩` from `ih g hgS hgb`. Use `⟨F, hF, fun t ht => ?_⟩` and prove the remaining obligations. Establish `htc : t ≠ c` using `fun h => ht (h ▸ Finset.mem_insert_self c S)`. Establish `htS : t ∉ S` using `fun h => ht (Finset.mem_insert_of_mem h)`.
-
-Rewrite using `[hFg t htS, hg, Function.update_of_ne htc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem removable_finset (S : Finset ℂ) : ∀ f : ℂ → ℂ, DifferentiableOn ℂ f (↑S)ᶜ →
     (∀ c ∈ S, ∃ M : ℝ, ∀ᶠ t in 𝓝[≠] c, ‖f t‖ ≤ M) →
@@ -84,37 +80,31 @@ theorem removable_finset (S : Finset ℂ) : ∀ f : ℂ → ℂ, DifferentiableO
     rw [hFg t htS, hg, Function.update_of_ne htc]
 
 /- English proof (translation)
-Introduce `g B A K N hB hKN hd hgr h0 t ht`. Take `⟨c0, hc0⟩` from `h0.bound`. Establish `hg0 : g 0 = 0`. Establish `h1` using `hc0.self_of_nhds`. Rewrite `h1` using `[zero_pow (by omega : N ≠ 0), norm_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `norm_le_zero_iff.mp h1`. Distinguish the cases in `ht0 : t = 0`. Rewrite using `[ht0]`. Conclude with `hg0`. Use `set S : Finset ℂ := insert 0 hB.toFinset with hS`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBc : IsOpen Bᶜ` using `hB.isClosed.isOpen_compl`. Establish `hmemS : ∀ x, x ∉ S ↔ x ≠ 0 ∧ x ∉ B` using `by intro x; simp [hS]`. Use `set h : ℂ → ℂ := fun x => g x / x ^ N with hh`. Establish `hdh : DifferentiableOn ℂ h (↑S)ᶜ`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx'` using `(hmemS x).mp hx`. Establish `hgx : DifferentiableAt ℂ g x` using `hd.differentiableAt (hBc.mem_nhds hx'.2)`. Conclude with `(hgx.div (differentiableAt_pow N) (pow_ne_zero N hx'.1)).differentiableWithinAt`. Establish `hbd : ∀ c ∈ S, ∃ M : ℝ, ∀ᶠ x in 𝓝[≠] c, ‖h x‖ ≤ M`. Introduce `c hc`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc0' : c = 0`. Substitute `hc0'` using the available equality. Use `⟨c0, ?_⟩` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds hc0, self_mem_nhdsWithin] with x hx hx0`. Establish `hxn : 0 < ‖x‖ ^ N` using `pow_pos (norm_pos_iff.mpr hx0) N`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hh]`. Simplify using `only [norm_div, norm_pow] at hx ⊢`. Rewrite using `[div_le_iff₀ hxn]`. Conclude with `hx`. Establish `hcont : ContinuousAt (fun x : ℂ => |A| * (1 + ‖x‖) ^ K / ‖x‖ ^ N) c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ContinuousAt.div (by fun_prop) (by fun_prop)` to reduce the goal to its premises. Conclude with `pow_ne_zero N (norm_ne_zero_iff.mpr hc0')`. Use `⟨|A| * (1 + ‖c‖) ^ K / ‖c‖ ^ N + 1, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ᶠ x in 𝓝 c, |A| * (1 + ‖x‖) ^ K / ‖x‖ ^ N < |A| * (1 + ‖c‖) ^ K / ‖c‖ ^ N + 1` using `hcont.eventually (gt_mem_nhds (lt_add_one _))`. Establish `h2 : ∀ᶠ x in 𝓝 c, x ≠ 0` using `isOpen_compl_singleton.mem_nhds hc0'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∀ᶠ x in 𝓝[≠] c, x ∉ B`. Establish `h4 : ∀ᶠ x in 𝓝 c, x ∉ B \ {c}` using `(hB.subset Set.sdiff_subset).isClosed.isOpen_compl.mem_nhds (by simp)`. Use `filter_upwards [nhdsWithin_le_nhds h4, self_mem_nhdsWithin] with x hx hxc`. Introduce `hxB`. Conclude with `hx ⟨hxB, hxc⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `filter_upwards [nhdsWithin_le_nhds h1, nhdsWithin_le_nhds h2, h3] with x hx1 hx2 hx3`. Establish `hxn : 0 < ‖x‖ ^ N` using `pow_pos (norm_pos_iff.mpr hx2) N`. Rewrite using `[hh]`. Simplify using `only [norm_div, norm_pow]`. Use `le_trans ?_ hx1.le` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_div_iff_of_pos_right hxn]`. Conclude with `(hgr x hx3).trans (mul_le_mul_of_nonneg_right (le_abs_self A) (by positivity))`. Take `⟨F, hF, hFh⟩` from `removable_finset S h hdh hbd`. Use `set R : ℝ := 1 + ∑ b ∈ S, ‖b‖ with hR`. Establish `hR1 : 1 ≤ R`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_nonneg (fun b (_ : b ∈ S) => norm_nonneg b)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfar : ∀ x : ℂ, R ≤ ‖x‖ → x ∉ S`. Introduce `x hx hxS`. Use `Finset.single_le_sum (fun b (_ : b ∈ S) => norm_nonneg b) hxS` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlim : Tendsto F (cocompact ℂ) (𝓝 0)`. Establish `hev : ∀ᶠ x in cocompact ℂ, R ≤ ‖x‖` using `tendsto_norm_cocompact_atTop.eventually (eventually_ge_atTop R)`. Establish `hlim0 : Tendsto (fun x : ℂ => |A| * 2 ^ K / ‖x‖) (cocompact ℂ) (𝓝 0)` using `tendsto_const_nhds.div_atTop tendsto_norm_cocompact_atTop`. Use `squeeze_zero_norm' ?_ hlim0` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `filter_upwards [hev] with x hx`. Establish `hxS` using `hfar x hx`. Establish `hx1 : 1 ≤ ‖x‖` using `hR1.trans hx`. Establish `hx'` using `(hmemS x).mp hxS`. Establish `hxpos : 0 < ‖x‖` using `by linarith`.
-
-Rewrite using `[hFh x hxS, hh]`. Simplify using `only [norm_div, norm_pow]`. Rewrite using `[div_le_div_iff₀ (pow_pos hxpos N) hxpos]`. Establish `hg1 : ‖g x‖ ≤ |A| * (2 * ‖x‖) ^ K`. Use `(hgr x hx'.2).trans ?_` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hpow : ‖x‖ ^ K * ‖x‖ ≤ ‖x‖ ^ N`. Rewrite using `[← pow_succ]`. Conclude with `pow_le_pow_right₀ hx1 hKN`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hF0 : ∀ x, F x = 0` using `fun x => hF.apply_eq_of_tendsto_cocompact x hlim`. Establish `htS : t ∉ S` using `(hmemS t).mpr ⟨ht0, ht⟩`. Establish `h2 : g t / t ^ N = 0` using `by show h t = 0`. Rewrite using `[← hFh t htS, hF0 t]`. Conclude with `(div_eq_zero_iff.mp h2).resolve_right (pow_ne_zero N ht0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineVanish : lineVanishStatement := by
   intro g B A K N hB hKN hd hgr h0 t ht

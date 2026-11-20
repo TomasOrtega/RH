@@ -15,13 +15,13 @@ namespace LatticeModel
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.isAlgebraic_iff ℤ ℚ K |>.mpr (.of_finite ℚ x)`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_int (x : K) : IsAlgebraic ℤ x :=
   IsFractionRing.isAlgebraic_iff ℤ ℚ K |>.mpr (.of_finite ℚ x)
 
 /- English proof (translation)
-Take `⟨n, s, hn, h⟩` from `(isAlgebraic_int x).exists_smul_eq (𝓞 K)`. Conclude with `⟨n, hn, s, by rw [← h, zsmul_eq_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_mul_integral (x : K) :
     ∃ n : ℤ, n ≠ 0 ∧ ∃ a : 𝓞 K, algebraMap (𝓞 K) K a = n * x := by
@@ -29,13 +29,13 @@ theorem exists_int_mul_integral (x : K) :
   exact ⟨n, hn, s, by rw [← h, zsmul_eq_mul]⟩
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hL`. Use `choose n hn a ha using fun g : Fin m → K ↦ exists_int_mul_integral (u ⬝ᵥ g)`. Use `⟨∏ g ∈ s, n g, Finset.prod_ne_zero_iff.mpr fun g _ ↦ hn g, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Use `⟨((∏ g ∈ s.erase x, n g : ℤ) : 𝓞 K) * a x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, ha x, smul_dotProduct, smul_eq_mul, ← Finset.mul_prod_erase s n hx]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨b, hb⟩` from `hx`. Take `⟨c, hc⟩` from `hy`. Conclude with `⟨b + c, by rw [map_add, hb, hc, dotProduct_add]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul c x _ hx`. Take `⟨b, hb⟩` from `hx`. Conclude with `⟨c * b, by rw [map_mul, hb, dotProduct_smul, Algebra.smul_def c]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem_latticeDual {m : ℕ} {L : Submodule (𝓞 K) (Fin m → K)} (hL : L.FG)
     (u : Fin m → K) : ∃ n : ℤ, n ≠ 0 ∧ (n : K) • u ∈ latticeDual L := by
@@ -62,38 +62,38 @@ theorem exists_int_smul_mem_latticeDual {m : ℕ} {L : Submodule (𝓞 K) (Fin m
 variable {m N : ℕ} {L : Submodule (𝓞 K) (Fin m → K)} {φ : Fin (N + 1) → Fin m → K}
 
 /- English proof (translation)
-Rewrite using `[← Submodule.mem_span_range_iff_exists_fun ℤ, hφ.span_eq, Submodule.restrictScalars_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_dual_iff (hφ : IsDualBasis L φ) (u : Fin m → K) :
     u ∈ latticeDual L ↔ ∃ c : Fin (N + 1) → ℤ, ∑ b, c b • φ b = u := by
   rw [← Submodule.mem_span_range_iff_exists_fun ℤ, hφ.span_eq, Submodule.restrictScalars_mem]
 
 /- English proof (translation)
-The claim follows from `(mem_dual_iff hφ _).mpr ⟨Pi.single b 1, by simp [Pi.single_apply]⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_dual (hφ : IsDualBasis L φ) (b : Fin (N + 1)) : φ b ∈ latticeDual L :=
   (mem_dual_iff hφ _).mpr ⟨Pi.single b 1, by simp [Pi.single_apply]⟩
 
 /- English proof (translation)
-Simplify using `[latticeForm, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem latticeForm_add (u v : Fin m → K) : latticeForm (u + v) = latticeForm u + latticeForm v := by
   simp [latticeForm, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[latticeForm, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem latticeForm_smul (c : K) (u : Fin m → K) : latticeForm (c • u) = C c * latticeForm u := by
   simp [latticeForm, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[latticeForm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem latticeForm_zero : latticeForm (0 : Fin m → K) = 0 := by
   simp [latticeForm]
 
 /- English proof (translation)
-Rewrite using `[← latticeForm_smul]`. Use `congr 1`. Use extensionality with `j`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem latticeForm_zsmul (c : ℤ) (u : Fin m → K) : latticeForm (c • u) = C (c : K) * latticeForm u := by
   rw [← latticeForm_smul]
@@ -102,7 +102,7 @@ theorem latticeForm_zsmul (c : ℤ) (u : Fin m → K) : latticeForm (c • u) = 
   simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [latticeForm_zero]`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, latticeForm_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem latticeForm_sum {ι : Type*} (s : Finset ι) (u : ι → Fin m → K) :
     latticeForm (∑ i ∈ s, u i) = ∑ i ∈ s, latticeForm (u i) := by
@@ -112,27 +112,27 @@ theorem latticeForm_sum {ι : Type*} (s : Finset ι) (u : ι → Fin m → K) :
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, latticeForm_add, ih]
 
 /- English proof (translation)
-Simplify using `[latticeForm, coeff_sum, coeff_C_mul, coeff_X, Finsupp.single_left_inj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_latticeForm (u : Fin m → K) (j : Fin m) :
     coeff (Finsupp.single j 1) (latticeForm u) = u j := by
   simp [latticeForm, coeff_sum, coeff_C_mul, coeff_X, Finsupp.single_left_inj]
 
 /- English proof (translation)
-Use `⟨fun h ↦ funext fun j ↦ ?_, fun h ↦ h ▸ latticeForm_zero⟩` and prove the remaining obligations. Rewrite using `[← coeff_latticeForm u j, h, coeff_zero, Pi.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem latticeForm_eq_zero_iff (u : Fin m → K) : latticeForm u = 0 ↔ u = 0 := by
   refine ⟨fun h ↦ funext fun j ↦ ?_, fun h ↦ h ▸ latticeForm_zero⟩
   rw [← coeff_latticeForm u j, h, coeff_zero, Pi.zero_apply]
 
 /- English proof (translation)
-The claim follows from `IsHomogeneous.sum _ _ _ fun _ _ ↦ isHomogeneous_C_mul_X _ _`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_latticeForm (u : Fin m → K) : (latticeForm u).IsHomogeneous 1 :=
   IsHomogeneous.sum _ _ _ fun _ _ ↦ isHomogeneous_C_mul_X _ _
 
 /- English proof (translation)
-Rewrite using `[latticeForm_sum, map_sum]`. Use `Finset.sum_congr rfl fun b _ ↦ ?_` and prove the remaining obligations. Rewrite using `[latticeForm_zsmul, map_mul]`. Simplify using `[latticeMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem latticeMap_linear (φ : Fin (N + 1) → Fin m → K) (c : Fin (N + 1) → ℤ) :
     latticeMap φ (∑ b, C (c b) * X ⟨(), b⟩) = latticeForm (∑ b, c b • φ b) := by
@@ -142,7 +142,7 @@ theorem latticeMap_linear (φ : Fin (N + 1) → Fin m → K) (c : Fin (N + 1) �
   simp [latticeMap]
 
 /- English proof (translation)
-Establish `h` using `hf.eval₂ (Int.castRingHom _) (fun v ↦ latticeForm (φ v.2)) (fun a ↦ by rw [eq_intCast, ← map_intCast (C : K →+* MvPolynomial (Fin m) K)]; exact isHomogeneous_C _ _) (fun v ↦ isHomogeneous_latticeForm _)`. Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isHomogeneous_latticeMap (φ : Fin (N + 1) → Fin m → K) {f : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ}
     {d : ℕ} (hf : f.IsHomogeneous d) : (latticeMap φ f).IsHomogeneous d := by
@@ -156,7 +156,7 @@ section Degrees
 variable {R : Type*} [CommSemiring R]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Finsupp.degree]`. Use `Finset.sum_congr rfl fun v _ ↦ ?_` and prove the remaining obligations. Simplify using `[coordDeg]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem weight_coordDeg (s : Coord (fun _ : Unit ↦ N) →₀ ℕ) :
     Finsupp.weight (coordDeg fun _ : Unit ↦ N) s = fun _ ↦ s.degree := by
@@ -166,18 +166,18 @@ theorem weight_coordDeg (s : Coord (fun _ : Unit ↦ N) →₀ ℕ) :
   simp [coordDeg]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_eq_weight_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem weight_one_eq_degree {σ : Type*} (s : σ →₀ ℕ) : Finsupp.weight (1 : σ → ℕ) s = s.degree := by
   rw [Finsupp.degree_eq_weight_one]
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h s hs`. Use `congrFun (h hs) ()` as an intermediate fact. Rewrite `this` using `[weight_coordDeg]`. Rewrite using `[weight_one_eq_degree]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Introduce `h s hs`. Rewrite using `[weight_coordDeg]`. Use function extensionality and compare the values at `u`. Use `h hs` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[weight_one_eq_degree]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_coordDeg_iff (f : MvPolynomial (Coord fun _ : Unit ↦ N) R) (μ : Unit → ℕ) :
     IsWeightedHomogeneous (coordDeg fun _ : Unit ↦ N) f μ ↔ f.IsHomogeneous (μ ()) := by
@@ -195,7 +195,7 @@ theorem isWeightedHomogeneous_coordDeg_iff (f : MvPolynomial (Coord fun _ : Unit
     exact this
 
 /- English proof (translation)
-Use extensionality with `s`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_homogeneousComponent, weight_coordDeg]`. Distinguish the cases in `h : s.degree = μ ()`. Rewrite using `[if_pos (funext fun _ ↦ h), if_pos h]`. Rewrite using `[if_neg (fun h' ↦ h (congrFun h' ())), if_neg h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem weightedHomogeneousComponent_coordDeg (f : MvPolynomial (Coord fun _ : Unit ↦ N) R) (μ : Unit → ℕ) :
     weightedHomogeneousComponent (coordDeg fun _ : Unit ↦ N) μ f = homogeneousComponent (μ ()) f := by
@@ -209,9 +209,9 @@ theorem weightedHomogeneousComponent_coordDeg (f : MvPolynomial (Coord fun _ : U
 end Degrees
 
 /- English proof (translation)
-Use `conv_rhs => rw [← sum_homogeneousComponent f]`. Rewrite using `[map_sum, map_sum]`. Repeatedly rewrite using `[homogeneousComponent_of_mem (isHomogeneous_latticeMap φ (homogeneousComponent_isHomogeneous _ f))]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h` using `[Finset.mem_range, not_lt]`. Rewrite using `[homogeneousComponent_eq_zero _ _ (by omega), map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latticeMap_homogeneousComponent (φ : Fin (N + 1) → Fin m → K)
     (f : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ) (d : ℕ) :
@@ -247,7 +247,7 @@ theorem latticeVariety_ideal (φ : Fin (N + 1) → Fin m → K) (hφ : IsDualBas
 variable {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply K (MvPolynomial (Fin r) K) (LatticeField K r), MvPolynomial.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_C (a : K) :
     algebraMap (MvPolynomial (Fin r) K) (LatticeField K r) (C a) = algebraMap K (LatticeField K r) a := by
@@ -260,7 +260,7 @@ def dehom (K : Type) [Field K] (r : ℕ) : MvPolynomial (Fin (r + 1)) K →+* La
   eval₂Hom (algebraMap K (LatticeField K r)) (genericVal K r)
 
 /- English proof (translation)
-Simplify using `only [dehom, latticeForm, map_sum, map_mul, map_add, coe_eval₂Hom, eval₂_C, eval₂_X, algebraMap_C, Fin.sum_univ_succ, genericVal, Fin.cases_zero, Fin.cases_succ, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dehom_latticeForm (u : Fin (r + 1) → K) :
     dehom K r (latticeForm u) = algebraMap (MvPolynomial (Fin r) K) (LatticeField K r)
@@ -269,16 +269,16 @@ theorem dehom_latticeForm (u : Fin (r + 1) → K) :
     Fin.sum_univ_succ, genericVal, Fin.cases_zero, Fin.cases_succ, mul_one]
 
 /- English proof (translation)
-The claim follows from `(dehom_latticeForm _).symm`.
+A detailed English derivation is pending.
 -/
 theorem latticeCoord_eq (φ : Fin (N + 1) → Fin (r + 1) → K) (v : Coord fun _ : Unit ↦ N) :
     latticeCoord φ v = dehom K r (latticeForm (φ v.2)) :=
   (dehom_latticeForm _).symm
 
 /- English proof (translation)
-Establish `h : (aeval (latticeCoord φ)).toRingHom = (dehom K r).comp (latticeMap φ)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[latticeMap]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[latticeMap, latticeCoord_eq]`. Conclude with `RingHom.congr_fun h g`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_latticeCoord (φ : Fin (N + 1) → Fin (r + 1) → K) (g : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ) :
     aeval (latticeCoord φ) g = dehom K r (latticeMap φ g) := by
@@ -291,29 +291,29 @@ theorem aeval_latticeCoord (φ : Fin (N + 1) → Fin (r + 1) → K) (g : MvPolyn
   exact RingHom.congr_fun h g
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[Geo.mCoordIdeal, RingHom.mem_ker, latticeIdeal, RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Establish `hw : ∀ w : Fin (r + 1) → K, w 0 ≠ 0 → eval w (latticeMap φ f) = 0`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw0`. Set `χ : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ →+* MvPolynomial (Fin r) K` to `eval₂Hom (Int.castRingHom _) fun v ↦ C (w 0) * (C (φ v.2 0) + ∑ j : Fin r, C (φ v.2 j.succ) * X j)`. Establish `h1 : ∀ g : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ, eval (fun _ : Unit ↦ algebraMap K (LatticeField K r) (w 0)) (Geo.mConeMap (ι` using `blockIdx fun _ : Unit ↦ N) (latticeCoord φ) g) = algebraMap (MvPolynomial (Fin r) K) (LatticeField K r) (χ g) := by`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `C a => simp [Geo.mConeMap, χ]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add, map_add]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, hp, map_mul, map_mul]`. Use `congr 1`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Geo.mConeMap, aeval_X, map_mul, eval_C, eval_X, χ, coe_eval₂Hom, eval₂_X, algebraMap_C, latticeCoord]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : χ f = 0`. Apply `IsFractionRing.injective (MvPolynomial (Fin r) K) (LatticeField K r)` to reduce the goal to its premises. Rewrite using `[map_zero, ← h1, hf, map_zero]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∀ g : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ, eval (fun j : Fin r ↦ w j.succ / w 0) (χ g) = eval w (latticeMap φ g)`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [χ, latticeMap]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add, map_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, hp, map_mul, map_mul]`. Use `congr 1`. Simplify using `only [χ, latticeMap, coe_eval₂Hom, eval₂_X, latticeForm, map_mul, map_add, map_sum, eval_C, eval_X, Fin.sum_univ_succ]`. Rewrite using `[mul_add, Finset.mul_sum]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← h3, h2, map_zero]`. Establish `hX : (X 0 : MvPolynomial (Fin (r + 1)) K) * latticeMap φ f = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `w`. Distinguish the cases in `h0 : w 0 = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h0]`. Simplify using `[hw w h0]`. Conclude with `(mul_eq_zero.mp hX).resolve_left (X_ne_zero _)`. Introduce `hf`. Set `ψ : MvPolynomial (Fin (r + 1)) K →+* MvPolynomial Unit (LatticeField K r)` to `eval₂Hom (C.comp (algebraMap K (LatticeField K r))) fun j ↦ C (genericVal K r j) * X ()`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : ∀ g : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ, Geo.mConeMap (ι` using `blockIdx fun _ : Unit ↦ N) (latticeCoord φ) g = ψ (latticeMap φ g) := by`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [Geo.mConeMap, ψ, latticeMap]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, hp, map_mul]`. Use `congr 1`. Take `⟨⟨⟩, b⟩` from `v`. Simplify using `only [Geo.mConeMap, aeval_X, latticeCoord_eq, dehom, latticeMap, ψ, coe_eval₂Hom, eval₂_X, latticeForm, map_sum, map_mul, eval₂_C, RingHom.comp_apply, Finset.sum_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hf, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem mCoordIdeal_latticeCoord (φ : Fin (N + 1) → Fin (r + 1) → K) :
     Geo.mCoordIdeal (ι := blockIdx fun _ : Unit ↦ N) (latticeCoord φ) = latticeIdeal φ := by

@@ -33,23 +33,21 @@ private def mulMap (P K : Subgroup G) (hK : IsOpen (K : Set G)) (σ σ' : Repres
   map_smul' a f := Subtype.ext (Subtype.ext (funext fun x => smul_comm _ a (f.1.1 x)))
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : G → ℂˣ, ∀ (p : P) (w : G), w ∈ K → c ((p : G) * w) = R p := by`. Use `⟨fun x => R (Classical.choose (hPK x)), fun p w hw => ?_⟩` and prove the remaining obligations. Take `⟨w', hw', hx⟩` from `Classical.choose_spec (hPK ((p : G) * w))`. Use `set q := Classical.choose (hPK ((p : G) * w))`. Establish `hqp : ((q⁻¹ * p : P) : G) ∈ K`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((q⁻¹ * p : P) : G) = w' * w⁻¹`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, inv_mul_eq_iff_eq_mul, ← mul_assoc, ← hx, mul_inv_cancel_right]`. Rewrite using `[this]`. Conclude with `K.mul_mem hw' (K.inv_mem hw)`. Use `hR _ hqp` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `this`. Establish `hr : ∀ κ ∈ K, ∀ x, c (x * κ) = c x`. Introduce `κ hκ x`. Take `⟨p, w, hw, rfl⟩` from `hPK x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_assoc, hc _ _ (K.mul_mem hw hκ), hc _ _ hw]`. Establish `hmul : ∀ (p : P) (x : G), c ((p : G) * x) = R p * c x`. Introduce `p x`. Take `⟨q, w, hw, rfl⟩` from `hPK x`. Rewrite using `[← mul_assoc, ← Subgroup.coe_mul, hc _ _ hw, hc _ _ hw, map_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : ∀ (p : P) (x : G) (v : W), ((c ((p : G) * x) : ℂˣ) : ℂ) • σ p v = σ' p (((c x : ℂˣ) : ℂ) • v)`. Introduce `p x v`. Rewrite using `[hσ, map_smul, smul_smul, hmul, Units.val_mul]`. Establish `hl' : ∀ (p : P) (x : G) (v : W), ((((fun y => (c y)⁻¹) ((p : G) * x)) : ℂˣ) : ℂ) • σ' p v = σ p ((((fun y => (c y)⁻¹) x : ℂˣ) : ℂ) • v)`. Introduce `p x v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hσ, map_smul, smul_smul, hmul, ← Units.val_mul]`. Use `congr 2`. Rewrite using `[mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one]`. Establish `hr' : ∀ κ ∈ K, ∀ x, (fun y => (c y)⁻¹) (x * κ) = (fun y => (c y)⁻¹) x`. Introduce `κ hκ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hr κ hκ x]`. Use `⟨{ toFun := mulMap P K hK σ σ' c hl hr map_add' := (mulMap P K hK σ σ' c hl hr).map_add map_smul' := (mulMap P K hK σ σ' c hl hr).map_smul isIntertwining' := ?_ invFun := mulMap P K hK σ' σ (fun y => (c y)⁻¹) hl' hr' left_inv := ?_ right_inv := ?_ }⟩` and prove the remaining obligations. Introduce `g`. Use `LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Use `show ((c x : ℂˣ) : ℂ) • f.1.1 (x * g) = ((c (x * g) : ℂˣ) : ℂ) • f.1.1 (x * g)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr g g.2]`. Introduce `f`. Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Use `show (((c x)⁻¹ : ℂˣ) : ℂ) • (((c x : ℂˣ) : ℂ) • f.1.1 x) = f.1.1 x`. Rewrite using `[smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`.
-
-Introduce `f`. Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Use `show ((c x : ℂˣ) : ℂ) • ((((c x)⁻¹ : ℂˣ) : ℂ) • f.1.1 x) = f.1.1 x`. Rewrite using `[smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem equiv_of_char (P K : Subgroup G) (hK : IsOpen (K : Set G))
     (hPK : ∀ x : G, ∃ p : P, ∃ w ∈ K, x = (p : G) * w) (σ σ' : Representation ℂ P W) (R : P →* ℂˣ)
@@ -114,7 +112,7 @@ section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨u, g, w, hw, hx⟩` from `UnitInd.exists_iwasawa (points (Fin n)) x`. Use `⟨⟨(u : GL (Fin n) k) * leviEmb k (points (Fin n)) g, mul_mem (unipRad_le_parab k (points (Fin n)) u.2) (leviEmb_mem_parab k (points (Fin n)) g)⟩, w, hw, hx⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 private theorem exists_pw (x : GL (Fin n) k) :
     ∃ p : parab k (points (Fin n)), ∃ w ∈ KO k (Fin n), x = (p : GL (Fin n) k) * w := by
@@ -124,11 +122,11 @@ private theorem exists_pw (x : GL (Fin n) k) :
 
 open GlobalTheory.SmGL.PrinProd in
 /- English proof (translation)
-Establish `h1` using `((GlobalTheory.SplitFlip.mem_KO_iff _).1 hp).1 i i`. Establish `h2` using `((GlobalTheory.SplitFlip.mem_KO_iff _).1 hp).2 i i`. Rewrite `h1` using `[← PrinProd.val_dg]`. Establish `h3 : ((dg p⁻¹ i : kˣ) : k) ∈ 𝒪[k]`. Rewrite using `[PrinProd.val_dg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h2`. Rewrite `h3` using `[map_inv, Pi.inv_apply, Units.val_inv_eq_inv_val]`. Express the relevant statement in the definitionally equal form `valuation k _ = 1`. Establish `a1 : valuation k ((dg p i : kˣ) : k) ≤ 1` using `(Valuation.mem_integer_iff _ _).1 h1`. Establish `a2 : valuation k ((dg p i : kˣ) : k)⁻¹ ≤ 1` using `(Valuation.mem_integer_iff _ _).1 h3`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a2` using `[map_inv₀]`. Establish `hne : valuation k ((dg p i : kˣ) : k) ≠ 0` using `by simp`. Conclude with `le_antisymm a1 ((inv_le_one₀ (zero_lt_iff.2 hne)).1 a2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem dg_mem_Uo (p : parab k (points (Fin n))) (hp : (p : GL (Fin n) k) ∈ KO k (Fin n)) (i : Fin n) :
     dg p i ∈ UpperTheory.V.Hi.Uo k := by
@@ -159,13 +157,13 @@ end Loc
 open GlobalTheory.SmGL.PrinProd in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n ω ω' _ _ h`. Set `χ : Fin n → kˣ →* ℂˣ` to `fun i => ω i * absPow k ((↑n - 1) / 2)`. Set `χ' : Fin n → kˣ →* ℂˣ` to `fun i => ω' i * absPow k ((↑n - 1) / 2)`. Set `ρ : Fin n → kˣ →* ℂˣ` to `fun i => ω' i * (ω i)⁻¹`. Establish `hχ : ∀ t, torusChar χ' t = torusChar ρ t * torusChar χ t`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `t`. Simplify using `only [torusChar_apply, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [χ, χ', ρ, MonoidHom.mul_apply, MonoidHom.inv_apply]`. Use `group`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `equiv_of_char (parab k (points (Fin n))) (KO k (Fin n)) GlobalTheory.SplitFlip.isOpen_KO exists_pw (sB χ) (sB χ') ((torusChar ρ).comp dg) (fun p hp => ?_) (fun p v => ?_)` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, torusChar_apply]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `only [ρ, MonoidHom.mul_apply, MonoidHom.inv_apply]`. Rewrite using `[← h i ⟨_, dg_mem_Uo p hp i⟩, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sB_apply, sB_apply, smul_eq_mul, MonoidHom.comp_apply, hχ, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem psRes : PsRes := by
   intro k _ _ _ _ n ω ω' _ _ h

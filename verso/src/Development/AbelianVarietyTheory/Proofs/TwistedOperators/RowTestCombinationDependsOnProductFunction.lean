@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.CombDet
 
 /- English proof (translation)
-Break down `S.eq_empty_or_nonempty with hS | ⟨i₀, hi₀⟩` into its components or cases. Conclude with `⟨0, fun i hi => by simp [hS] at hi⟩`. Establish `key : ∀ i ∈ S, IsThetaAt W.ψ (symplO _ _) (heisO W.ψ _ _) e (latO (G.pS p) (G.pT p) (G.latS p : Set _) (G.latT p : Set _) fun _ => True) 1 f₀ (d i).fn (comb W.ψ _ _ (c i) f₀)`. Introduce `i hi`. Establish `h` using `(hd i hi).2.2.2 f₀ h1 h2`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `he` using `(hd i hi).1`. Unfold `FinDatum.IsTheta at h`. Rewrite `h` using `[he]`. Conclude with `h`. Take `⟨Tm, hTm⟩` from `(key i₀ hi₀).1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Tm, fun i hi => (key i hi).2 Tm hTm⟩`.
+A detailed English derivation is pending.
 -/
 theorem row_position {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) {t : T} {p : Pair T}
     {I : Type} (S : Finset I) (e : AE D) (d : I → FinDatum G t p) (c : I → (WO (G.pS p) (G.pT p) →₀ ℂ))
@@ -44,9 +44,9 @@ def Spans {I Y : Type} (S : Finset I) (H : Y → I → ℂ) (g : I → ℂ) : Pr
   ∃ (J : Type) (P : Finset J) (a : J → ℂ) (y : J → Y), ∀ i ∈ S, g i = ∑ j ∈ P, a j * H (y j) i
 
 /- English proof (translation)
-Use `choose J P a y hy using hg`. Establish `e : ∀ i ∈ S, x i * ∏ l, g l i = ∑ z ∈ Fintype.piFinset P, (∏ l, a l (z l)) * (x i * ∏ l, H l (y l (z l)) i)`. Introduce `i hi`. Rewrite using `[Finset.prod_congr rfl fun l _ => hy l i hi, Finset.prod_univ_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl e, Finset.sum_comm]`. Use `Finset.sum_eq_zero fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, h fun l => y l (z l), mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_prod_eq_zero {I ι : Type} [Fintype ι] {Y : ι → Type} (S : Finset I) (x : I → ℂ) (H : ∀ l, Y l → I → ℂ)
     (g : ι → I → ℂ) (hg : ∀ l, Spans S (H l) (g l)) (h : ∀ z : ∀ l, Y l, ∑ i ∈ S, x i * ∏ l, H l (z l) i = 0) :
@@ -65,7 +65,7 @@ theorem sum_prod_eq_zero {I ι : Type} [Fintype ι] {Y : ι → Type} (S : Finse
   rw [← Finset.mul_sum, h fun l => y l (z l), mul_zero]
 
 /- English proof (translation)
-Take `⟨P, u, hu⟩` from `GlobalTheory.exists_finite_reproducing_of_submodule V (S.attach.image fun i : {i // i ∈ S} => (⟨F i.1, hF i.1 i.2⟩ : V))`. Use `⟨P, fun x => u x, fun x => (u x).2, fun i hi => ?_⟩` and prove the remaining obligations. Use `congrArg V.subtype (hu ⟨F i, hF i hi⟩ (Finset.mem_image.2 ⟨⟨i, hi⟩, Finset.mem_attach _ _, rfl⟩))` as an intermediate fact. Simplify `this` using `only [map_sum, map_smul, Submodule.subtype_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem reproducing {I X : Type} (S : Finset I) (V : Submodule ℂ (X → ℂ)) (F : I → X → ℂ) (hF : ∀ i ∈ S, F i ∈ V) :
     ∃ (P : Finset X) (u : X → X → ℂ), (∀ x, u x ∈ V) ∧ ∀ i ∈ S, F i = ∑ x ∈ P, F i x • u x := by
@@ -77,9 +77,7 @@ theorem reproducing {I X : Type} (S : Finset I) (V : Submodule ℂ (X → ℂ)) 
   simpa only [map_sum, map_smul, Submodule.subtype_apply] using this
 
 /- English proof (translation)
-Take `⟨P, u, -, hu⟩` from `reproducing S ⊤ F fun _ _ => trivial`. Use `⟨X, P, fun x => Tm (u x) z, id, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[hg i hi]`. Use `conv_lhs => rw [hu i hi]`. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, id]`.
-
-Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spans_linear {I X Z : Type} (S : Finset I) (F : I → X → ℂ) (Tm : (X → ℂ) →ₗ[ℂ] (Z → ℂ)) (z : Z) (g : I → ℂ)
     (hg : ∀ i ∈ S, g i = Tm (F i) z) : Spans S (fun x i => F i x) g := by
@@ -110,19 +108,17 @@ def vacSp {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgr
     · rw [key, hf.2.2 e he u hu hh]
 
 /- English proof (translation)
-Use `choose Tu hTu using fun u' => row_position W S e d₂ c₂ h₂ (C u') (hC.right u').1 (hC.right u').2`. Set `Lm : (WO (G.V (.top (j + 1))) (G.V (.top (j + 1 + 1))) → ℂ) →ₗ[ℂ] (WO (G.V (.top j)) (G.V (.top (j + 1))) → ℂ)` to `LinearMap.pi fun u' => (LinearMap.proj v) ∘ₗ Tu u'`. Set `Vac` to `vacSp W.ψ _ _ (latO (G.V (.top j)) (G.V (.top (j + 1))) (G.Λ (.top j) : Set _) (G.Λ (.top (j + 1)) : Set _) fun _ => True)`. Establish `hL : ∀ i ∈ S, Lm (d₂ i).fn = fun u' => comb W.ψ _ _ (c₂ i) (C u') v` using `fun i hi => by`. Use function extensionality and compare the values at `u'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `(congrFun (hTu u' i hi) v).symm`. Establish `hV : ∀ i ∈ S, (d₂ i).fn ∈ Vac.comap Lm` using `fun i hi => by`. Rewrite using `[Submodule.mem_comap, hL i hi]`. Establish `: (fun u' => comb W.ψ _ _ (c₂ i) (C u') v) = ∑ b ∈ (c₂ i).support, ((c₂ i) b * W.ψ (symplOH _ _ v b)) • fun u' => C u' (v + b)`. Use function extensionality and compare the values at `u'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.BiCombStable.comb_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[this]`. Conclude with `Vac.sum_mem fun b _ => Vac.smul_mem _ (hC.left (v + b))`. Take `⟨P, ε, hε, hP⟩` from `reproducing S (Vac.comap Lm) (fun i => (d₂ i).fn) hV`. Use `choose Tx hTx using fun x => row_position W S e d₁ c₁ h₁ (Lm (ε x)) (hε x).1 (hε x).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Q, η, -, hQ⟩` from `reproducing S ⊤ (fun i => (d₁ i).fn) fun _ _ => trivial`. Use `⟨_, Q ×ˢ P, fun p => Tx p.2 (η p.1) u, id, fun i hi => ?_⟩` and prove the remaining obligations. Establish `e1 : biComb W.ψ _ _ _ (c₁ i) (c₂ i) C u v = GlobalTheory.BiCombStable.combL W.ψ _ _ (c₁ i) (Lm (d₂ i).fn) u`. Rewrite using `[hL i hi]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∀ x, GlobalTheory.BiCombStable.combL W.ψ _ _ (c₁ i) (Lm (ε x)) = ∑ q ∈ Q, (d₁ i).fn q • Tx x (η q)` using `fun x => by`. Use `(hTx x i hi).trans ?_` and prove the remaining obligations. Use `(congrArg (Tx x) (hQ i hi)).trans ?_` and prove the remaining obligations. Simplify using `only [map_sum, map_smul]`. Establish `e3 : GlobalTheory.BiCombStable.combL W.ψ _ _ (c₁ i) (Lm (d₂ i).fn) = ∑ x ∈ P, (d₂ i).fn x • GlobalTheory.BiCombStable.combL W.ψ _ _ (c₁ i) (Lm (ε x))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (fun f => GlobalTheory.BiCombStable.combL W.ψ _ _ (c₁ i) (Lm f)) (hP i hi)).trans ?_` and prove the remaining obligations. Simplify using `only [map_sum, map_smul]`. Use `show biComb W.ψ _ _ _ (c₁ i) (c₂ i) C u v = _`. Rewrite using `[e1, e3, Finset.sum_product_right, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[e2, Pi.smul_apply, Finset.sum_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, id]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem col_position {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) {t : T} (j : ℕ)
     {I : Type} (S : Finset I) (e : AE D) (d₁ : I → FinDatum G t (.top t j)) (d₂ : I → FinDatum G t (.top t (j + 1)))
@@ -171,7 +167,7 @@ theorem col_position {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : Grid
   ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [show 2 * (n + 1) = 2 * n + 1 + 1 by ring, Finset.prod_range_succ, Finset.prod_range_succ, ih, Finset.prod_range_succ, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_range_pairs (f : ℕ → ℂ) (n : ℕ) :
     ∏ j ∈ Finset.range (2 * n), f j = ∏ k ∈ Finset.range n, f (2 * k) * f (2 * k + 1) := by
@@ -181,27 +177,25 @@ theorem prod_range_pairs (f : ℕ → ℂ) (n : ℕ) :
       Finset.prod_range_succ, mul_assoc]
 
 /- English proof (translation)
-Establish `hm : 0 + 2 * ((D.R.m - 2) / 2) + 2 = D.R.m` using `top_idx`. Establish `h' : ∀ (u : ∀ j : Fin D.R.m, WO (G.V (.top j)) (G.V (.top (j + 1)))) (y : RowPt G), ∑ i ∈ S, x i * ((∏ j, ((d i).1 j).fn (u j)) * ∏ n, ((d i).2 n).fn (y n)) = 0`. Introduce `u y`. Distinguish the cases in `hu : ∀ j, IsHalf e (u j)`. Distinguish the cases in `hy : ∀ n, IsHalf e (y n)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Conclude with `h u y hu hy`. Take `⟨n, hn⟩` from `not_forall.1 hy`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `h0 : ((d i).2 n).fn (y n) = 0`. Assume the negation of the conclusion as `h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hn (((hd i hi).2 n).1 ▸ ((d i).2 n).sb.1 _ h0)`. Rewrite using `[Finset.prod_eq_zero (f := fun n => ((d i).2 n).fn (y n)) (Finset.mem_univ n) h0, mul_zero, mul_zero]`. Take `⟨j, hj⟩` from `not_forall.1 hu`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `h0 : ((d i).1 j).fn (u j) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hj (((hd i hi).1 j).1 ▸ ((d i).1 j).sb.1 _ h0)`. Rewrite using `[Finset.prod_eq_zero (f := fun j => ((d i).1 j).fn (u j)) (Finset.mem_univ j) h0, zero_mul, mul_zero]`. Establish `hrow : ∀ (u : ∀ j : Fin D.R.m, WO (G.V (.top j)) (G.V (.top (j + 1)))), ∑ i ∈ S, (x i * ∏ j, ((d i).1 j).fn (u j)) * ∏ n, combR ρ (c i) n (y n) = 0`. Introduce `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `sum_prod_eq_zero S _ (fun (n : Fin D.R.m) (z : WO (G.pS (.chi n D.R.m : Pair T)) (G.pT (.chi n D.R.m : Pair T))) i => ((d i).2 n).fn z) (fun n i => combR ρ (c i) n (y n)) (fun n => ?_) fun z => ?_` and prove the remaining obligations. Establish `hv` using `ρ.vX_is n D.R.m n.2 le_rfl`. Take `⟨Tm, hTm⟩` from `row_position W S e (fun i => (d i).2 n) (fun i => (c i).2 n) (fun i hi => (hd i hi).2 n) _ hv.2.theta hv.2.lat`. Conclude with `spans_linear S (fun i => ((d i).2 n).fn) Tm (y n) _ fun i hi => congrFun (hTm i hi) (y n)`. Simplify `h' u z` using `only [mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `F : I → ∀ j : ℕ, WO (G.V (.top j)) (G.V (.top (j + 1))) → ℂ` to `fun i j => if hj : j < D.R.m then ((d i).1 ⟨j, hj⟩).fn else 0`. Establish `hcol` using `sum_prod_eq_zero (ι := Fin (D.R.m / 2)) S (fun i => x i * ∏ n, combR ρ (c i) n (y n)) (fun k (w : ColPt G) i => F i (2 * k) (w (2 * k)) * F i (2 * k + 1) (w (2 * k + 1))) (fun k i => combC W (c i) C (2 * k) (u (2 * k)) (u (2 * k + 1))) (fun k => ?_) fun z => ?_`. Rewrite using `[← hcol]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[evT, Finset.prod_range]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `k0 : 2 * (k : ℕ) < D.R.m` using `by have := k.2; omega`. Establish `k1 : 2 * (k : ℕ) + 1 < D.R.m` using `by have := k.2; omega`. Take `⟨J, P, a, p, hp⟩` from `col_position W (2 * k) S e (fun i => (d i).1 ⟨2 * k, k0⟩) (fun i => (d i).1 ⟨2 * k + 1, k1⟩) (fun i => (c i).1 (2 * k)) (fun i => (c i).1 (2 * k + 1)) (fun i hi => (hd i hi).1 ⟨2 * k, k0⟩) (fun i hi => (hd i hi).1 ⟨2 * k + 1, k1⟩) (C (2 * k)) (hC _ (even_two_mul _) k0).1 (u (2 * …`. Use `⟨J, P, a, fun j => Function.update (Function.update (0 : ColPt G) (2 * k) (p j).1) (2 * k + 1) (p j).2, fun i hi => (hp i hi).trans (Finset.sum_congr rfl fun j _ => ?_)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [F, dif_pos k0, dif_pos k1, Function.update_self, Function.update_of_ne (show 2 * (k : ℕ) ≠ 2 * k + 1 by omega)]`. Set `w : ColPt G` to `fun j => if hj : j / 2 < D.R.m / 2 then z ⟨j / 2, hj⟩ j else 0`. Establish `hw : ∀ (k : Fin (D.R.m / 2)) (j : ℕ), j / 2 = (k : ℕ) → w j = z k j`. Introduce and unpack `⟨k, hk⟩ j hj`. Establish `hj' : j / 2 = k` using `hj`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Substitute `hj'` using the available equality. Conclude with `dif_pos hk`. Rewrite using `[← hrow fun j => w j]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e1 : ∏ j : Fin D.R.m, ((d i).1 j).fn (w j) = ∏ j ∈ Finset.range D.R.m, F i j (w j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.prod_range]`. Conclude with `Finset.prod_congr rfl fun j _ => by simp only [F, dif_pos j.2]`. Establish `e2 : Finset.range D.R.m = Finset.range (2 * (D.R.m / 2))` using `by congr 1; omega`. Rewrite using `[e1, e2, prod_range_pairs (fun j => F i j (w j)), Finset.prod_range, Finset.prod_congr rfl fun (k : Fin (D.R.m / 2)) _ => show F i (2 * k) (w (2 * k)) * F i (2 * k + 1) (w (2 * k + 1)) = F i (2 * k) (z k (2 * k)) * F i (2 * k + 1) (z k (2 * k + 1)) by`. Rewrite using `[hw k _ (by omega), hw k _ (by omega)]]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sum_evT_eq_zero {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (ρ : RealMatch W)
     (t : T) (e : AE D) (I : Type) (S : Finset I) (x : I → ℂ) (d : I → PureDat G t) (c : I → Combs G)
@@ -280,7 +274,7 @@ theorem sum_evT_eq_zero {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : G
     ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ t e _ I S x d c hd h C hC u y => sum_evT_eq_zero ch.W ch.rm t e I S x d c hd h C hC u y⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem comb_det : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t e, IsIdemSum e (locPl ch.G t) → ∀ (I : Type) (S : Finset I) (x : I → ℂ) (d : I → PureDat ch.G t) (c : I → Combs ch.G), (∀ i ∈ S, (∀ j : Fin D.R.m, ((d i).1 j).e = e ∧ IsCombOf ch.W ((d i).1 j) ((c i).1 j)) ∧ ∀ n, ((d i).2 n).e = e ∧ IsCombOf ch.W ((d i).2 n) ((c i).2 n)) → (∀ (u : ∀ j : Fin D.R.m, WO (ch.G.V (.top j)) (ch.G.V (.top (j + 1)))) (y : RowPt ch.G), (∀ j, IsHalf e (u j)) → (∀ n, IsHalf e (y n)) → ∑ i ∈ S, x i * ((∏ j, ((d i).1 j).fn (u j)) * ∏ n, ((d i).2 n).fn (y n)) = 0) → ∀ C, IsRealFam ch.W C → ∀ u y, ∑ i ∈ S, x i * evT (combC ch.W (c i) C) (combR ch.rm (c i)) u y = 0 :=
   ⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ t e _ I S x d c hd h C hC u y =>

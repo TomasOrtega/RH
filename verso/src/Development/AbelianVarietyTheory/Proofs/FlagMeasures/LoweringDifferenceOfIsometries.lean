@@ -7,7 +7,7 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `Formalism.UG.hform`. Simplify using `only [Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hform_sub_left_flag {A : Type} [CommRing A] {n : Type} [Fintype n] (σ : A →+* A)
     (J : Matrix n n A) (x x' y : n → A) :
@@ -16,7 +16,7 @@ theorem hform_sub_left_flag {A : Type} [CommRing A] {n : Type} [Fintype n] (σ :
   simp only [Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Unfold `Formalism.UG.hform`. Simplify using `only [Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hform_sub_right_flag {A : Type} [CommRing A] {n : Type} [Fintype n] (σ : A →+* A)
     (J : Matrix n n A) (x y y' : n → A) :
@@ -25,7 +25,7 @@ theorem hform_sub_right_flag {A : Type} [CommRing A] {n : Type} [Fintype n] (σ 
   simp only [Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Unfold `Formalism.UG.hform`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem hform_eq_dotProduct_mulVec {K : Type} [CommRing K] {n : ℕ} (σ : K →+* K)
     (J : Matrix (Fin n) (Fin n) K) (x y : Fin n → K) :
@@ -34,9 +34,9 @@ private theorem hform_eq_dotProduct_mulVec {K : Type} [CommRing K] {n : ℕ} (σ
   simp only [dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dotProduct_mulVec, hform_eq_dotProduct_mulVec]`. Establish `h1 : (fun i => σ ((γ *ᵥ x) i)) = γ.map σ *ᵥ (fun i => σ (x i))`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec σ γ x i`. Unfold `Formalism.UG.cT at hγ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hγ` using `[Matrix.mul_assoc]`. Rewrite using `[h1, ← vecMul_transpose (γ.map σ), ← dotProduct_mulVec]`. Simplify using `only [mulVec_mulVec, hγ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hform_mulVec_eq_of_unitary {K : Type} [CommRing K] {n : ℕ} (σ : K →+* K)
     (J γ : Matrix (Fin n) (Fin n) K) (hγ : Formalism.UG.cT σ γ * J * γ = J) (x y : Fin n → K) :
@@ -51,33 +51,31 @@ private theorem hform_mulVec_eq_of_unitary {K : Type} [CommRing K] {n : ℕ} (σ
   simp only [mulVec_mulVec, hγ]
 
 /- English proof (translation)
-Introduce `K R _ _ _ _ n J _ a G hG0 hGm hdual γ γ' hγ hγ' hl hl' c hc hlow`. Use `set hf := Formalism.UG.hform (starRingEnd K) J with hhf`. Establish `hL : ∀ x x' y, hf (x - x') y = hf x y - hf x' y` using `fun x x' y => hform_sub_left_flag _ J x x' y`. Establish `hR : ∀ x y y', hf x (y - y') = hf x y - hf x y'` using `fun x y y' => hform_sub_right_flag _ J x y y'`. Establish `iso : ∀ x y, hf (γ *ᵥ x) (γ *ᵥ y) = hf x y` using `hform_mulVec_eq_of_unitary _ J γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iso' : ∀ x y, hf (γ' *ᵥ x) (γ' *ᵥ y) = hf x y` using `hform_mulVec_eq_of_unitary _ J γ' hγ'`. Establish `h0 : ∀ v, hf 0 v = 0` using `fun v => by simp [hhf, Formalism.UG.hform]`. Establish `mem0 : ∀ y ∈ G 0, y = 0` using `fun y hy => by`. Rewrite `hy` using `[hG0]`. Conclude with `(Submodule.mem_bot R).1 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `orth : ∀ m m', m + m' ≤ 2 * a + 1 → ∀ u ∈ G m, ∀ v ∈ G m', hf u v = 0`. Introduce `m m' hmm u hu v hv`. Conclude with `((hdual m (by omega) v).1 (hGm (by omega) hv)).2 u hu`. Establish `key : ∀ x y, hf ((γ - γ') *ᵥ x) (γ *ᵥ y) + hf (γ' *ᵥ x) ((γ - γ') *ᵥ y) = 0`. Introduce `x y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[sub_mulVec, sub_mulVec, hL, hR, iso, iso']`. Expand and normalize the polynomial expressions, which then agree. Establish `base : ∀ p ≤ 2 * a + 1, ∀ y ∈ G p, (γ - γ') *ᵥ y ∈ G (p - 1)`. Introduce `p hp y hy`. Break down `Nat.eq_zero_or_pos p with rfl | hp0` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mem0 y hy, mulVec_zero]`. Conclude with `zero_mem _`. Take `⟨p0, rfl⟩ : ∃ p0, p = p0 + 1` from `⟨p - 1, by omega⟩`. Establish `e : (γ - γ') *ᵥ y = (γ - 1) *ᵥ y - (γ' - 1) *ᵥ y`. Simplify using `only [sub_mulVec, one_mulVec]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e, Nat.add_sub_cancel]`. Conclude with `sub_mem (hl p0 (by omega) y hy) (hl' p0 (by omega) y hy)`. Establish `main1 : ∀ p, p ≤ 2 * a + 1 → ∀ y ∈ G p, (γ - γ') *ᵥ y ∈ G (p - c)`. Introduce `p`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Proceed by induction on `p using Nat.strong_induction_on with`. Consider the case `_ p ih`. Introduce `hp y hy`. Distinguish the cases in `hA : c = 1 ∨ p ≤ 1`. Conclude with `hGm (by omega) (base p hp y hy)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Distinguish the cases in `hB : 2 * p ≤ 2 * a + 1 + c ∨ p < c`. Take `⟨p0, rfl⟩ : ∃ p0, p = p0 + 1` from `⟨p - 1, by omega⟩`. Conclude with `hlow (p0 + 1 - c) p0 (by omega) (by omega) (by omega) y hy`. Establish `hγy : γ *ᵥ y ∈ G p`. Establish `e1 : γ *ᵥ y = (γ - 1) *ᵥ y + y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [sub_mulVec, one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Use `add_mem (hGm (Nat.sub_le p 1) (hl (p - 1) (by omega) y ?_)) hy` and prove the remaining obligations. Rewrite using `[Nat.sub_add_cancel (by omega : 1 ≤ p)]` and apply the resulting hypothesis.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `inner : ∀ j, j ≤ 2 * a + 1 - (p - c) → ∀ s ∈ G j, hf s ((γ - γ') *ᵥ y) = 0`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mem0 s hs, h0]`. Consider the case `succ j ihj`. Introduce `hj s hs`. Establish `k` using `key s y`. Establish `ha : hf ((γ' - 1) *ᵥ s) ((γ - γ') *ᵥ y) = hf (γ' *ᵥ s) ((γ - γ') *ᵥ y) - hf s ((γ - γ') *ᵥ y)`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[sub_mulVec γ' 1, one_mulVec, hL]`. Establish `hz1` using `ihj (by omega) _ (hl' j (by omega) s hs)`. Establish `hz2` using `orth (j + 1 - c) p (by omega) _ (ih (j + 1) (by omega) (by omega) s hs) _ hγy`. Take the linear combination `k + ha - hz1 - hz2`. Establish `hd` using `(hdual (2 * a + 1 - (p - c)) (by omega) ((γ - γ') *ᵥ y)).2 ⟨hGm (by omega) (base p hp y hy), fun s hs => inner _ le_rfl s hs⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : 2 * a + 1 - (2 * a + 1 - (p - c)) = p - c` using `by omega`. Rewrite `hd` using `[e2]`. Then use the resulting hypothesis. Use `⟨main1, ?_⟩` and prove the remaining obligations. Introduce `p p' hp hp' hpp x hx y hy`. Establish `e3 : hf ((γ - γ') *ᵥ x) ((γ - 1) *ᵥ y) = 0` using `orth (p + 1 - c) p' (by omega) _ (main1 (p + 1) (by omega) x hx) _ (hl p' hp' y hy)`.
-
-Establish `e4 : hf ((γ' - 1) *ᵥ x) ((γ - γ') *ᵥ y) = 0` using `orth p (p' + 1 - c) (by omega) _ (hl' p hp x hx) _ (main1 (p' + 1) (by omega) y hy)`. Rewrite `e3` using `[sub_mulVec γ 1, one_mulVec, hR]`. Rewrite `e4` using `[sub_mulVec γ' 1, one_mulVec, hL]`. Take the linear combination `key x y - e3 - e4`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lowering_difference_of_isometries :
     ∀ (K R : Type) [Field K] [StarRing K] [CommRing R] [Algebra R K] (n : ℕ) (J : Matrix (Fin n) (Fin n) K), Formalism.UG.IsHerm (starRingEnd K) J → ∀ (a : ℕ) (G : ℕ → Submodule R (Fin n → K)), G 0 = ⊥ → Monotone G → (∀ p ≤ 2 * a + 1, ∀ y, y ∈ G (2 * a + 1 - p) ↔ y ∈ G (2 * a + 1) ∧ ∀ s ∈ G p, Formalism.UG.hform (starRingEnd K) J s y = 0) → ∀ γ γ' : Matrix (Fin n) (Fin n) K, Formalism.UG.cT (starRingEnd K) γ * J * γ = J → Formalism.UG.cT (starRingEnd K) γ' * J * γ' = J → (∀ p ≤ 2 * a, ∀ y ∈ G (p + 1), (γ - 1) *ᵥ y ∈ G p) → (∀ p ≤ 2 * a, ∀ y ∈ G (p + 1), (γ' - 1) *ᵥ y ∈ G p) → ∀ c : ℕ, 1 ≤ c → (∀ q p : ℕ, q < p → q + p ≤ 2 * a → p - q < c → ∀ y ∈ G (p + 1), (γ - γ') *ᵥ y ∈ G q) → (∀ p ≤ 2 * a + 1, ∀ y ∈ G p, (γ - γ') *ᵥ y ∈ G (p - c)) ∧ ∀ p p' : ℕ, p ≤ 2 * a → p' ≤ 2 * a → p + p' ≤ 2 * a + c → ∀ x ∈ G (p + 1), ∀ y ∈ G (p' + 1), Formalism.UG.hform (starRingEnd K) J ((γ - γ') *ᵥ x) y + Formalism.UG.hform (starRingEnd K) J x ((γ - γ') *ᵥ y) = 0 := by

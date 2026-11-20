@@ -12,11 +12,11 @@ section General
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `key : ∀ (g : G) (v : A.toSubmodule), (subQuot A B) g ((B.toSubmodule.comap A.toSubmodule.subtype).mkQ v) = (B.toSubmodule.comap A.toSubmodule.subtype).mkQ (A.toRepresentation g v)` using `fun _ _ => rfl`. Unfold `twKer`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, w, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨v, rfl⟩` from `(B.toSubmodule.comap A.toSubmodule.subtype).mkQ_surjective w`. Establish `h : (subQuot A B) n ((B.toSubmodule.comap A.toSubmodule.subtype).mkQ v) - ((χ n : ℂˣ) : ℂ) • (B.toSubmodule.comap A.toSubmodule.subtype).mkQ v = (B.toSubmodule.comap A.toSubmodule.subtype).mkQ (A.toRepresentation n v - ((χ n : ℂˣ) : ℂ) • v)`. Rewrite using `[key, map_sub, map_smul]`. Rewrite using `[h]`. Conclude with `Submodule.mem_map_of_mem (Submodule.subset_span ⟨n, v, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, v, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, map_sub, map_smul, ← key]`. Conclude with `Submodule.subset_span ⟨n, _, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twKer_subQuot {ρ : Representation ℂ G V} (A B : Subrepresentation ρ) (U : Subgroup G) (χ : U →* ℂˣ) :
     twKer (subQuot A B) U χ =
@@ -43,9 +43,7 @@ theorem twKer_subQuot {ρ : Representation ℂ G V} (A B : Subrepresentation ρ)
     exact Submodule.subset_span ⟨n, _, rfl⟩
 
 /- English proof (translation)
-Establish `h : twKer A.toRepresentation U χ ≤ (twKer ρ U χ).comap A.toSubmodule.subtype`. Unfold `twKer`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, v, rfl⟩`. Conclude with `Submodule.subset_span ⟨n, v, rfl⟩`.
-
-Conclude with `h hx`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem coe_mem_twKer {ρ : Representation ℂ G V} (A : Subrepresentation ρ) (U : Subgroup G) (χ : U →* ℂˣ)
     {x : A.toSubmodule} (hx : x ∈ twKer A.toRepresentation U χ) : (x : V) ∈ twKer ρ U χ := by
@@ -59,17 +57,15 @@ theorem coe_mem_twKer {ρ : Representation ℂ G V} (A : Subrepresentation ρ) (
 end General
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ N V _ _ ρ hρ A B hBA`. Establish `hsm : IsSmooth A.toRepresentation`. Introduce `v`. Establish `h : {g : GL (Fin N) k | A.toRepresentation g v = v} = {g | ρ g (v : V) = v}` using `Set.ext fun g => Subtype.ext_iff`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hρ v`. Use `show Nontrivial (_ ⧸ twKer (subQuot A B) (unipB k (Fin N)) (whitChar ψ N)) ↔ _`. Rewrite using `[Submodule.Quotient.nontrivial_iff, twKer_subQuot, Ne, Submodule.map_mkQ_eq_top]`. Use `not_congr ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : (⟨v, hv⟩ : A.toSubmodule) ∈ B.toSubmodule.comap A.toSubmodule.subtype ⊔ twKer A.toRepresentation (unipB k (Fin N)) (whitChar ψ N)`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 hmem`. Establish `hv' : v = (y : V) + (z : V)` using `by rw [← Submodule.coe_add, hyz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hv']`. Conclude with `Submodule.add_mem_sup hy (coe_mem_twKer A _ _ hz)`. Rewrite using `[eq_top_iff]`. Introduce and unpack `a -`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 (h a.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyA : y ∈ A.toSubmodule` using `hBA hy`. Establish `hzA : z ∈ A.toSubmodule`. Establish `hz2 : z = (a : V) - y` using `by rw [← hyz]; abel`. Rewrite using `[hz2]`. Conclude with `A.toSubmodule.sub_mem a.2 hyA`.
-
-Establish `hz' : (⟨z, hzA⟩ : A.toSubmodule) ∈ twKer A.toRepresentation (unipB k (Fin N)) (whitChar ψ N)` using `GlobalTheory.CompanionTheory.PRep.WhitExact.twKer_whitChar_reflect k ψ hψ N A.toRepresentation ρ hsm hρ A.toSubmodule.subtype A.toSubmodule.injective_subtype (fun _ _ => rfl) _ hz`. Establish `ha : a = ⟨y, hyA⟩ + ⟨z, hzA⟩` using `Subtype.ext hyz.symm`. Rewrite using `[ha]`. Conclude with `Submodule.add_mem_sup hy hz'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenericFor_subQuot_iff : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ∀ (N : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin N) k) V), IsSmooth ρ → ∀ A B : Subrepresentation ρ, B ≤ A → (IsGenericFor ψ (subQuot A B) ↔ ¬ A.toSubmodule ≤ B.toSubmodule ⊔ twKer ρ (unipB k (Fin N)) (whitChar ψ N)) := by
   intro k _ _ _ _ ψ hψ N V _ _ ρ hρ A B hBA

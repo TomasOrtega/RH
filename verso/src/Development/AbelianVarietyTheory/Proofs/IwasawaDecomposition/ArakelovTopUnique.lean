@@ -26,7 +26,7 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 namespace GlobalTheory.TrueGeo.ArUniq
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `((hC.arExists k X p D hX).2 Unit fun _ => L).1`. Establish `h₁` using `(((hC.arIso k X p D hX).2 Unit _ Φ hΦ).1 ()).unique hX ha`. Take `⟨H, hH, e⟩` from `hΦ.1 fun _ => (m : ℤ)`. Use `⟨H, (hC.arIso k X p D hX).1 _ _ H (GlobalTheory.T.comb_pow_isometric k X p L m) hH, e.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← h₁, ← smul_eq_mul, ← map_smul, ArInt.lin, Fintype.sum_unique, mul_pow, ← map_pow, MvPolynomial.smul_eq_C_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -51,7 +51,7 @@ def Reads (A : Adl C Y) (M : TrueGeo.Model Y) (L : HermLB M.p) (k : ℕ+) (cf : 
 variable {M : TrueGeo.Model Y} {L : HermLB M.p} {k : ℕ+} {cf : HeightOneSpectrum (𝓞 F) → ℝ} {t : ℝ}
 
 /- English proof (translation)
-Take `⟨hI, a, ha, ht⟩` from `h`. Take `⟨U, hU, hU'⟩` from `hU`. Use `M.ar.isIntegral` as an intermediate fact. Use `N.ar.isIntegral` as an intermediate fact. Conclude with `⟨GlobalTheory.T.induced_metric_pullback F C Y A M N π hπ hj L k cf hI, a, hB _ M.X N.X M.p N.p Y.dim M.ar N.ar (GlobalTheory.T.generically_smooth_model F Y M) (GlobalTheory.T.generically_smooth_model F Y N) π hπ U hU hU' L a ha, ht⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Reads.pull (hB : GlobalTheory.Published.ArBirational) (h : Reads A M L k cf t) (N : TrueGeo.Model Y) (π : N.X ⟶ M.X)
     (hπ : π ≫ M.p = N.p) (hj : N.j ≫ π = M.j) (hU : ∃ U : M.X.Opens, (U : Set M.X).Nonempty ∧ IsIso (π ∣_ U)) :
@@ -64,9 +64,9 @@ theorem Reads.pull (hB : GlobalTheory.Published.ArBirational) (h : Reads A M L k
     hB _ M.X N.X M.p N.p Y.dim M.ar N.ar (GlobalTheory.T.generically_smooth_model F Y M) (GlobalTheory.T.generically_smooth_model F Y N) π hπ U hU hU' L a ha, ht⟩
 
 /- English proof (translation)
-Take `⟨hI, a, ha, ht⟩` from `h`. Use `M.ar.isIntegral` as an intermediate fact. Use `⟨GlobalTheory.T.induced_metric_pow F C Y A M L k m cf hI, _, isSelfInter_pow hE M.ar ha m, ?_⟩` and prove the remaining obligations. Establish `hm : ((m : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast m.ne_zero`. Establish `hk : ((k : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast k.ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast A.n.ne_zero`. Rewrite using `[ht, PNat.mul_coe, Nat.cast_mul]`. Use `congr 2`. Rewrite using `[mul_right_comm, mul_pow _ ((m : ℕ) : ℝ)]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem Reads.pow (hE : GlobalTheory.Published.ArCalc) (h : Reads A M L k cf t) (m : ℕ+) :
     Reads A M (L.pow m) (k * m) cf t := by
@@ -82,11 +82,11 @@ theorem Reads.pow (hE : GlobalTheory.Published.ArCalc) (h : Reads A M L k cf t) 
   field_simp
 
 /- English proof (translation)
-Take `⟨hI, a, ha, ht⟩` from `h`. Establish `hc : ∀ σ : 𝓞 F →+* ℂ, Real.log ‖((starRingEnd ℂ).comp σ) b‖ = Real.log ‖σ b‖` using `fun σ => by simp`. Take `⟨hf, r, hr, -⟩` from `id hI`. Use `⟨_, GlobalTheory.T.induced_metric_shift_element F C Y A M L k cf b hb hc hI, _, GlobalTheory.T.self_intersection_shift hC hD F Y M L _ r hr (fun σ => Real.log ‖σ b‖) hc a ha, ?_⟩` and prove the remaining obligations. Take `⟨h₁, h₂⟩` from `GlobalTheory.sum_log_embedding_add_finsum_log_adicAbv_eq_zero F (algebraMap (𝓞 F) F b) (by simpa using hb)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hk : ((k : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast k.ne_zero`. Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast A.n.ne_zero`. Rewrite using `[finsum_add_distrib hf (h₁.subset fun v hv h0 => hv (by simp only [h0, zero_div]))]`. Simplify using `only [div_eq_mul_inv (Real.log _)]`. Rewrite using `[← finsum_mul' _ _ h₁, eq_neg_of_add_eq_zero_right h₂, ht, Y.inter_const_nsmul, Adl.deg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.comp_apply]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Reads.scale (hC : GlobalTheory.Published.ArCalc) (hD : GlobalTheory.Published.ArDegree) (h : Reads A M L k cf t) {b : 𝓞 F} (hb : b ≠ 0) :
     ∃ L' : HermLB M.p, Reads A M L' k (fun v => cf v +
@@ -109,7 +109,7 @@ theorem Reads.scale (hC : GlobalTheory.Published.ArCalc) (hD : GlobalTheory.Publ
   ring
 
 /- English proof (translation)
-Take `⟨hI, a, ⟨H, hH, rfl⟩, rfl⟩` from `h`. Take `⟨hI', a', ha', rfl⟩` from `h'`. Use `M.ar.isIntegral` as an intermediate fact. Establish `e` using `HermLB.IsSelfInter.unique M.ar ⟨H, (hC.arIso _ M.X M.p Y.dim M.ar).1 L L' H (GlobalTheory.T.rational_isometry_isometric _ M.X M.p L L' (GlobalTheory.T.ratIsom_of_induced_hermitian_bundles F C Y A M hN L L' k cf hI hI')) hH, rfl⟩ ha'`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Reads.eq (hC : GlobalTheory.Published.ArCalc) (hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X) {L' : HermLB M.p} {t' : ℝ}
     (h : Reads A M L k cf t) (h' : Reads A M L' k cf t') : t = t' := by
@@ -121,13 +121,13 @@ theorem Reads.eq (hC : GlobalTheory.Published.ArCalc) (hN : ReciprocityTheory.Ch
   rw [e]
 
 /- English proof (translation)
-Take `⟨m, b, b', hb, hb', e⟩` from `GlobalTheory.T.exists_element_height_difference F (fun v => ((k : ℕ) : ℝ) * (A.n : ℕ) * (cf' v - cf v)) ((h.1.1.union h'.1.1).subset fun v hv => by`. Assume the negation of the conclusion as `h0`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at h0`. Simplify using `[h0.1, h0.2] at hv) fun v => by`. Take `⟨e, α, hα, h₁⟩` from `GlobalTheory.T.induced_metric_difference_log F C Y A M L L' k cf cf' h.1 h'.1 v`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h₁]`. Conclude with `GlobalTheory.T.log_absolute_value_rational F v e α hα`. Take `⟨L₁, h₁⟩` from `(h.pow hC m).scale hC hD hb`. Take `⟨L₂, h₂⟩` from `(h'.pow hC m).scale hC hD hb'`. Use `h₁.eq hC hN (L' := L₂) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h₂ using 2 with v` and compare the differences between its conclusion and the goal. Establish `hm : ((m : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast m.ne_zero`. Establish `hk : ((k : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast k.ne_zero`. Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast A.n.ne_zero`. Rewrite using `[sub_eq_iff_eq_add.1 (e v).symm, PNat.mul_coe, Nat.cast_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Reads.eq' (hC : GlobalTheory.Published.ArCalc) (hD : GlobalTheory.Published.ArDegree)
     (hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X) {L' : HermLB M.p} {t' : ℝ}
@@ -152,9 +152,9 @@ theorem Reads.eq' (hC : GlobalTheory.Published.ArCalc) (hD : GlobalTheory.Publis
   ring
 
 /- English proof (translation)
-Introduce and unpack `hC hD F _ _ C Y A t t' ⟨M, L, k, cf, a, hI, ha, ht⟩ ⟨M', L', k', cf', a', hI', ha', ht'⟩`. Take `⟨N, π, π', hN, hπ, hπ', hj, hj', hU, hU'⟩` from `GlobalTheory.ModelDom.exists_normal_dominating F Y M M'`. Establish `h₁` using `(Reads.pull hD.1 ⟨hI, a, ha, ht⟩ N π hπ hj hU).pow hC k'`. Establish `h₂` using `(Reads.pull hD.1 ⟨hI', a', ha', ht'⟩ N π' hπ' hj' hU').pow hC k`. Rewrite `h₂` using `[mul_comm k' k]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h₁.eq' hC hD hN h₂`.
+A detailed English derivation is pending.
 -/
 theorem isArTop_unique : GlobalTheory.Published.ArCalc → GlobalTheory.Published.ArDegree → ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F)
     (Y : Var F) (A : Adl C Y) (t t' : ℝ), A.IsArTop t → A.IsArTop t' → t = t' := by

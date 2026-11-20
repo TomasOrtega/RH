@@ -24,13 +24,13 @@ open GlobalTheory.PerTorus GlobalTheory.TorusAtAssembly
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ} {X : Data E r}
 
 /- English proof (translation)
-Establish `key : ∀ u : Fin r → E, (∀ v, EF X u v = 0) → u = 0`. Introduce `u hu`. Establish `hc : crd X bas u = 0`. Use function extensionality and compare the values at `j`. Break down `j with i | i` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h` using `hu (vecQ X bas (Pi.single (Sum.inr i) 1))`. Rewrite `h` using `[EF_crd hs, crd_vecQ hs]`. Simplify `h` using `[Pi.single_apply]`. Establish `h` using `hu (vecQ X bas (Pi.single (Sum.inl i) 1))`. Rewrite `h` using `[EF_crd hs, crd_vecQ hs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h` using `[Pi.single_apply]`. Rewrite using `[← vecQ_crd X bas u, hc, vecQ_zero]`. Establish `hB : ∀ u v, EFBil X u v = EF X u v` using `fun _ _ => rfl`. Use `show LinearMap.SeparatingLeft (EFBil X) ∧ LinearMap.SeparatingRight (EFBil X) from ⟨fun u hu => key u fun v => ?_, fun v hv => key v fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[← hB]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu v`. Establish `h` using `hv u`. Rewrite `h` using `[hB]`. Rewrite using `[TensLat.EF_swap, h, neg_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nondeg {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (hs : IsSympl X bas) :
     LinearMap.BilinForm.Nondegenerate (EFBil X) := by
@@ -57,17 +57,15 @@ theorem nondeg {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (hs : IsSympl 
     rw [TensLat.EF_swap, h, neg_zero]
 
 /- English proof (translation)
-Establish `hnd` using `nondeg hs`. Use `haveI : Module.Finite (𝓞 E) L := Module.Finite.iff_fg.mpr hL.1`. Use `haveI : Module.Finite ℤ L := Module.Finite.trans (𝓞 E) L`. Use `haveI : Module.IsTorsionFree ℤ L := Function.Injective.moduleIsTorsionFree (Subtype.val : L → Fin r → E) Subtype.val_injective (fun _ _ => rfl)`. Set `bZ` to `Module.Free.chooseBasis ℤ L`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : L →ₗ[ℤ] (Fin r → E)` to `L.subtype.toAddMonoidHom.toIntLinearMap`. Establish `hliQ : LinearIndependent ℚ (f ∘ bZ)` using `(LinearIndependent.iff_fractionRing ℤ ℚ).mp (bZ.linearIndependent.map' f (LinearMap.ker_eq_bot.mpr Subtype.val_injective))`. Set `bW` to `Module.Basis.span hliQ`. Set `ψ0 : Submodule.span ℚ (Set.range (f ∘ bZ)) →ₗ[ℚ] ℚ` to `bW.constr ℚ fun i => ((φ (bZ i) : ℤ) : ℚ)`. Take `⟨ψ, hψ⟩` from `LinearMap.exists_extend ψ0`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `u` to `(LinearMap.BilinForm.toDual (EFBil X) hnd).symm ψ`. Establish `hu : ∀ y, EF X u y = ψ y`. Introduce `y`. Conclude with `LinearMap.BilinForm.apply_toDual_symm_apply (hB := hnd) ψ y`. Establish `hext : (ψ.restrictScalars ℤ).comp f = (Int.castAddHom ℚ).toIntLinearMap.comp φ.toIntLinearMap`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `bZ.ext fun i => ?_` and prove the remaining obligations. Use `show ψ (f (bZ i)) = ((φ (bZ i) : ℤ) : ℚ)`. Establish `h1 : ψ0 (bW i) = ((φ (bZ i) : ℤ) : ℚ)` using `by simp [ψ0]`. Establish `h2 : ψ0 (bW i) = ψ (f (bZ i))`. Rewrite using `[← hψ, LinearMap.comp_apply, Submodule.subtype_apply, Module.Basis.span_apply]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← h2, h1]`. Establish `hval : ∀ v : L, ψ (v : Fin r → E) = ((φ v : ℤ) : ℚ)` using `fun v => LinearMap.congr_fun hext v`. Use `⟨u, ?_, fun v => ((hu v).trans (hval v)).symm⟩` and prove the remaining obligations. Rewrite using `[hL.2 u]`.
-
-Introduce `y hy`. Conclude with `⟨φ ⟨y, hy⟩, (hu y).trans (hval ⟨y, hy⟩)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem perf {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (hs : IsSympl X bas) {L : Lt E r} (hL : SelfD X L)
     (φ : L →+ ℤ) : ∃ u ∈ L, ∀ v : L, (φ v : ℚ) = EF X u v := by
@@ -110,11 +108,11 @@ theorem perf {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (hs : IsSympl X 
   exact ⟨φ ⟨y, hy⟩, (hu y).trans (hval ⟨y, hy⟩)⟩
 
 /- English proof (translation)
-Take `⟨N, hN, hNL⟩` from `TensLat.exists_mul_le hfg hsp`. Establish `hI : Ideal.span {N} ≠ ⊥` using `by rwa [Ne, Ideal.span_singleton_eq_bot]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {N}))`. Use `⟨(Ideal.absNorm (Ideal.span {N}) : ℤ), by exact_mod_cast mt Ideal.absNorm_eq_zero_iff.mp hI, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hcE : ((Ideal.absNorm (Ideal.span {N}) : ℤ) : E) = (c : E) * (N : E)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun z : 𝓞 E => (z : E)) hc`. Move the coercions through the operations in `at h ⊢`. Conclude with `h.symm`. Rewrite using `[hcE, mul_smul]`. Establish `h` using `L'.smul_mem c (hNL u hu)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← algebraMap_smul E c]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem exists_int_ne_zero_smul_mem_of_span_eq_univ {L L' : Lt E r} (hfg : L.FG)
     (hsp : Submodule.span E (L' : Set (Fin r → E)) = ⊤) :
@@ -134,21 +132,19 @@ private theorem exists_int_ne_zero_smul_mem_of_span_eq_univ {L L' : Lt E r} (hfg
   exact h
 
 /- English proof (translation)
-Take `⟨b₀, hb₀⟩` from `GlobalTheory.PerTorus.exists_basis (X := X) (x := x) ho`. Take `⟨n, hn, hnL⟩` from `exists_int_ne_zero_smul_mem_of_span_eq_univ hfg X.Λ_span`. Take `⟨m, hm, hmΛ⟩` from `exists_int_ne_zero_smul_mem_of_span_eq_univ X.Λ_fg hsp`. Establish `hsc : ∀ (k : ℤ) (v : Fin r → E), scaled X x ((k : E) • v) = k • scaled X x v`. Introduce `k v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Int.cast_smul_eq_zsmul, map_zsmul]`. Set `M : Submodule ℤ (I2.Vsp (dimPer X))` to `(L.toAddSubgroup.map (scaled X x)).toIntSubmodule`. Establish `hM : ∀ y, y ∈ M ↔ ∃ v ∈ L, scaled X x v = y` using `fun y => AddSubgroup.mem_map`. Establish `hsub : ∀ y ∈ M, n • y ∈ I2.lat b₀`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv, rfl⟩` from `(hM y).1 hy`. Conclude with `(hb₀ _).2 ⟨(n : E) • v, hnL v hv, hsc n v⟩`. Use `haveI : DiscreteTopology M := by`. Set `f : M → I2.lat b₀` to `fun y => ⟨n • (y : I2.Vsp (dimPer X)), hsub y y.2⟩`. Use `DiscreteTopology.of_continuous_injective (f := f) ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `((continuous_const_smul n).comp continuous_subtype_val).subtype_mk _`. Introduce `y y' h`. Establish `h0 : n • (y : I2.Vsp (dimPer X)) = n • (y' : I2.Vsp (dimPer X))` using `congrArg Subtype.val h`. Rewrite `h0` using `[← Int.cast_smul_eq_zsmul ℝ, ← Int.cast_smul_eq_zsmul ℝ]`. Conclude with `Subtype.ext (smul_right_injective _ (by exact_mod_cast hn : (n : ℝ) ≠ 0) h0)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsZLattice ℝ M := by`. Use `⟨eq_top_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[← ZSpan.span_top b₀]`. Use `Submodule.span_le.2 fun z hz => ?_` and prove the remaining obligations. Take `⟨v, hv, rfl⟩` from `(hb₀ z).1 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h1 : m • scaled X x v ∈ M` using `(hM _).2 ⟨(m : E) • v, hmΛ v hv, hsc m v⟩`. Establish `h2 : scaled X x v = ((m : ℝ)⁻¹) • (m • scaled X x v)`. Rewrite using `[← Int.cast_smul_eq_zsmul ℝ, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hm), one_smul]`. Rewrite using `[SetLike.mem_coe, h2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `bZ` to `Module.Free.chooseBasis ℤ M`. Set `bR` to `bZ.ofZLatticeBasis ℝ M`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ M) = Fintype.card (Fin (2 * Fintype.card (I2.Idx (dimPer X))))`. Rewrite using `[← Module.finrank_eq_card_basis bR, Module.finrank_eq_card_basis b₀]`. Use `⟨bR.reindex (Fintype.equivOfCardEq hcard), fun y => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hM]`. Use `show y ∈ Submodule.span ℤ (Set.range (bR.reindex _)) ↔ y ∈ M`. Rewrite using `[Module.Basis.range_reindex, Module.Basis.ofZLatticeBasis_span]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_of_full {x : Frame X.Ψ r} (ho : X.IsOrtho x) {L : Lt E r} (hfg : L.FG)
     (hsp : Submodule.span E (L : Set (Fin r → E)) = ⊤) :
@@ -220,45 +216,41 @@ end GlobalTheory.Dict.SelfTorus
 open GlobalTheory.PerTorus GlobalTheory.TorusAtAssembly GlobalTheory.Dict.SelfTorus in
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g bas idx hs w hw L hL x hxd ho t ht hc`. Establish `hspL` using `TensLat.span_of_selfD X hL`. Establish `coe_smul_mem_lemma_2 : ∀ (c : 𝓞 E) {w : Fin r → E}, w ∈ L → (c : E) • w ∈ L`. Introduce `c w hw`. Establish `h` using `L.smul_mem c hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[← algebraMap_smul E c w]`. Conclude with `h`. Take `⟨b, hb⟩` from `exists_basis_of_full ho hL.1 hspL`. Establish `hint : ∀ u ∈ L, ∀ v ∈ L, ∃ k : ℤ, EF X u v = k` using `fun u hu => (hL.2 u).1 hu`. Establish `him : ∀ u v, (I2.Hf (scaled X x u) (scaled X x v)).im = EF X u v` using `fun u v => im_Hf_scaled ho u v`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw' : ((1 - w : 𝓞 E) : E) = cc (w : E)`. Use `push_cast`. Conclude with `(eq_sub_of_add_eq' hw).symm`. Establish `stable : ∀ (α : 𝓞 E) (y : I2.Vsp (dimPer X)), y ∈ I2.lat b → I2.act α y ∈ I2.lat b`. Introduce `α y hy`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv, rfl⟩` from `(hb y).1 hy`. Conclude with `(hb _).2 ⟨(α : E) • v, coe_smul_mem_lemma_2 α hv, scaled_smul X x α v⟩`. Establish `par : ∀ y ∈ I2.lat b, ∀ z ∈ I2.lat b, ∃ k : ℤ, (I2.Hf y (I2.act w z)).im - (I2.Hf y (I2.act (1 - w) z)).im - (I2.Hf y z).im = 2 * k`. Introduce `y hy z hz`. Take `⟨u, hu, rfl⟩` from `(hb y).1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, rfl⟩` from `(hb z).1 hz`. Take `⟨k1, hk1⟩` from `hint u hu _ (coe_smul_mem_lemma_2 w hv)`. Take `⟨k2, hk2⟩` from `hint u hu v hv`. Use `⟨k1 - k2, ?_⟩` and prove the remaining obligations. Rewrite using `[← scaled_smul, ← scaled_smul, him, him, him]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h3 : EF X u (((1 - w : 𝓞 E) : E) • v) = EF X u v - EF X u ((w : E) • v)`. Establish `h4 : ((1 - w : 𝓞 E) : E) • v = v - (w : E) • v`. Use `push_cast`. Rewrite using `[sub_smul, one_smul]`. Rewrite using `[h4]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `map_sub (EFBil X u) v ((w : E) • v)`. Rewrite using `[h3, hk1, hk2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `perfect : ∀ φ : I2.lat b →+ ℤ, ∃ y ∈ I2.lat b, ∀ z : I2.lat b, (φ z : ℝ) = (I2.Hf y (z : I2.Vsp (dimPer X))).im`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `φ`. Set `j : L →+ I2.lat b` to `AddMonoidHom.mk' (fun v => ⟨scaled X x v, (hb _).2 ⟨v, v.2, rfl⟩⟩) (fun a c => by ext; simp)`. Take `⟨u, hu, hφ⟩` from `perf hs hL (φ.comp j)`. Use `⟨scaled X x u, (hb _).2 ⟨u, hu, rfl⟩, fun z => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hz⟩` from `(hb z).1 z.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hzj : z = j ⟨v, hv⟩` using `Subtype.ext hz.symm`. Establish `h1` using `hφ ⟨v, hv⟩`. Rewrite using `[hzj, show ((j ⟨v, hv⟩ : I2.lat b) : I2.Vsp (dimPer X)) = scaled X x v from rfl, him]`. Conclude with `h1` after adjusting the coercions. Set `T : I2.PT E` to `TorusAtAssembly.torus r (dimPer_add X) hw' stable par perfect`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `e : Fin g ≃ I2.Idx (dimPer X)` to `idx.trans (rowEquiv X).symm`. Establish `hst : ((Real.sqrt t : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.sqrt_pos.2 ht).ne'`. Set `ψ` to `scaleEquiv e ((Real.sqrt t : ℝ) : ℂ) hst`. Establish `hψ : ∀ u, ψ (pv X idx x u) = scaled X x u`. Introduce `u`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i`. Rewrite using `[scaleEquiv_apply, scaled_apply, hc]`. Simplify using `[e, pv]`. Establish `hH : ∀ z z', I2.Hf (ψ z) (ψ z') = hermForm ((t : ℂ) • (1 : Matrix (Fin g) (Fin g) ℂ)) z z'`. Introduce `z z'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hs2 : ((Real.sqrt t : ℝ) : ℂ) * (starRingEnd ℂ) ((Real.sqrt t : ℝ) : ℂ) = (t : ℂ)`. Rewrite using `[Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt ht.le]`. Simplify using `only [I2.Hf, ψ, scaleEquiv_apply]`. Rewrite using `[e.symm.sum_comp (fun j => ((Real.sqrt t : ℝ) : ℂ) * z j * (starRingEnd ℂ) (((Real.sqrt t : ℝ) : ℂ) * z' j))]`. Simplify using `only [hermForm, dotProduct, Matrix.smul_mulVec, Matrix.one_mulVec, Pi.smul_apply, Pi.star_apply, smul_eq_mul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def]`. Take the linear combination `(z j * (starRingEnd ℂ) (z' j)) * hs2`. Use `⟨T, ψ, e, rfl, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z z'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, -, -, -, -, -, huniq, -⟩` from `GlobalTheory.Dict.hx_laws E r X g bas idx 0 hs ⟨0, rfl⟩ x hxd`. Use `(hH z z').trans ((huniq L hspL).2 _ ?_ ?_ z z')` and prove the remaining obligations. Simplify using `[Matrix.IsHermitian, Matrix.conjTranspose_smul]`. Introduce `u _ v _`. Rewrite using `[← hH, hψ, hψ, him]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `ga`. Use `(hb ga).trans ⟨fun ⟨v, hv, h⟩ => ⟨v, hv, ?_⟩, fun ⟨v, hv, h⟩ => ⟨v, hv, ?_⟩⟩` and prove the remaining obligations. Conclude with `h.symm.trans (hψ v).symm`. Conclude with `(hψ v).symm.trans h.symm`. Introduce `a u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Conclude with `(hψ _).trans ((scaled_smul X x a u).trans (congrArg (I2.act a) (hψ u).symm))`. Introduce `ga hga`. Take `⟨u, hu, rfl⟩` from `(hb ga).1 hga`. Take `⟨k, hk⟩` from `hint u hu _ (coe_smul_mem_lemma_2 w hu)`. Establish `hk' : (I2.Hf (scaled X x u) (I2.act w (scaled X x u))).im = (k : ℝ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← scaled_smul, him, hk]`. Use `push_cast`. Both sides reduce to the same expression. Use `show ((TorusAtAssembly.sgnFloor (I2.Hf (scaled X x u) (I2.act w (scaled X x u))).im : ℤ) : ℝ) = _`. Rewrite using `[hk', TorusAtAssembly.sgnFloor_cos]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (fun s => Real.cos (Real.pi * s)) hk'.symm`. Introduce `j`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `rowType_rowEquiv X ((rowEquiv X).symm (idx j))`. Rewrite `h` using `[Equiv.apply_symm_apply]`.
-
-Conclude with `h.symm`. Use `show scaleEquiv e _ hst (Pi.single j 1) = ((Real.sqrt t : ℝ) : ℂ) • EuclideanSpace.single (e j) (1 : ℂ)`. Use extensionality with `i`. Rewrite using `[scaleEquiv_apply]`. Distinguish the cases in `h : i = e j`.
-
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `h' : e.symm i ≠ j` using `fun h' => h (by rw [← h', Equiv.apply_symm_apply])`. Simplify using `[h, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Dict.exists_torus_of_selfD : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsSympl X bas → ∀ w : 𝓞 E, (w : E) + cc (w : E) = 1 → ∀ L : Lt E r, SelfD X L → ∀ x ∈ X.dom, X.IsOrtho x → ∀ t : ℝ, 0 < t → (∀ τ, X.c τ = t) → ∃ (T : I2.PT E) (ψ : (Fin g → ℂ) ≃ₗ[ℂ] I2.Vsp T.dim) (e : Fin g ≃ I2.Idx T.dim), T.r = r ∧ (∀ z z', I2.Hf (ψ z) (ψ z') = hx X bas idx x z z') ∧ (∀ ga, ga ∈ T.L ↔ ∃ u ∈ L, ga = ψ (pv X idx x u)) ∧ (∀ (a : 𝓞 E) u, ψ (pv X idx x ((a : E) • u)) = I2.act a (ψ (pv X idx x u))) ∧ (∀ ga ∈ T.L, (T.eps ga : ℝ) = Real.cos (Real.pi * (I2.Hf ga (I2.act w ga)).im)) ∧ (∀ j, (e j).1 = rowType X (idx j) ∧ ψ (Pi.single j 1) = ((Real.sqrt t : ℝ) : ℂ) • EuclideanSpace.single (e j) (1 : ℂ)) := by
   intro E _ _ _ r X g bas idx hs w hw L hL x hxd ho t ht hc

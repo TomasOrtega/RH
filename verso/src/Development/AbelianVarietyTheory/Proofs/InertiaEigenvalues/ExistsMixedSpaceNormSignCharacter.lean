@@ -18,7 +18,7 @@ open scoped ContDiff Classical in
 open NumberField.InfinitePlace in
 variable {K : Type} [Field K] [NumberField K] in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.NormSign.snorm, Prod.fst_mul, Prod.snd_mul, Pi.mul_apply, norm_mul, mul_pow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.NormSign.snorm_mul {K : Type} [Field K] [NumberField K]
     (x y : NumberField.mixedEmbedding.mixedSpace K) :
@@ -28,7 +28,7 @@ theorem _root_.GlobalTheory.NormSign.snorm_mul {K : Type} [Field K] [NumberField
   ring
 
 /- English proof (translation)
-Use `⟨(∏ _w : {w : InfinitePlace K // IsReal w}, t) * ∏ _w : {w : InfinitePlace K // IsComplex w}, t ^ 2, by positivity, ?_⟩` and prove the remaining obligations. Simplify using `only [snorm, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, _root_.norm_smul, Real.norm_eq_abs, abs_of_pos ht, mul_pow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem snorm_smul (t : ℝ) (ht : 0 < t) (x : mixedSpace K) :
     ∃ c : ℝ, 0 < c ∧ snorm (t • x) = c * snorm x := by
@@ -39,16 +39,16 @@ theorem snorm_smul (t : ℝ) (ht : 0 < t) (x : mixedSpace K) :
   ring
 
 /- English proof (translation)
-Unfold `snorm`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_snorm : Continuous (snorm : mixedSpace K → ℝ) := by
   unfold snorm
   fun_prop
 
 /- English proof (translation)
-Rewrite using `[mixedEmbedding.norm_apply, prod_eq_prod_mul_prod, snorm, abs_mul, Finset.abs_prod, Finset.abs_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mult_isReal, pow_one, normAtPlace_apply_of_isReal w.2, Real.norm_eq_abs]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mult_isComplex, normAtPlace_apply_of_isComplex w.2, abs_of_nonneg (by positivity)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem abs_snorm (x : mixedSpace K) : |snorm x| = mixedEmbedding.norm x := by
   rw [mixedEmbedding.norm_apply, prod_eq_prod_mul_prod, snorm, abs_mul, Finset.abs_prod,
@@ -60,13 +60,13 @@ theorem abs_snorm (x : mixedSpace K) : |snorm x| = mixedEmbedding.norm x := by
     rw [mult_isComplex, normAtPlace_apply_of_isComplex w.2, abs_of_nonneg (by positivity)]
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ x`. Rewrite `h` using `[eq_ratCast, ← Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) (fun f => f x) (fun φ => φ x) fun _ => by simp [RingHom.equivRatAlgHom_apply]]`. Rewrite using `[Complex.ofReal_ratCast, h, ← Finset.prod_fiberwise Finset.univ InfinitePlace.mk (fun φ => φ x), prod_eq_prod_mul_prod, snorm, Complex.ofReal_mul, Complex.ofReal_prod, Complex.ofReal_prod]`. Establish `key : ∀ w : InfinitePlace K, (Finset.univ.filter fun φ : K →+* ℂ => InfinitePlace.mk φ = w) = {w.embedding, ComplexEmbedding.conjugate w.embedding}`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w`. Use extensionality with `φ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Use `conv_lhs => rw [← mk_embedding w, mk_eq_iff, ComplexEmbedding.conjugate, star_involutive.eq_iff]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[key, ComplexEmbedding.isReal_iff.mp (isReal_iff.mp w.2), Finset.pair_eq_singleton, Finset.prod_singleton, mixedEmbedding_apply_isReal, embedding_of_isReal_apply]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hne : w.1.embedding ≠ ComplexEmbedding.conjugate w.1.embedding`. Rewrite using `[Ne, eq_comm, ← ComplexEmbedding.isReal_iff, ← isReal_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `not_isReal_iff_isComplex.mpr w.2`. Rewrite using `[key, Finset.prod_pair hne, mixedEmbedding_apply_isComplex, ComplexEmbedding.conjugate_coe_eq, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+A detailed English derivation is pending.
 -/
 theorem snorm_mixedEmbedding (x : K) :
     snorm (mixedEmbedding K x) = ((Algebra.norm ℚ x : ℚ) : ℝ) := by
@@ -102,11 +102,11 @@ open scoped ContDiff Classical in
 open NumberField.InfinitePlace in
 variable {K : Type} [Field K] [NumberField K] in
 /- English proof (translation)
-Break down `lt_trichotomy a 0 with ha | rfl | ha` into its components or cases. Break down `lt_trichotomy b 0 with hb | rfl | hb` into its components or cases. Establish `h` using `mul_pos_of_neg_of_neg ha hb`. Simplify using `[_root_.GlobalTheory.NormSign.sgn, ha, hb, h, ha.not_gt, hb.not_gt, hε]`. Simplify using `[_root_.GlobalTheory.NormSign.sgn]`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h` using `mul_neg_of_neg_of_pos ha hb`. Simplify using `[_root_.GlobalTheory.NormSign.sgn, ha, hb, h, ha.not_gt, h.not_gt]`. Simplify using `[_root_.GlobalTheory.NormSign.sgn]`. Break down `lt_trichotomy b 0 with hb | rfl | hb` into its components or cases. Establish `h` using `mul_neg_of_pos_of_neg ha hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `[_root_.GlobalTheory.NormSign.sgn, ha, hb, h, hb.not_gt, h.not_gt]`. Simplify using `[_root_.GlobalTheory.NormSign.sgn]`. Establish `h` using `mul_pos ha hb`. Simplify using `[_root_.GlobalTheory.NormSign.sgn, ha, hb, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.NormSign.sgn_mul {ε : ℂ} (hε : ε * ε = 1) (a b : ℝ) :
     _root_.GlobalTheory.NormSign.sgn ε (a * b) = _root_.GlobalTheory.NormSign.sgn ε a * _root_.GlobalTheory.NormSign.sgn ε b := by
@@ -126,7 +126,7 @@ theorem _root_.GlobalTheory.NormSign.sgn_mul {ε : ℂ} (hε : ε * ε = 1) (a b
       simp [_root_.GlobalTheory.NormSign.sgn, ha, hb, h]
 
 /- English proof (translation)
-Establish `h : ‖ε‖ = 1`. Apply the tactic sequence `rcases mul_self_eq_one_iff.mp hε with h | h <;> simp [h]`. Break down `lt_or_gt_of_ne ha with h' | h'` into its components or cases. Simplify using `[sgn, h', h'.not_gt, h]`. Simplify using `[sgn, h']`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem norm_sgn {ε : ℂ} (hε : ε * ε = 1) {a : ℝ} (ha : a ≠ 0) : ‖sgn ε a‖ = 1 := by
   have h : ‖ε‖ = 1 := by
@@ -136,13 +136,13 @@ theorem norm_sgn {ε : ℂ} (hε : ε * ε = 1) {a : ℝ} (ha : a ≠ 0) : ‖sg
   · simp [sgn, h']
 
 /- English proof (translation)
-Establish `hne : ∀ x : mixedSpace K, mixedEmbedding.norm x ≠ 0 → snorm x ≠ 0` using `fun x hx => by`. Rewrite `hx` using `[← abs_snorm, abs_ne_zero]`. Then use the resulting hypothesis. Use `⟨fun x => sgn ε (snorm x), fun x y => ?_, fun t x ht => ?_, fun x hx => ?_, fun x hx => norm_sgn hε (hne x hx), fun β hβ => ?_⟩` and prove the remaining obligations. Simplify using `only [snorm_mul, sgn_mul hε]`. Take `⟨c, hc, h⟩` from `snorm_smul t ht x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [h, sgn_mul hε]`. Simplify using `[sgn, hc]`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Use `(contDiffAt_const (c := sgn ε (snorm x))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne (hne x hx) with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `filter_upwards [continuous_snorm.continuousAt.eventually (gt_mem_nhds h)] with y hy`. Simplify using `[sgn, h, hy, h.not_gt, hy.not_gt]`. Use `filter_upwards [continuous_snorm.continuousAt.eventually (lt_mem_nhds h)] with y hy`. Simplify using `[sgn, h, hy]`. Establish `h0 : Algebra.norm ℤ β ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hβ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [snorm_mixedEmbedding, ← Algebra.coe_norm_int, Rat.cast_intCast, sgn, Int.cast_pos, Int.cast_lt_zero]`. Break down `lt_or_gt_of_ne h0 with h | h` into its components or cases. Simplify using `[h, h.not_gt]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_normSign (K : Type) [Field K] [NumberField K] (ε : ℂ) (hε : ε * ε = 1) :
     ∃ φ : mixedSpace K → ℂ, (∀ x y, φ (x * y) = φ x * φ y) ∧

@@ -7,9 +7,9 @@ open Formalism.FourierDecayAlt Filter Topology
 noncomputable section
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [xD]`. Establish `h : (fun y => φ (y / ε)) = fun y => φ (ε⁻¹ * y)`. Use function extensionality and compare the values at `y`. Rewrite using `[div_eq_inv_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, deriv_comp_mul_left, smul_eq_mul, div_eq_inv_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem xD_dil (φ : ℝ → ℝ) {ε : ℝ} (hε : 0 < ε) :
     xD (fun y => φ (y / ε)) = fun x => xD φ (x / ε) := by
@@ -22,9 +22,9 @@ theorem xD_dil (φ : ℝ → ℝ) {ε : ℝ} (hε : 0 < ε) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => rfl`. Consider the case `succ q ih`. Rewrite using `[Function.iterate_succ_apply', ih, xD_dil _ hε]`. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Function.iterate_succ_apply']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xD_iter_dil (φ : ℝ → ℝ) {ε : ℝ} (hε : 0 < ε) (q : ℕ) :
     xD^[q] (fun y => φ (y / ε)) = fun x => (xD^[q] φ) (x / ε) := by
@@ -36,7 +36,7 @@ theorem xD_iter_dil (φ : ℝ → ℝ) {ε : ℝ} (hε : 0 < ε) (q : ℕ) :
     rw [Function.iterate_succ_apply']
 
 /- English proof (translation)
-Establish `hd` using `(contDiff_infty_iff_deriv.mp hφ).2`. Conclude with `contDiff_id.mul hd`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem xD_contDiff {φ : ℝ → ℝ} (hφ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (xD φ) := by
@@ -44,7 +44,7 @@ theorem xD_contDiff {φ : ℝ → ℝ} (hφ : ContDiff ℝ ((⊤ : ℕ∞) : Wit
   exact contDiff_id.mul hd
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simpa using hφ`. Consider the case `succ q ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `xD_contDiff ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xD_iter_contDiff {φ : ℝ → ℝ} (hφ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ) (q : ℕ) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (xD^[q] φ) := by
@@ -55,7 +55,7 @@ theorem xD_iter_contDiff {φ : ℝ → ℝ} (hφ : ContDiff ℝ ((⊤ : ℕ∞) 
     exact xD_contDiff ih
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h : φ =ᶠ[nhds y] fun _ => c` using `Filter.eventually_of_mem (hU.mem_nhds hy) hφ`. Use `show y * deriv φ y = 0`. Rewrite using `[h.deriv_eq]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xD_zero_of_const {φ : ℝ → ℝ} {U : Set ℝ} (hU : IsOpen U) (c : ℝ) (hφ : ∀ y ∈ U, φ y = c) :
     ∀ y ∈ U, xD φ y = 0 := by
@@ -66,9 +66,9 @@ theorem xD_zero_of_const {φ : ℝ → ℝ} {U : Set ℝ} (hU : IsOpen U) (c : �
   simp
 
 /- English proof (translation)
-Introduce `q`. Proceed by induction on `q with`. Consider the case `zero => intro y hy`. Simplify using `using hφ y hy`. Consider the case `succ q ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `y hy`. Rewrite using `[Function.iterate_succ_apply']`. Simplify using `only [Nat.succ_ne_zero, if_false]`. Conclude with `xD_zero_of_const hU _ ih y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem xD_iterate_eq_ite_of_const_on_open {φ : ℝ → ℝ} {U : Set ℝ} (hU : IsOpen U) (c : ℝ)
     (hφ : ∀ y ∈ U, φ y = c) : ∀ q : ℕ, ∀ y ∈ U, (xD^[q] φ) y = if q = 0 then c else 0 := by
@@ -82,13 +82,11 @@ private theorem xD_iterate_eq_ite_of_const_on_open {φ : ℝ → ℝ} {U : Set �
     exact xD_zero_of_const hU _ ih y hy
 
 /- English proof (translation)
-Unfold `NFCutSup`. Introduce `χ hχ q`. Take `⟨hs, -, h1⟩` from `hχ`. Establish `hc : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (xD^[q] χ)` using `xD_iter_contDiff hs q`. Take `⟨K0, hK0⟩` from `(isCompact_Icc (a := (0 : ℝ)) (b := 1)).exists_bound_of_continuousOn hc.continuous.continuousOn`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨max K0 1, fun ε hε x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[xD_iter_dil χ hε q]`. Use `show |(xD^[q] χ) (x / ε)| ≤ max K0 1`. Establish `hy : 0 < x / ε` using `div_pos hx hε`. Break down `le_or_gt (x / ε) 1 with hy1 | hy1` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hb` using `hK0 (x / ε) ⟨hy.le, hy1⟩`. Rewrite `hb` using `[Real.norm_eq_abs]`. Conclude with `hb.trans (le_max_left _ _)`. Rewrite using `[xD_iterate_eq_ite_of_const_on_open isOpen_Ioi 1 (fun z hz => h1 z (le_of_lt hz)) q (x / ε) hy1]`. Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations.
-
-Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem truncated_supremum_bound_holds : NFCutSup := by
   unfold NFCutSup

@@ -21,24 +21,22 @@ noncomputable section
 namespace GlobalTheory.BaseChain
 
 /- English proof (translation)
-Rewrite using `[Measure.restrict_smul, integral_smul_measure]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem setIntegral_smul_measure_complex {H : Type*} [MeasurableSpace H] (c : ENNReal) (ν : Measure H) (s : Set H) (f : H → ℂ) :
     ∫ y in s, f y ∂(c • ν) = c.toReal • ∫ y in s, f y ∂ν := by
   rw [Measure.restrict_smul, integral_smul_measure]
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u f hP hf j h`. Establish `hcard : Nat.card (lvP W).H ≠ 0`. Establish `hf' : ∀ PP : (pk W).Pg, Finite (kP PP.1)` using `fun PP => Ideal.finiteQuotientOfFreeOfNeBot _ PP.1.ne_bot`. Conclude with `Nat.card_pos.ne'`. Establish `hcH : GlobalTheory.BaseChain.cH W ≠ ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.BaseChain.cH]`. Use `⟨fun F φ v g => ?_, fun F φ v g => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.top_step_vector_property W hP j h _ ((hf.row W.P.A3.A.μ0).vT j h) F φ v g`. Unfold `IntegrableOn at h1 ⊢`. Express the relevant statement in the definitionally equal form `Integrable _ ((GlobalTheory.BaseChain.cH W • (pk W).νX W.P.A3.A.μ0).restrict ((pk W).fdX W.P.A3.A.μ0))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.restrict_smul]`. Conclude with `h1.smul_measure hcH`. Take `⟨h', -, hL⟩` from `GlobalTheory.T.extra_column_range_membership W u hP f.g W.P.A3.A.μ0 j h F`. Take `⟨h'', he⟩` from `(hf.row W.P.A3.A.μ0).ioT j h F`. Establish `e1` using `congrFun (hL _ ((hf.row W.P.A3.A.μ0).vT j h) φ v) g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ X : ℂ, (GlobalTheory.BaseChain.cH W).toReal • ((Nat.card (lvP W).H : ℂ) * X) = X`. Introduce `X`. Establish `e3 : (GlobalTheory.BaseChain.cH W).toReal = ((Nat.card (lvP W).H : ℝ))⁻¹`. Simplify using `[GlobalTheory.BaseChain.cH, ENNReal.toReal_inv]`. Establish `hc : ((Nat.card (lvP W).H : ℂ)) ≠ 0` using `Nat.cast_ne_zero.2 hcard`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[e3, Complex.real_smul, ← mul_assoc]`. Use `push_cast`. Rewrite using `[inv_mul_cancel₀ hc, one_mul]`. Express the relevant statement in the definitionally equal form `∫ y in (pk W).fdX W.P.A3.A.μ0, _ ∂(GlobalTheory.BaseChain.cH W • (pk W).νX W.P.A3.A.μ0) = ((f.row W.P.A3.A.μ0).ioT j h F).1 (f.c.ItT j h φ v) g`. Rewrite using `[setIntegral_smul_measure_complex, he]`.
-
-Establish `e2 : (∫ y in (pk W).fdX W.P.A3.A.μ0, thetaKO (omT (pk W) W.P.A3.A.μ0 j h) g y (pureTensorO (pk W).ψ (pk W).θ (Yc D (j + 1)) D.sp.X' (cart ((pk W).MY (j + 1))) (cart (pk W).MX) (onb ((pk W).MY (j + 1))) (onb (pk W).MX) ((f.row W.P.A3.A.μ0).vT j h) φ) * F.1 v y ∂(pk W).νX W.P.A3.A. …` using `e1`. Conclude with `(congrArg (fun z : ℂ => (GlobalTheory.BaseChain.cH W).toReal • z) e2).trans (key _)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stepX_isIo : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ j (h : j + 2 * 0 + 2 = D.R.m), Lift.IsIo (GlobalTheory.BaseChain.stageX W).ν (GlobalTheory.BaseChain.stageX W).fd (thetaKO (GlobalTheory.BaseChain.stepX f j h).ω) (GlobalTheory.BaseChain.stepX f j h).pt (GlobalTheory.BaseChain.stepX f j h).It ((GlobalTheory.BaseChain.stageX W).CC (GlobalTheory.BaseChain.com W)) ((GlobalTheory.BaseChain.stageY W (j + 1)).CC (GlobalTheory.BaseChain.com W)) (GlobalTheory.BaseChain.stepX f j h).io := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hP hf j h

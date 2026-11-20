@@ -22,7 +22,7 @@ def idemF (P : Set (Pl E)) : Af E :=
 def idem (P : Set (Pl E)) : Ad E := sFin E (idemF P)
 
 /- English proof (translation)
-Use `Prod.ext (mul_zero _) (FiniteAdeleRing.ext E fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(idemF P).1 v * (idemF P).1 v = (idemF P).1 v`. Simplify using `only [idemF]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem idem_mul_idem (P : Set (Pl E)) : idem P * idem P = idem P := by
   refine Prod.ext (mul_zero _) (FiniteAdeleRing.ext E fun v => ?_)
@@ -39,7 +39,7 @@ def sIdem (P : Set (Pl E)) : Ad E →ₙ+* Ad E where
   map_add' x y := mul_add _ _ _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `pInf E (sFin E (idemF P) * x) = 0`. Rewrite using `[map_mul]`. Establish `: pInf E (sFin E (idemF P)) = 0` using `map_zero (infEq E).symm`. Rewrite using `[this, zero_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pInf_sIdem (P : Set (Pl E)) (x : Ad E) : pInf E (sIdem P x) = 0 := by
   change pInf E (sFin E (idemF P) * x) = 0
@@ -48,7 +48,7 @@ theorem pInf_sIdem (P : Set (Pl E)) (x : Ad E) : pInf E (sIdem P x) = 0 := by
   rw [this, zero_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((pLoc E v).comp (pFin E)) (idem P) * _ = _`. Establish `: ((pLoc E v).comp (pFin E)) (idem P) = 1`. Express the relevant statement in the definitionally equal form `(idemF P).1 v = 1`. Simplify using `only [idemF, if_pos hv]`. Rewrite using `[this, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -62,7 +62,7 @@ theorem pLoc_sIdem_of_mem (P : Set (Pl E)) {v : Pl E} (hv : v ∈ P) (x : Ad E) 
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((pLoc E v).comp (pFin E)) (idem P) * _ = _`. Establish `: ((pLoc E v).comp (pFin E)) (idem P) = 0`. Express the relevant statement in the definitionally equal form `(idemF P).1 v = 0`. Simplify using `only [idemF, if_neg hv]`. Rewrite using `[this, zero_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pLoc_sIdem_of_not_mem (P : Set (Pl E)) {v : Pl E} (hv : v ∉ P) (x : Ad E) :
     ((pLoc E v).comp (pFin E)) (sIdem P x) = 0 := by
@@ -73,11 +73,11 @@ theorem pLoc_sIdem_of_not_mem (P : Set (Pl E)) {v : Pl E} (hv : v ∉ P) (x : Ad
   rw [this, zero_mul]
 
 /- English proof (translation)
-Use `Prod.ext ?_ (FiniteAdeleRing.ext E fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(infEq E) ((starRingEnd (Cinf E)) ((infEq E).symm 0)) = 0`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `pLoc E v (conjFin (IsCMField.complexConj E).toRingEquiv (idemF P)) = (idemF P).1 v`. Rewrite using `[pLoc_conjFin]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `conjLoc _ v ((idemF P).1 _) = (idemF P).1 v`. Establish `hc` using `GlobalTheory.DefU.LocRet.under_conjSrc (E := E) v`. Simplify using `only [idemF]`. Use `split_ifs with h1 h2 h2`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `absurd (hP _ _ hc h1) h2`. Conclude with `absurd (hP _ _ hc.symm h2) h1`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem conjAd_idem (P : Set (Pl E))
     (hP : ∀ u v : Pl E, u.under (𝓞 (maximalRealSubfield E)) = v.under (𝓞 (maximalRealSubfield E)) → u ∈ P → v ∈ P) :
@@ -99,9 +99,9 @@ theorem conjAd_idem (P : Set (Pl E))
 variable {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `conjAd E ((1 : Matrix (Fin n) (Fin n) (Ad E)) j i - idem P * (1 : Matrix (Fin n) (Fin n) (Ad E)) j i + idem P * M j i) = (1 : Matrix (Fin n) (Fin n) (Ad E)) i j - idem P * (1 : Matrix (Fin n) (Fin n) (Ad E)) i j + idem P * conjAd E (M j i)`. Rewrite using `[map_add, map_sub, map_mul, map_mul, conjAd_idem P hP, Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cT_corner (P : Set (Pl E))
     (hP : ∀ u v : Pl E, u.under (𝓞 (maximalRealSubfield E)) = v.under (𝓞 (maximalRealSubfield E)) → u ∈ P → v ∈ P)
@@ -117,7 +117,7 @@ theorem cT_corner (P : Set (Pl E))
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Establish `hg : cT (conjAd E) (g.1 : Matrix (Fin n) (Fin n) (Ad E)) * 1 * g.1 = 1` using `g.2`. Express the relevant statement in the definitionally equal form `cT (conjAd E) (corner (matN n (sIdem P)) g.1.1) * 1 * corner (matN n (sIdem P)) g.1.1 = 1`. Rewrite using `[cT_corner P hP, Matrix.mul_one, ← map_mul, ← Matrix.mul_one (cT (conjAd E) _), hg, map_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_mem (P : Set (Pl E))
     (hP : ∀ u v : Pl E, u.under (𝓞 (maximalRealSubfield E)) = v.under (𝓞 (maximalRealSubfield E)) → u ∈ P → v ∈ P)
@@ -127,9 +127,7 @@ theorem corner_mem (P : Set (Pl E))
   rw [cT_corner P hP, Matrix.mul_one, ← map_mul, ← Matrix.mul_one (cT (conjAd E) _), hg, map_one]
 
 /- English proof (translation)
-Introduce `E _ _ _ n P hP g _`. Use `⟨⟨cornerGL n (sIdem P) g.1, corner_mem P hP g⟩, ?_, fun v => ?_⟩` and prove the remaining obligations. Conclude with `MonoidHom.mem_ker.2 (map_cornerGL_of_zero _ _ (pInf_sIdem P) _)`. Use `split_ifs with hv`. Conclude with `map_cornerGL_of_hom _ _ _ (pLoc_sIdem_of_mem P hv) _`.
-
-Conclude with `map_cornerGL_of_zero _ _ (pLoc_sIdem_of_not_mem P hv) _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_cut : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (P : Set (Pl E)),
     (∀ u v : Pl E, u.under (𝓞 (maximalRealSubfield E)) = v.under (𝓞 (maximalRealSubfield E)) → u ∈ P → v ∈ P) →

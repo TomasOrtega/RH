@@ -274,7 +274,7 @@ abbrev d1 : IndexData := ⟨1, 2, 1, le_rfl, le_rfl, by norm_num⟩
 abbrev d2 : IndexData := ⟨1, 3, 2, by norm_num, by norm_num, by norm_num⟩
 
 /- English proof (translation)
-Use `show 2 < 3 * (2 - 1)`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem textRange_inhabited : (⟨3, 2, 1, le_rfl, le_rfl, by norm_num⟩ : IndexData).TextRange := by
   show 2 < 3 * (2 - 1)
@@ -286,7 +286,7 @@ Both sides reduce to the same expression.
 theorem rankTwo_D : d1.D = 1 := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 1, ⟨0, by norm_num⟩, ⟨1, by norm_num⟩, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem DegVanishesOnWall.hypotheses_inhabited :
     ∃ (u : Idx d1 → ℚ) (a b : Fin d1.N), b.val = a.val + 1 ∧ u (0, a) = u (0, b) :=
@@ -297,7 +297,7 @@ def sampleQ : ℕ → Fin d1.f → XPoly d1 := fun k τ => if k = 1 then X (τ, 
 def sampleF : XPoly d1 := ∑ k ∈ Icc 1 d1.N, ∑ τ : Fin d1.f, RestTerms.blockPowerSum d1.f d1.N k τ * sampleQ k τ
 
 /- English proof (translation)
-Unfold `RestTerms.blockPowerSum`. Conclude with `IsHomogeneous.sum _ _ _ (fun i _ => by simpa using (isHomogeneous_X ℚ (τ, i)).pow k)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem blockPowerSum_isHomogeneous (f N k : ℕ) (τ : Fin f) :
     (RestTerms.blockPowerSum f N k τ).IsHomogeneous k := by
@@ -305,15 +305,13 @@ theorem blockPowerSum_isHomogeneous (f N k : ℕ) (τ : Fin f) :
   exact IsHomogeneous.sum _ _ _ (fun i _ => by simpa using (isHomogeneous_X ℚ (τ, i)).pow k)
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, rfl⟩` and prove the remaining obligations. Introduce `h`. Establish `h1` using `congrArg (eval (fun _ => (1 : ℚ))) h`. Establish `hI : Icc 1 d1.N = {1, 2}` using `by decide`. Simplify using `[sampleF, sampleQ, hI, RestTerms.blockPowerSum] at h1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `IsHomogeneous.sum` to reduce the goal to its premises. Introduce `k _`. Apply `IsHomogeneous.sum` to reduce the goal to its premises. Introduce `τ _`. Distinguish the cases in `hk : k = 1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using `only [sampleQ, if_true]`. Conclude with `(blockPowerSum_isHomogeneous _ _ 1 τ).mul (isHomogeneous_X ℚ _)`. Simplify using `only [sampleQ, if_neg hk, mul_zero]`. Conclude with `isHomogeneous_zero _ _ _`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `k _ τ`. Distinguish the cases in `hk : k = 1`. Substitute `hk` using the available equality. Simplify using `only [sampleQ, if_true]`. Conclude with `isHomogeneous_X ℚ _`.
-
-Simplify using `only [sampleQ, if_neg hk]`. Conclude with `isHomogeneous_zero _ _ _`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ShFormula.hypotheses_inhabited :
     sampleF ≠ 0 ∧ sampleF.IsHomogeneous (d1.D + 1) ∧
@@ -343,7 +341,7 @@ theorem ShFormula.hypotheses_inhabited :
       exact isHomogeneous_zero _ _ _
 
 /- English proof (translation)
-Use `⟨∑ m ∈ P.support, |coeff m P|, fun m => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hm : m ∈ P.support`. Conclude with `Finset.single_le_sum (f := fun m => |coeff m P|) (fun _ _ => abs_nonneg _) hm`. Rewrite using `[notMem_support_iff.1 hm, abs_zero]`. Conclude with `Finset.sum_nonneg (fun _ _ => abs_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coeff_bound {σ : Type*} (P : MvPolynomial σ ℝ) : ∃ M : ℝ, ∀ m, |coeff m P| ≤ M := by
   refine ⟨∑ m ∈ P.support, |coeff m P|, fun m => ?_⟩
@@ -353,7 +351,7 @@ theorem exists_coeff_bound {σ : Type*} (P : MvPolynomial σ ℝ) : ∃ M : ℝ,
     exact Finset.sum_nonneg (fun _ _ => abs_nonneg _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Finsupp.sum_single_index rfl, exists_coeff_bound _⟩`.
+Supply the required witnesses or components.
 -/
 theorem PolarisationBound.hypotheses_inhabited (Φ : MvPolynomial (Fin 1) ℝ →ₗ[ℝ] ℝ) :
     ((Finsupp.single (0 : Fin 1) 1).sum fun _ e => e) = 1 ∧
@@ -361,9 +359,9 @@ theorem PolarisationBound.hypotheses_inhabited (Φ : MvPolynomial (Fin 1) ℝ �
   ⟨Finsupp.sum_single_index rfl, exists_coeff_bound _⟩
 
 /- English proof (translation)
-Introduce `a b`. Establish `hv : ∀ x ∈ rootHyperplane d1 0 a b, eval x (X (0, a) - X (0, b) : LamPoly d1) = 0`. Introduce `x hx`. Establish `hx' : x (0, a) = x (0, b)` using `hx`. Simplify using `[hx']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨by decide, ⟨Set.univ, isOpen_univ, ⟨0, Set.mem_univ _, ?_⟩, fun x hx => hv x hx.2⟩, hv⟩` and prove the remaining obligations. Use `show (0 : Weight d1) (0, a) = (0 : Weight d1) (0, b)`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem PolyVanishesOnHyperplane.hypotheses_inhabited :
     let a : Fin d1.N := ⟨0, by norm_num⟩
@@ -382,7 +380,7 @@ theorem PolyVanishesOnHyperplane.hypotheses_inhabited :
   rfl
 
 /- English proof (translation)
-Introduce `τ a b hab`. Unfold `antisymDelta`. Conclude with `((Finset.dvd_prod_of_mem (fun b => (X (τ, a) - X (τ, b) : LamPoly d)) (Finset.mem_Ioi.2 hab)).trans (Finset.dvd_prod_of_mem (fun a => ∏ b ∈ Finset.Ioi a, (X (τ, a) - X (τ, b) : LamPoly d)) (Finset.mem_univ a))).trans (Finset.dvd_prod_of_mem (fun τ => ∏ a : Fin d.N, ∏ b ∈ Finset.I …`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem DelDividesV.hypotheses_inhabited (d : IndexData) :
     ∀ (τ : Fin d.f) (a b : Fin d.N), a < b →
@@ -397,7 +395,7 @@ theorem DelDividesV.hypotheses_inhabited (d : IndexData) :
       (Finset.mem_univ τ))
 
 /- English proof (translation)
-Use `⟨antisymSample_mem.1, antisymSample_mem.2, ⟨by decide, by decide⟩, rfl, ?_⟩` and prove the remaining obligations. Introduce `τ a b hab`. Conclude with `antisymDelta_mul_vanishes (Fin 1) 3 2 _ τ a b hab.1 hab.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem CompactRootVanishes.hypotheses_inhabited :
     antisymSample ∈ vSpace d2 ∧ antisymSample ≠ 0 ∧
@@ -411,7 +409,7 @@ theorem CompactRootVanishes.hypotheses_inhabited :
   exact antisymDelta_mul_vanishes (Fin 1) 3 2 _ τ a b hab.1 hab.2
 
 /- English proof (translation)
-The claim follows from `isClosed_eq (continuous_apply _) (continuous_apply _)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_rootHyperplane (τ : Fin d.f) (a b : Fin d.N) : IsClosed (rootHyperplane d τ a b) :=
   isClosed_eq (continuous_apply _) (continuous_apply _)
@@ -420,7 +418,7 @@ def unitWallFamily : Fin d.f → Fin d.N → Fin d.N → Set (Weight d) :=
   fun τ a b => Metric.closedBall 0 1 ∩ rootHyperplane d τ a b
 
 /- English proof (translation)
-Introduce `τ a b _`. Use `⟨(isCompact_closedBall 0 1).inter_right (isClosed_rootHyperplane d τ a b), Set.inter_subset_right, Metric.ball 0 1, Metric.isOpen_ball, ⟨0, Metric.mem_ball_self one_pos, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (0 : Weight d) (τ, a) = (0 : Weight d) (τ, b)`. Both sides reduce to the same expression. Conclude with `Set.inter_subset_inter_left _ Metric.ball_subset_closedBall`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unitWallFamily_isWallFamily : IsWallFamily d (unitWallFamily d) := by
   intro τ a b _
@@ -432,13 +430,13 @@ theorem unitWallFamily_isWallFamily : IsWallFamily d (unitWallFamily d) := by
   · exact Set.inter_subset_inter_left _ Metric.ball_subset_closedBall
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `Submodule.exists_isCompl (U.comap V.subtype)`. Use `⟨q.map V.subtype, Submodule.map_subtype_le _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hxU hxV'`. Take `⟨y, hyq, rfl⟩` from `Submodule.mem_map.1 hxV'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hyp : y ∈ U.comap V.subtype` using `Submodule.mem_comap.2 hxU`. Establish `hy0 : y = 0` using `(Submodule.disjoint_def.1 hq.disjoint) y hyp hyq`. Simplify using `[hy0]`. Use `le_antisymm (sup_le h (Submodule.map_subtype_le _ _)) ?_` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htop : (⟨x, hx⟩ : V) ∈ U.comap V.subtype ⊔ q`. Rewrite using `[hq.sup_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 htop`. Establish `e : (y : M) + (z : M) = x` using `by simpa using congrArg Subtype.val hyz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `Submodule.add_mem_sup (Submodule.mem_comap.1 hy) (Submodule.mem_map_of_mem hz)`.
+A detailed English derivation is pending.
 -/
 theorem exists_complement_of_le {M : Type*} [AddCommGroup M] [Module ℝ M] {U V : Submodule ℝ M}
     (h : U ≤ V) : ∃ V' : Submodule ℝ M, V' ≤ V ∧ Disjoint U V' ∧ U ⊔ V' = V := by
@@ -461,7 +459,7 @@ theorem exists_complement_of_le {M : Type*} [AddCommGroup M] [Module ℝ M] {U V
     exact Submodule.add_mem_sup (Submodule.mem_comap.1 hy) (Submodule.mem_map_of_mem hz)
 
 /- English proof (translation)
-Establish `h0 : Finset.Ioi (0 : Fin 2) = {1}` using `by decide`. Establish `h1 : Finset.Ioi (1 : Fin 2) = ∅` using `by decide`. Simplify using `[antisymDelta, Fin.prod_univ_two, h0, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem antisymDelta_rankTwo : antisymDelta (Fin d1.f) d1.N = (X (0, 0) - X (0, 1) : LamPoly d1) := by
   have h0 : Finset.Ioi (0 : Fin 2) = {1} := by decide
@@ -469,7 +467,7 @@ theorem antisymDelta_rankTwo : antisymDelta (Fin d1.f) d1.N = (X (0, 0) - X (0, 
   simp [antisymDelta, Fin.prod_univ_two, h0, h1]
 
 /- English proof (translation)
-Rewrite using `[invForms, Submodule.span_le]`. Introduce and unpack `P (⟨τ, rfl⟩ | ⟨τ, rfl⟩)`. Conclude with `(mem_homogeneousSubmodule _ _).2 (IsHomogeneous.sum _ _ _ (fun i _ => isHomogeneous_X ℝ _))`. Conclude with `(mem_homogeneousSubmodule _ _).2 (IsHomogeneous.sum _ _ _ (fun i _ => isHomogeneous_X ℝ _))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem invForms_le_homogeneous : invForms d ≤ homogeneousSubmodule (Idx d) ℝ 1 := by
   rw [invForms, Submodule.span_le]
@@ -480,11 +478,11 @@ theorem invForms_le_homogeneous : invForms d ≤ homogeneousSubmodule (Idx d) �
       (IsHomogeneous.sum _ _ _ (fun i _ => isHomogeneous_X ℝ _))
 
 /- English proof (translation)
-Introduce `P hP`. Take `⟨l, hl, rfl⟩` from `Submodule.mem_map.1 hP`. Establish `hl1 : l.IsHomogeneous 1` using `(mem_homogeneousSubmodule _ _).1 (invForms_le_homogeneous d1 hl)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_homogeneousSubmodule]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hdeg : antisymDegree (Fin d1.f) d1.N + 1 = 1 + 1` using `by decide`. Rewrite using `[hdeg, LinearMap.mulLeft_apply, antisymDelta_rankTwo]`. Conclude with `((isHomogeneous_X ℝ _).sub (isHomogeneous_X ℝ _)).mul hl1`. Introduce and unpack `σ ⟨τ, a, b, hab, hblk, -⟩`. It suffices to derive a contradiction.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `ha : a.val < 2` using `a.isLt`. Establish `hb : b.val < 2` using `b.isLt`. Establish `hblk' : b.val < 1 ∨ 1 ≤ a.val` using `hblk`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem uSpace_le_vSpace_rankTwo : uSpace d1 ≤ vSpace d1 := by
   intro P hP
@@ -503,7 +501,7 @@ theorem uSpace_le_vSpace_rankTwo : uSpace d1 ≤ vSpace d1 := by
     omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨unitWallFamily_isWallFamily d1, exists_complement_of_le uSpace_le_vSpace_rankTwo⟩`.
+Supply the required witnesses or components.
 -/
 theorem DecompositionBound.hypotheses_inhabited :
     IsWallFamily d1 (unitWallFamily d1) ∧
@@ -512,9 +510,9 @@ theorem DecompositionBound.hypotheses_inhabited :
   ⟨unitWallFamily_isWallFamily d1, exists_complement_of_le uSpace_le_vSpace_rankTwo⟩
 
 /- English proof (translation)
-Use `⟨by rw [norm_zero]; norm_num, by simp [gap], ?_, ?_⟩` and prove the remaining obligations. Introduce `τ hτ`. Conclude with `absurd (Subsingleton.elim τ 0) hτ`. Introduce and unpack `τ a b ⟨hab, hbj⟩`. It suffices to derive a contradiction.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hb : b.val < 2` using `b.isLt`. Establish `hbj' : b.val ≠ 1` using `hbj`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem zero_mem_KSet_rankTwo : (0 : Weight d1) ∈ KSet d1 0 (quarterInverseN d1) := by
   refine ⟨by rw [norm_zero]; norm_num, by simp [gap], ?_, ?_⟩

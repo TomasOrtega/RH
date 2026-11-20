@@ -11,7 +11,7 @@ noncomputable def revLex : MonomialOrder.{0, 0} ℕ :=
   (MonomialOrder.lex (σ := ℕᵒᵈ) : MonomialOrder ℕᵒᵈ)
 
 /- English proof (translation)
-Conclude with `⟨OrderDual.toDual i, fun j hj => h1 (OrderDual.ofDual j) hj, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem revLex_lt {β γ : ℕ →₀ ℕ} (i : ℕ) (h1 : ∀ j, i < j → β j = γ j) (h2 : β i < γ i) :
     revLex.toSyn β < revLex.toSyn γ := by
@@ -23,9 +23,9 @@ def Led (m : MonomialOrder.{0, 0} σ) (p : MvPolynomial σ R) (γ : σ →₀ �
   IsUnit (MvPolynomial.coeff γ p) ∧ m.toSyn (m.degree p) ≤ m.toSyn γ
 
 /- English proof (translation)
-Take `⟨hp1, hp2⟩` from `hp`. Take `⟨hq1, hq2⟩` from `hq`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonomialOrder.coeff_mul_of_add_of_degree_le hp2 hq2]`. Conclude with `hp1.mul hq1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem Led.mul {m : MonomialOrder.{0, 0} σ} {p q : MvPolynomial σ R} {γ δ : σ →₀ ℕ}
     (hp : Led m p γ) (hq : Led m q δ) : Led m (p * q) (γ + δ) := by
@@ -41,7 +41,7 @@ theorem Led.mul {m : MonomialOrder.{0, 0} σ} {p q : MvPolynomial σ R} {γ δ :
       _ = m.toSyn (γ + δ) := (map_add _ _ _).symm
 
 /- English proof (translation)
-Use `⟨?_, MonomialOrder.degree_monomial_le _⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_monomial, if_pos rfl]`. Conclude with `isUnit_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Led.monomial (m : MonomialOrder.{0, 0} σ) (γ : σ →₀ ℕ) :
     Led m (MvPolynomial.monomial γ (1 : R)) γ := by
@@ -51,16 +51,16 @@ theorem Led.monomial (m : MonomialOrder.{0, 0} σ) (γ : σ →₀ ℕ) :
   exact isUnit_one
 
 /- English proof (translation)
-Establish `h` using `Led.monomial (R := R) m 0`. Rewrite `h` using `[← MvPolynomial.C_apply, MvPolynomial.C_1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Led.one (m : MonomialOrder.{0, 0} σ) : Led m (1 : MvPolynomial σ R) 0 := by
   have h := Led.monomial (R := R) m 0
   rwa [← MvPolynomial.C_apply, MvPolynomial.C_1] at h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `e : (0 : ℕ) • γ = 0` using `by ext; simp`. Rewrite using `[pow_zero, e]`. Conclude with `Led.one m`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Establish `e : (n + 1) • γ = n • γ + γ` using `by ext; simp [add_mul]`. Rewrite using `[pow_succ, e]`. Conclude with `ih.mul hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Led.pow {m : MonomialOrder.{0, 0} σ} {p : MvPolynomial σ R} {γ : σ →₀ ℕ}
     (hp : Led m p γ) (n : ℕ) : Led m (p ^ n) (n • γ) := by
@@ -75,9 +75,9 @@ theorem Led.pow {m : MonomialOrder.{0, 0} σ} {p : MvPolynomial σ R} {γ : σ �
     exact ih.mul hp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, Finset.sum_empty]`. Conclude with `Led.one m`. Consider the case `insert j s hj ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj]`. Conclude with `(hp j).mul ih`.
+A detailed English derivation is pending.
 -/
 theorem Led.prod {ι : Type} {m : MonomialOrder.{0, 0} σ} (s : Finset ι)
     {p : ι → MvPolynomial σ R} {γ : ι → σ →₀ ℕ}
@@ -92,7 +92,7 @@ theorem Led.prod {ι : Type} {m : MonomialOrder.{0, 0} σ} (s : Finset ι)
     exact (hp j).mul ih
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `hv : j ∈ a.vars` using `(MvPolynomial.mem_vars_iff_mem_support j).2 ⟨β, hβ, Finsupp.mem_support_iff.2 h⟩`. Establish `hlt : j < i` using `MvPolynomial.mem_supported.1 ha hv`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem apply_eq_zero_of_supported {i : ℕ} {a : MvPolynomial ℕ R}
     (ha : a ∈ MvPolynomial.supported R (Set.Iio i)) {β : ℕ →₀ ℕ} (hβ : β ∈ a.support)
@@ -104,25 +104,23 @@ theorem apply_eq_zero_of_supported {i : ℕ} {a : MvPolynomial ℕ R}
   omega
 
 /- English proof (translation)
-Establish `hmon : MvPolynomial.C (v : R) * MvPolynomial.X i ^ l = MvPolynomial.monomial (Finsupp.single i l) (v : R)`. Rewrite using `[MvPolynomial.X_pow_eq_monomial, MvPolynomial.C_mul_monomial, mul_one]`. Establish `hsmall : ∀ c : ℕ →₀ ℕ, (∀ j, i < j → c j = 0) → c i < l → revLex.toSyn c < revLex.toSyn (Finsupp.single i l)`. Introduce `c h1 h2`. Use `revLex_lt i (fun j hj => ?_) (by simpa using h2)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1 j hj]`. Simplify using `[hj.ne]`. Establish `hb0 : ∀ c, b.coeff c ≠ 0 → ∀ j, i ≤ j → c j = 0` using `fun c hc j hj => apply_eq_zero_of_supported hb (MvPolynomial.mem_support_iff.2 hc) hj`. Establish `ha0 : ∀ c, (a * MvPolynomial.X i).coeff c ≠ 0 → (∀ j, i < j → c j = 0) ∧ c i ≤ 1`. Introduce `c hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc` using `[MvPolynomial.coeff_mul_X']`. Use `split_ifs at hc with hci`. Establish `hd : ∀ j, i ≤ j → (c - Finsupp.single i 1 : ℕ →₀ ℕ) j = 0` using `fun j hj => apply_eq_zero_of_supported ha (MvPolynomial.mem_support_iff.2 hc) hj`. Use `⟨fun j hj => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hd j hj.le`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[Finsupp.tsub_apply, Finsupp.single_apply, if_neg hj.ne, Nat.sub_zero]`. Then use the resulting hypothesis. Establish `h` using `hd i le_rfl`. Rewrite `h` using `[Finsupp.tsub_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Conclude with `absurd rfl hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (a * MvPolynomial.X i).coeff (Finsupp.single i l) = 0`. Assume the negation of the conclusion as `h`. Establish `h'` using `(ha0 _ h).2`. Rewrite `h'` using `[Finsupp.single_eq_same]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : b.coeff (Finsupp.single i l) = 0`. Assume the negation of the conclusion as `h`. Establish `h'` using `hb0 _ h i le_rfl`. Rewrite `h'` using `[Finsupp.single_eq_same]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[MvPolynomial.coeff_add, MvPolynomial.coeff_add, hmon, MvPolynomial.coeff_monomial, if_pos rfl, h1, h2, add_zero, add_zero]`. Conclude with `v.isUnit`. Rewrite using `[MonomialOrder.degree_le_iff]`. Introduce `c hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hce : c = Finsupp.single i l`. Rewrite using `[hce]`. Establish `hc'` using `MvPolynomial.mem_support_iff.1 hc`. Rewrite `hc'` using `[MvPolynomial.coeff_add, MvPolynomial.coeff_add, hmon, MvPolynomial.coeff_monomial, if_neg (Ne.symm hce), zero_add]`. Distinguish the cases in `hA : (a * MvPolynomial.X i).coeff c = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hc'` using `[hA, zero_add]`. Establish `h` using `hb0 c hc'`. Use `(hsmall c (fun j hj => h j hj.le) ?_).le` and prove the remaining obligations. Rewrite using `[h i le_rfl]`. Use linear arithmetic over natural numbers and integers.
-
-Establish `h` using `ha0 c hA`. Conclude with `(hsmall c h.1 (by omega)).le`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem led_tri {l : ℕ} (hl : 2 ≤ l) (i : ℕ) (v : Rˣ) {a b : MvPolynomial ℕ R}
     (ha : a ∈ MvPolynomial.supported R (Set.Iio i))
@@ -185,17 +183,15 @@ theorem led_tri {l : ℕ} (hl : 2 ≤ l) (i : ℕ) (v : Rˣ) {a b : MvPolynomial
         exact (hsmall c h.1 (by omega)).le
 
 /- English proof (translation)
-Establish `hl0 : 0 < l` using `hl.out.pos`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨α, hα⟩, γ⟩ ⟨⟨α', hα'⟩, γ'⟩ h`. Establish `h' : α + l • γ = α' + l • γ'` using `h`. Establish `hk : ∀ k, α k = α' k ∧ γ k = γ' k`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Establish `e` using `DFunLike.congr_fun h' k`. Simplify using `only [Finsupp.add_apply, Finsupp.smul_apply, smul_eq_mul] at e`. Establish `e1 : α k = α' k`. Establish `h2` using `congrArg (· % l) e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt (hα k), Nat.mod_eq_of_lt (hα' k)] at h2`. Conclude with `h2`. Use `⟨e1, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[e1]`. Conclude with `Nat.eq_of_mul_eq_mul_left hl0 (Nat.add_left_cancel e)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : α = α'` using `Finsupp.ext fun k => (hk k).1`. Establish `e2 : γ = γ'` using `Finsupp.ext fun k => (hk k).2`. Substitute `e1` using the available equality. Substitute `e2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `β`. Use `⟨(⟨Finsupp.mapRange (· % l) (Nat.zero_mod l) β, fun k => ?_⟩, Finsupp.mapRange (· / l) (Nat.zero_div l) β), ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.mapRange_apply]`. Conclude with `Nat.mod_lt _ hl0`. Use extensionality with `k`.
-
-Simplify using `only [Finsupp.add_apply, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul]`. Conclude with `Nat.mod_add_div (β k) l`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bij (l : ℕ) [hl : Fact l.Prime] :
     Function.Bijective (fun x : Digits l × (ℕ →₀ ℕ) => x.1.1 + l • x.2) := by
@@ -229,37 +225,33 @@ theorem bij (l : ℕ) [hl : Fact l.Prime] :
       exact Nat.mod_add_div (β k) l
 
 /- English proof (translation)
-Introduce `l hlp R _ t ht`. Use `choose v a b ha hb hteq using ht`. Establish `hl : 2 ≤ l` using `hlp.out.two_le`. Use `set F : Digits l × (ℕ →₀ ℕ) → MvPolynomial ℕ R := fun x => MvPolynomial.monomial x.1.1 (1 : R) * x.2.prod fun i n => t i ^ n with hF`. Establish `hLed : ∀ x : Digits l × (ℕ →₀ ℕ), Led revLex (F x) (x.1.1 + l • x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Use `(Led.monomial revLex x.1.1).mul ?_` and prove the remaining obligations. Establish `ht' : ∀ i, Led revLex (t i ^ x.2 i) (x.2 i • Finsupp.single i l)` using `fun i => by`. Rewrite using `[hteq i]`. Conclude with `(led_tri hl i (v i) (ha i) (hb i)).pow _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : (∑ i ∈ x.2.support, x.2 i • Finsupp.single i l) = l • x.2`. Use extensionality with `j`. Rewrite using `[Finsupp.finsetSum_apply]`. Distinguish the cases in `hj : j ∈ x.2.support`. Rewrite using `[Finset.sum_eq_single j]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm]`. Introduce `k _ hk`. Simplify using `[hk]`. Introduce `h`. Conclude with `absurd hj h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_zero]`. Establish `h0 : x.2 j = 0` using `by simpa using hj`. Simplify using `[h0]`. Introduce `k hk`. Establish `hkj : k ≠ j` using `fun e => hj (e ▸ hk)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hkj]`. Rewrite using `[Finsupp.prod, ← hsum]`. Conclude with `Led.prod x.2.support ht'`. Prove the components needed by the constructor for the conclusion. Rewrite using `[linearIndependent_iff']`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `s g hg i0 hi0s`. Assume the negation of the conclusion as `hi0`. Establish `hs' : (s.filter fun x => g x ≠ 0).Nonempty` using `⟨i0, Finset.mem_filter.2 ⟨hi0s, hi0⟩⟩`. Take `⟨x, hx, hxmax⟩` from `Finset.exists_max_image _ (fun x : Digits l × (ℕ →₀ ℕ) => revLex.toSyn (x.1.1 + l • x.2)) hs'`. Rewrite `hx` using `[Finset.mem_filter]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc` using `congrArg (MvPolynomial.coeff (x.1.1 + l • x.2)) hg`. Rewrite `hc` using `[MvPolynomial.coeff_sum, MvPolynomial.coeff_zero, Finset.sum_eq_single x]`. Rewrite `hc` using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Take `⟨hu, _⟩` from `hLed x`. Conclude with `hx.2 ((hu.mul_left_eq_zero).1 hc)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy hyx`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Distinguish the cases in `hgy : g y = 0`. Rewrite using `[hgy, zero_mul]`. Establish `hle` using `hxmax y (Finset.mem_filter.2 ⟨hy, hgy⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : y.1.1 + l • y.2 ≠ x.1.1 + l • x.2` using `fun e => hyx ((bij l).1 e)`. Establish `hlt : revLex.toSyn (y.1.1 + l • y.2) < revLex.toSyn (x.1.1 + l • x.2)` using `lt_of_le_of_ne hle (fun e => hne (revLex.toSyn.injective e))`. Take `⟨_, hdeg⟩` from `hLed y`. Rewrite using `[MonomialOrder.coeff_eq_zero_of_lt (lt_of_le_of_lt hdeg hlt), mul_zero]`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd hx.1 h`. Rewrite using `[Submodule.eq_top_iff']`. Establish `key : ∀ s : revLex.syn, ∀ q : MvPolynomial ℕ R, revLex.toSyn (revLex.degree q) = s → q ∈ Submodule.span R (Set.range F)`. Introduce `s`. Proceed by induction on `s using WellFoundedLT.induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Consider the case `ind s ih`. Introduce `q hq`. Take `⟨x, hx⟩` from `(bij l).2 (revLex.degree q)`. Establish `hx' : x.1.1 + l • x.2 = revLex.degree q` using `hx`. Take `⟨hu, hdeg⟩` from `hLed x`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hu`, `hdeg` using `[hx']`. Establish `hmem : (q.coeff (revLex.degree q) * ↑hu.unit⁻¹) • F x ∈ Submodule.span R (Set.range F)` using `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, rfl⟩)`. Establish `hrest : q - (q.coeff (revLex.degree q) * ↑hu.unit⁻¹) • F x ∈ Submodule.span R (Set.range F)`. Distinguish the cases in `h0 : q - (q.coeff (revLex.degree q) * ↑hu.unit⁻¹) • F x = 0`. Rewrite using `[h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Use `ih _ ?_ _ rfl` and prove the remaining obligations. Rewrite using `[← hq]`. Establish `hle : revLex.toSyn (revLex.degree (q - (q.coeff (revLex.degree q) * ↑hu.unit⁻¹) • F x)) ≤ revLex.toSyn (revLex.degree q)` using `le_trans MonomialOrder.degree_sub_le (sup_le le_rfl (le_trans MonomialOrder.degree_smul_le hdeg))`. Use `lt_of_le_of_ne hle (fun e => ?_)` and prove the remaining obligations.
-
-Establish `e'` using `revLex.toSyn.injective e`. Establish `hz : (q - (q.coeff (revLex.degree q) * ↑hu.unit⁻¹) • F x).coeff (revLex.degree q) = 0`. Rewrite using `[MvPolynomial.coeff_sub, MvPolynomial.coeff_smul, smul_eq_mul, mul_assoc, hu.val_inv_mul, mul_one, sub_self]`. Conclude with `(MonomialOrder.coeff_degree_ne_zero_iff.2 h0) (by rw [e']; exact hz)`. Establish `h` using `Submodule.add_mem _ hrest hmem`.
-
-Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `q`. Conclude with `key _ q rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tri_basis : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (t : ℕ → MvPolynomial ℕ R), (∀ i, ∃ (v : Rˣ) (a b : MvPolynomial ℕ R), a ∈ MvPolynomial.supported R (Set.Iio i) ∧ b ∈ MvPolynomial.supported R (Set.Iio i) ∧ t i = MvPolynomial.C (v : R) * MvPolynomial.X i ^ l + a * MvPolynomial.X i + b) → LinearIndependent R (fun x : Digits l × (ℕ →₀ ℕ) => MvPolynomial.monomial x.1.1 (1 : R) * x.2.prod fun i n => t i ^ n) ∧ Submodule.span R (Set.range fun x : Digits l × (ℕ →₀ ℕ) => MvPolynomial.monomial x.1.1 (1 : R) * x.2.prod fun i n => t i ^ n) = ⊤ := by
   intro l hlp R _ t ht

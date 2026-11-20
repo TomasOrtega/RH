@@ -34,7 +34,7 @@ theorem pullNC_apply (G : C ⥤ ModuleCat.{0} R) {m n : ℕ} (θ : Fin (m + 1) �
   rfl
 
 /- English proof (translation)
-Rewrite using `[← ModuleCat.comp_apply, ← G.map_comp, ← c.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_map_chain (G : C ⥤ ModuleCat.{0} R) {n : ℕ} (c : Fin (n + 1) ⥤ C) {x y z : Fin (n + 1)} (a : x ≤ y)
     (b : y ≤ z) (v : G.obj (c.obj x)) :
@@ -90,9 +90,9 @@ Both sides reduce to the same expression.
 theorem nerveCx_X (G : C ⥤ ModuleCat.{0} R) (n : ℕ) : (nerveCx.obj G).X n = ModuleCat.of R (NC G n) := rfl
 
 /- English proof (translation)
-Establish `h0 : (nerveCx.obj G).d n (n + 1) = AlgebraicTopology.AlternatingCofaceMapComplex.objD (cosimp G) n` using `CochainComplex.of_d (fun n ↦ (cosimp G).obj ⦋n⦌) (AlgebraicTopology.AlternatingCofaceMapComplex.objD (cosimp G)) n`. Use `h0.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (ModuleCat.ofHom (pullNC G (Fin.succAboveOrderEmb i).toOrderHom) : ModuleCat.of R (NC G n) ⟶ ModuleCat.of R (NC G (n + 1)))) = _`. Use `ModuleCat.hom_ext ?_` and prove the remaining obligations. Rewrite using `[ModuleCat.hom_ofHom, ModuleCat.hom_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `dNC`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Establish `h : ((-1 : R) ^ (i : ℕ)) = (((-1 : ℤ) ^ (i : ℕ) : ℤ) : R)` using `by push_cast; rfl`. Rewrite using `[h, Int.cast_smul_eq_zsmul, ModuleCat.hom_zsmul, ModuleCat.hom_ofHom]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nerveCx_d (G : C ⥤ ModuleCat.{0} R) (n : ℕ) :
     (nerveCx.obj G).d n (n + 1) = ModuleCat.ofHom (dNC G n) := by
@@ -140,7 +140,7 @@ def cubeRes (G : Pᵒᵖ ⥤ ModuleCat.{0} R) {s t : Finset κ} (h : s ⊆ t) :
   else 0
 
 /- English proof (translation)
-Simplify using `[cubeRes, hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cubeRes_apply (G : Pᵒᵖ ⥤ ModuleCat.{0} R) {s t : Finset κ} (h : s ⊆ t)
     (x : ∀ hs : PLift s.Nonempty, G.obj (op (s.inf' hs.down e))) (hs : s.Nonempty) (ht : PLift t.Nonempty) :
@@ -148,7 +148,7 @@ theorem cubeRes_apply (G : Pᵒᵖ ⥤ ModuleCat.{0} R) {s t : Finset κ} (h : s
   simp [cubeRes, hs]
 
 /- English proof (translation)
-Simplify using `[cubeRes, hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cubeRes_empty (G : Pᵒᵖ ⥤ ModuleCat.{0} R) {s t : Finset κ} (h : s ⊆ t)
     (x : ∀ hs : PLift s.Nonempty, G.obj (op (s.inf' hs.down e))) (hs : ¬ s.Nonempty) (ht : PLift t.Nonempty) :

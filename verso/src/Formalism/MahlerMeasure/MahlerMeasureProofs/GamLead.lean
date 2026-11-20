@@ -11,15 +11,15 @@ variable {K σ : Type} [Field K] [Fintype σ] [DecidableEq σ]
 noncomputable def wf (m : σ →₀ ℕ) : K := ∏ x, ((m x).factorial : K)
 
 /- English proof (translation)
-Unfold `wf; exact Finsupp.prod_fintype _ _ (by simp)`.
+Replace the relevant objects with their definitions.
 -/
 theorem prod_eq_wf (m : σ →₀ ℕ) : (m.prod fun _ k => (k.factorial : K)) = wf m := by
   unfold wf; exact Finsupp.prod_fintype _ _ (by simp)
 
 /- English proof (translation)
-Unfold `wf`. Establish `h : ∀ x : σ, (((m + Finsupp.single i 1 : σ →₀ ℕ) x).factorial : K) = ((m x).factorial : K) * (if x = i then ((m i + 1 : ℕ) : K) else 1)`. Introduce `x`. Distinguish the cases in `hx : x = i`. Substitute `hx` using the available equality.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Nat.factorial_succ]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hx, Finsupp.single_apply]`. Rewrite using `[Finset.prod_congr rfl (fun x _ => h x), Finset.prod_mul_distrib, Finset.prod_ite_eq']`. Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wf_add_single (m : σ →₀ ℕ) (i : σ) :
     (wf (m + Finsupp.single i 1) : K) = ((m i + 1 : ℕ) : K) * wf m := by
@@ -37,7 +37,7 @@ noncomputable def fk (F G : MvPolynomial σ K) : K :=
   ∑ m ∈ F.support, F.coeff m * G.coeff m * wf m
 
 /- English proof (translation)
-Unfold `fk`. Apply `Finset.sum_subset h` to reduce the goal to its premises. Introduce `m _ hm`. Rewrite using `[notMem_support_iff.mp hm]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fk_eq_sum (F G : MvPolynomial σ K) (s : Finset (σ →₀ ℕ)) (h : F.support ⊆ s) :
     fk F G = ∑ m ∈ s, F.coeff m * G.coeff m * wf m := by
@@ -47,7 +47,7 @@ theorem fk_eq_sum (F G : MvPolynomial σ K) (s : Finset (σ →₀ ℕ)) (h : F.
   rw [notMem_support_iff.mp hm]; ring
 
 /- English proof (translation)
-Rewrite using `[fk_eq_sum F G (F.support ∪ s) Finset.subset_union_left]`. Use `symm`. Apply `Finset.sum_subset Finset.subset_union_right` to reduce the goal to its premises. Introduce `m _ hm`. Rewrite using `[notMem_support_iff.mp (fun h' => hm (h h'))]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -60,7 +60,7 @@ theorem fk_eq_sum' (F G : MvPolynomial σ K) (s : Finset (σ →₀ ℕ)) (h : G
   rw [notMem_support_iff.mp (fun h' => hm (h h'))]; ring
 
 /- English proof (translation)
-Rewrite using `[fk_eq_sum F G _ (Finset.subset_union_left (s₂ := G.support)), fk_eq_sum G F _ (Finset.subset_union_right (s₁ := F.support))]`. Conclude with `Finset.sum_congr rfl (fun m _ => by ring)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fk_symm (F G : MvPolynomial σ K) : fk F G = fk G F := by
   rw [fk_eq_sum F G _ (Finset.subset_union_left (s₂ := G.support)),
@@ -68,7 +68,7 @@ theorem fk_symm (F G : MvPolynomial σ K) : fk F G = fk G F := by
   exact Finset.sum_congr rfl (fun m _ => by ring)
 
 /- English proof (translation)
-Rewrite using `[fk_eq_sum (F + F') G (F.support ∪ F'.support) support_add, fk_eq_sum F G _ (Finset.subset_union_left (s₂ := F'.support)), fk_eq_sum F' G _ (Finset.subset_union_right (s₁ := F.support)), ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl (fun m _ => by rw [coeff_add]; ring)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fk_add_left (F F' G : MvPolynomial σ K) : fk (F + F') G = fk F G + fk F' G := by
   rw [fk_eq_sum (F + F') G (F.support ∪ F'.support) support_add,
@@ -77,31 +77,31 @@ theorem fk_add_left (F F' G : MvPolynomial σ K) : fk (F + F') G = fk F G + fk F
   exact Finset.sum_congr rfl (fun m _ => by rw [coeff_add]; ring)
 
 /- English proof (translation)
-Rewrite using `[fk_eq_sum (c • F) G F.support support_smul, fk, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun m _ => by rw [coeff_smul, smul_eq_mul]; ring)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fk_smul_left (c : K) (F G : MvPolynomial σ K) : fk (c • F) G = c * fk F G := by
   rw [fk_eq_sum (c • F) G F.support support_smul, fk, Finset.mul_sum]
   exact Finset.sum_congr rfl (fun m _ => by rw [coeff_smul, smul_eq_mul]; ring)
 
 /- English proof (translation)
-Simplify using `[fk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fk_zero_left (G : MvPolynomial σ K) : fk 0 G = 0 := by simp [fk]
 
 /- English proof (translation)
-Rewrite using `[show -F = (-1 : K) • F by simp, fk_smul_left]; ring`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fk_neg_left (F G : MvPolynomial σ K) : fk (-F) G = - fk F G := by
   rw [show -F = (-1 : K) • F by simp, fk_smul_left]; ring
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, fk_add_left, fk_neg_left]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fk_sub_left (F F' G : MvPolynomial σ K) : fk (F - F') G = fk F G - fk F' G := by
   rw [sub_eq_add_neg, fk_add_left, fk_neg_left]; ring
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp [fk_zero_left]`. Consider the case `insert a t ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fk_add_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem fk_sum_left {ι : Type} (t : Finset ι) (F : ι → MvPolynomial σ K) (G : MvPolynomial σ K) :
     fk (∑ i ∈ t, F i) G = ∑ i ∈ t, fk (F i) G := by
@@ -111,39 +111,39 @@ theorem fk_sum_left {ι : Type} (t : Finset ι) (F : ι → MvPolynomial σ K) (
   | insert a t ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, fk_add_left, ih]
 
 /- English proof (translation)
-Rewrite using `[fk_symm, fk_add_left, fk_symm G, fk_symm G']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fk_add_right (F G G' : MvPolynomial σ K) : fk F (G + G') = fk F G + fk F G' := by
   rw [fk_symm, fk_add_left, fk_symm G, fk_symm G']
 
 /- English proof (translation)
-Rewrite using `[fk_symm, fk_smul_left, fk_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fk_smul_right (c : K) (F G : MvPolynomial σ K) : fk F (c • G) = c * fk F G := by
   rw [fk_symm, fk_smul_left, fk_symm]
 
 /- English proof (translation)
-Rewrite using `[fk_symm, fk_sub_left, fk_symm G, fk_symm G']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fk_sub_right (F G G' : MvPolynomial σ K) : fk F (G - G') = fk F G - fk F G' := by
   rw [fk_symm, fk_sub_left, fk_symm G, fk_symm G']
 
 /- English proof (translation)
-Rewrite using `[fk_symm, fk_zero_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fk_zero_right (F : MvPolynomial σ K) : fk F 0 = 0 := by rw [fk_symm, fk_zero_left]
 
 /- English proof (translation)
-Rewrite using `[fk_symm, fk_sum_left]`. Conclude with `Finset.sum_congr rfl (fun i _ => fk_symm _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fk_sum_right {ι : Type} (t : Finset ι) (F : MvPolynomial σ K) (G : ι → MvPolynomial σ K) :
     fk F (∑ i ∈ t, G i) = ∑ i ∈ t, fk F (G i) := by
   rw [fk_symm, fk_sum_left]; exact Finset.sum_congr rfl (fun i _ => fk_symm _ _)
 
 /- English proof (translation)
-Establish `hs : (X i * g).support = g.support.map (addRightEmbedding (Finsupp.single i 1))`. Rewrite using `[mul_comm]`. Conclude with `support_mul_X i g`. Rewrite using `[fk, hs, Finset.sum_map, fk]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [addRightEmbedding_apply]`. Rewrite using `[mul_comm (X i) g, coeff_mul_X, coeff_pderiv, wf_add_single]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fk_X_mul (i : σ) (g h : MvPolynomial σ K) : fk (X i * g) h = fk g (pderiv i h) := by
   have hs : (X i * g).support = g.support.map (addRightEmbedding (Finsupp.single i 1)) := by
@@ -160,9 +160,9 @@ section tie
 variable {K σ : Type} [Field K] [Fintype σ] [DecidableEq σ] {r : ℕ} (w e : Fin r → σ)
 
 /- English proof (translation)
-Establish `h1 : Formalism.GM.tieE w e g = ∑ c, X (e c) * (X (w c) * g)`. Simplify using `only [Formalism.GM.tieE, LinearMap.mulLeft_apply, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl (fun c _ => by ring)`. Establish `h2 : Formalism.GM.tieF w e h = ∑ c, pderiv (w c) (pderiv (e c) h)`. Simplify using `[Formalism.GM.tieF, LinearMap.sum_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, fk_sum_left, fk_sum_right]`. Conclude with `Finset.sum_congr rfl (fun c _ => by rw [fk_X_mul, fk_X_mul])`.
+A detailed English derivation is pending.
 -/
 theorem fk_E (g h : MvPolynomial σ K) : fk (Formalism.GM.tieE w e g) h = fk g (Formalism.GM.tieF w e h) := by
   have h1 : Formalism.GM.tieE w e g = ∑ c, X (e c) * (X (w c) * g) := by
@@ -174,7 +174,7 @@ theorem fk_E (g h : MvPolynomial σ K) : fk (Formalism.GM.tieE w e g) h = fk g (
   exact Finset.sum_congr rfl (fun c _ => by rw [fk_X_mul, fk_X_mul])
 
 /- English proof (translation)
-Proceed by induction on `j generalizing h with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ', Module.End.mul_apply, fk_E, ih, pow_succ, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem fk_E_pow (j : ℕ) (g h : MvPolynomial σ K) :
     fk ((Formalism.GM.tieE w e ^ j) g) h = fk g ((Formalism.GM.tieF w e ^ j) h) := by
@@ -189,21 +189,21 @@ section real
 variable {σ : Type} [Fintype σ] [DecidableEq σ]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos (fun x _ => by exact_mod_cast Nat.factorial_pos _)`.
+A detailed English derivation is pending.
 -/
 theorem wf_pos (m : σ →₀ ℕ) : (0 : ℝ) < wf m :=
   Finset.prod_pos (fun x _ => by exact_mod_cast Nat.factorial_pos _)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg (fun m _ => mul_nonneg (mul_self_nonneg _) (wf_pos m).le)`.
+A detailed English derivation is pending.
 -/
 theorem fk_self_nonneg (F : MvPolynomial σ ℝ) : 0 ≤ fk F F :=
   Finset.sum_nonneg (fun m _ => mul_nonneg (mul_self_nonneg _) (wf_pos m).le)
 
 /- English proof (translation)
-Establish `h1` using `fk_self_nonneg (F - G)`. Establish `h2` using `fk_self_nonneg (F + G)`. Rewrite `h1` using `[fk_sub_left, fk_sub_right, fk_sub_right, fk_symm G F]`. Rewrite `h2` using `[fk_add_left, fk_add_right, fk_add_right, fk_symm G F]`. Establish `: 2 * |fk F G| = |2 * fk F G|` using `by rw [abs_mul, abs_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fk_abs_le (F G : MvPolynomial σ ℝ) : 2 * |fk F G| ≤ fk F F + fk G G := by
   have h1 := fk_self_nonneg (F - G)
@@ -226,13 +226,13 @@ section
 variable {K σ : Type} [Field K] [Fintype σ] [DecidableEq σ] {r : ℕ} {w e : Fin r → σ}
 
 /- English proof (translation)
-Introduce `m hm`. Simplify using `at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem biHom_zero (a b : ℕ) : BiHom w e a b (0 : MvPolynomial σ K) := by
   intro m hm; simp at hm
 
 /- English proof (translation)
-Introduce `m hm`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases. Conclude with `hu m h`. Conclude with `hv m h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem biHom_add {a b : ℕ} {u v : MvPolynomial σ K} (hu : BiHom w e a b u) (hv : BiHom w e a b v) :
     BiHom w e a b (u + v) := by
@@ -242,26 +242,26 @@ theorem biHom_add {a b : ℕ} {u v : MvPolynomial σ K} (hu : BiHom w e a b u) (
   · exact hv m h
 
 /- English proof (translation)
-Introduce `m hm` and use `hu m (support_smul hm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem biHom_smul {a b : ℕ} (c : K) {u : MvPolynomial σ K} (hu : BiHom w e a b u) :
     BiHom w e a b (c • u) := fun m hm => hu m (support_smul hm)
 
 /- English proof (translation)
-Rewrite using `[show -u = (-1 : K) • u by simp]; exact biHom_smul _ hu`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem biHom_neg {a b : ℕ} {u : MvPolynomial σ K} (hu : BiHom w e a b u) : BiHom w e a b (-u) := by
   rw [show -u = (-1 : K) • u by simp]; exact biHom_smul _ hu
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `biHom_add hu (biHom_neg hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biHom_sub {a b : ℕ} {u v : MvPolynomial σ K} (hu : BiHom w e a b u) (hv : BiHom w e a b v) :
     BiHom w e a b (u - v) := by
   rw [sub_eq_add_neg]; exact biHom_add hu (biHom_neg hv)
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using biHom_zero a b`. Consider the case `insert x t hx ih`. Rewrite using `[Finset.sum_insert hx]`. Conclude with `biHom_add (hu x (Finset.mem_insert_self _ _)) (ih (fun i hi => hu i (Finset.mem_insert_of_mem hi)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biHom_sum {ι : Type} {a b : ℕ} (t : Finset ι) (u : ι → MvPolynomial σ K)
     (hu : ∀ i ∈ t, BiHom w e a b (u i)) : BiHom w e a b (∑ i ∈ t, u i) := by
@@ -273,7 +273,7 @@ theorem biHom_sum {ι : Type} {a b : ℕ} (t : Finset ι) (u : ι → MvPolynomi
     exact biHom_add (hu x (Finset.mem_insert_self _ _)) (ih (fun i hi => hu i (Finset.mem_insert_of_mem hi)))
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `support_mul_X i g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_X_mul (i : σ) (g : MvPolynomial σ K) :
     (X i * g).support = g.support.map (addRightEmbedding (Finsupp.single i 1)) := by
@@ -283,31 +283,31 @@ variable (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀ c d,
 include hw he hwe
 
 /- English proof (translation)
-Simplify using `[Finsupp.single_apply, hw.eq_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_single_w (c : Fin r) : (∑ c', (Finsupp.single (w c) 1 : σ →₀ ℕ) (w c')) = 1 := by
   simp [Finsupp.single_apply, hw.eq_iff]
 
 /- English proof (translation)
-Simplify using `[Finsupp.single_apply, he.eq_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_single_e (c : Fin r) : (∑ c', (Finsupp.single (e c) 1 : σ →₀ ℕ) (e c')) = 1 := by
   simp [Finsupp.single_apply, he.eq_iff]
 
 /- English proof (translation)
-Simplify using `[Finsupp.single_apply, hwe]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_single_we (c : Fin r) : (∑ c', (Finsupp.single (w c) 1 : σ →₀ ℕ) (e c')) = 0 := by
   simp [Finsupp.single_apply, hwe]
 
 /- English proof (translation)
-Simplify using `[Finsupp.single_apply, fun c' => Ne.symm (hwe c' c)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_single_ew (c : Fin r) : (∑ c', (Finsupp.single (e c) 1 : σ →₀ ℕ) (w c')) = 0 := by
   simp [Finsupp.single_apply, fun c' => Ne.symm (hwe c' c)]
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[support_X_mul, Finset.mem_map]`. Take `⟨m0, hm0, rfl⟩` from `hm`. Simplify using `only [addRightEmbedding_apply, Finsupp.add_apply, Finset.sum_add_distrib]`. Rewrite using `[sum_single_w hw he hwe, sum_single_we hw he hwe, (hu m0 hm0).1, (hu m0 hm0).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -321,7 +321,7 @@ theorem biHom_X_w {a b : ℕ} (c : Fin r) {u : MvPolynomial σ K} (hu : BiHom w 
   simp
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[support_X_mul, Finset.mem_map]`. Take `⟨m0, hm0, rfl⟩` from `hm`. Simplify using `only [addRightEmbedding_apply, Finsupp.add_apply, Finset.sum_add_distrib]`. Rewrite using `[sum_single_e hw he hwe, sum_single_ew hw he hwe, (hu m0 hm0).1, (hu m0 hm0).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -335,7 +335,7 @@ theorem biHom_X_e {a b : ℕ} (c : Fin r) {u : MvPolynomial σ K} (hu : BiHom w 
   simp
 
 /- English proof (translation)
-Rewrite using `[tieE_apply', Finset.sum_mul]`. Apply `biHom_sum` to reduce the goal to its premises. Introduce `c _`. Rewrite using `[mul_assoc]`. Conclude with `biHom_X_w hw he hwe c (biHom_X_e hw he hwe c hu)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biHom_E {a b : ℕ} {u : MvPolynomial σ K} (hu : BiHom w e a b u) :
     BiHom w e (a + 1) (b + 1) (tieE w e u) := by
@@ -346,7 +346,7 @@ theorem biHom_E {a b : ℕ} {u : MvPolynomial σ K} (hu : BiHom w e a b u) :
   exact biHom_X_w hw he hwe c (biHom_X_e hw he hwe c hu)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero => simpa using hu`. Consider the case `succ l ih`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `biHom_E hw he hwe ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biHom_E_pow {a b : ℕ} {u : MvPolynomial σ K} (hu : BiHom w e a b u) (l : ℕ) :
     BiHom w e (a + l) (b + l) ((tieE w e ^ l) u) := by
@@ -357,11 +357,11 @@ theorem biHom_E_pow {a b : ℕ} {u : MvPolynomial σ K} (hu : BiHom w e a b u) (
     exact biHom_E hw he hwe ih
 
 /- English proof (translation)
-Establish `key : ∀ m ∈ (pderiv (w c) u).support, (∑ c', m (w c')) + 1 = a ∧ (∑ c', m (e c')) = b`. Introduce `m hm`. Rewrite `hm` using `[mem_support_iff, coeff_pderiv]`. Establish `h2 : m + Finsupp.single (w c) 1 ∈ u.support` using `mem_support_iff.mpr (left_ne_zero_of_mul hm)`. Establish `h3` using `hu _ h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib] at h3`. Rewrite `h3` using `[sum_single_w hw he hwe, sum_single_we hw he hwe]`. Simplify using `using h3`. Use `⟨fun m hm => ?_, fun ha => ?_⟩` and prove the remaining obligations. Use `key m hm; exact ⟨by omega, this.2⟩` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `m`. Assume the negation of the conclusion as `h`. Use `key m (mem_support_iff.mpr (by simpa using h))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem biHom_pderiv_w {a b : ℕ} (c : Fin r) {u : MvPolynomial σ K} (hu : BiHom w e a b u) :
     BiHom w e (a - 1) b (pderiv (w c) u) ∧ (a = 0 → pderiv (w c) u = 0) := by
@@ -381,11 +381,11 @@ theorem biHom_pderiv_w {a b : ℕ} (c : Fin r) {u : MvPolynomial σ K} (hu : BiH
     omega
 
 /- English proof (translation)
-Establish `key : ∀ m ∈ (pderiv (e c) u).support, (∑ c', m (w c')) = a ∧ (∑ c', m (e c')) + 1 = b`. Introduce `m hm`. Rewrite `hm` using `[mem_support_iff, coeff_pderiv]`. Establish `h2 : m + Finsupp.single (e c) 1 ∈ u.support` using `mem_support_iff.mpr (left_ne_zero_of_mul hm)`. Establish `h3` using `hu _ h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib] at h3`. Rewrite `h3` using `[sum_single_e hw he hwe, sum_single_ew hw he hwe]`. Simplify using `using h3`. Use `⟨fun m hm => ?_, fun hb => ?_⟩` and prove the remaining obligations. Use `key m hm; exact ⟨this.1, by omega⟩` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `m`. Assume the negation of the conclusion as `h`. Use `key m (mem_support_iff.mpr (by simpa using h))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem biHom_pderiv_e {a b : ℕ} (c : Fin r) {u : MvPolynomial σ K} (hu : BiHom w e a b u) :
     BiHom w e a (b - 1) (pderiv (e c) u) ∧ (b = 0 → pderiv (e c) u = 0) := by
@@ -405,9 +405,7 @@ theorem biHom_pderiv_e {a b : ℕ} (c : Fin r) {u : MvPolynomial σ K} (hu : BiH
     omega
 
 /- English proof (translation)
-Rewrite using `[tieF_apply']`. Use `⟨biHom_sum _ _ (fun c _ => ?_), fun h => Finset.sum_eq_zero (fun c _ => ?_)⟩` and prove the remaining obligations. Conclude with `(biHom_pderiv_w hw he hwe c (biHom_pderiv_e hw he hwe c hu).1).1`. Break down `h with h | h` into its components or cases. Conclude with `(biHom_pderiv_w hw he hwe c (biHom_pderiv_e hw he hwe c hu).1).2 h`.
-
-Rewrite using `[(biHom_pderiv_e hw he hwe c hu).2 h, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biHom_F {a b : ℕ} {u : MvPolynomial σ K} (hu : BiHom w e a b u) :
     BiHom w e (a - 1) (b - 1) (tieF w e u) ∧ (a = 0 ∨ b = 0 → tieF w e u = 0) := by
@@ -432,7 +430,7 @@ variable {K σ : Type} [Field K] [CharZero K] [Fintype σ] [DecidableEq σ] {r :
 include hw he hwe
 
 /- English proof (translation)
-Rewrite using `[tieE_apply', tieF_apply', F_S_mul hw he hwe g a b (euler_w_of_biHom w e hg) (euler_e_of_biHom w e hg), ← tieF_apply', ← tieE_apply']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem FE_one {a b : ℕ} {g : MvPolynomial σ K} (hg : BiHom w e a b g) :
     tieF w e (tieE w e g) = tieE w e (tieF w e g) + ((a + b + r : ℕ) : K) • g := by
@@ -440,9 +438,9 @@ theorem FE_one {a b : ℕ} {g : MvPolynomial σ K} (hg : BiHom w e a b g) :
     ← tieF_apply', ← tieE_apply']
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Simplify using `only [zero_add, pow_one, pow_zero, Module.End.one_apply, one_mul, add_zero]`. Conclude with `FE_one hw he hwe hy`. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2` using `biHom_E_pow hw he hwe hy (j + 1)`. Rewrite using `[show tieE w e ^ (j + 1 + 1) = tieE w e * tieE w e ^ (j + 1) from pow_succ' _ _, Module.End.mul_apply, FE_one hw he hwe h2, ih, map_add, map_smul, ← Module.End.mul_apply, ← pow_succ', ← Module.End.mul_apply (tieE w e) (tieE w e ^ j), ← pow_succ', add_assoc, ← add_smul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem F_E_pow_gen {a b : ℕ} {y : MvPolynomial σ K} (hy : BiHom w e a b y) (j : ℕ) :
     tieF w e ((tieE w e ^ (j + 1)) y) =
@@ -460,7 +458,7 @@ theorem F_E_pow_gen {a b : ℕ} {y : MvPolynomial σ K} (hy : BiHom w e a b y) (
     push_cast; ring
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `Nat.exists_eq_add_of_le ht`. Rewrite using `[add_comm, pow_succ, Module.End.mul_apply, hF, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Fpow_harm {u : MvPolynomial σ K} (hF : tieF w e u = 0) {t : ℕ} (ht : 1 ≤ t) :
     (tieF w e ^ t) u = 0 := by
@@ -468,16 +466,16 @@ theorem Fpow_harm {u : MvPolynomial σ K} (hF : tieF w e u = 0) {t : ℕ} (ht : 
   rw [add_comm, pow_succ, Module.End.mul_apply, hF, map_zero]
 
 /- English proof (translation)
-Rewrite using `[fk_symm, fk_E_pow, Fpow_harm hw he hwe hF ht, fk_zero_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fk_harm_Epow {g : MvPolynomial σ K} (hF : tieF w e g = 0) {t : ℕ} (ht : 1 ≤ t)
     (u : MvPolynomial σ K) : fk g ((tieE w e ^ t) u) = 0 := by
   rw [fk_symm, fk_E_pow, Fpow_harm hw he hwe hF ht, fk_zero_right]
 
 /- English proof (translation)
-Establish `hN' : a' + b' + r = (a' + b' + r - 1) + 1` using `by omega`. Establish `hN : a + b + r = (a + b + r - 1) + 1` using `by omega`. Establish `P'` using `F_pow_E_pow hw he hwe u' a' b' _ (euler_w_of_biHom w e hu') (euler_e_of_biHom w e hu') hF' hN'`. Establish `P` using `F_pow_E_pow hw he hwe u a b _ (euler_w_of_biHom w e hu) (euler_e_of_biHom w e hu) hF hN`. Break down `Nat.lt_trichotomy i j with hij | rfl | hij` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[if_neg (by omega), fk_E_pow, P', fk_smul_right, fk_harm_Epow hw he hwe hF (by omega), mul_zero]`. Rewrite using `[if_pos rfl, fk_E_pow, P', fk_smul_right, Nat.sub_self, pow_zero, Module.End.one_apply]`. Rewrite using `[if_neg (by omega), fk_symm, fk_E_pow, P, fk_smul_right, fk_harm_Epow hw he hwe hF' (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fk_EE (hr : 1 ≤ r) {a b a' b' : ℕ} {u u' : MvPolynomial σ K} (hu : BiHom w e a b u)
     (hF : tieF w e u = 0) (hu' : BiHom w e a' b' u') (hF' : tieF w e u' = 0) (i j : ℕ) :
@@ -495,11 +493,11 @@ theorem fk_EE (hr : 1 ≤ r) {a b a' b' : ℕ} {u u' : MvPolynomial σ K} (hu : 
       mul_zero]
 
 /- English proof (translation)
-Rewrite using `[fk_sum_left]`. Use `Finset.sum_congr rfl (fun l hl => ?_)` and prove the remaining obligations. Rewrite using `[fk_smul_left, fk_sum_right]`. Establish `: ∀ l' ∈ R, fk ((tieE w e ^ (s + l)) (u l)) (d l' • (tieE w e ^ (s + l')) (u' l')) = if l = l' then d l' * ((((s + l').descFactorial (s + l') * (α' l' + β' l' + r - 1 + (s + l')).descFactorial (s + l') : ℕ) : K) * fk (u l) (u' l')) else 0`. Introduce `l' hl'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[fk_smul_right, fk_EE hw he hwe hr (hu l hl).1 (hu l hl).2 (hu' l' hl').1 (hu' l' hl').2]`. Distinguish the cases in `h : l = l'`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (by omega), if_neg h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq, if_pos hl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fk_levels (hr : 1 ≤ r) (s : ℕ) (R : Finset ℕ) (u u' : ℕ → MvPolynomial σ K) (c d : ℕ → K)
     (α β α' β' : ℕ → ℕ) (hu : ∀ l ∈ R, BiHom w e (α l) (β l) (u l) ∧ tieF w e (u l) = 0)
@@ -522,37 +520,37 @@ theorem fk_levels (hr : 1 ≤ r) (s : ℕ) (R : Finset ℕ) (u u' : ℕ → MvPo
   ring
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `b y hy`. Use `⟨fun _ => y, by simp, fun l hl => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl0 : l = 0` using `by simp only [Finset.mem_range] at hl; omega`. Substitute `hl0` using the available equality. Conclude with `⟨(biHom_F hw he hwe hy).2 (Or.inl rfl), by simpa using hy, fun _ => Nat.zero_le _⟩`. Consider the case `succ a ih`. Introduce `b y hy`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Nat.eq_zero_or_pos b with hb | hb` into its components or cases. Substitute `hb` using the available equality. Use `⟨fun l => if l = 0 then y else 0, ?_, fun l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `l _ hl`. Simplify using `[hl]`. Simplify using the standard rewrite rules. Distinguish the cases in `h : l = 0`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `⟨by simpa using (biHom_F hw he hwe hy).2 (Or.inr rfl), by simpa using hy, fun _ => le_rfl⟩`. Simplify using `only [h, if_false]`. Conclude with `⟨map_zero _, biHom_zero _ _, fun h' => absurd rfl h'⟩`. Take `⟨b', rfl⟩ : ∃ b', b = b' + 1` from `⟨b - 1, by omega⟩`. Establish `hFy` using `(biHom_F hw he hwe hy).1`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Nat.add_sub_cancel] at hFy`. Take `⟨wl, hwl, hwc⟩` from `ih b' _ hFy`. Set `κ : ℕ → ℕ` to `fun l => (l + 1) * ((a - l) + (b' - l) + r + l)`. Establish `hκ : ∀ l, (κ l : K) ≠ 0` using `fun l => by`. Establish `: 0 < κ l` using `Nat.mul_pos (by omega) (by omega)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.ne'` after adjusting the coercions. Set `x` to `∑ l ∈ range (a + 1), ((κ l : K))⁻¹ • (tieE w e ^ l) (wl l)`. Establish `hFE : ∀ l ∈ range (a + 1), tieF w e ((tieE w e ^ (l + 1)) (wl l)) = (κ l : K) • (tieE w e ^ l) (wl l)`. Introduce `l hl`. Establish `hc` using `hwc l hl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `F_E_pow hw he hwe _ _ _ (euler_w_of_biHom w e hc.2.1) (euler_e_of_biHom w e hc.2.1) hc.1 l`. Establish `hEx : tieE w e x = ∑ l ∈ range (a + 1), ((κ l : K))⁻¹ • (tieE w e ^ (l + 1)) (wl l)`. Simplify using `only [x, map_sum, map_smul]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFEx : tieF w e (tieE w e x) = tieF w e y`. Rewrite using `[hEx, map_sum, hwl]`. Use `Finset.sum_congr rfl (fun l hl => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, hFE l hl, smul_smul, inv_mul_cancel₀ (hκ l), one_smul]`. Establish `hxB : BiHom w e a b' x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `biHom_sum` to reduce the goal to its premises. Introduce `l hl`. Apply `biHom_smul` to reduce the goal to its premises. Distinguish the cases in `h0 : wl l = 0`. Rewrite using `[h0, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `biHom_zero _ _`. Establish `hc` using `hwc l hl`. Establish `hlb` using `hc.2.2 h0`. Establish `hla : l ≤ a` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hl)`. Use `biHom_E_pow hw he hwe hc.2.1 l` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Nat.sub_add_cancel hla, Nat.sub_add_cancel hlb]`. Then use the resulting hypothesis. Use `⟨fun l => if l = 0 then y - tieE w e x else ((κ (l - 1) : K))⁻¹ • wl (l - 1), ?_, fun l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_range_succ']`. Simplify using `only [if_true, pow_zero, Module.End.one_apply, Nat.add_one_ne_zero, if_false, Nat.add_sub_cancel]`. Rewrite using `[hEx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `: ∀ l ∈ range (a + 1), (tieE w e ^ (l + 1)) (((κ l : K))⁻¹ • wl l) = ((κ l : K))⁻¹ • (tieE w e ^ (l + 1)) (wl l)` using `fun l _ => map_smul _ _ _`. Rewrite using `[Finset.sum_congr rfl this]`. Normalize the expressions using the abelian group laws. Distinguish the cases in `h : l = 0`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only [if_true, Nat.sub_zero]`. Use `⟨by rw [map_sub, hFEx, sub_self], biHom_sub hy (biHom_E hw he hwe hxB), fun _ => Nat.zero_le _⟩` and prove the remaining obligations. Take `⟨l', rfl⟩ : ∃ l', l = l' + 1` from `⟨l - 1, by omega⟩`. Simplify using `only [Nat.add_one_ne_zero, if_false, Nat.add_sub_cancel]`. Establish `hl' : l' ∈ range (a + 1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_range] at hl ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hc` using `hwc l' hl'`. Use `⟨by rw [map_smul, hc.1, smul_zero], ?_, fun h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.add_sub_add_right, Nat.add_sub_add_right]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `biHom_smul _ hc.2.1`. Establish `: wl l' ≠ 0` using `fun h1 => h0 (by rw [h1, smul_zero])`. Use `hc.2.2 this` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem decomp (hr : 1 ≤ r) : ∀ (a b : ℕ) (y : MvPolynomial σ K), BiHom w e a b y →
     ∃ u : ℕ → MvPolynomial σ K, y = ∑ l ∈ range (a + 1), (tieE w e ^ l) (u l) ∧
@@ -642,7 +640,7 @@ namespace Formalism.GM.leadingTermLemmas
 open Finset
 
 /- English proof (translation)
-The claim follows from `|∑ l ∈ range (A + 1), p l * Uc l - p0 * ∑ l ∈ range (A + 1), nfv l * Xc l| ≤ (Kc * ∑ l ∈ range (A + 1), nfv l * (U l + U' l) + p0 * ∑ l ∈ range (A + 1), κ l * nfv l * (X l + X' l)) / (2 * δ) := by rw [le_div_iff₀ (by positivity)] simp only [Finset.sum_range_succ' _ A, hpz, h0, hn …`.
+A detailed English derivation is pending.
 -/
 theorem ineq_core (A : ℕ) (δ Kc p0 : ℝ) (hδ : 0 < δ) (hKc : 0 ≤ Kc) (hp0 : 0 ≤ p0)
     (p nfv κ X X' Xc U U' Uc : ℕ → ℝ)
@@ -714,12 +712,12 @@ noncomputable def Kc (o z : ℕ) : ℝ :=
   ∑ L ∈ range (o + 1), (((z + L).choose L * L.factorial * L.factorial : ℕ) : ℝ)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg (fun _ _ => Nat.cast_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem Kc_nonneg (o z : ℕ) : 0 ≤ Kc o z := Finset.sum_nonneg (fun _ _ => Nat.cast_nonneg _)
 
 /- English proof (translation)
-Unfold `kap0`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem kappa_zero_nonneg (o n z t r : ℕ) : 0 ≤ kap0 o n z t r := by
   unfold kap0; positivity
@@ -730,9 +728,9 @@ variable {σ : Type} [Fintype σ] [DecidableEq σ] {r : ℕ} {w e : Fin r → σ
 include hw he hwe
 
 /- English proof (translation)
-Distinguish the cases in `h : y = 0`. Use `⟨fun _ => 0, by simp [h], fun l _ => ⟨map_zero _, biHom_zero _ _⟩⟩` and prove the remaining obligations. Take `⟨hA, hB⟩` from `hy0 h`. Take `⟨A', rfl⟩ : ∃ A', A = A' + 1` from `⟨A - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel] at hy ⊢`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨yl, hyl, hc⟩` from `decomp hw he hwe hr A' (B - 1) y hy`. Use `⟨yl, ?_, fun l hl => ⟨(hc l hl).1, (hc l hl).2.1⟩⟩` and prove the remaining obligations. Rewrite using `[hyl, map_sum]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem decompE {K : Type} [Field K] [CharZero K] (hr : 1 ≤ r) (A B : ℕ) (y : MvPolynomial σ K)
     (hy : BiHom w e (A - 1) (B - 1) y) (hy0 : y ≠ 0 → 1 ≤ A ∧ 1 ≤ B) :
@@ -750,7 +748,7 @@ theorem decompE {K : Type} [Field K] [CharZero K] (hr : 1 ≤ r) (A B : ℕ) (y 
     rw [pow_succ', Module.End.mul_apply]
 
 /- English proof (translation)
-The claim follows from `|fk (tiePhi w e o n z ((tieE w e ^ t) (v0 + tieE w e y))) ((tieE w e ^ t) (v0' + tieE w e y')) - kap0 o n z t r * fk v0 v0'| ≤ (Kc o z * (fk (v0 + tieE w e y) (v0 + tieE w e y) + fk (v0' + tieE w e y') (v0' + tieE w e y')) + kap0 o n z t r * (fk (tieF w e v0) (tieF w e v0) + fk ( …`.
+A detailed English derivation is pending.
 -/
 theorem core (hr : 1 ≤ r) (o n z t : ℕ) (ht : t ≤ o) (hon : o < n)
     (v0 y v0' y' : MvPolynomial σ ℝ)
@@ -972,7 +970,7 @@ noncomputable def gamK {N r : ℕ} (LL : M.Letters (N + 1)) (ρ : Fin r) (z n : 
 end gen
 
 /- English proof (translation)
-Unfold `M.fock fk`. Simplify using `only [prod_eq_wf]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem fock_eq (p : ℕ) [Fact p.Prime] {σ : Type} [Fintype σ] [DecidableEq σ] (F G : MvPolynomial σ ℚ_[p]) :
     M.fock p F G = fk F G := by
@@ -985,7 +983,7 @@ theorem freeze_eq (p : ℕ) [Fact p.Prime] {N r : ℕ} (LL : M.Letters N) (ρ : 
     (f : MvPolynomial (Fin N × Fin r) ℚ_[p]) : M.freeze p LL ρ n f = frz ℚ_[p] LL ρ n f := rfl
 
 /- English proof (translation)
-Unfold `M.tieGam gamK`. Rewrite using `[fock_eq, freeze_eq, freeze_eq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tieGam_eq (p : ℕ) [Fact p.Prime] {N r : ℕ} (LL : M.Letters (N + 1)) (ρ : Fin r) (z n : ℕ)
     (f f' : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) :
@@ -1004,7 +1002,7 @@ section bh
 variable {K σ : Type} [Field K] [DecidableEq σ] {r : ℕ} {w e : Fin r → σ}
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[show (1 : MvPolynomial σ K) = monomial 0 1 from rfl, support_monomial, if_neg one_ne_zero]`. Simplify using `only [Finset.mem_singleton] at hm`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem biHom_one : BiHom w e 0 0 (1 : MvPolynomial σ K) := by
   classical
@@ -1014,7 +1012,7 @@ theorem biHom_one : BiHom w e 0 0 (1 : MvPolynomial σ K) := by
   subst hm; simp
 
 /- English proof (translation)
-Introduce `m hm`. Take `⟨m1, hm1, m2, hm2, rfl⟩` from `Finset.mem_add.mp (support_mul u v hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib]`. Rewrite using `[(hu m1 hm1).1, (hu m1 hm1).2, (hv m2 hm2).1, (hv m2 hm2).2]`. Conclude with `⟨rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem biHom_mul {a b a' b' : ℕ} {u v : MvPolynomial σ K} (hu : BiHom w e a b u) (hv : BiHom w e a' b' v) :
     BiHom w e (a + a') (b + b') (u * v) := by
@@ -1025,7 +1023,7 @@ theorem biHom_mul {a b a' b' : ℕ} {u v : MvPolynomial σ K} (hu : BiHom w e a 
   exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using biHom_one`. Consider the case `succ k ih`. Rewrite using `[pow_succ, show (k + 1) * a = k * a + a by ring, show (k + 1) * b = k * b + b by ring]`. Conclude with `biHom_mul ih hu`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biHom_pow {a b : ℕ} {u : MvPolynomial σ K} (hu : BiHom w e a b u) (k : ℕ) :
     BiHom w e (k * a) (k * b) (u ^ k) := by
@@ -1036,7 +1034,7 @@ theorem biHom_pow {a b : ℕ} {u : MvPolynomial σ K} (hu : BiHom w e a b u) (k 
     exact biHom_mul ih hu
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using biHom_one`. Consider the case `insert x t hx ih`. Rewrite using `[Finset.sum_insert hx, Finset.sum_insert hx, Finset.prod_insert hx]`. Conclude with `biHom_mul (biHom_pow (hg x (Finset.mem_insert_self _ _)) _) (ih (fun i hi => hg i (Finset.mem_insert_of_mem hi)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biHom_prod_pow {ι : Type} [DecidableEq ι] (t : Finset ι) (g : ι → MvPolynomial σ K) (A B k : ι → ℕ)
     (hg : ∀ i ∈ t, BiHom w e (A i) (B i) (g i)) :
@@ -1049,7 +1047,7 @@ theorem biHom_prod_pow {ι : Type} [DecidableEq ι] (t : Finset ι) (g : ι → 
       (ih (fun i hi => hg i (Finset.mem_insert_of_mem hi)))
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[show (X v : MvPolynomial σ K) = monomial (Finsupp.single v 1) 1 from rfl, support_monomial, if_neg one_ne_zero]`. Simplify using `only [Finset.mem_singleton] at hm`. Substitute `hm` using the available equality. Conclude with `⟨ha, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem biHom_X_of (v : σ) {a b : ℕ} (ha : (∑ c, (Finsupp.single v 1 : σ →₀ ℕ) (w c)) = a)
     (hb : (∑ c, (Finsupp.single v 1 : σ →₀ ℕ) (e c)) = b) : BiHom w e a b (X v : MvPolynomial σ K) := by
@@ -1069,23 +1067,23 @@ abbrev wW : Fin r → Fin (N + 1 + 1) × Fin r := fun c => (Fin.castSucc (Fin.la
 abbrev eη : Fin r → Fin (N + 1 + 1) × Fin r := fun c => (Fin.last (N + 1), c)
 
 /- English proof (translation)
-Introduce `a b h` and use `by simpa using h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wW_inj : Function.Injective (wW (N := N) (r := r)) := fun a b h => by simpa using h
 /- English proof (translation)
-Introduce `a b h` and use `by simpa using h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eη_inj : Function.Injective (eη (N := N) (r := r)) := fun a b h => by simpa using h
 /- English proof (translation)
-Introduce `c d h` and use `by simp only [Prod.mk.injEq] at h; exact Fin.castSucc_ne_last _ h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wW_ne_eη : ∀ c d, (wW (N := N) (r := r)) c ≠ eη d := fun c d h => by
   simp only [Prod.mk.injEq] at h; exact Fin.castSucc_ne_last _ h.1
 
 /- English proof (translation)
-Apply `biHom_X_of` to reduce the goal to its premises. Simplify using `only [Finsupp.single_apply, Prod.mk.injEq, Fin.castSucc_inj]`. Distinguish the cases in `h : i = Fin.last N`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Ne.symm h]`. Simplify using `[Finsupp.single_apply, Fin.castSucc_ne_last]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem biHom_Xcs (i : Fin (N + 1)) (c : Fin r) :
     BiHom (wW (N := N)) eη (if i = Fin.last N then 1 else 0) 0
@@ -1098,7 +1096,7 @@ theorem biHom_Xcs (i : Fin (N + 1)) (c : Fin r) :
   · simp [Finsupp.single_apply, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Apply `biHom_X_of` to reduce the goal to its premises. Simplify using `[Finsupp.single_apply, (Fin.castSucc_ne_last _).symm]`. Simplify using `[Finsupp.single_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem biHom_Xeta (c : Fin r) :
     BiHom (wW (N := N)) eη 0 1 (X (Fin.last (N + 1), c) : MvPolynomial (Fin (N + 1 + 1) × Fin r) K) := by
@@ -1107,13 +1105,11 @@ theorem biHom_Xeta (c : Fin r) :
   · simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Take `⟨i, c⟩` from `x`. Establish `hp : ∀ c1 c2, BiHom (wW (N` using `N)) eη (if i = Fin.last N then 1 else 0) 1 ((X (Fin.last (N + 1), c1) : MvPolynomial (Fin (N + 1 + 1) × Fin r) K) * X (Fin.castSucc i, c2)) := by`. Introduce `c1 c2`. Use `biHom_mul (biHom_Xeta (K := K) (N := N) c1) (biHom_Xcs (K := K) i c2)` as an intermediate fact. Simplify `this` using `[add_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hp' : ∀ c1 c2, BiHom (wW (N` using `N)) eη (if i = Fin.last N then 1 else 0) 1 ((X (Fin.castSucc i, c2) : MvPolynomial (Fin (N + 1 + 1) × Fin r) K) * X (Fin.last (N + 1), c1)) := by`. Introduce `c1 c2`. Rewrite using `[mul_comm]`. Conclude with `hp c1 c2`. Simplify using `only [fSub]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hv : LL.vec i = true <;> by_cases hc : c = ρ`. Rewrite using `[if_pos hv, if_pos hc]`. Conclude with `biHom_sum _ _ (fun c' _ => hp' c' c')`. Rewrite using `[if_pos hv, if_neg hc]`. Conclude with `hp ρ c`.
-
-Rewrite using `[if_neg hv, if_pos hc]`. Conclude with `hp ρ ρ`. Rewrite using `[if_neg hv, if_neg hc]`. Conclude with `biHom_sub (hp ρ c) (hp' c ρ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biHom_fSub (x : Fin (N + 1) × Fin r) :
     BiHom (wW (N := N)) eη (if x.1 = Fin.last N then 1 else 0) 1 (fSub K LL ρ x) := by
@@ -1134,7 +1130,7 @@ theorem biHom_fSub (x : Fin (N + 1) × Fin r) :
   · rw [if_neg hv, if_neg hc]; exact biHom_sub (hp ρ c) (hp' c ρ)
 
 /- English proof (translation)
-Rewrite using `[aeval_monomial, map_one, one_mul]`. Conclude with `Finsupp.prod_fintype _ _ (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_fSub_monomial (m : Fin (N + 1) × Fin r →₀ ℕ) :
     aeval (fSub K LL ρ) (monomial m (1 : K)) = ∏ x, fSub K LL ρ x ^ m x := by
@@ -1142,9 +1138,9 @@ theorem aeval_fSub_monomial (m : Fin (N + 1) × Fin r →₀ ℕ) :
   exact Finsupp.prod_fintype _ _ (by simp)
 
 /- English proof (translation)
-Establish `h : ∀ x, g x ^ m x = (if x = x0 then g x0 ^ m x0 else 1) * g x ^ (Finsupp.update m x0 0) x`. Introduce `x`. Distinguish the cases in `hx : x = x0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hx, Finsupp.update_apply]`. Rewrite using `[Finset.prod_congr rfl (fun x _ => h x), Finset.prod_mul_distrib, Finset.prod_ite_eq']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_split {σ' : Type} [Fintype σ'] [DecidableEq σ'] {R : Type} [CommMonoid R] (g : σ' → R)
     (m : σ' →₀ ℕ) (x0 : σ') :
@@ -1158,14 +1154,14 @@ theorem prod_split {σ' : Type} [Fintype σ'] [DecidableEq σ'] {R : Type} [Comm
   simp
 
 /- English proof (translation)
-Simplify using `[fSub, hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fSub_alt (hv : LL.vec (Fin.last N) = true) :
     fSub K LL ρ (Fin.last N, ρ) = ∑ c, X (wW (N := N) c) * X (eη c) := by
   simp [fSub, hv]
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ a ih => rw [pow_succ', Module.End.mul_apply, ih, tieE_apply', pow_succ', mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem tieE_pow_eq (g : MvPolynomial (Fin (N + 1 + 1) × Fin r) K) (a : ℕ) :
     (tieE (wW (N := N)) eη ^ a) g = (∑ c, X (wW (N := N) c) * X (eη c)) ^ a * g := by
@@ -1177,7 +1173,7 @@ noncomputable def sq (m : Fin (N + 1) × Fin r →₀ ℕ) : MvPolynomial (Fin (
   ∏ x, fSub K LL ρ x ^ (Finsupp.update m (Fin.last N, ρ) 0) x
 
 /- English proof (translation)
-Rewrite using `[frz, aeval_fSub_monomial, prod_split _ m (Fin.last N, ρ), fSub_alt LL ρ hv, tieE_pow_eq, sq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frz_monomial (hv : LL.vec (Fin.last N) = true) (n : ℕ) (m : Fin (N + 1) × Fin r →₀ ℕ) :
     frz K LL ρ n (monomial m 1) =
@@ -1197,9 +1193,9 @@ section
 variable {K : Type} [Field K] {N r : ℕ} (LL : M.Letters (N + 1)) (ρ : Fin r)
 
 /- English proof (translation)
-Establish `h : ∀ x, m x * g x = (Finsupp.update m x0 0) x * g x + (if x = x0 then m x0 * g x0 else 0)`. Introduce `x`. Distinguish the cases in `hx : x = x0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hx, Finsupp.update_apply]`. Rewrite using `[Finset.sum_congr rfl (fun x _ => h x), Finset.sum_add_distrib, Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_update {σ' : Type} [Fintype σ'] [DecidableEq σ'] (m : σ' →₀ ℕ) (x0 : σ') (g : σ' → ℕ) :
     ∑ x, m x * g x = ∑ x, (Finsupp.update m x0 0) x * g x + m x0 * g x0 := by
@@ -1211,7 +1207,7 @@ theorem sum_update {σ' : Type} [Fintype σ'] [DecidableEq σ'] (m : σ' →₀ 
   simp
 
 /- English proof (translation)
-The claim follows from `biHom_prod_pow _ _ _ _ _ (fun x _ => biHom_fSub LL ρ x)`.
+A detailed English derivation is pending.
 -/
 theorem biHom_sq (m : Fin (N + 1) × Fin r →₀ ℕ) :
     BiHom (wW (N := N)) eη (∑ x, (Finsupp.update m (Fin.last N, ρ) 0) x * (if x.1 = Fin.last N then 1 else 0))
@@ -1219,7 +1215,7 @@ theorem biHom_sq (m : Fin (N + 1) × Fin r →₀ ℕ) :
   biHom_prod_pow _ _ _ _ _ (fun x _ => biHom_fSub LL ρ x)
 
 /- English proof (translation)
-Simplify using `only [mul_one, M.Letters.total]`. Rewrite using `[Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl (fun i _ => hm i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multiDeg_total (m : Fin (N + 1) × Fin r →₀ ℕ) (hm : M.MultiDeg LL m) :
     ∑ x, m x * 1 = LL.total := by
@@ -1228,7 +1224,7 @@ theorem multiDeg_total (m : Fin (N + 1) × Fin r →₀ ℕ) (hm : M.MultiDeg LL
   exact Finset.sum_congr rfl (fun i _ => hm i)
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, ← hm (Fin.last N)]`. Rewrite using `[Finset.sum_eq_single (Fin.last N)]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[hi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -1241,9 +1237,9 @@ theorem multidegree_last_weight_sum (m : Fin (N + 1) × Fin r →₀ ℕ) (hm : 
   · simp
 
 /- English proof (translation)
-Establish `h1` using `sum_update m (Fin.last N, ρ) (fun x => if x.1 = Fin.last N then 1 else 0)`. Establish `h2` using `sum_update m (Fin.last N, ρ) (fun _ => 1)`. Rewrite `h1` using `[multidegree_last_weight_sum LL m hm]`. Rewrite `h2` using `[multiDeg_total LL m hm]`. Simplify using `only [if_true, mul_one] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `biHom_sq (K := K) LL ρ m` as an intermediate fact. Simplify using `only [mul_one] at this`. Rewrite `this` using `[show ∑ x, (Finsupp.update m (Fin.last N, ρ) 0) x * (if x.1 = Fin.last N then 1 else 0) = LL.deg (Fin.last N) - m (Fin.last N, ρ) by omega, show ∑ x, (Finsupp.update m (Fin.last N, ρ) 0) x = LL.total - m (Fin.last N, ρ) by omega]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem biHom_sq' (m : Fin (N + 1) × Fin r →₀ ℕ) (hm : M.MultiDeg LL m) :
     BiHom (wW (N := N)) eη (LL.deg (Fin.last N) - m (Fin.last N, ρ)) (LL.total - m (Fin.last N, ρ))
@@ -1260,9 +1256,9 @@ theorem biHom_sq' (m : Fin (N + 1) × Fin r →₀ ℕ) (hm : M.MultiDeg LL m) :
     show ∑ x, (Finsupp.update m (Fin.last N, ρ) 0) x = LL.total - m (Fin.last N, ρ) by omega] at this
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.prod_insert ha, Derivation.leibniz, ih (fun x hx => h x (Finset.mem_insert_of_mem hx))]`. Break down `h a (Finset.mem_insert_self _ _) with h0 | h0` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[h0]`. Simplify using `[Derivation.leibniz_pow, h0]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_prod_zero {σ' ι : Type} [DecidableEq ι] (i : σ') (t : Finset ι) (g : ι → MvPolynomial σ' K)
     (k : ι → ℕ) (h : ∀ x ∈ t, k x = 0 ∨ pderiv i (g x) = 0) : pderiv i (∏ x ∈ t, g x ^ k x) = 0 := by
@@ -1275,17 +1271,17 @@ theorem pderiv_prod_zero {σ' ι : Type} [DecidableEq ι] (i : σ') (t : Finset 
     · simp [Derivation.leibniz_pow, h0]
 
 /- English proof (translation)
-Take `⟨i, c⟩` from `x`. Establish `hXcs : ∀ c', (i = Fin.last N → c' ≠ ρ) → pderiv (wW (N` using `N) ρ) (X (Fin.castSucc i, c') : MvPolynomial (Fin (N + 1 + 1) × Fin r) K) = 0 := by`. Introduce `c' hc'`. Apply `pderiv_X_of_ne` to reduce the goal to its premises. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [wW, Prod.mk.injEq, Fin.castSucc_inj] at h`. Conclude with `hc' h.1 h.2`. Establish `hXe : ∀ c', pderiv (wW (N` using `N) ρ) (X (Fin.last (N + 1), c') : MvPolynomial (Fin (N + 1 + 1) × Fin r) K) = 0 := by`. Introduce `c'`. Apply `pderiv_X_of_ne` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Simplify using `only [wW, Prod.mk.injEq] at h`. Conclude with `Fin.castSucc_ne_last _ h.1.symm`. Simplify using `only [fSub]`. Apply the tactic sequence `by_cases hvi : LL.vec i = true <;> by_cases hc : c = ρ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos hvi, if_pos hc]`. Establish `hi : i ≠ Fin.last N` using `fun h => hx (by rw [h, hc])`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero (fun c' _ => ?_)` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, hXcs c' (fun h => absurd h hi), hXe]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_pos hvi, if_neg hc, Derivation.leibniz, hXcs c (fun _ => hc), hXe]`. Simplify using the standard rewrite rules. Establish `hi : i ≠ Fin.last N` using `fun h => hvi (h ▸ hv)`. Rewrite using `[if_neg hvi, if_pos hc, Derivation.leibniz, hXcs ρ (fun h => absurd h hi), hXe]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hi : i ≠ Fin.last N` using `fun h => hvi (h ▸ hv)`. Rewrite using `[if_neg hvi, if_neg hc, map_sub, Derivation.leibniz, Derivation.leibniz, hXcs c (fun h => absurd h hi), hXcs ρ (fun h => absurd h hi), hXe, hXe]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pderiv_W_fSub (hv : LL.vec (Fin.last N) = true) (x : Fin (N + 1) × Fin r) (hx : x ≠ (Fin.last N, ρ)) :
     pderiv (wW (N := N) ρ) (fSub K LL ρ x) = 0 := by
@@ -1314,9 +1310,9 @@ theorem pderiv_W_fSub (hv : LL.vec (Fin.last N) = true) (x : Fin (N + 1) × Fin 
       hXcs ρ (fun h => absurd h hi), hXe, hXe]; simp
 
 /- English proof (translation)
-Apply `pderiv_prod_zero` to reduce the goal to its premises. Introduce `x _`. Distinguish the cases in `hx : x = (Fin.last N, ρ)`. Use `left`. Substitute `hx` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `right`. Conclude with `pderiv_W_fSub LL ρ hv x hx`.
+A detailed English derivation is pending.
 -/
 theorem pderiv_W_sq (hv : LL.vec (Fin.last N) = true) (m : Fin (N + 1) × Fin r →₀ ℕ) :
     pderiv (wW (N := N) ρ) (sq (K := K) LL ρ m) = 0 := by
@@ -1327,11 +1323,11 @@ theorem pderiv_W_sq (hv : LL.vec (Fin.last N) = true) (m : Fin (N + 1) × Fin r 
   · right; exact pderiv_W_fSub LL ρ hv x hx
 
 /- English proof (translation)
-Rewrite using `[tieF_apply', tieF_apply', Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Establish `h1 : pderiv (wW (N` using `N) c) (X (Fin.last (N + 1), ρ) : MvPolynomial (Fin (N + 1 + 1) × Fin r) K) = 0 := by`. Apply `pderiv_X_of_ne` to reduce the goal to its premises. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [wW, Prod.mk.injEq] at h`. Conclude with `Fin.castSucc_ne_last _ h.1.symm`. Distinguish the cases in `hc : c = ρ`. Substitute `hc` using the available equality. Simplify using `only [pderiv_mul, pderiv_pow, h1, hg, pderiv_X_self, mul_zero, zero_mul, add_zero, mul_one]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[pderiv_mul, hg, h1]`. Rewrite using `[pderiv_mul, pderiv_pow, pderiv_X_of_ne (by simp [eη, Ne.symm hc] : (Fin.last (N + 1), ρ) ≠ eη (N := N) c)]`. Simplify using `[pderiv_mul, pderiv_pow, h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem F_eta_pow (k : ℕ) (g : MvPolynomial (Fin (N + 1 + 1) × Fin r) K)
     (hg : pderiv (wW (N := N) ρ) g = 0) :
@@ -1359,11 +1355,11 @@ section gen
 variable {K σ : Type} [Field K] [Fintype σ] [DecidableEq σ]
 
 /- English proof (translation)
-Unfold `wf`. Establish `h : ∀ x : σ, ((((Finsupp.single i k + M : σ →₀ ℕ) x).factorial : ℕ) : K) = ((M x).factorial : K) * (if x = i then (((M i + k).descFactorial k : ℕ) : K) else 1)`. Introduce `x`. Distinguish the cases in `hx : x = i`. Substitute `hx` using the available equality.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same, if_true]`. Use `Nat.factorial_mul_descFactorial (n := M x + k) (k := k) (by omega)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel]`. Rewrite using `[add_comm k, ← this]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[hx, Finsupp.single_apply, Ne.symm hx]`. Rewrite using `[Finset.prod_congr rfl (fun x _ => h x), Finset.prod_mul_distrib, Finset.prod_ite_eq']`. Simplify using `[mul_comm]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wf_single_add (M : σ →₀ ℕ) (i : σ) (k : ℕ) :
     (wf (Finsupp.single i k + M) : K) = (((M i + k).descFactorial k : ℕ) : K) * wf M := by
@@ -1382,11 +1378,11 @@ theorem wf_single_add (M : σ →₀ ℕ) (i : σ) (k : ℕ) :
   simp [mul_comm]
 
 /- English proof (translation)
-Establish `hX : (X i ^ k : MvPolynomial σ K) = monomial (Finsupp.single i k) 1` using `by rw [X_pow_eq_monomial]`. Establish `hs : (X i ^ k * g).support ⊆ g.support.map (addLeftEmbedding (Finsupp.single i k))`. Introduce `M hM`. Use `support_mul (X i ^ k) g hM` as an intermediate fact. Rewrite `this` using `[hX, support_monomial, if_neg one_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.mp this`. Simplify using `only [Finset.mem_singleton] at ha`. Substitute `ha` using the available equality. Conclude with `Finset.mem_map.mpr ⟨b, hb, rfl⟩`. Rewrite using `[fk_eq_sum _ _ _ hs, Finset.sum_map]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun M _ => ?_)` and prove the remaining obligations. Simplify using `only [addLeftEmbedding_apply, hX, coeff_monomial_mul, one_mul, wf_single_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fk_Xpow (i : σ) (k : ℕ) (g g' : MvPolynomial σ K) :
     fk (X i ^ k * g) (X i ^ k * g') =
@@ -1412,11 +1408,9 @@ noncomputable def kill : MvPolynomial σ K →ₐ[K] MvPolynomial σ K :=
   aeval (fun v => if P v then (0 : MvPolynomial σ K) else X v)
 
 /- English proof (translation)
-Unfold `kill`. Rewrite using `[aeval_monomial, MvPolynomial.algebraMap_eq]`. Use `split_ifs with h`. Rewrite using `[monomial_eq]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finsupp.prod_congr (fun v hv => ?_)` and prove the remaining obligations. Establish `: ¬ P v` using `fun hp => (Finsupp.mem_support_iff.mp hv) (h v hp)`. Rewrite using `[if_neg this]`. Use `push Not at h`. Take `⟨v, hp, hv⟩` from `h`.
-
-Rewrite using `[Finsupp.prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hv) (by rw [if_pos hp, zero_pow hv]), mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kill_monomial (M : σ →₀ ℕ) (a : K) :
     kill P (monomial M a) = if (∀ v, P v → M v = 0) then monomial M a else 0 := by
@@ -1434,9 +1428,9 @@ theorem kill_monomial (M : σ →₀ ℕ) (a : K) :
       mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on' with`. Consider the case `monomial M' a`. Rewrite using `[kill_monomial]`. Distinguish the cases in `hM : M' = M`. Apply the tactic sequence `subst hM; split_ifs <;> simp`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp [coeff_monomial, hM]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, coeff_add, hp, hq, coeff_add]`. Apply the tactic sequence `split_ifs <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_kill (g : MvPolynomial σ K) (M : σ →₀ ℕ) :
     coeff M (kill P g) = if (∀ v, P v → M v = 0) then coeff M g else 0 := by
@@ -1451,7 +1445,7 @@ theorem coeff_kill (g : MvPolynomial σ K) (M : σ →₀ ℕ) :
     split_ifs <;> ring
 
 /- English proof (translation)
-Unfold `kill`. Rewrite using `[aeval_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kill_X (v : σ) : kill P (X v : MvPolynomial σ K) = if P v then 0 else X v := by
   unfold kill; rw [aeval_X]
@@ -1468,21 +1462,21 @@ instance (ρ : Fin r) : DecidablePred (Pη (N := N) ρ) := fun v => by unfold P�
 def cs' : Fin (N + 1) × Fin r → Fin (N + 1 + 1) × Fin r := fun x => (Fin.castSucc x.1, x.2)
 
 /- English proof (translation)
-Introduce `a b h`. Simplify using `only [cs', Prod.mk.injEq, Fin.castSucc_inj] at h`. Conclude with `Prod.ext h.1 h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cs'_inj : Function.Injective (cs' (N := N) (r := r)) := by
   intro a b h; simp only [cs', Prod.mk.injEq, Fin.castSucc_inj] at h; exact Prod.ext h.1 h.2
 
 /- English proof (translation)
-Take `⟨i, c⟩` from `x`. Establish `hcs : ∀ c', ¬ Pη (N` using `N) ρ (Fin.castSucc i, c') := fun c' h => Fin.castSucc_ne_last _ h.1`. Establish `he : ∀ c', Pη (N` using `N) ρ (Fin.last (N + 1), c') ↔ c' ≠ ρ := fun c' => by simp [Pη]`. Simplify using `only [fSub, cs']`. Apply the tactic sequence `by_cases hvi : LL.vec i = true <;> by_cases hc : c = ρ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[if_pos hvi, if_pos hc, map_sum]`. Simplify using `only [map_mul, kill_X, hcs, if_false, he, ite_not]`. Rewrite using `[Finset.sum_eq_single ρ]`. Substitute `hc` using the available equality. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Rewrite using `[if_pos hvi, if_neg hc]`. Simplify using `only [map_mul, kill_X, hcs, he, if_false]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hvi, if_pos hc]`. Simplify using `only [map_mul, kill_X, hcs, he, if_false]`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hvi, if_neg hc]`. Simplify using `only [map_sub, map_mul, kill_X, hcs, he, if_false]`. Simplify using `[hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem kill_fSub (x : Fin (N + 1) × Fin r) :
     kill (K := K) (Pη ρ) (fSub K LL ρ x) = X (Fin.last (N + 1), ρ) * X (cs' x) := by
@@ -1502,7 +1496,7 @@ theorem kill_fSub (x : Fin (N + 1) × Fin r) :
   · rw [if_neg hvi, if_neg hc]; simp only [map_sub, map_mul, kill_X, hcs, he, if_false]; simp [hc]
 
 /- English proof (translation)
-Rewrite using `[monomial_eq, C_1, one_mul]`. Conclude with `Finsupp.prod_fintype _ _ (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomial_eq_prod {σ' : Type} [Fintype σ'] [DecidableEq σ'] (m : σ' →₀ ℕ) :
     (monomial m (1 : K) : MvPolynomial σ' K) = ∏ x, X x ^ m x := by
@@ -1510,7 +1504,7 @@ theorem monomial_eq_prod {σ' : Type} [Fintype σ'] [DecidableEq σ'] (m : σ' �
   exact Finsupp.prod_fintype _ _ (by simp)
 
 /- English proof (translation)
-Rewrite using `[sq, map_prod]`. Simplify using `only [map_pow, kill_fSub, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Use `congr 1`. Rewrite using `[← rename_monomial, monomial_eq_prod, map_prod]`. Simplify using `[rename_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kill_sq (m : Fin (N + 1) × Fin r →₀ ℕ) :
     kill (K := K) (Pη ρ) (sq LL ρ m) =
@@ -1523,11 +1517,11 @@ theorem kill_sq (m : Fin (N + 1) × Fin r →₀ ℕ) :
   simp [rename_X]
 
 /- English proof (translation)
-Unfold `wf`. Rewrite using `[← Finset.prod_subset (Finset.subset_univ (Finset.univ.map ⟨cs' (N := N), cs'_inj⟩))]`. Rewrite using `[Finset.prod_map]`. Use `Finset.prod_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Simplify using `[Finsupp.mapDomain_apply cs'_inj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `v _ hv`. Establish `: v ∉ Set.range (cs' (N` using `N) (r := r)) := by`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `hv (Finset.mem_map.mpr ⟨x, Finset.mem_univ _, rfl⟩)`. Rewrite using `[Finsupp.mapDomain_of_notMem_range _ _ this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem wf_mapDomain (m : Fin (N + 1) × Fin r →₀ ℕ) :
     (wf (m.mapDomain (cs' (N := N))) : K) = wf m := by
@@ -1543,17 +1537,15 @@ theorem wf_mapDomain (m : Fin (N + 1) × Fin r →₀ ℕ) :
     rw [Finsupp.mapDomain_of_notMem_range _ _ this]; simp
 
 /- English proof (translation)
-Establish `hs : (kill (K` using `K) (Pη ρ) g).support ⊆ g.support := by`. Introduce `M hM`. Rewrite `hM` using `[mem_support_iff, coeff_kill]`. Use `split_ifs at hM`. Conclude with `mem_support_iff.mpr hM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd rfl hM`. Rewrite using `[fk_eq_sum _ _ _ hs]`. Use `Finset.sum_congr rfl (fun M hM => ?_)` and prove the remaining obligations. Rewrite using `[coeff_kill, coeff_kill]`. Establish `hd` using `(hg M hM).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `key : (∀ v, Pη (N` using `N) ρ v → M v = 0) ↔ M (Fin.last (N + 1), ρ) = d := by`. Rewrite using `[← hd, ← Finset.add_sum_erase _ _ (Finset.mem_univ ρ)]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[Finset.sum_eq_zero (fun c hc => h _ ⟨rfl, Finset.ne_of_mem_erase hc⟩), add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce `h v hv`. Take `⟨v1, v2⟩` from `v`. Simplify using `only [Pη] at hv`. Take `⟨rfl, hv2⟩` from `hv`. Establish `h0 : ∑ c ∈ Finset.univ.erase ρ, M (eη (N` using `N) c) = 0 := by simp only [eη] at h ⊢; omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `(Finset.sum_eq_zero_iff.mp h0) v2 (Finset.mem_erase.mpr ⟨hv2, Finset.mem_univ _⟩)`. Distinguish the cases in `h : M (Fin.last (N + 1), ρ) = d`. Rewrite using `[if_pos (key.mpr h), if_pos (key.mpr h), if_pos h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h' => h (key.mp h')), if_neg h]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem top_eq_kill (a d : ℕ) (g g' : MvPolynomial (Fin (N + 1 + 1) × Fin r) K)
     (hg : BiHom (wW (N := N)) eη a d g) :
@@ -1593,9 +1585,9 @@ namespace Formalism.GM.leadingTermLemmas
 open Filter Topology Finset
 
 /- English proof (translation)
-Establish `h` using `(tendsto_const_div_atTop_nhds_zero_nat b).const_add 1`. Rewrite `h` using `[add_zero]`. Use `h.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 1] with n hn`. Establish `: (n : ℝ) ≠ 0` using `by exact_mod_cast (by omega : n ≠ 0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem tendsto_lin (b : ℝ) : Tendsto (fun n : ℕ => ((n : ℝ) + b) / n) atTop (𝓝 1) := by
   have h := (tendsto_const_div_atTop_nhds_zero_nat b).const_add 1
@@ -1606,15 +1598,15 @@ theorem tendsto_lin (b : ℝ) : Tendsto (fun n : ℕ => ((n : ℝ) + b) / n) atT
   field_simp
 
 /- English proof (translation)
-Establish `hprod : Tendsto (fun n : ℕ => ∏ i ∈ range j, (((n : ℝ) + ((c : ℝ) - s - i)) / n)) atTop (𝓝 1)`. Use `tendsto_finsetProd (range j) (fun i _ => tendsto_lin ((c : ℝ) - s - i))` as an intermediate fact. Simplify using `using this`. Establish `h2` using `hprod.div_const (j.factorial : ℝ)`. Use `h2.congr' ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [eventually_ge_atTop (s + j + 1)] with n hn`. Establish `hn0 : (n : ℝ) ≠ 0` using `by exact_mod_cast (by omega : n ≠ 0)`. Establish `hf : (j.factorial : ℝ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero j`. Establish `hd` using `Nat.descFactorial_eq_factorial_mul_choose (n + c - s) j`. Rewrite `hd` using `[Nat.descFactorial_eq_prod_range]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcast : ((∏ i ∈ range j, (n + c - s - i) : ℕ) : ℝ) = ∏ i ∈ range j, ((n : ℝ) + ((c : ℝ) - s - i))`. Use `push_cast`. Use `Finset.prod_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Establish `hi' : i < j` using `Finset.mem_range.mp hi`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hC : ((n + c - s).choose j : ℝ) = (∏ i ∈ range j, ((n : ℝ) + ((c : ℝ) - s - i))) / j.factorial`. Rewrite using `[← hcast, hd]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hC, Finset.prod_div_distrib, Finset.prod_const, Finset.card_range]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem choose_lim (c s j : ℕ) :
     Tendsto (fun n : ℕ => ((n + c - s).choose j : ℝ) / (n : ℝ) ^ j) atTop (𝓝 (1 / (j.factorial : ℝ))) := by
@@ -1640,7 +1632,7 @@ theorem choose_lim (c s j : ℕ) :
   field_simp
 
 /- English proof (translation)
-Establish `h` using `(tendsto_one_div_atTop_nhds_zero_nat (𝕜 := ℝ)).pow t`. Rewrite `h` using `[zero_pow (by omega)]`. Use `h.congr' ?_` and prove the remaining obligations. Use `filter_upwards with n`. Rewrite using `[div_pow, one_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_pow_lim (t : ℕ) (ht : 1 ≤ t) : Tendsto (fun n : ℕ => 1 / (n : ℝ) ^ t) atTop (𝓝 0) := by
   have h := (tendsto_one_div_atTop_nhds_zero_nat (𝕜 := ℝ)).pow t
@@ -1650,11 +1642,11 @@ theorem inv_pow_lim (t : ℕ) (ht : 1 ≤ t) : Tendsto (fun n : ℕ => 1 / (n : 
   rw [div_pow, one_pow]
 
 /- English proof (translation)
-Distinguish the cases in `h : j = d`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `choose_lim j S j`. Rewrite using `[if_neg h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(choose_lim j S j).mul (inv_pow_lim (d - j) (by omega))`. Rewrite `h1` using `[mul_zero]`. Use `h1.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 1] with n hn`. Establish `hn0 : (n : ℝ) ≠ 0` using `by exact_mod_cast (by omega : n ≠ 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[show d = j + (d - j) by omega, pow_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Nat.add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem choose_lim' (S j d : ℕ) (hjd : j ≤ d) :
     Tendsto (fun n : ℕ => ((n + j - S).choose j : ℝ) / (n : ℝ) ^ d) atTop
@@ -1672,15 +1664,15 @@ theorem choose_lim' (S j d : ℕ) (hjd : j ≤ d) :
     rw [Nat.add_sub_cancel_left]
 
 /- English proof (translation)
-Use `set Q : Polynomial ℝ := Polynomial.X ^ D with hQ`. Establish `hQe : ∀ x : ℝ, Q.eval x = x ^ D` using `fun x => by simp [hQ]`. Establish `hQd : Q.degree = D` using `by simp [hQ]`. Establish `hQl : Q.leadingCoeff = 1` using `by simp [hQ]`. Establish `hnat` using `tendsto_natCast_atTop_atTop (R := ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy R.degree Q.degree with hlt | heq | hgt` into its components or cases. Establish `h0` using `(Polynomial.div_tendsto_atTop_zero_of_degree_lt R Q hlt).comp hnat`. Simplify using `only [Function.comp_def, hQe] at h0`. Establish `hL` using `tendsto_nhds_unique h h0`. Rewrite using `[hL]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Polynomial.coeff_eq_zero_of_degree_lt (by rw [← hQd]; exact hlt)`. Establish `h0` using `(Polynomial.div_tendsto_atTop_leadingCoeff_div_of_degree_eq R Q heq).comp hnat`. Simplify using `only [Function.comp_def, hQe, hQl, div_one] at h0`. Establish `hL` using `tendsto_nhds_unique h h0`. Rewrite using `[hL, Polynomial.leadingCoeff, Polynomial.natDegree_eq_of_degree_eq_some (heq.trans hQd)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `hR0 : R ≠ 0` using `fun h0 => by rw [h0, Polynomial.degree_zero] at hgt; exact absurd hgt (by simp)`. Establish `hlc : R.leadingCoeff ≠ 0` using `Polynomial.leadingCoeff_ne_zero.mpr hR0`. Break down `lt_or_gt_of_ne hlc with hneg | hpos` into its components or cases. Establish `h0` using `(Polynomial.div_tendsto_atBot_of_degree_gt' R Q hgt (by rw [hQl, div_one]; exact hneg)).comp hnat`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_def, hQe] at h0`. Conclude with `not_tendsto_nhds_of_tendsto_atBot h0 L h`. Establish `h0` using `(Polynomial.div_tendsto_atTop_of_degree_gt' R Q hgt (by rw [hQl, div_one]; exact hpos)).comp hnat`. Simplify using `only [Function.comp_def, hQe] at h0`. Conclude with `not_tendsto_nhds_of_tendsto_atTop h0 L h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_of_tendsto (R : Polynomial ℝ) (D : ℕ) (L : ℝ)
     (h : Tendsto (fun n : ℕ => R.eval (n : ℝ) / (n : ℝ) ^ D) atTop (𝓝 L)) : R.coeff D = L := by
@@ -1711,11 +1703,11 @@ theorem coeff_of_tendsto (R : Polynomial ℝ) (D : ℕ) (L : ℝ)
       exact not_tendsto_nhds_of_tendsto_atTop h0 L h
 
 /- English proof (translation)
-Establish `hlim : ∀ M ∈ g.support, Tendsto (fun n : ℕ => g.coeff M * g'.coeff M * wf M * (((n + M i - S).choose (M i) : ℝ) / (n : ℝ) ^ d)) atTop (𝓝 (g.coeff M * g'.coeff M * wf M * (if M i = d then 1 / (d.factorial : ℝ) else 0)))` using `fun M hM => (choose_lim' S (M i) d (hg M hM)).const_mul _`. Use `(tendsto_finsetSum _ hlim).congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (S + 1)] with n hn`. Rewrite using `[fk_Xpow, Finset.sum_div]`. Use `Finset.sum_congr rfl (fun M _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk : (n - S).factorial ≠ 0` using `Nat.factorial_ne_zero _`. Establish `hc` using `Nat.descFactorial_eq_factorial_mul_choose (M i + (n - S)) (n - S)`. Rewrite `hc` using `[← Nat.choose_symm_add, show M i + (n - S) = n + M i - S by omega]`. Rewrite using `[show M i + (n - S) = n + M i - S by omega, hc]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hk' : ((n - S).factorial : ℝ) ≠ 0` using `by exact_mod_cast hk`. Establish `hn0 : (n : ℝ) ^ d ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (by omega : n ≠ 0))`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fk_eta_lim {σ : Type} [Fintype σ] [DecidableEq σ] (i : σ) (S d : ℕ) (g g' : MvPolynomial σ ℝ)
     (hg : ∀ M ∈ g.support, M i ≤ d) :
@@ -1749,13 +1741,13 @@ section
 variable {K : Type} [Field K] {N r : ℕ} (LL : M.Letters (N + 1)) (ρ : Fin r) (e : ℕ)
 
 /- English proof (translation)
-Simplify using `[M.Letters.snoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snoc_degree_last_weight (n : ℕ) : (LL.snoc n).deg (Fin.castSucc (Fin.last N)) = LL.deg (Fin.last N) := by
   simp [M.Letters.snoc]
 
 /- English proof (translation)
-Simplify using `[M.Letters.snoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snoc_deg_eta (n : ℕ) : (LL.snoc n).deg (Fin.last (N + 1)) = n := by
   simp [M.Letters.snoc]
@@ -1774,7 +1766,7 @@ noncomputable def gF (m : Fin (N + 1) × Fin r →₀ ℕ) : MvPolynomial (Fin (
   if m (Fin.last N, ρ) = e then tieF (wW (N := N)) eη (sq LL ρ m) else 0
 
 /- English proof (translation)
-Rewrite using `[tieE_pow_eq, tieE_pow_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem E_pow_X_mul (j k : ℕ) (g : MvPolynomial (Fin (N + 1 + 1) × Fin r) K) :
     (tieE (wW (N := N)) eη ^ j) (X (Fin.last (N + 1), ρ) ^ k * g) =
@@ -1782,7 +1774,7 @@ theorem E_pow_X_mul (j k : ℕ) (g : MvPolynomial (Fin (N + 1 + 1) × Fin r) K) 
   rw [tieE_pow_eq, tieE_pow_eq]; ring
 
 /- English proof (translation)
-Unfold `V0 Yh gv`. Distinguish the cases in `h : m (Fin.last N, ρ) = e`. Rewrite using `[if_pos h, if_pos h, h, Nat.sub_self, pow_zero, Module.End.one_apply, map_zero, add_zero]`. Rewrite using `[if_neg h, if_neg h, zero_add, ← Module.End.mul_apply, ← pow_succ', show m (Fin.last N, ρ) - e - 1 + 1 = m (Fin.last N, ρ) - e by omega, E_pow_X_mul]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem leading_vector_add_linked (m : Fin (N + 1) × Fin r →₀ ℕ) (hme : e ≤ m (Fin.last N, ρ)) (n : ℕ) :
     V0 (K := K) LL ρ e m n + tieE (wW (N := N)) eη (Yh LL ρ e m n) =
@@ -1794,7 +1786,7 @@ theorem leading_vector_add_linked (m : Fin (N + 1) × Fin r →₀ ℕ) (hme : e
       show m (Fin.last N, ρ) - e - 1 + 1 = m (Fin.last N, ρ) - e by omega, E_pow_X_mul]
 
 /- English proof (translation)
-Rewrite using `[frz_monomial LL ρ hv, leading_vector_add_linked LL ρ e m hme, gv, ← E_pow_X_mul, ← Module.End.mul_apply, ← pow_add, Nat.add_sub_cancel' hme]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frz_shape (hv : LL.vec (Fin.last N) = true) (m : Fin (N + 1) × Fin r →₀ ℕ)
     (hme : e ≤ m (Fin.last N, ρ)) (n : ℕ) :
@@ -1804,7 +1796,7 @@ theorem frz_shape (hv : LL.vec (Fin.last N) = true) (m : Fin (N + 1) × Fin r �
     Nat.add_sub_cancel' hme]
 
 /- English proof (translation)
-Unfold `V0 gF`. Distinguish the cases in `h : m (Fin.last N, ρ) = e`. Rewrite using `[if_pos h, if_pos h, F_eta_pow ρ _ _ (pderiv_W_sq LL ρ hv m)]`. Rewrite using `[if_neg h, if_neg h, map_zero, mul_zero]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem linked_map_leading_vector (hv : LL.vec (Fin.last N) = true) (m : Fin (N + 1) × Fin r →₀ ℕ) (n : ℕ) :
     tieF (wW (N := N)) eη (V0 (K := K) LL ρ e m n) = X (Fin.last (N + 1), ρ) ^ (n - LL.total) * gF LL ρ e m := by
@@ -1814,7 +1806,7 @@ theorem linked_map_leading_vector (hv : LL.vec (Fin.last N) = true) (m : Fin (N 
   · rw [if_neg h, if_neg h, map_zero, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[← hm (Fin.last N)]`. Conclude with `Finset.single_le_sum (f := fun c => m (Fin.last N, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ ρ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem m_W_le (m : Fin (N + 1) × Fin r →₀ ℕ) (hm : M.MultiDeg LL m) :
     m (Fin.last N, ρ) ≤ LL.deg (Fin.last N) := by
@@ -1822,13 +1814,13 @@ theorem m_W_le (m : Fin (N + 1) × Fin r →₀ ℕ) (hm : M.MultiDeg LL m) :
   exact Finset.single_le_sum (f := fun c => m (Fin.last N, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ ρ)
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := LL.deg) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)`.
+A detailed English derivation is pending.
 -/
 theorem o_le_S : LL.deg (Fin.last N) ≤ LL.total :=
   Finset.single_le_sum (f := LL.deg) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)
 
 /- English proof (translation)
-Establish `h1` using `biHom_pow (biHom_Xeta (K := K) (N := N) ρ) (n - LL.total)`. Establish `h2` using `biHom_mul h1 (biHom_sq' (K := K) LL ρ m hm)`. Establish `hS` using `m_W_le LL ρ m hm`. Establish `hoS` using `o_le_S LL`. Rewrite `h2` using `[mul_zero, zero_add, mul_one, show n - LL.total + (LL.total - m (Fin.last N, ρ)) = n - m (Fin.last N, ρ) by omega]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem biHom_Xsq (m : Fin (N + 1) × Fin r →₀ ℕ) (hm : M.MultiDeg LL m) (n : ℕ) (hn : LL.total ≤ n) :
     BiHom (wW (N := N)) eη (LL.deg (Fin.last N) - m (Fin.last N, ρ)) (n - m (Fin.last N, ρ))
@@ -1845,9 +1837,9 @@ variable (hv : LL.vec (Fin.last N) = true) (m : Fin (N + 1) × Fin r →₀ ℕ)
 include hm hme hn
 
 /- English proof (translation)
-Unfold `V0`. Distinguish the cases in `h : m (Fin.last N, ρ) = e`. Rewrite using `[if_pos h]`. Use `biHom_Xsq (K := K) LL ρ m hm n hn` as an intermediate fact. Rewrite `this` using `[h]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[if_neg h]`. Conclude with `biHom_zero _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bihomogeneous_leading_vector : BiHom (wW (N := N)) eη (LL.deg (Fin.last N) - e) (n - e) (V0 (K := K) LL ρ e m n) := by
   unfold V0
@@ -1856,9 +1848,9 @@ theorem bihomogeneous_leading_vector : BiHom (wW (N := N)) eη (LL.deg (Fin.last
   · rw [if_neg h]; exact biHom_zero _ _
 
 /- English proof (translation)
-Unfold `Yh`. Distinguish the cases in `h : m (Fin.last N, ρ) = e`. Rewrite using `[if_pos h]`. Conclude with `biHom_zero _ _`. Rewrite using `[if_neg h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `biHom_E_pow wW_inj eη_inj wW_ne_eη (biHom_Xsq (K := K) LL ρ m hm n hn) (m (Fin.last N, ρ) - e - 1)` as an intermediate fact. Establish `hS` using `m_W_le LL ρ m hm`. Establish `hoS` using `o_le_S LL`. Rewrite `this` using `[show LL.deg (Fin.last N) - m (Fin.last N, ρ) + (m (Fin.last N, ρ) - e - 1) = LL.deg (Fin.last N) - e - 1 by omega, show n - m (Fin.last N, ρ) + (m (Fin.last N, ρ) - e - 1) = n - e - 1 by omega]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem biHom_Yh : BiHom (wW (N := N)) eη (LL.deg (Fin.last N) - e - 1) (n - e - 1) (Yh (K := K) LL ρ e m n) := by
   unfold Yh
@@ -1872,9 +1864,9 @@ theorem biHom_Yh : BiHom (wW (N := N)) eη (LL.deg (Fin.last N) - e - 1) (n - e 
       show n - m (Fin.last N, ρ) + (m (Fin.last N, ρ) - e - 1) = n - e - 1 by omega] at this
 
 /- English proof (translation)
-Introduce `h`. Unfold `Yh at h`. Distinguish the cases in `h' : m (Fin.last N, ρ) = e`. Rewrite `h` using `[if_pos h']`. Conclude with `absurd rfl h`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hS` using `m_W_le LL ρ m hm`. Establish `hoS` using `o_le_S LL`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem Yh_ne : Yh (K := K) LL ρ e m n ≠ 0 → 1 ≤ LL.deg (Fin.last N) - e ∧ 1 ≤ n - e := by
   intro h
@@ -1887,9 +1879,9 @@ theorem Yh_ne : Yh (K := K) LL ρ e m n ≠ 0 → 1 ≤ LL.deg (Fin.last N) - e 
 
 omit hn in
 /- English proof (translation)
-Introduce `M hM`. Establish `hb` using `biHom_E_pow wW_inj eη_inj wW_ne_eη (biHom_sq' (K := K) LL ρ m hm) (m (Fin.last N, ρ) - e)`. Establish `h2` using `(hb M hM).2`. Establish `hS` using `m_W_le LL ρ m hm`. Establish `hoS` using `o_le_S LL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : M (Fin.last (N + 1), ρ) ≤ ∑ c, M (eη (N` using `N) c) := Finset.single_le_sum (f := fun c => M (eη (N := N) c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ ρ)`. Simplify using `only [eη] at h2 h3`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem gv_eta_le : ∀ M ∈ (gv (K := K) LL ρ e m).support, M (Fin.last (N + 1), ρ) ≤ LL.total - e := by
   intro M hM
@@ -1904,11 +1896,11 @@ theorem gv_eta_le : ∀ M ∈ (gv (K := K) LL ρ e m).support, M (Fin.last (N + 
 
 omit hn in
 /- English proof (translation)
-Introduce `M hM`. Unfold `gF at hM`. Distinguish the cases in `h : m (Fin.last N, ρ) = e`. Rewrite `hM` using `[if_pos h]`. Establish `hb` using `(biHom_F wW_inj eη_inj wW_ne_eη (biHom_sq' (K := K) LL ρ m hm)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(hb M hM).2`. Establish `h3 : M (Fin.last (N + 1), ρ) ≤ ∑ c, M (eη (N` using `N) c) := Finset.single_le_sum (f := fun c => M (eη (N := N) c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ ρ)`. Simplify using `only [eη] at h2 h3`. Use linear arithmetic over natural numbers and integers. Rewrite `hM` using `[if_neg h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hM`.
+Simplify using the standard rewrite rules.
 -/
 theorem gF_eta_le : ∀ M ∈ (gF (K := K) LL ρ e m).support, M (Fin.last (N + 1), ρ) ≤ LL.total - e := by
   intro M hM
@@ -1925,7 +1917,7 @@ theorem gF_eta_le : ∀ M ∈ (gF (K := K) LL ρ e m).support, M (Fin.last (N + 
 
 omit hn hme in
 /- English proof (translation)
-Introduce `M hM`. Establish `h2` using `(biHom_sq' (K := K) LL ρ m hm M hM).2`. Establish `h3 : M (Fin.last (N + 1), ρ) ≤ ∑ c, M (eη (N` using `N) c) := Finset.single_le_sum (f := fun c => M (eη (N := N) c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ ρ)`. Simplify using `only [eη] at h2 h3`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sq_eta_le (he : m (Fin.last N, ρ) = e) : ∀ M ∈ (sq (K := K) LL ρ m).support, M (Fin.last (N + 1), ρ) ≤ LL.total - e := by
   intro M hM
@@ -1944,13 +1936,13 @@ namespace Formalism.GM.leadingTermLemmas
 open MvPolynomial Finset Formalism.GM Filter Topology
 
 /- English proof (translation)
-Establish `h1` using `choose_lim (o + r) (1 + e) e`. Establish `h2` using `choose_lim (o + r + z) 1 e`. Establish `hf : (1 / (e.factorial : ℝ)) ≠ 0`. Establish `: (e.factorial : ℝ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero e`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3` using `((h1.div h2 hf).const_mul (((z + e).choose e : ℝ) * e.factorial * e.factorial))`. Rewrite `h3` using `[div_self hf, mul_one]`. Use `h3.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (e + 1)] with n hn`. Establish `hn0 : (n : ℝ) ^ e ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (by omega : n ≠ 0))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `kap0`. Rewrite using `[show o + n + r - 1 - e = n + (o + r) - (1 + e) by omega, show o + n + r + z - 1 = n + (o + r + z) - 1 by omega, Nat.descFactorial_eq_factorial_mul_choose]`. Establish `hc : (((n + (o + r + z) - 1).choose e : ℕ) : ℝ) ≠ 0`. Conclude with `(Nat.choose_pos (by omega)).ne'` after adjusting the coercions. Simplify using `only [Pi.div_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem kappa_zero_tendsto_factorials (o z e r : ℕ) :
     Tendsto (fun n : ℕ => kap0 o n z e r) atTop (𝓝 (((z + e).choose e : ℝ) * e.factorial * e.factorial)) := by
@@ -1974,7 +1966,7 @@ theorem kappa_zero_tendsto_factorials (o z e r : ℕ) :
   field_simp
 
 /- English proof (translation)
-Use `(choose_lim (o + r + z) 1 o).congr' (Eventually.of_forall (fun n => ?_))` and prove the remaining obligations. Simplify using `only`. Rewrite using `[show n + (o + r + z) - 1 = o + n + r + z - 1 by omega]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chooseA_lim (o z r : ℕ) :
     Tendsto (fun n : ℕ => ((o + n + r + z - 1).choose o : ℝ) / (n : ℝ) ^ o) atTop (𝓝 (1 / (o.factorial : ℝ))) := by
@@ -1983,7 +1975,7 @@ theorem chooseA_lim (o z r : ℕ) :
   rw [show n + (o + r + z) - 1 = o + n + r + z - 1 by omega]
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun n : ℕ => ((n - o : ℕ) : ℝ)) atTop atTop` using `tendsto_natCast_atTop_atTop.comp (tendsto_sub_atTop_nat o)`. Establish `h2` using `(tendsto_inv_atTop_zero.comp h1).const_mul (1 / 2 : ℝ)`. Rewrite `h2` using `[mul_zero]`. Use `h2.congr' (Eventually.of_forall (fun n => ?_))` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -2000,9 +1992,9 @@ section
 variable {K σ : Type} [Field K] [Fintype σ] [DecidableEq σ]
 
 /- English proof (translation)
-Unfold `fk`. Rewrite using `[support_monomial, if_neg one_ne_zero, Finset.sum_singleton, coeff_monomial, coeff_monomial]`. Distinguish the cases in `h : M = M'`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h2 : ¬ M' = M` using `fun h' => h h'.symm`. Simplify using `[h, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem fk_monomial (M M' : σ →₀ ℕ) :
     fk (monomial M (1 : K)) (monomial M' 1) = if M = M' then wf M else 0 := by
@@ -2023,9 +2015,9 @@ noncomputable def inMono (e : ℕ) (m : Fin (N + 1) × Fin r →₀ ℕ) : MvPol
   if m (Fin.last N, ρ) = e then monomial m 1 else 0
 
 /- English proof (translation)
-Unfold `wf`. Establish `h2 : ∀ x : Fin (N + 1) × Fin r, ((m x).factorial : K) = (if x = (Fin.last N, ρ) then ((m (Fin.last N, ρ)).factorial : K) else 1) * (((Finsupp.update m (Fin.last N, ρ) 0) x).factorial : K)`. Introduce `x`. Distinguish the cases in `hx : x = (Fin.last N, ρ)`. Substitute `hx` using the available equality.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hx, Finsupp.update_apply]`. Rewrite using `[Finset.prod_congr rfl (fun x _ => h2 x), Finset.prod_mul_distrib, Finset.prod_ite_eq']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wf_split (m : Fin (N + 1) × Fin r →₀ ℕ) :
     (wf m : K) = ((m (Fin.last N, ρ)).factorial : K) * wf (Finsupp.update m (Fin.last N, ρ) 0) := by
@@ -2040,9 +2032,9 @@ theorem wf_split (m : Fin (N + 1) × Fin r →₀ ℕ) :
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use extensionality with `x`. Distinguish the cases in `hx : x = (Fin.last N, ρ)`. Substitute `hx` using the available equality.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `h`. Use `congrArg (fun f => f x) hu` as an intermediate fact. Simplify `this` using `[Finsupp.update_apply, hx]`. Introduce `h'`. Rewrite using `[h']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem update_eq_iff (m m' : Fin (N + 1) × Fin r →₀ ℕ) (h : m (Fin.last N, ρ) = m' (Fin.last N, ρ)) :
     Finsupp.update m (Fin.last N, ρ) 0 = Finsupp.update m' (Fin.last N, ρ) 0 ↔ m = m' := by
@@ -2056,11 +2048,11 @@ theorem update_eq_iff (m m' : Fin (N + 1) × Fin r →₀ ℕ) (h : m (Fin.last 
   · intro h'; rw [h']
 
 /- English proof (translation)
-Rewrite using `[kill_sq, kill_sq, hd, hd', fk_Xpow, support_monomial, if_neg one_ne_zero, Finset.sum_singleton, coeff_monomial, if_pos rfl, coeff_monomial, wf_mapDomain]`. Establish `h0 : ((Finsupp.update m (Fin.last N, ρ) 0).mapDomain (cs' (N` using `N))) (Fin.last (N + 1), ρ) = 0 := by`. Apply `Finsupp.mapDomain_of_notMem_range` to reduce the goal to its premises. Introduce and unpack `⟨x, hx⟩`. Simplify using `only [cs', Prod.mk.injEq] at hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `Fin.castSucc_ne_last _ hx.1`. Rewrite using `[h0, zero_add, Nat.descFactorial_self]`. Distinguish the cases in `h : Finsupp.update m (Fin.last N, ρ) 0 = Finsupp.update m' (Fin.last N, ρ) 0`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h'' : ¬ ((Finsupp.update m' (Fin.last N, ρ) 0).mapDomain (cs' (N` using `N)) = (Finsupp.update m (Fin.last N, ρ) 0).mapDomain (cs' (N := N))) := fun h' => h (Finsupp.mapDomain_injective cs'_inj h').symm`. Rewrite using `[if_neg h'', if_neg h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fk_kill_sq (m m' : Fin (N + 1) × Fin r →₀ ℕ) (d : ℕ)
     (hd : ∑ x, (Finsupp.update m (Fin.last N, ρ) 0) x = d) (hd' : ∑ x, (Finsupp.update m' (Fin.last N, ρ) 0) x = d) :
@@ -2095,7 +2087,7 @@ section
 variable {N r : ℕ} (LL : M.Letters (N + 1)) (ρ : Fin r)
 
 /- English proof (translation)
-Establish `h2` using `sum_update m (Fin.last N, ρ) (fun _ => 1)`. Rewrite `h2` using `[multiDeg_total LL m hm]`. Simplify using `only [mul_one] at h2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_update_eq (m : Fin (N + 1) × Fin r →₀ ℕ) (hm : M.MultiDeg LL m) :
     ∑ x, (Finsupp.update m (Fin.last N, ρ) 0) x = LL.total - m (Fin.last N, ρ) := by
@@ -2105,17 +2097,17 @@ theorem sum_update_eq (m : Fin (N + 1) × Fin r →₀ ℕ) (hm : M.MultiDeg LL 
   omega
 
 /- English proof (translation)
-Establish `ho : ((LL.deg (Fin.last N)).factorial : ℝ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `hS : ((LL.total).factorial : ℝ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `hd : ((LL.total - e).factorial : ℝ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `hpr : (∏ i, ((LL.deg i).factorial : ℝ)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun i _ => by exact_mod_cast Nat.factorial_ne_zero _)`. Distinguish the cases in `h : m (Fin.last N, ρ) = e ∧ m' (Fin.last N, ρ) = e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h]`. Establish `hT : ∑ M ∈ (sq (K` using `ℝ) LL ρ m).support, (sq LL ρ m).coeff M * (sq LL ρ m').coeff M * wf M * (if M (Fin.last (N + 1), ρ) = LL.total - e then 1 / ((LL.total - e).factorial : ℝ) else 0) = fk (kill (K := ℝ) (Pη ρ) (sq LL ρ m)) (kill (Pη ρ) (sq LL ρ m')) / ((LL.total - e).factorial : ℝ) := by`. Establish `hb` using `biHom_sq' (K := ℝ) LL ρ m hm`. Rewrite `hb` using `[h.1]`. Rewrite using `[← top_eq_kill ρ _ _ _ _ hb, Finset.sum_div]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun M _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[hT, fk_kill_sq LL ρ m m' (LL.total - e) (by rw [sum_update_eq LL ρ m hm, h.1]) (by rw [sum_update_eq LL ρ m' hm', h.2])]`. Unfold `inMono`. Rewrite using `[if_pos h.1, if_pos h.2, fk_monomial, wf_split ρ m, h.1]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hq : Finsupp.update m (Fin.last N, ρ) 0 = Finsupp.update m' (Fin.last N, ρ) 0`. Rewrite using `[if_pos hq, if_pos ((update_eq_iff ρ m m' (h.1.trans h.2.symm)).mp hq)]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_neg hq, if_neg (fun h' => hq ((update_eq_iff ρ m m' (h.1.trans h.2.symm)).mpr h'))]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h]`. Establish `: fk (inMono (K` using `ℝ) ρ e m) (inMono ρ e m') = 0 := by`. Unfold `inMono`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h1 : m (Fin.last N, ρ) = e`. Rewrite using `[if_neg (fun h2 => h ⟨h1, h2⟩), fk_zero_right]`. Rewrite using `[if_neg h1, fk_zero_left]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem limit_value (z e : ℕ) (m m' : Fin (N + 1) × Fin r →₀ ℕ) (hm : M.MultiDeg LL m) (hm' : M.MultiDeg LL m') :
     (1 / ((LL.deg (Fin.last N)).factorial : ℝ)) *
@@ -2173,37 +2165,35 @@ section
 variable {N r : ℕ} (LL : M.Letters (N + 1)) (ρ : Fin r)
 
 /- English proof (translation)
-Establish `heo : e ≤ LL.deg (Fin.last N)` using `le_trans hme (m_W_le LL ρ m hm)`. Establish `hoS : LL.deg (Fin.last N) ≤ LL.total` using `o_le_S LL`. Use `set o := LL.deg (Fin.last N) with ho`. Use `set S := LL.total with hS`. Use `set P : ℝ := ((S.factorial : ℕ) : ℝ) * ∏ i, ((LL.deg i).factorial : ℝ) with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPpos : 0 < P`. Establish `: 0 < ∏ i, ((LL.deg i).factorial : ℝ)` using `Finset.prod_pos (fun i _ => by exact_mod_cast Nat.factorial_pos _)`. Establish `h2 : (0 : ℝ) < ((S.factorial : ℕ) : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`. Check the signs of the components of the expression. Set `Bf : ℕ → ℝ` to `fun n => fk (tiePhi (wW (N := N)) eη o n z ((tieE (wW (N := N)) eη ^ e) (V0 LL ρ e m n + tieE (wW (N := N)) eη (Yh LL ρ e m n)))) ((tieE (wW (N := N)) eη ^ e) (V0 LL ρ e m' n + tieE (wW (N := N)) eη (Yh LL ρ e m' n)))`.
+Check the signs of the components of the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hgam : ∀ n, gamK ℝ LL ρ z n (monomial m 1) (monomial m' 1) = ((o + n + r + z - 1).choose o : ℝ) * Bf n / ((((n - S).factorial : ℕ) : ℝ) * P)`. Introduce `n`. Unfold `gamK`. Rewrite using `[snoc_degree_last_weight, snoc_deg_eta, frz_shape LL ρ e hv m hme, frz_shape LL ρ e hv m' hme']`. Simplify using `only [Bf, hP]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Set `Q : ℕ → ℝ` to `fun n => (((n - S).factorial : ℕ) : ℝ) * (n : ℝ) ^ (S - e)`. Set `i0 : Fin (N + 1 + 1) × Fin r` to `(Fin.last (N + 1), ρ)`. Establish `hX1` using `fk_eta_lim i0 S (S - e) (gv LL ρ e m) (gv LL ρ e m) (gv_eta_le (K := ℝ) LL ρ e m hm hme)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX2` using `fk_eta_lim i0 S (S - e) (gv LL ρ e m') (gv LL ρ e m') (gv_eta_le (K := ℝ) LL ρ e m' hm' hme')`. Establish `hY1` using `fk_eta_lim i0 S (S - e) (gF LL ρ e m) (gF LL ρ e m) (gF_eta_le (K := ℝ) LL ρ e m hm hme)`. Establish `hY2` using `fk_eta_lim i0 S (S - e) (gF LL ρ e m') (gF LL ρ e m') (gF_eta_le (K := ℝ) LL ρ e m' hm' hme')`. Use `set T : ℝ := if m (Fin.last N, ρ) = e ∧ m' (Fin.last N, ρ) = e then ∑ M ∈ (sq (K := ℝ) LL ρ m).support, (sq LL ρ m).coeff M * (sq LL ρ m').coeff M * wf M * (if M (Fin.last (N + 1), ρ) = S - e then 1 / ((S - e).factorial : ℝ) else 0) else 0 with hT`. Establish `hf3 : Tendsto (fun n => fk (V0 (K` using `ℝ) LL ρ e m n) (V0 LL ρ e m' n) / Q n) atTop (𝓝 T) := by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : m (Fin.last N, ρ) = e ∧ m' (Fin.last N, ρ) = e`. Rewrite using `[hT, if_pos h]`. Use `fk_eta_lim i0 S (S - e) (sq (K := ℝ) LL ρ m) (sq (K := ℝ) LL ρ m') (sq_eta_le (K := ℝ) LL ρ e m hm h.1)` as an intermediate fact. Use `this.congr' (Eventually.of_forall (fun n => ?_))` and prove the remaining obligations. Simplify using `only [V0, if_pos h.1, if_pos h.2, Q, i0]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[hT, if_neg h]`. Use `tendsto_const_nhds.congr' (Eventually.of_forall (fun n => ?_))` and prove the remaining obligations. Simplify using `only [V0]`. Distinguish the cases in `h1 : m (Fin.last N, ρ) = e`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[if_neg (fun h2 => h ⟨h1, h2⟩), fk_zero_right, zero_div]`. Rewrite using `[if_neg h1, fk_zero_left, zero_div]`. Set `f4 : ℕ → ℝ` to `fun n => (Bf n - kap0 o n z e r * fk (V0 LL ρ e m n) (V0 LL ρ e m' n)) / Q n`. Set `bd : ℕ → ℝ` to `fun n => (Kc o z * (fk (X i0 ^ (n - S) * gv LL ρ e m) (X i0 ^ (n - S) * gv LL ρ e m) / Q n + fk (X i0 ^ (n - S) * gv LL ρ e m') (X i0 ^ (n - S) * gv LL ρ e m') / Q n) + kap0 o n z e r * (fk (X i0 ^ (n - S) * gF LL ρ e m) (X i0 ^ (n - S) * gF LL ρ e m) / Q n + fk (X i0 ^ (n - S) * …`. Establish `hbd : Tendsto bd atTop (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(((hX1.add hX2).const_mul (Kc o z)).add ((kappa_zero_tendsto_factorials o z e r).mul (hY1.add hY2))).mul (inv_sub_lim o)` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Conclude with `this`. Establish `hf4 : Tendsto f4 atTop (𝓝 0)`. Use `squeeze_zero_norm' ?_ hbd` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [eventually_ge_atTop (S + 1)] with n hn`. Establish `hon : o < n` using `by omega`. Establish `hc` using `core wW_inj eη_inj wW_ne_eη hr o n z e heo hon (V0 (K := ℝ) LL ρ e m n) (Yh LL ρ e m n) (V0 LL ρ e m' n) (Yh LL ρ e m' n) (bihomogeneous_leading_vector LL ρ e m hm hme n (by omega)) (biHom_Yh LL ρ e m hm hme n (by omega)) (Yh_ne LL ρ e m hm hme n (by omega)) (bihomogeneous_leadin …`. Rewrite `hc` using `[leading_vector_add_linked LL ρ e m hme, leading_vector_add_linked LL ρ e m' hme', linked_map_leading_vector LL ρ e hv m, linked_map_leading_vector LL ρ e hv m']`. Establish `hBf : Bf n = fk (tiePhi (wW (N` using `N)) eη o n z ((tieE (wW (N := N)) eη ^ e) (X (Fin.last (N + 1), ρ) ^ (n - LL.total) * gv LL ρ e m))) ((tieE (wW (N := N)) eη ^ e) (X (Fin.last (N + 1), ρ) ^ (n - LL.total) * gv LL ρ e m')) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Simplify using `only [Bf]`. Rewrite using `[leading_vector_add_linked LL ρ e m hme, leading_vector_add_linked LL ρ e m' hme']`. Establish `hQ : 0 < Q n`. Establish `: (0 : ℝ) < (((n - S).factorial : ℕ) : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`. Establish `h2 : (0 : ℝ) < (n : ℝ) ^ (S - e)` using `pow_pos (by exact_mod_cast (by omega : 0 < n)) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Check the signs of the components of the expression. Establish `hδ : (0 : ℝ) < ((n - o : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 0 < n - o)`. Rewrite using `[Real.norm_eq_abs]`. Simplify using `only [f4, bd, abs_div, abs_of_pos hQ]`. Rewrite using `[hBf, div_le_iff₀ hQ]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans hc (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [i0]`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. Establish `hmain` using `((chooseA_lim o z r).mul (((kappa_zero_tendsto_factorials o z e r).mul hf3).add hf4)).div_const P`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← limit_value LL ρ z e m m' hm hm']`. Establish `hlim_eq : 1 / ((o.factorial : ℕ) : ℝ) * (((z + e).choose e : ℝ) * e.factorial * e.factorial * T + 0) / P = 1 / (o.factorial : ℝ) * (((z + e).choose e : ℝ) * e.factorial * e.factorial * T + 0) / (((LL.total).factorial : ℝ) * ∏ i, ((LL.deg i).factorial : ℝ))`. Simplify using `only [hP]`. Both sides reduce to the same expression. Rewrite using `[← hlim_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hmain.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (S + 1)] with n hn`. Rewrite using `[hgam n]`. Establish `hQ0 : (((n - S).factorial : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `hn0 : (n : ℝ) ≠ 0` using `by exact_mod_cast (by omega : n ≠ 0)`.
-
-Simplify using `only [f4, Q]`. Rewrite using `[show S + o - e = o + (S - e) by omega, pow_add]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem real_mono (hr : 1 ≤ r) (hv : LL.vec (Fin.last N) = true) (z e : ℕ)
     (m m' : Fin (N + 1) × Fin r →₀ ℕ) (hm : M.MultiDeg LL m) (hm' : M.MultiDeg LL m')
@@ -2329,7 +2319,7 @@ variable (K : Type) [Field K] [CharZero K]
 local notation "ι" => algebraMap ℚ K
 
 /- English proof (translation)
-Take `⟨i, c⟩` from `x`. Simplify using `only [fSub]`. Apply the tactic sequence `split_ifs <;> simp`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_fSub {N r : ℕ} (LL : M.Letters N) (ρ : Fin r) (x : Fin N × Fin r) :
     map ι (fSub ℚ LL ρ x) = fSub K LL ρ x := by
@@ -2338,7 +2328,7 @@ theorem map_fSub {N r : ℕ} (LL : M.Letters N) (ρ : Fin r) (x : Fin N × Fin r
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [frz, aeval_monomial, map_one, one_mul, Finsupp.prod, map_mul, map_pow, map_X, map_prod, map_fSub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_frz_monomial {N r : ℕ} (LL : M.Letters N) (ρ : Fin r) (n : ℕ) (m : Fin N × Fin r →₀ ℕ) :
     map ι (frz ℚ LL ρ n (monomial m 1)) = frz K LL ρ n (monomial m 1) := by
@@ -2347,19 +2337,19 @@ theorem map_frz_monomial {N r : ℕ} (LL : M.Letters N) (ρ : Fin r) (n : ℕ) (
 variable {σ : Type} [Fintype σ] [DecidableEq σ] {r : ℕ} (w e : Fin r → σ)
 
 /- English proof (translation)
-Simplify using `[tieE_apply', map_mul, map_sum, map_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_tieE (g : MvPolynomial σ ℚ) : map ι (tieE w e g) = tieE w e (map ι g) := by
   simp [tieE_apply', map_mul, map_sum, map_X]
 
 /- English proof (translation)
-Simplify using `[tieF_apply', map_sum, pderiv_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_tieF (g : MvPolynomial σ ℚ) : map ι (tieF w e g) = tieF w e (map ι g) := by
   simp [tieF_apply', map_sum, pderiv_map]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', Module.End.mul_apply, map_tieE, ih, pow_succ', Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_tieE_pow (j : ℕ) (g : MvPolynomial σ ℚ) :
     map ι ((tieE w e ^ j) g) = (tieE w e ^ j) (map ι g) := by
@@ -2368,7 +2358,7 @@ theorem map_tieE_pow (j : ℕ) (g : MvPolynomial σ ℚ) :
   | succ j ih => rw [pow_succ', Module.End.mul_apply, map_tieE, ih, pow_succ', Module.End.mul_apply]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', Module.End.mul_apply, map_tieF, ih, pow_succ', Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_tieF_pow (j : ℕ) (g : MvPolynomial σ ℚ) :
     map ι ((tieF w e ^ j) g) = (tieF w e ^ j) (map ι g) := by
@@ -2377,15 +2367,15 @@ theorem map_tieF_pow (j : ℕ) (g : MvPolynomial σ ℚ) :
   | succ j ih => rw [pow_succ', Module.End.mul_apply, map_tieF, ih, pow_succ', Module.End.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[smul_eq_C_mul, map_mul, map_C, smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul' (c : ℚ) (g : MvPolynomial σ ℚ) : map ι (c • g) = (ι c) • map ι g := by
   rw [smul_eq_C_mul, map_mul, map_C, smul_eq_C_mul]
 
 /- English proof (translation)
-Unfold `tiePhi`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, map_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul', map_tieE_pow, map_tieF_pow]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[map_div₀]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_tiePhi (o n z : ℕ) (g : MvPolynomial σ ℚ) :
     map ι (tiePhi w e o n z g) = tiePhi w e o n z (map ι g) := by
@@ -2397,13 +2387,13 @@ theorem map_tiePhi (o n z : ℕ) (g : MvPolynomial σ ℚ) :
   simp [map_div₀]
 
 /- English proof (translation)
-Simplify using `[wf, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_wf (m : σ →₀ ℕ) : ι (wf m) = (wf m : K) := by
   simp [wf, map_prod]
 
 /- English proof (translation)
-Unfold `fk`. Rewrite using `[support_map_of_injective _ (algebraMap ℚ K).injective, map_sum]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[coeff_map, coeff_map, map_mul, map_mul, map_wf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fk_map (F G : MvPolynomial σ ℚ) : fk (map ι F) (map ι G) = ι (fk F G) := by
   unfold fk
@@ -2412,7 +2402,7 @@ theorem fk_map (F G : MvPolynomial σ ℚ) : fk (map ι F) (map ι G) = ι (fk F
   rw [coeff_map, coeff_map, map_mul, map_mul, map_wf]
 
 /- English proof (translation)
-Unfold `gamK`. Rewrite using `[← map_frz_monomial K LL ρ n m, ← map_frz_monomial K LL ρ n m', ← map_tiePhi, fk_map]`. Simplify using `[map_div₀, map_prod]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gamK_map {N : ℕ} (LL : M.Letters (N + 1)) (ρ : Fin r) (z n : ℕ) (m m' : Fin (N + 1) × Fin r →₀ ℕ) :
     gamK K LL ρ z n (monomial m 1) (monomial m' 1) = ι (gamK ℚ LL ρ z n (monomial m 1) (monomial m' 1)) := by
@@ -2421,7 +2411,7 @@ theorem gamK_map {N : ℕ} (LL : M.Letters (N + 1)) (ρ : Fin r) (z n : ℕ) (m 
   simp [map_div₀, map_prod]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold inMono; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inMono_map {N : ℕ} (ρ : Fin r) (e : ℕ) (m : Fin (N + 1) × Fin r →₀ ℕ) :
     map ι (inMono (K := ℚ) ρ e m) = inMono (K := K) ρ e m := by
@@ -2439,7 +2429,7 @@ section
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem as_sum_smul {σ : Type} (f : MvPolynomial σ K) :
     f = ∑ m ∈ f.support, f.coeff m • monomial m (1 : K) := by
@@ -2448,7 +2438,7 @@ theorem as_sum_smul {σ : Type} (f : MvPolynomial σ K) :
   rw [smul_monomial, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Use `conv_lhs => rw [as_sum_smul f]`. Simplify using `only [frz, map_sum, map_smul, Finset.mul_sum, mul_smul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frz_sum {N r : ℕ} (LL : M.Letters N) (ρ : Fin r) (n : ℕ) (f : MvPolynomial (Fin N × Fin r) K) :
     frz K LL ρ n f = ∑ m ∈ f.support, f.coeff m • frz K LL ρ n (monomial m 1) := by
@@ -2456,7 +2446,7 @@ theorem frz_sum {N r : ℕ} (LL : M.Letters N) (ρ : Fin r) (n : ℕ) (f : MvPol
   simp only [frz, map_sum, map_smul, Finset.mul_sum, mul_smul_comm]
 
 /- English proof (translation)
-Unfold `gamK`. Rewrite using `[frz_sum LL ρ n f, frz_sum LL ρ n f', map_sum, fk_sum_left]`. Simplify using `only [map_smul, fk_smul_left, fk_sum_right, fk_smul_right, Finset.mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl (fun m _ => Finset.sum_congr rfl (fun m' _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gamK_bil {N r : ℕ} (LL : M.Letters (N + 1)) (ρ : Fin r) (z n : ℕ)
     (f f' : MvPolynomial (Fin (N + 1) × Fin r) K) :
@@ -2471,7 +2461,7 @@ theorem gamK_bil {N r : ℕ} (LL : M.Letters (N + 1)) (ρ : Fin r) (z n : ℕ)
 end
 
 /- English proof (translation)
-Unfold `M.initPart inMono`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [smul_monomial]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem initPart_sum (p : ℕ) [Fact p.Prime] {N r : ℕ} (ρ : Fin r) (e : ℕ)
     (f : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) :
@@ -2481,7 +2471,7 @@ theorem initPart_sum (p : ℕ) [Fact p.Prime] {N r : ℕ} (ρ : Fin r) (e : ℕ)
   split_ifs <;> simp [smul_monomial]
 
 /- English proof (translation)
-Rewrite using `[fock_eq, initPart_sum, initPart_sum, fk_sum_left]`. Simplify using `only [fk_smul_left, fk_sum_right, fk_smul_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun m _ => Finset.sum_congr rfl (fun m' _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fock_init_bil (p : ℕ) [Fact p.Prime] {N r : ℕ} (ρ : Fin r) (e : ℕ)
     (f f' : MvPolynomial (Fin (N + 1) × Fin r) ℚ_[p]) :
@@ -2499,39 +2489,35 @@ namespace Formalism.GM
 open MvPolynomial Finset Filter Topology Formalism.GM.leadingTermLemmas
 
 /- English proof (translation)
-Introduce `p _ N r LL ρ z e f f' P hr hv hf hf' hof hof' hP`. Use `set o := LL.deg (Fin.last N) with ho`. Use `set S := LL.total with hS`. Use `set D := S + o - e with hD`. Use `set I := f.support ×ˢ f'.support with hI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set c : (Fin (N + 1) × Fin r →₀ ℕ) × (Fin (N + 1) × Fin r →₀ ℕ) → ℚ_[p] := fun i => f.coeff i.1 * f'.coeff i.2 with hc`. Use `set γ : (Fin (N + 1) × Fin r →₀ ℕ) × (Fin (N + 1) × Fin r →₀ ℕ) → ℕ → ℚ := fun i n => gamK ℚ LL ρ z n (monomial i.1 1) (monomial i.2 1) with hγ`. Use `set Lq : (Fin (N + 1) × Fin r →₀ ℕ) × (Fin (N + 1) × Fin r →₀ ℕ) → ℚ := fun i => ((e.factorial * (z + e).choose e : ℕ) : ℚ) * fk (inMono (K := ℚ) ρ e i.1) (inMono ρ e i.2) / (((o.factorial * S.factorial : ℕ) : ℚ) * ∏ j, ((LL.deg j).factorial : ℚ)) with hLq`. Establish `hexp : ∀ n, M.tieGam p LL ρ z n f f' = ∑ i ∈ I, c i * algebraMap ℚ ℚ_[p] (γ i n)`. Introduce `n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tieGam_eq, gamK_bil, Finset.sum_product]`. Use `Finset.sum_congr rfl (fun m _ => Finset.sum_congr rfl (fun m' _ => ?_))` and prove the remaining obligations. Rewrite using `[gamK_map ℚ_[p]]`. Establish `htgt : ((e.factorial * (z + e).choose e : ℕ) : ℚ_[p]) * M.fock p (M.initPart (Fin.last N, ρ) e f) (M.initPart (Fin.last N, ρ) e f') / (((o.factorial * S.factorial : ℕ) : ℚ_[p]) * ∏ j, ((LL.deg j).factorial : ℚ_[p])) = ∑ i ∈ I, c i * algebraMap ℚ ℚ_[p] (Lq i)`. Rewrite using `[fock_init_bil, Finset.mul_sum, Finset.sum_div, Finset.sum_product]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl (fun m' _ => ?_)` and prove the remaining obligations. Rewrite using `[← inMono_map ℚ_[p], ← inMono_map ℚ_[p], fk_map]`. Simplify using `only [hLq, hc, map_div₀, map_mul, map_natCast, map_prod]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[htgt, ← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℚ _).mp (fun ψ => ?_)` and prove the remaining obligations. Establish `hψ : ∀ (a : ℚ_[p]) (q : ℚ), ψ (a * algebraMap ℚ ℚ_[p] q) = q * ψ a`. Introduce `a q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[mul_comm, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Use `set Rψ : Polynomial ℚ := ∑ k ∈ range (P.natDegree + 1), Polynomial.C (ψ (P.coeff k)) * Polynomial.X ^ k with hR`. Establish `hRcoeff : ∀ k, Rψ.coeff k = ψ (P.coeff k)`. Introduce `k`. Rewrite using `[hR, Polynomial.finsetSum_coeff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Polynomial.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hk`. Both sides reduce to the same expression. Establish `: P.natDegree < k` using `by simp at hk; omega`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt this, map_zero]`. Establish `hReval : ∀ q : ℚ, Rψ.eval q = ψ (P.eval (algebraMap ℚ ℚ_[p] q))`. Introduce `q`. Rewrite using `[Polynomial.eval_eq_sum_range (p := P), map_sum, hR, Polynomial.eval_finsetSum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, ← map_pow, hψ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hRn : ∀ n : ℕ, S ≤ n → Rψ.eval (n : ℚ) = ∑ i ∈ I, γ i n * ψ (c i)`. Introduce `n hn`. Rewrite using `[hReval, map_natCast, ← hP n hn, hexp, map_sum]`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.sum_congr rfl (fun i _ => hψ _ _)`. Establish `hmem : ∀ i ∈ I, M.MultiDeg LL i.1 ∧ M.MultiDeg LL i.2 ∧ e ≤ i.1 (Fin.last N, ρ) ∧ e ≤ i.2 (Fin.last N, ρ)`. Introduce `i hi`. Rewrite `hi` using `[hI, Finset.mem_product]`. Establish `h1` using `(MvPolynomial.mem_restrictSupport_iff _).mp hf hi.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `(MvPolynomial.mem_restrictSupport_iff _).mp hf' hi.2`. Conclude with `⟨h1, h2, hof.1 _ hi.1, hof'.1 _ hi.2⟩`. Use `set Rr : Polynomial ℝ := Rψ.map (algebraMap ℚ ℝ) with hRr`. Establish `hlim : Tendsto (fun n : ℕ => Rr.eval (n : ℝ) / (n : ℝ) ^ D) atTop (𝓝 (∑ i ∈ I, (algebraMap ℚ ℝ (Lq i)) * ψ (c i)))`. Establish `each : ∀ i ∈ I, Tendsto (fun n : ℕ => gamK ℝ LL ρ z n (monomial i.1 1) (monomial i.2 1) / (n : ℝ) ^ D * ψ (c i)) atTop (𝓝 ((algebraMap ℚ ℝ (Lq i)) * ψ (c i)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi`. Take `⟨h1, h2, h3, h4⟩` from `hmem i hi`. Use `(real_mono LL ρ hr hv z e i.1 i.2 h1 h2 h3 h4).mul_const (ψ (c i) : ℝ)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hLq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only`. Rewrite using `[← inMono_map ℝ ρ e i.1, ← inMono_map ℝ ρ e i.2, fk_map ℝ]`. Simplify using `only [map_div₀, map_mul, map_natCast, map_prod, eq_ratCast]`. Both sides reduce to the same expression. Use `(tendsto_finsetSum I each).congr' ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [eventually_ge_atTop S] with n hn`. Rewrite using `[hRr, Polynomial.eval_natCast_map, hRn n hn, map_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[gamK_map ℝ]`. Simplify using `only [hγ, eq_ratCast]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hcoef` using `coeff_of_tendsto Rr D _ hlim`. Rewrite `hcoef` using `[hRr, Polynomial.coeff_map, hRcoeff]`. Establish `hq : ψ (P.coeff D) = ∑ i ∈ I, Lq i * ψ (c i)`.
-
-Apply `(algebraMap ℚ ℝ).injective` to reduce the goal to its premises. Rewrite using `[hcoef, map_sum (algebraMap ℚ ℝ)]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `only [eq_ratCast]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_sub, hq, map_sum]`. Rewrite using `[sub_eq_zero]`. Conclude with `Finset.sum_congr rfl (fun i _ => (hψ _ _).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamma_leading_term : M.GamLead := by
   intro p _ N r LL ρ z e f f' P hr hv hf hf' hof hof' hP

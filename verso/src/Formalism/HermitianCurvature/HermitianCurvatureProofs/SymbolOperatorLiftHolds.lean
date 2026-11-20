@@ -14,25 +14,25 @@ def liftA {d o : ℕ} (a : (k : Fin (o + 1)) → (Fin k → Fin d) → (Fin d �
   fun k w x => if h : (k : ℕ) ≤ o then a ⟨k, by omega⟩ w x else 0
 
 /- English proof (translation)
-Introduce `d S m' O hle hS`. Take `⟨o, a⟩` from `S`. Simplify using `only at hle`. Use `⟨⟨m', liftA a m'⟩, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `ContDiffOn ℝ ∞ (liftA a m' i w) O`. Distinguish the cases in `h : (i : ℕ) ≤ o`. Establish `e : liftA a m' i w = a ⟨i, by omega⟩ w` using `funext fun x => dif_pos h`. Rewrite using `[e]`. Conclude with `hS (⟨i, Nat.lt_succ_of_le h⟩ : Fin (o + 1)) w`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : liftA a m' i w = fun _ => 0` using `funext fun x => dif_neg h`. Rewrite using `[e]`. Conclude with `contDiffOn_const`. Introduce `u x`. Simplify using `only [SOp.app]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : ℕ → ℂ` to `fun n => if h : n ≤ o then ∑ w : Fin n → Fin d, a ⟨n, by omega⟩ w x * pdc (List.ofFn w) u x else 0`. Establish `h1 : ∑ k : Fin (m' + 1), ∑ w : Fin k → Fin d, liftA a m' k w x * pdc (List.ofFn w) u x = ∑ k : Fin (m' + 1), F k`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [F, liftA]`. Use `split_ifs with h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish `h2 : ∑ k : Fin (o + 1), ∑ w : Fin k → Fin d, a k w x * pdc (List.ofFn w) u x = ∑ k : Fin (o + 1), F k`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [F]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[dif_pos (by omega)]`. Rewrite using `[h1, h2, Fin.sum_univ_eq_sum_range F, Fin.sum_univ_eq_sum_range F]`. Use `symm`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `n hn`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_range] at hn ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `n hn hn'`. Simplify using `only [Finset.mem_range] at hn hn'`. Simplify using `only [F]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_neg (by omega)]`. Introduce `x ξ`. Simplify using `only [SOp.symb]`. Distinguish the cases in `h : o = m'`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos rfl]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [liftA]`. Rewrite using `[dif_pos (by simp)]`. Rewrite using `[if_neg h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations. Simplify using `only [liftA]`. Rewrite using `[dif_neg (by simp; omega)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem symbol_operator_lift_holds : SOpLift := by
   intro d S m' O hle hS

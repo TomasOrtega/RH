@@ -16,7 +16,7 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Establish `h1` using `hd.P_ge.2.2.2.1`. Establish `h2` using `hd.size_L`. Establish `h3 : 0 ≤ Real.log (d.N + 1 : ℕ)` using `Real.log_nonneg (by exact_mod_cast Nat.succ_pos _)`. Establish `h4 : 0 ≤ max 0 d.laW` using `le_max_left _ _`. Unfold `upB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -29,27 +29,25 @@ theorem upB_nonneg (hd : d.AxH 𝒜) : 0 ≤ d.upB := by
   nlinarith
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := d.delc) (fun _ _ => Nat.zero_le _) (Finset.mem_univ c)`.
+A detailed English derivation is pending.
 -/
 theorem delc_le_del (c : ι) : d.delc c ≤ d.del :=
   Finset.single_le_sum (f := d.delc) (fun _ _ => Nat.zero_le _) (Finset.mem_univ c)
 
 /- English proof (translation)
-Establish `hB` using `d.upB_nonneg hd`. Distinguish the cases in `hpos : ReciprocityTheory.MultiplicativeHeights.h0 (F c) ≤ 0`. Conclude with `hpos.trans (by positivity)`. Use `replace hpos := not_le.mp hpos`. Take `⟨F1, m, deF, hm, hdeF, hmd, hirr, hx, hu, hle, hker⟩` from `d.irreducible_factor_height_bound hd h F hF c hpos`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcd` using `d.delc_le_del c`. Establish `hdel : 1 ≤ d.del`. Establish `: 1 ≤ m * deF` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`. Use linear arithmetic over natural numbers and integers. Establish `hmR : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hT0 : 0 < hT F1`. Assume the negation of the conclusion as `hneg`. Use `replace hneg := not_lt.mp hneg`. Establish `: (m : ℝ) * hT F1 ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (by linarith) hneg`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hu' : UDegLE ((d.D + 1) * d.del) F1` using `fun s hs => (hu s hs).trans (Nat.mul_le_mul_left _ hcd)`. Take `⟨Q, hQx, hQu, hQ, hS⟩` from `d.up_siegel hd F1 deF hdeF ((Nat.le_mul_of_pos_left deF (by omega)).trans (hmd.trans hcd)) hirr hx hu' hT0`. Take `⟨g, hg, hgc, hC⟩` from `d.up_cauchy hd hdel c F1 deF hx hker Q hQx hQu hQ`. Establish `hL` using `hLAM c g hg hgc`. Establish `hN` using `d.up_count hd hdel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hn : (0 : ℝ) < d.n96`. Establish `: 0 < d.n96`. Unfold `n96`. Establish `: 0 < (d.N + 1)` using `Nat.succ_pos _`. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Conclude with `this` after adjusting the coercions. Establish `hDF : (0 : ℝ) < (d.D + 2) * deF`. Establish `: (1 : ℝ) ≤ deF` using `by exact_mod_cast hdeF`. Check the signs of the components of the expression. Establish `hlaw : d.laW ≤ max 0 d.laW` using `le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `key : d.n96 * hT F1 / ((d.D + 2) * deF) ≤ d.n96 * d.upB`. Unfold `upB`. Use the polynomial consequences of the given equalities and inequalities. Establish `key2 : hT F1 ≤ (d.D + 2) * deF * d.upB`. Rewrite `key` using `[div_le_iff₀ hDF]`.
-
-Establish `: d.n96 * hT F1 ≤ d.n96 * ((d.D + 2) * deF * d.upB)` using `by nlinarith`. Conclude with `le_of_mul_le_mul_left this hn`. Establish `hmdR : (m : ℝ) * deF ≤ d.delc c` using `by exact_mod_cast hmd`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem up_comp (hd : d.AxH 𝒜) (h : d.S1) (hLAM : d.HtLAM) (F : ι → KTp K d.D d.N)
     (hF : ∀ c, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (F c) = d.fZ h c) (c : ι) :
@@ -101,7 +99,7 @@ theorem up_comp (hd : d.AxH 𝒜) (h : d.S1) (hLAM : d.HtLAM) (F : ι → KTp K 
     _ ≤ (d.D + 2) * d.delc c * d.upB := by gcongr
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum]`. Simplify using `[Data.del, Nat.cast_sum]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_logHeight_upper_bound (hd : d.AxH 𝒜) (h : d.S1) (hLAM : d.HtLAM) (F : ι → KTp K d.D d.N)
     (hF : ∀ c, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (F c) = d.fZ h c) :

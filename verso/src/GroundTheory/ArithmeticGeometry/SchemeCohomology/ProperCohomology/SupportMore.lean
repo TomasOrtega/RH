@@ -15,7 +15,7 @@ noncomputable section
 variable {X : Scheme.{u}}
 
 /- English proof (translation)
-Set `f : AddCommGrpCat.of (ULift.{u} ℤ) ⟶ T` to `AddCommGrpCat.ofHom ((zmultiplesHom T s).comp AddEquiv.ulift.toAddMonoidHom)`. Establish `h` using `congrArg (fun g : AddCommGrpCat.of (ULift.{u} ℤ) ⟶ T => g.hom (⟨1⟩ : ULift.{u} ℤ)) (hT.hom_ext f 0)`. Establish `h1 : (AddEquiv.ulift (⟨1⟩ : ULift.{u} ℤ) : ℤ) = 1` using `rfl`. Simplify using `only [f] at h`. Rewrite `h` using `[AddCommGrpCat.hom_ofHom, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, h1, zmultiplesHom_apply, one_smul]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma eq_zero_of_isTerminal {T : AddCommGrpCat.{u}} (hT : IsTerminal T) (s : T) : s = 0 := by
   let f : AddCommGrpCat.of (ULift.{u} ℤ) ⟶ T :=
@@ -27,13 +27,13 @@ lemma eq_zero_of_isTerminal {T : AddCommGrpCat.{u}} (hT : IsTerminal T) (s : T) 
   rwa [AddCommGrpCat.hom_ofHom, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, h1, zmultiplesHom_apply, one_smul] at h
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_isTerminal (TopCat.Sheaf.isTerminalOfEmpty (modulesAb F)) s`.
+A detailed English derivation is pending.
 -/
 lemma eq_zero_of_bot (F : X.Modules) (s : Γ(F, ⊥)) : s = 0 :=
   eq_zero_of_isTerminal (TopCat.Sheaf.isTerminalOfEmpty (modulesAb F)) s
 
 /- English proof (translation)
-Establish `: IsIso (0 : F ⟶ 0)` using `isIso_of_bijective_app _ fun U => ⟨fun a b _ => (h U a).trans (h U b).symm, fun t => ⟨0, (eq_zero_of_isZero (isZero_zero _) U t).symm ▸ map_zero _⟩⟩`. Conclude with `(isZero_zero _).of_iso (asIso (0 : F ⟶ 0))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma isZero_of_forall_eq_zero (F : X.Modules) (h : ∀ (U : X.Opens) (s : Γ(F, U)), s = 0) :
     IsZero F := by
@@ -45,9 +45,9 @@ lemma isZero_of_forall_eq_zero (F : X.Modules) (h : ∀ (U : X.Opens) (s : Γ(F,
 namespace Scheme.Modules.SupportedIn
 
 /- English proof (translation)
-Introduce `U hU s`. Establish `hU' : U = ⊥`. Use extensionality with `x`. Simplify using `only [Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun hx => Set.disjoint_left.1 hU hx trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Substitute `hU'` using the available equality. Conclude with `eq_zero_of_bot F s`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma univ (F : X.Modules) : Scheme.Modules.SupportedIn F Set.univ := by
   intro U hU s
@@ -59,11 +59,11 @@ lemma univ (F : X.Modules) : Scheme.Modules.SupportedIn F Set.univ := by
   exact eq_zero_of_bot F s
 
 /- English proof (translation)
-Introduce `U hU s`. Set `U₁ : X.Opens` to `U ⊓ ⟨T₁ᶜ, hT₁.isOpen_compl⟩`. Set `U₂ : X.Opens` to `U ⊓ ⟨T₂ᶜ, hT₂.isOpen_compl⟩`. Establish `hcov : U ≤ U₁ ⊔ U₂`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hx₁ : x ∈ T₁`. Use `Or.inr ⟨hx, fun hx₂ => Set.disjoint_left.1 hU hx ⟨hx₁, hx₂⟩⟩` and prove the remaining obligations. Conclude with `Or.inl ⟨hx, hx₁⟩`. Use `TopCat.Sheaf.eq_of_locally_eq₂ (modulesAb F) (homOfLE inf_le_left) (homOfLE inf_le_left) hcov s 0 ?_ ?_` and prove the remaining obligations. Rewrite using `[map_zero]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h₁ U₁ (Set.disjoint_left.2 fun x hx hxT => hx.2 hxT) _`. Rewrite using `[map_zero]`. Conclude with `h₂ U₂ (Set.disjoint_left.2 fun x hx hxT => hx.2 hxT) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inter {F : X.Modules} {T₁ T₂ : Set X} (h₁ : Scheme.Modules.SupportedIn F T₁)
     (h₂ : Scheme.Modules.SupportedIn F T₂) (hT₁ : IsClosed T₁) (hT₂ : IsClosed T₂) :
@@ -84,9 +84,9 @@ lemma inter {F : X.Modules} {T₁ T₂ : Set X} (h₁ : Scheme.Modules.Supported
     exact h₂ U₂ (Set.disjoint_left.2 fun x hx hxT => hx.2 hxT) _
 
 /- English proof (translation)
-Introduce `U hU s`. Establish `h1 : Mono ((Scheme.Modules.toPresheaf X).map m)` using `Functor.map_mono _ m`. Establish `h2 : Mono (((Scheme.Modules.toPresheaf X).map m).app (op U))` using `inferInstance`. Establish `hinj : Function.Injective (m.app U)` using `(AddCommGrpCat.mono_iff_injective _).1 h2`. Apply `hinj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero]`. Conclude with `h U hU _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma of_mono {F G : X.Modules} (m : F ⟶ G) [Mono m] {T : Set X}
     (h : Scheme.Modules.SupportedIn G T) : Scheme.Modules.SupportedIn F T := by
@@ -99,7 +99,7 @@ lemma of_mono {F G : X.Modules} (m : F ⟶ G) [Mono m] {T : Set X}
   exact h U hU _
 
 /- English proof (translation)
-Use `isZero_of_forall_eq_zero _ fun V s => h (U.ι ''ᵁ V) ?_ s` and prove the remaining obligations. Use `hU.mono_left ?_` and prove the remaining obligations. Conclude with `(U.ι.image_le_opensRange V).trans (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma isZero_restrict {F : X.Modules} {T : Set X} (h : Scheme.Modules.SupportedIn F T)
     (U : X.Opens) (hU : Disjoint (U : Set X) T) :
@@ -109,9 +109,9 @@ lemma isZero_restrict {F : X.Modules} {T : Set X} (h : Scheme.Modules.SupportedI
   exact (U.ι.image_le_opensRange V).trans (by simp)
 
 /- English proof (translation)
-Introduce `U hU s`. Establish `hE : U.ι ''ᵁ (U.ι ⁻¹ᵁ U) = U`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_idem U`. Establish `h0 : F.presheaf.map (eqToHom hE).op s = 0` using `eq_zero_of_isZero (h U hU) (U.ι ⁻¹ᵁ U) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : F.presheaf.map (eqToHom hE.symm).op (F.presheaf.map (eqToHom hE).op s) = s`. Rewrite using `[← ConcreteCategory.comp_apply, ← Functor.map_comp, ← op_comp, eqToHom_trans, eqToHom_refl, op_id, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression. Rewrite using `[← hinv, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma of_isZero_restrict {F : X.Modules} {T : Set X}
     (h : ∀ U : X.Opens, Disjoint (U : Set X) T →
@@ -130,7 +130,7 @@ lemma of_isZero_restrict {F : X.Modules} {T : Set X}
   rw [← hinv, h0, map_zero]
 
 /- English proof (translation)
-Use `of_isZero_restrict fun U hU => ?_` and prove the remaining obligations. Establish `: Epi ((Scheme.Modules.restrictFunctor U.ι).map e)` using `Functor.map_epi _ e`. Conclude with `(isZero_restrict h U hU).of_epi ((Scheme.Modules.restrictFunctor U.ι).map e)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma of_epi {F G : X.Modules} (e : F ⟶ G) [Epi e] {T : Set X}
     (h : Scheme.Modules.SupportedIn F T) : Scheme.Modules.SupportedIn G T := by
@@ -139,7 +139,7 @@ lemma of_epi {F G : X.Modules} (e : F ⟶ G) [Epi e] {T : Set X}
   exact (isZero_restrict h U hU).of_epi ((Scheme.Modules.restrictFunctor U.ι).map e)
 
 /- English proof (translation)
-The claim follows from `isZero_of_forall_eq_zero F fun U s => h U (Set.disjoint_empty _) s`.
+A detailed English derivation is pending.
 -/
 lemma isZero_of_empty {F : X.Modules} (h : Scheme.Modules.SupportedIn F ∅) : IsZero F :=
   isZero_of_forall_eq_zero F fun U s => h U (Set.disjoint_empty _) s
@@ -151,7 +151,7 @@ section Cohomology
 variable [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X.toTopCat) AddCommGrpCat.{u})]
 
 /- English proof (translation)
-Establish `hF' : IsZero (modulesAb F)` using `Functor.map_isZero _ hF`. Express the relevant statement in the definitionally equal form `Abelian.Ext _ _ p at x`. Rewrite using `[← Abelian.Ext.comp_mk₀_id x, hF'.eq_of_src (𝟙 _) 0, Abelian.Ext.mk₀_zero, Abelian.Ext.comp_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma H_eq_zero_of_isZero {F : X.Modules} (hF : IsZero F) {p : ℕ}
     (x : Sheaf.H.{w'} (modulesAb F) p) : x = 0 := by
@@ -161,7 +161,7 @@ lemma H_eq_zero_of_isZero {F : X.Modules} (hF : IsZero F) {p : ℕ}
     Abelian.Ext.comp_zero]
 
 /- English proof (translation)
-Introduce `p` and use `have : Subsingleton (Sheaf.H.{w'} (modulesAb F) p) := ⟨fun x y => (H_eq_zero_of_isZero hF x).trans (H_eq_zero_of_isZero hF y).symm⟩ Module.Finite.of_finite`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FiniteH.of_isZero (A : Type*) [CommRing A] [Algebra A Γ(X, ⊤)] {F : X.Modules}
     (hF : IsZero F) : FiniteH.{w'} A F := fun p =>

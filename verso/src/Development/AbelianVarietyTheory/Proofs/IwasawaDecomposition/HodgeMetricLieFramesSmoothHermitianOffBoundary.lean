@@ -22,17 +22,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {f₀ : EigFrame Z (constF e X) (genericPt X ≫ j ≫ genι Z)} {S : Fr (ratOf X) Dw.mult 0} {A₀ : Mat Dw.mult X.Fn}
 
 /- English proof (translation)
-The claim follows from `(Scheme.Spec_stalkClosedPointTo_fromSpecStalk y.1).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_evStalk_eq (y : CxPts X.str (σ.comp e.toRingHom)) : y.1 = spMap (evStalk y) ≫ stalkPt X (under y) :=
   (Scheme.Spec_stalkClosedPointTo_fromSpecStalk y.1).symm
 
 /- English proof (translation)
-Take `⟨φ, fz, hc⟩` from `hT.2 (under y) A hA`. Establish `hφ : σ = (evStalk y).comp φ` using `RingHom.ext fun a => by`. Establish `h3 : φ a = algebraMap F _ (e.symm a)` using `IsFractionRing.injective _ X.X.functionField ((RingHom.congr_fun hc.2.1 a).symm.trans ((X.stalkIncl (under y)).commutes _).symm)`. Use `show σ a = evStalk y (φ a)`. Rewrite using `[h3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ ((evStalk_germ (U := ⊤) trivial _).trans (ev_algX mem_ptsIn_top _)).symm` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hx : (cxOf e σ hj y).1 ≫ genι Z = spMap (evStalk y) ≫ stalkPt X (under y) ≫ j ≫ genι Z` using `by show (y.1 ≫ j) ≫ genι Z = _`. Rewrite using `[spMap_evStalk_eq y]`. Conclude with `Category.assoc _ _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g, hg⟩` from `fz.exists_isMap (evStalk y) hφ hx`. Conclude with `⟨g, φ, fz, evStalk y, spMap_evStalk_eq y, hc, hg⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_frameAt (hj : j ≫ genStr Z ≫ spMap e.toRingHom = X.str) (hT : Tied e X j f₀ S A₀)
     (y : CxPts X.str (σ.comp e.toRingHom)) {A : Mat Dw.mult X.Fn} (hA : A ∈ S.S (under y)) :
@@ -53,19 +53,19 @@ theorem exists_frameAt (hj : j ≫ genStr Z ≫ spMap e.toRingHom = X.str) (hT :
   exact ⟨g, φ, fz, evStalk y, spMap_evStalk_eq y, hc, hg⟩
 
 /- English proof (translation)
-Take `⟨φ, fz, ψ, hψ, hc, hm⟩` from `hg`. Take `⟨φ', fz', ψ', hψ', hc', hm'⟩` from `hg'`. Take `rfl : ψ = evStalk y` from `EigLoc.spMap_inj ((cancel_mono (X.X.fromSpecStalk (under y))).1 (hψ.symm.trans (spMap_evStalk_eq y)))`. Take `rfl : ψ' = evStalk y` from `EigLoc.spMap_inj ((cancel_mono (X.X.fromSpecStalk (under y))).1 (hψ'.symm.trans (spMap_evStalk_eq y)))`. Take `rfl : φ' = φ` from `RingHom.ext fun a => IsFractionRing.injective _ X.X.functionField ((RingHom.congr_fun hc'.2.1 a).symm.trans (RingHom.congr_fun hc.2.1 a))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx : (cxOf e σ hj y).1 ≫ genι Z = spMap (evStalk y) ≫ stalkPt X (under y) ≫ j ≫ genι Z` using `by show (y.1 ≫ j) ≫ genι Z = _`. Rewrite using `[spMap_evStalk_eq y]`. Conclude with `Category.assoc _ _ _`. Take `⟨k, hk⟩` from `fz.exists_isMap (algebraMap (X.X.presheaf.stalk (under y)) X.X.functionField) hc.2.1 hc.1`. Take `⟨k', hk'⟩` from `fz'.exists_isMap (algebraMap (X.X.presheaf.stalk (under y)) X.X.functionField) hc.2.1 hc.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : k.co f₀ τ = ((A₀ * A⁻¹) τ)ᵀ` using `EigFrame.co_eq fun i => by rw [funext (hk τ)]; exact hc.2.2 τ i`. Establish `h2 : k'.co f₀ τ = ((A₀ * A'⁻¹) τ)ᵀ` using `EigFrame.co_eq fun i => by rw [funext (hk' τ)]; exact hc'.2.2 τ i`. Establish `h3 : k.co k' τ = (fz.co fz' τ).map (algebraMap (X.X.presheaf.stalk (under y)) X.X.functionField)` using `hk.co τ hk' hc.1`. Establish `h4` using `k.co_mul k' f₀ τ`. Rewrite `h4` using `[h1, h2, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set M := (fz.co fz' τ).map (algebraMap (X.X.presheaf.stalk (under y)) X.X.functionField) with hM`. Establish `u0 : IsUnit (A₀ τ).det` using `isUnit_iff_ne_zero.2 (Fr.det_ne hT.1 τ)`. Establish `u' : IsUnit (A' τ).det` using `isUnit_iff_ne_zero.2 (Fr.det_ne hA' τ)`. Establish `h5 : A' τ * (A τ)⁻¹ = Mᵀ`. Establish `h6` using `congrArg Matrix.transpose h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h6` using `[transpose_mul, transpose_transpose, transpose_transpose]`. Express the relevant statement in the definitionally equal form `A₀ τ * (A' τ)⁻¹ * Mᵀ = A₀ τ * (A τ)⁻¹ at h6`. Establish `h7 : A' τ * (A₀ τ)⁻¹ * (A₀ τ * (A' τ)⁻¹) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (A₀ τ)⁻¹, Matrix.nonsing_inv_mul _ u0, Matrix.one_mul, Matrix.mul_nonsing_inv _ u']`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (A₀ τ)⁻¹, Matrix.nonsing_inv_mul _ u0, Matrix.one_mul]`. Use `_ = Mᵀ := by rw [← h6, ← Matrix.mul_assoc, h7, Matrix.one_mul]`. Rewrite using `[hm.co τ hm' hx]`. Express the relevant statement in the definitionally equal form `((A' τ * (A τ)⁻¹)).map (ratVal · y) = _`. Rewrite using `[h5]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Simplify using `only [map_apply, transpose_apply, hM]`. Rewrite using `[ratVal_eq_valAt y ⟨_, rfl⟩, valAt_algebraMap]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_ratVal_eq_co (hj : j ≫ genStr Z ≫ spMap e.toRingHom = X.str) (hT : Tied e X j f₀ S A₀)
     {y : CxPts X.str (σ.comp e.toRingHom)} {A A' : Mat Dw.mult X.Fn} (hA' : A' ∈ S.S (under y)) {g g' : EigFrame Z σ ((cxOf e σ hj y).1 ≫ genι Z)} (hg : FrameAt e f₀ A₀ A y g)
@@ -112,11 +112,11 @@ theorem map_ratVal_eq_co (hj : j ≫ genStr Z ≫ spMap e.toRingHom = X.str) (hT
   rfl
 
 /- English proof (translation)
-Use `⟨fun y _ A hA τ => ?_, fun y hy A hA τ a b => hs y hy A hA τ a b, fun y _ A hA A' hA' τ => ?_⟩` and prove the remaining obligations. Establish `h` using `exists_frameAt hj hT y hA`. Rewrite using `[gramOf, dif_pos h]`. Conclude with `(G.pos _ _ τ).transpose`. Establish `h` using `exists_frameAt hj hT y hA`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'` using `exists_frameAt hj hT y hA'`. Unfold `gramOf`. Rewrite using `[dif_pos h, dif_pos h']`. Rewrite using `[G.change _ h.choose h'.choose τ, map_ratVal_eq_co hj hT hA' h.choose_spec h'.choose_spec τ]`. Rewrite using `[transpose_mul, transpose_mul, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`.
+A detailed English derivation is pending.
 -/
 theorem isMetricOn_gramOf (G : EigMet Z σ) (hj : j ≫ genStr Z ≫ spMap e.toRingHom = X.str) (hT : Tied e X j f₀ S A₀)
     (Ω : X.X.Opens) (hs : ∀ y ∈ ptsIn X.str (σ.comp e.toRingHom) Ω, ∀ A ∈ S.S (under y), ∀ (τ : E →+* ℂ)
@@ -141,7 +141,7 @@ open AlgebraicGeometry CategoryTheory MvPolynomial NumberField ReciprocityTheory
   GlobalTheory.ProjVar GlobalTheory.FlagBundle GlobalTheory.GoodMetric GlobalTheory.LieBase GlobalTheory.CxPts GlobalTheory.Cartier
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU C X j f f₀ Eb A₀ hj hL`. Use `T.smooth` as an intermediate fact. Take `⟨hoi, -, hT⟩` from `hL`. Rewrite using `[lieGram_eq_gramOf]`. Conclude with `isMetricOn_gramOf (hodgeMet T.Z U) hj hT _ (GlobalTheory.T.eigenMetricGram_smooth_in_familyFrames E H Dw l Xo c O β T.Z σ _ (GlobalTheory.T.hodgeMetric_uniformisation_smoothOn_interior E H Dw l Xo c O β T.Z σ U hσ hU) F e X j f₀ Eb A₀ hj hoi hT)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LieBase.isMetricOn_lieGram : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (C : FlagCpt T.Z e), ∀ (X : Var F) (j : X.X ⟶ gen T.Z) (f : C.Y.X ⟶ X.X) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsLieBase e C X j f f₀ Eb A₀ → IsMetricOn Eb (openPart j) (lieGram e U hj f₀ A₀) := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU C X j f f₀ Eb A₀ hj hL

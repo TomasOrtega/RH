@@ -13,7 +13,7 @@ open scoped Topology
 namespace GlobalTheory.RootEx
 
 /- English proof (translation)
-Take `⟨K, hKo, hK⟩` from `GlobalTheory.QuotInt.exists_open_stab (G := Multiplicative M) (F := fun x => Φ (Multiplicative.toAdd x)) hΦ`. Use `⟨{ carrier := {y | Multiplicative.ofAdd y ∈ K} add_mem' := fun hy hz => K.mul_mem hy hz zero_mem' := K.one_mem neg_mem' := fun hy => K.inv_mem hy }, hKo, ?_⟩` and prove the remaining obligations. Introduce `x y hy`. Conclude with `hK (Multiplicative.ofAdd x) (Multiplicative.ofAdd y) hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem exists_open_translations {M : Type*} [AddCommGroup M] [TopologicalSpace M]
     [IsTopologicalAddGroup M] {Φ : M → ℂ} (hΦ : Φ ∈ SB M) :
@@ -28,33 +28,31 @@ private theorem exists_open_translations {M : Type*} [AddCommGroup M] [Topologic
   exact hK (Multiplicative.ofAdd x) (Multiplicative.ofAdd y) hy
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n n' _ _ _ _ c p hp1 hpc ψ hψc hψ1 ν _ μ hμ μX _ μG _ A _ _ σ hσ P P' _ _ _ _ π π' θ hθ b hb φ F Φ f hf`. Establish `hom` using `om_isSmoothRepresentation k (n' ⊕ Fin (c + 1)) (n ⊕ Fin c) μ hμ`. Establish `hom'` using `om_isSmoothRepresentation k n' n μ hμ`. Establish `hE` using `opE_SB_and_linear k n n' c p ψ hψc ν`. Establish `hΦ : IsLocallyConstant Φ.1 ∧ HasCompactSupport Φ.1` using `Φ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemΨ : ∀ h : GL (n ⊕ Fin c) k, opE ψ ν p (om μ 1 h Φ.1) ∈ SB (Matrix n n' k)` using `fun h => hE.1 _ (hom.2.2.2.1 1 h Φ.1 Φ.2)`. Establish `om_smul : ∀ {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (g : GL a k) (h : GL b k) (z : ℂ) (G : Matrix b a k → ℂ), om μ g h (z • G) = z • om μ g h G`. Introduce `a b _ _ _ _ g h z G`. Use function extensionality and compare the values at `y`. Simplify using `only [om, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hloc : IsLocallyConstant f`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hU : {y : GL (n ⊕ Fin c) k | σ y F = F ∧ om μ 1 y Φ.1 = Φ.1} ∈ 𝓝 (1 : GL (n ⊕ Fin c) k)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Filter.inter_mem ((hσ F).mem_nhds (by simp)) ?_` and prove the remaining obligations. Establish `ho : IsOpen {y : GL (n ⊕ Fin c) k | om μ 1 y Φ.1 = Φ.1}` using `(hom.2.2.2.2 Φ.1 Φ.2).preimage (continuous_const.prodMk continuous_id)`. Conclude with `ho.mem_nhds (hom.1 Φ.1)`. Establish `hx : {y | x⁻¹ * y ∈ {y : GL (n ⊕ Fin c) k | σ y F = F ∧ om μ 1 y Φ.1 = Φ.1}} ∈ 𝓝 x`. Establish `hc : Continuous fun y : GL (n ⊕ Fin c) k => x⁻¹ * y` using `continuous_const.mul continuous_id`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hc.continuousAt.preimage_mem_nhds (by simpa using hU)`. Use `filter_upwards [hx] with y hy`. Take `⟨z, rfl⟩ : ∃ z, y = x * z` from `⟨x⁻¹ * y, by group⟩`. Simplify using `only [inv_mul_cancel_left] at hy`. Take `⟨h1, h2⟩` from `hy`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : om μ 1 (x * z) Φ.1 = om μ 1 x Φ.1`. Use `hom.2.1 1 1 x z Φ.1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Rewrite using `[this, h2]`. Establish `hσz : σ (x * z) F = σ x F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, Module.End.mul_apply, h1]`. Rewrite using `[hf (x * z) ⟨_, hmemΨ x⟩ (by rw [e1]), hf x ⟨_, hmemΨ x⟩ rfl, hσz]`. Take `⟨Λ, hΛo, hΛ⟩` from `exists_open_translations (M := Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) Φ.2`. Take `⟨Ω, hΩ, hΩR⟩` from `opE_support_compact_mod_R k n n' c p hp1 hpc ψ hψc hψ1 ν (tsupport Φ.1) hΦ.2 Λ hΛo`. Establish `hsupp : ∀ h, f h ≠ 0 → ∃ r ∈ R k n c p, ∃ w ∈ Ω, h = r * w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hfh`. Establish `hne : opE ψ ν p (om μ 1 h Φ.1) ≠ 0`. Introduce `h0`. Apply `hfh` to reduce the goal to its premises. Rewrite using `[hf h 0 (by rw [h0]; rfl)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Take `⟨x₀, hx₀⟩` from `Function.ne_iff.mp hne`. Conclude with `hΩR μ Φ.1 (subset_tsupport _) hΛ (fun _ => 1) (IsLocallyConstant.const 1) h x₀ (by simpa using hx₀)`. Establish `hequiv : ∀ (x : GL n k), ∀ u ∈ N k n c p, ∀ h, f (embX c x * u * h) = ((nabs k (Matrix.GeneralLinearGroup.det x) ^ ((c : ℝ) + 1 - 2 * p) : ℝ) : ℂ) * f h`. Introduce `x u hu h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Ψ'' : SB (Matrix n n' k)` to `⟨om μ 1 x (opE ψ ν p (om μ 1 h Φ.1)), hom'.2.2.2.1 1 x _ (hmemΨ h)⟩`. Establish `m1 : om μ 1 (embX c x * u * h) Φ.1 = om μ 1 (embX c x) (om μ 1 u (om μ 1 h Φ.1))`. Establish `e1` using `hom.2.1 1 1 (embX c x * u) h Φ.1`. Establish `e2` using `hom.2.1 1 1 (embX c x) u (om μ 1 h Φ.1)`. Rewrite `e1`, `e2` using `[mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Establish `hkey : (((((nabs k (Matrix.GeneralLinearGroup.det x) ^ (((c : ℝ) + 1) / 2 - p) : ℝ) : ℂ) * (ψ (-simpleSum u) : ℂ)) • Ψ'' : SB (Matrix n n' k)) : Matrix n n' k → ℂ) = opE ψ ν p (om μ 1 (embX c x * u * h) Φ.1)`. Rewrite using `[m1, (opE_om_embX k n n' c p hp1 hpc ψ ν μ _).1 x, opE_om_target_unipotent k n n' c p hp1 hpc ψ ν μ _ u hu, om_smul, Submodule.coe_smul, smul_smul]`. Establish `hθΨ : θ φ Ψ'' = π x (θ φ ⟨_, hmemΨ h⟩)`. Use `hθ 1 x φ ⟨_, hmemΨ h⟩ Ψ'' rfl` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Rewrite using `[hf _ _ hkey, hf h ⟨_, hmemΨ h⟩ rfl, map_smul, hθΨ, map_smul, LinearMap.smul_apply, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hb.2 x, hb.1 _ u hu, smul_eq_mul]`. Establish `hN : 0 < nabs k (Matrix.GeneralLinearGroup.det x)` using `GlobalTheory.RootEx.OpELevi.nabs_pos _`. Establish `hpow : (nabs k (Matrix.GeneralLinearGroup.det x) ^ ((c : ℝ) + 1 - 2 * p) : ℝ) = nabs k (Matrix.GeneralLinearGroup.det x) ^ (((c : ℝ) + 1) / 2 - p) * nabs k (Matrix.GeneralLinearGroup.det x) ^ (((c : ℝ) + 1) / 2 - p)`. Rewrite using `[← Real.rpow_add hN]`.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Establish `hψ : (ψ (-simpleSum u) : ℂ) * (ψ (simpleSum u) : ℂ) = 1`. Rewrite using `[← Circle.coe_mul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, Circle.coe_one]`. Rewrite using `[hpow, Complex.ofReal_mul]`. Take the linear combination `((nabs k (Matrix.GeneralLinearGroup.det x) ^ (((c : ℝ) + 1) / 2 - p) : ℝ) : ℂ) * ((nabs k (Matrix.GeneralLinearGroup.det x) ^ (((c : ℝ) + 1) / 2 - p) : ℝ) : ℂ) * b (θ φ ⟨_, hmemΨ h⟩) (σ h F) * hψ`.
-
-Conclude with `(GlobalTheory.QuotInt.quotInt_unique_exists k n c p hp1 hpc ν μX μG f).2 hloc ⟨Ω, hΩ, hsupp⟩ hequiv`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_isQuotInt_unfolding : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c p : ℕ) (_ : 1 ≤ p) (_ : p ≤ c) (ψ : AddChar k Circle) (_ : Continuous ψ) (_ : ψ ≠ 1) (ν : Measure k) [ν.IsAddHaarMeasure] (μ : kˣ →* ℂˣ) (_ : IsOpen (μ.ker : Set kˣ)) (μX : Measure (GL n k)) [μX.IsHaarMeasure] (μG : Measure (GL (n ⊕ Fin c) k)) [μG.IsHaarMeasure] (A : Type) [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (_ : IsSmoothRep σ) (P P' : Type) [AddCommGroup P] [Module ℂ P] [AddCommGroup P'] [Module ℂ P'] (π : Representation ℂ (GL n k) P) (π' : Representation ℂ (GL n' k) P') (θ : P' →ₗ[ℂ] SB (Matrix n n' k) →ₗ[ℂ] P) (_ : ∀ g h φ Ψ Ψ', Ψ'.1 = om μ g h Ψ.1 → θ (π' g φ) Ψ' = π h (θ φ Ψ)) (b : P →ₗ[ℂ] A →ₗ[ℂ] ℂ) (_ : IsPos ψ p π σ b) (φ : P') (F : A) (Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)) (f : GL (n ⊕ Fin c) k → ℂ) (_ : ∀ h Ψ, Ψ.1 = opE ψ ν p (om μ 1 h Φ.1) → f h = b (θ φ Ψ) (σ h F)), ∃ z, IsQuotInt ν μX μG p f z := by
   intro k _ _ _ _ _ _ n n' _ _ _ _ c p hp1 hpc ψ hψc hψ1 ν _ μ hμ μX _ μG _ A _ _ σ hσ P P' _ _ _ _

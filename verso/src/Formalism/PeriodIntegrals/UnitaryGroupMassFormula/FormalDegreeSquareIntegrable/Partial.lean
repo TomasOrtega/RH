@@ -8,7 +8,7 @@ namespace PIW.HCFdeg
 open PI.UpqRep
 
 /- English proof (translation)
-The claim follows from `formal_degree_orthogonality (hOrthOf hSchur hBdd) hUni`.
+A detailed English derivation is pending.
 -/
 theorem formal_degree_of_schur_unimodular (hSchur : StSchur) (hBdd : StBdd) (hOrthOf : StOrthOf) (hUni : StUnimod) : StableSubspaceMobius :=
   formal_degree_orthogonality (hOrthOf hSchur hBdd) hUni

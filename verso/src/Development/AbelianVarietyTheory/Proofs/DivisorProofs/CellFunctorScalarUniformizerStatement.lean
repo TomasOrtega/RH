@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Be
 open GlobalTheory.PRep GlobalTheory.SmGL Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CellScalarTwo.cellFunctor_scalar | exact GlobalTheory.CellScalarTwo.cellFunctor_scalar | (intros; apply GlobalTheory.CellScalarTwo.cellFunctor_scalar <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.cell_functor_scalar_uniformizer : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ)

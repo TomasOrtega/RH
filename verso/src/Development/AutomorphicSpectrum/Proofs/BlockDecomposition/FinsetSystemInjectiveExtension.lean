@@ -11,7 +11,7 @@ section Tuples
 variable {ι : Type}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[Fin.succAbove_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cons_comp_zero {n : ℕ} (a : ι) (i : Fin (n + 1) → ι) :
     (Fin.cons a i : Fin (n + 2) → ι) ∘ (0 : Fin (n + 2)).succAbove = i := by
@@ -19,7 +19,7 @@ theorem cons_comp_zero {n : ℕ} (a : ι) (i : Fin (n + 1) → ι) :
   simp [Fin.succAbove_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Consider the cases of `t using Fin.cases with`. Consider the case `zero => simp only [Function.comp_apply, Fin.succ_succAbove_zero, Fin.cons_zero]`. Consider the case `succ t => simp only [Function.comp_apply, Fin.succ_succAbove_succ, Fin.cons_succ]`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem cons_comp_succ {n : ℕ} (a : ι) (i : Fin (n + 1) → ι) (k : Fin (n + 1)) :
     (Fin.cons a i : Fin (n + 2) → ι) ∘ k.succ.succAbove = Fin.cons a (i ∘ k.succAbove) := by
@@ -29,9 +29,9 @@ theorem cons_comp_succ {n : ℕ} (a : ι) (i : Fin (n + 1) → ι) (k : Fin (n +
   | succ t => simp only [Function.comp_apply, Fin.succ_succAbove_succ, Fin.cons_succ]
 
 /- English proof (translation)
-Simplify using `only [ent, Finset.mem_image, Finset.mem_univ, true_and] at h ⊢`. Take `⟨k, rfl⟩` from `h`. Consider the cases of `k using Fin.cases with`. Consider the case `zero => left`. Simplify using `only [Fin.cons_zero]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ k => right`. Conclude with `⟨k, by simp only [Fin.cons_succ]⟩`.
+Treat this case separately. Supply the required witnesses or components.
 -/
 theorem mem_ent_cons [DecidableEq ι] {n : ℕ} {a x : ι} {i : Fin n → ι}
     (h : x ∈ ent (Fin.cons a i : Fin (n + 1) → ι)) : x = a ∨ x ∈ ent i := by
@@ -54,9 +54,9 @@ variable {K : Type} [CommRing K] {ι : Type} [DecidableEq ι] [Fintype ι] {W : 
 def Sup (S : Finset ι) (w : W) : Prop := ∀ l, b.repr w l ≠ 0 → good' l ∧ T l ⊆ S
 
 /- English proof (translation)
-Rewrite using `[Module.Basis.mem_span_image]`. Prove the components needed by the constructor for the conclusion. Introduce `h l hl`. Conclude with `h (Finsupp.mem_support_iff.2 hl)`. Introduce `h l hl`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hl` using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Conclude with `h l hl`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_iff (S : Finset ι) (w : W) :
     w ∈ Submodule.span K (b '' {l | good' l ∧ T l ⊆ S}) ↔ Sup b good' T S w := by
@@ -69,7 +69,7 @@ theorem mem_span_iff (S : Finset ι) (w : W) :
     exact h l hl
 
 /- English proof (translation)
-Rewrite using `[map_sum, Finsupp.coe_finsetSum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Finsupp.smul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_sum {n : ℕ} (D : Fin n → W) (l : Λ) :
     b.repr (∑ k : Fin n, (-1 : ℤ) ^ (k : ℕ) • D k) l = ∑ k : Fin n, (-1 : ℤ) ^ (k : ℕ) • b.repr (D k) l := by
@@ -91,7 +91,7 @@ def contr {n : ℕ} (C : (Fin (n + 1) → ι) → W) (a : ∀ l, good' l → ι)
 
 open Classical in
 /- English proof (translation)
-Unfold `contr`. Rewrite using `[LinearEquiv.apply_symm_apply, Finsupp.onFinset_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem contr_apply {n : ℕ} (C : (Fin (n + 1) → ι) → W) (a : ∀ l, good' l → ι) (i : Fin n → ι) (l : Λ) :
     b.repr (contr b good' C a i) l = if h : good' l then b.repr (C (Fin.cons (a l h) i)) l else 0 := by
@@ -99,11 +99,9 @@ theorem contr_apply {n : ℕ} (C : (Fin (n + 1) → ι) → W) (a : ∀ l, good'
   rw [LinearEquiv.apply_symm_apply, Finsupp.onFinset_apply]
 
 /- English proof (translation)
-Introduce `l hl`. Rewrite `hl` using `[contr_apply]`. Distinguish the cases in `h : good' l`. Rewrite `hl` using `[dif_pos h]`. Take `⟨-, hT⟩` from `hC _ l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨h, fun x hx => ?_⟩` and prove the remaining obligations. Break down `mem_ent_cons (hT hx) with rfl | hx'` into its components or cases. Conclude with `absurd hx (ha l h)`. Conclude with `hx'`. Rewrite `hl` using `[dif_neg h]`.
-
-Conclude with `absurd rfl hl`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contr_sup {n : ℕ} (C : (Fin (n + 1) → ι) → W) (hC : ∀ i, Sup b good' T (ent i) (C i))
     (a : ∀ l, good' l → ι) (ha : ∀ l h, a l h ∉ T l) (i : Fin n → ι) :
@@ -121,11 +119,11 @@ theorem contr_sup {n : ℕ} (C : (Fin (n + 1) → ι) → W) (hC : ∀ i, Sup b 
     exact absurd rfl hl
 
 /- English proof (translation)
-Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `l`. Rewrite using `[coord_sum]`. Simplify using `only [contr_apply]`. Distinguish the cases in `h : good' l`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [dif_pos h]`. Establish `hz` using `congrArg (fun w => b.repr w l) (hZ (Fin.cons (a l h) i))`. Rewrite `hz` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.val_zero, pow_zero, one_smul, cons_comp_zero, Fin.val_succ, cons_comp_succ, map_add, map_sum, map_zsmul, Finsupp.add_apply, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, map_zero, Finsupp.coe_zero, Pi.zero_apply, pow_succ, mul_neg, mul_one, neg_smul, Fins …`. Rewrite `hz` using `[← sub_eq_add_neg, sub_eq_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hz.symm`. Simplify using `only [dif_neg h, smul_zero, Finset.sum_const_zero]`. Assume the negation of the conclusion as `hne`. Conclude with `h (hC i l (Ne.symm hne)).1`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem homotopy {n : ℕ} (C : (Fin (n + 1) → ι) → W) (hC : ∀ i, Sup b good' T (ent i) (C i))
     (hZ : ∀ i : Fin (n + 2) → ι, ∑ k : Fin (n + 2), (-1 : ℤ) ^ (k : ℕ) • C (i ∘ k.succAbove) = 0)
@@ -154,7 +152,7 @@ end Coordinates
 section Main
 
 /- English proof (translation)
-Simplify using `only [dZ, map_sum, map_zsmul, hr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem j_dZ {ι : Type} [DecidableEq ι] {W : Type} [AddCommGroup W] (M : Finset ι → Type) [∀ S, AddCommGroup (M S)]
     (r : ∀ {S S' : Finset ι}, S ⊆ S' → M S → M S') (j : ∀ S, M S →+ W)
@@ -164,25 +162,21 @@ theorem j_dZ {ι : Type} [DecidableEq ι] {W : Type} [AddCommGroup W] (M : Finse
   simp only [dZ, map_sum, map_zsmul, hr]
 
 /- English proof (translation)
-Introduce `K _ ι _ _ W _ _ Λ b good' T hT M _ r j hj hr hspan`. Establish `hout : ∀ l, good' l → ∃ y, y ∉ T l`. Introduce `l hl`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hT l hl (Finset.eq_univ_iff_forall.2 hc)`. Use `choose a ha using hout`. Establish `hsup : ∀ S (x : M S), Sup b good' T S (j S x)` using `fun S x => (mem_span_iff b good' T S _).1 ((hspan S _).1 ⟨x, rfl⟩)`. Establish `hlift : ∀ S w, Sup b good' T S w → ∃ x, j S x = w` using `fun S w h => (hspan S w).2 ((mem_span_iff b good' T S w).2 h)`. Use `⟨fun x hx => ?_, fun c hc => ?_, fun m c hc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `hw : j ∅ x = 0`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `l`. Rewrite using `[map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hg, -⟩` from `hsup ∅ x l hne`. Establish `h0` using `hr (Finset.empty_subset (ent (fun _ : Fin 1 => a l hg))) x`. Establish `hx0 : r (Finset.empty_subset (ent (fun _ : Fin 1 => a l hg))) x = 0` using `hx _`. Rewrite `h0` using `[hx0, map_zero]`. Rewrite `hne` using `[← h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne (by rw [map_zero, Finsupp.coe_zero, Pi.zero_apply])`. Conclude with `hj ∅ (hw.trans (map_zero (j ∅)).symm)`. Establish `hZ : ∀ i : Fin (0 + 2) → ι, ∑ k : Fin (0 + 2), (-1 : ℤ) ^ (k : ℕ) • j _ (c (i ∘ k.succAbove)) = 0`. Introduce `i`. Rewrite using `[← j_dZ M r j hr 0 c i, hc, Pi.zero_apply, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hCs : ∀ i : Fin (0 + 1) → ι, Sup b good' T (ent i) (j (ent i) (c i))` using `fun i => hsup _ (c i)`. Establish `hw` using `contr_sup b good' T (fun i : Fin (0 + 1) → ι => j (ent i) (c i)) hCs a ha Fin.elim0`. Establish `he : ent (Fin.elim0 : Fin 0 → ι) = ∅` using `by simp [ent]`. Rewrite `hw` using `[he]`. Take `⟨x, hx⟩` from `hlift ∅ _ hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨x, fun i => hj _ ?_⟩` and prove the remaining obligations. Rewrite using `[hr, hx]`. Establish `hh` using `homotopy b good' T (fun i : Fin (0 + 1) → ι => j (ent i) (c i)) hCs hZ a i`. Rewrite `hh` using `[Fin.sum_univ_succ]`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, add_zero, Fin.val_zero, pow_zero, one_smul] at hh`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hh using 2` and compare the differences between its conclusion and the goal. Establish `hZ : ∀ i : Fin (m + 1 + 2) → ι, ∑ k : Fin (m + 1 + 2), (-1 : ℤ) ^ (k : ℕ) • j _ (c (i ∘ k.succAbove)) = 0`. Introduce `i`. Rewrite using `[← j_dZ M r j hr (m + 1) c i, hc, Pi.zero_apply, map_zero]`. Establish `hCs : ∀ i : Fin (m + 1 + 1) → ι, Sup b good' T (ent i) (j (ent i) (c i))` using `fun i => hsup _ (c i)`.
-
-Establish `hb : ∀ i' : Fin (m + 1) → ι, ∃ x : M (ent i'), j (ent i') x = contr b good' (fun i : Fin (m + 1 + 1) → ι => j (ent i) (c i)) a i'` using `fun i' => hlift _ _ (contr_sup b good' T _ hCs a ha i')`. Use `choose b' hb' using hb`. Use `⟨b', funext fun i => hj _ ?_⟩` and prove the remaining obligations. Rewrite using `[j_dZ M r j hr m b' i]`. Simplify using `only [hb']`.
-
-Conclude with `homotopy b good' T (fun i : Fin (m + 1 + 1) → ι => j (ent i) (c i)) hCs hZ a i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exP_of_basis : ∀ {K : Type} [CommRing K] {ι : Type} [DecidableEq ι] [Fintype ι] {W : Type} [AddCommGroup W]
     [Module K W] {Λ : Type} (b : Module.Basis Λ K W) (good' : Λ → Prop) (T : Λ → Finset ι),

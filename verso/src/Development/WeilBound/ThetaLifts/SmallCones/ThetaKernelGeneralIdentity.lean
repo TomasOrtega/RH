@@ -14,21 +14,19 @@ open GlobalTheory.Doubling (absE)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨μ, 𝓕, hμ, h𝓕, h1⟩` from `hdom`. Take `⟨t, m, hm, ht⟩` from `hlevi`. Establish `hsum : ∀ h, fa h + fb h = fa' h + fb' h`. Introduce `h`. Establish `e1` using `h₁.1 μ 𝓕 hμ h𝓕 h1 h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2` using `h₂.1 μ 𝓕 hμ h𝓕 h1 h`. Simplify using `only [Pi.add_apply] at e1 e2`. Rewrite using `[e1, e2]`. Establish `key : ∀ h, fa h = fa' h`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Establish `hA` using `h₁.2.1 t m hm h`. Establish `hA'` using `h₂.2.1 t m hm h`. Establish `hB` using `h₁.2.2 t m hm h`. Establish `hB'` using `h₂.2.2 t m hm h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1` using `hsum (m * h)`. Establish `s0` using `hsum h`. Use `set cA' : ℂ := (X.α t : ℂ) * (((absE F E t : ℝ) ^ ((a' : ℝ) / 2) : ℝ) : ℂ) with hcA`. Use `set cB : ℂ := (X.β t : ℂ) * (((absE F E t : ℝ) ^ ((a : ℝ) / 2) : ℝ) : ℂ) with hcB`. Establish `e : cA' * (fa h - fa' h) = cB * (fa h - fa' h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `-hA + hA' + s1 - hB + hB' - cB * s0`. Establish `e' : cA' = cB` using `mul_right_cancel₀ (sub_ne_zero.2 hne) e`. Establish `n1 : ‖cA'‖ = (absE F E t : ℝ) ^ ((a' : ℝ) / 2)`. Rewrite using `[hcA, norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`. Establish `n2 : ‖cB‖ = (absE F E t : ℝ) ^ ((a : ℝ) / 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcB, norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`. Establish `hlt' : (a' : ℝ) / 2 < (a : ℝ) / 2`. Establish `: (a' : ℝ) < a` using `by exact_mod_cast hlt`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Real.rpow_lt_rpow_of_exponent_lt ht hlt'` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← n1, ← n2, e']`. Conclude with `lt_irrefl _ this`. Use `⟨funext key, funext fun h => ?_⟩` and prove the remaining obligations. Use `hsum h` as an intermediate fact. Rewrite `this` using `[key h]`.
-
-Conclude with `add_left_cancel this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split2_unique {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} {W : Spc F E (a + a')} {d₁ : ℕ} {W₁ : Spc F E d₁} {H' : Plane E (a + a') d₁} {X : Chars F E}
@@ -78,7 +76,7 @@ theorem split2_unique {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   exact add_left_cancel this
 
 /- English proof (translation)
-Substitute `h1 h2 h3 h4` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem IsPair.cast {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
     {r s r' s' a b a' b' : ℕ} (h : IsPair B M χX χW om r s r' s') (h1 : r = a) (h2 : s = b) (h3 : r' = a') (h4 : s' = b') :
@@ -88,13 +86,13 @@ def reM {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (Y : Spc 
   ⟨M.co, M.vac, M.μ, M.dom⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.rat, h.vac, h.std, h.haar, h.dom⟩`.
+Supply the required witnesses or components.
 -/
 theorem reM_good {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {ψ} (h : M.IsGood ψ) (Y : Spc F E n) :
     (reM M Y).IsGood ψ := ⟨h.rat, h.vac, h.std, h.haar, h.dom⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.base, hY, h.skew, reM_good h.good Y, h.hX, h.hW, h.resX, h.resW, h.weil⟩`.
+Supply the required witnesses or components.
 -/
 theorem reM_pair {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
     {r s r' s' : ℕ} (h : IsPair B M χX χW om r s r' s') {Y : Spc F E n} (hY : (reS X Y).IsHerm σ B r s) :
@@ -102,14 +100,14 @@ theorem reM_pair {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M :
   ⟨h.base, hY, h.skew, reM_good h.good Y, h.hX, h.hW, h.resX, h.resW, h.weil⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.maps, h.Heisenberg₂, h.inv, h.loc⟩`.
+Supply the required witnesses or components.
 -/
 theorem reM_ev {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁} {B : Base F E} {M : Model σ X W} {M₁ : Model σ X W₁}
     {ι ι' I e} (h : IsEv B M M₁ ι ι' I e) (Y : Spc F E n) : IsEv B (reM M Y) (reM M₁ Y) ι ι' I e :=
   ⟨h.maps, h.Heisenberg₂, h.inv, h.loc⟩
 
 /- English proof (translation)
-Establish `: (reM M Y).SoLoc ψ t = M.SoLoc ψ t` using `Set.ext fun φ => ⟨fun ⟨h, ι, hι, r⟩ => ⟨h, ι, ⟨hι.bij, hι.trans, hι.mult⟩, r⟩, fun ⟨h, ι, hι, r⟩ => ⟨h, ι, ⟨hι.bij, hι.trans, hι.mult⟩, r⟩⟩`. Unfold `Model.So`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem reM_so {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (Y : Spc F E n) (ψ) {v : Pl F} (t : E →ₐ[F] Fv F v) :
     (reM M Y).So ψ t = M.So ψ t := by
@@ -120,7 +118,7 @@ theorem reM_so {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (Y
   rfl
 
 /- English proof (translation)
-Introduce `h0`. Use `h.xy` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `[form] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adapted_x_ne {n n₁ : ℕ} {B : Base F E} {H : Plane E n n₁} {Y : Spc F E n} {Y₁ : Spc F E n₁} {i₀ i₁ : ℕ}
     (h : H.IsAdapted σ B Y Y₁ i₀ i₁) : H.x ≠ 0 := by
@@ -130,7 +128,7 @@ theorem adapted_x_ne {n n₁ : ℕ} {B : Base F E} {H : Plane E n n₁} {Y : Spc
   simp [form] at this
 
 /- English proof (translation)
-Introduce `a`. Rewrite using `[h a, e, pow_add]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem res_low {χ : Chr F E} {n n₁ : ℕ} (h : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ n) (e : n = n₁ + 2) :
     ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ n₁ := by
@@ -139,7 +137,7 @@ theorem res_low {χ : Chr F E} {n n₁ : ℕ} (h : ResEtaPow (Units.map (algebra
   simp
 
 /- English proof (translation)
-Take `⟨h1, -, -, -, ⟨lev, -, hl, -⟩, -, t, ht⟩` from `hU F E σ B _ _ G.W W₁ H' i₀ i₁ _ _ hT.base (Or.inr hT.geo.hW) hH`. Conclude with `split2_unique hT.geo.lt h1 ⟨t, _, hl t 1, ht⟩ h₁ h₂`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem split_uniq (hU : UnipEx) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om om'} (hT : IsTriple B G X om om')
     {d₁ : ℕ} {W₁ : Spc F E d₁} {H' : Plane E (a + a') d₁} {i₀ i₁ : ℕ} (hH : H'.IsAdapted σ B G.W W₁ i₀ i₁)
@@ -158,17 +156,15 @@ def AnySplit (cond : ℕ → ℕ → ℕ → ℕ → Prop) (so : Bool) : Prop :=
           (so = true → e₀ (om (1, h) Φ) ∈ M₁.So B.ψ B.τ₁) → A₀ (p * h) = C₀ * M₁.I om₁ (e₀ (om (1, h) Φ)) h₁
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d d₁ X W W₁ H' i₀ i₁ r s r' s' M M₁ hn hc hH' e₀ he₀`. Distinguish the cases in `h0 : min r s = 0`. Take `⟨C, hC0, h⟩` from `hA F E σ B n d d₁ X W W₁ H' i₀ i₁ r s (r' + 1) (s' + 1) r' s' X M M₁ rfl h0 hH' e₀ he₀`. Use `⟨C, hC0, fun χX χW om om₁ hp hp₁ Φ hΦ _ => ?_⟩` and prove the remaining obligations. Take `⟨K, μK, μ, hK1, -⟩` from `hS F E σ B n X r s hp.base hp.herm`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨A₀, h1, h2, h3⟩` from `h χX χW om om₁ hp hp₁ Φ (hK F E σ B n d X W M χX χW om _ _ _ _ hp K hK1 Φ hΦ).1`. Conclude with `⟨A₀, 0, by rwa [add_zero], h2, fun t m _ h => by simp, fun h₁ p hp h _ => h3 h₁ p hp h⟩`. Distinguish the cases in `hex : ∃ χX χW om om₁, IsPair B M χX χW om r s (r' + 1) (s' + 1) ∧ IsPair B M₁ χX χW om₁ r s r' s'`. Use `swap`. Conclude with `⟨1, one_ne_zero, fun χX χW om om₁ hp hp₁ => absurd ⟨χX, χW, om, om₁, hp, hp₁⟩ hex⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨χ0, χ0', o, o₁, hq, hq₁⟩` from `hex`. Take `⟨r, rfl⟩ : ∃ k, r = k + 1` from `⟨r - 1, by omega⟩`. Take `⟨s, rfl⟩ : ∃ k, s = k + 1` from `⟨s - 1, by omega⟩`. Take `⟨Y, X₁, H, hY, hX₁, hH⟩` from `hPl F E σ B hq.base n (n - 2) (by omega) (by omega) X (r + 1) (s + 1) (by omega) (by omega) hq.herm 0 1 (by omega) (by omega)`. Simplify using `only [Nat.add_sub_cancel] at hX₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨M₀, hM₀⟩, hW⟩` from `hP F E σ B hq.base _ _ X₁ W₁ r s r' s' hX₁ hq₁.skew`. Take `⟨⟨eA, heA⟩, eB, heB⟩` from `hC F E σ B n d _ W (reM M Y) χ0 χ0' o _ _ _ _ (reM_pair hq hY) _ _ X₁ W₁ H H' i₀ i₁ 0 1 M₀ hH hH' hM₀`. Take `⟨K, μK, μ, hK1, -, hμK, hμ⟩` from `hS F E σ B n X _ _ hq.base hq.herm`. Establish `hIw : Iwa (X` using `X) H K := hI F E σ B n _ X _ _ H hq.base hq.herm (adapted_x_ne hH) hH.xx K hK1`. Take `⟨C₀, hC₀, h⟩` from `gen F E σ B n d _ d₁ (reS X Y) W X₁ W₁ H H' 0 1 i₀ i₁ r s r' s' (reM M Y) M₀ hH hH' (reM M₁ Y) e₀ eA eB (reM_good hq₁.good Y) hM₀ (reM_ev he₀ Y) heA heB hc K μK μ hIw hμK hμ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C₀, hC₀, fun χX χW om om₁ hp hp₁ Φ hΦ hso => ?_⟩` and prove the remaining obligations. Take `⟨om₀, hp₀⟩` from `hW χX χW hp.hX hp.hW (res_low hp.resX hH.rank) hp₁.resW M₀ hM₀`. Take `⟨hs, hf⟩` from `hK F E σ B n d X W M χX χW om _ _ _ _ hp K hK1 Φ hΦ`. Use `h χX χW om om₁ om₀ (reM_pair hp hY) (reM_pair hp₁ hY) hp₀ Φ hs (by rwa [reM_so]) hf` as an intermediate fact. Simplify using `only [reM_so] at this`.
-
-Conclude with `this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_kernel_general_identity (hA : GenAniso) (hK : KFinData) (hS : StabEx) (hI : IwaEx) (hP : PairEx) (hPl : PlaneHerm) (hC : EvCone)
     (cond : ℕ → ℕ → ℕ → ℕ → Prop) (so : Bool)
@@ -215,9 +211,9 @@ theorem theta_kernel_general_identity (hA : GenAniso) (hK : KFinData) (hS : Stab
   exact this
 
 /- English proof (translation)
-Use `theta_kernel_general_identity hA hK hS hI hP hPl hC _ _ ?_` and prove the remaining obligations. Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' j₀ j₁ i₀ i₁ r s r' s' M M₀ hH hH' M₁ e₀ eA eB h1 h0 he₀ hA' _ ⟨z, hz, hz'⟩ K μK μ hI hμK hμ`. Take `⟨C₀, C₁, hC₀, -, h⟩` from `hG F E σ B n d n₁ d₁ X W X₁ W₁ H H' j₀ j₁ i₀ i₁ r s r' s' M M₀ hH hH' M₁ e₀ eA h1 h0 he₀ hA' z ⟨hz, by omega⟩ K μK μ hI hμK hμ`. Use `⟨C₀, hC₀, fun χX χW om om₁ om₀ hp hp₁ hp₀ Φ hΦ _ hf => ?_⟩` and prove the remaining obligations. Take `⟨A₀, A₁, a, b, c, e⟩` from `h χX χW om om₁ om₀ hp hp₁ hp₀ Φ hΦ hf`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨A₀, A₁, a, b, c, fun h₁ p hp h _ => (e h₁ p hp h).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem anyBig (hG : GenBig) (hA : GenAniso) (hK : KFinData) (hS : StabEx) (hI : IwaEx) (hP : PairEx) (hPl : PlaneHerm) (hC : EvCone) :
     AnySplit (fun n d r s => ∃ z, 2 * n = d + 2 * z ∧ min r s + 1 ≤ z) false := by
@@ -230,9 +226,9 @@ theorem anyBig (hG : GenBig) (hA : GenAniso) (hK : KFinData) (hS : StabEx) (hI :
   exact ⟨A₀, A₁, a, b, c, fun h₁ p hp h _ => (e h₁ p hp h).2⟩
 
 /- English proof (translation)
-Use `theta_kernel_general_identity hA hK hS hI hP hPl hC _ _ ?_` and prove the remaining obligations. Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' j₀ j₁ i₀ i₁ r s r' s' M M₀ hH hH' M₁ e₀ eA eB h1 h0 he₀ _ hB' ⟨z, hz⟩ K μK μ hI hμK hμ`. Take `⟨C₀, C₁, hC₀, -, h⟩` from `hG F E σ B n d n₁ d₁ X W X₁ W₁ H H' j₀ j₁ i₀ i₁ r s r' s' M M₀ hH hH' M₁ e₀ eB h1 h0 he₀ hB' z hz K μK μ hI hμK hμ`. Use `⟨C₀, hC₀, fun χX χW om om₁ om₀ hp hp₁ hp₀ Φ _ hso hf => ?_⟩` and prove the remaining obligations. Take `⟨A₀, A₁, a, b, c, e⟩` from `h χX χW om om₁ om₀ hp hp₁ hp₀ Φ (hso rfl) hf`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨A₀, A₁, a, b, c, fun h₁ p hp h hs => (e h₁ p hp h).2 (hs rfl)⟩`.
+Supply the required witnesses or components.
 -/
 theorem anySmall (hG : GenSmall) (hA : GenAniso) (hK : KFinData) (hS : StabEx) (hI : IwaEx) (hP : PairEx) (hPl : PlaneHerm)
     (hC : EvCone) : AnySplit (fun n d _ _ => ∃ z, d + 2 = 2 * n + 2 * z ∧ 2 ≤ z) true := by

@@ -26,7 +26,7 @@ def tanW (Y : Model Xo c β) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt X
     rw [hw, Category.assoc, Small.ptF_fst]) ≫ Y.m.φ
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hc`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isComb_cast {V : Type} [CommRing V] {G : CategoryTheory.Over (Spec (CommRingCat.of V))} [GrpObj G] {r m : ℕ} (h : r = m)
     (v : Fin m → (epsOver V V ⟶ G)) (cf : Fin m → V) (w : epsOver V V ⟶ G) (hc : IsComb v cf w) :
@@ -35,9 +35,9 @@ theorem isComb_cast {V : Type} [CommRing V] {G : CategoryTheory.Over (Spec (Comm
   exact hc
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← Spec.map_preimage p, ← Spec.map_preimage q]`. Rewrite `h` using `[← Spec.map_comp, ← Spec.map_comp]`. Establish `h2` using `Spec.map_injective h`. Use `congr 1`. Use `ext1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsLocalization.ringHom_ext (nonZeroDivisors T.V) ?_` and prove the remaining obligations. Conclude with `congrArg CommRingCat.Hom.hom h2`.
+A detailed English derivation is pending.
 -/
 theorem spec_frac_ext (T : CDVR) {B : Type} [CommRing B]
     {p q : Spec (CommRingCat.of B) ⟶ Spec (CommRingCat.of T.Fr)}
@@ -52,9 +52,9 @@ theorem spec_frac_ext (T : CDVR) {B : Type} [CommRing B]
   exact congrArg CommRingCat.Hom.hom h2
 
 /- English proof (translation)
-Apply `spec_frac_ext T` to reduce the goal to its premises. Establish `e1` using `m2.cart.1.w`. Rewrite using `[Category.assoc, ← e1, ← Category.assoc, h, Category.assoc, Over.w v]`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem base_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (T : CDVR)
     (G : SAB H (Spec (CommRingCat.of T.V))) (t' : SAB H (Spec (CommRingCat.of T.Fr)))

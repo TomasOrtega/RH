@@ -8,9 +8,9 @@ namespace PositivityTheory.HtPt.Htat
 open GlobalTheory.CompanionTheory.Ar.BT TensorProduct
 
 /- English proof (translation)
-Introduce `R _ T _ R' _ φ A g`. Set `S : Submonoid (T → R')` to `{ carrier := {g : T → R' | ∃ f ∈ A, g = fun t => φ (f t)} one_mem' := ⟨1, one_mem A, funext fun t => by simp⟩ mul_mem' := by`. Introduce and unpack `_ _ ⟨f, hf, rfl⟩ ⟨f', hf', rfl⟩`. Conclude with `⟨f * f', mul_mem hf hf', funext fun t => by simp⟩ }`. Establish `h` using `Algebra.adjoin_eq_span R' (S : Set (T → R'))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h` using `[Submonoid.closure_eq]`. Conclude with `(Subalgebra.mem_toSubmodule _).symm.trans (h ▸ Iff.rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_span : ∀ (R : Type) [CommRing R] (T : Type) [CommGroup T] (R' : Type) [CommRing R'] (φ : R →+* R') (A : Subalgebra R (T → R)) (g : T → R'), g ∈ extOrder φ A ↔ g ∈ Submodule.span R' {g : T → R' | ∃ f ∈ A, g = fun t => φ (f t)} := by
   intro R _ T _ R' _ φ A g
@@ -25,23 +25,21 @@ theorem ext_span : ∀ (R : Type) [CommRing R] (T : Type) [CommGroup T] (R' : Ty
   exact (Subalgebra.mem_toSubmodule _).symm.trans (h ▸ Iff.rfl)
 
 /- English proof (translation)
-Introduce `R _ ι _ N f h`. Set `_` to `Fintype.ofFinite ι`. Set `q : (ι → R) ⧸ N` to `N.mkQ f`. Set `I : Ideal R` to `LinearMap.ker (LinearMap.toSpanSingleton R _ q)`. Assume the negation of the conclusion as `hf`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hI : I ≠ ⊤` using `fun hI => hf (by`. Establish `h1 : (1 : R) ∈ I` using `hI ▸ Submodule.mem_top`. Establish `h2 : (1 : R) • q = 0` using `h1`. Rewrite `h2` using `[one_smul]`. Conclude with `(Submodule.Quotient.mk_eq_zero N).1 h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal I hI`. Take `⟨R', _, _, _, hflat, hc, hmem⟩` from `h P hP`. Set `ψ : (ι → R') →ₗ[R'] R' ⊗[R] ((ι → R) ⧸ N)` to `(N.mkQ.baseChange R') ∘ₗ (TensorProduct.piScalarRight R R' R' ι).symm.toLinearMap`. Establish `hψ : ∀ n : ι → R, ψ (fun i => algebraMap R R' (n i)) = 1 ⊗ₜ N.mkQ n` using `fun n => by`. Establish `: (TensorProduct.piScalarRight R R' R' ι).symm (fun i => algebraMap R R' (n i)) = 1 ⊗ₜ n`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Use `show (N.mkQ.baseChange R') ((TensorProduct.piScalarRight R R' R' ι).symm _) = _`. Rewrite using `[this, LinearMap.baseChange_tmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (1 : R') ⊗ₜ[R] q = 0`. Rewrite using `[← hψ]`. Use `(Submodule.span_le (p := LinearMap.ker ψ)).2 ?_ hmem` and prove the remaining obligations. Introduce and unpack `_ ⟨n, hn, rfl⟩`. Use `show ψ _ = 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hψ, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero N).2 hn, tmul_zero]`. Set `g : (R ⧸ I) →ₗ[R] ((ι → R) ⧸ N)` to `I.liftQ (LinearMap.toSpanSingleton R _ q) le_rfl`. Establish `hg : Function.Injective g` using `LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ le_rfl)`. Establish `h1 : (1 : R') ⊗ₜ[R] (Submodule.Quotient.mk 1 : R ⧸ I) = 0`. Apply `Module.Flat.lTensor_preserves_injective_linearMap (M := R') g hg` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Rewrite using `[LinearMap.lTensor_tmul, map_zero, ← h0]`. Use `congr 1`. Conclude with `one_smul R q`. Set `k` to `R' ⧸ IsLocalRing.maximalIdeal R'`. Set `a : (R ⧸ I) →ₗ[R] k` to `I.liftQ (Algebra.linearMap R k) fun r hr => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: r ∈ (IsLocalRing.maximalIdeal R').comap (algebraMap R R')` using `hc ▸ hle hr`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 this`. Establish `h2` using `congrArg (LinearMap.mul' R k ∘ₗ TensorProduct.map (Ideal.Quotient.mkₐ R (IsLocalRing.maximalIdeal R')).toLinearMap a) h1`. Rewrite `h2` using `[map_zero, LinearMap.comp_apply, TensorProduct.map_tmul, LinearMap.mul'_apply]`. Establish `h3 : a (Submodule.Quotient.mk 1) = 1` using `map_one (algebraMap R k)`.
-
-Rewrite `h2` using `[h3, mul_one]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal R').ne_top ((Ideal.eq_top_iff_one _).2 (Ideal.Quotient.eq_zero_iff_mem.1 h2))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_descent : ∀ (R : Type) [CommRing R] (ι : Type) [Finite ι] (N : Submodule R (ι → R)) (f : ι → R), (∀ P : Ideal R, P.IsMaximal → ∃ (R' : Type) (_ : CommRing R') (_ : IsLocalRing R') (_ : Algebra R R'), Module.Flat R R' ∧ (IsLocalRing.maximalIdeal R').comap (algebraMap R R') = P ∧ (fun i => algebraMap R R' (f i)) ∈ Submodule.span R' {g : ι → R' | ∃ n ∈ N, g = fun i => algebraMap R R' (n i)}) → f ∈ N := by
   intro R _ ι _ N f h

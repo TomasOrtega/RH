@@ -29,9 +29,9 @@ def toMultilinear {K : Type} {n : ℕ} (f : (Fin n → K → ℤ) → ℤ)
     exact (AddMonoidHom.mk' (fun x => f (Function.update m i x)) (hadd m i)).map_zsmul c x
 
 /- English proof (translation)
-Establish `h1` using `(toMultilinear f hadd).map_add_univ (fun _ => q • a) (fun _ => b)`. Use `h1.trans (Finset.sum_congr rfl fun s _ => ?_)` and prove the remaining obligations. Establish `h2` using `(toMultilinear f hadd).map_piecewise_smul (fun _ => q) (s.piecewise (fun _ => a) (fun _ => b)) s`. Establish `h3 : s.piecewise (fun i => q • s.piecewise (fun _ => a) (fun _ => b) i) (s.piecewise (fun _ => a) (fun _ => b)) = s.piecewise (fun _ => q • a) (fun _ => b)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `by_cases hi : i ∈ s <;> simp [Finset.piecewise, hi]`. Rewrite `h2` using `[h3, Finset.prod_const, smul_eq_mul]`. Conclude with `h2`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expand {K : Type} {n : ℕ} (f : (Fin n → K → ℤ) → ℤ)
     (hadd : ∀ (bs : Fin n → K → ℤ) (j : Fin n) (x y : K → ℤ),
@@ -51,17 +51,17 @@ theorem expand {K : Type} {n : ℕ} (f : (Fin n → K → ℤ) → ℤ)
   exact h2
 
 /- English proof (translation)
-Take `⟨-, ⟨hPp, ⟨S, hS, hPS⟩, hrel⟩, hhor, hdim⟩` from `hP`. Establish `: P.IsPrime` using `hPp`. Establish `hchar : ∀ m : ℤ, (C m : MvPolynomial (Σ k, ι k) ℤ) ∈ P → m = 0`. Introduce `m hm`. Establish `h1 : m ∈ P.comap (C : ℤ →+* MRing ι)` using `hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[show P.comap (C : ℤ →+* MRing ι) = ⊥ from hhor, Ideal.mem_bot]`. Conclude with `h1`. Take `⟨hqp, hcomap, hform⟩` from `ReciprocityTheory.AnForm.R.extQ_spec P hchar`. Establish `hq : ReciprocityTheory.AnForm.R.extQ P = P.map (MvPolynomial.map (Int.castRingHom ℚ))` using `rfl`. Rewrite using `[← hq]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨hqp, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GroundTheory.Heights₂.Heights.Bridge.isMultiHomogIdeal_iff]`. Use `⟨MvPolynomial.map (Int.castRingHom ℚ) '' S, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨b, hb⟩` from `hS f hf`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨b, fun m hm k => hb m (MvPolynomial.support_map_subset _ _ hm) k⟩`. Rewrite using `[hq, hPS, Ideal.map_span]`. Introduce `k`. Take `⟨i, hi⟩` from `hrel k`. Use `⟨i, fun hX => hi ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcomap, Ideal.mem_comap, map_X]`. Conclude with `hX`. Rewrite `hform` using `[hdim]`. Use `GroundTheory.Heights₂.Heights.ObjectsChow.GenericFibreDim.eq_natCast_of_add_one_eq _ _ ?_` and prove the remaining obligations. Rewrite using `[hform]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem genericFibre {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P : Ideal (MRing ι)} {D : ℕ} (hP : IsArithVar P (D + 1)) :
@@ -97,17 +97,17 @@ theorem genericFibre {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [�
     ring
 
 /- English proof (translation)
-Introduce `K _ ι _ P D a b hP`. Take `⟨hprime, hdimq⟩` from `genericFibre hP`. Use `set Q := P.map (MvPolynomial.map (Int.castRingHom ℚ)) with hQ`. Establish `hadd` using `(h ℚ K ι Q D hprime hdimq).2`. Set `f : (Fin D → K → ℤ) → ℤ` to `fun bs => GroundTheory.Heights₂.Heights.NumbersDVR.intNum ℚ Q bs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c : Finset (Fin D) → ℤ` to `fun s => f (s.piecewise (fun _ => a) (fun _ => b))`. Use `⟨∑ s : Finset (Fin D), Polynomial.C (c s : ℝ) * Polynomial.X ^ s.card, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun s _ => ?_` and prove the remaining obligations. Use `(Polynomial.natDegree_C_mul_X_pow_le _ _).trans ?_` and prove the remaining obligations. Simplify using `using Finset.card_le_univ s`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.finsetSum_coeff]`. Repeatedly rewrite using `[Polynomial.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_eq_single Finset.univ]`. Simplify using `[c, f, genDeg, hQ]`. Introduce `s _ hs`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce `hD`. Apply `hs` to reduce the goal to its premises. Rewrite using `[← Finset.card_eq_iff_eq_univ, Fintype.card_fin]`. Conclude with `hD.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hu`. Conclude with `absurd (Finset.mem_univ _) hu`. Introduce `q`. Establish `hexp` using `expand f hadd (q : ℤ) a b`. Establish `hg : genDeg P D ((q : ℤ) • a + b) = f (fun _ => (q : ℤ) • a + b)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg, hexp, Polynomial.eval_finsetSum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[c, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proof (h : MixedNumberPolynomial.Statement.{0}) : ShiftDegreePolynomial.Statement := by
   classical

@@ -10,14 +10,14 @@ namespace GlobalTheory.LatInt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
 
 /- English proof (translation)
-Simplify using `[piW, inclR, compFin, TensorProduct.smul_tmul', splitProj_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piW_smul_incl (v : Pl F) (t : E →ₐ[F] Fv F v) (a : AF F) (e : E) :
     piW t (a • inclR (F := F) (AF F) e) = evFin F v a * t e := by
   simp [piW, inclR, compFin, TensorProduct.smul_tmul', splitProj_tmul]
 
 /- English proof (translation)
-Use `⟨_, tmul_mem_latLoc (one_mem _) hx, funext fun i => ?_⟩` and prove the remaining obligations. Simplify using `[splitVec, splitProj_tmul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem comp_mem_splitLat (v : Pl F) (t : E →ₐ[F] Fv F v) {L : Submodule (𝓞 E) (Fin n → E)} {x : Fin n → E}
     (hx : x ∈ L) : (fun i => t (x i)) ∈ splitLat t L := by
@@ -31,7 +31,7 @@ namespace GlobalTheory.LatInt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, incM, Matrix.vecMulVec_apply, smul_eq_mul]`. Rewrite using `[piW_smul_incl, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_piW_gen (v : Pl F) (t : E →ₐ[F] Fv F v) (a : AF F) (x : Fin n → E) (y : Fin d → E) :
     (a • incM F (Matrix.vecMulVec x y)).map (piW t) =
@@ -41,13 +41,13 @@ theorem map_piW_gen (v : Pl F) (t : E →ₐ[F] Fv F v) (a : AF F) (x : Fin n �
   rw [piW_smul_incl, map_mul]
 
 /- English proof (translation)
-Introduce `γ hγ`. Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, -, ha, x, hx, y, hy, rfl⟩` from `hz`. Establish `hx'` using `(hb.mem_iff).1 (comp_mem_splitLat v t hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy'` using `(hc.mem_iff).1 (comp_mem_splitLat v t hy)`. Introduce `i j`. Rewrite using `[map_piW_gen, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul]`. Conclude with `mul_mem ha (mul_mem (hx' i) (hy' j))`. Consider the case `zero => intro i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add γ δ _ _ hγ hδ`. Introduce `i j`. Rewrite using `[Matrix.map_add (piW t) (map_add _), Matrix.mul_add, Matrix.add_mul, Matrix.add_apply]`. Conclude with `add_mem (hγ i j) (hδ i j)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `neg γ _ hγ`. Introduce `i j`. Rewrite using `[Matrix.map_neg (piW t) (map_neg _), Matrix.mul_neg, Matrix.neg_mul, Matrix.neg_apply]`. Conclude with `neg_mem (hγ i j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAtV_comp_integral {n d : ℕ}
     (X : Spc F E n) (W : Spc F E d) (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v))

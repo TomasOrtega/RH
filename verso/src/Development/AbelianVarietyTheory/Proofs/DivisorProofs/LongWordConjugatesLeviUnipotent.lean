@@ -5,15 +5,15 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.WhitHered Matrix
 namespace GlobalTheory.WhitHered
 
 /- English proof (translation)
-Use `set e' := stdBlocks (fun b => m (Fin.revPerm b)) (sum_rev_eq m hN) with he'`. Establish `key : ∀ (b b' : Fin c) (i' : Fin (m (Fin.revPerm b))) (j' : Fin (m (Fin.revPerm b'))), (((longW m hN k)⁻¹ * leviEmb k (stdBlocks m hN) t * longW m hN k : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) (e' ⟨b, i'⟩) (e' ⟨b', j'⟩) = (leviEmb k (stdBlocks m hN) t : Matrix (Fin N) (Fin N) …`. Introduce `b b' i' j'`. Rewrite using `[longW_conj_apply, he', revPlace_apply, revPlace_apply]`. Rewrite using `[mem_unipB]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `i j hji`. Take `⟨⟨b, i'⟩, rfl⟩` from `e'.surjective i`. Take `⟨⟨b', j'⟩, rfl⟩` from `e'.surjective j`. Rewrite using `[key]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality. Rewrite using `[leviEmb_apply_same]`. Establish `hlt : j' < i'`. Establish `h1` using `stdBlocks_val (fun b => m (Fin.revPerm b)) (sum_rev_eq m hN) b i'`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `stdBlocks_val (fun b => m (Fin.revPerm b)) (sum_rev_eq m hN) b j'`. Establish `: ((e' ⟨b, j'⟩ : Fin N) : ℕ) < (e' ⟨b, i'⟩ : Fin N)` using `hji`. Rewrite `this` using `[he', h1, h2]`. Conclude with `Fin.lt_def.2 (by omega)`. Conclude with `((mem_unipB k).1 (ht (Fin.revPerm b))).1 i' j' hlt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `leviEmb_apply_ne k (stdBlocks m hN) t (fun h => hb (Fin.revPerm.injective h)) i' j'`. Introduce `i`. Take `⟨⟨b, i'⟩, rfl⟩` from `e'.surjective i`. Rewrite using `[key, leviEmb_apply_same]`. Conclude with `((mem_unipB k).1 (ht (Fin.revPerm b))).2 i'`.
+A detailed English derivation is pending.
 -/
 theorem longW_conj_leviEmb_mem_unipB {k : Type} [Field k] {N c : ℕ} {m : Fin c → ℕ} (hN : ∑ a, m a = N)
     (t : Levi k fun a => Fin (m a)) (ht : ∀ a, t a ∈ unipB k (Fin (m a))) :
@@ -49,7 +49,7 @@ theorem longW_conj_leviEmb_mem_unipB {k : Type} [Field k] {N c : ℕ} {m : Fin c
     exact ((mem_unipB k).1 (ht (Fin.revPerm b))).2 i'
 
 /- English proof (translation)
-Introduce `hN t ht` and use `longW_conj_leviEmb_mem_unipB hN t ht`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ {k : Type} [Field k] {N c : ℕ} {m : Fin c → ℕ} (hN : ∑ a, m a = N) (t : Levi k fun a => Fin (m a)), (∀ a, t a ∈ unipB k (Fin (m a))) → (longW m hN k)⁻¹ * leviEmb k (stdBlocks m hN) t * longW m hN k ∈ unipB k (Fin N) :=
   fun hN t ht => longW_conj_leviEmb_mem_unipB hN t ht

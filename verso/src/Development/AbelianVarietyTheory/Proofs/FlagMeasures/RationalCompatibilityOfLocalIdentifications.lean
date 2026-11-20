@@ -22,7 +22,7 @@ open Formalism.L2.SG.Pf.FrameGlobalPatching.FStar
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[(locH Z p).h_herm (y + y') x, (locH Z p).h_add_left, map_add, ← (locH Z p).h_herm, ← (locH Z p).h_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locH_add_right (Z : LocDat D) (p : PlF D) (x y y' : Vp D p) :
     (locH Z p).h x (y + y') = (locH Z p).h x y + (locH Z p).h x y' := by
@@ -30,18 +30,18 @@ theorem locH_add_right (Z : LocDat D) (p : PlF D) (x y y' : Vp D p) :
     ← (locH Z p).h_herm]
 
 /- English proof (translation)
-Rewrite using `[(locH Z p).h_herm (c • y) x, (locH Z p).h_smul_left, map_mul, ← (locH Z p).h_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locH_smul_right (Z : LocDat D) (p : PlF D) (c : (D.s.atP p).Ep) (x y : Vp D p) :
     (locH Z p).h x (c • y) = (Z.M p).L.cj c * (locH Z p).h x y := by
   rw [(locH Z p).h_herm (c • y) x, (locH Z p).h_smul_left, map_mul, ← (locH Z p).h_herm]
 
 /- English proof (translation)
-Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hm`. Use `show ∀ y ∈ (locH Z p).X (scaled Z p (frame G)), (locH Z p).h (baseChange₂ D p m) y = 0`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hy`. Use `show (locH Z p).h (baseChange₂ D p m) (frFac Z.δ p a.castSucc • baseChange₂ D p (frame G a.castSucc)) = 0`. Rewrite using `[locH_smul_right, BwdNP.localForm_baseChange, GlobalTheory.LocExt.frame_castSucc, hm (G.fl.e a) (Submodule.subset_span ⟨a, rfl⟩), map_zero, mul_zero]`. Consider the case `zero`. Establish `h2` using `locH_add_right Z p (baseChange₂ D p m) 0 0`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h2` using `[add_zero]`. Take the linear combination `-h2`. Consider the case `add y y' _ _ hy hy' => rw [locH_add_right, hy, hy', add_zero]`. Consider the case `smul c y _ hy => rw [locH_smul_right, hy, mul_zero]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem baseChange_mem_perp_sup (Z : LocDat D) (p : PlF D) {T : D.host.E} (G : LFlag (VS D) D.R.rS T) {m : (VS D).V}
     (hm : m ∈ orth (VS D) (Xsp G)) :
@@ -63,7 +63,7 @@ theorem baseChange_mem_perp_sup (Z : LocDat D) (p : PlF D) {T : D.host.E} (G : L
   | smul c y _ hy => rw [locH_smul_right, hy, mul_zero]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.LocNG.theta`. Rewrite using `[hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_of_split (Z : LocDat D) (p : PlF D) (g : Formalism.MainNotions.S.Loc.SplitG (Z.M p).L)
     (hs : (Z.M p).split = some g) : Formalism.MainNotions.S.LocNG.theta (Z.M p) = (g.q : (D.s.atP p).Fp) := by
@@ -71,9 +71,9 @@ theorem theta_of_split (Z : LocDat D) (p : PlF D) (g : Formalism.MainNotions.S.L
   rw [hs]
 
 /- English proof (translation)
-Take `⟨l, hl, ξ, hξ, ξ', hξ', rfl⟩` from `IotaBP.NgX_dec hv`. Take `⟨w, hw, -, -, he, -⟩` from `IotaBP.gS_typed Z p g hs`. Establish `hξX : ξ ∈ Xsp F` using `(Submodule.mem_inf.1 hξ).2`. Establish `hξ'X : ξ' ∈ Xsp F'` using `(Submodule.mem_inf.1 hξ').2`. Use `⟨algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) • (w • baseChange₂ D p l), ?_, baseChange₂ D p ξ, BwdNP.baseChange_mem_localLattice Z (Submodule.mem_inf.1 hξ).1 p, baseChange₂ D p ξ', BwdNP.baseChange_mem_localLattice Z (Submodule.mem_inf.1 hξ').1 p, GlobalTheory …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[theta_of_split Z p g hs]`. Conclude with `Submodule.subset_span ⟨_, Formalism.L2.SG.Pf.LocalDenominators.smul_mem_localLattice Z p hw (BwdNP.baseChange_mem_localLattice Z hl p), rfl⟩`. Rewrite using `[map_add, map_add, baseChange_smul₂, he, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_of_mem (Z : LocDat D) (p : PlF D) (g : Formalism.MainNotions.S.Loc.SplitG (Z.M p).L) (hs : (Z.M p).split = some g)
     {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T)
@@ -91,15 +91,13 @@ theorem cong_of_mem (Z : LocDat D) (p : PlF D) (g : Formalism.MainNotions.S.Loc.
   · rw [map_add, map_add, baseChange_smul₂, he, mul_smul]
 
 /- English proof (translation)
-Take `⟨a, ha, b, hb, c, hc, hbX, hcX, rfl⟩` from `hw`. Establish `hX : ∀ {T₁ : D.host.E} (G : LFlag (VS D) D.R.rS T₁) {y : Vp D p}, y ∈ lattice₂ D Z.M p Λ → y ∈ (locH Z p).X (scaled Z p (frame G)) → y ∈ lattice₂ D Z.M p (XLam Λ G)`. Introduce `T₁ G y hy hyX`. Establish `hsp : y ∈ Submodule.span (D.s.atP p).Ep (baseChange₂ D p '' (Xsp G : Set (VS D).V))`. Use `Submodule.span_le.2 ?_ hyX` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Use `show frFac Z.δ p i.castSucc • baseChange₂ D p (frame G i.castSucc) ∈ _`. Rewrite using `[GlobalTheory.LocExt.frame_castSucc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨G.fl.e i, Submodule.subset_span ⟨i, rfl⟩, rfl⟩)`. Establish `h` using `Formalism.L2.SG.Pf.locSatC_holds D Z p Λ (Xsp G) hΛ`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : y ∈ (lattice₂ D Z.M p (Λ ⊓ toO (VS D) (Xsp G)) : Set (Vp D p))`. Rewrite using `[h]`. Conclude with `⟨hy, hsp⟩`. Conclude with `h2`. Use `add_mem (add_mem ?_ ?_) ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `ha` using `[theta_of_split Z p g hs]`. Unfold `Formalism.MainNotions.S.Loc.HermSp.smulLat at ha`. Use `(Submodule.span_le.2 ?_) ha` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `IotaBP.typed_q_mem Z p g hs F F' hy`.
-
-Conclude with `IotaBP.localLattice_mono Z p (le_sup_right.trans le_sup_left) (hX F hb hbX)`. Conclude with `IotaBP.localLattice_mono Z p le_sup_right (hX F' hc hcX)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_localLattice_of_cong (Z : LocDat D) (p : PlF D) (g : Formalism.MainNotions.S.Loc.SplitG (Z.M p).L)
     (hs : (Z.M p).split = some g) {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Λ.FG) {T T' : D.host.E}
@@ -130,7 +128,7 @@ theorem mem_localLattice_of_cong (Z : LocDat D) (p : PlF D) (g : Formalism.MainN
   · exact IotaBP.localLattice_mono Z p le_sup_right (hX F' hc hcX)
 
 /- English proof (translation)
-Use `BwdNP.mem_of_bcP Z (IotaBP.isLattice_NgX hΛ F F') fun p => ?_` and prove the remaining obligations. Use `match hs : (Z.M p).split with`. Consider the case `none => exact IotaBP.untyped_mem Z p hs F F' (BwdNP.baseChange_mem_localLattice Z hv p)`. Consider the case `some g => exact mem_localLattice_of_cong Z p g hs hΛ.fg F F' (h p (by rw [hs]; exact Option.some_ne_none g))`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_NgX_of_local (Z : LocDat D) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hΛ : Submodule.IsLattice D.host.E Λ) {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T)
@@ -144,23 +142,21 @@ theorem mem_NgX_of_local (Z : LocDat D) {Λ : Submodule (𝓞 D.host.E) (VS D).V
   | some g => exact mem_localLattice_of_cong Z p g hs hΛ.fg F F' (h p (by rw [hs]; exact Option.some_ne_none g))
 
 /- English proof (translation)
-Introduce `D X Y u u' t₀ t hl hl' hloc`. Use `set Z : LocDat D := ⟨Y.δ, Y.M, Y.agree⟩ with hZ`. Establish `hγ0 : t₀.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t₀.rep.2.2.1`. Establish `hγ1 : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Establish `hβ : t.lin * t₀.lin⁻¹ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `mul_mem hγ1 (inv_mem hγ0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : Formalism.HermitianLatticesTheory.gmap t₀.lin t₀.lam' = t₀.lam` using `t₀.rep.2.2.2.1`. Establish `hg1 : Formalism.HermitianLatticesTheory.gmap t.lin t₀.lam' = t₀.lam`. Establish `h : Formalism.HermitianLatticesTheory.gmap t.lin t.lam' = t.lam` using `t.rep.2.2.2.1`. Rewrite `h` using `[hl, hl']`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hβΛ : ∀ y ∈ t₀.lam, (t.lin * t₀.lin⁻¹) y ∈ t₀.lam`. Introduce `y hy`. Rewrite `hy` using `[← hg0]`. Take `⟨y', hy', rfl⟩` from `Submodule.mem_map.1 hy`. Rewrite using `[← hg1]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.mem_map.2 ⟨y', hy', ?_⟩` and prove the remaining obligations. Use `show t.lin y' = t.lin (t₀.lin.symm (t₀.lin y'))`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Establish `hLat : Submodule.IsLattice D.host.E t₀.lam` using `((Y.rowsOK u).1 t₀.lam t₀.mem).1.1`. Unfold `Formalism.MainNotions.S.Lat.IotaCompat`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x' hx' l hlr`. Establish `hx'Λ : x' ∈ t₀.lam` using `(Submodule.mem_inf.1 hx').1`. Establish `hx'o : x' ∈ orth (VS D) (Xsp t₀.frame)` using `(Submodule.mem_inf.1 hx').2`. Establish `hlΛ : l ∈ t₀.lam` using `(Submodule.mem_inf.1 hlr).1`. Establish `hlo : l ∈ orth (VS D) (Xsp (lf D (X.Fu u)))` using `(Submodule.mem_inf.1 hlr).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hβx' : (t.lin * t₀.lin⁻¹) x' ∈ t₀.lam` using `hβΛ x' hx'Λ`. Establish `key : ∀ p : PlF D, (Z.M p).split ≠ none → (Cong (locH Z p) (lattice₂ D Z.M p t₀.lam) (scaled Z p (frame (lf D (X.Fu u)))) (scaled Z p (frame t₀.frame)) (baseChange₂ D p (l - x')) ↔ Cong (locH Z p) (lattice₂ D Z.M p t₀.lam) (scaled Z p (frame (lf D (X.Fu u)))) (scaled Z p (frame t …`. Introduce `p hp`. Apply the tactic sequence `obtain ⟨gβ, hext, -⟩ := GlobalTheory.LocExt.ext_isometry D Z p _ hβ`. Establish `h` using `hloc p hp gβ hext (baseChange₂ D p x') (BwdNP.baseChange_mem_localLattice Z hx'Λ p) (baseChange₂ D p l) (BwdNP.baseChange_mem_localLattice Z hlΛ p) (baseChange_mem_perp_sup Z p _ hx'o) (baseChange_mem_perp_sup Z p _ hlo)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sub, map_sub, ← hext x']`. Conclude with `h`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Use `mem_NgX_of_local Z hLat _ _ (sub_mem hlΛ hβx') fun p hp => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `Option.ne_none_iff_exists'.1 hp`. Conclude with `(key p hp).1 (cong_of_mem Z p g hg _ _ h1)`. Introduce `h2`. Use `mem_NgX_of_local Z hLat _ _ (sub_mem hlΛ hx'Λ) fun p hp => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `Option.ne_none_iff_exists'.1 hp`.
-
-Conclude with `(key p hp).2 (cong_of_mem Z p g hg _ _ h2)`.
+A detailed English derivation is pending.
 -/
 theorem iotaCompat_of_local : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) (t₀ t : TauC Y u u'),
     t.lam = t₀.lam → t.lam' = t₀.lam' →

@@ -15,7 +15,7 @@ def extUnit {X W : Scheme.{0}} (g : W ⟶ X) [IsOpenImmersion g] (V : W.Opens) :
   Units.map (g.appIso V).inv.hom.toMonoidHom
 
 /- English proof (translation)
-Establish `hm : r t ∈ g ⁻¹ᵁ (g ''ᵁ V)` using `⟨r t, ht, rfl⟩`. Establish `e : pullU g (g ''ᵁ V) (extUnit g V a) = res (g.preimage_image_eq V).le a` using `Units.ext (congrArg (fun q => q.hom a.val) (g.appIso_inv_app V))`. Rewrite using `[← gm_pull r g t _ hm, e, gm_res r t _ hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gm_extUnit {X W T : Scheme.{0}} (g : W ⟶ X) [IsOpenImmersion g] (V : W.Opens) (a : Γ(W, V)ˣ)
     (r : T ⟶ W) (t : T) (ht : r t ∈ V) : gm (r ≫ g) t (g ''ᵁ V) (extUnit g V a) = gm r t V a := by
@@ -25,7 +25,7 @@ theorem gm_extUnit {X W T : Scheme.{0}} (g : W ⟶ X) [IsOpenImmersion g] (V : W
   rw [← gm_pull r g t _ hm, e, gm_res r t _ hm]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨⟨a, ha, rfl⟩, hb⟩`. Conclude with `⟨a, ⟨ha, (g.apply_mem_image_iff).1 hb⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem image_inf_le {X W : Scheme.{0}} (g : W ⟶ X) [IsOpenImmersion g] (A B : W.Opens) :
     g ''ᵁ A ⊓ g ''ᵁ B ≤ g ''ᵁ (A ⊓ B) := by
@@ -50,14 +50,14 @@ def glueLB : LB Y where
   g := gS f L
 
 /- English proof (translation)
-Use `show gS f L ⟨i, k⟩ ⟨i, k'⟩ = _`. Simplify using `[gS]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glueLB_g (i : κ) (k k' : (L i).ι) : (glueLB f L).g ⟨i, k⟩ ⟨i, k'⟩ = gT f L i k k' := by
   show gS f L ⟨i, k⟩ ⟨i, k'⟩ = _
   simp [gS]
 
 /- English proof (translation)
-Rewrite using `[glueLB_g]`. Establish `hm : (r ≫ f i) t ∈ (f i) ''ᵁ (L i).U k ⊓ (f i) ''ᵁ (L i).U k'` using `⟨(f i).apply_mem_image_iff.2 hk, (f i).apply_mem_image_iff.2 hk'⟩`. Conclude with `(gm_res _ t _ hm _).trans (gm_extUnit (f i) _ _ r t ⟨hk, hk'⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gm_glueLB {T : Scheme.{0}} (i : κ) (r : T ⟶ Z i) (t : T) (k k' : (L i).ι) (hk : r t ∈ (L i).U k)
     (hk' : r t ∈ (L i).U k') :
@@ -69,13 +69,13 @@ theorem gm_glueLB {T : Scheme.{0}} (i : κ) (r : T ⟶ Z i) (t : T) (k k' : (L i
   exact (gm_res _ t _ hm _).trans (gm_extUnit (f i) _ _ r t ⟨hk, hk'⟩)
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem mem_image {X W : Scheme.{0}} (g : W ⟶ X) [IsOpenImmersion g] {A : W.Opens} {y : X} (h : y ∈ g ''ᵁ A) :
     ∃ z ∈ A, g z = y := h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Conclude with `(hd hne).le_bot ⟨h, h'⟩`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem same_of_mem {i i' : κ} (hd : Pairwise fun i i' => Disjoint (f i).opensRange (f i').opensRange) {y : Y}
     (h : y ∈ (f i).opensRange) (h' : y ∈ (f i').opensRange) : i = i' := by
@@ -84,17 +84,17 @@ theorem same_of_mem {i i' : κ} (hd : Pairwise fun i i' => Disjoint (f i).opensR
 
 variable {L} in
 /- English proof (translation)
-Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Establish `hy : y ∈ ⨆ i, (f i).opensRange` using `by rw [hcov]; trivial`. Take `⟨i, z, rfl⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Take `⟨k, hk⟩` from `exists_chart (hL i) z`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨i, k⟩, (f i).apply_mem_image_iff.2 hk⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Use `g_self := by`. Introduce and unpack `⟨i, k⟩`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `mem_image (f i) hy`. Use `gm_inj (f i) z hy hy ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `gm_glueLB f L i (𝟙 _) z k k hz hz`. Rewrite `e` using `[Category.id_comp]`. Rewrite using `[map_one, gm_res _ z _ hy, e, gm_self (hL i) _ z hz]`. Use `cocycle := by`. Introduce and unpack `⟨i, k⟩ ⟨i', k'⟩ ⟨i'', k''⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `h1 : y ∈ (f i).opensRange` using `(f i).image_le_opensRange _ hy.1.1`. Establish `h2 : y ∈ (f i').opensRange` using `(f i').image_le_opensRange _ hy.1.2`. Establish `h3 : y ∈ (f i'').opensRange` using `(f i'').image_le_opensRange _ hy.2`. Take `rfl` from `same_of_mem f hd h1 h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl` from `same_of_mem f hd h1 h3`. Take `⟨z, hz, rfl⟩` from `mem_image (f i) hy.1.1`. Establish `hz' : z ∈ (L i).U k'` using `(f i).apply_mem_image_iff.1 hy.1.2`. Establish `hz'' : z ∈ (L i).U k''` using `(f i).apply_mem_image_iff.1 hy.2`. Use `gm_inj (f i) z hy hy ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `gm_glueLB f L i (𝟙 _) z k k' hz hz'`. Establish `e2` using `gm_glueLB f L i (𝟙 _) z k' k'' hz' hz''`. Establish `e3` using `gm_glueLB f L i (𝟙 _) z k k'' hz hz''`. Rewrite `e1`, `e2`, `e3` using `[Category.id_comp]`. Rewrite using `[map_mul, gm_res _ z _ hy, gm_res _ z _ hy, gm_res _ z _ hy, e1, e2, e3, gm_cocycle (hL i) _ z hz hz' hz'']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLB_glueLB (hL : ∀ i, (L i).IsLB) (hcov : ⨆ i, (f i).opensRange = ⊤)
     (hd : Pairwise fun i i' => Disjoint (f i).opensRange (f i').opensRange) : (glueLB f L).IsLB where
@@ -132,9 +132,9 @@ theorem isLB_glueLB (hL : ∀ i, (L i).IsLB) (hcov : ⨆ i, (f i).opensRange = �
       gm_cocycle (hL i) _ z hz hz' hz'']
 
 /- English proof (translation)
-Introduce `Y κ _ Z f _ hcov hd c`. Use `choose L hL hc using fun i => cls_surj (c i)`. Establish `hG` using `isLB_glueLB f hL hcov hd`. Use `⟨cls (glueLB f L) hG, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← cls_pull hG (f i) (pull_isLB hG (f i)), ← hc i]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.symm ((cls_eq_iff (hL i) (pull_isLB hG (f i))).2 (iso_of_chart (pull_isLB hG (f i)) ?_))` and prove the remaining obligations. Conclude with `{ idx := fun k _ => ⟨i, k⟩ le := fun k z hz => mem_pull.2 ((f i).apply_mem_image_iff.2 hz) g := fun z k k' hk hk' => Eq.symm ((gm_pull_g (glueLB f L) (f i) (𝟙 _) z (fun _ => ⟨i, k⟩) (fun _ => ⟨i, k'⟩) (mem_pull.2 ((f i).apply_mem_image_iff.2 hk)) (mem_pull.2 ((f i).apply_mem_imag …`.
+A detailed English derivation is pending.
 -/
 theorem exists_pic_glue : ∀ {Y : Scheme.{0}} {κ : Type} [Finite κ] {Z : κ → Scheme.{0}} (f : ∀ i, Z i ⟶ Y)
     [∀ i, IsOpenImmersion (f i)], (⨆ i, (f i).opensRange = ⊤) →

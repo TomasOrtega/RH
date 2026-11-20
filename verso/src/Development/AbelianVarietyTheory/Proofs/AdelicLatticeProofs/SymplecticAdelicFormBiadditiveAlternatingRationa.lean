@@ -10,7 +10,7 @@ open GlobalTheory.FockCompare GlobalTheory.VacUnique
 namespace GlobalTheory.SymplecticOrthogonalSesquilinear
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_one_tmul {F E : Type} [Field F] [Field E] [Algebra F E] [Module.Finite F E]
     (R : Type) [CommRing R] [Algebra F R] (e : E) :
@@ -18,7 +18,7 @@ theorem trace_one_tmul {F E : Type} [Field F] [Field E] [Algebra F E] [Module.Fi
   rw [Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]
 
 /- English proof (translation)
-Establish `h2 : (2 : F) • a = 0` using `by rw [two_smul]; exact eq_neg_iff_add_eq_zero.1 h`. Conclude with `(smul_eq_zero_iff_right two_ne_zero).1 h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_eq_neg {F R : Type} [Field F] [CharZero F] [CommRing R] [Algebra F R] {a : R} (h : a = -a) :
     a = 0 := by
@@ -26,7 +26,7 @@ theorem eq_zero_of_eq_neg {F R : Type} [Field F] [CharZero F] [CommRing R] [Alge
   exact (smul_eq_zero_iff_right two_ne_zero).1 h2
 
 /- English proof (translation)
-Simplify using `only [map_sum, map_mul, hc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_sesq {E A : Type} [CommRing E] [CommRing A] (ι : E →+* A) (c : A →+* A) (s : E → E)
     (hc : ∀ e, c (ι e) = ι (s e)) {m n : ℕ} (ξ : E) (P : Fin m → Fin m → E) (Q : Fin n → Fin n → E)
@@ -36,9 +36,9 @@ theorem map_sesq {E A : Type} [CommRing E] [CommRing A] (ι : E →+* A) (c : A 
   simp only [map_sum, map_mul, hc]
 
 /- English proof (translation)
-Use `haveI : Module.Finite D.host.F D.host.E := Module.finite_of_finrank_pos (by rw [D.sp.cm.deg2]; norm_num)`. Establish `h : ∃ e : D.host.E, incA D D.host.xi0 * hO S T (ratW T S γ) (ratW T S γ') = incA D e` using `⟨_, map_sesq (incA D) (cA D) star GlobalTheory.DualPairCheck.cA_incA D.host.xi0 (fun a b => S.gram⁻¹ a b) (fun a b => T.gram a b) γ γ'⟩`. Take `⟨e, he⟩` from `h`. Use `⟨Algebra.trace D.host.F D.host.E e, ?_⟩` and prove the remaining obligations. Unfold `symplO`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `trace_one_tmul _ e`.
+A detailed English derivation is pending.
 -/
 theorem symplO_rat (D : D7) (S T : HSp D) (γ γ' : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     ∃ a : D.host.F, symplO S T (ratW T S γ) (ratW T S γ') = algebraMap D.host.F (AF D.host.F) a := by
@@ -53,9 +53,9 @@ theorem symplO_rat (D : D7) (S T : HSp D) (γ γ' : Matrix (Fin T.rank) (Fin S.r
   exact trace_one_tmul _ e
 
 /- English proof (translation)
-Introduce `D S T`. Use `⟨fun x x' y => ?_, fun x y y' => ?_, fun x y => GlobalTheory.WeilVacMove.symplO_skew S T y x, fun x => eq_zero_of_eq_neg (F := D.host.F) (GlobalTheory.WeilVacMove.symplO_skew S T x x), symplO_rat D S T⟩` and prove the remaining obligations. Unfold `symplO hO`. Simplify using `only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]`. Unfold `symplO hO`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [Matrix.add_apply, mul_add, add_mul, Finset.sum_add_distrib, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplO_alt : ∀ (D : D7) (S T : HSp D), (∀ x x' y : WO S T, symplO S T (x + x') y = symplO S T x y + symplO S T x' y) ∧ (∀ x y y' : WO S T, symplO S T x (y + y') = symplO S T x y + symplO S T x y') ∧ (∀ x y : WO S T, symplO S T x y = -symplO S T y x) ∧ (∀ x : WO S T, symplO S T x x = 0) ∧ ∀ γ γ' : Matrix (Fin T.rank) (Fin S.rank) D.host.E, ∃ a : D.host.F, symplO S T (ratW T S γ) (ratW T S γ') = algebraMap D.host.F (AF D.host.F) a := by
   intro D S T

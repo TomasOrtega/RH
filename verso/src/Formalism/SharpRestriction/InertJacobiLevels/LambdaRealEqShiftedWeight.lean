@@ -15,7 +15,7 @@ def xG (D : D7) (τ : D.what₂.Tau) (j : ℕ) : ℝ := wj D (min j D.R.m) τ - 
 def wZof (D : D7) (τ : D.what₂.Tau) (j : ℕ) : ℤ := ⌊xG D τ j⌋
 
 /- English proof (translation)
-Unfold `wj`. Rewrite using `[dif_pos (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wj_eq (τ : D.what₂.Tau) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     wj D j τ = (((D.hc τ).e ⟨j - 1, by omega⟩ : ℚ) : ℝ) := by
@@ -23,9 +23,9 @@ theorem wj_eq (τ : D.what₂.Tau) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
   rw [dif_pos (by omega)]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.t_odd`. Use `⟨(a : ℤ) + (2 * (j : ℤ) - 1) * ((b : ℤ) + 1), ?_⟩` and prove the remaining obligations. Unfold `G.kaJ`. Rewrite using `[ha, hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kaJ_int (D : D7) (j : ℕ) (_h1 : 1 ≤ j) : ∃ z : ℤ, G.kaJ D j = z := by
   obtain ⟨a, ha⟩ := D.R.k_even
@@ -37,11 +37,11 @@ theorem kaJ_int (D : D7) (j : ℕ) (_h1 : 1 ≤ j) : ∃ z : ℤ, G.kaJ D j = z 
   ring
 
 /- English proof (translation)
-Establish `hj'` using `Finset.mem_Icc.1 hj`. Take `⟨z, hz⟩` from `(D.hc τ).e_int ⟨j - 1, by omega⟩`. Take `⟨y, hy⟩` from `kaJ_int D j hj'.1`. Establish `e : xG D τ j = ((z - y : ℤ) : ℝ)`. Unfold `xG`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[min_eq_left hj'.2, wj_eq τ j hj'.1 hj'.2, hz, hy]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `wZof`. Rewrite using `[e, Int.floor_intCast, ← e]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `xG`. Rewrite using `[min_eq_left hj'.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wZof_eq (τ : D.what₂.Tau) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) :
     ((wZof D τ j : ℤ) : ℝ) = wj D j τ - G.kaJ D j := by
@@ -59,13 +59,13 @@ theorem wZof_eq (τ : D.what₂.Tau) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) 
   rw [min_eq_left hj'.2]
 
 /- English proof (translation)
-Unfold `xG`. Distinguish the cases in `h : j + 1 ≤ D.R.m`. Rewrite using `[min_eq_left h, min_eq_left (by omega : j ≤ D.R.m), wj_eq τ j h1 (by omega), wj_eq τ (j + 1) (by omega) h]`. Establish `g1` using `(D.hc τ).gap_eb ⟨j - 1, by omega⟩ (by show j - 1 + 1 < D.R.m; omega)`. Establish `g2` using `(D.hc τ).gap_be ⟨j, by omega⟩`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (⟨(⟨j - 1, by omega⟩ : Fin D.R.m).1 + 1, by show j - 1 + 1 < D.R.m; omega⟩ : Fin D.R.m) = ⟨j, by omega⟩` using `Fin.ext (by show j - 1 + 1 = j; omega)`. Rewrite `g1` using `[e1]`. Establish `e2 : (⟨j + 1 - 1, by omega⟩ : Fin D.R.m) = ⟨j, by omega⟩` using `Fin.ext (by show j + 1 - 1 = j; omega)`. Rewrite using `[e2]`. Establish `g1' : (((D.R.t : ℚ) + 3) / 2 : ℚ) + (((D.R.t : ℚ) + 3) / 2 : ℚ) ≤ (D.hc τ).e ⟨j, by omega⟩ - (D.hc τ).e ⟨j - 1, by omega⟩` using `by linarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `g3 : (((((D.R.t : ℚ) + 3) / 2 : ℚ) + (((D.R.t : ℚ) + 3) / 2 : ℚ) : ℚ) : ℝ) ≤ (((D.hc τ).e ⟨j, by omega⟩ - (D.hc τ).e ⟨j - 1, by omega⟩ : ℚ) : ℝ)` using `by exact_mod_cast g1'`. Move the coercions through the operations in `at g3`. Unfold `G.kaJ`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[min_eq_right (by omega : D.R.m ≤ j + 1), min_eq_right (by omega : D.R.m ≤ j)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xG_mono (τ : D.what₂.Tau) (j : ℕ) (h1 : 1 ≤ j) : xG D τ j ≤ xG D τ (j + 1) := by
   unfold xG
@@ -89,13 +89,13 @@ theorem xG_mono (τ : D.what₂.Tau) (j : ℕ) (h1 : 1 ≤ j) : xG D τ j ≤ xG
   · rw [min_eq_right (by omega : D.R.m ≤ j + 1), min_eq_right (by omega : D.R.m ≤ j)]
 
 /- English proof (translation)
-The claim follows from `Int.floor_le_floor (xG_mono τ j h1)`.
+A detailed English derivation is pending.
 -/
 theorem wZof_mono (τ : D.what₂.Tau) (j : ℕ) (h1 : 1 ≤ j) : wZof D τ j ≤ wZof D τ (j + 1) :=
   Int.floor_le_floor (xG_mono τ j h1)
 
 /- English proof (translation)
-Unfold `xG`. Rewrite using `[min_eq_left (by have := D.R.two_le_m; omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem xG_one (τ : D.what₂.Tau) : xG D τ 1 = wj D 1 τ - G.kaJ D 1 := by
   unfold xG
@@ -104,9 +104,9 @@ theorem xG_one (τ : D.what₂.Tau) : xG D τ 1 = wj D 1 τ - G.kaJ D 1 := by
 variable (hT : GatTies D)
 
 /- English proof (translation)
-Rewrite using `[hT.gat_lam u w hg v s i]`. Establish `h` using `(D.fm u).lam_eq 0 (Nat.zero_le _) (hT.gat_pos u w hg ⟨v, s⟩) ⟨i.1, by simp only [Ranks.N]; omega⟩`. Rewrite `h` using `[dif_pos hi]`. Establish `h'` using `congrArg (fun q : ℚ => (q : ℝ)) h`. Simplify using `only [hcToWeightQ, rhoVec] at h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `at h'`. Conclude with `h'`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem lambda_real_eq_shifted_weight (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (v : Fin (D.gat u w hg).P.nV)
@@ -129,7 +129,7 @@ section Build
 variable {D : D7} (hT : GatTies D) (L : SizeData₂ D)
 
 /- English proof (translation)
-The claim follows from `|(D.gat u w hg).P.lam0 v s i| ≤ c := by have hk := hT.gat_k u w hg have hk0 : 0 < D.R.k := by omega have hkR : (((D.gat u w hg).P.m : ℕ) : ℝ) + 1 = (D.R.k : ℝ) := by exact_mod_cast hk have tu := L.top_u (hT.gat_pos u w hg ⟨v, s⟩) t hk0 ht refine ⟨?_, ?_, ?_⟩ · have h := lambda_re …`.
+A detailed English derivation is pending.
 -/
 theorem base_top_of (c : ℕ) (hcl : L.Sc + ((D.R.k : ℝ) - 1) / 2 ≤ c) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (v : Fin (D.gat u w hg).P.nV)
@@ -172,9 +172,9 @@ theorem base_top_of (c : ℕ) (hcl : L.Sc + ((D.R.k : ℝ) - 1) / 2 ≤ c) (u : 
     exact_mod_cast h2
 
 /- English proof (translation)
-Establish `hk` using `hT.gat_k u w hg`. Establish `hi : i.1 < D.R.k` using `by omega`. Establish `h` using `lambda_real_eq_shifted_weight hT u w hg v s i hi`. Establish `h2` using `hoff u _ hn ⟨i.1, hi⟩`. Rewrite `h2` using `[← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem base_off_of (c : ℕ)
     (hoff : ∀ u τ, (D.eTau τ : D.R.GG) ∉ D.host.topPlaces → ∀ i : Fin D.R.k,
@@ -192,11 +192,11 @@ theorem base_off_of (c : ℕ)
   exact_mod_cast h2
 
 /- English proof (translation)
-Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `tb` using `L.top_b τ t hm ht`. Establish `g` using `(D.hc τ).gap_be ⟨0, hm⟩`. Establish `g' : ((((D.R.t : ℚ) + 3) / 2 : ℚ) : ℝ) ≤ (((D.hc τ).e ⟨0, hm⟩ - (D.hc τ).b ⟨0, hm⟩ : ℚ) : ℝ)`. Conclude with `g` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at g'`. Rewrite using `[xG_one, wj_eq τ 1 le_rfl (by omega)]`. Establish `e : (⟨1 - 1, by omega⟩ : Fin D.R.m) = ⟨0, hm⟩` using `rfl`. Rewrite using `[e]`. Unfold `G.kaJ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem bT_le_xG (τ : D.what₂.Tau) (t : D.host.TT) (ht : (D.eTau τ : D.R.GG) = D.R.tau1 t) :
     (L.bT t : ℝ) ≤ xG D τ 1 := by

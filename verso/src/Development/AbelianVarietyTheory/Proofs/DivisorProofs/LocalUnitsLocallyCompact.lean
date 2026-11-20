@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.OrbFinAf
 
 /- English proof (translation)
-Establish `ho : IsOpen (v.1.adicCompletionIntegers ℚ : Set (v.1.adicCompletion ℚ))` using `(Valued.isClopen_integer (v.1.adicCompletion ℚ)).isOpen`. Conclude with `(GlobalTheory.LKTrip.LevelExists.isCompact_intCompl v.1).locallyCompactSpace_of_mem_nhds_of_addGroup (ho.mem_nhds (zero_mem _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locCpt_Qv {p : ℕ} [Fact p.Prime] (v : AwayP p) : LocallyCompactSpace (Qv v) := by
   have ho : IsOpen (v.1.adicCompletionIntegers ℚ : Set (v.1.adicCompletion ℚ)) :=
@@ -17,7 +17,7 @@ theorem locCpt_Qv {p : ℕ} [Fact p.Prime] (v : AwayP p) : LocallyCompactSpace (
     (ho.mem_nhds (zero_mem _))
 
 /- English proof (translation)
-Use `haveI := locCpt_Qv v`. Use `letI : NontriviallyNormedField (Qv v) := Valued.toNontriviallyNormedField _ _`. Use `haveI : ProperSpace (Qv v) := ProperSpace.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace _`. Conclude with `secondCountable_of_proper`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem secCount_Qv {p : ℕ} [Fact p.Prime] (v : AwayP p) : SecondCountableTopology (Qv v) := by
   haveI := locCpt_Qv v
@@ -26,13 +26,9 @@ theorem secCount_Qv {p : ℕ} [Fact p.Prime] (v : AwayP p) : SecondCountableTopo
   exact secondCountable_of_proper
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K A`. Set `e : A ≃ₗ[K] (Fin (Module.finrank K A) → K)` to `b.equivFun`. Use `haveI : ContinuousAdd A := IsModuleTopology.toContinuousAdd K A`. Establish `hc1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `hc2 : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `h : A ≃ₜ (Fin (Module.finrank K A) → K)` to `⟨e.toEquiv, hc1, hc2⟩`. Use `haveI : T2Space A := h.isEmbedding.t2Space`. Use `haveI : LocallyCompactSpace A := h.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology A := h.isEmbedding.secondCountableTopology`. Use `haveI : IsTopologicalRing A := IsModuleTopology.isTopologicalRing K A`.
-
-Use `haveI : LocallyCompactSpace Aᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology Aᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : LocallyCompactSpace Aˣ := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology Aˣ := Units.isClosedEmbedding_embedProduct.isEmbedding.secondCountableTopology`. Use `haveI : T2Space Aˣ := Units.isEmbedding_embedProduct.t2Space`.
-
-Conclude with `⟨inferInstance, inferInstance, sigmaCompactSpace_of_locallyCompact_secondCountable⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem units_topA (K : Type) [Field K] [TopologicalSpace K] [IsTopologicalRing K] [T2Space K]
     [LocallyCompactSpace K] [SecondCountableTopology K]
@@ -56,9 +52,7 @@ theorem units_topA (K : Type) [Field K] [TopologicalSpace K] [IsTopologicalRing 
   exact ⟨inferInstance, inferInstance, sigmaCompactSpace_of_locallyCompact_secondCountable⟩
 
 /- English proof (translation)
-Introduce `p _ G v`. Use `letI : TopologicalSpace (Qv v ⊗[ℚ] G.C) := moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology (Qv v) (Qv v ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `haveI := locCpt_Qv v`. Use `haveI := secCount_Qv v`.
-
-Conclude with `units_topA (Qv v) (Qv v ⊗[ℚ] G.C)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem topA : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p), letI : TopologicalSpace (Qv v ⊗[ℚ] G.C) := moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C); T2Space (Qv v ⊗[ℚ] G.C)ˣ ∧ LocallyCompactSpace (Qv v ⊗[ℚ] G.C)ˣ ∧ SigmaCompactSpace (Qv v ⊗[ℚ] G.C)ˣ := by
   intro p _ G v

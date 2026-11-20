@@ -16,7 +16,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 def mdeg (m : (Σ k, ι k) →₀ ℕ) : K → ℕ := fun k => ∑ i, m ⟨k, i⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[mdeg, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mdeg_add (m n : (Σ k, ι k) →₀ ℕ) : mdeg (m + n) = mdeg m + mdeg n := by
   funext k
@@ -29,9 +29,9 @@ def part (b : K → ℕ) (s : MvPolynomial (Σ k, ι k) ℂ) : MvPolynomial (Σ 
 
 open Classical in
 /- English proof (translation)
-Unfold `part`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Distinguish the cases in `h : mdeg m = b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hs : m ∈ s.support`. Simplify using `[h, hs]`. Establish `: coeff m s = 0` using `by simpa using hs`. Simplify using `[this]`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coeff_part (b : K → ℕ) (s : MvPolynomial (Σ k, ι k) ℂ) (m : (Σ k, ι k) →₀ ℕ) :
     coeff m (part b s) = if mdeg m = b then coeff m s else 0 := by
@@ -48,7 +48,7 @@ theorem coeff_part (b : K → ℕ) (s : MvPolynomial (Σ k, ι k) ℂ) (m : (Σ 
 
 open Classical in
 /- English proof (translation)
-Unfold `part`. Rewrite using `[Finset.sum_fiberwise_of_maps_to (fun m hm => Finset.mem_image_of_mem _ hm)]`. Conclude with `s.support_sum_monomial_coeff`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_part (s : MvPolynomial (Σ k, ι k) ℂ) :
     ∑ b ∈ s.support.image mdeg, part b s = s := by
@@ -57,7 +57,7 @@ theorem sum_part (s : MvPolynomial (Σ k, ι k) ℂ) :
   exact s.support_sum_monomial_coeff
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[mem_support_iff, coeff_part]`. Assume the negation of the conclusion as `hk`. Use `hm (if_neg fun h => hk ?_)` and prove the remaining obligations. Conclude with `congrFun h k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_part (b : K → ℕ) (s : MvPolynomial (Σ k, ι k) ℂ) :
     IsMultiHomog (part b s) b := by
@@ -69,7 +69,7 @@ theorem isMultiHomog_part (b : K → ℕ) (s : MvPolynomial (Σ k, ι k) ℂ) :
   exact congrFun h k
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨m₁, h₁, m₂, h₂, rfl⟩` from `Finset.mem_add.1 (support_mul s f hm)`. Use `congrFun (mdeg_add m₁ m₂) k` as an intermediate fact. Simplify using `only [mdeg, Pi.add_apply] at this`. Rewrite using `[this, hs m₁ h₁ k, hf m₂ h₂ k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -84,9 +84,9 @@ theorem isMultiHomog_mul {s f : MvPolynomial (Σ k, ι k) ℂ} {b a : K → ℕ}
   rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Take `⟨m₁, h₁, m₂, h₂, rfl⟩` from `Finset.mem_add.1 (support_mul r f (mem_support_iff.2 h))`. Use `hr m₁ h₁ (funext fun k => ?_)` and prove the remaining obligations. Establish `e` using `congrFun hm k`. Establish `e'` using `congrFun (mdeg_add m₁ m₂) k`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'' : mdeg m₂ k = a k` using `hf m₂ h₂ k`. Simplify using `only [Pi.add_apply] at e e'`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem coeff_mul_eq_zero {r f : MvPolynomial (Σ k, ι k) ℂ} {b a : K → ℕ}
     (hr : ∀ m ∈ r.support, mdeg m ≠ b) (hf : IsMultiHomog f a) {m : (Σ k, ι k) →₀ ℕ}
@@ -104,13 +104,13 @@ theorem coeff_mul_eq_zero {r f : MvPolynomial (Σ k, ι k) ℂ} {b a : K → ℕ
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 /- English proof (translation)
-Take `⟨g, hgI, hg⟩` from `cyc_exists_blockComponent hI (b + a) Finset.univ h`. Establish `hgeq : g = part b s * f`. Use extensionality with `m`. Rewrite using `[hg m]`. Distinguish the cases in `hm : mdeg m = b + a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `e : ∀ k ∈ (Finset.univ : Finset K), ∑ i, m ⟨k, i⟩ = (b + a) k` using `fun k _ => congrFun hm k`. Rewrite using `[if_pos e]`. Establish `hr : ∀ m' ∈ (s - part b s).support, mdeg m' ≠ b`. Introduce `m' hm' hb`. Rewrite `hm'` using `[mem_support_iff, coeff_sub, coeff_part, if_pos hb, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hm' rfl`. Establish `e2 : s * f = part b s * f + (s - part b s) * f` using `by ring`. Rewrite using `[e2, coeff_add, coeff_mul_eq_zero hr hf hm, add_zero]`. Establish `e : ¬ ∀ k ∈ (Finset.univ : Finset K), ∑ i, m ⟨k, i⟩ = (b + a) k` using `fun h' => hm (funext fun k => h' k (Finset.mem_univ k))`. Rewrite using `[if_neg e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hm (funext fun k => isMultiHomog_mul (isMultiHomog_part b s) hf m (mem_support_iff.2 (Ne.symm hne)) k)`. Conclude with `hgeq ▸ hgI`.
+A detailed English derivation is pending.
 -/
 theorem part_mul_mem [DecidableEq K] {I : Ideal (MvPolynomial (Σ k, ι k) ℂ)}
     (hI : ∀ k, I.IsHomogeneous (weightedHomogeneousSubmodule ℂ (cycBlockWt (ι := ι) k)))
@@ -140,9 +140,9 @@ theorem part_mul_mem [DecidableEq K] {I : Ideal (MvPolynomial (Σ k, ι k) ℂ)}
   exact hgeq ▸ hgI
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, Ideal.one_eq_top]`. Conclude with `(⊤ : HomogeneousIdeal 𝒜).isHomogeneous`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Conclude with `ih.mul hI`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_pow {A : Type*} [CommRing A] {R : Type*} [CommRing R] [Algebra R A]
     (𝒜 : ℕ → Submodule R A) [GradedAlgebra 𝒜] {I : Ideal A} (hI : I.IsHomogeneous 𝒜) (n : ℕ) :
@@ -156,7 +156,7 @@ theorem isHomogeneous_pow {A : Type*} [CommRing A] {R : Type*} [CommRing R] [Alg
     exact ih.mul hI
 
 /- English proof (translation)
-Unfold `ideal`. Rewrite using `[mem_map_renR_iff, RingEquiv.symm_apply_apply]`. Conclude with `hg`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ren_mem {S : Ideal (MvPolynomial (Σ k, ι k) ℂ)} {p : (k : K) → ι k}
     {g : MvPolynomial (Σ k, ι k) ℂ} (hg : g ∈ ReciprocityTheory.AnForm.R.chartIdeal S p) :
@@ -166,11 +166,11 @@ theorem ren_mem {S : Ideal (MvPolynomial (Σ k, ι k) ℂ)} {p : (k : K) → ι 
   exact hg
 
 /- English proof (translation)
-Take `⟨k, i⟩` from `q`. Unfold `lift`. Use `split_ifs with h`. Simplify using `only at h`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hm : (X ⟨k, p k⟩ - 1 : MvPolynomial (Σ k, ι k) ℂ) ∈ ReciprocityTheory.AnForm.R.chartIdeal S p` using `Ideal.mem_sup_right (Ideal.subset_span ⟨k, rfl⟩)`. Establish `h2 : renR (Σ k, ι k) (X ⟨k, p k⟩ - 1) ∈ ideal S p` using `ren_mem hm`. Establish `h3` using `(ideal S p).neg_mem h2`. Rewrite `h3` using `[map_sub, map_one, neg_sub]`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: renR (Σ k, ι k) (X (⟨k, i⟩ : Σ k, ι k)) = X (Fintype.equivFin (Σ k, ι k) ⟨k, i⟩)`. Simplify using `[renameEquiv_apply]`. Rewrite using `[this, sub_self]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_sub_mem (S : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → ι k) (q : Σ k, ι k) :
     lift p q - renR (Σ k, ι k) (X q) ∈ ideal S p := by
@@ -192,11 +192,11 @@ theorem lift_sub_mem (S : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) �
     exact zero_mem _
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C c`. Establish `e : renR (Σ k, ι k) (C c) = C c` using `by simp [renameEquiv_apply]`. Rewrite using `[e, bind₁_C_right, sub_self]`. Conclude with `zero_mem _`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add g h hg hh`. Rewrite using `[map_add, map_add, add_sub_add_comm]`. Conclude with `add_mem hg hh`. Consider the case `mul_X g q hg`. Rewrite using `[map_mul, map_mul, bind₁_X_right]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : bind₁ (lift p) g * lift p q - renR (Σ k, ι k) g * renR (Σ k, ι k) (X q) = (bind₁ (lift p) g - renR (Σ k, ι k) g) * lift p q + renR (Σ k, ι k) g * (lift p q - renR (Σ k, ι k) (X q))` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem (Ideal.mul_mem_right _ _ hg) (Ideal.mul_mem_left _ _ (lift_sub_mem S p q))`.
+A detailed English derivation is pending.
 -/
 theorem deh_sub_mem (S : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → ι k)
     (g : MvPolynomial (Σ k, ι k) ℂ) :
@@ -218,9 +218,9 @@ theorem deh_sub_mem (S : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) →
     exact add_mem (Ideal.mul_mem_right _ _ hg) (Ideal.mul_mem_left _ _ (lift_sub_mem S p q))
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `g hg`. Establish `hm : renR (Σ k, ι k) g ∈ ideal S p` using `ren_mem (Ideal.mem_sup_left hg)`. Rewrite using `[Ideal.mem_comap]`. Use `add_mem (deh_sub_mem S p g) hm` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem map_deh_le (S : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → ι k) :
     Ideal.map (bind₁ (lift p) : _ →ₐ[ℂ] _) S ≤ ideal S p := by
@@ -232,11 +232,9 @@ theorem map_deh_le (S : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → 
   rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Introduce `K _ ι _ P Q p f s a n hP hQ hQp hX hf hs hrel`. Establish `hI : ∀ k, (Q ^ n ⊔ P).IsHomogeneous (weightedHomogeneousSubmodule ℂ (cycBlockWt (ι` using `ι) k)) := fun k => (isHomogeneous_pow _ (cyc_isHomogeneous_of_isMultiHomogIdeal hQ k) n).sup (cyc_isHomogeneous_of_isMultiHomogIdeal hP k)`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, part b s ∉ Q := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hs (sum_part s ▸ Ideal.sum_mem _ fun b _ => hall b)`. Establish `hmem` using `part_mul_mem hI hf hrel b`. Use `⟨bind₁ (lift p) (part b s), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[((GlobalTheory.T.affine_chart_ideal_prime_and_saturated K ι Q p hQ hQp hX).2 _ b (isMultiHomog_part b s))]`. Conclude with `hb`.
-
-Establish `h1` using `Ideal.mem_map_of_mem (bind₁ (lift p) : _ →ₐ[ℂ] _) hmem`. Rewrite `h1` using `[map_mul, Ideal.map_sup, Ideal.map_pow]`. Conclude with `(sup_le_sup (Ideal.pow_right_mono (map_deh_le Q p) n) (map_deh_le P p)) h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relation_dehom : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (P Q : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → ι k)

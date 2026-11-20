@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.RootsC
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`. Rewrite using `[← Nat.add_assoc, pow_succ', pow_mul, GroundTheory.PAdicHodge.rootSeq_succ_pow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem seq_add_pow (m d : ℕ) : rootSeq l (m + d) ^ l ^ d = rootSeq l m := by
   induction d with
@@ -19,11 +19,9 @@ theorem seq_add_pow (m d : ℕ) : rootSeq l (m + d) ^ l ^ d = rootSeq l m := by
     rw [← Nat.add_assoc, pow_succ', pow_mul, GroundTheory.PAdicHodge.rootSeq_succ_pow, ih]
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Rewrite using `[pow_zero, IsPrimitiveRoot.one_right_iff]`. Simplify using `using (GroundTheory.PAdicHodge.rootSeq_pow (p := l) 0)`. Consider the case `succ k`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Establish `h1 : ¬ rootSeq l (k + 1) ^ l ^ k = 1`. Rewrite using `[Nat.add_comm, seq_add_pow]`. Conclude with `GroundTheory.PAdicHodge.rootSeq_one_ne_one`. Establish `h2` using `orderOf_eq_prime_pow h1 (GroundTheory.PAdicHodge.rootSeq_pow (p := l) (k + 1))`. Rewrite using `[← h2]`.
-
-Conclude with `IsPrimitiveRoot.orderOf _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seq_primitive (n : ℕ) : IsPrimitiveRoot (rootSeq l n) (l ^ n) := by
   cases n with
@@ -39,9 +37,9 @@ theorem seq_primitive (n : ℕ) : IsPrimitiveRoot (rootSeq l n) (l ^ n) := by
     exact IsPrimitiveRoot.orderOf _
 
 /- English proof (translation)
-Establish `hq : (l ^ n : ℕ) ≠ 0` using `pow_ne_zero n hl.out.ne_zero`. Use `haveI : NeZero ((l ^ n : ℕ) : PadicAlgCl l) := ⟨by exact_mod_cast hq⟩`. Establish `hdeg : (Polynomial.cyclotomic (l ^ n) (PadicAlgCl l)).degree ≠ 0`. Rewrite using `[Polynomial.degree_cyclotomic]`. Establish `ht : 0 < Nat.totient (l ^ n)` using `Nat.totient_pos.2 (Nat.pos_of_ne_zero hq)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `ht.ne'` after adjusting the coercions. Take `⟨η, hη⟩` from `IsAlgClosed.exists_root _ hdeg`. Conclude with `⟨η, Polynomial.isRoot_cyclotomic_iff.1 hη⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_primitive_cl (n : ℕ) : ∃ η : PadicAlgCl l, IsPrimitiveRoot η (l ^ n) := by
   have hq : (l ^ n : ℕ) ≠ 0 := pow_ne_zero n hl.out.ne_zero
@@ -54,9 +52,9 @@ theorem exists_primitive_cl (n : ℕ) : ∃ η : PadicAlgCl l, IsPrimitiveRoot �
   exact ⟨η, Polynomial.isRoot_cyclotomic_iff.1 hη⟩
 
 /- English proof (translation)
-Take `⟨η, hη⟩` from `exists_primitive_cl (l := l) n`. Establish `hinj : Function.Injective (clToC l)` using `(clToC l).injective`. Establish `hη' : IsPrimitiveRoot (clToC l η) (l ^ n)` using `(IsPrimitiveRoot.map_iff_of_injective hinj).2 hη`. Take `⟨i, -, hi⟩` from `hη'.eq_pow_of_pow_eq_one (GroundTheory.PAdicHodge.rootSeq_pow (p := l) n)`. Use `⟨η ^ i, ?_, by rw [map_pow, hi]⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← IsPrimitiveRoot.map_iff_of_injective hinj, map_pow, hi]`. Conclude with `seq_primitive n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift (n : ℕ) :
     ∃ ρ : PadicAlgCl l, IsPrimitiveRoot ρ (l ^ n) ∧ clToC l ρ = rootSeq l n := by
@@ -70,7 +68,7 @@ theorem exists_lift (n : ℕ) :
   exact seq_primitive n
 
 /- English proof (translation)
-Use `⟨isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 hq), ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `h.isRoot_cyclotomic (Nat.pos_of_ne_zero hq)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_of_primitive {q : ℕ} (hq : q ≠ 0) {F : Type} [Field F] [CharZero F] {ρ : F}
     (h : IsPrimitiveRoot ρ q) :
@@ -80,7 +78,7 @@ theorem prim_of_primitive {q : ℕ} (hq : q ≠ 0) {F : Type} [Field F] [CharZer
   exact h.isRoot_cyclotomic (Nat.pos_of_ne_zero hq)
 
 /- English proof (translation)
-Introduce `l _`. Use `choose ρ hρ using fun n => exists_lift (l := l) n`. Conclude with `⟨⟨fun n => Subtype.mk (ρ n) (prim_of_primitive (pow_ne_zero n (Fact.out : l.Prime).ne_zero) (hρ n).1), fun n => (hρ n).2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rootsEx : CrystallineSemistableComparison.E.RootsEx := by
   intro l _

@@ -33,19 +33,15 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [S
   (Y : FBChart C V O dd) {d : ℕ} [NeZero d] {Orb : Type} {I0 : Orb → Type} [∀ o, Fintype (I0 o)]
 
 /- English proof (translation)
-Take `⟨s, hs1, hs2, hs3⟩` from `GlobalTheory.T.exists_ladic_separating_sequence_embeddings C V O d (p o).em (p o).em_int (p o).em_frob (p o).em_unr`. Set `X : RawChart C d (fun _ => I0 o) (Fin dd)` to `{ lg := fun i => un1 (Y.lg i), ex := fun i => un1 (Y.ex i), h := Y.h, k := 0, u := fun _ => (p o).e, ty := fun _ => (p o).ty0, n := 0, j := 0, j' := 0, big := fun _ _ => True }`. Take `⟨M, M', h1, -, h3, h4⟩` from `GlobalTheory.T.exists_integralEnd_of_ladic_action_limit C V O dd Y d _ X rfl rfl rfl s hs1`. Establish `hlg : ∀ i, MvPowerSeries.constantCoeff (X.lg i) = 0`. Introduce `i`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show MvPowerSeries.constantCoeff (un1 (Y.lg i)) = 0`. Rewrite using `[constantCoeff_uncurry, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, Y.lg_lin i 0 (by simp)]`. Simplify using the standard rewrite rules. Establish `hex : ∀ i, MvPowerSeries.constantCoeff (X.ex i) = 0`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show MvPowerSeries.constantCoeff (un1 (Y.ex i)) = 0`. Rewrite using `[constantCoeff_uncurry]`. Conclude with `Y.ex_const i`. Establish `hh : MvPowerSeries.constantCoeff X.h = 0`. Use `coeff_of_ev_zero Y.h 0 ![0, pt C dd 0] rfl (by` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `g' hg'`. Rewrite using `[fin_two_eq_one_sub_of_ne' _ _ hg']`. Use the proof step `rfl) Y.gauge.ax0 0 (by simp)`. Simplify using `using this`. Establish `e1` using `teichSelf_double C V dd d d _ _ X (Y.rawSelf (p o)) hlg hex hh rfl rfl rfl M M' h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m1 : ∀ c i, M.mulVec ((p o).e c) i = 1 * (p o).e c i` using `fun c => teichSelf_eig _ _ ((p o).e_int c) _ _ (hs2 ((p o).ty0 c)) fun K i => by`. Simplify `h3 K ((p o).e c) i` using `only [(p o).e_eig, Pi.smul_apply, smul_eq_mul]`. Establish `hk : ∀ o', o' ≠ o → ∀ a K, ∃ n0, ∀ n ≥ n0, V.Ge (K : ℕ) (0 - (p o').em a (s n))` using `fun o' ho a => hs3 _ ((p o').em_int a) fun b => hs (o, b) (o', a) fun h => ho (congrArg Prod.fst h).symm`. Establish `m2 : ∀ o', o' ≠ o → ∀ c i, M.mulVec ((p o').e c) i = 0 * (p o').e c i` using `fun o' ho c => teichSelf_eig _ _ ((p o').e_int c) _ _ (hk o' ho ((p o').ty0 c)) fun K i => by`. Simplify `h3 K ((p o').e c) i` using `only [(p o').e_eig, Pi.smul_apply, smul_eq_mul]`.
-
-Establish `m3 : ∀ o', o' ≠ o → ∀ c i, M'.mulVec ((p o').e c) i = 0 * (p o').e c i` using `fun o' ho c => teichSelf_eig _ _ ((p o').e_int c) _ _ (hk o' ho ((p o').ty0 c + (p o').hd)) fun K i => by`. Simplify `h4 K ((p o').e c) i` using `only [(p o').e_eig, Pi.smul_apply, smul_eq_mul, (p o').em_conj]`. Use `⟨_, _, e1, fun g c => ?_, fun o' ho g c => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(teichSelf_mulVec M (fun r => (p o).gm ((p o).ty0 c) r g) ((p o).e c) _ (m1 c)).trans (one_smul _ _)`. Conclude with `(teichSelf_mulVec M (fun r => (p o').gm ((p o').ty0 c) r g) ((p o').e c) _ (m2 o' ho c)).trans (zero_smul _ _)`.
-
-Conclude with `(teichSelf_mulVec M' (fun r => (p o').gm ((p o').ty0 c) r g) ((p o').e c) _ (m3 o' ho c)).trans (zero_smul _ _)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_sep (p : ∀ o, SelfData Y d (I0 o)) (hs : SelfSep Y p) (o : Orb) :
     ∃ E E' : Matrix (Fin 2 × Fin dd) (Fin 2 × Fin dd) C, IsEnd (Y.rawSelf (p o)) V E E' ∧
@@ -93,7 +89,7 @@ theorem exists_sep (p : ∀ o, SelfData Y d (I0 o)) (hs : SelfSep Y p) (o : Orb)
 
 omit [CharZero C] in
 /- English proof (translation)
-Use `Matrix.ext_of_mulVec_single fun j => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `hB (Pi.single j 1)`. Rewrite using `[← Matrix.mulVec_mulVec, hb, Matrix.mulVec_sum, Matrix.zero_mulVec]`. Conclude with `Finset.sum_eq_zero fun c _ => by rw [Matrix.mulVec_smul, hA, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_eq_zero_of_range {κ α : Type} [Fintype κ] [Fintype α] {A B : Matrix κ κ C} {u : α → κ → C}
     (hB : ∀ v, ∃ b : α → C, B.mulVec v = ∑ c, b c • u c) (hA : ∀ c, A.mulVec (u c) = 0) : A * B = 0 := by
@@ -105,7 +101,7 @@ theorem mul_eq_zero_of_range {κ α : Type} [Fintype κ] [Fintype α] {A B : Mat
 
 omit [CharZero C] in
 /- English proof (translation)
-Use `mul_eq_zero_of_range (A := A - 1) hB fun c => by rw [Matrix.sub_mulVec, hA, Matrix.one_mulVec, sub_self]` as an intermediate fact. Rewrite `this` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_eq_self_of_range {κ α : Type} [Fintype κ] [Fintype α] {A B : Matrix κ κ C} {u : α → κ → C}
     (hB : ∀ v, ∃ b : α → C, B.mulVec v = ∑ c, b c • u c) (hA : ∀ c, A.mulVec (u c) = u c) : A * B = B := by
@@ -114,29 +110,25 @@ theorem mul_eq_self_of_range {κ α : Type} [Fintype κ] [Fintype α] {A B : Mat
   rwa [Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at this
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.T.isIntegralGaugedFormalGroupLaw_selfConjugateSquare C V O dd Y d _ (p o₀)`. Take `⟨W, W', hW, hWW, hWv, hWh⟩` from `GlobalTheory.T.exists_endomorphism_pair_w0 C V O dd Y d _ (p o₀)`. Use `choose P hP01 hP10 hPid hPk hPr using fun o => GlobalTheory.T.hasGaugeAdjointLieProjectors_selfConjugatePlace C V O dd Y d _ (p o)`. Use `choose E E' hE hEid hEk using exists_sep Y p hs`. Take `⟨-, -, cmul, czero, -, -, cadj⟩` from `GlobalTheory.T.gauge_biadditive_symm_adjoint_integralEnd C V d _ _ (Y.rawSelf (p o₀)) hL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPg : ∀ o g, IsEnd (Y.rawSelf (p o₀)) V (P o g) (P o (1 - g))`. Introduce `o g`. Use `fin_cases g`. Conclude with `hP01 o`. Conclude with `hP10 o`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE0 : ∀ o, IsEnd (Y.rawSelf (p o₀)) V (E o) (E' o)` using `hE`. Establish `hπ : ∀ o g, IntEnd (Y.rawSelf (p o₀)) V (P o g * E o)` using `fun o g => cmul _ _ (hPg o g).1 (hE0 o).1`. Establish `hr : ∀ o g v, ∃ b : I0 o → C, (P o g * E o).mulVec v = ∑ c, b c • (Y.rawSelf (p o)).u g c` using `fun o g v => by`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hPr o g _`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hWu : ∀ o g c, W.mulVec ((Y.rawSelf (p o)).u g c) = (p o).em ((p o).ty0 c) Y.w0 • (Y.rawSelf (p o)).u g c`. Introduce `o g c`. Use function extensionality and compare the values at `x`. Rewrite using `[hWv]`. Establish `h1` using `congrFun ((p o).e_eig c Y.w0) x.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [linAct, FBChart.rawSelf, Pi.smul_apply, smul_eq_mul] at h1 ⊢`. Rewrite using `[mul_left_comm, ← h1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Establish `hcore` using `GlobalTheory.T.sum_hEnd_sub_hEnd_mem_logInt C V d _ _ (Y.rawSelf (p o₀)) hL Orb (fun o g => P o g * E o) W W' hπ hW hWW (by`. Introduce `o g o' g' hne`.
+Substitute using the available equality. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hWπ` using `cmul _ _ hW.1 (hπ o' g')`. Distinguish the cases in `ho : o' = o`. Substitute `ho` using the available equality. Establish `hgg : g' = g`. Assume the negation of the conclusion as `h`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne ⟨rfl, fin_two_eq_one_sub_of_ne' _ _ h⟩`. Substitute `hgg` using the available equality. Establish `h1` using `cadj _ _ _ _ (hPg o' g') (hπ o' g') hWπ`. Rewrite `h1` using `[mul_eq_self_of_range (hr o' g') (hPid o' g'), ← Matrix.mul_assoc (P o' (1 - g')) W, mul_eq_zero_of_range (A := P o' (1 - g') * W) (hr o' g'), (czero _).1, sub_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Establish `h2` using `hPk o' (1 - g') c`. Rewrite `h2` using `[sub_sub_cancel]`. Rewrite using `[← Matrix.mulVec_mulVec, hWu, Matrix.mulVec_smul, h2, smul_zero]`. Establish `h1` using `cadj _ _ _ _ (hE0 o) (hπ o g) hWπ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[mul_eq_self_of_range (hr o g) (hEid o g), ← Matrix.mul_assoc (E' o) W, mul_eq_zero_of_range (A := E' o * W) (hr o' g'), (czero _).1, sub_zero]`. Conclude with `h1`. Introduce `c`. Rewrite using `[← Matrix.mulVec_mulVec, hWu, Matrix.mulVec_smul, (hEk o o' ho g' c).2, smul_zero])`. Rewrite using `[hWh]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.exists_integralSeries_frame_eq_prod_rows C V d Orb _ _ (fun o => Y.rawSelf (p o)) d _ (Y.rawSelf (p o₀)) hL (fun _ => ⟨rfl, rfl, rfl⟩) (fun o g => P o g * E o) W hπ ?_ ?_ hcore gr hg` and prove the remaining obligations. Introduce `o g c`. Rewrite using `[← Matrix.mulVec_mulVec, hEid, hPid]`. Introduce `o g o' g' c hne`. Rewrite using `[← Matrix.mulVec_mulVec]`.
-
-Distinguish the cases in `ho : o' = o`. Substitute `ho` using the available equality. Establish `hgg : g' = 1 - g` using `fin_two_eq_one_sub_of_ne' _ _ fun h => hne (by rw [h])`. Substitute `hgg` using the available equality. Rewrite using `[hEid, hPk]`.
-
-Rewrite using `[(hEk o o' ho g' c).1, Matrix.mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_plane [Fintype Orb] (p : ∀ o, SelfData Y d (I0 o)) (hs : SelfSep Y p) (o₀ : Orb)
     (gr : ∀ o, MvPowerSeries (WV fun _ => I0 o) C) (hg : ∀ o, gr o ∈ ExpInt (Y.rawSelf (p o)) V) :
@@ -220,16 +212,16 @@ noncomputable def linCol (s : Fin n × Fin dd) : MvPowerSeries (Fin N × ω) C :
 
 omit [CharZero C] in
 /- English proof (translation)
-Simplify using `[linCol]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_linCol (s : Fin n × Fin dd) : constantCoeff (linCol pl u s) = 0 := by
   simp [linCol]
 
 omit [CharZero C] in
 /- English proof (translation)
-Unfold `linCol`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single ρ]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `ρ' _ h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem linCol_pl (ρ : Fin N) (col : Fin 2) (j : Fin dd) :
     linCol pl u (pl (ρ, col), j) = ∑ w, u w (col, j) • X (ρ, w) := by
@@ -243,14 +235,14 @@ theorem linCol_pl (ρ : Fin N) (col : Fin 2) (j : Fin dd) :
 
 omit [CharZero C] in
 /- English proof (translation)
-Simplify using `[linCol, hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linCol_out (b : Fin n) (hb : ∀ y, pl y ≠ b) (j : Fin dd) : linCol pl u (b, j) = 0 := by
   simp [linCol, hb]
 
 omit [CharZero C] in
 /- English proof (translation)
-Use extensionality with `ν`. Establish `h0 : Van (∅ : Set τ) (subst (fun _ : σ => (0 : MvPowerSeries τ C)) f)` using `Van.subst Set.univ (fun _ => map_zero _) (fun _ _ ν _ => by simp) (van_univ hf)`. Conclude with `h0 ν (by simp)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subst_zero_of_cc {σ τ : Type} [Finite σ] {f : MvPowerSeries σ C} (hf : constantCoeff f = 0) :
     subst (fun _ : σ => (0 : MvPowerSeries τ C)) f = 0 := by
@@ -260,39 +252,35 @@ theorem subst_zero_of_cc {σ τ : Type} [Finite σ] {f : MvPowerSeries σ C} (hf
   exact h0 ν (by simp)
 
 /- English proof (translation)
-Use `set E : Fin n × Fin dd → MvPowerSeries (Fin N × ω) C := fun s => subst (fun j : Fin dd => linCol pl u (s.1, j)) (un1 (ex s.2)) with hE`. Use `set e : Fin 2 × Fin dd → MvPowerSeries ω C := fun x =>`. Substitute `(fun i : Fin 2 × Fin dd => ∑ w, u w i • (X w : MvPowerSeries ω C)) (inCol x.1 (un1 (ex x.2))) with he` using the available equality. Establish `hex' : ∀ i, constantCoeff (un1 (ex i)) = 0` using `fun i => by rw [constantCoeff_uncurry, hex]`. Establish `hl' : constantCoeff (un1 hl) = 0` using `by rw [constantCoeff_uncurry, hhl]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0 : ∀ i : Fin 2 × Fin dd, constantCoeff (∑ w, u w i • (X w : MvPowerSeries ω C)) = 0` using `fun i => by simp`. Establish `he1 : ∀ x, e x = subst (fun j => ∑ w, u w (x.1, j) • (X w : MvPowerSeries ω C)) (un1 (ex x.2))` using `fun x => teichSelf_subst_inCol _ hL0 _ _`. Establish `he0 : ∀ x, constantCoeff (e x) = 0` using `fun x => by`. Rewrite using `[he1]`. Conclude with `constantCoeff_subst_zero (fun j => hL0 _) (hex' _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE0 : ∀ s, constantCoeff (E s) = 0` using `fun s => constantCoeff_subst_zero (fun j => cc_linCol pl u _) (hex' _)`. Establish `hES` using `hasSubst_of_constantCoeff_zero hE0`. Establish `heS` using `hasSubst_of_constantCoeff_zero he0`. Establish `hRS : ∀ ρ : Fin N, HasSubst (fun w : ω => (X (ρ, w) : MvPowerSeries (Fin N × ω) C))` using `fun ρ => hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`. Establish `hE1 : ∀ ρ (x : Fin 2 × Fin dd), subst (fun w : ω => (X (ρ, w) : MvPowerSeries (Fin N × ω) C)) (e x) = E (pl (ρ, x.1), x.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `ρ x`. Rewrite using `[he1, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun j => hL0 _) (hRS ρ)]`. Use `show _ = subst (fun j : Fin dd => linCol pl u (pl (ρ, x.1), j)) (un1 (ex x.2))`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[linCol_pl, ← coe_substAlgHom (hRS ρ), map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, coe_substAlgHom, subst_X (hRS ρ)]`. Establish `hcb : ∀ b : Fin n, ev (n` using `n) ![pt C dd b] hl = subst (fun j => (X (b, j) : PS C n dd)) (un1 hl) := by`. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[ActionLimit.subst_singlePointUncurry _ (fun _ => constantCoeff_X _)]`. Unfold `ev`. Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[Subsingleton.elim q.1 0]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hc1 : constantCoeff (k • ∑ b : Fin n, ev (n` using `n) ![pt C dd b] hl) = 0 := by`. Rewrite using `[constantCoeff_smul, map_sum, Finset.sum_eq_zero, smul_zero]`. Introduce `b _`. Rewrite using `[hcb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `constantCoeff_subst_zero (fun _ => constantCoeff_X _) hl'`. Establish `hc2 : constantCoeff (k • ∑ col : Fin 2, inCol col (un1 hl)) = 0`. Rewrite using `[constantCoeff_smul, map_sum, Finset.sum_eq_zero, smul_zero]`. Introduce `b _`. Conclude with `constantCoeff_subst_zero (fun _ => constantCoeff_X _) hl'`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG0 : ∀ ρ (x : Fin 2 × Fin dd), constantCoeff (E (pl (ρ, x.1), x.2)) = 0` using `fun ρ x => hE0 _`. Establish `hR : ∀ ρ, subst (fun w : ω => (X (ρ, w) : MvPowerSeries (Fin N × ω) C)) (subst e (F ρ * mvExp (k • ∑ col : Fin 2, inCol col (un1 hl)))) =`. Substitute `(fun x : Fin 2 × Fin dd => E (pl (ρ, x.1), x.2)) (F ρ) * mvExp (k • ∑ col : Fin 2, subst (fun j => E (pl (ρ, col), j)) (un1 hl)) := by` using the available equality. Introduce `ρ`. Establish `hS` using `hasSubst_of_constantCoeff_zero (hG0 ρ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[subst_comp_subst_apply heS (hRS ρ)]`. Simplify using `only [hE1]`. Rewrite using `[subst_mul hS, subst_mvExp (hG0 ρ) hc2, ← coe_substAlgHom hS, map_smul, map_sum]`. Simplify using `only [coe_substAlgHom, teichSelf_subst_inCol _ (hG0 ρ)]`. Simplify using `only [hR]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_mul_distrib, subst_mul hES]`. Use `congr 1`. Rewrite using `[← coe_substAlgHom hES, map_prod]`. Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[coe_substAlgHom, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _) hES]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [subst_X hES]`. Unfold `FB.expS`. Rewrite using `[← mvExp_eq_subst hc1, subst_mvExp hE0 hc1, ← mvExp_sum]`. Use `congr 1`. Rewrite using `[← Finset.smul_sum, ← coe_substAlgHom hES, map_smul, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Establish `h1 : ∀ b : Fin n, substAlgHom hES (ev (n` using `n) ![pt C dd b] hl) = subst (fun j => E (b, j)) (un1 hl) := by`. Introduce `b`. Rewrite using `[coe_substAlgHom, hcb, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _) hES]`. Simplify using `only [subst_X hES]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [h1]`. Rewrite using `[← Fintype.sum_prod_type' (f := fun ρ col => subst (fun j => E (pl (ρ, col), j)) (un1 hl))]`. Use `symm`. Use `Fintype.sum_of_injective pl pl.injective _ _ ?_ fun _ => rfl` and prove the remaining obligations. Introduce `b hb`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb' : ∀ y, pl y ≠ b` using `fun y h => hb ⟨y, h⟩`. Establish `h2 : (fun j => E (b, j)) = fun _ => 0`. Use function extensionality and compare the values at `j`. Use `show subst (fun i : Fin dd => linCol pl u (b, i)) (un1 (ex j)) = 0`. Simplify using `only [linCol_out pl u b hb']`.
-
-Conclude with `subst_zero_of_cc (hex' j)`. Rewrite using `[h2]`. Conclude with `subst_zero_of_cc hl'`. Introduce `ρ`. Rewrite using `[constantCoeff_smul, map_sum, Finset.sum_eq_zero, smul_zero]`.
-
-Introduce `b _`. Conclude with `constantCoeff_subst_zero (fun _ => hE0 _) hl'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem glue (ex : Pt C 1 dd) (hex : ∀ i, constantCoeff (ex i) = 0) (hl : PS C 1 dd) (hhl : constantCoeff hl = 0)
     (k : C) (F : Fin N → MvPowerSeries (Fin 2 × Fin dd) C) :
@@ -396,37 +384,35 @@ theorem glue (ex : Pt C 1 dd) (hex : ∀ i, constantCoeff (ex i) = 0) (hl : PS C
 end Glue
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ Orb _ I0 _ p H Ls n hs N pl P _ Po hQ kind hk S t ht gr hg`. Take `⟨co, hco, hQ⟩` from `hQ`. Establish `hl0 : MvPowerSeries.constantCoeff (Y.B.hL C Y.h Y.w0) = 0` using `ReciprocityTheory.ChartRestriction.G.TB.SCPf.cc_hL Y.B Y.h Y.gauge Y.w0`. Use `set u : (WVO fun o (_ : Fin 2) => I0 o) → Fin 2 × Fin dd → C := fun w => (Y.rawSelf (p w.1)).u w.2.1 w.2.2 with hu`. Establish `hE0 : ∀ s : Fin n × Fin dd, MvPowerSeries.constantCoeff (MvPowerSeries.subst (fun j : Fin dd => linCol pl u (s.1, j)) (un1 (Y.ex s.2))) = 0` using `fun s => constantCoeff_subst_zero (fun j => cc_linCol pl u _) (by rw [constantCoeff_uncurry, Y.ex_const])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjet` using `GlobalTheory.T.constantCoeff_derivationPolynomial_eq_jetAt0 C dd n (Y.B.FK C) _ (Ls.cp n) (Ls.uv n) _ _ hE0 co P (by`. Introduce `ℓ hℓ`. Use `GlobalTheory.T.invariantDerivations_constant_in_logCoordinates C V O dd Y n _ (linCol pl u) (cc_linCol pl u) _ _ _ ?_` and prove the remaining obligations. Introduce `b j`. Take `⟨ρ, col, hpl, h0, h1⟩` from `hco ℓ hℓ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : ∀ x, MvPowerSeries.pderiv C x (linCol pl u (b, j)) = MvPowerSeries.C (∑ col : Fin 2, if pl (x.1, col) = b then u x.2 (col, j) else 0)`. Introduce `x`. Unfold `linCol`. Rewrite using `[map_sum, Finset.sum_eq_single x]`. Rewrite using `[Derivation.map_smul, MvPowerSeries.pderiv_X_self, MvPowerSeries.smul_eq_C_mul, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y _ hy`. Rewrite using `[Derivation.map_smul, MvPowerSeries.pderiv_X_of_ne hy, smul_zero]`. Simplify using the standard rewrite rules. Establish `h3 : ∀ col', ∑ w, co ℓ (ρ, w) * u w (col', j) = if col' = col then Ls.uv n ℓ j else 0`. Introduce `col'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun h1 (col', j)` as an intermediate fact. Simplify `this.symm` using `[Finset.sum_apply, hu]`. Simplify using `only [h2, MvPowerSeries.smul_eq_C_mul, ← map_mul]`. Rewrite using `[← map_sum, Fintype.sum_prod_type, Finset.sum_eq_single ρ]`. Simplify using `only [Finset.mul_sum, mul_ite, mul_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_irrel, Finset.sum_const_zero, h3, ← hpl]`. Rewrite using `[Finset.sum_eq_single col]`. Distinguish the cases in `hb : b = pl (ρ, col)`. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hb, Ne.symm hb]`. Introduce `c _ hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules. Introduce `ρ' _ hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[h0 ρ' _ hρ]`. Use the proof step `simp)`. Break down `isEmpty_or_nonempty Orb with hO | ⟨⟨o₀⟩⟩` into its components or cases. Use `⟨1, intS_one, ?_⟩` and prove the remaining obligations. Unfold `FBChart.nab nabValN`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hjet, ← hQ, Fintype.prod_empty, Fintype.prod_empty, RF.jetAt0_one, cc_subst hE0, one_mul]`. Use `ReciprocityTheory.ChartRestriction.G.TB.SCPf.cc_expS _ ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.constantCoeff_smul, map_sum, Finset.sum_eq_zero, smul_zero]`. Introduce `b _`. Use `constantCoeff_subst_zero (fun q => ?_) hl0` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim q.1 0]`. Conclude with `MvPowerSeries.constantCoeff_X _`. Establish `hg' : ∀ o ρ, gr o ρ ∈ ExpInt (Y.rawSelf (p o)) V` using `fun o ρ => by`. Rewrite using `[← GlobalTheory.T.integralGerm_eq_gaugedFormalGroupLaw_expIntegral C V d _ _ _ (GlobalTheory.T.isIntegralGaugedFormalGroupLaw_selfConjugateSquare C V O dd Y d _ (p o)) (H o).cartH (S o) (t o) (ht o)]`. Conclude with `hg o ρ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `choose F hF hFe using fun ρ => exists_plane Y p hs o₀ (fun o => gr o ρ) fun o => hg' o ρ`. Use `⟨∏ ρ, MvPowerSeries.subst (fun x : Fin 2 × Fin dd => (MvPowerSeries.X (pl (ρ, x.1), x.2) : PS C n dd)) (F ρ), intS_prod _ fun ρ => intS_subst (fun _ => MvPowerSeries.constantCoeff_X _) (fun _ => intS_X _) (hF ρ), ?_⟩` and prove the remaining obligations. Unfold `FBChart.nab nabValN`. Rewrite using `[hjet, ← hQ, glue pl u Y.ex Y.ex_const _ hl0]`. Simplify using `only [hu, hFe, GlobalTheory.T.admissibleRows_value_eq_rowGauge C V d _ _ _ (H _) N _ _ (hk _)]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Rewrite using `[← GlobalTheory.T.jetAt0_prod_subst_disjoint_variables C Orb (fun o => Fin N × WV fun _ => I0 o) (Fin N × WVO fun o (_ : Fin 2) => I0 o) (fun o x => (x.1, ⟨o, x.2⟩)) (by`. Introduce and unpack `⟨o, ρ, w⟩ ⟨o', ρ', w'⟩ h`. Simplify using `only [Prod.mk.injEq] at h`. Take `⟨rfl, h⟩` from `h`. Consider the cases of `h`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `rfl)]`. Use `congr 1`. Establish `hR : ∀ ρ : Fin N, MvPowerSeries.HasSubst (fun w : WVO fun o (_ : Fin 2) => I0 o => (MvPowerSeries.X (ρ, w) : MvPowerSeries (Fin N × WVO fun o (_ : Fin 2) => I0 o) C))` using `fun ρ => MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _`. Establish `hT : ∀ o, MvPowerSeries.HasSubst (fun x : Fin N × WV fun _ => I0 o => (MvPowerSeries.X (x.1, ⟨o, x.2⟩) : MvPowerSeries (Fin N × WVO fun o (_ : Fin 2) => I0 o) C))` using `fun o => MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _`. Establish `hrow : ∀ o ρ, rowCopy ρ (gr o ρ) * mvExp (rowCopy ρ (Y.rawSelf (p o)).hRow) = rowCopy ρ (gr o ρ * mvExp (Y.rawSelf (p o)).hRow)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `o ρ`. Establish `h0 : MvPowerSeries.constantCoeff (Y.rawSelf (p o)).hRow = 0` using `(H o).axes 0 (Or.inl (by simp))`. Unfold `rowCopy`. Rewrite using `[MvPowerSeries.subst_mul (MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _), subst_mvExp (fun _ => MvPowerSeries.constantCoeff_X _) h0]`. Simplify using `only [hrow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← MvPowerSeries.coe_substAlgHom (hR _), ← MvPowerSeries.coe_substAlgHom (hT _), map_prod]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun o _ => Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Unfold `rowCopy`. Rewrite using `[MvPowerSeries.coe_substAlgHom, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _) (hR ρ), MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero f …`.
-
-Simplify using `only [MvPowerSeries.subst_X (hR ρ), MvPowerSeries.subst_X (hT o)]`.
+A detailed English derivation is pending.
 -/
 theorem valEqSelf : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (Orb : Type) [Fintype Orb] (I0 : Orb → Type) [∀ o, Fintype (I0 o)] (p : ∀ o, SelfData Y d (I0 o)) (H : ∀ o, (Y.rawSelf (p o)).Hyps V) (Ls : LetSys C dd) (n : ℕ), ValEqSelfSt Y p H Ls n := by
   intro C _ _ V O _ _ dd Y d _ Orb _ I0 _ p H Ls n hs N pl P _ Po hQ kind hk S t ht gr hg

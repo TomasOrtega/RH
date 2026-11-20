@@ -7,11 +7,11 @@ open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar Glo
 namespace PositivityTheory.Xgn.LineLatticeSpread
 
 /- English proof (translation)
-Take `⟨S, hS, hcl, hirr, hU⟩` from `TopologicalSpace.NoetherianSpace.exists_finite_set_isClosed_irreducible hC`. Establish `key : ∀ Z ∈ S, ∃ o : O, o ≠ 0 ∧ ∀ x ∈ Z, o ∈ (f x).asIdeal`. Introduce `Z hZ`. Take `⟨η, hη⟩` from `QuasiSober.sober (hirr Z hZ) (hcl Z hZ)`. Take `⟨o, ho, hm⟩` from `h η (by rw [hU]; exact ⟨Z, hZ, hη.mem⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨o, ho, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `(PrimeSpectrum.le_iff_specializes _ _).2 ((hη.specializes hx).map hf) hm`. Use `choose! o ho hm using key`. Use `⟨∏ Z ∈ hS.toFinset, o Z, Finset.prod_ne_zero_iff.2 fun Z hZ => ho Z (hS.mem_toFinset.1 hZ), ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[hU]`. Take `⟨Z, hZ, hxZ⟩` from `hx`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem o (hS.mem_toFinset.2 hZ)`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ (hm Z hZ x hxZ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_common {α : Type*} [TopologicalSpace α] [TopologicalSpace.NoetherianSpace α] [QuasiSober α]
     {O : Type*} [CommRing O] [IsDomain O] (f : α → PrimeSpectrum O) (hf : Continuous f) (C : Set α)
@@ -37,17 +37,15 @@ theorem exists_common {α : Type*} [TopologicalSpace α] [TopologicalSpace.Noeth
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
 /- English proof (translation)
-Establish `h0 : b 0 ≠ 0` using `hb.1.ne_zero 0`. Establish `hr : Set.range b = {b 0}` using `Set.range_unique`. Establish `hL : L q = Submodule.span (regAt ξ q) {b 0}` using `by rw [hb.2, hr]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ht, e⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `e'` using `hL.symm.trans e`. Use `⟨div_ne_zero ht h0, ?_, ?_⟩` and prove the remaining obligations. Establish `: t ∈ Submodule.span (regAt ξ q) {b 0}` using `e' ▸ Submodule.mem_span_singleton_self t`. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 this`. Establish `hr' : (r : Ω) * b 0 = t` using `hr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hr', mul_div_cancel_right₀ _ h0]`. Conclude with `r.2`. Establish `: b 0 ∈ Submodule.span (regAt ξ q) {t}` using `e' ▸ Submodule.mem_span_singleton_self (b 0)`. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 this`. Establish `hr' : (r : Ω) * t = b 0` using `hr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_div, ← hr', mul_div_cancel_right₀ _ ht]`. Conclude with `r.2`. Introduce and unpack `⟨h1, h2, h3⟩`. Establish `ht : t ≠ 0` using `fun h => h1 (by rw [h, zero_div])`. Use `⟨ht, hL.trans (le_antisymm ?_ ?_)⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`. Use `⟨⟨_, h3⟩, ?_⟩` and prove the remaining obligations. Use `show (t / b 0)⁻¹ * t = b 0`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`.
-
-Use `⟨⟨_, h2⟩, ?_⟩` and prove the remaining obligations. Use `show (t / b 0) * b 0 = t`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem isGenAt_iff (L : Lat ξ Ω) (b : Fin 1 → Ω) (q : Cpt ξ) (hb : L.IsFrameAt b q) (t : Ω) :
     L.IsGenAt q t ↔ unitAt ξ q (t / b 0) := by
@@ -84,15 +82,13 @@ end PositivityTheory.Xgn.LineLatticeSpread
 
 open PositivityTheory.Xgn.LineLatticeSpread in
 /- English proof (translation)
-Introduce `X Ω _ ξ O _ _ _ s _ _ _ hs _ hc L T n₀ t hn₀ hT hL hgen`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s`. Use `haveI : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace s`. Use `haveI : IsNoetherian X := {}`. Establish `hu : ∀ (p : Cpt ξ) (o : O), unitAt ξ p (algebraMap O Ω o) ↔ o ∉ (s p.1).asIdeal` using `fun p o => (ConstReg.regular_const X Ω ξ O s hs p o).2 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `W : Set X` to `⋃ (U : X.Opens) (_ : ∀ q : Cpt ξ, q.1 ∈ U → L.IsGenAt q t), (U : Set X)`. Establish `hW : IsOpen W` using `isOpen_iUnion fun U => isOpen_iUnion fun _ => U.isOpen`. Take `⟨n, hn, H⟩` from `exists_common (O := O) (fun x : X => s x) s.continuous (closure {genPt ξ} ∩ Wᶜ) (isClosed_closure.inter hW.isClosed_compl) (by`. Introduce and unpack `x ⟨hx, hxW⟩`. Assume the negation of the conclusion as `hcon`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `p : Cpt ξ` to `⟨x, specializes_iff_mem_closure.2 hx⟩`. Establish `hp : p ∈ genFibre O ξ` using `fun o ho => (hu p o).2 fun hm => hcon ⟨o, ho, hm⟩`. Take `⟨U, hpU, b, -, hb⟩` from `hL p (hT p (hp n₀ hn₀))`. Establish `h1` using `(isGenAt_iff L b p (hb p (hT p (hp n₀ hn₀)) hpU) t).1 (hgen p hp)`. Take `⟨U₁, hp₁, H₁⟩` from `(regAt_unitAt_open X Ω ξ p _).2 h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨U₂, hp₂, H₂⟩` from `(regAt_unitAt_open X Ω ξ p _).2 (hp n₀ hn₀)`. Use `hxW (Set.mem_iUnion₂.2 ⟨U ⊓ U₁ ⊓ U₂, ?_, ⟨⟨hpU, hp₁⟩, hp₂⟩⟩)` and prove the remaining obligations. Introduce and unpack `q ⟨⟨hq, hq₁⟩, hq₂⟩`. Conclude with `(isGenAt_iff L b q (hb q (hT q (H₂ q hq₂)) hq) t).2 (H₁ q hq₁))`. Use `⟨n, hn, fun p hp => ?_⟩` and prove the remaining obligations.
-
-Establish `hpW : p.1 ∈ W`. Assume the negation of the conclusion as `hW'`. Conclude with `(hu p n).1 hp (H p.1 ⟨specializes_iff_mem_closure.1 p.2, hW'⟩)`. Take `⟨U, hU, hpU⟩` from `Set.mem_iUnion₂.1 hpW`. Conclude with `hU p hpU`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.line_lattice_spread : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (O : Type) [CommRing O] [IsDomain O] [Algebra O Ω] (s : X ⟶ Spec (CommRingCat.of O)) [IsNoetherianRing O] [LocallyOfFiniteType s] [QuasiCompact s], ξ ≫ s = Spec.map (CommRingCat.ofHom (algebraMap O Ω)) → Function.Injective (algebraMap O Ω) → IsCptGen ξ → ∀ (L : Lat ξ Ω) (T : Set (Cpt ξ)) (n₀ : O) (t : Ω), n₀ ≠ 0 → (∀ p, unitAt ξ p (algebraMap O Ω n₀) → p ∈ T) → L.IsVBOn T 1 ⊤ → (∀ p ∈ genFibre O ξ, L.IsGenAt p t) → ∃ n : O, n ≠ 0 ∧ ∀ p, unitAt ξ p (algebraMap O Ω n) → L.IsGenAt p t := by
   intro X Ω _ ξ O _ _ _ s _ _ _ hs _ hc L T n₀ t hn₀ hT hL hgen

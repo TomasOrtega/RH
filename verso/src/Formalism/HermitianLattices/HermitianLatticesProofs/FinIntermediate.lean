@@ -4,13 +4,11 @@ import Formalism.HermitianLattices.DefsCS
 namespace Formalism.HermitianLatticesTheory
 
 /- English proof (translation)
-Introduce `W _ P Q hPQ hfin`. Set `f : AddSubgroup W → AddSubgroup (Q ⧸ P.addSubgroupOf Q)` to `fun M => (M.addSubgroupOf Q).map (QuotientAddGroup.mk' (P.addSubgroupOf Q))`. Use `haveI : Finite (AddSubgroup (Q ⧸ P.addSubgroupOf Q)) := Finite.of_injective (β := Set (Q ⧸ P.addSubgroupOf Q)) (fun H : AddSubgroup (Q ⧸ P.addSubgroupOf Q) => (H : Set (Q ⧸ P.addSubgroupOf Q))) SetLike.coe_injective`. Use `Set.Finite.of_finite_image (f := f) (Set.toFinite _) ?_` and prove the remaining obligations. Introduce `M hM N hN hMN`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ M : AddSubgroup W, P ≤ M → M ≤ Q → (f M).comap (QuotientAddGroup.mk' (P.addSubgroupOf Q)) = M.addSubgroupOf Q`. Introduce `M hPM _`. Simplify using `only [f]`. Rewrite using `[AddSubgroup.comap_map_eq, QuotientAddGroup.ker_mk']`. Conclude with `sup_eq_left.mpr fun x hx => AddSubgroup.mem_addSubgroupOf.mpr (hPM (AddSubgroup.mem_addSubgroupOf.mp hx))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : M.addSubgroupOf Q = N.addSubgroupOf Q`. Rewrite using `[← key M hM.1 hM.2, ← key N hN.1 hN.2, hMN]`. Establish `h2 : ∀ M : AddSubgroup W, M ≤ Q → (M.addSubgroupOf Q).map Q.subtype = M`. Introduce `M hMQ`. Rewrite using `[AddSubgroup.addSubgroupOf_map_subtype, inf_eq_left.mpr hMQ]`.
-
-Rewrite using `[← h2 M hM.2, ← h2 N hN.2, h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finIntermediate : FinIntermediate := by
   intro W _ P Q hPQ hfin

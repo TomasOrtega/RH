@@ -11,12 +11,12 @@ namespace GlobalTheory.SemilinearNullity
 variable {C : Type} [Field C] {V : VF C}
 
 /- English proof (translation)
-Simplify using `[VF.MM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mm_zero : V.MM (0 : C) := by simp [VF.MM]
 
 /- English proof (translation)
-Unfold `VF.MM`. Rewrite using `[V.v.map_mul]`. Establish `ha' : (0 : WithTop ℝ) ≤ V.v a` using `ha`. Conclude with `lt_of_lt_of_le hb (le_add_of_nonneg_left ha')`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mm_int_mul {a b : C} (ha : V.Ge 0 a) (hb : V.MM b) : V.MM (a * b) := by
   unfold VF.MM; rw [V.v.map_mul]
@@ -24,7 +24,7 @@ theorem mm_int_mul {a b : C} (ha : V.Ge 0 a) (hb : V.MM b) : V.MM (a * b) := by
   exact lt_of_lt_of_le hb (le_add_of_nonneg_left ha')
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Use `V.v.map_lt_add ha ?_` and prove the remaining obligations. Rewrite using `[V.v.map_neg]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_sub {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a - b) := by
   rw [sub_eq_add_neg]
@@ -32,7 +32,7 @@ theorem mm_sub {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a - b) := by
   rw [V.v.map_neg]; exact hb
 
 /- English proof (translation)
-Establish `h' : (0 : WithTop ℝ) ≤ V.v (a ^ n)` using `h`. Use `show (0 : WithTop ℝ) ≤ V.v a`. Rewrite `h'` using `[V.v.map_pow]`. Assume the negation of the conclusion as `hc`. Conclude with `absurd (nsmul_neg (not_le.mp hc) hn) (not_lt.mpr h')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem ge_of_pow {a : C} {n : ℕ} (hn : n ≠ 0) (h : V.Ge 0 (a ^ n)) : V.Ge 0 a := by
   have h' : (0 : WithTop ℝ) ≤ V.v (a ^ n) := h
@@ -42,7 +42,7 @@ theorem ge_of_pow {a : C} {n : ℕ} (hn : n ≠ 0) (h : V.Ge 0 (a ^ n)) : V.Ge 0
   exact absurd (nsmul_neg (not_le.mp hc) hn) (not_lt.mpr h')
 
 /- English proof (translation)
-Establish `h0 : a ≠ 0` using `by rintro rfl; exact h mm_zero`. Use `show (0 : WithTop ℝ) ≤ V.v a⁻¹`. Establish `e : V.v a⁻¹ + V.v a = 0` using `by rw [← V.v.map_mul, inv_mul_cancel₀ h0, V.v.map_one]`. Establish `h1 : V.v a ≤ 0` using `not_lt.mp h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ge_inv {a : C} (h : ¬ V.MM a) : V.Ge 0 a⁻¹ := by
   have h0 : a ≠ 0 := by rintro rfl; exact h mm_zero
@@ -57,11 +57,9 @@ def IndepOn (V : VF C) {m : ℕ} {σ : Type} (Y : Fin m → σ → C) (T : Finse
     (∀ s, V.MM (∑ δ, c δ * Y δ s)) → ∀ δ, V.MM (c δ)
 
 /- English proof (translation)
-Introduce `c hc hs ν`. Establish `key` using `h (fun δ => ∑ ν, if f ν = δ then c ν else 0) (fun δ => VF.Ge.sum fun ν _ => by split_ifs`. Conclude with `hc ν`. Conclude with `VF.Ge.zero 0)`. Use the proof step `(fun δ hδ => Finset.sum_eq_zero fun ν _ => if_neg (by rintro rfl; exact hδ (hf ν)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun s => by`. Use `hs s using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations.
-
-Use the proof step `simp) (f ν)`. Simplify using `using key`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IndepOn.indepMod {m : ℕ} {σ : Type} {Y : Fin m → σ → C} {T : Finset (Fin m)}
     (h : IndepOn V Y T) {N : ℕ} (f : Fin N ↪ Fin m) (hf : ∀ ν, f ν ∈ T) :
@@ -81,17 +79,13 @@ theorem IndepOn.indepMod {m : ℕ} {σ : Type} {Y : Fin m → σ → C} {T : Fin
   simpa using key
 
 /- English proof (translation)
-Unfold `IndepOn at hn`. Use `push Not at hn`. Take `⟨c, hc, hc0, hs, ε₀, hε₀⟩` from `hn`. Establish `hcd : ¬ V.MM (c δ)`. Introduce `hm`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key` using `hT (fun ε => if ε = δ then 0 else c ε) (fun ε => by split_ifs`. Conclude with `VF.Ge.zero 0`. Conclude with `hc ε)`. Use the proof step `(fun ε hε => by split_ifs with h`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hc0 ε (by simp [h, hε]))`. Use the proof step `(fun s => by`. Establish `h1 : V.MM (Y δ s * c δ)` using `mm_int_mul (hY δ s) hm`. Use `mm_sub (hs s) h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[eq_sub_iff_add_eq, ← Finset.add_sum_erase _ _ (Finset.mem_univ δ), ← Finset.add_sum_erase _ (fun ε => c ε * Y ε s) (Finset.mem_univ δ)]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl (g := fun ε => c ε * Y ε s) (fun ε hε => by rw [if_neg (Finset.ne_of_mem_erase hε)])]`. Simplify using `only [if_true]`. Use the proof step `ring) ε₀`. Distinguish the cases in `h : ε₀ = δ`. Conclude with `hε₀ (h ▸ hm)`.
-
-Conclude with `hε₀ (by simpa [h] using key)`. Establish `h0 : c δ ≠ 0` using `by intro h; exact hcd (h ▸ mm_zero)`. Use `⟨fun ε => (c δ)⁻¹ * c ε, fun ε => (ge_inv hcd).mul_int (hc ε), inv_mul_cancel₀ h0, fun ε h1 h2 => ?_, fun s => ?_⟩` and prove the remaining obligations. Simplify using `only [hc0 ε (by simp [h1, h2]), mul_zero]`. Use `mm_int_mul (ge_inv hcd) (hs s) using 1` and compare the differences between its conclusion and the goal.
-
-Simplify using `only [Finset.mul_sum, mul_assoc]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_relation {m : ℕ} {σ : Type} {Y : Fin m → σ → C} (hY : ∀ δ x, V.Ge 0 (Y δ x))
     {T : Finset (Fin m)} (hT : IndepOn V Y T) {δ : Fin m}
@@ -131,19 +125,17 @@ theorem exists_relation {m : ℕ} {σ : Type} {Y : Fin m → σ → C} (hY : ∀
     simp only [Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Introduce `C _ _ V σ m k Q hQ Y hY hk`. Establish `hQ0 : Q ≠ 0` using `by omega`. Take `⟨T, hT, hmax⟩` from `Finset.exists_max_image (Finset.univ.filter fun T : Finset (Fin m) => IndepOn V Y T) Finset.card ⟨∅, by`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Introduce `c _ h0 _ δ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0 δ (by simp)]`. Conclude with `mm_zero⟩`. Establish `hT' : IndepOn V Y T` using `(Finset.mem_filter.1 hT).2`. Establish `hn : ∀ δ, δ ∉ T → ¬ IndepOn V Y (insert δ T)` using `fun δ hδ h => by`. Use `hmax _ (Finset.mem_filter.2 ⟨Finset.mem_univ _, h⟩)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Finset.card_insert_of_notMem hδ]`. Use linear arithmetic over natural numbers and integers. Establish `hrt : ∀ a : C, ∃ z : C, z ^ Q = a ∧ (a = 1 → z = 1) ∧ (a = 0 → z = 0)`. Introduce `a`. Distinguish the cases in `h : a = 1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨1, by simp [h], fun _ => rfl, fun h0 => absurd (h.symm.trans h0) one_ne_zero⟩`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq a (Nat.pos_of_ne_zero hQ0)`. Conclude with `⟨z, hz, fun h1 => absurd h1 h, fun h0 => pow_eq_zero_iff hQ0 |>.mp (hz.trans h0)⟩`. Use `choose rt hrt hrt1 hrt0 using hrt`. Set `e : Fin Tᶜ.card ↪ Fin m` to `(Tᶜ.orderEmbOfFin rfl).toEmbedding`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∀ ν, e ν ∉ T` using `fun ν => Finset.mem_compl.1 (Finset.orderEmbOfFin_mem _ rfl ν)`. Use `choose r hr hr1 hr0 hrs using fun ν => exists_relation hY hT' (hn _ (he ν))`. Establish `hle` using `hk Tᶜ.card (fun ν δ => rt (r ν δ)) (fun ν δ => ge_of_pow hQ0 (by rw [hrt]; exact hr ν δ)) (fun c _ hs ν => by`. Establish `h1 : V.MM (∑ b, c b * rt (r b (e ν)))` using `hs (e ν)`. Rewrite using `[Finset.sum_eq_single ν (fun b _ hb => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hrt0 _ (hr0 b _ (he ν) (fun h => hb (e.injective h).symm)), mul_zero])`. Use the proof step `(fun h => absurd (Finset.mem_univ _) h), hrt1 _ (hr1 ν), mul_one] at h1`. Conclude with `h1)`. Use the proof step `(fun ν s => by simp only [hrt]; exact hrs ν s)`. Use `⟨T.card, (T.orderEmbOfFin rfl).toEmbedding, ?_, hT'.indepMod _ fun ν => Finset.orderEmbOfFin_mem _ rfl ν⟩` and prove the remaining obligations.
-
-Rewrite `hle` using `[Finset.card_compl, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rank_nullity : ∀ (C : Type) [Field C] [IsAlgClosed C] (V : VF C) (σ : Type) (m k Q : ℕ), 1 ≤ Q → ∀ Y : Fin m → σ → C, (∀ δ x, V.Ge 0 (Y δ x)) → (∀ (N : ℕ) (x : Fin N → Fin m → C), (∀ ν δ, V.Ge 0 (x ν δ)) → IndepMod V x → (∀ ν s, V.MM (∑ δ, x ν δ ^ Q * Y δ s)) → N ≤ k) → ∃ (m' : ℕ) (cc : Fin m' ↪ Fin m), m ≤ m' + k ∧ IndepMod V (fun ν => Y (cc ν)) := by
   intro C _ _ V σ m k Q hQ Y hY hk

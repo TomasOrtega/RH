@@ -8,9 +8,9 @@ namespace Formalism.MainNotions.J
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Introduce `w hw v hv`. Take `⟨hs, hd, -⟩` from `(h w hw).2.1`. Use `⟨(hs v hv).1, fun hp => ?_⟩` and prove the remaining obligations. Establish `h0 : v ∈ D.ntw.S0 (N.twI w)`. Establish `h1` using `D.ntw.twistExcludedPlaces_contains_residueChar (N.twI w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[N.twI_l w]`. Conclude with `h1 hp` after adjusting the coercions. Conclude with `Finset.disjoint_left.mp hd hv (Finset.mem_union_left _ h0)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_twists_condition (D : D7) (N : NChoice D) (I : Formalism.MainNotions.TwIn D) (h : Formalism.MainNotions.TwGoodAt D N I) :
     Formalism.MainNotions.LocalQuadraticParts.TwistConductorsSplit D N := by
@@ -25,7 +25,7 @@ theorem good_twists_condition (D : D7) (N : NChoice D) (I : Formalism.MainNotion
   exact Finset.disjoint_left.mp hd hv (Finset.mem_union_left _ h0)
 
 /- English proof (translation)
-Take `⟨x0, H⟩` from `h`. Use `⟨x0, fun x hx0 hx i => ?_⟩` and prove the remaining obligations. Take `⟨-, N0, S, hG⟩` from `H x hx0 hx i`. Conclude with `good_twists_condition _ _ _ hG`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem family_good_twists_condition {eps : ℝ} (Fm : FamP eps) (h : Formalism.MainNotions.TwGood Fm) : Formalism.MainNotions.LocalQuadraticParts.TwistConductorsFamily Fm := by
   obtain ⟨x0, H⟩ := h

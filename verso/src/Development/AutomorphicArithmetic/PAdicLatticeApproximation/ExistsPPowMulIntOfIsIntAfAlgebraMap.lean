@@ -5,19 +5,17 @@ open GlobalTheory GlobalTheory.PELU GlobalTheory.UPel.HT GlobalTheory.LKTrip Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `p hp q hq`. Establish `hp' : p.Prime` using `hp.out`. Take `⟨r, m, hmp, hden⟩` from `Nat.exists_eq_pow_mul_and_not_dvd q.den_nz p hp'.one_lt.ne'`. Establish `hm0 : 0 < m`. Break down `Nat.eq_zero_or_pos m with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hden` using `[h, mul_zero]`. Conclude with `absurd hden q.den_nz`. Conclude with `h`. Establish `hmc : m.Coprime p` using `((Nat.Prime.coprime_iff_not_dvd hp').mpr hmp).symm`. Establish `hint : IsIntAf (algebraMap ℚ (AfP p) q * (p : AfP p) ^ r)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Rewrite using `[map_mul, map_pow, map_natCast]`. Conclude with `mul_mem (hq v) (pow_mem (natCast_mem _ p) r)`. Establish `hnum : ((q.num : ℤ) : ℚ) = (m : ℚ) * (q * (p : ℚ) ^ r)`. Rewrite using `[← Rat.mul_den_eq_num]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: (q.den : ℚ) = (p : ℚ) ^ r * m` using `by exact_mod_cast hden`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdvd : (m : ℤ) ∣ q.num`. Apply `IntDvd.int_dvd_of_eq_mul_isIntAf p m hm0 hmc q.num _ hint` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hnum, map_mul, map_mul, map_pow, map_natCast, map_natCast]`. Establish `h1 : m ∣ q.num.natAbs` using `Int.natCast_dvd.mp hdvd`. Establish `h2 : m ∣ q.den` using `⟨p ^ r, by rw [hden, mul_comm]⟩`. Establish `hm1 : m = 1` using `Nat.Coprime.eq_one_of_dvd (Nat.Coprime.coprime_dvd_left h1 q.reduced) h2`. Use `⟨r, q.num, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Rat.mul_den_eq_num]`. Establish `: (q.den : ℚ) = (p : ℚ) ^ r`. Rewrite using `[hden, hm1, mul_one]`. Use `push_cast`. Both sides reduce to the same expression.
-
-Rewrite using `[this, mul_comm]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_p_pow_mul_int_of_isIntAf_algebraMap :
     ∀ (p : ℕ) [Fact p.Prime] (q : ℚ), IsIntAf (algebraMap ℚ (AfP p) q) → ∃ (r : ℕ) (z : ℤ), (p : ℚ) ^ r * q = z := by

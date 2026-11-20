@@ -17,9 +17,9 @@ namespace Tw.LatParam
 open _root_.GlobalTheory
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.vecMulVec_apply, Finset.sum_apply, Pi.smul_apply, Matrix.sum_apply, Matrix.smul_apply, zsmul_eq_mul]`. Rewrite using `[Finset.sum_mul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Pi.intCast_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vecMulVec_sum_zsmul {E : Type} [Field E] {n d kx ky : ℕ} (ex : Fin kx → Fin n → E) (fy : Fin ky → Fin d → E)
     (c : Fin kx → ℤ) (c' : Fin ky → ℤ) :
@@ -35,29 +35,27 @@ theorem vecMulVec_sum_zsmul {E : Type} [Field E] {n d kx ky : ℕ} (ex : Fin kx 
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n d X Y hX hY v`. Take `⟨kx, ex, hex⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (hX.fg.restrictScalars (R := ℤ))`. Take `⟨ky, fy, hfy⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (hY.fg.restrictScalars (R := ℤ))`. Establish `memX : ∀ x, x ∈ X.L ↔ ∃ c : Fin kx → ℤ, ∑ i, c i • ex i = x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Submodule.restrictScalars_mem ℤ, ← hex, Submodule.mem_span_range_iff_exists_fun]`. Establish `memY : ∀ y, y ∈ Y.L ↔ ∃ c : Fin ky → ℤ, ∑ j, c j • fy j = y`. Introduce `y`. Rewrite using `[← Submodule.restrictScalars_mem ℤ, ← hfy, Submodule.mem_span_range_iff_exists_fun]`. Establish `exX : ∀ i, ex i ∈ X.L`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Establish `h` using `Submodule.subset_span (R := ℤ) (Set.mem_range_self (f := ex) i)`. Rewrite `h` using `[hex]`. Conclude with `(Submodule.restrictScalars_mem ℤ _ _).1 h`. Establish `exY : ∀ j, fy j ∈ Y.L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `h` using `Submodule.subset_span (R := ℤ) (Set.mem_range_self (f := fy) j)`. Rewrite `h` using `[hfy]`. Conclude with `(Submodule.restrictScalars_mem ℤ _ _).1 h`. Use `⟨Fin kx × Fin ky, inferInstance, fun m => Matrix.vecMulVec (ex m.1) (fy m.2), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `γ`. Set `φ : Matrix (Fin n) (Fin d) E →+ Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)` to `(Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (E := E) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F)).toAddMonoidHom.mapMatrix`. Establish `hφ : ∀ J, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F J = φ J` using `fun J => rfl`. Establish `hsupp : ∀ a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (⇑(GlobalTheory.AdelicU.evFin F v)) a → a = GlobalTheory.EmbChart.atPlace v (GlobalTheory.AdelicU.evFin F v a)`. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : GlobalTheory.AdelicU.evFin F v (1 - GlobalTheory.EmbChart.atPlace v 1) = 0`. Rewrite using `[map_sub, map_one, GlobalTheory.EmbChart.evFin_atPlace, sub_self]`. Establish `h2` using `ha _ h1`. Rewrite `h2` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdef : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV X Y v = AddSubgroup.closure {z | ∃ a, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (⇑(GlobalTheory.AdelicU.evFin F v)) a ∧ (GlobalTheory.AdelicU.evFin F v) a ∈ IsDedekindDomain.HeightOneSpectrum …` using `rfl`. Rewrite using `[hdef]`. Prove the components needed by the constructor for the conclusion. Introduce `hγ`. Proceed by induction on `hγ using AddSubgroup.closure_induction with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem z hz`. Take `⟨a, ha, hav, x, hx, y, hy, rfl⟩` from `hz`. Take `⟨c, rfl⟩` from `(memX x).1 hx`. Take `⟨c', rfl⟩` from `(memY y).1 hy`. Use `⟨fun m => (c m.1 * c' m.2) • ⟨_, hav⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `beta_reduce`. Rewrite using `[vecMulVec_sum_zsmul, hφ, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, smul_comm, AddSubgroupClass.coe_zsmul, map_zsmul, smul_assoc, ← hsupp a ha, hφ]`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, by simp [Finset.sum_add_distrib, add_smul]⟩`. Consider the case `neg x _ hx`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨a, rfl⟩` from `hx`. Conclude with `⟨-a, by simp [neg_smul]⟩`. Introduce and unpack `⟨a, rfl⟩`. Use `AddSubgroup.sum_mem _ fun m _ => AddSubgroup.subset_closure ?_` and prove the remaining obligations. Use `⟨GlobalTheory.EmbChart.atPlace v (a m), GlobalTheory.VacAny.at_atPlace _, ?_, ex m.1, exX _, fy m.2, exY _, rfl⟩` and prove the remaining obligations.
-
-Rewrite using `[GlobalTheory.EmbChart.evFin_atPlace]`. Conclude with `(a m).2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAtV_param : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ} (X : Spc F E n)
     (Y : Spc F E d), X.L.IsLattice E → Y.L.IsLattice E → ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F,

@@ -9,7 +9,7 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory.HTW
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `ht`. Establish `h : (2 * k + 1 + 1) / 2 = k + 1` using `by omega`. Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem cast_succ_div_two_of_odd {t : ℕ} (ht : Odd t) :
     (((t + 1) / 2 : ℕ) : ℝ) = ((t : ℝ) + 1) / 2 := by
@@ -20,15 +20,15 @@ private theorem cast_succ_div_two_of_odd {t : ℕ} (ht : Odd t) :
   ring
 
 /- English proof (translation)
-Introduce `D L C hL`. Establish `hw : (_root_.GlobalTheory.HTW.wHat D : ℝ) = _root_.GlobalTheory.HTW.wMax D + ((D.R.t : ℝ) + 1) / 2`. Unfold `_root_.GlobalTheory.HTW.wHat`. Move the coercions through the operations in `[cast_succ_div_two_of_odd D.R.t_odd]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Establish `hmax` using `(_root_.GlobalTheory.HTW.wMax_le_and_ge L C hL).1`. Establish `hR` using `hL`. Unfold `_root_.GlobalTheory.HTW.Roomy at hR`. Take `⟨-, -, h3, h4, -, -⟩` from `hR`. Establish `hS` using `L.Sc_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE` using `L.etaSz_pos`. Establish `ht : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `hfS : (_root_.GlobalTheory.HTW.sHat L : ℝ) ≤ L.Sc`. Unfold `_root_.GlobalTheory.HTW.sHat`. Conclude with `Nat.floor_le hS.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hfE : (_root_.GlobalTheory.HTW.etaHat L : ℝ) ≤ L.etaSz + D.R.t + 2`. Unfold `_root_.GlobalTheory.HTW.etaHat`. Use `push_cast`. Combine the linear relations using `[Nat.floor_le hE.le]`. Use `⟨hw, ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hw]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HTW.wHat_le : ∀ {D : _root_.Formalism.BasicNotions.D7} (L : _root_.Formalism.BasicNotions.SizeData₂ D) (C : ℝ),
     _root_.GlobalTheory.HTW.Roomy L C →

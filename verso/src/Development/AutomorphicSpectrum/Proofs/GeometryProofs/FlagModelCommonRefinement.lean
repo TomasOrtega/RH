@@ -7,7 +7,7 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.MbLTopCommon
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `PositivityTheory.HtPt.Mb.top_common` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FHodgeTatePoints%2FMbLTopCommon.lean&line=62#L62)
 -/

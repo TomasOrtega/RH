@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SquareSemiOpen
 
 /- English proof (translation)
-Establish `hB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsSemiAbelian.pullback U.ι A hA`. Use `⟨hB.comm, hB.smooth, ?_, hB.geomConnected⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsProper (pullback.snd A.hom U.ι)`. Rewrite using `[← pullbackRestrictIsoRestrict_hom_morphismRestrict]`. Use `infer_instance`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAb_pullback_open {S : Scheme.{0}} (A : Over S) [GrpObj A] (hA : IsSemiAbelian A) (U : S.Opens)
     (hU : IsProper (A.hom ∣_ U)) : IsAbelianScheme ((Over.pullback U.ι).obj A) := by

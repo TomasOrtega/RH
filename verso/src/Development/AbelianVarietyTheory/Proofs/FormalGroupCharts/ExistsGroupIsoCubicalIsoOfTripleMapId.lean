@@ -10,9 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChartCmp
 
 /- English proof (translation)
-Establish `e` using `h (𝟙_ _) 1 1`. Rewrite `e` using `[_root_.mul_one]`. Establish `e2 : (1 : 𝟙_ (Over S) ⟶ G) ≫ f = 1`. Use `e.symm` as an intermediate fact. Conclude with `mul_eq_left.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `e2` using `[Hom.one_def, toUnit_unique (toUnit (𝟙_ (Over S))) (𝟙 _)]`. Use `mul_hom := by`. Establish `e` using `h _ (fst G G) (snd G G)`. Rewrite `e` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[e, ← lift_fst_comp_snd_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonHom_of_mul_points {S : Scheme.{0}} {G G' : Over S} [GrpObj G] [GrpObj G'] (f : G ⟶ G')
     (h : ∀ (T : Over S) (x y : T ⟶ G), (x * y) ≫ f = (x ≫ f) * (y ≫ f)) : IsMonHom f where
@@ -29,13 +29,13 @@ theorem isMonHom_of_mul_points {S : Scheme.{0}} {G G' : Over S} [GrpObj G] [GrpO
     rw [e, ← lift_fst_comp_snd_comp]
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ t t' n`. Establish `hp` using `n.cart.1`. Establish `hw : n.cm.F ≫ t'.G.hom = t.G.hom` using `by simpa using hp.w`. Use `haveI : IsIso n.cm.F := hp.isIso_fst_of_isIso`. Set `ψ : t.G ≅ t'.G` to `Over.isoMk (asIso n.cm.F) hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : ψ.hom.left = n.cm.F` using `rfl`. Use `⟨ψ, rfl, ?_, fun a => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `isMonHom_of_mul_points _ fun T x y => ?_` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `e` using `n.cart.2 T x y (pushPt hp.w x) (pushPt hp.w y) rfl rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left, hψ, ← e]`. Conclude with `mul_left_congr (Category.comp_id _) _ _ (x ≫ ψ.hom) (y ≫ ψ.hom) rfl rfl`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `n.act a`. Use `hom_ext_triple _ fun i => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[cubeMap_comp_proj_three, ← Over.comp_left, ← cubeProj_comp_map, Over.comp_left, hψ]`. Take `⟨w, h1, -, h3⟩` from `n.lin`. Conclude with `⟨w, h1, h3⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_iso_of_sabMap_id : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] (t t' : SAB H (Sp V)) (n : SABMap t t' (𝟙 (Sp V))), ∃ ψ : t.G ≅ t'.G, ψ.hom.left = n.φ ∧ IsMonHom ψ.hom ∧ (∀ a, t.act.act a ≫ ψ.hom = ψ.hom ≫ t'.act.act a) ∧ n.cm.F3 = (ψ.hom ⊗ₘ ψ.hom ⊗ₘ ψ.hom).left ∧ ∃ w : LB.Iso t.PP.L (t'.PP.L.pull n.φ), CubIso n w := by
   intro E _ _ _ H V _ t t' n

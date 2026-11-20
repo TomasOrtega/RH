@@ -19,13 +19,11 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨M *ᵥ y, hM y hy, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ M y i`. Consider the case `zero => rw [mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mulVec_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `add_mem hx hy`. Consider the case `smul s x _ hx`. Use `Submodule.smul_mem _ s hx` as an intermediate fact. Rewrite `this` using `[Subring.smul_def, ← mulVec_smul]`. Rewrite using `[Subring.smul_def]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_hatL {m n : ℕ} (M : Matrix (Fin m) (Fin n) E) {Λ : Submodule (𝓞 E) (Fin n → E)}
     {Λ' : Submodule (𝓞 E) (Fin m → E)} (hM : ∀ y ∈ Λ, M *ᵥ y ∈ Λ') :
@@ -47,9 +45,9 @@ theorem map_hatL {m n : ℕ} (M : Matrix (Fin m) (Fin n) E) {Λ : Submodule (�
     exact this
 
 /- English proof (translation)
-Establish `: 𝔪 • Λ ≤ (𝔪 • Λ').comap ((Matrix.mulVecLin M).restrictScalars (𝓞 E))`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr z hz`. Use `show M *ᵥ (r • z) ∈ 𝔪 • Λ'`. Rewrite using `[mulVec_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `Submodule.smul_mem_smul hr (hM z hz)`. Conclude with `fun y hy => this hy`.
+A detailed English derivation is pending.
 -/
 theorem map_smul {m n : ℕ} (M : Matrix (Fin m) (Fin n) E) {Λ : Submodule (𝓞 E) (Fin n → E)}
     {Λ' : Submodule (𝓞 E) (Fin m → E)} (hM : ∀ y ∈ Λ, M *ᵥ y ∈ Λ') (𝔪 : Ideal (𝓞 E)) :
@@ -63,7 +61,7 @@ theorem map_smul {m n : ℕ} (M : Matrix (Fin m) (Fin n) E) {Λ : Submodule (�
   exact fun y hy => this hy
 
 /- English proof (translation)
-The claim follows from `map_hatL M (map_smul M hM 𝔪)`.
+A detailed English derivation is pending.
 -/
 theorem map_hatL_smul {m n : ℕ} (M : Matrix (Fin m) (Fin n) E) {Λ : Submodule (𝓞 E) (Fin n → E)}
     {Λ' : Submodule (𝓞 E) (Fin m → E)} (hM : ∀ y ∈ Λ, M *ᵥ y ∈ Λ') (𝔪 : Ideal (𝓞 E)) :
@@ -78,13 +76,13 @@ open GlobalTheory.UnitaryEmbeddingProperties
 variable {D : D7} {A B : HSp D} {c : ℕ} {ε : D.host.E}
 
 /- English proof (translation)
-Rewrite using `[qM, Matrix.mul_assoc, d.perp, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qM_mul_a (d : HermitianOrthogonalExtensionData A B c ε) : qM d * d.a = 0 := by
   rw [qM, Matrix.mul_assoc, d.perp, Matrix.mul_zero]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, hy, u, -, rfl⟩` from `hx`. Rewrite using `[mulVec_add, mulVec_mulVec, mulVec_mulVec, qM_mul, qM_mul_a, one_mulVec, zero_mulVec, add_zero]`. Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qM_lat (d : HermitianOrthogonalExtensionData A B c ε) (Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E))
     (𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) : ∀ x ∈ d.lat Λ 𝔟, qM d *ᵥ x ∈ Λ := by
@@ -94,7 +92,7 @@ theorem qM_lat (d : HermitianOrthogonalExtensionData A B c ε) (Λ : Submodule (
   exact hy
 
 /- English proof (translation)
-Introduce `y hy` and use `⟨y, hy, 0, fun p => (𝔟 p).zero_mem, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem frameMat_lat (d : HermitianOrthogonalExtensionData A B c ε) (Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E))
     (𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) : ∀ y ∈ Λ, frameMat B A d.ι *ᵥ y ∈ d.lat Λ 𝔟 :=
@@ -103,21 +101,19 @@ theorem frameMat_lat (d : HermitianOrthogonalExtensionData A B c ε) (Λ : Submo
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D A B c ε d Λ 𝔟 𝔪 h hg`. Take `⟨P, hP⟩ : ∃ P : Matrix (Fin B.rank) (Fin A.rank) (Lev.EAf D), P = (frameMat B A d.ι).map (Formalism.UG.inclE (F` from `D.host.F) (Formalism.L2.Herm.Af D.host.F)) := ⟨_, rfl⟩`. Take `⟨Q, hQ⟩ : ∃ Q : Matrix (Fin A.rank) (Fin B.rank) (Lev.EAf D), Q = (qM d).map (Formalism.UG.inclE (F` from `D.host.F) (Formalism.L2.Herm.Af D.host.F)) := ⟨_, rfl⟩`. Take `⟨g, hgdef⟩ : ∃ g, g = Lev.finE B (stabilizerEmbedding d h)` from `⟨_, rfl⟩`. Take `⟨k, hkdef⟩ : ∃ k, k = Lev.finE A h` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hg` using `[← hgdef]`. Rewrite using `[← hkdef]`. Establish `hQP : HMul.hMul Q P = (1 : Matrix (Fin A.rank) (Fin A.rank) (Lev.EAf D))`. Rewrite using `[hP, hQ]`. Conclude with `qM_mul_map _ d`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ∀ {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E), (M.map (incA D)).map (GlobalTheory.LevSplit.finSw D) = M.map (Formalism.UG.inclE (F` using `D.host.F) (Formalism.L2.Herm.Af D.host.F)) := fun M => by`. Use extensionality with `i j`. Conclude with `GlobalTheory.LevSplit.finSw_incA _`. Establish `hG : g.1 = ex P Q k.1`. Rewrite using `[hgdef, hkdef, GlobalTheory.LevSplit.finE_val, GlobalTheory.LevSplit.finE_val, hP, hQ]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show ((matHom B (stabilizerEmbedding d h)).1).map _ = ex _ _ (((matHom A h).1).map _)`. Rewrite using `[unitaryEmbedding_matrix_formula, ex_map, e, e]`. Establish `hGP : HMul.hMul g.1 P = HMul.hMul P k.1` using `by rw [hG]; exact ex_mul_P P Q hQP _`. Establish `hk : k.1 = HMul.hMul (HMul.hMul Q g.1) P`. Rewrite using `[Matrix.mul_assoc, hGP, ← Matrix.mul_assoc, hQP, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hPl : ∀ x ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ, P *ᵥ x ∈ Formalism.L2.Herm.hatL (F := D.host.F) (d.lat Λ 𝔟) := by subst hP; exact map_hatL (F := D.host.F) (frameMat B A d.ι) (frameMat_lat d Λ 𝔟)`. Establish `hQl : ∀ x ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) (d.lat Λ 𝔟), Q *ᵥ x ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ := by subst hQ; exact map_hatL (F := D.host.F) (qM d) (qM_lat d Λ 𝔟)`. Rewrite `hg` using `[mem_congLev]`. Establish `g2` using `hg.2.1`. Establish `g3` using `hg.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_congLev]`. Use `⟨?_, fun x => ⟨fun hx => ?_, fun hx => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hkdef]`. Conclude with `GlobalTheory.LevSplit.finE_mem_UA A h`. Rewrite using `[hk, ← mulVec_mulVec, ← mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hQl _ ((g2 _).1 (hPl x hx))`. Establish `h1` using `hPl _ hx`. Rewrite `h1` using `[mulVec_mulVec, ← hGP, ← mulVec_mulVec]`. Establish `h2` using `hQl _ ((g2 _).2 h1)`. Rewrite `h2` using `[mulVec_mulVec, hQP, one_mulVec]`. Then use the resulting hypothesis.
-
-Establish `e2 : k.1 *ᵥ x - x = Q *ᵥ (g.1 *ᵥ (P *ᵥ x) - P *ᵥ x)`. Rewrite using `[mulVec_sub, mulVec_mulVec, mulVec_mulVec, mulVec_mulVec, hQP, one_mulVec, hk]`. Rewrite using `[e2, hQ]`. Conclude with `map_hatL_smul (F := D.host.F) (qM d) (qM_lat d Λ 𝔟) 𝔪 _ (g3 _ (hPl x hx))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finE_mem_congLev : ∀ {D : D7} {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε)
     (Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)) (𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)

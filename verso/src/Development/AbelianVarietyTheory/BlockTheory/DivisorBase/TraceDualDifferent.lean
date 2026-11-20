@@ -40,7 +40,7 @@ open NumberField nonZeroDivisors in
 variable {F : Type} [Field F] [NumberField F] in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ a ∈ M, ∃ n : ℤ, Algebra.trace ℚ F (y * a) = n) ↔ _`. Rewrite using `[FractionalIdeal.mem_dual hM]`. Use `forall₂_congr fun a _ => ?_` and prove the remaining obligations. Simplify using `[Algebra.traceForm_apply, eq_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.mem_traceDual_iff {M : FractionalIdeal (𝓞 F)⁰ F} (hM : M ≠ 0) (y : F) :
     y ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.traceDual M ↔ y ∈ FractionalIdeal.dual ℤ ℚ M := by
@@ -50,7 +50,7 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.mem_tr
   simp [Algebra.traceForm_apply, eq_comm]
 
 /- English proof (translation)
-Rewrite using `[mem_traceDual_iff hM, FractionalIdeal.dual_eq_mul_inv, coeIdeal_differentIdeal ℤ ℚ F (𝓞 F), inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_traceDual_iff_different {M : FractionalIdeal (𝓞 F)⁰ F} (hM : M ≠ 0) (y : F) :
     y ∈ traceDual M ↔ y ∈ ((differentIdeal ℤ (𝓞 F) : FractionalIdeal (𝓞 F)⁰ F))⁻¹ * M⁻¹ := by
@@ -60,7 +60,7 @@ open NumberField nonZeroDivisors in
 variable {F : Type} [Field F] [NumberField F] in
 
 /- English proof (translation)
-Use `mul_pos (Real.sqrt_pos.2 (abs_pos.2 (Int.cast_ne_zero.2 (discr_ne_zero F)))) ?_` and prove the remaining obligations. Conclude with `lt_of_le_of_ne (FractionalIdeal.absNorm_nonneg M) (Ne.symm (FractionalIdeal.absNorm_eq_zero_iff.not.2 hM))` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.covol_pos {M : FractionalIdeal (𝓞 F)⁰ F} (hM : M ≠ 0) :
     0 < _root_.GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.covol M := by
@@ -73,7 +73,7 @@ variable {F : Type} [Field F] [NumberField F] in
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[mixedEmbedding.covolume_idealLattice, IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero, mul_one, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.covol_eq_covolume [IsTotallyReal F]
     (M : (FractionalIdeal (𝓞 F)⁰ F)ˣ) :
@@ -87,11 +87,11 @@ open NumberField nonZeroDivisors in
 variable {F : Type} [Field F] [NumberField F] in
 
 /- English proof (translation)
-Rewrite using `[IsTotallyReal.finrank, ← InfinitePlace.card_real_embeddings]`. Use `Fintype.card_congr { toFun := fun φ => ⟨Complex.ofRealHom.comp φ, ?_⟩ invFun := fun φ => φ.2.embedding left_inv := ?_ right_inv := ?_ : (F →+* ℝ) ≃ { φ : F →+* ℂ // ComplexEmbedding.IsReal φ } }` and compare the differences between its conclusion and the goal. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `φ`. Use extensionality with `x`. Simplify using `using ComplexEmbedding.IsReal.coe_embedding_apply (φ := Complex.ofRealHom.comp φ) _ x`. Introduce `φ`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[ComplexEmbedding.IsReal.coe_embedding_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.card_realEmb [IsTotallyReal F] :
     Fintype.card (F →+* ℝ) = Module.finrank ℚ F := by
@@ -108,14 +108,14 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.card_r
   · intro φ; ext x; simp [ComplexEmbedding.IsReal.coe_embedding_apply]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun τ _ h => hz τ (by simpa using congrArg Complex.im h)`.
+A detailed English derivation is pending.
 -/
 theorem norm_add_ne_zero {z : (F →+* ℝ) → ℂ} (hz : ∀ τ, (z τ).im ≠ 0) (a : F) :
     ∏ τ : F →+* ℝ, (z τ + ((τ a : ℝ) : ℂ)) ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun τ _ h => hz τ (by simpa using congrArg Complex.im h)
 
 /- English proof (translation)
-Simplify using `[dualCone, hz]`.
+Simplify using the standard rewrite rules.
 -/
 example (M : FractionalIdeal (𝓞 F)⁰ F) (z : (F →+* ℝ) → ℂ) (hz : ∀ τ, 0 < (z τ).im) (ν : F) :
     ν ∈ dualCone M z ↔ ν ∈ traceDual M ∧ ∀ τ : F →+* ℝ, 0 < τ ν := by

@@ -9,7 +9,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DefiniteMult
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F h`. Use `⟨?_, fun i t => extV_injective R h.models.HV i t⟩` and prove the remaining obligations. Introduce `t`. Conclude with `range_top R h.models.inf h.models.cX h.models.prX h.models.HX t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem topMult_and_extV_injective : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.BaseW F → Formalism.IndefR.RecTie.TopMultH R ∧ ∀ i t, Function.Injective (R.extV i t) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F h

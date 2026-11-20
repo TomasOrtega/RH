@@ -7,9 +7,9 @@ open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BasicNotions Global
 namespace GlobalTheory.Alc
 
 /- English proof (translation)
-Establish `h' : n % p = m % p` using `(ZMod.natCast_eq_natCast_iff' n m p).1 h`. Apply the tactic sequence `rcases hn.eq_or_lt with rfl | hn' <;> rcases hm.eq_or_lt with rfl | hm'`. Conclude with `Or.inl rfl`. Rewrite `h'` using `[Nat.mod_self, Nat.mod_eq_of_lt hm']`. Conclude with `Or.inr (Or.inr ⟨rfl, h'.symm⟩)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative.
 
-Rewrite `h'` using `[Nat.mod_self, Nat.mod_eq_of_lt hn']`. Conclude with `Or.inr (Or.inl ⟨h', rfl⟩)`. Rewrite `h'` using `[Nat.mod_eq_of_lt hn', Nat.mod_eq_of_lt hm']`. Conclude with `Or.inl h'`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative. Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative.
 -/
 theorem natCast_eq_le_prime {p n m : ℕ} (hp : 0 < p) (hn : n ≤ p) (hm : m ≤ p)
     (h : (n : ZMod p) = (m : ZMod p)) : n = m ∨ (n = 0 ∧ m = p) ∨ (n = p ∧ m = 0) := by
@@ -24,41 +24,39 @@ theorem natCast_eq_le_prime {p n m : ℕ} (hp : 0 < p) (hn : n ≤ p) (hm : m �
     exact Or.inl h'
 
 /- English proof (translation)
-Introduce `p N hp ν μ hν hμ h hc`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Use function extensionality and compare the values at `i`. Conclude with `i.elim0`. Take `⟨h1, h2, h3⟩` from `h hN`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp0 : 0 < p` using `hp.pos`. Set `a : Fin N → ℕ` to `fun i => ν i + (N - 1 - i.val)`. Set `b : Fin N → ℕ` to `fun i => μ i + (N - 1 - i.val)`. Establish `hc' : ∀ x : ZMod p, (Finset.univ.filter fun i : Fin N => ((a i : ℕ) : ZMod p) = x).card = (Finset.univ.filter fun i : Fin N => ((b i : ℕ) : ZMod p) = x).card` using `hc`. Establish `ha : StrictAnti a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Establish `h4` using `hν hij.le`. Establish `h5 : i.val < j.val` using `hij`. Establish `h6` using `j.isLt`. Use `show ν j + (N - 1 - j.val) < ν i + (N - 1 - i.val)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hb : StrictAnti b`. Introduce `i j hij`. Establish `h4` using `hμ hij.le`. Establish `h5 : i.val < j.val` using `hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h6` using `j.isLt`. Use `show μ j + (N - 1 - j.val) < μ i + (N - 1 - i.val)`. Use linear arithmetic over natural numbers and integers. Set `z : Fin N` to `⟨0, hN⟩`. Set `l : Fin N` to `⟨N - 1, by omega⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hal : a l = 0` using `by show ν ⟨N - 1, _⟩ + (N - 1 - (N - 1)) = 0`. Rewrite using `[h1]`. Use linear arithmetic over natural numbers and integers. Establish `haz : a z ≤ p` using `by show ν ⟨0, hN⟩ + (N - 1 - 0) ≤ p`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hbz : b z ≤ a z` using `by show μ ⟨0, hN⟩ + (N - 1 - 0) ≤ ν ⟨0, hN⟩ + (N - 1 - 0)`. Use linear arithmetic over natural numbers and integers. Establish `hzle : ∀ i : Fin N, z ≤ i` using `fun i => Nat.zero_le _`. Establish `hap : ∀ i, a i ≤ p` using `fun i => (ha.antitone (hzle i)).trans haz`. Establish `hbp : ∀ i, b i ≤ p` using `fun i => (hb.antitone (hzle i)).trans (hbz.trans haz)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `two : ∀ i, a i = p → (∃ j, b j = 0) ∧ (∃ j, b j = p)`. Introduce `i hi`. Establish `hne : i ≠ l`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1lt : 1 < (Finset.univ.filter fun i : Fin N => ((a i : ℕ) : ZMod p) = 0).card`. Use `Finset.one_lt_card.2 ⟨i, ?_, l, ?_, hne⟩` and prove the remaining obligations. Simplify using `[hi]`. Simplify using `[hal]`. Rewrite `h1lt` using `[hc' 0]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j₁, hj₁, j₂, hj₂, hj⟩` from `Finset.one_lt_card.1 h1lt`. Establish `e₁ : ((b j₁ : ℕ) : ZMod p) = ((0 : ℕ) : ZMod p)` using `by simpa using hj₁`. Establish `e₂ : ((b j₂ : ℕ) : ZMod p) = ((0 : ℕ) : ZMod p)` using `by simpa using hj₂`. Establish `r₁` using `natCast_eq_le_prime hp0 (hbp j₁) hp0.le e₁`. Establish `r₂` using `natCast_eq_le_prime hp0 (hbp j₂) hp0.le e₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbne : b j₁ ≠ b j₂` using `fun e => hj (hb.injective e)`. Establish `s₁ : b j₁ = 0 ∨ b j₁ = p` using `by omega`. Establish `s₂ : b j₂ = 0 ∨ b j₂ = p` using `by omega`. Apply the tactic sequence `rcases s₁ with s₁ | s₁ <;> rcases s₂ with s₂ | s₂`. Conclude with `absurd (s₁.trans s₂.symm) hbne`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨j₁, s₁⟩, ⟨j₂, s₂⟩⟩`. Conclude with `⟨⟨j₂, s₂⟩, ⟨j₁, s₁⟩⟩`. Conclude with `absurd (s₁.trans s₂.symm) hbne`. Establish `sub : ∀ i, ∃ j, b j = a i`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hpos : 0 < (Finset.univ.filter fun k : Fin N => ((a k : ℕ) : ZMod p) = (a i : ZMod p)).card` using `Finset.card_pos.2 ⟨i, by simp⟩`. Rewrite `hpos` using `[hc' (a i : ZMod p)]`. Take `⟨j, hj⟩` from `Finset.card_pos.1 hpos`. Establish `ej : ((b j : ℕ) : ZMod p) = ((a i : ℕ) : ZMod p)` using `by simpa using hj`. Break down `natCast_eq_le_prime hp0 (hbp j) (hap i) ej with e | ⟨e₁, e₂⟩ | ⟨e₁, e₂⟩` into its components or cases.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨j, e⟩`. Take `⟨k, hk⟩` from `(two i e₂).2`. Conclude with `⟨k, hk.trans e₂.symm⟩`. Establish `hbz' : b z = p` using `le_antisymm (hbp z) (e₁ ▸ hb.antitone (hzle j))`. Establish `haz' : a z = p` using `le_antisymm haz (hbz' ▸ hbz)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk⟩` from `(two z haz').1`. Conclude with `⟨k, hk.trans e₂.symm⟩`. Establish `himg : Finset.univ.image a = Finset.univ.image b`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hv`. Take `⟨j, hj⟩` from `sub i`. Conclude with `Finset.mem_image.2 ⟨j, Finset.mem_univ _, hj⟩`. Rewrite using `[Finset.card_image_of_injective _ ha.injective, Finset.card_image_of_injective _ hb.injective]`. Establish `hrange : Set.range b = Set.range a`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun s : Finset ℕ => (s : Set ℕ)) himg` as an intermediate fact. Simplify using `using this.symm`. Establish `hab : b = a` using `(StrictAnti.range_inj hb ha).1 hrange`. Use function extensionality and compare the values at `i`. Establish `e : b i = a i` using `congrFun hab i`.
-
-Establish `e' : μ i + (N - 1 - i.val) = ν i + (N - 1 - i.val)` using `e`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_of_shifted_residues_eq :
     ∀ (p N : ℕ), p.Prime → ∀ (ν μ : Fin N → ℕ), Antitone ν → Antitone μ →
